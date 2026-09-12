@@ -23,9 +23,9 @@ import { runRemunerationFormAction } from "@/server/actions/qualiopi/trainer-rem
 import {
   honorairesSousTraitanceAnnee,
   listAnomaliesPeriode,
-  listRelevesDus,
   listRelevesPeriode,
 } from "@/server/qualiopi/remuneration/queries";
+import { listDuFormateurs } from "@/server/qualiopi/remuneration/pilotage-formateurs";
 import { periodeDeRattachement } from "@/server/qualiopi/remuneration/run";
 import {
   euros,
@@ -71,17 +71,29 @@ export default async function QualiopiRemunerationPage({ params, searchParams }:
     listRelevesPeriode(periode),
     listAnomaliesPeriode(periode),
     honorairesSousTraitanceAnnee(year),
-    listRelevesDus(),
+    listDuFormateurs(),
   ]);
 
   const totalTtc = releves.reduce((t, r) => t + r.totalTtcCents, 0);
   const aPayer = releves.filter((r) => r.statut !== "paye" && r.statut !== "annule").length;
 
-  // Ce qu'on doit, toutes périodes confondues — la question à laquelle l'écran
-  // par période ne pouvait pas répondre.
-  const totalDuTtc = dus.reduce((t, r) => t + r.totalTtcCents, 0);
+  /*
+    🔴 CE QU'ON DOIT, TOUS STATUTS CONFONDUS (2026-09-12).
+
+    Jusqu'ici cette section ne connaissait que les INDÉPENDANTS : eux seuls ont
+    un relevé. Un salarié qui anime des formations n'apparaissait dans aucun
+    suivi de paiement — ses commissions étaient calculées en coût analytique et
+    s'arrêtaient là.
+
+    ⚠️ L'harmonisation porte sur la VISIBILITÉ, pas sur la nature de la dette.
+    Un salarié n'est pas payé sur facture : sa ligne annonce « à porter en
+    paie », et son montant est le COMPLÉMENT dû après imputation de son fixe
+    récupérable. Le confondre avec une dette fournisseur fausserait le BPF.
+  */
+  const totalDuTtc = dus.reduce((t, r) => t + r.montantCents, 0);
   const enRetard = dus.filter((r) => r.retardJours !== null);
-  const totalEchuTtc = enRetard.reduce((t, r) => t + r.totalTtcCents, 0);
+  const totalEchuTtc = enRetard.reduce((t, r) => t + r.montantCents, 0);
+  const aPorterEnPaie = dus.filter((r) => r.mode === "paie");
 
   return (
     <AdminPageShell>
@@ -221,15 +233,16 @@ export default async function QualiopiRemunerationPage({ params, searchParams }:
         cette page qui porte une échéance, donc la seule qui se périme.
       */}
       <AdminCard>
-        <h2 className="admin-h2">Ce qu&apos;on doit — toutes périodes</h2>
+        <h2 className="admin-h2">Ce qu&apos;on doit — tous les formateurs</h2>
         <p className="admin-muted">
-          Relevés validés ou facturés qui ne sont pas réglés. Le délai contractuel est de 30 jours à
-          compter de l&apos;émission de la facture (clause 4 du contrat de sous-traitance) ; passé
-          l&apos;échéance, les pénalités et l&apos;indemnité de 40 € courent de plein droit, sans
-          mise en demeure.
+          Indépendants, salariés et dirigeants dans une seule vue. Pour un{" "}
+          <strong>indépendant</strong>, la somme est réglée par virement, sous 30 jours à compter de
+          l&apos;émission de sa facture (clause 4 du contrat) ; passé l&apos;échéance, les pénalités
+          et l&apos;indemnité de 40 € courent de plein droit. Pour un <strong>salarié</strong>,
+          c&apos;est un complément à porter sur sa paie, après imputation de son fixe.
         </p>
 
-        <div className="mt-[var(--space-admin-4)] mb-[var(--space-admin-4)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-2">
+        <div className="mt-[var(--space-admin-4)] mb-[var(--space-admin-4)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3">
           <AdminStatCard
             label="Dû aux formateurs"
             value={euros(totalDuTtc)}
@@ -237,12 +250,20 @@ export default async function QualiopiRemunerationPage({ params, searchParams }:
             tone={totalDuTtc > 0 ? "info" : "default"}
           />
           <AdminStatCard
-            label={
-              enRetard.length > 0 ? `Échu — ${euros(totalEchuTtc)} TTC` : "Aucun relevé en retard"
-            }
+            label={enRetard.length > 0 ? `Échu — ${euros(totalEchuTtc)}` : "Aucun retard"}
             value={enRetard.length}
             icon={Clock}
             tone={enRetard.length > 0 ? "destructive" : "success"}
+          />
+          {/*
+            La paie est une file SÉPARÉE, et la compter avec les virements
+            donnerait un total qu'aucun geste unique ne solde.
+          */}
+          <AdminStatCard
+            label="À porter en paie"
+            value={aPorterEnPaie.length}
+            icon={Users}
+            tone={aPorterEnPaie.length > 0 ? "warning" : "default"}
           />
         </div>
 
@@ -250,7 +271,7 @@ export default async function QualiopiRemunerationPage({ params, searchParams }:
           <AdminEmptyState
             icon={<Clock size={24} />}
             title="Rien à payer"
-            description="Aucun relevé validé ou facturé n'attend son règlement."
+            description="Aucun formateur n'attend de règlement, ni par facture ni en paie."
           />
         ) : (
           <table className="admin-table">
@@ -258,10 +279,10 @@ export default async function QualiopiRemunerationPage({ params, searchParams }:
               <tr>
                 <th scope="col">Formateur</th>
                 <th scope="col">Période</th>
-                <th scope="col">Statut</th>
+                <th scope="col">Règlement</th>
                 <th scope="col">Échéance</th>
                 <th scope="col" className="text-right">
-                  TTC dû
+                  Montant dû
                 </th>
                 <th scope="col">
                   <span className="sr-only">Ouvrir</span>
@@ -270,14 +291,19 @@ export default async function QualiopiRemunerationPage({ params, searchParams }:
             </thead>
             <tbody>
               {dus.map((r) => (
-                <tr key={r.id}>
+                <tr key={r.statementId ?? `paie-${r.trainerId}`}>
                   <td>{r.trainerNom}</td>
                   <td className="tabular-nums">
                     {MOIS_FR[r.periodeMonth - 1]} {r.periodeYear}
                   </td>
                   <td>
-                    <AdminBadge tone={TON_STATUT_RELEVE[r.statut]} dot>
-                      {LIBELLE_STATUT_RELEVE[r.statut]}
+                    {/*
+                      🔑 Le mode de règlement DIT LE GESTE À FAIRE. Un « à payer »
+                      indifférencié enverrait chercher une facture pour quelqu'un
+                      qui n'en émettra jamais.
+                    */}
+                    <AdminBadge tone={r.mode === "facture" ? "info" : "warning"} dot>
+                      {r.mode === "facture" ? "Virement sur facture" : "À porter en paie"}
                     </AdminBadge>
                     {/*
                       🔴 « Facture reçue » ne distingue pas une facture que le
@@ -296,10 +322,17 @@ export default async function QualiopiRemunerationPage({ params, searchParams }:
                     )}
                   </td>
                   <td>
-                    {r.echeance === null ? (
-                      // Pas de facture, donc pas d'exigibilité. On le DIT plutôt
-                      // que de laisser une case vide, qu'un lecteur prendrait
-                      // pour une donnée manquante.
+                    {r.mode === "paie" ? (
+                      // La paie a son propre calendrier : lui inventer une
+                      // échéance ferait apparaître des « retards » qui n'existent
+                      // pas. On DIT le mécanisme plutôt que de laisser un vide.
+                      <span className="admin-muted">
+                        calendrier de paie
+                        {r.avanceResteCents > 0 && (
+                          <> — avance à rattraper : {euros(r.avanceResteCents)}</>
+                        )}
+                      </span>
+                    ) : r.echeance === null ? (
                       <span className="admin-muted">pas encore facturé</span>
                     ) : (
                       <>
@@ -317,11 +350,22 @@ export default async function QualiopiRemunerationPage({ params, searchParams }:
                       </>
                     )}
                   </td>
-                  <td className="text-right tabular-nums">{euros(r.totalTtcCents)}</td>
+                  <td className="text-right tabular-nums">{euros(r.montantCents)}</td>
                   <td>
-                    <Link href={`${base}/${r.id}`} className="admin-button-ghost">
-                      Ouvrir
-                    </Link>
+                    {r.statementId !== null ? (
+                      <Link href={`${base}/${r.statementId}`} className="admin-button-ghost">
+                        Ouvrir
+                      </Link>
+                    ) : (
+                      // Un salarié n'a pas de relevé : on renvoie vers sa fiche,
+                      // le seul endroit où son fixe et ses lignes se règlent.
+                      <Link
+                        href={`/${locale}/${adminPrefix}/qualiopi/formateurs/${r.trainerId}`}
+                        className="admin-button-ghost"
+                      >
+                        Sa fiche
+                      </Link>
+                    )}
                   </td>
                 </tr>
               ))}
