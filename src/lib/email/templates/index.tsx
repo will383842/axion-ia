@@ -96,6 +96,10 @@ import {
 } from "./documents-nouvelle-version";
 import { FormateurMagicLinkEmail, formateurMagicLinkSubject } from "./formateur-magic-link";
 import {
+  FormateurContratTravailEmail,
+  formateurContratTravailSubject,
+} from "./formateur-contrat-travail";
+import {
   FormateurMissionProposeeEmail,
   formateurMissionProposeeSubject,
 } from "./formateur-mission-proposee";
@@ -315,6 +319,11 @@ const TEMPLATES: TemplateMap = {
   "formateur-rappel-j1": {
     subject: formateurRappelJ1Subject,
     component: FormateurRappelJ1Email,
+  },
+  // Contrat de travail du salarié — envoi MANUEL depuis sa fiche.
+  "formateur-contrat-travail": {
+    subject: formateurContratTravailSubject,
+    component: FormateurContratTravailEmail,
   },
   "ressources-magic-link": {
     subject: ressourcesMagicLinkSubject,

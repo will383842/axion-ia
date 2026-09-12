@@ -72,7 +72,7 @@ function champsDeclares(source: string): ReadonlyArray<{ nom: string; optionnel:
 describe("le jeu de données d'exemple couvre tous les gabarits", () => {
   const tous = gabarits();
 
-  it("lit bien les 51 gabarits — sinon la garde serait verte en ne regardant rien", () => {
+  it("lit bien les 53 gabarits — sinon la garde serait verte en ne regardant rien", () => {
     // 🔴 Le témoin qui distingue « rien à signaler » de « je n'ai rien lu ».
     // Si ce nombre change parce qu'un gabarit a été ajouté, mettre le chiffre à
     // jour est le bon geste — le baisser pour faire passer la garde ne l'est pas.
@@ -91,7 +91,11 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // l'autofacturation). Ses trois champs sont déclarés ci-dessous — c'est la
     // garde suivante qui l'a exigé, et elle avait raison : un aperçu troué se
     // découvre en réunion, pas en test.
-    expect(tous.length).toBe(52);
+    // 🔴 2026-09-12 — RELEVÉ À 53 : `formateur-contrat-travail`, le message qui
+    // envoie un salarié lire et signer son contrat. Sa pièce était produite,
+    // signable et lisible depuis son espace — et RIEN ne l'y envoyait. Le
+    // lecteur existait, personne ne lui indiquait le chemin.
+    expect(tous.length).toBe(53);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

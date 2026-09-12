@@ -100,6 +100,10 @@ export type EmailJobName =
   | "formateur-mission-proposee"
   | "formateur-convocation-j7"
   | "formateur-rappel-j1"
+  // Contrat de travail du formateur SALARIÉ (2026-09-12) : la pièce est
+  // produite et signable dans son espace, mais personne ne l'y envoyait.
+  // Envoi MANUEL depuis la fiche — Will relit le contrat avant de prévenir.
+  | "formateur-contrat-travail"
   // Espace ressources — lien de connexion passwordless (commercial/formateur)
   | "ressources-magic-link"
   // Hub facturation — envois MANUELS (admin) de devis/facture avec PDF joint

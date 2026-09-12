@@ -31,6 +31,9 @@ import { generateDocument } from "@/server/qualiopi/documents/documents-service"
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { ContratTravailPdf } from "@/server/qualiopi/documents/templates/contrat-travail";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { enqueueEmail } from "@/server/queue/queues";
+import { publicUrl } from "@/lib/public-url";
+import { FORMATEUR_CONNEXION_PATH } from "@/server/formateur/routes";
 import {
   LIBELLE_REFUS_CONTRAT,
   motifSpecimenContrat,
@@ -328,4 +331,157 @@ export async function genererContratTravailAction(input: {
   return {
     data: { documentId: doc.id, numero: doc.numero, specimen: specimenMotif !== null },
   };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 3. Prévenir le salarié
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Annonce au salarié que son contrat l'attend dans son espace.
+ *
+ * ## 🔴 Pourquoi ce geste existe
+ *
+ * La pièce était complète, numérotée, signable — et personne n'allait la
+ * chercher. Quelqu'un qu'on vient d'embaucher n'a aucune raison d'ouvrir un
+ * « espace formateur » de sa propre initiative : il attend qu'on lui dise. Le
+ * lecteur EXISTAIT ; rien ne lui indiquait le chemin.
+ *
+ * ## ⛔ POURQUOI IL EST MANUEL, ET LE RESTERA
+ *
+ * C'est le QUATRIÈME geste, après enregistrer, établir et RELIRE. Will a demandé
+ * la relecture avant l'envoi ; un envoi automatique à l'émission la rendrait
+ * impossible — le message partirait dans le même mouvement que la production de
+ * la pièce, et une mention fausse serait déjà chez l'intéressé.
+ *
+ * ⚠️ L'écart avec l'autofacture est VOULU et n'est pas une incohérence :
+ * celle-là s'émet automatiquement parce que son contrôle humain a déjà eu lieu
+ * (la VALIDATION du relevé, où un opérateur regarde l'argent). Ici, le contrôle
+ * humain est la relecture, et elle vient APRÈS la production.
+ *
+ * ## Ce que le message ne fait pas
+ *
+ * ⛔ Aucune pièce jointe : le contrat porte la rémunération et l'adresse
+ * personnelle du salarié, l'espace le sert derrière une garde de propriété, une
+ * boîte aux lettres ne garde rien.
+ *
+ * ⛔ Aucun lien secret : le lien de connexion vaut quinze minutes. Un message
+ * ouvert le soir porterait un lien déjà mort, sur l'annonce d'un contrat de
+ * travail. On envoie vers la page de connexion.
+ */
+export async function notifierContratTravailAction(input: {
+  trainerId: string;
+}): Promise<ActionResult<{ destinataire: string }>> {
+  const session = await requireHabilitation("remunerer_formateur");
+  if (isStub()) return { error: "Envoi désactivé en mode build (stub)" };
+
+  const parsed = z.object({ trainerId: z.string().uuid() }).safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { trainerId } = parsed.data;
+
+  const trainer = await prisma.trainer.findUnique({
+    where: { id: trainerId },
+    select: {
+      email: true,
+      nom: true,
+      prenom: true,
+      statut: true,
+      actif: true,
+      contratType: true,
+      contratPoste: true,
+      dateEmbauche: true,
+    },
+  });
+  if (trainer === null) return { error: "Formateur introuvable" };
+  if (trainer.statut !== "salarie") {
+    return { error: "Ce formateur n'est pas salarié : il n'a pas de contrat de travail." };
+  }
+  if (!trainer.actif) {
+    return { error: "Ce compte est désactivé : réactivez-le avant de prévenir le salarié." };
+  }
+  if (trainer.email.trim() === "") {
+    return { error: "Ce formateur n'a pas d'adresse e-mail : renseignez-la sur sa fiche." };
+  }
+
+  /*
+    🔴 ON REFUSE D'ANNONCER UNE PIÈCE QUI N'EXISTE PAS.
+
+    Sans ce contrôle, le bouton enverrait « votre contrat est prêt » à quelqu'un
+    qui ouvrirait un espace vide. C'est pire que le silence qu'on corrige : le
+    silence n'engage rien, l'annonce fausse fait perdre confiance dans tout ce
+    qui suivra.
+
+    ⚠️ Et on refuse aussi le SPÉCIMEN. Une pièce marquée « spécimen » n'est pas
+    opposable et le service de signature la rejette : l'annoncer enverrait le
+    salarié buter sur un refus, sur le document le plus engageant qu'on lui
+    adresse.
+  */
+  const piece = await prisma.documentGenere.findFirst({
+    where: { type: "contrat_travail", trainerId, annuleeAt: null },
+    orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+    select: { numero: true, metadata: true },
+  });
+  if (piece === null) {
+    return {
+      error:
+        "Aucun contrat n'a été établi pour ce salarié. Établissez-le, relisez-le, puis prévenez-le.",
+    };
+  }
+  const estSpecimen =
+    typeof piece.metadata === "object" &&
+    piece.metadata !== null &&
+    !Array.isArray(piece.metadata) &&
+    (piece.metadata as Record<string, unknown>)["specimen"] === true;
+  if (estSpecimen) {
+    return {
+      error:
+        "Ce contrat porte la mention SPÉCIMEN : il n'est pas opposable et ne peut pas être signé. Renseignez la convention collective de l'organisme, établissez-le à nouveau, puis prévenez le salarié.",
+    };
+  }
+
+  const envoi = await enqueueEmail(
+    "formateur-contrat-travail",
+    trainer.email,
+    "fr",
+    {
+      formateurPrenomNom: `${trainer.prenom} ${trainer.nom}`.trim(),
+      natureContrat: trainer.contratType === "cdd" ? "CDD" : "CDI",
+      poste: trainer.contratPoste ?? "formateur",
+      dateEmbauche: dateFr(trainer.dateEmbauche),
+      numeroPiece: piece.numero,
+      lienEspace: publicUrl(FORMATEUR_CONNEXION_PATH).toString(),
+    },
+    {
+      // 🔑 `entityType`/`entityId` rendent l'envoi RETROUVABLE : c'est ce que
+      // l'écran relit pour afficher « prévenu le … ». Sans eux, la trace
+      // existerait dans le journal des e-mails sans qu'aucune surface ne sache
+      // la rattacher à ce salarié.
+      //
+      // ⚠️ AUCUN `jobId` fixe, volontairement : un identifiant stable rendrait
+      // l'envoi idempotent, donc un SECOND envoi serait silencieusement avalé.
+      // Or réenvoyer est un geste légitime — le premier message s'est perdu, ou
+      // le contrat a été refait.
+      entityType: "Trainer",
+      entityId: trainerId,
+    },
+  );
+
+  if (!envoi.enqueued) {
+    return {
+      error:
+        envoi.garePourValidation === true
+          ? "Le message est garé en corbeille de validation : il partira une fois validé."
+          : "La file de messages est indisponible : le salarié n'a PAS été prévenu. Réessayez.",
+    };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.trainer.contrat_travail.notifie",
+    targetType: "Trainer",
+    targetId: trainerId,
+    changes: { numero: piece.numero, destinataire: trainer.email },
+    session,
+  });
+
+  return { data: { destinataire: trainer.email } };
 }
