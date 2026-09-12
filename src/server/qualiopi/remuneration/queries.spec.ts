@@ -26,6 +26,7 @@ import {
   getReleveDetail,
   honorairesSousTraitanceAnnee,
   listAnomaliesPeriode,
+  listRelevesDuFormateur,
   listRelevesPeriode,
 } from "./queries";
 
@@ -143,5 +144,93 @@ describe("getReleveDetail", () => {
     expect(r?.lignes[1]?.rattacheeAuReleve).toBe(false);
     expect(r?.lignes[1]?.heures).toBeNull();
     expect(r?.totalHtCents).toBe(90_000);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// `contestable` — l'écran du formateur, et la règle qu'il affiche
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * 🔴 CETTE PROPRIÉTÉ N'ÉTAIT COUVERTE PAR RIEN, et elle était calculée DEUX
+ * fois : une fois dans `contestationOuverte`, une fois recopiée en clair ici.
+ *
+ * Deux implémentations de la même règle, dont une seule testée. Le jour où le
+ * délai change ou où la règle se raffine, l'une des deux bouge — et l'écran du
+ * formateur affirme « contestable » sur une pièce que l'action refuse, ou
+ * l'inverse. C'est le pire des deux mondes : l'intéressé clique, essuie un
+ * refus, et le lit comme une panne.
+ *
+ * La lecture appelle désormais la règle. Ces témoins vérifient que le
+ * BRANCHEMENT tient — pas la règle elle-même, qui a ses propres tests.
+ */
+describe("contestable — la lecture applique la règle, elle ne la réécrit pas", () => {
+  const MAINTENANT = new Date("2026-09-12T10:00:00.000Z");
+
+  function releve(o: Record<string, unknown> = {}) {
+    return {
+      id: "rel-1",
+      periodeYear: 2026,
+      periodeMonth: 8,
+      statut: "facture_recue",
+      totalHtCents: 100_000,
+      tvaCents: 20_000,
+      totalTtcCents: 120_000,
+      numeroFacture: "AXI-AUTOF-2026-001",
+      autofactureDocumentId: "doc-1",
+      dateFacture: new Date("2026-09-01T00:00:00.000Z"),
+      echeanceAt: new Date("2026-10-01T00:00:00.000Z"),
+      payeAt: null,
+      // Fenêtre ouverte jusqu'au 20/09 : on est le 12, elle court.
+      contestationAvantAt: new Date("2026-09-20T00:00:00.000Z"),
+      contesteeAt: null,
+      ...o,
+    };
+  }
+
+  it("une fenêtre encore ouverte rend `contestable`", async () => {
+    mockStatementFindMany.mockResolvedValue([releve()]);
+    const [r] = await listRelevesDuFormateur("f-1", MAINTENANT);
+    expect(r?.contestable).toBe(true);
+  });
+
+  it("🔴 une fenêtre EXPIRÉE ne l'est plus", async () => {
+    mockStatementFindMany.mockResolvedValue([
+      releve({ contestationAvantAt: new Date("2026-09-01T00:00:00.000Z") }),
+    ]);
+    const [r] = await listRelevesDuFormateur("f-1", MAINTENANT);
+    expect(r?.contestable).toBe(false);
+  });
+
+  it("🔴 une pièce JAMAIS TRANSMISE n'est pas contestable — la fenêtre n'est pas ouverte", async () => {
+    // ⚠️ Distinction qui compte : « le formateur a laissé passer » et « le
+    // formateur n'a jamais reçu la pièce » ne se réparent pas pareil.
+    mockStatementFindMany.mockResolvedValue([releve({ contestationAvantAt: null })]);
+    const [r] = await listRelevesDuFormateur("f-1", MAINTENANT);
+    expect(r?.contestable).toBe(false);
+  });
+
+  it("une contestation DÉJÀ déposée ferme la fenêtre", async () => {
+    mockStatementFindMany.mockResolvedValue([
+      releve({ contesteeAt: new Date("2026-09-05T00:00:00.000Z") }),
+    ]);
+    const [r] = await listRelevesDuFormateur("f-1", MAINTENANT);
+    expect(r?.contestable).toBe(false);
+  });
+
+  it("🔑 une facture PAYÉE n'est pas « hors délai », elle est SOLDÉE", async () => {
+    // `payeAt` n'appartient pas à la règle de contestation — il est ajouté par
+    // la lecture. Ce témoin le prouve : la fenêtre est ici grande ouverte, et
+    // c'est le paiement seul qui ferme le bouton.
+    mockStatementFindMany.mockResolvedValue([
+      releve({ payeAt: new Date("2026-09-10T00:00:00.000Z") }),
+    ]);
+    const [r] = await listRelevesDuFormateur("f-1", MAINTENANT);
+    expect(r?.contestable).toBe(false);
+  });
+
+  it("rend [] quand la base est absente (stub de build)", async () => {
+    mockStatementFindMany.mockRejectedValue(new Error("no db"));
+    await expect(listRelevesDuFormateur("f-1", MAINTENANT)).resolves.toEqual([]);
   });
 });

@@ -10,6 +10,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { echeanceEffective, joursDeRetard } from "./echeance";
+import { contestationOuverte } from "./autofacturation";
 import type { FeeLineStatut, Periode, StatementStatut } from "./run";
 import type {
   CompensationModel,
@@ -421,11 +422,21 @@ export async function listRelevesDuFormateur(
       payeAt: r.payeAt,
       contestationAvantAt: r.contestationAvantAt,
       contesteeAt: r.contesteeAt,
-      contestable:
-        r.payeAt === null &&
-        r.contesteeAt === null &&
-        r.contestationAvantAt !== null &&
-        r.contestationAvantAt.getTime() > now.getTime(),
+      /*
+        🔴 LA RÈGLE VIENT DU MODULE, elle n'est PAS réécrite ici.
+
+        Ces quatre conditions étaient recopiées en clair : une SECONDE
+        implémentation de `contestationOuverte`, à côté de la première, et rien
+        ne les obligeait à rester d'accord. Le jour où le délai change, ou où la
+        règle se raffine, l'une des deux bouge — et l'écran du formateur affirme
+        « contestable » sur une pièce que l'action refuse, ou l'inverse.
+
+        ⚠️ `payeAt` n'appartient PAS à la règle et reste donc ici : une facture
+        déjà payée n'est pas « hors délai », elle est SOLDÉE. Confondre les deux
+        ferait dire au formateur qu'il a laissé passer son délai alors qu'il a
+        simplement été réglé.
+      */
+      contestable: r.payeAt === null && contestationOuverte(r, now),
     }));
   } catch {
     return [];

@@ -18,6 +18,7 @@ import { ArrowLeft, FileText } from "lucide-react";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminCard } from "@/components/admin/ui/AdminCard";
+import { DELAI_CONTESTATION_JOURS } from "@/server/qualiopi/remuneration/autofacturation";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { transitionStatementFormAction } from "@/server/actions/qualiopi/trainer-remuneration";
 import {
@@ -194,7 +195,7 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
               Établir la facture d&apos;honoraires <strong>au nom et pour le compte</strong> du
               formateur, sur mandat. La pièce porte SON SIRET, SON régime de TVA et la mention «
               Autofacturation », et lui est transmise aussitôt — c&apos;est cette transmission qui
-              ouvre ses huit jours pour contester.
+              ouvre ses {DELAI_CONTESTATION_JOURS} jours pour contester.
             </p>
             <p className="admin-muted">
               Sans mandat en vigueur, sans SIRET ou sans régime de TVA renseignés sur sa fiche,
