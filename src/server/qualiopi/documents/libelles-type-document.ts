@@ -95,6 +95,7 @@ export const LIBELLES_TYPE_DOCUMENT: Record<DocumentType, string> = {
   protocole_afest: "Protocole AFEST",
   inventaire_moyens: "Inventaire des moyens",
   contrat_sous_traitance: "Contrat de sous-traitance",
+  contrat_travail: "Contrat de travail",
   procedure_sous_traitance: "Procédure de sous-traitance",
   cv_formateur: "Fiche formateur",
   programme: "Programme de l'action",

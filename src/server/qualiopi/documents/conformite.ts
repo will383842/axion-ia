@@ -124,6 +124,19 @@ const CHAMPS_OBLIGATOIRES: Partial<Record<DocumentType, ChampIdentite[]>> = {
   convention: ["raisonSociale", "siret", "adresseSiege"],
   convention_tripartite: ["raisonSociale", "siret", "adresseSiege"],
   contrat: ["raisonSociale", "siret", "adresseSiege"],
+  // Contrat de travail : l'employeur doit être identifiable. Ce n'est pas une
+  // exigence de forme — c'est contre lui que le salarié exerce ses droits, et
+  // une personne morale qui embauche sans numéro d'immatriculation n'embauche
+  // pas.
+  //
+  // ⚠️ La CONVENTION COLLECTIVE n'est pas gardée ici, et pourtant son absence
+  // est plus grave que celle d'une adresse. La raison est qu'elle ne vit pas
+  // dans `OrganismeIdentite` : elle est portée par `motifSpecimenContrat`, qui
+  // déclasse la pièce en spécimen avec SON motif à elle — « la classification,
+  // la période d'essai et les minima ne peuvent pas être énoncés ». Deux motifs
+  // distincts valent mieux qu'un seul qui les confond, parce que ce n'est pas
+  // le même geste qui les répare.
+  contrat_travail: ["raisonSociale", "siret", "adresseSiege"],
 };
 
 /** Un champ est « renseigné » s'il est une chaîne non vide après trim. */

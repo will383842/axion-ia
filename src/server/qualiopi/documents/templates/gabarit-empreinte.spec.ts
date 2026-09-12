@@ -63,6 +63,7 @@ const SOURCE: Readonly<Record<TypeGabaritSignable, string>> = {
   convention_tripartite: "convention-tripartite.tsx",
   contrat_formation: "contrat-formation.tsx",
   contrat_sous_traitance: "contrat-sous-traitance.tsx",
+  contrat_travail: "contrat-travail.tsx",
   releve_connexion: "releve-connexion.tsx",
   lettre_mission: "lettre-mission.tsx",
 };
@@ -106,6 +107,10 @@ const EMPREINTES: Readonly<
   contrat_sous_traitance: {
     sha: "826c87dd9c49c4d2424bfb8a9457e22bd6b99cbb8c14752e6588fb05a01136eb",
     version: 2,
+  },
+  contrat_travail: {
+    sha: "838949ca21ee01186a39eca67a073d880a0d44b9470002dc3cf2adcd2418c4a9",
+    version: 1,
   },
   releve_connexion: {
     sha: "afa986aaf0b72cb79ffa17b1693062898d85bbf9476de4ae191009a840cd7055",

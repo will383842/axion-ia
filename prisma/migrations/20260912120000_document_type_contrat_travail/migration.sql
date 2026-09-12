@@ -1,0 +1,27 @@
+-- DocumentType.contrat_travail — le contrat de travail du formateur SALARIÉ
+-- entre au registre des pièces produites.
+--
+-- ## Pourquoi la valeur AVANT le code qui l'émet
+--
+-- Deux conteneurs, deux vitesses (cf. AGENTS.md). Le worker est reconstruit par
+-- Coolify depuis les SOURCES en ~3 min ; l'app attend son image GHCR pendant 47
+-- à 56 min. Or c'est l'entrypoint de l'APP qui joue `prisma migrate deploy` :
+-- pendant près d'une heure, le worker peut exécuter du code qui attend une
+-- valeur d'énumération que la migration n'a pas encore posée. La règle du dépôt
+-- est « ajouter avant de lire », et cette migration n'ajoute rien d'autre.
+--
+-- ## ⚠️ Le nom existe DÉJÀ dans une autre énumération, et ce n'est pas un doublon
+--
+-- `TrainerDocumentType.contrat_travail` existe depuis l'origine : c'est le
+-- CASIER du dossier formateur où l'on classe un contrat, quelle qu'en soit la
+-- provenance (scan, PDF reçu, pièce déposée à la main). `DocumentType` est le
+-- registre des pièces que l'organisme PRODUIT — numérotées, hashées, signables,
+-- conservées cinq ans. Les deux coexistent sans se recouvrir : PostgreSQL les
+-- tient pour deux types distincts, et le jour où la pièce produite vient
+-- remplir le casier, c'est un rattachement explicite, jamais une confusion de
+-- noms.
+--
+-- `IF NOT EXISTS` : la migration doit pouvoir être rejouée sur une base où la
+-- valeur a déjà été posée à la main.
+
+ALTER TYPE "DocumentType" ADD VALUE IF NOT EXISTS 'contrat_travail';

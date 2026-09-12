@@ -35,6 +35,7 @@ import { ConventionPdf } from "./convention";
 import { ConventionTripartitePdf } from "./convention-tripartite";
 import { ContratFormationPdf } from "./contrat-formation";
 import { ContratSousTraitancePdf } from "./contrat-sous-traitance";
+import { ContratTravailPdf } from "./contrat-travail";
 import { AutorisationCaptationPdf } from "./autorisation-captation";
 import { ReleveConnexionPdf } from "./releve-connexion";
 import { LettreMissionPdf } from "./lettre-mission";
@@ -196,6 +197,40 @@ const CAS: ReadonlyArray<{
       remuneration: "850 € HT / jour",
       conformiteVerifieeAt: "20/08/2026",
       dateContrat: "25/08/2026",
+    },
+  },
+  {
+    type: "contrat_travail",
+    Composant: ContratTravailPdf as unknown as ComposantTest,
+    // La partie SALARIÉ, pas `sous_traitant` : ce sont deux qualités juridiques
+    // opposées, et c'est celle du SSOT qu'il faut éprouver.
+    partie: "formateur",
+    identiteEnProp: true,
+    data: {
+      numero: "AXI-DOC-2026-050",
+      salarie: {
+        nom: "Martin",
+        prenom: "Camille",
+        dateNaissance: "03/04/1990",
+        lieuNaissance: "Lyon (69)",
+        adresse: "5 rue des Lilas, 69003 Lyon",
+      },
+      type: "cdi",
+      dateEmbauche: "01/10/2026",
+      poste: "Formateur en intelligence artificielle",
+      classification: "Cadre, position 2.1, coefficient 115",
+      dureeHebdoHeures: "35",
+      lieuTravail: "Lyon",
+      periodeEssaiMois: 4,
+      remunerationMensuelle: "2 000,00 €",
+      // Clause de variable ACTIVE : c'est la branche la plus longue du gabarit,
+      // celle qui porte les trois garanties. L'éprouver éteinte rendrait le
+      // témoin muet sur le seul texte qui pose un risque.
+      variableActive: true,
+      conventionCollective: "Organismes de formation",
+      conventionIdcc: "1516",
+      representant: "Williams Jullin",
+      dateContrat: "20/09/2026",
     },
   },
   {

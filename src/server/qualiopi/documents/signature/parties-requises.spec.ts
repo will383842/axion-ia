@@ -50,6 +50,7 @@ describe("matrice des circuits", () => {
         "convention_tripartite",
         "contrat",
         "contrat_sous_traitance",
+        "contrat_travail",
         // 2026-08-10 (décision Will) : `protocole_afest` retiré — son circuit a
         // disparu avec le module AFEST 1-to-1 (conseil hors Qualiopi).
       ].sort(),

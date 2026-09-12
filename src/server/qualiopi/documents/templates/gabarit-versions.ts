@@ -61,6 +61,7 @@ export type TypeGabaritSignable =
   | "convention_tripartite"
   | "contrat_formation"
   | "contrat_sous_traitance"
+  | "contrat_travail"
   | "releve_connexion"
   | "lettre_mission";
 
@@ -106,6 +107,11 @@ export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
   convention_tripartite: 2,
   contrat_formation: 1,
   contrat_sous_traitance: 2,
+  // Créé le 12/09 — premier texte, donc v1. Le prochain incrément sera exigé par
+  // `gabarit-empreinte.spec.ts` dès qu'une clause de fond bougera. ⚠️ La clause
+  // de rémunération variable est celle qui bougera le plus : elle décrit un
+  // mécanisme d'imputation, et un mécanisme se précise.
+  contrat_travail: 1,
   releve_connexion: 1,
   lettre_mission: 1,
 };

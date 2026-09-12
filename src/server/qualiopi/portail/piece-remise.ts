@@ -148,6 +148,10 @@ const JALONS: Readonly<Record<string, JalonRemise>> = {
   kit_france_travail: "jamais",
   lettre_mission: "jamais",
   contrat_sous_traitance: "jamais",
+  // Pièce de la relation de TRAVAIL, remise au salarié par le circuit de
+  // signature. Un stagiaire n'a aucune raison de lire le salaire de son
+  // formateur.
+  contrat_travail: "jamais",
   inventaire_moyens: "jamais",
   procedure_sous_traitance: "jamais",
 
