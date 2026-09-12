@@ -128,6 +128,10 @@ export const CANAL_DE_REMISE: Record<DocumentType, CanalRemise> = {
   kit_france_travail: "aucun",
   lettre_mission: "aucun",
   contrat_sous_traitance: "aucun",
+  // Le destinataire est un SALARIÉ, pas un stagiaire : la remise passe par le
+  // circuit de signature et par son espace formateur, jamais par le portail du
+  // parcours de formation.
+  contrat_travail: "aucun",
   inventaire_moyens: "aucun",
   procedure_sous_traitance: "aucun",
   cv_formateur: "aucun",

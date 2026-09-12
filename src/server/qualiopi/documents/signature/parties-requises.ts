@@ -181,6 +181,23 @@ const CIRCUITS: Readonly<Record<string, CircuitSignature>> = {
     canal: "maison",
     libelle: "contrat de sous-traitance",
   },
+  // Contrat de travail d'un formateur SALARIÉ.
+  //
+  // 🔑 La partie est `formateur`, pas `sous_traitant`, et l'écart n'est pas
+  // cosmétique : ce sont deux qualités juridiques opposées. Un sous-traitant est
+  // un professionnel indépendant ; un salarié est subordonné. Les confondre dans
+  // le circuit de signature ferait porter à la preuve — qui est la pièce
+  // opposable — une qualité que le contrat dément dans son propre texte.
+  //
+  // ⚠️ Les DEUX parties signent, et l'ordre importe peu, mais l'exigence des
+  // deux, si : un contrat de travail non signé par le salarié ne lui est pas
+  // opposable, et un CDD non signé dans les deux jours de l'embauche est
+  // requalifiable en CDI (art. L.1242-13).
+  contrat_travail: {
+    parties: ["formateur", "axionia"],
+    canal: "maison",
+    libelle: "contrat de travail",
+  },
   // 🔴 UNE SEULE partie, et c'est voulu : un consentement est UNILATÉRAL.
   // L'organisme ne "co-signe" pas une autorisation d'image, il la reçoit.
   // Lui faire apposer une signature laisserait croire à un accord négocié, donc

@@ -37,7 +37,9 @@ import { requireFormateur } from "@/server/formateur/guard";
 import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
 import { EcheancesFormateur } from "@/components/espace-formateur/EcheancesFormateur";
 import { signerLettreMissionFormateurAction } from "@/server/actions/qualiopi/lettre-mission-signature";
+import { signerContratTravailFormateurAction } from "@/server/actions/qualiopi/contrat-travail-signature";
 import { lireLettresMissionDuFormateur } from "@/server/qualiopi/documents/signature/lettre-mission-queries";
+import { lireContratsTravailDuFormateur } from "@/server/qualiopi/documents/signature/contrat-travail-queries";
 import { echeancesDuFormateur } from "@/server/formateur/echeances-formateur";
 import { listerMissionsAConfirmer } from "@/server/qualiopi/trainers/mission-formateur";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
@@ -65,8 +67,14 @@ export default async function EspaceFormateurAccueilPage(): Promise<React.ReactE
   // Le repli sur liste vide vaut pour les lettres, pas contre elles — la
   // signature est le devoir premier de cette page, elle ne doit pas disparaître
   // parce que le calcul des échéances a échoué.
-  const [lettres, echeances, missions] = await Promise.all([
+  const [lettres, contrats, echeances, missions] = await Promise.all([
     lireLettresMissionDuFormateur(trainerId),
+    // 🔴 Le contrat de travail est la pièce la plus engageante que cet écran
+    // présente, et elle n'y figurait pas : un salarié ne pouvait ni la lire ni
+    // la signer. Le repli sur liste vide vaudrait pour un confort, pas pour
+    // elle — mais la lecture ne peut échouer que si la base est indisponible,
+    // auquel cas rien de cette page ne s'affiche de toute façon.
+    lireContratsTravailDuFormateur(trainerId),
     echeancesDuFormateur(trainerId).catch(() => []),
     // 2026-09-03 — les propositions de mission qui attendent SA réponse. Avant
     // la lettre : on ne signe pas le contrat d'une mission qu'on n'a pas dit
@@ -77,7 +85,8 @@ export default async function EspaceFormateurAccueilPage(): Promise<React.ReactE
   // 🔴 On compte celles où le formateur peut AGIR, pas toutes les lettres :
   // les lettres déjà signées restent affichées (c'est sa preuve), mais elles
   // n'ont rien à réclamer et ne doivent pas gonfler la pastille.
-  const aSigner = lettres.filter((l) => l.peutAgir).length;
+  const aSigner =
+    lettres.filter((l) => l.peutAgir).length + contrats.filter((c) => c.peutAgir).length;
 
   return (
     <CoquilleFormateur section="accueil" aSigner={aSigner}>
@@ -129,8 +138,52 @@ export default async function EspaceFormateurAccueilPage(): Promise<React.ReactE
         </div>
       )}
 
+      {/*
+        🔴 LE CONTRAT DE TRAVAIL PASSE AVANT LA LETTRE DE MISSION, et l'ordre
+        n'est pas un détail de mise en page : il fonde la relation, là où une
+        lettre de mission n'organise qu'une intervention. Un salarié qui ouvre
+        cet écran le jour de son embauche doit trouver son contrat en premier.
+      */}
+      {contrats.length > 0 && (
+        <section className="mb-10 space-y-4">
+          <h2 className="text-fg-muted text-xs font-semibold tracking-wide uppercase">
+            Contrat de travail
+          </h2>
+          <p className="text-fg-soft text-sm leading-relaxed">
+            Votre contrat fixe votre poste, votre rémunération, votre durée de travail et la
+            convention collective qui vous est applicable. Lisez-le en entier avant de le signer :
+            un exemplaire signé des deux parties vous est remis.
+          </p>
+          {contrats.map((contrat) => (
+            <div key={contrat.documentGenereId} className="space-y-1">
+              <p className="text-fg-muted text-xs">
+                {contrat.natureLisible === ""
+                  ? `Contrat ${contrat.numero} — établi le ${contrat.emisLeLisible}`
+                  : `${contrat.natureLisible} — établi le ${contrat.emisLeLisible}`}
+              </p>
+              {/* La route de lecture vérifie la MÊME titularité que la signature
+                  — l'ancre `trainerId`, pas une règle qui lui ressemble. */}
+              <SignatureDocument
+                documentGenereId={contrat.documentGenereId}
+                titrePiece="Contrat de travail"
+                numero={contrat.numero}
+                parties={contrat.parties}
+                peutAgir={contrat.peutAgir}
+                motifBlocage={contrat.motifBlocage}
+                urlPiece={`/api/formateur/contrat-travail/${contrat.documentGenereId}`}
+                mentions={contrat.mentions}
+                plafondProbant={contrat.plafondProbant}
+                libelleBouton="Signer mon contrat de travail"
+                labelSignature="Signature du salarié"
+                signerAction={signerContratTravailFormateurAction}
+              />
+            </div>
+          ))}
+        </section>
+      )}
+
       {lettres.length === 0 ? (
-        <RienASigner />
+        contrats.length === 0 && <RienASigner />
       ) : (
         <section className="space-y-4">
           <h2 className="text-fg-muted text-xs font-semibold tracking-wide uppercase">
@@ -239,8 +292,8 @@ function RienASigner() {
       </span>
       <p className="text-mocha font-serif text-lg font-semibold">Rien à signer</p>
       <p className="text-fg-soft mx-auto mt-2 max-w-sm text-sm leading-relaxed">
-        Aucune lettre de mission ne vous attend. C’est le cas normal si vous êtes salarié permanent
-        : les lettres ne nomment que les intervenants missionnés.
+        Aucune pièce ne vous attend. C’est le cas normal si vous êtes salarié permanent et que votre
+        contrat est déjà signé : les lettres de mission ne nomment que les intervenants missionnés.
       </p>
     </div>
   );

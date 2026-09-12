@@ -91,6 +91,10 @@ const DOC_TYPE_TO_NUMBERING: Record<DocumentType, (typeof DOCUMENT_REGISTER_TYPE
   inventaire_moyens: "document",
   // Contrat de sous-traitance (ind. 27).
   contrat_sous_traitance: "document",
+  // Contrat de travail d'un formateur salarié. Série « document » comme toute
+  // pièce non comptable : ce contrat n'entre dans aucun livre, la paie s'en
+  // charge par ses propres numéros.
+  contrat_travail: "document",
   procedure_sous_traitance: "document",
   // Fiche formateur versée au dossier (ind. 21).
   cv_formateur: "document",
@@ -304,7 +308,26 @@ function filtreMemePiece(input: GenerateDocumentInput): Prisma.DocumentGenereWhe
     refs?.coachingSessionId,
     refs?.sousTraitantId,
   ];
-  if (identifiants.every((v) => v == null)) return null;
+  // 🔴 `trainerId` entre dans l'identité, mais SEULEMENT quand il est la seule
+  // référence — et l'exception est la raison d'être de la condition.
+  //
+  // Le contrat de travail est dans la situation qu'occupait le contrat de
+  // sous-traitance avant `D2-5-07` : il ne porte AUCUNE des six autres
+  // références. Sans ce cas, `identifiants.every(v => v == null)` serait vrai, la
+  // question « est-ce la même pièce ? » ne serait jamais posée, et régénérer le
+  // contrat d'un salarié produirait un SECOND ORIGINAL — deux contrats
+  // concurrents, aucun des deux ne disant lequel fait foi.
+  //
+  // ⛔ MAIS `trainerId` NE DOIT PAS entrer dans l'identité des lettres de
+  // mission DE SESSION, et c'est écrit deux fois dans ce fichier : les lettres
+  // héritées portent `trainer_id` NULL en base, et l'y inclure ferait passer
+  // toute réémission post-migration pour un premier original. La lettre-CADRE,
+  // elle, est court-circuitée plus haut — elle est un original à chaque envoi.
+  //
+  // La condition « seule référence » satisfait les deux : elle ne s'arme que
+  // là où rien d'autre n'identifie la pièce.
+  const trainerSeuleReference = refs?.trainerId != null && identifiants.every((v) => v == null);
+  if (identifiants.every((v) => v == null) && !trainerSeuleReference) return null;
 
   return {
     type: input.type,
@@ -314,6 +337,7 @@ function filtreMemePiece(input: GenerateDocumentInput): Prisma.DocumentGenereWhe
     clientId: refs?.clientId ?? null,
     coachingSessionId: refs?.coachingSessionId ?? null,
     sousTraitantId: refs?.sousTraitantId ?? null,
+    ...(trainerSeuleReference ? { trainerId: refs?.trainerId } : {}),
   };
 }
 

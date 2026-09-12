@@ -6565,6 +6565,18 @@ enum DocumentType {
   /// app/worker : le worker tourne du code plus récent que l'app pendant ~50 min
   /// après chaque fusion, et c'est l'entrypoint de l'APP qui joue la migration).
   autofacture_honoraires
+  /// Contrat de travail d'un formateur SALARIÉ (CDI ou CDD).
+  ///
+  /// 🔑 À ne pas confondre avec `TrainerDocumentType.contrat_travail`, qui porte
+  /// le même nom dans une AUTRE énumération : celle-là désigne l'emplacement du
+  /// dossier où le contrat est classé — un fichier déposé, d'où qu'il vienne.
+  /// Celle-ci désigne la pièce que l'organisme PRODUIT, numérotée, hashée,
+  /// signable et conservée. La première est un casier, la seconde son contenu.
+  ///
+  /// ⚠️ Valeur ajoutée à l'énumération AVANT tout code qui l'émet (contrat
+  /// app/worker : le worker tourne du code plus récent que l'app pendant ~50 min
+  /// après chaque fusion, et c'est l'entrypoint de l'APP qui joue la migration).
+  contrat_travail
 }
 
 /// Document officiel généré (PDF react-pdf). Numéro immuable, hash SHA-256,

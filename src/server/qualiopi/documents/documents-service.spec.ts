@@ -412,6 +412,66 @@ describe("generateDocument — détection de régénération", () => {
     expect(whereDeDetection()!["sousTraitantId"]).toBe("st-2");
   });
 
+  // ───────────────────────────────────────────────────────────────────────────
+  // 2026-09-12 — le contrat de TRAVAIL était dans le même cas, et personne ne
+  // l'avait vu parce que `trainerId` était délibérément tenu hors de l'identité.
+  // ───────────────────────────────────────────────────────────────────────────
+
+  it("🔴 un second contrat de travail du MÊME salarié est reconnu comme régénération", async () => {
+    // Même défaut que `D2-5-07`, sur une pièce plus grave encore : deux contrats
+    // de travail concurrents au registre, aucun ne disant lequel fait foi, et
+    // potentiellement deux salaires ou deux termes différents.
+    simulerDocumentsExistants(1);
+    await generateDocument({
+      type: "contrat_travail",
+      buildElement,
+      refs: { trainerId: "f-1" },
+    });
+    expect(estCopiePersiste()).toBe(true);
+    expect(whereDeDetection(), "la détection doit avoir eu lieu").toBeDefined();
+    expect(whereDeDetection()!["trainerId"]).toBe("f-1");
+  });
+
+  it("un PREMIER contrat de travail reste un original", async () => {
+    // 🔑 Témoin négatif. Sans lui, une identité qui marquerait TOUT contrat
+    // « copie » passerait le test ci-dessus.
+    simulerDocumentsExistants(0);
+    await generateDocument({ type: "contrat_travail", buildElement, refs: { trainerId: "f-1" } });
+    expect(estCopiePersiste()).toBe(false);
+  });
+
+  it("🔴 deux salariés DIFFÉRENTS ne se marquent pas copie l'un l'autre", async () => {
+    // 🔑 Le témoin discriminant : une identité qui interrogerait la base SANS
+    // porter `trainerId` dans le `where` estampillerait « COPIE » le contrat du
+    // deuxième salarié embauché.
+    simulerDocumentsExistants(1);
+    await generateDocument({ type: "contrat_travail", buildElement, refs: { trainerId: "f-2" } });
+    expect(whereDeDetection()!["trainerId"]).toBe("f-2");
+  });
+
+  it("🔑 `trainerId` n'entre PAS dans l'identité quand une autre référence existe", async () => {
+    // ⛔ LE TÉMOIN QUI PROTÈGE LES LETTRES DE MISSION. Le dépôt dit deux fois que
+    // `trainerId` ne doit pas entrer dans l'identité des lettres DE SESSION :
+    // les lettres héritées portent `trainer_id` NULL en base, et l'y inclure
+    // ferait passer toute réémission post-migration pour un premier original.
+    //
+    // La condition « seule référence » satisfait les deux besoins ; sans ce
+    // test, la prochaine simplification la retirerait sans rien faire rougir.
+    simulerDocumentsExistants(1);
+    await generateDocument({
+      type: "lettre_mission",
+      buildElement,
+      refs: { sessionId: "ses-1", trainerId: "f-1" },
+    });
+    const where = whereDeDetection();
+    expect(where, "la détection doit avoir eu lieu").toBeDefined();
+    expect(where!["sessionId"]).toBe("ses-1");
+    expect(
+      where,
+      "trainerId n'a rien à faire dans l'identité d'une lettre de session",
+    ).not.toHaveProperty("trainerId");
+  });
+
   it("🔴 le renouvellement garde son échappement : `estCopie: false` l'emporte", async () => {
     // ⚠️ Un contrat-cadre renouvelé chaque année est un ORIGINAL, pas une copie.
     // L'identité seule ne peut pas distinguer une réédition d'un renouvellement

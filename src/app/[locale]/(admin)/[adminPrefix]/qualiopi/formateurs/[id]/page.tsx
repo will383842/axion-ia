@@ -19,6 +19,8 @@ import { TrainerManageForm } from "@/components/admin/qualiopi/TrainerManageForm
 import { TrainerDocumentsPanel } from "@/components/admin/qualiopi/TrainerDocumentsPanel";
 import { TrainerFacturationPanel } from "@/components/admin/qualiopi/TrainerFacturationPanel";
 import { TrainerFixePanel } from "@/components/admin/qualiopi/TrainerFixePanel";
+import { TrainerContratTravailPanel } from "@/components/admin/qualiopi/TrainerContratTravailPanel";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { lireSituationFixe } from "@/server/qualiopi/remuneration/pilotage-formateurs";
 import { TrainerCompetencesPanel } from "@/components/admin/qualiopi/TrainerCompetencesPanel";
 import { TrainerAvailabilityPanel } from "@/components/admin/qualiopi/TrainerAvailabilityPanel";
@@ -46,6 +48,8 @@ import { listIncidents } from "@/server/qualiopi/registres/incidents-service";
 import { genererCvFormateurAction } from "@/server/actions/qualiopi/exports-pdf";
 import { lireLettresMissionConsoleDuFormateur } from "@/server/qualiopi/documents/signature/lettre-mission-queries";
 import { contresignerLettreMissionAction } from "@/server/actions/qualiopi/lettre-mission-signature";
+import { lireContratsTravailConsole } from "@/server/qualiopi/documents/signature/contrat-travail-queries";
+import { signerContratTravailEmployeurAction } from "@/server/actions/qualiopi/contrat-travail-signature";
 import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { VerserFicheFormateurButton } from "@/components/admin/qualiopi/VerserFicheFormateurButton";
@@ -200,6 +204,46 @@ export default async function FicheFormateurPage({ params }: PageProps) {
     trainer.statut === "salarie" || trainer.statut === "dirigeant"
       ? await lireSituationFixe(trainer.id)
       : null;
+  /*
+    Contrat de travail — seulement pour un SALARIÉ, et la restriction n'est pas
+    cosmétique. Un sous-traitant est un professionnel indépendant ; lui offrir
+    l'écran d'un contrat de travail inviterait à créer de toutes pièces le lien
+    de subordination que la relation de sous-traitance existe pour ne pas avoir.
+    Un dirigeant relève de son mandat social, pas du Code du travail.
+
+    ⚠️ `dirigeant` est donc EXCLU ici alors qu'il est INCLUS pour le fixe
+    récupérable juste en dessous, et les deux sont justes : un dirigeant peut
+    percevoir un fixe sur lequel des commissions s'imputent, il ne peut pas
+    signer son propre contrat de travail.
+  */
+  const estSalarie = trainer.statut === "salarie";
+  const conventionCollective = estSalarie ? await getQualiopiConfig("convention_collective") : "";
+  /*
+    Le dernier contrat produit, pour la RELECTURE.
+
+    🔑 Le plus RÉCENT, et c'est bien ce qu'on veut ici : depuis que `trainerId`
+    participe à l'identité des pièces (cf. `filtreMemePiece`), une réémission est
+    marquée COPIE et le dernier tirage est celui qui fait foi. Le lien serait
+    faux si l'on montrait le premier.
+  */
+  const contratTravail = estSalarie
+    ? await prisma.documentGenere.findFirst({
+        where: { type: "contrat_travail", trainerId: trainer.id, annuleeAt: null },
+        orderBy: { createdAt: "desc" },
+        select: { id: true, numero: true, createdAt: true },
+      })
+    : null;
+
+  /*
+    L'état de signature du contrat, pour la console.
+
+    🔑 Le MÊME module que l'espace du salarié, et c'est ce qui garantit que les
+    deux écrans ne se contredisent pas sur la même pièce. Deux lectures
+    parallèles finissent toujours par diverger sur ce qui est affiché comme
+    signé, et c'est la moitié des incidents de ce dépôt.
+  */
+  const contratsConsole = estSalarie ? await lireContratsTravailConsole(trainer.id, role) : [];
+
   const bloquants = conformite?.manquements.filter((m) => m.gravite === "bloquant") ?? [];
   const alertes = conformite?.manquements.filter((m) => m.gravite === "alerte") ?? [];
 
@@ -386,6 +430,42 @@ export default async function FicheFormateurPage({ params }: PageProps) {
         fixe. L'exclure aurait recréé, une marche plus bas, l'asymétrie qu'on
         vient de corriger.
       */}
+      {estSalarie && (
+        <TrainerContratTravailPanel
+          trainerId={trainer.id}
+          initial={{
+            contratType: trainer.contratType,
+            dateNaissance: trainer.dateNaissance,
+            lieuNaissance: trainer.lieuNaissance,
+            adressePersonnelle: trainer.adressePersonnelle,
+            dateEmbauche: trainer.dateEmbauche,
+            contratPoste: trainer.contratPoste,
+            contratClassification: trainer.contratClassification,
+            // `Decimal` Prisma → nombre : un composant client ne sait pas le
+            // sérialiser, et le passer tel quel casse le rendu sans message utile.
+            contratDureeHebdoHeures:
+              trainer.contratDureeHebdoHeures === null
+                ? null
+                : Number(trainer.contratDureeHebdoHeures),
+            contratPeriodeEssaiMois: trainer.contratPeriodeEssaiMois,
+            contratLieuTravail: trainer.contratLieuTravail,
+            contratDateFin: trainer.contratDateFin,
+            contratMotifCdd: trainer.contratMotifCdd,
+          }}
+          conventionRenseignee={conventionCollective.trim() !== ""}
+          hrefConfig={`/${locale}/${adminPrefix}/qualiopi/config`}
+          contratExistant={
+            contratTravail === null
+              ? null
+              : {
+                  documentId: contratTravail.id,
+                  numero: contratTravail.numero,
+                  emisLe: contratTravail.createdAt.toLocaleDateString("fr-FR"),
+                }
+          }
+        />
+      )}
+
       {(trainer.statut === "salarie" || trainer.statut === "dirigeant") && (
         <TrainerFixePanel
           trainerId={trainer.id}
@@ -507,6 +587,50 @@ export default async function FicheFormateurPage({ params }: PageProps) {
         aucune lettre (le générateur les refuse), un bloc vide se lirait comme
         une pièce manquante.
       */}
+      {/*
+        Signature du contrat de travail par l'EMPLOYEUR.
+
+        🔑 C'est la surface qui manquait pour que le circuit se referme : sans
+        elle, le salarié pourrait signer et le contrat resterait à demi signé
+        pour toujours — exactement le défaut que la lettre-cadre a connu.
+
+        ⚠️ Le bloc porte l'état complet : qui a signé, quand, avec quelle
+        empreinte. C'est le « traçage » demandé, et il n'est pas ailleurs.
+      */}
+      {contratsConsole.length > 0 && (
+        <div className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]">
+          <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+            Contrat de travail — signature de l&apos;employeur
+          </h2>
+          <div className="flex flex-col gap-[var(--space-admin-4)]">
+            {contratsConsole.map((contrat) => (
+              <div key={contrat.documentGenereId}>
+                <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                  {contrat.natureLisible === ""
+                    ? `Établi le ${contrat.emisLeLisible}`
+                    : `${contrat.natureLisible} — établi le ${contrat.emisLeLisible}`}
+                  {contrat.estSpecimen ? " · SPÉCIMEN, non opposable" : ""}
+                </p>
+                <SignatureDocument
+                  documentGenereId={contrat.documentGenereId}
+                  titrePiece="Contrat de travail"
+                  numero={contrat.numero}
+                  parties={contrat.parties}
+                  peutAgir={contrat.peutAgir}
+                  motifBlocage={contrat.motifBlocage}
+                  urlPiece={`/api/qualiopi/documents/${contrat.documentGenereId}`}
+                  mentions={contrat.mentions}
+                  plafondProbant={contrat.plafondProbant}
+                  libelleBouton="Signer le contrat pour l'employeur"
+                  labelSignature="Signature de l'employeur"
+                  signerAction={signerContratTravailEmployeurAction}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {lettresConsole.length > 0 && (
         <div className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]">
           <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">

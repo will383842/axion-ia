@@ -54,6 +54,7 @@ import { ConventionPdf } from "@/server/qualiopi/documents/templates/convention"
 import { ConventionTripartitePdf } from "@/server/qualiopi/documents/templates/convention-tripartite";
 import { ContratFormationPdf } from "@/server/qualiopi/documents/templates/contrat-formation";
 import { ContratSousTraitancePdf } from "@/server/qualiopi/documents/templates/contrat-sous-traitance";
+import { ContratTravailPdf } from "@/server/qualiopi/documents/templates/contrat-travail";
 import { ReleveConnexionPdf } from "@/server/qualiopi/documents/templates/releve-connexion";
 import { LettreMissionPdf } from "@/server/qualiopi/documents/templates/lettre-mission";
 import { nomFichierDocument } from "@/server/qualiopi/documents/nom-fichier";
@@ -81,6 +82,7 @@ const COMPOSANTS: Readonly<Record<string, ComposantPiece>> = {
   convention_tripartite: ConventionTripartitePdf as unknown as ComposantPiece,
   contrat: ContratFormationPdf as unknown as ComposantPiece,
   contrat_sous_traitance: ContratSousTraitancePdf as unknown as ComposantPiece,
+  contrat_travail: ContratTravailPdf as unknown as ComposantPiece,
   // 2026-08-10 (décision Will) : `protocole_afest` retiré — le circuit et son
   // template ont disparu avec le module AFEST 1-to-1. Une vieille pièce de ce
   // type rendrait `type_non_rendu`, la preuve reste consultable au registre.

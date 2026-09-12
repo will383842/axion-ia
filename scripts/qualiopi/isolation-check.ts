@@ -235,6 +235,24 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // (`TYPES_CONSULTABLES`). Un type hors liste répond 404, jamais 403 — un
   // formateur n'a pas à apprendre qu'un identifiant existe.
   "src/app/api/espace-formateur/documents/[id]/route.ts",
+  // Contrat de travail du formateur SALARIÉ (2026-09-12). JUMELLE EXACTE de la
+  // route ci-dessus, et pour la même raison : le salarié doit pouvoir LIRE la
+  // pièce avant de signer la mention qui affirme qu'il l'a lue, puis recevoir
+  // l'exemplaire signé. Le domaine qualiopi est ce qui produit et scelle cette
+  // pièce ; aucune autre couche ne sait la rendre.
+  //
+  // 🔑 L'élargissement est le plus étroit possible : une seule route, un seul
+  // type de pièce (`contrat_travail`, vérifié avant tout le reste), et la
+  // titularité contrôlée sur l'ancre `trainerId` — la MÊME règle que l'action de
+  // signature. Elle ne donne accès à rien d'autre du domaine.
+  //
+  // ⚠️ Sur un contrat de travail, la remise d'un exemplaire n'est pas une
+  // commodité d'écran : c'est une obligation de l'employeur, et un CDD non
+  // transmis dans les deux jours de l'embauche est requalifiable (L.1242-13).
+  // Déplacer ce code « dans une zone dédiée » reviendrait à loger une route de
+  // l'espace formateur ailleurs que dans l'espace formateur — la garde serait
+  // verte et l'architecture fausse.
+  "src/app/api/formateur/contrat-travail/[id]/route.ts",
   "src/components/portail/DemanderAccesForm.tsx",
   // 🔴 2026-08-24, cahier D3-3 — la phrase d'attestation que le stagiaire COCHE
   // était codée en dur dans ce composant, hors de `qualiopi/emargement/mentions`.
