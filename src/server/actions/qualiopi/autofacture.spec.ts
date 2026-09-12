@@ -18,6 +18,10 @@ const mockStatementFindUnique = vi.fn();
 const mockStatementUpdate = vi.fn();
 const mockStatementFindMany = vi.fn();
 const mockDocFindFirst = vi.fn();
+// 🔴 La transmission va chercher le PDF PAR IDENTIFIANT depuis le 2026-09-12.
+// L'ancien `findFirst` trié par date renvoyait « la dernière autofacture de ce
+// formateur » : sur un rattrapage d'août, c'était celle de septembre.
+const mockDocFindUnique = vi.fn();
 const mockGenerateDocument = vi.fn();
 const mockEnqueueEmail = vi.fn();
 const mockIdentite = vi.fn();
@@ -29,7 +33,10 @@ vi.mock("@/lib/prisma", () => ({
       update: (...a: unknown[]) => mockStatementUpdate(...a),
       findMany: (...a: unknown[]) => mockStatementFindMany(...a),
     },
-    documentGenere: { findFirst: (...a: unknown[]) => mockDocFindFirst(...a) },
+    documentGenere: {
+      findFirst: (...a: unknown[]) => mockDocFindFirst(...a),
+      findUnique: (...a: unknown[]) => mockDocFindUnique(...a),
+    },
   },
 }));
 
@@ -73,6 +80,7 @@ function releve(over: Record<string, unknown> = {}): Record<string, unknown> {
     totalTtcCents: 144_000,
     numeroFacture: null,
     autofactureAt: null,
+    autofactureDocumentId: null,
     autofactureTransmiseAt: null,
     contestationAvantAt: null,
     contesteeAt: null,
@@ -108,6 +116,11 @@ beforeEach(() => {
   mockStatementUpdate.mockResolvedValue({});
   mockStatementFindMany.mockResolvedValue([]);
   mockDocFindFirst.mockResolvedValue({
+    type: "autofacture_honoraires",
+    numero: "AXI-DOC-2026-007",
+    createdAt: new Date("2026-09-10T00:00:00.000Z"),
+  });
+  mockDocFindUnique.mockResolvedValue({
     type: "autofacture_honoraires",
     numero: "AXI-DOC-2026-007",
     createdAt: new Date("2026-09-10T00:00:00.000Z"),
@@ -375,5 +388,51 @@ describe("🔴 l'émission automatique ne doit JAMAIS casser la validation", () 
     const res = await emettreAutofactureAction({ statementId: ID });
     expect("error" in res && res.error).toMatch(/déjà/i);
     expect(mockGenerateDocument).not.toHaveBeenCalled();
+  });
+});
+
+describe("🔴 la pièce jointe est CELLE du relevé, jamais « la dernière »", () => {
+  it("l'émission enregistre le PDF qu'elle vient de produire", async () => {
+    // Sans ce lien, la transmission retrouvait le PDF par heuristique. Le cas
+    // que le cron de rattrapage PRODUIT : un formateur avec deux factures, août
+    // et septembre, dont l'envoi d'août a échoué. Cliquer « Transmettre » sur
+    // août lui envoyait le PDF de SEPTEMBRE, avec le numéro d'août dans le
+    // corps de l'e-mail — une pièce comptable fausse, partie chez un tiers.
+    mockStatementFindUnique.mockResolvedValue(releve());
+    await emettreAutofactureAction({ statementId: ID });
+
+    const data = mockStatementUpdate.mock.calls
+      .map((c: unknown[]) => (c[0] as { data?: Record<string, unknown> })?.data)
+      .find((d) => d !== undefined && "autofactureAt" in d) as Record<string, unknown>;
+    expect(data["autofactureDocumentId"]).toBe("doc-1");
+  });
+
+  it("🔴 la transmission lit le PDF PAR IDENTIFIANT, pas par date", async () => {
+    mockStatementFindUnique.mockResolvedValue(releve());
+    await emettreAutofactureAction({ statementId: ID });
+
+    // C'est l'assertion qui tient le correctif : `findFirst` trié par date ne
+    // doit plus servir à retrouver la pièce.
+    expect(mockDocFindUnique).toHaveBeenCalled();
+    const where = mockDocFindUnique.mock.calls[0]?.[0]?.where as Record<string, unknown>;
+    expect(where["id"]).toBe("doc-1");
+    expect(mockDocFindFirst).not.toHaveBeenCalled();
+  });
+
+  it("🔑 une reprise SANS lien enregistré part sans pièce jointe, jamais avec la mauvaise", async () => {
+    // Les autofactures émises avant le 2026-09-12 n'ont pas de lien. Un e-mail
+    // sans PDF se rattrape ; un e-mail portant la facture d'un autre mois, non.
+    mockDocFindUnique.mockResolvedValue(null);
+    mockStatementFindUnique.mockResolvedValue(
+      releve({
+        autofactureAt: new Date("2026-08-01T00:00:00.000Z"),
+        autofactureDocumentId: null,
+        numeroFacture: "AXI-AUTOF-2026-001",
+      }),
+    );
+    await transmettreAutofactureAction({ statementId: ID });
+
+    const opts = mockEnqueueEmail.mock.calls[0]?.[4] as Record<string, unknown>;
+    expect(opts?.["attachments"]).toBeUndefined();
   });
 });

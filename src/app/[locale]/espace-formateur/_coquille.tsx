@@ -19,7 +19,7 @@
  * déclare sa section, et la coquille reste un composant serveur.
  */
 
-import { CalendarDays, CircleCheckBig, UserRound } from "lucide-react";
+import { CalendarDays, CircleCheckBig, Euro, UserRound } from "lucide-react";
 
 import { EspaceShell, type EspaceNavItem } from "@/components/espace/EspaceShell";
 import { FormateurLogoutButton } from "@/components/espace-formateur/FormateurLogoutButton";
@@ -27,7 +27,7 @@ import { getFormateurSession } from "@/server/formateur/guard";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { FORMATEUR_SESSIONS_PATH } from "@/server/formateur/collectif-labels";
 
-export type SectionFormateur = "accueil" | "formations" | "accompagnements";
+export type SectionFormateur = "accueil" | "formations" | "remuneration" | "accompagnements";
 
 /**
  * Trois destinations. Le collectif AVANT l'individuel : c'est le cas
@@ -52,6 +52,16 @@ function construireNavigation(aSigner: number): readonly EspaceNavItem[] {
       label: "Mes formations",
       labelCourt: "Formations",
       icone: CalendarDays,
+    },
+    {
+      // 🔴 Sa RÉMUNÉRATION — la destination qui manquait. Son espace portait
+      // ses sessions, ses séances et ses pièces à signer, et rien sur ce qu'on
+      // lui doit : une facture établie en son nom ne vivait que dans un e-mail.
+      cle: "remuneration",
+      href: `${FORMATEUR_BASE_PATH}/remuneration`,
+      label: "Ma rémunération",
+      labelCourt: "Rémunération",
+      icone: Euro,
     },
     {
       cle: "accompagnements",

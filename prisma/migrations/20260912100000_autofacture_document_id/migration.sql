@@ -1,0 +1,37 @@
+-- Le PDF d'une autofacture est enfin RATTACHÉ à son relevé.
+--
+-- ## Le défaut, et il envoyait la mauvaise pièce à un tiers
+--
+-- 🔴 L'émission produisait le PDF sans conserver lequel. Pour le transmettre, le
+-- code allait chercher « le dernier PDF d'autofacture de ce formateur » —
+-- `findFirst` trié par `createdAt desc`.
+--
+-- Le cas qui casse est celui que le cron de rattrapage PRODUIT : un formateur
+-- avec deux factures, août et septembre, dont l'envoi d'août a échoué. Cliquer
+-- « Transmettre » sur août lui envoyait le PDF de SEPTEMBRE, avec le numéro
+-- d'août dans le corps de l'e-mail. Pièce comptable fausse, partie chez un
+-- tiers, ouvrant en prime une fenêtre de contestation de huit jours sur un
+-- document qui n'est pas le sien.
+--
+-- ## Et le symétrique : personne ne pouvait VOIR la pièce
+--
+-- Le PDF existait, `/api/qualiopi/documents/[id]` savait le servir, et aucun
+-- écran n'y menait. `DocumentsSection` sait pourtant afficher ce type — mais
+-- elle prend un `sessionId`, et une autofacture est rattachée à un RELEVÉ, pas
+-- à une session. Une facture visible de personne n'existe que dans un e-mail.
+--
+-- C'est la famille « code complet sans appelant » relevée six fois dans l'audit
+-- du 2026-08-03 : ici, un LECTEUR qui n'existait pas.
+--
+-- ## Pourquoi NULLABLE, et sans clé étrangère
+--
+-- Nullable : les autofactures déjà émises n'ont pas ce lien, et le reconstituer
+-- par heuristique reproduirait exactement le défaut qu'on corrige. Elles restent
+-- consultables par leur numéro ; le lien se remplit pour les suivantes.
+--
+-- Pas de contrainte `REFERENCES` : `documents_generes` porte une purge à 5 ans,
+-- et une clé étrangère stricte empêcherait la purge ou effacerait le relevé avec
+-- elle. Le lien est une COMMODITÉ de lecture, pas la preuve — la preuve est le
+-- numéro de la pièce, immuable.
+ALTER TABLE "trainer_statements"
+  ADD COLUMN IF NOT EXISTS "autofacture_document_id" UUID;

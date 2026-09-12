@@ -121,6 +121,7 @@ async function lireReleve(id: string) {
       totalTtcCents: true,
       numeroFacture: true,
       autofactureAt: true,
+      autofactureDocumentId: true,
       autofactureTransmiseAt: true,
       contestationAvantAt: true,
       contesteeAt: true,
@@ -300,6 +301,10 @@ export async function emettreAutofactureAction(
         echeanceAt: echeance,
         montantFactureTtcCents: releve.totalTtcCents,
         autofactureAt: maintenant,
+        // 🔴 LE LIEN VERS LA PIÈCE. Sans lui, la transmission retrouvait le PDF
+        // par heuristique — « le dernier de ce formateur » — et envoyait la
+        // facture de septembre pour un rattrapage d'août.
+        autofactureDocumentId: doc.id,
       },
     });
   } catch {
@@ -327,6 +332,7 @@ export async function emettreAutofactureAction(
     {
       statementId: releve.id,
       numero,
+      documentId: doc.id,
       trainerId: releve.trainerId,
       trainerNom: sousTraitant.nom,
       trainerEmail: sousTraitant.email,
@@ -366,11 +372,16 @@ async function transmettre(
   const to = releve.trainerEmail;
   if (!to) return false;
 
-  const doc = await prisma.documentGenere.findFirst({
-    where: { type: "autofacture_honoraires", trainerId: releve.trainerId },
-    orderBy: { createdAt: "desc" },
-    select: { type: true, numero: true, createdAt: true },
-  });
+  // ⚠️ PAR IDENTIFIANT, jamais par heuristique. Le `findFirst` trié par date
+  // qui vivait ici renvoyait « la dernière autofacture de ce formateur » : sur
+  // un rattrapage d'août, c'était celle de septembre.
+  const doc =
+    releve.documentId === null
+      ? null
+      : await prisma.documentGenere.findUnique({
+          where: { id: releve.documentId },
+          select: { type: true, numero: true, createdAt: true },
+        });
 
   const echeance = releve.echeance;
   const maintenant = new Date();
@@ -438,6 +449,13 @@ async function transmettre(
 interface PieceATransmettre {
   readonly statementId: string;
   readonly numero: string;
+  /**
+   * Le PDF de CETTE facture. `null` pour les pièces émises avant le
+   * 2026-09-12, qui n'ont pas de lien enregistré : elles partent alors SANS
+   * pièce jointe plutôt qu'avec la mauvaise. Un e-mail sans PDF se rattrape ;
+   * un e-mail portant la facture d'un autre mois, non.
+   */
+  readonly documentId: string | null;
   readonly trainerId: string;
   readonly trainerNom: string;
   readonly trainerEmail: string | null;
@@ -473,6 +491,7 @@ export async function transmettreAutofactureAction(
     {
       statementId: releve.id,
       numero: releve.numeroFacture as string,
+      documentId: releve.autofactureDocumentId,
       trainerId: releve.trainerId,
       trainerNom: `${releve.trainer.prenom} ${releve.trainer.nom}`.trim(),
       trainerEmail: releve.trainer.email,

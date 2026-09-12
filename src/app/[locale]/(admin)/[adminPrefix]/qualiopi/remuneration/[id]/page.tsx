@@ -13,7 +13,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, FileText } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
@@ -221,6 +221,45 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
               Facture <strong>{releve.numeroFacture ?? "—"}</strong> établie le{" "}
               {releve.autofacture.emiseAt.toLocaleDateString("fr-FR")} au nom du formateur.
             </p>
+
+            {/*
+              🔴 LA PIÈCE, LÀ OÙ L'ON DÉCIDE DE L'ENVOYER.
+
+              Le PDF existait, `/api/qualiopi/documents/[id]` savait le servir, et
+              AUCUN écran n'y menait — la famille « code complet sans appelant »,
+              mais côté lecteur. Le bouton « Transmettre » était donc un geste
+              aveugle : il ouvre une fenêtre de contestation de huit jours sur un
+              document que personne n'avait pu lire.
+
+              Or la transmission reste MANUELLE précisément pour qu'on contrôle
+              avant l'envoi (décision de Will). Sans ce lien, on avait le coût du
+              geste sans son bénéfice.
+
+              ⚠️ Ouvert dans un onglet : partir consulter la pièce ne doit pas
+              faire perdre l'écran d'où l'on va cliquer « Transmettre ».
+            */}
+            {releve.autofacture.documentId !== null ? (
+              <p>
+                <a
+                  href={`/api/qualiopi/documents/${releve.autofacture.documentId}`}
+                  className="admin-button-ghost"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FileText size={16} aria-hidden />
+                  Voir la facture (PDF)
+                </a>
+              </p>
+            ) : (
+              // On DIT pourquoi le lien manque plutôt que de ne rien afficher :
+              // une absence muette se lit « le PDF n'existe pas », ce qui est
+              // faux — il existe, il n'est simplement pas rattaché.
+              <p className="admin-muted">
+                Cette facture a été émise avant le rattachement des pièces ({" "}
+                {releve.numeroFacture ?? "n° inconnu"} ) : elle existe au registre des documents,
+                mais aucun lien direct ne l&apos;ouvre depuis cet écran.
+              </p>
+            )}
 
             {releve.autofacture.transmiseAt === null ? (
               <>
