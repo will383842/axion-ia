@@ -31,6 +31,31 @@ on:
   # indéfiniment des checks qui ne se lancent jamais : elle se bloque au premier
   # usage. Il s'ajoute AVANT d'activer la file, jamais après.
   merge_group:
+  # 🔵 MESURE D'ACCESSIBILITÉ À LA DEMANDE (2026-09-12).
+  #
+  # `tests/e2e/a11y-admin-mesure.spec.ts` est l'outil qui débloque le lot a11y :
+  # la gate `@a11y-admin` couvre 18 écrans sur 242, et sa doctrine interdit d'en
+  # inscrire un sans l'avoir MESURÉ. Mesurer demande la pile complète — base
+  # semée, application démarrée, connexion admin — c'est-à-dire exactement ce
+  # que Gate B monte déjà.
+  #
+  # 🔑 ON NE DUPLIQUE PAS GATE B : on lui passe une variable. `A11Y_ROUTES` vide
+  # (tous les runs normaux) ⇒ la suite de mesure se `skip`, coût ZÉRO et
+  # comportement inchangé. Renseignée par un déclenchement manuel ⇒ elle tourne
+  # dans l'environnement déjà éprouvé, et le rapport part en artefact.
+  #
+  # ⚠️ Pourquoi pas la machine de Will : `next dev` y retient 4,4 Go sur 16, et
+  # la pile a été tuée DEUX FOIS pour manque de mémoire le 2026-09-10. Ce n'est
+  # pas un choix de confort, c'est la seule voie qui tienne.
+  workflow_dispatch:
+    inputs:
+      a11y_routes:
+        description: >-
+          Routes admin à mesurer, séparées par des virgules et commençant par
+          « / » (ex. « /,/avis,/blog »). Vide = aucune mesure.
+        required: false
+        default: ""
+
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
@@ -607,6 +632,9 @@ jobs:
           # de connexion ne répond pas et `signInAction` refuse toute connexion
           # admin par sécurité : voir le commentaire du service `redis`.
           REDIS_URL: "redis://localhost:6379"
+          # Vide sur tous les runs normaux ⇒ `a11y-admin-mesure` se `skip`.
+          # Renseigné par `workflow_dispatch` ⇒ la mesure tourne ici.
+          A11Y_ROUTES: ${{ github.event.inputs.a11y_routes || '' }}
           # 🔴 2026-08-22 — SANS CE DRAPEAU, QUATRE ÉCRANS N'ÉTAIENT PAS COUVERTS.
           #
           # `admin-nav-clic` rendait « 4 entrée(s) de navigation en panne »,
@@ -684,6 +712,30 @@ jobs:
         # en « success », et un relevé fait sur une suite tronquée ressemble
         # exactement à un relevé complet.
         timeout-minutes: 30
+
+      # 🔵 Rapport de mesure a11y — récupéré quand il y en a un.
+      #
+      # `if: always()` NU, et pas `${{ always() && inputs.a11y_routes != '' }}` :
+      # `gate-b-a-ses-services.spec.ts` exige la forme littérale pour toute étape
+      # placée après la suite E2E. Sa raison est bonne — une étape aval sans
+      # échappatoire disparaît au premier rouge de Playwright, donc exactement le
+      # jour où son rapport sert.
+      #
+      # 🔑 J'ai d'abord ÉLARGI cette garde pour qu'elle accepte ma condition
+      # composée. C'était le mauvais réflexe : on ne desserre pas un cliquet pour
+      # y faire entrer son propre code. La condition métier n'a d'ailleurs aucune
+      # raison de vivre dans le `if` — hors mesure, `_AUDIT/a11y-console-*.json`
+      # n'existe tout simplement pas, et `if-no-files-found: ignore` rend l'étape
+      # muette. Même comportement, aucune garde affaiblie.
+      - name: Rapport a11y (mesure à la demande)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-console-mesure
+          path: _AUDIT/a11y-console-*.json
+          if-no-files-found: ignore
+          retention-days: 30
+
       # ═══════════════════════════════════════════════════════════════════
       # 🔴 2026-08-24 — DEUX ÉTAPES RETIRÉES ICI, ET C'EST UNE MESURE QUI LE DIT
       # ═══════════════════════════════════════════════════════════════════
