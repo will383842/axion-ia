@@ -212,6 +212,29 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/components/espace-formateur/MissionReponseForm.tsx",
   "src/app/[locale]/espace-formateur/mission/[token]/page.tsx",
   "src/app/api/formateur/lettre-mission/[id]/route.ts",
+  // « Ma rémunération » dans l'espace du formateur (2026-09-12). C'est la
+  // réponse à une question qu'il pose forcément — « où est ma facture ? » —
+  // et à laquelle rien ne répondait : une autofacture établie EN SON NOM ne
+  // vivait que dans un e-mail, qui se perd.
+  //
+  // 🔑 La page ne consomme qu'UNE lecture, `listRelevesDuFormateur`, bornée au
+  // `trainerId` de la session. Elle n'appelle aucune action, n'écrit rien, et ne
+  // voit aucune donnée de stagiaire ni d'un autre formateur.
+  //
+  // ⚠️ La déplacer « en zone dédiée » reviendrait à loger une page de l'espace
+  // formateur hors de l'espace formateur : la garde serait verte et
+  // l'architecture fausse.
+  "src/app/[locale]/espace-formateur/remuneration/page.tsx",
+  // La route qui sert le PDF de cette page. Elle n'importe du domaine que
+  // `nomFichierDocument` — la façon de NOMMER le fichier remis, qui doit être la
+  // même partout : un même document téléchargé depuis la console et depuis
+  // l'espace formateur ne peut pas arriver sous deux noms différents.
+  //
+  // 🔑 La garde d'accès y est une PROPRIÉTÉ, pas un rôle : le document doit
+  // appartenir au formateur connecté, et son type figurer dans une liste fermée
+  // (`TYPES_CONSULTABLES`). Un type hors liste répond 404, jamais 403 — un
+  // formateur n'a pas à apprendre qu'un identifiant existe.
+  "src/app/api/espace-formateur/documents/[id]/route.ts",
   "src/components/portail/DemanderAccesForm.tsx",
   // 🔴 2026-08-24, cahier D3-3 — la phrase d'attestation que le stagiaire COCHE
   // était codée en dur dans ce composant, hors de `qualiopi/emargement/mentions`.
