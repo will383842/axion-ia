@@ -103,6 +103,13 @@ export interface ReleveDetail extends ReleveListe {
    */
   autofacture: {
     emiseAt: Date | null;
+    /**
+     * Le PDF de CETTE facture, dans `documents_generes`. `null` pour les pièces
+     * émises avant le 2026-09-12 — elles restent identifiables par leur numéro,
+     * mais aucun lien ne les ouvre : reconstituer le rattachement par
+     * heuristique reproduirait le défaut qu'on vient de corriger.
+     */
+    documentId: string | null;
     transmiseAt: Date | null;
     contestationAvantAt: Date | null;
     contesteeAt: Date | null;
@@ -136,6 +143,7 @@ export async function getReleveDetail(id: string, now = new Date()): Promise<Rel
         montantFactureTtcCents: true,
         echeanceAt: true,
         autofactureAt: true,
+        autofactureDocumentId: true,
         autofactureTransmiseAt: true,
         contestationAvantAt: true,
         contesteeAt: true,
@@ -188,6 +196,7 @@ export async function getReleveDetail(id: string, now = new Date()): Promise<Rel
       retardJours: joursDeRetard(r, now),
       autofacture: {
         emiseAt: r.autofactureAt,
+        documentId: r.autofactureDocumentId,
         transmiseAt: r.autofactureTransmiseAt,
         contestationAvantAt: r.contestationAvantAt,
         contesteeAt: r.contesteeAt,
@@ -315,6 +324,108 @@ export async function listAnomaliesPeriode(periode: Periode): Promise<AnomaliePe
       motif: r.motif ?? "",
       prestationType: r.prestationType,
       montantHtCents: r.montantHtCents,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────
+ * Ce que le FORMATEUR voit de sa propre rémunération
+ * ────────────────────────────────────────────────────────────────────────────── */
+
+export interface ReleveDuFormateur {
+  id: string;
+  periodeYear: number;
+  periodeMonth: number;
+  statut: StatementStatut;
+  totalHtCents: number;
+  tvaCents: number;
+  totalTtcCents: number;
+  numeroFacture: string | null;
+  /** Le PDF de SA facture, s'il lui est rattaché. */
+  documentId: string | null;
+  echeance: Date | null;
+  payeAt: Date | null;
+  /** Terme de son droit de contestation. `null` si la pièce ne lui est pas parvenue. */
+  contestationAvantAt: Date | null;
+  contesteeAt: Date | null;
+  /**
+   * La fenêtre de contestation est-elle ENCORE ouverte ?
+   *
+   * 🔑 Calculée ICI, jamais dans l'écran. Un composant qui lirait l'horloge
+   * pendant son rendu viole la pureté du rendu — et surtout, il donnerait une
+   * seconde réponse à une question dont le serveur a déjà l'autorité. C'est la
+   * deuxième fois que ce réflexe est corrigé dans ce chantier.
+   */
+  contestable: boolean;
+}
+
+/**
+ * Les relevés d'UN formateur, pour SON espace.
+ *
+ * 🔴 IL N'AVAIT AUCUN ENDROIT OÙ RETROUVER SA FACTURE. Son espace portait ses
+ * sessions, ses séances, ses missions, ses pièces à signer — ni relevé, ni
+ * facture, ni ce qu'on lui doit. Une autofacture établie EN SON NOM ne vivait
+ * que dans un e-mail : perdu l'e-mail, perdue la pièce.
+ *
+ * C'est d'autant moins tenable qu'il dispose de HUIT JOURS pour la contester.
+ * Demander à quelqu'un de contester un document qu'il ne peut pas relire n'est
+ * pas un droit, c'est une formalité.
+ *
+ * ⚠️ Le filtre porte sur `trainerId`, jamais sur un paramètre d'appel : c'est
+ * une garde de PROPRIÉTÉ. Un formateur ne voit que ses propres relevés.
+ *
+ * ⚠️ `brouillon` EXCLU : un montant qu'aucun humain n'a relu n'est pas une
+ * promesse, et le montrer ferait naître une attente sur un chiffre qui peut
+ * encore changer. `annule` aussi — une ligne annulée n'attend plus rien.
+ */
+export async function listRelevesDuFormateur(
+  trainerId: string,
+  now = new Date(),
+): Promise<ReleveDuFormateur[]> {
+  try {
+    const rows = await prisma.trainerStatement.findMany({
+      where: { trainerId, statut: { notIn: ["brouillon", "annule"] } },
+      select: {
+        id: true,
+        periodeYear: true,
+        periodeMonth: true,
+        statut: true,
+        totalHtCents: true,
+        tvaCents: true,
+        totalTtcCents: true,
+        numeroFacture: true,
+        autofactureDocumentId: true,
+        dateFacture: true,
+        echeanceAt: true,
+        payeAt: true,
+        contestationAvantAt: true,
+        contesteeAt: true,
+      },
+      orderBy: [{ periodeYear: "desc" }, { periodeMonth: "desc" }],
+      take: 36,
+    });
+
+    return rows.map((r) => ({
+      id: r.id,
+      periodeYear: r.periodeYear,
+      periodeMonth: r.periodeMonth,
+      statut: r.statut,
+      totalHtCents: r.totalHtCents,
+      tvaCents: r.tvaCents,
+      totalTtcCents: r.totalTtcCents,
+      numeroFacture: r.numeroFacture,
+      documentId: r.autofactureDocumentId,
+      echeance: echeanceEffective(r),
+      payeAt: r.payeAt,
+      contestationAvantAt: r.contestationAvantAt,
+      contesteeAt: r.contesteeAt,
+      contestable:
+        r.payeAt === null &&
+        r.contesteeAt === null &&
+        r.contestationAvantAt !== null &&
+        r.contestationAvantAt.getTime() > now.getTime(),
     }));
   } catch {
     return [];

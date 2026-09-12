@@ -5206,6 +5206,19 @@ model TrainerStatement {
   /// Émission par nous, sous mandat. `null` = facture reçue du formateur.
   /// C'est ce champ, et lui seul, qui distingue une pièce d'autofacturation.
   autofactureAt       DateTime? @map("autofacture_at")
+  /// LE PDF de cette autofacture, dans `documents_generes`.
+  ///
+  /// 🔴 SANS CE LIEN, LA PIÈCE ÉTAIT RETROUVÉE PAR HEURISTIQUE — « le dernier
+  /// PDF d'autofacture de ce formateur ». Un formateur avec deux factures, août
+  /// et septembre, dont l'envoi d'août a échoué : le rattrapage lui envoyait le
+  /// PDF de SEPTEMBRE avec le numéro d'août dans le corps de l'e-mail. Une pièce
+  /// comptable fausse, partie chez un tiers, ouvrant en prime une fenêtre de
+  /// contestation de huit jours sur un document qui n'est pas le sien.
+  ///
+  /// C'est aussi ce lien qui rend la pièce CONSULTABLE : le PDF existait, la
+  /// route savait le servir, et aucun écran n'y menait — ni côté organisme, ni
+  /// côté formateur. Une facture visible de personne n'existe que dans un e-mail.
+  autofactureDocumentId String? @map("autofacture_document_id") @db.Uuid
   /// Transmission au sous-traitant. La clause l'exige « dès son émission » :
   /// une autofacture émise et jamais transmise prive le formateur du droit de
   /// contester, donc vide la clause de sa contrepartie.
