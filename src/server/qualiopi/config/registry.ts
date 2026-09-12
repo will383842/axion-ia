@@ -287,6 +287,32 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     ...str(),
     description: "Adresse du lieu d'exercice effectif (Grenoble, Isère — Auvergne-Rhône-Alpes).",
   },
+
+  // ── Convention collective de L'ORGANISME ──────────────────────────────────
+  //
+  // 🔴 ELLE N'EXISTAIT NULLE PART, et c'est un manque qui se voit dès qu'on
+  // écrit un contrat de travail. Le dépôt connaît les conventions collectives
+  // des CLIENTS (`Client.conventionCollective`, `Client.idcc`) — elles servent
+  // à router vers le bon OPCO — mais rien ne décrivait CELLE DE L'ORGANISME.
+  //
+  // ⛔ ET ELLE NE SE DÉDUIT PAS. `naf-opco.ts` sait que « 8559A relève de la CCN
+  // des organismes de formation », mais c'est une règle appliquée à un client :
+  // rien n'atteste que l'organisme lui-même est en 8559A. L'appliquer à soi
+  // reviendrait à fabriquer une preuve à partir d'un indice qui n'en est pas un.
+  //
+  // ⚠️ Pas de DÉFAUT, délibérément. Une convention pré-remplie serait recopiée
+  // sans être vérifiée, et une classification fausse dans un contrat de travail
+  // se paie en rappel de salaire. Vide, le contrat sort en SPÉCIMEN et le dit.
+  convention_collective: {
+    ...str(),
+    description:
+      "Convention collective applicable à l'organisme, libellé exact tel qu'il figure sur les bulletins de paie (ex. « Convention collective nationale des organismes de formation »). Se lit sur un bulletin ou l'extrait Kbis — ne pas la deviner : elle fixe la classification, la période d'essai et les minima du contrat de travail.",
+  },
+  convention_collective_idcc: {
+    ...str(),
+    description:
+      "Identifiant IDCC de cette convention, 4 chiffres (ex. 1516 pour les organismes de formation). Figure sur le bulletin de paie à côté du libellé.",
+  },
   // ── Régime de TVA — VERROUILLÉ SUR « ASSUJETTI » ─────────────────────────
   // 🔴 Décision Will (règle du 2026-08-02, durcie le 2026-08-10) : « on doit
   // toujours facturer la TVA », « nulle part il ne doit y avoir de TVA

@@ -26,6 +26,10 @@ export const QUALIOPI_CONFIG_LABELS: Record<QualiopiConfigKey, string> = {
   raison_sociale: "Raison sociale",
   adresse_siege: "Adresse du siège social",
   adresse_exercice: "Adresse du lieu d'exercice",
+  // Convention collective de L'ORGANISME — celle des salariés, pas celle des
+  // clients (qui sert au routage OPCO et vit sur `Client`).
+  convention_collective: "Convention collective applicable",
+  convention_collective_idcc: "IDCC de la convention collective",
   dirigeant_nom: "Nom du dirigeant",
   dirigeant_fonction: "Fonction du dirigeant",
   logo_url: "URL du logo (en-tête des documents)",
