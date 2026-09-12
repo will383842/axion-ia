@@ -13,8 +13,17 @@
  * qu'un seul saute pour que tout devienne muet** :
  *
  *   1. l'entrée `a11y_routes` du `workflow_dispatch` ;
- *   2. la variable `A11Y_ROUTES` passée à l'étape Playwright ;
- *   3. l'étape qui récupère le rapport en artefact.
+ *   2. **le job `gate-b` doit s'EXÉCUTER sur cet événement** ;
+ *   3. la variable `A11Y_ROUTES` passée à l'étape Playwright ;
+ *   4. l'étape qui récupère le rapport en artefact.
+ *
+ * 🔴 LE MAILLON 2 A ÉTÉ AJOUTÉ APRÈS COUP, ET IL MANQUAIT POUR DE VRAI.
+ * Ce fichier gardait d'abord les seuls maillons 1, 3 et 4 — les raccords — sans
+ * vérifier que le moteur démarre. `gate-b` portait
+ * `if: github.event_name == 'pull_request' || … 'merge_group'` : au premier
+ * usage réel (run 34683555610), le dispatch a rendu `Gate B → skipped`,
+ * **40 écrans demandés, zéro mesuré, aucune erreur**. Le câblage était correct
+ * et entièrement inerte, et ce test était VERT.
  *
  * 🔑 CE QUI REND CE CÂBLAGE PARTICULIÈREMENT TRAÎTRE. Si le maillon 2 saute,
  * la suite de mesure se `skip` — exactement comme sur tous les runs normaux, où
@@ -64,7 +73,22 @@ describe("la mesure a11y est réellement déclenchable", () => {
     ).toBe(true);
   });
 
-  it("maillon 2 — l'étape Playwright reçoit `A11Y_ROUTES`", () => {
+  it("maillon 2 — `gate-b` s'exécute sur un `workflow_dispatch` avec des routes", () => {
+    const y = workflow();
+    const bloc = /\n {2}gate-b:[\s\S]{0,2500}?runs-on:/.exec(y)?.[0] ?? "";
+    expect(
+      /workflow_dispatch/.test(bloc),
+      "`gate-b` ne s'exécute pas sur un déclenchement manuel : la mesure vit DANS ce job, " +
+        "donc le dispatch rendrait `Gate B → skipped` et RIEN ne serait mesuré — sans la " +
+        "moindre erreur. C'est le défaut constaté au premier usage réel (run 34683555610).",
+    ).toBe(true);
+    expect(
+      /a11y_routes\s*!=\s*''/.test(bloc),
+      "`gate-b` tournerait sur TOUT dispatch, y compris sans routes : ~37 min de CI pour rien",
+    ).toBe(true);
+  });
+
+  it("maillon 3 — l'étape Playwright reçoit `A11Y_ROUTES`", () => {
     const y = workflow();
     expect(
       /A11Y_ROUTES:\s*\$\{\{\s*github\.event\.inputs\.a11y_routes/.test(y),
@@ -75,7 +99,7 @@ describe("la mesure a11y est réellement déclenchable", () => {
     ).toBe(true);
   });
 
-  it("maillon 3 — le rapport est récupéré en artefact, même si la suite tombe", () => {
+  it("maillon 4 — le rapport est récupéré en artefact, même si la suite tombe", () => {
     const y = workflow();
     expect(
       /name:\s*a11y-console-mesure/.test(y),
