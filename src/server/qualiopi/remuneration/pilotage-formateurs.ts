@@ -297,3 +297,53 @@ export async function lireSituationFixe(
     return null;
   }
 }
+
+/**
+ * Ce qu'un formateur doit lire dans SON espace, quel que soit son statut.
+ *
+ * ## 🔴 Le trou que cette lecture ferme
+ *
+ * « Ma rémunération » ne savait lire que des RELEVÉS. Or un salarié n'en a
+ * jamais — ni aujourd'hui, ni demain : sa rémunération passe par la paie. Il
+ * ouvrait donc la page et lisait « Aucun relevé pour l'instant, ils apparaissent
+ * ici une fois le mois arrêté ».
+ *
+ * Cette phrase est vraie pour un indépendant et FAUSSE pour lui : elle promet
+ * une chose qui n'arrivera pas, sur l'écran même où il cherche ce qu'on lui
+ * doit. Un état vide qui ment est pire qu'un état vide — il fait attendre.
+ *
+ * ## Ce que la lecture rend, et ce qu'elle se garde d'affirmer
+ *
+ * ⚠️ Le complément n'est PAS un salaire, et l'écran doit le dire : l'outil
+ * calcule ce qu'il faut porter EN PLUS sur la paie, il ne verse rien et ne fait
+ * pas foi. Le bulletin de paie fait foi. Laisser croire l'inverse ferait
+ * contester un bulletin sur la base d'un écran.
+ *
+ * 🔑 Aucune donnée d'un autre formateur ne peut en sortir : tout est borné par
+ * `trainerId`, celui de la session, jamais un paramètre d'URL.
+ */
+export async function lireRemunerationDuFormateur(trainerId: string): Promise<{
+  statut: string;
+  /** Le fixe de référence, en centimes. `null` quand il n'a pas été renseigné. */
+  fixeMensuelBrutCents: number | null;
+  /** Le déroulé du mois, ou `null` si rien n'a encore été commissionné. */
+  situation: { complementDuMoisCents: number; detteCents: number; moisLabel: string } | null;
+} | null> {
+  try {
+    const t = await prisma.trainer.findUnique({
+      where: { id: trainerId },
+      select: { statut: true, fixeMensuelBrutCents: true },
+    });
+    if (t === null) return null;
+    return {
+      statut: t.statut,
+      fixeMensuelBrutCents: t.fixeMensuelBrutCents,
+      // 🔑 Le MÊME calcul que la console — `lireSituationFixe`, la fonction
+      // elle-même. Deux chemins pour le même montant finiraient par annoncer
+      // deux sommes différentes à l'employeur et au salarié, sur la même paie.
+      situation: await lireSituationFixe(trainerId),
+    };
+  } catch {
+    return null;
+  }
+}
