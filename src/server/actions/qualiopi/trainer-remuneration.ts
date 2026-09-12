@@ -322,7 +322,72 @@ export async function transitionStatementAction(
     session,
   });
 
+  /**
+   * 🔑 L'AUTOFACTURE PART À LA VALIDATION, SANS SECOND CLIC.
+   *
+   * Décision de Will (2026-09-12) : « il faut que tout soit automatiquement pour
+   * les formateurs freelance ». J'avais d'abord défendu un bouton, au motif
+   * qu'émettre une pièce au nom d'un tiers engage. C'était une garde en DOUBLE :
+   * le contrôle humain, c'est CETTE validation. C'est le moment où un opérateur
+   * regarde l'argent, et c'est le fait générateur que la clause 4 du contrat
+   * désigne. Demander un second clic revenait à faire confirmer ce qui vient
+   * d'être confirmé.
+   *
+   * ⚠️ FAIL-SOFT, ET C'EST LA PROPRIÉTÉ QUI COMPTE. Une émission qui échoue ne
+   * doit JAMAIS faire échouer la validation : le relevé est validé, c'est un
+   * fait acquis, et le perdre parce qu'un PDF ne s'est pas rendu remplacerait un
+   * petit problème par un gros. L'échec est rattrapé par le cron et signalé par
+   * une alerte.
+   *
+   * ⚠️ APRÈS le commit, hors transaction. Générer un PDF et poster un e-mail
+   * DANS une transaction Prisma la tiendrait ouverte plusieurs secondes — et un
+   * échec y annulerait la validation, ce qu'on vient précisément d'exclure.
+   */
+  if (v.to === "valide") {
+    await tenterAutofactureApresValidation(v.id);
+  }
+
   return { data: { id: v.id, statut: v.to } };
+}
+
+/**
+ * Tente l'émission automatique. N'échoue JAMAIS : le relevé est déjà validé.
+ *
+ * ⛔ Ne concerne que les INDÉPENDANTS. Un salarié n'est pas payé sur facture :
+ * `verifierEligibiliteAutofacture` le refuserait de toute façon (ni mandat, ni
+ * SIRET), mais l'appel est évité en amont pour ne pas produire une alerte
+ * « données manquantes » sur quelqu'un qui n'a rien à fournir.
+ *
+ * 🔑 L'import est DYNAMIQUE, et ce n'est pas du confort : `autofacture.ts`
+ * importe déjà ce module pour la garde de paiement. Un cycle statique
+ * compilerait sans broncher et laisserait l'un des deux modules `undefined` à
+ * l'exécution, selon l'ordre de chargement — le genre de panne qui ne se voit
+ * qu'en production.
+ */
+async function tenterAutofactureApresValidation(statementId: string): Promise<void> {
+  try {
+    const releve = await prisma.trainerStatement.findUnique({
+      where: { id: statementId },
+      select: { trainer: { select: { statut: true } } },
+    });
+    if (releve?.trainer.statut !== "sous_traitant") return;
+
+    const { emettreAutofactureAction } = await import("@/server/actions/qualiopi/autofacture");
+    const res = await emettreAutofactureAction({ statementId });
+    if ("error" in res) {
+      // On LOGUE plutôt que de lever : l'alerte `autofacture_a_emettre` prend le
+      // relais avec le geste exact à faire. Un échec muet serait la pire des
+      // trois options.
+      console.warn(
+        `[autofacture] émission automatique refusée pour le relevé ${statementId} : ${res.error}`,
+      );
+    }
+  } catch (err) {
+    console.error(
+      `[autofacture] émission automatique en échec pour le relevé ${statementId} :`,
+      err instanceof Error ? err.message : String(err),
+    );
+  }
 }
 
 /* ──────────────────────────────────────────────────────────────────────────────

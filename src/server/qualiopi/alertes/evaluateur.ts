@@ -37,6 +37,14 @@ import {
   joursDeRetard,
   STATUTS_RELEVE_DU,
 } from "@/server/qualiopi/remuneration/echeance";
+// 🔑 Le MÊME contrôle que l'émission, jamais une seconde liste de conditions.
+// Deux jeux de règles d'éligibilité finiraient par diverger, et l'alerte
+// réclamerait alors une donnée que l'émission n'exige plus — ou se tairait sur
+// une donnée qu'elle exige.
+import {
+  LIBELLE_REFUS_AUTOFACTURE,
+  verifierEligibiliteAutofacture,
+} from "@/server/qualiopi/remuneration/autofacturation";
 import { libellePalier } from "@/server/qualiopi/financements/relance-paliers";
 import {
   CONFORMITE_DEFAUTS,
@@ -3855,6 +3863,81 @@ async function regleSessionRealiseeNonFacturee(now: Date): Promise<AlerteCandida
  * celui que l'autofacturation ferme, pas celui-ci. Il est signalé à l'écran
  * « Ce qu'on doit », qui montre les deux états.
  */
+async function regleAutofactureAEmettre(now: Date): Promise<AlerteCandidate[]> {
+  const releves = await prisma.trainerStatement.findMany({
+    where: {
+      statut: "valide",
+      autofactureAt: null,
+      numeroFacture: null,
+      // ⛔ Indépendants SEULEMENT. Un salarié n'est pas payé sur facture :
+      // l'alerter reviendrait à lui réclamer un SIRET qu'il n'a pas, chaque
+      // jour, sans qu'aucun geste puisse la fermer.
+      trainer: { statut: "sous_traitant" },
+    },
+    select: {
+      id: true,
+      statut: true,
+      tvaRegime: true,
+      totalTtcCents: true,
+      numeroFacture: true,
+      autofactureAt: true,
+      periodeYear: true,
+      periodeMonth: true,
+      trainer: {
+        select: {
+          nom: true,
+          prenom: true,
+          siret: true,
+          numeroTvaIntracom: true,
+          adresseProfessionnelle: true,
+          mandatAutofacturationSigneAt: true,
+          mandatAutofacturationRevoqueAt: true,
+        },
+      },
+    },
+    take: 200,
+  });
+
+  const out: AlerteCandidate[] = [];
+  for (const r of releves) {
+    const verdict = verifierEligibiliteAutofacture(r, r.trainer, now);
+    if (verdict.eligible) continue;
+
+    // 🔑 Les trois familles de motifs, et deux ne doivent RIEN produire ici.
+    // `releve_non_valide` est le déclencheur, pas un refus (et le `where`
+    // l'exclut déjà) ; `releve_sans_montant` et `facture_deja_presente` sont
+    // des silences légitimes. N'alerter que sur les DONNÉES MANQUANTES.
+    const manques = verdict.refus.filter(
+      (m) =>
+        m !== "releve_non_valide" && m !== "releve_sans_montant" && m !== "facture_deja_presente",
+    );
+    if (manques.length === 0) continue;
+
+    const qui = `${r.trainer.prenom} ${r.trainer.nom}`.trim();
+    const montant = (r.totalTtcCents / 100).toLocaleString("fr-FR", {
+      style: "currency",
+      currency: "EUR",
+    });
+    out.push({
+      code: "autofacture_a_emettre",
+      niveau: "important",
+      titre: "Relevé validé : la facture d'honoraires n'a pas pu être émise",
+      message:
+        `Le relevé de ${qui} (${montant} TTC, période ${String(r.periodeMonth).padStart(2, "0")}/${r.periodeYear}) ` +
+        `est validé, mais sa facture d'honoraires n'a pas pu être établie. ` +
+        // La LISTE complète, jamais le premier : corriger le SIRET pour
+        // découvrir la TVA au balayage suivant coûte une semaine pour quatre
+        // obstacles qu'on pouvait lever en une fois.
+        `Il manque ${manques.length === 1 ? "ceci" : `${manques.length} choses`} sur sa fiche — ` +
+        manques.map((m) => LIBELLE_REFUS_AUTOFACTURE[m]).join(" ") +
+        ` Tant que ce n'est pas complet, le formateur attend un argent que rien ne lui réclame.`,
+      cibleType: "TrainerStatement",
+      cibleId: r.id,
+    });
+  }
+  return out;
+}
+
 async function regleReleveFormateurEchu(now: Date): Promise<AlerteCandidate[]> {
   const releves = await prisma.trainerStatement.findMany({
     where: { statut: { in: [...STATUTS_RELEVE_DU] }, payeAt: null },
@@ -4311,6 +4394,9 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "releve_formateur_echu", fn: regleReleveFormateurEchu },
   // 2026-09-10 — l'état le plus dangereux du circuit d'autofacturation.
   { nom: "autofacture_non_transmise", fn: regleAutofactureNonTransmise },
+  // 2026-09-12 — depuis que l'émission est automatique, un échec ne laisse plus
+  // aucune trace : personne n'attend de bouton. Cette règle est cette trace.
+  { nom: "autofacture_a_emettre", fn: regleAutofactureAEmettre },
   { nom: "formateur_rc_pro_hors_sous_traitance", fn: regleRcProFormateurHorsSousTraitance },
 ];
 

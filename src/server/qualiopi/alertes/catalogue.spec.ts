@@ -203,6 +203,10 @@ const CODES_ATTENDUS: string[] = [
   // qu'elle existe. Aucun délai de contestation n'a couru.
   "autofacture_non_transmise",
   "releve_formateur_echu",
+  // 🔴 2026-09-12 — depuis que l'émission est AUTOMATIQUE, un relevé validé dont
+  // la facture n'a pas pu partir ne laisse plus aucune trace : personne
+  // n'attend de bouton. L'alerte porte la liste COMPLÈTE des manques.
+  "autofacture_a_emettre",
   // 🔴 Trou n°5 — CINQ CODES ÉMIS SANS ENTRÉE ICI, le défaut du 2026-08-05
   // revenu. Sans entrée : pas de guichet (`sansGuichet`, aucune boîte) et
   // absence de `codesAutoResolution` (ouvertes pour toujours). Tous levés hors

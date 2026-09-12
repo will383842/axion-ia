@@ -333,3 +333,47 @@ describe("contesterAutofactureAction", () => {
     expect("error" in res && res.error).toMatch(/motif/i);
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// L'émission AUTOMATIQUE — ce qui se passe quand plus personne ne clique
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 l'émission automatique ne doit JAMAIS casser la validation", () => {
+  it("un relevé validé sort une facture sans second clic", async () => {
+    // Le contrôle humain, c'est la VALIDATION : c'est là qu'un opérateur
+    // regarde l'argent, et c'est le fait générateur de la clause 4. Un second
+    // clic ferait confirmer ce qui vient d'être confirmé.
+    mockStatementFindUnique.mockResolvedValue(releve());
+    const res = await emettreAutofactureAction({ statementId: ID });
+    expect("data" in res).toBe(true);
+  });
+
+  it("🔑 un refus rend une ERREUR, jamais une exception", async () => {
+    // La propriété dont dépend tout le fail-soft en amont : `transitionStatementAction`
+    // appelle cette action après avoir validé, et une exception qui remonterait
+    // ferait perdre une validation acquise. Un relevé validé est un fait ; le
+    // perdre parce qu'un SIRET manque remplacerait un petit problème par un gros.
+    mockStatementFindUnique.mockResolvedValue(releve({ trainer: { siret: null } }));
+    const res = await emettreAutofactureAction({ statementId: ID });
+    expect("error" in res).toBe(true);
+  });
+
+  it("🔑 une panne de PDF rend une ERREUR, jamais une exception", async () => {
+    mockGenerateDocument.mockRejectedValue(new Error("rendu indisponible (test)"));
+    mockStatementFindUnique.mockResolvedValue(releve());
+    const res = await emettreAutofactureAction({ statementId: ID });
+    expect("error" in res).toBe(true);
+    if (!("error" in res)) return;
+    expect(res.error).toMatch(/PDF/i);
+  });
+
+  it("🔴 un relevé DÉJÀ facturé n'en produit pas une seconde", async () => {
+    // L'idempotence du cron de rattrapage repose là-dessus : il repasse toutes
+    // les heures sur les relevés validés, et deux passages ne doivent jamais
+    // produire deux pièces pour le même mois.
+    mockStatementFindUnique.mockResolvedValue(releve({ autofactureAt: new Date() }));
+    const res = await emettreAutofactureAction({ statementId: ID });
+    expect("error" in res && res.error).toMatch(/déjà/i);
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
+  });
+});
