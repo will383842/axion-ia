@@ -236,7 +236,25 @@ jobs:
     name: Gate B · per-PR
     # `merge_group` doit figurer ici : en file de fusion, un job SKIPPÉ sur un
     # contexte EXIGÉ n'est pas un job vert — la file resterait bloquée dessus.
-    if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
+    # 🔴 2026-09-12 — `workflow_dispatch` AJOUTÉ, ET C'EST UN DÉFAUT MESURÉ.
+    #
+    # La mesure a11y (`A11Y_ROUTES`, cf. le déclencheur en tête de fichier) vit
+    # DANS ce job. Sans cette troisième branche, un déclenchement manuel rendait
+    # `Gate B · per-PR → skipped` : le câblage entrée → variable → artefact était
+    # correct et entièrement INERTE. Constaté au premier usage réel, run
+    # 34683555610 — 40 écrans demandés, zéro mesuré, aucune erreur.
+    #
+    # 🔑 La garde `la-mesure-a11y-est-reellement-declenchable` vérifiait les trois
+    # maillons du câblage et PAS que le job s'exécute. Un quatrième maillon a été
+    # ajouté là-bas : vérifier des raccords sans vérifier que le moteur démarre
+    # est précisément le « vert qui ne regarde pas ».
+    #
+    # La condition sur `a11y_routes` est délibérée : un dispatch SANS routes ne
+    # doit pas payer les ~37 min de Gate B pour rien.
+    if: >-
+      github.event_name == 'pull_request' ||
+      github.event_name == 'merge_group' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.a11y_routes != '')
     runs-on: ubuntu-latest
     # 45 → 75 (2026-05-29) : une fois l'ENOSPC résolu (free-disk ci-dessous), le
     # build SSG (17 928 pages) + bundle + E2E + Lighthouse dépassait de peu 45 min.
