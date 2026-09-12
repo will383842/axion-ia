@@ -20,6 +20,15 @@ describe("partieARelancer — statut en_attente (personne n'a signé)", () => {
     // `beneficiaire`, et l'action refuserait `client` (hors circuit).
     contrat: "beneficiaire",
     contrat_sous_traitance: "sous_traitant",
+    // Contrat de travail : le SALARIÉ signe authentifié depuis son espace, et
+    // l'employeur depuis la console. Aucun jeton public n'existe pour l'un ni
+    // pour l'autre, donc aucun lien à relancer — comme la lettre de mission.
+    //
+    // 🔑 `null` ne veut pas dire « on ne relance pas » : il veut dire que la
+    // relance ne passe PAS par ce bouton-là. Un contrat de travail non signé se
+    // relance en parlant au salarié, et l'écran de la fiche montre déjà qui
+    // manque, depuis quand, et avec quelle empreinte pour celui qui a signé.
+    contrat_travail: null,
     // 2026-08-10 (décision Will) : `protocole_afest` retiré de la table — son
     // circuit a disparu avec le module AFEST 1-to-1.
     // Canal B — le formateur signe authentifié depuis son espace :
