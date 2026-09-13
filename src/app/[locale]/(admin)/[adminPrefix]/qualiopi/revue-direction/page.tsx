@@ -212,6 +212,7 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
                           planActions: Array.isArray(r.planActions)
                             ? (r.planActions as unknown[])
                             : [],
+                          risques: Array.isArray(r.risques) ? (r.risques as unknown[]) : [],
                         }}
                         updateAction={updateRevueDirectionAction}
                       />

@@ -7759,6 +7759,24 @@ model RevueDirection {
   indicateursSnapshot Json     @default("{}") @map("indicateurs_snapshot")
   decisions           Json     @default("[]")
   planActions         Json     @default("[]") @map("plan_actions")
+  /// 🔴 Décret n° 2026-728 — analyse de risques, exigible au 1er novembre 2026.
+  ///
+  /// L'indicateur 32 demandait « des mesures d'amélioration à partir de
+  /// l'analyse des appréciations et des réclamations » : on REAGIT à ce qui est
+  /// remonté. Le référentiel 2026 exige en plus un processus qui ANTICIPE —
+  /// une analyse de risques.
+  ///
+  /// Forme d'une entrée : { intitule, cause, gravite, probabilite, maitrise,
+  /// echeance, responsable }. Json et non une table : une analyse de risques se
+  /// lit comme un tout, à la date de la revue, et ne se requête jamais ligne à
+  /// ligne — même raisonnement que `decisions` et `planActions` juste au-dessus.
+  ///
+  /// ⚠️ NON exigée avant le 1er novembre 2026 : le verdict de l'indicateur la
+  /// réclame à partir de cette date seulement (cf. `evaluerCouvertureOff32`).
+  /// Un audit conduit avant l'entrée en vigueur porte sur le référentiel à 32
+  /// indicateurs, et rendre la revue « non couverte » plus tôt afficherait un
+  /// rouge que rien n'exige.
+  risques             Json     @default("[]")
   statut              String   @default("brouillon") @db.VarChar(20)
   createdAt           DateTime @default(now()) @map("created_at")
   updatedAt           DateTime @updatedAt @map("updated_at")

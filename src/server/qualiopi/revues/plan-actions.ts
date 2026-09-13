@@ -265,6 +265,8 @@ export interface RevueAnnuelleLue {
   participants: unknown;
   decisions: unknown;
   planActions: unknown;
+  /** Analyse de risques — exigible au 1er novembre 2026 (decret 2026-728). */
+  risques?: unknown;
 }
 
 export interface CouvertureOff32 {
@@ -308,6 +310,40 @@ function compterListe(x: unknown): number {
  * Les preuves rendues disent, dans tous les cas, ce qui est établi et ce qui
  * manque — y compris quand c'est couvert (nombre d'actions closes, en retard).
  */
+/**
+ * Date a partir de laquelle l'indicateur 32 exige une ANALYSE DE RISQUES.
+ *
+ * Decret n° 2026-728 du 1er aout 2026, en vigueur le 1er novembre 2026. Jusque-la
+ * l'indicateur se lit dans sa version a 32 indicateurs : « mettre en oeuvre des
+ * mesures d'amelioration a partir de l'analyse des appreciations et des
+ * reclamations » — on REAGIT. Le referentiel 2026 exige en plus d'ANTICIPER.
+ *
+ * 🔑 POURQUOI UNE BORNE DATEE PLUTOT QU'UNE EXIGENCE SECHE. Un audit conduit
+ * AVANT l'entree en vigueur porte sur le referentiel a 32 indicateurs. Rendre la
+ * revue « non couverte » des aujourd'hui afficherait un rouge que rien n'exige,
+ * sur le super-indicateur 32 — et un rouge qu'on ne peut pas fermer par une
+ * obligation reelle apprend a ignorer l'ecran.
+ *
+ * ⚠️ La colonne existe DES MAINTENANT et se remplit : c'est le VERDICT qui
+ * attend, pas la saisie. Poser la donnee avant de l'exiger est ce qui permet
+ * d'arriver au 1er novembre avec une analyse deja ecrite.
+ */
+export const EXIGENCE_RISQUES_DEPUIS = new Date("2026-11-01T00:00:00.000Z");
+
+/** Compte les entrees d'analyse de risques reellement exploitables. */
+export function compterRisquesExploitables(brut: unknown): number {
+  if (!Array.isArray(brut)) return 0;
+  return brut.filter((r) => {
+    if (typeof r !== "object" || r === null) return false;
+    const o = r as Record<string, unknown>;
+    // Un risque sans INTITULE n'est pas un risque, et un risque sans MESURE DE
+    // MAITRISE est un constat : l'indicateur porte sur le processus, pas sur la
+    // liste des inquietudes.
+    const nonVide = (v: unknown): boolean => typeof v === "string" && v.trim() !== "";
+    return nonVide(o["intitule"]) && nonVide(o["maitrise"]);
+  }).length;
+}
+
 export function evaluerCouvertureOff32(
   revue: RevueAnnuelleLue | null,
   maintenant: Date,
@@ -387,6 +423,24 @@ export function evaluerCouvertureOff32(
         `⚠️ ${resume.enRetard} ${pluriel(resume.enRetard, "action")} en retard (échéance dépassée, action non close)`,
       );
     }
+  }
+
+  // ── Analyse de risques — decret 2026-728, exigible au 1er novembre 2026 ────
+  const nbRisques = compterRisquesExploitables(revue.risques);
+  if (nbRisques > 0) {
+    preuves.push(
+      `${nbRisques} ${pluriel(nbRisques, "risque")} analysé${nbRisques > 1 ? "s" : ""} avec sa mesure de maîtrise`,
+    );
+  } else if (maintenant >= EXIGENCE_RISQUES_DEPUIS) {
+    manque(
+      "Aucune analyse de risques — depuis le 1er novembre 2026, l'indicateur 32 exige un processus d'amélioration continue qui ANTICIPE, pas seulement qui réagit aux appréciations et réclamations (décret n° 2026-728). Un risque compte s'il porte un intitulé ET une mesure de maîtrise.",
+    );
+  } else {
+    // Avant l'entrée en vigueur : on informe sans faire rougir. La revue reste
+    // couverte au sens du référentiel qui s'applique réellement ce jour-là.
+    preuves.push(
+      "Analyse de risques non renseignée — pas encore exigée (le décret 2026-728 la rend obligatoire au 1er novembre 2026)",
+    );
   }
 
   return { couvert: manques.length === 0, preuves, manques, resume };

@@ -60,6 +60,19 @@ const microLabelCls =
   "block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] mb-1";
 
 /**
+ * Exemple d'analyse de risques, deux lignes.
+ *
+ * Construit par concaténation plutôt qu'écrit d'un trait : une séquence
+ * d'échappement qui traverse un générateur se transforme en vrai retour à la
+ * ligne et coupe l'instruction — ça s'est produit trois fois sur ce dépôt le
+ * 2026-09-13, chez trois sessions différentes.
+ */
+const RISQUES_EXEMPLE = [
+  "Formateur unique indisponible sur une session engagée | Constituer un vivier de deux sous-traitants habilités",
+  "Retard de dépôt du BPF | Rappel calendaire à J-30 et pièce préparée en amont",
+].join(String.fromCharCode(10));
+
+/**
  * Libellé affichable d'une entrée `decisions`.
  *
  * Mêmes clés que `resumeJsonListe` de `registres-pdf.ts` et que
@@ -84,6 +97,43 @@ function versTexte(liste: readonly unknown[]): string {
     .map(libelleEntree)
     .filter((s) => s.trim().length > 0)
     .join("\n");
+}
+
+/**
+ * Une ligne par risque : « intitulé | mesure de maîtrise ».
+ *
+ * 🔑 Deux champs et non un. L'indicateur 32 porte sur un PROCESSUS : une liste
+ * d'intitulés sans réponse est un inventaire d'inquiétudes, pas une analyse.
+ * `compterRisquesExploitables` refuse d'ailleurs une entrée sans maîtrise — cet
+ * écran doit donc permettre d'écrire les deux, sinon le refus serait
+ * irréparable depuis l'interface.
+ */
+function risquesVersTexte(liste: readonly unknown[]): string {
+  if (!Array.isArray(liste)) return "";
+  return liste
+    .map((r) => {
+      if (typeof r !== "object" || r === null) return "";
+      const o = r as Record<string, unknown>;
+      const intitule = typeof o["intitule"] === "string" ? o["intitule"].trim() : "";
+      const maitrise = typeof o["maitrise"] === "string" ? o["maitrise"].trim() : "";
+      return intitule === "" ? "" : `${intitule} | ${maitrise}`;
+    })
+    .filter((l) => l !== "")
+    .join(String.fromCharCode(10));
+}
+
+/** L'inverse — une ligne sans barre garde un intitulé et une maîtrise vide. */
+function risquesVersListe(texte: string): unknown[] {
+  return texte
+    .split(String.fromCharCode(10))
+    .map((l) => l.trim())
+    .filter((l) => l !== "")
+    .map((l) => {
+      const i = l.indexOf("|");
+      return i === -1
+        ? { intitule: l, maitrise: "" }
+        : { intitule: l.slice(0, i).trim(), maitrise: l.slice(i + 1).trim() };
+    });
 }
 
 /**
@@ -127,6 +177,8 @@ export interface RevueDirectionRowActionsProps {
     participants: readonly unknown[];
     decisions: readonly unknown[];
     planActions: readonly unknown[];
+    /** Analyse de risques — décret 2026-728, exigée au 1er novembre 2026. */
+    risques: readonly unknown[];
   };
   updateAction: typeof updateRevueDirectionAction;
 }
@@ -147,6 +199,7 @@ export function RevueDirectionRowActions({
   const [actions, setActions] = useState<ActionAmelioration[]>(() =>
     normaliserPlanActions(revue.planActions as unknown[]),
   );
+  const [risquesRaw, setRisquesRaw] = useState(() => risquesVersTexte(revue.risques));
 
   function patcherAction(index: number, patch: Partial<ActionAmelioration>): void {
     setActions((prev) => prev.map((a, i) => (i === index ? { ...a, ...patch } : a)));
@@ -191,6 +244,7 @@ export function RevueDirectionRowActions({
         // Les lignes sans libellé sont écartées ici comme côté serveur : une
         // ligne qu'on vient d'ajouter et qu'on n'a pas remplie n'est pas une action.
         planActions: actions.filter((a) => a.action.trim().length > 0),
+        risques: risquesVersListe(risquesRaw),
       });
       if ("error" in result) {
         setError(result.error);
@@ -295,6 +349,26 @@ export function RevueDirectionRowActions({
           placeholder={"Décision prise en revue\nAutre décision"}
           className={inputCls}
         />
+      </div>
+
+      <div>
+        <label htmlFor="revuedirectionrowactions-risques" className={labelCls}>
+          Analyse de risques (une par ligne : intitulé | mesure de maîtrise)
+        </label>
+        <textarea
+          id="revuedirectionrowactions-risques"
+          value={risquesRaw}
+          onChange={(e) => setRisquesRaw(e.target.value)}
+          disabled={isPending}
+          rows={4}
+          placeholder={RISQUES_EXEMPLE}
+          className={inputCls}
+        />
+        <p className={microLabelCls}>
+          Exigée au 1{"ᵉʳ"} novembre 2026 (décret n{"°"} 2026-728). Un risque ne compte que s{"’"}il
+          porte un intitulé ET une mesure de maîtrise : une liste d{"’"}inquiétudes sans réponse n
+          {"’"}est pas une analyse.
+        </p>
       </div>
 
       {/* ── Plan d'actions : une action = une ligne suivie jusqu'à sa clôture ── */}

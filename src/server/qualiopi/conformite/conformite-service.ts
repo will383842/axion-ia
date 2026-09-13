@@ -281,7 +281,17 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // est délégué à `evaluerCouvertureOff32` — le seul prédicat d'off.32.
     prisma.revueDirection.findFirst({
       where: { statut: "validee", annee: maintenant.getFullYear() },
-      select: { annee: true, participants: true, decisions: true, planActions: true },
+      select: {
+        annee: true,
+        participants: true,
+        decisions: true,
+        planActions: true,
+        // 🔴 Sans ce champ, `compterRisquesExploitables` lirait `undefined` et
+        // rendrait 0 : apres le 1er novembre 2026 la revue serait declaree NON
+        // couverte alors que son analyse de risques existe. Un filtre sur un
+        // champ non selectionne ne rougit pas — il rend une absence.
+        risques: true,
+      },
     }),
     // off.26 : nom du référent handicap (config Qualiopi)
     getQualiopiConfig("referent_handicap_nom").catch(() => ""),
