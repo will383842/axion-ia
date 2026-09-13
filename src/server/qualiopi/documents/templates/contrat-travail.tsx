@@ -57,6 +57,7 @@ import {
   type PreuvesParPartie,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { libelleDuree, type DureeEssai } from "@/server/qualiopi/trainers/contrat-travail";
 
 export interface ContratTravailData {
   numero: string;
@@ -86,7 +87,16 @@ export interface ContratTravailData {
   /** Ex. « 35 » ou « 24,50 ». */
   dureeHebdoHeures: string;
   lieuTravail: string;
-  periodeEssaiMois: number | null;
+  /**
+   * La période d'essai, avec SON UNITÉ.
+   *
+   * 🔴 C'était `periodeEssaiMois: number | null`, et le gabarit imprimait
+   * « {valeur} mois » EN DUR. Un CDD d'au plus six mois a un plafond légal de
+   * DEUX SEMAINES (art. L.1242-10) : il était donc littéralement impossible
+   * d'imprimer une période d'essai juste sur ce type de contrat — la pièce
+   * opposable aurait affirmé des mois là où la loi compte en semaines.
+   */
+  periodeEssai: DureeEssai | null;
 
   /** Rémunération mensuelle brute, formatée « 2 000,00 € ». */
   remunerationMensuelle: string;
@@ -258,11 +268,11 @@ export function ContratTravailPdf({
           )}
         </DocSection>
 
-        {data.periodeEssaiMois !== null && (
+        {data.periodeEssai !== null && (
           <DocSection title={estCdd ? "7. Période d'essai" : "6. Période d'essai"}>
             <FieldRow
               label="Durée de la période d'essai"
-              value={`${data.periodeEssaiMois} mois`}
+              value={libelleDuree(data.periodeEssai)}
               required
             />
             <Text style={pdfStyles.legalNote}>

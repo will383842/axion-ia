@@ -48,7 +48,14 @@ export interface SalarieContrat {
   readonly contratPoste: string | null;
   readonly contratClassification: string | null;
   readonly contratDureeHebdoHeures: number | null;
-  readonly contratPeriodeEssaiMois: number | null;
+  /**
+   * La période d'essai, dans l'unité de SA PROPRE RÈGLE.
+   *
+   * 🔴 Remplace `contratPeriodeEssaiMois` (2026-09-13). Un CDD d'au plus six
+   * mois a un plafond de DEUX SEMAINES : aucune valeur non nulle n'était légale
+   * dans un champ exprimé en mois entiers.
+   */
+  readonly contratPeriodeEssai: DureeEssai | null;
   readonly contratLieuTravail: string | null;
   readonly contratDateFin: Date | null;
   readonly contratMotifCdd: string | null;
@@ -231,44 +238,88 @@ export function plafondLegalEssaiMois(classification: string | null): number | n
   return null;
 }
 
+/** Unité dans laquelle une période d'essai s'exprime. */
+export type UnitePeriodeEssai = "jours" | "semaines" | "mois";
+
+/** Une durée d'essai : un nombre ET l'unité qui lui donne son sens. */
+export interface DureeEssai {
+  readonly valeur: number;
+  readonly unite: UnitePeriodeEssai;
+}
+
+/**
+ * Lit le couple (valeur, unité) d'une ligne `Trainer` — UN SEUL endroit.
+ *
+ * 🔑 Les deux colonnes vont toujours ensemble : une valeur sans unité est un
+ * nombre sans signification, une unité sans valeur une promesse vide. Un CHECK
+ * l'impose en base ; cette fonction l'impose au code, pour que la règle ne soit
+ * pas recopiée dans les huit lecteurs — recopiée, elle divergerait au premier
+ * amendement.
+ */
+export function dureeEssaiDe(t: {
+  readonly contratPeriodeEssaiValeur: number | null;
+  readonly contratPeriodeEssaiUnite: UnitePeriodeEssai | null;
+}): DureeEssai | null {
+  if (t.contratPeriodeEssaiValeur === null || t.contratPeriodeEssaiUnite === null) return null;
+  return { valeur: t.contratPeriodeEssaiValeur, unite: t.contratPeriodeEssaiUnite };
+}
+
+/** « 2 semaines », « 1 mois », « 15 jours » — l'accord du pluriel compris. */
+export function libelleDuree(d: DureeEssai): string {
+  if (d.unite === "mois") return `${d.valeur} mois`;
+  const singulier = d.valeur <= 1;
+  return `${d.valeur} ${d.unite === "jours" ? (singulier ? "jour" : "jours") : singulier ? "semaine" : "semaines"}`;
+}
+
+/**
+ * Conversion en jours — POUR COMPARER DEUX PLAFONDS, ET RIEN D'AUTRE.
+ *
+ * ⛔ NE JAMAIS S'EN SERVIR POUR CALCULER UNE DATE DE FIN D'ESSAI. Un essai de
+ * deux mois commencé le 15 janvier finit le 15 mars ; selon l'année et le mois
+ * de départ, cela fait 59, 60, 61 ou 62 jours. Le « mois = 30 jours » ci-dessous
+ * est une échelle de COMPARAISON, pas un calendrier.
+ *
+ * 🔑 L'approximation ne fait jamais taire une alerte qu'elle devrait lever : sur
+ * les plafonds réellement en jeu (2 semaines, 1 à 4 mois), elle penche du côté
+ * du SIGNALEMENT. Neuf semaines (63 j) dépassent deux mois quel que soit le
+ * calendrier, et huit (56 j) restent dessous quel que soit le calendrier.
+ */
+function enJoursPourComparaison(d: DureeEssai): number {
+  if (d.unite === "jours") return d.valeur;
+  if (d.unite === "semaines") return d.valeur * 7;
+  return d.valeur * 30;
+}
+
 /** Le plafond légal applicable, et le texte qui le fonde. */
 export interface PlafondEssai {
-  /** Plafond exprimé en MOIS ENTIERS — l'unité du champ de saisie. */
-  readonly plafondMois: number;
+  /** Le plafond, EXPRIMÉ DANS L'UNITÉ DE SA PROPRE RÈGLE. */
+  readonly plafond: DureeEssai;
   /** L'article qui le fonde. Il n'est PAS le même selon la nature du contrat. */
   readonly article: "L.1221-19" | "L.1242-10";
   /** Ce qu'on affiche à l'opérateur, plafond compris. */
   readonly libelle: string;
-  /**
-   * Le plafond réel est-il INEXPRIMABLE dans un champ en mois entiers ?
-   *
-   * 🔴 Vrai pour tout CDD d'au plus six mois : son plafond est de DEUX SEMAINES.
-   * Le champ ne saisit que des mois entiers — il n'existe donc aucune valeur
-   * non nulle qui soit légale. Le taire ferait saisir « 1 » en croyant rester
-   * sous le plafond.
-   */
-  readonly inexprimableEnMois: boolean;
 }
 
 /**
  * Plafond légal de la période d'essai — CDI ET CDD.
  *
- * ## 🔴 Le défaut que cette fonction remplace (recette du 13/09)
+ * ## 🔴 Deux articles, deux unités, et convertir DÉFORME
  *
- * `plafondLegalEssaiMois` ne reçoit que la CLASSIFICATION. Elle rend donc le
- * plafond de l'art. L.1221-19, celui du CDI, quelle que soit la nature du
- * contrat. Sur un CDD de six mois classé « Cadre », l'écran affichait en gris,
- * rassurant : « Plafond légal : 4 mois ».
+ * `plafondLegalEssaiMois` ne recevait que la CLASSIFICATION : elle rendait donc
+ * toujours le plafond de l'art. L.1221-19, celui du CDI. Sur un CDD de six mois
+ * classé « Cadre », l'écran affichait en gris, rassurant : « Plafond légal :
+ * 4 mois ». L'art. L.1242-10 le limite à DEUX SEMAINES — quatre mois y sont
+ * NULS, le salarié est réputé confirmé depuis son premier jour, et une rupture
+ * pendant « l'essai » devient un licenciement sans cause réelle et sérieuse.
  *
- * Or l'art. L.1242-10 plafonne l'essai d'un CDD à UN JOUR PAR SEMAINE de durée
- * prévue, dans la limite de deux semaines jusqu'à six mois, d'un mois au-delà.
- * Quatre mois d'essai sur ce contrat sont NULS : le salarié est réputé confirmé
- * depuis son premier jour, et une rupture pendant « l'essai » est un
- * licenciement sans cause réelle et sérieuse.
- *
- * ⚠️ Le gabarit PDF citait déjà L.1242-10 en note de bas de page — sans que rien
+ * ⚠️ Le gabarit PDF citait DÉJÀ L.1242-10 en note de bas de page — sans que rien
  * ne l'ait jamais appliqué. Une référence juridique affichée sous une valeur
- * qu'elle contredit est pire qu'aucune référence : elle atteste.
+ * qu'elle contredit ne prévient pas : elle atteste.
+ *
+ * ## ⛔ Pourquoi le plafond n'est PAS rendu en jours pour tout le monde
+ *
+ * Ce serait réparer le CDD en déformant le CDI : L.1221-19 compte en MOIS
+ * CALENDAIRES. Chaque plafond sort donc dans l'unité de sa propre règle.
  *
  * `null` quand on ne peut pas trancher — un CDD sans terme connu, une
  * classification inclassable. Mieux vaut ne rien dire que se tromper de règle.
@@ -293,31 +344,43 @@ export function plafondLegalEssai(input: {
     const auDelaDeSixMois = jours > 183;
     return auDelaDeSixMois
       ? {
-          plafondMois: 1,
+          plafond: { valeur: 1, unite: "mois" },
           article: "L.1242-10",
           libelle:
             "Plafond légal : 1 mois pour un CDD de plus de six mois (art. L.1242-10) — " +
             "un jour par semaine de durée prévue, dans cette limite.",
-          inexprimableEnMois: false,
         }
       : {
-          plafondMois: 0,
+          plafond: { valeur: 2, unite: "semaines" },
           article: "L.1242-10",
           libelle:
-            "Plafond légal : DEUX SEMAINES pour un CDD d'au plus six mois (art. L.1242-10) — " +
-            "un jour par semaine de durée prévue, dans cette limite. Ce champ ne se saisit " +
-            "qu'en mois entiers : laissez-le vide, et portez la durée exacte par avenant.",
-          inexprimableEnMois: true,
+            "Plafond légal : 2 semaines pour un CDD d'au plus six mois (art. L.1242-10) — " +
+            "un jour par semaine de durée prévue, dans cette limite.",
         };
   }
   const mois = plafondLegalEssaiMois(input.contratClassification);
   if (mois === null) return null;
   return {
-    plafondMois: mois,
+    plafond: { valeur: mois, unite: "mois" },
     article: "L.1221-19",
     libelle:
       `Plafond légal : ${mois} mois pour cette classification (art. L.1221-19). ` +
       "Votre convention peut en fixer un plus court — le sien prime alors.",
-    inexprimableEnMois: false,
   };
+}
+
+/**
+ * La durée saisie dépasse-t-elle le plafond ?
+ *
+ * ⚠️ `false` quand l'un des deux manque : on ne signale QUE ce qu'on sait. Un
+ * avertissement rendu par défaut sur une information absente apprend à ignorer
+ * la famille entière.
+ */
+export function essaiDepassePlafond(
+  saisie: DureeEssai | null,
+  plafond: PlafondEssai | null,
+): boolean {
+  if (saisie === null || plafond === null) return false;
+  if (!Number.isFinite(saisie.valeur)) return false;
+  return enJoursPourComparaison(saisie) > enJoursPourComparaison(plafond.plafond);
 }

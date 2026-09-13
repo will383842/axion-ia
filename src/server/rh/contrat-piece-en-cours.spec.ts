@@ -34,7 +34,7 @@ function salarie(o: Partial<SalarieContrat> = {}): SalarieContrat {
     contratPoste: "Secrétaire administrative",
     contratClassification: "Employé niveau B",
     contratDureeHebdoHeures: 35,
-    contratPeriodeEssaiMois: 1,
+    contratPeriodeEssai: { valeur: 1, unite: "mois" },
     contratLieuTravail: "Lyon",
     contratDateFin: new Date("2027-03-31T00:00:00.000Z"),
     contratMotifCdd: "Accroissement temporaire d'activité",
@@ -67,7 +67,7 @@ describe("empreinteMentions — ne bouge QUE si une mention bouge", () => {
     ["le motif de recours", { contratMotifCdd: "Remplacement d'un salarié absent" }],
     ["la nature du contrat", { contratType: "cdi" as const }],
     ["la durée hebdomadaire", { contratDureeHebdoHeures: 28 }],
-    ["la période d'essai", { contratPeriodeEssaiMois: 2 }],
+    ["la période d'essai", { contratPeriodeEssai: { valeur: 2, unite: "mois" as const } }],
     ["le lieu de travail", { contratLieuTravail: "Villeurbanne" }],
     ["la classification", { contratClassification: "Cadre position 2.1" }],
   ])("changer %s change l'empreinte", (_libelle, patch) => {
@@ -100,7 +100,7 @@ describe("empreinteMentions — ne bouge QUE si une mention bouge", () => {
 
 describe("empreinteScellee — lire une colonne Json sans jamais caster", () => {
   it("rend l'empreinte quand elle est là", () => {
-    expect(empreinteScellee({ [CLE_EMPREINTE_MENTIONS]: "abc123" })).toBe("abc123");
+    expect(empreinteScellee({ [CLE_EMPREINTE_MENTIONS]: "v2:abc123" })).toBe("v2:abc123");
   });
 
   it.each([
@@ -110,6 +110,11 @@ describe("empreinteScellee — lire une colonne Json sans jamais caster", () => 
     ["un objet sans la clé", { specimen: true }],
     ["une valeur non textuelle", { [CLE_EMPREINTE_MENTIONS]: 42 }],
     ["une chaîne vide", { [CLE_EMPREINTE_MENTIONS]: "" }],
+    // 🔴 UNE EMPREINTE D'UNE AUTRE VERSION SE LIT COMME ABSENTE, jamais comme
+    // différente : la déclarer différente bloquerait TOUS les contrats en
+    // cours de signature au premier changement des entrées de l'empreinte.
+    ["une empreinte d'une version ANTÉRIEURE", { [CLE_EMPREINTE_MENTIONS]: "9f2a1c" }],
+    ["une empreinte d'une version INCONNUE", { [CLE_EMPREINTE_MENTIONS]: "v9:9f2a1c" }],
   ])("rend null sur %s", (_l, valeur) => {
     expect(empreinteScellee(valeur)).toBeNull();
   });
@@ -165,5 +170,43 @@ describe("refusNotification — ne pas annoncer un contrat que le PDF dément", 
     */
     expect(refusNotification(piece({ empreinte: null }), actuelle)).toBeNull();
     expect(pieceDesynchronisee(piece({ empreinte: null }), actuelle)).toBe(false);
+  });
+});
+
+describe("🔴 l'UNITÉ de la période d'essai fait partie des mentions", () => {
+  /*
+    Trouvé par MUTATION, pas par lecture : retirer l'unité de l'empreinte
+    laissait la suite entièrement verte.
+
+    Le défaut qu'il ouvrait est précis : « 2 mois » et « 2 semaines » auraient
+    produit LA MÊME empreinte. Corriger un essai de deux mois en deux semaines —
+    exactement le geste que ce lot rend possible sur un CDD — n'aurait pas été vu
+    comme une modification des mentions. La pièce déjà émise aurait continué
+    d'être annoncée au salarié comme à jour, en portant l'ancienne durée.
+
+    ⚠️ Et c'est la mention la plus sensible du contrat après la rémunération :
+    une période d'essai fausse, c'est une rupture requalifiée en licenciement.
+  */
+
+  it("🔴 changer l'UNITÉ à valeur égale change l'empreinte", () => {
+    expect(
+      empreinteMentions(salarie({ contratPeriodeEssai: { valeur: 2, unite: "mois" } })),
+    ).not.toBe(
+      empreinteMentions(salarie({ contratPeriodeEssai: { valeur: 2, unite: "semaines" } })),
+    );
+  });
+
+  it("🔑 la même durée dans la même unité rend la MÊME empreinte", () => {
+    // Témoin discriminant : sans lui, une empreinte aléatoire passerait le test
+    // ci-dessus et déclarerait périmée toute pièce, à chaque lecture.
+    expect(
+      empreinteMentions(salarie({ contratPeriodeEssai: { valeur: 2, unite: "semaines" } })),
+    ).toBe(empreinteMentions(salarie({ contratPeriodeEssai: { valeur: 2, unite: "semaines" } })));
+  });
+
+  it("⚠️ retirer la période d'essai change l'empreinte", () => {
+    expect(empreinteMentions(salarie({ contratPeriodeEssai: null }))).not.toBe(
+      empreinteMentions(salarie({ contratPeriodeEssai: { valeur: 2, unite: "mois" } })),
+    );
   });
 });

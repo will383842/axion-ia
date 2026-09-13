@@ -62,7 +62,22 @@ import {
 } from "./trainer-contrat";
 
 import { empreinteMentions, CLE_EMPREINTE_MENTIONS } from "@/server/rh/contrat-piece-en-cours";
-import type { SalarieContrat } from "@/server/qualiopi/trainers/contrat-travail";
+import { dureeEssaiDe, type SalarieContrat } from "@/server/qualiopi/trainers/contrat-travail";
+
+/**
+ * La fixture Prisma → `SalarieContrat`, comme l'action le fait elle-même.
+ *
+ * 🔴 REMPLACE UN `as unknown as SalarieContrat`. Le cast masquait que les deux
+ * formes avaient divergé : la fixture porte `contratPeriodeEssaiValeur` +
+ * `…Unite` (ce que le `select` rend), le domaine attend `contratPeriodeEssai`
+ * (le couple). Trois témoins sont tombés là où le compilateur l'aurait dit.
+ */
+function versSalarieContrat(o: Record<string, unknown>): SalarieContrat {
+  return {
+    ...(o as unknown as Omit<SalarieContrat, "contratPeriodeEssai">),
+    contratPeriodeEssai: dureeEssaiDe(o as unknown as Parameters<typeof dureeEssaiDe>[0]),
+  };
+}
 
 const ID = "11111111-1111-4111-8111-111111111111";
 
@@ -94,7 +109,8 @@ function salarie(o: Record<string, unknown> = {}) {
     contratPoste: "Formateur en intelligence artificielle",
     contratClassification: "Cadre position 2.1",
     contratDureeHebdoHeures: 35,
-    contratPeriodeEssaiMois: 3,
+    contratPeriodeEssaiValeur: 3,
+    contratPeriodeEssaiUnite: "mois",
     contratLieuTravail: "Lyon",
     contratDateFin: null,
     contratMotifCdd: null,
@@ -348,7 +364,7 @@ describe("🔴 la pièce annoncée doit porter les mentions de la fiche", () => 
 
   it("🔴 refuse quand le POSTE a changé depuis l'établissement", async () => {
     const empreinteAncienne = empreinteMentions(
-      salarie({ contratPoste: "Formatrice IA" }) as unknown as SalarieContrat,
+      versSalarieContrat(salarie({ contratPoste: "Formatrice IA" })),
     );
     mockDocFindFirst.mockResolvedValue(
       piece({ metadata: { [CLE_EMPREINTE_MENTIONS]: empreinteAncienne } }),
@@ -362,7 +378,7 @@ describe("🔴 la pièce annoncée doit porter les mentions de la fiche", () => 
   it("🔑 LAISSE PASSER quand la pièce porte bien les mentions actuelles", async () => {
     // Témoin discriminant. Sans lui, un « toujours refuser » passerait le test
     // ci-dessus et empêcherait toute annonce — le bouton deviendrait mort.
-    const empreinteJuste = empreinteMentions(salarie() as unknown as SalarieContrat);
+    const empreinteJuste = empreinteMentions(versSalarieContrat(salarie()));
     mockDocFindFirst.mockResolvedValue(
       piece({ metadata: { [CLE_EMPREINTE_MENTIONS]: empreinteJuste } }),
     );
@@ -389,7 +405,7 @@ describe("🔴 la pièce annoncée doit porter les mentions de la fiche", () => 
     // Sans la réduction au jour, une date ressaisie à une autre heure — ou lue
     // dans un autre fuseau — déclarerait périmée une pièce identique à l'écrit,
     // et l'avertissement finirait cliqué sans être lu.
-    const empreinteMinuit = empreinteMentions(salarie() as unknown as SalarieContrat);
+    const empreinteMinuit = empreinteMentions(versSalarieContrat(salarie()));
     mockTrainerFindUnique.mockResolvedValue(
       salarie({ dateEmbauche: new Date("2026-10-01T18:45:00.000Z") }),
     );

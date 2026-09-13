@@ -36,6 +36,7 @@ import { publicUrl } from "@/lib/public-url";
 import { FORMATEUR_CONNEXION_PATH } from "@/server/formateur/routes";
 import {
   LIBELLE_REFUS_CONTRAT,
+  dureeEssaiDe,
   motifSpecimenContrat,
   verifierEligibiliteContrat,
   type SalarieContrat,
@@ -100,7 +101,20 @@ const contratSchema = z.object({
   contratClassification: texteOptionnel(120),
   // Décimal en base (35, 24,5) : on accepte le point comme la virgule.
   contratDureeHebdoHeures: z.coerce.number().positive().max(48).nullable().optional(),
-  contratPeriodeEssaiMois: z.coerce.number().int().min(0).max(8).nullable().optional(),
+  /*
+    🔑 VALEUR ET UNITÉ, jamais un nombre de mois seul (2026-09-13).
+
+    Le plafond d'un CDD d'au plus six mois est de DEUX SEMAINES : aucune valeur
+    non nulle n'était légale dans un champ exprimé en mois entiers. Et convertir
+    tout en jours aurait déformé le CDI, dont L.1221-19 compte en mois
+    CALENDAIRES — deux mois commencés le 15 janvier finissent le 15 mars.
+
+    ⚠️ Borne haute à 365 : on saisit désormais aussi des jours. Elle n'est pas un
+    plafond légal — c'est `plafondLegalEssai` qui le dit — mais un garde-fou
+    contre une faute de frappe.
+  */
+  contratPeriodeEssaiValeur: z.coerce.number().int().min(0).max(365).nullable().optional(),
+  contratPeriodeEssaiUnite: z.enum(["jours", "semaines", "mois"]).nullable().optional(),
   contratLieuTravail: texteOptionnel(500),
   contratDateFin: dateJour,
   contratMotifCdd: texteOptionnel(1000),
@@ -159,8 +173,18 @@ export async function updateTrainerContratAction(
         ...(v.contratDureeHebdoHeures !== undefined
           ? { contratDureeHebdoHeures: v.contratDureeHebdoHeures }
           : {}),
-        ...(v.contratPeriodeEssaiMois !== undefined
-          ? { contratPeriodeEssaiMois: v.contratPeriodeEssaiMois }
+        /*
+          ⚠️ LES DEUX COLONNES VONT ENSEMBLE, et un CHECK en base l'impose. On
+          n'écrit donc jamais l'une sans l'autre : effacer la valeur efface
+          l'unité, et inversement. Une valeur orpheline serait un nombre sans
+          signification — et c'est la période d'essai d'un contrat de travail.
+        */
+        ...(v.contratPeriodeEssaiValeur !== undefined || v.contratPeriodeEssaiUnite !== undefined
+          ? {
+              contratPeriodeEssaiValeur: v.contratPeriodeEssaiValeur ?? null,
+              contratPeriodeEssaiUnite:
+                v.contratPeriodeEssaiValeur == null ? null : (v.contratPeriodeEssaiUnite ?? "mois"),
+            }
           : {}),
         ...(v.contratLieuTravail !== undefined ? { contratLieuTravail: v.contratLieuTravail } : {}),
         ...(v.contratDateFin !== undefined ? { contratDateFin: v.contratDateFin } : {}),
@@ -271,7 +295,8 @@ export async function genererContratTravailAction(input: {
       contratPoste: true,
       contratClassification: true,
       contratDureeHebdoHeures: true,
-      contratPeriodeEssaiMois: true,
+      contratPeriodeEssaiValeur: true,
+      contratPeriodeEssaiUnite: true,
       contratLieuTravail: true,
       contratDateFin: true,
       contratMotifCdd: true,
@@ -298,7 +323,7 @@ export async function genererContratTravailAction(input: {
     contratPoste: trainer.contratPoste,
     contratClassification: trainer.contratClassification,
     contratDureeHebdoHeures: dureeHebdo,
-    contratPeriodeEssaiMois: trainer.contratPeriodeEssaiMois,
+    contratPeriodeEssai: dureeEssaiDe(trainer),
     contratLieuTravail: trainer.contratLieuTravail,
     contratDateFin: trainer.contratDateFin,
     contratMotifCdd: trainer.contratMotifCdd,
@@ -389,7 +414,9 @@ export async function genererContratTravailAction(input: {
           classification: trainer.contratClassification ?? "",
           dureeHebdoHeures: dureeHebdo === null ? "" : String(dureeHebdo).replace(".", ","),
           lieuTravail: trainer.contratLieuTravail ?? "",
-          periodeEssaiMois: trainer.contratPeriodeEssaiMois,
+          // 🔴 Le gabarit imprimait « {valeur} mois » EN DUR : un CDD à deux
+          // semaines d'essai était littéralement impossible à imprimer juste.
+          periodeEssai: dureeEssaiDe(trainer),
           remunerationMensuelle: euros(trainer.fixeMensuelBrutCents ?? 0),
           /*
             🔴 LA CLAUSE DE VARIABLE N'EST RENDUE QUE SI LE MÉCANISME EXISTE.
@@ -502,7 +529,8 @@ export async function notifierContratTravailAction(input: {
       contratPoste: true,
       contratClassification: true,
       contratDureeHebdoHeures: true,
-      contratPeriodeEssaiMois: true,
+      contratPeriodeEssaiValeur: true,
+      contratPeriodeEssaiUnite: true,
       contratLieuTravail: true,
       contratDateFin: true,
       contratMotifCdd: true,
@@ -569,7 +597,7 @@ export async function notifierContratTravailAction(input: {
     contratClassification: trainer.contratClassification,
     contratDureeHebdoHeures:
       trainer.contratDureeHebdoHeures === null ? null : Number(trainer.contratDureeHebdoHeures),
-    contratPeriodeEssaiMois: trainer.contratPeriodeEssaiMois,
+    contratPeriodeEssai: dureeEssaiDe(trainer),
     contratLieuTravail: trainer.contratLieuTravail,
     contratDateFin: trainer.contratDateFin,
     contratMotifCdd: trainer.contratMotifCdd,

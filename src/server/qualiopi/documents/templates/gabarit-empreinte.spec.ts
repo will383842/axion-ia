@@ -109,8 +109,9 @@ const EMPREINTES: Readonly<
     version: 2,
   },
   contrat_travail: {
-    sha: "838949ca21ee01186a39eca67a073d880a0d44b9470002dc3cf2adcd2418c4a9",
-    version: 1,
+    // v2 — 13/09/2026 : la période d'essai porte son UNITÉ (cf. GABARIT_VERSIONS).
+    sha: "ccf8d5714c07a539301e6173e467fddb7ba7f1cbbd4381479dbacf344107e8da",
+    version: 2,
   },
   releve_connexion: {
     sha: "afa986aaf0b72cb79ffa17b1693062898d85bbf9476de4ae191009a840cd7055",

@@ -4974,6 +4974,29 @@ enum TypeContratTravail {
   cdd
 }
 
+/// Unité dans laquelle une période d'essai est EXPRIMÉE.
+///
+/// 🔴 Elle n'est pas décorative : les deux articles du Code du travail ne
+/// comptent pas dans la même unité, et convertir de l'un vers l'autre DÉFORME.
+///
+///   · CDI — art. L.1221-19 : 2, 3 ou 4 MOIS CALENDAIRES selon la
+///     classification. Deux mois commencés le 15 janvier finissent le 15 mars,
+///     ce ne sont pas 60 jours ;
+///   · CDD — art. L.1242-10 : un JOUR par semaine de durée prévue, dans la
+///     limite de DEUX SEMAINES (durée ≤ 6 mois) ou d'UN MOIS (au-delà).
+///
+/// ⚠️ Le champ ne se saisissait qu'en mois entiers : aucune valeur non nulle
+/// n'était donc légale sur un CDD d'au plus six mois, et le PDF imprimait
+/// « N mois » en dur. Passer le champ « en jours » aurait réparé le CDD en
+/// déformant le CDI — on aurait échangé un champ INEXPRIMABLE contre un champ
+/// qui EXPRIME FAUX, ce qui est pire : une absence se voit, une affirmation
+/// fausse se signe.
+enum UnitePeriodeEssai {
+  jours
+  semaines
+  mois
+}
+
 enum TrainerStatut {
   salarie
   sous_traitant
@@ -5673,9 +5696,23 @@ model Trainer {
   contratClassification        String?       @map("contrat_classification") @db.VarChar(120)
   /// Durée hebdomadaire de travail, en heures (35 = temps plein).
   contratDureeHebdoHeures      Decimal?      @map("contrat_duree_hebdo_heures") @db.Decimal(5, 2)
-  /// Durée de la période d'essai, en mois. Plafonnée par la loi et par la
-  /// convention : saisie, jamais devinée.
+  /// 🔴 LEGACY — CONSERVÉE, PLUS ÉCRITE. Ne plus lire ce champ.
+  ///
+  /// Durée de la période d'essai, en mois entiers. Remplacée le 2026-09-13 par
+  /// le couple `contratPeriodeEssaiValeur` + `contratPeriodeEssaiUnite`, parce
+  /// qu'un CDD d'au plus six mois a un plafond légal de DEUX SEMAINES : aucune
+  /// valeur non nulle n'était donc légale dans un champ exprimé en mois.
+  ///
+  /// ⚠️ Elle reste en base pour la fenêtre de déploiement app/worker (~50 min)
+  /// pendant laquelle les deux versions du code tournent ensemble, et comme
+  /// filet si le backfill s'était trompé. À supprimer quand plus rien ne la lit.
   contratPeriodeEssaiMois      Int?          @map("contrat_periode_essai_mois")
+  /// Durée de la période d'essai, dans l'unité de sa propre règle légale.
+  /// Plafonnée par la loi ET par la convention : saisie, jamais devinée.
+  contratPeriodeEssaiValeur    Int?          @map("contrat_periode_essai_valeur")
+  /// L'unité de `contratPeriodeEssaiValeur`. NULL quand aucune période d'essai
+  /// n'est prévue — les deux colonnes vont toujours ensemble.
+  contratPeriodeEssaiUnite     UnitePeriodeEssai? @map("contrat_periode_essai_unite")
   /// Lieu habituel de travail (art. L.1221-1 : mention du lieu d'exécution).
   contratLieuTravail           String?       @map("contrat_lieu_travail") @db.Text
   /// Terme du CDD. NULL pour un CDI — et un CDD sans terme ni motif est
