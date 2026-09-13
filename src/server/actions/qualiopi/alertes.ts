@@ -122,7 +122,24 @@ export async function marquerToutLuAction(): Promise<ActionResult<{ count: numbe
  * immédiat sans attendre minuit).
  */
 export async function synchroniserAlertesAction(): Promise<
-  ActionResult<{ crees: number; resolues: number; rafraichies: number }>
+  ActionResult<{
+    crees: number;
+    resolues: number;
+    rafraichies: number;
+    /**
+     * 🔴 LES RÈGLES QUI ONT LEVÉ, PAR LEUR NOM.
+     *
+     * Cette action rendait `{ créées, résolues, rafraîchies }` et rien d'autre.
+     * « 0 résolues » se lisait donc « rien à fermer » aussi bien que « fermeture
+     * SUSPENDUE, une règle est cassée » — un compteur à zéro qui admet deux
+     * explications, sur le dispositif dont la fonction entière est de rendre les
+     * choses observables.
+     *
+     * ⚠️ Les NOMS, jamais un compte : un nom qui apparaît est un fait et permet
+     * d'agir ; un nombre qui passe de 0 à 1 est une statistique qu'on survole.
+     */
+    reglesEnEchec: string[];
+  }>
 > {
   const session = await requireAdminWrite();
 
@@ -131,7 +148,14 @@ export async function synchroniserAlertesAction(): Promise<
   await logQualiopiActivity({
     action: "qualiopi.alertes.synchroniser",
     targetType: "AlerteSysteme",
-    changes: { crees: result.crees, resolues: result.resolues, rafraichies: result.rafraichies },
+    changes: {
+      crees: result.crees,
+      resolues: result.resolues,
+      rafraichies: result.rafraichies,
+      // 🔑 Au JOURNAL aussi : c'est la seule trace qui survit à la fermeture de
+      // l'onglet, et celle qu'on relira pour dater le début d'une panne.
+      reglesEnEchec: result.reglesEnEchec,
+    },
     session,
   });
 

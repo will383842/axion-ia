@@ -24,6 +24,12 @@ vi.mock("@/lib/prisma", () => ({
       findMany: vi.fn(),
       count: vi.fn(),
     },
+    // Le marqueur d'état du dernier balayage (2026-09-13) : il vit dans
+    // `site_settings`, comme le marqueur d'activation du CRM.
+    siteSetting: {
+      upsert: vi.fn(),
+      findUnique: vi.fn(),
+    },
   },
 }));
 
@@ -72,6 +78,7 @@ import {
   listAlertes,
   countNonLues,
   synchroniserAlertes,
+  lireDernierBalayage,
 } from "./alertes-service";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -87,6 +94,13 @@ const mp = prisma as unknown as {
     updateMany: ReturnType<typeof vi.fn>;
     findMany: ReturnType<typeof vi.fn>;
     count: ReturnType<typeof vi.fn>;
+  };
+  // ⚠️ Le modèle est déclaré DEUX FOIS — fabrique `vi.mock` ET ce cast — et les
+  // deux sont tenus séparément. En oublier un fait échouer le typecheck ou,
+  // pire, lever à l'exécution dans une règle avalée par le fail-soft.
+  siteSetting: {
+    upsert: ReturnType<typeof vi.fn>;
+    findUnique: ReturnType<typeof vi.fn>;
   };
 };
 
@@ -142,7 +156,18 @@ describe("alertes-service — stub-aware", () => {
     process.env["DATABASE_URL"] = "postgresql://stub:stub@stub.invalid:5432/stub";
     try {
       const result = await synchroniserAlertes();
-      expect(result).toEqual({ crees: 0, resolues: 0, tronquees: [], rafraichies: 0 });
+      expect(result).toEqual({
+        crees: 0,
+        resolues: 0,
+        tronquees: [],
+        rafraichies: 0,
+        // ⚠️ VIDE, jamais absent. Au build stub le moteur ne tourne pas : il n'a
+        // rien constaté, et rendre le champ absent forcerait chaque lecteur à
+        // distinguer « pas de règle en échec » de « champ manquant » — deux
+        // sens pour une même absence, très exactement ce que ce champ existe
+        // pour supprimer.
+        reglesEnEchec: [],
+      });
     } finally {
       process.env["DATABASE_URL"] = orig;
     }
@@ -747,5 +772,101 @@ describe("🔴 le libellé d'une alerte ouverte suit la règle qui la produit", 
       "une alerte inchangée a quand même été réécrite : le cron ferait tourner " +
         "`updatedAt` sur toute la table chaque nuit.",
     ).not.toHaveBeenCalled();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Le marqueur d'état du dernier balayage
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * 🔴 CE MARQUEUR EXISTE PARCE QUE LE BALAYAGE NOMINAL EST UN CRON.
+ *
+ * Une règle qui LÈVE est avalée par le fail-soft par règle, et son échec
+ * suspend la résolution automatique de TOUTES les alertes. Le tableau se fige,
+ * ce qui devrait se fermer s'accumule, et la lecture devient du bruit.
+ *
+ * La seule trace était un `console.warn` dans le worker. Personne ne le lit.
+ */
+describe("le moteur dit quand il boite", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mp.alerteSysteme.createMany.mockResolvedValue({ count: 0 });
+    mp.alerteSysteme.findMany.mockResolvedValue([]);
+    mp.alerteSysteme.updateMany.mockResolvedValue({ count: 0 });
+    mp.siteSetting.upsert.mockResolvedValue({});
+    mp.siteSetting.findUnique.mockResolvedValue(null);
+    mockEvaluerAlertes.mockResolvedValue([]);
+  });
+
+  it("🔴 consigne les règles en échec, PAR LEUR NOM", async () => {
+    (evaluerAlertesDetaille as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      candidates: [],
+      reglesEnEchec: ["contrat_cdd_non_remis"],
+      reglesTronquees: [],
+    });
+    const r = await synchroniserAlertes();
+    expect(r.reglesEnEchec).toStrictEqual(["contrat_cdd_non_remis"]);
+
+    const valeur = (mp.siteSetting.upsert.mock.calls[0]?.[0] as { update: { value: unknown } })
+      .update.value as { reglesEnEchec: string[] };
+    expect(valeur.reglesEnEchec).toStrictEqual(["contrat_cdd_non_remis"]);
+  });
+
+  it("🔑 CONSIGNE AUSSI UN BALAYAGE SAIN — sinon le bandeau mentirait après la réparation", async () => {
+    // La moitié de la correction. Un marqueur posé seulement en cas d'échec
+    // resterait affiché des semaines après que la panne a été réparée, et on
+    // apprendrait à ignorer ce bandeau-là aussi.
+    const r = await synchroniserAlertes();
+    expect(r.reglesEnEchec).toStrictEqual([]);
+    expect(mp.siteSetting.upsert).toHaveBeenCalledTimes(1);
+    const valeur = (mp.siteSetting.upsert.mock.calls[0]?.[0] as { update: { value: unknown } })
+      .update.value as { reglesEnEchec: string[] };
+    expect(valeur.reglesEnEchec).toStrictEqual([]);
+  });
+
+  it("⚠️ un marqueur NON ÉCRIT ne fait pas échouer le balayage", async () => {
+    // La trace est un confort de lecture ; les alertes sont le travail. Faire
+    // tomber le balayage sur l'écriture du marqueur échangerait un petit
+    // problème contre un gros.
+    mp.siteSetting.upsert.mockRejectedValue(new Error("colonne absente (test)"));
+    await expect(synchroniserAlertes()).resolves.toBeDefined();
+  });
+
+  it("🔴 `null` quand AUCUN balayage n'a été consigné — pas « tout va bien »", async () => {
+    // Confondre « on ne sait pas » avec « sain » rétablirait le silence qu'on
+    // corrige. L'écran formule les deux cas différemment.
+    mp.siteSetting.findUnique.mockResolvedValue(null);
+    await expect(lireDernierBalayage()).resolves.toBeNull();
+  });
+
+  it("relit ce qui a été consigné", async () => {
+    mp.siteSetting.findUnique.mockResolvedValue({
+      value: { at: "2026-09-13T02:00:00.000Z", reglesEnEchec: ["une_regle"] },
+    });
+    await expect(lireDernierBalayage()).resolves.toStrictEqual({
+      at: "2026-09-13T02:00:00.000Z",
+      reglesEnEchec: ["une_regle"],
+    });
+  });
+
+  it("🔑 une valeur MALFORMÉE rend null, jamais une forme inventée", async () => {
+    // ⚠️ `value` est une colonne Json : rien ne garantit sa forme côté
+    // application. On teste la forme au lieu de caster — un cast ferait
+    // planter l'écran des alertes sur une valeur écrite à la main.
+    mp.siteSetting.findUnique.mockResolvedValue({ value: "une chaîne" });
+    await expect(lireDernierBalayage()).resolves.toBeNull();
+    mp.siteSetting.findUnique.mockResolvedValue({ value: ["un", "tableau"] });
+    await expect(lireDernierBalayage()).resolves.toBeNull();
+    mp.siteSetting.findUnique.mockResolvedValue({ value: { at: 42 } });
+    await expect(lireDernierBalayage()).resolves.toBeNull();
+  });
+
+  it("⚠️ des noms de règles NON TEXTUELS sont écartés, la lecture survit", async () => {
+    mp.siteSetting.findUnique.mockResolvedValue({
+      value: { at: "2026-09-13T02:00:00.000Z", reglesEnEchec: ["ok", 7, null] },
+    });
+    const r = await lireDernierBalayage();
+    expect(r?.reglesEnEchec).toStrictEqual(["ok"]);
   });
 });
