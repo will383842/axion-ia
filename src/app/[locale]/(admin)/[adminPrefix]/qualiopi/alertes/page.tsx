@@ -13,6 +13,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { lienCible } from "@/server/qualiopi/alertes/lien-cible";
+import { libellesDesCibles, texteCible } from "@/server/qualiopi/alertes/libelle-cible";
+
 import { lireDernierBalayage } from "@/server/qualiopi/alertes/alertes-service";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
@@ -200,6 +202,20 @@ export default async function QualiopiAlertesPage({ params, searchParams }: Page
     }),
   ]);
   const tronque = total > alertes.length;
+
+  /*
+    🔴 CE QUE LA CIBLE EST, EN TOUTES LETTRES.
+
+    L'écran affichait « Cible : TrainingSession — 0d4e0c8b-3aaa-… ». Le LIEN
+    avait déjà été réparé, mais personne ne lit un UUID : pour savoir de qui ou
+    de quoi parlait l'alerte, il fallait cliquer, attendre l'écran, revenir. Sur
+    vingt alertes, vingt allers-retours pour trier ce qui est urgent.
+
+    ⚠️ UNE requête par TYPE présent, pas une par alerte — cet écran a déjà planté
+    à l'hydratation une fois, c'est le dernier endroit où ajouter quarante
+    allers-retours.
+  */
+  const libellesCibles = await libellesDesCibles(alertes);
 
   // Grouper par niveau
   const grouped = new Map<AlerteNiveau, typeof alertes>();
@@ -398,7 +414,9 @@ export default async function QualiopiAlertesPage({ params, searchParams }: Page
                       {alerte.cibleType &&
                         (() => {
                           const href = lienCible(alerte.cibleType, alerte.cibleId, baseAdmin);
-                          const texte = `${alerte.cibleType}${alerte.cibleId ? ` — ${alerte.cibleId}` : ""}`;
+                          const texte =
+                            texteCible(alerte.cibleType, alerte.cibleId, libellesCibles) ??
+                            alerte.cibleType;
                           return (
                             <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                               Cible&nbsp;:{" "}
