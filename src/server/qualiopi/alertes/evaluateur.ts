@@ -45,6 +45,11 @@ import {
   LIBELLE_REFUS_AUTOFACTURE,
   verifierEligibiliteAutofacture,
 } from "@/server/qualiopi/remuneration/autofacturation";
+import {
+  joursDepuisEmbauche,
+  messageRemiseCdd,
+  remiseCddEnSouffrance,
+} from "@/server/qualiopi/trainers/remise-contrat";
 import { libellePalier } from "@/server/qualiopi/financements/relance-paliers";
 import {
   CONFORMITE_DEFAUTS,
@@ -3938,6 +3943,81 @@ async function regleAutofactureAEmettre(now: Date): Promise<AlerteCandidate[]> {
   return out;
 }
 
+/**
+ * 🔴 UN CDD ÉTABLI DONT LA REMISE AU SALARIÉ N'EST PAS CONSIGNÉE.
+ *
+ * Le dernier maillon de la chaîne était un humain qu'on supposait : le contrat
+ * produit, le salarié prévenu, la pièce dans son espace — et rien n'observait
+ * s'il avait REÇU son exemplaire. Cette règle regarde ce fait-là.
+ *
+ * ⚠️ La borne est l'EMBAUCHE, pas la date du contrat : c'est l'entrée en
+ * fonction qui arme le délai de l'art. L.1242-13. Un CDD signé trois semaines à
+ * l'avance n'est en retard de rien.
+ *
+ * ⚠️ On exige qu'un contrat ait été ÉTABLI — `documentsGeneres` non vide sur le
+ * type. Sans pièce produite il n'y a rien à remettre, et réclamer la remise d'un
+ * document inexistant enverrait chercher une erreur là où il n'y a qu'une étape
+ * non faite.
+ *
+ * 🔑 La décision vit dans `remise-contrat.ts`, module PUR et testé. Cette
+ * fonction ne fait que lire la base et lui poser la question — réécrire la règle
+ * ici en donnerait une seconde version, et l'écran de la fiche et l'alerte
+ * finiraient par se contredire sur le même salarié.
+ */
+async function regleContratCddNonRemis(now: Date): Promise<AlerteCandidate[]> {
+  const salaries = await prisma.trainer.findMany({
+    where: {
+      statut: "salarie",
+      actif: true,
+      contratType: "cdd",
+      contratRemisAt: null,
+      dateEmbauche: { not: null, lte: now },
+    },
+    select: {
+      id: true,
+      nom: true,
+      prenom: true,
+      statut: true,
+      contratType: true,
+      dateEmbauche: true,
+      contratRemisAt: true,
+      // La pièce EXISTE-t-elle ? Une seule suffit — on ne compte pas, on constate.
+      documentsGeneres: {
+        where: { type: "contrat_travail", annuleeAt: null },
+        select: { id: true },
+        take: 1,
+      },
+    },
+    take: 200,
+  });
+
+  const out: AlerteCandidate[] = [];
+  for (const t of salaries) {
+    const enSouffrance = remiseCddEnSouffrance(
+      {
+        statut: t.statut,
+        contratType: t.contratType,
+        dateEmbauche: t.dateEmbauche,
+        contratRemisAt: t.contratRemisAt,
+        contratEtabli: t.documentsGeneres.length > 0,
+      },
+      now,
+    );
+    if (!enSouffrance) continue;
+
+    const qui = `${t.prenom} ${t.nom}`.trim();
+    out.push({
+      code: "contrat_cdd_non_remis",
+      niveau: "critique",
+      titre: "CDD établi : la remise au salarié n'est pas consignée",
+      message: messageRemiseCdd(qui, joursDepuisEmbauche(t.dateEmbauche, now)),
+      cibleType: "Trainer",
+      cibleId: t.id,
+    });
+  }
+  return out;
+}
+
 async function regleReleveFormateurEchu(now: Date): Promise<AlerteCandidate[]> {
   const releves = await prisma.trainerStatement.findMany({
     where: { statut: { in: [...STATUTS_RELEVE_DU] }, payeAt: null },
@@ -4397,6 +4477,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   // 2026-09-12 — depuis que l'émission est automatique, un échec ne laisse plus
   // aucune trace : personne n'attend de bouton. Cette règle est cette trace.
   { nom: "autofacture_a_emettre", fn: regleAutofactureAEmettre },
+  { nom: "contrat_cdd_non_remis", fn: regleContratCddNonRemis },
   { nom: "formateur_rc_pro_hors_sous_traitance", fn: regleRcProFormateurHorsSousTraitance },
 ];
 

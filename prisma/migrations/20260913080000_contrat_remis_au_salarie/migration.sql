@@ -1,0 +1,37 @@
+-- La REMISE du contrat de travail au salarié devient un fait OBSERVABLE.
+--
+-- ## Ce que cette colonne rend possible, et qui ne l'était pas
+--
+-- 🔴 Le contrat était produit, le salarié prévenu, la pièce l'attendait dans son
+-- espace. Restait un fait que le logiciel ne voyait pas : EST-CE QU'IL A SON
+-- EXEMPLAIRE ? Le contrat annonce lui-même « deux exemplaires originaux ». Si
+-- cette remise a lieu, tout va bien ; si elle n'a pas lieu — quelqu'un est en
+-- déplacement, quelqu'un oublie — rien ne le dit, rien ne compte les jours, et
+-- personne ne l'apprend avant un conseil de prud'hommes.
+--
+-- ⚠️ CE N'EST NI LA DATE D'ÉMISSION, NI CELLE DU MESSAGE QUI L'ANNONCE. Les
+-- confondre rendrait la trace fausse au moment exact où elle compte : annoncer
+-- qu'une pièce est disponible n'est pas la remettre, et c'est précisément la
+-- question qu'un contrôle poserait.
+--
+-- ## Pourquoi elle compte surtout pour un CDD
+--
+-- L'art. L.1242-13 impose la transmission du CDD au salarié dans les DEUX JOURS
+-- OUVRABLES suivant l'embauche. Le manquement n'est pas une amende : c'est la
+-- REQUALIFICATION en contrat à durée indéterminée (art. L.1245-1). Une alerte
+-- surveille l'absence de cette date pendant que le délai court.
+--
+-- ## Pourquoi la colonne AVANT le code qui l'écrit
+--
+-- Deux conteneurs, deux vitesses (cf. AGENTS.md). Le worker est reconstruit
+-- depuis les SOURCES en ~3 min ; l'app attend son image GHCR 47 à 56 min, et
+-- c'est l'entrypoint de l'APP qui joue `prisma migrate deploy`. Pendant près
+-- d'une heure, le worker peut exécuter du code qui attend une colonne que la
+-- migration n'a pas encore posée — et c'est le worker qui évalue les alertes.
+--
+-- Colonne NULLABLE, sans défaut, sans contrainte : aucune lecture n'en dépend au
+-- moment où elle passe. `NULL` signifie « personne n'a encore dit que le salarié
+-- l'a reçu », ce qui est exactement l'état de départ de tous les contrats
+-- existants — et l'alerte ne vise que les CDD dont l'embauche a commencé.
+
+ALTER TABLE "trainers" ADD COLUMN IF NOT EXISTS "contrat_remis_at" TIMESTAMP(3);

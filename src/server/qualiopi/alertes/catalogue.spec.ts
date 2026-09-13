@@ -207,6 +207,7 @@ const CODES_ATTENDUS: string[] = [
   // la facture n'a pas pu partir ne laisse plus aucune trace : personne
   // n'attend de bouton. L'alerte porte la liste COMPLÈTE des manques.
   "autofacture_a_emettre",
+  "contrat_cdd_non_remis",
   // 🔴 Trou n°5 — CINQ CODES ÉMIS SANS ENTRÉE ICI, le défaut du 2026-08-05
   // revenu. Sans entrée : pas de guichet (`sansGuichet`, aucune boîte) et
   // absence de `codesAutoResolution` (ouvertes pour toujours). Tous levés hors

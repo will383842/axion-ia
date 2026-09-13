@@ -485,3 +485,103 @@ export async function notifierContratTravailAction(input: {
 
   return { data: { destinataire: trainer.email } };
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 4. Consigner la remise
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Consigne la date à laquelle le salarié a REÇU son exemplaire du contrat.
+ *
+ * ## 🔴 Pourquoi ce geste existe, et pourquoi il est SÉPARÉ de l'annonce
+ *
+ * Le contrat est produit, le salarié est prévenu, la pièce l'attend dans son
+ * espace. Restait un fait que le logiciel ne voyait pas : **est-ce qu'il a son
+ * exemplaire ?** Si la remise a lieu, tout va bien. Sinon, rien ne le dit, rien
+ * ne compte les jours, et personne ne l'apprend avant un conseil de prud'hommes.
+ *
+ * ⛔ CE N'EST PAS `notifierContratTravailAction`, ET LES CONFONDRE SERAIT LE
+ * DÉFAUT. « Votre contrat vous attend » et « il a son exemplaire » sont deux
+ * faits différents. Si la notification posait cette date, on aurait une remise
+ * consignée pour quelqu'un qui n'a jamais ouvert le message — une trace FAUSSE,
+ * pire qu'une trace absente, parce qu'elle se défend.
+ *
+ * ## Ce que la date ferme
+ *
+ * L'alerte `contrat_cdd_non_remis` est `critique` et `resolutionAuto: true` :
+ * elle ne s'éteint QUE si cette colonne se pose. C'est le geste que son message
+ * prescrit, et c'est pour qu'il existe au même moment que l'alerte qu'une garde
+ * (`tests/unit/ci/la-remise-du-cdd-a-son-geste.spec.ts`) refuse l'une sans
+ * l'autre.
+ *
+ * ⚠️ La date est SAISIE, jamais « maintenant » par défaut. Une remise a pu avoir
+ * lieu la veille, ou le jour de l'embauche pendant que personne n'était devant
+ * l'écran. Poser l'horloge du serveur ferait dire à la trace autre chose que ce
+ * qui s'est passé — sur la pièce même qu'on produirait pour le prouver.
+ *
+ * ⚠️ Elle refuse une date FUTURE : consigner une remise qui n'a pas encore eu
+ * lieu éteindrait l'alerte par anticipation, ce qui est exactement ce qu'elle
+ * existe pour empêcher.
+ */
+const remiseSchema = z.object({
+  trainerId: z.string().uuid(),
+  /** `YYYY-MM-DD`, ou `null` pour EFFACER une date consignée par erreur. */
+  remisLe: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date attendue au format JJ/MM/AAAA")
+    .nullable(),
+});
+
+export async function consignerRemiseContratAction(
+  input: z.input<typeof remiseSchema>,
+): Promise<ActionResult<{ id: string; efface: boolean }>> {
+  const session = await requireHabilitation("remunerer_formateur");
+  const parsed = remiseSchema.safeParse(input);
+  if (!parsed.success) return { error: "Date invalide." };
+  const { trainerId, remisLe } = parsed.data;
+
+  const quand = remisLe === null ? null : new Date(`${remisLe}T00:00:00.000Z`);
+  if (quand !== null && Number.isNaN(quand.getTime())) return { error: "Date invalide." };
+
+  // 🔴 Pas de remise DANS LE FUTUR. Elle éteindrait l'alerte par anticipation —
+  // très exactement ce que cette alerte existe pour empêcher.
+  if (quand !== null && quand.getTime() > Date.now()) {
+    return {
+      error:
+        "Cette date est dans le futur : on ne consigne une remise qu'une fois qu'elle a eu lieu.",
+    };
+  }
+
+  const trainer = await prisma.trainer.findUnique({
+    where: { id: trainerId },
+    select: { statut: true },
+  });
+  if (trainer === null) return { error: "Formateur introuvable" };
+  if (trainer.statut !== "salarie") {
+    return {
+      error: "Ce formateur n'est pas salarié : il n'a pas de contrat de travail à remettre.",
+    };
+  }
+
+  try {
+    await prisma.trainer.update({ where: { id: trainerId }, data: { contratRemisAt: quand } });
+  } catch {
+    return { error: "Enregistrement impossible." };
+  }
+
+  await logQualiopiActivity({
+    // ⚠️ Le journal distingue les deux gestes : consigner une remise est un fait
+    // opposable, l'effacer revient à dire qu'on s'était trompé. Les ranger sous
+    // la même action rendrait le second invisible à la relecture.
+    action:
+      remisLe === null
+        ? "qualiopi.trainer.remise_contrat.effacee"
+        : "qualiopi.trainer.remise_contrat",
+    targetType: "Trainer",
+    targetId: trainerId,
+    changes: { remisLe },
+    session,
+  });
+
+  return { data: { id: trainerId, efface: remisLe === null } };
+}

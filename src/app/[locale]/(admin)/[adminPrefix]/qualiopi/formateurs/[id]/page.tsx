@@ -489,6 +489,17 @@ export default async function FicheFormateurPage({ params }: PageProps) {
                   emisLe: contratTravail.createdAt.toLocaleDateString("fr-FR"),
                 }
           }
+          /*
+            ⚠️ `yyyy-mm-dd` pour l'`<input type="date">`, en UTC — la colonne est
+            posée à minuit UTC par l'action. Passer par le fuseau local
+            reculerait la date d'un jour pour la moitié de l'année, sur une
+            valeur qui sert de preuve.
+          */
+          remisLe={
+            trainer.contratRemisAt === null
+              ? null
+              : trainer.contratRemisAt.toISOString().slice(0, 10)
+          }
           notification={
             contratNotifie === null || contratNotifie.sentAt === null
               ? null
