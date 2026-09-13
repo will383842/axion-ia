@@ -40,6 +40,40 @@ import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions
  */
 export const FENETRE_CONSTAT_JOURS = 30;
 
+/**
+ * Avance minimale, en heures, sous laquelle le rappel J-7 était IMPOSSIBLE.
+ *
+ * 🔴 2026-09-13 — LA RÈGLE NE DEMANDAIT JAMAIS SI LE RAPPEL POUVAIT PARTIR.
+ *
+ * Elle ne lisait que « `rappelJ7EnvoyeAt` est nulle et la session a commencé ».
+ * Mesuré en production : `AXI-SESS-2026-001`, créée le 04/09 à 16:30 pour un
+ * début le 05/09 à 07:00 — **14,5 heures d'avance**. L'alerte demandait de
+ * consigner un écart pour un envoi que rien ne pouvait produire.
+ *
+ * 🔑 C'est la famille de défaut que ce dépôt ferme depuis une semaine : un
+ * dispositif qui crie sur une situation où il n'avait aucun moyen d'agir. Une
+ * alerte impossible à satisfaire n'apprend pas à agir — elle apprend à ignorer
+ * la famille entière.
+ *
+ * ## D'où vient le 24, et pourquoi pas un autre nombre
+ *
+ * L'envoyeur (`qualiopi-formation-crons-worker.ts`, `seuilConvocation24h`)
+ * refuse de rappeler tant que la convocation de chaque inscrit n'a pas **24 h**
+ * — correctif S5, pour ne pas expédier deux messages quasi identiques dans la
+ * même matinée. Une session dont la vie entière tient sous ces 24 h ne peut donc
+ * JAMAIS satisfaire l'envoyeur.
+ *
+ * Ce nombre n'est pas choisi : il est la contrainte de l'envoyeur, relue depuis
+ * le lecteur. `le-seuil-de-24h-reste-celui-de-l-envoyeur` le garde — si
+ * l'envoyeur change son seuil sans qu'on change celui-ci, le témoin rougit et
+ * nomme les deux fichiers.
+ *
+ * ⚠️ Borne VOLONTAIREMENT conservatrice : elle n'écarte que les sessions dont
+ * l'impossibilité est certaine. Une avance de 30 h reste signalée, même si
+ * l'envoi y était serré — mieux vaut une alerte à arbitrer qu'une règle éteinte.
+ */
+export const AVANCE_MINIMALE_HEURES = 24;
+
 export interface SessionSansRappelJ7 {
   readonly id: string;
   readonly numero: string;
@@ -67,15 +101,26 @@ export interface SessionSansRappelJ7 {
  */
 export async function sessionsSansRappelJ7(now: Date): Promise<SessionSansRappelJ7[]> {
   const depuis = new Date(now.getTime() - FENETRE_CONSTAT_JOURS * 24 * 60 * 60 * 1000);
-  return prisma.trainingSession.findMany({
+  const candidates = await prisma.trainingSession.findMany({
     where: {
       statut: { in: ["planifiee", "en_cours", "realisee"] },
       rappelJ7EnvoyeAt: null,
       dateDebut: { lte: now, gte: depuis },
       enrollments: { some: { ...inscriptionsActives() } },
     },
-    select: { id: true, numero: true, titreSession: true, dateDebut: true },
+    // `createdAt` sert au filtre applicatif ci-dessous, pas à l'affichage.
+    select: { id: true, numero: true, titreSession: true, dateDebut: true, createdAt: true },
     orderBy: { dateDebut: "desc" },
     take: 100,
   });
+
+  // 🔑 FILTRE APPLICATIF, et non une clause `where`. `dateDebut - createdAt`
+  // est une comparaison COLONNE À COLONNE, que Prisma ne sait pas exprimer
+  // dans un `findMany`. L'envoyeur a déjà tranché le même arbitrage pour sa
+  // condition « tous convoqués depuis ≥ 24 h » : le volume — au plus 100
+  // sessions sur 30 jours — rend le filtre gratuit, et il se teste à sec.
+  const avanceMinimaleMs = AVANCE_MINIMALE_HEURES * 60 * 60 * 1000;
+  return candidates
+    .filter((s) => s.dateDebut.getTime() - s.createdAt.getTime() > avanceMinimaleMs)
+    .map(({ createdAt: _createdAt, ...reste }) => reste);
 }

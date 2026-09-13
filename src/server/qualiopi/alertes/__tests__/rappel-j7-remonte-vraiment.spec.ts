@@ -96,6 +96,16 @@ describe("le rappel J-7 manquant remonte vraiment", () => {
         numero: "AXI-SESS-2026-004",
         titreSession: "IA pour bien commencer",
         dateDebut: new Date("2026-08-20T09:00:00Z"),
+        // 2026-09-13 : la fixture porte desormais `createdAt`, parce que la
+        // mesure l'exige. Elle ecarte les sessions dont l'avance rendait le
+        // rappel J-7 IMPOSSIBLE (cf. `AVANCE_MINIMALE_HEURES`).
+        //
+        // 🔑 Ce n'est pas un affaiblissement du temoin : c'est ce qu'il
+        // affirmait DEJA, rendu explicite. Il dit « une session qui devait
+        // etre rappelee et ne l'a pas ete REMONTE » — et « qui devait » se
+        // lisait jusqu'ici dans un champ absent. Trente jours d'avance : le
+        // rappel etait largement posable, l'ecart est donc reel.
+        createdAt: new Date("2026-07-21T09:00:00Z"),
       },
     ]);
 
