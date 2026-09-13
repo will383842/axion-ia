@@ -36,6 +36,15 @@ interface Payload {
   numeroPiece: string;
   /** Page de connexion de l'espace formateur. Jamais un lien secret. */
   lienEspace: string;
+  /**
+   * Le contrat est-il DÉJÀ signé des deux parties ?
+   *
+   * 🔴 Recette du 13/09 : « Prévenir à nouveau » restait disponible après les
+   * deux signatures, et renvoyait le message « à lire et à SIGNER » — objet
+   * compris — à quelqu'un qui avait déjà signé. Le geste est légitime (rouvrir
+   * l'accès à son exemplaire), c'est la phrase qui ne l'était pas.
+   */
+  dejaSigne?: boolean;
 }
 
 /**
@@ -48,10 +57,26 @@ interface Payload {
  */
 export const formateurContratTravailSubject = (
   locale: Locale,
-  _payload: Record<string, unknown>,
+  payload: Record<string, unknown>,
 ): string => {
-  if (locale === "fr") return objetCompose("Votre contrat de travail", "à lire et à signer");
-  return objetCompose("Your employment contract", "to read and sign");
+  /*
+    🔑 LE PAYLOAD N'EST LU QUE POUR UN BOOLÉEN, et la raison écrite ci-dessus
+    tient toujours : un objet d'e-mail s'affiche en clair sur un écran qu'on
+    tend à quelqu'un, donc il ne portera jamais la NATURE ni le POSTE. Savoir
+    qu'un contrat est signé n'est pas du même ordre — et dire « à signer » à qui
+    a déjà signé est une erreur que l'objet propage jusque dans la notification.
+  */
+  const dejaSigne = payload["dejaSigne"] === true;
+  if (locale === "fr") {
+    return objetCompose(
+      "Votre contrat de travail",
+      dejaSigne ? "votre exemplaire signé" : "à lire et à signer",
+    );
+  }
+  return objetCompose(
+    "Your employment contract",
+    dejaSigne ? "your signed copy" : "to read and sign",
+  );
 };
 
 export function FormateurContratTravailEmail({
@@ -65,7 +90,11 @@ export function FormateurContratTravailEmail({
   return (
     <EmailLayout
       famille="C"
-      preview="Votre contrat vous attend dans votre espace. Lisez-le en entier avant de le signer."
+      preview={
+        p.dejaSigne === true
+          ? "Votre exemplaire signé des deux parties reste disponible dans votre espace."
+          : "Votre contrat vous attend dans votre espace. Lisez-le en entier avant de le signer."
+      }
       title="Votre contrat de travail est prêt"
       cta={{ label: "Ouvrir mon espace", href: p.lienEspace }}
       locale={locale}
@@ -92,7 +121,21 @@ export function FormateurContratTravailEmail({
             pour le poste de <strong>{p.poste}</strong>
           </>
         ) : null}{" "}
-        est établi, avec une entrée en fonction au <strong>{p.dateEmbauche}</strong>.
+        est {p.dejaSigne === true ? "signé des deux parties" : "établi"}
+        {/*
+          🔑 CONDITIONNEL, comme le poste juste au-dessus (recette du 13/09).
+          Le poste avait été protégé, la date non : une fiche sans date d'entrée
+          en fonction produisait « est établi, avec une entrée en fonction au . »
+          — une phrase cassée, dans le message le plus engageant qu'on adresse à
+          quelqu'un. L'action refuse par ailleurs d'annoncer un contrat
+          inétablissable ; les deux gardes se protègent mutuellement.
+        */}
+        {p.dateEmbauche ? (
+          <>
+            , avec une entrée en fonction au <strong>{p.dateEmbauche}</strong>
+          </>
+        ) : null}
+        .
       </Text>
       {/*
         🔑 « Lisez-le EN ENTIER » n'est pas une politesse. En le signant, il
