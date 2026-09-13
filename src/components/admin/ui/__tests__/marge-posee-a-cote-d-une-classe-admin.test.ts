@@ -104,6 +104,9 @@ describe("⚠️ la dette reste MESURÉE, pour qu'elle ne s'oublie pas", () => {
       prof += (l.match(/\{/g) ?? []).length - (l.match(/\}/g) ?? []).length;
     }
     expect(nues, "des règles `.admin-*` hors couche ont été AJOUTÉES").toBeLessThanOrEqual(280);
-    expect(nues, "le motif d'extraction ne trouve plus rien : ce témoin ne mesure plus").toBeGreaterThan(200);
+    expect(
+      nues,
+      "le motif d'extraction ne trouve plus rien : ce témoin ne mesure plus",
+    ).toBeGreaterThan(200);
   });
 });
