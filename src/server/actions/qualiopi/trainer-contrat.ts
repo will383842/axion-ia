@@ -446,7 +446,22 @@ export async function notifierContratTravailAction(input: {
     {
       formateurPrenomNom: `${trainer.prenom} ${trainer.nom}`.trim(),
       natureContrat: trainer.contratType === "cdd" ? "CDD" : "CDI",
-      poste: trainer.contratPoste ?? "formateur",
+      /*
+        🔴 MON PROPRE DÉFAUT, TROUVÉ PAR LA RELECTURE DU 13/09. C'était
+        `?? "formateur"` : une personne dont le poste n'a pas été saisi recevait
+        PAR ÉCRIT l'annonce de son contrat au poste de « formateur ». Une
+        secrétaire, un développeur web.
+
+        ⚠️ Et l'asymétrie aggravait tout : le PDF du contrat, lui, passe `?? ""`
+        sur une `FieldRow required` — il affiche « Non renseigné » en rouge. Le
+        DOCUMENT se taisait là où l'E-MAIL affirmait.
+
+        ⛔ Le repli ne s'exerce d'ailleurs jamais : `verifierEligibiliteContrat`
+        refuse d'établir un contrat sans poste, et cette action refuse d'annoncer
+        une pièce qui n'existe pas. Un repli qui ne peut pas s'exercer n'a pas
+        besoin d'INVENTER — il a besoin de ne rien affirmer.
+      */
+      poste: trainer.contratPoste ?? "",
       dateEmbauche: dateFr(trainer.dateEmbauche),
       numeroPiece: piece.numero,
       lienEspace: publicUrl(FORMATEUR_CONNEXION_PATH).toString(),

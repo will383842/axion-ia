@@ -45,6 +45,7 @@ export type AdminNavGroup =
   | "finances"
   | "documents-interventions"
   | "societe"
+  | "equipe"
   | "coaching-1to1"
   | "image-bank"
   | "presse"
@@ -191,6 +192,17 @@ export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   // « Documents », qui porte les kits de prestation et des fichiers SANS date
   // de péremption — or l'essentiel de ce dossier-ci périme.
   societe: "Société & conformité",
+  // 🔴 Groupe créé le 2026-09-13, sur demande de Will. Les contrats de travail
+  // vivaient sous « Formations & prestations », parce que le premier salarié
+  // d'Axion-IA était un formateur. Ce n'est plus vrai : secrétaire, marketing,
+  // développeur web. Un contrat engage l'ENTREPRISE, pas la certification, et
+  // chercher le contrat d'un développeur dans la section formation n'a pas de
+  // sens.
+  //
+  // ⚠️ Distinct de « Société & conformité », qui est le dossier qu'on ENVOIE à
+  // un donneur d'ordre — pièces légales, RGPD, méthode. Un contrat de travail
+  // n'y a pas sa place : il ne sort pas de l'entreprise.
+  equipe: "Équipe",
   "coaching-1to1": "Coaching 1-to-1",
   // Pole cree le 2026-08-28. Les 44 gabarits vivaient au meme endroit dans le
   // code depuis toujours ; ce qui manquait n etait pas la centralisation mais
@@ -332,6 +344,7 @@ export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "finances",
   "documents-interventions",
   "societe",
+  "equipe",
   "coaching-1to1",
   "image-bank",
   "presse",
@@ -1052,6 +1065,23 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Presentation",
       group: "qualiopi",
       subGroup: "intervenants",
+    },
+    // 🔴 SALARIÉS — hors du groupe Qualiopi, et c'est le point entier.
+    //
+    // Un contrat de travail engage l'ENTREPRISE, pas la certification. Celui
+    // d'une secrétaire, d'un responsable marketing ou d'un développeur web n'a
+    // rien à voir avec le référentiel qualité — et Axion-IA ne fait pas que de
+    // la formation. Ranger leur fiche sous « Qualiopi » obligerait à chercher un
+    // contrat de développeur dans la section certification.
+    //
+    // ⚠️ « Formateurs » ci-dessus reste la vue PÉDAGOGIQUE : habilitations,
+    // sessions, preuves d'audit. Une même personne figure dans les deux quand
+    // elle est formatrice ET salariée — même humain, deux angles.
+    {
+      href: `${base}/salaries`,
+      label: "Salariés",
+      icon: "Users",
+      group: "equipe",
     },
     // 🔴 Déplacé depuis « Coaching 1-to-1 » le 2026-07-28.
     //

@@ -88,6 +88,8 @@ const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
   qualiopi: GraduationCap,
   finances: Wallet,
   "documents-interventions": FolderOpen,
+  // Équipe : les contrats de travail, tous postes confondus.
+  equipe: Users,
   societe: Building2,
   "coaching-1to1": GraduationCap,
   "image-bank": Images,

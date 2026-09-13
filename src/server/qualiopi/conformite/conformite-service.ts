@@ -240,9 +240,19 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // (`trainer.count({ actif: true })`) filtre depuis toujours — c'était un
     // oubli, pas une convention.
     prisma.sousTraitant.count({ where: { actif: true } }),
-    prisma.trainer.count({ where: { actif: true } }),
+    // 🔴 `estFormateur` AJOUTÉ LE 2026-09-13. Ce compte est le DÉNOMINATEUR de
+    // la couverture de l'indicateur 21, dont le prédicat exige 100 % — resserré
+    // le 2026-09-02 précisément parce qu'UN intervenant en règle couvrait alors
+    // tous les autres.
+    //
+    // ⚠️ Sans ce filtre, chaque embauche hors formation ajoutait un
+    // dénominateur qu'AUCUNE pièce honnête ne peut satisfaire : off.21 passait
+    // en non-conformité MAJEURE, et la seule façon de le reverdir aurait été de
+    // fabriquer une pièce de compétence au nom d'une secrétaire. Le défaut
+    // n'était pas « un chiffre faux » — c'était une incitation à falsifier.
+    prisma.trainer.count({ where: { actif: true, estFormateur: true } }),
     // off.21 : formateurs avec CV téléversé (cvUrl non null)
-    prisma.trainer.count({ where: { actif: true, cvUrl: { not: null } } }),
+    prisma.trainer.count({ where: { actif: true, estFormateur: true, cvUrl: { not: null } } }),
     prisma.trainee.count({ where: { situationHandicap: true } }),
     // 🔴 2026-08-25, cahier D1-2 — ce compte était NU. La garde posée cinq lignes
     // plus bas sur `documentGenere` (24/08) n'a jamais été portée à son jumeau
@@ -404,8 +414,16 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       },
     }),
     // off.21 : CV téléversé ET À JOUR (< 24 mois) — un CV daté, pas une simple URL non datée.
+    // ⚠️ `estFormateur` : même dénominateur que ci-dessus, donc même filtre.
+    // L'omettre ici rendrait le NUMÉRATEUR incohérent avec le dénominateur — le
+    // ratio de couverture deviendrait faux dans l'autre sens.
     prisma.trainer.count({
-      where: { actif: true, cvUrl: { not: null }, cvUploadedAt: { gte: seuil24Mois } },
+      where: {
+        actif: true,
+        estFormateur: true,
+        cvUrl: { not: null },
+        cvUploadedAt: { gte: seuil24Mois },
+      },
     }),
     // off.19 : supports RÉELLEMENT produits (statut=genere ET pdfKey non null), pas un brouillon.
     prisma.supportFormation.count({ where: { statut: "genere", pdfKey: { not: null } } }),
@@ -472,7 +490,11 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // des freelances qui facturent l'OF. Axion pouvait donc référencer dix
     // intervenants conformes et voir l'indicateur 27 rester à zéro. Le critère 6
     // du RNQ vise « sous-traitants ET formateurs occasionnels ». [2026-08-03]
-    prisma.trainer.count({ where: { actif: true, statut: "sous_traitant" } }),
+    // ⚠️ `estFormateur` : l'indicateur 27 vise « sous-traitants ET formateurs
+    // occasionnels » — donc des INTERVENANTS. Un prestataire non pédagogique
+    // (comptable, graphiste) enregistré ici gonflerait le dénominateur d'un
+    // indicateur qui ne le concerne pas.
+    prisma.trainer.count({ where: { actif: true, statut: "sous_traitant", estFormateur: true } }),
     // ⚠️ La RC pro n'entre PAS dans le critère (décision Will du 2026-08-03) :
     // demandée et suivie par alerte, jamais bloquante. L'inclure gèlerait
     // l'indicateur sur une pièce volontairement non exigée. Cf. § 4.2.
@@ -480,6 +502,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       where: {
         actif: true,
         statut: "sous_traitant",
+        estFormateur: true,
         sousTraitantNda: { not: null },
         sousTraitantVerifieAt: { not: null },
         sousTraitantContratSigneAt: { not: null },

@@ -267,8 +267,24 @@ export async function computeBpf(annee: number): Promise<BpfResult> {
 
   const [nbFormateursInternes, nbFormateursExternes, depenses] = await Promise.all([
     // Internes = salariés + dirigeant-formateur (l'OF anime lui-même). Externes = sous-traitants.
-    prisma.trainer.count({ where: { statut: { in: ["salarie", "dirigeant"] }, actif: true } }),
-    prisma.trainer.count({ where: { statut: "sous_traitant", actif: true } }),
+    //
+    // 🔴 `estFormateur` AJOUTÉ LE 2026-09-13, ET C'EST LA CORRECTION LA PLUS
+    // GRAVE DU LOT. Le BPF est une DÉCLARATION ANNUELLE À LA DREETS, pas une
+    // pièce interne qu'on corrige après coup. Sans ce filtre, une secrétaire,
+    // un responsable marketing ou un développeur web — salariés, actifs, et
+    // lignes de la même table — étaient déclarés à l'État comme FORMATEURS
+    // INTERNES de l'organisme.
+    //
+    // ⚠️ Le défaut ne se voyait pas : il n'y avait aucun non-formateur en base
+    // quand ce compte a été écrit. Il devient faux à la première embauche hors
+    // formation, sans qu'aucune ligne de code ne change.
+    prisma.trainer.count({
+      where: { statut: { in: ["salarie", "dirigeant"] }, actif: true, estFormateur: true },
+    }),
+    // ⚠️ Les sous-traitants aussi : rien n'interdit d'enregistrer un prestataire
+    // non pédagogique (un comptable, un graphiste). Le filtre est le même, et
+    // l'omettre ici rouvrirait le défaut d'un côté seulement.
+    prisma.trainer.count({ where: { statut: "sous_traitant", actif: true, estFormateur: true } }),
     listDepenses(annee),
   ]);
 

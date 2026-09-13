@@ -753,6 +753,7 @@ export default async function FicheFormateurPage({ params }: PageProps) {
       <TrainerManageForm
         trainerId={trainer.id}
         statut={trainer.statut}
+        estFormateur={trainer.estFormateur}
         actif={trainer.actif}
         sousTraitantVerifie={trainer.sousTraitantVerifieAt != null}
         sousTraitantNda={trainer.sousTraitantNda}

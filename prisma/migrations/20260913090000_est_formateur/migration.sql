@@ -1,0 +1,42 @@
+-- `trainers.est_formateur` — distinguer QUI ANIME de QUI EST EMPLOYÉ.
+--
+-- ## Le raccourci qui devient faux
+--
+-- Jusqu'ici, toute personne employée par Axion-IA était une ligne de `trainers`,
+-- et donc implicitement un intervenant pédagogique. C'était vrai tant que
+-- l'organisme n'embauchait que des formateurs. Ça cesse de l'être : secrétaire,
+-- responsable marketing, développeur web.
+--
+-- ## Deux conséquences qui ne se rattrapent pas
+--
+-- 🔴 LE BPF EST UNE DÉCLARATION À L'ÉTAT. `bpf/service.ts` compte
+-- `nbFormateursInternes` comme « salariés + dirigeant actifs ». Une secrétaire y
+-- serait déclarée à la DREETS comme formatrice interne de l'organisme. Ce n'est
+-- pas une pièce interne qu'on corrige après coup.
+--
+-- 🔴 L'INDICATEUR 21 EXIGE 100 %. Son prédicat compare le nombre de formateurs
+-- actifs au nombre de ceux qui portent un CV ET une pièce de compétence — une
+-- couverture totale, resserrée le 2026-09-02 précisément parce qu'un seul
+-- intervenant en règle couvrait alors tous les autres. Chaque embauche non
+-- pédagogique ajoute donc un dénominateur qu'AUCUNE pièce honnête ne peut
+-- satisfaire, et fait basculer l'indicateur en non-conformité MAJEURE.
+--
+-- ## ⚠️ `DEFAULT true`, et c'est la moitié de la sûreté
+--
+-- Tout l'existant reste formateur : la migration ne change le comportement de
+-- RIEN. C'est la nouvelle embauche qui décochera, jamais l'ancienne qui aurait
+-- dû cocher. Un défaut à `false` aurait vidé la liste des formateurs, le BPF et
+-- l'indicateur 21 d'un coup, en silence.
+--
+-- ## Pourquoi la colonne AVANT le code qui la lit
+--
+-- Deux conteneurs, deux vitesses (cf. AGENTS.md) : le worker est reconstruit
+-- depuis les sources en ~3 min, l'app attend son image GHCR 47 à 56 min, et
+-- c'est l'entrypoint de l'APP qui joue `prisma migrate deploy`. Pendant près
+-- d'une heure, le worker peut exécuter du code qui lit une colonne absente — et
+-- c'est le worker qui évalue les alertes, dont celles qui liront ce champ.
+--
+-- Colonne NOT NULL avec défaut : aucune ligne existante n'est laissée à NULL, et
+-- aucune lecture ne dépend d'elle au moment où elle passe.
+
+ALTER TABLE "trainers" ADD COLUMN IF NOT EXISTS "est_formateur" BOOLEAN NOT NULL DEFAULT true;

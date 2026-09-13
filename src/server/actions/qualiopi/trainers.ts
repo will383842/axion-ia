@@ -114,6 +114,19 @@ const updateTrainerSchema = z.object({
   email: z.string().email().optional(),
   telephone: z.string().max(40).optional(),
   statut: z.enum(TRAINER_STATUTS).optional(),
+  /**
+   * 🔴 ANIME-T-IL DES FORMATIONS ? Décoché, la personne disparaît des pièces
+   * PÉDAGOGIQUES — liste officielle des formateurs, manifeste d'audit,
+   * dénominateur de l'indicateur 21, BPF déclaré à la DREETS, alerte de CV
+   * périmé — et reste entièrement dans les pièces d'EMPLOYEUR : contrat de
+   * travail, délai de remise, paie.
+   *
+   * ⚠️ Ce n'est pas le statut. Un SALARIÉ peut ne pas enseigner (secrétaire,
+   * développeur) ; un SOUS-TRAITANT aussi (un comptable). Les deux champs
+   * répondent à deux questions différentes, et les confondre ferait disparaître
+   * un formateur salarié de la liste d'audit ou y ferait entrer une secrétaire.
+   */
+  estFormateur: z.boolean().optional(),
   region: regionField,
   regionsIntervention: regionsField,
   interventionFranceEntiere: z.boolean().optional(),
@@ -308,6 +321,7 @@ export async function updateTrainerAction(
         ...(fields.email !== undefined ? { email: fields.email } : {}),
         ...(fields.telephone !== undefined ? { telephone: fields.telephone } : {}),
         ...(fields.statut !== undefined ? { statut: fields.statut } : {}),
+        ...(fields.estFormateur !== undefined ? { estFormateur: fields.estFormateur } : {}),
         ...(fields.region !== undefined
           ? { region: fields.region === "" ? null : fields.region }
           : {}),

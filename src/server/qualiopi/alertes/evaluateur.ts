@@ -49,7 +49,7 @@ import {
   joursDepuisEmbauche,
   messageRemiseCdd,
   remiseCddEnSouffrance,
-} from "@/server/qualiopi/trainers/remise-contrat";
+} from "@/server/rh/remise-contrat";
 import { libellePalier } from "@/server/qualiopi/financements/relance-paliers";
 import {
   CONFORMITE_DEFAUTS,
@@ -1506,7 +1506,19 @@ async function regleVeilleInactive(now: Date): Promise<AlerteCandidate[]> {
   return [];
 }
 
-/** R11 — CV formateur périmé : cvUploadedAt > 12 mois pour formateur actif. */
+/**
+ * R11 — CV formateur périmé : cvUploadedAt > 12 mois pour formateur actif.
+ *
+ * ⚠️ `estFormateur` ajouté le 2026-09-13. Sans lui, chaque embauche hors
+ * formation produisait une alerte `important` IMMÉDIATE et INFERMABLE — « Le CV
+ * de Camille Martin n'a jamais été uploadé » — sur quelqu'un dont le CV n'est
+ * exigé par aucun indicateur. Le seul geste qui l'aurait éteinte aurait été de
+ * verser un CV de secrétaire au dossier de preuve de l'indicateur 21.
+ *
+ * 🔑 C'est la panne qu'on passe la semaine à fermer : une alerte qui réclame un
+ * geste que personne ne peut poser honnêtement apprend à ignorer la famille
+ * entière — et c'est la vraie qu'on rate ensuite.
+ */
 async function regleCvFormateurPerime(now: Date): Promise<AlerteCandidate[]> {
   const threshold = new Date(now);
   threshold.setFullYear(threshold.getFullYear() - 1);
@@ -1514,6 +1526,7 @@ async function regleCvFormateurPerime(now: Date): Promise<AlerteCandidate[]> {
   const formateurs = await prisma.trainer.findMany({
     where: {
       actif: true,
+      estFormateur: true,
       OR: [{ cvUploadedAt: { lt: threshold } }, { cvUploadedAt: null }],
     },
     select: { id: true, nom: true, prenom: true, cvUploadedAt: true },

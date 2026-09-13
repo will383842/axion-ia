@@ -2194,7 +2194,11 @@ export async function genererListeFormateursAction(): Promise<
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
-  const trainers = await listTrainers({ actifOnly: true });
+  // 🔴 `pedagogiquesSeulement` AJOUTÉ LE 2026-09-13. Cette liste est une PIÈCE
+  // D'AUDIT : elle prouve les moyens humains de l'organisme. Une secrétaire, un
+  // responsable marketing ou un développeur web y figurant serait présenté au
+  // certificateur comme un intervenant — et le document NOMME les gens.
+  const trainers = await listTrainers({ actifOnly: true, pedagogiquesSeulement: true });
   if (trainers.length === 0) {
     return {
       error:

@@ -1,5 +1,12 @@
 /**
- * Contrat de travail d'un formateur SALARIÉ.
+ * Contrat de travail d'un SALARIÉ — quel que soit son poste.
+ *
+ * ⚠️ Ce gabarit s'intitulait « contrat de travail d'un formateur salarié », et
+ * ce n'est plus vrai depuis le 2026-09-13 : Axion-IA embauche hors formation.
+ * Le texte rendu, lui, n'a jamais rien affirmé de pédagogique — il parle de
+ * poste, de classification, de durée du travail. Seul l'en-tête mentait, et un
+ * en-tête qui restreint à tort finit par faire chercher un second gabarit là où
+ * le premier suffisait.
  *
  * ⛔ CE N'EST PAS UNE VARIANTE DU CONTRAT DE SOUS-TRAITANCE, et les confondre
  * coûterait cher dans les deux sens. Le contrat de sous-traitance lie deux
