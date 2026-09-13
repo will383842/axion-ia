@@ -2936,3 +2936,29 @@ a.admin-card-inline {
   border-radius: var(--radius-admin-xl);
   background-color: var(--color-admin-paper);
 }
+
+/* ---------------------------------------------------------------------------
+ * .admin-field-row — une case a cocher A COTE de son libelle, pas au-dessus.
+ *
+ * Mesure du 2026-09-13 : deux libelles de la console ecrivent
+ * `admin-field flex-row items-center gap-2` en attendant une rangee. Les trois
+ * utilitaires sont INERTES : `.admin-field { display: block }` (l. 1010) est
+ * hors couche, donc il bat toute regle layered, y compris un `flex` qu'on
+ * ajouterait a cote. La case et son libelle restent empiles.
+ *
+ * Fichiers : `AcompteFormationPanel.tsx` (« Acompte percu »),
+ * `AuditManagePanel.tsx` (« Audit realise »). Deux cases a cocher d'ARGENT et
+ * de CONFORMITE, pas de decor.
+ *
+ * 🔑 Meme remede que pour les 28 cellules de montants ci-dessus, et pour la
+ * meme raison : une surcharge par SPECIFICITE (0,2,0 contre 0,1,0), et non un
+ * deplacement en `@layer`. `admin.css` est une feuille separee ; l'ordre des
+ * couches n'est pas verifiable depuis ici. Voir le raisonnement complet au bloc
+ * precedent — il vaut mot pour mot.
+ * ------------------------------------------------------------------------- */
+.admin-field.admin-field-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-admin-2, 8px);
+}

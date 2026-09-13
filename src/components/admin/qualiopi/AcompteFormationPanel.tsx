@@ -93,7 +93,7 @@ export function AcompteFormationPanel({
             onChange={(e) => setMoy(e.target.value)}
           />
         </div>
-        <label className="admin-field flex-row items-center gap-2">
+        <label className="admin-field admin-field-row">
           <input type="checkbox" checked={r} onChange={(e) => setR(e.target.checked)} />
           <span className="admin-label">Acompte reçu</span>
         </label>

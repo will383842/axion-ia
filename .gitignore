@@ -124,3 +124,26 @@ _AUDIT-INVENTAIRE/
 # non ignore se glisse dans un `git add -A` sans se faire remarquer. On l'ignore : il
 # n'a de sens que pendant la fraction de seconde qui separe l'ecriture du `rename`.
 *.temoin-tmp
+
+# ---------------------------------------------------------------------------
+# Chantier Axion Apporteurs — documents de travail NON PUBLIABLES (REQ-GOV-031)
+#
+# Ce depot est PUBLIC. Ces fichiers decrivent des faiblesses de conception, des
+# scenarios d'abus et des arbitrages juridiques en cours : publies, ils servent
+# d'abord a celui qui voudrait en tirer parti.
+#
+# 🔴 Mesure du 2026-09-13 : deux rapports d'audit de 80 Ko (`audit-anti-abus-
+# reseau-apporteurs.md` et `audit-outil-apporteurs-bout-en-bout-2026-09-03.md`)
+# vivaient depuis dix jours DANS l'arbre de travail, non suivis et non ignores.
+# Un seul `git add -A` les publiait. La regle posee plus tot ne couvrait que
+# `docs/partners/` et le PLAN : elle visait a cote des fichiers reellement la.
+#
+# 🔑 On nomme donc la FAMILLE (`docs/audit-*apporteur*`), pas les deux fichiers
+# du jour — sinon le troisieme rapport, ecrit la semaine prochaine sous un autre
+# nom, retombera dans le meme trou.
+# ---------------------------------------------------------------------------
+docs/partners/
+docs/PLAN-IMPLEMENTATION-AXION-PARTNERS.md
+docs/audit-anti-abus-*.md
+docs/audit-outil-apporteurs-*.md
+docs/*-apporteurs-bout-en-bout-*.md
