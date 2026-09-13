@@ -652,6 +652,44 @@ jobs:
           pnpm exec lhci collect "${URLS[@]}" --numberOfRuns=1 "${LH_SETTINGS[@]}" || true
           rm -rf .lighthouseci
 
+          # -- Seconde passe de warm-up, /fr/appel SEULE (2026-09-13) --------
+          # UNE passe ne suffit pas pour cette page : elle porte l'iframe
+          # Calendly et reste froide au premier run MESURE.
+          #
+          # Mesure au run 34730241209 (deploy de 6192d366c), desktop, 2 runs :
+          #   passe 1 : perf 66, LCP 3081 ms, FCP 2963 ms
+          #   passe 2 : perf 78, LCP 2110 ms, FCP 2110 ms
+          # Le gate a rougi sur `performance >= 0.9` (0.78) et `FCP <= 1500`
+          # (2110). Les CINQ autres URLs etaient a 100 avec CLS 0.
+          #
+          # CE N'ETAIT PAS UNE REGRESSION, verifiable en trois points :
+          #   - le seul commit depuis le run vert precedent (#1061) touche
+          #     l'ecran des alertes de la CONSOLE ADMIN, il ne peut pas
+          #     ralentir une page publique ;
+          #   - la passe 2 est deja bien meilleure que la passe 1 dans le MEME
+          #     run : signature d'un cache qui se rechauffe, pas d'un code plus
+          #     lent ;
+          #   - la RELANCE seule du job est passee au vert sans qu'une ligne
+          #     bouge : /fr/appel y rend 74 puis 99 (LCP 2405 puis 831 ms).
+          #
+          # ON NE DESSERRE AUCUN SEUIL. Le fichier de config le dit lui-meme,
+          # « serrer sans lire les chiffres, c'est parier » — et l'inverse est
+          # vrai aussi : relacher un cliquet pour faire taire un bruit de
+          # mesure masquerait la regression qu'il doit attraper. On corrige
+          # l'INSTRUMENT, pas le contrat.
+          #
+          # Pourquoi cette page seule : la passe ci-dessus suffit aux cinq
+          # autres (100/100 aux deux passes). Rechauffer tout le parc une
+          # seconde fois couterait six passes pour en sauver une.
+          for u in "${URLS[@]}"; do
+            case "$u" in
+              *"/fr/appel"*)
+                pnpm exec lhci collect "$u" --numberOfRuns=1 "${LH_SETTINGS[@]}" || true
+                rm -rf .lighthouseci
+                ;;
+            esac
+          done
+
           # Mesure réelle (à chaud) + assertions strictes.
           pnpm exec lhci collect "${URLS[@]}" --numberOfRuns=2 "${LH_SETTINGS[@]}"
 
