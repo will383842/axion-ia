@@ -88,6 +88,356 @@ const PAGES_ADMIN = [
     label: "cockpit financier (1 contraste corrigé)",
   },
   { path: `/fr/${ADMIN_PREFIX}/qualiopi/baremes-opco`, label: "barèmes OPCO" },
+
+  // ═══════════════════════════════════════════════════════════════════
+  // LOT 2 D'ÉLARGISSEMENT (2026-09-13) — de 18 écrans à 216.
+  //
+  // Les 198 ci-dessous ont été MESURÉS, un par un, à 0 violation
+  // serious/critical — pas « en principe », pas sur un relevé ancien. La
+  // mesure a tourné en CI sur la pile complète (base semée, application
+  // démarrée, connexion admin), en six lots, et chaque rapport a été vérifié
+  // par son empreinte avant d'être compté.
+  //
+  // 🔑 CETTE VÉRIFICATION N'ÉTAIT PAS DU ZÈLE. Deux rapports sur six se sont
+  // révélés être des COPIES d'un autre lot, produites par une chaîne qui
+  // capturait le mauvais identifiant de run. Le décompte de fichiers disait
+  // « six lots, terminé » ; la comparaison des routes DEMANDÉES aux routes
+  // RELEVÉES disait que 80 écrans n'avaient jamais été regardés. Sans elle,
+  // 80 écrans entraient ici sur la foi d'un relevé inexistant.
+  //
+  // ⛔ CE QUI RESTE DEHORS, ET POURQUOI. 25 écrans mesurés portent des
+  // violations : ils sont listés dans la PR, avec leur famille. On ne les
+  // inscrit PAS — la doctrine de cette suite est « du vert vérifié, jamais
+  // une intention ». Les inscrire ouvrirait un rouge que personne ne peut
+  // fermer dans sa propre PR.
+  //
+  // Les routes à segment dynamique (`[id]`) restent hors périmètre : elles
+  // demandent une donnée de seed stable, ce qui est un lot en soi.
+  // ═══════════════════════════════════════════════════════════════════
+  { path: `/fr/${ADMIN_PREFIX}/2fa/setup`, label: "2fa · setup" },
+  { path: `/fr/${ADMIN_PREFIX}/activity-logs`, label: "activity-logs" },
+  { path: `/fr/${ADMIN_PREFIX}/alerts`, label: "alerts" },
+  { path: `/fr/${ADMIN_PREFIX}/analytics`, label: "analytics" },
+  { path: `/fr/${ADMIN_PREFIX}/annonces`, label: "annonces" },
+  { path: `/fr/${ADMIN_PREFIX}/annonces/liens`, label: "annonces · liens" },
+  { path: `/fr/${ADMIN_PREFIX}/avis`, label: "avis" },
+  { path: `/fr/${ADMIN_PREFIX}/blog`, label: "blog" },
+  { path: `/fr/${ADMIN_PREFIX}/blog/new`, label: "blog · new" },
+  { path: `/fr/${ADMIN_PREFIX}/calendrier`, label: "calendrier" },
+  { path: `/fr/${ADMIN_PREFIX}/calendrier/heatmap`, label: "calendrier · heatmap" },
+  { path: `/fr/${ADMIN_PREFIX}/calendrier/reschedule`, label: "calendrier · reschedule" },
+  { path: `/fr/${ADMIN_PREFIX}/candidatures`, label: "candidatures" },
+  { path: `/fr/${ADMIN_PREFIX}/case-studies`, label: "case-studies" },
+  { path: `/fr/${ADMIN_PREFIX}/case-studies/new`, label: "case-studies · new" },
+  { path: `/fr/${ADMIN_PREFIX}/catalogue-imprime`, label: "catalogue-imprime" },
+  { path: `/fr/${ADMIN_PREFIX}/categories`, label: "categories" },
+  { path: `/fr/${ADMIN_PREFIX}/categories/new`, label: "categories · new" },
+  { path: `/fr/${ADMIN_PREFIX}/chatbot`, label: "chatbot" },
+  { path: `/fr/${ADMIN_PREFIX}/chatbot/conversations`, label: "chatbot · conversations" },
+  { path: `/fr/${ADMIN_PREFIX}/chatbot/escalades`, label: "chatbot · escalades" },
+  { path: `/fr/${ADMIN_PREFIX}/chatbot/prompt`, label: "chatbot · prompt" },
+  { path: `/fr/${ADMIN_PREFIX}/chatbot/reglages`, label: "chatbot · reglages" },
+  { path: `/fr/${ADMIN_PREFIX}/coaching`, label: "coaching" },
+  { path: `/fr/${ADMIN_PREFIX}/coaching/seances`, label: "coaching · seances" },
+  { path: `/fr/${ADMIN_PREFIX}/connaissances`, label: "connaissances" },
+  { path: `/fr/${ADMIN_PREFIX}/connaissances/nouvelle`, label: "connaissances · nouvelle" },
+  { path: `/fr/${ADMIN_PREFIX}/console-editoriale`, label: "console-editoriale" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/console-editoriale/achat-media`,
+    label: "console-editoriale · achat-media",
+  },
+  { path: `/fr/${ADMIN_PREFIX}/console-editoriale/analyse`, label: "console-editoriale · analyse" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/console-editoriale/calendrier`,
+    label: "console-editoriale · calendrier",
+  },
+  { path: `/fr/${ADMIN_PREFIX}/console-editoriale/equipe`, label: "console-editoriale · equipe" },
+  { path: `/fr/${ADMIN_PREFIX}/console-editoriale/idees`, label: "console-editoriale · idees" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/console-editoriale/mediatheque`,
+    label: "console-editoriale · mediatheque",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/console-editoriale/publications`,
+    label: "console-editoriale · publications",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/console-editoriale/publications/nouvelle`,
+    label: "console-editoriale · publications · nouvelle",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/console-editoriale/recherche`,
+    label: "console-editoriale · recherche",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/console-editoriale/reglages`,
+    label: "console-editoriale · reglages",
+  },
+  { path: `/fr/${ADMIN_PREFIX}/contacts/appels`, label: "contacts · appels" },
+  { path: `/fr/${ADMIN_PREFIX}/contacts/autres`, label: "contacts · autres" },
+  { path: `/fr/${ADMIN_PREFIX}/contacts/calendly`, label: "contacts · calendly" },
+  { path: `/fr/${ADMIN_PREFIX}/contacts/candidatures`, label: "contacts · candidatures" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/contacts/candidatures/pilotage`,
+    label: "contacts · candidatures · pilotage",
+  },
+  { path: `/fr/${ADMIN_PREFIX}/contacts/clients`, label: "contacts · clients" },
+  { path: `/fr/${ADMIN_PREFIX}/contacts/commercial`, label: "contacts · commercial" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/contacts/commercial/nouveau`,
+    label: "contacts · commercial · nouveau",
+  },
+  { path: `/fr/${ADMIN_PREFIX}/contacts/conferences`, label: "contacts · conferences" },
+  { path: `/fr/${ADMIN_PREFIX}/contacts/investisseurs`, label: "contacts · investisseurs" },
+  { path: `/fr/${ADMIN_PREFIX}/contacts/messages`, label: "contacts · messages" },
+  { path: `/fr/${ADMIN_PREFIX}/contacts/partenariats`, label: "contacts · partenariats" },
+  { path: `/fr/${ADMIN_PREFIX}/contacts/presse`, label: "contacts · presse" },
+  { path: `/fr/${ADMIN_PREFIX}/contacts/rendez-vous`, label: "contacts · rendez-vous" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/contacts/rendez-vous/calendrier`,
+    label: "contacts · rendez-vous · calendrier",
+  },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen`, label: "content-gen" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/author/manon`, label: "content-gen · author · manon" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/brand-voice-drift`,
+    label: "content-gen · brand-voice-drift",
+  },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/campaigns/new`, label: "content-gen · campaigns · new" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/citations-backfill`,
+    label: "content-gen · citations-backfill",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/cities-coverage`,
+    label: "content-gen · cities-coverage",
+  },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/cities-order`, label: "content-gen · cities-order" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/city-coverage`, label: "content-gen · city-coverage" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/city-equity`, label: "content-gen · city-equity" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/costs`, label: "content-gen · costs" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/coverage`, label: "content-gen · coverage" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/coverage/new`, label: "content-gen · coverage · new" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/coverage/presets`,
+    label: "content-gen · coverage · presets",
+  },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/embeddings`, label: "content-gen · embeddings" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/external-links`, label: "content-gen · external-links" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/geo/batches`, label: "content-gen · geo · batches" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/geo/batches/new`,
+    label: "content-gen · geo · batches · new",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/geo/coverage-table`,
+    label: "content-gen · geo · coverage-table",
+  },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/geo/history`, label: "content-gen · geo · history" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/hero-images`, label: "content-gen · hero-images" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/jobs`, label: "content-gen · jobs" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/kb-readonly`, label: "content-gen · kb-readonly" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/keyword-strategy`,
+    label: "content-gen · keyword-strategy",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/keyword-tracking`,
+    label: "content-gen · keyword-tracking",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/landing-variants`,
+    label: "content-gen · landing-variants",
+  },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/monitoring`, label: "content-gen · monitoring" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/news`, label: "content-gen · news" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/observatoire`, label: "content-gen · observatoire" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/onboarding`, label: "content-gen · onboarding" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/orchestrator`, label: "content-gen · orchestrator" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/orchestrator/adhoc`,
+    label: "content-gen · orchestrator · adhoc",
+  },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/publications`, label: "content-gen · publications" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/publications-status`,
+    label: "content-gen · publications-status",
+  },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/quality`, label: "content-gen · quality" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/queue`, label: "content-gen · queue" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/review-queue`, label: "content-gen · review-queue" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/rss`, label: "content-gen · rss" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/rss/import`, label: "content-gen · rss · import" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/rss/new`, label: "content-gen · rss · new" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/settings`, label: "content-gen · settings" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/settings/audience-mix`,
+    label: "content-gen · settings · audience-mix",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/settings/banned-phrases`,
+    label: "content-gen · settings · banned-phrases",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/settings/batches`,
+    label: "content-gen · settings · batches",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/settings/benefit-gate`,
+    label: "content-gen · settings · benefit-gate",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/settings/coverage-distribution`,
+    label: "content-gen · settings · coverage-distribution",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/settings/kb-ingest`,
+    label: "content-gen · settings · kb-ingest",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/settings/kill-switch`,
+    label: "content-gen · settings · kill-switch",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/settings/llms-txt`,
+    label: "content-gen · settings · llms-txt",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/settings/policies`,
+    label: "content-gen · settings · policies",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/settings/providers`,
+    label: "content-gen · settings · providers",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/settings/qa-policies`,
+    label: "content-gen · settings · qa-policies",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/settings/quality-loop`,
+    label: "content-gen · settings · quality-loop",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/settings/search-intent-distribution`,
+    label: "content-gen · settings · search-intent-distribution",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/settings/seed-initial`,
+    label: "content-gen · settings · seed-initial",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/content-gen/similarity-monitor`,
+    label: "content-gen · similarity-monitor",
+  },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/templates`, label: "content-gen · templates" },
+  { path: `/fr/${ADMIN_PREFIX}/content-gen/templates/new`, label: "content-gen · templates · new" },
+  { path: `/fr/${ADMIN_PREFIX}/devis`, label: "devis" },
+  { path: `/fr/${ADMIN_PREFIX}/devis/new`, label: "devis · new" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/documents-interventions/destinataires`,
+    label: "documents-interventions · destinataires",
+  },
+  {
+    path: `/fr/${ADMIN_PREFIX}/documents-interventions/import`,
+    label: "documents-interventions · import",
+  },
+  { path: `/fr/${ADMIN_PREFIX}/emails-envoyes`, label: "emails-envoyes" },
+  { path: `/fr/${ADMIN_PREFIX}/emails/gabarits`, label: "emails · gabarits" },
+  { path: `/fr/${ADMIN_PREFIX}/factures`, label: "factures" },
+  { path: `/fr/${ADMIN_PREFIX}/faq`, label: "faq" },
+  { path: `/fr/${ADMIN_PREFIX}/faq/new`, label: "faq · new" },
+  { path: `/fr/${ADMIN_PREFIX}/help`, label: "help" },
+  { path: `/fr/${ADMIN_PREFIX}/help/new`, label: "help · new" },
+  { path: `/fr/${ADMIN_PREFIX}/image-bank`, label: "image-bank" },
+  { path: `/fr/${ADMIN_PREFIX}/image-bank/analytics`, label: "image-bank · analytics" },
+  { path: `/fr/${ADMIN_PREFIX}/image-bank/bulk-import`, label: "image-bank · bulk-import" },
+  { path: `/fr/${ADMIN_PREFIX}/image-bank/categories`, label: "image-bank · categories" },
+  { path: `/fr/${ADMIN_PREFIX}/image-bank/library`, label: "image-bank · library" },
+  { path: `/fr/${ADMIN_PREFIX}/image-bank/licensing`, label: "image-bank · licensing" },
+  { path: `/fr/${ADMIN_PREFIX}/image-bank/quality`, label: "image-bank · quality" },
+  { path: `/fr/${ADMIN_PREFIX}/image-bank/seo-audit`, label: "image-bank · seo-audit" },
+  { path: `/fr/${ADMIN_PREFIX}/image-bank/settings`, label: "image-bank · settings" },
+  { path: `/fr/${ADMIN_PREFIX}/image-bank/sitemap-status`, label: "image-bank · sitemap-status" },
+  { path: `/fr/${ADMIN_PREFIX}/image-bank/tags`, label: "image-bank · tags" },
+  { path: `/fr/${ADMIN_PREFIX}/image-bank/taxonomy`, label: "image-bank · taxonomy" },
+  { path: `/fr/${ADMIN_PREFIX}/image-bank/upload`, label: "image-bank · upload" },
+  { path: `/fr/${ADMIN_PREFIX}/image-bank/usage-logs`, label: "image-bank · usage-logs" },
+  { path: `/fr/${ADMIN_PREFIX}/imprimes`, label: "imprimes" },
+  { path: `/fr/${ADMIN_PREFIX}/infra`, label: "infra" },
+  { path: `/fr/${ADMIN_PREFIX}/infra/backups`, label: "infra · backups" },
+  { path: `/fr/${ADMIN_PREFIX}/login`, label: "login" },
+  { path: `/fr/${ADMIN_PREFIX}/newsletter`, label: "newsletter" },
+  { path: `/fr/${ADMIN_PREFIX}/offres-emploi`, label: "offres-emploi" },
+  { path: `/fr/${ADMIN_PREFIX}/offres-emploi/new`, label: "offres-emploi · new" },
+  { path: `/fr/${ADMIN_PREFIX}/options`, label: "options" },
+  { path: `/fr/${ADMIN_PREFIX}/paiements`, label: "paiements" },
+  { path: `/fr/${ADMIN_PREFIX}/planning`, label: "planning" },
+  { path: `/fr/${ADMIN_PREFIX}/planning/charge`, label: "planning · charge" },
+  { path: `/fr/${ADMIN_PREFIX}/planning/hub`, label: "planning · hub" },
+  { path: `/fr/${ADMIN_PREFIX}/planning/pipeline`, label: "planning · pipeline" },
+  { path: `/fr/${ADMIN_PREFIX}/planning/previsionnel`, label: "planning · previsionnel" },
+  { path: `/fr/${ADMIN_PREFIX}/planning/timeline`, label: "planning · timeline" },
+  { path: `/fr/${ADMIN_PREFIX}/podcast`, label: "podcast" },
+  { path: `/fr/${ADMIN_PREFIX}/presse`, label: "presse" },
+  { path: `/fr/${ADMIN_PREFIX}/presse/communiques`, label: "presse · communiques" },
+  { path: `/fr/${ADMIN_PREFIX}/presse/communiques/import`, label: "presse · communiques · import" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/presse/communiques/nouveau`,
+    label: "presse · communiques · nouveau",
+  },
+  { path: `/fr/${ADMIN_PREFIX}/presse/couverture`, label: "presse · couverture" },
+  { path: `/fr/${ADMIN_PREFIX}/presse/couverture/nouveau`, label: "presse · couverture · nouveau" },
+  { path: `/fr/${ADMIN_PREFIX}/presse/kit-media`, label: "presse · kit-media" },
+  { path: `/fr/${ADMIN_PREFIX}/presse/kit-media/upload`, label: "presse · kit-media · upload" },
+  { path: `/fr/${ADMIN_PREFIX}/qr-codes`, label: "qr-codes" },
+  { path: `/fr/${ADMIN_PREFIX}/qr-codes/avis`, label: "qr-codes · avis" },
+  { path: `/fr/${ADMIN_PREFIX}/qr-codes/catalogue`, label: "qr-codes · catalogue" },
+  { path: `/fr/${ADMIN_PREFIX}/qr-codes/general`, label: "qr-codes · general" },
+  { path: `/fr/${ADMIN_PREFIX}/qr-codes/new`, label: "qr-codes · new" },
+  { path: `/fr/${ADMIN_PREFIX}/qr-codes/pages`, label: "qr-codes · pages" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi`, label: "qualiopi" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/clients/new`, label: "qualiopi · clients · new" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/config`, label: "qualiopi · config" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/conformite`, label: "qualiopi · conformite" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/emails`, label: "qualiopi · emails" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/entrees`, label: "qualiopi · entrees" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/formateurs`, label: "qualiopi · formateurs" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/formation-engine`, label: "qualiopi · formation-engine" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/qualiopi/formation-engine/validations`,
+    label: "qualiopi · formation-engine · validations",
+  },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/incidents`, label: "qualiopi · incidents" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/qualiopi/mode-auditeur/emargement`,
+    label: "qualiopi · mode-auditeur · emargement",
+  },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/moyens`, label: "qualiopi · moyens" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/offres`, label: "qualiopi · offres" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/pilotage`, label: "qualiopi · pilotage" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/remuneration`, label: "qualiopi · remuneration" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/revue-direction`, label: "qualiopi · revue-direction" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/rgpd`, label: "qualiopi · rgpd" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/stagiaires`, label: "qualiopi · stagiaires" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/stagiaires/new`, label: "qualiopi · stagiaires · new" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/veille`, label: "qualiopi · veille" },
+  { path: `/fr/${ADMIN_PREFIX}/qualiopi/vente/new`, label: "qualiopi · vente · new" },
+  { path: `/fr/${ADMIN_PREFIX}/reservations`, label: "reservations" },
+  { path: `/fr/${ADMIN_PREFIX}/settings/new`, label: "settings · new" },
+  { path: `/fr/${ADMIN_PREFIX}/site-explorer`, label: "site-explorer" },
+  { path: `/fr/${ADMIN_PREFIX}/site-explorer/anomalies`, label: "site-explorer · anomalies" },
+  { path: `/fr/${ADMIN_PREFIX}/site-explorer/apercus`, label: "site-explorer · apercus" },
+  {
+    path: `/fr/${ADMIN_PREFIX}/site-explorer/apercus/surcharge`,
+    label: "site-explorer · apercus · surcharge",
+  },
+  { path: `/fr/${ADMIN_PREFIX}/societe`, label: "societe" },
+  { path: `/fr/${ADMIN_PREFIX}/submissions`, label: "submissions" },
+  { path: `/fr/${ADMIN_PREFIX}/synchro-crm`, label: "synchro-crm" },
+  { path: `/fr/${ADMIN_PREFIX}/users`, label: "users" },
+  { path: `/fr/${ADMIN_PREFIX}/users/new`, label: "users · new" },
+  { path: `/fr/${ADMIN_PREFIX}/web-vitals`, label: "web-vitals" },
 ] as const;
 
 /**
