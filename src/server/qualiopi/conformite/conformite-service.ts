@@ -35,6 +35,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { whereVeilleExploitee } from "./veille-exploitee";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import {
   pieceAdmissibleAuDossier,
@@ -431,27 +432,14 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // off.26 : partenariats du réseau HANDICAP spécifiquement (≠ partenariat commercial).
     prisma.partenariat.count({ where: { type: "reseau_handicap" } }),
     // off.23/24/25 : veille EXPLOITÉE (actionDecidee non vide) et RÉCENTE (< 12 mois).
-    prisma.veille.count({
-      where: {
-        type: "legale",
-        dateVeille: { gte: seuil12Mois },
-        AND: [{ actionDecidee: { not: null } }, { actionDecidee: { not: "" } }],
-      },
-    }),
-    prisma.veille.count({
-      where: {
-        type: "metiers",
-        dateVeille: { gte: seuil12Mois },
-        AND: [{ actionDecidee: { not: null } }, { actionDecidee: { not: "" } }],
-      },
-    }),
-    prisma.veille.count({
-      where: {
-        type: "pedagogique",
-        dateVeille: { gte: seuil12Mois },
-        AND: [{ actionDecidee: { not: null } }, { actionDecidee: { not: "" } }],
-      },
-    }),
+    //
+    // 🔑 La règle vit dans `whereVeilleExploitee`, partagée avec le manifeste
+    // d'audit. Elle était juste ici et ABSENTE là-bas : le manifeste déclarait
+    // 23/24/25 couverts pour toujours. Deux prédicats jumeaux s'éloignent à la
+    // première borne qui bouge — celui-ci n'a plus de jumeau.
+    prisma.veille.count({ where: whereVeilleExploitee("legale", maintenant) }),
+    prisma.veille.count({ where: whereVeilleExploitee("metiers", maintenant) }),
+    prisma.veille.count({ where: whereVeilleExploitee("pedagogique", maintenant) }),
     // off.26 : email du référent handicap — le NOM seul (défaut config) ne prouve pas la désignation.
     getQualiopiConfig("referent_handicap_email").catch(() => ""),
     // off.31 : procédure de réclamation PUBLIÉE (attestation explicite ≠ nom responsable par défaut).

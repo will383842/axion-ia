@@ -13,6 +13,7 @@
 
 import JSZip from "jszip";
 import { prisma } from "@/lib/prisma";
+import { whereVeilleExploitee } from "./veille-exploitee";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "@/server/qualiopi/conformite/conformite-service";
 import { renderRegistrePdfBuffer, REGISTRE_TYPES } from "@/server/qualiopi/registres/registres-pdf";
@@ -320,11 +321,21 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
   });
 
   // ── Preuves enrichies pour le manifeste ──────────────────────────────────
-  // off.23/24/25 : veille par type
+  // off.23/24/25 : veille EXPLOITÉE par type.
+  //
+  // 🔴 2026-09-13 — CES TROIS COMPTES N'AVAIENT AUCUN FILTRE. Le manifeste — la
+  // pièce qu'on remet au certificateur — déclarait donc 23/24/25 couverts POUR
+  // TOUJOURS : une entrée de 2019, sans décision, y suffisait. L'écran de
+  // conformité, lui, filtrait correctement depuis toujours.
+  //
+  // 🔑 Le mauvais sens de l'écart : l'instrument le plus PERMISSIF était celui
+  // qu'on donne à lire à l'auditeur. Les deux lisent désormais le même prédicat,
+  // pour que la prochaine borne qui bouge les fasse bouger ensemble.
+  const maintenantVeille = new Date();
   const [nbVeilleLegale, nbVeilleMetiers, nbVeillePedagogique] = await Promise.all([
-    prisma.veille.count({ where: { type: "legale" } }),
-    prisma.veille.count({ where: { type: "metiers" } }),
-    prisma.veille.count({ where: { type: "pedagogique" } }),
+    prisma.veille.count({ where: whereVeilleExploitee("legale", maintenantVeille) }),
+    prisma.veille.count({ where: whereVeilleExploitee("metiers", maintenantVeille) }),
+    prisma.veille.count({ where: whereVeilleExploitee("pedagogique", maintenantVeille) }),
   ]);
 
   // off.26 : nom du référent handicap
