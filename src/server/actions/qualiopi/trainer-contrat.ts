@@ -40,6 +40,14 @@ import {
   verifierEligibiliteContrat,
   type SalarieContrat,
 } from "@/server/qualiopi/trainers/contrat-travail";
+import {
+  empreinteMentions,
+  empreinteScellee,
+  refusNotification,
+  refusReemission,
+  CLE_EMPREINTE_MENTIONS,
+  type PieceContratEnCours,
+} from "@/server/rh/contrat-piece-en-cours";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -105,6 +113,35 @@ export async function updateTrainerContratAction(
   const parsed = contratSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides (dates, durée ou période d'essai)." };
   const { id, ...v } = parsed.data;
+
+  /*
+    🔴 UNE DATE D'EMBAUCHE NE S'EFFACE PAS APRÈS L'ÉTABLISSEMENT DU CONTRAT.
+
+    Recette du 13/09. Effacer ce champ éteignait EN SILENCE l'alerte CRITIQUE de
+    remise du CDD et remettait le compteur d'urgence à zéro : `remiseCddEnSouffrance`
+    et `joursDepuisEmbauche` n'ont plus d'origine à compter, donc plus de retard à
+    signaler. Le geste qui aurait dû crier devenait le geste qui fait taire.
+
+    ⚠️ Et la pièce, elle, PORTE cette date : le PDF l'imprime, le délai de
+    l'art. L.1242-13 en dépend, et la requalification en CDI qui le sanctionne
+    aussi. Un champ vide côté fiche pendant qu'un contrat signé affirme le
+    contraire n'est pas une donnée manquante — c'est une contradiction.
+  */
+  if (v.dateEmbauche === null) {
+    const pieceExistante = await prisma.documentGenere.findFirst({
+      where: { type: "contrat_travail", trainerId: id, annuleeAt: null },
+      select: { numero: true },
+    });
+    if (pieceExistante !== null) {
+      return {
+        error:
+          `${pieceExistante.numero} porte la date d'entrée en fonction : elle ne s'efface pas ` +
+          `tant que cette pièce existe. Le délai de remise d'un CDD (art. L.1242-13) se compte ` +
+          `depuis cette date, et l'effacer éteindrait l'alerte au lieu de la résoudre. ` +
+          `Corrigez la date, ou annulez la pièce d'abord.`,
+      };
+    }
+  }
 
   try {
     await prisma.trainer.update({
@@ -181,6 +218,34 @@ function euros(cents: number): string {
  * une question de configuration serait disproportionné — produire une pièce
  * qu'on pourrait croire opposable le serait davantage.
  */
+
+/**
+ * La pièce `contrat_travail` en cours d'un salarié, réduite à ce qui décide d'un
+ * geste — ou `null` s'il n'y en a aucune.
+ *
+ * ⚠️ `revokedAt: null` : une signature révoquée n'engage plus personne. La
+ * compter ferait refuser une réémission parfaitement légitime, sur une
+ * signature que quelqu'un a justement retirée pour permettre cette réémission.
+ */
+async function lirePieceContratEnCours(trainerId: string): Promise<PieceContratEnCours | null> {
+  const piece = await prisma.documentGenere.findFirst({
+    where: { type: "contrat_travail", trainerId, annuleeAt: null },
+    orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+    select: {
+      numero: true,
+      metadata: true,
+      signatures: { where: { revokedAt: null }, select: { partie: true } },
+    },
+  });
+  if (piece === null) return null;
+  return {
+    numero: piece.numero,
+    // Parties DISTINCTES : deux lignes de la même partie ne font pas deux
+    // signatures — un doublon en base ferait croire à un contrat contresigné.
+    partiesSignataires: [...new Set(piece.signatures.map((s) => s.partie as string))],
+    empreinte: empreinteScellee(piece.metadata),
+  };
+}
 export async function genererContratTravailAction(input: {
   trainerId: string;
 }): Promise<ActionResult<{ documentId: string; numero: string; specimen: boolean }>> {
@@ -249,6 +314,27 @@ export async function genererContratTravailAction(input: {
     };
   }
 
+  /*
+    🔴 ON REFUSE DE RÉÉCRIRE UN CONTRAT DÉJÀ SIGNÉ (recette du 13/09).
+
+    Cette action était STRUCTURELLEMENT aveugle aux signatures : son `select`
+    ci-dessus ne demandait ni les pièces produites ni leur état. Corriger une
+    coquille dans un intitulé de poste puis recliquer « Établir le contrat »
+    suffisait donc à produire un tirage neuf, non signé — et :
+
+      · l'espace du salarié ne montre que le tirage le PLUS RÉCENT, à dessein
+        (afficher les tirages côte à côte ferait signer le périmé aussi souvent
+        que le bon). L'intéressé ne voyait donc plus le contrat qu'il avait
+        signé, c'est-à-dire sa seule preuve à lui ;
+      · le pilotage repassait la ligne en « à signer ».
+
+    ⚠️ On borne sur UNE signature, pas deux. Un contrat que le salarié a signé et
+    que l'employeur n'a pas encore contresigné est DÉJÀ son engagement.
+  */
+  const pieceEnCours = await lirePieceContratEnCours(trainerId);
+  const refus = refusReemission(pieceEnCours);
+  if (refus !== null) return { error: refus.message };
+
   const [libelleConvention, idcc, representant] = await Promise.all([
     getQualiopiConfig("convention_collective"),
     getQualiopiConfig("convention_collective_idcc"),
@@ -266,6 +352,20 @@ export async function genererContratTravailAction(input: {
     // impossible, depuis un `documents_generes.id`, de savoir à qui adresser le
     // lien de signature — et l'espace formateur ne la verrait jamais.
     refs: { trainerId },
+    /*
+      🔑 L'EMPREINTE DES MENTIONS, SCELLÉE À L'ÉMISSION.
+
+      Elle répond à une question que la pièce ne sait pas poser seule : « le PDF
+      porte-t-il encore ce que la fiche affirme ? » Sans elle, on corrige une
+      mention, on clique « Prévenir le salarié », et le message décrit un contrat
+      que le PDF dément — c'est le message que l'intéressé produirait.
+
+      ⚠️ PAS `updatedAt` : il bouge à chaque écriture sur la ligne, y compris
+      quand on CONSIGNE LA REMISE, geste qui suit normalement l'envoi. La pièce
+      serait déclarée périmée par le geste même qui atteste qu'elle a été remise.
+    */
+    metadata: { [CLE_EMPREINTE_MENTIONS]: empreinteMentions(salarie) },
+
     buildElement: (numero) =>
       React.createElement(ContratTravailPdf, {
         data: {
@@ -381,15 +481,32 @@ export async function notifierContratTravailAction(input: {
 
   const trainer = await prisma.trainer.findUnique({
     where: { id: trainerId },
+    /*
+      ⚠️ CE `select` PORTE TOUTES LES MENTIONS DU CONTRAT, pas seulement celles
+      que l'e-mail cite. Il sert à recalculer l'empreinte et à vérifier que la
+      pièce annoncée les porte encore : une lecture partielle rendrait une
+      empreinte partielle, donc un contrôle qui laisse passer exactement ce
+      qu'il est censé attraper.
+    */
     select: {
       email: true,
       nom: true,
       prenom: true,
       statut: true,
       actif: true,
+      dateNaissance: true,
+      lieuNaissance: true,
+      adressePersonnelle: true,
+      dateEmbauche: true,
       contratType: true,
       contratPoste: true,
-      dateEmbauche: true,
+      contratClassification: true,
+      contratDureeHebdoHeures: true,
+      contratPeriodeEssaiMois: true,
+      contratLieuTravail: true,
+      contratDateFin: true,
+      contratMotifCdd: true,
+      fixeMensuelBrutCents: true,
     },
   });
   if (trainer === null) return { error: "Formateur introuvable" };
@@ -419,7 +536,7 @@ export async function notifierContratTravailAction(input: {
   const piece = await prisma.documentGenere.findFirst({
     where: { type: "contrat_travail", trainerId, annuleeAt: null },
     orderBy: [{ createdAt: "desc" }, { id: "desc" }],
-    select: { numero: true, metadata: true },
+    select: { numero: true, metadata: true, statutSignature: true },
   });
   if (piece === null) {
     return {
@@ -438,6 +555,49 @@ export async function notifierContratTravailAction(input: {
         "Ce contrat porte la mention SPÉCIMEN : il n'est pas opposable et ne peut pas être signé. Renseignez la convention collective de l'organisme, établissez-le à nouveau, puis prévenez le salarié.",
     };
   }
+
+  const salarieNotifie: SalarieContrat = {
+    statut: trainer.statut as SalarieContrat["statut"],
+    nom: trainer.nom,
+    prenom: trainer.prenom,
+    dateNaissance: trainer.dateNaissance,
+    lieuNaissance: trainer.lieuNaissance,
+    adressePersonnelle: trainer.adressePersonnelle,
+    dateEmbauche: trainer.dateEmbauche,
+    contratType: trainer.contratType,
+    contratPoste: trainer.contratPoste,
+    contratClassification: trainer.contratClassification,
+    contratDureeHebdoHeures:
+      trainer.contratDureeHebdoHeures === null ? null : Number(trainer.contratDureeHebdoHeures),
+    contratPeriodeEssaiMois: trainer.contratPeriodeEssaiMois,
+    contratLieuTravail: trainer.contratLieuTravail,
+    contratDateFin: trainer.contratDateFin,
+    contratMotifCdd: trainer.contratMotifCdd,
+    fixeMensuelBrutCents: trainer.fixeMensuelBrutCents,
+  };
+
+  /*
+    🔴 ON REFUSE D'ANNONCER UNE PIÈCE QUI NE PORTE PLUS LES MENTIONS DE LA FICHE.
+
+    Le message ci-dessous décrit `trainer` — la fiche VIVANTE — alors qu'il
+    annonce `piece.numero`. Rien n'empêchait les deux de diverger : corriger le
+    poste après l'émission, sans ré-établir, faisait partir « votre CDD pour le
+    poste de Secrétaire administrative… Référence : AXI-DOC-2026-050 » pendant
+    que le PDF de cette même pièce portait « Formatrice IA ».
+
+    ⚠️ Et c'est l'E-MAIL que l'intéressé produirait s'il contestait : il scelle,
+    en signant, une mention affirmant avoir pris connaissance de la pièce dans
+    son intégralité — sur un poste que l'employeur lui a annoncé autrement.
+  */
+  const refusNotif = refusNotification(
+    {
+      numero: piece.numero,
+      partiesSignataires: [],
+      empreinte: empreinteScellee(piece.metadata),
+    },
+    empreinteMentions(salarieNotifie),
+  );
+  if (refusNotif !== null) return { error: refusNotif.message };
 
   const envoi = await enqueueEmail(
     "formateur-contrat-travail",
@@ -465,6 +625,10 @@ export async function notifierContratTravailAction(input: {
       dateEmbauche: dateFr(trainer.dateEmbauche),
       numeroPiece: piece.numero,
       lienEspace: publicUrl(FORMATEUR_CONNEXION_PATH).toString(),
+      // 🔑 « Prévenir à nouveau » reste légitime après les deux signatures —
+      // rouvrir l'accès à son exemplaire en est un usage normal. C'est la
+      // PHRASE qui ne l'était pas : elle disait « à lire et à signer ».
+      dejaSigne: piece.statutSignature === "signee",
     },
     {
       // 🔑 `entityType`/`entityId` rendent l'envoi RETROUVABLE : c'est ce que

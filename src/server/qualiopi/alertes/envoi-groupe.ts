@@ -29,6 +29,7 @@ import {
   type AlerteARouter,
 } from "./routage";
 import { resoudreDestinataires } from "./destinataires";
+import { libellesDesCibles, texteCible } from "./libelle-cible";
 
 /**
  * Les codes notifiés en plus des `critique` — déblocages du parcours vente.
@@ -86,6 +87,18 @@ export async function notifierAlertesGroupees(
   });
   if (candidates.length === 0) return vide;
 
+  /*
+    🔴 L'E-MAIL D'ALERTE PORTAIT « TrainingSession / 0d4e0c8b-3aaa-… ».
+
+    Sur l'écran, un UUID coûte un aller-retour. Ici il ne coûte RIEN de moins :
+    le destinataire n'a même pas d'écran sur lequel cliquer. Le message arrivait
+    donc en annonçant un problème sur une entité qu'il ne nommait pas.
+
+    ⚠️ Résolu UNE FOIS pour tout le tour, avant le découpage en lots — une
+    requête par TYPE présent, pas une par alerte ni une par lot.
+  */
+  const libellesCibles = await libellesDesCibles(candidates);
+
   const parId = new Map(candidates.map((a) => [a.id, a]));
   const { lots, sansGuichet } = regrouperAlertes(candidates as ReadonlyArray<AlerteARouter>);
 
@@ -140,12 +153,19 @@ export async function notifierAlertesGroupees(
       code: lot.code,
       titre: lot.titre,
       guichet: LIBELLE_GUICHET[lot.guichet],
-      occurrences: retenues.map((a) => ({
-        message: a.message,
-        ...(a.cibleType != null ? { cibleType: a.cibleType } : {}),
-        ...(a.cibleId != null ? { cibleId: a.cibleId } : {}),
-        createdAt: fmtDate(a.createdAt),
-      })),
+      occurrences: retenues.map((a) => {
+        const libelle = texteCible(a.cibleType, a.cibleId, libellesCibles);
+        return {
+          message: a.message,
+          ...(a.cibleType != null ? { cibleType: a.cibleType } : {}),
+          ...(a.cibleId != null ? { cibleId: a.cibleId } : {}),
+          // 🔑 Le gabarit PRÉFÈRE ce libellé quand il est là, et retombe sur
+          // l'ancien affichage sinon : les messages déjà en file, produits avant
+          // ce lot, restent lisibles.
+          ...(libelle !== null ? { cibleLibelle: libelle } : {}),
+          createdAt: fmtDate(a.createdAt),
+        };
+      }),
     };
     if (cible.repli != null) payload["repli"] = cible.repli;
 

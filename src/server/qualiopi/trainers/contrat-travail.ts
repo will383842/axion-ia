@@ -230,3 +230,94 @@ export function plafondLegalEssaiMois(classification: string | null): number | n
   if (c.includes("ouvrier") || c.includes("employé") || c.includes("employe")) return 2;
   return null;
 }
+
+/** Le plafond légal applicable, et le texte qui le fonde. */
+export interface PlafondEssai {
+  /** Plafond exprimé en MOIS ENTIERS — l'unité du champ de saisie. */
+  readonly plafondMois: number;
+  /** L'article qui le fonde. Il n'est PAS le même selon la nature du contrat. */
+  readonly article: "L.1221-19" | "L.1242-10";
+  /** Ce qu'on affiche à l'opérateur, plafond compris. */
+  readonly libelle: string;
+  /**
+   * Le plafond réel est-il INEXPRIMABLE dans un champ en mois entiers ?
+   *
+   * 🔴 Vrai pour tout CDD d'au plus six mois : son plafond est de DEUX SEMAINES.
+   * Le champ ne saisit que des mois entiers — il n'existe donc aucune valeur
+   * non nulle qui soit légale. Le taire ferait saisir « 1 » en croyant rester
+   * sous le plafond.
+   */
+  readonly inexprimableEnMois: boolean;
+}
+
+/**
+ * Plafond légal de la période d'essai — CDI ET CDD.
+ *
+ * ## 🔴 Le défaut que cette fonction remplace (recette du 13/09)
+ *
+ * `plafondLegalEssaiMois` ne reçoit que la CLASSIFICATION. Elle rend donc le
+ * plafond de l'art. L.1221-19, celui du CDI, quelle que soit la nature du
+ * contrat. Sur un CDD de six mois classé « Cadre », l'écran affichait en gris,
+ * rassurant : « Plafond légal : 4 mois ».
+ *
+ * Or l'art. L.1242-10 plafonne l'essai d'un CDD à UN JOUR PAR SEMAINE de durée
+ * prévue, dans la limite de deux semaines jusqu'à six mois, d'un mois au-delà.
+ * Quatre mois d'essai sur ce contrat sont NULS : le salarié est réputé confirmé
+ * depuis son premier jour, et une rupture pendant « l'essai » est un
+ * licenciement sans cause réelle et sérieuse.
+ *
+ * ⚠️ Le gabarit PDF citait déjà L.1242-10 en note de bas de page — sans que rien
+ * ne l'ait jamais appliqué. Une référence juridique affichée sous une valeur
+ * qu'elle contredit est pire qu'aucune référence : elle atteste.
+ *
+ * `null` quand on ne peut pas trancher — un CDD sans terme connu, une
+ * classification inclassable. Mieux vaut ne rien dire que se tromper de règle.
+ */
+export function plafondLegalEssai(input: {
+  readonly contratType: TypeContratTravail | null;
+  readonly contratClassification: string | null;
+  readonly dateEmbauche: Date | null;
+  readonly contratDateFin: Date | null;
+}): PlafondEssai | null {
+  if (input.contratType === "cdd") {
+    const { dateEmbauche, contratDateFin } = input;
+    // Sans les deux bornes, la durée prévue est inconnue : on se tait plutôt
+    // que d'appliquer au hasard l'un des deux plafonds de L.1242-10.
+    if (dateEmbauche === null || contratDateFin === null) return null;
+    const jours = Math.round(
+      (contratDateFin.getTime() - dateEmbauche.getTime()) / (24 * 60 * 60 * 1000),
+    );
+    if (jours <= 0) return null;
+    // « Six mois » au sens du texte. 183 jours est la lecture retenue : un
+    // contrat pile à la limite bascule du côté le plus PROTECTEUR du salarié.
+    const auDelaDeSixMois = jours > 183;
+    return auDelaDeSixMois
+      ? {
+          plafondMois: 1,
+          article: "L.1242-10",
+          libelle:
+            "Plafond légal : 1 mois pour un CDD de plus de six mois (art. L.1242-10) — " +
+            "un jour par semaine de durée prévue, dans cette limite.",
+          inexprimableEnMois: false,
+        }
+      : {
+          plafondMois: 0,
+          article: "L.1242-10",
+          libelle:
+            "Plafond légal : DEUX SEMAINES pour un CDD d'au plus six mois (art. L.1242-10) — " +
+            "un jour par semaine de durée prévue, dans cette limite. Ce champ ne se saisit " +
+            "qu'en mois entiers : laissez-le vide, et portez la durée exacte par avenant.",
+          inexprimableEnMois: true,
+        };
+  }
+  const mois = plafondLegalEssaiMois(input.contratClassification);
+  if (mois === null) return null;
+  return {
+    plafondMois: mois,
+    article: "L.1221-19",
+    libelle:
+      `Plafond légal : ${mois} mois pour cette classification (art. L.1221-19). ` +
+      "Votre convention peut en fixer un plus court — le sien prime alors.",
+    inexprimableEnMois: false,
+  };
+}

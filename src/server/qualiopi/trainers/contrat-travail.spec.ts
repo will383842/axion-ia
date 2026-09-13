@@ -13,6 +13,7 @@ import { describe, expect, it } from "vitest";
 import {
   motifSpecimenContrat,
   plafondLegalEssaiMois,
+  plafondLegalEssai,
   verifierEligibiliteContrat,
   type SalarieContrat,
 } from "./contrat-travail";
@@ -232,5 +233,147 @@ describe("plafondLegalEssaiMois — il parle aussi le vocabulaire de la conventi
     expect(plafondLegalEssaiMois("Ouvrier qualifié")).toBe(2);
     expect(plafondLegalEssaiMois("")).toBeNull();
     expect(plafondLegalEssaiMois(null)).toBeNull();
+  });
+});
+
+describe("🔴 plafondLegalEssai — le CDD n'obéit PAS à l'article du CDI", () => {
+  /*
+    Recette du 13/09. `plafondLegalEssaiMois` ne reçoit que la CLASSIFICATION :
+    elle rend donc toujours le plafond de l'art. L.1221-19, celui du CDI. Sur un
+    CDD de six mois classé « Cadre », l'écran affichait en gris, rassurant :
+    « Plafond légal : 4 mois ».
+
+    Or l'art. L.1242-10 limite l'essai d'un CDD à UN JOUR PAR SEMAINE de durée
+    prévue, dans la limite de deux semaines jusqu'à six mois, d'un mois au-delà.
+    Quatre mois y sont NULS : le salarié est réputé confirmé depuis son premier
+    jour, et une rupture pendant « l'essai » devient un licenciement sans cause
+    réelle et sérieuse.
+
+    ⚠️ Le gabarit PDF citait DÉJÀ L.1242-10 en note de bas de page — sans que
+    rien ne l'ait jamais appliqué. Une référence juridique affichée sous une
+    valeur qu'elle contredit ne prévient pas : elle atteste.
+  */
+  const cadre = "Cadre — position 2.1";
+  const j = (s: string) => new Date(`${s}T00:00:00.000Z`);
+
+  it("🔴 CDD de 6 mois classé CADRE : DEUX SEMAINES, pas quatre mois", () => {
+    const p = plafondLegalEssai({
+      contratType: "cdd",
+      contratClassification: cadre,
+      dateEmbauche: j("2026-10-01"),
+      contratDateFin: j("2027-03-31"),
+    });
+    expect(p?.article).toBe("L.1242-10");
+    expect(p?.plafondMois).toBe(0);
+    expect(p?.libelle).toMatch(/DEUX SEMAINES/);
+  });
+
+  it("🔑 ce plafond est INEXPRIMABLE dans un champ en mois entiers, et le dit", () => {
+    // Le champ est un `Int` en mois : aucune valeur non nulle n'y est légale.
+    // Le taire ferait saisir « 1 » en croyant rester sous le plafond.
+    const p = plafondLegalEssai({
+      contratType: "cdd",
+      contratClassification: cadre,
+      dateEmbauche: j("2026-10-01"),
+      contratDateFin: j("2027-01-31"),
+    });
+    expect(p?.inexprimableEnMois).toBe(true);
+    expect(p?.libelle).toMatch(/laissez-le vide/i);
+  });
+
+  it("🔴 CDD de PLUS de six mois : un mois", () => {
+    const p = plafondLegalEssai({
+      contratType: "cdd",
+      contratClassification: cadre,
+      dateEmbauche: j("2026-10-01"),
+      contratDateFin: j("2027-10-01"),
+    });
+    expect(p?.article).toBe("L.1242-10");
+    expect(p?.plafondMois).toBe(1);
+    expect(p?.inexprimableEnMois).toBe(false);
+  });
+
+  it("⚠️ un CDD pile à la limite bascule du côté PROTECTEUR du salarié", () => {
+    // 183 jours exactement : on retient le plafond le plus court.
+    const p = plafondLegalEssai({
+      contratType: "cdd",
+      contratClassification: cadre,
+      dateEmbauche: j("2026-10-01"),
+      contratDateFin: j("2027-04-02"),
+    });
+    expect(p?.plafondMois).toBe(0);
+  });
+
+  it("🔑 CDD sans terme connu : on se TAIT plutôt que d'appliquer au hasard", () => {
+    expect(
+      plafondLegalEssai({
+        contratType: "cdd",
+        contratClassification: cadre,
+        dateEmbauche: j("2026-10-01"),
+        contratDateFin: null,
+      }),
+    ).toBeNull();
+    expect(
+      plafondLegalEssai({
+        contratType: "cdd",
+        contratClassification: cadre,
+        dateEmbauche: null,
+        contratDateFin: j("2027-03-31"),
+      }),
+    ).toBeNull();
+  });
+
+  it("🔑 un terme AVANT l'embauche ne produit pas un plafond absurde", () => {
+    expect(
+      plafondLegalEssai({
+        contratType: "cdd",
+        contratClassification: cadre,
+        dateEmbauche: j("2027-03-31"),
+        contratDateFin: j("2026-10-01"),
+      }),
+    ).toBeNull();
+  });
+
+  it("🔑 LE CDI GARDE SON ARTICLE — le témoin qui discrimine", () => {
+    /*
+      Sans lui, « toujours rendre L.1242-10 » passerait tous les tests ci-dessus
+      et ferait afficher « deux semaines » sur un CDI de cadre — l'erreur
+      symétrique, tout aussi fausse, et qui ferait raccourcir des essais
+      parfaitement légaux.
+    */
+    const p = plafondLegalEssai({
+      contratType: "cdi",
+      contratClassification: cadre,
+      dateEmbauche: j("2026-10-01"),
+      contratDateFin: null,
+    });
+    expect(p?.article).toBe("L.1221-19");
+    expect(p?.plafondMois).toBe(4);
+    expect(p?.libelle).toMatch(/convention peut en fixer un plus court/i);
+  });
+
+  it.each([
+    ["Technicien niveau C", 3],
+    ["Employé niveau B", 2],
+  ])("CDI %s → %i mois", (classification, attendu) => {
+    expect(
+      plafondLegalEssai({
+        contratType: "cdi",
+        contratClassification: classification,
+        dateEmbauche: null,
+        contratDateFin: null,
+      })?.plafondMois,
+    ).toBe(attendu);
+  });
+
+  it("se tait sur une classification inclassable", () => {
+    expect(
+      plafondLegalEssai({
+        contratType: "cdi",
+        contratClassification: "Niveau 3, coefficient 210",
+        dateEmbauche: null,
+        contratDateFin: null,
+      }),
+    ).toBeNull();
   });
 });

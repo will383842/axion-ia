@@ -18,6 +18,14 @@ interface Occurrence {
   message?: string;
   cibleType?: string;
   cibleId?: string;
+  /**
+   * Ce que la cible EST, en toutes lettres — « Session : Prompt engineering,
+   * 12/09/2026 » plutôt que « TrainingSession / 0d4e0c8b-… ».
+   *
+   * ⚠️ FACULTATIF à dessein : les messages déjà en file, produits avant ce lot,
+   * ne le portent pas, et le gabarit retombe alors sur l'ancien affichage.
+   */
+  cibleLibelle?: string;
   createdAt?: string;
 }
 
@@ -127,7 +135,23 @@ export function QualiopiAlerteInterneEmail({
         <Text key={`${o.cibleId ?? "sans-cible"}-${i}`} style={emailStyles.paragraphStyle}>
           {occurrences.length > 1 ? `${i + 1}. ` : ""}
           {o.message ?? titre}
-          {o.cibleType != null && o.cibleId != null ? ` — ${o.cibleType} / ${o.cibleId}` : ""}
+          {/*
+            🔑 LE LIBELLÉ D'ABORD, l'ancien affichage en repli.
+
+            Ce message portait « — TrainingSession / 0d4e0c8b-3aaa-… ». Sur un
+            écran, un UUID coûte un aller-retour ; ici il coûte davantage, car le
+            destinataire n'a aucun écran sur lequel cliquer : le message
+            annonçait un problème sur une entité qu'il ne nommait pas.
+
+            ⚠️ Le repli n'est pas décoratif : les messages DÉJÀ EN FILE, produits
+            avant ce lot, ne portent pas `cibleLibelle`. Les laisser tomber à
+            vide effacerait la seule indication qu'ils avaient.
+          */}
+          {o.cibleLibelle != null && o.cibleLibelle !== ""
+            ? ` — ${o.cibleLibelle}`
+            : o.cibleType != null && o.cibleId != null
+              ? ` — ${o.cibleType} / ${o.cibleId}`
+              : ""}
           {o.createdAt != null ? ` — depuis le ${o.createdAt}` : ""}
         </Text>
       ))}

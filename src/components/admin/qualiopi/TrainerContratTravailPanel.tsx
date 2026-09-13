@@ -48,7 +48,7 @@ import {
   notifierContratTravailAction,
   updateTrainerContratAction,
 } from "@/server/actions/qualiopi/trainer-contrat";
-import { plafondLegalEssaiMois } from "@/server/qualiopi/trainers/contrat-travail";
+import { plafondLegalEssai } from "@/server/qualiopi/trainers/contrat-travail";
 
 const inputCls =
   "w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-admin-accent)]";
@@ -59,6 +59,20 @@ const fieldCls = "flex flex-col gap-1";
 /** `Date` → `yyyy-mm-dd` pour un `<input type="date">`, chaîne vide si absente. */
 function versChampDate(d: Date | null): string {
   return d === null ? "" : d.toISOString().slice(0, 10);
+}
+
+/**
+ * L'inverse de `versChampDate` — pour dériver le plafond d'essai d'un CDD de la
+ * durée EN COURS DE SAISIE, pas de celle enregistrée.
+ *
+ * ⚠️ `null` sur une date incomplète (« 2026-1 » pendant la frappe) : sans ce
+ * refus, `new Date` rendrait une date valide mais absurde, et l'avertissement
+ * clignoterait entre deux plafonds à chaque caractère tapé.
+ */
+function depuisChampDate(v: string): Date | null {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return null;
+  const d = new Date(`${v}T00:00:00.000Z`);
+  return Number.isNaN(d.getTime()) ? null : d;
 }
 
 export interface TrainerContratTravailPanelProps {
@@ -93,6 +107,14 @@ export interface TrainerContratTravailPanelProps {
    */
   contratExistant: { documentId: string; numero: string; emisLe: string } | null;
   /**
+   * La pièce déjà produite ne porte PLUS les mentions de la fiche.
+   *
+   * 🔴 Décidé côté serveur, sur une EMPREINTE des mentions scellée à l'émission —
+   * jamais sur `updatedAt`, qui bouge aussi quand on consigne la remise de
+   * l'exemplaire, c'est-à-dire au geste qui SUIT normalement l'envoi.
+   */
+  contratDesynchronise: boolean;
+  /**
    * L'annonce faite au salarié, si elle a eu lieu. `null` = jamais prévenu.
    *
    * 🔑 Lu dans le journal des e-mails, pas déduit : sans cette trace,
@@ -116,6 +138,7 @@ export function TrainerContratTravailPanel({
   conventionRenseignee,
   hrefConfig,
   contratExistant,
+  contratDesynchronise,
   notification,
   remisLe,
 }: TrainerContratTravailPanelProps): React.ReactElement {
@@ -142,17 +165,32 @@ export function TrainerContratTravailPanel({
   const [motifCdd, setMotifCdd] = useState(initial.contratMotifCdd ?? "");
   const [remise, setRemise] = useState(remisLe ?? "");
 
-  // Plafond LÉGAL de la période d'essai, dérivé de la classification saisie.
-  // ⚠️ La convention peut en fixer un plus COURT, auquel cas c'est le sien qui
-  // s'applique — le message le dit, parce qu'un plafond affiché sans cette
-  // réserve se lirait comme une autorisation.
-  const plafondEssai = plafondLegalEssaiMois(classification);
+  /*
+    Plafond LÉGAL de la période d'essai.
+
+    🔴 IL DÉPEND DE LA NATURE DU CONTRAT, et cette fonction ne le savait pas
+    (recette du 13/09). Elle ne recevait que la classification, donc elle rendait
+    toujours le plafond du CDI (art. L.1221-19). Sur un CDD de six mois classé
+    « Cadre », l'écran affichait « Plafond légal : 4 mois » — rassurant, et faux :
+    l'art. L.1242-10 le limite à DEUX SEMAINES. Quatre mois d'essai y sont nuls,
+    et le salarié est réputé confirmé depuis son premier jour.
+
+    ⚠️ La convention peut en fixer un plus COURT, auquel cas c'est le sien qui
+    s'applique — le libellé le dit, parce qu'un plafond affiché sans cette
+    réserve se lirait comme une autorisation.
+  */
+  const plafondEssai = plafondLegalEssai({
+    contratType: type === "" ? null : type,
+    contratClassification: classification,
+    dateEmbauche: depuisChampDate(dateEmbauche),
+    contratDateFin: depuisChampDate(dateFin),
+  });
   const essaiNombre = essai.trim() === "" ? null : Number(essai);
   const essaiDepasse =
     plafondEssai !== null &&
     essaiNombre !== null &&
     Number.isFinite(essaiNombre) &&
-    essaiNombre > plafondEssai;
+    essaiNombre > plafondEssai.plafondMois;
 
   function enregistrer(e: React.FormEvent) {
     e.preventDefault();
@@ -407,23 +445,44 @@ export function TrainerContratTravailPanel({
               value={essai}
               disabled={isPending}
               inputMode="numeric"
+              // Le plafond légal et son dépassement sont RATTACHÉS au champ : un
+              // lecteur d'écran les énonce en y entrant, sans avoir à explorer
+              // ce qui suit l'input pour les découvrir.
+              aria-describedby="ct-essai-aide"
+              aria-invalid={essaiDepasse || undefined}
               onChange={(e) => setEssai(e.target.value)}
               placeholder="laisser vide si aucune"
             />
-            {plafondEssai !== null && (
-              <span
-                className={
-                  essaiDepasse
-                    ? "text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-danger)]"
-                    : "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
-                }
-                role={essaiDepasse ? "alert" : undefined}
-              >
-                {essaiDepasse
-                  ? `Au-delà du plafond légal de ${plafondEssai} mois pour cette classification (art. L.1221-19).`
-                  : `Plafond légal : ${plafondEssai} mois. Votre convention peut en fixer un plus court — le sien prime alors.`}
-              </span>
-            )}
+            {/*
+              🔴 RÉGION LIVE STABLE, MONTÉE EN PERMANENCE (recette a11y du 13/09).
+
+              Le dépassement basculait `role` sur un élément DÉJÀ monté : un
+              lecteur d'écran n'annonce pas un rôle live posé après coup, il
+              annonce les changements d'une région live qu'il surveillait DÉJÀ.
+              L'avertissement le plus important du formulaire — celui qui dit
+              qu'une période d'essai est nulle — n'était donc jamais lu à voix
+              haute. Le conteneur existe désormais toujours, avec son rôle posé
+              une fois pour toutes ; seul son TEXTE change.
+
+              ⚠️ Et le texte porte le mot « Dépassement » : l'information ne
+              tient pas qu'à la couleur rouge.
+            */}
+            <span
+              id="ct-essai-aide"
+              role="status"
+              aria-live="polite"
+              className={
+                essaiDepasse
+                  ? "text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-danger)]"
+                  : "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+              }
+            >
+              {plafondEssai === null
+                ? ""
+                : essaiDepasse
+                  ? `Dépassement — ${plafondEssai.libelle}`
+                  : plafondEssai.libelle}
+            </span>
           </div>
 
           <div className={`${fieldCls} sm:col-span-2`}>
@@ -545,13 +604,36 @@ export function TrainerContratTravailPanel({
             <button
               type="button"
               className="admin-button-secondary"
-              disabled={isPending}
+              /*
+                🔴 NEUTRALISÉ TANT QUE LA PIÈCE NE PORTE PAS LES CORRECTIONS.
+
+                L'annonce décrit la fiche VIVANTE et renvoie vers la PIÈCE. Les
+                laisser diverger faisait partir « votre CDD pour le poste de
+                Secrétaire administrative… Référence : AXI-DOC-2026-050 » pendant
+                que ce PDF portait « Formatrice IA ». L'action refuse aussi de son
+                côté — ici on évite d'abord le clic, là-bas on garantit le refus
+                même si cet écran se trompe.
+              */
+              disabled={isPending || contratDesynchronise}
+              aria-describedby={contratDesynchronise ? "ct-perime" : undefined}
               onClick={prevenir}
             >
               {notification === null ? "Prévenir le salarié" : "Prévenir à nouveau"}
             </button>
           )}
         </div>
+
+        {contratExistant !== null && contratDesynchronise && (
+          <div id="ct-perime" className="admin-alert admin-alert-error" role="alert">
+            <strong>
+              {contratExistant.numero} a été établi avant vos dernières corrections : il ne les
+              porte pas.
+            </strong>{" "}
+            Le relire montrerait l&apos;ancienne version, et prévenir le salarié lui enverrait
+            signer celle-là. Cliquez <strong>« Établir le contrat (PDF) »</strong> pour produire un
+            tirage à jour, relisez-le, puis prévenez-le.
+          </div>
+        )}
 
         {/*
           ── LA REMISE, LE SEUL FAIT QUE LE LOGICIEL NE VOYAIT PAS ──────────────

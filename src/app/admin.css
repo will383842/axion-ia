@@ -1155,7 +1155,36 @@
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
-  margin-top: 0;
+  /*
+    ⚠️ `margin-top: 0` A ÉTÉ RETIRÉ ICI (2026-09-13). Ne pas le remettre.
+
+    Cette règle vit au NIVEAU RACINE de ce fichier — hors de toute couche. Une
+    règle non-layered bat TOUTE règle layered, quelle que soit sa spécificité :
+    son `margin-top: 0` gagnait donc contre les utilitaires Tailwind posés à côté
+    d'elle, et onze boutons de la console portaient un `mt-[…]` parfaitement
+    INERTE. Ils restaient collés au texte qui les précède, sans que rien ne le
+    signale — ni à l'écran, ni en revue.
+
+    🔑 Le retrait ne change RIEN là où aucun utilitaire n'est posé : le reset de
+    Tailwind (preflight) met déjà `margin: 0` sur tous les éléments. La valeur
+    calculée reste 0 partout ailleurs. C'est la raison pour laquelle ce correctif
+    ne demande pas de recette visuelle : il n'a pas d'autre effet que de rendre
+    aux onze boutons la marge que leur auteur avait demandée.
+
+    ⛔ CE N'EST QU'UNE MOITIÉ DU DÉFAUT. 277 règles `.admin-*` de ce fichier sont
+    hors couche (contre 11 dans une couche), et le même piège vaut pour chacune —
+    `.admin-help`, `.admin-alert` et `.admin-h2` déclarent `margin: 0` et rendent
+    inertes les utilitaires de marge posés à côté d'elles. Les remettre toutes
+    dans `@layer components` réparerait l'ensemble d'un coup, et la question qui
+    bloquait ce déplacement est désormais TRANCHÉE : mesuré en production le
+    2026-09-13, `utilities` l'emporte bien sur `components` dans cette
+    application, donc le déplacement aurait l'effet voulu.
+
+    Ce qui manque n'est plus la théorie, c'est la RECETTE : le déplacement change
+    l'aspect de ~112 endroits d'un coup, et partout où quelqu'un a compensé une
+    marge inerte par un autre moyen, l'espacement s'appliquerait deux fois.
+    Aucun test ne voit cela. Cf. `_AUDIT/` et la note de reprise.
+  */
   transition:
     background-color var(--duration-admin-fast) var(--easing-admin),
     box-shadow var(--duration-admin-fast) var(--easing-admin);
