@@ -13,6 +13,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { lienCible } from "@/server/qualiopi/alertes/lien-cible";
+import { lireDernierBalayage } from "@/server/qualiopi/alertes/alertes-service";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
@@ -153,6 +154,29 @@ export default async function QualiopiAlertesPage({ params, searchParams }: Page
   */
   const baseAdmin = `/${locale}/${adminPrefix}`;
 
+  /*
+    🔴 L'ÉTAT DU MOTEUR LUI-MÊME, ET POURQUOI IL DOIT ÊTRE SUR CET ÉCRAN.
+
+    Une règle qui LÈVE est avalée par le fail-soft PAR RÈGLE : elle ne produit
+    aucune candidate, et son échec ne quitte pas le worker — un `console.warn`
+    que personne ne lit.
+
+    Or la conséquence n'est pas « une alerte manquante ». `synchroniserAlertes`
+    SUSPEND la résolution automatique de TOUTES les alertes dès qu'une règle
+    boite — et ce choix est juste : résoudre « ce qui n'est plus signalé »
+    effacerait en masse les alertes ouvertes d'une règle devenue muette. Mais le
+    tableau se fige : ce qui devrait se fermer s'accumule, jusqu'à ce que la
+    lecture devienne du bruit. Et le bruit est exactement ce qui apprend à
+    ignorer les critiques.
+
+    ⚠️ Le bouton « Synchroniser » rendait `{ créées, résolues, rafraîchies }` :
+    « 0 résolues » se lisait « rien à fermer » aussi bien que « fermeture
+    suspendue, une règle est cassée ». Un compteur à zéro admet deux
+    explications — sur le dispositif dont la fonction entière est de rendre les
+    choses observables.
+  */
+  const balayage = await lireDernierBalayage();
+
   // Le COMPTE vient d'un compteur, l'AFFICHAGE d'une liste plafonnée : le total
   // annoncé reste exact même quand la liste est tronquée. Écrire le nombre de
   // lignes affichées à la place du total mentirait sur le registre lui-même.
@@ -216,6 +240,40 @@ export default async function QualiopiAlertesPage({ params, searchParams }: Page
           )}
         </div>
       </div>
+
+      {/*
+        ── L'ÉTAT DU MOTEUR, EN TÊTE ────────────────────────────────────────
+
+        En tête, et pas en pied : si le moteur boite, tout ce qui suit est à
+        lire autrement. Une liste d'alertes figée ressemble trait pour trait à
+        une liste d'alertes à jour.
+      */}
+      {balayage !== null && balayage.reglesEnEchec.length > 0 && (
+        <div className="admin-alert admin-alert-error mb-[var(--space-admin-5)]" role="alert">
+          <strong>La fermeture automatique des alertes est suspendue.</strong> Le dernier balayage
+          n&apos;a pas pu exécuter{" "}
+          {balayage.reglesEnEchec.length === 1 ? "cette règle" : "ces règles"} :{" "}
+          {/*
+            ⚠️ LES NOMS, JAMAIS UN COMPTE. « 3 règles en échec » est un nombre qui
+            bouge pour plusieurs raisons et qu'on apprend à survoler ; un nom qui
+            apparaît est un fait, et c'est lui qui permet d'agir.
+          */}
+          <code>{balayage.reglesEnEchec.join(", ")}</code>. Tant que c&apos;est le cas,{" "}
+          <strong>aucune alerte ne se referme d&apos;elle-même</strong> — celles que vous voyez
+          peuvent être résolues depuis longtemps, et celles que ces règles surveillent
+          n&apos;apparaissent pas. La cause est presque toujours une colonne absente en base après
+          un déploiement.
+        </div>
+      )}
+      {balayage === null && (
+        // ⚠️ « On ne sait pas » n'est PAS « tout va bien » : le confondre
+        // rétablirait le silence qu'on corrige. Le cas est normal tant qu'aucun
+        // balayage n'a eu lieu depuis la livraison de ce marqueur.
+        <div className="admin-alert admin-alert-warning mb-[var(--space-admin-5)]" role="status">
+          <strong>État du moteur inconnu.</strong> Aucun balayage n&apos;a encore été consigné.
+          Lancez « Synchroniser » pour le savoir.
+        </div>
+      )}
 
       {/* Résumé compteurs */}
       <div className="mb-[var(--space-admin-6)] flex flex-wrap gap-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">

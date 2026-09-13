@@ -254,6 +254,112 @@ export interface SyntheseSynchronisation {
    * normalement zero.
    */
   rafraichies: number;
+  /**
+   * 🔴 RÈGLES QUI ONT LEVÉ ce tour, par leur NOM.
+   *
+   * Remontée jusqu'ici pour la même raison que `tronquees`, et l'enjeu est plus
+   * grand : une seule règle en échec SUSPEND la résolution automatique de
+   * TOUTES les alertes (voir plus bas). Le tableau se fige, les alertes qui
+   * devraient se fermer s'accumulent, et la lecture devient du bruit — c'est-à-
+   * dire ce qui apprend à ignorer les critiques.
+   *
+   * ⚠️ Les NOMS, jamais un compte. « 3 règles en échec » est un nombre qui bouge
+   * pour plusieurs raisons et qu'on apprend à survoler ; un nom qui apparaît est
+   * un fait, et c'est lui qui permet d'agir.
+   */
+  reglesEnEchec: string[];
+}
+
+/**
+ * Clé du marqueur d'état du dernier balayage.
+ *
+ * 🔑 Il faut une TRACE PERSISTÉE, et pas seulement une valeur de retour : le
+ * balayage nominal est un CRON. Sa synthèse ne passe devant personne. Sans
+ * marqueur, l'état « une règle boite » ne serait visible qu'à l'instant où
+ * quelqu'un clique « Synchroniser » — c'est-à-dire presque jamais, et jamais au
+ * moment où ça compte.
+ */
+const CLE_DERNIER_BALAYAGE = "alertes_dernier_balayage";
+
+/** L'état du dernier passage du moteur, tel que l'écran le lit. */
+export interface EtatDernierBalayage {
+  /** Horodatage ISO du dernier balayage connu. */
+  readonly at: string;
+  /** Noms des règles qui ont levé à ce passage. Vide = moteur sain. */
+  readonly reglesEnEchec: readonly string[];
+}
+
+/**
+ * Consigne l'état du balayage qui vient d'avoir lieu.
+ *
+ * ⚠️ ÉCRIT À CHAQUE PASSAGE, y compris quand tout va bien — et c'est la moitié
+ * de la correction. Un marqueur posé seulement en cas d'échec resterait affiché
+ * après la réparation : l'écran annoncerait une panne résolue depuis des
+ * semaines, et on apprendrait à ignorer ce bandeau-là aussi.
+ *
+ * ⚠️ FAIL-SOFT : ne pas pouvoir écrire le marqueur ne doit pas faire échouer le
+ * balayage. La trace est un confort de lecture ; les alertes, elles, sont le
+ * travail.
+ */
+async function consignerBalayage(reglesEnEchec: string[], at: Date): Promise<void> {
+  try {
+    const valeur: EtatDernierBalayage = { at: at.toISOString(), reglesEnEchec };
+    await prisma.siteSetting.upsert({
+      where: { key: CLE_DERNIER_BALAYAGE },
+      create: {
+        key: CLE_DERNIER_BALAYAGE,
+        value: valeur as unknown as object,
+        description:
+          "État du dernier balayage du moteur d'alertes (horodatage + règles en échec). Écrit à chaque passage, y compris sain. Lu par l'écran des alertes.",
+        category: "general",
+      },
+      update: { value: valeur as unknown as object },
+    });
+  } catch (err) {
+    console.warn("[alertes-service] marqueur de balayage non écrit (fail-soft)", err);
+  }
+}
+
+/**
+ * L'état du dernier balayage, ou `null` si aucun n'a encore été consigné.
+ *
+ * ⚠️ `null` ne veut PAS dire « tout va bien » : il veut dire « on ne sait pas ».
+ * L'écran doit le formuler ainsi — c'est le cas d'un moteur qui n'a jamais
+ * tourné depuis la livraison de ce marqueur, et le confondre avec un moteur sain
+ * rétablirait le silence qu'on corrige.
+ */
+export async function lireDernierBalayage(): Promise<EtatDernierBalayage | null> {
+  if (isStub()) return null;
+  try {
+    const row = await prisma.siteSetting.findUnique({
+      where: { key: CLE_DERNIER_BALAYAGE },
+      select: { value: true },
+    });
+    const v = row?.value;
+    /*
+      ⚠️ CETTE LIGNE N'EST PAS OBSERVABLE PAR UN TEST, et je l'écris plutôt que
+      de faire semblant. Une mutation qui la neutralise laisse la suite verte :
+      sur une chaîne, un nombre ou un tableau, `o["at"]` vaut `undefined` et le
+      contrôle suivant rend déjà `null`.
+
+      Ce qu'elle évite tient à la FORME du chemin, pas à son résultat : sans
+      elle, une valeur `null` ou absente ferait LEVER `o["at"]`, et c'est le
+      `catch` qui rendrait `null`. Même réponse, obtenue par une exception —
+      c'est-à-dire une exception utilisée comme flot de contrôle, dans un
+      `catch` qui est là pour les pannes de base.
+
+      On la garde pour cette raison-là, et pour aucune autre.
+    */
+    if (typeof v !== "object" || v === null || Array.isArray(v)) return null;
+    const o = v as Record<string, unknown>;
+    if (typeof o["at"] !== "string") return null;
+    const regles = Array.isArray(o["reglesEnEchec"])
+      ? (o["reglesEnEchec"] as unknown[]).filter((r): r is string => typeof r === "string")
+      : [];
+    return { at: o["at"], reglesEnEchec: regles };
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -266,13 +372,17 @@ export interface SyntheseSynchronisation {
  * lecture-puis-écriture que deux passages concurrents pouvaient traverser.
  */
 export async function synchroniserAlertes(): Promise<SyntheseSynchronisation> {
-  if (isStub()) return { crees: 0, resolues: 0, tronquees: [], rafraichies: 0 };
+  if (isStub()) return { crees: 0, resolues: 0, tronquees: [], rafraichies: 0, reglesEnEchec: [] };
 
   const {
     candidates: candidats,
     reglesEnEchec,
     reglesTronquees: tronquees,
   } = await evaluerAlertesDetaille();
+
+  // 🔑 Consigné AVANT toute sortie anticipée : l'état du moteur est connu ici,
+  // et c'est le seul endroit où les deux chemins — sain et boiteux — passent.
+  await consignerBalayage(reglesEnEchec, new Date());
 
   // ── T3a — une SALVE, plus un aller-retour par alerte ──────────────────────
   //
@@ -383,7 +493,7 @@ export async function synchroniserAlertes(): Promise<SyntheseSynchronisation> {
     console.warn(
       `[alertes-service] résolution auto SUSPENDUE ce tour : ${reglesEnEchec.length} règle(s) en échec (${reglesEnEchec.join(", ")})`,
     );
-    return { crees, resolues: 0, tronquees, rafraichies };
+    return { crees, resolues: 0, tronquees, rafraichies, reglesEnEchec };
   }
 
   // Résolution automatique : codes à resolutionAuto=true dont la condition
@@ -422,5 +532,5 @@ export async function synchroniserAlertes(): Promise<SyntheseSynchronisation> {
         })
       : { count: 0 };
 
-  return { crees, resolues, tronquees, rafraichies };
+  return { crees, resolues, tronquees, rafraichies, reglesEnEchec };
 }
