@@ -198,10 +198,33 @@ montre pas les déploiements en vol.
   n'entre pas dans le calcul du créneau. L'ajouter « par prudence » ferait attendre une
   demi-heure pour rien.
 
+🔴 **MAIS IL ENTRE DANS LE CALCUL DU MOMENT OÙ L'ON FUSIONNE, ET CE N'EST PAS LA MÊME
+QUESTION** (2026-09-13). Les deux phrases ci-dessus répondent à « quand MON code
+atterrira-t-il ? » — et elles sont justes. Elles ne répondent pas à « puis-je fusionner
+MAINTENANT ? ».
+
+Entre l'atterrissage de la page et la fin du run, il reste ~25 min de Lighthouse plus le
+préchauffage du cache. **Pendant toute cette fenêtre le run est `in_progress`, donc une
+fusion l'annule** — et ce que l'on perd n'est pas le déploiement, qui est acquis, mais la
+**seule mesure de performance réelle du dépôt** : les gates Lighthouse de PR ont été
+retirées le 2026-08-24 parce qu'elles mesuraient le runner.
+
+🔑 **Rien ne le signale.** Le déploiement a réussi, la page sert le bon SHA, et la gate
+meurt en silence. C'est exactement la famille de défauts que ce fichier documente ailleurs
+— un vert qui ne regarde pas.
+
+⛔ **Le protocole du dépôt est qu'UNE SEULE session tient la file.** Les autres livrent
+sans fusionner et préviennent quand c'est vert. Ça tient parce qu'un seul point observe
+l'état des builds. Avant de fusionner soi-même : demander si quelqu'un opère.
+
 **Avant de réserver un créneau, lire l'état RÉEL, jamais ce fichier :**
 
 ```bash
-gh run list --branch main --workflow "Build & Deploy · GHCR + Coolify (axion-ia.com)" --limit 1
+# Doit rendre 0 avant toute fusion. ⚠️ PAS `--limit 1` : un run `queued` n'apparaît
+# pas en tête de liste, et `status == "completed"` couvre aussi `cancelled`.
+gh run list --workflow=deploy-coolify.yml --limit 3 --json status   --jq '[.[]|select(.status=="in_progress" or .status=="queued")]|length'
+
+# Complément, jamais substitut : la page peut être à jour alors que le run tourne encore.
 curl -sI https://axion-ia.com/fr | grep -i x-axion-build-sha
 ```
 
