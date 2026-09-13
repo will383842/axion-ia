@@ -4150,7 +4150,7 @@ describe("la fabrique de mocks couvre TOUS les modeles lus par l'evaluateur", ()
   );
 
   /** Les modeles declares dans la fabrique `vi.mock("@/lib/prisma")`. */
-  const debut = srcSpec.indexOf("vi.mock(\"@/lib/prisma\"");
+  const debut = srcSpec.indexOf('vi.mock("@/lib/prisma"');
   const fin = srcSpec.indexOf("}));", debut);
   const declares = new Set(
     [...srcSpec.slice(debut, fin).matchAll(/^\s{4}([a-zA-Z][a-zA-Z0-9]*):/gm)].map(
