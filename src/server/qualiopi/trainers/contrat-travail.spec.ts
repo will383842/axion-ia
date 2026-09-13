@@ -169,3 +169,68 @@ describe("plafondLegalEssaiMois", () => {
     expect(plafondLegalEssaiMois("   ")).toBeNull();
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Le vocabulaire de la convention, pas celui du Code du travail
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * 🔴 CONSTATÉ LE 13/09, QUAND LA CONVENTION A ÉTÉ ARBITRÉE : Syntec/Bétic
+ * (IDCC 1486) ne classe pas en « cadre » ni en « technicien ». Elle classe en
+ * **ETAM** et en **IC**.
+ *
+ * Une classification écrite « IC position 2.1, coefficient 100 » ne déclenchait
+ * donc AUCUNE aide. Le repli `null` n'était pas faux — il se tait plutôt que de
+ * se tromper — mais il se taisait précisément là où l'aide sert.
+ */
+describe("plafondLegalEssaiMois — il parle aussi le vocabulaire de la convention", () => {
+  it("🔴 « IC » vaut cadre : 4 mois", () => {
+    expect(plafondLegalEssaiMois("IC position 2.1, coefficient 100")).toBe(4);
+    expect(plafondLegalEssaiMois("Ingénieur d'études")).toBe(4);
+    // Sans accent : une saisie au clavier ne doit pas changer le verdict.
+    expect(plafondLegalEssaiMois("Ingenieur d'etudes")).toBe(4);
+  });
+
+  it("🔴 LE TÉMOIN QUI COMPTE : « technicien » contient « ic » et reste à 3 mois", () => {
+    /*
+      🔑 C'est la raison d'être des bornes de mot dans le motif — et j'ai écrit
+      ce bug avant de l'écrire dans le commentaire : un `/ic/` sans borne
+      rendait 4 mois sur « technicien ». Quatre au lieu de trois, sur une durée
+      dont le dépassement rend la rupture abusive.
+
+      Ce témoin est le seul qui distingue le motif juste du motif faux.
+    */
+    expect(plafondLegalEssaiMois("Technicien de maintenance")).toBe(3);
+    expect(plafondLegalEssaiMois("ETAM technicien position 2.2")).toBe(3);
+  });
+
+  it("⚠️ « ETAM » SEUL rend null — et c'est un refus, pas un oubli", () => {
+    /*
+      « Employés, Techniciens et Agents de Maîtrise » chevauche DEUX plafonds
+      légaux : deux mois pour un employé, trois pour un technicien ou un agent
+      de maîtrise. Rendre 3 sur un ETAM position 1.x annoncerait un plafond
+      SUPÉRIEUR au vrai.
+
+      Il suffit d'écrire « ETAM technicien » pour que l'aide reparle — le test
+      au-dessus le montre.
+    */
+    expect(plafondLegalEssaiMois("ETAM position 1.1, coefficient 230")).toBeNull();
+    expect(plafondLegalEssaiMois("ETAM")).toBeNull();
+  });
+
+  it("« cadre » l'emporte, quel que soit le reste du libellé", () => {
+    // L'ordre des tests compte : « ingénieur cadre » doit rendre 4 par la
+    // première branche, jamais retomber sur une catégorie inférieure.
+    expect(plafondLegalEssaiMois("Ingénieur cadre, position 3.1")).toBe(4);
+    expect(plafondLegalEssaiMois("Cadre dirigeant")).toBe(4);
+  });
+
+  it("le vocabulaire du Code du travail continue de fonctionner", () => {
+    // 🔑 Témoin de non-régression : l'ajout ne doit rien retirer.
+    expect(plafondLegalEssaiMois("Agent de maîtrise")).toBe(3);
+    expect(plafondLegalEssaiMois("Employé administratif")).toBe(2);
+    expect(plafondLegalEssaiMois("Ouvrier qualifié")).toBe(2);
+    expect(plafondLegalEssaiMois("")).toBeNull();
+    expect(plafondLegalEssaiMois(null)).toBeNull();
+  });
+});
