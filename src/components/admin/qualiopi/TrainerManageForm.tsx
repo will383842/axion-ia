@@ -37,6 +37,8 @@ type TrainerStatut = "salarie" | "sous_traitant" | "dirigeant";
 export interface TrainerManageFormProps {
   trainerId: string;
   statut: TrainerStatut;
+  /** Cette personne anime-t-elle des formations ? */
+  estFormateur: boolean;
   actif: boolean;
   sousTraitantVerifie: boolean;
   sousTraitantNda: string | null;
@@ -57,6 +59,7 @@ export function TrainerManageForm(props: TrainerManageFormProps): React.ReactEle
     props.formations.length > 0 && props.formations.every((f) => selected.has(f.id));
   const [nda, setNda] = useState(props.sousTraitantNda ?? "");
   const [statut, setStatut] = useState<TrainerStatut>(props.statut);
+  const [estFormateur, setEstFormateur] = useState<boolean>(props.estFormateur);
 
   function toggle(id: string) {
     setSelected((prev) => {
@@ -166,6 +169,76 @@ export function TrainerManageForm(props: TrainerManageFormProps): React.ReactEle
             En enregistrant : {CONSEQUENCE_STATUT[statut]}
           </p>
         )}
+
+        {/*
+          ── ANIME-T-IL DES FORMATIONS ? ───────────────────────────────────────
+
+          🔴 SÉPARÉ DU STATUT, ET CE N'EST PAS UN DOUBLON. Le statut dit COMMENT
+          on le paie (salarié, sous-traitant, dirigeant) ; ceci dit CE QU'IL
+          FAIT. Un salarié peut ne pas enseigner — secrétaire, développeur web —
+          et un sous-traitant non plus — un comptable, un graphiste.
+
+          ⚠️ Les confondre ferait disparaître un formateur salarié des preuves
+          d'audit, ou y ferait entrer une secrétaire. Ce sont deux questions, et
+          elles ont deux réponses.
+        */}
+        <div className="mt-[var(--space-admin-4)] border-t border-[color:var(--color-admin-border)] pt-[var(--space-admin-4)]">
+          <label className="flex items-start gap-[var(--space-admin-2)]" htmlFor="est-formateur">
+            <input
+              id="est-formateur"
+              type="checkbox"
+              checked={estFormateur}
+              disabled={isPending}
+              onChange={(e) => setEstFormateur(e.target.checked)}
+              aria-describedby="est-formateur-aide"
+              className="mt-1"
+            />
+            <span>
+              <span className="admin-label">Cette personne anime des formations</span>
+              <span
+                id="est-formateur-aide"
+                className="mt-[var(--space-admin-1)] block text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+              >
+                Décochez pour un poste non pédagogique — secrétariat, marketing, développement. Elle
+                garde son contrat de travail, ses signatures et sa paie, et{" "}
+                <strong>sort des pièces Qualiopi</strong> : liste officielle des formateurs,
+                manifeste d&apos;audit, indicateur 21, et déclaration BPF à la DREETS.
+              </span>
+            </span>
+          </label>
+          {/*
+            ⚠️ On DIT la conséquence AVANT d'enregistrer, dans les deux sens.
+            Décocher retire quelqu'un d'une preuve d'audit ; cocher l'y ajoute
+            avec l'exigence de CV qui va avec. Aucun des deux gestes n'est neutre.
+          */}
+          {estFormateur !== props.estFormateur && (
+            <p
+              role="status"
+              className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+            >
+              En enregistrant :{" "}
+              {estFormateur
+                ? "cette personne entrera dans les pièces Qualiopi, et un CV à jour lui sera exigé par l'indicateur 21."
+                : "cette personne sortira des pièces Qualiopi et du BPF. Son contrat de travail et sa paie sont inchangés."}
+            </p>
+          )}
+          <button
+            type="button"
+            disabled={isPending || estFormateur === props.estFormateur}
+            aria-busy={isPending}
+            className="admin-button mt-[var(--space-admin-3)]"
+            onClick={() =>
+              run(
+                () => updateTrainerAction({ id: props.trainerId, estFormateur }),
+                estFormateur
+                  ? "Enregistré : cette personne compte désormais parmi les formateurs."
+                  : "Enregistré : cette personne ne compte plus parmi les formateurs.",
+              )
+            }
+          >
+            {isPending ? "Enregistrement…" : "Enregistrer"}
+          </button>
+        </div>
       </section>
 
       {/* Habilitations */}

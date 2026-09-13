@@ -70,10 +70,29 @@ export function FormateurContratTravailEmail({
       cta={{ label: "Ouvrir mon espace", href: p.lienEspace }}
       locale={locale}
     >
+      {/*
+        ⚠️ LE POSTE PEUT ÊTRE VIDE, ET LA PHRASE DOIT TENIR SANS LUI.
+
+        Il valait autrefois « formateur » par défaut : une secrétaire recevait
+        par écrit l'annonce de son contrat au poste de formateur. Le repli a été
+        retiré côté action — un repli qui INVENTE est pire qu'une absence — et
+        c'est ici que la phrase doit s'en accommoder. Sans cette branche, elle
+        se lirait « pour le poste de est établi ».
+
+        🔑 En pratique le cas ne se produit pas : `verifierEligibiliteContrat`
+        refuse d'établir un contrat sans poste. On l'écrit quand même, parce
+        qu'une phrase qui dépend d'une garde située trois modules plus loin est
+        une phrase qui se cassera le jour où la garde bougera.
+      */}
       <Text style={emailStyles.paragraphStyle}>
-        Bonjour {p.formateurPrenomNom}, votre <strong>{p.natureContrat}</strong> pour le poste de{" "}
-        <strong>{p.poste}</strong> est établi, avec une entrée en fonction au{" "}
-        <strong>{p.dateEmbauche}</strong>.
+        Bonjour {p.formateurPrenomNom}, votre <strong>{p.natureContrat}</strong>
+        {p.poste ? (
+          <>
+            {" "}
+            pour le poste de <strong>{p.poste}</strong>
+          </>
+        ) : null}{" "}
+        est établi, avec une entrée en fonction au <strong>{p.dateEmbauche}</strong>.
       </Text>
       {/*
         🔑 « Lisez-le EN ENTIER » n'est pas une politesse. En le signant, il

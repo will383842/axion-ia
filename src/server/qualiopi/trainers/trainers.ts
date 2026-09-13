@@ -70,6 +70,21 @@ export interface ListTrainersOpts {
   statut?: TrainerStatut;
   /** N'inclure que les formateurs actifs. */
   actifOnly?: boolean;
+  /**
+   * N'inclure que les personnes qui ANIMENT des formations.
+   *
+   * 🔴 OPTION EXPLICITE, JAMAIS UN DÉFAUT — et c'est la leçon de ce défaut-ci.
+   * `listTrainers` n'a jamais promis « les intervenants pédagogiques » : elle
+   * promet « les Trainer ». Une secrétaire n'y apparaîtrait pas PAR ERREUR,
+   * elle y apparaîtrait parce que la fonction répond à une question voisine de
+   * celle qu'on croit lui poser.
+   *
+   * Filtrer par défaut aurait corrigé les pièces pédagogiques et cassé en
+   * silence tout ce qui vise l'EMPLOYEUR — la paie, le contrat de travail, le
+   * délai de remise d'un CDD. Chaque appelant doit dire laquelle des deux
+   * questions il pose.
+   */
+  pedagogiquesSeulement?: boolean;
   limit?: number;
   offset?: number;
 }
@@ -95,9 +110,10 @@ export type TrainerAvecHabilitations = Trainer & {
 /** Tous les formateurs, triés par nom. Stub-safe → [] au build. */
 export async function listTrainers(opts?: ListTrainersOpts): Promise<TrainerAvecHabilitations[]> {
   try {
-    const where: { statut?: TrainerStatut; actif?: boolean } = {};
+    const where: { statut?: TrainerStatut; actif?: boolean; estFormateur?: boolean } = {};
     if (opts?.statut) where.statut = opts.statut;
     if (opts?.actifOnly) where.actif = true;
+    if (opts?.pedagogiquesSeulement) where.estFormateur = true;
     const rows = await prisma.trainer.findMany({
       ...(Object.keys(where).length > 0 ? { where } : {}),
       orderBy: [{ nom: "asc" }, { prenom: "asc" }],

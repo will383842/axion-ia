@@ -5696,6 +5696,31 @@ model Trainer {
   /// manquement REQUALIFIE le contrat en CDI (art. L.1245-1). Une alerte
   /// surveille son absence pendant que le délai court.
   contratRemisAt               DateTime?     @map("contrat_remis_at")
+  /// Cette personne ANIME-T-ELLE des formations ?
+  ///
+  /// 🔴 Ajouté le 2026-09-13. Jusqu'ici, toute personne employée était une
+  /// ligne de cette table et donc, implicitement, un intervenant pédagogique.
+  /// Axion-IA embauche désormais hors formation — secrétaire, marketing,
+  /// développeur web — et le raccourci devient FAUX, avec deux conséquences qui
+  /// ne se rattrapent pas :
+  ///
+  ///   · le BPF déclare `nbFormateursInternes` à la DREETS. Une secrétaire y
+  ///     serait déclarée à l'ÉTAT comme formatrice interne de l'organisme ;
+  ///   · l'indicateur 21 exige que 100 % des formateurs actifs portent un CV et
+  ///     une pièce de compétence. Chaque embauche non pédagogique ajoute un
+  ///     dénominateur impossible à satisfaire honnêtement, et fait basculer
+  ///     l'indicateur en non-conformité MAJEURE.
+  ///
+  /// ⚠️ `@default(true)` : tout l'existant reste formateur, donc AUCUN
+  /// changement de comportement à la migration. C'est la nouvelle embauche qui
+  /// décoche, jamais l'ancienne qui aurait dû cocher.
+  ///
+  /// ⛔ CE N'EST PAS UN FILTRE GLOBAL. La ligne de partage n'est pas « Trainer
+  /// ou pas » mais PIÈCE PÉDAGOGIQUE (exclure) contre PIÈCE D'EMPLOYEUR
+  /// (garder). Le contrat de travail, le délai de remise d'un CDD, la paie
+  /// visent TOUT salarié ; le CV, les habilitations, l'affectation aux sessions
+  /// ne visent que ceux qui enseignent.
+  estFormateur                 Boolean       @default(true) @map("est_formateur")
   /// Dette d'avance REPRISE d'avant l'entrée dans l'outil, en centimes.
   /// Permet de démarrer le déroulé sans réécrire l'historique des mois passés.
   avanceRepriseCents           Int?          @map("avance_reprise_cents")

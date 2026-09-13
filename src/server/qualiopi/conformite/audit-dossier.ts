@@ -387,8 +387,12 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
   const nbAppreciations = await prisma.appreciation.count();
 
   // off.21 : formateurs actifs avec CV
+  // 🔴 `estFormateur` (2026-09-13) : ce manifeste ne COMPTE pas, il NOMME —
+  // « Fiche au dossier : Prénom Nom » sous l'indicateur 21, devant le
+  // certificateur. Une secrétaire dont la fiche aurait été versée y apparaîtrait
+  // en toutes lettres comme intervenante pédagogique.
   const trainersAvecCV = await prisma.trainer.findMany({
-    where: { actif: true, cvUrl: { not: null } },
+    where: { actif: true, estFormateur: true, cvUrl: { not: null } },
     select: { id: true, nom: true, prenom: true, cvUrl: true },
   });
 

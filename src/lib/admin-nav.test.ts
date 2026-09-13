@@ -155,7 +155,14 @@ describe("buildAdminNav SSOT", () => {
     // n'apparaisse à l'écran. C'est voulu, et c'est la raison pour laquelle il
     // faut lire ce nombre comme un inventaire du SSOT, pas comme un compte de ce
     // que la barre affiche. = 170.
-    expect(items.length).toBe(170);
+    // +1 (2026-09-13, « Salariés », nouveau pôle « Équipe ») : Axion-IA embauche
+    // désormais hors formation — secrétaire, marketing, développeur web. Un
+    // contrat de travail engage l'ENTREPRISE, pas la certification : l'écran
+    // vit donc hors de Qualiopi, et c'est le premier pôle créé depuis
+    // « Société ». Jusque-là les contrats ne vivaient que sur la fiche de
+    // chaque personne, rangée sous « Qualiopi → Formateurs » : savoir qui était
+    // sous contrat demandait d'ouvrir les fiches UNE PAR UNE. = 171.
+    expect(items.length).toBe(171);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {

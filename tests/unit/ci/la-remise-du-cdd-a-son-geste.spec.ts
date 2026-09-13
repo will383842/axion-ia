@@ -50,7 +50,7 @@ function lire(relatif: string): string {
 }
 
 const EVALUATEUR = lire("src/server/qualiopi/alertes/evaluateur.ts");
-const MODULE_PUR = lire("src/server/qualiopi/trainers/remise-contrat.ts");
+const MODULE_PUR = lire("src/server/rh/remise-contrat.ts");
 const ACTION = lire("src/server/actions/qualiopi/trainer-contrat.ts");
 const PANNEAU = lire("src/components/admin/qualiopi/TrainerContratTravailPanel.tsx");
 
