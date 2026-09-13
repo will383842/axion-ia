@@ -12,6 +12,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { lienCible } from "@/server/qualiopi/alertes/lien-cible";
+
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import {
@@ -145,6 +147,11 @@ export default async function QualiopiAlertesPage({ params, searchParams }: Page
   const sp = await searchParams;
   const niveauFiltre = NIVEAU_ORDER.find((n) => n === sp.niveau);
   const self = `/${locale}/${adminPrefix}/qualiopi/alertes`;
+  /*
+    🔑 Le préfixe de la console est SECRET : il vient de l'URL, jamais d'une
+    constante. `lienCible` le reçoit et ne compose rien sans lui.
+  */
+  const baseAdmin = `/${locale}/${adminPrefix}`;
 
   // Le COMPTE vient d'un compteur, l'AFFICHAGE d'une liste plafonnée : le total
   // annoncé reste exact même quand la liste est tronquée. Écrire le nombre de
@@ -312,13 +319,41 @@ export default async function QualiopiAlertesPage({ params, searchParams }: Page
                         {alerte.message}
                       </p>
 
-                      {/* Cible si disponible */}
-                      {alerte.cibleType && (
-                        <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                          Cible&nbsp;: {alerte.cibleType}
-                          {alerte.cibleId ? ` — ${alerte.cibleId}` : ""}
-                        </p>
-                      )}
+                      {/*
+                        ── LA CIBLE, ET LE CHEMIN POUR Y ALLER ─────────────────
+
+                        🔴 Cette ligne affichait « Cible : Trainer — 1111…1111 » :
+                        un type technique et un UUID. Pour AGIR, l'opérateur
+                        devait reconnaître le type, deviner l'écran, et recopier
+                        l'identifiant dans une URL composée à la main.
+
+                        C'est la dernière marche de « une alerte prescrit un
+                        geste qui existe » : le geste existe, l'écran qui le
+                        porte existe, et l'alerte ne menait pas jusqu'à lui.
+
+                        ⚠️ Le lien n'apparaît QUE si l'écran existe. Neuf des
+                        quinze types de cibles n'en ont pas, et ils gardent
+                        l'affichage textuel — un lien mort est pire que pas de
+                        lien : il fait cliquer, rend une 404, et apprend à ne
+                        plus cliquer sur les autres.
+                      */}
+                      {alerte.cibleType &&
+                        (() => {
+                          const href = lienCible(alerte.cibleType, alerte.cibleId, baseAdmin);
+                          const texte = `${alerte.cibleType}${alerte.cibleId ? ` — ${alerte.cibleId}` : ""}`;
+                          return (
+                            <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                              Cible&nbsp;:{" "}
+                              {href === null ? (
+                                texte
+                              ) : (
+                                <Link href={href} className="underline">
+                                  {texte}
+                                </Link>
+                              )}
+                            </p>
+                          );
+                        })()}
 
                       {/* Actions */}
                       <AlerteActions
