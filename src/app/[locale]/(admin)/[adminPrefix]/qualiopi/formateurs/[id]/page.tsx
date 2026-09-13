@@ -50,6 +50,7 @@ import { lireLettresMissionConsoleDuFormateur } from "@/server/qualiopi/document
 import { contresignerLettreMissionAction } from "@/server/actions/qualiopi/lettre-mission-signature";
 import { lireContratsTravailConsole } from "@/server/qualiopi/documents/signature/contrat-travail-queries";
 import { signerContratTravailEmployeurAction } from "@/server/actions/qualiopi/contrat-travail-signature";
+import { dureeEssaiDe } from "@/server/qualiopi/trainers/contrat-travail";
 import {
   empreinteMentions,
   empreinteScellee,
@@ -304,7 +305,7 @@ export default async function FicheFormateurPage({ params }: PageProps) {
               trainer.contratDureeHebdoHeures === null
                 ? null
                 : Number(trainer.contratDureeHebdoHeures),
-            contratPeriodeEssaiMois: trainer.contratPeriodeEssaiMois,
+            contratPeriodeEssai: dureeEssaiDe(trainer),
             contratLieuTravail: trainer.contratLieuTravail,
             contratDateFin: trainer.contratDateFin,
             contratMotifCdd: trainer.contratMotifCdd,
@@ -525,7 +526,8 @@ export default async function FicheFormateurPage({ params }: PageProps) {
               trainer.contratDureeHebdoHeures === null
                 ? null
                 : Number(trainer.contratDureeHebdoHeures),
-            contratPeriodeEssaiMois: trainer.contratPeriodeEssaiMois,
+            contratPeriodeEssaiValeur: trainer.contratPeriodeEssaiValeur,
+            contratPeriodeEssaiUnite: trainer.contratPeriodeEssaiUnite,
             contratLieuTravail: trainer.contratLieuTravail,
             contratDateFin: trainer.contratDateFin,
             contratMotifCdd: trainer.contratMotifCdd,

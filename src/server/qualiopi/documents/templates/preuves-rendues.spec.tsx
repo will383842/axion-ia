@@ -221,7 +221,7 @@ const CAS: ReadonlyArray<{
       classification: "Cadre, position 2.1, coefficient 115",
       dureeHebdoHeures: "35",
       lieuTravail: "Lyon",
-      periodeEssaiMois: 4,
+      periodeEssai: { valeur: 4, unite: "mois" },
       remunerationMensuelle: "2 000,00 €",
       // Clause de variable ACTIVE : c'est la branche la plus longue du gabarit,
       // celle qui porte les trois garanties. L'éprouver éteinte rendrait le

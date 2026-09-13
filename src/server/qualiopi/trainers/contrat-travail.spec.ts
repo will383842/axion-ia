@@ -14,6 +14,9 @@ import {
   motifSpecimenContrat,
   plafondLegalEssaiMois,
   plafondLegalEssai,
+  essaiDepassePlafond,
+  dureeEssaiDe,
+  libelleDuree,
   verifierEligibiliteContrat,
   type SalarieContrat,
 } from "./contrat-travail";
@@ -31,7 +34,7 @@ function salarie(over: Partial<SalarieContrat> = {}): SalarieContrat {
     contratPoste: "Formateur en intelligence artificielle",
     contratClassification: "Technicien — niveau C, coefficient 200",
     contratDureeHebdoHeures: 35,
-    contratPeriodeEssaiMois: 2,
+    contratPeriodeEssai: { valeur: 2, unite: "mois" },
     contratLieuTravail: "11 Avenue Paul Verlaine, 38100 Grenoble",
     contratDateFin: null,
     contratMotifCdd: null,
@@ -264,8 +267,10 @@ describe("🔴 plafondLegalEssai — le CDD n'obéit PAS à l'article du CDI", (
       contratDateFin: j("2027-03-31"),
     });
     expect(p?.article).toBe("L.1242-10");
-    expect(p?.plafondMois).toBe(0);
-    expect(p?.libelle).toMatch(/DEUX SEMAINES/);
+    // 🔑 DEUX SEMAINES, exprimées EN SEMAINES — plus « 0 mois », qui était la
+    // façon dont l'ancien modèle avouait ne pas savoir le dire.
+    expect(p?.plafond).toStrictEqual({ valeur: 2, unite: "semaines" });
+    expect(p?.libelle).toMatch(/2 semaines/i);
   });
 
   it("🔑 ce plafond est INEXPRIMABLE dans un champ en mois entiers, et le dit", () => {
@@ -277,8 +282,8 @@ describe("🔴 plafondLegalEssai — le CDD n'obéit PAS à l'article du CDI", (
       dateEmbauche: j("2026-10-01"),
       contratDateFin: j("2027-01-31"),
     });
-    expect(p?.inexprimableEnMois).toBe(true);
-    expect(p?.libelle).toMatch(/laissez-le vide/i);
+    expect(p?.plafond.unite).toBe("semaines");
+    expect(p?.libelle).toMatch(/2 semaines/i);
   });
 
   it("🔴 CDD de PLUS de six mois : un mois", () => {
@@ -289,8 +294,8 @@ describe("🔴 plafondLegalEssai — le CDD n'obéit PAS à l'article du CDI", (
       contratDateFin: j("2027-10-01"),
     });
     expect(p?.article).toBe("L.1242-10");
-    expect(p?.plafondMois).toBe(1);
-    expect(p?.inexprimableEnMois).toBe(false);
+    expect(p?.plafond).toStrictEqual({ valeur: 1, unite: "mois" });
+    expect(p?.plafond.unite).toBe("mois");
   });
 
   it("⚠️ un CDD pile à la limite bascule du côté PROTECTEUR du salarié", () => {
@@ -301,7 +306,7 @@ describe("🔴 plafondLegalEssai — le CDD n'obéit PAS à l'article du CDI", (
       dateEmbauche: j("2026-10-01"),
       contratDateFin: j("2027-04-02"),
     });
-    expect(p?.plafondMois).toBe(0);
+    expect(p?.plafond).toStrictEqual({ valeur: 2, unite: "semaines" });
   });
 
   it("🔑 CDD sans terme connu : on se TAIT plutôt que d'appliquer au hasard", () => {
@@ -348,7 +353,7 @@ describe("🔴 plafondLegalEssai — le CDD n'obéit PAS à l'article du CDI", (
       contratDateFin: null,
     });
     expect(p?.article).toBe("L.1221-19");
-    expect(p?.plafondMois).toBe(4);
+    expect(p?.plafond).toStrictEqual({ valeur: 4, unite: "mois" });
     expect(p?.libelle).toMatch(/convention peut en fixer un plus court/i);
   });
 
@@ -362,7 +367,7 @@ describe("🔴 plafondLegalEssai — le CDD n'obéit PAS à l'article du CDI", (
         contratClassification: classification,
         dateEmbauche: null,
         contratDateFin: null,
-      })?.plafondMois,
+      })?.plafond.valeur,
     ).toBe(attendu);
   });
 
@@ -375,5 +380,136 @@ describe("🔴 plafondLegalEssai — le CDD n'obéit PAS à l'article du CDI", (
         contratDateFin: null,
       }),
     ).toBeNull();
+  });
+});
+
+describe("🔴 valeur + unité — la seule forme où les deux articles s'écrivent sans mentir", () => {
+  /*
+    Le champ ne saisissait que des mois entiers. Sur un CDD d'au plus six mois,
+    dont le plafond légal est de DEUX SEMAINES, aucune valeur non nulle n'était
+    donc légale — et le gabarit PDF imprimait « N mois » EN DUR.
+
+    ⚠️ Et « tout passer en jours » aurait réparé le CDD en DÉFORMANT le CDI :
+    L.1221-19 compte en MOIS CALENDAIRES. Deux mois commencés le 15 janvier
+    finissent le 15 mars — ce ne sont pas 60 jours. On aurait échangé un champ
+    INEXPRIMABLE contre un champ qui EXPRIME FAUX, ce qui est pire : une absence
+    se voit, une affirmation fausse se signe.
+  */
+
+  describe("dureeEssaiDe — les deux colonnes vont ensemble ou pas du tout", () => {
+    it("rend le couple quand les deux sont là", () => {
+      expect(
+        dureeEssaiDe({ contratPeriodeEssaiValeur: 2, contratPeriodeEssaiUnite: "semaines" }),
+      ).toStrictEqual({ valeur: 2, unite: "semaines" });
+    });
+
+    it.each([
+      ["une valeur SANS unité", { contratPeriodeEssaiValeur: 2, contratPeriodeEssaiUnite: null }],
+      [
+        "une unité SANS valeur",
+        { contratPeriodeEssaiValeur: null, contratPeriodeEssaiUnite: "mois" as const },
+      ],
+      ["ni l'un ni l'autre", { contratPeriodeEssaiValeur: null, contratPeriodeEssaiUnite: null }],
+    ])("rend null sur %s", (_l, t) => {
+      expect(dureeEssaiDe(t)).toBeNull();
+    });
+
+    it("🔑 ZÉRO est une valeur, pas une absence", () => {
+      // Témoin discriminant : un `if (!valeur)` mangerait « 0 jour d'essai »,
+      // qui est une stipulation valable — et différente d'une absence de clause.
+      expect(
+        dureeEssaiDe({ contratPeriodeEssaiValeur: 0, contratPeriodeEssaiUnite: "jours" }),
+      ).toStrictEqual({ valeur: 0, unite: "jours" });
+    });
+  });
+
+  describe("libelleDuree — ce que la PIÈCE OPPOSABLE imprime", () => {
+    it.each([
+      [{ valeur: 2, unite: "semaines" as const }, "2 semaines"],
+      [{ valeur: 1, unite: "semaines" as const }, "1 semaine"],
+      [{ valeur: 15, unite: "jours" as const }, "15 jours"],
+      [{ valeur: 1, unite: "jours" as const }, "1 jour"],
+      [{ valeur: 3, unite: "mois" as const }, "3 mois"],
+      [{ valeur: 1, unite: "mois" as const }, "1 mois"],
+    ])("%o → « %s »", (d, attendu) => {
+      expect(libelleDuree(d)).toBe(attendu);
+    });
+  });
+
+  describe("essaiDepassePlafond — comparer DEUX UNITÉS différentes", () => {
+    const cddCourt = {
+      contratType: "cdd" as const,
+      contratClassification: "Cadre — position 2.1",
+      dateEmbauche: new Date("2026-10-01T00:00:00.000Z"),
+      contratDateFin: new Date("2027-03-31T00:00:00.000Z"),
+    };
+    const cdiCadre = {
+      contratType: "cdi" as const,
+      contratClassification: "Cadre — position 2.1",
+      dateEmbauche: null,
+      contratDateFin: null,
+    };
+
+    it("🔴 UN MOIS saisi dépasse un plafond de DEUX SEMAINES", () => {
+      // Le cas qui motive tout ce lot : l'ancien champ ne savait pas l'exprimer.
+      expect(essaiDepassePlafond({ valeur: 1, unite: "mois" }, plafondLegalEssai(cddCourt))).toBe(
+        true,
+      );
+    });
+
+    it("🔑 DEUX SEMAINES pile ne dépassent pas — la borne est incluse", () => {
+      expect(
+        essaiDepassePlafond({ valeur: 2, unite: "semaines" }, plafondLegalEssai(cddCourt)),
+      ).toBe(false);
+    });
+
+    it("🔑 QUATORZE JOURS non plus — la même durée dans une autre unité", () => {
+      // Le témoin qui prouve que la comparaison traverse vraiment les unités.
+      expect(essaiDepassePlafond({ valeur: 14, unite: "jours" }, plafondLegalEssai(cddCourt))).toBe(
+        false,
+      );
+      expect(essaiDepassePlafond({ valeur: 15, unite: "jours" }, plafondLegalEssai(cddCourt))).toBe(
+        true,
+      );
+    });
+
+    it("⚠️ NEUF SEMAINES dépassent deux mois de CDI — quel que soit le calendrier", () => {
+      /*
+        63 jours. Deux mois calendaires font au plus 62 jours (juillet-août).
+        L'approximation « un mois = 30 jours » de la comparaison penche donc du
+        côté du SIGNALEMENT ici, ce qui est le bon sens de l'erreur.
+      */
+      const employe = { ...cdiCadre, contratClassification: "Employé niveau B" };
+      expect(
+        essaiDepassePlafond({ valeur: 9, unite: "semaines" }, plafondLegalEssai(employe)),
+      ).toBe(true);
+      // …et huit semaines (56 j) restent dessous quel que soit le calendrier.
+      expect(
+        essaiDepassePlafond({ valeur: 8, unite: "semaines" }, plafondLegalEssai(employe)),
+      ).toBe(false);
+    });
+
+    it("🔑 NE SIGNALE RIEN quand une des deux moitiés manque", () => {
+      /*
+        Un avertissement rendu par DÉFAUT sur une information absente apprend à
+        ignorer la famille entière — et c'est la vraie alerte qu'on rate ensuite.
+      */
+      expect(essaiDepassePlafond(null, plafondLegalEssai(cddCourt))).toBe(false);
+      expect(essaiDepassePlafond({ valeur: 99, unite: "mois" }, null)).toBe(false);
+      expect(
+        essaiDepassePlafond({ valeur: Number.NaN, unite: "mois" }, plafondLegalEssai(cddCourt)),
+      ).toBe(false);
+    });
+
+    it("⛔ un CDI de cadre à 4 mois reste conforme — le témoin symétrique", () => {
+      // Sans lui, un « toujours dépasser » passerait tous les tests ci-dessus et
+      // peindrait en rouge des périodes d'essai parfaitement légales.
+      expect(essaiDepassePlafond({ valeur: 4, unite: "mois" }, plafondLegalEssai(cdiCadre))).toBe(
+        false,
+      );
+      expect(essaiDepassePlafond({ valeur: 5, unite: "mois" }, plafondLegalEssai(cdiCadre))).toBe(
+        true,
+      );
+    });
   });
 });

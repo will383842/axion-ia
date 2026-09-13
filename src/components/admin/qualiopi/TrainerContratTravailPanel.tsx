@@ -48,7 +48,7 @@ import {
   notifierContratTravailAction,
   updateTrainerContratAction,
 } from "@/server/actions/qualiopi/trainer-contrat";
-import { plafondLegalEssai } from "@/server/qualiopi/trainers/contrat-travail";
+import { essaiDepassePlafond, plafondLegalEssai } from "@/server/qualiopi/trainers/contrat-travail";
 
 const inputCls =
   "w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-admin-accent)]";
@@ -86,7 +86,8 @@ export interface TrainerContratTravailPanelProps {
     contratPoste: string | null;
     contratClassification: string | null;
     contratDureeHebdoHeures: number | null;
-    contratPeriodeEssaiMois: number | null;
+    contratPeriodeEssaiValeur: number | null;
+    contratPeriodeEssaiUnite: "jours" | "semaines" | "mois" | null;
     contratLieuTravail: string | null;
     contratDateFin: Date | null;
     contratMotifCdd: string | null;
@@ -158,7 +159,21 @@ export function TrainerContratTravailPanel({
     initial.contratDureeHebdoHeures === null ? "" : String(initial.contratDureeHebdoHeures),
   );
   const [essai, setEssai] = useState(
-    initial.contratPeriodeEssaiMois === null ? "" : String(initial.contratPeriodeEssaiMois),
+    initial.contratPeriodeEssaiValeur === null ? "" : String(initial.contratPeriodeEssaiValeur),
+  );
+  /*
+    🔴 L'UNITÉ EST SAISIE, PAS DEVINÉE (2026-09-13).
+
+    Le champ ne connaissait que les mois entiers. Or un CDD d'au plus six mois
+    a un plafond légal de DEUX SEMAINES (art. L.1242-10) : aucune valeur non
+    nulle n'y était légale, et le PDF imprimait « N mois » en dur.
+
+    ⚠️ Le défaut par défaut reste « mois » : c'est ce que portaient toutes les
+    saisies existantes, et un CDI — le cas le plus fréquent — se compte bien
+    en mois calendaires.
+  */
+  const [essaiUnite, setEssaiUnite] = useState<"jours" | "semaines" | "mois">(
+    initial.contratPeriodeEssaiUnite ?? "mois",
   );
   const [lieuTravail, setLieuTravail] = useState(initial.contratLieuTravail ?? "");
   const [dateFin, setDateFin] = useState(versChampDate(initial.contratDateFin));
@@ -186,11 +201,17 @@ export function TrainerContratTravailPanel({
     contratDateFin: depuisChampDate(dateFin),
   });
   const essaiNombre = essai.trim() === "" ? null : Number(essai);
-  const essaiDepasse =
-    plafondEssai !== null &&
-    essaiNombre !== null &&
-    Number.isFinite(essaiNombre) &&
-    essaiNombre > plafondEssai.plafondMois;
+  /*
+    ⚠️ La COMPARAISON vit dans le domaine, pas ici. Deux unités différentes ne
+    se comparent pas avec un `>` — et refaire ce calcul à l'écran en ferait une
+    seconde définition, qui divergerait de la première au premier amendement.
+  */
+  const essaiDepasse = essaiDepassePlafond(
+    essaiNombre === null || !Number.isFinite(essaiNombre)
+      ? null
+      : { valeur: essaiNombre, unite: essaiUnite },
+    plafondEssai,
+  );
 
   function enregistrer(e: React.FormEvent) {
     e.preventDefault();
@@ -212,7 +233,8 @@ export function TrainerContratTravailPanel({
         contratClassification: classification.trim() === "" ? null : classification.trim(),
         contratDureeHebdoHeures:
           dureeHebdo.trim() === "" ? null : Number(dureeHebdo.replace(",", ".")),
-        contratPeriodeEssaiMois: essai.trim() === "" ? null : Number(essai),
+        contratPeriodeEssaiValeur: essai.trim() === "" ? null : Number(essai),
+        contratPeriodeEssaiUnite: essai.trim() === "" ? null : essaiUnite,
         contratLieuTravail: lieuTravail.trim() === "" ? null : lieuTravail.trim(),
         contratDateFin: dateFin === "" ? null : dateFin,
         contratMotifCdd: motifCdd.trim() === "" ? null : motifCdd.trim(),
@@ -437,22 +459,53 @@ export function TrainerContratTravailPanel({
 
           <div className={fieldCls}>
             <label htmlFor="ct-essai" className={labelCls}>
-              Période d&apos;essai (mois)
+              Période d&apos;essai
             </label>
-            <input
-              id="ct-essai"
-              className={inputCls}
-              value={essai}
-              disabled={isPending}
-              inputMode="numeric"
-              // Le plafond légal et son dépassement sont RATTACHÉS au champ : un
-              // lecteur d'écran les énonce en y entrant, sans avoir à explorer
-              // ce qui suit l'input pour les découvrir.
-              aria-describedby="ct-essai-aide"
-              aria-invalid={essaiDepasse || undefined}
-              onChange={(e) => setEssai(e.target.value)}
-              placeholder="laisser vide si aucune"
-            />
+            {/*
+              🔴 UNE VALEUR ET SON UNITÉ, côte à côte.
+
+              Le champ ne saisissait que des mois entiers. Or un CDD d'au plus
+              six mois a un plafond légal de DEUX SEMAINES (art. L.1242-10) :
+              aucune valeur non nulle n'y était légale, et le PDF imprimait
+              « N mois » en dur — la pièce OPPOSABLE affirmait des mois là où la
+              loi compte en semaines.
+
+              ⚠️ Et « tout passer en jours » aurait déformé le CDI : L.1221-19
+              compte en MOIS CALENDAIRES — deux mois commencés le 15 janvier
+              finissent le 15 mars, ce ne sont pas 60 jours. Chaque règle garde
+              donc son unité.
+            */}
+            <div className="flex gap-[var(--space-admin-3)]">
+              <input
+                id="ct-essai"
+                className={`${inputCls} flex-1`}
+                value={essai}
+                disabled={isPending}
+                inputMode="numeric"
+                // Le plafond légal et son dépassement sont RATTACHÉS au champ : un
+                // lecteur d'écran les énonce en y entrant, sans avoir à explorer
+                // ce qui suit l'input pour les découvrir.
+                aria-describedby="ct-essai-aide"
+                aria-invalid={essaiDepasse || undefined}
+                onChange={(e) => setEssai(e.target.value)}
+                placeholder="laisser vide si aucune"
+              />
+              <select
+                id="ct-essai-unite"
+                className={inputCls}
+                value={essaiUnite}
+                disabled={isPending}
+                // ⚠️ Le libellé du champ porte sur le COUPLE : sans nom propre,
+                // ce menu serait annoncé « liste » et rien d'autre.
+                aria-label="Unité de la période d'essai"
+                aria-describedby="ct-essai-aide"
+                onChange={(e) => setEssaiUnite(e.target.value as "jours" | "semaines" | "mois")}
+              >
+                <option value="jours">jours</option>
+                <option value="semaines">semaines</option>
+                <option value="mois">mois</option>
+              </select>
+            </div>
             {/*
               🔴 RÉGION LIVE STABLE, MONTÉE EN PERMANENCE (recette a11y du 13/09).
 

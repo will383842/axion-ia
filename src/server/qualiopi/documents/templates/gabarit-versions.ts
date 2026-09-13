@@ -107,11 +107,24 @@ export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
   convention_tripartite: 2,
   contrat_formation: 1,
   contrat_sous_traitance: 2,
-  // Créé le 12/09 — premier texte, donc v1. Le prochain incrément sera exigé par
-  // `gabarit-empreinte.spec.ts` dès qu'une clause de fond bougera. ⚠️ La clause
-  // de rémunération variable est celle qui bougera le plus : elle décrit un
-  // mécanisme d'imputation, et un mécanisme se précise.
-  contrat_travail: 1,
+  /*
+    v1 — 12/09/2026, premier texte.
+    v2 — 13/09/2026, LA PÉRIODE D'ESSAI PORTE SON UNITÉ.
+
+    🔴 Changement DE FOND, et un signataire le voit : le gabarit imprimait
+    « {valeur} mois » EN DUR. Or l'art. L.1242-10 plafonne l'essai d'un CDD d'au
+    plus six mois à DEUX SEMAINES — il était donc littéralement impossible
+    d'imprimer une période d'essai juste sur ce type de contrat. La pièce
+    OPPOSABLE affirmait des mois là où la loi compte en semaines.
+
+    ⚠️ L'incrément n'est pas une formalité : sans lui, les exemplaires déjà
+    signés seraient re-rendus avec « 2 semaines » là où leur signataire avait lu
+    « 2 mois ». C'est exactement ce que cette table existe pour empêcher.
+
+    La clause de rémunération variable reste celle qui bougera le plus : elle
+    décrit un mécanisme d'imputation, et un mécanisme se précise.
+  */
+  contrat_travail: 2,
   releve_connexion: 1,
   lettre_mission: 1,
 };

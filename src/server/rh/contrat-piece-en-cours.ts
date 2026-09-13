@@ -51,6 +51,23 @@ import type { SalarieContrat } from "../qualiopi/trainers/contrat-travail";
 export const CLE_EMPREINTE_MENTIONS = "empreinteMentions";
 
 /**
+ * 🔴 VERSION DE L'EMPREINTE — À INCRÉMENTER À CHAQUE CHANGEMENT DE SES ENTRÉES.
+ *
+ * Sans elle, modifier la liste des mentions prises en compte invaliderait d'un
+ * coup TOUTES les empreintes déjà scellées : chaque contrat en cours de
+ * signature serait déclaré « périmé », son annonce bloquée, et l'opérateur
+ * devrait tout réémettre — sur des pièces parfaitement à jour.
+ *
+ * 🔑 Une empreinte d'une AUTRE version se lit comme une empreinte ABSENTE : on
+ * ne peut pas la comparer, donc on ne conclut pas. C'est la même prudence que
+ * pour les pièces émises avant l'existence de ce module.
+ *
+ * v2 (2026-09-13) — la période d'essai passe de « un nombre de mois » au couple
+ * (valeur, unité) : un CDD d'au plus six mois a un plafond de deux semaines.
+ */
+const VERSION_EMPREINTE = "v2";
+
+/**
  * Empreinte des mentions imprimées, stable et indépendante de l'ordre des clés.
  *
  * ⚠️ N'entrent ici que les mentions que le GABARIT imprime. Ajouter un champ qui
@@ -82,20 +99,26 @@ export function empreinteMentions(salarie: SalarieContrat): string {
     texte(salarie.contratPoste),
     texte(salarie.contratClassification),
     salarie.contratDureeHebdoHeures,
-    salarie.contratPeriodeEssaiMois,
+    salarie.contratPeriodeEssai === null
+      ? null
+      : `${salarie.contratPeriodeEssai.valeur} ${salarie.contratPeriodeEssai.unite}`,
     texte(salarie.contratLieuTravail),
     jour(salarie.contratDateFin),
     texte(salarie.contratMotifCdd),
     salarie.fixeMensuelBrutCents,
   ];
-  return createHash("sha256").update(JSON.stringify(mentions)).digest("hex");
+  return `${VERSION_EMPREINTE}:${createHash("sha256").update(JSON.stringify(mentions)).digest("hex")}`;
 }
 
 /** Lit l'empreinte scellée dans une colonne `Json`, sans jamais caster. */
 export function empreinteScellee(metadata: unknown): string | null {
   if (typeof metadata !== "object" || metadata === null || Array.isArray(metadata)) return null;
   const v = (metadata as Record<string, unknown>)[CLE_EMPREINTE_MENTIONS];
-  return typeof v === "string" && v !== "" ? v : null;
+  if (typeof v !== "string" || v === "") return null;
+  // ⚠️ Une empreinte d'une AUTRE version n'est pas comparable : on la traite
+  // comme absente plutôt que comme différente. La déclarer différente
+  // bloquerait tous les contrats en cours au premier changement d'entrées.
+  return v.startsWith(`${VERSION_EMPREINTE}:`) ? v : null;
 }
 
 /** L'état d'une pièce déjà produite, réduit à ce qui décide d'un geste. */
