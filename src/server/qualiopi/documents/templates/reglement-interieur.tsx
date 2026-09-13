@@ -183,6 +183,68 @@ export function ReglementInterieurPdf({
           </Text>
         </DocSection>
 
+        {/* Article 3 ter — Prévention des violences, du harcèlement et des discriminations */}
+        {/*
+          🔴 Décret n° 2026-728 du 1er août 2026, en vigueur au 1er novembre 2026.
+          Le critère 4 du RNQ exige désormais des MESURES DE PRÉVENTION des
+          violences sexistes et sexuelles, du harcèlement et des discriminations,
+          ET la trace de la façon dont un signalement est traité.
+
+          Mesuré le 2026-09-13, avant cet article : « harcèlement », « violence »,
+          « discrimination », « sexiste », « sexuel » — ZÉRO occurrence, ni dans
+          ce gabarit ni dans la page publique.
+
+          ⚠️ Un organisme de formation n'est pas l'employeur du stagiaire : les
+          obligations de l'art. L.1153-5 du code du travail ne s'y transposent pas
+          telles quelles. Ce qui s'applique, et qui suffit à fonder l'article, ce
+          sont les INFRACTIONS PÉNALES — elles valent quel que soit le cadre — et
+          l'échelle de sanctions que ce règlement porte déjà (art. R6352-3).
+          C'est pourquoi les citations sont pénales, et la sanction disciplinaire.
+        */}
+        <DocSection title="Article 3 ter — Prévention des violences, du harcèlement et des discriminations">
+          <Text style={local.articleBody}>
+            L&apos;organisme ne tolère aucune violence, aucun harcèlement et aucune discrimination,
+            qu&apos;ils émanent d&apos;un stagiaire, d&apos;un formateur, d&apos;un intervenant ou
+            d&apos;un membre de l&apos;organisme, en présentiel comme à distance, y compris dans les
+            échanges écrits liés à la formation.
+          </Text>
+          <Text style={local.articleBody}>Sont notamment prohibés :</Text>
+          <BulletList
+            items={[
+              "Le harcèlement sexuel, défini comme le fait d'imposer à une personne, de façon répétée, des propos ou comportements à connotation sexuelle qui portent atteinte à sa dignité ou créent une situation intimidante, hostile ou offensante ; est assimilé au harcèlement sexuel le fait, même non répété, d'user d'une pression grave dans le but réel ou apparent d'obtenir un acte de nature sexuelle (art. 222-33 du code pénal).",
+              "Les agissements sexistes et les outrages sexistes, c'est-à-dire tout propos ou comportement lié au sexe d'une personne ayant pour objet ou pour effet de porter atteinte à sa dignité ou de créer un environnement dégradant.",
+              "Le harcèlement moral, soit les propos ou comportements répétés ayant pour objet ou pour effet une dégradation des conditions de vie de la personne, se traduisant par une altération de sa santé physique ou mentale (art. 222-33-2-2 du code pénal).",
+              "Toute discrimination, c'est-à-dire toute distinction opérée entre les personnes à raison notamment de leur origine, leur sexe, leur situation de famille, leur apparence physique, leur état de santé, leur handicap, leurs moeurs, leur orientation sexuelle, leur identité de genre, leur âge, leurs opinions politiques, leurs activités syndicales ou leur appartenance, vraie ou supposée, à une ethnie, une nation ou une religion déterminée (art. 225-1 du code pénal).",
+            ]}
+          />
+          <Text style={local.articleBody}>
+            Signaler — toute personne qui s&apos;estime victime ou témoin de tels faits peut les
+            signaler au représentant légal de l&apos;organisme, par écrit à l&apos;adresse de
+            contact publiée dans les mentions légales du site. Un signalement peut être fait pendant
+            ou après la formation. Il n&apos;est soumis à aucun formalisme : le récit des faits
+            suffit.
+          </Text>
+          <Text style={local.articleBody}>
+            Ce que fait l&apos;organisme — le signalement est reçu par le représentant légal, hors
+            du circuit ordinaire des réclamations, et traité de manière confidentielle : son contenu
+            n&apos;est communiqué qu&apos;aux personnes dont l&apos;intervention est nécessaire.
+            L&apos;organisme accuse réception sous 48 heures ouvrées, prend sans délai les mesures
+            conservatoires utiles — dont la suspension de la participation de la personne mise en
+            cause aux séquences concernées — puis recueille la version de chacun. Aucune mesure
+            défavorable ne peut être prise contre l&apos;auteur d&apos;un signalement ou un témoin
+            de bonne foi.
+          </Text>
+          <Text style={local.articleBody}>
+            Suites — si les faits sont établis, ils constituent un agissement fautif et appellent
+            une sanction choisie dans l&apos;échelle de l&apos;article 3, prononcée selon la
+            procédure de l&apos;article 3 bis. Lorsque les faits sont susceptibles de recevoir une
+            qualification pénale, l&apos;organisme informe la victime de son droit de porter plainte
+            et procède, le cas échéant, au signalement prévu à l&apos;article 40 du code de
+            procédure pénale. Le signalement, les mesures prises et la suite donnée sont consignés,
+            et cette trace est tenue à la disposition de l&apos;auditeur.
+          </Text>
+        </DocSection>
+
         {/* Article 4 — Propriété intellectuelle */}
         <DocSection title="Article 4 — Propriété intellectuelle">
           <Text style={local.articleBody}>
