@@ -28,6 +28,8 @@ export interface CreerRevueInput {
   participants?: unknown[];
   decisions?: unknown[];
   planActions?: unknown[];
+  /** Analyse de risques — decret 2026-728, exigee au 1er novembre 2026. */
+  risques?: unknown[];
   statut?: string;
 }
 
@@ -36,6 +38,8 @@ export interface UpdateRevueInput {
   participants?: unknown[];
   decisions?: unknown[];
   planActions?: unknown[];
+  /** Analyse de risques — decret 2026-728, exigee au 1er novembre 2026. */
+  risques?: unknown[];
   statut?: string;
   indicateursSnapshot?: unknown;
 }
@@ -63,6 +67,7 @@ export async function creerRevue(annee: number, input: CreerRevueInput): Promise
       participants: (input.participants ?? []) as never,
       decisions: (input.decisions ?? []) as never,
       planActions: (input.planActions ?? []) as never,
+      risques: (input.risques ?? []) as never,
       statut: input.statut ?? "brouillon",
       indicateursSnapshot: indicateurs as never,
     },
@@ -85,6 +90,7 @@ export async function updateRevue(id: string, input: UpdateRevueInput): Promise<
       ...(input.participants !== undefined ? { participants: input.participants as never } : {}),
       ...(input.decisions !== undefined ? { decisions: input.decisions as never } : {}),
       ...(input.planActions !== undefined ? { planActions: input.planActions as never } : {}),
+      ...(input.risques !== undefined ? { risques: input.risques as never } : {}),
       ...(input.statut !== undefined ? { statut: input.statut } : {}),
       ...(input.indicateursSnapshot !== undefined
         ? { indicateursSnapshot: input.indicateursSnapshot as never }

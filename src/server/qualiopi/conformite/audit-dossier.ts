@@ -378,7 +378,17 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
   const revueAnnuelleOff32 = await prisma.revueDirection
     .findFirst({
       where: { statut: "validee", annee: maintenantOff32.getFullYear() },
-      select: { annee: true, participants: true, decisions: true, planActions: true },
+      select: {
+        annee: true,
+        participants: true,
+        decisions: true,
+        planActions: true,
+        // 🔴 Sans ce champ, `compterRisquesExploitables` lirait `undefined` et
+        // rendrait 0 : apres le 1er novembre 2026 la revue serait declaree NON
+        // couverte alors que son analyse de risques existe. Un filtre sur un
+        // champ non selectionne ne rougit pas — il rend une absence.
+        risques: true,
+      },
     })
     .catch(() => null);
   const couvertureOff32 = evaluerCouvertureOff32(revueAnnuelleOff32, maintenantOff32);

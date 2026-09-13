@@ -57,6 +57,10 @@ const creerRevueDirectionSchema = z.object({
   participants: z.array(z.unknown()).optional(),
   decisions: z.array(z.unknown()).optional(),
   planActions: z.array(z.unknown()).optional(),
+  // Analyse de risques — decret 2026-728, exigee au 1er novembre 2026.
+  // Acceptee DES MAINTENANT : poser la donnee avant de l'exiger est ce qui
+  // permet d'arriver a l'echeance avec une analyse deja ecrite.
+  risques: z.array(z.unknown()).optional(),
   statut: statutRevueSchema.optional(),
 });
 
@@ -66,6 +70,10 @@ const updateRevueDirectionSchema = z.object({
   participants: z.array(z.unknown()).optional(),
   decisions: z.array(z.unknown()).optional(),
   planActions: z.array(z.unknown()).optional(),
+  // Analyse de risques — decret 2026-728, exigee au 1er novembre 2026.
+  // Acceptee DES MAINTENANT : poser la donnee avant de l'exiger est ce qui
+  // permet d'arriver a l'echeance avec une analyse deja ecrite.
+  risques: z.array(z.unknown()).optional(),
   statut: statutRevueSchema.optional(),
 });
 
@@ -88,6 +96,7 @@ function refuserValidation(etat: {
   participants: unknown;
   decisions: unknown;
   planActions: unknown;
+  risques?: unknown;
 }): string | null {
   const verdict = evaluerCouvertureOff32(etat, new Date());
   if (verdict.couvert) return null;
@@ -113,6 +122,7 @@ export async function creerRevueDirectionAction(input: {
   participants?: unknown[];
   decisions?: unknown[];
   planActions?: unknown[];
+  risques?: unknown[];
   statut?: string;
 }): Promise<ActionResult<{ id: string; annee: number }>> {
   const session = await requireAdminWrite();
@@ -130,6 +140,7 @@ export async function creerRevueDirectionAction(input: {
       participants: v.participants ?? [],
       decisions: v.decisions ?? [],
       planActions: v.planActions ?? [],
+      risques: v.risques ?? [],
     });
     if (refus !== null) return { error: refus };
   }
@@ -145,6 +156,7 @@ export async function creerRevueDirectionAction(input: {
       // clôture). Sans cela, chaque écran écrirait sa propre forme et le suivi ne
       // serait mesurable nulle part.
       ...(v.planActions !== undefined ? { planActions: normaliserPlanActions(v.planActions) } : {}),
+      ...(v.risques !== undefined ? { risques: v.risques } : {}),
       ...(v.statut !== undefined ? { statut: v.statut } : {}),
     });
   } catch (err) {
@@ -181,6 +193,7 @@ export async function updateRevueDirectionAction(input: {
   participants?: unknown[];
   decisions?: unknown[];
   planActions?: unknown[];
+  risques?: unknown[];
   statut?: string;
 }): Promise<ActionResult<{ id: string }>> {
   const session = await requireAdminWrite();
