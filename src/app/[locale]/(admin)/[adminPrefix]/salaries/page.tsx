@@ -231,9 +231,34 @@ export default async function SalariesPage({ params }: PageProps) {
                     )}
                   </td>
                   <td className={cellCls}>
-                    {l.remiseUrgente ? (
+                    {/*
+                      🔴 LE ROUGE EST RÉSERVÉ À CE QUI EST ENCORE UNE TÂCHE.
+
+                      Recette du 13/09 : la ligne se peignait en rouge « ⚠ non
+                      remis » pour TOUT LE MONDE, pendant que le compteur
+                      « Remise de CDD en retard » juste au-dessus ne compte que
+                      les actifs. Sur un compte désactivé, l'écran affichait donc
+                      0 EN VERT et une ligne EN ROUGE, sur la même page. Un
+                      tableau qui se contredit lui-même n'apprend rien : il
+                      apprend à ne plus lire le chiffre.
+
+                      ⚠️ ARBITRAGE, et c'est le sens INVERSE qui a été écarté :
+                      on aurait pu compter les inactifs dans le chiffre. Mais
+                      l'alerte `contrat_cdd_non_remis` ne vise, elle aussi, que
+                      les actifs — et l'étendre ferait crier indéfiniment sur
+                      d'anciens salariés dont plus personne ne peut honnêtement
+                      dater la remise. Une alerte qui réclame un geste que nul ne
+                      peut poser apprend à ignorer la famille entière.
+
+                      Le fait reste DIT, il cesse seulement d'être crié.
+                    */}
+                    {l.remiseUrgente && l.actif ? (
                       <span className="font-semibold text-[color:var(--color-admin-danger)]">
                         ⚠ non remis
+                      </span>
+                    ) : l.remiseUrgente ? (
+                      <span className="text-[color:var(--color-admin-fg-muted)]">
+                        non remis · compte désactivé
                       </span>
                     ) : l.remisAt !== null ? (
                       <span className="inline-flex items-center gap-1">

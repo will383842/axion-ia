@@ -130,6 +130,25 @@ export function SignatureDocument({
   const imageAEnvoyer = mode === "trace" ? trace : mode === "papier" ? photo : null;
   const pretASigner = lu && !enCours && (mode === "accessible" ? true : imageAEnvoyer !== null);
 
+  /*
+    🔴 CE QUI MANQUE POUR SIGNER, DIT EN TOUTES LETTRES (recette a11y du 13/09).
+
+    Le bouton était désactivé sur DEUX préconditions et n'en nommait aucune. Un
+    bouton grisé sans motif se lit comme une panne, pas comme une étape à
+    franchir — et c'est le dernier geste d'un contrat de travail, fait par
+    quelqu'un qui vient d'être embauché et n'a personne à qui demander.
+
+    ⚠️ Rendu dans une région live STABLE, jamais montée/démontée : un rôle live
+    posé après coup n'est pas annoncé par un lecteur d'écran.
+  */
+  const motifNonPret: string | null = enCours
+    ? null
+    : !lu
+      ? "Cochez « J'ai lu les mentions ci-dessus » pour activer la signature."
+      : mode !== "accessible" && imageAEnvoyer === null
+        ? "Tracez votre signature dans le cadre ci-dessus, ou choisissez « Confirmer sans tracé »."
+        : null;
+
   // 🔴 Le groupe de boutons radio est nommé par l'identifiant de la PIÈCE.
   //
   // La console affiche désormais deux pièces signables sur la même page (relevé
@@ -311,11 +330,15 @@ export function SignatureDocument({
           <button
             type="button"
             disabled={!pretASigner}
+            aria-describedby="sig-motif"
             onClick={soumettre}
             className="bg-mocha rounded px-3 py-1.5 text-xs text-white disabled:opacity-50"
           >
             {enCours ? "Enregistrement…" : libelleBouton}
           </button>
+          <p id="sig-motif" role="status" aria-live="polite" className="text-xs opacity-70">
+            {motifNonPret ?? ""}
+          </p>
         </div>
       ) : null}
     </section>

@@ -36,6 +36,7 @@ import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { partiesRequisesPour, circuitPour } from "./parties-requises";
 import { mentionCompleteDocument } from "./mentions-document";
 import type { PartieSignataire } from "./document-signature-hash";
+import { raisonDuRefus, type LecteurContratTravail } from "./motif-refus-contrat-travail";
 
 /** Une partie du circuit, et où elle en est. */
 export interface EtatPartieContratTravail {
@@ -95,9 +96,6 @@ const jourLisible = new Intl.DateTimeFormat("fr-FR", {
 /** Rôles habilités à engager l'organisme. Miroir de `habiliter()` du service. */
 const ROLES_HABILITES = new Set(["super_admin", "admin"]);
 
-const MOTIF_NON_TITULAIRE =
-  "Ce contrat de travail ne vous concerne pas : il nomme une personne précise, et elle seule peut le signer.";
-
 const SELECTION_PIECE = {
   id: true,
   numero: true,
@@ -135,8 +133,7 @@ type PieceLue = {
   }>;
 };
 
-type Lecteur =
-  { pourPartie: "formateur"; trainerId: string } | { pourPartie: "axionia"; role: string };
+type Lecteur = LecteurContratTravail;
 
 /**
  * Le salarié voit SON contrat de travail.
@@ -274,30 +271,4 @@ function construireEtat(
     ),
     plafondProbant: PLAFOND_PROBANT,
   };
-}
-
-/**
- * La raison du refus, dans l'ordre où elle doit être dite.
- *
- * ⚠️ L'ORDRE compte. Un spécimen relève d'un geste correctif — renseigner la
- * convention collective, régénérer la pièce. Annoncer d'abord « vous avez déjà
- * signé » ferait croire que tout va bien sur un contrat qui n'est pas opposable.
- */
-function raisonDuRefus(ctx: {
-  estSpecimen: boolean;
-  estTitulaire: boolean;
-  habilite: boolean;
-  lecteur: Lecteur;
-}): string {
-  if (ctx.estSpecimen) {
-    return "Ce contrat porte la mention SPÉCIMEN : la convention collective de l'organisme, ou son identité, était incomplète au moment de sa génération. Il n'est pas opposable. Complétez le paramètre manquant, établissez à nouveau le contrat, puis signez-le.";
-  }
-  if (ctx.lecteur.pourPartie === "formateur") {
-    if (!ctx.estTitulaire) return MOTIF_NON_TITULAIRE;
-    return "Vous avez déjà signé ce contrat. Il reste affiché avec son horodatage et son empreinte : c'est votre preuve.";
-  }
-  if (!ctx.habilite) {
-    return "Signer un contrat de travail engage l'organisme comme employeur : seuls un administrateur ou le dirigeant peuvent le faire.";
-  }
-  return "L'employeur a déjà signé ce contrat. Il reste affiché avec son horodatage et son empreinte.";
 }

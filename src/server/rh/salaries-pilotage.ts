@@ -177,7 +177,22 @@ export async function listSalaries(now = new Date()): Promise<LigneSalarie[]> {
       };
     });
   } catch {
-    return [];
+    /*
+      🔴 ON N'AVALE L'EXCEPTION QUE POUR LE STUB DE BUILD (recette du 13/09).
+
+      Le `catch` rendait `[]` quelle que soit la panne. Conséquence à l'écran :
+      quatre compteurs à zéro peints en VERT, « Aucun salarié enregistré », et
+      pas un mot disant que rien n'a été lu. Une base injoignable produisait donc
+      l'image exacte d'une entreprise parfaitement à jour — et c'est le seul
+      écran où l'on va vérifier qu'aucun CDD n'est en retard.
+
+      ⚠️ Le repli `[]` reste INDISPENSABLE au build : le SSG tourne sur une base
+      stub (`stub.invalid`), et y lever ferait échouer la construction de la page.
+      Mais il ne couvre plus que ce cas-là ; toute autre panne remonte et la
+      frontière d'erreur du segment s'affiche, ce qui est la vérité.
+    */
+    if (process.env["DATABASE_URL"]?.includes("stub.invalid") === true) return [];
+    throw new Error("La liste des salariés n'a pas pu être lue.");
   }
 }
 

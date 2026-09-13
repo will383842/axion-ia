@@ -50,6 +50,12 @@ import { lireLettresMissionConsoleDuFormateur } from "@/server/qualiopi/document
 import { contresignerLettreMissionAction } from "@/server/actions/qualiopi/lettre-mission-signature";
 import { lireContratsTravailConsole } from "@/server/qualiopi/documents/signature/contrat-travail-queries";
 import { signerContratTravailEmployeurAction } from "@/server/actions/qualiopi/contrat-travail-signature";
+import {
+  empreinteMentions,
+  empreinteScellee,
+  pieceDesynchronisee,
+} from "@/server/rh/contrat-piece-en-cours";
+
 import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { VerserFicheFormateurButton } from "@/components/admin/qualiopi/VerserFicheFormateurButton";
@@ -256,9 +262,55 @@ export default async function FicheFormateurPage({ params }: PageProps) {
     ? await prisma.documentGenere.findFirst({
         where: { type: "contrat_travail", trainerId: trainer.id, annuleeAt: null },
         orderBy: { createdAt: "desc" },
-        select: { id: true, numero: true, createdAt: true },
+        select: { id: true, numero: true, createdAt: true, metadata: true },
       })
     : null;
+
+  /*
+    🔴 LA PIÈCE PORTE-T-ELLE ENCORE LES MENTIONS DE LA FICHE ? (recette du 13/09)
+
+    Rien ne le disait. On corrigeait un lieu de travail faux, on cliquait
+    « Enregistrer les mentions », et le panneau continuait d'afficher le même
+    « Relire AXI-… » et le même « Prévenir le salarié » — sur une pièce qui ne
+    portait plus la correction. Le message partait, l'intéressé lisait et signait
+    l'ancienne version.
+
+    ⚠️ Comparé sur une EMPREINTE des mentions, jamais sur `updatedAt` : celui-ci
+    bouge aussi quand on consigne la remise de l'exemplaire, geste qui suit
+    normalement l'envoi. La pièce serait déclarée périmée par le geste même qui
+    atteste qu'elle a été remise.
+  */
+  const contratDesynchronise =
+    contratTravail === null
+      ? false
+      : pieceDesynchronisee(
+          {
+            numero: contratTravail.numero,
+            partiesSignataires: [],
+            empreinte: empreinteScellee(contratTravail.metadata),
+          },
+          empreinteMentions({
+            statut: trainer.statut as "salarie" | "sous_traitant" | "dirigeant",
+            nom: trainer.nom,
+            prenom: trainer.prenom,
+            dateNaissance: trainer.dateNaissance,
+            lieuNaissance: trainer.lieuNaissance,
+            adressePersonnelle: trainer.adressePersonnelle,
+            dateEmbauche: trainer.dateEmbauche,
+            contratType: trainer.contratType,
+            contratPoste: trainer.contratPoste,
+            contratClassification: trainer.contratClassification,
+            contratDureeHebdoHeures:
+              trainer.contratDureeHebdoHeures === null
+                ? null
+                : Number(trainer.contratDureeHebdoHeures),
+            contratPeriodeEssaiMois: trainer.contratPeriodeEssaiMois,
+            contratLieuTravail: trainer.contratLieuTravail,
+            contratDateFin: trainer.contratDateFin,
+            contratMotifCdd: trainer.contratMotifCdd,
+            fixeMensuelBrutCents: trainer.fixeMensuelBrutCents,
+          }),
+        );
 
   /*
     L'état de signature du contrat, pour la console.
@@ -489,6 +541,7 @@ export default async function FicheFormateurPage({ params }: PageProps) {
                   emisLe: contratTravail.createdAt.toLocaleDateString("fr-FR"),
                 }
           }
+          contratDesynchronise={contratDesynchronise}
           /*
             ⚠️ `yyyy-mm-dd` pour l'`<input type="date">`, en UTC — la colonne est
             posée à minuit UTC par l'action. Passer par le fuseau local

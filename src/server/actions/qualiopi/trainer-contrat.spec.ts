@@ -55,10 +55,30 @@ vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: (...a: unknown[]) => mockEnqueueEmail(...a),
 }));
 
-import { consignerRemiseContratAction, notifierContratTravailAction } from "./trainer-contrat";
+import {
+  consignerRemiseContratAction,
+  notifierContratTravailAction,
+  updateTrainerContratAction,
+} from "./trainer-contrat";
+
+import { empreinteMentions, CLE_EMPREINTE_MENTIONS } from "@/server/rh/contrat-piece-en-cours";
+import type { SalarieContrat } from "@/server/qualiopi/trainers/contrat-travail";
 
 const ID = "11111111-1111-4111-8111-111111111111";
 
+/**
+ * ⚠️ CETTE FIXTURE DOIT PORTER TOUT CE QUE LE `select` RÉEL DEMANDE.
+ *
+ * Elle n'en portait que huit champs quand l'action n'en lisait que huit. Le jour
+ * où l'action a eu besoin de TOUTES les mentions du contrat — pour recalculer
+ * l'empreinte et vérifier que la pièce annoncée les porte encore — huit tests
+ * sont tombés sur `Cannot read properties of undefined`.
+ *
+ * 🔑 C'est le bon comportement, et `empreinteMentions` reste volontairement
+ * STRICTE là-dessus : un repli `?? null` aurait rendu une empreinte calculée sur
+ * des trous, donc un contrôle qui laisse passer exactement ce qu'il doit
+ * attraper — en silence, et sans qu'aucun test ne bouge.
+ */
 function salarie(o: Record<string, unknown> = {}) {
   return {
     email: "camille@exemple.invalid",
@@ -66,15 +86,25 @@ function salarie(o: Record<string, unknown> = {}) {
     prenom: "Camille",
     statut: "salarie",
     actif: true,
+    dateNaissance: new Date("1992-04-03T00:00:00.000Z"),
+    lieuNaissance: "Lyon",
+    adressePersonnelle: "12 rue des Lilas, 69003 Lyon",
+    dateEmbauche: new Date("2026-10-01T00:00:00.000Z"),
     contratType: "cdi",
     contratPoste: "Formateur en intelligence artificielle",
-    dateEmbauche: new Date("2026-10-01T00:00:00.000Z"),
+    contratClassification: "Cadre position 2.1",
+    contratDureeHebdoHeures: 35,
+    contratPeriodeEssaiMois: 3,
+    contratLieuTravail: "Lyon",
+    contratDateFin: null,
+    contratMotifCdd: null,
+    fixeMensuelBrutCents: 300000,
     ...o,
   };
 }
 
 function piece(o: Record<string, unknown> = {}) {
-  return { numero: "AXI-DOC-2026-050", metadata: {}, ...o };
+  return { numero: "AXI-DOC-2026-050", metadata: {}, statutSignature: "en_attente", ...o };
 }
 
 beforeEach(() => {
@@ -300,5 +330,113 @@ describe("consignerRemiseContratAction — la remise devient observable", () => 
     expect((mockLog.mock.calls[0]?.[0] as { action: string }).action).toBe(
       "qualiopi.trainer.remise_contrat.effacee",
     );
+  });
+});
+
+describe("🔴 la pièce annoncée doit porter les mentions de la fiche", () => {
+  /*
+    Le message décrit `trainer` — la fiche VIVANTE — alors qu'il annonce
+    `piece.numero`. Rien n'empêchait les deux de diverger : corriger le poste
+    après l'émission, sans ré-établir, faisait partir « votre CDD pour le poste
+    de Secrétaire administrative… Référence : AXI-DOC-2026-050 » pendant que le
+    PDF de cette même pièce portait « Formatrice IA ».
+
+    ⚠️ Et c'est l'E-MAIL que l'intéressée produirait si elle contestait : en
+    signant, elle scelle une mention affirmant avoir pris connaissance de la
+    pièce dans son intégralité.
+  */
+
+  it("🔴 refuse quand le POSTE a changé depuis l'établissement", async () => {
+    const empreinteAncienne = empreinteMentions(
+      salarie({ contratPoste: "Formatrice IA" }) as unknown as SalarieContrat,
+    );
+    mockDocFindFirst.mockResolvedValue(
+      piece({ metadata: { [CLE_EMPREINTE_MENTIONS]: empreinteAncienne } }),
+    );
+    const res = await notifierContratTravailAction({ trainerId: ID });
+    expect("error" in res && res.error).toContain("AXI-DOC-2026-050");
+    expect("error" in res && res.error).toContain("Établissez-le à nouveau");
+    expect(mockEnqueueEmail).not.toHaveBeenCalled();
+  });
+
+  it("🔑 LAISSE PASSER quand la pièce porte bien les mentions actuelles", async () => {
+    // Témoin discriminant. Sans lui, un « toujours refuser » passerait le test
+    // ci-dessus et empêcherait toute annonce — le bouton deviendrait mort.
+    const empreinteJuste = empreinteMentions(salarie() as unknown as SalarieContrat);
+    mockDocFindFirst.mockResolvedValue(
+      piece({ metadata: { [CLE_EMPREINTE_MENTIONS]: empreinteJuste } }),
+    );
+    const res = await notifierContratTravailAction({ trainerId: ID });
+    expect("data" in res).toBe(true);
+    expect(mockEnqueueEmail).toHaveBeenCalledTimes(1);
+  });
+
+  it("⚠️ laisse passer une pièce SANS empreinte — les tirages d'avant ce module", async () => {
+    // Un correctif qui bloque l'existant n'en est pas un : les contrats déjà en
+    // cours de signature ne portent aucune empreinte.
+    mockDocFindFirst.mockResolvedValue(piece({ metadata: {} }));
+    expect("data" in (await notifierContratTravailAction({ trainerId: ID }))).toBe(true);
+  });
+
+  it("🔑 une métadonnée MALFORMÉE ne bloque pas l'annonce", async () => {
+    // `metadata` est une colonne Json : sa forme n'est pas garantie. La traiter
+    // comme une empreinte fausse ferait refuser toute annonce sans recours.
+    mockDocFindFirst.mockResolvedValue(piece({ metadata: ["inattendu"] }));
+    expect("data" in (await notifierContratTravailAction({ trainerId: ID }))).toBe(true);
+  });
+
+  it("🔴 l'HEURE d'une saisie ne rend pas une pièce périmée", async () => {
+    // Sans la réduction au jour, une date ressaisie à une autre heure — ou lue
+    // dans un autre fuseau — déclarerait périmée une pièce identique à l'écrit,
+    // et l'avertissement finirait cliqué sans être lu.
+    const empreinteMinuit = empreinteMentions(salarie() as unknown as SalarieContrat);
+    mockTrainerFindUnique.mockResolvedValue(
+      salarie({ dateEmbauche: new Date("2026-10-01T18:45:00.000Z") }),
+    );
+    mockDocFindFirst.mockResolvedValue(
+      piece({ metadata: { [CLE_EMPREINTE_MENTIONS]: empreinteMinuit } }),
+    );
+    expect("data" in (await notifierContratTravailAction({ trainerId: ID }))).toBe(true);
+  });
+});
+
+describe("🔴 une date d'embauche ne s'efface pas sous un contrat établi", () => {
+  /*
+    Recette du 13/09. Effacer ce champ éteignait EN SILENCE l'alerte CRITIQUE de
+    remise du CDD et remettait le compteur d'urgence à zéro : sans origine,
+    `remiseCddEnSouffrance` n'a plus de retard à compter. Le geste qui aurait dû
+    crier devenait celui qui fait taire.
+
+    ⚠️ Et la pièce PORTE cette date : le PDF l'imprime, le délai de
+    l'art. L.1242-13 s'en déduit, et la requalification en CDI qui le sanctionne
+    aussi. Un champ vide côté fiche pendant qu'un contrat signé affirme le
+    contraire n'est pas une donnée manquante, c'est une contradiction.
+  */
+
+  it("🔴 REFUSE l'effacement quand une pièce existe, et NOMME la pièce", async () => {
+    mockDocFindFirst.mockResolvedValue({ numero: "AXI-DOC-2026-050" });
+    const res = await updateTrainerContratAction({ id: ID, dateEmbauche: null });
+    expect("error" in res && res.error).toContain("AXI-DOC-2026-050");
+    expect("error" in res && res.error).toContain("L.1242-13");
+    expect(mockTrainerUpdate).not.toHaveBeenCalled();
+  });
+
+  it("🔑 AUTORISE l'effacement quand aucune pièce n'a été établie", async () => {
+    // Témoin discriminant : sans lui, un « toujours refuser » passerait le test
+    // ci-dessus et interdirait de corriger une date saisie par erreur avant
+    // même qu'un contrat existe.
+    mockDocFindFirst.mockResolvedValue(null);
+    const res = await updateTrainerContratAction({ id: ID, dateEmbauche: null });
+    expect("data" in res).toBe(true);
+    expect(mockTrainerUpdate).toHaveBeenCalledTimes(1);
+  });
+
+  it("🔑 n'entrave pas une CORRECTION de date — on ne bloque que l'EFFACEMENT", async () => {
+    // L'autre témoin discriminant. Corriger une date fausse reste le geste
+    // normal ; c'est la faire disparaître qui efface le délai avec elle.
+    mockDocFindFirst.mockResolvedValue({ numero: "AXI-DOC-2026-050" });
+    const res = await updateTrainerContratAction({ id: ID, dateEmbauche: "2026-10-05" });
+    expect("data" in res).toBe(true);
+    expect(mockTrainerUpdate).toHaveBeenCalledTimes(1);
   });
 });

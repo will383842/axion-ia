@@ -222,22 +222,36 @@ export function TrainerManageForm(props: TrainerManageFormProps): React.ReactEle
                 : "cette personne sortira des pièces Qualiopi et du BPF. Son contrat de travail et sa paie sont inchangés."}
             </p>
           )}
-          <button
-            type="button"
-            disabled={isPending || estFormateur === props.estFormateur}
-            aria-busy={isPending}
-            className="admin-button mt-[var(--space-admin-3)]"
-            onClick={() =>
-              run(
-                () => updateTrainerAction({ id: props.trainerId, estFormateur }),
-                estFormateur
-                  ? "Enregistré : cette personne compte désormais parmi les formateurs."
-                  : "Enregistré : cette personne ne compte plus parmi les formateurs.",
-              )
-            }
-          >
-            {isPending ? "Enregistrement…" : "Enregistrer"}
-          </button>
+          {/*
+            🔴 LA MARGE EST PORTÉE PAR UN CONTENEUR, PAS PAR LE BOUTON.
+
+            `mt-[…]` posé à côté de `.admin-button` est INERTE : cette classe vit
+            au niveau racine d'`admin.css` (l. 1132), donc HORS COUCHE, et une
+            règle non-layered bat toute règle layered — y compris un utilitaire
+            Tailwind — quelle que soit sa spécificité. Son `margin-top: 0`
+            gagnait en silence, et le bouton restait collé au paragraphe.
+
+            ⚠️ Le dépôt porte 11 AUTRES occurrences du même motif (mesurées le
+            13/09) : elles sont hors du périmètre de ce lot, et signalées.
+          */}
+          <div className="mt-[var(--space-admin-3)]">
+            <button
+              type="button"
+              disabled={isPending || estFormateur === props.estFormateur}
+              aria-busy={isPending}
+              className="admin-button"
+              onClick={() =>
+                run(
+                  () => updateTrainerAction({ id: props.trainerId, estFormateur }),
+                  estFormateur
+                    ? "Enregistré : cette personne compte désormais parmi les formateurs."
+                    : "Enregistré : cette personne ne compte plus parmi les formateurs.",
+                )
+              }
+            >
+              {isPending ? "Enregistrement…" : "Enregistrer"}
+            </button>
+          </div>
         </div>
       </section>
 

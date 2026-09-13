@@ -58,9 +58,42 @@ beforeEach(() => {
 });
 
 describe("listSalaries — l'état dit le geste qui reste", () => {
-  it("rend [] quand la base est absente (stub de build)", async () => {
+  it("rend [] quand la base est le STUB DE BUILD", async () => {
+    // Le SSG tourne sur `stub.invalid` : y lever ferait échouer la construction
+    // de la page. Le repli reste indispensable — mais pour ce cas SEULEMENT.
+    const avant = process.env["DATABASE_URL"];
+    process.env["DATABASE_URL"] = "postgresql://stub:stub@stub.invalid:5432/stub";
     mockTrainerFindMany.mockRejectedValue(new Error("no db"));
-    await expect(listSalaries(MAINTENANT)).resolves.toEqual([]);
+    try {
+      await expect(listSalaries(MAINTENANT)).resolves.toEqual([]);
+    } finally {
+      if (avant === undefined) delete process.env["DATABASE_URL"];
+      else process.env["DATABASE_URL"] = avant;
+    }
+  });
+
+  it("🔴 une VRAIE panne de base LÈVE — elle ne rend pas un écran tout vert", async () => {
+    /*
+      Le témoin qui manquait, et le défaut qu'il ferme (recette du 13/09).
+
+      Le `catch` rendait `[]` quelle que soit la panne. À l'écran : quatre
+      compteurs à ZÉRO peints en VERT, « Aucun salarié enregistré », et pas un
+      mot disant que rien n'a été lu. Une base injoignable produisait donc
+      l'image exacte d'une entreprise parfaitement à jour — sur le seul écran où
+      l'on va vérifier qu'aucun CDD n'est en retard.
+
+      🔑 C'est la PAIRE qui discrimine : le test ci-dessus seul serait passé sur
+      un `catch` qui avale tout.
+    */
+    const avant = process.env["DATABASE_URL"];
+    process.env["DATABASE_URL"] = "postgresql://vrai@10.0.0.1:5432/axionia";
+    mockTrainerFindMany.mockRejectedValue(new Error("connection refused"));
+    try {
+      await expect(listSalaries(MAINTENANT)).rejects.toThrow(/n'a pas pu être lue/);
+    } finally {
+      if (avant === undefined) delete process.env["DATABASE_URL"];
+      else process.env["DATABASE_URL"] = avant;
+    }
   });
 
   it("🔴 sans pièce produite : « à établir »", async () => {
