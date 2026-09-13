@@ -558,6 +558,21 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/scripts\/backfill-hero-images\.ts$/,
   /^src\/content\/__tests__\/services-ssot\.spec\.ts$/,
   /^src\/server\/queue\/workers\/keyword-opportunity-detector\.ts$/,
+  // a11y-admin.spec.ts (2026-09-13) — la gate d'accessibilité de la console.
+  // Elle est passée de 18 écrans à 216 après que les 223 routes admin ont été
+  // MESURÉES une par une (198 sans violation serious/critical ; les 25 en faute
+  // restent dehors). Une trentaine de ces routes vivent sous `/content-gen/`, et
+  // c'est de là, et de là seulement, que vient le marqueur : ce sont des URL
+  // dans une liste de chemins à visiter au navigateur.
+  //
+  // Aucun import, aucun type, aucun appel de brique content-gen — exactement la
+  // même nature que `admin-nav.test.ts` et `services-ssot.spec.ts` ci-dessus.
+  //
+  // 🔑 L'alternative aurait été de RETIRER ces écrans de la gate pour satisfaire
+  // la garde. Ce serait le pire échange : on perdrait la couverture réelle de
+  // trente écrans mesurés propres, pour un motif purement lexical — et la
+  // console content-gen serait le seul pan de l'admin sans garde d'accessibilité.
+  /^tests\/e2e\/a11y-admin\.spec\.ts$/,
   // check-positionnement.ts (2026-08-30) — garde du repositionnement PME/ETI/
   // grands groupes. Le marqueur vient de DEUX chemins de scope écrits en clair
   // (`src/server/content-gen/generators`, `.../brand`), parce que les prompts
