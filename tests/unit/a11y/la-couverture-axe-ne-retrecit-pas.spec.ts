@@ -180,17 +180,40 @@ describe("🛑 la couverture d'accessibilité de la console ne rétrécit pas", 
   });
 
   it("⚠️ dit la VÉRITÉ sur ce qui reste dehors", () => {
-    // Ce test ne garde rien : il refuse qu'on lise « 18 écrans verts » comme
-    // « la console est accessible ». Il échouera le jour où la couverture
+    // 🟢 2026-09-13 — LE JOUR ANNONCÉ EST ARRIVÉ, ET LE SEUIL A ÉTÉ RETOURNÉ.
+    //
+    // La version d'origine disait : « il échouera le jour où la couverture
     // deviendra majoritaire — et ce jour-là, ce sera une bonne nouvelle à
-    // écrire, pas un rouge à faire taire.
+    // écrire, pas un rouge à faire taire ». Elle a rougi sur 216/311, soit
+    // 69 %, après la mesure des 223 écrans (198 sans violation serious/critical,
+    // 25 en faute laissés dehors). C'est exactement ce qu'elle attendait.
+    //
+    // 🔑 CE QU'IL NE FAUT PAS FAIRE : relever le plafond à 0,8 « pour repasser
+    // au vert ». Un seuil qui suit la mesure ne garde plus rien — il enregistre.
+    // Le sens du test change donc de direction : il ne surveille plus une
+    // couverture trop FAIBLE annoncée comme suffisante, mais une couverture qui
+    // RÉTRÉCIT. C'est le titre du fichier, et c'était déjà sa vocation.
+    //
+    // Le plancher est posé SOUS la mesure du jour (216), pas dessus : retirer
+    // quelques écrans le temps d'un correctif reste possible, en vider la
+    // moitié ne l'est pas.
     const total = pagesAdmin();
     const couverts = ecransInscrits().length;
     expect(total, "le comptage des pages admin ne lit plus rien").toBeGreaterThan(250);
     expect(
+      couverts,
+      `${couverts}/${total} pages couvertes. Ce plancher a été posé le 2026-09-13 ` +
+        `à 200, sous la mesure du jour (216). Le franchir par le BAS signifie qu'on ` +
+        `a retiré des écrans de la gate : dire lesquels et pourquoi, jamais baisser ` +
+        `le plancher pour repasser au vert.`,
+    ).toBeGreaterThanOrEqual(200);
+    // ⚠️ Et on continue de refuser qu'on lise « 216 écrans verts » comme « la
+    // console est accessible » : 25 écrans mesurés portent des violations et
+    // restent dehors, et les routes à segment dynamique ne sont pas mesurées.
+    expect(
       couverts / total,
-      `${couverts}/${total} pages couvertes. Si ce ratio dépasse 50 %, relire ce ` +
-        `fichier : le commentaire « ~287 pages restent dehors » sera devenu faux.`,
-    ).toBeLessThan(0.5);
+      `${couverts}/${total}. Si ce ratio atteint 100 %, ce n'est pas que tout est ` +
+        `couvert : c'est que le dénominateur a cessé de compter les écrans réels.`,
+    ).toBeLessThan(1);
   });
 });
