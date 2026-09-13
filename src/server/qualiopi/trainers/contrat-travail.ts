@@ -187,11 +187,45 @@ export function motifSpecimenContrat(convention: ConventionCollective | null): s
  *
  * `null` quand la classification ne permet pas de trancher — cas normal, pas
  * une erreur : mieux vaut ne rien dire que se tromper de catégorie.
+ *
+ * ## 🔴 LES CONVENTIONS N'EMPLOIENT PAS LE VOCABULAIRE DU CODE DU TRAVAIL
+ *
+ * La loi raisonne en catégories socio-professionnelles — ouvriers et employés,
+ * agents de maîtrise et techniciens, cadres. Les conventions, elles, ont leurs
+ * propres grilles, et celle qui s'applique ici n'emploie aucun de ces mots :
+ * Syntec/Bétic (IDCC 1486) classe en **ETAM** et en **IC**.
+ *
+ * Conséquence, constatée le 13/09 quand la convention a été arbitrée : une
+ * classification écrite « IC position 2.1, coefficient 100 » ne déclenchait
+ * AUCUNE aide. Le repli `null` n'est pas faux — il se tait plutôt que de se
+ * tromper — mais il se taisait précisément là où l'aide sert.
+ *
+ * ## ⚠️ CE QUE J'AJOUTE, ET CE QUE JE REFUSE D'AJOUTER
+ *
+ * · **IC / ingénieur → 4 mois.** « Ingénieurs et Cadres » recouvre exactement la
+ *   catégorie « cadre » de l'art. L.1221-19. Sans ambiguïté.
+ * · **ETAM → rien, toujours `null`.** Et c'est un REFUS délibéré, pas un oubli :
+ *   « Employés, Techniciens et Agents de Maîtrise » chevauche DEUX plafonds
+ *   légaux — deux mois pour un employé, trois pour un technicien ou un agent de
+ *   maîtrise. Rendre 3 mois sur un ETAM position 1.x annoncerait un plafond
+ *   supérieur au vrai, sur une durée dont le dépassement rend la rupture
+ *   abusive. Se taire est la seule réponse honnête quand le libellé ne trance
+ *   pas — et il suffit d'écrire « ETAM technicien » pour que l'aide reparle.
+ *
+ * ⛔ Et je n'encode PAS les durées propres à la convention. Syntec/Bétic fixe ses
+ * propres périodes d'essai, souvent PLUS COURTES que le plafond légal — ce sont
+ * elles qui s'appliquent alors. Les écrire ici supposerait de lire une grille
+ * que l'outil ne connaît pas, et une valeur périmée au prochain avenant serait
+ * pire que l'absence. Le message rappelle déjà que la convention prime.
  */
 export function plafondLegalEssaiMois(classification: string | null): number | null {
   if (vide(classification)) return null;
   const c = (classification as string).toLowerCase();
+  // « cadre » d'abord : « ingénieur cadre » doit rendre 4, pas tomber plus bas.
   if (c.includes("cadre")) return 4;
+  // Syntec/Bétic : « IC » = Ingénieurs et Cadres. Cherché en MOT ENTIER — sans
+  // la borne, « technicien » contient « ic » et rendrait 4 mois au lieu de 3.
+  if (/\bic\b/.test(c) || c.includes("ingénieur") || c.includes("ingenieur")) return 4;
   if (c.includes("agent de maîtrise") || c.includes("technicien")) return 3;
   if (c.includes("ouvrier") || c.includes("employé") || c.includes("employe")) return 2;
   return null;
