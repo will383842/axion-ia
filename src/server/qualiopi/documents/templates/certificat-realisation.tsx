@@ -127,8 +127,14 @@ export interface CertificatRealisationData {
   estCopie?: boolean;
 }
 
-/** Libellés réglementaires — article L6313-1 du code du travail. */
-const NATURE_ACTION_LABELS: Record<
+/**
+ * Libellés réglementaires — article L6313-1 du code du travail.
+ *
+ * Exporté : les attestations de fin de formation (complète et partielle)
+ * impriment la nature de l'action avec CE libellé et ce même défaut, pour que
+ * les pièces d'un même dossier ne qualifient pas l'action différemment.
+ */
+export const NATURE_ACTION_LABELS: Record<
   NonNullable<CertificatRealisationData["natureAction"]>,
   string
 > = {

@@ -164,6 +164,54 @@ describe("AttestationPartiellePdf — contenu", () => {
   });
 });
 
+// 🔴 Audit initial 2026-09-14 (X-documents-pdf-05). L.6353-1 al. 2 fait porter à
+// l'attestation la NATURE de l'action, et le règlement intérieur publié, le PDF
+// du règlement et le livret l'annoncent désormais. Aucune des deux attestations
+// ne l'imprimait : la page publique promettait un champ absent de la pièce.
+// Même source et même libellé que le certificat de réalisation du même dossier.
+describe("attestations — nature de l'action (L.6353-1 al. 2)", () => {
+  it("l'attestation complète imprime la nature de l'action, « Action de formation » par défaut", () => {
+    const t = collectPdfTextNormalized(React.createElement(AttestationPdf, { data: ATTESTATION }));
+    expect(t).toContain("Nature de l'action");
+    expect(t).toContain("Action de formation");
+  });
+
+  it("l'attestation partielle imprime la nature de l'action, « Action de formation » par défaut", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(AttestationPartiellePdf, { data: PARTIELLE }),
+    );
+    expect(t).toContain("Nature de l'action");
+    expect(t).toContain("Action de formation");
+  });
+
+  it("les deux pièces suivent la nature fournie, avec le libellé du certificat de réalisation", () => {
+    const complete = collectPdfTextNormalized(
+      React.createElement(AttestationPdf, {
+        data: {
+          ...ATTESTATION,
+          formation: { ...ATTESTATION.formation, natureAction: "bilan_competences" },
+        },
+      }),
+    );
+    const partielle = collectPdfTextNormalized(
+      React.createElement(AttestationPartiellePdf, {
+        data: {
+          ...PARTIELLE,
+          formation: { ...PARTIELLE.formation, natureAction: "bilan_competences" },
+        },
+      }),
+    );
+    const certificat = collectPdfTextNormalized(
+      React.createElement(CertificatRealisationPdf, {
+        data: { ...CERTIFICAT, natureAction: "bilan_competences" },
+      }),
+    );
+    expect(certificat).toContain("Bilan de compétences");
+    expect(complete).toContain("Bilan de compétences");
+    expect(partielle).toContain("Bilan de compétences");
+  });
+});
+
 describe("CertificatRealisationPdf — contenu", () => {
   const text = collectPdfTextNormalized(
     React.createElement(CertificatRealisationPdf, { data: CERTIFICAT }),

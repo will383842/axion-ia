@@ -18,6 +18,7 @@ import {
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
+import { NATURE_ACTION_LABELS } from "./certificat-realisation";
 
 // ============================================================
 // Styles spécifiques
@@ -87,6 +88,11 @@ export interface FormationData {
   dateFin: string;
   modalite: string;
   formateur: string;
+  /**
+   * Nature de l'action (L.6353-1 al. 2). Même clé, même libellé et même défaut
+   * (« Action de formation ») que le certificat de réalisation du dossier.
+   */
+  natureAction?: keyof typeof NATURE_ACTION_LABELS;
 }
 
 export interface ResultatsFormationData {
@@ -183,6 +189,12 @@ export function AttestationPdf({ data }: { data: AttestationData }): React.React
         {/* Formation */}
         <DocSection title="Formation suivie">
           <FieldRow label="Intitulé" value={data.formation.intitule} />
+          {/* 🔴 Audit initial 2026-09-14 (X-documents-pdf-05) : L.6353-1 al. 2 fait
+              porter la nature de l'action, et le règlement publié l'annonce. */}
+          <FieldRow
+            label="Nature de l'action"
+            value={NATURE_ACTION_LABELS[data.formation.natureAction ?? "action_formation"]}
+          />
           <FieldRow label="Objectifs" value={data.formation.objectifs} />
           <FieldRow label="Durée totale" value={`${hFr(data.formation.dureeHeures)} h`} />
           <FieldRow label="Du" value={data.formation.dateDebut} />
