@@ -61,7 +61,19 @@ vi.mock("@/server/qualiopi/registres/registres-pdf", () => ({
   renderRegistrePdfBuffer: vi.fn(),
 }));
 
+// C2-03 / I10-02 : les positionnements REMPLIS sont rendus à la volée. Défaut
+// neutre (aucune réponse) posé dans la fabrique, pour que les autres blocs de
+// cette suite n'aient rien à savoir de ce module.
+vi.mock("@/server/qualiopi/positionnement/pieces-remplies", () => ({
+  compterPositionnementsRemplis: vi.fn(async () => 0),
+  produirePiecesPositionnementRempli: vi.fn(async () => ({ pieces: [], echecs: [] })),
+}));
+
 import { prisma } from "@/lib/prisma";
+import {
+  compterPositionnementsRemplis,
+  produirePiecesPositionnementRempli,
+} from "@/server/qualiopi/positionnement/pieces-remplies";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "./conformite-service";
 import { getObjectBufferR2, isR2Configured } from "@/lib/r2-storage";
@@ -1330,5 +1342,89 @@ describe("aucun indicateur applicable ne laisse l'auditrice devant une impasse",
   it("le contrôle porte sur les 23 indicateurs du tronc commun (témoin)", () => {
     const troncCommun = INDICATEURS_RNQ.filter((ind) => ind.conditionnel === undefined);
     expect(troncCommun.length).toBe(23);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// C2-03 / I10-02 (audit initial 2026-09-14) — le positionnement REMPLI figure au
+// dossier, jamais le gabarit vierge à sa place.
+//
+// Avant : la seule pièce « positionnement » du dossier était le PDF produit par
+// `produirePositionnement` — intitulé, date, cases à cocher vides. Le manifeste
+// la présentait aux indicateurs 4 et 8, et aucune réponse de stagiaire n'était
+// jointe nulle part.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("C2-03 — le dossier d'audit porte les positionnements REMPLIS", () => {
+  const mockCompter = compterPositionnementsRemplis as ReturnType<typeof vi.fn>;
+  const mockProduire = produirePiecesPositionnementRempli as ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockEvaluerConformite.mockResolvedValue(makeConformiteResult());
+    mockPrisma.documentGenere.groupBy.mockResolvedValue([
+      { type: "positionnement", _count: { _all: 1 } },
+    ]);
+    mockPrisma.documentGenere.findMany.mockResolvedValue([]);
+    mockPrisma.trainerDocument.findMany.mockResolvedValue([]);
+    mockPrisma.veille.count.mockResolvedValue(0);
+    mockPrisma.appreciation.count.mockResolvedValue(0);
+    mockPrisma.trainer.findMany.mockResolvedValue([]);
+    mockPrisma.revueDirection.findFirst.mockResolvedValue(null);
+    mockGetConfig.mockResolvedValue("");
+    mockGetObjectBufferR2.mockResolvedValue(null);
+    mockRenderRegistrePdfBuffer.mockImplementation((type: string) =>
+      Promise.resolve({ buffer: Buffer.from(`%PDF-1.4 ${type}`), filename: `${type}.pdf` }),
+    );
+    mockCompter.mockResolvedValue(0);
+    mockProduire.mockResolvedValue({ pieces: [], echecs: [] });
+  });
+
+  it("joint une pièce nominative par positionnement rempli, sous positionnements/", async () => {
+    mockCompter.mockResolvedValue(1);
+    mockProduire.mockResolvedValue({
+      pieces: [
+        {
+          chemin: "positionnements/2026-09-05_martin-camille_1a2b3c4d.pdf",
+          buffer: Buffer.from("%PDF-1.4 positionnement rempli"),
+        },
+      ],
+      echecs: [],
+    });
+
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+
+    expect(zip.files["positionnements/2026-09-05_martin-camille_1a2b3c4d.pdf"]).toBeDefined();
+    const index = await zip.files["index.txt"]!.async("string");
+    expect(index).toContain("[OK]  positionnements/2026-09-05_martin-camille_1a2b3c4d.pdf");
+  });
+
+  it("le manifeste présente aux indicateurs 4 et 8 les positionnements remplis", async () => {
+    mockCompter.mockResolvedValue(3);
+    const manifeste = await genererManifesteAudit();
+    for (const numero of [4, 8]) {
+      const preuves = manifeste.json.indicateurs.find((i) => i.numero === numero)!.preuves;
+      expect(preuves.join("\n")).toMatch(/3 positionnements remplis .*positionnements\//);
+    }
+  });
+
+  it("sans réponse, le manifeste dit que la pièce au registre est un GABARIT VIERGE", async () => {
+    const manifeste = await genererManifesteAudit();
+    const preuves = manifeste.json.indicateurs.find((i) => i.numero === 4)!.preuves;
+    expect(preuves.join("\n")).toMatch(/Aucun positionnement rempli/);
+    expect(preuves.join("\n")).toMatch(/gabarit vierge/i);
+  });
+
+  it("une pièce qui ne se rend pas rend le dossier INCOMPLET, et le dit", async () => {
+    mockCompter.mockResolvedValue(1);
+    mockProduire.mockResolvedValue({
+      pieces: [],
+      echecs: [{ chemin: "positionnements/2026-09-05_martin-camille_1a2b3c4d.pdf", motif: "boom" }],
+    });
+
+    const result = await genererDossierAuditZip();
+    expect(result.incomplet).toBe(true);
+    expect(result.avertissements.join("\n")).toMatch(/positionnement/i);
   });
 });

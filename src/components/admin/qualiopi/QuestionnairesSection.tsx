@@ -10,8 +10,14 @@
  * Câble genererQuestionnairesSessionAction + saisirReponsesQuestionnaireAction.
  */
 
-import { useState, useTransition } from "react";
+import { Fragment, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import {
+  chronologieReponse,
+  formaterInstantParis,
+  libelleBesoinAdaptation,
+  type PositionnementLu,
+} from "@/server/qualiopi/positionnement/lecture-positionnement";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -45,12 +51,104 @@ export interface QuestionnaireRow {
   envoyeAt: string | null;
   /** 1-5 ou null. */
   noteGlobale: number | null;
+  /**
+   * Réponses LUES d'un positionnement répondu (`lirePositionnement`, côté
+   * serveur). `null` pour tout autre type, ou tant que personne n'a répondu.
+   *
+   * 🔴 C2-03 / I10-02 — l'écran n'affichait d'un positionnement que « Répondu »
+   * et une date : attentes, niveaux et besoin d'adaptation n'étaient lisibles
+   * nulle part dans la console.
+   */
+  positionnement: PositionnementLu | null;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Sous-composant : réponses d'un positionnement, en lecture seule
+// ─────────────────────────────────────────────────────────────────────────────
+
+function ReponsesPositionnement({
+  questionnaire,
+  positionnement: p,
+  debutSession,
+}: {
+  questionnaire: QuestionnaireRow;
+  positionnement: PositionnementLu;
+  debutSession: string;
+}): React.ReactElement {
+  const dtCls =
+    "text-[length:var(--text-admin-xs)] font-medium uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]";
+  const ddCls =
+    "mb-[var(--space-admin-2)] whitespace-pre-line text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]";
+  const vide = <span className="text-[color:var(--color-admin-fg-muted)]">Non renseigné</span>;
+  const champ = (libelle: string, valeur: string | null) => (
+    <div>
+      <dt className={dtCls}>{libelle}</dt>
+      <dd className={ddCls}>{valeur ?? vide}</dd>
+    </div>
+  );
+
+  return (
+    <div className="space-y-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]">
+      <p className="text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
+        Positionnement — {questionnaire.traineeNom}
+        {questionnaire.reponduAt !== null &&
+          ` — répondu le ${formaterInstantParis(new Date(questionnaire.reponduAt))}, ${chronologieReponse(new Date(questionnaire.reponduAt), new Date(debutSession))}`}
+      </p>
+      {p.saisieAdmin && (
+        <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]">
+          Saisi par l&apos;organisme, et non par le ou la stagiaire.
+        </p>
+      )}
+      <dl className="grid gap-x-[var(--space-admin-6)] sm:grid-cols-2">
+        {champ("Fonction", p.fonction)}
+        {champ("Secteur d'activité", p.secteur)}
+        {champ("Outils d'IA utilisés", p.outilsUtilises)}
+        {champ("Fréquence d'usage", p.frequenceUsage)}
+        {champ("Attentes", p.attentes)}
+        {champ("Tâche visée", p.tacheVisee)}
+        {champ(
+          "Besoin d'adaptation déclaré",
+          libelleBesoinAdaptation(p.besoinAdaptation, p.saisieAdmin),
+        )}
+        {p.besoinAdaptation === true && champ("Précision", p.detailAdaptation)}
+      </dl>
+      <div>
+        <p className={dtCls}>Niveau déclaré par objectif</p>
+        {p.niveaux.length === 0 ? (
+          <p className={ddCls}>{vide}</p>
+        ) : (
+          <table className="mt-[var(--space-admin-1)] w-full border-collapse text-[length:var(--text-admin-sm)]">
+            <tbody>
+              {p.niveaux.map((n) => (
+                <tr
+                  key={n.objectif}
+                  className="border-b border-[color:var(--color-admin-border)] last:border-b-0"
+                >
+                  <td className="py-[var(--space-admin-1)] pr-[var(--space-admin-3)] text-[color:var(--color-admin-fg)]">
+                    {n.objectif}
+                  </td>
+                  <td className="py-[var(--space-admin-1)] text-[color:var(--color-admin-fg)]">
+                    {n.libelle}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
+  );
 }
 
 type ActionResult<T> = { data: T } | { error: string };
 
 export interface QuestionnairesSectionProps {
   sessionId: string;
+  /**
+   * Début de la session (ISO). Un positionnement se lit avant ou après : c'est
+   * la première chose que l'auditrice compare (indicateurs 4 et 10).
+   */
+  debutSession: string;
   questionnaires: QuestionnaireRow[];
   genererAction: (input: {
     sessionId: string;
@@ -306,6 +404,7 @@ function SaisieForm({ questionnaire, saisirReponsesAction, onDone }: SaisieFormP
 
 export function QuestionnairesSection({
   sessionId,
+  debutSession,
   questionnaires,
   genererAction,
   saisirReponsesAction,
@@ -318,6 +417,9 @@ export function QuestionnairesSection({
 
   // Id du questionnaire dont le formulaire de saisie est ouvert (null = aucun)
   const [saisieOuverteId, setSaisieOuverteId] = useState<string | null>(null);
+
+  // Id du positionnement dont les réponses sont dépliées (null = aucun)
+  const [reponsesOuvertesId, setReponsesOuvertesId] = useState<string | null>(null);
 
   // Envoi manuel : id en cours d'envoi, et message par questionnaire.
   const [envoiEnCoursId, setEnvoiEnCoursId] = useState<string | null>(null);
@@ -442,96 +544,139 @@ export function QuestionnairesSection({
                 const isRepandu = q.reponduAt !== null;
                 const isFormOpen = saisieOuverteId === q.id;
 
+                const reponsesOuvertes = q.positionnement !== null && reponsesOuvertesId === q.id;
+
                 return (
-                  <tr
-                    key={q.id}
-                    className="border-b border-[color:var(--color-admin-border)] last:border-b-0"
-                  >
-                    <td className={tdCls}>{q.traineeNom}</td>
+                  <Fragment key={q.id}>
+                    <tr className="border-b border-[color:var(--color-admin-border)] last:border-b-0">
+                      <td className={tdCls}>{q.traineeNom}</td>
 
-                    <td className={tdCls}>{TYPE_LABELS[q.type]}</td>
+                      <td className={tdCls}>{TYPE_LABELS[q.type]}</td>
 
-                    {/* État */}
-                    <td className={tdCls}>
-                      <span
-                        className={
-                          isRepandu
-                            ? "inline-flex items-center rounded-full bg-[color:var(--color-admin-success-subtle)] px-[var(--space-admin-2)] py-0.5 text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-success)]"
-                            : "inline-flex items-center rounded-full bg-[color:var(--color-admin-warning-subtle)] px-[var(--space-admin-2)] py-0.5 text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-warning)]"
-                        }
-                      >
-                        {isRepandu ? "Répondu" : "À remplir"}
-                      </span>
-                    </td>
+                      {/* État */}
+                      <td className={tdCls}>
+                        <span
+                          className={
+                            isRepandu
+                              ? "inline-flex items-center rounded-full bg-[color:var(--color-admin-success-subtle)] px-[var(--space-admin-2)] py-0.5 text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-success)]"
+                              : "inline-flex items-center rounded-full bg-[color:var(--color-admin-warning-subtle)] px-[var(--space-admin-2)] py-0.5 text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-warning)]"
+                          }
+                        >
+                          {isRepandu ? "Répondu" : "À remplir"}
+                        </span>
+                        {q.positionnement !== null && (
+                          <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                            Besoin d&apos;adaptation déclaré :{" "}
+                            {libelleBesoinAdaptation(
+                              q.positionnement.besoinAdaptation,
+                              q.positionnement.saisieAdmin,
+                            ).toLowerCase()}
+                          </p>
+                        )}
+                      </td>
 
-                    {/* Note */}
-                    <td className={tdCls}>
-                      {q.noteGlobale !== null ? (
-                        <span className="font-semibold">{q.noteGlobale}/5</span>
-                      ) : (
-                        <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
-                      )}
-                    </td>
+                      {/* Note */}
+                      <td className={tdCls}>
+                        {q.noteGlobale !== null ? (
+                          <span className="font-semibold">{q.noteGlobale}/5</span>
+                        ) : (
+                          <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
+                        )}
+                      </td>
 
-                    {/* Répondu le */}
-                    <td className={tdCls}>
-                      {q.reponduAt !== null ? (
-                        formatDateFR(q.reponduAt)
-                      ) : (
-                        <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
-                      )}
-                    </td>
+                      {/* Répondu le */}
+                      <td className={tdCls}>
+                        {q.reponduAt !== null ? (
+                          <>
+                            {formatDateFR(q.reponduAt)}
+                            {q.positionnement !== null && (
+                              <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                                {chronologieReponse(new Date(q.reponduAt), new Date(debutSession))}
+                              </span>
+                            )}
+                          </>
+                        ) : (
+                          <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
+                        )}
+                      </td>
 
-                    {/* Actions */}
-                    <td className={tdCls}>
-                      {!isRepandu && !isFormOpen && (
-                        <div className="flex flex-col items-start gap-[var(--space-admin-1)]">
-                          {/*
+                      {/* Actions */}
+                      <td className={tdCls}>
+                        {!isRepandu && !isFormOpen && (
+                          <div className="flex flex-col items-start gap-[var(--space-admin-1)]">
+                            {/*
                             « Envoyer » AVANT « Saisir » : recueillir la réponse du
                             stagiaire est la seule chose qui vaut preuve. Saisir à sa
                             place documente l'organisme, pas l'appréciation du
                             bénéficiaire — un auditeur fait la différence.
                           */}
-                          <button
-                            type="button"
-                            onClick={() => handleEnvoyer(q.id)}
-                            disabled={envoiEnCoursId === q.id}
-                            className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline disabled:opacity-60"
-                          >
-                            {envoiEnCoursId === q.id
-                              ? "Envoi…"
-                              : q.envoyeAt !== null
-                                ? "Renvoyer le lien"
-                                : "Envoyer au stagiaire"}
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setSaisieOuverteId(q.id)}
-                            className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] underline-offset-2 hover:underline"
-                          >
-                            Saisir les réponses
-                          </button>
-                          {envoiMessage[q.id] !== undefined && envoiMessage[q.id]!.texte !== "" && (
-                            <span
-                              role={envoiMessage[q.id]!.refus ? "alert" : "status"}
-                              className={
-                                envoiMessage[q.id]!.refus
-                                  ? "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)]"
-                                  : "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
-                              }
+                            <button
+                              type="button"
+                              onClick={() => handleEnvoyer(q.id)}
+                              disabled={envoiEnCoursId === q.id}
+                              className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline disabled:opacity-60"
                             >
-                              {envoiMessage[q.id]!.texte}
+                              {envoiEnCoursId === q.id
+                                ? "Envoi…"
+                                : q.envoyeAt !== null
+                                  ? "Renvoyer le lien"
+                                  : "Envoyer au stagiaire"}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setSaisieOuverteId(q.id)}
+                              className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] underline-offset-2 hover:underline"
+                            >
+                              Saisir les réponses
+                            </button>
+                            {envoiMessage[q.id] !== undefined &&
+                              envoiMessage[q.id]!.texte !== "" && (
+                                <span
+                                  role={envoiMessage[q.id]!.refus ? "alert" : "status"}
+                                  className={
+                                    envoiMessage[q.id]!.refus
+                                      ? "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)]"
+                                      : "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+                                  }
+                                >
+                                  {envoiMessage[q.id]!.texte}
+                                </span>
+                              )}
+                          </div>
+                        )}
+                        {isRepandu && (
+                          <div className="flex flex-col items-start gap-[var(--space-admin-1)]">
+                            <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                              Complet
                             </span>
-                          )}
-                        </div>
-                      )}
-                      {isRepandu && (
-                        <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                          Complet
-                        </span>
-                      )}
-                    </td>
-                  </tr>
+                            {q.positionnement !== null && (
+                              <button
+                                type="button"
+                                aria-expanded={reponsesOuvertes}
+                                onClick={() =>
+                                  setReponsesOuvertesId(reponsesOuvertes ? null : q.id)
+                                }
+                                className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                              >
+                                {reponsesOuvertes ? "Masquer les réponses" : "Voir les réponses"}
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                    {reponsesOuvertes && q.positionnement !== null && (
+                      <tr className="border-b border-[color:var(--color-admin-border)] last:border-b-0">
+                        <td colSpan={6} className={tdCls}>
+                          <ReponsesPositionnement
+                            questionnaire={q}
+                            positionnement={q.positionnement}
+                            debutSession={debutSession}
+                          />
+                        </td>
+                      </tr>
+                    )}
+                  </Fragment>
                 );
               })}
             </tbody>

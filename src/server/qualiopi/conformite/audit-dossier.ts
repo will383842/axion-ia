@@ -20,6 +20,10 @@ import { renderRegistrePdfBuffer, REGISTRE_TYPES } from "@/server/qualiopi/regis
 import { evaluerCouvertureOff32 } from "@/server/qualiopi/revues/plan-actions";
 import { getObjectBufferR2, isR2Configured, documentPdfKey } from "@/lib/r2-storage";
 import { libelleTypeDocument } from "@/server/qualiopi/documents/libelles-type-document";
+import {
+  compterPositionnementsRemplis,
+  produirePiecesPositionnementRempli,
+} from "@/server/qualiopi/positionnement/pieces-remplies";
 import type { DocumentType } from "../../../../prisma/generated/client";
 
 /**
@@ -406,8 +410,36 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
     select: { id: true, nom: true, prenom: true, cvUrl: true },
   });
 
+  // off.4 / off.8 : positionnements REMPLIS par les stagiaires.
+  //
+  // 🔴 C2-03 / I10-02 (audit initial 2026-09-14). La seule pièce que ce
+  // manifeste présentait à ces deux indicateurs était le « Questionnaire de
+  // positionnement » du registre — le GABARIT VIERGE, sans nom ni réponse. Les
+  // réponses réelles ne figuraient nulle part. Elles sont désormais jointes au
+  // ZIP (`positionnements/`), et le manifeste dit ce qu'est le gabarit.
+  const nbPositionnementsRemplis = await compterPositionnementsRemplis();
+  const gabaritPositionnementAuRegistre = docCounts.some(
+    (d) => d.type === "positionnement" && d._count._all > 0,
+  );
+  const pluriel = nbPositionnementsRemplis > 1 ? "s" : "";
+  const preuvesPositionnement =
+    nbPositionnementsRemplis > 0
+      ? [
+          `${nbPositionnementsRemplis} positionnement${pluriel} rempli${pluriel} par les stagiaires — pièce${pluriel} nominative${pluriel} datée${pluriel} de la réponse, jointe${pluriel} au dossier sous positionnements/`,
+          ...(gabaritPositionnementAuRegistre
+            ? [
+                "Le « Questionnaire de positionnement » listé en Documents est le gabarit vierge remis aux stagiaires : les réponses sont dans positionnements/",
+              ]
+            : []),
+        ]
+      : [
+          "Aucun positionnement rempli par un stagiaire : le « Questionnaire de positionnement » du registre est un gabarit vierge, il ne tient pas lieu de réponse",
+        ];
+
   // Preuves supplémentaires par indicateur (complètent celles de conformite-service)
   const preuvesSuppMap = new Map<number, string[]>([
+    [4, preuvesPositionnement],
+    [8, preuvesPositionnement],
     [
       1,
       [
@@ -614,6 +646,9 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
  *   - `registres/<nom>.pdf` — exports d'état des 5 registres (réclamations,
  *     veille, revue de direction, partenariats, sous-traitants) rendus à la
  *     volée depuis les données réelles (LOT 2 — fail-soft).
+ *   - `positionnements/<jour>_<stagiaire>_<id>.pdf` — une pièce nominative par
+ *     positionnement RÉPONDU, avec les réponses et l'instant de la réponse
+ *     (C2-03 — fail-soft, un échec rend le dossier incomplet).
  *
  * Stub-aware : retourne un ZIP minimal (manifeste seulement) si la magic
  * string "stub.invalid" est détectée dans DATABASE_URL.
@@ -816,6 +851,45 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
         `⚠️ Registre réglementaire « ${type} » absent du dossier (erreur de rendu). Corrigez-le avant de remettre ce dossier à un auditeur.`,
       );
     }
+  }
+
+  // ── Positionnements REMPLIS (C2-03 / I10-02) ─────────────────────────────
+  //   Une pièce nominative par questionnaire répondu, rendue à la volée depuis
+  //   les réponses enregistrées. Le gabarit vierge du registre (s'il existe)
+  //   reste sous preuves/positionnement/ : il n'en tient jamais lieu.
+  //   Fail-soft comme les registres, mais un trou rend le dossier INCOMPLET.
+  indexLines.push("");
+  try {
+    const { pieces, echecs } = await produirePiecesPositionnementRempli();
+    const total = pieces.length + echecs.length;
+    indexLines.push(`Positionnements remplis (ind. 4 / 8) : ${total} → positionnements/`);
+    if (total === 0) {
+      indexLines.push(
+        "  Aucun positionnement rempli par un stagiaire. Le gabarit vierge (preuves/positionnement/) ne tient pas lieu de réponse.",
+      );
+    }
+    for (const piece of pieces) {
+      zip.file(piece.chemin, piece.buffer);
+      indexLines.push(`[OK]  ${piece.chemin}  (${piece.buffer.byteLength} octets)`);
+      nbInclus++;
+    }
+    for (const echec of echecs) {
+      indexLines.push(`[OMIS] ${echec.chemin} — erreur de rendu (${echec.motif})`);
+      nbOmis++;
+    }
+    if (echecs.length > 0) {
+      avertissements.push(
+        `⚠️ ${echecs.length} positionnement${echecs.length > 1 ? "s" : ""} rempli${echecs.length > 1 ? "s" : ""} absent${echecs.length > 1 ? "s" : ""} du dossier (erreur de rendu) — les réponses des stagiaires aux indicateurs 4 et 8 ne sont pas toutes jointes.`,
+      );
+    }
+  } catch (err) {
+    indexLines.push(
+      `[OMIS] positionnements/ — lecture impossible (${err instanceof Error ? err.message : String(err)})`,
+    );
+    nbOmis++;
+    avertissements.push(
+      "⚠️ Positionnements remplis absents du dossier (lecture impossible) — les réponses des stagiaires aux indicateurs 4 et 8 ne sont pas jointes.",
+    );
   }
 
   indexLines.push("");

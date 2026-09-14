@@ -46,6 +46,7 @@ import { contresignerLettreMissionAction } from "@/server/actions/qualiopi/lettr
 import { lireEtatSignatureLettreMissionConsole } from "@/server/qualiopi/documents/signature/lettre-mission-queries";
 import { QuestionnairesSection } from "@/components/admin/qualiopi/QuestionnairesSection";
 import { envoyerQuestionnaireAction } from "@/server/actions/qualiopi/questionnaires";
+import { lirePositionnement } from "@/server/qualiopi/positionnement/lecture-positionnement";
 import {
   enrollTraineeAction,
   setEnrollmentStatutAction,
@@ -374,6 +375,11 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             // et n'était lue nulle part, l'écran ne pouvait pas les distinguer.
             envoyeAt: true,
             noteGlobale: true,
+            // 🔴 C2-03 / I10-02 — les réponses du positionnement (attentes,
+            // niveaux, besoin d'adaptation) n'étaient lues par AUCUN écran.
+            // Seules celles d'un positionnement répondu sont sérialisées, et
+            // déjà LUES côté serveur : le JSON brut ne descend pas.
+            reponses: true,
           },
         },
       },
@@ -573,6 +579,8 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       reponduAt: q.reponduAt ? q.reponduAt.toISOString() : null,
       envoyeAt: q.envoyeAt ? q.envoyeAt.toISOString() : null,
       noteGlobale: q.noteGlobale,
+      positionnement:
+        q.type === "positionnement" && q.reponduAt !== null ? lirePositionnement(q.reponses) : null,
     })),
   );
 
@@ -1178,9 +1186,10 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
        * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        */}
       <section id="questionnaires" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-        <h2 className={sectionHeadCls}>Questionnaires de satisfaction</h2>
+        <h2 className={sectionHeadCls}>Questionnaires — positionnement et satisfaction</h2>
         <QuestionnairesSection
           sessionId={id}
+          debutSession={trainingSession.dateDebut.toISOString()}
           questionnaires={questionnairesSerialized}
           genererAction={genererQuestionnairesSessionAction}
           saisirReponsesAction={saisirReponsesQuestionnaireAction}
