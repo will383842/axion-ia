@@ -694,7 +694,7 @@ describe("envoyerAttestationDisponible", () => {
     expect(payload["heuresSuiviesSeulement"]).toBe(true);
   });
 
-  it("🔴 contre-témoin : taux arrondi à 0 % mais 20 minutes RÉELLES — ce n'est pas 0 h", async () => {
+  it("🔴 contre-témoin : taux arrondi à 0 % mais 20 minutes réalisées — ce n'est pas 0 h", async () => {
     mockPrisma.enrollment.findUnique.mockResolvedValue({
       ...fakeEnrollmentBase,
       statut: "presente",

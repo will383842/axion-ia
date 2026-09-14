@@ -37,7 +37,7 @@ export interface PresenceMesuree {
  * 🔴 3e relecture A09 — la SEULE définition du « 0 h », lue par le service
  * d'attestation, le certificat de réalisation, l'e-mail et les alertes.
  *
- * Minutes RÉELLES de présence strictement nulles quand des créneaux existent ;
+ * Aucune minute réalisée sur les créneaux de présence quand il en existe ;
  * sans créneau, taux strictement nul. Le taux entier seul ne suffit pas : 20
  * minutes sur 70 h l'arrondissent à 0 %, et la pièce aurait dit « n'a suivi
  * aucune heure ». Indépendante de la durée : snapshot légal ou lecture live, le
@@ -53,8 +53,9 @@ export function aucuneHeureSuivie(p: PresenceMesuree): boolean {
  * 🔴 3e relecture A09 — minutes suivies à imprimer, MÊME calcul pour
  * l'attestation et le certificat de réalisation d'un même stagiaire.
  *
- * Sur les minutes réelles quand des créneaux existent (réalisé / prévu, appliqué
- * à la durée de référence), sinon sur le taux. Un suivi non nul ne s'imprime
+ * Durée suivie calculée à partir de la proportion des minutes réalisées sur les
+ * minutes prévues des créneaux, appliquée à la durée de référence ; sans
+ * créneau, sur le taux. Un suivi non nul ne s'imprime
  * jamais « 0 h » : au moins une minute. À n'appeler qu'avec un taux MESURÉ.
  */
 export function minutesSuiviesPresence(p: PresenceMesuree, dureeHeures: number): number {
@@ -68,6 +69,22 @@ export function minutesSuiviesPresence(p: PresenceMesuree, dureeHeures: number):
     }
   }
   return Math.max(1, minutes);
+}
+
+/**
+ * 🔴 4e relecture A09 — la durée de référence, MÊME repli pour l'attestation et
+ * le certificat de réalisation : durée réelle de la session, sinon durée du
+ * snapshot légal, sinon durée du catalogue.
+ *
+ * Un snapshot légal existant SANS durée faisait retomber l'attestation à 0 h
+ * prévues pendant que le certificat prenait la durée du catalogue.
+ */
+export function dureeReferenceHeures(d: {
+  dureeReelleHeures: number | null | undefined;
+  dureeSnapshotHeures: number | null | undefined;
+  dureeCatalogueHeures: number | null | undefined;
+}): number {
+  return d.dureeReelleHeures ?? d.dureeSnapshotHeures ?? d.dureeCatalogueHeures ?? 0;
 }
 
 /** « 6 h 30 », « 7 h », « 0 h » — jamais « 6,5 h ». */

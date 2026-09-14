@@ -842,7 +842,7 @@ export async function envoyerAttestationDisponible(enrollmentId: string): Promis
   // Détermine le libellé du document selon le résultat d'attestation
   // Enum AttestationResultat : complete | partielle | aucune
   // 🔴 3e relecture A09 — la MÊME définition du « 0 h » que le service
-  // (minutes réelles, sinon taux) : l'objet ne dit plus « partielle » d'une pièce
+  // (aucune minute réalisée sur les créneaux, sinon taux nul) : l'objet ne dit plus « partielle » d'une pièce
   // qui atteste qu'aucune heure n'a été suivie.
   const aucuneHeure = aucuneHeureSuivie({
     tauxPresencePct: enrollment.tauxPresencePct,

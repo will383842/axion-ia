@@ -3694,11 +3694,18 @@ describe("🔴 attestation_non_emise_automatiquement", () => {
     mockGetConfig.mockResolvedValue("");
   });
 
+  const creneau = (realisees: number) => ({
+    dureePrevueMinutes: 4200,
+    dureeRealiseeMinutes: realisees,
+    date: new Date("2026-06-01"),
+    demiJournee: "journee",
+  });
+
   const inscrit = (extra: Record<string, unknown>) => ({
     id: "enr-x",
     statut: "presente",
     tauxPresencePct: 0,
-    presences: [],
+    presences: [creneau(0)],
     trainee: { nom: "Blanc", prenom: "Simone" },
     session: { numero: "AXI-SESS-2026-001", dateFin: FIN_RECENTE },
     ...extra,
@@ -3706,7 +3713,7 @@ describe("🔴 attestation_non_emise_automatiquement", () => {
 
   function repondre(
     sortiesSansTaux: ReadonlyArray<Record<string, unknown>>,
-    zeroPct: ReadonlyArray<Record<string, unknown>>,
+    tauxMesures: ReadonlyArray<Record<string, unknown>>,
   ) {
     mp.enrollment.findMany.mockImplementation(async (args: { where?: Record<string, unknown> }) => {
       const w = args?.where ?? {};
@@ -3714,14 +3721,23 @@ describe("🔴 attestation_non_emise_automatiquement", () => {
       if (w["tauxPresencePct"] === null && statut?.in?.includes("exclu") === true) {
         return sortiesSansTaux.filter((l) => dansBorne(w, l));
       }
-      if (w["tauxPresencePct"] === 0 && w["attestationGenereeAt"] === null) {
-        return zeroPct.filter((l) => dansBorne(w, l));
+      // 4e relecture A09 : la règle lit TOUS les taux mesurés, et juge le « 0 h »
+      // sur les créneaux — pas sur un taux enregistré à 0.
+      const taux = w["tauxPresencePct"] as { not?: unknown } | null | undefined;
+      if (
+        typeof taux === "object" &&
+        taux !== null &&
+        "not" in taux &&
+        taux.not === null &&
+        w["attestationGenereeAt"] === null
+      ) {
+        return tauxMesures.filter((l) => dansBorne(w, l));
       }
       return [];
     });
   }
 
-  it("se lève pour un exclu/abandon SANS taux mesuré, et dit quoi faire", async () => {
+  it("se lève pour un exclu/abandon SANS taux mesuré, et dit honnêtement jusqu'à quand", async () => {
     repondre([inscrit({ id: "enr-sortie", statut: "abandon", tauxPresencePct: null })], []);
 
     const alertes = await evaluerAlertes();
@@ -3730,33 +3746,44 @@ describe("🔴 attestation_non_emise_automatiquement", () => {
     expect(a!.cibleId).toBe("enr-sortie");
     expect(a!.message).toMatch(/créneaux/);
     expect(a!.message).toMatch(/hors logiciel/);
+    // 4e relecture A09 : aucun geste en base ne la solde — elle le dit.
+    expect(a!.message).toMatch(/restera visible jusqu'à 90 jours après la fin de la session/);
+    expect(a!.message).toMatch(/versez/i);
   });
 
-  it("🔴 se lève pour 0 minute RÉELLE — pas pour un taux arrondi à 0 % sur 20 minutes suivies", async () => {
-    // 3e relecture A09 : 20 minutes sur 70 h arrondissent le taux entier à 0 %.
+  it("🔴 même définition que le cron : durée suivie nulle SUR LES CRÉNEAUX, pas un taux enregistré à 0", async () => {
     repondre(
       [],
       [
         inscrit({ id: "enr-0h", tauxPresencePct: 0 }),
-        inscrit({
-          id: "enr-20min",
-          tauxPresencePct: 0,
-          presences: [
-            {
-              dureePrevueMinutes: 4200,
-              dureeRealiseeMinutes: 20,
-              date: new Date("2026-06-01"),
-              demiJournee: "journee",
-            },
-          ],
-        }),
+        // Taux arrondi à 0 % mais 20 minutes réalisées sur 70 h : pas 0 h.
+        inscrit({ id: "enr-20min", tauxPresencePct: 0, presences: [creneau(20)] }),
+        // Taux enregistré non recalculé (40 %) mais aucune minute réalisée : 0 h.
+        inscrit({ id: "enr-taux-perime", tauxPresencePct: 40, presences: [creneau(0)] }),
       ],
     );
 
     const alertes = await evaluerAlertes();
     const leves = alertes.filter((x) => x.code === "attestation_non_emise_automatiquement");
-    expect(leves.map((a) => a.cibleId)).toEqual(["enr-0h"]);
+    expect(leves.map((a) => a.cibleId)).toEqual(["enr-0h", "enr-taux-perime"]);
     expect(leves[0]!.message).toMatch(/aucune heure/);
+    expect(leves[0]!.message).toMatch(
+      /restera visible jusqu'à 90 jours après la fin de la session/,
+    );
+  });
+
+  it("🔴 une situation qui revient se relève d'elle-même : 0 h → > 0 → 0 h", async () => {
+    const ligne = inscrit({ id: "enr-va-et-vient" });
+    repondre([], [ligne]);
+    const leves = async () =>
+      (await evaluerAlertes()).filter((x) => x.code === "attestation_non_emise_automatiquement")
+        .length;
+
+    expect(await leves()).toBe(1);
+    ligne.presences = [creneau(30)];
+    expect(await leves()).toBe(0);
+    ligne.presences = [creneau(0)];
+    expect(await leves()).toBe(1);
   });
 
   it("🔴 hors borne basse (session terminée depuis plus de 90 jours) : pas levée", async () => {
@@ -3786,13 +3813,10 @@ describe("🔴 attestation_non_emise_automatiquement", () => {
     expect(alertes.find((x) => x.code === "attestation_non_emise_automatiquement")).toBeUndefined();
   });
 
-  it("🔴 se ferme à la MAIN, durablement — le geste prescrit ne change aucune colonne", () => {
-    // Remise hors logiciel, ou décision de ne rien remettre : aucune donnée ne
-    // bouge. En `resolutionAuto: true`, une fermeture manuelle était recréée au
-    // balayage suivant ; en `false`, `creerOuDedup` ne la relève plus.
-    const entree = ALERTE_CATALOGUE["attestation_non_emise_automatiquement"];
-    expect(entree?.resolutionAuto).toBe(false);
-    expect(entree?.resolutionAuto === false ? entree.motifSansResolutionAuto : "").toMatch(/\S/);
+  it("🔴 se referme SEULE quand la situation disparaît (pièce générée, présence mesurée)", () => {
+    // 4e relecture A09 : la fermeture manuelle « avec motif » n'avait pas de
+    // motif en base, et le geste console (générer la pièce) ne la fermait plus.
+    expect(ALERTE_CATALOGUE["attestation_non_emise_automatiquement"]?.resolutionAuto).toBe(true);
   });
 });
 
@@ -3865,10 +3889,10 @@ describe("🔴 attestation_sans_evaluation_evaluee_depuis", () => {
     ).toBeUndefined();
   });
 
-  it("🔴 se ferme à la MAIN, durablement", () => {
-    const entree = ALERTE_CATALOGUE["attestation_sans_evaluation_evaluee_depuis"];
-    expect(entree?.resolutionAuto).toBe(false);
-    expect(entree?.resolutionAuto === false ? entree.motifSansResolutionAuto : "").toMatch(/\S/);
+  it("🔴 se referme SEULE après la réémission (le candidat disparaît)", () => {
+    expect(ALERTE_CATALOGUE["attestation_sans_evaluation_evaluee_depuis"]?.resolutionAuto).toBe(
+      true,
+    );
   });
 });
 
@@ -3879,7 +3903,7 @@ describe("🔴 R06 ne double pas l'alerte « non émise automatiquement »", () 
     mockGetConfig.mockResolvedValue("");
   });
 
-  it("un inscrit à 0 h déjà couvert n'a pas AUSSI « n'a pas été produite »", async () => {
+  it("🔴 un inscrit à 0 h n'a jamais AUSSI « n'a pas été produite » — ni au 91e jour", async () => {
     mp.enrollment.findMany.mockImplementation(async (args: { where?: Record<string, unknown> }) => {
       const ou = args?.where?.["OR"] as ReadonlyArray<Record<string, unknown>> | undefined;
       if (ou === undefined) return [];
@@ -3894,7 +3918,8 @@ describe("🔴 R06 ne double pas l'alerte « non émise automatiquement »", () 
       });
       return [
         ligne("enr-0h-couvert", 0, FIN_RECENTE),
-        // Hors de la borne de 90 jours de l'autre alerte : R06 reste le seul signal.
+        // 4e relecture A09 : au-delà de 90 jours non plus — sinon la même
+        // situation réapparaissait au 91e jour sous un autre code.
         ligne("enr-0h-ancien", 0, FIN_ANCIENNE),
         ligne("enr-actif", 50, FIN_RECENTE),
       ];
@@ -3902,7 +3927,7 @@ describe("🔴 R06 ne double pas l'alerte « non émise automatiquement »", () 
 
     const alertes = await evaluerAlertes();
     const r06 = alertes.filter((x) => x.code === "attestation_non_envoyee").map((a) => a.cibleId);
-    expect(r06).toEqual(["enr-0h-ancien", "enr-actif"]);
+    expect(r06).toEqual(["enr-actif"]);
   });
 });
 

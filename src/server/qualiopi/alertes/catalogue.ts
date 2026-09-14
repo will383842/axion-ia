@@ -735,17 +735,15 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
    * eu lieu), ou exclu/abandon sorti avant ses créneaux (aucun taux, rien à
    * mesurer).
    *
-   * 🔴 3e relecture A09 — fermeture MANUELLE durable : le geste prescrit
-   * (attestation établie hors logiciel, ou décision de ne rien remettre) ne
-   * change aucune colonne. En `resolutionAuto: true`, une fermeture manuelle
-   * était recréée au balayage suivant.
+   * 🔴 4e relecture A09 — se referme SEULE quand la situation disparaît en base
+   * (pièce générée, présence mesurée), et se relève si elle revient. Un cas
+   * soldé hors logiciel reste visible jusqu'à 90 jours après la fin de session :
+   * l'enregistrer en console exigerait un champ en base (suite de la PR).
    */
   attestation_non_emise_automatiquement: {
     niveau: "important",
     titre: "Attestation non émise automatiquement",
-    resolutionAuto: false,
-    motifSansResolutionAuto:
-      "Audit initial 2026-09-14 — le geste qui la solde (attestation établie hors logiciel, ou décision écrite de ne rien remettre à un inscrit à 0 h) ne change aucune colonne : elle se ferme à la main, et ne revient pas tant que la situation est la même.",
+    resolutionAuto: true,
     guichet: "administratif",
   },
   /**
@@ -753,14 +751,13 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
    * réalisée », puis une évaluation finale saisie : la pièce que détient le
    * stagiaire est contredite par la grille. Aucune réémission automatique.
    *
-   * 🔴 3e relecture A09 — fermeture MANUELLE durable, comme la précédente.
+   * 🔴 4e relecture A09 — se referme SEULE quand la pièce est réémise ou
+   * annulée, ou passé 90 jours après la fin de session.
    */
   attestation_sans_evaluation_evaluee_depuis: {
     niveau: "important",
     titre: "Attestation émise sans évaluation, évaluation saisie depuis",
-    resolutionAuto: false,
-    motifSansResolutionAuto:
-      "Audit initial 2026-09-14 — l'organisme peut décider de ne pas réémettre (pièce annulée, remise hors logiciel) : ce choix ne change aucune colonne, l'alerte se ferme à la main et ne revient pas tant que la situation est la même.",
+    resolutionAuto: true,
     guichet: "administratif",
   },
 

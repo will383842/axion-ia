@@ -51,7 +51,7 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
   getQualiopiConfig: vi.fn().mockResolvedValue(80),
 }));
 
-// `computeTauxPresence` reste RÉEL : les minutes réelles de présence (3e relecture
+// `computeTauxPresence` reste RÉEL : les minutes réalisées de présence (3e relecture
 // A09) s'agrègent avec lui. Seul le classifieur est piloté par les tests.
 vi.mock("@/server/qualiopi/presence/taux", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/server/qualiopi/presence/taux")>()),
@@ -378,7 +378,7 @@ describe("genererAttestationPourEnrollment", () => {
   });
 
   it("🔴 taux NON NUL arrondi à 0 minute : ce n'est pas « 0 h » — la pièce part", async () => {
-    // 3e relecture A09 : « n'a suivi aucune heure » exige des minutes réelles (ou
+    // 3e relecture A09 : « n'a suivi aucune heure » exige des minutes réalisées (ou
     // un taux) STRICTEMENT nulles. Un suivi, même bref, ne s'imprime jamais « 0 h ».
     mockClassifier.mockReturnValue("aucune");
     mockPrisma.enrollment.findUnique.mockResolvedValue(
@@ -393,7 +393,7 @@ describe("genererAttestationPourEnrollment", () => {
     expect(result).toEqual({ resultat: "partielle", documentId: "doc-uuid-1" });
   });
 
-  it("🔴 minutes RÉELLES : taux arrondi à 0 % mais 20 min suivies sur 70 h — pièce émise, 20 min", async () => {
+  it("🔴 minutes réalisées : taux arrondi à 0 % mais 20 min suivies sur 70 h — pièce émise, 20 min", async () => {
     mockClassifier.mockReturnValue("aucune");
     mockPrisma.enrollment.findUnique.mockResolvedValue(
       makeEnrollment({
@@ -421,6 +421,33 @@ describe("genererAttestationPourEnrollment", () => {
       unknown
     >;
     expect(resultats["heuresSuivies"]).toBe(20 / 60);
+  });
+
+  it("🔴 snapshot légal SANS durée : même repli que le certificat (durée du catalogue), pas 0", async () => {
+    // 4e relecture A09 : l'attestation retombait à 0 h prévues quand le snapshot
+    // existait sans `dureeHeures`, le certificat sur la durée du catalogue.
+    mockPrisma.enrollment.findUnique.mockResolvedValue(
+      makeEnrollment({
+        tauxPresencePct: 50,
+        session: {
+          ...makeEnrollment().session,
+          dureeReelleHeures: null,
+          formationSnapshot: { titre: "IA pour les managers" },
+        },
+      }),
+    );
+
+    await genererAttestationPourEnrollment("enroll-snapshot-sans-duree");
+
+    const docCall = mockGenDoc.mock.calls[0]![0] as {
+      buildElement: (numero: string) => { props: { data: Record<string, unknown> } };
+    };
+    const resultats = docCall.buildElement("AXI-ATT-2026-023").props.data["resultats"] as Record<
+      string,
+      unknown
+    >;
+    expect(resultats["heuresTotales"]).toBe(14);
+    expect(resultats["heuresSuivies"]).toBe(7);
   });
 
   it("🔴 concordance avec le certificat : 93 % de 7 h = 391 minutes", async () => {

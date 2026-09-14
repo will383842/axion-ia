@@ -44,7 +44,7 @@ import {
   MOTIF_PREUVES_MIN,
   messageRefusPreuvesManquantes,
 } from "./refus-attestation";
-import { aucuneHeureSuivie, minutesSuiviesPresence } from "./heures-suivies";
+import { aucuneHeureSuivie, dureeReferenceHeures, minutesSuiviesPresence } from "./heures-suivies";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { classifierPresence } from "@/server/qualiopi/presence/taux";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
@@ -338,7 +338,7 @@ export async function genererAttestationPourEnrollment(
       attestationResultat: true,
       attestationDocumentId: true,
       attestationGenereeAt: true,
-      // 🔴 3e relecture A09 — minutes RÉELLES de présence : elles décident du
+      // 🔴 3e relecture A09 — créneaux de présence (minutes réalisées / prévues) : ils décident du
       // « 0 h » et des heures imprimées (même calcul que le certificat).
       presences: {
         select: {
@@ -414,7 +414,13 @@ export async function genererAttestationPourEnrollment(
   // réalisation), sinon durée catalogue. Sans ça, une session animée 16 h au lieu
   // des 14 h prévues sortait une attestation à « 14 h » et un certificat à « 16 h »
   // pour le même stagiaire — divergence rejetée par un contrôle OPCO/France Travail.
-  const dureeHeures = session.dureeReelleHeures ?? formation.dureeHeures ?? 0;
+  // 🔴 4e relecture A09 — MÊME repli que le certificat (`dureeReferenceHeures`) :
+  // un snapshot légal sans durée retombait ici à 0, là-bas sur le catalogue.
+  const dureeHeures = dureeReferenceHeures({
+    dureeReelleHeures: session.dureeReelleHeures,
+    dureeSnapshotHeures: formation.dureeHeures,
+    dureeCatalogueHeures: session.formation.dureeHeures,
+  });
 
   // 2b-bis. 🔴 PREUVES — voir le bloc `PreuvesAttestation` en tête de fichier.
   //
@@ -445,8 +451,8 @@ export async function genererAttestationPourEnrollment(
     throw new AttestationTauxNonMesureError(inscriptionSortie);
   }
 
-  // 🔴 2e et 3e relectures A09 — 0 h suivie : minutes RÉELLES de présence
-  // strictement nulles (sans créneau : taux strictement nul). UNE définition,
+  // 🔴 2e et 3e relectures A09 — 0 h suivie : aucune minute réalisée sur les
+  // créneaux de présence (sans créneau : taux strictement nul). UNE définition,
   // partagée avec le certificat, l'e-mail et les alertes (`heures-suivies.ts`).
   // L'émission AUTOMATIQUE ne produit rien et n'écrit rien : refusé AVANT le
   // claim, pour que la ligne reste visible de l'alerte qui la porte.

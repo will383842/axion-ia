@@ -1317,19 +1317,18 @@ async function regleAttestationNonEnvoyee(now: Date): Promise<AlerteCandidate[]>
       tauxPresencePct: true,
       presences: { select: SELECTION_CRENEAUX },
       trainee: { select: { nom: true, prenom: true } },
-      session: { select: { numero: true, dateFin: true } },
+      session: { select: { numero: true } },
     },
   });
-  // 🔴 3e relecture A09 — pas de double signal : un inscrit à 0 h encore dans la
-  // borne de `attestation_non_emise_automatiquement` y est DÉJÀ signalé. Au-delà
-  // de cette borne, R06 reste le seul signal.
-  const borneBasse = daysAgo(BORNE_BASSE_ALERTES_ATTESTATION_JOURS, now);
+  // 🔴 3e et 4e relectures A09 — pas de double signal : un inscrit à 0 h relève
+  // de `attestation_non_emise_automatiquement`, jamais de R06 — y compris au-delà
+  // de la borne de 90 jours de celle-ci. Sinon la même situation réapparaissait
+  // au 91e jour sous un autre code.
   const candidats = enrollments.filter(
     (e) =>
       !(
         e.attestationGenereeAt === null &&
-        aucuneHeureSuivie({ tauxPresencePct: e.tauxPresencePct, creneaux: e.presences }) &&
-        e.session.dateFin.getTime() >= borneBasse.getTime()
+        aucuneHeureSuivie({ tauxPresencePct: e.tauxPresencePct, creneaux: e.presences })
       ),
   );
   return candidats.map((e) => {
@@ -1375,10 +1374,11 @@ async function regleAttestationNonEnvoyee(now: Date): Promise<AlerteCandidate[]>
  *     mesurer, aucun créneau recréé après coup.
  * Bornée comme l'émission sans évaluation, et vers le bas à 90 jours.
  *
- * 🔴 3e relecture A09 — fermeture MANUELLE durable (`resolutionAuto: false`) :
- * le geste prescrit (attestation établie hors logiciel, ou décision de ne rien
- * remettre) ne change aucune colonne. Fermée à la main, elle n'est plus relevée
- * tant que son message ne change pas (`creerOuDedup`).
+ * 🔴 4e relecture A09 — fermeture AUTOMATIQUE (`resolutionAuto: true`) : elle
+ * se referme dès que la situation disparaît en base (pièce générée, présence
+ * mesurée), et se relève d'elle-même si elle revient. Un cas soldé HORS logiciel
+ * ne change aucune colonne : le message le dit, et l'alerte disparaît d'elle-même
+ * passé 90 jours après la fin de la session.
  */
 async function regleAttestationNonEmiseAutomatiquement(now: Date): Promise<AlerteCandidate[]> {
   const limite = daysAgo(DELAI_EMISSION_SANS_EVALUATION_JOURS, now);
@@ -1401,17 +1401,21 @@ async function regleAttestationNonEmiseAutomatiquement(now: Date): Promise<Alert
     },
     select: selection,
   });
-  // « 0 h » ⇒ taux mesuré à 0 % (le taux se calcule sur les mêmes créneaux) :
-  // pré-filtre exact en base, verdict par la définition PARTAGÉE — 20 minutes
-  // réelles sous un taux arrondi à 0 % ne sont pas 0 h.
-  const tauxNul = await prisma.enrollment.findMany({
+  // 🔴 4e relecture A09 — le « 0 h » se juge avec la MÊME définition que le cron
+  // (`aucuneHeureSuivie`, sur les créneaux), pas sur un taux enregistré à 0 : un
+  // taux non recalculé ne doit ni masquer l'inscrit ni l'inventer. On lit donc
+  // tous les taux MESURÉS de la fenêtre (le cron refuse les autres en amont).
+  const tauxMesures = await prisma.enrollment.findMany({
     where: {
       session: { statut: "realisee", dateFin: { lte: limite, gte: borneBasse } },
       attestationGenereeAt: null,
-      tauxPresencePct: 0,
+      tauxPresencePct: { not: null },
     },
     select: selection,
   });
+  const visibleJusquA =
+    `cette alerte restera visible jusqu'à ${BORNE_BASSE_ALERTES_ATTESTATION_JOURS} jours ` +
+    `après la fin de la session`;
 
   const nom = (e: { trainee: { prenom: string; nom: string } }) =>
     `${e.trainee.prenom} ${e.trainee.nom}`;
@@ -1425,13 +1429,14 @@ async function regleAttestationNonEmiseAutomatiquement(now: Date): Promise<Alert
       `sans qu'aucune heure de présence ait été mesurée : les créneaux de la session ont été créés ` +
       `après sa sortie, et le logiciel n'en recrée pas après coup. Son attestation des heures ` +
       `suivies ne peut pas être émise depuis la console. Établissez la durée réellement suivie à ` +
-      `partir des pièces du dossier (émargement papier, relevé de connexion) et remettez-lui une ` +
-      `attestation établie hors logiciel, versée au dossier.`,
+      `partir des pièces du dossier (émargement papier, relevé de connexion), remettez-lui une ` +
+      `attestation établie hors logiciel et versez-la au dossier. Aucun geste en console ne solde ` +
+      `ce cas : ${visibleJusquA}.`,
     cibleType: "Enrollment",
     cibleId: e.id,
   }));
 
-  for (const e of tauxNul) {
+  for (const e of tauxMesures) {
     if (!aucuneHeureSuivie({ tauxPresencePct: e.tauxPresencePct, creneaux: e.presences })) continue;
     alertes.push({
       code: "attestation_non_emise_automatiquement",
@@ -1440,7 +1445,9 @@ async function regleAttestationNonEmiseAutomatiquement(now: Date): Promise<Alert
       message:
         `${nom(e)} (session ${e.session.numero}) n'a suivi aucune heure de la formation : aucune ` +
         `attestation n'est émise automatiquement. Si une pièce doit lui être remise, générez-la ` +
-        `depuis sa fiche — elle indiquera qu'aucune heure n'a été suivie.`,
+        `depuis sa fiche — elle indiquera qu'aucune heure n'a été suivie — et l'alerte se ` +
+        `refermera. Si la décision est de ne rien remettre, ou si la pièce est établie hors ` +
+        `logiciel, versez-la au dossier : ${visibleJusquA}.`,
       cibleType: "Enrollment",
       cibleId: e.id,
     });
@@ -1460,8 +1467,10 @@ async function regleAttestationNonEmiseAutomatiquement(now: Date): Promise<Alert
  * (`attestationGenereeAt` avance).
  *
  * 🔴 3e relecture A09 — pièces ANNULÉES exclues (une annulation sans réémission
- * n'a plus de pièce à réémettre), sessions bornées à 90 jours, et fermeture
- * MANUELLE durable (`resolutionAuto: false`).
+ * n'a plus de pièce à réémettre), sessions bornées à 90 jours.
+ *
+ * 🔴 4e relecture A09 — fermeture AUTOMATIQUE (`resolutionAuto: true`) : elle se
+ * referme quand la pièce est réémise ou annulée, ou passé 90 jours.
  */
 async function regleAttestationSansEvaluationEvalueeDepuis(now: Date): Promise<AlerteCandidate[]> {
   const enrollments = await prisma.enrollment.findMany({
