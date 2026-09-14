@@ -162,3 +162,22 @@ SEUIL_TAILLE_MO=9999 bash /opt/axion-ia/verifier-...sh        # doit echouer
 pouvait donc jamais etre depasse par un age de 0 h, et la branche « trop
 vieux » etait **indemontrable** — elle rendait vert. Corrige en comparant des
 secondes. Une garde qu'on ne peut pas voir rouge ne garde rien.
+
+#### 🔴 La chaine d'alerte, elle aussi, doit etre EPROUVEE
+
+Le 2026-09-14, run `34817480441` : declenchee avec un seuil impossible, la
+surveillance a correctement **rougi**… et **aucun ticket n'a ete ouvert**.
+`gh issue create` sortait en `fatal: not a git repository` — ce workflow ne fait
+pas de `actions/checkout`, donc `gh` ne savait pas sur quel depot agir.
+
+La garde voyait la panne, personne n'en etait averti. **Une alerte qui ne part
+pas vaut exactement une garde absente**, et le job rougissait pour la mauvaise
+raison — ce qui aurait envoye chercher du cote du miroir, pas du cote du
+messager.
+
+Correctif : `GH_REPO: ${{ github.repository }}` dans l'etape d'alerte.
+
+🔑 Trouve uniquement parce qu'on a declenche la garde **en panne simulee** apres
+l'avoir vue verte. Verifier qu'une surveillance detecte ne dit rien sur sa
+capacite a PREVENIR : ce sont deux chaines distinctes, et il faut les eprouver
+separement.

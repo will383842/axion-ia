@@ -119,6 +119,19 @@ jobs:
         if: steps.controle.outputs.echec == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
+          # 🔴 SANS `GH_REPO`, L'ALERTE NE PART PAS — et le job rougit pour la
+          # MAUVAISE raison. Ce workflow ne fait pas de `actions/checkout` (il
+          # n'a aucune source a compiler), donc le repertoire de travail n'est
+          # pas un depot git. `gh issue create` cherche alors le depot dans le
+          # git local et sort en erreur : « fatal: not a git repository ».
+          #
+          # 🔑 Mesure du 2026-09-14, run 34817480441 : declenche avec un seuil
+          # impossible, le controle a correctement rougi ET AUCUN TICKET N'A ETE
+          # OUVERT. La garde voyait la panne, personne n'en etait averti — une
+          # alerte qui ne part pas est exactement aussi utile qu'une garde
+          # absente. Trouve parce qu'on a EPROUVE la chaine d'alerte au lieu de
+          # supposer qu'elle marchait.
+          GH_REPO: ${{ github.repository }}
           RAPPORT: ${{ steps.controle.outputs.rapport }}
         run: |
           set -euo pipefail
