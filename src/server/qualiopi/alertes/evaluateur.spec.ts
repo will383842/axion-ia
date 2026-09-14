@@ -118,6 +118,7 @@ import {
 } from "@/server/qualiopi/trainers/documents";
 import { evaluerAlertes, evaluerAlertesDetaille, PLAFOND_CANDIDATES_PAR_REGLE } from "./evaluateur";
 import { ALERTE_CATALOGUE } from "./catalogue";
+import { refusEmissionLieu } from "@/server/qualiopi/lieu/resolve-lieu-document";
 // Catalogue des kits (module pur, non mocké) : fournit un slug RÉEL aux tests
 // de diaporama_manquant_session.
 import { getInterventionsByFamille } from "@/content/intervention-documents-catalog";
@@ -3106,28 +3107,90 @@ describe("evaluerAlertes — session_sans_lieu (I17-01)", () => {
     lieuVisioUrl: null,
   };
 
+  /** Identité de l'organisme telle que FIGÉE dans l'instantané d'une pièce. */
+  const IDENTITE_FIGEE = {
+    raisonSociale: "Axion-IA OÜ",
+    adresseExercice: "9 rue de la Domiciliation, 75009 Paris",
+  };
+
+  const LIEU_REEL = {
+    lieuType: "sur_site",
+    lieuAdresse: "5 rue des Docks",
+    lieuCodePostal: "42000",
+    lieuVille: "Saint-Étienne",
+  };
+
+  function fixtureSession(over: Record<string, unknown> = {}) {
+    return {
+      id: "ses-900",
+      numero: "SES-2026-900",
+      titreSession: "IA pour bien commencer",
+      statut: "planifiee",
+      dateDebut: dans(10),
+      dateFin: dans(11),
+      modalite: "presentiel",
+      ...SANS_LIEU,
+      client: { raisonSociale: "INVEST SUN" },
+      ...over,
+    };
+  }
+
   /** Répond à la seule requête qui cherche les sessions sans lieu. */
   function sessionSansLieu(over: Record<string, unknown> = {}) {
     mp.trainingSession.findMany.mockImplementation((args: { where?: unknown }) => {
       if (JSON.stringify(args?.where ?? {}).includes('"lieuType":null')) {
-        return Promise.resolve([
-          {
-            id: "ses-900",
-            numero: "SES-2026-900",
-            titreSession: "IA pour bien commencer",
-            dateDebut: dans(10),
-            modalite: "presentiel",
-            ...SANS_LIEU,
-            client: { raisonSociale: "INVEST SUN" },
-            ...over,
-          },
-        ]);
+        return Promise.resolve([fixtureSession(over)]);
       }
       return Promise.resolve([]);
     });
   }
 
+  /** Répond à la seule requête qui cherche les pièces VIVANTES qui impriment un lieu. */
+  function piecesEmises(pieces: Array<Record<string, unknown>>) {
+    mp.documentGenere.findMany.mockImplementation((args: { where?: unknown }) => {
+      const w = JSON.stringify(args?.where ?? {});
+      if (w.includes('"autorisation_captation"') && w.includes('"organisation_action"')) {
+        return Promise.resolve(pieces);
+      }
+      return Promise.resolve([]);
+    });
+  }
+
+  /** Une convention émise quand la session n'avait pas de lieu : elle a imprimé le repli. */
+  function pieceSurLeRepli(
+    over: Record<string, unknown> = {},
+    session: Record<string, unknown> = {},
+  ) {
+    return {
+      id: "doc-050",
+      numero: "AXI-DOC-2026-050",
+      type: "convention",
+      annuleeAt: null,
+      sessionId: "ses-900",
+      metadata: {
+        renderData: {
+          data: { numero: "AXI-DOC-2026-050", lieu: IDENTITE_FIGEE.adresseExercice },
+          identite: IDENTITE_FIGEE,
+        },
+      },
+      session: fixtureSession(session),
+      ...over,
+    };
+  }
+
   const trouver = async () => (await evaluerAlertes()).find((x) => x.code === "session_sans_lieu");
+  const toutes = async () => (await evaluerAlertes()).filter((x) => x.code === "session_sans_lieu");
+
+  /** Le `where` de la requête des sessions sans lieu, sérialisé. */
+  async function whereDesSessions(): Promise<string> {
+    sessionSansLieu();
+    await evaluerAlertes();
+    const args = mp.trainingSession.findMany.mock.calls
+      .map((c) => c[0] as { where?: unknown })
+      .find((a) => JSON.stringify(a?.where ?? {}).includes('"lieuType":null'));
+    expect(args, "la règle n'interroge pas les sessions sans lieu").toBeDefined();
+    return JSON.stringify(args?.where);
+  }
 
   it("🔴 présentiel sans lieu : l'adresse de l'organisme s'imprimerait EN SILENCE", async () => {
     sessionSansLieu();
@@ -3177,14 +3240,146 @@ describe("evaluerAlertes — session_sans_lieu (I17-01)", () => {
     expect(await trouver()).toBeUndefined();
   });
 
-  it("sa requête couvre `en_cours` — elle ne s'éteint pas au démarrage", async () => {
+  it("🔴 SANS type, une salle seule ne dit pas où : alerte (relecture #1086, constat 3)", async () => {
+    sessionSansLieu({ lieuSalle: "B2" });
+    const a = await trouver();
+    expect(a, "« Salle B2 » imprimée sans adresse, et rien ne lève").toBeDefined();
+    expect(a?.titre).toContain("sans adresse");
+  });
+
+  it("se tait sur un lieu distanciel sans lien — c'est `session_distanciel_sans_lien`", async () => {
+    sessionSansLieu({ modalite: "distanciel", lieuType: "distanciel" });
+    expect(await trouver()).toBeUndefined();
+  });
+
+  // ── Décision de Will (2026-09-14) : la règle ne vise QUE le présentiel et
+  // l'hybride. Une session 100 % distancielle n'est ni bloquée ni alertée. ──
+
+  it("🔴 distanciel pur → émission autorisée, pas d'alerte (même sans AUCUN champ de lieu)", async () => {
+    expect(refusEmissionLieu({ modalite: "distanciel" }), "émission bloquée").toBeNull();
+    sessionSansLieu({ modalite: "distanciel" });
+    expect(await trouver(), "une session 100 % distancielle a levé l'alerte").toBeUndefined();
+  });
+
+  it("🔴 distanciel pur avec une pièce émise sur le repli : pas d'alerte non plus", async () => {
+    piecesEmises([pieceSurLeRepli({}, { modalite: "distanciel" })]);
+    expect(await trouver()).toBeUndefined();
+  });
+
+  it("témoin de la frontière : la MÊME session en hybride lève", async () => {
+    sessionSansLieu({ modalite: "hybride" });
+    expect(await trouver()).toBeDefined();
+    piecesEmises([pieceSurLeRepli({}, { ...LIEU_REEL, modalite: "hybride" })]);
+    expect(await trouver()).toBeDefined();
+  });
+
+  // ── Fenêtre de statuts (relecture #1086, constats 2 et 4) ─────────────────
+
+  it("🔴 la requête FILTRE les statuts : planifiée, en cours, réalisée — jamais annulée ni reportée", async () => {
+    // Un `where` sans filtre de statut ramènerait tout : ce test rougirait.
+    const w = await whereDesSessions();
+    expect(w).toContain('{"statut":{"in":["planifiee","en_cours"]}}');
+    expect(w).toContain('"realisee"');
+    expect(w).not.toContain("annulee");
+    expect(w).not.toContain("reportee");
+  });
+
+  it("🔴 une session réalisée ne l'éteint pas : la feuille d'émargement se re-tire pour le dossier", async () => {
+    sessionSansLieu({ statut: "realisee", dateDebut: ilYA(10), dateFin: ilYA(9) });
+    expect(await trouver()).toBeDefined();
+  });
+
+  it("🔴 une session restée « planifiée » au-delà de sa fin reste dans la fenêtre", async () => {
+    sessionSansLieu({ statut: "planifiee", dateDebut: ilYA(6), dateFin: ilYA(5) });
+    expect(await trouver()).toBeDefined();
+  });
+
+  it("🔴 négatif : une session ANNULÉE ne lève pas", async () => {
+    sessionSansLieu({ statut: "annulee" });
+    expect(await trouver()).toBeUndefined();
+  });
+
+  it("🔴 négatif : une session REPORTÉE ne lève pas", async () => {
+    sessionSansLieu({ statut: "reportee" });
+    expect(await trouver()).toBeUndefined();
+  });
+
+  it("négatif : une session réalisée il y a plus de 90 jours, sans pièce fausse, sort de la fenêtre", async () => {
+    sessionSansLieu({ statut: "realisee", dateDebut: ilYA(121), dateFin: ilYA(120) });
+    expect(await trouver()).toBeUndefined();
+  });
+
+  // ── Pièces DÉJÀ émises (relecture #1086, constat 1) ───────────────────────
+
+  it("🔴 le lieu est saisi, mais une pièce VIVANTE imprime encore l'adresse de l'organisme : l'alerte RESTE", async () => {
+    piecesEmises([pieceSurLeRepli({}, LIEU_REEL)]);
+    const a = await trouver();
+    expect(a, "l'alerte s'est refermée à la moitié du geste qu'elle prescrit").toBeDefined();
+    expect(a?.cibleType).toBe("TrainingSession");
+    expect(a?.cibleId).toBe("ses-900");
+    expect(a?.message).toContain("AXI-DOC-2026-050");
+    expect(a?.message).toContain("annul");
+  });
+
+  it("session toujours sans lieu ET pièce fausse : UNE alerte, qui nomme la pièce", async () => {
     sessionSansLieu();
+    piecesEmises([pieceSurLeRepli()]);
+    const alertes = await toutes();
+    expect(alertes).toHaveLength(1);
+    expect(alertes[0]?.message).toContain("AXI-DOC-2026-050");
+  });
+
+  it("témoin : la pièce annulée au registre ne compte plus — l'alerte se referme", async () => {
+    piecesEmises([pieceSurLeRepli({ annuleeAt: ilYA(1) }, LIEU_REEL)]);
+    expect(await trouver()).toBeUndefined();
+  });
+
+  it("témoin : la pièce réémise avec le vrai lieu ne fait rien lever", async () => {
+    piecesEmises([
+      pieceSurLeRepli(
+        {
+          metadata: {
+            renderData: {
+              data: { lieu: "Sur site — 5 rue des Docks, 42000 Saint-Étienne" },
+              identite: IDENTITE_FIGEE,
+            },
+          },
+        },
+        LIEU_REEL,
+      ),
+    ]);
+    expect(await trouver()).toBeUndefined();
+  });
+
+  it("témoin : la session est désormais « nos locaux » — l'adresse imprimée était la bonne", async () => {
+    piecesEmises([pieceSurLeRepli({}, { lieuType: "nos_locaux" })]);
+    expect(await trouver()).toBeUndefined();
+  });
+
+  it("témoin : pièce d'une session annulée ou reportée — hors périmètre", async () => {
+    piecesEmises([
+      pieceSurLeRepli({}, { ...LIEU_REEL, statut: "annulee" }),
+      pieceSurLeRepli(
+        { id: "doc-051", numero: "AXI-DOC-2026-051" },
+        { ...LIEU_REEL, statut: "reportee" },
+      ),
+    ]);
+    expect(await trouver()).toBeUndefined();
+  });
+
+  it("⚠️ limite assumée : une pièce SANS instantané (antérieure au 2026-07-30) est indétectable", async () => {
+    piecesEmises([pieceSurLeRepli({ metadata: {} }, LIEU_REEL)]);
+    expect(await trouver()).toBeUndefined();
+  });
+
+  it("la requête des pièces ne lit que les pièces vivantes", async () => {
+    piecesEmises([]);
     await evaluerAlertes();
-    const args = mp.trainingSession.findMany.mock.calls
+    const args = mp.documentGenere.findMany.mock.calls
       .map((c) => c[0] as { where?: unknown })
-      .find((a) => JSON.stringify(a?.where ?? {}).includes('"lieuType":null'));
-    expect(args, "la règle n'interroge pas les sessions sans lieu").toBeDefined();
-    expect(JSON.stringify(args?.where)).toContain("en_cours");
+      .find((a) => JSON.stringify(a?.where ?? {}).includes('"autorisation_captation"'));
+    expect(args, "la règle ne lit pas les pièces déjà émises").toBeDefined();
+    expect(JSON.stringify(args?.where)).toContain('"annuleeAt":null');
   });
 
   it("le catalogue la laisse se refermer d'elle-même, au guichet administratif", () => {

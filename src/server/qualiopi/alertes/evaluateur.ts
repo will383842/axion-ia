@@ -70,6 +70,9 @@ import { enAttente } from "@/server/qualiopi/documents/signature/pieces-en-atten
 import {
   defautLieuDocument,
   LIEU_DOCUMENT_SELECT,
+  pieceImprimeRepliOrganisme,
+  TYPES_PIECES_AVEC_LIEU,
+  type DefautLieuDocument,
 } from "@/server/qualiopi/lieu/resolve-lieu-document";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
 import {
@@ -3637,64 +3640,172 @@ async function regleSessionDistancielSansLien(now: Date): Promise<AlerteCandidat
  * voyait — celle du contact sur place
  * exclut explicitement `lieuType` nul.
  *
- * ⚠️ Le prédicat est `defautLieuDocument`, celui du module qui fait le repli :
- * l'alerte lève si et seulement si le document ment. Toutes les modalités sont
- * couvertes, parce que le repli les frappe toutes ; un `lieuType: distanciel`
- * sans lien n'est PAS candidat (le document imprime « Distanciel ») et reste le
- * domaine de `session_distanciel_sans_lien`.
+ * ⚠️ Le prédicat est `defautLieuDocument`, celui du module qui fait le repli —
+ * et celui que lit le REFUS d'émettre (`refusEmissionLieu`). Un
+ * `lieuType: distanciel` sans lien n'est PAS candidat (le document imprime
+ * « Distanciel ») et reste le domaine de `session_distanciel_sans_lien`.
  *
- * ⚠️ La fenêtre COUVRE `en_cours` : la feuille d'émargement se tire pendant la
- * session, et une alerte qui s'éteint au démarrage se referme au moment où la
- * pièce fausse est produite.
+ * ⛔ DÉCISION DE WILL (2026-09-14) : la règle ne vise QUE les sessions en
+ * PRÉSENTIEL ou HYBRIDES. Une session 100 % distancielle n'est ni refusée à
+ * l'émission ni alertée ici — pas même pour une pièce déjà émise sur le repli.
+ * Exclue dans les deux requêtes ET en mémoire.
  *
- * Elle ne bloque rien : aucune émission n'est refusée, la règle ne fait que lire.
+ * ## Deux sources, UNE alerte par session (relecture #1086)
+ *
+ * 1. **La session** n'a pas de lieu qui dise où (état actuel). Depuis le refus
+ *    d'émettre, aucune NOUVELLE pièce fausse ne naît — mais il faut le saisir.
+ * 2. **Une pièce VIVANTE déjà émise** a imprimé l'adresse de l'organisme
+ *    (instantané `metadata.renderData`, `pieceImprimeRepliOrganisme`). Sans ce
+ *    second volet, l'alerte se refermait à la saisie du lieu, alors que la
+ *    convention fausse restait au dossier : la moitié du geste prescrit. Elle
+ *    reste donc ouverte jusqu'à l'ANNULATION de ces pièces au registre.
+ *    Exception : une session passée à « Nos locaux » — l'adresse imprimée
+ *    était la bonne. Limite : une pièce sans instantané (avant le 2026-07-30)
+ *    est indétectable sans schéma.
+ *
+ * ## Fenêtre de statuts
+ *
+ * - `planifiee` et `en_cours` SANS borne de date : une session restée planifiée
+ *   après sa fin garde son défaut (relecture #1086, constat 2) ;
+ * - `realisee` sur 90 jours — la feuille d'émargement se re-tire après la
+ *   session pour le dossier, et c'est la borne du worker de production
+ *   (`qualiopi-documents-worker.ts`) ; au-delà, seules les pièces fausses
+ *   encore vivantes font lever ;
+ * - `annulee` et `reportee` : jamais.
+ *
+ * La règle ne fait que lire : le blocage est dans les points d'émission.
  */
+const FENETRE_REALISEE_SANS_LIEU_JOURS = 90;
+const STATUTS_SANS_LIEU = ["planifiee", "en_cours", "realisee"] as const;
+/** Décision de Will (2026-09-14) : jamais le 100 % distanciel. */
+const MODALITES_SANS_LIEU = ["presentiel", "hybride"] as const;
+
 async function regleSessionSansLieu(now: Date): Promise<AlerteCandidate[]> {
-  const sessions = await prisma.trainingSession.findMany({
-    where: {
-      statut: { in: ["planifiee", "en_cours"] },
-      dateFin: { gte: daysAgo(2, now) },
-      OR: [{ lieuType: null }, { lieuType: "sur_site" }],
-    },
-    select: {
-      id: true,
-      numero: true,
-      titreSession: true,
-      dateDebut: true,
-      modalite: true,
-      ...LIEU_DOCUMENT_SELECT,
-      client: { select: { raisonSociale: true } },
-    },
-  });
+  const plafondRealisee = daysAgo(FENETRE_REALISEE_SANS_LIEU_JOURS, now);
+  const selectSession = {
+    id: true,
+    numero: true,
+    titreSession: true,
+    statut: true,
+    dateDebut: true,
+    dateFin: true,
+    modalite: true,
+    ...LIEU_DOCUMENT_SELECT,
+    client: { select: { raisonSociale: true } },
+  } as const;
 
-  return sessions.flatMap((s) => {
-    // Le prédicat en mémoire est la vérité : le `where` ne fait que borner la
-    // lecture (et les mocks de test l'ignorent).
-    const defaut = defautLieuDocument(s);
-    if (defaut === null) return [];
-
-    const date = s.dateDebut.toLocaleDateString("fr-FR");
-    const aSaisir =
-      s.modalite === "distanciel"
-        ? "le lien de connexion"
-        : "le lieu (adresse du client, ou « nos locaux »)";
-
-    return [
-      {
-        code: "session_sans_lieu",
-        niveau: "important" as AlerteNiveau,
-        titre:
-          defaut === "aucun_lieu"
-            ? "Session sans lieu de déroulement"
-            : "Session sur site sans adresse",
-        message:
-          defaut === "aucun_lieu"
-            ? `${designerSession(s)} (${date}) n'a aucun lieu enregistré. La convention, la convocation et la feuille d'émargement impriment à la place l'adresse de l'organisme — un lieu faux si la formation se tient ailleurs (L.6353-1, indicateur 17). Saisissez ${aSaisir} sur la fiche de session, puis réémettez les pièces déjà produites.`
-            : `${designerSession(s)} (${date}) est déclarée sur site sans adresse ni ville : les documents n'impriment que « Sur site », sans dire où. Demandez l'adresse au client, complétez la fiche de session, puis réémettez les pièces déjà produites.`,
-        cibleType: "TrainingSession",
-        cibleId: s.id,
+  const [sessions, pieces] = await Promise.all([
+    prisma.trainingSession.findMany({
+      where: {
+        AND: [
+          {
+            OR: [
+              { statut: { in: ["planifiee", "en_cours"] } },
+              { statut: "realisee", dateFin: { gte: plafondRealisee } },
+            ],
+          },
+          { OR: [{ lieuType: null }, { lieuType: "sur_site" }] },
+          { modalite: { in: [...MODALITES_SANS_LIEU] } },
+        ],
       },
-    ];
+      select: selectSession,
+    }),
+    // ⚠️ Pas de borne de date : une pièce fausse encore vivante l'est à tout
+    // âge. Le volume est celui des pièces à lieu des sessions tenues — le
+    // `metadata` est lu parce que c'est lui qui porte l'instantané.
+    prisma.documentGenere.findMany({
+      where: {
+        annuleeAt: null,
+        type: { in: [...TYPES_PIECES_AVEC_LIEU] },
+        session: {
+          statut: { in: [...STATUTS_SANS_LIEU] },
+          modalite: { in: [...MODALITES_SANS_LIEU] },
+        },
+      },
+      select: {
+        id: true,
+        numero: true,
+        annuleeAt: true,
+        metadata: true,
+        session: { select: selectSession },
+      },
+    }),
+  ]);
+
+  type SessionLue = (typeof sessions)[number];
+  const statutRetenu = (statut: string): boolean =>
+    (STATUTS_SANS_LIEU as readonly string[]).includes(statut);
+
+  // Le prédicat en mémoire est la vérité : les `where` ne font que borner la
+  // lecture (et les mocks de test les ignorent).
+  const parSession = new Map<
+    string,
+    { session: SessionLue; defaut: DefautLieuDocument | null; numeros: string[] }
+  >();
+
+  for (const s of sessions) {
+    // Décision de Will : une session 100 % distancielle n'est jamais alertée ici.
+    if (s.modalite === "distanciel") continue;
+    const dansLaFenetre =
+      s.statut === "planifiee" ||
+      s.statut === "en_cours" ||
+      (s.statut === "realisee" && s.dateFin >= plafondRealisee);
+    if (!dansLaFenetre) continue;
+    const defaut = defautLieuDocument(s);
+    if (defaut === null) continue;
+    parSession.set(s.id, { session: s, defaut, numeros: [] });
+  }
+
+  for (const p of pieces) {
+    const s = p.session;
+    if (s === null || p.annuleeAt !== null || !statutRetenu(s.statut)) continue;
+    // Décision de Will : jamais le 100 % distanciel, même pour une pièce déjà émise.
+    if (s.modalite === "distanciel") continue;
+    // « Nos locaux » : l'adresse de l'organisme imprimée était le vrai lieu.
+    if (s.lieuType === "nos_locaux") continue;
+    if (!pieceImprimeRepliOrganisme(p.metadata)) continue;
+    const constat = parSession.get(s.id) ?? {
+      session: s,
+      defaut: defautLieuDocument(s),
+      numeros: [],
+    };
+    if (!constat.numeros.includes(p.numero)) constat.numeros.push(p.numero);
+    parSession.set(s.id, constat);
+  }
+
+  return [...parSession.values()].map(({ session: s, defaut, numeros }) => {
+    const date = s.dateDebut.toLocaleDateString("fr-FR");
+    // Présentiel ou hybride seulement (le distanciel pur est écarté plus haut) :
+    // le refus d'émettre s'applique donc toujours à la session visée.
+    const aSaisir = "le lieu (adresse et ville du client, ou « Nos locaux »)";
+    const refus = " La génération de ces pièces est refusée tant que le lieu ne dit pas où.";
+    const piecesFausses =
+      numeros.length === 0
+        ? ""
+        : ` Pièce(s) déjà émise(s) qui impriment l'adresse de l'organisme à la place du lieu : ${numeros.join(", ")} — annulez-les au registre et réémettez-les une fois le lieu saisi. L'alerte reste ouverte tant qu'elles font foi.`;
+
+    const titre =
+      defaut === "aucun_lieu"
+        ? "Session sans lieu de déroulement"
+        : defaut === "lieu_sans_adresse"
+          ? "Lieu de session sans adresse"
+          : "Pièce émise avec l'adresse de l'organisme pour lieu";
+
+    const message =
+      defaut === "aucun_lieu"
+        ? `${designerSession(s)} (${date}) n'a aucun lieu enregistré. La convention, la convocation et la feuille d'émargement imprimeraient à la place l'adresse de l'organisme — un lieu faux si la formation se tient ailleurs (L.6353-1, indicateur 17). Saisissez ${aSaisir} sur la fiche de session.${refus}${piecesFausses}`
+        : defaut === "lieu_sans_adresse"
+          ? `${designerSession(s)} (${date}) a un lieu sans adresse ni ville : les pièces ne diraient pas où se tient la formation. Demandez l'adresse au client et complétez la fiche de session (ou choisissez « Nos locaux »).${refus}${piecesFausses}`
+          : `${designerSession(s)} (${date}) a désormais un lieu, mais des pièces émises avant sa saisie restent fausses.${piecesFausses}`;
+
+    return {
+      code: "session_sans_lieu",
+      niveau: "important" as AlerteNiveau,
+      titre,
+      message,
+      cibleType: "TrainingSession",
+      cibleId: s.id,
+    };
   });
 }
 

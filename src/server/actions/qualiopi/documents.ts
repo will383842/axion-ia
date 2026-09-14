@@ -70,6 +70,7 @@ import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
 import {
   LIEU_DOCUMENT_SELECT,
+  refusEmissionLieu,
   resolveLieuDocument,
 } from "@/server/qualiopi/lieu/resolve-lieu-document";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
@@ -2116,6 +2117,7 @@ export async function genererAutorisationCaptationAction(input: {
           id: true,
           titreSession: true,
           dateDebut: true,
+          modalite: true,
           ...LIEU_DOCUMENT_SELECT,
         },
       },
@@ -2124,6 +2126,10 @@ export async function genererAutorisationCaptationAction(input: {
   if (!enrollment) return { error: "Inscription introuvable" };
 
   const { trainee, session } = enrollment;
+  // 🔴 I17-01 — l'autorisation imprime le lieu de l'action : pas de lieu qui
+  // dise où, pas de pièce.
+  const refusLieu = refusEmissionLieu(session);
+  if (refusLieu !== null) return { error: refusLieu };
   const identite = await getOrganismeIdentite();
 
   const doc = await generateDocument({

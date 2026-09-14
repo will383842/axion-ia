@@ -585,16 +585,22 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
    * intra donnée chez le client — et en intra, la convention est LA preuve de
    * l'environnement de formation (indicateur 17, L.6353-1). Rien ne le disait.
    *
-   * ⚠️ UNE ALERTE, PAS UN REFUS D'ÉMETTRE. Le repli reste en place : bloquer
-   * l'émission rendrait non réémissibles des pièces déjà remises, et la
-   * contresignature comme l'émission ne sont pas bloquantes dans ce dépôt.
+   * ⚠️ L'ALERTE ET LE REFUS D'ÉMETTRE, pas l'un sans l'autre (relecture #1086).
+   * Depuis le refus (`refusEmissionLieu`), aucune NOUVELLE pièce fausse ne naît.
+   * L'alerte dit ce qu'il reste : le lieu à saisir, et les pièces DÉJÀ émises
+   * sur l'adresse de l'organisme, encore vivantes au registre.
+   *
+   * ⛔ Décision de Will (2026-09-14) : refus ET alerte ne visent QUE les
+   * sessions en présentiel ou hybrides. Une session 100 % distancielle n'est
+   * jamais bloquée ni alertée par cette règle.
    *
    * `important` et non `critique` : la session peut se tenir, c'est la pièce
-   * qui ment. Le geste est une saisie sur la fiche de session, puis une
-   * réémission.
+   * qui ment. Le geste est une saisie sur la fiche de session, puis
+   * l'annulation et la réémission des pièces fausses.
    *
-   * `resolutionAuto: true` : le balayage la réémet tant que le lieu manque, et
-   * elle se referme d'elle-même dès qu'il est saisi.
+   * `resolutionAuto: true` : le balayage la réémet tant que le lieu manque OU
+   * qu'une pièce vivante imprime le repli ; elle se referme d'elle-même quand
+   * les deux ont disparu — pas à la seule saisie du lieu.
    *
    * Guichet `administratif` : c'est lui qui monte la session et obtient
    * l'adresse du client — même guichet que `session_contact_sur_place_absent`.
