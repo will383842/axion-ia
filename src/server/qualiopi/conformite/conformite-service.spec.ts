@@ -491,6 +491,12 @@ describe("evaluerConformite", () => {
   // besoin — montrez ce que vous avez adapté pour elles ».
 
   it("off.10 couvert si une adaptation est tracée et qu'aucun besoin déclaré ne reste sans réponse", async () => {
+    // Le besoin a été RECUEILLI avant l'entrée : sans positionnement, rien ne
+    // dit qu'on l'a demandé (cf. les témoins X-moteur-02 plus bas).
+    mockP.questionnaire.findMany.mockResolvedValue([
+      positionnement("enr-1", AVANT_DEBUT),
+      positionnement("enr-2", AVANT_DEBUT),
+    ]);
     mockP.enrollment.count.mockImplementation((args?: { where?: Record<string, unknown> }) => {
       const where = (args?.where ?? {}) as Record<string, unknown>;
       const besoin = where["trainee"] !== undefined;
@@ -518,6 +524,82 @@ describe("evaluerConformite", () => {
     const ind10 = result.indicateurs.find((i) => i.numero === 10);
     expect(ind10?.statut).toBe("a_completer");
     expect(ind10?.preuves.join(" ")).toContain("ont DÉCLARÉ un besoin");
+  });
+
+  // 🔴 X-moteur-02 (audit initial 2026-09-14) — le verdict exigeait AU MOINS UNE
+  // adaptation saisie. Un organisme dont aucun bénéficiaire n'a déclaré de besoin
+  // ne pouvait donc JAMAIS couvrir off.10 ⭐ : la seule manière de le verdir était
+  // d'inventer une adaptation. Le RNQ demande d'adapter quand un besoin l'appelle,
+  // pas d'adapter pour prouver qu'on sait le faire. La preuve est le RECUEIL du
+  // besoin (positionnement avant l'entrée) et l'absence de besoin déclaré laissé
+  // sans suite.
+
+  /** Inscriptions sur session tenue : total, à besoin déclaré, à besoin servi, adaptées. */
+  function setupAdaptations(opts: {
+    tenues: number;
+    besoin: number;
+    besoinServi: number;
+    adaptees: number;
+  }): void {
+    mockP.enrollment.count.mockImplementation((args?: { where?: Record<string, unknown> }) => {
+      const where = (args?.where ?? {}) as Record<string, unknown>;
+      const besoin = where["trainee"] !== undefined;
+      const adaptee = where["adaptationsRealisees"] !== undefined;
+      if (besoin && adaptee) return Promise.resolve(opts.besoinServi);
+      if (besoin) return Promise.resolve(opts.besoin);
+      if (adaptee) return Promise.resolve(opts.adaptees);
+      if (where["emargementSigneAt"] !== undefined) return Promise.resolve(0);
+      return Promise.resolve(opts.tenues);
+    });
+  }
+
+  it("🔴 X-moteur-02 : off.10 COUVERT sans aucune adaptation quand les besoins ont été recueillis et qu'aucun n'est déclaré", async () => {
+    mockP.questionnaire.findMany.mockResolvedValue([
+      positionnement("enr-1", AVANT_DEBUT),
+      positionnement("enr-2", AVANT_DEBUT),
+    ]);
+    setupAdaptations({ tenues: 2, besoin: 0, besoinServi: 0, adaptees: 0 });
+    const result = await evaluerConformite();
+    const ind10 = result.indicateurs.find((i) => i.numero === 10);
+    expect(ind10?.statut).toBe("couvert");
+    expect(ind10?.preuves.join(" ")).toContain("positionné");
+  });
+
+  it("témoin négatif X-moteur-02 : besoin DÉCLARÉ sans adaptation tracée → NON couvert, même positionnements recueillis", async () => {
+    mockP.questionnaire.findMany.mockResolvedValue([
+      positionnement("enr-1", AVANT_DEBUT),
+      positionnement("enr-2", AVANT_DEBUT),
+    ]);
+    setupAdaptations({ tenues: 2, besoin: 1, besoinServi: 0, adaptees: 0 });
+    const result = await evaluerConformite();
+    const ind10 = result.indicateurs.find((i) => i.numero === 10);
+    expect(ind10?.statut).toBe("a_completer");
+    expect(ind10?.preuves.join(" ")).toContain("ont DÉCLARÉ un besoin");
+  });
+
+  it("témoin négatif X-moteur-02 : AUCUN positionnement recueilli → NON couvert, même avec des adaptations tracées", async () => {
+    // Aucun besoin déclaré ne veut rien dire si personne ne l'a demandé.
+    mockP.questionnaire.findMany.mockResolvedValue([]);
+    setupAdaptations({ tenues: 5, besoin: 0, besoinServi: 0, adaptees: 3 });
+    const result = await evaluerConformite();
+    const ind10 = result.indicateurs.find((i) => i.numero === 10);
+    expect(ind10?.statut).toBe("a_completer");
+    expect(ind10?.preuves.join(" ")).toContain("Aucun positionnement recueilli");
+  });
+
+  it("témoin négatif X-moteur-02 : base vide → NON couvert", async () => {
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 10)?.statut).toBe("a_completer");
+  });
+
+  it("témoin négatif X-moteur-02 : des positionnements répondus APRÈS le début ne recueillent pas le besoin en amont", async () => {
+    mockP.questionnaire.findMany.mockResolvedValue([
+      positionnement("enr-1", APRES_DEBUT),
+      positionnement("enr-2", APRES_DEBUT),
+    ]);
+    setupAdaptations({ tenues: 2, besoin: 0, besoinServi: 0, adaptees: 0 });
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 10)?.statut).toBe("a_completer");
   });
 
   it("off.23 couvert si au moins 1 veille legale existe", async () => {

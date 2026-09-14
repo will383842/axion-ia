@@ -1153,11 +1153,28 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   // Et le libellé affiché disait « 1 adaptation réalisées renseignées » —
   // accord au pluriel figé dans le gabarit, sur la pièce remise au
   // certificateur.
+  //
+  // 🔴 2026-09-14 (audit initial, X-moteur-02) — la « trace d'une pratique
+  // effective » était `nbEnrollmentsAdaptations > 0`. Un organisme dont aucun
+  // bénéficiaire n'avait déclaré de besoin ne pouvait donc JAMAIS couvrir
+  // off.10 ⭐ : la seule façon de le verdir était de SAISIR UNE ADAPTATION
+  // INVENTÉE. Même défaut que off.21 le 2026-09-13 — une incitation à falsifier,
+  // pas un chiffre faux.
+  //
+  // La pratique effective se prouve par le RECUEIL du besoin : au moins un
+  // bénéficiaire positionné AVANT le début de sa session (même mesure datée que
+  // off.4). Sans positionnement, « aucun besoin déclaré » ne veut rien dire —
+  // personne ne l'a demandé —, donc jamais de couverture sur une base sans
+  // positionnement recueilli, adaptations saisies ou non. Le contre-exemple
+  // (besoin déclaré, aucune adaptation tracée) reste bloquant.
   const besoinsAdaptationNonServis = nbInscritsBesoinAdaptation - nbInscritsBesoinAdaptationServis;
   set(
     10,
     [
       `${nbEnrollmentsAdaptations} adaptation${nbEnrollmentsAdaptations > 1 ? "s" : ""} tracée${nbEnrollmentsAdaptations > 1 ? "s" : ""} sur ${nbInscritsSessionsTenues} inscription${nbInscritsSessionsTenues > 1 ? "s" : ""} (une adaptation n'est due que lorsqu'un besoin l'appelle)`,
+      nbInscritsPositionnesAvantDebut === 0
+        ? "Aucun positionnement recueilli avant le début d'une session — rien ne montre que les besoins d'adaptation ont été demandés"
+        : `${nbInscritsPositionnesAvantDebut} bénéficiaire${nbInscritsPositionnesAvantDebut > 1 ? "s" : ""} positionné${nbInscritsPositionnesAvantDebut > 1 ? "s" : ""} avant le début de sa session (recueil du besoin d'adaptation)`,
       nbInscritsBesoinAdaptation === 0
         ? "Aucune inscription ne porte de besoin d'adaptation déclaré"
         : `${nbInscritsBesoinAdaptationServis}/${nbInscritsBesoinAdaptation} inscription${nbInscritsBesoinAdaptation > 1 ? "s" : ""} à besoin déclaré portant une adaptation tracée`,
@@ -1165,7 +1182,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
         ? `${besoinsAdaptationNonServis} bénéficiaire(s) ont DÉCLARÉ un besoin sans qu'aucune adaptation soit tracée — c'est le dossier que l'auditeur tire en premier`
         : "Aucun besoin déclaré laissé sans adaptation tracée",
     ],
-    nbEnrollmentsAdaptations > 0 && besoinsAdaptationNonServis === 0,
+    nbInscritsPositionnesAvantDebut > 0 && besoinsAdaptationNonServis === 0,
   );
   // off.11 ⭐ : évaluation de l'atteinte des objectifs.
   //
