@@ -16,6 +16,7 @@ import {
   chronologieReponse,
   formaterInstantParis,
   libelleBesoinAdaptation,
+  libellePrecisionAdaptation,
   type PositionnementLu,
 } from "@/server/qualiopi/positionnement/lecture-positionnement";
 
@@ -99,43 +100,61 @@ function ReponsesPositionnement({
           Saisi par l&apos;organisme, et non par le ou la stagiaire.
         </p>
       )}
-      <dl className="grid gap-x-[var(--space-admin-6)] sm:grid-cols-2">
-        {champ("Fonction", p.fonction)}
-        {champ("Secteur d'activité", p.secteur)}
-        {champ("Outils d'IA utilisés", p.outilsUtilises)}
-        {champ("Fréquence d'usage", p.frequenceUsage)}
-        {champ("Attentes", p.attentes)}
-        {champ("Tâche visée", p.tacheVisee)}
-        {champ(
-          "Besoin d'adaptation déclaré",
-          libelleBesoinAdaptation(p.besoinAdaptation, p.saisieAdmin),
-        )}
-        {p.besoinAdaptation === true && champ("Précision", p.detailAdaptation)}
-      </dl>
-      <div>
-        <p className={dtCls}>Niveau déclaré par objectif</p>
-        {p.niveaux.length === 0 ? (
-          <p className={ddCls}>{vide}</p>
-        ) : (
-          <table className="mt-[var(--space-admin-1)] w-full border-collapse text-[length:var(--text-admin-sm)]">
-            <tbody>
-              {p.niveaux.map((n) => (
-                <tr
-                  key={n.objectif}
-                  className="border-b border-[color:var(--color-admin-border)] last:border-b-0"
-                >
-                  <td className="py-[var(--space-admin-1)] pr-[var(--space-admin-3)] text-[color:var(--color-admin-fg)]">
-                    {n.objectif}
-                  </td>
-                  <td className="py-[var(--space-admin-1)] text-[color:var(--color-admin-fg)]">
-                    {n.libelle}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+      {p.saisieAdmin ? (
+        // Ce que l'organisme a réellement saisi (formulaire de saisie ci-dessous).
+        <dl className="grid gap-x-[var(--space-admin-6)] sm:grid-cols-2">
+          {champ("Objectifs atteints", p.saisieOrganisme.objectifsAtteints)}
+          {champ("Points forts", p.saisieOrganisme.pointsForts)}
+          {champ("Axes d'amélioration", p.saisieOrganisme.axesAmelioration)}
+          {champ("Commentaire", p.saisieOrganisme.commentaire)}
+          {champ(
+            "Besoin d'adaptation déclaré",
+            libelleBesoinAdaptation(p.besoinAdaptation, p.saisieAdmin),
+          )}
+        </dl>
+      ) : (
+        <dl className="grid gap-x-[var(--space-admin-6)] sm:grid-cols-2">
+          {champ("Fonction", p.fonction)}
+          {champ("Secteur d'activité", p.secteur)}
+          {champ("Outils d'IA utilisés", p.outilsUtilises)}
+          {champ("Fréquence d'usage", p.frequenceUsage)}
+          {champ("Attentes", p.attentes)}
+          {champ("Tâche visée", p.tacheVisee)}
+          {champ(
+            "Besoin d'adaptation déclaré",
+            libelleBesoinAdaptation(p.besoinAdaptation, p.saisieAdmin),
+          )}
+          {/* Donnée de santé : la présence se dit, le contenu jamais. */}
+          {p.besoinAdaptation === true &&
+            champ("Précision", libellePrecisionAdaptation(p.precisionAdaptationFournie))}
+        </dl>
+      )}
+      {!p.saisieAdmin && (
+        <div>
+          <p className={dtCls}>Niveau déclaré par objectif</p>
+          {p.niveaux.length === 0 ? (
+            <p className={ddCls}>{vide}</p>
+          ) : (
+            <table className="mt-[var(--space-admin-1)] w-full border-collapse text-[length:var(--text-admin-sm)]">
+              <tbody>
+                {p.niveaux.map((n) => (
+                  <tr
+                    key={n.objectif}
+                    className="border-b border-[color:var(--color-admin-border)] last:border-b-0"
+                  >
+                    <td className="py-[var(--space-admin-1)] pr-[var(--space-admin-3)] text-[color:var(--color-admin-fg)]">
+                      {n.objectif}
+                    </td>
+                    <td className="py-[var(--space-admin-1)] text-[color:var(--color-admin-fg)]">
+                      {n.libelle}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -192,6 +211,10 @@ function formatDateFR(iso: string): string {
     day: "2-digit",
     month: "long",
     year: "numeric",
+    // Jour de PARIS : le rendu serveur tourne en UTC, et le panneau des
+    // réponses affiche l'heure de Paris. Sans fuseau, une réponse de 00:30
+    // tombait la veille sur la ligne.
+    timeZone: "Europe/Paris",
   });
 }
 
@@ -653,6 +676,7 @@ export function QuestionnairesSection({
                               <button
                                 type="button"
                                 aria-expanded={reponsesOuvertes}
+                                aria-controls={`reponses-positionnement-${q.id}`}
                                 onClick={() =>
                                   setReponsesOuvertesId(reponsesOuvertes ? null : q.id)
                                 }
@@ -666,7 +690,10 @@ export function QuestionnairesSection({
                       </td>
                     </tr>
                     {reponsesOuvertes && q.positionnement !== null && (
-                      <tr className="border-b border-[color:var(--color-admin-border)] last:border-b-0">
+                      <tr
+                        id={`reponses-positionnement-${q.id}`}
+                        className="border-b border-[color:var(--color-admin-border)] last:border-b-0"
+                      >
                         <td colSpan={6} className={tdCls}>
                           <ReponsesPositionnement
                             questionnaire={q}

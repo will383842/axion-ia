@@ -42,8 +42,14 @@ const DATA: PositionnementRempliData = {
     tacheVisee: "Les comptes rendus de visite",
     niveaux: [{ objectif: "Rédiger des annonces", niveau: 2, libelle: "Quelques notions" }],
     besoinAdaptation: true,
-    detailAdaptation: "Salle accessible en fauteuil",
+    precisionAdaptationFournie: true,
     saisieAdmin: false,
+    saisieOrganisme: {
+      objectifsAtteints: null,
+      pointsForts: null,
+      axesAmelioration: null,
+      commentaire: null,
+    },
   },
 };
 
@@ -63,9 +69,14 @@ describe("PositionnementRempliPdf — une pièce REMPLIE, jamais le gabarit", ()
     expect(text).toContain("Les comptes rendus de visite");
     expect(text).toContain("Rédiger des annonces");
     expect(text).toContain("Quelques notions");
-    expect(text).toContain("Salle accessible en fauteuil");
     // Une question sans réponse le DIT.
     expect(text).toContain("Non renseigné");
+  });
+
+  it("une précision d'adaptation : sa PRÉSENCE se dit, jamais son contenu ni « Non renseigné »", () => {
+    expect(text).toContain("Précision fournie — consultable par le super-administrateur");
+    expect(text).not.toContain("Précision Non renseigné");
+    expect(text).toContain("Indicateurs Qualiopi 4, 8 et 10");
   });
 
   it("dit si la réponse précède le début, et porte sa date de tirage", () => {
@@ -80,9 +91,21 @@ describe("PositionnementRempliPdf — une pièce REMPLIE, jamais le gabarit", ()
           ...DATA,
           positionnement: {
             ...DATA.positionnement,
+            fonction: null,
+            secteur: null,
+            frequenceUsage: null,
+            attentes: null,
+            tacheVisee: null,
+            niveaux: [],
             besoinAdaptation: null,
-            detailAdaptation: null,
+            precisionAdaptationFournie: null,
             saisieAdmin: true,
+            saisieOrganisme: {
+              objectifsAtteints: "Objectifs recueillis par téléphone",
+              pointsForts: "Déjà à l'aise avec ChatGPT",
+              axesAmelioration: "Rédaction des annonces",
+              commentaire: "Appel téléphonique",
+            },
           },
         },
         identite: IDENTITE,
@@ -90,6 +113,17 @@ describe("PositionnementRempliPdf — une pièce REMPLIE, jamais le gabarit", ()
     );
     expect(saisie).toContain("Non posée (saisie par l'organisme)");
     expect(saisie).not.toMatch(/Besoin d'adaptation déclaré (Oui|Non)(?! posée)/);
+    // Titrée comme une saisie de l'organisme, jamais comme des réponses du stagiaire.
+    expect(saisie).toContain("Positionnement — saisie par l'organisme");
+    expect(saisie).not.toContain("Positionnement à l'entrée — réponses");
+    // Ce que l'organisme a réellement saisi est restitué.
+    expect(saisie).toContain("Objectifs recueillis par téléphone");
+    expect(saisie).toContain("Déjà à l'aise avec ChatGPT");
+    expect(saisie).toContain("Rédaction des annonces");
+    expect(saisie).toContain("Appel téléphonique");
+    // Règle de l'indicateur 10 (PR 1083) : une saisie de l'organisme ne le couvre pas.
+    expect(saisie).not.toContain("4, 8 et 10");
+    expect(saisie).toContain("Indicateurs Qualiopi 4 et 8");
   });
 
   it("ne reprend aucune case du formulaire vierge", () => {

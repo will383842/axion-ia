@@ -8,7 +8,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 vi.mock("@/lib/prisma", () => ({
-  prisma: { questionnaire: { count: vi.fn(), findMany: vi.fn() } },
+  prisma: {
+    questionnaire: { count: vi.fn(), findMany: vi.fn() },
+    trainee: { findMany: vi.fn() },
+  },
 }));
 vi.mock("@/server/qualiopi/documents/organisme", () => ({
   getOrganismeIdentite: vi.fn(async () => ({ raisonSociale: "Axion-IA SAS" })),
@@ -32,6 +35,7 @@ import { STATUTS_SESSION_SANS_PREUVE } from "@/server/qualiopi/conformite/piece-
 
 const mockPrisma = prisma as unknown as {
   questionnaire: { count: ReturnType<typeof vi.fn>; findMany: ReturnType<typeof vi.fn> };
+  trainee: { findMany: ReturnType<typeof vi.fn> };
 };
 const mockRender = renderPdfToBuffer as ReturnType<typeof vi.fn>;
 
@@ -40,7 +44,7 @@ const LIGNE = {
   reponduAt: new Date("2026-09-04T21:12:00.000Z"),
   reponses: { attentes: "Gagner du temps", besoinAdaptation: false },
   enrollment: {
-    trainee: { nom: "Martin", prenom: "Camille-Élise" },
+    trainee: { id: "t-1", nom: "Martin", prenom: "Camille-Élise" },
     session: {
       titreSession: "IA générative",
       dateDebut: new Date("2026-09-05T07:00:00.000Z"),
@@ -53,6 +57,7 @@ describe("pièces positionnement rempli", () => {
     vi.clearAllMocks();
     mockPrisma.questionnaire.count.mockResolvedValue(0);
     mockPrisma.questionnaire.findMany.mockResolvedValue([]);
+    mockPrisma.trainee.findMany.mockResolvedValue([]);
   });
 
   it("ne retient que les positionnements RÉPONDUS sur une session tenue", () => {
@@ -66,12 +71,73 @@ describe("pièces positionnement rempli", () => {
   it("le compte et la liste lisent le MÊME prédicat", async () => {
     await compterPositionnementsRemplis();
     await produirePiecesPositionnementRempli();
-    expect(mockPrisma.questionnaire.count.mock.calls[0]![0].where).toEqual(
-      wherePositionnementRempli(),
-    );
-    expect(mockPrisma.questionnaire.findMany.mock.calls[0]![0].where).toEqual(
-      wherePositionnementRempli(),
-    );
+    const appels = mockPrisma.questionnaire.findMany.mock.calls;
+    expect(appels).toHaveLength(2);
+    expect(appels[0]![0].where).toEqual(wherePositionnementRempli());
+    expect(appels[1]![0].where).toEqual(wherePositionnementRempli());
+  });
+
+  // ── Relecture de la PR 1090 : formes réelles ─────────────────────────────
+
+  it("le compte sépare les réponses des stagiaires des saisies de l'organisme", async () => {
+    mockPrisma.questionnaire.findMany.mockResolvedValue([
+      { reponses: { besoinAdaptation: false, attentes: "Gagner du temps" } },
+      { reponses: { commentaire: "Appel téléphonique", saisie_admin: true } },
+      { reponses: { saisie_admin: true, besoinAdaptation: false } },
+    ]);
+    expect(await compterPositionnementsRemplis()).toEqual({ parStagiaires: 1, parOrganisme: 2 });
+  });
+
+  it("détail chiffré sur la fiche : la pièce dit « précision fournie », sans jamais lire le chiffré", async () => {
+    mockPrisma.questionnaire.findMany.mockResolvedValue([
+      { ...LIGNE, reponses: { besoinAdaptation: true, attentes: "Gagner du temps" } },
+    ]);
+    mockPrisma.trainee.findMany.mockResolvedValue([{ id: "t-1" }]);
+
+    await produirePiecesPositionnementRempli();
+
+    // La présence se lit par un filtre : la colonne chiffrée n'est pas chargée.
+    const requete = mockPrisma.trainee.findMany.mock.calls[0]![0] as {
+      where: Record<string, unknown>;
+      select: Record<string, unknown>;
+    };
+    expect(requete.where["handicapDetailsChiffre"]).toEqual({ not: null });
+    expect(requete.select).toEqual({ id: true });
+
+    const element = mockRender.mock.calls[0]![0] as {
+      props: { data: { positionnement: { precisionAdaptationFournie: unknown } } };
+    };
+    expect(element.props.data.positionnement.precisionAdaptationFournie).toBe(true);
+  });
+
+  it("détail ancien EN CLAIR dans les réponses : sa présence passe, son contenu JAMAIS", async () => {
+    mockPrisma.questionnaire.findMany.mockResolvedValue([
+      {
+        ...LIGNE,
+        reponses: { besoinAdaptation: true, detailAdaptation: "Salle accessible en fauteuil" },
+      },
+    ]);
+
+    await produirePiecesPositionnementRempli();
+
+    const element = mockRender.mock.calls[0]![0] as {
+      props: { data: { positionnement: { precisionAdaptationFournie: unknown } } };
+    };
+    expect(element.props.data.positionnement.precisionAdaptationFournie).toBe(true);
+    expect(JSON.stringify(element.props.data)).not.toContain("fauteuil");
+  });
+
+  it("la pièce d'une saisie de l'organisme est nommée comme telle", async () => {
+    mockPrisma.questionnaire.findMany.mockResolvedValue([
+      { ...LIGNE, reponses: { commentaire: "Appel téléphonique", saisie_admin: true } },
+    ]);
+
+    const { pieces } = await produirePiecesPositionnementRempli();
+
+    expect(pieces.map((p) => p.chemin)).toEqual([
+      "positionnements/2026-09-05_martin-camille-elise_1a2b3c4d_saisie-organisme.pdf",
+    ]);
+    expect(pieces[0]!.saisieOrganisme).toBe(true);
   });
 
   it("rend une pièce nominative, datée, nommée par session et stagiaire", async () => {
@@ -137,6 +203,7 @@ describe("pièces positionnement rempli", () => {
       {
         chemin: "positionnements/2026-09-05_martin-camille-elise_1a2b3c4d.pdf",
         motif: "police absente",
+        saisieOrganisme: false,
       },
     ]);
   });

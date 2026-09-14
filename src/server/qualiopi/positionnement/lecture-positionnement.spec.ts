@@ -10,8 +10,10 @@
 import { describe, it, expect } from "vitest";
 import {
   chronologieReponse,
+  estSaisieOrganisme,
   lirePositionnement,
   libelleBesoinAdaptation,
+  libellePrecisionAdaptation,
 } from "./lecture-positionnement";
 
 describe("lirePositionnement", () => {
@@ -36,7 +38,6 @@ describe("lirePositionnement", () => {
       { objectif: "Estimer un bien", niveau: 3, libelle: "Je maîtrise" },
     ]);
     expect(lu.besoinAdaptation).toBe(true);
-    expect(lu.detailAdaptation).toBe("Salle accessible en fauteuil");
     expect(lu.saisieAdmin).toBe(false);
   });
 
@@ -83,6 +84,76 @@ describe("lirePositionnement", () => {
     expect(libelleBesoinAdaptation(lu.besoinAdaptation, lu.saisieAdmin)).toBe(
       "Non posée (saisie par l'organisme)",
     );
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Formes RÉELLES de `Questionnaire.reponses` (relecture de la PR 1090).
+//
+// 1. Portail depuis le 2026-08-20 : `portail.ts` retire `detailAdaptation` du
+//    JSON et le chiffre sur la fiche stagiaire. Le détail n'est donc PAS dans
+//    les réponses : le lire là rendait « Non renseigné », une absence fausse.
+// 2. Portail du 2026-07-26 au 2026-08-20 : le détail y est encore EN CLAIR.
+//    Donnée de santé (art. 9) : sa PRÉSENCE se dit, son contenu jamais.
+// 3. Saisie console : `objectifs_atteints`, `points_forts`,
+//    `axes_amelioration`, `commentaire` et `saisie_admin: true`.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("lirePositionnement — formes réelles en base", () => {
+  it("portail récent : besoin déclaré, détail chiffré hors du JSON → précision FOURNIE, jamais « Non renseigné »", () => {
+    const reponses = { besoinAdaptation: true, attentes: "Gagner du temps" };
+    const lu = lirePositionnement(reponses, { detailChiffrePresent: true });
+    expect(lu.besoinAdaptation).toBe(true);
+    expect(lu.precisionAdaptationFournie).toBe(true);
+    expect(libellePrecisionAdaptation(lu.precisionAdaptationFournie)).toBe(
+      "Précision fournie — consultable par le super-administrateur",
+    );
+  });
+
+  it("portail récent : besoin déclaré sans aucun détail → « Aucune précision »", () => {
+    const lu = lirePositionnement({ besoinAdaptation: true }, { detailChiffrePresent: false });
+    expect(lu.precisionAdaptationFournie).toBe(false);
+    expect(libellePrecisionAdaptation(lu.precisionAdaptationFournie)).toBe("Aucune précision");
+  });
+
+  it("portail ancien : le détail EN CLAIR est signalé présent et JAMAIS restitué", () => {
+    const lu = lirePositionnement({
+      besoinAdaptation: true,
+      detailAdaptation: "Salle accessible en fauteuil",
+    });
+    expect(lu.precisionAdaptationFournie).toBe(true);
+    expect(JSON.stringify(lu)).not.toContain("fauteuil");
+  });
+
+  it("sans besoin déclaré, la précision n'a pas d'objet", () => {
+    const lu = lirePositionnement({ besoinAdaptation: false }, { detailChiffrePresent: true });
+    expect(lu.precisionAdaptationFournie).toBeNull();
+  });
+
+  it("saisie console : les quatre champs écrits par l'organisme sont restitués", () => {
+    const reponses = {
+      objectifs_atteints: "Objectifs recueillis par téléphone",
+      points_forts: "Déjà à l'aise avec ChatGPT",
+      axes_amelioration: "Rédaction des annonces",
+      commentaire: "Appel téléphonique",
+      saisie_admin: true,
+    };
+    const lu = lirePositionnement(reponses, { detailChiffrePresent: true });
+    expect(estSaisieOrganisme(reponses)).toBe(true);
+    expect(lu.saisieAdmin).toBe(true);
+    expect(lu.saisieOrganisme).toEqual({
+      objectifsAtteints: "Objectifs recueillis par téléphone",
+      pointsForts: "Déjà à l'aise avec ChatGPT",
+      axesAmelioration: "Rédaction des annonces",
+      commentaire: "Appel téléphonique",
+    });
+    // La question n'a pas été posée : aucune précision ne s'y rattache.
+    expect(lu.precisionAdaptationFournie).toBeNull();
+  });
+
+  it("une réponse du portail n'est pas une saisie de l'organisme", () => {
+    expect(estSaisieOrganisme({ besoinAdaptation: false })).toBe(false);
+    expect(estSaisieOrganisme(null)).toBe(false);
   });
 });
 

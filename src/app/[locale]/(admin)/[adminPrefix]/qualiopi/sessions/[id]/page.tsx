@@ -47,6 +47,7 @@ import { lireEtatSignatureLettreMissionConsole } from "@/server/qualiopi/documen
 import { QuestionnairesSection } from "@/components/admin/qualiopi/QuestionnairesSection";
 import { envoyerQuestionnaireAction } from "@/server/actions/qualiopi/questionnaires";
 import { lirePositionnement } from "@/server/qualiopi/positionnement/lecture-positionnement";
+import { stagiairesAvecPrecisionChiffree } from "@/server/qualiopi/positionnement/precision-chiffree";
 import {
   enrollTraineeAction,
   setEnrollmentStatutAction,
@@ -571,6 +572,13 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     montantHtEuros: e.montantHtCents != null ? e.montantHtCents / 100 : null,
   }));
 
+  // C2-03 / I10-02 — PRÉSENCE d'une précision d'adaptation chiffrée, jamais son
+  // contenu (donnée de santé, lecture réservée au super-administrateur). Bornée
+  // aux inscrits de la session ; la colonne chiffrée n'est pas chargée.
+  const traineesAvecDetailChiffre = await stagiairesAvecPrecisionChiffree(
+    enrollmentsRaw.map((e) => e.trainee.id),
+  );
+
   const questionnairesSerialized = enrollmentsRaw.flatMap((e) =>
     e.questionnaires.map((q) => ({
       id: q.id,
@@ -580,7 +588,11 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       envoyeAt: q.envoyeAt ? q.envoyeAt.toISOString() : null,
       noteGlobale: q.noteGlobale,
       positionnement:
-        q.type === "positionnement" && q.reponduAt !== null ? lirePositionnement(q.reponses) : null,
+        q.type === "positionnement" && q.reponduAt !== null
+          ? lirePositionnement(q.reponses, {
+              detailChiffrePresent: traineesAvecDetailChiffre.has(e.trainee.id),
+            })
+          : null,
     })),
   );
 

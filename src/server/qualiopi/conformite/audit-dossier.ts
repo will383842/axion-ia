@@ -417,24 +417,31 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
   // positionnement » du registre — le GABARIT VIERGE, sans nom ni réponse. Les
   // réponses réelles ne figuraient nulle part. Elles sont désormais jointes au
   // ZIP (`positionnements/`), et le manifeste dit ce qu'est le gabarit.
-  const nbPositionnementsRemplis = await compterPositionnementsRemplis();
+  //
+  // 🔴 Relecture de la PR 1090 : une saisie par l'organisme (`saisie_admin`)
+  // n'est PAS « remplie par les stagiaires ». Elle est comptée à part — même
+  // règle que l'indicateur 10 (PR 1083).
+  const { parStagiaires, parOrganisme } = await compterPositionnementsRemplis();
   const gabaritPositionnementAuRegistre = docCounts.some(
     (d) => d.type === "positionnement" && d._count._all > 0,
   );
-  const pluriel = nbPositionnementsRemplis > 1 ? "s" : "";
-  const preuvesPositionnement =
-    nbPositionnementsRemplis > 0
+  const plurielStagiaires = parStagiaires > 1 ? "s" : "";
+  const plurielOrganisme = parOrganisme > 1 ? "s" : "";
+  const preuvesPositionnement = [
+    parStagiaires > 0
+      ? `${parStagiaires} positionnement${plurielStagiaires} rempli${plurielStagiaires} par les stagiaires — pièce${plurielStagiaires} nominative${plurielStagiaires} datée${plurielStagiaires} de la réponse, jointe${plurielStagiaires} au dossier sous positionnements/`
+      : "Aucun positionnement rempli par un stagiaire : le « Questionnaire de positionnement » du registre est un gabarit vierge, il ne tient pas lieu de réponse",
+    ...(parOrganisme > 0
       ? [
-          `${nbPositionnementsRemplis} positionnement${pluriel} rempli${pluriel} par les stagiaires — pièce${pluriel} nominative${pluriel} datée${pluriel} de la réponse, jointe${pluriel} au dossier sous positionnements/`,
-          ...(gabaritPositionnementAuRegistre
-            ? [
-                "Le « Questionnaire de positionnement » listé en Documents est le gabarit vierge remis aux stagiaires : les réponses sont dans positionnements/",
-              ]
-            : []),
+          `Saisies par l'organisme : ${parOrganisme} — elles ne valent pas réponse du stagiaire ; pièce${plurielOrganisme} titrée${plurielOrganisme} « saisie par l'organisme » sous positionnements/`,
         ]
-      : [
-          "Aucun positionnement rempli par un stagiaire : le « Questionnaire de positionnement » du registre est un gabarit vierge, il ne tient pas lieu de réponse",
-        ];
+      : []),
+    ...(parStagiaires > 0 && gabaritPositionnementAuRegistre
+      ? [
+          "Le « Questionnaire de positionnement » listé en Documents est le gabarit vierge remis aux stagiaires : les réponses sont dans positionnements/",
+        ]
+      : []),
+  ];
 
   // Preuves supplémentaires par indicateur (complètent celles de conformite-service)
   const preuvesSuppMap = new Map<number, string[]>([
@@ -861,9 +868,13 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   indexLines.push("");
   try {
     const { pieces, echecs } = await produirePiecesPositionnementRempli();
-    const total = pieces.length + echecs.length;
-    indexLines.push(`Positionnements remplis (ind. 4 / 8) : ${total} → positionnements/`);
-    if (total === 0) {
+    const toutes = [...pieces, ...echecs];
+    const nbOrganisme = toutes.filter((p) => p.saisieOrganisme === true).length;
+    const nbStagiaires = toutes.length - nbOrganisme;
+    indexLines.push(
+      `Positionnements (ind. 4 / 8) : ${nbStagiaires} rempli${nbStagiaires > 1 ? "s" : ""} par les stagiaires, ${nbOrganisme} saisi${nbOrganisme > 1 ? "s" : ""} par l'organisme → positionnements/`,
+    );
+    if (nbStagiaires === 0) {
       indexLines.push(
         "  Aucun positionnement rempli par un stagiaire. Le gabarit vierge (preuves/positionnement/) ne tient pas lieu de réponse.",
       );

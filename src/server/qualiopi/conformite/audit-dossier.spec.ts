@@ -1376,12 +1376,12 @@ describe("C2-03 — le dossier d'audit porte les positionnements REMPLIS", () =>
     mockRenderRegistrePdfBuffer.mockImplementation((type: string) =>
       Promise.resolve({ buffer: Buffer.from(`%PDF-1.4 ${type}`), filename: `${type}.pdf` }),
     );
-    mockCompter.mockResolvedValue(0);
+    mockCompter.mockResolvedValue({ parStagiaires: 0, parOrganisme: 0 });
     mockProduire.mockResolvedValue({ pieces: [], echecs: [] });
   });
 
   it("joint une pièce nominative par positionnement rempli, sous positionnements/", async () => {
-    mockCompter.mockResolvedValue(1);
+    mockCompter.mockResolvedValue({ parStagiaires: 1, parOrganisme: 0 });
     mockProduire.mockResolvedValue({
       pieces: [
         {
@@ -1401,7 +1401,7 @@ describe("C2-03 — le dossier d'audit porte les positionnements REMPLIS", () =>
   });
 
   it("le manifeste présente aux indicateurs 4 et 8 les positionnements remplis", async () => {
-    mockCompter.mockResolvedValue(3);
+    mockCompter.mockResolvedValue({ parStagiaires: 3, parOrganisme: 0 });
     const manifeste = await genererManifesteAudit();
     for (const numero of [4, 8]) {
       const preuves = manifeste.json.indicateurs.find((i) => i.numero === numero)!.preuves;
@@ -1416,8 +1416,53 @@ describe("C2-03 — le dossier d'audit porte les positionnements REMPLIS", () =>
     expect(preuves.join("\n")).toMatch(/gabarit vierge/i);
   });
 
+  // Relecture de la PR 1090 : une saisie de l'organisme n'est PAS un
+  // positionnement « rempli par les stagiaires » — même règle que l'indicateur 10.
+  it("le manifeste compte À PART les saisies de l'organisme", async () => {
+    mockCompter.mockResolvedValue({ parStagiaires: 1, parOrganisme: 2 });
+    const manifeste = await genererManifesteAudit();
+    for (const numero of [4, 8]) {
+      const texte = manifeste.json.indicateurs.find((i) => i.numero === numero)!.preuves.join("\n");
+      expect(texte).toMatch(/1 positionnement rempli par les stagiaires/);
+      expect(texte).toMatch(/Saisies par l'organisme : 2/);
+      expect(texte).not.toMatch(/3 positionnements remplis/);
+    }
+  });
+
+  it("seules des saisies de l'organisme : le manifeste dit qu'aucun stagiaire n'a répondu", async () => {
+    mockCompter.mockResolvedValue({ parStagiaires: 0, parOrganisme: 2 });
+    const manifeste = await genererManifesteAudit();
+    const texte = manifeste.json.indicateurs.find((i) => i.numero === 4)!.preuves.join("\n");
+    expect(texte).toMatch(/Aucun positionnement rempli par un stagiaire/);
+    expect(texte).toMatch(/Saisies par l'organisme : 2/);
+  });
+
+  it("l'index du ZIP sépare les pièces des stagiaires de celles de l'organisme", async () => {
+    mockProduire.mockResolvedValue({
+      pieces: [
+        {
+          chemin: "positionnements/2026-09-05_martin-camille_1a2b3c4d.pdf",
+          buffer: Buffer.from("%PDF-1.4 a"),
+          saisieOrganisme: false,
+        },
+        {
+          chemin: "positionnements/2026-09-05_durand-luc_5e6f7a8b_saisie-organisme.pdf",
+          buffer: Buffer.from("%PDF-1.4 b"),
+          saisieOrganisme: true,
+        },
+      ],
+      echecs: [],
+    });
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    const index = await zip.files["index.txt"]!.async("string");
+    expect(index).toContain(
+      "Positionnements (ind. 4 / 8) : 1 rempli par les stagiaires, 1 saisi par l'organisme",
+    );
+  });
+
   it("une pièce qui ne se rend pas rend le dossier INCOMPLET, et le dit", async () => {
-    mockCompter.mockResolvedValue(1);
+    mockCompter.mockResolvedValue({ parStagiaires: 1, parOrganisme: 0 });
     mockProduire.mockResolvedValue({
       pieces: [],
       echecs: [{ chemin: "positionnements/2026-09-05_martin-camille_1a2b3c4d.pdf", motif: "boom" }],
