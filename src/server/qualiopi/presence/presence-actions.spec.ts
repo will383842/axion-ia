@@ -719,82 +719,104 @@ describe("saveEmargementAction", () => {
     expect(mockInvalidateCache).toHaveBeenCalledWith(2026);
   });
 
-  it("pose emargementSigneAt write-once (updateMany conditionné sur null)", async () => {
-    await saveEmargementAction({
-      sessionId: "550e8400-e29b-41d4-a716-446655440000",
-      entries: [validEntry],
-    });
-
-    // 1re signature : le where cible uniquement les enrollments non encore signés.
-    expect(mockPrisma.enrollment.updateMany).toHaveBeenCalledWith(
-      expect.objectContaining({
-        where: expect.objectContaining({
-          id: validEntry.enrollmentId,
-          emargementSigneAt: null,
-        }),
-        data: expect.objectContaining({ emargementSigneAt: expect.any(Date) }),
-      }),
-    );
-  });
-
-  it("🔴 NE pose PAS emargementSigneAt quand la grille dit « absent partout »", async () => {
-    // `CONF-02`. La colonne était posée pour chaque inscription touchée, sans
-    // regarder ce que la grille disait. `conformite-service.ts` la compte pour
-    // l'indicateur off.12 et l'annonçait « émargement réellement signé » : un
-    // stagiaire jamais venu — donc qui n'a rien signé — gonflait un indicateur
-    // de conformité présenté à l'auditeur.
-    //
-    // Le taux recalculé est le discriminant : 0 = absent à tout, donc aucune
-    // présence à attester.
-    mockRecompute.mockResolvedValueOnce(0);
-
-    const result = await saveEmargementAction({
-      sessionId: "550e8400-e29b-41d4-a716-446655440000",
-      entries: [{ ...validEntry, present: false }],
-    });
-
-    expect("data" in result, "la sauvegarde doit réussir : l'absence se consigne").toBe(true);
-    const signatures = mockPrisma.enrollment.updateMany.mock.calls.filter(
-      (c) => (c[0] as { data?: Record<string, unknown> }).data?.["emargementSigneAt"] !== undefined,
-    );
-    expect(signatures, "une absence totale a été comptée comme un émargement signé").toHaveLength(
-      0,
-    );
-  });
-
-  it("pose emargementSigneAt dès qu'UNE présence est constatée", async () => {
-    // Témoin inverse. Sans lui, un correctif qui cesserait complètement de poser
-    // la colonne ferait passer le cas ci-dessus — on prouverait l'absence de
-    // faux positif par l'absence de fonctionnalité.
-    mockRecompute.mockResolvedValueOnce(50);
-
-    await saveEmargementAction({
-      sessionId: "550e8400-e29b-41d4-a716-446655440000",
-      entries: [validEntry],
-    });
-
-    const signatures = mockPrisma.enrollment.updateMany.mock.calls.filter(
-      (c) => (c[0] as { data?: Record<string, unknown> }).data?.["emargementSigneAt"] !== undefined,
-    );
-    expect(signatures).toHaveLength(1);
-  });
-
-  it("n'écrase pas la date sur ré-enregistrement (déjà signé → count:0)", async () => {
-    // Simule un enrollment déjà signé : le where exclut la ligne → 0 mise à jour.
-    mockPrisma.enrollment.updateMany.mockResolvedValue({ count: 0 });
+  /**
+   * 🔴 2026-09-14 — `G-prerequis-02` (audit initial, 65 agents).
+   *
+   * LA GRILLE MANUELLE SE FAISAIT PASSER POUR UN ÉMARGEMENT SIGNÉ.
+   *
+   * Cocher une case et cliquer « Enregistrer » écrivait `source:
+   * "emargement_presentiel"` sur le créneau et posait `Enrollment.emargementSigneAt`
+   * — sans AUCUNE signature en base. Or c'est cette date que lisent l'écran
+   * (« Émargement signé : Oui — date »), l'indicateur off.12, le parcours de
+   * session et la garde de requalification des dates. Une présence tapée par un
+   * administrateur ressortait donc partout comme la preuve signée d'un stagiaire.
+   *
+   * 🔑 Les tests d'origine VERROUILLAIENT ce défaut (« pose emargementSigneAt dès
+   * qu'UNE présence est constatée ») : ils disaient ce que le code faisait, pas
+   * ce que la colonne prétend. La date d'émargement signé ne se pose qu'au geste
+   * de signature (`emargement/signature-service.ts`), jamais ici.
+   */
+  it("🔴 G-prerequis-02 — une présence cochée à la main ne pose JAMAIS emargementSigneAt", async () => {
+    mockRecompute.mockResolvedValueOnce(100);
 
     const result = await saveEmargementAction({
       sessionId: "550e8400-e29b-41d4-a716-446655440000",
       entries: [validEntry],
     });
 
-    // La sauvegarde réussit (présence corrigible) mais la garde null empêche
-    // toute réécriture de la date de première signature.
-    expect("data" in result).toBe(true);
-    const call = mockCall<{ where: { emargementSigneAt: unknown } }>(
-      mockPrisma.enrollment.updateMany,
+    expect("data" in result, "la présence déclarée doit rester enregistrable").toBe(true);
+    const datesPosees = mockPrisma.enrollment.updateMany.mock.calls.filter(
+      (c) => (c[0] as { data?: Record<string, unknown> }).data?.["emargementSigneAt"] !== undefined,
     );
-    expect(call.where.emargementSigneAt).toBeNull();
+    expect(
+      datesPosees,
+      "la grille a posé une date d'« émargement signé » alors qu'aucune signature n'existe : " +
+        "une déclaration d'administrateur passe pour la preuve signée du stagiaire",
+    ).toHaveLength(0);
+  });
+
+  it("🔴 G-prerequis-02 — une présence cochée à la main porte la provenance « manuel »", async () => {
+    // Créneau généré (placeholder `emargement_presentiel`), sans signature ni import.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "c1",
+      dureePrevueMinutes: 210,
+      source: "emargement_presentiel",
+      libelle: "2026-06-10 matin",
+      importId: null,
+      emargementSignatures: [],
+    });
+
+    await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [validEntry],
+    });
+
+    const call = mockCall<{ source: string; present: boolean }>(mockUpsertCreneau);
+    expect(call.present).toBe(true);
+    expect(
+      call.source,
+      "une présence déclarée à la main a été enregistrée comme un émargement présentiel",
+    ).toBe("manuel");
+  });
+
+  it("une case laissée ABSENTE ne change pas la provenance du créneau", async () => {
+    // Contre-témoin : la grille renvoie TOUTES ses cellules à chaque clic. Une
+    // cellule vierge, non touchée, ne déclare rien — elle garde sa provenance.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "c1",
+      dureePrevueMinutes: 210,
+      source: "emargement_presentiel",
+      libelle: "2026-06-10 matin",
+      importId: null,
+      emargementSignatures: [],
+    });
+
+    await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [{ ...validEntry, present: false, dureeRealiseeMinutes: 0 }],
+    });
+
+    const call = mockCall<{ source: string }>(mockUpsertCreneau);
+    expect(call.source).toBe("emargement_presentiel");
+  });
+
+  it("une présence déclarée puis décochée reste une saisie manuelle", async () => {
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "c1",
+      dureePrevueMinutes: 210,
+      source: "manuel",
+      libelle: "2026-06-10 matin",
+      importId: null,
+      emargementSignatures: [],
+    });
+
+    await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [{ ...validEntry, present: false, dureeRealiseeMinutes: 0 }],
+    });
+
+    const call = mockCall<{ source: string }>(mockUpsertCreneau);
+    expect(call.source).toBe("manuel");
   });
 
   it("retourne { error } si la session n'existe pas", async () => {

@@ -159,6 +159,9 @@ function session(over: Record<string, unknown> = {}) {
         id: "enr-1",
         tauxPresencePct: 100,
         trainee: { nom: "Dupont", prenom: "Alice", deletedAt: null },
+        // Créneaux de présence (provenance, `G-prerequis-02`). Vide par défaut :
+        // la fixture ne modélise que la chaîne de signatures.
+        presences: [],
         emargementSignatures: chaineSaine(),
       },
     ],
@@ -243,6 +246,7 @@ describe("genererDossierSessionZip", () => {
             id: "enr-1",
             tauxPresencePct: 100,
             trainee: { nom: "Dupont", prenom: "Alice" },
+            presences: [],
             emargementSignatures: lignes,
           },
         ],
@@ -350,6 +354,7 @@ describe("genererDossierSessionZip", () => {
             id: "enr-1",
             tauxPresencePct: 100,
             trainee: { nom: "Dupont", prenom: "Alice" },
+            presences: [],
             emargementSignatures: [lignes[1]],
           },
         ],
@@ -451,6 +456,7 @@ describe("genererDossierSessionZip", () => {
             tauxPresencePct: 100,
             // Anonymisé par supprimerStagiaire + deletedAt posé.
             trainee: { nom: "[supprime]", prenom: "[supprime]", deletedAt: new Date() },
+            presences: [],
             emargementSignatures: chaineSaine(),
           },
         ],
@@ -633,6 +639,7 @@ describe("genererDossierSessionZip", () => {
             id: "enr-1",
             tauxPresencePct: 100,
             trainee: { nom: "Dupont", prenom: "Alice", deletedAt: null },
+            presences: [],
             emargementSignatures: chaine,
           },
         ],
@@ -648,5 +655,73 @@ describe("genererDossierSessionZip", () => {
     expect(res?.avertissements.join(" ")).toContain("condensat scellé");
     const rapport = await fichierDuZip(res!.base64, "verification-integrite.json");
     expect(JSON.parse(rapport!).signatures[0].imagesAlterees).toBeDefined();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 2026-09-14 — `G-prerequis-02` : la PROVENANCE des présences au dossier.
+//
+// Le dossier ne rendait, par stagiaire, que `tauxPresencePct` et `nbSignatures`.
+// Un taux de 100 % tapé à la main dans la grille se lisait donc comme un taux de
+// 100 % émargé : rien, dans le paquet remis au certificateur, ne distinguait une
+// déclaration de l'organisme d'une signature du stagiaire.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("genererDossierSessionZip — provenance des présences (G-prerequis-02)", () => {
+  it("🔴 une présence déclarée à la main est NOMMÉE, jamais comptée comme signée", async () => {
+    mockFindUnique.mockResolvedValue(
+      session({
+        enrollments: [
+          {
+            id: "enr-1",
+            tauxPresencePct: 100,
+            trainee: { nom: "Dupont", prenom: "Alice", deletedAt: null },
+            presences: [
+              { present: true, importId: null, emargementSignatures: [] },
+              { present: true, importId: null, emargementSignatures: [] },
+            ],
+            emargementSignatures: [],
+          },
+        ],
+      }),
+    );
+
+    const res = await genererDossierSessionZip("ses-1");
+
+    const rapport = JSON.parse((await fichierDuZip(res!.base64, "verification-integrite.json"))!);
+    expect(
+      rapport.signatures[0],
+      "le dossier ne dit pas que ces présences sont des déclarations sans signature",
+    ).toMatchObject({ nbSignatures: 0, presencesSignees: 0, presencesDeclareesSansSignature: 2 });
+    expect(res?.avertissements.join(" ")).toContain("déclarée");
+    expect(await fichierDuZip(res!.base64, "index.txt")).toContain("à la main sans signature");
+  });
+
+  it("contre-témoin : une présence SIGNÉE n'est pas rangée parmi les déclarations", async () => {
+    mockFindUnique.mockResolvedValue(
+      session({
+        enrollments: [
+          {
+            id: "enr-1",
+            tauxPresencePct: 100,
+            trainee: { nom: "Dupont", prenom: "Alice", deletedAt: null },
+            presences: [
+              { present: true, importId: null, emargementSignatures: [{ id: "sig-1" }] },
+              { present: true, importId: null, emargementSignatures: [{ id: "sig-2" }] },
+            ],
+            emargementSignatures: chaineSaine(),
+          },
+        ],
+      }),
+    );
+
+    const res = await genererDossierSessionZip("ses-1");
+
+    const rapport = JSON.parse((await fichierDuZip(res!.base64, "verification-integrite.json"))!);
+    expect(rapport.signatures[0]).toMatchObject({
+      presencesSignees: 2,
+      presencesDeclareesSansSignature: 0,
+    });
+    expect(res?.avertissements.join(" ")).not.toContain("déclarée");
   });
 });

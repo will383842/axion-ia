@@ -44,7 +44,12 @@ export interface SessionEmargementRow {
       email: string;
     };
   }>;
-  creneaux: PresenceCreneau[];
+  /**
+   * Créneaux, avec leurs signatures VIVANTES (bornées à 1 : la question est
+   * « en existe-t-il une ? »). Sans elles, l'écran ne peut pas distinguer une
+   * présence signée d'une présence déclarée à la main (`G-prerequis-02`).
+   */
+  creneaux: Array<PresenceCreneau & { emargementSignatures: Array<{ id: string }> }>;
   /**
    * Journées RÉELLEMENT animées (décision D14), ordonnées.
    *
@@ -112,6 +117,9 @@ export async function getSessionEmargement(
     const creneaux = await prisma.presenceCreneau.findMany({
       where: { enrollmentId: { in: session.enrollments.map((e) => e.id) } },
       orderBy: [{ date: "asc" }, { demiJournee: "asc" }],
+      include: {
+        emargementSignatures: { where: { revokedAt: null }, select: { id: true }, take: 1 },
+      },
     });
 
     return {
