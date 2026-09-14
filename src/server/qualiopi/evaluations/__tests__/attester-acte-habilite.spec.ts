@@ -144,12 +144,26 @@ describe("🔴 l'émetteur automatique porte SA garde de chronologie", () => {
     // avant le délai de R05. Un seul délai, lu au même endroit par l'alerte et
     // par le cron : deux littéraux « 2 » finiraient par diverger.
     expect(CRON).toContain('evaluations: { some: { type: "finale" } }');
-    expect(CRON).toContain("DELAI_EVALUATION_FINALE_JOURS");
+    // 🔴 2e relecture A09 : R05 tourne à 07:00, le cron à 09:00 — sur la même
+    // borne, l'alerte qui réclame l'évaluation ne laissait que deux heures. Le
+    // cron lit une borne DÉRIVÉE, un jour après celle de R05.
+    expect(CRON).toContain("DELAI_EMISSION_SANS_EVALUATION_JOURS");
     const EVALUATEUR = readFileSync(
       join(RACINE_SRC, "server/qualiopi/alertes/evaluateur.ts"),
       "utf-8",
     );
     expect(EVALUATEUR).toContain("daysAgo(DELAI_EVALUATION_FINALE_JOURS, now)");
+  });
+
+  it("la borne d'émission sans évaluation vient APRÈS R05 : délai de R05 + 1 jour, dérivé", async () => {
+    const delais = (await import("@/server/qualiopi/alertes/delai-evaluation-finale")) as Record<
+      string,
+      unknown
+    >;
+    expect(delais["DELAI_EVALUATION_FINALE_JOURS"]).toBe(2);
+    expect(delais["DELAI_EMISSION_SANS_EVALUATION_JOURS"]).toBe(
+      (delais["DELAI_EVALUATION_FINALE_JOURS"] as number) + 1,
+    );
   });
 
   it("exclut les inscriptions qui ont déjà leur attestation", () => {

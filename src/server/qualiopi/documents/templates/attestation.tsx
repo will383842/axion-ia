@@ -19,6 +19,7 @@ import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
 import { NATURE_ACTION_LABELS } from "./certificat-realisation";
+import { assiduiteSurMinutes, heuresMinutesFr } from "@/server/qualiopi/evaluations/heures-suivies";
 
 // ============================================================
 // Styles spécifiques
@@ -128,16 +129,13 @@ export interface AttestationData {
 // Helpers
 // ============================================================
 
+/** Assiduité calculée sur les MINUTES (2e relecture A09), pas sur des heures arrondies. */
 function assiduitePercent(data: ResultatsFormationData): string {
-  if (data.heuresTotales === 0) return "—";
-  const pct = Math.round((data.heuresSuivies / data.heuresTotales) * 100);
-  return `${pct} %`;
+  return assiduiteSurMinutes(data.heuresSuivies, data.heuresTotales);
 }
 
-/** Heures au format français (virgule décimale ; entiers inchangés). R.6313-3. */
-function hFr(heures: number): string {
-  return heures.toLocaleString("fr-FR", { maximumFractionDigits: 2 });
-}
+/** Heures en heures ET minutes (« 6 h 30 ») — « les heures effectivement suivies ». */
+const hMin = heuresMinutesFr;
 
 // ============================================================
 // Composant principal
@@ -196,7 +194,7 @@ export function AttestationPdf({ data }: { data: AttestationData }): React.React
             value={NATURE_ACTION_LABELS[data.formation.natureAction ?? "action_formation"]}
           />
           <FieldRow label="Objectifs" value={data.formation.objectifs} />
-          <FieldRow label="Durée totale" value={`${hFr(data.formation.dureeHeures)} h`} />
+          <FieldRow label="Durée totale" value={`${hMin(data.formation.dureeHeures)}`} />
           <FieldRow label="Du" value={data.formation.dateDebut} />
           <FieldRow label="Au" value={data.formation.dateFin} />
           <FieldRow label="Modalité" value={data.formation.modalite} />
@@ -208,7 +206,7 @@ export function AttestationPdf({ data }: { data: AttestationData }): React.React
           <View style={styles.resultRow}>
             <Text style={styles.resultLabel}>Assiduité</Text>
             <Text style={styles.resultValue}>
-              {`${hFr(data.resultats.heuresSuivies)} h / ${hFr(data.resultats.heuresTotales)} h = ${assiduitePercent(data.resultats)}`}
+              {`${hMin(data.resultats.heuresSuivies)} / ${hMin(data.resultats.heuresTotales)} = ${assiduitePercent(data.resultats)}`}
             </Text>
           </View>
           {data.resultats.evaluationObtenue ? (

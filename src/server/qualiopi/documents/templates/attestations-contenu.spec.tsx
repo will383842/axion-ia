@@ -212,6 +212,59 @@ describe("attestations — nature de l'action (L.6353-1 al. 2)", () => {
   });
 });
 
+// 🔴 2e relecture A09 (audit initial 2026-09-14).
+describe("attestations — heures réellement suivies et 0 h", () => {
+  it("🔴 0 h suivie : la pièce dit « n'a suivi aucune heure », jamais « a partiellement suivi »", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(AttestationPartiellePdf, {
+        data: {
+          ...PARTIELLE,
+          resultats: { ...PARTIELLE.resultats, heuresSuivies: 0, heuresTotales: 14 },
+        },
+      }),
+    );
+    expect(t).toContain("n'a suivi aucune heure de la formation");
+    expect(t).not.toContain("partiellement suivi");
+    expect(t).not.toContain("Formation suivie en partie");
+    expect(t).not.toMatch(/certifie que [^.]* a (partiellement )?suivi/);
+    // Les autres mentions obligatoires restent.
+    expect(t).toContain(LEGAL_MENTIONS.attestation);
+    expect(t).toContain("Nature de l'action");
+    expect(t).toContain("0 %");
+  });
+
+  it("🔴 les heures s'impriment en heures ET minutes, l'assiduité se calcule sur les minutes", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(AttestationPartiellePdf, {
+        data: {
+          ...PARTIELLE,
+          formation: { ...PARTIELLE.formation, dureeHeures: 7 },
+          resultats: { ...PARTIELLE.resultats, heuresSuivies: 6.5, heuresTotales: 7 },
+        },
+      }),
+    );
+    expect(t).toContain("6 h 30");
+    expect(t).not.toContain("6,5 h");
+    // 390 min / 420 min = 92,86 % → 93 %
+    expect(t).toContain("93 %");
+  });
+
+  it("🔴 l'attestation complète imprime aussi les durées en heures et minutes", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(AttestationPdf, {
+        data: {
+          ...ATTESTATION,
+          formation: { ...ATTESTATION.formation, dureeHeures: 3.5 },
+          resultats: { ...ATTESTATION.resultats, heuresSuivies: 3.25, heuresTotales: 3.5 },
+        },
+      }),
+    );
+    expect(t).toContain("3 h 30");
+    expect(t).toContain("3 h 15");
+    expect(t).not.toContain("3,5 h");
+  });
+});
+
 describe("CertificatRealisationPdf — contenu", () => {
   const text = collectPdfTextNormalized(
     React.createElement(CertificatRealisationPdf, { data: CERTIFICAT }),

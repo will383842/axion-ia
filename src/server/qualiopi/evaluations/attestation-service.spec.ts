@@ -361,6 +361,111 @@ describe("genererAttestationPourEnrollment", () => {
     expect(resultats["heuresTotales"]).toBe(20);
   });
 
+  // ── 2e relecture A09 (#audit initial 2026-09-14) ───────────────────────────
+
+  it("🔴 0 h suivie, émission AUTOMATIQUE : rien n'est émis, rien n'est écrit", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(makeEnrollment({ tauxPresencePct: 0 }));
+
+    const result = await genererAttestationPourEnrollment("enroll-0h", { automatique: true });
+
+    expect(result).toEqual({ resultat: "aucune", documentId: null, raison: "zero_heure_suivie" });
+    expect(mockGenDoc).not.toHaveBeenCalled();
+    expect(mockPrisma.enrollment.updateMany).not.toHaveBeenCalled();
+    expect(mockPrisma.enrollment.update).not.toHaveBeenCalled();
+  });
+
+  it("🔴 0 h par ARRONDI (taux non nul, 0 minute) : même refus automatique", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(
+      makeEnrollment({
+        tauxPresencePct: 1,
+        session: { ...makeEnrollment().session, dureeReelleHeures: 0.5 },
+      }),
+    );
+
+    const result = await genererAttestationPourEnrollment("enroll-arrondi", { automatique: true });
+
+    expect(result).toEqual({ resultat: "aucune", documentId: null, raison: "zero_heure_suivie" });
+    expect(mockGenDoc).not.toHaveBeenCalled();
+  });
+
+  it("0 h suivie, émission MANUELLE : la pièce sort — le texte exact est garanti par le gabarit", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(makeEnrollment({ tauxPresencePct: 0 }));
+
+    const result = await genererAttestationPourEnrollment("enroll-0h-manuel");
+
+    expect(result).toEqual({ resultat: "partielle", documentId: "doc-uuid-1" });
+  });
+
+  it("🔴 les heures suivies sont calculées à la MINUTE, pas arrondies à l'heure", async () => {
+    // 45 % de 3 h = 81 min = 1,35 h. L'arrondi à l'heure imprimait « 1 h ».
+    mockPrisma.enrollment.findUnique.mockResolvedValue(
+      makeEnrollment({
+        tauxPresencePct: 45,
+        session: { ...makeEnrollment().session, dureeReelleHeures: 3 },
+      }),
+    );
+
+    await genererAttestationPourEnrollment("enroll-minutes");
+
+    const docCall = mockGenDoc.mock.calls[0]![0] as {
+      buildElement: (numero: string) => { props: { data: Record<string, unknown> } };
+    };
+    const resultats = docCall.buildElement("AXI-ATT-2026-020").props.data["resultats"] as Record<
+      string,
+      unknown
+    >;
+    expect(resultats["heuresSuivies"]).toBe(1.35);
+  });
+
+  it("🔴 exclu/abandon SANS taux mesuré : le refus EXPLIQUE, et ne propose aucun motif", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(
+      makeEnrollment({ statut: "abandon", tauxPresencePct: null }),
+    );
+
+    const refus = await genererAttestationPourEnrollment("enroll-sortie").then(
+      () => null,
+      (e: unknown) => (e instanceof Error ? e.message : String(e)),
+    );
+
+    expect(refus).toMatch(/^Attestation refusée/);
+    expect(refus).toMatch(/créneaux/);
+    expect(refus).toMatch(/exclusion ou abandon/);
+    expect(refus).not.toMatch(/en écrivant pourquoi/);
+    expect(mockGenDoc).not.toHaveBeenCalled();
+  });
+
+  it("🔴 journal « sans évaluation finale » : PAS écrit si le rendu du PDF échoue", async () => {
+    mockPrisma.evaluationAcquis.count.mockResolvedValue(0);
+    mockGenDoc.mockRejectedValue(new Error("R2 indisponible"));
+
+    await expect(genererAttestationPourEnrollment("enroll-rendu-ko")).rejects.toThrow();
+
+    const appels = mockPrisma.activityLog.create.mock.calls.filter(
+      (c: unknown[]) =>
+        (c[0] as { data: { action: string } }).data.action ===
+        "qualiopi.attestation.sans_evaluation_finale",
+    );
+    expect(appels).toHaveLength(0);
+  });
+
+  it("journal « sans évaluation finale » : écrit UNE fois, après le rendu réussi", async () => {
+    mockPrisma.evaluationAcquis.count.mockResolvedValue(0);
+
+    await genererAttestationPourEnrollment("enroll-rendu-ok");
+
+    const appels = mockPrisma.activityLog.create.mock.calls.filter(
+      (c: unknown[]) =>
+        (c[0] as { data: { action: string } }).data.action ===
+        "qualiopi.attestation.sans_evaluation_finale",
+    );
+    expect(appels).toHaveLength(1);
+    const ordreJournal =
+      mockPrisma.activityLog.create.mock.invocationCallOrder[
+        mockPrisma.activityLog.create.mock.calls.indexOf(appels[0]!)
+      ]!;
+    expect(ordreJournal).toBeGreaterThan(mockGenDoc.mock.invocationCallOrder[0]!);
+  });
+
   // ── Formateur : jamais la raison sociale ────────────────────────────────────
 
   it("sans formateur désigné, la ligne « Formateur(rice) » n'imprime PAS la raison sociale", async () => {

@@ -987,8 +987,9 @@ describe("formation-crons.attestations-auto — garde évaluation finale", () =>
     expect(alternative?.[0]).toEqual({ evaluations: { some: { type: "finale" } } });
     const limite = (alternative?.[1] as { session: { dateFin: { lte: Date } } }).session.dateFin
       .lte;
-    // DELAI_EVALUATION_FINALE_JOURS = 2 : le délai de R05, pas un nouveau.
-    expect(Math.abs(limite.getTime() - (avant - 2 * 86_400_000))).toBeLessThan(60_000);
+    // DELAI_EMISSION_SANS_EVALUATION_JOURS = 3 : le délai de R05 (2 j) + 1 jour.
+    // Sur la même borne, R05 (07:00) ne laissait que deux heures avant le cron.
+    expect(Math.abs(limite.getTime() - (avant - 3 * 86_400_000))).toBeLessThan(60_000);
   });
 
   it("D2 : ne filtre plus les exclus ni les abandons — la pièce des heures suivies leur est due", async () => {
@@ -1092,8 +1093,14 @@ describe("formation-crons.attestations-auto — garde évaluation finale", () =>
     });
 
     expect(genererAttestationPourEnrollment).toHaveBeenCalledTimes(2);
-    expect(genererAttestationPourEnrollment).toHaveBeenCalledWith("enroll-evalue-1");
-    expect(genererAttestationPourEnrollment).toHaveBeenCalledWith("enroll-evalue-2");
+    // Le cron se DÉCLARE automatique : le service refuse alors d'émettre pour
+    // 0 h suivie (2e relecture A09), ce qu'il accepte d'un geste humain.
+    expect(genererAttestationPourEnrollment).toHaveBeenCalledWith("enroll-evalue-1", {
+      automatique: true,
+    });
+    expect(genererAttestationPourEnrollment).toHaveBeenCalledWith("enroll-evalue-2", {
+      automatique: true,
+    });
   });
 
   it("🔴 ne compte PAS « générée » une attestation qui n'a produit AUCUNE pièce", async () => {
@@ -1141,6 +1148,30 @@ describe("formation-crons.attestations-auto — garde évaluation finale", () =>
     // « exclue ou en abandon » pour cette raison-là — le libellé ne peut pas le dire.
     expect(ligne).not.toContain("exclue ou en abandon");
     expect(ligne).not.toContain("présence sous le seuil");
+  });
+
+  it("🔴 DIT combien d'inscrits à 0 h suivie il n'a PAS émis — l'alerte les porte", async () => {
+    // 2e relecture A09 : un inscrit jamais connecté recevait une pièce qui
+    // certifiait un suivi. Le cron n'émet rien pour 0 h ; il le compte à part.
+    const { genererAttestationPourEnrollment } =
+      await import("@/server/qualiopi/evaluations/attestation-service");
+    const mock = genererAttestationPourEnrollment as ReturnType<typeof vi.fn>;
+    mock.mockResolvedValue({ resultat: "aucune", documentId: null, raison: "zero_heure_suivie" });
+    mockPrisma.enrollment.findMany.mockResolvedValue([{ id: "enroll-0h", session: { id: "s1" } }]);
+    const journal = vi.spyOn(console, "log").mockImplementation(() => {});
+
+    await formationCronsHandler({
+      type: "formation-crons.attestations-auto",
+      tick: "2026-09-14T09:00:00Z",
+    });
+
+    const ligne = journal.mock.calls.map((c) => String(c[0])).find((l) => l.includes("générées"));
+    journal.mockRestore();
+    mock.mockResolvedValue({ resultat: "complete", documentId: "doc-1" });
+
+    expect(ligne).toContain("0 générées");
+    expect(ligne).toContain("1 à 0 h suivie");
+    expect(ligne).toContain("0 sans pièce");
   });
 });
 

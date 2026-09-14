@@ -108,6 +108,33 @@ describe("Qualiopi email templates — subject contient le nom de formation", ()
   });
 });
 
+describe("🔴 qualiopi-attestation-disponible — exclu ou abandon", () => {
+  // 2e relecture A09 (audit initial 2026-09-14) : « atteste de votre
+  // participation » et la demande d'avis partaient aussi à un stagiaire exclu.
+  it("annonce l'attestation des heures suivies, sans « participation » ni demande d'avis", async () => {
+    const result = await renderEmailTemplate("qualiopi-attestation-disponible", "fr", {
+      ...PAYLOADS["qualiopi-attestation-disponible"],
+      typeDocument: "attestation de formation partielle",
+      heuresSuiviesSeulement: true,
+      questionnaireEnAttente: true,
+    });
+    expect(result.html).toContain("attestation des heures suivies");
+    expect(result.html).not.toContain("atteste de votre participation");
+    expect(result.html).not.toContain("atteste votre participation");
+    expect(result.html).not.toContain("Déposer un avis");
+    expect(result.html).not.toContain("un questionnaire vous attend");
+  });
+
+  it("contre-témoin : l'e-mail ordinaire garde sa formulation", async () => {
+    const result = await renderEmailTemplate(
+      "qualiopi-attestation-disponible",
+      "fr",
+      PAYLOADS["qualiopi-attestation-disponible"] ?? {},
+    );
+    expect(result.html).toContain("atteste de votre participation");
+  });
+});
+
 describe("Qualiopi email templates — liens portail tokenisés", () => {
   const PORTAIL_TEMPLATES = [
     "qualiopi-convocation",

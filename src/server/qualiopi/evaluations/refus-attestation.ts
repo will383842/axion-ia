@@ -72,6 +72,24 @@ export const MESSAGE_REFUS_TAUX_NON_MESURE =
   "distance), puis relancez la génération.";
 
 /**
+ * Refus DUR, variante d'une inscription SORTIE (exclusion ou abandon).
+ *
+ * 🔴 2e relecture A09 (audit initial 2026-09-14). La génération des créneaux et
+ * l'import d'un relevé ne visent que les inscriptions actives : un stagiaire
+ * sorti AVANT n'a aucun créneau, donc aucun taux. Le refus générique lui disait
+ * « renseignez la présence » — impossible pour lui. Celui-ci dit pourquoi, et la
+ * seule sortie qui existe. Aucun créneau n'est recréé rétroactivement.
+ */
+export const MESSAGE_REFUS_TAUX_NON_MESURE_SORTIE =
+  "Attestation refusée : cette inscription est sortie de la formation (exclusion ou " +
+  "abandon) sans qu'aucune heure de présence ait été mesurée — les créneaux de la " +
+  "session ont été créés après sa sortie, et le logiciel n'en recrée pas après coup. " +
+  "Sans mesure, l'attestation des heures suivies ne peut pas être émise ici, et aucun " +
+  "motif ne peut y suppléer. Établissez la durée réellement suivie à partir des pièces " +
+  "du dossier (émargement papier, relevé de connexion) et remettez au stagiaire une " +
+  "attestation établie hors logiciel, versée au dossier.";
+
+/**
  * Ce refus se lève-t-il en ÉCRIVANT un motif ?
  *
  * Appelé par la console sur le message d'erreur rendu par la Server Action, qui

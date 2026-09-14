@@ -140,6 +140,10 @@ describe("le règlement intérieur publié vaut celui qu'on remet", () => {
       /conditionne la délivrance de l'attestation/i,
       /obligatoire pour obtenir votre attestation/i,
       /absence partielle justifiée/i,
+      // 2e relecture A09 : la version ANGLAISE de l'article 7 gardait l'ancienne
+      // condition, invisible tant que /en/* redirige, visible dès sa réactivation.
+      /is a condition for issuing the certificate/i,
+      /justified partial absence/i,
     ];
     const sources = { "page publique": PAGE, "règlement PDF": GABARIT, "livret PDF": LIVRET };
     const residus = Object.entries(sources).flatMap(([nom, src]) =>
@@ -158,6 +162,12 @@ describe("le règlement intérieur publié vaut celui qu'on remet", () => {
     }
     expect(aplati(LIVRET), "livret : l'absence d'évaluation n'est pas dite").toContain(
       "ou l'absence d'évaluation",
+    );
+    expect(
+      aplati(PAGE),
+      "page publique ANGLAISE : la même remise, dans les mêmes termes",
+    ).toContain(
+      "a certificate of completion is issued to every trainee. It states the objectives, nature and duration of the course, the hours actually attended and the results of the assessment of learning, or the absence of assessment.",
     );
   });
 

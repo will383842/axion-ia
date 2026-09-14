@@ -97,6 +97,11 @@ const CODES_ATTENDUS: string[] = [
   "satisfaction_manquante",
   "evaluation_acquis_manquante",
   "attestation_non_envoyee",
+  // 2e relecture A09 (audit initial 2026-09-14) : ce que le cron n'émet pas
+  // (0 h suivie, exclu/abandon sans taux) et l'évaluation saisie après une
+  // attestation « non réalisée » n'avaient aucune surface.
+  "attestation_non_emise_automatiquement",
+  "attestation_sans_evaluation_evaluee_depuis",
   "satisfaction_sous_seuil",
   "reclamation_sans_reponse_j15",
   "qualiopi_expire_j90",

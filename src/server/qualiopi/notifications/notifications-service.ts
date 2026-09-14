@@ -34,6 +34,7 @@ import {
   emettreLienQuestionnaire,
 } from "@/server/qualiopi/satisfaction/satisfaction-service";
 import { AttestationResultat } from "../../../../prisma/generated/client";
+import { estInscriptionActive } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
@@ -811,6 +812,8 @@ export async function envoyerAttestationDisponible(enrollmentId: string): Promis
     select: {
       id: true,
       attestationResultat: true,
+      statut: true,
+      tauxPresencePct: true,
       trainee: { select: { id: true, email: true, nom: true, prenom: true } },
       session: {
         select: {
@@ -848,6 +851,12 @@ export async function envoyerAttestationDisponible(enrollmentId: string): Promis
     },
   });
 
+  // 🔴 2e relecture A09 (audit initial 2026-09-14) — exclu, abandon ou 0 h
+  // suivie : la pièce est l'attestation des HEURES SUIVIES. L'e-mail ne dit ni
+  // « atteste de votre participation » ni ne demande d'avis.
+  const heuresSuiviesSeulement =
+    !estInscriptionActive(enrollment.statut) || enrollment.tauxPresencePct === 0;
+
   const envoi = await enqueueEmail(
     "qualiopi-attestation-disponible",
     trainee.email,
@@ -859,6 +868,7 @@ export async function envoyerAttestationDisponible(enrollmentId: string): Promis
       lienPortail,
       numeroSession: session.numero,
       questionnaireEnAttente: questionnairesEnAttente > 0,
+      ...(heuresSuiviesSeulement ? { heuresSuiviesSeulement: true } : {}),
     },
     {
       jobId: `qualiopi-attestation-disponible-${enrollmentId}`,

@@ -40,9 +40,11 @@ import { estInscriptionActive } from "@/server/qualiopi/inscriptions/inscription
 import { prisma } from "@/lib/prisma";
 import {
   MESSAGE_REFUS_TAUX_NON_MESURE,
+  MESSAGE_REFUS_TAUX_NON_MESURE_SORTIE,
   MOTIF_PREUVES_MIN,
   messageRefusPreuvesManquantes,
 } from "./refus-attestation";
+import { minutesSuivies } from "./heures-suivies";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { classifierPresence } from "@/server/qualiopi/presence/taux";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
@@ -63,6 +65,12 @@ import { envoyerAttestationDisponible } from "@/server/qualiopi/notifications/no
 export interface AttestationResult {
   resultat: "complete" | "partielle" | "aucune";
   documentId: string | null;
+  /**
+   * Pourquoi rien n'a été émis, quand c'est un choix et non une course perdue.
+   * `zero_heure_suivie` : émission AUTOMATIQUE refusée pour 0 minute suivie
+   * (l'alerte `attestation_non_emise_automatiquement` porte le cas).
+   */
+  raison?: "zero_heure_suivie";
 }
 
 /**
@@ -214,8 +222,9 @@ export class AttestationPreuvesManquantesError extends Error {
  * cul-de-sac, et l'admin finit par chercher un contournement.
  */
 export class AttestationTauxNonMesureError extends Error {
-  constructor() {
-    super(MESSAGE_REFUS_TAUX_NON_MESURE);
+  /** `inscriptionSortie` : exclu ou abandon — le refus dit alors pourquoi (2e relecture A09). */
+  constructor(inscriptionSortie = false) {
+    super(inscriptionSortie ? MESSAGE_REFUS_TAUX_NON_MESURE_SORTIE : MESSAGE_REFUS_TAUX_NON_MESURE);
     this.name = "AttestationTauxNonMesureError";
   }
 }
@@ -302,6 +311,17 @@ export async function genererAttestationPourEnrollment(
      * lui-même ne serait qu'un contournement avec un nom rassurant.
      */
     motifPreuvesManquantes?: string;
+    /**
+     * Posé par le cron `attestations-auto`, jamais par la console.
+     *
+     * 🔴 2e relecture A09 (audit initial 2026-09-14). Un inscrit jamais connecté
+     * reçoit un créneau importé à 0 minute : taux mesuré à 0, trace présente, et
+     * le cron lui émettait une pièce qui certifiait un suivi. En automatique, 0
+     * minute suivie ⇒ rien n'est émis ni écrit, et une alerte le rend visible.
+     * Le geste humain, lui, reste possible : la pièce dit alors « n'a suivi
+     * aucune heure de la formation ».
+     */
+    automatique?: boolean;
   },
 ): Promise<AttestationResult> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
@@ -375,6 +395,17 @@ export async function genererAttestationPourEnrollment(
   //     jusqu'au bout. Les preuves (taux mesuré, trace) restent exigées.
   const inscriptionSortie = !estInscriptionActive(enrollment.statut);
 
+  // Données formation depuis le snapshot légal (WS5), repli sur la lecture LIVE
+  // pour les sessions antérieures à WS5. Lues AVANT le claim : la durée décide
+  // du refus automatique à 0 minute, qui ne doit rien écrire.
+  const session = enrollment.session;
+  const formation = readFormationForDocs(session.formationSnapshot, session.formation);
+  // #3 — base = durée RÉELLE de la session si déclarée (comme le certificat de
+  // réalisation), sinon durée catalogue. Sans ça, une session animée 16 h au lieu
+  // des 14 h prévues sortait une attestation à « 14 h » et un certificat à « 16 h »
+  // pour le même stagiaire — divergence rejetée par un contrôle OPCO/France Travail.
+  const dureeHeures = session.dureeReelleHeures ?? formation.dureeHeures ?? 0;
+
   // 2b-bis. 🔴 PREUVES — voir le bloc `PreuvesAttestation` en tête de fichier.
   //
   // Placée AVANT le claim de 2c, et ce n'est pas un détail : le claim écrit
@@ -401,7 +432,15 @@ export async function genererAttestationPourEnrollment(
   // Placé AVANT le bloc suivant : rien ne sert de demander un motif pour des
   // manques rattrapables si la mesure elle-même est absente.
   if (!preuves.tauxPresenceMesure) {
-    throw new AttestationTauxNonMesureError();
+    throw new AttestationTauxNonMesureError(inscriptionSortie);
+  }
+
+  // 🔴 2e relecture A09 — 0 minute suivie (y compris par arrondi d'un taux non
+  // nul) : l'émission AUTOMATIQUE ne produit rien et n'écrit rien. Refusé AVANT
+  // le claim, pour que la ligne reste visible de l'alerte qui la porte.
+  const minutes = minutesSuivies(enrollment.tauxPresencePct ?? 0, dureeHeures);
+  if (opts?.automatique === true && minutes === 0) {
+    return { resultat: "aucune", documentId: null, raison: "zero_heure_suivie" };
   }
 
   const manquantes = preuvesManquantesAttestation(preuves);
@@ -471,26 +510,6 @@ export async function genererAttestationPourEnrollment(
     }
   }
 
-  // 2d. 🔴 Décision Will D1 — l'absence d'évaluation finale ne bloque plus,
-  //     mais elle se VOIT au registre. Best-effort, comme les autres journaux.
-  if (preuves.evaluationsFinales === 0) {
-    try {
-      await prisma.activityLog.create({
-        data: {
-          adminUserId: null,
-          action: "qualiopi.attestation.sans_evaluation_finale",
-          targetType: "Enrollment",
-          targetId: enrollmentId,
-          changes: { statut: enrollment.statut } as never,
-          ipAddress: null,
-          userAgent: null,
-        },
-      });
-    } catch {
-      // best-effort
-    }
-  }
-
   // 3. Classifie la présence
   const seuilPresencePct = await getQualiopiConfig("seuil_presence_pct");
   const tauxPct = enrollment.tauxPresencePct ?? 0;
@@ -506,15 +525,16 @@ export async function genererAttestationPourEnrollment(
   // réellement suivie : c'est ce qu'elle dit qui change avec l'assiduité, pas
   // le fait qu'elle soit due. « aucune » ne sort plus que de la base stub ou
   // d'un claim perdu (génération concurrente) — exclus et abandons compris (D2).
+  // Une pièce à 0 minute (émission manuelle) est toujours PARTIELLE : elle dit
+  // « n'a suivi aucune heure », jamais « a suivi la formation ».
   const resultat: "complete" | "partielle" =
-    !inscriptionSortie && classifierPresence(tauxPct, seuilPresencePct) === "complete"
+    !inscriptionSortie &&
+    minutes > 0 &&
+    classifierPresence(tauxPct, seuilPresencePct) === "complete"
       ? "complete"
       : "partielle";
 
-  // 5. Construction du PDF — données formation depuis le snapshot légal (WS5),
-  //    repli sur la lecture LIVE pour les sessions antérieures à WS5.
-  const session = enrollment.session;
-  const formation = readFormationForDocs(session.formationSnapshot, session.formation);
+  // 5. Construction du PDF.
   const trainee = enrollment.trainee;
 
   const identite = await getOrganismeIdentite();
@@ -522,12 +542,9 @@ export async function genererAttestationPourEnrollment(
   const verifyUrl = `${identite.site}/fr/verifier-attestation/${token}`;
   const qrUrl = await qrDataUrl(verifyUrl);
 
-  // #3 — base = durée RÉELLE de la session si déclarée (comme le certificat de
-  // réalisation), sinon durée catalogue. Sans ça, une session animée 16 h au lieu
-  // des 14 h prévues sortait une attestation à « 14 h » et un certificat à « 16 h »
-  // pour le même stagiaire — divergence rejetée par un contrôle OPCO/France Travail.
-  const dureeHeures = session.dureeReelleHeures ?? formation.dureeHeures ?? 0;
-  const heuresSuivies = Math.round((tauxPct * dureeHeures) / 100);
+  // 🔴 2e relecture A09 — heures suivies à la MINUTE (plus d'arrondi à l'heure) ;
+  // les gabarits les impriment en heures et minutes.
+  const heuresSuivies = minutes / 60;
 
   // Formateur principal : FK formateurPrincipalId prioritaire (fiable), repli sur
   // le Json coFormateurs (legacy), puis « Non renseigné ».
@@ -774,6 +791,28 @@ export async function genererAttestationPourEnrollment(
       attestationGenereeAt: new Date(),
     },
   });
+
+  // 7a. 🔴 Décision Will D1 — l'absence d'évaluation finale ne bloque plus, mais
+  //     elle se VOIT au registre. Écrit APRÈS le rendu réussi (2e relecture A09) :
+  //     avant, un rendu en échec laissait au registre une attestation « émise
+  //     sans évaluation » qui n'existait pas, répétée à chaque essai du cron.
+  if (preuves.evaluationsFinales === 0) {
+    try {
+      await prisma.activityLog.create({
+        data: {
+          adminUserId: null,
+          action: "qualiopi.attestation.sans_evaluation_finale",
+          targetType: "Enrollment",
+          targetId: enrollmentId,
+          changes: { statut: enrollment.statut, documentId: generated.id } as never,
+          ipAddress: null,
+          userAgent: null,
+        },
+      });
+    } catch {
+      // best-effort
+    }
+  }
 
   // 7b. Notification stagiaire — fail-soft (ne bloque pas la génération)
   //

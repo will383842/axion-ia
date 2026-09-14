@@ -3645,6 +3645,156 @@ describe("🔴 attestation_non_parvenue — produite N'EST PAS parvenue", () => 
     expect(a!.message).toMatch(/n'a pas été produite/);
     expect(a!.message).not.toMatch(/Ne la régénérez pas/);
   });
+
+  it("🔴 ancienne ligne « aucune » (produite SANS pièce) : consigne cohérente avec les boutons", async () => {
+    // 2e relecture A09 : `attestationGenereeAt` posé sans document. R06 disait
+    // « EXISTE… Ne la régénérez pas » pendant que les boutons disaient
+    // « régénérez si besoin ».
+    mp.enrollment.findMany.mockImplementation(async (args: { where?: Record<string, unknown> }) => {
+      const ou = args?.where?.["OR"] as ReadonlyArray<Record<string, unknown>> | undefined;
+      if (ou === undefined) return [];
+      return [
+        {
+          id: "enr-aucune-ancienne",
+          attestationGenereeAt: new Date("2026-08-01T00:00:00.000Z"),
+          attestationDocumentId: null,
+          trainee: { nom: "Blanc", prenom: "Simone" },
+          session: { numero: "AXI-SESS-2026-001" },
+        },
+      ];
+    });
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "attestation_non_envoyee");
+    expect(a).toBeDefined();
+    expect(a!.message).not.toMatch(/Ne la régénérez pas/);
+    expect(a!.message).toMatch(/Regénérer \(forcer\)/);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 2e relecture A09 (audit initial 2026-09-14) — ce que le cron n'émet pas se VOIT
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 attestation_non_emise_automatiquement", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+    mockGetConfig.mockResolvedValue("");
+  });
+
+  const inscrit = (extra: Record<string, unknown>) => ({
+    id: "enr-x",
+    statut: "presente",
+    tauxPresencePct: 0,
+    trainee: { nom: "Blanc", prenom: "Simone" },
+    session: { numero: "AXI-SESS-2026-001", dureeReelleHeures: 14, formation: { dureeHeures: 14 } },
+    ...extra,
+  });
+
+  function repondre(
+    sortiesSansTaux: ReadonlyArray<Record<string, unknown>>,
+    tauxBas: ReadonlyArray<Record<string, unknown>>,
+  ) {
+    mp.enrollment.findMany.mockImplementation(async (args: { where?: Record<string, unknown> }) => {
+      const w = args?.where ?? {};
+      const statut = w["statut"] as { in?: string[] } | undefined;
+      if (w["tauxPresencePct"] === null && statut?.in?.includes("exclu") === true) {
+        return sortiesSansTaux;
+      }
+      const taux = w["tauxPresencePct"] as { lt?: number } | undefined;
+      if (taux?.lt !== undefined && w["attestationGenereeAt"] === null) return tauxBas;
+      return [];
+    });
+  }
+
+  it("se lève pour un exclu/abandon SANS taux mesuré, et dit quoi faire", async () => {
+    repondre([inscrit({ id: "enr-sortie", statut: "abandon", tauxPresencePct: null })], []);
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "attestation_non_emise_automatiquement");
+    expect(a).toBeDefined();
+    expect(a!.cibleId).toBe("enr-sortie");
+    expect(a!.message).toMatch(/créneaux/);
+    expect(a!.message).toMatch(/hors logiciel/);
+  });
+
+  it("se lève pour 0 h suivie — et PAS pour un taux bas qui fait des minutes", async () => {
+    repondre(
+      [],
+      [
+        inscrit({ id: "enr-0h", tauxPresencePct: 0 }),
+        // 3 % de 14 h = 25 min : ce n'est pas 0 h, la pièce part normalement.
+        inscrit({ id: "enr-25min", tauxPresencePct: 3 }),
+      ],
+    );
+
+    const alertes = await evaluerAlertes();
+    const leves = alertes.filter((x) => x.code === "attestation_non_emise_automatiquement");
+    expect(leves.map((a) => a.cibleId)).toEqual(["enr-0h"]);
+    expect(leves[0]!.message).toMatch(/aucune heure/);
+  });
+
+  it("témoin négatif : rien à signaler, rien de levé", async () => {
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "attestation_non_emise_automatiquement")).toBeUndefined();
+  });
+
+  it("se referme toute seule quand la situation disparaît", () => {
+    expect(ALERTE_CATALOGUE["attestation_non_emise_automatiquement"]?.resolutionAuto).toBe(true);
+  });
+});
+
+describe("🔴 attestation_sans_evaluation_evaluee_depuis", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+    mockGetConfig.mockResolvedValue("");
+  });
+
+  it("se lève quand l'évaluation finale a été saisie APRÈS l'attestation — pas avant", async () => {
+    mp.enrollment.findMany.mockImplementation(async (args: { where?: Record<string, unknown> }) => {
+      const w = args?.where ?? {};
+      const doc = w["attestationDocumentId"] as { not?: unknown } | undefined;
+      if (doc === undefined || doc.not !== null) return [];
+      return [
+        {
+          id: "enr-evaluee-apres",
+          attestationGenereeAt: new Date("2026-08-01T09:00:00.000Z"),
+          evaluations: [{ createdAt: new Date("2026-08-05T10:00:00.000Z") }],
+          trainee: { nom: "Blanc", prenom: "Simone" },
+          session: { numero: "AXI-SESS-2026-001" },
+        },
+        {
+          id: "enr-evaluee-avant",
+          attestationGenereeAt: new Date("2026-08-10T09:00:00.000Z"),
+          evaluations: [{ createdAt: new Date("2026-08-05T10:00:00.000Z") }],
+          trainee: { nom: "Noir", prenom: "Jean" },
+          session: { numero: "AXI-SESS-2026-002" },
+        },
+      ];
+    });
+
+    const alertes = await evaluerAlertes();
+    const leves = alertes.filter((x) => x.code === "attestation_sans_evaluation_evaluee_depuis");
+    expect(leves.map((a) => a.cibleId)).toEqual(["enr-evaluee-apres"]);
+    expect(leves[0]!.message).toMatch(/annul/i);
+    expect(leves[0]!.message).toMatch(/Regénérer \(forcer\)/);
+    expect(leves[0]!.message).toMatch(/aucune réémission automatique/i);
+  });
+
+  it("témoin négatif : aucune attestation émise, rien de levé", async () => {
+    const alertes = await evaluerAlertes();
+    expect(
+      alertes.find((x) => x.code === "attestation_sans_evaluation_evaluee_depuis"),
+    ).toBeUndefined();
+  });
+
+  it("se referme toute seule après la réémission", () => {
+    expect(ALERTE_CATALOGUE["attestation_sans_evaluation_evaluee_depuis"]?.resolutionAuto).toBe(
+      true,
+    );
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────

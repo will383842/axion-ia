@@ -60,7 +60,7 @@ import { verifierSanteEmails } from "@/server/email/health";
 import type { TrainingSessionStatut } from "@/server/qualiopi/formations/types";
 import type { Prisma } from "../../../../prisma/generated/client";
 import { genererAttestationPourEnrollment } from "@/server/qualiopi/evaluations/attestation-service";
-import { DELAI_EVALUATION_FINALE_JOURS } from "@/server/qualiopi/alertes/delai-evaluation-finale";
+import { DELAI_EMISSION_SANS_EVALUATION_JOURS } from "@/server/qualiopi/alertes/delai-evaluation-finale";
 import { invalidateIndicateursCache } from "@/server/qualiopi/indicateurs/service";
 import {
   envoyerConvocation,
@@ -451,8 +451,10 @@ async function handleAttestationsAuto(): Promise<void> {
   // 🔴 Décision Will D1 (2026-09-14, audit initial, X-documents-pdf-04) — la
   // garde devient une ATTENTE BORNÉE. L.6353-1 al. 2 doit la pièce au stagiaire
   // à l'issue de la formation, évaluation ou non : passé le délai que R05 laisse
-  // pour saisir l'évaluation (`DELAI_EVALUATION_FINALE_JOURS`, la même
-  // constante), la pièce part et imprime « Évaluation des acquis non réalisée ».
+  // pour saisir l'évaluation, PLUS UN JOUR (`DELAI_EMISSION_SANS_EVALUATION_JOURS`,
+  // dérivée du délai de R05 — 2e relecture A09 : sur la même borne, R05 à 07:00
+  // ne laissait que deux heures avant ce cron de 09:00), la pièce part et
+  // imprime « Évaluation des acquis non réalisée ».
   // Avant ce délai, on attend toujours : émettre préempterait une évaluation
   // saisie en retard.
   //
@@ -465,7 +467,7 @@ async function handleAttestationsAuto(): Promise<void> {
   } satisfies Prisma.EnrollmentWhereInput;
 
   const limiteGraceEvaluation = new Date(
-    Date.now() - DELAI_EVALUATION_FINALE_JOURS * 24 * 60 * 60 * 1000,
+    Date.now() - DELAI_EMISSION_SANS_EVALUATION_JOURS * 24 * 60 * 60 * 1000,
   );
   const evaluationOuDelaiEcoule = {
     OR: [
@@ -555,11 +557,18 @@ async function handleAttestationsAuto(): Promise<void> {
   // ⚠️ Même famille que `D5-1-C2` (convocation-j5, 2026-08-21) et que les six
   // fonctions d'envoi alignées le 2026-08-20. Ici, le membre oublié.
   let sansPiece = 0;
+  // 🔴 2e relecture A09 — 0 minute suivie : le service refuse l'émission
+  // automatique (une pièce certifiait un suivi qui n'a pas eu lieu). Compté à
+  // part ; l'alerte `attestation_non_emise_automatiquement` porte chaque cas.
+  let zeroHeure = 0;
 
   for (const enrollment of enrollments) {
     try {
-      const { resultat } = await genererAttestationPourEnrollment(enrollment.id);
-      if (resultat === "aucune") sansPiece++;
+      const { resultat, raison } = await genererAttestationPourEnrollment(enrollment.id, {
+        automatique: true,
+      });
+      if (raison === "zero_heure_suivie") zeroHeure++;
+      else if (resultat === "aucune") sansPiece++;
       else ok++;
     } catch (err) {
       ko++;
@@ -572,9 +581,10 @@ async function handleAttestationsAuto(): Promise<void> {
 
   console.log(
     `[formation-crons] attestations-auto: ${ok} générées, ${sansPiece} sans pièce ` +
-      `(génération concurrente déjà en cours), ${ko} erreurs ` +
+      `(génération concurrente déjà en cours), ${zeroHeure} à 0 h suivie ` +
+      `(non émises, alerte levée), ${ko} erreurs ` +
       `(${enrollments.length} candidats scannés, ${enAttenteEvaluation} en attente d'évaluation finale ` +
-      `sous ${DELAI_EVALUATION_FINALE_JOURS} j, ` +
+      `sous ${DELAI_EMISSION_SANS_EVALUATION_JOURS} j, ` +
       `${sansPreuvePresence} sans taux mesuré ni trace d'assiduité)`,
   );
 }

@@ -1297,7 +1297,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Article 7 — Assessment and certificate of completion",
-          body: "Assessments of learning are carried out during and at the end of the training. Active participation in these assessments is a condition for issuing the certificate of completion. The certificate is issued to the trainee who has completed the full programme or, in the event of a justified partial absence, in proportion to the hours actually completed.",
+          body: "Assessments of learning are carried out during and at the end of the training. At the end of the training, a certificate of completion is issued to every trainee. It states the objectives, nature and duration of the course, the hours actually attended and the results of the assessment of learning, or the absence of assessment.",
         },
         {
           title: "Article 8 — Complaints",

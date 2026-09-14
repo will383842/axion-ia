@@ -15,3 +15,15 @@
  * doivent lire la MÊME borne : deux littéraux « 2 » finiraient par diverger.
  */
 export const DELAI_EVALUATION_FINALE_JOURS = 2;
+
+/**
+ * Borne de l'émission AUTOMATIQUE sans évaluation finale : un jour APRÈS le délai
+ * de R05.
+ *
+ * 🔴 2e relecture A09 (audit initial 2026-09-14). Sur la même borne, R05 tourne
+ * à 07:00 UTC et `attestations-auto` à 09:00 UTC : l'alerte qui réclame
+ * l'évaluation ne laissait que deux heures avant l'émission « non réalisée » —
+ * et se levait même APRÈS elle quand `dateFin` tombait entre 07:00 et 09:00.
+ * Dérivée, jamais recopiée : R05 reste la référence.
+ */
+export const DELAI_EMISSION_SANS_EVALUATION_JOURS = DELAI_EVALUATION_FINALE_JOURS + 1;

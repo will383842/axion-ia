@@ -77,4 +77,20 @@ describe("🔴 les deux refus d'attestation se distinguent", () => {
     expect(messageRefusPreuvesManquantes(MANQUES)).toMatch(/^Attestation refusée/);
     expect(MESSAGE_REFUS_TAUX_NON_MESURE).toMatch(/^Attestation refusée/);
   });
+
+  it("🔴 exclu/abandon sans taux : un refus DUR qui EXPLIQUE pourquoi et quoi faire", async () => {
+    // 2e relecture A09 : sortie enregistrée avant les créneaux, aucune mesure.
+    // Le bouton opposait le refus générique « renseignez la présence » —
+    // impossible pour une inscription sortie, dont les créneaux ne se recréent pas.
+    const mod = (await import("@/server/qualiopi/evaluations/refus-attestation")) as Record<
+      string,
+      unknown
+    >;
+    const m = mod["MESSAGE_REFUS_TAUX_NON_MESURE_SORTIE"];
+    expect(typeof m).toBe("string");
+    expect(m as string).toMatch(/^Attestation refusée/);
+    expect(m as string).toMatch(/exclusion ou abandon/);
+    expect(m as string).toMatch(/créneaux/);
+    expect(refusEstRattrapableParMotif(m as string)).toBe(false);
+  });
 });

@@ -27,6 +27,7 @@ import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
 import { NATURE_ACTION_LABELS } from "./certificat-realisation";
+import { assiduiteSurMinutes, heuresMinutesFr } from "@/server/qualiopi/evaluations/heures-suivies";
 
 // ============================================================
 // Styles spécifiques
@@ -130,16 +131,13 @@ export interface AttestationPartielleData {
 // Helpers
 // ============================================================
 
-/** Heures au format français (virgule décimale ; entiers inchangés). R.6313-3. */
-function hFr(heures: number): string {
-  return heures.toLocaleString("fr-FR", { maximumFractionDigits: 2 });
-}
-
-function assiduitePercent(heuresSuivies: number, heuresTotales: number): string {
-  if (heuresTotales === 0) return "—";
-  const pct = Math.round((heuresSuivies / heuresTotales) * 100);
-  return `${pct} %`;
-}
+/**
+ * Heures en heures ET minutes (« 6 h 30 »), assiduité calculée sur les minutes.
+ * 🔴 2e relecture A09 : l'arrondi à l'heure et l'assiduité recalculée depuis cet
+ * arrondi contredisaient « les heures effectivement suivies » du règlement publié.
+ */
+const hMin = heuresMinutesFr;
+const assiduitePercent = assiduiteSurMinutes;
 
 // ============================================================
 // Composant principal
@@ -153,6 +151,7 @@ export function AttestationPartiellePdf({
   const { identite } = data;
   const dirigeantOuRS = data.dirigeant ?? identite.raisonSociale;
   const prenomNom = `${data.beneficiaire.prenom} ${data.beneficiaire.nom}`.trim();
+  const aucuneHeure = Math.round(data.resultats.heuresSuivies * 60) === 0;
 
   const verifyUrl =
     data.qrToken && identite.site
@@ -175,14 +174,24 @@ export function AttestationPartiellePdf({
             au stagiaire, L.6353-1 al. 2). Elle ajoutait « compétences déclarées
             partiellement validées » : la partialité ne dit que la PRÉSENCE, les
             résultats de l'évaluation sont imprimés plus bas, tels quels. */}
-        <LegalCallout variant="warning" title="Attestation partielle">
-          {`Formation suivie en partie : ${hFr(data.resultats.heuresSuivies)} h sur ${hFr(data.resultats.heuresTotales)} h prévues (assiduité ${assiduitePercent(data.resultats.heuresSuivies, data.resultats.heuresTotales)}). Les résultats de l'évaluation des acquis figurent ci-après.`}
+        {/* 🔴 2e relecture A09 : à 0 minute suivie, la pièce ne dit JAMAIS « a
+            (partiellement) suivi ». Elle atteste l'inscription et l'absence de
+            suivi, avec les autres mentions obligatoires. */}
+        <LegalCallout
+          variant="warning"
+          title={aucuneHeure ? "Aucune heure suivie" : "Attestation partielle"}
+        >
+          {aucuneHeure
+            ? `Aucune heure de formation suivie sur ${hMin(data.resultats.heuresTotales)} prévues (assiduité ${assiduitePercent(data.resultats.heuresSuivies, data.resultats.heuresTotales)}). Les résultats de l'évaluation des acquis figurent ci-après.`
+            : `Formation suivie en partie : ${hMin(data.resultats.heuresSuivies)} sur ${hMin(data.resultats.heuresTotales)} prévues (assiduité ${assiduitePercent(data.resultats.heuresSuivies, data.resultats.heuresTotales)}). Les résultats de l'évaluation des acquis figurent ci-après.`}
         </LegalCallout>
 
         {/* Phrase certificative */}
         <View style={pdfStyles.section}>
           <Text style={styles.certifPhrase}>
-            {`Je soussigné ${dirigeantOuRS} certifie que ${prenomNom} a partiellement suivi la formation mentionnée ci-dessous.`}
+            {aucuneHeure
+              ? `Je soussigné ${dirigeantOuRS} atteste que ${prenomNom}, inscrit(e) à la formation mentionnée ci-dessous, n'a suivi aucune heure de la formation.`
+              : `Je soussigné ${dirigeantOuRS} certifie que ${prenomNom} a partiellement suivi la formation mentionnée ci-dessous.`}
           </Text>
           <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.attestation}</Text>
         </View>
@@ -208,7 +217,7 @@ export function AttestationPartiellePdf({
             value={NATURE_ACTION_LABELS[data.formation.natureAction ?? "action_formation"]}
           />
           <FieldRow label="Objectifs" value={data.formation.objectifs} />
-          <FieldRow label="Durée totale prévue" value={`${hFr(data.formation.dureeHeures)} h`} />
+          <FieldRow label="Durée totale prévue" value={`${hMin(data.formation.dureeHeures)}`} />
           <FieldRow label="Du" value={data.formation.dateDebut} />
           <FieldRow label="Au" value={data.formation.dateFin} />
           <FieldRow label="Modalité" value={data.formation.modalite} />
@@ -219,12 +228,12 @@ export function AttestationPartiellePdf({
         <DocSection title="Résultats partiels">
           <View style={styles.resultRow}>
             <Text style={styles.resultLabel}>Durée réelle suivie</Text>
-            <Text style={styles.resultValue}>{`${hFr(data.resultats.heuresSuivies)} h`}</Text>
+            <Text style={styles.resultValue}>{`${hMin(data.resultats.heuresSuivies)}`}</Text>
           </View>
           <View style={styles.resultRow}>
             <Text style={styles.resultLabel}>Assiduité</Text>
             <Text style={styles.resultValue}>
-              {`${hFr(data.resultats.heuresSuivies)} h / ${hFr(data.resultats.heuresTotales)} h = ${assiduitePercent(data.resultats.heuresSuivies, data.resultats.heuresTotales)}`}
+              {`${hMin(data.resultats.heuresSuivies)} / ${hMin(data.resultats.heuresTotales)} = ${assiduitePercent(data.resultats.heuresSuivies, data.resultats.heuresTotales)}`}
             </Text>
           </View>
           {data.resultats.evaluationObtenue ? (

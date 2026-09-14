@@ -663,6 +663,32 @@ describe("envoyerAttestationDisponible", () => {
     expect((call[3] as { typeDocument?: string }).typeDocument).toBe("certificat de réalisation");
   });
 
+  it("🔴 exclu/abandon : l'e-mail annonce l'attestation des HEURES SUIVIES", async () => {
+    // 2e relecture A09 : « ce document atteste de votre participation » et la
+    // demande d'avis partaient aussi à un stagiaire exclu.
+    mockPrisma.enrollment.findUnique.mockResolvedValue({
+      ...fakeEnrollmentBase,
+      statut: "exclu",
+      tauxPresencePct: 40,
+      attestationResultat: "partielle",
+    });
+    await envoyerAttestationDisponible(ENROLLMENT_ID);
+    const call = mockEnqueueEmail.mock.calls[0] as unknown[];
+    expect((call[3] as Record<string, unknown>)["heuresSuiviesSeulement"]).toBe(true);
+  });
+
+  it("contre-témoin : un inscrit actif garde l'e-mail ordinaire", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue({
+      ...fakeEnrollmentBase,
+      statut: "presente",
+      tauxPresencePct: 90,
+      attestationResultat: "complete",
+    });
+    await envoyerAttestationDisponible(ENROLLMENT_ID);
+    const call = mockEnqueueEmail.mock.calls[0] as unknown[];
+    expect((call[3] as Record<string, unknown>)["heuresSuiviesSeulement"]).not.toBe(true);
+  });
+
   it("jobId stable = qualiopi-attestation-disponible-{enrollmentId}", async () => {
     mockPrisma.enrollment.findUnique.mockResolvedValue({
       ...fakeEnrollmentBase,

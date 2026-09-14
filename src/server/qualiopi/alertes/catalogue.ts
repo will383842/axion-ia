@@ -729,6 +729,31 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "SPEC_PART2 §6.5 — « Non ». L attestation est un droit du stagiaire (L.6353-1). Le manquement se solde par un geste tracé, pas par la disparition du signal.",
     guichet: "administratif",
   },
+  /**
+   * 🔴 2e relecture A09 (audit initial 2026-09-14) — ce que le cron n'émet PAS.
+   * 0 minute suivie (l'émission automatique certifiait un suivi qui n'avait pas
+   * eu lieu), ou exclu/abandon sorti avant ses créneaux (aucun taux, rien à
+   * mesurer). Levée du balayage, elle se referme dès que la ligne cesse de
+   * correspondre (pièce émise, présence mesurée).
+   */
+  attestation_non_emise_automatiquement: {
+    niveau: "important",
+    titre: "Attestation non émise automatiquement",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
+  /**
+   * 🔴 2e relecture A09 — une attestation émise « Évaluation des acquis non
+   * réalisée », puis une évaluation finale saisie : la pièce que détient le
+   * stagiaire est contredite par la grille. Aucune réémission automatique ; se
+   * referme quand l'attestation est réémise.
+   */
+  attestation_sans_evaluation_evaluee_depuis: {
+    niveau: "important",
+    titre: "Attestation émise sans évaluation, évaluation saisie depuis",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
 
   // ── Qualiopi expiration ────────────────────────────────────────────────────
   qualiopi_expire_j90: {
