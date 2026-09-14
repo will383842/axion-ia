@@ -37,6 +37,7 @@ const mockHabilitationFindMany = vi.fn();
 const mockDevelopmentActionFindMany = vi.fn();
 const mockTrainerDocumentCount = vi.fn();
 const mockTrainerDocumentGroupBy = vi.fn();
+const mockTrainerDocumentFindMany = vi.fn();
 const mockFormationFindMany = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
@@ -55,6 +56,7 @@ vi.mock("@/lib/prisma", () => ({
     trainerDocument: {
       count: (...a: unknown[]) => mockTrainerDocumentCount(...a),
       groupBy: (...a: unknown[]) => mockTrainerDocumentGroupBy(...a),
+      findMany: (...a: unknown[]) => mockTrainerDocumentFindMany(...a),
     },
     formation: {
       findMany: (...a: unknown[]) => mockFormationFindMany(...a),
@@ -148,6 +150,33 @@ const WHERE_DECLARABLE_ATTENDU = {
   formation: { statut: { not: "archive" } },
 };
 
+/** Un CV source validé, tel qu'il est rangé en base. */
+function cvSource(over: Record<string, unknown> = {}) {
+  return {
+    trainerId: TRAINER_ID,
+    type: "cv",
+    statutValidation: "valide",
+    fichierUrl: "https://drive.example/cv.pdf",
+    dateExpiration: null,
+    ...over,
+  };
+}
+
+/**
+ * Pose l'ÉTAT de la base — les CV validés du formateur — sous les trois formes
+ * de lecture qu'un producteur peut employer (`count`, `groupBy`, `findMany`).
+ * Le mock n'évalue aucun `where` : chaque ligne posée ici est un CV validé en
+ * base, et c'est au code sous test de juger s'il PROUVE quelque chose. On
+ * asserte donc ce que la pièce IMPRIME, pas la forme de la requête.
+ */
+function poserCvValides(rows: Array<Record<string, unknown>>): void {
+  mockTrainerDocumentFindMany.mockResolvedValue(rows);
+  mockTrainerDocumentCount.mockResolvedValue(rows.length);
+  mockTrainerDocumentGroupBy.mockResolvedValue(
+    rows.length > 0 ? [{ trainerId: TRAINER_ID, _count: { _all: rows.length } }] : [],
+  );
+}
+
 beforeEach(() => {
   vi.clearAllMocks();
   mockGetOrganismeIdentite.mockResolvedValue(IDENTITE);
@@ -156,8 +185,7 @@ beforeEach(() => {
   mockTrainerFindUnique.mockResolvedValue(makeTrainer());
   mockHabilitationFindMany.mockResolvedValue([{ formation: { titre: "IA opérationnelle" } }]);
   mockDevelopmentActionFindMany.mockResolvedValue([]);
-  mockTrainerDocumentCount.mockResolvedValue(1);
-  mockTrainerDocumentGroupBy.mockResolvedValue([]);
+  poserCvValides([cvSource()]);
   mockTrainerUpdate.mockResolvedValue({});
   mockFormationFindMany.mockResolvedValue([]);
   mockTrainerFindMany.mockResolvedValue([]);
@@ -182,7 +210,7 @@ describe("verserFicheFormateurAction — habilitations déclarables", () => {
     // remonte rien. La fiche ne documenterait alors AUCUNE maîtrise.
     mockHabilitationFindMany.mockResolvedValue([]);
     mockTrainerFindUnique.mockResolvedValue(makeTrainer({ domainesCompetences: [] }));
-    mockTrainerDocumentCount.mockResolvedValue(0);
+    poserCvValides([]);
 
     const r = await verserFicheFormateurAction({ trainerId: TRAINER_ID });
 
@@ -190,31 +218,85 @@ describe("verserFicheFormateurAction — habilitations déclarables", () => {
     expect(mockGenerateDocument).not.toHaveBeenCalled();
   });
 
-  // 🔴 Audit initial 2026-09-14 (constat I21-02). `nbCvSource` comptait un CV
-  // validé SANS fichier, et la fiche imprimait alors « CV joint » /
-  // « cv_televerse » : une affirmation que la pièce elle-même ne tient pas.
-  it("« CV joint » ne compte QUE les CV sources validés portant un fichier", async () => {
-    await verserFicheFormateurAction({ trainerId: TRAINER_ID });
-
-    expect(mockTrainerDocumentCount).toHaveBeenCalledTimes(1);
-    expect(mockTrainerDocumentCount.mock.calls[0]?.[0]).toMatchObject({
-      where: {
-        trainerId: TRAINER_ID,
-        type: "cv",
-        statutValidation: "valide",
-        fichierUrl: { not: null },
-      },
-    });
-  });
-
   it("dégrade proprement : habilitations toutes retirées mais compétences saisies → la fiche sort", async () => {
     mockHabilitationFindMany.mockResolvedValue([]);
-    mockTrainerDocumentCount.mockResolvedValue(0);
+    poserCvValides([]);
 
     const r = await verserFicheFormateurAction({ trainerId: TRAINER_ID });
 
     expect(r).toHaveProperty("data");
     expect(mockGenerateDocument).toHaveBeenCalledTimes(1);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 Audit initial 2026-09-14 (constat I21-02) — ce que les pièces IMPRIMENT
+// d'un CV source. Un CV validé SANS fichier, ou EXPIRÉ, faisait imprimer « CV
+// joint » sur la fiche versée et « CV au dossier » sur la liste officielle :
+// deux affirmations que la pièce elle-même ne tient pas.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Les données imprimées par la fiche versée (`CvFormateurPdf`). */
+function dataFicheVersee(): { cvJoint: boolean; pieceCompetences: string } {
+  const build = mockGenerateDocument.mock.calls[0]?.[0]?.buildElement as () => {
+    props: { data: { cvJoint: boolean; pieceCompetences: string } };
+  };
+  return build().props.data;
+}
+
+/** La mention « CV au dossier » de la liste officielle, pour le seul formateur. */
+async function cvAuDossierListe(): Promise<boolean | undefined> {
+  mockTrainerFindMany.mockResolvedValue([
+    {
+      id: TRAINER_ID,
+      nom: "Durand",
+      prenom: "Claire",
+      statut: "salarie",
+      domainesCompetences: ["IA générative"],
+      dateEmbauche: null,
+      sousTraitantNda: null,
+      habilitations: [],
+    },
+  ]);
+  await genererListeFormateursAction();
+  const buildElement = mockGenerateDocument.mock.calls[0]?.[0]?.buildElement as (
+    numero: string,
+  ) => { props: { data: { formateurs: Array<{ cvAuDossier: boolean }> } } };
+  return buildElement("AXI-FORM-2026-001").props.data.formateurs[0]?.cvAuDossier;
+}
+
+const CAS_NON_PROBANTS: Array<[string, Record<string, unknown>]> = [
+  ["sans fichier", { fichierUrl: null }],
+  ["à l'adresse faite d'espaces", { fichierUrl: "   " }],
+  ["expiré", { dateExpiration: new Date("2020-01-01T00:00:00Z") }],
+];
+
+describe("verserFicheFormateurAction — « CV joint » (I21-02)", () => {
+  it.each(CAS_NON_PROBANTS)("un CV validé %s n'imprime PAS « CV joint »", async (_l, over) => {
+    poserCvValides([cvSource(over)]);
+    const r = await verserFicheFormateurAction({ trainerId: TRAINER_ID });
+    expect(r).toHaveProperty("data");
+    expect(dataFicheVersee().cvJoint).toBe(false);
+    expect(dataFicheVersee().pieceCompetences).toBe("fiche_organisme");
+  });
+
+  it("un CV validé portant son fichier imprime « CV joint »", async () => {
+    poserCvValides([cvSource()]);
+    await verserFicheFormateurAction({ trainerId: TRAINER_ID });
+    expect(dataFicheVersee().cvJoint).toBe(true);
+    expect(dataFicheVersee().pieceCompetences).toBe("cv_televerse");
+  });
+});
+
+describe("genererListeFormateursAction — « CV au dossier » (I21-02)", () => {
+  it.each(CAS_NON_PROBANTS)("un CV validé %s n'imprime PAS « CV au dossier »", async (_l, over) => {
+    poserCvValides([cvSource(over)]);
+    expect(await cvAuDossierListe()).toBe(false);
+  });
+
+  it("un CV validé portant son fichier imprime « CV au dossier »", async () => {
+    poserCvValides([cvSource()]);
+    expect(await cvAuDossierListe()).toBe(true);
   });
 });
 

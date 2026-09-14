@@ -19,6 +19,7 @@ import {
   logQualiopiActivity,
   requireHabilitation,
 } from "@/server/actions/qualiopi/_guards";
+import { motifPieceNonProbante } from "@/server/qualiopi/trainers/piece-competence";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -36,13 +37,6 @@ const DOCUMENT_TYPES = [
   "certification",
   "autre",
 ] as const;
-
-/**
- * Pièces qui justifient la COMPÉTENCE d'un intervenant (indicateur 21). Une
- * telle pièce ne se valide qu'avec un fichier joint : c'est ce fichier que
- * l'auditrice ouvre.
- */
-const PIECES_DE_COMPETENCE = ["cv", "diplome", "certification"] as const;
 
 const uuid = z.string().uuid();
 
@@ -139,24 +133,31 @@ export async function validateTrainerDocumentAction(
   // et faisait imprimer « CV joint » sur la fiche formateur versée au dossier.
   // L'auditrice ouvre la pièce : il n'y a rien derrière. On ne valide pas ce
   // qu'on n'a pas pu lire. Le rejet, lui, reste possible sans fichier.
+  //
+  // Le jugement vient du prédicat PARTAGÉ (`piece-competence.ts`), évalué sur la
+  // pièce telle qu'elle serait une fois validée : même liste de types, même
+  // définition de « fichier présent » que la couverture et les pièces imprimées.
+  // Seul le motif `sans_fichier` bloque : une pièce expirée reste authentique et
+  // se valide, elle ne couvre simplement rien (l'écran le signale).
   if (statutValidation === "valide") {
-    let piece: { type: string; fichierUrl: string | null } | null;
+    let piece: { type: string; fichierUrl: string | null; dateExpiration: Date | null } | null;
     try {
       piece = await prisma.trainerDocument.findUnique({
         where: { id },
-        select: { type: true, fichierUrl: true },
+        select: { type: true, fichierUrl: true, dateExpiration: true },
       });
     } catch {
       return { error: "Erreur lors de la validation de la pièce." };
     }
     if (piece === null) return { error: "Pièce introuvable." };
     if (
-      (PIECES_DE_COMPETENCE as readonly string[]).includes(piece.type) &&
-      (piece.fichierUrl === null || piece.fichierUrl.trim() === "")
+      motifPieceNonProbante({ ...piece, statutValidation: "valide" }, new Date()) === "sans_fichier"
     ) {
+      // Aucune action ne joint un fichier à une pièce EXISTANTE : le message
+      // prescrit le seul geste qui existe.
       return {
         error:
-          "Validation refusée : aucun fichier n'est joint à cette pièce de compétence. Joignez le fichier (ou rejetez la pièce) avant de la valider.",
+          "Validation refusée : aucun fichier n'est joint à cette pièce de compétence, et une pièce enregistrée ne peut pas en recevoir un. Ajoutez une nouvelle pièce avec l'URL de son fichier, puis rejetez celle-ci.",
       };
     }
   }

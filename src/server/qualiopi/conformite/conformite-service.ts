@@ -36,6 +36,11 @@
 
 import { prisma } from "@/lib/prisma";
 import { whereVeilleExploitee } from "./veille-exploitee";
+import {
+  SELECT_PIECE_COMPETENCE,
+  estPieceCompetenceProbante,
+  prefiltrePieceCompetenceProbante,
+} from "@/server/qualiopi/trainers/piece-competence";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import {
   pieceAdmissibleAuDossier,
@@ -546,20 +551,20 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     //
     // 🔴 Audit initial 2026-09-14 (constat I21-02) : une pièce VALIDÉE sans
     // fichier joint couvrait l'indicateur. La validation la refuse désormais,
-    // mais une ligne déjà validée sans fichier ne doit plus rien couvrir.
+    // mais une ligne déjà validée sans fichier ne doit plus rien couvrir. Type,
+    // statut, fichier et expiration sont jugés par LE prédicat partagé
+    // (`piece-competence.ts`) ; le `where` ne fait que rétrécir.
     prisma.trainerDocument
       .findMany({
-        where: {
-          type: { in: ["cv", "diplome", "certification"] },
-          statutValidation: "valide",
-          fichierUrl: { not: null },
-          trainer: { actif: true },
-          OR: [{ dateExpiration: null }, { dateExpiration: { gte: maintenant } }],
-        },
-        select: { trainerId: true },
-        distinct: ["trainerId"],
+        where: { ...prefiltrePieceCompetenceProbante(maintenant), trainer: { actif: true } },
+        select: { trainerId: true, ...SELECT_PIECE_COMPETENCE },
       })
-      .then((r) => r.length),
+      .then(
+        (pieces) =>
+          new Set(
+            pieces.filter((p) => estPieceCompetenceProbante(p, maintenant)).map((p) => p.trainerId),
+          ).size,
+      ),
     // off.18 — pièces écrites décrivant l'organisation et les moyens mobilisés.
     // Seconde voie de preuve de la coordination, à côté de la config.
     // Le prédicat partagé : une pièce annulée ne prouve rien, et une pièce

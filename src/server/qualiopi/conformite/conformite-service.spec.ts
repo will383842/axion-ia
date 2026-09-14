@@ -759,7 +759,7 @@ describe("evaluerConformite", () => {
   it("off.21 couvert quand CHAQUE formateur actif a une fiche à jour ET une pièce de compétence validée", async () => {
     // trainer.count : 1=actif, 2=actif+cvUrl, 3=actif+cvUrl+cvUploadedAt<24 mois
     mockP.trainer.count.mockResolvedValueOnce(1).mockResolvedValueOnce(1).mockResolvedValueOnce(1);
-    mockP.trainerDocument.findMany.mockResolvedValue([{ trainerId: "t-1" }]);
+    mockP.trainerDocument.findMany.mockResolvedValue([pieceCompetence("t-1")]);
     const result = await evaluerConformite();
     const ind21 = result.indicateurs.find((i) => i.numero === 21);
     expect(ind21?.statut).toBe("couvert");
@@ -767,7 +767,7 @@ describe("evaluerConformite", () => {
 
   it("off.21 À COMPLÉTER si un seul formateur sur deux porte une fiche à jour", async () => {
     mockP.trainer.count.mockResolvedValueOnce(2).mockResolvedValueOnce(1).mockResolvedValueOnce(1);
-    mockP.trainerDocument.findMany.mockResolvedValue([{ trainerId: "t-1" }]);
+    mockP.trainerDocument.findMany.mockResolvedValue([pieceCompetence("t-1")]);
     const result = await evaluerConformite();
     const ind21 = result.indicateurs.find((i) => i.numero === 21);
     expect(ind21?.statut).toBe("a_completer");
@@ -794,7 +794,7 @@ describe("evaluerConformite", () => {
 
   it("off.21 : l'élément constaté ne prétend plus « CV téléversé », mais « fiche formateur au dossier »", async () => {
     mockP.trainer.count.mockResolvedValueOnce(2).mockResolvedValueOnce(1).mockResolvedValueOnce(1);
-    mockP.trainerDocument.findMany.mockResolvedValue([{ trainerId: "t-1" }]);
+    mockP.trainerDocument.findMany.mockResolvedValue([pieceCompetence("t-1")]);
     const result = await evaluerConformite();
     const preuves = result.indicateurs.find((i) => i.numero === 21)?.preuves.join(" ") ?? "";
     expect(preuves).toMatch(/fiche formateur au dossier/i);
@@ -802,27 +802,63 @@ describe("evaluerConformite", () => {
   });
 
   // 🔴 Audit initial 2026-09-14 (constat I21-02). Une pièce VALIDÉE mais sans
-  // fichier comptait dans la couverture : le filtre portait sur le type, le
-  // statut, l'activité et l'expiration, jamais sur `fichierUrl`. Le mock ne sait
-  // pas évaluer un `where` : c'est donc le `where` lui-même qu'on asserte.
-  it("off.21 : une pièce de compétence SANS fichier ne compte pas dans la couverture", async () => {
+  // fichier comptait dans la couverture. Le mock n'évalue aucun `where` : il rend
+  // ce qui est EN BASE, et c'est au moteur de juger si la pièce prouve quelque
+  // chose. On asserte donc le VERDICT, pas la forme de la requête.
+  /** Une pièce de compétence telle qu'elle est rangée en base. */
+  function pieceCompetence(trainerId: string, over: Record<string, unknown> = {}) {
+    return {
+      trainerId,
+      type: "cv",
+      statutValidation: "valide",
+      fichierUrl: "https://drive.example/cv.pdf",
+      dateExpiration: null,
+      ...over,
+    };
+  }
+
+  it.each([
+    ["sans fichier", { fichierUrl: null }],
+    ["à l'adresse vide", { fichierUrl: "" }],
+    ["à l'adresse faite d'espaces", { fichierUrl: "   " }],
+    ["expirée", { type: "certification", dateExpiration: new Date("2020-01-01T00:00:00Z") }],
+  ])("off.21 À COMPLÉTER quand la seule pièce de compétence est %s", async (_libelle, over) => {
     mockP.trainer.count.mockResolvedValueOnce(1).mockResolvedValueOnce(1).mockResolvedValueOnce(1);
-    mockP.trainerDocument.findMany.mockResolvedValue([{ trainerId: "t-1" }]);
-    await evaluerConformite();
-    expect(mockP.trainerDocument.findMany).toHaveBeenCalledTimes(1);
-    expect(mockP.trainerDocument.findMany.mock.calls[0]?.[0]).toMatchObject({
-      where: {
-        type: { in: ["cv", "diplome", "certification"] },
-        statutValidation: "valide",
-        fichierUrl: { not: null },
-      },
-    });
+    mockP.trainerDocument.findMany.mockResolvedValue([pieceCompetence("t-1", over)]);
+    const result = await evaluerConformite();
+    const ind21 = result.indicateurs.find((i) => i.numero === 21);
+    expect(ind21?.statut).toBe("a_completer");
+    expect(ind21?.preuves.join(" ")).toMatch(/Aucune pièce de compétence validée/);
+  });
+
+  it("off.21 : la pièce sans fichier d'un formateur ne le fait pas compter à côté d'un collègue couvert", async () => {
+    mockP.trainer.count.mockResolvedValueOnce(2).mockResolvedValueOnce(2).mockResolvedValueOnce(2);
+    mockP.trainerDocument.findMany.mockResolvedValue([
+      pieceCompetence("t-1"),
+      pieceCompetence("t-2", { fichierUrl: null }),
+    ]);
+    const result = await evaluerConformite();
+    const ind21 = result.indicateurs.find((i) => i.numero === 21);
+    expect(ind21?.statut).toBe("a_completer");
+    expect(ind21?.preuves.join(" ")).toContain(
+      "1/2 formateurs actifs avec au moins une pièce de compétence validée",
+    );
+  });
+
+  it("off.21 : un formateur qui porte DEUX pièces probantes compte UNE fois", async () => {
+    mockP.trainer.count.mockResolvedValueOnce(1).mockResolvedValueOnce(1).mockResolvedValueOnce(1);
+    mockP.trainerDocument.findMany.mockResolvedValue([
+      pieceCompetence("t-1"),
+      pieceCompetence("t-1", { type: "diplome" }),
+    ]);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 21)?.statut).toBe("couvert");
   });
 
   it("off.21 a_completer si CV présent mais PÉRIMÉ (aucun < 24 mois)", async () => {
     // 2 CV téléversés mais aucun daté de moins de 24 mois → 3e appel = 0.
     mockP.trainer.count.mockResolvedValueOnce(3).mockResolvedValueOnce(2).mockResolvedValueOnce(0);
-    mockP.trainerDocument.findMany.mockResolvedValue([{ trainerId: "t-1" }]);
+    mockP.trainerDocument.findMany.mockResolvedValue([pieceCompetence("t-1")]);
     const result = await evaluerConformite();
     const ind21 = result.indicateurs.find((i) => i.numero === 21);
     expect(ind21?.statut).toBe("a_completer");
@@ -830,7 +866,7 @@ describe("evaluerConformite", () => {
 
   it("off.21 a_completer si formateurs actifs mais 0 avec cvUrl", async () => {
     mockP.trainer.count.mockResolvedValueOnce(3).mockResolvedValueOnce(0).mockResolvedValueOnce(0);
-    mockP.trainerDocument.findMany.mockResolvedValue([{ trainerId: "t-1" }]);
+    mockP.trainerDocument.findMany.mockResolvedValue([pieceCompetence("t-1")]);
     const result = await evaluerConformite();
     const ind21 = result.indicateurs.find((i) => i.numero === 21);
     expect(ind21?.statut).toBe("a_completer");

@@ -49,7 +49,11 @@ beforeEach(() => {
   mockUpdate.mockReset();
   mockDelete.mockReset();
   mockFindUnique.mockReset();
-  mockFindUnique.mockResolvedValue({ type: "cv", fichierUrl: "https://drive.example/cv.pdf" });
+  mockFindUnique.mockResolvedValue({
+    type: "cv",
+    fichierUrl: "https://drive.example/cv.pdf",
+    dateExpiration: null,
+  });
   mockCreate.mockResolvedValue({ id: DOC_ID });
   mockUpdate.mockResolvedValue({ id: DOC_ID });
   mockDelete.mockResolvedValue({ id: DOC_ID });
@@ -187,6 +191,33 @@ describe("validateTrainerDocumentAction", () => {
     expect(r).toHaveProperty("error");
     expect(mockUpdate).not.toHaveBeenCalled();
   });
+
+  // 🔴 Relecture PR #1085. Le message disait « Joignez le fichier… avant de la
+  // valider » : aucune action ne joint un fichier à une pièce existante. Il doit
+  // prescrire le geste qui EXISTE — ajouter une nouvelle pièce, rejeter l'ancienne.
+  it("le refus prescrit le geste qui existe : nouvelle pièce avec son fichier, puis rejet de l'ancienne", async () => {
+    mockFindUnique.mockResolvedValue({ type: "cv", fichierUrl: null, dateExpiration: null });
+    const r = await validateTrainerDocumentAction({ id: DOC_ID, statutValidation: "valide" });
+    expect(r).toHaveProperty("error");
+    if ("error" in r) {
+      expect(r.error).toMatch(/nouvelle pièce/);
+      expect(r.error).toMatch(/rejetez/);
+      expect(r.error).not.toMatch(/Joignez le fichier/);
+    }
+  });
+
+  // Voie négative : seules les pièces de COMPÉTENCE exigent un fichier. Une
+  // assurance RC pro ou un Kbis saisis sans URL restent validables comme avant.
+  // Sans ce test, retirer la condition de type ne ferait rougir personne.
+  it.each(["assurance_rc_pro", "kbis_avis_sirene", "autre"] as const)(
+    "une pièce HORS compétence (« %s ») reste validable sans fichier",
+    async (type) => {
+      mockFindUnique.mockResolvedValue({ type, fichierUrl: null, dateExpiration: null });
+      const r = await validateTrainerDocumentAction({ id: DOC_ID, statutValidation: "valide" });
+      expect(r).toEqual({ data: { id: DOC_ID } });
+      expect(mockUpdate).toHaveBeenCalledTimes(1);
+    },
+  );
 
   it("refuse un statut hors { valide, rejete }", async () => {
     const r = await validateTrainerDocumentAction({

@@ -23,6 +23,7 @@ import type {
   DocumentValidationStatutValue,
   TrainerDocumentTypeValue,
 } from "@/server/qualiopi/trainers/conformite";
+import type { PieceValideeEcartee } from "@/server/qualiopi/trainers/piece-competence";
 import { useConfirmation } from "@/components/admin/ui/useConfirmation";
 
 export interface TrainerDocumentView {
@@ -35,6 +36,11 @@ export interface TrainerDocumentView {
   statutValidation: DocumentValidationStatutValue;
   rejetMotif: string | null;
   createdAt: Date;
+  /**
+   * Pièce de compétence VALIDÉE qui ne compte pourtant pas comme preuve (sans
+   * fichier, ou expirée). Calculé côté serveur par le prédicat partagé.
+   */
+  ecarteeDeLaPreuve: PieceValideeEcartee | null;
 }
 
 export interface TrainerDocumentsPanelProps {
@@ -169,7 +175,7 @@ export function TrainerDocumentsPanel(props: TrainerDocumentsPanelProps): React.
       <h2 className="admin-h2">Pièces justificatives</h2>
       <p className="admin-meta mb-[var(--space-admin-4)]">
         Une pièce ne compte pour la conformité qu&apos;une fois <strong>validée</strong>. Le rejet
-        exige un motif.
+        exige un motif. Un CV, un diplôme ou une certification doit en outre porter son fichier.
       </p>
 
       {error && (
@@ -242,9 +248,29 @@ export function TrainerDocumentsPanel(props: TrainerDocumentsPanelProps): React.
                     {formatDate(d.dateExpiration)}
                   </td>
                   <td className="py-[var(--space-admin-3)] pr-[var(--space-admin-3)]">
-                    <span style={{ color: statutColor(d.statutValidation) }}>
-                      {STATUT_LABELS[d.statutValidation]}
-                    </span>
+                    {/*
+                      🔴 I21-02 — une pièce de compétence validée SANS fichier (ou
+                      expirée) ne couvre plus l'indicateur 21. L'afficher « Validé »
+                      en vert contredisait l'écran de conformité sur le même
+                      formateur. Pas de classe `.admin-*` sur ces spans : les
+                      utilitaires Tailwind y agissent (admin.css est hors couche).
+                    */}
+                    {d.statutValidation === "valide" && d.ecarteeDeLaPreuve !== null ? (
+                      <>
+                        <span style={{ color: "var(--color-admin-warning)" }}>
+                          Validé, mais ne compte pas comme preuve
+                        </span>
+                        <span className="mt-1 block text-[color:var(--color-admin-fg-muted)]">
+                          {d.ecarteeDeLaPreuve === "sans_fichier"
+                            ? "Aucun fichier joint. Ajoutez une nouvelle pièce avec son fichier, puis rejetez celle-ci."
+                            : "Pièce expirée. Ajoutez une pièce en cours de validité."}
+                        </span>
+                      </>
+                    ) : (
+                      <span style={{ color: statutColor(d.statutValidation) }}>
+                        {STATUT_LABELS[d.statutValidation]}
+                      </span>
+                    )}
                   </td>
                   <td className="py-[var(--space-admin-3)]">
                     {rejetPourId === d.id ? (
