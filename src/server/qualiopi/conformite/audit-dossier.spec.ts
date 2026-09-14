@@ -719,6 +719,149 @@ describe("genererDossierAuditZip", () => {
     const index = await zip.files["index.txt"]!.async("string");
     expect(index).toContain("[OMIS] registres/veille");
   });
+
+  // ── 🔴 X-mode-auditeur-05 / G-lieu-05 (audit initial 2026-09-14) ─────────────
+  //
+  // Le dossier remis à l'auditrice embarquait des pièces d'EMPLOYEUR et de
+  // rémunération : contrats de travail et autofactures d'honoraires sous
+  // `preuves/`, contrats de travail et DPAE dans `formateurs/pieces.json`. Aucune
+  // ne prouve un indicateur du RNQ. Enjeu RGPD (minimisation) : elles restent au
+  // registre, elles ne sortent pas dans le dossier de preuves.
+
+  it("🔴 n'embarque NI contrat de travail NI autofacture sous preuves/, et le DIT", async () => {
+    mockIsR2Configured.mockReturnValue(true);
+    mockPrisma.trainerDocument.findMany.mockResolvedValue([]);
+    mockGetObjectBufferR2.mockResolvedValue(Buffer.from("%PDF-1.4 ok"));
+    mockPrisma.documentGenere.findMany.mockResolvedValue([
+      { id: "d1", type: "convention", numero: "AXI-DOC-2026-001", createdAt: new Date() },
+      { id: "d2", type: "contrat_travail", numero: "AXI-DOC-2026-002", createdAt: new Date() },
+      {
+        id: "d3",
+        type: "autofacture_honoraires",
+        numero: "AXI-DOC-2026-003",
+        createdAt: new Date(),
+      },
+    ]);
+
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    const fichiers = Object.keys(zip.files);
+
+    expect(zip.files["preuves/convention/AXI-DOC-2026-001.pdf"]).toBeDefined();
+    expect(
+      fichiers.filter((f) => /contrat_travail|autofacture_honoraires/.test(f)),
+      "le dossier remis à l'auditrice embarque un contrat de travail ou une autofacture.",
+    ).toEqual([]);
+    // Aucun octet n'en est même téléchargé.
+    expect(mockGetObjectBufferR2).toHaveBeenCalledTimes(1);
+    // Pas comptées comme preuves attendues : le dossier n'est pas « incomplet ».
+    expect(result.nbPreuvesAttendues).toBe(1);
+    expect(result.incomplet).toBe(false);
+    // Mais pas tues : l'index dit combien restent au registre, sans les nommer.
+    const index = await zip.files["index.txt"]!.async("string");
+    expect(index).not.toContain("AXI-DOC-2026-002");
+    expect(index).toContain("2 pièces RH, de rémunération ou de facturation");
+  });
+
+  it("🔴 n'embarque NI facture NI devis NI avoir sous preuves/, et le DIT", async () => {
+    // Pièces commerciales : elles ne prouvent aucun indicateur du RNQ, et une
+    // facture à un particulier (CPF, financement personnel) nomme une personne
+    // physique et ce qu'elle a payé. Elles restent au registre.
+    mockIsR2Configured.mockReturnValue(true);
+    mockPrisma.trainerDocument.findMany.mockResolvedValue([]);
+    mockGetObjectBufferR2.mockResolvedValue(Buffer.from("%PDF-1.4 ok"));
+    mockPrisma.documentGenere.findMany.mockResolvedValue([
+      { id: "d1", type: "attestation", numero: "AXI-DOC-2026-021", createdAt: new Date() },
+      { id: "d2", type: "facture", numero: "AXI-DOC-2026-022", createdAt: new Date() },
+      { id: "d3", type: "devis", numero: "AXI-DOC-2026-023", createdAt: new Date() },
+      { id: "d4", type: "avoir", numero: "AXI-DOC-2026-024", createdAt: new Date() },
+    ]);
+
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    const fichiers = Object.keys(zip.files);
+
+    expect(zip.files["preuves/attestation/AXI-DOC-2026-021.pdf"]).toBeDefined();
+    expect(
+      fichiers.filter((f) => /preuves\/(facture|devis|avoir)/.test(f)),
+      "le dossier remis à l'auditrice embarque une facture, un devis ou un avoir.",
+    ).toEqual([]);
+    expect(mockGetObjectBufferR2).toHaveBeenCalledTimes(1);
+    expect(result.nbPreuvesAttendues).toBe(1);
+    const index = await zip.files["index.txt"]!.async("string");
+    expect(index).not.toContain("AXI-DOC-2026-022");
+    expect(index).toContain("3 pièces RH, de rémunération ou de facturation");
+  });
+
+  it("🔴 formateurs/pieces.json ne liste pas les pièces de qui n'anime pas, et le DIT", async () => {
+    // Toute personne employée est une ligne `trainers`. Le CV ou le diplôme d'une
+    // secrétaire est une pièce RH : il ne prouve ni l'indicateur 21 ni le 27.
+    const piece = (type: string, estFormateur: boolean, nom: string) => ({
+      type,
+      numeroPiece: null,
+      fichierUrl: `https://r2.example/${nom}-${type}.pdf`,
+      dateEmission: null,
+      dateExpiration: null,
+      statutValidation: "valide",
+      trainer: { nom, prenom: "X", estFormateur },
+    });
+    mockPrisma.trainerDocument.findMany.mockResolvedValue([
+      piece("cv", true, "Durand"),
+      piece("cv", false, "Martin"),
+      piece("diplome", false, "Martin"),
+    ]);
+
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    const json = await zip.files["formateurs/pieces.json"]!.async("string");
+    const pieces = JSON.parse(json) as { formateur: string }[];
+
+    expect(
+      pieces.map((p) => p.formateur),
+      "pieces.json remis à l'auditrice expose les pièces d'une personne qui n'anime pas.",
+    ).toEqual(["X Durand"]);
+    expect(json).not.toContain("Martin");
+    const index = await zip.files["index.txt"]!.async("string");
+    expect(index).not.toContain("Martin");
+    expect(index).toContain("Pièces formateurs (ind. 21 / 27) : 1");
+    expect(index).toContain("2 pièces de personnes qui n'animent pas");
+  });
+
+  it("🔴 formateurs/pieces.json n'expose NI contrat de travail NI DPAE", async () => {
+    const piece = (type: string) => ({
+      type,
+      numeroPiece: null,
+      fichierUrl: `https://r2.example/${type}.pdf`,
+      dateEmission: null,
+      dateExpiration: null,
+      statutValidation: "valide",
+      trainer: { nom: "Durand", prenom: "Sophie", estFormateur: true },
+    });
+    mockPrisma.trainerDocument.findMany.mockResolvedValue([
+      piece("cv"),
+      piece("contrat_travail"),
+      piece("dpae"),
+      piece("attestation_vigilance_urssaf"),
+    ]);
+
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    const pieces = JSON.parse(await zip.files["formateurs/pieces.json"]!.async("string")) as {
+      type: string;
+      fichierUrl: string | null;
+    }[];
+
+    expect(
+      pieces.map((p) => p.type),
+      "pieces.json remis à l'auditrice expose des pièces d'employeur (contrat, DPAE).",
+    ).toEqual(["cv", "attestation_vigilance_urssaf"]);
+    const json = await zip.files["formateurs/pieces.json"]!.async("string");
+    expect(json).not.toContain("contrat_travail.pdf");
+    expect(json).not.toContain("dpae.pdf");
+    const index = await zip.files["index.txt"]!.async("string");
+    expect(index).toContain("Pièces formateurs (ind. 21 / 27) : 2");
+    expect(index).toContain("2 pièces d'employeur");
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────

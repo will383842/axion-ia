@@ -39,6 +39,11 @@ import type { DocumentType } from "../../../../prisma/generated/client";
  * suite de tests l'a dit immédiatement, et elle avait raison.
  */
 import { pieceAdmissibleAuDossier } from "@/server/qualiopi/conformite/piece-admissible";
+import {
+  documentJointAuDossierAudit,
+  lignePiecesHorsDossier,
+  pieceFormateurJointeAuDossierAudit,
+} from "@/server/qualiopi/conformite/hors-dossier-audit";
 
 export { pieceAdmissibleAuDossier };
 
@@ -186,10 +191,15 @@ export interface ManifesteAuditResult {
  * préférable à une pièce hors sujet — ses éléments constatés restent affichés,
  * et le trou se voit.
  *
- * Les types absents de cette table (facture, devis, avoir, kit_opco, kit_cpf,
- * kit_france_travail, autorisation_captation) ne prouvent aucun indicateur du
- * RNQ : ils restent intégralement joints au ZIP, ils ne sont simplement pas
- * présentés comme preuve de quelque chose qu'ils ne prouvent pas.
+ * Les types absents de cette table (kit_opco, kit_cpf, kit_france_travail,
+ * autorisation_captation) ne prouvent aucun indicateur du RNQ : ils restent
+ * intégralement joints au ZIP, ils ne sont simplement pas présentés comme
+ * preuve de quelque chose qu'ils ne prouvent pas.
+ *
+ * ⚠️ Exception (2026-09-14, X-mode-auditeur-05) : les pièces d'EMPLOYEUR, de
+ * rémunération et de facturation — `contrat_travail`, `autofacture_honoraires`,
+ * `facture`, `devis`, `avoir` — ne sont PAS jointes au ZIP. La table de
+ * destination vit dans `hors-dossier-audit.ts`.
  */
 export const INDICATEUR_DOCUMENT_TYPES: Partial<Record<number, DocumentType[]>> = {
   // C1 — Information public
@@ -650,11 +660,18 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   // ⚠️ Ce ZIP est le dossier de PREUVES remis au certificateur. Ce qui n'y a pas
   // sa place — pièce annulée, session annulée ou reportée — est écrit une seule
   // fois, en tête de ce fichier.
-  const allDocuments = await prisma.documentGenere.findMany({
+  const documentsAdmissibles = await prisma.documentGenere.findMany({
     where: pieceAdmissibleAuDossier(),
     select: { id: true, type: true, numero: true, createdAt: true },
     orderBy: { createdAt: "asc" },
   });
+  // 🔴 X-mode-auditeur-05 / G-lieu-05 (2026-09-14) — contrats de travail,
+  // autofactures d'honoraires, factures, devis et avoirs partaient sous
+  // `preuves/`. Ils ne prouvent aucun indicateur : ils restent au registre, pas
+  // dans le dossier remis (RGPD, minimisation). Écartés AVANT tout
+  // téléchargement, et comptés dans l'index.
+  const allDocuments = documentsAdmissibles.filter((d) => documentJointAuDossierAudit(d.type));
+  const nbDocumentsHorsDossier = documentsAdmissibles.length - allDocuments.length;
 
   const zip = new JSZip();
   zip.file("manifeste.json", JSON.stringify(manifeste.json, null, 2));
@@ -666,7 +683,14 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   // intervenants) et 27 (sous-traitance) sont à non-conformité MAJEURE, et le
   // plan les présente comme le gain principal du chantier. Ils n'étaient pas
   // outillés du tout.
-  const piecesFormateurs = await prisma.trainerDocument.findMany({
+  // 🔴 X-mode-auditeur-05 (2026-09-14) — ce fichier listait aussi, avec l'URL de
+  // leur fichier, les contrats de travail et les DPAE des salariés. Pièces
+  // d'EMPLOYEUR, pas pièces pédagogiques : elles restent au dossier du
+  // formateur, et l'index compte ce qui n'est pas exporté.
+  // Même chose pour TOUTES les pièces d'une personne qui n'anime pas
+  // (`estFormateur: false`) : le CV d'une secrétaire est une pièce RH, il ne
+  // prouve ni l'indicateur 21 ni le 27.
+  const piecesFormateursRegistre = await prisma.trainerDocument.findMany({
     select: {
       type: true,
       numeroPiece: true,
@@ -674,10 +698,16 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
       dateEmission: true,
       dateExpiration: true,
       statutValidation: true,
-      trainer: { select: { nom: true, prenom: true } },
+      trainer: { select: { nom: true, prenom: true, estFormateur: true } },
     },
     orderBy: [{ trainer: { nom: "asc" } }, { type: "asc" }],
   });
+  const piecesDeFormateurs = piecesFormateursRegistre.filter((p) => p.trainer.estFormateur);
+  const nbPiecesNonFormateurs = piecesFormateursRegistre.length - piecesDeFormateurs.length;
+  const piecesFormateurs = piecesDeFormateurs.filter((p) =>
+    pieceFormateurJointeAuDossierAudit(p.type),
+  );
+  const nbPiecesEmployeur = piecesDeFormateurs.length - piecesFormateurs.length;
 
   zip.file(
     "formateurs/pieces.json",
@@ -704,6 +734,16 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   indexLines.push(
     `Pièces formateurs (ind. 21 / 27) : ${piecesFormateurs.length} → formateurs/pieces.json`,
   );
+  if (nbPiecesEmployeur > 0) {
+    indexLines.push(
+      `  ${nbPiecesEmployeur} pièce${nbPiecesEmployeur > 1 ? "s" : ""} d'employeur (contrat de travail, DPAE) non exportée${nbPiecesEmployeur > 1 ? "s" : ""} : elle${nbPiecesEmployeur > 1 ? "s" : ""} ne prouve${nbPiecesEmployeur > 1 ? "nt" : ""} aucun indicateur Qualiopi et reste${nbPiecesEmployeur > 1 ? "nt" : ""} au dossier du formateur.`,
+    );
+  }
+  if (nbPiecesNonFormateurs > 0) {
+    indexLines.push(
+      `  ${nbPiecesNonFormateurs} pièce${nbPiecesNonFormateurs > 1 ? "s" : ""} de personnes qui n'animent pas non exportée${nbPiecesNonFormateurs > 1 ? "s" : ""} : elle${nbPiecesNonFormateurs > 1 ? "s" : ""} ne prouve${nbPiecesNonFormateurs > 1 ? "nt" : ""} aucun indicateur Qualiopi et reste${nbPiecesNonFormateurs > 1 ? "nt" : ""} au dossier du salarié.`,
+    );
+  }
   const sansFichier = piecesFormateurs.filter((p) => p.fichierUrl === null).length;
   const expirees = piecesFormateurs.filter(
     (p) => p.dateExpiration !== null && p.dateExpiration.getTime() < Date.now(),
@@ -730,6 +770,9 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   indexLines.push(
     `Manifeste : ${allDocuments.length} document${allDocuments.length > 1 ? "s" : ""} en base.`,
   );
+  if (nbDocumentsHorsDossier > 0) {
+    indexLines.push(lignePiecesHorsDossier(nbDocumentsHorsDossier));
+  }
   indexLines.push("");
 
   let nbInclus = 0;

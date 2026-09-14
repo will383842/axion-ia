@@ -54,7 +54,13 @@ export type TirageEmargement =
  * `generateDocument`, le tirage à la demande réutilise celui de la pièce déjà
  * au registre. Aucune des deux voies n'invente de numérotation.
  */
-export async function construireTirageEmargement(sessionId: string): Promise<TirageEmargement> {
+export async function construireTirageEmargement(
+  sessionId: string,
+  // Le dossier d'audit d'une session porte les inscriptions sous droit à
+  // l'effacement (nom anonymisé, signatures conservées art. 17 §3 b), comme sa
+  // `feuille-emargement.json`. La route du tirage, elle, garde le défaut.
+  inclureEffaces = false,
+): Promise<TirageEmargement> {
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
     select: { id: true, ...LIEU_DOCUMENT_SELECT },
@@ -65,7 +71,7 @@ export async function construireTirageEmargement(sessionId: string): Promise<Tir
 
   // Horaires RÉELS, multi-jours, modules, formateur par journée, écart de
   // signature et ancrage de chaîne — tout vient de `session_jours`.
-  const feuille = await construireFeuillePdf(sessionId);
+  const feuille = await construireFeuillePdf(sessionId, inclureEffaces);
   if (feuille === null || feuille.journees.length === 0) {
     return {
       ok: false,
