@@ -2515,8 +2515,10 @@ export async function verserFicheFormateurAction(input: {
   // nul, la fiche imprimerait donc « CV non joint »… alors qu'elle EST la pièce,
   // et `cvUrl` pointera vers elle une seconde plus tard. Le même document
   // affirmerait deux choses opposées selon l'ordre des clics.
+  // 🔴 Audit initial 2026-09-14 (constat I21-02) : un CV validé SANS fichier
+  // faisait imprimer « CV joint » — une affirmation que la pièce ne tient pas.
   const nbCvSource = await prisma.trainerDocument.count({
-    where: { trainerId, type: "cv", statutValidation: "valide" },
+    where: { trainerId, type: "cv", statutValidation: "valide", fichierUrl: { not: null } },
   });
 
   // 🔴 #1 — off.21 est une NON-CONFORMITÉ MAJEURE : « la maîtrise des compétences

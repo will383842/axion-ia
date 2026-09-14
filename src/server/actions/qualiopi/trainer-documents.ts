@@ -37,6 +37,13 @@ const DOCUMENT_TYPES = [
   "autre",
 ] as const;
 
+/**
+ * Pièces qui justifient la COMPÉTENCE d'un intervenant (indicateur 21). Une
+ * telle pièce ne se valide qu'avec un fichier joint : c'est ce fichier que
+ * l'auditrice ouvre.
+ */
+const PIECES_DE_COMPETENCE = ["cv", "diplome", "certification"] as const;
+
 const uuid = z.string().uuid();
 
 /** Une date ISO facultative : "" (champ vide du formulaire) → absente. */
@@ -125,6 +132,33 @@ export async function validateTrainerDocumentAction(
 
   if (statutValidation === "rejete" && (rejetMotif === undefined || rejetMotif.trim() === "")) {
     return { error: "Un motif est requis pour rejeter une pièce." };
+  }
+
+  // 🔴 Audit initial 2026-09-14 (constat I21-02). Une pièce de compétence
+  // (CV, diplôme, certification) VALIDÉE sans fichier couvrait l'indicateur 21
+  // et faisait imprimer « CV joint » sur la fiche formateur versée au dossier.
+  // L'auditrice ouvre la pièce : il n'y a rien derrière. On ne valide pas ce
+  // qu'on n'a pas pu lire. Le rejet, lui, reste possible sans fichier.
+  if (statutValidation === "valide") {
+    let piece: { type: string; fichierUrl: string | null } | null;
+    try {
+      piece = await prisma.trainerDocument.findUnique({
+        where: { id },
+        select: { type: true, fichierUrl: true },
+      });
+    } catch {
+      return { error: "Erreur lors de la validation de la pièce." };
+    }
+    if (piece === null) return { error: "Pièce introuvable." };
+    if (
+      (PIECES_DE_COMPETENCE as readonly string[]).includes(piece.type) &&
+      (piece.fichierUrl === null || piece.fichierUrl.trim() === "")
+    ) {
+      return {
+        error:
+          "Validation refusée : aucun fichier n'est joint à cette pièce de compétence. Joignez le fichier (ou rejetez la pièce) avant de la valider.",
+      };
+    }
   }
 
   try {

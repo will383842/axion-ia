@@ -801,6 +801,24 @@ describe("evaluerConformite", () => {
     expect(preuves).not.toMatch(/CV téléversé/i);
   });
 
+  // 🔴 Audit initial 2026-09-14 (constat I21-02). Une pièce VALIDÉE mais sans
+  // fichier comptait dans la couverture : le filtre portait sur le type, le
+  // statut, l'activité et l'expiration, jamais sur `fichierUrl`. Le mock ne sait
+  // pas évaluer un `where` : c'est donc le `where` lui-même qu'on asserte.
+  it("off.21 : une pièce de compétence SANS fichier ne compte pas dans la couverture", async () => {
+    mockP.trainer.count.mockResolvedValueOnce(1).mockResolvedValueOnce(1).mockResolvedValueOnce(1);
+    mockP.trainerDocument.findMany.mockResolvedValue([{ trainerId: "t-1" }]);
+    await evaluerConformite();
+    expect(mockP.trainerDocument.findMany).toHaveBeenCalledTimes(1);
+    expect(mockP.trainerDocument.findMany.mock.calls[0]?.[0]).toMatchObject({
+      where: {
+        type: { in: ["cv", "diplome", "certification"] },
+        statutValidation: "valide",
+        fichierUrl: { not: null },
+      },
+    });
+  });
+
   it("off.21 a_completer si CV présent mais PÉRIMÉ (aucun < 24 mois)", async () => {
     // 2 CV téléversés mais aucun daté de moins de 24 mois → 3e appel = 0.
     mockP.trainer.count.mockResolvedValueOnce(3).mockResolvedValueOnce(2).mockResolvedValueOnce(0);

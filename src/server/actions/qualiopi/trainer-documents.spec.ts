@@ -11,10 +11,12 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 const mockCreate = vi.fn();
 const mockUpdate = vi.fn();
 const mockDelete = vi.fn();
+const mockFindUnique = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainerDocument: {
+      findUnique: (...a: unknown[]) => mockFindUnique(...a),
       create: (...a: unknown[]) => mockCreate(...a),
       update: (...a: unknown[]) => mockUpdate(...a),
       delete: (...a: unknown[]) => mockDelete(...a),
@@ -46,6 +48,8 @@ beforeEach(() => {
   mockCreate.mockReset();
   mockUpdate.mockReset();
   mockDelete.mockReset();
+  mockFindUnique.mockReset();
+  mockFindUnique.mockResolvedValue({ type: "cv", fichierUrl: "https://drive.example/cv.pdf" });
   mockCreate.mockResolvedValue({ id: DOC_ID });
   mockUpdate.mockResolvedValue({ id: DOC_ID });
   mockDelete.mockResolvedValue({ id: DOC_ID });
@@ -143,6 +147,45 @@ describe("validateTrainerDocumentAction", () => {
     expect(arg.data["rejetMotif"]).toBe("Document illisible");
     expect(arg.data["valideAt"]).toBeNull();
     expect(arg.data["valideParUserId"]).toBeNull();
+  });
+
+  // 🔴 Audit initial 2026-09-14 (constat I21-02). Une pièce de compétence
+  // VALIDÉE sans fichier couvrait l'indicateur 21 et faisait imprimer « CV
+  // joint » sur la fiche formateur : l'auditrice ouvre la pièce, il n'y a rien.
+  // On ne valide pas ce qu'on n'a pas pu lire.
+  it.each(["cv", "diplome", "certification"] as const)(
+    "REFUSE de valider une pièce de compétence « %s » sans fichier joint",
+    async (type) => {
+      mockFindUnique.mockResolvedValue({ type, fichierUrl: null });
+      const r = await validateTrainerDocumentAction({ id: DOC_ID, statutValidation: "valide" });
+      expect(r).toHaveProperty("error");
+      if ("error" in r) expect(r.error).toContain("fichier");
+      expect(mockUpdate).not.toHaveBeenCalled();
+    },
+  );
+
+  it("REFUSE de valider une pièce de compétence dont l'URL n'est que des espaces", async () => {
+    mockFindUnique.mockResolvedValue({ type: "diplome", fichierUrl: "   " });
+    const r = await validateTrainerDocumentAction({ id: DOC_ID, statutValidation: "valide" });
+    expect(r).toHaveProperty("error");
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("accepte de REJETER une pièce de compétence sans fichier (motif fourni)", async () => {
+    mockFindUnique.mockResolvedValue({ type: "cv", fichierUrl: null });
+    const r = await validateTrainerDocumentAction({
+      id: DOC_ID,
+      statutValidation: "rejete",
+      rejetMotif: "Aucun fichier joint",
+    });
+    expect(r).toEqual({ data: { id: DOC_ID } });
+  });
+
+  it("répond proprement si la pièce à valider n'existe pas", async () => {
+    mockFindUnique.mockResolvedValue(null);
+    const r = await validateTrainerDocumentAction({ id: DOC_ID, statutValidation: "valide" });
+    expect(r).toHaveProperty("error");
+    expect(mockUpdate).not.toHaveBeenCalled();
   });
 
   it("refuse un statut hors { valide, rejete }", async () => {

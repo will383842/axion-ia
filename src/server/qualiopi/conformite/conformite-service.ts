@@ -543,11 +543,16 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // l'expiration n'est PAS un statut et se déduit de `dateExpiration`. Sans
     // ce filtre, une certification expirée resterait « valide » indéfiniment.
     // `dateExpiration: null` = pièce sans échéance (un diplôme) → conservée.
+    //
+    // 🔴 Audit initial 2026-09-14 (constat I21-02) : une pièce VALIDÉE sans
+    // fichier joint couvrait l'indicateur. La validation la refuse désormais,
+    // mais une ligne déjà validée sans fichier ne doit plus rien couvrir.
     prisma.trainerDocument
       .findMany({
         where: {
           type: { in: ["cv", "diplome", "certification"] },
           statutValidation: "valide",
+          fichierUrl: { not: null },
           trainer: { actif: true },
           OR: [{ dateExpiration: null }, { dateExpiration: { gte: maintenant } }],
         },

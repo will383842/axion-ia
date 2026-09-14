@@ -190,6 +190,23 @@ describe("verserFicheFormateurAction — habilitations déclarables", () => {
     expect(mockGenerateDocument).not.toHaveBeenCalled();
   });
 
+  // 🔴 Audit initial 2026-09-14 (constat I21-02). `nbCvSource` comptait un CV
+  // validé SANS fichier, et la fiche imprimait alors « CV joint » /
+  // « cv_televerse » : une affirmation que la pièce elle-même ne tient pas.
+  it("« CV joint » ne compte QUE les CV sources validés portant un fichier", async () => {
+    await verserFicheFormateurAction({ trainerId: TRAINER_ID });
+
+    expect(mockTrainerDocumentCount).toHaveBeenCalledTimes(1);
+    expect(mockTrainerDocumentCount.mock.calls[0]?.[0]).toMatchObject({
+      where: {
+        trainerId: TRAINER_ID,
+        type: "cv",
+        statutValidation: "valide",
+        fichierUrl: { not: null },
+      },
+    });
+  });
+
   it("dégrade proprement : habilitations toutes retirées mais compétences saisies → la fiche sort", async () => {
     mockHabilitationFindMany.mockResolvedValue([]);
     mockTrainerDocumentCount.mockResolvedValue(0);
