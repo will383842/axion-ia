@@ -34,7 +34,6 @@ const DATA: PositionnementRempliData = {
   chronologie: "avant le début de la session",
   reponduAvantDebut: true,
   tireeLe: "14 septembre 2026 à 14:30",
-  precisionSurFicheStagiaire: false,
   positionnement: {
     fonction: "Assistante de direction",
     secteur: "Immobilier",
@@ -90,18 +89,55 @@ describe("PositionnementRempliPdf — une pièce REMPLIE, jamais le gabarit", ()
 
   // ── Relectures de la PR 1090 ─────────────────────────────────────────────
 
-  it("🔴 besoin coché sans précision, fiche portant un détail venu d'ailleurs : aucune précision n'est attribuée au questionnaire", () => {
-    const t = texte({ ...DATA, precisionSurFicheStagiaire: true });
-    expect(t).not.toContain("Précision fournie");
-    expect(t).not.toContain("Aucune précision");
-    // La fiche est signalée hors des réponses, sans rien affirmer au nom du questionnaire.
-    expect(t).toContain("peut figurer sur la fiche du stagiaire");
-    expect(t).toContain("Oui");
+  // 🔴 Minimisation (troisième relecture) : la pièce part dans le ZIP remis à
+  // l'auditrice. Signaler qu'un détail de santé EXISTE sur la fiche le révèle
+  // sans nécessité — y compris après « Non » ou sur une saisie de l'organisme.
+  // La fiche ne se signale donc JAMAIS sur la pièce ; seul l'écran de la
+  // console, réservé à l'administration, en porte la mention. Un appelant qui
+  // passerait encore l'ancienne donnée ne doit rien faire imprimer.
+  it("🔴 minimisation : stagiaire « Non », fiche porteuse d'un détail → la pièce ne mentionne AUCUNE précision", () => {
+    const t = texte({
+      ...DATA,
+      precisionSurFicheStagiaire: true,
+      positionnement: { ...DATA.positionnement, besoinAdaptation: false },
+    } as PositionnementRempliData);
+    expect(t).toContain("Non");
+    expect(t).not.toMatch(/précision/i);
+    expect(t).not.toContain("fiche du stagiaire");
   });
 
-  it("sans détail sur la fiche, la mention de la fiche n'apparaît pas", () => {
-    expect(text).not.toContain("peut figurer sur la fiche du stagiaire");
-    expect(text).not.toContain("Précision fournie");
+  it("🔴 minimisation : besoin « Oui » sans trace dans la réponse, fiche porteuse d'un détail → rien sur la fiche", () => {
+    const t = texte({ ...DATA, precisionSurFicheStagiaire: true } as PositionnementRempliData);
+    expect(t).toContain("Oui");
+    expect(t).not.toMatch(/précision/i);
+    expect(t).not.toContain("fiche du stagiaire");
+  });
+
+  it("🔴 minimisation : saisie de l'organisme, fiche porteuse d'un détail → rien sur la fiche", () => {
+    const t = texte({
+      ...DATA,
+      precisionSurFicheStagiaire: true,
+      positionnement: {
+        ...DATA.positionnement,
+        besoinAdaptation: null,
+        precisionDansLaReponse: false,
+        saisieAdmin: true,
+      },
+    } as PositionnementRempliData);
+    expect(t).not.toMatch(/précision/i);
+    expect(t).not.toContain("fiche du stagiaire");
+  });
+
+  it("une trace ancienne sans besoin déclaré « Oui » n'imprime AUCUNE ligne Précision", () => {
+    const t = texte({
+      ...DATA,
+      positionnement: {
+        ...DATA.positionnement,
+        besoinAdaptation: false,
+        precisionDansLaReponse: true,
+      },
+    });
+    expect(t).not.toMatch(/précision/i);
   });
 
   it("détail ancien présent DANS la réponse : la présence se dit, jamais le contenu", () => {

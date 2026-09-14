@@ -29,7 +29,9 @@
  * fiche stagiaire ne décide rien ici : elle est aussi écrite par la déclaration
  * de handicap du portail et par la console, jamais remise à zéro, et peut venir
  * d'une session antérieure. Elle se signale À PART, par une mention neutre
- * (`MENTION_PRECISION_FICHE_STAGIAIRE`), jamais au nom du questionnaire.
+ * (`MENTION_PRECISION_FICHE_STAGIAIRE`), jamais au nom du questionnaire — et
+ * UNIQUEMENT à l'écran de la console : jamais sur une pièce du dossier d'audit,
+ * qui révélerait sans nécessité l'existence d'un détail de santé.
  *
  * ⚠️ Module PUR : aucun import. Il ne doit rien inventer — une question qui n'a
  * pas été posée se lit `null` (« Non renseigné », ou « Non posée » pour une
@@ -49,7 +51,8 @@ export const PRECISION_DANS_LA_REPONSE =
 
 /**
  * Mention NEUTRE, affichée hors des réponses, quand la fiche stagiaire porte un
- * détail chiffré : elle n'affirme rien au nom du questionnaire.
+ * détail chiffré : elle n'affirme rien au nom du questionnaire. Écran de la
+ * console SEULEMENT — jamais sur une pièce ni dans le ZIP du dossier d'audit.
  */
 export const MENTION_PRECISION_FICHE_STAGIAIRE =
   "Une précision sur les besoins d'adaptation peut figurer sur la fiche du stagiaire (consultation réservée au super-administrateur).";

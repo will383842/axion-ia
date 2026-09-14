@@ -11,9 +11,10 @@
  * jamais chargée : la présence se lit par un filtre en base, et seul
  * l'identifiant revient.
  *
- * 🔑 La fiche session et les pièces du dossier d'audit lisent CETTE fonction.
- * La requête est bornée aux stagiaires désignés : elle ne parcourt jamais le
- * registre.
+ * 🔑 Seul l'écran de la fiche session (console, réservée à l'administration) lit
+ * cette fonction. Les pièces du dossier d'audit ne l'appellent PAS : elles ne
+ * révèlent pas l'existence d'un détail de santé (minimisation). La requête est
+ * bornée aux stagiaires désignés : elle ne parcourt jamais le registre.
  */
 
 import { prisma } from "@/lib/prisma";

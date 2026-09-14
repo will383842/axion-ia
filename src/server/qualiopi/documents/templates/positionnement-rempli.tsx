@@ -15,10 +15,11 @@
  * 🔴 Relectures de la PR 1090 :
  *   · la précision d'un besoin d'adaptation (donnée de santé, lecture réservée
  *     au super-administrateur) n'y figure JAMAIS, ni en clair ni déchiffrée.
- *     Une ligne « Précision » n'apparaît que si la RÉPONSE atteste qu'une
- *     précision a été saisie. Un détail sur la fiche stagiaire — qui peut venir
- *     d'ailleurs — se signale hors des réponses, sans rien attribuer au
- *     questionnaire ;
+ *     Une ligne « Précision » n'apparaît que si la RÉPONSE déclare un besoin
+ *     (« Oui ») ET atteste qu'une précision a été saisie. Rien de la FICHE
+ *     stagiaire n'y figure, pas même l'existence d'un détail : cette pièce part
+ *     dans le ZIP remis à l'auditrice (minimisation). Seul l'écran de la
+ *     console, réservé à l'administration, porte cette mention ;
  *   · l'indicateur 10 n'est cité que pour une réponse du portail portant la
  *     question du besoin, arrivée AVANT le début (règle de la PR 1083) ;
  *   · une saisie par l'organisme est titrée comme telle et restitue ce que
@@ -43,7 +44,6 @@ import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
 import {
   libelleBesoinAdaptation,
-  MENTION_PRECISION_FICHE_STAGIAIRE,
   PRECISION_DANS_LA_REPONSE,
   type PositionnementLu,
 } from "@/server/qualiopi/positionnement/lecture-positionnement";
@@ -94,11 +94,8 @@ export interface PositionnementRempliData {
   reponduAvantDebut: boolean;
   /** Instant RÉEL du tirage de la pièce, date et heure de Paris. Jamais antidaté. */
   tireeLe: string;
-  /**
-   * La FICHE stagiaire porte un détail chiffré. Ne dit rien de ce questionnaire :
-   * la colonne est aussi écrite ailleurs. Signalé hors des réponses.
-   */
-  precisionSurFicheStagiaire: boolean;
+  // ⚠️ Aucune donnée de la FICHE stagiaire : la pièce part dans le dossier
+  // d'audit, elle ne révèle pas l'existence d'un détail de santé.
   positionnement: PositionnementLu;
 }
 
@@ -191,16 +188,11 @@ export function PositionnementRempliPdf({
             question="Besoin d'adaptation déclaré"
             valeur={libelleBesoinAdaptation(p.besoinAdaptation, p.saisieAdmin)}
           />
-          {p.precisionDansLaReponse ? (
+          {/* Seulement après « Oui » : sans besoin déclaré, rien à signaler. */}
+          {p.besoinAdaptation === true && p.precisionDansLaReponse ? (
             <Reponse question="Précision" valeur={PRECISION_DANS_LA_REPONSE} />
           ) : null}
         </DocSection>
-
-        {data.precisionSurFicheStagiaire ? (
-          <Text style={pdfStyles.paragraph}>
-            {`Hors questionnaire : ${MENTION_PRECISION_FICHE_STAGIAIRE}`}
-          </Text>
-        ) : null}
 
         <LegalCallout variant="legal">
           {origine} Droit d&apos;accès :{" "}

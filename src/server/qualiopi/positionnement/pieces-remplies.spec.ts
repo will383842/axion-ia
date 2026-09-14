@@ -58,7 +58,6 @@ type DonneesPiece = {
   chronologie: string;
   tireeLe: string;
   reponduAvantDebut: boolean;
-  precisionSurFicheStagiaire: boolean;
   positionnement: Record<string, unknown>;
 };
 
@@ -173,29 +172,30 @@ describe("pièces positionnement rempli", () => {
     });
   });
 
-  it("🔴 besoin coché SANS précision, fiche portant un détail venu d'ailleurs : la pièce n'attribue AUCUNE précision au questionnaire", async () => {
-    // La colonne chiffrée a été écrite par la déclaration de handicap du
-    // portail, par la console, ou lors d'une session antérieure.
-    mockPrisma.questionnaire.findMany.mockResolvedValue([
-      { ...LIGNE, reponses: { besoinAdaptation: true, attentes: "Gagner du temps" } },
-    ]);
-    mockPrisma.trainee.findMany.mockResolvedValue([{ id: "t-1" }]);
+  // 🔴 Minimisation (troisième relecture) : rien de la FICHE stagiaire n'entre
+  // dans une pièce du dossier d'audit. La fiche n'est même pas interrogée.
+  for (const [cas, reponses] of [
+    ["stagiaire « Non »", { besoinAdaptation: false, attentes: "Gagner du temps" }],
+    ["besoin « Oui » sans trace dans la réponse", { besoinAdaptation: true }],
+    ["saisie de l'organisme", { commentaire: "Appel téléphonique", saisie_admin: true }],
+  ] as const) {
+    it(`🔴 minimisation — ${cas}, fiche porteuse d'un détail : la pièce ne reçoit RIEN de la fiche`, async () => {
+      // La colonne chiffrée a été écrite par la déclaration de handicap du
+      // portail, par la console, ou lors d'une session antérieure.
+      mockPrisma.questionnaire.findMany.mockResolvedValue([{ ...LIGNE, reponses }]);
+      mockPrisma.trainee.findMany.mockResolvedValue([{ id: "t-1" }]);
 
-    await produirePiecesPositionnementRempli();
+      await produirePiecesPositionnementRempli();
 
-    // La présence se lit par un filtre : la colonne chiffrée n'est pas chargée.
-    const requete = mockPrisma.trainee.findMany.mock.calls[0]![0] as {
-      where: Record<string, unknown>;
-      select: Record<string, unknown>;
-    };
-    expect(requete.where["handicapDetailsChiffre"]).toEqual({ not: null });
-    expect(requete.select).toEqual({ id: true });
-
-    const data = donneesRendues();
-    expect(data.positionnement["precisionDansLaReponse"]).toBe(false);
-    // La fiche est signalée À PART, sans être rattachée au questionnaire.
-    expect(data.precisionSurFicheStagiaire).toBe(true);
-  });
+      expect(mockPrisma.trainee.findMany).not.toHaveBeenCalled();
+      const data = donneesRendues() as unknown as Record<string, unknown>;
+      expect("precisionSurFicheStagiaire" in data).toBe(false);
+      expect(JSON.stringify(data)).not.toMatch(/fiche/i);
+      expect((data["positionnement"] as Record<string, unknown>)["precisionDansLaReponse"]).toBe(
+        false,
+      );
+    });
+  }
 
   it("détail ancien EN CLAIR dans les réponses : la réponse l'atteste, son contenu ne passe JAMAIS", async () => {
     mockPrisma.questionnaire.findMany.mockResolvedValue([
@@ -209,7 +209,7 @@ describe("pièces positionnement rempli", () => {
 
     const data = donneesRendues();
     expect(data.positionnement["precisionDansLaReponse"]).toBe(true);
-    expect(data.precisionSurFicheStagiaire).toBe(false);
+    expect("precisionSurFicheStagiaire" in data).toBe(false);
     expect(JSON.stringify(data)).not.toContain("fauteuil");
   });
 

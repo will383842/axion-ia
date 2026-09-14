@@ -15,9 +15,9 @@
  *     positionnement rempli par le stagiaire. Elle est comptée à part, et sa
  *     pièce est nommée et titrée comme telle ;
  *   · la précision d'un besoin d'adaptation (donnée de santé) n'entre JAMAIS
- *     dans une pièce. La présence d'un détail chiffré sur la FICHE stagiaire se
- *     lit par un filtre en base (la colonne n'est pas chargée) et se signale à
- *     part : elle n'est jamais attribuée au questionnaire.
+ *     dans une pièce. Rien de la FICHE stagiaire non plus, pas même l'existence
+ *     d'un détail chiffré : la fiche n'est pas interrogée ici (minimisation —
+ *     seul l'écran de la console en porte la mention).
  *
  * ⚠️ Un rendu en échec est RAPPORTÉ (`echecs`), jamais avalé : l'appelant le
  * porte en avertissement et déclare le dossier incomplet.
@@ -36,7 +36,6 @@ import {
   lirePositionnement,
   reponseAvantDebut,
 } from "./lecture-positionnement";
-import { stagiairesAvecPrecisionChiffree } from "./precision-chiffree";
 
 export interface PiecePositionnementRempli {
   readonly chemin: string;
@@ -134,11 +133,6 @@ export async function produirePiecesPositionnementRempli(): Promise<{
   const echecs: EchecPositionnementRempli[] = [];
   if (lignes.length === 0) return { pieces, echecs };
 
-  // Détail chiffré sur la FICHE (pas dans la réponse) : présence seule, par filtre.
-  const avecDetailSurFiche = await stagiairesAvecPrecisionChiffree(
-    lignes.map((l) => l.enrollment.trainee.id),
-  );
-
   const identite = await getOrganismeIdentite();
   // Instant RÉEL du tirage, le même pour toutes les pièces d'un dossier.
   const tireeLe = formaterInstantParis(new Date());
@@ -165,7 +159,6 @@ export async function produirePiecesPositionnementRempli(): Promise<{
             chronologie: chronologieReponse(ligne.reponduAt, session.dateDebut),
             reponduAvantDebut: reponseAvantDebut(ligne.reponduAt, session.dateDebut),
             tireeLe,
-            precisionSurFicheStagiaire: avecDetailSurFiche.has(trainee.id),
             positionnement: lirePositionnement(ligne.reponses),
           },
           identite,
