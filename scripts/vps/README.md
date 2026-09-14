@@ -12,16 +12,17 @@ la reprise après sinistre. Voir `docs/adr/0032-backup-dr-extension-pitr-immutab
 
 ## Contenu
 
-| Fichier                   | Rôle                                                                                            | Cron (UTC)                                 |
-| ------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------ |
-| `run-pg-hourly-backup.sh` | Dump Postgres applicatif → R2 `postgres/hourly/` (RPO ~1 h)                                     | `20 * * * *`                               |
-| `run-r2-backup.sh`        | Dump Postgres daily/weekly/monthly → R2 (auto-pull `backup-postgres-r2.sh`)                     | `0 3` / `0 4 dim` / `0 5 1er`              |
-| `run-files-backup.sh`     | tar chiffré des volumes fichiers (CV, console-docs, avis) → R2 `files/{daily,weekly,monthly}/`  | `15 4 * * *` · `30 4 * * 0` · `30 5 1 * *` |
-| `run-secrets-backup.sh`   | Archive chiffrée des secrets/env de **toute l'instance** Coolify → R2 `secrets/` (rétention 30) | `0 2 * * *`                                |
-| `run-docuseal-backup.sh`  | Dump Docuseal → R2 `docuseal/{daily,weekly,monthly}/`                                           | `45 2 * * *` · `50 4 * * 0` · `50 5 1 * *` |
-| `run-plausible-backup.sh` | Dump Plausible PG + ClickHouse → R2 `plausible/pg/daily/` + `plausible/ch/daily/`               | `30 3 * * *`                               |
-| `run-backup-digest.sh`    | **Bilan quotidien Telegram unique** : lit R2, vérifie fraîcheur par composant                   | `30 6 * * *`                               |
-| `crontab.snapshot.txt`    | Snapshot du crontab `root` (référence)                                                          | —                                          |
+| Fichier                    | Rôle                                                                                                                                                                                        | Cron (UTC)                                 |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| `run-pg-hourly-backup.sh`  | Dump Postgres applicatif → R2 `postgres/hourly/` (RPO ~1 h)                                                                                                                                 | `20 * * * *`                               |
+| `run-r2-backup.sh`         | Dump Postgres daily/weekly/monthly → R2 (auto-pull `backup-postgres-r2.sh`)                                                                                                                 | `0 3` / `0 4 dim` / `0 5 1er`              |
+| `run-files-backup.sh`      | tar chiffré des volumes fichiers (CV, console-docs, avis) → R2 `files/{daily,weekly,monthly}/`                                                                                              | `15 4 * * *` · `30 4 * * 0` · `30 5 1 * *` |
+| `run-secrets-backup.sh`    | Archive chiffrée des secrets/env de **toute l'instance** Coolify → R2 `secrets/` (rétention 30)                                                                                             | `0 2 * * *`                                |
+| `run-storagebox-mirror.sh` | **Seconde destination hors serveur** : recopie R2 → Hetzner Storage Box (Axion-IA + Axion Audit). Le mot de passe est LU dans `/opt/axion-ia/.storagebox-password` (600), jamais interpolé. | `30 5 * * *`                               |
+| `run-docuseal-backup.sh`   | Dump Docuseal → R2 `docuseal/{daily,weekly,monthly}/`                                                                                                                                       | `45 2 * * *` · `50 4 * * 0` · `50 5 1 * *` |
+| `run-plausible-backup.sh`  | Dump Plausible PG + ClickHouse → R2 `plausible/pg/daily/` + `plausible/ch/daily/`                                                                                                           | `30 3 * * *`                               |
+| `run-backup-digest.sh`     | **Bilan quotidien Telegram unique** : lit R2, vérifie fraîcheur par composant                                                                                                               | `30 6 * * *`                               |
+| `crontab.snapshot.txt`     | Snapshot du crontab `root` (référence)                                                                                                                                                      | —                                          |
 
 ## Notifications Telegram (2026-07-11)
 
@@ -87,3 +88,49 @@ ssh axion-prod 'chmod +x /opt/axion-ia/run-*.sh'
 
 Restauration / drill : voir `docs/runbooks/` (R33 disaster recovery) et
 `_AUDIT/RUNBOOK-PG-RESTORE-DRILL-2026-05-16.md`.
+
+## Le miroir Storage Box — deux pieges deja payes
+
+Ce script a ete depose sur le VPS le **2026-09-03** et n'a **jamais tourne une
+seule fois** avant le 2026-09-14. Il n'etait ni versionne, ni planifie, et il
+portait un defaut qui l'empechait de s'authentifier. Trois absences pour un
+seul resultat : la seconde destination hors serveur n'existait pas, alors que
+tout laissait croire le contraire.
+
+### 1. `-b -` desactive l'authentification par mot de passe
+
+`sftp -b -` implique le mode batch, qui refuse toute saisie de mot de passe —
+y compris celle que `sshpass` fournit. Le script ne pouvait donc PAS fonctionner,
+quel que soit le secret. Mesure du 2026-09-14, meme mot de passe, trois formes :
+
+| Forme                                                            | Resultat  |
+| ---------------------------------------------------------------- | --------- |
+| document en ligne (methode de `verifier-sauvegarde.sh` cote CRM) | ✅ OK     |
+| `-b -` seul                                                      | 🔴 refuse |
+| `-b -` + `-o BatchMode=no`                                       | ✅ OK     |
+
+🔑 Le symptome est un **« Permission denied »**, c'est-a-dire exactement ce
+qu'affiche un mauvais mot de passe. On peut donc y perdre des heures a chercher
+du cote du secret ou du fournisseur. C'est arrive deux fois : l'en-tete du
+script raconte deja une demi-heure perdue a croire a un blocage Hetzner.
+
+### 2. Lire un secret d'un `.env` en le DECOUPANT le corrompt
+
+Le `.env` du CRM est en fins de ligne Windows et la valeur est entre guillemets.
+`grep | cut | tr -d '"'` rend **15 caracteres** la ou la valeur en fait **13**.
+La bonne facon est celle des scripts du CRM :
+
+```sh
+set -a; source <(grep -E '^SB_' /opt/axion-crm-pro/.env); set +a
+```
+
+⚠️ Un mot de passe corrompu et un mot de passe faux rendent le meme message.
+Un controle de LONGUEUR avant usage distingue les deux en une seconde.
+
+### Pourquoi l'echec serait SILENCIEUX
+
+`run-backup-digest.sh` n'interroge que R2 (`aws s3 ls`) : un miroir mort laisse
+le bilan quotidien tout vert. Le tableau de bord est indexe par COMPOSANT et ne
+connait aucune entree `storagebox`. **Tant qu'une garde externe n'existe pas,
+seul le journal `/var/log/storagebox-mirror.log` dit la verite** — le relire
+apres tout changement touchant la Storage Box.

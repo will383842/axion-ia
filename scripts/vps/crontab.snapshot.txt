@@ -16,3 +16,7 @@
 30 5 1 * *   /opt/axion-ia/run-files-backup.sh monthly >> /var/log/files-backup.log 2>&1
 50 4 * * 0   /opt/axion-ia/run-docuseal-backup.sh weekly >> /var/log/docuseal-backup.log 2>&1
 50 5 1 * *   /opt/axion-ia/run-docuseal-backup.sh monthly >> /var/log/docuseal-backup.log 2>&1
+# Miroir R2 -> Hetzner Storage Box : la SECONDE destination hors serveur.
+# 05:30 = apres le dernier envoi R2 (files, 04:15) et AVANT le bilan (06:30),
+# pour que le bilan puisse voir ce que le miroir vient de faire.
+30 5 * * *   /opt/axion-ia/run-storagebox-mirror.sh >> /var/log/storagebox-mirror.log 2>&1
