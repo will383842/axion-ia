@@ -423,6 +423,10 @@ export async function saveEmargementAction(input: {
       select: {
         id: true,
         dureePrevueMinutes: true,
+        // Revue A09 §4 — l'état ACTUEL, pour ne réécrire que les créneaux que
+        // l'utilisateur a réellement modifiés (cf. plus bas).
+        dureeRealiseeMinutes: true,
+        present: true,
         source: true,
         libelle: true,
         // 🔴 2026-08-24 — `importId` et le compte de signatures MANQUAIENT ici,
@@ -512,28 +516,45 @@ export async function saveEmargementAction(input: {
     // modifier, transformait `import_zoom` en `emargement_presentiel` sur des
     // enregistrements à valeur probante — et remplaçait leur libellé horodaté.
     // Le PDF de relevé de connexion et le dossier d'audit lisent ce champ.
-    const sourceImportee = existingCreneau?.source?.startsWith("import_") === true;
+    //
+    // Revue A09 §4 (2026-09-14) — un relevé de la plateforme « autre » porte
+    // `source: emargement_presentiel` (`toPresenceSource`) ET un `importId`. Il
+    // se protège donc comme un `import_*` : c'est `importId` qui dit le relevé,
+    // pas le texte de `source` (même règle que `signature-service.ts`).
+    const creneauImporte =
+      existingCreneau?.source?.startsWith("import_") === true ||
+      (existingCreneau?.importId ?? null) !== null;
+
+    // 🔴 2026-09-14 — `G-prerequis-02` + revue A09 §4. LA GRILLE RENVOIE TOUTES
+    // SES CELLULES À CHAQUE CLIC. Un créneau dont l'utilisateur n'a changé ni la
+    // présence ni la durée n'est PAS réécrit : ni sa source, ni son libellé, ni
+    // son horodatage. Le réécrire en `manuel` inventerait une saisie que personne
+    // n'a faite — et requalifierait en masse, au premier clic, les grilles
+    // antérieures au correctif. Aucune donnée existante n'est modifiée sans geste.
+    if (
+      existingCreneau !== null &&
+      existingCreneau.present === entry.present &&
+      existingCreneau.dureeRealiseeMinutes === dureeRealiseeMinutes
+    ) {
+      continue;
+    }
+
     // 🔴 2026-09-14 — `G-prerequis-02`. Hors import, la grille écrivait
     // `emargement_presentiel` : une case cochée par un administrateur prenait la
     // provenance d'un émargement, alors qu'aucune signature n'existe — les
     // signatures sautent la grille (garde ci-dessus) et passent par
-    // `emargement/signature-service.ts`. Une présence DÉCLARÉE ici est donc
-    // `manuel`, la valeur que porte déjà `setPresenceCreneauManualAction` et que
-    // l'import reconnaît comme « saisie manuelle » à ne pas effacer.
-    //
-    // ⚠️ Une cellule vierge laissée absente ne déclare rien : elle garde sa
-    // provenance. La grille renvoie TOUTES ses cellules à chaque clic, et
-    // requalifier en `manuel` un créneau que personne n'a touché serait inventer
-    // une saisie.
-    const declarePresence = entry.present || dureeRealiseeMinutes > 0;
-    const source:
-      "import_zoom" | "import_teams" | "import_meet" | "manuel" | "emargement_presentiel" =
-      sourceImportee
-        ? (existingCreneau?.source as "import_zoom" | "import_teams" | "import_meet")
-        : declarePresence || existingCreneau?.source === "manuel"
-          ? "manuel"
-          : "emargement_presentiel";
-    const libelle = sourceImportee
+    // `emargement/signature-service.ts`. Un créneau MODIFIÉ ici est donc une
+    // saisie à la main : `manuel`, la valeur que porte déjà
+    // `setPresenceCreneauManualAction` et que l'import reconnaît comme « saisie
+    // manuelle » à ne pas effacer. Seul un créneau NEUF laissé vierge garde le
+    // gabarit `emargement_presentiel`.
+    const source =
+      existingCreneau !== null && creneauImporte
+        ? existingCreneau.source
+        : existingCreneau === null && !entry.present && dureeRealiseeMinutes === 0
+          ? ("emargement_presentiel" as const)
+          : ("manuel" as const);
+    const libelle = creneauImporte
       ? (existingCreneau?.libelle ?? "")
       : `${entry.date} ${entry.demiJournee === "apres_midi" ? "après-midi" : entry.demiJournee}`;
 

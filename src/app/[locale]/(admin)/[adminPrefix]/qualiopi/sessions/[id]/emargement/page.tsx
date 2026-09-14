@@ -19,10 +19,8 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { getSessionEmargement } from "@/server/qualiopi/presence/queries";
 import { classifierPresence } from "@/server/qualiopi/presence/taux";
 import {
-  libelleEmargementSigne,
-  resumerProvenance,
+  libellesEmargementParInscription,
   type LibelleEmargement,
-  type ResumeProvenance,
 } from "@/server/qualiopi/presence/provenance";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { EmargementGrid } from "@/components/admin/qualiopi/EmargementGrid";
@@ -132,28 +130,10 @@ export default async function EmargementPage({ params }: PageProps) {
   // 🔴 `G-prerequis-02` (audit initial 2026-09-14) — la colonne « Émargement
   // signé » lisait `emargementSigneAt` seul, que la grille manuelle posait sans
   // aucune signature. Elle lit désormais la PROVENANCE de chaque créneau : une
-  // signature vivante, un relevé importé, ou une déclaration à la main.
-  const resumeVide: ResumeProvenance = { signees: 0, declarees: 0, releveConnexion: 0 };
-  const libelleParInscription = new Map<string, LibelleEmargement>(
-    enrollments.map((e) => [
-      e.id,
-      libelleEmargementSigne({
-        emargementSigneAt: e.emargementSigneAt,
-        resume:
-          creneaux.length === 0
-            ? resumeVide
-            : resumerProvenance(
-                creneaux
-                  .filter((c) => c.enrollmentId === e.id)
-                  .map((c) => ({
-                    present: c.present,
-                    importId: c.importId,
-                    signaturesVivantes: c.emargementSignatures.length,
-                  })),
-              ),
-      }),
-    ]),
-  );
+  // signature vivante, un relevé importé, ou une déclaration à la main — et la
+  // date de la première signature au registre. Toute la règle vit dans
+  // `presence/provenance.ts`, testée sans rendu.
+  const libelleParInscription = libellesEmargementParInscription(enrollments, creneaux);
   const tonCls: Record<LibelleEmargement["ton"], string> = {
     succes: "text-[color:var(--color-admin-success)]",
     alerte: "text-[color:var(--color-admin-warning)]",

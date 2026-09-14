@@ -45,11 +45,12 @@ export interface SessionEmargementRow {
     };
   }>;
   /**
-   * Créneaux, avec leurs signatures VIVANTES (bornées à 1 : la question est
-   * « en existe-t-il une ? »). Sans elles, l'écran ne peut pas distinguer une
-   * présence signée d'une présence déclarée à la main (`G-prerequis-02`).
+   * Créneaux, avec leur plus ANCIENNE signature VIVANTE (bornée à 1 : la
+   * question est « en existe-t-il une, et depuis quand ? »). Sans elle, l'écran
+   * ne peut ni distinguer une présence signée d'une présence déclarée à la main
+   * (`G-prerequis-02`), ni dater l'émargement au registre (revue A09 §3).
    */
-  creneaux: Array<PresenceCreneau & { emargementSignatures: Array<{ id: string }> }>;
+  creneaux: Array<PresenceCreneau & { emargementSignatures: Array<{ id: string; signeAt: Date }> }>;
   /**
    * Journées RÉELLEMENT animées (décision D14), ordonnées.
    *
@@ -118,7 +119,15 @@ export async function getSessionEmargement(
       where: { enrollmentId: { in: session.enrollments.map((e) => e.id) } },
       orderBy: [{ date: "asc" }, { demiJournee: "asc" }],
       include: {
-        emargementSignatures: { where: { revokedAt: null }, select: { id: true }, take: 1 },
+        // La plus ANCIENNE signature vivante du créneau : l'écran affiche sa
+        // date, lue au registre, et non `emargementSigneAt` que l'ancienne grille
+        // a pu poser avant elle (revue A09 §3).
+        emargementSignatures: {
+          where: { revokedAt: null },
+          select: { id: true, signeAt: true },
+          orderBy: { signeAt: "asc" },
+          take: 1,
+        },
       },
     });
 

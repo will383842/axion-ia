@@ -724,4 +724,36 @@ describe("genererDossierSessionZip — provenance des présences (G-prerequis-02
     });
     expect(res?.avertissements.join(" ")).not.toContain("déclarée");
   });
+
+  it("🔴 revue A09 §1 — un créneau importé où le stagiaire était ABSENT n'est pas « issu d'un relevé »", async () => {
+    // Relevé à 0 min sur deux demi-journées, connecté sur une : UNE présence.
+    mockFindUnique.mockResolvedValue(
+      session({
+        enrollments: [
+          {
+            id: "enr-1",
+            tauxPresencePct: 33,
+            trainee: { nom: "Dupont", prenom: "Alice", deletedAt: null },
+            presences: [
+              { present: true, importId: "imp-1", emargementSignatures: [] },
+              { present: false, importId: "imp-1", emargementSignatures: [] },
+              { present: false, importId: "imp-1", emargementSignatures: [] },
+            ],
+            emargementSignatures: [],
+          },
+        ],
+      }),
+    );
+
+    const res = await genererDossierSessionZip("ses-1");
+
+    const rapport = JSON.parse((await fichierDuZip(res!.base64, "verification-integrite.json"))!);
+    expect(
+      rapport.signatures[0].presencesReleveConnexion,
+      "le dossier compte des ABSENCES du relevé comme des présences issues du relevé",
+    ).toBe(1);
+    expect(await fichierDuZip(res!.base64, "index.txt")).toContain(
+      "1 issu d'un relevé de connexion",
+    );
+  });
 });

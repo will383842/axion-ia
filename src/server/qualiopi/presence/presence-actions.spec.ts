@@ -756,10 +756,13 @@ describe("saveEmargementAction", () => {
   });
 
   it("🔴 G-prerequis-02 — une présence cochée à la main porte la provenance « manuel »", async () => {
-    // Créneau généré (placeholder `emargement_presentiel`), sans signature ni import.
+    // Créneau généré (placeholder `emargement_presentiel`, vierge), sans
+    // signature ni import.
     mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
       id: "c1",
       dureePrevueMinutes: 210,
+      dureeRealiseeMinutes: 0,
+      present: false,
       source: "emargement_presentiel",
       libelle: "2026-06-10 matin",
       importId: null,
@@ -779,12 +782,14 @@ describe("saveEmargementAction", () => {
     ).toBe("manuel");
   });
 
-  it("une case laissée ABSENTE ne change pas la provenance du créneau", async () => {
-    // Contre-témoin : la grille renvoie TOUTES ses cellules à chaque clic. Une
-    // cellule vierge, non touchée, ne déclare rien — elle garde sa provenance.
+  it("🔴 revue A09 §4 — une case vierge laissée ABSENTE n'est pas réécrite", async () => {
+    // La grille renvoie TOUTES ses cellules à chaque clic. Une cellule vierge,
+    // non touchée, ne déclare rien : aucune écriture.
     mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
       id: "c1",
       dureePrevueMinutes: 210,
+      dureeRealiseeMinutes: 0,
+      present: false,
       source: "emargement_presentiel",
       libelle: "2026-06-10 matin",
       importId: null,
@@ -796,14 +801,72 @@ describe("saveEmargementAction", () => {
       entries: [{ ...validEntry, present: false, dureeRealiseeMinutes: 0 }],
     });
 
-    const call = mockCall<{ source: string }>(mockUpsertCreneau);
-    expect(call.source).toBe("emargement_presentiel");
+    expect(
+      mockUpsertCreneau,
+      "un créneau que personne n'a modifié a été réécrit",
+    ).not.toHaveBeenCalled();
+  });
+
+  it("🔴 revue A09 §4 — un créneau PRÉSENT non modifié (grille antérieure) n'est pas requalifié en « manuel »", async () => {
+    // Grille enregistrée avant le correctif : `emargement_presentiel`, présent,
+    // 210 min. L'admin clique « Enregistrer » pour une AUTRE ligne : celle-ci
+    // revient telle quelle et ne doit pas changer de provenance.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "c1",
+      dureePrevueMinutes: 210,
+      dureeRealiseeMinutes: 210,
+      present: true,
+      source: "emargement_presentiel",
+      libelle: "2026-06-10 matin",
+      importId: null,
+      emargementSignatures: [],
+    });
+
+    const result = await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [{ ...validEntry, present: true, dureeRealiseeMinutes: 210 }],
+    });
+
+    expect(
+      mockUpsertCreneau,
+      "la grille a réécrit (et requalifié en « manuel ») un créneau que personne n'a touché",
+    ).not.toHaveBeenCalled();
+    expect("data" in result && result.data.updated).toBe(0);
+  });
+
+  it("🔴 revue A09 §4 — un relevé « autre » (source emargement_presentiel + importId) garde sa source", async () => {
+    // `toPresenceSource("autre")` écrit `emargement_presentiel` avec un
+    // `importId`. Le requalifier en `manuel` laisserait deux provenances
+    // contradictoires sur la même ligne.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "c1",
+      dureePrevueMinutes: 420,
+      dureeRealiseeMinutes: 100,
+      present: false,
+      source: "emargement_presentiel",
+      libelle: "2026-06-10 journée (relevé)",
+      importId: "imp-autre",
+      emargementSignatures: [],
+    });
+
+    await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [{ ...validEntry, present: true, dureeRealiseeMinutes: 400 }],
+    });
+
+    const call = mockCall<{ source: string; libelle: string }>(mockUpsertCreneau);
+    expect(call.source, "un relevé rattaché à son import a été requalifié en saisie manuelle").toBe(
+      "emargement_presentiel",
+    );
+    expect(call.libelle).toBe("2026-06-10 journée (relevé)");
   });
 
   it("une présence déclarée puis décochée reste une saisie manuelle", async () => {
     mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
       id: "c1",
       dureePrevueMinutes: 210,
+      dureeRealiseeMinutes: 210,
+      present: true,
       source: "manuel",
       libelle: "2026-06-10 matin",
       importId: null,
