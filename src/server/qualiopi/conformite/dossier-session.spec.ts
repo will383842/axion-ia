@@ -47,13 +47,11 @@ vi.mock("@/server/qualiopi/emargement/feuille-pdf", () => ({
 }));
 
 // 🔴 X-documents-pdf-01 (audit initial 2026-09-14) — le dossier joint désormais
-// le TIRAGE À JOUR de la feuille d'émargement. Son rendu réel (react-pdf,
-// polices) est testé ailleurs ; ici on teste ce que le DOSSIER en fait.
+// le TIRAGE À JOUR de la feuille d'émargement, rendu par le même chemin que
+// l'écran. Ce chemin est testé dans `documents/emargement-tirage.spec.ts` ; ici
+// on teste ce que le DOSSIER en fait.
 vi.mock("@/server/qualiopi/documents/emargement-tirage", () => ({
-  construireTirageEmargement: vi.fn(),
-}));
-vi.mock("@/server/qualiopi/documents/render", () => ({
-  renderPdfToBuffer: vi.fn(),
+  rendreTirageEmargementAJour: vi.fn(),
 }));
 
 // 🔴 2026-08-24, cahier D9 — le dossier vérifie désormais la TROISIÈME famille
@@ -72,8 +70,7 @@ import { prisma } from "@/lib/prisma";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
 import { construireFeuillePdf } from "@/server/qualiopi/emargement/feuille-pdf";
 import { verifierChaineDocument } from "@/server/qualiopi/documents/signature/registre-verification";
-import { construireTirageEmargement } from "@/server/qualiopi/documents/emargement-tirage";
-import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
+import { rendreTirageEmargementAJour } from "@/server/qualiopi/documents/emargement-tirage";
 import { genererDossierSessionZip } from "./dossier-session";
 import { calculerSelfHash, type TupleSignatureV1 } from "@/server/qualiopi/emargement/hash";
 
@@ -90,10 +87,10 @@ const mockR2Ok = isR2Configured as unknown as ReturnType<typeof vi.fn>;
 const mockGetBuffer = getObjectBufferR2 as unknown as ReturnType<typeof vi.fn>;
 const mockFeuille = construireFeuillePdf as unknown as ReturnType<typeof vi.fn>;
 const mockVerifierChaineDocument = verifierChaineDocument as unknown as ReturnType<typeof vi.fn>;
-const mockTirage = construireTirageEmargement as unknown as ReturnType<typeof vi.fn>;
-const mockRender = renderPdfToBuffer as unknown as ReturnType<typeof vi.fn>;
-/** Élément de rendu du tirage : on capture le numéro qu'il reçoit. */
-const mockElementTirage = vi.fn((numero: string) => ({ numero }));
+const mockTirage = rendreTirageEmargementAJour as unknown as ReturnType<typeof vi.fn>;
+/** Mention imprimée sur un tirage sans feuille au registre. */
+const MENTION_SANS_ORIGINE =
+  "Tirage à jour du 14/09/2026 à 15:32 (heure de Paris) — aucune feuille d'émargement émise au registre pour cette session";
 
 /** Tuple d'une signature, tel que le service l'écrit. */
 function tuple(prevHash: string | null, over: Partial<TupleSignatureV1> = {}): TupleSignatureV1 {
@@ -213,11 +210,12 @@ beforeEach(() => {
   });
   mockTirage.mockResolvedValue({
     ok: true,
-    element: mockElementTirage,
+    buffer: Buffer.from("%PDF-tirage-a-jour"),
+    numeroOrigine: null,
+    numeroSession: "AXI-SESS-2026-001",
     totalSignatures: 2,
-    nbParticipants: 1,
+    mention: MENTION_SANS_ORIGINE,
   });
-  mockRender.mockResolvedValue({ buffer: Buffer.from("%PDF-tirage-a-jour") });
 });
 
 describe("genererDossierSessionZip", () => {
@@ -681,15 +679,26 @@ describe("genererDossierSessionZip", () => {
    * figuraient qu'en JSON.
    */
   describe("feuille d'émargement À JOUR", () => {
+    // Émise le 31/07 à 01:30 heure de Paris — la veille en UTC.
     const emargement = {
       id: "doc-em",
       type: "emargement",
       numero: "AXI-DOC-2026-004",
-      createdAt: new Date("2026-07-31T09:00:00Z"),
+      createdAt: new Date("2026-07-30T23:30:00Z"),
     };
+    const MENTION =
+      "Réimpression à jour du 14/09/2026 à 15:32 (heure de Paris) — pièce d'origine : AXI-DOC-2026-004, émise le 31/07/2026";
 
-    it("🔴 joint le TIRAGE À JOUR à côté de la pièce figée, sous son numéro", async () => {
+    it("🔴 joint le TIRAGE À JOUR — celui de l'écran, qui se déclare réimpression — à côté de la pièce figée", async () => {
       mockFindUnique.mockResolvedValue(session({ documents: [emargement] }));
+      mockTirage.mockResolvedValue({
+        ok: true,
+        buffer: Buffer.from("%PDF-tirage-a-jour"),
+        numeroOrigine: "AXI-DOC-2026-004",
+        numeroSession: "AXI-SESS-2026-001",
+        totalSignatures: 2,
+        mention: MENTION,
+      });
 
       const res = await genererDossierSessionZip("ses-1");
       const zip = await JSZip.loadAsync(res!.base64, { base64: true });
@@ -701,30 +710,32 @@ describe("genererDossierSessionZip", () => {
           "tirée avant la session, elle affiche 0 signature devant l'auditrice.",
       ).not.toBeNull();
       expect(await tirage!.async("string")).toBe("%PDF-tirage-a-jour");
-      // Le tirage se présente comme la réimpression de la pièce du registre, pas
-      // comme une pièce de plus : même doctrine que la route du tirage.
-      expect(mockElementTirage).toHaveBeenCalledWith("AXI-DOC-2026-004");
-      // Cohérent avec `feuille-emargement.json` et la vérification d'intégrité :
-      // les inscriptions effacées (signatures conservées, art. 17 §3 b) y restent.
-      expect(mockTirage).toHaveBeenCalledWith("ses-1", true);
+      // 🔴 Le MÊME rendu que « Télécharger la feuille à jour » : même chemin, même
+      // population d'inscriptions (aucun second argument qui l'élargirait).
+      expect(mockTirage).toHaveBeenCalledWith("ses-1");
       // La pièce scellée du registre reste jointe, intacte.
       expect(zip.file("documents/emargement/AXI-DOC-2026-004.pdf")).not.toBeNull();
 
       const index = await fichierDuZip(res!.base64, "index.txt");
       expect(index).toContain("AXI-DOC-2026-004-a-jour.pdf");
-      expect(index).toContain("instantané");
+      expect(index).toContain(MENTION);
+      // Date de la pièce scellée en heure de PARIS, pas en UTC.
+      expect(index).toContain("instantané scellé du 2026-07-31");
+      // La règle de population est DITE.
+      expect(index).toContain("droit à l'effacement");
     });
 
     it("joint le tirage à jour même sans feuille émise au registre", async () => {
       const res = await genererDossierSessionZip("ses-1");
       const zip = await JSZip.loadAsync(res!.base64, { base64: true });
       expect(zip.file("documents/emargement/emargement-a-jour.pdf")).not.toBeNull();
-      expect(mockElementTirage).toHaveBeenCalledWith("— non émise au registre —");
+      const index = await fichierDuZip(res!.base64, "index.txt");
+      expect(index).toContain(MENTION_SANS_ORIGINE);
     });
 
     it("🔴 un tirage impossible à rendre lève un AVERTISSEMENT, pas un silence", async () => {
       mockFindUnique.mockResolvedValue(session({ documents: [emargement] }));
-      mockRender.mockRejectedValue(new Error("police introuvable"));
+      mockTirage.mockRejectedValue(new Error("police introuvable"));
 
       const res = await genererDossierSessionZip("ses-1");
 
@@ -771,7 +782,9 @@ describe("genererDossierSessionZip", () => {
       expect(clesDemandees.some((c) => c.includes("AXI-DOC-2026-012"))).toBe(false);
 
       // Ni comptées comme pièces attendues — le dossier n'est pas « amputé »…
-      expect(res?.nbDocuments).toBe(1);
+      // 🔴 …mais comptées EXACTEMENT : en base, jointes, écartées (constat n° 6).
+      expect(res?.nbDocuments).toBe(3);
+      expect(res?.nbDocumentsHorsDossier).toBe(2);
       expect(res?.nbDocumentsJoints).toBe(1);
       // …ni tues : l'index dit combien restent au registre, sans les nommer.
       const index = await fichierDuZip(res!.base64, "index.txt");
@@ -780,10 +793,11 @@ describe("genererDossierSessionZip", () => {
       expect(index).toContain("2 pièces RH, de rémunération ou de facturation");
     });
 
-    it("🔴 ne joint NI facture NI devis NI avoir, et le DIT", async () => {
-      // Pièces commerciales : aucune ne prouve un indicateur du RNQ, et une
-      // facture à un particulier nomme une personne physique et ce qu'elle a
-      // payé. Elles restent au registre.
+    it("🔴 ne joint NI facture NI avoir, et le DIT — mais JOINT le devis (ind. 4 et 6)", async () => {
+      // Facture et avoir : aucune exigence du RNQ, et une facture à un
+      // particulier nomme une personne physique et ce qu'elle a payé. Ils
+      // restent au registre. Le devis, lui, peut prouver l'analyse du besoin
+      // antérieure à la convention (arbitrage du 14/09).
       mockFindUnique.mockResolvedValue(
         session({
           documents: [
@@ -800,13 +814,19 @@ describe("genererDossierSessionZip", () => {
 
       expect(zip.file("documents/convention/AXI-DOC-2026-010.pdf")).not.toBeNull();
       expect(
-        zip.file(/documents\/(facture|devis|avoir)\//),
-        "le dossier remis à l'auditrice embarque une facture, un devis ou un avoir.",
+        zip.file(/documents\/(facture|avoir)\//),
+        "le dossier remis à l'auditrice embarque une facture ou un avoir.",
       ).toHaveLength(0);
-      expect(res?.nbDocuments).toBe(1);
+      expect(
+        zip.file("documents/devis/AXI-DOC-2026-014.pdf"),
+        "le devis, preuve possible de l'analyse du besoin (ind. 4 et 6), a disparu du dossier.",
+      ).not.toBeNull();
+      expect(res?.nbDocuments).toBe(4);
+      expect(res?.nbDocumentsHorsDossier).toBe(2);
+      expect(res?.nbDocumentsJoints).toBe(2);
       const index = await fichierDuZip(res!.base64, "index.txt");
       expect(index).not.toContain("AXI-DOC-2026-013");
-      expect(index).toContain("3 pièces RH, de rémunération ou de facturation");
+      expect(index).toContain("2 pièces RH, de rémunération ou de facturation");
     });
 
     it("n'en tire aucune ligne au journal des envois ni à la vérification d'intégrité", async () => {

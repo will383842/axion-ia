@@ -50,16 +50,23 @@ import {
 } from "@/server/qualiopi/emargement/reconstruction";
 import { maillonContresignatureDepuisLigne } from "@/server/qualiopi/emargement/contresignature-hash";
 import { construireFeuillePdf } from "@/server/qualiopi/emargement/feuille-pdf";
-import { construireTirageEmargement } from "@/server/qualiopi/documents/emargement-tirage";
-import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
+import { rendreTirageEmargementAJour } from "@/server/qualiopi/documents/emargement-tirage";
+import { parisDateISO } from "@/server/qualiopi/presence/time";
 import { documentJointAuDossierAudit, lignePiecesHorsDossier } from "./hors-dossier-audit";
 
 export interface DossierSessionResult {
   base64: string;
   filename: string;
   incomplet: boolean;
+  /** Pièces EN VIGUEUR de la session en base, qu'elles relèvent du dossier ou non. */
   nbDocuments: number;
   nbDocumentsJoints: number;
+  /**
+   * Pièces en vigueur ÉCARTÉES du dossier remis (RH, rémunération, facturation —
+   * `hors-dossier-audit.ts`). Elles restent au registre ; ce compteur permet de
+   * le tracer au journal de l'export.
+   */
+  nbDocumentsHorsDossier: number;
   /**
    * Pièces ANNULÉES de la session, écartées du ZIP mais NOMMÉES dans l'index.
    *
@@ -474,9 +481,11 @@ export async function genererDossierSessionZip(
     zip.file(`documents/${doc.type}/${doc.numero}.pdf`, buffer);
     // Une feuille d'émargement du registre est un INSTANTANÉ : l'index le dit à
     // côté de son nom, pour qu'on ne la lise pas comme l'état des signatures.
+    // Date en heure de PARIS : en UTC, une pièce émise entre minuit et 2 h
+    // reculerait d'un jour — la lecture « antidatée » à éviter.
     const mention =
       doc.type === "emargement"
-        ? ` — instantané scellé du ${doc.createdAt.toISOString().slice(0, 10)}, signatures à cette date seulement : voir la feuille à jour`
+        ? ` — instantané scellé du ${parisDateISO(doc.createdAt)}, signatures à cette date seulement : voir la feuille à jour`
         : "";
     index.push(`  [OK]     ${doc.type}/${doc.numero}.pdf (${buffer.byteLength} octets)${mention}`);
     joints += 1;
@@ -499,30 +508,27 @@ export async function genererDossierSessionZip(
   // la seule feuille en PDF de ce dossier : les signatures réelles n'y figuraient
   // qu'en JSON. L'auditrice ouvrait la pièce et voyait une feuille vierge.
   //
-  // ➡️ Même doctrine que `/api/qualiopi/sessions/[id]/emargement` : un tirage
-  // DÉRIVÉ, jamais persisté ni numéroté, qui emprunte le numéro de la dernière
-  // feuille qui fait foi. La pièce scellée reste jointe à côté, intacte —
-  // régénérer la pièce aurait créé une seconde feuille concurrente.
-  // `documents` est trié par `createdAt` croissant : la dernière est la plus récente.
-  const feuillesRegistre = documents.filter((d) => d.type === "emargement");
-  const derniereFeuille = feuillesRegistre[feuillesRegistre.length - 1] ?? null;
-  const cheminTirage =
-    derniereFeuille === null
-      ? "emargement/emargement-a-jour.pdf"
-      : `emargement/${derniereFeuille.numero}-a-jour.pdf`;
+  // ➡️ Le tirage est celui de l'écran « Télécharger la feuille à jour » : même
+  // chemin (`rendreTirageEmargementAJour`), même population, même PDF. Il est
+  // DÉRIVÉ, jamais persisté ni numéroté, emprunte le numéro de la dernière
+  // feuille qui fait foi, et le dit SUR LA PIÈCE : date et heure du tirage,
+  // pièce d'origine et sa date d'émission. La pièce scellée reste jointe à côté,
+  // intacte — régénérer la pièce aurait créé une seconde feuille concurrente.
   try {
-    const tirage = await construireTirageEmargement(sessionId, true);
+    const tirage = await rendreTirageEmargementAJour(sessionId);
     if (tirage.ok) {
-      const rendu = await renderPdfToBuffer(
-        tirage.element(derniereFeuille?.numero ?? "— non émise au registre —"),
-      );
-      zip.file(`documents/${cheminTirage}`, rendu.buffer);
+      const cheminTirage =
+        tirage.numeroOrigine === null
+          ? "emargement/emargement-a-jour.pdf"
+          : `emargement/${tirage.numeroOrigine}-a-jour.pdf`;
+      zip.file(`documents/${cheminTirage}`, tirage.buffer);
       index.push(
-        `  [À JOUR] ${cheminTirage} — feuille d'émargement tirée le ${new Date().toISOString().slice(0, 10)}, ${tirage.totalSignatures} signature${tirage.totalSignatures > 1 ? "s" : ""} enregistrée${tirage.totalSignatures > 1 ? "s" : ""}${derniereFeuille === null ? " (aucune feuille émise au registre)" : ` : réimpression à jour de la pièce ${derniereFeuille.numero}`}`,
+        `  [À JOUR] ${cheminTirage} — ${tirage.mention}. ${tirage.totalSignatures} signature${tirage.totalSignatures > 1 ? "s" : ""} enregistrée${tirage.totalSignatures > 1 ? "s" : ""}.`,
+        "           Même rendu que l'écran « Télécharger la feuille à jour » : les inscriptions sous droit à l'effacement n'y figurent pas ; leurs signatures conservées (art. 17 §3 b) sont dans feuille-emargement.json et verification-integrite.json.",
       );
     } else {
       // Seul cas d'échec prévu : journées non déclarées — déjà signalé plus haut.
-      index.push(`  [ABSENT] ${cheminTirage} — ${tirage.message}`);
+      index.push(`  [ABSENT] feuille d'émargement à jour — ${tirage.message}`);
     }
   } catch (err) {
     avertissements.push(
@@ -553,7 +559,7 @@ export async function genererDossierSessionZip(
   if (annulees.length > 0) {
     index.push("", `Pièces annulées, non jointes (${annulees.length}) :`);
     for (const a of annulees) {
-      const quand = a.annuleeAt === null ? "date inconnue" : a.annuleeAt.toISOString().slice(0, 10);
+      const quand = a.annuleeAt === null ? "date inconnue" : parisDateISO(a.annuleeAt);
       index.push(
         `  ${a.numero} (${a.type}) — ${a.annuleeMotif ?? "motif non renseigné"} — ${quand}`,
       );
@@ -573,8 +579,9 @@ export async function genererDossierSessionZip(
     // dossier, qu'on puisse le retrouver sans l'ouvrir.
     filename: `dossier-session-${session.numero}`,
     incomplet,
-    nbDocuments: documents.length,
+    nbDocuments: session.documents.length,
     nbDocumentsJoints: joints,
+    nbDocumentsHorsDossier,
     nbDocumentsAnnulees: annulees.length,
     nbChainesAnormales,
     nbChainesContresignAnormales,

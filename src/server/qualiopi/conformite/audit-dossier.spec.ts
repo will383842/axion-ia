@@ -44,6 +44,13 @@ vi.mock("./conformite-service", () => ({
   evaluerConformite: vi.fn(),
 }));
 
+// 🔴 X-documents-pdf-01 — le ZIP joint le tirage À JOUR de chaque feuille
+// d'émargement. Son rendu est testé dans `documents/emargement-tirage.spec.ts`.
+// Défaut « non modélisé » : les fixtures sans `sessionId` n'y passent jamais.
+vi.mock("@/server/qualiopi/documents/emargement-tirage", () => ({
+  rendreTirageEmargementAJour: vi.fn(async () => ({ ok: false as const, message: "non modélisé" })),
+}));
+
 vi.mock("@/server/qualiopi/config/site-settings", () => ({
   getQualiopiConfig: vi.fn().mockResolvedValue(""),
 }));
@@ -761,12 +768,18 @@ describe("genererDossierAuditZip", () => {
     const index = await zip.files["index.txt"]!.async("string");
     expect(index).not.toContain("AXI-DOC-2026-002");
     expect(index).toContain("2 pièces RH, de rémunération ou de facturation");
+    // 🔴 Constat n° 6 — le compte du registre est EXACT : il distingue ce qui
+    // est en base, ce qui relève du dossier et ce qui en est écarté.
+    expect(index).toContain("Registre : 3 pièces admissibles en base");
+    expect(index).toContain("1 relevant du dossier de preuves, 2 écartées");
+    expect(result.nbPiecesHorsDossier).toBe(2);
   });
 
-  it("🔴 n'embarque NI facture NI devis NI avoir sous preuves/, et le DIT", async () => {
-    // Pièces commerciales : elles ne prouvent aucun indicateur du RNQ, et une
-    // facture à un particulier (CPF, financement personnel) nomme une personne
-    // physique et ce qu'elle a payé. Elles restent au registre.
+  it("🔴 n'embarque NI facture NI avoir sous preuves/, et le DIT — mais JOINT le devis", async () => {
+    // Facture et avoir : aucune exigence du RNQ, et une facture à un
+    // particulier (CPF, financement personnel) nomme une personne physique et
+    // ce qu'elle a payé. Ils restent au registre. Le devis peut prouver
+    // l'analyse du besoin antérieure à la convention (ind. 4 et 6).
     mockIsR2Configured.mockReturnValue(true);
     mockPrisma.trainerDocument.findMany.mockResolvedValue([]);
     mockGetObjectBufferR2.mockResolvedValue(Buffer.from("%PDF-1.4 ok"));
@@ -783,14 +796,18 @@ describe("genererDossierAuditZip", () => {
 
     expect(zip.files["preuves/attestation/AXI-DOC-2026-021.pdf"]).toBeDefined();
     expect(
-      fichiers.filter((f) => /preuves\/(facture|devis|avoir)/.test(f)),
-      "le dossier remis à l'auditrice embarque une facture, un devis ou un avoir.",
+      fichiers.filter((f) => /preuves\/(facture|avoir)/.test(f)),
+      "le dossier remis à l'auditrice embarque une facture ou un avoir.",
     ).toEqual([]);
-    expect(mockGetObjectBufferR2).toHaveBeenCalledTimes(1);
-    expect(result.nbPreuvesAttendues).toBe(1);
+    expect(
+      zip.files["preuves/devis/AXI-DOC-2026-023.pdf"],
+      "le devis, preuve possible de l'analyse du besoin (ind. 4 et 6), a disparu du dossier.",
+    ).toBeDefined();
+    expect(mockGetObjectBufferR2).toHaveBeenCalledTimes(2);
+    expect(result.nbPreuvesAttendues).toBe(2);
     const index = await zip.files["index.txt"]!.async("string");
     expect(index).not.toContain("AXI-DOC-2026-022");
-    expect(index).toContain("3 pièces RH, de rémunération ou de facturation");
+    expect(index).toContain("2 pièces RH, de rémunération ou de facturation");
   });
 
   it("🔴 formateurs/pieces.json ne liste pas les pièces de qui n'anime pas, et le DIT", async () => {
@@ -825,6 +842,7 @@ describe("genererDossierAuditZip", () => {
     expect(index).not.toContain("Martin");
     expect(index).toContain("Pièces formateurs (ind. 21 / 27) : 1");
     expect(index).toContain("2 pièces de personnes qui n'animent pas");
+    expect(result.nbPiecesFormateursEcartees).toBe(2);
   });
 
   it("🔴 formateurs/pieces.json n'expose NI contrat de travail NI DPAE", async () => {
@@ -861,6 +879,194 @@ describe("genererDossierAuditZip", () => {
     const index = await zip.files["index.txt"]!.async("string");
     expect(index).toContain("Pièces formateurs (ind. 21 / 27) : 2");
     expect(index).toContain("2 pièces d'employeur");
+  });
+
+  it("🔴 écarte les pièces formateur « autre » de pieces.json, mais les COMPTE", async () => {
+    // Type libre de l'écran formateur : un RIB, une pièce d'identité ou un titre
+    // de séjour y atterrit. On ne l'exporte pas ; on dit qu'il existe.
+    mockPrisma.trainerDocument.findMany.mockResolvedValue([
+      {
+        type: "cv",
+        numeroPiece: null,
+        fichierUrl: "https://r2.example/cv.pdf",
+        dateEmission: null,
+        dateExpiration: null,
+        statutValidation: "valide",
+        trainer: { nom: "Durand", prenom: "Sophie", estFormateur: true },
+      },
+      {
+        type: "autre",
+        numeroPiece: null,
+        fichierUrl: "https://r2.example/rib-autre.pdf",
+        dateEmission: null,
+        dateExpiration: null,
+        statutValidation: "valide",
+        trainer: { nom: "Durand", prenom: "Sophie", estFormateur: true },
+      },
+    ]);
+
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    const json = await zip.files["formateurs/pieces.json"]!.async("string");
+
+    expect(
+      (JSON.parse(json) as { type: string }[]).map((p) => p.type),
+      "pieces.json remis à l'auditrice expose une pièce de type libre « autre ».",
+    ).toEqual(["cv"]);
+    expect(json).not.toContain("rib-autre.pdf");
+    const index = await zip.files["index.txt"]!.async("string");
+    expect(index).toContain(
+      "pièces « autre » écartées : 1, à ouvrir au registre si l'auditrice le demande",
+    );
+    expect(result.nbPiecesFormateursEcartees).toBe(1);
+  });
+
+  it("🔴 garde les pièces des indicateurs 17, 18 et 27 — rien ne les écarte en silence", async () => {
+    mockIsR2Configured.mockReturnValue(true);
+    mockGetObjectBufferR2.mockResolvedValue(Buffer.from("%PDF-1.4 ok"));
+    const types: DocumentType[] = [
+      "lettre_mission",
+      "contrat_sous_traitance",
+      "liste_formateurs",
+      "procedure_sous_traitance",
+      "devis",
+    ];
+    mockPrisma.documentGenere.findMany.mockResolvedValue(
+      types.map((type, i) => ({
+        id: `m${i}`,
+        type,
+        numero: `AXI-DOC-2026-10${i}`,
+        createdAt: new Date(),
+      })),
+    );
+    mockPrisma.trainerDocument.findMany.mockResolvedValue(
+      (
+        ["contrat_sous_traitance", "nda_sous_traitant", "attestation_vigilance_urssaf"] as const
+      ).map((type) => ({
+        type,
+        numeroPiece: null,
+        fichierUrl: `https://r2.example/${type}.pdf`,
+        dateEmission: null,
+        dateExpiration: null,
+        statutValidation: "valide",
+        trainer: { nom: "Durand", prenom: "Sophie", estFormateur: true },
+      })),
+    );
+
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+
+    types.forEach((type, i) => {
+      expect(
+        zip.files[`preuves/${type}/AXI-DOC-2026-10${i}.pdf`],
+        `la pièce « ${type} » n'est plus jointe au dossier d'audit.`,
+      ).toBeDefined();
+    });
+    expect(result.nbPreuvesAttendues).toBe(types.length);
+    expect(result.nbPiecesHorsDossier).toBe(0);
+    const pieces = JSON.parse(await zip.files["formateurs/pieces.json"]!.async("string")) as {
+      type: string;
+    }[];
+    expect(pieces.map((p) => p.type).sort()).toEqual([
+      "attestation_vigilance_urssaf",
+      "contrat_sous_traitance",
+      "nda_sous_traitant",
+    ]);
+  });
+
+  describe("🔴 X-documents-pdf-01 — feuilles d'émargement à jour dans le ZIP du mode auditeur", () => {
+    const TIRAGE = {
+      ok: true as const,
+      buffer: Buffer.from("%PDF-a-jour"),
+      numeroOrigine: "AXI-DOC-2026-005",
+      numeroSession: "AXI-SESS-2026-003",
+      totalSignatures: 4,
+      mention:
+        "Réimpression à jour du 14/09/2026 à 15:32 (heure de Paris) — pièce d'origine : AXI-DOC-2026-005, émise le 01/08/2026",
+    };
+
+    function feuillesDeLaSession() {
+      mockIsR2Configured.mockReturnValue(true);
+      mockPrisma.trainerDocument.findMany.mockResolvedValue([]);
+      mockGetObjectBufferR2.mockResolvedValue(Buffer.from("%PDF-1.4 ok"));
+      mockPrisma.documentGenere.findMany.mockResolvedValue([
+        {
+          id: "e1",
+          type: "emargement",
+          numero: "AXI-DOC-2026-004",
+          sessionId: "ses-9",
+          // 01:30 le 31/07 à Paris — la veille en UTC.
+          createdAt: new Date("2026-07-30T23:30:00Z"),
+        },
+        {
+          id: "e2",
+          type: "emargement",
+          numero: "AXI-DOC-2026-005",
+          sessionId: "ses-9",
+          createdAt: new Date("2026-08-01T08:00:00Z"),
+        },
+      ]);
+    }
+
+    it("joint le tirage à jour de chaque session, à côté des instantanés, et le DIT", async () => {
+      const { rendreTirageEmargementAJour } =
+        await import("@/server/qualiopi/documents/emargement-tirage");
+      const mockRendre = rendreTirageEmargementAJour as unknown as ReturnType<typeof vi.fn>;
+      feuillesDeLaSession();
+      mockRendre.mockResolvedValueOnce(TIRAGE);
+
+      const result = await genererDossierAuditZip();
+      const zip = await JSZip.loadAsync(result.base64, { base64: true });
+
+      expect(
+        zip.files["preuves/emargement/AXI-DOC-2026-005-a-jour.pdf"],
+        "le ZIP du mode auditeur ne joint que les feuilles d'émargement figées (0 signature si tirées avant la session).",
+      ).toBeDefined();
+      // Une session = un tirage, même avec deux feuilles au registre.
+      expect(mockRendre).toHaveBeenCalledTimes(1);
+      expect(mockRendre.mock.calls[0]![0]).toBe("ses-9");
+      // Les instantanés scellés restent joints.
+      expect(zip.files["preuves/emargement/AXI-DOC-2026-004.pdf"]).toBeDefined();
+      expect(zip.files["preuves/emargement/AXI-DOC-2026-005.pdf"]).toBeDefined();
+
+      const index = await zip.files["index.txt"]!.async("string");
+      expect(index).toContain("[À JOUR] preuves/emargement/AXI-DOC-2026-005-a-jour.pdf");
+      expect(index).toContain(TIRAGE.mention);
+      expect(index).toContain("instantané scellé du 2026-07-31");
+      expect(result.nbPreuvesAttendues).toBe(2);
+      expect(result.incomplet).toBe(false);
+    });
+
+    it("un tirage impossible à rendre lève un AVERTISSEMENT", async () => {
+      const { rendreTirageEmargementAJour } =
+        await import("@/server/qualiopi/documents/emargement-tirage");
+      const mockRendre = rendreTirageEmargementAJour as unknown as ReturnType<typeof vi.fn>;
+      feuillesDeLaSession();
+      mockRendre.mockRejectedValueOnce(new Error("police introuvable"));
+
+      const result = await genererDossierAuditZip();
+
+      expect(result.incomplet).toBe(true);
+      expect(result.avertissements.join(" ")).toContain("tirage à jour");
+    });
+  });
+
+  it("🔴 date le dossier en heure de PARIS, pas selon le fuseau du serveur", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    try {
+      // 00:30 le 14/09 à Paris ; encore le 13/09 en UTC (fuseau du conteneur).
+      vi.setSystemTime(new Date("2026-09-13T22:30:00Z"));
+      mockPrisma.trainerDocument.findMany.mockResolvedValue([]);
+
+      const result = await genererDossierAuditZip();
+      const zip = await JSZip.loadAsync(result.base64, { base64: true });
+
+      expect(result.filename).toBe("dossier-audit-qualiopi-2026-09-14");
+      const index = await zip.files["index.txt"]!.async("string");
+      expect(index).toContain("Dossier d'audit Qualiopi — 2026-09-14");
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });
 
