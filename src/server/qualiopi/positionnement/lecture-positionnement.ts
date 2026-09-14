@@ -13,18 +13,23 @@
  * 🔑 L'écran de session et la pièce nominative du dossier lisent CETTE fonction.
  * Deux lectures du même JSON finiraient par dire deux choses différentes.
  *
- * Trois formes RÉELLES existent en base (relecture de la PR 1090) :
+ * Trois formes RÉELLES existent en base (relectures de la PR 1090) :
  *   1. portail depuis le 2026-08-20 : `portail.ts` retire `detailAdaptation`
- *      du JSON et le chiffre sur la fiche stagiaire (`handicapDetailsChiffre`) ;
+ *      du JSON, sans y laisser de marqueur, et le chiffre sur la fiche stagiaire ;
  *   2. portail du 2026-07-26 au 2026-08-20 : le détail y est encore EN CLAIR ;
  *   3. saisie console (`QuestionnairesSection`) : `objectifs_atteints`,
  *      `points_forts`, `axes_amelioration`, `commentaire`, `saisie_admin: true`.
  *
  * 🔴 La précision d'un besoin d'adaptation est une donnée de santé (RGPD art. 9) :
  * lecture réservée au super-administrateur et journalisée (`portail.ts`). Ce
- * module n'en restitue JAMAIS le contenu, ni en clair ni déchiffré. Il dit
- * seulement si elle existe — et `PositionnementLu` n'a aucun champ qui puisse
- * la porter.
+ * module n'en restitue JAMAIS le contenu, ni en clair ni déchiffré.
+ *
+ * 🔑 RÈGLE DE PROVENANCE. Une précision n'est attribuée au questionnaire que si
+ * la RÉPONSE elle-même en garde la trace (forme 2). La colonne chiffrée de la
+ * fiche stagiaire ne décide rien ici : elle est aussi écrite par la déclaration
+ * de handicap du portail et par la console, jamais remise à zéro, et peut venir
+ * d'une session antérieure. Elle se signale À PART, par une mention neutre
+ * (`MENTION_PRECISION_FICHE_STAGIAIRE`), jamais au nom du questionnaire.
  *
  * ⚠️ Module PUR : aucun import. Il ne doit rien inventer — une question qui n'a
  * pas été posée se lit `null` (« Non renseigné », ou « Non posée » pour une
@@ -37,6 +42,17 @@ export const LIBELLES_NIVEAU_POSITIONNEMENT: Readonly<Record<1 | 2 | 3, string>>
   2: "Quelques notions",
   3: "Je maîtrise",
 };
+
+/** Libellé de la ligne « Précision », quand la réponse atteste qu'une précision a été saisie. */
+export const PRECISION_DANS_LA_REPONSE =
+  "Précision fournie dans la réponse — non reproduite ici (donnée de santé)";
+
+/**
+ * Mention NEUTRE, affichée hors des réponses, quand la fiche stagiaire porte un
+ * détail chiffré : elle n'affirme rien au nom du questionnaire.
+ */
+export const MENTION_PRECISION_FICHE_STAGIAIRE =
+  "Une précision sur les besoins d'adaptation peut figurer sur la fiche du stagiaire (consultation réservée au super-administrateur).";
 
 export interface NiveauDeclare {
   readonly objectif: string;
@@ -68,23 +84,16 @@ export interface PositionnementLu {
    */
   readonly besoinAdaptation: boolean | null;
   /**
-   * PRÉSENCE d'une précision au besoin déclaré — chiffrée sur la fiche
-   * stagiaire, ou ancienne en clair dans les réponses. Jamais son contenu.
-   * `null` quand aucun besoin n'est déclaré : la précision n'a pas d'objet.
+   * La RÉPONSE atteste qu'une précision a été saisie (détail encore présent
+   * dans le JSON, réponses antérieures au 2026-08-20). Jamais son contenu.
+   * `false` ne veut PAS dire « aucune précision » : depuis le 2026-08-20, le
+   * détail est retiré de la réponse sans marqueur.
    */
-  readonly precisionAdaptationFournie: boolean | null;
+  readonly precisionDansLaReponse: boolean;
   /** Réponses saisies par l'organisme à la place du ou de la stagiaire. */
   readonly saisieAdmin: boolean;
   /** Ce que l'organisme a saisi (tous `null` pour une réponse du portail). */
   readonly saisieOrganisme: ContenuSaisiParOrganisme;
-}
-
-export interface OptionsLecturePositionnement {
-  /**
-   * Le ou la stagiaire porte une précision CHIFFRÉE (`handicapDetailsChiffre`
-   * non nul). L'appelant le lit par un filtre en base, sans charger la colonne.
-   */
-  readonly detailChiffrePresent?: boolean;
 }
 
 function texte(valeur: unknown): string | null {
@@ -119,10 +128,7 @@ export function estSaisieOrganisme(reponses: unknown): boolean {
   return objet(reponses)["saisie_admin"] === true;
 }
 
-export function lirePositionnement(
-  reponses: unknown,
-  options: OptionsLecturePositionnement = {},
-): PositionnementLu {
+export function lirePositionnement(reponses: unknown): PositionnementLu {
   const r = objet(reponses);
 
   const brutsNiveaux = r["niveauParObjectif"];
@@ -143,10 +149,6 @@ export function lirePositionnement(
   // 🔴 Seule la PRÉSENCE du détail est lue : sa valeur ne sort pas d'ici.
   const detailBrut = r["detailAdaptation"];
   const detailEnClairPresent = typeof detailBrut === "string" && detailBrut.trim() !== "";
-  const precisionAdaptationFournie =
-    besoinAdaptation === true
-      ? detailEnClairPresent || options.detailChiffrePresent === true
-      : null;
 
   return {
     fonction: texte(r["fonction"]),
@@ -157,7 +159,7 @@ export function lirePositionnement(
     tacheVisee: texte(r["tacheVisee"]),
     niveaux,
     besoinAdaptation,
-    precisionAdaptationFournie,
+    precisionDansLaReponse: besoinAdaptation === true && detailEnClairPresent,
     saisieAdmin,
     saisieOrganisme: {
       objectifsAtteints: texte(r["objectifs_atteints"]),
@@ -179,21 +181,16 @@ export function libelleBesoinAdaptation(besoin: boolean | null, saisieAdmin = fa
 }
 
 /**
- * La précision se signale, elle ne se montre pas. Jamais « Non renseigné »
- * quand elle existe : le détail n'est simplement plus dans les réponses.
+ * La réponse précède-t-elle le début de la session ? Un instant égal au début
+ * compte « avant », comme dans la règle de l'indicateur 10 (PR 1083).
  */
-export function libellePrecisionAdaptation(fournie: boolean | null): string {
-  return fournie === true
-    ? "Précision fournie — consultable par le super-administrateur"
-    : "Aucune précision";
+export function reponseAvantDebut(reponduAt: Date, debutSession: Date): boolean {
+  return reponduAt.getTime() <= debutSession.getTime();
 }
 
-/**
- * Situe la réponse par rapport au début de la session. Un instant égal au début
- * compte « avant », comme dans la règle de l'indicateur 10.
- */
+/** Situe la réponse par rapport au début de la session (même prédicat). */
 export function chronologieReponse(reponduAt: Date, debutSession: Date): string {
-  return reponduAt.getTime() <= debutSession.getTime()
+  return reponseAvantDebut(reponduAt, debutSession)
     ? "avant le début de la session"
     : "après le début de la session";
 }

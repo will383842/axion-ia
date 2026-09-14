@@ -47,6 +47,7 @@ const POSITIONNEMENT_REPONDU: QuestionnaireRow = {
   reponduAt: "2026-09-04T21:12:00.000Z",
   envoyeAt: "2026-09-04T20:51:00.000Z",
   noteGlobale: null,
+  precisionSurFicheStagiaire: false,
   positionnement: {
     fonction: "Assistante de direction",
     secteur: "Immobilier",
@@ -56,7 +57,7 @@ const POSITIONNEMENT_REPONDU: QuestionnaireRow = {
     tacheVisee: "Les comptes rendus de visite",
     niveaux: [{ objectif: "Rédiger des annonces", niveau: 1, libelle: "Je découvre" }],
     besoinAdaptation: false,
-    precisionAdaptationFournie: null,
+    precisionDansLaReponse: false,
     saisieAdmin: false,
     saisieOrganisme: SANS_SAISIE_ORGANISME,
   },
@@ -125,23 +126,42 @@ describe("QuestionnairesSection — le positionnement répondu se LIT", () => {
     expect(screen.queryByRole("button", { name: /Voir les réponses/i })).toBeNull();
   });
 
-  // ── Relecture de la PR 1090 : formes réelles ─────────────────────────────
+  // ── Relectures de la PR 1090 : formes réelles ────────────────────────────
 
-  it("besoin déclaré avec une précision chiffrée : sa PRÉSENCE se dit, jamais « Non renseigné »", () => {
+  it("🔴 besoin coché sans précision, fiche portant un détail venu d'ailleurs : l'écran n'attribue AUCUNE précision au questionnaire", () => {
+    rendre([
+      {
+        ...POSITIONNEMENT_REPONDU,
+        precisionSurFicheStagiaire: true,
+        positionnement: {
+          ...POSITIONNEMENT_REPONDU.positionnement!,
+          besoinAdaptation: true,
+          precisionDansLaReponse: false,
+        },
+      },
+    ]);
+    fireEvent.click(screen.getByRole("button", { name: /Voir les réponses/i }));
+    expect(screen.queryByText(/Précision fournie/)).toBeNull();
+    expect(screen.queryByText(/Aucune précision/)).toBeNull();
+    expect(screen.getByText(/peut figurer sur la fiche du stagiaire/)).toBeTruthy();
+  });
+
+  it("détail ancien présent DANS la réponse : sa présence se dit, jamais son contenu", () => {
     rendre([
       {
         ...POSITIONNEMENT_REPONDU,
         positionnement: {
           ...POSITIONNEMENT_REPONDU.positionnement!,
           besoinAdaptation: true,
-          precisionAdaptationFournie: true,
+          precisionDansLaReponse: true,
         },
       },
     ]);
     fireEvent.click(screen.getByRole("button", { name: /Voir les réponses/i }));
     expect(
-      screen.getByText("Précision fournie — consultable par le super-administrateur"),
+      screen.getByText("Précision fournie dans la réponse — non reproduite ici (donnée de santé)"),
     ).toBeTruthy();
+    expect(screen.queryByText(/peut figurer sur la fiche du stagiaire/)).toBeNull();
   });
 
   it("une saisie de l'organisme montre ce que l'organisme a réellement saisi", () => {

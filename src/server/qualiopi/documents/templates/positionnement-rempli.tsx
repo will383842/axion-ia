@@ -12,13 +12,17 @@
  * pour que la chronologie se lise sans rien recouper. Une question sans réponse
  * l'écrit (« Non renseigné ») : rien n'est complété, rien n'est déduit.
  *
- * 🔴 Relecture de la PR 1090 :
+ * 🔴 Relectures de la PR 1090 :
  *   · la précision d'un besoin d'adaptation (donnée de santé, lecture réservée
- *     au super-administrateur) n'y figure JAMAIS, ni en clair ni déchiffrée :
- *     seule sa présence est dite ;
- *   · une saisie par l'organisme est titrée comme telle, restitue ce que
- *     l'organisme a saisi, et ne se réclame pas de l'indicateur 10 (règle de la
- *     PR 1083).
+ *     au super-administrateur) n'y figure JAMAIS, ni en clair ni déchiffrée.
+ *     Une ligne « Précision » n'apparaît que si la RÉPONSE atteste qu'une
+ *     précision a été saisie. Un détail sur la fiche stagiaire — qui peut venir
+ *     d'ailleurs — se signale hors des réponses, sans rien attribuer au
+ *     questionnaire ;
+ *   · l'indicateur 10 n'est cité que pour une réponse du portail portant la
+ *     question du besoin, arrivée AVANT le début (règle de la PR 1083) ;
+ *   · une saisie par l'organisme est titrée comme telle et restitue ce que
+ *     l'organisme a saisi.
  *
  * Ce n'est PAS une pièce du registre (`DocumentGenere`) : elle est rendue à la
  * volée depuis la base au moment de constituer le dossier, comme les registres.
@@ -39,7 +43,8 @@ import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
 import {
   libelleBesoinAdaptation,
-  libellePrecisionAdaptation,
+  MENTION_PRECISION_FICHE_STAGIAIRE,
+  PRECISION_DANS_LA_REPONSE,
   type PositionnementLu,
 } from "@/server/qualiopi/positionnement/lecture-positionnement";
 
@@ -85,8 +90,15 @@ export interface PositionnementRempliData {
   reponduLe: string;
   /** « avant / après le début de la session » (`chronologieReponse`). */
   chronologie: string;
+  /** Même prédicat que `chronologie` (`reponseAvantDebut`). */
+  reponduAvantDebut: boolean;
   /** Instant RÉEL du tirage de la pièce, date et heure de Paris. Jamais antidaté. */
   tireeLe: string;
+  /**
+   * La FICHE stagiaire porte un détail chiffré. Ne dit rien de ce questionnaire :
+   * la colonne est aussi écrite ailleurs. Signalé hors des réponses.
+   */
+  precisionSurFicheStagiaire: boolean;
   positionnement: PositionnementLu;
 }
 
@@ -110,9 +122,13 @@ export function PositionnementRempliPdf({
   const docTitle = p.saisieAdmin
     ? "Positionnement — saisie par l'organisme"
     : "Positionnement à l'entrée — réponses";
+  // Règle de la PR 1083 : l'indicateur 10 ne se prouve que par une réponse du
+  // bénéficiaire à la question du besoin, recueillie avant le début.
+  const couvreIndicateur10 =
+    !p.saisieAdmin && p.besoinAdaptation !== null && data.reponduAvantDebut;
   const origine = p.saisieAdmin
     ? "Pièce établie à partir des éléments saisis par l'organisme au questionnaire de positionnement — Indicateurs Qualiopi 4 et 8."
-    : "Pièce établie à partir des réponses enregistrées au questionnaire de positionnement — Indicateurs Qualiopi 4, 8 et 10.";
+    : `Pièce établie à partir des réponses enregistrées au questionnaire de positionnement — Indicateurs Qualiopi ${couvreIndicateur10 ? "4, 8 et 10" : "4 et 8"}.`;
 
   return (
     <Document>
@@ -175,13 +191,16 @@ export function PositionnementRempliPdf({
             question="Besoin d'adaptation déclaré"
             valeur={libelleBesoinAdaptation(p.besoinAdaptation, p.saisieAdmin)}
           />
-          {p.besoinAdaptation === true ? (
-            <Reponse
-              question="Précision"
-              valeur={libellePrecisionAdaptation(p.precisionAdaptationFournie)}
-            />
+          {p.precisionDansLaReponse ? (
+            <Reponse question="Précision" valeur={PRECISION_DANS_LA_REPONSE} />
           ) : null}
         </DocSection>
+
+        {data.precisionSurFicheStagiaire ? (
+          <Text style={pdfStyles.paragraph}>
+            {`Hors questionnaire : ${MENTION_PRECISION_FICHE_STAGIAIRE}`}
+          </Text>
+        ) : null}
 
         <LegalCallout variant="legal">
           {origine} Droit d&apos;accès :{" "}

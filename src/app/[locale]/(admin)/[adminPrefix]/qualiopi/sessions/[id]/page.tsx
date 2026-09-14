@@ -572,9 +572,11 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     montantHtEuros: e.montantHtCents != null ? e.montantHtCents / 100 : null,
   }));
 
-  // C2-03 / I10-02 — PRÉSENCE d'une précision d'adaptation chiffrée, jamais son
-  // contenu (donnée de santé, lecture réservée au super-administrateur). Bornée
-  // aux inscrits de la session ; la colonne chiffrée n'est pas chargée.
+  // C2-03 / I10-02 — PRÉSENCE d'une précision d'adaptation chiffrée sur la FICHE
+  // stagiaire, jamais son contenu (donnée de santé, lecture réservée au
+  // super-administrateur). Bornée aux inscrits de la session ; la colonne
+  // chiffrée n'est pas chargée. Elle ne dit rien du questionnaire : la colonne
+  // est aussi écrite par la déclaration de handicap et par la console.
   const traineesAvecDetailChiffre = await stagiairesAvecPrecisionChiffree(
     enrollmentsRaw.map((e) => e.trainee.id),
   );
@@ -588,11 +590,9 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       envoyeAt: q.envoyeAt ? q.envoyeAt.toISOString() : null,
       noteGlobale: q.noteGlobale,
       positionnement:
-        q.type === "positionnement" && q.reponduAt !== null
-          ? lirePositionnement(q.reponses, {
-              detailChiffrePresent: traineesAvecDetailChiffre.has(e.trainee.id),
-            })
-          : null,
+        q.type === "positionnement" && q.reponduAt !== null ? lirePositionnement(q.reponses) : null,
+      precisionSurFicheStagiaire:
+        q.type === "positionnement" && traineesAvecDetailChiffre.has(e.trainee.id),
     })),
   );
 

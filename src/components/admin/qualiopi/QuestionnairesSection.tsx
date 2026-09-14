@@ -16,7 +16,8 @@ import {
   chronologieReponse,
   formaterInstantParis,
   libelleBesoinAdaptation,
-  libellePrecisionAdaptation,
+  MENTION_PRECISION_FICHE_STAGIAIRE,
+  PRECISION_DANS_LA_REPONSE,
   type PositionnementLu,
 } from "@/server/qualiopi/positionnement/lecture-positionnement";
 
@@ -61,6 +62,12 @@ export interface QuestionnaireRow {
    * nulle part dans la console.
    */
   positionnement: PositionnementLu | null;
+  /**
+   * La FICHE stagiaire porte une précision chiffrée. Ne dit rien de CE
+   * questionnaire (la colonne est aussi écrite par la déclaration de handicap
+   * et par la console) : signalé hors des réponses, jamais en leur nom.
+   */
+  precisionSurFicheStagiaire: boolean;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -124,9 +131,9 @@ function ReponsesPositionnement({
             "Besoin d'adaptation déclaré",
             libelleBesoinAdaptation(p.besoinAdaptation, p.saisieAdmin),
           )}
-          {/* Donnée de santé : la présence se dit, le contenu jamais. */}
-          {p.besoinAdaptation === true &&
-            champ("Précision", libellePrecisionAdaptation(p.precisionAdaptationFournie))}
+          {/* Donnée de santé : la présence se dit, le contenu jamais — et
+              seulement quand la RÉPONSE elle-même l'atteste. */}
+          {p.precisionDansLaReponse && champ("Précision", PRECISION_DANS_LA_REPONSE)}
         </dl>
       )}
       {!p.saisieAdmin && (
@@ -154,6 +161,12 @@ function ReponsesPositionnement({
             </table>
           )}
         </div>
+      )}
+      {questionnaire.precisionSurFicheStagiaire && (
+        // Hors des réponses : la fiche peut porter une précision venue d'ailleurs.
+        <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          Hors questionnaire : {MENTION_PRECISION_FICHE_STAGIAIRE}
+        </p>
       )}
     </div>
   );

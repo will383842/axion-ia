@@ -13,7 +13,9 @@ import {
   estSaisieOrganisme,
   lirePositionnement,
   libelleBesoinAdaptation,
-  libellePrecisionAdaptation,
+  MENTION_PRECISION_FICHE_STAGIAIRE,
+  PRECISION_DANS_LA_REPONSE,
+  reponseAvantDebut,
 } from "./lecture-positionnement";
 
 describe("lirePositionnement", () => {
@@ -88,46 +90,42 @@ describe("lirePositionnement", () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Formes RÉELLES de `Questionnaire.reponses` (relecture de la PR 1090).
+// Formes RÉELLES de `Questionnaire.reponses` (relectures de la PR 1090).
 //
 // 1. Portail depuis le 2026-08-20 : `portail.ts` retire `detailAdaptation` du
-//    JSON et le chiffre sur la fiche stagiaire. Le détail n'est donc PAS dans
-//    les réponses : le lire là rendait « Non renseigné », une absence fausse.
+//    JSON et le chiffre sur la fiche stagiaire. La réponse ne garde AUCUNE
+//    trace qu'une précision a été saisie.
 // 2. Portail du 2026-07-26 au 2026-08-20 : le détail y est encore EN CLAIR.
-//    Donnée de santé (art. 9) : sa PRÉSENCE se dit, son contenu jamais.
+//    C'est la seule trace fiable, propre au questionnaire. Donnée de santé
+//    (art. 9) : sa PRÉSENCE se dit, son contenu jamais.
 // 3. Saisie console : `objectifs_atteints`, `points_forts`,
 //    `axes_amelioration`, `commentaire` et `saisie_admin: true`.
+//
+// 🔴 La colonne chiffrée de la fiche stagiaire est écrite par TROIS autres
+// chemins (déclaration de handicap du portail, création et mise à jour en
+// console) et jamais remise à zéro : elle ne prouve pas qu'une précision a été
+// donnée DANS CE positionnement. Elle ne décide donc rien ici.
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("lirePositionnement — formes réelles en base", () => {
-  it("portail récent : besoin déclaré, détail chiffré hors du JSON → précision FOURNIE, jamais « Non renseigné »", () => {
-    const reponses = { besoinAdaptation: true, attentes: "Gagner du temps" };
-    const lu = lirePositionnement(reponses, { detailChiffrePresent: true });
+  it("portail récent : besoin déclaré, détail retiré du JSON → la réponse n'atteste AUCUNE précision", () => {
+    const lu = lirePositionnement({ besoinAdaptation: true, attentes: "Gagner du temps" });
     expect(lu.besoinAdaptation).toBe(true);
-    expect(lu.precisionAdaptationFournie).toBe(true);
-    expect(libellePrecisionAdaptation(lu.precisionAdaptationFournie)).toBe(
-      "Précision fournie — consultable par le super-administrateur",
-    );
+    expect(lu.precisionDansLaReponse).toBe(false);
   });
 
-  it("portail récent : besoin déclaré sans aucun détail → « Aucune précision »", () => {
-    const lu = lirePositionnement({ besoinAdaptation: true }, { detailChiffrePresent: false });
-    expect(lu.precisionAdaptationFournie).toBe(false);
-    expect(libellePrecisionAdaptation(lu.precisionAdaptationFournie)).toBe("Aucune précision");
-  });
-
-  it("portail ancien : le détail EN CLAIR est signalé présent et JAMAIS restitué", () => {
+  it("portail ancien : le détail EN CLAIR atteste une précision, et n'est JAMAIS restitué", () => {
     const lu = lirePositionnement({
       besoinAdaptation: true,
       detailAdaptation: "Salle accessible en fauteuil",
     });
-    expect(lu.precisionAdaptationFournie).toBe(true);
+    expect(lu.precisionDansLaReponse).toBe(true);
     expect(JSON.stringify(lu)).not.toContain("fauteuil");
   });
 
-  it("sans besoin déclaré, la précision n'a pas d'objet", () => {
-    const lu = lirePositionnement({ besoinAdaptation: false }, { detailChiffrePresent: true });
-    expect(lu.precisionAdaptationFournie).toBeNull();
+  it("sans besoin déclaré, aucune précision n'est attribuée à la réponse", () => {
+    const lu = lirePositionnement({ besoinAdaptation: false, detailAdaptation: "texte" });
+    expect(lu.precisionDansLaReponse).toBe(false);
   });
 
   it("saisie console : les quatre champs écrits par l'organisme sont restitués", () => {
@@ -138,7 +136,7 @@ describe("lirePositionnement — formes réelles en base", () => {
       commentaire: "Appel téléphonique",
       saisie_admin: true,
     };
-    const lu = lirePositionnement(reponses, { detailChiffrePresent: true });
+    const lu = lirePositionnement(reponses);
     expect(estSaisieOrganisme(reponses)).toBe(true);
     expect(lu.saisieAdmin).toBe(true);
     expect(lu.saisieOrganisme).toEqual({
@@ -148,12 +146,19 @@ describe("lirePositionnement — formes réelles en base", () => {
       commentaire: "Appel téléphonique",
     });
     // La question n'a pas été posée : aucune précision ne s'y rattache.
-    expect(lu.precisionAdaptationFournie).toBeNull();
+    expect(lu.precisionDansLaReponse).toBe(false);
   });
 
   it("une réponse du portail n'est pas une saisie de l'organisme", () => {
     expect(estSaisieOrganisme({ besoinAdaptation: false })).toBe(false);
     expect(estSaisieOrganisme(null)).toBe(false);
+  });
+
+  it("les deux libellés ne se confondent pas : l'un parle de la réponse, l'autre de la fiche", () => {
+    expect(PRECISION_DANS_LA_REPONSE).toMatch(/dans la réponse/);
+    expect(PRECISION_DANS_LA_REPONSE).not.toMatch(/fiche/);
+    expect(MENTION_PRECISION_FICHE_STAGIAIRE).toMatch(/peut figurer sur la fiche du stagiaire/);
+    expect(MENTION_PRECISION_FICHE_STAGIAIRE).toMatch(/super-administrateur/);
   });
 });
 
@@ -172,5 +177,10 @@ describe("chronologieReponse", () => {
     expect(chronologieReponse(new Date("2026-09-05T07:01:00.000Z"), DEBUT)).toBe(
       "après le début de la session",
     );
+  });
+
+  it("le prédicat avant/après est celui de la mention imprimée", () => {
+    expect(reponseAvantDebut(DEBUT, DEBUT)).toBe(true);
+    expect(reponseAvantDebut(new Date("2026-09-05T07:01:00.000Z"), DEBUT)).toBe(false);
   });
 });

@@ -10,13 +10,14 @@
  * `wherePositionnementRempli()` : le manifeste ne peut pas annoncer trois
  * pièces quand le ZIP en joint deux.
  *
- * 🔴 Relecture de la PR 1090 :
+ * 🔴 Relectures de la PR 1090 :
  *   · une saisie par l'organisme (`saisie_admin: true`) n'est PAS un
  *     positionnement rempli par le stagiaire. Elle est comptée à part, et sa
  *     pièce est nommée et titrée comme telle ;
  *   · la précision d'un besoin d'adaptation (donnée de santé) n'entre JAMAIS
- *     dans une pièce. Sa présence chiffrée se lit par un FILTRE en base : la
- *     colonne `handicapDetailsChiffre` n'est pas chargée.
+ *     dans une pièce. La présence d'un détail chiffré sur la FICHE stagiaire se
+ *     lit par un filtre en base (la colonne n'est pas chargée) et se signale à
+ *     part : elle n'est jamais attribuée au questionnaire.
  *
  * ⚠️ Un rendu en échec est RAPPORTÉ (`echecs`), jamais avalé : l'appelant le
  * porte en avertissement et déclare le dossier incomplet.
@@ -33,6 +34,7 @@ import {
   estSaisieOrganisme,
   formaterInstantParis,
   lirePositionnement,
+  reponseAvantDebut,
 } from "./lecture-positionnement";
 import { stagiairesAvecPrecisionChiffree } from "./precision-chiffree";
 
@@ -69,17 +71,24 @@ export function wherePositionnementRempli() {
 }
 
 /**
- * Le partage stagiaires / organisme lit `saisie_admin` en JS, avec la même
- * fonction que l'écran et la pièce : un filtre JSON en base (`NOT path equals`)
- * écarterait silencieusement les réponses où la clé est absente.
+ * Deux comptes EN BASE, sans charger les réponses (ni les anciens détails de
+ * santé en clair) : le total, et les saisies de l'organisme
+ * (`saisie_admin` = `true`). Les stagiaires sont la différence.
+ *
+ * ⚠️ Jamais une exclusion (`NOT path equals`) : en SQL, une réponse sans la clé
+ * `saisie_admin` — toutes celles du portail — rendrait NULL et sortirait du
+ * compte. Ici elle reste dans le total, donc côté stagiaires, exactement comme
+ * `estSaisieOrganisme` la lit à l'écran et sur la pièce.
  */
 export async function compterPositionnementsRemplis(): Promise<ComptePositionnementsRemplis> {
-  const lignes = await prisma.questionnaire.findMany({
-    where: wherePositionnementRempli(),
-    select: { reponses: true },
-  });
-  const parOrganisme = lignes.filter((l) => estSaisieOrganisme(l.reponses)).length;
-  return { parStagiaires: lignes.length - parOrganisme, parOrganisme };
+  const where = wherePositionnementRempli();
+  const [total, parOrganisme] = await Promise.all([
+    prisma.questionnaire.count({ where }),
+    prisma.questionnaire.count({
+      where: { ...where, reponses: { path: ["saisie_admin"], equals: true } },
+    }),
+  ]);
+  return { parStagiaires: total - parOrganisme, parOrganisme };
 }
 
 function slug(texte: string): string {
@@ -125,8 +134,8 @@ export async function produirePiecesPositionnementRempli(): Promise<{
   const echecs: EchecPositionnementRempli[] = [];
   if (lignes.length === 0) return { pieces, echecs };
 
-  // PRÉSENCE d'une précision chiffrée, par filtre : le chiffré n'est pas chargé.
-  const avecDetailChiffre = await stagiairesAvecPrecisionChiffree(
+  // Détail chiffré sur la FICHE (pas dans la réponse) : présence seule, par filtre.
+  const avecDetailSurFiche = await stagiairesAvecPrecisionChiffree(
     lignes.map((l) => l.enrollment.trainee.id),
   );
 
@@ -154,10 +163,10 @@ export async function produirePiecesPositionnementRempli(): Promise<{
             debutSession: formaterInstantParis(session.dateDebut),
             reponduLe: formaterInstantParis(ligne.reponduAt),
             chronologie: chronologieReponse(ligne.reponduAt, session.dateDebut),
+            reponduAvantDebut: reponseAvantDebut(ligne.reponduAt, session.dateDebut),
             tireeLe,
-            positionnement: lirePositionnement(ligne.reponses, {
-              detailChiffrePresent: avecDetailChiffre.has(trainee.id),
-            }),
+            precisionSurFicheStagiaire: avecDetailSurFiche.has(trainee.id),
+            positionnement: lirePositionnement(ligne.reponses),
           },
           identite,
         }),
