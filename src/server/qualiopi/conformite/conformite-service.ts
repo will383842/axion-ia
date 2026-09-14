@@ -73,6 +73,23 @@ export interface ConformiteResult {
   nbApplicables: number;
 }
 
+/**
+ * off.10 — ce positionnement a-t-il RECUEILLI le besoin d'adaptation ?
+ *
+ * Oui seulement si la question y a reçu une réponse du bénéficiaire : le
+ * booléen `besoinAdaptation` que le portail pose toujours
+ * (`PositionnementPortailForm`). Une saisie administrateur
+ * (`QuestionnairesSection`, `saisie_admin: true`) ne pose pas la question et
+ * n'alimente pas `Trainee.situationHandicap` : elle est exclue, même si un
+ * booléen y figure.
+ */
+function porteReponseBesoinAdaptation(reponses: unknown): boolean {
+  if (reponses === null || typeof reponses !== "object" || Array.isArray(reponses)) return false;
+  const r = reponses as Record<string, unknown>;
+  if (r["saisie_admin"] === true) return false;
+  return typeof r["besoinAdaptation"] === "boolean";
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // evaluerConformite
 // ─────────────────────────────────────────────────────────────────────────────
@@ -201,6 +218,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbInscritsBesoinAdaptation,
     nbInscritsBesoinAdaptationServis,
     nbInscritsSessionsTenues,
+    positionnementsOff10,
+    nbInscritsSessionsTenuesDemarrees,
   ] = await Promise.all([
     prisma.formation.count(),
     prisma.trainingSession.count({ where: { statut: "realisee" } }),
@@ -700,6 +719,50 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // DIRE l'échelle : « 1 adaptation » ne veut rien dire tant qu'on ne sait pas
     // si l'organisme a inscrit dix personnes ou trois mille.
     prisma.enrollment.count({ where: { ...inscriptionSurSessionTenue() } }),
+    // off.10 ⭐ — positionnements qui RECUEILLENT le besoin d'adaptation.
+    //
+    // 🔴 2026-09-14 (relecture PR #1083) — PAS la lecture d'off.4. Celle-là ne
+    // porte aucun filtre de statut : reprise ici, un positionnement d'une
+    // session ANNULÉE ou REPORTÉE restait au numérateur pendant que le besoin
+    // déclaré de la même inscription sortait du dénominateur
+    // (`inscriptionSurSessionTenue`). C'est le défaut D1-2 du 2026-08-25,
+    // rouvert par une autre table : `Questionnaire` n'a pas de `sessionId`, le
+    // cliquet dérivé du schéma ne peut donc pas le voir. Le filtre passe par
+    // l'inscription, avec le MÊME prédicat que les autres compteurs d'off.10.
+    //
+    // `reponses` est lu pour distinguer le portail (qui pose toujours le
+    // booléen `besoinAdaptation`) de la saisie administrateur (qui ne pose
+    // jamais la question). Le détail chiffré en est retiré à l'écriture
+    // (`portail.ts`) : rien de sensible n'est lu ici.
+    //
+    // ⚠️ `take` ne peut que BAISSER le numérateur : une troncature donne
+    // « à compléter », jamais un faux « couvert ».
+    prisma.questionnaire.findMany({
+      where: {
+        type: "positionnement",
+        reponduAt: { not: null },
+        enrollment: {
+          session: { ...inscriptionSurSessionTenue().session, dateDebut: { lte: maintenant } },
+        },
+      },
+      select: {
+        enrollmentId: true,
+        reponduAt: true,
+        reponses: true,
+        enrollment: { select: { session: { select: { dateDebut: true } } } },
+      },
+      take: 5000,
+    }),
+    // off.10 ⭐ — DÉNOMINATEUR du recueil : inscriptions sur une session tenue
+    // ET démarrée. Même prédicat de statut que les autres compteurs d'off.10 ;
+    // pas de filtre sur le statut d'inscription, à dessein (cf.
+    // `piece-admissible.ts` : l'exclusion des abandons rendrait l'indicateur
+    // plus facile à satisfaire).
+    prisma.enrollment.count({
+      where: {
+        session: { ...inscriptionSurSessionTenue().session, dateDebut: { lte: maintenant } },
+      },
+    }),
   ]);
 
   const typesAction = typesActionResult;
@@ -791,6 +854,32 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     }
   }
   const nbInscritsPositionnesAvantDebut = positionnementsAvantDebut.size;
+
+  // ── off.10 : le RECUEIL du besoin d'adaptation, inscrit par inscrit ────────
+  //
+  // Un positionnement ne recueille le besoin que s'il porte une RÉPONSE à la
+  // question « besoin d'adaptation ». Seul le portail la pose
+  // (`PositionnementPortailForm`, booléen toujours présent). La saisie
+  // administrateur (`QuestionnairesSection`, `saisie_admin: true`) ne la pose
+  // pas et n'appelle pas `signalerBesoinAdaptation` : un formulaire vide validé
+  // avant le début ne prouve aucun recueil, et un booléen glissé dans une
+  // saisie admin n'est pas la réponse du bénéficiaire. Le schéma ne permet pas
+  // mieux sans migration : la saisie admin est donc EXCLUE de la preuve.
+  const inscritsBesoinRecueilliAvantDebut = new Set<string>();
+  let nbPositionnementsSansQuestionBesoin = 0;
+  for (const q of positionnementsOff10) {
+    const reponduAt = q.reponduAt;
+    if (reponduAt === null) continue;
+    const dateDebut = q.enrollment.session.dateDebut;
+    if (dateDebut.getTime() > maintenant.getTime()) continue;
+    if (reponduAt.getTime() > dateDebut.getTime()) continue;
+    if (!porteReponseBesoinAdaptation(q.reponses)) {
+      nbPositionnementsSansQuestionBesoin += 1;
+      continue;
+    }
+    inscritsBesoinRecueilliAvantDebut.add(q.enrollmentId);
+  }
+  const nbInscritsBesoinRecueilli = inscritsBesoinRecueilliAvantDebut.size;
 
   const evaluationsInitialesAvantDebut = new Set<string>();
   let nbEvaluationsInitialesHorsDelai = 0;
@@ -1161,20 +1250,47 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   // INVENTÉE. Même défaut que off.21 le 2026-09-13 — une incitation à falsifier,
   // pas un chiffre faux.
   //
-  // La pratique effective se prouve par le RECUEIL du besoin : au moins un
-  // bénéficiaire positionné AVANT le début de sa session (même mesure datée que
-  // off.4). Sans positionnement, « aucun besoin déclaré » ne veut rien dire —
-  // personne ne l'a demandé —, donc jamais de couverture sur une base sans
-  // positionnement recueilli, adaptations saisies ou non. Le contre-exemple
-  // (besoin déclaré, aucune adaptation tracée) reste bloquant.
+  // La pratique effective se prouve par le RECUEIL du besoin. Sans lui,
+  // « aucun besoin déclaré » ne veut rien dire — personne ne l'a demandé.
+  //
+  // 🔴 Relecture PR #1083 — la première version exigeait « au moins un »
+  // positionné, lu sur le compteur d'off.4. Trois faux verts en sortaient :
+  //   1. positionnements de sessions annulées/reportées comptés (cf. la
+  //      requête `positionnementsOff10`) ;
+  //   2. UN positionné sur 3 563 inscrits couvrait — la volumétrie que le
+  //      tableau du 2026-09-02 avait chassée de ce fichier. Pour les inscrits
+  //      non positionnés, « aucun besoin déclaré » n'est pas démontré ;
+  //   3. une saisie administrateur vide, sans question de besoin, suffisait.
+  //
+  // Règle (fix proposé par le constat I10-03) : TOUS les inscrits des sessions
+  // tenues et démarrées ont répondu, avant le début, à la question du besoin
+  // d'adaptation, ET aucun besoin déclaré ne reste sans adaptation tracée.
+  //
+  // ⚠️ Reste OUVERT (I10-03, hors de ce correctif) : `adaptationsRealisees`
+  // compte toute chaîne non vide — un besoin déclaré suivi de « RAS » compte
+  // comme servi.
   const besoinsAdaptationNonServis = nbInscritsBesoinAdaptation - nbInscritsBesoinAdaptationServis;
   set(
     10,
     [
       `${nbEnrollmentsAdaptations} adaptation${nbEnrollmentsAdaptations > 1 ? "s" : ""} tracée${nbEnrollmentsAdaptations > 1 ? "s" : ""} sur ${nbInscritsSessionsTenues} inscription${nbInscritsSessionsTenues > 1 ? "s" : ""} (une adaptation n'est due que lorsqu'un besoin l'appelle)`,
-      nbInscritsPositionnesAvantDebut === 0
-        ? "Aucun positionnement recueilli avant le début d'une session — rien ne montre que les besoins d'adaptation ont été demandés"
-        : `${nbInscritsPositionnesAvantDebut} bénéficiaire${nbInscritsPositionnesAvantDebut > 1 ? "s" : ""} positionné${nbInscritsPositionnesAvantDebut > 1 ? "s" : ""} avant le début de sa session (recueil du besoin d'adaptation)`,
+      nbInscritsSessionsTenuesDemarrees === 0
+        ? "Aucune inscription sur une session tenue et démarrée — le recueil du besoin d'adaptation n'est pas encore démontrable"
+        : `${nbInscritsBesoinRecueilli}/${nbInscritsSessionsTenuesDemarrees} inscrit${nbInscritsSessionsTenuesDemarrees > 1 ? "s" : ""} d'une session tenue et démarrée ${nbInscritsBesoinRecueilli > 1 ? "ont" : "a"} été positionné${nbInscritsBesoinRecueilli > 1 ? "s" : ""} avant le début avec une réponse à la question du besoin d'adaptation`,
+      ...(nbInscritsSessionsTenuesDemarrees > 0 && nbInscritsBesoinRecueilli === 0
+        ? [
+            "Aucun positionnement recueilli avant le début d'une session — rien ne montre que les besoins d'adaptation ont été demandés",
+          ]
+        : nbInscritsBesoinRecueilli < nbInscritsSessionsTenuesDemarrees
+          ? [
+              `${nbInscritsSessionsTenuesDemarrees - nbInscritsBesoinRecueilli} inscrit(s) entré(s) en formation sans que leur besoin d'adaptation ait été demandé`,
+            ]
+          : []),
+      ...(nbPositionnementsSansQuestionBesoin > 0
+        ? [
+            `${nbPositionnementsSansQuestionBesoin} positionnement(s) sans réponse à la question du besoin d'adaptation (saisie administrateur) — ne prouve(nt) pas le recueil du besoin`,
+          ]
+        : []),
       nbInscritsBesoinAdaptation === 0
         ? "Aucune inscription ne porte de besoin d'adaptation déclaré"
         : `${nbInscritsBesoinAdaptationServis}/${nbInscritsBesoinAdaptation} inscription${nbInscritsBesoinAdaptation > 1 ? "s" : ""} à besoin déclaré portant une adaptation tracée`,
@@ -1182,7 +1298,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
         ? `${besoinsAdaptationNonServis} bénéficiaire(s) ont DÉCLARÉ un besoin sans qu'aucune adaptation soit tracée — c'est le dossier que l'auditeur tire en premier`
         : "Aucun besoin déclaré laissé sans adaptation tracée",
     ],
-    nbInscritsPositionnesAvantDebut > 0 && besoinsAdaptationNonServis === 0,
+    nbInscritsSessionsTenuesDemarrees > 0 &&
+      nbInscritsBesoinRecueilli === nbInscritsSessionsTenuesDemarrees &&
+      besoinsAdaptationNonServis === 0,
   );
   // off.11 ⭐ : évaluation de l'atteinte des objectifs.
   //
