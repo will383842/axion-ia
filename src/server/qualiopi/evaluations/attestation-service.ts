@@ -17,6 +17,14 @@
  * de 60 % (`classifierPresence`) reste une catégorie d'affichage de la présence ;
  * il ne décide plus de l'existence de la pièce.
  *
+ * 🔴 Décisions Will du 2026-09-14 (audit initial) :
+ *   - D1 : l'absence d'évaluation finale n'exige plus de motif écrit. La pièce
+ *     sort, imprime « Évaluation des acquis non réalisée », et l'absence est
+ *     journalisée (`qualiopi.attestation.sans_evaluation_finale`). Le cron, lui,
+ *     attend le délai de grâce de R05 avant d'émettre sans évaluation.
+ *   - D2 : un stagiaire exclu ou en abandon reçoit une attestation PARTIELLE de
+ *     ses heures réellement suivies, quel que soit son taux.
+ *
  * Idempotence : si attestationGenereeAt est déjà set et opts.force !== true,
  * retourne l'existant sans regénérer.
  *
@@ -163,12 +171,10 @@ export function preuvesManquantesAttestation(p: PreuvesAttestation): string[] {
         "ni créneau issu d'un relevé de connexion importé",
     );
   }
-  if (p.evaluationsFinales === 0) {
-    manquantes.push(
-      "aucune évaluation finale des acquis (la pièce imprimerait « Évaluation des " +
-        "acquis non réalisée » à la place des résultats que L.6353-1 lui fait porter)",
-    );
-  }
+  // 🔴 Décision Will D1 (2026-09-14) : l'absence d'évaluation finale n'est plus
+  // un manque soumis à motif. La pièce que L.6353-1 al. 2 doit au stagiaire
+  // sort et imprime « Évaluation des acquis non réalisée » ; l'absence est
+  // journalisée par `genererAttestationPourEnrollment`, pas assumée par écrit.
   return manquantes;
 }
 
@@ -361,27 +367,13 @@ export async function genererAttestationPourEnrollment(
     };
   }
 
-  // 2b. Invariant métier S2 : un stagiaire exclu ou en abandon ne peut pas
-  //     recevoir d'attestation, même via l'action manuelle admin.
-  //     (Le cron filtre déjà ces statuts, mais l'action manuelle ne le faisait pas.)
-  if (!estInscriptionActive(enrollment.statut)) {
-    try {
-      await prisma.activityLog.create({
-        data: {
-          adminUserId: null,
-          action: "qualiopi.attestation.refusee_statut",
-          targetType: "Enrollment",
-          targetId: enrollmentId,
-          changes: { statut: enrollment.statut } as never,
-          ipAddress: null,
-          userAgent: null,
-        },
-      });
-    } catch {
-      // best-effort
-    }
-    return { resultat: "aucune", documentId: null };
-  }
+  // 2b. 🔴 Décision Will D2 (2026-09-14, audit initial) — fin de l'invariant S2.
+  //     Un stagiaire exclu ou en abandon ne recevait AUCUNE pièce. L.6353-1
+  //     al. 2 la lui doit à l'issue de la formation : il reçoit une attestation
+  //     PARTIELLE de ses heures réellement suivies, jamais la complète — même si
+  //     son taux dépasse le seuil, la pièce n'affirme pas qu'il a suivi l'action
+  //     jusqu'au bout. Les preuves (taux mesuré, trace) restent exigées.
+  const inscriptionSortie = !estInscriptionActive(enrollment.statut);
 
   // 2b-bis. 🔴 PREUVES — voir le bloc `PreuvesAttestation` en tête de fichier.
   //
@@ -479,6 +471,26 @@ export async function genererAttestationPourEnrollment(
     }
   }
 
+  // 2d. 🔴 Décision Will D1 — l'absence d'évaluation finale ne bloque plus,
+  //     mais elle se VOIT au registre. Best-effort, comme les autres journaux.
+  if (preuves.evaluationsFinales === 0) {
+    try {
+      await prisma.activityLog.create({
+        data: {
+          adminUserId: null,
+          action: "qualiopi.attestation.sans_evaluation_finale",
+          targetType: "Enrollment",
+          targetId: enrollmentId,
+          changes: { statut: enrollment.statut } as never,
+          ipAddress: null,
+          userAgent: null,
+        },
+      });
+    } catch {
+      // best-effort
+    }
+  }
+
   // 3. Classifie la présence
   const seuilPresencePct = await getQualiopiConfig("seuil_presence_pct");
   const tauxPct = enrollment.tauxPresencePct ?? 0;
@@ -492,10 +504,12 @@ export async function genererAttestationPourEnrollment(
   // attestation mentionnant objectifs, nature, durée et résultats de
   // l'évaluation. On émet donc la pièce PARTIELLE, qui imprime la durée
   // réellement suivie : c'est ce qu'elle dit qui change avec l'assiduité, pas
-  // le fait qu'elle soit due. « aucune » reste le résultat des seuls refus
-  // (statut exclu/abandon, base stub).
+  // le fait qu'elle soit due. « aucune » ne sort plus que de la base stub ou
+  // d'un claim perdu (génération concurrente) — exclus et abandons compris (D2).
   const resultat: "complete" | "partielle" =
-    classifierPresence(tauxPct, seuilPresencePct) === "complete" ? "complete" : "partielle";
+    !inscriptionSortie && classifierPresence(tauxPct, seuilPresencePct) === "complete"
+      ? "complete"
+      : "partielle";
 
   // 5. Construction du PDF — données formation depuis le snapshot légal (WS5),
   //    repli sur la lecture LIVE pour les sessions antérieures à WS5.
@@ -839,7 +853,12 @@ export async function genererAttestationPourEnrollment(
         action: `qualiopi.attestation.${resultat}`,
         targetType: "Enrollment",
         targetId: enrollmentId,
-        changes: { resultat, documentId: generated.id, tauxPct } as never,
+        changes: {
+          resultat,
+          documentId: generated.id,
+          tauxPct,
+          statut: enrollment.statut,
+        } as never,
         ipAddress: null,
         userAgent: null,
       },

@@ -50,10 +50,11 @@ export interface GenererAttestationButtonProps {
 const RESULTAT_LABELS: Record<AttestationResultat, string> = {
   complete: "Attestation complète générée",
   partielle: "Attestation partielle générée",
-  // Depuis l'audit initial 2026-09-14, une faible présence produit une attestation
-  // PARTIELLE (L.6353-1 al. 2) : « aucune » ne sort plus que pour une inscription
-  // exclue ou en abandon.
-  aucune: "Aucune attestation : inscription exclue ou en abandon",
+  // Depuis l'audit initial 2026-09-14, présence faible, exclus et abandons
+  // reçoivent tous une pièce (L.6353-1 al. 2) : « aucune » ne sort plus que d'une
+  // génération concurrente, ou d'un ancien résultat « aucune » resté en base.
+  aucune:
+    "Aucune pièce produite (génération déjà en cours ou ancien résultat « aucune ») : actualisez, puis régénérez si besoin",
 };
 
 function resultatCouleur(resultat: AttestationResultat): string {

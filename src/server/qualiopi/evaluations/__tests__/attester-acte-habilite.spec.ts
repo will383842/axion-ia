@@ -134,14 +134,22 @@ describe("🔴 l'émetteur automatique porte SA garde de chronologie", () => {
     expect(CRON).toContain('session: { statut: "realisee" }');
   });
 
-  it("n'émet que si une évaluation FINALE existe", () => {
-    // 🔴 Le défaut constaté sur `AXI-ATT-2026-003` : la pièce certifiait que la
-    // stagiaire « en a satisfait les exigences » et affichait deux lignes plus
-    // bas « Évaluation des acquis non réalisée ». Une attestation qui se
-    // contredit elle-même. La chronologie rendait le défaut SYSTÉMATIQUE :
-    // clôture à J+1 08:00, attestation à J+1 09:00, alerte « évaluation
-    // manquante » à J+2 07:00 — l'organisme prévenu 22 h APRÈS avoir délivré.
+  it("sans évaluation FINALE, n'émet qu'après le délai de grâce de R05 — la MÊME constante", () => {
+    // 🔴 Le défaut constaté sur `AXI-ATT-2026-003` : clôture à J+1 08:00,
+    // attestation à J+1 09:00, alerte « évaluation manquante » à J+2 — la pièce
+    // partait avant qu'une évaluation saisie en retard ait pu l'être.
+    //
+    // Décision Will D1 (2026-09-14) : la pièce est due même sans évaluation
+    // (elle imprime alors « Évaluation des acquis non réalisée »), mais pas
+    // avant le délai de R05. Un seul délai, lu au même endroit par l'alerte et
+    // par le cron : deux littéraux « 2 » finiraient par diverger.
     expect(CRON).toContain('evaluations: { some: { type: "finale" } }');
+    expect(CRON).toContain("DELAI_EVALUATION_FINALE_JOURS");
+    const EVALUATEUR = readFileSync(
+      join(RACINE_SRC, "server/qualiopi/alertes/evaluateur.ts"),
+      "utf-8",
+    );
+    expect(EVALUATEUR).toContain("daysAgo(DELAI_EVALUATION_FINALE_JOURS, now)");
   });
 
   it("exclut les inscriptions qui ont déjà leur attestation", () => {

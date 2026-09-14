@@ -54,6 +54,23 @@ const GABARIT = readFileSync(
   ),
   "utf8",
 );
+const LIVRET = readFileSync(
+  join(process.cwd(), "src", "server", "qualiopi", "documents", "templates", "livret-accueil.tsx"),
+  "utf8",
+);
+
+/**
+ * Le texte d'une source, lignes de commentaire écartées et espaces aplatis : le
+ * JSX coupe ses phrases sur plusieurs lignes, la chaîne publique non.
+ */
+function aplati(source: string): string {
+  return source
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter((l) => !l.startsWith("*") && !l.startsWith("//") && !l.startsWith("/*"))
+    .join(" ")
+    .replace(/\s+/g, " ");
+}
 
 /**
  * Les articles du code du travail RÉELLEMENT CITÉS par un texte, dédupliqués.
@@ -111,6 +128,37 @@ describe("le règlement intérieur publié vaut celui qu'on remet", () => {
         "DU PUBLIC — c'est cette page que le certificateur lira. Reporter le texte " +
         "du gabarit, verbatim.",
     ).toEqual([]);
+  });
+
+  it("🔴 D1 : aucune des trois versions ne conditionne plus l'attestation aux évaluations", () => {
+    // Décision Will (2026-09-14, audit initial, X-documents-pdf-04). L'article 7
+    // (page publique + PDF) et le livret faisaient dépendre l'attestation de la
+    // « participation active aux évaluations » et d'une « absence partielle
+    // justifiée ». L.6353-1 al. 2 la rend due à tout stagiaire, à l'issue de la
+    // formation. Contrôle NÉGATIF : l'ancienne condition ne doit revenir nulle part.
+    const anciennes = [
+      /conditionne la délivrance de l'attestation/i,
+      /obligatoire pour obtenir votre attestation/i,
+      /absence partielle justifiée/i,
+    ];
+    const sources = { "page publique": PAGE, "règlement PDF": GABARIT, "livret PDF": LIVRET };
+    const residus = Object.entries(sources).flatMap(([nom, src]) =>
+      anciennes.filter((re) => re.test(aplati(src))).map((re) => `${nom} : ${re.source}`),
+    );
+    expect(residus, "une clause conditionne encore l'attestation").toEqual([]);
+  });
+
+  it("D1 : la page et le PDF annoncent la même remise, à tout stagiaire, heures suivies comprises", () => {
+    const remise = "une attestation de fin de formation est remise à tout stagiaire";
+    const contenu =
+      "les heures effectivement suivies et les résultats de l'évaluation des acquis, ou l'absence d'évaluation";
+    for (const [nom, src] of Object.entries({ "page publique": PAGE, "règlement PDF": GABARIT })) {
+      expect(aplati(src), `${nom} : la remise à tout stagiaire`).toContain(remise);
+      expect(aplati(src), `${nom} : le contenu de la pièce`).toContain(contenu);
+    }
+    expect(aplati(LIVRET), "livret : l'absence d'évaluation n'est pas dite").toContain(
+      "ou l'absence d'évaluation",
+    );
   });
 
   it("la page publique nomme la procédure, pas seulement les articles", () => {

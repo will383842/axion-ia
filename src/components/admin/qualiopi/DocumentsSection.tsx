@@ -1134,8 +1134,10 @@ function EnrollmentDocButton({
         // dit ce qui a été produit ni pourquoi.
         const RESULTAT_ATTESTATION: Record<string, string> = {
           complete: "Attestation complète générée.",
-          partielle: "Attestation partielle générée — présence insuffisante.",
-          aucune: "Aucune attestation : les conditions ne sont pas remplies.",
+          // Audit initial 2026-09-14 : même vocabulaire que GenererAttestationButton.
+          partielle: "Attestation partielle générée — heures réellement suivies.",
+          aucune:
+            "Aucune pièce produite (génération déjà en cours ou ancien résultat « aucune ») : actualisez, puis régénérez si besoin.",
         };
         msg = RESULTAT_ATTESTATION[r.resultat] ?? `Attestation : « ${r.resultat} ».`;
       }

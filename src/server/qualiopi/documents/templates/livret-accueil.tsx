@@ -14,7 +14,6 @@ import {
   FieldRow,
   NdaFieldRow,
   BulletList,
-  LegalCallout,
   pdfStyles,
 } from "@/server/qualiopi/documents/base-layout";
 import {
@@ -200,11 +199,9 @@ export function LivretAccueilPdf({
           </Text>
           <Text style={local.bodyText}>
             À l'issue de la formation, vous recevrez une attestation de fin de formation mentionnant
-            les objectifs, la durée, les dates et les résultats de votre évaluation.
+            les objectifs, la nature et la durée de l'action, les dates, les heures que vous avez
+            effectivement suivies et les résultats de votre évaluation, ou l'absence d'évaluation.
           </Text>
-          <LegalCallout variant="info">
-            La participation active aux évaluations est obligatoire pour obtenir votre attestation.
-          </LegalCallout>
         </DocSection>
 
         {/* Accessibilité et handicap */}

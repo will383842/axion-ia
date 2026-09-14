@@ -73,6 +73,7 @@ import {
   titreReclamation,
   verdictSignature,
 } from "./seuil-signature";
+import { DELAI_EVALUATION_FINALE_JOURS } from "./delai-evaluation-finale";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Type de retour de l'évaluateur
@@ -1212,9 +1213,13 @@ async function regleSuiviFroidManquant(now: Date): Promise<AlerteCandidate[]> {
   }));
 }
 
-/** R05 — Évaluation des acquis manquante : session realisee > 2 jours sans éval finale. */
+/**
+ * R05 — Évaluation des acquis manquante : session realisee depuis plus de
+ * `DELAI_EVALUATION_FINALE_JOURS` jours sans éval finale. Le même délai borne
+ * l'émission automatique de l'attestation sans évaluation (décision Will D1).
+ */
 async function regleEvaluationAcquisManquante(now: Date): Promise<AlerteCandidate[]> {
-  const threshold = daysAgo(2, now);
+  const threshold = daysAgo(DELAI_EVALUATION_FINALE_JOURS, now);
   const enrollments = await prisma.enrollment.findMany({
     where: {
       session: { statut: "realisee", dateFin: { lte: threshold } },
@@ -1235,7 +1240,7 @@ async function regleEvaluationAcquisManquante(now: Date): Promise<AlerteCandidat
     code: "evaluation_acquis_manquante",
     niveau: "critique" as AlerteNiveau,
     titre: "Évaluation finale des acquis manquante",
-    message: `L'évaluation finale des acquis de ${e.trainee.prenom} ${e.trainee.nom} (session ${e.session.numero}) est manquante 2 jours après la session.`,
+    message: `L'évaluation finale des acquis de ${e.trainee.prenom} ${e.trainee.nom} (session ${e.session.numero}) est manquante ${DELAI_EVALUATION_FINALE_JOURS} jours après la session.`,
     cibleType: "Enrollment",
     cibleId: e.id,
   }));
