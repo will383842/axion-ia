@@ -1,12 +1,11 @@
 /**
  * Tests — provenance d'une présence (`G-prerequis-02`, audit initial 2026-09-14).
  *
- * La question posée est « d'où vient cette présence ? », et la réponse ne doit
- * JAMAIS se lire dans le texte de `source` : les créneaux saisis à la main avant
- * le correctif portent `emargement_presentiel`, exactement comme un créneau
- * signé. Le discriminant est la VALEUR qui prouve : une signature vivante, ou le
- * rattachement à un relevé de connexion archivé — pour une présence, jamais pour
- * une absence.
+ * La question posée est « d'où vient cette présence ? ». Le discriminant est la
+ * VALEUR qui prouve : une signature vivante, ou le rattachement à un relevé de
+ * connexion archivé — pour une présence mesurée, jamais pour une absence ni pour
+ * une saisie. `source` n'est lu que dans un sens : `manuel` désigne toujours une
+ * saisie à la main ; `emargement_presentiel` ne prouve rien.
  */
 
 import { describe, it, expect } from "vitest";
@@ -17,23 +16,30 @@ import {
   libellesEmargementParInscription,
 } from "@/server/qualiopi/presence/provenance";
 
+/** Créneau de test : présent, sans import, source neutre, sans signature. */
+function c(over: Partial<Parameters<typeof provenanceCreneau>[0]> = {}) {
+  return {
+    present: true,
+    importId: null,
+    source: "emargement_presentiel",
+    signaturesVivantes: 0,
+    ...over,
+  };
+}
+
 describe("provenanceCreneau", () => {
   it("une signature vivante fait une présence SIGNÉE", () => {
-    expect(provenanceCreneau({ present: true, importId: null, signaturesVivantes: 1 })).toBe(
-      "signature",
-    );
+    expect(provenanceCreneau(c({ signaturesVivantes: 1 }))).toBe("signature");
   });
 
   it("🔴 présent, sans signature ni import = DÉCLARATION MANUELLE, quelle que soit la source", () => {
     // Le cas des grilles enregistrées avant le correctif : source
-    // `emargement_presentiel`, aucune signature. Le prédicat ne lit pas `source`.
-    expect(provenanceCreneau({ present: true, importId: null, signaturesVivantes: 0 })).toBe(
-      "declaration_manuelle",
-    );
+    // `emargement_presentiel`, aucune signature.
+    expect(provenanceCreneau(c())).toBe("declaration_manuelle");
   });
 
-  it("un créneau PRÉSENT rattaché à un import vient du relevé de connexion", () => {
-    expect(provenanceCreneau({ present: true, importId: "imp-1", signaturesVivantes: 0 })).toBe(
+  it("un créneau PRÉSENT mesuré par un import vient du relevé de connexion", () => {
+    expect(provenanceCreneau(c({ importId: "imp-1", source: "import_zoom" }))).toBe(
       "releve_connexion",
     );
   });
@@ -42,15 +48,22 @@ describe("provenanceCreneau", () => {
     // Relevé à 0 min : le stagiaire ne s'est pas connecté. Le rattachement au
     // fichier prouve l'absence, pas une présence.
     expect(
-      provenanceCreneau({ present: false, importId: "imp-1", signaturesVivantes: 0 }),
+      provenanceCreneau(c({ present: false, importId: "imp-1", source: "import_zoom" })),
       "une absence du relevé de connexion est comptée comme une présence",
     ).toBe("aucune");
   });
 
+  it("🔴 revue A09 §6 — créneau importé COCHÉ À LA MAIN (source manuel) = déclaration, jamais « relevé »", () => {
+    // L'import a créé ce créneau à 0 min (inscrit non reconnu) ; l'admin l'a
+    // coché dans la grille, qui l'a passé en `manuel` en gardant `importId`.
+    expect(
+      provenanceCreneau(c({ importId: "imp-1", source: "manuel" })),
+      "une présence tapée à la main est présentée comme mesurée par la plateforme",
+    ).toBe("declaration_manuelle");
+  });
+
   it("absent, sans signature = aucune présence", () => {
-    expect(provenanceCreneau({ present: false, importId: null, signaturesVivantes: 0 })).toBe(
-      "aucune",
-    );
+    expect(provenanceCreneau(c({ present: false }))).toBe("aucune");
   });
 });
 
@@ -58,38 +71,36 @@ describe("resumerProvenance", () => {
   it("compte séparément les présences signées, déclarées et relevées", () => {
     expect(
       resumerProvenance([
-        { present: true, importId: null, signaturesVivantes: 1 },
-        { present: true, importId: null, signaturesVivantes: 0 },
-        { present: true, importId: null, signaturesVivantes: 0 },
-        { present: false, importId: null, signaturesVivantes: 0 },
-        { present: true, importId: "imp-1", signaturesVivantes: 0 },
+        c({ signaturesVivantes: 1 }),
+        c(),
+        c(),
+        c({ present: false }),
+        c({ importId: "imp-1", source: "import_zoom" }),
       ]),
     ).toEqual({ signees: 1, declarees: 2, releveConnexion: 1, premiereSignatureAt: null });
   });
 
   it("🔴 revue A09 §1 — les absences d'un relevé ne gonflent pas le compte « relevé »", () => {
     const resume = resumerProvenance([
-      { present: true, importId: "imp-1", signaturesVivantes: 0 },
-      { present: false, importId: "imp-1", signaturesVivantes: 0 },
-      { present: false, importId: "imp-1", signaturesVivantes: 0 },
+      c({ importId: "imp-1", source: "import_zoom" }),
+      c({ present: false, importId: "imp-1", source: "import_zoom" }),
+      c({ present: false, importId: "imp-1", source: "import_zoom" }),
     ]);
     expect(resume.releveConnexion).toBe(1);
   });
 
+  it("🔴 revue A09 §6 — une présence saisie sur un créneau importé est comptée DÉCLARÉE", () => {
+    const resume = resumerProvenance([
+      c({ importId: "imp-1", source: "import_teams" }),
+      c({ importId: "imp-1", source: "manuel" }),
+    ]);
+    expect(resume).toMatchObject({ releveConnexion: 1, declarees: 1 });
+  });
+
   it("retient la PLUS ANCIENNE signature vivante", () => {
     const resume = resumerProvenance([
-      {
-        present: true,
-        importId: null,
-        signaturesVivantes: 1,
-        premiereSignatureAt: new Date("2026-09-06T14:47:00Z"),
-      },
-      {
-        present: true,
-        importId: null,
-        signaturesVivantes: 1,
-        premiereSignatureAt: new Date("2026-09-05T08:10:00Z"),
-      },
+      c({ signaturesVivantes: 1, premiereSignatureAt: new Date("2026-09-06T14:47:00Z") }),
+      c({ signaturesVivantes: 1, premiereSignatureAt: new Date("2026-09-05T08:10:00Z") }),
     ]);
     expect(resume.premiereSignatureAt?.toISOString()).toBe("2026-09-05T08:10:00.000Z");
   });
@@ -171,20 +182,46 @@ describe("libellesEmargementParInscription", () => {
         { id: "a", emargementSigneAt: new Date("2026-09-01T09:00:00Z") },
         { id: "b", emargementSigneAt: new Date("2026-09-05T10:00:00Z") },
         { id: "c", emargementSigneAt: null },
+        { id: "d", emargementSigneAt: null },
       ],
       [
         {
           enrollmentId: "a",
           present: true,
           importId: null,
+          source: "emargement_presentiel",
           emargementSignatures: [sig("2026-09-06T14:47:00Z")],
         },
-        { enrollmentId: "b", present: true, importId: null, emargementSignatures: [] },
-        { enrollmentId: "c", present: false, importId: "imp-1", emargementSignatures: [] },
+        {
+          enrollmentId: "b",
+          present: true,
+          importId: null,
+          source: "manuel",
+          emargementSignatures: [],
+        },
+        {
+          enrollmentId: "c",
+          present: false,
+          importId: "imp-1",
+          source: "import_zoom",
+          emargementSignatures: [],
+        },
+        // Créneau importé à 0 min puis coché à la main : une déclaration.
+        {
+          enrollmentId: "d",
+          present: true,
+          importId: "imp-1",
+          source: "manuel",
+          emargementSignatures: [],
+        },
       ],
     );
     expect(libelles.get("a")).toEqual({ ton: "succes", texte: "Oui — 06/09/2026" });
     expect(libelles.get("b")?.texte.startsWith("Non — date posée le 05/09/2026")).toBe(true);
     expect(libelles.get("c")).toEqual({ ton: "neutre", texte: "Non" });
+    expect(libelles.get("d")).toEqual({
+      ton: "alerte",
+      texte: "Non — présence déclarée à la main (1 créneau, sans signature)",
+    });
   });
 });

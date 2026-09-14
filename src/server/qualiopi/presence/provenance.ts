@@ -12,25 +12,36 @@
  * Le chemin d'écriture est corrigé (`actions/qualiopi/presence.ts`). Ce module
  * porte la LECTURE : dire, pour chaque créneau, d'où vient la présence.
  *
- * ## 🔑 Le discriminant est une VALEUR, jamais le texte de `source`
+ * ## 🔑 Le discriminant est ce qui PROUVE — `source` n'est lu que dans un sens
  *
  * Les grilles enregistrées AVANT le correctif portent `emargement_presentiel`,
  * exactement comme un créneau signé électroniquement — et `toPresenceSource
- * ("autre")` rend aussi `emargement_presentiel` pour un relevé distanciel. Lire
- * `source` rangerait donc ces présences parmi les émargements, c'est-à-dire
- * reproduirait le défaut à la lecture. On lit ce qui PROUVE :
+ * ("autre")` rend aussi `emargement_presentiel` pour un relevé distanciel. Le
+ * texte de `source` ne peut donc jamais PROUVER une présence. Dans l'ordre :
  *
- *   · une signature vivante (`revokedAt: null`) → présence signée ;
- *   · présent ET rattaché à un relevé archivé (`importId`) → relevé de connexion ;
- *   · présent sans l'un ni l'autre → déclaration manuelle, quelle que soit la
- *     source écrite ;
- *   · ABSENT sans signature → aucune présence, même rattaché à un relevé.
+ *   1. une signature vivante (`revokedAt: null`) → présence signée ;
+ *   2. ABSENT sans signature → aucune présence, même rattaché à un relevé ;
+ *   3. `source: "manuel"` → déclaration manuelle, MÊME si le créneau porte un
+ *      `importId` ;
+ *   4. présent ET rattaché à un relevé archivé (`importId`) → relevé ;
+ *   5. présent sans l'un ni l'autre → déclaration manuelle, quelle que soit la
+ *      source écrite.
  *
  * ⚠️ Revue A09 (2026-09-14), constat 1 : le test sur `importId` passait AVANT
  * celui sur `present`. Un stagiaire absent du relevé (0 min) ressortait donc
- * « présence issue d'un relevé » dans le dossier d'audit — le même défaut que
- * celui corrigé ici, transposé au distanciel. Une absence n'est une présence
- * sous aucune provenance.
+ * « présence issue d'un relevé » dans le dossier d'audit. Une absence n'est une
+ * présence sous aucune provenance (règle 2).
+ *
+ * ⚠️ Seconde revue A09, constat 6 : l'import crée des créneaux à 0 min pour les
+ * inscrits qu'il ne reconnaît pas. Cochés à la main dans la grille, ils gardaient
+ * leur `importId` et ressortaient « issus d'un relevé » — une saisie présentée
+ * comme une mesure de la plateforme. Règle retenue, sans schéma : TOUT geste de
+ * la grille qui modifie la présence ou la durée d'un créneau le passe en
+ * `source: "manuel"` (`saveEmargementAction`), et `manuel` l'emporte sur
+ * `importId` (règle 3). Lire `source` dans CE sens est sûr : seule une saisie à
+ * la main écrit `manuel` (la grille, `setPresenceCreneauManualAction`) — jamais
+ * l'import ni la signature. `importId` est conservé : le créneau reste rattaché
+ * au relevé dont il est né, pour la traçabilité.
  *
  * Module PUR : aucun accès base, testable sans double.
  */
@@ -41,6 +52,8 @@ export type ProvenancePresence =
 export interface CreneauProvenance {
   readonly present: boolean;
   readonly importId: string | null;
+  /** `PresenceCreneau.source` — seule la valeur `manuel` est interprétée (règle 3). */
+  readonly source: string;
   /** Nombre de signatures NON révoquées portées par le créneau. */
   readonly signaturesVivantes: number;
   /**
@@ -54,15 +67,16 @@ export interface CreneauProvenance {
 export function provenanceCreneau(c: CreneauProvenance): ProvenancePresence {
   if (c.signaturesVivantes > 0) return "signature";
   if (!c.present) return "aucune";
+  if (c.source === "manuel") return "declaration_manuelle";
   return c.importId !== null ? "releve_connexion" : "declaration_manuelle";
 }
 
 export interface ResumeProvenance {
   /** Créneaux portant une signature vivante. */
   readonly signees: number;
-  /** Créneaux marqués présents SANS signature ni relevé : déclarations. */
+  /** Créneaux marqués présents SANS signature ni relevé, ou saisis à la main. */
   readonly declarees: number;
-  /** Créneaux présents, rattachés à un relevé de connexion importé. */
+  /** Créneaux présents, mesurés par un relevé de connexion importé. */
   readonly releveConnexion: number;
   /** Plus ancienne signature vivante, lue au registre — `null` si inconnue. */
   readonly premiereSignatureAt: Date | null;
@@ -109,7 +123,7 @@ function pluriel(n: number, singulier: string, plurielForme: string): string {
  * Libellé de la colonne « Émargement signé » d'un stagiaire.
  *
  * ⚠️ « Oui » exige que TOUTES les présences comptées soient prouvées — signées
- * ou issues d'un relevé. Revue A09, constat 2 : une seule demi-journée signée
+ * ou mesurées par un relevé. Revue A09, constat 2 : une seule demi-journée signée
  * suffisait à afficher « Oui » en vert à côté d'un taux de 100 % dont cinq
  * demi-journées sur six étaient tapées à la main. Dès qu'une présence n'est que
  * déclarée, l'écran donne la RÉPARTITION.
@@ -181,6 +195,7 @@ export function libellesEmargementParInscription(
     readonly enrollmentId: string;
     readonly present: boolean;
     readonly importId: string | null;
+    readonly source: string;
     readonly emargementSignatures: ReadonlyArray<{ readonly signeAt: Date }>;
   }>,
 ): Map<string, LibelleEmargement> {
@@ -195,6 +210,7 @@ export function libellesEmargementParInscription(
             .map((c) => ({
               present: c.present,
               importId: c.importId,
+              source: c.source,
               signaturesVivantes: c.emargementSignatures.length,
               premiereSignatureAt: c.emargementSignatures.reduce<Date | null>(
                 (min, s) => (min === null || s.signeAt < min ? s.signeAt : min),

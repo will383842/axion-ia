@@ -756,4 +756,34 @@ describe("genererDossierSessionZip — provenance des présences (G-prerequis-02
       "1 issu d'un relevé de connexion",
     );
   });
+
+  it("🔴 revue A09 §6 — un créneau importé COCHÉ À LA MAIN est compté déclaré, pas « issu d'un relevé »", async () => {
+    // Un créneau mesuré par la plateforme, un autre créé à 0 min par l'import
+    // puis coché dans la grille (`source: manuel`, `importId` conservé).
+    mockFindUnique.mockResolvedValue(
+      session({
+        enrollments: [
+          {
+            id: "enr-1",
+            tauxPresencePct: 100,
+            trainee: { nom: "Dupont", prenom: "Alice", deletedAt: null },
+            presences: [
+              { present: true, importId: "imp-1", source: "import_zoom", emargementSignatures: [] },
+              { present: true, importId: "imp-1", source: "manuel", emargementSignatures: [] },
+            ],
+            emargementSignatures: [],
+          },
+        ],
+      }),
+    );
+
+    const res = await genererDossierSessionZip("ses-1");
+
+    const rapport = JSON.parse((await fichierDuZip(res!.base64, "verification-integrite.json"))!);
+    expect(
+      rapport.signatures[0],
+      "le dossier présente une présence tapée à la main comme mesurée par la plateforme",
+    ).toMatchObject({ presencesReleveConnexion: 1, presencesDeclareesSansSignature: 1 });
+    expect(res?.avertissements.join(" ")).toContain("déclarée");
+  });
 });

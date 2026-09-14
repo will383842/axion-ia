@@ -618,14 +618,18 @@ describe("saveEmargementAction", () => {
     expect(mockUpsertCreneau).not.toHaveBeenCalled();
   });
 
-  it("n'écrase PAS le réalisé quand la grille renvoie la valeur d'un créneau importé", async () => {
+  it("n'écrase PAS un créneau importé que la grille renvoie tel quel", async () => {
     // `present` est DÉRIVÉ pour un import (réalisé ≥ 50 % du prévu) : un
     // stagiaire connecté 100 min sur 420 a `present = false` sans être absent.
-    // La grille renvoie désormais toujours la durée, y compris case décochée —
-    // un clic « Enregistrer » ne doit plus remettre ses 100 minutes à 0.
+    // La grille renvoie toujours la durée, y compris case décochée — un clic
+    // « Enregistrer » ne doit ni remettre ses 100 minutes à 0, ni toucher à sa
+    // provenance d'import (revue A09 §4 : un créneau non modifié n'est pas
+    // réécrit ; §6 : seul un geste qui le MODIFIE en fait une saisie).
     mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
       id: "c1",
       dureePrevueMinutes: 420,
+      dureeRealiseeMinutes: 100,
+      present: false,
       source: "import_zoom",
       libelle: "2026-06-10 journée",
       enrollmentId: "enr-1",
@@ -642,10 +646,10 @@ describe("saveEmargementAction", () => {
       entries: [{ ...validEntry, present: false, dureeRealiseeMinutes: 100 }],
     });
 
-    const call = mockCall<{ dureeRealiseeMinutes: number; source: string }>(mockUpsertCreneau);
-    expect(call.dureeRealiseeMinutes).toBe(100);
-    // La provenance reste celle de l'import.
-    expect(call.source).toBe("import_zoom");
+    expect(
+      mockUpsertCreneau,
+      "un relevé importé renvoyé sans modification a été réécrit",
+    ).not.toHaveBeenCalled();
   });
 
   it("utilise dureePrevueMinutes si present=true et dureeRealiseeMinutes absent", async () => {
@@ -834,10 +838,51 @@ describe("saveEmargementAction", () => {
     expect("data" in result && result.data.updated).toBe(0);
   });
 
-  it("🔴 revue A09 §4 — un relevé « autre » (source emargement_presentiel + importId) garde sa source", async () => {
-    // `toPresenceSource("autre")` écrit `emargement_presentiel` avec un
-    // `importId`. Le requalifier en `manuel` laisserait deux provenances
-    // contradictoires sur la même ligne.
+  /**
+   * 🔴 Seconde revue A09 §6 — UNE PRÉSENCE TAPÉE SUR UN CRÉNEAU IMPORTÉ PASSAIT
+   * POUR UNE MESURE DE LA PLATEFORME.
+   *
+   * L'import crée des créneaux pour TOUS les inscrits, à 0 min pour ceux que le
+   * relevé ne reconnaît pas, rattachés à l'import (`importId`). Coché à la main,
+   * le créneau gardait sa source d'import : écran et dossier d'audit le
+   * comptaient « issu d'un relevé », et le certificat de réalisation l'acceptait
+   * comme trace vérifiable (`documents.ts`, filtre `import_*`).
+   *
+   * 🔑 Règle : tout geste de la grille qui modifie présence ou durée fait une
+   * saisie à la main — `manuel` — même sur un créneau importé. `importId` et le
+   * libellé horodaté restent, pour la traçabilité ; la provenance lit `manuel`
+   * avant `importId` (`presence/provenance.ts`).
+   */
+  it("🔴 revue A09 §6 — créneau importé à 0 min (inscrit non reconnu) COCHÉ à la main → « manuel »", async () => {
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "c1",
+      dureePrevueMinutes: 420,
+      dureeRealiseeMinutes: 0,
+      present: false,
+      source: "import_zoom",
+      libelle: "2026-06-10 journée (relevé)",
+      importId: "imp-1",
+      emargementSignatures: [],
+    });
+
+    await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [{ ...validEntry, present: true, dureeRealiseeMinutes: 0 }],
+    });
+
+    const call = mockCall<{ source: string; libelle: string; present: boolean }>(mockUpsertCreneau);
+    expect(call.present).toBe(true);
+    expect(
+      call.source,
+      "une présence cochée à la main garde la source de l'import : elle passera pour une mesure de la plateforme",
+    ).toBe("manuel");
+    expect(call.libelle, "le libellé horodaté du relevé est conservé").toBe(
+      "2026-06-10 journée (relevé)",
+    );
+  });
+
+  it("🔴 revue A09 §6 — durée d'un relevé « autre » (emargement_presentiel + importId) RETOUCHÉE à la main → « manuel »", async () => {
+    // 100 min mesurées, 400 tapées : la durée n'est plus celle du relevé.
     mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
       id: "c1",
       dureePrevueMinutes: 420,
@@ -855,9 +900,7 @@ describe("saveEmargementAction", () => {
     });
 
     const call = mockCall<{ source: string; libelle: string }>(mockUpsertCreneau);
-    expect(call.source, "un relevé rattaché à son import a été requalifié en saisie manuelle").toBe(
-      "emargement_presentiel",
-    );
+    expect(call.source, "une durée tapée à la main reste présentée comme mesurée").toBe("manuel");
     expect(call.libelle).toBe("2026-06-10 journée (relevé)");
   });
 

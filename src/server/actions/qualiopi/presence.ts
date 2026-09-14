@@ -510,17 +510,17 @@ export async function saveEmargementAction(input: {
       dureeRealiseeMinutes = prevuConnu;
     }
 
-    // ⚠️ La PROVENANCE d'un créneau importé ne doit jamais être réécrite.
     // La grille reçoit TOUS les créneaux de la session, y compris ceux issus d'un
     // relevé Zoom/Teams/Meet. Un simple clic « Enregistrer », même sans rien
     // modifier, transformait `import_zoom` en `emargement_presentiel` sur des
     // enregistrements à valeur probante — et remplaçait leur libellé horodaté.
-    // Le PDF de relevé de connexion et le dossier d'audit lisent ce champ.
+    // Le PDF de relevé de connexion et le dossier d'audit lisent ce champ : un
+    // créneau NON MODIFIÉ n'est donc jamais réécrit (garde ci-dessous).
     //
-    // Revue A09 §4 (2026-09-14) — un relevé de la plateforme « autre » porte
-    // `source: emargement_presentiel` (`toPresenceSource`) ET un `importId`. Il
-    // se protège donc comme un `import_*` : c'est `importId` qui dit le relevé,
-    // pas le texte de `source` (même règle que `signature-service.ts`).
+    // Un relevé se reconnaît à `import_*` OU à `importId` : la plateforme
+    // « autre » écrit `emargement_presentiel` avec un `importId`
+    // (`toPresenceSource`). Seul son LIBELLÉ horodaté est conservé quand on le
+    // modifie — sa source, elle, devient `manuel` (seconde revue A09 §6, plus bas).
     const creneauImporte =
       existingCreneau?.source?.startsWith("import_") === true ||
       (existingCreneau?.importId ?? null) !== null;
@@ -539,7 +539,7 @@ export async function saveEmargementAction(input: {
       continue;
     }
 
-    // 🔴 2026-09-14 — `G-prerequis-02`. Hors import, la grille écrivait
+    // 🔴 2026-09-14 — `G-prerequis-02`. La grille écrivait
     // `emargement_presentiel` : une case cochée par un administrateur prenait la
     // provenance d'un émargement, alors qu'aucune signature n'existe — les
     // signatures sautent la grille (garde ci-dessus) et passent par
@@ -548,12 +548,19 @@ export async function saveEmargementAction(input: {
     // `setPresenceCreneauManualAction` et que l'import reconnaît comme « saisie
     // manuelle » à ne pas effacer. Seul un créneau NEUF laissé vierge garde le
     // gabarit `emargement_presentiel`.
+    //
+    // 🔴 Seconde revue A09 §6 — ET CE, MÊME SUR UN CRÉNEAU IMPORTÉ. L'import crée
+    // des créneaux à 0 min pour les inscrits qu'il ne reconnaît pas ; cochés ici,
+    // ils gardaient leur source d'import et passaient, à l'écran, au dossier
+    // d'audit et au certificat de réalisation (filtre `import_*`), pour une
+    // présence MESURÉE par la plateforme. Dès que la grille change la présence ou
+    // la durée d'un créneau importé, la valeur n'est plus celle du relevé : c'est
+    // une saisie. `importId` et le libellé restent, pour la traçabilité ; la
+    // provenance lit `manuel` avant `importId` (`presence/provenance.ts`).
     const source =
-      existingCreneau !== null && creneauImporte
-        ? existingCreneau.source
-        : existingCreneau === null && !entry.present && dureeRealiseeMinutes === 0
-          ? ("emargement_presentiel" as const)
-          : ("manuel" as const);
+      existingCreneau === null && !entry.present && dureeRealiseeMinutes === 0
+        ? ("emargement_presentiel" as const)
+        : ("manuel" as const);
     const libelle = creneauImporte
       ? (existingCreneau?.libelle ?? "")
       : `${entry.date} ${entry.demiJournee === "apres_midi" ? "après-midi" : entry.demiJournee}`;

@@ -284,11 +284,13 @@ export default async function EmargementPage({ params }: PageProps) {
             signé. Elle DÉCLARE une présence ; l'écran doit le dire avant le clic. */}
         <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
           Cocher une case ici <strong>déclare</strong> une présence : ce n&apos;est pas une
-          signature. Elle est enregistrée comme saisie manuelle, n&apos;est jamais comptée comme
-          émargement signé, et apparaît comme telle dans le récapitulatif ci-dessous et dans le
-          dossier d&apos;audit. Les signatures se recueillent par les liens d&apos;émargement
-          ci-dessus ou sur le poste du formateur ; un créneau déjà signé n&apos;est pas modifié par
-          cette grille.
+          signature. Toute case modifiée est enregistrée comme saisie manuelle — y compris sur un
+          créneau issu d&apos;un relevé de connexion, qui cesse alors d&apos;être compté comme
+          relevé —, n&apos;est jamais comptée comme émargement signé, et apparaît comme telle dans
+          le récapitulatif ci-dessous et dans le dossier d&apos;audit. Les signatures se recueillent
+          par les liens d&apos;émargement ci-dessus ou sur le poste du formateur ; un créneau déjà
+          signé n&apos;est pas modifié par cette grille, et une case que vous n&apos;avez pas
+          changée n&apos;est pas réécrite.
         </p>
         {enrollments.length === 0 ? (
           <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">

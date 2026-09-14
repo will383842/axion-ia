@@ -125,11 +125,13 @@ export async function genererDossierSessionZip(
           // rapport ne portait que le taux et le nombre de signatures : un taux
           // de 100 % tapé à la main dans la grille se lisait comme un taux émargé.
           // On lit la valeur qui PROUVE (signature vivante, rattachement à un
-          // relevé), jamais le texte de `source` — cf. `presence/provenance.ts`.
+          // relevé) ; `source` ne sert qu'à reconnaître une saisie `manuel` sur
+          // un créneau importé (seconde revue A09 §6) — cf. `presence/provenance.ts`.
           presences: {
             select: {
               present: true,
               importId: true,
+              source: true,
               emargementSignatures: { where: { revokedAt: null }, select: { id: true }, take: 1 },
             },
           },
@@ -204,6 +206,7 @@ export async function genererDossierSessionZip(
       inscription.presences.map((p) => ({
         present: p.present,
         importId: p.importId,
+        source: p.source,
         signaturesVivantes: p.emargementSignatures.length,
       })),
     );
