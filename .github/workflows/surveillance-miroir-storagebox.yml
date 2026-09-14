@@ -1,0 +1,142 @@
+name: Surveillance du miroir Storage Box
+
+# =============================================================================
+# ⚠️ POURQUOI CE WORKFLOW EXISTE
+#
+# `run-storagebox-mirror.sh` est la SECONDE destination hors serveur du site :
+# il recopie vers la Hetzner Storage Box ce qui part deja sur Cloudflare R2.
+# Depose sur le VPS le 2026-09-03, il n'a JAMAIS tourne avant le 2026-09-14 —
+# ni planifie, ni versionne, et porteur d'un defaut (`sftp -b -` desactive
+# l'authentification par mot de passe) qui l'empechait de s'authentifier.
+#
+# Onze jours d'inertie que PERSONNE n'a vus, et la raison est structurelle :
+#   - `run-backup-digest.sh` n'interroge que R2 : un miroir mort laisse le
+#     bilan quotidien tout vert ;
+#   - le tableau de bord est indexe par COMPOSANT et n'a aucune entree
+#     `storagebox` ;
+#   - le seul temoin etait un fichier de journal que personne ne lit.
+#
+# 🔑 CE WORKFLOW TOURNE DEPUIS GITHUB, PAS DEPUIS LE VPS — et c'est le point
+# entier. Une surveillance hebergee sur la machine qu'elle surveille meurt avec
+# elle : serveur eteint, disque plein, SSH casse, et la garde se tait
+# exactement quand elle devrait crier. Ici, un serveur injoignable fait ECHOUER
+# le job, donc ouvre une issue. L'ABSENCE DE SIGNAL EST TRAITEE COMME UN SIGNAL.
+#
+# Modele repris de `surveillance-sauvegarde.yml` du depot CRM, ecrit apres que
+# 91 executions cron ont echoue trois mois durant sans que personne ne le voie.
+#
+# Ce qui reste hors de portee, en toute honnetete : si GitHub cesse de
+# declencher les taches planifiees, plus personne ne surveille. Aucune garde ne
+# se surveille elle-meme ; on deplace le point aveugle, on ne le supprime pas.
+# =============================================================================
+
+on:
+  schedule:
+    # 07:00 UTC — 1 h 30 apres le miroir (05:30 UTC). La marge absorbe un
+    # transfert long (mesure : ~1 min pour 102 Mo) sans lever de fausse alerte.
+    - cron: "0 7 * * *"
+  workflow_dispatch:
+    inputs:
+      seuil_age_h:
+        description: "Age maximum du dernier passage du miroir, en heures (30 par defaut). Mettre 0 pour VERIFIER QUE LA GARDE ROUGIT."
+        required: false
+        default: "30"
+      seuil_taille_mo:
+        description: "Taille minimale du plus gros fichier hors site, en Mo (10 par defaut). Mettre 9999 pour verifier que la garde rougit."
+        required: false
+        default: "10"
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: surveillance-miroir-storagebox
+  cancel-in-progress: false
+
+jobs:
+  verifier:
+    name: Le miroir a-t-il depose quelque chose cette nuit ?
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Setup SSH agent
+        uses: webfactory/ssh-agent@v0.10.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: Trust host key
+        env:
+          HOST: ${{ vars.VPS_HOST || '178.105.55.15' }}
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Controler le miroir hors site
+        id: controle
+        env:
+          HOST: ${{ vars.VPS_HOST || '178.105.55.15' }}
+          VPS_USER: ${{ vars.VPS_USER || 'root' }}
+          SEUIL_AGE_H: ${{ github.event.inputs.seuil_age_h || '30' }}
+          SEUIL_TAILLE_MO: ${{ github.event.inputs.seuil_taille_mo || '10' }}
+        run: |
+          set -euo pipefail
+          # Le controle vit dans un SCRIPT du depot, pas dans ce YAML : il se
+          # rejoue a la main sur le serveur, et c'est comme ca qu'on a pu
+          # prouver qu'il rougit dans QUATRE directions avant de le brancher
+          # (trop vieux, trop petit, rien hors site, secret absent).
+          set +e
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 "$VPS_USER@$HOST" \
+            "SEUIL_AGE_H='$SEUIL_AGE_H' SEUIL_TAILLE_MO='$SEUIL_TAILLE_MO' \
+             bash /opt/axion-ia/verifier-miroir-storagebox.sh" \
+            > rapport.txt 2>&1
+          CODE=$?
+          set -e
+
+          cat rapport.txt
+
+          # Un serveur injoignable ne renvoie pas le code du script : ssh sort
+          # en 255. On ne veut surtout pas confondre « tout va bien » avec
+          # « je n'ai pas pu demander ».
+          if [ "$CODE" -eq 255 ]; then
+            echo "::error::VPS injoignable en SSH — le miroir n'a PAS pu etre verifie."
+            echo "VPS INJOIGNABLE (ssh code 255) — le miroir n'a PAS pu etre verifie." >> rapport.txt
+          fi
+
+          {
+            echo 'rapport<<FIN_RAPPORT'
+            cat rapport.txt
+            echo 'FIN_RAPPORT'
+            echo "echec=$([ "$CODE" -ne 0 ] && echo true || echo false)"
+          } >> "$GITHUB_OUTPUT"
+
+          # ⚠️ Cette etape ne fait PAS echouer le job : l'etape « Verdict » s'en
+          # charge. Les sorties d'une etape en echec ne remontent pas de facon
+          # fiable, et l'issue arriverait avec un rapport VIDE — une alerte sans
+          # sa raison fait perdre le temps qu'elle pretend faire gagner.
+
+      - name: Ouvrir une issue si le miroir est en panne
+        if: steps.controle.outputs.echec == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RAPPORT: ${{ steps.controle.outputs.rapport }}
+        run: |
+          set -euo pipefail
+          TITRE="🔴 Miroir Storage Box en panne — la 2e copie hors serveur n'est plus assuree"
+          # Une issue par panne, pas une par jour : on cherche d'abord si une
+          # issue ouverte porte deja ce titre.
+          EXISTE=$(gh issue list --state open --search "\"$TITRE\" in:title" --json number --jq '.[0].number // empty')
+          CORPS=$(printf '%s\n\n---\n\n**Rapport du controle**\n\n```\n%s\n```\n\n**Ce que cela veut dire**\n\nLe site retombe a UNE seule destination hors serveur (Cloudflare R2). Les sauvegardes continuent — c est la redondance qui est perdue, pas la sauvegarde.\n\n**Ou regarder**\n\n- journal : `/var/log/storagebox-mirror.log` sur le VPS\n- rejouer a la main : `bash /opt/axion-ia/run-storagebox-mirror.sh`\n- controler : `bash /opt/axion-ia/verifier-miroir-storagebox.sh`\n- crontab root : la ligne `30 5 * * *`\n\nRun : %s/%s/actions/runs/%s' \
+            "Le controle quotidien du miroir Storage Box a echoue." "$RAPPORT" "$GITHUB_SERVER_URL" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID")
+          if [ -n "$EXISTE" ]; then
+            gh issue comment "$EXISTE" --body "$CORPS"
+            echo "Commentaire ajoute a l'issue #$EXISTE (deja ouverte)."
+          else
+            gh issue create --title "$TITRE" --body "$CORPS"
+          fi
+
+      - name: Verdict
+        if: steps.controle.outputs.echec == 'true'
+        run: |
+          echo "::error::Le miroir Storage Box n'est pas fiable — voir le rapport ci-dessus."
+          exit 1
