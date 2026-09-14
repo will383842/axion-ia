@@ -9,6 +9,9 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Mocks
 // ─────────────────────────────────────────────────────────────────────────────
@@ -62,6 +65,15 @@ vi.mock("@/lib/prisma", () => ({
     sessionFormateur: { findMany: vi.fn() },
     missionFormateur: { findMany: vi.fn() },
     sessionFormateurRetire: { findMany: vi.fn() },
+    // 🔴 2026-09-13 — LE QUATRIEME DU MEME PIEGE, et le cliquet d'a-cote ne
+    // pouvait PAS le voir. `kit_sorties_non_pretes` lit `supportFormation.count`
+    // a l'INTERIEUR de la boucle sur les sessions : sur un balayage a vide,
+    // `trainingSession.findMany` rend [], la boucle ne tourne jamais, et rien ne
+    // leve. Le temoin « aucune regle ne doit etre INERTE » restait donc vert sur
+    // un modele absent — il ne mesure que ce qu'un balayage a vide ATTEINT.
+    // D'ou le cliquet STATIQUE en fin de fichier, qui LIT les deux sources au
+    // lieu de les executer.
+    supportFormation: { count: vi.fn() },
   },
 }));
 
@@ -143,6 +155,7 @@ const mp = prisma as unknown as {
   sessionFormateur: { findMany: ReturnType<typeof vi.fn> };
   missionFormateur: { findMany: ReturnType<typeof vi.fn> };
   sessionFormateurRetire: { findMany: ReturnType<typeof vi.fn> };
+  supportFormation: { count: ReturnType<typeof vi.fn> };
 };
 
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
@@ -196,6 +209,10 @@ function setupEmptyMocks() {
   mp.sessionFormateur.findMany.mockResolvedValue([]);
   mp.missionFormateur.findMany.mockResolvedValue([]);
   mp.sessionFormateurRetire.findMany.mockResolvedValue([]);
+  // 🔴 2026-09-13 — `kit_sorties_non_pretes`. Zero kit imprime publie = la regle
+  // ne regarde aucune session. C'est le defaut le moins contraignant, donc le bon
+  // pour les autres blocs : un test qui veut la regle pose son propre `count`.
+  mp.supportFormation.count.mockResolvedValue(0);
   // Idem pour facture_mentions_legales_absentes : identité légale COMPLÈTE par
   // défaut → pas d'alerte. Sans ce mock, la règle lirait `undefined.formeJuridique`,
   // lèverait, et le fail-soft l'avalerait : elle serait INERTE partout ailleurs.
@@ -4090,5 +4107,78 @@ describe("autofacture_a_emettre", () => {
     mp.trainerStatement.findMany.mockResolvedValue([valide({ siret: null })]);
     const { reglesEnEchec } = await evaluerAlertesDetaille();
     expect(reglesEnEchec).not.toContain("autofacture_a_emettre");
+  });
+});
+
+/**
+ * 🔴 LE CLIQUET STATIQUE — celui qui aurait attrape `supportFormation`.
+ *
+ * Le temoin « aucune regle ne doit etre INERTE » ci-dessus EXECUTE le moteur sur
+ * un balayage a vide. C'est puissant, et c'est aveugle sur un point precis :
+ * une lecture Prisma faite a l'INTERIEUR d'une boucle n'est jamais atteinte
+ * quand la requete qui alimente la boucle rend []. `kit_sorties_non_pretes` lit
+ * `supportFormation.count` par session ; sans session, l'appel n'a pas lieu, le
+ * modele manquant ne leve pas, et le cliquet rend VERT sur une regle inerte.
+ *
+ * Mesure du 2026-09-13 : l'evaluateur lisait 22 modeles, la fabrique en
+ * declarait 21. Le quatrieme episode de la meme famille en six semaines.
+ *
+ * 🔑 Ce temoin-ci ne lance rien. Il LIT les deux fichiers et compare deux
+ * ensembles de noms. Un modele lu par l'evaluateur et absent de la fabrique le
+ * fait rougir, qu'il soit atteint par un balayage a vide ou non.
+ *
+ * Il porte aussi un PLANCHER : sous 15 modeles extraits, c'est le motif
+ * d'extraction qui a cesse de reconnaitre le code, pas la dette qui a fondu.
+ * Sans ce plancher, reecrire les appels sous une autre forme rendrait le
+ * temoin vert en ne mesurant plus rien — le defaut que ce depot nomme
+ * « un zero qui ressemble a rien a signaler ».
+ */
+describe("la fabrique de mocks couvre TOUS les modeles lus par l'evaluateur", () => {
+  const racine = process.cwd();
+  const srcEvaluateur = readFileSync(
+    join(racine, "src/server/qualiopi/alertes/evaluateur.ts"),
+    "utf8",
+  );
+  const srcSpec = readFileSync(
+    join(racine, "src/server/qualiopi/alertes/evaluateur.spec.ts"),
+    "utf8",
+  );
+
+  /** Les modeles que l'evaluateur interroge reellement. */
+  const lus = new Set(
+    [...srcEvaluateur.matchAll(/prisma\.([a-zA-Z][a-zA-Z0-9]*)/g)].map((m) => m[1] as string),
+  );
+
+  /** Les modeles declares dans la fabrique `vi.mock("@/lib/prisma")`. */
+  const debut = srcSpec.indexOf('vi.mock("@/lib/prisma"');
+  const fin = srcSpec.indexOf("}));", debut);
+  const declares = new Set(
+    [...srcSpec.slice(debut, fin).matchAll(/^\s{4}([a-zA-Z][a-zA-Z0-9]*):/gm)].map(
+      (m) => m[1] as string,
+    ),
+  );
+
+  it("🔑 le motif d'extraction reconnait encore le code (plancher)", () => {
+    // TEMOIN POSITIF. Sans lui, un `prisma` renomme ou des appels reecrits
+    // videraient `lus`, et la comparaison ci-dessous serait vide contre vide.
+    expect(
+      lus.size,
+      "Moins de 15 modeles extraits de l'evaluateur : le motif ne reconnait plus " +
+        "les appels Prisma. Ce n'est pas la dette qui a fondu, c'est la mesure qui " +
+        "s'est eteinte. Corriger le motif, ne pas baisser le plancher.",
+    ).toBeGreaterThan(15);
+    expect(declares.size).toBeGreaterThan(15);
+  });
+
+  it("🔴 aucun modele lu par l'evaluateur n'est absent de la fabrique", () => {
+    const manquants = [...lus].filter((m) => !declares.has(m)).sort();
+    expect(
+      manquants,
+      "Ce(s) modele(s) Prisma sont lus par l'evaluateur mais absents du " +
+        "`vi.mock`. La regle qui les lit LEVERA, le fail-soft PAR REGLE avalera " +
+        "l'exception, et elle sera INERTE partout — tests verts compris. " +
+        "Les ajouter aux TROIS endroits tenus a la main : la fabrique " +
+        "`vi.mock`, le cast `mp`, et `setupEmptyMocks()`.",
+    ).toEqual([]);
   });
 });
