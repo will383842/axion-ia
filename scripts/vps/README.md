@@ -12,17 +12,18 @@ la reprise après sinistre. Voir `docs/adr/0032-backup-dr-extension-pitr-immutab
 
 ## Contenu
 
-| Fichier                    | Rôle                                                                                                                                                                                        | Cron (UTC)                                 |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
-| `run-pg-hourly-backup.sh`  | Dump Postgres applicatif → R2 `postgres/hourly/` (RPO ~1 h)                                                                                                                                 | `20 * * * *`                               |
-| `run-r2-backup.sh`         | Dump Postgres daily/weekly/monthly → R2 (auto-pull `backup-postgres-r2.sh`)                                                                                                                 | `0 3` / `0 4 dim` / `0 5 1er`              |
-| `run-files-backup.sh`      | tar chiffré des volumes fichiers (CV, console-docs, avis) → R2 `files/{daily,weekly,monthly}/`                                                                                              | `15 4 * * *` · `30 4 * * 0` · `30 5 1 * *` |
-| `run-secrets-backup.sh`    | Archive chiffrée des secrets/env de **toute l'instance** Coolify → R2 `secrets/` (rétention 30)                                                                                             | `0 2 * * *`                                |
-| `run-storagebox-mirror.sh` | **Seconde destination hors serveur** : recopie R2 → Hetzner Storage Box (Axion-IA + Axion Audit). Le mot de passe est LU dans `/opt/axion-ia/.storagebox-password` (600), jamais interpolé. | `30 5 * * *`                               |
-| `run-docuseal-backup.sh`   | Dump Docuseal → R2 `docuseal/{daily,weekly,monthly}/`                                                                                                                                       | `45 2 * * *` · `50 4 * * 0` · `50 5 1 * *` |
-| `run-plausible-backup.sh`  | Dump Plausible PG + ClickHouse → R2 `plausible/pg/daily/` + `plausible/ch/daily/`                                                                                                           | `30 3 * * *`                               |
-| `run-backup-digest.sh`     | **Bilan quotidien Telegram unique** : lit R2, vérifie fraîcheur par composant                                                                                                               | `30 6 * * *`                               |
-| `crontab.snapshot.txt`     | Snapshot du crontab `root` (référence)                                                                                                                                                      | —                                          |
+| Fichier                         | Rôle                                                                                                                                                                                                                | Cron (UTC)                                 |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| `run-pg-hourly-backup.sh`       | Dump Postgres applicatif → R2 `postgres/hourly/` (RPO ~1 h)                                                                                                                                                         | `20 * * * *`                               |
+| `run-r2-backup.sh`              | Dump Postgres daily/weekly/monthly → R2 (auto-pull `backup-postgres-r2.sh`)                                                                                                                                         | `0 3` / `0 4 dim` / `0 5 1er`              |
+| `run-files-backup.sh`           | tar chiffré des volumes fichiers (CV, console-docs, avis) → R2 `files/{daily,weekly,monthly}/`                                                                                                                      | `15 4 * * *` · `30 4 * * 0` · `30 5 1 * *` |
+| `run-secrets-backup.sh`         | Archive chiffrée des secrets/env de **toute l'instance** Coolify → R2 `secrets/` (rétention 30)                                                                                                                     | `0 2 * * *`                                |
+| `run-storagebox-mirror.sh`      | **Seconde destination hors serveur** : recopie R2 → Hetzner Storage Box (Axion-IA + Axion Audit). Le mot de passe est LU dans `/opt/axion-ia/.storagebox-password` (600), jamais interpolé.                         | `30 5 * * *`                               |
+| `verifier-miroir-storagebox.sh` | **Controle** du miroir : fichiers presents hors site, plus gros >= 10 Mo, dernier passage < 30 h. Lu par le workflow `surveillance-miroir-storagebox.yml`, qui tourne DEPUIS GITHUB et ouvre une issue si ca casse. | appele, pas planifie                       |
+| `run-docuseal-backup.sh`        | Dump Docuseal → R2 `docuseal/{daily,weekly,monthly}/`                                                                                                                                                               | `45 2 * * *` · `50 4 * * 0` · `50 5 1 * *` |
+| `run-plausible-backup.sh`       | Dump Plausible PG + ClickHouse → R2 `plausible/pg/daily/` + `plausible/ch/daily/`                                                                                                                                   | `30 3 * * *`                               |
+| `run-backup-digest.sh`          | **Bilan quotidien Telegram unique** : lit R2, vérifie fraîcheur par composant                                                                                                                                       | `30 6 * * *`                               |
+| `crontab.snapshot.txt`          | Snapshot du crontab `root` (référence)                                                                                                                                                                              | —                                          |
 
 ## Notifications Telegram (2026-07-11)
 
@@ -134,3 +135,30 @@ le bilan quotidien tout vert. Le tableau de bord est indexe par COMPOSANT et ne
 connait aucune entree `storagebox`. **Tant qu'une garde externe n'existe pas,
 seul le journal `/var/log/storagebox-mirror.log` dit la verite** — le relire
 apres tout changement touchant la Storage Box.
+
+### La surveillance — et pourquoi elle ne tourne PAS sur le VPS
+
+`.github/workflows/surveillance-miroir-storagebox.yml` s'execute **depuis
+GitHub**, chaque jour a 07:00 UTC, 1 h 30 apres le miroir. Il ouvre une issue
+quand le controle echoue.
+
+🔑 Une surveillance hebergee sur la machine qu'elle surveille meurt avec elle :
+serveur eteint, disque plein, SSH casse — et la garde se tait exactement quand
+elle devrait crier. Ici un VPS injoignable fait **echouer** le job (`ssh` sort
+en 255, distingue du code du script), donc ouvre une issue. **L'absence de
+signal est traitee comme un signal.**
+
+Le controle a ete **prouve rouge dans quatre directions** avant d'etre branche,
+le 2026-09-14 : trop vieux, trop petit, rien hors site, secret absent. Les deux
+seuils sont surchargeables pour pouvoir rejouer ces preuves :
+
+```sh
+bash /opt/axion-ia/verifier-miroir-storagebox.sh              # doit passer
+SEUIL_AGE_H=0        bash /opt/axion-ia/verifier-...sh        # doit echouer
+SEUIL_TAILLE_MO=9999 bash /opt/axion-ia/verifier-...sh        # doit echouer
+```
+
+⚠️ La premiere version comparait des HEURES ENTIERES : `SEUIL_AGE_H=0` ne
+pouvait donc jamais etre depasse par un age de 0 h, et la branche « trop
+vieux » etait **indemontrable** — elle rendait vert. Corrige en comparant des
+secondes. Une garde qu'on ne peut pas voir rouge ne garde rien.
