@@ -576,6 +576,36 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "administratif",
   },
   /**
+   * 🔴 UNE SESSION SANS LIEU IMPRIME L'ADRESSE DE L'ORGANISME, EN SILENCE
+   * (audit initial Qualiopi du 2026-09-14, constat I17-01).
+   *
+   * `resolveLieuDocument` retombe sur `adresseExercice`, puis sur le siège
+   * (domiciliation), dès qu'aucun champ de lieu n'est saisi. Convention,
+   * convocation et feuille d'émargement annoncent alors un lieu faux pour une
+   * intra donnée chez le client — et en intra, la convention est LA preuve de
+   * l'environnement de formation (indicateur 17, L.6353-1). Rien ne le disait.
+   *
+   * ⚠️ UNE ALERTE, PAS UN REFUS D'ÉMETTRE. Le repli reste en place : bloquer
+   * l'émission rendrait non réémissibles des pièces déjà remises, et la
+   * contresignature comme l'émission ne sont pas bloquantes dans ce dépôt.
+   *
+   * `important` et non `critique` : la session peut se tenir, c'est la pièce
+   * qui ment. Le geste est une saisie sur la fiche de session, puis une
+   * réémission.
+   *
+   * `resolutionAuto: true` : le balayage la réémet tant que le lieu manque, et
+   * elle se referme d'elle-même dès qu'il est saisi.
+   *
+   * Guichet `administratif` : c'est lui qui monte la session et obtient
+   * l'adresse du client — même guichet que `session_contact_sur_place_absent`.
+   */
+  session_sans_lieu: {
+    niveau: "important",
+    titre: "Session sans lieu de déroulement",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
+  /**
    * 🔴 PLUS D'INSCRITS QUE DE PLACES (audit du 2026-09-04, trou n°12).
    *
    * `nbParticipantsPrevus` n'était lu que par les écrans et les devis : aucune

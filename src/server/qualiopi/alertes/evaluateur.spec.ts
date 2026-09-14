@@ -3087,6 +3087,114 @@ describe("evaluerAlertes — session_distanciel_sans_lien", () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
+// I17-01 — session_sans_lieu
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — session_sans_lieu (I17-01)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  const SANS_LIEU = {
+    lieuType: null,
+    lieuIntitule: null,
+    lieuAdresse: null,
+    lieuCodePostal: null,
+    lieuVille: null,
+    lieuSalle: null,
+    lieuVisioUrl: null,
+  };
+
+  /** Répond à la seule requête qui cherche les sessions sans lieu. */
+  function sessionSansLieu(over: Record<string, unknown> = {}) {
+    mp.trainingSession.findMany.mockImplementation((args: { where?: unknown }) => {
+      if (JSON.stringify(args?.where ?? {}).includes('"lieuType":null')) {
+        return Promise.resolve([
+          {
+            id: "ses-900",
+            numero: "SES-2026-900",
+            titreSession: "IA pour bien commencer",
+            dateDebut: dans(10),
+            modalite: "presentiel",
+            ...SANS_LIEU,
+            client: { raisonSociale: "INVEST SUN" },
+            ...over,
+          },
+        ]);
+      }
+      return Promise.resolve([]);
+    });
+  }
+
+  const trouver = async () => (await evaluerAlertes()).find((x) => x.code === "session_sans_lieu");
+
+  it("🔴 présentiel sans lieu : l'adresse de l'organisme s'imprimerait EN SILENCE", async () => {
+    sessionSansLieu();
+    const a = await trouver();
+    expect(a, "aucune alerte : le repli sur la domiciliation reste muet").toBeDefined();
+    expect(a?.niveau).toBe("important");
+    expect(a?.cibleType).toBe("TrainingSession");
+    expect(a?.cibleId).toBe("ses-900");
+    expect(a?.message).toContain("INVEST SUN");
+    expect(a?.message).toContain("adresse de l'organisme");
+  });
+
+  it("🔴 hybride sans lieu : même défaut", async () => {
+    sessionSansLieu({ modalite: "hybride" });
+    expect(await trouver()).toBeDefined();
+  });
+
+  it("sur site sans adresse ni ville : alerte, avec un titre qui dit ce qui manque", async () => {
+    sessionSansLieu({ lieuType: "sur_site", lieuIntitule: "Siège du client" });
+    const a = await trouver();
+    expect(a).toBeDefined();
+    expect(a?.titre).toContain("sans adresse");
+  });
+
+  it("🔴 continue de lever une fois la session démarrée — l'émargement se tire encore", async () => {
+    sessionSansLieu({ dateDebut: ilYA(1), statut: "en_cours" });
+    expect(await trouver()).toBeDefined();
+  });
+
+  it("témoin de non-vacuité : se tait dès qu'une adresse est saisie", async () => {
+    sessionSansLieu({
+      lieuType: "sur_site",
+      lieuAdresse: "5 rue des Docks",
+      lieuCodePostal: "42000",
+      lieuVille: "Saint-Étienne",
+    });
+    expect(await trouver()).toBeUndefined();
+  });
+
+  it("se tait sur « nos locaux » — l'adresse de l'organisme y est la bonne", async () => {
+    sessionSansLieu({ lieuType: "nos_locaux" });
+    expect(await trouver()).toBeUndefined();
+  });
+
+  it("se tait sur un lieu partiel qui prime déjà sur le repli (ville seule)", async () => {
+    sessionSansLieu({ lieuVille: "Saint-Étienne" });
+    expect(await trouver()).toBeUndefined();
+  });
+
+  it("sa requête couvre `en_cours` — elle ne s'éteint pas au démarrage", async () => {
+    sessionSansLieu();
+    await evaluerAlertes();
+    const args = mp.trainingSession.findMany.mock.calls
+      .map((c) => c[0] as { where?: unknown })
+      .find((a) => JSON.stringify(a?.where ?? {}).includes('"lieuType":null'));
+    expect(args, "la règle n'interroge pas les sessions sans lieu").toBeDefined();
+    expect(JSON.stringify(args?.where)).toContain("en_cours");
+  });
+
+  it("le catalogue la laisse se refermer d'elle-même, au guichet administratif", () => {
+    expect(ALERTE_CATALOGUE["session_sans_lieu"]?.resolutionAuto).toBe(true);
+    expect(ALERTE_CATALOGUE["session_sans_lieu"]?.guichet).toBe("administratif");
+    expect(ALERTE_CATALOGUE["session_sans_lieu"]?.niveau).toBe("important");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Trou n°4 — les bornes élargies, vues depuis l'évaluateur
 // ─────────────────────────────────────────────────────────────────────────────
 

@@ -66,6 +66,11 @@ import { resolveInterventionSlugForFormation } from "@/server/qualiopi/vente/kit
 // SSOT du prédicat « pièce en attente de signature ». À n'appeler, jamais à
 // recopier — la recopie est ce qui a produit la divergence du constat `D3-4-06`.
 import { enAttente } from "@/server/qualiopi/documents/signature/pieces-en-attente";
+// 🔑 I17-01 — le MÊME prédicat que le repli des documents, jamais une recopie.
+import {
+  defautLieuDocument,
+  LIEU_DOCUMENT_SELECT,
+} from "@/server/qualiopi/lieu/resolve-lieu-document";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
 import {
   ATTENTE_JOURS,
@@ -964,7 +969,8 @@ async function regleDiaporamaManquant(now: Date): Promise<AlerteCandidate[]> {
  *   bloquant ;
  * - `nos_locaux` : jamais. L'hôte, c'est l'organisme lui-même ;
  * - `lieuType` non renseigné : jamais non plus. Une session sans lieu du tout
- *   est un autre défaut, et le signaler ici le noierait dans celui-ci.
+ *   est un autre défaut, et le signaler ici le noierait dans celui-ci — il a
+ *   sa propre alerte, `session_sans_lieu` (I17-01).
  *
  * ## Ce qu'elle DIT change une fois l'e-mail parti
  *
@@ -3621,6 +3627,78 @@ async function regleSessionDistancielSansLien(now: Date): Promise<AlerteCandidat
 }
 
 /**
+ * 🔴 UNE SESSION SANS LIEU — LES DOCUMENTS IMPRIMENT L'ADRESSE DE L'ORGANISME.
+ *
+ * Audit initial Qualiopi du 2026-09-14, constat I17-01. `resolveLieuDocument`
+ * retombe sur l'adresse d'exercice puis sur le siège (domiciliation) dès
+ * qu'aucun champ de lieu n'est saisi. Convention, convention tripartite,
+ * contrat, feuille d'émargement et lettre de mission l'impriment tel quel, et la
+ * convocation aussi (`resolveLieuConvocation`). Aucune règle de ce fichier ne le
+ * voyait — celle du contact sur place
+ * exclut explicitement `lieuType` nul.
+ *
+ * ⚠️ Le prédicat est `defautLieuDocument`, celui du module qui fait le repli :
+ * l'alerte lève si et seulement si le document ment. Toutes les modalités sont
+ * couvertes, parce que le repli les frappe toutes ; un `lieuType: distanciel`
+ * sans lien n'est PAS candidat (le document imprime « Distanciel ») et reste le
+ * domaine de `session_distanciel_sans_lien`.
+ *
+ * ⚠️ La fenêtre COUVRE `en_cours` : la feuille d'émargement se tire pendant la
+ * session, et une alerte qui s'éteint au démarrage se referme au moment où la
+ * pièce fausse est produite.
+ *
+ * Elle ne bloque rien : aucune émission n'est refusée, la règle ne fait que lire.
+ */
+async function regleSessionSansLieu(now: Date): Promise<AlerteCandidate[]> {
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: { in: ["planifiee", "en_cours"] },
+      dateFin: { gte: daysAgo(2, now) },
+      OR: [{ lieuType: null }, { lieuType: "sur_site" }],
+    },
+    select: {
+      id: true,
+      numero: true,
+      titreSession: true,
+      dateDebut: true,
+      modalite: true,
+      ...LIEU_DOCUMENT_SELECT,
+      client: { select: { raisonSociale: true } },
+    },
+  });
+
+  return sessions.flatMap((s) => {
+    // Le prédicat en mémoire est la vérité : le `where` ne fait que borner la
+    // lecture (et les mocks de test l'ignorent).
+    const defaut = defautLieuDocument(s);
+    if (defaut === null) return [];
+
+    const date = s.dateDebut.toLocaleDateString("fr-FR");
+    const aSaisir =
+      s.modalite === "distanciel"
+        ? "le lien de connexion"
+        : "le lieu (adresse du client, ou « nos locaux »)";
+
+    return [
+      {
+        code: "session_sans_lieu",
+        niveau: "important" as AlerteNiveau,
+        titre:
+          defaut === "aucun_lieu"
+            ? "Session sans lieu de déroulement"
+            : "Session sur site sans adresse",
+        message:
+          defaut === "aucun_lieu"
+            ? `${designerSession(s)} (${date}) n'a aucun lieu enregistré. La convention, la convocation et la feuille d'émargement impriment à la place l'adresse de l'organisme — un lieu faux si la formation se tient ailleurs (L.6353-1, indicateur 17). Saisissez ${aSaisir} sur la fiche de session, puis réémettez les pièces déjà produites.`
+            : `${designerSession(s)} (${date}) est déclarée sur site sans adresse ni ville : les documents n'impriment que « Sur site », sans dire où. Demandez l'adresse au client, complétez la fiche de session, puis réémettez les pièces déjà produites.`,
+        cibleType: "TrainingSession",
+        cibleId: s.id,
+      },
+    ];
+  });
+}
+
+/**
  * 🔴 LES QUATRE RÈGLES D'ÉMARGEMENT NE SAVENT COMPTER QUE JUSQU'À ZÉRO.
  *
  * Audit du moteur, trou n°9. `regleEmargementManquant` porte
@@ -4480,6 +4558,8 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "formateur_desiste_session", fn: regleFormateurDesisteSession },
   { nom: "convocation_stagiaire_manquante", fn: regleConvocationStagiaireManquante },
   { nom: "session_distanciel_sans_lien", fn: regleSessionDistancielSansLien },
+  // Audit initial Qualiopi 2026-09-14, I17-01 — le repli muet sur l'adresse de l'organisme.
+  { nom: "session_sans_lieu", fn: regleSessionSansLieu },
   { nom: "emargement_partiel", fn: regleEmargementPartiel },
   { nom: "effectif_depasse", fn: regleEffectifDepasse },
   { nom: "session_realisee_non_facturee", fn: regleSessionRealiseeNonFacturee },

@@ -7,12 +7,77 @@
 
 import { describe, it, expect } from "vitest";
 
-import { resolveLieuDocument, resolveLieuConvocation } from "./resolve-lieu-document";
+import {
+  defautLieuDocument,
+  resolveLieuDocument,
+  resolveLieuConvocation,
+} from "./resolve-lieu-document";
+import type { LieuFields } from "./format-lieu";
 
 const IDENTITE = {
   adresseExercice: "10 rue de l'Exercice, 38000 Grenoble",
   adresseSiege: "1 rue du Siège, 38000 Grenoble",
 };
+
+/**
+ * 🔴 I17-01 (audit initial Qualiopi, 2026-09-14) — le repli sur l'adresse de
+ * l'organisme était SILENCIEUX. Une session présentielle ou hybride sans lieu
+ * imprimait la domiciliation sur la convention, la convocation et la feuille
+ * d'émargement, et aucune alerte ne le disait. Le prédicat ci-dessous est ce que
+ * lit l'alerte `session_sans_lieu` : il doit dire EXACTEMENT quand le repli joue.
+ */
+describe("defautLieuDocument — le prédicat que lit l'alerte « session sans lieu »", () => {
+  it("🔴 aucun champ de lieu : le document retombera sur l'adresse de l'organisme", () => {
+    expect(defautLieuDocument({})).toBe("aucun_lieu");
+    expect(
+      defautLieuDocument({ lieuType: null, lieuAdresse: "  ", lieuVille: null, lieuSalle: "" }),
+    ).toBe("aucun_lieu");
+  });
+
+  it("sur site sans adresse ni ville : le document n'imprimera que « Sur site »", () => {
+    expect(defautLieuDocument({ lieuType: "sur_site" })).toBe("sur_site_sans_adresse");
+    expect(
+      defautLieuDocument({
+        lieuType: "sur_site",
+        lieuIntitule: "Siège du client",
+        lieuSalle: "B2",
+      }),
+    ).toBe("sur_site_sans_adresse");
+  });
+
+  it("témoins de non-vacuité : un lieu réel ne fait rien lever", () => {
+    expect(defautLieuDocument({ lieuType: "sur_site", lieuAdresse: "5 rue des Docks" })).toBeNull();
+    expect(defautLieuDocument({ lieuType: "sur_site", lieuVille: "Saint-Étienne" })).toBeNull();
+    expect(defautLieuDocument({ lieuType: "nos_locaux" })).toBeNull();
+    expect(defautLieuDocument({ lieuVille: "Saint-Étienne" })).toBeNull();
+    expect(
+      defautLieuDocument({ lieuType: "distanciel", lieuVisioUrl: "https://meet.google.com/x" }),
+    ).toBeNull();
+  });
+
+  it("🔑 « aucun_lieu » coïncide EXACTEMENT avec le repli de resolveLieuDocument", () => {
+    // Deux prédicats jumeaux divergent au premier changement. On vérifie donc,
+    // cas par cas, que l'alerte lève si et seulement si le document imprime
+    // l'adresse de l'organisme.
+    const cas: LieuFields[] = [
+      {},
+      { lieuType: null },
+      { lieuSalle: "  " },
+      { lieuSalle: "B2" },
+      { lieuIntitule: "Salle Fraunces" },
+      { lieuVisioUrl: "https://meet.google.com/abc" },
+      { lieuVisioUrl: "lien à venir" },
+      { lieuType: "sur_site" },
+      { lieuType: "nos_locaux" },
+      { lieuType: "distanciel" },
+      { lieuCodePostal: "42000" },
+    ];
+    for (const c of cas) {
+      const repli = resolveLieuDocument(c, IDENTITE) === IDENTITE.adresseExercice;
+      expect(defautLieuDocument(c) === "aucun_lieu", JSON.stringify(c)).toBe(repli);
+    }
+  });
+});
 
 describe("resolveLieuDocument", () => {
   // 🔴 Le test qui porte tout le chantier.
