@@ -511,8 +511,10 @@ async function handleAttestationsAuto(): Promise<void> {
   // quoi qu'il arrive.
   //
   // `genererAttestationPourEnrollment` rend `{ resultat, documentId }`, et
-  // `resultat` vaut `"aucune"` quand le taux de présence est sous le seuil :
-  // aucune pièce n'est alors produite, et c'est le BON comportement. Mais le
+  // `resultat` vaut `"aucune"` quand aucune pièce n'est produite (à l'époque :
+  // présence sous 60 % ; depuis l'audit initial 2026-09-14, qui rend la pièce
+  // PARTIELLE due même sous 60 % — L.6353-1 al. 2 —, seulement une inscription
+  // exclue ou en abandon). Ne rien produire y est le BON comportement. Mais le
   // journal annonçait quand même « 1 générées » — mesuré en dev le 2026-08-26,
   // le cron déclarait une attestation produite alors que ZÉRO ligne
   // `DocumentGenere` avait été écrite.
@@ -543,7 +545,7 @@ async function handleAttestationsAuto(): Promise<void> {
 
   console.log(
     `[formation-crons] attestations-auto: ${ok} générées, ${sansPiece} sans pièce ` +
-      `(présence sous le seuil), ${ko} erreurs ` +
+      `(inscription exclue ou en abandon), ${ko} erreurs ` +
       `(${enrollments.length} candidats scannés, ${enAttenteEvaluation} en attente d'évaluation finale, ` +
       `${sansPreuvePresence} évaluées mais sans taux mesuré ni trace d'assiduité)`,
   );

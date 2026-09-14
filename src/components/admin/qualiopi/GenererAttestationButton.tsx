@@ -50,7 +50,10 @@ export interface GenererAttestationButtonProps {
 const RESULTAT_LABELS: Record<AttestationResultat, string> = {
   complete: "Attestation complète générée",
   partielle: "Attestation partielle générée",
-  aucune: "Taux de présence insuffisant — aucune attestation",
+  // Depuis l'audit initial 2026-09-14, une faible présence produit une attestation
+  // PARTIELLE (L.6353-1 al. 2) : « aucune » ne sort plus que pour une inscription
+  // exclue ou en abandon.
+  aucune: "Aucune attestation : inscription exclue ou en abandon",
 };
 
 function resultatCouleur(resultat: AttestationResultat): string {

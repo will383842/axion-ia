@@ -155,10 +155,16 @@ export function AttestationPdf({ data }: { data: AttestationData }): React.React
         identite={identite}
         {...(data.estCopie === true ? { estCopie: true } : {})}
       >
-        {/* Phrase certificative */}
+        {/* Phrase certificative
+            🔴 Audit initial 2026-09-14 (X-documents-pdf-07). Elle affirmait « et en
+            a satisfait les exigences » quel que soit le résultat : le choix entre
+            cette pièce et la partielle ne dépend que de la PRÉSENCE. Une stagiaire
+            assidue mais « Non validée » recevait une attestation qui se contredisait
+            deux blocs plus bas. La phrase certifie ce que la pièce prouve — le suivi —
+            et renvoie aux résultats, qu'elle imprime tels quels (L.6353-1 al. 2). */}
         <View style={pdfStyles.section}>
           <Text style={styles.certifPhrase}>
-            {`Je soussigné ${dirigeantOuRS} certifie que ${prenomNom} a suivi la formation mentionnée ci-dessous et en a satisfait les exigences.`}
+            {`Je soussigné ${dirigeantOuRS} certifie que ${prenomNom} a suivi la formation mentionnée ci-dessous. Les résultats de l'évaluation des acquis figurent ci-après.`}
           </Text>
           <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.attestation}</Text>
         </View>

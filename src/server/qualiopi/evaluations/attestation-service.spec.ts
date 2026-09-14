@@ -307,32 +307,97 @@ describe("genererAttestationPourEnrollment", () => {
     expect(passe.rectifie?.motif).toContain("mise à jour de l'évaluation des acquis");
   });
 
-  // ── Résultat aucune ─────────────────────────────────────────────────────────
+  // ── Présence sous 60 % : la pièce reste DUE (L.6353-1 al. 2) ──────────────
+  //
+  // 🔴 Audit initial 2026-09-14 (M-documents-pdf-11). Sous 60 % de présence, le
+  // service ne produisait RIEN : `attestationGenereeAt` posé, `documentId` nul.
+  // Or l'article L.6353-1 al. 2 impose de remettre au stagiaire, à l'issue de la
+  // formation, une attestation portant objectifs, nature, durée et résultats de
+  // l'évaluation. Une assiduité faible change ce que la pièce DIT (la durée
+  // réellement suivie), pas le fait qu'elle soit due.
 
-  it("retourne { resultat: 'aucune', documentId: null } si classifierPresence='aucune'", async () => {
+  it("sous 60 % de présence, émet une attestation PARTIELLE — jamais « aucune pièce »", async () => {
     mockClassifier.mockReturnValue("aucune");
+    mockPrisma.enrollment.findUnique.mockResolvedValue(makeEnrollment({ tauxPresencePct: 40 }));
 
     const result = await genererAttestationPourEnrollment("enroll-1");
 
-    expect(result).toEqual({ resultat: "aucune", documentId: null });
-    expect(mockGenDoc).not.toHaveBeenCalled();
-  });
-
-  it("met à jour attestationResultat=aucune sans documentId si aucune présence", async () => {
-    mockClassifier.mockReturnValue("aucune");
-
-    await genererAttestationPourEnrollment("enroll-1");
-
+    expect(result).toEqual({ resultat: "partielle", documentId: "doc-uuid-1" });
+    expect(mockGenDoc).toHaveBeenCalledWith(
+      expect.objectContaining({ type: "attestation_partielle" }),
+    );
     expect(mockPrisma.enrollment.update).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { id: "enroll-1" },
-        data: expect.objectContaining({ attestationResultat: "aucune" }),
+        data: expect.objectContaining({
+          attestationResultat: "partielle",
+          attestationDocumentId: "doc-uuid-1",
+        }),
       }),
     );
-    const updateCall = mockPrisma.enrollment.update.mock.calls[0]![0] as {
-      data: Record<string, unknown>;
+  });
+
+  it("sous 60 %, la pièce porte la durée RÉELLEMENT suivie, pas la durée prévue", async () => {
+    mockClassifier.mockReturnValue("aucune");
+    // 40 % de 20 h = 8 h : un nombre rond, pour que l'assertion ne dépende pas
+    // de la règle d'arrondi (hors du périmètre de ce correctif).
+    mockPrisma.enrollment.findUnique.mockResolvedValue(
+      makeEnrollment({
+        tauxPresencePct: 40,
+        session: { ...makeEnrollment().session, dureeReelleHeures: 20 },
+      }),
+    );
+
+    await genererAttestationPourEnrollment("enroll-1");
+
+    const docCall = mockGenDoc.mock.calls[0]![0] as {
+      buildElement: (numero: string) => { props: { data: Record<string, unknown> } };
     };
-    expect("attestationDocumentId" in updateCall.data).toBe(false);
+    const resultats = docCall.buildElement("AXI-ATT-2026-009").props.data["resultats"] as Record<
+      string,
+      unknown
+    >;
+    expect(resultats["heuresSuivies"]).toBe(8);
+    expect(resultats["heuresTotales"]).toBe(20);
+  });
+
+  // ── Formateur : jamais la raison sociale ────────────────────────────────────
+
+  it("sans formateur désigné, la ligne « Formateur(rice) » n'imprime PAS la raison sociale", async () => {
+    // 🔴 M-documents-pdf-12. La convocation a fermé ce repli (D9) : nommer
+    // l'organisme sur une ligne « Formateur » affirme qu'une personne morale a
+    // animé la session.
+    await genererAttestationPourEnrollment("enroll-1");
+
+    const docCall = mockGenDoc.mock.calls[0]![0] as {
+      buildElement: (numero: string) => { props: { data: Record<string, unknown> } };
+    };
+    const formation = docCall.buildElement("AXI-ATT-2026-010").props.data["formation"] as Record<
+      string,
+      unknown
+    >;
+    expect(formation["formateur"]).not.toBe("Axion-IA SAS");
+    expect(formation["formateur"]).toBe("Non renseigné");
+  });
+
+  it("avec un formateur principal, c'est bien son nom qui est imprimé", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(
+      makeEnrollment({
+        session: { ...makeEnrollment().session, formateurPrincipalId: "trainer-1" },
+      }),
+    );
+    mockPrisma.trainer.findUnique.mockResolvedValue({ prenom: "Luc", nom: "Martin" });
+
+    await genererAttestationPourEnrollment("enroll-1");
+
+    const docCall = mockGenDoc.mock.calls[0]![0] as {
+      buildElement: (numero: string) => { props: { data: Record<string, unknown> } };
+    };
+    const formation = docCall.buildElement("AXI-ATT-2026-011").props.data["formation"] as Record<
+      string,
+      unknown
+    >;
+    expect(formation["formateur"]).toBe("Luc Martin");
   });
 
   // ── Attestation complète ────────────────────────────────────────────────────
@@ -558,8 +623,17 @@ describe("genererAttestationPourEnrollment", () => {
     expect(mockEnvoyerAttestation).toHaveBeenCalledWith("enroll-1");
   });
 
-  it("ne appelle PAS envoyerAttestationDisponible si résultat=aucune", async () => {
+  it("prévient AUSSI le stagiaire sous 60 % de présence — la pièce existe, elle lui est due", async () => {
     mockClassifier.mockReturnValue("aucune");
+    mockPrisma.enrollment.findUnique.mockResolvedValue(makeEnrollment({ tauxPresencePct: 40 }));
+
+    await genererAttestationPourEnrollment("enroll-1");
+
+    expect(mockEnvoyerAttestation).toHaveBeenCalledWith("enroll-1");
+  });
+
+  it("ne prévient PAS le stagiaire exclu (aucune pièce)", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(makeEnrollment({ statut: "exclu" }));
 
     await genererAttestationPourEnrollment("enroll-1");
 

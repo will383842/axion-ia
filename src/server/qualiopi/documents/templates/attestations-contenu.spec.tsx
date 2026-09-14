@@ -96,19 +96,71 @@ describe("AttestationPdf — contenu", () => {
   it("affiche l'assiduité", () => {
     expect(text).toContain("100 %");
   });
+
+  // 🔴 Audit initial 2026-09-14 (X-documents-pdf-07). La phrase certificative
+  // affirmait « en a satisfait les exigences » QUEL QUE SOIT le résultat : le
+  // choix entre attestation complète et partielle ne dépend que de la présence.
+  // Une stagiaire assidue mais « Non validée » recevait une pièce qui se
+  // contredisait deux blocs plus bas.
+  it("n'affirme JAMAIS « en a satisfait les exigences » quand l'évaluation porte « Non validée »", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(AttestationPdf, {
+        data: {
+          ...ATTESTATION,
+          resultats: {
+            ...ATTESTATION.resultats,
+            evaluationObtenue: "Non validée — score 40 %",
+            competencesAcquises: "Aucun objectif évalué comme acquis",
+            competencesReserves: "Non acquis : Prompt engineering",
+          },
+        },
+      }),
+    );
+    expect(t).toContain("Non validée — score 40 %");
+    expect(t).not.toContain("satisfait les exigences");
+    expect(t).toContain("résultats de l'évaluation des acquis");
+  });
 });
 
 describe("AttestationPartiellePdf — contenu", () => {
   const text = collectPdfTextNormalized(
     React.createElement(AttestationPartiellePdf, { data: PARTIELLE }),
   );
-  it("signale fortement le caractère partiel", () => {
+  it("signale fortement le caractère partiel, avec l'assiduité RÉELLE", () => {
     expect(text).toContain("Attestation partielle");
-    expect(text).toContain("60 %");
+    // 10 h / 14 h = 71 %
+    expect(text).toContain("71 %");
   });
-  it("porte la mention légale + les compétences partiellement validées", () => {
+  it("porte la mention légale + les compétences acquises", () => {
     expect(text).toContain(LEGAL_MENTIONS.attestation);
     expect(text).toContain("Modules 1-3");
+  });
+
+  // 🔴 Audit initial 2026-09-14 (M-documents-pdf-11 / X-documents-pdf-07). Sous
+  // 60 % la pièce est désormais émise (L.6353-1 al. 2) : la bannière ne peut plus
+  // annoncer une fourchette « entre 60 % et 79 % » — déjà fausse dès que le seuil
+  // de présence complète était réglé autrement que 80 %. Et « compétences
+  // déclarées partiellement validées » se lisait comme un résultat d'évaluation,
+  // alors que la partialité ne dit que la PRÉSENCE.
+  it("sous 60 % : ni fourchette fausse, ni validation affirmée, et la durée réellement suivie", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(AttestationPartiellePdf, {
+        data: {
+          ...PARTIELLE,
+          resultats: {
+            heuresSuivies: 5,
+            heuresTotales: 14,
+            evaluationObtenue: "Non validée — score 20 %",
+            competencesPartiellesValidees: "Aucun objectif évalué comme acquis",
+          },
+        },
+      }),
+    );
+    expect(t).not.toContain("entre 60 % et 79 %");
+    expect(t).not.toContain("partiellement validées");
+    expect(t).toContain("Durée réelle suivie");
+    expect(t).toContain("5 h");
+    expect(t).toContain("36 %");
   });
 });
 

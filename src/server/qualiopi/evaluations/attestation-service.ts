@@ -4,10 +4,18 @@
  * genererAttestationPourEnrollment : génère (ou renvoie existante) l'attestation
  *   d'un stagiaire à partir de son taux de présence.
  *
- * Décision Will #7 :
+ * Pièce selon l'assiduité :
  *   - >= seuil_presence_pct (défaut 80 %) → attestation complète
- *   - 60–79 %                             → attestation partielle
- *   - < 60 %                              → aucun document
+ *   - en dessous                          → attestation partielle, qui porte la
+ *                                           durée RÉELLEMENT suivie
+ *
+ * 🔴 Audit initial 2026-09-14 (M-documents-pdf-11). La décision #7 prévoyait
+ * « < 60 % → aucun document ». L'article L.6353-1 al. 2 impose pourtant de
+ * remettre au stagiaire, à l'issue de la formation, une attestation portant
+ * objectifs, nature, durée et résultats de l'évaluation des acquis. Une faible
+ * assiduité change ce que la pièce DIT, pas le fait qu'elle soit DUE. Le seuil
+ * de 60 % (`classifierPresence`) reste une catégorie d'affichage de la présence ;
+ * il ne décide plus de l'existence de la pièce.
  *
  * Idempotence : si attestationGenereeAt est déjà set et opts.force !== true,
  * retourne l'existant sans regénérer.
@@ -48,6 +56,12 @@ export interface AttestationResult {
   resultat: "complete" | "partielle" | "aucune";
   documentId: string | null;
 }
+
+/**
+ * Ligne « Formateur(rice) » quand aucun formateur n'est rattaché à la session.
+ * Jamais la raison sociale (cf. M-documents-pdf-12, au point d'usage).
+ */
+export const FORMATEUR_NON_RENSEIGNE = "Non renseigné";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // PREUVES — la pièce due au STAGIAIRE n'est plus moins gardée que celle du
@@ -151,8 +165,8 @@ export function preuvesManquantesAttestation(p: PreuvesAttestation): string[] {
   }
   if (p.evaluationsFinales === 0) {
     manquantes.push(
-      "aucune évaluation finale des acquis (la pièce certifierait « en a satisfait " +
-        "les exigences » en affichant « évaluation non réalisée »)",
+      "aucune évaluation finale des acquis (la pièce imprimerait « Évaluation des " +
+        "acquis non réalisée » à la place des résultats que L.6353-1 lui fait porter)",
     );
   }
   return manquantes;
@@ -248,7 +262,7 @@ async function lirePreuvesAttestation(
  * 1. Lit enrollment + session + formation + trainee.
  * 2. Idempotence : si attestationGenereeAt set et pas force → retourne existant.
  * 3. Classifie la présence via classifierPresence (taux.ts).
- * 4. Si "aucune" → update Enrollment, log, retourne null.
+ * 4. Complète si ≥ seuil, sinon PARTIELLE — y compris sous 60 % (L.6353-1).
  * 5. Construit AttestationData / AttestationPartielleData.
  * 6. generateDocument → DocumentGenere.
  * 7. update Enrollment (attestationResultat, documentId, genereeAt).
@@ -468,37 +482,20 @@ export async function genererAttestationPourEnrollment(
   // 3. Classifie la présence
   const seuilPresencePct = await getQualiopiConfig("seuil_presence_pct");
   const tauxPct = enrollment.tauxPresencePct ?? 0;
-  const resultat = classifierPresence(tauxPct, seuilPresencePct);
 
-  // 4. Si aucune → pas de doc
-  if (resultat === "aucune") {
-    await prisma.enrollment.update({
-      where: { id: enrollmentId },
-      data: {
-        attestationResultat: "aucune",
-        attestationGenereeAt: new Date(),
-      },
-    });
-
-    // Log activité best-effort (direct Prisma — pas de next/headers ici)
-    try {
-      await prisma.activityLog.create({
-        data: {
-          adminUserId: null,
-          action: "qualiopi.attestation.aucune",
-          targetType: "Enrollment",
-          targetId: enrollmentId,
-          changes: { resultat: "aucune", tauxPct } as never,
-          ipAddress: null,
-          userAgent: null,
-        },
-      });
-    } catch {
-      // best-effort
-    }
-
-    return { resultat: "aucune", documentId: null };
-  }
+  // 4. 🔴 Audit initial 2026-09-14 (M-documents-pdf-11) — plus de branche « aucune
+  //    pièce » sur la présence.
+  //
+  // Sous 60 %, `classifierPresence` rend « aucune », et ce service posait
+  // `attestationGenereeAt` en sortant SANS document. Le stagiaire ne recevait
+  // rien, alors que L.6353-1 al. 2 lui doit, à l'issue de la formation, une
+  // attestation mentionnant objectifs, nature, durée et résultats de
+  // l'évaluation. On émet donc la pièce PARTIELLE, qui imprime la durée
+  // réellement suivie : c'est ce qu'elle dit qui change avec l'assiduité, pas
+  // le fait qu'elle soit due. « aucune » reste le résultat des seuls refus
+  // (statut exclu/abandon, base stub).
+  const resultat: "complete" | "partielle" =
+    classifierPresence(tauxPct, seuilPresencePct) === "complete" ? "complete" : "partielle";
 
   // 5. Construction du PDF — données formation depuis le snapshot légal (WS5),
   //    repli sur la lecture LIVE pour les sessions antérieures à WS5.
@@ -519,10 +516,16 @@ export async function genererAttestationPourEnrollment(
   const heuresSuivies = Math.round((tauxPct * dureeHeures) / 100);
 
   // Formateur principal : FK formateurPrincipalId prioritaire (fiable), repli sur
-  // le Json coFormateurs (legacy), puis raison sociale. Corrige le nom du
-  // formateur sur l'attestation (auparavant toujours la raison sociale car
-  // coFormateurs est vide en pratique — jamais écrit par l'app).
-  let formateurNom = identite.raisonSociale;
+  // le Json coFormateurs (legacy), puis « Non renseigné ».
+  //
+  // 🔴 Audit initial 2026-09-14 (M-documents-pdf-12). Le dernier repli était la
+  // RAISON SOCIALE, imprimée sous « Formateur(rice) » : la pièce affirmait qu'une
+  // personne morale avait animé la session. La convocation a fermé ce repli
+  // (D9, `FORMATEUR_A_DESIGNER` dans `producteurs.ts`) ; sa formule n'est pas
+  // reprise ici, parce que l'attestation est émise APRÈS la formation — « à
+  // désigner » y serait faux aussi. On dit ce qui est vrai : l'information
+  // manque au dossier.
+  let formateurNom = FORMATEUR_NON_RENSEIGNE;
   const principalTrainerId = resolvePrincipalTrainerId({
     formateurPrincipalId: session.formateurPrincipalId,
     coFormateurs: session.coFormateurs,
@@ -537,7 +540,7 @@ export async function genererAttestationPourEnrollment(
         formateurNom = `${trainer.prenom} ${trainer.nom}`.trim();
       }
     } catch {
-      // fallback identité raisonSociale
+      // repli sur FORMATEUR_NON_RENSEIGNE
     }
   } else {
     // Repli legacy : nom inline éventuellement présent dans coFormateurs[0].

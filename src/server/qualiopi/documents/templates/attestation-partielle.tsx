@@ -1,10 +1,12 @@
 /**
- * Qualiopi — Attestation partielle de formation (assiduité 60–79 %).
+ * Qualiopi — Attestation partielle de formation (assiduité sous le seuil de
+ * présence complète, y compris sous 60 % : la pièce reste due, L.6353-1 al. 2).
  *
  * Identique à l'attestation complète MAIS :
  *  - Titre : "Attestation partielle de formation"
  *  - Durée réelle suivie affichée explicitement
- *  - Compétences désignées comme "partiellement validées"
+ *  - La partialité porte sur la PRÉSENCE ; les résultats de l'évaluation sont
+ *    imprimés tels quels, jamais présentés comme « partiellement validés »
  *
  * Mention légale EXACTE : LEGAL_MENTIONS.attestation
  * Bases juridiques : L.6353-1 / D.6353-1 du Code du travail.
@@ -159,10 +161,16 @@ export function AttestationPartiellePdf({
         identite={identite}
         {...(data.estCopie === true ? { estCopie: true } : {})}
       >
-        {/* Bannière partielle — signalée fortement */}
+        {/* Bannière partielle — signalée fortement.
+            🔴 Audit initial 2026-09-14 (M-documents-pdf-11 / X-documents-pdf-07).
+            Elle annonçait « assiduité comprise entre 60 % et 79 % » : fausse dès
+            que le seuil de présence complète était réglé autrement que 80 %, et
+            fausse tout court depuis que la pièce est émise sous 60 % (elle est due
+            au stagiaire, L.6353-1 al. 2). Elle ajoutait « compétences déclarées
+            partiellement validées » : la partialité ne dit que la PRÉSENCE, les
+            résultats de l'évaluation sont imprimés plus bas, tels quels. */}
         <LegalCallout variant="warning" title="Attestation partielle">
-          Formation non complétée (assiduité comprise entre 60 % et 79 %). Les compétences sont
-          déclarées partiellement validées.
+          {`Formation suivie en partie : ${hFr(data.resultats.heuresSuivies)} h sur ${hFr(data.resultats.heuresTotales)} h prévues (assiduité ${assiduitePercent(data.resultats.heuresSuivies, data.resultats.heuresTotales)}). Les résultats de l'évaluation des acquis figurent ci-après.`}
         </LegalCallout>
 
         {/* Phrase certificative */}
@@ -214,7 +222,7 @@ export function AttestationPartiellePdf({
             </View>
           ) : null}
           <View style={styles.resultRow}>
-            <Text style={styles.resultLabel}>Compétences partiellement validées</Text>
+            <Text style={styles.resultLabel}>Compétences acquises</Text>
             <Text style={styles.resultValue}>{data.resultats.competencesPartiellesValidees}</Text>
           </View>
           {data.resultats.competencesReserves ? (
