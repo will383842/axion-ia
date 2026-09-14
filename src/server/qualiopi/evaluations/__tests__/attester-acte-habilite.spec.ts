@@ -155,14 +155,49 @@ describe("🔴 l'émetteur automatique porte SA garde de chronologie", () => {
     expect(EVALUATEUR).toContain("daysAgo(DELAI_EVALUATION_FINALE_JOURS, now)");
   });
 
-  it("la borne d'émission sans évaluation vient APRÈS R05 : délai de R05 + 1 jour, dérivé", async () => {
+  it("🔴 au moins 24 h entre la levée possible de R05 et l'émission sans évaluation, à toute heure de fin", async () => {
+    // 3e relecture A09 : avec une borne à R05 + 1 jour, une session finie entre
+    // 07:00 et 09:00 UTC ne laissait que deux heures. Les horaires des crons sont
+    // LUS dans `queues.ts`, pas recopiés.
+    const delais = (await import("@/server/qualiopi/alertes/delai-evaluation-finale")) as Record<
+      string,
+      number
+    >;
+    const queues = readFileSync(join(RACINE_SRC, "server/queue/queues.ts"), "utf-8");
+    const heure = (type: string): number => {
+      const m = queues.match(new RegExp(`type: "${type}",\\s*pattern: "0 (\\d+) \\* \\* \\*"`));
+      expect(m, `horaire du cron ${type} introuvable`).not.toBeNull();
+      return Number(m![1]);
+    };
+    const hR05 = heure("formation-crons.alertes");
+    const hEmission = heure("formation-crons.attestations-auto");
+    const J = 86_400_000;
+    const premierPassage = (h: number, apres: number): number => {
+      const d = new Date(apres);
+      const ce = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), h);
+      return ce >= apres ? ce : ce + J;
+    };
+    const ecart = (fin: number): number =>
+      premierPassage(hEmission, fin + delais["DELAI_EMISSION_SANS_EVALUATION_JOURS"]! * J) -
+      premierPassage(hR05, fin + delais["DELAI_EVALUATION_FINALE_JOURS"]! * J);
+
+    // Le cas relevé : fin de session à 08:00 UTC.
+    expect(ecart(Date.UTC(2026, 8, 14, 8, 0))).toBeGreaterThanOrEqual(24 * 3_600_000);
+    for (let minute = 0; minute < 24 * 60; minute += 15) {
+      expect(ecart(Date.UTC(2026, 8, 14, 0, minute)), `fin à ${minute} min`).toBeGreaterThanOrEqual(
+        24 * 3_600_000,
+      );
+    }
+  });
+
+  it("la borne d'émission sans évaluation vient APRÈS R05 : délai de R05 + 2 jours, dérivé", async () => {
     const delais = (await import("@/server/qualiopi/alertes/delai-evaluation-finale")) as Record<
       string,
       unknown
     >;
     expect(delais["DELAI_EVALUATION_FINALE_JOURS"]).toBe(2);
     expect(delais["DELAI_EMISSION_SANS_EVALUATION_JOURS"]).toBe(
-      (delais["DELAI_EVALUATION_FINALE_JOURS"] as number) + 1,
+      (delais["DELAI_EVALUATION_FINALE_JOURS"] as number) + 2,
     );
   });
 

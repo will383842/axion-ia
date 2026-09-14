@@ -44,7 +44,7 @@ import {
   MOTIF_PREUVES_MIN,
   messageRefusPreuvesManquantes,
 } from "./refus-attestation";
-import { minutesSuivies } from "./heures-suivies";
+import { aucuneHeureSuivie, minutesSuiviesPresence } from "./heures-suivies";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { classifierPresence } from "@/server/qualiopi/presence/taux";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
@@ -338,6 +338,16 @@ export async function genererAttestationPourEnrollment(
       attestationResultat: true,
       attestationDocumentId: true,
       attestationGenereeAt: true,
+      // 🔴 3e relecture A09 — minutes RÉELLES de présence : elles décident du
+      // « 0 h » et des heures imprimées (même calcul que le certificat).
+      presences: {
+        select: {
+          dureePrevueMinutes: true,
+          dureeRealiseeMinutes: true,
+          date: true,
+          demiJournee: true,
+        },
+      },
       trainee: {
         select: {
           id: true,
@@ -435,11 +445,18 @@ export async function genererAttestationPourEnrollment(
     throw new AttestationTauxNonMesureError(inscriptionSortie);
   }
 
-  // 🔴 2e relecture A09 — 0 minute suivie (y compris par arrondi d'un taux non
-  // nul) : l'émission AUTOMATIQUE ne produit rien et n'écrit rien. Refusé AVANT
-  // le claim, pour que la ligne reste visible de l'alerte qui la porte.
-  const minutes = minutesSuivies(enrollment.tauxPresencePct ?? 0, dureeHeures);
-  if (opts?.automatique === true && minutes === 0) {
+  // 🔴 2e et 3e relectures A09 — 0 h suivie : minutes RÉELLES de présence
+  // strictement nulles (sans créneau : taux strictement nul). UNE définition,
+  // partagée avec le certificat, l'e-mail et les alertes (`heures-suivies.ts`).
+  // L'émission AUTOMATIQUE ne produit rien et n'écrit rien : refusé AVANT le
+  // claim, pour que la ligne reste visible de l'alerte qui la porte.
+  const presence = {
+    tauxPresencePct: enrollment.tauxPresencePct,
+    creneaux: enrollment.presences,
+  };
+  const aucuneHeure = aucuneHeureSuivie(presence);
+  const minutes = minutesSuiviesPresence(presence, dureeHeures);
+  if (opts?.automatique === true && aucuneHeure) {
     return { resultat: "aucune", documentId: null, raison: "zero_heure_suivie" };
   }
 
@@ -768,6 +785,9 @@ export async function genererAttestationPourEnrollment(
       },
       refs: { sessionId: session.id, traineeId: trainee.id },
       qrToken: token,
+      // 🔴 3e relecture A09 — la page publique de vérification dit « aucune heure
+      // suivie », pas « suivi partiel ». Aucun nouveau type de document : une marque.
+      ...(aucuneHeure ? { metadata: { aucuneHeureSuivie: true } } : {}),
       ...(numeroPrecedent !== undefined && numeroPrecedent !== null
         ? {
             rectifie: {

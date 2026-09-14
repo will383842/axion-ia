@@ -349,6 +349,21 @@ describe("genererCertificatRealisationAction", () => {
     expect(mockGenerateDocument).toHaveBeenCalledOnce();
   });
 
+  it("🔴 même durée que l'attestation : 93 % de 7 h = 391 min, pas « 7 » arrondi à l'heure", async () => {
+    // 3e relecture A09 : l'attestation comptait à la minute (« 6 h 31 »), le
+    // certificat du même stagiaire arrondissait à l'heure (« 7,00 »).
+    mockEnrollmentFindUnique.mockResolvedValue(
+      makeEnrollment({
+        tauxPresencePct: 93,
+        session: makeSession({ dureeReelleHeures: 7 }),
+      }),
+    );
+
+    await genererCertificatRealisationAction({ enrollmentId: ENROLLMENT_ID });
+
+    expect(donneesPdf<{ dureeHeures: number }>().dureeHeures).toBe(391 / 60);
+  });
+
   it("retourne error si enrollment introuvable", async () => {
     mockEnrollmentFindUnique.mockResolvedValue(null);
     const result = await genererCertificatRealisationAction({ enrollmentId: ENROLLMENT_ID });

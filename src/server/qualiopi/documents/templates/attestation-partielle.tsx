@@ -161,7 +161,11 @@ export function AttestationPartiellePdf({
   return (
     <Document>
       <QualiopiPage
-        docTitle="Attestation partielle de formation"
+        docTitle={
+          aucuneHeure
+            ? "Attestation de fin de formation — aucune heure suivie"
+            : "Attestation partielle de formation"
+        }
         docNumber={`N° ${data.numero}`}
         identite={identite}
         {...(data.estCopie === true ? { estCopie: true } : {})}
@@ -225,7 +229,8 @@ export function AttestationPartiellePdf({
         </DocSection>
 
         {/* Résultats partiels */}
-        <DocSection title="Résultats partiels">
+        {/* 🔴 3e relecture A09 : à 0 h, rien n'est « partiel ». */}
+        <DocSection title={aucuneHeure ? "Résultats" : "Résultats partiels"}>
           <View style={styles.resultRow}>
             <Text style={styles.resultLabel}>Durée réelle suivie</Text>
             <Text style={styles.resultValue}>{`${hMin(data.resultats.heuresSuivies)}`}</Text>

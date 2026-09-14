@@ -263,6 +263,33 @@ describe("attestations — heures réellement suivies et 0 h", () => {
     expect(t).toContain("3 h 15");
     expect(t).not.toContain("3,5 h");
   });
+
+  it("🔴 pièce à 0 h : ni « partielle » dans le titre, ni rubrique « Résultats partiels »", () => {
+    // 3e relecture A09 : la pièce qui atteste qu'aucune heure n'a été suivie
+    // restait intitulée « Attestation partielle de formation ».
+    const t = collectPdfTextNormalized(
+      React.createElement(AttestationPartiellePdf, {
+        data: {
+          ...PARTIELLE,
+          resultats: { ...PARTIELLE.resultats, heuresSuivies: 0, heuresTotales: 14 },
+        },
+      }),
+    );
+    expect(t).toContain("Attestation de fin de formation — aucune heure suivie");
+    expect(t).not.toContain("Attestation partielle de formation");
+    expect(t).not.toContain("Résultats partiels");
+  });
+
+  it("🔴 certificat : la durée en centièmes ET en heures-minutes, comme l'attestation", () => {
+    // 391 min = 6,52 h (centièmes, R.6313-3) = 6 h 31 (format de l'attestation).
+    const t = collectPdfTextNormalized(
+      React.createElement(CertificatRealisationPdf, {
+        data: { ...CERTIFICAT, dureeHeures: 391 / 60 },
+      }),
+    );
+    expect(t).toContain("6,52 heures");
+    expect(t).toContain("6 h 31");
+  });
 });
 
 describe("CertificatRealisationPdf — contenu", () => {

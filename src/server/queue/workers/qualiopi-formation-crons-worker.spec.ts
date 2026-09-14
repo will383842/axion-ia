@@ -989,7 +989,9 @@ describe("formation-crons.attestations-auto — garde évaluation finale", () =>
       .lte;
     // DELAI_EMISSION_SANS_EVALUATION_JOURS = 3 : le délai de R05 (2 j) + 1 jour.
     // Sur la même borne, R05 (07:00) ne laissait que deux heures avant le cron.
-    expect(Math.abs(limite.getTime() - (avant - 3 * 86_400_000))).toBeLessThan(60_000);
+    // 3e relecture A09 : R05 + 2 jours (4 j) garantit ≥ 24 h entre R05 et
+    // l'émission, quelle que soit l'heure de fin de session.
+    expect(Math.abs(limite.getTime() - (avant - 4 * 86_400_000))).toBeLessThan(60_000);
   });
 
   it("D2 : ne filtre plus les exclus ni les abandons — la pièce des heures suivies leur est due", async () => {

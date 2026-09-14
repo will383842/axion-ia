@@ -12,7 +12,7 @@ import {
   inscriptionsActives,
   STATUTS_SORTIS,
 } from "@/server/qualiopi/inscriptions/inscriptions-actives";
-import { minutesSuivies } from "@/server/qualiopi/evaluations/heures-suivies";
+import { aucuneHeureSuivie } from "@/server/qualiopi/evaluations/heures-suivies";
 // 🔴 2026-08-24 — la MÊME mesure que le cron, jamais une seconde requête jumelle :
 // deux prédicats qui se ressemblent finissent par diverger, et ce dépôt le paie
 // sans arrêt. Le cron en prend le compte, cette règle en mappe les lignes.
@@ -1280,6 +1280,21 @@ async function regleEvaluationAcquisManquante(now: Date): Promise<AlerteCandidat
  * balayage — ce n'est pas une régression, ce sont des envois dont on n'a jamais
  * su s'ils étaient partis.
  */
+/**
+ * 🔴 3e relecture A09 — borne basse des deux alertes d'attestation : les sessions
+ * terminées depuis au plus 90 jours. Sans elle, le premier balayage faisait
+ * remonter tout le stock historique d'un coup.
+ */
+const BORNE_BASSE_ALERTES_ATTESTATION_JOURS = 90;
+
+/** Créneaux de présence, pour la définition partagée du « 0 h » (`heures-suivies.ts`). */
+const SELECTION_CRENEAUX = {
+  dureePrevueMinutes: true,
+  dureeRealiseeMinutes: true,
+  date: true,
+  demiJournee: true,
+} as const;
+
 async function regleAttestationNonEnvoyee(now: Date): Promise<AlerteCandidate[]> {
   // 🔴 2e relecture A09 — un jour APRÈS la borne d'émission sans évaluation
   // (`attestations-auto`, 09:00). À 3 jours pile, l'alerte partait à 07:00 pour
@@ -1299,11 +1314,25 @@ async function regleAttestationNonEnvoyee(now: Date): Promise<AlerteCandidate[]>
       id: true,
       attestationGenereeAt: true,
       attestationDocumentId: true,
+      tauxPresencePct: true,
+      presences: { select: SELECTION_CRENEAUX },
       trainee: { select: { nom: true, prenom: true } },
-      session: { select: { numero: true } },
+      session: { select: { numero: true, dateFin: true } },
     },
   });
-  return enrollments.map((e) => {
+  // 🔴 3e relecture A09 — pas de double signal : un inscrit à 0 h encore dans la
+  // borne de `attestation_non_emise_automatiquement` y est DÉJÀ signalé. Au-delà
+  // de cette borne, R06 reste le seul signal.
+  const borneBasse = daysAgo(BORNE_BASSE_ALERTES_ATTESTATION_JOURS, now);
+  const candidats = enrollments.filter(
+    (e) =>
+      !(
+        e.attestationGenereeAt === null &&
+        aucuneHeureSuivie({ tauxPresencePct: e.tauxPresencePct, creneaux: e.presences }) &&
+        e.session.dateFin.getTime() >= borneBasse.getTime()
+      ),
+  );
+  return candidats.map((e) => {
     const produite = e.attestationGenereeAt !== null;
     // 🔴 2e relecture A09 — ancienne ligne « aucune » : `attestationGenereeAt`
     // posé SANS pièce (règle d'avant l'audit initial). Lui dire « EXISTE… ne la
@@ -1344,42 +1373,42 @@ async function regleAttestationNonEnvoyee(now: Date): Promise<AlerteCandidate[]>
  *     désormais — cette règle rend le refus visible ;
  *   - exclu/abandon sorti avant la création de ses créneaux : aucun taux, rien à
  *     mesurer, aucun créneau recréé après coup.
- * Bornée comme l'émission sans évaluation. Se referme quand la ligne cesse de
- * correspondre (pièce émise, présence mesurée).
+ * Bornée comme l'émission sans évaluation, et vers le bas à 90 jours.
+ *
+ * 🔴 3e relecture A09 — fermeture MANUELLE durable (`resolutionAuto: false`) :
+ * le geste prescrit (attestation établie hors logiciel, ou décision de ne rien
+ * remettre) ne change aucune colonne. Fermée à la main, elle n'est plus relevée
+ * tant que son message ne change pas (`creerOuDedup`).
  */
 async function regleAttestationNonEmiseAutomatiquement(now: Date): Promise<AlerteCandidate[]> {
   const limite = daysAgo(DELAI_EMISSION_SANS_EVALUATION_JOURS, now);
+  const borneBasse = daysAgo(BORNE_BASSE_ALERTES_ATTESTATION_JOURS, now);
   const selection = {
     id: true,
     statut: true,
     tauxPresencePct: true,
+    presences: { select: SELECTION_CRENEAUX },
     trainee: { select: { nom: true, prenom: true } },
-    session: {
-      select: {
-        numero: true,
-        dureeReelleHeures: true,
-        formation: { select: { dureeHeures: true } },
-      },
-    },
+    session: { select: { numero: true } },
   } as const;
 
   const sortiesSansTaux = await prisma.enrollment.findMany({
     where: {
-      session: { statut: "realisee", dateFin: { lte: limite } },
+      session: { statut: "realisee", dateFin: { lte: limite, gte: borneBasse } },
       attestationGenereeAt: null,
       statut: { in: [...STATUTS_SORTIS] },
       tauxPresencePct: null,
     },
     select: selection,
   });
-  // Pré-filtre large en base, décision exacte ici : c'est la MÊME fonction que
-  // le service qui dit « 0 minute » (un taux entier non nul sur une durée courte
-  // peut encore s'arrondir à 0).
-  const tauxBas = await prisma.enrollment.findMany({
+  // « 0 h » ⇒ taux mesuré à 0 % (le taux se calcule sur les mêmes créneaux) :
+  // pré-filtre exact en base, verdict par la définition PARTAGÉE — 20 minutes
+  // réelles sous un taux arrondi à 0 % ne sont pas 0 h.
+  const tauxNul = await prisma.enrollment.findMany({
     where: {
-      session: { statut: "realisee", dateFin: { lte: limite } },
+      session: { statut: "realisee", dateFin: { lte: limite, gte: borneBasse } },
       attestationGenereeAt: null,
-      tauxPresencePct: { not: null, lt: 5 },
+      tauxPresencePct: 0,
     },
     select: selection,
   });
@@ -1402,9 +1431,8 @@ async function regleAttestationNonEmiseAutomatiquement(now: Date): Promise<Alert
     cibleId: e.id,
   }));
 
-  for (const e of tauxBas) {
-    const duree = e.session.dureeReelleHeures ?? e.session.formation.dureeHeures;
-    if (minutesSuivies(e.tauxPresencePct ?? 0, duree) !== 0) continue;
+  for (const e of tauxNul) {
+    if (!aucuneHeureSuivie({ tauxPresencePct: e.tauxPresencePct, creneaux: e.presences })) continue;
     alertes.push({
       code: "attestation_non_emise_automatiquement",
       niveau: "important" as AlerteNiveau,
@@ -1428,13 +1456,20 @@ async function regleAttestationNonEmiseAutomatiquement(now: Date): Promise<Alert
  * pièce émise, et aucune règle ne comparait l'évaluation à l'attestation : le
  * stagiaire gardait une pièce que la grille contredisait — précisément le
  * recoupement de l'indicateur 11. Aucune réémission automatique : la réémission
- * forcée est un acte humain, qui referme l'alerte (`attestationGenereeAt` avance).
+ * forcée est un acte humain, qui fait disparaître le candidat
+ * (`attestationGenereeAt` avance).
+ *
+ * 🔴 3e relecture A09 — pièces ANNULÉES exclues (une annulation sans réémission
+ * n'a plus de pièce à réémettre), sessions bornées à 90 jours, et fermeture
+ * MANUELLE durable (`resolutionAuto: false`).
  */
-async function regleAttestationSansEvaluationEvalueeDepuis(_now: Date): Promise<AlerteCandidate[]> {
+async function regleAttestationSansEvaluationEvalueeDepuis(now: Date): Promise<AlerteCandidate[]> {
   const enrollments = await prisma.enrollment.findMany({
     where: {
       attestationDocumentId: { not: null },
       attestationGenereeAt: { not: null },
+      attestationDocument: { annuleeAt: null },
+      session: { dateFin: { gte: daysAgo(BORNE_BASSE_ALERTES_ATTESTATION_JOURS, now) } },
       evaluations: { some: { type: "finale" } },
     },
     select: {

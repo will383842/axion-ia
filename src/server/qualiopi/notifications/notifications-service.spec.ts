@@ -677,6 +677,44 @@ describe("envoyerAttestationDisponible", () => {
     expect((call[3] as Record<string, unknown>)["heuresSuiviesSeulement"]).toBe(true);
   });
 
+  it("🔴 0 minute réelle : objet et libellé « aucune heure suivie », sans « partielle »", async () => {
+    // 3e relecture A09 : la pièce à 0 h s'annonçait « attestation de formation
+    // partielle », et l'e-mail testait `tauxPresencePct === 0` pendant que le
+    // service lisait les minutes.
+    mockPrisma.enrollment.findUnique.mockResolvedValue({
+      ...fakeEnrollmentBase,
+      statut: "presente",
+      tauxPresencePct: 0,
+      presences: [],
+      attestationResultat: "partielle",
+    });
+    await envoyerAttestationDisponible(ENROLLMENT_ID);
+    const payload = (mockEnqueueEmail.mock.calls[0] as unknown[])[3] as Record<string, unknown>;
+    expect(payload["typeDocument"]).toBe("attestation de fin de formation (aucune heure suivie)");
+    expect(payload["heuresSuiviesSeulement"]).toBe(true);
+  });
+
+  it("🔴 contre-témoin : taux arrondi à 0 % mais 20 minutes RÉELLES — ce n'est pas 0 h", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue({
+      ...fakeEnrollmentBase,
+      statut: "presente",
+      tauxPresencePct: 0,
+      presences: [
+        {
+          dureePrevueMinutes: 4200,
+          dureeRealiseeMinutes: 20,
+          date: new Date("2026-06-01"),
+          demiJournee: "journee",
+        },
+      ],
+      attestationResultat: "partielle",
+    });
+    await envoyerAttestationDisponible(ENROLLMENT_ID);
+    const payload = (mockEnqueueEmail.mock.calls[0] as unknown[])[3] as Record<string, unknown>;
+    expect(payload["typeDocument"]).toBe("attestation de formation partielle");
+    expect(payload["heuresSuiviesSeulement"]).not.toBe(true);
+  });
+
   it("contre-témoin : un inscrit actif garde l'e-mail ordinaire", async () => {
     mockPrisma.enrollment.findUnique.mockResolvedValue({
       ...fakeEnrollmentBase,

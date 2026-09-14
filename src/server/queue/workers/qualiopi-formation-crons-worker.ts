@@ -451,7 +451,7 @@ async function handleAttestationsAuto(): Promise<void> {
   // 🔴 Décision Will D1 (2026-09-14, audit initial, X-documents-pdf-04) — la
   // garde devient une ATTENTE BORNÉE. L.6353-1 al. 2 doit la pièce au stagiaire
   // à l'issue de la formation, évaluation ou non : passé le délai que R05 laisse
-  // pour saisir l'évaluation, PLUS UN JOUR (`DELAI_EMISSION_SANS_EVALUATION_JOURS`,
+  // pour saisir l'évaluation, PLUS DEUX JOURS (`DELAI_EMISSION_SANS_EVALUATION_JOURS`,
   // dérivée du délai de R05 — 2e relecture A09 : sur la même borne, R05 à 07:00
   // ne laissait que deux heures avant ce cron de 09:00), la pièce part et
   // imprime « Évaluation des acquis non réalisée ».

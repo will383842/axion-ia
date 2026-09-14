@@ -733,25 +733,34 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
    * 🔴 2e relecture A09 (audit initial 2026-09-14) — ce que le cron n'émet PAS.
    * 0 minute suivie (l'émission automatique certifiait un suivi qui n'avait pas
    * eu lieu), ou exclu/abandon sorti avant ses créneaux (aucun taux, rien à
-   * mesurer). Levée du balayage, elle se referme dès que la ligne cesse de
-   * correspondre (pièce émise, présence mesurée).
+   * mesurer).
+   *
+   * 🔴 3e relecture A09 — fermeture MANUELLE durable : le geste prescrit
+   * (attestation établie hors logiciel, ou décision de ne rien remettre) ne
+   * change aucune colonne. En `resolutionAuto: true`, une fermeture manuelle
+   * était recréée au balayage suivant.
    */
   attestation_non_emise_automatiquement: {
     niveau: "important",
     titre: "Attestation non émise automatiquement",
-    resolutionAuto: true,
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "Audit initial 2026-09-14 — le geste qui la solde (attestation établie hors logiciel, ou décision écrite de ne rien remettre à un inscrit à 0 h) ne change aucune colonne : elle se ferme à la main, et ne revient pas tant que la situation est la même.",
     guichet: "administratif",
   },
   /**
    * 🔴 2e relecture A09 — une attestation émise « Évaluation des acquis non
    * réalisée », puis une évaluation finale saisie : la pièce que détient le
-   * stagiaire est contredite par la grille. Aucune réémission automatique ; se
-   * referme quand l'attestation est réémise.
+   * stagiaire est contredite par la grille. Aucune réémission automatique.
+   *
+   * 🔴 3e relecture A09 — fermeture MANUELLE durable, comme la précédente.
    */
   attestation_sans_evaluation_evaluee_depuis: {
     niveau: "important",
     titre: "Attestation émise sans évaluation, évaluation saisie depuis",
-    resolutionAuto: true,
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "Audit initial 2026-09-14 — l'organisme peut décider de ne pas réémettre (pièce annulée, remise hors logiciel) : ce choix ne change aucune colonne, l'alerte se ferme à la main et ne revient pas tant que la situation est la même.",
     guichet: "administratif",
   },
 

@@ -17,13 +17,20 @@
 export const DELAI_EVALUATION_FINALE_JOURS = 2;
 
 /**
- * Borne de l'émission AUTOMATIQUE sans évaluation finale : un jour APRÈS le délai
- * de R05.
+ * Borne de l'émission AUTOMATIQUE sans évaluation finale : DEUX jours après le
+ * délai de R05.
  *
- * 🔴 2e relecture A09 (audit initial 2026-09-14). Sur la même borne, R05 tourne
- * à 07:00 UTC et `attestations-auto` à 09:00 UTC : l'alerte qui réclame
- * l'évaluation ne laissait que deux heures avant l'émission « non réalisée » —
- * et se levait même APRÈS elle quand `dateFin` tombait entre 07:00 et 09:00.
+ * 🔴 2e relecture A09 (audit initial 2026-09-14). Sur la même borne que R05, R05
+ * (07:00 UTC) ne laissait que deux heures avant `attestations-auto` (09:00 UTC).
+ *
+ * 🔴 3e relecture A09. Un seul jour de plus ne suffisait pas : pour une fin de
+ * session entre 07:00 et 09:00 UTC, R05 se levait au passage de 07:00 du
+ * lendemain de sa borne, et l'émission partait deux heures plus tard. Le calcul
+ * qui ne dépend d'aucun horaire : R05 tourne chaque jour, donc elle se lève au
+ * plus tard 24 h après `dateFin + délai R05`. Avec une borne d'émission à
+ * `dateFin + délai R05 + 2 jours`, l'émission part au plus tôt 24 h après la
+ * dernière levée possible de R05 — quelle que soit l'heure de fin (vérifié sur
+ * les horaires réels lus dans `queues.ts`, par `attester-acte-habilite.spec.ts`).
  * Dérivée, jamais recopiée : R05 reste la référence.
  */
-export const DELAI_EMISSION_SANS_EVALUATION_JOURS = DELAI_EVALUATION_FINALE_JOURS + 1;
+export const DELAI_EMISSION_SANS_EVALUATION_JOURS = DELAI_EVALUATION_FINALE_JOURS + 2;

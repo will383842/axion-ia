@@ -29,6 +29,7 @@
 
 import React from "react";
 import { estInscriptionActive } from "@/server/qualiopi/inscriptions/inscriptions-actives";
+import { minutesSuiviesPresence } from "@/server/qualiopi/evaluations/heures-suivies";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
@@ -615,6 +616,15 @@ export async function genererCertificatRealisationAction(input: {
           },
         },
       },
+      // 🔴 3e relecture A09 — minutes RÉELLES de présence, lues comme l'attestation.
+      presences: {
+        select: {
+          dureePrevueMinutes: true,
+          dureeRealiseeMinutes: true,
+          date: true,
+          demiJournee: true,
+        },
+      },
     },
   });
   if (!enrollment) return { error: "Inscription introuvable" };
@@ -751,7 +761,15 @@ export async function genererCertificatRealisationAction(input: {
   const baseDuree = session.dureeReelleHeures ?? dureePrevue;
   let dureeHeures = baseDuree;
   if (enrollment.tauxPresencePct !== null) {
-    dureeHeures = Math.round((enrollment.tauxPresencePct * baseDuree) / 100);
+    // 🔴 3e relecture A09 — MÊME calcul que l'attestation du même stagiaire
+    // (`heures-suivies.ts`) : minutes réelles de présence, sinon taux, sans
+    // arrondi à l'heure. 93 % de 7 h donnait « 7,00 » ici et « 6 h 31 » sur
+    // l'attestation : la divergence que le commentaire #2 ci-dessus refuse.
+    dureeHeures =
+      minutesSuiviesPresence(
+        { tauxPresencePct: enrollment.tauxPresencePct, creneaux: enrollment.presences },
+        baseDuree,
+      ) / 60;
   }
 
   const dirigeant = await getQualiopiConfig("dirigeant_nom");

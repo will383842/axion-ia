@@ -51,7 +51,10 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
   getQualiopiConfig: vi.fn().mockResolvedValue(80),
 }));
 
-vi.mock("@/server/qualiopi/presence/taux", () => ({
+// `computeTauxPresence` reste RÉEL : les minutes réelles de présence (3e relecture
+// A09) s'agrègent avec lui. Seul le classifieur est piloté par les tests.
+vi.mock("@/server/qualiopi/presence/taux", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/server/qualiopi/presence/taux")>()),
   classifierPresence: vi.fn().mockReturnValue("complete"),
 }));
 
@@ -374,7 +377,10 @@ describe("genererAttestationPourEnrollment", () => {
     expect(mockPrisma.enrollment.update).not.toHaveBeenCalled();
   });
 
-  it("🔴 0 h par ARRONDI (taux non nul, 0 minute) : même refus automatique", async () => {
+  it("🔴 taux NON NUL arrondi à 0 minute : ce n'est pas « 0 h » — la pièce part", async () => {
+    // 3e relecture A09 : « n'a suivi aucune heure » exige des minutes réelles (ou
+    // un taux) STRICTEMENT nulles. Un suivi, même bref, ne s'imprime jamais « 0 h ».
+    mockClassifier.mockReturnValue("aucune");
     mockPrisma.enrollment.findUnique.mockResolvedValue(
       makeEnrollment({
         tauxPresencePct: 1,
@@ -384,16 +390,70 @@ describe("genererAttestationPourEnrollment", () => {
 
     const result = await genererAttestationPourEnrollment("enroll-arrondi", { automatique: true });
 
-    expect(result).toEqual({ resultat: "aucune", documentId: null, raison: "zero_heure_suivie" });
-    expect(mockGenDoc).not.toHaveBeenCalled();
+    expect(result).toEqual({ resultat: "partielle", documentId: "doc-uuid-1" });
   });
 
-  it("0 h suivie, émission MANUELLE : la pièce sort — le texte exact est garanti par le gabarit", async () => {
+  it("🔴 minutes RÉELLES : taux arrondi à 0 % mais 20 min suivies sur 70 h — pièce émise, 20 min", async () => {
+    mockClassifier.mockReturnValue("aucune");
+    mockPrisma.enrollment.findUnique.mockResolvedValue(
+      makeEnrollment({
+        tauxPresencePct: 0,
+        session: { ...makeEnrollment().session, dureeReelleHeures: 70 },
+        presences: [
+          {
+            dureePrevueMinutes: 4200,
+            dureeRealiseeMinutes: 20,
+            date: new Date("2026-06-01"),
+            demiJournee: "journee",
+          },
+        ],
+      }),
+    );
+
+    const result = await genererAttestationPourEnrollment("enroll-20min", { automatique: true });
+
+    expect(result).toEqual({ resultat: "partielle", documentId: "doc-uuid-1" });
+    const docCall = mockGenDoc.mock.calls[0]![0] as {
+      buildElement: (numero: string) => { props: { data: Record<string, unknown> } };
+    };
+    const resultats = docCall.buildElement("AXI-ATT-2026-021").props.data["resultats"] as Record<
+      string,
+      unknown
+    >;
+    expect(resultats["heuresSuivies"]).toBe(20 / 60);
+  });
+
+  it("🔴 concordance avec le certificat : 93 % de 7 h = 391 minutes", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(
+      makeEnrollment({
+        tauxPresencePct: 93,
+        session: { ...makeEnrollment().session, dureeReelleHeures: 7 },
+      }),
+    );
+
+    await genererAttestationPourEnrollment("enroll-93");
+
+    const docCall = mockGenDoc.mock.calls[0]![0] as {
+      buildElement: (numero: string) => { props: { data: Record<string, unknown> } };
+    };
+    const resultats = docCall.buildElement("AXI-ATT-2026-022").props.data["resultats"] as Record<
+      string,
+      unknown
+    >;
+    expect(resultats["heuresSuivies"]).toBe(391 / 60);
+  });
+
+  it("0 h suivie, émission MANUELLE : la pièce sort — et elle est MARQUÉE pour la page de vérification", async () => {
     mockPrisma.enrollment.findUnique.mockResolvedValue(makeEnrollment({ tauxPresencePct: 0 }));
 
     const result = await genererAttestationPourEnrollment("enroll-0h-manuel");
 
     expect(result).toEqual({ resultat: "partielle", documentId: "doc-uuid-1" });
+    // 3e relecture A09 : la page publique du QR doit dire « aucune heure
+    // suivie », pas « suivi partiel » — sans nouveau type de document.
+    expect(mockGenDoc).toHaveBeenCalledWith(
+      expect.objectContaining({ metadata: { aucuneHeureSuivie: true } }),
+    );
   });
 
   it("🔴 les heures suivies sont calculées à la MINUTE, pas arrondies à l'heure", async () => {

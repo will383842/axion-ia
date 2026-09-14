@@ -12,9 +12,62 @@
  * suivies » : elles se comptent en minutes et s'impriment en heures ET minutes.
  */
 
-/** Minutes réellement suivies, arrondies à la minute. */
+import { computeTauxPresence } from "@/server/qualiopi/presence/taux";
+
+/** Minutes suivies reconstituées depuis un taux (repli sans créneau : ±0,5 % de la durée). */
 export function minutesSuivies(tauxPct: number, dureeHeures: number): number {
   return Math.round((tauxPct * dureeHeures * 60) / 100);
+}
+
+/** Un créneau de présence, tel que le lit `computeTauxPresence`. */
+export interface CreneauMesure {
+  dureePrevueMinutes: number;
+  dureeRealiseeMinutes: number;
+  date?: Date | string;
+  demiJournee?: "matin" | "apres_midi" | "journee";
+}
+
+/** Ce qu'on sait de la présence d'une inscription. */
+export interface PresenceMesuree {
+  tauxPresencePct: number | null | undefined;
+  creneaux?: ReadonlyArray<CreneauMesure> | null | undefined;
+}
+
+/**
+ * 🔴 3e relecture A09 — la SEULE définition du « 0 h », lue par le service
+ * d'attestation, le certificat de réalisation, l'e-mail et les alertes.
+ *
+ * Minutes RÉELLES de présence strictement nulles quand des créneaux existent ;
+ * sans créneau, taux strictement nul. Le taux entier seul ne suffit pas : 20
+ * minutes sur 70 h l'arrondissent à 0 %, et la pièce aurait dit « n'a suivi
+ * aucune heure ». Indépendante de la durée : snapshot légal ou lecture live, le
+ * verdict est le même.
+ */
+export function aucuneHeureSuivie(p: PresenceMesuree): boolean {
+  const creneaux = p.creneaux ?? [];
+  if (creneaux.length > 0) return computeTauxPresence([...creneaux]).minutesRealisees === 0;
+  return p.tauxPresencePct === 0;
+}
+
+/**
+ * 🔴 3e relecture A09 — minutes suivies à imprimer, MÊME calcul pour
+ * l'attestation et le certificat de réalisation d'un même stagiaire.
+ *
+ * Sur les minutes réelles quand des créneaux existent (réalisé / prévu, appliqué
+ * à la durée de référence), sinon sur le taux. Un suivi non nul ne s'imprime
+ * jamais « 0 h » : au moins une minute. À n'appeler qu'avec un taux MESURÉ.
+ */
+export function minutesSuiviesPresence(p: PresenceMesuree, dureeHeures: number): number {
+  if (aucuneHeureSuivie(p)) return 0;
+  const creneaux = p.creneaux ?? [];
+  let minutes = minutesSuivies(p.tauxPresencePct ?? 0, dureeHeures);
+  if (creneaux.length > 0) {
+    const { minutesRealisees, minutesPrevues } = computeTauxPresence([...creneaux]);
+    if (minutesPrevues > 0) {
+      minutes = Math.round((minutesRealisees / minutesPrevues) * dureeHeures * 60);
+    }
+  }
+  return Math.max(1, minutes);
 }
 
 /** « 6 h 30 », « 7 h », « 0 h » — jamais « 6,5 h ». */
