@@ -37,9 +37,14 @@ vi.mock("@/server/qualiopi/emargement/feuille-pdf", () => ({
   LIBELLE_DEMI: { matin: "Matin", apres_midi: "Après-midi", journee: "Journée" },
 }));
 
+// `refusEmissionLieu` (I17-01, #1086) est appelé AVANT tout rendu : sans lui,
+// le mock levait « No export is defined » et les cinq tests rougissaient sur
+// `main` après la fusion conjointe de #1086 et #1089.
+const refusLieuMock = vi.fn((_session: unknown): string | null => null);
 vi.mock("@/server/qualiopi/lieu/resolve-lieu-document", () => ({
   LIEU_DOCUMENT_SELECT: {},
   resolveLieuDocument: () => "Paris",
+  refusEmissionLieu: (session: unknown) => refusLieuMock(session),
 }));
 
 // Le gabarit réel est testé dans `templates/__tests__/` : ici, on lit ce que
@@ -155,6 +160,16 @@ describe("🔴 rendreTirageEmargementAJour", () => {
     const res = await rendreTirageEmargementAJour("ses-1", MAINTENANT);
 
     expect(res.ok).toBe(false);
+    expect(rendus).toHaveLength(0);
+  });
+
+  it("🔴 I17-01 — session en présentiel sans lieu : le tirage est REFUSÉ avant tout rendu, avec le motif", async () => {
+    refusLieuMock.mockReturnValueOnce("Lieu de la session non renseigné");
+
+    const res = await rendreTirageEmargementAJour("ses-1", MAINTENANT);
+
+    expect(res).toMatchObject({ ok: false, message: "Lieu de la session non renseigné" });
+    expect(feuilleMock).not.toHaveBeenCalled();
     expect(rendus).toHaveLength(0);
   });
 });
