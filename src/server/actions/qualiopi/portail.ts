@@ -47,6 +47,11 @@ import { encryptPii, decryptPii } from "@/lib/pii-crypto";
 import { sendTelegram } from "@/lib/telegram";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { construireAlerteBesoinAdaptation } from "@/server/qualiopi/alertes/besoin-adaptation";
+import { journaliserDeclarationBesoin } from "@/server/qualiopi/adaptation/journal-declaration";
+import {
+  CLE_BESOIN_ADAPTATION_REPONDU,
+  MESSAGE_BESOIN_ADAPTATION_SANS_REPONSE,
+} from "@/server/qualiopi/positionnement/reponse-explicite";
 import { SITE_URL } from "@/lib/site-url";
 
 type ActionResult<T> = { data: T } | { error: string };
@@ -195,10 +200,22 @@ export async function soumettreSatisfactionPortailAction(input: {
   // A-01 (IDOR) : vérifier que le questionnaire appartient bien au stagiaire authentifié.
   const questionnaire = await prisma.questionnaire.findUnique({
     where: { id: v.questionnaireId },
-    select: { enrollment: { select: { traineeId: true } } },
+    select: { type: true, enrollment: { select: { traineeId: true } } },
   });
   if (!questionnaire || questionnaire.enrollment.traineeId !== authResult.traineeId) {
     return { error: "Questionnaire introuvable ou non autorisé" };
+  }
+
+  // 🔴 D6 (relecture #1095) — le oui/non du besoin d'adaptation se vérifie AUSSI
+  // ici : un formulaire resté en cache enverrait `false` pour une question jamais
+  // lue. Le marqueur est retiré avant l'écriture (`reponse-explicite.ts`).
+  const { [CLE_BESOIN_ADAPTATION_REPONDU]: marqueurReponseExplicite, ...reponsesRecues } =
+    v.reponses;
+  if (
+    questionnaire.type === "positionnement" &&
+    (marqueurReponseExplicite !== true || typeof reponsesRecues["besoinAdaptation"] !== "boolean")
+  ) {
+    return { error: MESSAGE_BESOIN_ADAPTATION_SANS_REPONSE };
   }
 
   // ── 🔴 Besoin d'adaptation : le SORTIR du JSON avant de l'écrire ──────────
@@ -231,13 +248,13 @@ export async function soumettreSatisfactionPortailAction(input: {
   // L'extraction se fait AVANT `soumettreReponses` : une fois la valeur écrite
   // dans la colonne JSON, elle y est en clair, et l'en retirer après coup
   // laisserait une trace dans les sauvegardes.
-  const besoinAdaptation = v.reponses["besoinAdaptation"] === true;
-  const detailBrut = v.reponses["detailAdaptation"];
+  const besoinAdaptation = reponsesRecues["besoinAdaptation"] === true;
+  const detailBrut = reponsesRecues["detailAdaptation"];
   const detailAdaptation = typeof detailBrut === "string" ? detailBrut.trim() : "";
   // Le booléen RESTE dans les réponses : il dit ce qui a été répondu, et le
   // dépôt stocke déjà `Trainee.situationHandicap` en clair. Seul le DÉTAIL —
   // le texte libre, celui qui décrit la situation — est retiré et chiffré.
-  const { detailAdaptation: _retire, ...reponsesSansDetail } = v.reponses;
+  const { detailAdaptation: _retire, ...reponsesSansDetail } = reponsesRecues;
 
   const result = await soumettreReponses({
     questionnaireId: v.questionnaireId,
@@ -293,6 +310,9 @@ export async function soumettreSatisfactionPortailAction(input: {
  * de session, dossier d'audit, espace formateur.
  */
 async function signalerBesoinAdaptation(traineeId: string, detail: string): Promise<void> {
+  // Un SEUL instant pour le journal et pour le message de l'alerte : ils doivent
+  // désigner la même déclaration.
+  const declareLe = new Date();
   const identite = { id: true, prenom: true, nom: true } as const;
   // ⚠️ Un détail VIDE n'écrase pas un détail existant. Le bénéficiaire peut
   // répondre « oui » sans rien préciser au positionnement alors qu'il a déjà
@@ -316,7 +336,15 @@ async function signalerBesoinAdaptation(traineeId: string, detail: string): Prom
   // FIGÉ en base à sa création et se recopie en pastille et en notification.
   // `construireAlerteBesoinAdaptation` ne reçoit d'ailleurs PAS le détail en
   // paramètre — la fuite est hors de portée, pas seulement évitée.
-  const alerte = construireAlerteBesoinAdaptation(trainee);
+  //
+  // 🔴 La DATE de la déclaration est journalisée AVANT l'alerte : c'est elle qui
+  // rouvre le circuit (ind. 10) si une réponse avait déjà été consignée.
+  await journaliserDeclarationBesoin({
+    traineeId: trainee.id,
+    origine: "portail_positionnement",
+    declareLe,
+  });
+  const alerte = construireAlerteBesoinAdaptation({ ...trainee, declareLe });
   await creerOuDedup({
     code: "besoin_adaptation_declare",
     niveau: "important",
@@ -357,6 +385,7 @@ export async function declarerHandicapAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
 
   const handicapDetailsChiffre = encryptPii(parsed.data.besoin);
+  const declareLe = new Date();
 
   const trainee = await prisma.trainee.update({
     where: { id: authResult.traineeId },
@@ -389,13 +418,24 @@ export async function declarerHandicapAction(input: {
   // n'est pas une alerte : c'est un pari sur l'attention de quelqu'un.
   //
   // `creerOuDedup` dédoublonne sur (code, cibleId) tant que l'alerte est
-  // ouverte : re-déclarer ne fabrique donc pas une seconde ligne. Et comme le
-  // message ne porte que l'identité — jamais le besoin —, il ne peut pas se
-  // périmer entre-temps (le texte d'une alerte est figé à sa création).
+  // ouverte : re-déclarer ne fabrique donc pas une seconde ligne. Le message
+  // porte l'identité et l'INSTANT de la déclaration — jamais le besoin.
   //
+  // 🔴 2026-09-15 (relecture #1095) — sans l'instant, une alerte RÉSOLUE au même
+  // message écartait toute nouvelle déclaration de la personne : un vrai besoin
+  // déclaré ici après une réponse « aucune adaptation nécessaire » ne levait
+  // rien. La date est aussi JOURNALISÉE : c'est elle qui rouvre l'indicateur 10
+  // (`journal-declaration.ts`). Attendue, contrairement à l'alerte : elle est la
+  // trace de la déclaration, pas une notification — et elle est fail-soft.
+  await journaliserDeclarationBesoin({
+    traineeId: trainee.id,
+    origine: "portail_mon_compte",
+    declareLe,
+  });
+
   // Fire-and-forget comme le reste : la déclaration du bénéficiaire est le
   // geste important, une panne d'alerte ne doit pas la faire échouer.
-  const alerte = construireAlerteBesoinAdaptation(trainee);
+  const alerte = construireAlerteBesoinAdaptation({ ...trainee, declareLe });
   void creerOuDedup({
     code: "besoin_adaptation_declare",
     niveau: "important",

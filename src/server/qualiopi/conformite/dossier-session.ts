@@ -54,8 +54,11 @@ import { construireFeuillePdf } from "@/server/qualiopi/emargement/feuille-pdf";
 import { rendreTirageEmargementAJour } from "@/server/qualiopi/documents/emargement-tirage";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
 import { documentJointAuDossierAudit, lignePiecesHorsDossier } from "./hors-dossier-audit";
-import { besoinAdaptationDeclare } from "@/server/qualiopi/adaptation/reponse-organisme";
-import { datesConsignationAdaptation } from "@/server/qualiopi/adaptation/journal-consignation";
+import {
+  HORODATAGE_CIRCUIT_VIDE,
+  besoinAdaptationDeclare,
+} from "@/server/qualiopi/adaptation/reponse-organisme";
+import { lireCircuitAdaptation } from "@/server/qualiopi/adaptation/journal-consignation";
 import { sectionIndicateur10 } from "@/server/qualiopi/adaptation/dossier-adaptation";
 
 export interface DossierSessionResult {
@@ -134,11 +137,13 @@ export async function genererDossierSessionZip(
           id: true,
           tauxPresencePct: true,
           // Ind. 10 — la réponse de l'organisme et le BOOLÉEN du besoin déclaré.
-          // Le détail chiffré n'est pas chargé.
+          // Le détail chiffré n'est pas chargé. `traineeId` et `reponduAt` DATENT
+          // la dernière déclaration (circuit rouvert par une déclaration nouvelle).
+          traineeId: true,
           adaptationsRealisees: true,
           questionnaires: {
             where: { type: "positionnement", reponduAt: { not: null } },
-            select: { reponses: true },
+            select: { reponses: true, reponduAt: true },
           },
           trainee: {
             select: { nom: true, prenom: true, deletedAt: true, situationHandicap: true },
@@ -531,7 +536,17 @@ export async function genererDossierSessionZip(
   // l'écran de session et l'alerte ; date lue au journal de l'unique écrivain.
   // Le détail déclaré (santé) n'est jamais chargé.
   try {
-    const consigneesLe = await datesConsignationAdaptation(session.enrollments.map((e) => e.id));
+    const circuit = await lireCircuitAdaptation(
+      session.enrollments.map((e) => ({
+        id: e.id,
+        traineeId: e.traineeId,
+        finSession: session.dateFin ?? null,
+        positionnements: (e.questionnaires ?? []).map((q) => ({
+          reponses: q.reponses,
+          reponduAt: q.reponduAt ?? null,
+        })),
+      })),
+    );
     const section = sectionIndicateur10(
       session.enrollments.map((e) => ({
         stagiaire:
@@ -545,7 +560,7 @@ export async function genererDossierSessionZip(
           reponsesPositionnements: (e.questionnaires ?? []).map((q) => q.reponses),
         }),
         adaptationsRealisees: e.adaptationsRealisees ?? null,
-        consigneeLe: consigneesLe.get(e.id) ?? null,
+        horodatage: circuit.get(e.id) ?? HORODATAGE_CIRCUIT_VIDE,
       })),
       session.dateDebut,
     );

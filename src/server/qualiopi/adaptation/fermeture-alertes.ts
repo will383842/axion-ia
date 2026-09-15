@@ -26,9 +26,13 @@ import {
   CODE_ALERTE_BESOIN_DECLARE,
   CODE_ALERTE_REPONSE_NON_CONSIGNEE,
   FENETRE_REPONSE_ADAPTATION_APRES_FIN_JOURS,
+  HORODATAGE_CIRCUIT_VIDE,
   besoinAdaptationDeclare,
+  etatReponseAdaptation,
   whereBesoinAdaptationDeclare,
+  type HorodatageCircuitAdaptation,
 } from "./reponse-organisme";
+import { lireCircuitAdaptation } from "./journal-consignation";
 
 export interface FermetureAlertesAdaptation {
   /** Alertes « réponse non consignée » fermées pour cette inscription. */
@@ -61,28 +65,53 @@ export async function fermerAlertesAdaptationConsignee(input: {
   const borne = new Date(
     now.getTime() - FENETRE_REPONSE_ADAPTATION_APRES_FIN_JOURS * 24 * 60 * 60 * 1000,
   );
+  //
+  // 🔴 2026-09-15 (relecture #1095) — « sans réponse » se lisait `adaptationsRealisees:
+  // null`. Une autre inscription dont la réponse PRÉCÈDE une nouvelle déclaration
+  // attend pourtant la sienne : même prédicat, mêmes dates que la règle balayée.
   const autres = await prisma.enrollment.findMany({
     where: {
       traineeId: input.traineeId,
       id: { not: input.enrollmentId },
-      adaptationsRealisees: null,
       ...inscriptionsActives(),
       session: { statut: { notIn: STATUTS_SESSION_SANS_PREUVE }, dateFin: { gte: borne } },
       ...whereBesoinAdaptationDeclare(),
     },
     select: {
+      id: true,
+      adaptationsRealisees: true,
+      session: { select: { dateFin: true } },
       trainee: { select: { situationHandicap: true } },
       questionnaires: {
         where: { type: "positionnement", reponduAt: { not: null } },
-        select: { reponses: true },
+        select: { reponses: true, reponduAt: true },
       },
     },
   });
-  const resteEnAttente = autres.some((e) =>
+  const aBesoin = autres.filter((e) =>
     besoinAdaptationDeclare({
       situationHandicap: e.trainee.situationHandicap,
       reponsesPositionnements: e.questionnaires.map((q) => q.reponses),
     }),
+  );
+  const circuit =
+    aBesoin.length === 0
+      ? new Map<string, HorodatageCircuitAdaptation>()
+      : await lireCircuitAdaptation(
+          aBesoin.map((e) => ({
+            id: e.id,
+            traineeId: input.traineeId,
+            finSession: e.session.dateFin,
+            positionnements: e.questionnaires,
+          })),
+        );
+  const resteEnAttente = aBesoin.some(
+    (e) =>
+      etatReponseAdaptation(
+        true,
+        e.adaptationsRealisees,
+        circuit.get(e.id) ?? HORODATAGE_CIRCUIT_VIDE,
+      ) === "a_consigner",
   );
   if (resteEnAttente) return { reponseNonConsignee, besoinDeclare: 0 };
 

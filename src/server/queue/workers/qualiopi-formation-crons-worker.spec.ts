@@ -1682,6 +1682,7 @@ describe("handleRappelJ7 — la convocation doit être partie depuis ≥ 24 h", 
     mockPrisma.trainingSession.findMany.mockResolvedValue([
       {
         id: "sess-frais",
+        dateDebut: new Date(Date.now() + 3 * 24 * HEURE_MS),
         enrollments: [{ convocationEnvoyeeAt: new Date(Date.now() - 1 * HEURE_MS) }],
       },
     ]);
@@ -1697,6 +1698,7 @@ describe("handleRappelJ7 — la convocation doit être partie depuis ≥ 24 h", 
     mockPrisma.trainingSession.findMany.mockResolvedValue([
       {
         id: "sess-mur",
+        dateDebut: new Date(Date.now() + 3 * 24 * HEURE_MS),
         enrollments: [{ convocationEnvoyeeAt: new Date(Date.now() - 25 * HEURE_MS) }],
       },
     ]);
@@ -1712,6 +1714,7 @@ describe("handleRappelJ7 — la convocation doit être partie depuis ≥ 24 h", 
     mockPrisma.trainingSession.findMany.mockResolvedValue([
       {
         id: "sess-non-convoquee",
+        dateDebut: new Date(Date.now() + 3 * 24 * HEURE_MS),
         enrollments: [
           { convocationEnvoyeeAt: new Date(Date.now() - 25 * HEURE_MS) },
           { convocationEnvoyeeAt: null },
@@ -1722,6 +1725,26 @@ describe("handleRappelJ7 — la convocation doit être partie depuis ≥ 24 h", 
     await lancer();
 
     expect(mockEnvoyerRappelJ7).not.toHaveBeenCalled();
+  });
+
+  it("🔴 la décision passe par `dateDebut` : une session déjà commencée ne part pas", async () => {
+    // Le prédicat est partagé avec la règle d'alerte (`rappelJ7EnvoyableA`) :
+    // sans `dateDebut` sélectionné, il ne pourrait rien affirmer.
+    mockPrisma.trainingSession.findMany.mockResolvedValue([
+      {
+        id: "sess-commencee",
+        dateDebut: new Date(Date.now() - 1 * HEURE_MS),
+        enrollments: [{ convocationEnvoyeeAt: new Date(Date.now() - 48 * HEURE_MS) }],
+      },
+    ]);
+
+    await lancer();
+
+    expect(mockEnvoyerRappelJ7).not.toHaveBeenCalled();
+    const args = mockPrisma.trainingSession.findMany.mock.calls[0]![0] as {
+      select: { dateDebut?: boolean };
+    };
+    expect(args.select.dateDebut).toBe(true);
   });
 });
 

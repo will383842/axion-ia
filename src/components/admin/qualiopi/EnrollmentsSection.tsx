@@ -19,9 +19,12 @@ import { useRouter } from "next/navigation";
 import { GenererPortailAccesButton } from "@/components/admin/qualiopi/GenererPortailAccesButton";
 import {
   REPONSE_AUCUNE_ADAPTATION,
-  consigneeAvantDebut,
+  decrireDateConsignation,
   etatReponseAdaptation,
   estReponseAucuneAdaptation,
+  lireHorodatageSerialise,
+  reponseAnterieureALaDerniereDeclaration,
+  type HorodatageCircuitSerialise,
 } from "@/server/qualiopi/adaptation/reponse-organisme";
 import { formaterInstantParis } from "@/server/qualiopi/positionnement/lecture-positionnement";
 
@@ -59,8 +62,12 @@ export interface EnrollmentSerialized {
    * Un booléen, jamais le contenu : c'est une donnée de santé.
    */
   besoinAdaptationDeclare?: boolean;
-  /** Depuis quand la réponse actuelle est consignée (journal), ISO — null si non tracé. */
-  adaptationsConsigneesLe?: string | null;
+  /**
+   * Dates du circuit (ISO) : première et dernière écriture de la réponse, et
+   * dernière déclaration du besoin. Une réponse antérieure à la dernière
+   * déclaration ne la couvre pas — la colonne repasse « à consigner ».
+   */
+  circuitAdaptation?: HorodatageCircuitSerialise;
   /** Date de sortie du dispositif (abandon / exclusion), ISO — null si active. */
   sortieAt: string | null;
   /** Motif de la sortie — null si active. */
@@ -275,14 +282,22 @@ function EnrollmentRow({
 
   // Ind. 10 — l'état de la RÉPONSE de l'organisme, lu au même prédicat que
   // l'alerte et le moteur de conformité.
+  const horodatage = lireHorodatageSerialise(enrollment.circuitAdaptation);
   const etatAdaptation = etatReponseAdaptation(
     enrollment.besoinAdaptationDeclare === true,
     enrollment.adaptationsRealisees,
+    horodatage,
   );
-  const consigneeLe =
-    enrollment.adaptationsConsigneesLe !== undefined && enrollment.adaptationsConsigneesLe !== null
-      ? new Date(enrollment.adaptationsConsigneesLe)
-      : null;
+  // 🔴 Une réponse est consignée, mais une déclaration l'a SUIVIE : elle reste
+  // affichée (trace) et se RECONSIGNE — modifiée, ou confirmée telle quelle.
+  // Sans ce cas, « Enregistrer » restait grisé tant que le texte n'avait pas
+  // changé : l'organisme ne pouvait pas confirmer une réponse toujours juste.
+  const reponseRouverte =
+    etatAdaptation === "a_consigner" &&
+    reponseAnterieureALaDerniereDeclaration(enrollment.adaptationsRealisees, horodatage);
+  const texteEstAucuneAdaptation =
+    adaptText.trim() === "" || adaptText.trim() === REPONSE_AUCUNE_ADAPTATION;
+  const debutSessionDate = debutSession !== undefined ? new Date(debutSession) : null;
 
   const tdCls =
     "px-[var(--space-admin-3)] py-[var(--space-admin-3)] align-top text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]";
@@ -413,11 +428,23 @@ function EnrollmentRow({
             <p className="text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-warning)]">
               Besoin d&apos;adaptation déclaré — réponse à consigner
             </p>
+            {reponseRouverte && (
+              <p className="mt-0.5 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)]">
+                {`Nouvelle déclaration${
+                  horodatage.derniereDeclarationLe !== null
+                    ? ` le ${formaterInstantParis(horodatage.derniereDeclarationLe)}`
+                    : ""
+                }, postérieure à la réponse ci-dessous (${decrireDateConsignation(
+                  horodatage,
+                  debutSessionDate,
+                )}). Cette réponse est conservée, mais elle ne couvre pas la nouvelle déclaration : reconsignez-la, modifiée ou confirmée.`}
+              </p>
+            )}
             <p className="mt-0.5 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)]">
               Échangez avec la personne, puis consignez l&apos;adaptation prévue ci-dessous — ou, si
               rien n&apos;est nécessaire :
             </p>
-            {adaptText.trim() === "" && (
+            {texteEstAucuneAdaptation && (
               <button
                 type="button"
                 onClick={() => handleSaveAdaptations(true)}
@@ -435,15 +462,7 @@ function EnrollmentRow({
             {estReponseAucuneAdaptation(enrollment.adaptationsRealisees)
               ? "aucune adaptation nécessaire, "
               : "réponse "}
-            {consigneeLe !== null
-              ? `consignée le ${formaterInstantParis(consigneeLe)}${
-                  debutSession !== undefined
-                    ? consigneeAvantDebut(consigneeLe, new Date(debutSession))
-                      ? ", avant le début de la session"
-                      : ", après le début de la session"
-                    : ""
-                }`
-              : "consignée (date non tracée au journal)"}
+            {decrireDateConsignation(horodatage, debutSessionDate)}
           </p>
         )}
         <textarea
@@ -463,10 +482,14 @@ function EnrollmentRow({
           <button
             type="button"
             onClick={() => handleSaveAdaptations()}
-            disabled={isPendingAdapt || !adaptDirty}
+            disabled={isPendingAdapt || (!adaptDirty && !reponseRouverte)}
             className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline disabled:opacity-50"
           >
-            {isPendingAdapt ? "Enregistrement…" : "Enregistrer"}
+            {isPendingAdapt
+              ? "Enregistrement…"
+              : reponseRouverte && !adaptDirty
+                ? "Confirmer cette réponse"
+                : "Enregistrer"}
           </button>
           {adaptSaved && !adaptDirty && (
             <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-success)]">
@@ -725,8 +748,11 @@ export function EnrollmentsSection({
   const alreadyEnrolledIds = new Set(enrollments.map((e) => e.trainee.id));
   const nbReponsesAdaptationAConsigner = enrollments.filter(
     (e) =>
-      etatReponseAdaptation(e.besoinAdaptationDeclare === true, e.adaptationsRealisees) ===
-      "a_consigner",
+      etatReponseAdaptation(
+        e.besoinAdaptationDeclare === true,
+        e.adaptationsRealisees,
+        lireHorodatageSerialise(e.circuitAdaptation),
+      ) === "a_consigner",
   ).length;
 
   const thCls =

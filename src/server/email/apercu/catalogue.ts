@@ -247,7 +247,9 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     quand:
       "Émission d'une autofacture d'honoraires — envoi DIRECT, jamais garé : il ouvre le délai de contestation de 8 jours",
     destinataire: "le formateur sous-traitant",
-    source: "server/actions/qualiopi/autofacture.ts",
+    // 2026-09-15 — le corps de « Émettre » et « Transmettre » a été extrait dans un
+    // service pur, partagé avec le rattrapage horaire des autofactures (worker).
+    source: "server/qualiopi/remuneration/autofacture-emission.ts",
   },
   "facture-envoi": {
     categorie: "commerce",

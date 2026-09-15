@@ -535,7 +535,8 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
    * restait affichée comme un manquement.
    *
    * Elle se referme désormais quand la règle cesse de la produire : rappel
-   * impossible (avance ≤ 24 h, la borne de l'envoyeur), plus aucun inscrit actif
+   * impossible (aucun passage de 08:00 UTC avec une convocation de 24 h avant le
+   * début — `rappel-j7-possible.ts`, le prédicat de l'envoyeur), plus aucun inscrit actif
    * à informer, session annulée — ou 30 jours après le début, la fenêtre de
    * constat de la règle. Ce dernier cas est ANNONCÉ dans le message, sur le
    * patron des alertes d'attestation (#1087) : l'écart se consigne pendant qu'il
@@ -1455,6 +1456,14 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
    * perdu, et le geste est une saisie sur une fiche. La marche au-dessus est
    * réservée à ce qui ne se rattrape pas — `autofacture_non_transmise` met en
    * défaut la régularité d'une pièce déjà émise, pas celle-ci.
+   *
+   * 🔑 SECONDE CAUSE, DEPUIS LE 2026-09-15 : L'ÉCHEC RÉPÉTÉ DU RATTRAPAGE. Une
+   * fiche complète dont la facture ne sort pourtant pas — panne de PDF, de
+   * numéro, d'écriture, ou relevé incohérent — n'était vue par rien. Le cron
+   * horaire en laisse une trace à chaque passage ; l'alerte se lève à partir de
+   * deux échecs en 24 h, jamais sur un seul (un Redis absent une minute n'est
+   * pas une panne). Même code, même cible : c'est le même fait vu du formateur
+   * — son argent n'est pas réclamé.
    *
    * `resolutionAuto` : disparaît dès que la donnée est saisie et la pièce émise.
    */

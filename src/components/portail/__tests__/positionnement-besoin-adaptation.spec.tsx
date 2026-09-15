@@ -48,6 +48,8 @@ describe("positionnement — besoin d'adaptation", () => {
     fireEvent.submit(form);
     await vi.waitFor(() => expect(soumettre).toHaveBeenCalledOnce());
     expect(soumettre.mock.calls[0]?.[0].reponses["besoinAdaptation"]).toBe(false);
+    // D6 — le marqueur que le serveur exige, et qu'un ancien formulaire ne porte pas.
+    expect(soumettre.mock.calls[0]?.[0].reponses["besoinAdaptationRepondu"]).toBe(true);
   });
 
   it("un « oui » explicite part en `true`", async () => {

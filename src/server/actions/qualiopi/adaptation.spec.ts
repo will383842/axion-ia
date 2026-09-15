@@ -92,6 +92,7 @@ import { prisma } from "@/lib/prisma";
 import {
   besoinAdaptationDeclare,
   etatReponseAdaptation,
+  HORODATAGE_CIRCUIT_VIDE,
   whereBesoinAdaptationDeclare,
 } from "@/server/qualiopi/adaptation/reponse-organisme";
 
@@ -301,7 +302,7 @@ describe("🔴 besoin déclaré au POSITIONNEMENT — second chemin, même régi
     });
     expect(besoin, "le besoin a disparu du prédicat partagé").toBe(true);
     // Colonne « Adaptations (ind. 10) » : rien de consigné → à consigner.
-    expect(etatReponseAdaptation(besoin, null)).toBe("a_consigner");
+    expect(etatReponseAdaptation(besoin, null, HORODATAGE_CIRCUIT_VIDE)).toBe("a_consigner");
     // Le filtre en base (alerte balayée, moteur de conformité) cherche la même clé.
     const [, parLePositionnement] = whereBesoinAdaptationDeclare().OR;
     const chemin = parLePositionnement.questionnaires.some.reponses.path;
