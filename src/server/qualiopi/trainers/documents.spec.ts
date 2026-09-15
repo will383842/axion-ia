@@ -33,6 +33,7 @@ function doc(type: string, over: Record<string, unknown> = {}): Record<string, u
   return {
     type,
     statutValidation: "valide",
+    fichierUrl: "https://drive.example/piece.pdf",
     dateEmission: new Date("2026-06-01T00:00:00Z"),
     dateExpiration: null,
     ...over,
@@ -57,6 +58,27 @@ describe("listTrainerDocuments", () => {
     await listTrainerDocuments("t1");
     const arg = mockDocumentFindMany.mock.calls[0]?.[0] as { where: { trainerId: string } };
     expect(arg.where.trainerId).toBe("t1");
+  });
+});
+
+// 🔴 Relecture PR #1085 (constat I21-02). `listTrainerDocuments` ne
+// sélectionnait même pas `fichierUrl` : le moteur de conformité du formateur ne
+// pouvait donc pas savoir qu'un CV validé n'avait rien derrière.
+describe("listTrainerDocuments — le fichier est lu", () => {
+  it("sélectionne `fichierUrl`", async () => {
+    await listTrainerDocuments("t1");
+    const arg = mockDocumentFindMany.mock.calls[0]?.[0] as { select: Record<string, boolean> };
+    expect(arg.select["fichierUrl"]).toBe(true);
+  });
+
+  it("getTrainerConformite : un CV validé SANS fichier lève l'alerte cv_absent", async () => {
+    mockTrainerFindUnique.mockResolvedValue({ statut: "salarie" });
+    mockDocumentFindMany.mockResolvedValue([
+      doc("contrat_travail"),
+      doc("cv", { fichierUrl: null }),
+    ]);
+    const r = await getTrainerConformite("t1", 2026, NOW);
+    expect(r?.manquements.map((m) => m.code)).toContain("cv_absent");
   });
 });
 
@@ -110,7 +132,72 @@ describe("listTrainerDocumentsFull", () => {
       },
     ];
     mockDocumentFindMany.mockResolvedValue(rows);
-    await expect(listTrainerDocumentsFull("t1")).resolves.toEqual(rows);
+    await expect(listTrainerDocumentsFull("t1")).resolves.toEqual([
+      { ...rows[0], ecarteeDeLaPreuve: null },
+    ]);
+  });
+
+  // 🔴 Relecture PR #1085 (constat I21-02). Le panneau affichait « Validé » en
+  // vert pour une pièce de compétence qui ne prouve plus rien. C'est ICI que
+  // l'écart est calculé, par le prédicat partagé : le composant client ne fait
+  // que l'afficher.
+  it("signale la pièce de compétence validée qui ne compte pas comme preuve", async () => {
+    const base = {
+      numeroPiece: null,
+      dateEmission: null,
+      rejetMotif: null,
+      createdAt: new Date("2026-07-01T00:00:00Z"),
+    };
+    mockDocumentFindMany.mockResolvedValue([
+      {
+        ...base,
+        id: "a",
+        type: "cv",
+        fichierUrl: null,
+        dateExpiration: null,
+        statutValidation: "valide",
+      },
+      {
+        ...base,
+        id: "b",
+        type: "certification",
+        fichierUrl: "https://d/x.pdf",
+        dateExpiration: new Date("2020-01-01T00:00:00Z"),
+        statutValidation: "valide",
+      },
+      {
+        ...base,
+        id: "c",
+        type: "diplome",
+        fichierUrl: "https://d/y.pdf",
+        dateExpiration: null,
+        statutValidation: "valide",
+      },
+      {
+        ...base,
+        id: "d",
+        type: "cv",
+        fichierUrl: null,
+        dateExpiration: null,
+        statutValidation: "en_attente",
+      },
+      {
+        ...base,
+        id: "e",
+        type: "assurance_rc_pro",
+        fichierUrl: null,
+        dateExpiration: null,
+        statutValidation: "valide",
+      },
+    ]);
+    const lignes = await listTrainerDocumentsFull("t1");
+    expect(lignes.map((l) => [l.id, l.ecarteeDeLaPreuve])).toEqual([
+      ["a", "sans_fichier"],
+      ["b", "expiree"],
+      ["c", null],
+      ["d", null],
+      ["e", null],
+    ]);
   });
 });
 
