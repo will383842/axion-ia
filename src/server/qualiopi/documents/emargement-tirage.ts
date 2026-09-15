@@ -33,6 +33,7 @@ import { EmargementPdf } from "@/server/qualiopi/documents/templates/emargement"
 import { construireFeuillePdf, LIBELLE_DEMI } from "@/server/qualiopi/emargement/feuille-pdf";
 import {
   LIEU_DOCUMENT_SELECT,
+  refusEmissionLieu,
   resolveLieuDocument,
 } from "@/server/qualiopi/lieu/resolve-lieu-document";
 
@@ -57,9 +58,15 @@ export type TirageEmargement =
 export async function construireTirageEmargement(sessionId: string): Promise<TirageEmargement> {
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
-    select: { id: true, ...LIEU_DOCUMENT_SELECT },
+    select: { id: true, modalite: true, ...LIEU_DOCUMENT_SELECT },
   });
   if (!session) return { ok: false, message: "Session introuvable" };
+
+  // 🔴 I17-01 — une feuille qui imprimerait l'adresse de l'organisme faute de
+  // lieu n'est ni émise au registre (`produireEmargement`) ni tirée à la demande
+  // (route GET, qui rend ce motif en 409) : les deux voies passent ici.
+  const refusLieu = refusEmissionLieu(session);
+  if (refusLieu !== null) return { ok: false, message: refusLieu };
 
   const identite = await getOrganismeIdentite();
 
