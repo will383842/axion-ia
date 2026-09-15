@@ -16,6 +16,13 @@ import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { creerQuestionnaire } from "@/server/qualiopi/satisfaction/satisfaction-service";
 import { STATUTS_SORTIS } from "@/server/qualiopi/inscriptions/inscriptions-actives";
+import {
+  ACTION_JOURNAL_ADAPTATIONS,
+  REPONSE_AUCUNE_ADAPTATION,
+  estReponseAucuneAdaptation,
+  reponseAdaptationConsignee,
+} from "@/server/qualiopi/adaptation/reponse-organisme";
+import { fermerAlertesAdaptationConsignee } from "@/server/qualiopi/adaptation/fermeture-alertes";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -56,6 +63,13 @@ const setEnrollmentAdaptationsSchema = z.object({
   // Adaptations réellement réalisées pour ce bénéficiaire (individualisation,
   // rythme, supports, situation de handicap). Vide → efface le champ (null).
   adaptationsRealisees: z.string().trim().max(5000),
+  /**
+   * Réponse « aucune adaptation nécessaire, après échange avec la personne ».
+   * Le libellé est écrit par le SERVEUR (`REPONSE_AUCUNE_ADAPTATION`), jamais
+   * tapé : le dossier d'audit et l'écran le reconnaissent. `adaptationsRealisees`
+   * est alors ignoré.
+   */
+  aucuneAdaptationNecessaire: z.boolean().optional(),
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -220,23 +234,86 @@ export async function setEnrollmentStatutAction(input: {
 export async function setEnrollmentAdaptationsAction(input: {
   id: string;
   adaptationsRealisees: string;
+  aucuneAdaptationNecessaire?: boolean;
 }): Promise<ActionResult<{ id: string }>> {
   const session = await requireAdminWrite();
   const parsed = setEnrollmentAdaptationsSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { id, adaptationsRealisees } = parsed.data;
-  const value = adaptationsRealisees.length > 0 ? adaptationsRealisees : null;
+  const { id, adaptationsRealisees, aucuneAdaptationNecessaire } = parsed.data;
 
-  await prisma.enrollment.update({
+  // 🔑 « Aucune adaptation nécessaire » ne remplace JAMAIS une adaptation déjà
+  // consignée : un clic de trop effacerait la seule trace de ce qui a été fait
+  // pour la personne. Pour changer une réponse, on la réécrit dans le champ.
+  if (aucuneAdaptationNecessaire === true) {
+    const actuelle = await prisma.enrollment.findUnique({
+      where: { id },
+      select: { adaptationsRealisees: true },
+    });
+    if (actuelle === null) return { error: "Inscription introuvable" };
+    if (
+      reponseAdaptationConsignee(actuelle.adaptationsRealisees) &&
+      !estReponseAucuneAdaptation(actuelle.adaptationsRealisees)
+    ) {
+      return {
+        error:
+          "Une adaptation est déjà consignée pour cette inscription : modifiez-la dans le champ " +
+          "plutôt que de la remplacer par « aucune adaptation nécessaire ».",
+      };
+    }
+  }
+
+  const value =
+    aucuneAdaptationNecessaire === true
+      ? REPONSE_AUCUNE_ADAPTATION
+      : adaptationsRealisees.length > 0
+        ? adaptationsRealisees
+        : null;
+
+  const inscription = await prisma.enrollment.update({
     where: { id },
     data: { adaptationsRealisees: value },
+    select: { traineeId: true },
   });
 
+  // 🔴 Indicateur 10 — une réponse consignée FERME les alertes d'adaptation.
+  //
+  // Avant, `besoin_adaptation_declare` se fermait à la main, et rien ne gardait
+  // ce qui avait été répondu. La fermeture suit désormais la consignation, et
+  // elle seule. Fail-soft : la réponse EST enregistrée ; une alerte restée
+  // ouverte se referme au balayage suivant (règle balayée) ou à la main.
+  let alertesFermees = 0;
+  if (value !== null) {
+    try {
+      const f = await fermerAlertesAdaptationConsignee({
+        enrollmentId: id,
+        traineeId: inscription.traineeId,
+      });
+      alertesFermees = f.reponseNonConsignee + f.besoinDeclare;
+    } catch (err) {
+      console.error(
+        "[setEnrollmentAdaptationsAction] fermeture des alertes d'adaptation en échec :",
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+  }
+
+  // Le journal est la DATE de la réponse — c'est lui que l'écran de session et
+  // le dossier d'audit relisent. ⚠️ Il ne recopie JAMAIS le texte : une réponse
+  // d'adaptation peut laisser deviner une situation de santé.
   await logQualiopiActivity({
-    action: "qualiopi.enrollment.adaptations",
+    action: ACTION_JOURNAL_ADAPTATIONS,
     targetType: "Enrollment",
     targetId: id,
-    changes: { adaptationsRenseignees: value !== null },
+    changes: {
+      adaptationsRenseignees: value !== null,
+      reponse:
+        value === null
+          ? "effacee"
+          : aucuneAdaptationNecessaire === true
+            ? "aucune_adaptation_necessaire"
+            : "adaptation",
+      alertesFermees,
+    },
     session,
   });
 

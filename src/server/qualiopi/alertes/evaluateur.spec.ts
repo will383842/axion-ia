@@ -2381,6 +2381,21 @@ describe("🔴 une règle qui dégénère est bornée ET le dit", () => {
     ]);
   });
 
+  it("🔴 et elle NOMME les codes tronqués — sans quoi la résolution fermerait la 201e", async () => {
+    // Le nom de la règle ne suffit pas : la résolution raisonne par CODE, et
+    // une règle peut en émettre plusieurs. Les codes viennent de la moisson
+    // COMPLÈTE, pas des candidates retenues.
+    mp.reclamation.findMany.mockResolvedValue(reclamations(PLAFOND_CANDIDATES_PAR_REGLE + 57));
+    const { codesTronques } = await evaluerAlertesDetaille();
+    expect(codesTronques).toEqual(["reclamation_sans_reponse_j15"]);
+  });
+
+  it("sous le plafond, aucun code n'est déclaré tronqué", async () => {
+    mp.reclamation.findMany.mockResolvedValue(reclamations(PLAFOND_CANDIDATES_PAR_REGLE));
+    const { codesTronques } = await evaluerAlertesDetaille();
+    expect(codesTronques).toEqual([]);
+  });
+
   it("la troncature d'une règle n'affecte pas les autres", async () => {
     mp.reclamation.findMany.mockResolvedValue(reclamations(PLAFOND_CANDIDATES_PAR_REGLE + 1));
     const { reglesTronquees } = await evaluerAlertesDetaille();
@@ -2558,6 +2573,30 @@ describe("🔴 evaluerAlertes — positionnement_sans_reponse (indicateur 8)", (
         "positionnement",
     ) as { session?: { statut?: string } } | undefined;
     expect(appel?.session?.statut).toBe("planifiee");
+  });
+});
+
+describe("🔴 evaluerAlertes — satisfaction_manquante ne se relève pas après la réponse", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("une inscription dont le questionnaire à chaud est RÉPONDU n'est jamais candidate", async () => {
+    // Depuis le 2026-09-15 l'alerte se referme seule quand la règle cesse de la
+    // produire. Si ce filtre disparaissait, elle se relèverait chaque matin sur
+    // un questionnaire déjà rempli — et se refermerait pour de mauvaises raisons.
+    await evaluerAlertes();
+    const appels = (
+      mp.enrollment.findMany.mock.calls as { where?: Record<string, unknown> }[][]
+    ).map((c) => c[0]?.where);
+    const appel = appels.find(
+      (w: Record<string, unknown> | undefined) =>
+        (w?.["questionnaires"] as { none?: { type?: string } } | undefined)?.none?.type ===
+        "satisfaction_chaud",
+    ) as { questionnaires?: { none?: { reponduAt?: unknown } } } | undefined;
+    expect(appel, "la règle satisfaction_manquante ne lit plus les questionnaires").toBeDefined();
+    expect(appel?.questionnaires?.none?.reponduAt).toEqual({ not: null });
   });
 });
 

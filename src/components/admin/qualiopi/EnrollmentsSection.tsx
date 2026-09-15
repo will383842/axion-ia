@@ -17,6 +17,13 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { GenererPortailAccesButton } from "@/components/admin/qualiopi/GenererPortailAccesButton";
+import {
+  REPONSE_AUCUNE_ADAPTATION,
+  consigneeAvantDebut,
+  etatReponseAdaptation,
+  estReponseAucuneAdaptation,
+} from "@/server/qualiopi/adaptation/reponse-organisme";
+import { formaterInstantParis } from "@/server/qualiopi/positionnement/lecture-positionnement";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -47,6 +54,13 @@ export interface EnrollmentSerialized {
   tauxPresencePct: number | null;
   /** Adaptations réellement réalisées pour ce bénéficiaire (ind. 10) — null si non renseigné. */
   adaptationsRealisees: string | null;
+  /**
+   * Ind. 10 — un besoin d'adaptation est-il DÉCLARÉ (fiche ou positionnement) ?
+   * Un booléen, jamais le contenu : c'est une donnée de santé.
+   */
+  besoinAdaptationDeclare?: boolean;
+  /** Depuis quand la réponse actuelle est consignée (journal), ISO — null si non tracé. */
+  adaptationsConsigneesLe?: string | null;
   /** Date de sortie du dispositif (abandon / exclusion), ISO — null si active. */
   sortieAt: string | null;
   /** Motif de la sortie — null si active. */
@@ -65,6 +79,8 @@ export interface TraineeSerialized {
 
 export interface EnrollmentsSectionProps {
   sessionId: string;
+  /** Début de la session, ISO — situe la réponse d'adaptation avant/après (ind. 10). */
+  debutSession?: string;
   enrollments: EnrollmentSerialized[];
   /**
    * Les stagiaires proposés au sélecteur d&apos;inscription — une PAGE du
@@ -101,6 +117,8 @@ export interface EnrollmentsSectionProps {
   setAdaptationsAction: (input: {
     id: string;
     adaptationsRealisees: string;
+    /** Réponse « aucune adaptation nécessaire » — libellé écrit par le serveur. */
+    aucuneAdaptationNecessaire?: boolean;
   }) => Promise<ActionResult<{ id: string }>>;
   genererPortailAction: (input: {
     traineeId: string;
@@ -154,6 +172,7 @@ function statutColor(s: EnrollmentStatut): string {
 
 interface EnrollmentRowProps {
   enrollment: EnrollmentSerialized;
+  debutSession: string | undefined;
   setStatutAction: EnrollmentsSectionProps["setStatutAction"];
   setAdaptationsAction: EnrollmentsSectionProps["setAdaptationsAction"];
   genererPortailAction: EnrollmentsSectionProps["genererPortailAction"];
@@ -163,6 +182,7 @@ interface EnrollmentRowProps {
 
 function EnrollmentRow({
   enrollment,
+  debutSession,
   setStatutAction,
   setAdaptationsAction,
   genererPortailAction,
@@ -229,17 +249,22 @@ function EnrollmentRow({
     });
   }
 
-  function handleSaveAdaptations() {
+  function handleSaveAdaptations(aucuneAdaptationNecessaire = false) {
     setAdaptError(null);
     setAdaptSaved(false);
     startAdapt(async () => {
       const res = await setAdaptationsAction({
         id: enrollment.id,
         adaptationsRealisees: adaptText.trim(),
+        ...(aucuneAdaptationNecessaire ? { aucuneAdaptationNecessaire: true } : {}),
       });
       if ("error" in res) {
         setAdaptError(res.error);
       } else {
+        // Le champ reflète ce que le serveur a écrit : sans cela, il resterait
+        // vide, se croirait « modifié », et un clic sur « Enregistrer »
+        // effacerait la réponse qu'on vient de consigner.
+        if (aucuneAdaptationNecessaire) setAdaptText(REPONSE_AUCUNE_ADAPTATION);
         setAdaptSaved(true);
         onMutated();
       }
@@ -247,6 +272,17 @@ function EnrollmentRow({
   }
 
   const adaptDirty = adaptText.trim() !== (enrollment.adaptationsRealisees ?? "");
+
+  // Ind. 10 — l'état de la RÉPONSE de l'organisme, lu au même prédicat que
+  // l'alerte et le moteur de conformité.
+  const etatAdaptation = etatReponseAdaptation(
+    enrollment.besoinAdaptationDeclare === true,
+    enrollment.adaptationsRealisees,
+  );
+  const consigneeLe =
+    enrollment.adaptationsConsigneesLe !== undefined && enrollment.adaptationsConsigneesLe !== null
+      ? new Date(enrollment.adaptationsConsigneesLe)
+      : null;
 
   const tdCls =
     "px-[var(--space-admin-3)] py-[var(--space-admin-3)] align-top text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]";
@@ -366,6 +402,50 @@ function EnrollmentRow({
 
       {/* Adaptations réalisées (ind. 10) */}
       <td className={tdCls}>
+        {/* 🔴 Un besoin DÉCLARÉ sans réponse consignée : le dossier que
+            l'auditrice tire en premier. Le signal dit quoi faire, jamais ce
+            qui a été déclaré (donnée de santé, fiche stagiaire). */}
+        {etatAdaptation === "a_consigner" && (
+          <div
+            role="status"
+            className="mb-[var(--space-admin-2)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-warning)] bg-[color:var(--color-admin-warning-subtle)] p-[var(--space-admin-2)]"
+          >
+            <p className="text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-warning)]">
+              Besoin d&apos;adaptation déclaré — réponse à consigner
+            </p>
+            <p className="mt-0.5 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)]">
+              Échangez avec la personne, puis consignez l&apos;adaptation prévue ci-dessous — ou, si
+              rien n&apos;est nécessaire :
+            </p>
+            {adaptText.trim() === "" && (
+              <button
+                type="button"
+                onClick={() => handleSaveAdaptations(true)}
+                disabled={isPendingAdapt}
+                className="mt-1 text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline disabled:opacity-50"
+              >
+                Aucune adaptation nécessaire (après échange)
+              </button>
+            )}
+          </div>
+        )}
+        {etatAdaptation === "consignee" && (
+          <p className="mb-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            {enrollment.besoinAdaptationDeclare === true ? "Besoin déclaré — " : ""}
+            {estReponseAucuneAdaptation(enrollment.adaptationsRealisees)
+              ? "aucune adaptation nécessaire, "
+              : "réponse "}
+            {consigneeLe !== null
+              ? `consignée le ${formaterInstantParis(consigneeLe)}${
+                  debutSession !== undefined
+                    ? consigneeAvantDebut(consigneeLe, new Date(debutSession))
+                      ? ", avant le début de la session"
+                      : ", après le début de la session"
+                    : ""
+                }`
+              : "consignée (date non tracée au journal)"}
+          </p>
+        )}
         <textarea
           value={adaptText}
           onChange={(e) => {
@@ -375,14 +455,14 @@ function EnrollmentRow({
           disabled={isPendingAdapt}
           rows={2}
           maxLength={5000}
-          placeholder="Adaptations réalisées (rythme, supports, handicap…)"
+          placeholder="Mesure prévue (accès, supports, rythme…) — sans détail de santé"
           aria-label={`Adaptations réalisées pour ${enrollment.trainee.prenom} ${enrollment.trainee.nom}`}
           className={`${inputCls} min-w-[14rem] resize-y`}
         />
         <div className="mt-1 flex items-center gap-[var(--space-admin-2)]">
           <button
             type="button"
-            onClick={handleSaveAdaptations}
+            onClick={() => handleSaveAdaptations()}
             disabled={isPendingAdapt || !adaptDirty}
             className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline disabled:opacity-50"
           >
@@ -624,6 +704,7 @@ function EnrollForm({
 
 export function EnrollmentsSection({
   sessionId,
+  debutSession,
   enrollments,
   availableTrainees,
   rechercheStagiaire = "",
@@ -642,12 +723,27 @@ export function EnrollmentsSection({
   }
 
   const alreadyEnrolledIds = new Set(enrollments.map((e) => e.trainee.id));
+  const nbReponsesAdaptationAConsigner = enrollments.filter(
+    (e) =>
+      etatReponseAdaptation(e.besoinAdaptationDeclare === true, e.adaptationsRealisees) ===
+      "a_consigner",
+  ).length;
 
   const thCls =
     "px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-left text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]";
 
   return (
     <div className="space-y-[var(--space-admin-6)]">
+      {nbReponsesAdaptationAConsigner > 0 && (
+        <p
+          role="status"
+          className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-warning)] bg-[color:var(--color-admin-warning-subtle)] p-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]"
+        >
+          {nbReponsesAdaptationAConsigner === 1
+            ? "1 besoin d'adaptation déclaré n'a pas de réponse consignée (indicateur 10) : voir la colonne « Adaptations »."
+            : `${nbReponsesAdaptationAConsigner} besoins d'adaptation déclarés n'ont pas de réponse consignée (indicateur 10) : voir la colonne « Adaptations ».`}
+        </p>
+      )}
       {/* ── Liste des inscriptions ───────────────────────────────────────── */}
       {enrollments.length === 0 ? (
         <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
@@ -670,6 +766,7 @@ export function EnrollmentsSection({
                 <EnrollmentRow
                   key={enrollment.id}
                   enrollment={enrollment}
+                  debutSession={debutSession}
                   setStatutAction={setStatutAction}
                   setAdaptationsAction={setAdaptationsAction}
                   genererPortailAction={genererPortailAction}

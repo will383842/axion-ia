@@ -21,6 +21,10 @@ const CODES_ATTENDUS: string[] = [
   // entrée du catalogue née d'un GESTE et non du balayage quotidien — d'où son
   // `resolutionAuto: false`, verrouillé par `besoin-adaptation.spec.ts`.
   "besoin_adaptation_declare",
+  // Ajouté 2026-09-15 : fermée à la main, l'alerte ci-dessus ne laissait AUCUNE
+  // trace de la réponse de l'organisme (ind. 10). Celle-ci relit l'état et se
+  // referme dès que la réponse est consignée sur l'inscription.
+  "adaptation_reponse_non_consignee",
   "categories_certifiees_non_renseignees",
   // Ajouté 2026-08-23 (recette du jour d'audit). Constaté À L'ÉCRAN sur
   // `/qualiopi/mode-auditeur` : « 1 formation certifiante avec code RS/RNCP »
@@ -356,8 +360,11 @@ describe("ALERTE_CATALOGUE", () => {
     expect(ALERTE_CATALOGUE["reclamation_sans_reponse_j15"]?.resolutionAuto).toBe(true);
   });
 
-  it("satisfaction_manquante a resolutionAuto=false", () => {
-    expect(ALERTE_CATALOGUE["satisfaction_manquante"]?.resolutionAuto).toBe(false);
+  // 🔴 2026-09-15 — décision de Will, écart déclaré à SPEC_PART2 §6.5 : une
+  // réponse enregistrée referme l'alerte (cf. `catalogue.ts` et
+  // `une-alerte-se-ferme-quand-sa-cause-disparait.spec.ts`).
+  it("satisfaction_manquante a resolutionAuto=true", () => {
+    expect(ALERTE_CATALOGUE["satisfaction_manquante"]?.resolutionAuto).toBe(true);
   });
 
   it("evaluation_acquis_manquante a resolutionAuto=false", () => {

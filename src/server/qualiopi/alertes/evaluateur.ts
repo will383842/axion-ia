@@ -16,7 +16,10 @@ import { aucuneHeureSuivie } from "@/server/qualiopi/evaluations/heures-suivies"
 // 🔴 2026-08-24 — la MÊME mesure que le cron, jamais une seconde requête jumelle :
 // deux prédicats qui se ressemblent finissent par diverger, et ce dépôt le paie
 // sans arrêt. Le cron en prend le compte, cette règle en mappe les lignes.
-import { sessionsSansRappelJ7 } from "@/server/qualiopi/notifications/rappel-j7-manquant";
+import {
+  FENETRE_CONSTAT_JOURS,
+  sessionsSansRappelJ7,
+} from "@/server/qualiopi/notifications/rappel-j7-manquant";
 import { DELAI_RELANCE_JOURS } from "@/server/qualiopi/trainers/mission-formateur";
 import { instantRelance } from "@/server/qualiopi/trainers/delai-reponse-mission";
 import { listIndisposEntre } from "@/server/qualiopi/trainers/availability-queries";
@@ -80,6 +83,7 @@ import {
 } from "@/server/qualiopi/lieu/resolve-lieu-document";
 import { casFactureAutoASignaler } from "@/server/qualiopi/financements/facture-auto-regles";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
+import { regleAdaptationReponseNonConsignee } from "./regle-adaptation-reponse";
 import {
   ATTENTE_JOURS,
   MARGE_AVANT_SESSION_JOURS,
@@ -674,7 +678,8 @@ async function regleRappelJ7NonEnvoye(now: Date): Promise<AlerteCandidate[]> {
       `${s.dateDebut.toLocaleDateString("fr-FR")} sans qu'aucun rappel J-7 ne soit parti. ` +
       `Le rappel porte les informations logistiques finales (lieu, horaires, accès) ; ` +
       `après le début, il n'est plus envoyable. L'écart est à consigner : le certificateur ` +
-      `vérifie que le stagiaire a été informé.`,
+      `vérifie que le stagiaire a été informé. Cette alerte reste affichée ` +
+      `${FENETRE_CONSTAT_JOURS} jours après le début de la session, puis se referme d'elle-même.`,
     cibleType: "TrainingSession" as const,
     cibleId: s.id,
   }));
@@ -1200,9 +1205,12 @@ async function reglePositionnementSansReponse(now: Date): Promise<AlerteCandidat
  * cesserait de dire « fais-le maintenant » pour devenir un inventaire des
  * regrets, et la liste se remplirait de lignes que personne ne peut solder.
  */
+/** Borne arrière du suivi à froid, en jours après la fin — annoncée dans le message. */
+const BORNE_BASSE_SUIVI_FROID_JOURS = 120;
+
 async function regleSuiviFroidManquant(now: Date): Promise<AlerteCandidate[]> {
   const borneHaute = daysAgo(37, now);
-  const borneBasse = daysAgo(120, now);
+  const borneBasse = daysAgo(BORNE_BASSE_SUIVI_FROID_JOURS, now);
   const enrollments = await prisma.enrollment.findMany({
     where: {
       session: {
@@ -1224,7 +1232,10 @@ async function regleSuiviFroidManquant(now: Date): Promise<AlerteCandidate[]> {
     code: "suivi_froid_manquant",
     niveau: "important" as AlerteNiveau,
     titre: "Suivi à froid (J+30) sans réponse",
-    message: `Le suivi à 30 jours de ${e.trainee.prenom} ${e.trainee.nom} (session ${e.session.numero}) est sans réponse plus de 37 jours après la fin. Relancer — l'indicateur 30 exige un recueil tracé.`,
+    // 🔴 2026-09-15 — la fermeture automatique à la fin de la fenêtre est ANNONCÉE,
+    // sur le patron des alertes d'attestation (#1087) : rien ne disparaît sans
+    // qu'on l'ait dit à celui qui lit.
+    message: `Le suivi à 30 jours de ${e.trainee.prenom} ${e.trainee.nom} (session ${e.session.numero}) est sans réponse plus de 37 jours après la fin. Relancer — l'indicateur 30 exige un recueil tracé. Cette alerte se referme dès la réponse enregistrée, et au plus tard ${BORNE_BASSE_SUIVI_FROID_JOURS} jours après la fin de la session.`,
     cibleType: "Enrollment",
     cibleId: e.id,
   }));
@@ -4828,6 +4839,9 @@ async function regleStagiairesNonPrevenusChangementFormateur(
 
 const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "referent_handicap", fn: regleReferentHandicap },
+  // 2026-09-15 — un besoin d'adaptation déclaré dont la RÉPONSE de l'organisme
+  // n'est consignée nulle part (ind. 10). Cf. `regle-adaptation-reponse.ts`.
+  { nom: "adaptation_reponse_non_consignee", fn: regleAdaptationReponseNonConsignee },
   { nom: "responsable_qualite", fn: regleResponsableQualite },
   { nom: "mentions_facture", fn: regleMentionsFacture },
   { nom: "categories_certifiees", fn: regleCategoriesCertifiees },
@@ -4948,6 +4962,20 @@ export interface EvaluationAlertes {
    * plafond tu est un mensonge par omission.
    */
   reglesTronquees: { nom: string; trouvees: number; retenues: number }[];
+  /**
+   * 🔴 2026-09-15 — les CODES émis par une règle tronquée, lus sur la moisson
+   * COMPLÈTE (pas sur les candidates retenues).
+   *
+   * La résolution automatique raisonne par code : « ce code n'est plus produit
+   * pour cette cible, donc sa cause a disparu ». Une candidate écartée par le
+   * plafond n'a pas disparu, elle n'a pas été LUE — la fermer serait confondre
+   * les deux, exactement ce que la suspension sur `reglesEnEchec` refuse déjà.
+   * `synchroniserAlertes` gèle donc la résolution de ces codes pour ce tour.
+   *
+   * Un champ distinct de `reglesTronquees` et non une propriété de plus sur ses
+   * entrées : celles-ci remontent telles quelles jusqu'à la console.
+   */
+  codesTronques: string[];
 }
 
 /**
@@ -4995,13 +5023,14 @@ export const PLAFOND_CANDIDATES_PAR_REGLE = 200;
  */
 export async function evaluerAlertesDetaille(): Promise<EvaluationAlertes> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
-    return { candidates: [], reglesEnEchec: [], reglesTronquees: [] };
+    return { candidates: [], reglesEnEchec: [], reglesTronquees: [], codesTronques: [] };
   }
 
   const now = new Date();
   const toutes: AlerteCandidate[] = [];
   const reglesEnEchec: string[] = [];
   const reglesTronquees: { nom: string; trouvees: number; retenues: number }[] = [];
+  const codesTronques = new Set<string>();
 
   for (const { nom, fn } of REGLES) {
     try {
@@ -5012,6 +5041,7 @@ export async function evaluerAlertesDetaille(): Promise<EvaluationAlertes> {
           trouvees: candidates.length,
           retenues: PLAFOND_CANDIDATES_PAR_REGLE,
         });
+        for (const c of candidates) codesTronques.add(c.code);
         console.warn(
           `[evaluateur-alertes] règle ${nom} TRONQUÉE : ${candidates.length} candidates ` +
             `trouvées, ${PLAFOND_CANDIDATES_PAR_REGLE} retenues. Une règle aussi bavarde est ` +
@@ -5028,7 +5058,7 @@ export async function evaluerAlertesDetaille(): Promise<EvaluationAlertes> {
     }
   }
 
-  return { candidates: toutes, reglesEnEchec, reglesTronquees };
+  return { candidates: toutes, reglesEnEchec, reglesTronquees, codesTronques: [...codesTronques] };
 }
 
 /** Compat : la liste des candidates seule (appelants historiques). */
