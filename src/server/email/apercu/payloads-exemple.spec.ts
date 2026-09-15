@@ -72,7 +72,7 @@ function champsDeclares(source: string): ReadonlyArray<{ nom: string; optionnel:
 describe("le jeu de données d'exemple couvre tous les gabarits", () => {
   const tous = gabarits();
 
-  it("lit bien les 53 gabarits — sinon la garde serait verte en ne regardant rien", () => {
+  it("lit bien les 54 gabarits — sinon la garde serait verte en ne regardant rien", () => {
     // 🔴 Le témoin qui distingue « rien à signaler » de « je n'ai rien lu ».
     // Si ce nombre change parce qu'un gabarit a été ajouté, mettre le chiffre à
     // jour est le bon geste — le baisser pour faire passer la garde ne l'est pas.
@@ -95,7 +95,10 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // envoie un salarié lire et signer son contrat. Sa pièce était produite,
     // signable et lisible depuis son espace — et RIEN ne l'y envoyait. Le
     // lecteur existait, personne ne lui indiquait le chemin.
-    expect(tous.length).toBe(53);
+    // 🔴 2026-09-15 — RELEVÉ À 54 : `formateur-contresignature`, la demande de
+    // contresignature de l'émargement. Son champ `demiJournees` est déclaré
+    // ci-dessous.
+    expect(tous.length).toBe(54);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

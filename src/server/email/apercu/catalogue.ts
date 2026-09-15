@@ -154,6 +154,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "le formateur",
     source: "server/qualiopi/trainers/convocation-formateur.ts",
   },
+  "formateur-contresignature": {
+    categorie: "formation",
+    quand:
+      "À la fin d'une journée que des stagiaires ont signée et qu'aucun formateur n'a contresignée — une fois par jour, deux rappels au plus sans réaction",
+    destinataire: "le formateur désigné de la journée",
+    source: "server/qualiopi/emargement/demande-contresignature.ts",
+  },
   "qualiopi-positionnement": {
     categorie: "formation",
     quand: "Questionnaire de positionnement, avant l'entrée en formation",
@@ -162,7 +169,8 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   },
   "qualiopi-emargement-lien": {
     categorie: "formation",
-    quand: "Le jour même, lien d'émargement de la journée",
+    quand:
+      "Le jour de la séance (premier passage de la nuit, ou dans l'heure pour une session créée le jour même), à chaque stagiaire qui n'a pas déjà reçu son lien avec un rappel — un seul lien, valable pour toutes les journées ; ou à la demande depuis la console",
     destinataire: "le stagiaire",
     source: "server/qualiopi/emargement/envoi-liens.ts",
   },

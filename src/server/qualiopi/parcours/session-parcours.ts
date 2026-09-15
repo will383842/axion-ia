@@ -73,6 +73,15 @@ export interface SessionParcoursInput {
   readonly liensEmargementActifs: number;
   /** Nombre de journées de présence confirmées. */
   readonly creneauxEmargement: number;
+  /**
+   * Contresignature du FORMATEUR, au grain de la demi-journée (2026-09-15).
+   *
+   * Calculé par `bilanContresignature` — la MÊME mesure que la demande envoyée
+   * au formateur. `signees` : demi-journées terminées portant au moins une
+   * signature de stagiaire ; `aContresigner` : celles qu'aucun formateur n'a
+   * contresignées.
+   */
+  readonly contresignature: { readonly signees: number; readonly aContresigner: number };
   readonly maintenant: Date;
 }
 
@@ -91,6 +100,7 @@ export type EtapeCle =
   | "creneaux_emargement"
   | "liens_signature_emis"
   | "emargement_signe"
+  | "contresignature_formateur"
   | "evaluation_finale"
   | "attestation"
   | "acces_portail"
@@ -494,14 +504,25 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       // Les jetons expirent 48 h après la fin : au-delà, plus rien à émettre.
       borne: apres(fin, 2),
       maintenant,
-      geste: "Manuel — « Émettre les liens », ou joints au rappel J-7.",
+      // 🔴 2026-09-15 — ce geste disait « Manuel — « Émettre les liens », ou
+      // joints au rappel J-7 ». Une session réservée moins de sept jours avant
+      // n'a jamais de rappel J-7 : lu au pied de la lettre, les liens ne
+      // partaient jamais seuls — et sur AXI-SESS-2026-001 ils sont partis à la
+      // main, le lendemain de la formation. Ils partent désormais seuls, à
+      // chaque stagiaire qui n'en a pas (`liens-emargement-j0`, maille de
+      // l'inscription) : le texte dit quand.
+      geste:
+        "Automatique — joint au rappel J-7 ou au rappel de la veille quand les journées sont " +
+        "confirmées à temps ; sinon envoyé le jour même, au passage horaire, à chaque stagiaire " +
+        "qui n'a pas encore son lien. « Envoyer les liens » reste le renvoi manuel.",
       // 🔴 Une réémission RÉVOQUE la précédente (index unique partiel) : le QR
       // déjà imprimé ou déjà distribué devient mort.
       avertissement:
         "Fabriquer un lien ne l'ENVOIE pas : « Émettre les liens » crée les jetons et affiche " +
-        "les QR à l'écran, sans expédier le moindre message. Utilisez « Envoyer les liens » " +
-        "pour qu'ils partent, ou distribuez les QR en séance. " +
-        "Réémettre révoque les liens en circulation — un QR déjà imprimé cesse de fonctionner.",
+        "les QR à l'écran, sans expédier le moindre message. L'envoi automatique ne remplace " +
+        "jamais un lien déjà envoyé, déjà ouvert, ou fabriqué aujourd'hui ; il remplace un lien " +
+        "fabriqué un autre jour et jamais ouvert — un QR imprimé la veille cesse alors de " +
+        "fonctionner. Réémettre à la main révoque aussi les liens en circulation.",
     }),
   );
 
@@ -521,6 +542,45 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       geste: "Le stagiaire signe, en salle ou par son lien. Le formateur dispose du mode groupe.",
       sansObjetSi: n === 0,
       motifSansObjet: "Aucune inscription active",
+    }),
+  );
+
+  // ── 9 bis. Contresignature du formateur ────────────────────────────────────
+  // 🔴 2026-09-15 — AXI-SESS-2026-001 : la stagiaire a signé, aucune
+  // contresignature n'a été recueillie, et AUCUNE surface ne le disait. Non
+  // bloquante pour l'attestation (décision de Will) : l'étape ne retient rien,
+  // elle rend le manque VISIBLE tant qu'il dure — ici, et dans l'accueil du
+  // formateur, qui lit la même étape.
+  const { signees, aContresigner } = input.contresignature;
+  etapes.push(
+    etape({
+      cle: "contresignature_formateur",
+      ancre: { id: "sous-pages", libelle: "sous-page Émargement" },
+      libelle: "Émargement contresigné par le formateur",
+      fait: signees > 0 && aContresigner === 0,
+      faitLe: null,
+      // La demande part le soir de chaque journée signée : au lendemain de la
+      // fin de session, un manque n'est plus une contresignature « en cours ».
+      echeance: apres(fin, 1),
+      borne: {
+        sansBorne:
+          "Contresigner tard laisse un écart de DATE, visible sur la feuille, pas une impossibilité : la contresignature reste possible et c'est elle que les financeurs demandent. La déclarer « hors délai » ferait renoncer à la réclamer.",
+      },
+      maintenant,
+      avancement: { fait: signees - aContresigner, total: signees },
+      geste:
+        "Automatique — la demande part au formateur par e-mail le soir de chaque journée signée " +
+        "(deux rappels au plus) et s'affiche dans son espace. La signature, elle, reste la sienne : " +
+        "personne ne signe à sa place.",
+      sansObjetSi: signees === 0,
+      motifSansObjet: "Aucune demi-journée terminée ne porte encore de signature de stagiaire",
+      ...(aContresigner > 0
+        ? {
+            avertissement:
+              `${aContresigner} demi-journée${aContresigner > 1 ? "s" : ""} signée${aContresigner > 1 ? "s" : ""} par des stagiaires sans contresignature du formateur. ` +
+              "Non bloquant pour l'attestation, mais les OPCO la demandent : relancez-le si les rappels n'ont rien donné.",
+          }
+        : {}),
     }),
   );
 

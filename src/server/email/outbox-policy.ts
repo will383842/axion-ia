@@ -102,6 +102,11 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // éviter. Même raisonnement que la convocation et le rappel J-7, en plus
   // court : ici la fenêtre utile fait vingt-quatre heures.
   "qualiopi-rappel-j1",
+  // 🔴 La demande de contresignature part SEULE (2026-09-15). Retenue en
+  // corbeille, elle n'atteindrait le formateur qu'après une relecture qui n'a
+  // rien à relire — le contenu est la liste des demi-journées signées — et la
+  // feuille resterait sans la signature que les OPCO demandent.
+  "formateur-contresignature",
 ] as const;
 
 /**
@@ -129,6 +134,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "qualiopi-attestation-disponible": "Attestation disponible",
   "qualiopi-portail-acces": "Accès au portail",
   "qualiopi-emargement-lien": "Lien de signature de présence",
+  "formateur-contresignature": "Demande de contresignature de l'émargement au formateur",
   "qualiopi-alerte-interne": "Alerte interne",
   "qualiopi-relance-impayee": "Relance d'impayé",
   "appel-rappel": "Rappel avant un appel de découverte",

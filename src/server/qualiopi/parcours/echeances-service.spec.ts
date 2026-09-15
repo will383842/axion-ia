@@ -39,6 +39,10 @@ function sessionAJ3(patch: Record<string, unknown> = {}) {
     // relation inverse pour composer « Session reportée vers … ». Une fixture
     // est un CONTRAT : elle se recopie sur le `select` de la requête.
     sessionRemplacement: [] as Array<{ numero: string }>,
+    // 2026-09-15 — champs AJOUTÉS avec l'étape de contresignature : ils sont
+    // lus par le même `select`.
+    jours: [] as Array<{ date: Date; heureDebut: string; heureFin: string; trainerId: null }>,
+    emargementContresignatures: [] as Array<{ date: Date; demiJournee: string }>,
     documents: [
       {
         id: "conv",
@@ -58,7 +62,14 @@ function sessionAJ3(patch: Record<string, unknown> = {}) {
         questionnaires: [],
         evaluations: [],
         emargementTokens: [],
-        presences: [{ id: "c1" }],
+        presences: [
+          {
+            id: "c1",
+            date: d("2026-09-10T00:00:00.000Z"),
+            demiJournee: "matin",
+            emargementSignatures: [],
+          },
+        ],
         trainee: { portailAcces: [{ id: "p1" }] },
       },
     ],

@@ -132,6 +132,14 @@ export const ETAPES_DU_FORMATEUR: Readonly<Record<EtapeCle, boolean>> = {
   emargement_signe: true,
 
   /**
+   * OUI — clause 1. Contresigner chaque demi-journée est SON geste, depuis son
+   * espace (`contresignerDemiJourneeAction`), et personne ne peut le poser à sa
+   * place. L'étape n'existait pas (2026-09-15) : la contresignature de la seule
+   * session réelle manque, et rien ne le lui a jamais dit.
+   */
+  contresignature_formateur: true,
+
+  /**
    * NON — **et c'est le cas limite du tableau.** Évaluer les acquis est bien son
    * acte pédagogique (ind. 11), mais `createEvaluationAcquisAction` est
    * `requireAdminWrite` et AUCUN écran de l'espace formateur ne saisit une
@@ -190,6 +198,8 @@ export const GESTE_FORMATEUR: Readonly<Partial<Record<EtapeCle, string>>> = {
     "Les journées n'ont pas été confirmées par l'organisme — sans elles, personne ne pourra émarger. Signalez-le avant la séance.",
   emargement_signe:
     "Ouvrez la formation, faites signer en mode groupe, puis contresignez chaque demi-journée.",
+  contresignature_formateur:
+    "Vos stagiaires ont signé : contresignez chaque demi-journée depuis la formation, bloc Émargement. Personne ne peut signer à votre place.",
 };
 
 /**

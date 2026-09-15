@@ -23,10 +23,12 @@ import * as Sentry from "@sentry/nextjs";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
+import { verdictAvantEnvoi } from "@/server/email/suppression";
 import {
   creerTokenInscription,
   TokenEmargementError,
 } from "@/server/qualiopi/emargement/token-service";
+import { inscriptionAttendSonLien } from "@/server/qualiopi/emargement/remise-lien";
 
 export interface EchecEnvoiLien {
   stagiaireNom: string;
@@ -36,6 +38,13 @@ export interface EchecEnvoiLien {
 export type ResultatEnvoiLiens =
   { ok: true; envoyes: number; echecs: EchecEnvoiLien[] } | { ok: false; motif: string };
 
+/** Libellé des motifs de la liste de suppression — dits, jamais maquillés en panne. */
+const MOTIF_SUPPRESSION: Record<string, string> = {
+  rebond_dur: "adresse en rebond définitif",
+  desabonne: "désabonnement",
+  oppose: "opposition aux envois",
+};
+
 /**
  * Émet un jeton neuf pour chaque stagiaire visé et le lui envoie.
  *
@@ -43,13 +52,29 @@ export type ResultatEnvoiLiens =
  * directe de « un seul jeton vivant par inscription » (`creerTokenInscription`).
  * L'appelant doit le dire à l'utilisateur ; le service, lui, ne peut pas le
  * deviner.
+ *
+ * ## `cible: "sans_lien_remis"` — la maille de l'envoi AUTOMATIQUE (2026-09-15)
+ *
+ * 🔴 Le cron servait la SESSION entière, et seulement si AUCUN inscrit n'avait
+ * de lien remis. Un seul stagiaire servi (renvoi ciblé, rappel J-7) suffisait
+ * donc à priver tous les autres, et un inscrit ajouté le deuxième jour n'était
+ * jamais vu. La maille est désormais l'INSCRIPTION : seuls ceux dont aucun lien
+ * vivant n'est entre les mains de quelqu'un sont servis (`remise-lien.ts`).
+ * Le renvoi de la console garde son contrat — tous les visés, toujours.
  */
 export async function envoyerLiensPourSession(input: {
   sessionId: string;
   /** Absent = tous les inscrits actifs. */
   enrollmentId?: string | undefined;
   origine: "console" | "cron-j0";
+  /**
+   * `tous` (défaut) : chaque inscrit visé reçoit un lien neuf.
+   * `sans_lien_remis` : seulement ceux qui n'ont aucun lien entre les mains.
+   */
+  cible?: "tous" | "sans_lien_remis";
 }): Promise<ResultatEnvoiLiens> {
+  const maintenant = new Date();
+  const seulementSansLien = input.cible === "sans_lien_remis";
   const formation = await prisma.trainingSession.findUnique({
     where: { id: input.sessionId },
     select: {
@@ -63,13 +88,34 @@ export async function envoyerLiensPourSession(input: {
           trainee: { deletedAt: null },
           ...(input.enrollmentId !== undefined ? { id: input.enrollmentId } : {}),
         },
-        select: { id: true, trainee: { select: { email: true, nom: true, prenom: true } } },
+        select: {
+          id: true,
+          trainee: { select: { email: true, nom: true, prenom: true } },
+          // Les jetons VIVANTS, pour savoir qui a déjà un lien entre les mains.
+          // Lus dans la même requête : une lecture par inscrit serait N+1.
+          emargementTokens: {
+            where: { revokedAt: null, expiresAt: { gt: maintenant } },
+            select: { envoyeAt: true, usedAt: true, createdAt: true },
+          },
+        },
         orderBy: { trainee: { nom: "asc" } },
       },
     },
   });
 
   if (formation === null) return { ok: false, motif: "Session introuvable" };
+
+  const aServir = seulementSansLien
+    ? formation.enrollments.filter((e) =>
+        inscriptionAttendSonLien(e.emargementTokens ?? [], maintenant),
+      )
+    : formation.enrollments;
+
+  // Personne n'attend son lien : ce n'est pas un échec, il n'y a rien à faire.
+  if (seulementSansLien && formation.enrollments.length > 0 && aServir.length === 0) {
+    return { ok: true, envoyes: 0, echecs: [] };
+  }
+
   if (formation.enrollments.length === 0) {
     return {
       ok: false,
@@ -84,9 +130,29 @@ export async function envoyerLiensPourSession(input: {
   const echecs: EchecEnvoiLien[] = [];
   let envoyes = 0;
 
-  for (const inscription of formation.enrollments) {
+  for (const inscription of aServir) {
     const nom = `${inscription.trainee.prenom} ${inscription.trainee.nom}`.trim();
     try {
+      // 🔴 La liste de suppression AVANT le jeton, sur le chemin automatique.
+      //
+      // `enqueueEmail` la consulte aussi — mais APRÈS que `creerTokenInscription`
+      // a fabriqué un jeton neuf, donc révoqué le précédent. Passage horaire
+      // oblige, une adresse morte faisait tourner un jeton par heure, et l'échec
+      // se lisait « file indisponible, réessayez » : un motif faux, qui envoie
+      // chercher une panne qui n'existe pas.
+      if (seulementSansLien) {
+        const verdict = await verdictAvantEnvoi(inscription.trainee.email, {
+          template: "qualiopi-emargement-lien",
+          marketing: false,
+        });
+        if (verdict.retenu) {
+          echecs.push({
+            stagiaireNom: nom,
+            motif: `Adresse retenue par la liste de suppression (${MOTIF_SUPPRESSION[verdict.motif] ?? verdict.motif}) — aucun lien émis. Corrigez l'adresse, ou faites signer en mode groupe.`,
+          });
+          continue;
+        }
+      }
       const { token, tokenId } = await creerTokenInscription({
         enrollmentId: inscription.id,
         dateFinSession: formation.dateFin,
@@ -134,7 +200,9 @@ export async function envoyerLiensPourSession(input: {
           motif:
             envoi.garePourValidation === true
               ? "E-mail garé en corbeille de validation — le lien ne partira qu'après approbation."
-              : "File de messages indisponible — le lien n'est pas parti, réessayez.",
+              : envoi.retenu !== undefined
+                ? `Adresse retenue par la liste de suppression (${MOTIF_SUPPRESSION[envoi.retenu] ?? envoi.retenu}) — le lien n'est pas parti.`
+                : "File de messages indisponible — le lien n'est pas parti, réessayez.",
         });
         continue;
       }

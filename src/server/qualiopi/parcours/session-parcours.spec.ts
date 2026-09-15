@@ -36,6 +36,7 @@ function dossier(patch: Partial<SessionParcoursInput> = {}): SessionParcoursInpu
     inscriptions: [],
     liensEmargementActifs: 0,
     creneauxEmargement: 0,
+    contresignature: { signees: 0, aContresigner: 0 },
     maintenant: d("2026-08-01T09:00:00.000Z"),
     ...patch,
   };
@@ -59,7 +60,7 @@ const etapeDe = (p: ReturnType<typeof construireParcours>, cle: string) =>
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-describe("🔴 le dossier couvre les quinze étapes du plan", () => {
+describe("🔴 le dossier couvre les seize étapes du plan", () => {
   it("les rend toutes, dans l'ordre chronologique", () => {
     const p = construireParcours(dossier({ inscriptions: [inscription()] }));
     expect(p.etapes.map((e) => e.cle)).toEqual([
@@ -73,6 +74,7 @@ describe("🔴 le dossier couvre les quinze étapes du plan", () => {
       "creneaux_emargement",
       "liens_signature_emis",
       "emargement_signe",
+      "contresignature_formateur",
       "evaluation_finale",
       "attestation",
       "acces_portail",
@@ -495,9 +497,10 @@ describe("🔴 aucune étape n'est privée d'état terminal par OUBLI", () => {
     }),
   );
 
-  it("les quinze étapes sont bien rendues", () => {
+  it("les seize étapes sont bien rendues", () => {
     // Sans ceci, une liste vide ferait passer tout le bloc au vert.
-    expect(p.etapes).toHaveLength(15);
+    // 2026-09-15 — seize : la contresignature du formateur a son étape.
+    expect(p.etapes).toHaveLength(16);
   });
 
   it.each(p.etapes.map((e) => [e.cle, e] as const))(

@@ -29,6 +29,9 @@ const ligne = (patch: Partial<LigneSessionParcours> = {}): LigneSessionParcours 
   // qui garde la fixture alignée sur le `select`.
   sessionRemplacement: [],
   documents: [],
+  // 2026-09-15 — requis par la mesure de contresignature.
+  jours: [],
+  emargementContresignatures: [],
   enrollments: [],
   ...patch,
 });
@@ -46,6 +49,14 @@ const inscription = (patch: Record<string, unknown> = {}) =>
     trainee: { portailAcces: [] },
     ...patch,
   }) as LigneSessionParcours["enrollments"][number];
+
+/** Un créneau sans signature — la forme du `select` depuis le 2026-09-15. */
+const creneau = (id: string) => ({
+  id,
+  date: new Date("2026-09-01T00:00:00Z"),
+  demiJournee: "matin",
+  emargementSignatures: [],
+});
 
 describe("entreeParcours — la traduction", () => {
   it("reporte la session telle quelle", () => {
@@ -87,11 +98,11 @@ describe("entreeParcours — la traduction", () => {
     const e = entreeParcours(
       ligne({
         enrollments: [
-          inscription({ id: "a", emargementTokens: [{ id: "t1" }], presences: [{ id: "p1" }] }),
+          inscription({ id: "a", emargementTokens: [{ id: "t1" }], presences: [creneau("p1")] }),
           inscription({
             id: "b",
             emargementTokens: [{ id: "t2" }, { id: "t3" }],
-            presences: [{ id: "p2" }, { id: "p3" }],
+            presences: [creneau("p2"), creneau("p3")],
           }),
         ],
       }),

@@ -91,11 +91,18 @@ export function EcheancesFormateur({ echeances }: EcheancesFormateurProps): Reac
             </div>
             {/* Encadré, jamais un texte souligné : une action se voit comme une
                 cible cliquable, pas comme un lien de bas de page. */}
+            {/* 2026-09-15 — pour l'émargement et sa contresignature, le lien
+                mène DROIT au bloc où se pose le geste (`#emargement`), pas en
+                haut d'une page qu'il faudrait parcourir. */}
             <Link
-              href={`${FORMATEUR_SESSIONS_PATH}/${e.sessionId}`}
+              href={`${FORMATEUR_SESSIONS_PATH}/${e.sessionId}${
+                e.cle === "contresignature_formateur" || e.cle === "emargement_signe"
+                  ? "#emargement"
+                  : ""
+              }`}
               className="border-border text-mocha hover:bg-sand shrink-0 rounded-md border px-3 py-1.5 text-xs font-medium transition-colors"
             >
-              Ouvrir la formation
+              {e.cle === "contresignature_formateur" ? "Contresigner" : "Ouvrir la formation"}
             </Link>
           </li>
         ))}

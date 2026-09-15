@@ -31,6 +31,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { bilanContresignature } from "@/server/qualiopi/emargement/contresignatures-manquantes";
 import { appelleUneAction, type EtatEtape } from "./etat-echeance";
 import {
   construireParcours,
@@ -81,6 +82,21 @@ export interface LigneSessionParcours {
    */
   readonly sessionRemplacement: ReadonlyArray<{ readonly numero: string }>;
   readonly documents: SessionParcoursInput["documents"];
+  /**
+   * 2026-09-15 — journées déclarées et contresignatures posées : de quoi dire
+   * quelles demi-journées signées attendent le formateur. Champs REQUIS, pour
+   * la raison écrite au-dessus de `sessionRemplacement`.
+   */
+  readonly jours: ReadonlyArray<{
+    readonly date: Date;
+    readonly heureDebut: string;
+    readonly heureFin: string;
+    readonly trainerId: string | null;
+  }>;
+  readonly emargementContresignatures: ReadonlyArray<{
+    readonly date: Date;
+    readonly demiJournee: string;
+  }>;
   readonly enrollments: ReadonlyArray<{
     readonly id: string;
     readonly statut: string;
@@ -89,7 +105,13 @@ export interface LigneSessionParcours {
     readonly questionnaires: SessionParcoursInput["inscriptions"][number]["questionnaires"];
     readonly evaluations: ReadonlyArray<{ readonly dateEvaluation: Date }>;
     readonly emargementTokens: ReadonlyArray<{ readonly id: string }>;
-    readonly presences: ReadonlyArray<{ readonly id: string }>;
+    readonly presences: ReadonlyArray<{
+      readonly id: string;
+      readonly date: Date;
+      readonly demiJournee: string;
+      /** Au plus une signature non révoquée : seule sa PRÉSENCE compte. */
+      readonly emargementSignatures: ReadonlyArray<{ readonly id: string }>;
+    }>;
     readonly trainee: { readonly portailAcces: ReadonlyArray<{ readonly id: string }> };
   }>;
 }
@@ -131,6 +153,21 @@ export function entreeParcours(
     })),
     liensEmargementActifs: s.enrollments.reduce((n, e) => n + e.emargementTokens.length, 0),
     creneauxEmargement: s.enrollments.reduce((n, e) => n + e.presences.length, 0),
+    // 🔴 La MÊME mesure que la demande envoyée au formateur
+    // (`demande-contresignature.ts`) : une fiche qui compterait autrement que
+    // l'e-mail dirait « 2 à contresigner » quand le formateur en lit trois.
+    contresignature: (() => {
+      const b = bilanContresignature({
+        jours: s.jours,
+        formateurPrincipalId: s.formateurPrincipalId,
+        creneauxSignes: s.enrollments.flatMap((e) =>
+          e.presences.filter((p) => p.emargementSignatures.length > 0),
+        ),
+        contresignatures: s.emargementContresignatures,
+        maintenant,
+      });
+      return { signees: b.signees, aContresigner: b.aContresigner.length };
+    })(),
     maintenant,
   };
 }
@@ -274,6 +311,11 @@ export async function prochainesEcheances(options?: {
           traineeId: true,
         },
       },
+      jours: { select: { date: true, heureDebut: true, heureFin: true, trainerId: true } },
+      emargementContresignatures: {
+        where: { revokedAt: null },
+        select: { date: true, demiJournee: true },
+      },
       enrollments: {
         select: {
           id: true,
@@ -295,7 +337,20 @@ export async function prochainesEcheances(options?: {
           // `PresenceCreneau.enrollmentId`. Les chercher sur la session ne
           // compile pas — et c'est tant mieux, une somme sur la mauvaise
           // relation aurait compté zéro en silence.
-          presences: { select: { id: true } },
+          // 2026-09-15 — date et demi-journée, et la présence d'une signature
+          // non révoquée : de quoi dire ce qui attend la contresignature.
+          presences: {
+            select: {
+              id: true,
+              date: true,
+              demiJournee: true,
+              emargementSignatures: {
+                where: { revokedAt: null },
+                select: { id: true },
+                take: 1,
+              },
+            },
+          },
           trainee: {
             select: {
               portailAcces: {

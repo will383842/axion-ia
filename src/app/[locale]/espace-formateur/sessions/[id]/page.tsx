@@ -23,6 +23,8 @@ import {
   contresignerDemiJourneeAction,
 } from "@/server/actions/qualiopi/emargement-formateur";
 import { EmargementGroupe } from "@/components/espace-formateur/EmargementGroupe";
+import { DemandeContresignature } from "@/components/espace-formateur/DemandeContresignature";
+import { contresignaturesAttenduesDuFormateur } from "@/server/qualiopi/emargement/contresignatures-attendues";
 import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
 import { signerReleveFormateurAction } from "@/server/actions/qualiopi/releve-signature";
 import { lireEtatSignatureReleve } from "@/server/qualiopi/documents/signature/releve-queries";
@@ -76,7 +78,11 @@ export default async function Page({
   // pourraient tomber de part et d'autre d'une bascule de demi-journée et
   // afficher un état incohérent.
   const identite = await getOrganismeIdentite();
-  const demiJournees = await lireFeuilleGroupe(id, new Date(), identite.raisonSociale, trainerId);
+  const maintenant = new Date();
+  const demiJournees = await lireFeuilleGroupe(id, maintenant, identite.raisonSociale, trainerId);
+  // 2026-09-15 — la DEMANDE de contresignature, visible en ouvrant la formation.
+  // Même bilan que l'e-mail et la fiche session ; appartenance revérifiée dedans.
+  const aContresigner = await contresignaturesAttenduesDuFormateur(id, trainerId, maintenant);
   // Lu APRÈS la garde de propriété, comme tout le reste de cette page.
   const etatReleve = await lireEtatSignatureReleve(id, trainerId);
   // Le kit imprime : null s'il n'est pas encore publie pour cette formation.
@@ -114,6 +120,9 @@ export default async function Page({
             {libelle(STATUT_SESSION_LABELS, session.statut)}
           </p>
         </div>
+
+        {/* Demande de contresignature — en tête, avec l'accès direct au geste. */}
+        <DemandeContresignature demiJournees={aContresigner} />
 
         {/* En-tête récapitulatif */}
         <dl className="border-border grid grid-cols-1 gap-4 rounded-lg border p-4 sm:grid-cols-2">
@@ -366,7 +375,9 @@ export default async function Page({
           préférable quand il marche : les stagiaires signent alors en parallèle
           sur leur propre appareil, et l'identification ne repose pas sur le
           formateur. */}
-        <section className="space-y-3">
+        {/* `id="emargement"` : l'ancre visée par la demande de contresignature —
+            dans l'e-mail, en tête de cette page et depuis l'accueil. */}
+        <section id="emargement" className="scroll-mt-24 space-y-3">
           <h2 className="text-espresso font-serif text-xl">Émargement</h2>
           <p className="text-mocha text-sm">
             Faites signer un stagiaire qui n&apos;a pas pu utiliser son lien personnel. Vous

@@ -135,6 +135,20 @@ vi.mock("@/server/qualiopi/emargement/envoi-liens", () => ({
   envoyerLiensPourSession: vi.fn(async () => ({ ok: true, echecs: [] })),
 }));
 
+// Demande de contresignature au formateur — le service a ses propres tests
+// (`demande-contresignature-bornee.spec.ts`) ; ici on vérifie le BRANCHEMENT.
+vi.mock("@/server/qualiopi/emargement/demande-contresignature", () => ({
+  envoyerDemandesContresignature: vi.fn(async () => ({
+    sessions: 0,
+    envoyees: 0,
+    dejaAujourdhui: 0,
+    plafonnees: 0,
+    sansFormateur: 0,
+    nonMembre: 0,
+    echecs: 0,
+  })),
+}));
+
 import { prisma } from "@/lib/prisma";
 import {
   envoyerConvocation,
@@ -1736,21 +1750,28 @@ describe("handleLiensEmargementJ0 — plus de fenêtre jour UTC aveugle", () => 
       tick: "2026-08-26T10:05:00Z",
     });
 
+  type WhereJ0 = {
+    dateDebut: { gte?: Date; lt?: Date; lte?: Date };
+    OR?: Array<{ dateDebut?: { gte: Date }; dateFin?: { gte: Date } }>;
+    enrollments?: { some?: { emargementTokens?: { none?: Record<string, unknown> } } };
+    AND?: unknown;
+  };
+  const whereJ0 = (): WhereJ0 =>
+    (mockPrisma.trainingSession.findMany.mock.calls[0]![0] as { where: WhereJ0 }).where;
+
   it("🔴 borne basse = now-24h (état), plus le minuit UTC du jour", async () => {
     await lancer();
 
-    const where = (
-      mockPrisma.trainingSession.findMany.mock.calls[0]![0] as {
-        where: { dateDebut: { gte: Date; lt?: Date; lte?: Date } };
-      }
-    ).where;
+    const where = whereJ0();
 
     // Une session commencée il y a 4 h — créée à 10 h, après l'ancien passage
     // unique de 06:00 — doit rester dans la sélection : la borne basse est
     // « il y a 24 h », pas « minuit UTC ».
     const borneBasseAttendue = Date.now() - 24 * 60 * 60 * 1000;
+    const parDebut = where.OR?.find((c) => c.dateDebut !== undefined)?.dateDebut?.gte;
+    expect(parDebut).toBeInstanceOf(Date);
     expect(
-      Math.abs(where.dateDebut.gte.getTime() - borneBasseAttendue),
+      Math.abs((parDebut as Date).getTime() - borneBasseAttendue),
       "la borne basse est retombée sur minuit UTC : une session créée après le " +
         "passage du matin redevient invisible (résidu M2)",
     ).toBeLessThan(5000);
@@ -1765,14 +1786,46 @@ describe("handleLiensEmargementJ0 — plus de fenêtre jour UTC aveugle", () => 
     expect(Math.abs((plafond as Date).getTime() - finJour)).toBeLessThan(5000);
   });
 
-  it("une session servie l'est par envoyerLiensPourSession (origine cron)", async () => {
+  it("🔴 couvre CHAQUE journée d'une session en cours, pas les seules 24 h après son début", async () => {
+    // Session de trois jours : un inscrit ajouté le deuxième jour n'était vu
+    // par aucun passage, la borne basse portant sur `dateDebut` seule.
+    await lancer();
+    const parFin = whereJ0().OR?.find((c) => c.dateFin !== undefined)?.dateFin?.gte;
+    expect(
+      parFin,
+      "aucune borne sur dateFin : une session de plusieurs jours sort du champ",
+    ).toBeInstanceOf(Date);
+    expect(Math.abs((parFin as Date).getTime() - (Date.now() - 24 * 60 * 60 * 1000))).toBeLessThan(
+      5000,
+    );
+  });
+
+  it("🔴 la garde est à la maille de l'INSCRIPTION, pas de la session", async () => {
+    // L'ancienne garde (`enrollments: { none: … }`) écartait la session dès
+    // qu'UN inscrit avait un lien remis : tous les autres restaient sans rien.
+    await lancer();
+    const where = whereJ0();
+    const none = where.enrollments?.some?.emargementTokens?.none as
+      { OR?: unknown[]; revokedAt?: null } | undefined;
+    expect(none, "la sélection ne cherche plus un inscrit qui ATTEND son lien").toBeDefined();
+    expect(none?.revokedAt).toBeNull();
+    // Même règle que le prédicat en mémoire : remis, héritage, ouvert, du jour.
+    expect(none?.OR).toHaveLength(4);
+    expect(JSON.stringify(where.AND ?? null)).not.toContain('"none"');
+  });
+
+  it("une session servie l'est par envoyerLiensPourSession (origine cron, inscrits sans lien)", async () => {
     mockPrisma.trainingSession.findMany.mockResolvedValue([
       { id: "sess-1", numero: "AXI-SESS-2026-009", _count: { jours: 2 } },
     ]);
 
     await lancer();
 
-    expect(mockEnvoyerLiens).toHaveBeenCalledWith({ sessionId: "sess-1", origine: "cron-j0" });
+    expect(mockEnvoyerLiens).toHaveBeenCalledWith({
+      sessionId: "sess-1",
+      origine: "cron-j0",
+      cible: "sans_lien_remis",
+    });
   });
 
   it("🔴 le cron est HORAIRE dans queues.ts — pas un unique passage à 06:00", async () => {
@@ -1787,5 +1840,53 @@ describe("handleLiensEmargementJ0 — plus de fenêtre jour UTC aveugle", () => 
       source.indexOf('jobId: "formation-crons-liens-emargement-j0-cron"'),
     );
     expect(bloc).toContain('pattern: "5 * * * *"');
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Demande de CONTRESIGNATURE au formateur (2026-09-15)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("formation-crons.demandes-contresignature — la demande part seule", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    delete process.env["DATABASE_URL"];
+  });
+
+  const lancer = () =>
+    formationCronsHandler({
+      // Le type est ajouté par ce lot : l'ancien worker l'ignore (warn), il ne
+      // plante pas — et c'est le worker qui pose le planning, pas l'app.
+      type: "formation-crons.demandes-contresignature",
+      tick: "2026-09-16T16:25:00Z",
+    } as Parameters<typeof formationCronsHandler>[0]);
+
+  it("🔴 le type est BRANCHÉ sur le service de demande", async () => {
+    const { envoyerDemandesContresignature } =
+      await import("@/server/qualiopi/emargement/demande-contresignature");
+    await lancer();
+    expect(envoyerDemandesContresignature).toHaveBeenCalledTimes(1);
+  });
+
+  it("stub SSG → aucun appel", async () => {
+    const { envoyerDemandesContresignature } =
+      await import("@/server/qualiopi/emargement/demande-contresignature");
+    process.env["DATABASE_URL"] = "postgresql://stub:stub@stub.invalid:5432/stub";
+    await lancer();
+    delete process.env["DATABASE_URL"];
+    expect(envoyerDemandesContresignature).not.toHaveBeenCalled();
+  });
+
+  it("🔴 planifié HORAIRE à :25 dans queues.ts — la fin d'une journée n'attend pas le lendemain", async () => {
+    const { readFileSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const source = readFileSync(join(process.cwd(), "src/server/queue/queues.ts"), "utf8");
+    const debut = source.indexOf('type: "formation-crons.demandes-contresignature"');
+    expect(debut, "le cron n'est pas planifié : la demande ne partirait jamais").toBeGreaterThan(0);
+    const bloc = source.slice(
+      debut,
+      source.indexOf('jobId: "formation-crons-demandes-contresignature-cron"'),
+    );
+    expect(bloc).toContain('pattern: "25 * * * *"');
   });
 });

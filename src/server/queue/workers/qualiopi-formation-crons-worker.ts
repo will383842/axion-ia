@@ -77,6 +77,9 @@ import { notifierAlertesGroupees } from "@/server/qualiopi/alertes/envoi-groupe"
 // La MEME mesure que la regle d alerte rappel_j7_non_envoye : une seconde
 // requete jumelle divergerait au premier changement de borne.
 import { sessionsSansRappelJ7 } from "@/server/qualiopi/notifications/rappel-j7-manquant";
+// Module PUR (aucun Prisma) : la règle « ce lien est-il entre les mains de
+// quelqu'un ? », partagée avec le service d'envoi.
+import { whereJetonIntouchable } from "@/server/qualiopi/emargement/remise-lien";
 import {
   gestePositionnement,
   HORIZON_JOURS,
@@ -108,6 +111,10 @@ export type FormationCronJobType =
   // 2026-08-16 — liens de signature des sessions qui COMMENCENT aujourd'hui.
   // Envoyer un lien n'engage pas l'organisme (signer, si) : automatisable.
   | "formation-crons.liens-emargement-j0"
+  // 2026-09-15 — DEMANDE de contresignature au formateur, à la fin d'une
+  // journée signée par des stagiaires. La signature reste la sienne : seule la
+  // demande est automatique, et ses rappels sont bornés.
+  | "formation-crons.demandes-contresignature"
   // 2026-09-06 (ADR 0050) — remise des exemplaires signés que le hook de
   // complétion de signature n'a pas pu servir. Le bouton « Relancer la remise »
   // RESTE : ce cron couvre ce que personne ne va cliquer, parce qu'une pièce
@@ -1837,12 +1844,17 @@ async function handleOffresFraicheur(): Promise<void> {
  * pas l'organisme** — c'est SIGNER qui engage, et signer reste le geste du
  * stagiaire. L'automatiser est donc légitime, au même titre que la convocation.
  *
- * ⚠️ LA GARDE QUI COMPTE : on ne traite QUE les sessions dont AUCUN inscrit
- * actif n'a de jeton vivant. Sans elle, une session de trois jours verrait ses
- * liens réémis chaque matin — et comme toute émission révoque la précédente,
- * les stagiaires arriveraient le jour 2 avec un lien mort dans leur boîte,
- * pendant que la console afficherait « liens émis ». Le remède aurait fabriqué
- * une panne plus subtile que la maladie.
+ * ⚠️ LA GARDE QUI COMPTE : on ne sert QUE les inscrits dont aucun lien vivant
+ * n'est entre les mains de quelqu'un (`remise-lien.ts`). Sans elle, une session
+ * de trois jours verrait ses liens réémis chaque matin — et comme toute
+ * émission révoque la précédente, les stagiaires arriveraient le jour 2 avec un
+ * lien mort dans leur boîte. Un lien remis sert TOUTES les journées : il expire
+ * 48 h après la fin de session, jamais le soir du premier jour.
+ *
+ * Le calendrier qui en résulte : le lien part avec le rappel J-7 ou le rappel
+ * de la veille quand les journées sont confirmées à temps (et il y est marqué
+ * remis) ; sinon au premier passage horaire du jour de la séance — 00:05 UTC,
+ * donc dans la nuit — ou, pour une session créée le jour même, dans l'heure.
  *
  * ⚠️ Une session sans journée déclarée n'est PAS forcée : `creerTokenInscription`
  * refuse, et il a raison — une feuille sans horaires réels est insuffisamment
@@ -1852,15 +1864,11 @@ async function handleOffresFraicheur(): Promise<void> {
 /**
  * Frontière entre l'ancienne sémantique des jetons d'émargement et la nouvelle.
  *
- * Un jeton créé AVANT la migration `20260906140000_emargement_token_envoye_at`
- * porte `envoyeAt = NULL` qu'il ait été remis ou non — la colonne n'existait
- * pas. Le lire comme « jamais envoyé » ferait réémettre, donc révoquer, un lien
- * peut-être déjà entre les mains d'un stagiaire.
- *
- * Exporté pour que le témoin puisse fabriquer un jeton de chaque côté de la
- * frontière : c'est la seule façon de prouver que l'héritage est bien épargné.
+ * Déplacée dans `emargement/remise-lien.ts` (2026-09-15), avec les trois autres
+ * raisons de ne pas remplacer un lien : le service d'envoi en a besoin, et il
+ * ne peut pas importer ce fichier. Ré-exportée ici pour ses lecteurs existants.
  */
-export const SEUIL_ENVOYE_AT = new Date("2026-09-06T14:00:00.000Z");
+export { SEUIL_ENVOYE_AT } from "@/server/qualiopi/emargement/remise-lien";
 
 async function handleLiensEmargementJ0(): Promise<void> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
@@ -1887,54 +1895,36 @@ async function handleLiensEmargementJ0(): Promise<void> {
   const sessions = await prisma.trainingSession.findMany({
     where: {
       statut: { in: ["planifiee", "en_cours"] },
-      dateDebut: { gte: borneBasse24h, lt: finJour },
-      AND: [
-        { enrollments: { some: { ...inscriptionsActives() } } },
-        // 🔴 2026-09-06 — LA GARDE LISAIT L'EXISTENCE D'UN JETON, PAS SA REMISE.
-        //
-        // Elle disait « personne n'a de lien vivant ». Mais fabriquer un lien et
-        // l'envoyer sont deux actes distincts et délibérément séparés :
-        // « Émettre les liens » crée les jetons et affiche les QR pour la salle
-        // SANS expédier le moindre message. Un clic sur ce bouton suffisait donc
-        // à faire croire à ce cron que le travail était fait — et il ne repassait
-        // plus jamais.
-        //
-        // Vécu sur AXI-SESS-2026-001 : jetons fabriqués, aucun envoi dans le
-        // journal, la stagiaire n'a jamais rien reçu, personne n'a pu émarger. Et
-        // faute de trace de présence, `attestations-auto` ne pouvait pas délivrer
-        // sa pièce non plus. Un seul état non nommé arrêtait toute la chaîne.
-        //
-        // La garde lit désormais `envoyeAt`, posé par `envoyerLiensPourSession`
-        // APRÈS un envoi accepté.
-        {
-          enrollments: {
-            none: {
-              emargementTokens: {
-                some: {
-                  revokedAt: null,
-                  expiresAt: { gt: now },
-                  OR: [
-                    { envoyeAt: { not: null } },
-                    // ⚠️ HÉRITAGE — les jetons d'avant la migration portent
-                    // `envoyeAt = NULL` qu'ils aient été remis ou non : la
-                    // colonne n'existait pas, et aucun backfill ne peut inventer
-                    // ce qui n'a pas été écrit. Les lire comme « jamais envoyés »
-                    // ferait réémettre — donc RÉVOQUER — un lien qu'un stagiaire
-                    // a peut-être reçu et s'apprête à utiliser. On corrigerait un
-                    // envoi manquant en fabriquant un émargement perdu.
-                    //
-                    // Ils gardent donc l'ancienne sémantique : leur existence
-                    // vaut « traité ». Le coût est borné dans le temps — un jeton
-                    // expire 48 h après la fin de session, le stock hérité
-                    // s'éteint de lui-même en quelques jours.
-                    { createdAt: { lt: SEUIL_ENVOYE_AT } },
-                  ],
-                },
-              },
-            },
-          },
+      // Plafond : on n'émet pas les liens d'une session de demain.
+      dateDebut: { lt: finJour },
+      // 🔴 2026-09-15 — CHAQUE JOURNÉE, et plus seulement les 24 h qui suivent
+      // le début. `dateDebut ≥ now-24h` seul laissait hors du champ le deuxième
+      // et le troisième jour d'une session : un inscrit ajouté en cours de
+      // route, ou un lien refusé le premier jour faute d'horaires confirmés,
+      // n'était plus jamais servi. La borne sur `dateDebut` reste dans le `OR` :
+      // la sélection ne peut que s'élargir.
+      OR: [{ dateDebut: { gte: borneBasse24h } }, { dateFin: { gte: borneBasse24h } }],
+      // 🔴 2026-09-15 — LA GARDE EST À L'INSCRIPTION, plus à la session.
+      //
+      // Depuis le 2026-09-06 elle lisait `envoyeAt` (fabriquer n'est pas
+      // envoyer — vécu sur AXI-SESS-2026-001). Mais elle le lisait sous un
+      // `enrollments: { none: … }` : UN inscrit servi — renvoi ciblé depuis la
+      // console, lien joint au rappel J-7 — écartait la session entière, et tous
+      // les autres restaient sans rien.
+      //
+      // On cherche désormais un inscrit actif qui ATTEND son lien : aucun jeton
+      // vivant entre les mains de quelqu'un (remis, héritage, ouvert, ou
+      // fabriqué aujourd'hui pour la salle). La règle vit dans
+      // `remise-lien.ts`, où le service la rejoue en mémoire inscrit par
+      // inscrit : ce `where` ne sert qu'à ne pas réveiller une session sans
+      // travail.
+      enrollments: {
+        some: {
+          ...inscriptionsActives(),
+          trainee: { deletedAt: null },
+          emargementTokens: { none: whereJetonIntouchable(now) },
         },
-      ],
+      },
     },
     select: { id: true, numero: true, _count: { select: { jours: true } } },
     take: 50,
@@ -1962,9 +1952,16 @@ async function handleLiensEmargementJ0(): Promise<void> {
       // qu'elles ne testent pas. Même raisonnement que le commentaire de
       // `types.ts` sur le cycle worker ↔ queues.
       const { envoyerLiensPourSession } = await import("@/server/qualiopi/emargement/envoi-liens");
-      const r = await envoyerLiensPourSession({ sessionId: session.id, origine: "cron-j0" });
+      const r = await envoyerLiensPourSession({
+        sessionId: session.id,
+        origine: "cron-j0",
+        // Seulement les inscrits dont aucun lien n'est entre les mains de
+        // quelqu'un : un envoi révoque le lien précédent, on ne tue pas celui
+        // qui sert.
+        cible: "sans_lien_remis",
+      });
       if (r.ok) {
-        traitees++;
+        if (r.envoyes > 0) traitees++;
         if (r.echecs.length > 0) {
           console.error(
             `[formation-crons] liens-emargement-j0: ${session.numero} — ${r.echecs.length} stagiaire(s) sans lien : ` +
@@ -1989,6 +1986,40 @@ async function handleLiensEmargementJ0(): Promise<void> {
       `${sansJournees} sans journée déclarée, ${enEchec} en échec ` +
       `(${sessions.length} session(s) sans lien vivant, démarrant aujourd'hui ou depuis < 24 h)`,
   );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Contresignature — la DEMANDE part seule (2026-09-15)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Horaire à :25 — demande au formateur de contresigner les demi-journées que
+ * ses stagiaires ont signées, une fois la journée terminée.
+ *
+ * 🔴 Sur AXI-SESS-2026-001, la stagiaire a signé et aucune contresignature n'a
+ * jamais été recueillie : rien ne la demandait. Elle reste NON BLOQUANTE pour
+ * l'attestation (décision de Will) ; ce cron ne signe rien à la place de
+ * personne, il DEMANDE — une fois par jour, deux rappels au plus sans réaction.
+ * Tout vit dans `demande-contresignature.ts` ; ici on déclenche et on dit ce
+ * qui s'est passé, même quand il ne s'est rien passé.
+ */
+async function handleDemandesContresignature(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] demandes-contresignature: stub DB, skip");
+    return;
+  }
+  // Import DYNAMIQUE : le service tire `queues.ts` — même raison que
+  // `envoi-liens` plus haut.
+  const { envoyerDemandesContresignature } =
+    await import("@/server/qualiopi/emargement/demande-contresignature");
+  const b = await envoyerDemandesContresignature(new Date());
+  const ligne =
+    `[formation-crons] demandes-contresignature: ${b.envoyees} demande(s) envoyée(s), ` +
+    `${b.dejaAujourdhui} déjà faite(s) aujourd'hui, ${b.plafonnees} au plafond de rappels, ` +
+    `${b.sansFormateur} demi-journée(s) sans formateur, ${b.nonMembre} formateur(s) non membre(s), ` +
+    `${b.echecs} échec(s) (${b.sessions} session(s) examinée(s))`;
+  if (b.echecs > 0 || b.nonMembre > 0 || b.sansFormateur > 0) console.error(ligne);
+  else console.log(ligne);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -2409,6 +2440,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.alertes": handleAlertes,
   "formation-crons.convocation-j5": handleConvocationJ5,
   "formation-crons.liens-emargement-j0": handleLiensEmargementJ0,
+  "formation-crons.demandes-contresignature": handleDemandesContresignature,
   "formation-crons.exemplaires-non-transmis": handleExemplairesNonTransmis,
   "formation-crons.factures-retard": handleFacturesRetard,
   "formation-crons.autofactures": handleAutofactures,

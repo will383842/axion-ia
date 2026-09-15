@@ -41,6 +41,9 @@ vi.mock("@/lib/prisma", () => ({
     },
     emargementToken: {
       findFirst: vi.fn(),
+      // 2026-09-15 — le lien joint au rappel J-7 ou de la veille est MARQUÉ
+      // remis (`envoyeAt`) quand l'e-mail est accepté par la file.
+      update: vi.fn(),
     },
     // 🔴 Le rappel de la VEILLE (ADR 0048 §4.3) lit la trace DURABLE de son
     // propre envoi ici, et non une colonne d'état : son cron est horaire sur
@@ -137,7 +140,7 @@ const mockPrisma = prisma as unknown as {
     update: ReturnType<typeof vi.fn>;
   };
   portailAcces: { findFirst: ReturnType<typeof vi.fn> };
-  emargementToken: { findFirst: ReturnType<typeof vi.fn> };
+  emargementToken: { findFirst: ReturnType<typeof vi.fn>; update: ReturnType<typeof vi.fn> };
   emailLog: { findFirst: ReturnType<typeof vi.fn> };
   questionnaire: {
     findUnique: ReturnType<typeof vi.fn>;
@@ -408,6 +411,40 @@ describe("envoyerRappelJ7", () => {
     expect((call[3] as Record<string, unknown>)["lienEmargement"]).toBeUndefined();
     // Le reste du payload est intact — le lien portail notamment.
     expect((call[3] as Record<string, unknown>)["lienPortail"]).toContain("/portail/acces/");
+  });
+
+  // 🔴 2026-09-15 — LE LIEN JOINT EST UN LIEN REMIS.
+  //
+  // Le jeton mis en circulation par ce rappel restait `envoyeAt = NULL` : pour
+  // le passage horaire du jour J, il était donc « fabriqué, jamais envoyé ». Le
+  // cron le réémettait — c'est-à-dire le RÉVOQUAIT — et le stagiaire recevait
+  // deux liens pour la même séance, dont le premier mort.
+  it("🔴 lien joint et e-mail accepté → le jeton est marqué REMIS", async () => {
+    mockEnqueueEmail.mockResolvedValue({ enqueued: true });
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(fakeSessionWithEnrollments);
+    await envoyerRappelJ7(SESSION_ID);
+    expect(mockPrisma.emargementToken.update).toHaveBeenCalledTimes(2);
+    const arg = mockPrisma.emargementToken.update.mock.calls[0]?.[0] as {
+      where: { id: string };
+      data: { envoyeAt: Date };
+    };
+    expect(arg.where.id).toBe("tok-uuid-1");
+    expect(arg.data.envoyeAt).toBeInstanceOf(Date);
+  });
+
+  it("e-mail NON accepté → le jeton n'est PAS marqué remis", async () => {
+    mockEnqueueEmail.mockResolvedValue({ enqueued: false });
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(fakeSessionWithEnrollments);
+    await envoyerRappelJ7(SESSION_ID);
+    expect(mockPrisma.emargementToken.update).not.toHaveBeenCalled();
+    mockEnqueueEmail.mockResolvedValue({ enqueued: true });
+  });
+
+  it("aucun lien joint → rien à marquer", async () => {
+    mockPrisma.emargementToken.findFirst.mockResolvedValue({ id: "tok-existant" });
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(fakeSessionWithEnrollments);
+    await envoyerRappelJ7(SESSION_ID);
+    expect(mockPrisma.emargementToken.update).not.toHaveBeenCalled();
   });
 
   it("enqueue 1 email par enrollment (2 au total)", async () => {
@@ -1095,6 +1132,15 @@ describe("envoyerRappelJ1", () => {
     // passerait, et c'est exactement ce que la réduction de `formatLieu` évite.
     expect(payload["lieu"]).toBe("Distanciel — meet.google.com");
     expect(String(payload["lieu"])).not.toContain("abc-defg-hij");
+  });
+
+  it("🔴 le lien d'émargement joint à la veille est marqué REMIS", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(sessionDistanciel());
+    await envoyerRappelJ1(SESSION_ID);
+    const arg = mockPrisma.emargementToken.update.mock.calls[0]?.[0] as
+      { where: { id: string }; data: { envoyeAt: Date } } | undefined;
+    expect(arg?.where.id).toBe("tok-uuid-1");
+    expect(arg?.data.envoyeAt).toBeInstanceOf(Date);
   });
 
   it("n'invente PAS de lien quand la session n'en porte pas", async () => {
