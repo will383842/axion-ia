@@ -54,9 +54,19 @@ import { resolveRibFacture } from "@/lib/legal-identity";
 import { periodePrestationSession } from "@/server/qualiopi/financements/periode-prestation";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
+import { factureVivante } from "@/server/qualiopi/financements/facture-vivante";
+import { avecVerrouFactureSession } from "@/server/qualiopi/financements/verrou-facture-session";
 import type { FactureFormationDestinataire } from "../../../../prisma/generated/client";
 
-export type ResultatEmission<T> = { data: T } | { error: string };
+/**
+ * `code` distingue les refus que l'automate traite À PART d'une erreur métier :
+ *   - `verrou_pris` : un autre passage (ou un clic) émet pour cette session ;
+ *   - `deja_facturee` : une facture vivante couvre déjà la prestation ;
+ *   - `garde` : la précondition de l'appelant, relue sous verrou, a refusé.
+ */
+export type CodeRefusEmission = "verrou_pris" | "deja_facturee" | "garde";
+
+export type ResultatEmission<T> = { data: T } | { error: string; code?: CodeRefusEmission };
 
 export interface EmettreFactureSessionInput {
   sessionId: string;
@@ -168,8 +178,37 @@ function computeForfait(montantHtCents: number): {
  *
  * ⚠️ L'entrée est supposée VALIDÉE par l'appelant (schéma Zod de l'action,
  * décision pure du cron).
+ *
+ * 🔴 SOUS VERROU CONSULTATIF PAR SESSION (relecture A09, PR 1097). Le bouton et
+ * l'automate prennent le même : deux clics simultanés, ou un clic pendant le
+ * passage du cron, n'émettent qu'une pièce. Et sous ce verrou, une facture
+ * VIVANTE qui couvre déjà la prestation fait refuser l'émission.
+ *
+ * @param options.garde  précondition de l'appelant, évaluée SOUS le verrou
+ *   (l'automate y relit sa décision). Un message non nul refuse l'émission.
  */
 export async function emettreFactureFormationSession(
+  input: EmettreFactureSessionInput,
+  options?: { garde?: () => Promise<string | null> },
+): Promise<ResultatEmission<FactureSessionEmise>> {
+  const issue = await avecVerrouFactureSession(input.sessionId, async () => {
+    if (options?.garde !== undefined) {
+      const refus = await options.garde();
+      if (refus !== null) return { error: refus, code: "garde" } as const;
+    }
+    return emettreSansVerrou(input);
+  });
+  if (!issue.acquis) {
+    return {
+      error:
+        "Une génération de facture est déjà en cours pour cette session. Réessayez dans un instant.",
+      code: "verrou_pris",
+    };
+  }
+  return issue.valeur;
+}
+
+async function emettreSansVerrou(
   input: EmettreFactureSessionInput,
 ): Promise<ResultatEmission<FactureSessionEmise>> {
   const { sessionId, destinataire, ventilation } = input;
@@ -221,6 +260,18 @@ export async function emettreFactureFormationSession(
           ...CLIENT_FACTURABLE_SELECT,
           // Conditions de règlement propres au client (F61) — priment sur la config.
           delaiPaiementJours: true,
+        },
+      },
+      // 🔴 Les factures ORIGINALES déjà rattachées à la session (un avoir ne
+      // porte pas de `sessionId`) : c'est ce qui refuse le doublon, plus bas.
+      facturesFormation: {
+        where: { avoirDeId: null },
+        select: {
+          id: true,
+          numero: true,
+          statut: true,
+          montantHtCents: true,
+          avoirs: { select: { statut: true, montantHtCents: true } },
         },
       },
     },
@@ -345,6 +396,40 @@ export async function emettreFactureFormationSession(
 
   if (!choix.ok && choix.raison !== "aucune_creance") {
     return { error: choix.message };
+  }
+
+  // ── 🔴 JAMAIS DEUX FACTURES VIVANTES POUR LA MÊME PRESTATION ──────────────
+  //
+  // Relecture A09 de la PR 1097 : depuis que l'automate émet la facture d'une
+  // session en financement direct le lendemain de sa fin, ce bouton — affiché
+  // sans condition — en émettait une SECONDE l'après-midi. Sans créance, rien
+  // ne regardait les factures existantes.
+  //
+  //   · SANS créance : la facture couvre toute la session. Toute autre facture
+  //     vivante de la session la couvre déjà.
+  //   · AVEC créances : chaque créance a sa facture (OPCO + reste à charge : le
+  //     cas légitime de deux factures). Seule une facture vivante rattachée à
+  //     AUCUNE créance du dossier — une facture « globale » — couvre déjà tout.
+  //     La double facturation d'une MÊME créance est refusée par
+  //     `choisirCreancePourFacture`, plus haut.
+  //
+  // ⚠️ Vivante = ni annulée, ni entièrement rectifiée par avoir (`facture-
+  // vivante.ts`). Refacturer après un avoir total reste donc possible — c'est
+  // exactement le geste que le message prescrit.
+  const rattacheesAUneCreance = new Set(
+    creances.map((c) => c.factureFormationId).filter((id): id is string => id !== null),
+  );
+  const couvrantes = (trainingSession.facturesFormation ?? []).filter(
+    (f) => factureVivante(f) && !(choix.ok && rattacheesAUneCreance.has(f.id)),
+  );
+  if (couvrantes.length > 0) {
+    const numeros = couvrantes.map((f) => f.numero).join(", ");
+    return {
+      error:
+        `Une facture existe déjà pour cette session : ${numeros}. ` +
+        "Pour refacturer, émettez d'abord un avoir sur cette facture.",
+      code: "deja_facturee",
+    };
   }
 
   const destinataireEffectif: FactureFormationDestinataire = destinataire;

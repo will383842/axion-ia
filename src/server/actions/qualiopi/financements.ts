@@ -355,7 +355,7 @@ export async function genererFactureFormationAction(input: {
   // du lendemain de session (cron du worker, hors Next). Cf. l'en-tête de
   // `facture-formation-emission.ts`.
   const resultat = await emettreFactureFormationSession({ sessionId, destinataire, ventilation });
-  if ("error" in resultat) return resultat;
+  if ("error" in resultat) return { error: resultat.error };
   const facture = resultat.data;
 
   await logQualiopiActivity({

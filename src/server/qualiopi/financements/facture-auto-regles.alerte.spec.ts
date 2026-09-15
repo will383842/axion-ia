@@ -1,66 +1,61 @@
 /**
- * `facture_auto_non_emise` — ce que l'alerte dit, et qu'elle se TAIT une fois
- * le cas résolu (c'est ce silence qui la ferme : code `resolutionAuto: true`).
+ * `facture_auto_non_emise` — ce que l'alerte dit, QUAND elle le dit, et qu'elle
+ * se TAIT une fois le cas résolu (c'est ce silence qui la ferme :
+ * `resolutionAuto: true`).
+ *
+ * La famille 3 (facture sans PDF ni e-mail) est éprouvée à part, sur la facture
+ * elle-même : `facture-auto-reprise.spec.ts`.
  */
 
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import {
+  etatVide,
+  factureFausse,
+  sessionEligible,
+  type EtatFaux,
+} from "./__tests__/fausse-base-facture-auto";
 
-const d = vi.hoisted(() => ({
-  sessions: vi.fn(),
-  logs: vi.fn(),
-  factures: vi.fn(),
+const h = vi.hoisted(() => ({
+  etat: null as unknown as EtatFaux,
 }));
 
-vi.mock("@/lib/prisma", () => ({
-  prisma: {
-    trainingSession: { findMany: (...a: unknown[]) => d.sessions(...a) },
-    activityLog: { findMany: (...a: unknown[]) => d.logs(...a) },
-    factureFormation: { findMany: (...a: unknown[]) => d.factures(...a) },
-  },
-}));
+vi.mock("@/lib/prisma", async () => {
+  const { vi: v } = await import("vitest");
+  const { etatVide: vide, faussePrisma: fausse } =
+    await import("./__tests__/fausse-base-facture-auto");
+  h.etat = vide();
+  return { prisma: fausse(h.etat, v.fn()) };
+});
 
-import { casFactureAutoASignaler } from "./facture-auto-regles";
+import {
+  casFactureAutoASignaler,
+  DELAI_SESSION_NON_FACTUREE_JOURS,
+  FENETRE_FACTURE_AUTO_JOURS,
+} from "./facture-auto-regles";
 import { ALERTE_CATALOGUE } from "@/server/qualiopi/alertes/catalogue";
 
+/** Fin le 5 octobre 2026 à 16:00, heure de Paris. */
 const FIN = new Date("2026-10-05T14:00:00.000Z");
-
-function session(over: Record<string, unknown> = {}) {
-  return {
-    id: "s-1",
-    numero: "AXI-SESS-2026-900",
-    titreSession: "Formation test",
-    statut: "realisee",
-    dateFin: FIN,
-    montantHtCents: 150000,
-    interEntreprises: false,
-    financementType: "direct",
-    opcoSubrogation: false,
-    client: {
-      type: "entreprise",
-      raisonSociale: "Acme",
-      siret: "12345678900011",
-      adresse: "1 rue de l'Exemple, 00000 Ville",
-      contactEmail: "compta@acme.test",
-    },
-    facturesFormation: [],
-    dossiersFinancement: [],
-    ...over,
-  };
-}
+const jour = (n: number, heure = "07:00") =>
+  new Date(`2026-10-${String(5 + n).padStart(2, "0")}T${heure}:00.000Z`);
 
 beforeEach(() => {
-  vi.clearAllMocks();
-  d.sessions.mockResolvedValue([]);
-  d.logs.mockResolvedValue([]);
-  d.factures.mockResolvedValue([]);
+  Object.assign(h.etat, etatVide());
+  // Le cron tourne : il a consigné son passage d'hier.
+  h.etat.reglages.set("facture_auto_dernier_passage", { at: "2026-10-05T09:30:00.000Z" });
 });
+
+const passageRecent = (now: Date) =>
+  h.etat.reglages.set("facture_auto_dernier_passage", {
+    at: new Date(now.getTime() - 22 * 3_600_000).toISOString(),
+  });
 
 describe("famille 1 — session non automatisable", () => {
   it("l'alerte cible la session et NOMME le motif", async () => {
-    d.sessions.mockResolvedValue([session({ interEntreprises: true })]);
-    const cas = await casFactureAutoASignaler(new Date("2026-10-06T08:00:00.000Z"));
+    h.etat.sessions = [sessionEligible("s-1", { interEntreprises: true })];
+    const cas = await casFactureAutoASignaler(jour(1));
     expect(cas).toHaveLength(1);
     expect(cas[0]).toMatchObject({ cibleType: "TrainingSession", cibleId: "s-1" });
     expect(cas[0]!.message).toContain("PAR PARTICIPANT");
@@ -68,76 +63,105 @@ describe("famille 1 — session non automatisable", () => {
   });
 
   it("🔑 se tait dès qu'une facture existe (émise à la main) — l'alerte se ferme", async () => {
-    d.sessions.mockResolvedValue([
-      session({
-        interEntreprises: true,
-        facturesFormation: [{ statut: "emise", montantHtCents: 150000, avoirs: [] }],
-      }),
-    ]);
-    expect(await casFactureAutoASignaler(new Date("2026-10-06T08:00:00.000Z"))).toEqual([]);
+    h.etat.sessions = [sessionEligible("s-1", { interEntreprises: true })];
+    h.etat.factures = [factureFausse({ sessionId: "s-1", emiseAt: jour(1, "06:00") })];
+    h.etat.outbox.push({
+      template: "facture-envoi",
+      entityId: "f-1",
+      payload: {},
+      createdAt: jour(1),
+    });
+    expect(await casFactureAutoASignaler(jour(2))).toEqual([]);
   });
 
   it("pas avant le lendemain : le soir même, rien à signaler", async () => {
-    d.sessions.mockResolvedValue([session({ client: null })]);
+    h.etat.sessions = [sessionEligible("s-1", { client: null })];
     expect(await casFactureAutoASignaler(new Date("2026-10-05T20:00:00.000Z"))).toEqual([]);
   });
 });
 
-describe("famille 2 — éligible, et toujours rien trois jours après", () => {
-  it("le lendemain, le passage n'a pas encore eu lieu : silence", async () => {
-    d.sessions.mockResolvedValue([session()]);
-    expect(await casFactureAutoASignaler(new Date("2026-10-06T06:00:00.000Z"))).toEqual([]);
+describe("🔴 pas de doublon avec `session_realisee_non_facturee`", () => {
+  it("le relais est à J+15, et la fenêtre de l'automate s'arrête la veille", () => {
+    expect(DELAI_SESSION_NON_FACTUREE_JOURS).toBe(15);
+    expect(FENETRE_FACTURE_AUTO_JOURS).toBe(14);
   });
 
-  it("🔑 le surlendemain à 07:00 UTC (balayage) : silence — une session clôturée à 08:00 ce jour-là n'est facturée qu'à 09:30", async () => {
-    d.sessions.mockResolvedValue([session()]);
-    expect(await casFactureAutoASignaler(new Date("2026-10-07T07:00:00.000Z"))).toEqual([]);
+  it("J+14 : l'alerte de l'automate parle encore", async () => {
+    h.etat.sessions = [sessionEligible("s-1", { interEntreprises: true })];
+    expect(await casFactureAutoASignaler(jour(14))).toHaveLength(1);
   });
 
-  it("trois jours après, sans facture : l'échec silencieux est dit", async () => {
-    d.sessions.mockResolvedValue([session()]);
-    const cas = await casFactureAutoASignaler(new Date("2026-10-08T05:00:00.000Z"));
-    expect(cas).toHaveLength(1);
-    expect(cas[0]!.message).toContain("n'a pas abouti");
+  it("J+15 : elle se tait — l'alerte historique a pris le relais", async () => {
+    h.etat.sessions = [sessionEligible("s-1", { interEntreprises: true })];
+    expect(await casFactureAutoASignaler(jour(15))).toEqual([]);
+  });
+
+  it("l'évaluateur lit la MÊME constante pour le départ de l'alerte historique", () => {
+    const src = readFileSync(
+      join(process.cwd(), "src/server/qualiopi/alertes/evaluateur.ts"),
+      "utf8",
+    );
+    const depart = src.indexOf("async function regleSessionRealiseeNonFacturee");
+    const corps = src.slice(depart, src.indexOf("\nasync function ", depart + 10));
+    expect(corps).toContain("daysAgo(DELAI_SESSION_NON_FACTUREE_JOURS, now)");
   });
 });
 
-describe("famille 3 — facture automatique sans e-mail préparé", () => {
-  const now = new Date("2026-10-08T05:00:00.000Z");
-
-  it("signalée sur la FACTURE tant qu'aucun journal d'e-mail n'existe", async () => {
-    d.logs.mockImplementation(async ({ where }: { where: { action: string } }) =>
-      where.action === "qualiopi.facture.generer.auto" ? [{ targetId: "f-1" }] : [],
-    );
-    d.factures.mockResolvedValue([{ id: "f-1", numero: "AXI-FACT-2026-050" }]);
-
-    const cas = await casFactureAutoASignaler(now);
-    expect(cas).toEqual([
-      expect.objectContaining({ cibleType: "FactureFormation", cibleId: "f-1" }),
-    ]);
-    expect(cas[0]!.message).toContain("AXI-FACT-2026-050");
-    expect(cas[0]!.message).toContain("Envoyer par email");
+describe("🔴 famille 2 — éligible sans facture : seulement sur un ÉCHEC RÉEL", () => {
+  it("🔑 balayage de 07:00 AVANT la tentative de 09:30, même trois jours après : silence", async () => {
+    // La fausse alarme de la relecture : session clôturée ou complétée tard,
+    // éligible, pas encore tentée. Le cron tourne, aucun échec n'est consigné.
+    h.etat.sessions = [sessionEligible("s-1")];
+    passageRecent(jour(4));
+    expect(await casFactureAutoASignaler(jour(4))).toEqual([]);
   });
 
-  it("🔑 se tait dès que l'e-mail a été préparé (bouton ou automate)", async () => {
-    d.logs.mockImplementation(async ({ where }: { where: { action: string } }) =>
-      where.action === "qualiopi.facture.generer.auto"
-        ? [{ targetId: "f-1" }]
-        : [{ targetId: "f-1" }],
-    );
-    d.factures.mockResolvedValue([{ id: "f-1", numero: "AXI-FACT-2026-050" }]);
-    expect(await casFactureAutoASignaler(now)).toEqual([]);
-  });
-
-  it("une facture annulée depuis ne réclame plus d'e-mail", async () => {
-    d.logs.mockImplementation(async ({ where }: { where: { action: string } }) =>
-      where.action === "qualiopi.facture.generer.auto" ? [{ targetId: "f-1" }] : [],
-    );
-    d.factures.mockResolvedValue([]);
-    expect(await casFactureAutoASignaler(now)).toEqual([]);
-    expect(d.factures.mock.calls[0]![0]).toMatchObject({
-      where: { statut: { notIn: ["annulee", "brouillon"] } },
+  it("le passage a échoué pour cette session : l'alerte le dit, avec le motif", async () => {
+    h.etat.sessions = [sessionEligible("s-1")];
+    passageRecent(jour(2));
+    h.etat.journaux.push({
+      action: "qualiopi.facture.generer.auto.echec",
+      targetType: "TrainingSession",
+      targetId: "s-1",
+      createdAt: jour(1, "09:30"),
+      changes: { motif: "Identité de l'organisme incomplète (SIRET)." },
     });
+    const cas = await casFactureAutoASignaler(jour(2));
+    expect(cas).toHaveLength(1);
+    expect(cas[0]!.message).toContain("Identité de l'organisme incomplète (SIRET).");
+  });
+
+  it("un échec ANTÉRIEUR à la fin de la session ne compte pas", async () => {
+    h.etat.sessions = [sessionEligible("s-1")];
+    passageRecent(jour(2));
+    h.etat.journaux.push({
+      action: "qualiopi.facture.generer.auto.echec",
+      targetType: "TrainingSession",
+      targetId: "s-1",
+      createdAt: new Date(FIN.getTime() - 86_400_000),
+    });
+    expect(await casFactureAutoASignaler(jour(2))).toEqual([]);
+  });
+
+  it("le cron ne passe plus depuis plus de 26 h : l'alerte le dit", async () => {
+    h.etat.sessions = [sessionEligible("s-1")];
+    h.etat.reglages.set("facture_auto_dernier_passage", { at: "2026-10-05T09:30:00.000Z" });
+    const cas = await casFactureAutoASignaler(jour(3));
+    expect(cas).toHaveLength(1);
+    expect(cas[0]!.message).toContain("n'a pas tourné");
+  });
+
+  it("🔑 se tait dès que la facture existe", async () => {
+    h.etat.sessions = [sessionEligible("s-1")];
+    h.etat.reglages.set("facture_auto_dernier_passage", { at: "2026-10-05T09:30:00.000Z" });
+    h.etat.factures = [factureFausse({ sessionId: "s-1", emiseAt: jour(3, "06:00") })];
+    h.etat.outbox.push({
+      template: "facture-envoi",
+      entityId: "f-1",
+      payload: {},
+      createdAt: jour(3),
+    });
+    expect(await casFactureAutoASignaler(jour(3))).toEqual([]);
   });
 });
 

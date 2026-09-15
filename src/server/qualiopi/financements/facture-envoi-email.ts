@@ -148,6 +148,11 @@ export async function preparerEnvoiFactureEmail(
       // Voir le commentaire de l'envoi de devis : sans `clientId`, les règles
       // par client sont inertes ; et `enqueued: false` peut signifier « garé ».
       ...(facture.clientId !== null ? { clientId: facture.clientId } : {}),
+      // 2026-09-15 — rattache la ligne de corbeille (et le journal d'envoi) à la
+      // FACTURE : c'est ce qui permet de savoir, sans journal applicatif, qu'un
+      // e-mail a bien été préparé pour elle (alerte `facture_auto_non_emise`).
+      entityType: "FactureFormation",
+      entityId: facture.id,
       sujet: `${estAvoir ? "Avoir" : "Facture"} ${facture.numero} — Axion-IA`,
       // 🛑 Présent SEULEMENT quand l'appelant l'exige : le bouton n'ajoute rien,
       // et son appel reste octet pour octet celui d'avant l'extraction.

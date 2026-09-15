@@ -472,8 +472,10 @@ export default async function FacturationHubPage({
             <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
               Facture de formation : générée automatiquement le lendemain de la fin de la session
               une fois celle-ci clôturée (financement direct, fiche client complète) ; l&apos;e-mail
-              attend votre validation dans « E-mails à valider ». Les autres cas (OPCO, CPF, France
-              Travail, inter-entreprises, fiche incomplète) sont signalés dans les alertes et se
+              attend votre validation dans « E-mails à valider ». Un financement non renseigné est
+              traité comme un financement direct (facture à l&apos;entreprise, montant HT complet).
+              Les autres cas (OPCO, CPF, France Travail, inter-entreprises, fiche incomplète,
+              facture libre déjà émise pour ce client) sont signalés dans les alertes et se
               facturent depuis la fiche de session.
             </p>
             <AdminFilterTabs
