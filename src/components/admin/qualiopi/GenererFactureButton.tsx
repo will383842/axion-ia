@@ -114,6 +114,13 @@ export function GenererFactureButton({
         Générer une facture de formation
       </h3>
 
+      <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+        Générée automatiquement le lendemain de la fin de la session, une fois celle-ci clôturée,
+        quand le financement est direct et la fiche client complète (SIRET, adresse, e-mail de
+        contact) ; l&apos;e-mail attend votre validation dans « E-mails à valider ». Ce bouton sert
+        aux autres cas (OPCO, CPF, France Travail, inter-entreprises, refacturation), que les
+        alertes signalent.
+      </p>
       <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
         TVA appliquée selon le régime configuré (Qualiopi → Configuration → Régime de TVA).
       </p>

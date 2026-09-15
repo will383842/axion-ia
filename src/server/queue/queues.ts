@@ -764,6 +764,19 @@ export async function enqueueEmail(
      */
     bypassValidation?: boolean;
     /**
+     * 🛑 FORCE le garage en « E-mails à valider », quelles que soient les règles
+     * d'automatisation (globales ou par client). Exigé par tout chemin qui
+     * prépare un e-mail commercial SANS personne devant l'écran — la facture
+     * générée le lendemain d'une session (2026-09-15). Ordre permanent de Will :
+     * rien ne part à un client sans sa validation. Une règle `auto` posée pour
+     * un client exprime un choix sur les envois qu'un humain déclenche ; elle ne
+     * vaut pas consentement pour un automate.
+     *
+     * ⚠️ Sans effet avec `bypassValidation` (l'envoi DEPUIS la corbeille, après
+     * approbation) : c'est précisément la sortie de la validation exigée.
+     */
+    exigerValidation?: boolean;
+    /**
      * Objet forcé par l'admin depuis la corbeille (lot 2). Traverse la file tel
      * quel et prime sur l'objet du gabarit. Ne pas confondre avec `sujet`, qui
      * ne sert qu'à l'affichage de la corbeille.
@@ -815,7 +828,10 @@ export async function enqueueEmail(
   // relecture qui attend vaut mieux qu'un email de relecture parti sans
   // relecture — c'est toute la raison d'être de la corbeille.
   if (options?.bypassValidation !== true) {
-    const mode = await resoudreMode(template, options?.clientId ?? null);
+    const mode =
+      options?.exigerValidation === true
+        ? "validation"
+        : await resoudreMode(template, options?.clientId ?? null);
     if (mode === "validation") {
       const outboxId = await garerPourValidation({
         template,
@@ -1584,6 +1600,29 @@ export async function bootRepeatableJobs(): Promise<void> {
         type: "formation-crons.autofactures",
         pattern: "50 * * * *",
         jobId: "formation-crons-autofactures-cron",
+      },
+      // 🔴 2026-09-15 — FACTURE DU LENDEMAIN DE SESSION, quotidienne à 09:30 UTC.
+      //
+      // Quotidienne et non horaire : la règle se compte en JOURS CIVILS (le
+      // lendemain de la fin), et chaque passage émet des pièces comptables
+      // numérotées — vingt-quatre passages ne rendraient la facture plus tôt que
+      // de quelques heures, au prix de vingt-quatre occasions de plus de doubler
+      // une émission. La sélection est un ÉTAT (aucune facture vivante) : un
+      // passage manqué est repris le lendemain.
+      //
+      // 09:30 UTC (11:30 à Paris) : APRÈS la clôture automatique de 08:00 (une
+      // session doit être « réalisée » pour être facturée), et en matinée, pour
+      // que l'e-mail garé attende la validation pendant la journée plutôt que
+      // la nuit.
+      //
+      // ⚠️ « Le lendemain » suppose la session CLÔTURÉE. La clôture automatique
+      // exige fin + 24 h au passage de 08:00 : une session finie à 16 h n'est
+      // « réalisée » que le surlendemain matin, et facturée ce jour-là à 09:30.
+      // Clôturée à la main le soir même, elle l'est bien le lendemain.
+      {
+        type: "formation-crons.factures-lendemain",
+        pattern: "30 9 * * *",
+        jobId: "formation-crons-factures-lendemain-cron",
       },
       // Hub facturation Phase 5 — brouillons des plans récurrents (émission
       // manuelle), daily 05:00 UTC

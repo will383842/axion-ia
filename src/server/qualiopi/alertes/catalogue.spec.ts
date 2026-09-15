@@ -204,6 +204,9 @@ const CODES_ATTENDUS: string[] = [
   "effectif_depasse",
   // Trou n°10 : toute la chaîne de recouvrement part d'une facture qui EXISTE.
   "session_realisee_non_facturee",
+  // 🔴 2026-09-15 — la facture est générée automatiquement le lendemain de la
+  // session ; ce que l'automate refuse ou rate ne doit pas se taire.
+  "facture_auto_non_emise",
   // 🔴 2026-09-09 — les sept codes de facturation surveillaient tous l'argent
   // qu'on nous doit ; aucun ne surveillait l'argent qu'on doit. Un relevé
   // d'honoraires échu n'avait AUCUNE surface : le seul rappel était le formateur.

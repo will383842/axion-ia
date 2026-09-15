@@ -78,6 +78,7 @@ import {
   TYPES_PIECES_AVEC_LIEU,
   type DefautLieuDocument,
 } from "@/server/qualiopi/lieu/resolve-lieu-document";
+import { casFactureAutoASignaler } from "@/server/qualiopi/financements/facture-auto-regles";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
 import {
   ATTENTE_JOURS,
@@ -4244,6 +4245,27 @@ async function regleSessionRealiseeNonFacturee(now: Date): Promise<AlerteCandida
 }
 
 /**
+ * 🔴 LA FACTURE DU LENDEMAIN N'EST PAS PARTIE TOUTE SEULE (2026-09-15).
+ *
+ * La décision, la lecture et le texte vivent dans
+ * `financements/facture-auto-regles.ts`, À CÔTÉ de la décision du cron : une
+ * requête jumelle écrite ici divergerait au premier changement de borne, et
+ * l'alerte finirait par réclamer ce que l'automate a délibérément laissé, ou
+ * par taire ce qu'il a raté. Cette règle ne fait que les porter au moteur.
+ */
+async function regleFactureAutoNonEmise(now: Date): Promise<AlerteCandidate[]> {
+  const cas = await casFactureAutoASignaler(now);
+  return cas.map((c) => ({
+    code: "facture_auto_non_emise",
+    niveau: "important" as AlerteNiveau,
+    titre: "Facture du lendemain non générée automatiquement",
+    message: c.message,
+    cibleType: c.cibleType,
+    cibleId: c.cibleId,
+  }));
+}
+
+/**
  * 🔴 LE MOTEUR NE REGARDAIT QUE L'ARGENT QU'ON NOUS DOIT (2026-09-09).
  *
  * Sept règles de facturation, sept créances CLIENTS. Un relevé d'honoraires de
@@ -4888,6 +4910,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "emargement_partiel", fn: regleEmargementPartiel },
   { nom: "effectif_depasse", fn: regleEffectifDepasse },
   { nom: "session_realisee_non_facturee", fn: regleSessionRealiseeNonFacturee },
+  { nom: "facture_auto_non_emise", fn: regleFactureAutoNonEmise },
   // 2026-09-09 — la première règle du moteur qui surveille l'argent qu'on DOIT.
   { nom: "releve_formateur_echu", fn: regleReleveFormateurEchu },
   // 2026-09-10 — l'état le plus dangereux du circuit d'autofacturation.

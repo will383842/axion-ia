@@ -161,7 +161,11 @@ export type FormationCronJobType =
   // `exemplaires-non-transmis`, il porte un PLAFOND par passage : une
   // dégénérescence doit rester bornée, et un afflux anormal doit se voir plutôt
   // que s'écouler.
-  | "formation-crons.autofactures";
+  | "formation-crons.autofactures"
+  // 🔴 2026-09-15 — la FACTURE d'une session réalisée, générée le LENDEMAIN de
+  // sa fin, e-mail garé en « E-mails à valider » (jamais envoyé seul). Le corps
+  // vit dans `financements/facture-auto-session.ts`.
+  | "formation-crons.factures-lendemain";
 
 export interface FormationCronJobData {
   type: FormationCronJobType;
@@ -2396,6 +2400,30 @@ async function handleExemplairesNonTransmis(): Promise<void> {
   }
 }
 
+/**
+ * Facture du lendemain de session (2026-09-15). Le corps, ses bornes et son
+ * verrou vivent dans `facture-auto-session.ts` ; ici on déclenche et on trace.
+ *
+ * Import paresseux : la chaîne PDF ne se charge pas au démarrage du worker.
+ */
+async function handleFacturesLendemain(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] factures-lendemain: stub DB, skip");
+    return;
+  }
+  try {
+    const { genererFacturesDuLendemain, ligneJournalBilan } =
+      await import("@/server/qualiopi/financements/facture-auto-session");
+    const { niveau, ligne } = ligneJournalBilan(await genererFacturesDuLendemain());
+    console[niveau](ligne);
+  } catch (err) {
+    console.error(
+      "[formation-crons] factures-lendemain: erreur:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
 const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.date-debut": handleDateDebut,
   "formation-crons.positionnement": handlePositionnement,
@@ -2412,6 +2440,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.exemplaires-non-transmis": handleExemplairesNonTransmis,
   "formation-crons.factures-retard": handleFacturesRetard,
   "formation-crons.autofactures": handleAutofactures,
+  "formation-crons.factures-lendemain": handleFacturesLendemain,
   "formation-crons.plans-recurrents": handlePlansRecurrents,
   "formation-crons.devis-expiration": handleDevisExpiration,
   "formation-crons.offres-fraicheur": handleOffresFraicheur,

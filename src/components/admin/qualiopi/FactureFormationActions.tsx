@@ -12,7 +12,10 @@
  *   - payée : « Envoyer par email », « Émettre un avoir ».
  *   - annulée / avoir : aucune action.
  *
- * Rien d'automatique : chaque action = un clic admin. router.refresh() au succès.
+ * Chaque action = un clic admin. router.refresh() au succès. (Depuis le 2026-09-15,
+ * la facture d'une session réalisée et son e-mail GARÉ en validation peuvent
+ * naître sans clic, le lendemain de la session — `facture-auto-session.ts` ;
+ * les gestes de ce panneau, eux, restent manuels.)
  * Zéro appel DB côté client.
  */
 

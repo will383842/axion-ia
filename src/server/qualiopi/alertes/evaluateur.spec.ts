@@ -74,6 +74,9 @@ vi.mock("@/lib/prisma", () => ({
     // D'ou le cliquet STATIQUE en fin de fichier, qui LIT les deux sources au
     // lieu de les executer.
     supportFormation: { count: vi.fn() },
+    // 2026-09-15 — `facture_auto_non_emise` lit le journal des factures générées
+    // automatiquement (famille « e-mail non préparé »).
+    activityLog: { findMany: vi.fn() },
   },
 }));
 
@@ -128,6 +131,7 @@ import { getInterventionsByFamille } from "@/content/intervention-documents-cata
 // ─────────────────────────────────────────────────────────────────────────────
 
 const mp = prisma as unknown as {
+  activityLog: { findMany: ReturnType<typeof vi.fn> };
   reclamation: { findMany: ReturnType<typeof vi.fn> };
   enrollment: { findMany: ReturnType<typeof vi.fn> };
   trainingSession: { findMany: ReturnType<typeof vi.fn> };
@@ -210,6 +214,8 @@ function setupEmptyMocks() {
   mp.sessionFormateur.findMany.mockResolvedValue([]);
   mp.missionFormateur.findMany.mockResolvedValue([]);
   mp.sessionFormateurRetire.findMany.mockResolvedValue([]);
+  // `facture_auto_non_emise` : aucune facture générée automatiquement par défaut.
+  mp.activityLog.findMany.mockResolvedValue([]);
   // 🔴 2026-09-13 — `kit_sorties_non_pretes`. Zero kit imprime publie = la regle
   // ne regarde aucune session. C'est le defaut le moins contraignant, donc le bon
   // pour les autres blocs : un test qui veut la regle pose son propre `count`.
