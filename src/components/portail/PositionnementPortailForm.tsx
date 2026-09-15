@@ -79,7 +79,22 @@ export function PositionnementPortailForm({
   const [niveaux, setNiveaux] = useState<Record<number, number>>({});
   const [attentes, setAttentes] = useState("");
   const [tacheVisee, setTacheVisee] = useState("");
-  const [besoinAdaptation, setBesoinAdaptation] = useState(false);
+  /**
+   * 🔴 2026-09-15 — `null` tant que la personne n'a PAS répondu.
+   *
+   * La question était une case à cocher « J'ai un besoin d'adaptation
+   * (matériel, rythme, accessibilité, situation de handicap) ». Deux défauts,
+   * vus sur la seule session réelle :
+   *   · « matériel » et « rythme » sont des souhaits que tout participant peut
+   *     avoir : une personne sans handicap ni contrainte de santé l'a cochée, et
+   *     la console a affiché « besoin d'adaptation déclaré : oui » ;
+   *   · une case NON cochée partait en `false` — « non » — même si la personne
+   *     n'avait jamais lu la question.
+   * La question vise désormais l'aménagement lié à un handicap, à la santé ou à
+   * l'accessibilité, se répond par oui OU non, et ne part pas sans réponse. La
+   * clé et son type ne changent pas : les réponses déjà en base gardent leur sens.
+   */
+  const [besoinAdaptation, setBesoinAdaptation] = useState<boolean | null>(null);
   const [detailAdaptation, setDetailAdaptation] = useState("");
 
   const [isPending, startTransition] = useTransition();
@@ -89,6 +104,16 @@ export function PositionnementPortailForm({
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+
+    // Le besoin d'adaptation se répond, il ne se suppose pas : ni « non » par
+    // défaut, ni envoi sans réponse.
+    if (besoinAdaptation === null) {
+      setError(
+        "Indiquez si vous avez besoin d'un aménagement pour suivre la formation (oui ou non).",
+      );
+      return;
+    }
+    const besoin: boolean = besoinAdaptation;
 
     // Un positionnement ne se note pas : on n'envoie JAMAIS de noteGlobale ici.
     // C'est ce qui distingue cette réponse d'une satisfaction dans les indicateurs.
@@ -106,8 +131,8 @@ export function PositionnementPortailForm({
           ),
           attentes: attentes.trim(),
           tacheVisee: tacheVisee.trim(),
-          besoinAdaptation,
-          ...(besoinAdaptation && detailAdaptation.trim()
+          besoinAdaptation: besoin,
+          ...(besoin && detailAdaptation.trim()
             ? { detailAdaptation: detailAdaptation.trim() }
             : {}),
         },
@@ -265,33 +290,55 @@ export function PositionnementPortailForm({
         />
       </div>
 
-      <div className="rounded-md border border-gray-200 p-3">
-        <label className="flex items-start gap-2 text-sm text-gray-900">
-          <input
-            type="checkbox"
-            checked={besoinAdaptation}
-            onChange={(e) => setBesoinAdaptation(e.target.checked)}
-            disabled={isPending}
-            className="mt-0.5"
-          />
-          <span>
-            J&apos;ai un besoin d&apos;adaptation (matériel, rythme, accessibilité, situation de
-            handicap)
-          </span>
-        </label>
-        {besoinAdaptation && (
+      <fieldset className="rounded-md border border-gray-200 p-3">
+        <legend className="px-1 text-sm font-medium text-gray-900">
+          Avez-vous besoin d&apos;un aménagement pour suivre cette formation, en raison d&apos;un
+          handicap, d&apos;un problème de santé ou d&apos;une difficulté d&apos;accès ?
+        </legend>
+        <p id="pos-besoin-aide" className="mt-1 text-xs text-gray-600">
+          Par exemple : accès à la salle, supports agrandis, sous-titrage, pauses supplémentaires.
+          Vos attentes sur le contenu ou le niveau se précisent plus haut, dans «
+          Qu&apos;attendez-vous concrètement de cette formation ? ».
+        </p>
+        <div className="mt-2 flex flex-wrap gap-4" aria-describedby="pos-besoin-aide">
+          <label className="flex items-center gap-2 text-sm text-gray-900">
+            <input
+              type="radio"
+              name="pos-besoin-adaptation"
+              value="non"
+              checked={besoinAdaptation === false}
+              onChange={() => setBesoinAdaptation(false)}
+              disabled={isPending}
+              required
+            />
+            Non, aucun aménagement
+          </label>
+          <label className="flex items-center gap-2 text-sm text-gray-900">
+            <input
+              type="radio"
+              name="pos-besoin-adaptation"
+              value="oui"
+              checked={besoinAdaptation === true}
+              onChange={() => setBesoinAdaptation(true)}
+              disabled={isPending}
+              required
+            />
+            Oui, j&apos;ai besoin d&apos;un aménagement
+          </label>
+        </div>
+        {besoinAdaptation === true && (
           <textarea
             value={detailAdaptation}
             onChange={(e) => setDetailAdaptation(e.target.value)}
             disabled={isPending}
             rows={2}
             maxLength={1000}
-            placeholder="Précisez si vous le souhaitez — transmis au référent handicap."
+            placeholder="Précisez si vous le souhaitez — transmis de façon confidentielle au référent handicap."
             className={`${champ} mt-3`}
-            aria-label="Précision sur le besoin d'adaptation"
+            aria-label="Précision sur le besoin d'aménagement"
           />
         )}
-      </div>
+      </fieldset>
 
       {error && (
         <p role="alert" className="text-sm text-red-700">

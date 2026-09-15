@@ -317,12 +317,30 @@ describe("🔴 une alerte dont la cause a disparu doit pouvoir se refermer", () 
    * émissions — sans quoi un code seulement MENTIONNÉ dans une note de bas de
    * règle compterait comme émis.
    */
-  const sourceEvaluateur = readFileSync(
-    resolve(process.cwd(), "src/server/qualiopi/alertes/evaluateur.ts"),
-    "utf-8",
-  )
-    .replace(/\/\*[\s\S]*?\*\//g, "")
-    .replace(/\/\/.*$/gm, "");
+  const sansCommentaires = (source: string): string =>
+    source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+  const sourceEvaluateurSeul = sansCommentaires(
+    readFileSync(resolve(process.cwd(), "src/server/qualiopi/alertes/evaluateur.ts"), "utf-8"),
+  );
+  /**
+   * 🔴 2026-09-15 — une règle peut vivre dans son propre module (`./regle-*.ts`)
+   * pour être testée sans monter l'évaluateur entier. Lire le seul
+   * `evaluateur.ts` la rangeait « hors du balayage » : la garde exigeait alors
+   * `resolutionAuto: false` d'un code BALAYÉ — l'inverse du juste. Les modules
+   * de règle sont DÉRIVÉS des imports de l'évaluateur, jamais listés à la main :
+   * un module importé est lu, un module oublié ne l'est pas.
+   */
+  const modulesDeRegle = [...sourceEvaluateurSeul.matchAll(/from\s+"\.\/(regle-[a-z0-9-]+)"/g)].map(
+    (m) => m[1]!,
+  );
+  const sourceEvaluateur = [
+    sourceEvaluateurSeul,
+    ...modulesDeRegle.map((nom) =>
+      sansCommentaires(
+        readFileSync(resolve(process.cwd(), `src/server/qualiopi/alertes/${nom}.ts`), "utf-8"),
+      ),
+    ),
+  ].join("\n");
 
   // 🔴 On cherche TOUTE citation littérale d'un code du catalogue, pas la seule
   // forme `code: "…"`. L'évaluateur en émet deux par un ternaire
