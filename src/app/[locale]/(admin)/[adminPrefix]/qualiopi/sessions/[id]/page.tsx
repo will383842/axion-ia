@@ -171,42 +171,16 @@ function statutColor(s: TrainingSessionStatut): string {
  */
 const PLAFOND_STAGIAIRES_INSCRIPTIBLES = 200;
 
-interface PageProps {
-  params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
-  /**
-   * `qStagiaire` — recherche SERVEUR dans le registre des stagiaires.
-   *
-   * C'est le recours qu'exige le plafond posé sur `listTrainees` ci-dessous :
-   * un `take` sans recherche ne remplacerait pas une lenteur, il fabriquerait
-   * une IMPOSSIBILITÉ — le 201ᵉ stagiaire deviendrait ininscriptible, sans le
-   * moindre message. Même patron que l'écran `/qualiopi/stagiaires`.
-   */
-  searchParams: Promise<{ qStagiaire?: string }>;
-}
-
 // ─────────────────────────────────────────────────────────────────────────────
-// Page
+// Lectures de la fiche
+//
+// Sorties de la page telles quelles, pour être lancées ENSEMBLE dans la vague 1
+// (voir le commentaire « Chargement EN VAGUES » de la page). Même `select`, même
+// tri : rien de ce qui est affiché ne change.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export default async function SessionHubPage({ params, searchParams }: PageProps) {
-  const { locale, adminPrefix, id } = await params;
-  const rechercheStagiaire = ((await searchParams).qStagiaire ?? "").trim();
-  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
-  if (!acces.autorise) {
-    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
-  }
-  const role = acces.role;
-
-  // État de signature du relevé de connexion, lu APRÈS la garde de rôle.
-  // `null` quand la session n'a pas de relevé — cas NORMAL du présentiel.
-  const etatReleveConsole = await lireEtatSignatureReleveConsole(id, role);
-
-  // Contreseing de la lettre de mission formateur, même règle de lecture.
-  // `null` quand aucune lettre n'a été générée — la section Documents ci-dessous
-  // porte le bouton qui la génère.
-  const etatLettreConsole = await lireEtatSignatureLettreMissionConsole(id, role);
-
-  const trainingSession = await prisma.trainingSession.findUnique({
+function chargerSession(id: string) {
+  return prisma.trainingSession.findUnique({
     where: { id },
     select: {
       id: true,
@@ -260,175 +234,184 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       },
     },
   });
+}
 
-  if (!trainingSession) notFound();
-
-  const mentionTvaSession = mentionTva(await getQualiopiConfig("regime_tva"));
-
-  // 🔴 DIVERGENCE PLAGE ↔ JOURNÉES, rendue visible en permanence.
-  //
-  // Corriger les dates d'une session ne décale PAS les `SessionJour` — décision
-  // et ses trois raisons dans `sessions/requalification-dates.ts`. Le prix de
-  // cette décision est une divergence possible ; une divergence silencieuse est
-  // un piège, donc on la compte à chaque rendu et l'écran la dit.
-  const joursDeclaresSession = await prisma.sessionJour.findMany({
+function chargerInscriptions(id: string) {
+  return prisma.enrollment.findMany({
     where: { sessionId: id },
-    select: { date: true },
-  });
-  const joursHorsPlageSession = compterJoursHorsPlage({
-    // `@db.Date` stocke minuit UTC : `toISOString` redonne le jour civil.
-    joursISO: joursDeclaresSession.map((j) => j.date.toISOString().slice(0, 10)),
-    debutISO: parisDateISO(trainingSession.dateDebut),
-    finISO: parisDateISO(trainingSession.dateFin),
-  });
-
-  // 🔴 UI 2026-07-27 — l'écran ne prévenait JAMAIS que les documents sortiraient
-  // en SPÉCIMEN. On le découvrait en ouvrant le PDF, une fois généré — ou pas du
-  // tout si on l'envoyait au client sans le rouvrir.
-  // On l'annonce AVANT de générer, avec la liste exacte de ce qui manque.
-  const identiteOf = await getOrganismeIdentite();
-  const champsManquantsConvention = champsIdentiteManquants(identiteOf, "convention");
-
-  // ── Mission du formateur principal (2026-09-03) ─────────────────────────
-  const missionFormateur =
-    trainingSession.formateurPrincipalId !== null
-      ? await lireMissionCourante(id, trainingSession.formateurPrincipalId)
-      : null;
-  const etatMissionFormateur =
-    missionFormateur === null
-      ? "aucune proposition envoyée (affectation antérieure au 3 septembre 2026, ou e-mail non parti)."
-      : `${LIBELLE_STATUT_MISSION[missionFormateur.statut].toLowerCase()}` +
-        (missionFormateur.statut === "en_attente"
-          ? ` depuis le ${missionFormateur.solliciteAt.toLocaleDateString("fr-FR")}` +
-            (missionFormateur.relanceAt !== null
-              ? `, relancé le ${missionFormateur.relanceAt.toLocaleDateString("fr-FR")}`
-              : "") +
-            (missionFormateur.emailEnvoyeAt === null ? " — e-mail de proposition NON parti" : "")
-          : missionFormateur.reponduAt !== null
-            ? ` le ${missionFormateur.reponduAt.toLocaleDateString("fr-FR")}`
-            : "") +
-        (missionFormateur.statut === "refusee" && missionFormateur.motifRefus !== null
-          ? ` — motif : « ${missionFormateur.motifRefus} »`
-          : "") +
-        ".";
-
-  // ── Formateurs assignables (R9) — habilitation calculée sur la formation ───
-  const allTrainers = await listTrainers({ actifOnly: true });
-  // Lot 1ter §2 — une lettre de mission suppose DEUX personnes. Le statut
-  // `dirigeant` existe dans le registre des formateurs ; on ne devine pas par
-  // comparaison de noms, ce qui serait faux au premier homonyme.
-  const formateurEstLeDirigeant =
-    trainingSession.formateurPrincipalId !== null &&
-    allTrainers.some(
-      (t) => t.id === trainingSession.formateurPrincipalId && t.statut === "dirigeant",
-    );
-  const clientType = trainingSession.client?.type ?? null;
-
-  const formateurOptions = allTrainers.map((t) => ({
-    id: t.id,
-    label: `${t.prenom} ${t.nom}${t.statut === "sous_traitant" ? " (sous-traitant)" : ""}`,
-    habilite: isTrainerHabilite(t, trainingSession.formation.id).ok,
-  }));
-
-  // ── Inter-entreprises (R-INTER) — clients payeurs sélectionnables ──────────
-  const clientsForInter = (await listClients()).map((c) => ({
-    id: c.id,
-    label: c.raisonSociale,
-  }));
-
-  // ── Données des sections (Vague 2) ────────────────────────────────────────
-  const [enrollmentsRaw, documentsRaw, traineesRaw, totalStagiairesRegistre] = await Promise.all([
-    prisma.enrollment.findMany({
-      where: { sessionId: id },
-      orderBy: { createdAt: "asc" },
-      select: {
-        id: true,
-        statut: true,
-        tauxPresencePct: true,
-        adaptationsRealisees: true,
-        sortieAt: true,
-        sortieMotif: true,
-        // Financement par participant (R-INTER)
-        financementType: true,
-        clientId: true,
-        numeroDossierOpco: true,
-        edofVerifieAt: true,
-        montantHtCents: true,
-        trainee: {
-          select: {
-            id: true,
-            nom: true,
-            prenom: true,
-            email: true,
-            // Ind. 10 — le BOOLÉEN seul, pour dire « besoin déclaré ». Le détail
-            // chiffré n'est pas chargé.
-            situationHandicap: true,
-            portailAcces: {
-              where: { revoked: false },
-              orderBy: { expiresAt: "desc" },
-              take: 1,
-              select: { id: true, expiresAt: true, revoked: true },
-            },
-          },
-        },
-        questionnaires: {
-          select: {
-            id: true,
-            // 🔴 `D4-5-S1` — `token: true` était ici. La page sérialisait le
-            // jeton porteur de chaque questionnaire vers le navigateur, pour
-            // que la console puisse saisir les réponses. L'identifiant suffit :
-            // il désigne, il n'ouvre pas.
-
-            type: true,
-            reponduAt: true,
-            // « jamais envoyé » ≠ « envoyé, sans réponse » : la colonne existait
-            // et n'était lue nulle part, l'écran ne pouvait pas les distinguer.
-            envoyeAt: true,
-            noteGlobale: true,
-            // 🔴 C2-03 / I10-02 — les réponses du positionnement (attentes,
-            // niveaux, besoin d'adaptation) n'étaient lues par AUCUN écran.
-            // Seules celles d'un positionnement répondu sont sérialisées, et
-            // déjà LUES côté serveur : le JSON brut ne descend pas.
-            reponses: true,
+    orderBy: { createdAt: "asc" },
+    select: {
+      id: true,
+      statut: true,
+      tauxPresencePct: true,
+      adaptationsRealisees: true,
+      sortieAt: true,
+      sortieMotif: true,
+      // Financement par participant (R-INTER)
+      financementType: true,
+      clientId: true,
+      numeroDossierOpco: true,
+      edofVerifieAt: true,
+      montantHtCents: true,
+      trainee: {
+        select: {
+          id: true,
+          nom: true,
+          prenom: true,
+          email: true,
+          // Ind. 10 — le BOOLÉEN seul, pour dire « besoin déclaré ». Le détail
+          // chiffré n'est pas chargé.
+          situationHandicap: true,
+          portailAcces: {
+            where: { revoked: false },
+            orderBy: { expiresAt: "desc" },
+            take: 1,
+            select: { id: true, expiresAt: true, revoked: true },
           },
         },
       },
-    }),
-    prisma.documentGenere.findMany({
-      where: { sessionId: id },
-      orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        type: true,
-        numero: true,
-        pdfUrl: true,
-        createdAt: true,
-        // Finitions 2026-08-02 : permet à DocumentsSection de savoir quel
-        // stagiaire une pièce individuelle (convocation, certificat…) couvre —
-        // le bouton « déjà généré » ne doit s'allumer que pour LE stagiaire
-        // sélectionné, pas dès qu'une convocation existe pour n'importe qui.
-        traineeId: true,
-        // Porte `{ specimen: true, champsManquants: [...] }` quand l'identité de
-        // l'OF est incomplète (documents-service), et `{ rectifie: {...} }`
-        // quand la pièce en remplace une autre.
-        metadata: true,
-        // Sort de la pièce : annulée au registre, et/ou remplacée par une
-        // rectification. Sans ces trois colonnes, une pièce morte était
-        // indiscernable d'une pièce valable — même ligne, même lien.
-        annuleeAt: true,
-        annuleeMotif: true,
-        annuleePar: true,
-        remplaceeParNumero: true,
-        // 2026-09-06 — sans ces deux colonnes, l'ecran ne peut pas dire si
-        // l'exemplaire signe est parti, et le bouton de relance ne saurait pas
-        // quand s'afficher. La remise n'a qu'UN declencheur automatique, au
-        // moment ou la derniere signature tombe : une piece signee avant la
-        // livraison de ce mecanisme n'a aucun autre chemin. Cf.
-        // `relancerRemiseExemplaireAction`.
-        statutSignature: true,
-        exemplaireSigneEnvoyeAt: true,
+      questionnaires: {
+        select: {
+          id: true,
+          // 🔴 `D4-5-S1` — `token: true` était ici. La page sérialisait le
+          // jeton porteur de chaque questionnaire vers le navigateur, pour
+          // que la console puisse saisir les réponses. L'identifiant suffit :
+          // il désigne, il n'ouvre pas.
+
+          type: true,
+          reponduAt: true,
+          // « jamais envoyé » ≠ « envoyé, sans réponse » : la colonne existait
+          // et n'était lue nulle part, l'écran ne pouvait pas les distinguer.
+          envoyeAt: true,
+          noteGlobale: true,
+          // 🔴 C2-03 / I10-02 — les réponses du positionnement (attentes,
+          // niveaux, besoin d'adaptation) n'étaient lues par AUCUN écran.
+          // Seules celles d'un positionnement répondu sont sérialisées, et
+          // déjà LUES côté serveur : le JSON brut ne descend pas.
+          reponses: true,
+        },
       },
+    },
+  });
+}
+
+function chargerPieces(id: string) {
+  return prisma.documentGenere.findMany({
+    where: { sessionId: id },
+    orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      type: true,
+      numero: true,
+      pdfUrl: true,
+      createdAt: true,
+      // Finitions 2026-08-02 : permet à DocumentsSection de savoir quel
+      // stagiaire une pièce individuelle (convocation, certificat…) couvre —
+      // le bouton « déjà généré » ne doit s'allumer que pour LE stagiaire
+      // sélectionné, pas dès qu'une convocation existe pour n'importe qui.
+      traineeId: true,
+      // Porte `{ specimen: true, champsManquants: [...] }` quand l'identité de
+      // l'OF est incomplète (documents-service), et `{ rectifie: {...} }`
+      // quand la pièce en remplace une autre.
+      metadata: true,
+      // Sort de la pièce : annulée au registre, et/ou remplacée par une
+      // rectification. Sans ces trois colonnes, une pièce morte était
+      // indiscernable d'une pièce valable — même ligne, même lien.
+      annuleeAt: true,
+      annuleeMotif: true,
+      annuleePar: true,
+      remplaceeParNumero: true,
+      // 2026-09-06 — sans ces deux colonnes, l'ecran ne peut pas dire si
+      // l'exemplaire signe est parti, et le bouton de relance ne saurait pas
+      // quand s'afficher. La remise n'a qu'UN declencheur automatique, au
+      // moment ou la derniere signature tombe : une piece signee avant la
+      // livraison de ce mecanisme n'a aucun autre chemin. Cf.
+      // `relancerRemiseExemplaireAction`.
+      statutSignature: true,
+      exemplaireSigneEnvoyeAt: true,
+    },
+  });
+}
+
+interface PageProps {
+  params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
+  /**
+   * `qStagiaire` — recherche SERVEUR dans le registre des stagiaires.
+   *
+   * C'est le recours qu'exige le plafond posé sur `listTrainees` ci-dessous :
+   * un `take` sans recherche ne remplacerait pas une lenteur, il fabriquerait
+   * une IMPOSSIBILITÉ — le 201ᵉ stagiaire deviendrait ininscriptible, sans le
+   * moindre message. Même patron que l'écran `/qualiopi/stagiaires`.
+   */
+  searchParams: Promise<{ qStagiaire?: string }>;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Page
+// ─────────────────────────────────────────────────────────────────────────────
+
+export default async function SessionHubPage({ params, searchParams }: PageProps) {
+  const { locale, adminPrefix, id } = await params;
+  const rechercheStagiaire = ((await searchParams).qStagiaire ?? "").trim();
+  const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
+  if (!acces.autorise) {
+    return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
+  }
+  const role = acces.role;
+
+  // ── Chargement EN VAGUES, jamais en cascade (2026-09-15) ──────────────────
+  //
+  // 🔴 Cette page enchaînait QUATORZE attentes successives avant de rendre quoi
+  // que ce soit, alors que seules quatre lectures ont besoin d'un résultat
+  // d'une autre. La fiche entière est une seule frontière de chargement
+  // (`sessions/loading.tsx`) : tant que la dernière lecture n'était pas
+  // revenue, AUCUN bouton n'était interactif — et chaque `router.refresh()`
+  // d'après clic rejouait la cascade.
+  //
+  // Vague 1 : tout ce qui ne dépend que de l'identifiant, du rôle et de la
+  // recherche. Vague 2 : ce qui lit un résultat de la vague 1.
+  // Garde : `features/admin-qualiopi/session-hub/chargement-fiche-en-vagues.spec.tsx`.
+  //
+  // ⚠️ Toujours APRÈS la garde de rôle ci-dessus : aucune lecture ne part avant.
+  const [
+    etatReleveConsole,
+    etatLettreConsole,
+    trainingSession,
+    regimeTva,
+    joursDeclaresSession,
+    identiteOf,
+    allTrainers,
+    clientsRegistre,
+    enrollmentsRaw,
+    documentsRaw,
+    traineesRaw,
+    totalStagiairesRegistre,
+    preparationKit,
+    echeances,
+  ] = await Promise.all([
+    // État de signature du relevé de connexion, lu APRÈS la garde de rôle.
+    // `null` quand la session n'a pas de relevé — cas NORMAL du présentiel.
+    lireEtatSignatureReleveConsole(id, role),
+    // Contreseing de la lettre de mission formateur, même règle de lecture.
+    // `null` quand aucune lettre n'a été générée — la section Documents
+    // ci-dessous porte le bouton qui la génère.
+    lireEtatSignatureLettreMissionConsole(id, role),
+    chargerSession(id),
+    getQualiopiConfig("regime_tva"),
+    // 🔴 DIVERGENCE PLAGE ↔ JOURNÉES — voir le calcul plus bas.
+    prisma.sessionJour.findMany({
+      where: { sessionId: id },
+      select: { date: true },
     }),
+    // 🔴 UI 2026-07-27 — annonce SPÉCIMEN, voir plus bas.
+    getOrganismeIdentite(),
+    // ── Formateurs assignables (R9) — habilitation calculée sur la formation ─
+    listTrainers({ actifOnly: true }),
+    // ── Inter-entreprises (R-INTER) — clients payeurs sélectionnables ────────
+    listClients(),
+    // ── Données des sections (Vague 2 du hub) ────────────────────────────────
+    chargerInscriptions(id),
+    chargerPieces(id),
     // 🔴 Ce `findMany` n'avait NI `take` NI recherche : tout le registre des
     // stagiaires était chargé, sérialisé vers le navigateur et rendu dans un
     // `<select>`, à CHAQUE ouverture d'une fiche session. Tenable sur une base
@@ -448,7 +431,42 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     // qui permet de dire « 200 sur 1 240 » plutôt que de laisser croire que le
     // registre s'arrête là.
     countTrainees(),
+    // Ce que la session attend encore de nous. Deduit, jamais coche.
+    //
+    // 🔴 Le parcours est lu par le MÊME service que « À traiter », en balayage
+    // CIBLÉ (`sessionIds`) : une seconde traduction des lignes Prisma vers les
+    // étapes fabriquerait deux vérités, et le jour où une quinzième étape arrive
+    // l'un des deux écrans compterait encore sur quatorze.
+    //
+    // ⚠️ `catch` : la checklist est un CONFORT de lecture. Une lecture en échec
+    // ne doit pas faire tomber le dossier entier — on perd la checklist, pas la
+    // page.
+    lirePreparation(id),
+    prochainesEcheances({ sessionIds: [id] }).catch(() => null),
   ]);
+
+  if (!trainingSession) notFound();
+
+  const mentionTvaSession = mentionTva(regimeTva);
+
+  // 🔴 DIVERGENCE PLAGE ↔ JOURNÉES, rendue visible en permanence.
+  //
+  // Corriger les dates d'une session ne décale PAS les `SessionJour` — décision
+  // et ses trois raisons dans `sessions/requalification-dates.ts`. Le prix de
+  // cette décision est une divergence possible ; une divergence silencieuse est
+  // un piège, donc on la compte à chaque rendu et l'écran la dit.
+  const joursHorsPlageSession = compterJoursHorsPlage({
+    // `@db.Date` stocke minuit UTC : `toISOString` redonne le jour civil.
+    joursISO: joursDeclaresSession.map((j) => j.date.toISOString().slice(0, 10)),
+    debutISO: parisDateISO(trainingSession.dateDebut),
+    finISO: parisDateISO(trainingSession.dateFin),
+  });
+
+  // 🔴 UI 2026-07-27 — l'écran ne prévenait JAMAIS que les documents sortiraient
+  // en SPÉCIMEN. On le découvrait en ouvrant le PDF, une fois généré — ou pas du
+  // tout si on l'envoyait au client sans le rouvrir.
+  // On l'annonce AVANT de générer, avec la liste exacte de ce qui manque.
+  const champsManquantsConvention = champsIdentiteManquants(identiteOf, "convention");
 
   // ── Pièces CONTRACTUELLES de la session et leurs signatures ──
   //
@@ -470,54 +488,113 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
   const piecesSignables = documentsRaw.filter(
     (d) => circuitPour(d.type) !== null && d.annuleeAt === null,
   );
-  const signaturesParPiece = new Map<string, SignatureApposeeVue[]>();
-  if (piecesSignables.length > 0) {
-    const lignes = await prisma.documentSignature.findMany({
-      where: { documentGenereId: { in: piecesSignables.map((d) => d.id) }, revokedAt: null },
-      select: {
-        id: true,
-        documentGenereId: true,
-        partie: true,
-        signataireNom: true,
-        signataireQualite: true,
-        signeAt: true,
-        selfHash: true,
-        methode: true,
-      },
-      // ⚠️ Même tri que la chaîne (`createdAt`, puis `id`) : trier sur `signeAt`
-      // afficherait un ordre pouvant différer de celui du chaînage.
-      orderBy: [{ createdAt: "asc" }, { id: "asc" }],
-    });
-    for (const l of lignes) {
-      const liste = signaturesParPiece.get(l.documentGenereId) ?? [];
-      liste.push({
-        id: l.id,
-        partie: l.partie,
-        signataireNom: l.signataireNom,
-        signataireQualite: l.signataireQualite,
-        signeAtLisible: l.signeAt.toLocaleString("fr-FR", { timeZone: "Europe/Paris" }),
-        empreinte: l.selfHash,
-        methode: l.methode,
-      });
-      signaturesParPiece.set(l.documentGenereId, liste);
-    }
-  }
 
-  // 🔴 Ind. 10 — la RÉPONSE de l'organisme à un besoin déclaré, et ses dates.
-  // Le besoin se lit au MÊME prédicat que l'alerte balayée et le moteur de
-  // conformité ; les dates viennent du journal (réponse, déclaration) et du
-  // positionnement. Une réponse antérieure à une nouvelle déclaration ne la
-  // couvre pas : c'est ce que ces dates permettent de dire.
-  const circuitAdaptation = await lireCircuitAdaptation(
-    enrollmentsRaw.map((e) => ({
-      id: e.id,
-      traineeId: e.trainee.id,
-      finSession: trainingSession.dateFin,
-      positionnements: e.questionnaires
-        .filter((q) => q.type === "positionnement" && q.reponduAt !== null)
-        .map((q) => ({ reponses: q.reponses, reponduAt: q.reponduAt })),
-    })),
-  );
+  // Vague 2 — les seules lectures qui ont besoin d'un résultat de la vague 1.
+  const [missionFormateur, lignesSignatures, circuitAdaptation, traineesAvecDetailChiffre] =
+    await Promise.all([
+      // ── Mission du formateur principal (2026-09-03) ───────────────────────
+      trainingSession.formateurPrincipalId !== null
+        ? lireMissionCourante(id, trainingSession.formateurPrincipalId)
+        : null,
+      piecesSignables.length > 0
+        ? prisma.documentSignature.findMany({
+            where: {
+              documentGenereId: { in: piecesSignables.map((d) => d.id) },
+              revokedAt: null,
+            },
+            select: {
+              id: true,
+              documentGenereId: true,
+              partie: true,
+              signataireNom: true,
+              signataireQualite: true,
+              signeAt: true,
+              selfHash: true,
+              methode: true,
+            },
+            // ⚠️ Même tri que la chaîne (`createdAt`, puis `id`) : trier sur
+            // `signeAt` afficherait un ordre pouvant différer de celui du
+            // chaînage.
+            orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+          })
+        : [],
+      // 🔴 Ind. 10 — la RÉPONSE de l'organisme à un besoin déclaré, et ses
+      // dates. Le besoin se lit au MÊME prédicat que l'alerte balayée et le
+      // moteur de conformité ; les dates viennent du journal (réponse,
+      // déclaration) et du positionnement. Une réponse antérieure à une nouvelle
+      // déclaration ne la couvre pas : c'est ce que ces dates permettent de dire.
+      lireCircuitAdaptation(
+        enrollmentsRaw.map((e) => ({
+          id: e.id,
+          traineeId: e.trainee.id,
+          finSession: trainingSession.dateFin,
+          positionnements: e.questionnaires
+            .filter((q) => q.type === "positionnement" && q.reponduAt !== null)
+            .map((q) => ({ reponses: q.reponses, reponduAt: q.reponduAt })),
+        })),
+      ),
+      // C2-03 / I10-02 — PRÉSENCE d'une précision d'adaptation chiffrée sur la
+      // FICHE stagiaire, jamais son contenu (donnée de santé, lecture réservée
+      // au super-administrateur). Bornée aux inscrits de la session ; la
+      // colonne chiffrée n'est pas chargée. Elle ne dit rien du questionnaire :
+      // la colonne est aussi écrite par la déclaration de handicap et par la
+      // console.
+      stagiairesAvecPrecisionChiffree(enrollmentsRaw.map((e) => e.trainee.id)),
+    ]);
+
+  const etatMissionFormateur =
+    missionFormateur === null
+      ? "aucune proposition envoyée (affectation antérieure au 3 septembre 2026, ou e-mail non parti)."
+      : `${LIBELLE_STATUT_MISSION[missionFormateur.statut].toLowerCase()}` +
+        (missionFormateur.statut === "en_attente"
+          ? ` depuis le ${missionFormateur.solliciteAt.toLocaleDateString("fr-FR")}` +
+            (missionFormateur.relanceAt !== null
+              ? `, relancé le ${missionFormateur.relanceAt.toLocaleDateString("fr-FR")}`
+              : "") +
+            (missionFormateur.emailEnvoyeAt === null ? " — e-mail de proposition NON parti" : "")
+          : missionFormateur.reponduAt !== null
+            ? ` le ${missionFormateur.reponduAt.toLocaleDateString("fr-FR")}`
+            : "") +
+        (missionFormateur.statut === "refusee" && missionFormateur.motifRefus !== null
+          ? ` — motif : « ${missionFormateur.motifRefus} »`
+          : "") +
+        ".";
+
+  // Lot 1ter §2 — une lettre de mission suppose DEUX personnes. Le statut
+  // `dirigeant` existe dans le registre des formateurs ; on ne devine pas par
+  // comparaison de noms, ce qui serait faux au premier homonyme.
+  const formateurEstLeDirigeant =
+    trainingSession.formateurPrincipalId !== null &&
+    allTrainers.some(
+      (t) => t.id === trainingSession.formateurPrincipalId && t.statut === "dirigeant",
+    );
+  const clientType = trainingSession.client?.type ?? null;
+
+  const formateurOptions = allTrainers.map((t) => ({
+    id: t.id,
+    label: `${t.prenom} ${t.nom}${t.statut === "sous_traitant" ? " (sous-traitant)" : ""}`,
+    habilite: isTrainerHabilite(t, trainingSession.formation.id).ok,
+  }));
+
+  const clientsForInter = clientsRegistre.map((c) => ({
+    id: c.id,
+    label: c.raisonSociale,
+  }));
+
+  const signaturesParPiece = new Map<string, SignatureApposeeVue[]>();
+  for (const l of lignesSignatures) {
+    const liste = signaturesParPiece.get(l.documentGenereId) ?? [];
+    liste.push({
+      id: l.id,
+      partie: l.partie,
+      signataireNom: l.signataireNom,
+      signataireQualite: l.signataireQualite,
+      signeAtLisible: l.signeAt.toLocaleString("fr-FR", { timeZone: "Europe/Paris" }),
+      empreinte: l.selfHash,
+      methode: l.methode,
+    });
+    signaturesParPiece.set(l.documentGenereId, liste);
+  }
 
   const enrollmentsSerialized = enrollmentsRaw.map((e) => {
     const acces = e.trainee.portailAcces[0];
@@ -606,15 +683,6 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     montantHtEuros: e.montantHtCents != null ? e.montantHtCents / 100 : null,
   }));
 
-  // C2-03 / I10-02 — PRÉSENCE d'une précision d'adaptation chiffrée sur la FICHE
-  // stagiaire, jamais son contenu (donnée de santé, lecture réservée au
-  // super-administrateur). Bornée aux inscrits de la session ; la colonne
-  // chiffrée n'est pas chargée. Elle ne dit rien du questionnaire : la colonne
-  // est aussi écrite par la déclaration de handicap et par la console.
-  const traineesAvecDetailChiffre = await stagiairesAvecPrecisionChiffree(
-    enrollmentsRaw.map((e) => e.trainee.id),
-  );
-
   const questionnairesSerialized = enrollmentsRaw.flatMap((e) =>
     e.questionnaires.map((q) => ({
       id: q.id,
@@ -632,20 +700,6 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
 
   const base = `/${locale}/${adminPrefix}/qualiopi/sessions`;
   const sessionBase = `${base}/${id}`;
-  // Ce que la session attend encore de nous. Deduit, jamais coche.
-  //
-  // 🔴 Le parcours est lu par le MÊME service que « À traiter », en balayage
-  // CIBLÉ (`sessionIds`) : une seconde traduction des lignes Prisma vers les
-  // étapes fabriquerait deux vérités, et le jour où une quinzième étape arrive
-  // l'un des deux écrans compterait encore sur quatorze.
-  //
-  // ⚠️ `catch` : la checklist est un CONFORT de lecture. Une lecture en échec
-  // ne doit pas faire tomber le dossier entier — on perd la checklist, pas la
-  // page.
-  const [preparationKit, echeances] = await Promise.all([
-    lirePreparation(id),
-    prochainesEcheances({ sessionIds: [id] }).catch(() => null),
-  ]);
   const parcours = echeances?.parSession.get(id) ?? null;
   const dateValidation = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" });
 
