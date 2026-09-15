@@ -251,9 +251,12 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   },
   "facture-envoi": {
     categorie: "commerce",
-    quand: "Émission d'une facture — passe par la corbeille de validation",
+    quand:
+      "Émission d'une facture : clic « Envoyer par email », ou préparé seul le lendemain d'une session réalisée — passe TOUJOURS par la corbeille de validation",
     destinataire: "le client",
-    source: "server/actions/qualiopi/facturation-emails.ts",
+    // 2026-09-15 — le corps de « Envoyer par email » a été extrait dans un service
+    // pur, partagé avec la facture générée le lendemain de la session.
+    source: "server/qualiopi/financements/facture-envoi-email.ts",
   },
   "quote-request-received": {
     categorie: "commerce",

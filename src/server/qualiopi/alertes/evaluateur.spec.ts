@@ -74,6 +74,9 @@ vi.mock("@/lib/prisma", () => ({
     // D'ou le cliquet STATIQUE en fin de fichier, qui LIT les deux sources au
     // lieu de les executer.
     supportFormation: { count: vi.fn() },
+    // 2026-09-15 — `facture_auto_non_emise` lit le journal des factures générées
+    // automatiquement (famille « e-mail non préparé »).
+    activityLog: { findMany: vi.fn() },
   },
 }));
 
@@ -128,6 +131,7 @@ import { getInterventionsByFamille } from "@/content/intervention-documents-cata
 // ─────────────────────────────────────────────────────────────────────────────
 
 const mp = prisma as unknown as {
+  activityLog: { findMany: ReturnType<typeof vi.fn> };
   reclamation: { findMany: ReturnType<typeof vi.fn> };
   enrollment: { findMany: ReturnType<typeof vi.fn> };
   trainingSession: { findMany: ReturnType<typeof vi.fn> };
@@ -210,6 +214,8 @@ function setupEmptyMocks() {
   mp.sessionFormateur.findMany.mockResolvedValue([]);
   mp.missionFormateur.findMany.mockResolvedValue([]);
   mp.sessionFormateurRetire.findMany.mockResolvedValue([]);
+  // `facture_auto_non_emise` : aucune facture générée automatiquement par défaut.
+  mp.activityLog.findMany.mockResolvedValue([]);
   // 🔴 2026-09-13 — `kit_sorties_non_pretes`. Zero kit imprime publie = la regle
   // ne regarde aucune session. C'est le defaut le moins contraignant, donc le bon
   // pour les autres blocs : un test qui veut la regle pose son propre `count`.
@@ -3785,7 +3791,14 @@ describe("evaluerAlertes — session_realisee_non_facturee", () => {
     setupEmptyMocks();
   });
 
-  function sessionRealisee(factures: Array<{ statut: string }>, montantHtCents = 250_000) {
+  function sessionRealisee(
+    factures: Array<{
+      statut: string;
+      montantHtCents?: number;
+      avoirs?: Array<{ statut: string; montantHtCents: number }>;
+    }>,
+    montantHtCents = 250_000,
+  ) {
     mp.trainingSession.findMany.mockImplementation(
       (args: { select?: { facturesFormation?: unknown } }) => {
         if (args?.select?.facturesFormation !== undefined) {
@@ -3844,6 +3857,35 @@ describe("evaluerAlertes — session_realisee_non_facturee", () => {
     const a = alertes.find((x) => x.code === "session_realisee_non_facturee");
     expect(a?.message).toContain("BROUILLON");
     expect(a?.message).not.toContain("aucune facture n'a été émise");
+  });
+
+  it("🔴 déclenche quand la seule facture est ENTIÈREMENT annulée par avoir — et le dit", async () => {
+    // Relecture A09 de la PR 1097 : une facture couverte par un avoir total
+    // garde le statut « émise ». Comptée comme émise, la session n'était plus
+    // signalée par AUCUNE règle au-delà de la fenêtre de l'automate.
+    sessionRealisee([
+      {
+        statut: "emise",
+        montantHtCents: 250_000,
+        avoirs: [{ statut: "emise", montantHtCents: -250_000 }],
+      },
+    ]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "session_realisee_non_facturee");
+    expect(a).toBeDefined();
+    expect(a?.message).toContain("avoir");
+  });
+
+  it("un avoir PARTIEL laisse la session facturée : silence", async () => {
+    sessionRealisee([
+      {
+        statut: "emise",
+        montantHtCents: 250_000,
+        avoirs: [{ statut: "emise", montantHtCents: -50_000 }],
+      },
+    ]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "session_realisee_non_facturee")).toBeUndefined();
   });
 
   it("se tait sur une session à 0 € — il n'y a rien à émettre", async () => {

@@ -54,7 +54,10 @@ const LIGNES_PUR = lire("src/server/qualiopi/financements/facture-libre-pur.ts")
 const SITES_DE_CREATION = [
   "src/server/actions/qualiopi/devis.ts",
   "src/server/actions/qualiopi/factures-inter.ts",
-  "src/server/actions/qualiopi/financements.ts",
+  // 2026-09-15 — le corps d'émission de `actions/qualiopi/financements.ts` vit
+  // désormais dans ce service pur (partagé avec la facture du lendemain). La
+  // résolution du régime a déménagé avec lui ; l'action n'en résout plus aucun.
+  "src/server/qualiopi/financements/facture-formation-emission.ts",
   "src/server/qualiopi/coaching-1to1/facturation-1to1.ts",
   "src/server/qualiopi/financements/facturation-service.ts",
   "src/server/qualiopi/financements/facture-libre.ts",

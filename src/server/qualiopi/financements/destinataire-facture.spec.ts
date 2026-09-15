@@ -126,7 +126,11 @@ describe("aucun émetteur ne facture au nom de la prestation", () => {
     // Sans cette assertion, supprimer les appels ferait passer le test ci-dessus
     // — et rendrait le garde-fou muet le jour où il compte.
     for (const emetteur of [
-      "server/actions/qualiopi/financements.ts",
+      // 2026-09-15 — le corps de « Générer la facture de formation » a quitté
+      // l'action (`actions/qualiopi/financements.ts`) pour ce service pur, partagé
+      // avec la facture générée le lendemain de la session. L'émetteur a
+      // DÉMÉNAGÉ ; la garde le suit.
+      "server/qualiopi/financements/facture-formation-emission.ts",
       "server/qualiopi/financements/facturation-service.ts",
     ]) {
       const source = readFileSync(path.join(SRC, emetteur), "utf8");

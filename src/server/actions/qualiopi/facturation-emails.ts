@@ -1,9 +1,14 @@
 /**
  * Hub facturation — envoi MANUEL par email des devis et factures (PDF joint).
  *
- * Règle produit absolue : ces actions ne sont déclenchées QUE par un clic
- * admin — aucun cron, aucun envoi automatique. Le PDF n'est jamais mis dans
+ * Ces actions sont déclenchées par un clic admin. Le PDF n'est jamais mis dans
  * Redis : on passe la clé R2, le worker email télécharge puis attache.
+ *
+ * ⚠️ 2026-09-15 — la facture d'une session réalisée est désormais générée
+ * automatiquement le lendemain de sa fin, et son e-mail PRÉPARÉ par le même
+ * chemin (`facture-envoi-email.ts`), toujours GARÉ en « E-mails à valider » :
+ * rien ne part à un client sans validation (ordre permanent de Will). Aucun
+ * envoi automatique n'existe pour autant.
  *
  * Journal des envois : ActivityLog (SSOT audit existant) via
  * logQualiopiActivity — actions `facturation.email.devis` /
@@ -21,8 +26,7 @@ import {
   creerTokenDocument,
   TokenDocumentError,
 } from "@/server/qualiopi/documents/signature/token-document";
-import { documentPdfKey } from "@/lib/r2-storage";
-import { resteDuNetCents } from "@/server/qualiopi/crm/clients";
+import { preparerEnvoiFactureEmail } from "@/server/qualiopi/financements/facture-envoi-email";
 
 const eur = (cents: number): string =>
   new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
@@ -194,102 +198,19 @@ export async function envoyerFactureEmailAction(
   if (!parsed.success) return { error: "Entrée invalide." };
   const input = parsed.data;
 
-  const facture = await prisma.factureFormation.findUnique({
-    where: { id: input.factureId },
-    include: {
-      client: { select: { raisonSociale: true, contactEmail: true } },
-      // Nécessaires au RESTE DÛ NET (voir plus bas) : sans eux, l'e-mail
-      // réclamerait le TTC total d'une facture déjà partiellement réglée.
-      payments: { select: { amountCents: true, status: true } },
-      avoirs: { select: { montantHtCents: true, montantTtcCents: true, statut: true } },
-    },
-  });
-  if (!facture) return { error: "Facture introuvable." };
-  if (facture.statut === "brouillon") {
-    return { error: "Une facture en brouillon ne s'envoie pas — l'émettre d'abord." };
-  }
-  if (facture.documentId === null) {
-    return { error: "PDF absent : générer le PDF de la facture avant l'envoi." };
-  }
-
-  const doc = await prisma.documentGenere.findUnique({
-    where: { id: facture.documentId },
-    select: { type: true, numero: true, hashSha256: true, createdAt: true },
-  });
-  if (doc === null) return { error: "Document PDF introuvable." };
-  // Clé R2 stable (cf. documents-service/storeAndSignPdf).
-  // 🔴 L'année était lue dans le NUMÉRO (`AXI-XXX-YYYY-NNN`) — troisième variante
-  // maison de la même clé, et la seule qui ne consultait pas `createdAt`, sur
-  // lequel l'écriture partitionne réellement. Une pièce renumérotée ou reprise
-  // aurait pointé sur un dossier inexistant, et la facture serait partie sans sa
-  // pièce jointe.
-  const r2Key = documentPdfKey(doc);
-
-  const to = input.to ?? facture.client?.contactEmail ?? null;
-  if (to === null) {
-    return { error: "Aucun destinataire : renseigner un email (ou l'email de contact du client)." };
-  }
-
-  const estAvoir = facture.avoirDeId !== null;
-
-  // ── Montant réclamé = RESTE DÛ NET, jamais le TTC total ───────────────────
-  //
-  // 🔴 L'e-mail annonçait le TTC total de la facture. Un client ayant versé son
-  // acompte — le cas NORMAL en formation, le mode `acompte_solde` étant le
-  // défaut — recevait donc une relance au montant plein, acompte compris. Il en
-  // conclut qu'on a perdu son virement ; au mieux il rappelle, au pire il paie
-  // deux fois. Même défaut sur une facture partiellement avoirée.
-  //
-  // La formule vient de `resteDuNetCents` (SSOT de l'encours client, déjà
-  // utilisée par la fiche 360°, la fiche facture et la balance âgée) : TTC
-  // (repli HT) + avoirs non annulés (négatifs en base) − encaissements
-  // `succeeded`. NE PAS la réécrire ici : c'est exactement ainsi que deux
-  // montants divergent d'un écran à l'autre.
-  //
-  // Un AVOIR garde son montant propre : il ne se « reste-dû » pas, il crédite.
-  const montantDu = estAvoir
-    ? (facture.montantTtcCents ?? facture.montantHtCents)
-    : resteDuNetCents({
-        statut: facture.statut,
-        avoirDeId: facture.avoirDeId,
-        montantHtCents: facture.montantHtCents,
-        montantTtcCents: facture.montantTtcCents,
-        payments: facture.payments,
-        avoirs: facture.avoirs,
-      });
-  const { enqueued, garePourValidation = false } = await enqueueEmail(
-    "facture-envoi",
-    to,
-    "fr",
-    {
-      clientNom: facture.client?.raisonSociale ?? facture.destinataireNom,
-      numero: facture.numero,
-      montantLabel: `${eur(montantDu)} TTC`,
-      ...(facture.echeanceAt !== null && !estAvoir
-        ? { dateEcheanceLabel: dateFr(facture.echeanceAt) }
-        : {}),
-      estAvoir,
-      ...(input.messagePersonnalise !== undefined
-        ? { messagePersonnalise: input.messagePersonnalise }
-        : {}),
-    },
-    {
-      attachments: [{ filename: `${facture.numero}.pdf`, r2Key }],
-      // Voir le commentaire de l'envoi de devis : sans `clientId`, les règles
-      // par client sont inertes ; et `enqueued: false` peut signifier « garé ».
-      ...(facture.clientId !== null ? { clientId: facture.clientId } : {}),
-      sujet: `${estAvoir ? "Avoir" : "Facture"} ${facture.numero} — Axion-IA`,
-    },
-  );
-  if (!enqueued && !garePourValidation) {
-    return { error: "File d'envoi indisponible — réessayer." };
-  }
+  // 🔑 Le corps vit dans un service PUR, partagé avec la préparation automatique
+  // de l'e-mail au lendemain de la session (cron du worker, hors Next). Le
+  // bouton n'exige PAS la validation : les règles d'automatisation par client
+  // restent souveraines ici. Cf. l'en-tête de `facture-envoi-email.ts`.
+  const resultat = await preparerEnvoiFactureEmail(input);
+  if ("error" in resultat) return resultat;
+  const { enqueued, garePourValidation, to, numero, estAvoir, pdfHash } = resultat.data;
 
   await logQualiopiActivity({
     action: "facturation.email.facture",
     targetType: "FactureFormation",
-    targetId: facture.id,
-    changes: { to, numero: facture.numero, estAvoir, pdfHash: doc.hashSha256 },
+    targetId: input.factureId,
+    changes: { to, numero, estAvoir, pdfHash },
     session,
   });
   return { data: { enqueued, garePourValidation, to } };

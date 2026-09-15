@@ -37,6 +37,12 @@ function mockCall<T>(fn: ReturnType<typeof vi.fn>, callIndex = 0): T {
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    // 2026-09-15 — l'émission passe sous verrou consultatif par session
+    // (`verrou-facture-session.ts`). Plomberie SEULE : le verrou est toujours
+    // acquis ici ; il est éprouvé par `facture-formation-emission.doublon.spec.ts`.
+    $transaction: vi.fn(async (fn: (tx: unknown) => Promise<unknown>) =>
+      fn({ $queryRaw: async () => [{ acquis: true }] }),
+    ),
     trainingSession: {
       findUnique: vi.fn(),
       update: vi.fn(),

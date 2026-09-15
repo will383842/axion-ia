@@ -81,6 +81,11 @@ import {
   TYPES_PIECES_AVEC_LIEU,
   type DefautLieuDocument,
 } from "@/server/qualiopi/lieu/resolve-lieu-document";
+import {
+  casFactureAutoASignaler,
+  DELAI_SESSION_NON_FACTUREE_JOURS,
+} from "@/server/qualiopi/financements/facture-auto-regles";
+import { factureVivante } from "@/server/qualiopi/financements/facture-vivante";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
 import { regleAdaptationReponseNonConsignee } from "./regle-adaptation-reponse";
 import {
@@ -4206,7 +4211,9 @@ async function regleSessionRealiseeNonFacturee(now: Date): Promise<AlerteCandida
   const sessions = await prisma.trainingSession.findMany({
     where: {
       statut: "realisee",
-      dateFin: { lte: daysAgo(15, now), gte: daysAgo(365, now) },
+      // 🔑 Le relais de `facture_auto_non_emise`, qui parle de J+1 à J+14 : la
+      // MÊME constante, pour que les deux alertes ne se chevauchent jamais.
+      dateFin: { lte: daysAgo(DELAI_SESSION_NON_FACTUREE_JOURS, now), gte: daysAgo(365, now) },
       montantHtCents: { gt: 0 },
     },
     select: {
@@ -4216,7 +4223,14 @@ async function regleSessionRealiseeNonFacturee(now: Date): Promise<AlerteCandida
       dateFin: true,
       montantHtCents: true,
       client: { select: { raisonSociale: true } },
-      facturesFormation: { select: { statut: true } },
+      facturesFormation: {
+        where: { avoirDeId: null },
+        select: {
+          statut: true,
+          montantHtCents: true,
+          avoirs: { select: { statut: true, montantHtCents: true } },
+        },
+      },
     },
     take: 100,
   });
@@ -4229,11 +4243,14 @@ async function regleSessionRealiseeNonFacturee(now: Date): Promise<AlerteCandida
     // ignorent le SQL. Réclamer une facture pour une action offerte produirait
     // une alerte qu'aucun geste ne ferme.
     if (s.montantHtCents <= 0) continue;
-    const emises = s.facturesFormation.filter(
-      (f) => f.statut !== "annulee" && f.statut !== "brouillon",
-    );
+    // 🔴 Relecture A09 de la PR 1097 — une facture ENTIÈREMENT annulée par avoir
+    // garde le statut « émise ». Comptée comme émise, la session n'était plus
+    // signalée par aucune règle. « Vivante » vient du module partagé avec le
+    // point d'émission, qui refuse la double facture sur la même définition.
+    const emises = s.facturesFormation.filter((f) => f.statut !== "brouillon" && factureVivante(f));
     if (emises.length > 0) continue;
     const brouillons = s.facturesFormation.filter((f) => f.statut === "brouillon").length;
+    const avoiree = s.facturesFormation.some((f) => f.statut !== "annulee" && !factureVivante(f));
     const fin = s.dateFin.toLocaleDateString("fr-FR");
     const montant = (s.montantHtCents / 100).toLocaleString("fr-FR", {
       style: "currency",
@@ -4246,12 +4263,35 @@ async function regleSessionRealiseeNonFacturee(now: Date): Promise<AlerteCandida
       message:
         brouillons > 0
           ? `${designerSession(s)} est réalisée depuis le ${fin} et sa facture est restée en BROUILLON : ${montant} HT ne sont ni émis, ni exigibles, ni suivis par les relances. Émettez-la.`
-          : `${designerSession(s)} est réalisée depuis le ${fin} et aucune facture n'a été émise : ${montant} HT n'apparaissent nulle part — ni dans les encaissements attendus, ni dans la balance âgée, ni dans les relances. Créez la facture depuis la fiche de session.`,
+          : avoiree
+            ? `${designerSession(s)} est réalisée depuis le ${fin} et sa facture a été entièrement annulée par avoir : ${montant} HT ne sont plus réclamés à personne. Refacturez depuis la fiche de session si la prestation reste due.`
+            : `${designerSession(s)} est réalisée depuis le ${fin} et aucune facture n'a été émise : ${montant} HT n'apparaissent nulle part — ni dans les encaissements attendus, ni dans la balance âgée, ni dans les relances. Créez la facture depuis la fiche de session.`,
       cibleType: "TrainingSession",
       cibleId: s.id,
     });
   }
   return out;
+}
+
+/**
+ * 🔴 LA FACTURE DU LENDEMAIN N'EST PAS PARTIE TOUTE SEULE (2026-09-15).
+ *
+ * La décision, la lecture et le texte vivent dans
+ * `financements/facture-auto-regles.ts`, À CÔTÉ de la décision du cron : une
+ * requête jumelle écrite ici divergerait au premier changement de borne, et
+ * l'alerte finirait par réclamer ce que l'automate a délibérément laissé, ou
+ * par taire ce qu'il a raté. Cette règle ne fait que les porter au moteur.
+ */
+async function regleFactureAutoNonEmise(now: Date): Promise<AlerteCandidate[]> {
+  const cas = await casFactureAutoASignaler(now);
+  return cas.map((c) => ({
+    code: "facture_auto_non_emise",
+    niveau: "important" as AlerteNiveau,
+    titre: "Facture du lendemain non générée automatiquement",
+    message: c.message,
+    cibleType: c.cibleType,
+    cibleId: c.cibleId,
+  }));
 }
 
 /**
@@ -4902,6 +4942,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "emargement_partiel", fn: regleEmargementPartiel },
   { nom: "effectif_depasse", fn: regleEffectifDepasse },
   { nom: "session_realisee_non_facturee", fn: regleSessionRealiseeNonFacturee },
+  { nom: "facture_auto_non_emise", fn: regleFactureAutoNonEmise },
   // 2026-09-09 — la première règle du moteur qui surveille l'argent qu'on DOIT.
   { nom: "releve_formateur_echu", fn: regleReleveFormateurEchu },
   // 2026-09-10 — l'état le plus dangereux du circuit d'autofacturation.

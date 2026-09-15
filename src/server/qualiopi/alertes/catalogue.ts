@@ -1331,6 +1331,29 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "direction",
   },
   /**
+   * 🔴 LA FACTURE DU LENDEMAIN N'EST PAS PARTIE TOUTE SEULE (2026-09-15).
+   *
+   * Depuis que la facture d'une session réalisée est générée automatiquement
+   * le lendemain de sa fin (`financements/facture-auto-session.ts`), plus
+   * personne n'attend de bouton. Tout ce que l'automate refuse — financement
+   * à arbitrer, inter-entreprises, fiche client incomplète, facture annulée —
+   * ou rate — passage en échec, e-mail non préparé — serait un silence. Cette
+   * alerte le dit, avec le MOTIF, dès le lendemain : l'alerte J+15 voisine
+   * arriverait deux semaines trop tard pour un circuit qui promet J+1.
+   *
+   * `resolutionAuto` : chaque cas disparaît quand il est résolu (facture émise,
+   * e-mail préparé) ou quand il sort de la fenêtre de 30 jours de l'automate.
+   *
+   * `direction` : émettre une facture ENGAGE l'organisme, comme pour
+   * `session_realisee_non_facturee`.
+   */
+  facture_auto_non_emise: {
+    niveau: "important",
+    titre: "Facture du lendemain non générée automatiquement",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
+  /**
    * 🔴 TOUTE LA FACTURATION REGARDAIT DANS UN SEUL SENS (2026-09-09).
    *
    * Les six codes ci-dessus surveillent l'argent qu'on nous DOIT. Aucun ne

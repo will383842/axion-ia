@@ -1,8 +1,11 @@
-// Email — envoi MANUEL d'une facture (ou d'un avoir) par l'admin (Hub
-// facturation), PDF joint.
+// Email — envoi d'une facture (ou d'un avoir), PDF joint.
 //
-// Déclenché exclusivement par un clic admin (envoyerFactureEmailAction) —
-// JAMAIS par un cron (règle produit : relances et envois 100 % manuels).
+// Préparé par un clic admin (« Envoyer par email », envoyerFactureEmailAction)
+// OU, depuis le 2026-09-15, par la génération automatique de la facture le
+// lendemain d'une session (cron `formation-crons.factures-lendemain`). Dans les
+// deux cas par le même service (`financements/facture-envoi-email.ts`), et le
+// chemin automatique EXIGE la validation : l'e-mail attend dans « E-mails à
+// valider ». Aucun envoi ne part seul à un client.
 // Le PDF est attaché par le worker (clé R2 dans EmailJobData.attachments).
 
 import { Text } from "@react-email/components";
