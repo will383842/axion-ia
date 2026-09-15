@@ -535,7 +535,8 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
    * restait affichée comme un manquement.
    *
    * Elle se referme désormais quand la règle cesse de la produire : rappel
-   * impossible (avance ≤ 24 h, la borne de l'envoyeur), plus aucun inscrit actif
+   * impossible (aucun passage de 08:00 UTC avec une convocation de 24 h avant le
+   * début — `rappel-j7-possible.ts`, le prédicat de l'envoyeur), plus aucun inscrit actif
    * à informer, session annulée — ou 30 jours après le début, la fenêtre de
    * constat de la règle. Ce dernier cas est ANNONCÉ dans le message, sur le
    * patron des alertes d'attestation (#1087) : l'écart se consigne pendant qu'il

@@ -77,6 +77,12 @@ import { notifierAlertesGroupees } from "@/server/qualiopi/alertes/envoi-groupe"
 // La MEME mesure que la regle d alerte rappel_j7_non_envoye : une seconde
 // requete jumelle divergerait au premier changement de borne.
 import { sessionsSansRappelJ7 } from "@/server/qualiopi/notifications/rappel-j7-manquant";
+// Module PUR : LE prédicat d'envoi du rappel J-7, que la règle d'alerte rejoue
+// passage par passage pour savoir si le rappel POUVAIT partir.
+import {
+  PLAFOND_RAPPEL_J7_MS,
+  rappelJ7EnvoyableA,
+} from "@/server/qualiopi/notifications/rappel-j7-possible";
 // Module PUR (aucun Prisma) : la règle « ce lien est-il entre les mains de
 // quelqu'un ? », partagée avec le service d'envoi.
 import { whereJetonIntouchable } from "@/server/qualiopi/emargement/remise-lien";
@@ -635,7 +641,7 @@ async function handleRappelJ7(): Promise<void> {
   // message porte les informations logistiques finales. Ce qui disparaît, c'est
   // le plancher — le cron RATTRAPE chaque jour, tant que la session n'a pas
   // commencé.
-  const plafond = new Date(now.getTime() + 7.5 * 24 * 60 * 60 * 1000);
+  const plafond = new Date(now.getTime() + PLAFOND_RAPPEL_J7_MS);
   // 🔴 S5 (2026-08-26) — LE RAPPEL NE PART JAMAIS LE MÊME MATIN QUE LA
   // CONVOCATION. Défaut mesuré (AN-S6) : une session créée moins de 5,5 j du
   // début recevait la convocation (cron HORAIRE, rattrapant) puis le rappel
@@ -643,7 +649,10 @@ async function handleRappelJ7(): Promise<void> {
   // matinée, les drapeaux `convocationEnvoyeeAt` et `rappelJ7EnvoyeAt`
   // n'étant jamais croisés. Le rappel exige désormais que la convocation soit
   // PARTIE depuis au moins 24 h pour chaque inscrit actif.
-  const seuilConvocation24h = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+  //
+  // 🔴 2026-09-15 — ces conditions vivent dans `rappelJ7EnvoyableA`, que la
+  // règle `rappel_j7_non_envoye` rejoue : une alerte ne réclame plus un rappel
+  // qu'aucun passage de ce cron ne pouvait envoyer.
 
   const sessions = await prisma.trainingSession.findMany({
     where: {
@@ -662,6 +671,7 @@ async function handleRappelJ7(): Promise<void> {
     // J+7,5) rend le filtre applicatif gratuit — et testable à sec.
     select: {
       id: true,
+      dateDebut: true,
       enrollments: {
         where: { ...inscriptionsActives() },
         select: { convocationEnvoyeeAt: true },
@@ -674,12 +684,8 @@ async function handleRappelJ7(): Promise<void> {
   // horaire, il passera avant le prochain tour du rappel, et rappeler avant
   // d'avoir convoqué inverserait les deux pièces. Le rattrapage par état
   // (`rappelJ7EnvoyeAt: null`) représentera la session au passage suivant.
-  const candidates = sessions.filter(
-    (s) =>
-      s.enrollments.length > 0 &&
-      s.enrollments.every(
-        (e) => e.convocationEnvoyeeAt !== null && e.convocationEnvoyeeAt < seuilConvocation24h,
-      ),
+  const candidates = sessions.filter((s) =>
+    rappelJ7EnvoyableA(now, { dateDebut: s.dateDebut, inscrits: s.enrollments }),
   );
 
   // 🔑 CE QUE LE COMPTE À REBOURS RENDAIT INVISIBLE : les sessions qui ont
