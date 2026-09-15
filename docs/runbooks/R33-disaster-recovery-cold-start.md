@@ -60,6 +60,7 @@ semaines + 12 mois, fichiers et Docuseal quotidien + hebdo + mensuel, secrets 30
 3. **Rollback** sur le serveur existant, OU créer un nouveau serveur depuis l'image backup.
 4. Au boot : vérifier `docker ps` (tous les conteneurs healthy), puis `curl https://axion-ia.com/api/healthz`.
 5. Si nouvelle IP → mettre à jour l'A record dans Cloudflare DNS.
+6. Si le snapshot est antérieur au passage du rattrapage R34 : rechiffrer (voie B, **étape 3 bis**).
 
 RTO typique ~15-20 min. **Perte de données** = tout ce qui s'est passé depuis le dernier
 snapshot (jusqu'à ~24 h). Pour réduire, réappliquer par-dessus le dernier dump PG horaire (Voie B, étape 2).
@@ -135,6 +136,21 @@ pg_restore --clean --if-exists --no-owner --dbname="$DATABASE_URL" <fichier .dum
 # Via Coolify : pull image GHCR ghcr.io/will383842/axion-ia:latest (Dockerfile.coolify-pull)
 # Les migrations tournent à l'entrypoint (prisma migrate deploy).
 ```
+
+### Étape 3 bis — Rechiffrer la précision de santé des positionnements (RGPD art. 9)
+
+⚠️ **Vaut pour les trois voies (A, B et C).** Un dump ou un snapshot **antérieur à la date du
+passage du rattrapage R34** (consignée dans le journal de R34) fait **revenir en clair** la
+précision de santé des anciens positionnements. Après toute restauration d'un tel état, une fois
+le conteneur worker démarré avec la bonne `PII_ENCRYPTION_KEY` :
+
+```bash
+docker exec -it <worker> node_modules/.bin/tsx src/scripts/qualiopi/chiffrer-details-adaptation-positionnement.ts --appliquer
+docker exec -it <worker> node_modules/.bin/tsx src/scripts/qualiopi/chiffrer-details-adaptation-positionnement.ts --verifier
+```
+
+Puis **Q1 = 0** (requête Q1 de `R34-rattrapage-chiffrement-details-adaptation.md`). Le script est
+idempotent : sur un état déjà chiffré, il n'écrit rien.
 
 ### Étape 4 — Données annexes (chacune : télécharger → déchiffrer AES → restaurer dans le volume)
 

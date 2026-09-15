@@ -15,6 +15,10 @@ import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { makeQrToken } from "@/server/qualiopi/documents/qr";
 import { createEvaluation } from "@/server/qualiopi/evaluations/evaluations-service";
 import { creerAppreciation } from "@/server/qualiopi/portail/appreciation-service";
+import {
+  reporterDetailChiffre,
+  retirerCleReservee,
+} from "@/server/qualiopi/positionnement/detail-adaptation-chiffre";
 import type { Questionnaire, QuestionnaireType } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -180,6 +184,10 @@ export async function soumettreReponses(
       // soumission d'une re-soumission — le versement aux registres ne doit
       // avoir lieu qu'une fois.
       reponduAt: true,
+      // 🔴 La réponse EXISTANTE, pour y relire la précision de santé chiffrée
+      // (`detailAdaptationChiffre`) et la reporter : l'écriture ci-dessous
+      // remplace TOUT le JSON. Elle n'est lue que pour ce report.
+      reponses: true,
       enrollment: {
         select: {
           id: true,
@@ -208,10 +216,23 @@ export async function soumettreReponses(
   // deux `new Date()` distants de quelques millisecondes.
   const dateReponse = new Date();
 
+  // 🔴 RGPD art. 9 — `detailAdaptationChiffre` est RÉSERVÉE au serveur.
+  //   1. Retirée TOUJOURS des entrées : un stagiaire (portail) ou un admin
+  //      (console) pourrait sinon FORGER le marqueur, et l'écran afficherait
+  //      « Précision fournie » sans qu'aucune précision n'existe.
+  //   2. Puis REPORTÉE depuis la ligne existante : cette écriture remplace
+  //      tout le JSON, et aucun serveur n'empêche une re-soumission. Sans ce
+  //      report, elle effacerait sans bruit la précision chiffrée — une perte,
+  //      contraire à la rétention de 5 ans.
+  const reponsesEcrites = reporterDetailChiffre(
+    questionnaire.reponses,
+    retirerCleReservee(input.reponses),
+  );
+
   const updated = await prisma.questionnaire.update({
     where: { id: questionnaire.id },
     data: {
-      reponses: input.reponses as never,
+      reponses: reponsesEcrites as never,
       reponduAt: dateReponse,
       ...(input.noteGlobale !== undefined ? { noteGlobale: input.noteGlobale } : {}),
     },

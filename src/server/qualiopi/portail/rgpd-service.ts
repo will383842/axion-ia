@@ -22,6 +22,10 @@ import { supprimerImageSignature } from "@/server/qualiopi/emargement/storage";
 import { enqueueEmail } from "@/server/queue/queues";
 import { notify } from "@/server/notifications";
 import { redactName, redactEmail } from "@/lib/pii-redaction";
+import {
+  CLE_DETAIL_ADAPTATION_CHIFFRE,
+  CLE_DETAIL_ADAPTATION_CLAIR,
+} from "@/server/qualiopi/positionnement/lecture-positionnement";
 import type { RgpdDemandeType } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -139,7 +143,18 @@ export async function exporterDonneesStagiaire(traineeId: string): Promise<objec
       consentementAt: trainee.consentementAt ?? null,
       createdAt: trainee.createdAt,
     },
-    inscriptions: trainee.enrollments,
+    // 🔴 RGPD art. 15 + art. 9 — la précision d'un besoin d'adaptation rangée
+    // dans une réponse de positionnement est CHIFFRÉE en place
+    // (`detailAdaptationChiffre`, format `enc:v1:`). Restituer le chiffré
+    // rendrait l'export inintelligible pour la personne concernée : on le
+    // remplace par le texte déchiffré, comme `handicapDetails` ci-dessus.
+    inscriptions: trainee.enrollments.map((inscription) => ({
+      ...inscription,
+      questionnaires: inscription.questionnaires.map((q) => ({
+        ...q,
+        reponses: restituerPrecisionAdaptation(q.reponses),
+      })),
+    })),
     documents: trainee.documents.map((d) => ({
       id: d.id,
       type: d.type,
@@ -152,6 +167,30 @@ export async function exporterDonneesStagiaire(traineeId: string): Promise<objec
     // RGPD art.15 — parcours coaching 1-to-1 / AFEST du bénéficiaire.
     coachingSessions: trainee.coachingSessions,
   };
+}
+
+/**
+ * Réponse de questionnaire telle que restituée à la personne (art. 15) : la
+ * précision chiffrée devient `detailAdaptation`, en clair, et aucune valeur
+ * `enc:v1:` issue d'un questionnaire ne sort.
+ *
+ * Si la réponse porte À LA FOIS le clair et le chiffré (anomalie comptée par le
+ * rattrapage), les deux déclarations sont restituées, sans en perdre aucune.
+ */
+function restituerPrecisionAdaptation(reponses: unknown): unknown {
+  if (typeof reponses !== "object" || reponses === null || Array.isArray(reponses)) {
+    return reponses;
+  }
+  const r = reponses as Record<string, unknown>;
+  if (!Object.prototype.hasOwnProperty.call(r, CLE_DETAIL_ADAPTATION_CHIFFRE)) return reponses;
+
+  const { [CLE_DETAIL_ADAPTATION_CHIFFRE]: chiffre, ...reste } = r;
+  const dechiffre = typeof chiffre === "string" ? decryptPii(chiffre) : null;
+
+  if (Object.prototype.hasOwnProperty.call(reste, CLE_DETAIL_ADAPTATION_CLAIR)) {
+    return { ...reste, detailAdaptationAutreDeclaration: dechiffre };
+  }
+  return { ...reste, [CLE_DETAIL_ADAPTATION_CLAIR]: dechiffre };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

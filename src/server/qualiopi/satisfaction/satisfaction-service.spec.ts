@@ -44,6 +44,7 @@ vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
 }));
 
 import { prisma } from "@/lib/prisma";
+import { CLE_DETAIL_ADAPTATION_CHIFFRE } from "@/server/qualiopi/positionnement/lecture-positionnement";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { makeQrToken } from "@/server/qualiopi/documents/qr";
 import { createEvaluation } from "@/server/qualiopi/evaluations/evaluations-service";
@@ -607,5 +608,95 @@ describe("soumettreReponses — versement aux registres", () => {
 
     expect(mockCreerAppreciation).toHaveBeenCalledOnce();
     expect(mockCreerOuDedup).not.toHaveBeenCalled();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// soumettreReponses — la précision de santé chiffrée (RGPD art. 9)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("soumettreReponses — clé réservée `detailAdaptationChiffre`", () => {
+  const CHIFFRE_EXISTANT = "enc:v1:0a0b:0c0d:0e0f";
+
+  /** Positionnement DÉJÀ répondu : aucun versement aux registres n'interfère. */
+  function positionnementRepondu(reponses: Record<string, unknown>) {
+    return {
+      id: "q-pos-1",
+      type: "positionnement",
+      reponduAt: new Date("2026-08-01T08:00:00Z"),
+      reponses,
+      enrollment: {
+        id: "enroll-1",
+        traineeId: "trainee-1",
+        trainee: { prenom: "A", nom: "B" },
+        session: { clientId: null, titreSession: "S", dateDebut: new Date("2026-08-10") },
+      },
+    };
+  }
+
+  function reponsesEcrites(): Record<string, unknown> {
+    const appel = mockPrisma.questionnaire.update.mock.calls[0]![0] as {
+      data: { reponses: Record<string, unknown> };
+    };
+    return appel.data.reponses;
+  }
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockPrisma.questionnaire.update.mockResolvedValue({ id: "q-pos-1" });
+  });
+
+  it("🔴 T4 — une nouvelle soumission REPORTE le chiffré existant au lieu de l'effacer", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(
+      positionnementRepondu({
+        besoinAdaptation: true,
+        [CLE_DETAIL_ADAPTATION_CHIFFRE]: CHIFFRE_EXISTANT,
+      }),
+    );
+
+    await soumettreReponses({
+      questionnaireId: "q-pos-1",
+      reponses: { besoinAdaptation: true, attentes: "Gagner du temps" },
+    });
+
+    expect(reponsesEcrites()).toEqual({
+      besoinAdaptation: true,
+      attentes: "Gagner du temps",
+      [CLE_DETAIL_ADAPTATION_CHIFFRE]: CHIFFRE_EXISTANT,
+    });
+    // La ligne existante doit être LUE : sans `reponses` au select, la vraie
+    // base ne rendrait rien à reporter, et le simulacre le masquerait.
+    const lecture = mockPrisma.questionnaire.findUnique.mock.calls[0]![0] as {
+      select: Record<string, unknown>;
+    };
+    expect(lecture.select["reponses"]).toBe(true);
+  });
+
+  it("🔴 T5 — un marqueur FORGÉ par le client n'atteint jamais l'écriture", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(positionnementRepondu({}));
+
+    await soumettreReponses({
+      questionnaireId: "q-pos-1",
+      reponses: {
+        besoinAdaptation: true,
+        [CLE_DETAIL_ADAPTATION_CHIFFRE]: "enc:v1:forge:forge:forge",
+      },
+    });
+
+    expect(reponsesEcrites()).toEqual({ besoinAdaptation: true });
+    expect(JSON.stringify(mockPrisma.questionnaire.update.mock.calls)).not.toContain("forge");
+  });
+
+  it("🔴 T5 bis — forgé ET chiffré légitime : c'est la valeur de la BASE qui est écrite", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(
+      positionnementRepondu({ [CLE_DETAIL_ADAPTATION_CHIFFRE]: CHIFFRE_EXISTANT }),
+    );
+
+    await soumettreReponses({
+      token: "tok-portail",
+      reponses: { [CLE_DETAIL_ADAPTATION_CHIFFRE]: "enc:v1:forge:forge:forge" },
+    });
+
+    expect(reponsesEcrites()[CLE_DETAIL_ADAPTATION_CHIFFRE]).toBe(CHIFFRE_EXISTANT);
   });
 });
