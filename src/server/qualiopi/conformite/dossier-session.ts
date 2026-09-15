@@ -36,6 +36,7 @@ import { prisma } from "@/lib/prisma";
 import { lignesDeChaine } from "@/server/qualiopi/emargement/lignes-de-chaine";
 import { isR2Configured, getObjectBufferR2, documentPdfKey } from "@/lib/r2-storage";
 import { verifierChaine } from "@/server/qualiopi/emargement/hash";
+import { resumerProvenance } from "@/server/qualiopi/presence/provenance";
 // 🔴 2026-08-24, cahier D9 — cet export n'avait AUCUN appelant de production.
 // Le dossier promet « la VÉRIFICATION D'INTÉGRITÉ de CHAQUE chaîne de
 // signatures » et n'en vérifiait que deux familles sur trois : les signatures
@@ -120,6 +121,20 @@ export async function genererDossierSessionZip(
           id: true,
           tauxPresencePct: true,
           trainee: { select: { nom: true, prenom: true, deletedAt: true } },
+          // 🔴 `G-prerequis-02` — PROVENANCE des présences. Sans ces lignes, le
+          // rapport ne portait que le taux et le nombre de signatures : un taux
+          // de 100 % tapé à la main dans la grille se lisait comme un taux émargé.
+          // On lit la valeur qui PROUVE (signature vivante, rattachement à un
+          // relevé) ; `source` ne sert qu'à reconnaître une saisie `manuel` sur
+          // un créneau importé (seconde revue A09 §6) — cf. `presence/provenance.ts`.
+          presences: {
+            select: {
+              present: true,
+              importId: true,
+              source: true,
+              emargementSignatures: { where: { revokedAt: null }, select: { id: true }, take: 1 },
+            },
+          },
           // ⚠️ Filtre ET ordre viennent de `lignesDeChaine()` : ce sont les deux
           // conditions pour que `verifierChaine` rende un verdict juste, et
           // elles étaient recopiées à chaque lecture. Le détail du raisonnement
@@ -148,6 +163,11 @@ export async function genererDossierSessionZip(
   let nbChainesAnormales = 0;
   let nbEffaces = 0;
   let nbImagesAlterees = 0;
+  // Provenance des présences, cumulée sur la session (`G-prerequis-02`).
+  let presencesSignees = 0;
+  let presencesDeclarees = 0;
+  let presencesReleve = 0;
+  let inscriptionsAvecDeclaration = 0;
 
   for (const inscription of session.enrollments) {
     // ⚠️ `verrouColonnes` plutôt qu'un `as unknown as` : la conversion est
@@ -182,6 +202,19 @@ export async function genererDossierSessionZip(
       }
     }
 
+    const provenance = resumerProvenance(
+      inscription.presences.map((p) => ({
+        present: p.present,
+        importId: p.importId,
+        source: p.source,
+        signaturesVivantes: p.emargementSignatures.length,
+      })),
+    );
+    presencesSignees += provenance.signees;
+    presencesDeclarees += provenance.declarees;
+    presencesReleve += provenance.releveConnexion;
+    if (provenance.declarees > 0) inscriptionsAvecDeclaration += 1;
+
     rapports.push({
       // Nom déjà anonymisé (« [supprime] ») pour un effacé ; on l'étiquette
       // explicitement pour que l'auditeur sache pourquoi il est là.
@@ -190,6 +223,12 @@ export async function genererDossierSessionZip(
         : `${inscription.trainee.prenom} ${inscription.trainee.nom}`.trim(),
       effaceRgpd: efface,
       tauxPresencePct: inscription.tauxPresencePct,
+      // 🔴 `G-prerequis-02` — le taux ci-dessus agrège TOUTES les présences.
+      // Ces trois compteurs disent d'où elles viennent : un créneau présent sans
+      // signature ni relevé est une déclaration de l'organisme, pas un émargement.
+      presencesSignees: provenance.signees,
+      presencesDeclareesSansSignature: provenance.declarees,
+      presencesReleveConnexion: provenance.releveConnexion,
       nbSignatures: inscription.emargementSignatures.length,
       empreinteTete:
         inscription.emargementSignatures[inscription.emargementSignatures.length - 1]?.selfHash ??
@@ -294,6 +333,19 @@ export async function genererDossierSessionZip(
       ? "Intégrité des chaînes de signatures de pièces : AUCUNE pièce contractuelle signée au dossier."
       : `Intégrité des chaînes de signatures de pièces : ${rapportsPieces.length - nbChainesPieceAnormales}/${rapportsPieces.length} conformes.`,
   );
+  // 🔴 `G-prerequis-02` — la provenance est ÉCRITE dans l'index, pas seulement
+  // rangée dans le JSON : c'est l'index que l'auditeur ouvre en premier.
+  index.push(
+    `Provenance des présences : ${presencesSignees} créneau${presencesSignees > 1 ? "x" : ""} signé${presencesSignees > 1 ? "s" : ""}, ${presencesDeclarees} déclaré${presencesDeclarees > 1 ? "s" : ""} à la main sans signature, ${presencesReleve} issu${presencesReleve > 1 ? "s" : ""} d'un relevé de connexion.`,
+  );
+  if (presencesDeclarees > 0) {
+    // Un avertissement, pas un refus : la présence déclarée est une donnée de
+    // l'organisme, légitime à conserver. Ce qui ne l'est pas, c'est qu'elle se
+    // confonde avec un émargement dans le paquet remis au certificateur.
+    avertissements.push(
+      `⚠️ ${presencesDeclarees} présence${presencesDeclarees > 1 ? "s" : ""} déclarée${presencesDeclarees > 1 ? "s" : ""} à la main, SANS signature, pour ${inscriptionsAvecDeclaration} stagiaire${inscriptionsAvecDeclaration > 1 ? "s" : ""} : ce sont des déclarations de l'organisme, pas des émargements. Voir « presencesDeclareesSansSignature » dans verification-integrite.json.`,
+    );
+  }
   if (session.enrollments.length === 0) {
     avertissements.push(
       "⚠️ Aucune signature d'émargement dans ce dossier. La feuille d'émargement est la pièce que le certificateur demande en premier pour établir la réalité de l'action.",
