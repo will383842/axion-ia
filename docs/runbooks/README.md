@@ -46,19 +46,20 @@
 
 ### 🟢 P2 — Maintenance routine (10)
 
-| Code                                    | Titre                                          | Fréquence                                                          |
-| --------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------ |
-| [R21](./R21-cost-cap-monthly-reset.md)  | Reset cost cap mensuel                         | 1er du mois 00:01 UTC                                              |
-| [R22](./R22-pg-restore-drill.md)        | Backup Postgres restore drill                  | Trimestriel                                                        |
-| [R23](./R23-indexnow-key-rotation.md)   | Rotation `INDEXNOW_KEY`                        | Annuel ou si leak                                                  |
-| [R24](./R24-telegram-token-rotation.md) | Rotation Telegram bot token                    | Si leak / suspicion                                                |
-| R25                                     | Migration upgrade Next 16 → 17                 | Quand stable (ADR dédié futur)                                     |
-| [R26](./R26-retention-tier3-cleanup.md) | Cleanup retention tier-3 (90j+)                | Quotidien cron 03:00                                               |
-| [R27](./R27-postgres-vacuum.md)         | Vacuum analyze Postgres                        | Mensuel                                                            |
-| [R28](./R28-dpa-renewal.md)             | Renouvellement DPA providers IA + infra        | Annuel T1 (cycles 12-24 mois selon provider)                       |
-| [R29](./R29-rgpd-subprocessor-audit.md) | Audit RGPD sous-processeurs                    | Annuel T2 (cohérence legal.ts ↔ actif ↔ DPA signé)                 |
-| [R30](./R30-lighthouse-weekly.md)       | Lighthouse CI prod hebdo                       | Hebdo (lundi 04:00)                                                |
-| [R31](./R31-disaster-region-down.md)    | Disaster total région Hetzner (Nuremberg down) | Sur incident très rare — bascule Falkenstein/Helsinki via snapshot |
+| Code                                                      | Titre                                                                          | Fréquence                                                              |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| [R21](./R21-cost-cap-monthly-reset.md)                    | Reset cost cap mensuel                                                         | 1er du mois 00:01 UTC                                                  |
+| [R22](./R22-pg-restore-drill.md)                          | Backup Postgres restore drill                                                  | Trimestriel                                                            |
+| [R23](./R23-indexnow-key-rotation.md)                     | Rotation `INDEXNOW_KEY`                                                        | Annuel ou si leak                                                      |
+| [R24](./R24-telegram-token-rotation.md)                   | Rotation Telegram bot token                                                    | Si leak / suspicion                                                    |
+| R25                                                       | Migration upgrade Next 16 → 17                                                 | Quand stable (ADR dédié futur)                                         |
+| [R26](./R26-retention-tier3-cleanup.md)                   | Cleanup retention tier-3 (90j+)                                                | Quotidien cron 03:00                                                   |
+| [R27](./R27-postgres-vacuum.md)                           | Vacuum analyze Postgres                                                        | Mensuel                                                                |
+| [R28](./R28-dpa-renewal.md)                               | Renouvellement DPA providers IA + infra                                        | Annuel T1 (cycles 12-24 mois selon provider)                           |
+| [R29](./R29-rgpd-subprocessor-audit.md)                   | Audit RGPD sous-processeurs                                                    | Annuel T2 (cohérence legal.ts ↔ actif ↔ DPA signé)                     |
+| [R30](./R30-lighthouse-weekly.md)                         | Lighthouse CI prod hebdo                                                       | Hebdo (lundi 04:00)                                                    |
+| [R31](./R31-disaster-region-down.md)                      | Disaster total région Hetzner (Nuremberg down)                                 | Sur incident très rare — bascule Falkenstein/Helsinki via snapshot     |
+| [R34](./R34-rattrapage-chiffrement-details-adaptation.md) | Rattrapage art. 9 — chiffrer la précision de santé des anciens positionnements | Une fois, puis après toute restauration d'un dump antérieur au passage |
 
 ## Procédures transverses
 

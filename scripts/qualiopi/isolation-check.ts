@@ -15,7 +15,7 @@
  *  - src/components/admin/qualiopi/**
  *  - src/server/queue/workers/qualiopi-*-worker.ts
  *  - prisma/seeds/qualiopi/**  ·  prisma/migrations/*_qualiopi_*
- *  - scripts/qualiopi/**  ·  tests/qualiopi/**  ·  tests/e2e/qualiopi/**
+ *  - scripts/qualiopi/**  ·  src/scripts/qualiopi/**  ·  tests/qualiopi/**  ·  tests/e2e/qualiopi/**
  *  - docs/qualiopi/**  ·  src/types/qualiopi*
  *
  * + exceptions explicites (SSOT transverses qui RÉFÉRENCENT qualiopi)
@@ -76,6 +76,10 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^prisma\/seeds\/qualiopi\//,
   /^prisma\/migrations\/\d+_(add_)?qualiopi_/,
   /^scripts\/qualiopi\//,
+  // Scripts ponctuels du domaine exécutés DANS le conteneur worker (`tsx`) :
+  // l'image worker copie `src/` mais pas `scripts/`. Même zone que la ligne
+  // ci-dessus, à un autre emplacement pour être atteignable en production.
+  /^src\/scripts\/qualiopi\//,
   /^tests\/qualiopi\//,
   /^tests\/e2e\/qualiopi\//,
   /^docs\/qualiopi\//,

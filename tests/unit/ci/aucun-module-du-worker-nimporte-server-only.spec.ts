@@ -33,7 +33,8 @@ import { describe, expect, it } from "vitest";
  * un bundle client. Huit autres modules l'utilisent à bon droit — ils ne sont
  * atteints QUE par des composants Next. Cette garde ne leur dit rien.
  *
- * Elle ne parle QUE des modules atteignables depuis `src/server/queue/**`, et
+ * Elle ne parle QUE des modules atteignables depuis `src/server/queue/**` et
+ * `src/scripts/qualiopi/**` (scripts lancés par `tsx` dans le même conteneur), et
  * pour ceux-là l'interdiction est structurelle, pas stylistique : sous `tsx`,
  * l'import ne peut pas résoudre. Il n'y a donc aucun cas légitime à excuser, et
  * aucune liste d'exceptions à tenir — la garde ne peut pas pourrir.
@@ -47,7 +48,15 @@ import { describe, expect, it } from "vitest";
 
 const RACINE = resolve(__dirname, "../../..");
 const SRC = join(RACINE, "src");
-const DEPART = join(SRC, "server/queue");
+/**
+ * Points de départ exécutés par `tsx` dans le conteneur worker :
+ *   - `src/server/queue` — le worker BullMQ lui-même ;
+ *   - `src/scripts/qualiopi` — scripts ponctuels lancés par `docker exec` dans
+ *     ce même conteneur (rattrapage de chiffrement art. 9). Même contrainte :
+ *     hors de Next, `server-only` ne résout pas, et le script mourrait au
+ *     premier import au moment précis où l'on veut le lancer en production.
+ */
+const DEPARTS = [join(SRC, "server/queue"), join(SRC, "scripts/qualiopi")];
 
 /** Tous les `.ts`/`.tsx` sous un dossier. */
 function fichiersSous(dir: string): string[] {
@@ -100,7 +109,7 @@ function resoudre(spec: string): string | null {
 /** Fermeture transitive des modules du dépôt atteignables depuis le worker. */
 function atteignablesDepuisLeWorker(): Set<string> {
   const vus = new Set<string>();
-  const file = fichiersSous(DEPART);
+  const file = DEPARTS.flatMap((depart) => fichiersSous(depart));
   while (file.length > 0) {
     const f = file.pop() as string;
     if (vus.has(f)) continue;
@@ -136,7 +145,7 @@ function atteignablesDepuisLeWorker(): Set<string> {
 const IMPORTE_SERVER_ONLY = /^\s*import\s+["']server-only["']/m;
 
 describe("🔴 le worker tourne hors de Next — `server-only` n'y résout pas", () => {
-  it("aucun module atteignable depuis `src/server/queue/**` n'importe `server-only`", () => {
+  it("aucun module atteignable depuis `src/server/queue/**` ou `src/scripts/qualiopi/**` n'importe `server-only`", () => {
     const atteignables = [...atteignablesDepuisLeWorker()].sort();
     const fautifs = atteignables
       .filter((f) => IMPORTE_SERVER_ONLY.test(readFileSync(f, "utf8")))
@@ -168,5 +177,18 @@ describe("🔴 le worker tourne hors de Next — `server-only` n'y résout pas",
     // cas précis que les imports directs ne verraient pas.
     expect(atteignables).toContain("src/server/careers/rappels-entretien.ts");
     expect(atteignables).toContain("src/server/careers/dossiers-en-sommeil.ts");
+  });
+
+  it("TÉMOIN+ : la marche part aussi des scripts lancés dans le conteneur worker", () => {
+    const atteignables = [...atteignablesDepuisLeWorker()].map((f) =>
+      f.slice(RACINE.length + 1).replace(/\\/g, "/"),
+    );
+
+    expect(atteignables).toContain(
+      "src/scripts/qualiopi/chiffrer-details-adaptation-positionnement.ts",
+    );
+    expect(atteignables).toContain(
+      "src/server/qualiopi/positionnement/detail-adaptation-chiffre.ts",
+    );
   });
 });

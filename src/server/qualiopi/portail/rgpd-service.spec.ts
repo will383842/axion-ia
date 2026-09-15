@@ -594,3 +594,85 @@ describe("creerDemandeRgpd — prévient les deux parties", () => {
     expect(notify).not.toHaveBeenCalled();
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Export art. 15 — la précision de santé rangée dans une réponse
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("exporterDonneesStagiaire — précision chiffrée dans un positionnement", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  const traineeAvecPositionnement = (reponses: Record<string, unknown>) => ({
+    id: "t-9",
+    nom: "N",
+    prenom: "P",
+    email: "p@example.com",
+    telephone: null,
+    entreprise: null,
+    fonction: null,
+    situationHandicap: false,
+    handicapDetailsChiffre: null,
+    consentementFormation: true,
+    consentementEmail: false,
+    consentementVersion: null,
+    consentementAt: null,
+    createdAt: new Date("2026-07-01"),
+    enrollments: [
+      {
+        id: "e-9",
+        questionnaires: [
+          { id: "q-9", type: "positionnement", reponses },
+          { id: "q-10", type: "satisfaction_chaud", reponses: { commentaire: "Bien" } },
+        ],
+      },
+    ],
+    documents: [],
+    appreciations: [],
+    rgpdDemandes: [],
+    coachingSessions: [],
+  });
+
+  it("🔴 T6 — restitue `detailAdaptation` DÉCHIFFRÉ, et aucun `enc:v1:` issu d'un questionnaire", async () => {
+    const { decryptPii } = await import("@/lib/pii-crypto");
+    vi.mocked(decryptPii).mockImplementation(((v: string | null) =>
+      v === "enc:v1:11:22:33" ? "Texte de la personne" : v) as never);
+    mockPrisma.trainee.findUnique.mockResolvedValue(
+      traineeAvecPositionnement({
+        besoinAdaptation: true,
+        detailAdaptationChiffre: "enc:v1:11:22:33",
+      }),
+    );
+
+    const resultat = (await exporterDonneesStagiaire("t-9")) as {
+      inscriptions: Array<{
+        questionnaires: Array<{ id: string; reponses: Record<string, unknown> }>;
+      }>;
+    };
+
+    const inscriptions = JSON.stringify(resultat.inscriptions);
+    expect(inscriptions).not.toContain("enc:v1:");
+    expect(inscriptions).not.toContain("detailAdaptationChiffre");
+    const positionnement = resultat.inscriptions[0]!.questionnaires[0]!;
+    expect(positionnement.reponses).toEqual({
+      besoinAdaptation: true,
+      detailAdaptation: "Texte de la personne",
+    });
+    // Les autres questionnaires sont restitués tels quels.
+    expect(resultat.inscriptions[0]!.questionnaires[1]!.reponses).toEqual({ commentaire: "Bien" });
+  });
+
+  it("un ancien positionnement encore EN CLAIR est restitué tel quel", async () => {
+    mockPrisma.trainee.findUnique.mockResolvedValue(
+      traineeAvecPositionnement({ besoinAdaptation: true, detailAdaptation: "Rampe" }),
+    );
+
+    const resultat = (await exporterDonneesStagiaire("t-9")) as {
+      inscriptions: Array<{ questionnaires: Array<{ reponses: Record<string, unknown> }> }>;
+    };
+
+    expect(resultat.inscriptions[0]!.questionnaires[0]!.reponses).toEqual({
+      besoinAdaptation: true,
+      detailAdaptation: "Rampe",
+    });
+  });
+});
