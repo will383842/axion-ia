@@ -16,7 +16,9 @@
  * Trois formes RÉELLES existent en base (relectures de la PR 1090) :
  *   1. portail depuis le 2026-08-20 : `portail.ts` retire `detailAdaptation`
  *      du JSON, sans y laisser de marqueur, et le chiffre sur la fiche stagiaire ;
- *   2. portail du 2026-07-26 au 2026-08-20 : le détail y est encore EN CLAIR ;
+ *   2. portail du 2026-07-26 au 2026-08-20 : le détail y est EN CLAIR
+ *      (`detailAdaptation`) avant le rattrapage de chiffrement, puis CHIFFRÉ
+ *      en place (`detailAdaptationChiffre`, format `enc:v1:`) après ;
  *   3. saisie console (`QuestionnairesSection`) : `objectifs_atteints`,
  *      `points_forts`, `axes_amelioration`, `commentaire`, `saisie_admin: true`.
  *
@@ -44,6 +46,17 @@ export const LIBELLES_NIVEAU_POSITIONNEMENT: Readonly<Record<1 | 2 | 3, string>>
   2: "Quelques notions",
   3: "Je maîtrise",
 };
+
+/**
+ * Clés de la précision dans `Questionnaire.reponses` — nommées UNE seule fois,
+ * ici (module pur), pour ce lecteur et pour le script de rattrapage de
+ * chiffrement. Le chiffré est réservé au serveur et n'est JAMAIS déchiffré ici.
+ */
+export const CLE_DETAIL_ADAPTATION_CLAIR = "detailAdaptation";
+export const CLE_DETAIL_ADAPTATION_CHIFFRE = "detailAdaptationChiffre";
+
+/** Préfixe du format de chiffrement en vigueur (`encryptPii`). */
+const PREFIXE_CHIFFRE = "enc:v1:";
 
 /** Libellé de la ligne « Précision », quand la réponse atteste qu'une précision a été saisie. */
 export const PRECISION_DANS_LA_REPONSE =
@@ -87,8 +100,9 @@ export interface PositionnementLu {
    */
   readonly besoinAdaptation: boolean | null;
   /**
-   * La RÉPONSE atteste qu'une précision a été saisie (détail encore présent
-   * dans le JSON, réponses antérieures au 2026-08-20). Jamais son contenu.
+   * La RÉPONSE atteste qu'une précision a été saisie : réponses antérieures au
+   * 2026-08-20, détail en clair (avant rattrapage) ou chiffré sous
+   * `detailAdaptationChiffre` (après). Jamais son contenu, clair ou chiffré.
    * `false` ne veut PAS dire « aucune précision » : depuis le 2026-08-20, le
    * détail est retiré de la réponse sans marqueur.
    */
@@ -149,9 +163,15 @@ export function lirePositionnement(reponses: unknown): PositionnementLu {
   // du bénéficiaire, et ne doit jamais s'afficher comme telle.
   const besoinAdaptation = saisieAdmin ? null : typeof besoin === "boolean" ? besoin : null;
 
-  // 🔴 Seule la PRÉSENCE du détail est lue : sa valeur ne sort pas d'ici.
-  const detailBrut = r["detailAdaptation"];
-  const detailEnClairPresent = typeof detailBrut === "string" && detailBrut.trim() !== "";
+  // 🔴 Seule la PRÉSENCE du détail est lue : ni le clair ni le chiffré ne
+  // sortent d'ici, et le chiffré n'est jamais déchiffré. Le clair reste lu
+  // pendant la transition, pour que l'écran soit juste avant comme après le
+  // rattrapage de chiffrement.
+  const clair = r[CLE_DETAIL_ADAPTATION_CLAIR];
+  const chiffre = r[CLE_DETAIL_ADAPTATION_CHIFFRE];
+  const precisionPresente =
+    (typeof clair === "string" && clair.trim() !== "") ||
+    (typeof chiffre === "string" && chiffre.startsWith(PREFIXE_CHIFFRE));
 
   return {
     fonction: texte(r["fonction"]),
@@ -162,7 +182,7 @@ export function lirePositionnement(reponses: unknown): PositionnementLu {
     tacheVisee: texte(r["tacheVisee"]),
     niveaux,
     besoinAdaptation,
-    precisionDansLaReponse: besoinAdaptation === true && detailEnClairPresent,
+    precisionDansLaReponse: besoinAdaptation === true && precisionPresente,
     saisieAdmin,
     saisieOrganisme: {
       objectifsAtteints: texte(r["objectifs_atteints"]),

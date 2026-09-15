@@ -10,6 +10,8 @@
 import { describe, it, expect } from "vitest";
 import {
   chronologieReponse,
+  CLE_DETAIL_ADAPTATION_CHIFFRE,
+  CLE_DETAIL_ADAPTATION_CLAIR,
   estSaisieOrganisme,
   lirePositionnement,
   libelleBesoinAdaptation,
@@ -146,6 +148,41 @@ describe("lirePositionnement — formes réelles en base", () => {
       commentaire: "Appel téléphonique",
     });
     // La question n'a pas été posée : aucune précision ne s'y rattache.
+    expect(lu.precisionDansLaReponse).toBe(false);
+  });
+
+  // ── Rattrapage de chiffrement (décision de Will, 2026-09-15) ─────────────
+  // Un script retirera `detailAdaptation` du JSON et posera
+  // `detailAdaptationChiffre` au format `enc:v1:`. Sans ces cas, la trace
+  // disparaîtrait après le rattrapage : la fausse absence que la PR combat.
+
+  it("les deux clés de la précision sont nommées une seule fois", () => {
+    expect(CLE_DETAIL_ADAPTATION_CLAIR).toBe("detailAdaptation");
+    expect(CLE_DETAIL_ADAPTATION_CHIFFRE).toBe("detailAdaptationChiffre");
+  });
+
+  it("réponse rattrapée : seul le détail CHIFFRÉ (enc:v1:) → trace présente, valeur jamais exposée", () => {
+    const lu = lirePositionnement({
+      besoinAdaptation: true,
+      detailAdaptationChiffre: "enc:v1:aa:bb:cc",
+    });
+    expect(lu.precisionDansLaReponse).toBe(true);
+    expect(JSON.stringify(lu)).not.toContain("enc:v1");
+    expect(JSON.stringify(lu)).not.toContain("aa:bb:cc");
+  });
+
+  it("une valeur chiffrée qui ne commence pas par enc:v1: n'est PAS une trace", () => {
+    for (const valeur of ["aa:bb:cc", "", "   ", "ENC:V1:aa", 42, null]) {
+      const lu = lirePositionnement({ besoinAdaptation: true, detailAdaptationChiffre: valeur });
+      expect(lu.precisionDansLaReponse).toBe(false);
+    }
+  });
+
+  it("détail chiffré sans besoin déclaré « Oui » → aucune trace (même règle que le clair)", () => {
+    const lu = lirePositionnement({
+      besoinAdaptation: false,
+      detailAdaptationChiffre: "enc:v1:aa:bb:cc",
+    });
     expect(lu.precisionDansLaReponse).toBe(false);
   });
 
