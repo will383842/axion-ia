@@ -33,19 +33,39 @@ vi.mock("@/server/qualiopi/inscriptions/inscriptions-actives", () => ({
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { sessionsSansRappelJ7, AVANCE_MINIMALE_HEURES } from "./rappel-j7-manquant";
+import { sessionsSansRappelJ7 } from "./rappel-j7-manquant";
+import {
+  DELAI_APRES_CONVOCATION_MS,
+  PLAFOND_CONVOCATION_MS,
+  PLAFOND_RAPPEL_J7_MS,
+} from "./rappel-j7-possible";
 
 const MAINTENANT = new Date("2026-09-13T09:00:00.000Z");
 
-/** Fabrique une session dont l'avance (en heures) est choisie explicitement. */
+/**
+ * Fabrique une session dont l'avance (en heures) est choisie explicitement.
+ *
+ * 2026-09-15 : l'unique inscrit porte la convocation qu'aurait posée le cron
+ * horaire (l'heure pile suivant la création, pas avant J-5,5). La règle ne lit
+ * plus une avance : elle rejoue les passages de l'envoyeur sur ces dates.
+ */
 function session(numero: string, avanceHeures: number, debut = "2026-09-05T07:00:00.000Z") {
   const dateDebut = new Date(debut);
+  const createdAt = new Date(dateDebut.getTime() - avanceHeures * 60 * 60 * 1000);
+  const HEURE = 60 * 60 * 1000;
+  const plancher = Math.max(createdAt.getTime(), dateDebut.getTime() - 5.5 * 24 * HEURE);
   return {
     id: `id-${numero}`,
     numero,
     titreSession: "IA pour bien commencer",
     dateDebut,
-    createdAt: new Date(dateDebut.getTime() - avanceHeures * 60 * 60 * 1000),
+    createdAt,
+    enrollments: [
+      {
+        createdAt,
+        convocationEnvoyeeAt: new Date(Math.floor(plancher / HEURE) * HEURE + HEURE + 5_000),
+      },
+    ],
   };
 }
 
@@ -77,10 +97,10 @@ describe("sessionsSansRappelJ7 — le rappel devait être possible", () => {
     expect(r.map((s) => s.numero)).toEqual(["POSSIBLE"]);
   });
 
-  it("la borne est STRICTE : exactement 24 h ne suffisait pas", async () => {
+  it("exactement 24 h ne suffit pas", async () => {
     // À 24 h pile, la convocation atteint tout juste son seuil au moment où la
     // session commence : l'envoyeur n'a aucun passage pour tirer.
-    findMany.mockResolvedValue([session("PILE", AVANCE_MINIMALE_HEURES)]);
+    findMany.mockResolvedValue([session("PILE", 24)]);
     await expect(sessionsSansRappelJ7(MAINTENANT)).resolves.toEqual([]);
   });
 
@@ -100,40 +120,47 @@ describe("sessionsSansRappelJ7 — le rappel devait être possible", () => {
 });
 
 /**
- * 🔑 LA BORNE N'EST PAS À MOI — elle est celle de l'ENVOYEUR, relue depuis le
- * lecteur.
+ * 🔑 LES BORNES NE SONT PAS À MOI — elles sont celles des CRONS, relues depuis
+ * le lecteur.
  *
- * `AVANCE_MINIMALE_HEURES` vaut 24 parce que
- * `qualiopi-formation-crons-worker.ts` refuse de rappeler tant que la
- * convocation de chaque inscrit n'a pas 24 h (`seuilConvocation24h`, correctif
- * S5). Le jour où l'envoyeur change ce seuil, ma borne devient fausse — et
- * silencieusement : la règle continuerait de rendre des listes plausibles.
- *
- * Ce témoin NOMME les deux fichiers et la valeur. Il ne mesure pas un seuil,
- * il mesure un ACCORD entre deux endroits.
+ * L'envoyeur du rappel lit `rappelJ7EnvoyableA` et `PLAFOND_RAPPEL_J7_MS` : le
+ * témoin vérifie qu'il n'a pas recopié ses propres bornes à côté. Le cron de
+ * convocation, lui, garde son plafond de 5,5 jours en ligne — la règle en
+ * dérive la première convocation possible d'un inscrit jamais convoqué, donc le
+ * témoin relit la valeur et nomme les deux fichiers.
  */
-describe("le seuil de 24 h reste celui de l'envoyeur", () => {
-  it("l'envoyeur exige toujours 24 h de convocation, et notre borne l'égale", () => {
-    const worker = readFileSync(
-      join(process.cwd(), "src/server/queue/workers/qualiopi-formation-crons-worker.ts"),
-      "utf8",
-    );
-    const ligne = worker
-      .split(String.fromCharCode(10))
-      .find((l) => l.includes("seuilConvocation24h") && l.includes("now.getTime()"));
+describe("les bornes restent celles des crons", () => {
+  const worker = readFileSync(
+    join(process.cwd(), "src/server/queue/workers/qualiopi-formation-crons-worker.ts"),
+    "utf8",
+  );
+  const corps = (nom: string) => {
+    const debut = worker.indexOf(`async function ${nom}(`);
+    expect(debut, `\`${nom}\` a disparu du worker`).toBeGreaterThan(-1);
+    const fin = worker.indexOf(String.fromCharCode(10) + "async function ", debut + 1);
+    return worker.slice(debut, fin === -1 ? undefined : fin).replace(/\s+/g, " ");
+  };
+
+  it("l'envoyeur décide par le prédicat partagé, sans seuil recopié", () => {
+    const rappel = corps("handleRappelJ7");
+    expect(rappel).toContain("rappelJ7EnvoyableA(now,");
+    expect(rappel).toContain("now.getTime() + PLAFOND_RAPPEL_J7_MS");
     expect(
-      ligne,
-      "`seuilConvocation24h` a disparu ou changé de forme dans l'envoyeur. " +
-        "La borne d'impossibilité du rappel J-7 en dérive : relire les deux ensemble.",
-    ).toBeDefined();
-    // Normalisé : Prettier peut reformater, la valeur ne doit pas bouger sans qu'on le sache.
-    const heuresEnvoyeur = /(\d+)\s*\*\s*60\s*\*\s*60\s*\*\s*1000/.exec(
-      (ligne ?? "").replace(/\s+/g, " "),
+      /24 \* 60 \* 60 \* 1000|7\.5 \* 24/.test(rappel),
+      "l'envoyeur a de nouveau un seuil en ligne : la règle d'alerte ne le lirait pas.",
+    ).toBe(false);
+    expect(DELAI_APRES_CONVOCATION_MS).toBe(24 * 60 * 60 * 1000);
+    expect(PLAFOND_RAPPEL_J7_MS).toBe(7.5 * 24 * 60 * 60 * 1000);
+  });
+
+  it("le cron de convocation convoque toujours à 5,5 j au plus tôt", () => {
+    const heures = /now\.getTime\(\) \+ ([\d.]+) \* 24 \* 60 \* 60 \* 1000/.exec(
+      corps("handleConvocationJ5"),
     )?.[1];
     expect(
-      Number(heuresEnvoyeur),
-      "l'envoyeur n'attend plus 24 h avant de rappeler : `AVANCE_MINIMALE_HEURES` " +
-        "doit suivre, sinon la règle écarterait les mauvaises sessions.",
-    ).toBe(AVANCE_MINIMALE_HEURES);
+      Number(heures) * 24 * 60 * 60 * 1000,
+      "le plafond de `handleConvocationJ5` a changé : `PLAFOND_CONVOCATION_MS` " +
+        "(rappel-j7-possible.ts) doit suivre.",
+    ).toBe(PLAFOND_CONVOCATION_MS);
   });
 });
