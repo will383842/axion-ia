@@ -1034,6 +1034,86 @@ describe("evaluerConformite", () => {
     expect(result.indicateurs.find((i) => i.numero === 21)?.statut).toBe("couvert");
   });
 
+  // 🔴 Relecture du 2026-09-15 — le NUMÉRATEUR (formateurs porteurs d'une pièce
+  // probante) filtrait `actif` mais PAS `estFormateur`, alors que le DÉNOMINATEUR
+  // filtre les deux. La pièce d'une secrétaire comblait donc le trou d'un
+  // formateur sans pièce : « 2/2 », indicateur déclaré couvert.
+  //
+  // ⚠️ Le mock Prisma de cette spec n'évalue aucun `where`. Rendre une liste fixe
+  // ne distinguerait pas un filtre présent d'un filtre absent : on SIMULE donc le
+  // seul filtre de relation en jeu (chaque clé demandée sur `trainer` doit valoir
+  // sur le formateur rattaché à la pièce), et un second témoin exige que ce
+  // filtre soit EXACTEMENT celui du dénominateur.
+  type Rattachement = { actif: boolean; estFormateur: boolean };
+  function pieceDe(trainerId: string, trainer: Rattachement) {
+    return { ...pieceCompetence(trainerId), trainer };
+  }
+  function simulerFiltreDeRelation(pieces: Array<ReturnType<typeof pieceDe>>) {
+    mockP.trainerDocument.findMany.mockImplementation(
+      async (args?: { where?: { trainer?: Record<string, unknown> } }) => {
+        const filtre = args?.where?.trainer ?? {};
+        return pieces.filter((p) =>
+          Object.entries(filtre).every(
+            ([cle, valeur]) => p.trainer[cle as keyof Rattachement] === valeur,
+          ),
+        );
+      },
+    );
+  }
+  const FORMATEUR_ACTIF: Rattachement = { actif: true, estFormateur: true };
+
+  it("🔴 off.21 NON couvert : la pièce d'un NON-formateur ne comble pas le formateur qui n'en a pas", async () => {
+    // Dénominateur : 2 formateurs actifs (le non-formateur n'y est pas compté).
+    mockP.trainer.count.mockResolvedValueOnce(2).mockResolvedValueOnce(2).mockResolvedValueOnce(2);
+    simulerFiltreDeRelation([
+      pieceDe("t-formateur-1", FORMATEUR_ACTIF),
+      // t-formateur-2 n'a AUCUNE pièce.
+      pieceDe("t-secretaire", { actif: true, estFormateur: false }),
+    ]);
+    const result = await evaluerConformite();
+    const ind21 = result.indicateurs.find((i) => i.numero === 21);
+    expect(ind21?.statut).toBe("a_completer");
+    expect(ind21?.preuves.join(" ")).toContain(
+      "1/2 formateurs actifs avec au moins une pièce de compétence validée",
+    );
+  });
+
+  it("contre-témoin off.21 : deux formateurs actifs porteurs d'une pièce probante → couvert", async () => {
+    mockP.trainer.count.mockResolvedValueOnce(2).mockResolvedValueOnce(2).mockResolvedValueOnce(2);
+    simulerFiltreDeRelation([
+      pieceDe("t-formateur-1", FORMATEUR_ACTIF),
+      pieceDe("t-formateur-2", FORMATEUR_ACTIF),
+    ]);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 21)?.statut).toBe("couvert");
+  });
+
+  it("off.21 : la pièce d'un formateur INACTIF ne compte pas", async () => {
+    mockP.trainer.count.mockResolvedValueOnce(2).mockResolvedValueOnce(2).mockResolvedValueOnce(2);
+    simulerFiltreDeRelation([
+      pieceDe("t-formateur-1", FORMATEUR_ACTIF),
+      pieceDe("t-formateur-parti", { actif: false, estFormateur: true }),
+    ]);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 21)?.statut).toBe("a_completer");
+  });
+
+  it("🔴 off.21 : le numérateur porte EXACTEMENT la population du dénominateur", async () => {
+    await evaluerConformite();
+    const filtreNumerateur = mockP.trainerDocument.findMany.mock.calls[0]?.[0]?.where?.trainer;
+    // Le dénominateur de l'indicateur 21 : les formateurs actifs.
+    const denominateur = { actif: true, estFormateur: true };
+    expect(
+      mockP.trainer.count.mock.calls.map(
+        (c: Array<{ where?: unknown } | undefined>) => c[0]?.where,
+      ),
+    ).toContainEqual(denominateur);
+    expect(
+      filtreNumerateur,
+      "le numérateur d'off.21 ne filtre pas la même population que son dénominateur",
+    ).toEqual(denominateur);
+  });
+
   it("off.21 a_completer si CV présent mais PÉRIMÉ (aucun < 24 mois)", async () => {
     // 2 CV téléversés mais aucun daté de moins de 24 mois → 3e appel = 0.
     mockP.trainer.count.mockResolvedValueOnce(3).mockResolvedValueOnce(2).mockResolvedValueOnce(0);

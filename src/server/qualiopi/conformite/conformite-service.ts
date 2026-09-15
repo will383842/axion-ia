@@ -573,9 +573,18 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // mais une ligne déjà validée sans fichier ne doit plus rien couvrir. Type,
     // statut, fichier et expiration sont jugés par LE prédicat partagé
     // (`piece-competence.ts`) ; le `where` ne fait que rétrécir.
+    //
+    // 🔴 Relecture 2026-09-15 — `estFormateur` manquait ICI alors que le
+    // DÉNOMINATEUR (`trainer.count` plus haut) le porte depuis le 2026-09-13.
+    // La pièce d'un intervenant NON formateur comblait le trou d'un formateur
+    // sans pièce : « 2/2 », indicateur déclaré couvert. Numérateur et
+    // dénominateur doivent filtrer EXACTEMENT la même population.
     prisma.trainerDocument
       .findMany({
-        where: { ...prefiltrePieceCompetenceProbante(maintenant), trainer: { actif: true } },
+        where: {
+          ...prefiltrePieceCompetenceProbante(maintenant),
+          trainer: { actif: true, estFormateur: true },
+        },
         select: { trainerId: true, ...SELECT_PIECE_COMPETENCE },
       })
       .then(
