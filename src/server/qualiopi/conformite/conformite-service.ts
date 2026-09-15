@@ -36,6 +36,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { whereVeilleExploitee } from "./veille-exploitee";
+import { whereBesoinAdaptationDeclare } from "@/server/qualiopi/adaptation/reponse-organisme";
 import {
   SELECT_PIECE_COMPETENCE,
   estPieceCompetenceProbante,
@@ -723,13 +724,21 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // d'adaptation, sur une session tenue. Dénominateur de la seule question
     // que l'auditrice pose sur cet indicateur : « des personnes vous ont
     // déclaré un besoin — montrez ce que vous avez adapté pour elles ».
+    //
+    // 🔴 2026-09-15 — ce compte ne lisait QUE `Trainee.situationHandicap`. Un
+    // « oui » au positionnement dont la fiche avait ensuite été décochée (cas
+    // réel : aucune adaptation nécessaire après échange) SORTAIT du
+    // dénominateur, en silence — et avec lui l'obligation de montrer la réponse
+    // de l'organisme. Le besoin déclaré se lit désormais au MÊME prédicat que
+    // l'alerte et l'écran de session (`whereBesoinAdaptationDeclare`).
     prisma.enrollment.count({
-      where: { trainee: { situationHandicap: true }, ...inscriptionSurSessionTenue() },
+      where: { ...whereBesoinAdaptationDeclare(), ...inscriptionSurSessionTenue() },
     }),
-    // off.10 — parmi celles-ci, celles qui portent une adaptation tracée.
+    // off.10 — parmi celles-ci, celles qui portent une RÉPONSE consignée
+    // (adaptation prévue, ou « aucune adaptation nécessaire » après échange).
     prisma.enrollment.count({
       where: {
-        trainee: { situationHandicap: true },
+        ...whereBesoinAdaptationDeclare(),
         adaptationsRealisees: { not: null },
         ...inscriptionSurSessionTenue(),
       },
@@ -1285,9 +1294,11 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   // tenues et démarrées ont répondu, avant le début, à la question du besoin
   // d'adaptation, ET aucun besoin déclaré ne reste sans adaptation tracée.
   //
-  // ⚠️ Reste OUVERT (I10-03, hors de ce correctif) : `adaptationsRealisees`
-  // compte toute chaîne non vide — un besoin déclaré suivi de « RAS » compte
-  // comme servi.
+  // ⚠️ `adaptationsRealisees` compte toute chaîne non vide. Depuis le
+  // 2026-09-15 c'est ASSUMÉ : l'indicateur exige une RÉPONSE au besoin, et
+  // « aucune adaptation nécessaire après échange » en est une — consignée avec
+  // un libellé fixe (`REPONSE_AUCUNE_ADAPTATION`) et datée au journal. Reste
+  // ouvert : une réponse libre vide de sens (« RAS ») compte encore.
   const besoinsAdaptationNonServis = nbInscritsBesoinAdaptation - nbInscritsBesoinAdaptationServis;
   set(
     10,

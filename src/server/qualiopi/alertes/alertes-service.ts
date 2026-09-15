@@ -378,6 +378,7 @@ export async function synchroniserAlertes(): Promise<SyntheseSynchronisation> {
     candidates: candidats,
     reglesEnEchec,
     reglesTronquees: tronquees,
+    codesTronques,
   } = await evaluerAlertesDetaille();
 
   // 🔑 Consigné AVANT toute sortie anticipée : l'état du moteur est connu ici,
@@ -498,8 +499,20 @@ export async function synchroniserAlertes(): Promise<SyntheseSynchronisation> {
 
   // Résolution automatique : codes à resolutionAuto=true dont la condition
   // a disparu — on vérifie par (code, cibleId) pour la précision.
+  //
+  // 🔴 2026-09-15 — SAUF les codes d'une règle TRONQUÉE ce tour. Une candidate
+  // écartée par le plafond n'a pas disparu, elle n'a pas été lue : la fermer
+  // serait prendre une limite de lecture pour une cause résolue. Seuls ces codes
+  // sont gelés ; les autres se referment normalement.
+  const gelesParTroncature = new Set(codesTronques);
+  if (gelesParTroncature.size > 0) {
+    console.warn(
+      `[alertes-service] résolution auto GELÉE ce tour pour ${gelesParTroncature.size} code(s) ` +
+        `tronqué(s) (${[...gelesParTroncature].join(", ")})`,
+    );
+  }
   const codesAutoResolution = Object.entries(ALERTE_CATALOGUE)
-    .filter(([, entry]) => entry.resolutionAuto)
+    .filter(([code, entry]) => entry.resolutionAuto && !gelesParTroncature.has(code))
     .map(([code]) => code);
 
   // Ensemble des (code::cibleId) encore actifs

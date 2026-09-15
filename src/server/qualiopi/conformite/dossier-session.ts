@@ -54,6 +54,9 @@ import { construireFeuillePdf } from "@/server/qualiopi/emargement/feuille-pdf";
 import { rendreTirageEmargementAJour } from "@/server/qualiopi/documents/emargement-tirage";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
 import { documentJointAuDossierAudit, lignePiecesHorsDossier } from "./hors-dossier-audit";
+import { besoinAdaptationDeclare } from "@/server/qualiopi/adaptation/reponse-organisme";
+import { datesConsignationAdaptation } from "@/server/qualiopi/adaptation/journal-consignation";
+import { sectionIndicateur10 } from "@/server/qualiopi/adaptation/dossier-adaptation";
 
 export interface DossierSessionResult {
   base64: string;
@@ -130,7 +133,16 @@ export async function genererDossierSessionZip(
         select: {
           id: true,
           tauxPresencePct: true,
-          trainee: { select: { nom: true, prenom: true, deletedAt: true } },
+          // Ind. 10 — la réponse de l'organisme et le BOOLÉEN du besoin déclaré.
+          // Le détail chiffré n'est pas chargé.
+          adaptationsRealisees: true,
+          questionnaires: {
+            where: { type: "positionnement", reponduAt: { not: null } },
+            select: { reponses: true },
+          },
+          trainee: {
+            select: { nom: true, prenom: true, deletedAt: true, situationHandicap: true },
+          },
           // 🔴 `G-prerequis-02` — PROVENANCE des présences. Sans ces lignes, le
           // rapport ne portait que le taux et le nombre de signatures : un taux
           // de 100 % tapé à la main dans la grille se lisait comme un taux émargé.
@@ -509,6 +521,43 @@ export async function genererDossierSessionZip(
     // sinon son absence se confondrait avec « aucun envoi ».
     avertissements.push(
       "⚠️ Le journal des envois n'a pas pu être lu : la preuve de sollicitation est absente de ce dossier, et ce n'est PAS un constat d'absence d'envoi.",
+    );
+  }
+
+  // ── 2 ter. INDICATEUR 10 — la réponse aux besoins d'adaptation déclarés ──
+  //
+  // 🔴 2026-09-15 — le dossier ne disait rien, stagiaire par stagiaire, de ce que
+  // l'organisme avait répondu à un besoin déclaré, ni quand. Même prédicat que
+  // l'écran de session et l'alerte ; date lue au journal de l'unique écrivain.
+  // Le détail déclaré (santé) n'est jamais chargé.
+  try {
+    const consigneesLe = await datesConsignationAdaptation(session.enrollments.map((e) => e.id));
+    const section = sectionIndicateur10(
+      session.enrollments.map((e) => ({
+        stagiaire:
+          e.trainee.deletedAt !== null
+            ? "[inscription sous droit à l'effacement]"
+            : `${e.trainee.prenom} ${e.trainee.nom}`.trim(),
+        // Lecture défensive : une ligne incomplète ne doit pas faire perdre la
+        // section entière au fail-soft ci-dessous.
+        besoinDeclare: besoinAdaptationDeclare({
+          situationHandicap: e.trainee.situationHandicap === true,
+          reponsesPositionnements: (e.questionnaires ?? []).map((q) => q.reponses),
+        }),
+        adaptationsRealisees: e.adaptationsRealisees ?? null,
+        consigneeLe: consigneesLe.get(e.id) ?? null,
+      })),
+      session.dateDebut,
+    );
+    index.push("", ...section.lignes);
+    if (section.nbAConsigner > 0) {
+      avertissements.push(
+        `⚠️ ${section.nbAConsigner} besoin${section.nbAConsigner > 1 ? "s" : ""} d'adaptation déclaré${section.nbAConsigner > 1 ? "s" : ""} sans réponse de l'organisme consignée (indicateur 10). Consignez l'adaptation prévue, ou « aucune adaptation nécessaire » après échange, sur la fiche session.`,
+      );
+    }
+  } catch {
+    avertissements.push(
+      "⚠️ La réponse aux besoins d'adaptation (indicateur 10) n'a pas pu être lue : elle est absente de ce dossier, et ce n'est PAS un constat d'absence de besoin.",
     );
   }
 

@@ -198,13 +198,25 @@ const APRES_DEBUT = new Date("2024-03-08T17:00:00.000Z");
  * VRAIMENT la requête — les autres portent un champ d'inscription en propre —
  * et jamais sur un champ que ses voisines pourraient acquérir.
  */
+/**
+ * La requête vise-t-elle les inscriptions à BESOIN D'ADAPTATION DÉCLARÉ ?
+ *
+ * 🔴 2026-09-15 — ce test lisait `where.trainee` : le besoin ne se comptait que
+ * sur `Trainee.situationHandicap`. Il se lit désormais aussi au positionnement
+ * (`whereBesoinAdaptationDeclare`, un `OR`). On reconnaît les deux formes, pour
+ * que ces doubles restent justes avant comme après.
+ */
+function viseBesoinAdaptationDeclare(where: Record<string, unknown>): boolean {
+  return where["trainee"] !== undefined || JSON.stringify(where).includes("situationHandicap");
+}
+
 function setupInscritsSessionsDemarrees(nb: number): void {
   mockP.enrollment.count.mockImplementation((args?: { where?: Record<string, unknown> }) => {
     const where = args?.where ?? {};
     const viseUnChampDInscription =
       where["adaptationsRealisees"] !== undefined ||
       where["emargementSigneAt"] !== undefined ||
-      where["trainee"] !== undefined;
+      viseBesoinAdaptationDeclare(where);
     return Promise.resolve(!viseUnChampDInscription && where["session"] !== undefined ? nb : 0);
   });
 }
@@ -513,7 +525,7 @@ describe("evaluerConformite", () => {
     ]);
     mockP.enrollment.count.mockImplementation((args?: { where?: Record<string, unknown> }) => {
       const where = (args?.where ?? {}) as Record<string, unknown>;
-      const besoin = where["trainee"] !== undefined;
+      const besoin = viseBesoinAdaptationDeclare(where);
       const adaptee = where["adaptationsRealisees"] !== undefined;
       if (besoin && adaptee) return Promise.resolve(2);
       if (besoin) return Promise.resolve(2);
@@ -524,10 +536,27 @@ describe("evaluerConformite", () => {
     expect(result.indicateurs.find((i) => i.numero === 10)?.statut).toBe("couvert");
   });
 
+  it("🔴 off.10 : un « oui » au positionnement reste un besoin déclaré quand la fiche est décochée", async () => {
+    // Cas réel du 2026-09 : « oui » au positionnement, `situationHandicap`
+    // remis à `false` après échange, inscription vide. Le compte ne lisait que
+    // la fiche : le besoin sortait du dénominateur et l'indicateur ne réclamait
+    // plus aucune réponse. Les deux comptes d'off.10 doivent lire les DEUX
+    // sources — le positionnement ET la fiche.
+    await evaluerConformite();
+    const wheres = mockP.enrollment.count.mock.calls.map((c: unknown[]) =>
+      JSON.stringify((c[0] as { where?: unknown } | undefined)?.where ?? {}),
+    );
+    const besoin = wheres.filter((w: string) => w.includes("situationHandicap"));
+    expect(besoin).toHaveLength(2);
+    for (const w of besoin) {
+      expect(w).toContain('"path":["besoinAdaptation"],"equals":true');
+    }
+  });
+
   it("off.10 À COMPLÉTER si un besoin déclaré reste sans adaptation tracée", async () => {
     mockP.enrollment.count.mockImplementation((args?: { where?: Record<string, unknown> }) => {
       const where = (args?.where ?? {}) as Record<string, unknown>;
-      const besoin = where["trainee"] !== undefined;
+      const besoin = viseBesoinAdaptationDeclare(where);
       const adaptee = where["adaptationsRealisees"] !== undefined;
       if (besoin && adaptee) return Promise.resolve(1);
       if (besoin) return Promise.resolve(3);
@@ -557,7 +586,7 @@ describe("evaluerConformite", () => {
   }): void {
     mockP.enrollment.count.mockImplementation((args?: { where?: Record<string, unknown> }) => {
       const where = (args?.where ?? {}) as Record<string, unknown>;
-      const besoin = where["trainee"] !== undefined;
+      const besoin = viseBesoinAdaptationDeclare(where);
       const adaptee = where["adaptationsRealisees"] !== undefined;
       if (besoin && adaptee) return Promise.resolve(opts.besoinServi);
       if (besoin) return Promise.resolve(opts.besoin);

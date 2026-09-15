@@ -48,6 +48,8 @@ import { QuestionnairesSection } from "@/components/admin/qualiopi/Questionnaire
 import { envoyerQuestionnaireAction } from "@/server/actions/qualiopi/questionnaires";
 import { lirePositionnement } from "@/server/qualiopi/positionnement/lecture-positionnement";
 import { stagiairesAvecPrecisionChiffree } from "@/server/qualiopi/positionnement/precision-chiffree";
+import { besoinAdaptationDeclare } from "@/server/qualiopi/adaptation/reponse-organisme";
+import { datesConsignationAdaptation } from "@/server/qualiopi/adaptation/journal-consignation";
 import {
   enrollTraineeAction,
   setEnrollmentStatutAction,
@@ -354,6 +356,9 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             nom: true,
             prenom: true,
             email: true,
+            // Ind. 10 — le BOOLÉEN seul, pour dire « besoin déclaré ». Le détail
+            // chiffré n'est pas chargé.
+            situationHandicap: true,
             portailAcces: {
               where: { revoked: false },
               orderBy: { expiresAt: "desc" },
@@ -494,6 +499,11 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     }
   }
 
+  // 🔴 Ind. 10 — la RÉPONSE de l'organisme à un besoin déclaré, et sa date.
+  // Le besoin se lit au MÊME prédicat que l'alerte balayée et le moteur de
+  // conformité ; la date vient du journal de l'unique écrivain de la colonne.
+  const consigneesLe = await datesConsignationAdaptation(enrollmentsRaw.map((e) => e.id));
+
   const enrollmentsSerialized = enrollmentsRaw.map((e) => {
     const acces = e.trainee.portailAcces[0];
     return {
@@ -501,6 +511,13 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       statut: e.statut,
       tauxPresencePct: e.tauxPresencePct,
       adaptationsRealisees: e.adaptationsRealisees,
+      besoinAdaptationDeclare: besoinAdaptationDeclare({
+        situationHandicap: e.trainee.situationHandicap,
+        reponsesPositionnements: e.questionnaires
+          .filter((q) => q.type === "positionnement" && q.reponduAt !== null)
+          .map((q) => q.reponses),
+      }),
+      adaptationsConsigneesLe: consigneesLe.get(e.id)?.toISOString() ?? null,
       sortieAt: e.sortieAt?.toISOString() ?? null,
       sortieMotif: e.sortieMotif,
       trainee: {
@@ -988,6 +1005,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
         <h2 className={sectionHeadCls}>Stagiaires</h2>
         <EnrollmentsSection
           sessionId={id}
+          debutSession={trainingSession.dateDebut.toISOString()}
           enrollments={enrollmentsSerialized}
           availableTrainees={traineesRaw.map((t) => ({
             id: t.id,

@@ -31,6 +31,11 @@ vi.mock("@/lib/prisma", () => ({
     // tous les doubles qui le traversent — sinon leur silence passe pour un
     // verdict.
     emailLog: { findMany: vi.fn(async () => []) },
+    // 🔴 2026-09-15 — même leçon, même endroit : la section « indicateur 10 »
+    // lit au journal la DATE des réponses d'adaptation. Sans ce modèle, le
+    // fail-soft l'attraperait et un dossier sain repartirait avec un
+    // avertissement.
+    activityLog: { findMany: vi.fn(async () => []) },
   },
 }));
 
@@ -199,6 +204,10 @@ beforeEach(() => {
   // Journal des envois vide par défaut : la fixture ne modélise aucun e-mail,
   // et c'est le cas qui doit lever l'avertissement de sollicitation manquante.
   mockEmailLogFindMany.mockResolvedValue([]);
+  // Journal d'activité vide : aucune réponse d'adaptation datée (ind. 10).
+  (
+    prisma as unknown as { activityLog: { findMany: ReturnType<typeof vi.fn> } }
+  ).activityLog.findMany.mockResolvedValue([]);
   mockR2Ok.mockReturnValue(true);
   mockGetBuffer.mockResolvedValue(Buffer.from("%PDF-"));
   // `null` = « cette pièce ne porte aucune signature », le cas d'une convocation
@@ -978,5 +987,68 @@ describe("genererDossierSessionZip — provenance des présences (G-prerequis-02
       "le dossier présente une présence tapée à la main comme mesurée par la plateforme",
     ).toMatchObject({ presencesReleveConnexion: 1, presencesDeclareesSansSignature: 1 });
     expect(res?.avertissements.join(" ")).toContain("déclarée");
+  });
+
+  // ── 🔴 Indicateur 10 (2026-09-15) ────────────────────────────────────────
+  // Le dossier ne disait rien, stagiaire par stagiaire, de la RÉPONSE de
+  // l'organisme à un besoin d'adaptation déclaré, ni de sa date.
+
+  it("🔴 ind. 10 : un besoin déclaré SANS réponse consignée est écrit dans l'index ET averti", async () => {
+    mockFindUnique.mockResolvedValue(
+      session({
+        enrollments: [
+          {
+            id: "enr-1",
+            tauxPresencePct: 100,
+            adaptationsRealisees: null,
+            questionnaires: [{ reponses: { besoinAdaptation: true } }],
+            trainee: { nom: "Dupont", prenom: "Alice", deletedAt: null, situationHandicap: false },
+            presences: [],
+            emargementSignatures: chaineSaine(),
+          },
+        ],
+      }),
+    );
+
+    const res = await genererDossierSessionZip("ses-1");
+
+    const index = (await fichierDuZip(res!.base64, "index.txt"))!;
+    expect(index).toContain("indicateur 10");
+    expect(index).toContain("Alice Dupont — besoin déclaré — AUCUNE RÉPONSE CONSIGNÉE");
+    expect(res?.avertissements.join(" ")).toContain("indicateur 10");
+  });
+
+  it("ind. 10 : la réponse consignée est datée au journal et située avant le début", async () => {
+    mockFindUnique.mockResolvedValue(
+      session({
+        enrollments: [
+          {
+            id: "enr-1",
+            tauxPresencePct: 100,
+            adaptationsRealisees: "Échange avec le bénéficiaire : aucune adaptation nécessaire.",
+            questionnaires: [{ reponses: { besoinAdaptation: true } }],
+            trainee: { nom: "Dupont", prenom: "Alice", deletedAt: null, situationHandicap: false },
+            presences: [],
+            emargementSignatures: chaineSaine(),
+          },
+        ],
+      }),
+    );
+    (
+      prisma as unknown as { activityLog: { findMany: ReturnType<typeof vi.fn> } }
+    ).activityLog.findMany.mockResolvedValueOnce([
+      {
+        targetId: "enr-1",
+        createdAt: new Date("2026-06-09T08:00:00Z"),
+        changes: { adaptationsRenseignees: true, reponse: "aucune_adaptation_necessaire" },
+      },
+    ]);
+
+    const res = await genererDossierSessionZip("ses-1");
+
+    const index = (await fichierDuZip(res!.base64, "index.txt"))!;
+    expect(index).toMatch(/Alice Dupont — besoin déclaré — réponse consignée le .*avant le début/);
+    expect(index).toContain("aucune adaptation nécessaire après échange");
+    expect(res?.avertissements.join(" ")).not.toContain("indicateur 10");
   });
 });

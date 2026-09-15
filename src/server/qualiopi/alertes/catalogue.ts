@@ -199,15 +199,37 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
    * ⚠️ `resolutionAuto: false`, et c'est STRUCTUREL : l'évaluateur quotidien
    * n'émet jamais ce code (l'alerte naît du geste du bénéficiaire, pas d'un
    * balayage). Le passer à `true` ferait résoudre l'alerte par le premier
-   * `synchroniserAlertes` venu, avant même que quiconque l'ait lue. Elle se
-   * résout à la main, quand l'adaptation a été prise en compte.
+   * `synchroniserAlertes` venu, avant même que quiconque l'ait lue.
+   *
+   * 🔴 2026-09-15 — elle se fermait « à la main, quand l'adaptation a été prise
+   * en compte », et rien ne gardait CE QUI avait été pris en compte. Cas réel :
+   * fermée après échange (aucune adaptation nécessaire), inscription vide,
+   * indicateur 10 sans trace. Elle se ferme désormais D'ELLE-MÊME quand la
+   * réponse de l'organisme est consignée sur l'inscription
+   * (`setEnrollmentAdaptationsAction`) ; fermée à la main sans consignation,
+   * `adaptation_reponse_non_consignee` prend le relais au balayage suivant.
    */
   besoin_adaptation_declare: {
     niveau: "important",
     titre: "Besoin d'adaptation déclaré par un bénéficiaire",
     resolutionAuto: false,
     motifSansResolutionAuto:
-      "STRUCTUREL — l'alerte naît du geste du bénéficiaire, pas du balayage quotidien. `synchroniserAlertes` ne la verrait jamais parmi les candidates et la résoudrait dès le premier tour, avant que quiconque l'ait lue. Elle se résout à la main, quand l'adaptation a été prise en compte.",
+      "STRUCTUREL — l'alerte naît du geste du bénéficiaire, pas du balayage quotidien. `synchroniserAlertes` ne la verrait jamais parmi les candidates et la résoudrait dès le premier tour, avant que quiconque l'ait lue. Elle se ferme quand la réponse de l'organisme est consignée sur l'inscription (action de consignation), ou à la main — auquel cas `adaptation_reponse_non_consignee` reprend le signal tant que rien n'est consigné.",
+    guichet: "qualite",
+  },
+  /**
+   * Besoin d'adaptation déclaré, RÉPONSE de l'organisme non consignée (ind. 10).
+   *
+   * Balayée (`regle-adaptation-reponse.ts`) : elle relit l'état, donc elle se
+   * referme d'elle-même dès que `adaptationsRealisees` est renseignée — y compris
+   * par « aucune adaptation nécessaire » — et ne peut pas être éteinte par un
+   * simple clic tant que rien n'est consigné. Guichet `qualite` : l'accueil du
+   * handicap relève du référent.
+   */
+  adaptation_reponse_non_consignee: {
+    niveau: "important",
+    titre: "Besoin d'adaptation déclaré : réponse de l'organisme non consignée (ind. 10)",
+    resolutionAuto: true,
     guichet: "qualite",
   },
 
@@ -504,16 +526,29 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   /**
    * 🔴 2026-08-24, cahier D5 — la mesure existait, elle sortait en
    * `console.error`. Un journal de conteneur n'est lu par personne le lendemain.
+   *
+   * 🔴 2026-09-15 — `resolutionAuto: true`. Le motif « IRRÉVERSIBLE » tenait
+   * pour un écart RÉEL, et il a laissé ouverte une alerte FAUSSE : sur la seule
+   * session réelle, créée moins de 24 h avant son début, #1066 a corrigé la
+   * levée — la règle ne la produit plus —, mais la ligne déjà ouverte ne
+   * pouvait se fermer par aucun chemin. Une alerte dont la cause n'existe pas
+   * restait affichée comme un manquement.
+   *
+   * Elle se referme désormais quand la règle cesse de la produire : rappel
+   * impossible (avance ≤ 24 h, la borne de l'envoyeur), plus aucun inscrit actif
+   * à informer, session annulée — ou 30 jours après le début, la fenêtre de
+   * constat de la règle. Ce dernier cas est ANNONCÉ dans le message, sur le
+   * patron des alertes d'attestation (#1087) : l'écart se consigne pendant qu'il
+   * est affiché.
+   *
+   * Garde-fous : aucune fermeture sur une règle en échec ni sur un code tronqué
+   * (`synchroniserAlertes`), et la lecture de la règle n'est plus plafonnée
+   * (`sessionsSansRappelJ7`).
    */
   rappel_j7_non_envoye: {
     niveau: "important",
     titre: "Rappel J-7 jamais envoyé",
-    resolutionAuto: false,
-    motifSansResolutionAuto:
-      "IRRÉVERSIBLE — la condition (`rappelJ7EnvoyeAt` nulle sur une session DÉJÀ " +
-      "commencée) ne disparaîtra jamais : le rappel n'est plus envoyable après le " +
-      "début. Une résolution automatique attendrait un événement qui ne peut pas " +
-      "se produire. L'écart s'acquitte à la main, une fois consigné.",
+    resolutionAuto: true,
     guichet: "administratif",
   },
   /**
@@ -699,10 +734,10 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
    * `administratif` : envoyer et relancer un questionnaire n'engage pas
    * l'organisme. C'est la colonne déléguable de la matrice du Lot 10.
    *
-   * `resolutionAuto: true`, contrairement à `satisfaction_manquante` : ici la
-   * cause disparaît AVANT la séance et le geste redevient sans objet dès que la
-   * session commence. Garder l'alerte ouverte ensuite n'apprendrait rien —
-   * l'écart, lui, est porté par la checklist du dossier, qui ne l'efface pas.
+   * `resolutionAuto: true` : la cause disparaît AVANT la séance et le geste
+   * redevient sans objet dès que la session commence. Garder l'alerte ouverte
+   * ensuite n'apprendrait rien — l'écart, lui, est porté par la checklist du
+   * dossier, qui ne l'efface pas.
    */
   positionnement_sans_reponse: {
     niveau: "important",
@@ -717,24 +752,39 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
    * parcours : elle tombe un mois après la fin, quand le dossier a quitté tous
    * les écrans. L'indicateur 30 exige pourtant un recueil TRACÉ.
    *
-   * ⚠️ Même famille que `satisfaction_manquante`, et même raisonnement pour la
-   * résolution : la relance porte le rattrapage, l'alerte reste la trace qu'il
-   * a fallu relancer. C'est ce fait-là que l'auditeur regarde.
+   * 🔴 2026-09-15 — `resolutionAuto: true`, même décision que
+   * `satisfaction_manquante` ci-dessous, et pour la même raison. Elle se referme
+   * aussi à J+120, fin de la fenêtre de la règle : le message l'annonce.
    */
   suivi_froid_manquant: {
     niveau: "important",
     titre: "Suivi à froid (J+30) sans réponse",
-    resolutionAuto: false,
-    motifSansResolutionAuto:
-      "Même raisonnement que `satisfaction_manquante` (SPEC_PART2 §6.5, « Non (relance auto) ») : la relance porte le rattrapage, l alerte reste la TRACE que le recueil à froid n a pas eu lieu spontanément. La refermer parce que le stagiaire a fini par répondre effacerait le fait qu il a fallu relancer — or c est ce fait que l auditeur regarde (ind. 30).",
+    resolutionAuto: true,
     guichet: "administratif",
   },
+  /**
+   * 🔴 2026-09-15 — `resolutionAuto: true`, DÉCISION DE WILL, et un écart
+   * déclaré à SPEC_PART2 §6.5 (« Non (relance auto) »).
+   *
+   * Vécu sur la seule session réelle : levée huit jours après la fin, la
+   * stagiaire répond le lendemain (5/5), l'alerte est toujours ouverte le jour
+   * suivant. « Il ne faut pas que le système d'alerte vérifie et se mette à jour
+   * tout seul ? » — si.
+   *
+   * L'ancien motif disait que l'alerte ouverte était la TRACE qu'il avait fallu
+   * relancer. Deux faits le contredisent : la trace des relances vit sur le
+   * questionnaire (`relanceCount`, `derniereRelanceAt` — « c'est la PREUVE »,
+   * dit le schéma), et une alerte résolue n'est pas effacée — sa ligne garde
+   * `createdAt` et `resolueAt`. Garder ouverte une alerte dont la cause a
+   * disparu, en revanche, apprend à ignorer la liste.
+   *
+   * Pas de relève : une réponse enregistrée ne disparaît pas, la règle ne
+   * reproduit donc jamais la candidate.
+   */
   satisfaction_manquante: {
     niveau: "important",
     titre: "Questionnaire de satisfaction non rempli",
-    resolutionAuto: false,
-    motifSansResolutionAuto:
-      "SPEC_PART2 §6.5 — « Non (relance auto) ». La relance du questionnaire porte le rattrapage ; l alerte, elle, reste la TRACE que le retour n a pas été recueilli. La refermer parce que le stagiaire a fini par répondre effacerait le fait qu il a fallu relancer — or c est ce fait que l auditeur regarde (ind. 30).",
+    resolutionAuto: true,
     guichet: "administratif",
   },
   satisfaction_sous_seuil: {
@@ -757,12 +807,22 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   },
 
   // ── Attestations ──────────────────────────────────────────────────────────
+  /**
+   * 🔴 2026-09-15 — `resolutionAuto: true`. L'ancien motif (« le manquement se
+   * solde par un geste tracé, pas par la disparition du signal ») décrivait
+   * exactement ce qui fait disparaître le signal : la règle ne la produit plus
+   * quand la pièce existe ET que `attestationNotifieeAt` est posée — colonne
+   * écrite seulement quand la notification a été acceptée
+   * (`attestation-service.ts`). Le geste tracé EST la fermeture.
+   *
+   * Autre sortie, voulue : un inscrit à 0 h passe à
+   * `attestation_non_emise_automatiquement` (pas de double signal, #1087). La
+   * règle n'a pas de borne basse, donc aucune fermeture par ancienneté.
+   */
   attestation_non_envoyee: {
     niveau: "important",
     titre: "Attestation non parvenue au stagiaire",
-    resolutionAuto: false,
-    motifSansResolutionAuto:
-      "SPEC_PART2 §6.5 — « Non ». L attestation est un droit du stagiaire (L.6353-1). Le manquement se solde par un geste tracé, pas par la disparition du signal.",
+    resolutionAuto: true,
     guichet: "administratif",
   },
   /**

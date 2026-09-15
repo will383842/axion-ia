@@ -111,14 +111,18 @@ export async function sessionsSansRappelJ7(now: Date): Promise<SessionSansRappel
     // `createdAt` sert au filtre applicatif ci-dessous, pas à l'affichage.
     select: { id: true, numero: true, titreSession: true, dateDebut: true, createdAt: true },
     orderBy: { dateDebut: "desc" },
-    take: 100,
+    // 🔴 2026-09-15 — PLUS DE `take: 100`. Depuis que `rappel_j7_non_envoye` se
+    // referme seul, une session que cette lecture ne RAMÈNE pas est une session
+    // dont l'alerte se ferme : la 101e serait devenue indiscernable d'une session
+    // régularisée. La fenêtre de 30 jours borne déjà la lecture — des sessions
+    // commencées sans rappel, sur un mois, se comptent en unités.
   });
 
   // 🔑 FILTRE APPLICATIF, et non une clause `where`. `dateDebut - createdAt`
   // est une comparaison COLONNE À COLONNE, que Prisma ne sait pas exprimer
   // dans un `findMany`. L'envoyeur a déjà tranché le même arbitrage pour sa
-  // condition « tous convoqués depuis ≥ 24 h » : le volume — au plus 100
-  // sessions sur 30 jours — rend le filtre gratuit, et il se teste à sec.
+  // condition « tous convoqués depuis ≥ 24 h » : le volume — les sessions
+  // commencées sur 30 jours — rend le filtre gratuit, et il se teste à sec.
   const avanceMinimaleMs = AVANCE_MINIMALE_HEURES * 60 * 60 * 1000;
   return candidates
     .filter((s) => s.dateDebut.getTime() - s.createdAt.getTime() > avanceMinimaleMs)
