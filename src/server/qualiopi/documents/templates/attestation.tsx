@@ -18,6 +18,8 @@ import {
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
+import { NATURE_ACTION_LABELS } from "./certificat-realisation";
+import { assiduiteSurMinutes, heuresMinutesFr } from "@/server/qualiopi/evaluations/heures-suivies";
 
 // ============================================================
 // Styles spécifiques
@@ -87,6 +89,11 @@ export interface FormationData {
   dateFin: string;
   modalite: string;
   formateur: string;
+  /**
+   * Nature de l'action (L.6353-1 al. 2). Même clé, même libellé et même défaut
+   * (« Action de formation ») que le certificat de réalisation du dossier.
+   */
+  natureAction?: keyof typeof NATURE_ACTION_LABELS;
 }
 
 export interface ResultatsFormationData {
@@ -122,16 +129,13 @@ export interface AttestationData {
 // Helpers
 // ============================================================
 
+/** Assiduité calculée sur les MINUTES (2e relecture A09), pas sur des heures arrondies. */
 function assiduitePercent(data: ResultatsFormationData): string {
-  if (data.heuresTotales === 0) return "—";
-  const pct = Math.round((data.heuresSuivies / data.heuresTotales) * 100);
-  return `${pct} %`;
+  return assiduiteSurMinutes(data.heuresSuivies, data.heuresTotales);
 }
 
-/** Heures au format français (virgule décimale ; entiers inchangés). R.6313-3. */
-function hFr(heures: number): string {
-  return heures.toLocaleString("fr-FR", { maximumFractionDigits: 2 });
-}
+/** Heures en heures ET minutes (« 6 h 30 ») — « les heures effectivement suivies ». */
+const hMin = heuresMinutesFr;
 
 // ============================================================
 // Composant principal
@@ -155,10 +159,16 @@ export function AttestationPdf({ data }: { data: AttestationData }): React.React
         identite={identite}
         {...(data.estCopie === true ? { estCopie: true } : {})}
       >
-        {/* Phrase certificative */}
+        {/* Phrase certificative
+            🔴 Audit initial 2026-09-14 (X-documents-pdf-07). Elle affirmait « et en
+            a satisfait les exigences » quel que soit le résultat : le choix entre
+            cette pièce et la partielle ne dépend que de la PRÉSENCE. Une stagiaire
+            assidue mais « Non validée » recevait une attestation qui se contredisait
+            deux blocs plus bas. La phrase certifie ce que la pièce prouve — le suivi —
+            et renvoie aux résultats, qu'elle imprime tels quels (L.6353-1 al. 2). */}
         <View style={pdfStyles.section}>
           <Text style={styles.certifPhrase}>
-            {`Je soussigné ${dirigeantOuRS} certifie que ${prenomNom} a suivi la formation mentionnée ci-dessous et en a satisfait les exigences.`}
+            {`Je soussigné ${dirigeantOuRS} certifie que ${prenomNom} a suivi la formation mentionnée ci-dessous. Les résultats de l'évaluation des acquis figurent ci-après.`}
           </Text>
           <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.attestation}</Text>
         </View>
@@ -177,8 +187,14 @@ export function AttestationPdf({ data }: { data: AttestationData }): React.React
         {/* Formation */}
         <DocSection title="Formation suivie">
           <FieldRow label="Intitulé" value={data.formation.intitule} />
+          {/* 🔴 Audit initial 2026-09-14 (X-documents-pdf-05) : L.6353-1 al. 2 fait
+              porter la nature de l'action, et le règlement publié l'annonce. */}
+          <FieldRow
+            label="Nature de l'action"
+            value={NATURE_ACTION_LABELS[data.formation.natureAction ?? "action_formation"]}
+          />
           <FieldRow label="Objectifs" value={data.formation.objectifs} />
-          <FieldRow label="Durée totale" value={`${hFr(data.formation.dureeHeures)} h`} />
+          <FieldRow label="Durée totale" value={`${hMin(data.formation.dureeHeures)}`} />
           <FieldRow label="Du" value={data.formation.dateDebut} />
           <FieldRow label="Au" value={data.formation.dateFin} />
           <FieldRow label="Modalité" value={data.formation.modalite} />
@@ -190,7 +206,7 @@ export function AttestationPdf({ data }: { data: AttestationData }): React.React
           <View style={styles.resultRow}>
             <Text style={styles.resultLabel}>Assiduité</Text>
             <Text style={styles.resultValue}>
-              {`${hFr(data.resultats.heuresSuivies)} h / ${hFr(data.resultats.heuresTotales)} h = ${assiduitePercent(data.resultats)}`}
+              {`${hMin(data.resultats.heuresSuivies)} / ${hMin(data.resultats.heuresTotales)} = ${assiduitePercent(data.resultats)}`}
             </Text>
           </View>
           {data.resultats.evaluationObtenue ? (

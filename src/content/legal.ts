@@ -1248,7 +1248,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Article 7 — Évaluation et attestation de formation",
-          body: "Des évaluations des acquis sont réalisées en cours et en fin de formation. La participation active à ces évaluations conditionne la délivrance de l'attestation de fin de formation. L'attestation est remise au stagiaire ayant suivi l'intégralité du programme ou, en cas d'absence partielle justifiée, au prorata des heures effectivement réalisées.",
+          body: "Des évaluations des acquis sont réalisées en cours et en fin de formation. À l'issue de la formation, une attestation de fin de formation est remise à tout stagiaire. Elle mentionne les objectifs, la nature et la durée de l'action, les heures effectivement suivies et les résultats de l'évaluation des acquis, ou l'absence d'évaluation.",
         },
         {
           title: "Article 8 — Réclamations",
@@ -1297,7 +1297,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Article 7 — Assessment and certificate of completion",
-          body: "Assessments of learning are carried out during and at the end of the training. Active participation in these assessments is a condition for issuing the certificate of completion. The certificate is issued to the trainee who has completed the full programme or, in the event of a justified partial absence, in proportion to the hours actually completed.",
+          body: "Assessments of learning are carried out during and at the end of the training. At the end of the training, a certificate of completion is issued to every trainee. It states the objectives, nature and duration of the course, the hours actually attended and the results of the assessment of learning, or the absence of assessment.",
         },
         {
           title: "Article 8 — Complaints",

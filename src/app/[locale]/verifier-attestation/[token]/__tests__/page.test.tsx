@@ -148,6 +148,42 @@ describe("select Prisma", () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
+// 1 bis. Pièce à 0 h — 3e relecture A09 (audit initial 2026-09-14)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 pièce à 0 h suivie — libellé exact sur la page publique", () => {
+  it("affiche « Attestation de fin de formation (aucune heure suivie) », jamais « suivi partiel »", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue({
+      ...docFixture(),
+      type: "attestation_partielle",
+      metadata: { aucuneHeureSuivie: true },
+    });
+
+    await renderPage();
+
+    expect(
+      screen.getByText("Attestation de fin de formation (aucune heure suivie)"),
+    ).toBeInTheDocument();
+    expect(screen.queryByText("Attestation de suivi partiel")).toBeNull();
+    expect(mockPrisma.documentGenere.findUnique).toHaveBeenCalledWith(
+      expect.objectContaining({ select: expect.objectContaining({ metadata: true }) }),
+    );
+  });
+
+  it("contre-témoin : une pièce partielle ordinaire garde son libellé", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue({
+      ...docFixture(),
+      type: "attestation_partielle",
+      metadata: {},
+    });
+
+    await renderPage();
+
+    expect(screen.getByText("Attestation de suivi partiel")).toBeInTheDocument();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
 // 2. Les trois états
 // ─────────────────────────────────────────────────────────────────────────────
 

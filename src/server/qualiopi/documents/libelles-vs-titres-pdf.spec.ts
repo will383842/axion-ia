@@ -47,15 +47,36 @@ const TEMPLATES_DIR = join(process.cwd(), "src", "server", "qualiopi", "document
 function docTitleDuGabarit(fichier: string): string {
   const source = readFileSync(join(TEMPLATES_DIR, fichier), "utf8");
   const m = /docTitle="([^"]+)"/.exec(source);
-  if (m === null) {
-    throw new Error(
-      `Aucun \`docTitle="…"\` littéral trouvé dans ${fichier}. Si le titre est ` +
-        "devenu une expression, cette garde ne mesure plus rien : la réécrire " +
-        "plutôt que la supprimer.",
-    );
-  }
-  return m[1] as string;
+  if (m !== null) return m[1] as string;
+  // 🔴 3e relecture A09 (audit initial 2026-09-14) — la pièce partielle porte
+  // DEUX titres : le nominal (celui du registre, en branche « sinon ») et celui
+  // de la pièce à 0 h suivie, qui n'est plus « partielle ». Seule cette forme
+  // précise est acceptée ; toute autre expression fait encore échouer la garde.
+  const ternaire = /docTitle=\{\s*\w+\s*\?\s*"([^"]+)"\s*:\s*"([^"]+)"\s*\}/.exec(source);
+  if (ternaire !== null) return ternaire[2] as string;
+  throw new Error(
+    `Aucun \`docTitle="…"\` littéral trouvé dans ${fichier}. Si le titre est ` +
+      "devenu une expression, cette garde ne mesure plus rien : la réécrire " +
+      "plutôt que la supprimer.",
+  );
 }
+
+describe("🔴 la pièce à 0 h suivie ne s'intitule pas « partielle »", () => {
+  it("le titre alternatif du gabarit partiel est lu, et il ne dit ni « partiel » ni le titre nominal", () => {
+    const source = readFileSync(join(TEMPLATES_DIR, "attestation-partielle.tsx"), "utf8");
+    const ternaire = /docTitle=\{\s*\w+\s*\?\s*"([^"]+)"\s*:\s*"([^"]+)"\s*\}/.exec(source);
+    expect(
+      ternaire,
+      "le titre de la pièce à 0 h n'est plus lisible dans le gabarit",
+    ).not.toBeNull();
+    const titreZeroHeure = ternaire![1] as string;
+    expect(titreZeroHeure).toContain("aucune heure suivie");
+    expect(titreZeroHeure.toLowerCase()).not.toContain("partiel");
+    expect(titreZeroHeure).not.toBe(
+      LIBELLES_TYPE_DOCUMENT["attestation_partielle" as DocumentType],
+    );
+  });
+});
 
 /** Les trois pièces de fin de parcours, celles que l'on confond. */
 const PIECES_DE_FIN: ReadonlyArray<{ type: DocumentType; gabarit: string }> = [

@@ -34,6 +34,8 @@ import {
   emettreLienQuestionnaire,
 } from "@/server/qualiopi/satisfaction/satisfaction-service";
 import { AttestationResultat } from "../../../../prisma/generated/client";
+import { estInscriptionActive } from "@/server/qualiopi/inscriptions/inscriptions-actives";
+import { aucuneHeureSuivie } from "@/server/qualiopi/evaluations/heures-suivies";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
@@ -811,6 +813,16 @@ export async function envoyerAttestationDisponible(enrollmentId: string): Promis
     select: {
       id: true,
       attestationResultat: true,
+      statut: true,
+      tauxPresencePct: true,
+      presences: {
+        select: {
+          dureePrevueMinutes: true,
+          dureeRealiseeMinutes: true,
+          date: true,
+          demiJournee: true,
+        },
+      },
       trainee: { select: { id: true, email: true, nom: true, prenom: true } },
       session: {
         select: {
@@ -829,11 +841,20 @@ export async function envoyerAttestationDisponible(enrollmentId: string): Promis
 
   // Détermine le libellé du document selon le résultat d'attestation
   // Enum AttestationResultat : complete | partielle | aucune
+  // 🔴 3e relecture A09 — la MÊME définition du « 0 h » que le service
+  // (aucune minute réalisée sur les créneaux, sinon taux nul) : l'objet ne dit plus « partielle » d'une pièce
+  // qui atteste qu'aucune heure n'a été suivie.
+  const aucuneHeure = aucuneHeureSuivie({
+    tauxPresencePct: enrollment.tauxPresencePct,
+    creneaux: enrollment.presences,
+  });
   const typeDocument: string =
     enrollment.attestationResultat === AttestationResultat.complete
       ? "attestation de formation"
       : enrollment.attestationResultat === AttestationResultat.partielle
-        ? "attestation de formation partielle"
+        ? aucuneHeure
+          ? "attestation de fin de formation (aucune heure suivie)"
+          : "attestation de formation partielle"
         : "certificat de réalisation";
 
   // 🔴 Le moment de l'attestation est celui où le stagiaire est le PLUS enclin
@@ -848,6 +869,11 @@ export async function envoyerAttestationDisponible(enrollmentId: string): Promis
     },
   });
 
+  // 🔴 2e relecture A09 (audit initial 2026-09-14) — exclu, abandon ou 0 h
+  // suivie : la pièce est l'attestation des HEURES SUIVIES. L'e-mail ne dit ni
+  // « atteste de votre participation » ni ne demande d'avis.
+  const heuresSuiviesSeulement = !estInscriptionActive(enrollment.statut) || aucuneHeure;
+
   const envoi = await enqueueEmail(
     "qualiopi-attestation-disponible",
     trainee.email,
@@ -859,6 +885,7 @@ export async function envoyerAttestationDisponible(enrollmentId: string): Promis
       lienPortail,
       numeroSession: session.numero,
       questionnaireEnAttente: questionnairesEnAttente > 0,
+      ...(heuresSuiviesSeulement ? { heuresSuiviesSeulement: true } : {}),
     },
     {
       jobId: `qualiopi-attestation-disponible-${enrollmentId}`,

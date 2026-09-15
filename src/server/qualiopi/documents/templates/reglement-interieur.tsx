@@ -285,14 +285,13 @@ export function ReglementInterieurPdf({
         {/* Article 7 — Évaluation et attestation */}
         <DocSection title="Article 7 — Évaluation et attestation de formation">
           <Text style={local.articleBody}>
-            Des évaluations des acquis sont réalisées en cours et en fin de formation. La
-            participation active aux évaluations conditionne la délivrance de l'attestation de fin
-            de formation.
+            Des évaluations des acquis sont réalisées en cours et en fin de formation.
           </Text>
           <Text style={local.articleBody}>
-            L'attestation de fin de formation est remise au stagiaire ayant suivi l'intégralité du
-            programme ou, en cas d'absence partielle justifiée, au prorata des heures effectivement
-            réalisées.
+            À l'issue de la formation, une attestation de fin de formation est remise à tout
+            stagiaire. Elle mentionne les objectifs, la nature et la durée de l'action, les heures
+            effectivement suivies et les résultats de l'évaluation des acquis, ou l'absence
+            d'évaluation.
           </Text>
         </DocSection>
 

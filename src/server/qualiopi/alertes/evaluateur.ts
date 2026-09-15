@@ -8,7 +8,11 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
+import {
+  inscriptionsActives,
+  STATUTS_SORTIS,
+} from "@/server/qualiopi/inscriptions/inscriptions-actives";
+import { aucuneHeureSuivie } from "@/server/qualiopi/evaluations/heures-suivies";
 // 🔴 2026-08-24 — la MÊME mesure que le cron, jamais une seconde requête jumelle :
 // deux prédicats qui se ressemblent finissent par diverger, et ce dépôt le paie
 // sans arrêt. Le cron en prend le compte, cette règle en mappe les lignes.
@@ -81,6 +85,10 @@ import {
   titreReclamation,
   verdictSignature,
 } from "./seuil-signature";
+import {
+  DELAI_EMISSION_SANS_EVALUATION_JOURS,
+  DELAI_EVALUATION_FINALE_JOURS,
+} from "./delai-evaluation-finale";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Type de retour de l'évaluateur
@@ -1221,9 +1229,13 @@ async function regleSuiviFroidManquant(now: Date): Promise<AlerteCandidate[]> {
   }));
 }
 
-/** R05 — Évaluation des acquis manquante : session realisee > 2 jours sans éval finale. */
+/**
+ * R05 — Évaluation des acquis manquante : session realisee depuis plus de
+ * `DELAI_EVALUATION_FINALE_JOURS` jours sans éval finale. Le même délai borne
+ * l'émission automatique de l'attestation sans évaluation (décision Will D1).
+ */
 async function regleEvaluationAcquisManquante(now: Date): Promise<AlerteCandidate[]> {
-  const threshold = daysAgo(2, now);
+  const threshold = daysAgo(DELAI_EVALUATION_FINALE_JOURS, now);
   const enrollments = await prisma.enrollment.findMany({
     where: {
       session: { statut: "realisee", dateFin: { lte: threshold } },
@@ -1244,7 +1256,7 @@ async function regleEvaluationAcquisManquante(now: Date): Promise<AlerteCandidat
     code: "evaluation_acquis_manquante",
     niveau: "critique" as AlerteNiveau,
     titre: "Évaluation finale des acquis manquante",
-    message: `L'évaluation finale des acquis de ${e.trainee.prenom} ${e.trainee.nom} (session ${e.session.numero}) est manquante 2 jours après la session.`,
+    message: `L'évaluation finale des acquis de ${e.trainee.prenom} ${e.trainee.nom} (session ${e.session.numero}) est manquante ${DELAI_EVALUATION_FINALE_JOURS} jours après la session.`,
     cibleType: "Enrollment",
     cibleId: e.id,
   }));
@@ -1277,8 +1289,27 @@ async function regleEvaluationAcquisManquante(now: Date): Promise<AlerteCandidat
  * balayage — ce n'est pas une régression, ce sont des envois dont on n'a jamais
  * su s'ils étaient partis.
  */
+/**
+ * 🔴 3e relecture A09 — borne basse des deux alertes d'attestation : les sessions
+ * terminées depuis au plus 90 jours. Sans elle, le premier balayage faisait
+ * remonter tout le stock historique d'un coup.
+ */
+const BORNE_BASSE_ALERTES_ATTESTATION_JOURS = 90;
+
+/** Créneaux de présence, pour la définition partagée du « 0 h » (`heures-suivies.ts`). */
+const SELECTION_CRENEAUX = {
+  dureePrevueMinutes: true,
+  dureeRealiseeMinutes: true,
+  date: true,
+  demiJournee: true,
+} as const;
+
 async function regleAttestationNonEnvoyee(now: Date): Promise<AlerteCandidate[]> {
-  const threshold = daysAgo(3, now);
+  // 🔴 2e relecture A09 — un jour APRÈS la borne d'émission sans évaluation
+  // (`attestations-auto`, 09:00). À 3 jours pile, l'alerte partait à 07:00 pour
+  // une pièce que le cron émettait deux heures plus tard.
+  const joursApresFin = DELAI_EMISSION_SANS_EVALUATION_JOURS + 1;
+  const threshold = daysAgo(joursApresFin, now);
   const enrollments = await prisma.enrollment.findMany({
     where: {
       session: { statut: "realisee", dateFin: { lte: threshold } },
@@ -1291,12 +1322,39 @@ async function regleAttestationNonEnvoyee(now: Date): Promise<AlerteCandidate[]>
     select: {
       id: true,
       attestationGenereeAt: true,
+      attestationDocumentId: true,
+      tauxPresencePct: true,
+      presences: { select: SELECTION_CRENEAUX },
       trainee: { select: { nom: true, prenom: true } },
       session: { select: { numero: true } },
     },
   });
-  return enrollments.map((e) => {
+  // 🔴 3e et 4e relectures A09 — pas de double signal : un inscrit à 0 h relève
+  // de `attestation_non_emise_automatiquement`, jamais de R06 — y compris au-delà
+  // de la borne de 90 jours de celle-ci. Sinon la même situation réapparaissait
+  // au 91e jour sous un autre code.
+  const candidats = enrollments.filter(
+    (e) =>
+      !(
+        e.attestationGenereeAt === null &&
+        aucuneHeureSuivie({ tauxPresencePct: e.tauxPresencePct, creneaux: e.presences })
+      ),
+  );
+  return candidats.map((e) => {
     const produite = e.attestationGenereeAt !== null;
+    // 🔴 2e relecture A09 — ancienne ligne « aucune » : `attestationGenereeAt`
+    // posé SANS pièce (règle d'avant l'audit initial). Lui dire « EXISTE… ne la
+    // régénérez pas » contredisait les boutons, et c'était faux : rien n'existe.
+    if (produite && e.attestationDocumentId === null) {
+      return {
+        code: "attestation_non_envoyee",
+        niveau: "important" as AlerteNiveau,
+        titre: "Attestation non parvenue au stagiaire",
+        message: `L'inscription de ${e.trainee.prenom} ${e.trainee.nom} (session ${e.session.numero}) porte un ancien résultat « aucune » : aucune attestation n'existe. Produisez-la depuis sa fiche (« Regénérer (forcer) »).`,
+        cibleType: "Enrollment",
+        cibleId: e.id,
+      };
+    }
     return {
       code: "attestation_non_envoyee",
       niveau: "important" as AlerteNiveau,
@@ -1306,11 +1364,162 @@ async function regleAttestationNonEnvoyee(now: Date): Promise<AlerteCandidate[]>
       // une régénération non motivée ressort filigranée « COPIE ».
       message: produite
         ? `L'attestation de ${e.trainee.prenom} ${e.trainee.nom} (session ${e.session.numero}) EXISTE mais le stagiaire n'a jamais été prévenu qu'elle est disponible. Ne la régénérez pas : renvoyez-lui la notification depuis sa fiche.`
-        : `L'attestation de ${e.trainee.prenom} ${e.trainee.nom} (session ${e.session.numero}) n'a pas été produite, 3 jours après la fin de la session.`,
+        : `L'attestation de ${e.trainee.prenom} ${e.trainee.nom} (session ${e.session.numero}) n'a pas été produite, ${joursApresFin} jours après la fin de la session.`,
       cibleType: "Enrollment",
       cibleId: e.id,
     };
   });
+}
+
+/**
+ * Attestation que le cron n'émet PAS — et qui doit donc se voir.
+ *
+ * 🔴 2e relecture A09 (audit initial 2026-09-14). Deux cas disparaissaient en
+ * silence :
+ *   - 0 minute suivie : un inscrit jamais connecté reçoit un créneau importé à
+ *     0 minute ; l'émission automatique certifiait un suivi. Le service la refuse
+ *     désormais — cette règle rend le refus visible ;
+ *   - exclu/abandon sorti avant la création de ses créneaux : aucun taux, rien à
+ *     mesurer, aucun créneau recréé après coup.
+ * Bornée comme l'émission sans évaluation, et vers le bas à 90 jours.
+ *
+ * 🔴 4e relecture A09 — fermeture AUTOMATIQUE (`resolutionAuto: true`) : elle
+ * se referme dès que la situation disparaît en base (pièce générée, présence
+ * mesurée), et se relève d'elle-même si elle revient. Un cas soldé HORS logiciel
+ * ne change aucune colonne : le message le dit, et l'alerte disparaît d'elle-même
+ * passé 90 jours après la fin de la session.
+ */
+async function regleAttestationNonEmiseAutomatiquement(now: Date): Promise<AlerteCandidate[]> {
+  const limite = daysAgo(DELAI_EMISSION_SANS_EVALUATION_JOURS, now);
+  const borneBasse = daysAgo(BORNE_BASSE_ALERTES_ATTESTATION_JOURS, now);
+  const selection = {
+    id: true,
+    statut: true,
+    tauxPresencePct: true,
+    presences: { select: SELECTION_CRENEAUX },
+    trainee: { select: { nom: true, prenom: true } },
+    session: { select: { numero: true } },
+  } as const;
+
+  const sortiesSansTaux = await prisma.enrollment.findMany({
+    where: {
+      session: { statut: "realisee", dateFin: { lte: limite, gte: borneBasse } },
+      attestationGenereeAt: null,
+      statut: { in: [...STATUTS_SORTIS] },
+      tauxPresencePct: null,
+    },
+    select: selection,
+  });
+  // 🔴 4e relecture A09 — le « 0 h » se juge avec la MÊME définition que le cron
+  // (`aucuneHeureSuivie`, sur les créneaux), pas sur un taux enregistré à 0 : un
+  // taux non recalculé ne doit ni masquer l'inscrit ni l'inventer. On lit donc
+  // tous les taux MESURÉS de la fenêtre (le cron refuse les autres en amont).
+  const tauxMesures = await prisma.enrollment.findMany({
+    where: {
+      session: { statut: "realisee", dateFin: { lte: limite, gte: borneBasse } },
+      attestationGenereeAt: null,
+      tauxPresencePct: { not: null },
+    },
+    select: selection,
+  });
+  const visibleJusquA =
+    `cette alerte restera visible jusqu'à ${BORNE_BASSE_ALERTES_ATTESTATION_JOURS} jours ` +
+    `après la fin de la session`;
+
+  const nom = (e: { trainee: { prenom: string; nom: string } }) =>
+    `${e.trainee.prenom} ${e.trainee.nom}`;
+
+  const alertes: AlerteCandidate[] = sortiesSansTaux.map((e) => ({
+    code: "attestation_non_emise_automatiquement",
+    niveau: "important" as AlerteNiveau,
+    titre: "Attestation non émise automatiquement",
+    message:
+      `${nom(e)} (session ${e.session.numero}) est sorti(e) de la formation (exclusion ou abandon) ` +
+      `sans qu'aucune heure de présence ait été mesurée : les créneaux de la session ont été créés ` +
+      `après sa sortie, et le logiciel n'en recrée pas après coup. Son attestation des heures ` +
+      `suivies ne peut pas être émise depuis la console. Établissez la durée réellement suivie à ` +
+      `partir des pièces du dossier (émargement papier, relevé de connexion), remettez-lui une ` +
+      `attestation établie hors logiciel et versez-la au dossier. Aucun geste en console ne solde ` +
+      `ce cas : ${visibleJusquA}.`,
+    cibleType: "Enrollment",
+    cibleId: e.id,
+  }));
+
+  for (const e of tauxMesures) {
+    if (!aucuneHeureSuivie({ tauxPresencePct: e.tauxPresencePct, creneaux: e.presences })) continue;
+    alertes.push({
+      code: "attestation_non_emise_automatiquement",
+      niveau: "important" as AlerteNiveau,
+      titre: "Attestation non émise automatiquement",
+      message:
+        `${nom(e)} (session ${e.session.numero}) n'a suivi aucune heure de la formation : aucune ` +
+        `attestation n'est émise automatiquement. Si une pièce doit lui être remise, générez-la ` +
+        `depuis sa fiche — elle indiquera qu'aucune heure n'a été suivie — et l'alerte se ` +
+        `refermera. Si la décision est de ne rien remettre, ou si la pièce est établie hors ` +
+        `logiciel, versez-la au dossier : ${visibleJusquA}.`,
+      cibleType: "Enrollment",
+      cibleId: e.id,
+    });
+  }
+  return alertes;
+}
+
+/**
+ * Attestation émise « Évaluation des acquis non réalisée », évaluation finale
+ * saisie depuis.
+ *
+ * 🔴 2e relecture A09 (audit initial 2026-09-14). Le cron ne revient pas sur une
+ * pièce émise, et aucune règle ne comparait l'évaluation à l'attestation : le
+ * stagiaire gardait une pièce que la grille contredisait — précisément le
+ * recoupement de l'indicateur 11. Aucune réémission automatique : la réémission
+ * forcée est un acte humain, qui fait disparaître le candidat
+ * (`attestationGenereeAt` avance).
+ *
+ * 🔴 3e relecture A09 — pièces ANNULÉES exclues (une annulation sans réémission
+ * n'a plus de pièce à réémettre), sessions bornées à 90 jours.
+ *
+ * 🔴 4e relecture A09 — fermeture AUTOMATIQUE (`resolutionAuto: true`) : elle se
+ * referme quand la pièce est réémise ou annulée, ou passé 90 jours.
+ */
+async function regleAttestationSansEvaluationEvalueeDepuis(now: Date): Promise<AlerteCandidate[]> {
+  const enrollments = await prisma.enrollment.findMany({
+    where: {
+      attestationDocumentId: { not: null },
+      attestationGenereeAt: { not: null },
+      attestationDocument: { annuleeAt: null },
+      session: { dateFin: { gte: daysAgo(BORNE_BASSE_ALERTES_ATTESTATION_JOURS, now) } },
+      evaluations: { some: { type: "finale" } },
+    },
+    select: {
+      id: true,
+      attestationGenereeAt: true,
+      evaluations: { where: { type: "finale" }, select: { createdAt: true } },
+      trainee: { select: { nom: true, prenom: true } },
+      session: { select: { numero: true } },
+    },
+  });
+
+  const alertes: AlerteCandidate[] = [];
+  for (const e of enrollments) {
+    const emise = e.attestationGenereeAt;
+    if (emise === null || e.evaluations.length === 0) continue;
+    // Émise SANS évaluation ⇔ toutes les évaluations finales lui sont postérieures.
+    if (!e.evaluations.every((ev) => ev.createdAt.getTime() > emise.getTime())) continue;
+    alertes.push({
+      code: "attestation_sans_evaluation_evaluee_depuis",
+      niveau: "important" as AlerteNiveau,
+      titre: "Attestation émise sans évaluation, évaluation saisie depuis",
+      message:
+        `L'attestation de ${e.trainee.prenom} ${e.trainee.nom} (session ${e.session.numero}) a été ` +
+        `émise sans évaluation finale (« Évaluation des acquis non réalisée »), et une évaluation ` +
+        `finale a été saisie depuis. Annulez-la en la réémettant depuis sa fiche (« Regénérer ` +
+        `(forcer) ») : la nouvelle pièce porte les résultats et déclare remplacer la précédente. ` +
+        `Aucune réémission automatique n'a lieu.`,
+      cibleType: "Enrollment",
+      cibleId: e.id,
+    });
+  }
+  return alertes;
 }
 
 /** R07 — Satisfaction sous seuil (seuil_satisfaction_pct, défaut 90%). */
@@ -4615,6 +4824,11 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "satisfaction_manquante", fn: regleSatisfactionManquante },
   { nom: "evaluation_acquis_manquante", fn: regleEvaluationAcquisManquante },
   { nom: "attestation_non_envoyee", fn: regleAttestationNonEnvoyee },
+  { nom: "attestation_non_emise_automatiquement", fn: regleAttestationNonEmiseAutomatiquement },
+  {
+    nom: "attestation_sans_evaluation_evaluee_depuis",
+    fn: regleAttestationSansEvaluationEvalueeDepuis,
+  },
   { nom: "satisfaction_sous_seuil", fn: regleSatisfactionSousSeuil },
   { nom: "qualiopi_expiration", fn: regleQualiopiExpiration },
   { nom: "bpf", fn: regleBpf },

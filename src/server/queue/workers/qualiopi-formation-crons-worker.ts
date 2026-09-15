@@ -60,6 +60,7 @@ import { verifierSanteEmails } from "@/server/email/health";
 import type { TrainingSessionStatut } from "@/server/qualiopi/formations/types";
 import type { Prisma } from "../../../../prisma/generated/client";
 import { genererAttestationPourEnrollment } from "@/server/qualiopi/evaluations/attestation-service";
+import { DELAI_EMISSION_SANS_EVALUATION_JOURS } from "@/server/qualiopi/alertes/delai-evaluation-finale";
 import { invalidateIndicateursCache } from "@/server/qualiopi/indicateurs/service";
 import {
   envoyerConvocation,
@@ -410,10 +411,11 @@ async function handleClotureAuto(): Promise<void> {
 /**
  * Daily 09:00 — Génère les attestations automatiques pour les sessions `realisee`.
  *
- * Scan toutes les sessions `realisee` ayant des enrollments (statut planifiee ou
- * presente) dont l'attestation n'a pas encore été générée (attestationGenereeAt: null)
- * ET qui portent les PREUVES exigées : taux de présence mesuré, trace d'assiduité
- * vérifiable, évaluation finale (cf. `preuvesRequises` plus bas).
+ * Scan toutes les sessions `realisee` ayant des enrollments (tous statuts, exclus
+ * et abandons compris — décision Will D2) dont l'attestation n'a pas encore été
+ * générée (attestationGenereeAt: null) ET qui portent les PREUVES exigées : taux
+ * de présence mesuré, trace d'assiduité vérifiable, évaluation finale OU délai
+ * de grâce de R05 écoulé (décision Will D1 ; cf. `preuvesRequises` plus bas).
  * Pour chaque enrollment, délègue à `genererAttestationPourEnrollment` (AGENT A).
  * Fail-soft par enrollment : une erreur ne bloque pas les autres.
  * Idempotence garantie car `realisee` n'arrive qu'après dateFin + 24h (cloture-auto).
@@ -445,12 +447,33 @@ async function handleAttestationsAuto(): Promise<void> {
   // graduable). L'émettre sans évaluation ne fait pas gagner un indicateur : ça
   // fabrique une pièce qui documente le manquement. On ne génère plus, et on
   // laisse l'alerte R05 faire son travail.
-  // `satisfies` plutôt que `as const` : `as const` fige le tableau de `in` en
-  // `readonly`, que Prisma refuse.
+  //
+  // 🔴 Décision Will D1 (2026-09-14, audit initial, X-documents-pdf-04) — la
+  // garde devient une ATTENTE BORNÉE. L.6353-1 al. 2 doit la pièce au stagiaire
+  // à l'issue de la formation, évaluation ou non : passé le délai que R05 laisse
+  // pour saisir l'évaluation, PLUS DEUX JOURS (`DELAI_EMISSION_SANS_EVALUATION_JOURS`,
+  // dérivée du délai de R05 — 2e relecture A09 : sur la même borne, R05 à 07:00
+  // ne laissait que deux heures avant ce cron de 09:00), la pièce part et
+  // imprime « Évaluation des acquis non réalisée ».
+  // Avant ce délai, on attend toujours : émettre préempterait une évaluation
+  // saisie en retard.
+  //
+  // 🔴 Décision Will D2 (2026-09-14) — plus de filtre de statut : un stagiaire
+  // exclu ou en abandon reçoit la pièce PARTIELLE de ses heures réellement
+  // suivies (le service la force en partielle).
   const where = {
     session: { statut: "realisee" },
-    statut: { in: ["planifiee", "presente"] },
     attestationGenereeAt: null,
+  } satisfies Prisma.EnrollmentWhereInput;
+
+  const limiteGraceEvaluation = new Date(
+    Date.now() - DELAI_EMISSION_SANS_EVALUATION_JOURS * 24 * 60 * 60 * 1000,
+  );
+  const evaluationOuDelaiEcoule = {
+    OR: [
+      { evaluations: { some: { type: "finale" } } },
+      { session: { dateFin: { lte: limiteGraceEvaluation } } },
+    ],
   } satisfies Prisma.EnrollmentWhereInput;
 
   // 🔴 2026-09-05 — LES PREUVES, ET NON PLUS LA SEULE ÉVALUATION.
@@ -470,7 +493,7 @@ async function handleAttestationsAuto(): Promise<void> {
   // lui-même ne serait qu'un contournement avec un nom rassurant.
   const preuvesRequises = {
     tauxPresencePct: { not: null },
-    evaluations: { some: { type: "finale" } },
+    AND: [evaluationOuDelaiEcoule],
     OR: [
       { emargementSignatures: { some: { revokedAt: null } } },
       {
@@ -490,19 +513,24 @@ async function handleAttestationsAuto(): Promise<void> {
   });
 
   // Comptés séparément pour que le log dise « 3 en attente d'évaluation » plutôt
-  // que de rester silencieux sur ce qu'il a délibérément sauté.
+  // que de rester silencieux sur ce qu'il a délibérément sauté. Seuls ceux
+  // encore DANS le délai de grâce attendent : passé ce délai, ils sont émis.
   const enAttenteEvaluation = await prisma.enrollment.count({
-    where: { ...where, evaluations: { none: { type: "finale" } } },
+    where: {
+      ...where,
+      session: { statut: "realisee", dateFin: { gt: limiteGraceEvaluation } },
+      evaluations: { none: { type: "finale" } },
+    },
   });
 
-  // Évaluées MAIS sans preuve d'assiduité. DÉRIVÉ par soustraction d'un
-  // sous-ensemble à son sur-ensemble (`preuvesRequises` contient déjà
-  // `evaluations: some finale`), et non par une troisième requête qui
-  // divergerait de `preuvesRequises` le jour où l'une des deux bougerait.
-  const avecEvaluation = await prisma.enrollment.count({
-    where: { ...where, evaluations: { some: { type: "finale" } } },
+  // Éligibles côté évaluation MAIS sans preuve d'assiduité. DÉRIVÉ par
+  // soustraction d'un sous-ensemble à son sur-ensemble (`preuvesRequises`
+  // contient déjà `evaluationOuDelaiEcoule`), et non par une troisième requête
+  // qui divergerait de `preuvesRequises` le jour où l'une des deux bougerait.
+  const eligiblesEvaluation = await prisma.enrollment.count({
+    where: { ...where, AND: [evaluationOuDelaiEcoule] },
   });
-  const sansPreuvePresence = avecEvaluation - enrollments.length;
+  const sansPreuvePresence = eligiblesEvaluation - enrollments.length;
 
   let ok = 0;
   let ko = 0;
@@ -511,8 +539,11 @@ async function handleAttestationsAuto(): Promise<void> {
   // quoi qu'il arrive.
   //
   // `genererAttestationPourEnrollment` rend `{ resultat, documentId }`, et
-  // `resultat` vaut `"aucune"` quand le taux de présence est sous le seuil :
-  // aucune pièce n'est alors produite, et c'est le BON comportement. Mais le
+  // `resultat` vaut `"aucune"` quand aucune pièce n'est produite (à l'époque :
+  // présence sous 60 %). Depuis l'audit initial 2026-09-14 — présence faible,
+  // exclus et abandons reçoivent tous une pièce —, le cron ne le reçoit plus
+  // que lorsqu'une génération concurrente tient déjà l'inscription (claim
+  // perdu). Ne rien produire y est le BON comportement. Mais le
   // journal annonçait quand même « 1 générées » — mesuré en dev le 2026-08-26,
   // le cron déclarait une attestation produite alors que ZÉRO ligne
   // `DocumentGenere` avait été écrite.
@@ -526,11 +557,18 @@ async function handleAttestationsAuto(): Promise<void> {
   // ⚠️ Même famille que `D5-1-C2` (convocation-j5, 2026-08-21) et que les six
   // fonctions d'envoi alignées le 2026-08-20. Ici, le membre oublié.
   let sansPiece = 0;
+  // 🔴 2e relecture A09 — 0 minute suivie : le service refuse l'émission
+  // automatique (une pièce certifiait un suivi qui n'a pas eu lieu). Compté à
+  // part ; l'alerte `attestation_non_emise_automatiquement` porte chaque cas.
+  let zeroHeure = 0;
 
   for (const enrollment of enrollments) {
     try {
-      const { resultat } = await genererAttestationPourEnrollment(enrollment.id);
-      if (resultat === "aucune") sansPiece++;
+      const { resultat, raison } = await genererAttestationPourEnrollment(enrollment.id, {
+        automatique: true,
+      });
+      if (raison === "zero_heure_suivie") zeroHeure++;
+      else if (resultat === "aucune") sansPiece++;
       else ok++;
     } catch (err) {
       ko++;
@@ -543,9 +581,11 @@ async function handleAttestationsAuto(): Promise<void> {
 
   console.log(
     `[formation-crons] attestations-auto: ${ok} générées, ${sansPiece} sans pièce ` +
-      `(présence sous le seuil), ${ko} erreurs ` +
-      `(${enrollments.length} candidats scannés, ${enAttenteEvaluation} en attente d'évaluation finale, ` +
-      `${sansPreuvePresence} évaluées mais sans taux mesuré ni trace d'assiduité)`,
+      `(génération concurrente déjà en cours), ${zeroHeure} à 0 h suivie ` +
+      `(non émises, alerte levée), ${ko} erreurs ` +
+      `(${enrollments.length} candidats scannés, ${enAttenteEvaluation} en attente d'évaluation finale ` +
+      `sous ${DELAI_EMISSION_SANS_EVALUATION_JOURS} j, ` +
+      `${sansPreuvePresence} sans taux mesuré ni trace d'assiduité)`,
   );
 }
 

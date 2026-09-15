@@ -968,16 +968,40 @@ describe("formation-crons.attestations-auto — garde évaluation finale", () =>
     mockPrisma.enrollment.count.mockResolvedValue(0);
   });
 
-  it("ne sélectionne que les inscrits ayant une évaluation de type `finale`", async () => {
+  it("D1 : évaluation finale OU délai de grâce de R05 écoulé depuis la fin de session", async () => {
+    // 🔴 Décision Will D1 (2026-09-14). L'attestation part même sans évaluation
+    // finale, mais pas avant le délai que l'alerte R05 laisse pour la saisir :
+    // émettre à J+1 préempterait une évaluation saisie en retard.
+    const avant = Date.now();
     await formationCronsHandler({
       type: "formation-crons.attestations-auto",
       tick: "2026-08-03T09:00:00Z",
     });
 
     const where = mockPrisma.enrollment.findMany.mock.calls[0]?.[0]?.where;
-    expect(where?.evaluations).toEqual({ some: { type: "finale" } });
     expect(where?.attestationGenereeAt).toBeNull();
     expect(where?.session).toEqual({ statut: "realisee" });
+    const alternative = (where?.AND as Array<{ OR?: unknown[] }> | undefined)?.find(
+      (c) => Array.isArray(c.OR) && JSON.stringify(c.OR).includes("finale"),
+    )?.OR as Array<Record<string, unknown>> | undefined;
+    expect(alternative?.[0]).toEqual({ evaluations: { some: { type: "finale" } } });
+    const limite = (alternative?.[1] as { session: { dateFin: { lte: Date } } }).session.dateFin
+      .lte;
+    // DELAI_EMISSION_SANS_EVALUATION_JOURS = 3 : le délai de R05 (2 j) + 1 jour.
+    // Sur la même borne, R05 (07:00) ne laissait que deux heures avant le cron.
+    // 3e relecture A09 : R05 + 2 jours (4 j) garantit ≥ 24 h entre R05 et
+    // l'émission, quelle que soit l'heure de fin de session.
+    expect(Math.abs(limite.getTime() - (avant - 4 * 86_400_000))).toBeLessThan(60_000);
+  });
+
+  it("D2 : ne filtre plus les exclus ni les abandons — la pièce des heures suivies leur est due", async () => {
+    await formationCronsHandler({
+      type: "formation-crons.attestations-auto",
+      tick: "2026-09-14T09:00:00Z",
+    });
+
+    const where = mockPrisma.enrollment.findMany.mock.calls[0]?.[0]?.where;
+    expect(where?.statut).toBeUndefined();
   });
 
   // 🔴 2026-09-05 — L'ASYMÉTRIE FERMÉE.
@@ -1021,15 +1045,16 @@ describe("formation-crons.attestations-auto — garde évaluation finale", () =>
     ]);
   });
 
-  it("DIT combien de dossiers évalués il a écartés faute de preuve, au lieu de les taire", async () => {
+  it("DIT combien de dossiers il a écartés faute de preuve, au lieu de les taire", async () => {
     // Témoin POSITIF non nul : dix zéros ne distinguent pas « rien à signaler »
-    // d'un compteur qui ne mesure rien. 4 évalués, 1 retenu ⇒ 3 écartés.
+    // d'un compteur qui ne mesure rien. 4 éligibles (évalués ou délai écoulé),
+    // 1 retenu ⇒ 3 écartés.
     mockPrisma.enrollment.findMany.mockResolvedValue([
       { id: "enroll-complet", session: { id: "s1" } },
     ]);
     mockPrisma.enrollment.count
-      .mockResolvedValueOnce(2) // en attente d'évaluation
-      .mockResolvedValueOnce(4); // évalués (dont le seul retenu)
+      .mockResolvedValueOnce(2) // en attente d'évaluation, délai de grâce en cours
+      .mockResolvedValueOnce(4); // éligibles côté évaluation (dont le seul retenu)
     const journal = vi.spyOn(console, "log").mockImplementation(() => {});
 
     await formationCronsHandler({
@@ -1041,10 +1066,10 @@ describe("formation-crons.attestations-auto — garde évaluation finale", () =>
     journal.mockRestore();
 
     expect(ligne).toContain("2 en attente d'évaluation finale");
-    expect(ligne).toContain("3 évaluées mais sans taux mesuré ni trace d'assiduité");
+    expect(ligne).toContain("3 sans taux mesuré ni trace d'assiduité");
   });
 
-  it("compte séparément les inscrits en attente d'évaluation, au lieu de les taire", async () => {
+  it("compte séparément les inscrits en attente d'évaluation DANS le délai de grâce", async () => {
     await formationCronsHandler({
       type: "formation-crons.attestations-auto",
       tick: "2026-08-03T09:00:00Z",
@@ -1052,6 +1077,8 @@ describe("formation-crons.attestations-auto — garde évaluation finale", () =>
 
     const where = mockPrisma.enrollment.count.mock.calls[0]?.[0]?.where;
     expect(where?.evaluations).toEqual({ none: { type: "finale" } });
+    // Passé le délai, l'inscrit n'est plus « en attente » : il reçoit sa pièce.
+    expect(where?.session).toEqual({ statut: "realisee", dateFin: { gt: expect.any(Date) } });
   });
 
   it("génère l'attestation des inscrits que la requête a retenus", async () => {
@@ -1068,16 +1095,25 @@ describe("formation-crons.attestations-auto — garde évaluation finale", () =>
     });
 
     expect(genererAttestationPourEnrollment).toHaveBeenCalledTimes(2);
-    expect(genererAttestationPourEnrollment).toHaveBeenCalledWith("enroll-evalue-1");
-    expect(genererAttestationPourEnrollment).toHaveBeenCalledWith("enroll-evalue-2");
+    // Le cron se DÉCLARE automatique : le service refuse alors d'émettre pour
+    // 0 h suivie (2e relecture A09), ce qu'il accepte d'un geste humain.
+    expect(genererAttestationPourEnrollment).toHaveBeenCalledWith("enroll-evalue-1", {
+      automatique: true,
+    });
+    expect(genererAttestationPourEnrollment).toHaveBeenCalledWith("enroll-evalue-2", {
+      automatique: true,
+    });
   });
 
   it("🔴 ne compte PAS « générée » une attestation qui n'a produit AUCUNE pièce", async () => {
     // Défaut mesuré en dev le 2026-08-26 : la valeur de retour était JETÉE et
-    // `ok++` s'incrémentait quoi qu'il arrive. `resultat: "aucune"` — le taux de
-    // présence est sous le seuil, donc aucune pièce n'est produite, et c'est le
-    // BON comportement — était compté comme une génération. Journal : « 1
+    // `ok++` s'incrémentait quoi qu'il arrive. `resultat: "aucune"` — aucune
+    // pièce produite — était compté comme une génération. Journal : « 1
     // générées » ; base : ZÉRO ligne `DocumentGenere`.
+    //
+    // Depuis l'audit initial 2026-09-14 (présence faible, exclus et abandons :
+    // tous reçoivent une pièce), le service ne rend plus « aucune » au cron que
+    // lorsqu'une génération concurrente tient déjà l'inscription (claim perdu).
     //
     // Les données restaient saines. C'est le compte rendu qui mentait, et c'est
     // lui qu'un humain lit le matin pour croire la chaîne en ordre.
@@ -1108,8 +1144,36 @@ describe("formation-crons.attestations-auto — garde évaluation finale", () =>
     ).toContain("0 générées");
     expect(
       ligne,
-      "le cas « présence sous le seuil » doit être DIT, pas seulement retiré du compte",
+      "le cas « aucune pièce produite » doit être DIT, pas seulement retiré du compte",
     ).toContain("1 sans pièce");
+    // Relecture A09 (#1087) : le cron ne sélectionne jamais d'inscription
+    // « exclue ou en abandon » pour cette raison-là — le libellé ne peut pas le dire.
+    expect(ligne).not.toContain("exclue ou en abandon");
+    expect(ligne).not.toContain("présence sous le seuil");
+  });
+
+  it("🔴 DIT combien d'inscrits à 0 h suivie il n'a PAS émis — l'alerte les porte", async () => {
+    // 2e relecture A09 : un inscrit jamais connecté recevait une pièce qui
+    // certifiait un suivi. Le cron n'émet rien pour 0 h ; il le compte à part.
+    const { genererAttestationPourEnrollment } =
+      await import("@/server/qualiopi/evaluations/attestation-service");
+    const mock = genererAttestationPourEnrollment as ReturnType<typeof vi.fn>;
+    mock.mockResolvedValue({ resultat: "aucune", documentId: null, raison: "zero_heure_suivie" });
+    mockPrisma.enrollment.findMany.mockResolvedValue([{ id: "enroll-0h", session: { id: "s1" } }]);
+    const journal = vi.spyOn(console, "log").mockImplementation(() => {});
+
+    await formationCronsHandler({
+      type: "formation-crons.attestations-auto",
+      tick: "2026-09-14T09:00:00Z",
+    });
+
+    const ligne = journal.mock.calls.map((c) => String(c[0])).find((l) => l.includes("générées"));
+    journal.mockRestore();
+    mock.mockResolvedValue({ resultat: "complete", documentId: "doc-1" });
+
+    expect(ligne).toContain("0 générées");
+    expect(ligne).toContain("1 à 0 h suivie");
+    expect(ligne).toContain("0 sans pièce");
   });
 });
 

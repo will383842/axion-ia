@@ -29,6 +29,10 @@
 
 import React from "react";
 import { estInscriptionActive } from "@/server/qualiopi/inscriptions/inscriptions-actives";
+import {
+  dureeReferenceHeures,
+  minutesSuiviesPresence,
+} from "@/server/qualiopi/evaluations/heures-suivies";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
@@ -621,6 +625,15 @@ export async function genererCertificatRealisationAction(input: {
           },
         },
       },
+      // 🔴 3e relecture A09 — créneaux de présence (minutes réalisées / prévues), lus comme l'attestation.
+      presences: {
+        select: {
+          dureePrevueMinutes: true,
+          dureeRealiseeMinutes: true,
+          date: true,
+          demiJournee: true,
+        },
+      },
     },
   });
   if (!enrollment) return { error: "Inscription introuvable" };
@@ -742,7 +755,6 @@ export async function genererCertificatRealisationAction(input: {
   const trainee = enrollment.trainee;
   // Durée + intitulé depuis le snapshot légal (WS5), repli LIVE si legacy.
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
-  const dureePrevue = formationDoc.dureeHeures ?? session.formation.dureeHeures;
 
   // Durée RÉALISÉE PAR CE STAGIAIRE (R.6313-3) : base = durée réelle de la session
   // si déclarée, sinon durée prévue ; puis TOUJOURS pondérée par le taux de présence
@@ -754,10 +766,24 @@ export async function genererCertificatRealisationAction(input: {
   // « 8 h suivies » (durée INDIVIDUELLE). Deux pièces du même dossier divergeaient, et
   // le certificat SUR-DÉCLARAIT les heures à l'OPCO. Les deux mesurent désormais les
   // heures réellement suivies par le bénéficiaire = taux × (durée réelle ?? prévue).
-  const baseDuree = session.dureeReelleHeures ?? dureePrevue;
+  // 🔴 4e relecture A09 — même repli que l'attestation (`dureeReferenceHeures`).
+  const baseDuree = dureeReferenceHeures({
+    dureeReelleHeures: session.dureeReelleHeures,
+    dureeSnapshotHeures: formationDoc.dureeHeures,
+    dureeCatalogueHeures: session.formation.dureeHeures,
+  });
   let dureeHeures = baseDuree;
   if (enrollment.tauxPresencePct !== null) {
-    dureeHeures = Math.round((enrollment.tauxPresencePct * baseDuree) / 100);
+    // 🔴 3e relecture A09 — MÊME calcul que l'attestation du même stagiaire
+    // (`heures-suivies.ts`) : proportion des minutes réalisées sur les minutes
+    // prévues des créneaux, sinon taux, sans
+    // arrondi à l'heure. 93 % de 7 h donnait « 7,00 » ici et « 6 h 31 » sur
+    // l'attestation : la divergence que le commentaire #2 ci-dessus refuse.
+    dureeHeures =
+      minutesSuiviesPresence(
+        { tauxPresencePct: enrollment.tauxPresencePct, creneaux: enrollment.presences },
+        baseDuree,
+      ) / 60;
   }
 
   const dirigeant = await getQualiopiConfig("dirigeant_nom");

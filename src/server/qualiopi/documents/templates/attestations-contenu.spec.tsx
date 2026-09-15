@@ -96,19 +96,199 @@ describe("AttestationPdf — contenu", () => {
   it("affiche l'assiduité", () => {
     expect(text).toContain("100 %");
   });
+
+  // 🔴 Audit initial 2026-09-14 (X-documents-pdf-07). La phrase certificative
+  // affirmait « en a satisfait les exigences » QUEL QUE SOIT le résultat : le
+  // choix entre attestation complète et partielle ne dépend que de la présence.
+  // Une stagiaire assidue mais « Non validée » recevait une pièce qui se
+  // contredisait deux blocs plus bas.
+  it("n'affirme JAMAIS « en a satisfait les exigences » quand l'évaluation porte « Non validée »", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(AttestationPdf, {
+        data: {
+          ...ATTESTATION,
+          resultats: {
+            ...ATTESTATION.resultats,
+            evaluationObtenue: "Non validée — score 40 %",
+            competencesAcquises: "Aucun objectif évalué comme acquis",
+            competencesReserves: "Non acquis : Prompt engineering",
+          },
+        },
+      }),
+    );
+    expect(t).toContain("Non validée — score 40 %");
+    expect(t).not.toContain("satisfait les exigences");
+    expect(t).toContain("résultats de l'évaluation des acquis");
+  });
 });
 
 describe("AttestationPartiellePdf — contenu", () => {
   const text = collectPdfTextNormalized(
     React.createElement(AttestationPartiellePdf, { data: PARTIELLE }),
   );
-  it("signale fortement le caractère partiel", () => {
+  it("signale fortement le caractère partiel, avec l'assiduité RÉELLE", () => {
     expect(text).toContain("Attestation partielle");
-    expect(text).toContain("60 %");
+    // 10 h / 14 h = 71 %
+    expect(text).toContain("71 %");
   });
-  it("porte la mention légale + les compétences partiellement validées", () => {
+  it("porte la mention légale + les compétences acquises", () => {
     expect(text).toContain(LEGAL_MENTIONS.attestation);
     expect(text).toContain("Modules 1-3");
+  });
+
+  // 🔴 Audit initial 2026-09-14 (M-documents-pdf-11 / X-documents-pdf-07). Sous
+  // 60 % la pièce est désormais émise (L.6353-1 al. 2) : la bannière ne peut plus
+  // annoncer une fourchette « entre 60 % et 79 % » — déjà fausse dès que le seuil
+  // de présence complète était réglé autrement que 80 %. Et « compétences
+  // déclarées partiellement validées » se lisait comme un résultat d'évaluation,
+  // alors que la partialité ne dit que la PRÉSENCE.
+  it("sous 60 % : ni fourchette fausse, ni validation affirmée, et la durée réellement suivie", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(AttestationPartiellePdf, {
+        data: {
+          ...PARTIELLE,
+          resultats: {
+            heuresSuivies: 5,
+            heuresTotales: 14,
+            evaluationObtenue: "Non validée — score 20 %",
+            competencesPartiellesValidees: "Aucun objectif évalué comme acquis",
+          },
+        },
+      }),
+    );
+    expect(t).not.toContain("entre 60 % et 79 %");
+    expect(t).not.toContain("partiellement validées");
+    expect(t).toContain("Durée réelle suivie");
+    expect(t).toContain("5 h");
+    expect(t).toContain("36 %");
+  });
+});
+
+// 🔴 Audit initial 2026-09-14 (X-documents-pdf-05). L.6353-1 al. 2 fait porter à
+// l'attestation la NATURE de l'action, et le règlement intérieur publié, le PDF
+// du règlement et le livret l'annoncent désormais. Aucune des deux attestations
+// ne l'imprimait : la page publique promettait un champ absent de la pièce.
+// Même source et même libellé que le certificat de réalisation du même dossier.
+describe("attestations — nature de l'action (L.6353-1 al. 2)", () => {
+  it("l'attestation complète imprime la nature de l'action, « Action de formation » par défaut", () => {
+    const t = collectPdfTextNormalized(React.createElement(AttestationPdf, { data: ATTESTATION }));
+    expect(t).toContain("Nature de l'action");
+    expect(t).toContain("Action de formation");
+  });
+
+  it("l'attestation partielle imprime la nature de l'action, « Action de formation » par défaut", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(AttestationPartiellePdf, { data: PARTIELLE }),
+    );
+    expect(t).toContain("Nature de l'action");
+    expect(t).toContain("Action de formation");
+  });
+
+  it("les deux pièces suivent la nature fournie, avec le libellé du certificat de réalisation", () => {
+    const complete = collectPdfTextNormalized(
+      React.createElement(AttestationPdf, {
+        data: {
+          ...ATTESTATION,
+          formation: { ...ATTESTATION.formation, natureAction: "bilan_competences" },
+        },
+      }),
+    );
+    const partielle = collectPdfTextNormalized(
+      React.createElement(AttestationPartiellePdf, {
+        data: {
+          ...PARTIELLE,
+          formation: { ...PARTIELLE.formation, natureAction: "bilan_competences" },
+        },
+      }),
+    );
+    const certificat = collectPdfTextNormalized(
+      React.createElement(CertificatRealisationPdf, {
+        data: { ...CERTIFICAT, natureAction: "bilan_competences" },
+      }),
+    );
+    expect(certificat).toContain("Bilan de compétences");
+    expect(complete).toContain("Bilan de compétences");
+    expect(partielle).toContain("Bilan de compétences");
+  });
+});
+
+// 🔴 2e relecture A09 (audit initial 2026-09-14).
+describe("attestations — heures réellement suivies et 0 h", () => {
+  it("🔴 0 h suivie : la pièce dit « n'a suivi aucune heure », jamais « a partiellement suivi »", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(AttestationPartiellePdf, {
+        data: {
+          ...PARTIELLE,
+          resultats: { ...PARTIELLE.resultats, heuresSuivies: 0, heuresTotales: 14 },
+        },
+      }),
+    );
+    expect(t).toContain("n'a suivi aucune heure de la formation");
+    expect(t).not.toContain("partiellement suivi");
+    expect(t).not.toContain("Formation suivie en partie");
+    expect(t).not.toMatch(/certifie que [^.]* a (partiellement )?suivi/);
+    // Les autres mentions obligatoires restent.
+    expect(t).toContain(LEGAL_MENTIONS.attestation);
+    expect(t).toContain("Nature de l'action");
+    expect(t).toContain("0 %");
+  });
+
+  it("🔴 les heures s'impriment en heures ET minutes, l'assiduité se calcule sur les minutes", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(AttestationPartiellePdf, {
+        data: {
+          ...PARTIELLE,
+          formation: { ...PARTIELLE.formation, dureeHeures: 7 },
+          resultats: { ...PARTIELLE.resultats, heuresSuivies: 6.5, heuresTotales: 7 },
+        },
+      }),
+    );
+    expect(t).toContain("6 h 30");
+    expect(t).not.toContain("6,5 h");
+    // 390 min / 420 min = 92,86 % → 93 %
+    expect(t).toContain("93 %");
+  });
+
+  it("🔴 l'attestation complète imprime aussi les durées en heures et minutes", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(AttestationPdf, {
+        data: {
+          ...ATTESTATION,
+          formation: { ...ATTESTATION.formation, dureeHeures: 3.5 },
+          resultats: { ...ATTESTATION.resultats, heuresSuivies: 3.25, heuresTotales: 3.5 },
+        },
+      }),
+    );
+    expect(t).toContain("3 h 30");
+    expect(t).toContain("3 h 15");
+    expect(t).not.toContain("3,5 h");
+  });
+
+  it("🔴 pièce à 0 h : ni « partielle » dans le titre, ni rubrique « Résultats partiels »", () => {
+    // 3e relecture A09 : la pièce qui atteste qu'aucune heure n'a été suivie
+    // restait intitulée « Attestation partielle de formation ».
+    const t = collectPdfTextNormalized(
+      React.createElement(AttestationPartiellePdf, {
+        data: {
+          ...PARTIELLE,
+          resultats: { ...PARTIELLE.resultats, heuresSuivies: 0, heuresTotales: 14 },
+        },
+      }),
+    );
+    expect(t).toContain("Attestation de fin de formation — aucune heure suivie");
+    expect(t).not.toContain("Attestation partielle de formation");
+    expect(t).not.toContain("Résultats partiels");
+  });
+
+  it("🔴 certificat : la durée en centièmes ET en heures-minutes, comme l'attestation", () => {
+    // 391 min = 6,52 h (centièmes, R.6313-3) = 6 h 31 (format de l'attestation).
+    const t = collectPdfTextNormalized(
+      React.createElement(CertificatRealisationPdf, {
+        data: { ...CERTIFICAT, dureeHeures: 391 / 60 },
+      }),
+    );
+    expect(t).toContain("6,52 heures");
+    expect(t).toContain("6 h 31");
   });
 });
 

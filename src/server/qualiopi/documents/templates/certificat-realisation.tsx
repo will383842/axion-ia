@@ -23,6 +23,7 @@ import {
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { LEGAL_MENTIONS, formatHeuresCentiemes } from "@/server/qualiopi/legal/legal-mentions";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
+import { heuresMinutesFr } from "@/server/qualiopi/evaluations/heures-suivies";
 
 // ============================================================
 // Styles spécifiques
@@ -127,8 +128,14 @@ export interface CertificatRealisationData {
   estCopie?: boolean;
 }
 
-/** Libellés réglementaires — article L6313-1 du code du travail. */
-const NATURE_ACTION_LABELS: Record<
+/**
+ * Libellés réglementaires — article L6313-1 du code du travail.
+ *
+ * Exporté : les attestations de fin de formation (complète et partielle)
+ * impriment la nature de l'action avec CE libellé et ce même défaut, pour que
+ * les pièces d'un même dossier ne qualifient pas l'action différemment.
+ */
+export const NATURE_ACTION_LABELS: Record<
   NonNullable<CertificatRealisationData["natureAction"]>,
   string
 > = {
@@ -240,7 +247,11 @@ export function CertificatRealisationPdf({
         {/* Durée en centièmes — bloc mis en avant */}
         <View style={styles.dureeBlock}>
           <Text style={styles.dureeLabel}>Durée réalisée (format réglementaire en centièmes)</Text>
-          <Text style={styles.dureeValue}>{`${dureeFormatee} heures`}</Text>
+          {/* 🔴 3e relecture A09 : centièmes (R.6313-3) ET heures-minutes, le format
+              de l'attestation du même stagiaire — une seule durée, deux écritures. */}
+          <Text
+            style={styles.dureeValue}
+          >{`${dureeFormatee} heures (${heuresMinutesFr(data.dureeHeures)})`}</Text>
           <Text style={styles.dureeNote}>
             Conformément à l'arrêté du 21 décembre 2018 — format centièmes obligatoire (OPCO Atlas).
           </Text>

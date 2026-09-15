@@ -15,6 +15,12 @@ interface Payload {
   numeroSession: string;
   /** Vrai si un questionnaire du stagiaire attend encore sa réponse. */
   questionnaireEnAttente?: boolean;
+  /**
+   * Vrai pour un stagiaire exclu ou en abandon, ou à 0 h suivie : la pièce est
+   * l'attestation des HEURES SUIVIES. 🔴 2e relecture A09 — ni « atteste de
+   * votre participation », ni demande d'avis, ni rappel de questionnaire.
+   */
+  heuresSuiviesSeulement?: boolean;
 }
 
 export const qualiopiAttestationDisponibleSubject = (
@@ -38,13 +44,18 @@ export function QualiopiAttestationDisponibleEmail({
   const p = payload as unknown as Payload;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   const ctaHref = p.lienPortail ?? `${baseUrl}/fr/portail/mon-espace`;
+  const heuresSeulement = p.heuresSuiviesSeulement === true;
   return (
     <EmailLayout
       famille="B"
       /* « est prête » figeait un accord féminin alors que `typeDocument` est
          libre : la console rendait « Votre Audit IA est prête ». Le pré-en-tête
          ne répète plus le titre et n'accorde plus rien. */
-      preview="À télécharger dans votre espace stagiaire. Conservez-le : il atteste votre participation."
+      preview={
+        heuresSeulement
+          ? "À télécharger dans votre espace stagiaire : l'attestation des heures suivies."
+          : "À télécharger dans votre espace stagiaire. Conservez-le : il atteste votre participation."
+      }
       title={`Votre ${p.typeDocument ?? "attestation"} est disponible`}
       cta={{ label: "Télécharger mon document", href: ctaHref }}
       locale={locale}
@@ -60,20 +71,27 @@ export function QualiopiAttestationDisponibleEmail({
          dépassement du budget de la famille B (§5.4). La demande d'avis, elle,
          est exactement à sa place (§7.6). */
       trust
-      snowball="review"
+      {...(heuresSeulement ? {} : { snowball: "review" as const })}
     >
       <Text style={emailStyles.paragraphStyle}>
         Votre <strong>{p.typeDocument ?? "attestation"}</strong> pour la formation{" "}
         <strong>{p.titreFormation}</strong> est désormais disponible dans votre espace stagiaire.
       </Text>
-      <Text style={emailStyles.paragraphStyle}>
-        Bonjour {p.stagiairePrenomNom} — ce document officiel atteste de votre participation.
-        Conservez-le précieusement.
-      </Text>
+      {heuresSeulement ? (
+        <Text style={emailStyles.paragraphStyle}>
+          Bonjour {p.stagiairePrenomNom} — vous trouverez dans votre espace l&apos;attestation des
+          heures suivies. Conservez-la.
+        </Text>
+      ) : (
+        <Text style={emailStyles.paragraphStyle}>
+          Bonjour {p.stagiairePrenomNom} — ce document officiel atteste de votre participation.
+          Conservez-le précieusement.
+        </Text>
+      )}
       {/* 🔴 Le moment de l'attestation est celui où le stagiaire est le plus
           enclin à répondre — on glisse le rappel ICI. ⚠️ L'attestation part
           quoi qu'il arrive : c'est un droit (L.6353-1), jamais un levier. */}
-      {p.questionnaireEnAttente === true && (
+      {p.questionnaireEnAttente === true && !heuresSeulement && (
         <Text style={emailStyles.paragraphStyle}>
           Au passage : un questionnaire vous attend encore dans votre espace. Deux minutes
           suffisent, et votre retour nous aide réellement à améliorer nos formations.

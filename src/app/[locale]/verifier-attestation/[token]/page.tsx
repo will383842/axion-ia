@@ -124,6 +124,8 @@ export default async function VerifierAttestationPage({ params }: Props) {
       annuleeAt: true,
       annuleeMotif: true,
       remplaceeParNumero: true,
+      // Marque d'une pièce à 0 h suivie (cf. libellé ci-dessous).
+      metadata: true,
       session: {
         select: {
           id: true,
@@ -144,7 +146,19 @@ export default async function VerifierAttestationPage({ params }: Props) {
     notFound();
   }
 
-  const typeLabel = DOC_TYPE_LABELS[doc.type] ?? doc.type;
+  // 🔴 Audit initial 2026-09-14 (3e relecture A09) — une pièce à 0 h suivie est
+  // émise sous le type `attestation_partielle`, marquée en `metadata`. Elle
+  // atteste qu'aucune heure n'a été suivie : « suivi partiel » serait faux.
+  const metadata = doc.metadata;
+  const aucuneHeureSuivie =
+    doc.type === "attestation_partielle" &&
+    typeof metadata === "object" &&
+    metadata !== null &&
+    !Array.isArray(metadata) &&
+    (metadata as Record<string, unknown>)["aucuneHeureSuivie"] === true;
+  const typeLabel = aucuneHeureSuivie
+    ? "Attestation de fin de formation (aucune heure suivie)"
+    : (DOC_TYPE_LABELS[doc.type] ?? doc.type);
   const statut = resolveStatut(doc);
 
   // Mentions de statut cumulables affichées dans le tableau : « Copie » n'est
