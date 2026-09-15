@@ -8,11 +8,13 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const enrollmentFindMany = vi.fn();
 const alerteFindMany = vi.fn();
+const journalFindMany = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     enrollment: { findMany: (a: unknown) => enrollmentFindMany(a) },
     alerteSysteme: { findMany: (a: unknown) => alerteFindMany(a) },
+    activityLog: { findMany: (a: unknown) => journalFindMany(a) },
   },
 }));
 
@@ -37,23 +39,33 @@ function inscription(over: {
   situationHandicap?: boolean;
   reponses?: unknown[];
   traineeId?: string;
+  adaptationsRealisees?: string | null;
 }) {
   return {
     id: over.id ?? "enr-1",
+    adaptationsRealisees: over.adaptationsRealisees ?? null,
     trainee: {
       id: over.traineeId ?? "tr-1",
       prenom: "Alice",
       nom: "Test",
       situationHandicap: over.situationHandicap ?? false,
     },
-    session: { numero: "AXI-SESS-TEST", dateDebut: new Date("2026-09-05T07:00:00.000Z") },
-    questionnaires: (over.reponses ?? []).map((reponses) => ({ reponses })),
+    session: {
+      numero: "AXI-SESS-TEST",
+      dateDebut: new Date("2026-09-05T07:00:00.000Z"),
+      dateFin: new Date("2026-09-20T16:00:00.000Z"),
+    },
+    questionnaires: (over.reponses ?? []).map((reponses) => ({
+      reponses,
+      reponduAt: new Date("2026-09-01T08:00:00.000Z"),
+    })),
   };
 }
 
 beforeEach(() => {
   vi.clearAllMocks();
   alerteFindMany.mockResolvedValue([]);
+  journalFindMany.mockResolvedValue([]);
 });
 
 describe("adaptation_reponse_non_consignee", () => {
@@ -70,12 +82,14 @@ describe("adaptation_reponse_non_consignee", () => {
     expect(alertes[0]?.message).toContain("aucune adaptation");
   });
 
-  it("la requête ne retient que les inscriptions SANS réponse, actives, sur une session tenue et récente", async () => {
+  it("la requête lit les inscriptions actives, sur une session tenue et récente, réponse consignée OU non", async () => {
     enrollmentFindMany.mockResolvedValue([]);
     await regleAdaptationReponseNonConsignee(MAINTENANT);
     const where = (enrollmentFindMany.mock.calls[0]?.[0] as { where: Record<string, unknown> })
       .where;
-    expect(where["adaptationsRealisees"]).toBeNull();
+    // 🔴 Relecture #1095 — PAS de filtre `adaptationsRealisees: null` : une réponse
+    // consignée AVANT une nouvelle déclaration doit rester visible du balayage.
+    expect(where).not.toHaveProperty("adaptationsRealisees");
     expect(JSON.stringify(where["statut"])).toContain("abandon");
     expect(JSON.stringify(where["session"])).toContain("annulee");
     expect(JSON.stringify(where["session"])).toContain("dateFin");
@@ -116,5 +130,59 @@ describe("adaptation_reponse_non_consignee", () => {
     const { candidates } = await evaluerAlertesDetaille();
     expect(candidates.some((c) => c.code === "adaptation_reponse_non_consignee")).toBe(true);
     vi.unstubAllEnvs();
+  });
+
+  describe("🔴 relecture #1095 — une réponse antérieure à une NOUVELLE déclaration ne couvre rien", () => {
+    const REPONSE = "Échange avec le bénéficiaire : aucune adaptation nécessaire.";
+
+    function journal(consigneeLe: string, declareLe: string | null) {
+      journalFindMany.mockImplementation(async (a: { where: { action: string } }) => {
+        if (a.where.action === "qualiopi.enrollment.adaptations") {
+          return [
+            {
+              targetId: "enr-1",
+              createdAt: new Date(consigneeLe),
+              changes: { adaptationsRenseignees: true },
+            },
+          ];
+        }
+        return declareLe === null ? [] : [{ targetId: "tr-1", createdAt: new Date(declareLe) }];
+      });
+    }
+
+    it("déclaration postérieure à la réponse → l'alerte se lève, et le dit — sans rien de la réponse", async () => {
+      enrollmentFindMany.mockResolvedValue([
+        inscription({ situationHandicap: true, adaptationsRealisees: "Supports agrandis" }),
+      ]);
+      journal("2026-09-02T08:00:00.000Z", "2026-09-10T08:00:00.000Z");
+      const alertes = await regleAdaptationReponseNonConsignee(MAINTENANT);
+      expect(alertes.map((a) => a.cibleId)).toEqual(["enr-1"]);
+      expect(alertes[0]?.message).toContain("APRÈS la dernière réponse consignée");
+      expect(alertes[0]?.message).not.toContain("agrandis");
+    });
+
+    it("déclaration antérieure à la réponse → rien", async () => {
+      enrollmentFindMany.mockResolvedValue([
+        inscription({ situationHandicap: true, adaptationsRealisees: REPONSE }),
+      ]);
+      journal("2026-09-10T08:00:00.000Z", "2026-09-02T08:00:00.000Z");
+      expect(await regleAdaptationReponseNonConsignee(MAINTENANT)).toEqual([]);
+    });
+
+    it("la déclaration du journal ne vise que la PERSONNE, jamais le détail", async () => {
+      enrollmentFindMany.mockResolvedValue([
+        inscription({ situationHandicap: true, adaptationsRealisees: REPONSE }),
+      ]);
+      journal("2026-09-02T08:00:00.000Z", "2026-09-10T08:00:00.000Z");
+      await regleAdaptationReponseNonConsignee(MAINTENANT);
+      const wheres = journalFindMany.mock.calls.map((c) => (c[0] as { where: unknown }).where);
+      expect(wheres).toContainEqual(
+        expect.objectContaining({
+          action: "qualiopi.trainee.besoin_adaptation.declare",
+          targetType: "Trainee",
+          targetId: { in: ["tr-1"] },
+        }),
+      );
+    });
   });
 });

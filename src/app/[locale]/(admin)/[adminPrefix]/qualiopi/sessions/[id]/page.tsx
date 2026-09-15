@@ -48,8 +48,12 @@ import { QuestionnairesSection } from "@/components/admin/qualiopi/Questionnaire
 import { envoyerQuestionnaireAction } from "@/server/actions/qualiopi/questionnaires";
 import { lirePositionnement } from "@/server/qualiopi/positionnement/lecture-positionnement";
 import { stagiairesAvecPrecisionChiffree } from "@/server/qualiopi/positionnement/precision-chiffree";
-import { besoinAdaptationDeclare } from "@/server/qualiopi/adaptation/reponse-organisme";
-import { datesConsignationAdaptation } from "@/server/qualiopi/adaptation/journal-consignation";
+import {
+  HORODATAGE_CIRCUIT_VIDE,
+  besoinAdaptationDeclare,
+  serialiserHorodatage,
+} from "@/server/qualiopi/adaptation/reponse-organisme";
+import { lireCircuitAdaptation } from "@/server/qualiopi/adaptation/journal-consignation";
 import {
   enrollTraineeAction,
   setEnrollmentStatutAction,
@@ -499,10 +503,21 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     }
   }
 
-  // 🔴 Ind. 10 — la RÉPONSE de l'organisme à un besoin déclaré, et sa date.
+  // 🔴 Ind. 10 — la RÉPONSE de l'organisme à un besoin déclaré, et ses dates.
   // Le besoin se lit au MÊME prédicat que l'alerte balayée et le moteur de
-  // conformité ; la date vient du journal de l'unique écrivain de la colonne.
-  const consigneesLe = await datesConsignationAdaptation(enrollmentsRaw.map((e) => e.id));
+  // conformité ; les dates viennent du journal (réponse, déclaration) et du
+  // positionnement. Une réponse antérieure à une nouvelle déclaration ne la
+  // couvre pas : c'est ce que ces dates permettent de dire.
+  const circuitAdaptation = await lireCircuitAdaptation(
+    enrollmentsRaw.map((e) => ({
+      id: e.id,
+      traineeId: e.trainee.id,
+      finSession: trainingSession.dateFin,
+      positionnements: e.questionnaires
+        .filter((q) => q.type === "positionnement" && q.reponduAt !== null)
+        .map((q) => ({ reponses: q.reponses, reponduAt: q.reponduAt })),
+    })),
+  );
 
   const enrollmentsSerialized = enrollmentsRaw.map((e) => {
     const acces = e.trainee.portailAcces[0];
@@ -517,7 +532,9 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
           .filter((q) => q.type === "positionnement" && q.reponduAt !== null)
           .map((q) => q.reponses),
       }),
-      adaptationsConsigneesLe: consigneesLe.get(e.id)?.toISOString() ?? null,
+      circuitAdaptation: serialiserHorodatage(
+        circuitAdaptation.get(e.id) ?? HORODATAGE_CIRCUIT_VIDE,
+      ),
       sortieAt: e.sortieAt?.toISOString() ?? null,
       sortieMotif: e.sortieMotif,
       trainee: {

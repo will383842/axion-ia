@@ -36,9 +36,14 @@ import {
   CODE_ALERTE_BESOIN_DECLARE,
   CODE_ALERTE_REPONSE_NON_CONSIGNEE,
   FENETRE_REPONSE_ADAPTATION_APRES_FIN_JOURS,
+  HORODATAGE_CIRCUIT_VIDE,
   besoinAdaptationDeclare,
+  etatReponseAdaptation,
+  reponseAnterieureALaDerniereDeclaration,
   whereBesoinAdaptationDeclare,
+  type HorodatageCircuitAdaptation,
 } from "@/server/qualiopi/adaptation/reponse-organisme";
+import { lireCircuitAdaptation } from "@/server/qualiopi/adaptation/journal-consignation";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
 
 /** Même forme que `AlerteCandidate` d'`evaluateur.ts` — sans l'importer (cycle). */
@@ -68,22 +73,28 @@ export async function regleAdaptationReponseNonConsignee(
     now.getTime() - FENETRE_REPONSE_ADAPTATION_APRES_FIN_JOURS * 24 * 60 * 60 * 1000,
   );
 
+  // 🔴 2026-09-15 (relecture #1095) — la requête ne retenait que les inscriptions
+  // à colonne VIDE (`adaptationsRealisees: null`). Une réponse consignée AVANT
+  // une nouvelle déclaration du besoin la faisait donc sortir du balayage pour
+  // toujours. Toutes les inscriptions à besoin déclaré sont lues ; c'est
+  // `etatReponseAdaptation`, avec les dates du circuit, qui dit laquelle attend
+  // encore sa réponse — le même prédicat que l'écran et l'indicateur.
   const inscriptions = await prisma.enrollment.findMany({
     where: {
-      adaptationsRealisees: null,
       ...inscriptionsActives(),
       session: { statut: { notIn: STATUTS_SESSION_SANS_PREUVE }, dateFin: { gte: borne } },
       ...whereBesoinAdaptationDeclare(),
     },
     select: {
       id: true,
+      adaptationsRealisees: true,
       trainee: { select: { id: true, prenom: true, nom: true, situationHandicap: true } },
-      session: { select: { numero: true, dateDebut: true } },
+      session: { select: { numero: true, dateDebut: true, dateFin: true } },
       // Seul le booléen de la réponse est lu ; le détail chiffré n'est pas dans
       // ce JSON (retiré à l'écriture par `portail.ts`) et n'est jamais déchiffré.
       questionnaires: {
         where: { type: "positionnement", reponduAt: { not: null } },
-        select: { reponses: true },
+        select: { reponses: true, reponduAt: true },
       },
     },
   });
@@ -95,7 +106,7 @@ export async function regleAdaptationReponseNonConsignee(
   // mais une règle qui lève est AVALÉE par le fail-soft de l'évaluateur, et
   // suspend la résolution automatique de TOUTES les alertes ce tour-là. Une
   // ligne incomplète doit être écartée, pas faire tomber le balayage.
-  const retenues = inscriptions.filter(
+  const aBesoin = inscriptions.filter(
     (e) =>
       e.trainee !== undefined &&
       e.session !== undefined &&
@@ -103,6 +114,26 @@ export async function regleAdaptationReponseNonConsignee(
         situationHandicap: e.trainee?.situationHandicap === true,
         reponsesPositionnements: (e.questionnaires ?? []).map((q) => q.reponses),
       }),
+  );
+  if (aBesoin.length === 0) return [];
+
+  const circuit = await lireCircuitAdaptation(
+    aBesoin.map((e) => ({
+      id: e.id,
+      traineeId: e.trainee.id,
+      finSession: e.session.dateFin ?? null,
+      positionnements: (e.questionnaires ?? []).map((q) => ({
+        reponses: q.reponses,
+        reponduAt: q.reponduAt ?? null,
+      })),
+    })),
+  );
+  const horodatageDe = (id: string): HorodatageCircuitAdaptation =>
+    circuit.get(id) ?? HORODATAGE_CIRCUIT_VIDE;
+  const retenues = aBesoin.filter(
+    (e) =>
+      etatReponseAdaptation(true, e.adaptationsRealisees ?? null, horodatageDe(e.id)) ===
+      "a_consigner",
   );
   if (retenues.length === 0) return [];
 
@@ -122,6 +153,16 @@ export async function regleAdaptationReponseNonConsignee(
       const identite = `${e.trainee.prenom} ${e.trainee.nom}`.trim();
       const debut = jourParis.format(e.session.dateDebut);
       const commencee = e.session.dateDebut.getTime() <= now.getTime();
+      const h = horodatageDe(e.id);
+      const constat = reponseAnterieureALaDerniereDeclaration(e.adaptationsRealisees ?? null, h)
+        ? `a déclaré un besoin d'adaptation${
+            h.derniereDeclarationLe !== null
+              ? ` le ${jourParis.format(h.derniereDeclarationLe)}`
+              : ""
+          }, APRÈS la dernière réponse consignée sur son inscription : cette réponse est ` +
+          `conservée, mais elle ne couvre pas la nouvelle déclaration.`
+        : `a un besoin d'adaptation déclaré, et aucune réponse de l'organisme n'est consignée ` +
+          `sur son inscription.`;
       return {
         // Littéral, et non la constante : `routage.spec.ts` reconnaît un code
         // balayé à sa position syntaxique `code: "…"`.
@@ -130,8 +171,7 @@ export async function regleAdaptationReponseNonConsignee(
         titre: TITRE_ALERTE_REPONSE_NON_CONSIGNEE,
         message:
           `${identite} (session ${e.session.numero}, ${commencee ? "commencée" : "début"} le ${debut}) ` +
-          `a un besoin d'adaptation déclaré, et aucune réponse de l'organisme n'est consignée ` +
-          `sur son inscription. Consignez l'adaptation prévue — ou « aucune adaptation ` +
+          `${constat} Consignez l'adaptation prévue — ou « aucune adaptation ` +
           `nécessaire » après échange avec la personne — dans la colonne « Adaptations ` +
           `(ind. 10) » de la fiche session : cette alerte se fermera d'elle-même.`,
         cibleType: "Enrollment" as const,

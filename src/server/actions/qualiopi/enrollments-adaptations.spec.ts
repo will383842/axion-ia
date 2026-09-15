@@ -11,6 +11,7 @@ const enrollmentUpdate = vi.fn();
 const enrollmentFindUnique = vi.fn();
 const enrollmentFindMany = vi.fn();
 const alerteUpdateMany = vi.fn();
+const journalFindMany = vi.fn();
 const logActivity = vi.fn(async (_i: unknown) => undefined);
 
 vi.mock("@/lib/prisma", () => ({
@@ -21,6 +22,7 @@ vi.mock("@/lib/prisma", () => ({
       findMany: (a: unknown) => enrollmentFindMany(a),
     },
     alerteSysteme: { updateMany: (a: unknown) => alerteUpdateMany(a) },
+    activityLog: { findMany: (a: unknown) => journalFindMany(a) },
   },
 }));
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
@@ -51,6 +53,7 @@ beforeEach(() => {
   enrollmentFindUnique.mockResolvedValue({ adaptationsRealisees: null });
   enrollmentFindMany.mockResolvedValue([]);
   alerteUpdateMany.mockResolvedValue({ count: 1 });
+  journalFindMany.mockResolvedValue([]);
 });
 
 describe("setEnrollmentAdaptationsAction — la réponse ferme les alertes", () => {
@@ -83,8 +86,13 @@ describe("setEnrollmentAdaptationsAction — la réponse ferme les alertes", () 
   it("l'alerte du geste reste ouverte tant qu'une AUTRE inscription de la personne attend sa réponse", async () => {
     enrollmentFindMany.mockResolvedValue([
       {
+        id: "enr-autre",
+        adaptationsRealisees: null,
+        session: { dateFin: new Date("2026-10-20T16:00:00.000Z") },
         trainee: { situationHandicap: false },
-        questionnaires: [{ reponses: { besoinAdaptation: true } }],
+        questionnaires: [
+          { reponses: { besoinAdaptation: true }, reponduAt: new Date("2026-09-01T08:00:00.000Z") },
+        ],
       },
     ]);
     await setEnrollmentAdaptationsAction({
@@ -94,11 +102,55 @@ describe("setEnrollmentAdaptationsAction — la réponse ferme les alertes", () 
     expect(codesFermes()).toEqual([{ code: "adaptation_reponse_non_consignee", cibleId: ENR }]);
     const where = (enrollmentFindMany.mock.calls[0]?.[0] as { where: Record<string, unknown> })
       .where;
-    expect(where).toMatchObject({
-      traineeId: TRAINEE,
-      id: { not: ENR },
-      adaptationsRealisees: null,
-    });
+    expect(where).toMatchObject({ traineeId: TRAINEE, id: { not: ENR } });
+    // 🔴 Relecture #1095 — pas de filtre sur la colonne : une réponse antérieure à
+    // une nouvelle déclaration attend, elle aussi, sa réponse.
+    expect(where).not.toHaveProperty("adaptationsRealisees");
+  });
+
+  it("🔴 l'alerte du geste reste ouverte si une AUTRE inscription porte une réponse ANTÉRIEURE à une nouvelle déclaration", async () => {
+    enrollmentFindMany.mockResolvedValue([
+      {
+        id: "enr-autre",
+        adaptationsRealisees: REPONSE_AUCUNE_ADAPTATION,
+        session: { dateFin: new Date("2026-10-20T16:00:00.000Z") },
+        trainee: { situationHandicap: true },
+        questionnaires: [],
+      },
+    ]);
+    journalFindMany.mockImplementation(async (a: { where: { action: string } }) =>
+      a.where.action === "qualiopi.enrollment.adaptations"
+        ? [
+            {
+              targetId: "enr-autre",
+              createdAt: new Date("2026-09-02T08:00:00.000Z"),
+              changes: { adaptationsRenseignees: true },
+            },
+          ]
+        : [{ targetId: TRAINEE, createdAt: new Date("2026-09-10T08:00:00.000Z") }],
+    );
+    await setEnrollmentAdaptationsAction({ id: ENR, adaptationsRealisees: "Sous-titrage" });
+    expect(codesFermes()).toEqual([{ code: "adaptation_reponse_non_consignee", cibleId: ENR }]);
+
+    // Contre-épreuve : la même inscription, réponse POSTÉRIEURE à la déclaration
+    // → elle est couverte, et l'alerte du geste se ferme.
+    alerteUpdateMany.mockClear();
+    journalFindMany.mockImplementation(async (a: { where: { action: string } }) =>
+      a.where.action === "qualiopi.enrollment.adaptations"
+        ? [
+            {
+              targetId: "enr-autre",
+              createdAt: new Date("2026-09-12T08:00:00.000Z"),
+              changes: { adaptationsRenseignees: true },
+            },
+          ]
+        : [{ targetId: TRAINEE, createdAt: new Date("2026-09-10T08:00:00.000Z") }],
+    );
+    await setEnrollmentAdaptationsAction({ id: ENR, adaptationsRealisees: "Sous-titrage" });
+    expect(codesFermes()).toEqual([
+      { code: "adaptation_reponse_non_consignee", cibleId: ENR },
+      { code: "besoin_adaptation_declare", cibleId: TRAINEE },
+    ]);
   });
 
   it("effacer la réponse ne ferme rien — et le journal le dit", async () => {

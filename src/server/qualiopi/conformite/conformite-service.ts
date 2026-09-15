@@ -37,6 +37,7 @@
 import { prisma } from "@/lib/prisma";
 import { whereVeilleExploitee } from "./veille-exploitee";
 import { whereBesoinAdaptationDeclare } from "@/server/qualiopi/adaptation/reponse-organisme";
+import { compterReponsesRouvertes } from "@/server/qualiopi/adaptation/journal-consignation";
 import {
   SELECT_PIECE_COMPETENCE,
   estPieceCompetenceProbante,
@@ -222,7 +223,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbSessionsRealiseesAvecPresence,
     nbFormationsActivesAvecContenu,
     nbInscritsBesoinAdaptation,
-    nbInscritsBesoinAdaptationServis,
+    nbInscritsBesoinAdaptationConsignes,
     nbInscritsSessionsTenues,
     positionnementsOff10,
     nbInscritsSessionsTenuesDemarrees,
@@ -1299,6 +1300,19 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   // « aucune adaptation nécessaire après échange » en est une — consignée avec
   // un libellé fixe (`REPONSE_AUCUNE_ADAPTATION`) et datée au journal. Reste
   // ouvert : une réponse libre vide de sens (« RAS ») compte encore.
+  //
+  // 🔴 2026-09-15 (relecture #1095) — une réponse consignée AVANT une nouvelle
+  // déclaration du besoin ne la couvre pas. Le compte SQL ne sait pas comparer la
+  // date de la réponse (journal) à celle de la déclaration : on en retranche les
+  // réponses rouvertes, lues au même prédicat que l'écran et l'alerte.
+  const nbReponsesAdaptationRouvertes =
+    nbInscritsBesoinAdaptationConsignes > 0
+      ? await compterReponsesRouvertes({ ...inscriptionSurSessionTenue() })
+      : 0;
+  const nbInscritsBesoinAdaptationServis = Math.max(
+    0,
+    nbInscritsBesoinAdaptationConsignes - nbReponsesAdaptationRouvertes,
+  );
   const besoinsAdaptationNonServis = nbInscritsBesoinAdaptation - nbInscritsBesoinAdaptationServis;
   set(
     10,

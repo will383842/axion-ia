@@ -19,17 +19,25 @@
 
 import { formaterInstantParis } from "../positionnement/lecture-positionnement";
 import {
-  consigneeAvantDebut,
+  decrireDateConsignation,
   estReponseAucuneAdaptation,
   etatReponseAdaptation,
+  reponseAdaptationConsignee,
+  type HorodatageCircuitAdaptation,
 } from "./reponse-organisme";
 
 export interface InscriptionAdaptationDossier {
   readonly stagiaire: string;
   readonly besoinDeclare: boolean;
   readonly adaptationsRealisees: string | null;
-  /** Début de la consignation actuelle (journal) — `null` si non tracée. */
-  readonly consigneeLe: Date | null;
+  /** Dates du circuit (journal, positionnement) — cf. `lireCircuitAdaptation`. */
+  readonly horodatage: HorodatageCircuitAdaptation;
+}
+
+function libelleReponse(adaptationsRealisees: string | null): string {
+  return estReponseAucuneAdaptation(adaptationsRealisees)
+    ? "aucune adaptation nécessaire après échange"
+    : `adaptation : « ${(adaptationsRealisees ?? "").trim()} »`;
 }
 
 export interface SectionIndicateur10 {
@@ -52,7 +60,7 @@ export function sectionIndicateur10(
   let nbSansObjet = 0;
 
   for (const i of inscriptions) {
-    const etat = etatReponseAdaptation(i.besoinDeclare, i.adaptationsRealisees);
+    const etat = etatReponseAdaptation(i.besoinDeclare, i.adaptationsRealisees, i.horodatage);
     if (etat === "sans_besoin") {
       nbSansObjet += 1;
       continue;
@@ -60,21 +68,29 @@ export function sectionIndicateur10(
     const besoin = i.besoinDeclare ? "besoin déclaré" : "aucun besoin déclaré";
     if (etat === "a_consigner") {
       nbAConsigner += 1;
-      lignes.push(`  ${i.stagiaire} — ${besoin} — AUCUNE RÉPONSE CONSIGNÉE`);
+      if (reponseAdaptationConsignee(i.adaptationsRealisees)) {
+        // Réponse ANTÉRIEURE à une nouvelle déclaration : elle ne la couvre pas,
+        // mais elle reste une trace — on la dit, datée, à côté du manque.
+        const declaree = i.horodatage.derniereDeclarationLe;
+        lignes.push(
+          `  ${i.stagiaire} — ${besoin}${
+            declaree !== null ? ` (nouvelle déclaration le ${formaterInstantParis(declaree)})` : ""
+          } — AUCUNE RÉPONSE CONSIGNÉE à cette déclaration — réponse antérieure conservée, ${decrireDateConsignation(
+            i.horodatage,
+            debutSession,
+          )} — ${libelleReponse(i.adaptationsRealisees)}`,
+        );
+      } else {
+        lignes.push(`  ${i.stagiaire} — ${besoin} — AUCUNE RÉPONSE CONSIGNÉE`);
+      }
       continue;
     }
-    const quand =
-      i.consigneeLe === null
-        ? "consignée (date non tracée au journal)"
-        : `consignée le ${formaterInstantParis(i.consigneeLe)}, ${
-            consigneeAvantDebut(i.consigneeLe, debutSession)
-              ? "avant le début de la session"
-              : "APRÈS le début de la session"
-          }`;
-    const reponse = estReponseAucuneAdaptation(i.adaptationsRealisees)
-      ? "aucune adaptation nécessaire après échange"
-      : `adaptation : « ${(i.adaptationsRealisees ?? "").trim()} »`;
-    lignes.push(`  ${i.stagiaire} — ${besoin} — réponse ${quand} — ${reponse}`);
+    lignes.push(
+      `  ${i.stagiaire} — ${besoin} — réponse ${decrireDateConsignation(
+        i.horodatage,
+        debutSession,
+      )} — ${libelleReponse(i.adaptationsRealisees)}`,
+    );
   }
 
   if (lignes.length === 1) {
