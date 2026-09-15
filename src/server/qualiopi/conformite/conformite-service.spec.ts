@@ -238,13 +238,26 @@ function setupSessionsRealisees(opts: {
   });
 }
 
-/** Ligne de questionnaire de positionnement répondu, telle que la lit off.4. */
+/**
+ * Ligne de questionnaire de positionnement répondu, telle que la lisent off.4
+ * et off.10.
+ *
+ * `reponses` vaut par défaut ce qu'écrit le portail (`PositionnementPortailForm`
+ * pose TOUJOURS le booléen `besoinAdaptation`). off.4 ignore ce champ ; off.10
+ * n'y reconnaît un recueil du besoin que si la question y a reçu une réponse.
+ */
 function positionnement(
   enrollmentId: string,
   reponduAt: Date,
   dateDebut: Date = DEBUT_SESSION,
-): { enrollmentId: string; reponduAt: Date; enrollment: { session: { dateDebut: Date } } } {
-  return { enrollmentId, reponduAt, enrollment: { session: { dateDebut } } };
+  reponses: Record<string, unknown> = { besoinAdaptation: false },
+): {
+  enrollmentId: string;
+  reponduAt: Date;
+  reponses: Record<string, unknown>;
+  enrollment: { session: { dateDebut: Date } };
+} {
+  return { enrollmentId, reponduAt, reponses, enrollment: { session: { dateDebut } } };
 }
 
 /** Ligne d'évaluation initiale, telle que la lit off.8. */
@@ -491,6 +504,13 @@ describe("evaluerConformite", () => {
   // besoin — montrez ce que vous avez adapté pour elles ».
 
   it("off.10 couvert si une adaptation est tracée et qu'aucun besoin déclaré ne reste sans réponse", async () => {
+    // Le besoin a été RECUEILLI avant l'entrée, pour CHACUN des inscrits des
+    // sessions tenues : sans positionnement, rien ne dit qu'on l'a demandé
+    // (cf. les témoins X-moteur-02 plus bas).
+    mockP.questionnaire.findMany.mockResolvedValue([
+      positionnement("enr-1", AVANT_DEBUT),
+      positionnement("enr-2", AVANT_DEBUT),
+    ]);
     mockP.enrollment.count.mockImplementation((args?: { where?: Record<string, unknown> }) => {
       const where = (args?.where ?? {}) as Record<string, unknown>;
       const besoin = where["trainee"] !== undefined;
@@ -498,7 +518,7 @@ describe("evaluerConformite", () => {
       if (besoin && adaptee) return Promise.resolve(2);
       if (besoin) return Promise.resolve(2);
       if (adaptee) return Promise.resolve(3);
-      return Promise.resolve(10);
+      return Promise.resolve(2);
     });
     const result = await evaluerConformite();
     expect(result.indicateurs.find((i) => i.numero === 10)?.statut).toBe("couvert");
@@ -518,6 +538,165 @@ describe("evaluerConformite", () => {
     const ind10 = result.indicateurs.find((i) => i.numero === 10);
     expect(ind10?.statut).toBe("a_completer");
     expect(ind10?.preuves.join(" ")).toContain("ont DÉCLARÉ un besoin");
+  });
+
+  // 🔴 X-moteur-02 (audit initial 2026-09-14) — le verdict exigeait AU MOINS UNE
+  // adaptation saisie. Un organisme dont aucun bénéficiaire n'a déclaré de besoin
+  // ne pouvait donc JAMAIS couvrir off.10 ⭐ : la seule manière de le verdir était
+  // d'inventer une adaptation. Le RNQ demande d'adapter quand un besoin l'appelle,
+  // pas d'adapter pour prouver qu'on sait le faire. La preuve est le RECUEIL du
+  // besoin (positionnement avant l'entrée) et l'absence de besoin déclaré laissé
+  // sans suite.
+
+  /** Inscriptions sur session tenue : total, à besoin déclaré, à besoin servi, adaptées. */
+  function setupAdaptations(opts: {
+    tenues: number;
+    besoin: number;
+    besoinServi: number;
+    adaptees: number;
+  }): void {
+    mockP.enrollment.count.mockImplementation((args?: { where?: Record<string, unknown> }) => {
+      const where = (args?.where ?? {}) as Record<string, unknown>;
+      const besoin = where["trainee"] !== undefined;
+      const adaptee = where["adaptationsRealisees"] !== undefined;
+      if (besoin && adaptee) return Promise.resolve(opts.besoinServi);
+      if (besoin) return Promise.resolve(opts.besoin);
+      if (adaptee) return Promise.resolve(opts.adaptees);
+      if (where["emargementSigneAt"] !== undefined) return Promise.resolve(0);
+      return Promise.resolve(opts.tenues);
+    });
+  }
+
+  it("🔴 X-moteur-02 : off.10 COUVERT sans aucune adaptation quand les besoins ont été recueillis et qu'aucun n'est déclaré", async () => {
+    mockP.questionnaire.findMany.mockResolvedValue([
+      positionnement("enr-1", AVANT_DEBUT),
+      positionnement("enr-2", AVANT_DEBUT),
+    ]);
+    setupAdaptations({ tenues: 2, besoin: 0, besoinServi: 0, adaptees: 0 });
+    const result = await evaluerConformite();
+    const ind10 = result.indicateurs.find((i) => i.numero === 10);
+    expect(ind10?.statut).toBe("couvert");
+    expect(ind10?.preuves.join(" ")).toContain("positionné");
+  });
+
+  it("témoin négatif X-moteur-02 : besoin DÉCLARÉ sans adaptation tracée → NON couvert, même positionnements recueillis", async () => {
+    mockP.questionnaire.findMany.mockResolvedValue([
+      positionnement("enr-1", AVANT_DEBUT),
+      positionnement("enr-2", AVANT_DEBUT),
+    ]);
+    setupAdaptations({ tenues: 2, besoin: 1, besoinServi: 0, adaptees: 0 });
+    const result = await evaluerConformite();
+    const ind10 = result.indicateurs.find((i) => i.numero === 10);
+    expect(ind10?.statut).toBe("a_completer");
+    expect(ind10?.preuves.join(" ")).toContain("ont DÉCLARÉ un besoin");
+  });
+
+  it("témoin négatif X-moteur-02 : AUCUN positionnement recueilli → NON couvert, même avec des adaptations tracées", async () => {
+    // Aucun besoin déclaré ne veut rien dire si personne ne l'a demandé.
+    mockP.questionnaire.findMany.mockResolvedValue([]);
+    setupAdaptations({ tenues: 5, besoin: 0, besoinServi: 0, adaptees: 3 });
+    const result = await evaluerConformite();
+    const ind10 = result.indicateurs.find((i) => i.numero === 10);
+    expect(ind10?.statut).toBe("a_completer");
+    expect(ind10?.preuves.join(" ")).toContain("Aucun positionnement recueilli");
+  });
+
+  it("témoin négatif X-moteur-02 : base vide → NON couvert", async () => {
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 10)?.statut).toBe("a_completer");
+  });
+
+  it("témoin négatif X-moteur-02 : des positionnements répondus APRÈS le début ne recueillent pas le besoin en amont", async () => {
+    mockP.questionnaire.findMany.mockResolvedValue([
+      positionnement("enr-1", APRES_DEBUT),
+      positionnement("enr-2", APRES_DEBUT),
+    ]);
+    setupAdaptations({ tenues: 2, besoin: 0, besoinServi: 0, adaptees: 0 });
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 10)?.statut).toBe("a_completer");
+  });
+
+  // 🔴 Relecture de la PR #1083 (2026-09-14) — la première version de ce
+  // correctif reprenait le compteur d'off.4 et le seuil « au moins un ». Trois
+  // voies de FAUX VERT en sortaient ; chacune a son témoin ci-dessous, rouge
+  // sous la règle « au moins un positionnement ».
+
+  it("témoin X-moteur-02 voie 1 : la seule session est ANNULÉE après les positionnements → NON couvert", async () => {
+    // Base réelle : les inscrits ont répondu, puis la session a été annulée.
+    // Aucune inscription ne reste sur une session tenue ; les positionnements
+    // ne prouvent plus rien pour off.10.
+    mockP.questionnaire.findMany.mockResolvedValue([
+      positionnement("enr-1", AVANT_DEBUT),
+      positionnement("enr-2", AVANT_DEBUT),
+    ]);
+    setupAdaptations({ tenues: 0, besoin: 0, besoinServi: 0, adaptees: 0 });
+    const result = await evaluerConformite();
+    const ind10 = result.indicateurs.find((i) => i.numero === 10);
+    expect(ind10?.statut).toBe("a_completer");
+    expect(ind10?.preuves.join(" ")).toContain("Aucune inscription sur une session tenue");
+  });
+
+  it("témoin X-moteur-02 voie 1 : off.10 ne lit que les positionnements et inscriptions de sessions TENUES et démarrées", async () => {
+    // Le mock ignore le `where` : le filtre de statut ne se prouve qu'en
+    // lisant la FORME des requêtes. Sans lui, un positionnement d'une session
+    // annulée ou reportée restait au numérateur pendant que son besoin
+    // déclaré sortait du dénominateur (défaut D1-2 du 2026-08-25, rouvert).
+    await evaluerConformite();
+    type Appel = { where?: Record<string, unknown>; select?: Record<string, unknown> };
+    type SessionFiltre = { statut?: { notIn?: string[] }; dateDebut?: unknown };
+
+    const lectureOff10 = mockP.questionnaire.findMany.mock.calls
+      .map((c: unknown[]) => c[0] as Appel)
+      .find((a: Appel) => a.select?.["reponses"] === true);
+    expect(lectureOff10).toBeDefined();
+    const sessionPositionnement = (
+      lectureOff10?.where?.["enrollment"] as { session?: SessionFiltre } | undefined
+    )?.session;
+    expect(sessionPositionnement?.statut?.notIn).toEqual(
+      expect.arrayContaining(["annulee", "reportee"]),
+    );
+    expect(sessionPositionnement?.dateDebut).toBeDefined();
+
+    const denominateur = mockP.enrollment.count.mock.calls
+      .map((c: unknown[]) => c[0] as Appel)
+      .find((a: Appel) => {
+        const s = a.where?.["session"] as SessionFiltre | undefined;
+        return s?.statut !== undefined && s.dateDebut !== undefined;
+      });
+    expect(denominateur).toBeDefined();
+    expect((denominateur?.where?.["session"] as SessionFiltre | undefined)?.statut?.notIn).toEqual(
+      expect.arrayContaining(["annulee", "reportee"]),
+    );
+  });
+
+  it("témoin X-moteur-02 voie 2 : UN positionné sur trois inscrits tenus → NON couvert", async () => {
+    // « Aucun besoin déclaré » n'est démontré que pour les inscrits à qui la
+    // question a été posée. Un sur trois, c'est le 1/3 563 du 2026-09-02.
+    mockP.questionnaire.findMany.mockResolvedValue([positionnement("enr-1", AVANT_DEBUT)]);
+    setupAdaptations({ tenues: 3, besoin: 0, besoinServi: 0, adaptees: 0 });
+    const result = await evaluerConformite();
+    const ind10 = result.indicateurs.find((i) => i.numero === 10);
+    expect(ind10?.statut).toBe("a_completer");
+    expect(ind10?.preuves.join(" ")).toContain("1/3");
+  });
+
+  it("témoin X-moteur-02 voie 3 : positionnements SAISIS PAR L'ADMIN, sans question de besoin → NON couvert", async () => {
+    // `QuestionnairesSection` n'envoie ni `besoinAdaptation` ni appel à
+    // `signalerBesoinAdaptation` : un formulaire vide validé avant le début ne
+    // recueille aucun besoin. Même un booléen glissé dans une saisie admin ne
+    // vaut pas réponse du bénéficiaire.
+    mockP.questionnaire.findMany.mockResolvedValue([
+      positionnement("enr-1", AVANT_DEBUT, DEBUT_SESSION, { saisie_admin: true }),
+      positionnement("enr-2", AVANT_DEBUT, DEBUT_SESSION, {
+        saisie_admin: true,
+        besoinAdaptation: false,
+      }),
+    ]);
+    setupAdaptations({ tenues: 2, besoin: 0, besoinServi: 0, adaptees: 0 });
+    const result = await evaluerConformite();
+    const ind10 = result.indicateurs.find((i) => i.numero === 10);
+    expect(ind10?.statut).toBe("a_completer");
+    expect(ind10?.preuves.join(" ")).toContain("sans réponse à la question du besoin d'adaptation");
   });
 
   it("off.23 couvert si au moins 1 veille legale existe", async () => {
@@ -759,7 +938,7 @@ describe("evaluerConformite", () => {
   it("off.21 couvert quand CHAQUE formateur actif a une fiche à jour ET une pièce de compétence validée", async () => {
     // trainer.count : 1=actif, 2=actif+cvUrl, 3=actif+cvUrl+cvUploadedAt<24 mois
     mockP.trainer.count.mockResolvedValueOnce(1).mockResolvedValueOnce(1).mockResolvedValueOnce(1);
-    mockP.trainerDocument.findMany.mockResolvedValue([{ trainerId: "t-1" }]);
+    mockP.trainerDocument.findMany.mockResolvedValue([pieceCompetence("t-1")]);
     const result = await evaluerConformite();
     const ind21 = result.indicateurs.find((i) => i.numero === 21);
     expect(ind21?.statut).toBe("couvert");
@@ -767,7 +946,7 @@ describe("evaluerConformite", () => {
 
   it("off.21 À COMPLÉTER si un seul formateur sur deux porte une fiche à jour", async () => {
     mockP.trainer.count.mockResolvedValueOnce(2).mockResolvedValueOnce(1).mockResolvedValueOnce(1);
-    mockP.trainerDocument.findMany.mockResolvedValue([{ trainerId: "t-1" }]);
+    mockP.trainerDocument.findMany.mockResolvedValue([pieceCompetence("t-1")]);
     const result = await evaluerConformite();
     const ind21 = result.indicateurs.find((i) => i.numero === 21);
     expect(ind21?.statut).toBe("a_completer");
@@ -794,17 +973,71 @@ describe("evaluerConformite", () => {
 
   it("off.21 : l'élément constaté ne prétend plus « CV téléversé », mais « fiche formateur au dossier »", async () => {
     mockP.trainer.count.mockResolvedValueOnce(2).mockResolvedValueOnce(1).mockResolvedValueOnce(1);
-    mockP.trainerDocument.findMany.mockResolvedValue([{ trainerId: "t-1" }]);
+    mockP.trainerDocument.findMany.mockResolvedValue([pieceCompetence("t-1")]);
     const result = await evaluerConformite();
     const preuves = result.indicateurs.find((i) => i.numero === 21)?.preuves.join(" ") ?? "";
     expect(preuves).toMatch(/fiche formateur au dossier/i);
     expect(preuves).not.toMatch(/CV téléversé/i);
   });
 
+  // 🔴 Audit initial 2026-09-14 (constat I21-02). Une pièce VALIDÉE mais sans
+  // fichier comptait dans la couverture. Le mock n'évalue aucun `where` : il rend
+  // ce qui est EN BASE, et c'est au moteur de juger si la pièce prouve quelque
+  // chose. On asserte donc le VERDICT, pas la forme de la requête.
+  /** Une pièce de compétence telle qu'elle est rangée en base. */
+  function pieceCompetence(trainerId: string, over: Record<string, unknown> = {}) {
+    return {
+      trainerId,
+      type: "cv",
+      statutValidation: "valide",
+      fichierUrl: "https://drive.example/cv.pdf",
+      dateExpiration: null,
+      ...over,
+    };
+  }
+
+  it.each([
+    ["sans fichier", { fichierUrl: null }],
+    ["à l'adresse vide", { fichierUrl: "" }],
+    ["à l'adresse faite d'espaces", { fichierUrl: "   " }],
+    ["expirée", { type: "certification", dateExpiration: new Date("2020-01-01T00:00:00Z") }],
+  ])("off.21 À COMPLÉTER quand la seule pièce de compétence est %s", async (_libelle, over) => {
+    mockP.trainer.count.mockResolvedValueOnce(1).mockResolvedValueOnce(1).mockResolvedValueOnce(1);
+    mockP.trainerDocument.findMany.mockResolvedValue([pieceCompetence("t-1", over)]);
+    const result = await evaluerConformite();
+    const ind21 = result.indicateurs.find((i) => i.numero === 21);
+    expect(ind21?.statut).toBe("a_completer");
+    expect(ind21?.preuves.join(" ")).toMatch(/Aucune pièce de compétence validée/);
+  });
+
+  it("off.21 : la pièce sans fichier d'un formateur ne le fait pas compter à côté d'un collègue couvert", async () => {
+    mockP.trainer.count.mockResolvedValueOnce(2).mockResolvedValueOnce(2).mockResolvedValueOnce(2);
+    mockP.trainerDocument.findMany.mockResolvedValue([
+      pieceCompetence("t-1"),
+      pieceCompetence("t-2", { fichierUrl: null }),
+    ]);
+    const result = await evaluerConformite();
+    const ind21 = result.indicateurs.find((i) => i.numero === 21);
+    expect(ind21?.statut).toBe("a_completer");
+    expect(ind21?.preuves.join(" ")).toContain(
+      "1/2 formateurs actifs avec au moins une pièce de compétence validée",
+    );
+  });
+
+  it("off.21 : un formateur qui porte DEUX pièces probantes compte UNE fois", async () => {
+    mockP.trainer.count.mockResolvedValueOnce(1).mockResolvedValueOnce(1).mockResolvedValueOnce(1);
+    mockP.trainerDocument.findMany.mockResolvedValue([
+      pieceCompetence("t-1"),
+      pieceCompetence("t-1", { type: "diplome" }),
+    ]);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 21)?.statut).toBe("couvert");
+  });
+
   it("off.21 a_completer si CV présent mais PÉRIMÉ (aucun < 24 mois)", async () => {
     // 2 CV téléversés mais aucun daté de moins de 24 mois → 3e appel = 0.
     mockP.trainer.count.mockResolvedValueOnce(3).mockResolvedValueOnce(2).mockResolvedValueOnce(0);
-    mockP.trainerDocument.findMany.mockResolvedValue([{ trainerId: "t-1" }]);
+    mockP.trainerDocument.findMany.mockResolvedValue([pieceCompetence("t-1")]);
     const result = await evaluerConformite();
     const ind21 = result.indicateurs.find((i) => i.numero === 21);
     expect(ind21?.statut).toBe("a_completer");
@@ -812,7 +1045,7 @@ describe("evaluerConformite", () => {
 
   it("off.21 a_completer si formateurs actifs mais 0 avec cvUrl", async () => {
     mockP.trainer.count.mockResolvedValueOnce(3).mockResolvedValueOnce(0).mockResolvedValueOnce(0);
-    mockP.trainerDocument.findMany.mockResolvedValue([{ trainerId: "t-1" }]);
+    mockP.trainerDocument.findMany.mockResolvedValue([pieceCompetence("t-1")]);
     const result = await evaluerConformite();
     const ind21 = result.indicateurs.find((i) => i.numero === 21);
     expect(ind21?.statut).toBe("a_completer");

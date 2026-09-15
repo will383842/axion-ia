@@ -12,6 +12,7 @@ import {
   estPerime,
   estValide,
   evaluerConformiteFormateur,
+  trouverValide,
   vigilancePerimee,
   vigilanceRequise,
   CONFORMITE_DEFAUTS,
@@ -28,6 +29,7 @@ function doc(
   return {
     type,
     statutValidation: "valide",
+    fichierUrl: "https://drive.example/piece.pdf",
     dateEmission: new Date("2026-06-01T00:00:00Z"),
     dateExpiration: null,
     ...over,
@@ -45,6 +47,49 @@ function dossierSousTraitantComplet(): DocumentConformite[] {
     doc("cv"),
   ];
 }
+
+// 🔴 Relecture PR #1085 (constat I21-02). `trouverValide` retenait un CV validé
+// SANS fichier : l'alerte « CV absent » ne se levait pas, et la fiche formateur
+// de la console annonçait « Dossier complet — aucun manquement » sur une pièce
+// qui ne prouve rien — l'écran que l'auditrice ouvre quand elle désigne
+// l'intervenant.
+describe("pièce de compétence sans fichier (I21-02)", () => {
+  it.each([null, "", "   "])(
+    "trouverValide ne retient pas un CV validé au fichier « %j »",
+    (url) => {
+      expect(trouverValide([doc("cv", { fichierUrl: url })], "cv", NOW)).toBeNull();
+    },
+  );
+
+  it("trouverValide préfère le CV qui porte son fichier, même plus ancien", () => {
+    const sansFichier = doc("cv", { fichierUrl: null, dateEmission: new Date("2026-07-01") });
+    const avecFichier = doc("cv", { dateEmission: new Date("2026-05-01") });
+    expect(trouverValide([sansFichier, avecFichier], "cv", NOW)).toBe(avecFichier);
+  });
+
+  it("un CV validé sans fichier ne donne PAS « Dossier complet » : alerte cv_absent", () => {
+    const r = evaluerConformiteFormateur(
+      { statut: "dirigeant", documents: [doc("cv", { fichierUrl: null })], montantRetenuCents: 0 },
+      NOW,
+    );
+    expect(r.manquements).not.toEqual([]);
+    const cv = r.manquements.find((m) => m.code === "cv_absent");
+    expect(cv?.gravite).toBe("alerte");
+    // Le message nomme la vraie cause : la pièce existe, son fichier manque.
+    expect(cv?.message).toMatch(/sans fichier/);
+  });
+
+  it("un diplôme validé sans fichier n'est pas retenu non plus", () => {
+    expect(trouverValide([doc("diplome", { fichierUrl: null })], "diplome", NOW)).toBeNull();
+  });
+
+  // Voie négative : l'exigence de fichier ne vise QUE les pièces de compétence.
+  // Un contrat de travail saisi sans URL reste retenu, comme avant.
+  it("une pièce HORS compétence sans fichier reste retenue (contrat de travail)", () => {
+    const contrat = doc("contrat_travail", { fichierUrl: null });
+    expect(trouverValide([contrat], "contrat_travail", NOW)).toBe(contrat);
+  });
+});
 
 describe("addMonths", () => {
   it("ajoute des mois en arithmétique calendaire", () => {
@@ -346,7 +391,14 @@ describe("evaluerConformiteFormateur — CV (Qualiopi off.21)", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("Plusieurs pièces valides du même type", () => {
-  const base = { statutValidation: "valide" as const, dateExpiration: null };
+  // `fichierUrl` renseigné : ces tests portent sur le CHOIX entre CV valides.
+  // Un CV sans fichier n'est plus retenu (I21-02, cas testé plus haut), et sans
+  // ce champ ils passeraient à vide sur « CV absent ».
+  const base = {
+    statutValidation: "valide" as const,
+    fichierUrl: "https://drive.example/cv.pdf",
+    dateExpiration: null,
+  };
 
   // 🔴 `trouverValide` était un `find` : « la première de la liste », donc
   // l'ordre de chargement. Verser un CV actualisé sans supprimer l'ancien

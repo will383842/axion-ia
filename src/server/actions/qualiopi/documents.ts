@@ -59,6 +59,11 @@ import {
 
 import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
 import {
+  SELECT_PIECE_COMPETENCE,
+  estPieceCompetenceProbante,
+  prefiltrePieceCompetenceProbante,
+} from "@/server/qualiopi/trainers/piece-competence";
+import {
   requireAdminWrite,
   requireHabilitation,
   logQualiopiActivity,
@@ -70,6 +75,7 @@ import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
 import {
   LIEU_DOCUMENT_SELECT,
+  refusEmissionLieu,
   resolveLieuDocument,
 } from "@/server/qualiopi/lieu/resolve-lieu-document";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
@@ -2116,6 +2122,7 @@ export async function genererAutorisationCaptationAction(input: {
           id: true,
           titreSession: true,
           dateDebut: true,
+          modalite: true,
           ...LIEU_DOCUMENT_SELECT,
         },
       },
@@ -2124,6 +2131,10 @@ export async function genererAutorisationCaptationAction(input: {
   if (!enrollment) return { error: "Inscription introuvable" };
 
   const { trainee, session } = enrollment;
+  // 🔴 I17-01 — l'autorisation imprime le lieu de l'action : pas de lieu qui
+  // dise où, pas de pièce.
+  const refusLieu = refusEmissionLieu(session);
+  if (refusLieu !== null) return { error: refusLieu };
   const identite = await getOrganismeIdentite();
 
   const doc = await generateDocument({
@@ -2231,13 +2242,21 @@ export async function genererListeFormateursAction(): Promise<
   // Un CV SOURCE validé, jamais `Trainer.cvUrl` : ce dernier pointe vers la
   // FICHE produite par l'organisme, qui ne prouve rien sur les compétences —
   // c'est le raisonnement déjà tenu par `genererCvFormateurAction`.
+  //
+  // 🔴 Audit initial 2026-09-14 (constat I21-02, relecture PR #1085) : le
+  // `groupBy` comptait tout CV VALIDÉ, avec ou sans fichier, expiré ou non — et
+  // la liste remise à l'auditrice imprimait « CV au dossier ». Le prédicat
+  // partagé tranche : un CV sans fichier n'est pas au dossier.
+  const maintenantListe = new Date();
   const cvParTrainer = new Map<string, number>();
-  const cvs = await prisma.trainerDocument.groupBy({
-    by: ["trainerId"],
-    where: { type: "cv", statutValidation: "valide" },
-    _count: { _all: true },
+  const cvs = await prisma.trainerDocument.findMany({
+    where: { ...prefiltrePieceCompetenceProbante(maintenantListe), type: "cv" },
+    select: { trainerId: true, ...SELECT_PIECE_COMPETENCE },
   });
-  for (const c of cvs) cvParTrainer.set(c.trainerId, c._count._all);
+  for (const c of cvs) {
+    if (!estPieceCompetenceProbante(c, maintenantListe)) continue;
+    cvParTrainer.set(c.trainerId, (cvParTrainer.get(c.trainerId) ?? 0) + 1);
+  }
 
   const identite = await getOrganismeIdentite();
 
@@ -2515,9 +2534,14 @@ export async function verserFicheFormateurAction(input: {
   // nul, la fiche imprimerait donc « CV non joint »… alors qu'elle EST la pièce,
   // et `cvUrl` pointera vers elle une seconde plus tard. Le même document
   // affirmerait deux choses opposées selon l'ordre des clics.
-  const nbCvSource = await prisma.trainerDocument.count({
-    where: { trainerId, type: "cv", statutValidation: "valide" },
+  // 🔴 Audit initial 2026-09-14 (constat I21-02) : un CV validé SANS fichier, ou
+  // EXPIRÉ, faisait imprimer « CV joint » — une affirmation que la pièce ne tient
+  // pas. Le prédicat partagé tranche, comme pour la couverture de l'indicateur.
+  const cvSources = await prisma.trainerDocument.findMany({
+    where: { ...prefiltrePieceCompetenceProbante(maintenant), trainerId, type: "cv" },
+    select: SELECT_PIECE_COMPETENCE,
   });
+  const nbCvSource = cvSources.filter((c) => estPieceCompetenceProbante(c, maintenant)).length;
 
   // 🔴 #1 — off.21 est une NON-CONFORMITÉ MAJEURE : « la maîtrise des compétences
   // des intervenants est VÉRIFIÉE ». Verser une fiche VIDE (aucune compétence, aucune

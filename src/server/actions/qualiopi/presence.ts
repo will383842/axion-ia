@@ -371,8 +371,10 @@ export async function generateSessionCreneauxAction(input: {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Upsert les entrées d'émargement présentiel (présent/absent + durée),
- * recompute le taux pour chaque enrollment touché, set emargementSigneAt.
+ * Upsert les entrées d'émargement présentiel (présent/absent + durée) et
+ * recompute le taux pour chaque enrollment touché. Une présence cochée ici est
+ * DÉCLARÉE (`source: "manuel"`) : elle ne pose jamais `emargementSigneAt`,
+ * réservé au geste de signature (`G-prerequis-02`).
  */
 export async function saveEmargementAction(input: {
   sessionId: string;
@@ -421,6 +423,10 @@ export async function saveEmargementAction(input: {
       select: {
         id: true,
         dureePrevueMinutes: true,
+        // Revue A09 §4 — l'état ACTUEL, pour ne réécrire que les créneaux que
+        // l'utilisateur a réellement modifiés (cf. plus bas).
+        dureeRealiseeMinutes: true,
+        present: true,
         source: true,
         libelle: true,
         // 🔴 2026-08-24 — `importId` et le compte de signatures MANQUAIENT ici,
@@ -504,17 +510,58 @@ export async function saveEmargementAction(input: {
       dureeRealiseeMinutes = prevuConnu;
     }
 
-    // ⚠️ La PROVENANCE d'un créneau importé ne doit jamais être réécrite.
     // La grille reçoit TOUS les créneaux de la session, y compris ceux issus d'un
     // relevé Zoom/Teams/Meet. Un simple clic « Enregistrer », même sans rien
     // modifier, transformait `import_zoom` en `emargement_presentiel` sur des
     // enregistrements à valeur probante — et remplaçait leur libellé horodaté.
-    // Le PDF de relevé de connexion et le dossier d'audit lisent ce champ.
-    const sourceImportee = existingCreneau?.source?.startsWith("import_") === true;
-    const source = sourceImportee
-      ? (existingCreneau?.source as "import_zoom" | "import_teams" | "import_meet")
-      : "emargement_presentiel";
-    const libelle = sourceImportee
+    // Le PDF de relevé de connexion et le dossier d'audit lisent ce champ : un
+    // créneau NON MODIFIÉ n'est donc jamais réécrit (garde ci-dessous).
+    //
+    // Un relevé se reconnaît à `import_*` OU à `importId` : la plateforme
+    // « autre » écrit `emargement_presentiel` avec un `importId`
+    // (`toPresenceSource`). Seul son LIBELLÉ horodaté est conservé quand on le
+    // modifie — sa source, elle, devient `manuel` (seconde revue A09 §6, plus bas).
+    const creneauImporte =
+      existingCreneau?.source?.startsWith("import_") === true ||
+      (existingCreneau?.importId ?? null) !== null;
+
+    // 🔴 2026-09-14 — `G-prerequis-02` + revue A09 §4. LA GRILLE RENVOIE TOUTES
+    // SES CELLULES À CHAQUE CLIC. Un créneau dont l'utilisateur n'a changé ni la
+    // présence ni la durée n'est PAS réécrit : ni sa source, ni son libellé, ni
+    // son horodatage. Le réécrire en `manuel` inventerait une saisie que personne
+    // n'a faite — et requalifierait en masse, au premier clic, les grilles
+    // antérieures au correctif. Aucune donnée existante n'est modifiée sans geste.
+    if (
+      existingCreneau !== null &&
+      existingCreneau.present === entry.present &&
+      existingCreneau.dureeRealiseeMinutes === dureeRealiseeMinutes
+    ) {
+      continue;
+    }
+
+    // 🔴 2026-09-14 — `G-prerequis-02`. La grille écrivait
+    // `emargement_presentiel` : une case cochée par un administrateur prenait la
+    // provenance d'un émargement, alors qu'aucune signature n'existe — les
+    // signatures sautent la grille (garde ci-dessus) et passent par
+    // `emargement/signature-service.ts`. Un créneau MODIFIÉ ici est donc une
+    // saisie à la main : `manuel`, la valeur que porte déjà
+    // `setPresenceCreneauManualAction` et que l'import reconnaît comme « saisie
+    // manuelle » à ne pas effacer. Seul un créneau NEUF laissé vierge garde le
+    // gabarit `emargement_presentiel`.
+    //
+    // 🔴 Seconde revue A09 §6 — ET CE, MÊME SUR UN CRÉNEAU IMPORTÉ. L'import crée
+    // des créneaux à 0 min pour les inscrits qu'il ne reconnaît pas ; cochés ici,
+    // ils gardaient leur source d'import et passaient, à l'écran, au dossier
+    // d'audit et au certificat de réalisation (filtre `import_*`), pour une
+    // présence MESURÉE par la plateforme. Dès que la grille change la présence ou
+    // la durée d'un créneau importé, la valeur n'est plus celle du relevé : c'est
+    // une saisie. `importId` et le libellé restent, pour la traçabilité ; la
+    // provenance lit `manuel` avant `importId` (`presence/provenance.ts`).
+    const source =
+      existingCreneau === null && !entry.present && dureeRealiseeMinutes === 0
+        ? ("emargement_presentiel" as const)
+        : ("manuel" as const);
+    const libelle = creneauImporte
       ? (existingCreneau?.libelle ?? "")
       : `${entry.date} ${entry.demiJournee === "apres_midi" ? "après-midi" : entry.demiJournee}`;
 
@@ -531,37 +578,25 @@ export async function saveEmargementAction(input: {
     updated++;
   }
 
-  // Recompute taux + pose emargementSigneAt pour chaque enrollment touché.
-  // Verrou write-once : le `where` sur emargementSigneAt:null fait que seul le
-  // PREMIER émargement horodate la signature ; les ré-enregistrements suivants
-  // (correction de présence) n'affectent 0 ligne → preuve horodatée immuable.
-  const now = new Date();
+  // Recompute du taux pour chaque enrollment touché.
+  //
+  // 🔴 2026-09-14 — `G-prerequis-02`. Cette boucle posait aussi
+  // `Enrollment.emargementSigneAt` dès que le taux dépassait 0 (le correctif
+  // `CONF-02` du 2026-08-20 avait seulement retiré le cas « absent partout »).
+  // Une présence TAPÉE ici devenait ainsi un « émargement signé » pour l'écran,
+  // l'indicateur off.12, le parcours de session et la garde de requalification
+  // des dates — sans qu'aucune signature n'existe.
+  //
+  // 🔑 Cette date ne se pose désormais qu'au geste de signature
+  // (`emargement/signature-service.ts`, write-once) et retombe à la révocation
+  // de la dernière (`revocation-service.ts`). La grille déclare une présence ;
+  // elle ne signe pour personne.
+  //
+  // ⚠️ Les dates déjà posées par la grille ne sont PAS effacées ici : réécrire
+  // une donnée d'audit en silence serait l'autre moitié du même défaut. Elles
+  // sont nommées à l'écran et au dossier (`presence/provenance.ts`).
   for (const enrollmentId of enrollmentIds) {
-    const taux = await recomputeTauxPresence(enrollmentId);
-    // 🔴 `CONF-02` (2026-08-20). `emargementSigneAt` était posé pour CHAQUE
-    // inscription touchée par la sauvegarde, sans regarder ce que la grille
-    // disait — **y compris quand elle déclarait la personne absente partout**.
-    //
-    // Ce que cela produisait n'est pas cosmétique : `conformite-service.ts`
-    // compte cette colonne pour l'indicateur `off.12` (suivi de l'assiduité) et
-    // l'annonce « inscription avec émargement réellement signé ». Un stagiaire
-    // qui n'est jamais venu — donc qui n'a rien signé — gonflait donc un
-    // indicateur de conformité présenté à l'auditeur.
-    //
-    // Le taux est le bon discriminant, et il vient d'être recalculé sur les
-    // créneaux réellement enregistrés : `0` signifie « absent à tout », et il
-    // n'y a alors aucune présence à attester.
-    //
-    // ⚠️ Le verrou write-once est CONSERVÉ, et il s'entend mieux ainsi : si une
-    // grille est d'abord enregistrée « absent partout » puis corrigée, la date
-    // posée est celle de la PREMIÈRE présence constatée — pas celle du premier
-    // clic sur « Enregistrer ».
-    if (taux > 0) {
-      await prisma.enrollment.updateMany({
-        where: { id: enrollmentId, emargementSigneAt: null },
-        data: { emargementSigneAt: now },
-      });
-    }
+    await recomputeTauxPresence(enrollmentId);
   }
 
   // UN SEUL appel, APRÈS la boucle : `invalidateIndicateursCache` fait un
