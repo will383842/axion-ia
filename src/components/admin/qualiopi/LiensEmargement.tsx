@@ -296,13 +296,20 @@ export function LiensEmargement({
         AXI-SESS-2026-001, où personne n'a pu émarger. Depuis, le cron horaire
         rattrape ce cas — mais en réémettant, donc en tuant le QR déjà imprimé.
         Ce résidu ne se corrige pas en code : il se DIT, ici, avant le clic.
+
+        🔴 2026-09-15 — le résidu est RÉDUIT, et le texte suit. L'envoi
+        automatique sert désormais chaque stagiaire qui n'a pas de lien entre
+        les mains, à la maille de l'inscription (`remise-lien.ts`) : il ne
+        remplace jamais un lien envoyé, ouvert, ou fabriqué le jour même. Seul
+        un lien fabriqué un AUTRE jour et jamais ouvert est remplacé.
       */}
       <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
         <strong>« Émettre » n&apos;envoie rien</strong> : le bouton fabrique les liens et affiche
-        les QR, c&apos;est tout. Pour que les stagiaires les reçoivent, cliquez «&nbsp;Envoyer les
-        liens par e-mail&nbsp;». Si vous imprimez un QR sans envoyer, le rattrapage automatique du
-        jour J enverra les liens — et <strong>le QR imprimé cessera alors de fonctionner</strong>,
-        chaque envoi révoquant le lien précédent.
+        les QR, c&apos;est tout. Les liens partent seuls : joints au rappel J-7 ou au rappel de la
+        veille, sinon le jour même, à chaque stagiaire qui n&apos;a pas encore le sien. L&apos;envoi
+        automatique ne remplace jamais un lien déjà envoyé, déjà ouvert ou fabriqué
+        aujourd&apos;hui. Un QR fabriqué un autre jour et jamais scanné, lui, est remplacé :{" "}
+        <strong>un QR imprimé la veille cessera alors de fonctionner</strong>.
       </p>
 
       <div className="flex flex-wrap gap-[var(--space-admin-3)]">

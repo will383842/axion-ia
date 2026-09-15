@@ -44,6 +44,7 @@ const TOUTES_LES_CLES = [
   "creneaux_emargement",
   "liens_signature_emis",
   "emargement_signe",
+  "contresignature_formateur",
   "evaluation_finale",
   "attestation",
   "acces_portail",
@@ -93,7 +94,11 @@ describe("ETAPES_DU_FORMATEUR — la table de décision", () => {
     // filtre qui trie. C'est cette assertion, et elle seule, qui les sépare.
     expect(retenues.length).toBeLessThan(TOUTES_LES_CLES.length);
     expect(retenues.length).toBeGreaterThan(0);
-    expect(retenues).toEqual(["creneaux_emargement", "emargement_signe"]);
+    expect(retenues).toEqual([
+      "creneaux_emargement",
+      "emargement_signe",
+      "contresignature_formateur",
+    ]);
   });
 
   it("réécrit le geste de CHAQUE étape retenue (le geste de la console nomme des boutons absents)", () => {

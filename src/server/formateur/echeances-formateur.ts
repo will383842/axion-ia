@@ -84,7 +84,25 @@ export async function echeancesDuFormateur(
 
   const { echeances } = await prochainesEcheances({ sessionIds, maintenant });
 
-  return filtrerEtapesFormateur(echeances).map((e) => ({
+  return filtrerEtapesFormateur(echeances).flatMap((e) => {
+    // 🔴 Relecture #1096 — la contresignature se compte au grain de CE
+    // formateur, comme le bandeau de sa formation. Sur une session co-animée,
+    // l'étape de session disait « 0/4 » à chacun et réclamait au co-formateur
+    // l'attestation d'une journée qu'il n'a pas animée.
+    if (e.etape.cle !== "contresignature_formateur") return [ligne(e)];
+    const moi = e.contresignatureParFormateur?.get(trainerId);
+    if (moi === undefined || moi.aContresigner === 0) return [];
+    return [
+      {
+        ...ligne(e),
+        avancement: { fait: moi.signees - moi.aContresigner, total: moi.signees },
+      },
+    ];
+  });
+}
+
+function ligne(e: EcheanceSession): EcheanceFormateur {
+  return {
     sessionId: e.sessionId,
     numero: e.numero,
     titre: e.titre,
@@ -97,5 +115,5 @@ export async function echeancesDuFormateur(
     geste: GESTE_FORMATEUR[e.etape.cle] ?? e.etape.geste,
     etat: e.etape.etat,
     ...(e.etape.avancement !== undefined ? { avancement: e.etape.avancement } : {}),
-  }));
+  };
 }

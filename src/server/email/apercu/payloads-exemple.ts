@@ -65,6 +65,9 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   dateLimiteReponse: "lundi 15 septembre 2026",
   dateValiditeLabel: "30 septembre 2026",
   demandes: 7,
+  // Demande de contresignature au formateur (2026-09-15) : une ligne par
+  // demi-journée signée par les stagiaires et non contresignée.
+  demiJournees: ["mardi 15 septembre 2026 — matin", "mardi 15 septembre 2026 — après-midi"],
   deposeeLe: "28 août 2026",
   destinataireNom: "Camille Dupont",
   dureeMinutes: 45,

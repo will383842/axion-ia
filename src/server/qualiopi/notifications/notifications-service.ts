@@ -95,21 +95,69 @@ async function getLienEmargementSiPremier(
    * un lien émis sans destinataire ne serait rattaché à personne.
    */
   destinataireEmail: string,
-): Promise<string | null> {
+): Promise<{ url: string; tokenId: string } | null> {
   try {
     const actif = await prisma.emargementToken.findFirst({
       where: { enrollmentId, revokedAt: null, expiresAt: { gt: new Date() } },
       select: { id: true },
     });
     if (actif) return null;
-    const { token } = await creerTokenInscription({
+    const { token, tokenId } = await creerTokenInscription({
       enrollmentId,
       dateFinSession,
       destinataireEmail,
     });
-    return `${baseUrl}/fr/portail/emarger/${token}`;
+    return { url: `${baseUrl}/fr/portail/emarger/${token}`, tokenId };
   } catch {
     return null;
+  }
+}
+
+/**
+ * Marque REMIS le jeton joint à un rappel dont l'e-mail vient d'être accepté.
+ *
+ * 🔴 2026-09-15 — le lien joint au rappel J-7 ou de la veille restait
+ * `envoyeAt = NULL`. Pour le passage horaire `liens-emargement-j0`, c'était un
+ * lien « fabriqué, jamais envoyé » : il le réémettait, donc le RÉVOQUAIT, et le
+ * stagiaire recevait deux liens pour la même séance, le premier mort.
+ *
+ * Posée APRÈS l'acceptation par la file, jamais avant — même doctrine que
+ * `envoi-liens.ts`. Et fail-soft : l'e-mail est parti, une marque non posée ne
+ * doit pas transformer un envoi réussi en échec (le seul coût est un envoi de
+ * plus au jour J, visible).
+ */
+/**
+ * Révoque le jeton joint à un rappel que la file a REFUSÉ (hors validation).
+ *
+ * 🔴 Relecture #1096 — laissé vivant, ce jeton n'était entre les mains de
+ * personne mais se lisait « fabriqué aujourd'hui » pour le passage horaire du
+ * jour J, qui le protégeait comme un QR de salle. Un rappel de la veille tardif
+ * (session créée le matin pour l'après-midi) privait ainsi le stagiaire de son
+ * lien jusqu'au lendemain. Garé en validation, le message garde son lien : on
+ * n'y touche pas.
+ */
+async function revoquerLienNonParti(tokenId: string, contexte: string): Promise<void> {
+  try {
+    await prisma.emargementToken.updateMany({
+      where: { id: tokenId, envoyeAt: null, revokedAt: null },
+      data: { revokedAt: new Date(), revokedMotif: `${contexte} non parti — lien jamais remis` },
+    });
+  } catch (err) {
+    console.error(
+      `[${contexte}] jeton ${tokenId} non parti et non révoqué :`,
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
+async function marquerLienRemis(tokenId: string, contexte: string): Promise<void> {
+  try {
+    await prisma.emargementToken.update({ where: { id: tokenId }, data: { envoyeAt: new Date() } });
+  } catch (err) {
+    console.error(
+      `[${contexte}] jeton ${tokenId} REMIS mais non marqué — le passage du jour J pourra le réémettre :`,
+      err instanceof Error ? err.message : String(err),
+    );
   }
 }
 
@@ -401,7 +449,7 @@ export async function envoyerRappelJ7(sessionId: string): Promise<boolean> {
           modalite: session.modalite,
           numeroSession: session.numero,
           lienPortail,
-          ...(lienEmargement !== null ? { lienEmargement } : {}),
+          ...(lienEmargement !== null ? { lienEmargement: lienEmargement.url } : {}),
         },
         {
           jobId: `qualiopi-rappel-j7-${enrollment.id}-${dk}`,
@@ -419,10 +467,14 @@ export async function envoyerRappelJ7(sessionId: string): Promise<boolean> {
               ? " (e-mail garé en corbeille de validation)"
               : " (file de messages indisponible)"),
         );
+        if (lienEmargement !== null && envoi.garePourValidation !== true) {
+          await revoquerLienNonParti(lienEmargement.tokenId, "rappel-j7");
+        }
         // `continue`, PAS `return` : les inscrits suivants ont droit à leur rappel.
         tousPartis = false;
         continue;
       }
+      if (lienEmargement !== null) await marquerLienRemis(lienEmargement.tokenId, "rappel-j7");
     } catch (err) {
       // Fail-soft PAR STAGIAIRE : une erreur ne bloque pas les autres. Mais elle
       // compte — la session reste candidate au rattrapage.
@@ -615,7 +667,7 @@ export async function envoyerRappelJ1(sessionId: string): Promise<boolean> {
           // arbitre son budget de liens sur leur présence, et un `undefined`
           // explicite vaut mieux qu'une chaîne vide qui rendrait un `href=""`.
           ...(lienVisio !== null ? { lienVisio } : {}),
-          ...(lienEmargement !== null ? { lienEmargement } : {}),
+          ...(lienEmargement !== null ? { lienEmargement: lienEmargement.url } : {}),
         },
         {
           jobId,
@@ -634,9 +686,13 @@ export async function envoyerRappelJ1(sessionId: string): Promise<boolean> {
         // `continue`, PAS `return` : le correctif du 2026-08-24 avait constaté
         // qu'un premier échec privait les neuf autres de leur rappel — et que
         // le journal ne nommait qu'une session, pas neuf personnes.
+        if (lienEmargement !== null && envoi.garePourValidation !== true) {
+          await revoquerLienNonParti(lienEmargement.tokenId, "rappel-j1");
+        }
         tousPartis = false;
         continue;
       }
+      if (lienEmargement !== null) await marquerLienRemis(lienEmargement.tokenId, "rappel-j1");
     } catch (err) {
       // Fail-soft PAR STAGIAIRE, même raison.
       tousPartis = false;

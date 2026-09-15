@@ -100,6 +100,11 @@ export type EmailJobName =
   | "formateur-mission-proposee"
   | "formateur-convocation-j7"
   | "formateur-rappel-j1"
+  // 🔴 Demande de CONTRESIGNATURE de l'émargement (2026-09-15). Sur la seule
+  // session réelle, personne ne l'avait demandée : la stagiaire a signé, le
+  // formateur jamais. Enfilé ET consommé par le worker — pas de décalage de
+  // version possible avec l'app.
+  | "formateur-contresignature"
   // Contrat de travail du formateur SALARIÉ (2026-09-12) : la pièce est
   // produite et signable dans son espace, mais personne ne l'y envoyait.
   // Envoi MANUEL depuis la fiche — Will relit le contrat avant de prévenir.

@@ -108,6 +108,10 @@ import {
   formateurConvocationJ7Subject,
 } from "./formateur-convocation-j7";
 import { FormateurRappelJ1Email, formateurRappelJ1Subject } from "./formateur-rappel-j1";
+import {
+  FormateurContresignatureEmail,
+  formateurContresignatureSubject,
+} from "./formateur-contresignature";
 import { RessourcesMagicLinkEmail, ressourcesMagicLinkSubject } from "./ressources-magic-link";
 import { DevisEnvoiEmail, devisEnvoiSubject } from "./devis-envoi";
 import {
@@ -319,6 +323,12 @@ const TEMPLATES: TemplateMap = {
   "formateur-rappel-j1": {
     subject: formateurRappelJ1Subject,
     component: FormateurRappelJ1Email,
+  },
+  // Demande de contresignature de l'émargement (2026-09-15) — automatique,
+  // bornée à deux rappels sans réaction (`demande-contresignature.ts`).
+  "formateur-contresignature": {
+    subject: formateurContresignatureSubject,
+    component: FormateurContresignatureEmail,
   },
   // Contrat de travail du salarié — envoi MANUEL depuis sa fiche.
   "formateur-contrat-travail": {

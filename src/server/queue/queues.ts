@@ -1541,6 +1541,23 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "5 * * * *",
         jobId: "formation-crons-liens-emargement-j0-cron",
       },
+      // 2026-09-15 — DEMANDE de contresignature au formateur.
+      //
+      // HORAIRE : la demande part à la fin d'une journée signée, et une journée
+      // qui finit à 17:00 ne doit pas attendre un passage du lendemain matin.
+      // L'idempotence est dans le journal des envois (une demande par jour, deux
+      // rappels au plus), pas dans la cadence. `:25` est libre : convocation-j5
+      // (:00), liens-emargement-j0 (:05), documents-auto (:15), email-sante
+      // (:20), exemplaires-non-transmis (:35), formateur-rappel-j1 (:40),
+      // rappel-j1 (:45), autofactures (:50).
+      //
+      // ⚠️ Type NEUF : c'est le worker qui pose ce planning ET qui le consomme ;
+      // ils atterrissent ensemble. L'app n'enfile jamais ce job.
+      {
+        type: "formation-crons.demandes-contresignature",
+        pattern: "25 * * * *",
+        jobId: "formation-crons-demandes-contresignature-cron",
+      },
       // Remise des exemplaires signés jamais transmis (ADR 0050, 2026-09-06).
       //
       // HORAIRE, comme les autres rattrapages pilotés par un ÉTAT et non par une
