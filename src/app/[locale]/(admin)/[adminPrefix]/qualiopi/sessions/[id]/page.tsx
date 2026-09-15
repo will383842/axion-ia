@@ -46,6 +46,8 @@ import { contresignerLettreMissionAction } from "@/server/actions/qualiopi/lettr
 import { lireEtatSignatureLettreMissionConsole } from "@/server/qualiopi/documents/signature/lettre-mission-queries";
 import { QuestionnairesSection } from "@/components/admin/qualiopi/QuestionnairesSection";
 import { envoyerQuestionnaireAction } from "@/server/actions/qualiopi/questionnaires";
+import { lirePositionnement } from "@/server/qualiopi/positionnement/lecture-positionnement";
+import { stagiairesAvecPrecisionChiffree } from "@/server/qualiopi/positionnement/precision-chiffree";
 import {
   enrollTraineeAction,
   setEnrollmentStatutAction,
@@ -374,6 +376,11 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             // et n'était lue nulle part, l'écran ne pouvait pas les distinguer.
             envoyeAt: true,
             noteGlobale: true,
+            // 🔴 C2-03 / I10-02 — les réponses du positionnement (attentes,
+            // niveaux, besoin d'adaptation) n'étaient lues par AUCUN écran.
+            // Seules celles d'un positionnement répondu sont sérialisées, et
+            // déjà LUES côté serveur : le JSON brut ne descend pas.
+            reponses: true,
           },
         },
       },
@@ -565,6 +572,15 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     montantHtEuros: e.montantHtCents != null ? e.montantHtCents / 100 : null,
   }));
 
+  // C2-03 / I10-02 — PRÉSENCE d'une précision d'adaptation chiffrée sur la FICHE
+  // stagiaire, jamais son contenu (donnée de santé, lecture réservée au
+  // super-administrateur). Bornée aux inscrits de la session ; la colonne
+  // chiffrée n'est pas chargée. Elle ne dit rien du questionnaire : la colonne
+  // est aussi écrite par la déclaration de handicap et par la console.
+  const traineesAvecDetailChiffre = await stagiairesAvecPrecisionChiffree(
+    enrollmentsRaw.map((e) => e.trainee.id),
+  );
+
   const questionnairesSerialized = enrollmentsRaw.flatMap((e) =>
     e.questionnaires.map((q) => ({
       id: q.id,
@@ -573,6 +589,10 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       reponduAt: q.reponduAt ? q.reponduAt.toISOString() : null,
       envoyeAt: q.envoyeAt ? q.envoyeAt.toISOString() : null,
       noteGlobale: q.noteGlobale,
+      positionnement:
+        q.type === "positionnement" && q.reponduAt !== null ? lirePositionnement(q.reponses) : null,
+      precisionSurFicheStagiaire:
+        q.type === "positionnement" && traineesAvecDetailChiffre.has(e.trainee.id),
     })),
   );
 
@@ -1178,9 +1198,10 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
        * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        */}
       <section id="questionnaires" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-        <h2 className={sectionHeadCls}>Questionnaires de satisfaction</h2>
+        <h2 className={sectionHeadCls}>Questionnaires — positionnement et satisfaction</h2>
         <QuestionnairesSection
           sessionId={id}
+          debutSession={trainingSession.dateDebut.toISOString()}
           questionnaires={questionnairesSerialized}
           genererAction={genererQuestionnairesSessionAction}
           saisirReponsesAction={saisirReponsesQuestionnaireAction}
