@@ -273,6 +273,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/components/portail/EnqueteEntrepriseForm.tsx",
   "src/server/formateur/echeances-formateur.ts",
   "src/server/formateur/etapes-formateur.ts",
+  // Liste des participants de l'espace formateur (2026-09-15, dette D4 de la
+  // relecture #1095) : le drapeau « besoin d'adaptation déclaré » se lit au
+  // prédicat PARTAGÉ de l'indicateur 10, importé et jamais recopié. Module pur,
+  // un seul booléen rendu — c'est ce fichier qui porte la politique de champs.
+  "src/server/formateur/collectif-queries.ts",
   // ── Dossier société (2026-08-26) : l'onglet « Société & conformité » affiche
   //    l'identité de l'organisme de formation — numéro de déclaration
   //    d'activité, numéro de certificat Qualiopi, adresse d'exercice, référent

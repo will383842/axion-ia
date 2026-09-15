@@ -26,6 +26,7 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import { retenirPiecesParSessionEtType } from "./pieces-par-formation";
 import { pieceEstRemise } from "./piece-remise";
+import { besoinAdaptationDeclare } from "@/server/qualiopi/adaptation/reponse-organisme";
 
 /**
  * Les pièces COLLECTIVES : elles décrivent l'ACTION, pas une personne. Tout
@@ -177,6 +178,11 @@ export interface EspaceStagiaire {
   pieces: PieceRemise[];
   /** Situation handicap (champ clair après décryptage, null si non renseigné). */
   situationHandicap: {
+    /**
+     * Un besoin d'adaptation est-il DÉJÀ déclaré ? Fiche (`situationHandicap`)
+     * OU « oui » au positionnement d'une inscription — le prédicat partagé de
+     * l'indicateur 10. « Mon compte » s'en sert pour ne pas redemander.
+     */
     declaree: boolean;
     details: string | null;
   };
@@ -462,6 +468,9 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
               // stagiaire. L'identifiant suffit, et il n'ouvre rien.
               id: true,
               reponduAt: true,
+              // Lu côté serveur pour le seul booléen du besoin d'adaptation
+              // (`declaree`, plus bas) ; jamais recopié dans l'espace rendu.
+              reponses: true,
             },
           },
           session: {
@@ -677,6 +686,21 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
   const detailsChiffre = trainee.handicapDetailsChiffre ?? null;
   const details = detailsChiffre !== null ? decryptPii(detailsChiffre) : null;
 
+  // 🔴 2026-09-15 (dette D4, relecture #1095) — c'était `trainee.situationHandicap`
+  // seul. Un « oui » au positionnement cochait alors cette case ; il ne la coche
+  // plus (ce n'est pas un handicap). Lu seul, le drapeau aurait RE-proposé le
+  // formulaire « Déclarer une situation particulière » à quelqu'un qui venait de
+  // déclarer son besoin — et une seconde saisie, par ce chemin-là, aurait coché la
+  // case qu'on cesse précisément de cocher. Même prédicat que l'indicateur 10.
+  const besoinDeja = trainee.enrollments.some((e) =>
+    besoinAdaptationDeclare({
+      situationHandicap: trainee.situationHandicap,
+      reponsesPositionnements: e.questionnaires
+        .filter((q) => q.type === "positionnement" && q.reponduAt != null)
+        .map((q) => q.reponses),
+    }),
+  );
+
   return {
     trainee: { prenom: trainee.prenom, nom: trainee.nom },
     formations,
@@ -684,7 +708,7 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
     questionnaires,
     pieces,
     situationHandicap: {
-      declaree: trainee.situationHandicap,
+      declaree: trainee.situationHandicap || besoinDeja,
       details,
     },
   };

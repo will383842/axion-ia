@@ -7,8 +7,10 @@
  *
  * ⚠️ POLITIQUE DE CHAMPS STAGIAIRE — non négociable : jamais d'email stagiaire
  * ni de détail chiffré de handicap. On n'affiche que le DRAPEAU
- * `situationHandicap` (mention sans détail), l'identité pédagogique minimale et
- * le taux de présence agrégé. C'est volontaire.
+ * « besoin d'adaptation déclaré » (mention sans détail, prédicat partagé de
+ * l'indicateur 10 — jamais « handicap », que ce drapeau ne permet pas
+ * d'affirmer), l'identité pédagogique minimale et le taux de présence agrégé.
+ * C'est volontaire.
  */
 
 import { notFound } from "next/navigation";
@@ -312,9 +314,9 @@ export default async function Page({
                       <tr key={p.id} className="border-border border-b last:border-b-0">
                         <td className="text-mocha px-4 py-3">
                           {p.prenom} {p.nom}
-                          {p.situationHandicap ? (
+                          {p.besoinAdaptationDeclare ? (
                             <span className="text-fg-muted mt-0.5 block text-xs">
-                              situation de handicap signalée
+                              besoin d&apos;adaptation déclaré
                             </span>
                           ) : null}
                         </td>
@@ -344,8 +346,8 @@ export default async function Page({
                         {libelle(STATUT_INSCRIPTION_LABELS, p.statut)}
                       </span>
                     </div>
-                    {p.situationHandicap ? (
-                      <p className="text-fg-muted mt-1 text-xs">situation de handicap signalée</p>
+                    {p.besoinAdaptationDeclare ? (
+                      <p className="text-fg-muted mt-1 text-xs">besoin d&apos;adaptation déclaré</p>
                     ) : null}
                     <dl className="text-fg-muted mt-2 space-y-1 text-xs">
                       <div className="flex gap-2">

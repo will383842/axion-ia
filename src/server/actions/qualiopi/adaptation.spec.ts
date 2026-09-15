@@ -89,6 +89,11 @@ import {
 } from "./portail";
 import { soumettreReponses } from "@/server/qualiopi/satisfaction/satisfaction-service";
 import { prisma } from "@/lib/prisma";
+import {
+  besoinAdaptationDeclare,
+  etatReponseAdaptation,
+  whereBesoinAdaptationDeclare,
+} from "@/server/qualiopi/adaptation/reponse-organisme";
 
 const SESSION_ADMIN = { userId: "u1", email: "a@b.c", role: "super_admin" };
 const UUID = "11111111-2222-4333-8444-555555555555";
@@ -213,6 +218,7 @@ describe("🔴 besoin déclaré au POSITIONNEMENT — second chemin, même régi
     vi.mocked(prisma.questionnaire.findUnique).mockResolvedValue({
       enrollment: { traineeId: UUID },
     } as never);
+    traineeFindUnique.mockResolvedValue({ id: UUID, prenom: "Simone", nom: "Blanc" });
   });
 
   it("🔴 le détail n'atteint JAMAIS la colonne JSON", async () => {
@@ -251,11 +257,64 @@ describe("🔴 besoin déclaré au POSITIONNEMENT — second chemin, même régi
 
     const maj = traineeUpdate.mock.calls[0]?.[0] as {
       where: { id: string };
-      data: { situationHandicap: boolean; handicapDetailsChiffre?: string };
+      data: Record<string, unknown>;
     };
     expect(maj.where.id).toBe(UUID);
-    expect(maj.data.situationHandicap).toBe(true);
-    expect(maj.data.handicapDetailsChiffre).toBe("enc:Salle accessible en fauteuil");
+    expect(maj.data["handicapDetailsChiffre"]).toBe("enc:Salle accessible en fauteuil");
+  });
+
+  // 🔴 D4 (relecture sécurité #1095, décision du 2026-09-15). La question couvre
+  // aussi une difficulté d'accès ou un problème de santé passager : un « oui »
+  // n'est pas un handicap. Cocher la case qualifiait la personne à tort, dans la
+  // liste des stagiaires, le compte « situation de handicap » et l'espace
+  // formateur. Seul le geste explicite (console, « mon compte ») la pose.
+  it("🔴 D4 — un « oui » au positionnement ne coche PAS la situation de handicap", async () => {
+    for (const reponses of [
+      { besoinAdaptation: true, detailAdaptation: "Salle accessible en fauteuil" },
+      { besoinAdaptation: true },
+    ]) {
+      traineeUpdate.mockClear();
+      await soumettreSatisfactionPortailAction({ questionnaireId: QUEST_ID, reponses });
+      for (const [appel] of traineeUpdate.mock.calls as Array<[{ data: object }]>) {
+        expect(appel.data, "le positionnement a coché la situation de handicap").not.toHaveProperty(
+          "situationHandicap",
+        );
+      }
+    }
+  });
+
+  it("🔴 D4 — le circuit de l'indicateur 10 part quand même : alerte, besoin déclaré, à consigner", async () => {
+    // La coche retirée, le besoin ne vit plus que dans les RÉPONSES : c'est donc
+    // ce qui est réellement écrit qu'on relit au prédicat partagé — fiche
+    // stagiaire NON cochée.
+    await soumettreSatisfactionPortailAction({
+      questionnaireId: QUEST_ID,
+      reponses: { attentes: "monter en compétence", besoinAdaptation: true },
+    });
+
+    const ecrit = vi.mocked(soumettreReponses).mock.calls[0]?.[0] as {
+      reponses: Record<string, unknown>;
+    };
+    const besoin = besoinAdaptationDeclare({
+      situationHandicap: false,
+      reponsesPositionnements: [ecrit.reponses],
+    });
+    expect(besoin, "le besoin a disparu du prédicat partagé").toBe(true);
+    // Colonne « Adaptations (ind. 10) » : rien de consigné → à consigner.
+    expect(etatReponseAdaptation(besoin, null)).toBe("a_consigner");
+    // Le filtre en base (alerte balayée, moteur de conformité) cherche la même clé.
+    const [, parLePositionnement] = whereBesoinAdaptationDeclare().OR;
+    const chemin = parLePositionnement.questionnaires.some.reponses.path;
+    expect(
+      chemin.reduce<unknown>((o, k) => (o as Record<string, unknown>)[k], ecrit.reponses),
+    ).toBe(true);
+    // Et l'alerte du geste est levée, sur la fiche de la personne.
+    expect(creerOuDedup).toHaveBeenCalledOnce();
+    expect(creerOuDedup.mock.calls[0]?.[0]).toMatchObject({
+      code: "besoin_adaptation_declare",
+      cibleType: "Trainee",
+      cibleId: UUID,
+    });
   });
 
   it("🔴 quelqu'un est PRÉVENU — alerte console, et sans le besoin dedans", async () => {
@@ -282,11 +341,11 @@ describe("🔴 besoin déclaré au POSITIONNEMENT — second chemin, même régi
       reponses: { besoinAdaptation: true },
     });
 
-    const maj = traineeUpdate.mock.calls[0]?.[0] as {
-      data: Record<string, unknown>;
-    };
-    expect(maj.data["situationHandicap"]).toBe(true);
-    expect("handicapDetailsChiffre" in maj.data).toBe(false);
+    // Sans détail, la fiche n'est plus écrite du tout (D4) : elle est seulement
+    // lue, pour nommer la personne dans l'alerte.
+    expect(traineeUpdate).not.toHaveBeenCalled();
+    expect(traineeFindUnique).toHaveBeenCalledOnce();
+    expect(creerOuDedup).toHaveBeenCalledOnce();
   });
 
   it("sans besoin déclaré, la fiche n'est PAS touchée", async () => {

@@ -3,8 +3,10 @@
  *
  * Actions PORTAIL (authentification via cookie, PAS requireAdminWrite) :
  *   quitterPortailAction          : supprime le cookie (déconnexion)
- *   soumettreSatisfactionPortailAction : réutilise soumettreReponses T10 via cookie
- *   declarerHandicapAction        : set situationHandicap + handicapDetailsChiffre (encryptPii)
+ *   soumettreSatisfactionPortailAction : réutilise soumettreReponses T10 via cookie ;
+ *                                   un « oui » au besoin d'adaptation chiffre le détail
+ *                                   et alerte, SANS cocher situationHandicap (D4)
+ *   declarerHandicapAction       : set situationHandicap + handicapDetailsChiffre (encryptPii)
  *   demanderExportRgpdAction      : crée demande RGPD type=export via cookie
  *   demanderSuppressionRgpdAction : crée demande RGPD type=suppression via cookie
  *
@@ -275,25 +277,40 @@ export async function soumettreSatisfactionPortailAction(input: {
 /**
  * Enregistre un besoin d'adaptation déclaré au POSITIONNEMENT et prévient.
  *
- * Même destination et même régime que `declarerHandicapAction` : détail chiffré
- * sur la fiche stagiaire, alerte console, message Telegram. C'est délibérément
- * la même écriture — deux chemins de déclaration qui rangeraient la donnée à
- * deux endroits différents produiraient exactement la divergence que ces
- * constats décrivent.
+ * Même destination et même régime que `declarerHandicapAction` pour le DÉTAIL :
+ * chiffré sur la fiche stagiaire, alerte console, message Telegram — deux
+ * chemins qui rangeraient le détail à deux endroits produiraient la divergence
+ * que ces constats décrivent.
+ *
+ * 🔴 2026-09-15 (relecture sécurité #1095, dette D4) — ce chemin ne coche PLUS
+ * `Trainee.situationHandicap`. La question du positionnement couvre aussi une
+ * difficulté d'accès, un aménagement, un problème de santé passager : un « oui »
+ * n'est pas un handicap. Cocher la case qualifiait la personne de « handicapée »
+ * à tort (exactitude et minimisation, RGPD art. 5), dans la liste des stagiaires
+ * et le compte « situation de handicap ». Le besoin, lui, n'est pas perdu : le
+ * « oui » reste dans les réponses du positionnement, et `besoinAdaptationDeclare`
+ * (`adaptation/reponse-organisme.ts`) le lit là — indicateur 10, alertes, écran
+ * de session, dossier d'audit, espace formateur.
  */
 async function signalerBesoinAdaptation(traineeId: string, detail: string): Promise<void> {
-  const trainee = await prisma.trainee.update({
-    where: { id: traineeId },
-    data: {
-      situationHandicap: true,
-      // ⚠️ Un détail VIDE n'écrase pas un détail existant. Le bénéficiaire peut
-      // cocher la case sans rien préciser au positionnement alors qu'il a déjà
-      // décrit sa situation ailleurs : recopier `null` par symétrie détruirait
-      // cette déclaration-là, sans que rien ne le signale.
-      ...(detail.length > 0 ? { handicapDetailsChiffre: encryptPii(detail) } : {}),
-    },
-    select: { id: true, prenom: true, nom: true },
-  });
+  const identite = { id: true, prenom: true, nom: true } as const;
+  // ⚠️ Un détail VIDE n'écrase pas un détail existant. Le bénéficiaire peut
+  // répondre « oui » sans rien préciser au positionnement alors qu'il a déjà
+  // décrit sa situation ailleurs : recopier `null` par symétrie détruirait
+  // cette déclaration-là, sans que rien ne le signale. Sans détail, la fiche
+  // n'est donc pas écrite du tout — on ne la lit que pour nommer la personne.
+  const trainee =
+    detail.length > 0
+      ? await prisma.trainee.update({
+          where: { id: traineeId },
+          data: { handicapDetailsChiffre: encryptPii(detail) },
+          select: identite,
+        })
+      : await prisma.trainee.findUnique({ where: { id: traineeId }, select: identite });
+  if (trainee === null) {
+    // Le cookie désignait une fiche qui n'existe plus : l'appelant le remonte à Sentry.
+    throw new Error("signalerBesoinAdaptation : stagiaire introuvable");
+  }
 
   // ⚠️ Aucun de ces deux messages ne porte le besoin : le texte d'une alerte est
   // FIGÉ en base à sa création et se recopie en pastille et en notification.
