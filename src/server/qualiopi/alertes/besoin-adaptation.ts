@@ -39,9 +39,15 @@ export function construireAlerteBesoinAdaptation(beneficiaire: BeneficiairePourA
   const identite = `${beneficiaire.prenom} ${beneficiaire.nom}`.trim();
   return {
     titre: "Besoin d'adaptation déclaré par un bénéficiaire",
+    // 🔴 2026-09-15 — « résolvez cette alerte une fois l'adaptation prise en
+    // compte » faisait fermer l'alerte sans rien consigner : l'indicateur 10
+    // restait sans trace de la réponse. Le geste demandé est la CONSIGNATION,
+    // et c'est elle qui ferme l'alerte.
     message:
       `${identite} a déclaré un besoin d'adaptation depuis son espace. ` +
-      `Le détail est chiffré : ouvrez sa fiche stagiaire pour le lire, ` +
-      `puis résolvez cette alerte une fois l'adaptation prise en compte.`,
+      `Le détail est chiffré : ouvrez sa fiche stagiaire pour le lire, échangez avec la ` +
+      `personne, puis consignez la réponse de l'organisme — adaptation prévue, ou « aucune ` +
+      `adaptation nécessaire » — dans la colonne « Adaptations (ind. 10) » de la fiche ` +
+      `session. Cette alerte se fermera d'elle-même.`,
   };
 }

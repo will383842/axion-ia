@@ -21,6 +21,10 @@ const CODES_ATTENDUS: string[] = [
   // entrée du catalogue née d'un GESTE et non du balayage quotidien — d'où son
   // `resolutionAuto: false`, verrouillé par `besoin-adaptation.spec.ts`.
   "besoin_adaptation_declare",
+  // Ajouté 2026-09-15 : fermée à la main, l'alerte ci-dessus ne laissait AUCUNE
+  // trace de la réponse de l'organisme (ind. 10). Celle-ci relit l'état et se
+  // referme dès que la réponse est consignée sur l'inscription.
+  "adaptation_reponse_non_consignee",
   "categories_certifiees_non_renseignees",
   // Ajouté 2026-08-23 (recette du jour d'audit). Constaté À L'ÉCRAN sur
   // `/qualiopi/mode-auditeur` : « 1 formation certifiante avec code RS/RNCP »

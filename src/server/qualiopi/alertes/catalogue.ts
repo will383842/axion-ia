@@ -199,15 +199,37 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
    * ⚠️ `resolutionAuto: false`, et c'est STRUCTUREL : l'évaluateur quotidien
    * n'émet jamais ce code (l'alerte naît du geste du bénéficiaire, pas d'un
    * balayage). Le passer à `true` ferait résoudre l'alerte par le premier
-   * `synchroniserAlertes` venu, avant même que quiconque l'ait lue. Elle se
-   * résout à la main, quand l'adaptation a été prise en compte.
+   * `synchroniserAlertes` venu, avant même que quiconque l'ait lue.
+   *
+   * 🔴 2026-09-15 — elle se fermait « à la main, quand l'adaptation a été prise
+   * en compte », et rien ne gardait CE QUI avait été pris en compte. Cas réel :
+   * fermée après échange (aucune adaptation nécessaire), inscription vide,
+   * indicateur 10 sans trace. Elle se ferme désormais D'ELLE-MÊME quand la
+   * réponse de l'organisme est consignée sur l'inscription
+   * (`setEnrollmentAdaptationsAction`) ; fermée à la main sans consignation,
+   * `adaptation_reponse_non_consignee` prend le relais au balayage suivant.
    */
   besoin_adaptation_declare: {
     niveau: "important",
     titre: "Besoin d'adaptation déclaré par un bénéficiaire",
     resolutionAuto: false,
     motifSansResolutionAuto:
-      "STRUCTUREL — l'alerte naît du geste du bénéficiaire, pas du balayage quotidien. `synchroniserAlertes` ne la verrait jamais parmi les candidates et la résoudrait dès le premier tour, avant que quiconque l'ait lue. Elle se résout à la main, quand l'adaptation a été prise en compte.",
+      "STRUCTUREL — l'alerte naît du geste du bénéficiaire, pas du balayage quotidien. `synchroniserAlertes` ne la verrait jamais parmi les candidates et la résoudrait dès le premier tour, avant que quiconque l'ait lue. Elle se ferme quand la réponse de l'organisme est consignée sur l'inscription (action de consignation), ou à la main — auquel cas `adaptation_reponse_non_consignee` reprend le signal tant que rien n'est consigné.",
+    guichet: "qualite",
+  },
+  /**
+   * Besoin d'adaptation déclaré, RÉPONSE de l'organisme non consignée (ind. 10).
+   *
+   * Balayée (`regle-adaptation-reponse.ts`) : elle relit l'état, donc elle se
+   * referme d'elle-même dès que `adaptationsRealisees` est renseignée — y compris
+   * par « aucune adaptation nécessaire » — et ne peut pas être éteinte par un
+   * simple clic tant que rien n'est consigné. Guichet `qualite` : l'accueil du
+   * handicap relève du référent.
+   */
+  adaptation_reponse_non_consignee: {
+    niveau: "important",
+    titre: "Besoin d'adaptation déclaré : réponse de l'organisme non consignée (ind. 10)",
+    resolutionAuto: true,
     guichet: "qualite",
   },
 

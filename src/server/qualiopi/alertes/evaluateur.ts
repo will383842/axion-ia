@@ -82,6 +82,7 @@ import {
   type DefautLieuDocument,
 } from "@/server/qualiopi/lieu/resolve-lieu-document";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
+import { regleAdaptationReponseNonConsignee } from "./regle-adaptation-reponse";
 import {
   ATTENTE_JOURS,
   MARGE_AVANT_SESSION_JOURS,
@@ -4816,6 +4817,9 @@ async function regleStagiairesNonPrevenusChangementFormateur(
 
 const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "referent_handicap", fn: regleReferentHandicap },
+  // 2026-09-15 — un besoin d'adaptation déclaré dont la RÉPONSE de l'organisme
+  // n'est consignée nulle part (ind. 10). Cf. `regle-adaptation-reponse.ts`.
+  { nom: "adaptation_reponse_non_consignee", fn: regleAdaptationReponseNonConsignee },
   { nom: "responsable_qualite", fn: regleResponsableQualite },
   { nom: "mentions_facture", fn: regleMentionsFacture },
   { nom: "categories_certifiees", fn: regleCategoriesCertifiees },
