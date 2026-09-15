@@ -109,7 +109,9 @@ describe("une pièce jointe se résout par identifiant, jamais par récence", ()
         "cassé, pas le code gardé. Vérifiez le nom du champ (`attachments`) et " +
         "les chemins avant de conclure quoi que ce soit sur les envoyeurs.",
     ).toBeGreaterThanOrEqual(4);
-    expect(fichiers).toContain("src/server/actions/qualiopi/autofacture.ts");
+    // 2026-09-15 — l'envoi de l'autofacture a quitté l'action pour le service
+    // pur partagé avec le rattrapage horaire (worker).
+    expect(fichiers).toContain("src/server/qualiopi/remuneration/autofacture-emission.ts");
     expect(fichiers).toContain(
       "src/server/qualiopi/documents/signature/transmission-exemplaire.ts",
     );

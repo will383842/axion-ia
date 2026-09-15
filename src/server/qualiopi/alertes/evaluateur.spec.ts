@@ -4776,6 +4776,68 @@ describe("autofacture_a_emettre", () => {
     const { reglesEnEchec } = await evaluerAlertesDetaille();
     expect(reglesEnEchec).not.toContain("autofacture_a_emettre");
   });
+
+  // ── 2026-09-15 — l'échec RÉPÉTÉ du rattrapage horaire ──────────────────────
+  //
+  // Une fiche complète dont la facture ne sort pas n'était vue par rien : la
+  // branche « manques » se tait, et le cron comptait « refusée » en silence.
+
+  /** Le journal d'échec du cron, et rien d'autre (les autres règles lisent [] ). */
+  function journalEchecs(lignes: Array<{ ilYaMin: number; code?: string; motif?: string }>) {
+    mp.activityLog.findMany.mockImplementation(async (a: { where?: { action?: unknown } }) =>
+      a?.where?.action === "qualiopi.autofacture.rattrapage.echec"
+        ? lignes.map((l) => ({
+            targetId: "st-ae-1",
+            createdAt: new Date(Date.now() - l.ilYaMin * 60_000),
+            changes: { code: l.code ?? "technique", motif: l.motif ?? "" },
+          }))
+        : [],
+    );
+  }
+
+  it("🔴 alerte quand le rattrapage d'une fiche COMPLÈTE échoue à répétition", async () => {
+    mp.trainerStatement.findMany.mockResolvedValue([valide()]);
+    journalEchecs([
+      { ilYaMin: 10, motif: "Erreur lors de la production du PDF de la facture." },
+      { ilYaMin: 70, motif: "Erreur lors de la production du PDF de la facture." },
+    ]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "autofacture_a_emettre");
+    expect(a, "l'échec répété du cron n'est porté par aucune alerte").toBeDefined();
+    expect(a!.cibleId).toBe("st-ae-1");
+    expect(a!.message).toMatch(/2 fois/);
+    expect(a!.message).toMatch(/PDF/);
+    expect(a!.message).toMatch(/panne/);
+  });
+
+  it("🔑 un SEUL échec ne suffit pas — un passage raté n'est pas une panne", async () => {
+    mp.trainerStatement.findMany.mockResolvedValue([valide()]);
+    journalEchecs([{ ilYaMin: 10 }]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.some((x) => x.code === "autofacture_a_emettre")).toBe(false);
+  });
+
+  it("une anomalie du relevé prescrit de CORRIGER le relevé, pas de signaler une panne", async () => {
+    mp.trainerStatement.findMany.mockResolvedValue([valide()]);
+    journalEchecs([
+      { ilYaMin: 5, code: "sans_lignes", motif: "Aucune ligne d'honoraires rattachée." },
+      { ilYaMin: 65, code: "sans_lignes", motif: "Aucune ligne d'honoraires rattachée." },
+    ]);
+    const a = (await evaluerAlertes()).find((x) => x.code === "autofacture_a_emettre");
+    expect(a!.message).toMatch(/Corrigez le relevé/);
+    expect(a!.message).not.toMatch(/panne/);
+  });
+
+  it("le journal est lu par l'ACTION du cron, bornée à la fenêtre et aux relevés candidats", async () => {
+    mp.trainerStatement.findMany.mockResolvedValue([valide()]);
+    await evaluerAlertes();
+    const where = mp.activityLog.findMany.mock.calls
+      .map((c: unknown[]) => (c[0] as { where?: Record<string, unknown> })?.where)
+      .find((w) => w?.["action"] === "qualiopi.autofacture.rattrapage.echec");
+    expect(where).toBeDefined();
+    expect(where!["targetId"]).toEqual({ in: ["st-ae-1"] });
+    expect((where!["createdAt"] as { gte: Date }).gte).toBeInstanceOf(Date);
+  });
 });
 
 /**

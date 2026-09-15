@@ -53,6 +53,11 @@ import {
   verifierEligibiliteAutofacture,
 } from "@/server/qualiopi/remuneration/autofacturation";
 import {
+  ACTION_JOURNAL_ECHEC_RATTRAPAGE_AUTOFACTURE,
+  FENETRE_ECHECS_RATTRAPAGE_MS,
+  echecRepeteRattrapage,
+} from "@/server/qualiopi/remuneration/autofacture-rattrapage-regles";
+import {
   joursDepuisEmbauche,
   messageRemiseCdd,
   remiseCddEnSouffrance,
@@ -4365,8 +4370,58 @@ async function regleAutofactureAEmettre(now: Date): Promise<AlerteCandidate[]> {
     take: 200,
   });
 
+  // 🔴 L'ÉCHEC RÉPÉTÉ DU RATTRAPAGE (2026-09-15). Un relevé ÉLIGIBLE que le
+  // cron horaire ne parvient pas à facturer — panne de PDF, numéro, écriture,
+  // ou anomalie du relevé — n'était vu par AUCUNE règle : la fiche est
+  // complète, donc la branche « manques » se tait. Le cron laisse une trace
+  // par échec (`autofacture-rattrapage.ts`) ; on ne la lit qu'ici, en une
+  // requête, et on n'alerte que si l'échec SE RÉPÈTE dans la fenêtre.
+  // ⚠️ Lu pour TOUS les relevés, pas seulement ceux que `verifierEligibilite…`
+  // juge éligibles : le cron résout aussi le mandat signé au contrat
+  // (`resoudreMandat`), ce que cette règle ne fait pas. Une trace d'échec
+  // prouve que le cron, lui, l'a trouvé éligible.
+  const echecs =
+    releves.length === 0
+      ? []
+      : await prisma.activityLog.findMany({
+          where: {
+            action: ACTION_JOURNAL_ECHEC_RATTRAPAGE_AUTOFACTURE,
+            targetType: "TrainerStatement",
+            targetId: { in: releves.map((r) => r.id) },
+            createdAt: { gte: new Date(now.getTime() - FENETRE_ECHECS_RATTRAPAGE_MS) },
+          },
+          select: { targetId: true, createdAt: true, changes: true },
+        });
+
   const out: AlerteCandidate[] = [];
   for (const r of releves) {
+    const repete = echecRepeteRattrapage(echecs, r.id, now);
+    if (repete !== null) {
+      const qui = `${r.trainer.prenom} ${r.trainer.nom}`.trim();
+      const montant = (r.totalTtcCents / 100).toLocaleString("fr-FR", {
+        style: "currency",
+        currency: "EUR",
+      });
+      const quand = repete.dernierAt.toLocaleString("fr-FR", { timeZone: "Europe/Paris" });
+      out.push({
+        code: "autofacture_a_emettre",
+        niveau: "important",
+        titre: "Relevé validé : la facture d'honoraires n'a pas pu être émise",
+        message:
+          `Le relevé de ${qui} (${montant} TTC, période ${String(r.periodeMonth).padStart(2, "0")}/${r.periodeYear}) ` +
+          `est validé et sa fiche est complète, mais le rattrapage automatique a échoué ` +
+          `${repete.nombre} fois en 24 h (dernier essai le ${quand})` +
+          (repete.motif !== null ? ` : ${repete.motif}` : ".") +
+          (repete.code === "technique"
+            ? " Émettez la facture depuis la fiche du relevé ; si l'échec persiste, c'est une panne — le journal du worker porte le détail."
+            : " Corrigez le relevé, puis émettez la facture depuis sa fiche.") +
+          ` Tant qu'elle n'est pas émise, le formateur attend un argent que rien ne lui réclame.`,
+        cibleType: "TrainerStatement",
+        cibleId: r.id,
+      });
+      continue;
+    }
+
     const verdict = verifierEligibiliteAutofacture(r, r.trainer, now);
     if (verdict.eligible) continue;
 

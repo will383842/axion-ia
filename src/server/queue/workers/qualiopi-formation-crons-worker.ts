@@ -1437,77 +1437,40 @@ async function handleFacturesRetard(): Promise<void> {
 }
 
 /**
- * Plafond d'autofactures émises par passage.
- *
- * 🔴 Ce cron ÉMET des pièces au nom de tiers et les leur envoie. Une borne n'est
- * pas un réglage de confort : sans elle, une dégénérescence — un run de
- * rémunération qui valide tout un historique, une migration mal jouée — enverrait
- * des dizaines de factures à de vrais formateurs avant que quiconque s'en
- * aperçoive. Bornée, l'anomalie se voit dans le journal et s'arrête d'elle-même.
- *
- * 25 : très au-dessus du volume mensuel normal (quelques indépendants), assez
- * bas pour qu'un afflux anormal se remarque au lieu de s'écouler.
- */
-const PLAFOND_AUTOFACTURES_PAR_PASSAGE = 25;
-
-/**
  * HORAIRE — rattrape les autofactures qui n'ont pas pu être émises.
  *
- * 🔑 CE CRON EXISTE PARCE QUE L'ÉMISSION EST DEVENUE AUTOMATIQUE. Elle part à
- * la validation du relevé, en fail-soft : un PDF qui ne se rend pas, une file
- * d'envoi absente, et la pièce n'existe pas. Avant, un opérateur voyait le
- * bouton et recliquait ; maintenant plus personne n'attend rien, et ce silence
- * ne serait rattrapé par RIEN.
+ * Le corps, son plafond et le tri refus / échec vivent dans
+ * `server/qualiopi/remuneration/autofacture-rattrapage.ts` ; ici on déclenche
+ * et on trace.
  *
- * C'est exactement le motif d'ADR 0050 : le geste manuel couvre le cas normal,
- * le cron couvre ce que personne ne va cliquer.
+ * 🔴 JUSQU'AU 2026-09-15, CE HANDLER APPELAIT `emettreAutofactureAction`. Sa
+ * première ligne est `requireHabilitation("remunerer_formateur")`, qui lit la
+ * session du navigateur : sous `tsx`, hors requête, elle levait. Le `catch`
+ * comptait l'exception comme un refus, et le rattrapage n'a jamais émis une
+ * seule pièce. Il appelle maintenant le service pur, le même que le bouton.
+ * Garde : `autofacture-rattrapage.graphe-worker.spec.ts`.
  *
  * ⚠️ HORAIRE et non quotidien : un relevé validé à 9 h ne doit pas attendre le
  * lendemain pour que le formateur sache ce qu'on lui doit — et son délai de
  * 30 jours court depuis l'émission.
  *
- * ⚠️ Les relevés dont la fiche est INCOMPLÈTE (SIRET, TVA, mandat) échouent ici
- * à chaque passage, et c'est voulu : ils ne sont pas rattrapables par une
- * reprise, seulement par une saisie. L'alerte `autofacture_a_emettre` porte la
- * liste des manques ; ce cron ne la double pas, il tente et se tait.
+ * ⚠️ Les relevés dont la fiche est INCOMPLÈTE (SIRET, TVA, mandat) sont refusés
+ * à chaque passage, et c'est voulu : ils ne se rattrapent que par une saisie.
+ * L'alerte `autofacture_a_emettre` porte la liste des manques ; ce cron les
+ * compte sans bruit. Une PANNE, elle, se voit : `console.error` avec le relevé,
+ * et une trace que la même alerte lit quand elle se répète.
+ *
+ * Import paresseux : évite de charger la chaîne PDF au démarrage du worker.
+ * Une erreur de SÉLECTION remonte à BullMQ (job en échec, visible) : elle n'est
+ * pas avalée ici.
  */
 async function handleAutofactures(): Promise<void> {
-  // Import paresseux : évite de charger la chaîne PDF au démarrage du worker.
-  const { emettreAutofactureAction } = await import("@/server/actions/qualiopi/autofacture");
-
-  const candidats = await prisma.trainerStatement.findMany({
-    where: {
-      statut: "valide",
-      autofactureAt: null,
-      numeroFacture: null,
-      trainer: { statut: "sous_traitant" },
-    },
-    select: { id: true },
-    orderBy: { updatedAt: "asc" },
-    take: PLAFOND_AUTOFACTURES_PAR_PASSAGE,
-  });
-  if (candidats.length === 0) return;
-
-  let emises = 0;
-  let refusees = 0;
-  for (const c of candidats) {
-    try {
-      const res = await emettreAutofactureAction({ statementId: c.id });
-      if ("error" in res) refusees += 1;
-      else emises += 1;
-    } catch {
-      // Une pièce qui échoue n'arrête pas les suivantes : un formateur ne doit
-      // pas attendre parce que la fiche d'un autre est incomplète.
-      refusees += 1;
-    }
-  }
-
-  console.warn(
-    `[autofactures] ${emises} émise(s), ${refusees} refusée(s) sur ${candidats.length} relevé(s) validés` +
-      (candidats.length === PLAFOND_AUTOFACTURES_PAR_PASSAGE
-        ? ` — PLAFOND ATTEINT : d'autres restent en attente, et un afflux de cette taille mérite d'être regardé.`
-        : ""),
-  );
+  const { rattraperAutofactures, ligneJournalRattrapage } =
+    await import("@/server/qualiopi/remuneration/autofacture-rattrapage");
+  const bilan = await rattraperAutofactures();
+  if (bilan.candidats === 0) return;
+  const { niveau, ligne } = ligneJournalRattrapage(bilan);
+  console[niveau](ligne);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
