@@ -1,19 +1,16 @@
 /**
- * Garde — le tirage « à jour » ne porte jamais le numéro d'une feuille ANNULÉE.
+ * Garde — l'écran « Télécharger la feuille à jour » rend le MÊME tirage que les
+ * dossiers d'audit.
  *
- * Ce tirage se présente comme la RÉIMPRESSION de la pièce du registre : il en
- * emprunte le numéro, et le nom du fichier téléchargé est « <numero>-a-jour.pdf ».
- * Emprunter le numéro d'une feuille que le registre déclare sans valeur produit
- * donc un document qui se réclame d'une pièce annulée — la doctrine
- * d'`audit-dossier.ts` dit l'inverse : « une pièce annulée ne se compte NULLE
- * PART ».
+ * 🔴 X-documents-pdf-01 (audit initial 2026-09-14, relecture de la PR 1089). Le
+ * tirage à jour était construit ici ET dans le dossier de session, avec deux
+ * populations d'inscriptions différentes, et aucun des deux PDF ne disait qu'il
+ * était une réimpression. La route passe désormais par
+ * `rendreTirageEmargementAJour`, seul chemin de rendu. Ce qui vaut pour le PDF
+ * lui-même — mention datée, pièce d'origine, feuille ANNULÉE jamais empruntée —
+ * est gardé dans `documents/emargement-tirage.spec.ts`.
  *
- * Le modèle existe dans le même dépôt : `documents-service.ts` filtre
- * `annuleeAt: null` en choisissant la pièce remplacée, « la chaîne de
- * remplacement doit désigner la dernière qui faisait foi ».
- *
- * Retomber sur « — non émise au registre — » n'est pas une régression : c'est
- * exact. Aucune feuille en vigueur ne porte cette session.
+ * Ici : ce que la ROUTE en fait — statut, nom de fichier.
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -21,26 +18,9 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 const authMock = vi.fn();
 vi.mock("@/auth", () => ({ auth: () => authMock() }));
 
-const findFirstMock = vi.fn();
-vi.mock("@/lib/prisma", () => ({
-  prisma: { documentGenere: { findFirst: (...args: unknown[]) => findFirstMock(...args) } },
-}));
-
-vi.mock("@/server/qualiopi/documents/render", () => ({
-  renderPdfToBuffer: vi.fn(async () => ({ buffer: Buffer.from("%PDF-1.7") })),
-}));
-
-const numerosImprimes: string[] = [];
+const rendreMock = vi.fn();
 vi.mock("@/server/qualiopi/documents/emargement-tirage", () => ({
-  construireTirageEmargement: vi.fn(async () => ({
-    ok: true as const,
-    element: (numero: string) => {
-      // Le numéro IMPRIMÉ sur le PDF, capturé : c'est lui qui fait la fausse
-      // affirmation, pas seulement le nom du fichier.
-      numerosImprimes.push(numero);
-      return null;
-    },
-  })),
+  rendreTirageEmargementAJour: (...a: unknown[]) => rendreMock(...a),
 }));
 
 import { GET } from "./route";
@@ -51,38 +31,51 @@ function requete(): Request {
   return new Request(`https://test.local/api/qualiopi/sessions/${SESSION}/emargement`);
 }
 
+function tirage(numeroOrigine: string | null) {
+  return {
+    ok: true as const,
+    buffer: Buffer.from("%PDF-a-jour"),
+    numeroOrigine,
+    numeroSession: "AXI-SESS-2026-003",
+    totalSignatures: 4,
+    mention: "Réimpression à jour du …",
+  };
+}
+
 beforeEach(() => {
   vi.clearAllMocks();
-  numerosImprimes.length = 0;
   authMock.mockResolvedValue({ user: { id: "admin-1", role: "super_admin" } });
-  findFirstMock.mockResolvedValue(null);
+  rendreMock.mockResolvedValue(tirage("AXI-DOC-2026-011"));
 });
 
-describe("🔴 GET emargement — la feuille annulée ne prête plus son numéro", () => {
-  it("écarte les feuilles annulées de la requête", async () => {
-    await GET(requete() as never, { params: Promise.resolve({ id: SESSION }) });
-
-    const where = (findFirstMock.mock.calls[0]?.[0] as { where: Record<string, unknown> }).where;
-    expect(where).toMatchObject({ annuleeAt: null });
-  });
-
-  it("retombe sur « non émise au registre » quand la seule feuille est annulée", async () => {
-    // Avec le filtre, Prisma ne rend plus rien : le tirage doit le DIRE, et non
-    // se réclamer d'une pièce sans valeur.
-    findFirstMock.mockResolvedValue(null);
-
+describe("🔴 GET emargement — un seul tirage à jour, celui des dossiers d'audit", () => {
+  it("rend le tirage partagé, pour CETTE session", async () => {
     const res = await GET(requete() as never, { params: Promise.resolve({ id: SESSION }) });
 
-    expect(numerosImprimes).toEqual(["— non émise au registre —"]);
-    expect(res.headers.get("Content-Disposition")).toContain(`emargement-${SESSION}.pdf`);
+    expect(rendreMock).toHaveBeenCalledTimes(1);
+    expect(rendreMock.mock.calls[0]![0]).toBe(SESSION);
+    expect(res.status).toBe(200);
+    expect(Buffer.from(await res.arrayBuffer()).toString()).toBe("%PDF-a-jour");
   });
 
-  it("porte encore le numéro d'une feuille EN VIGUEUR — la garde ne bloque pas le cas sain", async () => {
-    findFirstMock.mockResolvedValue({ numero: "AXI-DOC-2026-011" });
-
+  it("nomme le fichier d'après la pièce d'origine, suffixé -a-jour", async () => {
     const res = await GET(requete() as never, { params: Promise.resolve({ id: SESSION }) });
-
-    expect(numerosImprimes).toEqual(["AXI-DOC-2026-011"]);
     expect(res.headers.get("Content-Disposition")).toContain("AXI-DOC-2026-011-a-jour.pdf");
+  });
+
+  it("sans feuille au registre, le nom de fichier dit encore qu'il s'agit d'un tirage à jour", async () => {
+    rendreMock.mockResolvedValue(tirage(null));
+    const res = await GET(requete() as never, { params: Promise.resolve({ id: SESSION }) });
+    expect(res.headers.get("Content-Disposition")).toContain(`emargement-${SESSION}-a-jour.pdf`);
+  });
+
+  it("session introuvable → 404 ; journées non déclarées → 409", async () => {
+    rendreMock.mockResolvedValue({ ok: false, message: "Session introuvable" });
+    const a = await GET(requete() as never, { params: Promise.resolve({ id: SESSION }) });
+    expect(a.status).toBe(404);
+
+    rendreMock.mockResolvedValue({ ok: false, message: "Les journées de cette session …" });
+    const b = await GET(requete() as never, { params: Promise.resolve({ id: SESSION }) });
+    expect(b.status).toBe(409);
   });
 });

@@ -143,6 +143,9 @@ import {
   genererLettreMissionCadreAction,
   genererLivretAccueilAction,
   genererContratFormationAction,
+  genererProgrammeAction,
+  genererOrganisationActionAction,
+  genererAutorisationCaptationAction,
   annulerDocumentAction,
 } from "./documents";
 // Importé pour lire les appels au journal d'audit : la trace de conformité est
@@ -179,6 +182,10 @@ function makeSession(overrides: Record<string, unknown> = {}) {
     dateDebut: new Date("2026-09-01T09:00:00Z"),
     dateFin: new Date("2026-09-02T17:00:00Z"),
     modalite: "presentiel",
+    // 🔴 I17-01 — une session présentielle SANS lieu voit désormais ses pièces
+    // refusées (elles imprimeraient l'adresse de l'organisme). Le dossier sain
+    // par défaut se tient donc « dans nos locaux ».
+    lieuType: "nos_locaux",
     nbParticipantsPrevus: 8,
     montantHtCents: 150000,
     coFormateurs: [],
@@ -653,6 +660,131 @@ describe("genererConventionTripartiteAction", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 // 8. Satisfaction
 // ─────────────────────────────────────────────────────────────────────────────
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 I17-01 — la pièce qui imprimerait l'adresse de l'organisme n'est PAS émise
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 I17-01 — une pièce qui imprimerait un lieu faux n'est pas émise", () => {
+  const SANS_LIEU = {
+    lieuType: null,
+    lieuIntitule: null,
+    lieuAdresse: null,
+    lieuCodePostal: null,
+    lieuVille: null,
+    lieuSalle: null,
+    lieuVisioUrl: null,
+  };
+
+  /** Le refus : une erreur à l'écran qui parle du lieu, et AUCUNE pièce générée. */
+  function expectRefusSurLeLieu(result: unknown) {
+    expect(result, "la pièce a été émise avec l'adresse de l'organisme").toHaveProperty("error");
+    expect((result as { error: string }).error).toContain("lieu");
+    expect((result as { error: string }).error).toContain("fiche de session");
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
+  }
+
+  it("convention", async () => {
+    mockSessionFindUnique.mockResolvedValue(makeSession(SANS_LIEU));
+    expectRefusSurLeLieu(await genererConventionAction({ sessionId: SESSION_ID }));
+  });
+
+  it("convention tripartite", async () => {
+    mockSessionFindUnique.mockResolvedValue(makeSession(SANS_LIEU));
+    expectRefusSurLeLieu(await genererConventionTripartiteAction({ sessionId: SESSION_ID }));
+  });
+
+  it("contrat de formation", async () => {
+    mockEnrollmentFindUnique.mockResolvedValue(
+      makeEnrollment({ session: makeSession({ ...SANS_LIEU, modalite: "hybride" }) }),
+    );
+    expectRefusSurLeLieu(await genererContratFormationAction({ enrollmentId: ENROLLMENT_ID }));
+  });
+
+  it("convocation", async () => {
+    mockEnrollmentFindUnique.mockResolvedValue(makeEnrollment({ session: makeSession(SANS_LIEU) }));
+    expectRefusSurLeLieu(await genererConvocationAction({ enrollmentId: ENROLLMENT_ID }));
+  });
+
+  it("feuille d'émargement — le constructeur est celui du tirage à la demande", async () => {
+    // Une feuille par ailleurs ÉMETTABLE (journée déclarée, inscrits) : seul le
+    // lieu manque, donc seul le lieu peut la faire refuser.
+    mockSessionFindUnique.mockResolvedValue(
+      makeSession({
+        ...SANS_LIEU,
+        formateurPrincipal: { nom: "Jullin", prenom: "Williams" },
+        jours: [
+          {
+            date: new Date("2026-09-01T00:00:00.000Z"),
+            heureDebut: "08:30",
+            heureFin: "16:45",
+            modules: [],
+            trainer: null,
+          },
+        ],
+        enrollments: [
+          {
+            id: ENROLLMENT_ID,
+            trainee: { nom: "Dupont", prenom: "Marie", entreprise: "Tech" },
+            emargementSignatures: [],
+          },
+        ],
+        emargementContresignatures: [],
+      }),
+    );
+    expectRefusSurLeLieu(await genererEmargementAction({ sessionId: SESSION_ID }));
+  });
+
+  it("programme", async () => {
+    mockSessionFindUnique.mockResolvedValue(makeSession(SANS_LIEU));
+    expectRefusSurLeLieu(await genererProgrammeAction({ sessionId: SESSION_ID }));
+  });
+
+  it("organisation de l'action", async () => {
+    mockSessionFindUnique.mockResolvedValue(makeSession({ ...SANS_LIEU, jours: [] }));
+    expectRefusSurLeLieu(await genererOrganisationActionAction({ sessionId: SESSION_ID }));
+  });
+
+  it("autorisation de captation", async () => {
+    mockEnrollmentFindUnique.mockResolvedValue(makeEnrollment({ session: makeSession(SANS_LIEU) }));
+    expectRefusSurLeLieu(await genererAutorisationCaptationAction({ enrollmentId: ENROLLMENT_ID }));
+  });
+
+  it("lieu « sur site » sans adresse ni ville : refusé aussi, le motif demande l'adresse", async () => {
+    mockSessionFindUnique.mockResolvedValue(
+      makeSession({ ...SANS_LIEU, lieuType: "sur_site", lieuSalle: "B2" }),
+    );
+    const result = await genererConventionAction({ sessionId: SESSION_ID });
+    expectRefusSurLeLieu(result);
+    expect((result as { error: string }).error).toContain("adresse");
+  });
+
+  it("témoin : « nos locaux » est émis — l'adresse de l'organisme y est la bonne", async () => {
+    mockSessionFindUnique.mockResolvedValue(makeSession({ ...SANS_LIEU, lieuType: "nos_locaux" }));
+    const result = await genererConventionAction({ sessionId: SESSION_ID });
+    expect(result).toEqual({ data: { documentId: DOCUMENT_ID, numero: NUMERO } });
+  });
+
+  it("témoin : une adresse réelle est émise, et c'est elle qui est imprimée", async () => {
+    mockSessionFindUnique.mockResolvedValue(
+      makeSession({
+        ...SANS_LIEU,
+        lieuType: "sur_site",
+        lieuAdresse: "5 rue des Docks",
+        lieuCodePostal: "42000",
+        lieuVille: "Saint-Étienne",
+      }),
+    );
+    await genererConventionAction({ sessionId: SESSION_ID });
+    expect(donneesPdf<{ lieu: string }>().lieu).toContain("Saint-Étienne");
+  });
+
+  it("⚠️ session 100 % distancielle : non concernée par le refus, la pièce est émise", async () => {
+    mockSessionFindUnique.mockResolvedValue(makeSession({ ...SANS_LIEU, modalite: "distanciel" }));
+    const result = await genererConventionAction({ sessionId: SESSION_ID });
+    expect(result).toEqual({ data: { documentId: DOCUMENT_ID, numero: NUMERO } });
+  });
+});
 
 describe("genererSatisfactionAction", () => {
   it("génère le questionnaire de satisfaction", async () => {

@@ -36,6 +36,7 @@ import { prisma } from "@/lib/prisma";
 import { lignesDeChaine } from "@/server/qualiopi/emargement/lignes-de-chaine";
 import { isR2Configured, getObjectBufferR2, documentPdfKey } from "@/lib/r2-storage";
 import { verifierChaine } from "@/server/qualiopi/emargement/hash";
+import { resumerProvenance } from "@/server/qualiopi/presence/provenance";
 // 🔴 2026-08-24, cahier D9 — cet export n'avait AUCUN appelant de production.
 // Le dossier promet « la VÉRIFICATION D'INTÉGRITÉ de CHAQUE chaîne de
 // signatures » et n'en vérifiait que deux familles sur trois : les signatures
@@ -50,13 +51,23 @@ import {
 } from "@/server/qualiopi/emargement/reconstruction";
 import { maillonContresignatureDepuisLigne } from "@/server/qualiopi/emargement/contresignature-hash";
 import { construireFeuillePdf } from "@/server/qualiopi/emargement/feuille-pdf";
+import { rendreTirageEmargementAJour } from "@/server/qualiopi/documents/emargement-tirage";
+import { parisDateISO } from "@/server/qualiopi/presence/time";
+import { documentJointAuDossierAudit, lignePiecesHorsDossier } from "./hors-dossier-audit";
 
 export interface DossierSessionResult {
   base64: string;
   filename: string;
   incomplet: boolean;
+  /** Pièces EN VIGUEUR de la session en base, qu'elles relèvent du dossier ou non. */
   nbDocuments: number;
   nbDocumentsJoints: number;
+  /**
+   * Pièces en vigueur ÉCARTÉES du dossier remis (RH, rémunération, facturation —
+   * `hors-dossier-audit.ts`). Elles restent au registre ; ce compteur permet de
+   * le tracer au journal de l'export.
+   */
+  nbDocumentsHorsDossier: number;
   /**
    * Pièces ANNULÉES de la session, écartées du ZIP mais NOMMÉES dans l'index.
    *
@@ -120,6 +131,20 @@ export async function genererDossierSessionZip(
           id: true,
           tauxPresencePct: true,
           trainee: { select: { nom: true, prenom: true, deletedAt: true } },
+          // 🔴 `G-prerequis-02` — PROVENANCE des présences. Sans ces lignes, le
+          // rapport ne portait que le taux et le nombre de signatures : un taux
+          // de 100 % tapé à la main dans la grille se lisait comme un taux émargé.
+          // On lit la valeur qui PROUVE (signature vivante, rattachement à un
+          // relevé) ; `source` ne sert qu'à reconnaître une saisie `manuel` sur
+          // un créneau importé (seconde revue A09 §6) — cf. `presence/provenance.ts`.
+          presences: {
+            select: {
+              present: true,
+              importId: true,
+              source: true,
+              emargementSignatures: { where: { revokedAt: null }, select: { id: true }, take: 1 },
+            },
+          },
           // ⚠️ Filtre ET ordre viennent de `lignesDeChaine()` : ce sont les deux
           // conditions pour que `verifierChaine` rende un verdict juste, et
           // elles étaient recopiées à chaque lecture. Le détail du raisonnement
@@ -136,6 +161,15 @@ export async function genererDossierSessionZip(
 
   if (session === null) return null;
 
+  // 🔴 X-mode-auditeur-05 / G-lieu-05 (2026-09-14) — contrats de travail et
+  // autofactures d'honoraires partaient dans le dossier remis à l'auditrice.
+  // Ils ne prouvent aucun indicateur : ils restent au registre, pas dans le
+  // dossier (RGPD, minimisation). Écartés ICI, avant toute lecture qui suit —
+  // téléchargement, vérification de chaîne, journal des envois — et tout ce qui
+  // suit lit `documents`, jamais `session.documents`.
+  const documents = session.documents.filter((d) => documentJointAuDossierAudit(d.type));
+  const nbDocumentsHorsDossier = session.documents.length - documents.length;
+
   const zip = new JSZip();
   const avertissements: string[] = [];
   const index: string[] = [`Dossier d'audit — session ${session.numero}`, session.titreSession, ""];
@@ -148,6 +182,11 @@ export async function genererDossierSessionZip(
   let nbChainesAnormales = 0;
   let nbEffaces = 0;
   let nbImagesAlterees = 0;
+  // Provenance des présences, cumulée sur la session (`G-prerequis-02`).
+  let presencesSignees = 0;
+  let presencesDeclarees = 0;
+  let presencesReleve = 0;
+  let inscriptionsAvecDeclaration = 0;
 
   for (const inscription of session.enrollments) {
     // ⚠️ `verrouColonnes` plutôt qu'un `as unknown as` : la conversion est
@@ -182,6 +221,19 @@ export async function genererDossierSessionZip(
       }
     }
 
+    const provenance = resumerProvenance(
+      inscription.presences.map((p) => ({
+        present: p.present,
+        importId: p.importId,
+        source: p.source,
+        signaturesVivantes: p.emargementSignatures.length,
+      })),
+    );
+    presencesSignees += provenance.signees;
+    presencesDeclarees += provenance.declarees;
+    presencesReleve += provenance.releveConnexion;
+    if (provenance.declarees > 0) inscriptionsAvecDeclaration += 1;
+
     rapports.push({
       // Nom déjà anonymisé (« [supprime] ») pour un effacé ; on l'étiquette
       // explicitement pour que l'auditeur sache pourquoi il est là.
@@ -190,6 +242,12 @@ export async function genererDossierSessionZip(
         : `${inscription.trainee.prenom} ${inscription.trainee.nom}`.trim(),
       effaceRgpd: efface,
       tauxPresencePct: inscription.tauxPresencePct,
+      // 🔴 `G-prerequis-02` — le taux ci-dessus agrège TOUTES les présences.
+      // Ces trois compteurs disent d'où elles viennent : un créneau présent sans
+      // signature ni relevé est une déclaration de l'organisme, pas un émargement.
+      presencesSignees: provenance.signees,
+      presencesDeclareesSansSignature: provenance.declarees,
+      presencesReleveConnexion: provenance.releveConnexion,
       nbSignatures: inscription.emargementSignatures.length,
       empreinteTete:
         inscription.emargementSignatures[inscription.emargementSignatures.length - 1]?.selfHash ??
@@ -239,7 +297,7 @@ export async function genererDossierSessionZip(
   // juste en dessous.
   const rapportsPieces: Array<Record<string, unknown>> = [];
   let nbChainesPieceAnormales = 0;
-  for (const doc of session.documents) {
+  for (const doc of documents) {
     const res = await verifierChaineDocument(doc.id);
     if (res === null) continue;
     if (!res.valide) nbChainesPieceAnormales += 1;
@@ -294,6 +352,19 @@ export async function genererDossierSessionZip(
       ? "Intégrité des chaînes de signatures de pièces : AUCUNE pièce contractuelle signée au dossier."
       : `Intégrité des chaînes de signatures de pièces : ${rapportsPieces.length - nbChainesPieceAnormales}/${rapportsPieces.length} conformes.`,
   );
+  // 🔴 `G-prerequis-02` — la provenance est ÉCRITE dans l'index, pas seulement
+  // rangée dans le JSON : c'est l'index que l'auditeur ouvre en premier.
+  index.push(
+    `Provenance des présences : ${presencesSignees} créneau${presencesSignees > 1 ? "x" : ""} signé${presencesSignees > 1 ? "s" : ""}, ${presencesDeclarees} déclaré${presencesDeclarees > 1 ? "s" : ""} à la main sans signature, ${presencesReleve} issu${presencesReleve > 1 ? "s" : ""} d'un relevé de connexion.`,
+  );
+  if (presencesDeclarees > 0) {
+    // Un avertissement, pas un refus : la présence déclarée est une donnée de
+    // l'organisme, légitime à conserver. Ce qui ne l'est pas, c'est qu'elle se
+    // confonde avec un émargement dans le paquet remis au certificateur.
+    avertissements.push(
+      `⚠️ ${presencesDeclarees} présence${presencesDeclarees > 1 ? "s" : ""} déclarée${presencesDeclarees > 1 ? "s" : ""} à la main, SANS signature, pour ${inscriptionsAvecDeclaration} stagiaire${inscriptionsAvecDeclaration > 1 ? "s" : ""} : ce sont des déclarations de l'organisme, pas des émargements. Voir « presencesDeclareesSansSignature » dans verification-integrite.json.`,
+    );
+  }
   if (session.enrollments.length === 0) {
     avertissements.push(
       "⚠️ Aucune signature d'émargement dans ce dossier. La feuille d'émargement est la pièce que le certificateur demande en premier pour établir la réalité de l'action.",
@@ -383,7 +454,7 @@ export async function genererDossierSessionZip(
     const idsSession = [
       sessionId,
       ...session.enrollments.map((e) => e.id),
-      ...session.documents.map((d) => d.id),
+      ...documents.map((d) => d.id),
     ];
     const envois = await prisma.emailLog.findMany({
       where: { entityId: { in: idsSession } },
@@ -449,8 +520,8 @@ export async function genererDossierSessionZip(
   }
 
   let joints = 0;
-  index.push("", `Documents (${session.documents.length}) :`);
-  for (const doc of session.documents) {
+  index.push("", `Documents (${documents.length}) :`);
+  for (const doc of documents) {
     // Clé alignée sur l'écriture (`documents-service.ts` utilise l'année locale
     // au moment de la génération).
     const cle = documentPdfKey(doc);
@@ -460,17 +531,65 @@ export async function genererDossierSessionZip(
       continue;
     }
     zip.file(`documents/${doc.type}/${doc.numero}.pdf`, buffer);
-    index.push(`  [OK]     ${doc.type}/${doc.numero}.pdf (${buffer.byteLength} octets)`);
+    // Une feuille d'émargement du registre est un INSTANTANÉ : l'index le dit à
+    // côté de son nom, pour qu'on ne la lise pas comme l'état des signatures.
+    // Date en heure de PARIS : en UTC, une pièce émise entre minuit et 2 h
+    // reculerait d'un jour — la lecture « antidatée » à éviter.
+    const mention =
+      doc.type === "emargement"
+        ? ` — instantané scellé du ${parisDateISO(doc.createdAt)}, signatures à cette date seulement : voir la feuille à jour`
+        : "";
+    index.push(`  [OK]     ${doc.type}/${doc.numero}.pdf (${buffer.byteLength} octets)${mention}`);
     joints += 1;
   }
 
   // ⚠️ La condition porte sur les pièces EN VIGUEUR, et c'est le point : une
   // session dont toutes les pièces sont annulées n'a plus rien à joindre. Faire
   // porter le chapeau au stockage enverrait chercher une panne qui n'existe pas.
-  if (session.documents.length > 0 && joints === 0) {
+  if (documents.length > 0 && joints === 0) {
     avertissements.push(
-      `⚠️ ${session.documents.length} document${session.documents.length > 1 ? "s" : ""} en base mais AUCUN PDF joint — vérifiez le stockage R2.`,
+      `⚠️ ${documents.length} document${documents.length > 1 ? "s" : ""} en base mais AUCUN PDF joint — vérifiez le stockage R2.`,
     );
+  }
+
+  // ── 3 ter. La feuille d'émargement À JOUR ──
+  //
+  // 🔴 X-documents-pdf-01 (audit initial 2026-09-14). La feuille du registre est
+  // tirée AVANT la session — c'est l'usage : on l'imprime pour la faire signer.
+  // Elle porte donc à vie « Signatures enregistrées au tirage : 0 », et c'était
+  // la seule feuille en PDF de ce dossier : les signatures réelles n'y figuraient
+  // qu'en JSON. L'auditrice ouvrait la pièce et voyait une feuille vierge.
+  //
+  // ➡️ Le tirage est celui de l'écran « Télécharger la feuille à jour » : même
+  // chemin (`rendreTirageEmargementAJour`), même population, même PDF. Il est
+  // DÉRIVÉ, jamais persisté ni numéroté, emprunte le numéro de la dernière
+  // feuille qui fait foi, et le dit SUR LA PIÈCE : date et heure du tirage,
+  // pièce d'origine et sa date d'émission. La pièce scellée reste jointe à côté,
+  // intacte — régénérer la pièce aurait créé une seconde feuille concurrente.
+  try {
+    const tirage = await rendreTirageEmargementAJour(sessionId);
+    if (tirage.ok) {
+      const cheminTirage =
+        tirage.numeroOrigine === null
+          ? "emargement/emargement-a-jour.pdf"
+          : `emargement/${tirage.numeroOrigine}-a-jour.pdf`;
+      zip.file(`documents/${cheminTirage}`, tirage.buffer);
+      index.push(
+        `  [À JOUR] ${cheminTirage} — ${tirage.mention}. ${tirage.totalSignatures} signature${tirage.totalSignatures > 1 ? "s" : ""} enregistrée${tirage.totalSignatures > 1 ? "s" : ""}.`,
+        "           Même rendu que l'écran « Télécharger la feuille à jour » : les inscriptions sous droit à l'effacement n'y figurent pas ; leurs signatures conservées (art. 17 §3 b) sont dans feuille-emargement.json et verification-integrite.json.",
+      );
+    } else {
+      // Seul cas d'échec prévu : journées non déclarées — déjà signalé plus haut.
+      index.push(`  [ABSENT] feuille d'émargement à jour — ${tirage.message}`);
+    }
+  } catch (err) {
+    avertissements.push(
+      `⚠️ Le tirage à jour de la feuille d'émargement n'a pas pu être produit (${err instanceof Error ? err.message : String(err)}). Une feuille du registre jointe n'est qu'un instantané : elle ne porte que les signatures recueillies à sa date.`,
+    );
+  }
+
+  if (nbDocumentsHorsDossier > 0) {
+    index.push("", lignePiecesHorsDossier(nbDocumentsHorsDossier));
   }
 
   // ── 3 bis. Pièces ANNULÉES — retirées, mais JAMAIS tues ──
@@ -492,7 +611,7 @@ export async function genererDossierSessionZip(
   if (annulees.length > 0) {
     index.push("", `Pièces annulées, non jointes (${annulees.length}) :`);
     for (const a of annulees) {
-      const quand = a.annuleeAt === null ? "date inconnue" : a.annuleeAt.toISOString().slice(0, 10);
+      const quand = a.annuleeAt === null ? "date inconnue" : parisDateISO(a.annuleeAt);
       index.push(
         `  ${a.numero} (${a.type}) — ${a.annuleeMotif ?? "motif non renseigné"} — ${quand}`,
       );
@@ -514,6 +633,7 @@ export async function genererDossierSessionZip(
     incomplet,
     nbDocuments: session.documents.length,
     nbDocumentsJoints: joints,
+    nbDocumentsHorsDossier,
     nbDocumentsAnnulees: annulees.length,
     nbChainesAnormales,
     nbChainesContresignAnormales,

@@ -127,6 +127,11 @@ export async function exporterDossierZipAction(): Promise<
       incomplet: dossier.incomplet,
       nbPreuvesAttendues: dossier.nbPreuvesAttendues,
       nbPreuvesJointes: dossier.nbPreuvesJointes,
+      // Ce qui n'est PAS sorti : retenu au registre (RH, rémunération,
+      // facturation) ou non exporté dans pieces.json. La trace de l'export
+      // doit permettre de reconstituer les deux.
+      nbPiecesHorsDossier: dossier.nbPiecesHorsDossier,
+      nbPiecesFormateursEcartees: dossier.nbPiecesFormateursEcartees,
     },
     session,
   });
@@ -200,6 +205,8 @@ export async function exporterDossierSessionAction(input: { sessionId: string })
       incomplet: dossier.incomplet,
       nbDocuments: dossier.nbDocuments,
       nbDocumentsJoints: dossier.nbDocumentsJoints,
+      // Pièces en vigueur retenues au registre, hors du dossier remis.
+      nbDocumentsHorsDossier: dossier.nbDocumentsHorsDossier,
       // Tracé volontairement : une anomalie d'intégrité constatée doit laisser
       // une trace datée, indépendamment de ce que l'admin fera du ZIP.
       nbChainesAnormales: dossier.nbChainesAnormales,

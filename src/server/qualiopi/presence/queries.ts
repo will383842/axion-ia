@@ -44,7 +44,13 @@ export interface SessionEmargementRow {
       email: string;
     };
   }>;
-  creneaux: PresenceCreneau[];
+  /**
+   * Créneaux, avec leur plus ANCIENNE signature VIVANTE (bornée à 1 : la
+   * question est « en existe-t-il une, et depuis quand ? »). Sans elle, l'écran
+   * ne peut ni distinguer une présence signée d'une présence déclarée à la main
+   * (`G-prerequis-02`), ni dater l'émargement au registre (revue A09 §3).
+   */
+  creneaux: Array<PresenceCreneau & { emargementSignatures: Array<{ id: string; signeAt: Date }> }>;
   /**
    * Journées RÉELLEMENT animées (décision D14), ordonnées.
    *
@@ -112,6 +118,17 @@ export async function getSessionEmargement(
     const creneaux = await prisma.presenceCreneau.findMany({
       where: { enrollmentId: { in: session.enrollments.map((e) => e.id) } },
       orderBy: [{ date: "asc" }, { demiJournee: "asc" }],
+      include: {
+        // La plus ANCIENNE signature vivante du créneau : l'écran affiche sa
+        // date, lue au registre, et non `emargementSigneAt` que l'ancienne grille
+        // a pu poser avant elle (revue A09 §3).
+        emargementSignatures: {
+          where: { revokedAt: null },
+          select: { id: true, signeAt: true },
+          orderBy: { signeAt: "asc" },
+          take: 1,
+        },
+      },
     });
 
     return {

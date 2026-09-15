@@ -27,7 +27,7 @@
  *    cette forme est celle que le moteur de conformité relit.
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 vi.mock("@/server/qualiopi/registres/revue-direction-service", () => ({
   creerRevue: vi.fn(),
@@ -160,6 +160,90 @@ describe("updateRevueDirectionAction — « validee » exige la preuve, au momen
     const result = await updateRevueDirectionAction({ id: ID, statut: "brouillon" });
 
     expect(result).toEqual({ data: { id: ID } });
+  });
+});
+
+/**
+ * 🔴 I32-01 (audit initial 2026-09-14) — l'analyse de risques saisie en
+ * MODIFICATION était perdue sans message.
+ *
+ * L'écran d'édition envoie `risques`, le schéma Zod l'accepte, le service sait
+ * l'écrire… mais l'action ne le transmettait ni à `updateRevue`, ni à la garde
+ * de validation. Or la revue de l'année existe déjà (`annee` est unique) : la
+ * mise à jour est le SEUL chemin d'écriture. À partir du 1er novembre 2026
+ * (décret 2026-728), la revue ne pouvait donc plus jamais être validée.
+ */
+describe("updateRevueDirectionAction — l'analyse de risques arrive jusqu'à la base (I32-01)", () => {
+  const APRES_ECHEANCE = new Date("2026-11-15T09:00:00.000Z");
+  const RISQUE = {
+    intitule: "Indisponibilité du formateur unique sur une session engagée",
+    cause: "Un seul intervenant habilité",
+    gravite: "élevée",
+    probabilite: "moyenne",
+    maitrise: "Constituer un vivier de deux sous-traitants habilités",
+    echeance: "2026-12-15",
+    responsable: "W. Jullin",
+  };
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("🔴 transmet les risques saisis à `updateRevue`", async () => {
+    const result = await updateRevueDirectionAction({ id: ID, risques: [RISQUE] });
+
+    expect(result).toEqual({ data: { id: ID } });
+    const [, input] = mockUpdateRevue.mock.calls[0] as [string, { risques?: unknown[] }];
+    expect(input.risques, "l'analyse de risques saisie à l'écran n'est pas écrite en base").toEqual(
+      [RISQUE],
+    );
+  });
+
+  it("n'efface pas les risques stockés quand la mise à jour ne les renvoie pas", async () => {
+    await updateRevueDirectionAction({ id: ID, statut: "brouillon" });
+
+    const [, input] = mockUpdateRevue.mock.calls[0] as [string, Record<string, unknown>];
+    expect("risques" in input).toBe(false);
+  });
+
+  it("🔴 après le 1er novembre, valide avec les risques envoyés dans le même geste", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(APRES_ECHEANCE);
+    mockGetRevueParId.mockResolvedValue({ ...revueComplete(), risques: [] });
+
+    const result = await updateRevueDirectionAction({
+      id: ID,
+      statut: "validee",
+      risques: [RISQUE],
+    });
+
+    expect(result).toEqual({ data: { id: ID } });
+    expect(mockUpdateRevue).toHaveBeenCalledOnce();
+  });
+
+  it("🔴 après le 1er novembre, valide avec les risques déjà en base", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(APRES_ECHEANCE);
+    mockGetRevueParId.mockResolvedValue({ ...revueComplete(), risques: [RISQUE] });
+
+    const result = await updateRevueDirectionAction({ id: ID, statut: "validee" });
+
+    expect(result).toEqual({ data: { id: ID } });
+  });
+
+  it("après le 1er novembre, refuse toujours sans aucune analyse — la garde discrimine", async () => {
+    // Témoin inverse : sans lui, une garde qui accepterait TOUT passerait les
+    // deux tests précédents.
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(APRES_ECHEANCE);
+    mockGetRevueParId.mockResolvedValue({ ...revueComplete(), risques: [] });
+
+    const result = await updateRevueDirectionAction({ id: ID, statut: "validee" });
+
+    expect("error" in result).toBe(true);
+    if (!("error" in result)) return;
+    expect(result.error).toMatch(/analyse de risques/i);
+    expect(mockUpdateRevue).not.toHaveBeenCalled();
   });
 });
 

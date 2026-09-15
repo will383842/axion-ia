@@ -618,14 +618,18 @@ describe("saveEmargementAction", () => {
     expect(mockUpsertCreneau).not.toHaveBeenCalled();
   });
 
-  it("n'écrase PAS le réalisé quand la grille renvoie la valeur d'un créneau importé", async () => {
+  it("n'écrase PAS un créneau importé que la grille renvoie tel quel", async () => {
     // `present` est DÉRIVÉ pour un import (réalisé ≥ 50 % du prévu) : un
     // stagiaire connecté 100 min sur 420 a `present = false` sans être absent.
-    // La grille renvoie désormais toujours la durée, y compris case décochée —
-    // un clic « Enregistrer » ne doit plus remettre ses 100 minutes à 0.
+    // La grille renvoie toujours la durée, y compris case décochée — un clic
+    // « Enregistrer » ne doit ni remettre ses 100 minutes à 0, ni toucher à sa
+    // provenance d'import (revue A09 §4 : un créneau non modifié n'est pas
+    // réécrit ; §6 : seul un geste qui le MODIFIE en fait une saisie).
     mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
       id: "c1",
       dureePrevueMinutes: 420,
+      dureeRealiseeMinutes: 100,
+      present: false,
       source: "import_zoom",
       libelle: "2026-06-10 journée",
       enrollmentId: "enr-1",
@@ -642,10 +646,10 @@ describe("saveEmargementAction", () => {
       entries: [{ ...validEntry, present: false, dureeRealiseeMinutes: 100 }],
     });
 
-    const call = mockCall<{ dureeRealiseeMinutes: number; source: string }>(mockUpsertCreneau);
-    expect(call.dureeRealiseeMinutes).toBe(100);
-    // La provenance reste celle de l'import.
-    expect(call.source).toBe("import_zoom");
+    expect(
+      mockUpsertCreneau,
+      "un relevé importé renvoyé sans modification a été réécrit",
+    ).not.toHaveBeenCalled();
   });
 
   it("utilise dureePrevueMinutes si present=true et dureeRealiseeMinutes absent", async () => {
@@ -719,82 +723,206 @@ describe("saveEmargementAction", () => {
     expect(mockInvalidateCache).toHaveBeenCalledWith(2026);
   });
 
-  it("pose emargementSigneAt write-once (updateMany conditionné sur null)", async () => {
-    await saveEmargementAction({
-      sessionId: "550e8400-e29b-41d4-a716-446655440000",
-      entries: [validEntry],
-    });
-
-    // 1re signature : le where cible uniquement les enrollments non encore signés.
-    expect(mockPrisma.enrollment.updateMany).toHaveBeenCalledWith(
-      expect.objectContaining({
-        where: expect.objectContaining({
-          id: validEntry.enrollmentId,
-          emargementSigneAt: null,
-        }),
-        data: expect.objectContaining({ emargementSigneAt: expect.any(Date) }),
-      }),
-    );
-  });
-
-  it("🔴 NE pose PAS emargementSigneAt quand la grille dit « absent partout »", async () => {
-    // `CONF-02`. La colonne était posée pour chaque inscription touchée, sans
-    // regarder ce que la grille disait. `conformite-service.ts` la compte pour
-    // l'indicateur off.12 et l'annonçait « émargement réellement signé » : un
-    // stagiaire jamais venu — donc qui n'a rien signé — gonflait un indicateur
-    // de conformité présenté à l'auditeur.
-    //
-    // Le taux recalculé est le discriminant : 0 = absent à tout, donc aucune
-    // présence à attester.
-    mockRecompute.mockResolvedValueOnce(0);
-
-    const result = await saveEmargementAction({
-      sessionId: "550e8400-e29b-41d4-a716-446655440000",
-      entries: [{ ...validEntry, present: false }],
-    });
-
-    expect("data" in result, "la sauvegarde doit réussir : l'absence se consigne").toBe(true);
-    const signatures = mockPrisma.enrollment.updateMany.mock.calls.filter(
-      (c) => (c[0] as { data?: Record<string, unknown> }).data?.["emargementSigneAt"] !== undefined,
-    );
-    expect(signatures, "une absence totale a été comptée comme un émargement signé").toHaveLength(
-      0,
-    );
-  });
-
-  it("pose emargementSigneAt dès qu'UNE présence est constatée", async () => {
-    // Témoin inverse. Sans lui, un correctif qui cesserait complètement de poser
-    // la colonne ferait passer le cas ci-dessus — on prouverait l'absence de
-    // faux positif par l'absence de fonctionnalité.
-    mockRecompute.mockResolvedValueOnce(50);
-
-    await saveEmargementAction({
-      sessionId: "550e8400-e29b-41d4-a716-446655440000",
-      entries: [validEntry],
-    });
-
-    const signatures = mockPrisma.enrollment.updateMany.mock.calls.filter(
-      (c) => (c[0] as { data?: Record<string, unknown> }).data?.["emargementSigneAt"] !== undefined,
-    );
-    expect(signatures).toHaveLength(1);
-  });
-
-  it("n'écrase pas la date sur ré-enregistrement (déjà signé → count:0)", async () => {
-    // Simule un enrollment déjà signé : le where exclut la ligne → 0 mise à jour.
-    mockPrisma.enrollment.updateMany.mockResolvedValue({ count: 0 });
+  /**
+   * 🔴 2026-09-14 — `G-prerequis-02` (audit initial, 65 agents).
+   *
+   * LA GRILLE MANUELLE SE FAISAIT PASSER POUR UN ÉMARGEMENT SIGNÉ.
+   *
+   * Cocher une case et cliquer « Enregistrer » écrivait `source:
+   * "emargement_presentiel"` sur le créneau et posait `Enrollment.emargementSigneAt`
+   * — sans AUCUNE signature en base. Or c'est cette date que lisent l'écran
+   * (« Émargement signé : Oui — date »), l'indicateur off.12, le parcours de
+   * session et la garde de requalification des dates. Une présence tapée par un
+   * administrateur ressortait donc partout comme la preuve signée d'un stagiaire.
+   *
+   * 🔑 Les tests d'origine VERROUILLAIENT ce défaut (« pose emargementSigneAt dès
+   * qu'UNE présence est constatée ») : ils disaient ce que le code faisait, pas
+   * ce que la colonne prétend. La date d'émargement signé ne se pose qu'au geste
+   * de signature (`emargement/signature-service.ts`), jamais ici.
+   */
+  it("🔴 G-prerequis-02 — une présence cochée à la main ne pose JAMAIS emargementSigneAt", async () => {
+    mockRecompute.mockResolvedValueOnce(100);
 
     const result = await saveEmargementAction({
       sessionId: "550e8400-e29b-41d4-a716-446655440000",
       entries: [validEntry],
     });
 
-    // La sauvegarde réussit (présence corrigible) mais la garde null empêche
-    // toute réécriture de la date de première signature.
-    expect("data" in result).toBe(true);
-    const call = mockCall<{ where: { emargementSigneAt: unknown } }>(
-      mockPrisma.enrollment.updateMany,
+    expect("data" in result, "la présence déclarée doit rester enregistrable").toBe(true);
+    const datesPosees = mockPrisma.enrollment.updateMany.mock.calls.filter(
+      (c) => (c[0] as { data?: Record<string, unknown> }).data?.["emargementSigneAt"] !== undefined,
     );
-    expect(call.where.emargementSigneAt).toBeNull();
+    expect(
+      datesPosees,
+      "la grille a posé une date d'« émargement signé » alors qu'aucune signature n'existe : " +
+        "une déclaration d'administrateur passe pour la preuve signée du stagiaire",
+    ).toHaveLength(0);
+  });
+
+  it("🔴 G-prerequis-02 — une présence cochée à la main porte la provenance « manuel »", async () => {
+    // Créneau généré (placeholder `emargement_presentiel`, vierge), sans
+    // signature ni import.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "c1",
+      dureePrevueMinutes: 210,
+      dureeRealiseeMinutes: 0,
+      present: false,
+      source: "emargement_presentiel",
+      libelle: "2026-06-10 matin",
+      importId: null,
+      emargementSignatures: [],
+    });
+
+    await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [validEntry],
+    });
+
+    const call = mockCall<{ source: string; present: boolean }>(mockUpsertCreneau);
+    expect(call.present).toBe(true);
+    expect(
+      call.source,
+      "une présence déclarée à la main a été enregistrée comme un émargement présentiel",
+    ).toBe("manuel");
+  });
+
+  it("🔴 revue A09 §4 — une case vierge laissée ABSENTE n'est pas réécrite", async () => {
+    // La grille renvoie TOUTES ses cellules à chaque clic. Une cellule vierge,
+    // non touchée, ne déclare rien : aucune écriture.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "c1",
+      dureePrevueMinutes: 210,
+      dureeRealiseeMinutes: 0,
+      present: false,
+      source: "emargement_presentiel",
+      libelle: "2026-06-10 matin",
+      importId: null,
+      emargementSignatures: [],
+    });
+
+    await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [{ ...validEntry, present: false, dureeRealiseeMinutes: 0 }],
+    });
+
+    expect(
+      mockUpsertCreneau,
+      "un créneau que personne n'a modifié a été réécrit",
+    ).not.toHaveBeenCalled();
+  });
+
+  it("🔴 revue A09 §4 — un créneau PRÉSENT non modifié (grille antérieure) n'est pas requalifié en « manuel »", async () => {
+    // Grille enregistrée avant le correctif : `emargement_presentiel`, présent,
+    // 210 min. L'admin clique « Enregistrer » pour une AUTRE ligne : celle-ci
+    // revient telle quelle et ne doit pas changer de provenance.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "c1",
+      dureePrevueMinutes: 210,
+      dureeRealiseeMinutes: 210,
+      present: true,
+      source: "emargement_presentiel",
+      libelle: "2026-06-10 matin",
+      importId: null,
+      emargementSignatures: [],
+    });
+
+    const result = await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [{ ...validEntry, present: true, dureeRealiseeMinutes: 210 }],
+    });
+
+    expect(
+      mockUpsertCreneau,
+      "la grille a réécrit (et requalifié en « manuel ») un créneau que personne n'a touché",
+    ).not.toHaveBeenCalled();
+    expect("data" in result && result.data.updated).toBe(0);
+  });
+
+  /**
+   * 🔴 Seconde revue A09 §6 — UNE PRÉSENCE TAPÉE SUR UN CRÉNEAU IMPORTÉ PASSAIT
+   * POUR UNE MESURE DE LA PLATEFORME.
+   *
+   * L'import crée des créneaux pour TOUS les inscrits, à 0 min pour ceux que le
+   * relevé ne reconnaît pas, rattachés à l'import (`importId`). Coché à la main,
+   * le créneau gardait sa source d'import : écran et dossier d'audit le
+   * comptaient « issu d'un relevé », et le certificat de réalisation l'acceptait
+   * comme trace vérifiable (`documents.ts`, filtre `import_*`).
+   *
+   * 🔑 Règle : tout geste de la grille qui modifie présence ou durée fait une
+   * saisie à la main — `manuel` — même sur un créneau importé. `importId` et le
+   * libellé horodaté restent, pour la traçabilité ; la provenance lit `manuel`
+   * avant `importId` (`presence/provenance.ts`).
+   */
+  it("🔴 revue A09 §6 — créneau importé à 0 min (inscrit non reconnu) COCHÉ à la main → « manuel »", async () => {
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "c1",
+      dureePrevueMinutes: 420,
+      dureeRealiseeMinutes: 0,
+      present: false,
+      source: "import_zoom",
+      libelle: "2026-06-10 journée (relevé)",
+      importId: "imp-1",
+      emargementSignatures: [],
+    });
+
+    await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [{ ...validEntry, present: true, dureeRealiseeMinutes: 0 }],
+    });
+
+    const call = mockCall<{ source: string; libelle: string; present: boolean }>(mockUpsertCreneau);
+    expect(call.present).toBe(true);
+    expect(
+      call.source,
+      "une présence cochée à la main garde la source de l'import : elle passera pour une mesure de la plateforme",
+    ).toBe("manuel");
+    expect(call.libelle, "le libellé horodaté du relevé est conservé").toBe(
+      "2026-06-10 journée (relevé)",
+    );
+  });
+
+  it("🔴 revue A09 §6 — durée d'un relevé « autre » (emargement_presentiel + importId) RETOUCHÉE à la main → « manuel »", async () => {
+    // 100 min mesurées, 400 tapées : la durée n'est plus celle du relevé.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "c1",
+      dureePrevueMinutes: 420,
+      dureeRealiseeMinutes: 100,
+      present: false,
+      source: "emargement_presentiel",
+      libelle: "2026-06-10 journée (relevé)",
+      importId: "imp-autre",
+      emargementSignatures: [],
+    });
+
+    await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [{ ...validEntry, present: true, dureeRealiseeMinutes: 400 }],
+    });
+
+    const call = mockCall<{ source: string; libelle: string }>(mockUpsertCreneau);
+    expect(call.source, "une durée tapée à la main reste présentée comme mesurée").toBe("manuel");
+    expect(call.libelle).toBe("2026-06-10 journée (relevé)");
+  });
+
+  it("une présence déclarée puis décochée reste une saisie manuelle", async () => {
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "c1",
+      dureePrevueMinutes: 210,
+      dureeRealiseeMinutes: 210,
+      present: true,
+      source: "manuel",
+      libelle: "2026-06-10 matin",
+      importId: null,
+      emargementSignatures: [],
+    });
+
+    await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [{ ...validEntry, present: false, dureeRealiseeMinutes: 0 }],
+    });
+
+    const call = mockCall<{ source: string }>(mockUpsertCreneau);
+    expect(call.source).toBe("manuel");
   });
 
   it("retourne { error } si la session n'existe pas", async () => {

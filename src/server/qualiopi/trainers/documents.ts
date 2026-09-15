@@ -25,6 +25,7 @@ import {
   type TrainerDocumentTypeValue,
   type TrainerStatutValue,
 } from "./conformite";
+import { pieceValideeEcartee, type PieceValideeEcartee } from "./piece-competence";
 
 /** Pièces d'un formateur, les plus récemment émises d'abord. Stub-safe → []. */
 export async function listTrainerDocuments(trainerId: string): Promise<DocumentConformite[]> {
@@ -34,6 +35,9 @@ export async function listTrainerDocuments(trainerId: string): Promise<DocumentC
       select: {
         type: true,
         statutValidation: true,
+        // 🔴 I21-02 : sans le fichier, le moteur retenait un CV validé qui
+        // n'avait rien derrière (« Dossier complet », pas d'alerte « CV absent »).
+        fichierUrl: true,
         dateEmission: true,
         dateExpiration: true,
       },
@@ -55,6 +59,12 @@ export interface TrainerDocumentRow {
   statutValidation: DocumentValidationStatutValue;
   rejetMotif: string | null;
   createdAt: Date;
+  /**
+   * 🔴 I21-02 — pièce de compétence VALIDÉE qui ne compte pourtant pas comme
+   * preuve (sans fichier, ou expirée). Sans ce champ, le panneau affichait
+   * « Validé » en vert là où l'écran de conformité la déclarait absente.
+   */
+  ecarteeDeLaPreuve: PieceValideeEcartee | null;
 }
 
 /**
@@ -66,7 +76,8 @@ export interface TrainerDocumentRow {
  */
 export async function listTrainerDocumentsFull(trainerId: string): Promise<TrainerDocumentRow[]> {
   try {
-    return await prisma.trainerDocument.findMany({
+    const maintenant = new Date();
+    const lignes = await prisma.trainerDocument.findMany({
       where: { trainerId },
       select: {
         id: true,
@@ -81,6 +92,7 @@ export async function listTrainerDocumentsFull(trainerId: string): Promise<Train
       },
       orderBy: [{ createdAt: "desc" }],
     });
+    return lignes.map((l) => ({ ...l, ecarteeDeLaPreuve: pieceValideeEcartee(l, maintenant) }));
   } catch {
     return [];
   }

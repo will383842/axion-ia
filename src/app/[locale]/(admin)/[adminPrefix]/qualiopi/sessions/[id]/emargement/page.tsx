@@ -18,6 +18,10 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { getSessionEmargement } from "@/server/qualiopi/presence/queries";
 import { classifierPresence } from "@/server/qualiopi/presence/taux";
+import {
+  libellesEmargementParInscription,
+  type LibelleEmargement,
+} from "@/server/qualiopi/presence/provenance";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { EmargementGrid } from "@/components/admin/qualiopi/EmargementGrid";
 import { ImportReleveForm } from "@/components/admin/qualiopi/ImportReleveForm";
@@ -122,6 +126,19 @@ export default async function EmargementPage({ params }: PageProps) {
     email: e.trainee.email,
     tauxPresencePct: e.tauxPresencePct,
   }));
+
+  // 🔴 `G-prerequis-02` (audit initial 2026-09-14) — la colonne « Émargement
+  // signé » lisait `emargementSigneAt` seul, que la grille manuelle posait sans
+  // aucune signature. Elle lit désormais la PROVENANCE de chaque créneau : une
+  // signature vivante, un relevé importé, ou une déclaration à la main — et la
+  // date de la première signature au registre. Toute la règle vit dans
+  // `presence/provenance.ts`, testée sans rendu.
+  const libelleParInscription = libellesEmargementParInscription(enrollments, creneaux);
+  const tonCls: Record<LibelleEmargement["ton"], string> = {
+    succes: "text-[color:var(--color-admin-success)]",
+    alerte: "text-[color:var(--color-admin-warning)]",
+    neutre: "text-[color:var(--color-admin-fg-muted)]",
+  };
 
   const hasCreneaux = creneauxRows.length > 0;
   const isDistanciel = session.modalite === "distanciel" || session.modalite === "hybride";
@@ -263,6 +280,18 @@ export default async function EmargementPage({ params }: PageProps) {
       {/* Section : Grille émargement */}
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Feuille d&apos;émargement présentiel</h2>
+        {/* 🔴 `G-prerequis-02` — la grille se faisait passer pour un émargement
+            signé. Elle DÉCLARE une présence ; l'écran doit le dire avant le clic. */}
+        <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          Cocher une case ici <strong>déclare</strong> une présence : ce n&apos;est pas une
+          signature. Toute case modifiée est enregistrée comme saisie manuelle — y compris sur un
+          créneau issu d&apos;un relevé de connexion, qui cesse alors d&apos;être compté comme
+          relevé —, n&apos;est jamais comptée comme émargement signé, et apparaît comme telle dans
+          le récapitulatif ci-dessous et dans le dossier d&apos;audit. Les signatures se recueillent
+          par les liens d&apos;émargement ci-dessus ou sur le poste du formateur ; un créneau déjà
+          signé n&apos;est pas modifié par cette grille, et une case que vous n&apos;avez pas
+          changée n&apos;est pas réécrite.
+        </p>
         {enrollments.length === 0 ? (
           <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
             Aucun stagiaire inscrit à cette session.
@@ -344,13 +373,9 @@ export default async function EmargementPage({ params }: PageProps) {
                         <span className={badgeCls(cat)}>{TAUX_LABELS[cat]}</span>
                       </td>
                       <td className="px-[var(--space-admin-4)] py-[var(--space-admin-3)]">
-                        {e.emargementSigneAt != null ? (
-                          <span className="text-[color:var(--color-admin-success)]">
-                            Oui — {new Date(e.emargementSigneAt).toLocaleDateString("fr-FR")}
-                          </span>
-                        ) : (
-                          <span className="text-[color:var(--color-admin-fg-muted)]">Non</span>
-                        )}
+                        <span className={tonCls[libelleParInscription.get(e.id)?.ton ?? "neutre"]}>
+                          {libelleParInscription.get(e.id)?.texte ?? "Non"}
+                        </span>
                       </td>
                     </tr>
                   );

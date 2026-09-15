@@ -197,6 +197,10 @@ const CODES_ATTENDUS: string[] = [
   // l'effectif vendu n'étaient lus par AUCUNE règle du balayage.
   "convocation_stagiaire_manquante",
   "session_distanciel_sans_lien",
+  // 🔴 I17-01 (audit initial Qualiopi, 2026-09-14) — une session sans lieu
+  // imprimait EN SILENCE l'adresse de l'organisme sur convention, convocation
+  // et émargement.
+  "session_sans_lieu",
   "effectif_depasse",
   // Trou n°10 : toute la chaîne de recouvrement part d'une facture qui EXISTE.
   "session_realisee_non_facturee",

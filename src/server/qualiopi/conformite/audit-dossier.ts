@@ -39,6 +39,15 @@ import type { DocumentType } from "../../../../prisma/generated/client";
  * suite de tests l'a dit immédiatement, et elle avait raison.
  */
 import { pieceAdmissibleAuDossier } from "@/server/qualiopi/conformite/piece-admissible";
+import {
+  destinationPieceFormateur,
+  documentJointAuDossierAudit,
+  lignePiecesAutreEcartees,
+  lignePiecesHorsDossier,
+  pieceFormateurJointeAuDossierAudit,
+} from "@/server/qualiopi/conformite/hors-dossier-audit";
+import { rendreTirageEmargementAJour } from "@/server/qualiopi/documents/emargement-tirage";
+import { parisDateISO } from "@/server/qualiopi/presence/time";
 
 export { pieceAdmissibleAuDossier };
 
@@ -51,6 +60,16 @@ export interface DossierAuditZipResult {
   readonly base64: string;
   /** Nom de fichier suggéré pour le téléchargement (sans extension). */
   readonly filename: string;
+  /**
+   * Pièces admissibles du registre ÉCARTÉES du dossier (RH, rémunération,
+   * facturation — `hors-dossier-audit.ts`). Elles restent au registre.
+   */
+  readonly nbPiecesHorsDossier: number;
+  /**
+   * Pièces formateur non exportées dans `pieces.json` : pièces d'employeur,
+   * type libre « autre », pièces de personnes qui n'animent pas.
+   */
+  readonly nbPiecesFormateursEcartees: number;
   /**
    * `true` si le dossier livré est incomplet : au moins un avertissement a été
    * émis (R2 non configuré, mode stub) OU toutes les preuves attendues n'ont pas
@@ -186,10 +205,15 @@ export interface ManifesteAuditResult {
  * préférable à une pièce hors sujet — ses éléments constatés restent affichés,
  * et le trou se voit.
  *
- * Les types absents de cette table (facture, devis, avoir, kit_opco, kit_cpf,
- * kit_france_travail, autorisation_captation) ne prouvent aucun indicateur du
- * RNQ : ils restent intégralement joints au ZIP, ils ne sont simplement pas
- * présentés comme preuve de quelque chose qu'ils ne prouvent pas.
+ * Les types absents de cette table (kit_opco, kit_cpf, kit_france_travail,
+ * autorisation_captation) ne prouvent aucun indicateur du RNQ : ils restent
+ * intégralement joints au ZIP, ils ne sont simplement pas présentés comme
+ * preuve de quelque chose qu'ils ne prouvent pas.
+ *
+ * ⚠️ Exception (2026-09-14, X-mode-auditeur-05) : les pièces d'EMPLOYEUR, de
+ * rémunération et de facturation — `contrat_travail`, `autofacture_honoraires`,
+ * `facture`, `devis`, `avoir` — ne sont PAS jointes au ZIP. La table de
+ * destination vit dans `hors-dossier-audit.ts`.
  */
 export const INDICATEUR_DOCUMENT_TYPES: Partial<Record<number, DocumentType[]>> = {
   // C1 — Information public
@@ -620,7 +644,9 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
  */
 export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   const now = new Date();
-  const horodatage = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  // Heure de PARIS, pas le fuseau du conteneur (UTC) : entre minuit et 2 h, le
+  // dossier se datait de la veille.
+  const horodatage = parisDateISO(now);
   const filename = `dossier-audit-qualiopi-${horodatage}`;
 
   // ── Mode stub : ZIP minimal manifeste-only ──────────────────────────────
@@ -637,6 +663,8 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
       incomplet: true,
       nbPreuvesAttendues: 0,
       nbPreuvesJointes: 0,
+      nbPiecesHorsDossier: 0,
+      nbPiecesFormateursEcartees: 0,
       avertissements: ["Mode build (stub) — données indisponibles, aucun PDF de preuve inclus."],
     };
   }
@@ -650,11 +678,19 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   // ⚠️ Ce ZIP est le dossier de PREUVES remis au certificateur. Ce qui n'y a pas
   // sa place — pièce annulée, session annulée ou reportée — est écrit une seule
   // fois, en tête de ce fichier.
-  const allDocuments = await prisma.documentGenere.findMany({
+  const documentsAdmissibles = await prisma.documentGenere.findMany({
     where: pieceAdmissibleAuDossier(),
-    select: { id: true, type: true, numero: true, createdAt: true },
+    // `sessionId` : pour joindre le tirage À JOUR de chaque feuille d'émargement.
+    select: { id: true, type: true, numero: true, createdAt: true, sessionId: true },
     orderBy: { createdAt: "asc" },
   });
+  // 🔴 X-mode-auditeur-05 / G-lieu-05 (2026-09-14) — contrats de travail,
+  // autofactures d'honoraires, factures, devis et avoirs partaient sous
+  // `preuves/`. Ils ne prouvent aucun indicateur : ils restent au registre, pas
+  // dans le dossier remis (RGPD, minimisation). Écartés AVANT tout
+  // téléchargement, et comptés dans l'index.
+  const allDocuments = documentsAdmissibles.filter((d) => documentJointAuDossierAudit(d.type));
+  const nbDocumentsHorsDossier = documentsAdmissibles.length - allDocuments.length;
 
   const zip = new JSZip();
   zip.file("manifeste.json", JSON.stringify(manifeste.json, null, 2));
@@ -666,7 +702,14 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   // intervenants) et 27 (sous-traitance) sont à non-conformité MAJEURE, et le
   // plan les présente comme le gain principal du chantier. Ils n'étaient pas
   // outillés du tout.
-  const piecesFormateurs = await prisma.trainerDocument.findMany({
+  // 🔴 X-mode-auditeur-05 (2026-09-14) — ce fichier listait aussi, avec l'URL de
+  // leur fichier, les contrats de travail et les DPAE des salariés. Pièces
+  // d'EMPLOYEUR, pas pièces pédagogiques : elles restent au dossier du
+  // formateur, et l'index compte ce qui n'est pas exporté.
+  // Même chose pour TOUTES les pièces d'une personne qui n'anime pas
+  // (`estFormateur: false`) : le CV d'une secrétaire est une pièce RH, il ne
+  // prouve ni l'indicateur 21 ni le 27.
+  const piecesFormateursRegistre = await prisma.trainerDocument.findMany({
     select: {
       type: true,
       numeroPiece: true,
@@ -674,10 +717,21 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
       dateEmission: true,
       dateExpiration: true,
       statutValidation: true,
-      trainer: { select: { nom: true, prenom: true } },
+      trainer: { select: { nom: true, prenom: true, estFormateur: true } },
     },
     orderBy: [{ trainer: { nom: "asc" } }, { type: "asc" }],
   });
+  const piecesDeFormateurs = piecesFormateursRegistre.filter((p) => p.trainer.estFormateur);
+  const nbPiecesNonFormateurs = piecesFormateursRegistre.length - piecesDeFormateurs.length;
+  const piecesFormateurs = piecesDeFormateurs.filter((p) =>
+    pieceFormateurJointeAuDossierAudit(p.type),
+  );
+  // Type libre « autre » : écarté (un RIB ou une pièce d'identité peut y être
+  // rangé), mais compté à part — l'auditrice peut le demander.
+  const nbPiecesAutre = piecesDeFormateurs.filter(
+    (p) => destinationPieceFormateur(p.type) === "sur_demande",
+  ).length;
+  const nbPiecesEmployeur = piecesDeFormateurs.length - piecesFormateurs.length - nbPiecesAutre;
 
   zip.file(
     "formateurs/pieces.json",
@@ -704,6 +758,19 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   indexLines.push(
     `Pièces formateurs (ind. 21 / 27) : ${piecesFormateurs.length} → formateurs/pieces.json`,
   );
+  if (nbPiecesEmployeur > 0) {
+    indexLines.push(
+      `  ${nbPiecesEmployeur} pièce${nbPiecesEmployeur > 1 ? "s" : ""} d'employeur (contrat de travail, DPAE) non exportée${nbPiecesEmployeur > 1 ? "s" : ""} : elle${nbPiecesEmployeur > 1 ? "s" : ""} ne prouve${nbPiecesEmployeur > 1 ? "nt" : ""} aucun indicateur Qualiopi et reste${nbPiecesEmployeur > 1 ? "nt" : ""} au dossier du formateur.`,
+    );
+  }
+  if (nbPiecesAutre > 0) {
+    indexLines.push(`  ${lignePiecesAutreEcartees(nbPiecesAutre)}`);
+  }
+  if (nbPiecesNonFormateurs > 0) {
+    indexLines.push(
+      `  ${nbPiecesNonFormateurs} pièce${nbPiecesNonFormateurs > 1 ? "s" : ""} de personnes qui n'animent pas non exportée${nbPiecesNonFormateurs > 1 ? "s" : ""} : elle${nbPiecesNonFormateurs > 1 ? "s" : ""} ne prouve${nbPiecesNonFormateurs > 1 ? "nt" : ""} aucun indicateur Qualiopi et reste${nbPiecesNonFormateurs > 1 ? "nt" : ""} au dossier du salarié.`,
+    );
+  }
   const sansFichier = piecesFormateurs.filter((p) => p.fichierUrl === null).length;
   const expirees = piecesFormateurs.filter(
     (p) => p.dateExpiration !== null && p.dateExpiration.getTime() < Date.now(),
@@ -727,9 +794,16 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
     );
   }
 
+  // 🔴 Relecture PR 1089, constat n° 6 — la ligne disait « N documents en base »
+  // sur le total DÉJÀ filtré. Elle distingue désormais ce qui est en base, ce
+  // qui relève du dossier et ce qui en est écarté.
+  const nbAdmissibles = documentsAdmissibles.length;
   indexLines.push(
-    `Manifeste : ${allDocuments.length} document${allDocuments.length > 1 ? "s" : ""} en base.`,
+    `Registre : ${nbAdmissibles} pièce${nbAdmissibles > 1 ? "s" : ""} admissible${nbAdmissibles > 1 ? "s" : ""} en base — ${allDocuments.length} relevant du dossier de preuves, ${nbDocumentsHorsDossier} écartée${nbDocumentsHorsDossier > 1 ? "s" : ""}.`,
   );
+  if (nbDocumentsHorsDossier > 0) {
+    indexLines.push(lignePiecesHorsDossier(nbDocumentsHorsDossier));
+  }
   indexLines.push("");
 
   let nbInclus = 0;
@@ -772,8 +846,14 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
         if (buffer !== null) {
           // Chemin dans le ZIP : preuves/<type>/<numero>.pdf
           zip.file(`preuves/${doc.type}/${doc.numero}.pdf`, buffer);
+          // Une feuille d'émargement du registre est un INSTANTANÉ : l'index le
+          // dit à côté de son nom (date de Paris), et renvoie au tirage à jour.
+          const instantane =
+            doc.type === "emargement"
+              ? ` — instantané scellé du ${parisDateISO(doc.createdAt)}, signatures à cette date seulement : voir le tirage à jour`
+              : "";
           indexLines.push(
-            `[OK]  preuves/${doc.type}/${doc.numero}.pdf  (${buffer.byteLength} octets)`,
+            `[OK]  preuves/${doc.type}/${doc.numero}.pdf  (${buffer.byteLength} octets)${instantane}`,
           );
           nbInclus++;
           nbDocsInclus++;
@@ -791,6 +871,47 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
     avertissements.push(
       `⚠️ ${allDocuments.length} document${allDocuments.length > 1 ? "s" : ""} en base mais AUCUN PDF de preuve joint — vérifiez le stockage R2 (les preuves stagiaires convention→attestation sont absentes du dossier).`,
     );
+  }
+
+  // ── Feuilles d'émargement À JOUR (X-documents-pdf-01) ────────────────────
+  //   Une feuille du registre est tirée AVANT la session : elle porte à vie
+  //   « Signatures enregistrées au tirage : 0 ». Ce ZIP ne joignait qu'elle.
+  //   Pour chaque session qui a une feuille, on joint le tirage à jour — le
+  //   même rendu que l'écran « Télécharger la feuille à jour », qui se déclare
+  //   réimpression sur le PDF. Rendu à la volée, jamais persisté ni numéroté ;
+  //   ne dépend pas de R2. Un rendu en échec rend le dossier INCOMPLET.
+  const sessionsEmargement = [
+    ...new Set(
+      allDocuments
+        .filter((d) => d.type === "emargement" && d.sessionId)
+        .map((d) => d.sessionId as string),
+    ),
+  ];
+  if (sessionsEmargement.length > 0) {
+    indexLines.push(
+      "",
+      `Feuilles d'émargement à jour (${sessionsEmargement.length} session${sessionsEmargement.length > 1 ? "s" : ""}) — les feuilles preuves/emargement/<numero>.pdf sont des instantanés scellés ; les tirages ci-dessous portent les signatures recueillies à l'instant de l'export (inscriptions sous droit à l'effacement non portées, comme à l'écran) :`,
+    );
+    for (const sessionId of sessionsEmargement) {
+      try {
+        const tirage = await rendreTirageEmargementAJour(sessionId, now);
+        if (tirage.ok) {
+          const chemin = `preuves/emargement/${tirage.numeroOrigine ?? `session-${tirage.numeroSession}`}-a-jour.pdf`;
+          zip.file(chemin, tirage.buffer);
+          indexLines.push(
+            `[À JOUR] ${chemin} — session ${tirage.numeroSession} : ${tirage.mention}, ${tirage.totalSignatures} signature${tirage.totalSignatures > 1 ? "s" : ""}.`,
+          );
+          nbInclus++;
+        } else {
+          indexLines.push(`[ABSENT] tirage à jour — ${tirage.message}`);
+        }
+      } catch (err) {
+        nbOmis++;
+        avertissements.push(
+          `⚠️ Le tirage à jour d'une feuille d'émargement n'a pas pu être produit (${err instanceof Error ? err.message : String(err)}). La feuille jointe n'est qu'un instantané : elle ne porte que les signatures recueillies à sa date.`,
+        );
+      }
+    }
   }
 
   // ── Exports d'état des registres (LOT 2 — A3/A7/A8/A17/A18) ─────────────
@@ -847,6 +968,8 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
     incomplet,
     nbPreuvesAttendues,
     nbPreuvesJointes,
+    nbPiecesHorsDossier: nbDocumentsHorsDossier,
+    nbPiecesFormateursEcartees: nbPiecesEmployeur + nbPiecesAutre + nbPiecesNonFormateurs,
     avertissements,
   };
 }
