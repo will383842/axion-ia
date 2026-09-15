@@ -88,6 +88,17 @@ export interface EmargementJournee {
 export interface EmargementData {
   numero: string;
   estCopie?: boolean;
+  /**
+   * Mention d'un TIRAGE À JOUR — « Réimpression à jour du …, pièce d'origine :
+   * …, émise le … ». Absente sur la pièce officielle du registre.
+   *
+   * 🔴 X-documents-pdf-01. Le tirage emprunte le numéro de la pièce du registre ;
+   * posé à côté d'elle dans un dossier d'audit, rien SUR LE PDF ne disait qu'il
+   * était une réimpression ni quand il avait été tiré. Lu seul, il ressemblait
+   * à une feuille émise avant la session portant des signatures postérieures :
+   * l'apparence d'une pièce antidatée. Construite par `emargement-tirage.ts`.
+   */
+  reimpression?: string;
   intituleFormation: string;
   numeroSession: string;
   lieu: string;
@@ -133,6 +144,16 @@ export function EmargementPdf({
         identite={identite}
         {...(data.estCopie !== undefined ? { estCopie: data.estCopie } : {})}
       >
+        {/* Tirage à jour : la pièce DIT ce qu'elle est, avant tout le reste. */}
+        {data.reimpression !== undefined && (
+          <View style={pdfStyles.specimenBanner}>
+            <Text style={pdfStyles.specimenBannerTitle}>
+              TIRAGE À JOUR — ce document n&apos;est pas la pièce d&apos;origine
+            </Text>
+            <Text style={pdfStyles.specimenBannerText}>{data.reimpression}</Text>
+          </View>
+        )}
+
         {/* En-tête de session */}
         <DocSection title="Informations de la session">
           <FieldRow label="Formation" value={data.intituleFormation} />

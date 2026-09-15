@@ -31,6 +31,7 @@ import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-fo
 import { ecartEffectif, mentionStagiaires } from "@/server/qualiopi/documents/stagiaires-nommes";
 import {
   LIEU_DOCUMENT_SELECT,
+  refusEmissionLieu,
   resolveLieuConvocation,
   resolveLieuDocument,
 } from "@/server/qualiopi/lieu/resolve-lieu-document";
@@ -290,6 +291,10 @@ export async function produireConvention(
   if (!session.client) {
     return { ok: false, motif: "Session sans client — impossible de générer la convention" };
   }
+  // 🔴 I17-01 — une convention qui imprimerait l'adresse de l'organisme faute de
+  // lieu n'est pas émise : le motif dit quoi saisir.
+  const refusLieu = refusEmissionLieu(session);
+  if (refusLieu !== null) return { ok: false, motif: refusLieu };
 
   const identite = await getOrganismeIdentite();
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
@@ -397,6 +402,9 @@ export async function produireConventionTripartite(
   });
   if (!session) return { ok: false, motif: "Session introuvable" };
   if (!session.client) return { ok: false, motif: "Session sans client" };
+  // 🔴 I17-01 — pas de lieu qui dise où : pas de convention tripartite.
+  const refusLieu = refusEmissionLieu(session);
+  if (refusLieu !== null) return { ok: false, motif: refusLieu };
 
   const identite = await getOrganismeIdentite();
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
@@ -516,6 +524,9 @@ export async function produireContratFormation(
   const identite = await getOrganismeIdentite();
   const session = enrollment.session;
   const trainee = enrollment.trainee;
+  // 🔴 I17-01 — pas de lieu qui dise où : pas de contrat.
+  const refusLieu = refusEmissionLieu(session);
+  if (refusLieu !== null) return { ok: false, motif: refusLieu };
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const objectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
   const nomPrenom = `${trainee.prenom} ${trainee.nom}`.trim();
@@ -638,6 +649,9 @@ export async function produireConvocation(
   const identite = await getOrganismeIdentite();
   const session = enrollment.session;
   const trainee = enrollment.trainee;
+  // 🔴 I17-01 — la convocation annoncerait l'adresse de l'organisme au stagiaire.
+  const refusLieu = refusEmissionLieu(session);
+  if (refusLieu !== null) return { ok: false, motif: refusLieu };
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const formateurNom = await resolveFormateurNom(
     { formateurPrincipalId: session.formateurPrincipalId, coFormateurs: session.coFormateurs },
@@ -968,6 +982,9 @@ export async function produireProgramme(
     },
   });
   if (!session) return { ok: false, motif: "Session introuvable" };
+  // 🔴 I17-01 — le programme imprime aussi le lieu de déroulement.
+  const refusLieu = refusEmissionLieu(session);
+  if (refusLieu !== null) return { ok: false, motif: refusLieu };
 
   const identite = await getOrganismeIdentite();
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
@@ -1064,6 +1081,9 @@ export async function produireOrganisationAction(
     },
   });
   if (!session) return { ok: false, motif: "Session introuvable" };
+  // 🔴 I17-01 — l'organisation de l'action imprime aussi le lieu de déroulement.
+  const refusLieu = refusEmissionLieu(session);
+  if (refusLieu !== null) return { ok: false, motif: refusLieu };
 
   const identite = await getOrganismeIdentite();
 

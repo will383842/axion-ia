@@ -562,6 +562,32 @@ describe("documentsAutoHandler — le worker n'écrit jamais deux fois la même 
     expect(mockProduireConvocation).toHaveBeenCalled();
   });
 
+  it("🔴 I17-01 — un refus faute de lieu est DIT : motif et session journalisés, jamais tu", async () => {
+    // Le producteur refuse désormais une pièce qui imprimerait l'adresse de
+    // l'organisme. Le cron ne doit ni planter, ni sauter la session sans trace.
+    const motif = "Émission refusée : la session n'a aucun lieu de déroulement.";
+    mockPrisma.trainingSession.findMany.mockResolvedValue([sessionNominale()]);
+    mockProduireConvocation.mockResolvedValue({ ok: false, motif });
+    const erreurs = vi.spyOn(console, "error").mockImplementation(() => {});
+    const bilans = vi.spyOn(console, "log").mockImplementation(() => {});
+    try {
+      await expect(
+        documentsAutoHandler({ type: "documents-auto.production", tick: "t" }),
+      ).resolves.toBeUndefined();
+
+      const lignes = erreurs.mock.calls.map((c) => c.map(String).join(" "));
+      expect(
+        lignes.some((l) => l.includes("AXI-SESS-2026-001") && l.includes(motif)),
+        "le refus n'a laissé aucune trace nommant la session et le motif",
+      ).toBe(true);
+      const bilan = bilans.mock.calls.map((c) => c.map(String).join(" ")).join("\n");
+      expect(bilan).toMatch(/[1-9]\d* en échec/);
+    } finally {
+      erreurs.mockRestore();
+      bilans.mockRestore();
+    }
+  });
+
   it("sélectionne par ÉTAT, jamais par fenêtre : statuts actifs + realisee bornée", async () => {
     await documentsAutoHandler({ type: "documents-auto.production", tick: "t" });
 

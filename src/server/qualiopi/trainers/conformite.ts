@@ -30,6 +30,8 @@
  * d'outil : on ne bloque donc pas sur une règle non validée, mais on la signale.
  */
 
+import { aUnFichier, estPieceCompetenceProbante, estTypePieceCompetence } from "./piece-competence";
+
 /** Miroir de l'enum Prisma `TrainerStatut`. */
 export type TrainerStatutValue = "salarie" | "sous_traitant" | "dirigeant";
 
@@ -55,6 +57,11 @@ export type DocumentValidationStatutValue = "en_attente" | "valide" | "rejete";
 export interface DocumentConformite {
   type: TrainerDocumentTypeValue;
   statutValidation: DocumentValidationStatutValue;
+  /**
+   * Adresse du fichier. Une pièce de COMPÉTENCE sans fichier n'est jamais
+   * retenue (constat I21-02, `piece-competence.ts`).
+   */
+  fichierUrl: string | null;
   dateEmission: Date | null;
   dateExpiration: Date | null;
 }
@@ -172,7 +179,14 @@ export function trouverValide(
   type: TrainerDocumentTypeValue,
   now: Date,
 ): DocumentConformite | null {
-  const candidates = documents.filter((d) => d.type === type && estValide(d, now));
+  // 🔴 I21-02 (relecture PR #1085) — pour une pièce de COMPÉTENCE, « valide » ne
+  // suffit pas : le prédicat partagé exige aussi un fichier. Sans cela, un CV
+  // validé sans fichier éteignait l'alerte « CV absent » et laissait la fiche
+  // formateur annoncer « Dossier complet ». Les autres types gardent `estValide`.
+  const retenue = estTypePieceCompetence(type)
+    ? (d: DocumentConformite) => estPieceCompetenceProbante(d, now)
+    : (d: DocumentConformite) => estValide(d, now);
+  const candidates = documents.filter((d) => d.type === type && retenue(d));
   if (candidates.length === 0) return null;
   return candidates.reduce((meilleur, d) => {
     if (d.dateEmission === null) return meilleur;
@@ -293,9 +307,17 @@ export function evaluerConformiteFormateur(
       // périmé, et un CV dont la date d'émission n'a simplement pas été saisie.
       // Annoncer « de plus de 12 mois » sur une pièce sans date envoie chercher
       // un document à refaire alors qu'il suffit de renseigner un champ.
+      // 🔴 I21-02 : un CV validé mais SANS fichier n'est pas retenu. Le dire
+      // « absent » tout court enverrait chercher une pièce que l'écran montre
+      // pourtant validée : on nomme la vraie cause et le geste qui existe.
       message:
         cv === null
-          ? "CV absent ou non validé."
+          ? documents.some(
+              (d) =>
+                d.type === "cv" && d.statutValidation === "valide" && !aUnFichier(d.fichierUrl),
+            )
+            ? "CV validé mais sans fichier joint : il ne prouve rien. Ajoutez une nouvelle pièce avec son fichier, puis rejetez l'ancienne."
+            : "CV absent ou non validé."
           : cv.dateEmission === null
             ? "CV sans date d'émission : renseignez-la pour prouver sa fraîcheur."
             : `CV de plus de ${config.cvValiditeMois} mois : à actualiser.`,

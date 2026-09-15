@@ -211,6 +211,10 @@ export async function updateRevueDirectionAction(input: {
       participants: fields.participants ?? stockee?.participants ?? [],
       decisions: fields.decisions ?? stockee?.decisions ?? [],
       planActions: planActions ?? stockee?.planActions ?? [],
+      // 🔴 I32-01 (2026-09-14) — les risques manquaient ici : après le
+      // 1er novembre 2026, la garde refusait toute validation, même quand
+      // l'analyse était envoyée dans le même geste ou déjà en base.
+      risques: fields.risques ?? stockee?.risques ?? [],
     });
     if (refus !== null) return { error: refus };
   }
@@ -220,6 +224,10 @@ export async function updateRevueDirectionAction(input: {
     ...(fields.participants !== undefined ? { participants: fields.participants } : {}),
     ...(fields.decisions !== undefined ? { decisions: fields.decisions } : {}),
     ...(planActions !== undefined ? { planActions } : {}),
+    // 🔴 I32-01 (2026-09-14) — l'analyse de risques saisie à l'écran était
+    // acceptée par le schéma puis jetée ici, sans message. La revue de l'année
+    // existant déjà (`annee` unique), la mise à jour est son SEUL chemin d'écriture.
+    ...(fields.risques !== undefined ? { risques: fields.risques } : {}),
     ...(fields.statut !== undefined ? { statut: fields.statut } : {}),
   });
 
