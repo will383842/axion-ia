@@ -51,13 +51,23 @@ import {
 } from "@/server/qualiopi/emargement/reconstruction";
 import { maillonContresignatureDepuisLigne } from "@/server/qualiopi/emargement/contresignature-hash";
 import { construireFeuillePdf } from "@/server/qualiopi/emargement/feuille-pdf";
+import { rendreTirageEmargementAJour } from "@/server/qualiopi/documents/emargement-tirage";
+import { parisDateISO } from "@/server/qualiopi/presence/time";
+import { documentJointAuDossierAudit, lignePiecesHorsDossier } from "./hors-dossier-audit";
 
 export interface DossierSessionResult {
   base64: string;
   filename: string;
   incomplet: boolean;
+  /** Pièces EN VIGUEUR de la session en base, qu'elles relèvent du dossier ou non. */
   nbDocuments: number;
   nbDocumentsJoints: number;
+  /**
+   * Pièces en vigueur ÉCARTÉES du dossier remis (RH, rémunération, facturation —
+   * `hors-dossier-audit.ts`). Elles restent au registre ; ce compteur permet de
+   * le tracer au journal de l'export.
+   */
+  nbDocumentsHorsDossier: number;
   /**
    * Pièces ANNULÉES de la session, écartées du ZIP mais NOMMÉES dans l'index.
    *
@@ -150,6 +160,15 @@ export async function genererDossierSessionZip(
   });
 
   if (session === null) return null;
+
+  // 🔴 X-mode-auditeur-05 / G-lieu-05 (2026-09-14) — contrats de travail et
+  // autofactures d'honoraires partaient dans le dossier remis à l'auditrice.
+  // Ils ne prouvent aucun indicateur : ils restent au registre, pas dans le
+  // dossier (RGPD, minimisation). Écartés ICI, avant toute lecture qui suit —
+  // téléchargement, vérification de chaîne, journal des envois — et tout ce qui
+  // suit lit `documents`, jamais `session.documents`.
+  const documents = session.documents.filter((d) => documentJointAuDossierAudit(d.type));
+  const nbDocumentsHorsDossier = session.documents.length - documents.length;
 
   const zip = new JSZip();
   const avertissements: string[] = [];
@@ -278,7 +297,7 @@ export async function genererDossierSessionZip(
   // juste en dessous.
   const rapportsPieces: Array<Record<string, unknown>> = [];
   let nbChainesPieceAnormales = 0;
-  for (const doc of session.documents) {
+  for (const doc of documents) {
     const res = await verifierChaineDocument(doc.id);
     if (res === null) continue;
     if (!res.valide) nbChainesPieceAnormales += 1;
@@ -435,7 +454,7 @@ export async function genererDossierSessionZip(
     const idsSession = [
       sessionId,
       ...session.enrollments.map((e) => e.id),
-      ...session.documents.map((d) => d.id),
+      ...documents.map((d) => d.id),
     ];
     const envois = await prisma.emailLog.findMany({
       where: { entityId: { in: idsSession } },
@@ -501,8 +520,8 @@ export async function genererDossierSessionZip(
   }
 
   let joints = 0;
-  index.push("", `Documents (${session.documents.length}) :`);
-  for (const doc of session.documents) {
+  index.push("", `Documents (${documents.length}) :`);
+  for (const doc of documents) {
     // Clé alignée sur l'écriture (`documents-service.ts` utilise l'année locale
     // au moment de la génération).
     const cle = documentPdfKey(doc);
@@ -512,17 +531,65 @@ export async function genererDossierSessionZip(
       continue;
     }
     zip.file(`documents/${doc.type}/${doc.numero}.pdf`, buffer);
-    index.push(`  [OK]     ${doc.type}/${doc.numero}.pdf (${buffer.byteLength} octets)`);
+    // Une feuille d'émargement du registre est un INSTANTANÉ : l'index le dit à
+    // côté de son nom, pour qu'on ne la lise pas comme l'état des signatures.
+    // Date en heure de PARIS : en UTC, une pièce émise entre minuit et 2 h
+    // reculerait d'un jour — la lecture « antidatée » à éviter.
+    const mention =
+      doc.type === "emargement"
+        ? ` — instantané scellé du ${parisDateISO(doc.createdAt)}, signatures à cette date seulement : voir la feuille à jour`
+        : "";
+    index.push(`  [OK]     ${doc.type}/${doc.numero}.pdf (${buffer.byteLength} octets)${mention}`);
     joints += 1;
   }
 
   // ⚠️ La condition porte sur les pièces EN VIGUEUR, et c'est le point : une
   // session dont toutes les pièces sont annulées n'a plus rien à joindre. Faire
   // porter le chapeau au stockage enverrait chercher une panne qui n'existe pas.
-  if (session.documents.length > 0 && joints === 0) {
+  if (documents.length > 0 && joints === 0) {
     avertissements.push(
-      `⚠️ ${session.documents.length} document${session.documents.length > 1 ? "s" : ""} en base mais AUCUN PDF joint — vérifiez le stockage R2.`,
+      `⚠️ ${documents.length} document${documents.length > 1 ? "s" : ""} en base mais AUCUN PDF joint — vérifiez le stockage R2.`,
     );
+  }
+
+  // ── 3 ter. La feuille d'émargement À JOUR ──
+  //
+  // 🔴 X-documents-pdf-01 (audit initial 2026-09-14). La feuille du registre est
+  // tirée AVANT la session — c'est l'usage : on l'imprime pour la faire signer.
+  // Elle porte donc à vie « Signatures enregistrées au tirage : 0 », et c'était
+  // la seule feuille en PDF de ce dossier : les signatures réelles n'y figuraient
+  // qu'en JSON. L'auditrice ouvrait la pièce et voyait une feuille vierge.
+  //
+  // ➡️ Le tirage est celui de l'écran « Télécharger la feuille à jour » : même
+  // chemin (`rendreTirageEmargementAJour`), même population, même PDF. Il est
+  // DÉRIVÉ, jamais persisté ni numéroté, emprunte le numéro de la dernière
+  // feuille qui fait foi, et le dit SUR LA PIÈCE : date et heure du tirage,
+  // pièce d'origine et sa date d'émission. La pièce scellée reste jointe à côté,
+  // intacte — régénérer la pièce aurait créé une seconde feuille concurrente.
+  try {
+    const tirage = await rendreTirageEmargementAJour(sessionId);
+    if (tirage.ok) {
+      const cheminTirage =
+        tirage.numeroOrigine === null
+          ? "emargement/emargement-a-jour.pdf"
+          : `emargement/${tirage.numeroOrigine}-a-jour.pdf`;
+      zip.file(`documents/${cheminTirage}`, tirage.buffer);
+      index.push(
+        `  [À JOUR] ${cheminTirage} — ${tirage.mention}. ${tirage.totalSignatures} signature${tirage.totalSignatures > 1 ? "s" : ""} enregistrée${tirage.totalSignatures > 1 ? "s" : ""}.`,
+        "           Même rendu que l'écran « Télécharger la feuille à jour » : les inscriptions sous droit à l'effacement n'y figurent pas ; leurs signatures conservées (art. 17 §3 b) sont dans feuille-emargement.json et verification-integrite.json.",
+      );
+    } else {
+      // Seul cas d'échec prévu : journées non déclarées — déjà signalé plus haut.
+      index.push(`  [ABSENT] feuille d'émargement à jour — ${tirage.message}`);
+    }
+  } catch (err) {
+    avertissements.push(
+      `⚠️ Le tirage à jour de la feuille d'émargement n'a pas pu être produit (${err instanceof Error ? err.message : String(err)}). Une feuille du registre jointe n'est qu'un instantané : elle ne porte que les signatures recueillies à sa date.`,
+    );
+  }
+
+  if (nbDocumentsHorsDossier > 0) {
+    index.push("", lignePiecesHorsDossier(nbDocumentsHorsDossier));
   }
 
   // ── 3 bis. Pièces ANNULÉES — retirées, mais JAMAIS tues ──
@@ -544,7 +611,7 @@ export async function genererDossierSessionZip(
   if (annulees.length > 0) {
     index.push("", `Pièces annulées, non jointes (${annulees.length}) :`);
     for (const a of annulees) {
-      const quand = a.annuleeAt === null ? "date inconnue" : a.annuleeAt.toISOString().slice(0, 10);
+      const quand = a.annuleeAt === null ? "date inconnue" : parisDateISO(a.annuleeAt);
       index.push(
         `  ${a.numero} (${a.type}) — ${a.annuleeMotif ?? "motif non renseigné"} — ${quand}`,
       );
@@ -566,6 +633,7 @@ export async function genererDossierSessionZip(
     incomplet,
     nbDocuments: session.documents.length,
     nbDocumentsJoints: joints,
+    nbDocumentsHorsDossier,
     nbDocumentsAnnulees: annulees.length,
     nbChainesAnormales,
     nbChainesContresignAnormales,

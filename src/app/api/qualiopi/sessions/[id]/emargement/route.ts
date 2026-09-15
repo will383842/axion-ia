@@ -22,6 +22,12 @@
  * le tirage se présente comme une réimpression à jour de cette pièce-là, pas
  * comme une pièce de plus. Sans feuille au registre, on l'indique en clair.
  *
+ * 🔴 X-documents-pdf-01 (audit initial 2026-09-14). Le rendu passe par
+ * `rendreTirageEmargementAJour`, le MÊME chemin que les dossiers d'audit : même
+ * population d'inscriptions, et une mention imprimée sur le PDF qui date le
+ * tirage et nomme la pièce d'origine. Le choix du numéro (jamais une feuille
+ * annulée) y vit aussi.
+ *
  * ⚠️ Logée sous `api/qualiopi/` et NON `api/admin/qualiopi/` : seul le premier
  * est whitelisté par `qualiopi:isolation-check`. La garde est dans le corps de
  * la route, pas dans le chemin.
@@ -32,9 +38,7 @@
 
 import { NextResponse, type NextRequest } from "next/server";
 import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
-import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
-import { construireTirageEmargement } from "@/server/qualiopi/documents/emargement-tirage";
+import { rendreTirageEmargementAJour } from "@/server/qualiopi/documents/emargement-tirage";
 import { dispositionDemandee, enTeteContentDisposition } from "@/lib/content-disposition";
 
 export const dynamic = "force-dynamic";
@@ -53,7 +57,9 @@ export async function GET(
 
   const { id } = await params;
 
-  const tirage = await construireTirageEmargement(id);
+  // Numéro, population, mention datée : tout est tranché dans
+  // `rendreTirageEmargementAJour`, partagé avec les dossiers d'audit.
+  const tirage = await rendreTirageEmargementAJour(id);
   if (!tirage.ok) {
     // « Journées non déclarées » n'est pas une panne, c'est un ÉTAT : le dire
     // évite de partir chercher une erreur qui n'existe pas.
@@ -61,32 +67,14 @@ export async function GET(
     return NextResponse.json({ error: tirage.message }, { status: statut });
   }
 
-  // Numéro de la feuille au registre, s'il y en a une. On prend la plus RÉCENTE
-  // qui fasse ENCORE FOI : c'est celle que l'admin a sous les yeux dans
-  // « Documents générés ».
-  //
-  // 🔴 `annuleeAt: null` n'est pas un raffinement. Ce tirage se présente comme la
-  // réimpression de la pièce dont il emprunte le numéro — jusque dans le nom du
-  // fichier, « <numero>-a-jour.pdf ». Emprunter celui d'une feuille que le
-  // registre déclare sans valeur produit un document qui se réclame d'une pièce
-  // annulée, et rien sur le PDF ne le dit : il n'existe aucun filigrane
-  // « ANNULÉ » dans le dépôt.
-  //
-  // Même filtre, et pour la même raison, que `documents-service.ts:313` : « la
-  // chaîne de remplacement doit désigner la dernière qui faisait foi ».
-  const officielle = await prisma.documentGenere.findFirst({
-    where: { type: "emargement", sessionId: id, annuleeAt: null },
-    orderBy: { createdAt: "desc" },
-    select: { numero: true },
-  });
-  const numero = officielle?.numero ?? "— non émise au registre —";
-
-  const rendu = await renderPdfToBuffer(tirage.element(numero));
-
+  // Le nom du fichier dit toujours qu'il s'agit d'un tirage à jour, avec ou sans
+  // pièce d'origine au registre.
   const nomFichier =
-    officielle?.numero != null ? `${officielle.numero}-a-jour.pdf` : `emargement-${id}.pdf`;
+    tirage.numeroOrigine !== null
+      ? `${tirage.numeroOrigine}-a-jour.pdf`
+      : `emargement-${id}-a-jour.pdf`;
 
-  return new NextResponse(new Uint8Array(rendu.buffer), {
+  return new NextResponse(new Uint8Array(tirage.buffer), {
     status: 200,
     headers: {
       "Content-Type": "application/pdf",
