@@ -179,6 +179,20 @@ describe("🔴 le worker tourne hors de Next — `server-only` n'y résout pas",
     expect(atteignables).toContain("src/server/careers/dossiers-en-sommeil.ts");
   });
 
+  // 🔑 2026-09-15 — le rattrapage des autofactures est atteint par un
+  // `await import()` dans `handleAutofactures`. Cette garde-ci ne suit que
+  // `server-only` ; la Server Action gardée qu'il appelait jusque-là est suivie
+  // par `autofacture-rattrapage.graphe-worker.spec.ts`. Ce témoin prouve que la
+  // marche générale couvre bien ce chemin, import dynamique compris.
+  it("TÉMOIN+ : la marche atteint le rattrapage des autofactures et son service d'émission", () => {
+    const atteignables = [...atteignablesDepuisLeWorker()].map((f) =>
+      f.slice(RACINE.length + 1).replace(/\\/g, "/"),
+    );
+
+    expect(atteignables).toContain("src/server/qualiopi/remuneration/autofacture-rattrapage.ts");
+    expect(atteignables).toContain("src/server/qualiopi/remuneration/autofacture-emission.ts");
+  });
+
   it("TÉMOIN+ : la marche part aussi des scripts lancés dans le conteneur worker", () => {
     const atteignables = [...atteignablesDepuisLeWorker()].map((f) =>
       f.slice(RACINE.length + 1).replace(/\\/g, "/"),

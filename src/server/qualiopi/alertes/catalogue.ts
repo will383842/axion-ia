@@ -1456,6 +1456,14 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
    * réservée à ce qui ne se rattrape pas — `autofacture_non_transmise` met en
    * défaut la régularité d'une pièce déjà émise, pas celle-ci.
    *
+   * 🔑 SECONDE CAUSE, DEPUIS LE 2026-09-15 : L'ÉCHEC RÉPÉTÉ DU RATTRAPAGE. Une
+   * fiche complète dont la facture ne sort pourtant pas — panne de PDF, de
+   * numéro, d'écriture, ou relevé incohérent — n'était vue par rien. Le cron
+   * horaire en laisse une trace à chaque passage ; l'alerte se lève à partir de
+   * deux échecs en 24 h, jamais sur un seul (un Redis absent une minute n'est
+   * pas une panne). Même code, même cible : c'est le même fait vu du formateur
+   * — son argent n'est pas réclamé.
+   *
    * `resolutionAuto` : disparaît dès que la donnée est saisie et la pièce émise.
    */
   autofacture_a_emettre: {
