@@ -118,8 +118,10 @@ beforeEach(() => {
   fiches.set(HANDICAP, fiche(HANDICAP, "Handicap"));
   vi.mocked(verifierToken).mockResolvedValue({ traineeId: BESOIN } as never);
   vi.mocked(soumettreReponses).mockResolvedValue({ id: QUEST_ID } as never);
+  // Même forme que `adaptation.spec.ts` : l'appartenance seule. Le contrôle du
+  // oui/non explicite propre au type « positionnement » (#1099) est verrouillé
+  // par ses propres specs ; ce fichier ne vérifie que la coche.
   vi.mocked(prisma.questionnaire.findUnique).mockResolvedValue({
-    type: "positionnement",
     enrollment: { traineeId: BESOIN },
   } as never);
 });
