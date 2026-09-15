@@ -126,6 +126,30 @@ async function getLienEmargementSiPremier(
  * doit pas transformer un envoi réussi en échec (le seul coût est un envoi de
  * plus au jour J, visible).
  */
+/**
+ * Révoque le jeton joint à un rappel que la file a REFUSÉ (hors validation).
+ *
+ * 🔴 Relecture #1096 — laissé vivant, ce jeton n'était entre les mains de
+ * personne mais se lisait « fabriqué aujourd'hui » pour le passage horaire du
+ * jour J, qui le protégeait comme un QR de salle. Un rappel de la veille tardif
+ * (session créée le matin pour l'après-midi) privait ainsi le stagiaire de son
+ * lien jusqu'au lendemain. Garé en validation, le message garde son lien : on
+ * n'y touche pas.
+ */
+async function revoquerLienNonParti(tokenId: string, contexte: string): Promise<void> {
+  try {
+    await prisma.emargementToken.updateMany({
+      where: { id: tokenId, envoyeAt: null, revokedAt: null },
+      data: { revokedAt: new Date(), revokedMotif: `${contexte} non parti — lien jamais remis` },
+    });
+  } catch (err) {
+    console.error(
+      `[${contexte}] jeton ${tokenId} non parti et non révoqué :`,
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
 async function marquerLienRemis(tokenId: string, contexte: string): Promise<void> {
   try {
     await prisma.emargementToken.update({ where: { id: tokenId }, data: { envoyeAt: new Date() } });
@@ -443,6 +467,9 @@ export async function envoyerRappelJ7(sessionId: string): Promise<boolean> {
               ? " (e-mail garé en corbeille de validation)"
               : " (file de messages indisponible)"),
         );
+        if (lienEmargement !== null && envoi.garePourValidation !== true) {
+          await revoquerLienNonParti(lienEmargement.tokenId, "rappel-j7");
+        }
         // `continue`, PAS `return` : les inscrits suivants ont droit à leur rappel.
         tousPartis = false;
         continue;
@@ -659,6 +686,9 @@ export async function envoyerRappelJ1(sessionId: string): Promise<boolean> {
         // `continue`, PAS `return` : le correctif du 2026-08-24 avait constaté
         // qu'un premier échec privait les neuf autres de leur rappel — et que
         // le journal ne nommait qu'une session, pas neuf personnes.
+        if (lienEmargement !== null && envoi.garePourValidation !== true) {
+          await revoquerLienNonParti(lienEmargement.tokenId, "rappel-j1");
+        }
         tousPartis = false;
         continue;
       }

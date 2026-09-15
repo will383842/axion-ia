@@ -201,3 +201,72 @@ describe("filtrage et mise en forme", () => {
     expect(r[0]?.avancement).toEqual({ fait: 2, total: 6 });
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 Relecture #1096 — l'étape de contresignature, au grain de CE formateur
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 contresignature : l'accueil ne compte que les demi-journées de CE formateur", () => {
+  // Session co-animée : le 16 est au formateur principal, le 17 au co-formateur.
+  // Le bandeau de la formation ne réclame à chacun que SES demi-journées
+  // (`contresignatures-attendues.ts`) ; l'accueil disait « 0/4 » aux deux, et
+  // réclamait au co-formateur l'attestation d'une journée qu'il n'a pas animée.
+  const avecParFormateur = (
+    parFormateur: Map<string, { signees: number; aContresigner: number }>,
+  ) => ({
+    ...echeance("s1", "contresignature_formateur"),
+    etape: {
+      ...echeance("s1", "contresignature_formateur").etape,
+      avancement: { fait: 0, total: 4 },
+    },
+    contresignatureParFormateur: parFormateur,
+  });
+
+  beforeEach(() => {
+    mockMesSessions.mockResolvedValue([session("s1")] as never);
+  });
+
+  it("n'affiche que SON avancement", async () => {
+    mockEcheances.mockResolvedValue({
+      ...VIDE,
+      echeances: [
+        avecParFormateur(
+          new Map([
+            [TRAINER, { signees: 2, aContresigner: 1 }],
+            ["autre", { signees: 2, aContresigner: 2 }],
+          ]),
+        ),
+      ],
+    } as never);
+    const r = await echeancesDuFormateur(TRAINER, MAINTENANT);
+    expect(r.find((e) => e.cle === "contresignature_formateur")?.avancement).toEqual({
+      fait: 1,
+      total: 2,
+    });
+  });
+
+  it("rien ne lui manque → l'étape ne lui est pas réclamée, même si un confrère est en retard", async () => {
+    mockEcheances.mockResolvedValue({
+      ...VIDE,
+      echeances: [
+        avecParFormateur(
+          new Map([
+            [TRAINER, { signees: 2, aContresigner: 0 }],
+            ["autre", { signees: 2, aContresigner: 2 }],
+          ]),
+        ),
+      ],
+    } as never);
+    const r = await echeancesDuFormateur(TRAINER, MAINTENANT);
+    expect(r.map((e) => e.cle)).not.toContain("contresignature_formateur");
+  });
+
+  it("aucune demi-journée à lui → l'étape n'apparaît pas", async () => {
+    mockEcheances.mockResolvedValue({
+      ...VIDE,
+      echeances: [avecParFormateur(new Map([["autre", { signees: 4, aContresigner: 4 }]]))],
+    } as never);
+    const r = await echeancesDuFormateur(TRAINER, MAINTENANT);
+    expect(r.map((e) => e.cle)).not.toContain("contresignature_formateur");
+  });
+});

@@ -46,6 +46,39 @@ const MOTIF_SUPPRESSION: Record<string, string> = {
 };
 
 /**
+ * Révoque un jeton fabriqué pour un e-mail qui n'est PAS parti.
+ *
+ * 🔴 Relecture de #1096 (review 5209451470). Le jeton est fabriqué AVANT la mise
+ * en file — il faut son clair pour écrire le lien. Si la file refuse, ce jeton
+ * n'est entre les mains de personne : son clair meurt avec la valeur de retour.
+ * Laissé vivant, il se lisait « fabriqué aujourd'hui » (`remise-lien.ts`), la
+ * raison qui protège un QR de salle, et plus aucun passage ne le remplaçait : le
+ * lien partait le lendemain de la formation.
+ *
+ * Aucune colonne neuve : l'état qui distingue « fabriqué pour la salle » de
+ * « fabriqué par l'envoi et non parti » n'est pas à stocker, il est à ne pas
+ * laisser exister. Un QR de salle ne passe jamais par ici.
+ *
+ * `envoyeAt: null` dans le filtre : on ne révoque jamais un jeton déjà remis.
+ * Fail-soft : un échec de révocation se journalise, il ne masque pas l'échec
+ * d'envoi que l'appelant doit rapporter.
+ */
+async function revoquerJetonNonParti(tokenId: string, motif: string): Promise<void> {
+  try {
+    await prisma.emargementToken.updateMany({
+      where: { id: tokenId, envoyeAt: null, revokedAt: null },
+      data: { revokedAt: new Date(), revokedMotif: motif },
+    });
+  } catch (err) {
+    console.error(
+      `[envoi-liens] jeton ${tokenId} NON parti et non révoqué — il bloquera le rattrapage ` +
+        "jusqu'au lendemain :",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
+/**
  * Émet un jeton neuf pour chaque stagiaire visé et le lui envoie.
  *
  * ⚠️ Chaque envoi RÉVOQUE le lien précédent du même stagiaire — conséquence
@@ -132,6 +165,8 @@ export async function envoyerLiensPourSession(input: {
 
   for (const inscription of aServir) {
     const nom = `${inscription.trainee.prenom} ${inscription.trainee.nom}`.trim();
+    // Jeton fabriqué dans ce tour ET dont l'e-mail n'est pas encore accepté.
+    let jetonEnSuspens: string | null = null;
     try {
       // 🔴 La liste de suppression AVANT le jeton, sur le chemin automatique.
       //
@@ -160,6 +195,7 @@ export async function envoyerLiensPourSession(input: {
         // même adresse deux lignes plus bas, jamais une autre.
         destinataireEmail: inscription.trainee.email,
       });
+      jetonEnSuspens = tokenId;
       const envoi = await enqueueEmail(
         "qualiopi-emargement-lien",
         inscription.trainee.email,
@@ -195,6 +231,13 @@ export async function envoyerLiensPourSession(input: {
       // émarger le jour J. Le mécanisme d'échec nommé existait déjà juste en
       // dessous (`echecs.push`) : il suffisait de s'en servir.
       if (!envoi.enqueued) {
+        // Garé en validation : le message ET son lien sont conservés dans la
+        // corbeille, ils partiront à l'approbation. Tout autre refus : le lien
+        // n'ira nulle part, le jeton ne doit pas survivre.
+        if (envoi.garePourValidation !== true) {
+          await revoquerJetonNonParti(tokenId, "Envoi automatique non parti — lien jamais remis");
+        }
+        jetonEnSuspens = null;
         echecs.push({
           stagiaireNom: nom,
           motif:
@@ -246,8 +289,13 @@ export async function envoyerLiensPourSession(input: {
           err instanceof Error ? err.message : String(err),
         );
       }
+      jetonEnSuspens = null;
       envoyes++;
     } catch (err) {
+      // La mise en file a LEVÉ après la fabrication : même raisonnement.
+      if (jetonEnSuspens !== null) {
+        await revoquerJetonNonParti(jetonEnSuspens, "Envoi en erreur — lien jamais remis");
+      }
       if (err instanceof TokenEmargementError) {
         // Le motif le plus fréquent, et le seul actionnable : aucune journée
         // déclarée. Le message du service dit déjà quoi faire.

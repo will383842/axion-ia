@@ -157,7 +157,7 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   "formateur-contresignature": {
     categorie: "formation",
     quand:
-      "À la fin d'une journée que des stagiaires ont signée et qu'aucun formateur n'a contresignée — une fois par jour, deux rappels au plus sans réaction",
+      "À la fin d'une journée que des stagiaires ont signée et qu'aucun formateur n'a contresignée — une demande par journée signée, deux rappels au plus à un jour d'écart, jamais entre 21 h et 8 h (heure de Paris)",
     destinataire: "le formateur désigné de la journée",
     source: "server/qualiopi/emargement/demande-contresignature.ts",
   },

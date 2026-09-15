@@ -141,10 +141,11 @@ vi.mock("@/server/qualiopi/emargement/demande-contresignature", () => ({
   envoyerDemandesContresignature: vi.fn(async () => ({
     sessions: 0,
     envoyees: 0,
-    dejaAujourdhui: 0,
+    enAttente: 0,
     plafonnees: 0,
     sansFormateur: 0,
-    nonMembre: 0,
+    retenues: 0,
+    horsPlage: false,
     echecs: 0,
   })),
 }));

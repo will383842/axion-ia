@@ -44,6 +44,8 @@ vi.mock("@/lib/prisma", () => ({
       // 2026-09-15 — le lien joint au rappel J-7 ou de la veille est MARQUÉ
       // remis (`envoyeAt`) quand l'e-mail est accepté par la file.
       update: vi.fn(),
+      // Relecture #1096 — un lien joint à un e-mail REFUSÉ par la file est révoqué.
+      updateMany: vi.fn(),
     },
     // 🔴 Le rappel de la VEILLE (ADR 0048 §4.3) lit la trace DURABLE de son
     // propre envoi ici, et non une colonne d'état : son cron est horaire sur
@@ -140,7 +142,11 @@ const mockPrisma = prisma as unknown as {
     update: ReturnType<typeof vi.fn>;
   };
   portailAcces: { findFirst: ReturnType<typeof vi.fn> };
-  emargementToken: { findFirst: ReturnType<typeof vi.fn>; update: ReturnType<typeof vi.fn> };
+  emargementToken: {
+    findFirst: ReturnType<typeof vi.fn>;
+    update: ReturnType<typeof vi.fn>;
+    updateMany: ReturnType<typeof vi.fn>;
+  };
   emailLog: { findFirst: ReturnType<typeof vi.fn> };
   questionnaire: {
     findUnique: ReturnType<typeof vi.fn>;
@@ -437,6 +443,28 @@ describe("envoyerRappelJ7", () => {
     mockPrisma.trainingSession.findUnique.mockResolvedValue(fakeSessionWithEnrollments);
     await envoyerRappelJ7(SESSION_ID);
     expect(mockPrisma.emargementToken.update).not.toHaveBeenCalled();
+    mockEnqueueEmail.mockResolvedValue({ enqueued: true });
+  });
+
+  // 🔴 Relecture #1096 — le jeton d'un rappel REFUSÉ par la file restait vivant,
+  // « fabriqué » : le jour même (rappel de la veille tardif), le passage horaire
+  // le protégeait comme un QR de salle et ne servait plus le stagiaire.
+  it("🔴 e-mail refusé par la file → le jeton joint est RÉVOQUÉ, jamais laissé en suspens", async () => {
+    mockEnqueueEmail.mockResolvedValue({ enqueued: false });
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(fakeSessionWithEnrollments);
+    await envoyerRappelJ7(SESSION_ID);
+    const arg = mockPrisma.emargementToken.updateMany.mock.calls[0]?.[0] as
+      { where: { id: string; envoyeAt: null }; data: { revokedAt: Date } } | undefined;
+    expect(arg?.where).toMatchObject({ id: "tok-uuid-1", envoyeAt: null });
+    expect(arg?.data.revokedAt).toBeInstanceOf(Date);
+    mockEnqueueEmail.mockResolvedValue({ enqueued: true });
+  });
+
+  it("e-mail garé en validation → le jeton reste : il partira à l'approbation", async () => {
+    mockEnqueueEmail.mockResolvedValue({ enqueued: false, garePourValidation: true });
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(fakeSessionWithEnrollments);
+    await envoyerRappelJ7(SESSION_ID);
+    expect(mockPrisma.emargementToken.updateMany).not.toHaveBeenCalled();
     mockEnqueueEmail.mockResolvedValue({ enqueued: true });
   });
 

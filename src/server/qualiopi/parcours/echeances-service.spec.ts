@@ -43,6 +43,7 @@ function sessionAJ3(patch: Record<string, unknown> = {}) {
     // lus par le même `select`.
     jours: [] as Array<{ date: Date; heureDebut: string; heureFin: string; trainerId: null }>,
     emargementContresignatures: [] as Array<{ date: Date; demiJournee: string }>,
+    sessionFormateurs: [] as Array<{ trainerId: string }>,
     documents: [
       {
         id: "conv",

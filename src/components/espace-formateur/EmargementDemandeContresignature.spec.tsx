@@ -40,6 +40,8 @@ describe("ce que CE formateur a à contresigner", () => {
     delete process.env["DATABASE_URL"];
     findFirst.mockResolvedValue({
       formateurPrincipalId: "t-moi",
+      // Le formateur du 15 est bien membre : c'est la DÉSIGNATION qui l'écarte ici.
+      sessionFormateurs: [{ trainerId: "t-autre" }],
       jours: [
         {
           date: jourDb("2026-09-15"),

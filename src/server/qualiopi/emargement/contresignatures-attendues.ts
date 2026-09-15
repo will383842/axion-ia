@@ -36,6 +36,7 @@ export async function contresignaturesAttenduesDuFormateur(
     },
     select: {
       formateurPrincipalId: true,
+      sessionFormateurs: { select: { trainerId: true } },
       jours: { select: { date: true, heureDebut: true, heureFin: true, trainerId: true } },
       emargementContresignatures: {
         where: { revokedAt: null },
@@ -58,6 +59,12 @@ export async function contresignaturesAttenduesDuFormateur(
     formateurPrincipalId: s.formateurPrincipalId,
     creneauxSignes: s.enrollments.flatMap((e) => e.presences),
     contresignatures: s.emargementContresignatures,
+    // Même règle que l'e-mail : seul un formateur MEMBRE est désigné.
+    membres: new Set(
+      [s.formateurPrincipalId, ...s.sessionFormateurs.map((sf) => sf.trainerId)].filter(
+        (id): id is string => id !== null,
+      ),
+    ),
     maintenant,
   });
   return aContresigner.filter((d) => d.formateurId === trainerId);

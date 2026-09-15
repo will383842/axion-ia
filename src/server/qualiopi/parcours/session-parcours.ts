@@ -81,7 +81,20 @@ export interface SessionParcoursInput {
    * signature de stagiaire ; `aContresigner` : celles qu'aucun formateur n'a
    * contresignées.
    */
-  readonly contresignature: { readonly signees: number; readonly aContresigner: number };
+  readonly contresignature: {
+    readonly signees: number;
+    readonly aContresigner: number;
+    /**
+     * Relecture #1096 — demi-journées à contresigner sans AUCUN formateur
+     * membre à qui le demander : la demande ne peut pas partir, la fiche le dit.
+     */
+    readonly sansDestinataire: number;
+    /** Détail par formateur désigné — l'accueil de chaque formateur le lit. */
+    readonly parFormateur: ReadonlyMap<
+      string,
+      { readonly signees: number; readonly aContresigner: number }
+    >;
+  };
   readonly maintenant: Date;
 }
 
@@ -551,7 +564,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   // bloquante pour l'attestation (décision de Will) : l'étape ne retient rien,
   // elle rend le manque VISIBLE tant qu'il dure — ici, et dans l'accueil du
   // formateur, qui lit la même étape.
-  const { signees, aContresigner } = input.contresignature;
+  const { signees, aContresigner, sansDestinataire } = input.contresignature;
   etapes.push(
     etape({
       cle: "contresignature_formateur",
@@ -570,15 +583,21 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       avancement: { fait: signees - aContresigner, total: signees },
       geste:
         "Automatique — la demande part au formateur par e-mail le soir de chaque journée signée " +
-        "(deux rappels au plus) et s'affiche dans son espace. La signature, elle, reste la sienne : " +
-        "personne ne signe à sa place.",
+        "(une par journée, deux rappels au plus, jamais entre 21 h et 8 h) et s'affiche dans son " +
+        "espace. La signature, elle, reste la sienne : personne ne signe à sa place.",
       sansObjetSi: signees === 0,
       motifSansObjet: "Aucune demi-journée terminée ne porte encore de signature de stagiaire",
       ...(aContresigner > 0
         ? {
             avertissement:
               `${aContresigner} demi-journée${aContresigner > 1 ? "s" : ""} signée${aContresigner > 1 ? "s" : ""} par des stagiaires sans contresignature du formateur. ` +
-              "Non bloquant pour l'attestation, mais les OPCO la demandent : relancez-le si les rappels n'ont rien donné.",
+              "Non bloquant pour l'attestation, mais les OPCO la demandent : relancez-le si les rappels n'ont rien donné." +
+              // 🔴 Relecture #1096 — ce manque-là ne se rattrape par AUCUN
+              // rappel : il n'existait que dans un `console.error` du worker.
+              (sansDestinataire > 0
+                ? ` ${sansDestinataire} d'entre elles n'ont aucun formateur membre de la session à qui ` +
+                  "demander : aucune demande ne part. Affectez la journée à un formateur de la session."
+                : ""),
           }
         : {}),
     }),

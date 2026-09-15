@@ -1999,7 +1999,8 @@ async function handleLiensEmargementJ0(): Promise<void> {
  * 🔴 Sur AXI-SESS-2026-001, la stagiaire a signé et aucune contresignature n'a
  * jamais été recueillie : rien ne la demandait. Elle reste NON BLOQUANTE pour
  * l'attestation (décision de Will) ; ce cron ne signe rien à la place de
- * personne, il DEMANDE — une fois par jour, deux rappels au plus sans réaction.
+ * personne, il DEMANDE — une demande par journée signée, deux rappels au plus,
+ * jamais entre 21 h et 8 h (heure de Paris).
  * Tout vit dans `demande-contresignature.ts` ; ici on déclenche et on dit ce
  * qui s'est passé, même quand il ne s'est rien passé.
  */
@@ -2013,12 +2014,20 @@ async function handleDemandesContresignature(): Promise<void> {
   const { envoyerDemandesContresignature } =
     await import("@/server/qualiopi/emargement/demande-contresignature");
   const b = await envoyerDemandesContresignature(new Date());
+  if (b.horsPlage) {
+    // Jamais la nuit : le passage se DIT, pour qu'on ne le confonde pas avec un
+    // cron qui ne tourne plus.
+    console.log(
+      "[formation-crons] demandes-contresignature: hors plage 08:00-21:00 (Paris), rien tenté",
+    );
+    return;
+  }
   const ligne =
     `[formation-crons] demandes-contresignature: ${b.envoyees} demande(s) envoyée(s), ` +
-    `${b.dejaAujourdhui} déjà faite(s) aujourd'hui, ${b.plafonnees} au plafond de rappels, ` +
-    `${b.sansFormateur} demi-journée(s) sans formateur, ${b.nonMembre} formateur(s) non membre(s), ` +
+    `${b.enAttente} journée(s) en attente du prochain rappel, ${b.plafonnees} au plafond, ` +
+    `${b.sansFormateur} demi-journée(s) sans formateur membre, ${b.retenues} adresse(s) retenue(s), ` +
     `${b.echecs} échec(s) (${b.sessions} session(s) examinée(s))`;
-  if (b.echecs > 0 || b.nonMembre > 0 || b.sansFormateur > 0) console.error(ligne);
+  if (b.echecs > 0 || b.sansFormateur > 0 || b.retenues > 0) console.error(ligne);
   else console.log(ligne);
 }
 

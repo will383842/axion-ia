@@ -28,6 +28,12 @@
  * Le formateur DÉSIGNÉ est celui de la journée, sinon le principal — la même
  * résolution que l'écran de groupe (`feuille-groupe.ts`).
  *
+ * 🔴 Relecture #1096 — et il doit être MEMBRE de la session : l'action de
+ * contresignature refuse les autres. Un formateur de journée qui n'est plus
+ * membre (retiré de la session, journée mal affectée) replie sur le principal
+ * s'il l'est ; sinon la demi-journée n'a PERSONNE à qui demander, et le bilan
+ * le compte (`sansDestinataire`) pour que la console le montre.
+ *
  * ## Une seule mesure, trois surfaces
  *
  * L'e-mail au formateur, son espace et la fiche session de la console lisent ce
@@ -51,6 +57,11 @@ export interface EntreeBilanContresignature {
   readonly creneauxSignes: ReadonlyArray<{ readonly date: Date; readonly demiJournee: string }>;
   /** Contresignatures non révoquées de la session, tous formateurs confondus. */
   readonly contresignatures: ReadonlyArray<{ readonly date: Date; readonly demiJournee: string }>;
+  /**
+   * Formateurs MEMBRES de la session (principal par la FK + lignes
+   * `SessionFormateur`). Absent = aucune vérification d'appartenance.
+   */
+  readonly membres?: ReadonlySet<string>;
   readonly maintenant: Date;
 }
 
@@ -67,6 +78,23 @@ export interface BilanContresignature {
   readonly signees: number;
   /** Parmi elles, celles qu'aucun formateur n'a contresignées. Triées. */
   readonly aContresigner: ReadonlyArray<DemiJourneeAContresigner>;
+  /** Demi-journées à contresigner sans formateur MEMBRE à qui le demander. */
+  readonly sansDestinataire: number;
+  /** Les deux compteurs, pour chaque formateur désigné. */
+  readonly parFormateur: ReadonlyMap<string, { signees: number; aContresigner: number }>;
+}
+
+/** Formateur désigné d'une journée : celui de la journée, sinon le principal — s'il est membre. */
+function formateurDesigne(
+  trainerDuJour: string | null,
+  principal: string | null,
+  membres: ReadonlySet<string> | undefined,
+): string | null {
+  const estMembre = (id: string | null): id is string =>
+    id !== null && (membres === undefined || membres.has(id));
+  if (estMembre(trainerDuJour)) return trainerDuJour;
+  if (estMembre(principal)) return principal;
+  return null;
 }
 
 function minutes(hhmm: string): number {
@@ -103,7 +131,7 @@ export function bilanContresignature(e: EntreeBilanContresignature): BilanContre
     signees.push({
       date,
       demiJournee: c.demiJournee,
-      formateurId: jour?.trainerId ?? e.formateurPrincipalId,
+      formateurId: formateurDesigne(jour?.trainerId ?? null, e.formateurPrincipalId, e.membres),
     });
   }
 
@@ -111,7 +139,21 @@ export function bilanContresignature(e: EntreeBilanContresignature): BilanContre
     .filter((d) => !contresignees.has(`${d.date}|${d.demiJournee}`))
     .sort((a, b) => a.date.localeCompare(b.date) || ORDRE[a.demiJournee] - ORDRE[b.demiJournee]);
 
-  return { signees: signees.length, aContresigner };
+  const parFormateur = new Map<string, { signees: number; aContresigner: number }>();
+  for (const d of signees) {
+    if (d.formateurId === null) continue;
+    const c = parFormateur.get(d.formateurId) ?? { signees: 0, aContresigner: 0 };
+    c.signees++;
+    if (!contresignees.has(`${d.date}|${d.demiJournee}`)) c.aContresigner++;
+    parFormateur.set(d.formateurId, c);
+  }
+
+  return {
+    signees: signees.length,
+    aContresigner,
+    sansDestinataire: aContresigner.filter((d) => d.formateurId === null).length,
+    parFormateur,
+  };
 }
 
 const LIBELLE_DEMI: Record<DemiJourneeContresignable, string> = {

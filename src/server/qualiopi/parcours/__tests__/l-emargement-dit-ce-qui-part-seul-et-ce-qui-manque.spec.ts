@@ -47,7 +47,7 @@ function dossier(patch: Partial<SessionParcoursInput> = {}): SessionParcoursInpu
     ],
     liensEmargementActifs: 1,
     creneauxEmargement: 4,
-    contresignature: { signees: 2, aContresigner: 2 },
+    contresignature: { signees: 2, aContresigner: 2, sansDestinataire: 0, parFormateur: new Map() },
     maintenant: d("2026-09-17T18:00:00.000Z"),
     ...patch,
   } as SessionParcoursInput;
@@ -123,7 +123,16 @@ describe("2. la contresignature du formateur a son étape", () => {
 
   it("tout contresigné → fait", () => {
     const e = etape(
-      construireParcours(dossier({ contresignature: { signees: 2, aContresigner: 0 } })),
+      construireParcours(
+        dossier({
+          contresignature: {
+            signees: 2,
+            aContresigner: 0,
+            sansDestinataire: 0,
+            parFormateur: new Map(),
+          },
+        }),
+      ),
       "contresignature_formateur",
     );
     expect(e?.etat).toBe("fait");
@@ -131,7 +140,16 @@ describe("2. la contresignature du formateur a son étape", () => {
 
   it("aucune demi-journée signée terminée → sans objet", () => {
     const e = etape(
-      construireParcours(dossier({ contresignature: { signees: 0, aContresigner: 0 } })),
+      construireParcours(
+        dossier({
+          contresignature: {
+            signees: 0,
+            aContresigner: 0,
+            sansDestinataire: 0,
+            parFormateur: new Map(),
+          },
+        }),
+      ),
       "contresignature_formateur",
     );
     expect(e?.etat).toBe("sans_objet");
@@ -154,6 +172,7 @@ describe("3. la traduction ligne Prisma → parcours compte les demi-journées",
     formateurPrincipalId: "t-1",
     financementType: null,
     sessionRemplacement: [],
+    sessionFormateurs: [],
     documents: [],
     jours: [
       { date: jourDb("2026-09-16"), heureDebut: "09:00", heureFin: "17:00", trainerId: null },
@@ -192,6 +211,27 @@ describe("3. la traduction ligne Prisma → parcours compte les demi-journées",
 
   it("🔴 signées et à contresigner viennent du MÊME bilan que l'e-mail au formateur", () => {
     const e = entreeParcours(ligne, new Map(), d("2026-09-16T18:00:00.000Z"));
-    expect(e.contresignature).toEqual({ signees: 2, aContresigner: 1 });
+    expect(e.contresignature).toMatchObject({ signees: 2, aContresigner: 1, sansDestinataire: 0 });
+  });
+});
+
+describe("🔴 relecture #1096 — le manque de DESTINATAIRE se voit dans la console", () => {
+  it("demi-journées sans formateur membre à qui demander → l'avertissement le dit", () => {
+    // Avant : un `console.error` dans le worker, lu par personne. La demande ne
+    // partait pas, et la fiche disait seulement « relancez-le ».
+    const e = etape(
+      construireParcours(
+        dossier({
+          contresignature: {
+            signees: 2,
+            aContresigner: 2,
+            sansDestinataire: 2,
+            parFormateur: new Map(),
+          },
+        } as Partial<SessionParcoursInput>),
+      ),
+      "contresignature_formateur",
+    );
+    expect(e?.avertissement).toMatch(/aucun formateur membre/i);
   });
 });

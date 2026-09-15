@@ -32,6 +32,7 @@ const ligne = (patch: Partial<LigneSessionParcours> = {}): LigneSessionParcours 
   // 2026-09-15 — requis par la mesure de contresignature.
   jours: [],
   emargementContresignatures: [],
+  sessionFormateurs: [],
   enrollments: [],
   ...patch,
 });

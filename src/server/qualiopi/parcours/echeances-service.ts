@@ -97,6 +97,8 @@ export interface LigneSessionParcours {
     readonly date: Date;
     readonly demiJournee: string;
   }>;
+  /** Relecture #1096 — les membres, pour ne désigner qu'un formateur qui peut agir. */
+  readonly sessionFormateurs: ReadonlyArray<{ readonly trainerId: string }>;
   readonly enrollments: ReadonlyArray<{
     readonly id: string;
     readonly statut: string;
@@ -164,9 +166,19 @@ export function entreeParcours(
           e.presences.filter((p) => p.emargementSignatures.length > 0),
         ),
         contresignatures: s.emargementContresignatures,
+        membres: new Set(
+          [s.formateurPrincipalId, ...s.sessionFormateurs.map((sf) => sf.trainerId)].filter(
+            (id): id is string => id !== null,
+          ),
+        ),
         maintenant,
       });
-      return { signees: b.signees, aContresigner: b.aContresigner.length };
+      return {
+        signees: b.signees,
+        aContresigner: b.aContresigner.length,
+        sansDestinataire: b.sansDestinataire,
+        parFormateur: b.parFormateur,
+      };
     })(),
     maintenant,
   };
@@ -178,6 +190,12 @@ export interface EcheanceSession {
   readonly titre: string;
   readonly dateDebut: Date;
   readonly etape: EtapeParcours;
+  /**
+   * Relecture #1096 — pour l'étape `contresignature_formateur` seulement : le
+   * détail par formateur. L'accueil d'un co-formateur ne doit compter que SES
+   * demi-journées, comme le bandeau de sa formation.
+   */
+  readonly contresignatureParFormateur?: SessionParcoursInput["contresignature"]["parFormateur"];
 }
 
 export interface ResultatEcheances {
@@ -316,6 +334,7 @@ export async function prochainesEcheances(options?: {
         where: { revokedAt: null },
         select: { date: true, demiJournee: true },
       },
+      sessionFormateurs: { select: { trainerId: true } },
       enrollments: {
         select: {
           id: true,
@@ -398,7 +417,8 @@ export async function prochainesEcheances(options?: {
   >();
 
   for (const s of retenues) {
-    const parcours = construireParcours(entreeParcours(s, signaturesParPiece, maintenant));
+    const entree = entreeParcours(s, signaturesParPiece, maintenant);
+    const parcours = construireParcours(entree);
     parSession.set(s.id, {
       pire: parcours.pire,
       fait: parcours.avancement.fait,
@@ -415,6 +435,9 @@ export async function prochainesEcheances(options?: {
         titre: s.titreSession,
         dateDebut: s.dateDebut,
         etape,
+        ...(etape.cle === "contresignature_formateur"
+          ? { contresignatureParFormateur: entree.contresignature.parFormateur }
+          : {}),
       });
     }
   }

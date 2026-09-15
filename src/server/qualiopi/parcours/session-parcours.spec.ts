@@ -36,7 +36,7 @@ function dossier(patch: Partial<SessionParcoursInput> = {}): SessionParcoursInpu
     inscriptions: [],
     liensEmargementActifs: 0,
     creneauxEmargement: 0,
-    contresignature: { signees: 0, aContresigner: 0 },
+    contresignature: { signees: 0, aContresigner: 0, sansDestinataire: 0, parFormateur: new Map() },
     maintenant: d("2026-08-01T09:00:00.000Z"),
     ...patch,
   };

@@ -103,7 +103,8 @@ describe("bilan de contresignature", () => {
       creneauxSignes: [],
       maintenant: new Date("2026-09-17T18:00:00.000Z"),
     });
-    expect(b).toEqual({ signees: 0, aContresigner: [] });
+    expect(b).toMatchObject({ signees: 0, aContresigner: [], sansDestinataire: 0 });
+    expect(b.parFormateur.size).toBe(0);
   });
 
   it("libellé lisible d'une demi-journée, en français", () => {
@@ -114,5 +115,48 @@ describe("bilan de contresignature", () => {
         formateurId: null,
       }),
     ).toBe("mercredi 16 septembre 2026 — après-midi");
+  });
+});
+
+describe("🔴 relecture #1096 — formateur de la journée NON membre de la session", () => {
+  const maintenant = new Date("2026-09-17T18:00:00.000Z");
+  const base = {
+    ...BASE,
+    jours: [
+      { date: jourDb("2026-09-16"), heureDebut: "09:00", heureFin: "17:00", trainerId: "t-parti" },
+    ],
+    creneauxSignes: [{ date: jourDb("2026-09-16"), demiJournee: "matin" }],
+    maintenant,
+  };
+
+  it("replie sur le formateur principal quand il est membre", () => {
+    // `contresignerDemiJourneeAction` refuse un non-membre : lui écrire
+    // l'enverrait sur un bouton qui échoue. Le principal, lui, peut agir.
+    const b = manquantes.bilanContresignature({
+      ...base,
+      membres: new Set(["t-principal"]),
+    });
+    expect(b.aContresigner[0]?.formateurId).toBe("t-principal");
+    expect(b.sansDestinataire).toBe(0);
+  });
+
+  it("personne de membre à qui demander → destinataire nul, et COMPTÉ", () => {
+    const b = manquantes.bilanContresignature({
+      ...base,
+      formateurPrincipalId: null,
+      membres: new Set<string>(),
+    });
+    expect(b.aContresigner[0]?.formateurId).toBeNull();
+    expect(b.sansDestinataire).toBe(1);
+  });
+
+  it("le bilan porte le détail PAR formateur (accueil du co-formateur)", () => {
+    const b = manquantes.bilanContresignature({
+      ...BASE,
+      membres: new Set(["t-jour-1", "t-principal"]),
+      maintenant,
+    });
+    expect(b.parFormateur.get("t-jour-1")).toEqual({ signees: 2, aContresigner: 2 });
+    expect(b.parFormateur.get("t-principal")).toEqual({ signees: 1, aContresigner: 1 });
   });
 });
