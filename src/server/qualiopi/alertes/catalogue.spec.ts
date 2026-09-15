@@ -353,8 +353,11 @@ describe("ALERTE_CATALOGUE", () => {
     expect(ALERTE_CATALOGUE["reclamation_sans_reponse_j15"]?.resolutionAuto).toBe(true);
   });
 
-  it("satisfaction_manquante a resolutionAuto=false", () => {
-    expect(ALERTE_CATALOGUE["satisfaction_manquante"]?.resolutionAuto).toBe(false);
+  // 🔴 2026-09-15 — décision de Will, écart déclaré à SPEC_PART2 §6.5 : une
+  // réponse enregistrée referme l'alerte (cf. `catalogue.ts` et
+  // `une-alerte-se-ferme-quand-sa-cause-disparait.spec.ts`).
+  it("satisfaction_manquante a resolutionAuto=true", () => {
+    expect(ALERTE_CATALOGUE["satisfaction_manquante"]?.resolutionAuto).toBe(true);
   });
 
   it("evaluation_acquis_manquante a resolutionAuto=false", () => {
