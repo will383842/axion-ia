@@ -28,7 +28,8 @@ vi.mock("@/lib/prisma", () => ({
     trainerDevelopmentAction: { count: vi.fn() },
     trainerDocument: { findMany: vi.fn() },
     trainee: { count: vi.fn() },
-    enrollment: { count: vi.fn() },
+    enrollment: { count: vi.fn(), findMany: vi.fn() },
+    activityLog: { findMany: vi.fn() },
     client: { findMany: vi.fn() },
     documentGenere: { count: vi.fn() },
     revueDirection: { count: vi.fn(), findFirst: vi.fn() },
@@ -67,7 +68,8 @@ type MockPrisma = {
   trainerDevelopmentAction: { count: ReturnType<typeof vi.fn> };
   trainerDocument: { findMany: ReturnType<typeof vi.fn> };
   trainee: { count: ReturnType<typeof vi.fn> };
-  enrollment: { count: ReturnType<typeof vi.fn> };
+  enrollment: { count: ReturnType<typeof vi.fn>; findMany: ReturnType<typeof vi.fn> };
+  activityLog: { findMany: ReturnType<typeof vi.fn> };
   client: { findMany: ReturnType<typeof vi.fn> };
   documentGenere: { count: ReturnType<typeof vi.fn> };
   revueDirection: { count: ReturnType<typeof vi.fn>; findFirst: ReturnType<typeof vi.fn> };
@@ -109,6 +111,10 @@ function setupEmpty() {
   mockP.trainerDocument.findMany.mockResolvedValue([]);
   mockP.trainee.count.mockResolvedValue(0);
   mockP.enrollment.count.mockResolvedValue(0);
+  // off.10 : réponses consignées ANTÉRIEURES à une nouvelle déclaration
+  // (`compterReponsesRouvertes`, relecture #1095). Aucune par défaut.
+  mockP.enrollment.findMany.mockResolvedValue([]);
+  mockP.activityLog.findMany.mockResolvedValue([]);
   mockP.client.findMany.mockResolvedValue([]);
   // ⚠️ Compteur de documents NEUTRE par défaut. Les tests qui le règlent
   // (off.9, off.12…) ne visent PAS la procédure de sous-traitance : sans ce
@@ -534,6 +540,48 @@ describe("evaluerConformite", () => {
     });
     const result = await evaluerConformite();
     expect(result.indicateurs.find((i) => i.numero === 10)?.statut).toBe("couvert");
+  });
+
+  it("🔴 off.10 NON couvert quand une réponse consignée PRÉCÈDE une nouvelle déclaration (relecture #1095)", async () => {
+    mockP.questionnaire.findMany.mockResolvedValue([
+      positionnement("enr-1", AVANT_DEBUT),
+      positionnement("enr-2", AVANT_DEBUT),
+    ]);
+    // Le compte SQL voit 2 besoins, 2 réponses : il dirait « tout est servi ».
+    mockP.enrollment.count.mockImplementation((args?: { where?: Record<string, unknown> }) => {
+      const where = (args?.where ?? {}) as Record<string, unknown>;
+      const besoin = viseBesoinAdaptationDeclare(where);
+      const adaptee = where["adaptationsRealisees"] !== undefined;
+      if (besoin && adaptee) return Promise.resolve(2);
+      if (besoin) return Promise.resolve(2);
+      if (adaptee) return Promise.resolve(3);
+      return Promise.resolve(2);
+    });
+    // …mais la réponse d'enr-1 date du 2, et la personne a redéclaré le 10.
+    mockP.enrollment.findMany.mockResolvedValue([
+      {
+        id: "enr-1",
+        traineeId: "tr-1",
+        adaptationsRealisees: "Échange avec le bénéficiaire : aucune adaptation nécessaire.",
+        session: { dateFin: new Date("2099-01-01T00:00:00.000Z") },
+        trainee: { situationHandicap: true },
+        questionnaires: [],
+      },
+    ]);
+    mockP.activityLog.findMany.mockImplementation(async (a: { where: { action: string } }) =>
+      a.where.action === "qualiopi.enrollment.adaptations"
+        ? [
+            {
+              targetId: "enr-1",
+              createdAt: new Date("2026-09-02T08:00:00.000Z"),
+              changes: { adaptationsRenseignees: true },
+            },
+          ]
+        : [{ targetId: "tr-1", createdAt: new Date("2026-09-10T08:00:00.000Z") }],
+    );
+    const ind10 = (await evaluerConformite()).indicateurs.find((i) => i.numero === 10);
+    expect(ind10?.statut).toBe("a_completer");
+    expect(ind10?.preuves.join(" ")).toContain("1/2 inscription");
   });
 
   it("🔴 off.10 : un « oui » au positionnement reste un besoin déclaré quand la fiche est décochée", async () => {

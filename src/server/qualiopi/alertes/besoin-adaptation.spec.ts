@@ -17,11 +17,14 @@ import { describe, it, expect } from "vitest";
 import { construireAlerteBesoinAdaptation } from "./besoin-adaptation";
 import { ALERTE_CATALOGUE } from "./catalogue";
 
+const LE = new Date("2026-09-25T08:00:05.000Z");
+
 describe("le texte de l'alerte", () => {
   it("nomme la personne et dit où lire", () => {
     const { titre, message } = construireAlerteBesoinAdaptation({
       prenom: "Simone",
       nom: "Blanc",
+      declareLe: LE,
     });
     expect(titre).toContain("adaptation");
     expect(message).toContain("Simone Blanc");
@@ -33,12 +36,44 @@ describe("le texte de l'alerte", () => {
     // de la signature. Ce cas fige ce contrat.
     const args = construireAlerteBesoinAdaptation.length;
     expect(args).toBe(1);
-    const { message } = construireAlerteBesoinAdaptation({ prenom: "Simone", nom: "Blanc" });
+    const { message } = construireAlerteBesoinAdaptation({
+      prenom: "Simone",
+      nom: "Blanc",
+      declareLe: LE,
+    });
     expect(message).toContain("chiffré");
   });
 
+  it("🔴 porte l'INSTANT de la déclaration : deux déclarations, deux messages ; la même, un seul", () => {
+    // Le code est en `resolutionAuto: false` : `creerOuDedup` écarte une alerte
+    // dont une sœur RÉSOLUE porte le même message. Sans l'instant, toute
+    // nouvelle déclaration de la même personne était écartée (relecture #1095).
+    const premiere = construireAlerteBesoinAdaptation({
+      prenom: "Simone",
+      nom: "Blanc",
+      declareLe: LE,
+    });
+    const redite = construireAlerteBesoinAdaptation({
+      prenom: "Simone",
+      nom: "Blanc",
+      declareLe: new Date(LE.getTime()),
+    });
+    const nouvelle = construireAlerteBesoinAdaptation({
+      prenom: "Simone",
+      nom: "Blanc",
+      declareLe: new Date(LE.getTime() + 1000),
+    });
+    expect(premiere.message).toContain("25 septembre 2026");
+    expect(redite.message).toBe(premiere.message);
+    expect(nouvelle.message).not.toBe(premiere.message);
+  });
+
   it("supporte un nom vide sans laisser d'espace orphelin", () => {
-    const { message } = construireAlerteBesoinAdaptation({ prenom: "Simone", nom: "" });
+    const { message } = construireAlerteBesoinAdaptation({
+      prenom: "Simone",
+      nom: "",
+      declareLe: LE,
+    });
     expect(message.startsWith("Simone a déclaré")).toBe(true);
   });
 });

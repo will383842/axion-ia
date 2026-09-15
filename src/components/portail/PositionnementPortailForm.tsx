@@ -132,6 +132,12 @@ export function PositionnementPortailForm({
           attentes: attentes.trim(),
           tacheVisee: tacheVisee.trim(),
           besoinAdaptation: besoin,
+          // Le serveur exige ce marqueur : un ancien formulaire en cache, qui
+          // enverrait `false` sans avoir posé la question, ne le porte pas.
+          // Clé écrite en toutes lettres (cloisonnement du domaine qualiopi) :
+          // `CLE_BESOIN_ADAPTATION_REPONDU` côté serveur, verrouillée par les
+          // deux specs (formulaire et action) qui assertent ce même littéral.
+          besoinAdaptationRepondu: true,
           ...(besoin && detailAdaptation.trim()
             ? { detailAdaptation: detailAdaptation.trim() }
             : {}),

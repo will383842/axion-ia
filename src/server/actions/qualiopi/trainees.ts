@@ -15,6 +15,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { encryptPii } from "@/lib/pii-crypto";
+import { journaliserDeclarationBesoin } from "@/server/qualiopi/adaptation/journal-declaration";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -92,6 +93,14 @@ export async function createTraineeAction(
       changes: { nom: v.nom, prenom: v.prenom, email: v.email, situationHandicap },
       session,
     });
+    if (situationHandicap) {
+      await journaliserDeclarationBesoin({
+        traineeId: created.id,
+        origine: "console",
+        declareLe: new Date(),
+        adminUserId: session.userId,
+      });
+    }
 
     return { data: { id: created.id } };
   } catch (err) {
@@ -114,6 +123,16 @@ export async function updateTraineeAction(
   const hasHandicapDetails = handicapDetails !== undefined && handicapDetails.trim() !== "";
 
   try {
+    // 🔴 Ind. 10 (relecture #1095) — cocher la situation de handicap, ou en
+    // réécrire le détail, est une NOUVELLE DÉCLARATION : elle rouvre une réponse
+    // déjà consignée. Le formulaire renvoie la case à chaque enregistrement, d'où
+    // la lecture de l'état AVANT : garder la case cochée n'est pas déclarer.
+    const avant =
+      fields.situationHandicap === true || hasHandicapDetails
+        ? await prisma.trainee.findUnique({ where: { id }, select: { situationHandicap: true } })
+        : null;
+    const declareLe = new Date();
+
     await prisma.trainee.update({
       where: { id },
       data: {
@@ -148,6 +167,18 @@ export async function updateTraineeAction(
       changes: { ...fields, handicapDetailsModifie: hasHandicapDetails },
       session,
     });
+
+    const situationApres = fields.situationHandicap ?? avant?.situationHandicap === true;
+    const nouvelleDeclaration =
+      avant !== null && situationApres && (hasHandicapDetails || avant.situationHandicap !== true);
+    if (nouvelleDeclaration) {
+      await journaliserDeclarationBesoin({
+        traineeId: id,
+        origine: "console",
+        declareLe,
+        adminUserId: session.userId,
+      });
+    }
 
     return { data: { id } };
   } catch (err) {

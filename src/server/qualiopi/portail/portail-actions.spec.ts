@@ -291,6 +291,56 @@ describe("soumettreSatisfactionPortailAction", () => {
 
     expect(mockSoumettreReponses).toHaveBeenCalledOnce();
   });
+
+  // 🔴 D6 (relecture #1095) — le oui/non du besoin d'adaptation ne se vérifiait
+  // que dans le navigateur. Un ancien formulaire en cache (case à cocher)
+  // enverrait `false` pour une question jamais lue.
+  describe("positionnement — le besoin d'adaptation se répond, côté SERVEUR aussi", () => {
+    beforeEach(() => {
+      mockPrisma.questionnaire.findUnique.mockResolvedValue({
+        type: "positionnement",
+        enrollment: { traineeId: TRAINEE_UUID },
+      });
+    });
+
+    it("refuse un positionnement sans réponse explicite — même un `false` d'ancien formulaire", async () => {
+      for (const reponses of [
+        { attentes: "x" },
+        { attentes: "x", besoinAdaptation: false },
+        { attentes: "x", besoinAdaptationRepondu: true },
+        { attentes: "x", besoinAdaptation: "non", besoinAdaptationRepondu: true },
+      ]) {
+        const result = await soumettreSatisfactionPortailAction({
+          questionnaireId: QUEST_ID,
+          reponses,
+        });
+        expect(result).toEqual({ error: expect.stringContaining("oui ou non") });
+      }
+      expect(mockSoumettreReponses).not.toHaveBeenCalled();
+    });
+
+    it("accepte un « non » explicite, et n'écrit PAS le marqueur en base", async () => {
+      const result = await soumettreSatisfactionPortailAction({
+        questionnaireId: QUEST_ID,
+        reponses: { attentes: "x", besoinAdaptation: false, besoinAdaptationRepondu: true },
+      });
+      expect("data" in result).toBe(true);
+      const call = mockCall<{ reponses: Record<string, unknown> }>(mockSoumettreReponses);
+      expect(call.reponses).toEqual({ attentes: "x", besoinAdaptation: false });
+    });
+
+    it("une satisfaction n'est pas concernée", async () => {
+      mockPrisma.questionnaire.findUnique.mockResolvedValue({
+        type: "satisfaction_chaud",
+        enrollment: { traineeId: TRAINEE_UUID },
+      });
+      const result = await soumettreSatisfactionPortailAction({
+        questionnaireId: QUEST_ID,
+        reponses: { q1: "oui" },
+      });
+      expect("data" in result).toBe(true);
+    });
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
