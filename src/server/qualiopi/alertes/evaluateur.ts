@@ -4395,7 +4395,34 @@ async function regleAutofactureAEmettre(now: Date): Promise<AlerteCandidate[]> {
 
   const out: AlerteCandidate[] = [];
   for (const r of releves) {
-    const repete = echecRepeteRattrapage(echecs, r.id, now);
+    const verdict = verifierEligibiliteAutofacture(r, r.trainer, now);
+    // 🔑 Les trois familles de motifs, et deux ne doivent RIEN produire ici.
+    // `releve_non_valide` est le déclencheur, pas un refus (et le `where`
+    // l'exclut déjà) ; `releve_sans_montant` et `facture_deja_presente` sont
+    // des silences légitimes. N'alerter que sur les DONNÉES MANQUANTES.
+    const manques = verdict.eligible
+      ? []
+      : verdict.refus.filter(
+          (m) =>
+            m !== "releve_non_valide" &&
+            m !== "releve_sans_montant" &&
+            m !== "facture_deja_presente",
+        );
+    const silenceLegitime =
+      !verdict.eligible &&
+      verdict.refus.some((m) => m === "releve_sans_montant" || m === "facture_deja_presente");
+
+    // 🔴 L'ORDRE COMPTE (relecture de #1098). Une trace d'échec vit 24 h : un
+    // relevé qui a échoué deux fois, puis dont la fiche a PERDU une donnée, ne
+    // doit pas garder le message « fiche complète » — la fiche d'aujourd'hui
+    // prime sur l'échec d'hier. Seule exception, le mandat : il peut venir du
+    // contrat signé, que cette règle ne résout pas et le cron si ; un échec
+    // répété prouve que le cron l'a trouvé.
+    const manquesVisibles = manques.filter((m) => m !== "mandat_absent_ou_revoque");
+    const repete =
+      manquesVisibles.length === 0 && !silenceLegitime
+        ? echecRepeteRattrapage(echecs, r.id, now)
+        : null;
     if (repete !== null) {
       const qui = `${r.trainer.prenom} ${r.trainer.nom}`.trim();
       const montant = (r.totalTtcCents / 100).toLocaleString("fr-FR", {
@@ -4422,17 +4449,6 @@ async function regleAutofactureAEmettre(now: Date): Promise<AlerteCandidate[]> {
       continue;
     }
 
-    const verdict = verifierEligibiliteAutofacture(r, r.trainer, now);
-    if (verdict.eligible) continue;
-
-    // 🔑 Les trois familles de motifs, et deux ne doivent RIEN produire ici.
-    // `releve_non_valide` est le déclencheur, pas un refus (et le `where`
-    // l'exclut déjà) ; `releve_sans_montant` et `facture_deja_presente` sont
-    // des silences légitimes. N'alerter que sur les DONNÉES MANQUANTES.
-    const manques = verdict.refus.filter(
-      (m) =>
-        m !== "releve_non_valide" && m !== "releve_sans_montant" && m !== "facture_deja_presente",
-    );
     if (manques.length === 0) continue;
 
     const qui = `${r.trainer.prenom} ${r.trainer.nom}`.trim();

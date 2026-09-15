@@ -29,6 +29,12 @@ vi.mock("@/lib/prisma", () => ({
     trainerStatement: { findMany: vi.fn(), findUnique: vi.fn(), update: vi.fn() },
     documentGenere: { findUnique: vi.fn(), findMany: vi.fn() },
     activityLog: { create: vi.fn() },
+    // Verrou consultatif de la série AXI-AUTOF : toujours obtenu ici (un seul
+    // émetteur). La course elle-même est éprouvée par
+    // `autofacture-emission.concurrence.spec.ts`.
+    $transaction: vi.fn(async (travail: (tx: unknown) => Promise<unknown>) =>
+      travail({ $queryRaw: async () => [{ acquis: true }] }),
+    ),
   },
 }));
 
@@ -273,7 +279,7 @@ describe("refus métier ≠ exception technique", () => {
 
     const erreurs = errorSpy.mock.calls.map((c) => c.map(String).join(" ")).join("\n");
     expect(erreurs).toContain(ID_A);
-    expect(erreurs).toContain("rendu indisponible (test)");
+    expect(erreurs).toMatch(/étape pdf/);
     const echec = journaux().find((j) => j["action"] === "qualiopi.autofacture.rattrapage.echec");
     expect(
       echec,
@@ -295,12 +301,41 @@ describe("refus métier ≠ exception technique", () => {
 
     const erreurs = errorSpy.mock.calls.map((c) => c.map(String).join(" ")).join("\n");
     expect(erreurs).toContain(ID_A);
-    expect(erreurs).toContain("connexion perdue (test)");
     // Un formateur n'attend pas parce que le relevé d'un autre a planté.
     expect(mockGenerate).toHaveBeenCalledTimes(1);
     const echec = journaux().find(
       (j) => j["action"] === "qualiopi.autofacture.rattrapage.echec" && j["targetId"] === ID_A,
     );
     expect(echec).toBeDefined();
+  });
+
+  it("🔴 le journal ne recopie JAMAIS le message de l'exception — seulement l'étape et le type", async () => {
+    // Le message d'une erreur Prisma recopie les paramètres de la requête. Au
+    // journal d'activité (conservé cinq ans), c'est une donnée personnelle
+    // collectée par accident.
+    mp.trainerStatement.findMany.mockResolvedValue([{ id: ID_A }]);
+    mp.trainerStatement.findUnique.mockResolvedValue(releve(ID_A));
+    const erreurPrisma = Object.assign(
+      new Error(
+        "Invalid `prisma.trainerStatement.update()` invocation: email camille@example.test siret 93812345600017",
+      ),
+      { name: "PrismaClientKnownRequestError", code: "P2025" },
+    );
+    mp.trainerStatement.update.mockRejectedValue(erreurPrisma);
+
+    await formationCronsHandler(JOB);
+
+    const ecrit =
+      JSON.stringify(journaux()) +
+      errorSpy.mock.calls.map((c) => c.map(String).join(" ")).join("\n");
+    expect(ecrit, "le message brut de l'exception a été recopié").not.toContain(
+      "camille@example.test",
+    );
+    expect(ecrit).not.toContain("93812345600017");
+    expect(ecrit).not.toContain("invocation");
+    const echec = journaux().find((j) => j["action"] === "qualiopi.autofacture.rattrapage.echec");
+    const changes = echec?.["changes"] as Record<string, unknown>;
+    expect(changes["etape"]).toBe("ecriture");
+    expect(changes["erreur"]).toBe("PrismaClientKnownRequestError P2025");
   });
 });

@@ -37,6 +37,10 @@ vi.mock("@/lib/prisma", () => ({
       findFirst: (...a: unknown[]) => mockDocFindFirst(...a),
       findUnique: (...a: unknown[]) => mockDocFindUnique(...a),
     },
+    // 2026-09-15 — l'émission passe sous le verrou consultatif de la série
+    // AXI-AUTOF (`verrou-emission-autofacture.ts`). Toujours obtenu ici.
+    $transaction: async (travail: (tx: unknown) => Promise<unknown>) =>
+      travail({ $queryRaw: async () => [{ acquis: true }] }),
   },
 }));
 

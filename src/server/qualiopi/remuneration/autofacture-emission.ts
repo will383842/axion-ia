@@ -34,6 +34,19 @@
  * journal APRÈS l'appel du service aurait changé l'ordre des écritures du
  * bouton ; lire la session ici aurait réintroduit le défaut.
  *
+ * ── UNE ÉMISSION À LA FOIS ───────────────────────────────────────────────────
+ *
+ * 🔴 Le bouton, la validation du relevé et le cron émettent tous par ici. La
+ * relecture du relevé, le numéro, la pièce et l'écriture passent sous le verrou
+ * consultatif de la série (`verrou-emission-autofacture.ts`) : sans lui, deux
+ * émetteurs simultanés produisaient deux PDF et deux e-mails au même numéro.
+ *
+ * ⚠️ DETTE : un échec APRÈS la production du PDF (écriture du relevé) laisse une
+ * pièce orpheline, et l'essai suivant en produit une autre au même numéro,
+ * datée du nouvel essai. La réutiliser demanderait de retrouver la pièce sans
+ * lien enregistré, donc par récence — ce que la garde des pièces jointes
+ * interdit à juste titre.
+ *
  * ⚠️ Ce module ne doit mener, par ses imports, ni à `server-only`, ni à
  * `next/headers`, ni à un fichier `"use server"`. Garde :
  * `autofacture-rattrapage.graphe-worker.spec.ts`.
@@ -54,6 +67,10 @@ import {
 import { verifierTotauxConformes } from "@/server/qualiopi/remuneration/autofacture-pieces";
 import { calculerEcheanceHonoraires } from "@/server/qualiopi/remuneration/echeance";
 import { resoudreMandat } from "@/server/qualiopi/remuneration/mandat-source";
+import {
+  avecVerrouEmissionAutofacture,
+  type IssueVerrouAutofacture,
+} from "@/server/qualiopi/remuneration/verrou-emission-autofacture";
 
 const dateFr = (d: Date): string => d.toLocaleDateString("fr-FR");
 const euros = (cents: number): string =>
@@ -201,16 +218,39 @@ export function journalSysteme(origine: OrigineSysteme): JournalAutofacture {
  * `error` — le code ne change rien à l'écran.
  */
 export type CodeRefusAutofacture =
-  "introuvable" | "ineligible" | "sans_lignes" | "montant_incoherent" | "technique";
+  | "introuvable"
+  | "ineligible"
+  | "sans_lignes"
+  | "montant_incoherent"
+  | "technique"
+  /** Une autre émission tenait la série au-delà de l'attente : rien n'a été tenté. */
+  | "verrou_pris";
+
+/** L'étape où un échec technique s'est produit — c'est elle qu'on journalise. */
+export type EtapeEmissionAutofacture = "verrou" | "preparation" | "numero" | "pdf" | "ecriture";
+
+export interface RefusEmissionAutofacture {
+  error: string;
+  code: CodeRefusAutofacture;
+  /** Renseignée pour `technique`. */
+  etape?: EtapeEmissionAutofacture;
+  /**
+   * L'exception d'origine d'un échec technique. ⚠️ Son MESSAGE ne va jamais au
+   * journal : Prisma y recopie les paramètres de la requête.
+   */
+  cause?: unknown;
+}
 
 export type ResultatEmissionAutofacture =
-  | { data: { numero: string; transmise: boolean } }
-  | {
-      error: string;
-      code: CodeRefusAutofacture;
-      /** L'exception d'origine d'un échec technique, pour le journal du worker. */
-      cause?: unknown;
-    };
+  { data: { numero: string; transmise: boolean } } | RefusEmissionAutofacture;
+
+/** Ce que la section sous verrou rend quand la pièce est écrite. */
+interface PieceEmise {
+  readonly numero: string;
+  readonly doc: { readonly id: string; readonly hashSha256: string };
+  readonly mandatOrigine: unknown;
+  readonly transmission: PieceATransmettre;
+}
 
 /**
  * Établit la facture d'honoraires au nom du sous-traitant, puis tente de la lui
@@ -224,8 +264,75 @@ export async function emettreAutofacture(
   statementId: string,
   journaliser: JournalAutofacture,
 ): Promise<ResultatEmissionAutofacture> {
-  const releve = await lireReleveAutofacture(statementId);
-  if (releve === null) return { error: "Relevé introuvable.", code: "introuvable" };
+  // 🔴 SOUS VERROU : relecture du relevé, éligibilité, numéro, pièce, écriture.
+  // Un second émetteur (bouton, validation, cron) attend, puis RELIT le relevé
+  // et le trouve facturé (`facture_deja_presente`). Le verrou porte sur la
+  // SÉRIE, pas sur le relevé : cf. `verrou-emission-autofacture.ts`.
+  let issue: IssueVerrouAutofacture<PieceEmise | RefusEmissionAutofacture>;
+  try {
+    issue = await avecVerrouEmissionAutofacture(() => emettreSousVerrou(statementId));
+  } catch (cause) {
+    // La transaction a levé : délai dépassé ou connexion perdue. L'écriture a
+    // PU aboutir — le message ne prétend pas le contraire, et l'essai suivant
+    // relira le relevé sous verrou.
+    return {
+      error:
+        "Erreur technique pendant l'émission de la facture. Rechargez le relevé avant de réessayer : la pièce a pu être enregistrée.",
+      code: "technique",
+      etape: "verrou",
+      cause,
+    };
+  }
+  if (!issue.acquis) {
+    return {
+      error:
+        "Une autre émission d'autofacture est en cours. Réessayez dans un instant : les numéros sont attribués une facture à la fois.",
+      code: "verrou_pris",
+    };
+  }
+  const piece = issue.valeur;
+  if ("error" in piece) return piece;
+
+  // Hors verrou : le journal, puis la transmission — même ordre qu'avant
+  // l'extraction : après l'écriture, avant l'envoi.
+  await journaliser({
+    action: "qualiopi.autofacture.emission",
+    targetType: "TrainerStatement",
+    targetId: statementId,
+    changes: {
+      numero: piece.numero,
+      documentId: piece.doc.id,
+      hashSha256: piece.doc.hashSha256,
+      // 🔑 D'où venait le mandat au moment de l'émission. Sans cette trace, une
+      // pièce émise sous mandat papier et une pièce émise sous mandat dérivé du
+      // contrat sont indiscernables dans le registre — et c'est exactement ce
+      // qu'un contrôle demanderait à établir.
+      mandat: piece.mandatOrigine,
+    },
+  });
+
+  const transmise = await transmettreAutofacture(piece.transmission, "emission");
+  return { data: { numero: piece.numero, transmise } };
+}
+
+/** Tout ce qui décide et écrit — appelé UNIQUEMENT sous le verrou de série. */
+async function emettreSousVerrou(
+  statementId: string,
+): Promise<PieceEmise | RefusEmissionAutofacture> {
+  let releve: Awaited<ReturnType<typeof lireReleveAutofacture>>;
+  let mandat: Awaited<ReturnType<typeof resoudreMandat>>;
+  try {
+    releve = await lireReleveAutofacture(statementId);
+    if (releve === null) return { error: "Relevé introuvable.", code: "introuvable" };
+    mandat = await resoudreMandat(releve.trainerId, releve.trainer);
+  } catch (cause) {
+    return {
+      error: "Erreur technique pendant la lecture du relevé.",
+      code: "technique",
+      etape: "preparation",
+      cause,
+    };
+  }
 
   const maintenant = new Date();
 
@@ -238,7 +345,6 @@ export async function emettreAutofacture(
   // qu'une fois. Saisie manuelle sur la fiche (mandat papier, ou signé hors de
   // l'outil), ou article 4 bis du contrat de sous-traitance qu'il a signé
   // électroniquement. La saisie gagne toujours : voir `resoudreMandat`.
-  const mandat = await resoudreMandat(releve.trainerId, releve.trainer);
   const verdict = verifierEligibiliteAutofacture(
     releve,
     {
@@ -281,7 +387,17 @@ export async function emettreAutofacture(
     };
   }
 
-  const identite = await getOrganismeIdentite();
+  let identite: Awaited<ReturnType<typeof getOrganismeIdentite>>;
+  try {
+    identite = await getOrganismeIdentite();
+  } catch (cause) {
+    return {
+      error: "Erreur technique pendant la lecture de l'identité de l'organisme.",
+      code: "technique",
+      etape: "preparation",
+      cause,
+    };
+  }
   const sousTraitant = {
     nom: `${releve.trainer.prenom} ${releve.trainer.nom}`.trim(),
     // Non nuls : `verifierEligibiliteAutofacture` vient de les exiger.
@@ -311,7 +427,12 @@ export async function emettreAutofacture(
       return rows.map((r) => ({ numero: r.numeroFacture }));
     });
   } catch (cause) {
-    return { error: "Impossible d'allouer un numéro de facture.", code: "technique", cause };
+    return {
+      error: "Impossible d'allouer un numéro de facture.",
+      code: "technique",
+      etape: "numero",
+      cause,
+    };
   }
 
   const echeance = calculerEcheanceHonoraires(maintenant);
@@ -344,6 +465,7 @@ export async function emettreAutofacture(
     return {
       error: "Erreur lors de la production du PDF de la facture.",
       code: "technique",
+      etape: "pdf",
       cause,
     };
   }
@@ -373,28 +495,16 @@ export async function emettreAutofacture(
     return {
       error: "Erreur lors de l'enregistrement de la facture sur le relevé.",
       code: "technique",
+      etape: "ecriture",
       cause,
     };
   }
 
-  await journaliser({
-    action: "qualiopi.autofacture.emission",
-    targetType: "TrainerStatement",
-    targetId: releve.id,
-    changes: {
-      numero,
-      documentId: doc.id,
-      hashSha256: doc.hashSha256,
-      // 🔑 D'où venait le mandat au moment de l'émission. Sans cette trace, une
-      // pièce émise sous mandat papier et une pièce émise sous mandat dérivé du
-      // contrat sont indiscernables dans le registre — et c'est exactement ce
-      // qu'un contrôle demanderait à établir.
-      mandat: mandat.origine,
-    },
-  });
-
-  const transmise = await transmettreAutofacture(
-    {
+  return {
+    numero,
+    doc: { id: doc.id, hashSha256: doc.hashSha256 },
+    mandatOrigine: mandat.origine,
+    transmission: {
       statementId: releve.id,
       numero,
       documentId: doc.id,
@@ -406,9 +516,7 @@ export async function emettreAutofacture(
       totalTtcCents: releve.totalTtcCents,
       echeance,
     },
-    "emission",
-  );
-  return { data: { numero, transmise } };
+  };
 }
 
 /* ──────────────────────────────────────────────────────────────────────────────

@@ -34,7 +34,7 @@ import {
 } from "@/server/qualiopi/remuneration/autofacture-emission";
 import {
   ACTION_JOURNAL_ECHEC_RATTRAPAGE_AUTOFACTURE,
-  LONGUEUR_DETAIL_ECHEC,
+  typeErreur,
   type CodeEchecRattrapage,
 } from "@/server/qualiopi/remuneration/autofacture-rattrapage-regles";
 
@@ -70,8 +70,6 @@ export interface BilanRattrapageAutofactures {
   readonly plafondAtteint: boolean;
 }
 
-const message = (err: unknown): string => (err instanceof Error ? err.message : String(err));
-
 export async function rattraperAutofactures(): Promise<BilanRattrapageAutofactures> {
   const candidats = await prisma.trainerStatement.findMany({
     where: {
@@ -91,14 +89,23 @@ export async function rattraperAutofactures(): Promise<BilanRattrapageAutofactur
   let refusees = 0;
   const echecs: EchecRattrapage[] = [];
 
+  /**
+   * ⚠️ Ni le journal ni les logs ne reçoivent le MESSAGE de l'exception : Prisma
+   * y recopie les paramètres de la requête (cf. `typeErreur`). L'étape et le
+   * type d'erreur suffisent à savoir où chercher.
+   */
   const echouer = async (
     statementId: string,
     code: CodeEchecRattrapage,
     motif: string,
-    detail: string | null,
+    etape: string | null,
+    erreur: string | null,
   ): Promise<void> => {
     console.error(
-      `[autofactures] relevé ${statementId} — ${code} : ${motif}${detail !== null ? ` (${detail})` : ""}`,
+      `[autofactures] relevé ${statementId} — ${code}` +
+        (etape !== null ? ` à l'étape ${etape}` : "") +
+        (erreur !== null ? ` (${erreur})` : "") +
+        ` : ${motif}`,
     );
     echecs.push({ statementId, code, motif });
     await journal({
@@ -108,7 +115,8 @@ export async function rattraperAutofactures(): Promise<BilanRattrapageAutofactur
       changes: {
         code,
         motif,
-        ...(detail !== null ? { detail: detail.slice(0, LONGUEUR_DETAIL_ECHEC) } : {}),
+        ...(etape !== null ? { etape } : {}),
+        ...(erreur !== null ? { erreur } : {}),
       },
     });
   };
@@ -124,14 +132,22 @@ export async function rattraperAutofactures(): Promise<BilanRattrapageAutofactur
         continue;
       }
       // 🔑 `introuvable` : le relevé a disparu entre la sélection et
-      // l'émission. Ce n'est ni une panne ni un manque de données.
-      if (res.code === "ineligible" || res.code === "introuvable") {
+      // l'émission. `verrou_pris` : un autre émetteur tenait la série — le
+      // relevé est repris au passage suivant, relu sous verrou. Ni l'un ni
+      // l'autre n'est une panne ou un manque de données.
+      if (res.code === "ineligible" || res.code === "introuvable" || res.code === "verrou_pris") {
         refusees += 1;
         continue;
       }
-      await echouer(c.id, res.code, res.error, res.cause !== undefined ? message(res.cause) : null);
+      await echouer(
+        c.id,
+        res.code,
+        res.error,
+        res.etape ?? null,
+        res.cause !== undefined ? typeErreur(res.cause) : null,
+      );
     } catch (err) {
-      await echouer(c.id, "technique", "Exception pendant l'émission.", message(err));
+      await echouer(c.id, "technique", "Exception pendant l'émission.", null, typeErreur(err));
     }
   }
 

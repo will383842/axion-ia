@@ -37,8 +37,22 @@ export const SEUIL_ECHECS_RATTRAPAGE = 2;
 /** Les codes d'échec que le cron JOURNALISE (jamais `ineligible`). */
 export type CodeEchecRattrapage = "sans_lignes" | "montant_incoherent" | "technique";
 
-/** Longueur maximale du détail technique conservé au journal. */
-export const LONGUEUR_DETAIL_ECHEC = 300;
+/**
+ * Le TYPE d'une erreur, jamais son message — ce qui va au journal et aux logs.
+ *
+ * 🔴 Le message brut d'une exception Prisma recopie les paramètres de la
+ * requête : identifiants, e-mail, SIRET, adresse du formateur. Au journal
+ * d'activité, conservé cinq ans, ce serait une donnée personnelle collectée
+ * par accident. On garde le nom de la classe (`PrismaClientKnownRequestError`,
+ * `TypeError`…) et, s'il existe, le code Prisma (`P2002`) : assez pour
+ * diagnostiquer, rien qui désigne une personne.
+ */
+export function typeErreur(err: unknown): string {
+  if (!(err instanceof Error)) return typeof err;
+  const nom = /^[A-Za-z][A-Za-z0-9_]{0,79}$/.test(err.name) ? err.name : "Error";
+  const code = (err as { code?: unknown }).code;
+  return typeof code === "string" && /^P\d{4}$/.test(code) ? `${nom} ${code}` : nom;
+}
 
 export interface JournalEchecRattrapage {
   readonly targetId: string | null;

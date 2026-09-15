@@ -39,6 +39,8 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: (...a: unknown[]) => mockDocFindUnique(...a),
       findMany: vi.fn().mockResolvedValue([]),
     },
+    $transaction: async (travail: (tx: unknown) => Promise<unknown>) =>
+      travail({ $queryRaw: async () => [{ acquis: true }] }),
   },
 }));
 

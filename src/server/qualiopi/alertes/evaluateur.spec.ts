@@ -4817,6 +4817,24 @@ describe("autofacture_a_emettre", () => {
     expect(alertes.some((x) => x.code === "autofacture_a_emettre")).toBe(false);
   });
 
+  it("🔴 un relevé qui a échoué PUIS perdu une donnée de fiche nomme le manque, pas « fiche complète »", async () => {
+    // La trace d'échec vit 24 h ; la fiche d'aujourd'hui prime sur l'échec d'hier.
+    mp.trainerStatement.findMany.mockResolvedValue([valide({ siret: null })]);
+    journalEchecs([{ ilYaMin: 10 }, { ilYaMin: 70 }]);
+    const a = (await evaluerAlertes()).find((x) => x.code === "autofacture_a_emettre");
+    expect(a!.message).toMatch(/SIRET/i);
+    expect(a!.message).not.toMatch(/fiche est complète/);
+  });
+
+  it("🔑 le mandat seul absent n'efface pas l'échec répété — il peut venir du contrat signé", async () => {
+    mp.trainerStatement.findMany.mockResolvedValue([
+      valide({ mandatAutofacturationSigneAt: null }),
+    ]);
+    journalEchecs([{ ilYaMin: 10 }, { ilYaMin: 70 }]);
+    const a = (await evaluerAlertes()).find((x) => x.code === "autofacture_a_emettre");
+    expect(a!.message).toMatch(/a échoué 2 fois/);
+  });
+
   it("une anomalie du relevé prescrit de CORRIGER le relevé, pas de signaler une panne", async () => {
     mp.trainerStatement.findMany.mockResolvedValue([valide()]);
     journalEchecs([
