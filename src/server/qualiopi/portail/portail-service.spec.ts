@@ -425,6 +425,58 @@ describe("getEspaceStagiaire", () => {
     expect(espace.situationHandicap.details).toBeNull();
   });
 
+  it("🔴 D4 — un « oui » au positionnement compte comme besoin DÉJÀ déclaré, sans la case", async () => {
+    // Le « oui » ne coche plus `situationHandicap`. Lu seul, ce drapeau
+    // re-proposerait « Déclarer une situation particulière » à la personne qui
+    // vient de répondre — et cette seconde saisie cocherait la case.
+    const avecPositionnement = (besoinAdaptation: boolean) => ({
+      ...fakeTrainee,
+      situationHandicap: false,
+      handicapDetailsChiffre: null,
+      enrollments: [
+        {
+          ...fakeTrainee.enrollments[0]!,
+          questionnaires: [
+            {
+              type: "positionnement",
+              id: "q-pos",
+              reponduAt: new Date("2026-01-20"),
+              reponses: { besoinAdaptation },
+            },
+          ],
+        },
+      ],
+    });
+
+    mockPrisma.trainee.findUnique.mockResolvedValue(avecPositionnement(true));
+    expect((await getEspaceStagiaire("trainee-g4")).situationHandicap.declaree).toBe(true);
+
+    // Témoin : un « non » ne déclare rien.
+    mockPrisma.trainee.findUnique.mockResolvedValue(avecPositionnement(false));
+    expect((await getEspaceStagiaire("trainee-g5")).situationHandicap.declaree).toBe(false);
+  });
+
+  it("🔴 D4 — les réponses lues pour ce booléen ne sortent pas dans l'espace rendu", async () => {
+    mockPrisma.trainee.findUnique.mockResolvedValue({
+      ...fakeTrainee,
+      enrollments: [
+        {
+          ...fakeTrainee.enrollments[0]!,
+          questionnaires: [
+            {
+              type: "positionnement",
+              id: "q-pos",
+              reponduAt: new Date("2026-01-20"),
+              reponses: { besoinAdaptation: true, attentes: "reponse-privee-temoin" },
+            },
+          ],
+        },
+      ],
+    });
+    const espace = await getEspaceStagiaire("trainee-g6");
+    expect(JSON.stringify(espace.questionnaires)).not.toContain("reponse-privee-temoin");
+  });
+
   it("leve si le stagiaire est introuvable", async () => {
     mockPrisma.trainee.findUnique.mockResolvedValue(null);
 

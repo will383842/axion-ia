@@ -123,4 +123,76 @@ describe("getTrainingSessionForFormateur", () => {
     expect(r?.role).toBe("co_formateur");
     expect(r?.peutCloturerEmargement).toBe(false);
   });
+
+  // 🔴 D4 (relecture sécurité #1095, 2026-09-15). Le formateur lisait
+  // `situationHandicap`, affiché « situation de handicap signalée ». Un « oui »
+  // au positionnement ne coche plus cette case : il doit pourtant rester visible
+  // au formateur — sous le libellé « besoin d'adaptation déclaré », au prédicat
+  // partagé de l'indicateur 10 — et rien de plus que ce booléen ne sort.
+  describe("🔴 D4 — besoin d'adaptation déclaré, jamais « handicap »", () => {
+    const sessionAvec = (
+      trainee: { situationHandicap: boolean },
+      questionnaires: Array<{ reponses: unknown }>,
+    ) => ({
+      id: "s1",
+      numero: "AXI-SESS-2026-1",
+      titreSession: "IA pour RH",
+      statut: "planifiee",
+      modalite: "presentiel",
+      dateDebut: new Date("2026-09-01"),
+      dateFin: new Date("2026-09-02"),
+      formateurPrincipalId: TRAINER,
+      sessionFormateurs: [],
+      jours: [],
+      enrollments: [
+        {
+          id: "e1",
+          statut: "confirmee",
+          tauxPresencePct: null,
+          trainee: { nom: "Blanc", prenom: "Simone", entreprise: null, fonction: null, ...trainee },
+          questionnaires,
+        },
+      ],
+    });
+
+    it("un « oui » au positionnement, case NON cochée → besoin déclaré", async () => {
+      mockFindFirst.mockResolvedValue(
+        sessionAvec({ situationHandicap: false }, [
+          { reponses: { besoinAdaptation: true, attentes: "reponse-privee-temoin" } },
+        ]),
+      );
+      const r = await getTrainingSessionForFormateur("s1", TRAINER);
+      expect(r?.inscrits[0]?.besoinAdaptationDeclare).toBe(true);
+      // Ni les réponses, ni le drapeau « handicap » ne sont rendus au formateur.
+      const rendu = JSON.stringify(r);
+      expect(rendu).not.toContain("reponse-privee-temoin");
+      expect(rendu).not.toContain("situationHandicap");
+    });
+
+    it("la case cochée en console → besoin déclaré ; ni case ni « oui » → rien", async () => {
+      mockFindFirst.mockResolvedValue(sessionAvec({ situationHandicap: true }, []));
+      expect(
+        (await getTrainingSessionForFormateur("s1", TRAINER))?.inscrits[0]?.besoinAdaptationDeclare,
+      ).toBe(true);
+
+      mockFindFirst.mockResolvedValue(
+        sessionAvec({ situationHandicap: false }, [{ reponses: { besoinAdaptation: false } }]),
+      );
+      expect(
+        (await getTrainingSessionForFormateur("s1", TRAINER))?.inscrits[0]?.besoinAdaptationDeclare,
+      ).toBe(false);
+    });
+
+    it("seuls les positionnements RÉPONDUS sont lus", async () => {
+      mockFindFirst.mockResolvedValue(null);
+      await getTrainingSessionForFormateur("s1", TRAINER);
+      const arg = mockFindFirst.mock.calls[0]?.[0] as {
+        select: { enrollments: { select: { questionnaires: unknown } } };
+      };
+      expect(arg.select.enrollments.select.questionnaires).toEqual({
+        where: { type: "positionnement", reponduAt: { not: null } },
+        select: { reponses: true },
+      });
+    });
+  });
 });

@@ -7,12 +7,24 @@
  *
  * ⚠️ POLITIQUE DE CHAMPS STAGIAIRE — non négociable : ne jamais exposer
  * `Trainee.handicapDetailsChiffre` (détail de santé chiffré). Le formateur voit
- * le drapeau `situationHandicap` (nécessaire pour adapter, ind. 10/26) et
- * l'identité pédagogique minimale (nom, prénom, entreprise, fonction), jamais
+ * UN booléen, « besoin d'adaptation déclaré » (nécessaire pour adapter, ind. 10),
+ * et l'identité pédagogique minimale (nom, prénom, entreprise, fonction), jamais
  * l'email ni les détails sensibles.
+ *
+ * 🔴 2026-09-15 (dette D4 de la relecture #1095) — ce booléen était
+ * `Trainee.situationHandicap`, affiché « situation de handicap signalée ». Deux
+ * défauts : un « oui » au positionnement, qui couvre aussi une difficulté d'accès
+ * ou un problème de santé passager, cochait cette case et faisait lire « handicap »
+ * au formateur ; et depuis que ce « oui » ne la coche plus, le formateur ne l'aurait
+ * plus vu du tout. Le booléen se lit donc au prédicat PARTAGÉ
+ * (`besoinAdaptationDeclare`), le même que l'alerte, l'écran de session et le
+ * moteur de l'indicateur 10 — et il ne dit pas lequel des deux chemins l'a posé.
+ * Les réponses du positionnement sont lues ICI, côté serveur, et ne sortent jamais
+ * de ce module : seul le booléen est rendu.
  */
 
 import { prisma } from "@/lib/prisma";
+import { besoinAdaptationDeclare } from "@/server/qualiopi/adaptation/reponse-organisme";
 import { resoudreAppartenance, type RoleFormateur } from "./session-membership";
 
 /** Filtre Prisma : sessions du formateur (principal FK OU ligne SessionFormateur). */
@@ -138,6 +150,12 @@ export async function getTrainingSessionForFormateur(sessionId: string, trainerI
               // ❌ JAMAIS : email, handicapDetailsChiffre, consentements.
             },
           },
+          // Ind. 10 — seul le booléen `besoinAdaptation` en est tiré, ci-dessous.
+          // Le JSON ne quitte pas ce module.
+          questionnaires: {
+            where: { type: "positionnement", reponduAt: { not: null } },
+            select: { reponses: true },
+          },
         },
       },
     },
@@ -183,7 +201,10 @@ export async function getTrainingSessionForFormateur(sessionId: string, trainerI
       prenom: e.trainee.prenom,
       entreprise: e.trainee.entreprise,
       fonction: e.trainee.fonction,
-      situationHandicap: e.trainee.situationHandicap,
+      besoinAdaptationDeclare: besoinAdaptationDeclare({
+        situationHandicap: e.trainee.situationHandicap,
+        reponsesPositionnements: (e.questionnaires ?? []).map((q) => q.reponses),
+      }),
     })),
   };
 }
