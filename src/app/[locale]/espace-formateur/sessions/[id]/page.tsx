@@ -23,7 +23,7 @@ import {
   contresignerDemiJourneeAction,
 } from "@/server/actions/qualiopi/emargement-formateur";
 import { EmargementGroupe } from "@/components/espace-formateur/EmargementGroupe";
-import { DemandeContresignature } from "@/components/espace-formateur/DemandeContresignature";
+import { EmargementDemandeContresignature } from "@/components/espace-formateur/EmargementDemandeContresignature";
 import { contresignaturesAttenduesDuFormateur } from "@/server/qualiopi/emargement/contresignatures-attendues";
 import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
 import { signerReleveFormateurAction } from "@/server/actions/qualiopi/releve-signature";
@@ -122,7 +122,7 @@ export default async function Page({
         </div>
 
         {/* Demande de contresignature — en tête, avec l'accès direct au geste. */}
-        <DemandeContresignature demiJournees={aContresigner} />
+        <EmargementDemandeContresignature demiJournees={aContresigner} />
 
         {/* En-tête récapitulatif */}
         <dl className="border-border grid grid-cols-1 gap-4 rounded-lg border p-4 sm:grid-cols-2">

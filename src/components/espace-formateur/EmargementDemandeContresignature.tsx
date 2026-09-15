@@ -8,6 +8,10 @@
  * d'émargement (`#emargement`), où se pose le geste.
  *
  * Composant serveur, sans état : il ne signe rien, il montre et il mène.
+ *
+ * Nommé `Emargement*` et rangé à côté d'`EmargementGroupe` : il appartient au
+ * même geste, et c'est la zone de l'espace formateur autorisée à consommer le
+ * domaine qualiopi (`scripts/qualiopi/isolation-check.ts`). Pas une exception.
  * Aucun nom de stagiaire — la politique de champs de l'espace formateur.
  */
 
@@ -16,13 +20,13 @@ import {
   type DemiJourneeAContresigner,
 } from "@/server/qualiopi/emargement/contresignatures-manquantes";
 
-export interface DemandeContresignatureProps {
+export interface EmargementDemandeContresignatureProps {
   readonly demiJournees: ReadonlyArray<DemiJourneeAContresigner>;
 }
 
-export function DemandeContresignature({
+export function EmargementDemandeContresignature({
   demiJournees,
-}: DemandeContresignatureProps): React.ReactElement | null {
+}: EmargementDemandeContresignatureProps): React.ReactElement | null {
   // Rien à contresigner : aucun bandeau. Un bandeau vide se lit comme une alerte.
   if (demiJournees.length === 0) return null;
   const n = demiJournees.length;

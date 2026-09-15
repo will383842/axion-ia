@@ -28,7 +28,7 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-import { DemandeContresignature } from "../DemandeContresignature";
+import { EmargementDemandeContresignature } from "./EmargementDemandeContresignature";
 import { contresignaturesAttenduesDuFormateur } from "@/server/qualiopi/emargement/contresignatures-attendues";
 
 const jourDb = (iso: string) => new Date(`${iso}T00:00:00.000Z`);
@@ -87,7 +87,7 @@ describe("ce que CE formateur a à contresigner", () => {
 describe("le bandeau de demande", () => {
   it("🔴 nomme chaque demi-journée et mène DROIT au bloc d'émargement", () => {
     const html = renderToStaticMarkup(
-      <DemandeContresignature
+      <EmargementDemandeContresignature
         demiJournees={[
           { date: "2026-09-16", demiJournee: "matin", formateurId: "t-moi" },
           { date: "2026-09-16", demiJournee: "apres_midi", formateurId: "t-moi" },
@@ -101,7 +101,7 @@ describe("le bandeau de demande", () => {
   });
 
   it("rien à contresigner → aucun bandeau (un bandeau vide se lit comme une alerte)", () => {
-    expect(renderToStaticMarkup(<DemandeContresignature demiJournees={[]} />)).toBe("");
+    expect(renderToStaticMarkup(<EmargementDemandeContresignature demiJournees={[]} />)).toBe("");
   });
 });
 
@@ -117,7 +117,7 @@ describe("les ancres existent là où on les vise", () => {
   );
 
   it("la page de la formation affiche la demande et porte l'ancre `emargement`", () => {
-    expect(page).toContain("<DemandeContresignature");
+    expect(page).toContain("<EmargementDemandeContresignature");
     expect(page).toMatch(/id="emargement"/);
     expect(page).toContain("contresignaturesAttenduesDuFormateur(");
   });
