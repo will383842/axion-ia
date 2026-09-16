@@ -393,12 +393,25 @@ async function signalerBesoinAdaptation(traineeId: string, detail: string): Prom
   // Seul appel TIERS du lot : détaché, pour ne pas tenir la réponse du
   // bénéficiaire sur la latence de Telegram. Il ne remplace pas l'alerte —
   // Will peut ne pas le lire, et rien ne l'y ramène.
+  //
+  // 🔴 Le message DÉPEND de ce qui a réellement été écrit. Le détail est retiré
+  // du JSON des réponses AVANT la soumission : si le chiffrement refuse, il
+  // n'est nulle part. Annoncer « le détail est chiffré » enverrait alors le
+  // référent chercher un texte qui n'existe pas — ou pire, lire une déclaration
+  // ANTÉRIEURE en croyant lire celle du jour, et organiser l'adaptation sur un
+  // contenu périmé, avant une formation.
+  const detailPrecise = detail.length > 0;
+  const detailEnregistre = detailChiffre !== null;
   void sendTelegram({
     tag: "ADAPTATION_DECLAREE",
     body:
       `♿ ${trainee.prenom} ${trainee.nom} a déclaré un besoin d'adaptation ` +
       `dans son questionnaire de positionnement.\n` +
-      `Le détail est chiffré : le lire depuis sa fiche stagiaire dans la console.`,
+      (detailEnregistre
+        ? `Le détail est chiffré : le lire depuis sa fiche stagiaire dans la console.`
+        : detailPrecise
+          ? `⚠️ La précision saisie n'a PAS pu être enregistrée : la contacter pour la recueillir.`
+          : `Aucune précision n'a été saisie : la contacter pour la recueillir.`),
   }).catch(() => {});
 }
 
