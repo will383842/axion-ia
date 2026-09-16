@@ -7,12 +7,24 @@
  * passe en `completed + completedAt = NOW() + completedReason = 'deadline_reached'`.
  *
  * Si la campagne a un recurringSchedule, retire le repeatable BullMQ job.
- * Log SOC2 CAMPAIGN_AUTO_STOPPED_DEADLINE via logActivity.
+ * Log SOC2 CAMPAIGN_AUTO_STOPPED_DEADLINE.
+ *
+ * ⚠️ CE WORKER TOURNE HORS DE NEXT (`tsx src/server/queue/worker.ts`).
+ *
+ * 🔴 Il journalisait par `logActivity`, une Server Action qui lit `headers()`
+ * dans le même `try` que son écriture : hors requête, `headers()` lève, le
+ * `catch` best-effort avale, et AUCUNE ligne n'était écrite. Depuis le
+ * 2026-09-16 il écrit par `ecrireJournalActivite` — ni directive, ni requête —
+ * en se déclarant `acteurSysteme`, donc `adminUserId: null`. Garde d'import :
+ * `__tests__/content-gen-deadline-checker.graphe-worker.spec.ts`.
  */
 
 import { Queue, Worker } from "bullmq";
 import { prisma } from "@/lib/prisma";
-import { logActivity } from "@/server/content-gen/shared/activity-log";
+import {
+  acteurSysteme,
+  ecrireJournalActivite,
+} from "@/server/content-gen/shared/activity-log-writer";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 
 const QUEUE_NAME = "content-gen-deadline-checker";
@@ -106,13 +118,11 @@ async function processJob(): Promise<void> {
       }
     }
 
-    // 4. Log SOC2
-    await logActivity({
-      session: {
-        userId: "system:deadline-checker",
-        email: "system@axion-ia.com",
-        role: "admin" as const,
-      },
+    // 4. Log SOC2. 🔑 `adminUserId: null` — personne n'est derrière cet acte, et
+    //    `ActivityLog.adminUserId` est un `@db.Uuid` lié à `AdminUser` : la chaîne
+    //    `"system:deadline-checker"` qui y figurait avant le 2026-09-16 aurait fait
+    //    lever le `create` de toute façon. L'auteur se lit dans `changes.origine`.
+    await ecrireJournalActivite(acteurSysteme("content-gen-deadline-checker"), {
       action: "content-gen.campaign.auto-stopped",
       targetType: "CoverageCampaign",
       targetId: campaign.id,

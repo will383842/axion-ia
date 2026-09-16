@@ -19,7 +19,7 @@ const campaignFindManyMock = vi.fn();
 const campaignUpdateMock = vi.fn();
 const contentGenJobFindManyMock = vi.fn();
 const contentGenJobUpdateManyMock = vi.fn();
-const logActivityMock = vi.fn();
+const ecrireJournalActiviteMock = vi.fn();
 const captureWorkerErrorMock = vi.fn();
 const queueGetJobMock = vi.fn();
 const queueRemoveRepeatableMock = vi.fn();
@@ -39,8 +39,16 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-vi.mock("@/server/content-gen/shared/activity-log", () => ({
-  logActivity: (...args: unknown[]) => logActivityMock(...args),
+// ⚠️ CE DOUBLE NE PROUVE RIEN SUR L'ÉCRITURE, et c'est assumé : ce fichier teste
+// les CINQ scénarios d'arrêt de campagne, pas le journal. Jusqu'au 2026-09-16 il
+// doublait `logActivity` de la même façon, et son `expect(...).toHaveBeenCalled()`
+// restait vert alors qu'aucune ligne ne partait en base — `logActivity` lit
+// `headers()`, qui lève hors requête, dans le même `try` que son `create`.
+// La preuve que la ligne existe VRAIMENT est dans `deadline-checker-journal.spec.ts`,
+// qui ne double que `prisma` et `next/headers`.
+vi.mock("@/server/content-gen/shared/activity-log-writer", () => ({
+  acteurSysteme: (origine: string) => ({ adminUserId: null, origine }),
+  ecrireJournalActivite: (...args: unknown[]) => ecrireJournalActiviteMock(...args),
 }));
 
 vi.mock("@/server/queue/lib/sentry-worker", () => ({
@@ -69,7 +77,7 @@ beforeEach(() => {
   campaignUpdateMock.mockResolvedValue({ id: "campaign-1" });
   contentGenJobFindManyMock.mockResolvedValue([]);
   contentGenJobUpdateManyMock.mockResolvedValue({ count: 0 });
-  logActivityMock.mockResolvedValue(undefined);
+  ecrireJournalActiviteMock.mockResolvedValue(undefined);
   queueGetJobMock.mockResolvedValue(null);
   queueRemoveRepeatableMock.mockResolvedValue(undefined);
 });
@@ -97,9 +105,9 @@ describe("content-gen-deadline-checker", () => {
     const callArg: any = campaignUpdateMock.mock.calls[0]?.[0];
     expect(callArg?.data?.status).toBe("completed");
     expect(callArg?.data?.completedReason).toBe("deadline_reached");
-    expect(logActivityMock).toHaveBeenCalled();
+    expect(ecrireJournalActiviteMock).toHaveBeenCalled();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const logArg: any = logActivityMock.mock.calls[0]?.[0];
+    const logArg: any = ecrireJournalActiviteMock.mock.calls[0]?.[1];
     expect(logArg?.changes?.soc2).toBe("CAMPAIGN_AUTO_STOPPED_DEADLINE");
   });
 

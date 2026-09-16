@@ -193,6 +193,21 @@ describe("🔴 le worker tourne hors de Next — `server-only` n'y résout pas",
     expect(atteignables).toContain("src/server/qualiopi/remuneration/autofacture-emission.ts");
   });
 
+  // 🔑 2026-09-16 — le `content-gen-deadline-checker` écrivait sa trace SOC2 par
+  // `logActivity`, une Server Action qui lit `headers()`. Cette garde-ci ne suit
+  // que `server-only` ; les deux autres fautes de ce chemin sont suivies par
+  // `src/server/queue/workers/__tests__/content-gen-deadline-checker.graphe-worker.spec.ts`.
+  // Ce témoin prouve que la marche générale couvre bien le cron et son nouveau
+  // chemin d'écriture, sans requête ni directive.
+  it("TÉMOIN+ : la marche atteint le deadline-checker des campagnes et son chemin de journal", () => {
+    const atteignables = [...atteignablesDepuisLeWorker()].map((f) =>
+      f.slice(RACINE.length + 1).replace(/\\/g, "/"),
+    );
+
+    expect(atteignables).toContain("src/server/queue/workers/content-gen-deadline-checker.ts");
+    expect(atteignables).toContain("src/server/content-gen/shared/activity-log-writer.ts");
+  });
+
   it("TÉMOIN+ : la marche part aussi des scripts lancés dans le conteneur worker", () => {
     const atteignables = [...atteignablesDepuisLeWorker()].map((f) =>
       f.slice(RACINE.length + 1).replace(/\\/g, "/"),
