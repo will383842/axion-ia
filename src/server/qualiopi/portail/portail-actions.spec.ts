@@ -63,9 +63,22 @@ vi.mock("@/server/qualiopi/satisfaction/satisfaction-service", () => ({
   soumettreReponses: vi.fn(),
 }));
 
+// `declarerHandicapAction` porte désormais un limiteur (relecture sécurité
+// #1103). Sans ce doublon, le VRAI compteur tourne ici, sur un Redis simulé :
+// ce fichier appelle l'action quatre fois, et l'une d'elles finissait refusée —
+// un rouge qui ne dit rien du sujet testé. Ce fichier ne garde pas le limiteur
+// (c'est `declaration-besoin-sans-handicap.spec.ts` qui le fait) : il déclare
+// simplement qu'il laisse passer.
+vi.mock("@/lib/rate-limit", () => ({
+  checkRateLimit: vi.fn(async () => ({ allowed: true, count: 1, remaining: 4 })),
+}));
 vi.mock("@/lib/pii-crypto", () => ({
   encryptPii: vi.fn((v: string) => `enc:v1:${v}`),
   decryptPii: vi.fn((v: string) => v),
+  // Doublon COMPLET : `portail.ts` refuse d'écrire ce qui n'est pas chiffré.
+  // Un doublon partiel fait échouer le fichier entier, pas seulement le cas.
+  isEncryptedPii: (v: unknown) => typeof v === "string" && v.startsWith("enc:"),
+  PII_DECRYPT_PLACEHOLDER: "[encrypted — key missing]",
 }));
 
 // ─────────────────────────────────────────────────────────────────────────────

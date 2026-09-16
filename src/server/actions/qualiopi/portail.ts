@@ -48,7 +48,7 @@ import { headers } from "next/headers";
 import { getPortailToken, clearPortailCookie } from "@/server/qualiopi/portail/cookie";
 import { creerDemandeRgpd } from "@/server/qualiopi/portail/rgpd-service";
 import { soumettreReponses } from "@/server/qualiopi/satisfaction/satisfaction-service";
-import { encryptPii, decryptPii } from "@/lib/pii-crypto";
+import { encryptPii, decryptPii, isEncryptedPii, PII_DECRYPT_PLACEHOLDER } from "@/lib/pii-crypto";
 import { sendTelegram } from "@/lib/telegram";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { construireAlerteBesoinAdaptation } from "@/server/qualiopi/alertes/besoin-adaptation";
@@ -90,7 +90,11 @@ const soumettreSatisfactionPortailSchema = z.object({
 });
 
 const declarerHandicapSchema = z.object({
-  besoin: z.string().min(1).max(2000),
+  // `.trim()` AVANT les bornes : le formulaire trime déjà (`DeclarationBesoin…`),
+  // mais l'action est un point d'entrée HTTP à part entière. Sans lui, 2 000
+  // espaces étaient une déclaration valide — et chaque appel faisait grossir la
+  // colonne chiffrée d'autant.
+  besoin: z.string().trim().min(1).max(2000),
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -427,6 +431,60 @@ const instantParis = new Intl.DateTimeFormat("fr-FR", {
 });
 
 /**
+ * 🔴 PLAFOND DE TAILLE DU CUMUL — relecture sécurité #1103 (art. 32 RGPD).
+ *
+ * Le cumul relit, déchiffre, concatène et rechiffre TOUTE la colonne à chaque
+ * déclaration : le coût du k-ième appel croît avec les k-1 précédents. La
+ * première version n'avait aucune borne, au motif qu'« une déclaration est un
+ * geste rare ». C'est une hypothèse sur le comportement d'un utilisateur, pas
+ * un contrôle — et `declarerBesoinAmenagementAction` est un point d'entrée HTTP
+ * qu'atteint n'importe quel porteur de cookie portail.
+ *
+ * Sans borne, quelques milliers d'appels rendaient `handicapDetailsChiffre`
+ * illisible : le référent handicap perdait l'accès à TOUTES les déclarations de
+ * la personne — y compris les vraies, y compris les anciennes — et l'export du
+ * droit d'accès tombait avec. Échec ouvert, et silencieux : l'alerte est
+ * dédoublonnée tant qu'elle est ouverte, donc un seul signal pour des milliers
+ * d'appels.
+ *
+ * 20 000 caractères = dix déclarations pleines. Au-delà, les plus ANCIENNES
+ * sortent : ce sont les plus récentes qui portent une adaptation encore
+ * organisable. Rien ne disparaît sans trace — la date de chaque déclaration
+ * reste au journal d'activité, qui n'a jamais porté le texte.
+ */
+const MAX_DETAIL_CUMULE_CARACTERES = 20_000;
+
+const MENTION_ANCIENNES_RETIREES =
+  "[déclarations plus anciennes retirées faute de place — leur date reste au journal d'activité]";
+
+/** Plafond de déclarations par bénéficiaire et par heure. Voir le limiteur. */
+const PLAFOND_DECLARATIONS_PAR_HEURE = 5;
+
+/** Ramène le cumul sous le plafond en retirant les déclarations les plus anciennes. */
+function bornerCumul(texte: string): string {
+  if (texte.length <= MAX_DETAIL_CUMULE_CARACTERES) return texte;
+
+  const blocs = texte.split(SEPARATEUR_DECLARATIONS);
+  while (
+    blocs.length > 1 &&
+    blocs.join(SEPARATEUR_DECLARATIONS).length + MENTION_ANCIENNES_RETIREES.length >
+      MAX_DETAIL_CUMULE_CARACTERES
+  ) {
+    blocs.shift();
+  }
+
+  // Reste le cas d'une valeur héritée unique déjà plus grosse que le plafond :
+  // on garde sa FIN, pour la même raison que ci-dessus.
+  const garde = blocs.join(SEPARATEUR_DECLARATIONS);
+  const borne =
+    garde.length > MAX_DETAIL_CUMULE_CARACTERES
+      ? garde.slice(-MAX_DETAIL_CUMULE_CARACTERES)
+      : garde;
+
+  return `${MENTION_ANCIENNES_RETIREES}${SEPARATEUR_DECLARATIONS}${borne}`;
+}
+
+/**
  * Le texte chiffré à écrire : la NOUVELLE déclaration, précédée des précédentes.
  *
  * 🔴 Dette D3 (relecture #1103). `handicapDetailsChiffre` était ÉCRASÉ à chaque
@@ -448,7 +506,7 @@ const instantParis = new Intl.DateTimeFormat("fr-FR", {
  *
  * 🔴 Le clair ne sort JAMAIS d'ici : ni journal, ni Sentry, ni valeur de retour.
  */
-async function detailCumule(traineeId: string, nouveau: string): Promise<string> {
+async function detailCumule(traineeId: string, nouveau: string): Promise<string | null> {
   const entete = `${SEPARATEUR_DECLARATIONS}${instantParis.format(new Date())} —\n`;
   let precedent: string | null = null;
   try {
@@ -459,7 +517,13 @@ async function detailCumule(traineeId: string, nouveau: string): Promise<string>
     const chiffre = fiche?.handicapDetailsChiffre ?? null;
     if (chiffre !== null && chiffre !== "") {
       precedent = decryptPii(chiffre);
-      if (precedent === null || precedent === "") {
+      // 🔴 `decryptPii` NE LÈVE PAS quand la clé est absente : il rend un
+      // texte-témoin. Sans ce test, ce témoin était concaténé à la nouvelle
+      // déclaration — puis `encryptPii`, privé de la même clé, rendait le tout
+      // INCHANGÉ : une donnée de santé écrite EN CLAIR, à la place du
+      // chiffré précédent, pendant que le portail affiche « Ce texte est
+      // chiffré ». Le refus d'écrire est décidé plus bas.
+      if (precedent === null || precedent === "" || precedent === PII_DECRYPT_PLACEHOLDER) {
         precedent = "[déclaration précédente enregistrée, non relisible]";
       }
     }
@@ -472,7 +536,23 @@ async function detailCumule(traineeId: string, nouveau: string): Promise<string>
     });
     precedent = "[déclaration précédente enregistrée, non relisible]";
   }
-  return encryptPii(precedent === null ? nouveau : `${precedent}${entete}${nouveau}`);
+  const texte = precedent === null ? nouveau : bornerCumul(`${precedent}${entete}${nouveau}`);
+  const chiffre = encryptPii(texte);
+
+  // 🔴 Dernier verrou : ne JAMAIS écrire ce qui n'est pas chiffré. `encryptPii`
+  // rend le texte inchangé quand la clé manque (repli de développement). Ici, ce
+  // repli écrirait une donnée de santé en clair dans la base de production.
+  // Mieux vaut refuser la déclaration et le dire au bénéficiaire.
+  if (!isEncryptedPii(chiffre)) {
+    Sentry.captureMessage("déclaration d'adaptation : chiffrement indisponible, écriture refusée", {
+      level: "error",
+      tags: { service: "declarationMonCompte", etape: "chiffrement" },
+      extra: { traineeId },
+    });
+    return null;
+  }
+
+  return chiffre;
 }
 
 async function declarerDepuisMonCompte(
@@ -487,13 +567,52 @@ async function declarerDepuisMonCompte(
 
   const declareLe = new Date();
 
+  // 🔴 LIMITEUR — relecture sécurité #1103.
+  //
+  // Ce fichier explique plus haut pourquoi `accederPortailAction` a été
+  // SUPPRIMÉE plutôt que corrigée : « un second chemin d'entrée au portail,
+  // dépourvu de la seule protection qui garde le premier ». Un chemin
+  // d'ÉCRITURE non limité, sur une donnée de santé, n'est pas d'une autre
+  // famille. Clé par bénéficiaire (l'action est déjà derrière le cookie) et non
+  // par IP : une déclaration légitime depuis un réseau d'entreprise partagé ne
+  // doit pas être bloquée par celle d'un collègue.
+  try {
+    const rl = await checkRateLimit(`portail:declaration:${authResult.traineeId}`, {
+      limit: PLAFOND_DECLARATIONS_PAR_HEURE,
+      windowSec: 3600,
+      // Choix DÉCLARÉ, pas subi : une panne de Redis ne doit pas empêcher une
+      // vraie déclaration de handicap. Le plafond de taille ci-dessus ne dépend
+      // d'aucun service externe — c'est lui qui borne le dégât dans ce cas.
+      surPanne: "laisser-passer",
+    });
+    if (!rl.allowed) {
+      return {
+        error:
+          "Votre déclaration a bien été enregistrée. Pour en ajouter une autre, merci de patienter un peu.",
+      };
+    }
+  } catch {
+    // fail-open ASSUMÉ : un limiteur indisponible ne doit pas empêcher une vraie
+    // déclaration de handicap. Le plafond de taille, lui, ne dépend d'aucun
+    // service externe — c'est lui qui borne le dégât dans ce cas.
+  }
+
+  const detailChiffre = await detailCumule(authResult.traineeId, parsed.data.besoin);
+  if (detailChiffre === null) {
+    // Chiffrement indisponible : déjà signalé à Sentry en niveau `error`.
+    return {
+      error:
+        "Votre déclaration n'a pas pu être enregistrée. Merci de réessayer, ou de contacter votre référent.",
+    };
+  }
+
   const trainee = await prisma.trainee.update({
     where: { id: authResult.traineeId },
     data: {
       // La case n'est posée QUE par la déclaration de handicap ou de problème
       // de santé. Un besoin d'aménagement ne la voit jamais.
       ...(nature === "handicap" ? { situationHandicap: true } : {}),
-      handicapDetailsChiffre: await detailCumule(authResult.traineeId, parsed.data.besoin),
+      handicapDetailsChiffre: detailChiffre,
     },
     select: { id: true, prenom: true, nom: true },
   });

@@ -74,12 +74,22 @@ vi.mock("@/server/qualiopi/portail/rgpd-service", () => ({ creerDemandeRgpd: vi.
 vi.mock("@/server/qualiopi/satisfaction/satisfaction-service", () => ({
   soumettreReponses: vi.fn(),
 }));
-vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: vi.fn() }));
+// Doublon EXPLICITE : rendre `undefined` ici faisait lever la lecture de
+// `allowed`, donc passer par le filet de panne du limiteur — vert, mais par le
+// chemin d'erreur. Le limiteur lui-même est gardé par
+// `declaration-besoin-sans-handicap.spec.ts`.
+vi.mock("@/lib/rate-limit", () => ({
+  checkRateLimit: vi.fn(async () => ({ allowed: true, count: 1, remaining: 4 })),
+}));
 vi.mock("next/headers", () => ({ headers: vi.fn(async () => new Map()) }));
 // Chiffrement réel non souhaité ici : on veut vérifier le FLUX, pas AES.
 vi.mock("@/lib/pii-crypto", () => ({
   encryptPii: (v: string) => `enc:${v}`,
   decryptPii: (v: string | null) => (v == null ? null : String(v).replace(/^enc:/, "")),
+  // Doublon COMPLET : `portail.ts` refuse d'écrire ce qui n'est pas chiffré.
+  // Un doublon partiel fait échouer le fichier entier, pas seulement le cas.
+  isEncryptedPii: (v: unknown) => typeof v === "string" && v.startsWith("enc:"),
+  PII_DECRYPT_PLACEHOLDER: "[encrypted — key missing]",
 }));
 
 import {

@@ -46,6 +46,10 @@ const sendTelegram = vi.fn(async (_msg: unknown) => true);
 const creerOuDedup = vi.fn(async (_input: unknown) => null);
 const getPortailToken = vi.fn();
 const verifierToken = vi.fn();
+const checkRateLimitMock = vi.fn(async (_cle: string, _opts: unknown) => ({ allowed: true }));
+
+/** Bascule du doublon de `pii-crypto` : `false` = clé de chiffrement absente. */
+let chiffrementDisponible = true;
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -83,11 +87,23 @@ vi.mock("@/server/qualiopi/portail/rgpd-service", () => ({ creerDemandeRgpd: vi.
 vi.mock("@/server/qualiopi/satisfaction/satisfaction-service", () => ({
   soumettreReponses: vi.fn(),
 }));
-vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: vi.fn() }));
+vi.mock("@/lib/rate-limit", () => ({
+  checkRateLimit: (k: string, o: unknown) => checkRateLimitMock(k, o),
+}));
 vi.mock("next/headers", () => ({ headers: vi.fn(async () => new Map()) }));
+// ⚠️ Ce doublon doit exporter TOUT ce que `portail.ts` importe de `pii-crypto` :
+// un `vi.mock` incomplet fait échouer le fichier entier sur « No "x" export is
+// defined on the mock » — et deux PR vertes séparément peuvent rougir ensemble
+// pour cette seule raison (incident du 2026-09-15, PR #1092).
 vi.mock("@/lib/pii-crypto", () => ({
-  encryptPii: (v: string) => `enc:${v}`,
-  decryptPii: (v: string | null) => (v == null ? null : String(v).replace(/^enc:/, "")),
+  encryptPii: (v: string) => (chiffrementDisponible ? `enc:${v}` : v),
+  decryptPii: (v: string | null) => {
+    if (v == null) return null;
+    if (!chiffrementDisponible && String(v).startsWith("enc:")) return "[encrypted — key missing]";
+    return String(v).replace(/^enc:/, "");
+  },
+  isEncryptedPii: (v: unknown) => typeof v === "string" && v.startsWith("enc:"),
+  PII_DECRYPT_PLACEHOLDER: "[encrypted — key missing]",
 }));
 
 import { declarerBesoinAmenagementAction, declarerHandicapAction } from "./portail";
@@ -132,6 +148,8 @@ beforeEach(() => {
   activityLogCreate.mockResolvedValue({ id: "log-1" });
   enrollmentUpdateMany.mockResolvedValue({ count: 1 });
   queryRaw.mockResolvedValue([{ existe: true }]);
+  checkRateLimitMock.mockResolvedValue({ allowed: true });
+  chiffrementDisponible = true;
 });
 
 describe("🔴 aménagement SANS handicap — la case n'est pas cochée", () => {
@@ -329,6 +347,96 @@ describe("🔴 dette D3 — une seconde déclaration n'efface pas la première",
     await declarerBesoinAmenagementAction({ besoin: BESOIN });
     const maj = traineeUpdate.mock.calls[0]?.[0] as { data: Record<string, unknown> };
     expect(maj.data["handicapDetailsChiffre"]).toBe(`enc:${BESOIN}`);
+  });
+});
+
+/**
+ * 🔴 Relecture sécurité #1103 — art. 32 RGPD (disponibilité et intégrité).
+ *
+ * Le cumul ci-dessus relit, déchiffre, concatène et rechiffre TOUTE la colonne à
+ * chaque déclaration. Sans borne, le coût du k-ième appel croît avec les k-1
+ * précédents, et `declarerBesoinAmenagementAction` est un point d'entrée HTTP
+ * qu'atteint n'importe quel porteur de cookie portail. Quelques milliers
+ * d'appels rendaient la colonne illisible : le référent handicap perdait
+ * TOUTES les déclarations de la personne, l'export du droit d'accès avec.
+ */
+describe("🔴 le cumul est borné, et le chiffrement n'est jamais contourné", () => {
+  it("🔴 un texte cumulé ne dépasse jamais le plafond, et le dit", async () => {
+    // Une colonne déjà énorme : exactement ce qu'une boucle d'appels produit.
+    traineeFindUnique.mockResolvedValue({ handicapDetailsChiffre: `enc:${"x".repeat(60_000)}` });
+
+    await declarerBesoinAmenagementAction({ besoin: BESOIN });
+
+    const maj = traineeUpdate.mock.calls[0]?.[0] as { data: Record<string, unknown> };
+    const ecrit = String(maj.data["handicapDetailsChiffre"]);
+    expect(
+      ecrit.length,
+      "le cumul n'est pas borné : la colonne peut enfler jusqu'à devenir illisible",
+    ).toBeLessThan(25_000);
+    // La déclaration du jour survit — c'est celle sur laquelle on peut encore agir.
+    expect(ecrit).toContain(BESOIN);
+    expect(ecrit).toContain("retirées faute de place");
+  });
+
+  it("🔴 au-delà du plafond, ce sont les PLUS ANCIENNES qui sortent", async () => {
+    const ancienne = "PREMIERE-DECLARATION";
+    const recente = "DERNIERE-DECLARATION";
+    traineeFindUnique.mockResolvedValue({
+      handicapDetailsChiffre: `enc:${ancienne}\n\n— Déclaration du 1 janvier 2026 —\n${"y".repeat(30_000)}\n\n— Déclaration du 2 janvier 2026 —\n${recente}`,
+    });
+
+    await declarerBesoinAmenagementAction({ besoin: BESOIN });
+
+    const maj = traineeUpdate.mock.calls[0]?.[0] as { data: Record<string, unknown> };
+    const ecrit = String(maj.data["handicapDetailsChiffre"]);
+    expect(ecrit).toContain(recente);
+    expect(ecrit).toContain(BESOIN);
+    expect(ecrit, "on a gardé l'ancienne et jeté la récente").not.toContain(ancienne);
+  });
+
+  it("🔴 au-delà du plafond horaire, la déclaration est refusée SANS toucher la fiche", async () => {
+    checkRateLimitMock.mockResolvedValue({ allowed: false });
+
+    const res = await declarerBesoinAmenagementAction({ besoin: BESOIN });
+
+    expect("error" in res, "l'action sans limiteur laisse écrire sans fin").toBe(true);
+    expect(traineeUpdate).not.toHaveBeenCalled();
+    const [cle] = checkRateLimitMock.mock.calls[0] ?? [];
+    // Par bénéficiaire, pas par IP : un réseau d'entreprise partagé ne doit pas
+    // faire taire la déclaration d'un collègue.
+    expect(String(cle)).toContain(UUID);
+  });
+
+  it("le limiteur vaut pour les DEUX chemins, handicap compris", async () => {
+    checkRateLimitMock.mockResolvedValue({ allowed: false });
+    expect("error" in (await declarerHandicapAction({ besoin: BESOIN }))).toBe(true);
+    expect(traineeUpdate).not.toHaveBeenCalled();
+  });
+
+  it("un limiteur en panne ne bloque pas une vraie déclaration", async () => {
+    checkRateLimitMock.mockRejectedValue(new Error("redis indisponible"));
+    await declarerBesoinAmenagementAction({ besoin: BESOIN });
+    // Choix assumé : le plafond de taille, lui, ne dépend d'aucun service externe.
+    expect(traineeUpdate).toHaveBeenCalled();
+  });
+
+  it("🔴 clé de chiffrement absente : RIEN n'est écrit, surtout pas en clair", async () => {
+    chiffrementDisponible = false;
+    traineeFindUnique.mockResolvedValue({ handicapDetailsChiffre: "enc:Je suis malentendant" });
+
+    const res = await declarerBesoinAmenagementAction({ besoin: BESOIN });
+
+    expect("error" in res).toBe(true);
+    expect(
+      traineeUpdate,
+      "une donnée de santé a été écrite en clair, à la place du chiffré précédent",
+    ).not.toHaveBeenCalled();
+  });
+
+  it("🔴 un besoin fait uniquement d'espaces est refusé, pas enregistré", async () => {
+    const res = await declarerBesoinAmenagementAction({ besoin: "   \n\t  " });
+    expect(res).toEqual({ error: "Données invalides" });
+    expect(traineeUpdate).not.toHaveBeenCalled();
   });
 });
 
