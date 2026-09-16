@@ -48,7 +48,11 @@ import { headers } from "next/headers";
 import { getPortailToken, clearPortailCookie } from "@/server/qualiopi/portail/cookie";
 import { creerDemandeRgpd } from "@/server/qualiopi/portail/rgpd-service";
 import { soumettreReponses } from "@/server/qualiopi/satisfaction/satisfaction-service";
-import { encryptPii, decryptPii, isEncryptedPii, PII_DECRYPT_PLACEHOLDER } from "@/lib/pii-crypto";
+import { decryptPii, PII_DECRYPT_PLACEHOLDER } from "@/lib/pii-crypto";
+import {
+  chiffrerDetailSante,
+  detailSanteSaisissable,
+} from "@/server/qualiopi/adaptation/detail-sante-chiffre";
 import { sendTelegram } from "@/lib/telegram";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { construireAlerteBesoinAdaptation } from "@/server/qualiopi/alertes/besoin-adaptation";
@@ -106,7 +110,7 @@ const declarerHandicapSchema = z.object({
     // santé EN CLAIR, et rendait ensuite illisibles les trois lecteurs de la
     // colonne (référent, portail du bénéficiaire, export art. 15) : chacun
     // appelle `decryptPii`, qui lève sur un faux ciphertext.
-    .refine((v) => !isEncryptedPii(v)),
+    .refine(detailSanteSaisissable),
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -341,11 +345,21 @@ async function signalerBesoinAdaptation(traineeId: string, detail: string): Prom
   // décrit sa situation ailleurs : recopier `null` par symétrie détruirait
   // cette déclaration-là, sans que rien ne le signale. Sans détail, la fiche
   // n'est donc pas écrite du tout — on ne la lit que pour nommer la personne.
-  const trainee =
+  // 🔴 La garde partagée, et non `encryptPii` nu : `encryptPii` rend le texte
+  // INCHANGÉ quand la clé manque ou quand l'entrée porte déjà le préfixe, et ce
+  // chemin-ci reçoit du texte libre venant d'un `z.record(z.unknown())`. Un
+  // refus ne fait pas échouer la soumission — les réponses sont déjà
+  // enregistrées — mais rien n'est écrit en clair, et Sentry le dit.
+  const detailChiffre =
     detail.length > 0
+      ? chiffrerDetailSante(detail, { service: "signalerBesoinAdaptation", traineeId })
+      : null;
+
+  const trainee =
+    detailChiffre !== null
       ? await prisma.trainee.update({
           where: { id: traineeId },
-          data: { handicapDetailsChiffre: encryptPii(detail) },
+          data: { handicapDetailsChiffre: detailChiffre },
           select: identite,
         })
       : await prisma.trainee.findUnique({ where: { id: traineeId }, select: identite });
@@ -557,30 +571,13 @@ async function detailCumule(traineeId: string, nouveau: string): Promise<string 
     precedent = "[déclaration précédente enregistrée, non relisible]";
   }
   const texte = precedent === null ? nouveau : bornerCumul(`${precedent}${entete}${nouveau}`);
-  const chiffre = encryptPii(texte);
 
-  // 🔴 Dernier verrou : ne JAMAIS écrire ce qui n'est pas chiffré.
-  //
-  // DEUX conditions, et la seconde est la seule qui tienne face à une saisie
-  // hostile. `isEncryptedPii` n'est qu'un test de préfixe : sur `enc:v1:<texte>`
-  // tapé par le bénéficiaire, `encryptPii` court-circuite (garde d'idempotence),
-  // rend le texte INCHANGÉ, et le test de préfixe répond « oui, c'est chiffré ».
-  // Un contrôle qui valide le clair de l'attaquant est pire que pas de contrôle.
-  // `chiffre === texte` dit la seule chose qui compte : le chiffrement n'a rien
-  // transformé. Il couvre la clé absente ET le court-circuit.
-  //
-  // (La saisie est aussi refusée en amont par le schéma ; ceci reste la garde
-  // de dernier recours, pour le `precedent` déchiffré et pour tout appelant futur.)
-  if (!isEncryptedPii(chiffre) || chiffre === texte) {
-    Sentry.captureMessage("déclaration d'adaptation : chiffrement indisponible, écriture refusée", {
-      level: "error",
-      tags: { service: "declarationMonCompte", etape: "chiffrement" },
-      extra: { traineeId },
-    });
-    return null;
-  }
-
-  return chiffre;
+  // 🔴 Dernier verrou : ne JAMAIS écrire ce qui n'est pas chiffré. La garde est
+  // désormais PARTAGÉE par les quatre chemins d'écriture de la colonne — elle
+  // était recopiée ici seulement, et les trois autres s'en passaient.
+  // (La saisie est aussi refusée en amont par le schéma ; ceci reste le dernier
+  // recours, pour le `precedent` déchiffré et pour tout appelant futur.)
+  return chiffrerDetailSante(texte, { service: "declarationMonCompte", traineeId });
 }
 
 async function declarerDepuisMonCompte(
