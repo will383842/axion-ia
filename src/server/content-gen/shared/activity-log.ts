@@ -8,17 +8,30 @@
  * les actions humaines admin.
  *
  * Pattern : appeler `logActivity({...})` après chaque Server Action mutante
- * réussie. Best-effort fail-silent (un log raté n'invalide jamais l'action).
+ * réussie. Best-effort (un log raté n'invalide jamais l'action).
  *
  * Page admin de consultation : `/[adminPrefix]/activity-logs` (filtrable par
  * `target_type=content-gen`).
+ *
+ * ⚠️ CE FICHIER EST UNE ENVELOPPE, ET SEULEMENT ÇA (2026-09-16).
+ *
+ * Il est `"use server"` et lit `next/headers` : ses exports sont des Server
+ * Actions, et `headers()` LÈVE hors d'une requête. Un worker BullMQ qui
+ * l'appelait n'écrivait donc rien — l'appel à `headers()` et le `create`
+ * partageaient le même `try`, et le `catch` best-effort cachait tout. Le
+ * chemin d'écriture vit désormais dans `activity-log-writer.ts`, qui n'a ni
+ * directive ni requête ; hors requête, on appelle CELUI-LÀ.
+ *
+ * 🔑 `headers()` a sa propre paire `try`/`catch`, et ce détail est le
+ * correctif : une requête absente coûte l'IP et le navigateur, plus jamais la
+ * ligne d'audit.
  */
 
 "use server";
 
 import { headers } from "next/headers";
-import { prisma } from "@/lib/prisma";
 import type { AdminSession } from "@/server/actions/content-gen/_auth";
+import { ecrireJournalActivite } from "@/server/content-gen/shared/activity-log-writer";
 
 export interface ActivityLogInput {
   /** Identifiant canonique de l'action ex. "content-gen.review.approve". */
@@ -34,38 +47,35 @@ export interface ActivityLogInput {
 }
 
 /**
- * Persiste une entrée ActivityLog. Best-effort : toute erreur Prisma (table
- * absente migration non appliquée, contention) est swallow + warn dev only.
+ * Persiste une entrée ActivityLog au nom de l'administrateur connecté.
  *
- * Récupère IP + User-Agent depuis `headers()` Next 16 — robuste aux requêtes
- * sans header (CLI, tests, worker reentry).
+ * Récupère IP + User-Agent depuis `headers()` Next 16, puis délègue l'écriture
+ * à `ecrireJournalActivite`. Champs, troncatures et forme de `changes` sont
+ * ceux d'avant le 2026-09-16, à l'identique.
  */
 export async function logActivity(input: ActivityLogInput): Promise<void> {
+  let ipAddress: string | null = null;
+  let userAgent: string | null = null;
   try {
     const h = await headers();
-    const ipAddress =
+    ipAddress =
       h.get("x-forwarded-for")?.split(",")[0]?.trim() ||
       h.get("x-real-ip") ||
       h.get("cf-connecting-ip") ||
       null;
-    const userAgent = h.get("user-agent") || null;
-    await prisma.activityLog.create({
-      data: {
-        adminUserId: input.session.userId,
-        action: input.action.slice(0, 120),
-        targetType: input.targetType?.slice(0, 80) ?? null,
-        targetId: input.targetId ?? null,
-        changes: (input.changes ?? null) as never,
-        ipAddress: ipAddress?.slice(0, 64) ?? null,
-        userAgent: userAgent?.slice(0, 2000) ?? null,
-      },
-    });
-  } catch (err) {
-    if (process.env.NODE_ENV !== "production") {
-      console.warn(
-        "[activity-log] persist failed (best-effort):",
-        err instanceof Error ? err.message : String(err),
-      );
-    }
+    userAgent = h.get("user-agent") || null;
+  } catch {
+    // Hors requête (script, test, réentrée worker) : on perd l'IP et le
+    // navigateur. On n'a JAMAIS de raison d'y perdre la ligne d'audit.
   }
+
+  await ecrireJournalActivite(
+    { adminUserId: input.session.userId, ipAddress, userAgent },
+    {
+      action: input.action,
+      targetType: input.targetType,
+      targetId: input.targetId,
+      changes: input.changes,
+    },
+  );
 }
