@@ -53,6 +53,7 @@ import {
   besoinAdaptationDeclare,
   serialiserHorodatage,
 } from "@/server/qualiopi/adaptation/reponse-organisme";
+import { colonneDeclarationDisponible } from "@/server/qualiopi/adaptation/colonne-declaration";
 import { lireCircuitAdaptation } from "@/server/qualiopi/adaptation/journal-consignation";
 import {
   enrollTraineeAction,
@@ -236,7 +237,7 @@ function chargerSession(id: string) {
   });
 }
 
-function chargerInscriptions(id: string) {
+function chargerInscriptions(id: string, colonneDeclaration: boolean) {
   return prisma.enrollment.findMany({
     where: { sessionId: id },
     orderBy: { createdAt: "asc" },
@@ -245,6 +246,9 @@ function chargerInscriptions(id: string) {
       statut: true,
       tauxPresencePct: true,
       adaptationsRealisees: true,
+      // Ind. 10, troisième source : un aménagement déclaré sans handicap depuis
+      // « mon compte ». Absente pendant l'heure qui suit une fusion.
+      besoinAdaptationDeclareAt: colonneDeclaration,
       sortieAt: true,
       sortieMotif: true,
       // Financement par participant (R-INTER)
@@ -373,6 +377,10 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
   // Garde : `features/admin-qualiopi/session-hub/chargement-fiche-en-vagues.spec.tsx`.
   //
   // ⚠️ Toujours APRÈS la garde de rôle ci-dessus : aucune lecture ne part avant.
+  //
+  // Une lecture de catalogue, hors vagues : la troisième source du besoin
+  // déclaré (ind. 10) n'existe pas pendant l'heure qui suit une fusion.
+  const colonneDeclaration = await colonneDeclarationDisponible();
   const [
     etatReleveConsole,
     etatLettreConsole,
@@ -410,7 +418,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     // ── Inter-entreprises (R-INTER) — clients payeurs sélectionnables ────────
     listClients(),
     // ── Données des sections (Vague 2 du hub) ────────────────────────────────
-    chargerInscriptions(id),
+    chargerInscriptions(id, colonneDeclaration),
     chargerPieces(id),
     // 🔴 Ce `findMany` n'avait NI `take` NI recherche : tout le registre des
     // stagiaires était chargé, sérialisé vers le navigateur et rendu dans un
@@ -608,6 +616,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
         reponsesPositionnements: e.questionnaires
           .filter((q) => q.type === "positionnement" && q.reponduAt !== null)
           .map((q) => q.reponses),
+        besoinAdaptationDeclareAt: e.besoinAdaptationDeclareAt ?? null,
       }),
       circuitAdaptation: serialiserHorodatage(
         circuitAdaptation.get(e.id) ?? HORODATAGE_CIRCUIT_VIDE,

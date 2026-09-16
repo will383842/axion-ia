@@ -37,6 +37,7 @@
 import { prisma } from "@/lib/prisma";
 import { whereVeilleExploitee } from "./veille-exploitee";
 import { whereBesoinAdaptationDeclare } from "@/server/qualiopi/adaptation/reponse-organisme";
+import { colonneDeclarationDisponible } from "@/server/qualiopi/adaptation/colonne-declaration";
 import { compterReponsesRouvertes } from "@/server/qualiopi/adaptation/journal-consignation";
 import {
   SELECT_PIECE_COMPETENCE,
@@ -150,6 +151,10 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   seuil12Mois.setMonth(seuil12Mois.getMonth() - 12);
   const seuil24Mois = new Date(maintenant);
   seuil24Mois.setMonth(seuil24Mois.getMonth() - 24);
+
+  // Troisième branche du besoin déclaré (ind. 10) : absente tant que la colonne
+  // n'est pas migrée — l'heure qui suit une fusion (cf. `colonne-declaration.ts`).
+  const colonneDeclaration = await colonneDeclarationDisponible();
 
   // ── Collecte des données nécessaires en parallèle ──────────────────────────
   const [
@@ -733,13 +738,16 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // de l'organisme. Le besoin déclaré se lit désormais au MÊME prédicat que
     // l'alerte et l'écran de session (`whereBesoinAdaptationDeclare`).
     prisma.enrollment.count({
-      where: { ...whereBesoinAdaptationDeclare(), ...inscriptionSurSessionTenue() },
+      where: {
+        ...whereBesoinAdaptationDeclare(colonneDeclaration),
+        ...inscriptionSurSessionTenue(),
+      },
     }),
     // off.10 — parmi celles-ci, celles qui portent une RÉPONSE consignée
     // (adaptation prévue, ou « aucune adaptation nécessaire » après échange).
     prisma.enrollment.count({
       where: {
-        ...whereBesoinAdaptationDeclare(),
+        ...whereBesoinAdaptationDeclare(colonneDeclaration),
         adaptationsRealisees: { not: null },
         ...inscriptionSurSessionTenue(),
       },

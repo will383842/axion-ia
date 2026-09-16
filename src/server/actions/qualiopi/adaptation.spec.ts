@@ -74,12 +74,22 @@ vi.mock("@/server/qualiopi/portail/rgpd-service", () => ({ creerDemandeRgpd: vi.
 vi.mock("@/server/qualiopi/satisfaction/satisfaction-service", () => ({
   soumettreReponses: vi.fn(),
 }));
-vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: vi.fn() }));
+// Doublon EXPLICITE : rendre `undefined` ici faisait lever la lecture de
+// `allowed`, donc passer par le filet de panne du limiteur — vert, mais par le
+// chemin d'erreur. Le limiteur lui-même est gardé par
+// `declaration-besoin-sans-handicap.spec.ts`.
+vi.mock("@/lib/rate-limit", () => ({
+  checkRateLimit: vi.fn(async () => ({ allowed: true, count: 1, remaining: 4 })),
+}));
 vi.mock("next/headers", () => ({ headers: vi.fn(async () => new Map()) }));
 // Chiffrement réel non souhaité ici : on veut vérifier le FLUX, pas AES.
 vi.mock("@/lib/pii-crypto", () => ({
   encryptPii: (v: string) => `enc:${v}`,
   decryptPii: (v: string | null) => (v == null ? null : String(v).replace(/^enc:/, "")),
+  // Doublon COMPLET : `portail.ts` refuse d'écrire ce qui n'est pas chiffré.
+  // Un doublon partiel fait échouer le fichier entier, pas seulement le cas.
+  isEncryptedPii: (v: unknown) => typeof v === "string" && v.startsWith("enc:"),
+  PII_DECRYPT_PLACEHOLDER: "[encrypted — key missing]",
 }));
 
 import {
@@ -299,12 +309,13 @@ describe("🔴 besoin déclaré au POSITIONNEMENT — second chemin, même régi
     const besoin = besoinAdaptationDeclare({
       situationHandicap: false,
       reponsesPositionnements: [ecrit.reponses],
+      besoinAdaptationDeclareAt: null,
     });
     expect(besoin, "le besoin a disparu du prédicat partagé").toBe(true);
     // Colonne « Adaptations (ind. 10) » : rien de consigné → à consigner.
     expect(etatReponseAdaptation(besoin, null, HORODATAGE_CIRCUIT_VIDE)).toBe("a_consigner");
     // Le filtre en base (alerte balayée, moteur de conformité) cherche la même clé.
-    const [, parLePositionnement] = whereBesoinAdaptationDeclare().OR;
+    const [, parLePositionnement] = whereBesoinAdaptationDeclare(true).OR;
     const chemin = parLePositionnement.questionnaires.some.reponses.path;
     expect(
       chemin.reduce<unknown>((o, k) => (o as Record<string, unknown>)[k], ecrit.reponses),

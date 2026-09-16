@@ -33,6 +33,7 @@ import {
   type HorodatageCircuitAdaptation,
 } from "./reponse-organisme";
 import { lireCircuitAdaptation } from "./journal-consignation";
+import { colonneDeclarationDisponible } from "./colonne-declaration";
 
 export interface FermetureAlertesAdaptation {
   /** Alertes « réponse non consignée » fermées pour cette inscription. */
@@ -69,17 +70,19 @@ export async function fermerAlertesAdaptationConsignee(input: {
   // 🔴 2026-09-15 (relecture #1095) — « sans réponse » se lisait `adaptationsRealisees:
   // null`. Une autre inscription dont la réponse PRÉCÈDE une nouvelle déclaration
   // attend pourtant la sienne : même prédicat, mêmes dates que la règle balayée.
+  const colonneDeclaration = await colonneDeclarationDisponible();
   const autres = await prisma.enrollment.findMany({
     where: {
       traineeId: input.traineeId,
       id: { not: input.enrollmentId },
       ...inscriptionsActives(),
       session: { statut: { notIn: STATUTS_SESSION_SANS_PREUVE }, dateFin: { gte: borne } },
-      ...whereBesoinAdaptationDeclare(),
+      ...whereBesoinAdaptationDeclare(colonneDeclaration),
     },
     select: {
       id: true,
       adaptationsRealisees: true,
+      besoinAdaptationDeclareAt: colonneDeclaration,
       session: { select: { dateFin: true } },
       trainee: { select: { situationHandicap: true } },
       questionnaires: {
@@ -92,6 +95,7 @@ export async function fermerAlertesAdaptationConsignee(input: {
     besoinAdaptationDeclare({
       situationHandicap: e.trainee.situationHandicap,
       reponsesPositionnements: e.questionnaires.map((q) => q.reponses),
+      besoinAdaptationDeclareAt: e.besoinAdaptationDeclareAt ?? null,
     }),
   );
   const circuit =

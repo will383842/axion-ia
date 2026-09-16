@@ -6,7 +6,12 @@
  *   soumettreSatisfactionPortailAction : réutilise soumettreReponses T10 via cookie ;
  *                                   un « oui » au besoin d'adaptation chiffre le détail
  *                                   et alerte, SANS cocher situationHandicap (D4)
- *   declarerHandicapAction       : set situationHandicap + handicapDetailsChiffre (encryptPii)
+ *   declarerHandicapAction        : handicap / problème de santé → situationHandicap
+ *                                   + handicapDetailsChiffre (encryptPii)
+ *   declarerBesoinAmenagementAction : besoin d'aménagement SANS handicap → détail
+ *                                   chiffré + `Enrollment.besoinAdaptationDeclareAt`,
+ *                                   SANS cocher situationHandicap (dette D2/D4)
+ *                                   et SANS toucher au questionnaire
  *   demanderExportRgpdAction      : crée demande RGPD type=export via cookie
  *   demanderSuppressionRgpdAction : crée demande RGPD type=suppression via cookie
  *
@@ -43,11 +48,12 @@ import { headers } from "next/headers";
 import { getPortailToken, clearPortailCookie } from "@/server/qualiopi/portail/cookie";
 import { creerDemandeRgpd } from "@/server/qualiopi/portail/rgpd-service";
 import { soumettreReponses } from "@/server/qualiopi/satisfaction/satisfaction-service";
-import { encryptPii, decryptPii } from "@/lib/pii-crypto";
+import { encryptPii, decryptPii, isEncryptedPii, PII_DECRYPT_PLACEHOLDER } from "@/lib/pii-crypto";
 import { sendTelegram } from "@/lib/telegram";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { construireAlerteBesoinAdaptation } from "@/server/qualiopi/alertes/besoin-adaptation";
 import { journaliserDeclarationBesoin } from "@/server/qualiopi/adaptation/journal-declaration";
+import { declarerBesoinAmenagementSurInscriptions } from "@/server/qualiopi/adaptation/declaration-amenagement";
 import {
   CLE_BESOIN_ADAPTATION_REPONDU,
   MESSAGE_BESOIN_ADAPTATION_SANS_REPONSE,
@@ -84,7 +90,23 @@ const soumettreSatisfactionPortailSchema = z.object({
 });
 
 const declarerHandicapSchema = z.object({
-  besoin: z.string().min(1).max(2000),
+  // `.trim()` AVANT les bornes : le formulaire trime déjà (`DeclarationBesoin…`),
+  // mais l'action est un point d'entrée HTTP à part entière. Sans lui, 2 000
+  // espaces étaient une déclaration valide — et chaque appel faisait grossir la
+  // colonne chiffrée d'autant.
+  besoin: z
+    .string()
+    .trim()
+    .min(1)
+    .max(2000)
+    // 🔴 Le préfixe de chiffrement est INTERDIT À LA SAISIE (contre-relecture
+    // sécurité #1103). `encryptPii` court-circuite sur ce préfixe — c'est sa
+    // garde d'idempotence, voulue — et rend le texte INCHANGÉ. Un bénéficiaire
+    // qui commence son besoin par `enc:v1:` faisait donc écrire sa donnée de
+    // santé EN CLAIR, et rendait ensuite illisibles les trois lecteurs de la
+    // colonne (référent, portail du bénéficiaire, export art. 15) : chacun
+    // appelle `decryptPii`, qui lève sur un faux ciphertext.
+    .refine((v) => !isEncryptedPii(v)),
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -367,34 +389,314 @@ async function signalerBesoinAdaptation(traineeId: string, detail: string): Prom
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// PORTAIL — declarerHandicapAction
+// PORTAIL — les DEUX déclarations de « mon compte »
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Déclare la situation de handicap depuis le portail stagiaire.
- * Chiffre le détail via encryptPii (jamais en clair en DB).
- * S'authentifie via le cookie portail.
+ * Déclare une SITUATION DE HANDICAP ou un PROBLÈME DE SANTÉ nécessitant une
+ * adaptation, depuis « mon compte ». Pose `Trainee.situationHandicap`.
+ *
+ * Le détail est chiffré (`encryptPii`, jamais en clair en base). Authentification
+ * par le cookie portail.
  */
 export async function declarerHandicapAction(input: {
   besoin: string;
 }): Promise<ActionResult<{ ok: boolean }>> {
+  return declarerDepuisMonCompte(input, "handicap");
+}
+
+/**
+ * Déclare un BESOIN D'AMÉNAGEMENT SANS handicap — matériel, rythme, accès,
+ * organisation — depuis « mon compte ». Ne pose PAS
+ * `Trainee.situationHandicap`.
+ *
+ * 🔴 Dette D2/D4 (relectures #1095, #1099, #1101). L'écran ne proposait qu'un
+ * seul bouton, dont le texte couvrait « handicap, trouble d'apprentissage,
+ * etc. », et son unique action cochait la case. Une pause plus longue ou un
+ * support agrandi faisaient donc qualifier la personne « en situation de
+ * handicap » — inexactitude et minimisation (RGPD art. 5) — et alimentaient le
+ * décompte handicap (ind. 20 et 26). #1101 avait fermé le même défaut sur le
+ * positionnement ; c'était le dernier chemin.
+ *
+ * 🔑 DEUX ENDPOINTS, une seule implémentation. Un unique endpoint qui recevrait
+ * la nature en paramètre rendrait possible qu'un formulaire en cache ou une
+ * valeur absente coche la case par défaut. Ici la case n'est pas atteignable
+ * depuis ce chemin : elle n'y est pas écrite. L'implémentation, elle, est
+ * partagée — un prédicat recopié diverge toujours.
+ */
+export async function declarerBesoinAmenagementAction(input: {
+  besoin: string;
+}): Promise<ActionResult<{ ok: boolean }>> {
+  return declarerDepuisMonCompte(input, "amenagement");
+}
+
+/** Ce que le bénéficiaire a voulu dire, et c'est lui qui le dit. */
+type NatureDeclaration = "handicap" | "amenagement";
+
+/** Sépare deux déclarations successives dans la colonne chiffrée. Jamais traduit. */
+const SEPARATEUR_DECLARATIONS = "\n\n— Déclaration du ";
+
+const instantParis = new Intl.DateTimeFormat("fr-FR", {
+  dateStyle: "long",
+  timeStyle: "short",
+  timeZone: "Europe/Paris",
+});
+
+/**
+ * 🔴 PLAFOND DE TAILLE DU CUMUL — relecture sécurité #1103 (art. 32 RGPD).
+ *
+ * Le cumul relit, déchiffre, concatène et rechiffre TOUTE la colonne à chaque
+ * déclaration : le coût du k-ième appel croît avec les k-1 précédents. La
+ * première version n'avait aucune borne, au motif qu'« une déclaration est un
+ * geste rare ». C'est une hypothèse sur le comportement d'un utilisateur, pas
+ * un contrôle — et `declarerBesoinAmenagementAction` est un point d'entrée HTTP
+ * qu'atteint n'importe quel porteur de cookie portail.
+ *
+ * Sans borne, quelques milliers d'appels rendaient `handicapDetailsChiffre`
+ * illisible : le référent handicap perdait l'accès à TOUTES les déclarations de
+ * la personne — y compris les vraies, y compris les anciennes — et l'export du
+ * droit d'accès tombait avec. Échec ouvert, et silencieux : l'alerte est
+ * dédoublonnée tant qu'elle est ouverte, donc un seul signal pour des milliers
+ * d'appels.
+ *
+ * 20 000 caractères = dix déclarations pleines. Au-delà, les plus ANCIENNES
+ * sortent : ce sont les plus récentes qui portent une adaptation encore
+ * organisable. Rien ne disparaît sans trace — la date de chaque déclaration
+ * reste au journal d'activité, qui n'a jamais porté le texte.
+ */
+const MAX_DETAIL_CUMULE_CARACTERES = 20_000;
+
+const MENTION_ANCIENNES_RETIREES =
+  "[déclarations plus anciennes retirées faute de place — leur date reste au journal d'activité]";
+
+/** Plafond de déclarations par bénéficiaire et par heure. Voir le limiteur. */
+const PLAFOND_DECLARATIONS_PAR_HEURE = 5;
+
+/**
+ * Ramène le cumul sous le plafond en retirant les déclarations les plus anciennes.
+ *
+ * ⚠️ Le budget retranche la mention et le séparateur AVANT la boucle : une
+ * première version les ajoutait après coup et rendait jusqu'à ~20 117
+ * caractères — une fonction qui dépasse la constante qu'elle porte.
+ */
+function bornerCumul(texte: string): string {
+  if (texte.length <= MAX_DETAIL_CUMULE_CARACTERES) return texte;
+
+  const budget =
+    MAX_DETAIL_CUMULE_CARACTERES -
+    MENTION_ANCIENNES_RETIREES.length -
+    SEPARATEUR_DECLARATIONS.length;
+
+  const blocs = texte.split(SEPARATEUR_DECLARATIONS);
+  while (blocs.length > 1 && blocs.join(SEPARATEUR_DECLARATIONS).length > budget) {
+    blocs.shift();
+  }
+
+  // Reste le cas d'une valeur héritée d'un SEUL bloc, déjà plus grosse que le
+  // budget : on garde sa FIN, pour la même raison que ci-dessus.
+  //
+  // ⚠️ Découpe par POINT DE CODE, pas par unité UTF-16 : `slice(-n)` peut
+  // couper une paire de substitution en deux et laisser un demi-caractère, qui
+  // devient « � » au rechiffrement.
+  const garde = blocs.join(SEPARATEUR_DECLARATIONS);
+  const borne = garde.length > budget ? Array.from(garde).slice(-budget).join("") : garde;
+
+  return `${MENTION_ANCIENNES_RETIREES}${SEPARATEUR_DECLARATIONS}${borne}`;
+}
+
+/**
+ * Le texte chiffré à écrire : la NOUVELLE déclaration, précédée des précédentes.
+ *
+ * 🔴 Dette D3 (relecture #1103). `handicapDetailsChiffre` était ÉCRASÉ à chaque
+ * déclaration. Quelqu'un qui précisait « et j'aurai besoin d'une place près de la
+ * porte » effaçait « je suis malentendant » : le référent ne voyait plus que la
+ * seconde phrase, et rien ne disait qu'il y en avait eu une première. Une
+ * déclaration de besoin n'est pas un champ de profil qu'on met à jour, c'est un
+ * message reçu.
+ *
+ * Les déclarations sont donc CUMULÉES, chacune datée, dans la même colonne
+ * `@db.Text` — une seule destination, comme le reste du dispositif. Volume :
+ * 2 000 caractères par déclaration, et une déclaration est un geste rare.
+ *
+ * ⚠️ Si l'ancien texte ne se déchiffre pas (format hérité, clé tournée), on ne
+ * le perd pas en silence : la nouvelle déclaration part avec une mention qui dit
+ * qu'une précédente existait et n'a pas pu être relue. Le contraire — garder
+ * l'ancien illisible et jeter le nouveau — perdrait la seule des deux qui soit
+ * encore utile.
+ *
+ * 🔴 Le clair ne sort JAMAIS d'ici : ni journal, ni Sentry, ni valeur de retour.
+ */
+async function detailCumule(traineeId: string, nouveau: string): Promise<string | null> {
+  const entete = `${SEPARATEUR_DECLARATIONS}${instantParis.format(new Date())} —\n`;
+  let precedent: string | null = null;
+  try {
+    const fiche = await prisma.trainee.findUnique({
+      where: { id: traineeId },
+      select: { handicapDetailsChiffre: true },
+    });
+    const chiffre = fiche?.handicapDetailsChiffre ?? null;
+    if (chiffre !== null && chiffre !== "") {
+      precedent = decryptPii(chiffre);
+      // 🔴 `decryptPii` NE LÈVE PAS quand la clé est absente : il rend un
+      // texte-témoin. Sans ce test, ce témoin était concaténé à la nouvelle
+      // déclaration — puis `encryptPii`, privé de la même clé, rendait le tout
+      // INCHANGÉ : une donnée de santé écrite EN CLAIR, à la place du
+      // chiffré précédent, pendant que le portail affiche « Ce texte est
+      // chiffré ». Le refus d'écrire est décidé plus bas.
+      if (precedent === null || precedent === "" || precedent === PII_DECRYPT_PLACEHOLDER) {
+        precedent = "[déclaration précédente enregistrée, non relisible]";
+      }
+    }
+  } catch (err) {
+    // On ne sait plus s'il y avait quelque chose : le dire, et ne rien écraser
+    // à l'aveugle serait pire — la nouvelle déclaration doit partir.
+    Sentry.captureException(err, {
+      tags: { service: "declarationMonCompte", etape: "detail_precedent" },
+      extra: { traineeId },
+    });
+    precedent = "[déclaration précédente enregistrée, non relisible]";
+  }
+  const texte = precedent === null ? nouveau : bornerCumul(`${precedent}${entete}${nouveau}`);
+  const chiffre = encryptPii(texte);
+
+  // 🔴 Dernier verrou : ne JAMAIS écrire ce qui n'est pas chiffré.
+  //
+  // DEUX conditions, et la seconde est la seule qui tienne face à une saisie
+  // hostile. `isEncryptedPii` n'est qu'un test de préfixe : sur `enc:v1:<texte>`
+  // tapé par le bénéficiaire, `encryptPii` court-circuite (garde d'idempotence),
+  // rend le texte INCHANGÉ, et le test de préfixe répond « oui, c'est chiffré ».
+  // Un contrôle qui valide le clair de l'attaquant est pire que pas de contrôle.
+  // `chiffre === texte` dit la seule chose qui compte : le chiffrement n'a rien
+  // transformé. Il couvre la clé absente ET le court-circuit.
+  //
+  // (La saisie est aussi refusée en amont par le schéma ; ceci reste la garde
+  // de dernier recours, pour le `precedent` déchiffré et pour tout appelant futur.)
+  if (!isEncryptedPii(chiffre) || chiffre === texte) {
+    Sentry.captureMessage("déclaration d'adaptation : chiffrement indisponible, écriture refusée", {
+      level: "error",
+      tags: { service: "declarationMonCompte", etape: "chiffrement" },
+      extra: { traineeId },
+    });
+    return null;
+  }
+
+  return chiffre;
+}
+
+async function declarerDepuisMonCompte(
+  input: { besoin: string },
+  nature: NatureDeclaration,
+): Promise<ActionResult<{ ok: boolean }>> {
   const authResult = await resolveTraineeIdFromCookie();
   if ("error" in authResult) return { error: authResult.error };
 
   const parsed = declarerHandicapSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
 
-  const handicapDetailsChiffre = encryptPii(parsed.data.besoin);
   const declareLe = new Date();
+
+  // 🔴 LIMITEUR — relecture sécurité #1103.
+  //
+  // Ce fichier explique plus haut pourquoi `accederPortailAction` a été
+  // SUPPRIMÉE plutôt que corrigée : « un second chemin d'entrée au portail,
+  // dépourvu de la seule protection qui garde le premier ». Un chemin
+  // d'ÉCRITURE non limité, sur une donnée de santé, n'est pas d'une autre
+  // famille. Clé par bénéficiaire (l'action est déjà derrière le cookie) et non
+  // par IP : une déclaration légitime depuis un réseau d'entreprise partagé ne
+  // doit pas être bloquée par celle d'un collègue.
+  //
+  // ⚠️ PAS de `try/catch` ici. `checkRateLimit` ne lève jamais : elle attrape
+  // tout et rend la conduite déclarée par `surPanne` (`rate-limit.ts`). Un
+  // `catch` vide serait donc mort en production — et surtout il garantirait
+  // qu'un futur doublon de test rendant `undefined` repasse au vert PAR LE
+  // CHEMIN D'ERREUR, exactement le défaut corrigé plus bas dans ce commit.
+  const rl = await checkRateLimit(`portail:declaration:${authResult.traineeId}`, {
+    limit: PLAFOND_DECLARATIONS_PAR_HEURE,
+    windowSec: 3600,
+    // Choix DÉCLARÉ, pas subi : une panne de Redis ne doit pas empêcher une
+    // vraie déclaration de handicap. Le plafond de taille ci-dessus ne dépend
+    // d'aucun service externe — c'est lui qui borne le dégât dans ce cas.
+    surPanne: "laisser-passer",
+  });
+  if (!rl.allowed) {
+    // 🔴 Ne PAS mentir au bénéficiaire. Une première rédaction annonçait
+    // « Votre déclaration a bien été enregistrée » alors que RIEN n'était
+    // écrit : ni fiche, ni journal, ni alerte. Quelqu'un qui précise son besoin
+    // la veille de sa formation aurait été rassuré pendant que le référent
+    // n'apprenait rien. Et le refus laisse une trace, pour que la perte ne soit
+    // pas silencieuse.
+    Sentry.captureMessage("déclaration d'adaptation refusée par le limiteur", {
+      level: "warning",
+      tags: { service: "declarationMonCompte", etape: "limiteur" },
+      extra: { traineeId: authResult.traineeId },
+    });
+    return {
+      error:
+        "Votre déclaration n'a pas été enregistrée : trop de déclarations en peu de temps. Réessayez dans un moment, ou contactez votre référent handicap.",
+    };
+  }
+
+  const detailChiffre = await detailCumule(authResult.traineeId, parsed.data.besoin);
+  if (detailChiffre === null) {
+    // Chiffrement indisponible : déjà signalé à Sentry en niveau `error`.
+    return {
+      error:
+        "Votre déclaration n'a pas pu être enregistrée. Merci de réessayer, ou de contacter votre référent.",
+    };
+  }
 
   const trainee = await prisma.trainee.update({
     where: { id: authResult.traineeId },
     data: {
-      situationHandicap: true,
-      handicapDetailsChiffre,
+      // La case n'est posée QUE par la déclaration de handicap ou de problème
+      // de santé. Un besoin d'aménagement ne la voit jamais.
+      ...(nature === "handicap" ? { situationHandicap: true } : {}),
+      handicapDetailsChiffre: detailChiffre,
     },
     select: { id: true, prenom: true, nom: true },
   });
+
+  // Sans la case, le besoin est porté par SA PROPRE colonne
+  // (`Enrollment.besoinAdaptationDeclareAt`), troisième source du besoin déclaré
+  // de l'indicateur 10. ATTENDU — c'est la PERSISTANCE de la déclaration, pas
+  // une notification.
+  //
+  // 🔴 Ce qu'on NE fait PAS : réécrire `Questionnaire.reponses`. Un premier
+  // correctif y posait `besoinAdaptation: true` « là où les lecteurs cherchent
+  // déjà » et transformait un « Non » explicite du bénéficiaire en « Oui » sur
+  // la pièce d'audit, bandeau « 4, 8 et 10 » compris. Une réponse de
+  // bénéficiaire ne se réécrit pas.
+  if (nature === "amenagement") {
+    try {
+      const resultat = await declarerBesoinAmenagementSurInscriptions({
+        traineeId: trainee.id,
+        declareLe,
+      });
+      if (resultat.etat === "colonne_absente") {
+        // L'heure qui suit une fusion : le worker tourne avant que l'entrypoint
+        // de l'app n'ait migré. Rare, borné, et jamais silencieux.
+        Sentry.captureMessage("déclaration d'aménagement : colonne pas encore migrée", {
+          level: "warning",
+          tags: { service: "declarerBesoinAmenagementAction" },
+          extra: { traineeId: trainee.id },
+        });
+      } else if (resultat.inscriptions === 0) {
+        // Aucune inscription en cours : la personne n'a plus de session à venir.
+        // L'alerte et le journal partent quand même ; il n'y a simplement aucune
+        // formation où organiser l'aménagement.
+        Sentry.captureMessage("déclaration d'aménagement sans inscription en cours", {
+          level: "info",
+          tags: { service: "declarerBesoinAmenagementAction" },
+          extra: { traineeId: trainee.id },
+        });
+      }
+    } catch (err) {
+      Sentry.captureException(err, {
+        tags: { service: "declarerBesoinAmenagementAction", etape: "inscriptions" },
+        extra: { traineeId: trainee.id },
+      });
+    }
+  }
 
   // 🔴 PERSONNE N'ÉTAIT PRÉVENU (corrigé le 2026-08-04).
   //
@@ -429,7 +731,7 @@ export async function declarerHandicapAction(input: {
   // trace de la déclaration, pas une notification — et elle est fail-soft.
   await journaliserDeclarationBesoin({
     traineeId: trainee.id,
-    origine: "portail_mon_compte",
+    origine: nature === "handicap" ? "portail_mon_compte" : "portail_mon_compte_amenagement",
     declareLe,
   });
 
@@ -447,10 +749,18 @@ export async function declarerHandicapAction(input: {
 
   // 2. Le message Telegram — utile pour être prévenu hors console, mais il ne
   // remplace pas l'alerte : Will peut ne pas le lire, et rien ne l'y ramène.
+  //
+  // ⚠️ La NATURE se dit, et elle n'est pas le détail : « situation de handicap
+  // ou problème de santé » vs « aménagement, sans handicap déclaré ». Sans elle,
+  // le même message annoncerait deux choses différentes, et la personne qui lit
+  // supposerait la première — ce que tout ce correctif cesse de faire.
   void sendTelegram({
     tag: "ADAPTATION_DECLAREE",
     body:
-      `♿ ${trainee.prenom} ${trainee.nom} a déclaré un besoin d'adaptation.\n` +
+      `♿ ${trainee.prenom} ${trainee.nom} a déclaré ` +
+      (nature === "handicap"
+        ? `une situation de handicap ou un problème de santé nécessitant une adaptation.\n`
+        : `un besoin d'aménagement, SANS déclarer de situation de handicap.\n`) +
       `Le détail est chiffré : le lire depuis sa fiche stagiaire dans la console.`,
   }).catch(() => {});
 

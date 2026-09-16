@@ -6362,6 +6362,31 @@ model Enrollment {
   tauxPresencePct       Int?                     @map("taux_presence_pct")
   emargementSigneAt     DateTime?                @map("emargement_signe_at")
   adaptationsRealisees  String?                  @map("adaptations_realisees") @db.Text
+  /// 🔴 BESOIN D'AMÉNAGEMENT DÉCLARÉ **SANS** SITUATION DE HANDICAP (dette D2/D4).
+  ///
+  /// Instant de la dernière déclaration faite depuis « mon compte » du portail
+  /// pour CETTE inscription, quand la personne a choisi « aménagement pratique »
+  /// et non « handicap ou problème de santé ». `Trainee.situationHandicap` reste
+  /// alors à `false` : un besoin matériel ou d'organisation ne qualifie personne
+  /// « en situation de handicap » (RGPD art. 5, exactitude et minimisation), et
+  /// n'entre pas au décompte handicap des indicateurs 20 et 26.
+  ///
+  /// C'est la TROISIÈME source du besoin déclaré de l'indicateur 10, à côté de
+  /// `Trainee.situationHandicap` et du « oui » d'un positionnement répondu — une
+  /// définition unique, `adaptation/reponse-organisme.ts`.
+  ///
+  /// ⚠️ Au niveau de l'INSCRIPTION et non de la personne : le besoin déclaré de
+  /// l'indicateur 10 se compte par inscription, et un drapeau porté par la fiche
+  /// stagiaire marquerait aussi les sessions déjà terminées — dont l'indicateur
+  /// réclamerait une réponse que plus personne ne peut organiser.
+  ///
+  /// ⚠️ Ce n'est PAS une donnée de santé : c'est une date. Le détail, lui, est
+  /// chiffré sur `Trainee.handicapDetailsChiffre`.
+  ///
+  /// ⚠️ La réponse au questionnaire de positionnement n'est JAMAIS réécrite pour
+  /// porter ce besoin : un « Non » du bénéficiaire reste un « Non » sur la pièce
+  /// d'audit, et la pièce ne gagne pas l'indicateur 10 qu'elle ne prouve pas.
+  besoinAdaptationDeclareAt DateTime?            @map("besoin_adaptation_declare_at")
   /// Résultat d'attestation calculé (décision #7 : ≥80 complète / 60-79 partielle / <60 aucune).
   attestationResultat   AttestationResultat?     @map("attestation_resultat")
   /// Attestation officielle générée (DocumentGenere). Null tant que non émise / si <60%.
@@ -6422,6 +6447,9 @@ model Enrollment {
   /// Selection du cron de convocation : les inscriptions actives non encore
   /// convoquees. Sans lui, le rattrapage balaie toute la table chaque jour.
   @@index([convocationEnvoyeeAt, statut])
+  /// Troisième branche du besoin déclaré (ind. 10) : sans index, la règle
+  /// nocturne balaierait toute la table pour quelques lignes.
+  @@index([besoinAdaptationDeclareAt])
   @@map("enrollments")
 }
 

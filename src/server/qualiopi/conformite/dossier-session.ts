@@ -58,6 +58,7 @@ import {
   HORODATAGE_CIRCUIT_VIDE,
   besoinAdaptationDeclare,
 } from "@/server/qualiopi/adaptation/reponse-organisme";
+import { colonneDeclarationDisponible } from "@/server/qualiopi/adaptation/colonne-declaration";
 import { lireCircuitAdaptation } from "@/server/qualiopi/adaptation/journal-consignation";
 import { sectionIndicateur10 } from "@/server/qualiopi/adaptation/dossier-adaptation";
 
@@ -103,6 +104,10 @@ export async function genererDossierSessionZip(
 ): Promise<DossierSessionResult | null> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return null;
 
+  // Troisième source du besoin déclaré (ind. 10), absente pendant l'heure qui
+  // suit une fusion — le dossier se tire quand même, sans elle.
+  const colonneDeclaration = await colonneDeclarationDisponible();
+
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
     select: {
@@ -141,6 +146,10 @@ export async function genererDossierSessionZip(
           // la dernière déclaration (circuit rouvert par une déclaration nouvelle).
           traineeId: true,
           adaptationsRealisees: true,
+          // Troisième source du besoin déclaré : un aménagement demandé sans
+          // handicap depuis « mon compte ». Absente pendant l'heure qui suit une
+          // fusion, le temps que l'entrypoint de l'app migre.
+          besoinAdaptationDeclareAt: colonneDeclaration,
           questionnaires: {
             where: { type: "positionnement", reponduAt: { not: null } },
             select: { reponses: true, reponduAt: true },
@@ -558,6 +567,7 @@ export async function genererDossierSessionZip(
         besoinDeclare: besoinAdaptationDeclare({
           situationHandicap: e.trainee.situationHandicap === true,
           reponsesPositionnements: (e.questionnaires ?? []).map((q) => q.reponses),
+          besoinAdaptationDeclareAt: e.besoinAdaptationDeclareAt ?? null,
         }),
         adaptationsRealisees: e.adaptationsRealisees ?? null,
         horodatage: circuit.get(e.id) ?? HORODATAGE_CIRCUIT_VIDE,

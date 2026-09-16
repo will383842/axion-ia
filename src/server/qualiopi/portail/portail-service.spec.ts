@@ -27,6 +27,9 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: vi.fn(),
       findFirst: vi.fn(),
     },
+    // Présence de `enrollments.besoin_adaptation_declare_at` : l'espace la
+    // demande avant de la sélectionner (fenêtre app/worker).
+    $queryRaw: vi.fn(),
   },
 }));
 
@@ -63,6 +66,7 @@ import {
   getEspaceStagiaire,
   demanderAccesParEmail,
 } from "./portail-service";
+import { oublierPresenceColonne } from "@/server/qualiopi/adaptation/colonne-declaration";
 
 const mockPrisma = prisma as unknown as {
   portailAcces: {
@@ -74,6 +78,7 @@ const mockPrisma = prisma as unknown as {
   trainee: {
     findUnique: ReturnType<typeof vi.fn>;
   };
+  $queryRaw: ReturnType<typeof vi.fn>;
 };
 
 const mockIsR2Configured = isR2Configured as ReturnType<typeof vi.fn>;
@@ -354,6 +359,8 @@ describe("revoquerAcces", () => {
 describe("getEspaceStagiaire", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    oublierPresenceColonne();
+    mockPrisma.$queryRaw.mockResolvedValue([{ existe: true }]);
     mockIsR2Configured.mockReturnValue(false);
     mockGetSignedUrlR2.mockResolvedValue("https://r2.example.com/signed-fresh.pdf");
   });
@@ -454,6 +461,29 @@ describe("getEspaceStagiaire", () => {
     // Témoin : un « non » ne déclare rien.
     mockPrisma.trainee.findUnique.mockResolvedValue(avecPositionnement(false));
     expect((await getEspaceStagiaire("trainee-g5")).situationHandicap.declaree).toBe(false);
+  });
+
+  it("🔴 D2 — un besoin d'AMÉNAGEMENT déclaré sans handicap ne re-propose PAS le formulaire", async () => {
+    // Le trou du premier correctif : il fallait un positionnement DÉJÀ RÉPONDU
+    // pour porter le besoin. Sans lui, l'espace re-proposait « Signaler un
+    // besoin » à quelqu'un qui venait de déclarer. La colonne de l'inscription
+    // n'a besoin de rien.
+    mockPrisma.trainee.findUnique.mockResolvedValue({
+      ...fakeTrainee,
+      situationHandicap: false,
+      handicapDetailsChiffre: null,
+      enrollments: [
+        {
+          ...fakeTrainee.enrollments[0]!,
+          besoinAdaptationDeclareAt: new Date("2026-09-16T08:00:00Z"),
+          questionnaires: [],
+        },
+      ],
+    });
+    const espace = await getEspaceStagiaire("trainee-g7");
+    expect(espace.situationHandicap.declaree).toBe(true);
+    // …et la case de la fiche reste à `false` : c'est tout l'objet du correctif.
+    expect(espace.situationHandicap.details).toBeNull();
   });
 
   it("🔴 D4 — les réponses lues pour ce booléen ne sortent pas dans l'espace rendu", async () => {

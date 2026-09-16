@@ -25,6 +25,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { besoinAdaptationDeclare } from "@/server/qualiopi/adaptation/reponse-organisme";
+import { colonneDeclarationDisponible } from "@/server/qualiopi/adaptation/colonne-declaration";
 import { resoudreAppartenance, type RoleFormateur } from "./session-membership";
 
 /** Filtre Prisma : sessions du formateur (principal FK OU ligne SessionFormateur). */
@@ -95,6 +96,9 @@ export async function listMyTrainingSessions(trainerId: string) {
  * pur.
  */
 export async function getTrainingSessionForFormateur(sessionId: string, trainerId: string) {
+  // Troisième source du besoin déclaré (ind. 10), absente pendant l'heure qui
+  // suit une fusion (cf. `adaptation/colonne-declaration.ts`).
+  const colonneDeclaration = await colonneDeclarationDisponible();
   const session = await prisma.trainingSession.findFirst({
     where: { id: sessionId, ...whereSessionsDuFormateur(trainerId) },
     select: {
@@ -152,6 +156,10 @@ export async function getTrainingSessionForFormateur(sessionId: string, trainerI
           },
           // Ind. 10 — seul le booléen `besoinAdaptation` en est tiré, ci-dessous.
           // Le JSON ne quitte pas ce module.
+          // Troisième source du besoin déclaré (ind. 10) : un aménagement demandé
+          // sans handicap depuis « mon compte ». C'est une DATE, pas une donnée
+          // de santé, et seul le booléen en sort.
+          besoinAdaptationDeclareAt: colonneDeclaration,
           questionnaires: {
             where: { type: "positionnement", reponduAt: { not: null } },
             select: { reponses: true },
@@ -204,6 +212,7 @@ export async function getTrainingSessionForFormateur(sessionId: string, trainerI
       besoinAdaptationDeclare: besoinAdaptationDeclare({
         situationHandicap: e.trainee.situationHandicap,
         reponsesPositionnements: (e.questionnaires ?? []).map((q) => q.reponses),
+        besoinAdaptationDeclareAt: e.besoinAdaptationDeclareAt ?? null,
       }),
     })),
   };
