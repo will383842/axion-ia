@@ -35,6 +35,7 @@ import {
   type EntreeJournalAdaptation,
   type HorodatageCircuitAdaptation,
 } from "./reponse-organisme";
+import { colonneDeclarationDisponible } from "./colonne-declaration";
 
 export interface InscriptionPourCircuit {
   readonly id: string;
@@ -125,15 +126,17 @@ export async function compterReponsesRouvertes(
   where: Prisma.EnrollmentWhereInput,
 ): Promise<number> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return 0;
+  const colonneDeclaration = await colonneDeclarationDisponible();
   const lignes = await prisma.enrollment.findMany({
     where: {
-      AND: [where, whereBesoinAdaptationDeclare()],
+      AND: [where, whereBesoinAdaptationDeclare(colonneDeclaration)],
       adaptationsRealisees: { not: null },
     },
     select: {
       id: true,
       traineeId: true,
       adaptationsRealisees: true,
+      besoinAdaptationDeclareAt: colonneDeclaration,
       session: { select: { dateFin: true } },
       trainee: { select: { situationHandicap: true } },
       questionnaires: {
@@ -146,6 +149,7 @@ export async function compterReponsesRouvertes(
     besoinAdaptationDeclare({
       situationHandicap: e.trainee.situationHandicap,
       reponsesPositionnements: e.questionnaires.map((q) => q.reponses),
+      besoinAdaptationDeclareAt: e.besoinAdaptationDeclareAt ?? null,
     }),
   );
   if (aBesoin.length === 0) return 0;

@@ -76,11 +76,33 @@ export interface InscriptionPourBesoin {
   readonly situationHandicap: boolean;
   /** `reponses` BRUTES des positionnements RÉPONDUS de cette inscription. */
   readonly reponsesPositionnements: readonly unknown[];
+  /**
+   * 🔴 TROISIÈME SOURCE (2026-09-16, dette D2/D4) —
+   * `Enrollment.besoinAdaptationDeclareAt` : un besoin d'aménagement déclaré
+   * depuis « mon compte » SANS situation de handicap. La case de la fiche n'est
+   * alors pas cochée, et la réponse au positionnement n'est pas réécrite ; sans
+   * cette source, un besoin réel serait invisible de l'indicateur 10.
+   *
+   * ⚠️ Champ OBLIGATOIRE, et c'est voulu : le rendre facultatif laisserait un
+   * appelant l'oublier en silence, et ce dépôt a payé quatre fois ce motif. Le
+   * compilateur oblige chaque lecteur à dire ce qu'il en fait.
+   *
+   * ⚠️ `undefined` est admis pour la FENÊTRE d'une heure où la colonne n'est pas
+   * encore migrée (cf. `colonne-declaration.ts`) : le lecteur ne la sélectionne
+   * alors pas, et cela se lit « pas de déclaration directe », jamais une erreur.
+   */
+  readonly besoinAdaptationDeclareAt: Date | null | undefined;
 }
 
 /** Cette inscription porte-t-elle un besoin d'adaptation déclaré ? */
 export function besoinAdaptationDeclare(inscription: InscriptionPourBesoin): boolean {
   if (inscription.situationHandicap) return true;
+  if (
+    inscription.besoinAdaptationDeclareAt !== null &&
+    inscription.besoinAdaptationDeclareAt !== undefined
+  ) {
+    return true;
+  }
   return inscription.reponsesPositionnements.some(
     (r) => lirePositionnement(r).besoinAdaptation === true,
   );
@@ -208,20 +230,30 @@ export function etatReponseAdaptation(
  * `pieces-remplies.ts`). Il ne sait pas écarter une saisie par l'organisme qui
  * porterait le booléen — cas qu'aucun formulaire ne produit. Les lecteurs qui
  * chargent les lignes confirment avec {@link besoinAdaptationDeclare}.
+ *
+ * 🔴 TROISIÈME BRANCHE (2026-09-16) — `besoinAdaptationDeclareAt`, le besoin
+ * d'aménagement déclaré sans handicap. Elle n'est posée QUE si la colonne existe
+ * déjà : `colonneDeclarationDisponible()` le dit. Le paramètre est OBLIGATOIRE —
+ * un défaut à `true` casserait le worker pendant l'heure qui suit une fusion, un
+ * défaut à `false` perdrait la branche pour toujours, et les deux seraient muets.
+ *
+ * ⚠️ Ce filtre reste un PRÉ-FILTRE : il doit rester un SUR-ensemble de
+ * {@link besoinAdaptationDeclare}, jamais l'inverse.
  */
-export function whereBesoinAdaptationDeclare(): {
-  OR: [
-    { trainee: { situationHandicap: true } },
-    {
-      questionnaires: {
-        some: {
-          type: "positionnement";
-          reponduAt: { not: null };
-          reponses: { path: string[]; equals: true };
-        };
-      };
-    },
-  ];
+export type BrancheFicheStagiaire = { trainee: { situationHandicap: true } };
+export type BranchePositionnement = {
+  questionnaires: {
+    some: {
+      type: "positionnement";
+      reponduAt: { not: null };
+      reponses: { path: string[]; equals: true };
+    };
+  };
+};
+export type BrancheDeclarationDirecte = { besoinAdaptationDeclareAt: { not: null } };
+
+export function whereBesoinAdaptationDeclare(colonneDeclarationDisponible: boolean): {
+  OR: [BrancheFicheStagiaire, BranchePositionnement, ...BrancheDeclarationDirecte[]];
 } {
   return {
     OR: [
@@ -235,6 +267,11 @@ export function whereBesoinAdaptationDeclare(): {
           },
         },
       },
+      // La troisième branche n'existe que si la colonne existe : pendant l'heure
+      // qui suit une fusion, le worker tourne avant la migration de l'app.
+      ...(colonneDeclarationDisponible
+        ? ([{ besoinAdaptationDeclareAt: { not: null } }] as BrancheDeclarationDirecte[])
+        : []),
     ],
   };
 }

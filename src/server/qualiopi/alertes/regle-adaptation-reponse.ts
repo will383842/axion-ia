@@ -44,6 +44,7 @@ import {
   type HorodatageCircuitAdaptation,
 } from "@/server/qualiopi/adaptation/reponse-organisme";
 import { lireCircuitAdaptation } from "@/server/qualiopi/adaptation/journal-consignation";
+import { colonneDeclarationDisponible } from "@/server/qualiopi/adaptation/colonne-declaration";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
 
 /** Même forme que `AlerteCandidate` d'`evaluateur.ts` — sans l'importer (cycle). */
@@ -79,15 +80,22 @@ export async function regleAdaptationReponseNonConsignee(
   // toujours. Toutes les inscriptions à besoin déclaré sont lues ; c'est
   // `etatReponseAdaptation`, avec les dates du circuit, qui dit laquelle attend
   // encore sa réponse — le même prédicat que l'écran et l'indicateur.
+  // ⚠️ FENÊTRE APP/WORKER : cette règle tourne dans le worker, qui atterrit ~50 min
+  // AVANT l'app — et c'est l'entrypoint de l'app qui migre. Tant que la colonne
+  // n'est pas posée, la troisième branche du besoin déclaré est simplement absente :
+  // la demander ferait lever la règle, et le fail-soft de l'évaluateur suspendrait
+  // la résolution automatique de TOUTES les alertes ce tour-là.
+  const colonneDeclaration = await colonneDeclarationDisponible();
   const inscriptions = await prisma.enrollment.findMany({
     where: {
       ...inscriptionsActives(),
       session: { statut: { notIn: STATUTS_SESSION_SANS_PREUVE }, dateFin: { gte: borne } },
-      ...whereBesoinAdaptationDeclare(),
+      ...whereBesoinAdaptationDeclare(colonneDeclaration),
     },
     select: {
       id: true,
       adaptationsRealisees: true,
+      besoinAdaptationDeclareAt: colonneDeclaration,
       trainee: { select: { id: true, prenom: true, nom: true, situationHandicap: true } },
       session: { select: { numero: true, dateDebut: true, dateFin: true } },
       // Seul le booléen de la réponse est lu ; le détail chiffré n'est pas dans
@@ -113,6 +121,7 @@ export async function regleAdaptationReponseNonConsignee(
       besoinAdaptationDeclare({
         situationHandicap: e.trainee?.situationHandicap === true,
         reponsesPositionnements: (e.questionnaires ?? []).map((q) => q.reponses),
+        besoinAdaptationDeclareAt: e.besoinAdaptationDeclareAt ?? null,
       }),
   );
   if (aBesoin.length === 0) return [];

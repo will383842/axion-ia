@@ -31,14 +31,51 @@ describe("besoin d'adaptation déclaré", () => {
       besoinAdaptationDeclare({
         situationHandicap: false,
         reponsesPositionnements: [{ besoinAdaptation: true }],
+        besoinAdaptationDeclareAt: null,
+      }),
+    ).toBe(true);
+  });
+
+  it("🔴 un besoin d'AMÉNAGEMENT déclaré sans handicap compte, sans cocher la fiche", () => {
+    // Dette D2/D4 : « mon compte » posait `situationHandicap` pour un besoin
+    // matériel. La colonne `Enrollment.besoinAdaptationDeclareAt` porte désormais
+    // ce geste — fiche NON cochée, réponse du questionnaire NON réécrite.
+    expect(
+      besoinAdaptationDeclare({
+        situationHandicap: false,
+        reponsesPositionnements: [{ besoinAdaptation: false }],
+        besoinAdaptationDeclareAt: new Date("2026-09-16T08:00:00Z"),
+      }),
+    ).toBe(true);
+  });
+
+  it("la colonne ABSENTE (fenêtre app/worker) se lit « rien », jamais une erreur", () => {
+    // Pendant l'heure qui suit une fusion, le lecteur ne sélectionne pas la
+    // colonne : le champ vaut `undefined`. Les deux autres sources travaillent.
+    expect(
+      besoinAdaptationDeclare({
+        situationHandicap: false,
+        reponsesPositionnements: [{ besoinAdaptation: false }],
+        besoinAdaptationDeclareAt: undefined,
+      }),
+    ).toBe(false);
+    expect(
+      besoinAdaptationDeclare({
+        situationHandicap: true,
+        reponsesPositionnements: [],
+        besoinAdaptationDeclareAt: undefined,
       }),
     ).toBe(true);
   });
 
   it("la fiche stagiaire (portail « mon compte » ou console) suffit", () => {
-    expect(besoinAdaptationDeclare({ situationHandicap: true, reponsesPositionnements: [] })).toBe(
-      true,
-    );
+    expect(
+      besoinAdaptationDeclare({
+        situationHandicap: true,
+        reponsesPositionnements: [],
+        besoinAdaptationDeclareAt: null,
+      }),
+    ).toBe(true);
   });
 
   it("un « non », une question non posée ou une saisie par l'organisme ne déclarent rien", () => {
@@ -49,13 +86,17 @@ describe("besoin d'adaptation déclaré", () => {
       { saisie_admin: true, besoinAdaptation: true },
     ]) {
       expect(
-        besoinAdaptationDeclare({ situationHandicap: false, reponsesPositionnements: [reponses] }),
+        besoinAdaptationDeclare({
+          situationHandicap: false,
+          reponsesPositionnements: [reponses],
+          besoinAdaptationDeclareAt: null,
+        }),
       ).toBe(false);
     }
   });
 
   it("le filtre base est POSITIF sur les deux sources — jamais une exclusion JSON", () => {
-    const plat = JSON.stringify(whereBesoinAdaptationDeclare());
+    const plat = JSON.stringify(whereBesoinAdaptationDeclare(true));
     expect(plat).toContain('"situationHandicap":true');
     expect(plat).toContain('"path":["besoinAdaptation"],"equals":true');
     expect(plat).not.toContain("NOT");

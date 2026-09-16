@@ -299,12 +299,13 @@ describe("🔴 besoin déclaré au POSITIONNEMENT — second chemin, même régi
     const besoin = besoinAdaptationDeclare({
       situationHandicap: false,
       reponsesPositionnements: [ecrit.reponses],
+      besoinAdaptationDeclareAt: null,
     });
     expect(besoin, "le besoin a disparu du prédicat partagé").toBe(true);
     // Colonne « Adaptations (ind. 10) » : rien de consigné → à consigner.
     expect(etatReponseAdaptation(besoin, null, HORODATAGE_CIRCUIT_VIDE)).toBe("a_consigner");
     // Le filtre en base (alerte balayée, moteur de conformité) cherche la même clé.
-    const [, parLePositionnement] = whereBesoinAdaptationDeclare().OR;
+    const [, parLePositionnement] = whereBesoinAdaptationDeclare(true).OR;
     const chemin = parLePositionnement.questionnaires.some.reponses.path;
     expect(
       chemin.reduce<unknown>((o, k) => (o as Record<string, unknown>)[k], ecrit.reponses),

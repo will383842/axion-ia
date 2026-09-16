@@ -9,8 +9,9 @@
  *   declarerHandicapAction        : handicap / problème de santé → situationHandicap
  *                                   + handicapDetailsChiffre (encryptPii)
  *   declarerBesoinAmenagementAction : besoin d'aménagement SANS handicap → détail
- *                                   chiffré + besoin porté par le positionnement,
+ *                                   chiffré + `Enrollment.besoinAdaptationDeclareAt`,
  *                                   SANS cocher situationHandicap (dette D2/D4)
+ *                                   et SANS toucher au questionnaire
  *   demanderExportRgpdAction      : crée demande RGPD type=export via cookie
  *   demanderSuppressionRgpdAction : crée demande RGPD type=suppression via cookie
  *
@@ -52,7 +53,7 @@ import { sendTelegram } from "@/lib/telegram";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { construireAlerteBesoinAdaptation } from "@/server/qualiopi/alertes/besoin-adaptation";
 import { journaliserDeclarationBesoin } from "@/server/qualiopi/adaptation/journal-declaration";
-import { inscrireBesoinSurPositionnements } from "@/server/qualiopi/adaptation/besoin-sans-handicap";
+import { declarerBesoinAmenagementSurInscriptions } from "@/server/qualiopi/adaptation/declaration-amenagement";
 import {
   CLE_BESOIN_ADAPTATION_REPONDU,
   MESSAGE_BESOIN_ADAPTATION_SANS_REPONSE,
@@ -416,6 +417,64 @@ export async function declarerBesoinAmenagementAction(input: {
 /** Ce que le bénéficiaire a voulu dire, et c'est lui qui le dit. */
 type NatureDeclaration = "handicap" | "amenagement";
 
+/** Sépare deux déclarations successives dans la colonne chiffrée. Jamais traduit. */
+const SEPARATEUR_DECLARATIONS = "\n\n— Déclaration du ";
+
+const instantParis = new Intl.DateTimeFormat("fr-FR", {
+  dateStyle: "long",
+  timeStyle: "short",
+  timeZone: "Europe/Paris",
+});
+
+/**
+ * Le texte chiffré à écrire : la NOUVELLE déclaration, précédée des précédentes.
+ *
+ * 🔴 Dette D3 (relecture #1103). `handicapDetailsChiffre` était ÉCRASÉ à chaque
+ * déclaration. Quelqu'un qui précisait « et j'aurai besoin d'une place près de la
+ * porte » effaçait « je suis malentendant » : le référent ne voyait plus que la
+ * seconde phrase, et rien ne disait qu'il y en avait eu une première. Une
+ * déclaration de besoin n'est pas un champ de profil qu'on met à jour, c'est un
+ * message reçu.
+ *
+ * Les déclarations sont donc CUMULÉES, chacune datée, dans la même colonne
+ * `@db.Text` — une seule destination, comme le reste du dispositif. Volume :
+ * 2 000 caractères par déclaration, et une déclaration est un geste rare.
+ *
+ * ⚠️ Si l'ancien texte ne se déchiffre pas (format hérité, clé tournée), on ne
+ * le perd pas en silence : la nouvelle déclaration part avec une mention qui dit
+ * qu'une précédente existait et n'a pas pu être relue. Le contraire — garder
+ * l'ancien illisible et jeter le nouveau — perdrait la seule des deux qui soit
+ * encore utile.
+ *
+ * 🔴 Le clair ne sort JAMAIS d'ici : ni journal, ni Sentry, ni valeur de retour.
+ */
+async function detailCumule(traineeId: string, nouveau: string): Promise<string> {
+  const entete = `${SEPARATEUR_DECLARATIONS}${instantParis.format(new Date())} —\n`;
+  let precedent: string | null = null;
+  try {
+    const fiche = await prisma.trainee.findUnique({
+      where: { id: traineeId },
+      select: { handicapDetailsChiffre: true },
+    });
+    const chiffre = fiche?.handicapDetailsChiffre ?? null;
+    if (chiffre !== null && chiffre !== "") {
+      precedent = decryptPii(chiffre);
+      if (precedent === null || precedent === "") {
+        precedent = "[déclaration précédente enregistrée, non relisible]";
+      }
+    }
+  } catch (err) {
+    // On ne sait plus s'il y avait quelque chose : le dire, et ne rien écraser
+    // à l'aveugle serait pire — la nouvelle déclaration doit partir.
+    Sentry.captureException(err, {
+      tags: { service: "declarationMonCompte", etape: "detail_precedent" },
+      extra: { traineeId },
+    });
+    precedent = "[déclaration précédente enregistrée, non relisible]";
+  }
+  return encryptPii(precedent === null ? nouveau : `${precedent}${entete}${nouveau}`);
+}
+
 async function declarerDepuisMonCompte(
   input: { besoin: string },
   nature: NatureDeclaration,
@@ -426,7 +485,6 @@ async function declarerDepuisMonCompte(
   const parsed = declarerHandicapSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
 
-  const handicapDetailsChiffre = encryptPii(parsed.data.besoin);
   const declareLe = new Date();
 
   const trainee = await prisma.trainee.update({
@@ -435,38 +493,48 @@ async function declarerDepuisMonCompte(
       // La case n'est posée QUE par la déclaration de handicap ou de problème
       // de santé. Un besoin d'aménagement ne la voit jamais.
       ...(nature === "handicap" ? { situationHandicap: true } : {}),
-      handicapDetailsChiffre,
+      handicapDetailsChiffre: await detailCumule(authResult.traineeId, parsed.data.besoin),
     },
     select: { id: true, prenom: true, nom: true },
   });
 
-  // Sans la case, le besoin doit être porté par ce que les lecteurs de
-  // l'indicateur 10 et l'espace formateur lisent déjà : le positionnement
-  // répondu des inscriptions en cours (`besoin-sans-handicap.ts`). ATTENDU —
-  // c'est la PERSISTANCE de la déclaration, pas une notification.
+  // Sans la case, le besoin est porté par SA PROPRE colonne
+  // (`Enrollment.besoinAdaptationDeclareAt`), troisième source du besoin déclaré
+  // de l'indicateur 10. ATTENDU — c'est la PERSISTANCE de la déclaration, pas
+  // une notification.
+  //
+  // 🔴 Ce qu'on NE fait PAS : réécrire `Questionnaire.reponses`. Un premier
+  // correctif y posait `besoinAdaptation: true` « là où les lecteurs cherchent
+  // déjà » et transformait un « Non » explicite du bénéficiaire en « Oui » sur
+  // la pièce d'audit, bandeau « 4, 8 et 10 » compris. Une réponse de
+  // bénéficiaire ne se réécrit pas.
   if (nature === "amenagement") {
     try {
-      const marquees = await inscrireBesoinSurPositionnements({
+      const resultat = await declarerBesoinAmenagementSurInscriptions({
         traineeId: trainee.id,
         declareLe,
       });
-      if (marquees === 0) {
-        // ⛔ Le trou connu : aucune inscription en cours dont le positionnement
-        // soit répondu. L'alerte et le journal partent quand même, mais le
-        // besoin ne compte pas encore au dénominateur de l'indicateur 10. Il se
-        // dit, il ne se tait pas.
-        Sentry.captureMessage(
-          "besoin d'aménagement déclaré sans positionnement répondu pour le porter",
-          {
-            level: "warning",
-            tags: { service: "declarerBesoinAmenagementAction" },
-            extra: { traineeId: trainee.id },
-          },
-        );
+      if (resultat.etat === "colonne_absente") {
+        // L'heure qui suit une fusion : le worker tourne avant que l'entrypoint
+        // de l'app n'ait migré. Rare, borné, et jamais silencieux.
+        Sentry.captureMessage("déclaration d'aménagement : colonne pas encore migrée", {
+          level: "warning",
+          tags: { service: "declarerBesoinAmenagementAction" },
+          extra: { traineeId: trainee.id },
+        });
+      } else if (resultat.inscriptions === 0) {
+        // Aucune inscription en cours : la personne n'a plus de session à venir.
+        // L'alerte et le journal partent quand même ; il n'y a simplement aucune
+        // formation où organiser l'aménagement.
+        Sentry.captureMessage("déclaration d'aménagement sans inscription en cours", {
+          level: "info",
+          tags: { service: "declarerBesoinAmenagementAction" },
+          extra: { traineeId: trainee.id },
+        });
       }
     } catch (err) {
       Sentry.captureException(err, {
-        tags: { service: "declarerBesoinAmenagementAction", etape: "positionnements" },
+        tags: { service: "declarerBesoinAmenagementAction", etape: "inscriptions" },
         extra: { traineeId: trainee.id },
       });
     }

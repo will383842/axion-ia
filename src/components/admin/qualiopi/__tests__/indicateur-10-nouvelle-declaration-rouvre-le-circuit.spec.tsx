@@ -372,6 +372,7 @@ async function circuit() {
   const besoin = besoinAdaptationDeclare({
     situationHandicap: e.trainee.situationHandicap,
     reponsesPositionnements: e.questionnaires.map((q) => q.reponses),
+    besoinAdaptationDeclareAt: null,
   });
   return { horodatage, besoin };
 }

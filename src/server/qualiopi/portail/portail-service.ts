@@ -27,6 +27,7 @@ import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/ob
 import { retenirPiecesParSessionEtType } from "./pieces-par-formation";
 import { pieceEstRemise } from "./piece-remise";
 import { besoinAdaptationDeclare } from "@/server/qualiopi/adaptation/reponse-organisme";
+import { colonneDeclarationDisponible } from "@/server/qualiopi/adaptation/colonne-declaration";
 
 /**
  * Les pièces COLLECTIVES : elles décrivent l'ACTION, pas une personne. Tout
@@ -441,6 +442,7 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
     };
   }
 
+  const colonneDeclaration = await colonneDeclarationDisponible();
   const trainee = await prisma.trainee.findUnique({
     where: { id: traineeId },
     select: {
@@ -451,6 +453,10 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
       enrollments: {
         select: {
           statut: true,
+          // Ind. 10, troisième source : un aménagement déclaré sans handicap
+          // depuis « mon compte ». C'est ce qui empêche l'écran de RE-proposer
+          // le formulaire à quelqu'un qui vient de déclarer.
+          besoinAdaptationDeclareAt: colonneDeclaration,
           attestationDocument: {
             select: {
               type: true,
@@ -698,6 +704,7 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
       reponsesPositionnements: e.questionnaires
         .filter((q) => q.type === "positionnement" && q.reponduAt != null)
         .map((q) => q.reponses),
+      besoinAdaptationDeclareAt: e.besoinAdaptationDeclareAt ?? null,
     }),
   );
 
