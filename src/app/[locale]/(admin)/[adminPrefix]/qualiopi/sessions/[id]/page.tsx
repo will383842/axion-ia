@@ -47,7 +47,7 @@ import { lireEtatSignatureLettreMissionConsole } from "@/server/qualiopi/documen
 import { QuestionnairesSection } from "@/components/admin/qualiopi/QuestionnairesSection";
 import { envoyerQuestionnaireAction } from "@/server/actions/qualiopi/questionnaires";
 import { lirePositionnement } from "@/server/qualiopi/positionnement/lecture-positionnement";
-import { stagiairesAvecPrecisionChiffree } from "@/server/qualiopi/positionnement/precision-chiffree";
+import { stagiairesAvecPrecision } from "@/server/qualiopi/positionnement/precision-presente";
 import {
   HORODATAGE_CIRCUIT_VIDE,
   besoinAdaptationDeclare,
@@ -547,7 +547,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       // colonne chiffrée n'est pas chargée. Elle ne dit rien du questionnaire :
       // la colonne est aussi écrite par la déclaration de handicap et par la
       // console.
-      stagiairesAvecPrecisionChiffree(enrollmentsRaw.map((e) => e.trainee.id)),
+      stagiairesAvecPrecision(enrollmentsRaw.map((e) => e.trainee.id)),
     ]);
 
   const etatMissionFormateur =

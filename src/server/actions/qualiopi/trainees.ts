@@ -14,7 +14,10 @@
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
-import { chiffrerDetailSante } from "@/server/qualiopi/adaptation/detail-sante-chiffre";
+import {
+  chiffrerDetailSante,
+  detailSanteSaisissable,
+} from "@/server/qualiopi/adaptation/detail-sante-chiffre";
 import { journaliserDeclarationBesoin } from "@/server/qualiopi/adaptation/journal-declaration";
 
 type ActionResult<T> = { data: T } | { error: string };
@@ -27,8 +30,16 @@ const createTraineeSchema = z.object({
   entreprise: z.string().max(250).optional(),
   fonction: z.string().max(200).optional(),
   situationHandicap: z.boolean().optional(),
-  /** Détail handicap EN CLAIR — chiffré avant stockage (jamais persisté en clair). */
-  handicapDetails: z.string().max(2000).optional(),
+  /**
+   * Détail handicap EN CLAIR — chiffré avant stockage (jamais persisté en clair).
+   *
+   * `detailSanteSaisissable` refuse le préfixe de chiffrement DÈS LA SAISIE :
+   * il déclencherait la garde d'idempotence du chiffrement, qui rendrait le
+   * texte inchangé. La garde de dernier recours l'attrape de toute façon, mais
+   * elle ne peut plus rien dire d'utile à ce stade — ici, le refus est précoce
+   * et le champ fautif est nommé.
+   */
+  handicapDetails: z.string().max(2000).refine(detailSanteSaisissable).optional(),
   consentementFormation: z.boolean().optional(),
   consentementEmail: z.boolean().optional(),
   consentementVersion: z.string().max(20).optional(),
@@ -43,11 +54,56 @@ const updateTraineeSchema = z.object({
   entreprise: z.string().max(250).optional(),
   fonction: z.string().max(200).optional(),
   situationHandicap: z.boolean().optional(),
-  handicapDetails: z.string().max(2000).optional(),
+  handicapDetails: z.string().max(2000).refine(detailSanteSaisissable).optional(),
   consentementFormation: z.boolean().optional(),
   consentementEmail: z.boolean().optional(),
   consentementVersion: z.string().max(20).optional(),
 });
+
+/**
+ * Le champ de santé a-t-il été refusé par le SCHÉMA ? Si oui : le dire
+ * précisément à l'administrateur, et laisser une trace au journal qualité.
+ *
+ * 🔴 Deux défauts fermés ici, relevés par la relecture de #1106 :
+ *
+ * 1. le refus rendait « Données invalides », mot pour mot comme un e-mail
+ *    malformé. Le commentaire du schéma promettait que « le champ fautif est
+ *    nommé » — il ne l'était pas ;
+ * 2. ce refus-là ne laissait **aucune** trace. Le refus de la garde d'écriture
+ *    est consigné plus bas, mais celui du schéma court-circuite en amont : la
+ *    cause « saisie anormale » — la seule qui ne peut PAS venir d'un usage
+ *    normal, le formulaire n'ayant pas de valeur pré-remplie — disparaissait
+ *    en silence.
+ *
+ * Rend `null` quand l'échec de validation porte sur autre chose.
+ */
+async function refusDetailSante(
+  erreur: z.ZodError,
+  // ⚠️ `AdminSession` n'est volontairement PAS exporté de `_guards` (Turbopack
+  // transformerait le type en référence de Server Action). On le dérive.
+  contexte: {
+    etape: "creation" | "modification";
+    session: Awaited<ReturnType<typeof requireAdminWrite>>;
+    targetId?: string;
+  },
+): Promise<{ error: string } | null> {
+  const porteSurLeDetail = erreur.issues.some((i) => i.path[0] === "handicapDetails");
+  if (!porteSurLeDetail) return null;
+
+  await logQualiopiActivity({
+    action: "qualiopi.trainee.detail_sante.refuse",
+    targetType: "Trainee",
+    targetId: contexte.targetId ?? null,
+    // Le motif, jamais le contenu.
+    changes: { etape: contexte.etape, motif: "saisie_refusee" },
+    session: contexte.session,
+  });
+
+  return {
+    error:
+      "La précision sur la situation contient une valeur qui ne peut pas être enregistrée. Corrigez ce champ, les autres sont intacts.",
+  };
+}
 
 /** Crée un stagiaire. Email unique. PII handicap chiffré. */
 export async function createTraineeAction(
@@ -55,7 +111,11 @@ export async function createTraineeAction(
 ): Promise<ActionResult<{ id: string }>> {
   const session = await requireAdminWrite();
   const parsed = createTraineeSchema.safeParse(input);
-  if (!parsed.success) return { error: "Données invalides" };
+  if (!parsed.success) {
+    const refus = await refusDetailSante(parsed.error, { etape: "creation", session });
+    if (refus !== null) return refus;
+    return { error: "Données invalides" };
+  }
   const v = parsed.data;
 
   const hasHandicapDetails = v.handicapDetails !== undefined && v.handicapDetails.trim() !== "";
@@ -68,6 +128,18 @@ export async function createTraineeAction(
   // fiche serait créée SANS la précision, et personne ne saurait qu'elle a été
   // saisie. Déjà signalé à Sentry par la garde.
   if (hasHandicapDetails && detailChiffreCreation === null) {
+    // 🔴 Au JOURNAL QUALITÉ, pas seulement à la supervision technique. Sur une
+    // donnée de santé, le refus d'écriture est en soi un événement à consigner :
+    // c'est lui qui explique, un an plus tard, pourquoi une fiche ne porte pas
+    // la précision que quelqu'un se souvient avoir saisie. Et il se consigne
+    // SANS donnée personnelle — seule la survenue du geste importe.
+    await logQualiopiActivity({
+      action: "qualiopi.trainee.detail_sante.refuse",
+      targetType: "Trainee",
+      targetId: null,
+      changes: { etape: "creation" },
+      session,
+    });
     return {
       error:
         "La précision sur la situation n'a pas pu être enregistrée de façon sécurisée. Fiche non créée.",
@@ -133,7 +205,15 @@ export async function updateTraineeAction(
 ): Promise<ActionResult<{ id: string }>> {
   const session = await requireAdminWrite();
   const parsed = updateTraineeSchema.safeParse(input);
-  if (!parsed.success) return { error: "Données invalides" };
+  if (!parsed.success) {
+    const refus = await refusDetailSante(parsed.error, {
+      etape: "modification",
+      session,
+      ...(typeof input?.id === "string" ? { targetId: input.id } : {}),
+    });
+    if (refus !== null) return refus;
+    return { error: "Données invalides" };
+  }
   const { id, handicapDetails, consentementVersion, ...fields } = parsed.data;
 
   const hasHandicapDetails = handicapDetails !== undefined && handicapDetails.trim() !== "";
@@ -147,6 +227,15 @@ export async function updateTraineeAction(
   // Même règle qu'à la création : une précision saisie mais non chiffrable ne
   // doit pas disparaître en silence — l'administrateur croirait l'avoir enregistrée.
   if (hasHandicapDetails && detailChiffreMaj === null) {
+    // Même raison qu'à la création : le refus se consigne au journal qualité,
+    // sans aucune donnée personnelle. Ici la cible existe, elle est nommée.
+    await logQualiopiActivity({
+      action: "qualiopi.trainee.detail_sante.refuse",
+      targetType: "Trainee",
+      targetId: id,
+      changes: { etape: "modification" },
+      session,
+    });
     return {
       error:
         "La précision sur la situation n'a pas pu être enregistrée de façon sécurisée. Aucune modification enregistrée.",
