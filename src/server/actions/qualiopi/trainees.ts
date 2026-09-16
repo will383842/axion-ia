@@ -14,7 +14,7 @@
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
-import { encryptPii } from "@/lib/pii-crypto";
+import { chiffrerDetailSante } from "@/server/qualiopi/adaptation/detail-sante-chiffre";
 import { journaliserDeclarationBesoin } from "@/server/qualiopi/adaptation/journal-declaration";
 
 type ActionResult<T> = { data: T } | { error: string };
@@ -61,6 +61,19 @@ export async function createTraineeAction(
   const hasHandicapDetails = v.handicapDetails !== undefined && v.handicapDetails.trim() !== "";
   const situationHandicap = v.situationHandicap ?? hasHandicapDetails;
 
+  const detailChiffreCreation = hasHandicapDetails
+    ? chiffrerDetailSante(v.handicapDetails as string, { service: "createTraineeAction" })
+    : null;
+  // Un détail fourni mais non chiffrable ne doit pas passer sous silence : la
+  // fiche serait créée SANS la précision, et personne ne saurait qu'elle a été
+  // saisie. Déjà signalé à Sentry par la garde.
+  if (hasHandicapDetails && detailChiffreCreation === null) {
+    return {
+      error:
+        "La précision sur la situation n'a pas pu être enregistrée de façon sécurisée. Fiche non créée.",
+    };
+  }
+
   try {
     const created = await prisma.trainee.create({
       data: {
@@ -71,8 +84,11 @@ export async function createTraineeAction(
         ...(v.telephone !== undefined ? { telephone: v.telephone } : {}),
         ...(v.entreprise !== undefined ? { entreprise: v.entreprise } : {}),
         ...(v.fonction !== undefined ? { fonction: v.fonction } : {}),
-        ...(hasHandicapDetails
-          ? { handicapDetailsChiffre: encryptPii(v.handicapDetails as string) }
+        // 🔴 Garde partagée, et non `encryptPii` nu : celui-ci rend le texte
+        // INCHANGÉ si la clé manque ou si l'entrée porte déjà le préfixe — on
+        // écrirait alors une donnée de santé en clair. `null` = ne pas écrire.
+        ...(detailChiffreCreation !== null
+          ? { handicapDetailsChiffre: detailChiffreCreation }
           : {}),
         ...(v.consentementFormation !== undefined
           ? { consentementFormation: v.consentementFormation }
@@ -122,6 +138,21 @@ export async function updateTraineeAction(
 
   const hasHandicapDetails = handicapDetails !== undefined && handicapDetails.trim() !== "";
 
+  const detailChiffreMaj = hasHandicapDetails
+    ? chiffrerDetailSante(handicapDetails as string, {
+        service: "updateTraineeAction",
+        traineeId: id,
+      })
+    : null;
+  // Même règle qu'à la création : une précision saisie mais non chiffrable ne
+  // doit pas disparaître en silence — l'administrateur croirait l'avoir enregistrée.
+  if (hasHandicapDetails && detailChiffreMaj === null) {
+    return {
+      error:
+        "La précision sur la situation n'a pas pu être enregistrée de façon sécurisée. Aucune modification enregistrée.",
+    };
+  }
+
   try {
     // 🔴 Ind. 10 (relecture #1095) — cocher la situation de handicap, ou en
     // réécrire le détail, est une NOUVELLE DÉCLARATION : elle rouvre une réponse
@@ -145,9 +176,7 @@ export async function updateTraineeAction(
         ...(fields.situationHandicap !== undefined
           ? { situationHandicap: fields.situationHandicap }
           : {}),
-        ...(hasHandicapDetails
-          ? { handicapDetailsChiffre: encryptPii(handicapDetails as string) }
-          : {}),
+        ...(detailChiffreMaj !== null ? { handicapDetailsChiffre: detailChiffreMaj } : {}),
         ...(fields.consentementFormation !== undefined
           ? { consentementFormation: fields.consentementFormation }
           : {}),

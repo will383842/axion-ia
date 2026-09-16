@@ -27,8 +27,14 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
   logQualiopiActivity: vi.fn().mockResolvedValue(undefined),
 }));
 
+// ⚠️ Doublon FIDÈLE : il reproduit la garde d'idempotence du module réel (un
+// texte déjà préfixé revient INCHANGÉ). Un doublon plus indulgent que la
+// production rend invisible la garde qui refuse d'écrire du clair — c'est
+// exactement ce qui avait laissé passer la faille corrigée ici.
 vi.mock("@/lib/pii-crypto", () => ({
-  encryptPii: vi.fn((v: string) => `enc:v1:${v}`),
+  encryptPii: vi.fn((v: string) => (v.startsWith("enc:v1:") ? v : `enc:v1:${v}`)),
+  isEncryptedPii: (v: unknown) => typeof v === "string" && v.startsWith("enc:v1:"),
+  PII_DECRYPT_PLACEHOLDER: "[encrypted — key missing]",
 }));
 
 import { createTraineeAction, updateTraineeAction } from "./trainees";

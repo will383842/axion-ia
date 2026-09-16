@@ -85,9 +85,16 @@ vi.mock("@/server/qualiopi/satisfaction/satisfaction-service", () => ({
 }));
 vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: vi.fn() }));
 vi.mock("next/headers", () => ({ headers: vi.fn(async () => new Map()) }));
+// ⚠️ Doublon COMPLET et FIDÈLE : la garde partagée `chiffrerDetailSante` lit
+// `isEncryptedPii` et refuse d'écrire si le chiffrement n'a rien transformé.
+// Sans ces deux exports, l'appel lève, l'exception est absorbée par le
+// fail-soft du chemin, et le détail n'est PAS écrit — un rouge qui ne dit rien
+// du sujet testé. La garde d'idempotence est reproduite, comme dans le module réel.
 vi.mock("@/lib/pii-crypto", () => ({
-  encryptPii: (v: string) => `enc:${v}`,
+  encryptPii: (v: string) => (v.startsWith("enc:") ? v : `enc:${v}`),
   decryptPii: (v: string | null) => v,
+  isEncryptedPii: (v: unknown) => typeof v === "string" && v.startsWith("enc:"),
+  PII_DECRYPT_PLACEHOLDER: "[encrypted — key missing]",
 }));
 
 import { soumettreSatisfactionPortailAction } from "./portail";
