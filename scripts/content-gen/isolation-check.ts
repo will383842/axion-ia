@@ -91,6 +91,19 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // et `AdminBreadcrumbs.tsx` ci-dessous — le marqueur est cité, pas importé.
   /^scripts\/qualiopi\/isolation-check\.ts$/,
   /^tests\/unit\/ci\/gardes-isolation-sont-appelees\.spec\.ts$/,
+  // Exception ajoutée 2026-09-16 — la garde « aucun module du worker n'importe
+  // `server-only` » marche sur la fermeture d'imports de `src/server/queue/**`.
+  // Cette fermeture traverse le pipeline éditorial, et l'un de ses TÉMOINS+ doit
+  // nommer `content-gen-deadline-checker` et son chemin de journal : sans nom, le
+  // témoin ne distingue plus « aucun fautif » de « ma marche ne parcourt rien ».
+  // C'est exactement ce qui vient d'arriver — une racine mal comptée rendait une
+  // fermeture VIDE, et les trois assertions passaient en vert sur du néant.
+  //
+  // Lecture de fichier en assertion, aucun `import`, aucune dépendance à
+  // l'exécution : le couplage que le § 4.1bis interdit n'existe pas ici. Même
+  // nature d'exception que les gardes a11y / sitemap plus bas, et même règle —
+  // une garde qui surveille une frontière doit pouvoir NOMMER LES DEUX CÔTÉS.
+  /^tests\/unit\/ci\/aucun-module-du-worker-nimporte-server-only\.spec\.ts$/,
   // AdminCommandPalette ⌘K — référence des routes /content-gen pour navigation
   // rapide admin (Audit final P0-4, commit `24e050e`).
   /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/AdminCommandPalette\.tsx$/,
