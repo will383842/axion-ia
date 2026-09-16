@@ -44,7 +44,13 @@ import * as crypto from "node:crypto";
 const ALGORITHM = "aes-256-gcm";
 const IV_BYTES = 12;
 const TAG_BYTES = 16;
-const PREFIX_V1 = "enc:v1:";
+/**
+ * Préfixe d'un chiffré `v1`. **Exporté** pour que personne ne le retape :
+ * un prédicat recopié diverge toujours, et ce dépôt l'a déjà payé. Sert
+ * notamment aux filtres en base qui veulent distinguer « chiffré » de
+ * « non vide ».
+ */
+export const PREFIX_V1 = "enc:v1:";
 
 // Lecture directe `process.env` (pas via `env` t3-validator) pour rester
 // compatible Vitest (t3-env throw "client-side detected" en test sans

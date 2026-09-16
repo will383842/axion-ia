@@ -32,14 +32,27 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
 // production rend invisible la garde qui refuse d'écrire du clair — c'est
 // exactement ce qui avait laissé passer la faille corrigée ici.
 vi.mock("@/lib/pii-crypto", () => ({
-  encryptPii: vi.fn((v: string) => (v.startsWith("enc:v1:") ? v : `enc:v1:${v}`)),
+  encryptPii: vi.fn((v: string) => (v.startsWith("enc:v1:") || !cleDisponible ? v : `enc:v1:${v}`)),
   isEncryptedPii: (v: unknown) => typeof v === "string" && v.startsWith("enc:v1:"),
   PII_DECRYPT_PLACEHOLDER: "[encrypted — key missing]",
 }));
 
 import { createTraineeAction, updateTraineeAction } from "./trainees";
+import { logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 
 const TRAINEE_ID = "44444444-4444-4444-4444-444444444444";
+
+/** Bascule du doublon de chiffrement : `false` = clé absente. */
+let cleDisponible = true;
+
+/** Les refus d'écriture d'un détail de santé consignés au journal QUALITÉ. */
+function refusJournalises(): Array<{ targetId: string | null; changes: unknown }> {
+  return vi
+    .mocked(logQualiopiActivity)
+    .mock.calls.map((c) => c[0])
+    .filter((e) => e.action === "qualiopi.trainee.detail_sante.refuse")
+    .map((e) => ({ targetId: e.targetId ?? null, changes: e.changes }));
+}
 
 beforeEach(() => {
   mockCreate.mockReset();
@@ -49,6 +62,8 @@ beforeEach(() => {
   mockJournal.mockResolvedValue({});
   mockFindUnique.mockResolvedValue({ situationHandicap: false });
   vi.stubEnv("DATABASE_URL", "postgresql://test");
+  vi.mocked(logQualiopiActivity).mockClear();
+  cleDisponible = true;
 });
 
 /** Les déclarations de besoin datées au journal (ind. 10). */
@@ -144,5 +159,80 @@ describe("updateTraineeAction", () => {
     await updateTraineeAction({ id: TRAINEE_ID, situationHandicap: true, entreprise: "ACME" });
     await updateTraineeAction({ id: TRAINEE_ID, situationHandicap: false });
     expect(declarationsJournalisees()).toHaveLength(0);
+  });
+});
+
+/**
+ * 🔴 Le détail de santé est refusé TÔT, et le refus laisse une trace QUALITÉ.
+ *
+ * Deux défauts distincts, relevés par la relecture de la PR précédente :
+ *
+ * 1. le préfixe de chiffrement n'était refusé qu'au dernier moment, par la garde
+ *    d'écriture : l'administrateur recevait un message générique au lieu de
+ *    savoir quel champ pose problème ;
+ * 2. un refus n'existait que dans la supervision technique. Sur une donnée de
+ *    santé, c'est justement la trace qui explique, un an plus tard, pourquoi une
+ *    fiche ne porte pas la précision que quelqu'un se souvient avoir saisie.
+ */
+describe("🔴 refus d'un détail de santé — tôt, et consigné", () => {
+  it("🔴 création : un détail préfixé est refusé PAR LE SCHÉMA, rien n'est créé", async () => {
+    const r = await createTraineeAction({
+      nom: "Martin",
+      prenom: "Léa",
+      email: "lea@example.com",
+      handicapDetails: "enc:v1:contenu piégé",
+    });
+
+    // « Données invalides » = le SCHÉMA a tranché. Un autre message voudrait
+    // dire que la garde d'écriture a rattrapé au dernier moment.
+    expect(r).toEqual({ error: "Données invalides" });
+    expect(mockCreate).not.toHaveBeenCalled();
+  });
+
+  it("🔴 modification : idem, et la fiche n'est pas touchée", async () => {
+    const r = await updateTraineeAction({
+      id: TRAINEE_ID,
+      handicapDetails: "enc:v1:contenu piégé",
+    });
+
+    expect(r).toEqual({ error: "Données invalides" });
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("🔴 chiffrement indisponible à la CRÉATION : refus consigné au journal qualité", async () => {
+    cleDisponible = false;
+
+    const r = await createTraineeAction({
+      nom: "Martin",
+      prenom: "Léa",
+      email: "lea@example.com",
+      handicapDetails: "Besoin d'un écran adapté",
+    });
+
+    expect("error" in r).toBe(true);
+    expect(mockCreate, "la fiche a été créée sans la précision").not.toHaveBeenCalled();
+    expect(refusJournalises(), "le refus n'existe que dans la supervision technique").toEqual([
+      { targetId: null, changes: { etape: "creation" } },
+    ]);
+  });
+
+  it("🔴 chiffrement indisponible à la MODIFICATION : refus consigné, cible nommée", async () => {
+    cleDisponible = false;
+
+    const r = await updateTraineeAction({ id: TRAINEE_ID, handicapDetails: "RQTH" });
+
+    expect("error" in r).toBe(true);
+    expect(mockUpdate).not.toHaveBeenCalled();
+    expect(refusJournalises()).toEqual([
+      { targetId: TRAINEE_ID, changes: { etape: "modification" } },
+    ]);
+  });
+
+  it("🔑 aucune donnée de santé n'entre dans le journal du refus", async () => {
+    cleDisponible = false;
+    await updateTraineeAction({ id: TRAINEE_ID, handicapDetails: "je suis malentendant" });
+
+    const trace = JSON.stringify(vi.mocked(logQualiopiActivity).mock.calls);
+    expect(trace, "le détail de santé est parti au journal").not.toContain("malentendant");
   });
 });

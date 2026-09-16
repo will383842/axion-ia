@@ -14,7 +14,10 @@
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
-import { chiffrerDetailSante } from "@/server/qualiopi/adaptation/detail-sante-chiffre";
+import {
+  chiffrerDetailSante,
+  detailSanteSaisissable,
+} from "@/server/qualiopi/adaptation/detail-sante-chiffre";
 import { journaliserDeclarationBesoin } from "@/server/qualiopi/adaptation/journal-declaration";
 
 type ActionResult<T> = { data: T } | { error: string };
@@ -27,8 +30,16 @@ const createTraineeSchema = z.object({
   entreprise: z.string().max(250).optional(),
   fonction: z.string().max(200).optional(),
   situationHandicap: z.boolean().optional(),
-  /** Détail handicap EN CLAIR — chiffré avant stockage (jamais persisté en clair). */
-  handicapDetails: z.string().max(2000).optional(),
+  /**
+   * Détail handicap EN CLAIR — chiffré avant stockage (jamais persisté en clair).
+   *
+   * `detailSanteSaisissable` refuse le préfixe de chiffrement DÈS LA SAISIE :
+   * il déclencherait la garde d'idempotence du chiffrement, qui rendrait le
+   * texte inchangé. La garde de dernier recours l'attrape de toute façon, mais
+   * elle ne peut plus rien dire d'utile à ce stade — ici, le refus est précoce
+   * et le champ fautif est nommé.
+   */
+  handicapDetails: z.string().max(2000).refine(detailSanteSaisissable).optional(),
   consentementFormation: z.boolean().optional(),
   consentementEmail: z.boolean().optional(),
   consentementVersion: z.string().max(20).optional(),
@@ -43,7 +54,7 @@ const updateTraineeSchema = z.object({
   entreprise: z.string().max(250).optional(),
   fonction: z.string().max(200).optional(),
   situationHandicap: z.boolean().optional(),
-  handicapDetails: z.string().max(2000).optional(),
+  handicapDetails: z.string().max(2000).refine(detailSanteSaisissable).optional(),
   consentementFormation: z.boolean().optional(),
   consentementEmail: z.boolean().optional(),
   consentementVersion: z.string().max(20).optional(),
@@ -68,6 +79,18 @@ export async function createTraineeAction(
   // fiche serait créée SANS la précision, et personne ne saurait qu'elle a été
   // saisie. Déjà signalé à Sentry par la garde.
   if (hasHandicapDetails && detailChiffreCreation === null) {
+    // 🔴 Au JOURNAL QUALITÉ, pas seulement à la supervision technique. Sur une
+    // donnée de santé, le refus d'écriture est en soi un événement à consigner :
+    // c'est lui qui explique, un an plus tard, pourquoi une fiche ne porte pas
+    // la précision que quelqu'un se souvient avoir saisie. Et il se consigne
+    // SANS donnée personnelle — seule la survenue du geste importe.
+    await logQualiopiActivity({
+      action: "qualiopi.trainee.detail_sante.refuse",
+      targetType: "Trainee",
+      targetId: null,
+      changes: { etape: "creation" },
+      session,
+    });
     return {
       error:
         "La précision sur la situation n'a pas pu être enregistrée de façon sécurisée. Fiche non créée.",
@@ -147,6 +170,15 @@ export async function updateTraineeAction(
   // Même règle qu'à la création : une précision saisie mais non chiffrable ne
   // doit pas disparaître en silence — l'administrateur croirait l'avoir enregistrée.
   if (hasHandicapDetails && detailChiffreMaj === null) {
+    // Même raison qu'à la création : le refus se consigne au journal qualité,
+    // sans aucune donnée personnelle. Ici la cible existe, elle est nommée.
+    await logQualiopiActivity({
+      action: "qualiopi.trainee.detail_sante.refuse",
+      targetType: "Trainee",
+      targetId: id,
+      changes: { etape: "modification" },
+      session,
+    });
     return {
       error:
         "La précision sur la situation n'a pas pu être enregistrée de façon sécurisée. Aucune modification enregistrée.",

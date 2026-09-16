@@ -18,6 +18,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { PREFIX_V1 } from "@/lib/pii-crypto";
 
 export async function stagiairesAvecPrecisionChiffree(
   traineeIds: readonly string[],
@@ -25,7 +26,13 @@ export async function stagiairesAvecPrecisionChiffree(
   const ids = [...new Set(traineeIds)];
   if (ids.length === 0) return new Set();
   const lignes = await prisma.trainee.findMany({
-    where: { id: { in: ids }, handicapDetailsChiffre: { not: null } },
+    // 🔴 `startsWith` et non `{ not: null }` : cette fonction s'appelle
+    // « avec précision CHIFFRÉE », et « non vide » ne veut pas dire « chiffré ».
+    // Une valeur héritée ou posée hors des chemins gardés serait comptée comme
+    // chiffrée — l'écran affirmerait à l'administration que la précision est
+    // protégée alors qu'elle ne l'est pas. Un nom qui promet plus que le
+    // prédicat ne tient est un mensonge qui ne rougit jamais.
+    where: { id: { in: ids }, handicapDetailsChiffre: { startsWith: PREFIX_V1 } },
     select: { id: true },
   });
   return new Set(lignes.map((t) => t.id));
