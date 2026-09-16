@@ -96,7 +96,12 @@ vi.mock("next/headers", () => ({ headers: vi.fn(async () => new Map()) }));
 // defined on the mock » — et deux PR vertes séparément peuvent rougir ensemble
 // pour cette seule raison (incident du 2026-09-15, PR #1092).
 vi.mock("@/lib/pii-crypto", () => ({
-  encryptPii: (v: string) => (chiffrementDisponible ? `enc:${v}` : v),
+  // ⚠️ Ce doublon REPRODUIT la garde d'idempotence du vrai module
+  // (`pii-crypto.ts` : un texte qui porte déjà le préfixe revient INCHANGÉ).
+  // Sans elle, le doublon chiffre là où le module réel ne chiffre pas — il est
+  // plus indulgent que la réalité, précisément à l'endroit que la garde de
+  // sécurité prétend défendre, et aucun test ne peut voir la faille.
+  encryptPii: (v: string) => (v.startsWith("enc:") ? v : chiffrementDisponible ? `enc:${v}` : v),
   decryptPii: (v: string | null) => {
     if (v == null) return null;
     if (!chiffrementDisponible && String(v).startsWith("enc:")) return "[encrypted — key missing]";
@@ -362,17 +367,32 @@ describe("🔴 dette D3 — une seconde déclaration n'efface pas la première",
  */
 describe("🔴 le cumul est borné, et le chiffrement n'est jamais contourné", () => {
   it("🔴 un texte cumulé ne dépasse jamais le plafond, et le dit", async () => {
-    // Une colonne déjà énorme : exactement ce qu'une boucle d'appels produit.
-    traineeFindUnique.mockResolvedValue({ handicapDetailsChiffre: `enc:${"x".repeat(60_000)}` });
+    // ⚠️ La colonne doit être faite de NOMBREUSES déclarations, pas d'un seul
+    // bloc énorme. Avec un bloc unique, l'éviction retombe d'un coup sur la
+    // seule déclaration du jour — quelques dizaines de caractères — et la
+    // mesure de longueur ne dit alors plus RIEN du plafond : relâcher la
+    // constante de 4 000 laissait le cas au vert. C'est le peuplement du cas,
+    // pas l'assertion, qui décide de ce qu'une garde peut voir.
+    const anciennes = Array.from(
+      { length: 40 },
+      (_, i) => `declaration-${i}-${"x".repeat(1_000)}`,
+    ).join("\n\n— Déclaration du 1 janvier 2026 —\n");
+    traineeFindUnique.mockResolvedValue({ handicapDetailsChiffre: `enc:${anciennes}` });
 
     await declarerBesoinAmenagementAction({ besoin: BESOIN });
 
     const maj = traineeUpdate.mock.calls[0]?.[0] as { data: Record<string, unknown> };
     const ecrit = String(maj.data["handicapDetailsChiffre"]);
+    // Le plafond EXACT, pas une marge confortable.
     expect(
       ecrit.length,
       "le cumul n'est pas borné : la colonne peut enfler jusqu'à devenir illisible",
-    ).toBeLessThan(25_000);
+    ).toBeLessThanOrEqual(20_000 + "enc:".length);
+    // …et il est réellement ATTEINT : sinon la borne ne serait pas mesurée.
+    expect(
+      ecrit.length,
+      "le cas ne remplit pas assez la colonne pour que le plafond soit mesuré",
+    ).toBeGreaterThan(15_000);
     // La déclaration du jour survit — c'est celle sur laquelle on peut encore agir.
     expect(ecrit).toContain(BESOIN);
     expect(ecrit).toContain("retirées faute de place");
@@ -413,11 +433,46 @@ describe("🔴 le cumul est borné, et le chiffrement n'est jamais contourné", 
     expect(traineeUpdate).not.toHaveBeenCalled();
   });
 
-  it("un limiteur en panne ne bloque pas une vraie déclaration", async () => {
-    checkRateLimitMock.mockRejectedValue(new Error("redis indisponible"));
+  it("🔴 une panne de Redis ne bloque pas une vraie déclaration — `surPanne` est DÉCLARÉ", async () => {
     await declarerBesoinAmenagementAction({ besoin: BESOIN });
-    // Choix assumé : le plafond de taille, lui, ne dépend d'aucun service externe.
-    expect(traineeUpdate).toHaveBeenCalled();
+
+    // C'est `surPanne` qui implémente le laisser-passer, pas un `catch` : le
+    // limiteur ne lève jamais, il attrape et rend la conduite demandée. Garder
+    // l'option ici, c'est garder le choix — un `"refuser"` posé par mégarde
+    // fermerait la déclaration de handicap sur un hoquet d'infrastructure.
+    const [, opts] = checkRateLimitMock.mock.calls[0] ?? [];
+    expect(opts).toMatchObject({ surPanne: "laisser-passer", limit: 5, windowSec: 3600 });
+  });
+
+  it("🔴 un besoin qui commence par le préfixe de chiffrement est REFUSÉ", async () => {
+    // `encryptPii` court-circuite sur ce préfixe (garde d'idempotence) et rend
+    // le texte inchangé : sans ce refus, la donnée de santé partait EN CLAIR, et
+    // toute relecture levait ensuite — référent, portail du bénéficiaire et
+    // export art. 15 cassés en une seule requête.
+    const res = await declarerBesoinAmenagementAction({
+      besoin: "enc:v1:je suis séropositif",
+    });
+
+    expect(res).toEqual({ error: "Données invalides" });
+    expect(
+      traineeUpdate,
+      "une donnée de santé a été écrite en clair, validée par la garde de chiffrement",
+    ).not.toHaveBeenCalled();
+  });
+
+  it("🔴 dernier recours : rien n'est écrit si le chiffrement n'a RIEN transformé", async () => {
+    // Même défaut, atteint par l'autre porte : un texte hérité déjà préfixé,
+    // relu en clair et recumulé. La garde ne peut pas se contenter du préfixe.
+    // Chiffré dans la colonne, mais dont le CLAIR porte le préfixe : une fois
+    // déchiffré et recumulé, le texte à écrire recommence par `enc:v1:`.
+    traineeFindUnique.mockResolvedValue({
+      handicapDetailsChiffre: "enc:enc:v1:ancien texte piégé",
+    });
+
+    const res = await declarerHandicapAction({ besoin: BESOIN });
+
+    expect("error" in res).toBe(true);
+    expect(traineeUpdate).not.toHaveBeenCalled();
   });
 
   it("🔴 clé de chiffrement absente : RIEN n'est écrit, surtout pas en clair", async () => {

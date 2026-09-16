@@ -94,7 +94,19 @@ const declarerHandicapSchema = z.object({
   // mais l'action est un point d'entrée HTTP à part entière. Sans lui, 2 000
   // espaces étaient une déclaration valide — et chaque appel faisait grossir la
   // colonne chiffrée d'autant.
-  besoin: z.string().trim().min(1).max(2000),
+  besoin: z
+    .string()
+    .trim()
+    .min(1)
+    .max(2000)
+    // 🔴 Le préfixe de chiffrement est INTERDIT À LA SAISIE (contre-relecture
+    // sécurité #1103). `encryptPii` court-circuite sur ce préfixe — c'est sa
+    // garde d'idempotence, voulue — et rend le texte INCHANGÉ. Un bénéficiaire
+    // qui commence son besoin par `enc:v1:` faisait donc écrire sa donnée de
+    // santé EN CLAIR, et rendait ensuite illisibles les trois lecteurs de la
+    // colonne (référent, portail du bénéficiaire, export art. 15) : chacun
+    // appelle `decryptPii`, qui lève sur un faux ciphertext.
+    .refine((v) => !isEncryptedPii(v)),
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -460,26 +472,34 @@ const MENTION_ANCIENNES_RETIREES =
 /** Plafond de déclarations par bénéficiaire et par heure. Voir le limiteur. */
 const PLAFOND_DECLARATIONS_PAR_HEURE = 5;
 
-/** Ramène le cumul sous le plafond en retirant les déclarations les plus anciennes. */
+/**
+ * Ramène le cumul sous le plafond en retirant les déclarations les plus anciennes.
+ *
+ * ⚠️ Le budget retranche la mention et le séparateur AVANT la boucle : une
+ * première version les ajoutait après coup et rendait jusqu'à ~20 117
+ * caractères — une fonction qui dépasse la constante qu'elle porte.
+ */
 function bornerCumul(texte: string): string {
   if (texte.length <= MAX_DETAIL_CUMULE_CARACTERES) return texte;
 
+  const budget =
+    MAX_DETAIL_CUMULE_CARACTERES -
+    MENTION_ANCIENNES_RETIREES.length -
+    SEPARATEUR_DECLARATIONS.length;
+
   const blocs = texte.split(SEPARATEUR_DECLARATIONS);
-  while (
-    blocs.length > 1 &&
-    blocs.join(SEPARATEUR_DECLARATIONS).length + MENTION_ANCIENNES_RETIREES.length >
-      MAX_DETAIL_CUMULE_CARACTERES
-  ) {
+  while (blocs.length > 1 && blocs.join(SEPARATEUR_DECLARATIONS).length > budget) {
     blocs.shift();
   }
 
-  // Reste le cas d'une valeur héritée unique déjà plus grosse que le plafond :
-  // on garde sa FIN, pour la même raison que ci-dessus.
+  // Reste le cas d'une valeur héritée d'un SEUL bloc, déjà plus grosse que le
+  // budget : on garde sa FIN, pour la même raison que ci-dessus.
+  //
+  // ⚠️ Découpe par POINT DE CODE, pas par unité UTF-16 : `slice(-n)` peut
+  // couper une paire de substitution en deux et laisser un demi-caractère, qui
+  // devient « � » au rechiffrement.
   const garde = blocs.join(SEPARATEUR_DECLARATIONS);
-  const borne =
-    garde.length > MAX_DETAIL_CUMULE_CARACTERES
-      ? garde.slice(-MAX_DETAIL_CUMULE_CARACTERES)
-      : garde;
+  const borne = garde.length > budget ? Array.from(garde).slice(-budget).join("") : garde;
 
   return `${MENTION_ANCIENNES_RETIREES}${SEPARATEUR_DECLARATIONS}${borne}`;
 }
@@ -539,11 +559,19 @@ async function detailCumule(traineeId: string, nouveau: string): Promise<string 
   const texte = precedent === null ? nouveau : bornerCumul(`${precedent}${entete}${nouveau}`);
   const chiffre = encryptPii(texte);
 
-  // 🔴 Dernier verrou : ne JAMAIS écrire ce qui n'est pas chiffré. `encryptPii`
-  // rend le texte inchangé quand la clé manque (repli de développement). Ici, ce
-  // repli écrirait une donnée de santé en clair dans la base de production.
-  // Mieux vaut refuser la déclaration et le dire au bénéficiaire.
-  if (!isEncryptedPii(chiffre)) {
+  // 🔴 Dernier verrou : ne JAMAIS écrire ce qui n'est pas chiffré.
+  //
+  // DEUX conditions, et la seconde est la seule qui tienne face à une saisie
+  // hostile. `isEncryptedPii` n'est qu'un test de préfixe : sur `enc:v1:<texte>`
+  // tapé par le bénéficiaire, `encryptPii` court-circuite (garde d'idempotence),
+  // rend le texte INCHANGÉ, et le test de préfixe répond « oui, c'est chiffré ».
+  // Un contrôle qui valide le clair de l'attaquant est pire que pas de contrôle.
+  // `chiffre === texte` dit la seule chose qui compte : le chiffrement n'a rien
+  // transformé. Il couvre la clé absente ET le court-circuit.
+  //
+  // (La saisie est aussi refusée en amont par le schéma ; ceci reste la garde
+  // de dernier recours, pour le `precedent` déchiffré et pour tout appelant futur.)
+  if (!isEncryptedPii(chiffre) || chiffre === texte) {
     Sentry.captureMessage("déclaration d'adaptation : chiffrement indisponible, écriture refusée", {
       level: "error",
       tags: { service: "declarationMonCompte", etape: "chiffrement" },
@@ -576,25 +604,36 @@ async function declarerDepuisMonCompte(
   // famille. Clé par bénéficiaire (l'action est déjà derrière le cookie) et non
   // par IP : une déclaration légitime depuis un réseau d'entreprise partagé ne
   // doit pas être bloquée par celle d'un collègue.
-  try {
-    const rl = await checkRateLimit(`portail:declaration:${authResult.traineeId}`, {
-      limit: PLAFOND_DECLARATIONS_PAR_HEURE,
-      windowSec: 3600,
-      // Choix DÉCLARÉ, pas subi : une panne de Redis ne doit pas empêcher une
-      // vraie déclaration de handicap. Le plafond de taille ci-dessus ne dépend
-      // d'aucun service externe — c'est lui qui borne le dégât dans ce cas.
-      surPanne: "laisser-passer",
+  //
+  // ⚠️ PAS de `try/catch` ici. `checkRateLimit` ne lève jamais : elle attrape
+  // tout et rend la conduite déclarée par `surPanne` (`rate-limit.ts`). Un
+  // `catch` vide serait donc mort en production — et surtout il garantirait
+  // qu'un futur doublon de test rendant `undefined` repasse au vert PAR LE
+  // CHEMIN D'ERREUR, exactement le défaut corrigé plus bas dans ce commit.
+  const rl = await checkRateLimit(`portail:declaration:${authResult.traineeId}`, {
+    limit: PLAFOND_DECLARATIONS_PAR_HEURE,
+    windowSec: 3600,
+    // Choix DÉCLARÉ, pas subi : une panne de Redis ne doit pas empêcher une
+    // vraie déclaration de handicap. Le plafond de taille ci-dessus ne dépend
+    // d'aucun service externe — c'est lui qui borne le dégât dans ce cas.
+    surPanne: "laisser-passer",
+  });
+  if (!rl.allowed) {
+    // 🔴 Ne PAS mentir au bénéficiaire. Une première rédaction annonçait
+    // « Votre déclaration a bien été enregistrée » alors que RIEN n'était
+    // écrit : ni fiche, ni journal, ni alerte. Quelqu'un qui précise son besoin
+    // la veille de sa formation aurait été rassuré pendant que le référent
+    // n'apprenait rien. Et le refus laisse une trace, pour que la perte ne soit
+    // pas silencieuse.
+    Sentry.captureMessage("déclaration d'adaptation refusée par le limiteur", {
+      level: "warning",
+      tags: { service: "declarationMonCompte", etape: "limiteur" },
+      extra: { traineeId: authResult.traineeId },
     });
-    if (!rl.allowed) {
-      return {
-        error:
-          "Votre déclaration a bien été enregistrée. Pour en ajouter une autre, merci de patienter un peu.",
-      };
-    }
-  } catch {
-    // fail-open ASSUMÉ : un limiteur indisponible ne doit pas empêcher une vraie
-    // déclaration de handicap. Le plafond de taille, lui, ne dépend d'aucun
-    // service externe — c'est lui qui borne le dégât dans ce cas.
+    return {
+      error:
+        "Votre déclaration n'a pas été enregistrée : trop de déclarations en peu de temps. Réessayez dans un moment, ou contactez votre référent handicap.",
+    };
   }
 
   const detailChiffre = await detailCumule(authResult.traineeId, parsed.data.besoin);
