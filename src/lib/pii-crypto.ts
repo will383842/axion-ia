@@ -45,10 +45,17 @@ const ALGORITHM = "aes-256-gcm";
 const IV_BYTES = 12;
 const TAG_BYTES = 16;
 /**
- * Préfixe d'un chiffré `v1`. **Exporté** pour que personne ne le retape :
- * un prédicat recopié diverge toujours, et ce dépôt l'a déjà payé. Sert
- * notamment aux filtres en base qui veulent distinguer « chiffré » de
+ * Préfixe d'un chiffré `v1`. **Exporté** pour que les nouveaux prédicats ne le
+ * retapent pas : un prédicat recopié diverge toujours, et ce dépôt l'a déjà
+ * payé. Sert notamment aux filtres en base qui distinguent « chiffré » de
  * « non vide ».
+ *
+ * ⚠️ **Il reste TROIS copies du littéral en production**, non alignées ici :
+ * `positionnement/lecture-positionnement.ts`,
+ * `positionnement/detail-adaptation-chiffre.ts` et le `LIKE 'enc:v1:%'` du
+ * script de rattrapage. Les aligner fait tomber **huit** fichiers de test, dont
+ * les doublons de `pii-crypto` devraient alors tous déclarer cette constante —
+ * mesuré, pas supposé. À faire dans un lot dédié, pas au détour d'un correctif.
  */
 export const PREFIX_V1 = "enc:v1:";
 

@@ -60,13 +60,62 @@ const updateTraineeSchema = z.object({
   consentementVersion: z.string().max(20).optional(),
 });
 
+/**
+ * Le champ de santé a-t-il été refusé par le SCHÉMA ? Si oui : le dire
+ * précisément à l'administrateur, et laisser une trace au journal qualité.
+ *
+ * 🔴 Deux défauts fermés ici, relevés par la relecture de #1106 :
+ *
+ * 1. le refus rendait « Données invalides », mot pour mot comme un e-mail
+ *    malformé. Le commentaire du schéma promettait que « le champ fautif est
+ *    nommé » — il ne l'était pas ;
+ * 2. ce refus-là ne laissait **aucune** trace. Le refus de la garde d'écriture
+ *    est consigné plus bas, mais celui du schéma court-circuite en amont : la
+ *    cause « saisie anormale » — la seule qui ne peut PAS venir d'un usage
+ *    normal, le formulaire n'ayant pas de valeur pré-remplie — disparaissait
+ *    en silence.
+ *
+ * Rend `null` quand l'échec de validation porte sur autre chose.
+ */
+async function refusDetailSante(
+  erreur: z.ZodError,
+  // ⚠️ `AdminSession` n'est volontairement PAS exporté de `_guards` (Turbopack
+  // transformerait le type en référence de Server Action). On le dérive.
+  contexte: {
+    etape: "creation" | "modification";
+    session: Awaited<ReturnType<typeof requireAdminWrite>>;
+    targetId?: string;
+  },
+): Promise<{ error: string } | null> {
+  const porteSurLeDetail = erreur.issues.some((i) => i.path[0] === "handicapDetails");
+  if (!porteSurLeDetail) return null;
+
+  await logQualiopiActivity({
+    action: "qualiopi.trainee.detail_sante.refuse",
+    targetType: "Trainee",
+    targetId: contexte.targetId ?? null,
+    // Le motif, jamais le contenu.
+    changes: { etape: contexte.etape, motif: "saisie_refusee" },
+    session: contexte.session,
+  });
+
+  return {
+    error:
+      "La précision sur la situation contient une valeur qui ne peut pas être enregistrée. Corrigez ce champ, les autres sont intacts.",
+  };
+}
+
 /** Crée un stagiaire. Email unique. PII handicap chiffré. */
 export async function createTraineeAction(
   input: z.infer<typeof createTraineeSchema>,
 ): Promise<ActionResult<{ id: string }>> {
   const session = await requireAdminWrite();
   const parsed = createTraineeSchema.safeParse(input);
-  if (!parsed.success) return { error: "Données invalides" };
+  if (!parsed.success) {
+    const refus = await refusDetailSante(parsed.error, { etape: "creation", session });
+    if (refus !== null) return refus;
+    return { error: "Données invalides" };
+  }
   const v = parsed.data;
 
   const hasHandicapDetails = v.handicapDetails !== undefined && v.handicapDetails.trim() !== "";
@@ -156,7 +205,15 @@ export async function updateTraineeAction(
 ): Promise<ActionResult<{ id: string }>> {
   const session = await requireAdminWrite();
   const parsed = updateTraineeSchema.safeParse(input);
-  if (!parsed.success) return { error: "Données invalides" };
+  if (!parsed.success) {
+    const refus = await refusDetailSante(parsed.error, {
+      etape: "modification",
+      session,
+      ...(typeof input?.id === "string" ? { targetId: input.id } : {}),
+    });
+    if (refus !== null) return refus;
+    return { error: "Données invalides" };
+  }
   const { id, handicapDetails, consentementVersion, ...fields } = parsed.data;
 
   const hasHandicapDetails = handicapDetails !== undefined && handicapDetails.trim() !== "";

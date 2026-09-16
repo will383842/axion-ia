@@ -216,8 +216,8 @@ vi.mock("@/server/qualiopi/trainees/trainees", () => ({
 vi.mock("@/server/qualiopi/adaptation/journal-consignation", () => ({
   lireCircuitAdaptation: (...a: unknown[]) => m.circuit!(...a),
 }));
-vi.mock("@/server/qualiopi/positionnement/precision-chiffree", () => ({
-  stagiairesAvecPrecisionChiffree: (...a: unknown[]) => m.precisions!(...a),
+vi.mock("@/server/qualiopi/positionnement/precision-presente", () => ({
+  stagiairesAvecPrecision: (...a: unknown[]) => m.precisions!(...a),
 }));
 vi.mock("@/server/qualiopi/kit-session/preparation", () => ({
   lirePreparation: (...a: unknown[]) => m.preparation!(...a),

@@ -46,12 +46,17 @@ const TRAINEE_ID = "44444444-4444-4444-4444-444444444444";
 let cleDisponible = true;
 
 /** Les refus d'écriture d'un détail de santé consignés au journal QUALITÉ. */
-function refusJournalises(): Array<{ targetId: string | null; changes: unknown }> {
-  return vi
-    .mocked(logQualiopiActivity)
-    .mock.calls.map((c) => c[0])
-    .filter((e) => e.action === "qualiopi.trainee.detail_sante.refuse")
-    .map((e) => ({ targetId: e.targetId ?? null, changes: e.changes }));
+function refusJournalises(): Array<{ targetId: string | null | undefined; changes: unknown }> {
+  return (
+    vi
+      .mocked(logQualiopiActivity)
+      .mock.calls.map((c) => c[0])
+      .filter((e) => e.action === "qualiopi.trainee.detail_sante.refuse")
+      // ⚠️ PAS de `?? null` ici : normaliser masquerait le retrait de
+      // `targetId: null`, et l'assertion dirait autre chose que ce qu'elle
+      // paraît dire. On compare ce qui est réellement passé.
+      .map((e) => ({ targetId: e.targetId, changes: e.changes }))
+  );
 }
 
 beforeEach(() => {
@@ -183,20 +188,41 @@ describe("🔴 refus d'un détail de santé — tôt, et consigné", () => {
       handicapDetails: "enc:v1:contenu piégé",
     });
 
-    // « Données invalides » = le SCHÉMA a tranché. Un autre message voudrait
-    // dire que la garde d'écriture a rattrapé au dernier moment.
-    expect(r).toEqual({ error: "Données invalides" });
+    // 🔴 Le message NOMME le champ. « Données invalides » — mot pour mot ce que
+    // rend un e-mail malformé — laisserait l'administrateur chercher.
+    expect("error" in r && r.error).toContain("précision sur la situation");
+    expect("error" in r && r.error, "l'administrateur ne sait pas si le reste est perdu").toContain(
+      "les autres sont intacts",
+    );
     expect(mockCreate).not.toHaveBeenCalled();
+
+    // 🔴 …et ce refus-là LAISSE UNE TRACE. C'est le seul cas qui ne peut pas
+    // venir d'un usage normal : le formulaire ne pré-remplit jamais ce champ.
+    expect(refusJournalises(), "un refus du schéma ne laissait aucune trace").toEqual([
+      { targetId: null, changes: { etape: "creation", motif: "saisie_refusee" } },
+    ]);
   });
 
-  it("🔴 modification : idem, et la fiche n'est pas touchée", async () => {
+  it("🔴 modification : idem, la fiche n'est pas touchée, et la cible est nommée", async () => {
     const r = await updateTraineeAction({
       id: TRAINEE_ID,
       handicapDetails: "enc:v1:contenu piégé",
     });
 
-    expect(r).toEqual({ error: "Données invalides" });
+    expect("error" in r && r.error).toContain("précision sur la situation");
     expect(mockUpdate).not.toHaveBeenCalled();
+    expect(refusJournalises()).toEqual([
+      { targetId: TRAINEE_ID, changes: { etape: "modification", motif: "saisie_refusee" } },
+    ]);
+  });
+
+  it("un autre champ invalide reste « Données invalides » et ne journalise RIEN", async () => {
+    // Sans ce cas, le nouveau message pourrait s'afficher pour n'importe quelle
+    // faute de saisie, et le journal se remplirait de refus sans rapport.
+    const r = await createTraineeAction({ nom: "X", prenom: "Y", email: "pas-un-email" } as never);
+
+    expect(r).toEqual({ error: "Données invalides" });
+    expect(refusJournalises()).toEqual([]);
   });
 
   it("🔴 chiffrement indisponible à la CRÉATION : refus consigné au journal qualité", async () => {
