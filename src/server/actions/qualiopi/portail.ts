@@ -6,7 +6,11 @@
  *   soumettreSatisfactionPortailAction : réutilise soumettreReponses T10 via cookie ;
  *                                   un « oui » au besoin d'adaptation chiffre le détail
  *                                   et alerte, SANS cocher situationHandicap (D4)
- *   declarerHandicapAction       : set situationHandicap + handicapDetailsChiffre (encryptPii)
+ *   declarerHandicapAction        : handicap / problème de santé → situationHandicap
+ *                                   + handicapDetailsChiffre (encryptPii)
+ *   declarerBesoinAmenagementAction : besoin d'aménagement SANS handicap → détail
+ *                                   chiffré + besoin porté par le positionnement,
+ *                                   SANS cocher situationHandicap (dette D2/D4)
  *   demanderExportRgpdAction      : crée demande RGPD type=export via cookie
  *   demanderSuppressionRgpdAction : crée demande RGPD type=suppression via cookie
  *
@@ -48,6 +52,7 @@ import { sendTelegram } from "@/lib/telegram";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { construireAlerteBesoinAdaptation } from "@/server/qualiopi/alertes/besoin-adaptation";
 import { journaliserDeclarationBesoin } from "@/server/qualiopi/adaptation/journal-declaration";
+import { inscrireBesoinSurPositionnements } from "@/server/qualiopi/adaptation/besoin-sans-handicap";
 import {
   CLE_BESOIN_ADAPTATION_REPONDU,
   MESSAGE_BESOIN_ADAPTATION_SANS_REPONSE,
@@ -367,17 +372,54 @@ async function signalerBesoinAdaptation(traineeId: string, detail: string): Prom
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// PORTAIL — declarerHandicapAction
+// PORTAIL — les DEUX déclarations de « mon compte »
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Déclare la situation de handicap depuis le portail stagiaire.
- * Chiffre le détail via encryptPii (jamais en clair en DB).
- * S'authentifie via le cookie portail.
+ * Déclare une SITUATION DE HANDICAP ou un PROBLÈME DE SANTÉ nécessitant une
+ * adaptation, depuis « mon compte ». Pose `Trainee.situationHandicap`.
+ *
+ * Le détail est chiffré (`encryptPii`, jamais en clair en base). Authentification
+ * par le cookie portail.
  */
 export async function declarerHandicapAction(input: {
   besoin: string;
 }): Promise<ActionResult<{ ok: boolean }>> {
+  return declarerDepuisMonCompte(input, "handicap");
+}
+
+/**
+ * Déclare un BESOIN D'AMÉNAGEMENT SANS handicap — matériel, rythme, accès,
+ * organisation — depuis « mon compte ». Ne pose PAS
+ * `Trainee.situationHandicap`.
+ *
+ * 🔴 Dette D2/D4 (relectures #1095, #1099, #1101). L'écran ne proposait qu'un
+ * seul bouton, dont le texte couvrait « handicap, trouble d'apprentissage,
+ * etc. », et son unique action cochait la case. Une pause plus longue ou un
+ * support agrandi faisaient donc qualifier la personne « en situation de
+ * handicap » — inexactitude et minimisation (RGPD art. 5) — et alimentaient le
+ * décompte handicap (ind. 20 et 26). #1101 avait fermé le même défaut sur le
+ * positionnement ; c'était le dernier chemin.
+ *
+ * 🔑 DEUX ENDPOINTS, une seule implémentation. Un unique endpoint qui recevrait
+ * la nature en paramètre rendrait possible qu'un formulaire en cache ou une
+ * valeur absente coche la case par défaut. Ici la case n'est pas atteignable
+ * depuis ce chemin : elle n'y est pas écrite. L'implémentation, elle, est
+ * partagée — un prédicat recopié diverge toujours.
+ */
+export async function declarerBesoinAmenagementAction(input: {
+  besoin: string;
+}): Promise<ActionResult<{ ok: boolean }>> {
+  return declarerDepuisMonCompte(input, "amenagement");
+}
+
+/** Ce que le bénéficiaire a voulu dire, et c'est lui qui le dit. */
+type NatureDeclaration = "handicap" | "amenagement";
+
+async function declarerDepuisMonCompte(
+  input: { besoin: string },
+  nature: NatureDeclaration,
+): Promise<ActionResult<{ ok: boolean }>> {
   const authResult = await resolveTraineeIdFromCookie();
   if ("error" in authResult) return { error: authResult.error };
 
@@ -390,11 +432,45 @@ export async function declarerHandicapAction(input: {
   const trainee = await prisma.trainee.update({
     where: { id: authResult.traineeId },
     data: {
-      situationHandicap: true,
+      // La case n'est posée QUE par la déclaration de handicap ou de problème
+      // de santé. Un besoin d'aménagement ne la voit jamais.
+      ...(nature === "handicap" ? { situationHandicap: true } : {}),
       handicapDetailsChiffre,
     },
     select: { id: true, prenom: true, nom: true },
   });
+
+  // Sans la case, le besoin doit être porté par ce que les lecteurs de
+  // l'indicateur 10 et l'espace formateur lisent déjà : le positionnement
+  // répondu des inscriptions en cours (`besoin-sans-handicap.ts`). ATTENDU —
+  // c'est la PERSISTANCE de la déclaration, pas une notification.
+  if (nature === "amenagement") {
+    try {
+      const marquees = await inscrireBesoinSurPositionnements({
+        traineeId: trainee.id,
+        declareLe,
+      });
+      if (marquees === 0) {
+        // ⛔ Le trou connu : aucune inscription en cours dont le positionnement
+        // soit répondu. L'alerte et le journal partent quand même, mais le
+        // besoin ne compte pas encore au dénominateur de l'indicateur 10. Il se
+        // dit, il ne se tait pas.
+        Sentry.captureMessage(
+          "besoin d'aménagement déclaré sans positionnement répondu pour le porter",
+          {
+            level: "warning",
+            tags: { service: "declarerBesoinAmenagementAction" },
+            extra: { traineeId: trainee.id },
+          },
+        );
+      }
+    } catch (err) {
+      Sentry.captureException(err, {
+        tags: { service: "declarerBesoinAmenagementAction", etape: "positionnements" },
+        extra: { traineeId: trainee.id },
+      });
+    }
+  }
 
   // 🔴 PERSONNE N'ÉTAIT PRÉVENU (corrigé le 2026-08-04).
   //
@@ -429,7 +505,7 @@ export async function declarerHandicapAction(input: {
   // trace de la déclaration, pas une notification — et elle est fail-soft.
   await journaliserDeclarationBesoin({
     traineeId: trainee.id,
-    origine: "portail_mon_compte",
+    origine: nature === "handicap" ? "portail_mon_compte" : "portail_mon_compte_amenagement",
     declareLe,
   });
 
@@ -447,10 +523,18 @@ export async function declarerHandicapAction(input: {
 
   // 2. Le message Telegram — utile pour être prévenu hors console, mais il ne
   // remplace pas l'alerte : Will peut ne pas le lire, et rien ne l'y ramène.
+  //
+  // ⚠️ La NATURE se dit, et elle n'est pas le détail : « situation de handicap
+  // ou problème de santé » vs « aménagement, sans handicap déclaré ». Sans elle,
+  // le même message annoncerait deux choses différentes, et la personne qui lit
+  // supposerait la première — ce que tout ce correctif cesse de faire.
   void sendTelegram({
     tag: "ADAPTATION_DECLAREE",
     body:
-      `♿ ${trainee.prenom} ${trainee.nom} a déclaré un besoin d'adaptation.\n` +
+      `♿ ${trainee.prenom} ${trainee.nom} a déclaré ` +
+      (nature === "handicap"
+        ? `une situation de handicap ou un problème de santé nécessitant une adaptation.\n`
+        : `un besoin d'aménagement, SANS déclarer de situation de handicap.\n`) +
       `Le détail est chiffré : le lire depuis sa fiche stagiaire dans la console.`,
   }).catch(() => {});
 

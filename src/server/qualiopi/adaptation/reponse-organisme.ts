@@ -356,4 +356,15 @@ export function derniereDeclarationPourInscription(input: {
  */
 export const ACTION_JOURNAL_DECLARATION_BESOIN = "qualiopi.trainee.besoin_adaptation.declare";
 
-export type OrigineDeclarationBesoin = "portail_positionnement" | "portail_mon_compte" | "console";
+/**
+ * D'où vient le geste. `portail_mon_compte` = déclaration d'une situation de
+ * handicap ou d'un problème de santé (elle coche `Trainee.situationHandicap`) ;
+ * `portail_mon_compte_amenagement` = besoin d'aménagement SANS handicap (elle ne
+ * la coche pas — cf. `besoin-sans-handicap.ts`).
+ *
+ * ⚠️ Écrite seulement, jamais relue à ce jour : `lireCircuitAdaptation` ne
+ * sélectionne que `targetId` et `createdAt`. Ajouter une valeur est donc sans
+ * risque pour la fenêtre où le worker et l'app tournent deux versions.
+ */
+export type OrigineDeclarationBesoin =
+  "portail_positionnement" | "portail_mon_compte" | "portail_mon_compte_amenagement" | "console";

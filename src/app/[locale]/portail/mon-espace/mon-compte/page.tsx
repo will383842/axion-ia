@@ -15,9 +15,10 @@
 
 import { Accessibility, DatabaseZap } from "lucide-react";
 
-import { HandicapDeclarationForm } from "@/components/portail/HandicapDeclarationForm";
+import { DeclarationBesoinAdaptationForm } from "@/components/portail/DeclarationBesoinAdaptationForm";
 import { RgpdActions } from "@/components/portail/RgpdActions";
 import {
+  declarerBesoinAmenagementAction,
   declarerHandicapAction,
   demanderExportRgpdAction,
   demanderSuppressionRgpdAction,
@@ -56,14 +57,15 @@ export default async function MonComptePage({ params }: PageProps) {
                   Besoin d’une adaptation
                 </h2>
                 <p className="text-fg-soft mt-1 text-sm leading-relaxed">
-                  Si une situation particulière nécessite un aménagement — salle, rythme, supports,
-                  matériel — dites-le nous. Nous en tiendrons compte avant la formation.
+                  Salle, rythme, supports, matériel : dites-nous ce dont vous avez besoin. Nous en
+                  tiendrons compte avant la formation, que ce besoin soit lié ou non à un handicap.
                 </p>
               </div>
             </div>
-            <HandicapDeclarationForm
+            <DeclarationBesoinAdaptationForm
               situationDeclaree={espace.situationHandicap.declaree}
               declarerHandicapAction={declarerHandicapAction}
+              declarerBesoinAmenagementAction={declarerBesoinAmenagementAction}
             />
           </section>
 
