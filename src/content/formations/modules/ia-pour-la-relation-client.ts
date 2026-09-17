@@ -181,7 +181,7 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
           {
             question: "On est notés ?",
             reponse:
-              "Pas ici. L'évaluation des acquis se tient en fin de journée, sur dix questions et trois productions. Ceci sert à repérer ce qui coince pendant qu'on peut encore le corriger.",
+              "Pas ici. L'évaluation des acquis se tient en fin de journée, sur la grille individuelle et trois productions. Ceci sert à repérer ce qui coince pendant qu'on peut encore le corriger.",
           },
         ],
         blocages: [
@@ -610,16 +610,16 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Deux contrôles. Le premier, croisé : deux fiches par binôme passées à la grille — motif unique, réponse exacte et vérifiable, date de revue renseignée, propriétaire nommé. Le second, l'évaluation des acquis : quiz individuel de dix questions corrigé en salle, puis notation sur grille de trois productions du jour — une réponse type, une réclamation traitée, une fiche de base de connaissances.",
+        "Deux contrôles. Le premier, croisé : deux fiches par binôme passées à la grille — motif unique, réponse exacte et vérifiable, date de revue renseignée, propriétaire nommé. Le second, l'évaluation des acquis : grille d'évaluation individuelle renseignée et commentée en salle, appuyée sur trois productions du jour — une réponse type, une réclamation traitée, une fiche de base de connaissances.",
       reponseAttendue:
-        "Sur les fiches, les quatre cases cochées ou l'écart nommé ; le corrigé montre les trois défauts qui reviennent — deux motifs dans une même fiche, une date de revue au conditionnel, un propriétaire écrit « le support ». Sur l'évaluation, le corrigé est commenté question par question sans en passer aucune, et la grille de notation est remplie pour chaque stagiaire. Le seuil de réussite est celui déclaré au programme ; un score en dessous déclenche la reprise individuelle prévue au dispositif.",
+        "Sur les fiches, les quatre cases cochées ou l'écart nommé ; la reprise en salle montre les trois défauts qui reviennent — deux motifs dans une même fiche, une date de revue au conditionnel, un propriétaire écrit « le support ». Sur l'évaluation, la grille est renseignée pour chaque stagiaire et commentée item par item sans en passer aucun : chaque objectif de la journée y est marqué atteint ou non atteint, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif.",
       dureeMin: 25,
       notes: {
         script:
-          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se corrige, elle se conserve. Ne la sacrifiez jamais au temps qui manque — c'est la première chose qu'un auditeur demande. Si vous êtes en retard, coupez sur le contrôle croisé des fiches, pas sur le quiz. Sur la notation des trois productions, notez pendant l'atelier précédent et pas après : à 17 h vous n'aurez plus le temps, et une grille remplie de mémoire ne vaut rien.",
+          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se commente, elle se conserve. Ne la sacrifiez jamais au temps qui manque — c'est la première chose qu'un auditeur demande. Si vous êtes en retard, coupez sur le contrôle croisé des fiches, pas sur la grille d'évaluation. Renseignez-la en regardant les trois productions pendant l'atelier précédent, et pas après : à 17 h vous n'aurez plus le temps, et une grille remplie de mémoire ne vaut rien.",
         faq: [
           {
-            question: "Ma note va être transmise à mon responsable ?",
+            question: "Mon évaluation va être transmise à mon responsable ?",
             reponse:
               "Le résultat individuel ne l'est pas. Ce qui est transmis, c'est l'attestation de fin de formation et le fait que l'évaluation a eu lieu.",
           },
@@ -631,9 +631,9 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
         ],
         blocages: [
           {
-            situation: "Il est 17 h 10 et le quiz n'est pas commencé.",
+            situation: "Il est 17 h 10 et la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en réduisant le commentaire du corrigé aux trois questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
+              "La tenir quand même, en réduisant le commentaire aux trois items les moins bien tenus. On ne remplace jamais l'évaluation par un tour de table.",
           },
           {
             situation: "Les binômes valident toutes les fiches sans relever un seul écart.",
@@ -642,7 +642,7 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quiz papier et corrigé imprimés dans le kit, grille de notation imprimée. Aucune dépendance à un outil.",
+          "Grilles d'évaluation vierges imprimées dans le kit, grille de contrôle des fiches imprimée. Aucune dépendance à un outil.",
       },
     },
     synthese: {

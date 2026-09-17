@@ -510,7 +510,7 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
       // Le retour sur l'historique du jour se reporte en bas de la fiche « le
       // régime de mon poste », qui sort ainsi datée et complétée (obj-1) ; le
       // manuel porte en outre la page « régimes, ligne rouge et à qui la
-      // question remonte », reprise au quiz de fin (obj-3).
+      // question remonte », reprise à la grille d'évaluation de fin (obj-3).
       objectifsSecondairesIds: ["obj-1", "obj-3"],
       dureeMin: 5,
       notes: {
@@ -599,13 +599,13 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Validation des acquis : quiz individuel de dix questions, corrigé en salle question par question — les trois régimes, les quatre traces, la ligne rouge du soin, les renvois de page, à qui remonte le doute. Puis passage de votre production du jour à la grille de critères, chacun notant les points à reprendre sur sa fiche-procédure.",
+        "Validation des acquis : grille d'évaluation individuelle, renseignée et commentée en salle item par item — les trois régimes, les quatre traces, la ligne rouge du soin, les renvois de page, à qui remonte le doute. Puis passage de votre production du jour à la grille de critères, chacun notant les points à reprendre sur sa fiche-procédure.",
       reponseAttendue:
-        "Le corrigé est commenté question par question, sans en passer aucune. Le seuil de réussite est celui déclaré au programme ; un score en dessous déclenche la reprise individuelle prévue au dispositif. Les points à reprendre se notent sur la fiche-procédure elle-même — c'est elle qui vit après la journée.",
+        "La grille est commentée item par item, sans en passer aucun : chaque objectif de la journée y est marqué atteint ou non atteint, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif. Les points à reprendre se notent sur la fiche-procédure elle-même — c'est elle qui vit après la journée.",
       dureeMin: 20,
       notes: {
         script:
-          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, se corrige et se conserve — ne la sacrifiez jamais au temps qui manque ; si vous êtes en retard, coupez ailleurs. Deux questions du quiz portent sur la ligne rouge — données de patients, usages de soin : si l'une des deux est ratée par plusieurs personnes, reprenez-la en entier. C'est la seule erreur de la journée qui ne pardonne pas dehors.",
+          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, se commente et se conserve — ne la sacrifiez jamais au temps qui manque ; si vous êtes en retard, coupez ailleurs. Deux items de la grille portent sur la ligne rouge — données de patients, usages de soin : si l'un des deux n'est pas atteint chez plusieurs personnes, reprenez-le en entier devant toute la salle. C'est la seule erreur de la journée qui ne pardonne pas dehors.",
         faq: [
           {
             question: "Mon résultat sera transmis à mon employeur ?",
@@ -615,12 +615,12 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
         ],
         blocages: [
           {
-            situation: "Il est 17 h 10 et le quiz n'est pas commencé.",
+            situation: "Il est 17 h 10 et la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
+              "La tenir quand même, en réduisant le commentaire aux items les moins bien tenus. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
-        planB: "Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil.",
+        planB: "Grilles d'évaluation vierges imprimées dans le kit. Aucune dépendance à un outil.",
       },
     },
     synthese: {

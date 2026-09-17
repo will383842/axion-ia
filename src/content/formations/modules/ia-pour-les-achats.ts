@@ -588,29 +588,29 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Évaluation des acquis : quiz individuel de dix questions, corrigé en salle question par question. Puis évaluation croisée du dossier d'arbitrage sur la grille du kit — critères posés, totaux recalculés, questions au fournisseur, liste rouge respectée, aucune donnée interdite soumise.",
+        "Évaluation des acquis : grille d'évaluation individuelle, renseignée et commentée en salle item par item. Puis évaluation croisée du dossier d'arbitrage sur la grille du kit — critères posés, totaux recalculés, questions au fournisseur, liste rouge respectée, aucune donnée interdite soumise.",
       reponseAttendue:
-        "Le corrigé est commenté question par question, sans en passer aucune. Le seuil de réussite est celui déclaré au programme ; un score en dessous déclenche la reprise individuelle prévue au dispositif. Sur la grille croisée, chaque case non cochée se corrige séance tenante — le dossier part complet ou ne part pas.",
+        "La grille individuelle est commentée item par item, sans en passer aucun : chaque objectif de la journée y est marqué atteint ou non atteint, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif. Sur la grille croisée, chaque case non cochée se corrige séance tenante — le dossier part complet ou ne part pas.",
       dureeMin: 15,
       notes: {
         script:
-          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se corrige, et elle se conserve. Ne la sacrifiez jamais au temps qui manque — c'est la première chose qu'un auditeur demande. Si vous êtes en retard, coupez ailleurs. L'évaluation croisée du dossier se fait grille en main, case par case, sans complaisance : chaque binôme doit pouvoir dire ce qui manque chez l'autre.",
+          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se commente, et elle se conserve. Ne la sacrifiez jamais au temps qui manque — c'est la première chose qu'un auditeur demande. Si vous êtes en retard, coupez ailleurs. L'évaluation croisée du dossier se fait grille en main, case par case, sans complaisance : chaque binôme doit pouvoir dire ce qui manque chez l'autre.",
         faq: [
           {
-            question: "Le résultat du quiz va être transmis à mon employeur ?",
+            question: "Le résultat de mon évaluation va être transmis à mon employeur ?",
             reponse:
               "Le résultat individuel ne l'est pas. Ce qui est transmis, c'est l'attestation de fin de formation et le fait que l'évaluation a eu lieu.",
           },
         ],
         blocages: [
           {
-            situation: "Il est 17 h 15 et le quiz n'est pas commencé.",
+            situation: "Il est 17 h 15 et la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
+              "La tenir quand même, en réduisant le commentaire aux items les moins bien tenus. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
         planB:
-          "Quiz papier et corrigé imprimés dans le kit, grille croisée imprimée. Aucune dépendance à un outil.",
+          "Grilles d'évaluation vierges imprimées dans le kit, grille croisée imprimée. Aucune dépendance à un outil.",
       },
     },
     synthese: {

@@ -499,22 +499,22 @@ export const IA_POUR_LES_EQUIPES: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Évaluation des acquis : quiz individuel de dix questions corrigé en salle, puis relecture croisée d'une production du jour à la grille commune — exactitude, ton, mentions dues, réutilisabilité.",
+        "Évaluation des acquis : grille d'évaluation individuelle renseignée et commentée en salle, puis relecture croisée d'une production du jour à la grille commune — exactitude, ton, mentions dues, réutilisabilité.",
       reponseAttendue:
-        "Le corrigé est commenté question par question, sans en sauter. La relecture croisée se fait sur la grille que l'équipe vient d'écrire — c'est son premier usage réel.",
+        "La grille d'évaluation est commentée item par item, sans en sauter : chaque objectif de la journée y est marqué atteint ou non atteint, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif. La relecture croisée se fait ensuite sur la grille commune que l'équipe vient d'écrire — c'est son premier usage réel.",
       dureeMin: 15,
       notes: {
         script:
-          "L'évaluation des acquis se tient, se corrige et se conserve : c'est la première pièce qu'un auditeur demande. Si vous êtes en retard, coupez ailleurs — jamais ici.",
+          "L'évaluation des acquis se tient, se commente et se conserve : c'est la première pièce qu'un auditeur demande. Si vous êtes en retard, coupez ailleurs — jamais ici.",
         faq: [],
         blocages: [
           {
-            situation: "Il est 17 h 15 et le quiz n'est pas commencé.",
+            situation: "Il est 17 h 15 et la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en réduisant le commentaire aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
+              "La tenir quand même, en réduisant le commentaire aux items les moins bien tenus. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
-        planB: "Quiz et corrigé imprimés dans le kit.",
+        planB: "Grilles d'évaluation vierges imprimées dans le kit.",
       },
     },
     synthese: {

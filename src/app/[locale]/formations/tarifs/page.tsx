@@ -231,7 +231,7 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
               "Pratique sur vos vraies tâches et documents (anonymisés)",
               "Des méthodes et des prompts immédiatement applicables",
               "Supports et fiches pratiques remis à chaque participant",
-              "Quiz de validation des acquis et attestation de fin de formation",
+              "Grille d'évaluation individuelle des acquis et attestation de fin de formation",
               "Aucune préparation requise de votre côté",
               "Présentiel dans vos locaux ou distanciel, au choix",
               "Formations de 2 jours scindables en 2×1 jour, sans surcoût",

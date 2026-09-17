@@ -610,28 +610,28 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Validation des acquis : quiz individuel de dix questions, corrigé en salle question par question. Puis passage de votre propre production du jour à la grille de critères fournie — mentions obligatoires présentes, caractéristiques prouvées par la fiche technique, rien de personnel publié.",
+        "Validation des acquis : grille d'évaluation individuelle, renseignée et commentée en salle item par item. Puis passage de votre propre production du jour à la grille de critères fournie — mentions obligatoires présentes, caractéristiques prouvées par la fiche technique, rien de personnel publié.",
       reponseAttendue:
-        "Le corrigé est commenté question par question, sans en passer aucune. Le seuil de réussite est celui déclaré au programme ; un score en dessous déclenche la reprise individuelle prévue au dispositif.",
+        "La grille est commentée item par item, sans en passer aucun : chaque objectif de la journée y est marqué atteint ou non atteint, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif.",
       dureeMin: 20,
       notes: {
         script:
-          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se corrige, et elle se conserve. Ne la sacrifiez jamais au temps qui manque — si vous êtes en retard, coupez ailleurs. Le passage à la grille se fait ensuite, chacun sur SA production : c'est lui qui relie le quiz au geste réel.",
+          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se commente, et elle se conserve. Ne la sacrifiez jamais au temps qui manque — si vous êtes en retard, coupez ailleurs. Le passage à la grille de critères se fait ensuite, chacun sur SA production : c'est lui qui relie l'évaluation au geste réel.",
         faq: [
           {
-            question: "Le résultat du quiz sera transmis à mon employeur ?",
+            question: "Le résultat de mon évaluation sera transmis à mon employeur ?",
             reponse:
               "Le résultat individuel ne l'est pas. Ce qui est transmis, c'est l'attestation de fin de formation et le fait que l'évaluation a eu lieu.",
           },
         ],
         blocages: [
           {
-            situation: "Il est 17 h 15 et le quiz n'est pas commencé.",
+            situation: "Il est 17 h 15 et la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
+              "La tenir quand même, en réduisant le commentaire aux items les moins bien tenus. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
-        planB: "Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil.",
+        planB: "Grilles d'évaluation vierges imprimées dans le kit. Aucune dépendance à un outil.",
       },
     },
     synthese: {

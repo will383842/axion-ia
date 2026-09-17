@@ -351,16 +351,51 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
 
               {/* 2. Modalités d&apos;évaluation */}
               <SectionBlock title="Modalités d'évaluation">
+                {/*
+                  ⚠️ 2026-09-17 — DEUX DISPOSITIFS DISTINCTS, NE PAS LES CONFONDRE.
+
+                  Le POSITIONNEMENT en amont existe réellement : questionnaire
+                  répondu par la stagiaire de la session du 05/09 à 08:14, pièce
+                  AXI-DOC-2026-034. Il est conservé, et nommé « questionnaire » —
+                  jamais « quiz », terme que le PDF du programme n'emploie pas non
+                  plus et qui rouvrirait la question qu'on vient de fermer.
+
+                  L'ÉVALUATION DES ACQUIS, elle, était annoncée sous forme de quiz
+                  individuel de dix questions. Cette FORME n'a jamais existé :
+                  mesuré en production le 17/09, aucune formation ne porte une
+                  seule question ni un seul corrigé, et le dirigeant l'a confirmé
+                  le même jour. Elle est décrite ci-dessous sous sa forme réelle,
+                  la grille d'évaluation individuelle (pièce AXI-DOC-2026-041).
+
+                  ⛔ Le « Seuil de réussite » affiché plus bas n'est PAS concerné :
+                  il est réellement appliqué. Voir le commentaire qui le précède
+                  avant d'y toucher.
+                */}
                 <p className="text-fg-soft text-[15px] leading-relaxed">
                   L&apos;acquisition des compétences est évaluée tout au long de la formation par
-                  des exercices pratiques et une évaluation formative continue. Un quiz de
-                  positionnement est réalisé en amont. Une évaluation à chaud est conduite à
-                  l&apos;issue de la formation.
+                  des exercices pratiques et une évaluation formative continue. Un questionnaire de
+                  positionnement est réalisé en amont. En fin de parcours, une grille
+                  d&apos;évaluation individuelle est renseignée et commentée en salle. Une
+                  évaluation à chaud est conduite à l&apos;issue de la formation.
                 </p>
                 <p className="text-fg-soft mt-3 text-[15px] leading-relaxed">
                   Une <strong className="text-fg font-semibold">attestation de formation</strong>{" "}
                   est délivrée à l&apos;issue du parcours. {LEGAL_MENTIONS.attestation}
                 </p>
+                {/*
+                  ⚠️ 2026-09-17 — CE SEUIL EST VRAI. Il avait été retiré quelques
+                  heures plus tôt, par excès de correction, en même temps que la
+                  promesse de quiz. C'était une erreur : le seuil est RÉELLEMENT
+                  appliqué. `evaluations-service.ts` lit `seuil_reussite_pct` en
+                  configuration et `scoring.ts` en déduit la réussite. Vérifié en
+                  production le 17/09 sur la session du 05/09 : évaluation finale
+                  18/18 (100 %), `reussite = true`, compétences notées une à une
+                  et reprises sur l'attestation.
+
+                  🔑 Ce qui n'existait pas, c'était le QUIZ — la forme. Le
+                  dispositif d'évaluation, lui, fonctionne. Ne pas confondre une
+                  promesse sans objet avec une promesse tenue autrement.
+                */}
                 <p className="text-fg-muted mt-3 text-[13px] leading-snug">
                   Seuil de réussite : {f.seuilReussitePct} %
                   {f.ratioPratiquePct != null

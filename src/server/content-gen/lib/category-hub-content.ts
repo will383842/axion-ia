@@ -170,7 +170,7 @@ const CATALOG: Catalog = {
           // une vraie requête utilisateur — mieux vaut la trancher que la fuir.
           question: "Le coaching 1-to-1 est-il finançable (OPCO) ?",
           answer:
-            "Non. Le coaching 1-to-1 est une prestation de conseil, pas une action de formation : pas de programme pédagogique imposé, pas de QCM, pas d'attestation — et donc pas de prise en charge OPCO. C'est aussi ce qui lui permet de rester entièrement centré sur votre poste et vos cas réels. Si le financement est un critère décisif pour vous, parlez-en lors de l'échange de cadrage : d'autres formats s'inscrivent dans un cadre différent.",
+            "Non. Le coaching 1-to-1 est une prestation de conseil, pas une action de formation : pas de programme pédagogique imposé, pas d'évaluation des acquis, pas d'attestation — et donc pas de prise en charge OPCO. C'est aussi ce qui lui permet de rester entièrement centré sur votre poste et vos cas réels. Si le financement est un critère décisif pour vous, parlez-en lors de l'échange de cadrage : d'autres formats s'inscrivent dans un cadre différent.",
         },
         {
           question: "Faut-il des connaissances techniques ?",
@@ -213,7 +213,7 @@ const CATALOG: Catalog = {
           // Miroir EN de la réécriture 2026-08-10 (cf. bloc FR ci-dessus).
           question: "Can 1-to-1 coaching be funded?",
           answer:
-            "No. 1-to-1 coaching is a consulting service, not a training action: no imposed syllabus, no quiz, no certificate — and therefore no third-party funding. That is also what keeps it entirely focused on your actual role and real cases. If funding is a decisive criterion for you, raise it during the scoping call: other formats fall under a different framework.",
+            "No. 1-to-1 coaching is a consulting service, not a training action: no imposed syllabus, no assessment of learning outcomes, no certificate — and therefore no third-party funding. That is also what keeps it entirely focused on your actual role and real cases. If funding is a decisive criterion for you, raise it during the scoping call: other formats fall under a different framework.",
         },
         {
           question: "Do I need technical skills?",

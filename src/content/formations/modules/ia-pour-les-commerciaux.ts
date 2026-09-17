@@ -193,7 +193,7 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
           {
             question: "On est noté ? Ça compte pour l'attestation ?",
             reponse:
-              "Pas ici. L'évaluation des acquis est en fin d'après-midi, sur dix questions. Ceci sert à repérer ce qui coince pendant qu'on peut encore le corriger.",
+              "Pas ici. L'évaluation des acquis est en fin d'après-midi, sur la grille individuelle. Ceci sert à repérer ce qui coince pendant qu'on peut encore le corriger.",
           },
           {
             question: "Mon binôme n'a rien barré, ma fiche est donc bonne.",
@@ -597,7 +597,7 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
           {
             situation: "La salle, en fin de journée, réclame de « finir plus tôt ».",
             parade:
-              "Annoncer le programme du module en trois livrables datés — la grille, le quiz, la feuille de route — et rappeler que c'est le module qui décide de ce qui survivra à la journée. Ne rien couper ici.",
+              "Annoncer le programme du module en trois livrables datés — la grille de relecture, l'évaluation des acquis, la feuille de route — et rappeler que c'est le module qui décide de ce qui survivra à la journée. Ne rien couper ici.",
           },
         ],
         planB: "Aucun outil en jeu.",
@@ -672,33 +672,33 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Évaluation des acquis : quiz individuel de dix questions corrigé en salle question par question, suivi de l'auto-évaluation d'une production du jour sur la grille de relecture que chacun vient de construire.",
+        "Évaluation des acquis : grille d'évaluation individuelle renseignée et commentée en salle item par item, suivie de l'auto-évaluation d'une production du jour sur la grille de relecture que chacun vient de construire.",
       reponseAttendue:
-        "Le corrigé est commenté question par question, sans en sauter aucune, et chaque participant passe sa grille sur une de ses productions du jour. Le seuil de réussite est celui déclaré au programme ; un score en dessous déclenche la reprise individuelle prévue au dispositif.",
+        "La grille d'évaluation est commentée item par item, sans en sauter aucun, et chaque participant passe ensuite sa grille de relecture sur une de ses productions du jour. Chaque objectif de la journée est marqué atteint ou non atteint, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif.",
       dureeMin: 15,
       notes: {
         script:
-          "Le quiz est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se corrige, elle se conserve. Ne la sacrifiez jamais au temps qui manque — c'est la première chose qu'un auditeur demande. Si vous êtes en retard, coupez ailleurs, jamais ici. L'auto-évaluation sur la grille vient APRÈS le quiz : elle montre que la grille sert dès aujourd'hui, pas « à partir de lundi ».",
+          "Cette grille est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se commente, elle se conserve. Ne la sacrifiez jamais au temps qui manque — c'est la première chose qu'un auditeur demande. Si vous êtes en retard, coupez ailleurs, jamais ici. L'auto-évaluation sur la grille de relecture vient APRÈS : elle montre que cette grille-là sert dès aujourd'hui, pas « à partir de lundi ».",
         faq: [
           {
-            question: "Le résultat du quiz part chez mon directeur commercial ?",
+            question: "Le résultat de mon évaluation part chez mon directeur commercial ?",
             reponse:
               "Le résultat individuel, non. Ce qui est transmis, c'est l'attestation de fin de formation et le fait que l'évaluation a eu lieu.",
           },
         ],
         blocages: [
           {
-            situation: "Il est 17 h 10 et le quiz n'a pas commencé.",
+            situation: "Il est 17 h 10 et la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en réduisant le commentaire du corrigé aux trois questions les plus ratées. On ne remplace jamais l'évaluation des acquis par un tour de table.",
+              "La tenir quand même, en réduisant le commentaire aux trois items les moins bien tenus. On ne remplace jamais l'évaluation des acquis par un tour de table.",
           },
           {
-            situation: "Un participant conteste la réponse attendue d'une question du quiz.",
+            situation: "Un participant conteste l'appréciation portée sur un item de sa grille.",
             parade:
-              "Noter la contestation, donner la réponse du corrigé, poursuivre. La question se rediscute à la pause, pas devant la salle.",
+              "Noter la contestation sur la grille elle-même, redire le critère tel qu'il est écrit, poursuivre. Le désaccord se rediscute à la pause, pas devant la salle.",
           },
         ],
-        planB: "Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil.",
+        planB: "Grilles d'évaluation vierges imprimées dans le kit. Aucune dépendance à un outil.",
       },
     },
     synthese: {

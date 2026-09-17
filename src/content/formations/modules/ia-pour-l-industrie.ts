@@ -24,7 +24,8 @@
  * l'interdit le plus fort des deux jours, et il s'enseigne comme tel : une
  * erreur ici ne coûte pas un audit, elle blesse quelqu'un. La règle est posée
  * au module 3 AVANT que quiconque ouvre un document, elle est reprise au
- * module 7 dans la procédure d'usage, et elle est évaluée au quiz du module 8.
+ * module 7 dans la procédure d'usage, et elle est évaluée à la grille du
+ * module 8.
  *
  * **Le secret industriel ne sort pas.** Plans et nomenclatures, paramètres et
  * gammes de fabrication, formulations, prix de revient, cahiers des charges et
@@ -201,7 +202,7 @@ export const IA_POUR_L_INDUSTRIE: EnrichissementFormation = [
           {
             question: "On note ? C'est l'examen ?",
             reponse:
-              "Non. L'évaluation des acquis se tient demain après-midi, dix questions. Ceci sert à repérer ce qui coince pendant qu'on peut encore le corriger.",
+              "Non. L'évaluation des acquis se tient demain après-midi, sur la grille individuelle. Ceci sert à repérer ce qui coince pendant qu'on peut encore le corriger.",
           },
         ],
         blocages: [
@@ -1185,8 +1186,9 @@ export const IA_POUR_L_INDUSTRIE: EnrichissementFormation = [
 
   // ───────────────────────────────────────────────────────────────────────────
   // Module 8 — Évaluation, revue des productions et feuille de route (A-m J2)
-  // ⚠️ Le catalogue place la VÉRIFICATION (quiz) AVANT les deux séquences de
-  //    pratique : cet ordre est délibéré, il empêche l'évaluation de sauter.
+  // ⚠️ Le catalogue place la VÉRIFICATION (grille d'évaluation) AVANT les
+  //    deux séquences de pratique : cet ordre est délibéré, il empêche
+  //    l'évaluation de sauter.
   // ───────────────────────────────────────────────────────────────────────────
   {
     moduleId: "mod-8",
@@ -1292,13 +1294,13 @@ export const IA_POUR_L_INDUSTRIE: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Évaluation des acquis : quiz individuel de dix questions couvrant les trois régimes d'usage, la liste rouge du site, la règle de revalidation des écrits à portée sécurité, la vérification aux sources et la qualification des dispositifs de suivi. Correction commentée en salle, question par question.",
+        "Évaluation des acquis : grille d'évaluation individuelle couvrant les trois régimes d'usage, la liste rouge du site, la règle de revalidation des écrits à portée sécurité, la vérification aux sources et la qualification des dispositifs de suivi. Renseignée puis commentée en salle, item par item.",
       reponseAttendue:
-        "Le corrigé est repris question par question, sans en passer aucune. Si le temps manque, les questions portant sur les écrits à portée sécurité et sur la qualification des suivis sont commentées en premier. Le seuil de réussite est celui déclaré au programme ; en dessous, la reprise individuelle prévue au dispositif est déclenchée.",
+        "La grille est reprise item par item, sans en passer aucun. Si le temps manque, les items portant sur les écrits à portée sécurité et sur la qualification des suivis sont commentés en premier. Chaque objectif des deux jours y est marqué atteint ou non atteint ; ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif.",
       dureeMin: 20,
       notes: {
         script:
-          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se corrige, elle se conserve. Ne la sacrifiez jamais au temps qui manque — si vous êtes en retard, coupez dans la revue des productions, pas ici. Dix minutes de réponse en silence, dix minutes de correction commentée. Ramassez les copies : c'est une pièce du dossier de la session.",
+          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se commente, elle se conserve. Ne la sacrifiez jamais au temps qui manque — si vous êtes en retard, coupez dans la revue des productions, pas ici. Dix minutes pour renseigner la grille, dix minutes pour la commenter. Ramassez les grilles : c'est une pièce du dossier de la session.",
         faq: [
           {
             question: "Le résultat part chez mon employeur ?",
@@ -1306,20 +1308,20 @@ export const IA_POUR_L_INDUSTRIE: EnrichissementFormation = [
               "Le résultat individuel, non. Ce qui est transmis, c'est l'attestation de fin de formation et le fait que l'évaluation a eu lieu.",
           },
           {
-            question: "Une question porte sur un cas qui me concerne vraiment chez nous.",
+            question: "Un item porte sur un cas qui me concerne vraiment chez nous.",
             reponse:
-              "Notez-la à part : je ne me prononce pas sur votre cas, votre référent QSE tranchera. Le quiz porte sur la règle, pas sur votre site.",
+              "Notez-le à part : je ne me prononce pas sur votre cas, votre référent QSE tranchera. La grille porte sur la règle, pas sur votre site.",
           },
         ],
         blocages: [
           {
-            situation: "Il est 16 h 40 et le quiz n'est pas commencé.",
+            situation: "Il est 16 h 40 et la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en réduisant le commentaire aux trois questions les plus ratées. On ne remplace jamais l'évaluation des acquis par un tour de table.",
+              "La tenir quand même, en réduisant le commentaire aux trois items les moins bien tenus. On ne remplace jamais l'évaluation des acquis par un tour de table.",
           },
         ],
         planB:
-          "Quiz et corrigé sont imprimés dans le kit — c'est d'ailleurs la version normale : le quiz se tient sur papier et aucun outil n'est en jeu.",
+          "Les grilles d'évaluation sont imprimées dans le kit — c'est d'ailleurs la version normale : la grille se renseigne sur papier et aucun outil n'est en jeu.",
       },
     },
     synthese: {

@@ -501,7 +501,8 @@ export const IA_POUR_L_IMMOBILIER: EnrichissementFormation = [
       // La checklist portée par chaque trame reprend les deux gestes du matin
       // et les rend transmissibles à toute l'agence : les pièces sources d'où
       // chaque chiffre se recopie (obj-2) et le vocabulaire d'occupant à
-      // traquer avant diffusion (obj-3) — tous deux repris au quiz de fin.
+      // traquer avant diffusion (obj-3) — tous deux repris à la grille
+      // d'évaluation de fin.
       objectifsSecondairesIds: ["obj-2", "obj-3"],
       dureeMin: 5,
       notes: {
@@ -580,28 +581,28 @@ export const IA_POUR_L_IMMOBILIER: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Validation des acquis : quiz individuel de dix questions, corrigé en salle question par question. Puis chacun passe SA production de la journée à la grille de critères fournie — mentions obligatoires, chiffres sourcés, vocabulaire d'occupant, données personnelles, ton de l'agence.",
+        "Validation des acquis : grille d'évaluation individuelle, renseignée et commentée en salle item par item. Puis chacun passe SA production de la journée à la grille de critères fournie — mentions obligatoires, chiffres sourcés, vocabulaire d'occupant, données personnelles, ton de l'agence.",
       reponseAttendue:
-        "Le corrigé est commenté question par question, sans en sauter. Le seuil de réussite est celui déclaré au programme ; un score en dessous déclenche la reprise individuelle prévue au dispositif. La grille appliquée à sa production révèle au moins un point d'amélioration par personne.",
+        "La grille d'évaluation est commentée item par item, sans en sauter : chaque objectif de la journée y est marqué atteint ou non atteint, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif. La grille de critères appliquée à sa production révèle au moins un point d'amélioration par personne.",
       dureeMin: 20,
       notes: {
         script:
-          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se corrige, et elle se conserve. Si vous êtes en retard, coupez ailleurs — jamais ici. Le quiz reprend les cinq points durs de la journée : mentions obligatoires, chiffres sourcés, vocabulaire d'occupant, refus du tri de locataires, données personnelles.",
+          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se commente, et elle se conserve. Si vous êtes en retard, coupez ailleurs — jamais ici. La grille reprend les cinq points durs de la journée : mentions obligatoires, chiffres sourcés, vocabulaire d'occupant, refus du tri de locataires, données personnelles.",
         faq: [
           {
-            question: "Le résultat du quiz est transmis à mon employeur ?",
+            question: "Le résultat de mon évaluation est transmis à mon employeur ?",
             reponse:
               "Le résultat individuel ne l'est pas. Ce qui est transmis, c'est l'attestation de fin de formation et le fait que l'évaluation a eu lieu.",
           },
         ],
         blocages: [
           {
-            situation: "Il est 17 h 10 et le quiz n'est pas commencé.",
+            situation: "Il est 17 h 10 et la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en limitant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
+              "La tenir quand même, en limitant le commentaire aux items les moins bien tenus. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
-        planB: "Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil.",
+        planB: "Grilles d'évaluation vierges imprimées dans le kit. Aucune dépendance à un outil.",
       },
     },
     synthese: {

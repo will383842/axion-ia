@@ -287,7 +287,7 @@ const FORMATION_SLOTS: ReadonlyArray<DocSlot> = [
   // 04 — Évaluation & qualité
   {
     key: "evaluation_acquis",
-    titre: "Évaluation des acquis (quiz / QCM)",
+    titre: "Évaluation des acquis (grille individuelle)",
     categorie: "evaluation",
     visibilite: "formateur",
     formats: ["docx"],

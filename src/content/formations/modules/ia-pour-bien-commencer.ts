@@ -464,28 +464,29 @@ export const IA_POUR_BIEN_COMMENCER: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Évaluation des acquis : quiz individuel de dix questions (corrigé fourni), corrigé en salle question par question. Puis relecture par chacun de SA meilleure production du jour, à la grille fournie — exactitude des chiffres, noms et dates ; ton adapté au destinataire ; structure ; réutilisable tel quel ou pas — et note sur le feuillet de ce qu'il reste à corriger avant de s'en servir.",
+        "Évaluation des acquis : grille d'évaluation individuelle (trame fournie), renseignée et commentée en salle item par item. Puis relecture par chacun de SA meilleure production du jour, à la grille fournie — exactitude des chiffres, noms et dates ; ton adapté au destinataire ; structure ; réutilisable tel quel ou pas — et note sur le feuillet de ce qu'il reste à corriger avant de s'en servir.",
       reponseAttendue:
-        "Le corrigé est commenté question par question, sans en passer aucune. Le seuil de réussite est celui déclaré au programme ; un score en dessous déclenche la reprise individuelle prévue au dispositif. Sur la relecture : chacun relève AU MOINS un point à corriger sur sa propre production — une copie « parfaite » est une copie relue trop vite.",
+        "La grille est commentée item par item, sans en passer aucun : chaque objectif de la journée est marqué atteint ou non atteint devant son titulaire, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif. Sur la relecture : chacun relève AU MOINS un point à corriger sur sa propre production — une copie « parfaite » est une copie relue trop vite.",
       dureeMin: 15,
       notes: {
         script:
-          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se corrige, elle se conserve. Si le temps manque, coupez ailleurs — jamais ici. Le quiz est individuel et sans document ; annoncez-le simplement, sans solennité : dix questions sur ce qui a été fait, pas des pièges. Pendant la relecture, passez voir en priorité ceux qui n'ont rien noté à corriger — c'est presque toujours une relecture trop rapide, pas une production parfaite.",
+          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se commente, elle se conserve. Si le temps manque, coupez ailleurs — jamais ici. La grille est individuelle et se remplit devant son titulaire ; annoncez-la simplement, sans solennité : on regarde objectif par objectif ce qui a été fait, ce n'est pas un piège. Pendant la relecture, passez voir en priorité ceux qui n'ont rien noté à corriger — c'est presque toujours une relecture trop rapide, pas une production parfaite.",
         faq: [
           {
-            question: "Le résultat du quiz sera transmis à mon employeur ?",
+            question: "Le résultat de mon évaluation sera transmis à mon employeur ?",
             reponse:
               "Le résultat individuel ne l'est pas. Ce qui est transmis, c'est l'attestation de fin de formation et le fait que l'évaluation a eu lieu.",
           },
         ],
         blocages: [
           {
-            situation: "Il reste douze minutes et le quiz n'est pas lancé.",
+            situation: "Il reste douze minutes et la grille n'est pas lancée.",
             parade:
-              "Le tenir quand même : quiz complet, et commentaire du corrigé resserré sur les questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
+              "La tenir quand même : grille complète pour chacun, et commentaire resserré sur les items les moins bien tenus. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
-        planB: "Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil.",
+        planB:
+          "Grilles vierges et trame de commentaire imprimées dans le kit. Aucune dépendance à un outil.",
       },
     },
     synthese: {

@@ -185,7 +185,7 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
           {
             question: "Ça compte comme évaluation ?",
             reponse:
-              "Non. L'évaluation des acquis est le quiz de fin d'après-midi. Ceci sert à repérer ce qui coince pendant qu'on peut encore le corriger.",
+              "Non. L'évaluation des acquis est la grille individuelle de fin d'après-midi. Ceci sert à repérer ce qui coince pendant qu'on peut encore le corriger.",
           },
         ],
         blocages: [
@@ -564,9 +564,9 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
       // titulaire : c'est l'objectif 8, dans son ordre. Le suivi d'activité est
       // aussi le point où la donnée personnelle de conducteur revient par la
       // fenêtre — colonne des noms retirée, ré-identification par la tournée :
-      // l'objectif 2 s'y rejoue en acte. Enfin, le quiz de fin interroge
-      // nommément ce que l'assistant ne construit jamais et la source d'une
-      // règle de temps de conduite, soit l'objectif 7.
+      // l'objectif 2 s'y rejoue en acte. Enfin, la grille d'évaluation de fin
+      // porte nommément sur ce que l'assistant ne construit jamais et sur la
+      // source d'une règle de temps de conduite, soit l'objectif 7.
       objectifsSecondairesIds: ["obj-2", "obj-7"],
       dureeMin: 5,
       notes: {
@@ -660,13 +660,13 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Évaluation des acquis : quiz individuel de dix questions — les trois régimes d'usage, les pièces qui ne sortent jamais, ce que l'assistant ne construit jamais, la source d'une règle de temps de conduite, les mentions qu'un assistant invente dans un courrier de litige — puis correction commentée en salle, question par question.",
+        "Évaluation des acquis : grille d'évaluation individuelle — les trois régimes d'usage, les pièces qui ne sortent jamais, ce que l'assistant ne construit jamais, la source d'une règle de temps de conduite, les mentions qu'un assistant invente dans un courrier de litige — renseignée puis commentée en salle, item par item.",
       reponseAttendue:
-        "Le corrigé est commenté sans sauter aucune question. Le seuil de réussite est celui déclaré au programme ; un score en dessous déclenche la reprise individuelle prévue au dispositif.",
+        "La grille est commentée sans sauter un item : chaque objectif de la journée y est marqué atteint ou non atteint, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif.",
       dureeMin: 15,
       notes: {
         script:
-          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se corrige, elle se conserve. Ne la sacrifiez jamais au temps qui manque, c'est la première pièce qu'un auditeur demande — si vous êtes en retard, coupez ailleurs. Sur la question des temps de conduite, la seule réponse juste est « le texte réglementaire ouvert et l'outil métier » ; refusez « l'assistant », même formulé prudemment.",
+          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se commente, elle se conserve. Ne la sacrifiez jamais au temps qui manque, c'est la première pièce qu'un auditeur demande — si vous êtes en retard, coupez ailleurs. Sur l'item des temps de conduite, la seule réponse juste est « le texte réglementaire ouvert et l'outil métier » ; refusez « l'assistant », même formulé prudemment.",
         faq: [
           {
             question: "Le résultat sera transmis à mon employeur ?",
@@ -676,13 +676,13 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
         ],
         blocages: [
           {
-            situation: "Il est 16 h 50 et le quiz n'est pas commencé.",
+            situation: "Il est 16 h 50 et la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
+              "La tenir quand même, en réduisant le commentaire aux items les moins bien tenus. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
         planB:
-          "Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil, aucune à un réseau.",
+          "Grilles d'évaluation vierges imprimées dans le kit. Aucune dépendance à un outil, aucune à un réseau.",
       },
     },
     synthese: {

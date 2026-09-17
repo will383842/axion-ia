@@ -1145,19 +1145,18 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       question:
         "En combien de temps les équipes sont-elles opérationnelles après une formation IA ?",
       answer:
-        "Dès le lendemain. Les formations Axion-IA sont construites pour cela : chaque notion fait l'objet d'une démonstration courte, suivie d'une pratique immédiate sur les tâches réelles apportées par les participants. Personne ne repart avec des notes à retranscrire — on repart avec ce qu'on a produit en séance.\n\nÀ l'issue d'une journée, chacun dispose de prompts construits sur ses propres cas, de trames réutilisables et d'une liste de 5 premières actions à mener dans son poste. L'acquisition est vérifiée pendant la session par les exercices, puis par un quiz individuel de 10 questions dont le seuil de réussite est fixé à 7 sur 10 ; une attestation individuelle mentionnant les compétences acquises est remise à l'issue du parcours.\n\nLa vitesse d'installation dépend ensuite du format retenu. Une demi-journée de 4 heures lève les blocages et pose les premiers usages ; une journée de 7 heures installe une pratique commune ; les formats de 2 journées vont jusqu'à la construction d'automatisations. Les formations de 2 jours sont scindables en deux journées espacées, ce qui laisse le temps de pratiquer entre les deux.",
+        "Dès le lendemain. Les formations Axion-IA sont construites pour cela : chaque notion fait l'objet d'une démonstration courte, suivie d'une pratique immédiate sur les tâches réelles apportées par les participants. Personne ne repart avec des notes à retranscrire — on repart avec ce qu'on a produit en séance.\n\nÀ l'issue d'une journée, chacun dispose de prompts construits sur ses propres cas, de trames réutilisables et d'une liste de 5 premières actions à mener dans son poste. L'acquisition est vérifiée pendant la session par les exercices, puis en fin de parcours par une grille d'évaluation individuelle, renseignée et commentée en salle ; une attestation individuelle mentionnant les compétences acquises est remise à l'issue du parcours.\n\nLa vitesse d'installation dépend ensuite du format retenu. Une demi-journée de 4 heures lève les blocages et pose les premiers usages ; une journée de 7 heures installe une pratique commune ; les formats de 2 journées vont jusqu'à la construction d'automatisations. Les formations de 2 jours sont scindables en deux journées espacées, ce qui laisse le temps de pratiquer entre les deux.",
       keyPoints: [
         "Opérationnel dès le lendemain : la pratique se fait en séance, sur vos vraies tâches",
         "Chacun repart avec ses prompts, des trames réutilisables et 5 premières actions",
-        "Quiz individuel de 10 questions, seuil de réussite fixé à 7 sur 10",
+        "Grille d'évaluation individuelle, renseignée et commentée en salle",
         "Attestation individuelle mentionnant les compétences acquises",
         "Les formations de 2 jours sont scindables en deux journées espacées",
       ],
       facts: [
         { figure: "J+1", label: "premiers usages en autonomie" },
         { figure: "5", label: "premières actions listées" },
-        { figure: "10", label: "questions au quiz final" },
-        { figure: "7/10", label: "seuil de réussite" },
+        { figure: "1", label: "grille d'évaluation individuelle, commentée en salle" },
       ],
       steps: [
         {
@@ -1178,7 +1177,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Ce que je fais lundi",
           detail:
-            "Chacun écrit ses 5 premières actions et conserve ses prompts. Quiz individuel de 10 questions, puis attestation individuelle des compétences acquises.",
+            "Chacun écrit ses 5 premières actions et conserve ses prompts. Grille d'évaluation individuelle commentée en salle, puis attestation individuelle des compétences acquises.",
         },
       ],
       nuances: [
@@ -1781,7 +1780,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         { figure: "2-15", label: "participants par groupe" },
         { figure: "3", label: "assistants pratiqués" },
         { figure: "4 h à 3 j", label: "durées au catalogue" },
-        { figure: "10", label: "questions au quiz final" },
+        { figure: "1", label: "grille d'évaluation individuelle, commentée en salle" },
       ],
       nuances: [
         {
@@ -2424,7 +2423,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "La session",
           detail:
-            "Démonstration courte, pratique immédiate, exercices différenciés par profil et travail en binômes. Un quiz individuel de 10 questions valide les acquis en fin de parcours.",
+            "Démonstration courte, pratique immédiate, exercices différenciés par profil et travail en binômes. Une grille d'évaluation individuelle, renseignée et commentée en salle, valide les acquis en fin de parcours.",
         },
         {
           title: "L'ancrage",
@@ -4054,19 +4053,19 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Comment se passe une formation IA en entreprise ?",
       answer:
-        "Toujours en intra, dans vos locaux ou à distance, pour un seul et même groupe de 2 à 15 personnes. Une journée type dure 7 heures ; le catalogue va de la demi-journée de 4 heures aux formats de 2 journées, ceux-ci étant scindables en journées espacées.\n\nLe déroulé est le même partout. On pose d'abord le cadre — ce qu'une IA sait faire, ce qu'elle fait mal, et les données qui ne sortent jamais de l'entreprise — puis chaque notion est démontrée en direct avant d'être pratiquée immédiatement sur les tâches réelles apportées par les participants. Les exercices sont différenciés par profil et une partie se fait en binômes. La journée se termine par ce que chacun applique dès le lundi suivant.\n\nEn amont, on cale avec vous la formation, les cas à travailler et, si besoin, les accès aux outils : le délai d'accès est d'au moins 11 jours ouvrés à compter de la confirmation. À l'issue, un quiz individuel de 10 questions valide les acquis, avec un seuil de réussite à 7 sur 10, et une attestation individuelle est remise.",
+        "Toujours en intra, dans vos locaux ou à distance, pour un seul et même groupe de 2 à 15 personnes. Une journée type dure 7 heures ; le catalogue va de la demi-journée de 4 heures aux formats de 2 journées, ceux-ci étant scindables en journées espacées.\n\nLe déroulé est le même partout. On pose d'abord le cadre — ce qu'une IA sait faire, ce qu'elle fait mal, et les données qui ne sortent jamais de l'entreprise — puis chaque notion est démontrée en direct avant d'être pratiquée immédiatement sur les tâches réelles apportées par les participants. Les exercices sont différenciés par profil et une partie se fait en binômes. La journée se termine par ce que chacun applique dès le lundi suivant.\n\nEn amont, on cale avec vous la formation, les cas à travailler et, si besoin, les accès aux outils : le délai d'accès est d'au moins 11 jours ouvrés à compter de la confirmation. À l'issue, une grille d'évaluation individuelle, renseignée et commentée en salle, valide les acquis, et une attestation individuelle est remise.",
       keyPoints: [
         "Toujours en intra : une session est montée pour une seule entreprise",
         "Groupe de 2 à 15 personnes, sur site ou à distance, au même tarif",
         "Journée type de 7 heures ; du format 4 heures aux parcours de 2 journées",
         "Le cadre de confidentialité est posé avant tout atelier",
-        "Quiz individuel de 10 questions et attestation individuelle à l'issue",
+        "Grille d'évaluation individuelle et attestation individuelle à l'issue",
       ],
       facts: [
         { figure: "7 h", label: "pour une journée type" },
         { figure: "2-15", label: "participants par groupe" },
         { figure: "11 j", label: "ouvrés de délai d'accès" },
-        { figure: "10", label: "questions au quiz final" },
+        { figure: "1", label: "grille d'évaluation individuelle, commentée en salle" },
       ],
       steps: [
         {
@@ -4087,7 +4086,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Vérification et suite",
           detail:
-            "On relit les productions avec une grille, puis chacun écrit ce qu'il applique dès lundi. Quiz individuel de 10 questions, seuil à 7 sur 10, puis attestation.",
+            "On relit les productions avec une grille, puis chacun écrit ce qu'il applique dès lundi. Grille d'évaluation individuelle commentée en salle, puis attestation.",
         },
       ],
       nuances: [

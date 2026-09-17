@@ -189,7 +189,7 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
           {
             question: "On note ? Ça compte ?",
             reponse:
-              "Pas ici. L'évaluation des acquis est en fin de journée, sur dix questions. Ce contrôle sert à repérer ce qui coince pendant qu'on peut encore le corriger.",
+              "Pas ici. L'évaluation des acquis est en fin de journée, sur la grille individuelle. Ce contrôle sert à repérer ce qui coince pendant qu'on peut encore le corriger.",
           },
           {
             question: "Mon binôme n'a rien trouvé, ma synthèse est donc bonne ?",
@@ -664,13 +664,13 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Évaluation des acquis : quiz individuel de validation (10 questions) corrigé en salle, puis auto-évaluation d'une production du jour sur la grille de relecture du classeur.",
+        "Évaluation des acquis : grille d'évaluation individuelle renseignée et commentée en salle, puis auto-évaluation d'une production du jour sur la grille de relecture du classeur.",
       reponseAttendue:
-        "Le corrigé est commenté question par question sans en sauter aucune ; le seuil de réussite est celui déclaré au programme, et un score en dessous déclenche la reprise individuelle prévue au dispositif. L'auto-évaluation se fait sur une production réelle du jour, sortie du classeur.",
+        "La grille d'évaluation est commentée item par item sans en sauter aucun ; chaque objectif de la journée y est marqué atteint ou non atteint, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif. L'auto-évaluation se fait sur une production réelle du jour, sortie du classeur.",
       dureeMin: 15,
       notes: {
         script:
-          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se corrige, elle se conserve. Ne la sacrifiez jamais au temps qui manque — si vous êtes en retard, coupez ailleurs, jamais sur le quiz. C'est la première chose qu'un auditeur demande. Sur l'auto-évaluation, faites cocher la grille sur une production RÉELLE du jour, sortie du classeur, pas sur un souvenir de l'après-midi.",
+          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se commente, elle se conserve. Ne la sacrifiez jamais au temps qui manque — si vous êtes en retard, coupez ailleurs, jamais sur la grille d'évaluation. C'est la première chose qu'un auditeur demande. Sur l'auto-évaluation, faites cocher la grille de relecture sur une production RÉELLE du jour, sortie du classeur, pas sur un souvenir de l'après-midi.",
         faq: [
           {
             question: "Le résultat sera transmis à mon employeur ?",
@@ -680,13 +680,13 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
         ],
         blocages: [
           {
-            situation: "Il est 17 h 15 et le quiz n'est pas commencé.",
+            situation: "Il est 17 h 15 et la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
+              "La tenir quand même, en réduisant le commentaire aux items les moins bien tenus. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
         planB:
-          "Quiz papier et corrigé imprimés dans le kit, grille d'auto-évaluation dans le classeur. Aucune dépendance à un outil, et c'est délibéré : l'évaluation ne peut pas sauter parce que le réseau est tombé.",
+          "Grilles d'évaluation vierges imprimées dans le kit, grille d'auto-évaluation dans le classeur. Aucune dépendance à un outil, et c'est délibéré : l'évaluation ne peut pas sauter parce que le réseau est tombé.",
       },
     },
     synthese: {

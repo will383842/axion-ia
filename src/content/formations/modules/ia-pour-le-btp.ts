@@ -183,7 +183,7 @@ export const IA_POUR_LE_BTP: EnrichissementFormation = [
           {
             question: "On note ? Ça compte pour l'évaluation ?",
             reponse:
-              "Non. L'évaluation des acquis est en fin de journée, sur dix questions. Ici on repère ce qui coince pendant qu'on peut encore le corriger.",
+              "Non. L'évaluation des acquis est en fin de journée, sur la grille individuelle. Ici on repère ce qui coince pendant qu'on peut encore le corriger.",
           },
         ],
         blocages: [
@@ -603,29 +603,29 @@ export const IA_POUR_LE_BTP: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Validation des acquis : quiz individuel de dix questions, corrigé en salle question par question. Puis chacun passe une de ses propres pièces du jour à la grille de critères fournie — sources, mentions, confidentialité, ton, relecteur — et les écarts sont repris nominativement, pièce à l'écran.",
+        "Validation des acquis : grille d'évaluation individuelle, renseignée et commentée en salle item par item. Puis chacun passe une de ses propres pièces du jour à la grille de critères fournie — sources, mentions, confidentialité, ton, relecteur — et les écarts sont repris nominativement, pièce à l'écran.",
       reponseAttendue:
-        "Le quiz corrigé sans sauter de question ; le seuil de réussite est celui déclaré au programme, et un score en dessous déclenche la reprise individuelle prévue au dispositif. Sur les pièces : chaque écart repris se corrige en direct — c'est la dernière passe avant l'envoi réel.",
+        "La grille d'évaluation commentée sans sauter un item ; chaque objectif de la journée y est marqué atteint ou non atteint, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif. Sur les pièces : chaque écart repris se corrige en direct — c'est la dernière passe avant l'envoi réel.",
       dureeMin: 20,
       notes: {
         script:
-          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, se corrige et se conserve. Si le temps manque, coupez ailleurs — jamais ici. La reprise nominative se fait pièce à l'écran : on commente le document, jamais la personne.",
+          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, se commente et se conserve. Si le temps manque, coupez ailleurs — jamais ici. La reprise nominative se fait pièce à l'écran : on commente le document, jamais la personne.",
         faq: [
           {
-            question: "Mon score sera transmis à mon employeur ?",
+            question: "Mon évaluation sera transmise à mon employeur ?",
             reponse:
               "Le résultat individuel, non. Ce qui est transmis : l'attestation de fin de formation et le fait que l'évaluation a eu lieu.",
           },
         ],
         blocages: [
           {
-            situation: "Il est 17 h et le quiz n'est pas commencé.",
+            situation: "Il est 17 h et la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en resserrant le commentaire du corrigé sur les questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
+              "La tenir quand même, en resserrant le commentaire sur les items les moins bien tenus. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
         planB:
-          "Quiz papier et corrigé dans le kit ; la passe des pièces à la grille se fait sur les impressions. Aucune dépendance à un outil.",
+          "Grilles d'évaluation vierges dans le kit ; la passe des pièces à la grille de critères se fait sur les impressions. Aucune dépendance à un outil.",
       },
     },
     synthese: {

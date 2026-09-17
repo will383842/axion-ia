@@ -206,8 +206,25 @@ export function getFormationMethodes(f: FormationV2): string {
   return f.methodesFr ?? FORMATION_METHODES_DEFAUT;
 }
 
+// 🔴 2026-09-17 — CETTE PHRASE PROMETTAIT UN DISPOSITIF QUI N'EXISTE PAS.
+//
+// Elle annonçait « un quiz individuel de 10 questions (seuil de réussite :
+// 7/10) ». Mesuré en production le 17/09 : les 22 formations portent bien un
+// seuil enregistré, 20 mentionnent le quiz dans leur programme, et **aucune ne
+// contient une seule question ni un seul corrigé**. Confirmé par Will le même
+// jour : il n'en fait pas passer.
+//
+// 🔑 Un auditeur Qualiopi compare ce qu'un organisme ANNONCE et ce qu'il FAIT.
+// Une promesse publique sans dispositif derrière est l'écart le plus simple à
+// constater — et il porte sur l'indicateur de l'évaluation des acquis.
+//
+// Ce que Will fait réellement est décrit ci-dessous, et c'est prouvé : la
+// session du 05/09/2026 a produit la pièce AXI-DOC-2026-041, une GRILLE
+// D'ÉVALUATION. L'indicateur est couvert par cette grille, pas par un quiz :
+// le référentiel demande d'évaluer l'atteinte des objectifs, il n'impose
+// aucune forme.
 export const FORMATION_EVALUATION_DEFAUT =
-  "L'acquisition des compétences est évaluée tout au long de la formation par des exercices pratiques, puis par un quiz individuel de 10 questions (seuil de réussite : 7/10). Une attestation individuelle mentionnant les compétences acquises et un certificat de réalisation sont délivrés à l'issue du parcours, conformément aux articles L.6353-1 et D.6353-1 du Code du travail.";
+  "L'acquisition des compétences est évaluée tout au long de la formation par des exercices pratiques sur les tâches réelles apportées par les participants, puis en fin de parcours par une grille d'évaluation individuelle, renseignée et commentée en salle. Une attestation individuelle mentionnant les compétences acquises et un certificat de réalisation sont délivrés à l'issue du parcours, conformément aux articles L.6353-1 et D.6353-1 du Code du travail.";
 
 export function getFormationEvaluation(f: FormationV2): string {
   return f.modalitesEvaluationFr ?? FORMATION_EVALUATION_DEFAUT;
