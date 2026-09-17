@@ -2488,16 +2488,28 @@ async function handleEmailSante(): Promise<void> {
       `webhook recu : ${sante.dernierAppelRecu ?? "JAMAIS"} · authentifie : ` +
       `${sante.dernierAppelWebhook ?? "JAMAIS"}`;
 
+    // ⚠️ La SÉRIE accompagne chaque ligne, saine ou non — 2026-09-17. Un
+    // « RAS » qui ne rapporte qu'un taux sur six heures ne distingue pas une
+    // chaîne saine d'une chaîne morte depuis le week-end : c'est très
+    // exactement le zéro rassurant que ce module répare ailleurs.
+    const serie =
+      `série : ${sante.serieEchecs.chaine} échec(s) consécutif(s) · dernier succès : ` +
+      `${sante.dernierSuccesAt ?? "JAMAIS"}`;
+    const ferme =
+      sante.alertesResolues.length > 0
+        ? ` — refermée(s) : ${sante.alertesResolues.join(", ")}`
+        : "";
+
     if (sante.alertesLevees.length === 0) {
       console.log(
         `[formation-crons] email-sante: RAS (${sante.echecsRecents} échec(s) récent(s), ` +
-          `${sante.bloquesEnFile} en attente) — ${battement}`,
+          `${sante.bloquesEnFile} en attente, ${serie}) — ${battement}${ferme}`,
       );
       return;
     }
     console.error(
       `[formation-crons] email-sante: ${sante.alertesLevees.join(", ")} — ` +
-        `${sante.echecsRecents} échec(s), ${sante.bloquesEnFile} bloqué(s) — ${battement}`,
+        `${sante.echecsRecents} échec(s), ${sante.bloquesEnFile} bloqué(s), ${serie} — ${battement}`,
     );
   } catch (e) {
     console.error(

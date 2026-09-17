@@ -1689,6 +1689,40 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — levée par la sonde de santé e-mail (`server/email/health.ts`), jamais par `evaluerAlertes`. La passer à `true` la ferait résoudre au premier `synchroniserAlertes`, alors que le relais est peut-être toujours injoignable.",
     guichet: "direction",
   },
+  /**
+   * Les envois échouent EN SÉRIE — aucun succès depuis N tentatives.
+   *
+   * 🔴 2026-09-17, après 43 heures de silence (15/09 13 h 17 → 17/09 08 h 40).
+   * 19 envois refusés d'affilée sur `535 Authentication Failed` : 18 accusés de
+   * réception de candidature vers 18 personnes, une alerte Qualiopi interne, un
+   * lien de connexion formateur. Personne n'a été prévenu.
+   *
+   * Ce code complète `emails_en_echec` au lieu de le remplacer, et les deux
+   * critères ne se recouvrent pas :
+   *   · `emails_en_echec` compte un TAUX (3 échecs / 6 h). Il attrape les
+   *     rafales, et il lui faut du volume : sous 0,5 échec par heure — un
+   *     week-end, une file calme — il ne se lève jamais, quelle que soit la
+   *     durée de la panne.
+   *   · celui-ci compte une SÉRIE : trois échecs consécutifs SANS un seul succès
+   *     entre eux. Indépendant du volume et de l'espacement. Un succès remet le
+   *     compteur à zéro, donc une adresse morte au milieu d'un trafic normal ne
+   *     le déclenche pas.
+   *
+   * ⚠️ `resolutionAuto: false`, comme tous les codes de la sonde, et pour le
+   * même motif structurel. Mais contrairement aux autres, celui-ci SE REFERME
+   * quand même : c'est la sonde elle-même qui le résout (`resoudreAlertesParCode`)
+   * sur preuve positive — un envoi a réussi depuis. Le balayage quotidien n'y
+   * est pour rien, et c'est justement pour ça qu'il ne peut pas la refermer à
+   * tort.
+   */
+  emails_echecs_consecutifs: {
+    niveau: "critique",
+    titre: "Les envois d'e-mails échouent en série",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par la sonde de santé e-mail, hors du balayage d'`evaluerAlertes` : la passer à `true` la ferait refermer au premier `synchroniserAlertes`, sur une chaîne peut-être toujours morte. Elle se referme néanmoins toute seule, mais par la SONDE et sur preuve positive (un envoi a réussi depuis), pas par le balayage.",
+    guichet: "direction",
+  },
   emails_bloques_en_file: {
     niveau: "critique",
     titre: "E-mails enfilés mais jamais envoyés",

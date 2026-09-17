@@ -20,13 +20,23 @@ const creerOuDedup = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    emailLog: { count: (...a: unknown[]) => countMock(...a) },
+    emailLog: {
+      count: (...a: unknown[]) => countMock(...a),
+      // 🔴 Ajoutés le 2026-09-17 avec la série d'échecs consécutifs. Un module
+      // doublé sans l'un de ses exports rend `undefined` : le `TypeError` part
+      // dans le `catch` fail-soft de la sonde, et tout ce fichier redevient vert
+      // en ne mesurant plus rien.
+      findFirst: vi.fn(async () => null),
+      findMany: vi.fn(async () => []),
+    },
     emailOutbox: { updateMany: (...a: unknown[]) => outboxUpdateMany(...a) },
   },
 }));
 vi.mock("@/lib/redis", () => ({ redis: { get: vi.fn(async () => null), set: vi.fn() } }));
 vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
   creerOuDedup: (...a: unknown[]) => creerOuDedup(...a),
+  creerOuActualiser: (...a: unknown[]) => creerOuDedup(...a),
+  resoudreAlertesParCode: vi.fn(async () => 0),
 }));
 vi.mock("@/server/notifications", () => ({ notify: vi.fn(async () => ({ ok: true })) }));
 

@@ -20,6 +20,16 @@
  */
 
 import { prisma } from "@/lib/prisma";
+// ⚠️ Tout vient du module PUR. Importer `whereEchecsDeLaSerie` depuis
+// `@/server/email/health` tirait `@/server/notifications` → `next-auth` →
+// `next/server` dans les tests d'écran, dont la collecte échouait avant le
+// premier test.
+import {
+  doitAlerterSerie,
+  resumerEchecs,
+  whereEchecsDeLaSerie,
+  type LigneEchec,
+} from "@/server/email/serie-echecs";
 import type { EmailLogStatus } from "../../../prisma/generated/client";
 // ⚠️ Import de VALEUR, pas de type : `STATUTS` est dérivé de l'énum à
 // l'exécution. Un `import type` seul ne donnerait rien à énumérer.
@@ -227,6 +237,197 @@ export function lireStatutEmail(brut: string | undefined): EmailLogStatus | null
 export function lirePage(brut: string | undefined): number {
   const n = Number(brut);
   return Number.isInteger(n) && n >= 1 && n <= 500 ? n : 1;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Ce qui est resté à quai — et qu'on peut remettre à la poste
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Plafond d'un renvoi en lot.
+ *
+ * Ce n'est pas un réglage de confort : c'est la borne au-delà de laquelle un
+ * clic cesse d'être un geste et devient une campagne. Deux cents envois vers
+ * deux cents personnes réelles, c'est déjà beaucoup pour un bouton.
+ */
+export const PLAFOND_RENVOI_LOT = 200;
+
+/** Fenêtre de rattrapage. Au-delà d'un mois, un accusé de réception n'a plus d'objet. */
+export const FENETRE_RENVOI_JOURS = 30;
+
+/**
+ * Ce qu'il faut savoir AVANT de cliquer « renvoyer », et qui n'existait nulle
+ * part.
+ *
+ * 🔴 2026-09-17. Pendant les 43 heures de panne, l'écran « E-mails envoyés »
+ * savait tout et ne disait rien : un compteur « Échecs » au milieu de quatre
+ * autres, et un bouton « Renvoyer » par ligne. Rien ne disait que dix-huit
+ * personnes distinctes attendaient un accusé de réception depuis deux jours, ni
+ * qu'aucun envoi n'avait abouti dans l'intervalle.
+ */
+export type EchecsRenvoyables = {
+  /** Envois en échec qu'on peut effectivement rejouer (le job BullMQ existe). */
+  total: number;
+  /** Combien de personnes distinctes n'ont rien reçu. C'est ce chiffre qui parle. */
+  destinatairesDistincts: number;
+  /** Le plus ancien échec de la sélection — « depuis quand ». */
+  depuis: Date | null;
+  /** Motif le plus récent imputable à la chaîne, pour dire ce qui s'est passé. */
+  motif: string | null;
+  /**
+   * Échecs SANS identifiant de job : irrécupérables depuis cet écran (le journal
+   * ne garde pas le contenu). On les annonce plutôt que de les faire disparaître
+   * du décompte — un écran qui promet « tout renvoyer » et en oublie quatre est
+   * pire qu'un écran qui dit lesquels il ne sait pas reprendre.
+   */
+  sansJob: number;
+  /** Vrai si le plafond a tronqué la lecture : les chiffres sont des minorants. */
+  tronque: boolean;
+  /**
+   * 🔴 LA PANNE EST-ELLE EN COURS ? — distinction ajoutée en relecture.
+   *
+   * La première version passait une fenêtre de TRENTE JOURS à `analyserSerie`,
+   * dont la précondition écrite est « ces lignes sont consécutives, postérieures
+   * au dernier succès ». Elle violait donc son propre contrat, et l'écran
+   * affichait un bandeau ROUGE « série en cours » sur des échecs vieux de
+   * semaines — que rien ne pouvait faire redescendre, puisqu'une ligne `failed`
+   * dont le job a été purgé n'est jamais rejouable. **Un bandeau rouge permanent
+   * apprend à ne plus lire les bandeaux rouges.**
+   *
+   * Deux grandeurs distinctes, donc :
+   *   - `total` / `sansJob` : le STOCK à rattraper — c'est l'action ;
+   *   - `panneEnCours` : la SÉRIE en cours, lue avec la même borne que la sonde
+   *     (`whereEchecsDeLaSerie`) — c'est l'alarme, et elle seule met du rouge.
+   */
+  panneEnCours: boolean;
+  /**
+   * Horodatage de la lecture. Repart dans le formulaire pour borner le renvoi
+   * aux messages RÉELLEMENT affichés — voir `jusquA` côté action.
+   */
+  luA: Date;
+};
+
+export const AUCUN_ECHEC_RENVOYABLE: EchecsRenvoyables = {
+  total: 0,
+  destinatairesDistincts: 0,
+  depuis: null,
+  motif: null,
+  sansJob: 0,
+  tronque: false,
+  panneEnCours: false,
+  luA: new Date(0),
+};
+
+/**
+ * Ce que le dernier geste de renvoi a produit — relu depuis l'URL.
+ *
+ * 🔴 L'action de formulaire d'un composant serveur ne rend rien à l'appelant :
+ * la page se recharge, et c'est tout. C'est pour ça que l'ancien « Renvoyer »
+ * par ligne se contentait d'un `console.warn` — un résultat qu'aucun
+ * utilisateur ne voit. Le résultat transite donc par l'URL, et cette fonction
+ * le relit en liste fermée.
+ */
+export type IssueRenvoi =
+  | {
+      kind: "ok";
+      renvoyes: number;
+      destinataires: number;
+      irrecuperables: number;
+      /**
+       * Retenus par la liste de suppression (désabonné, opposé, rebond dur).
+       * Affiché séparément : « 3 non renvoyés » sans dire pourquoi passerait
+       * pour une panne, alors que c'est un refus VOULU.
+       */
+      retenus: number;
+    }
+  | { kind: "erreur"; motif: string }
+  | null;
+
+/** Un entier d'URL, borné. Une valeur absurde ne doit pas s'afficher telle quelle. */
+function entierBorne(brut: string | undefined, max: number): number {
+  const n = Number(brut);
+  return Number.isInteger(n) && n >= 0 && n <= max ? n : 0;
+}
+
+export function lireIssueRenvoi(sp: Record<string, string | undefined>): IssueRenvoi {
+  const kind = sp["renvoi"];
+  if (kind === "erreur") {
+    const motif = sp["motif"]?.slice(0, 200).trim();
+    return { kind: "erreur", motif: motif || "Motif inconnu." };
+  }
+  if (kind === "ok" || kind === "lot") {
+    return {
+      kind: "ok",
+      // « ok » est le renvoi à l'unité : un message, un destinataire.
+      renvoyes: kind === "ok" ? 1 : entierBorne(sp["n"], PLAFOND_RENVOI_LOT),
+      destinataires: kind === "ok" ? 1 : entierBorne(sp["d"], PLAFOND_RENVOI_LOT),
+      irrecuperables: kind === "ok" ? 0 : entierBorne(sp["ko"], PLAFOND_RENVOI_LOT),
+      retenus: kind === "ok" ? 0 : entierBorne(sp["ret"], PLAFOND_RENVOI_LOT),
+    };
+  }
+  return null;
+}
+
+export async function resumerEchecsRenvoyables(
+  maintenant: Date = new Date(),
+): Promise<EchecsRenvoyables> {
+  const depuis = new Date(maintenant.getTime() - FENETRE_RENVOI_JOURS * 24 * 3600_000);
+
+  const champs = {
+    recipient: true,
+    template: true,
+    error: true,
+    failedAt: true,
+    createdAt: true,
+  } as const;
+
+  try {
+    const [lignes, sansJob, dernierSucces] = await Promise.all([
+      prisma.emailLog.findMany({
+        where: { status: "failed", jobId: { not: null }, failedAt: { gte: depuis } },
+        orderBy: { failedAt: "desc" },
+        take: PLAFOND_RENVOI_LOT,
+        select: champs,
+      }),
+      prisma.emailLog.count({
+        where: { status: "failed", jobId: null, failedAt: { gte: depuis } },
+      }),
+      prisma.emailLog.findFirst({
+        where: { status: "sent", sentAt: { not: null } },
+        orderBy: { sentAt: "desc" },
+        select: { sentAt: true },
+      }),
+    ]);
+
+    // Le STOCK : ce qu'il y a à rattraper. Aucune prétention de consécutivité,
+    // d'où `resumerEchecs` et non `analyserSerie` — c'est précisément la faute
+    // que la relecture a relevée.
+    const stock = resumerEchecs(lignes as LigneEchec[]);
+
+    // La SÉRIE : lue avec la borne de la sonde, donc réellement consécutive.
+    // C'est elle, et elle seule, qui autorise le rouge.
+    const enSerie = await prisma.emailLog.findMany({
+      where: whereEchecsDeLaSerie(dernierSucces?.sentAt ?? null),
+      orderBy: { failedAt: "desc" },
+      take: PLAFOND_RENVOI_LOT,
+      select: champs,
+    });
+
+    return {
+      total: stock.total,
+      destinatairesDistincts: stock.destinatairesDistincts,
+      depuis: stock.depuis,
+      motif: stock.motif,
+      sansJob,
+      tronque: lignes.length === PLAFOND_RENVOI_LOT,
+      panneEnCours: doitAlerterSerie(resumerEchecs(enSerie as LigneEchec[])),
+      luA: maintenant,
+    };
+  } catch {
+    // Au build (base stub) comme sur une base illisible : l'écran doit
+    // s'afficher. Le bandeau disparaît, il ne ment pas.
+    return { ...AUCUN_ECHEC_RENVOYABLE, luA: maintenant };
+  }
 }
 
 export async function chargerEmails(filtres: FiltresEmails): Promise<ChargementEmails> {

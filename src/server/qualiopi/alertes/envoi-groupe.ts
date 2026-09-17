@@ -29,6 +29,7 @@ import {
   type AlerteARouter,
 } from "./routage";
 import { resoudreDestinataires } from "./destinataires";
+import { CODES_HORS_BANDE } from "./hors-bande";
 import { libellesDesCibles, texteCible } from "./libelle-cible";
 
 /**
@@ -72,6 +73,19 @@ export async function notifierAlertesGroupees(
     where: {
       resolue: false,
       notifiedAt: null,
+      // 🔴 2026-09-17 — L'ALERTE « PLUS RIEN NE PART » REPARTAIT PAR E-MAIL.
+      //
+      // La sonde de santé e-mail crée des alertes `critique`, donc ce `findMany`
+      // les ramassait et les envoyait par `enqueueEmail`. Comme `enqueueEmail`
+      // RÉUSSIT quand seul le relais SMTP est mort (Redis va bien), la branche
+      // de relâchement plus bas ne s'exécutait pas : `notifiedAt` restait posé
+      // et l'alerte n'était plus JAMAIS notifiée, même après réparation.
+      // Mesuré en production : `notified_at = 17/09 07:00` sur une alerte du
+      // 16/09, et l'e-mail correspondant en `failed` au même horodatage.
+      //
+      // Ces codes ont deux canaux qui, eux, ne dépendent pas de la chaîne en
+      // panne : l'écran et Telegram (poussé par la sonde). Cf. `hors-bande.ts`.
+      code: { notIn: [...CODES_HORS_BANDE] },
       OR: [{ niveau: "critique" }, { code: { in: [...CODES_DEBLOCAGE] } }],
     },
     select: {
