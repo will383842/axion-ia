@@ -589,7 +589,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
       </Section>
 
       {/* ── PROGRAMME DÉTAILLÉ — disposition type fiche référence : modules
-          riches à GAUCHE (numéro, points, QCM, « Livrable inclus » mis en
+          riches à GAUCHE (numéro, points, évaluation, « Livrable inclus » mis en
           valeur), carte RÉCAP STICKY à DROITE (durée/format/effectif/prix/CTA).
           Server-only : sticky en CSS pur, aucun JS. */}
       <Section
@@ -612,13 +612,20 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
               const titre =
                 dash > 0 ? sectionDay.titreFr.slice(dash + 1).trim() : sectionDay.titreFr;
               const livrables = sectionDay.steps.filter((st) => st.temps === "Livrable");
-              const hasQcm = sectionDay.steps.some((st) => /qcm|quiz/i.test(st.titre));
+              // ⚠️ 2026-09-17 — Ce badge détectait `/qcm|quiz/`. Plus aucun titre
+              // d'étape ne porte ces mots depuis que l'évaluation est décrite sous
+              // sa forme réelle (grille d'évaluation individuelle) : le prédicat
+              // rendait donc `false` partout et le badge avait disparu en silence.
+              // Il est réarmé sur le vocabulaire en vigueur. L'étape n'est plus
+              // retirée de la liste : son libellé dit ce qui se passe réellement,
+              // et c'est précisément ce qu'un lecteur doit pouvoir lire.
+              const hasEvaluation = sectionDay.steps.some((st) =>
+                /(?:évaluation|validation) des acquis|grille d'évaluation individuelle/i.test(
+                  st.titre,
+                ),
+              );
               const steps = sectionDay.steps.filter(
-                (st) =>
-                  st.titre !== "Pause" &&
-                  st.type !== "pause" &&
-                  st.temps !== "Livrable" &&
-                  !/^qcm|^quiz/i.test(st.titre),
+                (st) => st.titre !== "Pause" && st.type !== "pause" && st.temps !== "Livrable",
               );
               const acquis = acquisDuModule(sectionDay.steps);
               const dureeLabel = dureeModuleLabel(sectionDay.steps);
@@ -631,10 +638,10 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
                     <span className="bg-terracotta text-mocha-fg inline-flex items-center rounded-full px-3 py-1 text-[11.5px] font-bold tracking-wide uppercase">
                       {badge}
                     </span>
-                    {hasQcm ? (
+                    {hasEvaluation ? (
                       <span className="border-border text-fg-muted inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-semibold">
                         <CheckCircle2 aria-hidden="true" className="h-3 w-3" />
-                        Quiz de validation des acquis
+                        Évaluation des acquis
                       </span>
                     ) : null}
                   </div>

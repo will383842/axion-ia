@@ -352,24 +352,28 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
               {/* 2. Modalités d&apos;évaluation */}
               <SectionBlock title="Modalités d'évaluation">
                 {/*
-                  🔴 2026-09-17 — « Seuil de réussite : X % » A ÉTÉ RETIRÉ D'ICI.
-                  La page l'affichait depuis `seuilReussitePct` (70 % en base sur
-                  les 22 formations). Or RIEN n'est noté : mesuré en production
-                  le 17/09, aucune formation ne porte une seule question ni un
-                  seul corrigé, et le dirigeant a confirmé qu'il ne fait pas
-                  passer de test noté. Annoncer un seuil qu'aucun dispositif ne
-                  mesure est l'écart le plus visible du site.
+                  ⚠️ 2026-09-17 — DEUX DISPOSITIFS DISTINCTS, NE PAS LES CONFONDRE.
 
-                  ⚠️ Le « quiz de POSITIONNEMENT en amont », lui, est CONSERVÉ :
-                  il existe réellement (questionnaire de positionnement, répondu
-                  par la stagiaire de la session du 05/09 à 08:14, pièce
-                  AXI-DOC-2026-034). Ne pas le confondre avec l'évaluation des
-                  acquis : ce sont deux dispositifs distincts, et seul le second
-                  était promis à tort.
+                  Le POSITIONNEMENT en amont existe réellement : questionnaire
+                  répondu par la stagiaire de la session du 05/09 à 08:14, pièce
+                  AXI-DOC-2026-034. Il est conservé, et nommé « questionnaire » —
+                  jamais « quiz », terme que le PDF du programme n'emploie pas non
+                  plus et qui rouvrirait la question qu'on vient de fermer.
+
+                  L'ÉVALUATION DES ACQUIS, elle, était annoncée sous forme de quiz
+                  individuel de dix questions. Cette FORME n'a jamais existé :
+                  mesuré en production le 17/09, aucune formation ne porte une
+                  seule question ni un seul corrigé, et le dirigeant l'a confirmé
+                  le même jour. Elle est décrite ci-dessous sous sa forme réelle,
+                  la grille d'évaluation individuelle (pièce AXI-DOC-2026-041).
+
+                  ⛔ Le « Seuil de réussite » affiché plus bas n'est PAS concerné :
+                  il est réellement appliqué. Voir le commentaire qui le précède
+                  avant d'y toucher.
                 */}
                 <p className="text-fg-soft text-[15px] leading-relaxed">
                   L&apos;acquisition des compétences est évaluée tout au long de la formation par
-                  des exercices pratiques et une évaluation formative continue. Un quiz de
+                  des exercices pratiques et une évaluation formative continue. Un questionnaire de
                   positionnement est réalisé en amont. En fin de parcours, une grille
                   d&apos;évaluation individuelle est renseignée et commentée en salle. Une
                   évaluation à chaud est conduite à l&apos;issue de la formation.

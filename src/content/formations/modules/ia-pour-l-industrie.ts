@@ -1186,8 +1186,9 @@ export const IA_POUR_L_INDUSTRIE: EnrichissementFormation = [
 
   // ───────────────────────────────────────────────────────────────────────────
   // Module 8 — Évaluation, revue des productions et feuille de route (A-m J2)
-  // ⚠️ Le catalogue place la VÉRIFICATION (grille d'évaluation) AVANT les deux séquences de
-  //    pratique : cet ordre est délibéré, il empêche l'évaluation de sauter.
+  // ⚠️ Le catalogue place la VÉRIFICATION (grille d'évaluation) AVANT les
+  //    deux séquences de pratique : cet ordre est délibéré, il empêche
+  //    l'évaluation de sauter.
   // ───────────────────────────────────────────────────────────────────────────
   {
     moduleId: "mod-8",

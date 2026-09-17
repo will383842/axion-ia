@@ -78,7 +78,7 @@ const METHODES_PEDAGOGIQUES =
   "Pédagogie active et inductive : chaque participant produit dès la séance sur " +
   "ses propres cas (atelier majoritaire), en alternance avec de courtes " +
   "démonstrations. Reformulation, itération guidée jusqu'au résultat attendu, " +
-  "quiz de clôture et engagement individuel.";
+  "grille d'évaluation renseignée et commentée en clôture, et engagement individuel.";
 
 const MOYENS_TECHNIQUES =
   "Salle équipée et vidéoprojecteur en présentiel, ou visioconférence en " +
