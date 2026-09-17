@@ -20,10 +20,16 @@ import {
   LIBELLES_STATUT_EMAIL,
   libelleStatutLigne,
   type ChargementEmails,
+  type EchecsRenvoyables,
   type FiltresEmails,
+  type IssueRenvoi,
   type LigneEmail,
 } from "@/features/admin-emails/query";
-import { renvoyerEmailActionFormulaire } from "@/features/admin-emails/actions";
+import { depuisCombienDeTemps } from "@/server/email/serie-echecs";
+import {
+  renvoyerEchecsEnLotFormulaire,
+  renvoyerEmailActionFormulaire,
+} from "@/features/admin-emails/actions";
 
 const nb = (n: number): string => n.toLocaleString("fr-FR");
 
@@ -49,13 +55,155 @@ const detailDe = (r: LigneEmail): string | null =>
  */
 const PUCE = "min-h-11 inline-flex items-center";
 
+/**
+ * Ce qui est resté à quai, dit en français, et le geste pour le réparer.
+ *
+ * 🔴 2026-09-17 — L'ÉCRAN SAVAIT TOUT ET NE DISAIT RIEN. Pendant les 43 heures
+ * de panne (15/09 13 h 17 → 17/09 08 h 40), cette page affichait un compteur
+ * « Échecs » parmi cinq tuiles, et un bouton « Renvoyer » par ligne. Dix-huit
+ * personnes attendaient un accusé de réception de candidature ; il fallait
+ * compter les lignes du tableau pour l'apprendre, et cliquer dix-huit fois pour
+ * y remédier.
+ *
+ * Le bandeau dit donc les trois choses qu'on veut savoir sans compter :
+ * **ce qui s'est passé**, **combien de personnes**, **depuis quand**.
+ */
+function BandeauEchecs({
+  echecs,
+  adminPrefix,
+  hrefFiltre,
+}: {
+  echecs: EchecsRenvoyables;
+  adminPrefix: string;
+  hrefFiltre: string;
+}): React.ReactElement | null {
+  if (echecs.total === 0 && echecs.sansJob === 0) return null;
+
+  const personnes =
+    echecs.destinatairesDistincts === 1
+      ? "1 personne"
+      : `${nb(echecs.destinatairesDistincts)} personnes`;
+  const depuis = echecs.depuis ? depuisCombienDeTemps(new Date(echecs.depuis), new Date()) : null;
+
+  return (
+    // ⚠️ La marge vit sur un conteneur NEUTRE, jamais sur l'élément
+    // `.admin-alert` : `admin.css` est hors couche et y déclare `margin: 0`,
+    // ce qui rend inerte tout utilitaire de marge posé à côté d'une classe
+    // `.admin-*` (cf. `admin.css`, § « 277 règles hors couche »).
+    <div className="mt-[var(--space-admin-4)]">
+      <section className="admin-alert admin-alert-error">
+        <div>
+          <p>
+            <strong>
+              {nb(echecs.total + echecs.sansJob)} e-mail(s) ne sont jamais arrivés à destination.
+            </strong>{" "}
+            {personnes} {echecs.destinatairesDistincts === 1 ? "attend" : "attendent"} encore leur
+            message
+            {depuis ? `, le plus ancien depuis ${depuis}` : ""}.
+          </p>
+          {echecs.motif ? (
+            <div className="mt-1">
+              <span className="admin-meta-small">
+                Dernier motif rendu par le relais : « {echecs.motif} ».
+              </span>
+            </div>
+          ) : null}
+          {echecs.sansJob > 0 ? (
+            <div className="mt-1">
+              <span className="admin-meta-small">
+                ⚠️ {nb(echecs.sansJob)} d&apos;entre eux ne sont pas rejouables depuis cet écran (le
+                job a quitté la file) : les ré-émettre depuis leur écran d&apos;origine.
+              </span>
+            </div>
+          ) : null}
+          {echecs.tronque ? (
+            <div className="mt-1">
+              <span className="admin-meta-small">
+                Lecture plafonnée : les chiffres ci-dessus sont des minorants.
+              </span>
+            </div>
+          ) : null}
+
+          {echecs.total > 0 ? (
+            <form
+              action={renvoyerEchecsEnLotFormulaire.bind(null, adminPrefix)}
+              className="mt-[var(--space-admin-3)] flex flex-col gap-[var(--space-admin-2)]"
+            >
+              {/* Le nombre que l'utilisateur A SOUS LES YEUX. L'action n'en
+                  renvoie jamais plus : ce qui arriverait après l'affichage
+                  n'a pas été consenti. */}
+              <input type="hidden" name="attendus" value={echecs.total} />
+              <label className="flex items-start gap-[var(--space-admin-2)]">
+                {/* `required` : validation native du navigateur, zéro
+                    JavaScript — et l'action REFUSE de toute façon côté serveur
+                    si la case n'est pas cochée. */}
+                <input type="checkbox" name="confirmation" value="oui" required className="mt-1" />
+                <span>
+                  Je confirme renvoyer <strong>{nb(echecs.total)} e-mail(s)</strong> à{" "}
+                  <strong>{personnes}</strong>. Ces messages partiront réellement.
+                </span>
+              </label>
+              <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+                <button type="submit" className={`admin-button ${PUCE}`}>
+                  Renvoyer les envois en échec
+                </button>
+                <Link href={hrefFiltre} className={`admin-button-ghost ${PUCE}`}>
+                  Voir le détail avant de renvoyer
+                </Link>
+              </div>
+            </form>
+          ) : null}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+/** Ce que le dernier geste a produit — dit à l'écran, pas dans un journal. */
+function IssueDuRenvoi({ issue }: { issue: IssueRenvoi }): React.ReactElement | null {
+  if (!issue) return null;
+  if (issue.kind === "erreur") {
+    return (
+      <div className="mt-[var(--space-admin-4)]">
+        <p className="admin-alert admin-alert-error">
+          <span>
+            <strong>Le renvoi n&apos;a pas eu lieu.</strong> {issue.motif}
+          </span>
+        </p>
+      </div>
+    );
+  }
+  return (
+    <div className="mt-[var(--space-admin-4)]">
+      <p className="admin-alert admin-alert-success">
+        <span>
+          <strong>
+            {nb(issue.renvoyes)} e-mail(s) remis en file vers {nb(issue.destinataires)}{" "}
+            destinataire(s).
+          </strong>{" "}
+          Ils repasseront « Envoyé » dans les minutes qui viennent — actualisez pour suivre.
+          {issue.irrecuperables > 0
+            ? ` ${nb(issue.irrecuperables)} n'ont pas pu être repris : leur ligne porte le motif.`
+            : ""}
+        </span>
+      </p>
+    </div>
+  );
+}
+
 export function VueEmails({
   donnees,
+  echecs,
+  issueRenvoi,
   filtres,
   adminPrefix,
   nbGabaritsDeclares,
 }: {
   donnees: ChargementEmails;
+  /** Ce qui est resté à quai, INDÉPENDAMMENT des filtres de l'écran. */
+  echecs: EchecsRenvoyables;
+  /** Résultat du dernier geste de renvoi, relu depuis l'URL. */
+  issueRenvoi: IssueRenvoi;
   filtres: FiltresEmails;
   adminPrefix: string;
   /** Taille du registre des gabarits, DÉRIVÉE par la page — jamais un chiffre écrit ici (lot 3). */
@@ -138,7 +286,10 @@ export function VueEmails({
               envois à ré-émettre à la main un lundi matin, déclencheur par
               déclencheur. */}
           {r.status === "failed" && r.jobId ? (
-            <form action={renvoyerEmailActionFormulaire.bind(null, r.id)} className="mt-1">
+            <form
+              action={renvoyerEmailActionFormulaire.bind(null, adminPrefix, r.id)}
+              className="mt-1"
+            >
               <button type="submit" className={`admin-button-ghost ${PUCE}`}>
                 Renvoyer
               </button>
@@ -234,6 +385,17 @@ export function VueEmails({
           l&apos;ensemble du journal.
         </p>
       ) : null}
+
+      {/* 🔴 AVANT les compteurs, et pas après. Ce qui n'est pas parti prime sur
+          ce qui est parti : c'est la seule information de cet écran qui
+          appelle un geste, et c'est celle que la panne du 15/09 a laissée
+          invisible pendant 43 heures. */}
+      <IssueDuRenvoi issue={issueRenvoi} />
+      <BandeauEchecs
+        echecs={echecs}
+        adminPrefix={adminPrefix}
+        hrefFiltre={lien({ statut: "failed", page: 1 })}
+      />
 
       <div className="admin-kpi-grid">
         <AdminStatCard

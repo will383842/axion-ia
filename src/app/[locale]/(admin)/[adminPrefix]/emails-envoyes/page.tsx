@@ -20,6 +20,8 @@ import {
   lireFenetreEmails,
   lirePage,
   lireStatutEmail,
+  lireIssueRenvoi,
+  resumerEchecsRenvoyables,
 } from "@/features/admin-emails/query";
 import { VueEmails } from "./_components/VueEmails";
 import { EtatWebhookRebonds } from "./_components/EtatWebhookRebonds";
@@ -59,7 +61,10 @@ export default async function EmailsEnvoyesPage({
     page: lirePage(sp.page),
   };
 
-  const donnees = await chargerEmails(filtres);
+  // Le résumé des échecs ne dépend d'AUCUN filtre de l'écran, et c'est
+  // délibéré : un bandeau « 18 personnes attendent depuis 43 h » qui
+  // disparaîtrait parce qu'on regarde les envois réussis serait pire qu'absent.
+  const [donnees, echecs] = await Promise.all([chargerEmails(filtres), resumerEchecsRenvoyables()]);
 
   // Deux lectures Redis bornees a 1,5 s, fail-soft : elles rendent `null`
   // plutot que de lever. Le bloc affiche alors « jamais », ce qui est le bon
@@ -74,6 +79,8 @@ export default async function EmailsEnvoyesPage({
       <EtatWebhookRebonds recu={appelRecu} authentifie={appelAuthentifie} />
       <VueEmails
         donnees={donnees}
+        echecs={echecs}
+        issueRenvoi={lireIssueRenvoi(sp)}
         filtres={filtres}
         adminPrefix={adminPrefix}
         nbGabaritsDeclares={EMAIL_TEMPLATE_NAMES.length}

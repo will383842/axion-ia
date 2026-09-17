@@ -72,6 +72,8 @@ import { prisma } from "@/lib/prisma";
 import { evaluerAlertes, evaluerAlertesDetaille } from "./evaluateur";
 import {
   creerOuDedup,
+  creerOuActualiser,
+  resoudreAlertesParCode,
   resoudreAlerte,
   marquerLu,
   marquerToutLu,
@@ -868,5 +870,158 @@ describe("le moteur dit quand il boite", () => {
     });
     const r = await lireDernierBalayage();
     expect(r?.reglesEnEchec).toStrictEqual(["ok"]);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// creerOuActualiser — le fusible qui ne fondait qu'une fois (2026-09-17)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("creerOuActualiser", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    delete process.env["DATABASE_URL"];
+  });
+
+  const entree = {
+    code: "emails_echecs_consecutifs",
+    niveau: "critique" as const,
+    titre: "19 envois d'e-mails échouent d'affilée",
+    message: "19 envoi(s) ont échoué d'affilée vers 19 destinataires distincts.",
+    metadata: { chaine: 19 },
+  };
+
+  it("🔴 RAFRAÎCHIT l'alerte ouverte au lieu de la dé-dupliquer en silence", async () => {
+    // Le défaut exact : `creerOuDedup` rendait `null` et ne touchait à RIEN.
+    // Le titre affiché restait celui du premier passage — « 3 » — pendant que
+    // la panne montait à 19. Et comme ce code ne se referme pas tout seul, la
+    // dé-duplication valait pour TOUTES les pannes suivantes.
+    mp.alerteSysteme.findFirst.mockResolvedValue({
+      id: VALID_UUID,
+      titre: "3 envois d'e-mails échouent d'affilée",
+      message: "ancien message",
+      niveau: "critique",
+    });
+    mp.alerteSysteme.update.mockResolvedValue(makeAlerte({ titre: entree.titre }));
+
+    const r = await creerOuActualiser(entree);
+
+    expect(r).not.toBeNull();
+    expect(mp.alerteSysteme.create).not.toHaveBeenCalled();
+    const args = mp.alerteSysteme.update.mock.calls[0]?.[0] as {
+      where: { id: string };
+      data: Record<string, unknown>;
+    };
+    expect(args.where).toEqual({ id: VALID_UUID });
+    expect(args.data["titre"]).toBe(entree.titre);
+    expect(args.data["message"]).toBe(entree.message);
+    expect(args.data["metadata"]).toEqual(entree.metadata);
+  });
+
+  it("🔑 repasse l'alerte NON LUE — l'état a changé, il mérite un second regard", async () => {
+    mp.alerteSysteme.findFirst.mockResolvedValue({
+      id: VALID_UUID,
+      titre: "ancien",
+      message: "ancien",
+      niveau: "critique",
+    });
+    mp.alerteSysteme.update.mockResolvedValue(makeAlerte());
+
+    await creerOuActualiser(entree);
+
+    const args = mp.alerteSysteme.update.mock.calls[0]?.[0] as { data: { lu: boolean } };
+    expect(args.data.lu).toBe(false);
+  });
+
+  it("🔑 CONTRE-TÉMOIN : n'écrit RIEN quand rien n'a bougé", async () => {
+    // Sinon le passage horaire re-marquerait l'alerte « non lue » toutes les
+    // heures : au bout d'une journée, la pastille ne dirait plus « du nouveau »
+    // mais « le cron est passé ».
+    mp.alerteSysteme.findFirst.mockResolvedValue({
+      id: VALID_UUID,
+      titre: entree.titre,
+      message: entree.message,
+      niveau: entree.niveau,
+    });
+
+    await expect(creerOuActualiser(entree)).resolves.toBeNull();
+    expect(mp.alerteSysteme.update).not.toHaveBeenCalled();
+  });
+
+  it("🔑 ne touche PAS à createdAt — « depuis quand » doit rester le début de l'incident", async () => {
+    mp.alerteSysteme.findFirst.mockResolvedValue({
+      id: VALID_UUID,
+      titre: "ancien",
+      message: "ancien",
+      niveau: "critique",
+    });
+    mp.alerteSysteme.update.mockResolvedValue(makeAlerte());
+
+    await creerOuActualiser(entree);
+
+    const args = mp.alerteSysteme.update.mock.calls[0]?.[0] as { data: Record<string, unknown> };
+    expect(Object.keys(args.data)).not.toContain("createdAt");
+  });
+
+  it("CRÉE quand aucune alerte n'est ouverte", async () => {
+    mp.alerteSysteme.findFirst.mockResolvedValue(null);
+    mp.alerteSysteme.create.mockResolvedValue(makeAlerte());
+
+    const r = await creerOuActualiser(entree);
+
+    expect(r).not.toBeNull();
+    expect(mp.alerteSysteme.create).toHaveBeenCalledTimes(1);
+    expect(mp.alerteSysteme.update).not.toHaveBeenCalled();
+  });
+
+  it("reste muet au build (base stub)", async () => {
+    process.env["DATABASE_URL"] = "postgresql://stub:stub@stub.invalid:5432/stub";
+    await expect(creerOuActualiser(entree)).resolves.toBeNull();
+    expect(mp.alerteSysteme.findFirst).not.toHaveBeenCalled();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// resoudreAlertesParCode — la fermeture par l'ÉMETTEUR, pas par le balayage
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("resoudreAlertesParCode", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    delete process.env["DATABASE_URL"];
+  });
+
+  it("🔴 referme les alertes ouvertes des codes demandés, et elles seules", async () => {
+    mp.alerteSysteme.updateMany.mockResolvedValue({ count: 2 });
+
+    const n = await resoudreAlertesParCode(["emails_echecs_consecutifs"]);
+
+    expect(n).toBe(2);
+    const args = mp.alerteSysteme.updateMany.mock.calls[0]?.[0] as {
+      where: Record<string, unknown>;
+      data: Record<string, unknown>;
+    };
+    expect(args.where).toMatchObject({
+      code: { in: ["emails_echecs_consecutifs"] },
+      resolue: false,
+    });
+    expect(args.data["resolue"]).toBe(true);
+    expect(args.data["resolueAt"]).toBeInstanceOf(Date);
+  });
+
+  it("🔑 CONTRE-TÉMOIN : une liste vide n'écrit RIEN", async () => {
+    // Sans cette garde, un appelant qui n'a rien à refermer déclencherait un
+    // `updateMany` avec `code: { in: [] }` — inoffensif ici, mais c'est
+    // exactement le genre de requête qui devient destructrice à la moindre
+    // refonte du `where`.
+    const n = await resoudreAlertesParCode([]);
+    expect(n).toBe(0);
+    expect(mp.alerteSysteme.updateMany).not.toHaveBeenCalled();
+  });
+
+  it("reste muet au build (base stub)", async () => {
+    process.env["DATABASE_URL"] = "postgresql://stub:stub@stub.invalid:5432/stub";
+    await expect(resoudreAlertesParCode(["emails_echecs_consecutifs"])).resolves.toBe(0);
+    expect(mp.alerteSysteme.updateMany).not.toHaveBeenCalled();
   });
 });

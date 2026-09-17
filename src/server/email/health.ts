@@ -25,6 +25,12 @@
  *
  * - `emails_en_echec` : les envois PARTENT et sont REFUSÉS. Relais injoignable,
  *   authentification rejetée, quota dépassé.
+ * - `emails_echecs_consecutifs` : les envois échouent EN SÉRIE, sans un seul
+ *   succès entre eux. Ajouté le 2026-09-17, après 43 heures de panne dont
+ *   personne n'a été averti. C'est le seul des trois qui ne dépende pas du
+ *   volume : `emails_en_echec` ci-dessus compte un taux (3 échecs / 6 h) et
+ *   reste donc muet sous 0,5 échec par heure, quelle que soit la durée de la
+ *   panne.
  * - `emails_bloques_en_file` : les envois ne partent même pas. Des lignes
  *   restent `pending` bien après leur enfilage — worker mort, file non
  *   consommée. C'est le symptôme qu'aucun compteur ne pouvait montrer avant que
@@ -41,8 +47,18 @@
 
 import { prisma } from "@/lib/prisma";
 import { lireDernierAppelRecu, lireDernierAppelWebhook } from "./webhook-battement";
-import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
+import {
+  creerOuActualiser,
+  resoudreAlertesParCode,
+} from "@/server/qualiopi/alertes/alertes-service";
 import { notify } from "@/server/notifications";
+import {
+  analyserSerie,
+  doitAlerterSerie,
+  resumeSerie,
+  SERIE_VIDE,
+  type SerieEchecs,
+} from "./serie-echecs";
 import { EmailLogStatus } from "../../../prisma/generated/client";
 
 function estStub(): boolean {
@@ -63,6 +79,40 @@ export const FENETRE_ECHECS_H = 6;
  * bruit.
  */
 export const SEUIL_ECHECS = 3;
+
+/**
+ * Combien de lignes d'échec on relit au plus pour reconstituer la série.
+ *
+ * ⚠️ LIMITE DÉCLARÉE : au-delà, `serieEchecs.total` et `serieEchecs.depuis`
+ * SOUS-ESTIMENT (on lit les plus récentes). La DÉCISION, elle, n'en dépend
+ * pas — elle se prend à 3. Deux cents échecs consécutifs représentent des
+ * semaines de panne sur cette production ; l'alerte sera tombée depuis
+ * longtemps.
+ */
+export const PLAFOND_LECTURE_SERIE = 200;
+
+/**
+ * Condition « cet échec appartient à la série en cours », isolée pour être
+ * éprouvée sur des lignes plutôt que sur sa forme.
+ *
+ * La série, ce sont les échecs postérieurs au dernier envoi RÉUSSI. Deux
+ * branches, parce que `failedAt` n'est pas garanti sur les lignes anciennes :
+ * on retombe alors sur `createdAt`, plutôt que de les laisser disparaître de la
+ * série — un échec qu'on ne compte pas est un échec qui n'alerte pas.
+ *
+ * `dernierSucces === null` (aucun envoi réussi de toute l'histoire, ou base
+ * fraîche) : aucune borne basse, tous les échecs appartiennent à la série.
+ */
+export function whereEchecsDeLaSerie(dernierSucces: Date | null): {
+  status: typeof EmailLogStatus.failed;
+  OR?: Array<{ failedAt: { gt: Date } } | { failedAt: null; createdAt: { gt: Date } }>;
+} {
+  if (dernierSucces === null) return { status: EmailLogStatus.failed };
+  return {
+    status: EmailLogStatus.failed,
+    OR: [{ failedAt: { gt: dernierSucces } }, { failedAt: null, createdAt: { gt: dernierSucces } }],
+  };
+}
 
 /**
  * Âge à partir duquel une ligne `pending` est anormale — compté depuis son
@@ -208,6 +258,27 @@ export interface SanteEmails {
    * dont rien ne rebondit. On expose la valeur, on ne la juge pas.
    */
   dernierAppelRecu: string | null;
+  /**
+   * 🔑 La SÉRIE d'échecs en cours — échecs consécutifs depuis le dernier envoi
+   * réussi. Ajouté le 2026-09-17 après 43 heures de panne muette.
+   *
+   * Indépendante du volume, là où `echecsRecents` est un taux sur six heures :
+   * une chaîne morte un week-end calme ne produit jamais 3 échecs dans une même
+   * fenêtre, et produit toujours 3 échecs d'affilée.
+   *
+   * ⚠️ Ne veut rien dire quand `mesureIndisponible` est levé, comme les autres
+   * compteurs.
+   */
+  serieEchecs: SerieEchecs;
+  /**
+   * Date ISO du dernier envoi RÉUSSI, ou `null` si aucun n'a jamais abouti.
+   *
+   * C'est la preuve positive sur laquelle la série se referme : sans un succès
+   * postérieur, on ne prétend pas que la chaîne est rétablie.
+   */
+  dernierSuccesAt: string | null;
+  /** Codes d'alerte que ce passage a REFERMÉS parce que les envois sont repartis. */
+  alertesResolues: string[];
   alertesLevees: string[];
   /**
    * 🔑 « Je n'ai rien pu regarder » ≠ « rien ne va mal ».
@@ -241,6 +312,9 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
     detectionRebondsDebranchee: !process.env["ZEPTOMAIL_WEBHOOK_KEY"]?.trim(),
     dernierAppelWebhook: null,
     dernierAppelRecu: null,
+    serieEchecs: SERIE_VIDE,
+    dernierSuccesAt: null,
+    alertesResolues: [],
     alertesLevees: [],
     mesureIndisponible: false,
   };
@@ -260,7 +334,7 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
   const depuisRebonds = new Date(maintenant.getTime() - FENETRE_REBONDS_H * 3600_000);
 
   try {
-    [resultat.echecsRecents, resultat.bloquesEnFile, resultat.rebondsRecents] = await Promise.all([
+    const [echecsRecents, bloquesEnFile, rebondsRecents, dernierSucces] = await Promise.all([
       prisma.emailLog.count({
         where: { status: EmailLogStatus.failed, failedAt: { gte: depuis } },
       }),
@@ -271,7 +345,30 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
       prisma.emailLog.count({
         where: { status: EmailLogStatus.bounced, bouncedAt: { gte: depuisRebonds } },
       }),
+      // Le dernier envoi RÉUSSI. C'est lui qui borne la série ET qui prouve le
+      // rétablissement : sans succès postérieur, on ne referme rien.
+      prisma.emailLog.findFirst({
+        where: { status: EmailLogStatus.sent, sentAt: { not: null } },
+        orderBy: { sentAt: "desc" },
+        select: { sentAt: true },
+      }),
     ]);
+    resultat.echecsRecents = echecsRecents;
+    resultat.bloquesEnFile = bloquesEnFile;
+    resultat.rebondsRecents = rebondsRecents;
+
+    const dernierSuccesAt = dernierSucces?.sentAt ?? null;
+    resultat.dernierSuccesAt = dernierSuccesAt?.toISOString() ?? null;
+
+    // Deuxième temps, et non un quatrième membre du `Promise.all` : la borne de
+    // cette lecture est le résultat de la précédente.
+    const lignes = await prisma.emailLog.findMany({
+      where: whereEchecsDeLaSerie(dernierSuccesAt),
+      orderBy: { failedAt: "desc" },
+      take: PLAFOND_LECTURE_SERIE,
+      select: { recipient: true, template: true, error: true, failedAt: true, createdAt: true },
+    });
+    resultat.serieEchecs = analyserSerie(lignes);
   } catch (e) {
     // 🔴 2026-08-25 — CE CHEMIN RENDAIT UN ZÉRO QUI AVAIT L'AIR SAIN.
     //
@@ -304,6 +401,70 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
     );
     resultat.alertesLevees.push("emails_sante_non_mesurable");
     return resultat;
+  }
+
+  // ── La SÉRIE, et le retour à la normale ────────────────────────────────────
+  //
+  // 🔴 2026-09-17 — les deux moitiés du défaut qui a coûté 43 heures.
+  //
+  // (1) LA CAUSE DU SILENCE, mesurée : une alerte levée puis jamais refermée
+  //     dé-duplique TOUTES les suivantes — `creerOuDedup` rend `null` sur une
+  //     alerte ouverte de même code, sans rien écrire. Le premier incident de
+  //     l'histoire du système consommait le signal pour toujours, et le titre
+  //     affiché restait figé sur le compte de son premier passage. On rafraîchit
+  //     donc l'alerte ouverte (`creerOuActualiser`) et on la referme sur preuve
+  //     positive, ici même.
+  //     ⚠️ Ce n'est PAS le seuil qui était en cause : 19 échecs sur 43 h
+  //     atteignent bien 3 dans une fenêtre de 6 h. Mesuré dans
+  //     `serie-echecs.spec.ts`, contre la mauvaise piste.
+  // (2) Le critère de TAUX ci-dessous mesure quand même le trafic autant que la
+  //     panne : il lui faut 0,5 échec par heure pour se lever. Une chaîne morte
+  //     un week-end calme n'y arrive jamais. La série, elle, ne dépend de rien
+  //     d'autre que d'elle-même.
+  if (doitAlerterSerie(resultat.serieEchecs)) {
+    const s = resultat.serieEchecs;
+    const titre =
+      `${s.chaine} envois d'e-mails échouent d'affilée — plus rien ne part` +
+      (s.destinatairesDistincts > 1 ? ` (${s.destinatairesDistincts} destinataires)` : "");
+    const message =
+      `${resumeSerie(s, maintenant)} ` +
+      `Aucun envoi n'a abouti depuis ${
+        resultat.dernierSuccesAt
+          ? `le ${new Date(resultat.dernierSuccesAt).toLocaleString("fr-FR")}`
+          : "toujours (aucun succès au journal)"
+      }. ` +
+      (s.motif ? `Motif rendu par le relais : « ${s.motif} ». ` : "") +
+      `Vérifier en priorité les identifiants du relais (SMTP_USER / SMTP_PASS côté Coolify), ` +
+      `puis le quota du compte. Une fois réparé : console → E-mails envoyés, bandeau rouge → ` +
+      `« Renvoyer les envois en échec » remet à la poste ce qui est resté à quai.`;
+    await leverAlerte("emails_echecs_consecutifs", titre, message, s.chaine, {
+      total: s.total,
+      chaine: s.chaine,
+      destinataire: s.destinataire,
+      destinatairesDistincts: s.destinatairesDistincts,
+      depuis: s.depuis?.toISOString() ?? null,
+      motif: s.motif,
+    });
+    resultat.alertesLevees.push("emails_echecs_consecutifs");
+  } else if (resultat.serieEchecs.total === 0 && resultat.dernierSuccesAt !== null) {
+    // 🔑 PREUVE POSITIVE, et elle seule : un envoi a réussi et plus aucun échec
+    // ne lui est postérieur. Refermer sur « je ne vois plus d'échec » suffirait
+    // à effacer l'alerte le jour où plus RIEN ne s'envoie — c'est-à-dire dans le
+    // pire des cas, pas le meilleur.
+    try {
+      const fermees = await resoudreAlertesParCode(["emails_echecs_consecutifs"]);
+      if (fermees > 0) {
+        resultat.alertesResolues.push("emails_echecs_consecutifs");
+        console.warn(
+          `[email-sante] ✅ les envois sont repartis : ${fermees} alerte(s) « série d'échecs » refermée(s).`,
+        );
+      }
+    } catch (e) {
+      console.error(
+        "[email-sante] fermeture automatique impossible :",
+        e instanceof Error ? e.message : String(e),
+      );
+    }
   }
 
   if (resultat.echecsRecents >= SEUIL_ECHECS) {
@@ -400,16 +561,23 @@ async function leverAlerte(
   titre: string,
   message: string,
   compte: number,
+  detail?: Record<string, unknown>,
 ): Promise<void> {
   console.error(`[email-sante] ⛔ ${titre} — ${message}`);
 
   try {
-    await creerOuDedup({
+    // 🔴 `creerOuActualiser` et non `creerOuDedup` : ces alertes décrivent un
+    // ÉTAT QUI DURE, pas un fait accompli. Avec la dé-duplication muette, le
+    // titre affiché restait figé sur le compte du premier passage pendant que la
+    // panne grossissait — et comme aucun de ces codes ne se referme tout seul,
+    // la toute première occurrence de l'histoire du système éteignait le signal
+    // pour toutes les suivantes. Un fusible qui ne fond qu'une fois.
+    await creerOuActualiser({
       code,
       niveau: "critique",
       titre,
       message,
-      metadata: { compte, detecteLe: new Date().toISOString() },
+      metadata: { compte, detecteLe: new Date().toISOString(), ...(detail ?? {}) },
     });
   } catch (e) {
     console.error(

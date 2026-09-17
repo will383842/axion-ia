@@ -153,6 +153,11 @@ const CODES_ATTENDUS: string[] = [
   // d'où leur `resolutionAuto: false`, sans quoi le premier
   // `synchroniserAlertes` venu les résoudrait avant que quiconque les ait lus.
   "emails_en_echec",
+  // 2026-09-17 — le critère de SÉRIE, ajouté après 43 h de panne muette.
+  // `emails_en_echec` ci-dessus compte un TAUX (3 échecs / 6 h) et reste donc
+  // aveugle sous 0,5 échec par heure, quelle que soit la durée de la panne.
+  // Celui-ci compte des échecs CONSÉCUTIFS : indépendant du volume.
+  "emails_echecs_consecutifs",
   "emails_bloques_en_file",
   // Ajoutés le 2026-08-31 : la sonde levait CINQ codes, ce catalogue en
   // connaissait deux. Les trois autres arrivaient en console sans niveau ni

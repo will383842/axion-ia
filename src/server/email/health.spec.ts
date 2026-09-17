@@ -14,7 +14,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const countMock = vi.fn();
+const findFirstMock = vi.fn();
+const findManyMock = vi.fn();
 const creerOuDedupMock = vi.fn();
+const resoudreParCodeMock = vi.fn();
 const notifyMock = vi.fn();
 
 // Le battement du webhook lit Redis. Sans cette doublure, les tests mesurent
@@ -26,10 +29,22 @@ vi.mock("@/lib/redis", () => ({
 }));
 
 vi.mock("@/lib/prisma", () => ({
-  prisma: { emailLog: { count: (...a: unknown[]) => countMock(...a) } },
+  prisma: {
+    emailLog: {
+      count: (...a: unknown[]) => countMock(...a),
+      findFirst: (...a: unknown[]) => findFirstMock(...a),
+      findMany: (...a: unknown[]) => findManyMock(...a),
+    },
+  },
 }));
+// ⚠️ `creerOuActualiser` DOIT figurer ici : la sonde l'importe depuis le
+// 2026-09-17, et un module doublé sans l'un de ses exports rend `undefined` —
+// donc un `TypeError` avalé par le `catch` fail-soft, c'est-à-dire un fichier
+// entier vert qui ne mesure plus rien.
 vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
   creerOuDedup: (...a: unknown[]) => creerOuDedupMock(...a),
+  creerOuActualiser: (...a: unknown[]) => creerOuDedupMock(...a),
+  resoudreAlertesParCode: (...a: unknown[]) => resoudreParCodeMock(...a),
 }));
 vi.mock("@/server/notifications", () => ({
   notify: (...a: unknown[]) => notifyMock(...a),
@@ -41,7 +56,9 @@ import {
   FENETRE_ECHECS_H,
   AGE_BLOCAGE_MIN,
   whereEnvoisBloques,
+  whereEchecsDeLaSerie,
 } from "./health";
+import { SEUIL_ECHECS_CONSECUTIFS } from "./serie-echecs";
 
 /**
  * `count` est appelé TROIS fois depuis le 2026-08-31 : échecs, bloqués, puis
@@ -55,9 +72,29 @@ function compteurs(echecs: number, bloques: number, rebonds = 0): void {
     .mockResolvedValueOnce(rebonds);
 }
 
+/** Le dernier envoi RÉUSSI, et les échecs qui le suivent. */
+function serie(dernierSucces: Date | null, echecs: readonly unknown[]): void {
+  findFirstMock.mockResolvedValue(dernierSucces ? { sentAt: dernierSucces } : null);
+  findManyMock.mockResolvedValue(echecs);
+}
+
+const T = new Date("2026-09-17T08:40:00.000Z");
+const echecLigne = (recipient: string, heures: number, error = "535 Authentication Failed") => ({
+  recipient,
+  template: "candidature-accuse-reception",
+  error,
+  failedAt: new Date(T.getTime() - heures * 3600_000),
+  createdAt: new Date(T.getTime() - heures * 3600_000),
+});
+
 beforeEach(() => {
   vi.clearAllMocks();
   delete process.env["DATABASE_URL"];
+  // Par défaut : un envoi a réussi il y a une minute, aucun échec derrière.
+  // Sans cette ligne, chaque test hériterait d'une série indéfinie — vraie,
+  // mais sans rapport avec ce qu'il mesure.
+  serie(new Date(T.getTime() - 60_000), []);
+  resoudreParCodeMock.mockResolvedValue(0);
   // 🔑 Par défaut, on se place dans le cas où la détection de rebonds EST
   // branchée. Sans cette ligne, chaque test hériterait de l'alerte
   // `emails_rebonds_non_detectes` — vraie, mais sans rapport avec ce qu'il
@@ -165,6 +202,181 @@ describe("verifierSanteEmails — quand la chaîne casse", () => {
     const r = await verifierSanteEmails();
     expect(r.alertesLevees).toEqual(["emails_en_echec", "emails_bloques_en_file"]);
     expect(notifyMock).toHaveBeenCalledTimes(2);
+  });
+});
+
+/**
+ * 🔴 L'incident du 2026-09-15 — 43 heures, 19 échecs, personne de prévenu.
+ *
+ * Ce bloc garde les trois propriétés qui manquaient, et RIEN d'autre :
+ *   1. une série d'échecs consécutifs lève une alerte, même quand le taux sur
+ *      six heures ne l'aurait jamais levée (week-end, file calme) ;
+ *   2. l'alerte ouverte est RAFRAÎCHIE à chaque passage — sinon son titre reste
+ *      figé sur le compte du premier tour et, comme aucun de ces codes ne se
+ *      referme seul, toutes les pannes suivantes sont dé-dupliquées en silence ;
+ *   3. elle se referme d'elle-même, mais seulement sur PREUVE POSITIVE.
+ */
+describe("verifierSanteEmails — la série d'échecs consécutifs", () => {
+  it("🔴 lève « emails_echecs_consecutifs » au troisième échec d'affilée", async () => {
+    compteurs(0, 0);
+    serie(new Date(T.getTime() - 40 * 3600_000), [
+      echecLigne("a@exemple.fr", 30),
+      echecLigne("b@exemple.fr", 20),
+      echecLigne("c@exemple.fr", 10),
+    ]);
+
+    const r = await verifierSanteEmails(T);
+
+    expect(r.serieEchecs.chaine).toBe(SEUIL_ECHECS_CONSECUTIFS);
+    expect(r.alertesLevees).toContain("emails_echecs_consecutifs");
+    expect(creerOuDedupMock).toHaveBeenCalledWith(
+      expect.objectContaining({ code: "emails_echecs_consecutifs", niveau: "critique" }),
+    );
+  });
+
+  it("🔴 crie là où le TAUX sur 6 h se serait tu — trois échecs espacés de 10 h", async () => {
+    // `echecsRecents` vaut 0 : aucune fenêtre de six heures n'en contient trois.
+    // C'est exactement le cas que l'ancien critère ne pouvait pas voir.
+    compteurs(0, 0);
+    serie(new Date(T.getTime() - 40 * 3600_000), [
+      echecLigne("a@exemple.fr", 30),
+      echecLigne("b@exemple.fr", 20),
+      echecLigne("c@exemple.fr", 10),
+    ]);
+
+    const r = await verifierSanteEmails(T);
+
+    expect(r.echecsRecents, "le taux ne voit rien, et c'est le point").toBe(0);
+    expect(r.alertesLevees).not.toContain("emails_en_echec");
+    expect(r.alertesLevees).toContain("emails_echecs_consecutifs");
+  });
+
+  it("dit COMBIEN de personnes et DEPUIS QUAND, dans le message et les métadonnées", async () => {
+    compteurs(0, 0);
+    serie(new Date(T.getTime() - 44 * 3600_000), [
+      echecLigne("a@exemple.fr", 43),
+      echecLigne("b@exemple.fr", 20),
+      echecLigne("c@exemple.fr", 1),
+    ]);
+
+    await verifierSanteEmails(T);
+
+    const appel = creerOuDedupMock.mock.calls.find(
+      (c) => (c[0] as { code: string }).code === "emails_echecs_consecutifs",
+    )?.[0] as { titre: string; message: string; metadata: Record<string, unknown> };
+
+    expect(appel.titre).toContain("3 destinataires");
+    expect(appel.message).toContain("43 h");
+    expect(appel.message).toContain("535");
+    expect(appel.metadata["destinatairesDistincts"]).toBe(3);
+  });
+
+  it("🔴 trois rebonds d'ADRESSE d'affilée ne lèvent PAS la panne de chaîne", async () => {
+    compteurs(0, 0);
+    serie(new Date(T.getTime() - 40 * 3600_000), [
+      echecLigne("mort@x.fr", 30, "550 5.1.1 User unknown"),
+      echecLigne("parti@y.fr", 20, "550 5.1.1 Recipient address rejected"),
+      echecLigne("plein@z.fr", 10, "552 5.2.2 Mailbox full"),
+    ]);
+
+    const r = await verifierSanteEmails(T);
+
+    expect(r.serieEchecs.total).toBe(3);
+    expect(r.serieEchecs.destinataire).toBe(3);
+    expect(r.alertesLevees).not.toContain("emails_echecs_consecutifs");
+  });
+
+  it("🔴 RAFRAÎCHIT l'alerte ouverte au lieu de la dé-dupliquer en silence", async () => {
+    // Le fusible qui ne fondait qu'une fois : `creerOuDedup` rend `null` dès
+    // qu'une alerte du même code est ouverte, et aucun de ces codes ne se
+    // referme tout seul. Le compte affiché restait donc celui du premier
+    // passage — 3 — pendant que la panne montait à 19.
+    compteurs(0, 0);
+    serie(
+      new Date(T.getTime() - 44 * 3600_000),
+      Array.from({ length: 19 }, (_, i) => echecLigne(`c${i}@exemple.fr`, 43 - i * 2)),
+    );
+
+    await verifierSanteEmails(T);
+
+    const appel = creerOuDedupMock.mock.calls.find(
+      (c) => (c[0] as { code: string }).code === "emails_echecs_consecutifs",
+    )?.[0] as { titre: string; metadata: Record<string, unknown> };
+
+    expect(
+      appel.titre,
+      "le titre doit porter le compte COURANT, pas celui du premier tour",
+    ).toContain("19");
+    expect(appel.metadata["chaine"]).toBe(19);
+  });
+
+  it("🔴 se referme d'elle-même quand les envois repartent", async () => {
+    compteurs(0, 0);
+    resoudreParCodeMock.mockResolvedValue(1);
+    serie(new Date(T.getTime() - 60_000), []); // un succès, aucun échec derrière
+
+    const r = await verifierSanteEmails(T);
+
+    expect(resoudreParCodeMock).toHaveBeenCalledWith(["emails_echecs_consecutifs"]);
+    expect(r.alertesResolues).toContain("emails_echecs_consecutifs");
+  });
+
+  it("🔑 CONTRE-TÉMOIN : ne referme RIEN tant qu'aucun envoi n'a réussi", async () => {
+    // Refermer sur « je ne vois plus d'échec » effacerait l'alerte le jour où
+    // plus RIEN ne s'envoie — le pire des cas, pas le meilleur.
+    compteurs(0, 0);
+    serie(null, []);
+
+    const r = await verifierSanteEmails(T);
+
+    expect(resoudreParCodeMock).not.toHaveBeenCalled();
+    expect(r.alertesResolues).toEqual([]);
+  });
+
+  it("🔑 CONTRE-TÉMOIN : ne referme rien tant que la série dure", async () => {
+    compteurs(0, 0);
+    serie(new Date(T.getTime() - 40 * 3600_000), [echecLigne("a@exemple.fr", 1)]);
+
+    const r = await verifierSanteEmails(T);
+
+    expect(resoudreParCodeMock).not.toHaveBeenCalled();
+    expect(r.alertesResolues).toEqual([]);
+  });
+});
+
+describe("whereEchecsDeLaSerie — la borne de la série, éprouvée sur des lignes", () => {
+  const succes = new Date("2026-09-15T13:00:00.000Z");
+
+  /** Applique le `where` rendu à une ligne, comme le ferait la base. */
+  function retenue(l: { failedAt: Date | null; createdAt: Date }, borne: Date | null): boolean {
+    const w = whereEchecsDeLaSerie(borne);
+    if (!w.OR) return true; // aucune borne : toute la table
+    return w.OR.some((c) =>
+      "createdAt" in c
+        ? l.failedAt === null && l.createdAt > c.createdAt.gt
+        : l.failedAt !== null && l.failedAt > c.failedAt.gt,
+    );
+  }
+
+  it("retient les échecs POSTÉRIEURS au dernier succès", () => {
+    const apres = { failedAt: new Date("2026-09-15T13:17:00.000Z"), createdAt: succes };
+    expect(retenue(apres, succes)).toBe(true);
+  });
+
+  it("🔑 CONTRE-TÉMOIN : écarte ceux qui le PRÉCÈDENT — sinon la série ne se remet jamais à zéro", () => {
+    const avant = { failedAt: new Date("2026-09-14T09:00:00.000Z"), createdAt: succes };
+    expect(retenue(avant, succes)).toBe(false);
+  });
+
+  it("n'oublie pas les lignes anciennes sans failedAt — elles comptent par createdAt", () => {
+    const heritee = { failedAt: null, createdAt: new Date("2026-09-15T14:00:00.000Z") };
+    expect(retenue(heritee, succes)).toBe(true);
+    const herriteeAvant = { failedAt: null, createdAt: new Date("2026-09-14T14:00:00.000Z") };
+    expect(retenue(herriteeAvant, succes)).toBe(false);
+  });
+
+  it("sans aucun succès au journal, tout échec appartient à la série", () => {
+    expect(whereEchecsDeLaSerie(null).OR).toBeUndefined();
   });
 });
 

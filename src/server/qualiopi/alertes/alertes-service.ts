@@ -136,6 +136,104 @@ export async function creerOuDedup(input: AlerteInput): Promise<AlerteSysteme | 
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// creerOuActualiser
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Crée l'alerte, ou RAFRAÎCHIT celle qui est déjà ouverte.
+ *
+ * 🔴 2026-09-17 — LE DÉFAUT QUE `creerOuDedup` LAISSAIT PASSER, ET QU'IL A
+ * COÛTÉ 43 HEURES.
+ *
+ * `creerOuDedup` rend `null` dès qu'une alerte du même code est ouverte, et ne
+ * touche à rien. C'est juste pour un fait ACCOMPLI — « ce devis est expiré » ne
+ * change pas de contenu. C'est faux pour un ÉTAT QUI DURE : pendant la panne
+ * d'envoi du 15 au 17 septembre, le titre affiché à l'écran restait figé sur le
+ * compte du tout premier passage, alors que les échecs s'accumulaient. Une
+ * alerte dont le contenu ne bouge plus se lit comme une vieille alerte qu'on a
+ * déjà vue — c'est-à-dire qu'elle cesse d'informer précisément au moment où
+ * elle aurait le plus à dire.
+ *
+ * Pire : une alerte de ce genre n'étant jamais refermée automatiquement (voir
+ * `resolutionAuto`), la dé-duplication est définitive. La PREMIÈRE panne de
+ * l'histoire du système consomme le signal, et toutes les suivantes sont
+ * silencieuses tant que personne n'a cliqué « résolue ». Un fusible qui ne
+ * fond qu'une fois.
+ *
+ * Ici, on met à jour `titre`, `message` et `metadata` de l'alerte ouverte, et
+ * on la repasse NON LUE : l'état a changé, il mérite un second regard.
+ * `createdAt` n'est PAS touché — « depuis quand » doit rester le début de
+ * l'incident, pas l'heure du dernier passage du cron.
+ */
+export async function creerOuActualiser(input: AlerteInput): Promise<AlerteSysteme | null> {
+  if (isStub()) return null;
+
+  const existante = await prisma.alerteSysteme.findFirst({
+    where: {
+      code: input.code,
+      resolue: false,
+      ...(input.cibleId !== undefined ? { cibleId: input.cibleId } : { cibleId: null }),
+    },
+    select: { id: true, titre: true, message: true, niveau: true },
+  });
+
+  if (existante) {
+    // ⚠️ Une LECTURE d'abord, une écriture ensuite, et seulement sur ce qui a
+    // réellement bougé — même discipline que le rafraîchissement de
+    // `synchroniserAlertes`. Réécrire à l'identique ferait tourner `updatedAt`
+    // à chaque passage horaire, et surtout re-marquerait l'alerte « non lue »
+    // toutes les heures : au bout d'une journée, la pastille qui devrait dire
+    // « du nouveau » ne dirait plus que « le cron est passé ».
+    const identique =
+      existante.titre === input.titre &&
+      existante.message === input.message &&
+      existante.niveau === input.niveau;
+    if (identique) return null;
+
+    return prisma.alerteSysteme.update({
+      where: { id: existante.id },
+      data: {
+        titre: input.titre,
+        message: input.message,
+        niveau: input.niveau,
+        // L'état a CHANGÉ (le compte a monté, le motif a tourné) : ce n'est plus
+        // l'alerte qu'on a lue hier, elle mérite un second regard.
+        lu: false,
+        metadata: (input.metadata ?? {}) as never,
+      },
+    });
+  }
+
+  return creerOuDedup(input);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// resoudreAlertesParCode
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Referme toutes les alertes ouvertes portant l'un de ces codes.
+ *
+ * 🔑 Ce n'est PAS `resolutionAuto`, et la distinction est le cœur du sujet.
+ * `synchroniserAlertes` referme ce que son balayage ne voit plus parmi les
+ * candidates — or les alertes de la sonde e-mail ne sont JAMAIS des candidates
+ * de ce balayage, donc les y inscrire les ferait refermer au premier tour, avant
+ * lecture (c'est le piège que le catalogue documente sur six codes).
+ *
+ * Ici, c'est l'ÉMETTEUR qui referme, et seulement sur une preuve positive :
+ * un envoi a réussi depuis. Un appelant qui n'a rien pu mesurer ne doit pas
+ * appeler cette fonction — l'absence de mesure n'est pas un rétablissement.
+ */
+export async function resoudreAlertesParCode(codes: readonly string[]): Promise<number> {
+  if (isStub() || codes.length === 0) return 0;
+  const { count } = await prisma.alerteSysteme.updateMany({
+    where: { code: { in: [...codes] }, resolue: false },
+    data: { resolue: true, resolueAt: new Date() },
+  });
+  return count;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // resoudreAlerte
 // ─────────────────────────────────────────────────────────────────────────────
 
