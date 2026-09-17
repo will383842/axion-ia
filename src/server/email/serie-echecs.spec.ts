@@ -228,6 +228,48 @@ describe("estEchecDestinataire — le classement, motif par motif", () => {
     }
   });
 
+  /**
+   * 🔴 LE PRÉDICAT ÉCHOUAIT FERMÉ SUR UN REJET CÔTÉ EXPÉDITEUR.
+   *
+   * Défaut trouvé en relecture le 2026-09-17, en EXÉCUTANT les expressions sur
+   * des motifs réels. Le mot « address » suffisait à classer « destinataire » :
+   *
+   *   `553 5.7.1 Sender address rejected: not owned by user`
+   *   `550 Message rejected due to spam content, address blocked`
+   *
+   * Or ces deux motifs disent l'INVERSE : c'est NOTRE adresse d'expédition qui
+   * est refusée, ou NOTRE réputation. Le jour où le compte d'envoi est suspendu,
+   * 100 % des envois rendent `553 Sender address rejected` → `chaine = 0` →
+   * aucune alerte. Panne totale, silence total — le défaut réparé par ce module,
+   * rétabli par sa propre liste de motifs.
+   */
+  const refusQuiParlentDeNOUS = [
+    "553 5.7.1 Sender address rejected: not owned by user",
+    "550 Message rejected due to spam content, address blocked",
+    "553 Sender address rejected: Access denied",
+    "550 5.7.1 Service unavailable, sending domain blocked by reputation",
+    "554 5.7.1 Message rejected by policy",
+    "MAIL FROM command failed: 553 Invalid sender address",
+  ];
+
+  it("🔴 un refus qui parle de L'EXPÉDITEUR est une panne de CHAÎNE", () => {
+    for (const m of refusQuiParlentDeNOUS) {
+      expect(estEchecDestinataire(m), `classé « destinataire » à tort : ${m}`).toBe(false);
+    }
+  });
+
+  it("🔴 une série de « Sender address rejected » DÉCLENCHE l'alerte", () => {
+    // Le scénario complet, bout en bout : compte d'envoi suspendu, tous les
+    // messages refusés à l'identique. C'est le cas le plus grave et c'était le
+    // seul totalement muet.
+    const serie = analyserSerie(
+      refusQuiParlentDeNOUS.slice(0, 3).map((m, i) => echec(i, `p${i}@exemple.fr`, m)),
+    );
+    expect(serie.destinataire).toBe(0);
+    expect(serie.chaine).toBe(3);
+    expect(doitAlerterSerie(serie)).toBe(true);
+  });
+
   it("🔑 CONTRE-TÉMOIN : n'avale PAS les pannes de chaîne", () => {
     // Sans ce bloc, un prédicat qui rendrait `true` pour tout passerait le test
     // précédent en paraissant juste — et éteindrait l'alerte sur l'incident même

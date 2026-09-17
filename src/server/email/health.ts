@@ -56,6 +56,7 @@ import {
   analyserSerie,
   doitAlerterSerie,
   resumeSerie,
+  whereEchecsDeLaSerie,
   SERIE_VIDE,
   type SerieEchecs,
 } from "./serie-echecs";
@@ -92,6 +93,55 @@ export const SEUIL_ECHECS = 3;
 export const PLAFOND_LECTURE_SERIE = 200;
 
 /**
+ * Fraîcheur EXIGÉE du succès qui referme l'alerte de série.
+ *
+ * 🔴 Défaut relevé en relecture (2026-09-17) : la première version refermait sur
+ * « plus aucun échec dans la série » + « un succès existe quelque part dans
+ * l'histoire ». Ce n'est pas une preuve de rétablissement, et le renvoi en lot
+ * de cette même PR le démontrait : il repasse les lignes en `pending`, la série
+ * tombe à zéro, et l'alerte CRITIQUE se refermait **relais toujours mort**.
+ *
+ * Six heures : un succès doit avoir eu lieu RÉCEMMENT. Une période sans trafic
+ * ne referme donc rien — c'est le bon côté du marché, l'absence de mesure n'est
+ * pas un rétablissement.
+ */
+export const FENETRE_RETABLISSEMENT_H = 6;
+
+/**
+ * La chaîne est-elle DÉMONTRABLEMENT rétablie ?
+ *
+ * Fonction pure, isolée pour être éprouvée sur des valeurs — la première version
+ * de cette condition vivait en ligne dans un `else if`, et ses deux fautes y
+ * étaient invisibles :
+ *
+ * 🔴 **(a) elle lisait `total`, pas `chaine`.** Une seule adresse morte dans la
+ * série empêchait donc la fermeture, et l'alerte CRITIQUE « plus rien ne part »
+ * restait ouverte après réparation — le faux critique du 07→09/09 que
+ * `AGE_BLOCAGE_MIN` raconte plus haut, refait à l'identique dix jours plus tard.
+ * Le déclenchement lit `chaine` ; la fermeture doit lire la même grandeur, sinon
+ * les deux portes ne donnent pas sur la même pièce.
+ *
+ * 🔴 **(b) elle acceptait n'importe quel succès de l'histoire.** « Aucun échec
+ * dans la série » + « un `sent` existe quelque part » n'est pas un
+ * rétablissement : le renvoi en lot de cette même PR repasse les lignes en
+ * `pending`, la série tombe à zéro, et l'alerte se refermait **relais toujours
+ * mort**. Le succès doit être RÉCENT.
+ *
+ * ⚠️ Une période sans aucun trafic ne referme rien, et c'est voulu : l'absence
+ * de mesure n'est pas une bonne nouvelle.
+ */
+export function retablissementProuve(
+  serie: SerieEchecs,
+  dernierSucces: Date | null,
+  maintenant: Date,
+): boolean {
+  if (serie.chaine > 0) return false;
+  if (dernierSucces === null) return false;
+  const age = maintenant.getTime() - dernierSucces.getTime();
+  return age >= 0 && age <= FENETRE_RETABLISSEMENT_H * 3600_000;
+}
+
+/**
  * Condition « cet échec appartient à la série en cours », isolée pour être
  * éprouvée sur des lignes plutôt que sur sa forme.
  *
@@ -102,17 +152,20 @@ export const PLAFOND_LECTURE_SERIE = 200;
  *
  * `dernierSucces === null` (aucun envoi réussi de toute l'histoire, ou base
  * fraîche) : aucune borne basse, tous les échecs appartiennent à la série.
+ *
+ * ⚠️ Elle VIT dans `serie-echecs.ts` et n'est que ré-exportée ici. Motif
+ * mesuré : l'écran `emails-envoyes` a besoin de la même borne, et l'importer
+ * depuis CE module tirait `@/server/notifications` — donc `next-auth`, donc
+ * `next/server` — dans un test d'écran qui n'en a que faire. La collecte
+ * échouait avant le premier test. Une condition partagée doit vivre dans le
+ * module PUR, pas dans celui qui parle à Telegram.
  */
-export function whereEchecsDeLaSerie(dernierSucces: Date | null): {
-  status: typeof EmailLogStatus.failed;
-  OR?: Array<{ failedAt: { gt: Date } } | { failedAt: null; createdAt: { gt: Date } }>;
-} {
-  if (dernierSucces === null) return { status: EmailLogStatus.failed };
-  return {
-    status: EmailLogStatus.failed,
-    OR: [{ failedAt: { gt: dernierSucces } }, { failedAt: null, createdAt: { gt: dernierSucces } }],
-  };
-}
+// ⚠️ IMPORTÉE ci-dessus ET ré-exportée ici. `export { X } from "…"` seul ne
+// lie PAS le nom dans le module : la sonde a compilé, et `whereEchecsDeLaSerie`
+// y était `undefined` à l'exécution — donc un `TypeError` avalé par le
+// fail-soft, donc dix-huit tests qui rendaient « je n'ai rien pu mesurer » au
+// lieu de leur mesure. Le contre-témoin `mesureIndisponible` a attrapé la faute.
+export { whereEchecsDeLaSerie };
 
 /**
  * Âge à partir duquel une ligne `pending` est anormale — compté depuis son
@@ -279,6 +332,16 @@ export interface SanteEmails {
   dernierSuccesAt: string | null;
   /** Codes d'alerte que ce passage a REFERMÉS parce que les envois sont repartis. */
   alertesResolues: string[];
+  /**
+   * Combien d'accusés de notification ont été RELÂCHÉS parce que la chaîne était
+   * en panne au moment où ils ont été posés.
+   *
+   * 🔑 `notifiedAt` veut dire « quelqu'un a été poussé ». Pendant une panne
+   * d'envoi, il ne veut plus rien dire : l'e-mail a été accepté par la file et
+   * refusé par le relais. Le laisser posé condamne l'alerte au silence
+   * définitif, puisque `notifierAlertesGroupees` n'examine que `notifiedAt: null`.
+   */
+  notificationsRelachees: number;
   alertesLevees: string[];
   /**
    * 🔑 « Je n'ai rien pu regarder » ≠ « rien ne va mal ».
@@ -315,6 +378,7 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
     serieEchecs: SERIE_VIDE,
     dernierSuccesAt: null,
     alertesResolues: [],
+    notificationsRelachees: 0,
     alertesLevees: [],
     mesureIndisponible: false,
   };
@@ -332,6 +396,8 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
   const depuis = new Date(maintenant.getTime() - FENETRE_ECHECS_H * 3600_000);
   const avant = new Date(maintenant.getTime() - AGE_BLOCAGE_MIN * 60_000);
   const depuisRebonds = new Date(maintenant.getTime() - FENETRE_REBONDS_H * 3600_000);
+
+  let dernierSuccesDate: Date | null = null;
 
   try {
     const [echecsRecents, bloquesEnFile, rebondsRecents, dernierSucces] = await Promise.all([
@@ -358,6 +424,7 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
     resultat.rebondsRecents = rebondsRecents;
 
     const dernierSuccesAt = dernierSucces?.sentAt ?? null;
+    dernierSuccesDate = dernierSuccesAt;
     resultat.dernierSuccesAt = dernierSuccesAt?.toISOString() ?? null;
 
     // Deuxième temps, et non un quatrième membre du `Promise.all` : la borne de
@@ -446,11 +513,25 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
       motif: s.motif,
     });
     resultat.alertesLevees.push("emails_echecs_consecutifs");
-  } else if (resultat.serieEchecs.total === 0 && resultat.dernierSuccesAt !== null) {
-    // 🔑 PREUVE POSITIVE, et elle seule : un envoi a réussi et plus aucun échec
-    // ne lui est postérieur. Refermer sur « je ne vois plus d'échec » suffirait
-    // à effacer l'alerte le jour où plus RIEN ne s'envoie — c'est-à-dire dans le
-    // pire des cas, pas le meilleur.
+
+    // 🔴 L'ACCUSÉ DE NOTIFICATION CONSOMMÉ PAR UN E-MAIL QUI N'EST JAMAIS PARTI.
+    //
+    // Mesuré en production le 2026-09-17 : une alerte du 16/09 portait
+    // `notified_at = 17/09 07:00`, et l'e-mail `qualiopi-alerte-interne`
+    // correspondant était en `failed` au même horodatage. `enqueueEmail` avait
+    // réussi (Redis vivant, seul SMTP mort), donc `notifierAlertesGroupees`
+    // n'avait pas relâché son claim — et sa sélection exigeant
+    // `notifiedAt: null`, l'alerte n'aurait JAMAIS été re-notifiée, même après
+    // réparation.
+    //
+    // Tant que la chaîne est en panne, AUCUN accusé de notification par e-mail
+    // ne vaut : on les relâche tous. Les alertes redeviendront candidates dès que
+    // la chaîne repartira — c'est-à-dire au moment précis où la notification peut
+    // enfin arriver.
+    resultat.notificationsRelachees = await relacherNotificationsNonParties();
+  } else if (retablissementProuve(resultat.serieEchecs, dernierSuccesDate, maintenant)) {
+    // 🔑 PREUVE POSITIVE, et elle seule — voir `retablissementProuve`, qui porte
+    // les deux corrections de la relecture du 2026-09-17.
     try {
       const fermees = await resoudreAlertesParCode(["emails_echecs_consecutifs"]);
       if (fermees > 0) {
@@ -549,6 +630,38 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
   }
 
   return resultat;
+}
+
+/**
+ * Relâche les accusés de notification posés pendant que la chaîne était morte.
+ *
+ * Fail-soft : cette réparation ne doit jamais faire tomber le cron qui la porte.
+ * Elle rend 0 plutôt que de lever.
+ *
+ * ⚠️ Elle ne s'appelle QUE sur une série d'échecs de chaîne avérée. L'appeler
+ * inconditionnellement relâcherait des accusés parfaitement valides et
+ * renverrait le même résumé tous les jours — le bruit qui désarme.
+ */
+async function relacherNotificationsNonParties(): Promise<number> {
+  try {
+    const { count } = await prisma.alerteSysteme.updateMany({
+      where: { resolue: false, notifiedAt: { not: null } },
+      data: { notifiedAt: null },
+    });
+    if (count > 0) {
+      console.warn(
+        `[email-sante] ${count} accusé(s) de notification relâché(s) : ils ont été posés ` +
+          `pendant une panne d'envoi, donc aucun e-mail n'a pu arriver.`,
+      );
+    }
+    return count;
+  } catch (e) {
+    console.error(
+      "[email-sante] relâchement des accusés de notification impossible :",
+      e instanceof Error ? e.message : String(e),
+    );
+    return 0;
+  }
 }
 
 /**

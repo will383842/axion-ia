@@ -22,11 +22,12 @@ import { lireIssueRenvoi, PLAFOND_RENVOI_LOT } from "../query";
 
 describe("lireIssueRenvoi — le résultat du geste revient à l'écran", () => {
   it("🔴 lit un renvoi en lot réussi", () => {
-    expect(lireIssueRenvoi({ renvoi: "lot", n: "18", d: "18", ko: "0" })).toEqual({
+    expect(lireIssueRenvoi({ renvoi: "lot", n: "18", d: "18", ko: "0", ret: "2" })).toEqual({
       kind: "ok",
       renvoyes: 18,
       destinataires: 18,
       irrecuperables: 0,
+      retenus: 2,
     });
   });
 
@@ -49,6 +50,7 @@ describe("lireIssueRenvoi — le résultat du geste revient à l'écran", () => 
       renvoyes: 1,
       destinataires: 1,
       irrecuperables: 0,
+      retenus: 0,
     });
   });
 
@@ -61,7 +63,7 @@ describe("lireIssueRenvoi — le résultat du geste revient à l'écran", () => 
 
   it("borne les compteurs venus de l'URL plutôt que de les afficher tels quels", () => {
     const r = lireIssueRenvoi({ renvoi: "lot", n: "999999", d: "-3", ko: "pas un nombre" });
-    expect(r).toEqual({ kind: "ok", renvoyes: 0, destinataires: 0, irrecuperables: 0 });
+    expect(r).toEqual({ kind: "ok", renvoyes: 0, destinataires: 0, irrecuperables: 0, retenus: 0 });
     expect(PLAFOND_RENVOI_LOT).toBeGreaterThan(0);
   });
 
@@ -119,6 +121,29 @@ describe("le bandeau de renvoi en lot", () => {
 
   it("🔴 transmet le nombre MONTRÉ à l'utilisateur, pas un plafond arbitraire", () => {
     expect(VUE).toMatch(/name="attendus"\s+value=\{echecs\.total\}/);
+  });
+
+  it("🔴 transmet la BORNE HAUTE : l'instant de l'affichage", () => {
+    // `attendus` borne le nombre, pas l'identité : un échec tombé entre
+    // l'affichage et le clic passe devant (tri `failedAt desc`) et partirait à
+    // la place de ceux qu'on a vus.
+    expect(VUE).toMatch(/name="jusqua"[^>]*value=\{new Date\(echecs\.luA\)\.toISOString\(\)\}/);
+  });
+
+  it("🔴 le ROUGE est réservé à une panne EN COURS", () => {
+    // Un bandeau rouge sur le stock des trente derniers jours ne peut pas
+    // redescendre (les jobs purgés ne sont plus rejouables) — et un rouge
+    // permanent apprend à ne plus lire les rouges.
+    expect(VUE).toMatch(
+      /echecs\.panneEnCours\s*\?\s*"admin-alert-error"\s*:\s*"admin-alert-warning"/,
+    );
+  });
+
+  it("🔴 dit qu'un message retenu l'a été VOLONTAIREMENT", () => {
+    // « 3 non renvoyés » sans motif se lit comme une panne, alors que c'est un
+    // refus voulu : désabonné, opposé, rebond définitif.
+    expect(VUE).toContain("issue.retenus");
+    expect(VUE).toMatch(/VOLONTAIREMENT/);
   });
 
   it("🔴 affiche combien de destinataires distincts et depuis quand", () => {

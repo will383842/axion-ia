@@ -91,10 +91,21 @@ function BandeauEchecs({
     // ce qui rend inerte tout utilitaire de marge posé à côté d'une classe
     // `.admin-*` (cf. `admin.css`, § « 277 règles hors couche »).
     <div className="mt-[var(--space-admin-4)]">
-      <section className="admin-alert admin-alert-error">
+      {/* 🔴 ROUGE seulement si la panne est EN COURS — correction de relecture.
+          La version précédente mettait du rouge sur le stock d'échecs des trente
+          derniers jours, y compris ceux dont le job est purgé et qu'on ne peut
+          donc PAS faire redescendre. Un bandeau rouge permanent apprend à ne
+          plus lire les bandeaux rouges ; le rattrapage d'un stock ancien est un
+          avertissement, pas une urgence. */}
+      <section
+        className={`admin-alert ${echecs.panneEnCours ? "admin-alert-error" : "admin-alert-warning"}`}
+      >
         <div>
           <p>
             <strong>
+              {echecs.panneEnCours
+                ? "Les envois échouent en série — la chaîne est en panne EN CE MOMENT. "
+                : ""}
               {nb(echecs.total + echecs.sansJob)} e-mail(s) ne sont jamais arrivés à destination.
             </strong>{" "}
             {personnes} {echecs.destinatairesDistincts === 1 ? "attend" : "attendent"} encore leur
@@ -133,6 +144,12 @@ function BandeauEchecs({
                   renvoie jamais plus : ce qui arriverait après l'affichage
                   n'a pas été consenti. */}
               <input type="hidden" name="attendus" value={echecs.total} />
+              {/* 🔑 La BORNE HAUTE : l'instant de cette lecture. L'action ne
+                  reprend que des échecs antérieurs, donc exactement ceux qu'on
+                  a sous les yeux. `attendus` bornait le nombre, pas l'identité —
+                  trois échecs tombés entre l'affichage et le clic passaient
+                  devant (tri `failedAt desc`) et partaient à leur place. */}
+              <input type="hidden" name="jusqua" value={new Date(echecs.luA).toISOString()} />
               <label className="flex items-start gap-[var(--space-admin-2)]">
                 {/* `required` : validation native du navigateur, zéro
                     JavaScript — et l'action REFUSE de toute façon côté serveur
@@ -182,8 +199,11 @@ function IssueDuRenvoi({ issue }: { issue: IssueRenvoi }): React.ReactElement | 
             destinataire(s).
           </strong>{" "}
           Ils repasseront « Envoyé » dans les minutes qui viennent — actualisez pour suivre.
-          {issue.irrecuperables > 0
-            ? ` ${nb(issue.irrecuperables)} n'ont pas pu être repris : leur ligne porte le motif.`
+          {issue.retenus > 0
+            ? ` ${nb(issue.retenus)} n'ont VOLONTAIREMENT pas été renvoyés : le destinataire est désabonné, opposé à tout envoi, ou son adresse a définitivement rebondi.`
+            : ""}
+          {issue.irrecuperables - issue.retenus > 0
+            ? ` ${nb(issue.irrecuperables - issue.retenus)} n'ont pas pu être repris : leur ligne porte le motif.`
             : ""}
         </span>
       </p>

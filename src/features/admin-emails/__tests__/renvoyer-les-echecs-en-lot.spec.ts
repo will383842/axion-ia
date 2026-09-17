@@ -27,6 +27,7 @@ const d = vi.hoisted(() => ({
   updateMany: vi.fn(),
   update: vi.fn(),
   getJob: vi.fn(),
+  verdict: vi.fn(),
   requireAdminWrite: vi.fn(),
   logActivity: vi.fn(),
   revalidatePath: vi.fn(),
@@ -57,6 +58,9 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: (...a: unknown[]) => d.requireAdminWrite(...a),
   logQualiopiActivity: (...a: unknown[]) => d.logActivity(...a),
 }));
+vi.mock("@/server/email/suppression", () => ({
+  verdictAvantEnvoi: (...a: unknown[]) => d.verdict(...a),
+}));
 vi.mock("@/server/queue/queues", () => ({
   emailsQueue: { getJob: (...a: unknown[]) => d.getJob(...a) },
 }));
@@ -73,11 +77,17 @@ const verrouPris = (pris: boolean): void => {
   d.queryRaw.mockResolvedValue([{ locked: pris }]);
 };
 
+/** L'instant de l'AFFICHAGE : borne haute du consentement. */
+const AFFICHAGE = "2026-09-17T08:40:00.000Z";
+
 const ligne = (i: number) => ({
   id: `id-${i}`,
   jobId: `job-${i}`,
   template: "candidature-accuse-reception",
   recipient: `candidat${i}@exemple.fr`,
+  marketing: false,
+  error: "535 Authentication Failed",
+  failedAt: new Date("2026-09-15T13:17:00.000Z"),
 });
 
 const jobEnEchec = () => ({ getState: async () => "failed", retry: vi.fn(async () => undefined) });
@@ -89,17 +99,22 @@ beforeEach(() => {
   d.updateMany.mockResolvedValue({ count: 0 });
   d.update.mockResolvedValue({});
   d.getJob.mockImplementation(async () => jobEnEchec());
+  d.verdict.mockResolvedValue({ retenu: false });
   verrouPris(true);
   vi.spyOn(console, "warn").mockImplementation(() => {});
 });
 
 describe("🔴 aucun envoi en masse sans confirmation explicite", () => {
   it("REFUSE sans la case cochée, et ne touche à RIEN", async () => {
-    const r = await renvoyerEchecsEnLotAction({ confirmation: "", attendus: 18 });
+    const r = await renvoyerEchecsEnLotAction({
+      confirmation: "",
+      jusquA: AFFICHAGE,
+      attendus: 18,
+    });
 
     expect(r).toEqual({
       ok: false,
-      error: "Renvoi non confirmé : cochez la case avant de renvoyer.",
+      error: "Renvoi non confirmé : rechargez l'écran, puis cochez la case avant de renvoyer.",
     });
     expect(d.queryRaw).not.toHaveBeenCalled();
     expect(d.findMany).not.toHaveBeenCalled();
@@ -108,7 +123,11 @@ describe("🔴 aucun envoi en masse sans confirmation explicite", () => {
 
   it("REFUSE une confirmation approchante — « oui » exactement, ou rien", async () => {
     for (const valeur of ["Oui", "OUI", "true", "1", "on", "o"]) {
-      const r = await renvoyerEchecsEnLotAction({ confirmation: valeur, attendus: 18 });
+      const r = await renvoyerEchecsEnLotAction({
+        confirmation: valeur,
+        jusquA: AFFICHAGE,
+        attendus: 18,
+      });
       expect(r.ok, `« ${valeur} » a été accepté comme confirmation`).toBe(false);
     }
     expect(d.getJob).not.toHaveBeenCalled();
@@ -119,17 +138,21 @@ describe("🔴 aucun envoi en masse sans confirmation explicite", () => {
     // précédents en paraissant prudente — et le bouton ne marcherait jamais.
     d.findMany.mockResolvedValue([ligne(1), ligne(2)]);
 
-    const r = await renvoyerEchecsEnLotAction({ confirmation: "oui", attendus: 2 });
+    const r = await renvoyerEchecsEnLotAction({
+      confirmation: "oui",
+      jusquA: AFFICHAGE,
+      attendus: 2,
+    });
 
-    expect(r).toEqual({ ok: true, renvoyes: 2, destinataires: 2, irrecuperables: 0 });
+    expect(r).toEqual({ ok: true, renvoyes: 2, destinataires: 2, irrecuperables: 0, retenus: 0 });
     expect(d.getJob).toHaveBeenCalledTimes(2);
   });
 
   it("exige un administrateur en écriture AVANT toute lecture", async () => {
     d.requireAdminWrite.mockRejectedValue(new Error("interdit"));
-    await expect(renvoyerEchecsEnLotAction({ confirmation: "oui", attendus: 5 })).rejects.toThrow(
-      "interdit",
-    );
+    await expect(
+      renvoyerEchecsEnLotAction({ confirmation: "oui", jusquA: AFFICHAGE, attendus: 5 }),
+    ).rejects.toThrow("interdit");
     expect(d.findMany).not.toHaveBeenCalled();
   });
 });
@@ -138,7 +161,7 @@ describe("🔴 on ne renvoie jamais plus que ce qui a été montré", () => {
   it("borne la lecture sur le nombre affiché à l'utilisateur", async () => {
     d.findMany.mockResolvedValue([ligne(1), ligne(2), ligne(3)]);
 
-    await renvoyerEchecsEnLotAction({ confirmation: "oui", attendus: 3 });
+    await renvoyerEchecsEnLotAction({ confirmation: "oui", jusquA: AFFICHAGE, attendus: 3 });
 
     // Le `take` est le consentement obtenu, pas un réglage de pagination :
     // trois échecs de plus tombés entre l'affichage et le clic attendront le
@@ -148,7 +171,11 @@ describe("🔴 on ne renvoie jamais plus que ce qui a été montré", () => {
 
   it("refuse un nombre absurde plutôt que de le tronquer en silence", async () => {
     for (const attendus of [0, -1, 1.5, 100_000]) {
-      const r = await renvoyerEchecsEnLotAction({ confirmation: "oui", attendus });
+      const r = await renvoyerEchecsEnLotAction({
+        confirmation: "oui",
+        jusquA: AFFICHAGE,
+        attendus,
+      });
       expect(r.ok, `attendus=${attendus} accepté`).toBe(false);
     }
   });
@@ -158,7 +185,11 @@ describe("🔴 anti-doublon — un message déjà repris ne repart pas deux fois
   it("REFUSE quand le verrou consultatif est déjà tenu", async () => {
     verrouPris(false);
 
-    const r = await renvoyerEchecsEnLotAction({ confirmation: "oui", attendus: 18 });
+    const r = await renvoyerEchecsEnLotAction({
+      confirmation: "oui",
+      jusquA: AFFICHAGE,
+      attendus: 18,
+    });
 
     expect(r).toEqual({
       ok: false,
@@ -174,11 +205,11 @@ describe("🔴 anti-doublon — un message déjà repris ne repart pas deux fois
     // échecs, donc un second lot ne les voit plus — même verrou relâché.
     d.findMany.mockResolvedValue([ligne(1), ligne(2)]);
 
-    await renvoyerEchecsEnLotAction({ confirmation: "oui", attendus: 2 });
+    await renvoyerEchecsEnLotAction({ confirmation: "oui", jusquA: AFFICHAGE, attendus: 2 });
 
     expect(d.updateMany).toHaveBeenCalledWith({
       where: { id: { in: ["id-1", "id-2"] } },
-      data: { status: "pending", failedAt: null },
+      data: { status: "pending", dueAt: expect.any(Date) },
     });
   });
 
@@ -197,7 +228,7 @@ describe("🔴 anti-doublon — un message déjà repris ne repart pas deux fois
       return jobEnEchec();
     });
 
-    await renvoyerEchecsEnLotAction({ confirmation: "oui", attendus: 1 });
+    await renvoyerEchecsEnLotAction({ confirmation: "oui", jusquA: AFFICHAGE, attendus: 1 });
 
     expect(ordre).toEqual(["revendication", "reprise"]);
   });
@@ -209,9 +240,13 @@ describe("🔴 anti-doublon — un message déjà repris ne repart pas deux fois
     d.findMany.mockResolvedValue([ligne(1)]);
     d.getJob.mockResolvedValue(null);
 
-    const r = await renvoyerEchecsEnLotAction({ confirmation: "oui", attendus: 1 });
+    const r = await renvoyerEchecsEnLotAction({
+      confirmation: "oui",
+      jusquA: AFFICHAGE,
+      attendus: 1,
+    });
 
-    expect(r).toEqual({ ok: true, renvoyes: 0, destinataires: 1, irrecuperables: 1 });
+    expect(r).toEqual({ ok: true, renvoyes: 0, destinataires: 1, irrecuperables: 1, retenus: 0 });
     expect(d.update).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { id: "id-1" },
@@ -227,18 +262,150 @@ describe("🔴 anti-doublon — un message déjà repris ne repart pas deux fois
       ligne(3),
     ]);
 
-    const r = await renvoyerEchecsEnLotAction({ confirmation: "oui", attendus: 3 });
+    const r = await renvoyerEchecsEnLotAction({
+      confirmation: "oui",
+      jusquA: AFFICHAGE,
+      attendus: 3,
+    });
 
-    expect(r).toEqual({ ok: true, renvoyes: 3, destinataires: 2, irrecuperables: 0 });
+    expect(r).toEqual({ ok: true, renvoyes: 3, destinataires: 2, irrecuperables: 0, retenus: 0 });
   });
 
   it("dit qu'il n'y a plus rien à renvoyer, sans faux succès", async () => {
     d.findMany.mockResolvedValue([]);
 
-    const r = await renvoyerEchecsEnLotAction({ confirmation: "oui", attendus: 5 });
+    const r = await renvoyerEchecsEnLotAction({
+      confirmation: "oui",
+      jusquA: AFFICHAGE,
+      attendus: 5,
+    });
 
     expect(r).toEqual({ ok: false, error: "Plus aucun envoi en échec à renvoyer." });
     expect(d.logActivity).not.toHaveBeenCalled();
+  });
+});
+
+/**
+ * 🔴 F3 — LE RENVOI CONTOURNAIT LA LISTE DE SUPPRESSION, 200 MESSAGES PAR CLIC.
+ *
+ * `verdictAvantEnvoi` ne s'applique qu'à l'ENFILAGE (`enqueueEmail`). Un
+ * `job.retry()` reprend le job d'origine, et le worker ne consulte aucune liste.
+ * Une adresse désabonnée, opposée (RGPD) ou en rebond dur ENTRE l'échec et le
+ * renvoi était donc servie quand même.
+ */
+describe("🔴 la liste de suppression s'applique AUSSI au renvoi", () => {
+  it("NE renvoie PAS à une adresse opposée, désabonnée ou en rebond dur", async () => {
+    d.findMany.mockResolvedValue([ligne(1), ligne(2)]);
+    d.verdict.mockImplementation(async (adresse: string) =>
+      adresse === "candidat1@exemple.fr"
+        ? { retenu: true, motif: "oppose", depuis: new Date() }
+        : { retenu: false },
+    );
+
+    const r = await renvoyerEchecsEnLotAction({
+      confirmation: "oui",
+      jusquA: AFFICHAGE,
+      attendus: 2,
+    });
+
+    expect(r).toEqual({ ok: true, renvoyes: 1, destinataires: 2, irrecuperables: 1, retenus: 1 });
+    // Le job de l'adresse retenue n'est même pas demandé à la file.
+    expect(d.getJob).toHaveBeenCalledTimes(1);
+    expect(d.getJob).toHaveBeenCalledWith("job-2");
+  });
+
+  it("consulte la liste AVANT de toucher à la file, pour chaque ligne", async () => {
+    d.findMany.mockResolvedValue([ligne(1), ligne(2), ligne(3)]);
+
+    await renvoyerEchecsEnLotAction({ confirmation: "oui", jusquA: AFFICHAGE, attendus: 3 });
+
+    expect(d.verdict).toHaveBeenCalledTimes(3);
+    expect(d.verdict).toHaveBeenCalledWith("candidat1@exemple.fr", {
+      template: "candidature-accuse-reception",
+      marketing: false,
+    });
+  });
+
+  it("dit POURQUOI la ligne n'est pas repartie, en français", async () => {
+    d.findMany.mockResolvedValue([ligne(1)]);
+    d.verdict.mockResolvedValue({ retenu: true, motif: "rebond_dur", depuis: null });
+
+    await renvoyerEchecsEnLotAction({ confirmation: "oui", jusquA: AFFICHAGE, attendus: 1 });
+
+    const maj = d.update.mock.calls[0]?.[0] as { data: { error: string } };
+    expect(maj.data.error).toContain("rebond définitif");
+  });
+
+  it("🔑 CONTRE-TÉMOIN : une liste vide ne retient personne", async () => {
+    // Sans ce bloc, un prédicat qui retiendrait TOUT passerait les trois tests
+    // précédents — et le bouton ne renverrait plus jamais rien.
+    d.findMany.mockResolvedValue([ligne(1), ligne(2)]);
+
+    const r = await renvoyerEchecsEnLotAction({
+      confirmation: "oui",
+      jusquA: AFFICHAGE,
+      attendus: 2,
+    });
+
+    expect(r).toMatchObject({ ok: true, renvoyes: 2, retenus: 0 });
+  });
+});
+
+describe("🔴 le consentement porte sur des messages PRÉCIS, pas sur un cardinal", () => {
+  it("borne la lecture à l'instant de l'AFFICHAGE", async () => {
+    d.findMany.mockResolvedValue([ligne(1)]);
+
+    await renvoyerEchecsEnLotAction({ confirmation: "oui", jusquA: AFFICHAGE, attendus: 1 });
+
+    const where = d.findMany.mock.calls[0]?.[0] as {
+      where: { failedAt: { gte: Date; lte: Date } };
+    };
+    expect(
+      where.where.failedAt.lte,
+      "sans borne haute, un échec tombé après l'affichage passe devant " +
+        "(tri failedAt desc) et part À LA PLACE de ceux qu'on a vus",
+    ).toEqual(new Date(AFFICHAGE));
+  });
+
+  it("REFUSE un formulaire sans borne d'affichage, plutôt que de tout prendre", async () => {
+    const r = await renvoyerEchecsEnLotAction({ confirmation: "oui", attendus: 5 });
+    expect(r.ok).toBe(false);
+    expect(d.findMany).not.toHaveBeenCalled();
+  });
+});
+
+describe("🔴 la réparation ne détruit pas le diagnostic", () => {
+  it("CONSERVE le motif d'origine et la date d'échec d'origine", async () => {
+    // Le défaut : l'alerte publiait ensuite « Job purgé de la file » et « il y a
+    // 0 min », en effaçant le `535 Authentication Failed` — seule pièce
+    // permettant de comprendre l'incident.
+    d.findMany.mockResolvedValue([ligne(1)]);
+    d.getJob.mockResolvedValue(null);
+
+    await renvoyerEchecsEnLotAction({ confirmation: "oui", jusquA: AFFICHAGE, attendus: 1 });
+
+    const maj = d.update.mock.calls[0]?.[0] as {
+      data: { error: string; failedAt: Date; status: string };
+    };
+    expect(maj.data.error).toContain("535 Authentication Failed");
+    expect(maj.data.error).toContain("purgé");
+    expect(maj.data.failedAt).toEqual(new Date("2026-09-15T13:17:00.000Z"));
+  });
+
+  it("🔑 repose une ÉCHÉANCE fraîche — sinon la réparation lève sa propre fausse alerte", async () => {
+    // Dix-huit lignes vieilles de deux jours repassées « en attente » avec une
+    // échéance dépassée font lever `emails_bloques_en_file` au passage suivant :
+    // « la file n'est pas consommée, AUCUN e-mail ne part ».
+    d.findMany.mockResolvedValue([ligne(1)]);
+
+    await renvoyerEchecsEnLotAction({ confirmation: "oui", jusquA: AFFICHAGE, attendus: 1 });
+
+    const maj = d.updateMany.mock.calls[0]?.[0] as { data: Record<string, unknown> };
+    expect(maj.data["dueAt"]).toBeInstanceOf(Date);
+    expect(
+      Object.keys(maj.data),
+      "effacer failedAt ferait perdre la trace de l'échec sur une ligne en attente",
+    ).not.toContain("failedAt");
   });
 });
 
@@ -246,7 +413,7 @@ describe("🔴 le renvoi est tracé au registre d'activité", () => {
   it("écrit l'acte, ses comptes et ses gabarits — et AUCUNE adresse", async () => {
     d.findMany.mockResolvedValue([ligne(1), ligne(2)]);
 
-    await renvoyerEchecsEnLotAction({ confirmation: "oui", attendus: 2 });
+    await renvoyerEchecsEnLotAction({ confirmation: "oui", jusquA: AFFICHAGE, attendus: 2 });
 
     expect(d.logActivity).toHaveBeenCalledTimes(1);
     const entree = d.logActivity.mock.calls[0]?.[0] as {

@@ -196,9 +196,21 @@ export async function creerOuActualiser(input: AlerteInput): Promise<AlerteSyste
         titre: input.titre,
         message: input.message,
         niveau: input.niveau,
-        // L'état a CHANGÉ (le compte a monté, le motif a tourné) : ce n'est plus
-        // l'alerte qu'on a lue hier, elle mérite un second regard.
-        lu: false,
+        // 🔴 `notifiedAt: null`, et surtout PAS `lu: false`.
+        //
+        // La première version repassait l'alerte « non lue ». Défaut relevé en
+        // relecture : le titre porte un COMPTE, donc il change à chaque nouvel
+        // échec — la pastille « non lue » serait remontée à presque chaque
+        // passage horaire, et cesserait de vouloir dire « du nouveau ». C'est
+        // exactement le travers que ce fichier dit vouloir éviter ailleurs.
+        //
+        // Le bon signal n'est pas de faire clignoter l'écran : c'est de
+        // RÉARMER la notification. `notifiedAt` est un accusé de « quelqu'un a
+        // été poussé sur cette version des faits » ; la version a changé, il ne
+        // vaut plus. Sans ce relâchement, une alerte notifiée une fois n'est
+        // plus jamais reprise par `notifierAlertesGroupees`, dont la sélection
+        // exige `notifiedAt: null` — le fusible mesuré en production.
+        notifiedAt: null,
         metadata: (input.metadata ?? {}) as never,
       },
     });

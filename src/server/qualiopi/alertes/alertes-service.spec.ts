@@ -918,7 +918,11 @@ describe("creerOuActualiser", () => {
     expect(args.data["metadata"]).toEqual(entree.metadata);
   });
 
-  it("🔑 repasse l'alerte NON LUE — l'état a changé, il mérite un second regard", async () => {
+  it("🔴 RELÂCHE l'accusé de notification — c'est LUI, le fusible", async () => {
+    // Mesuré en production le 2026-09-17 : une alerte `emails_en_echec` portait
+    // `notified_at = 17/09 07:00` et l'e-mail correspondant était en `failed`.
+    // `notifierAlertesGroupees` ne sélectionne que `notifiedAt: null` : sans
+    // relâchement, l'alerte n'est plus JAMAIS notifiée, même après réparation.
     mp.alerteSysteme.findFirst.mockResolvedValue({
       id: VALID_UUID,
       titre: "ancien",
@@ -929,8 +933,29 @@ describe("creerOuActualiser", () => {
 
     await creerOuActualiser(entree);
 
-    const args = mp.alerteSysteme.update.mock.calls[0]?.[0] as { data: { lu: boolean } };
-    expect(args.data.lu).toBe(false);
+    const args = mp.alerteSysteme.update.mock.calls[0]?.[0] as { data: Record<string, unknown> };
+    expect(args.data["notifiedAt"]).toBeNull();
+  });
+
+  it("🔑 NE repasse PAS l'alerte « non lue » — le titre porte un compte qui bouge", async () => {
+    // La première version posait `lu: false`. Défaut relevé en relecture : le
+    // titre porte le NOMBRE d'échecs, donc il change à chaque nouvel envoi raté.
+    // La pastille « non lue » serait remontée à presque chaque passage horaire,
+    // et cesserait de vouloir dire « du nouveau » — le travers que ce fichier
+    // dit vouloir éviter ailleurs. Le bon signal est de réarmer la NOTIFICATION,
+    // pas de faire clignoter l'écran.
+    mp.alerteSysteme.findFirst.mockResolvedValue({
+      id: VALID_UUID,
+      titre: "ancien",
+      message: "ancien",
+      niveau: "critique",
+    });
+    mp.alerteSysteme.update.mockResolvedValue(makeAlerte());
+
+    await creerOuActualiser(entree);
+
+    const args = mp.alerteSysteme.update.mock.calls[0]?.[0] as { data: Record<string, unknown> };
+    expect(Object.keys(args.data)).not.toContain("lu");
   });
 
   it("🔑 CONTRE-TÉMOIN : n'écrit RIEN quand rien n'a bougé", async () => {
