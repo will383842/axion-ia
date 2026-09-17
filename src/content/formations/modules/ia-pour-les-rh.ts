@@ -167,7 +167,7 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
           {
             question: "On note ? Ça compte ?",
             reponse:
-              "On ne note pas ici. L'évaluation des acquis est à 16 h, sur dix questions. Ceci sert à repérer ce qui coince pendant qu'on peut encore le corriger.",
+              "On ne note pas ici. L'évaluation des acquis est à 16 h, sur la grille individuelle. Ceci sert à repérer ce qui coince pendant qu'on peut encore le corriger.",
           },
         ],
         blocages: [
@@ -577,13 +577,13 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Évaluation des acquis : quiz individuel de dix questions, corrigé en salle question par question. Puis auto-évaluation par chacun d'une production réelle du jour, sur la grille de relecture — exactitude des affirmations, informations interdites, mentions dues, ton, réutilisabilité.",
+        "Évaluation des acquis : grille d'évaluation individuelle, renseignée et commentée en salle item par item. Puis auto-évaluation par chacun d'une production réelle du jour, sur la grille de relecture — exactitude des affirmations, informations interdites, mentions dues, ton, réutilisabilité.",
       reponseAttendue:
-        "Le corrigé est commenté question par question, sans passer aucune question. Le seuil de réussite de la formation est celui déclaré au programme ; un score en dessous déclenche la reprise individuelle prévue au dispositif.",
+        "La grille est commentée item par item, sans en passer aucun : chaque objectif de la journée y est marqué atteint ou non atteint, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif.",
       dureeMin: 15,
       notes: {
         script:
-          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se corrige, et elle se conserve. Ne la sacrifiez jamais au temps qui manque — c'est la première chose qu'un auditeur demande. Si vous êtes en retard, coupez ailleurs.",
+          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se commente, et elle se conserve. Ne la sacrifiez jamais au temps qui manque — c'est la première chose qu'un auditeur demande. Si vous êtes en retard, coupez ailleurs.",
         faq: [
           {
             question: "Le résultat va être transmis à mon employeur ?",
@@ -593,12 +593,12 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
         ],
         blocages: [
           {
-            situation: "Il est 17 h 15, le quiz n'est pas commencé.",
+            situation: "Il est 17 h 15, la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
+              "La tenir quand même, en réduisant le commentaire aux items les moins bien tenus. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
-        planB: "Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil.",
+        planB: "Grilles d'évaluation vierges imprimées dans le kit. Aucune dépendance à un outil.",
       },
     },
     synthese: {

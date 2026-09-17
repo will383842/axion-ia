@@ -759,13 +759,13 @@ export const IA_POUR_L_AUTOMATISATION: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Deux temps. Test de reprise à blanc : votre binôme fait tourner VOTRE automatisation avec votre seule fiche d'usage, sans vous — toute question qu'il doit vous poser est notée comme un manque à combler, puis la fiche est contresignée. Puis l'évaluation des acquis : quiz individuel de dix questions et grille d'auto-évaluation de votre prototype — contrôle humain, traçabilité, régime de données, reprenabilité, couleur au feu tricolore.",
+        "Deux temps. Test de reprise à blanc : votre binôme fait tourner VOTRE automatisation avec votre seule fiche d'usage, sans vous — toute question qu'il doit vous poser est notée comme un manque à combler, puis la fiche est contresignée. Puis l'évaluation des acquis : grille d'évaluation individuelle et grille d'auto-évaluation de votre prototype — contrôle humain, traçabilité, régime de données, reprenabilité, couleur au feu tricolore.",
       reponseAttendue:
-        "Une fiche d'usage contresignée par le binôme, avec la liste écrite des questions qu'il a dû poser et le complément apporté à chacune. Puis le quiz corrigé question par question en salle ; le seuil de réussite est celui déclaré au programme, et un score en dessous déclenche la reprise individuelle prévue au dispositif.",
+        "Une fiche d'usage contresignée par le binôme, avec la liste écrite des questions qu'il a dû poser et le complément apporté à chacune. Puis la grille d'évaluation renseignée et commentée item par item en salle : chaque objectif de la journée y est marqué atteint ou non atteint, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif.",
       dureeMin: 50,
       notes: {
         script:
-          "Sur la reprise à blanc, tenez la règle : l'auteur se TAIT. S'il parle, l'épreuve ne vaut rien et la fiche ressort creuse. Faites écrire chaque question posée sur la fiche elle-même — c'est la liste des manques, et elle est plus précieuse que la fiche. Sur le quiz : c'est l'évaluation des acquis au sens de l'indicateur 11, elle se tient, se corrige et se conserve. Ne la sacrifiez jamais au temps qui manque ; si vous êtes en retard, coupez sur la feuille de route, pas ici.",
+          "Sur la reprise à blanc, tenez la règle : l'auteur se TAIT. S'il parle, l'épreuve ne vaut rien et la fiche ressort creuse. Faites écrire chaque question posée sur la fiche elle-même — c'est la liste des manques, et elle est plus précieuse que la fiche. Sur la grille : c'est l'évaluation des acquis au sens de l'indicateur 11, elle se tient, se commente et se conserve. Ne la sacrifiez jamais au temps qui manque ; si vous êtes en retard, coupez sur la feuille de route, pas ici.",
         faq: [
           {
             question: "Mon binôme n'a pas réussi à faire tourner mon automatisation.",
@@ -773,7 +773,7 @@ export const IA_POUR_L_AUTOMATISATION: EnrichissementFormation = [
               "Alors vous venez d'apprendre la chose la plus utile de la journée, et vous savez exactement quoi compléter. Une chaîne que vous seul savez lancer n'existe que tant que vous êtes là.",
           },
           {
-            question: "Le résultat du quiz est transmis à mon employeur ?",
+            question: "Le résultat de mon évaluation est transmis à mon employeur ?",
             reponse:
               "Le résultat individuel, non. Ce qui est transmis, c'est l'attestation de fin de formation et le fait que l'évaluation a eu lieu.",
           },
@@ -785,13 +785,13 @@ export const IA_POUR_L_AUTOMATISATION: EnrichissementFormation = [
               "Le faire changer de place, sans dramatiser : « allez voir la table d'à côté cinq minutes ». La fiche parle enfin d'elle-même.",
           },
           {
-            situation: "Il est 17 h 15 et le quiz n'est pas commencé.",
+            situation: "Il est 17 h 15 et la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation des acquis par un tour de table.",
+              "La tenir quand même, en réduisant le commentaire aux items les moins bien tenus. On ne remplace jamais l'évaluation des acquis par un tour de table.",
           },
         ],
         planB:
-          "Quiz papier et corrigé sont dans le kit. Si l'outil est indisponible, la reprise à blanc se fait « à la lecture » : le binôme énonce à voix haute chaque geste qu'il ferait à partir de la fiche, et bute exactement aux mêmes endroits.",
+          "Les grilles d'évaluation vierges sont dans le kit. Si l'outil est indisponible, la reprise à blanc se fait « à la lecture » : le binôme énonce à voix haute chaque geste qu'il ferait à partir de la fiche, et bute exactement aux mêmes endroits.",
       },
     },
     synthese: {

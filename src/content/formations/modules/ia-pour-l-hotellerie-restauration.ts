@@ -616,13 +616,13 @@ export const IA_POUR_L_HOTELLERIE_RESTAURATION: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Quiz individuel de validation des acquis, dix questions couvrant la journée — régimes d'usage et liste rouge, les quatre interdits de la réponse publique, l'interdit allergènes, les trois vérifications anti-invention — puis correction commentée question par question, chaque réponse renvoyant à la séquence qui traitait le point.",
+        "Grille d'évaluation individuelle des acquis, couvrant la journée — régimes d'usage et liste rouge, les quatre interdits de la réponse publique, l'interdit allergènes, les trois vérifications anti-invention — renseignée puis commentée item par item, chaque item renvoyant à la séquence qui traitait le point.",
       reponseAttendue:
-        "Le quiz corrigé en salle sans sauter de question. Le seuil de réussite est celui déclaré au programme ; un score en dessous déclenche la reprise individuelle prévue au dispositif. Les deux questions les plus discriminantes du corrigé : « que fait-on d'une ligne d'allergènes ? » (on la recopie, jamais on ne la génère) et « que répond-on à un avis dont l'auteur dit avoir dîné chez vous ? » (on ne le confirme jamais).",
+        "La grille commentée en salle sans sauter un item : chaque objectif de la journée y est marqué atteint ou non atteint, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif. Les deux items les plus discriminants : ce qu'on fait d'une ligne d'allergènes (on la recopie, jamais on ne la génère) et ce qu'on répond à un avis dont l'auteur dit avoir dîné chez vous (on ne le confirme jamais).",
       dureeMin: 25,
       notes: {
         script:
-          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, se corrige et se conserve. Si le temps manque, coupez ailleurs — jamais ici. À la correction, faites dire par la salle à quelle séquence chaque question renvoie : c'est la révision de la journée qui s'opère, pas un contrôle de plus.",
+          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, se commente et se conserve. Si le temps manque, coupez ailleurs — jamais ici. Pendant la reprise, faites dire par la salle à quelle séquence chaque item renvoie : c'est la révision de la journée qui s'opère, pas un contrôle de plus.",
         faq: [
           {
             question: "Le résultat sera transmis à mon employeur ?",
@@ -632,12 +632,12 @@ export const IA_POUR_L_HOTELLERIE_RESTAURATION: EnrichissementFormation = [
         ],
         blocages: [
           {
-            situation: "Il est 17 h et le quiz n'est pas commencé.",
+            situation: "Il est 17 h et la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
+              "La tenir quand même, en réduisant le commentaire aux items les moins bien tenus. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
-        planB: "Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil.",
+        planB: "Grilles d'évaluation vierges imprimées dans le kit. Aucune dépendance à un outil.",
       },
     },
     synthese: {

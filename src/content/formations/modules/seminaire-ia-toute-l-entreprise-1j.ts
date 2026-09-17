@@ -96,7 +96,7 @@ export const SEMINAIRE_IA_TOUTE_L_ENTREPRISE_1J: EnrichissementFormation = [
           {
             question: "Je n'ai jamais ouvert un de ces outils, je vais suivre ?",
             reponse:
-              "Oui. Vous ne toucherez à aucun clavier de la journée sauf votre téléphone pour le sondage et le QCM. Tout se fait par table, et personne ne travaille seul.",
+              "Oui. Vous ne toucherez à aucun clavier de la journée sauf votre téléphone pour le sondage. Tout se fait par table, et personne ne travaille seul.",
           },
           {
             question: "On est là pour nous vendre l'IA ?",
@@ -786,39 +786,39 @@ export const SEMINAIRE_IA_TOUTE_L_ENTREPRISE_1J: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Deux temps. Chaque table rejoue devant la salle l'astuce qu'elle a transposée : fonctionne-t-elle telle qu'elle est écrite, ou que manquait-il pour qu'elle fonctionne ailleurs ? Puis évaluation individuelle des acquis : dix questions sur terminal fourni ou téléphone personnel, au choix.",
+        "Deux temps. Chaque table rejoue devant la salle l'astuce qu'elle a transposée : fonctionne-t-elle telle qu'elle est écrite, ou que manquait-il pour qu'elle fonctionne ailleurs ? Puis évaluation des acquis : grille d'évaluation individuelle, sur papier, renseignée et commentée en salle item par item.",
       reponseAttendue:
-        "Pour chaque astuce, soit elle fonctionne telle qu'elle est écrite, soit ce qui manquait est noté au tableau et ajouté à la version diffusable. Le QCM est corrigé et commenté en salle question par question, le résultat agrégé est affiché, et aucun résultat nominatif n'est communiqué à l'employeur.",
+        "Pour chaque astuce, soit elle fonctionne telle qu'elle est écrite, soit ce qui manquait est noté au tableau et ajouté à la version diffusable. La grille est commentée en salle item par item : chaque objectif de la journée y est marqué atteint ou non atteint, ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif, et aucun résultat nominatif n'est communiqué à l'employeur.",
       dureeMin: 20,
       notes: {
         script:
-          "L'évaluation des acquis se tient, se corrige et se conserve : c'est la première pièce qu'un auditeur demande. Si vous êtes en retard, coupez ailleurs — jamais ici. Redites AVANT d'ouvrir le QCM que le résultat individuel ne part pas chez l'employeur : ce qui est transmis, c'est l'attestation de fin et le fait que l'évaluation a eu lieu. Commentez le corrigé question par question sans en sauter, en insistant sur les trois plus ratées. Sur les rejeux d'astuces : ce qui manquait s'écrit sur la version diffusable, immédiatement, sinon la remarque se perd entre ici et le classeur.",
+          "L'évaluation des acquis se tient, se commente et se conserve : c'est la première pièce qu'un auditeur demande. Si vous êtes en retard, coupez ailleurs — jamais ici. Redites AVANT de distribuer les grilles que le résultat individuel ne part pas chez l'employeur : ce qui est transmis, c'est l'attestation de fin et le fait que l'évaluation a eu lieu. Commentez la grille item par item sans en sauter, en insistant sur les trois items les moins bien tenus. C'est la seule séquence individuelle de la journée : annoncez-le, sinon la salle continue de se concerter par table comme elle l'a fait depuis 9 h. Sur les rejeux d'astuces : ce qui manquait s'écrit sur la version diffusable, immédiatement, sinon la remarque se perd entre ici et le classeur.",
         faq: [
           {
-            question: "Mon résultat au QCM va remonter à mon responsable ?",
+            question: "Mon résultat à l'évaluation va remonter à mon responsable ?",
             reponse:
-              "Non. Le résultat individuel ne sort pas. Ce qui est transmis, c'est l'attestation de fin de formation et le fait que l'évaluation a eu lieu — le résultat affiché est agrégé.",
+              "Non. Le résultat individuel ne sort pas. Ce qui est transmis, c'est l'attestation de fin de formation et le fait que l'évaluation a eu lieu. Votre grille est conservée au dossier de la session : elle n'est ni affichée, ni transmise nominativement.",
           },
           {
             question: "Je n'ai pas de téléphone compatible.",
             reponse:
-              "Un terminal est fourni, il y en a plusieurs dans la salle. Personne n'est écarté de l'évaluation pour une question de matériel.",
+              "Cela ne change rien ici : la grille se renseigne sur papier et ne demande aucun matériel. Personne n'est écarté de l'évaluation pour une question d'équipement.",
           },
         ],
         blocages: [
           {
-            situation: "Il est 17 h 15 et le QCM n'est pas commencé.",
+            situation: "Il est 17 h 15 et la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en réduisant le commentaire du corrigé aux trois questions les plus ratées. On ne remplace jamais l'évaluation des acquis par un tour de table, quelle que soit l'heure.",
+              "La tenir quand même, en réduisant le commentaire aux trois items les moins bien tenus. On ne remplace jamais l'évaluation des acquis par un tour de table, quelle que soit l'heure.",
           },
           {
-            situation: "Le sondage ou le QCM en ligne tombe au moment de le lancer.",
+            situation: "Une table renseigne sa grille collectivement, en se concertant.",
             parade:
-              "Basculer immédiatement sur le QCM papier du kit, sans hésiter ni chercher à réparer devant la salle : la correction se fait à l'oral question par question, les copies se ramassent, l'évaluation est tenue et tracée.",
+              "Reposer la règle sans dramatiser : toute la journée a été un travail de table, celle-ci est la seule séquence individuelle — et c'est ce qui la rend valable. Écartez les chaises d'un cran, redistribuez les grilles concernées, et accordez deux minutes de plus plutôt que de ramasser une copie écrite à quatre mains.",
           },
         ],
         planB:
-          "QCM papier et corrigé imprimés dans le kit, en cinquante exemplaires. La correction se fait à l'oral, question par question, et les copies sont ramassées pour être conservées au dossier de la session.",
+          "Aucun outil en jeu, et c'est délibéré : la grille est sur papier, en cinquante exemplaires dans le kit, et ne dépend ni du réseau ni d'un terminal. Elle se commente à l'oral, item par item, et les copies sont ramassées pour être conservées au dossier de la session.",
       },
     },
     synthese: {

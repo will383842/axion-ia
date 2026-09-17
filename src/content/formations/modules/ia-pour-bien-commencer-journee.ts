@@ -631,25 +631,25 @@ export const IA_POUR_BIEN_COMMENCER_JOURNEE: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Évaluation des acquis en deux temps. Quiz individuel de douze questions, corrigé en salle question par question. Puis vérification par la production : chacun relit UNE de ses productions du jour à SA propre grille en cinq points, note les points corrigés — et le voisin contrôle que la grille a réellement été appliquée, point par point.",
+        "Évaluation des acquis en deux temps. Grille d'évaluation individuelle, renseignée et commentée en salle item par item. Puis vérification par la production : chacun relit UNE de ses productions du jour à SA propre grille en cinq points, note les points corrigés — et le voisin contrôle que la grille a réellement été appliquée, point par point.",
       reponseAttendue:
-        "Le corrigé du quiz est commenté question par question, sans en passer aucune ; le seuil de réussite est celui déclaré au programme, et un score en dessous déclenche la reprise individuelle prévue au dispositif. Sur la relecture : au moins un point marqué « à corriger » par production — une grille qui ne trouve jamais rien n'a pas été appliquée.",
+        "La grille d'évaluation est commentée item par item, sans en passer aucun ; chaque objectif de la journée y est marqué atteint ou non atteint, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif. Sur la relecture : au moins un point marqué « à corriger » par production — une grille qui ne trouve jamais rien n'a pas été appliquée.",
       dureeMin: 23,
       notes: {
         script:
-          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se corrige, elle se conserve. Si la journée a pris du retard, coupez ailleurs — jamais ici. Annoncez avant le quiz que le résultat individuel n'est pas transmis à l'employeur : la salle se détend et répond mieux. Sur la vérification par la production, le contrôle du voisin porte sur l'APPLICATION de la grille, pas sur la qualité du texte — cinq points regardés, cinq cases cochées ou commentées.",
+          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se commente, elle se conserve. Si la journée a pris du retard, coupez ailleurs — jamais ici. Annoncez avant de remplir la grille que le résultat individuel n'est pas transmis à l'employeur : la salle se détend et joue le jeu. Sur la vérification par la production, le contrôle du voisin porte sur l'APPLICATION de la grille en cinq points, pas sur la qualité du texte — cinq points regardés, cinq cases cochées ou commentées.",
         faq: [
           {
-            question: "Le résultat du quiz est transmis à mon employeur ?",
+            question: "Le résultat de mon évaluation est transmis à mon employeur ?",
             reponse:
               "Le résultat individuel, non. Ce qui est transmis : l'attestation de fin de formation et le fait que l'évaluation a eu lieu.",
           },
         ],
         blocages: [
           {
-            situation: "Il est 17 h 10 et le quiz n'est pas commencé.",
+            situation: "Il est 17 h 10 et la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table — c'est la première pièce qu'un auditeur demande.",
+              "La tenir quand même, en réduisant le commentaire aux items les moins bien tenus. On ne remplace jamais l'évaluation par un tour de table — c'est la première pièce qu'un auditeur demande.",
           },
           {
             situation: "Un stagiaire relit sa production et ne trouve rien à corriger.",
@@ -658,7 +658,7 @@ export const IA_POUR_BIEN_COMMENCER_JOURNEE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quiz papier et corrigé imprimés dans le kit. La relecture à la grille est déjà un exercice papier. Aucune dépendance à un outil.",
+          "Grilles d'évaluation vierges imprimées dans le kit. La relecture à la grille en cinq points est déjà un exercice papier. Aucune dépendance à un outil.",
       },
     },
     synthese: {

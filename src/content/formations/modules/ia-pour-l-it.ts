@@ -198,7 +198,7 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
           {
             question: "On note ? Ça compte pour l'attestation ?",
             reponse:
-              "Non. L'évaluation des acquis est demain à 16 h, sur dix questions. Ceci sert à repérer ce qui coince pendant qu'on peut encore le corriger.",
+              "Non. L'évaluation des acquis est demain à 16 h, sur la grille individuelle. Ceci sert à repérer ce qui coince pendant qu'on peut encore le corriger.",
           },
           {
             question: "Ma règle interdit tout, elle est forcément bonne ?",
@@ -758,13 +758,13 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Évaluation des acquis : quiz individuel de 10 questions, corrigé en salle question par question. Puis évaluation croisée des productions d'atelier sur la grille fournie — exactitude, sécurité (aucun secret, aucune commande destructive), réversibilité, documentation, et mention du haut risque le cas échéant.",
+        "Évaluation des acquis : grille d'évaluation individuelle, renseignée et commentée en salle item par item. Puis évaluation croisée des productions d'atelier sur la grille fournie — exactitude, sécurité (aucun secret, aucune commande destructive), réversibilité, documentation, et mention du haut risque le cas échéant.",
       reponseAttendue:
-        "Le corrigé est commenté question par question, sans en sauter aucune. Sur l'évaluation croisée, chaque production reçoit au moins un écart nommé sur les cinq critères. Le seuil de réussite est celui déclaré au programme ; un score en dessous déclenche la reprise individuelle prévue au dispositif.",
+        "La grille d'évaluation est commentée item par item, sans en sauter aucun : chaque objectif de la journée y est marqué atteint ou non atteint, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif. Sur l'évaluation croisée, chaque production reçoit au moins un écart nommé sur les cinq critères.",
       dureeMin: 30,
       notes: {
         script:
-          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se corrige, et elle se conserve. Ne la sacrifiez jamais au temps qui manque — c'est la première chose qu'un auditeur demande. Si vous êtes en retard, coupez dans la mise en commun de l'atelier gouvernance, pas ici. Sur l'évaluation croisée : le critère « sécurité » se vérifie en cherchant un secret dans la production, pas en demandant s'il y en a un.",
+          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se commente, et elle se conserve. Ne la sacrifiez jamais au temps qui manque — c'est la première chose qu'un auditeur demande. Si vous êtes en retard, coupez dans la mise en commun de l'atelier gouvernance, pas ici. Sur l'évaluation croisée : le critère « sécurité » se vérifie en cherchant un secret dans la production, pas en demandant s'il y en a un.",
         faq: [
           {
             question: "Le résultat sera transmis à mon employeur ?",
@@ -779,9 +779,9 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
         ],
         blocages: [
           {
-            situation: "Il est 16 h 45 et le quiz n'est pas commencé.",
+            situation: "Il est 16 h 45 et la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
+              "La tenir quand même, en réduisant le commentaire aux items les moins bien tenus. On ne remplace jamais l'évaluation par un tour de table.",
           },
           {
             situation: "Une production contient encore un secret en clair.",
@@ -789,7 +789,7 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
               "Le traiter comme un incident, calmement et sans humilier : on le retire, on note que la règle de la section 1 n'a pas tenu, et on la rectifie. C'est le dernier moment où c'est gratuit.",
           },
         ],
-        planB: "Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil.",
+        planB: "Grilles d'évaluation vierges imprimées dans le kit. Aucune dépendance à un outil.",
       },
     },
     synthese: {

@@ -192,7 +192,7 @@ export const IA_POUR_LA_BANQUE_ASSURANCE: EnrichissementFormation = [
           {
             question: "On note ? Ça compte pour l'évaluation ?",
             reponse:
-              "Non, l'évaluation des acquis est en fin de journée, sur dix questions. Ceci sert à régler l'œil pendant qu'on peut encore corriger.",
+              "Non, l'évaluation des acquis est en fin de journée, sur la grille individuelle. Ceci sert à régler l'œil pendant qu'on peut encore corriger.",
           },
         ],
         blocages: [
@@ -626,13 +626,13 @@ export const IA_POUR_LA_BANQUE_ASSURANCE: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Évaluation des acquis : quiz individuel de dix questions couvrant la journée — régimes d'usage et liste rouge, usages hors périmètre, recopie des références contractuelles, validation et trace — puis correction commentée en salle, question par question.",
+        "Évaluation des acquis : grille d'évaluation individuelle couvrant la journée — régimes d'usage et liste rouge, usages hors périmètre, recopie des références contractuelles, validation et trace — renseignée puis commentée en salle, item par item.",
       reponseAttendue:
-        "Dix réponses individuelles par stagiaire, corrigées en salle sans passer aucune question. Le seuil de réussite est celui déclaré au programme ; un score en dessous déclenche la reprise individuelle prévue au dispositif.",
+        "Une grille renseignée par stagiaire, commentée en salle sans passer aucun item : chaque objectif de la journée y est marqué atteint ou non atteint, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif.",
       dureeMin: 15,
       notes: {
         script:
-          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se corrige, et elle se conserve. Ne la sacrifiez jamais au temps qui manque — si vous êtes en retard, c'est la correction commentée qui se resserre sur les questions les plus ratées, jamais le quiz qui saute.",
+          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se commente, et elle se conserve. Ne la sacrifiez jamais au temps qui manque — si vous êtes en retard, c'est le commentaire qui se resserre sur les items les moins bien tenus, jamais la grille qui saute.",
         faq: [
           {
             question: "Le résultat sera transmis à mon employeur ?",
@@ -644,10 +644,10 @@ export const IA_POUR_LA_BANQUE_ASSURANCE: EnrichissementFormation = [
           {
             situation: "Il est tard, la salle range déjà ses affaires.",
             parade:
-              "Tenir le quiz quand même, en annonçant le temps exact : « dix questions, douze minutes, correction incluse ». On ne remplace jamais l'évaluation par un tour de table.",
+              "Tenir la grille quand même, en annonçant le temps exact : « douze minutes, commentaire compris ». On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
-        planB: "Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil.",
+        planB: "Grilles d'évaluation vierges imprimées dans le kit. Aucune dépendance à un outil.",
       },
     },
     synthese: {

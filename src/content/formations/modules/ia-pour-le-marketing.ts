@@ -200,7 +200,7 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
           {
             question: "On note ? Ça compte quelque part ?",
             reponse:
-              "On ne note pas ici. L'évaluation des acquis est en fin de journée, sur dix questions. Ce contrôle sert à repérer ce qui coince pendant qu'on peut encore le corriger.",
+              "On ne note pas ici. L'évaluation des acquis est en fin de journée, sur la grille individuelle. Ce contrôle sert à repérer ce qui coince pendant qu'on peut encore le corriger.",
           },
         ],
         blocages: [
@@ -708,29 +708,29 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Évaluation des acquis : quiz individuel de dix questions, corrigé en salle question par question, suivi de l'auto-évaluation d'une production du jour sur la grille de relecture construite par la salle.",
+        "Évaluation des acquis : grille d'évaluation individuelle, renseignée et commentée en salle item par item, suivie de l'auto-évaluation d'une production du jour sur la grille de relecture construite par la salle.",
       reponseAttendue:
-        "Le corrigé du quiz est commenté question par question, sans en passer aucune ; le seuil de réussite est celui déclaré au programme, et un score en dessous déclenche la reprise individuelle prévue au dispositif. L'auto-évaluation passe la grille sur une production réelle du jour, et chaque contrôle est coché ou motivé.",
+        "La grille d'évaluation est commentée item par item, sans en passer aucun ; chaque objectif de la journée y est marqué atteint ou non atteint, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif. L'auto-évaluation passe la grille de relecture sur une production réelle du jour, et chaque contrôle est coché ou motivé.",
       dureeMin: 15,
       notes: {
         script:
-          "C'est l'évaluation des acquis au sens de l'indicateur 11 — elle se tient, elle se corrige, elle se conserve. Ne la sacrifiez jamais au temps qui manque ; c'est la première chose qu'un auditeur demande. Si vous êtes en retard, coupez ailleurs. L'auto-évaluation se fait sur la grille que la salle vient de construire, pas sur un modèle du kit : c'est la première mise en service de leur propre outil.",
+          "C'est l'évaluation des acquis au sens de l'indicateur 11 — elle se tient, elle se commente, elle se conserve. Ne la sacrifiez jamais au temps qui manque ; c'est la première chose qu'un auditeur demande. Si vous êtes en retard, coupez ailleurs. L'auto-évaluation se fait sur la grille que la salle vient de construire, pas sur un modèle du kit : c'est la première mise en service de leur propre outil.",
         faq: [
           {
-            question: "Le résultat du quiz sera transmis à mon employeur ?",
+            question: "Le résultat de mon évaluation sera transmis à mon employeur ?",
             reponse:
               "Le résultat individuel ne l'est pas. Ce qui est transmis, c'est l'attestation de fin de formation et le fait que l'évaluation a bien eu lieu.",
           },
         ],
         blocages: [
           {
-            situation: "Il est 17 h 15 et le quiz n'est pas commencé.",
+            situation: "Il est 17 h 15 et la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation des acquis par un tour de table.",
+              "La tenir quand même, en réduisant le commentaire aux items les moins bien tenus. On ne remplace jamais l'évaluation des acquis par un tour de table.",
           },
         ],
         planB:
-          "Quiz et corrigé sont imprimés dans le kit. Aucune dépendance à un outil, ni à un vidéoprojecteur.",
+          "Les grilles d'évaluation vierges sont imprimées dans le kit. Aucune dépendance à un outil, ni à un vidéoprojecteur.",
       },
     },
     synthese: {

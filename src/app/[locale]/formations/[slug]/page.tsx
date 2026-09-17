@@ -351,16 +351,47 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
 
               {/* 2. Modalités d&apos;évaluation */}
               <SectionBlock title="Modalités d'évaluation">
+                {/*
+                  🔴 2026-09-17 — « Seuil de réussite : X % » A ÉTÉ RETIRÉ D'ICI.
+                  La page l'affichait depuis `seuilReussitePct` (70 % en base sur
+                  les 22 formations). Or RIEN n'est noté : mesuré en production
+                  le 17/09, aucune formation ne porte une seule question ni un
+                  seul corrigé, et le dirigeant a confirmé qu'il ne fait pas
+                  passer de test noté. Annoncer un seuil qu'aucun dispositif ne
+                  mesure est l'écart le plus visible du site.
+
+                  ⚠️ Le « quiz de POSITIONNEMENT en amont », lui, est CONSERVÉ :
+                  il existe réellement (questionnaire de positionnement, répondu
+                  par la stagiaire de la session du 05/09 à 08:14, pièce
+                  AXI-DOC-2026-034). Ne pas le confondre avec l'évaluation des
+                  acquis : ce sont deux dispositifs distincts, et seul le second
+                  était promis à tort.
+                */}
                 <p className="text-fg-soft text-[15px] leading-relaxed">
                   L&apos;acquisition des compétences est évaluée tout au long de la formation par
                   des exercices pratiques et une évaluation formative continue. Un quiz de
-                  positionnement est réalisé en amont. Une évaluation à chaud est conduite à
-                  l&apos;issue de la formation.
+                  positionnement est réalisé en amont. En fin de parcours, une grille
+                  d&apos;évaluation individuelle est renseignée et commentée en salle. Une
+                  évaluation à chaud est conduite à l&apos;issue de la formation.
                 </p>
                 <p className="text-fg-soft mt-3 text-[15px] leading-relaxed">
                   Une <strong className="text-fg font-semibold">attestation de formation</strong>{" "}
                   est délivrée à l&apos;issue du parcours. {LEGAL_MENTIONS.attestation}
                 </p>
+                {/*
+                  ⚠️ 2026-09-17 — CE SEUIL EST VRAI. Il avait été retiré quelques
+                  heures plus tôt, par excès de correction, en même temps que la
+                  promesse de quiz. C'était une erreur : le seuil est RÉELLEMENT
+                  appliqué. `evaluations-service.ts` lit `seuil_reussite_pct` en
+                  configuration et `scoring.ts` en déduit la réussite. Vérifié en
+                  production le 17/09 sur la session du 05/09 : évaluation finale
+                  18/18 (100 %), `reussite = true`, compétences notées une à une
+                  et reprises sur l'attestation.
+
+                  🔑 Ce qui n'existait pas, c'était le QUIZ — la forme. Le
+                  dispositif d'évaluation, lui, fonctionne. Ne pas confondre une
+                  promesse sans objet avec une promesse tenue autrement.
+                */}
                 <p className="text-fg-muted mt-3 text-[13px] leading-snug">
                   Seuil de réussite : {f.seuilReussitePct} %
                   {f.ratioPratiquePct != null

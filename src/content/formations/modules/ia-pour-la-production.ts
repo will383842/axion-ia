@@ -682,13 +682,13 @@ export const IA_POUR_LA_PRODUCTION: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Évaluation des acquis : quiz individuel de dix questions, corrigé en salle question par question. Puis chacun évalue sa production d'atelier des deux jours sur la grille fournie — exactitude des faits et des chiffres, points de sécurité recopiés et emplacement de visa marqué, structure des écrits, réutilisabilité lundi matin.",
+        "Évaluation des acquis : grille d'évaluation individuelle, renseignée et commentée en salle item par item. Puis chacun évalue sa production d'atelier des deux jours sur la grille fournie — exactitude des faits et des chiffres, points de sécurité recopiés et emplacement de visa marqué, structure des écrits, réutilisabilité lundi matin.",
       reponseAttendue:
-        "Le corrigé se commente question par question, sans en sauter aucune ; le seuil de réussite est celui déclaré au programme, et un score en dessous déclenche la reprise individuelle prévue au dispositif. Sur la grille, la ligne « points de sécurité » ne se moyenne pas avec les autres : une production dont un point de sécurité a été rédigé par l'outil est refusée, quel que soit le reste.",
+        "La grille d'évaluation se commente item par item, sans en sauter aucun ; chaque objectif des deux jours y est marqué atteint ou non atteint, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif. Sur la grille d'atelier, la ligne « points de sécurité » ne s'efface pas derrière les autres : une production dont un point de sécurité a été rédigé par l'outil est refusée, quel que soit le reste.",
       dureeMin: 25,
       notes: {
         script:
-          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se corrige, elle se conserve. Ne la sacrifiez jamais au temps qui manque — si vous êtes en retard, coupez sur l'assemblage du classeur, pas ici. Sur la grille d'auto-évaluation, annoncez la règle avant de distribuer : la ligne sécurité est éliminatoire et ne se compense pas. Dans un atelier, une moyenne qui absorbe un défaut de sécurité est une moyenne qui ment.",
+          "C'est l'évaluation des acquis au sens de l'indicateur 11 : elle se tient, elle se commente, elle se conserve. Ne la sacrifiez jamais au temps qui manque — si vous êtes en retard, coupez sur l'assemblage du classeur, pas ici. Sur la grille d'auto-évaluation, annoncez la règle avant de distribuer : la ligne sécurité est éliminatoire et ne se compense pas. Dans un atelier, une grille qui absorbe un défaut de sécurité dans le reste est une grille qui ment.",
         faq: [
           {
             question: "Le résultat va être transmis à mon responsable ?",
@@ -698,13 +698,13 @@ export const IA_POUR_LA_PRODUCTION: EnrichissementFormation = [
         ],
         blocages: [
           {
-            situation: "Il est 16 h 40 et le quiz n'est pas commencé.",
+            situation: "Il est 16 h 40 et la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation des acquis par un tour de table.",
+              "La tenir quand même, en réduisant le commentaire aux items les moins bien tenus. On ne remplace jamais l'évaluation des acquis par un tour de table.",
           },
         ],
         planB:
-          "Quiz papier et corrigé dans le kit, grille d'auto-évaluation imprimée. Aucune dépendance à un outil.",
+          "Grilles d'évaluation vierges dans le kit, grille d'auto-évaluation imprimée. Aucune dépendance à un outil.",
       },
     },
     synthese: {

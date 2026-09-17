@@ -349,7 +349,7 @@ const BIEN_COMMENCER_4H: FormationV2 = {
           temps: "15'",
           type: "verification",
           titre:
-            "Évaluation des acquis corrigée en salle : quiz individuel de 10 questions (corrigé fourni), puis relecture par chacun de sa propre production à la grille fournie — exactitude, ton, structure, réutilisable tel quel — et note de ce qu'il doit encore corriger avant de s'en servir",
+            "Évaluation des acquis corrigée en salle : relecture par chacun de sa propre production à la grille fournie — exactitude, ton, structure, réutilisable tel quel — et note de ce qu'il doit encore corriger avant de s'en servir",
         },
         {
           temps: "5'",
@@ -650,7 +650,7 @@ const BIEN_COMMENCER_JOURNEE: FormationV2 = {
           temps: "12'",
           type: "verification",
           titre:
-            "Évaluation des acquis : quiz individuel de 12 questions, corrigé en salle question par question",
+            "Évaluation des acquis : grille d'évaluation individuelle, renseignée et commentée en salle",
         },
         {
           temps: "11'",
@@ -938,7 +938,7 @@ const IA_POUR_LES_EQUIPES: FormationV2 = {
           temps: "15'",
           type: "verification",
           titre:
-            "Évaluation des acquis : quiz individuel de 10 questions corrigé en salle, puis relecture croisée d'une production du jour à la grille commune (exactitude, ton, format, réutilisable par un collègue)",
+            "Évaluation des acquis : relecture croisée d'une production du jour à la grille commune (exactitude, ton, format, réutilisable par un collègue)",
         },
         {
           temps: "15'",
@@ -1266,7 +1266,7 @@ const IA_POUR_L_AUTOMATISATION: FormationV2 = {
           temps: "25'",
           type: "verification",
           titre:
-            "Évaluation des acquis : quiz individuel de validation (10 questions) et grille d'auto-évaluation du prototype (contrôle humain, traçabilité, régime de données, reprenabilité, couleur au feu tricolore) ; corrigé commenté en salle",
+            "Évaluation des acquis : grille d'auto-évaluation du prototype (contrôle humain, traçabilité, régime de données, reprenabilité, couleur au feu tricolore) ; corrigé commenté en salle",
         },
         {
           temps: "25'",
@@ -1570,7 +1570,7 @@ const IA_POUR_LES_RH: FormationV2 = {
           temps: "15'",
           type: "verification",
           titre:
-            "Évaluation des acquis : quiz individuel de validation (10 questions, corrigé en salle question par question) + auto-évaluation par chacun d'une production réelle du jour sur la grille de relecture (exactitude des affirmations, informations interdites, mentions dues, ton, réutilisabilité)",
+            "Évaluation des acquis : auto-évaluation par chacun d'une production réelle du jour sur la grille de relecture (exactitude des affirmations, informations interdites, mentions dues, ton, réutilisabilité)",
         },
         {
           temps: "10'",
@@ -1873,7 +1873,7 @@ const IA_POUR_LE_MARKETING: FormationV2 = {
           temps: "15'",
           type: "verification",
           titre:
-            "Évaluation des acquis : quiz individuel de validation (10 questions, corrigé en salle) puis auto-évaluation d'une production du jour sur la grille de relecture construite par la salle.",
+            "Évaluation des acquis : auto-évaluation d'une production du jour sur la grille de relecture construite par la salle.",
         },
         {
           temps: "5'",
@@ -2163,7 +2163,7 @@ const IA_POUR_LES_COMMERCIAUX: FormationV2 = {
           temps: "15'",
           type: "verification",
           titre:
-            "Évaluation des acquis : quiz individuel de validation (10 questions) corrigé en salle, puis auto-évaluation d'une production du jour sur la grille de relecture",
+            "Évaluation des acquis : auto-évaluation d'une production du jour sur la grille de relecture",
         },
         {
           temps: "10'",
@@ -2469,7 +2469,7 @@ const IA_POUR_LA_FINANCE: FormationV2 = {
           temps: "15'",
           type: "verification",
           titre:
-            "Évaluation des acquis : quiz individuel de validation (10 questions) corrigé en salle, puis auto-évaluation d'une production du jour sur la grille de relecture du classeur",
+            "Évaluation des acquis : auto-évaluation d'une production du jour sur la grille de relecture du classeur",
         },
         {
           temps: "5'",
@@ -2783,7 +2783,7 @@ const IA_POUR_LE_JURIDIQUE: FormationV2 = {
           temps: "15'",
           type: "verification",
           titre:
-            "Évaluation des acquis : quiz individuel de validation (10 questions) corrigé en salle, puis auto-évaluation d'une production du jour sur la grille de relecture",
+            "Évaluation des acquis : auto-évaluation d'une production du jour sur la grille de relecture",
         },
         {
           temps: "5'",
@@ -3168,7 +3168,7 @@ const IA_POUR_LA_PRODUCTION: FormationV2 = {
           temps: "25'",
           type: "verification",
           titre:
-            "Évaluation des acquis corrigée en salle : quiz individuel de 10 questions, puis évaluation de la production d'atelier sur la grille fournie (exactitude, sécurité, structure, réutilisabilité)",
+            "Évaluation des acquis corrigée en salle : évaluation de la production d'atelier sur la grille fournie (exactitude, sécurité, structure, réutilisabilité)",
         },
         {
           temps: "20'",
@@ -3482,7 +3482,7 @@ const IA_POUR_LES_ACHATS: FormationV2 = {
           temps: "15'",
           type: "verification",
           titre:
-            "Évaluation des acquis : quiz individuel de 10 questions corrigé en salle, puis évaluation croisée du dossier d'arbitrage sur la grille du kit (critères posés, totaux recalculés, questions au fournisseur, liste rouge respectée, aucune donnée interdite soumise)",
+            "Évaluation des acquis : évaluation croisée du dossier d'arbitrage sur la grille du kit (critères posés, totaux recalculés, questions au fournisseur, liste rouge respectée, aucune donnée interdite soumise)",
         },
         {
           temps: "10'",
@@ -3758,7 +3758,7 @@ const IA_POUR_LA_RELATION_CLIENT: FormationV2 = {
           temps: "15'",
           type: "verification",
           titre:
-            "Évaluation des acquis : quiz individuel (10 questions) et notation sur grille de trois productions d'atelier (une réponse type, une réclamation, une fiche de base de connaissances)",
+            "Évaluation des acquis : notation sur grille de trois productions d'atelier (une réponse type, une réclamation, une fiche de base de connaissances)",
         },
         {
           temps: "5'",
@@ -4092,7 +4092,7 @@ const IA_POUR_L_IT: FormationV2 = {
           temps: "30'",
           type: "verification",
           titre:
-            "Évaluation des acquis : quiz individuel de 10 questions corrigé en salle, puis évaluation croisée des productions d'atelier sur grille (exactitude, sécurité, réversibilité, documentation, mention du haut risque le cas échéant)",
+            "Évaluation des acquis : évaluation croisée des productions d'atelier sur grille (exactitude, sécurité, réversibilité, documentation, mention du haut risque le cas échéant)",
         },
         {
           temps: "20'",
@@ -4415,7 +4415,7 @@ const IA_POUR_LA_SANTE: FormationV2 = {
           temps: "20'",
           type: "verification",
           titre:
-            "Validation des acquis : quiz individuel de 10 questions corrigé en salle question par question, puis passage de sa propre production du jour à la grille de critères — chacun note les points à reprendre sur sa fiche-procédure",
+            "Validation des acquis : passage de sa propre production du jour à la grille de critères — chacun note les points à reprendre sur sa fiche-procédure",
         },
         {
           temps: "10'",
@@ -4714,7 +4714,7 @@ const IA_POUR_LE_BTP: FormationV2 = {
           temps: "20'",
           type: "verification",
           titre:
-            "Validation des acquis : quiz individuel de 10 questions corrigé en salle, puis passage de sa propre production de la journée à la grille de critères fournie — reprise nominative des écarts",
+            "Validation des acquis : passage de sa propre production de la journée à la grille de critères fournie — reprise nominative des écarts",
         },
         {
           temps: "10'",
@@ -5020,7 +5020,7 @@ const IA_POUR_L_IMMOBILIER: FormationV2 = {
           temps: "20'",
           type: "verification",
           titre:
-            "Validation des acquis, corrigée en salle : quiz individuel (10 questions) puis passage de sa production de la journée à la grille de critères fournie",
+            "Validation des acquis, corrigée en salle : passage de sa production de la journée à la grille de critères fournie",
         },
         {
           temps: "10'",
@@ -5312,7 +5312,7 @@ const IA_POUR_LE_COMMERCE: FormationV2 = {
           temps: "20'",
           type: "verification",
           titre:
-            "Validation des acquis : quiz individuel de 10 questions corrigé en salle, puis passage de sa propre production du jour à la grille de critères fournie (mentions obligatoires, caractéristiques prouvées, rien de personnel publié)",
+            "Validation des acquis : passage de sa propre production du jour à la grille de critères fournie (mentions obligatoires, caractéristiques prouvées, rien de personnel publié)",
         },
         {
           temps: "10'",
@@ -5588,7 +5588,7 @@ const IA_POUR_L_HOTELLERIE_RESTAURATION: FormationV2 = {
           temps: "25'",
           type: "verification",
           titre:
-            "Quiz individuel de validation des acquis (10 questions), puis correction commentée question par question, chaque réponse renvoyant à la séquence qui traitait le point",
+            "Grille d'évaluation individuelle des acquis, puis reprise commentée item par item, chaque objectif renvoyant à la séquence qui traitait le point",
         },
         {
           temps: "10'",
@@ -6002,7 +6002,7 @@ const IA_POUR_L_INDUSTRIE: FormationV2 = {
           temps: "20'",
           type: "verification",
           titre:
-            "Quiz individuel de validation des acquis (10 questions couvrant les régimes d'usage, la liste rouge, la revalidation HSE, la vérification aux sources et la qualification des suivis) + correction commentée en salle",
+            "Grille d'évaluation individuelle des acquis, couvrant les régimes d'usage, la liste rouge, la revalidation HSE, la vérification aux sources et la qualification des suivis, puis reprise commentée en salle",
         },
         {
           temps: "25'",
@@ -6300,8 +6300,7 @@ const IA_POUR_LE_TRANSPORT_LOGISTIQUE: FormationV2 = {
         {
           temps: "15'",
           type: "verification",
-          titre:
-            "Quiz individuel de validation des acquis (10 questions) + correction commentée en salle",
+          titre: "Grille d'évaluation individuelle des acquis, renseignée puis commentée en salle",
         },
         {
           temps: "10'",
@@ -6590,8 +6589,7 @@ const IA_POUR_LA_BANQUE_ASSURANCE: FormationV2 = {
         {
           temps: "15'",
           type: "verification",
-          titre:
-            "Quiz individuel de validation des acquis (10 questions) + correction commentée en salle",
+          titre: "Grille d'évaluation individuelle des acquis, renseignée puis commentée en salle",
         },
         {
           temps: "10'",
@@ -6637,9 +6635,22 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
   // Programme : « Jusqu'à 50 participants, en tables de 6 à 8 ».
   effectifFr: "Jusqu’à 50 participants, en tables de 6 à 8",
   // Le séminaire ne demande AUCUN matériel individuel : le formateur démontre,
-  // et seul le téléphone personnel sert au sondage et aux QCM.
+  // et seul le téléphone personnel sert au SONDAGE — anonyme, agrégé par
+  // service, protégé par l'engagement de non-usage disciplinaire signé à 9 h.
+  //
+  // 🔴 2026-09-17 — L'ÉVALUATION DES ACQUIS NE PASSE PLUS PAR LE TÉLÉPHONE.
+  // Le texte annonçait des « QCM (évaluation individuelle et nominative) » sur
+  // téléphone, alors qu'il promettait par ailleurs « aucun matériel à prévoir ».
+  // Contradiction relevée par Will le 17/09. L'évaluation se fait désormais sur
+  // la même grille individuelle que les autres formations — ce qui aligne le
+  // séminaire sur le reste du catalogue et donne une preuve papier.
+  //
+  // ⚠️ Elle ne DISPARAÎT pas : un OPCO ne finance une action que si elle permet
+  // d'apprécier les résultats (L.6313-1). Supprimer l'évaluation sortirait le
+  // séminaire de la définition d'une action de formation, donc du financement.
+  // Décision de Will du 17/09 : « il faut qu'il soit finançable ».
   materielFr:
-    "Aucun matériel à prévoir : les démonstrations sont pilotées par le formateur. Chaque participant utilise son téléphone personnel pour le sondage en direct et les QCM",
+    "Aucun matériel à prévoir : les démonstrations sont pilotées par le formateur. Chaque participant utilise son téléphone personnel pour le seul sondage en direct, anonyme et agrégé par service ; l'évaluation des acquis se fait en fin de journée sur une grille individuelle remise en salle",
   outilsFr:
     "Le séminaire est démonstratif : le formateur pilote en direct un seul assistant, tenu toute la journée pour que la salle suive un geste et non trois interfaces. Les participants ne créent aucun compte — ils travaillent par table, sur leurs propres cas d’usage.",
   seminaire: true,
@@ -6661,7 +6672,7 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
   publicViseFr:
     "L'entreprise entière ou un site complet, réunis le même jour : tous services, tous métiers, tous niveaux de maîtrise de l'IA. C'est précisément ce mélange qui fait la valeur de la journée — ceux qui n'ont jamais essayé et ceux qui utilisent déjà l'IA au quotidien. Jusqu'à 50 participants, en tables de 6 à 8.",
   prerequisFr:
-    "Aucun prérequis technique ni expérience de l'IA. Aucun compte à créer, aucun logiciel à installer : le séminaire est conçu pour qu'on y participe sans préparation. Chaque participant utilise son téléphone personnel pour le sondage et les QCM (évaluation individuelle et nominative) ; un ordinateur ou un téléphone par table suffit pour les temps collectifs.",
+    "Aucun prérequis technique ni expérience de l'IA. Aucun compte à créer, aucun logiciel à installer : le séminaire est conçu pour qu'on y participe sans préparation. Chaque participant utilise son téléphone personnel pour le sondage en direct, qui est anonyme et agrégé par service ; l'évaluation des acquis, elle, est individuelle et se fait sur une grille papier remise en fin de journée. Un ordinateur ou un téléphone par table suffit pour les temps collectifs.",
   casUsageFr: [
     {
       texteFr:
@@ -6941,7 +6952,7 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
     {
       question: "Combien de participants et quelle organisation de salle ?",
       reponse:
-        "Jusqu'à 50 participants, en tables de 6 à 8 personnes, de préférence en mélangeant les services. Il faut un vidéoprojecteur ou grand écran, une sonorisation adaptée, un paperboard par table et une connexion internet couvrant la salle (pour le sondage et les QCM depuis les téléphones).",
+        "Jusqu'à 50 participants, en tables de 6 à 8 personnes, de préférence en mélangeant les services. Il faut un vidéoprojecteur ou grand écran, une sonorisation adaptée, un paperboard par table et une connexion internet couvrant la salle (pour le sondage en direct depuis les téléphones). L'évaluation des acquis se fait sur grille papier : prévoir de quoi écrire à chaque place.",
     },
   ],
 };

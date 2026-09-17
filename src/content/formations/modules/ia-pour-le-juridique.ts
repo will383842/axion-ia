@@ -343,7 +343,7 @@ export const IA_POUR_LE_JURIDIQUE: EnrichissementFormation = [
           {
             question: "On note ? Ça compte ?",
             reponse:
-              "On ne note pas ici. L'évaluation des acquis est en fin de journée, sur dix questions. Ceci sert à régler l'œil pendant qu'on peut encore corriger.",
+              "On ne note pas ici. L'évaluation des acquis est en fin de journée, sur la grille individuelle. Ceci sert à régler l'œil pendant qu'on peut encore corriger.",
           },
         ],
         blocages: [
@@ -606,28 +606,28 @@ export const IA_POUR_LE_JURIDIQUE: EnrichissementFormation = [
     },
     verification: {
       question:
-        "Deux temps. D'abord, chacun réécrit une des cinq erreurs de la chasse en formulation vérifiable et nomme la source qu'il aurait dû ouvrir. Puis l'évaluation des acquis : quiz individuel de dix questions corrigé en salle, suivi de l'auto-évaluation d'une production du jour sur la grille de relecture.",
+        "Deux temps. D'abord, chacun réécrit une des cinq erreurs de la chasse en formulation vérifiable et nomme la source qu'il aurait dû ouvrir. Puis l'évaluation des acquis : grille d'évaluation individuelle renseignée et commentée en salle, suivie de l'auto-évaluation d'une production du jour sur la grille de relecture.",
       reponseAttendue:
-        "Une réécriture qui porte sa source pour chaque erreur reprise, et la règle prononcée : le périmètre du conseil ne se délègue pas, l'IA n'est jamais l'auteur d'une position du service. Le quiz est corrigé question par question ; le seuil de réussite est celui déclaré au programme, un score en dessous déclenche la reprise individuelle prévue au dispositif.",
+        "Une réécriture qui porte sa source pour chaque erreur reprise, et la règle prononcée : le périmètre du conseil ne se délègue pas, l'IA n'est jamais l'auteur d'une position du service. La grille d'évaluation est commentée item par item ; chaque objectif de la journée y est marqué atteint ou non atteint, et ce qui n'est pas atteint déclenche la reprise individuelle prévue au dispositif.",
       dureeMin: 25,
       notes: {
         script:
-          "Les réécritures se lisent à VOIX HAUTE : une formulation vérifiable se reconnaît à l'oreille — elle porte une source et une date. Puis le quiz : c'est l'évaluation des acquis au sens de l'indicateur 11, elle se tient, se corrige et se conserve. Ne la sacrifiez jamais au temps qui manque — c'est la première chose qu'un auditeur demande. Si vous êtes en retard, coupez ailleurs.",
+          "Les réécritures se lisent à VOIX HAUTE : une formulation vérifiable se reconnaît à l'oreille — elle porte une source et une date. Puis la grille : c'est l'évaluation des acquis au sens de l'indicateur 11, elle se tient, se commente et se conserve. Ne la sacrifiez jamais au temps qui manque — c'est la première chose qu'un auditeur demande. Si vous êtes en retard, coupez ailleurs.",
         faq: [
           {
-            question: "Le résultat du quiz va être transmis à mon employeur ?",
+            question: "Le résultat de mon évaluation va être transmis à mon employeur ?",
             reponse:
               "Le résultat individuel ne l'est pas. Ce qui est transmis : l'attestation de fin de formation et le fait que l'évaluation a eu lieu.",
           },
         ],
         blocages: [
           {
-            situation: "Il est 17 h 15, le quiz n'est pas commencé.",
+            situation: "Il est 17 h 15, la grille d'évaluation n'est pas commencée.",
             parade:
-              "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
+              "La tenir quand même, en réduisant le commentaire aux items les moins bien tenus. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
-        planB: "Quiz papier et corrigé dans le kit. Aucune dépendance à un outil.",
+        planB: "Grilles d'évaluation vierges dans le kit. Aucune dépendance à un outil.",
       },
     },
     synthese: {
