@@ -62,6 +62,21 @@ vi.mock("@/server/actions/qualiopi/emargement-liens", () => ({
 vi.mock("@/server/auth/garde-page", () => ({ gardePage: vi.fn() }));
 vi.mock("@/server/qualiopi/config/site-settings", () => ({ getQualiopiConfig: vi.fn() }));
 vi.mock("@/server/qualiopi/presence/queries", () => ({ getSessionEmargement: vi.fn() }));
+// 🔴 Ajouter un import à la page, c'est ajouter une ligne à tous les doubles qui
+// la traversent. Sans celui-ci, le bandeau « contresignature attendue par le
+// financeur » ouvre une vraie connexion Prisma et ce fichier ENTIER rougit
+// (`PrismaClientInitializationError`) — un rouge sur du code juste, exactement
+// la leçon déjà écrite dans `dossier-session.spec.ts`.
+//
+// Le constat est neutralisé (`afficher: false`) : ce test-ci regarde la colonne
+// « Émargement signé », pas le bandeau, qui a son propre témoin
+// (`le-bandeau-contresignature-informe-sans-bloquer.spec.tsx`).
+vi.mock("@/server/qualiopi/emargement/constat-financeur-session", () => ({
+  constatContresignatureSession: vi.fn(async () => ({
+    afficher: false,
+    raison: "financement_non_renseigne",
+  })),
+}));
 
 import { gardePage } from "@/server/auth/garde-page";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";

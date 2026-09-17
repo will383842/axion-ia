@@ -29,6 +29,12 @@
 
 import { partiesRequisesPour } from "../documents/signature/parties-requises";
 import { calculerEtat, mentionPour, pireEtat, type EtatEtape } from "./etat-echeance";
+// Module PUR lui aussi : la règle « ce financeur-là réclamera-t-il la
+// contresignature, et à quel titre ? ». Aucune requête ajoutée.
+import {
+  attenteContresignature,
+  type FinancementSession,
+} from "../emargement/contresignature-attendue";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // L'état d'entrée — exactement ce que le hub porte déjà
@@ -565,6 +571,11 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   // elle rend le manque VISIBLE tant qu'il dure — ici, et dans l'accueil du
   // formateur, qui lit la même étape.
   const { signees, aContresigner, sansDestinataire } = input.contresignature;
+  // Le financeur RÉEL de cette session, et ce qu'il attend. Même module que
+  // l'écran d'émargement et que le dossier d'audit — trois surfaces, un libellé.
+  const attenteFinanceur = attenteContresignature(
+    input.session.financementType as FinancementSession | null,
+  );
   etapes.push(
     etape({
       cle: "contresignature_formateur",
@@ -591,7 +602,17 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
         ? {
             avertissement:
               `${aContresigner} demi-journée${aContresigner > 1 ? "s" : ""} signée${aContresigner > 1 ? "s" : ""} par des stagiaires sans contresignature du formateur. ` +
-              "Non bloquant pour l'attestation, mais les OPCO la demandent : relancez-le si les rappels n'ont rien donné." +
+              // 🔴 Ce texte disait « les OPCO la demandent » QUEL QUE SOIT le
+              // financement. Sur un dossier payé par le client — le cas le plus
+              // courant — il invoquait un financeur inexistant ; sur un dossier
+              // CPF ou France Travail, il nommait le mauvais. Le libellé vient
+              // désormais du module pur, qui connaît le financeur RÉEL et dit
+              // la vérité sur le statut de la pièce : contractuelle, variable,
+              // à confirmer — jamais « obligatoire ».
+              //
+              // ⛔ On change ce que l'étape DIT, pas ce qu'elle empêche : elle
+              // n'empêche rien, et ne doit rien empêcher (décision du 25/08/2026).
+              `Non bloquant pour l'attestation : relancez-le si les rappels n'ont rien donné. ${attenteFinanceur.pourquoi}` +
               // 🔴 Relecture #1096 — ce manque-là ne se rattrape par AUCUN
               // rappel : il n'existait que dans un `console.error` du worker.
               (sansDestinataire > 0

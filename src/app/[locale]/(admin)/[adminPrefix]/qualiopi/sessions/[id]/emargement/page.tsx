@@ -28,6 +28,8 @@ import { ImportReleveForm } from "@/components/admin/qualiopi/ImportReleveForm";
 import { GenererCreneauxButton } from "@/components/admin/qualiopi/GenererCreneauxButton";
 import { SessionJoursEditor } from "@/components/admin/qualiopi/SessionJoursEditor";
 import { LiensEmargement } from "@/components/admin/qualiopi/LiensEmargement";
+import { BandeauContresignatureFinanceur } from "@/components/admin/qualiopi/BandeauContresignatureFinanceur";
+import { constatContresignatureSession } from "@/server/qualiopi/emargement/constat-financeur-session";
 import { DossierSessionButton } from "@/components/admin/qualiopi/DossierSessionButton";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import type { DemiJourneeLabel } from "@/server/qualiopi/presence/types";
@@ -101,6 +103,15 @@ export default async function EmargementPage({ params }: PageProps) {
   // relevé PDF, sinon la grille affiche « Complète » là où l'attestation générée
   // sera « partielle » dès que l'admin règle `seuil_presence_pct` ≠ 80.
   const seuilPresencePct = await getQualiopiConfig("seuil_presence_pct").catch(() => 80);
+
+  // 🔴 Ce que le FINANCEUR réclamera. L'organisme l'apprenait au refus de
+  // règlement : la contresignature du formateur conditionne le paiement chez la
+  // plupart des financeurs, et aucune surface de l'outil ne le disait là où on
+  // s'occupe des signatures.
+  //
+  // ⛔ NON BLOQUANT — décision de Will du 25/08/2026. Le constat n'est qu'un
+  // constat : il ne conditionne aucun bouton de cette page.
+  const constatFinanceur = await constatContresignatureSession(id, new Date());
 
   // Prépare les props pour EmargementGrid (clés sérialisables)
   // c.date est un DateTime Prisma (Date JS) → on extrait la partie ISO date (Europe/Paris).
@@ -213,6 +224,17 @@ export default async function EmargementPage({ params }: PageProps) {
           </p>
         </div>
       </div>
+
+      {/* Ce que le financeur réclamera — en tête, AVANT les journées et la
+          grille : c'est la seule information de cet écran qui se paie en
+          argent, et la lire après avoir tout fermé ne sert à rien.
+          Il disparaît de lui-même quand tout est contresigné, et ne s'affiche
+          jamais sur une session en financement direct. */}
+      <BandeauContresignatureFinanceur
+        constat={constatFinanceur}
+        href={`/${locale}/${adminPrefix}/qualiopi/sessions/${id}#formateur`}
+        libelleLien="Voir le formateur désigné (il contresigne depuis son espace)"
+      />
 
       {/* Section : Journées réellement animées (D14) — AVANT la génération des
           créneaux, parce qu'elle en dépend : sans journées déclarées, les

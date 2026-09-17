@@ -155,6 +155,47 @@ describe("2. la contresignature du formateur a son étape", () => {
     expect(e?.etat).toBe("sans_objet");
   });
 
+  /**
+   * 🔴 L'AVERTISSEMENT PARLAIT DE L'OPCO SUR UNE SESSION QUE PERSONNE N'A
+   * FINANCÉE PAR UN OPCO.
+   *
+   * Le texte était fixe : « les OPCO la demandent », quel que soit le
+   * `financementType` de la session. Sur un dossier payé directement par le
+   * client — la fixture ci-dessus, et le cas le plus courant du registre — il
+   * invoquait un financeur qui n'existe pas ; et sur un dossier CPF ou France
+   * Travail, il nommait le mauvais.
+   *
+   * ⚠️ Il ne devient pas bloquant pour autant : on change ce qu'il DIT, pas ce
+   * qu'il empêche (il n'empêche rien, et ne doit rien empêcher).
+   */
+  it("🔴 nomme le VRAI financeur de la session, pas « les OPCO » par défaut", () => {
+    const e = etape(
+      construireParcours(dossier({ session: { ...dossier().session, financementType: "cpf" } })),
+      "contresignature_formateur",
+    );
+    expect(e?.avertissement).toContain("CPF");
+    expect(e?.avertissement).not.toMatch(/les OPCO la demandent/);
+  });
+
+  it("🔴 n'invoque AUCUN financeur sur une session payée par le client", () => {
+    // Témoin de non-vacuité : la fixture est en financement `direct`.
+    const e = etape(construireParcours(dossier()), "contresignature_formateur");
+    expect(e?.avertissement).not.toMatch(/OPCO|CPF|France Travail/);
+    // Mais il reste un avertissement : le manque se voit toujours.
+    expect(e?.avertissement).toMatch(/contresignature/i);
+    expect(e?.avertissement).toMatch(/non bloquant/i);
+  });
+
+  it("dit que la liste des pièces est CONTRACTUELLE, jamais « obligatoire »", () => {
+    const e = etape(
+      construireParcours(dossier({ session: { ...dossier().session, financementType: "opco" } })),
+      "contresignature_formateur",
+    );
+    expect(e?.avertissement?.toLowerCase()).toContain("contractuel");
+    expect(e?.avertissement?.toLowerCase()).not.toContain("obligatoire");
+    expect(e?.avertissement?.toLowerCase()).not.toContain("exigé par la loi");
+  });
+
   it("🔴 l'étape concerne le FORMATEUR : elle entre dans son accueil, avec SON geste", () => {
     const table = ETAPES_DU_FORMATEUR as Record<string, boolean>;
     const gestes = GESTE_FORMATEUR as Record<string, string | undefined>;
