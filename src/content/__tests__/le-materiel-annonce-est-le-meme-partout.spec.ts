@@ -31,11 +31,14 @@
  *    de « ordinateur portable » ni de « laptop », quelle que soit la phrase.
  *    Il n'en reste aucune légitime ; une future mention exigera de retoucher
  *    cette garde, et c'est voulu.
- *  - Fiches formation, TOUS les champs (prérequis affichés sur la fiche et dans
- *    son JSON-LD, public visé, programme, textes EN) : même interdiction, sauf
- *    le champ `materielFr` des deux exceptions confirmées (revue exactitude
- *    5251895268, panne R10 : « Un ordinateur portable est obligatoire » dans
- *    `prerequisFr` passait en vert).
+ *  - Fiches formation, texte AFFICHÉ (champs de l'objet ET défauts centralisés
+ *    servis par `catalog-v2-facts.ts` : matériel, effectif, outils, méthodes,
+ *    évaluation, accessibilité…) : même interdiction, « PC portable » et
+ *    espace insécable compris. Exclus : le matériel des deux exceptions
+ *    confirmées, et les textes alternatifs des images (descriptions de
+ *    photos). Pannes fermées : R10 (`prerequisFr`, revue exactitude
+ *    5251895268) et D1 (défaut `FORMATION_MATERIEL_DEFAUT`, absent de l'objet,
+ *    revue sécurité 5252455088).
  *  - Les entrées qui parlent du matériel (`presentiel-distance`,
  *    `competences-techniques`) doivent CONTENIR la phrase et nommer les
  *    exceptions : si la phrase disparaît, le test échoue au lieu de passer à vide.
@@ -54,7 +57,18 @@ import path from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { getFormationMateriel } from "@/content/formations/catalog-v2-facts";
+import {
+  getFormationAccessibilite,
+  getFormationCasUsage,
+  getFormationDelaiAcces,
+  getFormationDureeFacts,
+  getFormationEffectif,
+  getFormationEvaluation,
+  getFormationMateriel,
+  getFormationMethodes,
+  getFormationModalites,
+  getFormationOutils,
+} from "@/content/formations/catalog-v2-facts";
 import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
 import { FAQ_GLOBAL } from "@/content/transversal";
 
@@ -80,8 +94,36 @@ const ORDINATEUR_COMME_MATERIEL = new RegExp(
   "i",
 );
 
-/** Dans la FAQ, aucune occurrence n'est tolérée, dans aucune langue. */
-const ORDINATEUR_PORTABLE_OU_LAPTOP = /ordinateurs? portables?|laptops?/i;
+/**
+ * Aucune occurrence n'est tolérée, dans aucune langue : « ordinateur portable »,
+ * « PC portable », « laptop » — espace ordinaire ou insécable.
+ */
+const ORDINATEUR_PORTABLE_OU_LAPTOP = /(?:ordinateurs?|pc)[\s\u00a0\u202f]+portables?|laptops?/i;
+
+/**
+ * Ce que la fiche AFFICHE (page et JSON-LD), pas seulement l'objet du catalogue :
+ * les champs absents de l'objet sont servis par des défauts centralisés
+ * (`catalog-v2-facts.ts`), qu'un `JSON.stringify(f)` ne voit pas (revue sécurité
+ * 5252455088, panne D1). Le matériel des deux exceptions est exclu ; les images
+ * aussi : leurs textes alternatifs décrivent des photos (« people around a
+ * laptop ») et ne sont pas une exigence de matériel.
+ */
+function texteAffiche(f: (typeof FORMATIONS_V2)[number]): string {
+  const exception = EXCEPTIONS_ORDINATEUR.has(f.id);
+  return JSON.stringify({
+    fiche: { ...f, materielFr: undefined, imageSrc: undefined, imageAltFr: undefined },
+    materiel: exception ? undefined : getFormationMateriel(f),
+    duree: getFormationDureeFacts(f),
+    modalites: getFormationModalites(f),
+    effectif: getFormationEffectif(f),
+    outils: getFormationOutils(f),
+    casUsage: getFormationCasUsage(f),
+    delaiAcces: getFormationDelaiAcces(f),
+    methodes: getFormationMethodes(f),
+    evaluation: getFormationEvaluation(f),
+    accessibilite: getFormationAccessibilite(f),
+  });
+}
 
 /** Entrées de la FAQ qui énoncent le matériel, en FR et en EN. */
 const FAQ_MATERIEL = ["presentiel-distance", "competences-techniques"] as const;
@@ -125,16 +167,12 @@ describe("le matériel annoncé est le même partout", () => {
     );
   });
 
-  it("aucune fiche ne mentionne l'ordinateur portable ou le laptop hors du champ matériel des exceptions", () => {
-    // Tous les champs de la fiche : prérequis (affichés sur la fiche et dans son
-    // JSON-LD), public visé, programme, textes EN… Seul `materielFr` des deux
-    // exceptions confirmées peut en parler.
-    const fautives = FORMATIONS_V2.filter((f) => {
-      const champs = EXCEPTIONS_ORDINATEUR.has(f.id) ? { ...f, materielFr: undefined } : f;
-      return ORDINATEUR_PORTABLE_OU_LAPTOP.test(JSON.stringify(champs));
-    }).map((f) => f.id);
-    expect(fautives).toEqual([]);
-  });
+  it.each(FORMATIONS_V2.map((f) => [f.id, f] as const))(
+    "%s n'affiche ni ordinateur portable ni laptop, défauts centralisés compris",
+    (_id, f) => {
+      expect(texteAffiche(f)).not.toMatch(ORDINATEUR_PORTABLE_OU_LAPTOP);
+    },
+  );
 
   it("les exceptions existent et restent sur ordinateur", () => {
     for (const id of EXCEPTIONS_ORDINATEUR) {
