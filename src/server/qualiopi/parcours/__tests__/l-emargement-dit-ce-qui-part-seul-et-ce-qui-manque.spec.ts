@@ -38,6 +38,9 @@ function dossier(patch: Partial<SessionParcoursInput> = {}): SessionParcoursInpu
       {
         id: "e1",
         statut: "planifiee",
+        // Override du payeur par participant (R-INTER). `null` = aucun : cette
+        // inscription relève du `financementType` de la session ci-dessus.
+        financementType: null,
         emargementSigneAt: d("2026-09-16T10:00:00.000Z"),
         convocationEnvoyeeAt: d("2026-09-10T08:00:00.000Z"),
         questionnaires: [],
@@ -155,6 +158,47 @@ describe("2. la contresignature du formateur a son étape", () => {
     expect(e?.etat).toBe("sans_objet");
   });
 
+  /**
+   * 🔴 L'AVERTISSEMENT PARLAIT DE L'OPCO SUR UNE SESSION QUE PERSONNE N'A
+   * FINANCÉE PAR UN OPCO.
+   *
+   * Le texte était fixe : « les OPCO la demandent », quel que soit le
+   * `financementType` de la session. Sur un dossier payé directement par le
+   * client — la fixture ci-dessus, et le cas le plus courant du registre — il
+   * invoquait un financeur qui n'existe pas ; et sur un dossier CPF ou France
+   * Travail, il nommait le mauvais.
+   *
+   * ⚠️ Il ne devient pas bloquant pour autant : on change ce qu'il DIT, pas ce
+   * qu'il empêche (il n'empêche rien, et ne doit rien empêcher).
+   */
+  it("🔴 nomme le VRAI financeur de la session, pas « les OPCO » par défaut", () => {
+    const e = etape(
+      construireParcours(dossier({ session: { ...dossier().session, financementType: "cpf" } })),
+      "contresignature_formateur",
+    );
+    expect(e?.avertissement).toContain("CPF");
+    expect(e?.avertissement).not.toMatch(/les OPCO la demandent/);
+  });
+
+  it("🔴 n'invoque AUCUN financeur sur une session payée par le client", () => {
+    // Témoin de non-vacuité : la fixture est en financement `direct`.
+    const e = etape(construireParcours(dossier()), "contresignature_formateur");
+    expect(e?.avertissement).not.toMatch(/OPCO|CPF|France Travail/);
+    // Mais il reste un avertissement : le manque se voit toujours.
+    expect(e?.avertissement).toMatch(/contresignature/i);
+    expect(e?.avertissement).toMatch(/non bloquant/i);
+  });
+
+  it("dit que la liste des pièces est CONTRACTUELLE, jamais « obligatoire »", () => {
+    const e = etape(
+      construireParcours(dossier({ session: { ...dossier().session, financementType: "opco" } })),
+      "contresignature_formateur",
+    );
+    expect(e?.avertissement?.toLowerCase()).toContain("contractuel");
+    expect(e?.avertissement?.toLowerCase()).not.toContain("obligatoire");
+    expect(e?.avertissement?.toLowerCase()).not.toContain("exigé par la loi");
+  });
+
   it("🔴 l'étape concerne le FORMATEUR : elle entre dans son accueil, avec SON geste", () => {
     const table = ETAPES_DU_FORMATEUR as Record<string, boolean>;
     const gestes = GESTE_FORMATEUR as Record<string, string | undefined>;
@@ -183,6 +227,8 @@ describe("3. la traduction ligne Prisma → parcours compte les demi-journées",
       {
         id: "e1",
         statut: "planifiee",
+        // Override du payeur par participant (R-INTER). `null` = aucun.
+        financementType: null,
         emargementSigneAt: null,
         convocationEnvoyeeAt: null,
         questionnaires: [],
@@ -212,6 +258,23 @@ describe("3. la traduction ligne Prisma → parcours compte les demi-journées",
   it("🔴 signées et à contresigner viennent du MÊME bilan que l'e-mail au formateur", () => {
     const e = entreeParcours(ligne, new Map(), d("2026-09-16T18:00:00.000Z"));
     expect(e.contresignature).toMatchObject({ signees: 2, aContresigner: 1, sansDestinataire: 0 });
+  });
+
+  it("🔴 R-INTER — session `direct`, un inscrit en OPCO : l'étape n'affirme plus l'absence", () => {
+    // Bout à bout, de la ligne Prisma à l'avertissement : c'est la seule façon
+    // de voir un maillon qui laisserait tomber l'override en route — le `select`,
+    // la traduction `entreeParcours`, ou `construireParcours` lui-même.
+    const avecOverride = {
+      ...ligne,
+      financementType: "direct",
+      enrollments: ligne.enrollments.map((e) => ({ ...e, financementType: "opco" })),
+    } as unknown as LigneSessionParcours;
+    const e = etape(
+      construireParcours(entreeParcours(avecOverride, new Map(), d("2026-09-16T18:00:00.000Z"))),
+      "contresignature_formateur",
+    );
+    expect(e?.avertissement).not.toContain("aucun financeur tiers");
+    expect(e?.avertissement).toContain("OPCO");
   });
 });
 

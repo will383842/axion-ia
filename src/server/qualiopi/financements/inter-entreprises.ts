@@ -42,6 +42,21 @@ export interface ResolvedFinancement {
 }
 
 /**
+ * La règle du payeur effectif, SEULE : l'override de l'inscription prime, sinon
+ * le financement de la session, sinon `null` (inconnu).
+ *
+ * Extraite pour les lecteurs qui n'ont que le TYPE de financement en main (la
+ * contresignature attendue par le financeur) : ils appliquent ainsi la même
+ * règle que la facturation, au lieu d'en retaper une copie.
+ */
+export function financementTypeEffectif<T>(
+  inscription: T | null | undefined,
+  session: T | null | undefined,
+): T | null {
+  return inscription ?? session ?? null;
+}
+
+/**
  * Financement EFFECTIF d'une inscription : l'override porté par l'inscription
  * prime ; à défaut, on retombe sur le financement de la session (intra).
  * Le montant retombe sur le prix session si l'inscription n'a pas de prix de siège.
@@ -51,7 +66,7 @@ export function resolveEnrollmentFinancement(
   session: SessionFinancementFallback,
 ): ResolvedFinancement {
   return {
-    financementType: enrollment.financementType ?? session.financementType,
+    financementType: financementTypeEffectif(enrollment.financementType, session.financementType),
     clientId: enrollment.clientId ?? session.clientId,
     numeroDossierOpco: enrollment.numeroDossierOpco ?? session.numeroDossierOpco,
     edofVerifieAt: enrollment.edofVerifieAt ?? session.edofVerifieAt,

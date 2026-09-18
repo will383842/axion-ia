@@ -41,6 +41,10 @@ const inscription = (patch: Record<string, unknown> = {}) =>
   ({
     id: "e1",
     statut: "confirme",
+    // 2026-09-17 — champ REQUIS par `LigneSessionParcours` : l'override du
+    // payeur PAR PARTICIPANT (R-INTER). `null` = pas d'override, l'inscription
+    // relève du financement de la session — le comportement d'avant.
+    financementType: null,
     emargementSigneAt: null,
     convocationEnvoyeeAt: null,
     questionnaires: [],

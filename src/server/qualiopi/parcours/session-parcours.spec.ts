@@ -46,6 +46,9 @@ function inscription(patch: Partial<SessionParcoursInput["inscriptions"][number]
   return {
     id: "e1",
     statut: "planifiee",
+    // Requis au type depuis B1 : `null` = pas d'override, l'inscription relève
+    // du financement de la session.
+    financementType: null,
     emargementSigneAt: null,
     convocationEnvoyeeAt: null,
     questionnaires: [],

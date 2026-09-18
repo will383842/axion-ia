@@ -50,6 +50,15 @@ import {
   verrouColonnesContresignature,
 } from "@/server/qualiopi/emargement/reconstruction";
 import { maillonContresignatureDepuisLigne } from "@/server/qualiopi/emargement/contresignature-hash";
+// 🔴 Le certificateur et le financeur ne lisent pas la même chose. La section
+// « contresignatures » répondait au premier (l'intégrité des chaînes) et se
+// taisait sur le second (« cette pièce conditionne-t-elle mon règlement ? »).
+// La règle vit dans UN module pur, partagé avec l'écran d'émargement : deux
+// libellés divergents sur la même question feraient deux vérités.
+import {
+  attenteContresignature,
+  type FinancementSession,
+} from "@/server/qualiopi/emargement/contresignature-attendue";
 import { construireFeuillePdf } from "@/server/qualiopi/emargement/feuille-pdf";
 import { rendreTirageEmargementAJour } from "@/server/qualiopi/documents/emargement-tirage";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
@@ -115,6 +124,8 @@ export async function genererDossierSessionZip(
       titreSession: true,
       dateDebut: true,
       dateFin: true,
+      // Qui paie — donc quelle liste de pièces CONTRACTUELLE s'applique.
+      financementType: true,
       documents: {
         // 🔴 Doctrine d'`audit-dossier.ts` : « une pièce annulée ne se compte
         // NULLE PART ». Sans ce filtre, le ZIP téléchargeait le PDF d'une pièce
@@ -141,6 +152,9 @@ export async function genererDossierSessionZip(
         select: {
           id: true,
           tauxPresencePct: true,
+          // Override du payeur par participant (R-INTER) — lu ici parce que la
+          // ligne « contresignature » de l'index en dépend.
+          financementType: true,
           // Ind. 10 — la réponse de l'organisme et le BOOLÉEN du besoin déclaré.
           // Le détail chiffré n'est pas chargé. `traineeId` et `reponduAt` DATENT
           // la dernière déclaration (circuit rouvert par une déclaration nouvelle).
@@ -294,6 +308,21 @@ export async function genererDossierSessionZip(
     lot.push(c);
     parFormateur.set(c.trainerId, lot);
   }
+  // Ce que le FINANCEUR de cette session attend de la contresignature. Une
+  // seule source pour l'écran d'émargement et pour ce dossier.
+  //
+  // 🔴 Les inscriptions sont lues, pas seulement la session : c'est ICI que la
+  // faute coûtait le plus cher. Cette ligne part dans `index.txt`, la pièce que
+  // l'organisme dépose chez le financeur ; écrire « aucun financeur tiers ne
+  // réclame de pièce » sur une session dont un inscrit relève d'un OPCO n'est
+  // pas un silence, c'est une affirmation d'absence, et elle serait fausse.
+  const attenteFinanceur = attenteContresignature({
+    session: session.financementType as FinancementSession | null,
+    parInscription: session.enrollments.map(
+      (e) => (e.financementType as FinancementSession | null) ?? null,
+    ),
+  });
+
   const rapportsContresignatures: Array<Record<string, unknown>> = [];
   let nbChainesContresignAnormales = 0;
   for (const [trainerId, lignes] of parFormateur) {
@@ -373,6 +402,18 @@ export async function genererDossierSessionZip(
       ? "Intégrité des chaînes de contresignatures : AUCUNE contresignature de formateur au dossier."
       : `Intégrité des chaînes de contresignatures : ${parFormateur.size - nbChainesContresignAnormales}/${parFormateur.size} conformes.`,
   );
+  // 🔴 La ligne ci-dessus répond au CERTIFICATEUR : les chaînes tiennent-elles ?
+  // Celle-ci répond au FINANCEUR : cette pièce conditionne-t-elle le règlement ?
+  // Ce sont deux lectures du même dossier, et l'organisme ne découvrait la
+  // seconde qu'au refus de paiement.
+  //
+  // ⚠️ Le libellé vient du module pur — contractuel, variable, à confirmer
+  // auprès du financeur. Jamais « obligatoire » : le jour d'un refus, ce mot
+  // enverrait chercher un texte de loi qui n'existe pas.
+  //
+  // ⛔ Et cette ligne n'est qu'une LIGNE : elle n'empêche pas de produire le
+  // dossier. La contresignature reste non bloquante (décision du 25/08/2026).
+  index.push(`Contresignature du formateur — ${attenteFinanceur.pourquoi}`);
   index.push(
     rapportsPieces.length === 0
       ? "Intégrité des chaînes de signatures de pièces : AUCUNE pièce contractuelle signée au dossier."
@@ -402,7 +443,11 @@ export async function genererDossierSessionZip(
     // quotidien et rendrait des dossiers ingénérables ; on la rend VISIBLE là où
     // elle sera lue, c'est-à-dire dans le dossier lui-même.
     avertissements.push(
-      "⚠️ Aucune contresignature de formateur dans ce dossier. L'émargement contresigné par l'intervenant est la pièce qui atteste que la séance a bien été animée — son absence n'est signalée par aucune garde en amont.",
+      "⚠️ Aucune contresignature de formateur dans ce dossier. L'émargement contresigné par l'intervenant est la pièce qui atteste que la séance a bien été animée — son absence n'est signalée par aucune garde en amont." +
+        // 🔴 Une absence sur un dossier financé par un tiers n'est pas du même
+        // ordre qu'une absence sur un dossier payé par le client : la première
+        // se paie au règlement. L'avertissement le dit, sans devenir un refus.
+        (attenteFinanceur.attendue ? ` ${attenteFinanceur.pourquoi}` : ""),
     );
   }
   if (nbChainesAnormales > 0) {

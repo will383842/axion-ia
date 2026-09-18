@@ -169,6 +169,9 @@ function session(over: Record<string, unknown> = {}) {
   return {
     numero: "AXI-SESS-2026-001",
     titreSession: "Bien démarrer avec l'IA",
+    // Colonne NULLABLE en base. `null` par défaut, comme la majorité du
+    // registre : la mention du financeur ne doit jamais s'inventer un payeur.
+    financementType: null as string | null,
     dateDebut: new Date("2026-06-10T09:00:00Z"),
     dateFin: new Date("2026-06-10T17:00:00Z"),
     documents: [],
@@ -176,6 +179,10 @@ function session(over: Record<string, unknown> = {}) {
       {
         id: "enr-1",
         tauxPresencePct: 100,
+        // Override du payeur POUR CE PARTICIPANT (R-INTER). `null` = pas
+        // d'override : l'inscription relève du `financementType` de la session,
+        // qui est le comportement d'avant le 2026-09-17.
+        financementType: null as string | null,
         trainee: { nom: "Dupont", prenom: "Alice", deletedAt: null },
         // Créneaux de présence (provenance, `G-prerequis-02`). Vide par défaut :
         // la fixture ne modélise que la chaîne de signatures.
@@ -611,6 +618,184 @@ describe("genererDossierSessionZip", () => {
     const index = await fichierDuZip(res!.base64, "index.txt");
     expect(index).toContain("Intégrité des chaînes de contresignatures :");
     expect(index).not.toContain("AUCUNE contresignature");
+  });
+
+  /**
+   * 🔴 LE CERTIFICATEUR ET LE FINANCEUR NE LISENT PAS LA MÊME CHOSE.
+   *
+   * La section « contresignatures » disait l'intégrité des chaînes — la
+   * question du CERTIFICATEUR. Elle ne disait rien de la question du
+   * FINANCEUR : « cette pièce conditionne-t-elle mon règlement ? ». Et c'est
+   * celle qui coûte de l'argent, parce qu'elle ne se découvre qu'au refus.
+   *
+   * ⚠️ Le libellé doit rester HONNÊTE : contractuel, variable d'un financeur à
+   * l'autre, à confirmer. Un dossier remis à un auditeur qui écrirait
+   * « obligatoire » ferait chercher un texte qui n'existe pas.
+   */
+  describe("mention du FINANCEUR dans la section contresignatures", () => {
+    /**
+     * ⚠️ On lit LA LIGNE, pas l'index entier.
+     *
+     * L'index se termine par les AVERTISSEMENTS, qui portent eux aussi la
+     * mention du financeur quand aucune contresignature n'existe. Chercher
+     * « OPCO » n'importe où dans le fichier passerait donc au vert même si la
+     * ligne dédiée disparaissait — un témoin satisfait par une autre source
+     * que celle qu'il prétend surveiller. Mesuré : la mutation « retirer la
+     * ligne » ne faisait alors rougir qu'un test sur quatre.
+     */
+    const ligneContresignature = (index: string | null): string =>
+      (index ?? "").split("\n").find((l) => l.startsWith("Contresignature du formateur")) ?? "";
+
+    it("dit que le financeur la réclamera quand un tiers paie", async () => {
+      mockFindUnique.mockResolvedValue(session({ financementType: "opco" }));
+      const res = await genererDossierSessionZip("s-1");
+      const ligne = ligneContresignature(await fichierDuZip(res!.base64, "index.txt"));
+      expect(ligne).toContain("OPCO");
+      expect(ligne.toLowerCase()).toContain("contractuel");
+    });
+
+    it("le dit aussi pour le CPF, France Travail et un financement mixte", async () => {
+      for (const [financement, attendu] of [
+        ["cpf", "CPF"],
+        ["france_travail", "France Travail"],
+        ["mixte", "OPCO"],
+      ] as const) {
+        mockFindUnique.mockResolvedValue(session({ financementType: financement }));
+        const res = await genererDossierSessionZip("s-1");
+        const ligne = ligneContresignature(await fichierDuZip(res!.base64, "index.txt"));
+        expect(ligne, `financement ${financement}`).toContain(attendu);
+      }
+    });
+
+    it("n'invente AUCUN financeur sur une session en financement direct", async () => {
+      // Témoin de non-vacuité de la règle : si la mention était
+      // inconditionnelle, les deux tests ci-dessus ne prouveraient rien.
+      mockFindUnique.mockResolvedValue(session({ financementType: "direct" }));
+      const res = await genererDossierSessionZip("s-1");
+      const index = await fichierDuZip(res!.base64, "index.txt");
+      expect(index).not.toContain("OPCO");
+      expect(index).not.toContain("France Travail");
+      // Et il dit quand même ce qu'il en est : le silence total laisserait
+      // croire que la question n'a pas été posée.
+      expect(index?.toLowerCase()).toContain("directement par le client");
+    });
+
+    it("🔴 un SEUL inscrit en OPCO suffit : l'index n'affirme plus l'absence", async () => {
+      // 🔴 R-INTER — LA FAUTE QUI A FAIT REFUSER LA PR, ET SON PIRE ENDROIT.
+      //
+      // Une session inter-entreprises se crée en `direct` par défaut
+      // (`sessions.ts`), et la facturation se fait PAR PARTICIPANT. Ne lire que
+      // `session.financementType` faisait écrire « aucun financeur tiers ne
+      // réclame de pièce » dans `index.txt` — c'est-à-dire dans la pièce même
+      // que l'organisme dépose chez l'OPCO de cet inscrit. Ce n'est pas un
+      // silence : c'est une AFFIRMATION D'ABSENCE, et elle était fausse.
+      //
+      // ⚠️ La population est ce qui donne à ce témoin le pouvoir de voir :
+      // la session reste `direct`, c'est l'INSCRIPTION qui porte l'override.
+      mockFindUnique.mockResolvedValue(
+        session({
+          financementType: "direct",
+          enrollments: [
+            {
+              id: "enr-1",
+              tauxPresencePct: 100,
+              financementType: "opco",
+              trainee: { nom: "Dupont", prenom: "Alice", deletedAt: null },
+              presences: [],
+              emargementSignatures: chaineSaine(),
+            },
+          ],
+        }),
+      );
+      const res = await genererDossierSessionZip("s-1");
+      const ligne = ligneContresignature(await fichierDuZip(res!.base64, "index.txt"));
+      // Bornée À LA LIGNE, comme les autres témoins de ce bloc : les
+      // avertissements de fin d'index portent eux aussi le nom du financeur, et
+      // chercher partout ferait passer au vert une ligne disparue.
+      expect(ligne).not.toContain("aucun financeur tiers ne réclame de pièce");
+      expect(ligne).toContain("OPCO");
+    });
+
+    it("🔴 B1 — un inscrit au financement INCONNU : l'index n'affirme pas l'absence", async () => {
+      // Revues 5247614532 / 5247629929. Session sans financement (chemin réel :
+      // sessions récurrentes), un inscrit réglé en `direct`, l'autre sans
+      // override. La résolution retirait l'inconnu et ne gardait que `direct` :
+      // « aucun financeur tiers ne réclame de pièce » partait dans la pièce
+      // même que l'on remettrait à l'OPCO de l'inscrit pas encore saisi.
+      const inscrit = (id: string, financementType: string | null) => ({
+        id,
+        tauxPresencePct: 100,
+        financementType,
+        trainee: { nom: "Dupont", prenom: id, deletedAt: null },
+        presences: [],
+        emargementSignatures: chaineSaine(),
+      });
+      mockFindUnique.mockResolvedValue(
+        session({
+          financementType: null,
+          enrollments: [inscrit("enr-1", "direct"), inscrit("enr-2", null)],
+        }),
+      );
+      const res = await genererDossierSessionZip("s-1");
+      const ligne = ligneContresignature(await fichierDuZip(res!.base64, "index.txt"));
+      expect(ligne).not.toContain("aucun financeur tiers ne réclame de pièce");
+      expect(ligne).toContain("non renseigné");
+    });
+
+    it("🔴 B1 — `[opco, null]` : l'OPCO est nommé, l'assiette n'est pas affirmée entière", async () => {
+      const inscrit = (id: string, financementType: string | null) => ({
+        id,
+        tauxPresencePct: 100,
+        financementType,
+        trainee: { nom: "Dupont", prenom: id, deletedAt: null },
+        presences: [],
+        emargementSignatures: chaineSaine(),
+      });
+      mockFindUnique.mockResolvedValue(
+        session({
+          financementType: null,
+          enrollments: [inscrit("enr-1", "opco"), inscrit("enr-2", null)],
+        }),
+      );
+      const res = await genererDossierSessionZip("s-1");
+      const ligne = ligneContresignature(await fichierDuZip(res!.base64, "index.txt"));
+      expect(ligne).toContain("OPCO");
+      expect(ligne).not.toContain("Cette session est financée par un tiers");
+      expect(ligne).toContain("non renseigné");
+    });
+
+    it("n'écrit jamais « obligatoire » ni « exigé par la loi »", async () => {
+      for (const financement of ["opco", "cpf", "france_travail", "mixte", "direct"] as const) {
+        mockFindUnique.mockResolvedValue(session({ financementType: financement }));
+        const res = await genererDossierSessionZip("s-1");
+        const index = (await fichierDuZip(res!.base64, "index.txt"))?.toLowerCase() ?? "";
+        // Bornée à la ligne de contresignature : le reste de l'index parle
+        // d'autres pièces, dont certaines SONT réglementaires.
+        const ligneFinanceur =
+          index.split("\n").find((l) => l.includes("contresignature du formateur")) ?? "";
+        expect(ligneFinanceur, `financement ${financement}`).not.toContain("obligatoire");
+        expect(ligneFinanceur, `financement ${financement}`).not.toContain("exigé par la loi");
+        expect(ligneFinanceur, `financement ${financement}`).not.toContain("réglementaire");
+      }
+    });
+
+    it("renforce l'AVERTISSEMENT d'absence quand un tiers finance", async () => {
+      // La liste d'avertissements est ce qu'on relit avant de remettre le
+      // dossier. Une absence de contresignature sur un dossier OPCO n'est pas
+      // du même ordre qu'une absence sur un dossier payé par le client.
+      mockFindUnique.mockResolvedValue(session({ financementType: "opco" }));
+      const res = await genererDossierSessionZip("s-1");
+      const avert = res?.avertissements.join(" ") ?? "";
+      expect(avert).toContain("Aucune contresignature de formateur");
+      expect(avert).toContain("OPCO");
+    });
+
+    it("n'ajoute PAS de mention de financeur à l'avertissement en direct", async () => {
+      mockFindUnique.mockResolvedValue(session({ financementType: "direct" }));
+      const avert = (await genererDossierSessionZip("s-1"))?.avertissements.join(" ") ?? "";
+      expect(avert).toContain("Aucune contresignature de formateur");
+      expect(avert).not.toContain("OPCO");
+    });
   });
 
   /**

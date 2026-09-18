@@ -102,6 +102,14 @@ export interface LigneSessionParcours {
   readonly enrollments: ReadonlyArray<{
     readonly id: string;
     readonly statut: string;
+    /**
+     * Override du payeur pour CE participant (R-INTER). Champ REQUIS — pour la
+     * raison écrite au-dessus de `sessionRemplacement` : un `select` qui
+     * l'oublierait ferait retomber l'étape « contresignature » sur le seul
+     * financement de la session, silencieusement, et le parcours réaffirmerait
+     * « aucun financeur tiers » sur un dossier qui en a un.
+     */
+    readonly financementType: string | null;
     readonly emargementSigneAt: Date | null;
     readonly convocationEnvoyeeAt: Date | null;
     readonly questionnaires: SessionParcoursInput["inscriptions"][number]["questionnaires"];
@@ -147,6 +155,7 @@ export function entreeParcours(
     inscriptions: s.enrollments.map((e) => ({
       id: e.id,
       statut: e.statut,
+      financementType: e.financementType,
       emargementSigneAt: e.emargementSigneAt,
       convocationEnvoyeeAt: e.convocationEnvoyeeAt,
       questionnaires: e.questionnaires,
@@ -339,6 +348,9 @@ export async function prochainesEcheances(options?: {
         select: {
           id: true,
           statut: true,
+          // Override du payeur par participant (R-INTER) — l'étape
+          // « contresignature » du parcours en dépend.
+          financementType: true,
           emargementSigneAt: true,
           convocationEnvoyeeAt: true,
           questionnaires: { select: { type: true, envoyeAt: true, reponduAt: true } },

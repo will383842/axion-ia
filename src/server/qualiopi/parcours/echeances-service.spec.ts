@@ -58,6 +58,8 @@ function sessionAJ3(patch: Record<string, unknown> = {}) {
       {
         id: "e1",
         statut: "planifiee",
+        // Override du payeur par participant (R-INTER). `null` = aucun.
+        financementType: null,
         emargementSigneAt: null,
         convocationEnvoyeeAt: d("2026-09-05T00:00:00.000Z"),
         questionnaires: [],
