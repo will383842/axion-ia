@@ -341,7 +341,11 @@ export async function marquerPaiementRecuSiSoldee(dossierId: string): Promise<vo
  */
 export async function creerDossierDepuisSession(sessionId: string): Promise<{ id: string }> {
   const existant = await prisma.dossierFinancement.findFirst({
-    where: { trainingSessionId: sessionId },
+    // 🔴 Un dossier `clos` n'est plus un suivi : le compter ici ferait qu'un
+    // aller-retour opco → direct → opco (dont le retour referme le dossier)
+    // laisserait la session en OPCO avec pour seul dossier un dossier clos —
+    // aucune alerte, aucune ligne au cockpit, le défaut même du sous-lot 8C.
+    where: { trainingSessionId: sessionId, statut: { not: "clos" } },
     select: { id: true },
     // Le plus ancien : si un doublon a été créé avant cette garde, c'est lui
     // qui porte l'historique de transitions.
@@ -446,4 +450,37 @@ export async function creerDossierDepuisSession(sessionId: string): Promise<{ id
     select: { id: true },
   });
   return dossier;
+}
+
+/**
+ * Le RETOUR de l'ouverture automatique : referme les dossiers `a_monter` d'une
+ * session qui n'a plus de financeur à suivre (cf. `financementRefermeLesDossiers`).
+ *
+ * - `a_monter` → `clos` par la machine à états (verrou optimiste compris) : un
+ *   classeur vide se referme comme il s'est ouvert, sans humain. Jamais supprimé.
+ * - Tout dossier au-delà (`envoye`, `accord_recu`, `refuse`, `facture`,
+ *   `paiement_recu`) engage l'organisme auprès d'un financeur : il n'est JAMAIS
+ *   touché ici. Il est rendu à l'appelant, qui doit le dire en clair.
+ * - `clos` : déjà fermé, ignoré.
+ */
+export async function refermerDossiersAMonter(sessionId: string): Promise<{
+  clos: string[];
+  engages: Array<{ id: string; statut: DossierFinancementStatut }>;
+}> {
+  const dossiers = await prisma.dossierFinancement.findMany({
+    where: { trainingSessionId: sessionId, statut: { not: "clos" } },
+    select: { id: true, statut: true },
+  });
+
+  const clos: string[] = [];
+  const engages: Array<{ id: string; statut: DossierFinancementStatut }> = [];
+  for (const d of dossiers) {
+    if (d.statut === "a_monter") {
+      await transitionnerDossier({ dossierId: d.id, vers: "clos" });
+      clos.push(d.id);
+    } else {
+      engages.push({ id: d.id, statut: d.statut });
+    }
+  }
+  return { clos, engages };
 }

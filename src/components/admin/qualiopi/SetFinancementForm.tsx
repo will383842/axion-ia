@@ -154,7 +154,13 @@ export function SetFinancementForm({
       if ("error" in result) {
         setError(result.error);
       } else {
-        setSuccessMsg("Financement mis à jour.");
+        // Un dossier déjà déposé chez un financeur n'est jamais refermé par ce
+        // formulaire : l'action le signale, on le montre au lieu de le taire.
+        setSuccessMsg(
+          result.data.avertissement
+            ? `Financement mis à jour. ${result.data.avertissement}`
+            : "Financement mis à jour.",
+        );
         router.refresh();
       }
     });

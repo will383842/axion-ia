@@ -73,12 +73,56 @@ export function sessionExigeUnDossier(financementType: string | null | undefined
  *
  * Le sens inverse (mutualisé → direct) ne SUPPRIME jamais le dossier existant :
  * un dossier porte des dates, des montants et un historique de transitions —
- * c'est une pièce de suivi, pas un cache. Le refermer est une décision humaine
- * (`clos`), pas un effet de bord d'un changement de menu déroulant.
+ * c'est une pièce de suivi, pas un cache. Il le REFERME à `clos` tant qu'il est
+ * encore `a_monter`, et seulement alors : voir `financementRefermeLesDossiers`.
  */
 export function changementOuvreUnDossier(
   financementAvant: string | null | undefined,
   financementApres: string | null | undefined,
 ): boolean {
   return sessionExigeUnDossier(financementApres) && !sessionExigeUnDossier(financementAvant);
+}
+
+/**
+ * Le RETOUR : un financement hors du périmètre suivi referme-t-il les dossiers ?
+ *
+ * 🔴 Défaut mesuré en production le 17/09/2026 : une session passée de `direct`
+ * à `opco`, puis revenue à `direct` cinq secondes plus tard (une correction de
+ * saisie), gardait un dossier `opco` `a_monter` « Financeur à identifier » sur
+ * une action facturée en direct. L'aller s'automatisait, le retour n'existait
+ * pas : toute personne qui se trompe de menu puis se corrige laissait un résidu
+ * DÉFINITIF et visible.
+ *
+ * 🔑 Une automatisation qui ouvre seule doit savoir refermer seule — et dans la
+ * même limite : ce qu'elle referme, c'est ce qu'elle a le droit d'ouvrir. Un
+ * dossier `a_monter` est un classeur vide (il s'ouvre sans humain, il se
+ * referme sans humain). Un dossier `envoye` ou au-delà engage l'organisme
+ * auprès d'un financeur : l'appelant ne le touche JAMAIS, il le signale.
+ *
+ * ⚠️ Répond sur l'ÉTAT écrit, pas sur la transition (contrairement à
+ * `changementOuvreUnDossier`) : réenregistrer « direct » sur une session déjà
+ * directe referme aussi un dossier resté orphelin. C'est sans piège ici —
+ * refermer un classeur vide d'une affaire sans financeur est toujours juste —
+ * et c'est le seul chemin de nettoyage par la console (R-12 : aucune écriture
+ * directe en base). `undefined` (champ non envoyé) ne referme rien.
+ */
+export function financementRefermeLesDossiers(
+  financementApres: string | null | undefined,
+): boolean {
+  return financementApres !== undefined && !sessionExigeUnDossier(financementApres);
+}
+
+/**
+ * Financements qui admettent la subrogation de paiement OPCO.
+ *
+ * Même ensemble que le formulaire (`SetFinancementForm`, `showOpco`) et que
+ * `validerAccordOpcoAction` : `opco` et `mixte` (part OPCO). Hors de là, une
+ * subrogation à `true` n'a aucun sens — et elle n'est pas inerte : les alertes
+ * « sans accord OPCO » la lisent (`evaluateur.ts`).
+ */
+const FINANCEMENTS_SUBROGEABLES = ["opco", "mixte"] as const;
+
+export function financementAdmetSubrogation(financementType: string | null | undefined): boolean {
+  const normalise = (financementType ?? "").trim().toLowerCase();
+  return (FINANCEMENTS_SUBROGEABLES as readonly string[]).includes(normalise);
 }

@@ -38,8 +38,15 @@ import {
   emettreFactureFormationSession,
   genererPdfFactureFormation,
 } from "@/server/qualiopi/financements/facture-formation-emission";
-import { creerDossierDepuisSession } from "@/server/qualiopi/financements/dossier-financement";
-import { changementOuvreUnDossier } from "@/server/qualiopi/financements/dossier-auto";
+import {
+  creerDossierDepuisSession,
+  refermerDossiersAMonter,
+} from "@/server/qualiopi/financements/dossier-financement";
+import {
+  changementOuvreUnDossier,
+  financementAdmetSubrogation,
+  financementRefermeLesDossiers,
+} from "@/server/qualiopi/financements/dossier-auto";
 import type {
   FinancementType,
   OpcoStatut,
@@ -161,7 +168,7 @@ export async function setFinancementSessionAction(input: {
   ftPoeiOffreEmploiNumero?: string;
   ftPoeiAccordFinancementAt?: Date;
   ftPoeiEngagementSigneAt?: Date;
-}): Promise<ActionResult<{ id: string }>> {
+}): Promise<ActionResult<{ id: string; avertissement?: string }>> {
   const session = await requireAdminWrite();
   const parsed = setFinancementSessionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
@@ -171,6 +178,17 @@ export async function setFinancementSessionAction(input: {
   if (fields.financementType !== undefined) updateData.financementType = fields.financementType;
   if (fields.opcoStatut !== undefined) updateData.opcoStatut = fields.opcoStatut;
   if (fields.opcoSubrogation !== undefined) updateData.opcoSubrogation = fields.opcoSubrogation;
+  // 🔴 17/09/2026 — la subrogation survivait au financement qui la portait. Le
+  // formulaire ne l'envoie que si le type affiché est OPCO/mixte : repasser en
+  // `direct` la laissait à `true`, et les alertes « sans accord OPCO » la lisent.
+  // Forcée ici dans la MÊME écriture, y compris sans changement de type : c'est
+  // ce qui permet de nettoyer un résidu en réenregistrant « direct » (R-12).
+  if (
+    fields.financementType !== undefined &&
+    !financementAdmetSubrogation(fields.financementType)
+  ) {
+    updateData.opcoSubrogation = false;
+  }
   if (fields.numeroDossierOpco !== undefined)
     updateData.numeroDossierOpco = fields.numeroDossierOpco;
   if (fields.ftDispositif !== undefined) updateData.ftDispositif = fields.ftDispositif;
@@ -281,7 +299,46 @@ export async function setFinancementSessionAction(input: {
     }
   }
 
-  return { data: { id: sessionId } };
+  // ── 🔴 LE RETOUR — ce qui s'ouvre seul se referme seul ──────────────────────
+  //
+  // 17/09/2026, en production : direct → opco → direct en cinq secondes (une
+  // correction de saisie) laissait un dossier `opco` `a_monter` « Financeur à
+  // identifier » sur une action facturée en direct. L'aller était automatique,
+  // le retour n'existait pas — le résidu était définitif.
+  //
+  // Même limite que l'ouverture : seuls les dossiers `a_monter` (classeurs vides)
+  // se referment, à `clos`, jamais supprimés. Un dossier déjà déposé chez un
+  // financeur engage l'organisme : il n'est pas touché, et on le DIT.
+  // Fail-soft, comme l'ouverture : le financement saisi ne se perd jamais.
+  let avertissement: string | undefined;
+  if (financementRefermeLesDossiers(fields.financementType)) {
+    try {
+      const { clos, engages } = await refermerDossiersAMonter(sessionId);
+      for (const dossierId of clos) {
+        await logQualiopiActivity({
+          action: "qualiopi.dossier_financement.clos_auto",
+          targetType: "DossierFinancement",
+          targetId: dossierId,
+          changes: { sessionId, financementType: fields.financementType, statut: "clos" },
+          session,
+        });
+      }
+      if (engages.length > 0) {
+        avertissement =
+          `${engages.length === 1 ? "Un dossier de financement déjà engagé" : `${engages.length} dossiers de financement déjà engagés`} ` +
+          `(${engages.map((d) => d.statut).join(", ")}) ${engages.length === 1 ? "reste" : "restent"} ouvert${engages.length === 1 ? "" : "s"} : ` +
+          "une demande envoyée à un financeur ne se referme pas depuis ce formulaire. " +
+          "À clore à la main dans Facturation (Hub) une fois le financeur informé.";
+      }
+    } catch (err) {
+      console.error("[financements] fermeture auto du dossier impossible", {
+        sessionId,
+        err: err instanceof Error ? err.message : String(err),
+      });
+    }
+  }
+
+  return { data: { id: sessionId, ...(avertissement !== undefined ? { avertissement } : {}) } };
 }
 
 /**
