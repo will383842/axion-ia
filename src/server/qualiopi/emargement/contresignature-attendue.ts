@@ -60,10 +60,12 @@
  * lecture**, pas le quatrième calcul : il reçoit le bilan et n'ajoute que la
  * dimension que personne ne portait, **le financeur**.
  *
- * Aucun import Prisma, aucun import Next, aucun import de valeur : importable
- * par un test, une page serveur ou un worker sans effet de bord.
+ * Aucun import Prisma, aucun import Next, et un seul import de valeur — la règle
+ * pure du payeur effectif (`financementTypeEffectif`), elle-même sans effet de
+ * bord : importable par un test, une page serveur ou un worker.
  */
 
+import { financementTypeEffectif } from "../financements/inter-entreprises";
 import type { DemiJourneeAContresigner } from "./contresignatures-manquantes";
 
 /** Reprend l'enum Prisma `FinancementType`, valeur pour valeur. */
@@ -122,10 +124,10 @@ const PLUSIEURS_FINANCEURS = "vos financeurs";
  * porte l'override (R-INTER), il est écrit par `setEnrollmentFinancementAction`
  * et piloté depuis la fiche session.
  *
- * Ce module ne fabrique donc PAS une seconde façon de répondre à « qui paie ? » :
- * il applique la même résolution que `production-au-jalon.ts:376`, à savoir
- * `enrollment.financementType ?? session.financementType`, inscription par
- * inscription.
+ * Ce module ne retape pas la règle « qui paie ? » : il appelle
+ * `financementTypeEffectif` (`inter-entreprises.ts`), celle-là même sur laquelle
+ * repose `resolveEnrollmentFinancement` et donc la facturation par participant
+ * — inscription par inscription.
  *
  * ⚠️ La faute que ça ferme était pire qu'un silence. Une session
  * inter-entreprises se crée par défaut en `direct` (`sessions.ts:402`) ; si un
@@ -157,12 +159,31 @@ export interface FinancementsAuDossier {
  * tous d'un OPCO, personne ne paie en direct — et le résultat le dit.
  */
 export function financeursEffectifs(f: FinancementsAuDossier): readonly FinancementSession[] {
+  return resoudre(f).connus;
+}
+
+/**
+ * Qui paie, ET combien de payeurs restent inconnus.
+ *
+ * 🔴 B1 (revues 5247614532 / 5247629929) — l'inconnu ne se RETIRE pas. Une
+ * inscription qui ne résout à rien n'est pas une inscription payée en direct :
+ * la jeter avant de conclure faisait écrire « aucun financeur tiers ne réclame
+ * de pièce » sur `[direct, inconnu]`, une affirmation d'absence fondée sur une
+ * ignorance. Le compte des inconnus voyage donc avec la liste des connus.
+ */
+function resoudre(f: FinancementsAuDossier): {
+  readonly connus: readonly FinancementSession[];
+  readonly inconnus: number;
+} {
   const inscriptions = f.parInscription ?? [];
-  const resolus = inscriptions.length > 0 ? inscriptions.map((i) => i ?? f.session) : [f.session];
-  const connus = resolus.filter((v): v is FinancementSession => v !== null && v !== undefined);
+  const resolus =
+    inscriptions.length > 0
+      ? inscriptions.map((i) => financementTypeEffectif(i, f.session))
+      : [financementTypeEffectif(null, f.session)];
+  const connus = resolus.filter((v): v is FinancementSession => v !== null);
   // `Set` conserve l'ordre d'insertion : la phrase reste stable d'un rendu à
   // l'autre, donc les tests aussi.
-  return [...new Set(connus)];
+  return { connus: [...new Set(connus)], inconnus: resolus.length - connus.length };
 }
 
 /**
@@ -175,7 +196,7 @@ export function financeursEffectifs(f: FinancementsAuDossier): readonly Financem
  * silence ici n'ôte aucune garde : il n'y en a aucune.
  */
 export function attenteContresignature(f: FinancementsAuDossier): AttenteFinanceur {
-  const effectifs = financeursEffectifs(f);
+  const { connus: effectifs, inconnus } = resoudre(f);
 
   if (effectifs.length === 0) {
     return {
@@ -187,6 +208,20 @@ export function attenteContresignature(f: FinancementsAuDossier): AttenteFinance
   }
 
   const tiers = effectifs.filter((v): v is Exclude<FinancementSession, "direct"> => v !== "direct");
+
+  if (tiers.length === 0 && inconnus > 0) {
+    // 🔴 B1 — des inscrits en direct, d'autres dont on ignore le payeur. Rien ne
+    // permet d'affirmer qu'aucun tiers ne réclamera : l'inconnu est peut-être un
+    // salarié financé par son OPCO, pas encore saisi.
+    return {
+      attendue: false,
+      financeur: null,
+      pourquoi:
+        "Financement non renseigné pour une partie des inscrits (les autres sont payés en direct) : " +
+        "on ne sait pas encore si un financeur tiers réclamera des pièces. Renseignez le " +
+        "financement de chaque inscrit avant de remettre ce dossier.",
+    };
+  }
 
   if (tiers.length === 0) {
     return {
@@ -204,11 +239,21 @@ export function attenteContresignature(f: FinancementsAuDossier): AttenteFinance
   // Une partie seulement des inscrits relève d'un tiers : la feuille est UNE,
   // le dossier du financeur ne l'est pas. Le taire ferait lire « toute la
   // session est financée », ce qui est faux dans l'autre sens.
-  const partiel = effectifs.includes("direct");
-  const assiette = partiel
-    ? `Une PARTIE des inscrits de cette session est financée par un tiers (${financeur}), le reste en direct. ` +
-      `La feuille d'émargement est la même pour tous : c'est le dossier du financeur qui la réclamera.`
-    : `Cette session est financée par un tiers (${financeur}).`;
+  //
+  // 🔴 B1 — et une part INCONNUE ne se range ni dans le tiers ni dans le
+  // direct : elle se dit. « Cette session est financée par un tiers »
+  // affirmerait l'assiette entière alors qu'un payeur au moins reste ignoré.
+  const direct = effectifs.includes("direct");
+  const reste = [
+    ...(direct ? ["une autre en direct"] : []),
+    ...(inconnus > 0 ? ["financement non renseigné pour le reste"] : []),
+  ];
+  const assiette =
+    reste.length > 0
+      ? `Une PARTIE des inscrits de cette session est financée par un tiers (${financeur}) ; ` +
+        `${reste.join(", et ")}. ` +
+        `La feuille d'émargement est la même pour tous : c'est le dossier du financeur qui la réclamera.`
+      : `Cette session est financée par un tiers (${financeur}).`;
 
   return {
     attendue: true,
@@ -300,13 +345,16 @@ const DETAIL_MAX = 4;
 export function constaterContresignature(entree: EntreeConstat): ConstatContresignature {
   const attente = attenteContresignature(entree.financement);
   if (!attente.attendue || attente.financeur === null) {
+    const { connus, inconnus } = resoudre(entree.financement);
     return {
       afficher: false,
       // « Non renseigné » et « payé en direct » sont deux silences différents :
       // le premier dit qu'on ne sait pas, le second qu'on sait que personne ne
       // réclamera. Les confondre ferait passer une ignorance pour une réponse.
+      // 🔴 B1 — un seul payeur inconnu suffit : « tous connus en direct » est la
+      // SEULE population qui autorise le second.
       raison:
-        financeursEffectifs(entree.financement).length === 0
+        connus.length === 0 || inconnus > 0
           ? "financement_non_renseigne"
           : "non_attendue_par_le_financeur",
     };

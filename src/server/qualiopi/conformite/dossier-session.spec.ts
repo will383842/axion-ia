@@ -716,6 +716,54 @@ describe("genererDossierSessionZip", () => {
       expect(ligne).toContain("OPCO");
     });
 
+    it("🔴 B1 — un inscrit au financement INCONNU : l'index n'affirme pas l'absence", async () => {
+      // Revues 5247614532 / 5247629929. Session sans financement (chemin réel :
+      // sessions récurrentes), un inscrit réglé en `direct`, l'autre sans
+      // override. La résolution retirait l'inconnu et ne gardait que `direct` :
+      // « aucun financeur tiers ne réclame de pièce » partait dans la pièce
+      // même que l'on remettrait à l'OPCO de l'inscrit pas encore saisi.
+      const inscrit = (id: string, financementType: string | null) => ({
+        id,
+        tauxPresencePct: 100,
+        financementType,
+        trainee: { nom: "Dupont", prenom: id, deletedAt: null },
+        presences: [],
+        emargementSignatures: chaineSaine(),
+      });
+      mockFindUnique.mockResolvedValue(
+        session({
+          financementType: null,
+          enrollments: [inscrit("enr-1", "direct"), inscrit("enr-2", null)],
+        }),
+      );
+      const res = await genererDossierSessionZip("s-1");
+      const ligne = ligneContresignature(await fichierDuZip(res!.base64, "index.txt"));
+      expect(ligne).not.toContain("aucun financeur tiers ne réclame de pièce");
+      expect(ligne).toContain("non renseigné");
+    });
+
+    it("🔴 B1 — `[opco, null]` : l'OPCO est nommé, l'assiette n'est pas affirmée entière", async () => {
+      const inscrit = (id: string, financementType: string | null) => ({
+        id,
+        tauxPresencePct: 100,
+        financementType,
+        trainee: { nom: "Dupont", prenom: id, deletedAt: null },
+        presences: [],
+        emargementSignatures: chaineSaine(),
+      });
+      mockFindUnique.mockResolvedValue(
+        session({
+          financementType: null,
+          enrollments: [inscrit("enr-1", "opco"), inscrit("enr-2", null)],
+        }),
+      );
+      const res = await genererDossierSessionZip("s-1");
+      const ligne = ligneContresignature(await fichierDuZip(res!.base64, "index.txt"));
+      expect(ligne).toContain("OPCO");
+      expect(ligne).not.toContain("Cette session est financée par un tiers");
+      expect(ligne).toContain("non renseigné");
+    });
+
     it("n'écrit jamais « obligatoire » ni « exigé par la loi »", async () => {
       for (const financement of ["opco", "cpf", "france_travail", "mixte", "direct"] as const) {
         mockFindUnique.mockResolvedValue(session({ financementType: financement }));

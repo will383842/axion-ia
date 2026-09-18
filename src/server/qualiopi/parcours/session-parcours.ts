@@ -66,11 +66,14 @@ export interface SessionParcoursInput {
     readonly statut: string;
     /**
      * Override du payeur pour CE participant (R-INTER). `null` = pas d'override,
-     * l'inscription relève du financement de la session. Optionnel : un appelant
-     * qui ne le charge pas retombe sur le financement de la session, ce qui est
-     * le comportement d'avant — jamais une affirmation fausse en plus.
+     * l'inscription relève du financement de la session.
+     *
+     * REQUIS, délibérément : un appelant qui l'omettrait ferait retomber chaque
+     * inscription sur la session, c'est-à-dire exactement la lecture « session
+     * seule » qui écrivait « aucun financeur tiers » à tort (F1). Le compilateur
+     * refuse désormais cet oubli.
      */
-    readonly financementType?: string | null;
+    readonly financementType: string | null;
     readonly emargementSigneAt: Date | null;
     readonly convocationEnvoyeeAt: Date | null;
     readonly questionnaires: ReadonlyArray<{
@@ -580,11 +583,16 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   const { signees, aContresigner, sansDestinataire } = input.contresignature;
   // Le financeur RÉEL de cette session, et ce qu'il attend. Même module que
   // l'écran d'émargement et que le dossier d'audit — trois surfaces, un libellé.
+  //
+  // ⚠️ `input.inscriptions`, PAS `actives` : il n'existe pas de statut « annulée ».
+  // Hors `planifiee`/`presente`, il reste `abandon` et `exclu` — et un inscrit
+  // en abandon a signé des demi-journées que son OPCO règle au prorata. Filtrer
+  // sur `actives` le ferait disparaître, et une session `direct` dont le seul
+  // tiers a abandonné écrirait « aucun financeur tiers » : une fausse absence.
+  // Lire toutes les inscriptions ne peut qu'AJOUTER un financeur, jamais en ôter.
   const attenteFinanceur = attenteContresignature({
     session: input.session.financementType as FinancementSession | null,
-    parInscription: input.inscriptions.map(
-      (i) => (i.financementType as FinancementSession | null | undefined) ?? null,
-    ),
+    parInscription: input.inscriptions.map((i) => i.financementType as FinancementSession | null),
   });
   etapes.push(
     etape({

@@ -174,6 +174,79 @@ describe("attenteContresignature — R-INTER : le financement PAR INSCRIPTION", 
   });
 });
 
+/**
+ * 🔴 B1 (revues 5247614532 et 5247629929, sur `faa31dd0c`) — UN INSCRIT DONT ON
+ * NE SAIT PAS QUI PAIE N'EST PAS UN INSCRIT PAYÉ EN DIRECT.
+ *
+ * La correction de F1 résolvait chaque inscription, puis RETIRAIT les
+ * inconnues avant de conclure. Session sans financement, inscrits
+ * `["direct", null]` : l'inconnue disparaissait, il ne restait que `direct`, et
+ * `index.txt` écrivait « aucun financeur tiers ne réclame de pièce » — la même
+ * affirmation d'absence que F1, par le cas du financement non renseigné.
+ *
+ * Le chemin existe : une session récurrente se crée sans financement
+ * (`sessions-recurrentes.ts`), et un inscrit peut recevoir un override sans que
+ * la session en ait un (`inter-entreprises.ts`).
+ *
+ * ⚠️ Toutes les populations ci-dessous MÉLANGENT connu et inconnu : c'est ce que
+ * le témoin « distingue les DEUX silences » ne faisait pas — il n'essayait que
+ * des populations homogènes, et passait donc sur la faute.
+ */
+describe("attenteContresignature — B1 : un financement INCONNU n'est pas un paiement direct", () => {
+  const AFFIRMATION_D_ABSENCE = "aucun financeur tiers ne réclame de pièce";
+
+  it("🔴 session non renseignée, inscrits `[direct, null]` : AUCUNE phrase d'absence", () => {
+    const a = attenteContresignature({ session: null, parInscription: ["direct", null] });
+    expect(a.attendue).toBe(false);
+    expect(a.financeur).toBeNull();
+    expect(a.pourquoi).not.toContain(AFFIRMATION_D_ABSENCE);
+    expect(a.pourquoi).toContain("non renseigné");
+  });
+
+  it("🔴 le bandeau se tait pour « non renseigné », pas pour « payé en direct »", () => {
+    const c = constaterContresignature({
+      financement: { session: null, parInscription: ["direct", null] },
+      signees: 3,
+      aContresigner: [dj("2026-09-01", "matin")],
+    });
+    expect(c.afficher === false && c.raison).toBe("financement_non_renseigne");
+  });
+
+  it("🔴 `[opco, null]` : attendue, mais l'assiette n'est PAS affirmée entière", () => {
+    // Un tiers est connu : l'avertissement reste dû. Mais écrire « cette session
+    // est financée par un tiers » affirmerait l'assiette entière, alors qu'on ne
+    // sait pas qui paie pour l'autre inscrit.
+    const a = attenteContresignature({ session: null, parInscription: ["opco", null] });
+    expect(a.attendue).toBe(true);
+    expect(a.financeur).toBe("votre OPCO");
+    expect(a.pourquoi).not.toContain("Cette session est financée par un tiers");
+    expect(a.pourquoi).toContain("non renseigné");
+  });
+
+  it("`[opco, direct, null]` : dit les TROIS parts, sans en taire aucune", () => {
+    const a = attenteContresignature({ session: null, parInscription: ["opco", "direct", null] });
+    expect(a.attendue).toBe(true);
+    expect(a.pourquoi).toContain("Une PARTIE des inscrits");
+    expect(a.pourquoi).toContain("en direct");
+    expect(a.pourquoi).toContain("non renseigné");
+  });
+
+  it("contre-témoin : tous les inscrits CONNUS en direct → l'absence reste dite", () => {
+    // Sans ce témoin, un module qui ne dirait plus JAMAIS « aucun financeur
+    // tiers » passerait les quatre cas ci-dessus. La session est inconnue, mais
+    // chaque inscrit porte son override : personne n'est inconnu.
+    const a = attenteContresignature({ session: null, parInscription: ["direct", "direct"] });
+    expect(a.attendue).toBe(false);
+    expect(a.pourquoi).toContain(AFFIRMATION_D_ABSENCE);
+    const c = constaterContresignature({
+      financement: { session: null, parInscription: ["direct", "direct"] },
+      signees: 3,
+      aContresigner: [dj("2026-09-01", "matin")],
+    });
+    expect(c.afficher === false && c.raison).toBe("non_attendue_par_le_financeur");
+  });
+});
+
 describe("financeursEffectifs — qui paie RÉELLEMENT", () => {
   it("dédoublonne : trois inscrits d'un même OPCO ne font qu'un financeur", () => {
     expect(
