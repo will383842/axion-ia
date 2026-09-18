@@ -48,6 +48,7 @@ vi.mock("@/server/qualiopi/supports/supports-service", () => ({
 
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import * as supportsService from "@/server/qualiopi/supports/supports-service";
+import { MOTIF_REFUS_SUPPORT_PROJETE } from "@/server/qualiopi/supports/types";
 import {
   genererSupportAction,
   regenererSupportAction,
@@ -110,7 +111,7 @@ describe("genererSupportAction", () => {
   it("accepte enrichirIA=true", async () => {
     await genererSupportAction({
       formationId: FORMATION_UUID,
-      type: "slides_formateur",
+      type: "memo",
       enrichirIA: true,
     });
 
@@ -130,10 +131,12 @@ describe("genererSupportAction", () => {
     expect(call["enrichirIA"] === undefined || !("enrichirIA" in call)).toBe(true);
   });
 
-  it("accepte les 7 types de supports", async () => {
+  // 🛑 2026-09-17 — ce test affirmait « accepte les 7 types », diaporamas
+  // projetés compris : il verrouillait la voie individuelle que #851 avait
+  // laissée ouverte. Les deux supports projetés sont désormais REFUSÉS
+  // (cf. `le-ppt-projete-nest-genere-par-aucune-voie.spec.ts`).
+  it("accepte les 5 types générables", async () => {
     const types = [
-      "slides_formateur",
-      "slides_stagiaire",
       "livret_stagiaire",
       "memo",
       "guide_animation",
@@ -148,6 +151,17 @@ describe("genererSupportAction", () => {
 
       const result = await genererSupportAction({ formationId: FORMATION_UUID, type });
       expect("data" in result).toBe(true);
+    }
+  });
+
+  it("refuse les 2 supports projetés, sans déléguer au service", async () => {
+    for (const type of ["slides_formateur", "slides_stagiaire"]) {
+      vi.clearAllMocks();
+      mockRequireAdminWrite.mockResolvedValue({ userId: "admin-test-id" });
+
+      const result = await genererSupportAction({ formationId: FORMATION_UUID, type } as never);
+      expect(result).toEqual({ error: MOTIF_REFUS_SUPPORT_PROJETE });
+      expect(mockGenererSupport).not.toHaveBeenCalled();
     }
   });
 

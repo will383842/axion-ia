@@ -137,7 +137,7 @@ describe("genererSupport", () => {
   it("crée un support quand aucun n'existe (version 1)", async () => {
     const result = await genererSupport({
       formationId: FORMATION_UUID,
-      type: "slides_formateur",
+      type: "memo",
     });
 
     expect(result.id).toBe(SUPPORT_UUID);
@@ -150,7 +150,7 @@ describe("genererSupport", () => {
     expect(createCall.data["statut"]).toBe("genere");
     expect(createCall.data["aiGenerated"]).toBe(false);
     expect(createCall.data["formationId"]).toBe(FORMATION_UUID);
-    expect(createCall.data["type"]).toBe("slides_formateur");
+    expect(createCall.data["type"]).toBe("memo");
   });
 
   it("met à jour un support existant avec version incrémentée", async () => {
@@ -159,7 +159,7 @@ describe("genererSupport", () => {
       version: 2,
     });
 
-    await genererSupport({ formationId: FORMATION_UUID, type: "slides_formateur" });
+    await genererSupport({ formationId: FORMATION_UUID, type: "memo" });
 
     expect(mockPrisma.supportFormation.update).toHaveBeenCalledOnce();
     expect(mockPrisma.supportFormation.create).not.toHaveBeenCalled();
@@ -269,10 +269,11 @@ describe("genererSupport", () => {
     }
   });
 
-  it("supporte les 7 types de supports", async () => {
+  // 🛑 2026-09-17 — « supporte les 7 types » verrouillait la fabrication des deux
+  // diaporamas projetés. Ils sont refusés au goulot du service
+  // (cf. `le-ppt-projete-nest-genere-par-aucune-voie.spec.ts`).
+  it("supporte les 5 types générables", async () => {
     const types = [
-      "slides_formateur",
-      "slides_stagiaire",
       "livret_stagiaire",
       "memo",
       "guide_animation",

@@ -13,6 +13,8 @@ import { prisma } from "@/lib/prisma";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { redis } from "@/lib/redis";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { QUALIOPI_CONFIG_REGISTRY } from "@/server/qualiopi/config/registry";
+import { buildMethodesCalcul, type MethodesCalcul } from "./methodes";
 import {
   computeTauxSatisfaction,
   computeTauxReussite,
@@ -38,12 +40,12 @@ export interface DelaiAccesDetail {
   fiable: boolean;
 }
 
-export interface MethodesCalcul {
-  satisfaction: string;
-  reussite: string;
-  completion: string;
-  delaiAcces: string;
-}
+/**
+ * Les quatre phrases de méthode vivent dans `./methodes` — module PUR, hors du
+ * chemin DB. Le type est ré-exporté ici pour ne pas casser les imports
+ * existants (`import type { MethodesCalcul } from ".../indicateurs/service"`).
+ */
+export type { MethodesCalcul };
 
 export interface IndicateursResult {
   annee: number;
@@ -164,15 +166,11 @@ export async function getIndicateurs(
   const completionResult = computeTauxCompletion(tauxPresences, seuilPresencePct as number);
   const delaiResult = computeDelaiAccesMoyen(paires);
 
-  const debutStr = `01/01/${annee}`;
-  const finStr = `31/12/${annee}`;
-
-  const methodes: MethodesCalcul = {
-    satisfaction: `Calculé sur la note globale (1 à 5) de tous les questionnaires de satisfaction remplis à l'issue de chaque session, rapportée à 100. (${satResult.nb} évaluation${satResult.nb > 1 ? "s" : ""} du ${debutStr} au ${finStr}).`,
-    reussite: `Pourcentage de stagiaires ayant obtenu le niveau « acquis » à l'évaluation finale parmi l'ensemble des évaluations finales de l'année.`,
-    completion: `Pourcentage de stagiaires ayant atteint ou dépassé le seuil de présence requis (${seuilPresencePct} %) sur l'ensemble des inscriptions actives de sessions réalisées.`,
-    delaiAcces: `Délai moyen en jours entre la date d'inscription et le début de la session, sur les sessions réalisées de l'année.`,
-  };
+  const methodes: MethodesCalcul = buildMethodesCalcul({
+    annee,
+    seuilPresencePct: seuilPresencePct as number,
+    nbSatisfaction: satResult.nb,
+  });
 
   const result: IndicateursResult = {
     annee,
@@ -238,12 +236,20 @@ function buildEmptyResult(annee: number): IndicateursResult {
     tauxReussite: vide,
     tauxCompletion: vide,
     delaiAccesMoyen: { jours: 0, nb: 0, fiable: false },
-    methodes: {
-      satisfaction: "",
-      reussite: "",
-      completion: "",
-      delaiAcces: "",
-    },
+    // 🔴 2026-09-17 — ces quatre champs valaient `""`. C'est ce résultat-là qui
+    // sort au build SSG sous `stub.invalid`, et `revalidate = 3600` le FIGE
+    // dans le HTML pré-rendu de `/fr/certification-qualiopi` : mesuré en
+    // production, zéro occurrence des quatre méthodes dans 1 411 588 octets.
+    // La méthode ne dépend d'AUCUNE donnée — seulement de l'année, du seuil de
+    // présence (défaut du registre quand la base ne répond pas) et de
+    // l'effectif, qui vaut honnêtement 0 ici. Elle est donc construite, pas
+    // vidée : une page « en cours de constitution » doit dire COMMENT le
+    // chiffre sera calculé quand il existera.
+    methodes: buildMethodesCalcul({
+      annee,
+      seuilPresencePct: QUALIOPI_CONFIG_REGISTRY["seuil_presence_pct"].default,
+      nbSatisfaction: 0,
+    }),
     calculeAt: new Date(),
   };
 }

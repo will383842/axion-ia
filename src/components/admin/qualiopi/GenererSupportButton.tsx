@@ -19,14 +19,16 @@ import { useRouter } from "next/navigation";
 // Types (calqués sur les signatures AGENT B)
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Les types que ce bouton sait GÉNÉRER.
+ *
+ * 🛑 `slides_formateur` et `slides_stagiaire` en sont sortis le 2026-09-17 :
+ * le PowerPoint projeté est téléversé, jamais fabriqué. Les garder ici
+ * laissait le composant accepter un type que l'action refuse désormais — et
+ * c'est le TYPE qui disait au compilateur que le chemin existait.
+ */
 export type SupportTypeValue =
-  | "slides_formateur"
-  | "slides_stagiaire"
-  | "livret_stagiaire"
-  | "memo"
-  | "guide_animation"
-  | "exercices"
-  | "grille_eval";
+  "livret_stagiaire" | "memo" | "guide_animation" | "exercices" | "grille_eval";
 
 export interface GenererSupportButtonProps {
   formationId: string;

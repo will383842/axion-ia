@@ -28,6 +28,7 @@ import { renderSupportToStored } from "./render-support";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import type { SupportType, SupportContenu, FormationInput } from "./types";
+import { estSupportProjete, MOTIF_REFUS_SUPPORT_PROJETE } from "./types";
 import type { SupportFormation } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -225,6 +226,13 @@ export async function genererSupport(
   }
 
   const { formationId, type, enrichirIA = false } = input;
+
+  // 🛑 Le PowerPoint projeté n'est jamais fabriqué ici. Ce point est le
+  // GOULOT : `regenererSupport` délègue à cette fonction, et
+  // `genererTousSupports` aussi — une seule garde ferme les trois voies.
+  if (estSupportProjete(type)) {
+    throw new Error(MOTIF_REFUS_SUPPORT_PROJETE);
+  }
 
   // 1. Lire la formation
   const formation = await prisma.formation.findUnique({

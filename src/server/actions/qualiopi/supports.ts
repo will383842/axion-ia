@@ -27,6 +27,11 @@ import {
   supprimerSupport,
   type GenererTousSupportsResult,
 } from "@/server/qualiopi/supports/supports-service";
+import {
+  MOTIF_REFUS_SUPPORT_PROJETE,
+  SUPPORTS_PROJETES_INTERDITS,
+  type SupportType,
+} from "@/server/qualiopi/supports/types";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -38,9 +43,15 @@ type ActionResult<T> = { data: T } | { error: string };
 // Schémas Zod
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Les types que `genererSupportAction` accepte.
+ *
+ * 🛑 `slides_formateur` et `slides_stagiaire` en sont SORTIS le 2026-09-17.
+ * Ils y figuraient encore trois semaines après que la voie EN LOT ait été
+ * fermée (#851) : un bouton retiré d'un écran n'empêche pas l'appel, et cette
+ * enum-là était le vrai point d'entrée. Cf. `SUPPORTS_PROJETES_INTERDITS`.
+ */
 const SUPPORT_TYPES = [
-  "slides_formateur",
-  "slides_stagiaire",
   "livret_stagiaire",
   "memo",
   "guide_animation",
@@ -79,6 +90,15 @@ export async function genererSupportAction(input: {
   enrichirIA?: boolean;
 }): Promise<ActionResult<{ id: string; pdfUrl: string | null }>> {
   const session = await requireAdminWrite();
+
+  // 🛑 Refus NOMMÉ avant la validation Zod. Sans cette ligne, un appel direct
+  // (l'enum ne contient plus les deux valeurs) ressortirait « Données
+  // invalides » : un refus qui n'explique rien se lit comme un bug, et se
+  // « corrige » en rouvrant la porte. Le motif est celui de la fermeture en
+  // lot, mot pour mot.
+  if (SUPPORTS_PROJETES_INTERDITS.includes(input.type as SupportType)) {
+    return { error: MOTIF_REFUS_SUPPORT_PROJETE };
+  }
 
   const parsed = genererSupportSchema.safeParse(input);
   if (!parsed.success) {

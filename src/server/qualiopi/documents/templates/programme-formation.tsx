@@ -61,6 +61,15 @@ export interface ProgrammeFormationData {
   modules: ModuleProgramme[];
   methodesPedagogiques: string;
   moyensTechniques?: string;
+  /**
+   * Ressources pédagogiques mises à disposition des bénéficiaires — la preuve
+   * attendue à l'INDICATEUR 19 du RNQ, que `audit-dossier.ts` fait porter à
+   * cette pièce depuis l'origine sans qu'elle la porte jamais.
+   *
+   * Absent (et non « tableau vide ») quand la formation n'en déclare aucune :
+   * le gabarit omet alors la section entière.
+   */
+  ressourcesPedagogiques?: string[];
   /** Modalités d'évaluation et de sanction de l'action. */
   modalitesEvaluation: string;
   /** Libellé de la sanction (attestation, certificat…). */
@@ -127,6 +136,12 @@ export function ProgrammeFormationPdf({
   identite,
 }: ProgrammeFormationProps): React.ReactElement {
   const dureeContractuelle = `${data.dureeHeures} heure${data.dureeHeures > 1 ? "s" : ""}`;
+
+  // Numérotation : la section « Ressources » n'existe que si la formation en
+  // déclare. Sans ce calcul, une action sans ressources imprimerait « 5 » puis
+  // « 7 » — un trou qu'un auditeur lit comme une page manquante.
+  const ressources = data.ressourcesPedagogiques ?? [];
+  const numEvaluation = ressources.length > 0 ? 7 : 6;
 
   return (
     <Document>
@@ -233,8 +248,17 @@ export function ProgrammeFormationPdf({
           ) : null}
         </DocSection>
 
-        {/* 6. Évaluation et sanction */}
-        <DocSection title="6. Modalités d'évaluation et sanction">
+        {/* 6. Ressources pédagogiques — INDICATEUR 19.
+            Omise, jamais vide : une section « Ressources » suivie d'un tiret
+            prouverait le contraire de ce qu'elle est censée prouver. */}
+        {ressources.length > 0 ? (
+          <DocSection title="6. Ressources pédagogiques mises à disposition">
+            <BulletList items={ressources} />
+          </DocSection>
+        ) : null}
+
+        {/* Évaluation et sanction */}
+        <DocSection title={`${numEvaluation}. Modalités d'évaluation et sanction`}>
           <Text style={local.bodyText}>{data.modalitesEvaluation}</Text>
           <FieldRow label="Sanction de la formation" value={data.sanction} />
         </DocSection>

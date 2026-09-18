@@ -66,6 +66,18 @@ import { OrganisationActionPdf } from "@/server/qualiopi/documents/templates/org
 // implémentation, réimportée par le fichier d'actions)
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Ce que porte la ligne « Date d'évaluation » d'une grille NON ENCORE remplie.
+ *
+ * 🔴 Jusqu'au 2026-09-17, cette ligne imprimait `session.dateDebut` — la date
+ * de DÉBUT DE SESSION — dans tous les cas, y compris quand une évaluation
+ * existait avec sa propre date. Une date fausse sur une pièce remise au
+ * stagiaire, et indiscernable d'une vraie : c'est le repli silencieux qui est
+ * le défaut, pas seulement la mauvaise colonne.
+ */
+export const DATE_EVALUATION_NON_RENSEIGNEE =
+  "Non évaluée à ce jour — à renseigner le jour de l'évaluation";
+
 export function formatDate(d: Date): string {
   return d.toLocaleDateString("fr-FR", {
     day: "2-digit",
@@ -635,7 +647,11 @@ export async function produireConvocation(
           modalite: true,
           ...LIEU_DOCUMENT_SELECT,
           formationSnapshot: true,
-          formation: { select: { dureeHeures: true } },
+          // `moyensTechniques` : le matériel déclaré par la FORMATION, repris
+          // par la convocation (cf. `ConvocationData.materielAPrevoir`). Lecture
+          // live, comme le programme (`produireProgramme`) : les deux pièces
+          // disent la même chose.
+          formation: { select: { dureeHeures: true, moyensTechniques: true } },
           coFormateurs: true,
           formateurPrincipalId: true,
           numeroDossierOpco: true,
@@ -675,6 +691,7 @@ export async function produireConvocation(
     plages.length === 0 ? "horaires communiqués par l'organisme" : plages.join(", ");
 
   const lieuConvocation = resolveLieuConvocation(session, identite);
+  const materielAPrevoir = session.formation.moyensTechniques?.trim() ?? "";
 
   const doc = await generateDocument({
     type: "convocation",
@@ -701,6 +718,7 @@ export async function produireConvocation(
           ...(session.numeroDossierOpco !== null && session.numeroDossierOpco !== undefined
             ? { numeroOrdrePriseEnCharge: session.numeroDossierOpco }
             : {}),
+          ...(materielAPrevoir !== "" ? { materielAPrevoir } : {}),
         },
         identite,
       }),
@@ -825,7 +843,11 @@ export async function produireGrilleEvaluation(
   const evaluationFinale = await prisma.evaluationAcquis.findFirst({
     where: { enrollmentId, type: "finale" },
     orderBy: { dateEvaluation: "desc" },
-    select: { competences: true, recommandations: true },
+    // 🔴 2026-09-17 — `dateEvaluation` était TRIÉE mais pas SÉLECTIONNÉE, et la
+    // ligne « Date d'évaluation » de la pièce imprimait `session.dateDebut` :
+    // une date fausse sur un document remis au stagiaire et versé au dossier
+    // d'audit. La vraie date existait, à un mot du `select`.
+    select: { competences: true, recommandations: true, dateEvaluation: true },
   });
 
   const competencesEvaluees = Array.isArray(evaluationFinale?.competences)
@@ -852,6 +874,15 @@ export async function produireGrilleEvaluation(
   // formulaire imprimable, jamais faire échouer la génération.
   const competences = competencesEvaluees.length > 0 ? competencesEvaluees : grilleVierge;
 
+  // 🔑 Le cas « pas encore évaluée » se DIT, il ne se replie pas. C'est
+  // exactement le défaut qu'on répare : `session.dateDebut` était un repli
+  // silencieux, indiscernable d'une vraie date d'évaluation. Sur une grille
+  // vierge, la ligne annonce ce qu'elle est et reste à compléter à la main.
+  const dateEvaluationTexte =
+    evaluationFinale?.dateEvaluation != null
+      ? formatDate(new Date(evaluationFinale.dateEvaluation))
+      : DATE_EVALUATION_NON_RENSEIGNEE;
+
   const doc = await generateDocument({
     type: "grille_evaluation",
     ...optionsGenerate(opts),
@@ -860,7 +891,7 @@ export async function produireGrilleEvaluation(
         data: {
           numero,
           intituleFormation: session.titreSession,
-          dateEvaluation: formatDate(new Date(session.dateDebut)),
+          dateEvaluation: dateEvaluationTexte,
           typeEvaluation: "finale",
           nomFormateur: formateurNom,
           nomStagiaire: `${trainee.prenom} ${trainee.nom}`.trim(),
@@ -976,6 +1007,20 @@ export async function produireProgramme(
           niveau: true,
           accessibleHandicap: true,
           seuilReussitePct: true,
+          // 🔴 2026-09-17 — ce champ manquait au `select` ET au type du gabarit.
+          // `git log -S"ressourcesPedagogiques"` sur ce fichier et sur
+          // `programme-formation.tsx` : zéro résultat — jamais branché, jamais
+          // retiré. Pendant ce temps la colonne est REMPLIE : mesuré en
+          // production le 2026-09-17, 22 formations sur 22, 0 nulle, 0 vide.
+          // Or `audit-dossier.ts:281` présente le programme à l'auditrice comme
+          // preuve de l'indicateur 19 (« ressources pédagogiques mises à
+          // disposition ») : la pièce ne portait pas la donnée qu'elle prouve.
+          //
+          // ⚠️ Lecture LIVE assumée : `formationSnapshot` (v1) ne capture pas ce
+          // champ. Le figer demanderait un snapshot v2 et ne rétroagirait sur
+          // aucune session déjà créée — l'inventaire des moyens mis à
+          // disposition n'est pas une clause contractuelle chiffrée.
+          ressourcesPedagogiques: true,
           offreSite: { select: { publicViseFr: true } },
         },
       },
@@ -999,6 +1044,14 @@ export async function produireProgramme(
     `Évaluation des acquis en fin d'action au regard des objectifs pédagogiques ci-dessus ` +
     `(seuil de réussite : ${seuil} %). ` +
     `Recueil de la satisfaction des participants à l'issue de l'action.`;
+
+  // Le Json n'est pas typé : on le normalise par le SSOT déjà utilisé pour les
+  // objectifs (`{ type, libelle }[]` en production, mais `string[]` et
+  // `{ description }[]` existent au catalogue et à la saisie manuelle). Une
+  // entrée illisible est écartée plutôt qu'imprimée en « [object Object] ».
+  const ressourcesPedagogiques = normaliserObjectifsPedagogiques(
+    session.formation.ressourcesPedagogiques,
+  );
 
   const doc = await generateDocument({
     type: "programme",
@@ -1027,6 +1080,11 @@ export async function produireProgramme(
           ...(session.formation.moyensTechniques
             ? { moyensTechniques: session.formation.moyensTechniques }
             : {}),
+          // Rien à imprimer → la section entière est OMISE côté gabarit. Un
+          // titre suivi de rien se lit comme une ressource manquante, pas comme
+          // une absence de ressource : sur une pièce probante, la différence
+          // compte.
+          ...(ressourcesPedagogiques.length > 0 ? { ressourcesPedagogiques } : {}),
           modalitesEvaluation,
           sanction: sanctionLabel(formationDoc.certificationType),
           ...(identite.referentHandicapEmail
