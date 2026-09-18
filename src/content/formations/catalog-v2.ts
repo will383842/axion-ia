@@ -25,6 +25,7 @@
 import type { FormationCategorie, FormationDuree, FormationGamme } from "../pricing";
 import { getFormationBrackets, getFormationEntryPrice, getFormationPrice } from "../pricing";
 import type { FormationBracket } from "../pricing";
+import { MATERIEL_SMARTPHONE_OU_ORDINATEUR, MATERIEL_TABLEUR } from "./materiel";
 import type { ModalitePedagogique } from "./modalites";
 
 export interface FormationV2Faq {
@@ -123,7 +124,7 @@ export interface FormationV2 {
   // ---- Modalités & pratique (défauts centralisés dans catalog-v2-facts.ts) ----
   /** Format. Défaut = présentiel + distanciel possible. Surcharge si différent. */
   modalites?: ReadonlyArray<ModalitePedagogique>;
-  /** Matériel requis. Défaut = « un ordinateur avec connexion internet ». */
+  /** Matériel requis. Défaut = FORMATION_MATERIEL_DEFAUT (« smartphone ou ordinateur, connexion internet… », catalog-v2-facts.ts). Ne surcharger que pour dire autre chose que le défaut. */
   materielFr?: string;
   /** Effectif du groupe. Défaut = « Jusqu'à 15 participants ». */
   effectifFr?: string;
@@ -232,8 +233,6 @@ const BIEN_COMMENCER_4H: FormationV2 = {
     { valeur: "2", label: "tâches réelles du poste traitées en séance" },
     { valeur: "1", label: "grille d'évaluation individuelle, renseignée et commentée en salle" },
   ],
-  materielFr:
-    "Ordinateur portable et connexion internet ; accès aux outils IA préparé avec vous en amont si besoin",
   programme: [
     {
       titreFr: "Module 1 — Ce que l'IA sait faire, et ce qu'on ne lui confie jamais",
@@ -463,8 +462,6 @@ const BIEN_COMMENCER_JOURNEE: FormationV2 = {
     { valeur: "2", label: "notes produites à la voix, sans clavier" },
     { valeur: "1", label: "grille d'évaluation individuelle, renseignée et commentée en salle" },
   ],
-  materielFr:
-    "Ordinateur portable et connexion internet ; accès aux outils IA préparé avec vous en amont si besoin",
   programme: [
     {
       titreFr:
@@ -775,6 +772,7 @@ const IA_POUR_LES_EQUIPES: FormationV2 = {
     { valeur: "1", label: "mode d'emploi commun rédigé et validé par le service" },
     { valeur: "1", label: "grille d'évaluation individuelle, renseignée et commentée en salle" },
   ],
+  materielFr: MATERIEL_TABLEUR,
   programme: [
     {
       titreFr: "Matin — Module 1 : le cadre commun avant de toucher à quoi que ce soit",
@@ -2282,6 +2280,7 @@ const IA_POUR_LA_FINANCE: FormationV2 = {
     },
     { valeur: "1", label: "grille d'évaluation individuelle, renseignée et commentée en salle" },
   ],
+  materielFr: MATERIEL_TABLEUR,
   programme: [
     {
       titreFr: "Matin · Module 1 — Le partage des rôles et l'analyse de documents",
@@ -2904,8 +2903,7 @@ const IA_POUR_LA_PRODUCTION: FormationV2 = {
     },
     { valeur: "1", label: "grille d'évaluation individuelle, renseignée et commentée en salle" },
   ],
-  materielFr:
-    "Ordinateur portable, connexion internet, accès aux outils IA et aux données de production concernées",
+  materielFr: `${MATERIEL_SMARTPHONE_OU_ORDINATEUR}, accès aux outils IA et aux données de production concernées`,
   programme: [
     {
       titreFr:
@@ -3287,6 +3285,7 @@ const IA_POUR_LES_ACHATS: FormationV2 = {
     },
     { valeur: "1", label: "grille d'évaluation individuelle, renseignée et commentée en salle" },
   ],
+  materielFr: MATERIEL_TABLEUR,
   programme: [
     {
       titreFr: "Matin · Module 1 — Le cadre d'usage : ce qui sort, ce qui ne sort jamais",
@@ -5132,6 +5131,7 @@ const IA_POUR_LE_COMMERCE: FormationV2 = {
     { valeur: "3", label: "avis clients traités — un positif, un négatif, un injustifié" },
     { valeur: "1", label: "grille d'évaluation individuelle, renseignée et commentée en salle" },
   ],
+  materielFr: MATERIEL_TABLEUR,
   programme: [
     {
       titreFr: "Matin · Module 1 — Une fiche produit qui vend et qui n'invente rien",
@@ -5708,8 +5708,7 @@ const IA_POUR_L_INDUSTRIE: FormationV2 = {
     },
     { valeur: "1", label: "grille d'évaluation individuelle, renseignée et commentée en salle" },
   ],
-  materielFr:
-    "Ordinateur portable, connexion internet, accès aux outils IA et aux données de production concernées",
+  materielFr: `${MATERIEL_SMARTPHONE_OU_ORDINATEUR}, accès aux outils IA et aux données de production concernées`,
   programme: [
     {
       titreFr:

@@ -831,11 +831,11 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Faut-il avoir des compétences techniques pour bénéficier d'une intervention IA ?",
       answer:
-        "Non, aucune. Les formations Axion-IA s'adressent à des équipes non techniques : la seule qui suppose une aisance en développement ou en administration système est celle destinée aux profils IT. Partout ailleurs, on part du principe que certains participants n'ont jamais ouvert un outil d'IA, et chaque notion est démontrée en direct avant d'être pratiquée immédiatement.\n\nCôté matériel, rien à installer : un ordinateur portable et une connexion internet suffisent, et les accès aux outils sont préparés avec vous en amont si besoin. Les exercices portent sur vos propres tâches — offres d'emploi et comptes rendus côté RH, propositions et relances côté commercial, rapports et relances côté comptabilité, courriers et synthèses côté direction — et non sur des cas d'école.\n\nCe qui compte n'est donc pas le niveau technique, mais le fait d'arriver avec de vraies tâches à traiter. Les participants qui utilisent déjà l'IA de temps en temps ne perdent rien pour autant : ils y gagnent une méthode et des réflexes de vérification qu'ils n'ont généralement pas.",
+        "Non, aucune. Les formations Axion-IA s'adressent à des équipes non techniques : la seule qui suppose une aisance en développement ou en administration système est celle destinée aux profils IT. Partout ailleurs, on part du principe que certains participants n'ont jamais ouvert un outil d'IA, et chaque notion est démontrée en direct avant d'être pratiquée immédiatement.\n\nCôté matériel, rien à installer : un smartphone ou un ordinateur et une connexion internet suffisent (un ordinateur pour IA pour l'IT et IA pour l'automatisation, qui font construire sur poste ; un ordinateur est recommandé pour les exercices sur tableur), et les accès aux outils sont préparés avec vous en amont si besoin. Les exercices portent sur vos propres tâches — offres d'emploi et comptes rendus côté RH, propositions et relances côté commercial, rapports et relances côté comptabilité, courriers et synthèses côté direction — et non sur des cas d'école.\n\nCe qui compte n'est donc pas le niveau technique, mais le fait d'arriver avec de vraies tâches à traiter. Les participants qui utilisent déjà l'IA de temps en temps ne perdent rien pour autant : ils y gagnent une méthode et des réflexes de vérification qu'ils n'ont généralement pas.",
       keyPoints: [
         "Aucun prérequis technique : les formations sont conçues pour des équipes non techniques",
         "Seule exception, la formation destinée aux profils IT suppose une aisance en développement",
-        "Rien à installer : un ordinateur portable et une connexion internet suffisent",
+        "Rien à installer : un smartphone ou un ordinateur et une connexion internet suffisent (un ordinateur pour IA pour l'IT et IA pour l'automatisation, recommandé pour les exercices sur tableur)",
         "Les accès aux outils sont préparés avec vous en amont si besoin",
         "Chaque notion est démontrée en direct, puis pratiquée sur vos propres tâches",
       ],
@@ -866,7 +866,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Do you need technical skills to benefit from an AI session?",
       answer:
-        "No. Axion-IA sessions are designed for non-technical teams. No software installation is required on your end. The trainer arrives with their own equipment and adapts examples to your real business roles (HR, accounting, sales, operations, etc.).",
+        "No. Axion-IA sessions are designed for non-technical teams. Nothing to install: participants need a smartphone or a computer and an internet connection (a computer for AI for IT and AI for automation, and recommended for spreadsheet exercises), and access to the tools is prepared with you in advance if needed. Examples are adapted to your real business roles (HR, accounting, sales, operations, etc.).",
     },
   },
   {
@@ -1428,7 +1428,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Axion-IA intervient-il à distance ou sur site ?",
       answer:
-        "Les deux, au choix, et avec le même programme. Le format par défaut est le présentiel en intra, dans vos locaux : c'est celui qui permet de travailler directement sur vos outils, vos documents et vos données, et de capter les vraies questions au moment où elles se posent. Le distanciel est possible sur l'ensemble du catalogue, avec le même contenu et le même niveau d'interactivité.\n\nIl s'impose surtout quand l'équipe est répartie sur plusieurs sites, quand les déplacements pèseraient plus lourd que la session elle-même, ou pour une session de suivi après un premier passage sur place. Un format hybride est également possible : une journée dans vos locaux pour lancer la dynamique, puis le suivi à distance.\n\nDans les deux cas, le matériel demandé est le même — un ordinateur portable et une connexion internet — et les accès aux outils sont préparés avec vous en amont si besoin. Le format ne change pas le prix : il est fixé par groupe et par formation, pas par personne, et il n'y a pas de surcoût géographique en France métropolitaine.",
+        "Les deux, au choix, et avec le même programme. Le format par défaut est le présentiel en intra, dans vos locaux : c'est celui qui permet de travailler directement sur vos outils, vos documents et vos données, et de capter les vraies questions au moment où elles se posent. Le distanciel est possible sur l'ensemble du catalogue, avec le même contenu et le même niveau d'interactivité.\n\nIl s'impose surtout quand l'équipe est répartie sur plusieurs sites, quand les déplacements pèseraient plus lourd que la session elle-même, ou pour une session de suivi après un premier passage sur place. Un format hybride est également possible : une journée dans vos locaux pour lancer la dynamique, puis le suivi à distance.\n\nDans les deux cas, le matériel demandé est le même — un smartphone ou un ordinateur et une connexion internet ; un ordinateur pour IA pour l'IT et IA pour l'automatisation, recommandé pour les exercices sur tableur (finance, achats, commerce, équipes) — et les accès aux outils sont préparés avec vous en amont si besoin. Le format ne change pas le prix : il est fixé par groupe et par formation, pas par personne, et il n'y a pas de surcoût géographique en France métropolitaine.",
       keyPoints: [
         "Présentiel en intra par défaut, distanciel possible sur tout le catalogue",
         "Même programme, même durée, même niveau d'interactivité dans les deux cas",
@@ -1463,7 +1463,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Does Axion-IA work remotely or on site?",
       answer:
-        "Both. The preferred format is on site (France and internationally) as it allows working directly on your tools and data. Remote sessions are possible via videoconference for geographically dispersed teams or follow-up training.",
+        "Both. The preferred format is on site (France and internationally) as it allows working directly on your tools and data. Remote sessions are possible via videoconference for geographically dispersed teams or follow-up training. In both cases, participants need a smartphone or a computer and an internet connection (a computer for AI for IT and AI for automation, and recommended for spreadsheet exercises).",
     },
   },
   {
