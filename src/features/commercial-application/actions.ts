@@ -28,6 +28,7 @@ import { hashIp } from "@/lib/security/ip-hash";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { notify } from "@/server/notifications";
 import { enqueueEmail } from "@/server/queue/queues";
+import { ENTITE_MESSAGE } from "@/lib/contact/accuse-attendu";
 import { parseLocale } from "@/lib/schemas/locale";
 import { scoreCandidature } from "@/lib/commercial-application/scoring";
 import { getClientIp } from "@/lib/client-ip";
@@ -550,10 +551,14 @@ export async function submitCommercialApplicationAction(
 
     // 7. Email candidat (accusé chaleureux) — best-effort.
     try {
-      await enqueueEmail("candidature-commercial-confirmee", d.email, locale, {
-        contactName: d.prenom,
-        submissionId: submission.id,
-      });
+      await enqueueEmail(
+        "candidature-commercial-confirmee",
+        d.email,
+        locale,
+        { contactName: d.prenom, submissionId: submission.id },
+        // Entité liée : la fiche du message dit EXACTEMENT si l'accusé est parti.
+        { entityType: ENTITE_MESSAGE, entityId: submission.id },
+      );
     } catch (mailErr) {
       console.error("[commercial-application] email candidat a échoué:", mailErr);
       Sentry.captureException(mailErr, {

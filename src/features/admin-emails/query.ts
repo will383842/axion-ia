@@ -72,36 +72,10 @@ const STATUTS: readonly EmailLogStatus[] = Object.values(EmailLogStatusEnum);
 /** Les statuts, dans l'ordre de l'énum — pour les puces de filtre de l'écran (lot 3). */
 export const STATUTS_EMAILS: readonly EmailLogStatus[] = STATUTS;
 
-/**
- * Libellé français de CHAQUE statut — lot 3 (2026-09-02). Typé sur l'énum :
- * un statut ajouté sans libellé ne compile plus. Avant, la vue portait sa
- * propre table à trois entrées, et « bounced » s'affichait en anglais brut
- * dans une console française — sur le seul statut qui exige un geste humain.
- */
-export const LIBELLES_STATUT_EMAIL: Readonly<Record<EmailLogStatus, string>> = {
-  pending: "En attente",
-  sent: "Envoyé",
-  failed: "Échec",
-  bounced: "Rebond",
-  // 🔴 2026-09-09 — AJOUTÉ AVANT QUE LA VALEUR N'EXISTE EN BASE, et c'est
-  // délibéré. Cette carte est la seule source des libellés ; une ligne portant
-  // un statut absent d'ici s'afficherait avec une cellule VIDE — pas une
-  // erreur, pas un rouge, juste un trou que personne ne remarque. Le libellé
-  // précède donc l'écriture du statut, jamais l'inverse.
-  cancelled: "Annulé",
-};
-
-/** Libellé complet d'une ligne : le type de rebond compte, il commande le geste. */
-export function libelleStatutLigne(l: Pick<LigneEmail, "status" | "bounceType">): string {
-  if (l.status === "bounced") {
-    return l.bounceType === "hard"
-      ? "Rebond définitif"
-      : l.bounceType === "soft"
-        ? "Rebond temporaire"
-        : "Rebond";
-  }
-  return LIBELLES_STATUT_EMAIL[l.status];
-}
+// Libellés et tons des statuts : dans le module PUR `./statut-libelles`, lu
+// aussi par les fiches (accusé de réception d'un message, d'une candidature).
+// Re-exportés ici pour les appelants historiques — une seule source.
+export { LIBELLES_STATUT_EMAIL, TON_STATUT_EMAIL, libelleStatutLigne } from "./statut-libelles";
 
 export type FiltresEmails = {
   jours: number;

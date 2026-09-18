@@ -46,7 +46,9 @@ import {
 
 const DEPOT = new Date("2026-09-16T07:59:00Z");
 
-function ligne(p: Partial<LigneEnvoiAccuse> & { id: string }): LigneEnvoiAccuse {
+function ligne(
+  p: Partial<LigneEnvoiAccuse & { recipient: string }> & { id: string },
+): LigneEnvoiAccuse & { recipient: string } {
   return {
     template: "candidature-recue",
     status: "sent",
@@ -58,6 +60,8 @@ function ligne(p: Partial<LigneEnvoiAccuse> & { id: string }): LigneEnvoiAccuse 
     failedAt: null,
     bouncedAt: null,
     bounceReason: null,
+    bounceType: null,
+    recipient: "maxime@exemple-temoin.fr",
     createdAt: new Date(DEPOT.getTime() + 2_000),
     ...p,
   };
@@ -214,7 +218,10 @@ describe("lireAccuseReception — la lecture en base", () => {
       where: { template: { in: string[] }; OR: Array<Record<string, unknown>> };
     };
     expect(arg.where.template.in).toContain("candidature-recue");
-    expect(arg.where.OR).toContainEqual({ entityType: ENTITE_CANDIDATURE, entityId: "app-1" });
+    expect(arg.where.OR).toContainEqual({
+      entityType: ENTITE_CANDIDATURE,
+      entityId: { in: ["app-1"] },
+    });
     expect(JSON.stringify(arg.where.OR)).toContain("maxime@exemple-temoin.fr");
   });
 
@@ -228,7 +235,7 @@ describe("lireAccuseReception — la lecture en base", () => {
     findManyMock.mockResolvedValue([]);
     await lireAccuseReception({ ...CANDIDATURE, email: "" }, { role: ROLE_OUVRANT });
     const arg = findManyMock.mock.calls[0]?.[0] as { where: { OR: unknown[] } };
-    expect(arg.where.OR).toEqual([{ entityType: ENTITE_CANDIDATURE, entityId: "app-1" }]);
+    expect(arg.where.OR).toEqual([{ entityType: ENTITE_CANDIDATURE, entityId: { in: ["app-1"] } }]);
   });
 
   it.skipIf(ROLE_FERME === undefined)(

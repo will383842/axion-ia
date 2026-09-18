@@ -20,6 +20,8 @@ import { SubmissionRowActions } from "./SubmissionRowActions";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
 import { formatDateFrShort, formatTimeFr } from "@/lib/format-date-fr";
 import { splitNomPrenom } from "@/lib/nom-prenom";
+import { lireAccusesMessages } from "@/features/admin-submissions/accuse-reception";
+import { MentionAccuse } from "@/components/admin/accuse/AccuseReceptionAuto";
 
 /**
  * Computed reply badge — derives 4 visual states from SubmissionListItem :
@@ -111,6 +113,18 @@ export async function SubmissionsV2({
     deleted,
   });
 
+  // L'accusé de réception automatique de CHAQUE ligne, en UNE requête pour la
+  // page (2026-09-18). « Sans réponse » disait seulement que personne n'avait
+  // répondu ; rien ne disait si la personne avait au moins reçu l'accusé.
+  const accuses = await lireAccusesMessages(
+    result.items.map((s) => ({
+      id: s.id,
+      contactEmail: s.contactEmail,
+      submittedAt: s.submittedAt,
+      origine: s.origine,
+    })),
+  );
+
   // L'export doit porter le MÊME périmètre que l'écran : filtres de l'URL +
   // types forcés de la vue (Clients / Presse / …). Sans `unifiedTypeIn`, le CSV
   // d'un onglet filtré ramènerait toutes les soumissions du site.
@@ -176,15 +190,19 @@ export async function SubmissionsV2({
   // restent visibles dans le détail — ils encombraient la liste.
   const rows = result.items.map((s) => {
     const r = replyBadge(s);
+    const accuse = accuses.get(s.id);
     const { prenom, nom } = splitNomPrenom(s.contactName);
     return {
       id: s.id,
       detailHref: `${detailBase}/${s.id}`,
       cells: [
-        <AdminBadge key="reply" tone={r.tone} className="gap-1">
-          <r.Icone size={12} aria-hidden="true" className="shrink-0" />
-          {r.label}
-        </AdminBadge>,
+        <span key="reply" className="flex flex-col gap-[var(--space-admin-1)]">
+          <AdminBadge tone={r.tone} className="gap-1">
+            <r.Icone size={12} aria-hidden="true" className="shrink-0" />
+            {r.label}
+          </AdminBadge>
+          {accuse ? <MentionAccuse accuse={accuse} /> : null}
+        </span>,
         formatDateFrShort(s.submittedAt),
         formatTimeFr(s.submittedAt),
         s.messageExtrait ? (

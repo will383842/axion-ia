@@ -18,6 +18,8 @@ import { lireFichePersonne } from "@/features/personne/fiche-personne";
 import { SubmissionUpdateForm } from "../[id]/SubmissionUpdateForm";
 import { ReplyComposer } from "@/components/admin/contacts/ReplyComposer";
 import { ReplyHistory } from "@/components/admin/contacts/ReplyHistory";
+import { BlocAccuse } from "@/components/admin/accuse/AccuseReceptionAuto";
+import { lireAccuseMessage } from "@/features/admin-submissions/accuse-reception";
 import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { CandidatureCommercialeDetail } from "./CandidatureCommercialeDetail";
@@ -105,6 +107,16 @@ export async function SubmissionDetailContent({
   const score = details && typeof details.score === "number" ? details.score : null;
   const scorePriorite =
     details && typeof details.scorePriorite === "string" ? details.scorePriorite : null;
+  // L'accusé de réception automatique (2026-09-18) — lu avec la même règle que
+  // la liste. Ce n'est pas une réponse : il s'affiche à côté de l'historique.
+  const origine = details && typeof details.origine === "string" ? details.origine : null;
+  const accuse = await lireAccuseMessage({
+    id: submission.id,
+    contactEmail: submission.contactEmail,
+    submittedAt: submission.submittedAt,
+    origine,
+  });
+
   const titreSociete =
     submission.companyName && submission.companyName !== "—"
       ? submission.companyName
@@ -246,6 +258,7 @@ export async function SubmissionDetailContent({
             currentAssignedTo={submission.assignedTo}
           />
         </div>
+        {accuse ? <BlocAccuse accuse={accuse} /> : null}
         <ReplyHistory submissionId={submission.id} />
         <details className="admin-card admin-card-wide">
           <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg-muted)] select-none">

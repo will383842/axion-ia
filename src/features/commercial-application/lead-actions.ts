@@ -40,6 +40,7 @@ import { hashIp } from "@/lib/security/ip-hash";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { notify } from "@/server/notifications";
 import { enqueueEmail } from "@/server/queue/queues";
+import { ENTITE_MESSAGE } from "@/lib/contact/accuse-attendu";
 import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
 import { parseUtmFromUrl, readUtmCookie, UTM_COOKIE_NAME, type UtmParams } from "@/lib/utm";
@@ -253,12 +254,19 @@ export async function submitLeadApporteurAction(
 
     // 7. E-mail au candidat — best-effort.
     try {
-      await enqueueEmail("lead-apporteur-recu", d.email, locale, {
-        contactName: d.prenom,
-        submissionId: submission.id,
-        dossierUrl,
-        ...(creneauUrl ? { creneauUrl } : {}),
-      });
+      await enqueueEmail(
+        "lead-apporteur-recu",
+        d.email,
+        locale,
+        {
+          contactName: d.prenom,
+          submissionId: submission.id,
+          dossierUrl,
+          ...(creneauUrl ? { creneauUrl } : {}),
+        },
+        // Entité liée : la fiche du message dit EXACTEMENT si l'accusé est parti.
+        { entityType: ENTITE_MESSAGE, entityId: submission.id },
+      );
     } catch (mailErr) {
       console.error("[lead-apporteur] email candidat a échoué:", mailErr);
       Sentry.captureException(mailErr, {

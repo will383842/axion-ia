@@ -22,6 +22,7 @@ const ENVOYE: AccuseReception = {
   date: new Date("2026-09-18T15:48:37Z"),
   essais: 1,
   motif: null,
+  rebond: null,
   rattachement: "exact",
 };
 
@@ -45,6 +46,7 @@ describe("FriseCandidature — l'accusé de réception automatique", () => {
       date: new Date("2026-09-16T08:30:00Z"),
       essais: 5,
       motif: "Invalid login: 535 Authentication Failed",
+      rebond: null,
       rattachement: "exact",
     });
     expect(html).toMatch(/n.est pas parti/);
@@ -58,6 +60,7 @@ describe("FriseCandidature — l'accusé de réception automatique", () => {
       date: null,
       essais: 0,
       motif: null,
+      rebond: null,
       rattachement: null,
     });
     expect(html).toMatch(/Aucun accusé de réception automatique/);
