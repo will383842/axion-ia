@@ -1,48 +1,16 @@
 /**
  * QUEL ACCUSÉ DE RÉCEPTION un message déposé doit-il recevoir ?
  *
- * Une seule table pour deux lecteurs :
- *   - le formulaire `/contact` (`features/unified-contact/actions.ts`), qui
- *     choisit le gabarit qu'il ENVOIE ;
- *   - la console (`features/admin-submissions/accuse-reception.ts`), qui dit si
- *     cet accusé est PARTI.
- * Si les deux avaient chacun leur liste, la console chercherait un jour un
- * gabarit que le formulaire n'envoie plus, et afficherait « aucun accusé » sur
- * un message bel et bien accusé.
+ * La console (`features/admin-submissions/accuse-reception.ts`) y cherche les
+ * accusés ; les formulaires, eux, choisissent le gabarit qu'ils envoient à
+ * côté de leur appel d'envoi (le catalogue des e-mails vérifie que le fichier
+ * déclaré est bien celui qui envoie). Un test lit ces formulaires et exige que
+ * chaque gabarit qu'ils envoient figure ici : sans lui, la console chercherait
+ * un jour un gabarit qu'on n'envoie plus, et dirait « aucun accusé » sur un
+ * message bel et bien accusé.
  *
  * Module pur, sans dépendance serveur.
  */
-
-import type { UnifiedContactType } from "@/lib/schemas/unified-contact-schema";
-
-/** Le gabarit d'accusé envoyé par le formulaire `/contact`, par type. */
-export function gabaritAccuseContact(
-  type: UnifiedContactType,
-): "audit-confirmed" | "implementation-confirmed" | "quote-request-received" | "contact-confirmed" {
-  switch (type) {
-    case "audit":
-      return "audit-confirmed";
-    case "implementation":
-      return "implementation-confirmed";
-    // `quote-request-received` était écrit et déclaré depuis le sprint Booking,
-    // mais appelé NULLE PART : les demandes de devis retombaient sur l'accusé
-    // générique. Branché le 2026-08-13.
-    case "devis":
-      return "quote-request-received";
-    // Les autres types gardent l'accusé générique. Le routage interne fin se
-    // fait côté Telegram (catégories distinctes).
-    case "formation":
-    case "un_a_un":
-    case "partenariat":
-    case "presse":
-    case "recrutement":
-    case "speaker":
-    case "investisseur":
-    case "support_client":
-    case "autre":
-      return "contact-confirmed";
-  }
-}
 
 /**
  * TOUS les gabarits qui accusent réception d'un message (`Submission`), tous

@@ -39,7 +39,7 @@ import {
   attribuerAccuses as attribuerNoyau,
   type LigneAvecDestinataire,
 } from "@/server/email/accuse-noyau";
-import { GABARITS_ACCUSE_MESSAGE, gabaritAccuseContact } from "@/lib/contact/accuse-attendu";
+import { GABARITS_ACCUSE_MESSAGE } from "@/lib/contact/accuse-attendu";
 
 const DEPOT = new Date("2026-09-16T06:16:00Z");
 
@@ -225,12 +225,25 @@ describe("une seule table des accusés, lue par les formulaires ET par la consol
     for (const g of GABARITS_ACCUSE_MESSAGE) expect(types).toContain(`"${g}"`);
   });
 
-  it("le formulaire /contact choisit son gabarit dans CETTE table", () => {
-    expect(lire("src/features/unified-contact/actions.ts")).toContain(
-      "return gabaritAccuseContact(type);",
-    );
-    expect(gabaritAccuseContact("devis")).toBe("quote-request-received");
-    expect(gabaritAccuseContact("presse")).toBe("contact-confirmed");
+  it("chaque gabarit que le formulaire /contact peut envoyer est cherché par la console", () => {
+    const source = lire("src/features/unified-contact/actions.ts");
+    const debut = source.indexOf("function emailTemplateFor(");
+    const corps = source.slice(debut, source.indexOf("\n}\n", debut));
+    const renvoyes = [...corps.matchAll(/return "([a-z-]+)";/g)].map((m) => m[1]);
+    // Le témoin qui distingue « tout est couvert » de « je n'ai rien lu ».
+    expect(renvoyes.length).toBeGreaterThanOrEqual(4);
+    for (const g of renvoyes) expect(GABARITS_ACCUSE_MESSAGE as readonly string[]).toContain(g);
+  });
+
+  it("chaque accusé envoyé par un autre formulaire de message est cherché aussi", () => {
+    for (const [f, g] of [
+      ["src/features/commercial-application/actions.ts", "candidature-commercial-confirmee"],
+      ["src/features/commercial-application/lead-actions.ts", "lead-apporteur-recu"],
+      ["src/features/roi-report/actions.ts", "roi-report"],
+    ] as const) {
+      expect(lire(f), f).toContain(`"${g}"`);
+      expect(GABARITS_ACCUSE_MESSAGE as readonly string[]).toContain(g);
+    }
   });
 
   it("chaque formulaire qui accuse réception LIE l'accusé à son message dès l'envoi", () => {

@@ -45,7 +45,7 @@ import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
 import { REFERRER_CITY_COOKIE_NAME } from "@/lib/pseo-referrer";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
-import { ENTITE_MESSAGE, gabaritAccuseContact } from "@/lib/contact/accuse-attendu";
+import { ENTITE_MESSAGE } from "@/lib/contact/accuse-attendu";
 
 export type UnifiedContactState = { ok: true; submissionId: string } | { ok: false; error: string };
 
@@ -111,11 +111,34 @@ function notifCategoryFor(type: UnifiedContactType): NotificationCategory {
   }
 }
 
-// Le choix du gabarit d'accusé vit dans `lib/contact/accuse-attendu.ts`, lu
-// AUSSI par la console pour dire si cet accusé est parti : une seule table,
-// sinon la console chercherait un jour un gabarit qu'on n'envoie plus.
+// 🔑 Chaque gabarit rendu ici doit figurer dans `GABARITS_ACCUSE_MESSAGE`
+// (`lib/contact/accuse-attendu.ts`), la liste où la console cherche l'accusé :
+// un test lit ce `switch` et le vérifie, sinon la console afficherait « aucun
+// accusé » sur un message bel et bien accusé.
 function emailTemplateFor(type: UnifiedContactType): EmailJobName {
-  return gabaritAccuseContact(type);
+  switch (type) {
+    case "audit":
+      return "audit-confirmed";
+    case "implementation":
+      return "implementation-confirmed";
+    // `quote-request-received` était écrit et déclaré depuis le sprint Booking,
+    // mais appelé NULLE PART : les demandes de devis retombaient sur l'accusé
+    // générique. Branché le 2026-08-13.
+    case "devis":
+      return "quote-request-received";
+    // Les autres types gardent l'accusé générique. Le routage interne fin se
+    // fait côté Telegram (catégories distinctes).
+    case "formation":
+    case "un_a_un":
+    case "partenariat":
+    case "presse":
+    case "recrutement":
+    case "speaker":
+    case "investisseur":
+    case "support_client":
+    case "autre":
+      return "contact-confirmed";
+  }
 }
 
 // `hashIp` throw si IP_HASH_SALT absent en prod (doctrine RGPD). Ce wrapper
