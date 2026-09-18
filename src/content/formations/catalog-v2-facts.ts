@@ -8,16 +8,15 @@
 //
 // Décisions Will (2026-07-05) :
 //   - Format : présentiel intra + distanciel possible (défaut), surchargeable.
-//   - Matériel défaut : « un ordinateur avec connexion internet ».
-//     ➜ Remplacé le 2026-09-18 (décision Will) : « smartphone OU ordinateur ».
-//       La base (`formations.moyens_techniques`, imprimé sur le programme PDF
-//       et la convocation) le disait déjà ; la fiche publique disait le
-//       contraire. Exceptions gardées sur ordinateur : IA pour l'IT et IA pour
-//       l'automatisation (surcharges `materielFr`), à confirmer par Will.
+//   - Matériel défaut : « smartphone ou ordinateur, connexion internet »
+//     (décision Will du 2026-09-18, qui remplace « un ordinateur avec
+//     connexion internet »). Voir `materiel.ts` ; IA pour l'IT et IA pour
+//     l'automatisation restent sur ordinateur (confirmé par Will le 2026-09-18).
 //   - Images : mix bank (fallback par gamme) + Unsplash spécifique (override).
 // ============================================================================
 
 import type { FormationDuree, FormationGamme } from "../pricing";
+import { MATERIEL_SMARTPHONE_OU_ORDINATEUR } from "./materiel";
 import type { FormationCasUsage, FormationV2 } from "./catalog-v2";
 import { FORMATION_CARD_PHOTOS } from "./catalog-v2-photos";
 import { type ModalitePedagogique, PRESENTIEL_DISTANCIEL } from "./modalites";
@@ -74,8 +73,7 @@ export function getFormationCourseModes(f: FormationV2): ReadonlyArray<"Onsite" 
 }
 
 // ── Matériel ────────────────────────────────────────────────────────────────
-export const FORMATION_MATERIEL_DEFAUT =
-  "Smartphone ou ordinateur, connexion internet, accès aux outils IA (comptes préparés en amont avec vous si besoin)";
+export const FORMATION_MATERIEL_DEFAUT = `${MATERIEL_SMARTPHONE_OU_ORDINATEUR}, accès aux outils IA (comptes préparés en amont avec vous si besoin)`;
 
 export function getFormationMateriel(f: FormationV2): string {
   return f.materielFr ?? FORMATION_MATERIEL_DEFAUT;
