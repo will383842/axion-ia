@@ -240,6 +240,9 @@ async function emettreSansVerrou(
       // Sans ce `select`, le destinataire était écrasé à « opco » en subrogation
       // et le reste à charge n'était facturable à personne.
       dossiersFinancement: {
+        // 🔴 #1112 — un dossier `clos` n'est plus le dossier de la session : après
+        // opco → direct → opco, le plus ancien est le clos, l'actif est derrière.
+        where: { statut: { not: "clos" } },
         orderBy: { createdAt: "asc" },
         take: 1,
         select: {

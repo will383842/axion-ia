@@ -213,6 +213,8 @@ export const SESSION_FACTURE_AUTO_SELECT = {
   // (`facture-formation-emission.ts`). Deux lectures différentes du « dossier »
   // feraient décider ici sur une créance et facturer là-bas sur une autre.
   dossiersFinancement: {
+    // 🔴 #1112 — même filtre que l'émission : un dossier `clos` n'est plus lu.
+    where: { statut: { not: "clos" } },
     orderBy: { createdAt: "asc" },
     take: 1,
     select: {

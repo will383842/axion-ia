@@ -8,7 +8,12 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { changementOuvreUnDossier, sessionExigeUnDossier } from "./dossier-auto";
+import {
+  changementOuvreUnDossier,
+  financementAdmetSubrogation,
+  financementRefermeLesDossiers,
+  sessionExigeUnDossier,
+} from "./dossier-auto";
 
 describe("quels financements appellent un dossier de suivi", () => {
   it.each(["opco", "cpf", "france_travail", "mixte"])("%s → oui", (f) => {
@@ -62,8 +67,8 @@ describe("🔴 quand un CHANGEMENT ouvre un dossier", () => {
   it("🔴 opco → direct : n'ouvre pas, et ne SUPPRIME rien non plus", () => {
     // Cette fonction ne décide que de l'ouverture. La suppression n'existe pas :
     // un dossier porte des dates, des montants et un historique de transitions.
-    // Le refermer est une décision humaine (`clos`), pas l'effet de bord d'un
-    // changement de menu déroulant.
+    // La FERMETURE d'un dossier encore `a_monter` relève de
+    // `financementRefermeLesDossiers` (le retour, 17/09/2026).
     expect(changementOuvreUnDossier("opco", "direct")).toBe(false);
   });
 
@@ -76,5 +81,29 @@ describe("🔴 quand un CHANGEMENT ouvre un dossier", () => {
     // champ — cas le plus fréquent (on met à jour le n° de dossier seul).
     expect(changementOuvreUnDossier("opco", undefined)).toBe(false);
     expect(changementOuvreUnDossier("direct", undefined)).toBe(false);
+  });
+});
+
+describe("🔴 le RETOUR — quand un financement referme les dossiers `a_monter`", () => {
+  it("direct referme : plus de financeur à suivre", () => {
+    expect(financementRefermeLesDossiers("direct")).toBe(true);
+  });
+
+  it.each(["opco", "cpf", "france_travail", "mixte"])("%s ne referme rien", (f) => {
+    expect(financementRefermeLesDossiers(f)).toBe(false);
+  });
+
+  it("un champ NON envoyé ne referme rien — corriger un n° de dossier ne ferme pas le suivi", () => {
+    expect(financementRefermeLesDossiers(undefined)).toBe(false);
+  });
+});
+
+describe("quels financements admettent la subrogation OPCO", () => {
+  it.each(["opco", "mixte"])("%s → oui", (f) => {
+    expect(financementAdmetSubrogation(f)).toBe(true);
+  });
+
+  it.each(["direct", "cpf", "france_travail", null, undefined, ""])("%s → non", (f) => {
+    expect(financementAdmetSubrogation(f)).toBe(false);
   });
 });

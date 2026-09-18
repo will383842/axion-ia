@@ -201,6 +201,18 @@ describe("🔴 financeur — le contact vit sur le DOSSIER, pas sur l'OPCO", () 
     );
   });
 
+  it("🔴 #1112 — le contact ne vient jamais d'un dossier CLOS", async () => {
+    // Session revenue en direct puis en OPCO : le dossier le plus récent peut
+    // être celui qui a été refermé. On lit le dossier ouvert, jamais le clos.
+    mp.documentGenere.findUnique.mockResolvedValue(pieceTripartite());
+    await emettreLienSignatureAction({ documentGenereId: DOC, partie: "financeur" });
+    expect(mp.dossierFinancement.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ statut: { not: "clos" } }),
+      }),
+    );
+  });
+
   it("se replie sur le NOM DU FINANCEUR quand le contact est anonyme", async () => {
     mp.documentGenere.findUnique.mockResolvedValue(pieceTripartite());
     mp.dossierFinancement.findFirst.mockResolvedValue({
