@@ -44,7 +44,13 @@ test.describe("recrutement — le journal du candidat", () => {
 
     // Sur une candidature du socle, rien n'a encore été consigné : l'écran doit
     // le DIRE. Un espace vide se lirait comme un écran cassé.
-    await expect(page.getByText(/rien n.a encore été consigné/i)).toBeVisible();
+    await expect(page.getByText(/n.a encore été consigné/i)).toBeVisible();
+
+    // 🔑 2026-09-18 — l'accusé de réception automatique a SA ligne, qu'il soit
+    // parti, en échec ou introuvable (le socle n'en porte pas). Le 18/09, une
+    // fiche dont l'accusé était livré disait « rien n'a été consigné » — la
+    // même phrase qu'une fiche dont l'accusé n'était jamais parti.
+    await expect(page.getByText("Accusé de réception automatique", { exact: true })).toBeVisible();
   });
 
   test("choisir un modèle pré-remplit l'objet ET le message", async ({ page }) => {
