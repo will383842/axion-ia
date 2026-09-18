@@ -18,8 +18,33 @@
  * 🔴 PREMIÈRE VERSION DE CETTE GARDE : TROP ÉTROITE. Elle ne cherchait dans la
  * FAQ qu'UNE phrase exacte ; l'entrée `presentiel-distance` disait encore
  * « un ordinateur portable et une connexion internet » (publiée sur /faq, le
- * JSON-LD QAPage et llms-full.txt), et la garde passait 22/22 en vert. Elle
- * balaie désormais TOUT le contenu public source, pas une formulation.
+ * JSON-LD QAPage et llms-full.txt), et la garde passait 22/22 en vert.
+ *
+ * 🔴 DEUXIÈME VERSION : ENCORE TROP ÉTROITE. Elle ne reconnaissait « ordinateur
+ * portable » que collé à « connexion internet » : « un ordinateur portable »
+ * seul, « … avec une connexion internet », « … et d'une connexion internet »,
+ * « … — et une connexion internet » passaient en exit 0 (revue sécurité
+ * 5251842255).
+ *
+ * Ce qu'elle garantit désormais, et ce qu'elle ne garantit pas :
+ *  - FAQ_GLOBAL (FR ET EN, réponses, points clés, nuances) : AUCUNE occurrence
+ *    de « ordinateur portable » ni de « laptop », quelle que soit la phrase.
+ *    Il n'en reste aucune légitime ; une future mention exigera de retoucher
+ *    cette garde, et c'est voulu.
+ *  - Fiches formation, TOUS les champs (prérequis affichés sur la fiche et dans
+ *    son JSON-LD, public visé, programme, textes EN) : même interdiction, sauf
+ *    le champ `materielFr` des deux exceptions confirmées (revue exactitude
+ *    5251895268, panne R10 : « Un ordinateur portable est obligatoire » dans
+ *    `prerequisFr` passait en vert).
+ *  - Les entrées qui parlent du matériel (`presentiel-distance`,
+ *    `competences-techniques`) doivent CONTENIR la phrase et nommer les
+ *    exceptions : si la phrase disparaît, le test échoue au lieu de passer à vide.
+ *  - ⚠️ LIMITE DÉCLARÉE du balayage des fichiers (src/content, src/app,
+ *    src/components, src/messages) : il ne repère que la formulation
+ *    « ordinateur portable » JOINTE à « connexion internet » (avec ou sans
+ *    « avec », « et », « d' », tiret). Une mention isolée hors FAQ n'y est pas
+ *    détectée : elle serait indiscernable des descriptions de photos
+ *    (« une main au-dessus d'un ordinateur portable »), nombreuses et légitimes.
  *
  * Elle ne lit pas la base : elle vérifie que le contenu public dit la même
  * chose qu'elle.
@@ -49,8 +74,17 @@ const FORMATIONS_TABLEUR = new Set([
  * précédé) de la connexion internet. Les descriptions de photos (« une main
  * au-dessus d'un ordinateur portable ») ne le sont pas, et ne sont pas visées.
  */
-const ORDINATEUR_COMME_MATERIEL =
-  /ordinateur portable\s*(?:,|;|et)\s*(?:une\s+)?connexion internet|connexion internet\s*(?:,|;|et)\s*(?:un\s+)?ordinateur portable/i;
+const LIEN = String.raw`\s*(?:[,;—–-]\s*)?(?:et|avec)?\s*(?:d'|de\s+)?(?:une?\s+)?`;
+const ORDINATEUR_COMME_MATERIEL = new RegExp(
+  String.raw`ordinateur portable${LIEN}connexion internet|connexion internet${LIEN}ordinateur portable`,
+  "i",
+);
+
+/** Dans la FAQ, aucune occurrence n'est tolérée, dans aucune langue. */
+const ORDINATEUR_PORTABLE_OU_LAPTOP = /ordinateurs? portables?|laptops?/i;
+
+/** Entrées de la FAQ qui énoncent le matériel, en FR et en EN. */
+const FAQ_MATERIEL = ["presentiel-distance", "competences-techniques"] as const;
 
 const RACINE = path.resolve(__dirname, "../../..");
 
@@ -91,6 +125,17 @@ describe("le matériel annoncé est le même partout", () => {
     );
   });
 
+  it("aucune fiche ne mentionne l'ordinateur portable ou le laptop hors du champ matériel des exceptions", () => {
+    // Tous les champs de la fiche : prérequis (affichés sur la fiche et dans son
+    // JSON-LD), public visé, programme, textes EN… Seul `materielFr` des deux
+    // exceptions confirmées peut en parler.
+    const fautives = FORMATIONS_V2.filter((f) => {
+      const champs = EXCEPTIONS_ORDINATEUR.has(f.id) ? { ...f, materielFr: undefined } : f;
+      return ORDINATEUR_PORTABLE_OU_LAPTOP.test(JSON.stringify(champs));
+    }).map((f) => f.id);
+    expect(fautives).toEqual([]);
+  });
+
   it("les exceptions existent et restent sur ordinateur", () => {
     for (const id of EXCEPTIONS_ORDINATEUR) {
       const f = formations.find((x) => x.id === id);
@@ -99,20 +144,31 @@ describe("le matériel annoncé est le même partout", () => {
     }
   });
 
-  it("aucune entrée de la FAQ (réponses et points clés, FR et EN) n'exige l'ordinateur portable", () => {
-    const fautives = FAQ_GLOBAL.filter((e) =>
-      ORDINATEUR_COMME_MATERIEL.test(JSON.stringify(e)),
-    ).map((e) => e.id);
+  it("aucune entrée de la FAQ, en FR comme en EN, ne mentionne l'ordinateur portable ni le laptop", () => {
+    const fautives = FAQ_GLOBAL.flatMap((e) =>
+      (["fr", "en"] as const)
+        .filter((langue) => ORDINATEUR_PORTABLE_OU_LAPTOP.test(JSON.stringify(e[langue])))
+        .map((langue) => `${e.id}:${langue}`),
+    );
     expect(fautives).toEqual([]);
   });
 
-  it("la FAQ qui parle du matériel nomme les deux exceptions", () => {
-    const texte = JSON.stringify(FAQ_GLOBAL);
-    for (const m of texte.matchAll(/smartphone ou un ordinateur[^"]{0,260}/gi)) {
-      expect(m[0]).toMatch(/IA pour l'IT et IA pour l'automatisation/);
-      expect(m[0]).toMatch(/tableur/);
-    }
-  });
+  it.each([...FAQ_MATERIEL])(
+    "%s énonce le matériel en FR et en EN, avec les exceptions et le tableur",
+    (id) => {
+      const e = FAQ_GLOBAL.find((x) => x.id === id);
+      expect(e, id).toBeDefined();
+      const fr = JSON.stringify(e!.fr);
+      const en = JSON.stringify(e!.en);
+      // Pas de passage à vide : la phrase doit être là.
+      expect(fr).toMatch(/smartphone ou un ordinateur/i);
+      expect(fr).toMatch(/IA pour l'IT et IA pour l'automatisation/);
+      expect(fr).toMatch(/tableur/);
+      expect(en).toMatch(/smartphone or a computer/i);
+      expect(en).toMatch(/AI for IT and AI for automation/);
+      expect(en).toMatch(/spreadsheet/);
+    },
+  );
 
   it("aucun fichier de contenu public n'exige l'ordinateur portable hors des deux exceptions", () => {
     const racines = ["src/content", "src/app", "src/components", "src/messages"]

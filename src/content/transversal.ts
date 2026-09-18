@@ -866,7 +866,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Do you need technical skills to benefit from an AI session?",
       answer:
-        "No. Axion-IA sessions are designed for non-technical teams. No software installation is required on your end. The trainer arrives with their own equipment and adapts examples to your real business roles (HR, accounting, sales, operations, etc.).",
+        "No. Axion-IA sessions are designed for non-technical teams. Nothing to install: participants need a smartphone or a computer and an internet connection (a computer for AI for IT and AI for automation, and recommended for spreadsheet exercises), and access to the tools is prepared with you in advance if needed. Examples are adapted to your real business roles (HR, accounting, sales, operations, etc.).",
     },
   },
   {
@@ -1463,7 +1463,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Does Axion-IA work remotely or on site?",
       answer:
-        "Both. The preferred format is on site (France and internationally) as it allows working directly on your tools and data. Remote sessions are possible via videoconference for geographically dispersed teams or follow-up training.",
+        "Both. The preferred format is on site (France and internationally) as it allows working directly on your tools and data. Remote sessions are possible via videoconference for geographically dispersed teams or follow-up training. In both cases, participants need a smartphone or a computer and an internet connection (a computer for AI for IT and AI for automation, and recommended for spreadsheet exercises).",
     },
   },
   {
