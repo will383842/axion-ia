@@ -9,6 +9,11 @@
 // Décisions Will (2026-07-05) :
 //   - Format : présentiel intra + distanciel possible (défaut), surchargeable.
 //   - Matériel défaut : « un ordinateur avec connexion internet ».
+//     ➜ Remplacé le 2026-09-18 (décision Will) : « smartphone OU ordinateur ».
+//       La base (`formations.moyens_techniques`, imprimé sur le programme PDF
+//       et la convocation) le disait déjà ; la fiche publique disait le
+//       contraire. Exceptions gardées sur ordinateur : IA pour l'IT et IA pour
+//       l'automatisation (surcharges `materielFr`), à confirmer par Will.
 //   - Images : mix bank (fallback par gamme) + Unsplash spécifique (override).
 // ============================================================================
 
@@ -70,7 +75,7 @@ export function getFormationCourseModes(f: FormationV2): ReadonlyArray<"Onsite" 
 
 // ── Matériel ────────────────────────────────────────────────────────────────
 export const FORMATION_MATERIEL_DEFAUT =
-  "Ordinateur portable, connexion internet, accès aux outils IA (comptes préparés en amont avec vous si besoin)";
+  "Smartphone ou ordinateur, connexion internet, accès aux outils IA (comptes préparés en amont avec vous si besoin)";
 
 export function getFormationMateriel(f: FormationV2): string {
   return f.materielFr ?? FORMATION_MATERIEL_DEFAUT;

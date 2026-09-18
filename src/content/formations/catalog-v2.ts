@@ -123,7 +123,7 @@ export interface FormationV2 {
   // ---- Modalités & pratique (défauts centralisés dans catalog-v2-facts.ts) ----
   /** Format. Défaut = présentiel + distanciel possible. Surcharge si différent. */
   modalites?: ReadonlyArray<ModalitePedagogique>;
-  /** Matériel requis. Défaut = « un ordinateur avec connexion internet ». */
+  /** Matériel requis. Défaut = « smartphone ou ordinateur, connexion internet » (décision Will du 2026-09-18). */
   materielFr?: string;
   /** Effectif du groupe. Défaut = « Jusqu'à 15 participants ». */
   effectifFr?: string;
@@ -233,7 +233,7 @@ const BIEN_COMMENCER_4H: FormationV2 = {
     { valeur: "1", label: "grille d'évaluation individuelle, renseignée et commentée en salle" },
   ],
   materielFr:
-    "Ordinateur portable et connexion internet ; accès aux outils IA préparé avec vous en amont si besoin",
+    "Smartphone ou ordinateur et connexion internet ; accès aux outils IA préparé avec vous en amont si besoin",
   programme: [
     {
       titreFr: "Module 1 — Ce que l'IA sait faire, et ce qu'on ne lui confie jamais",
@@ -464,7 +464,7 @@ const BIEN_COMMENCER_JOURNEE: FormationV2 = {
     { valeur: "1", label: "grille d'évaluation individuelle, renseignée et commentée en salle" },
   ],
   materielFr:
-    "Ordinateur portable et connexion internet ; accès aux outils IA préparé avec vous en amont si besoin",
+    "Smartphone ou ordinateur et connexion internet ; accès aux outils IA préparé avec vous en amont si besoin",
   programme: [
     {
       titreFr:
@@ -2905,7 +2905,7 @@ const IA_POUR_LA_PRODUCTION: FormationV2 = {
     { valeur: "1", label: "grille d'évaluation individuelle, renseignée et commentée en salle" },
   ],
   materielFr:
-    "Ordinateur portable, connexion internet, accès aux outils IA et aux données de production concernées",
+    "Smartphone ou ordinateur, connexion internet, accès aux outils IA et aux données de production concernées",
   programme: [
     {
       titreFr:
@@ -5709,7 +5709,7 @@ const IA_POUR_L_INDUSTRIE: FormationV2 = {
     { valeur: "1", label: "grille d'évaluation individuelle, renseignée et commentée en salle" },
   ],
   materielFr:
-    "Ordinateur portable, connexion internet, accès aux outils IA et aux données de production concernées",
+    "Smartphone ou ordinateur, connexion internet, accès aux outils IA et aux données de production concernées",
   programme: [
     {
       titreFr:
