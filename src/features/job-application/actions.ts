@@ -556,10 +556,21 @@ export async function submitJobApplicationAction(
     // candidatures en attente. Le nouveau gabarit n'annonce aucun délai : il
     // dit qu'on lit, qu'on répondra, y compris négativement. C'est le seul
     // engagement tenable.
-    await enqueueEmail("candidature-recue", d.email, locale, {
-      contactName: `${d.firstName} ${d.lastName}`.trim(),
-      offerTitle: titrePoste,
-    });
+    //
+    // 🔑 L'entité liée (2026-09-18) : c'est ce qui permet à la fiche du
+    // candidat de dire, EXACTEMENT, si son accusé est parti — cf.
+    // `admin-job-applications/accuse-reception.ts`. Sans elle, la fiche ne
+    // peut que le deviner par l'adresse et l'heure.
+    await enqueueEmail(
+      "candidature-recue",
+      d.email,
+      locale,
+      {
+        contactName: `${d.firstName} ${d.lastName}`.trim(),
+        offerTitle: titrePoste,
+      },
+      { entityType: "JobApplication", entityId: app.id },
+    );
 
     revalidatePath(adminPath("fr", "contacts/candidatures"));
     return { ok: true, applicationId: app.id };

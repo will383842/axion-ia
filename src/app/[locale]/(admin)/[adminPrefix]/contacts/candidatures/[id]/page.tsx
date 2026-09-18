@@ -14,6 +14,7 @@ import { FriseCandidature } from "./FriseCandidature";
 import { ComposerReponse } from "./ComposerReponse";
 import { ConsignerAuJournal } from "./ConsignerAuJournal";
 import { lireFrise, lireEntretiens } from "@/features/admin-job-applications/timeline";
+import { lireAccuseReception } from "@/features/admin-job-applications/accuse-reception";
 import { Entretiens } from "./Entretiens";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
 import { formatDateFrShort } from "@/lib/format-date-fr";
@@ -64,9 +65,12 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
   // sa lecture réapplique le prédicat d'ouverture du dossier plutôt que de se
   // fier à la garde de la page. Deux étages qui ne peuvent pas diverger.
   const acteur = { role: (session.user as { role?: string }).role };
-  const [frise, entretiens] = await Promise.all([
+  const [frise, entretiens, accuse] = await Promise.all([
     lireFrise(a.id, acteur),
     lireEntretiens(a.id, acteur),
+    // L'accusé de réception automatique : parti, en échec, ou introuvable.
+    // Même prédicat que la frise — il lit l'adresse du candidat.
+    lireAccuseReception({ id: a.id, email: a.email, submittedAt: a.submittedAt }, acteur),
   ]);
   const qLabels: Record<string, string> = {};
   if (offer && Array.isArray(offer.screeningQuestions)) {
@@ -200,7 +204,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           <ComposerReponse applicationId={a.id} prenom={a.firstName} poste={a.offerTitleSnap} />
           <ConsignerAuJournal applicationId={a.id} />
         </div>
-        <FriseCandidature entrees={frise} />
+        <FriseCandidature entrees={frise} accuse={accuse} />
       </AdminCard>
 
       <AdminCard>
