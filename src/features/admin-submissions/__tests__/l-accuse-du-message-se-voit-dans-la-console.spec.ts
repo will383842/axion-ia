@@ -7,8 +7,9 @@ import { readFileSync } from "node:fs";
  * ═══ LE DÉFAUT, RELEVÉ PAR WILL EN PRODUCTION LE 2026-09-18 ═══
  *
  * L'écran « Messages » affichait « SANS RÉPONSE » sur les 18 lignes, et rien
- * d'autre. Mesuré le même jour sur toute la boîte : 196 accusés automatiques
- * partis sur 201 vérifiables — aucun ne se lisait dans la console.
+ * d'autre. Mesuré le même jour sur toute la boîte (211 éléments) : 196 accusés
+ * automatiques partis, 6 absents, 5 absences voulues, 4 invérifiables (antérieurs
+ * au journal) — aucun ne se lisait dans la console.
  *
  * ═══ CE QUE CE FICHIER VERROUILLE ═══
  *
@@ -30,15 +31,12 @@ vi.mock("@/lib/prisma", () => ({
 }));
 
 import {
-  avecAbsenceVoulue,
   lireAccusesMessages,
   type AccuseMessage,
   type MessagePourAccuse,
 } from "../accuse-reception";
-import {
-  attribuerAccuses as attribuerNoyau,
-  type LigneAvecDestinataire,
-} from "@/server/email/accuse-noyau";
+import type { LigneAvecDestinataire } from "@/server/email/accuse-noyau";
+import { PII_DECRYPT_PLACEHOLDER } from "@/lib/pii-crypto";
 import { GABARITS_ACCUSE_MESSAGE } from "@/lib/contact/accuse-attendu";
 
 const DEPOT = new Date("2026-09-16T06:16:00Z");
@@ -47,22 +45,18 @@ function message(p: Partial<MessagePourAccuse> & { id: string }): MessagePourAcc
   return { contactEmail: "alice@exemple.fr", submittedAt: DEPOT, origine: null, ...p };
 }
 
-/** Le même chemin que la page : rattachement du noyau, puis absence voulue. */
-function attribuerAccuses(
+/**
+ * Passe par la VRAIE `lireAccusesMessages` — celle de la page — avec un journal
+ * simulé. Aucune recomposition dans le test : une copie de la composition
+ * resterait verte si la page cessait de transmettre l'origine du dépôt.
+ */
+async function attribuerAccuses(
   messages: ReadonlyArray<MessagePourAccuse>,
   lignes: ReadonlyArray<LigneAvecDestinataire>,
-): Map<string, AccuseMessage> {
-  const bruts = attribuerNoyau(
-    "Submission",
-    messages.map((m) => ({ id: m.id, email: m.contactEmail, submittedAt: m.submittedAt })),
-    lignes,
-  );
-  const r = new Map<string, AccuseMessage>();
-  for (const m of messages) {
-    const a = bruts.get(m.id);
-    if (a) r.set(m.id, avecAbsenceVoulue(a, m.origine));
-  }
-  return r;
+): Promise<Map<string, AccuseMessage>> {
+  findManyMock.mockReset();
+  findManyMock.mockResolvedValue(lignes);
+  return lireAccusesMessages(messages);
 }
 
 function ligne(p: Partial<LigneAvecDestinataire> & { id: string }): LigneAvecDestinataire {
@@ -84,9 +78,9 @@ function ligne(p: Partial<LigneAvecDestinataire> & { id: string }): LigneAvecDes
   };
 }
 
-describe("attribuerAccuses — chaque message reçoit SON accusé", () => {
-  it("le lien exact prime, même si un autre envoi est plus proche de l'heure", () => {
-    const r = attribuerAccuses(
+describe("lireAccusesMessages — chaque message reçoit SON accusé", () => {
+  it("le lien exact prime, même si un autre envoi est plus proche de l'heure", async () => {
+    const r = await attribuerAccuses(
       [message({ id: "m1" })],
       [
         ligne({ id: "proche", createdAt: new Date(DEPOT.getTime() + 1_000) }),
@@ -102,25 +96,25 @@ describe("attribuerAccuses — chaque message reçoit SON accusé", () => {
     expect(r.get("m1")).toMatchObject({ etat: "envoye", rattachement: "exact" });
   });
 
-  it("sans lien, rattache par adresse et heure — la casse de l'adresse n'y fait rien", () => {
-    const r = attribuerAccuses(
+  it("sans lien, rattache par adresse et heure — la casse de l'adresse n'y fait rien", async () => {
+    const r = await attribuerAccuses(
       [message({ id: "m1", contactEmail: "Alice@Exemple.FR " })],
       [ligne({ id: "a" })],
     );
     expect(r.get("m1")).toMatchObject({ etat: "envoye", rattachement: "adresse_et_date" });
   });
 
-  it("n'attribue JAMAIS l'accusé d'une autre personne envoyé la même minute", () => {
-    const r = attribuerAccuses(
+  it("n'attribue JAMAIS l'accusé d'une autre personne envoyé la même minute", async () => {
+    const r = await attribuerAccuses(
       [message({ id: "m1" })],
       [ligne({ id: "autre", recipient: "bob@exemple.fr" })],
     );
     expect(r.get("m1")).toMatchObject({ etat: "absent", absenceVoulue: null });
   });
 
-  it("même personne, deux messages à deux minutes : chacun garde le sien", () => {
+  it("même personne, deux messages à deux minutes : chacun garde le sien", async () => {
     const deux = new Date(DEPOT.getTime() + 120_000);
-    const r = attribuerAccuses(
+    const r = await attribuerAccuses(
       [message({ id: "m1" }), message({ id: "m2", submittedAt: deux })],
       [
         ligne({ id: "l1", entityType: "Submission", entityId: "m1" }),
@@ -142,8 +136,8 @@ describe("attribuerAccuses — chaque message reçoit SON accusé", () => {
     });
   });
 
-  it("lit la NATURE du rebond : un rebond temporaire n'est pas un rebond définitif", () => {
-    const r = attribuerAccuses(
+  it("lit la NATURE du rebond : un rebond temporaire n'est pas un rebond définitif", async () => {
+    const r = await attribuerAccuses(
       [message({ id: "m1" }), message({ id: "m2", contactEmail: "bob@exemple.fr" })],
       [
         ligne({ id: "s", status: "bounced", bounceType: "soft", bounceReason: "Mailbox full" }),
@@ -154,16 +148,16 @@ describe("attribuerAccuses — chaque message reçoit SON accusé", () => {
     expect(r.get("m2")).toMatchObject({ etat: "rebond", rebond: "hard" });
   });
 
-  it("un envoi hors de la fenêtre (le lendemain) n'est pas l'accusé de ce message", () => {
-    const r = attribuerAccuses(
+  it("un envoi hors de la fenêtre (le lendemain) n'est pas l'accusé de ce message", async () => {
+    const r = await attribuerAccuses(
       [message({ id: "m1" })],
       [ligne({ id: "tard", createdAt: new Date(DEPOT.getTime() + 24 * 3_600_000) })],
     );
     expect(r.get("m1")?.etat).toBe("absent");
   });
 
-  it("l'absence VOULUE se dit comme telle ; l'absence ordinaire, jamais", () => {
-    const r = attribuerAccuses(
+  it("l'absence VOULUE se dit comme telle ; l'absence ordinaire, jamais", async () => {
+    const r = await attribuerAccuses(
       [
         message({ id: "capture", origine: "ecran-1-du-dossier" }),
         message({ id: "ordinaire", contactEmail: "carole@exemple.fr" }),
@@ -174,8 +168,8 @@ describe("attribuerAccuses — chaque message reçoit SON accusé", () => {
     expect(r.get("ordinaire")).toMatchObject({ etat: "absent", absenceVoulue: null });
   });
 
-  it("un accusé PARTI n'est jamais présenté comme une absence voulue", () => {
-    const r = attribuerAccuses(
+  it("un accusé PARTI n'est jamais présenté comme une absence voulue", async () => {
+    const r = await attribuerAccuses(
       [message({ id: "m1", origine: "ecran-1-du-dossier" })],
       [ligne({ id: "a" })],
     );
@@ -207,6 +201,20 @@ describe("lireAccusesMessages — une requête par page, jamais une par ligne", 
     const r = await lireAccusesMessages([]);
     expect(findManyMock).not.toHaveBeenCalled();
     expect(r.size).toBe(0);
+  });
+
+  it("clé de déchiffrement absente : le libellé de remplacement n'est jamais cherché comme adresse", async () => {
+    findManyMock.mockResolvedValue([]);
+    await lireAccusesMessages([message({ id: "m1", contactEmail: PII_DECRYPT_PLACEHOLDER })]);
+    const where = (findManyMock.mock.calls[0]?.[0] as { where: { OR: unknown[] } }).where;
+    expect(where.OR).toHaveLength(1);
+  });
+
+  it("le plafond garde les envois les PLUS RÉCENTS", async () => {
+    findManyMock.mockResolvedValue([]);
+    await lireAccusesMessages([message({ id: "m1" })]);
+    const arg = findManyMock.mock.calls[0]?.[0] as { orderBy: unknown };
+    expect(arg.orderBy).toEqual({ createdAt: "desc" });
   });
 
   it("une adresse illisible (déchiffrement raté) ne cherche que le lien exact", async () => {
@@ -266,6 +274,15 @@ describe("une seule table des accusés, lue par les formulaires ET par la consol
       "src/app/[locale]/(admin)/[adminPrefix]/submissions/_v2/SubmissionDetailContent.tsx",
     );
     expect(fiche).toContain("<BlocAccuse accuse={accuse} />");
+  });
+
+  it("la liste et la fiche ne tombent pas si le journal des e-mails ne répond pas", () => {
+    for (const f of [
+      "src/app/[locale]/(admin)/[adminPrefix]/submissions/_v2/SubmissionsV2.tsx",
+      "src/app/[locale]/(admin)/[adminPrefix]/submissions/_v2/SubmissionDetailContent.tsx",
+    ]) {
+      expect(lire(f), f).toMatch(/try \{\s+accuses? = await lireAccuses?Messages?\(/);
+    }
   });
 
   it("la fiche d'une candidature et celle d'un message partagent le MÊME rendu", () => {

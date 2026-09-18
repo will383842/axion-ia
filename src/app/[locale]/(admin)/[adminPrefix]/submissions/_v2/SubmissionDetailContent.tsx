@@ -9,6 +9,7 @@
 // `submissions → contacts/messages` (Chantier 2).
 
 import { notFound, redirect } from "next/navigation";
+import * as Sentry from "@sentry/nextjs";
 import { auth } from "@/auth";
 import { getSubmissionDetailAction } from "@/features/admin-submissions/actions";
 import { findClientByEmail } from "@/server/qualiopi/crm/entrees";
@@ -110,12 +111,19 @@ export async function SubmissionDetailContent({
   // L'accusé de réception automatique (2026-09-18) — lu avec la même règle que
   // la liste. Ce n'est pas une réponse : il s'affiche à côté de l'historique.
   const origine = details && typeof details.origine === "string" ? details.origine : null;
-  const accuse = await lireAccuseMessage({
-    id: submission.id,
-    contactEmail: submission.contactEmail,
-    submittedAt: submission.submittedAt,
-    origine,
-  });
+  // Information ACCESSOIRE : si le journal ne répond pas, la fiche s'affiche
+  // sans le bloc — elle ne tombe jamais pour ça.
+  let accuse: Awaited<ReturnType<typeof lireAccuseMessage>> = null;
+  try {
+    accuse = await lireAccuseMessage({
+      id: submission.id,
+      contactEmail: submission.contactEmail,
+      submittedAt: submission.submittedAt,
+      origine,
+    });
+  } catch (err) {
+    Sentry.captureException(err, { tags: { ecran: "fiche-message", etape: "accuse" } });
+  }
 
   const titreSociete =
     submission.companyName && submission.companyName !== "—"

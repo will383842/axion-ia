@@ -7,8 +7,9 @@ import "server-only";
  *
  * L'écran « Messages » affichait « SANS RÉPONSE » sur chaque ligne, et rien
  * d'autre : impossible de savoir si la personne avait au moins reçu l'accusé
- * automatique. Mesuré ce jour-là sur toute la boîte de réception : 196 accusés
- * partis sur 201 vérifiables — aucun ne se lisait dans la console.
+ * automatique. Mesuré ce jour-là sur toute la boîte de réception (211 éléments) :
+ * 196 accusés partis, 6 absents, 5 absences voulues, 4 invérifiables
+ * (antérieurs au journal) — aucun ne se lisait dans la console.
  *
  * Couvre TOUS les messages, candidatures commerciales comprises (dossier
  * complet, premier contact apporteur) : ce sont des `Submission`, listées et
@@ -38,7 +39,10 @@ import type { AccuseReception } from "@/server/email/accuse-noyau";
 
 export interface MessagePourAccuse {
   readonly id: string;
-  /** Adresse DÉCHIFFRÉE, telle qu'affichée. Vide si le déchiffrement a échoué. */
+  /**
+   * Adresse DÉCHIFFRÉE, telle qu'affichée. Si elle est illisible (libellé de
+   * remplacement quand la clé manque), seul le lien exact est cherché.
+   */
   readonly contactEmail: string;
   readonly submittedAt: Date;
   /** `details.origine` — dit si l'absence d'accusé est voulue. */

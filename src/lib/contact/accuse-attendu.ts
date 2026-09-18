@@ -33,6 +33,11 @@ export const GABARITS_ACCUSE_MESSAGE = [
 /** `EmailLog.entityType` posé à l'enfilage d'un accusé de message. */
 export const ENTITE_MESSAGE = "Submission";
 
+/** `details.origine` d'un contact apporteur capturé à l'écran 1 du dossier. */
+export const ORIGINE_ECRAN_1_DOSSIER = "ecran-1-du-dossier";
+/** `details.origine` d'un contact apporteur saisi à la main dans la console. */
+export const ORIGINE_SAISIE_MANUELLE = "saisie-manuelle";
+
 /**
  * Les dépôts qui, VOLONTAIREMENT, ne reçoivent aucun accusé — et pourquoi.
  * La console l'écrit tel quel au lieu d'un « aucun accusé » qui aurait l'air
@@ -43,11 +48,11 @@ export function absenceVoulue(details: { origine?: string | null }): string | nu
     // `capture-actions.ts` : écrire « c'est noté » au milieu du dossier dirait à
     // la personne qu'elle peut s'arrêter. L'accusé part à la soumission
     // complète ; seuls les rappels J+2 / J+7 partent avant.
-    case "ecran-1-du-dossier":
+    case ORIGINE_ECRAN_1_DOSSIER:
       return "Aucun accusé, et c’est voulu : contact enregistré à l’écran 1 du dossier, l’accusé part quand le dossier complet arrive.";
     // `saisie-manuelle-actions.ts` : la ligne est saisie dans la console, pas
     // déposée par la personne.
-    case "saisie-manuelle":
+    case ORIGINE_SAISIE_MANUELLE:
       return "Aucun accusé, et c’est voulu : contact saisi à la main dans la console.";
     default:
       return null;

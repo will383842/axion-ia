@@ -14,6 +14,7 @@ import "server-only";
  */
 
 import { prisma } from "@/lib/prisma";
+import { isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import {
   FENETRE_APRES_MS,
   MARGE_AVANT_MS,
@@ -39,10 +40,15 @@ export async function lireAccuses(
 ): Promise<Map<string, AccuseReception>> {
   if (entites.length === 0) return new Map();
 
-  // Une adresse vide (déchiffrement raté) ne cherche QUE le lien exact : un
-  // filtre sur une chaîne vide ne trouverait rien, mais il ne doit pas non
-  // plus avoir l'air d'avoir cherché.
-  const adresses = [...new Set(entites.map((e) => e.email.trim()).filter((a) => a.length > 0))];
+  // Une adresse illisible ne cherche QUE le lien exact. `decryptPii` ne rend
+  // pas une chaîne vide quand la clé manque : il rend un LIBELLÉ DE
+  // REMPLACEMENT (`PII_DECRYPT_PLACEHOLDER`). Le chercher comme destinataire ne
+  // trouverait rien, mais aurait l'air d'avoir cherché — on le traite comme vide.
+  const lisibles = entites.map((e) => ({
+    ...e,
+    email: isDecryptedEmailUsable(e.email) ? e.email.trim() : "",
+  }));
+  const adresses = [...new Set(lisibles.map((e) => e.email).filter((a) => a.length > 0))];
   const instants = entites.map((e) => e.submittedAt.getTime());
 
   const lignes = await prisma.emailLog.findMany({
@@ -63,10 +69,12 @@ export async function lireAccuses(
           : []),
       ],
     },
-    orderBy: { createdAt: "asc" },
+    // Du plus RÉCENT au plus ancien : si le plafond coupe, ce sont les envois
+    // les plus anciens qui tombent, jamais l'accusé du message déposé ce matin.
+    orderBy: { createdAt: "desc" },
     take: PLAFOND_LIGNES,
     select: SELECT_LIGNE_ACCUSE,
   });
 
-  return attribuerAccuses(cible.entityType, entites, lignes);
+  return attribuerAccuses(cible.entityType, lisibles, lignes);
 }

@@ -78,7 +78,11 @@ export interface AccuseRetenu {
 /** L'entité dont on cherche l'accusé. */
 export interface EntiteAccusee {
   readonly id: string;
-  /** Adresse DÉCHIFFRÉE, telle qu'affichée. Vide si le déchiffrement a échoué. */
+  /**
+   * Adresse DÉCHIFFRÉE, telle qu'affichée. Quand elle est illisible (clé
+   * absente : `decryptPii` rend alors un libellé de remplacement), la lecture
+   * (`accuse-lecture.ts`) la remplace par une chaîne vide avant d'arriver ici.
+   */
   readonly email: string;
   readonly submittedAt: Date;
 }

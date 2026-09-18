@@ -38,6 +38,7 @@
 
 "use server";
 
+import { ORIGINE_ECRAN_1_DOSSIER } from "@/lib/contact/accuse-attendu";
 import { headers, cookies } from "next/headers";
 import * as Sentry from "@sentry/nextjs";
 
@@ -139,7 +140,7 @@ export async function capturerContactDossierAction(
           // premier contact venu du mini formulaire. Sans lui, on ne saurait pas
           // dire combien de gens s'arrêtent dans le dossier — c'est-à-dire
           // précisément le chiffre pour lequel cette capture existe.
-          origine: "ecran-1-du-dossier",
+          origine: ORIGINE_ECRAN_1_DOSSIER,
           nom: d.nom,
           ...(Object.keys(utm).length > 0 ? { funnel: { utm } as unknown as object } : {}),
           ...(d.sourceConnaissance ? { sourceConnaissance: d.sourceConnaissance } : {}),
