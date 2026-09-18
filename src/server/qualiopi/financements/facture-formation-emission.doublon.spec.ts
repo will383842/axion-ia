@@ -292,3 +292,18 @@ describe("🔴 le MÊME verrou consultatif pour le bouton et l'automate", () => 
     expect(d.create).not.toHaveBeenCalled();
   });
 });
+
+describe("🔴 #1112 — la facture ne se rattache jamais à un dossier CLOS", () => {
+  // Depuis que le retour opco → direct referme le dossier `a_monter`, un
+  // aller-retour opco → direct → opco laisse DEUX dossiers : le clos (le plus
+  // ancien) et l'actif. Lire « le plus ancien » sans exclure `clos` rattachait
+  // les créances facturées au dossier fermé, et l'actif ne voyait jamais sa facture.
+  it("la lecture du dossier exclut les dossiers clos", async () => {
+    const { prisma } = await import("@/lib/prisma");
+    await generer();
+    const arg = vi.mocked(prisma.trainingSession.findUnique).mock.calls[0]?.[0] as {
+      select: { dossiersFinancement: { where?: unknown } };
+    };
+    expect(arg.select.dossiersFinancement.where).toEqual({ statut: { not: "clos" } });
+  });
+});

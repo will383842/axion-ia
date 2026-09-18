@@ -453,33 +453,87 @@ export async function creerDossierDepuisSession(sessionId: string): Promise<{ id
 }
 
 /**
- * Le RETOUR de l'ouverture automatique : referme les dossiers `a_monter` d'une
+ * Un dossier `a_monter` n'est un classeur VIDE que s'il n'a jamais été déposé.
+ *
+ * 🔴 #1112, revue 5250421969 : `envoye → a_monter` est une transition permise
+ * (le financeur renvoie pour complément) et ne remet AUCUN horodatage à zéro. Un
+ * `a_monter` qui porte `envoyeAt` est une demande en cours chez un financeur :
+ * la refermer d'office supprimait, côté console, une instruction réelle — par un
+ * `editor` qui n'a même pas l'habilitation de la clore à la main.
+ *
+ * Se lit sur TOUS les horodatages d'engagement de `STATUT_TIMESTAMP` (sauf
+ * `closAt`, un dossier clos n'arrive jamais ici) : si l'un est posé, le dossier
+ * a quitté le classeur vide, quel que soit son statut actuel.
+ */
+export function dossierJamaisDepose(d: {
+  statut: DossierFinancementStatut;
+  envoyeAt: Date | null;
+  accordAt: Date | null;
+  refuseAt: Date | null;
+  paiementRecuAt: Date | null;
+}): boolean {
+  return (
+    d.statut === "a_monter" &&
+    d.envoyeAt === null &&
+    d.accordAt === null &&
+    d.refuseAt === null &&
+    d.paiementRecuAt === null
+  );
+}
+
+/** Libellés des statuts de dossier, pour les messages rendus à l'humain. */
+export const DOSSIER_STATUT_LIBELLES: Record<DossierFinancementStatut, string> = {
+  a_monter: "À monter",
+  envoye: "Envoyé",
+  accord_recu: "Accord reçu",
+  refuse: "Refusé",
+  facture: "Facturé",
+  paiement_recu: "Paiement reçu",
+  clos: "Clos",
+};
+
+/**
+ * Le RETOUR de l'ouverture automatique : referme les dossiers JAMAIS DÉPOSÉS d'une
  * session qui n'a plus de financeur à suivre (cf. `financementRefermeLesDossiers`).
  *
- * - `a_monter` → `clos` par la machine à états (verrou optimiste compris) : un
- *   classeur vide se referme comme il s'est ouvert, sans humain. Jamais supprimé.
- * - Tout dossier au-delà (`envoye`, `accord_recu`, `refuse`, `facture`,
- *   `paiement_recu`) engage l'organisme auprès d'un financeur : il n'est JAMAIS
- *   touché ici. Il est rendu à l'appelant, qui doit le dire en clair.
- * - `clos` : déjà fermé, ignoré.
+ * - `a_monter` jamais déposé (`dossierJamaisDepose`) → `clos` par la machine à
+ *   états (verrou optimiste compris) : un classeur vide se referme comme il s'est
+ *   ouvert, sans humain. Jamais supprimé. `onClos` est appelé APRÈS CHAQUE
+ *   fermeture — le journal suit la base, pas la boucle : si le suivant lève, ce
+ *   qui est déjà clos reste tracé.
+ * - Tout autre dossier ouvert — y compris un `a_monter` déjà déposé puis renvoyé —
+ *   engage l'organisme auprès d'un financeur : il n'est JAMAIS touché ici. Il est
+ *   rendu à l'appelant, qui doit le dire en clair.
+ * - `clos` : exclu de la lecture.
  */
-export async function refermerDossiersAMonter(sessionId: string): Promise<{
+export async function refermerDossiersAMonter(
+  sessionId: string,
+  onClos: (dossierId: string) => Promise<void>,
+): Promise<{
   clos: string[];
-  engages: Array<{ id: string; statut: DossierFinancementStatut }>;
+  engages: Array<{ id: string; statut: DossierFinancementStatut; depose: boolean }>;
 }> {
   const dossiers = await prisma.dossierFinancement.findMany({
     where: { trainingSessionId: sessionId, statut: { not: "clos" } },
-    select: { id: true, statut: true },
+    select: {
+      id: true,
+      statut: true,
+      envoyeAt: true,
+      accordAt: true,
+      refuseAt: true,
+      paiementRecuAt: true,
+    },
   });
 
   const clos: string[] = [];
-  const engages: Array<{ id: string; statut: DossierFinancementStatut }> = [];
+  const engages: Array<{ id: string; statut: DossierFinancementStatut; depose: boolean }> = [];
   for (const d of dossiers) {
-    if (d.statut === "a_monter") {
+    if (dossierJamaisDepose(d)) {
       await transitionnerDossier({ dossierId: d.id, vers: "clos" });
       clos.push(d.id);
+      await onClos(d.id);
     } else {
-      engages.push({ id: d.id, statut: d.statut });
+      engages.push({ id: d.id, statut: d.statut, depose: d.statut === "a_monter" });
     }
   }
   return { clos, engages };

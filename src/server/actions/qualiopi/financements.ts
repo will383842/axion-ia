@@ -40,6 +40,7 @@ import {
 } from "@/server/qualiopi/financements/facture-formation-emission";
 import {
   creerDossierDepuisSession,
+  DOSSIER_STATUT_LIBELLES,
   refermerDossiersAMonter,
 } from "@/server/qualiopi/financements/dossier-financement";
 import {
@@ -306,29 +307,39 @@ export async function setFinancementSessionAction(input: {
   // identifier » sur une action facturée en direct. L'aller était automatique,
   // le retour n'existait pas — le résidu était définitif.
   //
-  // Même limite que l'ouverture : seuls les dossiers `a_monter` (classeurs vides)
-  // se referment, à `clos`, jamais supprimés. Un dossier déjà déposé chez un
-  // financeur engage l'organisme : il n'est pas touché, et on le DIT.
+  // Même limite que l'ouverture : seuls les dossiers JAMAIS DÉPOSÉS (classeurs
+  // vides) se referment, à `clos`, jamais supprimés. Tout dossier déjà déposé
+  // chez un financeur — y compris un `a_monter` renvoyé pour complément (#1112,
+  // revue 5250421969) — engage l'organisme : il n'est pas touché, et on le DIT.
   // Fail-soft, comme l'ouverture : le financement saisi ne se perd jamais.
   let avertissement: string | undefined;
   if (financementRefermeLesDossiers(fields.financementType)) {
     try {
-      const { clos, engages } = await refermerDossiersAMonter(sessionId);
-      for (const dossierId of clos) {
-        await logQualiopiActivity({
+      // Journalisé dossier par dossier, APRÈS chaque fermeture : si le suivant
+      // lève, ce qui est déjà clos en base reste tracé au journal.
+      const { engages } = await refermerDossiersAMonter(sessionId, (dossierId) =>
+        logQualiopiActivity({
           action: "qualiopi.dossier_financement.clos_auto",
           targetType: "DossierFinancement",
           targetId: dossierId,
           changes: { sessionId, financementType: fields.financementType, statut: "clos" },
           session,
-        });
-      }
+        }),
+      );
       if (engages.length > 0) {
+        const un = engages.length === 1;
+        const etats = engages
+          .map((d) =>
+            d.depose
+              ? `${DOSSIER_STATUT_LIBELLES[d.statut]}, déjà déposé chez le financeur`
+              : DOSSIER_STATUT_LIBELLES[d.statut],
+          )
+          .join(" ; ");
         avertissement =
-          `${engages.length === 1 ? "Un dossier de financement déjà engagé" : `${engages.length} dossiers de financement déjà engagés`} ` +
-          `(${engages.map((d) => d.statut).join(", ")}) ${engages.length === 1 ? "reste" : "restent"} ouvert${engages.length === 1 ? "" : "s"} : ` +
-          "une demande envoyée à un financeur ne se referme pas depuis ce formulaire. " +
-          "À clore à la main dans Facturation (Hub) une fois le financeur informé.";
+          `${un ? "Un dossier de financement déjà engagé" : `${engages.length} dossiers de financement déjà engagés`} ` +
+          `(${etats}) ${un ? "reste ouvert" : "restent ouverts"} : ` +
+          "une demande déposée chez un financeur ne se referme pas depuis ce formulaire. " +
+          "Sa clôture est un acte habilité, à faire dans Facturation (Hub) une fois le financeur informé.";
       }
     } catch (err) {
       console.error("[financements] fermeture auto du dossier impossible", {

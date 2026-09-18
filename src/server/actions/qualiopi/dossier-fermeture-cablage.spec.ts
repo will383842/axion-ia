@@ -82,8 +82,17 @@ import { setFinancementSessionAction } from "@/server/actions/qualiopi/financeme
 const SESSION_ID = "44444444-4444-4444-8444-444444444444";
 
 /** Les dossiers de la session, tels que la base les rend. */
-function dossiersEnBase(dossiers: Array<{ id: string; statut: string }>) {
-  mockDossierFindMany.mockResolvedValue(dossiers);
+function dossiersEnBase(dossiers: Array<{ id: string; statut: string } & Record<string, unknown>>) {
+  // Comme Prisma : un horodatage jamais posé vaut `null`. Un champ ABSENT n'est
+  // pas « jamais déposé » — la fermeture échoue fermée (dossier traité engagé).
+  const lus = dossiers.map((d) => ({
+    envoyeAt: null,
+    accordAt: null,
+    refuseAt: null,
+    paiementRecuAt: null,
+    ...d,
+  }));
+  mockDossierFindMany.mockResolvedValue(lus);
   mockDossierFindUniqueOrThrow.mockImplementation(({ where }: { where: { id: string } }) =>
     Promise.resolve({ statut: dossiers.find((d) => d.id === where.id)?.statut }),
   );
@@ -328,5 +337,105 @@ describe("🔴 un dossier CLOS ne bloque pas la réouverture du suivi", () => {
       where?.["statut"],
       "la recherche d'un dossier existant compte les dossiers CLOS : le suivi ne se rouvrira jamais",
     ).toEqual({ not: "clos" });
+  });
+});
+
+describe("🔴 B1/B2 (#1112) — un dossier ENGAGÉ n'est JAMAIS clos, quel que soit son statut", () => {
+  // La machine à états PERMET `→ clos` depuis accord_recu, refuse, facture et
+  // paiement_recu (`DOSSIER_TRANSITIONS`). Le seul témoin d'origine portait sur
+  // `envoye`, le seul état qu'elle interdit déjà de clore : il ne gardait rien.
+  // Chacun de ces témoins doit rougir si la fermeture se fie à la machine à
+  // états (« tout ce qui peut aller à clos ») au lieu de l'historique de dépôt.
+  it.each(["envoye", "accord_recu", "refuse", "facture", "paiement_recu"])(
+    "`%s` : pas clos, et l'action le dit",
+    async (statut) => {
+      mockSessionFindUnique.mockResolvedValue({ financementType: "opco" });
+      dossiersEnBase([{ id: "d-engage", statut }]);
+
+      const r = await setFinancementSessionAction({
+        sessionId: SESSION_ID,
+        financementType: "direct",
+      });
+
+      expect(dossiersClos(), `un dossier \`${statut}\` a été clos par un menu`).toEqual([]);
+      expect("data" in r && r.data.avertissement, "aucun avertissement").toBeTruthy();
+    },
+  );
+
+  it.each(["envoyeAt", "accordAt", "refuseAt", "paiementRecuAt"])(
+    "🔴 `a_monter` qui porte `%s` (déposé puis renvoyé) : ENGAGÉ, pas clos",
+    async (champ) => {
+      // `envoye → a_monter` est permis et ne remet aucun horodatage à zéro : un
+      // `a_monter` n'est un classeur vide que s'il n'a JAMAIS été déposé. Panne
+      // de la revue 5250421969 : un éditeur sans `deposer_demande_financeur`
+      // clôturait, sans avertissement, une demande en cours chez l'OPCO.
+      mockSessionFindUnique.mockResolvedValue({ financementType: "opco" });
+      dossiersEnBase([
+        { id: "d-depose-puis-renvoye", statut: "a_monter", [champ]: new Date("2026-09-01") },
+      ]);
+
+      const r = await setFinancementSessionAction({
+        sessionId: SESSION_ID,
+        financementType: "direct",
+      });
+
+      expect(dossiersClos(), "un dossier déjà déposé a été clos comme un classeur vide").toEqual(
+        [],
+      );
+      expect("data" in r && r.data.avertissement, "aucun avertissement").toMatch(/déposé/i);
+    },
+  );
+
+  it("l'avertissement parle français, pas en codes machine", async () => {
+    mockSessionFindUnique.mockResolvedValue({ financementType: "opco" });
+    dossiersEnBase([{ id: "d-accord", statut: "accord_recu" }]);
+
+    const r = await setFinancementSessionAction({
+      sessionId: SESSION_ID,
+      financementType: "direct",
+    });
+
+    const texte = "data" in r ? (r.data.avertissement ?? "") : "";
+    expect(texte).toContain("Accord reçu");
+    expect(texte).not.toContain("accord_recu");
+  });
+});
+
+describe("la fermeture ne relit que ce qui est encore ouvert", () => {
+  it("la recherche des dossiers à refermer exclut les dossiers `clos`", async () => {
+    mockSessionFindUnique.mockResolvedValue({ financementType: "opco" });
+
+    await setFinancementSessionAction({ sessionId: SESSION_ID, financementType: "direct" });
+
+    const where = mockDossierFindMany.mock.calls[0]?.[0]?.where as Record<string, unknown>;
+    expect(where?.["trainingSessionId"]).toBe(SESSION_ID);
+    expect(where?.["statut"], "les dossiers clos sont relus, et comptés comme engagés").toEqual({
+      not: "clos",
+    });
+  });
+});
+
+describe("🔴 la journalisation suit chaque fermeture, pas la boucle", () => {
+  it("un échec sur le 2ᵉ dossier n'efface pas la trace du 1ᵉʳ, déjà clos", async () => {
+    mockSessionFindUnique.mockResolvedValue({ financementType: "opco" });
+    dossiersEnBase([
+      { id: "d-1", statut: "a_monter" },
+      { id: "d-2", statut: "a_monter" },
+    ]);
+    // Verrou optimiste perdu sur le second : `transitionnerDossier` lève.
+    mockDossierUpdateMany.mockResolvedValueOnce({ count: 1 }).mockResolvedValueOnce({ count: 0 });
+
+    const r = await setFinancementSessionAction({
+      sessionId: SESSION_ID,
+      financementType: "direct",
+    });
+
+    expect("data" in r).toBe(true);
+    expect(mockLog, "le dossier d-1 est clos en base mais absent du journal").toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "qualiopi.dossier_financement.clos_auto",
+        targetId: "d-1",
+      }),
+    );
   });
 });

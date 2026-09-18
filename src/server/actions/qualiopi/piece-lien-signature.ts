@@ -195,7 +195,9 @@ async function resoudreIdentite(
     // 🔴 Le contact vit sur le DOSSIER, pas sur l'OPCO — voir l'en-tête. On prend
     // le dossier le plus récent de la session : c'est celui en cours d'instruction.
     const dossier = await prisma.dossierFinancement.findFirst({
-      where: { trainingSessionId: piece.sessionId },
+      // 🔴 #1112 — jamais un dossier `clos` : une session revenue en direct puis
+      // en OPCO porte un dossier refermé qui n'est plus celui en instruction.
+      where: { trainingSessionId: piece.sessionId, statut: { not: "clos" } },
       orderBy: { createdAt: "desc" },
       select: {
         financeurNom: true,
