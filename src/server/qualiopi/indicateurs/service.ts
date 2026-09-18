@@ -13,7 +13,6 @@ import { prisma } from "@/lib/prisma";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { redis } from "@/lib/redis";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
-import { QUALIOPI_CONFIG_REGISTRY } from "@/server/qualiopi/config/registry";
 import { buildMethodesCalcul, type MethodesCalcul } from "./methodes";
 import {
   computeTauxSatisfaction,
@@ -237,19 +236,19 @@ function buildEmptyResult(annee: number): IndicateursResult {
     tauxCompletion: vide,
     delaiAccesMoyen: { jours: 0, nb: 0, fiable: false },
     // 🔴 2026-09-17 — ces quatre champs valaient `""`. C'est ce résultat-là qui
-    // sort au build SSG sous `stub.invalid`, et `revalidate = 3600` le FIGE
-    // dans le HTML pré-rendu de `/fr/certification-qualiopi` : mesuré en
-    // production, zéro occurrence des quatre méthodes dans 1 411 588 octets.
-    // La méthode ne dépend d'AUCUNE donnée — seulement de l'année, du seuil de
-    // présence (défaut du registre quand la base ne répond pas) et de
-    // l'effectif, qui vaut honnêtement 0 ici. Elle est donc construite, pas
-    // vidée : une page « en cours de constitution » doit dire COMMENT le
-    // chiffre sera calculé quand il existera.
-    methodes: buildMethodesCalcul({
-      annee,
-      seuilPresencePct: QUALIOPI_CONFIG_REGISTRY["seuil_presence_pct"].default,
-      nbSatisfaction: 0,
-    }),
+    // sort au build SSG sous `stub.invalid`. Mesuré en production les 17 et
+    // 18/09 : `/fr/certification-qualiopi` est servie PRÉRENDUE
+    // (`x-nextjs-prerender: 1`, `x-nextjs-cache: HIT`) et ne contient aucune
+    // des quatre méthodes (1 411 588 octets). Une régénération ISR sous
+    // `revalidate = 3600` qui aurait remplacé ce HTML n'a pas été observée :
+    // c'est le texte du build que l'on sert. La méthode est donc construite,
+    // pas vidée.
+    //
+    // 🔴 2026-09-18 — mais SANS AUCUN CHIFFRE : ici la base ne répond pas,
+    // l'effectif et le seuil configuré sont INCONNUS, pas nuls. Passer `0` et
+    // le défaut du registre faisait imprimer « (0 évaluation …) » sur la page
+    // publique alors que la production en comptait une. `null` = inconnu.
+    methodes: buildMethodesCalcul({ annee, seuilPresencePct: null, nbSatisfaction: null }),
     calculeAt: new Date(),
   };
 }

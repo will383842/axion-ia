@@ -26,7 +26,10 @@ import { generateDocument } from "@/server/qualiopi/documents/documents-service"
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { ACOMPTE_DEFAUT_PERCENT } from "@/server/qualiopi/documents/acompte-defaut";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
-import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
+import {
+  normaliserLibelles,
+  normaliserObjectifsPedagogiques,
+} from "@/server/qualiopi/formations/objectifs";
 import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
 import { ecartEffectif, mentionStagiaires } from "@/server/qualiopi/documents/stagiaires-nommes";
 import {
@@ -1045,13 +1048,11 @@ export async function produireProgramme(
     `(seuil de réussite : ${seuil} %). ` +
     `Recueil de la satisfaction des participants à l'issue de l'action.`;
 
-  // Le Json n'est pas typé : on le normalise par le SSOT déjà utilisé pour les
-  // objectifs (`{ type, libelle }[]` en production, mais `string[]` et
-  // `{ description }[]` existent au catalogue et à la saisie manuelle). Une
-  // entrée illisible est écartée plutôt qu'imprimée en « [object Object] ».
-  const ressourcesPedagogiques = normaliserObjectifsPedagogiques(
-    session.formation.ressourcesPedagogiques,
-  );
+  // Le Json n'est pas typé : même normalisation que les objectifs
+  // (`{ type, libelle }[]` en production, mais `string[]` et `{ description }[]`
+  // existent au catalogue et à la saisie manuelle). Une entrée illisible est
+  // écartée plutôt qu'imprimée en « [object Object] ».
+  const ressourcesPedagogiques = normaliserLibelles(session.formation.ressourcesPedagogiques);
 
   const doc = await generateDocument({
     type: "programme",

@@ -74,6 +74,14 @@ export function normaliserObjectifsPedagogiques(valeur: unknown): string[] {
 }
 
 /**
+ * Même normalisation, sous un nom qui ne ment pas quand la liste n'est PAS une
+ * liste d'objectifs : les ressources pédagogiques (`Formation.ressourcesPedagogiques`)
+ * ont exactement la même forme Json (`{ type, libelle }[]`, `string[]`,
+ * `{ description }[]`). Un alias, pas une copie : une seule règle.
+ */
+export const normaliserLibelles: (valeur: unknown) => string[] = normaliserObjectifsPedagogiques;
+
+/**
  * Même normalisation, rendue en une seule ligne — pour les champs de document
  * qui attendent un `string` (« Objectifs : … » sur l'attestation).
  *

@@ -52,7 +52,6 @@ const PAGE = readFileSync(
 
 describe("la fiche formation « base de données » est du code mort — et le dit", () => {
   it("les 22 slugs de production résolvent tous au catalogue statique", () => {
-    expect(SLUGS_PRODUCTION).toHaveLength(22);
     const vivants = SLUGS_PRODUCTION.filter((s) => getFormationV2(s)?.slugFr !== s);
     expect(
       vivants,
@@ -61,11 +60,25 @@ describe("la fiche formation « base de données » est du code mort — et le d
     ).toEqual([]);
   });
 
-  it("la page cherche bien le catalogue AVANT la base", () => {
-    const iCatalogue = PAGE.indexOf("getFormationV2(slug)");
-    const iBase = PAGE.indexOf("getPublicFormationBySlug(slug)");
-    expect(iCatalogue).toBeGreaterThan(-1);
-    expect(iBase).toBeGreaterThan(iCatalogue);
+  // 🔴 Relecture PR 1111 : les deux appels existent AUSSI dans `generateMetadata`,
+  // plus haut dans le fichier. Un `indexOf` sur tout le fichier lisait donc la
+  // mauvaise fonction et restait vert si le corps de la page interrogeait la
+  // base d'abord, ou perdait son court-circuit. On lit le CORPS de la page, et
+  // du code, pas le commentaire qui le cite.
+  it("le corps de la page court-circuite par le catalogue AVANT toute lecture en base", () => {
+    const debut = PAGE.indexOf("export default async function FormationSlugPage");
+    expect(debut, "FormationSlugPage introuvable : la garde ne lit plus rien").toBeGreaterThan(-1);
+    const corps = PAGE.slice(debut);
+
+    const courtCircuit =
+      /const cat = getFormationV2\(slug\);\s*if \(cat\) \{[\s\S]*?return <FormationDetailPage/.exec(
+        corps,
+      );
+    expect(courtCircuit, "le court-circuit par le catalogue a disparu du corps").not.toBeNull();
+
+    const iBase = corps.indexOf("await getPublicFormationBySlug(slug)");
+    expect(iBase, "la lecture en base a disparu du corps").toBeGreaterThan(-1);
+    expect(iBase, "le corps lit la base AVANT le catalogue").toBeGreaterThan(courtCircuit!.index);
   });
 
   it("aucun commentaire ne réaffirme que ce seuil est appliqué", () => {

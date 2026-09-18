@@ -134,7 +134,7 @@ describe("genererSupportAction", () => {
   // 🛑 2026-09-17 — ce test affirmait « accepte les 7 types », diaporamas
   // projetés compris : il verrouillait la voie individuelle que #851 avait
   // laissée ouverte. Les deux supports projetés sont désormais REFUSÉS
-  // (cf. `le-ppt-projete-nest-genere-par-aucune-voie.spec.ts`).
+  // (cf. `le-ppt-projete-nest-genere-par-aucune-voie-des-supports.spec.ts`).
   it("accepte les 5 types générables", async () => {
     const types = [
       "livret_stagiaire",

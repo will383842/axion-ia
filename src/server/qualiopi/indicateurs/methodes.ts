@@ -44,37 +44,52 @@ export interface ParametresMethodes {
   /** Année civile de l'échantillon. */
   annee: number;
   /**
-   * Seuil de présence « complète » (%). Vient de `seuil_presence_pct` quand la
-   * base répond ; du défaut du registre quand elle ne répond pas (build SSG).
+   * Seuil de présence « complète » (%), lu en configuration. `null` quand il
+   * est INCONNU — au build SSG, la base ne répond pas.
    */
-  seuilPresencePct: number;
-  /** Nombre de questionnaires de satisfaction retenus — 0 est une réponse. */
-  nbSatisfaction: number;
+  seuilPresencePct: number | null;
+  /**
+   * Nombre de questionnaires de satisfaction retenus. `null` quand il est
+   * INCONNU (build SSG) : ce n'est pas zéro.
+   */
+  nbSatisfaction: number | null;
 }
 
 /**
  * Construit les quatre phrases de méthode. Aucune ne peut être vide : chaque
- * branche produit du texte, y compris à effectif nul.
+ * branche produit du texte, y compris quand rien n'est connu.
+ *
+ * 🔴 2026-09-18 (revue sécurité de la PR 1111) — un paramètre INCONNU ne
+ * s'imprime pas. Au build, `buildEmptyResult` passait `nbSatisfaction: 0` et
+ * le seuil par défaut du registre : la page prérendue affirmait donc
+ * « (0 évaluation du 01/01/2026 au 31/12/2026) » alors que la production en
+ * comptait une. Ne pas savoir n'est pas compter zéro : sur une page publique
+ * lue par l'auditrice, un compteur inventé est une affirmation fausse. Quand
+ * la valeur est `null`, la phrase décrit la méthode et s'arrête là.
  */
 export function buildMethodesCalcul({
   annee,
   seuilPresencePct,
   nbSatisfaction,
 }: ParametresMethodes): MethodesCalcul {
-  const debutStr = `01/01/${annee}`;
-  const finStr = `31/12/${annee}`;
+  const periode = `du 01/01/${annee} au 31/12/${annee}`;
+  const effectif =
+    nbSatisfaction === null
+      ? ` Période : ${periode}.`
+      : ` (${nbSatisfaction} évaluation${nbSatisfaction > 1 ? "s" : ""} ${periode}).`;
+  const seuil = seuilPresencePct === null ? "" : ` (${seuilPresencePct} %)`;
 
   return {
     satisfaction:
       `Calculé sur la note globale (1 à 5) de tous les questionnaires de satisfaction ` +
-      `remplis à l'issue de chaque session, rapportée à 100. ` +
-      `(${nbSatisfaction} évaluation${nbSatisfaction > 1 ? "s" : ""} du ${debutStr} au ${finStr}).`,
+      `remplis à l'issue de chaque session, rapportée à 100.` +
+      effectif,
     reussite:
       `Pourcentage de stagiaires ayant obtenu le niveau « acquis » à l'évaluation finale ` +
       `parmi l'ensemble des évaluations finales de l'année.`,
     completion:
-      `Pourcentage de stagiaires ayant atteint ou dépassé le seuil de présence requis ` +
-      `(${seuilPresencePct} %) sur l'ensemble des inscriptions actives de sessions réalisées.`,
+      `Pourcentage de stagiaires ayant atteint ou dépassé le seuil de présence requis` +
+      `${seuil} sur l'ensemble des inscriptions actives de sessions réalisées.`,
     delaiAcces:
       `Délai moyen en jours entre la date d'inscription et le début de la session, ` +
       `sur les sessions réalisées de l'année.`,

@@ -1,5 +1,6 @@
 /**
- * 🛑 GARDE — le PowerPoint PROJETÉ n'est fabriqué par AUCUNE voie.
+ * 🛑 GARDE — le PowerPoint PROJETÉ n'est fabriqué par AUCUNE voie du moteur
+ * de SUPPORTS (lot, individuelle, régénération).
  *
  * `le-ppt-projete-nest-jamais-genere.spec.ts` garde la voie EN LOT
  * (`TOUS_SUPPORT_TYPES`). Mesuré le 2026-09-17 : la voie INDIVIDUELLE était
@@ -8,6 +9,14 @@
  * service qui les produisait. Cette garde-ci ferme les deux étages qu'un appel
  * direct atteint : l'action serveur et le service (goulot de `regenererSupport`
  * et de `genererTousSupports`).
+ *
+ * ## Ce que cette garde ne couvre PAS
+ *
+ * `genererDiaporamaAction` (`src/server/actions/qualiopi/diaporama.ts`) produit
+ * toujours un .pptx projeté, par un AUTRE chemin : sur un clic explicite, en
+ * version `brouillon` qui ne remplace pas le fichier déposé tant que Will ne
+ * l'a pas publiée. Décision distincte, non tranchée ici — même limite que
+ * `le-ppt-projete-nest-jamais-genere.spec.ts`, lignes 20-27.
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
@@ -41,7 +50,7 @@ const FORMATION_ID = "11111111-1111-4111-8111-111111111111";
 
 beforeEach(() => vi.clearAllMocks());
 
-describe("🛑 aucun PowerPoint projeté n'est fabriqué, quelle que soit la voie", () => {
+describe("🛑 le moteur de supports ne fabrique aucun PowerPoint projeté, quelle que soit sa voie", () => {
   it("la liste interdite porte exactement les deux supports projetés", () => {
     expect([...SUPPORTS_PROJETES_INTERDITS].sort()).toEqual([...SLIDES].sort());
     expect(estSupportProjete("livret_stagiaire")).toBe(false);

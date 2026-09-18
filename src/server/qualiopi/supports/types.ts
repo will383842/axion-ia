@@ -155,15 +155,20 @@ export const TOUS_SUPPORT_TYPES: readonly SupportType[] = [
 ];
 
 /**
- * Les deux supports PROJETÉS que le système ne fabrique jamais.
+ * Les deux supports PROJETÉS que le moteur de SUPPORTS ne fabrique jamais.
+ *
+ * ⚠️ Périmètre : le moteur de supports seulement (lot, individuel,
+ * régénération). `genererDiaporamaAction` (`actions/qualiopi/diaporama.ts`)
+ * produit toujours un .pptx projeté en BROUILLON, sur clic explicite — décision
+ * distincte, non tranchée ici.
  *
  * 🔴 2026-09-17 — la PR #851 avait fermé la voie EN LOT (en les retirant de
  * `TOUS_SUPPORT_TYPES` ci-dessus) et rien d'autre. La voie INDIVIDUELLE est
  * restée grande ouverte pendant trois semaines, sur trois étages : un bouton
  * « Générer » par type dans la console, un schéma Zod qui acceptait les deux
  * valeurs, et un builder qui les produisait. Le spec de l'époque
- * (`le-ppt-projete-nest-jamais-genere.spec.ts`) déclarait lui-même, lignes
- * 20-27, ne pas couvrir ce chemin.
+ * (`le-ppt-projete-nest-jamais-genere.spec.ts`) ne vérifiait que
+ * `TOUS_SUPPORT_TYPES` : la voie individuelle n'était gardée par rien.
  *
  * 🔑 Une décision fermée sur UNE voie n'est pas fermée. Cette liste est la
  * SEULE source : la console la retire de ses boutons, le service la refuse, et
@@ -180,11 +185,11 @@ export const SUPPORTS_PROJETES_INTERDITS: readonly SupportType[] = [
  * l'action : le refus doit se lire pareil d'où qu'il vienne.
  */
 export const MOTIF_REFUS_SUPPORT_PROJETE =
-  "Le support projeté ne se génère pas depuis le moteur : il est réalisé à " +
+  "Le support projeté ne se génère pas depuis le moteur de supports : il est réalisé à " +
   "l'extérieur et téléversé, pour que le visuel reste retouchable à tout " +
   "moment (décision du 2026-07-15, réaffirmée le 2026-08-25).";
 
-/** Vrai si ce type de support est un PowerPoint projeté, donc jamais fabriqué. */
+/** Vrai si ce type de support est un PowerPoint projeté, que ce moteur ne fabrique pas. */
 export function estSupportProjete(type: SupportType): boolean {
   return SUPPORTS_PROJETES_INTERDITS.includes(type);
 }

@@ -403,8 +403,8 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
                      à 70 — la divergence est donc RÉELLE mais INERTE. Elle ne
                      se manifestera qu'au premier clic qui change un seuil.
 
-                  2. ⛔ SURTOUT — CE CODE NE S'EXÉCUTE JAMAIS. Quinze lignes
-                     après le début de cette page, `const cat =
+                  2. ⛔ SURTOUT — CE CODE NE S'EXÉCUTE JAMAIS. Dès l'entrée
+                     de `FormationSlugPage`, `const cat =
                      getFormationV2(slug); if (cat) { … return … }` part TOUJOURS
                      pour les 22 formations de la table `formations` : leurs 22
                      slugs ont tous un `slugFr` identique au catalogue statique

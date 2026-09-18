@@ -271,7 +271,7 @@ describe("genererSupport", () => {
 
   // 🛑 2026-09-17 — « supporte les 7 types » verrouillait la fabrication des deux
   // diaporamas projetés. Ils sont refusés au goulot du service
-  // (cf. `le-ppt-projete-nest-genere-par-aucune-voie.spec.ts`).
+  // (cf. `le-ppt-projete-nest-genere-par-aucune-voie-des-supports.spec.ts`).
   it("supporte les 5 types générables", async () => {
     const types = [
       "livret_stagiaire",

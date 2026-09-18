@@ -29,7 +29,7 @@ import {
 } from "@/server/qualiopi/supports/supports-service";
 import {
   MOTIF_REFUS_SUPPORT_PROJETE,
-  SUPPORTS_PROJETES_INTERDITS,
+  estSupportProjete,
   type SupportType,
 } from "@/server/qualiopi/supports/types";
 
@@ -94,9 +94,9 @@ export async function genererSupportAction(input: {
   // 🛑 Refus NOMMÉ avant la validation Zod. Sans cette ligne, un appel direct
   // (l'enum ne contient plus les deux valeurs) ressortirait « Données
   // invalides » : un refus qui n'explique rien se lit comme un bug, et se
-  // « corrige » en rouvrant la porte. Le motif est celui de la fermeture en
-  // lot, mot pour mot.
-  if (SUPPORTS_PROJETES_INTERDITS.includes(input.type as SupportType)) {
+  // « corrige » en rouvrant la porte. Le motif est celui que le service
+  // oppose (`MOTIF_REFUS_SUPPORT_PROJETE`), et la règle est la sienne.
+  if (estSupportProjete(input.type as SupportType)) {
     return { error: MOTIF_REFUS_SUPPORT_PROJETE };
   }
 
