@@ -13,6 +13,7 @@ import { prisma } from "@/lib/prisma";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { redis } from "@/lib/redis";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { buildMethodesCalcul, type MethodesCalcul } from "./methodes";
 import {
   computeTauxSatisfaction,
   computeTauxReussite,
@@ -38,12 +39,12 @@ export interface DelaiAccesDetail {
   fiable: boolean;
 }
 
-export interface MethodesCalcul {
-  satisfaction: string;
-  reussite: string;
-  completion: string;
-  delaiAcces: string;
-}
+/**
+ * Les quatre phrases de méthode vivent dans `./methodes` — module PUR, hors du
+ * chemin DB. Le type est ré-exporté ici pour ne pas casser les imports
+ * existants (`import type { MethodesCalcul } from ".../indicateurs/service"`).
+ */
+export type { MethodesCalcul };
 
 export interface IndicateursResult {
   annee: number;
@@ -164,15 +165,11 @@ export async function getIndicateurs(
   const completionResult = computeTauxCompletion(tauxPresences, seuilPresencePct as number);
   const delaiResult = computeDelaiAccesMoyen(paires);
 
-  const debutStr = `01/01/${annee}`;
-  const finStr = `31/12/${annee}`;
-
-  const methodes: MethodesCalcul = {
-    satisfaction: `Calculé sur la note globale (1 à 5) de tous les questionnaires de satisfaction remplis à l'issue de chaque session, rapportée à 100. (${satResult.nb} évaluation${satResult.nb > 1 ? "s" : ""} du ${debutStr} au ${finStr}).`,
-    reussite: `Pourcentage de stagiaires ayant obtenu le niveau « acquis » à l'évaluation finale parmi l'ensemble des évaluations finales de l'année.`,
-    completion: `Pourcentage de stagiaires ayant atteint ou dépassé le seuil de présence requis (${seuilPresencePct} %) sur l'ensemble des inscriptions actives de sessions réalisées.`,
-    delaiAcces: `Délai moyen en jours entre la date d'inscription et le début de la session, sur les sessions réalisées de l'année.`,
-  };
+  const methodes: MethodesCalcul = buildMethodesCalcul({
+    annee,
+    seuilPresencePct: seuilPresencePct as number,
+    nbSatisfaction: satResult.nb,
+  });
 
   const result: IndicateursResult = {
     annee,
@@ -238,12 +235,20 @@ function buildEmptyResult(annee: number): IndicateursResult {
     tauxReussite: vide,
     tauxCompletion: vide,
     delaiAccesMoyen: { jours: 0, nb: 0, fiable: false },
-    methodes: {
-      satisfaction: "",
-      reussite: "",
-      completion: "",
-      delaiAcces: "",
-    },
+    // 🔴 2026-09-17 — ces quatre champs valaient `""`. C'est ce résultat-là qui
+    // sort au build SSG sous `stub.invalid`. Mesuré en production les 17 et
+    // 18/09 : `/fr/certification-qualiopi` est servie PRÉRENDUE
+    // (`x-nextjs-prerender: 1`, `x-nextjs-cache: HIT`) et ne contient aucune
+    // des quatre méthodes (1 411 588 octets). Une régénération ISR sous
+    // `revalidate = 3600` qui aurait remplacé ce HTML n'a pas été observée :
+    // c'est le texte du build que l'on sert. La méthode est donc construite,
+    // pas vidée.
+    //
+    // 🔴 2026-09-18 — mais SANS AUCUN CHIFFRE : ici la base ne répond pas,
+    // l'effectif et le seuil configuré sont INCONNUS, pas nuls. Passer `0` et
+    // le défaut du registre faisait imprimer « (0 évaluation …) » sur la page
+    // publique alors que la production en comptait une. `null` = inconnu.
+    methodes: buildMethodesCalcul({ annee, seuilPresencePct: null, nbSatisfaction: null }),
     calculeAt: new Date(),
   };
 }

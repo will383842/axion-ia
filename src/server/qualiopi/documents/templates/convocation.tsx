@@ -3,7 +3,8 @@
  *
  * Mention réglementaire "À conserver". Contient les informations de session
  * (intitulé, dates, horaires heure de Paris, modalité, lieu/visio, formateur,
- * contact), les informations stagiaire, l'équipement requis (distanciel),
+ * contact), les informations stagiaire, le matériel à prévoir (fiche de la
+ * formation, hors distanciel pur), l'équipement requis (distanciel),
  * les documents mis à disposition dans l'espace stagiaire et les mentions
  * handicap/absence.
  *
@@ -66,6 +67,19 @@ export interface ConvocationData {
   entreprise?: string;
   financement?: string;
   numeroOrdrePriseEnCharge?: string;
+  /**
+   * Matériel à prévoir sur place — le champ `moyens_techniques` DE LA
+   * FORMATION, tel quel. Imprimé hors distanciel pur.
+   *
+   * 🔴 2026-09-18 — la convocation présentiel ne disait RIEN du matériel : la
+   * section « Équipement requis » n'existait qu'en distanciel. Un stagiaire
+   * convoqué en salle pouvait venir sans le poste que la formation suppose.
+   * Règle GÉNÉRIQUE, décidée par le propriétaire : chaque formation déclare
+   * son matériel dans sa fiche (certaines n'en exigent aucun), la convocation
+   * le reprend — jamais une liste écrite ici. Absent → rien n'est imprimé :
+   * aucun texte inventé sur une pièce remise au stagiaire.
+   */
+  materielAPrevoir?: string;
 }
 
 // ============================================================
@@ -135,7 +149,14 @@ export function ConvocationPdf({
           ) : null}
         </DocSection>
 
-        {/* Section 3 : Équipement requis (distanciel uniquement) */}
+        {/* Section 3a : Matériel à prévoir sur place — la fiche de la formation */}
+        {data.modalite !== "distanciel" && data.materielAPrevoir ? (
+          <DocSection title="Matériel à prévoir sur place">
+            <Text style={pdfStyles.paragraph}>{data.materielAPrevoir}</Text>
+          </DocSection>
+        ) : null}
+
+        {/* Section 3b : Équipement requis (distanciel uniquement) */}
         {isDistanciel ? (
           <DocSection title="Équipement requis (distanciel)">
             <Text style={pdfStyles.paragraph}>

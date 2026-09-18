@@ -16,6 +16,7 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { getFormationById } from "@/server/qualiopi/formations/formations";
 import { SUPPORT_TYPE_LABELS } from "@/server/qualiopi/supports/support-builder";
+import { SUPPORTS_PROJETES_INTERDITS } from "@/server/qualiopi/supports/types";
 import {
   GenererSupportButton,
   type SupportTypeValue,
@@ -65,10 +66,16 @@ const STATUT_LABELS: Record<SupportStatut, string> = {
  * main dans `_KIT/<slug>/` et publié par `scripts/kit-formateur/publier-vers-r2.ts`.
  * Lui donner un bouton « Générer » ici produirait un classeur vide qui
  * écraserait le vrai. Il apparaît plus bas, en lecture seule.
+ *
+ * 🛑 `slides_formateur` et `slides_stagiaire` en sont sortis le 2026-09-17,
+ * pour la même raison de fond : le PowerPoint PROJETÉ est réalisé à l'extérieur
+ * et téléversé. La fermeture en lot (PR 851, 2026-08-25) n'avait retiré ces deux
+ * types que de `TOUS_SUPPORT_TYPES` — ces deux boutons-là sont restés cliquables
+ * trois semaines de plus. Les 44 supports déjà produits (22 + 22, mesurés en
+ * production le 2026-09-17) restent téléchargeables dans le bloc en lecture
+ * seule plus bas : fermer la porte ne doit pas rendre l'existant introuvable.
  */
 const ALL_TYPES: SupportTypeValue[] = [
-  "slides_formateur",
-  "slides_stagiaire",
   "livret_stagiaire",
   "memo",
   "guide_animation",
@@ -163,7 +170,7 @@ export default async function QualiopiFormationSupportsPage({ params }: PageProp
 
       <AdminPageHeader
         title={`Supports — ${formation.titre}`}
-        description={`7 types de supports pédagogiques à la charte pour la formation ${formation.numero}. Chaque type peut être généré indépendamment, ou tous d'un coup ci-dessous.`}
+        description={`${ALL_TYPES.length} types de supports pédagogiques à la charte pour la formation ${formation.numero}. Chaque type peut être généré indépendamment, ou tous d'un coup ci-dessous.`}
       />
 
       <GenererTousSupportsButton formationId={id} genererTousAction={genererTousSupportsAction} />
@@ -284,6 +291,50 @@ export default async function QualiopiFormationSupportsPage({ params }: PageProp
           </tbody>
         </table>
       </div>
+
+      {/* Les supports PROJETÉS — présents en base (44 au 2026-09-17, soit les
+          22 formations × 2) mais absents du tableau ci-dessus, parce qu'ils ne
+          se génèrent plus : le visuel est réalisé à l'extérieur et téléversé.
+          Affichés ici pour rester récupérables, sans bouton « Générer » ni
+          « Régénérer » — le service refuse les deux. */}
+      {(() => {
+        const projetes = SUPPORTS_PROJETES_INTERDITS.map((t) => supportByType.get(t)).filter(
+          (s): s is NonNullable<typeof s> => s != null,
+        );
+        if (projetes.length === 0) return null;
+        return (
+          <div className="mt-[var(--space-admin-5)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
+            <h2 className="text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+              Supports projetés — archives, non regénérables
+            </h2>
+            <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+              Le support de cours et le livret de projection sont réalisés à l&apos;extérieur puis
+              téléversés, pour que le visuel reste retouchable à tout moment. Ces versions ont été
+              produites par le moteur avant la fermeture du 2026-09-17 ; elles restent
+              téléchargeables, mais aucun bouton ne les régénère.
+            </p>
+            <ul className="mt-[var(--space-admin-3)] space-y-[var(--space-admin-2)]">
+              {projetes.map((s) => (
+                <li key={s.id} className="text-[length:var(--text-admin-sm)]">
+                  <span className="font-medium">{TYPE_LABELS_RAW[s.type]}</span>{" "}
+                  <span className="text-[color:var(--color-admin-fg-muted)]">v{s.version}</span>
+                  {s.pdfUrl != null ? (
+                    <>
+                      {" — "}
+                      <a
+                        href={`/api/qualiopi/supports/${s.id}`}
+                        className="text-[color:var(--color-admin-accent)] underline"
+                      >
+                        Télécharger le PDF
+                      </a>
+                    </>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })()}
 
       {/* Le kit imprimé — présent en base mais absent du tableau ci-dessus,
           parce qu'il ne se génère pas : il s'écrit dans `_KIT/<slug>/` et se

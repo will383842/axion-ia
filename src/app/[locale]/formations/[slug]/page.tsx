@@ -367,9 +367,10 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
                   le même jour. Elle est décrite ci-dessous sous sa forme réelle,
                   la grille d'évaluation individuelle (pièce AXI-DOC-2026-041).
 
-                  ⛔ Le « Seuil de réussite » affiché plus bas n'est PAS concerné :
-                  il est réellement appliqué. Voir le commentaire qui le précède
-                  avant d'y toucher.
+                  ⛔ Le « Seuil de réussite » affiché plus bas est un AUTRE sujet,
+                  et il n'est pas ce qu'on croyait : lire le commentaire rectifié
+                  qui le précède avant d'y toucher — la ligne est du code mort
+                  pour les 22 formations, mesuré en production le 2026-09-17.
                 */}
                 <p className="text-fg-soft text-[15px] leading-relaxed">
                   L&apos;acquisition des compétences est évaluée tout au long de la formation par
@@ -383,18 +384,63 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
                   est délivrée à l&apos;issue du parcours. {LEGAL_MENTIONS.attestation}
                 </p>
                 {/*
-                  ⚠️ 2026-09-17 — CE SEUIL EST VRAI. Il avait été retiré quelques
-                  heures plus tôt, par excès de correction, en même temps que la
-                  promesse de quiz. C'était une erreur : le seuil est RÉELLEMENT
-                  appliqué. `evaluations-service.ts` lit `seuil_reussite_pct` en
-                  configuration et `scoring.ts` en déduit la réussite. Vérifié en
-                  production le 17/09 sur la session du 05/09 : évaluation finale
-                  18/18 (100 %), `reussite = true`, compétences notées une à une
-                  et reprises sur l'attestation.
+                  🔴 2026-09-17 — RECTIFICATION. Ce commentaire affirmait, en
+                  substance, « CE SEUIL EST VRAI […] le seuil est RÉELLEMENT
+                  appliqué », et donnait pour preuve que `evaluations-service.ts`
+                  lit `seuil_reussite_pct` EN CONFIGURATION. Il était faux deux
+                  fois, et il est remplacé par la mesure.
 
-                  🔑 Ce qui n'existait pas, c'était le QUIZ — la forme. Le
-                  dispositif d'évaluation, lui, fonctionne. Ne pas confondre une
-                  promesse sans objet avec une promesse tenue autrement.
+                  1. La preuve ÉNONÇAIT la divergence qu'elle croyait réfuter.
+                     Le moteur lit la config GLOBALE
+                     (`evaluations-service.ts:191` → `getQualiopiConfig(
+                     "seuil_reussite_pct")`). La ligne ci-dessous affiche
+                     `f.seuilReussitePct`, la colonne PAR FORMATION
+                     (`schema.prisma`, `formations.seuil_reussite_pct`). Ce ne
+                     sont pas la même valeur, et la colonne est éditable d'un
+                     clic en console (`FormationForm.tsx`,
+                     `actions/qualiopi/formations.ts`). Mesuré en production le
+                     2026-09-17 : config globale = 70, et 22 formations sur 22
+                     à 70 — la divergence est donc RÉELLE mais INERTE. Elle ne
+                     se manifestera qu'au premier clic qui change un seuil.
+
+                  2. ⛔ SURTOUT — CE CODE NE S'EXÉCUTE JAMAIS. Dès l'entrée
+                     de `FormationSlugPage`, `const cat =
+                     getFormationV2(slug); if (cat) { … return … }` part TOUJOURS
+                     pour les 22 formations de la table `formations` : leurs 22
+                     slugs ont tous un `slugFr` identique au catalogue statique
+                     (`catalog-v2.ts`), vérifié slug par slug. Tout ce bloc
+                     — seuil, ratio pratique, objectifs, `indicateursPublies`,
+                     `methodeCalculIndicateurs` — est du CODE MORT.
+                     Mesuré sur la production live le 2026-09-17 :
+                     `GET /fr/formations/ia-pour-l-immobilier` → 200, 2 038 510
+                     octets, « réussite » 0 occurrence, « Seuil » 0 occurrence,
+                     « Taux de réussite » 0 occurrence, « Méthode de calcul »
+                     0 occurrence.
+
+                  3. Conséquence directe, et elle vaut pour l'audit : le bouton
+                     « publier les indicateurs par formation » ne publie à
+                     PERSONNE. La valeur publiée le 2026-08-04 sur « IA pour
+                     l'immobilier » (« Taux de réussite 100 % », effectif 1)
+                     n'apparaît sur aucune page publique — alors qu'elle suffit
+                     à faire passer l'indicateur 2 au vert dans le mode auditeur
+                     (`conformite-service.ts` : `indicateursPubliesAt` non nul
+                     → « Couvert »).
+
+                  ⛔ NE PAS « RÉPARER » CE CODE MORT ICI. Décision explicite du
+                  propriétaire, 2026-09-17 : rebrancher ces ~300 lignes toucherait
+                  22 pages publiques à huit jours d'une échéance. On DOCUMENTE, on
+                  ne rebranche pas. Un commentaire juste sur du code mort vaut
+                  mieux qu'un rebranchement risqué que personne n'a demandé.
+                  Le sort de ce bloc — supprimé ou rendu atteignable — est une
+                  décision à part, hors de cette PR.
+
+                  🔑 La garde qui tient cette page honnête est
+                  `tests/unit/qualiopi/la-fiche-formation-db-est-du-code-mort.spec.ts` :
+                  elle vérifie que les 22 slugs de production résolvent tous au
+                  catalogue, et que ce commentaire ne réaffirme pas la fausseté
+                  ci-dessus. Si un jour un slug cesse de résoudre, la branche
+                  redevient vivante et ce commentaire devient faux à son tour —
+                  c'est le test qui le dira.
                 */}
                 <p className="text-fg-muted mt-3 text-[13px] leading-snug">
                   Seuil de réussite : {f.seuilReussitePct} %
