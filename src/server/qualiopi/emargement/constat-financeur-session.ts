@@ -49,6 +49,11 @@ export async function constatContresignatureSession(
       },
       enrollments: {
         select: {
+          // L'override de financement PAR PARTICIPANT (R-INTER) : sur une
+          // session inter-entreprises, chaque inscrit peut relever de son
+          // propre financeur. Lire la seule session ferait écrire « aucun
+          // financeur tiers » sur un dossier qui en a un.
+          financementType: true,
           presences: {
             where: { emargementSignatures: { some: { revokedAt: null } } },
             select: { date: true, demiJournee: true },
@@ -77,7 +82,12 @@ export async function constatContresignatureSession(
   });
 
   return constaterContresignature({
-    financement: (s.financementType as FinancementSession | null) ?? null,
+    financement: {
+      session: (s.financementType as FinancementSession | null) ?? null,
+      parInscription: s.enrollments.map(
+        (e) => (e.financementType as FinancementSession | null) ?? null,
+      ),
+    },
     signees: bilan.signees,
     aContresigner: bilan.aContresigner,
   });

@@ -64,6 +64,13 @@ export interface SessionParcoursInput {
   readonly inscriptions: ReadonlyArray<{
     readonly id: string;
     readonly statut: string;
+    /**
+     * Override du payeur pour CE participant (R-INTER). `null` = pas d'override,
+     * l'inscription relève du financement de la session. Optionnel : un appelant
+     * qui ne le charge pas retombe sur le financement de la session, ce qui est
+     * le comportement d'avant — jamais une affirmation fausse en plus.
+     */
+    readonly financementType?: string | null;
     readonly emargementSigneAt: Date | null;
     readonly convocationEnvoyeeAt: Date | null;
     readonly questionnaires: ReadonlyArray<{
@@ -573,9 +580,12 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   const { signees, aContresigner, sansDestinataire } = input.contresignature;
   // Le financeur RÉEL de cette session, et ce qu'il attend. Même module que
   // l'écran d'émargement et que le dossier d'audit — trois surfaces, un libellé.
-  const attenteFinanceur = attenteContresignature(
-    input.session.financementType as FinancementSession | null,
-  );
+  const attenteFinanceur = attenteContresignature({
+    session: input.session.financementType as FinancementSession | null,
+    parInscription: input.inscriptions.map(
+      (i) => (i.financementType as FinancementSession | null | undefined) ?? null,
+    ),
+  });
   etapes.push(
     etape({
       cle: "contresignature_formateur",

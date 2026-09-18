@@ -40,6 +40,9 @@ function ligneSession(over: Record<string, unknown> = {}) {
     emargementContresignatures: [],
     enrollments: [
       {
+        // Override du payeur par participant (R-INTER). `null` = aucun :
+        // l'inscription relève du `financementType` de la session.
+        financementType: null,
         presences: [
           { date: jour("2026-09-16"), demiJournee: "matin" },
           { date: jour("2026-09-16"), demiJournee: "apres_midi" },
@@ -78,6 +81,21 @@ describe("constatContresignatureSession", () => {
     findUnique.mockResolvedValue(ligneSession({ financementType: "direct" }));
     const c = await constatContresignatureSession("s-1", MAINTENANT);
     expect(c.afficher).toBe(false);
+  });
+
+  it("🔴 R-INTER — session `direct`, un inscrit en OPCO : le bandeau parle", async () => {
+    // Le cas qui a fait refuser la PR, sur l'écran d'émargement : la session
+    // reste `direct` (valeur par défaut à la création), c'est l'INSCRIPTION qui
+    // porte l'override. Lire la seule session rendait ce bandeau muet.
+    const base = ligneSession({ financementType: "direct" });
+    findUnique.mockResolvedValue({
+      ...base,
+      enrollments: base.enrollments.map((e) => ({ ...e, financementType: "opco" })),
+    });
+    const c = await constatContresignatureSession("s-1", MAINTENANT);
+    expect(c.afficher).toBe(true);
+    if (!c.afficher) return;
+    expect(c.financeur).toContain("OPCO");
   });
 
   it("se tait quand le financement n'est pas renseigné", async () => {

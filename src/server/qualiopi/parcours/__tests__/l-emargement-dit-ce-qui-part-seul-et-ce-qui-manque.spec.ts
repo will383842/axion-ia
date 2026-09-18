@@ -38,6 +38,9 @@ function dossier(patch: Partial<SessionParcoursInput> = {}): SessionParcoursInpu
       {
         id: "e1",
         statut: "planifiee",
+        // Override du payeur par participant (R-INTER). `null` = aucun : cette
+        // inscription relève du `financementType` de la session ci-dessus.
+        financementType: null,
         emargementSigneAt: d("2026-09-16T10:00:00.000Z"),
         convocationEnvoyeeAt: d("2026-09-10T08:00:00.000Z"),
         questionnaires: [],
@@ -224,6 +227,8 @@ describe("3. la traduction ligne Prisma → parcours compte les demi-journées",
       {
         id: "e1",
         statut: "planifiee",
+        // Override du payeur par participant (R-INTER). `null` = aucun.
+        financementType: null,
         emargementSigneAt: null,
         convocationEnvoyeeAt: null,
         questionnaires: [],
@@ -253,6 +258,23 @@ describe("3. la traduction ligne Prisma → parcours compte les demi-journées",
   it("🔴 signées et à contresigner viennent du MÊME bilan que l'e-mail au formateur", () => {
     const e = entreeParcours(ligne, new Map(), d("2026-09-16T18:00:00.000Z"));
     expect(e.contresignature).toMatchObject({ signees: 2, aContresigner: 1, sansDestinataire: 0 });
+  });
+
+  it("🔴 R-INTER — session `direct`, un inscrit en OPCO : l'étape n'affirme plus l'absence", () => {
+    // Bout à bout, de la ligne Prisma à l'avertissement : c'est la seule façon
+    // de voir un maillon qui laisserait tomber l'override en route — le `select`,
+    // la traduction `entreeParcours`, ou `construireParcours` lui-même.
+    const avecOverride = {
+      ...ligne,
+      financementType: "direct",
+      enrollments: ligne.enrollments.map((e) => ({ ...e, financementType: "opco" })),
+    } as unknown as LigneSessionParcours;
+    const e = etape(
+      construireParcours(entreeParcours(avecOverride, new Map(), d("2026-09-16T18:00:00.000Z"))),
+      "contresignature_formateur",
+    );
+    expect(e?.avertissement).not.toContain("aucun financeur tiers");
+    expect(e?.avertissement).toContain("OPCO");
   });
 });
 

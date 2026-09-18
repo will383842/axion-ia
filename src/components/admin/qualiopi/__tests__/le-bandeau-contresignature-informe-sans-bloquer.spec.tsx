@@ -28,7 +28,7 @@ describe("le bandeau ne s'affiche que quand il a quelque chose à dire", () => {
     const { container } = render(
       <BandeauContresignatureFinanceur
         constat={constaterContresignature({
-          financement: "direct",
+          financement: { session: "direct" },
           signees: 2,
           aContresigner: manquantes,
         })}
@@ -41,7 +41,7 @@ describe("le bandeau ne s'affiche que quand il a quelque chose à dire", () => {
     const { container } = render(
       <BandeauContresignatureFinanceur
         constat={constaterContresignature({
-          financement: "opco",
+          financement: { session: "opco" },
           signees: 2,
           aContresigner: [],
         })}
@@ -56,7 +56,7 @@ describe("ce qui manque, pourquoi ça compte, où cliquer", () => {
     return render(
       <BandeauContresignatureFinanceur
         constat={constaterContresignature({
-          financement: "opco",
+          financement: { session: "opco" },
           signees: 3,
           aContresigner: manquantes,
         })}
@@ -75,8 +75,21 @@ describe("ce qui manque, pourquoi ça compte, où cliquer", () => {
   });
 
   it("dit POURQUOI : le règlement du financeur, nommé", () => {
+    // ⚠️ 2026-09-17 — CE TEST ÉTAIT SATISFAIT PAR LE TITRE.
+    //
+    // Il cherchait « OPCO » n'importe où dans le `role="status"` ; or le titre
+    // porte déjà « votre OPCO la réclamera probablement ». Retirer
+    // `{constat.pourquoi}` du composant — c'est-à-dire supprimer exactement ce
+    // que ce test prétend surveiller — le laissait VERT. Un témoin satisfait
+    // par une autre source que la sienne ne garde rien.
+    //
+    // Il porte désormais sur un fragment qui n'existe QUE dans `pourquoi` : le
+    // renvoi vers le financeur pour confirmer la liste des pièces. Ni le titre
+    // ni le message ne l'écrivent.
     rendu();
-    expect(screen.getByRole("status").textContent ?? "").toContain("OPCO");
+    expect(screen.getByRole("status").textContent ?? "").toContain(
+      "à confirmer auprès de votre OPCO",
+    );
   });
 
   it("dit OÙ cliquer", () => {
@@ -105,7 +118,7 @@ describe("🔴 le cas vide est NOMMÉ — « 0/0 » ne se refait pas", () => {
     render(
       <BandeauContresignatureFinanceur
         constat={constaterContresignature({
-          financement: "opco",
+          financement: { session: "opco" },
           signees: 0,
           aContresigner: [],
         })}

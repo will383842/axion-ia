@@ -110,37 +110,111 @@ export interface AttenteFinanceur {
   readonly pourquoi: string;
 }
 
+/** Plusieurs circuits distincts sur la même feuille : on ne devine pas lequel réclamera. */
+const PLUSIEURS_FINANCEURS = "vos financeurs";
+
 /**
- * La contresignature du formateur est-elle attendue par le financeur ?
+ * Le financement AU DOSSIER — au niveau de la session ET de chaque inscription.
  *
- * ⚠️ `null` (financement non renseigné) rend `attendue: false`. Ce n'est pas un
- * oubli : le bandeau affirme « votre financeur réclamera ». Sans financement
- * au dossier, la prémisse n'est pas établie, et affirmer au hasard sur toutes
- * les sessions du registre transformerait l'information en bruit — c'est-à-dire
- * en rien. Le silence ici n'ôte aucune garde : il n'y en a aucune.
+ * 🔴 **Le payeur de la session n'est pas toujours le payeur effectif.** Sur une
+ * session inter-entreprises, la facturation se fait PAR PARTICIPANT, selon le
+ * financement de chacun (`facture-auto-regles.ts`) : `Enrollment.financementType`
+ * porte l'override (R-INTER), il est écrit par `setEnrollmentFinancementAction`
+ * et piloté depuis la fiche session.
+ *
+ * Ce module ne fabrique donc PAS une seconde façon de répondre à « qui paie ? » :
+ * il applique la même résolution que `production-au-jalon.ts:376`, à savoir
+ * `enrollment.financementType ?? session.financementType`, inscription par
+ * inscription.
+ *
+ * ⚠️ La faute que ça ferme était pire qu'un silence. Une session
+ * inter-entreprises se crée par défaut en `direct` (`sessions.ts:402`) ; si un
+ * seul participant relève d'un OPCO, ne lire que la session faisait écrire au
+ * dossier d'audit « aucun financeur tiers ne réclame de pièce » — une
+ * **affirmation d'absence**, fausse, dans la pièce même que l'organisme dépose
+ * chez le financeur.
  */
-export function attenteContresignature(
-  financement: FinancementSession | null | undefined,
-): AttenteFinanceur {
-  if (financement === null || financement === undefined || financement === "direct") {
+export interface FinancementsAuDossier {
+  /** Financement porté par la session. */
+  readonly session: FinancementSession | null | undefined;
+  /**
+   * Un élément par inscription active, dans l'ordre. `null`/`undefined` = pas
+   * d'override, l'inscription relève du financement de la session.
+   *
+   * Vide ou absent (aucune inscription, ou appelant qui ne les charge pas) : on
+   * retombe sur le seul financement de la session.
+   */
+  readonly parInscription?: ReadonlyArray<FinancementSession | null | undefined>;
+}
+
+/**
+ * Qui paie RÉELLEMENT, sans doublon — la résolution par inscription, ou à
+ * défaut le financement de la session.
+ *
+ * 🔑 Quand des inscriptions existent, le financement de la session **ne compte
+ * pas pour lui-même** : il ne vaut que comme valeur de repli de celles qui
+ * n'ont pas d'override. Si les trois inscrits d'une session `direct` relèvent
+ * tous d'un OPCO, personne ne paie en direct — et le résultat le dit.
+ */
+export function financeursEffectifs(f: FinancementsAuDossier): readonly FinancementSession[] {
+  const inscriptions = f.parInscription ?? [];
+  const resolus = inscriptions.length > 0 ? inscriptions.map((i) => i ?? f.session) : [f.session];
+  const connus = resolus.filter((v): v is FinancementSession => v !== null && v !== undefined);
+  // `Set` conserve l'ordre d'insertion : la phrase reste stable d'un rendu à
+  // l'autre, donc les tests aussi.
+  return [...new Set(connus)];
+}
+
+/**
+ * La contresignature du formateur est-elle attendue par un financeur ?
+ *
+ * ⚠️ Aucun financement connu rend `attendue: false`. Ce n'est pas un oubli : le
+ * bandeau affirme « votre financeur réclamera ». Sans financement au dossier, la
+ * prémisse n'est pas établie, et affirmer au hasard sur toutes les sessions du
+ * registre transformerait l'information en bruit — c'est-à-dire en rien. Le
+ * silence ici n'ôte aucune garde : il n'y en a aucune.
+ */
+export function attenteContresignature(f: FinancementsAuDossier): AttenteFinanceur {
+  const effectifs = financeursEffectifs(f);
+
+  if (effectifs.length === 0) {
     return {
       attendue: false,
       financeur: null,
       pourquoi:
-        financement === "direct"
-          ? "Session payée directement par le client : aucun financeur tiers ne réclame de pièce. " +
-            "La contresignature du formateur reste utile à la valeur probante de la feuille, mais " +
-            "elle ne conditionne ici aucun règlement."
-          : "Financement non renseigné : on ne sait pas encore quelles pièces seront réclamées.",
+        "Financement non renseigné : on ne sait pas encore quelles pièces seront réclamées.",
     };
   }
 
-  const financeur = FINANCEUR_LIBELLE[financement];
+  const tiers = effectifs.filter((v): v is Exclude<FinancementSession, "direct"> => v !== "direct");
+
+  if (tiers.length === 0) {
+    return {
+      attendue: false,
+      financeur: null,
+      pourquoi:
+        "Session payée directement par le client : aucun financeur tiers ne réclame de pièce. " +
+        "La contresignature du formateur reste utile à la valeur probante de la feuille, mais " +
+        "elle ne conditionne ici aucun règlement.",
+    };
+  }
+
+  const financeur = tiers.length === 1 ? FINANCEUR_LIBELLE[tiers[0]!] : PLUSIEURS_FINANCEURS;
+
+  // Une partie seulement des inscrits relève d'un tiers : la feuille est UNE,
+  // le dossier du financeur ne l'est pas. Le taire ferait lire « toute la
+  // session est financée », ce qui est faux dans l'autre sens.
+  const partiel = effectifs.includes("direct");
+  const assiette = partiel
+    ? `Une PARTIE des inscrits de cette session est financée par un tiers (${financeur}), le reste en direct. ` +
+      `La feuille d'émargement est la même pour tous : c'est le dossier du financeur qui la réclamera.`
+    : `Cette session est financée par un tiers (${financeur}).`;
+
   return {
     attendue: true,
     financeur,
     pourquoi:
-      `Cette session est financée par un tiers (${financeur}). La plupart des financeurs réclament ` +
+      `${assiette} La plupart des financeurs réclament ` +
       `une feuille d'émargement signée par le stagiaire ET par le formateur pour régler le dossier. ` +
       `⚠️ La liste des pièces est contractuelle et varie d'un financeur à l'autre : elle n'est pas ` +
       `imposée par un texte — à confirmer auprès de ${financeur} avant le dépôt. ` +
@@ -150,7 +224,12 @@ export function attenteContresignature(
 
 /** Ce que l'appelant fournit : la règle (financement) et la mesure (le bilan). */
 export interface EntreeConstat {
-  readonly financement: FinancementSession | null | undefined;
+  /**
+   * Le financement AU DOSSIER — session **et** overrides par inscription.
+   * Pas un scalaire : une session `direct` dont un inscrit relève d'un OPCO
+   * attend bel et bien la contresignature (R-INTER).
+   */
+  readonly financement: FinancementsAuDossier;
   /**
    * `BilanContresignature.signees` — demi-journées TERMINÉES portant au moins
    * une signature de stagiaire. C'est le dénominateur, et il peut valoir zéro :
@@ -223,8 +302,11 @@ export function constaterContresignature(entree: EntreeConstat): ConstatContresi
   if (!attente.attendue || attente.financeur === null) {
     return {
       afficher: false,
+      // « Non renseigné » et « payé en direct » sont deux silences différents :
+      // le premier dit qu'on ne sait pas, le second qu'on sait que personne ne
+      // réclamera. Les confondre ferait passer une ignorance pour une réponse.
       raison:
-        entree.financement === null || entree.financement === undefined
+        financeursEffectifs(entree.financement).length === 0
           ? "financement_non_renseigne"
           : "non_attendue_par_le_financeur",
     };

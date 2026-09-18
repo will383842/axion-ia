@@ -179,6 +179,10 @@ function session(over: Record<string, unknown> = {}) {
       {
         id: "enr-1",
         tauxPresencePct: 100,
+        // Override du payeur POUR CE PARTICIPANT (R-INTER). `null` = pas
+        // d'override : l'inscription relève du `financementType` de la session,
+        // qui est le comportement d'avant le 2026-09-17.
+        financementType: null as string | null,
         trainee: { nom: "Dupont", prenom: "Alice", deletedAt: null },
         // Créneaux de présence (provenance, `G-prerequis-02`). Vide par défaut :
         // la fixture ne modélise que la chaîne de signatures.
@@ -674,6 +678,42 @@ describe("genererDossierSessionZip", () => {
       // Et il dit quand même ce qu'il en est : le silence total laisserait
       // croire que la question n'a pas été posée.
       expect(index?.toLowerCase()).toContain("directement par le client");
+    });
+
+    it("🔴 un SEUL inscrit en OPCO suffit : l'index n'affirme plus l'absence", async () => {
+      // 🔴 R-INTER — LA FAUTE QUI A FAIT REFUSER LA PR, ET SON PIRE ENDROIT.
+      //
+      // Une session inter-entreprises se crée en `direct` par défaut
+      // (`sessions.ts`), et la facturation se fait PAR PARTICIPANT. Ne lire que
+      // `session.financementType` faisait écrire « aucun financeur tiers ne
+      // réclame de pièce » dans `index.txt` — c'est-à-dire dans la pièce même
+      // que l'organisme dépose chez l'OPCO de cet inscrit. Ce n'est pas un
+      // silence : c'est une AFFIRMATION D'ABSENCE, et elle était fausse.
+      //
+      // ⚠️ La population est ce qui donne à ce témoin le pouvoir de voir :
+      // la session reste `direct`, c'est l'INSCRIPTION qui porte l'override.
+      mockFindUnique.mockResolvedValue(
+        session({
+          financementType: "direct",
+          enrollments: [
+            {
+              id: "enr-1",
+              tauxPresencePct: 100,
+              financementType: "opco",
+              trainee: { nom: "Dupont", prenom: "Alice", deletedAt: null },
+              presences: [],
+              emargementSignatures: chaineSaine(),
+            },
+          ],
+        }),
+      );
+      const res = await genererDossierSessionZip("s-1");
+      const ligne = ligneContresignature(await fichierDuZip(res!.base64, "index.txt"));
+      // Bornée À LA LIGNE, comme les autres témoins de ce bloc : les
+      // avertissements de fin d'index portent eux aussi le nom du financeur, et
+      // chercher partout ferait passer au vert une ligne disparue.
+      expect(ligne).not.toContain("aucun financeur tiers ne réclame de pièce");
+      expect(ligne).toContain("OPCO");
     });
 
     it("n'écrit jamais « obligatoire » ni « exigé par la loi »", async () => {

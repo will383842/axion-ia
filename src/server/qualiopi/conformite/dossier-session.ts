@@ -152,6 +152,9 @@ export async function genererDossierSessionZip(
         select: {
           id: true,
           tauxPresencePct: true,
+          // Override du payeur par participant (R-INTER) — lu ici parce que la
+          // ligne « contresignature » de l'index en dépend.
+          financementType: true,
           // Ind. 10 — la réponse de l'organisme et le BOOLÉEN du besoin déclaré.
           // Le détail chiffré n'est pas chargé. `traineeId` et `reponduAt` DATENT
           // la dernière déclaration (circuit rouvert par une déclaration nouvelle).
@@ -307,9 +310,18 @@ export async function genererDossierSessionZip(
   }
   // Ce que le FINANCEUR de cette session attend de la contresignature. Une
   // seule source pour l'écran d'émargement et pour ce dossier.
-  const attenteFinanceur = attenteContresignature(
-    session.financementType as FinancementSession | null,
-  );
+  //
+  // 🔴 Les inscriptions sont lues, pas seulement la session : c'est ICI que la
+  // faute coûtait le plus cher. Cette ligne part dans `index.txt`, la pièce que
+  // l'organisme dépose chez le financeur ; écrire « aucun financeur tiers ne
+  // réclame de pièce » sur une session dont un inscrit relève d'un OPCO n'est
+  // pas un silence, c'est une affirmation d'absence, et elle serait fausse.
+  const attenteFinanceur = attenteContresignature({
+    session: session.financementType as FinancementSession | null,
+    parInscription: session.enrollments.map(
+      (e) => (e.financementType as FinancementSession | null) ?? null,
+    ),
+  });
 
   const rapportsContresignatures: Array<Record<string, unknown>> = [];
   let nbChainesContresignAnormales = 0;
