@@ -31,14 +31,17 @@
  *    de « ordinateur portable » ni de « laptop », quelle que soit la phrase.
  *    Il n'en reste aucune légitime ; une future mention exigera de retoucher
  *    cette garde, et c'est voulu.
- *  - Fiches formation, texte AFFICHÉ (champs de l'objet ET défauts centralisés
- *    servis par `catalog-v2-facts.ts` : matériel, effectif, outils, méthodes,
- *    évaluation, accessibilité…) : même interdiction, « PC portable » et
- *    espace insécable compris. Exclus : le matériel des deux exceptions
- *    confirmées, et les textes alternatifs des images (descriptions de
- *    photos). Pannes fermées : R10 (`prerequisFr`, revue exactitude
- *    5251895268) et D1 (défaut `FORMATION_MATERIEL_DEFAUT`, absent de l'objet,
- *    revue sécurité 5252455088).
+ *  - Fiches formation, texte AFFICHÉ (page et JSON-LD) : champs de l'objet ET
+ *    sortie de CHAQUE export de `catalog-v2-facts.ts` appliqué à la fiche —
+ *    défauts (matériel, prérequis, effectif, outils, méthodes…) et libellés
+ *    `format*` réellement rendus (modalités, durée). Même interdiction,
+ *    « PC portable », espace insécable et saut de ligne compris. Un export
+ *    nouveau non classé fait échouer la garde. Exclus, avec leur motif : le
+ *    matériel des deux exceptions confirmées, et les textes alternatifs et
+ *    légendes de photos. Pannes fermées : R10 (`prerequisFr`), D1 (défaut du
+ *    matériel absent de l'objet), S1/N1 (libellé `formatModalitesFr`), N2
+ *    (prérequis par défaut écrit en dur dans la page, désormais
+ *    `FORMATION_PREREQUIS_DEFAUT`).
  *  - Les entrées qui parlent du matériel (`presentiel-distance`,
  *    `competences-techniques`) doivent CONTENIR la phrase et nommer les
  *    exceptions : si la phrase disparaît, le test échoue au lieu de passer à vide.
@@ -57,18 +60,8 @@ import path from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import {
-  getFormationAccessibilite,
-  getFormationCasUsage,
-  getFormationDelaiAcces,
-  getFormationDureeFacts,
-  getFormationEffectif,
-  getFormationEvaluation,
-  getFormationMateriel,
-  getFormationMethodes,
-  getFormationModalites,
-  getFormationOutils,
-} from "@/content/formations/catalog-v2-facts";
+import * as FAITS from "@/content/formations/catalog-v2-facts";
+import { getFormationMateriel } from "@/content/formations/catalog-v2-facts";
 import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
 import { FAQ_GLOBAL } from "@/content/transversal";
 
@@ -101,28 +94,75 @@ const ORDINATEUR_COMME_MATERIEL = new RegExp(
 const ORDINATEUR_PORTABLE_OU_LAPTOP = /(?:ordinateurs?|pc)[\s\u00a0\u202f]+portables?|laptops?/i;
 
 /**
- * Ce que la fiche AFFICHE (page et JSON-LD), pas seulement l'objet du catalogue :
- * les champs absents de l'objet sont servis par des défauts centralisés
- * (`catalog-v2-facts.ts`), qu'un `JSON.stringify(f)` ne voit pas (revue sécurité
- * 5252455088, panne D1). Le matériel des deux exceptions est exclu ; les images
- * aussi : leurs textes alternatifs décrivent des photos (« people around a
- * laptop ») et ne sont pas une exigence de matériel.
+ * Ce que la fiche AFFICHE (page et JSON-LD), dérivé MÉCANIQUEMENT de tout le
+ * module `catalog-v2-facts.ts`, et non d'une liste tapée à la main.
+ *
+ * Historique de l'escalade, pour ne pas la rejouer : l'objet seul ne voyait pas
+ * les défauts (panne D1, revue sécurité 5252455088) ; une liste de `get*` tapée
+ * à la main ne voyait pas les libellés `format*` réellement rendus (panne S1,
+ * revue simplicité 5253007780 : « Présentiel — ordinateur portable obligatoire »
+ * dans `formatModalitesFr` restait vert).
+ *
+ * Règle : chaque export du module est classé ci-dessous, et un test échoue si
+ * un export nouveau n'entre dans aucune classe.
+ *  - fonction d'arité 1 → appelée sur la fiche ;
+ *  - `format*` dont l'argument est la SORTIE d'un `get*` → appelée sur cette
+ *    sortie (table `FORMATEURS_SUR_SORTIE`) ;
+ *  - constante → sérialisée telle quelle ;
+ *  - exclus, avec leur motif (`EXCLUS`).
  */
+const FORMATEURS_SUR_SORTIE: Record<string, string> = {
+  formatModalitesFr: "getFormationModalites",
+};
+
+/** Exports exclus, et pourquoi. Tout ajout ici doit se justifier. */
+const EXCLUS: Record<string, string> = {
+  // ⚠️ Ces textes servent AUSSI de légende (`caption`) dans le JSON-LD de la
+  // fiche. Ils restent exclus parce qu'au 2026-09-19 deux d'entre eux décrivent
+  // une photo où figure un laptop (IA pour les équipes, IA pour le marketing) :
+  // ce n'est pas une exigence de matériel. `imageAltFr` propre à une fiche, lui,
+  // reste contrôlé (aucune valeur actuelle ne parle de laptop).
+  getFormationImage: "texte alternatif et légende de photo (« people around a laptop »)",
+  getFormationImageCredit: "nom et lien du photographe",
+  getFormationScenePhotos: "textes alternatifs de photos",
+  FORMATION_GAMME_IMAGE: "textes alternatifs de photos",
+};
+
+type Fonction = (x: unknown) => unknown;
+
+function classer(nom: string, valeur: unknown): "fiche" | "sortie" | "constante" | "exclu" | null {
+  if (nom in EXCLUS) return "exclu";
+  if (nom in FORMATEURS_SUR_SORTIE) return "sortie";
+  if (typeof valeur === "function") return (valeur as Fonction).length === 1 ? "fiche" : null;
+  return "constante";
+}
+
+/** Espaces et sauts de ligne normalisés : « ordinateur⏎portable » est cherché comme tel. */
+function normaliser(texte: string): string {
+  // `\\[nrt]` : les sauts de ligne tels que JSON.stringify les \u00e9crit (barre
+  // oblique inverse suivie d'une lettre), pas des caract\u00e8res de contr\u00f4le.
+  return texte.replace(/\\[nrt]/g, " ").replace(/[\s\u00a0\u202f]+/g, " ");
+}
+
 function texteAffiche(f: (typeof FORMATIONS_V2)[number]): string {
   const exception = EXCEPTIONS_ORDINATEUR.has(f.id);
-  return JSON.stringify({
-    fiche: { ...f, materielFr: undefined, imageSrc: undefined, imageAltFr: undefined },
-    materiel: exception ? undefined : getFormationMateriel(f),
-    duree: getFormationDureeFacts(f),
-    modalites: getFormationModalites(f),
-    effectif: getFormationEffectif(f),
-    outils: getFormationOutils(f),
-    casUsage: getFormationCasUsage(f),
-    delaiAcces: getFormationDelaiAcces(f),
-    methodes: getFormationMethodes(f),
-    evaluation: getFormationEvaluation(f),
-    accessibilite: getFormationAccessibilite(f),
-  });
+  const morceaux: unknown[] = [{ ...f, materielFr: undefined }];
+  for (const [nom, valeur] of Object.entries(FAITS)) {
+    const classe = classer(nom, valeur);
+    if (classe === "exclu" || classe === null) continue;
+    if (classe === "constante") {
+      // Les constantes de matériel sont lues via la fiche : pour une exception,
+      // son texte propre remplace le défaut, qui n'est alors pas affiché.
+      morceaux.push(valeur);
+    } else if (classe === "fiche") {
+      if (exception && nom === "getFormationMateriel") continue;
+      morceaux.push((valeur as Fonction)(f));
+    } else {
+      const source = (FAITS as Record<string, unknown>)[FORMATEURS_SUR_SORTIE[nom]!] as Fonction;
+      morceaux.push((valeur as Fonction)(source(f)));
+    }
+  }
+  return normaliser(JSON.stringify(morceaux));
 }
 
 /** Entrées de la FAQ qui énoncent le matériel, en FR et en EN. */
@@ -167,6 +207,18 @@ describe("le matériel annoncé est le même partout", () => {
     );
   });
 
+  it("chaque export de catalog-v2-facts.ts est couvert par texteAffiche, ou exclu avec un motif", () => {
+    const nonClasses = Object.entries(FAITS)
+      .filter(([nom, valeur]) => classer(nom, valeur) === null)
+      .map(([nom]) => nom);
+    expect(nonClasses).toEqual([]);
+    for (const [nom, source] of Object.entries(FORMATEURS_SUR_SORTIE)) {
+      expect(typeof (FAITS as Record<string, unknown>)[nom], nom).toBe("function");
+      expect(typeof (FAITS as Record<string, unknown>)[source], source).toBe("function");
+    }
+    for (const nom of Object.keys(EXCLUS)) expect(nom in FAITS, nom).toBe(true);
+  });
+
   it.each(FORMATIONS_V2.map((f) => [f.id, f] as const))(
     "%s n'affiche ni ordinateur portable ni laptop, défauts centralisés compris",
     (_id, f) => {
@@ -185,7 +237,9 @@ describe("le matériel annoncé est le même partout", () => {
   it("aucune entrée de la FAQ, en FR comme en EN, ne mentionne l'ordinateur portable ni le laptop", () => {
     const fautives = FAQ_GLOBAL.flatMap((e) =>
       (["fr", "en"] as const)
-        .filter((langue) => ORDINATEUR_PORTABLE_OU_LAPTOP.test(JSON.stringify(e[langue])))
+        .filter((langue) =>
+          ORDINATEUR_PORTABLE_OU_LAPTOP.test(normaliser(JSON.stringify(e[langue]))),
+        )
         .map((langue) => `${e.id}:${langue}`),
     );
     expect(fautives).toEqual([]);

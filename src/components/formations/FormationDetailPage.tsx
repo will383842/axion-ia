@@ -58,6 +58,7 @@ import {
   getFormationImage,
   getFormationImageCredit,
   getFormationMateriel,
+  getFormationPrerequis,
   getFormationMethodes,
   getFormationModalites,
   getFormationOutils,
@@ -148,7 +149,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const modalitesLabel = formatModalitesFr(getFormationModalites(f));
   const materiel = getFormationMateriel(f);
   const effectif = getFormationEffectif(f);
-  const prerequis = f.prerequisFr ?? "Aucun — la formation démarre à votre niveau.";
+  const prerequis = getFormationPrerequis(f);
   const image = getFormationImage(f);
   const imageCredit = getFormationImageCredit(f);
   const casUsage = getFormationCasUsage(f);

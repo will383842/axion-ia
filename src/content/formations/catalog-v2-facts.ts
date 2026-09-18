@@ -79,6 +79,16 @@ export function getFormationMateriel(f: FormationV2): string {
   return f.materielFr ?? FORMATION_MATERIEL_DEFAUT;
 }
 
+// ── Prérequis ───────────────────────────────────────────────────────────────
+// Défaut affiché sur la fiche (et dans sa FAQ JSON-LD) quand la formation n'en
+// déclare pas. Centralisé ici pour que la garde du matériel le lise (revue
+// exactitude 5253117909, N2) : il était écrit en dur dans la page.
+export const FORMATION_PREREQUIS_DEFAUT = "Aucun — la formation démarre à votre niveau.";
+
+export function getFormationPrerequis(f: FormationV2): string {
+  return f.prerequisFr ?? FORMATION_PREREQUIS_DEFAUT;
+}
+
 // ── Effectif du groupe ──────────────────────────────────────────────────────
 // Engagement contractuel : les programmes source l'annoncent en en-tête, dans
 // les modalités pédagogiques ET dans les délais d'accès. Il doit donc être
