@@ -85,6 +85,9 @@ export interface SubmissionListItem {
    * granularité fine (audit-flash, chatbot…). C'est LE contexte que la boîte de
    * réception affichait « — » alors qu'il était en base (relevé P1-08). */
   subType: string | null;
+  /** details.origine — `ecran-1-du-dossier`, `saisie-manuelle`… Dit si l'absence
+   * d'accusé de réception automatique est VOULUE (cf. `lib/contact/accuse-attendu`). */
+  origine: string | null;
 }
 
 export interface SubmissionListResult {
@@ -156,6 +159,7 @@ export async function listSubmissions(
     const unifiedType =
       details && typeof details.unifiedType === "string" ? details.unifiedType : null;
     const subType = details && typeof details.subType === "string" ? details.subType : null;
+    const origine = details && typeof details.origine === "string" ? details.origine : null;
     const rawMessage = details && typeof details.message === "string" ? details.message.trim() : "";
     return {
       id: s.id,
@@ -182,6 +186,7 @@ export async function listSubmissions(
       lastReplyStatus: s.replies[0]?.deliveryStatus ?? null,
       unifiedType,
       subType,
+      origine,
     };
   };
 

@@ -28,6 +28,7 @@
 
 "use server";
 
+import { ORIGINE_SAISIE_MANUELLE } from "@/lib/contact/accuse-attendu";
 import { revalidatePath } from "next/cache";
 import * as Sentry from "@sentry/nextjs";
 
@@ -147,7 +148,7 @@ export async function creerContactManuelAction(payload: unknown): Promise<Saisie
           unifiedType: "recrutement",
           subType: CANDIDATURE_COMMERCIALE_SUBTYPE,
           etape: LEAD_APPORTEUR_ETAPE,
-          origine: "saisie-manuelle",
+          origine: ORIGINE_SAISIE_MANUELLE,
           origineSaisie: d.origine,
           ...(d.ville ? { ville: d.ville } : {}),
           ...(d.note ? { note: d.note } : {}),

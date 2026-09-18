@@ -45,6 +45,7 @@ import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
 import { REFERRER_CITY_COOKIE_NAME } from "@/lib/pseo-referrer";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
+import { ENTITE_MESSAGE } from "@/lib/contact/accuse-attendu";
 
 export type UnifiedContactState = { ok: true; submissionId: string } | { ok: false; error: string };
 
@@ -110,6 +111,10 @@ function notifCategoryFor(type: UnifiedContactType): NotificationCategory {
   }
 }
 
+// 🔑 Chaque gabarit rendu ici doit figurer dans `GABARITS_ACCUSE_MESSAGE`
+// (`lib/contact/accuse-attendu.ts`), la liste où la console cherche l'accusé :
+// un test lit ce `switch` et le vérifie, sinon la console afficherait « aucun
+// accusé » sur un message bel et bien accusé.
 function emailTemplateFor(type: UnifiedContactType): EmailJobName {
   switch (type) {
     case "audit":
@@ -336,20 +341,28 @@ export async function submitUnifiedContactAction(
     }
 
     try {
-      await enqueueEmail(emailTemplateFor(data.type), data.email, locale, {
-        contactName: data.nom,
-        submissionId: submission.id,
-        // `quote-request-received` s'en sert dans sa phrase d'accroche. Sans
-        // lui, le gabarit affichait « votre demande de devis pour undefined ».
-        ...(data.companyName ? { companyName: data.companyName } : {}),
-        type: data.type,
-        subType: data.subType,
-        // Champs hérités utilisés par les templates existants (audit-confirmed,
-        // implementation-confirmed, contact-confirmed) — non bloquant si absent.
-        size: data.companySize,
-        industry: data.companySector,
-        auditType: data.subType,
-      });
+      await enqueueEmail(
+        emailTemplateFor(data.type),
+        data.email,
+        locale,
+        {
+          contactName: data.nom,
+          submissionId: submission.id,
+          // `quote-request-received` s'en sert dans sa phrase d'accroche. Sans
+          // lui, le gabarit affichait « votre demande de devis pour undefined ».
+          ...(data.companyName ? { companyName: data.companyName } : {}),
+          type: data.type,
+          subType: data.subType,
+          // Champs hérités utilisés par les templates existants (audit-confirmed,
+          // implementation-confirmed, contact-confirmed) — non bloquant si absent.
+          size: data.companySize,
+          industry: data.companySector,
+          auditType: data.subType,
+        },
+        // 🔑 L'entité liée (2026-09-18) : la fiche du message dit alors EXACTEMENT
+        // si l'accusé est parti — cf. `admin-submissions/accuse-reception.ts`.
+        { entityType: ENTITE_MESSAGE, entityId: submission.id },
+      );
     } catch (mailErr) {
       console.error("[unified-contact] enqueueEmail best-effort a échoué:", mailErr);
       Sentry.captureException(mailErr, {

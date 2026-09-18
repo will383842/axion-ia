@@ -29,6 +29,7 @@ import { encryptPii, decryptPii } from "@/lib/pii-crypto";
 import { hashIp } from "@/lib/security/ip-hash";
 import { notify } from "@/server/notifications";
 import { enqueueEmail } from "@/server/queue/queues";
+import { ENTITE_MESSAGE } from "@/lib/contact/accuse-attendu";
 import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
 import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
@@ -213,23 +214,30 @@ export async function submitRoiReportAction(
     }
 
     try {
-      await enqueueEmail("roi-report", data.email, locale, {
-        contactName: data.nom,
-        reportUrl,
-        sectorLabel,
-        headcount: report.headcount,
-        savedHoursPerYear: report.totalSavedHoursPerYear,
-        savedEurPerYear: report.totalSavedEurPerYear,
-        savedEurLow: report.totalSavedEurLow,
-        savedEurHigh: report.totalSavedEurHigh,
-        fteRecovered: report.fteRecovered,
-        topTasks: report.topTasks.map((t) => ({
-          label: t.task.labelFr,
-          hours: Math.round(t.savedHoursPerYear),
-          eur: Math.round(t.savedEurPerYear),
-          weeks: t.weeksToValue,
-        })),
-      });
+      await enqueueEmail(
+        "roi-report",
+        data.email,
+        locale,
+        {
+          contactName: data.nom,
+          reportUrl,
+          sectorLabel,
+          headcount: report.headcount,
+          savedHoursPerYear: report.totalSavedHoursPerYear,
+          savedEurPerYear: report.totalSavedEurPerYear,
+          savedEurLow: report.totalSavedEurLow,
+          savedEurHigh: report.totalSavedEurHigh,
+          fteRecovered: report.fteRecovered,
+          topTasks: report.topTasks.map((t) => ({
+            label: t.task.labelFr,
+            hours: Math.round(t.savedHoursPerYear),
+            eur: Math.round(t.savedEurPerYear),
+            weeks: t.weeksToValue,
+          })),
+        },
+        // Entité liée : la fiche du message dit EXACTEMENT si le rapport est parti.
+        { entityType: ENTITE_MESSAGE, entityId: submission.id },
+      );
     } catch (mailErr) {
       console.error("[roi-report] enqueueEmail best-effort a échoué:", mailErr);
       Sentry.captureException(mailErr, {

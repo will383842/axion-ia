@@ -29,85 +29,21 @@ import { AdminBadge } from "@/components/admin/ui";
 import { LIBELLE_EVENEMENT, LIBELLE_LIVRAISON } from "@/features/admin-job-applications/timeline";
 import type { EntreeFrise } from "@/features/admin-job-applications/timeline";
 import type { AccuseReception } from "@/features/admin-job-applications/accuse-reception";
+import { LigneAccuse } from "@/components/admin/accuse/AccuseReceptionAuto";
+import { TON_STATUT_EMAIL } from "@/features/admin-emails/statut-libelles";
 
-/** Ton du badge de livraison. Le vert ne vaut que pour une remise CONFIRMÉE. */
-const TON_LIVRAISON: Record<string, "success" | "warning" | "destructive" | "neutral"> = {
-  sent: "success",
-  pending: "warning",
-  failed: "destructive",
-  bounced: "destructive",
-};
+/**
+ * Ton du badge de livraison d'une réponse — ceux de l'écran « E-mails envoyés ».
+ * Le vert ne vaut que pour une remise CONFIRMÉE.
+ */
+const TON_LIVRAISON: Readonly<Record<string, "success" | "warning" | "destructive" | "neutral">> =
+  TON_STATUT_EMAIL;
 
 const DATE_FR = new Intl.DateTimeFormat("fr-FR", {
   timeZone: "Europe/Paris",
   dateStyle: "medium",
   timeStyle: "short",
 });
-
-/** Ton et libellé du badge de l'accusé, par état. */
-const BADGE_ACCUSE: Record<
-  AccuseReception["etat"],
-  { tone: "success" | "warning" | "destructive" | "neutral"; libelle: string }
-> = {
-  envoye: { tone: "success", libelle: "envoyé" },
-  en_attente: { tone: "warning", libelle: "en file d’envoi" },
-  echec: { tone: "destructive", libelle: "échec d’envoi" },
-  rebond: { tone: "destructive", libelle: "refusé par le destinataire" },
-  annule: { tone: "neutral", libelle: "annulé" },
-  absent: { tone: "neutral", libelle: "introuvable" },
-};
-
-function phraseAccuse(a: AccuseReception): string {
-  const le = a.date ? ` le ${DATE_FR.format(a.date)}` : "";
-  switch (a.etat) {
-    case "envoye":
-      return a.essais > 1
-        ? `L’accusé de réception automatique est parti${le}, au ${a.essais}ᵉ essai : les tentatives précédentes avaient échoué. Ce n’est pas une réponse — la candidature reste à traiter.`
-        : `L’accusé de réception automatique est parti${le}. Ce n’est pas une réponse — la candidature reste à traiter.`;
-    case "en_attente":
-      return `L’accusé de réception automatique est en file d’envoi depuis${le} : il n’est pas encore parti.`;
-    case "echec":
-      return `L’accusé de réception automatique n’est pas parti (échec${le}). Il peut être renvoyé depuis « E-mails envoyés ».`;
-    case "rebond":
-      return `L’accusé de réception automatique a été refusé par le serveur du destinataire${le} : l’adresse est peut-être erronée.`;
-    case "annule":
-      return `L’accusé de réception automatique a été annulé avant son départ.`;
-    case "absent":
-      return "Aucun accusé de réception automatique n’a été trouvé pour cette candidature : rien ne dit que le candidat a été averti de sa bonne réception.";
-  }
-}
-
-function LigneAccuse({ accuse }: { accuse: AccuseReception }): React.ReactElement {
-  const badge = BADGE_ACCUSE[accuse.etat];
-  const alerte = accuse.etat === "echec" || accuse.etat === "rebond";
-  return (
-    <li className="border-border-subtle border-l-2 pl-[var(--space-admin-4)]">
-      <div className="flex flex-wrap items-baseline gap-x-[var(--space-admin-3)]">
-        <span className="text-[length:var(--text-admin-sm)] font-semibold">
-          Accusé de réception automatique
-        </span>
-        <span className="admin-meta-small">
-          {accuse.date ? `${DATE_FR.format(accuse.date)} · ` : ""}Envoi automatique
-        </span>
-        <AdminBadge tone={badge.tone}>{badge.libelle}</AdminBadge>
-      </div>
-      {alerte ? (
-        <p role="alert" className="admin-alert admin-alert-error">
-          {phraseAccuse(accuse)}
-          {accuse.motif ? ` Motif : ${accuse.motif}` : ""}
-        </p>
-      ) : (
-        <p className="text-[length:var(--text-admin-sm)]">{phraseAccuse(accuse)}</p>
-      )}
-      {accuse.rattachement === "adresse_et_date" ? (
-        <p className="admin-meta-small">
-          Rattaché à cette candidature par l’adresse et l’heure de dépôt (envoi antérieur au lien
-          direct).
-        </p>
-      ) : null}
-    </li>
-  );
-}
 
 export function FriseCandidature({
   entrees,
