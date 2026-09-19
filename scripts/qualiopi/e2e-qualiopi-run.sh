@@ -27,8 +27,15 @@ echo "[e2e:qualiopi] 1/4 — base pgvector jetable ($CONTAINER, port $PORT)…"
 docker run -d --name "$CONTAINER" -e POSTGRES_PASSWORD=e2e -e POSTGRES_USER=e2e -e POSTGRES_DB=e2e -p "${PORT}:5432" "$IMAGE" >/dev/null
 
 echo "[e2e:qualiopi] 2/4 — attente Postgres…"
+# 🔴 `-h 127.0.0.1` : sonder en TCP, pas par la socket Unix. Pendant l'initdb,
+# l'image démarre un serveur TEMPORAIRE qui n'écoute que sur la socket, puis
+# l'arrête et relance le vrai. Sondé par la socket, `pg_isready` répondait
+# « prêt » sur ce serveur temporaire, et `prisma migrate deploy` tombait juste
+# après sur `P1001: Can't reach database server` (nuit du 2026-09-14,
+# run 34823669423). Le serveur temporaire n'écoute pas en TCP : ce sondage-ci
+# n'attend donc que le vrai.
 for i in $(seq 1 60); do
-  if docker exec "$CONTAINER" pg_isready -U e2e -d e2e >/dev/null 2>&1; then ready=1; break; fi
+  if docker exec "$CONTAINER" pg_isready -h 127.0.0.1 -U e2e -d e2e >/dev/null 2>&1; then ready=1; break; fi
   sleep 1
 done
 [ "${ready:-0}" = "1" ] || { echo "[e2e:qualiopi] ❌ Postgres timeout." >&2; exit 1; }

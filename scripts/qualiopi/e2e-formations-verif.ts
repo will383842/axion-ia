@@ -5,6 +5,7 @@
  * 1-to-1 est du conseil, hors Qualiopi.) Seede une session réelle (offre +
  * formation + session réalisée OPCO + client + 3 stagiaires inscrits présents)
  * puis fait tourner TOUTE la chaîne :
+ *   émargement au registre (créneaux + signatures, taux recalculé) →
  *   14 documents réglementaires (generateDocument + templates) → attestations
  *   (heures × taux) → factures OPCO horaire / entreprise / France Travail →
  *   conformité (22 indicateurs) → mode auditeur (manifeste) → BPF. Rend des PDF.
@@ -17,6 +18,7 @@ import { writeFileSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import React from "react";
 import { prisma } from "@/lib/prisma";
+import { redis } from "@/lib/redis";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -26,6 +28,9 @@ import { genererAttestationPourEnrollment } from "@/server/qualiopi/evaluations/
 import { evaluerConformite } from "@/server/qualiopi/conformite/conformite-service";
 import { genererManifesteAudit } from "@/server/qualiopi/conformite/audit-dossier";
 import { computeBpf } from "@/server/qualiopi/bpf/service";
+import { genererCreneaux } from "@/server/qualiopi/presence/creneaux";
+import { upsertCreneau } from "@/server/qualiopi/presence/presence-service";
+import { signerCreneau } from "@/server/qualiopi/emargement/signature-service";
 // Templates (mêmes que les Server Actions documents.ts)
 import { ConventionPdf } from "@/server/qualiopi/documents/templates/convention";
 import { ConventionTripartitePdf } from "@/server/qualiopi/documents/templates/convention-tripartite";
@@ -123,6 +128,110 @@ function assertIdentiteSemee(identite: {
   }
 }
 
+/**
+ * Journées RÉELLEMENT animées de la fixture (D14) — ce que l'admin saisit dans
+ * « Journées réellement animées » avant de générer la grille de présence.
+ */
+const JOURNEES_FIXTURE = [
+  { date: "2026-03-10", heureDebut: "09:00", heureFin: "17:00" },
+  { date: "2026-03-11", heureDebut: "09:00", heureFin: "17:00" },
+] as const;
+
+/**
+ * Émarge la session comme le fait le vrai parcours, avant toute attestation.
+ *
+ * 🔴 Ce bloc n'existait pas, et la chaîne a échoué chaque nuit depuis #1003 :
+ * la fixture posait `tauxPresencePct: 100` À LA MAIN sur l'inscription, sans une
+ * seule signature au registre ni un seul créneau. Depuis cette PR,
+ * `genererAttestationPourEnrollment` refuse une attestation sans trace
+ * d'assiduité vérifiable — signature d'émargement non révoquée, ou créneau issu
+ * d'un relevé de connexion importé — sauf motif ÉCRIT par un humain.
+ *
+ * On ne passe PAS de motif : un motif que le script se donnerait serait
+ * exactement le contournement que la garde interdit, et la chaîne cesserait de
+ * prouver que le parcours nominal produit une attestation. On fabrique à la
+ * place la vraie trace, par les MÊMES fonctions que la production :
+ *
+ * 1. `genererCreneaux` + `upsertCreneau` — ce que fait
+ *    `generateSessionCreneauxAction` (l'action exige une session admin, d'où
+ *    l'appel direct au domaine) ;
+ * 2. `signerCreneau`, porteur `formateur` — le seul écrivain de signatures du
+ *    dépôt : il scelle la chaîne d'empreintes, reporte la présence sur le
+ *    créneau et RECALCULE `tauxPresencePct`. Méthode `confirmation_accessible` :
+ *    le nom saisi remplace le tracé, donc aucune image à pousser sur R2 — que
+ *    la base jetable n'a pas.
+ *
+ * Le taux n'est plus posé à la main : il sort du recalcul. S'il ne vaut pas
+ * 100 % après émargement complet, on rougit ICI, pas trois étapes plus loin.
+ */
+async function emargerSession(input: {
+  sessionId: string;
+  trainerId: string;
+  dateDebut: Date;
+  dateFin: Date;
+  dureeTotaleHeures: number;
+  enrollments: ReadonlyArray<{ id: string; traineeNom: string; traineePrenom: string }>;
+}): Promise<{ creneaux: number; signatures: number }> {
+  const creneaux = genererCreneaux({
+    dateDebut: input.dateDebut,
+    dateFin: input.dateFin,
+    jours: JOURNEES_FIXTURE.map((j) => ({ ...j })),
+    dureeTotaleHeures: input.dureeTotaleHeures,
+  });
+  if (creneaux.length === 0) {
+    throw new Error("[e2e:qualiopi] aucun créneau généré pour la session de la fixture.");
+  }
+
+  let signatures = 0;
+  for (const e of input.enrollments) {
+    for (const c of creneaux) {
+      const creneauId = await upsertCreneau({
+        enrollmentId: e.id,
+        date: new Date(`${c.date}T00:00:00+00:00`),
+        demiJournee: c.demiJournee,
+        libelle: c.libelle,
+        dureePrevueMinutes: c.dureePrevueMinutes,
+        source: "emargement_presentiel",
+        present: false,
+        dureeRealiseeMinutes: 0,
+      });
+      // Signé pendant la demi-journée (heure de Paris = UTC+1 en mars).
+      const maintenant = new Date(
+        `${c.date}T${c.demiJournee === "matin" ? "10:00" : "15:00"}:00.000Z`,
+      );
+      const r = await signerCreneau({
+        creneauId,
+        porteur: { type: "formateur", sessionId: input.sessionId, trainerId: input.trainerId },
+        methode: "confirmation_accessible",
+        nomConfirme: `${e.traineePrenom} ${e.traineeNom}`,
+        maintenant,
+      });
+      if (!r.ok) {
+        throw new Error(
+          `[e2e:qualiopi] signature refusée pour ${e.traineePrenom} ${e.traineeNom} ` +
+            `(${c.date} ${c.demiJournee}) : ${r.raison} — ${r.message}`,
+        );
+      }
+      signatures++;
+    }
+  }
+
+  // Le recalcul du taux est best-effort dans `signerCreneau` (post-commit) : on
+  // relit ce qu'il a réellement écrit plutôt que de le supposer.
+  const lus = await prisma.enrollment.findMany({
+    where: { id: { in: input.enrollments.map((e) => e.id) } },
+    select: { id: true, tauxPresencePct: true, emargementSigneAt: true },
+  });
+  const fautifs = lus.filter((l) => l.tauxPresencePct !== 100 || l.emargementSigneAt === null);
+  if (fautifs.length > 0) {
+    throw new Error(
+      `[e2e:qualiopi] émargement complet mais présence non recalculée à 100 % : ` +
+        JSON.stringify(fautifs),
+    );
+  }
+  return { creneaux: creneaux.length, signatures };
+}
+
 async function main() {
   mkdirSync(PDF_DIR, { recursive: true });
   const report: Record<string, unknown> = {};
@@ -171,8 +280,30 @@ async function main() {
       opcoNumeroAdherent: "ADH-998877",
     },
   });
+  // Formateur affecté : son nom est figé sur chaque signature d'émargement
+  // (`signerCreneau` refuse `formateur_absent`), et c'est lui qui recueille les
+  // signatures sur son poste.
+  const trainer = await prisma.trainer.create({
+    data: {
+      nom: "Formateur",
+      prenom: "Jean",
+      email: `jean.formateur-${stamp}@axion-ia.test`,
+      statut: "sous_traitant",
+    },
+  });
   const session = await prisma.trainingSession.create({
     data: {
+      formateurPrincipalId: trainer.id,
+      sessionFormateurs: { create: [{ trainerId: trainer.id, role: "principal" }] },
+      jours: {
+        create: JOURNEES_FIXTURE.map((j) => ({
+          date: new Date(`${j.date}T00:00:00.000Z`),
+          heureDebut: j.heureDebut,
+          heureFin: j.heureFin,
+          modules: ["Module 1 — Cadrage", "Module 2 — Mise en pratique"],
+          horairesConfirmes: true,
+        })),
+      },
       numero: `AXI-SESS-${stamp}`,
       titreSession: "Maîtriser l'IA générative en équipe — session juin 2026",
       formationId: formation.id,
@@ -215,11 +346,22 @@ async function main() {
         sessionId: session.id,
         traineeId: trainee.id,
         statut: "presente",
-        tauxPresencePct: 100,
+        // Pas de `tauxPresencePct` ici : il est CALCULÉ par l'émargement
+        // ci-dessous, comme en production. Le poser à la main fabriquait une
+        // présence sans preuve — ce que refuse l'attestation depuis #1003.
       },
     });
     enrollments.push({ id: enr.id, traineeNom: t.nom, traineePrenom: t.prenom });
   }
+
+  report.emargement = await emargerSession({
+    sessionId: session.id,
+    trainerId: trainer.id,
+    dateDebut: session.dateDebut,
+    dateFin: session.dateFin,
+    dureeTotaleHeures: formation.dureeHeures,
+    enrollments,
+  });
 
   const objectifs = ["Rédiger des prompts efficaces", "Automatiser des tâches bureautiques"];
   const dD = fmt(new Date(session.dateDebut));
@@ -650,6 +792,18 @@ async function main() {
   writeFileSync(`${OUT_DIR}/e2e-formations-results.json`, JSON.stringify(report, null, 2));
   console.log(JSON.stringify(report, null, 2));
   await prisma.$disconnect();
+  // 🔴 Fermer AUSSI Redis, sinon le processus ne rend jamais la main.
+  //
+  // `signerCreneau` invalide le cache des indicateurs après chaque signature, ce
+  // qui ouvre (en paresseux) le client `@/lib/redis`. Sans serveur Redis — le
+  // cas du job nocturne —, sa `retryStrategy` se reconnecte sans fin ; avec un
+  // serveur, la socket reste ouverte. Dans les deux cas la boucle d'événements
+  // reste vivante : mesuré en local, rapport écrit puis processus pendu, seule
+  // ressource active une socket vers :6381. En CI, la chaîne aurait tenu ses
+  // 30 min de `timeout-minutes` et rougi APRÈS avoir tout produit.
+  // `disconnect()` et non `quit()` : `quit` attend une connexion qui peut ne
+  // jamais venir.
+  redis.disconnect();
 }
 
 main().catch((e) => {
