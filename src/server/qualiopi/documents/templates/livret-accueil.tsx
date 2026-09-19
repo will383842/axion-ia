@@ -21,6 +21,7 @@ import {
   DOCUMENT_RETENTION_YEARS,
   HANDICAP_PARTENAIRES,
 } from "@/server/qualiopi/legal/legal-mentions";
+import { ASSISTANCE_DISTANCE } from "@/server/qualiopi/legal/assistance-distance";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 // ============================================================
@@ -185,9 +186,17 @@ export function LivretAccueilPdf({
               "Le lien de connexion vous est communiqué par email avant la session.",
               "Merci d'activer votre caméra pendant les séquences synchrones.",
               "Un relevé de connexion automatique fait office d'émargement.",
-              "En cas de problème technique, contactez immédiatement votre référent pédagogique.",
             ]}
           />
+          {/* Assistance technique et pédagogique à distance (D.6313-3-1) — même
+              texte que la convocation : `legal/assistance-distance.ts`. Il
+              remplace « contactez immédiatement votre référent pédagogique »,
+              qui ne disait ni le canal, ni le délai, ni quoi faire si la visio
+              tombe. */}
+          <Text style={[local.bodyText, { fontWeight: "bold", marginTop: 4 }]}>
+            Assistance à distance
+          </Text>
+          <BulletList items={[...ASSISTANCE_DISTANCE]} />
         </DocSection>
 
         {/* Évaluation et attestation */}
