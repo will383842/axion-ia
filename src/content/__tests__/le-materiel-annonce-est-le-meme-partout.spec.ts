@@ -45,6 +45,12 @@
  *  - Les entrées qui parlent du matériel (`presentiel-distance`,
  *    `competences-techniques`) doivent CONTENIR la phrase et nommer les
  *    exceptions : si la phrase disparaît, le test échoue au lieu de passer à vide.
+ *  - Décision de Will du 2026-09-19 : À DISTANCE, un ordinateur avec caméra et
+ *    micro (le smartphone ne suffit pas pour la visio). Ces deux entrées doivent
+ *    le dire dans leur réponse, FR et EN ; et plus aucune entrée ne peut
+ *    affirmer que le matériel est « le même » sur place et à distance — la
+ *    phrase que la FAQ publiait jusque-là, pendant que la convocation exigeait
+ *    déjà l'ordinateur.
  *  - ⚠️ LIMITE DÉCLARÉE du balayage des fichiers (src/content, src/app,
  *    src/components, src/messages) : il ne repère que la formulation
  *    « ordinateur portable » JOINTE à « connexion internet » (avec ou sans
@@ -259,8 +265,26 @@ describe("le matériel annoncé est le même partout", () => {
       expect(en).toMatch(/smartphone or a computer/i);
       expect(en).toMatch(/AI for IT and AI for automation/);
       expect(en).toMatch(/spreadsheet/);
+      // Décision de Will du 2026-09-19 : à distance, le smartphone ne suffit
+      // pas — un ordinateur avec caméra et micro, comme le dit la convocation.
+      // Cherché dans la RÉPONSE elle-même (celle du JSON-LD), pas dans tout
+      // l'objet : un point clé seul la laisserait muette sans que rien rougisse.
+      expect(e!.fr.answer).toMatch(/à distance[^.]*un ordinateur avec caméra et micro/i);
+      expect(e!.en.answer).toMatch(/remote[^.]*a computer with a camera and a microphone/i);
     },
   );
+
+  it("aucune entrée de la FAQ ne dit que le matériel est le même sur place et à distance", () => {
+    // La phrase que la décision du 2026-09-19 a rendue fausse, et ses variantes.
+    const MEME_MATERIEL =
+      /mat[ée]riel (?:demand[ée] )?est le m[êe]me|m[êe]me mat[ée]riel|same equipment|in both cases,? participants need/i;
+    const fautives = FAQ_GLOBAL.flatMap((e) =>
+      (["fr", "en"] as const)
+        .filter((langue) => MEME_MATERIEL.test(normaliser(JSON.stringify(e[langue]))))
+        .map((langue) => `${e.id}:${langue}`),
+    );
+    expect(fautives).toEqual([]);
+  });
 
   it("aucun fichier de contenu public n'exige l'ordinateur portable hors des deux exceptions", () => {
     const racines = ["src/content", "src/app", "src/components", "src/messages"]

@@ -102,6 +102,22 @@ jobs:
     # Si ce budget redevient juste : ce n'est pas le timeout qu'il faudra
     # remonter une troisième fois, mais la couverture qu'il faudra sortir du
     # chemin critique (job dédié, non bloquant).
+    #
+    # 2026-09-19 — C'EST ARRIVÉ, ET C'EST FAIT. Gate A mesurée (started_at →
+    # completed_at du job) à 24 min 36 s sur #1112, 24 min 40 s sur #1114 et
+    # 24 min 32 s sur #1115 : moins d'une demi-minute de marge sur 25 min, à
+    # chaque PR. L'étape « Vitest (with coverage) » en prenait à elle seule
+    # 19 min 09 s à 19 min 15 s. Comme prévu ci-dessus, on n'a pas
+    # remonté le timeout : la couverture est sortie dans le job voisin
+    # `gate-a-couverture` (« Gate A · couverture »), qui tourne EN PARALLÈLE
+    # (aucun `needs`) avec les mêmes seuils. Gate A exécute toujours la suite
+    # Vitest ENTIÈRE — même périmètre, aucun test perdu — mais sans
+    # l'instrumentation V8, qui était le surcoût.
+    # ⚠️ Le seuil de couverture ne bloque une fusion que si « Gate A ·
+    # couverture » est un contexte EXIGÉ de la protection de `main`. Ce n'est
+    # pas le cas tant qu'on ne l'y a pas ajouté à la main, après la fusion de
+    # ce changement (un contexte exigé qui n'existe pas encore bloquerait
+    # toutes les PR).
     timeout-minutes: 25
     steps:
       # fetch-depth: 0 requis pour gitleaks (diff commit^..HEAD).
@@ -131,19 +147,10 @@ jobs:
         run: pnpm lint
       - name: Prettier
         run: pnpm format:check
-      # Sprint S6.3 P1-7 (2026-05-15) — coverage activé en CI (thresholds
-      # vitest.config.ts:37-43 statements/branches/functions/lines 60/55/60/60).
-      # Bloque la PR si la couverture descend sous les seuils. ~+20s overhead V8
-      # vs `vitest run` sec, acceptable pour gate-a (~15min budget total).
-      - name: Vitest (with coverage)
-        run: pnpm test:coverage
-      - name: Upload coverage report
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: coverage-${{ github.run_id }}
-          path: coverage/
-          retention-days: 7
+      # Suite Vitest entière, SANS couverture (2026-09-19). La couverture et
+      # ses seuils vivent dans le job `gate-a-couverture` ci-dessous.
+      - name: Vitest
+        run: pnpm test
       - name: i18n parity
         run: pnpm i18n:check
       - name: Anti-SIREN grep
@@ -231,6 +238,44 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           config-path: axionia/.gitleaks.toml
+
+  # 2026-09-19 — la couverture, sortie du chemin critique de Gate A (voir le
+  # commentaire du job `gate-a`). Mêmes seuils qu'avant, lus dans
+  # `coverage.thresholds` de vitest.config.ts (24/25/31/24 pour
+  # statements/branches/functions/lines au 2026-09-19 — et non les 60/55/60/60
+  # qu'annonçait l'ancien commentaire de Gate A) : le job rougit si la
+  # couverture descend dessous. Aucun `needs` : il démarre en
+  # même temps que Gate A et ne l'attend pas.
+  # Il refait l'installation et `prisma generate` : un job GitHub part d'une
+  # machine vierge, rien n'est hérité de Gate A.
+  gate-a-couverture:
+    name: Gate A · couverture
+    runs-on: ubuntu-latest
+    # Son propre budget : la suite instrumentée prenait 19 min 09 s à 19 min 15 s
+    # dans Gate A (#1112, #1114, #1115). 40 min laisse une marge réelle sans rendre un job bloqué
+    # interminable.
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Generate Prisma client
+        run: pnpm prisma:generate
+      - name: Vitest (with coverage)
+        run: pnpm test:coverage
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-${{ github.run_id }}
+          path: coverage/
+          retention-days: 7
 
   gate-b:
     name: Gate B · per-PR

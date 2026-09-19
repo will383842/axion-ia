@@ -92,17 +92,20 @@ describe("les gardes d'isolation sont appelées par la CI", () => {
     // rangée dans un job facultatif rougirait sans rien empêcher — c'est le vice
     // de `continue-on-error`, sous une autre forme.
     const debutGateA = ci.indexOf("\n  gate-a:");
-    const debutGateB = ci.indexOf("\n  gate-b:");
+    // Borné au job SUIVANT, quel qu'il soit — pas à gate-b : depuis le
+    // 2026-09-19, `gate-a-couverture` s'intercale, et une garde déplacée dans
+    // ce job facultatif doit rougir ici.
+    const finGateA = ci.indexOf("\n  gate-", debutGateA + 10);
     expect(
       debutGateA,
       `🔴 Le job « gate-a » est introuvable dans ${CI} : ce contrôle deviendrait vide.`,
     ).toBeGreaterThan(-1);
     expect(
-      debutGateB,
-      `🔴 Le job « gate-b » est introuvable dans ${CI} : impossible de borner gate-a.`,
+      finGateA,
+      `🔴 Aucun job après « gate-a » dans ${CI} : impossible de le borner.`,
     ).toBeGreaterThan(debutGateA);
 
-    const corpsGateA = ci.slice(debutGateA, debutGateB);
+    const corpsGateA = ci.slice(debutGateA, finGateA);
     for (const garde of GARDES_EXIGEES) {
       expect(
         corpsGateA,
