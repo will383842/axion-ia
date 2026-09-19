@@ -4,7 +4,7 @@
 // SAISIE MANUELLE D'UN CONTACT APPORTEUR.
 //
 // Pour l'apporteur qui écrit par e-mail, celui rencontré sur un salon, celui
-// repéré sur un site d'annonces. Aucun de ces gens ne pouvait entrer dans le
+// qui a répondu à notre annonce. Aucun de ces gens ne pouvait entrer dans le
 // système : les six chemins de création étaient tous des formulaires publics.
 //
 // ⛔ AUCUN ENVOI AUTOMATIQUE : ni confirmation, ni rappels. Une seule chose peut
@@ -66,6 +66,7 @@ interface Champs {
   note: string;
   envoyerInvitation: boolean;
   calendlyUrl: string;
+  accordContact: boolean;
 }
 
 const VIDE: Champs = {
@@ -78,6 +79,7 @@ const VIDE: Champs = {
   note: "",
   envoyerInvitation: false,
   calendlyUrl: "",
+  accordContact: false,
 };
 
 /** Une origine de saisie, réduite à ce qu'un `<option>` a besoin de savoir. */
@@ -89,9 +91,17 @@ export interface OrigineProposable {
 export function FormulaireContactManuel({
   lienFiche,
   origines,
+  originesAccordRequis,
   lienCalendlyParDefaut,
 }: {
   lienFiche: string;
+  /**
+   * Origines où l'adresse vient d'ailleurs (recommandation, autre) : la case
+   * « La personne a accepté d'être contactée » y apparaît, et l'invitation ne
+   * part pas sans elle (L.34-5 CPCE). Passées par le parent serveur, comme
+   * les origines.
+   */
+  originesAccordRequis: readonly string[];
   /** `CALENDLY_APPORTEUR_URL`, lu par le parent serveur — vide s'il n'est pas posé. */
   lienCalendlyParDefaut: string;
   /**
@@ -107,6 +117,8 @@ export function FormulaireContactManuel({
   const [erreur, setErreur] = useState<string | null>(null);
   const [doublons, setDoublons] = useState<TraceExistante[] | null>(null);
   const [cree, setCree] = useState<{ id: string; invitation?: IssueInvitation } | null>(null);
+
+  const accordRequis = originesAccordRequis.includes(c.origine);
 
   const set = (patch: Partial<Champs>) => {
     setC((p) => ({ ...p, ...patch }));
@@ -129,6 +141,7 @@ export function FormulaireContactManuel({
         ...(c.envoyerInvitation
           ? { envoyerInvitation: true, calendlyUrl: c.calendlyUrl.trim() }
           : {}),
+        ...(accordRequis && c.accordContact ? { accordContact: true } : {}),
       });
 
       if (r.ok) {
@@ -155,7 +168,12 @@ export function FormulaireContactManuel({
         <p className="flex items-center gap-2 font-medium">
           <Check className="size-4" aria-hidden /> Contact enregistré.
         </p>
-        {cree.invitation?.envoyee ? (
+        {cree.invitation?.envoyee && cree.invitation.enValidation ? (
+          <p className="text-sm">
+            <strong>Invitation en attente de validation</strong> dans Envois à valider : elle
+            partira une fois approuvée. Aucun rappel ne suivra.
+          </p>
+        ) : cree.invitation?.envoyee ? (
           <p className="text-sm">
             <strong>Invitation mise en file</strong> : lien Calendly, document de présentation et
             catalogue. Aucun rappel ne suivra.
@@ -306,6 +324,24 @@ export function FormulaireContactManuel({
           Un e-mail avec le lien de réservation Calendly, le document de présentation et le
           catalogue. Aucun rappel ne suit.
         </p>
+        {accordRequis ? (
+          <div className="flex flex-col gap-1">
+            <label className="admin-checkbox-label" htmlFor="cm-accord">
+              <input
+                id="cm-accord"
+                type="checkbox"
+                checked={c.accordContact}
+                onChange={(e) => set({ accordContact: e.target.checked })}
+              />{" "}
+              La personne a accepté d&apos;être contactée
+            </label>
+            <p className="admin-help">
+              L&apos;adresse vient d&apos;ailleurs : l&apos;invitation ne part que si la personne a
+              accepté d&apos;être contactée. Le message lui dira d&apos;où vient son adresse et
+              quels sont ses droits.
+            </p>
+          </div>
+        ) : null}
         {c.envoyerInvitation ? (
           <div className="flex flex-col gap-1.5">
             <label className={LABEL} htmlFor="cm-calendly">
@@ -370,7 +406,8 @@ export function FormulaireContactManuel({
             envoi ||
             !c.prenom.trim() ||
             !c.email.trim() ||
-            (c.envoyerInvitation && !c.calendlyUrl.trim())
+            (c.envoyerInvitation && !c.calendlyUrl.trim()) ||
+            (c.envoyerInvitation && accordRequis && !c.accordContact)
           }
           onClick={() => void envoyer(false)}
         >

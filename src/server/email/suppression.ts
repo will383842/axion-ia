@@ -32,122 +32,23 @@
 // journalisé en erreur pour ne pas être silencieux — c'est la seule chose qu'on
 // puisse honnêtement faire ici.
 
-import { prisma } from "@/lib/prisma";
-import { hashEmailForLookup } from "@/lib/security/email-hash";
+// 🔑 2026-09-19 — le VERDICT vit désormais dans `verdict-envoi.ts`, module pur
+// (base + empreinte, rien d'autre), pour que le worker d'e-mails puisse relire
+// l'opposition au départ sans charger ce fichier : `signalerRetenue`, ci-dessous,
+// importe paresseusement un service qui tire `next-auth` et `next/headers`.
+// Ce module le RÉEXPORTE à l'identique — mêmes références — et aucun appelant
+// existant ne change. Le worker, lui, importe `verdict-envoi` directement.
 
-export type MotifRetenue = "rebond_dur" | "desabonne" | "oppose";
+import type { VerdictEnvoi } from "./verdict-envoi";
 
-export type VerdictEnvoi =
-  | { readonly retenu: false }
-  | { readonly retenu: true; readonly motif: MotifRetenue; readonly depuis: Date | null };
-
-/**
- * Gabarits marketing qui passent MALGRÉ un désabonnement : la confirmation de
- * double opt-in est la porte par laquelle on se réabonne. La retenir rendrait
- * le désabonnement irréversible.
- */
-export const GABARITS_EXEMPTES_DU_DESABONNEMENT: ReadonlySet<string> = new Set([
-  "newsletter-confirm-optin",
-]);
-
-/**
- * 🔴 2026-09-19 — Sollicitations du réseau d'apporteurs : non marketing, mais
- * soumises à l'OPPOSITION.
- *
- * Les relances « ton dossier t'attend » (J+2, J+7) et l'invitation à l'échange
- * de 15 minutes partent en famille B, sans le drapeau `marketing` : elles
- * répondent à une démarche de la personne, pas à une campagne. Or l'opposition
- * n'était lue QUE pour le marketing — une personne qui avait cliqué « ne plus
- * me solliciter » recevait donc encore relances et invitation, alors que la
- * page d'opposition lui affirme le contraire. Relevé par l'audit du 19/09.
- *
- * Ces gabarits honorent donc l'opposition (et seulement elle : un
- * désabonnement de la NEWSLETTER n'est pas un refus d'être recontacté au sujet
- * d'une candidature). L'accusé immédiat d'une démarche (`lead-apporteur-recu`,
- * `candidature-commercial-confirmee`) n'y est pas : une personne qui dépose un
- * nouveau dossier après s'être opposée reprend elle-même contact.
- */
-export const GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION: ReadonlySet<string> = new Set([
-  "lead-apporteur-relance",
-  "apporteur-invitation-appel",
-]);
-
-function estStub(): boolean {
-  return process.env["DATABASE_URL"]?.includes("stub.invalid") === true;
-}
-
-export interface ContexteEnvoi {
-  readonly template: string;
-  readonly marketing: boolean;
-}
-
-export async function verdictAvantEnvoi(
-  destinataire: string,
-  contexte: ContexteEnvoi,
-): Promise<VerdictEnvoi> {
-  if (estStub()) return { retenu: false };
-  const adresse = destinataire.trim();
-  if (adresse === "") return { retenu: false };
-
-  try {
-    // `recipient` est en citext : l'égalité est insensible à la casse.
-    const rebond = await prisma.emailLog.findFirst({
-      where: { recipient: adresse, status: "bounced", bounceType: "hard" },
-      orderBy: { bouncedAt: "desc" },
-      select: { bouncedAt: true },
-    });
-    if (rebond !== null) {
-      return { retenu: true, motif: "rebond_dur", depuis: rebond.bouncedAt };
-    }
-  } catch (e) {
-    console.error(
-      `[email-suppression] lecture des rebonds impossible pour ${adresse} — envoi maintenu :`,
-      e instanceof Error ? e.message : String(e),
-    );
-  }
-
-  const marketing =
-    contexte.marketing && !GABARITS_EXEMPTES_DU_DESABONNEMENT.has(contexte.template);
-  const sollicitation = GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION.has(contexte.template);
-  if (marketing || sollicitation) {
-    try {
-      // Le désabonnement newsletter ne vaut que pour le marketing.
-      if (marketing) {
-        const abonne = await prisma.newsletterSubscriber.findUnique({
-          where: { email: adresse },
-          select: { status: true, unsubscribedAt: true },
-        });
-        if (abonne?.status === "unsubscribed") {
-          return { retenu: true, motif: "desabonne", depuis: abonne.unsubscribedAt };
-        }
-      }
-      // Lot 1b : l'opposition à la prospection, exprimée depuis n'importe quel
-      // e-mail, retient les envois marketing au même titre que le désabonnement.
-      // Lecture DIRECTE : `opposition.ts` tire la synchronisation CRM, qui tire
-      // les files, qui tirent ce module — un cycle, et une chaîne d'imports qui
-      // n'a rien à faire sur le chemin d'enfilage. La table ne porte que
-      // l'empreinte de recherche : aucune adresse lisible n'y dort.
-      const empreinte = hashEmailForLookup(adresse);
-      const opposition =
-        empreinte === null
-          ? null
-          : await prisma.emailOpposition.findUnique({
-              where: { emailHash: empreinte },
-              select: { id: true },
-            });
-      if (opposition !== null) {
-        return { retenu: true, motif: "oppose", depuis: null };
-      }
-    } catch (e) {
-      console.error(
-        `[email-suppression] lecture du désabonnement impossible pour ${adresse} — envoi maintenu :`,
-        e instanceof Error ? e.message : String(e),
-      );
-    }
-  }
-
-  return { retenu: false };
-}
+export {
+  GABARITS_EXEMPTES_DU_DESABONNEMENT,
+  GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION,
+  VARIANTE_KIT_DIFFERE,
+  estSollicitationSoumiseAOpposition,
+  verdictAvantEnvoi,
+} from "./verdict-envoi";
+export type { ContexteEnvoi, MotifRetenue, VerdictEnvoi } from "./verdict-envoi";
 
 /**
  * Trace visible d'un envoi retenu. Deux canaux, aucun des deux n'échoue
@@ -177,9 +78,15 @@ export async function signalerRetenue(
         `Corriger l'adresse dans la fiche concernée (client, stagiaire, candidat), puis ré-émettre l'envoi ` +
         `depuis son écran d'origine. Tant que l'adresse n'est pas corrigée, cette personne ne recevra ` +
         `ni convocation, ni attestation, ni facture.`
-      : `« ${template} » n'est pas parti vers ${destinataire}${quand} : cette personne a retiré son ` +
-        `consentement newsletter. Un envoi marketing vers un désabonné est une plainte pour spam en ` +
-        `puissance, et la plainte abîme le domaine pour tous les flux. Aucune action : le retrait est honoré.`;
+      : // 2026-09-19 — l'opposition avait le texte du désabonnement newsletter :
+        // la console expliquait un refus de sollicitation par un retrait de
+        // consentement qui n'avait pas eu lieu.
+        verdict.motif === "oppose"
+        ? `« ${template} » n'est pas parti vers ${destinataire}${quand} : la personne s'est opposée aux ` +
+          `sollicitations ; aucune action, l'opposition est honorée.`
+        : `« ${template} » n'est pas parti vers ${destinataire}${quand} : cette personne a retiré son ` +
+          `consentement newsletter. Un envoi marketing vers un désabonné est une plainte pour spam en ` +
+          `puissance, et la plainte abîme le domaine pour tous les flux. Aucune action : le retrait est honoré.`;
   try {
     // 🔴 Import DYNAMIQUE, jamais statique : `alertes-service` tire son
     // évaluateur, qui tire `next-auth` → `next/server`. Ce module est importé par

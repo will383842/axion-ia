@@ -232,3 +232,33 @@ describe("signalerRetenue", () => {
     expect(console.error).toHaveBeenCalled();
   });
 });
+
+describe("2026-09-19 — le verdict vit dans un module pur, `suppression.ts` le réexporte", () => {
+  it("réexporte les MÊMES références (aucun appelant ne change)", async () => {
+    const pur = await import("./verdict-envoi");
+    const reexport = await import("./suppression");
+    expect(reexport.verdictAvantEnvoi).toBe(pur.verdictAvantEnvoi);
+    expect(reexport.estSollicitationSoumiseAOpposition).toBe(
+      pur.estSollicitationSoumiseAOpposition,
+    );
+    expect(reexport.GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION).toBe(
+      pur.GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION,
+    );
+    expect(reexport.GABARITS_EXEMPTES_DU_DESABONNEMENT).toBe(
+      pur.GABARITS_EXEMPTES_DU_DESABONNEMENT,
+    );
+  });
+
+  it("🔴 une retenue pour OPPOSITION dit l'opposition, pas le désabonnement newsletter", async () => {
+    await signalerRetenue("oppose@exemple.fr", "lead-apporteur-relance", {
+      retenu: true,
+      motif: "oppose",
+      depuis: null,
+    });
+    const alerte = creerOuDedup.mock.calls[0]![0] as Record<string, unknown>;
+    const message = String(alerte["message"]);
+    expect(message).toContain("s'est opposée aux sollicitations");
+    expect(message).toContain("aucune action");
+    expect(message.toLowerCase()).not.toContain("newsletter");
+  });
+});

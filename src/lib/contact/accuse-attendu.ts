@@ -47,9 +47,10 @@ export function absenceVoulue(details: { origine?: string | null }): string | nu
   switch (details.origine) {
     // `capture-actions.ts` : écrire « c'est noté » au milieu du dossier dirait à
     // la personne qu'elle peut s'arrêter. L'accusé part à la soumission
-    // complète ; seuls les rappels J+2 / J+7 partent avant.
+    // complète ; avant, seuls partent le kit (30 min après, si le dossier n'est
+    // pas terminé — 2026-09-19) et les rappels J+2 / J+7.
     case ORIGINE_ECRAN_1_DOSSIER:
-      return "Aucun accusé, et c’est voulu : contact enregistré à l’écran 1 du dossier, l’accusé part quand le dossier complet arrive.";
+      return "Pas d’accusé immédiat : le kit part 30 min après si le dossier n’est pas terminé, l’accusé part avec le dossier complet.";
     // `saisie-manuelle-actions.ts` : la ligne est saisie dans la console, pas
     // déposée par la personne.
     case ORIGINE_SAISIE_MANUELLE:

@@ -89,11 +89,13 @@ describe("enqueueEmail — liste de suppression", () => {
     expect(doublures.verdict).toHaveBeenCalledWith("x@client.fr", {
       template: "newsletter-confirm-optin",
       marketing: true,
+      sollicitation: false,
     });
     await enqueueEmail("facture-envoi", "y@client.fr", "fr", {});
     expect(doublures.verdict).toHaveBeenLastCalledWith("y@client.fr", {
       template: "facture-envoi",
       marketing: false,
+      sollicitation: false,
     });
   });
 

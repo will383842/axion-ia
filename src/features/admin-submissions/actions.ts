@@ -196,6 +196,46 @@ export async function eraseSubmissionAction(
 
   const ip = await getClientIp();
 
+  // 🔴 2026-09-19 — L'ADRESSE EN CLAIR, LUE AVANT D'EFFACER.
+  //
+  // Deux usages, et les deux étaient impossibles après coup :
+  //   · retirer les envois programmés (relances J+2 / J+7, kit du dossier
+  //     commencé) — des jobs retardés retrouvés par l'EMPREINTE de l'adresse.
+  //     Une fois la ligne supprimée, plus rien ne les relie à la personne : ils
+  //     partaient vers quelqu'un qui venait d'obtenir l'effacement ;
+  //   · l'empreinte d'audit, qui était calculée sur le texte CHIFFRÉ (IV
+  //     aléatoire) : elle ne permettait jamais de prouver sur quelle adresse
+  //     l'effacement avait porté.
+  // `decryptPii` rend la valeur telle quelle pour une ligne ancienne non
+  // chiffrée ; s'il échoue, on garde le texte stocké (comportement antérieur).
+  const avant = await prisma.submission.findUnique({
+    where: { id: parsed.data.id },
+    select: { contactEmail: true },
+  });
+  let adresseClaire: string | null = null;
+  if (avant) {
+    try {
+      adresseClaire = decryptPii(avant.contactEmail);
+    } catch (err) {
+      Sentry.captureException(err, { tags: { action: "eraseSubmissionAction", step: "pii" } });
+    }
+  }
+  if (adresseClaire) {
+    try {
+      // Import dynamique : le module des relances tire les files BullMQ, que
+      // les autres actions de ce fichier n'ont pas à charger.
+      const { annulerRelancesLeadApporteur } =
+        await import("@/features/commercial-application/relances-lead-apporteur");
+      await annulerRelancesLeadApporteur(adresseClaire, "Envoi annulé : effacement RGPD.");
+    } catch (err) {
+      // Best-effort : l'effacement ne doit jamais attendre une file. Le filet
+      // du worker retient de toute façon un envoi vers une fiche effacée.
+      Sentry.captureException(err, {
+        tags: { action: "eraseSubmissionAction", step: "annuler-relances" },
+      });
+    }
+  }
+
   await prisma.$transaction(async (tx) => {
     const sub = await tx.submission.findUnique({
       where: { id: parsed.data.id },
@@ -207,7 +247,7 @@ export async function eraseSubmissionAction(
 
     // Activity log RGPD : on ne re-stocke pas l'email supprimé en clair, on
     // conserve uniquement le hash + reason + targetId pour traçabilité.
-    const emailHash = await hashEmailForAudit(sub.contactEmail);
+    const emailHash = await hashEmailForAudit(adresseClaire ?? sub.contactEmail);
     await tx.activityLog.create({
       data: {
         adminUserId: session.user.id,

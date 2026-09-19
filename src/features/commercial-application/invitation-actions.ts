@@ -32,12 +32,38 @@ async function adminAutorise(): Promise<string | null> {
 const schema = z.object({
   submissionId: z.string().uuid(),
   calendlyUrl: z.string().trim().max(500),
+  /** « Renvoyer quand même » — case HTML : `on` si cochée, absente sinon. */
+  renvoyer: z.enum(["on"]).optional(),
+  /** « La personne a accepté d'être contactée » (recommandation, autre). */
+  accordContact: z.enum(["on"]).optional(),
 });
 
+/** Une case HTML décochée n'est pas envoyée : `null` devient « absente ». */
+function caseCochee(formData: FormData, nom: string): string | undefined {
+  const v = formData.get(nom);
+  return typeof v === "string" ? v : undefined;
+}
+
 export async function envoyerInvitationDepuisFicheAction(formData: FormData): Promise<void> {
+  // 🔴 2026-09-19 — UNE PERSONNE À LA FOIS, vérifié AVANT toute lecture.
+  // `formData.get` ne lit que la première valeur : un formulaire qui porterait
+  // plusieurs fiches (forgé, ou un futur écran de sélection) en inviterait une
+  // seule en laissant croire à l'administrateur qu'il les a toutes invitées.
+  const ids = formData.getAll("submissionId");
+  if (ids.length !== 1) {
+    const premier = ids[0];
+    const ficheOuListe =
+      typeof premier === "string" && z.string().uuid().safeParse(premier).success
+        ? adminPath("fr", `contacts/commercial/${premier}`)
+        : adminPath("fr", "contacts/commercial");
+    redirect(`${ficheOuListe}?invitation=une-seule-personne#invitation`);
+  }
+
   const parsed = schema.safeParse({
     submissionId: formData.get("submissionId"),
     calendlyUrl: formData.get("calendlyUrl") ?? "",
+    renvoyer: caseCochee(formData, "renvoyer"),
+    accordContact: caseCochee(formData, "accordContact"),
   });
   // Sans identifiant valide, il n'y a pas de fiche où revenir : retour à la liste.
   if (!parsed.success) redirect(adminPath("fr", "contacts/commercial"));
@@ -51,8 +77,15 @@ export async function envoyerInvitationDepuisFicheAction(formData: FormData): Pr
     submissionId: parsed.data.submissionId,
     calendlyUrl: parsed.data.calendlyUrl,
     adminId,
+    renvoyer: parsed.data.renvoyer === "on",
+    accordContact: parsed.data.accordContact === "on",
   });
 
+  const code = resultat.ok
+    ? resultat.enValidation
+      ? "en-validation"
+      : "envoyee"
+    : resultat.erreur;
   revalidatePath(fiche);
-  redirect(`${fiche}?invitation=${resultat.ok ? "envoyee" : resultat.erreur}#invitation`);
+  redirect(`${fiche}?invitation=${code}#invitation`);
 }

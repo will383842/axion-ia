@@ -5,7 +5,7 @@
 // ou le chatbot. Aucun écran de la console ne permettait d'en saisir un.
 //
 // Conséquence : l'apporteur qui écrit par e-mail, celui rencontré sur un salon,
-// celui repéré sur un site d'annonces — aucun ne pouvait entrer dans le
+// celui qui a répondu à notre annonce — aucun ne pouvait entrer dans le
 // système. On ne pouvait que lui envoyer un lien et espérer qu'il le remplisse.
 //
 // ── Trois règles, et elles ne sont pas négociables ────────────────────────
@@ -47,6 +47,8 @@ import { adminPath } from "@/lib/admin-path";
 import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
 import { LEAD_APPORTEUR_ETAPE } from "@/lib/commercial-application/lead-apporteur";
 import {
+  ORIGINE_INTERDITE,
+  ORIGINES_ACCORD_REQUIS,
   saisieManuelleSchema,
   type IssueInvitation,
   type SaisieState,
@@ -129,6 +131,30 @@ export async function creerContactManuelAction(payload: unknown): Promise<Saisie
   }
   const d = parsed.data;
 
+  // 🔴 2026-09-19 — art. 14 RGPD et L.34-5 CPCE. Une adresse relevée sur
+  // l'annonce d'un TIERS n'a pas été donnée à Axion-IA : on ne l'enregistre pas
+  // (l'option n'est plus proposée, mais un formulaire ancien ou forgé peut
+  // encore l'envoyer). Rien n'est écrit.
+  if (d.origine === ORIGINE_INTERDITE) {
+    return {
+      ok: false,
+      erreur: "champs-invalides",
+      message:
+        "Une adresse relevée sur l'annonce d'un tiers ne s'enregistre pas : la personne ne nous l'a pas donnée.",
+    };
+  }
+  // Adresse venue d'ailleurs (recommandation, autre) : l'invitation n'est
+  // possible que si l'administrateur atteste que la personne a accepté d'être
+  // contactée. Vérifié AVANT d'écrire, comme le lien.
+  if (d.envoyerInvitation && ORIGINES_ACCORD_REQUIS.includes(d.origine) && !d.accordContact) {
+    return {
+      ok: false,
+      erreur: "champs-invalides",
+      message:
+        "Pour inviter une personne dont l'adresse vient d'ailleurs, coche « La personne a accepté d'être contactée ».",
+    };
+  }
+
   // Le lien se vérifie AVANT d'écrire : une invitation demandée avec un lien
   // faux ne doit pas laisser une fiche créée et un envoi raté derrière elle.
   if (d.envoyerInvitation && !estLienCalendlyValide(d.calendlyUrl ?? "")) {
@@ -172,6 +198,12 @@ export async function creerContactManuelAction(payload: unknown): Promise<Saisie
           origineSaisie: d.origine,
           ...(d.ville ? { ville: d.ville } : {}),
           ...(d.note ? { note: d.note } : {}),
+          // L'accord ATTESTÉ par l'administrateur, daté. Ce n'est pas un
+          // consentement de la personne (voir la ligne suivante) : c'est la
+          // trace que quelqu'un a affirmé qu'elle acceptait d'être contactée.
+          ...(ORIGINES_ACCORD_REQUIS.includes(d.origine) && d.accordContact
+            ? { accordContactAt: new Date().toISOString() }
+            : {}),
           // 🔴 Le FAIT, écrit noir sur blanc : cette personne n'a rien accepté.
           // Fabriquer un `optin` qui n'a pas eu lieu serait pire que l'absence.
           consentement: "aucun — contact saisi par un administrateur",
@@ -209,7 +241,9 @@ export async function creerContactManuelAction(payload: unknown): Promise<Saisie
           calendlyUrl: d.calendlyUrl,
           adminId,
         });
-        invitation = r.ok ? { envoyee: true } : { envoyee: false, message: r.message };
+        invitation = r.ok
+          ? { envoyee: true, ...(r.enValidation ? { enValidation: true as const } : {}) }
+          : { envoyee: false, message: r.message };
       } catch (err) {
         // La fiche EST écrite : ne pas laisser l'écran dire « l'enregistrement
         // a échoué » pour un envoi raté.

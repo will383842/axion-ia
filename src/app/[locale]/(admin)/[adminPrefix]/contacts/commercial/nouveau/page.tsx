@@ -5,7 +5,7 @@
  *
  * Six chemins créaient un contact, et tous les six étaient des formulaires
  * publics ou le chatbot. L'apporteur qui écrit par e-mail, celui rencontré sur
- * un salon, celui repéré sur un site d'annonces : aucun ne pouvait entrer dans
+ * un salon, celui qui a répondu à notre annonce : aucun ne pouvait entrer dans
  * le système. On ne pouvait que lui envoyer un lien et espérer.
  *
  * ## Trois règles, portées par l'action serveur
@@ -29,7 +29,10 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { FormulaireContactManuel } from "@/components/admin/campagnes/FormulaireContactManuel";
 import { adminPath } from "@/lib/admin-path";
-import { ORIGINES_SAISIE } from "@/lib/commercial-application/saisie-manuelle";
+import {
+  ORIGINES_ACCORD_REQUIS,
+  ORIGINES_SAISIE,
+} from "@/lib/commercial-application/saisie-manuelle";
 import { env } from "@/env";
 
 // 🔴 RÉDUIT ICI, dans un composant SERVEUR. `saisie-manuelle.ts` porte le schéma
@@ -42,7 +45,13 @@ import { env } from "@/env";
 // (700,49 Ko contre 700) : zod entre déjà dans le paquet du navigateur par les
 // formulaires publics. Cf. le commentaire détaillé en tête de
 // `FormulaireContactManuel.tsx`.
-const ORIGINES_PROPOSABLES = ORIGINES_SAISIE.map((o) => ({ id: o.id, libelle: o.libelle }));
+//
+// 2026-09-19 — les origines MASQUÉES (adresse relevée sur l'annonce d'un tiers)
+// ne sont plus proposées : l'action les refuse de toute façon.
+const ORIGINES_PROPOSABLES = ORIGINES_SAISIE.filter((o) => !o.masquee).map((o) => ({
+  id: o.id,
+  libelle: o.libelle,
+}));
 
 export const dynamic = "force-dynamic";
 
@@ -76,6 +85,7 @@ export default async function NouveauContactPage({ params }: PageProps) {
         <FormulaireContactManuel
           lienFiche={adminPath("fr", "contacts/commercial")}
           origines={ORIGINES_PROPOSABLES}
+          originesAccordRequis={ORIGINES_ACCORD_REQUIS}
           lienCalendlyParDefaut={env.CALENDLY_APPORTEUR_URL ?? ""}
         />
       </AdminCard>

@@ -5,15 +5,28 @@
 // Server Action, qui redirige vers la fiche avec `?invitation=<résultat>`.
 //
 // Il dit, dans l'ordre : ce que l'e-mail contient, si une invitation est déjà
-// partie (lu dans le JOURNAL DES ENVOIS, pas dans une intention), et le
+// partie ou attend validation (lu dans le JOURNAL DES ENVOIS et la corbeille,
+// sur TOUTES les lignes de la personne — pas dans une intention), et le
 // résultat du dernier geste. Le lien Calendly est pré-rempli par
 // `CALENDLY_APPORTEUR_URL` et reste modifiable.
+//
+// 2026-09-19 — deux cases, sans JavaScript :
+//   · « Renvoyer quand même », seulement si une invitation existe déjà : sans
+//     elle, un second clic est refusé (jamais deux invitations par mégarde) ;
+//   · « La personne a accepté d'être contactée », seulement pour une adresse
+//     venue d'ailleurs (recommandation, autre) dont l'accord n'est pas encore
+//     daté sur la fiche (L.34-5 CPCE).
 
 import { envoyerInvitationDepuisFicheAction } from "@/features/commercial-application/invitation-actions";
 import {
-  lireInvitationsEnvoyees,
+  lireInvitationsDeLaPersonne,
   type InvitationEnvoyee,
 } from "@/features/commercial-application/invitation-apporteur";
+import {
+  ORIGINE_INTERDITE,
+  ORIGINES_ACCORD_REQUIS,
+} from "@/lib/commercial-application/saisie-manuelle";
+import { ORIGINE_SAISIE_MANUELLE } from "@/lib/contact/accuse-attendu";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { env } from "@/env";
 
@@ -24,13 +37,37 @@ const RESULTATS: Record<string, { ton: "success" | "error"; texte: string }> = {
     texte:
       "Invitation mise en file : elle part dans la minute, avec le document de présentation et le catalogue.",
   },
+  "en-validation": {
+    ton: "success",
+    texte:
+      "Invitation en attente de validation dans Envois à valider : elle partira une fois approuvée.",
+  },
+  "deja-invitee": {
+    ton: "error",
+    texte:
+      "Rien n'est parti : une invitation est déjà partie (ou attend validation) pour cette personne. Coche « Renvoyer quand même » pour la renvoyer.",
+  },
+  "origine-interdite": {
+    ton: "error",
+    texte: "Rien n'est parti : adresse relevée sur l'annonce d'un tiers, pas d'invitation.",
+  },
+  "accord-manquant": {
+    ton: "error",
+    texte:
+      "Rien n'est parti : l'adresse vient d'ailleurs. Coche « La personne a accepté d'être contactée » pour l'inviter.",
+  },
+  "une-seule-personne": {
+    ton: "error",
+    texte: "Rien n'est parti : une invitation s'envoie à une seule personne à la fois.",
+  },
   "lien-invalide": {
     ton: "error",
     texte: "Rien n'est parti : le lien doit être une adresse https://calendly.com/… complète.",
   },
   retenu: {
     ton: "error",
-    texte: "Rien n'est parti : cette adresse est retenue (désinscription ou adresse en erreur).",
+    texte:
+      "Rien n'est parti : cette adresse est retenue (désinscription, opposition ou adresse en erreur).",
   },
   "file-indisponible": {
     ton: "error",
@@ -51,26 +88,37 @@ const RESULTATS: Record<string, { ton: "success" | "error"; texte: string }> = {
   },
 };
 
-/** Le statut du journal, en mots. */
-function statutLisible(s: string): string {
-  if (s === "sent") return "envoyée";
-  if (s === "failed") return "en échec";
-  if (s === "bounced") return "adresse en erreur";
-  if (s === "cancelled") return "annulée";
-  return "en cours d'envoi";
+/** Une invitation, en mots : « Déjà invité le … » ou « En attente de validation ». */
+function ligneHistorique(e: InvitationEnvoyee): string {
+  if (e.statut === "a_valider") {
+    return `En attente de validation depuis le ${formatDateFrShort(e.le)}`;
+  }
+  if (e.statut === "pending") return `Déjà invité le ${formatDateFrShort(e.le)} (en cours d'envoi)`;
+  return `Déjà invité le ${formatDateFrShort(e.le)}`;
 }
 
 export async function BlocInvitationApporteur({
   submissionId,
   resultat,
+  details,
 }: {
   submissionId: string;
   /** Valeur de `?invitation=` après un envoi, s'il y en a eu un. */
   resultat?: string | undefined;
+  /** `details` de la fiche : origine d'une saisie manuelle et accord déjà daté. */
+  details?: Record<string, unknown> | null | undefined;
 }) {
-  const envoyees: InvitationEnvoyee[] = await lireInvitationsEnvoyees(submissionId);
+  const invitations: InvitationEnvoyee[] = await lireInvitationsDeLaPersonne(submissionId);
   const lienParDefaut = env.CALENDLY_APPORTEUR_URL ?? "";
   const retour = resultat ? RESULTATS[resultat] : undefined;
+
+  const saisieManuelle = details?.["origine"] === ORIGINE_SAISIE_MANUELLE;
+  const origine = typeof details?.["origineSaisie"] === "string" ? details["origineSaisie"] : "";
+  const origineInterdite = saisieManuelle && origine === ORIGINE_INTERDITE;
+  const accordADemander =
+    saisieManuelle &&
+    ORIGINES_ACCORD_REQUIS.includes(origine) &&
+    typeof details?.["accordContactAt"] !== "string";
 
   return (
     <div className="admin-card admin-card-wide" id="invitation">
@@ -94,35 +142,48 @@ export async function BlocInvitationApporteur({
         </p>
       ) : null}
 
-      {envoyees.length > 0 ? (
-        <p className="admin-help">
-          Invitation déjà envoyée :{" "}
-          {envoyees
-            .map((e) => `${formatDateFrShort(e.le)} (${statutLisible(e.statut)})`)
-            .join(" · ")}
-        </p>
+      {invitations.length > 0 ? (
+        <p className="admin-help">{invitations.map(ligneHistorique).join(" · ")}</p>
       ) : null}
 
-      <form action={envoyerInvitationDepuisFicheAction} className="admin-form-row">
-        <input type="hidden" name="submissionId" value={submissionId} />
-        <div className="admin-field">
-          <label htmlFor="calendlyUrl" className="admin-label">
-            Lien Calendly de l&apos;échange (15 min)
-          </label>
-          <input
-            id="calendlyUrl"
-            name="calendlyUrl"
-            type="url"
-            required
-            defaultValue={lienParDefaut}
-            placeholder="https://calendly.com/axion-ia/echange-apporteur"
-            className="admin-input"
-          />
-        </div>
-        <button type="submit" className="admin-button">
-          {envoyees.length > 0 ? "Renvoyer l'invitation" : "Envoyer l'invitation"}
-        </button>
-      </form>
+      {origineInterdite ? (
+        <p className="admin-alert admin-alert-error">
+          Adresse relevée sur l&apos;annonce d&apos;un tiers : pas d&apos;invitation. La personne ne
+          nous a pas donné son adresse.
+        </p>
+      ) : (
+        <form action={envoyerInvitationDepuisFicheAction} className="admin-form-row">
+          <input type="hidden" name="submissionId" value={submissionId} />
+          <div className="admin-field">
+            <label htmlFor="calendlyUrl" className="admin-label">
+              Lien Calendly de l&apos;échange (15 min)
+            </label>
+            <input
+              id="calendlyUrl"
+              name="calendlyUrl"
+              type="url"
+              required
+              defaultValue={lienParDefaut}
+              placeholder="https://calendly.com/axion-ia/echange-apporteur"
+              className="admin-input"
+            />
+          </div>
+          {accordADemander ? (
+            <label className="admin-checkbox-label" htmlFor="accordContact">
+              <input id="accordContact" name="accordContact" type="checkbox" value="on" required />{" "}
+              La personne a accepté d&apos;être contactée
+            </label>
+          ) : null}
+          {invitations.length > 0 ? (
+            <label className="admin-checkbox-label" htmlFor="renvoyer">
+              <input id="renvoyer" name="renvoyer" type="checkbox" value="on" /> Renvoyer quand même
+            </label>
+          ) : null}
+          <button type="submit" className="admin-button">
+            {invitations.length > 0 ? "Renvoyer l'invitation" : "Envoyer l'invitation"}
+          </button>
+        </form>
+      )}
     </div>
   );
 }

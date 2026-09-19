@@ -24,9 +24,81 @@ import { renderEmailTemplate } from "@/lib/email/templates";
 import { jetonOpposition } from "@/server/email/opposition-jeton";
 import { prisma } from "@/lib/prisma";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
-import { cloturerJournal, noterTentativeEchouee } from "@/server/email/email-log";
+import { cloturerJournal, marquerAnnule, noterTentativeEchouee } from "@/server/email/email-log";
+// 🔴 `verdict-envoi`, JAMAIS `suppression` : ce dernier importe paresseusement
+// un service qui tire `next-auth` et `next/headers`. Sous `tsx`, hors de Next,
+// tous les e-mails du site mourraient au premier départ. Gardé par
+// `__tests__/email-worker.opposition.graphe-worker.spec.ts`.
+import {
+  estSollicitationSoumiseAOpposition,
+  verdictAvantEnvoi,
+} from "@/server/email/verdict-envoi";
 import { EmailLogStatus } from "../../../../prisma/generated/client";
 import type { EmailJobData, EmailJobName } from "../types";
+
+/**
+ * La fiche liée au job a-t-elle disparu depuis l'enfilage ? Absente, en
+ * corbeille, ou effacée au titre de l'art. 17 (adresse synthétique
+ * `…@erased.local`) : écrire serait écrire à une personne qui a demandé
+ * l'oubli, ou à une adresse qui n'existe pas.
+ *
+ * Base injoignable : `null` — on ne SAIT pas, et l'appelant laisse partir
+ * (échec ouvert, assumé comme pour le verdict, et bruyant).
+ */
+async function ficheEffacee(submissionId: string): Promise<boolean | null> {
+  try {
+    const ligne = await prisma.submission.findUnique({
+      where: { id: submissionId },
+      select: { deletedAt: true, contactEmail: true },
+    });
+    if (ligne === null || ligne.deletedAt !== null) return true;
+    let adresse: string | null = null;
+    try {
+      adresse = decryptPii(ligne.contactEmail);
+    } catch {
+      adresse = null;
+    }
+    return typeof adresse === "string" && adresse.endsWith("@erased.local");
+  } catch (e) {
+    console.error(
+      `[email-worker] lecture de la fiche ${submissionId} impossible — envoi maintenu :`,
+      e instanceof Error ? e.message : String(e),
+    );
+    return null;
+  }
+}
+
+/**
+ * 🔴 2026-09-19 — LE FILET DU DÉPART, pour les sollicitations du réseau
+ * d'apporteurs (relances J+2 / J+7, invitation, kit du dossier commencé).
+ *
+ * Ce sont des jobs RETARDÉS : `enqueueEmail` les vérifie à l'enfilage, puis ils
+ * dorment des heures ou des jours dans Redis. Une opposition cliquée, une fiche
+ * mise à la corbeille ou effacée entre-temps n'étaient relues par personne —
+ * pour les jobs déjà en file, ce filet est la SEULE protection.
+ *
+ * Rend le motif de la retenue, ou `null` si l'envoi peut partir.
+ */
+async function motifDeRetenueAuDepart(data: EmailJobData): Promise<string | null> {
+  const verdict = await verdictAvantEnvoi(data.to, {
+    template: data.template,
+    marketing: data.marketing === true,
+    sollicitation: true,
+  });
+  if (verdict.retenu) {
+    return verdict.motif === "oppose"
+      ? "la personne s'est opposée aux sollicitations"
+      : verdict.motif === "rebond_dur"
+        ? "adresse en rebond définitif"
+        : "désabonnement";
+  }
+  if (data.entityType === "Submission" && data.entityId) {
+    if ((await ficheEffacee(data.entityId)) === true) {
+      return "la fiche a été supprimée ou effacée (RGPD)";
+    }
+  }
+  return null;
+}
 
 /**
  * Plafond cumulé des pièces jointes, en octets bruts (avant encodage base64).
@@ -114,6 +186,25 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
       if (template === "candidature-reponse") {
         await handleCandidatureReponse(payload);
         return;
+      }
+
+      // 🔴 2026-09-19 — sollicitation retardée : l'opposition et l'effacement
+      // se relisent AU DÉPART. Un envoi retenu se clôt en « annulé », JAMAIS en
+      // « échec » : l'alarme des échecs (SEUIL_ECHECS) compterait une opposition
+      // honorée comme une panne. Pas de `throw` — BullMQ rejouerait le job.
+      // Pas d'alerte console non plus : une opposition respectée n'appelle
+      // aucune action.
+      if (estSollicitationSoumiseAOpposition(template, payload)) {
+        const motif = await motifDeRetenueAuDepart(job.data);
+        if (motif !== null) {
+          const trace = `Retenu à l'envoi : ${motif}`;
+          if (job.id) {
+            await marquerAnnule(job.id, trace);
+          } else {
+            console.warn(`[email-worker] « ${template} » ${trace} (job sans identifiant).`);
+          }
+          return;
+        }
       }
 
       const jobId = job.id;

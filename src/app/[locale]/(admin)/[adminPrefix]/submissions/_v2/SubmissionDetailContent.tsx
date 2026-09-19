@@ -191,7 +191,11 @@ export async function SubmissionDetailContent({
       />
       <div className="admin-detail-grid">
         {estContactApporteur ? (
-          <BlocInvitationApporteur submissionId={submission.id} resultat={invitation} />
+          <BlocInvitationApporteur
+            submissionId={submission.id}
+            resultat={invitation}
+            details={details}
+          />
         ) : null}
         {candidature ? (
           <CandidatureCommercialeDetail

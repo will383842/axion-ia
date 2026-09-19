@@ -200,7 +200,7 @@ function IssueDuRenvoi({ issue }: { issue: IssueRenvoi }): React.ReactElement | 
           </strong>{" "}
           Ils repasseront « Envoyé » dans les minutes qui viennent — actualisez pour suivre.
           {issue.retenus > 0
-            ? ` ${nb(issue.retenus)} n'ont VOLONTAIREMENT pas été renvoyés : le destinataire est désabonné, opposé à tout envoi, ou son adresse a définitivement rebondi.`
+            ? ` ${nb(issue.retenus)} n'ont VOLONTAIREMENT pas été renvoyés : le destinataire est désabonné, opposé aux sollicitations, ou son adresse a définitivement rebondi.`
             : ""}
           {issue.irrecuperables - issue.retenus > 0
             ? ` ${nb(issue.irrecuperables - issue.retenus)} n'ont pas pu être repris : leur ligne porte le motif.`
