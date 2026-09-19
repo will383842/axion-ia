@@ -53,16 +53,28 @@
  *    déjà l'ordinateur.
  *  - Même décision, sur les FICHES formation : `getFormationMateriel` scinde le
  *    texte par format dès que la fiche se suit à distance (« En présentiel, … ;
- *    en distanciel, un ordinateur avec caméra et micro, et l'application de
- *    visioconférence… ») — carte « Matériel », FAQ de la fiche et JSON-LD. La
- *    page ne doit rien écrire du matériel en dur.
+ *    en distanciel, un ordinateur avec caméra et micro, … Google Meet depuis le
+ *    navigateur… ») — carte « Matériel », FAQ de la fiche et JSON-LD. La page
+ *    ne doit rien écrire du matériel en dur.
  *  - Balayage des fichiers publics : toute ligne qui annonce « smartphone ou
  *    (un) ordinateur » doit parler du distanciel SUR LA MÊME LIGNE (pages,
  *    messages, FAQ). Seule exception : le fichier `materiel.ts`, dont
  *    `getFormationMateriel` complète les constantes. La convocation distanciel
  *    doit exiger ce que `MATERIEL_DISTANCIEL` annonce.
- *  - « Rien à installer » ne vaut que sur place : en distanciel, la convocation
- *    exige l'application de visioconférence installée et testée.
+ *  - Seconde décision de Will du 2026-09-19 : la visio se fait sur Google Meet,
+ *    depuis le navigateur de l'ordinateur. Il n'y a donc RIEN À INSTALLER, ni
+ *    sur place ni à distance. La garde s'est inversée : elle refusait « rien à
+ *    installer » non borné au présentiel ; elle refuse désormais (1) toute
+ *    phrase qui exige d'installer une application pour suivre la session
+ *    (`INSTALLATION_EXIGEE`, FAQ ET fichiers publics) et (2) tout « rien à
+ *    installer » borné au présentiel sans couvrir le distanciel, qui laisserait
+ *    entendre qu'à distance il faut installer quelque chose. La convocation
+ *    distanciel, lue RENDUE, doit dire Google Meet, le navigateur et « rien à
+ *    installer » : c'est la garde du dispositif d'assistance, côté domaine
+ *    Qualiopi, qui la lit.
+ *  - `AUCUNE_INSTALLATION` laissait passer « aucun logiciel à installer » (dette
+ *    de relecture) : le motif couvre désormais « aucun X à installer » et « sans
+ *    rien installer ».
  *  - ⚠️ LIMITE DÉCLARÉE du balayage des fichiers (src/content, src/app,
  *    src/components, src/messages) : il ne repère que la formulation
  *    « ordinateur portable » JOINTE à « connexion internet » (avec ou sans
@@ -191,19 +203,38 @@ function aDuDistanciel(f: (typeof FORMATIONS_V2)[number]): boolean {
 }
 
 const CLAUSE_DISTANCIEL =
-  /en distanciel, un ordinateur avec caméra et micro, une connexion internet stable, l'application de visioconférence installée et testée avant la session, accès aux outils IA/;
+  /en distanciel, un ordinateur avec caméra et micro, une connexion internet stable, Google Meet depuis le navigateur \(rien à installer\), testé avant la session, accès aux outils IA/;
 
 /**
- * Une affirmation qu'il n'y a RIEN À INSTALLER. Vraie sur place seulement :
- * à distance, la convocation exige l'application de visioconférence installée
- * (revues exactitude 5254909256 et 5255141619 — `pme-ia` disait « aucune
- * installation n'est requise » sans condition).
+ * Une affirmation qu'il n'y a RIEN À INSTALLER. Depuis la seconde décision du
+ * 2026-09-19 (Google Meet, dans le navigateur), elle est vraie sur place ET à
+ * distance. Élargi le même jour : « aucun logiciel à installer » et « sans rien
+ * installer » passaient (dette de relecture).
  */
 const AUCUNE_INSTALLATION =
-  /rien à installer|(?:aucune|sans|ni)\s+(?:\S+\s+){0,2}?installation|nothing to install|no (?:software )?installation/i;
-/** Ce qui borne l'affirmation au présentiel, DANS LA MÊME PHRASE. */
-const BORNE_SUR_PLACE =
-  /sur place|dans vos locaux|(?:vient|arrive) avec (?:son|ses)|on site|arrives with (?:their|his|her)/i;
+  /rien à installer|(?:aucune?|sans|ni)\s+(?:\S+\s+){0,2}?(?:à\s+)?install(?:ation|er)\b|nothing to install|no (?:\S+\s+){0,2}?(?:to )?install(?:ation)?\b/i;
+/** Ce qui borne l'affirmation au présentiel, DANS LA MÊME PROPOSITION. */
+const BORNE_SUR_PLACE = /sur place|dans vos locaux|en présentiel|on site|in person/i;
+/** Ce qui l'étend au distanciel, DANS LA MÊME PROPOSITION. */
+const COUVRE_LA_DISTANCE =
+  /ni (?:sur place ni )?à distance|sur place comme à distance|(?:on site|in person),? (?:or|and|as well as) remotely|nor remotely/i;
+
+/**
+ * Une installation EXIGÉE pour suivre la session — fausse depuis le passage à
+ * Google Meet dans le navigateur : « l'application de visioconférence installée
+ * et testée », « seule l'application de visioconférence est à installer »,
+ * « the videoconferencing app installed ».
+ */
+const INSTALLATION_EXIGEE = new RegExp(
+  [
+    String.raw`\b(?:application|appli|app|logiciel)s?\b[^.;:]{0,40}?\binstall(?:ée?s?|és|ed)`,
+    String.raw`\bseule?s?\s+l['’](?:application|appli)`,
+    String.raw`\bonly the (?:\S+\s+)?app\b`,
+    String.raw`\b(?:est|sont|reste|restent)\s+à\s+installer`,
+    String.raw`\b(?:needs?|has|have|must) (?:to )?be installed|\b(?:needs?|requires?) installing`,
+  ].join("|"),
+  "i",
+);
 
 /** Toutes les chaînes d'une entrée de FAQ (réponse, points clés, nuances…), en phrases. */
 function phrases(valeur: unknown): string[] {
@@ -211,6 +242,20 @@ function phrases(valeur: unknown): string[] {
   if (Array.isArray(valeur)) return valeur.flatMap(phrases);
   if (valeur && typeof valeur === "object") return Object.values(valeur).flatMap(phrases);
   return [];
+}
+
+/** Une phrase découpée en propositions : « Sur place, rien à installer : … ; à distance, … ». */
+function propositions(phrase: string): string[] {
+  return phrase.split(/\s*[;:—(]\s*|\s+-\s+/);
+}
+
+/** Proposition qui borne « rien à installer » au présentiel sans couvrir le distanciel. */
+function borneAuPresentiel(proposition: string): boolean {
+  return (
+    AUCUNE_INSTALLATION.test(proposition) &&
+    BORNE_SUR_PLACE.test(proposition) &&
+    !COUVRE_LA_DISTANCE.test(proposition)
+  );
 }
 
 /**
@@ -316,19 +361,21 @@ describe("le matériel annoncé est le même partout", () => {
     expect(page).not.toMatch(/smartphone/i);
   });
 
-  it("la convocation distanciel exige ce que MATERIEL_DISTANCIEL annonce", () => {
-    // `materiel.ts` affirme « même exigence que la convocation » : ce test la tient.
-    const convocation = readFileSync(
-      path.join(RACINE, "src/server/qualiopi/documents/templates/convocation.tsx"),
-      "utf8",
-    );
-    const bloc = convocation.slice(convocation.indexOf("Équipement requis (distanciel)"));
-    expect(bloc).toContain("Un ordinateur avec caméra et micro");
-    expect(bloc).toContain("Une connexion internet stable");
-    expect(bloc).toContain("L'application de visioconférence installée et testée");
-    expect(MATERIEL_DISTANCIEL).toContain("un ordinateur avec caméra et micro");
-    expect(MATERIEL_DISTANCIEL).toContain("une connexion internet stable");
-    expect(MATERIEL_DISTANCIEL).toContain("l'application de visioconférence installée et testée");
+  it("MATERIEL_DISTANCIEL exige ce que la convocation distanciel exige", () => {
+    // `materiel.ts` affirme « même exigence que la convocation ». La
+    // convocation RENDUE est confrontée à MATERIEL_DISTANCIEL côté domaine
+    // Qualiopi (`documents/templates/__tests__/le-dispositif-d-assistance-est-imprime.spec.tsx`) :
+    // ce fichier-ci n'a pas le droit d'importer le domaine (`qualiopi:isolation-check`).
+    for (const exigence of [
+      "un ordinateur avec caméra et micro",
+      "une connexion internet stable",
+      "Google Meet depuis le navigateur",
+      "rien à installer",
+      "testé avant la session",
+    ]) {
+      expect(MATERIEL_DISTANCIEL, exigence).toContain(exigence);
+    }
+    expect(MATERIEL_DISTANCIEL).not.toMatch(INSTALLATION_EXIGEE);
   });
 
   it.each([...FORMATIONS_TABLEUR])("%s recommande l'ordinateur pour le tableur", (id) => {
@@ -412,26 +459,75 @@ describe("le matériel annoncé est le même partout", () => {
       expect(en).toMatch(/AI for IT and AI for automation/);
       expect(en).toMatch(/spreadsheet/);
       // Décision de Will du 2026-09-19 : à distance, le smartphone ne suffit
-      // pas — un ordinateur avec caméra et micro, comme le dit la convocation.
-      // Cherché dans la RÉPONSE elle-même (celle du JSON-LD), pas dans tout
-      // l'objet : un point clé seul la laisserait muette sans que rien rougisse.
-      expect(e!.fr.answer).toMatch(
-        /à distance[^.]*un ordinateur avec caméra et micro[^.]*application de visioconférence installée/i,
-      );
-      expect(e!.en.answer).toMatch(
-        /remote[^.]*a computer with a camera and a microphone[^.]*videoconferencing app installed/i,
-      );
+      // pas — un ordinateur avec caméra et micro, comme le dit la convocation ;
+      // et la visio se fait sur Google Meet, dans le navigateur, sans rien
+      // installer. Cherché dans la RÉPONSE elle-même (celle du JSON-LD), pas
+      // dans tout l'objet : un point clé seul la laisserait muette sans que
+      // rien rougisse.
+      expect(e!.fr.answer).toMatch(/à distance[^.]*un ordinateur avec caméra et micro/i);
+      expect(e!.fr.answer).toMatch(/Google Meet[^.]*navigateur[^.]*sans rien installer/);
+      expect(e!.en.answer).toMatch(/remote[^.]*a computer with a camera and a microphone/i);
+      expect(e!.en.answer).toMatch(/Google Meet[^.]*browser[^.]*nothing to install/);
     },
   );
 
-  it("aucune entrée de la FAQ n'affirme « rien à installer » sans la borner au présentiel", () => {
+  it("presentiel-distance dit l'assistance à distance, en FR et en EN", () => {
+    // Dispositif d'assistance (D.6313-3-1), décision de Will du 2026-09-19 :
+    // le formateur pendant la session, contact@axion-ia.com sous 1 jour ouvré
+    // en dehors. Même dispositif, en entier, sur la convocation et le livret.
+    const e = FAQ_GLOBAL.find((x) => x.id === "presentiel-distance")!;
+    expect(e.fr.answer).toMatch(/Pendant la session, le formateur répond dans la conversation/);
+    expect(e.fr.answer).toMatch(/en dehors, contact@axion-ia\.com répond sous 1 jour ouvré/);
+    expect(e.en.answer).toMatch(
+      /During the session, the trainer answers in the videoconference chat/,
+    );
+    expect(e.en.answer).toMatch(/outside it, contact@axion-ia\.com replies within 1 business day/);
+  });
+
+  it("aucune entrée de la FAQ n'exige d'installer une application pour suivre la session", () => {
     const fautives = FAQ_GLOBAL.flatMap((e) =>
       (["fr", "en"] as const).flatMap((langue) =>
         phrases(e[langue])
-          .filter((ph) => AUCUNE_INSTALLATION.test(ph) && !BORNE_SUR_PLACE.test(ph))
+          .filter((ph) => INSTALLATION_EXIGEE.test(ph))
           .map((ph) => `${e.id}:${langue} — ${ph.slice(0, 90)}`),
       ),
     );
+    expect(fautives).toEqual([]);
+  });
+
+  it("aucune entrée de la FAQ ne borne « rien à installer » au présentiel sans couvrir le distanciel", () => {
+    const fautives = FAQ_GLOBAL.flatMap((e) =>
+      (["fr", "en"] as const).flatMap((langue) =>
+        phrases(e[langue])
+          .flatMap(propositions)
+          .filter(borneAuPresentiel)
+          .map((p) => `${e.id}:${langue} — ${p.slice(0, 90)}`),
+      ),
+    );
+    expect(fautives).toEqual([]);
+  });
+
+  it("aucune ligne publique n'exige d'installer une application pour suivre la session", () => {
+    const fautives = toutesLesLignesPubliques()
+      .filter(
+        ({ ligne }) =>
+          /install/i.test(ligne) &&
+          !/^\s*(?:\/\/|\/?\*)/.test(ligne) &&
+          INSTALLATION_EXIGEE.test(ligne),
+      )
+      .map(({ fichier, n }) => `${fichier}:${n}`);
+    expect(fautives).toEqual([]);
+  });
+
+  it("aucune ligne publique ne borne « rien à installer » au présentiel sans couvrir le distanciel", () => {
+    const fautives = toutesLesLignesPubliques()
+      .filter(
+        ({ ligne }) =>
+          /install/i.test(ligne) &&
+          !/^\s*(?:\/\/|\/?\*)/.test(ligne) &&
+          phrases(ligne).flatMap(propositions).some(borneAuPresentiel),
+      )
+      .map(({ fichier, n }) => `${fichier}:${n}`);
     expect(fautives).toEqual([]);
   });
 
@@ -439,11 +535,51 @@ describe("le matériel annoncé est le même partout", () => {
     "Aucune installation n'est requise.",
     "Rien à installer : un smartphone suffit.",
     "Aucune compétence technique ni installation requise.",
+    "Aucun logiciel à installer.",
+    "Aucun logiciel spécifique à installer.",
+    "Sans rien installer.",
     "No software installation is required.",
+    "No software to install.",
     "Nothing to install.",
   ])("AUCUNE_INSTALLATION reconnaît « %s »", (ph) => {
     expect(ph).toMatch(AUCUNE_INSTALLATION);
-    expect(ph).not.toMatch(BORNE_SUR_PLACE);
+  });
+
+  it.each([
+    "Sur place, rien à installer : un smartphone suffit ; à distance, l'application de visio.",
+    "Aucune compétence technique requise, aucune installation sur place",
+    "Sur place, aucun logiciel à installer.",
+    "On site, nothing to install.",
+  ])("borneAuPresentiel refuse « %s »", (ph) => {
+    expect(phrases(ph).flatMap(propositions).some(borneAuPresentiel)).toBe(true);
+  });
+
+  it.each([
+    "Rien à installer, ni sur place ni à distance.",
+    "Aucune installation n'est requise, ni sur place ni à distance (Google Meet s'ouvre dans le navigateur).",
+    "Rien à installer : sur place, un smartphone suffit ; à distance, Google Meet dans le navigateur.",
+    "Nothing to install, on site or remotely.",
+  ])("borneAuPresentiel laisse passer « %s »", (ph) => {
+    expect(phrases(ph).flatMap(propositions).some(borneAuPresentiel)).toBe(false);
+  });
+
+  it.each([
+    "L'application de visioconférence installée et testée avant la session.",
+    "à distance, seule l'application de visioconférence est à installer",
+    "(à distance, seule l'application de visioconférence)",
+    "the videoconferencing app installed and tested before the session",
+    "Only the videoconferencing app needs to be installed.",
+    "Un logiciel doit être installé au préalable.",
+  ])("INSTALLATION_EXIGEE reconnaît « %s »", (ph) => {
+    expect(ph).toMatch(INSTALLATION_EXIGEE);
+  });
+
+  it.each([
+    "Google Meet, depuis le navigateur de l'ordinateur (rien à installer), testé avant la session.",
+    "leurs outils IA installés et testés sur de vrais fichiers",
+    "des modèles open-source installés sur vos propres serveurs",
+  ])("INSTALLATION_EXIGEE laisse passer « %s »", (ph) => {
+    expect(ph).not.toMatch(INSTALLATION_EXIGEE);
   });
 
   it("aucune entrée de la FAQ ne dit que le matériel est le même sur place et à distance", () => {
