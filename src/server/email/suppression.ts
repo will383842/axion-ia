@@ -50,6 +50,28 @@ export const GABARITS_EXEMPTES_DU_DESABONNEMENT: ReadonlySet<string> = new Set([
   "newsletter-confirm-optin",
 ]);
 
+/**
+ * 🔴 2026-09-19 — Sollicitations du réseau d'apporteurs : non marketing, mais
+ * soumises à l'OPPOSITION.
+ *
+ * Les relances « ton dossier t'attend » (J+2, J+7) et l'invitation à l'échange
+ * de 15 minutes partent en famille B, sans le drapeau `marketing` : elles
+ * répondent à une démarche de la personne, pas à une campagne. Or l'opposition
+ * n'était lue QUE pour le marketing — une personne qui avait cliqué « ne plus
+ * me solliciter » recevait donc encore relances et invitation, alors que la
+ * page d'opposition lui affirme le contraire. Relevé par l'audit du 19/09.
+ *
+ * Ces gabarits honorent donc l'opposition (et seulement elle : un
+ * désabonnement de la NEWSLETTER n'est pas un refus d'être recontacté au sujet
+ * d'une candidature). L'accusé immédiat d'une démarche (`lead-apporteur-recu`,
+ * `candidature-commercial-confirmee`) n'y est pas : une personne qui dépose un
+ * nouveau dossier après s'être opposée reprend elle-même contact.
+ */
+export const GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION: ReadonlySet<string> = new Set([
+  "lead-apporteur-relance",
+  "apporteur-invitation-appel",
+]);
+
 function estStub(): boolean {
   return process.env["DATABASE_URL"]?.includes("stub.invalid") === true;
 }
@@ -84,14 +106,20 @@ export async function verdictAvantEnvoi(
     );
   }
 
-  if (contexte.marketing && !GABARITS_EXEMPTES_DU_DESABONNEMENT.has(contexte.template)) {
+  const marketing =
+    contexte.marketing && !GABARITS_EXEMPTES_DU_DESABONNEMENT.has(contexte.template);
+  const sollicitation = GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION.has(contexte.template);
+  if (marketing || sollicitation) {
     try {
-      const abonne = await prisma.newsletterSubscriber.findUnique({
-        where: { email: adresse },
-        select: { status: true, unsubscribedAt: true },
-      });
-      if (abonne?.status === "unsubscribed") {
-        return { retenu: true, motif: "desabonne", depuis: abonne.unsubscribedAt };
+      // Le désabonnement newsletter ne vaut que pour le marketing.
+      if (marketing) {
+        const abonne = await prisma.newsletterSubscriber.findUnique({
+          where: { email: adresse },
+          select: { status: true, unsubscribedAt: true },
+        });
+        if (abonne?.status === "unsubscribed") {
+          return { retenu: true, motif: "desabonne", depuis: abonne.unsubscribedAt };
+        }
       }
       // Lot 1b : l'opposition à la prospection, exprimée depuis n'importe quel
       // e-mail, retient les envois marketing au même titre que le désabonnement.
@@ -140,7 +168,7 @@ export async function signalerRetenue(
     verdict.motif === "rebond_dur"
       ? "Un envoi a été retenu : l'adresse a déjà rebondi définitivement"
       : verdict.motif === "oppose"
-        ? "Un envoi marketing a été retenu : la personne s'est opposée à la prospection"
+        ? "Un envoi a été retenu : la personne s'est opposée aux sollicitations"
         : "Un envoi marketing a été retenu : la personne s'est désabonnée";
   const message =
     verdict.motif === "rebond_dur"
