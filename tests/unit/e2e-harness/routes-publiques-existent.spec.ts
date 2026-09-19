@@ -9,7 +9,8 @@
  *
  * 🔑 Une liste écrite à la main dérive TOUJOURS du code qu'elle prétend
  * décrire. Ce qui la tient, ce n'est pas la relecture : c'est un test qui la
- * confronte à la source. Celui-ci tourne dans Gate A, en quelques
+ * confronte à la source. Celui-ci tourne avec la suite Vitest (job « Gate A ·
+ * couverture » depuis le 2026-09-19), en quelques
  * millisecondes, sans serveur — donc avant même que Playwright ait une chance
  * de se tromper.
  */

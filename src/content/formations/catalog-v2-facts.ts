@@ -12,11 +12,17 @@
 //     (décision Will du 2026-09-18, qui remplace « un ordinateur avec
 //     connexion internet »). Voir `materiel.ts` ; IA pour l'IT et IA pour
 //     l'automatisation restent sur ordinateur (confirmé par Will le 2026-09-18).
+//     Ce matériel vaut pour le PRÉSENTIEL : en distanciel, un ordinateur avec
+//     caméra et micro (décision Will du 2026-09-19, `getFormationMateriel`).
 //   - Images : mix bank (fallback par gamme) + Unsplash spécifique (override).
 // ============================================================================
 
 import type { FormationDuree, FormationGamme } from "../pricing";
-import { MATERIEL_SMARTPHONE_OU_ORDINATEUR } from "./materiel";
+import {
+  DEBUT_DES_ACCES,
+  MATERIEL_DISTANCIEL,
+  MATERIEL_SMARTPHONE_OU_ORDINATEUR,
+} from "./materiel";
 import type { FormationCasUsage, FormationV2 } from "./catalog-v2";
 import { FORMATION_CARD_PHOTOS } from "./catalog-v2-photos";
 import { type ModalitePedagogique, PRESENTIEL_DISTANCIEL } from "./modalites";
@@ -75,8 +81,22 @@ export function getFormationCourseModes(f: FormationV2): ReadonlyArray<"Onsite" 
 // ── Matériel ────────────────────────────────────────────────────────────────
 export const FORMATION_MATERIEL_DEFAUT = `${MATERIEL_SMARTPHONE_OU_ORDINATEUR}, accès aux outils IA (comptes préparés en amont avec vous si besoin)`;
 
+/**
+ * Matériel AFFICHÉ sur la fiche (carte, FAQ, JSON-LD). Quand la formation peut
+ * se suivre à distance, le texte se scinde par format — décision de Will du
+ * 2026-09-19 : « smartphone ou ordinateur » ne vaut que pour le présentiel ; en
+ * distanciel, un ordinateur avec caméra et micro (`MATERIEL_DISTANCIEL`).
+ */
 export function getFormationMateriel(f: FormationV2): string {
-  return f.materielFr ?? FORMATION_MATERIEL_DEFAUT;
+  const surPlace = f.materielFr ?? FORMATION_MATERIEL_DEFAUT;
+  const m = getFormationModalites(f);
+  if (!m.includes("distanciel") && !m.includes("hybride")) return surPlace;
+  const initiale = surPlace.charAt(0).toLowerCase() + surPlace.slice(1);
+  // Ce que la fiche exige AU-DELÀ du poste (accès aux outils, environnement de
+  // développement, données) vaut aussi à distance : on le reprend tel quel.
+  const i = surPlace.indexOf(DEBUT_DES_ACCES);
+  const acces = i === -1 ? "" : `, ${surPlace.slice(i)}`;
+  return `En présentiel, ${initiale} ; en distanciel, ${MATERIEL_DISTANCIEL}${acces}`;
 }
 
 // ── Prérequis ───────────────────────────────────────────────────────────────

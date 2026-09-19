@@ -101,7 +101,29 @@ jobs:
     #
     # Si ce budget redevient juste : ce n'est pas le timeout qu'il faudra
     # remonter une troisième fois, mais la couverture qu'il faudra sortir du
-    # chemin critique (job dédié, non bloquant).
+    # chemin critique.
+    #
+    # 2026-09-19 — C'EST ARRIVÉ. Gate A mesurée (started_at → completed_at du
+    # job) à 24 min 36 s sur #1112, 24 min 40 s sur #1114 et 24 min 32 s sur
+    # #1115 : moins d'une demi-minute de marge sur 25 min, à chaque PR. L'étape
+    # « Vitest (with coverage) » en prenait à elle seule 19 min 09 s à
+    # 19 min 15 s.
+    #
+    # Premier essai (#1116, run 35425943414) : Vitest SANS couverture ici, et
+    # la couverture dans un job voisin. Mesuré : Vitest nu prenait encore
+    # 15 min 34 s, Gate A 20 min 51 s — l'instrumentation ne coûtait que
+    # ~4 min, et la suite tournait DEUX fois par PR.
+    #
+    # D'où l'état actuel : Gate A NE LANCE PLUS VITEST DU TOUT. La suite entière
+    # tourne UNE fois, avec couverture, dans le job `gate-a-couverture`
+    # (« Gate A · couverture ») ci-dessous, en parallèle. Gate A garde tous les
+    # contrôles statiques (types, lint, format, gardes grep, isolation,
+    # gitleaks…), qui n'ont pas besoin de la suite.
+    # ⚠️ Conséquence : les tests unitaires ne bloquent une fusion QUE si
+    # « Gate A · couverture » est un contexte EXIGÉ de la protection de `main`.
+    # Il faut l'y ajouter à la main, après la fusion de ce changement (un
+    # contexte exigé qui n'existe pas encore sur `main` bloquerait toutes les
+    # PR). Tant que ce n'est pas fait, un test rouge ne bloque rien.
     timeout-minutes: 25
     steps:
       # fetch-depth: 0 requis pour gitleaks (diff commit^..HEAD).
@@ -131,19 +153,8 @@ jobs:
         run: pnpm lint
       - name: Prettier
         run: pnpm format:check
-      # Sprint S6.3 P1-7 (2026-05-15) — coverage activé en CI (thresholds
-      # vitest.config.ts:37-43 statements/branches/functions/lines 60/55/60/60).
-      # Bloque la PR si la couverture descend sous les seuils. ~+20s overhead V8
-      # vs `vitest run` sec, acceptable pour gate-a (~15min budget total).
-      - name: Vitest (with coverage)
-        run: pnpm test:coverage
-      - name: Upload coverage report
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: coverage-${{ github.run_id }}
-          path: coverage/
-          retention-days: 7
+      # Pas de Vitest ici (2026-09-19) : la suite entière tourne dans le job
+      # `gate-a-couverture` ci-dessous. Voir le commentaire de tête du job.
       - name: i18n parity
         run: pnpm i18n:check
       - name: Anti-SIREN grep
@@ -231,6 +242,44 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           config-path: axionia/.gitleaks.toml
+
+  # 2026-09-19 — LA suite Vitest du dépôt : c'est le SEUL job qui la lance
+  # (voir le commentaire de tête de `gate-a`). Elle tourne avec couverture ;
+  # le job rougit si un test échoue OU si la couverture descend sous les seuils
+  # de `coverage.thresholds` dans vitest.config.ts (source unique : ne pas les
+  # recopier ici). Aucun `needs` : il démarre en même temps que Gate A.
+  # Il refait l'installation et `prisma generate` : un job GitHub part d'une
+  # machine vierge, rien n'est hérité de Gate A.
+  # ⚠️ Il ne bloque une fusion que s'il figure dans les contextes EXIGÉS de la
+  # protection de `main` — à ajouter après la fusion de ce job.
+  gate-a-couverture:
+    name: Gate A · couverture
+    runs-on: ubuntu-latest
+    # Mesuré sur #1116 (run 35425943414) : 20 min 19 s, dont 19 min 35 s pour
+    # la suite instrumentée. 40 min laisse une marge réelle sans rendre un job
+    # bloqué interminable.
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Generate Prisma client
+        run: pnpm prisma:generate
+      - name: Vitest (with coverage)
+        run: pnpm test:coverage
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-${{ github.run_id }}
+          path: coverage/
+          retention-days: 7
 
   gate-b:
     name: Gate B · per-PR

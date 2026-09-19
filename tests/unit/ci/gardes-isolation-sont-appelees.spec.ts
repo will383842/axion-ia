@@ -48,16 +48,10 @@ import path from "node:path";
 
 import { describe, expect, it } from "vitest";
 
+import { codeYaml, corpsDuJob } from "./lire-un-workflow";
+
 const RACINE = process.cwd();
 const CI = ".github/workflows/ci.yml";
-
-/** Le workflow, privé de ses commentaires : seules les lignes de code comptent. */
-function codeYaml(chemin: string): string {
-  return readFileSync(path.join(RACINE, chemin), "utf8")
-    .split("\n")
-    .filter((l) => !/^\s*#/.test(l))
-    .join("\n");
-}
 
 /**
  * Les trois gardes d'isolation du dépôt. Aucune ne doit sortir de la CI sans
@@ -91,21 +85,15 @@ describe("les gardes d'isolation sont appelées par la CI", () => {
     // Le job qui compte est celui dont l'échec bloque la fusion. Une garde
     // rangée dans un job facultatif rougirait sans rien empêcher — c'est le vice
     // de `continue-on-error`, sous une autre forme.
-    const debutGateA = ci.indexOf("\n  gate-a:");
-    const debutGateB = ci.indexOf("\n  gate-b:");
+    const corpsGateA = corpsDuJob(ci, "gate-a");
     expect(
-      debutGateA,
+      corpsGateA,
       `🔴 Le job « gate-a » est introuvable dans ${CI} : ce contrôle deviendrait vide.`,
-    ).toBeGreaterThan(-1);
-    expect(
-      debutGateB,
-      `🔴 Le job « gate-b » est introuvable dans ${CI} : impossible de borner gate-a.`,
-    ).toBeGreaterThan(debutGateA);
+    ).not.toBeNull();
 
-    const corpsGateA = ci.slice(debutGateA, debutGateB);
     for (const garde of GARDES_EXIGEES) {
       expect(
-        corpsGateA,
+        corpsGateA!,
         `🔴 « pnpm ${garde} » est bien dans ${CI}, mais PAS dans le job gate-a.\n` +
           "   gate-a est un contexte exigé par la protection de branche : c'est là que\n" +
           "   son rouge empêche une fusion. Ailleurs, il informe sans protéger.",
@@ -135,5 +123,41 @@ describe("les gardes d'isolation sont appelées par la CI", () => {
       "🔴 La liste CONSOMMATEURS_ASSUMES est vide ou illisible : la garde serait\n" +
         "   verte par vacuité, ce qui ne prouve rien.",
     ).toBeGreaterThan(20);
+  });
+});
+
+describe("corpsDuJob borne un job au suivant, quelle que soit sa clé", () => {
+  const yaml = [
+    "jobs:",
+    "  gate-a:",
+    "    steps:",
+    "      - run: pnpm a:check",
+    "  lint-facultatif:",
+    "    steps:",
+    "      - run: pnpm b:check",
+    "  gate-b:",
+    "    steps:",
+    "      - run: pnpm c:check",
+    "",
+  ].join("\n");
+
+  it("s'arrête au job suivant même si sa clé ne commence pas par gate-", () => {
+    const corps = corpsDuJob(yaml, "gate-a");
+    expect(corps).toContain("pnpm a:check");
+    expect(corps).not.toContain("pnpm b:check");
+    expect(corps).not.toContain("pnpm c:check");
+  });
+
+  it("ne prend pas pour gate-a un job dont la clé le prolonge", () => {
+    expect(corpsDuJob(yaml.replace("  gate-a:", "  gate-a-bis:"), "gate-a")).toBeNull();
+  });
+
+  it("va jusqu'à la fin du fichier pour le dernier job", () => {
+    expect(corpsDuJob(yaml, "gate-b")).toContain("pnpm c:check");
+  });
+
+  it("s'arrête aussi à une clé de premier niveau", () => {
+    const corps = corpsDuJob(yaml.replace("  lint-facultatif:", "outputs:"), "gate-a");
+    expect(corps).not.toContain("pnpm b:check");
   });
 });

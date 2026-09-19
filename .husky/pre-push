@@ -4,9 +4,12 @@
 # push (817 fichiers, 23 428 tests) — et il prouvait MOINS que la CI.
 #
 # Pourquoi c'est sûr :
-#   · `main` est protégée par 4 gates obligatoires. Gate A rejoue `typecheck` ET
-#     la suite complète **sur le commit de fusion** — l'état qui ira réellement en
-#     production. Ce hook, lui, testait un état pré-fusion qui n'y va jamais.
+#   · `main` est protégée par des gates obligatoires. Gate A rejoue `typecheck`,
+#     et « Gate A · couverture » la suite complète (depuis le 2026-09-19), **sur
+#     le commit de fusion** — l'état qui ira réellement en production. Ce hook,
+#     lui, testait un état pré-fusion qui n'y va jamais.
+#     ⚠️ « Gate A · couverture » ne bloque que si elle figure dans les contextes
+#     EXIGÉS de `main` : c'est à vérifier, pas à supposer.
 #   · `typecheck` reste dans `pre-commit` : un seul passage local suffit, et une
 #     erreur de type est précisément ce qui se découvre le mieux tôt.
 #
@@ -46,8 +49,8 @@ if git rev-parse --verify --quiet origin/main >/dev/null; then
   #
   # Le seuil de 200 est CONSERVE, mais il ne garde plus que le TEMPS : au-dela,
   # `vitest related` ne cible plus rien d'utile — c'est la suite entiere, soit les
-  # 41 minutes qu'on a precisement retirees. On le DIT, on laisse passer ; Gate A
-  # reste bloquante sur le commit de fusion.
+  # 41 minutes qu'on a precisement retirees. On le DIT, on laisse passer ; la
+  # suite complete tourne en CI (« Gate A · couverture ») sur le commit de fusion.
   LISTE_MODIFIES=$(mktemp)
   trap 'rm -f "${LISTE_MODIFIES}"' EXIT
   git diff --name-only --diff-filter=ACMR origin/main...HEAD -- '*.ts' '*.tsx' > "${LISTE_MODIFIES}"
@@ -59,14 +62,14 @@ if git rev-parse --verify --quiet origin/main >/dev/null; then
     echo "⚠️ ${NB_MODIFIES} fichiers .ts/.tsx modifiés depuis origin/main — au-delà du"
     echo "   seuil de 200, « vitest related » ne cible plus rien d'utile : c'est la"
     echo "   suite entière, et son coût. Tests liés NON joués ici."
-    echo "   Le filet exhaustif reste en CI, Gate A, bloquante."
+    echo "   Le filet exhaustif reste en CI : « Gate A · couverture »."
   else
-    echo "→ tests liés aux ${NB_MODIFIES} fichiers modifiés (le filet complet est en CI, Gate A)"
+    echo "→ tests liés aux ${NB_MODIFIES} fichiers modifiés (le filet complet est en CI, « Gate A · couverture »)"
     tr '\n' '\0' < "${LISTE_MODIFIES}" \
       | xargs -0 -r -s 6000 pnpm exec vitest related --run || exit 1
   fi
 else
-  echo "⚠️ origin/main introuvable — tests liés non joués. Gate A reste bloquante en CI."
+  echo "⚠️ origin/main introuvable — tests liés non joués. La suite complète tourne en CI (« Gate A · couverture »)."
 fi
 
 # Audit A1 P2-6 (2026-05-15) — pnpm audit avant push : attrape les
