@@ -162,7 +162,10 @@ describe("buildAdminNav SSOT", () => {
     // « Société ». Jusque-là les contrats ne vivaient que sur la fiche de
     // chaque personne, rangée sous « Qualiopi → Formateurs » : savoir qui était
     // sous contrat demandait d'ouvrir les fiches UNE PAR UNE. = 171.
-    expect(items.length).toBe(171);
+    // +1 (2026-09-19, « Devenir apporteur d'affaires », sous-onglet des Imprimés
+    // DÉRIVÉ de IMPRIMES) : le document de présentation envoyé à toute personne
+    // intéressée par le réseau d'apporteurs. = 172.
+    expect(items.length).toBe(172);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {

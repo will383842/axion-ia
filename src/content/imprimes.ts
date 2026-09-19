@@ -227,7 +227,7 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     ],
     avantTirage: [
       "Le vocabulaire est celui de l'apporteur qui RECOMMANDE, jamais du commercial qui vend : ni « prospection », ni « argumentaire », ni « formation à l'offre ». Relire toute correction à l'aune de docs/partners/ANTI-REQUALIFICATION.md.",
-      "Les commissions (500 € par journée, 30 % audit, 15 % intégration) viennent de COMMERCIAL_COMMISSIONS dans pricing.ts : si la grille change, le document doit être régénéré.",
+      "Les commissions imprimées dans le document (par journée de formation, audit, intégration) viennent de COMMERCIAL_COMMISSIONS dans pricing.ts : si la grille change, le document doit être régénéré.",
     ],
   },
   {
