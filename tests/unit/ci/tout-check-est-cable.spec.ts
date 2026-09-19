@@ -62,10 +62,12 @@ const EXEMPTIONS: Readonly<Record<string, string>> = {
   linkcheck: "exige un serveur vivant sur localhost:3000 — Gate A n'en a pas",
 
   // Délègue à `src/lib/__tests__/jsonld-validation.spec.ts` via `vitest run`.
-  // Cette spec est DÉJÀ jouée par `pnpm test` en Gate A : la câbler en plus
+  // Cette spec est DÉJÀ jouée par la suite Vitest (`pnpm test:coverage`, job
+  // « Gate A · couverture » depuis le 2026-09-19) : la câbler en plus
   // ferait tourner les mêmes 11 tests deux fois. Ce n'est pas une orpheline,
   // c'est un raccourci de confort pour lancer une spec à la main.
-  schemacheck: "délègue à jsonld-validation.spec.ts, déjà jouée par `pnpm test` en Gate A",
+  schemacheck:
+    "délègue à jsonld-validation.spec.ts, déjà jouée par la suite Vitest (job « Gate A · couverture »)",
 };
 
 /** Lignes de CODE des workflows — commentaires retirés. */

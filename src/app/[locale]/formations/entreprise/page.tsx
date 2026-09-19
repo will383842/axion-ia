@@ -476,8 +476,8 @@ export default async function FormationsEntreprise({ params }: Props) {
         ? "Faut-il des prérequis ou connaître l'IA ?"
         : "Are prerequisites or prior AI knowledge needed?",
       answer: isFr
-        ? "Non pour la plupart de nos formations : elles sont conçues pour des débutants complets, tous postes mélangés. Un smartphone ou un ordinateur suffit. Les formats avancés indiquent leurs prérequis sur leur fiche."
-        : "No for most of our trainings: they are designed for complete beginners, all roles mixed. A smartphone or computer is enough. Advanced formats state their prerequisites on their page.",
+        ? "Non pour la plupart de nos formations : elles sont conçues pour des débutants complets, tous postes mélangés. Côté matériel, un smartphone ou un ordinateur suffit en présentiel ; en distanciel, il faut un ordinateur avec caméra et micro. Les formats avancés indiquent leurs prérequis sur leur fiche."
+        : "No for most of our trainings: they are designed for complete beginners, all roles mixed. On site, a smartphone or a computer is enough; remote sessions require a computer with a camera and a microphone. Advanced formats state their prerequisites on their page.",
     },
     {
       id: "outils",

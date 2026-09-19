@@ -101,23 +101,29 @@ jobs:
     #
     # Si ce budget redevient juste : ce n'est pas le timeout qu'il faudra
     # remonter une troisième fois, mais la couverture qu'il faudra sortir du
-    # chemin critique (job dédié, non bloquant).
+    # chemin critique.
     #
-    # 2026-09-19 — C'EST ARRIVÉ, ET C'EST FAIT. Gate A mesurée (started_at →
-    # completed_at du job) à 24 min 36 s sur #1112, 24 min 40 s sur #1114 et
-    # 24 min 32 s sur #1115 : moins d'une demi-minute de marge sur 25 min, à
-    # chaque PR. L'étape « Vitest (with coverage) » en prenait à elle seule
-    # 19 min 09 s à 19 min 15 s. Comme prévu ci-dessus, on n'a pas
-    # remonté le timeout : la couverture est sortie dans le job voisin
-    # `gate-a-couverture` (« Gate A · couverture »), qui tourne EN PARALLÈLE
-    # (aucun `needs`) avec les mêmes seuils. Gate A exécute toujours la suite
-    # Vitest ENTIÈRE — même périmètre, aucun test perdu — mais sans
-    # l'instrumentation V8, qui était le surcoût.
-    # ⚠️ Le seuil de couverture ne bloque une fusion que si « Gate A ·
-    # couverture » est un contexte EXIGÉ de la protection de `main`. Ce n'est
-    # pas le cas tant qu'on ne l'y a pas ajouté à la main, après la fusion de
-    # ce changement (un contexte exigé qui n'existe pas encore bloquerait
-    # toutes les PR).
+    # 2026-09-19 — C'EST ARRIVÉ. Gate A mesurée (started_at → completed_at du
+    # job) à 24 min 36 s sur #1112, 24 min 40 s sur #1114 et 24 min 32 s sur
+    # #1115 : moins d'une demi-minute de marge sur 25 min, à chaque PR. L'étape
+    # « Vitest (with coverage) » en prenait à elle seule 19 min 09 s à
+    # 19 min 15 s.
+    #
+    # Premier essai (#1116, run 35425943414) : Vitest SANS couverture ici, et
+    # la couverture dans un job voisin. Mesuré : Vitest nu prenait encore
+    # 15 min 34 s, Gate A 20 min 51 s — l'instrumentation ne coûtait que
+    # ~4 min, et la suite tournait DEUX fois par PR.
+    #
+    # D'où l'état actuel : Gate A NE LANCE PLUS VITEST DU TOUT. La suite entière
+    # tourne UNE fois, avec couverture, dans le job `gate-a-couverture`
+    # (« Gate A · couverture ») ci-dessous, en parallèle. Gate A garde tous les
+    # contrôles statiques (types, lint, format, gardes grep, isolation,
+    # gitleaks…), qui n'ont pas besoin de la suite.
+    # ⚠️ Conséquence : les tests unitaires ne bloquent une fusion QUE si
+    # « Gate A · couverture » est un contexte EXIGÉ de la protection de `main`.
+    # Il faut l'y ajouter à la main, après la fusion de ce changement (un
+    # contexte exigé qui n'existe pas encore sur `main` bloquerait toutes les
+    # PR). Tant que ce n'est pas fait, un test rouge ne bloque rien.
     timeout-minutes: 25
     steps:
       # fetch-depth: 0 requis pour gitleaks (diff commit^..HEAD).
@@ -147,10 +153,8 @@ jobs:
         run: pnpm lint
       - name: Prettier
         run: pnpm format:check
-      # Suite Vitest entière, SANS couverture (2026-09-19). La couverture et
-      # ses seuils vivent dans le job `gate-a-couverture` ci-dessous.
-      - name: Vitest
-        run: pnpm test
+      # Pas de Vitest ici (2026-09-19) : la suite entière tourne dans le job
+      # `gate-a-couverture` ci-dessous. Voir le commentaire de tête du job.
       - name: i18n parity
         run: pnpm i18n:check
       - name: Anti-SIREN grep
@@ -239,21 +243,21 @@ jobs:
         with:
           config-path: axionia/.gitleaks.toml
 
-  # 2026-09-19 — la couverture, sortie du chemin critique de Gate A (voir le
-  # commentaire du job `gate-a`). Mêmes seuils qu'avant, lus dans
-  # `coverage.thresholds` de vitest.config.ts (24/25/31/24 pour
-  # statements/branches/functions/lines au 2026-09-19 — et non les 60/55/60/60
-  # qu'annonçait l'ancien commentaire de Gate A) : le job rougit si la
-  # couverture descend dessous. Aucun `needs` : il démarre en
-  # même temps que Gate A et ne l'attend pas.
+  # 2026-09-19 — LA suite Vitest du dépôt : c'est le SEUL job qui la lance
+  # (voir le commentaire de tête de `gate-a`). Elle tourne avec couverture ;
+  # le job rougit si un test échoue OU si la couverture descend sous les seuils
+  # de `coverage.thresholds` dans vitest.config.ts (source unique : ne pas les
+  # recopier ici). Aucun `needs` : il démarre en même temps que Gate A.
   # Il refait l'installation et `prisma generate` : un job GitHub part d'une
   # machine vierge, rien n'est hérité de Gate A.
+  # ⚠️ Il ne bloque une fusion que s'il figure dans les contextes EXIGÉS de la
+  # protection de `main` — à ajouter après la fusion de ce job.
   gate-a-couverture:
     name: Gate A · couverture
     runs-on: ubuntu-latest
-    # Son propre budget : la suite instrumentée prenait 19 min 09 s à 19 min 15 s
-    # dans Gate A (#1112, #1114, #1115). 40 min laisse une marge réelle sans rendre un job bloqué
-    # interminable.
+    # Mesuré sur #1116 (run 35425943414) : 20 min 19 s, dont 19 min 35 s pour
+    # la suite instrumentée. 40 min laisse une marge réelle sans rendre un job
+    # bloqué interminable.
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v6

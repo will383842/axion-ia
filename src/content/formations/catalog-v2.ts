@@ -124,7 +124,7 @@ export interface FormationV2 {
   // ---- Modalités & pratique (défauts centralisés dans catalog-v2-facts.ts) ----
   /** Format. Défaut = présentiel + distanciel possible. Surcharge si différent. */
   modalites?: ReadonlyArray<ModalitePedagogique>;
-  /** Matériel requis. Défaut = FORMATION_MATERIEL_DEFAUT (« smartphone ou ordinateur, connexion internet… », catalog-v2-facts.ts). Ne surcharger que pour dire autre chose que le défaut. */
+  /** Matériel requis. Défaut = FORMATION_MATERIEL_DEFAUT (« smartphone ou ordinateur, connexion internet… », catalog-v2-facts.ts). Matériel du PRÉSENTIEL : `getFormationMateriel` y ajoute l'exigence du distanciel. Ne surcharger que pour dire autre chose que le défaut. */
   materielFr?: string;
   /** Effectif du groupe. Défaut = « Jusqu'à 15 participants ». */
   effectifFr?: string;

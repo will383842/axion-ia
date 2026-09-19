@@ -176,7 +176,9 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
     },
     {
       question: "Faut-il des prérequis ou du matériel particulier ?",
-      reponse: `${prerequis} Côté matériel : ${materiel.toLowerCase()}.`,
+      // Minuscule sur l'INITIALE seulement : `toLowerCase()` sur tout le texte
+      // rendait « outils ia ».
+      reponse: `${prerequis} Côté matériel : ${materiel.charAt(0).toLowerCase()}${materiel.slice(1)}.`,
     },
     {
       question: "Quels outils d'IA vais-je apprendre à utiliser ?",

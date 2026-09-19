@@ -51,6 +51,17 @@
  *    affirmer que le matériel est « le même » sur place et à distance — la
  *    phrase que la FAQ publiait jusque-là, pendant que la convocation exigeait
  *    déjà l'ordinateur.
+ *  - Même décision, sur les FICHES formation : `getFormationMateriel` scinde le
+ *    texte par format dès que la fiche se suit à distance (« En présentiel, … ;
+ *    en distanciel, un ordinateur avec caméra et micro, et l'application de
+ *    visioconférence… ») — carte « Matériel », FAQ de la fiche et JSON-LD. La
+ *    page ne doit rien écrire du matériel en dur.
+ *  - Balayage des fichiers publics : toute ligne qui annonce « smartphone ou
+ *    (un) ordinateur » doit parler du distanciel SUR LA MÊME LIGNE (pages,
+ *    messages, FAQ). Seule exception : la constante de `materiel.ts`, que
+ *    `getFormationMateriel` complète.
+ *  - « Rien à installer » ne vaut que sur place : en distanciel, la convocation
+ *    exige l'application de visioconférence installée et testée.
  *  - ⚠️ LIMITE DÉCLARÉE du balayage des fichiers (src/content, src/app,
  *    src/components, src/messages) : il ne repère que la formulation
  *    « ordinateur portable » JOINTE à « connexion internet » (avec ou sans
@@ -67,7 +78,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import * as FAITS from "@/content/formations/catalog-v2-facts";
-import { getFormationMateriel } from "@/content/formations/catalog-v2-facts";
+import { getFormationMateriel, getFormationModalites } from "@/content/formations/catalog-v2-facts";
 import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
 import { FAQ_GLOBAL } from "@/content/transversal";
 
@@ -171,10 +182,63 @@ function texteAffiche(f: (typeof FORMATIONS_V2)[number]): string {
   return normaliser(JSON.stringify(morceaux));
 }
 
+/** Une fiche qui peut se suivre à distance. */
+function aDuDistanciel(f: (typeof FORMATIONS_V2)[number]): boolean {
+  const m = getFormationModalites(f);
+  return m.includes("distanciel") || m.includes("hybride");
+}
+
+const CLAUSE_DISTANCIEL =
+  /en distanciel, un ordinateur avec caméra et micro, et l'application de visioconférence installée/;
+
+/**
+ * Toute phrase qui dit que le matériel est le même sur place et à distance —
+ * celle que la décision du 2026-09-19 a rendue fausse, et ses variantes
+ * (revue exactitude 5254909256 : « l'équipement demandé est identique »
+ * passait).
+ */
+const MEME_MATERIEL = new RegExp(
+  [
+    String.raw`(?:mat[ée]riel|[ée]quipement)s?\s+(?:demand[ée]s?\s+|requis\s+|n[ée]cessaires?\s+)?(?:est|sont|reste|restent)\s+(?:le m[êe]me|les m[êe]mes|identiques?)`,
+    String.raw`(?:le|les|un|du) m[êe]mes?\s+(?:mat[ée]riel|[ée]quipement)s?`,
+    String.raw`(?:mat[ée]riel|[ée]quipement)s?\s+identiques?`,
+    String.raw`same (?:equipment|hardware|devices?)`,
+    String.raw`(?:equipment|hardware) (?:is|are|remains?) (?:the same|identical)`,
+    String.raw`identical (?:equipment|hardware)`,
+    String.raw`in both cases,? participants need`,
+  ].join("|"),
+  "i",
+);
+
+/** « smartphone ou (un) ordinateur », en FR ou en EN. */
+const SMARTPHONE_OU_ORDINATEUR = /smartphone (?:ou (?:un )?ordinateur|or (?:a )?computer)/i;
+const PARLE_DU_DISTANCIEL = /distance|distanciel|remote|visio/i;
+
 /** Entrées de la FAQ qui énoncent le matériel, en FR et en EN. */
 const FAQ_MATERIEL = ["presentiel-distance", "competences-techniques"] as const;
 
 const RACINE = path.resolve(__dirname, "../../..");
+
+/** Lignes des fichiers publics, lues une fois pour les deux balayages. */
+type LignePublique = { fichier: string; ligne: string; n: number };
+let lignesPubliques: LignePublique[] | null = null;
+function toutesLesLignesPubliques(): LignePublique[] {
+  if (lignesPubliques) return lignesPubliques;
+  const racines = ["src/content", "src/app", "src/components", "src/messages"]
+    .map((r) => path.join(RACINE, r))
+    .filter((r) => existsSync(r));
+  expect(racines.length).toBeGreaterThanOrEqual(3);
+  lignesPubliques = racines.flatMap(fichiers).flatMap((f) =>
+    readFileSync(f, "utf8")
+      .split("\n")
+      .map((ligne, i) => ({
+        fichier: path.relative(RACINE, f).replace(/\\/g, "/"),
+        ligne,
+        n: i + 1,
+      })),
+  );
+  return lignesPubliques;
+}
 
 function fichiers(dir: string): string[] {
   const out: string[] = [];
@@ -199,17 +263,42 @@ describe("le matériel annoncé est le même partout", () => {
 
   it.each(
     formations.filter((f) => !EXCEPTIONS_ORDINATEUR.has(f.id)).map((f) => [f.id, f] as const),
-  )("%s annonce « smartphone ou ordinateur »", (_id, f) => {
+  )("%s annonce « smartphone ou ordinateur » en présentiel", (_id, f) => {
     const materiel = getFormationMateriel(f);
-    expect(materiel).toMatch(/^smartphone ou ordinateur/i);
+    expect(materiel).toMatch(/^en présentiel, smartphone ou ordinateur/i);
     expect(materiel).not.toMatch(ORDINATEUR_COMME_MATERIEL);
+  });
+
+  it.each(formations.map((f) => [f.id, f] as const))(
+    "%s exige l'ordinateur avec caméra et micro en distanciel",
+    (_id, f) => {
+      // Toutes les fiches hors séminaire se suivent à distance : sinon ce test
+      // passerait à vide sur une fiche passée en présentiel seul.
+      expect(aDuDistanciel(f)).toBe(true);
+      expect(getFormationMateriel(f)).toMatch(CLAUSE_DISTANCIEL);
+    },
+  );
+
+  it("une fiche en présentiel seul n'annonce pas de distanciel", () => {
+    const presentielSeul = FORMATIONS_V2.filter((f) => !aDuDistanciel(f));
+    expect(presentielSeul.length).toBeGreaterThan(0);
+    for (const f of presentielSeul) expect(getFormationMateriel(f)).not.toMatch(/distanciel/i);
+  });
+
+  it("la fiche formation n'écrit pas le matériel en dur : elle lit getFormationMateriel", () => {
+    const page = readFileSync(
+      path.join(RACINE, "src/components/formations/FormationDetailPage.tsx"),
+      "utf8",
+    );
+    expect(page).toContain("getFormationMateriel(f)");
+    expect(page).not.toMatch(/smartphone/i);
   });
 
   it.each([...FORMATIONS_TABLEUR])("%s recommande l'ordinateur pour le tableur", (id) => {
     const f = formations.find((x) => x.id === id);
     expect(f, id).toBeDefined();
     expect(getFormationMateriel(f!)).toMatch(
-      /^smartphone ou ordinateur.*un ordinateur est recommandé pour les exercices sur tableur/i,
+      /^en présentiel, smartphone ou ordinateur.*un ordinateur est recommandé pour les exercices sur tableur.*en distanciel, un ordinateur avec caméra et micro/i,
     );
   });
 
@@ -236,7 +325,7 @@ describe("le matériel annoncé est le même partout", () => {
     for (const id of EXCEPTIONS_ORDINATEUR) {
       const f = formations.find((x) => x.id === id);
       expect(f, id).toBeDefined();
-      expect(getFormationMateriel(f!)).toMatch(/^ordinateur portable/i);
+      expect(getFormationMateriel(f!)).toMatch(/^en présentiel, ordinateur portable/i);
     }
   });
 
@@ -269,15 +358,20 @@ describe("le matériel annoncé est le même partout", () => {
       // pas — un ordinateur avec caméra et micro, comme le dit la convocation.
       // Cherché dans la RÉPONSE elle-même (celle du JSON-LD), pas dans tout
       // l'objet : un point clé seul la laisserait muette sans que rien rougisse.
-      expect(e!.fr.answer).toMatch(/à distance[^.]*un ordinateur avec caméra et micro/i);
-      expect(e!.en.answer).toMatch(/remote[^.]*a computer with a camera and a microphone/i);
+      expect(e!.fr.answer).toMatch(
+        /à distance[^.]*un ordinateur avec caméra et micro[^.]*application de visioconférence installée/i,
+      );
+      expect(e!.en.answer).toMatch(
+        /remote[^.]*a computer with a camera and a microphone[^.]*videoconferencing app installed/i,
+      );
+      // « Rien à installer » ne vaut que sur place (convocation distanciel :
+      // application de visioconférence installée et testée).
+      expect(fr).not.toMatch(/(?<!sur place, )rien à installer/i);
+      expect(en).not.toMatch(/(?<!on site, )nothing to install/i);
     },
   );
 
   it("aucune entrée de la FAQ ne dit que le matériel est le même sur place et à distance", () => {
-    // La phrase que la décision du 2026-09-19 a rendue fausse, et ses variantes.
-    const MEME_MATERIEL =
-      /mat[ée]riel (?:demand[ée] )?est le m[êe]me|m[êe]me mat[ée]riel|same equipment|in both cases,? participants need/i;
     const fautives = FAQ_GLOBAL.flatMap((e) =>
       (["fr", "en"] as const)
         .filter((langue) => MEME_MATERIEL.test(normaliser(JSON.stringify(e[langue]))))
@@ -286,21 +380,48 @@ describe("le matériel annoncé est le même partout", () => {
     expect(fautives).toEqual([]);
   });
 
+  it.each([
+    "Dans les deux cas, le matériel demandé est le même.",
+    "L'équipement demandé est identique sur place et à distance.",
+    "Le même équipement suffit dans les deux formats.",
+    "Un matériel identique dans les deux cas.",
+    "Les équipements requis restent les mêmes.",
+    "The same equipment is needed in both formats.",
+    "Equipment is identical on site and remotely.",
+    "In both cases, participants need a smartphone.",
+  ])("MEME_MATERIEL reconnaît « %s »", (phrase) => {
+    expect(phrase).toMatch(MEME_MATERIEL);
+  });
+
+  it.each([
+    "Les deux, au choix, et avec le même programme.",
+    "Même contenu et même niveau d'interactivité.",
+    "The same programme and the same duration.",
+  ])("MEME_MATERIEL laisse passer « %s »", (phrase) => {
+    expect(phrase).not.toMatch(MEME_MATERIEL);
+  });
+
+  it("toute ligne publique qui annonce « smartphone ou ordinateur » parle aussi du distanciel", () => {
+    // La constante de `materiel.ts` est complétée par getFormationMateriel
+    // (vérifié plus haut, fiche par fiche) : c'est la seule ligne admise. Les
+    // lignes de COMMENTAIRE (`//`, `*`) ne sont pas publiées : elles sont
+    // ignorées.
+    const fautives = toutesLesLignesPubliques()
+      .filter(
+        ({ ligne }) =>
+          !/^\s*(?:\/\/|\/?\*)/.test(ligne) &&
+          SMARTPHONE_OU_ORDINATEUR.test(ligne) &&
+          !PARLE_DU_DISTANCIEL.test(ligne),
+      )
+      .map(({ fichier, n }) => `${fichier}:${n}`)
+      .filter((t) => !t.startsWith("src/content/formations/materiel.ts:"));
+    expect(fautives).toEqual([]);
+  });
+
   it("aucun fichier de contenu public n'exige l'ordinateur portable hors des deux exceptions", () => {
-    const racines = ["src/content", "src/app", "src/components", "src/messages"]
-      .map((r) => path.join(RACINE, r))
-      .filter((r) => existsSync(r));
-    expect(racines.length).toBeGreaterThanOrEqual(3);
-    const trouvailles: string[] = [];
-    for (const f of racines.flatMap(fichiers)) {
-      readFileSync(f, "utf8")
-        .split("\n")
-        .forEach((ligne, i) => {
-          if (ORDINATEUR_COMME_MATERIEL.test(ligne)) {
-            trouvailles.push(`${path.relative(RACINE, f).replace(/\\/g, "/")}:${i + 1}`);
-          }
-        });
-    }
+    const trouvailles = toutesLesLignesPubliques()
+      .filter(({ ligne }) => ORDINATEUR_COMME_MATERIEL.test(ligne))
+      .map(({ fichier, n }) => `${fichier}:${n}`);
     // Les deux seules lignes admises : les surcharges `materielFr` des exceptions.
     const admises = trouvailles.filter((t) =>
       t.startsWith("src/content/formations/catalog-v2.ts:"),
