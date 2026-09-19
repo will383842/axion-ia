@@ -58,8 +58,9 @@
  *    page ne doit rien écrire du matériel en dur.
  *  - Balayage des fichiers publics : toute ligne qui annonce « smartphone ou
  *    (un) ordinateur » doit parler du distanciel SUR LA MÊME LIGNE (pages,
- *    messages, FAQ). Seule exception : la constante de `materiel.ts`, que
- *    `getFormationMateriel` complète.
+ *    messages, FAQ). Seule exception : le fichier `materiel.ts`, dont
+ *    `getFormationMateriel` complète les constantes. La convocation distanciel
+ *    doit exiger ce que `MATERIEL_DISTANCIEL` annonce.
  *  - « Rien à installer » ne vaut que sur place : en distanciel, la convocation
  *    exige l'application de visioconférence installée et testée.
  *  - ⚠️ LIMITE DÉCLARÉE du balayage des fichiers (src/content, src/app,
@@ -80,6 +81,7 @@ import { describe, expect, it } from "vitest";
 import * as FAITS from "@/content/formations/catalog-v2-facts";
 import { getFormationMateriel, getFormationModalites } from "@/content/formations/catalog-v2-facts";
 import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
+import { MATERIEL_DISTANCIEL } from "@/content/formations/materiel";
 import { FAQ_GLOBAL } from "@/content/transversal";
 
 /** Fiches où le smartphone serait une promesse fausse — confirmées par Will le 2026-09-18. */
@@ -189,7 +191,27 @@ function aDuDistanciel(f: (typeof FORMATIONS_V2)[number]): boolean {
 }
 
 const CLAUSE_DISTANCIEL =
-  /en distanciel, un ordinateur avec caméra et micro, et l'application de visioconférence installée/;
+  /en distanciel, un ordinateur avec caméra et micro, une connexion internet stable, l'application de visioconférence installée et testée avant la session, accès aux outils IA/;
+
+/**
+ * Une affirmation qu'il n'y a RIEN À INSTALLER. Vraie sur place seulement :
+ * à distance, la convocation exige l'application de visioconférence installée
+ * (revues exactitude 5254909256 et 5255141619 — `pme-ia` disait « aucune
+ * installation n'est requise » sans condition).
+ */
+const AUCUNE_INSTALLATION =
+  /rien à installer|(?:aucune|sans|ni)\s+(?:\S+\s+){0,2}?installation|nothing to install|no (?:software )?installation/i;
+/** Ce qui borne l'affirmation au présentiel, DANS LA MÊME PHRASE. */
+const BORNE_SUR_PLACE =
+  /sur place|dans vos locaux|(?:vient|arrive) avec (?:son|ses)|on site|arrives with (?:their|his|her)/i;
+
+/** Toutes les chaînes d'une entrée de FAQ (réponse, points clés, nuances…), en phrases. */
+function phrases(valeur: unknown): string[] {
+  if (typeof valeur === "string") return valeur.split(/(?<=[.!?])\s+|\n+/);
+  if (Array.isArray(valeur)) return valeur.flatMap(phrases);
+  if (valeur && typeof valeur === "object") return Object.values(valeur).flatMap(phrases);
+  return [];
+}
 
 /**
  * Toute phrase qui dit que le matériel est le même sur place et à distance —
@@ -294,6 +316,21 @@ describe("le matériel annoncé est le même partout", () => {
     expect(page).not.toMatch(/smartphone/i);
   });
 
+  it("la convocation distanciel exige ce que MATERIEL_DISTANCIEL annonce", () => {
+    // `materiel.ts` affirme « même exigence que la convocation » : ce test la tient.
+    const convocation = readFileSync(
+      path.join(RACINE, "src/server/qualiopi/documents/templates/convocation.tsx"),
+      "utf8",
+    );
+    const bloc = convocation.slice(convocation.indexOf("Équipement requis (distanciel)"));
+    expect(bloc).toContain("Un ordinateur avec caméra et micro");
+    expect(bloc).toContain("Une connexion internet stable");
+    expect(bloc).toContain("L'application de visioconférence installée et testée");
+    expect(MATERIEL_DISTANCIEL).toContain("un ordinateur avec caméra et micro");
+    expect(MATERIEL_DISTANCIEL).toContain("une connexion internet stable");
+    expect(MATERIEL_DISTANCIEL).toContain("l'application de visioconférence installée et testée");
+  });
+
   it.each([...FORMATIONS_TABLEUR])("%s recommande l'ordinateur pour le tableur", (id) => {
     const f = formations.find((x) => x.id === id);
     expect(f, id).toBeDefined();
@@ -327,6 +364,26 @@ describe("le matériel annoncé est le même partout", () => {
       expect(f, id).toBeDefined();
       expect(getFormationMateriel(f!)).toMatch(/^en présentiel, ordinateur portable/i);
     }
+  });
+
+  it.each(formations.map((f) => [f.id, f] as const))(
+    "%s exige à distance ce qu'elle exige sur place au-delà du poste",
+    (_id, f) => {
+      // Revue exactitude 5255141619 : pour IA pour l'IT et IA pour
+      // l'automatisation, l'environnement de développement et les données
+      // disparaissaient de la clause distanciel.
+      const [presentiel, distanciel] = getFormationMateriel(f).split(" ; en distanciel, ");
+      const i = presentiel!.indexOf("accès aux outils IA");
+      expect(i, "la partie présentiel ne dit plus « accès aux outils IA »").toBeGreaterThan(-1);
+      expect(distanciel).toContain(presentiel!.slice(i));
+    },
+  );
+
+  it("à distance, l'IT garde son environnement de développement et l'automatisation ses données", () => {
+    const distanciel = (id: string) =>
+      getFormationMateriel(formations.find((x) => x.id === id)!).split(" ; en distanciel, ")[1];
+    expect(distanciel("ia-pour-l-it")).toContain("environnement de développement habituel");
+    expect(distanciel("ia-pour-l-automatisation")).toContain("données concernées");
   });
 
   it("aucune entrée de la FAQ, en FR comme en EN, ne mentionne l'ordinateur portable ni le laptop", () => {
@@ -364,12 +421,30 @@ describe("le matériel annoncé est le même partout", () => {
       expect(e!.en.answer).toMatch(
         /remote[^.]*a computer with a camera and a microphone[^.]*videoconferencing app installed/i,
       );
-      // « Rien à installer » ne vaut que sur place (convocation distanciel :
-      // application de visioconférence installée et testée).
-      expect(fr).not.toMatch(/(?<!sur place, )rien à installer/i);
-      expect(en).not.toMatch(/(?<!on site, )nothing to install/i);
     },
   );
+
+  it("aucune entrée de la FAQ n'affirme « rien à installer » sans la borner au présentiel", () => {
+    const fautives = FAQ_GLOBAL.flatMap((e) =>
+      (["fr", "en"] as const).flatMap((langue) =>
+        phrases(e[langue])
+          .filter((ph) => AUCUNE_INSTALLATION.test(ph) && !BORNE_SUR_PLACE.test(ph))
+          .map((ph) => `${e.id}:${langue} — ${ph.slice(0, 90)}`),
+      ),
+    );
+    expect(fautives).toEqual([]);
+  });
+
+  it.each([
+    "Aucune installation n'est requise.",
+    "Rien à installer : un smartphone suffit.",
+    "Aucune compétence technique ni installation requise.",
+    "No software installation is required.",
+    "Nothing to install.",
+  ])("AUCUNE_INSTALLATION reconnaît « %s »", (ph) => {
+    expect(ph).toMatch(AUCUNE_INSTALLATION);
+    expect(ph).not.toMatch(BORNE_SUR_PLACE);
+  });
 
   it("aucune entrée de la FAQ ne dit que le matériel est le même sur place et à distance", () => {
     const fautives = FAQ_GLOBAL.flatMap((e) =>
@@ -402,10 +477,10 @@ describe("le matériel annoncé est le même partout", () => {
   });
 
   it("toute ligne publique qui annonce « smartphone ou ordinateur » parle aussi du distanciel", () => {
-    // La constante de `materiel.ts` est complétée par getFormationMateriel
-    // (vérifié plus haut, fiche par fiche) : c'est la seule ligne admise. Les
-    // lignes de COMMENTAIRE (`//`, `*`) ne sont pas publiées : elles sont
-    // ignorées.
+    // Admis : TOUT le fichier `materiel.ts` — ses constantes sont complétées
+    // par getFormationMateriel, vérifié plus haut fiche par fiche. Ignorées :
+    // les lignes qui COMMENCENT par `//`, `*` ou `/*` (commentaires, non
+    // publiés) ; un commentaire en fin de ligne de code ne l'est pas.
     const fautives = toutesLesLignesPubliques()
       .filter(
         ({ ligne }) =>

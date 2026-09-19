@@ -18,7 +18,11 @@
 // ============================================================================
 
 import type { FormationDuree, FormationGamme } from "../pricing";
-import { MATERIEL_DISTANCIEL, MATERIEL_SMARTPHONE_OU_ORDINATEUR } from "./materiel";
+import {
+  DEBUT_DES_ACCES,
+  MATERIEL_DISTANCIEL,
+  MATERIEL_SMARTPHONE_OU_ORDINATEUR,
+} from "./materiel";
 import type { FormationCasUsage, FormationV2 } from "./catalog-v2";
 import { FORMATION_CARD_PHOTOS } from "./catalog-v2-photos";
 import { type ModalitePedagogique, PRESENTIEL_DISTANCIEL } from "./modalites";
@@ -88,7 +92,11 @@ export function getFormationMateriel(f: FormationV2): string {
   const m = getFormationModalites(f);
   if (!m.includes("distanciel") && !m.includes("hybride")) return surPlace;
   const initiale = surPlace.charAt(0).toLowerCase() + surPlace.slice(1);
-  return `En présentiel, ${initiale} ; en distanciel, ${MATERIEL_DISTANCIEL}`;
+  // Ce que la fiche exige AU-DELÀ du poste (accès aux outils, environnement de
+  // développement, données) vaut aussi à distance : on le reprend tel quel.
+  const i = surPlace.indexOf(DEBUT_DES_ACCES);
+  const acces = i === -1 ? "" : `, ${surPlace.slice(i)}`;
+  return `En présentiel, ${initiale} ; en distanciel, ${MATERIEL_DISTANCIEL}${acces}`;
 }
 
 // ── Prérequis ───────────────────────────────────────────────────────────────

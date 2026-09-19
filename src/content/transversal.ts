@@ -649,12 +649,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Par où commencer avec l'IA dans mon entreprise ?",
       answer:
-        "Par un cas réel, pas par un plan stratégique. La première étape recommandée est une intervention de découverte — une demi-journée ou une journée — qui identifie 3 à 5 process candidats à l'IA dans votre contexte. L'intervenant arrive avec ses modèles, travaille sur vos données et démontre des gains concrets avant tout engagement.\n\nEn amont, un appel de cadrage de 45 minutes suffit à choisir le bon point d'entrée. Si vous voulez faire monter une équipe, ce sera une formation en intra. Si le sujet est votre propre poste, ce sera le coaching 1-to-1. Si vous cherchez une cartographie chiffrée de l'entreprise, ce sera l'audit IA.\n\nAucune compétence technique n'est requise et aucune installation logicielle n'est demandée de votre côté. Le devis suit sous 48 heures ouvrées, et les équipes formées sont opérationnelles dès le lendemain.",
+        "Par un cas réel, pas par un plan stratégique. La première étape recommandée est une intervention de découverte — une demi-journée ou une journée — qui identifie 3 à 5 process candidats à l'IA dans votre contexte. L'intervenant arrive avec ses modèles, travaille sur vos données et démontre des gains concrets avant tout engagement.\n\nEn amont, un appel de cadrage de 45 minutes suffit à choisir le bon point d'entrée. Si vous voulez faire monter une équipe, ce sera une formation en intra. Si le sujet est votre propre poste, ce sera le coaching 1-to-1. Si vous cherchez une cartographie chiffrée de l'entreprise, ce sera l'audit IA.\n\nAucune compétence technique n'est requise, et sur place aucune installation logicielle n'est demandée de votre côté ; à distance, seule l'application de visioconférence est à installer. Le devis suit sous 48 heures ouvrées, et les équipes formées sont opérationnelles dès le lendemain.",
       keyPoints: [
         "Commencer par un cas réel, pas par une stratégie IA",
         "Appel de cadrage de 45 minutes pour choisir le point d'entrée",
         "Journée de découverte : 3 à 5 process candidats identifiés sur vos données",
-        "Aucune compétence technique ni installation requise de votre côté",
+        "Aucune compétence technique requise, aucune installation sur place",
         "Devis sous 48 h ouvrées, équipes opérationnelles dès le lendemain",
       ],
       facts: [
@@ -689,7 +689,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Ce n'est pas un projet informatique",
           detail:
-            "La première étape ne demande ni budget IT, ni installation, ni compétence technique. L'intervenant vient avec son propre équipement.",
+            "Sur place, la première étape ne demande ni budget IT, ni installation, ni compétence technique : l'intervenant vient avec son propre équipement.",
         },
         {
           title: "Ce n'est pas un audit",
@@ -831,11 +831,11 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Faut-il avoir des compétences techniques pour bénéficier d'une intervention IA ?",
       answer:
-        "Non, aucune. Les formations Axion-IA s'adressent à des équipes non techniques : la seule qui suppose une aisance en développement ou en administration système est celle destinée aux profils IT. Partout ailleurs, on part du principe que certains participants n'ont jamais ouvert un outil d'IA, et chaque notion est démontrée en direct avant d'être pratiquée immédiatement.\n\nCôté matériel, sur place, rien à installer : un smartphone ou un ordinateur et une connexion internet suffisent (un ordinateur pour IA pour l'IT et IA pour l'automatisation, qui font construire sur poste ; un ordinateur est recommandé pour les exercices sur tableur). À distance, il faut un ordinateur avec caméra et micro, et l'application de visioconférence installée et testée avant la session. Les accès aux outils sont préparés avec vous en amont si besoin. Les exercices portent sur vos propres tâches — offres d'emploi et comptes rendus côté RH, propositions et relances côté commercial, rapports et relances côté comptabilité, courriers et synthèses côté direction — et non sur des cas d'école.\n\nCe qui compte n'est donc pas le niveau technique, mais le fait d'arriver avec de vraies tâches à traiter. Les participants qui utilisent déjà l'IA de temps en temps ne perdent rien pour autant : ils y gagnent une méthode et des réflexes de vérification qu'ils n'ont généralement pas.",
+        "Non, aucune. Les formations Axion-IA s'adressent à des équipes non techniques : la seule qui suppose une aisance en développement ou en administration système est celle destinée aux profils IT. Partout ailleurs, on part du principe que certains participants n'ont jamais ouvert un outil d'IA, et chaque notion est démontrée en direct avant d'être pratiquée immédiatement.\n\nCôté matériel, sur place, rien à installer : un smartphone ou un ordinateur et une connexion internet suffisent (un ordinateur pour IA pour l'IT et IA pour l'automatisation, qui font construire sur poste ; un ordinateur est recommandé pour les exercices sur tableur). À distance, il faut un ordinateur avec caméra et micro, une connexion internet et l'application de visioconférence installée et testée avant la session. Les accès aux outils sont préparés avec vous en amont si besoin. Les exercices portent sur vos propres tâches — offres d'emploi et comptes rendus côté RH, propositions et relances côté commercial, rapports et relances côté comptabilité, courriers et synthèses côté direction — et non sur des cas d'école.\n\nCe qui compte n'est donc pas le niveau technique, mais le fait d'arriver avec de vraies tâches à traiter. Les participants qui utilisent déjà l'IA de temps en temps ne perdent rien pour autant : ils y gagnent une méthode et des réflexes de vérification qu'ils n'ont généralement pas.",
       keyPoints: [
         "Aucun prérequis technique : les formations sont conçues pour des équipes non techniques",
         "Seule exception, la formation destinée aux profils IT suppose une aisance en développement",
-        "Sur place, rien à installer : un smartphone ou un ordinateur et une connexion internet suffisent (un ordinateur pour IA pour l'IT et IA pour l'automatisation, recommandé pour les exercices sur tableur) ; à distance, un ordinateur avec caméra et micro, et l'application de visioconférence",
+        "Sur place, rien à installer : un smartphone ou un ordinateur et une connexion internet suffisent (un ordinateur pour IA pour l'IT et IA pour l'automatisation, recommandé pour les exercices sur tableur) ; à distance, un ordinateur avec caméra et micro, une connexion internet et l'application de visioconférence",
         "Les accès aux outils sont préparés avec vous en amont si besoin",
         "Chaque notion est démontrée en direct, puis pratiquée sur vos propres tâches",
       ],
@@ -866,7 +866,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Do you need technical skills to benefit from an AI session?",
       answer:
-        "No. Axion-IA sessions are designed for non-technical teams. On site, nothing to install: participants need a smartphone or a computer and an internet connection (a computer for AI for IT and AI for automation, and recommended for spreadsheet exercises). Remote sessions require a computer with a camera and a microphone, and the videoconferencing app installed and tested before the session. Access to the tools is prepared with you in advance if needed. Examples are adapted to your real business roles (HR, accounting, sales, operations, etc.).",
+        "No. Axion-IA sessions are designed for non-technical teams. On site, nothing to install: participants need a smartphone or a computer and an internet connection (a computer for AI for IT and AI for automation, and recommended for spreadsheet exercises). Remote sessions require a computer with a camera and a microphone, an internet connection, and the videoconferencing app installed and tested before the session. Access to the tools is prepared with you in advance if needed. Examples are adapted to your real business roles (HR, accounting, sales, operations, etc.).",
     },
   },
   {
@@ -1011,7 +1011,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Ce n'est pas réservé aux profils techniques",
           detail:
-            "Les formations sont conçues pour des équipes non techniques : aucune installation n'est requise et les exemples sont pris dans vos métiers réels.",
+            "Les formations sont conçues pour des équipes non techniques : sur place, aucune installation n'est requise (à distance, seule l'application de visioconférence), et les exemples sont pris dans vos métiers réels.",
         },
         {
           title: "L'outil seul ne suffit pas",
