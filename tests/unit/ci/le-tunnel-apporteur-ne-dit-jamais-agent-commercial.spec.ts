@@ -49,6 +49,11 @@ const SURFACES = [
   "src/components/recrutement/TunnelFacebookShell.tsx",
   "src/lib/email/templates/lead-apporteur-recu.tsx",
   "src/lib/email/templates/lead-apporteur-relance.tsx",
+  // 2026-09-19 — le kit, la confirmation du dossier et l'invitation à l'échange.
+  "src/lib/email/templates/_kit-apporteur.tsx",
+  "src/lib/email/templates/candidature-commercial-confirmee.tsx",
+  "src/lib/email/templates/apporteur-invitation-appel.tsx",
+  "src/app/[locale]/apporteur-affaires/merci/page.tsx",
 ];
 
 /**

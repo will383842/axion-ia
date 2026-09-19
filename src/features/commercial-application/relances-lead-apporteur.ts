@@ -17,6 +17,16 @@
 // `annulerRelancesLeadApporteur` : les jobs encore en attente sont retirés,
 // et personne n'est relancé pour un dossier déjà envoyé.
 //
+// ── Le kit du dossier commencé (2026-09-19) ──────────────────────────────
+// Quelqu'un qui valide l'écran 1 du dossier sans le finir n'a reçu AUCUN
+// e-mail : le kit apporteur (document de présentation + catalogue) doit
+// pourtant partir dès qu'on a son adresse (décision Will). Un troisième job
+// retardé de 30 minutes lui envoie `lead-apporteur-recu`, variante
+// `dossier-commence`. Même mécanique que les relances — `jobId` dérivé du hash,
+// retiré par `annulerRelancesLeadApporteur` quand le dossier arrive — donc celui
+// qui finit son dossier en trois minutes ne le reçoit jamais : la confirmation
+// du dossier porte déjà le kit.
+//
 // 🔴 Le `jobId` porte le HASH, jamais l'adresse — une clé Redis se lit dans
 // n'importe quel dump (même règle que le compteur par e-mail de l'action).
 // Il n'a pas de `:` : BullMQ s'en sert comme séparateur de clés.
@@ -24,6 +34,10 @@
 import { emailsQueue, enqueueEmail } from "@/server/queue/queues";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { marquerAnnule } from "@/server/email/email-log";
+import {
+  DELAI_KIT_DOSSIER_COMMENCE_MS,
+  VARIANTE_DOSSIER_COMMENCE,
+} from "@/lib/commercial-application/kit-apporteur";
 
 export const RELANCES_LEAD_APPORTEUR = [
   { etape: "j2", delaiMs: 2 * 24 * 60 * 60 * 1000 },
@@ -36,11 +50,23 @@ export function jobIdRelance(etape: EtapeRelance, emailKey: string): string {
   return `lead-apporteur-relance-${etape}-${emailKey}`;
 }
 
+/** Identifiant du job « kit du dossier commencé » — dérivé du hash, comme les relances. */
+export function jobIdKitDossierCommence(emailKey: string): string {
+  return `lead-apporteur-kit-${emailKey}`;
+}
+
+/** Tous les jobs en attente qu'un dossier complet rend caducs, pour une adresse. */
+function jobsCaducs(emailKey: string): string[] {
+  return [
+    jobIdKitDossierCommence(emailKey),
+    ...RELANCES_LEAD_APPORTEUR.map((r) => jobIdRelance(r.etape, emailKey)),
+  ];
+}
+
 export interface PlanifierRelancesInput {
   email: string;
   prenom: string;
   dossierUrl: string;
-  creneauUrl?: string | undefined;
   submissionId: string;
 }
 
@@ -63,7 +89,6 @@ export async function planifierRelancesLeadApporteur(
         contactName: input.prenom,
         dossierUrl: input.dossierUrl,
         etape: r.etape,
-        ...(input.creneauUrl ? { creneauUrl: input.creneauUrl } : {}),
         submissionId: input.submissionId,
       },
       {
@@ -79,16 +104,46 @@ export async function planifierRelancesLeadApporteur(
 }
 
 /**
+ * Pose le kit du dossier commencé (30 min) — pour la personne arrivée
+ * DIRECTEMENT sur le dossier, qui n'a donc reçu aucun e-mail. Best-effort,
+ * comme les relances. Renvoie vrai si le job est posé.
+ */
+export async function planifierKitDossierCommence(input: PlanifierRelancesInput): Promise<boolean> {
+  const emailKey = hashEmailForLookup(input.email);
+  if (!emailKey) return false;
+  const res = await enqueueEmail(
+    "lead-apporteur-recu",
+    input.email,
+    "fr",
+    {
+      contactName: input.prenom,
+      dossierUrl: input.dossierUrl,
+      variante: VARIANTE_DOSSIER_COMMENCE,
+      submissionId: input.submissionId,
+    },
+    {
+      delayMs: DELAI_KIT_DOSSIER_COMMENCE_MS,
+      jobId: jobIdKitDossierCommence(emailKey),
+      entityType: "Submission",
+      entityId: input.submissionId,
+    },
+  );
+  return res.enqueued;
+}
+
+/**
  * Retire les rappels encore en attente pour cette adresse. Appelée quand le
  * dossier complet arrive. Best-effort, silencieuse si la file est absente
  * (build, tests) ou si aucun job n'existe.
  */
-export async function annulerRelancesLeadApporteur(email: string): Promise<number> {
+export async function annulerRelancesLeadApporteur(
+  email: string,
+  motif = "Envoi annulé : le dossier complet est arrivé avant l'échéance.",
+): Promise<number> {
   const emailKey = hashEmailForLookup(email);
   if (!emailKey || !emailsQueue) return 0;
   let retires = 0;
-  for (const r of RELANCES_LEAD_APPORTEUR) {
-    const jobId = jobIdRelance(r.etape, emailKey);
+  for (const jobId of jobsCaducs(emailKey)) {
     try {
       const n = await emailsQueue.remove(jobId);
       if (n === 1) retires += 1;
@@ -106,7 +161,7 @@ export async function annulerRelancesLeadApporteur(email: string): Promise<numbe
     // aussi 0 quand le job a déjà été retiré par un passage précédent, et la
     // ligne, elle, peut être restée ouverte. `marquerAnnule` ne touche que les
     // lignes encore `pending` — un envoi réellement parti n'est jamais réécrit.
-    await marquerAnnule(jobId, "Relance annulée : le dossier complet est arrivé avant l'échéance.");
+    await marquerAnnule(jobId, motif);
   }
   return retires;
 }

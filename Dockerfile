@@ -80,12 +80,6 @@ ARG NEXT_PUBLIC_PLAUSIBLE_API_URL
 # qu'aucune erreur ne le signale. C'est exactement l'incident Plausible du
 # 2026-07-21, rejoué sur un budget publicitaire.
 ARG NEXT_PUBLIC_META_PIXEL_ID
-# Créneau d'appel des apporteurs — lu côté SERVEUR (`/apporteur-affaires/merci`), donc il
-# fonctionnerait au runtime seul. Il est quand même posé au build parce que la
-# page est prérendue (`revalidate = 600`) : sans lui au bake, le calendrier
-# n'apparaît qu'à la première régénération, jusqu'à 10 minutes après la mise en
-# ligne — sur la page qui suit immédiatement la conversion.
-ARG NEXT_PUBLIC_CALENDLY_APPORTEUR_URL
 ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
 ENV NEXT_PUBLIC_APP_ENV=${NEXT_PUBLIC_APP_ENV:-production}
 ENV NEXT_PUBLIC_CALENDLY_APPEL_URL=${NEXT_PUBLIC_CALENDLY_APPEL_URL}
@@ -93,7 +87,6 @@ ENV NEXT_PUBLIC_TURNSTILE_SITE_KEY=${NEXT_PUBLIC_TURNSTILE_SITE_KEY}
 ENV NEXT_PUBLIC_PLAUSIBLE_DOMAIN=${NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
 ENV NEXT_PUBLIC_PLAUSIBLE_API_URL=${NEXT_PUBLIC_PLAUSIBLE_API_URL}
 ENV NEXT_PUBLIC_META_PIXEL_ID=${NEXT_PUBLIC_META_PIXEL_ID}
-ENV NEXT_PUBLIC_CALENDLY_APPORTEUR_URL=${NEXT_PUBLIC_CALENDLY_APPORTEUR_URL}
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Bypass Zod env.ts validation au build (option F.1 recovery 2026-05-16).

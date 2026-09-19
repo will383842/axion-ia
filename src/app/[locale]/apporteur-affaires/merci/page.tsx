@@ -4,34 +4,33 @@
 // le visiteur vient de donner ses coordonnées, il est au maximum de son
 // attention. Elle fait trois choses :
 //   1. dit que c'est noté et qu'un e-mail arrive (spams compris) ;
-//   2. propose de CHOISIR le moment de l'appel — un candidat qui réserve
-//      lui-même se convertit mieux qu'un candidat qu'on rappelle ;
+//   2. donne le KIT — document de présentation + catalogue, pour découvrir ce
+//      qu'on recommandera (décision Will 2026-09-19) ;
 //   3. propose de compléter le dossier (3 min, sans CV), pré-rempli.
 //
 // Et c'est ici que le pixel Meta compte la conversion (`MerciLeadMeta`), avec
 // l'identifiant de la Submission en `eventID`, dédoublonné avec l'envoi serveur.
 //
-// Le calendrier est celui des APPELS D'APPORTEURS (`NEXT_PUBLIC_CALENDLY_APPORTEUR_URL`),
-// distinct de l'appel client de `/appel`. Absent = on dit simplement qu'on
-// appelle — jamais un délai chiffré (règle Will 2026-08-23).
+// ⛔ Plus de calendrier ici (2026-09-19). Le lien de réservation de l'échange
+// de 15 minutes n'est envoyé qu'aux personnes que Will choisit, depuis la
+// console : affiché à chaque personne qui laisse son numéro, il saturerait son
+// agenda. La page dit donc simplement qu'on appelle — sans délai chiffré.
 //
-// `noindex` : page de fin de tunnel, sans contenu à indexer. Statique, mais
-// revalidée toutes les 10 min pour que les créneaux du calendrier restent frais.
+// `noindex` : page de fin de tunnel, sans contenu à indexer.
 
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
-import { CalendarCheck, FileText, MailCheck } from "lucide-react";
+import { BookOpen, FileText, MailCheck } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
-import { env } from "@/env";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
-import { CalendlyInlineWidget } from "@/components/booking/CalendlyInlineWidget";
 import { TunnelFacebookShell } from "@/components/recrutement/TunnelFacebookShell";
 import { MerciLeadMeta } from "@/components/recrutement/MerciLeadMeta";
 import { MERCI } from "@/content/recrutement/tunnel-facebook";
 import { DOSSIER_COMPLET_PATH } from "@/lib/commercial-application/lead-apporteur";
+import { liensKitApporteur } from "@/lib/commercial-application/kit-apporteur";
 
 export const revalidate = 600;
 
@@ -53,8 +52,7 @@ export default async function Page({ params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale as Locale);
-  const isFr = locale === "fr";
-  const calendlyUrl = env.NEXT_PUBLIC_CALENDLY_APPORTEUR_URL;
+  const kit = liensKitApporteur(locale === "en" ? "en" : "fr");
 
   return (
     <TunnelFacebookShell sousTitre="Apporteurs d'affaires">
@@ -72,7 +70,8 @@ export default async function Page({ params }: Props) {
         </div>
       </Section>
 
-      {/* Étape A — choisir le moment de l'appel. */}
+      {/* Étape A — le kit : découvrir ce qu'on recommandera. Deux boutons
+          SECONDAIRES : l'action principale de la page reste le dossier. */}
       <Section className="py-8 sm:py-12 lg:py-14">
         <div className="mx-auto max-w-3xl">
           <div className="flex items-start gap-3">
@@ -80,27 +79,37 @@ export default async function Page({ params }: Props) {
               aria-hidden="true"
               className="bg-terracotta-soft text-terracotta-deep flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
             >
-              <CalendarCheck className="h-4 w-4" />
+              <BookOpen className="h-4 w-4" />
             </span>
             <div>
               <h2 className="text-fg font-serif text-2xl leading-tight font-semibold sm:text-3xl">
-                {MERCI.creneauTitre}
+                {MERCI.kitTitre}
               </h2>
-              <p className="text-fg-soft mt-2 leading-relaxed">
-                {calendlyUrl ? MERCI.creneauTexte : MERCI.creneauAbsent}
-              </p>
+              <p className="text-fg-soft mt-2 leading-relaxed">{MERCI.kitTexte}</p>
+              <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                <Cta
+                  href={kit.documentUrl}
+                  size="lg"
+                  variant="outline"
+                  external
+                  track="facebook-merci-document"
+                  className="w-full justify-center sm:w-auto"
+                >
+                  {MERCI.kitDocument} →
+                </Cta>
+                <Cta
+                  href={kit.catalogueUrl}
+                  size="lg"
+                  variant="outline"
+                  external
+                  track="facebook-merci-catalogue"
+                  className="w-full justify-center sm:w-auto"
+                >
+                  {MERCI.kitCatalogue} →
+                </Cta>
+              </div>
             </div>
           </div>
-          {calendlyUrl ? (
-            <div className="bg-paper border-border shadow-card mt-6 rounded-2xl border p-1.5">
-              <CalendlyInlineWidget
-                calendlyUrl={calendlyUrl}
-                isFr={isFr}
-                height={640}
-                locale={locale}
-              />
-            </div>
-          ) : null}
         </div>
       </Section>
 

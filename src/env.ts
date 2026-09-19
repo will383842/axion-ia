@@ -155,6 +155,20 @@ export const env = createEnv({
     // La clé n'est affichée qu'UNE SEULE FOIS, à la création.
     CALENDLY_WEBHOOK_SIGNING_KEY: z.string().optional(),
 
+    // Lien de réservation de l'ÉCHANGE DE 15 MINUTES proposé aux candidats
+    // apporteurs d'affaires (2026-09-19). Il PRÉ-REMPLIT le champ « lien
+    // Calendly » de l'invitation envoyée depuis la console — jamais distribué
+    // automatiquement : Will l'envoie à qui il choisit, pour ne pas saturer son
+    // agenda. Absent = le champ est vide et se colle à la main.
+    //
+    // ⚠️ Le NOM de l'événement dans Calendly doit contenir « apporteur » :
+    // c'est ce qui l'exclut des e-mails « appel de découverte » et du CRM des
+    // ventes (`server/calendly/appel-apporteur.ts`).
+    //
+    // Variable SERVEUR, lue à l'exécution : un `NEXT_PUBLIC_*` serait figé au
+    // build GitHub Actions, où il n'est pas posé.
+    CALENDLY_APPORTEUR_URL: z.string().url().optional(),
+
     // ── Tunnel Facebook — API Conversions Meta (2026-09-03) ────────────────
     // Jeton « système » généré dans le Gestionnaire d'événements Meta (Pixel →
     // Paramètres → API Conversions → Générer un token). SERVEUR UNIQUEMENT.
@@ -575,13 +589,6 @@ export const env = createEnv({
      * Conversions (`META_CAPI_ACCESS_TOKEN`).
      */
     NEXT_PUBLIC_META_PIXEL_ID: z.string().optional(),
-    /**
-     * Type d'événement Calendly réservé aux APPELS D'APPORTEURS D'AFFAIRES —
-     * distinct de l'appel client de `/appel`. Affiché sur `/apporteur-affaires/merci`
-     * pour que le candidat choisisse lui-même le moment de l'appel. Absent =
-     * la page dit simplement qu'on l'appelle.
-     */
-    NEXT_PUBLIC_CALENDLY_APPORTEUR_URL: z.string().url().optional(),
     // Kill-switch PUBLIC du widget chatbot (T-08). "true" → la bulle se monte
     // côté client (île idle). Tant que non défini / != "true", le widget ne
     // monte rien et n'émet aucune requête. Pendant client de la garde serveur
@@ -629,6 +636,7 @@ export const env = createEnv({
     TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY,
     CALENDLY_API_TOKEN: process.env.CALENDLY_API_TOKEN,
     CALENDLY_WEBHOOK_SIGNING_KEY: process.env.CALENDLY_WEBHOOK_SIGNING_KEY,
+    CALENDLY_APPORTEUR_URL: process.env.CALENDLY_APPORTEUR_URL,
     META_CAPI_ACCESS_TOKEN: process.env.META_CAPI_ACCESS_TOKEN,
     META_CAPI_TEST_EVENT_CODE: process.env.META_CAPI_TEST_EVENT_CODE,
     GOOGLE_CALENDAR_CLIENT_EMAIL: process.env.GOOGLE_CALENDAR_CLIENT_EMAIL,
@@ -711,7 +719,6 @@ export const env = createEnv({
     NEXT_PUBLIC_CLARITY_PROJECT_ID: process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID,
     NEXT_PUBLIC_LINKEDIN_PARTNER_ID: process.env.NEXT_PUBLIC_LINKEDIN_PARTNER_ID,
     NEXT_PUBLIC_META_PIXEL_ID: process.env.NEXT_PUBLIC_META_PIXEL_ID,
-    NEXT_PUBLIC_CALENDLY_APPORTEUR_URL: process.env.NEXT_PUBLIC_CALENDLY_APPORTEUR_URL,
     NEXT_PUBLIC_CHATBOT_ENABLED: process.env.NEXT_PUBLIC_CHATBOT_ENABLED,
     NEXT_PUBLIC_CHATBOT_PAGES: process.env.NEXT_PUBLIC_CHATBOT_PAGES,
   },

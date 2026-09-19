@@ -20,9 +20,15 @@
 // qu'elle peut s'arrêter. L'e-mail de confirmation part à la SOUMISSION
 // complète, comme aujourd'hui.
 //
-// Elle programme en revanche les rappels J+2 / J+7 — ce sont exactement eux
-// qu'il faut à un dossier abandonné, et `submitCommercialApplicationAction` les
-// ANNULE déjà si le dossier finit par arriver.
+// Elle programme en revanche, DIFFÉRÉS :
+//   · le KIT (+30 min) — `lead-apporteur-recu`, variante `dossier-commence` :
+//     document de présentation + catalogue, parce que toute personne dont on a
+//     l'adresse doit les recevoir (décision Will 2026-09-19) ;
+//   · les rappels J+2 / J+7 — ce sont exactement eux qu'il faut à un dossier
+//     abandonné.
+// `submitCommercialApplicationAction` ANNULE les trois si le dossier arrive :
+// celui qui le finit en trois minutes ne reçoit que la confirmation, qui porte
+// déjà le kit.
 //
 // Elle n'envoie pas non plus l'événement Meta : il appartient au tunnel, dont
 // le consentement publicitaire est recueilli par la bannière.
@@ -54,7 +60,6 @@ import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
 import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
 import { SITE_URL } from "@/lib/site-url";
-import { env } from "@/env";
 import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
 import {
   DOSSIER_COMPLET_PATH,
@@ -62,7 +67,10 @@ import {
   LEAD_APPORTEUR_ETAPE,
   captureDossierSchema,
 } from "@/lib/commercial-application/lead-apporteur";
-import { planifierRelancesLeadApporteur } from "./relances-lead-apporteur";
+import {
+  planifierKitDossierCommence,
+  planifierRelancesLeadApporteur,
+} from "./relances-lead-apporteur";
 
 export type CaptureState =
   { ok: true; submissionId: string; deja: boolean } | { ok: false; error: string };
@@ -187,15 +195,25 @@ export async function capturerContactDossierAction(
       });
     }
 
-    // Rappels J+2 / J+7 — annulés automatiquement si le dossier arrive.
+    // Kit (+30 min) puis rappels J+2 / J+7 — tous annulés automatiquement si
+    // le dossier arrive. Le kit fait que toute personne dont on a l'adresse
+    // reçoit le document de présentation et le catalogue (décision Will
+    // 2026-09-19), sans lui écrire pendant qu'elle remplit.
+    const relance = {
+      email: d.email,
+      prenom: d.prenom,
+      dossierUrl: `${SITE_URL}/${locale}${DOSSIER_COMPLET_PATH}`,
+      submissionId: submission.id,
+    };
     try {
-      await planifierRelancesLeadApporteur({
-        email: d.email,
-        prenom: d.prenom,
-        dossierUrl: `${SITE_URL}/${locale}${DOSSIER_COMPLET_PATH}`,
-        creneauUrl: env.NEXT_PUBLIC_CALENDLY_APPORTEUR_URL,
-        submissionId: submission.id,
+      await planifierKitDossierCommence(relance);
+    } catch (err) {
+      Sentry.captureException(err, {
+        tags: { action: "capturerContactDossierAction", step: "kit" },
       });
+    }
+    try {
+      await planifierRelancesLeadApporteur(relance);
     } catch (err) {
       Sentry.captureException(err, {
         tags: { action: "capturerContactDossierAction", step: "relances" },

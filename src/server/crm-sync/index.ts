@@ -1,4 +1,5 @@
 import { hashEmailForLookup, normalizeEmail } from "@/lib/security/email-hash";
+import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 
 import { enqueueCrmSyncEvent, newCrmEventId, type CrmOutboxWriter } from "./enqueue";
 import {
@@ -96,9 +97,21 @@ export async function syncFormSubmissionToCrm(
 }
 
 /** Un rendez-vous Calendly (pris, honoré, annulé, non honoré). */
+/** Le nom du type d'événement Calendly, tel que chaque appelant le porte dans `payload`. */
+function lireNomTypeEvenement(payload: Record<string, unknown> | undefined): string | null {
+  const nom = payload?.["eventTypeName"];
+  return typeof nom === "string" ? nom : null;
+}
+
 export async function syncCalendlyEventToCrm(
   input: BaseInput & { kind: "booked" | "completed" | "canceled" | "no_show" },
 ): Promise<void> {
+  // Un échange avec un candidat apporteur n'est pas une interaction commerciale :
+  // le pousser dans l'univers des ventes y ferait entrer un apporteur comme un
+  // prospect (`server/calendly/appel-apporteur.ts`). Garde posée ICI, au point
+  // d'entrée unique, plutôt que chez chacun des quatre appelants.
+  if (estAppelApporteur(lireNomTypeEvenement(input.payload))) return;
+
   const map = {
     booked: "calendly_booked",
     completed: "calendly_completed",

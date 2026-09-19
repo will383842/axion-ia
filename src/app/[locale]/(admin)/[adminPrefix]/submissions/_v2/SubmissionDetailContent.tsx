@@ -24,6 +24,8 @@ import { lireAccuseMessage } from "@/features/admin-submissions/accuse-reception
 import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { CandidatureCommercialeDetail } from "./CandidatureCommercialeDetail";
+import { BlocInvitationApporteur } from "@/components/admin/contacts/BlocInvitationApporteur";
+import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
 
 interface Props {
   adminPrefix: string;
@@ -31,6 +33,8 @@ interface Props {
   /** Lien de retour vers le listing (varie selon la route appelante). */
   backHref: string;
   backLabel?: string;
+  /** `?invitation=` après l'envoi d'une invitation apporteur (fiche Commercial). */
+  invitation?: string | undefined;
 }
 
 export async function SubmissionDetailContent({
@@ -38,6 +42,7 @@ export async function SubmissionDetailContent({
   id,
   backHref,
   backLabel = "← Messages",
+  invitation,
 }: Props): Promise<React.ReactElement> {
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
@@ -79,6 +84,11 @@ export async function SubmissionDetailContent({
   const unifiedType =
     details && typeof details.unifiedType === "string" ? details.unifiedType : null;
   const typeLabel = resolveSubmissionLabel(submission.type, unifiedType);
+  // Contact du réseau d'apporteurs — premier contact, dossier, capture ou
+  // saisie manuelle : tous portent ce couple. La fiche lui propose alors
+  // l'invitation à l'échange de 15 minutes (2026-09-19).
+  const estContactApporteur =
+    unifiedType === "recrutement" && details?.subType === CANDIDATURE_COMMERCIALE_SUBTYPE;
 
   // Présentation lisible : on SORT le message + les métas utiles (ville/source)
   // du JSON brut pour les afficher en clair. Le reste (JSON, IP, User-Agent) part
@@ -180,6 +190,9 @@ export async function SubmissionDetailContent({
         }
       />
       <div className="admin-detail-grid">
+        {estContactApporteur ? (
+          <BlocInvitationApporteur submissionId={submission.id} resultat={invitation} />
+        ) : null}
         {candidature ? (
           <CandidatureCommercialeDetail
             candidature={candidature}

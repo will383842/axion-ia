@@ -31,6 +31,7 @@
 
 import { prisma } from "@/lib/prisma";
 
+import { HORS_APPELS_APPORTEUR } from "@/server/calendly/appel-apporteur";
 import { alertCrmSync } from "./alerts";
 import { isCrmSyncCandidatesEnabled, isCrmSyncEnabled } from "./config";
 import type { CrmUniverse } from "./types";
@@ -230,7 +231,13 @@ export async function collectReconciliation(): Promise<ReconcileReport> {
       until,
       loadIds: (from, to) =>
         prisma.calendlyEvent.findMany({
-          where: { capturedAt: { gte: from, lt: to }, inviteeEmail: { not: null } },
+          // Les échanges apporteur ne sont jamais émis (`syncCalendlyEventToCrm`) :
+          // les compter ici les ferait passer pour des émissions perdues.
+          where: {
+            capturedAt: { gte: from, lt: to },
+            inviteeEmail: { not: null },
+            ...HORS_APPELS_APPORTEUR,
+          },
           select: { id: true },
           orderBy: { capturedAt: "asc" },
           take: MAX_SOURCES_PER_FAMILY,

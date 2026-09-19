@@ -67,9 +67,6 @@ vi.mock("@/lib/security/honeypot-observable", () => ({
 vi.mock("@/server/meta/conversions-api", () => ({
   envoyerLeadMeta: (i: unknown, o: unknown) => envoyerMeta(i, o),
 }));
-vi.mock("@/env", () => ({
-  env: { NEXT_PUBLIC_CALENDLY_APPORTEUR_URL: "https://calendly.com/axion/apporteur" },
-}));
 vi.mock("@/lib/site-url", () => ({ SITE_URL: "https://axion-ia.com" }));
 vi.mock("@/lib/admin-path", () => ({ adminPath: (_l: string, p: string) => `/fr/console/${p}` }));
 
@@ -146,7 +143,7 @@ describe("submitLeadApporteurAction", () => {
     expect(JSON.stringify(d)).not.toContain("06 12");
   });
 
-  it("notifie, envoie l'e-mail candidat avec dossier + créneau, le récap interne, et deux relances", async () => {
+  it("notifie, envoie l'e-mail candidat avec le dossier (SANS lien d'appel), le récap interne, et deux relances", async () => {
     await submitLeadApporteurAction({ ok: false, error: "" }, formulaire(valide));
     expect(notifier).toHaveBeenCalledTimes(1);
 
@@ -166,7 +163,10 @@ describe("submitLeadApporteurAction", () => {
     ];
     expect(recu[1]).toBe("nadia@example.com");
     expect(recu[3].dossierUrl).toBe("https://axion-ia.com/fr/devenir-commercial-ia/candidature");
-    expect(recu[3].creneauUrl).toBe("https://calendly.com/axion/apporteur");
+    // ⛔ Décision Will 2026-09-19 : le lien de réservation n'est plus distribué
+    // automatiquement (il saturerait l'agenda) — il part sur invitation, depuis
+    // la console. Le kit, lui, est rendu par le gabarit.
+    expect(JSON.stringify(recu[3])).not.toMatch(/calendly|creneau/i);
 
     const relances = enfiler.mock.calls.slice(2) as unknown as Array<
       [string, string, string, Record<string, unknown>, { delayMs: number; jobId: string }]

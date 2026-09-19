@@ -53,6 +53,11 @@ on:
           # posé, les envois serveur atterrissent dans l'onglet de test au lieu
           # de la production. À RETIRER une fois l'installation vérifiée.
           - META_CAPI_TEST_EVENT_CODE
+          # ── Échange de 15 minutes des apporteurs (2026-09-19) ────────────
+          # Lien de réservation Calendly, lu CÔTÉ SERVEUR à l'exécution (il
+          # pré-remplit l'invitation envoyée depuis la console). Pas un secret,
+          # mais il passe par le même chemin : un secret GitHub du même nom.
+          - CALENDLY_APPORTEUR_URL
           - lister-seulement
       confirmer:
         description: "Taper OUI pour écrire réellement. Toute autre valeur = simulation."
@@ -126,6 +131,7 @@ jobs:
           GITHUB_READ_TOKEN: ${{ secrets.GH_READ_TOKEN }}
           META_CAPI_ACCESS_TOKEN: ${{ secrets.META_CAPI_ACCESS_TOKEN }}
           META_CAPI_TEST_EVENT_CODE: ${{ secrets.META_CAPI_TEST_EVENT_CODE }}
+          CALENDLY_APPORTEUR_URL: ${{ secrets.CALENDLY_APPORTEUR_URL }}
           CIBLE: ${{ inputs.variable }}
           CONFIRMER: ${{ inputs.confirmer }}
         run: |

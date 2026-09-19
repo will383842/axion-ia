@@ -204,6 +204,33 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     ],
   },
   {
+    id: "devenir-apporteur",
+    icon: "Handshake",
+    nom: "Devenir apporteur d'affaires · 12 pages",
+    format: "A4 paysage · 297 × 210 mm · 12 pages, lecture à l'écran",
+    resume:
+      "Le document de présentation du réseau d'apporteurs d'affaires : commissions, fonctionnement, prestations à recommander, profils recherchés. Envoyé automatiquement, avec le catalogue, à toute personne qui s'y intéresse — et joint à l'invitation à l'échange de 15 minutes.",
+    fichiersPublics: [
+      {
+        chemin: "imprimes/devenir-apporteur-d-affaires-axion-ia.pdf",
+        nom: "Le PDF, 12 pages",
+        role: "Le lien que portent les e-mails du réseau d'apporteurs (accusé du premier contact, rappels, confirmation du dossier, invitation) et la page de remerciement du tunnel Facebook. ⚠️ Ne pas renommer : le chemin part dans des e-mails déjà envoyés.",
+      },
+    ],
+    fichiersHorsLigne: [
+      {
+        nom: "devenir-apporteur-d-affaires.html",
+        ou: "docs/imprimes/ (dans le dépôt)",
+        pourquoi:
+          "La source du PDF. Toute correction se fait là, puis le PDF se régénère — la commande est écrite en tête du fichier. Corriger le PDF à la main ferait diverger les deux.",
+      },
+    ],
+    avantTirage: [
+      "Le vocabulaire est celui de l'apporteur qui RECOMMANDE, jamais du commercial qui vend : ni « prospection », ni « argumentaire », ni « formation à l'offre ». Relire toute correction à l'aune de docs/partners/ANTI-REQUALIFICATION.md.",
+      "Les commissions (500 € par journée, 30 % audit, 15 % intégration) viennent de COMMERCIAL_COMMISSIONS dans pricing.ts : si la grille change, le document doit être régénéré.",
+    ],
+  },
+  {
     id: "livre-kdp",
     icon: "BookUser",
     nom: "Livre KDP",

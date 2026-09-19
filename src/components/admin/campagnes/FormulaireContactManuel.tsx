@@ -7,9 +7,12 @@
 // repéré sur un site d'annonces. Aucun de ces gens ne pouvait entrer dans le
 // système : les six chemins de création étaient tous des formulaires publics.
 //
-// ⛔ AUCUN ENVOI. Cette personne n'a rien demandé : ni confirmation, ni rappels.
-// L'écran le DIT, plutôt que de laisser le doute — un administrateur qui ignore
-// ce que son geste déclenche finit par ne plus oser l'utiliser.
+// ⛔ AUCUN ENVOI AUTOMATIQUE : ni confirmation, ni rappels. Une seule chose peut
+// partir, et seulement si la case est cochée : l'INVITATION à l'échange de
+// 15 minutes (lien Calendly + document de présentation + catalogue) — décision
+// Will 2026-09-19. L'écran DIT ce qui part et ce qui ne part pas, avant et
+// après : un administrateur qui ignore ce que son geste déclenche finit par ne
+// plus oser l'utiliser.
 
 import { useState } from "react";
 import { AlertTriangle, Check } from "lucide-react";
@@ -44,7 +47,7 @@ import { creerContactManuelAction } from "@/features/commercial-application/sais
 // function » AU RENDU — ce qui s'est produit, et que seule la recette par
 // l'interface a vu. Une prop passée par un composant serveur, elle, est une
 // vraie valeur sérialisée.
-import type { TraceExistante } from "@/lib/commercial-application/saisie-manuelle";
+import type { IssueInvitation, TraceExistante } from "@/lib/commercial-application/saisie-manuelle";
 
 // Classes du SYSTEME de la console, pas des couleurs choisies a la main : la
 // garde `admin-design-tokens` refuse la palette Tailwind par defaut. Deux
@@ -61,6 +64,8 @@ interface Champs {
   ville: string;
   origine: string;
   note: string;
+  envoyerInvitation: boolean;
+  calendlyUrl: string;
 }
 
 const VIDE: Champs = {
@@ -71,6 +76,8 @@ const VIDE: Champs = {
   ville: "",
   origine: "email-direct",
   note: "",
+  envoyerInvitation: false,
+  calendlyUrl: "",
 };
 
 /** Une origine de saisie, réduite à ce qu'un `<option>` a besoin de savoir. */
@@ -82,8 +89,11 @@ export interface OrigineProposable {
 export function FormulaireContactManuel({
   lienFiche,
   origines,
+  lienCalendlyParDefaut,
 }: {
   lienFiche: string;
+  /** `CALENDLY_APPORTEUR_URL`, lu par le parent serveur — vide s'il n'est pas posé. */
+  lienCalendlyParDefaut: string;
   /**
    * Le vocabulaire des origines, calculé PAR LE PARENT, qui est un composant
    * serveur. Cf. le commentaire de l'import en tête de fichier : le lire ici
@@ -91,11 +101,12 @@ export function FormulaireContactManuel({
    */
   origines: readonly OrigineProposable[];
 }) {
-  const [c, setC] = useState<Champs>(VIDE);
+  const vierge: Champs = { ...VIDE, calendlyUrl: lienCalendlyParDefaut };
+  const [c, setC] = useState<Champs>(vierge);
   const [envoi, setEnvoi] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
   const [doublons, setDoublons] = useState<TraceExistante[] | null>(null);
-  const [cree, setCree] = useState<string | null>(null);
+  const [cree, setCree] = useState<{ id: string; invitation?: IssueInvitation } | null>(null);
 
   const set = (patch: Partial<Champs>) => {
     setC((p) => ({ ...p, ...patch }));
@@ -115,12 +126,15 @@ export function FormulaireContactManuel({
         origine: c.origine,
         ...(c.note.trim() ? { note: c.note.trim() } : {}),
         ...(confirmeMalgreDoublon ? { confirmeMalgreDoublon: true } : {}),
+        ...(c.envoyerInvitation
+          ? { envoyerInvitation: true, calendlyUrl: c.calendlyUrl.trim() }
+          : {}),
       });
 
       if (r.ok) {
-        setCree(r.submissionId);
+        setCree({ id: r.submissionId, ...(r.invitation ? { invitation: r.invitation } : {}) });
         setDoublons(null);
-        setC(VIDE);
+        setC(vierge);
         return;
       }
       if (r.erreur === "doublon") {
@@ -141,15 +155,26 @@ export function FormulaireContactManuel({
         <p className="flex items-center gap-2 font-medium">
           <Check className="size-4" aria-hidden /> Contact enregistré.
         </p>
-        <p className="text-sm">
-          <strong>Aucun e-mail ne lui a été envoyé</strong> — ni confirmation, ni rappel. Il
-          n&apos;a rien demandé.
-        </p>
+        {cree.invitation?.envoyee ? (
+          <p className="text-sm">
+            <strong>Invitation mise en file</strong> : lien Calendly, document de présentation et
+            catalogue. Aucun rappel ne suivra.
+          </p>
+        ) : cree.invitation ? (
+          <p className="text-sm">
+            <strong>L&apos;invitation n&apos;est pas partie</strong> — {cree.invitation.message} Le
+            bouton « Envoyer l&apos;invitation » de la fiche permet de réessayer.
+          </p>
+        ) : (
+          <p className="text-sm">
+            <strong>Aucun e-mail ne lui a été envoyé</strong> — ni confirmation, ni rappel.
+          </p>
+        )}
         <div className="flex flex-wrap gap-3">
           <AdminButton type="button" variant="secondary" onClick={() => setCree(null)}>
             Saisir un autre contact
           </AdminButton>
-          <a className="admin-button-secondary" href={`${lienFiche}/${cree}`}>
+          <a className="admin-button-secondary" href={`${lienFiche}/${cree.id}`}>
             Ouvrir la fiche
           </a>
         </div>
@@ -267,6 +292,38 @@ export function FormulaireContactManuel({
         />
       </div>
 
+      <div className="flex flex-col gap-2">
+        <label className="admin-checkbox-label" htmlFor="cm-invitation">
+          <input
+            id="cm-invitation"
+            type="checkbox"
+            checked={c.envoyerInvitation}
+            onChange={(e) => set({ envoyerInvitation: e.target.checked })}
+          />{" "}
+          Lui envoyer l&apos;invitation à un échange de 15 minutes
+        </label>
+        <p className="admin-help">
+          Un e-mail avec le lien de réservation Calendly, le document de présentation et le
+          catalogue. Aucun rappel ne suit.
+        </p>
+        {c.envoyerInvitation ? (
+          <div className="flex flex-col gap-1.5">
+            <label className={LABEL} htmlFor="cm-calendly">
+              Lien Calendly de l&apos;échange *
+            </label>
+            <input
+              id="cm-calendly"
+              type="url"
+              inputMode="url"
+              className={CHAMP}
+              value={c.calendlyUrl}
+              onChange={(e) => set({ calendlyUrl: e.target.value })}
+              placeholder="https://calendly.com/axion-ia/echange-apporteur"
+            />
+          </div>
+        ) : null}
+      </div>
+
       {doublons ? (
         <div className="admin-alert admin-alert-warning flex flex-col gap-3">
           <p className="flex items-center gap-2 font-medium">
@@ -309,12 +366,25 @@ export function FormulaireContactManuel({
       <div className="flex flex-wrap items-center gap-4">
         <AdminButton
           type="button"
-          disabled={envoi || !c.prenom.trim() || !c.email.trim()}
+          disabled={
+            envoi ||
+            !c.prenom.trim() ||
+            !c.email.trim() ||
+            (c.envoyerInvitation && !c.calendlyUrl.trim())
+          }
           onClick={() => void envoyer(false)}
         >
-          {envoi ? "Enregistrement…" : "Enregistrer le contact"}
+          {envoi
+            ? "Enregistrement…"
+            : c.envoyerInvitation
+              ? "Enregistrer et envoyer l'invitation"
+              : "Enregistrer le contact"}
         </AdminButton>
-        <p className="admin-help">Aucun e-mail ne sera envoyé à cette personne.</p>
+        <p className="admin-help">
+          {c.envoyerInvitation
+            ? "Seule l'invitation partira — ni confirmation, ni rappel."
+            : "Aucun e-mail ne sera envoyé à cette personne."}
+        </p>
       </div>
     </div>
   );

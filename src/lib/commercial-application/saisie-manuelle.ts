@@ -47,6 +47,15 @@ export const saisieManuelleSchema = z
      * avant l'écriture, jamais après.
      */
     confirmeMalgreDoublon: z.boolean().optional(),
+    /**
+     * Envoyer, en même temps, l'invitation à l'échange de 15 minutes (lien
+     * Calendly + document de présentation + catalogue). DÉCOCHÉE par défaut :
+     * l'envoi est un geste explicite de l'administrateur, jamais un effet de
+     * bord de l'enregistrement (décision Will 2026-09-19).
+     */
+    envoyerInvitation: z.boolean().optional(),
+    /** Le lien Calendly de l'invitation — exigé seulement si elle part. */
+    calendlyUrl: z.string().trim().max(500).optional(),
   })
   .strict();
 
@@ -60,7 +69,10 @@ export interface TraceExistante {
   recuLe: string;
 }
 
+/** Ce qu'il est advenu de l'invitation demandée à la saisie, si elle l'a été. */
+export type IssueInvitation = { envoyee: true } | { envoyee: false; message: string };
+
 export type SaisieState =
-  | { ok: true; submissionId: string }
+  | { ok: true; submissionId: string; invitation?: IssueInvitation }
   | { ok: false; erreur: "doublon"; traces: TraceExistante[] }
   | { ok: false; erreur: "champs-invalides" | "non-autorise" | "echec"; message: string };
