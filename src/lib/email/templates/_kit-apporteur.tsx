@@ -18,16 +18,16 @@ const COPY = {
   fr: {
     intro: "Pour découvrir le réseau et ce que tu pourras recommander :",
     document: "Le document de présentation",
-    documentDetail: " — commissions, fonctionnement, prestations (12 pages)",
-    catalogue: "Le catalogue des formations",
-    catalogueDetail: " — à feuilleter ou à télécharger",
+    documentDetail: " — statut, commissions, fonctionnement (13 pages)",
+    catalogue: "Le catalogue complet de nos prestations",
+    catalogueDetail: " — formations, audit IA, accompagnement 1-to-1, implémentation",
   },
   en: {
     intro: "To discover the network and what you will be able to recommend:",
     document: "The presentation document",
-    documentDetail: " — commissions, how it works, services (12 pages, in French)",
-    catalogue: "The training catalogue",
-    catalogueDetail: " — browse or download it",
+    documentDetail: " — status, commissions, how it works (13 pages, in French)",
+    catalogue: "Our full catalogue of services",
+    catalogueDetail: " — training, AI audit, 1-to-1 coaching, implementation",
   },
 } as const;
 

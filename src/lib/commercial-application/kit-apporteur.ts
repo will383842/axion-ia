@@ -2,9 +2,10 @@
 // d'apporteurs d'affaires, dès qu'on a son adresse (décision Will 2026-09-19).
 //
 // Deux documents, toujours les mêmes, toujours ensemble :
-//   · le document de présentation « Devenir apporteur d'affaires » (12 pages) —
-//     commissions, fonctionnement, prestations recommandables ;
-//   · le catalogue des formations — pour savoir ce qu'on recommande.
+//   · le document de présentation « Devenir apporteur d'affaires » (13 pages) —
+//     statut d'indépendant, commissions, fonctionnement, prestations ;
+//   · le catalogue complet des prestations (formations, audit IA,
+//     accompagnement 1-to-1, implémentation) — pour savoir ce qu'on recommande.
 //
 // Ils partent en LIENS, jamais en pièces jointes : une pièce jointe de 10 Mo
 // pousse l'e-mail vers les indésirables, et un lien suit la dernière version du

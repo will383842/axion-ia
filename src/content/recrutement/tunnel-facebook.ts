@@ -157,9 +157,9 @@ export const MERCI = {
   // l'agenda de Will), il part sur invitation depuis la console.
   kitTitre: "Découvre ce que tu pourras recommander",
   kitTexte:
-    "Le document de présentation — commissions, fonctionnement, prestations — et le catalogue des formations. Tu les retrouves aussi dans l'e-mail.",
+    "Le document de présentation — statut, commissions, fonctionnement — et le catalogue complet de nos prestations : formations, audit IA, accompagnement, implémentation. Tu les retrouves aussi dans l'e-mail.",
   kitDocument: "Le document de présentation",
-  kitCatalogue: "Le catalogue des formations",
+  kitCatalogue: "Le catalogue des prestations",
   dossierTitre: "Complète ton dossier",
   dossierTexte:
     "Trois minutes, sans CV. Tes coordonnées sont déjà remplies. On prépare l'appel à partir de tes réponses.",
