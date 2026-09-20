@@ -17,6 +17,25 @@ export const BACKUP_COMPONENTS = [
   "plausible_clickhouse",
   "secrets",
   "git_mirror",
+  // 🔴 AJOUTÉS LE 2026-09-20. Ces deux valeurs existent dans l'enum Prisma
+  // `BackupComponent` DEPUIS LE 2026-08-19 — la migration est passée, la base
+  // les accepte. Cette liste-ci, qui alimente le schéma Zod de
+  // `POST /api/internal/backups`, ne les a jamais reçues : la correction du
+  // 19 août n'a été faite qu'à moitié.
+  //
+  // Conséquence mesurée le 2026-09-20 : l'API répondait **HTTP 422** à ces deux
+  // composants (« Invalid enum value … received 'files_documents' »), et
+  // `report_backup_run` termine par `curl … || true` — l'erreur était donc
+  // AVALÉE. Les scripts annonçaient « OK » et `backup_runs` ne contenait aucune
+  // ligne : `files_utilisateurs` tourne depuis juillet sans laisser la moindre
+  // trace, alors qu'il sauvegarde les CV des candidats.
+  //
+  // 🔑 Un composant absent de cette liste ne « manque » pas au tableau de bord :
+  // il n'existe pas pour lui, donc il ne peut pas être en retard, donc il
+  // n'alerte jamais. Le vert ne vient pas d'une mesure réussie — il vient de
+  // l'absence de question.
+  "files_documents",
+  "files_utilisateurs",
 ] as const;
 export type BackupComponentValue = (typeof BACKUP_COMPONENTS)[number];
 
@@ -60,6 +79,8 @@ export const RPO_TARGETS_MIN: Record<BackupComponentValue, number> = {
   plausible_clickhouse: 24 * 60,
   secrets: 24 * 60, // quotidien (cron VPS 0 2 * * *)
   git_mirror: 7 * 24 * 60, // hebdo
+  files_documents: 24 * 60, // miroir quotidien 5 h 15 vers le bucket verrouillé
+  files_utilisateurs: 24 * 60, // cron VPS 4 h 15
 };
 
 /** Seuil au-delà duquel un drill de restauration est considéré périmé. */
@@ -70,12 +91,20 @@ export const COMPONENT_LABELS_FR: Record<BackupComponentValue, string> = {
   postgres: "PostgreSQL (dump)",
   postgres_pitr: "PostgreSQL (PITR / WAL)",
   redis: "Redis / BullMQ",
-  files_image_bank: "Fichiers (CV, documents, avis)",
+  // 🔴 Libellé corrigé le 2026-09-20. Il annonçait « Fichiers (CV, documents,
+  // avis) » alors que ce composant est alimenté par
+  // `scripts/backup-image-bank-r2.sh`, c'est-à-dire la BANQUE D'IMAGES. Le
+  // tableau de bord affichait donc un vert « CV sauvegardés » en lisant le
+  // voyant d'autre chose, pendant que le vrai composant des CV était rejeté
+  // en 422. Un faux vert est pire qu'un voyant absent.
+  files_image_bank: "Banque d'images",
   docuseal: "Docuseal (signatures)",
   plausible_pg: "Plausible (Postgres)",
   plausible_clickhouse: "Plausible (ClickHouse)",
   secrets: "Secrets & config",
   git_mirror: "Miroir Git",
+  files_documents: "Pièces légales (conventions, attestations, signatures)",
+  files_utilisateurs: "Fichiers déposés (CV, documents de console, avis)",
 };
 
 export const KIND_LABELS_FR: Record<BackupKindValue, string> = {
