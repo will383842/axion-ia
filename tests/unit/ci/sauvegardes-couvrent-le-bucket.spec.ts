@@ -203,4 +203,67 @@ describe("🔴 sauvegardes — un composant, un script", () => {
         `sera refusée à l'insertion, et la sauvegarde passera pour non exécutée.`,
     ).toStrictEqual([]);
   });
+
+  it("🔴 chaque valeur de l'énumération Prisma figure dans `BACKUP_COMPONENTS`", () => {
+    // 🔑 C'EST L'AXE QUI A SAIGNÉ, et il n'était gardé par rien.
+    //
+    // La garde ci-dessus vérifie scripts → énumération Prisma. Elle était VERTE le
+    // 2026-08-19 quand `files_documents` et `files_utilisateurs` ont été ajoutés
+    // à l'énumération, et elle l'est restée un mois — parce que le trou n'est
+    // pas là. Il est entre l'énumération et `BACKUP_COMPONENTS`, la liste qui
+    // alimente le schéma Zod de `POST /api/internal/backups`.
+    //
+    // Mesuré le 2026-09-20 : l'API répondait **HTTP 422** à ces deux composants,
+    // et `report_backup_run` finit par `curl … || true` — l'erreur était avalée.
+    // Résultat : la sauvegarde des CV des candidats a tourné **dix-sept jours**
+    // sans laisser UNE SEULE ligne dans `backup_runs`, pendant que le tableau
+    // de bord restait vert. Un composant qu'il ne connaît pas ne peut pas être
+    // en retard, donc n'alerte jamais.
+    //
+    // ⚠️ Dix-sept jours, PAS deux mois. Le dépôt a basculé le 2026-08-19, mais
+    // le VPS n'a reçu le script que le 2026-09-03 : les wrappers ne se
+    // déploient pas tout seuls. Une première rédaction de ce commentaire
+    // portait « deux mois » — le chiffre faux survivait dans la garde écrite
+    // contre cette famille d'erreur, donc dans un test vert.
+    //
+    // Cette garde ferme l'axe. La 12e valeur ajoutée à l'énumération rougira
+    // ici, au lieu de repartir en 422 silencieux.
+    const schema = readFileSync(path.join(RACINE, "prisma", "schema.prisma"), "utf8");
+    const bloc = schema.match(/enum BackupComponent \{([\s\S]*?)\}/);
+    expect(bloc, "énumération `BackupComponent` introuvable au schéma").not.toBeNull();
+    const duSchema = [...bloc![1]!.matchAll(/^\s*([a-z_]+)\s*(?:\/\/.*)?$/gm)]
+      .map((m) => m[1]!)
+      .filter((v) => v !== "map");
+
+    // Le contrat est lu en TEXTE, comme le schéma : `types.ts` est server-only,
+    // et une garde de CI n'a pas à dépendre de ce qu'il importe.
+    const contrat = readFileSync(path.join(RACINE, "src", "server", "backups", "types.ts"), "utf8");
+    const blocContrat = contrat.match(/BACKUP_COMPONENTS = \[([\s\S]*?)\] as const/);
+    expect(blocContrat, "`BACKUP_COMPONENTS` introuvable").not.toBeNull();
+    // 🔑 Les COMMENTAIRES sont retirés avant extraction. Sans cela, cette
+    // garde pouvait rester VERTE À TORT — relevé en relecture le 2026-09-20 :
+    // déplacer une valeur du tableau vers un commentaire la laissait visible
+    // au motif, alors que l'API l'aurait refusée en 422. Une garde qui lit ses
+    // propres commentaires mesure le texte, pas le code.
+    //
+    // Sans le drapeau `s`, le point ne franchit pas la fin de ligne : `//.*`
+    // suffit, et évite d'écrire une classe de caractères qui ne survit pas au
+    // passage par un script.
+    const sansCommentaires = blocContrat![1]!.replace(/\/\/.*/g, "");
+    const duContrat = new Set([...sansCommentaires.matchAll(/"([a-z_]+)"/g)].map((m) => m[1]!));
+
+    // Témoins de non-vacuité : sans eux, une extraction cassée rendrait le test
+    // vert en ne comparant rien — exactement le défaut qu'il traque.
+    expect(duSchema.length).toBeGreaterThan(5);
+    expect(duContrat.size).toBeGreaterThan(5);
+
+    const absents = duSchema.filter((v) => !duContrat.has(v));
+    expect(
+      absents,
+      `Valeur(s) de l'énumération Prisma absente(s) de \`BACKUP_COMPONENTS\` ` +
+        `(src/server/backups/types.ts). L'API d'ingestion les REFUSERA en 422, ` +
+        `\`report_backup_run\` avalera l'erreur, et la sauvegarde passera pour ` +
+        `jamais exécutée sans qu'aucune alerte ne se déclenche.`,
+    ).toStrictEqual([]);
+  });
 });
