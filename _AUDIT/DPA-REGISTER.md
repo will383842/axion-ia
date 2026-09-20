@@ -228,7 +228,7 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | **DPA**                   | Online — auto-acceptable depuis dashboard CF. ⛔ **Il couvrira alors AUSSI R2** : ce n'est plus un DPA « CDN » |
 | **Lien**                  | https://www.cloudflare.com/cloudflare-customer-dpa/                           |
 | **Procédure**             | Dashboard Cloudflare → Manage Account → Configurations → Privacy → Sign DPA   |
-| **Durée conservation**    | Logs CDN : 30 j max. **Pièces R2 : 5 ans annoncés** (`DOCUMENT_RETENTION_YEARS`, imprimé sur les pièces ; `suppressionPrevueAt` en base). ⛔ **Aucune purge n'applique cette échéance aux PIÈCES** : `suppressionPrevueAt` n'est lu par aucun effacement (cf. `src/server/qualiopi/legal/retention-echeance.ts`). ⚠️ Ne pas confondre avec la rotation des SAUVEGARDES, qui existe bel et bien : `prune_r2` (`scripts/backup-lib.sh`) supprime par rang de récence — `files/` 14, `secrets/` 30, `postgres/hourly/` 24, `docuseal/` 24. Deux mécanismes distincts, un seul manque. Seules suppressions réelles : purge RGPD art. 17 des images de signature, rollback de signature, suppression admin d'une version, ZIP temporaire |
+| **Durée conservation**    | Logs CDN : 30 j max. **Pièces R2 : 5 ans annoncés** (`DOCUMENT_RETENTION_YEARS`, imprimé sur les pièces ; `suppressionPrevueAt` en base). ⛔ **Aucune purge n'applique cette échéance aux PIÈCES** : `suppressionPrevueAt` n'est lu par aucun effacement (cf. `src/server/qualiopi/legal/retention-echeance.ts`). ⚠️ Ne pas confondre avec la rotation des SAUVEGARDES, qui existe bel et bien : `prune_r2` (`scripts/backup-lib.sh`) supprime par rang de récence — `files/` 14, `secrets/` 30, `postgres/hourly/` 24, `docuseal/` 24 — entre autres : `redis/`, `plausible/*` et `image-bank/` tournent aussi, selon `retention_for_type` (`scripts/backup-lib.sh`). Deux mécanismes distincts, un seul manque. Seules suppressions réelles : purge RGPD art. 17 des images de signature, rollback de signature, suppression admin d'une version, ZIP temporaire |
 | **Statut**                | 🟠 **À ACCEPTER** par Will — et la fiche est désormais exacte sur ce que Cloudflare détient |
 | **Date signature**        | _(à compléter)_                                                               |
 
@@ -236,8 +236,9 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 > `PUBLIC`, vérifié le 2026-09-20). Un registre art. 30 est une pièce INTERNE :
 > il énumère par construction ce qui n'est pas encore en règle. Les écarts
 > ci-dessous sont donc lisibles par n'importe qui, y compris par une personne
-> qui voudrait s'en servir. Rien ici n'est exploitable techniquement — aucun
-> identifiant, aucune clé, aucune URL — mais ⛔ **la place de ce fichier est une
+> qui voudrait s'en servir. Rien ici n'est exploitable techniquement : aucun
+> identifiant, aucune clé, aucun point d'accès interne — les seules URL du
+> fichier sont les pages publiques de DPA des prestataires. Mais ⛔ **la place de ce fichier est une
 > décision à prendre** : le sortir du dépôt (par exemple sous
 > `Projets/_PRIVE-HORS-DEPOT/`) ou assumer sa publication. Le constat précède
 > cette livraison : le fichier portait déjà « ACTIF sans DPA » et une note sur

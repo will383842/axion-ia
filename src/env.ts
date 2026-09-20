@@ -273,12 +273,13 @@ export const env = createEnv({
     DOCUSEAL_CONTRACT_TEMPLATE_ID: z.string().optional(),
 
     // 🔴 AJOUTÉ LE 2026-09-20 — ces variables existaient en production depuis
-    // toujours, lues directement par `process.env` dans `src/lib/r2-storage.ts`
+    // la mise en service du stockage, lues par `process.env` dans `src/lib/r2-storage.ts`
     // et dans les scripts de sauvegarde, mais n'étaient déclarées NULLE PART
     // ici. Conséquence : `src/content/__tests__/sous-traitants-serveur.spec.ts`
     // dérive sa liste de tiers de CE fichier — R2 lui était donc structurellement
-    // invisible, et Cloudflare a pu héberger cinq ans des pièces nominatives
-    // sans figurer au registre à ce titre. Même angle mort que ZeptoMail.
+    // invisible, et Cloudflare a pu héberger des pièces nominatives — conservées
+    // cinq ans — sans figurer au registre à ce titre. Même angle mort que
+    // ZeptoMail.
     //
     // `.optional()` est délibéré : ces variables ne conditionnent pas le
     // démarrage (le code échoue à l'usage, avec un message explicite), et une
