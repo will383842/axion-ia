@@ -20,3 +20,7 @@
 # 05:30 = apres le dernier envoi R2 (files, 04:15) et AVANT le bilan (06:30),
 # pour que le bilan puisse voir ce que le miroir vient de faire.
 30 5 * * *   /opt/axion-ia/run-storagebox-mirror.sh >> /var/log/storagebox-mirror.log 2>&1
+# Miroir des pieces legales vers le compartiment R2 verrouille. Ajoute le 2026-09-20 :
+# le script existait dans le depot depuis le 2026-08-19 et n'etait appele par RIEN.
+# 15 5 : apres run-files-backup (15 4) et avant le miroir Storage Box (30 5).
+15 5 * * *   /opt/axion-ia/run-documents-mirror.sh daily >> /var/log/documents-mirror.log 2>&1
