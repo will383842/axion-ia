@@ -48,14 +48,26 @@ export type BackupComponentValue = (typeof BACKUP_COMPONENTS)[number];
  * Ces composants sont rendus « non suivi — assumé » (tone neutre) au lieu de
  * « critique », et sont EXCLUS des alertes /alerts. Retirer un composant de ce
  * set le remet immédiatement sous surveillance (alerte si non sauvegardé).
- * NB : `files_image_bank` a été RETIRÉ de ce set le 2026-07-11 — les volumes
- * fichiers utilisateurs (CV, docs, avis) sont désormais sauvegardés quotidiennement
- * vers R2 (cron VPS `run-files-backup.sh`), donc suivi comme un composant normal.
+ * NB : `files_image_bank` avait été RETIRÉ de ce set le 2026-07-11, quand
+ * `run-files-backup.sh` rapportait encore sous ce nom. Il y REVIENT le
+ * 2026-09-20 : ce script est passé à `files_utilisateurs` le 2026-08-19, plus
+ * rien n'alimente `files_image_bank`, et le flux des CV est désormais suivi
+ * sous son propre nom.
  */
 export const ACCEPTED_GAP_COMPONENTS: ReadonlySet<BackupComponentValue> = new Set([
   "postgres_pitr",
   "redis",
   "git_mirror",
+  // 🔴 Ajouté le 2026-09-20. Ce composant n'est plus alimenté depuis le
+  // 2026-08-19 : son flux a MIGRÉ vers `files_utilisateurs`. Sans cette ligne
+  // il serait « en retard » pour toujours, sans qu'aucune action puisse le
+  // rattraper — une alerte qu'on apprend à ignorer, donc une alerte de moins.
+  //
+  // ⚠️ Ce n'est PAS un aveu que la banque d'images n'a pas besoin d'être
+  // sauvegardée : c'est le constat que CE composant-ci ne la sauvegarde pas et
+  // ne l'a jamais fait. Le jour où le cron de `backup-image-bank-r2.sh` sera
+  // posé, il faudra un composant à lui — et le retirer d'ici.
+  "files_image_bank",
 ]);
 
 export const BACKUP_KINDS = ["daily", "weekly", "monthly", "pitr", "manual"] as const;
@@ -91,13 +103,28 @@ export const COMPONENT_LABELS_FR: Record<BackupComponentValue, string> = {
   postgres: "PostgreSQL (dump)",
   postgres_pitr: "PostgreSQL (PITR / WAL)",
   redis: "Redis / BullMQ",
-  // 🔴 Libellé corrigé le 2026-09-20. Il annonçait « Fichiers (CV, documents,
-  // avis) » alors que ce composant est alimenté par
-  // `scripts/backup-image-bank-r2.sh`, c'est-à-dire la BANQUE D'IMAGES. Le
-  // tableau de bord affichait donc un vert « CV sauvegardés » en lisant le
-  // voyant d'autre chose, pendant que le vrai composant des CV était rejeté
-  // en 422. Un faux vert est pire qu'un voyant absent.
-  files_image_bank: "Banque d'images",
+  // 🔴 2026-09-20 — CE COMPOSANT NE VEUT PLUS DIRE CE QUE SON NOM ANNONCE.
+  //
+  // Une première correction l'avait renommé « Banque d'images », en croyant que
+  // `scripts/backup-image-bank-r2.sh` l'alimentait. FAUX, et relevé en
+  // relecture : **aucun cron n'appelle ce script**, ni dans
+  // `scripts/vps/crontab.snapshot.txt`, ni sur le VPS, où aucun wrapper
+  // `run-image-bank-*.sh` n'existe. Ses 56 traces viennent de
+  // `run-files-backup.sh`, qui rapportait sous ce nom jusqu'au 2026-08-19
+  // (`ae8a23ff9`) avant de basculer sur `files_utilisateurs`.
+  //
+  // L'ancien libellé « Fichiers (CV, documents, avis) » n'était donc pas faux :
+  // il l'est DEVENU le 19 août, en même temps que le 422. Et le renommer en
+  // « Banque d'images » aurait affiché « 56 sauvegardes, dernière le 19/08 »
+  // pour un flux qui n'a jamais tourné sous ce nom — un troisième faux vert,
+  // ouvert en fermant les deux autres.
+  //
+  // ⛔ ET LA BANQUE D'IMAGES, ELLE, N'EST SAUVEGARDÉE PAR RIEN. Le script
+  // existe depuis toujours et personne ne l'appelle — exactement le défaut que
+  // `backup-documents-r2.sh` a connu jusqu'au 2026-09-20. À trancher : poser le
+  // cron, ou assumer par écrit que les originaux de la banque d'images ne sont
+  // pas sauvegardés.
+  files_image_bank: "Fichiers utilisateurs (vestige, jusqu'au 19/08/2026)",
   docuseal: "Docuseal (signatures)",
   plausible_pg: "Plausible (Postgres)",
   plausible_clickhouse: "Plausible (ClickHouse)",
