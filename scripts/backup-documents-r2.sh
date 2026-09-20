@@ -150,12 +150,24 @@ for prefixe in "${PREFIXES[@]}"; do
       # Même contenu que la copie nue : rien à faire, et surtout rien à dupliquer.
       [ "${etag_src}" = "${etag_dst}" ] && continue
 
-      dst_uri="${DST}${rel}.__e${etag_src}"
       # Cette version-là est-elle déjà déposée ? Alors on n'y touche pas.
-      if s3 s3api head-object --bucket "${R2_BUCKET_IMMUTABLE}" \
-           --key "${cle}.__e${etag_src}" >/dev/null 2>&1; then
-        continue
+      #
+      # ⚠️ Même exigence que le `head-object` ci-dessus, et pour la même raison :
+      # ce prédicat garde la SECONDE des deux seules écritures du script. Une
+      # première rédaction l'avait laissé en `>/dev/null 2>&1` vingt lignes sous
+      # le commentaire qui promet de distinguer le 404 — relevé par la lentille
+      # exactitude le 2026-09-20. Corriger un prédicat ouvert et laisser son
+      # jumeau, c'est n'en avoir corrigé aucun.
+      rep_v=$(s3 s3api head-object --bucket "${R2_BUCKET_IMMUTABLE}" \
+        --key "${cle}.__e${etag_src}" --query 'ETag' --output text 2>&1) && deja=1 || deja=0
+      if [ "${deja}" -eq 0 ] && ! printf '%s' "${rep_v}" | grep -qE '404|Not Found'; then
+        record_fail "head_object_version_indecis:${prefixe}"
+        echo "head-object (version) a echoue sans dire 404 : ${rep_v}" >&2
+        exit 1
       fi
+      [ "${deja}" -eq 1 ] && continue
+
+      dst_uri="${DST}${rel}.__e${etag_src}"
       NB_VERSIONNES=$(( NB_VERSIONNES + 1 ))
     else
       dst_uri="${DST}${rel}"
