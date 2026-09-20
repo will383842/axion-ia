@@ -31,18 +31,23 @@
  * Et l'inverse : la convocation PRÉSENTIEL ne porte pas le dispositif (il ne
  * s'y applique pas).
  *
- * Il tient aussi « même exigence que la convocation », promis par
- * `src/content/formations/materiel.ts` : la section « Équipement requis
- * (distanciel) » RENDUE est confrontée à `MATERIEL_DISTANCIEL`, que publient
- * les fiches. Ce test vit ici, et non dans la garde du matériel
- * (`src/content/__tests__/le-materiel-annonce-est-le-meme-partout.spec.ts`),
- * parce que `qualiopi:isolation-check` interdit à `src/content` d'importer le
- * domaine Qualiopi ; l'inverse est permis.
+ * L'équipement requis n'est plus confronté à `MATERIEL_DISTANCIEL` : la
+ * convocation IMPORTE ses éléments depuis `src/content/formations/materiel.ts`
+ * (l'isolation permet ce sens-là). Ce qui reste écrit ici en toutes lettres,
+ * c'est ce que le stagiaire doit lire : Zoom, le navigateur, rien à
+ * installer — si la constante change, ce test le voit.
+ *
+ * Et la règle « rien à installer » du site (`regle-installation.ts`) s'applique
+ * au texte RENDU des deux pièces : « Installez l'application Zoom sur votre
+ * ordinateur avant la session » rougit (revue exactitude 5256482948) — le mot
+ * « Zoom » reste permis, c'est l'outil ; seule une exigence d'installation est
+ * refusée.
  */
 
 import { describe, expect, it } from "vitest";
 import React from "react";
 
+import { fautesInstallation } from "@/content/__tests__/regle-installation";
 import { MATERIEL_DISTANCIEL } from "@/content/formations/materiel";
 
 import { collectPdfTextNormalized } from "../../collect-pdf-text";
@@ -132,37 +137,31 @@ describe("le dispositif d'assistance à distance est imprimé", () => {
       expect(texte).toMatch(motif);
     });
 
-    it("dit l'outil : Google Meet, dans le navigateur, rien à installer", () => {
+    it("dit l'outil : Zoom, dans le navigateur, rien à installer", () => {
       expect(texte).toContain(
-        "Google Meet, depuis le navigateur de l'ordinateur (rien à installer), testé avant la session : caméra, micro, son.",
+        "Zoom, depuis le navigateur (rien à installer), testé avant la session : caméra, micro, son.",
       );
-      expect(texte).not.toMatch(/installée et testée/);
+      expect(texte).toContain("Un ordinateur avec caméra et micro fonctionnels.");
+      expect(texte).toContain("Une connexion internet stable (≥ 5 Mbit/s recommandé).");
     });
 
-    it("exige ce que les fiches publiques annoncent (MATERIEL_DISTANCIEL)", () => {
-      // `materiel.ts` affirme « même exigence que la convocation » : ce test
-      // confronte la section « Équipement requis » RENDUE à la constante que
-      // les fiches publient, exigence par exigence.
-      const debut = texte.indexOf("Équipement requis (distanciel)");
-      expect(debut, "plus de section « Équipement requis (distanciel) »").toBeGreaterThan(-1);
-      const fin = texte.indexOf("Assistance à distance", debut);
-      const bloc = texte.slice(debut, fin === -1 ? undefined : fin);
-      const exigences: ReadonlyArray<readonly [string, string]> = [
-        ["Un ordinateur avec caméra et micro", "un ordinateur avec caméra et micro"],
-        ["Une connexion internet stable", "une connexion internet stable"],
-        ["Google Meet, depuis le navigateur", "Google Meet depuis le navigateur"],
-        ["rien à installer", "rien à installer"],
-        ["testé avant la session", "testé avant la session"],
-      ];
-      for (const [surLaConvocation, surLesFiches] of exigences) {
-        expect(bloc, surLaConvocation).toContain(surLaConvocation);
-        expect(MATERIEL_DISTANCIEL, surLesFiches).toContain(surLesFiches);
+    it("importe l'équipement que publient les fiches (MATERIEL_DISTANCIEL)", () => {
+      // Aucun élément retapé : chaque morceau de la constante est imprimé.
+      for (const element of MATERIEL_DISTANCIEL.split(", ")) {
+        expect(texte.toLowerCase(), element).toContain(element.toLowerCase());
       }
-      // Pas de `\b` après « é » : en JavaScript sans drapeau `u`, la frontière
-      // de mot est ASCII et ne tomberait jamais entre « é » et une espace.
-      expect(bloc).not.toMatch(/install(?:ée|é|ed)/);
-      expect(MATERIEL_DISTANCIEL).not.toMatch(/install(?:ée|é|ed)/);
     });
+  });
+
+  it.each(["distanciel", "mixte", "présentiel"] as const)(
+    "la convocation %s n'exige d'installer rien",
+    (modalite) => {
+      expect(fautesInstallation([convocation(modalite)])).toEqual([]);
+    },
+  );
+
+  it("le livret n'exige d'installer rien", () => {
+    expect(fautesInstallation([livret()])).toEqual([]);
   });
 
   it("la convocation présentiel ne porte pas le dispositif", () => {

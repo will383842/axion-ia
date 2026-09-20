@@ -5,8 +5,8 @@
  * (intitulé, dates, horaires heure de Paris, modalité, lieu/visio, formateur,
  * contact), les informations stagiaire, le matériel à prévoir (fiche de la
  * formation, hors distanciel pur), l'équipement requis et l'assistance à
- * distance (distanciel et mixte, art. D.6313-3-1), les documents mis à disposition dans l'espace stagiaire et les mentions
- * handicap/absence.
+ * distance (distanciel et mixte, art. D.6313-3-1), les documents mis à
+ * disposition dans l'espace stagiaire et les mentions handicap/absence.
  *
  * NE PAS "use client" — rendu serveur exclusif (@react-pdf/renderer).
  */
@@ -26,8 +26,17 @@ import {
   ASSISTANCE_COUPURE,
   ASSISTANCE_HORS_SESSION,
   ASSISTANCE_PENDANT_SESSION,
-  OUTIL_VISIO_CONVOCATION,
 } from "@/server/qualiopi/legal/assistance-distance";
+import {
+  DISTANCIEL_CONNEXION,
+  DISTANCIEL_ORDINATEUR,
+  DISTANCIEL_VISIO,
+} from "@/content/formations/materiel";
+
+/** Première lettre en majuscule : les éléments du matériel commencent en minuscule. */
+function majuscule(texte: string): string {
+  return texte.charAt(0).toUpperCase() + texte.slice(1);
+}
 
 // ============================================================
 // Types
@@ -162,7 +171,9 @@ export function ConvocationPdf({
           </DocSection>
         ) : null}
 
-        {/* Section 3b : Équipement requis (distanciel uniquement) */}
+        {/* Section 3b : Équipement requis (distanciel et mixte) — les éléments
+            viennent de `content/formations/materiel.ts`, ceux que publient les
+            fiches : la convocation exige ce que le site annonce. */}
         {isDistanciel ? (
           <DocSection title="Équipement requis (distanciel)">
             <Text style={pdfStyles.paragraph}>
@@ -170,9 +181,9 @@ export function ConvocationPdf({
             </Text>
             <BulletList
               items={[
-                "Un ordinateur avec caméra et micro fonctionnels.",
-                "Une connexion internet stable (≥ 5 Mbit/s recommandé).",
-                OUTIL_VISIO_CONVOCATION,
+                `${majuscule(DISTANCIEL_ORDINATEUR)} fonctionnels.`,
+                `${majuscule(DISTANCIEL_CONNEXION)} (≥ 5 Mbit/s recommandé).`,
+                `${DISTANCIEL_VISIO} : caméra, micro, son.`,
                 "Un espace calme et éclairé.",
               ]}
             />

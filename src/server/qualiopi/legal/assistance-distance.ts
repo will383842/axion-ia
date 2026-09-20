@@ -42,7 +42,3 @@ export const ASSISTANCE_DISTANCE: readonly string[] = [
   ASSISTANCE_HORS_SESSION,
   ...ASSISTANCE_COUPURE,
 ];
-
-/** Outil de visioconférence, tel que la convocation l'exige. */
-export const OUTIL_VISIO_CONVOCATION =
-  "Google Meet, depuis le navigateur de l'ordinateur (rien à installer), testé avant la session : caméra, micro, son.";
