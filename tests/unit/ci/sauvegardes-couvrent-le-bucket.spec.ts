@@ -215,10 +215,16 @@ describe("🔴 sauvegardes — un composant, un script", () => {
     //
     // Mesuré le 2026-09-20 : l'API répondait **HTTP 422** à ces deux composants,
     // et `report_backup_run` finit par `curl … || true` — l'erreur était avalée.
-    // Résultat : la sauvegarde des CV des candidats a tourné deux mois sans
-    // laisser UNE SEULE ligne dans `backup_runs`, pendant que le tableau de
-    // bord restait vert. Un composant qu'il ne connaît pas ne peut pas être en
-    // retard, donc n'alerte jamais.
+    // Résultat : la sauvegarde des CV des candidats a tourné **dix-sept jours**
+    // sans laisser UNE SEULE ligne dans `backup_runs`, pendant que le tableau
+    // de bord restait vert. Un composant qu'il ne connaît pas ne peut pas être
+    // en retard, donc n'alerte jamais.
+    //
+    // ⚠️ Dix-sept jours, PAS deux mois. Le dépôt a basculé le 2026-08-19, mais
+    // le VPS n'a reçu le script que le 2026-09-03 : les wrappers ne se
+    // déploient pas tout seuls. Une première rédaction de ce commentaire
+    // portait « deux mois » — le chiffre faux survivait dans la garde écrite
+    // contre cette famille d'erreur, donc dans un test vert.
     //
     // Cette garde ferme l'axe. La 12e valeur ajoutée à l'énumération rougira
     // ici, au lieu de repartir en 422 silencieux.
@@ -234,7 +240,17 @@ describe("🔴 sauvegardes — un composant, un script", () => {
     const contrat = readFileSync(path.join(RACINE, "src", "server", "backups", "types.ts"), "utf8");
     const blocContrat = contrat.match(/BACKUP_COMPONENTS = \[([\s\S]*?)\] as const/);
     expect(blocContrat, "`BACKUP_COMPONENTS` introuvable").not.toBeNull();
-    const duContrat = new Set([...blocContrat![1]!.matchAll(/"([a-z_]+)"/g)].map((m) => m[1]!));
+    // 🔑 Les COMMENTAIRES sont retirés avant extraction. Sans cela, cette
+    // garde pouvait rester VERTE À TORT — relevé en relecture le 2026-09-20 :
+    // déplacer une valeur du tableau vers un commentaire la laissait visible
+    // au motif, alors que l'API l'aurait refusée en 422. Une garde qui lit ses
+    // propres commentaires mesure le texte, pas le code.
+    //
+    // Sans le drapeau `s`, le point ne franchit pas la fin de ligne : `//.*`
+    // suffit, et évite d'écrire une classe de caractères qui ne survit pas au
+    // passage par un script.
+    const sansCommentaires = blocContrat![1]!.replace(/\/\/.*/g, "");
+    const duContrat = new Set([...sansCommentaires.matchAll(/"([a-z_]+)"/g)].map((m) => m[1]!));
 
     // Témoins de non-vacuité : sans eux, une extraction cassée rendrait le test
     // vert en ne comparant rien — exactement le défaut qu'il traque.

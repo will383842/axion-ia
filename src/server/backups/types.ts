@@ -54,16 +54,18 @@ export type BackupComponentValue = (typeof BACKUP_COMPONENTS)[number];
  * set le remet immédiatement sous surveillance (alerte si non sauvegardé).
  * NB : `files_image_bank` avait été RETIRÉ de ce set le 2026-07-11, quand
  * `run-files-backup.sh` rapportait encore sous ce nom. Il y REVIENT le
- * 2026-09-20 : ce script est passé à `files_utilisateurs` le 2026-08-19, plus
- * rien n'alimente `files_image_bank`, et le flux des CV est désormais suivi
- * sous son propre nom.
+ * 2026-09-20. ⚠️ Deux dates à ne pas recoller : le DÉPÔT est passé à
+ * `files_utilisateurs` le 2026-08-19, mais le VPS n'a reçu le script que le
+ * **2026-09-03** — c'est cette seconde date qui borne les traces. Depuis, plus
+ * rien n'alimente `files_image_bank`, et le flux des CV est suivi sous son
+ * propre nom.
  */
 export const ACCEPTED_GAP_COMPONENTS: ReadonlySet<BackupComponentValue> = new Set([
   "postgres_pitr",
   "redis",
   "git_mirror",
   // 🔴 Ajouté le 2026-09-20. Ce composant n'est plus alimenté depuis le
-  // 2026-08-19 : son flux a MIGRÉ vers `files_utilisateurs`. Sans cette ligne
+  // **2026-09-03** : son flux a MIGRÉ vers `files_utilisateurs`. Sans cette ligne
   // il serait « en retard » pour toujours, sans qu'aucune action puisse le
   // rattraper — une alerte qu'on apprend à ignorer, donc une alerte de moins.
   //
@@ -125,8 +127,8 @@ export const COMPONENT_LABELS_FR: Record<BackupComponentValue, string> = {
   // tableau de bord est donc celle d'un script périmé.
   //
   // L'ancien libellé « Fichiers (CV, documents, avis) » n'était donc pas faux :
-  // il l'est DEVENU le 19 août, en même temps que le 422. Et le renommer en
-  // « Banque d'images » aurait affiché « 56 sauvegardes, dernière le 19/08 »
+  // il l'est DEVENU le 2026-09-03, en même temps que le 422 — les deux moitiés basculent le même jour, celui du déploiement sur le VPS. Et le renommer en
+  // « Banque d'images » aurait affiché « 56 sauvegardes, dernière le 03/09 »
   // pour un flux qui n'a jamais tourné sous ce nom — un troisième faux vert,
   // ouvert en fermant les deux autres.
   //
