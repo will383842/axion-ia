@@ -222,16 +222,27 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | **Nom légal**             | Cloudflare, Inc.                                                              |
 | **Adresse**               | 101 Townsend St, San Francisco, CA 94107, USA                                 |
 | **Finalité**              | CDN + protection DDoS + Turnstile (captcha anti-spam formulaires) **et stockage objet Cloudflare R2** |
-| **Données traitées**      | Réseau : IP visiteur, User-Agent, requêtes HTTP (logs CDN). **Stockage R2 : le contenu des pièces** — conventions, convocations, émargements, attestations, certificats, devis, factures, avoirs, exemplaires signés, supports (`documents/`, `supports/`) ; **images de signature manuscrite** (`emargement/…png`) ; **relevés de connexion CSV nominatifs** des sessions à distance (`presence/…`, nom + e-mail + horaires) ; kits d'intervention (`interventions/`) ; **sauvegardes chiffrées** de la base, de Redis, de Plausible et de DocuSeal |
+| **Données traitées**      | Réseau : IP visiteur, User-Agent, requêtes HTTP (logs CDN). **Stockage R2 : le contenu des pièces** — conventions, convocations, émargements, attestations, certificats, devis, factures, avoirs, exemplaires signés, supports (`documents/`, `supports/`) ; **images de signature manuscrite** (`emargement/…png`) ; **relevés de connexion CSV nominatifs** des sessions à distance (`presence/…`, nom + e-mail + horaires) ; kits d'intervention (`interventions/`) ; **sauvegardes chiffrées** — bases de données, Redis, Plausible, DocuSeal, banque d'images, l'archive des secrets d'exploitation, et `files/` : les volumes de la console, **dont les CV reçus par candidature** et les médias des avis |
 | **Localisation physique** | Edge mondial. ⛔ Le bucket R2 est joint par l'endpoint **global** `<account>.r2.cloudflarestorage.com`, pas par un endpoint à juridiction restreinte : **le code ne contraint aucune juridiction** — à confirmer côté tableau de bord Cloudflare |
 | **Garanties**             | DPA + clauses contractuelles types (SCC) + EU-US Data Privacy Framework (DPF) |
 | **DPA**                   | Online — auto-acceptable depuis dashboard CF. ⛔ **Il couvrira alors AUSSI R2** : ce n'est plus un DPA « CDN » |
 | **Lien**                  | https://www.cloudflare.com/cloudflare-customer-dpa/                           |
 | **Procédure**             | Dashboard Cloudflare → Manage Account → Configurations → Privacy → Sign DPA   |
-| **Durée conservation**    | Logs CDN : 30 j max. **Pièces R2 : 5 ans annoncés** (`DOCUMENT_RETENTION_YEARS`, imprimé sur les pièces ; `suppressionPrevueAt` en base). ⛔ **Aucune purge n'applique cette échéance** — aucun objet R2 n'est supprimé par ancienneté (cf. `src/server/qualiopi/legal/retention-echeance.ts`). Seules suppressions réelles : purge RGPD art. 17 des images de signature, rollback de signature, suppression admin d'une version, ZIP temporaire |
+| **Durée conservation**    | Logs CDN : 30 j max. **Pièces R2 : 5 ans annoncés** (`DOCUMENT_RETENTION_YEARS`, imprimé sur les pièces ; `suppressionPrevueAt` en base). ⛔ **Aucune purge n'applique cette échéance aux PIÈCES** : `suppressionPrevueAt` n'est lu par aucun effacement (cf. `src/server/qualiopi/legal/retention-echeance.ts`). ⚠️ Ne pas confondre avec la rotation des SAUVEGARDES, qui existe bel et bien : `prune_r2` (`scripts/backup-lib.sh`) supprime par rang de récence — `files/` 14, `secrets/` 30, `postgres/hourly/` 24, `docuseal/` 24. Deux mécanismes distincts, un seul manque. Seules suppressions réelles : purge RGPD art. 17 des images de signature, rollback de signature, suppression admin d'une version, ZIP temporaire |
 | **Statut**                | 🟠 **À ACCEPTER** par Will — et la fiche est désormais exacte sur ce que Cloudflare détient |
 | **Date signature**        | _(à compléter)_                                                               |
 
+> ⚠️ **CE FICHIER EST DANS UN DÉPÔT PUBLIC** (`will383842/axion-ia`, visibilité
+> `PUBLIC`, vérifié le 2026-09-20). Un registre art. 30 est une pièce INTERNE :
+> il énumère par construction ce qui n'est pas encore en règle. Les écarts
+> ci-dessous sont donc lisibles par n'importe qui, y compris par une personne
+> qui voudrait s'en servir. Rien ici n'est exploitable techniquement — aucun
+> identifiant, aucune clé, aucune URL — mais ⛔ **la place de ce fichier est une
+> décision à prendre** : le sortir du dépôt (par exemple sous
+> `Projets/_PRIVE-HORS-DEPOT/`) ou assumer sa publication. Le constat précède
+> cette livraison : le fichier portait déjà « ACTIF sans DPA » et une note sur
+> une donnée de santé dans des sauvegardes.
+>
 > 🔴 **§3 RÉÉCRIT LE 2026-09-20.** Cette fiche n'a décrit pendant des mois que le
 > réseau — « CDN + DDoS + Turnstile », « logs CDN 30 j ». Or **c'est Cloudflare
 > qui détient les pièces** : conventions, attestations, factures, exemplaires
@@ -255,6 +266,10 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 > 1. la **juridiction réelle** du bucket (indice de localisation choisi à la
 >    création) et les valeurs de `R2_ACCOUNT_ID` / `R2_BUCKET_NAME` /
 >    `R2_BUCKET_IMMUTABLE` en production ;
+> 1bis. **vérifier au tableau de bord que le bucket n'est pas en accès public.**
+>    Le code n'expose rien — il ne construit aucune URL publique et
+>    `R2_PUBLIC_BASE_URL` n'est lue nulle part — mais l'ouverture d'un bucket
+>    est un réglage de plateforme, que le dépôt ne peut ni voir ni garantir ;
 > 2. accepter le **DPA Cloudflare**, qui couvre aussi le stockage ;
 > 3. trancher **5 ans** (mentions imprimées sur les pièces) contre **10 ans**
 >    (en-tête de `src/lib/r2-storage.ts`, obligation comptable CGI 242 nonies A)

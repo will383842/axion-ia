@@ -145,12 +145,9 @@ const CLASSEMENT: Readonly<Record<string, Rattachement>> = {
   HETZNER_STORAGE_ENDPOINT: { tiers: "Hetzner" },
 
   // ── Stockage objet R2 (2026-09-20) ────────────────────────────────────────
-  // Le tiers est Cloudflare, et il ne se voit PAS depuis une CSP : ces appels
-  // partent du serveur. C'est ce même trou qui avait laissé passer l'agenda
-  // Google ci-dessus — sauf qu'ici le tiers détient les PIÈCES : conventions,
-  // attestations, factures, images de signature manuscrite, relevés de
-  // connexion. Les variables n'étaient déclarées nulle part dans `src/env.ts`,
-  // donc cette garde ne pouvait pas les voir : elles y sont désormais.
+  // Même cas que l'agenda Google ci-dessus — appel serveur, invisible en CSP —
+  // sauf qu'ici le tiers détient les PIÈCES : conventions, attestations,
+  // factures, images de signature manuscrite, relevés de connexion.
   R2_ACCOUNT_ID: { tiers: "Cloudflare" },
   R2_ACCESS_KEY_ID: { tiers: "Cloudflare" },
   R2_SECRET_ACCESS_KEY: { tiers: "Cloudflare" },
