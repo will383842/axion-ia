@@ -97,8 +97,10 @@ for prefixe in "${PREFIXES[@]}"; do
   DST="s3://${R2_BUCKET_IMMUTABLE}/${COMPONENT}/${prefixe}/"
   echo "-> miroir ${SRC} vers ${DST}"
 
-  # `--dryrun` donne le DELTA sans rien écrire : seuls les objets absents ou
-  # modifiés y figurent. Un passage sans changement ne copie rien.
+  # `--dryrun` donne les CANDIDATS sans rien écrire. ⚠️ Il en signale plus que
+  # nécessaire : la clé nue n'étant jamais réécrite, toute pièce déjà modifiée
+  # y figure à chaque passage. C'est la comparaison d'EMPREINTES ci-dessous
+  # qui tranche, et qui garantit qu'un passage sans changement ne copie rien.
   A_COPIER=$(s3 s3 sync "${SRC}" "${DST}" --dryrun 2>/dev/null \
     | awk '/^\(dryrun\) copy:/ {print $3}') \
     || { record_fail "s3_dryrun_failed:${prefixe}"; exit 1; }
@@ -108,9 +110,52 @@ for prefixe in "${PREFIXES[@]}"; do
     rel="${src_uri#"${SRC}"}"
     cle="${COMPONENT}/${prefixe}/${rel}"
 
-    if s3 s3api head-object --bucket "${R2_BUCKET_IMMUTABLE}" --key "${cle}" >/dev/null 2>&1; then
-      # Déjà sauvegardé, et le contenu a changé : nouvelle clé, jamais d'écrasement.
-      dst_uri="${DST}${rel}.__v${DATE_TAG}"
+    # 🔴 L'EMPREINTE, PAS LA DATE — corrigé le 2026-09-20 avant la fusion.
+    #
+    # Une première version nommait la copie `<cle>.__v<DATE_TAG>`. Elle créait
+    # une croissance SANS FIN : `sync --dryrun` compare la source à la clé `X`,
+    # or on n'écrit JAMAIS sur `X` (le verrou l'interdit), donc `X` garde pour
+    # toujours les octets du premier passage. Une pièce régénérée une fois
+    # serait donc re-signalée à CHAQUE passage, et déposée sous une date
+    # nouvelle à chaque fois : 365 objets immuables par an au lieu de 2, et
+    # aucun effaçable. Le défaut ne pouvait pas se voir au premier passage.
+    #
+    # La clé dérivée de l'EMPREINTE rend l'opération idempotente : même
+    # contenu -> même clé -> déjà présente -> rien à faire. Contenu
+    # différent -> clé différente -> une seule copie, pour toujours.
+    #
+    # ⚠️ `head-object` distingue le 404 des AUTRES erreurs. Avaler les deux
+    # ferait lire « absent » sur une panne réseau, donc tenter d'écrire sur la
+    # clé nue déjà verrouillée, donc arrêter le miroir entier. Un prédicat
+    # ouvert échoue ouvert.
+    # `--query ETag --output text` : on récupère l'empreinte SEULE, sans traverser
+    # le JSON — dont les guillemets échappés casseraient tout filtre naïf.
+    rep=$(s3 s3api head-object --bucket "${R2_BUCKET_IMMUTABLE}" --key "${cle}" \
+      --query 'ETag' --output text 2>&1) && present=1 || present=0
+    if [ "${present}" -eq 0 ] && ! printf '%s' "${rep}" | grep -qE '404|Not Found'; then
+      record_fail "head_object_indecis:${prefixe}"
+      echo "head-object a echoue sans dire 404 : ${rep}" >&2
+      exit 1
+    fi
+
+    if [ "${present}" -eq 1 ]; then
+      # Déjà sauvegardé. La pièce a-t-elle vraiment changé ?
+      etag_dst=$(printf '%s' "${rep}" | tr -cd 'a-zA-Z0-9')
+      etag_src=$(s3 s3api head-object --bucket "${R2_BUCKET_NAME}" --key "${prefixe}/${rel}" \
+        --query 'ETag' --output text 2>/dev/null | tr -cd 'a-zA-Z0-9')
+      if [ -z "${etag_src}" ]; then
+        record_fail "etag_source_illisible:${prefixe}"
+        exit 1
+      fi
+      # Même contenu que la copie nue : rien à faire, et surtout rien à dupliquer.
+      [ "${etag_src}" = "${etag_dst}" ] && continue
+
+      dst_uri="${DST}${rel}.__e${etag_src}"
+      # Cette version-là est-elle déjà déposée ? Alors on n'y touche pas.
+      if s3 s3api head-object --bucket "${R2_BUCKET_IMMUTABLE}" \
+           --key "${cle}.__e${etag_src}" >/dev/null 2>&1; then
+        continue
+      fi
       NB_VERSIONNES=$(( NB_VERSIONNES + 1 ))
     else
       dst_uri="${DST}${rel}"

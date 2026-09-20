@@ -61,7 +61,9 @@ docker run --rm \
   postgres:16-alpine \
   bash -c '
     set -e
-    apk add --no-cache aws-cli curl bash >/dev/null
+    # openssl : exige par backup-lib.sh (_hmac_hex, report_backup_run). Sans lui,
+    # le compte rendu partirait en silence et aucun BackupRun ne serait enregistre.
+    apk add --no-cache aws-cli curl bash openssl >/dev/null
     mkdir -p /tmp/scripts
     BASE="https://raw.githubusercontent.com/will383842/axion-ia/${REF}/scripts"
     # Les deux fichiers ensemble : le script source son voisin par `dirname $0`.
