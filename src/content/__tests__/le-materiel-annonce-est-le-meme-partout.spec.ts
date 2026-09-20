@@ -53,16 +53,35 @@
  *    déjà l'ordinateur.
  *  - Même décision, sur les FICHES formation : `getFormationMateriel` scinde le
  *    texte par format dès que la fiche se suit à distance (« En présentiel, … ;
- *    en distanciel, un ordinateur avec caméra et micro, et l'application de
- *    visioconférence… ») — carte « Matériel », FAQ de la fiche et JSON-LD. La
- *    page ne doit rien écrire du matériel en dur.
+ *    en distanciel, un ordinateur avec caméra et micro, … Zoom, depuis le
+ *    navigateur… ») — carte « Matériel », FAQ de la fiche et JSON-LD. La page
+ *    ne doit rien écrire du matériel en dur.
  *  - Balayage des fichiers publics : toute ligne qui annonce « smartphone ou
  *    (un) ordinateur » doit parler du distanciel SUR LA MÊME LIGNE (pages,
  *    messages, FAQ). Seule exception : le fichier `materiel.ts`, dont
  *    `getFormationMateriel` complète les constantes. La convocation distanciel
- *    doit exiger ce que `MATERIEL_DISTANCIEL` annonce.
- *  - « Rien à installer » ne vaut que sur place : en distanciel, la convocation
- *    exige l'application de visioconférence installée et testée.
+ *    IMPORTE les éléments de `MATERIEL_DISTANCIEL` : elle exige ce que les
+ *    fiches annoncent par construction.
+ *  - Seconde décision de Will du 2026-09-19 : la visio se fait sur Zoom (l'outil
+ *    de l'organisme), depuis le navigateur de l'ordinateur. Il n'y a donc RIEN
+ *    À INSTALLER, ni sur place ni à distance. Règle unique
+ *    (`fautesInstallation`, `regle-installation.ts`), appliquée à
+ *    la FAQ, aux fiches (texte affiché et JSON-LD) et à la page
+ *    `/formations/entreprise`, FR et EN, PROPOSITION par proposition — pas
+ *    ligne par ligne de source, qu'une phrase repliée déjouait :
+ *      · toute proposition qui contient « install » porte une NÉGATION (rien,
+ *        aucun, sans, pas, ni, no, nothing, without…). « Il faut installer
+ *        Zoom », « Installez l'application Teams », « You need to install
+ *        Zoom » rougissent, quelle que soit la tournure ;
+ *      · et, si elle est bornée au présentiel (« sur place »), elle couvre
+ *        aussi le distanciel — sinon elle laisse entendre qu'à distance il
+ *        faut installer quelque chose.
+ *    Seules exceptions : les sens FIGURÉS ou hors session (« installer une
+ *    pratique commune », « modèles installés sur vos serveurs »), listés
+ *    nommément dans `FIGURES` ; une entrée qui ne sert plus rougit.
+ *    🔴 La version précédente listait les tournures FAUTIVES
+ *    (`INSTALLATION_EXIGEE`) : « il faut installer l'application Zoom »
+ *    passait en exit 0 (revue simplicité 5256426101).
  *  - ⚠️ LIMITE DÉCLARÉE du balayage des fichiers (src/content, src/app,
  *    src/components, src/messages) : il ne repère que la formulation
  *    « ordinateur portable » JOINTE à « connexion internet » (avec ou sans
@@ -83,6 +102,8 @@ import { getFormationMateriel, getFormationModalites } from "@/content/formation
 import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
 import { MATERIEL_DISTANCIEL } from "@/content/formations/materiel";
 import { FAQ_GLOBAL } from "@/content/transversal";
+
+import { FIGURES, fautesInstallation, propositions } from "./regle-installation";
 
 /** Fiches où le smartphone serait une promesse fausse — confirmées par Will le 2026-09-18. */
 const EXCEPTIONS_ORDINATEUR = new Set(["ia-pour-l-it", "ia-pour-l-automatisation"]);
@@ -163,7 +184,7 @@ function normaliser(texte: string): string {
   return texte.replace(/\\[nrt]/g, " ").replace(/[\s\u00a0\u202f]+/g, " ");
 }
 
-function texteAffiche(f: (typeof FORMATIONS_V2)[number]): string {
+function morceauxAffiches(f: (typeof FORMATIONS_V2)[number]): unknown[] {
   const exception = EXCEPTIONS_ORDINATEUR.has(f.id);
   const morceaux: unknown[] = [{ ...f, materielFr: undefined }];
   for (const [nom, valeur] of Object.entries(FAITS)) {
@@ -181,7 +202,11 @@ function texteAffiche(f: (typeof FORMATIONS_V2)[number]): string {
       morceaux.push((valeur as Fonction)(source(f)));
     }
   }
-  return normaliser(JSON.stringify(morceaux));
+  return morceaux;
+}
+
+function texteAffiche(f: (typeof FORMATIONS_V2)[number]): string {
+  return normaliser(JSON.stringify(morceauxAffiches(f)));
 }
 
 /** Une fiche qui peut se suivre à distance. */
@@ -191,26 +216,44 @@ function aDuDistanciel(f: (typeof FORMATIONS_V2)[number]): boolean {
 }
 
 const CLAUSE_DISTANCIEL =
-  /en distanciel, un ordinateur avec caméra et micro, une connexion internet stable, l'application de visioconférence installée et testée avant la session, accès aux outils IA/;
+  /en distanciel, un ordinateur avec caméra et micro, une connexion internet stable, Zoom, depuis le navigateur \(rien à installer\), testé avant la session, accès aux outils IA/;
 
-/**
- * Une affirmation qu'il n'y a RIEN À INSTALLER. Vraie sur place seulement :
- * à distance, la convocation exige l'application de visioconférence installée
- * (revues exactitude 5254909256 et 5255141619 — `pme-ia` disait « aucune
- * installation n'est requise » sans condition).
- */
-const AUCUNE_INSTALLATION =
-  /rien à installer|(?:aucune|sans|ni)\s+(?:\S+\s+){0,2}?installation|nothing to install|no (?:software )?installation/i;
-/** Ce qui borne l'affirmation au présentiel, DANS LA MÊME PHRASE. */
-const BORNE_SUR_PLACE =
-  /sur place|dans vos locaux|(?:vient|arrive) avec (?:son|ses)|on site|arrives with (?:their|his|her)/i;
-
-/** Toutes les chaînes d'une entrée de FAQ (réponse, points clés, nuances…), en phrases. */
+/** Toutes les chaînes d'un objet (réponse, points clés, nuances…), en phrases. */
 function phrases(valeur: unknown): string[] {
   if (typeof valeur === "string") return valeur.split(/(?<=[.!?])\s+|\n+/);
   if (Array.isArray(valeur)) return valeur.flatMap(phrases);
   if (valeur && typeof valeur === "object") return Object.values(valeur).flatMap(phrases);
   return [];
+}
+
+/** Source d'une page, commentaires retirés : les phrases repliées se recollent. */
+function sourceSansCommentaires(fichier: string): string {
+  return readFileSync(path.join(RACINE, fichier), "utf8")
+    .replace(/\/\*[\s\S]*?\*\//g, " ")
+    .replace(/(^|[^:"'`])\/\/[^\n]*/g, "$1");
+}
+
+/** Pages qui énoncent le matériel en prose propre, hors FAQ et fiches. */
+const PAGES_MATERIEL = ["src/app/[locale]/formations/entreprise/page.tsx"] as const;
+
+/** Tout le périmètre de la règle, étiqueté pour le message d'échec. */
+function perimetreInstallation(): Array<{ ou: string; textes: string[] }> {
+  return [
+    ...FAQ_GLOBAL.flatMap((e) =>
+      (["fr", "en"] as const).map((langue) => ({
+        ou: `FAQ ${e.id}:${langue}`,
+        textes: phrases(e[langue]),
+      })),
+    ),
+    ...FORMATIONS_V2.map((f) => ({
+      ou: `fiche ${f.id}`,
+      textes: phrases([morceauxAffiches(f), getFormationMateriel(f), f.materielFr ?? ""]),
+    })),
+    ...PAGES_MATERIEL.map((fichier) => ({
+      ou: fichier,
+      textes: [sourceSansCommentaires(fichier)],
+    })),
+  ];
 }
 
 /**
@@ -316,19 +359,13 @@ describe("le matériel annoncé est le même partout", () => {
     expect(page).not.toMatch(/smartphone/i);
   });
 
-  it("la convocation distanciel exige ce que MATERIEL_DISTANCIEL annonce", () => {
-    // `materiel.ts` affirme « même exigence que la convocation » : ce test la tient.
-    const convocation = readFileSync(
-      path.join(RACINE, "src/server/qualiopi/documents/templates/convocation.tsx"),
-      "utf8",
-    );
-    const bloc = convocation.slice(convocation.indexOf("Équipement requis (distanciel)"));
-    expect(bloc).toContain("Un ordinateur avec caméra et micro");
-    expect(bloc).toContain("Une connexion internet stable");
-    expect(bloc).toContain("L'application de visioconférence installée et testée");
-    expect(MATERIEL_DISTANCIEL).toContain("un ordinateur avec caméra et micro");
-    expect(MATERIEL_DISTANCIEL).toContain("une connexion internet stable");
-    expect(MATERIEL_DISTANCIEL).toContain("l'application de visioconférence installée et testée");
+  it("MATERIEL_DISTANCIEL dit Zoom dans le navigateur, sans rien à installer", () => {
+    // La convocation distanciel IMPORTE ces éléments (`materiel.ts`) : la
+    // « même exigence » tient par construction ; la garde du dispositif
+    // d'assistance lit la convocation rendue.
+    expect(MATERIEL_DISTANCIEL).toContain("Zoom, depuis le navigateur");
+    expect(MATERIEL_DISTANCIEL).toContain("rien à installer");
+    expect(fautesInstallation([MATERIEL_DISTANCIEL])).toEqual([]);
   });
 
   it.each([...FORMATIONS_TABLEUR])("%s recommande l'ordinateur pour le tableur", (id) => {
@@ -412,38 +449,109 @@ describe("le matériel annoncé est le même partout", () => {
       expect(en).toMatch(/AI for IT and AI for automation/);
       expect(en).toMatch(/spreadsheet/);
       // Décision de Will du 2026-09-19 : à distance, le smartphone ne suffit
-      // pas — un ordinateur avec caméra et micro, comme le dit la convocation.
-      // Cherché dans la RÉPONSE elle-même (celle du JSON-LD), pas dans tout
-      // l'objet : un point clé seul la laisserait muette sans que rien rougisse.
-      expect(e!.fr.answer).toMatch(
-        /à distance[^.]*un ordinateur avec caméra et micro[^.]*application de visioconférence installée/i,
-      );
-      expect(e!.en.answer).toMatch(
-        /remote[^.]*a computer with a camera and a microphone[^.]*videoconferencing app installed/i,
-      );
+      // pas — un ordinateur avec caméra et micro, comme le dit la convocation ;
+      // et la visio se fait sur Zoom, dans le navigateur, sans rien
+      // installer. Cherché dans la RÉPONSE elle-même (celle du JSON-LD), pas
+      // dans tout l'objet : un point clé seul la laisserait muette sans que
+      // rien rougisse.
+      expect(e!.fr.answer).toMatch(/à distance[^.]*un ordinateur avec caméra et micro/i);
+      expect(e!.fr.answer).toMatch(/Zoom[^.]*navigateur[^.]*sans rien installer/);
+      expect(e!.en.answer).toMatch(/remote[^.]*a computer with a camera and a microphone/i);
+      expect(e!.en.answer).toMatch(/Zoom[^.]*browser[^.]*nothing to install/);
     },
   );
 
-  it("aucune entrée de la FAQ n'affirme « rien à installer » sans la borner au présentiel", () => {
-    const fautives = FAQ_GLOBAL.flatMap((e) =>
-      (["fr", "en"] as const).flatMap((langue) =>
-        phrases(e[langue])
-          .filter((ph) => AUCUNE_INSTALLATION.test(ph) && !BORNE_SUR_PLACE.test(ph))
-          .map((ph) => `${e.id}:${langue} — ${ph.slice(0, 90)}`),
-      ),
+  it("presentiel-distance dit l'assistance à distance, en FR et en EN", () => {
+    // Dispositif d'assistance (D.6313-3-1), décision de Will du 2026-09-19 :
+    // le formateur pendant la session, contact@axion-ia.com sous 1 jour ouvré
+    // en dehors. Même dispositif, en entier, sur la convocation et le livret.
+    const e = FAQ_GLOBAL.find((x) => x.id === "presentiel-distance")!;
+    expect(e.fr.answer).toMatch(/Pendant la session, le formateur répond dans la conversation/);
+    expect(e.fr.answer).toMatch(/en dehors, contact@axion-ia\.com répond sous 1 jour ouvré/);
+    expect(e.en.answer).toMatch(
+      /During the session, the trainer answers in the videoconference chat/,
+    );
+    expect(e.en.answer).toMatch(/outside it, contact@axion-ia\.com replies within 1 business day/);
+  });
+
+  it("aucun texte public du périmètre ne parle d'installer sans le nier, ni sur place seulement", () => {
+    const fautives = perimetreInstallation().flatMap(({ ou, textes }) =>
+      fautesInstallation(textes).map((p) => `${ou} — ${p.slice(0, 100)}`),
     );
     expect(fautives).toEqual([]);
   });
 
+  it("chaque figure déclarée sert encore (sinon, la retirer)", () => {
+    const tout = perimetreInstallation()
+      .flatMap(({ textes }) => textes.flatMap(propositions))
+      .join(" \u0000 ")
+      .toLowerCase();
+    const perimees = FIGURES.filter((f) => !tout.includes(f.toLowerCase()));
+    expect(perimees).toEqual([]);
+  });
+
   it.each([
-    "Aucune installation n'est requise.",
-    "Rien à installer : un smartphone suffit.",
-    "Aucune compétence technique ni installation requise.",
-    "No software installation is required.",
-    "Nothing to install.",
-  ])("AUCUNE_INSTALLATION reconnaît « %s »", (ph) => {
-    expect(ph).toMatch(AUCUNE_INSTALLATION);
-    expect(ph).not.toMatch(BORNE_SUR_PLACE);
+    // Revue simplicité 5256426101 : les cinq passaient en exit 0.
+    "À distance, il faut installer l'application Zoom avant la session.",
+    "You need to install Zoom before the session.",
+    "Installez l'application Teams avant la session.",
+    "Pensez à installer Zoom.",
+    "Please install the Teams app beforehand.",
+    // Revue exactitude 5256482948.
+    "Installez l'application de visioconférence sur votre ordinateur avant la session.",
+    "Installez l'application Zoom sur votre ordinateur avant la session.",
+    "Il faut installer Zoom.",
+    "Install Zoom before the session.",
+    "Vous devrez installer le logiciel de visio.",
+    // Anciennes phrases publiées.
+    "L'application de visioconférence installée et testée avant la session.",
+    "à distance, seule l'application de visioconférence est à installer",
+    "the videoconferencing app installed and tested before the session",
+    // Négation bornée au présentiel.
+    "Sur place, rien à installer : un smartphone suffit.",
+    "Aucune compétence technique requise, aucune installation sur place",
+    "Sur place, aucun logiciel à installer.",
+    "On site, nothing to install.",
+    // Une figure ne couvre pas une consigne voisine.
+    "Installez Zoom et installez une pratique commune.",
+    // 🔴 2026-09-20 — ces six tournures PASSAIENT. Relevées par les lentilles
+    // exactitude et simplicité sur la tête `da583bd94`, elles n'étaient
+    // épinglées par aucun test : retirer la réparation laissait la suite verte,
+    // et le rouge n'existait qu'à la main. Une réparation que rien ne retient
+    // se défait au premier refactor, sans bruit.
+    //
+    // Un figuré emprunté pour viser l'outil.
+    "Suivez la procédure d'installation de Zoom avant la session.",
+    "Il faut évaluer, installer et tester Zoom avant la session.",
+    "Le distanciel suppose des usages à installer sur votre poste, à savoir Zoom.",
+    // Une négation qui porte sur autre chose que l'installation.
+    "N'oubliez pas d'installer Zoom avant la session.",
+    "Pas besoin d'être technicien, installez l'application Zoom.",
+    "Don't forget to install Zoom before the session.",
+    // Une clause d'exception reprend ce que la négation donnait.
+    "Rien à installer, sauf l'application Zoom.",
+    "Aucune installation n'est requise, sauf Zoom qu'il faut installer.",
+  ])("fautesInstallation refuse « %s »", (ph) => {
+    expect(fautesInstallation([ph])).not.toEqual([]);
+  });
+
+  it.each([
+    "Rien à installer, ni sur place ni à distance.",
+    "Aucune installation n'est requise, ni sur place ni à distance (Zoom s'ouvre dans le navigateur).",
+    "Rien à installer : sur place, un smartphone suffit ; à distance, Zoom dans le navigateur.",
+    "Aucun logiciel à installer.",
+    "Sans rien installer.",
+    "Nothing to install, on site or remotely.",
+    "Zoom, depuis le navigateur (rien à installer), testé avant la session.",
+    // 🔑 CONTRE-ÉPREUVE des lignes ci-dessus : la règle ne doit pas rougir dès
+    // qu'une phrase nomme l'outil. Ces deux-là ont VIRÉ AU ROUGE le 2026-09-20
+    // dans une première version de la réparation — un échec FERMÉ, qui aurait
+    // rendu `FIGURES` inopérante le jour où elle sert, sans laisser de trace.
+    "Avec Zoom, l'autonomie s'installe en trois séances.",
+    "Sur Zoom, les usages installés tiennent après la formation.",
+    "Des modèles open-source installés sur vos propres serveurs, sans transfert hors UE.",
+  ])("fautesInstallation laisse passer « %s »", (ph) => {
+    expect(fautesInstallation([ph])).toEqual([]);
   });
 
   it("aucune entrée de la FAQ ne dit que le matériel est le même sur place et à distance", () => {

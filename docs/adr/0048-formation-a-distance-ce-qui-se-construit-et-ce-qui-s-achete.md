@@ -1,5 +1,7 @@
 # ADR 0048 — Formation à distance : ce qui se construit maintenant, et ce qui s'achète plus tard
 
+> **2026-09-19 — Décision Will** : Zoom est l'outil de visio de l'organisme (pas l'outil du client) ; abonnement Pro avant la première session à distance ; stagiaire en navigateur, rien à installer ; dispositif d'assistance : `src/server/qualiopi/legal/assistance-distance.ts`.
+
 - **Statut** : **ACCEPTÉ** — tranché en session le 2026-09-05, sous mandat explicite de Will (« tranche entre Zoom et Teams selon tes recommandations »)
 - **Date** : 2026-09-05
 - **Auteur** : Claude, en ouvrant le lot C du chantier Qualiopi

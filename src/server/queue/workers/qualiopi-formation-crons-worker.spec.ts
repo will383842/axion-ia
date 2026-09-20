@@ -630,6 +630,25 @@ describe("handleFacturesRetard — échéances manquantes (via formationCronsHan
     avoirs: [],
   });
 
+  /**
+   * Oracle CALENDAIRE de l'échéance : un délai de paiement se compte en jours
+   * de calendrier (`calculerEcheanceFacture` fait `setDate(getDate() + jours)`),
+   * jamais en tranches de 24 h.
+   *
+   * 🔴 2026-09-20 — les deux gardes ci-dessous comparaient l'échéance posée à
+   * `Date.now() + N * JOUR_MS`, à 5 min près. Une facture émise le 10/09 avec un
+   * délai de 45 j échoit le 25/10/2026 : le passage à l'heure d'hiver. Écart
+   * mesuré ce jour-là : 3 599 999 ms — une heure pile, douze fois la tolérance.
+   * Le code avait raison, le test avait tort, et il serait redevenu vert tout
+   * seul le 26/10. Un rouge SAISONNIER sur un fichier que la branche ne touche
+   * pas est exactement ce qui apprend `--no-verify`.
+   */
+  const echeanceCalendaire = (emiseAt: Date, jours: number) => {
+    const attendue = new Date(emiseAt.getTime());
+    attendue.setDate(attendue.getDate() + jours);
+    return attendue;
+  };
+
   const lancer = () =>
     formationCronsHandler({
       type: "formation-crons.factures-retard",
@@ -811,7 +830,8 @@ describe("handleFacturesRetard — échéances manquantes (via formationCronsHan
 
   it("RÉPARE l'échéance manquante : emiseAt + délai du client", async () => {
     // Émise il y a 10 jours, client à 45 jours → échéance dans 35 jours (future).
-    mockPrisma.factureFormation.findMany.mockResolvedValue([factureSansEcheance(10, 45)]);
+    const facture = factureSansEcheance(10, 45);
+    mockPrisma.factureFormation.findMany.mockResolvedValue([facture]);
 
     await lancer();
 
@@ -825,20 +845,20 @@ describe("handleFacturesRetard — échéances manquantes (via formationCronsHan
     // Écriture conditionnée à la nullité : idempotent, sans course.
     expect(arg.where.echeanceAt).toBeNull();
 
-    const attendu = Date.now() + 35 * JOUR_MS;
-    expect(Math.abs(arg.data.echeanceAt.getTime() - attendu)).toBeLessThan(5 * 60 * 1000);
+    expect(arg.data.echeanceAt.getTime()).toBe(echeanceCalendaire(facture.emiseAt, 45).getTime());
   });
 
   it("retombe sur 30 jours quand le client n'a pas de délai propre", async () => {
-    mockPrisma.factureFormation.findMany.mockResolvedValue([factureSansEcheance(10, null)]);
+    const facture = factureSansEcheance(10, null);
+    mockPrisma.factureFormation.findMany.mockResolvedValue([facture]);
 
     await lancer();
 
     const arg = mockPrisma.factureFormation.updateMany.mock.calls[0]![0] as {
       data: { echeanceAt: Date };
     };
-    const attendu = Date.now() + 20 * JOUR_MS; // émise il y a 10 j + 30 j
-    expect(Math.abs(arg.data.echeanceAt.getTime() - attendu)).toBeLessThan(5 * 60 * 1000);
+    // Émise il y a 10 j + 30 j de défaut, en jours de CALENDRIER.
+    expect(arg.data.echeanceAt.getTime()).toBe(echeanceCalendaire(facture.emiseAt, 30).getTime());
   });
 
   it("échéance reconstituée encore FUTURE → aucune relance, aucun passage en retard", async () => {

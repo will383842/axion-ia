@@ -29,6 +29,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { DISTANCIEL_VISIO } from "../formations/materiel";
 import { SUBPROCESSORS } from "../subprocessors";
 import { LEGAL_PAGES } from "../legal";
 
@@ -157,6 +158,35 @@ describe("cohérence des sous-processeurs", () => {
           `renvoyer à /sous-processeurs sans nommer personne.`,
       ).not.toContain(token);
     }
+  });
+
+  it("🔴 l'outil de visioconférence annoncé aux stagiaires est un sous-traitant DÉCLARÉ", () => {
+    // 🔑 CE QUE CETTE GARDE RÉPARE, le 2026-09-20. La décision de Will du
+    // 2026-09-19 a remplacé Google Meet par Zoom pour les formations à
+    // distance. Le nom a changé dans neuf textes publics et sur la convocation
+    // remise au stagiaire — et dans AUCUN registre. Aucune garde ne l'a vu :
+    // `la-notice-ne-retarde-pas-sur-la-visio.spec.ts` est épinglée sur la
+    // chaîne « Google Meet » (donc aveugle à une SUBSTITUTION d'outil), et le
+    // scan de ce fichier est adossé à la CSP, que Zoom ne traverse pas — le
+    // lien est saisi à la main, le stagiaire le suit depuis son navigateur.
+    //
+    // Une substitution d'outil est le mode de défaillance le plus discret :
+    // rien n'est ajouté, tout est déjà écrit, et la page publique continue de
+    // se dire « exhaustive » en nommant le prédécesseur.
+    const outil = DISTANCIEL_VISIO.split(/[\s,]+/)[0] ?? "";
+    // Contre-témoin : sans nom d'outil, le test ne mesurerait plus rien.
+    expect(
+      outil,
+      "`DISTANCIEL_VISIO` ne commence plus par un nom d'outil — cette garde est devenue muette",
+    ).toMatch(/^[A-Z][\w.-]{2,}$/);
+    expect(
+      SUBPROCESSORS.some((s) => s.name.toLowerCase().includes(outil.toLowerCase())),
+      `"${outil}" est annoncé aux stagiaires (src/content/formations/materiel.ts, ` +
+        `repris sur la convocation) mais n'est déclaré nulle part dans ` +
+        `src/content/subprocessors.ts, pendant que /sous-processeurs se dit ` +
+        `« liste exhaustive » (RGPD art. 13.1.e). Leur image, leur voix, leur IP ` +
+        `et leurs horaires de connexion partent chez un tiers non déclaré.`,
+    ).toBe(true);
   });
 
   it("chaque entrée de la SSOT figure dans le registre interne art. 30", () => {

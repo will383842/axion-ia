@@ -644,17 +644,17 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
   },
   {
     id: "comment-commencer",
-    reviewedAt: "2026-08-12",
+    reviewedAt: "2026-09-19",
     related: ["definition-axion-ia", "budget-demarrer-ia", "premier-diagnostic-ia"],
     fr: {
       question: "Par où commencer avec l'IA dans mon entreprise ?",
       answer:
-        "Par un cas réel, pas par un plan stratégique. La première étape recommandée est une intervention de découverte — une demi-journée ou une journée — qui identifie 3 à 5 process candidats à l'IA dans votre contexte. L'intervenant arrive avec ses modèles, travaille sur vos données et démontre des gains concrets avant tout engagement.\n\nEn amont, un appel de cadrage de 45 minutes suffit à choisir le bon point d'entrée. Si vous voulez faire monter une équipe, ce sera une formation en intra. Si le sujet est votre propre poste, ce sera le coaching 1-to-1. Si vous cherchez une cartographie chiffrée de l'entreprise, ce sera l'audit IA.\n\nAucune compétence technique n'est requise, et sur place aucune installation logicielle n'est demandée de votre côté ; à distance, seule l'application de visioconférence est à installer. Le devis suit sous 48 heures ouvrées, et les équipes formées sont opérationnelles dès le lendemain.",
+        "Par un cas réel, pas par un plan stratégique. La première étape recommandée est une intervention de découverte — une demi-journée ou une journée — qui identifie 3 à 5 process candidats à l'IA dans votre contexte. L'intervenant arrive avec ses modèles, travaille sur vos données et démontre des gains concrets avant tout engagement.\n\nEn amont, un appel de cadrage de 45 minutes suffit à choisir le bon point d'entrée. Si vous voulez faire monter une équipe, ce sera une formation en intra. Si le sujet est votre propre poste, ce sera le coaching 1-to-1. Si vous cherchez une cartographie chiffrée de l'entreprise, ce sera l'audit IA.\n\nAucune compétence technique n'est requise, et aucune installation logicielle n'est demandée de votre côté, ni sur place ni à distance : la visioconférence se fait sur Zoom, depuis le navigateur. Le devis suit sous 48 heures ouvrées, et les équipes formées sont opérationnelles dès le lendemain.",
       keyPoints: [
         "Commencer par un cas réel, pas par une stratégie IA",
         "Appel de cadrage de 45 minutes pour choisir le point d'entrée",
         "Journée de découverte : 3 à 5 process candidats identifiés sur vos données",
-        "Aucune compétence technique requise, aucune installation sur place",
+        "Aucune compétence technique requise, rien à installer, ni sur place ni à distance",
         "Devis sous 48 h ouvrées, équipes opérationnelles dès le lendemain",
       ],
       facts: [
@@ -689,7 +689,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Ce n'est pas un projet informatique",
           detail:
-            "Sur place, la première étape ne demande ni budget IT, ni installation, ni compétence technique : l'intervenant vient avec son propre équipement.",
+            "La première étape ne demande ni budget IT, ni installation, ni compétence technique : l'intervenant vient avec son propre équipement.",
         },
         {
           title: "Ce n'est pas un audit",
@@ -831,11 +831,11 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Faut-il avoir des compétences techniques pour bénéficier d'une intervention IA ?",
       answer:
-        "Non, aucune. Les formations Axion-IA s'adressent à des équipes non techniques : la seule qui suppose une aisance en développement ou en administration système est celle destinée aux profils IT. Partout ailleurs, on part du principe que certains participants n'ont jamais ouvert un outil d'IA, et chaque notion est démontrée en direct avant d'être pratiquée immédiatement.\n\nCôté matériel, sur place, rien à installer : un smartphone ou un ordinateur et une connexion internet suffisent (un ordinateur pour IA pour l'IT et IA pour l'automatisation, qui font construire sur poste ; un ordinateur est recommandé pour les exercices sur tableur). À distance, il faut un ordinateur avec caméra et micro, une connexion internet et l'application de visioconférence installée et testée avant la session. Les accès aux outils sont préparés avec vous en amont si besoin. Les exercices portent sur vos propres tâches — offres d'emploi et comptes rendus côté RH, propositions et relances côté commercial, rapports et relances côté comptabilité, courriers et synthèses côté direction — et non sur des cas d'école.\n\nCe qui compte n'est donc pas le niveau technique, mais le fait d'arriver avec de vraies tâches à traiter. Les participants qui utilisent déjà l'IA de temps en temps ne perdent rien pour autant : ils y gagnent une méthode et des réflexes de vérification qu'ils n'ont généralement pas.",
+        "Non, aucune. Les formations Axion-IA s'adressent à des équipes non techniques : la seule qui suppose une aisance en développement ou en administration système est celle destinée aux profils IT. Partout ailleurs, on part du principe que certains participants n'ont jamais ouvert un outil d'IA, et chaque notion est démontrée en direct avant d'être pratiquée immédiatement.\n\nCôté matériel, rien à installer, ni sur place ni à distance. Sur place, un smartphone ou un ordinateur et une connexion internet suffisent (un ordinateur pour IA pour l'IT et IA pour l'automatisation, qui font construire sur poste ; un ordinateur est recommandé pour les exercices sur tableur). À distance, il faut un ordinateur avec caméra et micro et une connexion internet : la visioconférence se fait sur Zoom, depuis le navigateur, sans rien installer, et se teste avant la session. Les accès aux outils sont préparés avec vous en amont si besoin. Les exercices portent sur vos propres tâches — offres d'emploi et comptes rendus côté RH, propositions et relances côté commercial, rapports et relances côté comptabilité, courriers et synthèses côté direction — et non sur des cas d'école.\n\nCe qui compte n'est donc pas le niveau technique, mais le fait d'arriver avec de vraies tâches à traiter. Les participants qui utilisent déjà l'IA de temps en temps ne perdent rien pour autant : ils y gagnent une méthode et des réflexes de vérification qu'ils n'ont généralement pas.",
       keyPoints: [
         "Aucun prérequis technique : les formations sont conçues pour des équipes non techniques",
         "Seule exception, la formation destinée aux profils IT suppose une aisance en développement",
-        "Sur place, rien à installer : un smartphone ou un ordinateur et une connexion internet suffisent (un ordinateur pour IA pour l'IT et IA pour l'automatisation, recommandé pour les exercices sur tableur) ; à distance, un ordinateur avec caméra et micro, une connexion internet et l'application de visioconférence",
+        "Rien à installer : sur place, un smartphone ou un ordinateur et une connexion internet suffisent (un ordinateur pour IA pour l'IT et IA pour l'automatisation, recommandé pour les exercices sur tableur) ; à distance, un ordinateur avec caméra et micro, une connexion internet et Zoom dans le navigateur",
         "Les accès aux outils sont préparés avec vous en amont si besoin",
         "Chaque notion est démontrée en direct, puis pratiquée sur vos propres tâches",
       ],
@@ -866,7 +866,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Do you need technical skills to benefit from an AI session?",
       answer:
-        "No. Axion-IA sessions are designed for non-technical teams. On site, nothing to install: participants need a smartphone or a computer and an internet connection (a computer for AI for IT and AI for automation, and recommended for spreadsheet exercises). Remote sessions require a computer with a camera and a microphone, an internet connection, and the videoconferencing app installed and tested before the session. Access to the tools is prepared with you in advance if needed. Examples are adapted to your real business roles (HR, accounting, sales, operations, etc.).",
+        "No. Axion-IA sessions are designed for non-technical teams. Nothing to install, on site or remotely. On site, participants need a smartphone or a computer and an internet connection (a computer for AI for IT and AI for automation, and recommended for spreadsheet exercises). Remote sessions require a computer with a camera and a microphone and an internet connection: the videoconference runs on Zoom, in the browser, with nothing to install, and is tested before the session. Access to the tools is prepared with you in advance if needed. Examples are adapted to your real business roles (HR, accounting, sales, operations, etc.).",
     },
   },
   {
@@ -983,7 +983,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
   },
   {
     id: "pme-ia",
-    reviewedAt: "2026-08-12",
+    reviewedAt: "2026-09-19",
     related: ["heures-semaine-pme", "tpe-ia", "automatiser-taches-ia"],
     fr: {
       question: "Comment l'IA peut-elle aider une PME concrètement ?",
@@ -1011,7 +1011,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Ce n'est pas réservé aux profils techniques",
           detail:
-            "Les formations sont conçues pour des équipes non techniques : sur place, aucune installation n'est requise (à distance, seule l'application de visioconférence), et les exemples sont pris dans vos métiers réels.",
+            "Les formations sont conçues pour des équipes non techniques : aucune installation n'est requise, ni sur place ni à distance (Zoom s'ouvre dans le navigateur), et les exemples sont pris dans vos métiers réels.",
         },
         {
           title: "L'outil seul ne suffit pas",
@@ -1428,7 +1428,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Axion-IA intervient-il à distance ou sur site ?",
       answer:
-        "Les deux, au choix, et avec le même programme. Le format par défaut est le présentiel en intra, dans vos locaux : c'est celui qui permet de travailler directement sur vos outils, vos documents et vos données, et de capter les vraies questions au moment où elles se posent. Le distanciel est possible sur l'ensemble du catalogue, avec le même contenu et le même niveau d'interactivité.\n\nIl s'impose surtout quand l'équipe est répartie sur plusieurs sites, quand les déplacements pèseraient plus lourd que la session elle-même, ou pour une session de suivi après un premier passage sur place. Un format hybride est également possible : une journée dans vos locaux pour lancer la dynamique, puis le suivi à distance.\n\nLe matériel, lui, dépend du format. Sur place, un smartphone ou un ordinateur et une connexion internet suffisent ; un ordinateur pour IA pour l'IT et IA pour l'automatisation, recommandé pour les exercices sur tableur (finance, achats, commerce, équipes). À distance, il faut un ordinateur avec caméra et micro, l'application de visioconférence installée et testée avant la session, et une connexion internet : un smartphone ne permet pas de suivre la visioconférence et de pratiquer en même temps. Dans les deux formats, les accès aux outils sont préparés avec vous en amont si besoin. Le format ne change pas le prix : il est fixé par groupe et par formation, pas par personne, et il n'y a pas de surcoût géographique en France métropolitaine.",
+        "Les deux, au choix, et avec le même programme. Le format par défaut est le présentiel en intra, dans vos locaux : c'est celui qui permet de travailler directement sur vos outils, vos documents et vos données, et de capter les vraies questions au moment où elles se posent. Le distanciel est possible sur l'ensemble du catalogue, avec le même contenu et le même niveau d'interactivité.\n\nIl s'impose surtout quand l'équipe est répartie sur plusieurs sites, quand les déplacements pèseraient plus lourd que la session elle-même, ou pour une session de suivi après un premier passage sur place. Un format hybride est également possible : une journée dans vos locaux pour lancer la dynamique, puis le suivi à distance.\n\nLe matériel, lui, dépend du format. Sur place, un smartphone ou un ordinateur et une connexion internet suffisent ; un ordinateur pour IA pour l'IT et IA pour l'automatisation, recommandé pour les exercices sur tableur (finance, achats, commerce, équipes). À distance, il faut un ordinateur avec caméra et micro et une connexion internet : un smartphone ne permet pas de suivre la visioconférence et de pratiquer en même temps. La visioconférence se fait sur Zoom, depuis le navigateur, sans rien installer ; on la teste avant la session. Pendant la session, le formateur répond dans la conversation de la visioconférence ; en dehors, contact@axion-ia.com répond sous 1 jour ouvré. Dans les deux formats, les accès aux outils sont préparés avec vous en amont si besoin. Le format ne change pas le prix : il est fixé par groupe et par formation, pas par personne, et il n'y a pas de surcoût géographique en France métropolitaine.",
       keyPoints: [
         "Présentiel en intra par défaut, distanciel possible sur tout le catalogue",
         "Même programme, même durée, même niveau d'interactivité dans les deux cas",
@@ -1464,7 +1464,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Does Axion-IA work remotely or on site?",
       answer:
-        "Both. The preferred format is on site (France and internationally) as it allows working directly on your tools and data. Remote sessions are possible via videoconference for geographically dispersed teams or follow-up training. On site, participants need a smartphone or a computer and an internet connection (a computer for AI for IT and AI for automation, and recommended for spreadsheet exercises). For remote sessions, they need a computer with a camera and a microphone, the videoconferencing app installed and tested before the session, and an internet connection.",
+        "Both. The preferred format is on site (France and internationally) as it allows working directly on your tools and data. Remote sessions are possible via videoconference for geographically dispersed teams or follow-up training. On site, participants need a smartphone or a computer and an internet connection (a computer for AI for IT and AI for automation, and recommended for spreadsheet exercises). For remote sessions, they need a computer with a camera and a microphone and an internet connection; the videoconference runs on Zoom, in the browser, with nothing to install, and is tested before the session. During the session, the trainer answers in the videoconference chat; outside it, contact@axion-ia.com replies within 1 business day.",
     },
   },
   {

@@ -635,8 +635,8 @@ export default async function SubprocessorsPage({ params }: Props) {
                             className="bg-terracotta-soft text-terracotta-deep inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium"
                             title={
                               isFr
-                                ? "Intégration codée ; activation en prod conditionnée à la signature du DPA et à l'ajout de la clé API en environnement."
-                                : "Integration coded; prod activation pending DPA signature and API key addition to env."
+                                ? "Déclaré avant toute mise en service : aucune donnée ne lui est transmise aujourd'hui. Activation conditionnée à la signature du DPA et, pour les intégrations techniques, à l'ajout de la clé API en environnement."
+                                : "Declared before any go-live: no data is sent to it today. Activation pending DPA signature and, for technical integrations, the API key addition to env."
                             }
                           >
                             <span
