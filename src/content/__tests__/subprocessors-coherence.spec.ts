@@ -189,6 +189,77 @@ describe("cohérence des sous-processeurs", () => {
     ).toBe(true);
   });
 
+  /**
+   * Les deux seuls sous-traitants actifs portant `dpaStatus: "pending"`, au
+   * 2026-09-20.
+   *
+   * ⚠️ Ce n'est PAS la liste des sous-traitants actifs sans DPA accepté :
+   * Cloudflare, Calendly et Sentry sont `auto_signable_dashboard`, c'est-à-dire
+   * « acceptable en un clic », et le registre note que certains restent à
+   * accepter. Cette garde ne couvre que le cas le plus net — aucun accord
+   * possible — et ne prétend pas à davantage. Relevé par la lentille sécurité
+   * le 2026-09-20 : le titre était plus large que le code.
+   *
+   * Même cause pour les deux : le compte est un
+   * compte Gmail grand public, dont les conditions consommateur ne comportent
+   * pas de DPA. Écart ASSUMÉ et daté — la sortie est la bascule vers Google
+   * Workspace, décidée par Will pour janvier 2027 (`_AUDIT/DPA-REGISTER.md`).
+   *
+   * 🔑 Cette liste doit RÉTRÉCIR, jamais grandir. Y ajouter un nom, c'est
+   * décider d'envoyer des données personnelles à un tiers sans contrat — une
+   * décision qui se prend, se date et s'inscrit au registre, elle ne se
+   * configure pas au détour d'un champ.
+   */
+  const ACTIFS_SANS_DPA_ASSUMES: readonly string[] = [
+    "Google Ireland Limited (Google Agenda)",
+    "Google Ireland Limited (Google Meet)",
+  ];
+
+  it("🔴 aucun sous-traitant n'est ACTIF sans accord de sous-traitance", () => {
+    // 🔑 CE QUE CETTE GARDE TIENT, posée le 2026-09-20 avec l'entrée Zoom.
+    // Zoom est déclaré `pending_activation` parce qu'aucun compte n'existe
+    // encore. Le jour de la souscription, quelqu'un passera ce champ à
+    // `active` — et rien, jusqu'ici, n'exigeait que le DPA soit accepté au
+    // même moment. C'est un champ d'une ligne, dans un fichier de contenu :
+    // exactement le genre de bascule qui se fait sans que personne ne relise
+    // le registre.
+    //
+    // La règle vaut pour TOUS les futurs sous-traitants, pas seulement Zoom :
+    // activer, c'est ouvrir un flux de données personnelles vers un tiers.
+    const fautifs = SUBPROCESSORS.filter(
+      (s) =>
+        s.activationStatus === "active" &&
+        s.dpaStatus === "pending" &&
+        !ACTIFS_SANS_DPA_ASSUMES.includes(s.name),
+    ).map((s) => s.name);
+
+    expect(
+      fautifs,
+      `sous-traitant(s) déclaré(s) ACTIF avec \`dpaStatus: "pending"\` : des ` +
+        `données personnelles partent chez un tiers sans contrat de ` +
+        `sous-traitance (RGPD art. 28). Accepter le DPA d'abord et passer ` +
+        `\`dpaStatus\`, ou laisser \`pending_activation\` — et inscrire la ` +
+        `décision dans _AUDIT/DPA-REGISTER.md.`,
+    ).toEqual([]);
+  });
+
+  it("🔑 CONTRE-TÉMOIN : les écarts assumés existent encore, et ne sont que deux", () => {
+    // Sans ce test, retirer les deux lignes Google rendrait la garde ci-dessus
+    // verte pour une mauvaise raison — et sa liste d'exemptions, invisible.
+    for (const nom of ACTIFS_SANS_DPA_ASSUMES) {
+      const entree = SUBPROCESSORS.find((s) => s.name === nom);
+      expect(entree, `"${nom}" a disparu de la SSOT : l'exemption ne vise plus rien`).toBeDefined();
+    }
+    const reels = SUBPROCESSORS.filter(
+      (s) => s.activationStatus === "active" && s.dpaStatus === "pending",
+    ).map((s) => s.name);
+    expect(
+      reels.length,
+      "le nombre de sous-traitants actifs sans DPA a AUGMENTÉ. Cette liste " +
+        "doit rétrécir (sortie : bascule Google Workspace, janvier 2027).",
+    ).toBeLessThanOrEqual(ACTIFS_SANS_DPA_ASSUMES.length);
+  });
+
   it("chaque entrée de la SSOT figure dans le registre interne art. 30", () => {
     const register = readFileSync(join(ROOT, "_AUDIT", "DPA-REGISTER.md"), "utf8");
     for (const s of SUBPROCESSORS) {

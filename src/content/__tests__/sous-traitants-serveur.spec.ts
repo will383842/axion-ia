@@ -50,7 +50,18 @@ const RACINE = process.cwd();
  * Volontairement LARGE — mieux vaut classer une variable inoffensive que rater
  * l'intégration qui achemine les e-mails.
  */
-const FORME_TIERS = /_API_KEY$|_TOKEN$|^SMTP_|_SECRET$|_KEY$|_DSN$|_URL$/;
+// 🔴 ÉLARGI LE 2026-09-20. La liste d'origine ne reconnaissait que les suffixes
+// d'un SECRET ou d'une URL. Un tiers qui s'identifie par un numéro de compte et
+// un point d'accès — c'est la forme exacte des variables de stockage objet —
+// passait donc entre les mailles : `R2_ACCOUNT_ID` et `R2_ENDPOINT` n'ont
+// jamais été recensés, et Cloudflare a pu héberger les pièces nominatives de
+// l'organisme sans que cette garde ait le moindre mot à dire.
+//
+// 🔑 Mesuré : avant l'élargissement, retirer `R2_ACCOUNT_ID` du classement
+// ci-dessous laissait les 5 tests VERTS. Une garde qui ne voit pas la variable
+// ne garde rien, et son silence se lit comme un feu vert.
+const FORME_TIERS =
+  /_API_KEY$|_TOKEN$|^SMTP_|_SECRET$|_KEY$|_KEY_ID$|_DSN$|_URL$|_ENDPOINT$|_ACCOUNT_ID$/;
 
 /** Rattachement à un sous-traitant de la SSOT. */
 type Rattachement = { readonly tiers: string } | { readonly exempt: string };
@@ -130,6 +141,23 @@ const CLASSEMENT: Readonly<Record<string, Rattachement>> = {
   },
   HETZNER_STORAGE_KEY: { tiers: "Hetzner" },
   HETZNER_STORAGE_SECRET: { tiers: "Hetzner" },
+  // Remonté par l'élargissement du 2026-09-20 : jamais recensé jusque-là.
+  HETZNER_STORAGE_ENDPOINT: { tiers: "Hetzner" },
+
+  // ── Stockage objet R2 (2026-09-20) ────────────────────────────────────────
+  // Même cas que l'agenda Google ci-dessus — appel serveur, invisible en CSP —
+  // sauf qu'ici le tiers détient les PIÈCES : conventions, attestations,
+  // factures, images de signature manuscrite, relevés de connexion.
+  R2_ACCOUNT_ID: { tiers: "Cloudflare" },
+  R2_ACCESS_KEY_ID: { tiers: "Cloudflare" },
+  R2_SECRET_ACCESS_KEY: { tiers: "Cloudflare" },
+  R2_ENDPOINT: { tiers: "Cloudflare" },
+  R2_BUCKET_NAME: {
+    exempt: "Nom du bucket visé, côté Axion-IA. Le tiers est déclaré par les variables ci-dessus.",
+  },
+  R2_BUCKET_IMMUTABLE: {
+    exempt: "Nom du bucket de sauvegarde immuable, côté Axion-IA. Même tiers, déjà déclaré.",
+  },
   SENTRY_DSN: { tiers: "Sentry" },
   SENTRY_AUTH_TOKEN: { tiers: "Sentry" },
   OPENAI_API_KEY: { tiers: "OpenAI," },

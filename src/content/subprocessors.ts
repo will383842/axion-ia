@@ -81,10 +81,13 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     name: "Hetzner Online GmbH",
     location: "Gunzenhausen, Allemagne (UE)",
     serversLocation: "Frankfurt + Nuremberg, Allemagne (UE)",
+    // 🔴 Corrigé le 2026-09-20 : « stockage objet » se lisait comme les pièces de
+    // l'organisme, alors qu'elles sont sur Cloudflare R2. Qui cherchait ses
+    // documents lisait le mauvais sous-traitant.
     purposeFr:
-      "Hébergement applicatif (VPS), base PostgreSQL, Redis, stockage objet et back-up chiffrés.",
+      "Hébergement applicatif (VPS), base PostgreSQL, Redis, et miroir de sauvegarde chiffré (Storage Box). Ses disques portent aussi les fichiers déposés par les personnes : CV reçus par candidature, documents de la console, médias des avis. En revanche, les pièces produites par l'organisme — conventions, attestations, factures, signatures, relevés de connexion — ne sont pas ici : elles sont sur Cloudflare R2.",
     purposeEn:
-      "Application hosting (VPS), PostgreSQL database, Redis, encrypted object storage and backups.",
+      "Application hosting (VPS), PostgreSQL database, Redis, and an encrypted backup mirror (Storage Box). Its disks also hold the files people upload: CVs received with job applications, console documents, review media. The documents produced by the training provider — agreements, certificates, invoices, signatures, connection reports — are not here: they are on Cloudflare R2.",
     dataCategoriesFr:
       "Toutes les données techniques et personnelles transitant par l'app (Submissions, Bookings, Payments, Invoices…).",
     dataCategoriesEn:
@@ -100,11 +103,29 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     name: "Cloudflare Inc.",
     location: "San Francisco, USA",
     serversLocation: "Réseau global edge, traitement EU pour zone UE",
-    purposeFr: "CDN, protection anti-DDoS, Bot Fight, DNS, Turnstile (anti-bot, sans cookie).",
-    purposeEn: "CDN, anti-DDoS protection, Bot Fight, DNS, Turnstile (no-cookie anti-bot).",
+    // 🔴 **R2 AJOUTÉ LE 2026-09-20.** Cette entrée n'a longtemps déclaré que le
+    // réseau — CDN, DNS, Turnstile — alors que **Cloudflare R2 héberge les
+    // pièces elles-mêmes** : conventions, convocations, attestations, factures,
+    // exemplaires signés, IMAGES DE SIGNATURE manuscrite et relevés de
+    // connexion nominatifs. La page se disait « liste exhaustive » en taisant
+    // le seul tiers qui détient les documents des stagiaires.
+    //
+    // Deux choses avaient rendu l'omission invisible :
+    //   · l'entrée Hetzner ci-dessus s'attribuait le « stockage objet » — c'est
+    //     là qu'un lecteur allait chercher, et il trouvait le mauvais nom ;
+    //   · aucune variable `R2_*` n'ÉTAIT déclarée dans `src/env.ts`, alors que
+    //     la garde `sous-traitants-serveur.spec.ts` dérive sa liste de ce
+    //     fichier : le tiers lui était invisible. Même angle mort que ZeptoMail.
+    // Les deux sont corrigés dans la même livraison — les six variables sont
+    // désormais déclarées, et le filtre de la garde reconnaît leur forme.
+    purposeFr:
+      "CDN, protection anti-DDoS, Bot Fight, DNS, Turnstile (anti-bot, sans cookie). Et stockage objet R2 : c'est Cloudflare qui héberge les pièces produites par l'organisme — conventions, convocations, feuilles d'émargement, attestations, certificats, devis, factures et avoirs, exemplaires signés, supports pédagogiques —, les images de signature manuscrite, et les relevés de connexion des sessions à distance. Les sauvegardes y sont également déposées, chiffrées avant envoi : bases de données, cache, statistiques d'audience, service de signature, banque d'images, et les fichiers déposés dans la console — dont les CV reçus par candidature et les médias des avis.",
+    purposeEn:
+      "CDN, anti-DDoS protection, Bot Fight, DNS, Turnstile (no-cookie anti-bot). Plus R2 object storage: Cloudflare hosts the documents the training provider produces — agreements, invitations, attendance sheets, certificates, quotes, invoices and credit notes, signed counterparts, course materials —, handwritten signature images, and the connection reports of remote sessions. Backups are stored there too, encrypted before upload: databases, cache, audience statistics, signature service, image bank, and the files uploaded through the console — including CVs received with job applications and review media.",
     dataCategoriesFr:
-      "Adresses IP visiteur, user-agent, requêtes HTTP. Pas de cookie publicitaire.",
-    dataCategoriesEn: "Visitor IP addresses, user-agent, HTTP requests. No advertising cookies.",
+      "Pour le réseau : adresses IP visiteur, user-agent, requêtes HTTP, sans cookie publicitaire. Pour le stockage : le contenu des pièces, donc l'identité des stagiaires, des formateurs et des clients, leurs coordonnées, les montants facturés, le tracé de leur signature manuscrite et leurs heures de connexion. Aucun objet n'est servi publiquement par l'application : chaque accès passe par un lien signé de durée limitée.",
+    dataCategoriesEn:
+      "For the network: visitor IP addresses, user-agent, HTTP requests, no advertising cookies. For storage: the contents of the documents — the identity of trainees, trainers and clients, their contact details, invoiced amounts, their handwritten signature stroke and their connection times. No object is served publicly by the application: every access goes through a time-limited signed link.",
     legalBasis: "6.1.f_legitimate_interest",
     dpaStatus: "auto_signable_dashboard",
     transferFramework: "scc",

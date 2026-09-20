@@ -272,6 +272,26 @@ export const env = createEnv({
     DOCUSEAL_QUOTE_TEMPLATE_ID: z.string().optional(),
     DOCUSEAL_CONTRACT_TEMPLATE_ID: z.string().optional(),
 
+    // 🔴 AJOUTÉ LE 2026-09-20 — ces variables existaient en production depuis
+    // la mise en service du stockage, lues par `process.env` dans `src/lib/r2-storage.ts`
+    // et dans les scripts de sauvegarde, mais n'étaient déclarées NULLE PART
+    // ici. Conséquence : `src/content/__tests__/sous-traitants-serveur.spec.ts`
+    // dérive sa liste de tiers de CE fichier — R2 lui était donc structurellement
+    // invisible, et Cloudflare a pu héberger des pièces nominatives — conservées
+    // cinq ans — sans figurer au registre à ce titre. Même angle mort que
+    // ZeptoMail.
+    //
+    // `.optional()` est délibéré : ces variables ne conditionnent pas le
+    // démarrage (le code échoue à l'usage, avec un message explicite), et une
+    // exigence stricte ici empêcherait le conteneur de démarrer sur une
+    // instance qui ne stocke rien. Le but est de les rendre VISIBLES.
+    R2_ACCOUNT_ID: z.string().optional(),
+    R2_ACCESS_KEY_ID: z.string().optional(),
+    R2_SECRET_ACCESS_KEY: z.string().optional(),
+    R2_BUCKET_NAME: z.string().optional(),
+    R2_ENDPOINT: z.string().optional(),
+    R2_BUCKET_IMMUTABLE: z.string().optional(),
+
     HETZNER_STORAGE_ENDPOINT: z.string().optional(),
     HETZNER_STORAGE_BUCKET: z.string().optional(),
     HETZNER_STORAGE_KEY: z.string().optional(),
@@ -604,6 +624,12 @@ export const env = createEnv({
     DOCUSEAL_WEBHOOK_SECRET: process.env.DOCUSEAL_WEBHOOK_SECRET,
     DOCUSEAL_QUOTE_TEMPLATE_ID: process.env.DOCUSEAL_QUOTE_TEMPLATE_ID,
     DOCUSEAL_CONTRACT_TEMPLATE_ID: process.env.DOCUSEAL_CONTRACT_TEMPLATE_ID,
+    R2_ACCOUNT_ID: process.env.R2_ACCOUNT_ID,
+    R2_ACCESS_KEY_ID: process.env.R2_ACCESS_KEY_ID,
+    R2_SECRET_ACCESS_KEY: process.env.R2_SECRET_ACCESS_KEY,
+    R2_BUCKET_NAME: process.env.R2_BUCKET_NAME,
+    R2_ENDPOINT: process.env.R2_ENDPOINT,
+    R2_BUCKET_IMMUTABLE: process.env.R2_BUCKET_IMMUTABLE,
     HETZNER_STORAGE_ENDPOINT: process.env.HETZNER_STORAGE_ENDPOINT,
     HETZNER_STORAGE_BUCKET: process.env.HETZNER_STORAGE_BUCKET,
     HETZNER_STORAGE_KEY: process.env.HETZNER_STORAGE_KEY,
