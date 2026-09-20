@@ -148,6 +148,14 @@ const CLASSEMENT: Readonly<Record<string, Rattachement>> = {
   // Même cas que l'agenda Google ci-dessus — appel serveur, invisible en CSP —
   // sauf qu'ici le tiers détient les PIÈCES : conventions, attestations,
   // factures, images de signature manuscrite, relevés de connexion.
+  // Jeton d'API Cloudflare — purge de l'edge après publication, depuis l'app
+  // comme depuis le worker. Lu en `process.env` brut, et resté invisible ici
+  // jusqu'au 2026-09-20 faute d'être déclaré dans `src/env.ts`.
+  CLOUDFLARE_API_TOKEN: { tiers: "Cloudflare" },
+  CLOUDFLARE_ZONE_ID: {
+    exempt:
+      "Identifiant de la zone visée, côté Axion-IA. Le tiers est déclaré par le jeton ci-dessus.",
+  },
   R2_ACCOUNT_ID: { tiers: "Cloudflare" },
   R2_ACCESS_KEY_ID: { tiers: "Cloudflare" },
   R2_SECRET_ACCESS_KEY: { tiers: "Cloudflare" },

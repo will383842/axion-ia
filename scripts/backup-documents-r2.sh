@@ -68,15 +68,115 @@ fi
 START_TS=$(date +%s)
 SIZE_BYTES=0
 
+NB_NOUVEAUX=0
+NB_VERSIONNES=0
+
+# ⚠️ PAS de `--delete`. Une pièce retirée de la source ne doit pas disparaître
+# de la sauvegarde : c'est précisément le cas d'une suppression accidentelle,
+# celui contre lequel cette sauvegarde existe.
+#
+# 🔴 ET PAS DE `s3 sync` NON PLUS — mesuré le 2026-09-20 sur le bucket réel.
+# Le verrou du bucket (`retention-1-an`) refuse le REMPLACEMENT autant que la
+# suppression :
+#
+#     1er envoi            -> OK
+#     2e envoi, même clé   -> ObjectLockedByBucketPolicy
+#     suppression          -> ObjectLockedByBucketPolicy
+#
+# Or l'application REGENERE des pièces sous le même nom : une convocation
+# corrigée, un émargement refait. `sync` aurait donc échoué dès la première
+# pièce modifiée — et comme l'échec sortait en `exit 1`, c'est le miroir ENTIER
+# qui se serait arrêté, en laissant croire qu'il tournait.
+#
+# On ne remplace donc JAMAIS : un objet déjà présent dont le contenu diffère est
+# déposé sous une clé datée. Les deux versions coexistent, chacune verrouillée
+# pour la durée du bucket — ce qu'on veut d'une sauvegarde de preuves :
+# l'historique, pas le dernier état.
 for prefixe in "${PREFIXES[@]}"; do
-  echo "→ sync s3://${R2_BUCKET_NAME}/${prefixe}/ → s3://${R2_BUCKET_IMMUTABLE}/${COMPONENT}/${prefixe}/"
-  # ⚠️ PAS de `--delete`. Une pièce retirée de la source ne doit pas disparaître
-  # de la sauvegarde : c'est précisément le cas d'une suppression accidentelle,
-  # celui contre lequel cette sauvegarde existe. La rotation est assurée par le
-  # cycle de vie du bucket immuable, pas par le miroir.
-  s3 s3 sync "s3://${R2_BUCKET_NAME}/${prefixe}/" \
-             "s3://${R2_BUCKET_IMMUTABLE}/${COMPONENT}/${prefixe}/" \
-    || { record_fail "s3_sync_failed:${prefixe}"; exit 1; }
+  SRC="s3://${R2_BUCKET_NAME}/${prefixe}/"
+  DST="s3://${R2_BUCKET_IMMUTABLE}/${COMPONENT}/${prefixe}/"
+  echo "-> miroir ${SRC} vers ${DST}"
+
+  # `--dryrun` donne les CANDIDATS sans rien écrire. ⚠️ Il en signale plus que
+  # nécessaire : la clé nue n'étant jamais réécrite, toute pièce déjà modifiée
+  # y figure à chaque passage. C'est la comparaison d'EMPREINTES ci-dessous
+  # qui tranche, et qui garantit qu'un passage sans changement ne copie rien.
+  A_COPIER=$(s3 s3 sync "${SRC}" "${DST}" --dryrun 2>/dev/null \
+    | awk '/^\(dryrun\) copy:/ {print $3}') \
+    || { record_fail "s3_dryrun_failed:${prefixe}"; exit 1; }
+
+  while IFS= read -r src_uri; do
+    [ -z "${src_uri}" ] && continue
+    rel="${src_uri#"${SRC}"}"
+    cle="${COMPONENT}/${prefixe}/${rel}"
+
+    # 🔴 L'EMPREINTE, PAS LA DATE — corrigé le 2026-09-20 avant la fusion.
+    #
+    # Une première version nommait la copie `<cle>.__v<DATE_TAG>`. Elle créait
+    # une croissance SANS FIN : `sync --dryrun` compare la source à la clé `X`,
+    # or on n'écrit JAMAIS sur `X` (le verrou l'interdit), donc `X` garde pour
+    # toujours les octets du premier passage. Une pièce régénérée une fois
+    # serait donc re-signalée à CHAQUE passage, et déposée sous une date
+    # nouvelle à chaque fois : 365 objets immuables par an au lieu de 2, et
+    # aucun effaçable. Le défaut ne pouvait pas se voir au premier passage.
+    #
+    # La clé dérivée de l'EMPREINTE rend l'opération idempotente : même
+    # contenu -> même clé -> déjà présente -> rien à faire. Contenu
+    # différent -> clé différente -> une seule copie, pour toujours.
+    #
+    # ⚠️ `head-object` distingue le 404 des AUTRES erreurs. Avaler les deux
+    # ferait lire « absent » sur une panne réseau, donc tenter d'écrire sur la
+    # clé nue déjà verrouillée, donc arrêter le miroir entier. Un prédicat
+    # ouvert échoue ouvert.
+    # `--query ETag --output text` : on récupère l'empreinte SEULE, sans traverser
+    # le JSON — dont les guillemets échappés casseraient tout filtre naïf.
+    rep=$(s3 s3api head-object --bucket "${R2_BUCKET_IMMUTABLE}" --key "${cle}" \
+      --query 'ETag' --output text 2>&1) && present=1 || present=0
+    if [ "${present}" -eq 0 ] && ! printf '%s' "${rep}" | grep -qE '404|Not Found'; then
+      record_fail "head_object_indecis:${prefixe}"
+      echo "head-object a echoue sans dire 404 : ${rep}" >&2
+      exit 1
+    fi
+
+    if [ "${present}" -eq 1 ]; then
+      # Déjà sauvegardé. La pièce a-t-elle vraiment changé ?
+      etag_dst=$(printf '%s' "${rep}" | tr -cd 'a-zA-Z0-9')
+      etag_src=$(s3 s3api head-object --bucket "${R2_BUCKET_NAME}" --key "${prefixe}/${rel}" \
+        --query 'ETag' --output text 2>/dev/null | tr -cd 'a-zA-Z0-9')
+      if [ -z "${etag_src}" ]; then
+        record_fail "etag_source_illisible:${prefixe}"
+        exit 1
+      fi
+      # Même contenu que la copie nue : rien à faire, et surtout rien à dupliquer.
+      [ "${etag_src}" = "${etag_dst}" ] && continue
+
+      # Cette version-là est-elle déjà déposée ? Alors on n'y touche pas.
+      #
+      # ⚠️ Même exigence que le `head-object` ci-dessus, et pour la même raison :
+      # ce prédicat garde la SECONDE des deux seules écritures du script. Une
+      # première rédaction l'avait laissé en `>/dev/null 2>&1` vingt lignes sous
+      # le commentaire qui promet de distinguer le 404 — relevé par la lentille
+      # exactitude le 2026-09-20. Corriger un prédicat ouvert et laisser son
+      # jumeau, c'est n'en avoir corrigé aucun.
+      rep_v=$(s3 s3api head-object --bucket "${R2_BUCKET_IMMUTABLE}" \
+        --key "${cle}.__e${etag_src}" --query 'ETag' --output text 2>&1) && deja=1 || deja=0
+      if [ "${deja}" -eq 0 ] && ! printf '%s' "${rep_v}" | grep -qE '404|Not Found'; then
+        record_fail "head_object_version_indecis:${prefixe}"
+        echo "head-object (version) a echoue sans dire 404 : ${rep_v}" >&2
+        exit 1
+      fi
+      [ "${deja}" -eq 1 ] && continue
+
+      dst_uri="${DST}${rel}.__e${etag_src}"
+      NB_VERSIONNES=$(( NB_VERSIONNES + 1 ))
+    else
+      dst_uri="${DST}${rel}"
+      NB_NOUVEAUX=$(( NB_NOUVEAUX + 1 ))
+    fi
+
+    s3 s3 cp "${src_uri}" "${dst_uri}" >/dev/null \
+      || { record_fail "s3_cp_failed:${prefixe}"; exit 1; }
+  done <<< "${A_COPIER}"
 
   # Volumétrie best-effort : un échec de mesure ne doit pas faire échouer une
   # sauvegarde qui, elle, a réussi.
@@ -93,5 +193,6 @@ DEST="r2_immutable"
 record_success
 report_backup_run "success" "${SIZE_BYTES}" "${DURATION}" "${DEST}" "${REMOTE_KEY}"
 healthcheck_ping
-notify_telegram "OK ${BACKUP_TYPE} · ${SIZE_HUMAN} · ${DURATION}s" "🟢"
+notify_telegram "OK ${BACKUP_TYPE} · ${SIZE_HUMAN} · ${DURATION}s · ${NB_NOUVEAUX} nouvelle(s), ${NB_VERSIONNES} version(s)" "🟢"
 echo "✅ Backup pièces légales OK : ${REMOTE_KEY} (${SIZE_HUMAN}, ${DURATION}s)"
+echo "   ${NB_NOUVEAUX} piece(s) nouvelle(s), ${NB_VERSIONNES} version(s) deposee(s) a cote de l existant."
