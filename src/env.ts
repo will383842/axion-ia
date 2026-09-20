@@ -285,6 +285,30 @@ export const env = createEnv({
     // démarrage (le code échoue à l'usage, avec un message explicite), et une
     // exigence stricte ici empêcherait le conteneur de démarrer sur une
     // instance qui ne stocke rien. Le but est de les rendre VISIBLES.
+    // 🔴 AJOUTÉ LE 2026-09-20, dans la même livraison que le miroir immuable —
+    // et pour la MÊME raison que les `R2_*` juste en dessous : ces deux
+    // variables sont lues en `process.env` brut (`src/server/cache/revalidate-
+    // and-purge.ts`, `infra/page.tsx`), n'étaient déclarées NULLE PART ici, et
+    // échappaient donc au recensement de
+    // `src/content/__tests__/sous-traitants-serveur.spec.ts`, qui dérive sa
+    // liste de ce fichier. Un secret de production ni validé, ni documenté dans
+    // `.env.example`, ni recensé comme sous-traitant — chez le prestataire qui
+    // héberge par ailleurs toutes les pièces. C'est la même classe de défaut
+    // que ZeptoMail et que R2, la troisième fois.
+    //
+    // `.optional()` : le code est fail-soft, il n'appelle simplement pas
+    // Cloudflare quand elles manquent. Le but est la VISIBILITÉ.
+    //
+    // ⛔ Périmètre nécessaire, relevé usage par usage le 2026-09-20 :
+    // `Zone → Cache Purge → Purge` sur la seule zone axion-ia.com (purge après
+    // publication, depuis l'app ET depuis le worker), plus éventuellement
+    // `Zone → Zone → Read` pour la carte Cloudflare de la console Infra. AUCUN
+    // droit de niveau Account n'est justifié par le dépôt — et c'est ce qui
+    // garantit qu'un jeton bien dimensionné ne peut pas lever l'Object Lock du
+    // compartiment de sauvegarde.
+    CLOUDFLARE_API_TOKEN: z.string().optional(),
+    CLOUDFLARE_ZONE_ID: z.string().optional(),
+
     R2_ACCOUNT_ID: z.string().optional(),
     R2_ACCESS_KEY_ID: z.string().optional(),
     R2_SECRET_ACCESS_KEY: z.string().optional(),
@@ -624,6 +648,8 @@ export const env = createEnv({
     DOCUSEAL_WEBHOOK_SECRET: process.env.DOCUSEAL_WEBHOOK_SECRET,
     DOCUSEAL_QUOTE_TEMPLATE_ID: process.env.DOCUSEAL_QUOTE_TEMPLATE_ID,
     DOCUSEAL_CONTRACT_TEMPLATE_ID: process.env.DOCUSEAL_CONTRACT_TEMPLATE_ID,
+    CLOUDFLARE_API_TOKEN: process.env.CLOUDFLARE_API_TOKEN,
+    CLOUDFLARE_ZONE_ID: process.env.CLOUDFLARE_ZONE_ID,
     R2_ACCOUNT_ID: process.env.R2_ACCOUNT_ID,
     R2_ACCESS_KEY_ID: process.env.R2_ACCESS_KEY_ID,
     R2_SECRET_ACCESS_KEY: process.env.R2_SECRET_ACCESS_KEY,

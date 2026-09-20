@@ -68,15 +68,58 @@ fi
 START_TS=$(date +%s)
 SIZE_BYTES=0
 
+NB_NOUVEAUX=0
+NB_VERSIONNES=0
+
+# ⚠️ PAS de `--delete`. Une pièce retirée de la source ne doit pas disparaître
+# de la sauvegarde : c'est précisément le cas d'une suppression accidentelle,
+# celui contre lequel cette sauvegarde existe.
+#
+# 🔴 ET PAS DE `s3 sync` NON PLUS — mesuré le 2026-09-20 sur le bucket réel.
+# Le verrou du bucket (`retention-1-an`) refuse le REMPLACEMENT autant que la
+# suppression :
+#
+#     1er envoi            -> OK
+#     2e envoi, même clé   -> ObjectLockedByBucketPolicy
+#     suppression          -> ObjectLockedByBucketPolicy
+#
+# Or l'application REGENERE des pièces sous le même nom : une convocation
+# corrigée, un émargement refait. `sync` aurait donc échoué dès la première
+# pièce modifiée — et comme l'échec sortait en `exit 1`, c'est le miroir ENTIER
+# qui se serait arrêté, en laissant croire qu'il tournait.
+#
+# On ne remplace donc JAMAIS : un objet déjà présent dont le contenu diffère est
+# déposé sous une clé datée. Les deux versions coexistent, chacune verrouillée
+# pour la durée du bucket — ce qu'on veut d'une sauvegarde de preuves :
+# l'historique, pas le dernier état.
 for prefixe in "${PREFIXES[@]}"; do
-  echo "→ sync s3://${R2_BUCKET_NAME}/${prefixe}/ → s3://${R2_BUCKET_IMMUTABLE}/${COMPONENT}/${prefixe}/"
-  # ⚠️ PAS de `--delete`. Une pièce retirée de la source ne doit pas disparaître
-  # de la sauvegarde : c'est précisément le cas d'une suppression accidentelle,
-  # celui contre lequel cette sauvegarde existe. La rotation est assurée par le
-  # cycle de vie du bucket immuable, pas par le miroir.
-  s3 s3 sync "s3://${R2_BUCKET_NAME}/${prefixe}/" \
-             "s3://${R2_BUCKET_IMMUTABLE}/${COMPONENT}/${prefixe}/" \
-    || { record_fail "s3_sync_failed:${prefixe}"; exit 1; }
+  SRC="s3://${R2_BUCKET_NAME}/${prefixe}/"
+  DST="s3://${R2_BUCKET_IMMUTABLE}/${COMPONENT}/${prefixe}/"
+  echo "-> miroir ${SRC} vers ${DST}"
+
+  # `--dryrun` donne le DELTA sans rien écrire : seuls les objets absents ou
+  # modifiés y figurent. Un passage sans changement ne copie rien.
+  A_COPIER=$(s3 s3 sync "${SRC}" "${DST}" --dryrun 2>/dev/null \
+    | awk '/^\(dryrun\) copy:/ {print $3}') \
+    || { record_fail "s3_dryrun_failed:${prefixe}"; exit 1; }
+
+  while IFS= read -r src_uri; do
+    [ -z "${src_uri}" ] && continue
+    rel="${src_uri#"${SRC}"}"
+    cle="${COMPONENT}/${prefixe}/${rel}"
+
+    if s3 s3api head-object --bucket "${R2_BUCKET_IMMUTABLE}" --key "${cle}" >/dev/null 2>&1; then
+      # Déjà sauvegardé, et le contenu a changé : nouvelle clé, jamais d'écrasement.
+      dst_uri="${DST}${rel}.__v${DATE_TAG}"
+      NB_VERSIONNES=$(( NB_VERSIONNES + 1 ))
+    else
+      dst_uri="${DST}${rel}"
+      NB_NOUVEAUX=$(( NB_NOUVEAUX + 1 ))
+    fi
+
+    s3 s3 cp "${src_uri}" "${dst_uri}" >/dev/null \
+      || { record_fail "s3_cp_failed:${prefixe}"; exit 1; }
+  done <<< "${A_COPIER}"
 
   # Volumétrie best-effort : un échec de mesure ne doit pas faire échouer une
   # sauvegarde qui, elle, a réussi.
@@ -93,5 +136,6 @@ DEST="r2_immutable"
 record_success
 report_backup_run "success" "${SIZE_BYTES}" "${DURATION}" "${DEST}" "${REMOTE_KEY}"
 healthcheck_ping
-notify_telegram "OK ${BACKUP_TYPE} · ${SIZE_HUMAN} · ${DURATION}s" "🟢"
+notify_telegram "OK ${BACKUP_TYPE} · ${SIZE_HUMAN} · ${DURATION}s · ${NB_NOUVEAUX} nouvelle(s), ${NB_VERSIONNES} version(s)" "🟢"
 echo "✅ Backup pièces légales OK : ${REMOTE_KEY} (${SIZE_HUMAN}, ${DURATION}s)"
+echo "   ${NB_NOUVEAUX} piece(s) nouvelle(s), ${NB_VERSIONNES} version(s) deposee(s) a cote de l existant."
