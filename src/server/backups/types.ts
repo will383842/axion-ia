@@ -26,9 +26,13 @@ export const BACKUP_COMPONENTS = [
   // Conséquence mesurée le 2026-09-20 : l'API répondait **HTTP 422** à ces deux
   // composants (« Invalid enum value … received 'files_documents' »), et
   // `report_backup_run` termine par `curl … || true` — l'erreur était donc
-  // AVALÉE. Les scripts annonçaient « OK » et `backup_runs` ne contenait aucune
-  // ligne : `files_utilisateurs` tourne depuis juillet sans laisser la moindre
-  // trace, alors qu'il sauvegarde les CV des candidats.
+  // AVALÉE. Les scripts annonçaient « OK » et `backup_runs` ne recevait rien.
+  //
+  // La sauvegarde des CV des candidats est donc invisible depuis le
+  // **2026-09-03**, jour où le VPS a reçu le script qui rapporte sous
+  // `files_utilisateurs`. Dix-sept jours pendant lesquels le tableau de bord
+  // montrait une dernière sauvegarde au 03/09 et rien d'alarmant — le voyant
+  // ne vieillissait pas, il avait simplement cessé d'exister.
   //
   // 🔑 Un composant absent de cette liste ne « manque » pas au tableau de bord :
   // il n'existe pas pour lui, donc il ne peut pas être en retard, donc il
@@ -110,8 +114,15 @@ export const COMPONENT_LABELS_FR: Record<BackupComponentValue, string> = {
   // relecture : **aucun cron n'appelle ce script**, ni dans
   // `scripts/vps/crontab.snapshot.txt`, ni sur le VPS, où aucun wrapper
   // `run-image-bank-*.sh` n'existe. Ses 56 traces viennent de
-  // `run-files-backup.sh`, qui rapportait sous ce nom jusqu'au 2026-08-19
-  // (`ae8a23ff9`) avant de basculer sur `files_utilisateurs`.
+  // `run-files-backup.sh`, qui rapportait sous ce nom jusqu'au **2026-09-03**.
+  //
+  // ⚠️ DEUX DATES, ET C'EST TOUT LE SUJET. Le dépôt a basculé le 2026-08-19
+  // (`ae8a23ff9`), mais les wrappers du VPS ne se déploient pas tout seuls :
+  // `/opt/axion-ia/run-files-backup.sh` n'a reçu la nouvelle version que le
+  // 2026-09-03. Entre les deux, le serveur a continué de rapporter sous
+  // l'ancien nom — d'où des traces jusqu'au 03/09, et plus AUCUNE ensuite,
+  // puisque le nouveau nom partait en 422. La dernière trace lisible du
+  // tableau de bord est donc celle d'un script périmé.
   //
   // L'ancien libellé « Fichiers (CV, documents, avis) » n'était donc pas faux :
   // il l'est DEVENU le 19 août, en même temps que le 422. Et le renommer en
@@ -124,7 +135,7 @@ export const COMPONENT_LABELS_FR: Record<BackupComponentValue, string> = {
   // `backup-documents-r2.sh` a connu jusqu'au 2026-09-20. À trancher : poser le
   // cron, ou assumer par écrit que les originaux de la banque d'images ne sont
   // pas sauvegardés.
-  files_image_bank: "Fichiers utilisateurs (vestige, jusqu'au 19/08/2026)",
+  files_image_bank: "Fichiers utilisateurs (vestige, jusqu'au 03/09/2026)",
   docuseal: "Docuseal (signatures)",
   plausible_pg: "Plausible (Postgres)",
   plausible_clickhouse: "Plausible (ClickHouse)",
