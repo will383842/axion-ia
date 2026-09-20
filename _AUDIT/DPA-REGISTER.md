@@ -223,7 +223,7 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | **Adresse**               | 101 Townsend St, San Francisco, CA 94107, USA                                 |
 | **Finalité**              | CDN + protection DDoS + Turnstile (captcha anti-spam formulaires) **et stockage objet Cloudflare R2** |
 | **Données traitées**      | Réseau : IP visiteur, User-Agent, requêtes HTTP (logs CDN). **Stockage R2 : le contenu des pièces** — conventions, convocations, émargements, attestations, certificats, devis, factures, avoirs, exemplaires signés, supports (`documents/`, `supports/`) ; **images de signature manuscrite** (`emargement/…png`) ; **relevés de connexion CSV nominatifs** des sessions à distance (`presence/…`, nom + e-mail + horaires) ; kits d'intervention (`interventions/`) ; **sauvegardes chiffrées** — bases de données, Redis, Plausible, DocuSeal, banque d'images, l'archive des secrets d'exploitation, et `files/` : les volumes de la console, **dont les CV reçus par candidature** et les médias des avis |
-| **Localisation physique** | Edge mondial. ⛔ Le bucket R2 est joint par l'endpoint **global** `<account>.r2.cloudflarestorage.com`, pas par un endpoint à juridiction restreinte : **le code ne contraint aucune juridiction** — à confirmer côté tableau de bord Cloudflare |
+| **Localisation physique** | Edge mondial pour le CDN. **Stockage R2 — relevé par Will au tableau de bord le 2026-09-20** : `axion-ia-backups` (créé le 2026-05-09, région **EEUR**, 1,61 k objets, 2,28 Go — le site) et `axion-audit-backups` (créé le 2026-08-28, région **WEUR**, 8,14 k objets, 49,7 Mo — l'application d'audit). Les deux en **juridiction « par défaut »**, joints par l'endpoint global `…r2.cloudflarestorage.com`. ⚠️ WEUR/EEUR sont des **indications de région, pas une garantie de résidence** : Cloudflare stocke en Europe de préférence, rien n'oblige les données à y rester. La juridiction se choisit **à la création** et ne se modifie plus |
 | **Garanties**             | DPA + clauses contractuelles types (SCC) + EU-US Data Privacy Framework (DPF) |
 | **DPA**                   | Online — auto-acceptable depuis dashboard CF. ⛔ **Il couvrira alors AUSSI R2** : ce n'est plus un DPA « CDN » |
 | **Lien**                  | https://www.cloudflare.com/cloudflare-customer-dpa/                           |
@@ -263,15 +263,28 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 >    `R2_ENDPOINT` n'auraient pas été recensés même déclarés. Mesuré : avant
 >    correction, retirer R2 du classement laissait la garde **verte**.
 >
+> ✅ **VÉRIFIÉ PAR WILL LE 2026-09-20 — ces deux points ne sont plus des questions** :
+> · **aucun accès public** sur les deux compartiments : pas de domaine
+>   personnalisé, URL publique `r2.dev` **désactivée**, lecture par clés API S3
+>   seulement. Le constat de plateforme rejoint celui du code, qui ne construit
+>   aucune URL publique et ne lit jamais `R2_PUBLIC_BASE_URL` ;
+> · **juridiction « par défaut » sur les deux**, régions EEUR et WEUR.
+>   **Décision de Will du 2026-09-20 : on reste, et on l'écrit.** Migrer
+>   supposerait de créer un compartiment en juridiction UE, d'y recopier 2,3 Go
+>   et de basculer le code sur `…eu.r2.cloudflarestorage.com` — sans changer le
+>   fait que le sous-traitant est américain. Ce qui protège ici, ce sont les
+>   clauses contractuelles types, pas la géographie.
+>
 > ⛔ **RESTE À WILL, sur R2** :
-> 1. la **juridiction réelle** du bucket (indice de localisation choisi à la
->    création) et les valeurs de `R2_ACCOUNT_ID` / `R2_BUCKET_NAME` /
->    `R2_BUCKET_IMMUTABLE` en production ;
-> 1bis. **vérifier au tableau de bord que le bucket n'est pas en accès public.**
->    Le code n'expose rien — il ne construit aucune URL publique et
->    `R2_PUBLIC_BASE_URL` n'est lue nulle part — mais l'ouverture d'un bucket
->    est un réglage de plateforme, que le dépôt ne peut ni voir ni garantir ;
-> 2. accepter le **DPA Cloudflare**, qui couvre aussi le stockage ;
+> 1. 🔴 **ACCEPTER LE DPA CLOUDFLARE — le seul vrai manque, et il prime sur la
+>    géographie.** Sans lui, le transfert hors UE n'a **aucune base
+>    contractuelle** : ce sont les clauses contractuelles types qu'il porte.
+>    L'absence de juridiction UE n'est pas une non-conformité ; l'absence de DPA
+>    en est une. Dashboard → Manage Account → Configurations → Privacy → Sign DPA ;
+> 1bis. relever `R2_ACCOUNT_ID` / `R2_BUCKET_NAME` / `R2_BUCKET_IMMUTABLE` en
+>    production, et **déclarer les DEUX compartiments** s'ils relèvent du même
+>    responsable de traitement — `axion-ia-backups` sert le site,
+>    `axion-audit-backups` l'application d'audit ;
 > 3. trancher **5 ans** (mentions imprimées sur les pièces) contre **10 ans**
 >    (en-tête de `src/lib/r2-storage.ts`, obligation comptable CGI 242 nonies A)
 >    pour les factures — les deux durées coexistent dans le dépôt ;
