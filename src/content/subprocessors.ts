@@ -476,10 +476,20 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
       "Tenue des sessions de formation à distance en visioconférence, et relevé de connexion des stagiaires. Le lien de réunion est créé par Axion-IA et transmis au stagiaire ; le « rapport des participants » (heures d'entrée et de sortie, durée) est exporté de Zoom puis importé dans la console comme preuve d'assiduité. Aucune API ne relie la console à Zoom.",
     purposeEn:
       "Running remote training sessions by video conference, and recording trainee attendance times. The meeting link is created by Axion-IA and sent to the trainee; the participant report (join and leave times, duration) is exported from Zoom and imported into the console as proof of attendance. No API connects the console to Zoom.",
+    // 🔴 Rédigé une première fois « seule donnée que nous conservons : les heures
+    // d'entrée et de sortie ». FAUX, relevé par la lentille sécurité AVANT la
+    // fusion : le rapport importé est archivé TEL QUEL cinq ans
+    // (`ReleveConnexionImport.fichierOriginalPath`, obligation du cahier des
+    // charges) et il porte le nom et l'adresse e-mail de chaque participant ;
+    // les participants non rapprochés sont en outre stockés en base
+    // (`unmatched : [{ nom, email, dureeMin }]`). L'archivage est légitime —
+    // c'est la preuve d'assiduité ; le taire en promettant l'inverse ne l'était
+    // pas. « Une notice qui minimise un flux réel est plus grave qu'une notice
+    // absente » est écrit plus haut dans ce fichier : ça vaut contre nous aussi.
     dataCategoriesFr:
-      "Flux audio et vidéo de la session, nom affiché, adresse email du stagiaire, adresse IP et données de connexion, et — seule donnée que nous conservons — les heures d'entrée et de sortie de chaque participant. La session n'est ni enregistrée ni transcrite.",
+      "Flux audio et vidéo de la session, nom affiché, adresse email du stagiaire, adresse IP et données de connexion. La session n'est ni enregistrée ni transcrite. Ce que nous conservons ensuite : le rapport des participants tel que Zoom l'exporte — nom, adresse email, heures d'entrée et de sortie, durée — archivé cinq ans comme preuve d'assiduité, ainsi que les heures de connexion rattachées à chaque stagiaire.",
     dataCategoriesEn:
-      "Audio and video streams of the session, display name, trainee email address, IP address and connection data, and — the only data we retain — each participant's join and leave times. Sessions are neither recorded nor transcribed.",
+      "Audio and video streams of the session, display name, trainee email address, IP address and connection data. Sessions are neither recorded nor transcribed. What we then retain: the participant report exactly as Zoom exports it — name, email address, join and leave times, duration — archived for five years as proof of attendance, together with the connection times matched to each trainee.",
     // Suivre une formation à distance, c'est l'exécution du contrat de
     // formation lui-même : la visioconférence EST la prestation vendue.
     legalBasis: "6.1.b_contract",

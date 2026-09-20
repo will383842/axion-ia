@@ -520,9 +520,18 @@ Cf. `src/app/[locale]/mes-donnees/page.tsx` (page exposée) +
 > Calendly — absent de ce registre quatorze mois après sa mise en service.
 >
 > Ce qui transite : image, voix, nom affiché, adresse e-mail, adresse IP et
-> horaires de connexion du stagiaire. **Seules les heures d'entrée et de sortie
-> sont conservées par Axion-IA** (rapport des participants exporté puis importé
-> dans `/qualiopi/sessions/{id}/emargement`, preuve d'assiduité — `parse-zoom.ts`).
+> horaires de connexion du stagiaire.
+>
+> 🔴 **Ce qui est CONSERVÉ — et qu'une première rédaction de cette note
+> minimisait**, corrigé avant fusion sur relevé de la lentille sécurité : le
+> rapport des participants est importé dans `/qualiopi/sessions/{id}/emargement`
+> (`parse-zoom.ts`) **et le CSV d'origine est archivé tel quel cinq ans**
+> (`ReleveConnexionImport.fichierOriginalPath`, obligation du cahier des
+> charges) — il porte **le nom et l'adresse e-mail** de chaque participant. Les
+> participants non rapprochés sont en outre stockés en base
+> (`unmatched : [{ nom, email, dureeMin }]`). L'archivage est légitime, c'est la
+> preuve d'assiduité ; le taire en promettant l'inverse ne l'était pas. ⛔ Une
+> demande d'accès ou d'effacement doit couvrir **ces deux emplacements**.
 > ⛔ Aucun enregistrement, aucune transcription : ordre permanent de Will du
 > 2026-09-01, le même qui a écarté le Notetaker ligne 21.
 >

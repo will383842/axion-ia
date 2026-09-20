@@ -113,15 +113,54 @@ export function propositions(texte: string): string[] {
  * l'application Zoom. » nie la technicité, pas l'installation. La borne
  * présentiel/distance, elle, continue de se lire sur la proposition ENTIÈRE.
  */
-function segmentPortantInstall(proposition: string): string {
-  const segments = proposition.split(/\s*,\s*/);
-  return segments.find((seg) => /install/i.test(seg)) ?? proposition;
+function segmentsPortantInstall(proposition: string): string[] {
+  const segments = proposition.split(/\s*,\s*/).filter((seg) => /install/i.test(seg));
+  return segments.length > 0 ? segments : [proposition];
 }
 
-/** Retire les sens figurés déclarés. */
-function sansFigures(proposition: string): string {
+/**
+ * Une clause d'exception reprend d'une main ce que la négation donnait de
+ * l'autre : « Rien à installer, sauf l'application Zoom. » Relevé par la
+ * lentille exactitude le 2026-09-20 — la négation et l'exception vivent dans
+ * deux segments différents, aucun des deux n'est fautif pris isolément.
+ */
+const EXCEPTION =
+  /\bsauf\b|\bhormis\b|\bà l['’]exception\b|\bexcept\b|\bapart from\b|\bother than\b/i;
+
+/**
+ * Retire les sens figurés déclarés — SAUF ceux qui visent l'outil.
+ *
+ * 🔑 Un figuré ne couvre que ce qu'il dit. « Suivez la procédure d'installation
+ * de Zoom » emprunte le fragment « procédure d'installation » pour donner une
+ * consigne bien réelle : le nom de l'outil le suit. « Avec Zoom, l'autonomie
+ * s'installe en trois séances » ne demande rien à personne, bien que la phrase
+ * nomme l'outil elle aussi.
+ *
+ * On regarde donc ce qui SUIT le fragment, pas la phrase entière. Première
+ * version (2026-09-20) : désactiver toutes les figures dès que le texte nommait
+ * l'outil. Elle échouait FERMÉ — deux figures déjà déclarées viraient au rouge,
+ * et l'échappatoire aurait été inopérante le jour où elle sert, sans laisser
+ * de trace. Mesuré par la lentille simplicité avant la fusion.
+ */
+const PORTEE_DU_FIGURE = 40;
+
+function sansFigures(proposition: string, outil = ""): string {
   let reste = proposition.toLowerCase();
-  for (const figure of FIGURES) reste = reste.split(figure.toLowerCase()).join(" ");
+  const cible = outil.toLowerCase();
+  for (const figure of FIGURES) {
+    const frag = figure.toLowerCase();
+    let i = reste.indexOf(frag);
+    while (i !== -1) {
+      const suite = reste.slice(i + frag.length, i + frag.length + PORTEE_DU_FIGURE);
+      // Le figuré vise l'outil : il ne blanchit rien, on laisse le texte tel quel.
+      if (cible.length > 0 && suite.includes(cible)) {
+        i = reste.indexOf(frag, i + frag.length);
+        continue;
+      }
+      reste = reste.slice(0, i) + " " + reste.slice(i + frag.length);
+      i = reste.indexOf(frag, i + 1);
+    }
+  }
   return reste;
 }
 
@@ -143,12 +182,18 @@ export function fautesInstallation(textes: readonly string[]): string[] {
     const nommeLOutil =
       OUTIL_VISIO.length > 0 && texte.toLowerCase().includes(OUTIL_VISIO.toLowerCase());
     return propositions(texte).filter((p) => {
-      const reste = nommeLOutil ? p.toLowerCase() : sansFigures(p);
+      // Quand le texte nomme l'outil, les figurés restent utilisables — mais
+      // aucun d'eux ne couvre un fragment que le nom de l'outil suit.
+      const reste = sansFigures(p, nommeLOutil ? OUTIL_VISIO : "");
       if (!/install/i.test(reste)) return false;
       // La négation doit porter sur l'installation elle-même — pas sur la
       // difficulté, pas sur le niveau requis, pas sur un oubli.
-      const porteur = segmentPortantInstall(reste);
-      if (!NEGATION.test(porteur) || NEGATION_INOPERANTE.test(porteur)) return true;
+      // Une exception annule la négation, où qu'elle soit dans la proposition.
+      if (EXCEPTION.test(reste) && NEGATION.test(reste)) return true;
+      // Chaque segment qui parle d'installer doit porter sa propre négation :
+      // « Aucune installation n'est requise, sauf Zoom qu'il faut installer. »
+      const porteurs = segmentsPortantInstall(reste);
+      if (porteurs.some((seg) => !NEGATION.test(seg) || NEGATION_INOPERANTE.test(seg))) return true;
       // La borne présentiel/distance se lit sur la proposition entière.
       return BORNE_SUR_PLACE.test(reste) && !COUVRE_LA_DISTANCE.test(reste);
     });

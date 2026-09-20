@@ -514,6 +514,23 @@ describe("le matériel annoncé est le même partout", () => {
     "On site, nothing to install.",
     // Une figure ne couvre pas une consigne voisine.
     "Installez Zoom et installez une pratique commune.",
+    // 🔴 2026-09-20 — ces six tournures PASSAIENT. Relevées par les lentilles
+    // exactitude et simplicité sur la tête `da583bd94`, elles n'étaient
+    // épinglées par aucun test : retirer la réparation laissait la suite verte,
+    // et le rouge n'existait qu'à la main. Une réparation que rien ne retient
+    // se défait au premier refactor, sans bruit.
+    //
+    // Un figuré emprunté pour viser l'outil.
+    "Suivez la procédure d'installation de Zoom avant la session.",
+    "Il faut évaluer, installer et tester Zoom avant la session.",
+    "Le distanciel suppose des usages à installer sur votre poste, à savoir Zoom.",
+    // Une négation qui porte sur autre chose que l'installation.
+    "N'oubliez pas d'installer Zoom avant la session.",
+    "Pas besoin d'être technicien, installez l'application Zoom.",
+    "Don't forget to install Zoom before the session.",
+    // Une clause d'exception reprend ce que la négation donnait.
+    "Rien à installer, sauf l'application Zoom.",
+    "Aucune installation n'est requise, sauf Zoom qu'il faut installer.",
   ])("fautesInstallation refuse « %s »", (ph) => {
     expect(fautesInstallation([ph])).not.toEqual([]);
   });
@@ -526,6 +543,13 @@ describe("le matériel annoncé est le même partout", () => {
     "Sans rien installer.",
     "Nothing to install, on site or remotely.",
     "Zoom, depuis le navigateur (rien à installer), testé avant la session.",
+    // 🔑 CONTRE-ÉPREUVE des lignes ci-dessus : la règle ne doit pas rougir dès
+    // qu'une phrase nomme l'outil. Ces deux-là ont VIRÉ AU ROUGE le 2026-09-20
+    // dans une première version de la réparation — un échec FERMÉ, qui aurait
+    // rendu `FIGURES` inopérante le jour où elle sert, sans laisser de trace.
+    "Avec Zoom, l'autonomie s'installe en trois séances.",
+    "Sur Zoom, les usages installés tiennent après la formation.",
+    "Des modèles open-source installés sur vos propres serveurs, sans transfert hors UE.",
   ])("fautesInstallation laisse passer « %s »", (ph) => {
     expect(fautesInstallation([ph])).toEqual([]);
   });
