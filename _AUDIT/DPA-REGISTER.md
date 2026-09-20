@@ -37,6 +37,7 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | 20  | Google Ireland Limited (Google Meet) | Rendez-vous de découverte tenus en **visioconférence** | Irlande (UE) + USA | ❌ aucun (compte Gmail grand public) | SCC | 🔴 **ACTIF sans DPA** — voir note |
 | 21  | Meta Platforms Ireland Limited | Pixel Meta + API Conversions — mesure et reciblage de la campagne Facebook apporteurs (pages `/apporteur-affaires*` uniquement, après consentement) | Irlande (UE) + USA | online | SCC + EU-US DPF | ⚪ non activé (`NEXT_PUBLIC_META_PIXEL_ID` absent) |
 | 21  | Calendly LLC (Notetaker) | **Enregistrement et transcription** automatiques des rendez-vous en visio | États-Unis | accepté (DPA Calendly) | SCC | 🛑 **ÉCARTÉ par décision du 2026-09-01** — aucun enregistrement |
+| 22  | Zoom Communications, Inc. | **Sessions de formation à distance** en visioconférence + rapport des participants (relevé de connexion) | États-Unis (régions paramétrables) | ❌ aucun (pas encore de compte) | SCC | ⚪ non activé — abonnement Pro à souscrire avant la 1re session |
 
 > 🆕 **Ligne 17 ajoutée 2026-08-20** (audit Qualiopi E2E, constat `D9-5-10`).
 > ZeptoMail était en production depuis le **2026-08-16** et n'apparaissait NI
@@ -509,6 +510,29 @@ Cf. `src/app/[locale]/mes-donnees/page.tsx` (page exposée) +
 > grand public, donc aucun accord de sous-traitance au sens de l'art. 28. La
 > sortie est la même — la bascule vers Google Workspace, décidée par Will pour
 > **janvier 2027**.
+
+> 🆕 **Ligne 22 ajoutée 2026-09-20**, dans la livraison QUI ANNONCE ZOOM — pas
+> après. Décision de Will du 2026-09-19 : les formations à distance se tiennent
+> sur **Zoom**, l'outil de l'organisme, jamais celui du client (ADR 0048). La
+> même livraison l'écrit sur les pages publiques et l'**imprime sur la
+> convocation** remise au stagiaire, pendant que `/sous-processeurs` se déclare
+> « liste exhaustive ». Déclarer après la première session, c'eût été répéter
+> Calendly — absent de ce registre quatorze mois après sa mise en service.
+>
+> Ce qui transite : image, voix, nom affiché, adresse e-mail, adresse IP et
+> horaires de connexion du stagiaire. **Seules les heures d'entrée et de sortie
+> sont conservées par Axion-IA** (rapport des participants exporté puis importé
+> dans `/qualiopi/sessions/{id}/emargement`, preuve d'assiduité — `parse-zoom.ts`).
+> ⛔ Aucun enregistrement, aucune transcription : ordre permanent de Will du
+> 2026-09-01, le même qui a écarté le Notetaker ligne 21.
+>
+> ⛔ **RESTE À WILL, le jour de la souscription** : accepter le DPA Zoom en
+> ligne (il s'accepte au moment de l'abonnement), relever l'entité contractante
+> et le cadre de transfert RÉELS du contrat, puis repasser cette ligne et
+> `src/content/subprocessors.ts` en `signed` / `active`. Tant que c'est
+> `pending`, la déclaration est au plus conservateur : entité américaine,
+> clauses contractuelles types. P-19 § 5.3 : l'abonnement Pro est souscrit
+> **avant la première session à distance**, aucune n'étant vendue à ce jour.
 
 > 🛑 **DÉCISION DE WILL — 2026-09-01 : « supprime tout enregistrement ».**
 >

@@ -19,9 +19,33 @@
  * le code de production.
  */
 
+import { DISTANCIEL_VISIO } from "../formations/materiel";
+
+/**
+ * Le nom de l'outil de visioconférence, DÉRIVÉ de la SSOT du matériel : c'est
+ * le premier mot de `DISTANCIEL_VISIO` (« Zoom, depuis le navigateur… »). Le
+ * jour où Will change d'outil, cette règle le suit sans qu'on y pense — c'est
+ * précisément la substitution qu'une garde épinglée sur un nom en dur ne voit
+ * pas (constat du 2026-09-20 sur la SSOT sous-traitants).
+ */
+const OUTIL_VISIO = DISTANCIEL_VISIO.split(/[\s,]+/)[0] ?? "";
+
 /** Une négation, dans la proposition même. */
 const NEGATION =
   /\b(?:rien|aucune?s?|sans|pas|ni|jamais|no|not|nothing|without|never|none)\b|n['’]t\b/i;
+/**
+ * Négations qui portent sur AUTRE CHOSE que l'installation, et qui blanchissaient
+ * donc une consigne fautive. Mesurées par les lentilles exactitude et simplicité
+ * le 2026-09-20 : « N'oubliez pas d'installer Zoom avant la session. » passait.
+ *
+ * 🔑 Liste de CONTRE-exemples, pas de tournures fautives : la règle reste « toute
+ * proposition qui dit d'installer porte une négation » ; on retire seulement à
+ * trois formules le droit de compter comme telle. Une quatrième devra être lue
+ * par quelqu'un, et c'est voulu.
+ */
+const NEGATION_INOPERANTE =
+  /n['’](?:oubliez|oublie|hésitez|hésite)\b|\bdon['’]?t forget\b|\bn['’]hésitez\b/i;
+
 /** Ce qui borne la proposition au présentiel. */
 const BORNE_SUR_PLACE = /sur place|dans vos locaux|en présentiel|on site|in person/i;
 /** Ce qui l'étend au distanciel. */
@@ -56,7 +80,11 @@ export const FIGURES: readonly string[] = [
   "ce qu'on installe lundi",
   "évaluer, installer",
   // Chez le client, par Axion IA : rien que le participant installe.
-  "modèles installés sur vos propres serveurs",
+  // Élargi le 2026-09-20 : le texte réel écrit « modèles open-source comme Llama
+  // ou Mistral installés sur vos propres serveurs » — le fragment d'origine,
+  // plus étroit, ne le couvrait pas. C'est Axion-IA qui installe, chez le
+  // client, sur ses serveurs : rien que le participant ait à installer.
+  "installés sur vos propres serveurs",
   "modèles ouverts installés chez vous",
   "stack open-source installée chez vous",
   // Un exercice : faire rédiger une procédure d'installation par l'IA.
@@ -71,6 +99,25 @@ export function propositions(texte: string): string[] {
     .split(/(?<=[.!?])\s+|\s*[;:—(){}[\]]\s*|\s+-\s+/);
 }
 
+/**
+ * Le morceau de proposition qui porte réellement « install », entre virgules.
+ *
+ * 🔑 POURQUOI LA VIRGULE NE DÉCOUPE PAS LES PROPOSITIONS. Essayé le 2026-09-20,
+ * et REJETÉ sur mesure : « Sur place, rien à installer : un smartphone suffit. »
+ * doit rougir (la négation ne vaut que sur place, le distanciel reste muet).
+ * Couper à la virgule sépare « Sur place » de « rien à installer », et la garde
+ * ne voit plus la borne — trois de ses propres cas sont passés au vert.
+ *
+ * La virgule sert donc à UNE seule chose : savoir si la négation porte sur
+ * l'installation ou sur autre chose. « Pas besoin d'être technicien, installez
+ * l'application Zoom. » nie la technicité, pas l'installation. La borne
+ * présentiel/distance, elle, continue de se lire sur la proposition ENTIÈRE.
+ */
+function segmentPortantInstall(proposition: string): string {
+  const segments = proposition.split(/\s*,\s*/);
+  return segments.find((seg) => /install/i.test(seg)) ?? proposition;
+}
+
 /** Retire les sens figurés déclarés. */
 function sansFigures(proposition: string): string {
   let reste = proposition.toLowerCase();
@@ -83,10 +130,27 @@ function sansFigures(proposition: string): string {
  * d'installer sans le nier, ou qui ne le nient que sur place.
  */
 export function fautesInstallation(textes: readonly string[]): string[] {
-  return textes.flatMap(propositions).filter((p) => {
-    const reste = sansFigures(p);
-    if (!/install/i.test(reste)) return false;
-    if (!NEGATION.test(reste)) return true;
-    return BORNE_SUR_PLACE.test(reste) && !COUVRE_LA_DISTANCE.test(reste);
+  return textes.flatMap((texte) => {
+    // 🔑 Un sens figuré ne couvre JAMAIS un texte qui NOMME l'outil de
+    // visioconférence. Sans cela, « Suivez la procédure d'installation de Zoom
+    // avant la session. » sortait vert : le fragment figuré emportait le seul
+    // « install », et il ne restait plus rien à juger.
+    //
+    // Le nom de l'outil se cherche dans le TEXTE ENTIER, pas dans la
+    // proposition : la virgule sépare la consigne de sa cible (« des usages à
+    // installer sur votre poste, à savoir Zoom »), et une garde qui regarde
+    // chaque morceau isolément ne voit ni l'un ni l'autre.
+    const nommeLOutil =
+      OUTIL_VISIO.length > 0 && texte.toLowerCase().includes(OUTIL_VISIO.toLowerCase());
+    return propositions(texte).filter((p) => {
+      const reste = nommeLOutil ? p.toLowerCase() : sansFigures(p);
+      if (!/install/i.test(reste)) return false;
+      // La négation doit porter sur l'installation elle-même — pas sur la
+      // difficulté, pas sur le niveau requis, pas sur un oubli.
+      const porteur = segmentPortantInstall(reste);
+      if (!NEGATION.test(porteur) || NEGATION_INOPERANTE.test(porteur)) return true;
+      // La borne présentiel/distance se lit sur la proposition entière.
+      return BORNE_SUR_PLACE.test(reste) && !COUVRE_LA_DISTANCE.test(reste);
+    });
   });
 }

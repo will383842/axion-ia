@@ -35,7 +35,7 @@
  * — bonne pratique transparence). Affichée en haut de `/sous-processeurs`.
  * Update à chaque ajout/modification d'entrée.
  */
-export const SUBPROCESSORS_LAST_UPDATED = "2026-08-31" as const;
+export const SUBPROCESSORS_LAST_UPDATED = "2026-09-20" as const;
 
 export type TransferFramework = "intra_eu" | "scc" | "adequacy_decision" | "self_hosted_eu";
 
@@ -449,6 +449,59 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     // possible et un flux constaté. On déclare le possible.
     activationStatus: "active",
     documentationUrl: "https://policies.google.com/privacy",
+  },
+  {
+    // Ajouté le 2026-09-20, dans la PR QUI ANNONCE ZOOM — pas après.
+    //
+    // 🔴 CE QUE CETTE LIGNE RÉPARE. La décision de Will du 2026-09-19 fait de
+    // Zoom l'outil des formations à distance. La même livraison l'écrit sur des
+    // pages publiques (`transversal.ts`, `/formations/entreprise`) et
+    // l'IMPRIME sur la convocation remise au stagiaire — pendant que
+    // `/sous-processeurs` se déclare « liste exhaustive […] dans le cadre de
+    // ses prestations ». Sans cette entrée, cette page devenait fausse le jour
+    // du déploiement : image, voix, adresse IP et horaires de connexion d'un
+    // stagiaire partent chez un destinataire hors UE que rien ne déclarait.
+    // C'est exactement la faute reprochée plus haut à Calendly, absent
+    // quatorze mois — et, comme elle, elle se serait découverte en audit.
+    //
+    // La ligne Google Meet ci-dessus dit la doctrine : on déclare le POSSIBLE,
+    // pas le constaté.
+    name: "Zoom Communications, Inc.",
+    location: "San José, Californie, États-Unis",
+    // Zoom permet de restreindre les régions de traitement depuis la console
+    // d'administration. Tant qu'aucun compte n'existe, aucun réglage n'a été
+    // fait : on déclare le cas par défaut, le plus large.
+    serversLocation: "Union européenne et États-Unis",
+    purposeFr:
+      "Tenue des sessions de formation à distance en visioconférence, et relevé de connexion des stagiaires. Le lien de réunion est créé par Axion-IA et transmis au stagiaire ; le « rapport des participants » (heures d'entrée et de sortie, durée) est exporté de Zoom puis importé dans la console comme preuve d'assiduité. Aucune API ne relie la console à Zoom.",
+    purposeEn:
+      "Running remote training sessions by video conference, and recording trainee attendance times. The meeting link is created by Axion-IA and sent to the trainee; the participant report (join and leave times, duration) is exported from Zoom and imported into the console as proof of attendance. No API connects the console to Zoom.",
+    dataCategoriesFr:
+      "Flux audio et vidéo de la session, nom affiché, adresse email du stagiaire, adresse IP et données de connexion, et — seule donnée que nous conservons — les heures d'entrée et de sortie de chaque participant. La session n'est ni enregistrée ni transcrite.",
+    dataCategoriesEn:
+      "Audio and video streams of the session, display name, trainee email address, IP address and connection data, and — the only data we retain — each participant's join and leave times. Sessions are neither recorded nor transcribed.",
+    // Suivre une formation à distance, c'est l'exécution du contrat de
+    // formation lui-même : la visioconférence EST la prestation vendue.
+    legalBasis: "6.1.b_contract",
+    // ⛔ RESTE À WILL. Aucun compte Zoom n'existe à ce jour : P-19 § 5.3 prévoit
+    // l'abonnement Pro « avant la première session à distance ». Le DPA de Zoom
+    // s'accepte en ligne au moment de la souscription — à faire LE JOUR MÊME,
+    // et à repasser ici en `signed`. L'entité contractante et le cadre de
+    // transfert réels se lisent alors dans le contrat signé : ils sont déclarés
+    // ici au plus conservateur (entité américaine, clauses contractuelles
+    // types), jamais au plus flatteur.
+    dpaStatus: "pending",
+    transferFramework: "scc",
+    category: "communications",
+    // `pending_activation` au sens strict : aucun flux n'est possible
+    // aujourd'hui, faute de compte — et aucune session à distance n'est vendue.
+    //
+    // ⚠️ À repasser à `active` EN MÊME TEMPS que la souscription de
+    // l'abonnement Pro, pas à la première session : entre les deux, la visio
+    // est déjà possible. Attendre la première session, ce serait déclarer
+    // après coup.
+    activationStatus: "pending_activation",
+    documentationUrl: "https://www.zoom.com/en/trust/gdpr/",
   },
   {
     name: "OpenStreetMap Foundation (Nominatim)",
