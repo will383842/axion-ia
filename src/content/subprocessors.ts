@@ -81,10 +81,15 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     name: "Hetzner Online GmbH",
     location: "Gunzenhausen, Allemagne (UE)",
     serversLocation: "Frankfurt + Nuremberg, Allemagne (UE)",
+    // 🔴 Corrigé le 2026-09-20 : « stockage objet » désignait ici les pièces de
+    // l'organisme, alors qu'elles sont sur **Cloudflare R2** (voir l'entrée
+    // Cloudflare). Une personne qui cherchait où sont ses documents lisait le
+    // mauvais sous-traitant. Hetzner garde ce qui est vrai : les machines, la
+    // base, le cache, et un miroir de sauvegarde chiffré (Storage Box).
     purposeFr:
-      "Hébergement applicatif (VPS), base PostgreSQL, Redis, stockage objet et back-up chiffrés.",
+      "Hébergement applicatif (VPS), base PostgreSQL, Redis, et miroir de sauvegarde chiffré (Storage Box). Les pièces produites par l'organisme ne sont pas stockées ici : elles sont sur Cloudflare R2.",
     purposeEn:
-      "Application hosting (VPS), PostgreSQL database, Redis, encrypted object storage and backups.",
+      "Application hosting (VPS), PostgreSQL database, Redis, and an encrypted backup mirror (Storage Box). The documents produced by the training provider are not stored here: they are on Cloudflare R2.",
     dataCategoriesFr:
       "Toutes les données techniques et personnelles transitant par l'app (Submissions, Bookings, Payments, Invoices…).",
     dataCategoriesEn:
@@ -100,11 +105,28 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     name: "Cloudflare Inc.",
     location: "San Francisco, USA",
     serversLocation: "Réseau global edge, traitement EU pour zone UE",
-    purposeFr: "CDN, protection anti-DDoS, Bot Fight, DNS, Turnstile (anti-bot, sans cookie).",
-    purposeEn: "CDN, anti-DDoS protection, Bot Fight, DNS, Turnstile (no-cookie anti-bot).",
+    // 🔴 **R2 AJOUTÉ LE 2026-09-20.** Cette entrée n'a longtemps déclaré que le
+    // réseau — CDN, DNS, Turnstile — alors que **Cloudflare R2 héberge les
+    // pièces elles-mêmes** : conventions, convocations, attestations, factures,
+    // exemplaires signés, IMAGES DE SIGNATURE manuscrite et relevés de
+    // connexion nominatifs. La page se disait « liste exhaustive » en taisant
+    // le seul tiers qui détient les documents des stagiaires.
+    //
+    // Deux choses avaient rendu l'omission invisible :
+    //   · l'entrée Hetzner ci-dessus s'attribuait le « stockage objet » — c'est
+    //     là qu'un lecteur allait chercher, et il trouvait le mauvais nom ;
+    //   · aucune variable `R2_*` n'est déclarée dans `src/env.ts`, donc la
+    //     garde `sous-traitants-serveur.spec.ts`, qui dérive sa liste de ce
+    //     fichier, ne pouvait pas voir le tiers. Même angle mort que ZeptoMail.
+    // Les deux sont corrigés dans la même livraison.
+    purposeFr:
+      "CDN, protection anti-DDoS, Bot Fight, DNS, Turnstile (anti-bot, sans cookie). Et stockage objet R2 : c'est Cloudflare qui héberge les pièces produites par l'organisme — conventions, convocations, feuilles d'émargement, attestations, certificats, devis, factures et avoirs, exemplaires signés, supports pédagogiques —, les images de signature manuscrite, et les relevés de connexion des sessions à distance. Les sauvegardes chiffrées de la base y sont également déposées.",
+    purposeEn:
+      "CDN, anti-DDoS protection, Bot Fight, DNS, Turnstile (no-cookie anti-bot). Plus R2 object storage: Cloudflare hosts the documents the training provider produces — agreements, invitations, attendance sheets, certificates, quotes, invoices and credit notes, signed counterparts, course materials —, handwritten signature images, and the connection reports of remote sessions. Encrypted database backups are stored there too.",
     dataCategoriesFr:
-      "Adresses IP visiteur, user-agent, requêtes HTTP. Pas de cookie publicitaire.",
-    dataCategoriesEn: "Visitor IP addresses, user-agent, HTTP requests. No advertising cookies.",
+      "Pour le réseau : adresses IP visiteur, user-agent, requêtes HTTP, sans cookie publicitaire. Pour le stockage : le contenu des pièces, donc l'identité des stagiaires, des formateurs et des clients, leurs coordonnées, les montants facturés, le tracé de leur signature manuscrite et leurs heures de connexion. Aucun objet n'est public : chaque accès passe par un lien signé de durée limitée.",
+    dataCategoriesEn:
+      "For the network: visitor IP addresses, user-agent, HTTP requests, no advertising cookies. For storage: the contents of the documents — the identity of trainees, trainers and clients, their contact details, invoiced amounts, their handwritten signature stroke and their connection times. No object is public: every access goes through a time-limited signed link.",
     legalBasis: "6.1.f_legitimate_interest",
     dpaStatus: "auto_signable_dashboard",
     transferFramework: "scc",

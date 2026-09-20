@@ -16,7 +16,7 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | #   | Sous-processeur            | Finalité                             | Localisation            | DPA    | Base légale transfert      | Statut          |
 | --- | -------------------------- | ------------------------------------ | ----------------------- | ------ | -------------------------- | --------------- |
 | 1   | Hetzner Online GmbH        | VPS + Storage Box backups offsite    | Allemagne (Frankfurt)   | papier | UE intra-zone              | 🟡 à signer     |
-| 2   | Cloudflare, Inc.           | CDN + DDoS + Turnstile captcha       | États-Unis              | online | SCC + EU-US DPF            | 🟡 à accepter   |
+| 2   | Cloudflare, Inc.           | CDN + DDoS + Turnstile captcha **+ stockage objet R2 : toutes les pièces de l'organisme, images de signature, relevés de connexion, sauvegardes chiffrées** | États-Unis (endpoint global) | online | SCC + EU-US DPF            | 🟠 à accepter — **et il détient les pièces** |
 | 3   | Telegram FZ-LLC            | Notifications admin (Bot API)        | Émirats Arabes Unis     | aucun  | Art. 49 + minimisation PII | ✅ ADR 0010     |
 | 4   | Sentry (Functional Software) | Crash reporting + traces           | SaaS région UE (`ingest.de.sentry.io`) | online | SCC + EU-US DPF | 🟡 à signer     |
 | 5   | Plausible (self-hosted)    | Analytics anonymes                   | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
@@ -221,16 +221,50 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | ------------------------- | ----------------------------------------------------------------------------- |
 | **Nom légal**             | Cloudflare, Inc.                                                              |
 | **Adresse**               | 101 Townsend St, San Francisco, CA 94107, USA                                 |
-| **Finalité**              | CDN + protection DDoS + Turnstile (captcha anti-spam formulaires)             |
-| **Données traitées**      | IP visiteur, User-Agent, requêtes HTTP (logs CDN)                             |
-| **Localisation physique** | Edge mondial — données peuvent être routées via des POPs hors UE              |
+| **Finalité**              | CDN + protection DDoS + Turnstile (captcha anti-spam formulaires) **et stockage objet Cloudflare R2** |
+| **Données traitées**      | Réseau : IP visiteur, User-Agent, requêtes HTTP (logs CDN). **Stockage R2 : le contenu des pièces** — conventions, convocations, émargements, attestations, certificats, devis, factures, avoirs, exemplaires signés, supports (`documents/`, `supports/`) ; **images de signature manuscrite** (`emargement/…png`) ; **relevés de connexion CSV nominatifs** des sessions à distance (`presence/…`, nom + e-mail + horaires) ; kits d'intervention (`interventions/`) ; **sauvegardes chiffrées** de la base, de Redis, de Plausible et de DocuSeal |
+| **Localisation physique** | Edge mondial. ⛔ Le bucket R2 est joint par l'endpoint **global** `<account>.r2.cloudflarestorage.com`, pas par un endpoint à juridiction restreinte : **le code ne contraint aucune juridiction** — à confirmer côté tableau de bord Cloudflare |
 | **Garanties**             | DPA + clauses contractuelles types (SCC) + EU-US Data Privacy Framework (DPF) |
-| **DPA**                   | Online — auto-acceptable depuis dashboard CF                                  |
+| **DPA**                   | Online — auto-acceptable depuis dashboard CF. ⛔ **Il couvrira alors AUSSI R2** : ce n'est plus un DPA « CDN » |
 | **Lien**                  | https://www.cloudflare.com/cloudflare-customer-dpa/                           |
 | **Procédure**             | Dashboard Cloudflare → Manage Account → Configurations → Privacy → Sign DPA   |
-| **Durée conservation**    | Logs CDN : 30 j max                                                           |
-| **Statut**                | 🟡 **À ACCEPTER** par Will avant cutover                                      |
+| **Durée conservation**    | Logs CDN : 30 j max. **Pièces R2 : 5 ans annoncés** (`DOCUMENT_RETENTION_YEARS`, imprimé sur les pièces ; `suppressionPrevueAt` en base). ⛔ **Aucune purge n'applique cette échéance** — aucun objet R2 n'est supprimé par ancienneté (cf. `src/server/qualiopi/legal/retention-echeance.ts`). Seules suppressions réelles : purge RGPD art. 17 des images de signature, rollback de signature, suppression admin d'une version, ZIP temporaire |
+| **Statut**                | 🟠 **À ACCEPTER** par Will — et la fiche est désormais exacte sur ce que Cloudflare détient |
 | **Date signature**        | _(à compléter)_                                                               |
+
+> 🔴 **§3 RÉÉCRIT LE 2026-09-20.** Cette fiche n'a décrit pendant des mois que le
+> réseau — « CDN + DDoS + Turnstile », « logs CDN 30 j ». Or **c'est Cloudflare
+> qui détient les pièces** : conventions, attestations, factures, exemplaires
+> signés, **images de signature manuscrite** et **relevés de connexion
+> nominatifs**. Un auditeur lisant l'ancienne fiche aurait conclu que le
+> prestataire ne voit que des adresses IP.
+>
+> **Pourquoi personne ne l'a vu** — deux angles morts, corrigés dans la même
+> livraison :
+> 1. l'entrée **Hetzner** de `src/content/subprocessors.ts` s'attribuait le
+>    « stockage objet » : le lecteur qui cherchait où sont ses documents
+>    trouvait le mauvais sous-traitant ;
+> 2. **aucune variable `R2_*` n'était déclarée dans `src/env.ts`**, et la garde
+>    `src/content/__tests__/sous-traitants-serveur.spec.ts` dérive sa liste de
+>    ce fichier — R2 lui était structurellement invisible. Son filtre ne
+>    reconnaissait d'ailleurs que les secrets et les URL : `R2_ACCOUNT_ID` et
+>    `R2_ENDPOINT` n'auraient pas été recensés même déclarés. Mesuré : avant
+>    correction, retirer R2 du classement laissait la garde **verte**.
+>
+> ⛔ **RESTE À WILL, sur R2** :
+> 1. la **juridiction réelle** du bucket (indice de localisation choisi à la
+>    création) et les valeurs de `R2_ACCOUNT_ID` / `R2_BUCKET_NAME` /
+>    `R2_BUCKET_IMMUTABLE` en production ;
+> 2. accepter le **DPA Cloudflare**, qui couvre aussi le stockage ;
+> 3. trancher **5 ans** (mentions imprimées sur les pièces) contre **10 ans**
+>    (en-tête de `src/lib/r2-storage.ts`, obligation comptable CGI 242 nonies A)
+>    pour les factures — les deux durées coexistent dans le dépôt ;
+> 4. décider si l'échéance annoncée doit être **appliquée** : aujourd'hui elle
+>    est écrite, imprimée, et jamais exécutée ;
+> 5. arbitrer deux expositions constatées : les liens signés **14 jours**
+>    envoyés par e-mail aux formateurs (`intervention-documents/notifications.ts`),
+>    et le **miroir immuable sans `--delete`**, qui conserve une pièce effacée
+>    de la source — ce qui touche directement le droit à l'effacement.
 
 ---
 
