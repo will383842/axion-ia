@@ -109,8 +109,15 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     // de région, pas une juridiction — celle-ci se choisit à la création et ne
     // se change plus. Ce qui protège ici, ce sont les clauses contractuelles
     // types, pas la géographie.
+    //
+    // 🔑 Et ce champ décrit une LOCALISATION, rien d'autre. Une première
+    // rédaction y ajoutait « transfert encadré par les clauses contractuelles
+    // types » — une garantie que le DPA porte, et que le DPA n'est pas encore
+    // accepté. C'eût été le défaut même que cette ligne corrige, déplacé de la
+    // géographie vers le contrat. Les garanties ont leurs propres champs,
+    // `transferFramework` et `dpaStatus`, affichés séparément et à jour.
     serversLocation:
-      "Réseau global edge pour le CDN. Stockage : deux compartiments avec indication de région Europe (Ouest et Est), sans juridiction européenne garantie — transfert encadré par les clauses contractuelles types.",
+      "Réseau global edge pour le CDN. Stockage : deux compartiments avec indication de région Europe (Ouest et Est), sans juridiction européenne garantie.",
     // 🔴 **R2 AJOUTÉ LE 2026-09-20.** Cette entrée n'a longtemps déclaré que le
     // réseau — CDN, DNS, Turnstile — alors que **Cloudflare R2 héberge les
     // pièces elles-mêmes** : conventions, convocations, attestations, factures,

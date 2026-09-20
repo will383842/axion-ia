@@ -277,14 +277,24 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 >
 > ⛔ **RESTE À WILL, sur R2** :
 > 1. 🔴 **ACCEPTER LE DPA CLOUDFLARE — le seul vrai manque, et il prime sur la
->    géographie.** Sans lui, le transfert hors UE n'a **aucune base
->    contractuelle** : ce sont les clauses contractuelles types qu'il porte.
->    L'absence de juridiction UE n'est pas une non-conformité ; l'absence de DPA
->    en est une. Dashboard → Manage Account → Configurations → Privacy → Sign DPA ;
-> 1bis. relever `R2_ACCOUNT_ID` / `R2_BUCKET_NAME` / `R2_BUCKET_IMMUTABLE` en
->    production, et **déclarer les DEUX compartiments** s'ils relèvent du même
->    responsable de traitement — `axion-ia-backups` sert le site,
->    `axion-audit-backups` l'application d'audit ;
+>    géographie.** Le fondement est l'**art. 28 §3** : un traitement par un
+>    sous-traitant doit être régi par un contrat, point. Cette obligation ne
+>    dépend pas du lieu des serveurs ni du mécanisme de transfert — elle
+>    s'appliquerait à l'identique avec un compartiment en juridiction UE.
+>    L'absence de juridiction UE n'est donc PAS une non-conformité ; l'absence
+>    de contrat de sous-traitance en est une, directement.
+>    ⚠️ Ne pas fonder ce reste sur les seules clauses contractuelles types : la
+>    ligne « Garanties » ci-dessus invoque aussi l'EU-US Data Privacy Framework,
+>    décision d'adéquation au sens de l'art. 45 — qui fonderait le transfert
+>    sans CCT. L'art. 28 §3, lui, ne souffre aucune discussion.
+>    Dashboard → Manage Account → Configurations → Privacy → Sign DPA ;
+> 1bis. **déclarer les DEUX compartiments** s'ils relèvent du même responsable
+>    de traitement — `axion-ia-backups` sert le site, `axion-audit-backups`
+>    l'application d'audit. ⚠️ `R2_BUCKET_IMMUTABLE` figure dans le code et les
+>    scripts, mais le relevé du 2026-09-20 ne montre **aucun compartiment
+>    immuable**, et `scripts/restore-secrets-test-r2.sh` note qu'elle n'a jamais
+>    été configurée : le miroir à Object Lock est un dispositif **prévu, pas
+>    actif**. À trancher — l'activer, ou retirer du code ce qui le suppose ;
 > 3. trancher **5 ans** (mentions imprimées sur les pièces) contre **10 ans**
 >    (en-tête de `src/lib/r2-storage.ts`, obligation comptable CGI 242 nonies A)
 >    pour les factures — les deux durées coexistent dans le dépôt ;
