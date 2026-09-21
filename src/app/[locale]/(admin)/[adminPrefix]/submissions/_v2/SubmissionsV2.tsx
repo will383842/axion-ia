@@ -4,7 +4,7 @@
 
 import Link from "next/link";
 import * as Sentry from "@sentry/nextjs";
-import { Archive, AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
+import { Archive, AlertTriangle, CheckCircle2, XCircle, CircleSlash } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { SubmissionListItem } from "@/features/admin-submissions/actions";
 import { listSubmissionsAction } from "@/features/admin-submissions/actions";
@@ -25,6 +25,7 @@ import { lireAccusesMessages } from "@/features/admin-submissions/accuse-recepti
 import { MentionAccuse } from "@/components/admin/accuse/AccuseReceptionAuto";
 import type { PerimetreSubmissions } from "@/features/admin-submissions/query";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
+import { LIBELLE_ETAPE } from "@/lib/commercial-application/etape-apporteur";
 
 /**
  * Computed reply badge — derives 4 visual states from SubmissionListItem :
@@ -47,6 +48,10 @@ import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 type TonBadge = "neutral" | "success" | "warning" | "destructive";
 
 function replyBadge(s: SubmissionListItem): { label: string; tone: TonBadge; Icone: LucideIcon } {
+  // 🔑 « Sans suite » AVANT « Archivé », et ce n'est pas cosmétique : les deux
+  // portent `status: archived`, donc le second capterait le premier. Une fiche
+  // qu'on a décidé d'écarter se lirait « Archivé », comme une fiche rangée.
+  if (s.sansSuiteAt) return { label: "Sans suite", tone: "neutral", Icone: CircleSlash };
   if (s.archivedAt) return { label: "Archivé", tone: "neutral", Icone: Archive };
   if (s.lastReplyStatus === "failed" || s.lastReplyStatus === "bounced") {
     return { label: "Échec envoi", tone: "warning", Icone: AlertTriangle };
@@ -227,6 +232,15 @@ export async function SubmissionsV2({
             <r.Icone size={12} aria-hidden="true" className="shrink-0" />
             {r.label}
           </AdminBadge>
+          {/* Où en est la personne, et combien de formulaires elle a remplis.
+              Le second n'apparaît qu'au-delà de UN : « 1 ligne » sur toute la
+              liste n'apprendrait rien et ferait du bruit sur chaque ligne. */}
+          {s.etape ? (
+            <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              {LIBELLE_ETAPE[s.etape]}
+              {s.lignesDeLaPersonne > 1 ? ` · ${s.lignesDeLaPersonne} formulaires` : ""}
+            </span>
+          ) : null}
           {accuse ? <MentionAccuse accuse={accuse} /> : null}
         </span>,
         formatDateFrShort(s.submittedAt),
@@ -250,6 +264,7 @@ export async function SubmissionsV2({
           key="actions"
           id={s.id}
           archived={s.archivedAt !== null}
+          sansSuite={s.sansSuiteAt !== null}
           needsAttention={s.needsAttention}
           status={s.status}
           deleted={s.deletedAt !== null}

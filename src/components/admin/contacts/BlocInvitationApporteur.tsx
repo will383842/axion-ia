@@ -29,65 +29,8 @@ import {
 } from "@/lib/commercial-application/saisie-manuelle";
 import { ORIGINE_SAISIE_MANUELLE } from "@/lib/contact/accuse-attendu";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { estCodeIssue, phraseInvitation } from "@/lib/commercial-application/issues-invitation";
 import { env } from "@/env";
-
-/** Ce que l'écran dit après le geste — une phrase par issue possible. */
-const RESULTATS: Record<string, { ton: "success" | "error"; texte: string }> = {
-  envoyee: {
-    ton: "success",
-    texte:
-      "Invitation mise en file : elle part dans la minute, avec le document de présentation et le catalogue.",
-  },
-  "en-validation": {
-    ton: "success",
-    texte:
-      "Invitation en attente de validation dans Envois à valider : elle partira une fois approuvée.",
-  },
-  "deja-invitee": {
-    ton: "error",
-    texte:
-      "Rien n'est parti : une invitation est déjà partie (ou attend validation) pour cette personne. Coche « Renvoyer quand même » pour la renvoyer.",
-  },
-  "origine-interdite": {
-    ton: "error",
-    texte: "Rien n'est parti : adresse relevée sur l'annonce d'un tiers, pas d'invitation.",
-  },
-  "accord-manquant": {
-    ton: "error",
-    texte:
-      "Rien n'est parti : l'adresse vient d'ailleurs. Coche « La personne a accepté d'être contactée » pour l'inviter.",
-  },
-  "une-seule-personne": {
-    ton: "error",
-    texte: "Rien n'est parti : une invitation s'envoie à une seule personne à la fois.",
-  },
-  "lien-invalide": {
-    ton: "error",
-    texte: "Rien n'est parti : le lien doit être une adresse https://calendly.com/… complète.",
-  },
-  retenu: {
-    ton: "error",
-    texte:
-      "Rien n'est parti : cette adresse est retenue (désinscription, opposition ou adresse en erreur).",
-  },
-  "file-indisponible": {
-    ton: "error",
-    texte: "Rien n'est parti : la file d'envoi est indisponible. Réessaie dans un instant.",
-  },
-  efface: {
-    ton: "error",
-    texte: "Rien n'est parti : les coordonnées de cette personne ont été effacées.",
-  },
-  "pas-un-apporteur": {
-    ton: "error",
-    texte: "Rien n'est parti : cette fiche n'est pas un contact du réseau d'apporteurs.",
-  },
-  introuvable: { ton: "error", texte: "Rien n'est parti : cette fiche n'existe plus." },
-  "non-autorise": {
-    ton: "error",
-    texte: "Rien n'est parti : ton rôle ne permet pas d'envoyer d'e-mail depuis la console.",
-  },
-};
 
 /** Une invitation, en mots : « Déjà invité le … » ou « En attente de validation ». */
 function ligneHistorique(e: InvitationEnvoyee): string {
@@ -111,7 +54,11 @@ export async function BlocInvitationApporteur({
 }) {
   const invitations: InvitationEnvoyee[] = await lireInvitationsDeLaPersonne(submissionId);
   const lienParDefaut = env.CALENDLY_APPORTEUR_URL ?? "";
-  const retour = resultat ? RESULTATS[resultat] : undefined;
+  // 🔑 Les phrases ne vivent PLUS ici. Elles vivaient en deux exemplaires —
+  // un ici, un dans `invitation-apporteur.ts` — et SEPT DES NEUF avaient deja
+  // diverge : le meme refus se lisait autrement selon la porte par laquelle on
+  // etait entre. Le code vient de l'URL : un code inconnu n'affiche rien.
+  const retour = estCodeIssue(resultat) ? phraseInvitation(resultat) : undefined;
 
   const saisieManuelle = details?.["origine"] === ORIGINE_SAISIE_MANUELLE;
   const origine = typeof details?.["origineSaisie"] === "string" ? details["origineSaisie"] : "";

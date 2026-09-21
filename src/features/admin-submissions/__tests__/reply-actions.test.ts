@@ -32,6 +32,7 @@ const submissionReplyFindUnique = vi.fn();
 const submissionReplyUpdate = vi.fn();
 const submissionUpdate = vi.fn();
 const submissionUpdateMany = vi.fn();
+const submissionFindMany = vi.fn();
 const transactionMock = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
@@ -40,6 +41,7 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: (...args: unknown[]) => submissionFindUnique(...args),
       update: (...args: unknown[]) => submissionUpdate(...args),
       updateMany: (...args: unknown[]) => submissionUpdateMany(...args),
+      findMany: (...args: unknown[]) => submissionFindMany(...args),
     },
     submissionReply: {
       create: (...args: unknown[]) => submissionReplyCreate(...args),
@@ -71,6 +73,22 @@ beforeEach(() => {
   });
   // enqueueEmail renvoie désormais { enqueued: boolean } (retour détectable).
   enqueueEmailMock.mockResolvedValue({ enqueued: true });
+  // Les quatre gestes d'état passent par `transitions.ts` depuis le 21/09 :
+  // ils LISENT la fiche, puis écrivent dans une transaction. Le double défaut
+  // qu'ils réparent (relances non annulées à l'archivage) a ses propres tests
+  // dans `archiver-arrete-les-relances.spec.ts` ; ici on garde le contrat
+  // d'action — RBAC, Zod, et ce qui part en base.
+  submissionFindMany.mockResolvedValue([]);
+  transactionMock.mockImplementation(async (fn: (tx: unknown) => Promise<unknown>) =>
+    fn({
+      submission: {
+        findUnique: (...a: unknown[]) => submissionFindUnique(...a),
+        update: (...a: unknown[]) => submissionUpdate(...a),
+      },
+      activityLog: { create: vi.fn() },
+      submissionReply: { create: () => ({ id: REPLY_ID }) },
+    }),
+  );
 });
 
 describe("replyToSubmissionAction", () => {
@@ -146,10 +164,12 @@ describe("replyToSubmissionAction", () => {
 
 describe("archiveSubmissionAction", () => {
   it("archive un id valide → status=archived + archivedAt set", async () => {
-    submissionUpdate.mockResolvedValueOnce({});
+    // Adresse absente : aucun retrait de relance à tenter, le compte vaut 0.
+    submissionFindUnique.mockResolvedValue({ id: VALID_UUID, contactEmail: null, deletedAt: null });
+    submissionUpdate.mockResolvedValue({});
     const { archiveSubmissionAction } = await import("../reply-actions");
     const result = await archiveSubmissionAction(VALID_UUID);
-    expect(result).toEqual({ ok: true });
+    expect(result).toEqual({ ok: true, relancesRetirees: 0 });
     expect(submissionUpdate).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { id: VALID_UUID },
@@ -162,7 +182,7 @@ describe("archiveSubmissionAction", () => {
     authMock.mockResolvedValueOnce(null);
     const { archiveSubmissionAction } = await import("../reply-actions");
     const result = await archiveSubmissionAction(VALID_UUID);
-    expect(result).toEqual({ ok: false });
+    expect(result.ok).toBe(false);
     expect(submissionUpdate).not.toHaveBeenCalled();
   });
 });

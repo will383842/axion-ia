@@ -50,6 +50,10 @@ import {
 } from "@/lib/commercial-application/saisie-manuelle";
 import { ORIGINE_SAISIE_MANUELLE } from "@/lib/contact/accuse-attendu";
 import { annulerRelancesLeadApporteur } from "./relances-lead-apporteur";
+import {
+  phraseInvitation,
+  type CodeIssueInvitation,
+} from "@/lib/commercial-application/issues-invitation";
 
 /** Nom du gabarit — aussi la clé de lecture de l'historique (`EmailLog.template`). */
 export const GABARIT_INVITATION_APPORTEUR = "apporteur-invitation-appel";
@@ -58,16 +62,18 @@ export type ResultatInvitation =
   | { ok: true; enValidation?: true; message?: string }
   | {
       ok: false;
-      erreur:
-        | "lien-invalide"
-        | "introuvable"
-        | "pas-un-apporteur"
-        | "efface"
-        | "retenu"
-        | "file-indisponible"
-        | "deja-invitee"
-        | "origine-interdite"
-        | "accord-manquant";
+      /**
+       * 🔑 DERIVE DES CODES QUI ONT UNE PHRASE, et pas l'inverse. Une liste
+       * tapee a la main ici laissait ajouter un code que `phraseInvitation` ne
+       * connait pas : l'ecran affichait alors du vide, et le vide ne se voit
+       * pas en relecture. Les quatre codes retires sont ceux qui ne naissent
+       * jamais de cette fonction (deux succes, et deux refus poses par
+       * l'appelant avant meme de l'atteindre).
+       */
+      erreur: Exclude<
+        CodeIssueInvitation,
+        "envoyee" | "en-validation" | "une-seule-personne" | "non-autorise"
+      >;
       message: string;
     };
 
@@ -196,7 +202,7 @@ export async function envoyerInvitationApporteur(input: {
     return {
       ok: false,
       erreur: "lien-invalide",
-      message: "Le lien doit être une adresse https://calendly.com/… complète.",
+      message: phraseInvitation("lien-invalide").texte,
     };
   }
 
@@ -213,7 +219,7 @@ export async function envoyerInvitationApporteur(input: {
     },
   });
   if (!ligne || ligne.deletedAt) {
-    return { ok: false, erreur: "introuvable", message: "Cette fiche n'existe plus." };
+    return { ok: false, erreur: "introuvable", message: phraseInvitation("introuvable").texte };
   }
   // Même prédicat que la liste « Apporteurs » : on n'invite que ceux qui y
   // figurent (2026-09-19, prédicat unique).
@@ -226,7 +232,7 @@ export async function envoyerInvitationApporteur(input: {
     return {
       ok: false,
       erreur: "pas-un-apporteur",
-      message: "Cette fiche n'est pas un contact du réseau d'apporteurs.",
+      message: phraseInvitation("pas-un-apporteur").texte,
     };
   }
 
@@ -244,7 +250,7 @@ export async function envoyerInvitationApporteur(input: {
     return {
       ok: false,
       erreur: "efface",
-      message: "Les coordonnées de cette personne ont été effacées : rien n'est envoyé.",
+      message: phraseInvitation("efface").texte,
     };
   }
 
@@ -262,7 +268,7 @@ export async function envoyerInvitationApporteur(input: {
       return {
         ok: false,
         erreur: "origine-interdite",
-        message: "Adresse relevée sur l'annonce d'un tiers : pas d'invitation.",
+        message: phraseInvitation("origine-interdite").texte,
       };
     }
     const fragment = PROVENANCE_ADRESSE[origine];
@@ -272,8 +278,7 @@ export async function envoyerInvitationApporteur(input: {
         return {
           ok: false,
           erreur: "accord-manquant",
-          message:
-            "L'adresse vient d'ailleurs : coche « La personne a accepté d'être contactée » pour l'inviter.",
+          message: phraseInvitation("accord-manquant").texte,
         };
       }
       accordAEcrire = !accordEnregistre;
@@ -298,9 +303,7 @@ export async function envoyerInvitationApporteur(input: {
         return {
           ok: false,
           erreur: "deja-invitee",
-          message:
-            `Une invitation est déjà partie (ou attend validation) le ${jourMois(derniere.le)}. ` +
-            "Coche « Renvoyer quand même » pour la renvoyer.",
+          message: phraseInvitation("deja-invitee", { le: jourMois(derniere.le) }).texte,
         };
       }
     }
@@ -310,9 +313,10 @@ export async function envoyerInvitationApporteur(input: {
     });
     return {
       ok: false,
-      erreur: "file-indisponible",
-      message:
-        "Rien n'est parti : l'historique des invitations est illisible. Réessaie dans un instant.",
+      // 🔑 Ici on ne sait PAS LIRE l'historique — ce n'est pas la file d'envoi
+      // qui est en panne. Les deux partageaient un code et se contredisaient.
+      erreur: "historique-illisible",
+      message: phraseInvitation("historique-illisible").texte,
     };
   }
 
@@ -352,7 +356,7 @@ export async function envoyerInvitationApporteur(input: {
     return {
       ok: true,
       enValidation: true,
-      message: "Invitation en attente de validation dans Envois à valider.",
+      message: phraseInvitation("en-validation").texte,
     };
   }
 
@@ -361,13 +365,12 @@ export async function envoyerInvitationApporteur(input: {
       ? {
           ok: false,
           erreur: "retenu",
-          message:
-            "Rien n'est parti : cette adresse est retenue (désinscription, opposition ou adresse en erreur).",
+          message: phraseInvitation("retenu").texte,
         }
       : {
           ok: false,
           erreur: "file-indisponible",
-          message: "Rien n'est parti : la file d'envoi est indisponible. Réessaie dans un instant.",
+          message: phraseInvitation("file-indisponible").texte,
         };
   }
 
