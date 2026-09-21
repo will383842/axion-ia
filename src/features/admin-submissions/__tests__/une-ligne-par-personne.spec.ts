@@ -146,6 +146,51 @@ describe("le périmètre apporteurs regroupe par personne", () => {
   });
 });
 
+describe("🔴 « sans réponse » veut dire la même chose partout", () => {
+  // ── Le défaut, plus ancien que ce chantier ──────────────────────────────
+  // « sans réponse » lisait `needsAttention`, « répondu » lisait `replyCount > 0`.
+  // Les deux n'étaient donc PAS contraires : une fiche à laquelle personne n'a
+  // répondu mais qu'on avait marquée « lue » sortait des DEUX filtres. Elle
+  // n'existait sous aucun des deux.
+  //
+  // 🔑 Le dépôt avait déjà tranché ailleurs, AVEC son raisonnement écrit :
+  // `admin-inbox/counters.ts` explique pourquoi il a refusé `needsAttention`
+  // pour le badge. Personne ne l'avait reporté ici. Trois endroits comptent
+  // désormais la même chose : badge, filtre, tuile d'accueil.
+  it("le filtre compte `replyCount: 0`, et pas l'attention levée", async () => {
+    count.mockResolvedValue(0);
+    findMany.mockResolvedValue([]);
+
+    await listSubmissions({ replyStatus: "unanswered" });
+
+    const where = (findMany.mock.calls[0]?.[0] as { where: Record<string, unknown> }).where;
+    expect(where["replyCount"]).toBe(0);
+    expect(where["needsAttention"]).toBeUndefined();
+  });
+
+  it("une fiche MARQUÉE TRAITÉE n'attend plus rien : elle sort du filtre", async () => {
+    // Sans cette clause, la tuile d'accueil annonçait zéro en ouvrant une liste
+    // qui montrait une ligne — le chiffre ne se reproduisait pas.
+    count.mockResolvedValue(0);
+    findMany.mockResolvedValue([]);
+
+    await listSubmissions({ replyStatus: "unanswered" });
+
+    const where = (findMany.mock.calls[0]?.[0] as { where: Record<string, unknown> }).where;
+    expect(where["status"]).toEqual({ notIn: ["processed", "archived"] });
+  });
+
+  it("TÉMOIN — « répondu » reste l'exact contraire", async () => {
+    count.mockResolvedValue(0);
+    findMany.mockResolvedValue([]);
+
+    await listSubmissions({ replyStatus: "answered" });
+
+    const where = (findMany.mock.calls[0]?.[0] as { where: Record<string, unknown> }).where;
+    expect(where["replyCount"]).toEqual({ gt: 0 });
+  });
+});
+
 describe("le regroupement ne déborde PAS sur les autres listes", () => {
   // 🔑 Le témoin. Sans lui, un regroupement appliqué partout passerait ce
   // fichier en entier — et la boîte de réception fondrait deux demandes

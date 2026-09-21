@@ -169,7 +169,17 @@ export function buildSubmissionsWhere(parsed: ListSubmissionsInput): Prisma.Subm
   // de la barre latérale et ce filtre comptent enfin la même chose — et le
   // chiffre de l'accueil se REPRODUIT en ouvrant la liste.
   if (parsed.replyStatus === "unanswered") {
+    // ⚠️ `replyCount` SEUL ne suffit pas, et l'oubli se voyait à l'accueil : une
+    // fiche marquée « traité » sans réponse écrite restait dans ce filtre, alors
+    // que la tuile « apporteurs en attente » l'excluait. Le chiffre de l'accueil
+    // annonçait alors zéro en ouvrant une liste qui montrait une ligne.
+    //
+    // 🔑 La définition de la maison pour « reste à faire » est écrite dans
+    // `admin-inbox/counters.ts` : `replyCount === 0` ET un statut qui n'est ni
+    // `processed` ni `archived`. C'est elle, et elle seule, dans les TROIS
+    // endroits — badge de la barre latérale, ce filtre, tuile d'accueil.
     where.replyCount = 0;
+    where.status = { notIn: ["processed", "archived"] };
   } else if (parsed.replyStatus === "answered") {
     where.replyCount = { gt: 0 };
   } else if (parsed.replyStatus === "failed") {

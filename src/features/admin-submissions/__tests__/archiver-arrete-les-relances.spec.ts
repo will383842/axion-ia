@@ -126,6 +126,30 @@ describe("🔴 rouvrir DÉFAIT ce que fermer a posé", () => {
     expect(ecrit.data["needsAttention"]).toBe(true);
   });
 
+  it("🔴 DÉSARCHIVER la retire AUSSI — le défaut jumeau, sur le chemin le plus visible", async () => {
+    // Une fiche classée sans suite est AUSSI archivée : la ligne lui propose
+    // donc « Désarchiver » en bouton PRINCIPAL, qui ne regarde que `archived`.
+    // Corriger « remettre » seul laissait le défaut entier derrière ce
+    // bouton-là — celui qu'on clique en premier.
+    //
+    // 🔑 La règle générale : TOUTE transition qui rouvre défait ce que la
+    // fermeture a posé. Il y en a deux, pas une.
+    findUnique.mockResolvedValue({
+      id: "sub-1",
+      contactEmail: "lea@exemple.invalid",
+      deletedAt: null,
+      details: { sansSuiteAt: "2026-09-10T08:00:00.000Z", unifiedType: "audit" },
+    });
+
+    await appliquerTransition("sub-1", "desarchiver", "admin-1");
+
+    const ecrit = update.mock.calls[0]?.[0] as {
+      data: { details: Record<string, unknown>; archivedAt: unknown };
+    };
+    expect(ecrit.data.details["sansSuiteAt"]).toBeUndefined();
+    expect(ecrit.data.archivedAt).toBeNull();
+  });
+
   it("retire la marque « sans suite », sinon la pastille ment encore", async () => {
     findUnique.mockResolvedValue({
       id: "sub-1",

@@ -101,9 +101,21 @@ const EFFETS: Readonly<Record<Transition, Effet>> = {
   // Rouvrir. On ne ressuscite PAS les relances : elles ont été retirées de la
   // file, et les faire repartir enverrait un « ton dossier t'attend » des
   // semaines après coup.
+  //
+  // 🔴 `retireDetails` VAUT ICI AUSSI, et son absence était le DÉFAUT JUMEAU de
+  // celui de « remettre » — sur le chemin le plus visible des deux. Une fiche
+  // classée sans suite est AUSSI archivée : la ligne lui propose donc
+  // « Désarchiver » en bouton PRINCIPAL. Sans cette ligne, on la rouvrait, et la
+  // pastille continuait d'annoncer « Sans suite » pendant que le menu
+  // reproposait « Remettre à traiter » sur une fiche déjà rouverte.
+  //
+  // 🔑 La règle, et elle vaut au-delà de ce cas : **toute transition qui ROUVRE
+  // défait ce que la fermeture a posé**. Corriger un seul des deux chemins
+  // laissait le défaut entier, derrière un autre bouton.
   desarchiver: {
     donnees: { status: "in_progress", archivedAt: null },
     annuleLesRelances: false,
+    retireDetails: ["sansSuiteAt"],
   },
   // Remettre à traiter : la fiche redevient visible dans « à traiter ».
   //
