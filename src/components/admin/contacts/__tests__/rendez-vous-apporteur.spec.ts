@@ -36,6 +36,22 @@ beforeEach(() => {
   ]);
 });
 
+/**
+ * Le texte d'un arbre React, sans DOM.
+ *
+ * Ce composant est un composant SERVEUR asynchrone : `@testing-library` ne sait
+ * pas le rendre (un enfant asynchrone non résolu ne rend rien du tout, et les
+ * assertions passent alors sur du vide — le piège exact que cette PR a déjà
+ * rencontré ailleurs). On parcourt donc l'arbre à la main.
+ */
+function rendreEnTexte(n: unknown): string {
+  if (n === null || n === undefined || typeof n === "boolean") return "";
+  if (typeof n === "string" || typeof n === "number") return String(n);
+  if (Array.isArray(n)) return n.map(rendreEnTexte).join(" ");
+  const el = n as { props?: { children?: unknown } };
+  return el.props ? rendreEnTexte(el.props.children) : "";
+}
+
 describe("RendezVousApporteur", () => {
   it("un rôle qui ne voit pas les appels ne rend rien ET ne lit rien", async () => {
     const rendu = await RendezVousApporteur({ submissionId: "sub_42", role: "reader" });
@@ -43,9 +59,18 @@ describe("RendezVousApporteur", () => {
     expect(findMany).not.toHaveBeenCalled();
   });
 
-  it("un rôle habilité voit le bloc", async () => {
+  it("un rôle habilité voit le bloc, AVEC ce qu'il promet dedans", async () => {
     const rendu = await RendezVousApporteur({ submissionId: "sub_42", role: "admin" });
     expect(rendu).not.toBeNull();
     expect(findMany).toHaveBeenCalledTimes(1);
+
+    // 🔑 `not.toBeNull()` seul ne garde RIEN. Vider la boucle qui rend les
+    // rendez-vous laisserait ce test vert : le bloc existerait toujours, la
+    // requête partirait toujours, et l'écran n'afficherait plus rien. La
+    // promesse du bloc — « on sait si la personne a réservé, et quand » — doit
+    // se lire dans le rendu.
+    const texte = rendreEnTexte(rendu);
+    expect(texte).toContain("Échange apporteur");
+    expect(texte).toContain("22"); // le jour du rendez-vous
   });
 });

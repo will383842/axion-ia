@@ -20,7 +20,8 @@
 // D'où trois ajouts, tous DÉRIVÉS du nom du type d'événement
 // (`estAppelApporteur`) — rien n'est stocké, rien ne migre :
 //   · un filtre Tous / Clients / Apporteurs (`?public=`), appliqué APRÈS la
-//     garde, dans les requêtes elles-mêmes ;
+//     garde, EN MÉMOIRE sur les lignes lues (`queries.ts` le dit aussi) — le
+//     public se déduit du nom du type d'événement, que SQL ne sait pas lire ;
 //   · une pastille « Apporteur » / « Client » sur chaque rendez-vous ;
 //   · une vue « Jour », ouverte par défaut : la question qu'on pose à cet écran
 //     est « qui j'appelle aujourd'hui », pas « combien en juillet ».

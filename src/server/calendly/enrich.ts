@@ -262,7 +262,26 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
     return { ok: false, reason: "db_write_failed" };
   }
 
-  const inviteeEmail = (data["inviteeEmail"] as string | undefined) ?? row.inviteeEmail ?? "";
+  // 🔴 SEULE L'ADRESSE QUE CALENDLY CONFIRME DECIDE D'UN RATTACHEMENT, et ce
+  // n'est pas un exces de prudence : c'est la difference entre une ligne
+  // parasite et le dossier d'un tiers.
+  //
+  // `/api/calendly/client-event` est une route PUBLIQUE qui ecrit
+  // `inviteeEmail` depuis le corps de la requete. Son propre en-tete dit que la
+  // porte reste ouverte a l'appel scripte informe (`Origin` en dur dans
+  // `TRUSTED_ORIGINS`) et que « fabriquer une fiche au nom d'un tiers » reste
+  // atteignable. Jusqu'ici, cela ne produisait qu'une ligne fausse.
+  //
+  // `setIfEmpty` (plus haut) n'ecrase JAMAIS un champ deja rempli : l'adresse
+  // forgee survit donc a l'enrichissement. Lire `row.inviteeEmail` ici
+  // reviendrait a rattacher automatiquement, en silence et sans trace, le
+  // rendez-vous de quelqu'un au dossier apporteur d'une VICTIME choisie par
+  // l'appelant — puis a afficher « echange reserve » sur ce dossier.
+  //
+  // 🔑 On echoue donc FERME : sans adresse confirmee par l'API, aucun
+  // rattachement automatique. Le selecteur de la console reste la, et un admin
+  // rattache a la main — ce qui laisse, lui, un auteur.
+  const inviteeEmail = d.inviteeEmail ?? "";
 
   // ── Rattachement d'un échange apporteur à son dossier (2026-09-19) ──────────
   //

@@ -26,6 +26,7 @@ import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { estApporteur, FILTRE_APPORTEUR_PRISMA } from "@/lib/commercial-application/est-apporteur";
 import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { JOURS_FICHES_RECENTES } from "@/lib/calendly/fenetre-rattachement";
 
 export type GroupeFiche = "meme-personne" | "recentes" | "actuelle";
 
@@ -35,8 +36,9 @@ export interface FicheRattachable {
   groupe: GroupeFiche;
 }
 
-/** Fenêtre des fiches « récentes » proposées quand l'adresse ne suffit pas. */
-export const JOURS_FICHES_RECENTES = 30;
+// Fenêtre des fiches « récentes » : déclarée dans un module PUR, parce que le
+// sélecteur qui l'annonce est un composant client (voir l'en-tête là-bas).
+export { JOURS_FICHES_RECENTES };
 const PLAFOND_PAR_GROUPE = 25;
 
 const SELECT = {

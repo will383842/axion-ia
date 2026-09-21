@@ -6,6 +6,7 @@
 import { useState, useTransition } from "react";
 import { updateCalendlyEventAction } from "@/features/admin-calendly/actions";
 import { toParisLocalInput, fromParisLocalInput } from "@/lib/calendar-grid";
+import { JOURS_FICHES_RECENTES } from "@/lib/calendly/fenetre-rattachement";
 
 /**
  * Une fiche proposée au rattachement — calculée côté serveur par
@@ -19,10 +20,14 @@ interface FicheRattachable {
   readonly groupe: "meme-personne" | "recentes" | "actuelle";
 }
 
+// 🔑 La fenêtre est LUE, pas retapée. Le nombre de jours vit dans
+// `fiches-rattachables.ts`, qui s'en sert pour filtrer : écrit ici en dur, le
+// jour où on passerait à 60, le sélecteur annoncerait toujours 30 en proposant
+// des fiches de 45 jours — et rien ne rougirait.
 const INTITULE_GROUPE: Record<FicheRattachable["groupe"], string> = {
   actuelle: "Fiche rattachée",
   "meme-personne": "Même adresse e-mail",
-  recentes: "Reçues ces 30 derniers jours",
+  recentes: `Reçues ces ${JOURS_FICHES_RECENTES} derniers jours`,
 };
 
 interface Initial {
