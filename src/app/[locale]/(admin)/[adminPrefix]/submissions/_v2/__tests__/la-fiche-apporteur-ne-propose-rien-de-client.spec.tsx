@@ -48,6 +48,12 @@ vi.mock("@/components/admin/contacts/ReplyHistory", () => ({ ReplyHistory: () =>
 vi.mock("@/components/admin/contacts/BlocInvitationApporteur", () => ({
   BlocInvitationApporteur: () => <p>bloc-invitation</p>,
 }));
+// Le bloc des echanges reserves lit `calendly_events` : c'est un composant
+// serveur asynchrone, et un enfant asynchrone non resolu rend la fiche VIDE —
+// pas une erreur, un ecran blanc. Ses deux tests vivent a cote de lui.
+vi.mock("@/components/admin/contacts/RendezVousApporteur", () => ({
+  RendezVousApporteur: () => null,
+}));
 vi.mock("@/components/admin/accuse/AccuseReceptionAuto", () => ({ BlocAccuse: () => null }));
 vi.mock("../CandidatureCommercialeDetail", () => ({ CandidatureCommercialeDetail: () => null }));
 vi.mock("../../[id]/SubmissionUpdateForm", () => ({ SubmissionUpdateForm: () => null }));
