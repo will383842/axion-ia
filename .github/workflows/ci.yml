@@ -236,12 +236,29 @@ jobs:
         run: pnpm image-bank:isolation-check
       - name: Zod schemas have tests
         run: pnpm zod:check
+      # 🔴 2026-09-21 — `config-path` N'EST PAS UNE ENTRÉE DE CETTE ACTION.
+      # `gitleaks-action@v3` ne lit sa configuration QUE par la variable
+      # d'environnement `GITLEAKS_CONFIG`. Un `with:` inconnu ne fait pas
+      # échouer un workflow : il est ignoré, en silence.
+      #
+      # Conséquence mesurée : l'allowlist de `.gitleaks.toml` — trois exceptions
+      # écrites, commentées, dont une avec sept lignes de justification — n'a
+      # JAMAIS été lue. Le scan tournait sur les règles par défaut.
+      #
+      # 🔑 Le défaut est SÉVÈRE, jamais dangereux : les règles par défaut sont
+      # plus strictes que les nôtres, donc aucun secret n'est passé à travers.
+      # Ce qu'on perdait, c'est l'inverse — des faux positifs sur du base64
+      # d'image et des jetons de test, et la confiance dans une garde dont
+      # personne ne savait qu'elle ne s'appliquait pas.
+      #
+      # ⚠️ Il était invisible pour une raison de plus : une PR ne scanne que ses
+      # commits NEUFS. Tant qu'aucun d'eux ne touchait un fichier exempté,
+      # l'exception inerte ne se voyait pas.
       - name: gitleaks
         uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          config-path: axionia/.gitleaks.toml
+          GITLEAKS_CONFIG: ${{ github.workspace }}/axionia/.gitleaks.toml
 
   # 2026-09-19 — LA suite Vitest du dépôt : c'est le SEUL job qui la lance
   # (voir le commentaire de tête de `gate-a`). Elle tourne avec couverture ;

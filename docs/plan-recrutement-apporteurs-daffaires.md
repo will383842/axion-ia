@@ -1,6 +1,28 @@
 # Plan de recrutement — Réseau national d'apporteurs d'affaires IA
 
-> **Statut** : plan de travail actif — créé le 2026-08-23
+> **Statut du document (mis à jour le 2026-09-21).** Ceci est un **PLAN**, écrit le
+> 2026-08-23. Ce n'est **pas** la description de ce qui existe aujourd'hui, et le lire
+> comme tel conduit à deux erreurs symétriques : croire construit ce qui n'est qu'écrit,
+> ou reconstruire ce qui l'est déjà.
+>
+> ⚠️ **Ce qui a changé depuis, et que ce document ignore.** Le tunnel apporteurs a été
+> implémenté en septembre 2026. En particulier :
+>
+> - le vocabulaire public ne dit plus jamais « agent commercial », « VRP » ni « on
+>   t'appelle » — une garde exécutable le vérifie à chaque PR ;
+> - **aucun dossier d'apporteur ne part au CRM des ventes** (décision opposée à ce que
+>   ce plan supposait) ;
+> - l'échange de découverte est un rendez-vous **en visioconférence de 15 minutes**,
+>   envoyé sur invitation manuelle uniquement — jamais de réservation ouverte ;
+> - la console a sa propre liste « Apporteurs », **une ligne par personne**, avec ses
+>   gestes (inviter, classer sans suite, enregistrer une opposition).
+>
+> 🔑 **Source de vérité sur le FONCTIONNEMENT** : `docs/fonctionnement-reseau-apporteurs.md`.
+> **Sur le CONTRAT** : `docs/contrat-apporteur-clauses.md`. Ce plan-ci garde sa valeur
+> pour le **raisonnement** qui a conduit aux décisions — la métrique pilotée, le risque
+> de requalification, l'ordre des chantiers — pas pour l'état du produit.
+>
+> **Plan créé le** : 2026-08-23
 > **Objectif** : constituer un réseau d'apporteurs d'affaires partout en France pour les formations, audits et intégrations IA d'Axion-IA.
 > **Contrainte** : le plus vite possible, au coût de recrutement le plus bas possible.
 > **Méthode** : on exécute les chantiers **les uns après les autres**, dans l'ordre du §6.
