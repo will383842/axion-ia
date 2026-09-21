@@ -1,32 +1,33 @@
 /**
  * L'allowlist de `gitleaks` est vraiment LUE par le scan (2026-09-21).
  *
- * ── Le défaut réparé ──────────────────────────────────────────────────────
- * L'étape déclarait `with: config-path: axionia/.gitleaks.toml`. **Ce n'est pas
- * une entrée de `gitleaks-action@v3`** : l'action ne lit sa configuration que
- * par la variable d'environnement `GITLEAKS_CONFIG`. Et un `with:` inconnu ne
- * fait pas échouer un workflow — il est ignoré, en silence.
+ * ── Ce que ce fichier a coûté à apprendre ────────────────────────────────
+ * `config-path` n'est PAS une entrée de `gitleaks-action@v3` (son `action.yml`
+ * ne déclare aucun `inputs:`). Un `with:` inconnu ne fait pas échouer un
+ * workflow : il est ignoré, en silence.
  *
- * Résultat : trois exceptions écrites et commentées, dont une avec sept lignes
- * de justification, n'ont **jamais** été lues. Le scan tournait sur les règles
- * par défaut.
+ * 🔑 MAIS L'ALLOWLIST ÉTAIT LUE QUAND MÊME. Une première version de ce fichier
+ * affirmait le contraire, et c'était FAUX : l'action ne passe pas `--source`,
+ * donc gitleaks charge `./.gitleaks.toml` par sa résolution automatique. Le
+ * journal de `main` le dit mot pour mot :
+ *   `DBG using existing gitleaks config .gitleaks.toml from `(--source)/.gitleaks.toml``
  *
- * 🔑 LE DÉFAUT EST SÉVÈRE SANS JAMAIS ÊTRE DANGEREUX, et c'est ce qui le rend
- * intéressant : les règles par défaut sont PLUS strictes que les nôtres, donc
- * aucun secret n'est passé à travers. Ce qu'on perdait est l'inverse — des faux
- * positifs, et la confiance dans une garde dont personne ne savait qu'elle ne
- * s'appliquait pas.
+ * 🔴 ET LA PREMIÈRE « RÉPARATION » A CASSÉ LE SCAN. `GITLEAKS_CONFIG` désignait
+ * `.../axionia/.gitleaks.toml` — `axionia` est le dossier PARENT en local, pas
+ * un répertoire du dépôt. gitleaks meurt au chargement et n'inspecte plus aucun
+ * commit.
  *
- * ── Pourquoi personne ne l'a vu pendant des mois ─────────────────────────
- * Une PR ne scanne que ses commits NEUFS. Tant qu'aucun d'eux ne touchait un
- * fichier exempté, l'exception inerte ne se manifestait pas. Elle s'est révélée
- * le 2026-09-21, sur une PR dont un jeton de TEST était voisin du mot-clé
- * `token:` — un faux positif que l'allowlist aurait dû absorber.
+ * 🔴 CE TEST ÉTAIT VERT PENDANT CE TEMPS, et c'est la leçon qui compte. Il
+ * NORMALISAIT le chemin — `.replace(/^axionia\//, "")` — avant d'en vérifier
+ * l'existence : il effaçait exactement le segment qui cassait tout, puis
+ * validait un chemin qui n'était pas celui configuré.
  *
- * ── Ce que ce test tient ─────────────────────────────────────────────────
- * Il refuse le RETOUR de `config-path`, et il exige que le fichier désigné
- * existe. Un chemin qui ne mène à rien remettrait la garde dans l'état qu'on
- * vient de quitter : configurée en apparence, muette en pratique.
+ * ⚠️ **Une garde qui nettoie son entrée avant de la vérifier ne vérifie plus
+ * l'entrée.** Ici elle a été écrite, non pas pour mesurer, mais pour passer.
+ *
+ * ── Ce que ce test tient maintenant ──────────────────────────────────────
+ * Le chemin est résolu comme le fait GitHub — `${{ github.workspace }}` est la
+ * RACINE du dépôt — et rien d'autre n'est retiré. Un segment de trop rougit.
  */
 
 import { readFileSync, existsSync } from "node:fs";
@@ -69,10 +70,11 @@ describe("le scan de secrets lit bien notre configuration", () => {
     expect(m, "GITLEAKS_CONFIG sans valeur").not.toBeNull();
     // Le chemin est exprimé depuis la racine du dépôt (`github.workspace`) ;
     // les tests, eux, tournent depuis `axionia/`.
-    const chemin = (m?.[1] ?? "")
-      .trim()
-      .replace(/\$\{\{[^}]*\}\}\//, "")
-      .replace(/^axionia\//, "");
+    // 🔴 SEULE l'expression `${{ github.workspace }}` est résolue — elle vaut la
+    // RACINE du dépôt, c'est-à-dire l'endroit d'où tournent ces tests. Tout le
+    // reste du chemin est vérifié TEL QUEL. Retirer un segment ici, c'est
+    // s'interdire de voir celui qui est en trop.
+    const chemin = (m?.[1] ?? "").trim().replace(/^\$\{\{[^}]*\}\}\//, "");
     expect(existsSync(join(RACINE, chemin)), `${chemin} est introuvable`).toBe(true);
   });
 
