@@ -43,6 +43,19 @@ function estUnTest(relatif: string): boolean {
   );
 }
 
+/**
+ * Retire commentaires de ligne et de bloc.
+ *
+ * 🔑 Sans ça, la garde ci-dessous accuse le texte qui ÉNONCE la règle : la
+ * doctrine « jamais de `NOT: FILTRE_APPORTEUR_PRISMA` » est écrite en toutes
+ * lettres dans l'en-tête de `est-apporteur.ts`. Mesuré au premier essai : un
+ * seul coupable, et c'était le commentaire. Une règle doit pouvoir se citer
+ * elle-même. Même procédé que `le-tunnel-apporteur-ne-dit-jamais-agent-commercial`.
+ */
+function codeSeul(source: string): string {
+  return source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:])\/\/.*/g, "$1");
+}
+
 function sources(dossier: string): string[] {
   const absolu = path.join(RACINE, dossier);
   const trouves: string[] = [];
@@ -89,6 +102,52 @@ describe("le dossier apporteur ne part pas au CRM (décision B2, 19/09)", () => 
     expect(
       fautifs,
       "ces fichiers rouvrent l'envoi au CRM coupé le 19/09 (décision B2, ADR 0051) :",
+    ).toEqual([]);
+  });
+  // ── 2026-09-21 — la doctrine « jamais de NOT: » devient EXÉCUTABLE ───────
+  //
+  // `est-apporteur.ts` interdit, en commentaire, d'écrire
+  // `NOT: FILTRE_APPORTEUR_PRISMA` pour exclure les apporteurs d'une requête.
+  // Le motif est un piège SQL réel : en base, un chemin JSON absent rend NULL,
+  // et `NOT (NULL = 'x')` vaut encore NULL — la ligne DISPARAÎT du résultat.
+  // Toutes les submissions sans `subType`, c'est-à-dire la plupart des demandes
+  // clients, sortiraient silencieusement, sans la moindre erreur.
+  //
+  // 🔴 Jusqu'ici cette règle n'était portée QUE par un commentaire : rien ne
+  // rougissait si quelqu'un l'écrivait. Sa doctrine jumelle (ne pas importer
+  // `@/server/crm-sync` dans ce dossier) avait sa garde ; celle-ci non. On
+  // comble l'écart — un commentaire n'est pas une garde.
+  //
+  // Portée : tout `src/`, pas seulement le tunnel. Le piège vaut partout où la
+  // constante est lue, et son premier consommateur de production vit ailleurs
+  // (`src/server/calendly/`, unité P9).
+  const NEGATION_DU_FILTRE = /NOT\s*:\s*\{?\s*(?:\.\.\.\s*)?FILTRE_APPORTEUR_PRISMA/;
+
+  it("le prédicat de négation reconnaît les formes qu'un développeur écrirait", () => {
+    // Témoin : une garde qui ne reconnaît pas la faute ne la trouvera jamais.
+    expect(NEGATION_DU_FILTRE.test(`NOT: FILTRE_APPORTEUR_PRISMA`)).toBe(true);
+    expect(NEGATION_DU_FILTRE.test(`NOT: { ...FILTRE_APPORTEUR_PRISMA }`)).toBe(true);
+    expect(NEGATION_DU_FILTRE.test(`NOT:{...FILTRE_APPORTEUR_PRISMA}`)).toBe(true);
+    // Et il ne crie pas sur l'usage LÉGITIME, qui est une inclusion.
+    expect(NEGATION_DU_FILTRE.test(`where: { ...FILTRE_APPORTEUR_PRISMA }`)).toBe(false);
+    // Ni sur la doctrine qui se cite elle-même : `est-apporteur.ts` écrit la
+    // règle en toutes lettres dans son en-tête, et la garde l'accusait au
+    // premier essai. Commentaire de BLOC, comme celui du module.
+    expect(NEGATION_DU_FILTRE.test(codeSeul("/** NOT: FILTRE_APPORTEUR_PRISMA */"))).toBe(false);
+    // Et en commentaire de LIGNE, l'autre forme que `codeSeul` doit retirer.
+    expect(NEGATION_DU_FILTRE.test(codeSeul("// NOT: FILTRE_APPORTEUR_PRISMA"))).toBe(false);
+  });
+
+  it("aucun module de src/ n'exclut les apporteurs par une négation en base", () => {
+    const fautifs = sources("src").filter((f) =>
+      NEGATION_DU_FILTRE.test(codeSeul(readFileSync(path.join(RACINE, f), "utf8"))),
+    );
+    expect(
+      fautifs,
+      "ces fichiers excluent les apporteurs par `NOT:` — en SQL, un chemin JSON " +
+        "absent rend NULL et la négation d'un NULL reste NULL : les demandes " +
+        "clients sans `subType` disparaîtraient du résultat, sans erreur. " +
+        "Lire, puis filtrer en mémoire avec `estApporteur` :",
     ).toEqual([]);
   });
 });
