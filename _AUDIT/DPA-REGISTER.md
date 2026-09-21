@@ -16,7 +16,7 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | #   | Sous-processeur            | Finalité                             | Localisation            | DPA    | Base légale transfert      | Statut          |
 | --- | -------------------------- | ------------------------------------ | ----------------------- | ------ | -------------------------- | --------------- |
 | 1   | Hetzner Online GmbH        | VPS + Storage Box backups offsite    | Allemagne (Frankfurt)   | papier | UE intra-zone              | 🟡 à signer     |
-| 2   | Cloudflare, Inc.           | CDN + DDoS + Turnstile captcha **+ stockage objet R2 : toutes les pièces de l'organisme, images de signature, relevés de connexion, sauvegardes chiffrées** | États-Unis (endpoint global) | online | SCC + EU-US DPF            | 🟠 à accepter — **et il détient les pièces** |
+| 2   | Cloudflare, Inc.           | CDN + DDoS + Turnstile captcha **+ stockage objet R2 : toutes les pièces de l'organisme, images de signature, relevés de connexion, sauvegardes chiffrées** | États-Unis (endpoint global) | accepté | SCC + EU-US DPF            | ✅ **DPA accepté le 2026-05-09** — et il détient les pièces |
 | 3   | Telegram FZ-LLC            | Notifications admin (Bot API)        | Émirats Arabes Unis     | aucun  | Art. 49 + minimisation PII | ✅ ADR 0010     |
 | 4   | Sentry (Functional Software) | Crash reporting + traces           | SaaS région UE (`ingest.de.sentry.io`) | online | SCC + EU-US DPF | 🟡 à signer     |
 | 5   | Plausible (self-hosted)    | Analytics anonymes                   | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
@@ -225,12 +225,12 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | **Données traitées**      | Réseau : IP visiteur, User-Agent, requêtes HTTP (logs CDN). **Stockage R2 : le contenu des pièces** — conventions, convocations, émargements, attestations, certificats, devis, factures, avoirs, exemplaires signés, supports (`documents/`, `supports/`) ; **images de signature manuscrite** (`emargement/…png`) ; **relevés de connexion CSV nominatifs** des sessions à distance (`presence/…`, nom + e-mail + horaires) ; kits d'intervention (`interventions/`) ; **sauvegardes chiffrées** — bases de données, Redis, Plausible, DocuSeal, banque d'images, l'archive des secrets d'exploitation, et `files/` : les volumes de la console, **dont les CV reçus par candidature** et les médias des avis |
 | **Localisation physique** | Edge mondial pour le CDN. **Stockage R2 — relevé par Will au tableau de bord le 2026-09-20** : `axion-ia-backups` (créé le 2026-05-09, région **EEUR**, 1,61 k objets, 2,28 Go — le site) et `axion-audit-backups` (créé le 2026-08-28, région **WEUR**, 8,14 k objets, 49,7 Mo — l'application d'audit). Les deux en **juridiction « par défaut »**, joints par l'endpoint global `…r2.cloudflarestorage.com`. ⚠️ WEUR/EEUR sont des **indications de région, pas une garantie de résidence** : Cloudflare stocke en Europe de préférence, rien n'oblige les données à y rester. La juridiction se choisit **à la création** et ne se modifie plus |
 | **Garanties**             | DPA + clauses contractuelles types (SCC) + EU-US Data Privacy Framework (DPF) |
-| **DPA**                   | Online — auto-acceptable depuis dashboard CF. ⛔ **Il couvrira alors AUSSI R2** : ce n'est plus un DPA « CDN » |
+| **DPA**                   | Online, **accepté le 2026-05-09** (source : `docs/runbooks/R28-dpa-renewal.md`). Il couvre **aussi R2** : ce n'est pas un DPA « CDN » |
 | **Lien**                  | https://www.cloudflare.com/cloudflare-customer-dpa/                           |
 | **Procédure**             | Dashboard Cloudflare → Manage Account → Configurations → Privacy → Sign DPA   |
 | **Durée conservation**    | Logs CDN : 30 j max. **Pièces R2 : 5 ans annoncés** (`DOCUMENT_RETENTION_YEARS`, imprimé sur les pièces ; `suppressionPrevueAt` en base). ⛔ **Aucune purge n'applique cette échéance aux PIÈCES** : `suppressionPrevueAt` n'est lu par aucun effacement (cf. `src/server/qualiopi/legal/retention-echeance.ts`). ⚠️ Ne pas confondre avec la rotation des SAUVEGARDES, qui existe bel et bien : `prune_r2` (`scripts/backup-lib.sh`) supprime par rang de récence — `files/` 14, `secrets/` 30, `postgres/hourly/` 24, `docuseal/` 24 — entre autres : `redis/`, `plausible/*` et `image-bank/` tournent aussi, selon `retention_for_type` (`scripts/backup-lib.sh`). Deux mécanismes distincts, un seul manque. Seules suppressions réelles : purge RGPD art. 17 des images de signature, rollback de signature, suppression admin d'une version, ZIP temporaire |
-| **Statut**                | 🟠 **À ACCEPTER** par Will — et la fiche est désormais exacte sur ce que Cloudflare détient |
-| **Date signature**        | _(à compléter)_                                                               |
+| **Statut**                | ✅ **ACCEPTÉ** — confirmé par Will le 2026-09-20. ⚠️ Ce registre a porté « à accepter » alors que l'accord existait : l'écart jouait en défaveur de l'organisme |
+| **Date signature**        | **2026-05-09** — source : `docs/runbooks/R28-dpa-renewal.md` (« online accepté 2026-05-09 »). ⚠️ Une première rédaction portait « non retrouvée » : Will ne s'en souvenait pas et j'avais renoncé à chercher dans ce troisième registre. La date existait |
 
 > ⚠️ **CE FICHIER EST DANS UN DÉPÔT PUBLIC** (`will383842/axion-ia`, visibilité
 > `PUBLIC`, vérifié le 2026-09-20). Un registre art. 30 est une pièce INTERNE :
@@ -276,18 +276,14 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 >   clauses contractuelles types, pas la géographie.
 >
 > ⛔ **RESTE À WILL, sur R2** :
-> 1. 🔴 **ACCEPTER LE DPA CLOUDFLARE — le seul vrai manque, et il prime sur la
->    géographie.** Le fondement est l'**art. 28 §3** : un traitement par un
->    sous-traitant doit être régi par un contrat, point. Cette obligation ne
->    dépend pas du lieu des serveurs ni du mécanisme de transfert — elle
->    s'appliquerait à l'identique avec un compartiment en juridiction UE.
->    L'absence de juridiction UE n'est donc PAS une non-conformité ; l'absence
->    de contrat de sous-traitance en est une, directement.
->    ⚠️ Ne pas fonder ce reste sur les seules clauses contractuelles types : la
->    ligne « Garanties » ci-dessus invoque aussi l'EU-US Data Privacy Framework,
->    décision d'adéquation au sens de l'art. 45 — qui fonderait le transfert
->    sans CCT. L'art. 28 §3, lui, ne souffre aucune discussion.
->    Dashboard → Manage Account → Configurations → Privacy → Sign DPA ;
+> 1. ✅ **LE DPA EST ACCEPTÉ** (confirmé par Will le 2026-09-20). Ce reste a été
+>    écrit comme « le seul vrai manque » alors que l'accord existait déjà : le
+>    registre se trompait CONTRE l'organisme. L'obligation de l'**art. 28 §3**
+>    — un traitement par un sous-traitant doit être régi par un contrat — est
+>    donc satisfaite, et c'est ce contrat qui porte les clauses contractuelles
+>    types du transfert hors UE, pour R2 comme pour le CDN.
+>    📅 Date d'acceptation : **2026-05-09**, retrouvée dans
+>    `docs/runbooks/R28-dpa-renewal.md`. Rien ne reste sur ce point ;
 > 1bis. **déclarer les DEUX compartiments** s'ils relèvent du même responsable
 >    de traitement — `axion-ia-backups` sert le site, `axion-audit-backups`
 >    l'application d'audit. ⚠️ `R2_BUCKET_IMMUTABLE` figure dans le code et les
@@ -529,7 +525,7 @@ Cf. `src/app/[locale]/mes-donnees/page.tsx` (page exposée) +
 | 2026-05-15 | Audit B5 fix P0-2/P0-3/P0-5 : ajout Unsplash / Voyage AI / Stripe / OSM / DocuSeal (5 lignes). SSOT publique unifiée sur `src/content/subprocessors.ts`. |
 | 2026-09-15 | ⏳ **En attente de validation de Will.** Donnée de santé (art. 9) : le détail du besoin d'adaptation des positionnements répondus du 2026-07-26 au 2026-08-20 reste présent **en clair** dans les dumps PostgreSQL **chiffrés** (Hetzner Storage Box, R2) antérieurs à la date du passage du rattrapage (`docs/runbooks/R34-rattrapage-chiffrement-details-adaptation.md`), jusqu'à leur rotation (mensuels : ≤ 12 mois). Aucune purge de sauvegarde proposée. |
 | _(date)_   | DPA Hetzner signé (Will). Référence : **\*\*\*\***\_**\*\*\*\***                                                                                         |
-| _(date)_   | DPA Cloudflare accepté (Will).                                                                                                                           |
+| 2026-05-09 | DPA Cloudflare accepté (Will). Couvre TOUS les services du compte, **R2 compris**. Source : `docs/runbooks/R28-dpa-renewal.md`. Date inscrite le 2026-09-20. |
 | _(date)_   | DPA OpenAI signé + ZDR activé (Will). ID compte : **\*\*\*\***\_**\*\*\*\***                                                                             |
 | _(date)_   | DPA Anthropic signé (Will). ID compte : **\*\*\*\***\_**\*\*\*\***                                                                                       |
 | _(date)_   | DPA Perplexity signé (Will). ID compte : **\*\*\*\***\_**\*\*\*\***                                                                                      |

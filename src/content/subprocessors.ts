@@ -112,9 +112,11 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     //
     // 🔑 Et ce champ décrit une LOCALISATION, rien d'autre. Une première
     // rédaction y ajoutait « transfert encadré par les clauses contractuelles
-    // types » — une garantie que le DPA porte, et que le DPA n'est pas encore
-    // accepté. C'eût été le défaut même que cette ligne corrige, déplacé de la
-    // géographie vers le contrat. Les garanties ont leurs propres champs,
+    // types » — une garantie que le DPA porte. Au moment de cette rédaction, on
+    // croyait le DPA non accepté ; il l'était depuis le 2026-05-09. La phrase
+    // reste néanmoins RETIRÉE : ce champ décrit une localisation, et une
+    // garantie juridique n'a pas à y être répétée alors qu'elle a son propre
+    // champ, qui peut évoluer sans lui. Les garanties ont leurs propres champs,
     // `transferFramework` et `dpaStatus`, affichés séparément et à jour.
     serversLocation:
       "Réseau global edge pour le CDN. Stockage : deux compartiments avec indication de région Europe (Ouest et Est), sans juridiction européenne garantie.",
@@ -142,7 +144,27 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     dataCategoriesEn:
       "For the network: visitor IP addresses, user-agent, HTTP requests, no advertising cookies. For storage: the contents of the documents — the identity of trainees, trainers and clients, their contact details, invoiced amounts, their handwritten signature stroke and their connection times. No object is served publicly by the application: every access goes through a time-limited signed link.",
     legalBasis: "6.1.f_legitimate_interest",
-    dpaStatus: "auto_signable_dashboard",
+    // 🟢 2026-09-20 — **LE DPA EST ACCEPTÉ**, confirmé par Will. Cette ligne
+    // portait `auto_signable_dashboard`, c'est-à-dire « acceptable en un
+    // clic » — pas « accepté ». La notice publique annonçait donc moins que
+    // la réalité, et le registre listait en tête de ses restes une action
+    // déjà faite.
+    //
+    // 🔑 L'écart joue ici EN DÉFAVEUR de l'organisme : il est en règle et ses
+    // propres documents disent le contraire. Un registre art. 30 qui
+    // sous-déclare sa conformité est aussi faux qu'un registre qui la
+    // sur-déclare, et c'est la pièce qu'un auditeur ouvre en premier.
+    //
+    // ⚠️ Le DPA Cloudflare couvre TOUS les services du compte, donc **aussi
+    // R2** : ce n'est plus un DPA « CDN ». C'est lui qui porte les clauses
+    // contractuelles types du transfert hors UE.
+    //
+    // 📅 Accepté le **2026-05-09**. La date n'a PAS été fournie par Will, qui
+    // ne s'en souvenait pas : elle était dans `docs/runbooks/R28-dpa-renewal.md`
+    // — un TROISIÈME registre, que je n'avais pas ouvert. Une première
+    // rédaction inscrivait « date non retrouvée » après avoir renoncé trop
+    // vite. Chercher dans le dépôt avant de déclarer une information perdue.
+    dpaStatus: "signed",
     transferFramework: "scc",
     category: "core_infra",
     activationStatus: "active",
