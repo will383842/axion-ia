@@ -50,7 +50,6 @@ export type AdminNavGroup =
   | "image-bank"
   | "presse"
   | "chatbot"
-  | "engagement"
   | "emails"
   | "ops"
   | "system";
@@ -213,7 +212,6 @@ export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   "image-bank": "Banque d'images",
   presse: "Salle de presse",
   chatbot: "Chatbot",
-  engagement: "Engagement",
   ops: "Ops & monitoring",
   system: "Système",
 };
@@ -349,7 +347,6 @@ export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "image-bank",
   "presse",
   "chatbot",
-  "engagement",
   "emails",
   "ops",
   "system",
@@ -419,7 +416,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       subGroup: "agenda",
     },
     // Planning unifié des prestations (formations collectives + coaching 1-to-1).
-    // Distinct du « Calendrier » booking ci-dessous, qui est un vestige masqué.
+    // (Le « Calendrier » de l'ancienne réservation payante a été retiré le
+    // 2026-08-01 ; sa route redirige ici.)
     // Le hub d'abord : c'est la page qui dit ce qui ne va pas. Les autres vues
     // du cockpit répondent à une question qu'on est venu poser ; celle-ci répond
     // à une question qu'on n'a pas encore pensé à se poser.
@@ -479,12 +477,12 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     //    MÊME table `Submission` avec un filtre figé ; trois autres étaient la
     //    MÊME table `calendly_events` affichée de trois façons.
     //
-    //    Après : 5 entrées, une par CANAL D'ENTRÉE réel.
-    //      Tout            → vue unifiée des 4 sources (rien ne se perd)
+    //    Après : une entrée racine par CANAL D'ENTRÉE réel.
+    //      Tout            → vue unifiée des sources (rien ne se perd)
     //      Appels réservés → calendly_events (liste + calendrier en onglet)
-    //      Messages        → Submission (le tri fin passe par le filtre « Catégorie »)
-    //      Candidatures    → JobApplication (CV, workflow RH : vrai objet distinct)
-    //      Podcast         → PodcastRequest (vrai objet distinct)
+    //      Messages        → Submission, trié par ses catégories indentées
+    //                        dessous (dont Podcast, 2026-08-14, et Apporteurs)
+    //      Candidatures    → JobApplication (CV, suivi RH : vrai objet distinct)
     //
     //    Les vues filtrées de Submission ne disparaissent pas : elles gardent
     //    leur route et restent joignables par la command palette (⌘K) et les
@@ -518,7 +516,9 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     //   sans le préfixe « Messages · » : l'indentation le dit déjà.
     {
       href: `${base}/contacts/clients`,
-      label: "Clients",
+      // « Demandes clients » (2026-09-19) : « Clients » laissait croire à la
+      // liste des clients du CRM Qualiopi, alors que ce sont des DEMANDES.
+      label: "Demandes clients",
       icon: "Briefcase",
       group: "contacts",
       navLevel: 2,
@@ -551,38 +551,18 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "contacts",
       navLevel: 2,
     },
+    // « Apporteurs » (2026-09-19, ex-« Recrutement ») : la liste ne contient
+    // plus que les apporteurs d'affaires — les messages /contact « je cherche
+    // un poste » vont dans « Autres ». Le libellé dit enfin ce qu'on y trouve ;
+    // l'URL ne bouge pas.
+    //
+    // La saisie manuelle d'un apporteur n'est plus une entrée de menu : c'est
+    // le bouton « Ajouter » de cette liste. Un geste n'est pas une catégorie de
+    // Messages, et la garde réciproque range sa route parmi les sous-écrans.
     {
       href: `${base}/contacts/commercial`,
-      label: "Recrutement",
+      label: "Apporteurs",
       icon: "UserSearch",
-      group: "contacts",
-      navLevel: 2,
-    },
-    // Saisie manuelle d'un contact apporteur (2026-09-04). Posée JUSTE APRÈS
-    // « Commercial », et INDENTÉE comme elle : ce n'est pas un canal d'entrée
-    // mais une action sur ce canal.
-    //
-    // 🔴 Première tentative : entrée racine du pôle « contacts ». La garde
-    // « expose 5 canaux racine, un par type d'entrée réel » a rougi, et elle
-    // avait raison — une racine annonce un TYPE D'ENTRÉE (appels, messages,
-    // candidatures), pas un geste. Poser un bouton au rang d'un canal aurait
-    // laissé croire qu'une nouvelle source de contacts existait.
-    //
-    // 🔑 Sans entrée de menu, l'écran existe et n'est atteignable par aucun
-    // chemin. Six portes créaient un contact, toutes publiques ; celle-ci est
-    // la première qui parte de la console.
-    {
-      href: `${base}/contacts/commercial/nouveau`,
-      label: "Nouveau contact apporteur",
-      // 🔴 `UserPlus` était le choix évident — et « Candidatures » le portait
-      // déjà dans le MÊME groupe. La garde `admin-nav-icons` l'a refusé, à
-      // raison : deux entrées voisines partageant une icône deviennent
-      // indiscernables du coin de l'œil, ce qui est précisément la façon dont
-      // on lit une barre latérale.
-      //
-      // `PenLine` dit le bon geste : ici on ÉCRIT une fiche, on ne reçoit pas
-      // une candidature.
-      icon: "PenLine",
       group: "contacts",
       navLevel: 2,
     },
@@ -626,10 +606,25 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     //
     // `navLevel: 2` : c'est une vue DE la liste des candidatures, pas une
     // catégorie sœur — l'indentation le dit sans qu'on ait à l'écrire.
+    //
+    // « Suivi des candidatures emploi » (2026-09-19, ex-« Pilotage du
+    // recrutement ») : « recrutement » désignait aussi les apporteurs, qui n'y
+    // figurent pas. Le libellé nomme ce que l'écran mesure.
     {
       href: `${base}/contacts/candidatures/pilotage`,
-      label: "Pilotage du recrutement",
+      label: "Suivi des candidatures emploi",
       icon: "Gauge",
+      group: "contacts",
+      navLevel: 2,
+    },
+    // Les offres qu'on PUBLIE sont l'autre moitié des candidatures qu'on
+    // REÇOIT (2026-09-19) : elles vivaient dans « Contenu », entre le blog et
+    // la FAQ, loin de l'écran où l'on voit ce qu'elles rapportent. L'URL ne
+    // bouge pas. Pas `Briefcase` : « Demandes clients » le porte dans ce groupe.
+    {
+      href: `${base}/offres-emploi`,
+      label: "Offres d'emploi",
+      icon: "FileUser",
       group: "contacts",
       navLevel: 2,
     },
@@ -645,7 +640,9 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     {
       href: `${base}/tunnels/prospects`,
-      label: "Tunnel de prospects",
+      // Nommé par ce qu'il suit (2026-09-19) : le parcours diagnostic &
+      // simulateur de gain. « Prospects » se confondait avec les apporteurs.
+      label: "Tunnel diagnostic & simulateur",
       icon: "UserSearch",
       group: "tunnels",
     },
@@ -981,12 +978,6 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     { href: `${base}/categories`, label: "Catégories", icon: "Tag", group: "content" },
     { href: `${base}/case-studies`, label: "Cas concrets", icon: "Trophy", group: "content" },
     { href: `${base}/avis`, label: "Avis clients", icon: "Star", group: "content" },
-    {
-      href: `${base}/offres-emploi`,
-      label: "Offres d'emploi",
-      icon: "Briefcase",
-      group: "content",
-    },
     { href: `${base}/faq`, label: "FAQ", icon: "HelpCircle", group: "content" },
     { href: `${base}/help`, label: "Centre d'aide", icon: "LifeBuoy", group: "content" },
     // ── Formation / Qualiopi (back-office OF) ──────────────────────────────
@@ -1129,6 +1120,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       subGroup: "dossiers",
     },
     // (Refonte 2026-08-01 : le rangement par pôle vit dans subGroup — l'ordre
+    // du fichier ne préjuge plus du pôle. Repères historiques supprimés.)
     {
       href: `${base}/qualiopi/offres`,
       label: "Offres",
@@ -1232,7 +1224,6 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "qualiopi",
       subGroup: "catalogue",
     },
-    // du fichier ne préjuge plus du pôle. Repères historiques supprimés.)
     // « Conformité » (/qualiopi/conformite) fusionnée le 2026-08-01 (phase 2)
     // dans « Conformité & mode auditeur » ci-dessous — même matrice de 32
     // indicateurs sous deux entrées. La route redirige en 308.
@@ -1281,10 +1272,14 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "qualiopi",
       subGroup: "conformite",
     },
+    // « Réseau de partenaires » (2026-09-19) : « Partenariats » était aussi le
+    // nom d'une catégorie de Messages, avec la même poignée de main — deux
+    // écrans différents indiscernables. Celui-ci est le registre Qualiopi des
+    // partenaires ; son icône n'est portée par aucune autre entrée.
     {
       href: `${base}/qualiopi/partenariats`,
-      label: "Partenariats",
-      icon: "Handshake",
+      label: "Réseau de partenaires",
+      icon: "Waypoints",
       group: "qualiopi",
       subGroup: "conformite",
     },
@@ -1493,88 +1488,22 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "image-bank",
       subGroup: "bibliotheque",
     },
-    // ⚠️ Les 5 items `parent`-masqués ci-dessous (bulk-import, categories, tags,
-    //   analytics, settings) sont des PLACEHOLDERS jamais livrés : leurs pages
-    //   rendent `AdminStubPageV2` (« Cette section est prévue Sprint 2.x »),
-    //   aucune donnée, aucune fonctionnalité. Ils promettaient 10 outils dans la
-    //   sidebar alors que 5 seulement existent (Vue d'ensemble, Bibliothèque,
-    //   Téléverser, File de qualité, Journaux d'utilisation).
-    //   Masqués via `parent` (filtre `it.parent == null` dans AdminSidebarNav) :
-    //   routes + command palette + breadcrumb conservés. Réversible — retirer
-    //   `parent` le jour où le Sprint 2.x est réellement livré.
-    //   🔴 2026-09-06 — LES 4 STUBS ORPHELINS SONT RENTRÉS DANS LE RANG.
-    //   Ce commentaire disait, depuis des mois : « NB : 4 autres stubs
-    //   (licensing, seo-audit, sitemap-status, taxonomy) n'ont jamais eu
-    //   d'entrée de nav — routes accessibles par URL seulement. » Le dépôt
-    //   documentait donc son propre angle mort, et la garde réciproque les
-    //   absolvait par simple préfixe (`/image-bank` est au menu).
-    //   Ils sont désormais déclarés ici comme leurs 5 frères : `parent` posé,
-    //   donc TOUJOURS masqués de la barre latérale — mais atteignables par la
-    //   palette de commandes et porteurs d'un fil d'Ariane, au lieu de n'être
-    //   accessibles qu'en tapant leur URL.
-    //   🔑 Ce qui a tranché : `AdminStubPageV2` affiche lui-même « L'entrée de
-    //   menu existe déjà pour que vous sachiez ce qui est prévu ». Pour ces
-    //   quatre-là, l'écran mentait. Les 9 stubs sont maintenant homogènes ; les
-    //   retirer TOUS reste un arbitrage ouvert, mais il n'en concernerait plus
-    //   4 arbitrairement choisis.
-    {
-      href: `${base}/image-bank/bulk-import`,
-      label: "Import CSV en masse",
-      icon: "PackagePlus",
-      group: "image-bank",
-      subGroup: "bibliotheque",
-      parent: `${base}/image-bank`,
-    },
     // ▸ ORGANISATION & QUALITÉ
-    {
-      href: `${base}/image-bank/categories`,
-      label: "Catégories",
-      icon: "Tag",
-      group: "image-bank",
-      subGroup: "organisation",
-      parent: `${base}/image-bank`,
-    },
-    {
-      href: `${base}/image-bank/tags`,
-      label: "Étiquettes",
-      icon: "Tags",
-      group: "image-bank",
-      subGroup: "organisation",
-      parent: `${base}/image-bank`,
-    },
-    {
-      href: `${base}/image-bank/taxonomy`,
-      label: "Taxonomie",
-      icon: "Network",
-      group: "image-bank",
-      subGroup: "organisation",
-      parent: `${base}/image-bank`,
-    },
-    {
-      href: `${base}/image-bank/seo-audit`,
-      label: "Audit SEO",
-      // PAS `ScanSearch` : « File de qualité » le porte déjà dans ce groupe, et
-      // deux entrées à la même icône sont indiscernables dans la liste — c'est
-      // exactement ce que garde `admin-nav-icons.test.ts`, qui l'a refusé.
-      icon: "Gauge",
-      group: "image-bank",
-      subGroup: "organisation",
-      parent: `${base}/image-bank`,
-    },
+    // 🔴 2026-09-19 — LES 9 ÉCRANS VIDES SONT RETIRÉS, ENSEMBLE, AVEC LEURS
+    //    ROUTES (bulk-import, categories, tags, taxonomy, seo-audit, analytics,
+    //    settings, licensing, sitemap-status). Ils ne rendaient que
+    //    « cet écran n'existe pas encore » (composant d'attente, supprimé avec
+    //    eux). Masqués de la barre par `parent`, ils restaient dans la palette
+    //    de commandes, où ils promettaient neuf outils qui n'existent pas. Les
+    //    retirer tous d'un coup évite de recréer l'arbitraire corrigé le
+    //    2026-09-06 (quatre sans entrée, cinq avec). Le jour où l'un d'eux est
+    //    livré, il revient avec sa page — pas avant.
     {
       href: `${base}/image-bank/quality`,
       label: "File de qualité",
       icon: "ScanSearch",
       group: "image-bank",
       subGroup: "organisation",
-    },
-    {
-      href: `${base}/image-bank/analytics`,
-      label: "Statistiques",
-      icon: "BarChart3",
-      group: "image-bank",
-      subGroup: "organisation",
-      parent: `${base}/image-bank`,
     },
     // ▸ ADMINISTRATION
     {
@@ -1583,30 +1512,6 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Shield",
       group: "image-bank",
       subGroup: "admin",
-    },
-    {
-      href: `${base}/image-bank/settings`,
-      label: "Réglages",
-      icon: "Settings",
-      group: "image-bank",
-      subGroup: "admin",
-      parent: `${base}/image-bank`,
-    },
-    {
-      href: `${base}/image-bank/licensing`,
-      label: "Licences",
-      icon: "Scale",
-      group: "image-bank",
-      subGroup: "admin",
-      parent: `${base}/image-bank`,
-    },
-    {
-      href: `${base}/image-bank/sitemap-status`,
-      label: "État du sitemap",
-      icon: "FileSearch",
-      group: "image-bank",
-      subGroup: "admin",
-      parent: `${base}/image-bank`,
     },
     // ── salle de presse (communiqués + kit média de marque) ──────────────
     { href: `${base}/presse`, label: "Vue d'ensemble", icon: "Newspaper", group: "presse" },
@@ -1644,15 +1549,9 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "chatbot",
     },
     { href: `${base}/chatbot/reglages`, label: "Réglages", icon: "Settings", group: "chatbot" },
-    // ── engagement ───────────────────────────────────────────────────────
-    { href: `${base}/newsletter`, label: "Newsletter", icon: "Mail", group: "engagement" },
     // ── ops & monitoring ─────────────────────────────────────────────────
     { href: `${base}/analytics`, label: "Statistiques & SEO", icon: "BarChart3", group: "ops" },
     { href: `${base}/web-vitals`, label: "Web Vitals", icon: "Activity", group: "ops" },
-    // Journal des e-mails reellement partis (2026-08-13). La table existait
-    // depuis le debut, indexee pour etre lue — et n'etait affichee nulle part.
-    // A ne pas confondre avec « E-mails a valider » (Qualiopi), qui est une
-    // corbeille d'approbation et ne montre que 5 gabarits sur 66.
     // ── e-mails ──────────────────────────────────────────────────────────
     // Les 44 gabarits, avec leur rendu reel, leur declencheur et leur
     // destinataire. Derive de CATALOGUE — la page ne porte aucune liste.
@@ -1672,16 +1571,17 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "MailCheck",
       group: "emails",
     },
+    // La newsletter rejoint les e-mails (2026-09-19) : elle était seule dans un
+    // groupe « Engagement » d'une entrée, un titre de plus pour un seul lien.
+    // Pas `Mail` : « Gabarits » le porte déjà dans ce groupe.
+    { href: `${base}/newsletter`, label: "Newsletter", icon: "Newspaper", group: "emails" },
     // ⚠️ Le lien vers le tableau de bord ZeptoMail (demande Will, 2026-08-16)
-    // n'est VOLONTAIREMENT pas ici : `admin-nav.test.ts` verrouille l'invariant
-    // « tout href de la navigation est une route interne préfixée
-    // /<locale>/<adminPrefix> ». Un lien sortant le casse — et cet invariant
-    // n'est pas décoratif : le rendu de la nav construit des `<Link>` Next et
-    // la mise en surbrillance de l'entrée active compare des chemins.
-    // Le lien vit donc SUR la page « E-mails envoyés », à côté du journal
-    // qu'il complète. C'est aussi sa place logique : notre journal dit ce que
-    // l'application a TENTÉ, ZeptoMail ce que le relais a réellement REMIS —
-    // l'écart entre les deux est l'information, et elle se lit côte à côte.
+    // n'est VOLONTAIREMENT pas ici. Un lien sortant est possible depuis le
+    // 2026-08-24 (`external: true`, cf. Tiime) ; ce n'est pas la raison. Il vit
+    // SUR la page « Envoyés », à côté du journal qu'il complète : notre journal
+    // dit ce que l'application a TENTÉ, ZeptoMail ce que le relais a réellement
+    // REMIS — l'écart entre les deux est l'information, et elle se lit côte à
+    // côte.
     { href: `${base}/site-explorer`, label: "Toutes les URLs", icon: "Map", group: "ops" },
     // Recensement OG 2026-08-17 — il n'existait aucun endroit où VOIR ce que le
     // site sert au partage d'un lien. L'entrée vit sous « Toutes les URLs »
@@ -1705,7 +1605,9 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // et non en « contacts » : c'est un tableau de pilotage d'acquisition, pas
     // un écran de traitement — on y décide où remettre de l'argent, on n'y
     // traite aucune candidature.
-    { href: `${base}/annonces`, label: "Annonces recrutement", icon: "Megaphone", group: "ops" },
+    // « Provenance des annonces » (2026-09-19) : l'écran dit d'où viennent les
+    // apporteurs, annonce par annonce — ce n'est pas un écran de recrutement.
+    { href: `${base}/annonces`, label: "Provenance des annonces", icon: "Megaphone", group: "ops" },
     // Fabrique de liens de campagne (2026-09-04). Rangée juste après
     // « Annonces » parce que les deux répondent aux deux moitiés de la même
     // question : celle-ci FABRIQUE le lien qu'on diffuse, celle-là dit ce qu'il

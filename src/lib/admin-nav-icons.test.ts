@@ -70,4 +70,27 @@ describe("registre d'icônes nav admin (NAV_ICONS)", () => {
         `dans la liste :\n  - ${collisions.join("\n  - ")}`,
     ).toEqual([]);
   });
+
+  // Rangement du menu (2026-09-19). Trois entrées changeaient de place ou de
+  // nom en gardant une icône déjà prise dans leur voisinage : « Newsletter »
+  // arrive dans E-mails à côté de « Gabarits » (Mail), « Offres d'emploi »
+  // arrive sous Candidatures, dans le groupe où « Demandes clients » porte
+  // Briefcase, et « Réseau de partenaires » partageait sa poignée de main avec
+  // la catégorie « Partenariats » des messages — deux choses différentes sous
+  // le même dessin.
+  it("les entrées rangées le 2026-09-19 ont une icône qui leur est propre", () => {
+    const icone = (label: string) => items.find((it) => it.label === label)?.icon;
+
+    expect(icone("Newsletter")).toBeDefined();
+    expect(icone("Newsletter")).not.toBe("Mail");
+    expect(icone("Offres d'emploi")).toBeDefined();
+    expect(icone("Offres d'emploi")).not.toBe("Briefcase");
+
+    const reseau = icone("Réseau de partenaires");
+    expect(reseau).toBeDefined();
+    expect(
+      items.filter((it) => it.icon === reseau).map((it) => it.label),
+      "l'icône du réseau de partenaires n'est portée par aucune autre entrée",
+    ).toEqual(["Réseau de partenaires"]);
+  });
 });

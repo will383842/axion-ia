@@ -166,7 +166,11 @@ export async function listCandidaturesUnifieesAction(input: {
     return {
       id: s.id,
       source: "commerciale",
-      offerLabel: ville ? `Commercial Mémo Isère · ${ville}` : "Commercial Mémo Isère",
+      // Libellé d'AFFICHAGE, calculé à la lecture (2026-09-19) : rien n'est
+      // stocké, rien n'est réécrit. « Commercial Mémo Isère » nommait une
+      // annonce et un métier ; un apporteur est une personne indépendante qui
+      // recommande Axion-IA, venue de n'importe quel canal.
+      offerLabel: ville ? `Apporteur d'affaires · ${ville}` : "Apporteur d'affaires",
       contactName: safeDecrypt(s.contactName),
       contactEmail: safeDecrypt(s.contactEmail),
       status: s.status,

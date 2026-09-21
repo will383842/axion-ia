@@ -74,6 +74,13 @@ export default async function NouveauContactPage({ params }: PageProps) {
       <AdminPageHeader
         title="Nouveau contact apporteur"
         description="Pour quelqu'un qui a écrit, appelé, ou qu'on a rencontré — et qui n'est passé par aucun formulaire."
+        // On arrive ici par le bouton « Ajouter » de la liste des apporteurs
+        // (2026-09-19), plus par une entrée de menu : le retour y ramène.
+        breadcrumbs={
+          <a href={adminPath("fr", "contacts/commercial")} className="admin-link admin-back">
+            ← Apporteurs
+          </a>
+        }
       />
 
       <AdminCard>

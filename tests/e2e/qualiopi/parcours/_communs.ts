@@ -62,8 +62,19 @@ export type Modalite = "presentiel" | "distanciel" | "hybride";
  * Surtout, il ne couvre pas la console. Mesure du 2026-08-23, union dédupliquée :
  * **132 des 285** `page.tsx` du groupe `(admin)` le rendent — 93 en propre, 29
  * l'héritent de trois layouts (`contacts`, `documents-interventions`, `tunnels`),
- * 10 passent par `AdminStubPageV2` ou `VenteWizard`. Sur les **153** autres, un
- * locator bâti dessus ne matche RIEN.
+ * 10 passent par le composant d'écran d'attente de la banque d'images ou
+ * `VenteWizard`. Sur les **153** autres, un locator bâti dessus ne matche RIEN.
+ *
+ * Recompte du 2026-09-19, après la suppression des neuf écrans vides de la
+ * banque d'images et de leur composant d'attente : **303** `page.tsx`. 115 le
+ * rendent en propre, 32 l'héritent de quatre layouts (`contacts`,
+ * `documents-interventions`, `societe`, `tunnels`), 105 passent par un
+ * composant relais importé directement
+ * (les `*V2.tsx`, `VenteWizard`, `AdminListScaffold`…). Restent **51** pages où
+ * ce locator ne matche rien : le chiffre a changé, l'argument tient. Méthode :
+ * commentaires retirés, UN niveau d'import suivi, `components/admin/ui` exclu
+ * (il DÉFINIT la primitive, il ne la rend pas). Le relevé du 2026-08-23 ne
+ * suivait que deux relais — les deux décomptes ne se comparent pas ligne à ligne.
  *
  * 🔑 PIÈGE DE RE-MESURE : un `grep AdminPageShell` sur les `page.tsx` rend **97**,
  * et ce compte est faux dans les deux sens — il inclut 4 fichiers qui ne citent

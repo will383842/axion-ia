@@ -2,7 +2,10 @@
 //
 // Route canonique (anciennement `/submissions/[id]`).
 
+import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
+import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { markInboxRead } from "@/features/admin-inbox/reads";
 import { SubmissionDetailContent } from "../../../submissions/_v2/SubmissionDetailContent";
 import { gardePage } from "@/server/auth/garde-page";
@@ -25,6 +28,19 @@ export default async function ContactsMessageDetailPage({ params }: PageProps) {
   //    elle coûtait 1,64 kB gz au cliquet de bundle sur les 29 pages de ce lot
   //    (mesuré par Gate B) — `AccesRefuse` tire `next/link` et une icône.
   await gardePage("consultation", `/fr/${adminPrefix}/login`);
+
+  // Un apporteur a SA fiche (2026-09-19) : retour vers la liste des apporteurs,
+  // résultat de l'invitation. Un lien ancien — favori, notification, boîte de
+  // réception d'avant ce lot — l'ouvrait ici « comme un message ». La
+  // redirection est serveur : le lien reste valide, il atterrit au bon endroit.
+  //
+  // Placée AVANT l'accusé de lecture : la fiche d'arrivée le pose elle-même, il
+  // ne doit pas l'être deux fois. Un id inconnu n'est pas redirigé — la fiche
+  // rend son propre 404, comme avant.
+  const ligne = await prisma.submission.findUnique({ where: { id }, select: { details: true } });
+  if (ligne && estApporteur(ligne.details)) {
+    redirect(`/fr/${adminPrefix}/contacts/commercial/${id}`);
+  }
 
   // Boîte de réception (2026-07-29) — « non lu » façon boîte mail : ouvrir la
   // fiche vaut lecture, sans geste. Best-effort : `markInboxRead` ne throw

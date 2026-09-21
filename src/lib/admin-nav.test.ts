@@ -13,7 +13,7 @@ import {
 } from "./admin-nav";
 
 describe("buildAdminNav SSOT", () => {
-  it("returns 164 items (snapshot count — +5 console chatbot ADR-CB-07, +20 Qualiopi T0-T16, +1 RGPD T19, +1 Formateurs R9, +1 Stagiaires R10, +1 Config Qualiopi, +2 carrières, +6 Documents interventions dont Importer un kit, +3 Coaching 1-to-1, content_gen refonte UX 2026-06-16 = 30 items en 6 pôles, +1 Observatoire IA suivi 2026-06-17, +2 sous-items Documents interventions #125 (implementations/sites-web) non répercutés sur ce snapshot, +3 Salle de presse #140 (Vue d'ensemble · Communiqués · Kit média), +1 Couverture médias 2026-06-23 (CRUD retombées presse) — réconciliation du snapshot resté à 110 ; /orchestrator et /queue fusionnés → pas d'entrée nav, redirections seules ; +1 Photos hero Unsplash 2026-06-24 (rattrapage backfill content-gen/publier) ; +1 Backfill citations 2026-06-26 (content-gen/publier, rattrapage bloc Sources) ; +1 Actualités (news RSS) 2026-07-01 (pôle Lancer, contrôle volume news/jour)) ; +1 Annonces recrutement 2026-08-23 (pôle ops, provenance des candidatures commerciales) ; +1 Tiime 2026-08-24 (pôle Finances, LIEN EXTERNE vers notre plateforme agréée de facturation électronique) ; +1 Dépliant formations 2026-08-25 (sous-onglet des Imprimés, dérivé de IMPRIMES) ; −1 Entrées récentes 2026-08-27 (quatrième porte pour lire une demande — redirige en 308 vers la Boîte de réception) ; +1 Pilotage du recrutement 2026-09-04 (vue de Candidatures livrée par #968, jusque-là sans entrée de menu) ; +1 Liens de campagne 2026-09-04 (fabrique le lien UTM à diffuser — « Annonces » dit ce qu'il a rapporté, celle-ci le construit); +1 Nouveau contact apporteur 2026-09-04 (première porte de création qui parte de la CONSOLE — les six autres étaient publiques)", () => {
+  it("returns 162 items (snapshot count — +5 console chatbot ADR-CB-07, +20 Qualiopi T0-T16, +1 RGPD T19, +1 Formateurs R9, +1 Stagiaires R10, +1 Config Qualiopi, +2 carrières, +6 Documents interventions dont Importer un kit, +3 Coaching 1-to-1, content_gen refonte UX 2026-06-16 = 30 items en 6 pôles, +1 Observatoire IA suivi 2026-06-17, +2 sous-items Documents interventions #125 (implementations/sites-web) non répercutés sur ce snapshot, +3 Salle de presse #140 (Vue d'ensemble · Communiqués · Kit média), +1 Couverture médias 2026-06-23 (CRUD retombées presse) — réconciliation du snapshot resté à 110 ; /orchestrator et /queue fusionnés → pas d'entrée nav, redirections seules ; +1 Photos hero Unsplash 2026-06-24 (rattrapage backfill content-gen/publier) ; +1 Backfill citations 2026-06-26 (content-gen/publier, rattrapage bloc Sources) ; +1 Actualités (news RSS) 2026-07-01 (pôle Lancer, contrôle volume news/jour)) ; +1 Annonces recrutement 2026-08-23 (pôle ops, provenance des candidatures commerciales) ; +1 Tiime 2026-08-24 (pôle Finances, LIEN EXTERNE vers notre plateforme agréée de facturation électronique) ; +1 Dépliant formations 2026-08-25 (sous-onglet des Imprimés, dérivé de IMPRIMES) ; −1 Entrées récentes 2026-08-27 (quatrième porte pour lire une demande — redirige en 308 vers la Boîte de réception) ; +1 Pilotage du recrutement 2026-09-04 (vue de Candidatures livrée par #968, jusque-là sans entrée de menu) ; +1 Liens de campagne 2026-09-04 (fabrique le lien UTM à diffuser — « Annonces » dit ce qu'il a rapporté, celle-ci le construit); +1 Nouveau contact apporteur 2026-09-04 (première porte de création qui parte de la CONSOLE — les six autres étaient publiques) ; −1 Nouveau contact apporteur 2026-09-19 (devenue le bouton « Ajouter » de la liste Apporteurs) ; −9 écrans vides de la banque d'images 2026-09-19 (retirés avec leurs routes)", () => {
     const items = buildAdminNav("admin-test-prefix");
     // Base 131 − 14 module Prospection retiré 2026-07-08 (#278) = 117.
     // Refonte messagerie 2026-07-09 : 3 groupes distincts sortis de « main » /
@@ -147,14 +147,14 @@ describe("buildAdminNav SSOT", () => {
     // six portes créaient un contact, toutes publiques ; celle-ci est la
     // première qui parte de la console. = 166.
     // +4 (2026-09-06, stubs `image-bank` : Taxonomie, Audit SEO, Licences, État
-    // du sitemap) : quatre écrans `AdminStubPageV2` identiques à cinq autres qui,
+    // du sitemap) : quatre écrans d'attente vides identiques à cinq autres qui,
     // eux, avaient leur entrée depuis toujours. Ils n'étaient atteignables qu'en
     // tapant leur URL, et la garde réciproque les absolvait par simple préfixe.
     // `parent` est posé comme sur leurs cinq frères : ils restent MASQUÉS de la
     // barre latérale — ce compteur monte donc de 4 sans qu'aucune entrée
     // n'apparaisse à l'écran. C'est voulu, et c'est la raison pour laquelle il
     // faut lire ce nombre comme un inventaire du SSOT, pas comme un compte de ce
-    // que la barre affiche. = 170.
+    // que la barre affiche. = 170. (Les neuf sont retirés le 2026-09-19, plus bas.)
     // +1 (2026-09-13, « Salariés », nouveau pôle « Équipe ») : Axion-IA embauche
     // désormais hors formation — secrétaire, marketing, développeur web. Un
     // contrat de travail engage l'ENTREPRISE, pas la certification : l'écran
@@ -165,7 +165,16 @@ describe("buildAdminNav SSOT", () => {
     // +1 (2026-09-19, « Devenir apporteur d'affaires », sous-onglet des Imprimés
     // DÉRIVÉ de IMPRIMES) : le document de présentation envoyé à toute personne
     // intéressée par le réseau d'apporteurs. = 172.
-    expect(items.length).toBe(172);
+    // −1 (2026-09-19, « Nouveau contact apporteur ») : ce n'était pas un canal
+    // mais un GESTE sur la liste des apporteurs. Il devient le bouton « Ajouter »
+    // de cette liste, là où on le cherche — la route ne change pas. = 171.
+    // −9 (2026-09-19, écrans vides de la banque d'images : analytics,
+    // bulk-import, categories, licensing, seo-audit, settings, sitemap-status,
+    // tags, taxonomy) : neuf entrées qui ne menaient qu'à « cet écran n'existe
+    // pas encore ». Retirées ENSEMBLE avec leurs routes et leur composant :
+    // en garder une partie aurait gardé l'arbitraire que le +4 du 2026-09-06
+    // venait de supprimer. = 162.
+    expect(items.length).toBe(162);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
@@ -300,7 +309,13 @@ describe("buildAdminNav SSOT", () => {
     expect(candidatures?.href).toBe("/fr/p/contacts/candidatures");
     // Libellé raccourci le 2026-08-14 : « Recrutement » est désormais indenté
     // sous « Messages », l'indentation dit ce que le préfixe disait.
-    expect(items.find((it) => it.label === "Recrutement")?.group).toBe("contacts");
+    // 🔴 Renommé « Apporteurs » le 2026-09-19 : la liste ne contient plus que
+    //    des apporteurs d'affaires, et « Recrutement » faisait croire qu'on y
+    //    trouverait les candidatures emploi. L'URL, elle, ne bouge pas.
+    const apporteurs = items.find((it) => it.label === "Apporteurs");
+    expect(apporteurs?.group).toBe("contacts");
+    expect(apporteurs?.href).toBe("/fr/p/contacts/commercial");
+    expect(items.some((it) => it.label === "Recrutement")).toBe(false);
   });
 
   // ── Refonte « Boîte de réception » 2026-07-29 ───────────────────────────
@@ -324,7 +339,9 @@ describe("buildAdminNav SSOT", () => {
     // entrée par TABLE au même rang que les canaux — pas une hiérarchie qui
     // montre à quel canal chaque vue appartient. Les canaux RACINE restent donc
     // au nombre de 4 (+ Messages), et tout ce qui est indenté est une catégorie.
-    it("expose 5 canaux racine, un par type d'entrée réel", () => {
+    // Le titre disait « 5 canaux » depuis que « Podcast » était passé sous
+    // Messages : la liste en vérifie 4, c'est elle qui fait foi.
+    it("expose 4 canaux racine, un par type d'entrée réel", () => {
       expect(visible.filter((it) => it.navLevel == null).map((it) => it.href)).toEqual([
         "/fr/p/contacts",
         "/fr/p/contacts/appels",
@@ -347,19 +364,21 @@ describe("buildAdminNav SSOT", () => {
     it("chaque entrée indentée est rendue sous LE canal auquel elle appartient", () => {
       const enfants = visible.filter((it) => it.navLevel === 2);
       expect(enfants.map((it) => it.label)).toEqual([
-        "Clients",
+        "Demandes clients",
         "Presse",
         "Partenariats",
         "Investisseurs",
         "Conférences",
-        "Recrutement",
-        // Action posée sous « Recrutement » (`/contacts/commercial`), pas un
-        // canal d'entrée : on y CRÉE une personne. Une première version la
-        // plaçait en racine ; la garde des canaux racine a rougi, à raison.
-        "Nouveau contact apporteur",
+        "Apporteurs",
+        // « Nouveau contact apporteur » n'est plus une entrée (2026-09-19) :
+        // c'est le bouton « Ajouter » de la liste Apporteurs. Un geste n'est
+        // pas une catégorie de Messages.
         "Podcast",
         "Autres",
-        "Pilotage du recrutement",
+        "Suivi des candidatures emploi",
+        // Les offres qu'on publie sont l'autre moitié des candidatures qu'on
+        // reçoit : rangées sous elles, plus dans « Contenu ».
+        "Offres d'emploi",
       ]);
 
       // La sidebar est une liste à plat que seule l'indentation hiérarchise :
@@ -370,12 +389,13 @@ describe("buildAdminNav SSOT", () => {
       const canalDe = (enfant: (typeof visible)[number]) =>
         racines.filter(({ index }) => index < visible.indexOf(enfant)).at(-1)?.it.href;
 
-      for (const enfant of enfants.filter((it) => it.label !== "Pilotage du recrutement")) {
+      const sousCandidatures = ["Suivi des candidatures emploi", "Offres d'emploi"];
+      for (const enfant of enfants.filter((it) => !sousCandidatures.includes(it.label))) {
         expect(canalDe(enfant), enfant.label).toBe("/fr/p/contacts/messages");
       }
-      expect(canalDe(enfants.at(-1)!), "Pilotage du recrutement").toBe(
-        "/fr/p/contacts/candidatures",
-      );
+      for (const enfant of enfants.filter((it) => sousCandidatures.includes(it.label))) {
+        expect(canalDe(enfant), enfant.label).toBe("/fr/p/contacts/candidatures");
+      }
     });
 
     // Le cœur du problème d'origine : trois entrées pour la même table
@@ -423,6 +443,80 @@ describe("buildAdminNav SSOT", () => {
         "/fr/p/contacts/messages",
       );
     });
+  });
+});
+
+// ─── Menu rangé, sans écrans vides (2026-09-19) ────────────────────────────
+//
+// Chaque libellé dit ce que l'écran CONTIENT, pas la table qu'il lit ni
+// l'historique de sa création. Ces verrous rougissent si un ancien nom revient.
+describe("menu rangé, sans écrans vides (2026-09-19)", () => {
+  const items = buildAdminNav("p");
+  const base = "/fr/p";
+  const parLibelle = (label: string) => items.find((it) => it.label === label);
+
+  it("les anciens libellés ne reviennent pas", () => {
+    for (const ancien of [
+      "Recrutement",
+      "Pilotage du recrutement",
+      "Clients",
+      "Tunnel de prospects",
+      "Annonces recrutement",
+      "Nouveau contact apporteur",
+    ]) {
+      expect(parLibelle(ancien), ancien).toBeUndefined();
+    }
+  });
+
+  it("chaque renommage garde son URL", () => {
+    expect(parLibelle("Apporteurs")?.href).toBe(`${base}/contacts/commercial`);
+    expect(parLibelle("Suivi des candidatures emploi")?.href).toBe(
+      `${base}/contacts/candidatures/pilotage`,
+    );
+    expect(parLibelle("Demandes clients")?.href).toBe(`${base}/contacts/clients`);
+    expect(parLibelle("Tunnel diagnostic & simulateur")?.href).toBe(`${base}/tunnels/prospects`);
+    expect(parLibelle("Provenance des annonces")?.href).toBe(`${base}/annonces`);
+    const reseau = parLibelle("Réseau de partenaires");
+    expect(reseau?.href).toBe(`${base}/qualiopi/partenariats`);
+    expect(reseau?.group).toBe("qualiopi");
+  });
+
+  it("la newsletter vit dans « E-mails », et le groupe « engagement » n'existe plus", () => {
+    const newsletter = parLibelle("Newsletter");
+    expect(newsletter?.group).toBe("emails");
+    expect(newsletter?.href).toBe(`${base}/newsletter`);
+    expect(items.some((it) => (it.group as string) === "engagement")).toBe(false);
+    expect(ADMIN_NAV_GROUP_ORDER as ReadonlyArray<string>).not.toContain("engagement");
+    expect(Object.keys(ADMIN_NAV_GROUP_LABELS)).not.toContain("engagement");
+  });
+
+  it("les offres d'emploi sont rangées sous Candidatures, plus dans Contenu", () => {
+    const offres = parLibelle("Offres d'emploi");
+    expect(offres?.group).toBe("contacts");
+    expect(offres?.navLevel).toBe(2);
+    expect(offres?.href).toBe(`${base}/offres-emploi`);
+  });
+
+  it("les 9 écrans vides de la banque d'images sont retirés, les 4 vrais restent", () => {
+    const hrefs = new Set(items.map((it) => it.href));
+    for (const vide of [
+      "analytics",
+      "bulk-import",
+      "categories",
+      "licensing",
+      "seo-audit",
+      "settings",
+      "sitemap-status",
+      "tags",
+      "taxonomy",
+    ]) {
+      expect(hrefs.has(`${base}/image-bank/${vide}`), vide).toBe(false);
+    }
+    // Contre-témoin : retirer tout le groupe passerait aussi l'assertion
+    // ci-dessus.
+    for (const vrai of ["", "/library", "/upload", "/quality", "/usage-logs"]) {
+      expect(hrefs.has(`${base}/image-bank${vrai}`), vrai || "/image-bank").toBe(true);
+    }
   });
 });
 

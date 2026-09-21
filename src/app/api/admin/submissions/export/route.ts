@@ -22,6 +22,13 @@ export async function GET(request: NextRequest) {
       ...(sp.getAll("unifiedTypeIn").length > 0
         ? { unifiedTypeIn: sp.getAll("unifiedTypeIn") }
         : {}),
+      // Périmètre nommé de la vue (2026-09-19) — sans lui, l'export lancé
+      // depuis « Apporteurs » ramenait toute la catégorie « recrutement », y
+      // compris les messages /contact de personnes qui cherchent un poste.
+      // ⚠️ Transmis tel quel : une valeur inconnue est REFUSÉE par le schéma
+      //    (liste fermée), jamais ignorée. L'ignorer exporterait un périmètre
+      //    plus LARGE que celui demandé — l'échec doit être fermé.
+      ...(sp.get("perimetre") ? { perimetre: sp.get("perimetre") as never } : {}),
       status: (sp.get("status") as never) ?? undefined,
       locale: (sp.get("locale") as never) ?? undefined,
       dateFrom: sp.get("dateFrom") ?? undefined,

@@ -120,7 +120,7 @@ export function VueProspects({
   return (
     <>
       <AdminPageHeader
-        title="Tunnel de prospects"
+        title="Tunnel diagnostic & simulateur"
         description="De la publicité au rapport envoyé : où les visiteurs décrochent, et lesquels."
         actions={
           <nav aria-label="Période" className="flex gap-[var(--space-admin-2)]">

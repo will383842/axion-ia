@@ -3,14 +3,8 @@
 // Image bank Overview V2 — AdminPageShell + AdminPageHeader + AdminStatCard.
 
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Gauge, Hourglass, Image as ImageIcon } from "lucide-react";
-import {
-  AdminPageShell,
-  AdminPageHeader,
-  AdminCard,
-  AdminStatCard,
-  AdminButton,
-} from "@/components/admin/ui";
+import { CheckCircle2, Gauge, Hourglass, Image as ImageIcon } from "lucide-react";
+import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
 import { AdminImageThumb } from "@/components/admin/image-bank/AdminImageThumb";
 import { libelleModule } from "@/server/image-bank/taxonomy";
 
@@ -53,15 +47,13 @@ export function OverviewV2({
       <AdminPageHeader
         title="Banque d'images — Vue d'ensemble"
         description={`Tableau de bord production · ${new Date().toLocaleDateString(locale)}`}
+        // « Import en masse CSV » retiré le 2026-09-19 avec l'écran vide qu'il
+        // ouvrait : un bouton vers « cet écran n'existe pas encore » est une
+        // promesse, pas une action.
         actions={
-          <>
-            <Link href={`${base}/upload`} className="admin-button">
-              Téléverser
-            </Link>
-            <Link href={`${base}/bulk-import`} className="admin-button-ghost">
-              Import en masse CSV
-            </Link>
-          </>
+          <Link href={`${base}/upload`} className="admin-button">
+            Téléverser
+          </Link>
         }
       />
 
@@ -159,36 +151,9 @@ export function OverviewV2({
         </div>
       </AdminCard>
 
-      <AdminCard>
-        <h2 className="admin-h2">Liens rapides</h2>
-        <ul className="admin-meta-block flex flex-wrap gap-[var(--space-admin-5)]">
-          <li>
-            <AdminButton
-              href={`${base}/analytics`}
-              variant="ghost"
-              size="sm"
-              iconAfter={ArrowRight}
-            >
-              Voir les statistiques détaillées
-            </AdminButton>
-          </li>
-          <li>
-            <AdminButton
-              href={`${base}/sitemap-status`}
-              variant="ghost"
-              size="sm"
-              iconAfter={ArrowRight}
-            >
-              Statut Sitemap &amp; IndexNow
-            </AdminButton>
-          </li>
-          <li>
-            <AdminButton href={`${base}/settings`} variant="ghost" size="sm" iconAfter={ArrowRight}>
-              Paramètres
-            </AdminButton>
-          </li>
-        </ul>
-      </AdminCard>
+      {/* Le bloc « Liens rapides » menait aux trois écrans vides (statistiques,
+          sitemap, paramètres), retirés le 2026-09-19 : il n'avait plus rien à
+          proposer. */}
     </AdminPageShell>
   );
 }

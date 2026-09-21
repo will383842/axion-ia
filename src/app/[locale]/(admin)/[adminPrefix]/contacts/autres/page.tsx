@@ -1,5 +1,11 @@
-// Contacts admin — catégorie « Autres » de Messages : les soumissions qui
-// n'entrent dans aucun canal nommé (unifiedType = "autre").
+// Contacts admin — catégorie « Autres » de Messages : les messages qui
+// n'entrent dans aucun canal nommé (unifiedType = "autre"), plus, depuis le
+// 2026-09-19, la rubrique « recrutement » du formulaire /contact quand ce n'est
+// PAS un apporteur — typiquement quelqu'un qui cherche un poste.
+//
+// 🔑 Sans cette seconde moitié, retirer ces messages de la liste des apporteurs
+//    les aurait fait disparaître de toutes les catégories : visibles dans
+//    Messages seulement, rangés nulle part.
 //
 // Route créée le 2026-08-14 avec la remontée des catégories dans la sidebar.
 // Même patron que /contacts/presse.
@@ -10,7 +16,9 @@ import { gardePage } from "@/server/auth/garde-page";
 export const dynamic = "force-dynamic";
 
 // Filtre forcé via `forcedTypes` (jamais un `unifiedType` écrasé dans `sp`).
-const AUTRES_TYPES = ["autre"] as const;
+// « recrutement » n'y entre qu'avec le périmètre « hors-apporteurs » : les
+// apporteurs ont leur propre liste.
+const AUTRES_TYPES = ["autre", "recrutement"] as const;
 
 interface PageProps {
   params: Promise<{ adminPrefix: string }>;
@@ -37,6 +45,7 @@ export default async function ContactsAutresPage({ params, searchParams }: PageP
       searchParams={sp}
       basePath="contacts/autres"
       forcedTypes={AUTRES_TYPES}
+      perimetre="hors-apporteurs"
     />
   );
 }

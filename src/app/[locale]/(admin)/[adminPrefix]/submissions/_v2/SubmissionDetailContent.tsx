@@ -25,7 +25,7 @@ import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { CandidatureCommercialeDetail } from "./CandidatureCommercialeDetail";
 import { BlocInvitationApporteur } from "@/components/admin/contacts/BlocInvitationApporteur";
-import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
+import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 
 interface Props {
   adminPrefix: string;
@@ -50,11 +50,6 @@ export async function SubmissionDetailContent({
   const submission = await getSubmissionDetailAction(id);
   if (!submission) notFound();
 
-  // Le geste ATTENDU sur une demande de devis/formation est « créer le devis »,
-  // pas seulement « convertir en client » : quand le client existe déjà (même
-  // e-mail, insensible à la casse), la conversion ferait un doublon et le devis
-  // exigeait de repartir de zéro dans qualiopi/devis/new (relevé P1-09,
-  // audit réservation 2026-08-26). Même appariement que qualiopi/entrees.
   // ── LIEN VERS LA FICHE PERSONNE (2026-09-04) ─────────────────────────────
   // Cette page montre UNE trace. La fiche personne les montre TOUTES, par
   // l'empreinte de l'adresse — premier contact, dossier, candidature emploi,
@@ -67,10 +62,6 @@ export async function SubmissionDetailContent({
   const autresTraces = empreintePersonne
     ? (await lireFichePersonne(empreintePersonne)).traces.length - 1
     : 0;
-
-  const clientExistant = submission.contactEmail
-    ? await findClientByEmail(submission.contactEmail)
-    : null;
 
   // Form v2 (2026-05-28) — extrait unifiedType depuis details JSON pour
   // afficher le label fin (presse, recrutement, etc.) plutôt que le type DB
@@ -87,8 +78,24 @@ export async function SubmissionDetailContent({
   // Contact du réseau d'apporteurs — premier contact, dossier, capture ou
   // saisie manuelle : tous portent ce couple. La fiche lui propose alors
   // l'invitation à l'échange de 15 minutes (2026-09-19).
-  const estContactApporteur =
-    unifiedType === "recrutement" && details?.subType === CANDIDATURE_COMMERCIALE_SUBTYPE;
+  const estContactApporteur = estApporteur(details);
+
+  // Le geste ATTENDU sur une demande de devis/formation est « créer le devis »,
+  // pas seulement « convertir en client » : quand le client existe déjà (même
+  // e-mail, insensible à la casse), la conversion ferait un doublon et le devis
+  // exigeait de repartir de zéro dans qualiopi/devis/new (relevé P1-09,
+  // audit réservation 2026-08-26). Même appariement que qualiopi/entrees.
+  //
+  // 🔴 Aucun geste CLIENT sur un apporteur (2026-09-19). La fiche est partagée
+  //    par tous les canaux : elle proposait « Convertir en client » (ou « Créer
+  //    le devis » quand l'adresse était connue) et une carte « Identité
+  //    société » vide à quelqu'un qui RECOMMANDE Axion-IA. Au pire, une fiche
+  //    client et un devis créés pour un apporteur. La recherche du client
+  //    n'est donc même pas faite : son seul usage est ce bouton.
+  const clientExistant =
+    !estContactApporteur && submission.contactEmail
+      ? await findClientByEmail(submission.contactEmail)
+      : null;
 
   // Présentation lisible : on SORT le message + les métas utiles (ville/source)
   // du JSON brut pour les afficher en clair. Le reste (JSON, IP, User-Agent) part
@@ -165,7 +172,7 @@ export async function SubmissionDetailContent({
                 les coordonnées de ce lead (déchiffrées côté serveur sur la page
                 cible). Évite la re-saisie manuelle inbox → CRM Qualiopi. L'URL
                 ne porte que l'id — aucune PII n'y transite. */}
-            {clientExistant ? (
+            {estContactApporteur ? null : clientExistant ? (
               <a
                 href={`/fr/${adminPrefix}/qualiopi/devis/new?clientId=${clientExistant.id}`}
                 className="admin-button"
@@ -224,31 +231,33 @@ export async function SubmissionDetailContent({
             )}
           </div>
         ) : null}
-        <div className="admin-card">
-          <h2 className="admin-h2">Identité société</h2>
-          <dl className="admin-dl">
-            <DT>Société</DT>
-            <DD>{submission.companyName}</DD>
-            {submission.sector && (
-              <>
-                <DT>Secteur</DT>
-                <DD>{submission.sector}</DD>
-              </>
-            )}
-            {submission.employeesCount && (
-              <>
-                <DT>Effectif</DT>
-                <DD>{submission.employeesCount}</DD>
-              </>
-            )}
-            {submission.address && (
-              <>
-                <DT>Adresse</DT>
-                <DD>{submission.address}</DD>
-              </>
-            )}
-          </dl>
-        </div>
+        {estContactApporteur ? null : (
+          <div className="admin-card">
+            <h2 className="admin-h2">Identité société</h2>
+            <dl className="admin-dl">
+              <DT>Société</DT>
+              <DD>{submission.companyName}</DD>
+              {submission.sector && (
+                <>
+                  <DT>Secteur</DT>
+                  <DD>{submission.sector}</DD>
+                </>
+              )}
+              {submission.employeesCount && (
+                <>
+                  <DT>Effectif</DT>
+                  <DD>{submission.employeesCount}</DD>
+                </>
+              )}
+              {submission.address && (
+                <>
+                  <DT>Adresse</DT>
+                  <DD>{submission.address}</DD>
+                </>
+              )}
+            </dl>
+          </div>
+        )}
         <div className="admin-card">
           <h2 className="admin-h2">Contact</h2>
           <dl className="admin-dl">
@@ -275,7 +284,9 @@ export async function SubmissionDetailContent({
           </dl>
         </div>
         <div className="admin-card admin-card-wide">
-          <h2 className="admin-h2">Workflow admin</h2>
+          {/* « Workflow admin » était un mot de développeur : ce bloc sert à
+              SUIVRE la demande — statut, notes, personne en charge. */}
+          <h2 className="admin-h2">Suivi</h2>
           <SubmissionUpdateForm
             id={submission.id}
             currentStatus={submission.status}

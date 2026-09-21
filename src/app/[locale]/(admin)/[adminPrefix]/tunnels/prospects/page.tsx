@@ -1,4 +1,4 @@
-// Tunnel de prospects — le détail actionnable.
+// Tunnel diagnostic & simulateur — le détail actionnable.
 //
 // La vue d'ensemble dit COMBIEN on perd. Cette page dit OÙ et POUR QUI :
 // l'écran exact qui fait décrocher, la campagne qui amène du monde sans
@@ -18,7 +18,7 @@ import { VueProspects } from "../_components/VueProspects";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Tunnel de prospects",
+  title: "Tunnel diagnostic & simulateur",
   robots: { index: false, follow: false },
 };
 
