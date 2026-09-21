@@ -261,6 +261,58 @@ describe("cohérence des sous-processeurs", () => {
     ).toBeLessThanOrEqual(ACTIFS_SANS_DPA_ASSUMES.length);
   });
 
+  it("🔴 un DPA déclaré ACCEPTÉ au registre ne peut pas rester « à accepter » en public", () => {
+    // 🔑 DEUX OCCURRENCES EN DEUX JOURS, et personne ne les voyait.
+    //
+    //   · 2026-09-20, Cloudflare : registre « ✅ DPA accepté », SSOT
+    //     `auto_signable_dashboard`. Le DPA était signé depuis le 2026-05-09.
+    //   · 2026-09-21, Calendly : registre « ✅ DPA accepté 2026-08-28 », SSOT
+    //     `auto_signable_dashboard`.
+    //
+    // Les deux fois, le REGISTRE disait vrai et la notice PUBLIQUE disait moins.
+    // L'écart joue contre l'organisme : il est en règle et son propre site
+    // l'infirme. Une notice qui sous-déclare sa conformité est aussi fausse
+    // qu'une notice qui la sur-déclare — et c'est la page qu'on montre.
+    //
+    // Rien ne reliait les deux sources. `dpaStatus` vit dans le code,
+    // la cellule « Statut » dans un Markdown, et aucune garde ne les
+    // confrontait : elles ne pouvaient que dériver.
+    const register = readFileSync(join(ROOT, "_AUDIT", "DPA-REGISTER.md"), "utf8");
+
+    // Les lignes du tableau de synthèse qui annoncent un DPA obtenu.
+    const lignesAcceptees = register
+      .split("\n")
+      .filter((l) => l.startsWith("|") && /DPA (accept|sign)/i.test(l));
+
+    // Témoin de non-vacuité : si le tableau changeait de forme, cette garde
+    // passerait sur un ensemble vide sans rien mesurer.
+    expect(
+      lignesAcceptees.length,
+      "aucune ligne « DPA accepté » trouvée au registre : l'extraction ne mesure plus rien",
+    ).toBeGreaterThan(0);
+
+    const incoherents: string[] = [];
+    for (const ligne of lignesAcceptees) {
+      const colonnes = ligne.split("|").map((c) => c.trim());
+      const nom = colonnes[2] ?? "";
+      if (nom.length === 0) continue;
+      // Rapprochement par le premier mot, comme les autres gardes du fichier.
+      const jeton = firstToken(nom);
+      const entree = SUBPROCESSORS.find((s) => s.name.startsWith(jeton));
+      if (entree === undefined) continue; // couvert par la garde du registre
+      if (entree.dpaStatus === "signed" || entree.dpaStatus === "self_hosted_no_dpa") continue;
+      incoherents.push(`${entree.name} : registre « accepté », SSOT « ${entree.dpaStatus} »`);
+    }
+
+    expect(
+      incoherents,
+      `Le registre art. 30 déclare ce DPA ACCEPTÉ, la notice publique le dit ` +
+        `encore à obtenir. Les deux ne peuvent pas être vrais. Si le registre a ` +
+        `raison — c'est le cas les deux fois où c'est arrivé — la page publique ` +
+        `SOUS-DÉCLARE la conformité de l'organisme.`,
+    ).toStrictEqual([]);
+  });
+
   it("chaque entrée de la SSOT figure dans le registre interne art. 30", () => {
     const register = readFileSync(join(ROOT, "_AUDIT", "DPA-REGISTER.md"), "utf8");
     for (const s of SUBPROCESSORS) {
