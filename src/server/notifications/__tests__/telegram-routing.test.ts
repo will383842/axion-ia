@@ -2,6 +2,8 @@
 
 import { describe, it, expect, afterEach, beforeEach } from "vitest";
 import {
+  getRouting,
+  shouldNotifyWhatsApp,
   telegramGroupFor,
   resolveTelegramTarget,
   resetTelegramGroupWarnings,
@@ -109,6 +111,27 @@ describe("telegramGroupFor", () => {
     for (const c of ALL_NOTIFICATION_CATEGORIES) {
       expect(groups, c).toContain(telegramGroupFor(c));
     }
+  });
+});
+
+// B6 (décision Will, 2026-09-19) : les alertes disent désormais « apporteur » ou
+// « client », mais AUCUN canal ni routage ne change. Ce cas fige l'état d'avant
+// pour les deux catégories dont le TITRE a changé : si l'on y touchait en
+// croyant « finir le travail », il rougirait.
+describe("B6 — titres changés, canaux identiques", () => {
+  it("réservation Calendly et candidat apporteur : mêmes canaux, même salon, même WhatsApp", () => {
+    expect(getRouting("CALENDLY_INVITEE_CREATED")).toMatchObject({
+      channels: ["telegram"],
+      severity: "info",
+    });
+    expect(getRouting("COMMERCIAL_APPLICATION_RECEIVED")).toMatchObject({
+      channels: ["telegram"],
+      severity: "info",
+    });
+    expect(telegramGroupFor("CALENDLY_INVITEE_CREATED")).toBe("calendly");
+    expect(telegramGroupFor("COMMERCIAL_APPLICATION_RECEIVED")).toBe("commercial-memo");
+    expect(shouldNotifyWhatsApp("CALENDLY_INVITEE_CREATED")).toBe(true);
+    expect(shouldNotifyWhatsApp("COMMERCIAL_APPLICATION_RECEIVED")).toBe(true);
   });
 });
 

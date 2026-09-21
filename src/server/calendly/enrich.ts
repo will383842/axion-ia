@@ -44,6 +44,7 @@ import { prisma } from "@/lib/prisma";
 import { notify } from "@/server/notifications";
 import { syncCalendlyEventToCrm } from "@/server/crm-sync";
 import { fetchCalendlyInvitee, isCalendlyApiConfigured } from "./api";
+import { rattacherEchangeApporteur } from "./rattachement-apporteur";
 
 export type EnrichOutcome =
   | {
@@ -101,6 +102,8 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
     cancelUrl: string | null;
     rescheduleUrl: string | null;
     rawPayload: unknown;
+    linkedSubmissionId: string | null;
+    linkedJobApplicationId: string | null;
   } | null;
   try {
     row = await prisma.calendlyEvent.findUnique({
@@ -121,6 +124,10 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
         cancelUrl: true,
         rescheduleUrl: true,
         rawPayload: true,
+        // Lus pour le rattachement automatique d'un échange apporteur : on ne
+        // rattache qu'une ligne qui ne l'est à rien (cf. rattachement-apporteur).
+        linkedSubmissionId: true,
+        linkedJobApplicationId: true,
       },
     });
   } catch (e) {
@@ -256,6 +263,27 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
   }
 
   const inviteeEmail = (data["inviteeEmail"] as string | undefined) ?? row.inviteeEmail ?? "";
+
+  // ── Rattachement d'un échange apporteur à son dossier (2026-09-19) ──────────
+  //
+  // C'est ICI que l'adresse de l'invité devient connue : la capture depuis le
+  // widget n'en porte aucune. Le rattachement se fait donc après l'écriture,
+  // avec l'adresse fraîche. Il n'écrit que sur une ligne rattachée à rien, et
+  // cette condition est posée dans sa requête d'écriture même.
+  //
+  // Best-effort strict : un rattachement raté laisse la fiche comme avant (le
+  // sélecteur de la console reste là), il ne fait pas échouer l'enrichissement.
+  try {
+    await rattacherEchangeApporteur({
+      id: eventId,
+      eventTypeName: (data["eventTypeName"] as string | undefined) ?? row.eventTypeName,
+      inviteeEmail,
+      linkedSubmissionId: row.linkedSubmissionId,
+      linkedJobApplicationId: row.linkedJobApplicationId,
+    });
+  } catch (e) {
+    Sentry.captureException(e, { tags: { service: "calendly-rattachement-apporteur" } });
+  }
   // Le nom et le type de RDV viennent de la ligne, complétés par ce que
   // l'enrichissement vient d'écrire. Sans eux, l'alerte disait seulement
   // « annulation » + un identifiant technique : illisible depuis un téléphone,

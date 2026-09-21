@@ -18,6 +18,9 @@ import { ExternalLink } from "lucide-react";
 import { CalendlyEventEditor } from "@/components/admin/contacts/CalendlyEventEditor";
 import { EnrichCalendlyEventButton } from "@/components/admin/contacts/EnrichCalendlyEventButton";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
+import * as Sentry from "@sentry/nextjs";
+import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
+import { listerFichesRattachables } from "@/features/admin-calendly/fiches-rattachables";
 // Dates affichées en FR (audit UX : ISO brut illisible pour Will). Seuls les
 // usages AFFICHÉS sont concernés — la `key` React et les valeurs passées en
 // `initial` à CalendlyEventEditor restent en ISO (attendu par le formulaire).
@@ -65,6 +68,21 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
 
   const backHref = `/fr/${adminPrefix}/contacts/appels`;
   const apiConfigured = isCalendlyApiConfigured();
+  // Les fiches proposées au sélecteur de rattachement (2026-09-19) — à la place
+  // de la saisie d'UUID. Information ACCESSOIRE : si la lecture échoue, le
+  // sélecteur n'offre que « Aucune fiche », mais l'état du formulaire garde le
+  // rattachement courant tant qu'on ne touche pas au champ. On le signale à
+  // Sentry plutôt que de faire tomber la fiche.
+  let fichesRattachables: Awaited<ReturnType<typeof listerFichesRattachables>> = [];
+  try {
+    fichesRattachables = await listerFichesRattachables({
+      inviteeEmail: event.inviteeEmail,
+      linkedSubmissionId: event.linkedSubmissionId,
+      estEchangeApporteur: estAppelApporteur(event.eventTypeName),
+    });
+  } catch (err) {
+    Sentry.captureException(err, { tags: { ecran: "fiche-appel", etape: "fiches-rattachables" } });
+  }
 
   return (
     <>
@@ -131,6 +149,7 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
               notes: event.notes,
               linkedSubmissionId: event.linkedSubmissionId,
             }}
+            fichesRattachables={fichesRattachables}
           />
         </div>
 
