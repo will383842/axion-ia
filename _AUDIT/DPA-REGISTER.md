@@ -525,7 +525,7 @@ Cf. `src/app/[locale]/mes-donnees/page.tsx` (page exposée) +
 | 2026-05-15 | Audit B5 fix P0-2/P0-3/P0-5 : ajout Unsplash / Voyage AI / Stripe / OSM / DocuSeal (5 lignes). SSOT publique unifiée sur `src/content/subprocessors.ts`. |
 | 2026-09-15 | ⏳ **En attente de validation de Will.** Donnée de santé (art. 9) : le détail du besoin d'adaptation des positionnements répondus du 2026-07-26 au 2026-08-20 reste présent **en clair** dans les dumps PostgreSQL **chiffrés** (Hetzner Storage Box, R2) antérieurs à la date du passage du rattrapage (`docs/runbooks/R34-rattrapage-chiffrement-details-adaptation.md`), jusqu'à leur rotation (mensuels : ≤ 12 mois). Aucune purge de sauvegarde proposée. |
 | _(date)_   | DPA Hetzner signé (Will). Référence : **\*\*\*\***\_**\*\*\*\***                                                                                         |
-| _(date)_   | DPA Cloudflare accepté (Will).                                                                                                                           |
+| 2026-05-09 | DPA Cloudflare accepté (Will). Couvre TOUS les services du compte, **R2 compris**. Source : `docs/runbooks/R28-dpa-renewal.md`. Date inscrite le 2026-09-20. |
 | _(date)_   | DPA OpenAI signé + ZDR activé (Will). ID compte : **\*\*\*\***\_**\*\*\*\***                                                                             |
 | _(date)_   | DPA Anthropic signé (Will). ID compte : **\*\*\*\***\_**\*\*\*\***                                                                                       |
 | _(date)_   | DPA Perplexity signé (Will). ID compte : **\*\*\*\***\_**\*\*\*\***                                                                                      |

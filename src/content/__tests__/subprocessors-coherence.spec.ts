@@ -194,9 +194,10 @@ describe("cohérence des sous-processeurs", () => {
    * 2026-09-20.
    *
    * ⚠️ Ce n'est PAS la liste des sous-traitants actifs sans DPA accepté :
-   * Cloudflare, Calendly et Sentry sont `auto_signable_dashboard`, c'est-à-dire
-   * « acceptable en un clic », et le registre note que certains restent à
-   * accepter. Cette garde ne couvre que le cas le plus net — aucun accord
+   * plusieurs entrées portent `auto_signable_dashboard`, c'est-à-dire
+   * « acceptable en un clic », et le registre note que certaines restent à
+   * accepter. (Cloudflare figurait dans cette liste jusqu'au 2026-09-20 : son
+   * DPA est accepté depuis le 2026-05-09, la phrase était devenue fausse.) Cette garde ne couvre que le cas le plus net — aucun accord
    * possible — et ne prétend pas à davantage. Relevé par la lentille sécurité
    * le 2026-09-20 : le titre était plus large que le code.
    *
