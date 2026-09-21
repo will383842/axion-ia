@@ -60,10 +60,12 @@ import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
 import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
 import { SITE_URL } from "@/lib/site-url";
-import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
+import {
+  CANDIDATURE_COMMERCIALE_SUBTYPE,
+  COMMERCIAL_APPLICATION_CONSENT_VERSION,
+} from "@/lib/commercial-application/model";
 import {
   DOSSIER_COMPLET_PATH,
-  LEAD_APPORTEUR_CONSENT_VERSION,
   LEAD_APPORTEUR_ETAPE,
   captureDossierSchema,
 } from "@/lib/commercial-application/lead-apporteur";
@@ -161,10 +163,17 @@ export async function capturerContactDossierAction(
       },
     });
 
+    // 🔴 La preuve porte le texte AFFICHÉ à l'écran 1 — celui du dossier :
+    // « J'accepte que mes informations soient utilisées pour l'étude de ma
+    // candidature » (`components/forms/commercial-application/steps.tsx`).
+    // Jusqu'au 19/09, on consignait ici la version du formulaire court
+    // Facebook (`LEAD_APPORTEUR_CONSENT_VERSION`), un AUTRE texte : la preuve
+    // ne correspondait pas à ce que la personne avait lu, et une preuve de
+    // consentement ne vaut que par ce texte-là.
     await recordConsentEvent({
       email: d.email,
-      formRef: CONSENT_FORM_REFS.leadApporteur,
-      consentVersion: LEAD_APPORTEUR_CONSENT_VERSION,
+      formRef: CONSENT_FORM_REFS.commercialApplication,
+      consentVersion: COMMERCIAL_APPLICATION_CONSENT_VERSION,
       action: "optin",
       occurredAt: submission.submittedAt,
       ip,

@@ -31,6 +31,7 @@
 
 import { prisma } from "@/lib/prisma";
 
+import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { HORS_APPELS_APPORTEUR } from "@/server/calendly/appel-apporteur";
 import { alertCrmSync } from "./alerts";
 import { isCrmSyncCandidatesEnabled, isCrmSyncEnabled } from "./config";
@@ -169,13 +170,26 @@ export async function collectReconciliation(): Promise<ReconcileReport> {
       // d'horodatage sur `Submission` comme sur `JobApplication`. Un
       // `createdAt` inventé ici ne compile pas — mais avec un `where` typé
       // trop large il aurait pu passer et comparer la fenêtre ENTIÈRE.
-      loadIds: (from, to) =>
-        prisma.submission.findMany({
+      //
+      // 🔴 B2 (19/09) — les dossiers APPORTEURS ne partent plus au CRM (ordre
+      // de Will du 04/09, ADR 0051). Ils n'ont donc, par construction, aucune
+      // ligne d'outbox : les compter ici les ferait tous passer pour des
+      // émissions perdues, et chaque candidature déclencherait `reconcile_gap`.
+      //
+      // Le tri se fait EN MÉMOIRE, jamais par un `NOT` sur un chemin JSON : en
+      // SQL un chemin absent rend NULL, et `NOT (NULL = …)` écarte aussi toutes
+      // les demandes clients sans `subType` — le filet deviendrait aveugle à la
+      // perte qu'il existe pour voir. Le plafond `take` s'applique AVANT le tri :
+      // au volume actuel il n'est jamais atteint (cf. `MAX_SOURCES_PER_FAMILY`).
+      loadIds: async (from, to) => {
+        const lignes = await prisma.submission.findMany({
           where: { submittedAt: { gte: from, lt: to } },
-          select: { id: true },
+          select: { id: true, details: true },
           orderBy: { submittedAt: "asc" },
           take: MAX_SOURCES_PER_FAMILY,
-        }),
+        });
+        return lignes.filter((ligne) => !estApporteur(ligne.details));
+      },
     }),
   );
 

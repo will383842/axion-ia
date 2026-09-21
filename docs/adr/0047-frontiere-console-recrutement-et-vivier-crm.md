@@ -97,7 +97,14 @@ Trois corollaires, dont deux sont déjà acquis :
 > | ------------------------------------ | ----------------------------------------------- | -------------------------- |
 > | 1 · Une spontanée va-t-elle au CRM ? | **NON — elle reste dans la console** (option C) | ✅ déjà en place (PR #975) |
 > | 2 · `sourceSlug` du payload          | **sans objet** tant que 1 vaut C                | —                          |
-> | 3 · Une porte, ou deux ?             | **UNE seule** (option A)                        | ✅ les 4 liens rebranchés  |
+> | 3 · Une porte, ou deux ?             | **UNE seule** (option A)                        | ⚠️ **partiel** (cf. infra) |
+>
+> ⚠️ **Arbitrage 3, état relu le 2026-09-19 : partiel.** Les 4 liens « candidature
+> spontanée » sont bien rebranchés vers la page dédiée, mais le formulaire `/contact`
+> garde son type « recrutement » (`unified-contact/actions.ts`), qui produit toujours une
+> `Submission` et reste soumis aux drapeaux du vivier CRM (`crm-sync/enqueue.ts`,
+> `universeOf`). Ce n'est pas un dossier apporteur : son sort est consigné dans
+> l'ADR 0051, § l.
 >
 > ⚠️ **Pour revenir sur l'arbitrage 1** : ajouter d'abord la famille dans le
 > `CHECK` SQL du CRM Pro, **puis** activer l'émission. Dans l'autre ordre, le CRM
@@ -176,6 +183,33 @@ pas une sortie.
 
 L'ordre est également écrit **à côté du drapeau lui-même**, dans
 `src/server/vivier/config.ts` — un journal que personne ne relit ne protège rien.
+
+### 2026-09-19 — les dossiers apporteurs ne partent plus au CRM (décision B2)
+
+🔴 **Le paragraphe ci-dessus laissait un canal ouvert, et il a servi.** Il décrit le
+drapeau `VIVIER_STOCK_ENABLED`, qui ne porte que la campagne sur le **stock** des
+candidatures `/carrieres`. Le dossier complet du tunnel apporteurs
+(`sourceSlug: "site-candidature-commerciale"`, famille `candidat_commercial`) émettait,
+lui, **à chaque nouvelle candidature**, dès que les deux drapeaux `CRM_SYNC_*` valaient
+`true` — ce qu'ils valaient à la mesure du 2026-09-05 (tableau ci-dessus).
+« Sans effet tant que le premier est fermé » était vrai pour le stock, **faux pour les
+nouvelles candidatures apporteurs**.
+
+Mesure R8 du 2026-09-19 : **9 dossiers apporteurs** sont arrivés au CRM entre le 17/08 et
+le 16/09 (`application_submitted` : 8 créations, 1 mise à jour).
+
+**Décision B2 (Will, 2026-09-19) : l'envoi est coupé.** Les dossiers
+`site-candidature-commerciale` ne partent plus au CRM ; la case « vivier 2 ans » du
+formulaire, qui n'existait que pour lui, est retirée (version de consentement
+`memo-v3-2026-09-19`). La frontière des apporteurs n'est plus console ↔ CRM mais
+console ↔ Axion Partners : **ADR 0051**. Le rapprochement quotidien
+(`crm-sync/reconcile.ts`) ne les réclame plus.
+
+⛔ **Les 9 fiches déjà au CRM y restent** : leur sort revient à Will. Rien dans ce dépôt ne
+les touche, et aucune session ne les touche côté CRM.
+
+`/carrieres` n'est pas concerné : ses candidatures aux offres suivent toujours ce qui
+précède.
 
 ## 5. Comment revenir sur cette décision
 

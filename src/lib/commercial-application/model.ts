@@ -33,14 +33,20 @@ export const CANDIDATURE_COMMERCIALE_SUBTYPE = "candidature-commerciale";
 /**
  * Version du consentement RGPD affiché par le formulaire.
  *
- * v2 (lot L4) — valeur FERME décidée au plan §2.3. Elle recouvre les DEUX
- * textes affichés ensemble : la case obligatoire (étude de la candidature) et
- * la case optionnelle, décochée par défaut (conservation en vivier 2 ans).
+ * v3 (19/09, décisions B2 et B4) — elle ne couvre plus QUE l'étude de la
+ * candidature : « J'accepte que mes informations soient utilisées pour l'étude
+ * de ma candidature », seul texte affiché, à l'écran 1 comme au dernier. La
+ * case optionnelle « vivier 2 ans » de la v2 (`memo-v2-2026-08-13`) est
+ * retirée : elle n'existait que pour le CRM, et le dossier apporteur ne part
+ * plus au CRM.
  *
- * 🔴 Le CRM REJETTE en 422 toute fiche candidat dont la version n'est pas v2 :
- * cette constante et la liste côté CRM doivent bouger ensemble.
+ * 🔑 Le couplage avec le CRM, qui refusait en 422 toute version inconnue, ne
+ * s'applique donc plus : cette valeur ne franchit plus la frontière. Elle vit
+ * dans `details.consentVersion` et dans le registre de preuve — changer le
+ * texte affiché, c'est changer cette valeur (≤ 40 caractères, borne pinnée
+ * par `lib/consents/__tests__/consents.test.ts`).
  */
-export const COMMERCIAL_APPLICATION_CONSENT_VERSION = "memo-v2-2026-08-13";
+export const COMMERCIAL_APPLICATION_CONSENT_VERSION = "memo-v3-2026-09-19";
 
 /** Durée de conservation annoncée dans la mention RGPD (candidatures). */
 export const COMMERCIAL_APPLICATION_RETENTION = "2 ans";
@@ -131,8 +137,9 @@ export const STATUT_OPTIONS = [
  * dire, et on paie des annonces à l'aveugle.
  *
  * Purement additif : `sourceConnaissance` n'est consommé qu'en affichage
- * (`optionLabel`) et transmis au CRM comme chaîne libre. Aucun contrat à
- * propager, aucune migration.
+ * (`optionLabel`) — il partait aussi au CRM comme chaîne libre jusqu'au 19/09,
+ * date à laquelle le dossier apporteur a cessé d'y partir (B2). Aucun contrat
+ * à propager, aucune migration.
  *
  * Cf. `docs/annonce-leboncoin-recrutement.md` et l'entrée mémoire
  * « réseau apporteurs — ajouter un canal d'annonce ».
@@ -427,12 +434,16 @@ export const commercialApplicationSchema = z
     sourceConnaissance: z.enum(SOURCE_OPTIONS.map((o) => o.id) as [string, ...string[]]).optional(),
     consent: z.literal(true),
     /**
-     * Accord OPTIONNEL de conservation en vivier (lot L4).
+     * IGNORÉ depuis le 19/09 — la case vivier est retirée du formulaire (B2).
      *
-     * `z.boolean().optional()` et surtout PAS `z.literal(true)` : la case est
-     * facultative, un refus (`false`) comme une absence sont des réponses
-     * parfaitement valides. L'exiger la rendrait bloquante — donc plus un
-     * consentement libre, donc juridiquement sans valeur.
+     * Gardé dans le schéma, et optionnel, pour une seule raison : un onglet
+     * ouvert avant le déploiement sert encore l'ancien JS, qui envoie la clé.
+     * Le schéma n'étant pas `.strict()`, la retirer ne ferait rien refuser
+     * aujourd'hui — mais la DÉCLARER écrit ce contrat avec l'ancien JS : qui
+     * passerait le schéma en `.strict()` ferait refuser ces candidatures par
+     * « Champs invalides », un message que la personne ne peut pas corriger.
+     * Le serveur ne la lit plus (`features/commercial-application/actions.ts`) :
+     * ni horodatage en base, ni preuve vivier.
      */
     consentVivier: z.boolean().optional(),
   })

@@ -64,8 +64,6 @@ export interface WizardAnswers {
   linkedin: string;
   sourceConnaissance: string;
   consent: boolean;
-  /** Accord OPTIONNEL de conservation en vivier 2 ans (lot L4). */
-  consentVivier: boolean;
 }
 
 export function newExperience(open = true): ExperienceDraft {
@@ -119,9 +117,6 @@ export function emptyAnswers(): WizardAnswers {
     linkedin: "",
     sourceConnaissance: "",
     consent: false,
-    // Décoché par défaut : un consentement pré-coché n'en est pas un
-    // (RGPD art. 4.11 — « acte positif clair »).
-    consentVivier: false,
   };
 }
 
@@ -328,9 +323,6 @@ export function buildSubmissionPayload(a: WizardAnswers): CommercialApplicationI
     ...(a.linkedin.trim() ? { linkedin: a.linkedin.trim() } : {}),
     ...(a.sourceConnaissance ? { sourceConnaissance: a.sourceConnaissance } : {}),
     consent: true,
-    // Transmis TEL QUEL, y compris `false` : le serveur doit pouvoir
-    // distinguer un refus explicite d'une absence de réponse.
-    consentVivier: a.consentVivier,
   };
 }
 
@@ -360,10 +352,26 @@ export function loadDraft(): { screen: number; answers: WizardAnswers } | null {
       return null;
     // Fusion défensive : un brouillon d’une version antérieure du formulaire
     // ne doit jamais casser le rendu — les champs manquants prennent le défaut.
+    //
+    // 🔴 Et les champs RETIRÉS sont écartés, pas étalés. Un brouillon commencé
+    // avant le 19/09 porte encore l'accord « vivier 2 ans », case supprimée ce
+    // jour-là (décision B2 : le dossier apporteur ne part plus au CRM). Étalé
+    // tel quel, il survivrait en silence — ré-écrit à chaque sauvegarde — et un
+    // accord que la personne n'a pas vu dans CE formulaire voyagerait avec son
+    // dossier. Seule occurrence tolérée du nom dans ce dossier (contrôle P2).
+    // Double conversion assumee : `WizardAnswers` n'a pas de signature d'index,
+    // et `consentVivier` n'y figure PLUS — c'est tout l'objet du retrait. Le
+    // brouillon vient de `JSON.parse`, donc sa vraie nature est `unknown` : on le
+    // dit au lieu de mentir au compilateur avec une conversion directe, que TS
+    // refuse ici (TS2352).
+    const { consentVivier: _retire, ...reponses } = parsed.answers as unknown as Record<
+      string,
+      unknown
+    >;
     const base = emptyAnswers();
     const answers: WizardAnswers = {
       ...base,
-      ...parsed.answers,
+      ...(reponses as Partial<WizardAnswers>),
       experiences:
         Array.isArray(parsed.answers.experiences) && parsed.answers.experiences.length > 0
           ? parsed.answers.experiences.map((exp) => ({ ...newExperience(false), ...exp }))

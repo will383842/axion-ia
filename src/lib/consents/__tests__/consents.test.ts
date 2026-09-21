@@ -129,7 +129,11 @@ describe("versions de consentement v2", () => {
     const { COMMERCIAL_APPLICATION_CONSENT_VERSION } =
       await import("@/lib/commercial-application/model");
 
-    expect(COMMERCIAL_APPLICATION_CONSENT_VERSION).toBe("memo-v2-2026-08-13");
+    // ⚠️ Exception depuis le 19/09 (B2) : la version du dossier APPORTEUR ne
+    // part plus au CRM. Elle passe en v3 (étude de la candidature seule, case
+    // vivier retirée) sans rien porter côté CRM ; on la pinne ici pour que tout
+    // changement du texte affiché reste un geste délibéré.
+    expect(COMMERCIAL_APPLICATION_CONSENT_VERSION).toBe("memo-v3-2026-09-19");
     // La version carrières vit dans une constante privée de sa Server Action :
     // elle est pinnée par le test d'intégration du formulaire. On vérifie ici
     // ce qui est importable sans monter tout le module serveur.
