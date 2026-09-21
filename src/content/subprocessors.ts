@@ -112,9 +112,11 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     //
     // 🔑 Et ce champ décrit une LOCALISATION, rien d'autre. Une première
     // rédaction y ajoutait « transfert encadré par les clauses contractuelles
-    // types » — une garantie que le DPA porte, et que le DPA n'est pas encore
-    // accepté. C'eût été le défaut même que cette ligne corrige, déplacé de la
-    // géographie vers le contrat. Les garanties ont leurs propres champs,
+    // types » — une garantie que le DPA porte. Au moment de cette rédaction, on
+    // croyait le DPA non accepté ; il l'était depuis le 2026-05-09. La phrase
+    // reste néanmoins RETIRÉE : ce champ décrit une localisation, et une
+    // garantie juridique n'a pas à y être répétée alors qu'elle a son propre
+    // champ, qui peut évoluer sans lui. Les garanties ont leurs propres champs,
     // `transferFramework` et `dpaStatus`, affichés séparément et à jour.
     serversLocation:
       "Réseau global edge pour le CDN. Stockage : deux compartiments avec indication de région Europe (Ouest et Est), sans juridiction européenne garantie.",
@@ -156,6 +158,12 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     // ⚠️ Le DPA Cloudflare couvre TOUS les services du compte, donc **aussi
     // R2** : ce n'est plus un DPA « CDN ». C'est lui qui porte les clauses
     // contractuelles types du transfert hors UE.
+    //
+    // 📅 Accepté le **2026-05-09**. La date n'a PAS été fournie par Will, qui
+    // ne s'en souvenait pas : elle était dans `docs/runbooks/R28-dpa-renewal.md`
+    // — un TROISIÈME registre, que je n'avais pas ouvert. Une première
+    // rédaction inscrivait « date non retrouvée » après avoir renoncé trop
+    // vite. Chercher dans le dépôt avant de déclarer une information perdue.
     dpaStatus: "signed",
     transferFramework: "scc",
     category: "core_infra",

@@ -16,7 +16,7 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | #   | Sous-processeur            | Finalité                             | Localisation            | DPA    | Base légale transfert      | Statut          |
 | --- | -------------------------- | ------------------------------------ | ----------------------- | ------ | -------------------------- | --------------- |
 | 1   | Hetzner Online GmbH        | VPS + Storage Box backups offsite    | Allemagne (Frankfurt)   | papier | UE intra-zone              | 🟡 à signer     |
-| 2   | Cloudflare, Inc.           | CDN + DDoS + Turnstile captcha **+ stockage objet R2 : toutes les pièces de l'organisme, images de signature, relevés de connexion, sauvegardes chiffrées** | États-Unis (endpoint global) | accepté | SCC + EU-US DPF            | ✅ **DPA accepté** (date non retrouvée) — et il détient les pièces |
+| 2   | Cloudflare, Inc.           | CDN + DDoS + Turnstile captcha **+ stockage objet R2 : toutes les pièces de l'organisme, images de signature, relevés de connexion, sauvegardes chiffrées** | États-Unis (endpoint global) | accepté | SCC + EU-US DPF            | ✅ **DPA accepté le 2026-05-09** — et il détient les pièces |
 | 3   | Telegram FZ-LLC            | Notifications admin (Bot API)        | Émirats Arabes Unis     | aucun  | Art. 49 + minimisation PII | ✅ ADR 0010     |
 | 4   | Sentry (Functional Software) | Crash reporting + traces           | SaaS région UE (`ingest.de.sentry.io`) | online | SCC + EU-US DPF | 🟡 à signer     |
 | 5   | Plausible (self-hosted)    | Analytics anonymes                   | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
@@ -225,12 +225,12 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | **Données traitées**      | Réseau : IP visiteur, User-Agent, requêtes HTTP (logs CDN). **Stockage R2 : le contenu des pièces** — conventions, convocations, émargements, attestations, certificats, devis, factures, avoirs, exemplaires signés, supports (`documents/`, `supports/`) ; **images de signature manuscrite** (`emargement/…png`) ; **relevés de connexion CSV nominatifs** des sessions à distance (`presence/…`, nom + e-mail + horaires) ; kits d'intervention (`interventions/`) ; **sauvegardes chiffrées** — bases de données, Redis, Plausible, DocuSeal, banque d'images, l'archive des secrets d'exploitation, et `files/` : les volumes de la console, **dont les CV reçus par candidature** et les médias des avis |
 | **Localisation physique** | Edge mondial pour le CDN. **Stockage R2 — relevé par Will au tableau de bord le 2026-09-20** : `axion-ia-backups` (créé le 2026-05-09, région **EEUR**, 1,61 k objets, 2,28 Go — le site) et `axion-audit-backups` (créé le 2026-08-28, région **WEUR**, 8,14 k objets, 49,7 Mo — l'application d'audit). Les deux en **juridiction « par défaut »**, joints par l'endpoint global `…r2.cloudflarestorage.com`. ⚠️ WEUR/EEUR sont des **indications de région, pas une garantie de résidence** : Cloudflare stocke en Europe de préférence, rien n'oblige les données à y rester. La juridiction se choisit **à la création** et ne se modifie plus |
 | **Garanties**             | DPA + clauses contractuelles types (SCC) + EU-US Data Privacy Framework (DPF) |
-| **DPA**                   | Online — auto-acceptable depuis dashboard CF. ⛔ **Il couvrira alors AUSSI R2** : ce n'est plus un DPA « CDN » |
+| **DPA**                   | Online, **accepté le 2026-05-09** (source : `docs/runbooks/R28-dpa-renewal.md`). Il couvre **aussi R2** : ce n'est pas un DPA « CDN » |
 | **Lien**                  | https://www.cloudflare.com/cloudflare-customer-dpa/                           |
 | **Procédure**             | Dashboard Cloudflare → Manage Account → Configurations → Privacy → Sign DPA   |
 | **Durée conservation**    | Logs CDN : 30 j max. **Pièces R2 : 5 ans annoncés** (`DOCUMENT_RETENTION_YEARS`, imprimé sur les pièces ; `suppressionPrevueAt` en base). ⛔ **Aucune purge n'applique cette échéance aux PIÈCES** : `suppressionPrevueAt` n'est lu par aucun effacement (cf. `src/server/qualiopi/legal/retention-echeance.ts`). ⚠️ Ne pas confondre avec la rotation des SAUVEGARDES, qui existe bel et bien : `prune_r2` (`scripts/backup-lib.sh`) supprime par rang de récence — `files/` 14, `secrets/` 30, `postgres/hourly/` 24, `docuseal/` 24 — entre autres : `redis/`, `plausible/*` et `image-bank/` tournent aussi, selon `retention_for_type` (`scripts/backup-lib.sh`). Deux mécanismes distincts, un seul manque. Seules suppressions réelles : purge RGPD art. 17 des images de signature, rollback de signature, suppression admin d'une version, ZIP temporaire |
 | **Statut**                | ✅ **ACCEPTÉ** — confirmé par Will le 2026-09-20. ⚠️ Ce registre a porté « à accepter » alors que l'accord existait : l'écart jouait en défaveur de l'organisme |
-| **Date signature**        | _Non retrouvée._ ⛔ À relever : Dashboard → Manage Account → Configurations → Privacy affiche la date d'acceptation. Inscrite ici « non retrouvée » plutôt qu'approximative — une date fausse dans un registre art. 30 est pire qu'un champ vide |
+| **Date signature**        | **2026-05-09** — source : `docs/runbooks/R28-dpa-renewal.md` (« online accepté 2026-05-09 »). ⚠️ Une première rédaction portait « non retrouvée » : Will ne s'en souvenait pas et j'avais renoncé à chercher dans ce troisième registre. La date existait |
 
 > ⚠️ **CE FICHIER EST DANS UN DÉPÔT PUBLIC** (`will383842/axion-ia`, visibilité
 > `PUBLIC`, vérifié le 2026-09-20). Un registre art. 30 est une pièce INTERNE :
@@ -282,8 +282,8 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 >    — un traitement par un sous-traitant doit être régi par un contrat — est
 >    donc satisfaite, et c'est ce contrat qui porte les clauses contractuelles
 >    types du transfert hors UE, pour R2 comme pour le CDN.
->    ⛔ Reste seulement à **relever la date d'acceptation** au tableau de bord
->    (Manage Account → Configurations → Privacy) et à l'inscrire plus haut ;
+>    📅 Date d'acceptation : **2026-05-09**, retrouvée dans
+>    `docs/runbooks/R28-dpa-renewal.md`. Rien ne reste sur ce point ;
 > 1bis. **déclarer les DEUX compartiments** s'ils relèvent du même responsable
 >    de traitement — `axion-ia-backups` sert le site, `axion-audit-backups`
 >    l'application d'audit. ⚠️ `R2_BUCKET_IMMUTABLE` figure dans le code et les
