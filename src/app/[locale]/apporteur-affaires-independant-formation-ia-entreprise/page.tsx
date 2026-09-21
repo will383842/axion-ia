@@ -7,8 +7,8 @@
 //   · `/leboncoin` est une page de RÉCEPTION d'annonce. 100 % de son
 //     trafic vient du lien de l'annonce, elle ne vise aucune requête, et son
 //     contenu est un quasi-doublon de `/devenir-commercial-ia`. L'indexer
-//     cannibaliserait la page qui porte le JobPosting Google for Jobs, pour un
-//     gain nul, avec un risque de doorway.
+//     cannibaliserait cette page principale, pour un gain nul, avec un risque
+//     de doorway.
 //
 //   · CETTE page vise un CLUSTER DE REQUÊTES DISTINCT — « apporteur d'affaires
 //     indépendant », « apport d'affaires formation », « devenir apporteur
@@ -50,7 +50,6 @@ import {
   getCommissionById,
   getTierById,
 } from "@/content/pricing";
-import { COMMERCIAL_OFFER_DATE_POSTED } from "@/content/recrutement/dates";
 import { memoPhoto, type MemoIserePhotoSlot } from "@/content/recrutement/memo-isere-photos";
 import {
   PARTENAIRE_CE_QUE_CE_NEST_PAS,
@@ -79,7 +78,7 @@ const REASSURANCE_CERTIFIE: readonly string[] = [
 ];
 
 const REASSURANCE_BASE: readonly string[] = [
-  "Statut libre : micro-entreprise, agent commercial, apporteur",
+  "Statut libre : micro-entreprise ou société",
   "Cumulable avec ton activité actuelle",
   "Démarrer ne te coûte rien",
 ];
@@ -208,7 +207,7 @@ export default async function ApporteurAffairesPage({ params }: Props) {
       id: "definition",
       question: "C'est quoi, un apporteur d'affaires indépendant ?",
       answer:
-        "Un apporteur d'affaires met en relation une entreprise et un prestataire, et perçoit une commission quand l'affaire se conclut. Il ne négocie pas, ne signe rien au nom du prestataire et n'a aucun mandat de représentation : son rôle s'arrête à la mise en relation. C'est ce qui le distingue de l'agent commercial, qui négocie et dispose d'un statut légal propre.",
+        "Un apporteur d'affaires met en relation une entreprise et un prestataire, et perçoit une commission quand l'affaire se conclut. Il ne négocie pas, ne signe rien au nom du prestataire et n'a aucun mandat de représentation : son rôle s'arrête à la mise en relation. C'est ce qui le distingue d'un intermédiaire mandaté, qui négocie au nom de l'entreprise et relève d'un statut légal propre.",
     },
     {
       id: "remuneration",
@@ -219,7 +218,7 @@ export default async function ApporteurAffairesPage({ params }: Props) {
       id: "statut",
       question: "Quel statut faut-il pour être apporteur d'affaires ?",
       answer:
-        "Il faut un statut d'indépendant permettant d'émettre une facture : micro-entreprise, entreprise individuelle ou société. La création d'une micro-entreprise est gratuite et se fait en ligne en une quinzaine de minutes. Aucun diplôme n'est exigé, et il n'existe pas de registre spécifique à l'apport d'affaires, contrairement à l'agent commercial.",
+        "Il faut un statut d'indépendant permettant d'émettre une facture : micro-entreprise, entreprise individuelle ou société. La création d'une micro-entreprise est gratuite et se fait en ligne en une quinzaine de minutes. Aucun diplôme n'est exigé, et il n'existe pas de registre spécifique à l'apport d'affaires.",
     },
     {
       id: "competences-ia",
@@ -354,10 +353,16 @@ export default async function ApporteurAffairesPage({ params }: Props) {
               négocie pas les prix, ne signe rien au nom du prestataire et n&apos;a aucun mandat de
               représentation.
             </p>
+            {/* 2026-09-19 (P4) — ce paragraphe nommait le statut de mandataire
+                pour s'en distinguer. La distinction est juste, mais nommer ce
+                statut sur une page d'acquisition est précisément ce que
+                l'article 8.2 du contrat et la garde
+                `le-tunnel-apporteur-ne-dit-jamais-agent-commercial.spec.ts`
+                excluent : on décrit ce que l'apporteur ne fait pas. */}
             <p className="text-fg-soft mt-4 leading-relaxed">
-              C&apos;est ce qui le distingue de l&apos;<strong>agent commercial</strong>, qui
-              négocie, dispose d&apos;un mandat permanent et relève d&apos;un statut légal propre.
-              Deux métiers voisins, deux réalités juridiques différentes.
+              C&apos;est ce qui le distingue d&apos;un <strong>intermédiaire mandaté</strong>, qui
+              négocie au nom de l&apos;entreprise, la représente durablement et relève d&apos;un
+              statut légal propre. Deux métiers voisins, deux réalités juridiques différentes.
             </p>
             <p className="text-fg-soft mt-4 leading-relaxed">
               Concrètement, chez nous : vous signalez une entreprise, nous l&apos;appelons, nous
@@ -559,11 +564,10 @@ export default async function ApporteurAffairesPage({ params }: Props) {
         track="apporteur-sticky-apply"
       />
 
-      {/* Date de publication de l'offre — utilisée par le cron de fraîcheur.
-          Pas de JobPosting ici : il vit sur `/devenir-commercial-ia`, qui est la
-          page canonique pour Google for Jobs. Deux JobPosting pour la même offre
-          se feraient concurrence dans l'index. */}
-      <meta itemProp="datePosted" content={COMMERCIAL_OFFER_DATE_POSTED} />
+      {/* ⛔ Pas d'offre d'emploi schema.org, ni ici ni ailleurs pour les
+          apporteurs (décision Will 2026-09-19, B5) : un apporteur indépendant
+          n'est pas un poste. La balise `datePosted` orpheline qui vivait ici
+          (hors de tout `itemscope`, lue par aucun cron) est partie avec. */}
     </>
   );
 }

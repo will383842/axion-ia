@@ -27,8 +27,16 @@ const consentement = vi.fn(async (_a: unknown) => true);
 const honeypot = vi.fn();
 let cookieUtm: string | undefined;
 
+let adresseSaturee = false;
 vi.mock("@/lib/rate-limit", () => ({
-  checkRateLimit: async () => ({ allowed: true, count: 1, remaining: 9, resetAt: 0, panne: false }),
+  checkRateLimit: async (cle: string) => ({
+    // Seul le compteur PAR ADRESSE peut être saturé, et seulement quand un test le demande.
+    allowed: !(adresseSaturee && cle.startsWith("lead-apporteur:email:")),
+    count: 1,
+    remaining: 9,
+    resetAt: 0,
+    panne: false,
+  }),
 }));
 vi.mock("@/lib/client-ip", () => ({ getClientIp: async () => "203.0.113.7" }));
 vi.mock("@/lib/prisma", () => ({
@@ -104,6 +112,7 @@ beforeEach(() => {
   consentement.mockClear();
   honeypot.mockClear();
   cookieUtm = undefined;
+  adresseSaturee = false;
 });
 
 describe("submitLeadApporteurAction", () => {
@@ -179,6 +188,37 @@ describe("submitLeadApporteurAction", () => {
       expect(r[4].jobId).not.toContain(":");
       expect(r[4].jobId).not.toContain("@");
     }
+  });
+
+  it("enregistre la version v2 du consentement, dans la ligne ET dans le registre de preuve", async () => {
+    // 2026-09-19 (B4) — le texte coché ne promet plus d'appel et ne dit plus
+    // « jamais transmises » : la preuve doit pointer vers CE texte. Valeur
+    // littérale, et non la constante : recopier la constante ne testerait rien.
+    // (Le dossier complet, lui, enregistre sa propre version — pas celle-ci.)
+    const v2 = "lead-apporteur-facebook-v2-2026-09-19";
+    await submitLeadApporteurAction({ ok: false, error: "" }, formulaire(valide));
+
+    const args = creer.mock.calls[0]?.[0] as CreateArgs;
+    expect(args.data.details.consentVersion).toBe(v2);
+
+    expect(consentement).toHaveBeenCalledTimes(1);
+    expect(consentement.mock.calls[0]?.[0]).toMatchObject({
+      consentVersion: v2,
+      formRef: "lead-apporteur-facebook",
+      action: "optin",
+    });
+  });
+
+  it("une demande en double ne promet pas d'appel", async () => {
+    // Le compteur par adresse répond dès la 4e demande du jour : ce message est
+    // lu par quelqu'un qui attend une suite — il ne doit pas en inventer une.
+    adresseSaturee = true;
+    const r = await submitLeadApporteurAction({ ok: false, error: "" }, formulaire(valide));
+    expect(r).toEqual({
+      ok: false,
+      error: "On a déjà bien reçu ta demande avec cet email — inutile de la renvoyer.",
+    });
+    expect(creer).not.toHaveBeenCalled();
   });
 
   it("transmet à l'API Conversions la réponse à la bannière telle quelle — c'est elle qui décide", async () => {

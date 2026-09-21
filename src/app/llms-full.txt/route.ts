@@ -178,7 +178,7 @@ URL : ${SITE_URL}/fr/methodologie
 - Facturation EUR, régime TVA UE, virement SEPA/SWIFT.
 - Pas de mensualité, pas d'engagement, devis fixe.
 - 30 jours de support post-livraison inclus.
-- Notifications Telegram + emails automatiques (PowerMTA self-hosted).
+- Notifications Telegram + emails automatiques (relais ZeptoMail).
 `;
 
   return new Response(body, {

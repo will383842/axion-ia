@@ -5,7 +5,7 @@
 // D'un post ou d'une publicité, sur son téléphone, sans rien avoir demandé.
 // Il donne dix secondes. Tout ce fichier est écrit pour ces dix secondes :
 // une promesse dans SES mots (« tu connais des dirigeants »), une action
-// unique (« qu'on m'appelle »), la preuve avant l'argument — et PEU DE TEXTE
+// unique (« recevoir le kit »), la preuve avant l'argument — et PEU DE TEXTE
 // (demande Will 2026-09-03 : « pas trop de blabla »). Une phrase par idée.
 //
 // ── Les trois contraintes qui ont écrit chaque phrase ───────────────────────
@@ -41,13 +41,19 @@
 // calculés dans la page. Deux barèmes publics ont déjà divergé de 150 € pour
 // un montant recopié à la main.
 //
-// 🔴 AUCUN DÉLAI DE RÉPONSE PROMIS (règle Will 2026-08-23) : « on t'appelle »,
+// 🔴 AUCUN DÉLAI DE RÉPONSE PROMIS (règle Will 2026-08-23) : « on te répond »,
 // jamais « sous 48 h ».
+//
+// 🔴 AUCUN APPEL PROMIS (décision Will 2026-09-19, B4). L'échange de
+// 15 minutes part sur invitation, depuis la console, aux seuls profils
+// retenus : le promettre à chaque personne qui laisse son numéro, c'était
+// annoncer un service qu'on ne rend pas. Ce qui arrive vraiment, et que la
+// page dit : le kit par e-mail tout de suite, puis une réponse.
 //
 // TUTOIEMENT, comme tout le tunnel de candidature.
 
 export const TUNNEL_FACEBOOK_META = {
-  title: "Apporteur d'affaires IA — on t'appelle",
+  title: "Apporteur d'affaires IA : recommande, sans vendre",
   description:
     "Tu connais des dirigeants ? Présente-leur Axion-IA, on s'occupe du reste, tu touches une commission sur chaque formation payée. Quatre champs, zéro CV.",
 } as const;
@@ -64,7 +70,7 @@ export const HERO = {
   montantSous: "Versé dès que l'entreprise nous a payés.",
   chapo:
     "La loi européenne oblige désormais les entreprises à former leurs équipes à l'IA. Tu présentes Axion-IA aux dirigeants que tu connais, on fait tout le reste, tu touches une commission sur chaque formation payée.",
-  cta: "Je veux qu'on m'appelle",
+  cta: "Recevoir le kit",
   micro: "30 secondes · 4 champs · zéro CV",
   /** Couverture nationale, dite en clair sous le formulaire ET dans le héro :
    *  la question « est-ce que ça marche chez moi ? » est le premier frein d'un
@@ -82,17 +88,23 @@ export const CONFIANCE_BASE: readonly string[] = [
 ];
 
 export const FORMULAIRE = {
-  titre: "On t'appelle, on t'explique",
+  titre: "Reçois le kit, on te répond",
   sousTitre: "Quatre champs. Aucun engagement : tu décides après.",
   points: [
-    "On t'appelle et on répond à tes questions.",
+    "On te répond par e-mail et on répond à tes questions.",
     "Tu complètes ensuite un dossier de 3 minutes, sans CV.",
     "Tu décides après. Jamais avant.",
   ],
+  // ⚠️ Texte versionné : toute modification change `LEAD_APPORTEUR_CONSENT_VERSION`
+  // (`lib/commercial-application/lead-apporteur.ts`) — la preuve enregistrée
+  // doit pointer vers le texte réellement coché. v2 (2026-09-19) : plus de
+  // rappel promis, et « jamais transmises » devient « jamais vendues ni
+  // cédées » (nos sous-traitants d'envoi et de notification les reçoivent :
+  // le texte doit dire vrai).
   consent:
-    "J'accepte qu'Axion-IA me rappelle et m'écrive au sujet du réseau d'apporteurs d'affaires. Données conservées 2 ans, jamais transmises.",
-  bouton: "Je veux qu'on m'appelle",
-  micro: "Un e-mail tout de suite, puis un appel de notre part.",
+    "J'accepte qu'Axion-IA m'écrive au sujet du réseau d'apporteurs d'affaires. Données conservées 24 mois après la clôture de mon dossier, jamais vendues ni cédées.",
+  bouton: "Recevoir le kit",
+  micro: "Un e-mail tout de suite, avec le document de présentation et le catalogue.",
 } as const;
 
 export const ETAPES: readonly { readonly titre: string; readonly texte: string }[] = [
@@ -150,7 +162,7 @@ export const FONDATEUR = {
 
 export const MERCI = {
   title: "C'est noté 🎉",
-  description: "On t'appelle. En attendant, deux choses si tu veux.",
+  description: "En attendant, deux choses si tu veux.",
   email: "Un e-mail arrive dans les prochaines minutes. Regarde tes spams si tu ne le vois pas.",
   // 2026-09-19 — le bloc « choisis le moment de l'appel » est remplacé par le
   // KIT : le lien de réservation n'est plus distribué à tous (il saturerait
@@ -162,7 +174,7 @@ export const MERCI = {
   kitCatalogue: "Le catalogue des prestations",
   dossierTitre: "Complète ton dossier",
   dossierTexte:
-    "Trois minutes, sans CV. Tes coordonnées sont déjà remplies. On prépare l'appel à partir de tes réponses.",
+    "Trois minutes, sans CV. Tes coordonnées sont déjà remplies. Tes réponses nous disent si un échange de 15 minutes a du sens.",
   dossierCta: "Compléter mon dossier",
 } as const;
 

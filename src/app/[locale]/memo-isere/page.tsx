@@ -72,13 +72,9 @@ import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { cn } from "@/lib/utils";
 import { memoPhoto, type MemoIserePhotoSlot } from "@/content/recrutement/memo-isere-photos";
 import { COMMISSION_FORMATION_PAR_JOURNEE_EUR } from "@/content/pricing";
-import { buildProductMetadata, buildWebPageJsonLd, SITE_URL } from "@/lib/seo";
+import { buildProductMetadata, buildWebPageJsonLd } from "@/lib/seo";
 import { getPublishedReviews, type PublicReview } from "@/server/reviews/queries";
-import {
-  MEMO_ZONE_CLUSTERS,
-  MEMO_ZONE_PRINCIPALES,
-  MEMO_ZONE_TOTAL,
-} from "@/content/recrutement/memo-isere-zone";
+import { MEMO_ZONE_CLUSTERS, MEMO_ZONE_TOTAL } from "@/content/recrutement/memo-isere-zone";
 
 export const revalidate = 3600;
 
@@ -624,7 +620,7 @@ export default async function MemoIserePage({ params }: Props) {
       id: "statut",
       question: "Quel statut faut-il ?",
       answer:
-        "Indépendant : micro-entrepreneur, agent commercial, VRP multicartes ou apporteur d'affaires. Si tu n'as pas encore de statut, la micro-entreprise se crée en ligne en quelques jours et ne coûte rien — on t'oriente au démarrage.",
+        "Un statut d'indépendant qui permet de facturer ta commission : micro-entreprise ou société. Si tu n'as pas encore de statut, la micro-entreprise se crée en ligne en quelques jours et ne coûte rien — on t'oriente au démarrage.",
     },
     {
       id: "cumul",
@@ -664,7 +660,7 @@ export default async function MemoIserePage({ params }: Props) {
     {
       id: "paiement",
       question: "Comment et quand suis-je payé ?",
-      answer: `En tant qu'indépendant, tu factures ta commission à Axion-IA une fois que le client a réglé sa facture — pas à la signature. C'est la règle du jeu de l'apport d'affaires : la commission est due quand l'argent est encaissé. ${commission(1)} par journée de formation vendue, pourcentage sur les audits et intégrations — le tableau de suivi te montre tes ventes et tes commissions en temps réel.`,
+      answer: `En tant qu'indépendant, tu factures ta commission à Axion-IA une fois que le client a réglé sa facture — pas à la signature. C'est la règle du jeu de l'apport d'affaires : la commission est due quand l'argent est encaissé. ${commission(1)} par journée de formation vendue, pourcentage sur les audits et intégrations. Chaque entreprise que tu nous déclares est enregistrée à ton nom par notre équipe : c'est cette déclaration qui fait foi.`,
     },
     {
       id: "engagement",
@@ -676,53 +672,17 @@ export default async function MemoIserePage({ params }: Props) {
       id: "candidater",
       question: "Comment candidater ?",
       answer:
-        "En 3 minutes chrono : zéro CV demandé, et la lettre de motivation ? On a remplacé cette vieillerie par un message libre 😉 — raconte-nous qui tu es, ce que tu connais de ton coin et pourquoi ton secteur, c'est toi. On te rappelle vite pour en parler de vive voix.",
+        "En 3 minutes chrono : zéro CV demandé, et la lettre de motivation ? On a remplacé cette vieillerie par un message libre 😉 — raconte-nous qui tu es, ce que tu connais de ton coin et pourquoi ton secteur, c'est toi. On te répond, et si ton profil correspond, on te propose un échange de 15 minutes.",
     },
   ];
 
   // ── JSON-LD ────────────────────────────────────────────────────────────────
-  // JobPosting Google for Jobs. 🔴 Pas de lieu dans `title` (règle Google) —
-  // le géo vit dans jobLocation (47 communes officielles).
-  const jobJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "JobPosting",
-    title: "Commercial indépendant IA (apporteur d'affaires)",
-    description: `Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Grenoble à Valence, Die et Lyon (474 communes, zone au choix selon disponibilité) pour promouvoir ses formations et audits IA auprès des PME, ETI et grands groupes locaux — artisans et commerçants compris — quel que soit le secteur d'activité. L'AI Act impose la formation des équipes à l'IA et les formations sont finançables OPCO : la vente est facilitée. ${commission(1)} par journée de formation vendue, revenus non plafonnés, statut libre. Débutants acceptés, formation à l'offre fournie.`,
-    // Date RÉELLE de mise en ligne de l'annonce (règle Google for Jobs : jamais
-    // une date antérieure à l'existence de l'URL). À rafraîchir UNIQUEMENT lors
-    // d'une vraie republication de l'offre (contenu revu, offre toujours ouverte).
-    datePosted: "2026-08-13T00:00:00.000Z",
-    employmentType: "CONTRACTOR",
-    occupationalCategory: "Commercial indépendant · Agent commercial · VRP · Apporteur d'affaires",
-    industry: "Intelligence artificielle · Formation · Services aux entreprises",
-    qualifications:
-      "Aisance relationnelle et motivation. Débutants acceptés : formation complète à l'offre IA fournie.",
-    responsibilities:
-      "Prospecter les PME, ETI et grands groupes de sa zone (choisie entre Grenoble, Valence, Die et Lyon), quel que soit leur secteur d'activité — cabinets d'avocats et d'expertise comptable, santé et laboratoires, sites industriels, BTP, transport, agroalimentaire, commerce, hôtellerie ; présenter les formations et audits IA ; suivre ses ventes et commissions sur un tableau de bord.",
-    jobBenefits:
-      "Statut indépendant, revenus non plafonnés, emploi du temps libre, territoire dédié, supports et argumentaires fournis, accompagnement au démarrage, activité évolutive (responsable de secteur).",
-    incentiveCompensation: `Rémunération 100 % à la commission, comptée en journées de formation vendues : ${commission(1)} par journée, sans plafond. Une formation de 2 journées rapporte ${commission(2)}, un programme de 3 journées ${commission(3)}. Pourcentage de la facture en plus sur les audits et intégrations IA.`,
-    hiringOrganization: {
-      "@type": "Organization",
-      "@id": `${SITE_URL}/#organization`,
-      name: "Axion-IA",
-      url: SITE_URL,
-      sameAs: ["https://www.linkedin.com/company/axion-ia-france"],
-    },
-    jobLocation: MEMO_ZONE_PRINCIPALES.map((city) => ({
-      "@type": "Place",
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: city,
-        addressRegion: "Auvergne-Rhône-Alpes",
-        addressCountry: "FR",
-      },
-    })),
-    applicantLocationRequirements: { "@type": "Country", name: "France" },
-    directApply: true,
-    url: `${SITE_URL}/fr/memo-isere`,
-  } as const;
-
+  // ⛔ Plus d'offre d'emploi schema.org ici (décision Will 2026-09-19, B5) :
+  // pour Google, elle faisait de l'apporteur d'affaires un POSTE (employeur,
+  // « type d'emploi », statuts de mandataire en catégorie), ce que le contrat
+  // d'un indépendant sans lien de subordination existe pour écarter. La page
+  // reste indexée par son WebPage ci-dessous ; le cron de fraîcheur ne la
+  // surveille plus (`content/recrutement/dates.ts`, liste vide).
   const webpageJsonLd = buildWebPageJsonLd({
     locale: loc,
     path: "/memo-isere",
@@ -734,7 +694,6 @@ export default async function MemoIserePage({ params }: Props) {
 
   return (
     <>
-      <JsonLd data={jobJsonLd} scriptId="jsonld-memo-jobposting" />
       <JsonLd data={webpageJsonLd} scriptId="jsonld-memo-webpage" />
 
       <Container className="border-border border-b py-3">
@@ -877,7 +836,7 @@ export default async function MemoIserePage({ params }: Props) {
                 ? "Organisme certifié Qualiopi"
                 : "Démarche qualité alignée sur le référentiel national qualité",
               "Formations finançables OPCO",
-              "Statut libre : micro-entreprise, VRP, apporteur",
+              "Statut libre : micro-entreprise ou société",
               "Cumulable avec ton job actuel",
             ].map((t) => (
               <li
@@ -1480,7 +1439,7 @@ export default async function MemoIserePage({ params }: Props) {
                   Icon: Rocket,
                   title: "Tu candidates",
                   description:
-                    "3 minutes chrono : pas de CV, pas de lettre de motivation à l'ancienne — un message libre pour te présenter. On t'appelle ensuite pour faire connaissance.",
+                    "3 minutes chrono : pas de CV, pas de lettre de motivation à l'ancienne — un message libre pour te présenter. On te répond, et si ton profil correspond, on te propose un échange de 15 minutes.",
                   stat: { figure: "3 min", label: "pour candidater" },
                 },
                 {
@@ -1597,7 +1556,7 @@ export default async function MemoIserePage({ params }: Props) {
                 eyebrow: "02",
                 title: "Outils fournis",
                 description:
-                  "Supports de présentation, plaquettes, démos prêtes à montrer et tableau de bord de tes ventes et commissions — tu n'as rien à créer.",
+                  "Supports de présentation, plaquettes, démos prêtes à montrer et catalogue complet des prestations — tu n'as rien à créer.",
               },
               {
                 Icon: Rocket,
@@ -1742,7 +1701,7 @@ export default async function MemoIserePage({ params }: Props) {
             {[
               "Commerciaux indépendants",
               "Apporteurs d'affaires",
-              "VRP multicartes",
+              "Consultants et courtiers",
               "En reconversion",
               "Retraités actifs",
               "Bon carnet d'adresses local",

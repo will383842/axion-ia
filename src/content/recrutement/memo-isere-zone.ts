@@ -7,9 +7,11 @@
 // re-relever l'API si un périmètre intercommunal change.
 //
 // `principales` = communes de 4 000 hab. et plus du bloc (au minimum son
-// chef-lieu) : elles portent le JobPosting Google for Jobs (poids JSON-LD
-// contenu) ; la liste complète, elle, est VISIBLE sur la page (SEO/AEO/GEO :
-// les petites communes comptent).
+// chef-lieu) : la page en affiche les trois premières sous chaque secteur.
+// Elles portaient aussi les lieux de l'offre d'emploi schema.org de
+// /memo-isere, retirée le 2026-09-19 avec son export dédié (décision Will B5 :
+// un apporteur indépendant n'est pas un poste). La liste complète, elle, est
+// VISIBLE sur la page (SEO/AEO/GEO : les petites communes comptent).
 
 export interface ZoneCluster {
   /** Libellé humain du territoire. */
@@ -682,8 +684,3 @@ export const MEMO_ZONE_CLUSTERS: readonly ZoneCluster[] = [
 
 /** Nombre total de communes couvertes (dédupliqué). */
 export const MEMO_ZONE_TOTAL = new Set(MEMO_ZONE_CLUSTERS.flatMap((c) => c.communes)).size;
-
-/** Communes principales dédupliquées — jobLocation du JobPosting. */
-export const MEMO_ZONE_PRINCIPALES: readonly string[] = [
-  ...new Set(MEMO_ZONE_CLUSTERS.flatMap((c) => c.principales)),
-];

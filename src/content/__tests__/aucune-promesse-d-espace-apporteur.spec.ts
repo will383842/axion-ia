@@ -26,7 +26,9 @@
  * LIGNE dans deux autres fichiers :
  *
  *   · `src/app/[locale]/devenir-commercial-ia/page.tsx` — le JSON-LD `JobPosting`,
- *     « suivre les comptes sur un dashboard », lu par Google ;
+ *     « suivre les comptes sur un dashboard », lu par Google (ce JSON-LD a
+ *     depuis été retiré tout entier, le 2026-09-19 : plus d'offre d'emploi
+ *     Google pour un apporteur indépendant) ;
  *   · `src/components/services/devenir-commercial/CommercialHowItWorks.tsx` — le
  *     résumé accessible, « 03 vous tracez vos entreprises sur votre dashboard ».
  *
@@ -65,6 +67,11 @@ const RACINES = [
   "src/components/services/devenir-commercial",
   "src/app/[locale]/devenir-commercial-ia",
   "src/app/[locale]/apporteur-affaires-independant-formation-ia-entreprise",
+  // 2026-09-19 (P4) — la landing du Mémo de l'Isère recrute les mêmes apporteurs,
+  // et c'est elle qui promettait encore « le tableau de suivi te montre tes
+  // ventes et tes commissions en temps réel » : la promesse exacte que cette
+  // garde existe pour interdire, sur un territoire qu'elle ne balayait pas.
+  "src/app/[locale]/memo-isere",
 ] as const;
 
 const EXTENSIONS = [".ts", ".tsx"];
@@ -109,12 +116,19 @@ function parcoursApporteur(): { chemin: string; texte: string }[] {
  */
 const PROMESSES_D_OUTIL: readonly (readonly [RegExp, string])[] = [
   [/votre dashboard/i, "possession — « votre dashboard »"],
-  [/sur un dashboard/i, "usage — « sur un dashboard » (JSON-LD JobPosting)"],
+  [/sur un dashboard/i, "usage — « sur un dashboard »"],
   [/your dashboard/i, "possession (EN)"],
   [/on a dashboard/i, "usage (EN)"],
   [/sur votre (?:tableau de bord|espace)/i, "possession — variante FR"],
   [/votre espace (?:apporteur|personnel|commercial)/i, "possession — « votre espace »"],
   [/trac[ée]e? de bout en bout/i, "traçabilité automatique inexistante"],
+  // 2026-09-19 (P4) — la variante française que la liste ci-dessus laissait
+  // passer : « le tableau de suivi te montre tes ventes », « tableau de bord de
+  // tes ventes et commissions » (/memo-isere). Le mot seul est visé ICI sans
+  // viser la possession, parce que cette garde ne balaie QUE les racines du
+  // parcours apporteur : aucune page client n'est lue, et dans ce parcours un
+  // tableau de bord ne peut désigner que l'espace qui n'existe pas encore.
+  [/tableau de (?:bord|suivi)/i, "tableau de bord ou de suivi"],
 ];
 
 describe("le parcours apporteur n'annonce aucun espace en libre-service tant qu'il n'existe pas", () => {
@@ -152,8 +166,26 @@ describe("le parcours apporteur n'annonce aucun espace en libre-service tant qu'
         expect.stringContaining("devenir-commercial-ia/page.tsx"),
         expect.stringContaining("CommercialHowItWorks.tsx"),
         expect.stringContaining("commercial-offer.ts"),
+        // Le territoire ajouté le 2026-09-19 : sans lui, la promesse du tableau
+        // de suivi de /memo-isere repasserait sous le radar.
+        expect.stringContaining("memo-isere/page.tsx"),
       ]),
     );
+  });
+
+  it("TÉMOIN — le motif « tableau de bord / de suivi » voit les phrases retirées de /memo-isere", () => {
+    // Copies exactes de ce qui était en ligne : une garde élargie qui ne les
+    // verrait pas serait verte pour de mauvaises raisons.
+    const voit = (s: string) => PROMESSES_D_OUTIL.some(([motif]) => motif.test(s));
+    expect(voit("le tableau de suivi te montre tes ventes et tes commissions en temps réel")).toBe(
+      true,
+    );
+    expect(voit("démos prêtes à montrer et tableau de bord de tes ventes et commissions")).toBe(
+      true,
+    );
+    expect(voit("suivre ses ventes et commissions sur un tableau de bord.")).toBe(true);
+    // Le processus RÉEL, lui, passe : c'est l'équipe qui enregistre.
+    expect(voit("Chaque entreprise est enregistrée à ton nom par notre équipe.")).toBe(false);
   });
 
   it("décrit le processus qui existe vraiment", () => {

@@ -15,7 +15,7 @@
 // risque de perte totale, et devient un risque de perte partielle.
 //
 // ── Ce qu'elle NE fait PAS, et pourquoi ───────────────────────────────────
-// Elle n'envoie PAS l'e-mail « C'est noté, on t'appelle ». La personne est en
+// Elle n'envoie PAS l'e-mail « C'est noté » du premier contact. La personne est en
 // train de remplir : lui écrire « c'est noté » au milieu du formulaire lui dit
 // qu'elle peut s'arrêter. L'e-mail de confirmation part à la SOUMISSION
 // complète, comme aujourd'hui.

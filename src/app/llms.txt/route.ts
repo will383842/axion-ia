@@ -122,11 +122,10 @@ export function GET() {
 - Services localisés par ville : ${SITE_URL}/fr/audit/par-ville/{ville} (idem interventions / implementation / un-a-un / sites-web-augmentes).
 - ~2 150 communes couvertes, Tier 1 grandes métropoles (Paris, Lyon, Marseille, Toulouse, Nice, Nantes, Strasbourg, Montpellier, Bordeaux, Lille…) → Tier 3 longue traîne (indexation progressive).
 
-## Recrutement — réseau commercial indépendant
+## Réseau d'apporteurs d'affaires indépendants
 
-- [Devenir commercial IA](${SITE_URL}/fr/devenir-commercial-ia) — Axion-IA recrute 200+ commerciaux indépendants partout en France pour vendre ses formations, audits, accompagnements 1-to-1 et intégrations IA aux PME, ETI et grands groupes, artisans, commerçants et grandes entreprises. Statut indépendant, rémunération à la commission (fixe par formation, % de la facture sur audits/intégrations), démarrage sans coût, formation aux bases de l'IA + à la prospection, équipe d'accompagnement. Débutants acceptés.
-- [Candidature commercial](${SITE_URL}/fr/devenir-commercial-ia/candidature) — formulaire de candidature (réponse email sous quelques jours puis appel visio).
-- Pages par ville (40 hubs T1+T2, ex. ${SITE_URL}/fr/devenir-commercial-ia/grenoble) — territoire de vente local réel (secteurs, grands comptes, bassin). Les villes plus petites (T3/T4) redirigent en 301 vers leur hub le plus proche (« et alentours »).
+- [Devenir apporteur d'affaires](${SITE_URL}/fr/devenir-commercial-ia) — Axion-IA constitue un réseau d'apporteurs d'affaires indépendants partout en France, qui recommandent ses formations, audits, accompagnements 1-to-1 et intégrations IA aux PME, ETI et grands groupes, artisans et commerçants compris. L'apporteur met en relation, Axion-IA présente, chiffre et facture. Micro-entreprise ou société, commission à l'encaissement (fixe par journée de formation, % de la facture sur audits/intégrations), démarrage sans coût. Débutants acceptés.
+- [Candidature apporteur](${SITE_URL}/fr/devenir-commercial-ia/candidature) — formulaire de candidature (réponse par e-mail dans les prochaines heures ; un échange de 15 min peut être proposé).
 - Sitemap dédié : ${SITE_URL}/sitemap-recrutement.xml
 
 ## Carrières — nous rejoindre (salariat)
@@ -146,7 +145,7 @@ export function GET() {
 ## Stratégie & positionnement
 
 - Mobile-first absolu. Accessibilité : objectif WCAG 2.2 AA, conformité partielle non encore auditée — déclaration : ${SITE_URL}/fr/accessibilite.
-- Notifications Telegram + emails automatiques (PowerMTA self-hosted, pas de SaaS tiers).
+- Notifications Telegram + emails automatiques (relais ZeptoMail).
 - Facturation EUR, régime TVA UE, virement SEPA/SWIFT.
 - Pas de mensualité, pas d'engagement, devis fixe.
 - Hébergement Hetzner (UE) — pas de Stripe payment, pas de Resend, pas de Vercel.

@@ -4,8 +4,9 @@
 // Là-bas, le visiteur a lu une annonce et vient CANDIDATER : la page l'envoie
 // vers le dossier complet. Ici, il vient d'un post, sur son téléphone, sans
 // rien avoir décidé : la page doit le convaincre en dix secondes et ne lui
-// demander QU'UN geste — laisser quatre champs pour qu'on l'appelle. Le dossier
-// complet vient après, par l'e-mail.
+// demander QU'UN geste — laisser quatre champs pour recevoir le kit (document
+// de présentation + catalogue). Le dossier complet vient après, par l'e-mail ;
+// l'échange de 15 minutes, lui, part sur invitation (décision Will 2026-09-19).
 //
 // Ordre des sections, et pourquoi :
 //   1. Héro : la promesse dans SES mots, une action, une photo.
@@ -224,7 +225,8 @@ export async function FacebookLandingPage({ params }: Props) {
     },
     {
       id: "statut",
-      // 🔴 2026-09-04 — « agent commercial » RETIRÉ de cette réponse.
+      // 🔴 2026-09-04 — le statut de mandataire de l'article L.134-1 du code de
+      // commerce RETIRÉ de cette réponse (elle le citait en toutes lettres).
       //
       // Ce n'était pas un mot maladroit : c'est un STATUT JURIDIQUE (art. L.134
       // du code de commerce) défini par l'existence d'un MANDAT de négocier au
@@ -234,14 +236,14 @@ export async function FacebookLandingPage({ params }: Props) {
       // représentant ».
       //
       // Le registre des risques du contrat lui-même le dit sans détour, à
-      // propos de la seule mention de ce statut : « aveu que la qualification
-      // d'agent commercial était envisagée : elle DÉTRUIRAIT la portée des
+      // propos de la seule mention de ce statut : c'est l'aveu que cette
+      // qualification était envisagée, et elle « DÉTRUIRAIT la portée des
       // articles 1 et 2 » (`docs/partners/CONTRAT-APPORTEUR-V1.md`).
       //
       // Autrement dit, la page publique invitait les candidats à s'immatriculer
-      // sous le statut que tout le contrat existe pour écarter — et le statut
-      // d'agent commercial ouvre en outre un droit à indemnité de fin de
-      // contrat (L.134-12) auquel on ne peut pas renoncer (L.134-16).
+      // sous le statut que tout le contrat existe pour écarter — et ce statut
+      // ouvre en outre un droit à indemnité de fin de contrat (L.134-12)
+      // auquel on ne peut pas renoncer (L.134-16).
       //
       // ⛔ NE PAS le remettre, même « pour être complet » : la complétude n'a
       // aucun intérêt ici, et deux statuts suffisent à facturer.
@@ -560,7 +562,7 @@ export async function FacebookLandingPage({ params }: Props) {
         <Container className="text-center">
           <h2 className="text-fg font-serif text-3xl leading-tight font-semibold text-balance sm:text-4xl">
             Tu connais des dirigeants ?{" "}
-            <span className="text-terracotta italic">On s&apos;appelle.</span>
+            <span className="text-terracotta italic">Reçois le kit.</span>
           </h2>
           <p className="text-fg-soft mx-auto mt-4 max-w-xl text-lg">
             Quatre champs, zéro CV, aucun engagement.

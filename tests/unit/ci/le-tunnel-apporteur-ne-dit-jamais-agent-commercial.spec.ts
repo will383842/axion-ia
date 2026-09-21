@@ -38,6 +38,7 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { buildCommercialKeywords } from "@/content/recrutement/commercial-offer";
 
 const RACINE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 
@@ -58,6 +59,17 @@ const SURFACES = [
   "src/lib/email/templates/candidature-commercial-confirmee.tsx",
   "src/lib/email/templates/apporteur-invitation-appel.tsx",
   "src/app/[locale]/apporteur-affaires/merci/page.tsx",
+  // 2026-09-19 (B5, P4) — les pages publiques qui recrutent des apporteurs
+  // HORS du tunnel Facebook. Elles disaient toutes « agent commercial » ou
+  // « VRP » : dans la FAQ statut de /memo-isere, dans la bande de réassurance
+  // des annonces, dans le JSON-LD `JobPosting` que Google lisait. La garde ne
+  // lisait que le tunnel Facebook : la même faute vivait à côté, en ligne.
+  "src/content/recrutement/partenaire-landings.ts",
+  "src/app/[locale]/devenir-commercial-ia/page.tsx",
+  "src/app/[locale]/devenir-commercial-ia/candidature/page.tsx",
+  "src/app/[locale]/apporteur-affaires-independant-formation-ia-entreprise/page.tsx",
+  "src/app/[locale]/memo-isere/page.tsx",
+  "src/components/services/devenir-commercial/CommercialProductsEarnings.tsx",
 ];
 
 /**
@@ -123,5 +135,33 @@ describe("le tunnel apporteurs ne nomme jamais un statut de mandataire", () => {
     // la défense pour satisfaire le contrôle.
     expect(voitUneFaute(negationProtectrice)).toBe(false);
     expect(voitUneFaute(enCommentaire)).toBe(false);
+  });
+
+  it("les mots-clés des pages apporteur ne nomment ni un mandat, ni la vente", () => {
+    // `keywords` n'est pas du texte visible, mais les moteurs le lisent : c'est
+    // la même déclaration publique que la page, sous une autre forme.
+    const motsCles = buildCommercialKeywords("Grenoble", "Isère", "Auvergne-Rhône-Alpes");
+    expect(motsCles.length).toBeGreaterThan(20); // témoin : la liste n'est pas vide
+    const fautes = motsCles.filter(
+      (k) => TERMES_DE_MANDAT.some((m) => m.test(k)) || /\bvend|\bvente/i.test(k),
+    );
+    expect(fautes).toEqual([]);
+  });
+
+  it("TÉMOIN — les fautes retirées des pages ajoutées le 2026-09-19 seraient vues", () => {
+    // Copies EXACTES de ce qui était en ligne avant la réécriture : si l'une
+    // d'elles revenait, la garde doit rougir. Sans ce témoin, élargir SURFACES
+    // prouverait seulement que les fichiers existent, pas qu'on y lit la faute.
+    const voitUneFaute = (s: string) => TERMES_DE_MANDAT.some((m) => m.test(texteVisible(s)));
+    for (const fauteRetiree of [
+      '"Indépendant : micro-entrepreneur, agent commercial, VRP multicartes ou apporteur d\'affaires."',
+      '"Statut libre : micro-entreprise, VRP, apporteur",',
+      '"Statut libre : micro-entreprise, agent commercial, apporteur",',
+      '"Agents commerciaux multicartes",',
+      '"Mandataires en immobilier d\'entreprise",',
+      'occupationalCategory: "Commercial indépendant · Agent commercial · VRP",',
+    ]) {
+      expect(voitUneFaute(fauteRetiree), fauteRetiree).toBe(true);
+    }
   });
 });

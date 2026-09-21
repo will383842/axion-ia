@@ -7,9 +7,9 @@
 // `PARTENAIRE_LANDINGS`, pas une nouvelle page.
 //
 // 🔴 `noindex` ASSUMÉ — cette page est un quasi-doublon de
-// `/devenir-commercial-ia`. L'indexer cannibaliserait la page principale (qui
-// porte le JobPosting Google for Jobs) et exposerait au doorway, pour un gain
-// nul : 100 % de son trafic vient de l'annonce. Même arbitrage que les 40
+// `/devenir-commercial-ia`. L'indexer cannibaliserait la page principale et
+// exposerait au doorway, pour un gain nul : 100 % de son trafic vient de
+// l'annonce. Même arbitrage que les 40
 // pages ville (`sitemap-recrutement.xml/route.ts`). Elle n'est donc NI dans un
 // sitemap, NI indexable.
 //

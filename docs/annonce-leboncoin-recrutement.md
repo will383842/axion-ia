@@ -1,6 +1,7 @@
 # Annonce Le Bon Coin + landing dédiée + pilotage des annonces
 
 > **Créé le** 2026-08-23 · **Aucun code écrit.**
+> **Aligné le 2026-09-19** sur `src/content/recrutement/partenaire-landings.ts` : ni statut de mandataire, ni appel promis à tous (l'échange de 15 minutes part sur invitation), plus de tableau de suivi, lien de la landing corrigé (`/leboncoin`). C'est la base de la mise à jour des annonces Leboncoin et Indeed.
 > Complète `docs/plan-recrutement-apporteurs-daffaires.md` (chantier C5).
 > **Brief Will** : annonce Le Bon Coin France entière, landing dédiée type `memo-isere`, stats console par annonce. Focus **formations + audits uniquement**. Mettre en avant les **500 €**. Ton **fun, simple, accrocheur**.
 
@@ -40,11 +41,11 @@ Et le problème n'attend pas : une annonce Le Bon Coin est surtout vue dans ses 
 
 Le titre fait tout : il décide du taux de clic, et les annonces Le Bon Coin sont souvent indexées par Google. Trois options, la première recommandée :
 
-| #        | Titre                                                               | Pourquoi                                                                 |
-| -------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| **A** ✅ | **Apporteur d'affaires IA — 500 € par journée de formation vendue** | Le chiffre arrête le scroll. Le métier est nommé. Aucune promesse floue. |
-| B        | Commercial indépendant IA — 500 €/formation + 30 % sur les audits   | Plus complet, mais deux chiffres diluent l'accroche                      |
-| C        | Formations IA : apporteur d'affaires, 500 € par journée vendue      | Bon si la recherche « formation IA » compte plus que « apporteur »       |
+| #        | Titre                                                              | Pourquoi                                                                 |
+| -------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| **A** ✅ | **Apporteur d'affaires IA — 500 € par journée de formation payée** | Le chiffre arrête le scroll. Le métier est nommé. Aucune promesse floue. |
+| B        | Commercial indépendant IA — 500 €/formation + 30 % sur les audits  | Plus complet, mais deux chiffres diluent l'accroche                      |
+| C        | Formations IA : apporteur d'affaires, 500 € par journée payée      | Bon si la recherche « formation IA » compte plus que « apporteur »       |
 
 ### 2.2 Les trois leviers « conditions de marché » — lequel a le droit d'être utilisé
 
@@ -225,10 +226,10 @@ Nommer les métiers est ce qui déclenche la reconnaissance. Une liste vague ne 
 
 - Commerciaux B2B en poste (une carte de plus) ou en reconversion
 - **Commerciaux qui tournent déjà chez les dirigeants** (télécom, énergie, mutuelle, sécurité, fournitures…)
-- Agents commerciaux multicartes
+- Indépendants qui visitent plusieurs entreprises par semaine
 - Courtiers en assurance ou en financement professionnel
 - Consultants indépendants (RH, gestion, organisation, qualité)
-- Mandataires en immobilier d'entreprise
+- Professionnels de l'immobilier d'entreprise
 - Anciens dirigeants, anciens responsables d'agence
 - **Jeunes retraités du commerce** — déjà dans l'annonce, à conserver
 
@@ -247,11 +248,11 @@ _Une version antérieure de ce document recommandait de publier deux annonces d'
 
 Seuil : **40+ candidatures et un coût par apporteur actif acceptable après 3 semaines.** Alors seulement, ajouter une annonce dédiée multicarte, avec un titre et un corps **franchement différents** (pour éviter le doublon), sur une URL distincte :
 
-|       | Annonce A — lancement                                           | Annonce B — plus tard, si A fonctionne                                  |
-| ----- | --------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| Titre | Apporteur d'affaires IA — 500 € par journée de formation vendue | Vous visitez déjà des entreprises ? Ajoutez une carte à 500 €/formation |
-| Cible | Tous profils commerciaux, bloc carnet d'adresses inclus         | Ceux qui sont déjà chez le dirigeant                                    |
-| URL   | `/partenaire/leboncoin`                                         | `/partenaire/leboncoin?a=multicarte`                                    |
+|       | Annonce A — lancement                                          | Annonce B — plus tard, si A fonctionne                                  |
+| ----- | -------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Titre | Apporteur d'affaires IA — 500 € par journée de formation payée | Vous visitez déjà des entreprises ? Ajoutez une carte à 500 €/formation |
+| Cible | Tous profils commerciaux, bloc carnet d'adresses inclus        | Ceux qui sont déjà chez le dirigeant                                    |
+| URL   | `/partenaire/leboncoin`                                        | `/partenaire/leboncoin?a=multicarte`                                    |
 
 On compare au **coût par apporteur actif**, jamais au nombre de candidatures.
 
@@ -330,10 +331,10 @@ encore plus simple : vous êtes déjà en face de la bonne personne.
 Une phrase de plus dans un rendez-vous que vous faisiez de toute façon.
 
 Ce métier va bien à : commerciaux B2B (vente aux entreprises), en poste
-ou anciens · agents commerciaux multicartes · courtiers en assurance ou
-en financement pro · consultants indépendants · mandataires en immobilier
-d'entreprise · anciens dirigeants · et jeunes retraités du commerce,
-dont le carnet d'adresses vaut de l'or.
+ou anciens · indépendants qui visitent plusieurs entreprises par semaine ·
+courtiers en assurance ou en financement pro · consultants indépendants ·
+professionnels de l'immobilier d'entreprise · anciens dirigeants · et
+jeunes retraités du commerce, dont le carnet d'adresses vaut de l'or.
 
 Vous partez de zéro ? C'est possible aussi. Ce sera juste plus long.
 ```
@@ -355,23 +356,23 @@ Deux lignes portent tout le travail :
 | Point                       | `/memo-isere`                                                                             | Annonce Le Bon Coin        | État                          |
 | --------------------------- | ----------------------------------------------------------------------------------------- | -------------------------- | ----------------------------- |
 | **Registre**                | **Tutoiement** (« Tu proposes », « ta zone », « toi, tu touches »)                        | Était en vouvoiement       | ✅ **Aligné en tutoiement**   |
-| **Délai de réponse**        | _« On te rappelle vite »_ — aucun délai chiffré                                           | Promettait 24 h / 48 h     | ✅ **Délais retirés**         |
+| **Délai de réponse**        | _« On te répond »_ — aucun appel promis (2026-09-19)                                      | Promettait 24 h / 48 h     | ✅ **Délais retirés**         |
 | **Format d'accueil**        | _« un échange téléphonique »_ (l. 573)                                                    | Parlait de webinaire hebdo | ✅ **Appel visio individuel** |
 | **Commission**              | 500 €/journée, % sur audits et intégrations                                               | Identique                  | ✅                            |
 | **Déclencheur de paiement** | _« une fois que le client a réglé sa facture — pas à la signature »_ (l. 578)             | Identique                  | ✅                            |
 | **Avertissement revenus**   | _« exemples de calcul, pas une promesse : tes revenus dépendent de tes ventes »_ (l. 532) | Absent                     | ✅ **Repris à l'identique**   |
 | **Candidature**             | _« 3 minutes chrono · zéro CV, zéro lettre de motivation »_                               | Formulation différente     | ✅ **Alignée**                |
-| **Tableau de suivi**        | Promis (l. 578)                                                                           | Absent                     | ✅ **Ajouté**                 |
+| **Tableau de suivi**        | Retiré le 2026-09-19 : l'espace n'existe pas                                              | Retiré                     | ✅ **Retiré des deux**        |
 | **AI Act + OPCO**           | Les deux, en ouverture                                                                    | Les deux                   | ✅                            |
 
 > ⚠️ **Incohérence relevée DANS `memo-isere` même** : le `<h1>` est en vouvoiement (_« Deve**nez** commercial IA indépendant sur **votre** territoire »_) alors que tout le reste de la page tutoie (_« **Tu** proposes… de **ta** zone »_). Deux registres à trois lignes d'écart. À trancher — et à appliquer aux deux pages en même temps.
 
-> ⚠️ **Le « tableau de suivi » est promis sur `memo-isere` (l. 578) mais n'existe pas encore** (chantier C6, 4 j). L'annonce ne partant qu'après la certification, il sera très probablement livré d'ici là — mais c'est à vérifier avant publication.
+> ✅ **2026-09-19 — le « tableau de suivi » est retiré de `memo-isere` ET de l'annonce.** Il n'existe pas (projet Axion Partners, non déployé) ; la garde `aucune-promesse-d-espace-apporteur.spec.ts` interdit désormais de l'annoncer dans le parcours apporteur. Ne le remettre dans l'annonce qu'une fois l'espace EN LIGNE.
 
 #### Titre
 
 ```
-Apporteur d'affaires IA — 500 € par journée de formation vendue
+Apporteur d'affaires IA — 500 € par journée de formation payée
 ```
 
 #### Corps
@@ -404,7 +405,7 @@ DEUX PRODUITS. C'EST TOUT.
 Pas de catalogue de 40 pages à apprendre. Deux choses à retenir :
 
 ▸ UNE FORMATION IA en entreprise
-  500 € pour toi, par journée vendue.
+  500 € pour toi, par journée de formation signée et payée.
   Une formation de 2 jours = 1 000 €. De 3 jours = 1 500 €.
   Finançable jusqu'à 100 % par l'OPCO de l'entreprise.
 
@@ -414,7 +415,7 @@ Pas de catalogue de 40 pages à apprendre. Deux choses à retenir :
   Un audit de PME démarre à 1 900 € HT → au moins 570 €.
 
 Ce sont des exemples de calcul, pas une promesse :
-tes revenus dépendent de tes ventes.
+tes revenus dépendent des entreprises que tu recommandes.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -455,15 +456,15 @@ encore plus simple : tu es déjà en face de la bonne personne.
 Une phrase de plus dans un rendez-vous que tu faisais de toute façon.
 
 Ce métier va bien aux commerciaux B2B (vente aux entreprises), en poste
-ou anciens · agents commerciaux multicartes · courtiers en assurance ou
-en financement pro · consultants indépendants · mandataires en
-immobilier d'entreprise · anciens dirigeants.
+ou anciens · indépendants qui visitent plusieurs entreprises par semaine ·
+courtiers en assurance ou en financement pro · consultants indépendants ·
+professionnels de l'immobilier d'entreprise · anciens dirigeants.
 
 Ton carnet, c'est ton capital, et la vraie question n'est pas « est-ce
 que j'en suis capable » — c'est « est-ce que je vais griller mon
 réseau ». Alors on s'engage :
 
- • Chaque entreprise que tu nous présentes est rappelée. Tu ne seras
+ • Chaque entreprise que tu nous présentes est contactée. Tu ne seras
    jamais celui qui a recommandé un injoignable.
  • Ton premier rendez-vous, on le fait avec toi, en visio.
  • Chaque entreprise est enregistrée à ton nom. Même si elle nous
@@ -499,17 +500,19 @@ rien à prouver, et tu choisis ton rythme.
 COMMENT ÇA SE PASSE
 
 1. Tu candidates en 3 minutes. On répond à TOUTES les candidatures —
-   personne ne reste sans réponse. On revient vers toi dans les
-   prochaines semaines.
-2. Un appel en visio, juste toi et nous : on t'explique l'offre, tu poses
-   tes questions. Pas de réunion collective, un vrai échange.
+   personne ne reste sans réponse. Tu reçois tout de suite par e-mail le
+   document de présentation et le catalogue.
+2. Si ton profil correspond, on te propose un échange de 15 minutes en
+   visio, juste toi et nous : on t'explique l'offre, tu poses tes
+   questions. Pas de réunion collective, un vrai échange.
 3. Tu parles d'Axion-IA à une entreprise que tu connais et tu nous la
    signales : elle est enregistrée à ton nom.
-4. On appelle, on présente, on monte le dossier de financement, on vend.
+4. On contacte l'entreprise, on présente, on monte le dossier de
+   financement, on facture.
 5. L'entreprise (ou son OPCO) nous paie → on te paie.
 
 TU NE CLOSES JAMAIS.
-C'est nous qui vendons. Tu ouvres la porte, c'est tout.
+Tu recommandes, on s'occupe du reste. Tu ouvres la porte, c'est tout.
 Pas de négociation, pas de devis, pas de dossier OPCO,
 pas de relance d'impayés.
 
@@ -519,8 +522,8 @@ CE QU'IL FAUT
 
  • Avoir déjà vendu aux entreprises (B2B) — ou connaître des dirigeants.
    C'est le seul vrai atout qui compte.
- • Un statut d'indépendant, ou l'envie d'en créer un : c'est gratuit et
-   ça prend un quart d'heure en ligne.
+ • Un statut d'indépendant — micro-entreprise ou société —, ou l'envie
+   d'en créer un : c'est gratuit et ça prend un quart d'heure en ligne.
  • Rien d'autre. Pas de diplôme. Aucune connaissance en IA.
 
 CE QUE CE N'EST PAS
@@ -537,12 +540,11 @@ CE QUE CE N'EST PAS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 PARTOUT EN FRANCE. À distance ou sur le terrain, comme tu préfères.
-Un tableau de suivi te montre tes entreprises et tes commissions.
 
 Tout est détaillé ici — candidature en 3 minutes chrono,
 zéro CV, zéro lettre de motivation :
 
-    axion-ia.com/partenaire/leboncoin
+    axion-ia.com/leboncoin
 
 À très vite 👋
 ```
@@ -689,11 +691,11 @@ Une landing `/partenaire/leboncoin` est, par construction, un quasi-doublon de `
 
 ### Où va l'effort SEO/AEO/GEO à la place
 
-| Cible                               | Ce qu'on y met                                                                                                                                                        |
-| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`/devenir-commercial-ia`**        | La page qui doit ranker. Elle porte déjà le JobPosting multi-lieux Google for Jobs. C'est là qu'on renforce le contenu, les entités, les réponses citables (AEO/GEO). |
-| **L'annonce Le Bon Coin elle-même** | Les annonces LBC sont souvent indexées par Google. Le travail de mots-clés se fait **dans le titre de l'annonce** — d'où les trois variantes du §2.1.                 |
-| **`/partenaire/leboncoin`**         | `noindex`. Objectif unique : **convertir**.                                                                                                                           |
+| Cible                               | Ce qu'on y met                                                                                                                                                                                  |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`/devenir-commercial-ia`**        | La page qui doit ranker. Plus d'offre d'emploi Google depuis le 2026-09-19 (un apporteur n'est pas un poste). C'est là qu'on renforce le contenu, les entités, les réponses citables (AEO/GEO). |
+| **L'annonce Le Bon Coin elle-même** | Les annonces LBC sont souvent indexées par Google. Le travail de mots-clés se fait **dans le titre de l'annonce** — d'où les trois variantes du §2.1.                                           |
+| **`/partenaire/leboncoin`**         | `noindex`. Objectif unique : **convertir**.                                                                                                                                                     |
 
 > **Décision recommandée : `noindex` sur toutes les landings `/partenaire/[source]`**, cohérent avec le traitement déjà appliqué aux 40 pages ville.
 

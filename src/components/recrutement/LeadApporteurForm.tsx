@@ -66,13 +66,15 @@ const TELEPHONE_RE = /^\+?[\d\s().-]{6,}$/;
 
 function valider(c: Champs): Erreurs {
   const e: Erreurs = {};
-  if (!c.prenom.trim()) e.prenom = "Ton prénom, pour qu'on sache qui appeler.";
-  if (!c.telephone.trim()) e.telephone = "Ton numéro, c'est lui qu'on appelle.";
+  // 2026-09-19 (B4) — plus aucun message ne promet d'appel : l'échange de
+  // 15 minutes part sur invitation, aux seuls profils retenus.
+  if (!c.prenom.trim()) e.prenom = "Ton prénom, pour savoir à qui on écrit.";
+  if (!c.telephone.trim()) e.telephone = "Ton numéro, pour te joindre si on te propose un échange.";
   else if (!TELEPHONE_RE.test(c.telephone.trim()))
     e.telephone = "Ce numéro ne ressemble pas à un téléphone.";
   if (!c.email.trim()) e.email = "Ton e-mail, pour t'envoyer le lien du dossier.";
   else if (!EMAIL_RE.test(c.email.trim())) e.email = "Cet e-mail ne ressemble pas à une adresse.";
-  if (!c.consent) e.consent = "Coche la case pour qu'on puisse te rappeler.";
+  if (!c.consent) e.consent = "Coche la case pour qu'on puisse t'écrire.";
   return e;
 }
 

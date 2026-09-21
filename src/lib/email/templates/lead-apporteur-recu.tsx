@@ -5,14 +5,16 @@
 //
 // Deux variantes, un seul gabarit — elles ne diffèrent que par l'accroche :
 //   · `premier-contact` (défaut) — le formulaire court de la landing Facebook,
-//     qui demande « qu'on m'appelle » : on confirme qu'on appelle ;
+//     qui demande le kit : on confirme que c'est noté, SANS promettre d'appel
+//     (décision Will 2026-09-19, B4 — l'échange de 15 minutes part sur
+//     invitation, aux seuls profils retenus) ;
 //   · `dossier-commence` — la personne a validé l'écran 1 du dossier et ne l'a
 //     pas fini. Envoyé 30 minutes plus tard (`DELAI_KIT_DOSSIER_COMMENCE_MS`),
 //     et ANNULÉ si le dossier arrive entre-temps : elle n'a rien demandé
-//     d'autre que de candidater, on ne lui promet donc pas d'appel.
+//     d'autre que de candidater.
 //
 // Il fait trois choses, dans cet ordre :
-//   1. dire que c'est noté — SANS délai chiffré sur l'appel ;
+//   1. dire que c'est noté — sans délai chiffré, sans appel promis ;
 //   2. donner le KIT : document de présentation + catalogue (décision Will
 //      2026-09-19 : tout le monde le reçoit dès qu'on a son adresse) ;
 //   3. proposer de compléter le dossier (3 minutes, sans CV) : le CTA principal.
@@ -43,10 +45,9 @@ interface Payload {
 
 const COPY = {
   fr: {
-    title: "C'est noté, on t'appelle",
-    preview:
-      "En attendant l'appel : le document de présentation, le catalogue, et ton dossier à compléter si tu veux.",
-    body: "Tu viens de nous laisser tes coordonnées pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. On t'appelle pour faire connaissance, t'expliquer comment ça marche et répondre à tes questions. Aucun engagement : tu décides après.",
+    title: "C'est noté",
+    preview: "Le document de présentation, le catalogue, et ton dossier à compléter si tu veux.",
+    body: "Tu viens de nous laisser tes coordonnées pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Voici le document de présentation et le catalogue de ce que tu pourras recommander. Si ton profil correspond, on te propose un échange de 15 minutes pour faire connaissance. Aucun engagement : tu décides après.",
     titleDossier: "Ton dossier t'attend",
     previewDossier:
       "Le document de présentation, le catalogue, et ton dossier à terminer : il reste quelques écrans.",
@@ -60,10 +61,9 @@ const COPY = {
     refRow: (id: string) => `Référence : ${id}`,
   },
   en: {
-    title: "Noted, we'll call you",
-    preview:
-      "While you wait for our call: the presentation document, the catalogue, and your file to complete if you like.",
-    body: "You just left us your details to join Axion-IA's network of business introducers. We'll call you to get acquainted, explain how it works and answer your questions. No commitment: you decide afterwards.",
+    title: "Noted",
+    preview: "The presentation document, the catalogue, and your file to complete if you like.",
+    body: "You just left us your details to join Axion-IA's network of business introducers. Here are the presentation document and the catalogue of what you will be able to recommend. If your profile is a match, we will offer you a 15-minute call to get acquainted. No commitment: you decide afterwards.",
     titleDossier: "Your file is waiting",
     previewDossier:
       "The presentation document, the catalogue, and your file to finish: only a few screens left.",

@@ -102,7 +102,9 @@ export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsP
               {c.flatEur != null ? formatAmount(c.flatEur, loc, { compact: true }) : "—"}
             </span>
             <span className="text-fg-muted mt-1 text-xs">
-              {isFr ? "par formation vendue" : "per training sold"}
+              {/* « signée et payée » (2026-09-19, P4) : la commission est due à
+                  l'encaissement, et un apporteur recommande, il ne vend pas. */}
+              {isFr ? "par formation signée et payée" : "per training signed and paid"}
             </span>
           </Link>
         ))}

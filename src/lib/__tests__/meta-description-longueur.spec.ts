@@ -92,10 +92,13 @@ const DETTE: Readonly<Record<string, number>> = {
   // `metaDescFr` sont rentrées dans les clous le même jour (139-156 car.). Le
   // locale EN étant désactivé (301 vers FR, cf. AGENTS.md), ces descriptions
   // ne sont servies à personne — c'est la moins urgente des sept.
+  //
+  // 2026-09-19 — `recrutement/partenaire-landings.ts` (203) SORT de la dette :
+  // ses deux descriptions ont été réécrites (vocabulaire apporteur) et tiennent
+  // désormais en 156 caractères. Le cliquet s'est serré, il ne se rouvre pas.
   "src/content/keywords/i-geo.ts": 250,
   "src/content/regions.ts": 223,
   "src/content/keywords/g4-aeo.ts": 207,
-  "src/content/recrutement/partenaire-landings.ts": 203,
   "src/content/automatisations.ts": 184,
   "src/content/keywords/g3-implementation-codage.ts": 162,
   "src/content/keywords/g1-audit.ts": 159,
