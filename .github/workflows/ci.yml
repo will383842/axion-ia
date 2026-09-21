@@ -236,12 +236,35 @@ jobs:
         run: pnpm image-bank:isolation-check
       - name: Zod schemas have tests
         run: pnpm zod:check
+      # ── Ce que ce bloc a coûté à apprendre, écrit pour la prochaine fois ──
+      #
+      # 1. `config-path` N'EST PAS une entrée de `gitleaks-action@v3` (son
+      #    `action.yml` ne déclare AUCUN `inputs:`). Un `with:` inconnu ne fait
+      #    pas échouer un workflow : il est ignoré, en silence.
+      #
+      # 2. 🔑 MAIS L'ALLOWLIST ÉTAIT LUE QUAND MÊME, et c'est le point qu'une
+      #    première version de ce commentaire affirmait faussement. L'action ne
+      #    passe pas `--source`, donc gitleaks scanne `.` et charge
+      #    `./.gitleaks.toml` par sa résolution automatique. Le journal de `main`
+      #    le dit mot pour mot :
+      #      DBG using existing gitleaks config .gitleaks.toml from `(--source)/.gitleaks.toml`
+      #    `config-path` était donc REDONDANT, jamais nuisible.
+      #
+      # 3. 🔴 Et une première tentative de « réparation » a CASSÉ LE SCAN :
+      #    `GITLEAKS_CONFIG` pointait `.../axionia/.gitleaks.toml`, un chemin qui
+      #    n'existe pas — `axionia` est le dossier PARENT en local, pas un
+      #    répertoire du dépôt. gitleaks meurt alors au chargement
+      #    (`FTL unable to load gitleaks config`) et n'inspecte plus AUCUN commit.
+      #
+      # Le chemin explicite est conservé parce qu'il échoue FORT (le run rougit)
+      # là où la résolution automatique échoue en silence si l'action se met un
+      # jour à passer `--source`. Il est désormais juste : `.gitleaks.toml` est à
+      # la RACINE du dépôt.
       - name: gitleaks
         uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          config-path: axionia/.gitleaks.toml
+          GITLEAKS_CONFIG: ${{ github.workspace }}/.gitleaks.toml
 
   # 2026-09-19 — LA suite Vitest du dépôt : c'est le SEUL job qui la lance
   # (voir le commentaire de tête de `gate-a`). Elle tourne avec couverture ;
