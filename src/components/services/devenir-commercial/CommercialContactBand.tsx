@@ -29,7 +29,7 @@ export function CommercialContactBand({
               className="text-mocha-fg text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight font-semibold tracking-tight"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              {isFr ? "Devenez commercial Axion-IA," : "Become an Axion-IA sales rep,"}{" "}
+              {isFr ? "Rejoignez le réseau Axion-IA," : "Join the Axion-IA network,"}{" "}
               <span className="text-paper italic" style={{ fontFamily: "var(--font-serif)" }}>
                 {isFr ? "à votre rythme" : "at your own pace"}
               </span>

@@ -34,7 +34,7 @@ export function CommercialFounder({ isFr }: CommercialFounderProps): ReactNode {
               style={{ fontFamily: "var(--font-serif)" }}
             >
               {isFr
-                ? "« Nous cherchons des commerciaux qui ont faim. Le marché de l'IA est énorme, nos produits sont concrets et faciles à défendre, et notre équipe s'occupe de vous outiller : supports de vente, formation à l'offre et accompagnement au quotidien. Vous gardez votre liberté, votre portefeuille, et vous touchez de vraies commissions sur ce que vous vendez. Si vous avez la fibre, on construit quelque chose de grand ensemble. »"
+                ? "« Nous cherchons des indépendants qui ont faim. Le marché de l'IA est énorme, nos produits sont concrets et faciles à défendre, et notre équipe s'occupe de vous outiller : supports de vente, formation à l'offre et accompagnement au quotidien. Vous gardez votre liberté, votre portefeuille, et vous touchez de vraies commissions sur ce que vous recommandez. Si vous avez la fibre, on construit quelque chose de grand ensemble. »"
                 : "\"We're looking for hungry sales reps. The AI market is huge, our products are concrete and easy to defend, and our team makes sure you're well equipped: sales materials, training on the offer and day-to-day support. You keep your freedom, your portfolio, and you earn real commissions on what you sell. If you've got the instinct, we'll build something big together.\""}
             </blockquote>
             <p className="text-fg mt-4 font-semibold">

@@ -69,8 +69,8 @@ export const COMMERCIAL_HERO_NODES: ReadonlyArray<ServiceHeroNode & { benefitEn:
 
 export const COMMERCIAL_HERO = {
   eyebrow: {
-    fr: "Recrutement · +200 commerciaux en France",
-    en: "Hiring · 200+ sales reps in France",
+    fr: "Réseau · +200 apporteurs d'affaires en France",
+    en: "Network · 200+ business introducers in France",
   },
   /** {ville} résolu dans le composant. */
   titleFr: "Devenez commercial IA à",
@@ -84,7 +84,7 @@ export const COMMERCIAL_HERO = {
     fr: "Le métier de commercial IA chez Axion-IA en 8 volets : prospection tous secteurs, vente de formations, audits, accompagnements 1-to-1, intégrations, produits financés à coût quasi nul pour le client, statut indépendant et suivi des commissions.",
     en: "The Axion-IA AI sales role in 8 facets: all-sector prospecting, selling trainings, audits, 1-on-1 support, integrations, funded near-zero-cost products, self-employed status and commission tracking.",
   },
-  ctaLabel: { fr: "Je veux devenir commercial", en: "I want to become a sales rep" },
+  ctaLabel: { fr: "Je veux rejoindre le réseau", en: "I want to join the network" },
 } as const;
 
 // ── L'OPPORTUNITÉ (section + encart noir) ─────────────────────────────────────
