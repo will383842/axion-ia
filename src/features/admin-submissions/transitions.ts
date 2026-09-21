@@ -28,6 +28,7 @@ import { updateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import { adminPath } from "@/lib/admin-path";
+import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 import { annulerRelancesLeadApporteur } from "@/features/commercial-application/relances-lead-apporteur";
 
@@ -55,6 +56,16 @@ interface Effet {
   readonly journal?: string;
   /** Une marque posée dans `details`, pour les états que le schéma ne porte pas. */
   readonly marqueDetails?: "sansSuiteAt";
+  /**
+   * Les marques RETIRÉES de `details`.
+   *
+   * 🔑 Une transition qui ROUVRE doit défaire ce que la fermeture a posé, sinon
+   * elle réussit sans rien changer. C'est le défaut exact que cette entrée
+   * répare : « Remettre à traiter » laissait `sansSuiteAt` en place, la pastille
+   * continuait d'annoncer « Sans suite », et le bouton se reproposait — sur une
+   * fiche que l'écran venait de déclarer rouverte.
+   */
+  readonly retireDetails?: readonly "sansSuiteAt"[];
 }
 
 /**
@@ -95,9 +106,17 @@ const EFFETS: Readonly<Record<Transition, Effet>> = {
     annuleLesRelances: false,
   },
   // Remettre à traiter : la fiche redevient visible dans « à traiter ».
+  //
+  // 🔴 `archivedAt: null` EST INDISPENSABLE, et son absence rendait ce geste
+  // MUET. « Classer sans suite » pose `archivedAt` ; la liste par défaut filtre
+  // sur `archivedAt: null`. Sans cette remise à zéro, l'écran répondait « La
+  // fiche est à traiter » et la fiche restait invisible — dans un état
+  // (`in_progress` + `archivedAt` non nul) qu'aucun autre chemin ne produit.
+  // Un bouton qui annonce un succès sans rien changer se reclique.
   remettre: {
-    donnees: { status: "in_progress", needsAttention: true },
+    donnees: { status: "in_progress", needsAttention: true, archivedAt: null },
     annuleLesRelances: false,
+    retireDetails: ["sansSuiteAt"],
   },
 };
 
@@ -127,19 +146,30 @@ export async function appliquerTransition(
 ): Promise<ResultatTransition> {
   const effet = EFFETS[transition];
 
-  let ligne: { id: string; contactEmail: string | null; deletedAt: Date | null } | null = null;
+  let ligne: {
+    id: string;
+    contactEmail: string | null;
+    deletedAt: Date | null;
+    details: unknown;
+  } | null = null;
   try {
     ligne = await prisma.submission.findUnique({
       where: { id: submissionId },
-      select: { id: true, contactEmail: true, deletedAt: true },
+      select: { id: true, contactEmail: true, deletedAt: true, details: true },
     });
   } catch {
     return { ok: false, relancesRetirees: 0, erreur: "db" };
   }
 
   if (!ligne) return { ok: false, relancesRetirees: 0, erreur: "introuvable" };
-  // 🔴 Une fiche effacée (art. 17) ne se transite plus. La rouvrir ou
-  // l'archiver reviendrait à la faire vivre après une demande d'effacement.
+  // 🔴 Une fiche à la CORBEILLE ne se transite plus : la rouvrir ou l'archiver
+  // reviendrait à la faire vivre après qu'on l'a mise de côté.
+  //
+  // ⚠️ CE N'EST PAS LA GARDE DE L'ARTICLE 17, et le dire serait faussement
+  // rassurant. `eraseSubmissionsForEmail` anonymise la ligne EN PLACE et ne
+  // touche jamais à `deletedAt` : une fiche réellement effacée passe ici sans
+  // encombre. Ce qui la protège vraiment est plus loin — son adresse devient
+  // synthétique, et tout envoi s'arrête dessus.
   if (ligne.deletedAt) return { ok: false, relancesRetirees: 0, erreur: "effacee" };
 
   // `new Date(0)` dans la table n'est qu'un marqueur de PRÉSENCE : l'instant
@@ -151,16 +181,21 @@ export async function appliquerTransition(
 
   try {
     await prisma.$transaction(async (tx) => {
-      if (effet.marqueDetails) {
+      if (effet.marqueDetails || effet.retireDetails) {
         const actuel = await tx.submission.findUnique({
           where: { id: submissionId },
           select: { details: true },
         });
         const details =
           actuel?.details && typeof actuel.details === "object" && !Array.isArray(actuel.details)
-            ? (actuel.details as Record<string, unknown>)
+            ? { ...(actuel.details as Record<string, unknown>) }
             : {};
-        donnees.details = { ...details, [effet.marqueDetails]: maintenant.toISOString() };
+        // Retirer AVANT de marquer : une transition ne fait jamais les deux sur
+        // la même clé, mais l'ordre inverse effacerait la marque qu'on vient de
+        // poser le jour où quelqu'un l'essaierait.
+        for (const cle of effet.retireDetails ?? []) delete details[cle];
+        if (effet.marqueDetails) details[effet.marqueDetails] = maintenant.toISOString();
+        donnees.details = details;
       }
       await tx.submission.update({ where: { id: submissionId }, data: donnees });
       if (effet.journal) {
@@ -183,7 +218,21 @@ export async function appliquerTransition(
   }
 
   let relancesRetirees = 0;
-  if (effet.annuleLesRelances) {
+  // 🔴 LE GESTE PORTE SUR UNE FICHE, L'ANNULATION SUR UNE ADRESSE — et c'est
+  // toute la raison de cette condition.
+  //
+  // Les relances sont retrouvées par l'EMPREINTE de l'adresse, jamais par la
+  // fiche : une personne en a souvent deux ou trois. Sans ce garde-fou,
+  // archiver un simple message /contact de quelqu'un tuerait, EN SILENCE, les
+  // rappels « ton dossier t'attend » programmés par sa candidature d'apporteur
+  // — et inscrirait au journal des envois « la fiche a été archivée » en
+  // parlant d'une fiche qui n'avait rien programmé.
+  //
+  // 🔑 On ne retire donc les relances que si la fiche qu'on ferme appartient au
+  // tunnel apporteur. Entre deux fiches apporteur de la même personne, on les
+  // retire : le tunnel raisonne PAR PERSONNE partout ailleurs (« jamais deux
+  // invitations » se vérifie ainsi), et l'incohérence serait là.
+  if (effet.annuleLesRelances && estApporteur(ligne.details)) {
     const adresse = decryptPii(ligne.contactEmail);
     if (adresse) {
       try {

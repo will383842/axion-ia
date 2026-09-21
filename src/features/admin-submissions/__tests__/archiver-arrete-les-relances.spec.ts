@@ -55,7 +55,9 @@ beforeEach(() => {
     id: "sub-1",
     contactEmail: "lea@exemple.invalid",
     deletedAt: null,
-    details: {},
+    // Un DOSSIER APPORTEUR : c'est la seule population dont les relances se
+    // retirent. Une fiche ordinaire n'en a pas.
+    details: { unifiedType: "recrutement", subType: "candidature-commerciale" },
   });
   update.mockResolvedValue({});
   annuler.mockResolvedValue(2);
@@ -104,6 +106,81 @@ describe("les transitions qui NE doivent PAS toucher aux relances", () => {
   });
 });
 
+describe("🔴 rouvrir DÉFAIT ce que fermer a posé", () => {
+  // Le défaut que ce bloc répare : « Remettre à traiter » écrivait
+  // `status: in_progress` + `needsAttention: true`, et laissait `archivedAt`
+  // NON NUL. Or la liste par défaut filtre sur `archivedAt: null`.
+  //
+  // 🔑 L'écran répondait donc « La fiche est à traiter » sur une fiche qui
+  // restait invisible — dans un état (`in_progress` + archivée) qu'aucun autre
+  // chemin ne produit. Un bouton qui annonce un succès sans rien changer se
+  // reclique, indéfiniment.
+  //
+  // C'était aussi la SEULE des transitions qu'aucun test ne couvrait.
+  it("remet la fiche dans la liste : `archivedAt` redevient nul", async () => {
+    await appliquerTransition("sub-1", "remettre", "admin-1");
+
+    const ecrit = update.mock.calls[0]?.[0] as { data: Record<string, unknown> };
+    expect(ecrit.data["archivedAt"]).toBeNull();
+    expect(ecrit.data["status"]).toBe("in_progress");
+    expect(ecrit.data["needsAttention"]).toBe(true);
+  });
+
+  it("retire la marque « sans suite », sinon la pastille ment encore", async () => {
+    findUnique.mockResolvedValue({
+      id: "sub-1",
+      contactEmail: "lea@exemple.invalid",
+      deletedAt: null,
+      details: { sansSuiteAt: "2026-09-10T08:00:00.000Z", origine: "saisie-manuelle" },
+    });
+
+    await appliquerTransition("sub-1", "remettre", "admin-1");
+
+    const ecrit = update.mock.calls[0]?.[0] as { data: { details: Record<string, unknown> } };
+    expect(ecrit.data.details["sansSuiteAt"]).toBeUndefined();
+    // Et elle ne jette pas le reste de `details` au passage.
+    expect(ecrit.data.details["origine"]).toBe("saisie-manuelle");
+  });
+});
+
+describe("🔴 l'annulation suit l'ADRESSE, le geste suit la FICHE", () => {
+  // Les relances sont retrouvées par l'EMPREINTE de l'adresse, jamais par la
+  // fiche — et une personne en a souvent deux ou trois.
+  //
+  // Sans garde, archiver un simple message /contact de quelqu'un tuerait, en
+  // silence, les rappels « ton dossier t'attend » programmés par sa candidature
+  // d'apporteur — et inscrirait au journal « la fiche a été archivée » en
+  // parlant d'une fiche qui n'avait rien programmé.
+  it("archiver une fiche qui N'EST PAS un dossier apporteur ne touche à rien", async () => {
+    findUnique.mockResolvedValue({
+      id: "sub-1",
+      contactEmail: "lea@exemple.invalid",
+      deletedAt: null,
+      details: { unifiedType: "audit" }, // une demande client ordinaire
+    });
+
+    const res = await appliquerTransition("sub-1", "archiver", "admin-1");
+
+    expect(res.ok).toBe(true);
+    expect(annuler).not.toHaveBeenCalled();
+  });
+
+  it("TÉMOIN — sur un dossier apporteur, elles sont bien retirées", async () => {
+    // Sans lui, couper l'annulation pour TOUT LE MONDE passerait le test
+    // ci-dessus, et le défaut d'origine reviendrait intact.
+    findUnique.mockResolvedValue({
+      id: "sub-1",
+      contactEmail: "lea@exemple.invalid",
+      deletedAt: null,
+      details: { unifiedType: "recrutement", subType: "candidature-commerciale" },
+    });
+
+    await appliquerTransition("sub-1", "archiver", "admin-1");
+
+    expect(annuler).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe("ce qui ne doit jamais céder", () => {
   it("un retrait qui ÉCHOUE ne défait pas l'archivage", async () => {
     // Redis indisponible. La fiche EST archivée : dire le contraire à l'admin
@@ -123,7 +200,7 @@ describe("ce qui ne doit jamais céder", () => {
       id: "sub-1",
       contactEmail: "lea@exemple.invalid",
       deletedAt: new Date("2026-09-01"),
-      details: {},
+      details: { unifiedType: "recrutement", subType: "candidature-commerciale" },
     });
 
     const res = await appliquerTransition("sub-1", "archiver", "admin-1");

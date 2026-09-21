@@ -27,6 +27,7 @@ import { renderEmailTemplate } from "@/lib/email/templates";
 import { enqueueEmail } from "@/server/queue/queues";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { appliquerTransition } from "./transitions";
+import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { enregistrerOppositionPourAdresse } from "@/server/email/opposition";
 import { annulerRelancesLeadApporteur } from "@/features/commercial-application/relances-lead-apporteur";
 
@@ -207,7 +208,7 @@ export interface ResultatGeste {
 
 async function geste(
   id: string,
-  transition: "archiver" | "desarchiver" | "sans-suite" | "remettre",
+  transition: "traite" | "archiver" | "desarchiver" | "sans-suite" | "remettre",
 ): Promise<ResultatGeste> {
   let session: { userId: string };
   try {
@@ -219,6 +220,23 @@ async function geste(
   if (!parsed.success) return { ok: false };
   const res = await appliquerTransition(parsed.data.id, transition, session.userId);
   return { ok: res.ok, relancesRetirees: res.relancesRetirees };
+}
+
+/**
+ * Marquer traité — RANGER, sans clore.
+ *
+ * 🔴 Ce geste passait par `updateSubmissionAction`, le formulaire général de la
+ * fiche, et pas par la table des transitions. Conséquence invisible : le témoin
+ * qui prouve que « traité » n'annule PAS les relances gardait du code que la
+ * production n'exécutait jamais. Il serait resté vert le jour où le vrai
+ * « marquer traité » se serait mis à couper des relances légitimes.
+ *
+ * Au passage, ce chemin-ci n'écrit QUE deux colonnes : il ne peut pas emporter
+ * les notes internes, contrairement au formulaire général — c'est exactement le
+ * défaut réparé le 19/09.
+ */
+export async function marquerTraiteAction(id: string): Promise<ResultatGeste> {
+  return geste(id, "traite");
 }
 
 export async function archiveSubmissionAction(id: string): Promise<ResultatGeste> {
@@ -304,7 +322,7 @@ export async function bulkArchiveSubmissionsAction(ids: string[]): Promise<{ arc
   // null` ne retrouve plus les lignes que cet appel vient de fermer.
   const concernes = await prisma.submission.findMany({
     where: { id: { in: parsed.data.ids }, archivedAt: null },
-    select: { contactEmail: true },
+    select: { contactEmail: true, details: true },
   });
   const result = await prisma.submission.updateMany({
     where: { id: { in: parsed.data.ids }, archivedAt: null },
@@ -315,9 +333,16 @@ export async function bulkArchiveSubmissionsAction(ids: string[]): Promise<{ arc
   // le retrait doit avoir lieu, sinon archiver cinquante fiches d'un coup
   // laisserait cinquante « ton dossier t'attend » en vol.
   for (const c of concernes) {
-    const adresse = decryptPii(c.contactEmail);
-    if (!adresse) continue;
+    // 🔑 SEULS les dossiers apporteurs, comme pour le geste unitaire : les
+    // relances se retrouvent par l'ADRESSE, et archiver un simple message
+    // /contact de quelqu'un tuerait celles que sa candidature a programmées.
+    if (!estApporteur(c.details)) continue;
     try {
+      // ⚠️ `decryptPii` DANS le filet : un chiffré altéré lève, et il
+      // interromprait la boucle APRES que les 500 fiches ont été archivées —
+      // les suivantes garderaient leurs relances, sans que rien ne le dise.
+      const adresse = decryptPii(c.contactEmail);
+      if (!adresse) continue;
       await annulerRelancesLeadApporteur(adresse, "Envoi annulé : la fiche a été archivée.");
     } catch {
       // Un retrait qui échoue ne défait pas un archivage acquis.

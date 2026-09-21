@@ -56,7 +56,13 @@ export function ApporteursEnAttenteSection({ adminPrefix, apporteurs }: Props): 
         <h2 className="text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
           Apporteurs en attente
         </h2>
-        <Link href={`${base}/contacts/commercial`} className="admin-button-ghost">
+        {/* 🔑 Le lien porte le MEME filtre que le compte. Un chiffre d'accueil
+            qu'on ne peut pas reproduire en ouvrant la liste apprend a se
+            mefier des deux ecrans. */}
+        <Link
+          href={`${base}/contacts/commercial?replyStatus=unanswered`}
+          className="admin-button-ghost"
+        >
           Ouvrir la liste →
         </Link>
       </div>

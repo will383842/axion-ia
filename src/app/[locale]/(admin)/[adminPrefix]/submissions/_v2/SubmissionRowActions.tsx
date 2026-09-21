@@ -9,7 +9,7 @@
 // Vue normale / archivés :
 //   - Archiver / Désarchiver   → archive/unarchiveSubmissionAction
 //   - Marquer lu / non-lu      → markNeedsAttentionAction (needsAttention)
-//   - Marquer traité           → updateSubmissionAction (status=processed)
+//   - Marquer traité           → marquerTraiteAction (table des transitions)
 //   - Supprimer                → softDeleteSubmissionAction (corbeille, récup.)
 //
 // Vue Corbeille (deleted) :
@@ -28,14 +28,12 @@ import {
   unarchiveSubmissionAction,
   classerSansSuiteAction,
   remettreATraiterAction,
+  marquerTraiteAction,
   markNeedsAttentionAction,
   softDeleteSubmissionAction,
   restoreSubmissionAction,
 } from "@/features/admin-submissions/reply-actions";
-import {
-  updateSubmissionAction,
-  eraseSubmissionAction,
-} from "@/features/admin-submissions/actions";
+import { eraseSubmissionAction } from "@/features/admin-submissions/actions";
 import { MoreHorizontal, Undo2 } from "lucide-react";
 
 interface Props {
@@ -76,11 +74,10 @@ export function SubmissionRowActions({
     });
   }
 
+  // Passe par la table des transitions, comme les cinq autres gestes : le
+  // formulaire général écrivait d'autres colonnes au passage.
   function markProcessed() {
-    const fd = new FormData();
-    fd.set("id", id);
-    fd.set("status", "processed");
-    return updateSubmissionAction({ ok: true }, fd);
+    return marquerTraiteAction(id);
   }
 
   function eraseForever() {
