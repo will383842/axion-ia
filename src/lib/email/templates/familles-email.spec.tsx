@@ -31,7 +31,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { renderEmailTemplate, EMAIL_TEMPLATE_NAMES } from "./index";
+import { renderEmailTemplate, EMAIL_TEMPLATE_NAMES, familleDuHtml } from "./index";
 import { REGIME_FAMILLE, type FamilleEmail } from "./_layout";
 import { OBJET_MAX } from "../objet-email";
 import { EMAIL_LEGAL } from "../legal-footer";
@@ -148,17 +148,37 @@ const PAYLOAD: Record<string, unknown> = {
 
 const LOCALES = ["fr", "en"] as const;
 
-/** Déduit la famille du HTML rendu, sans recopier de table de correspondance. */
+/**
+ * Famille du gabarit, lue à sa SOURCE : l'estampille `data-famille` que le
+ * châssis pose sur le `<body>`.
+ *
+ * 🔴 2026-09-21 — ce prédicat DEVINAIT la famille d'après le pied de page :
+ * « si le HTML contient facebook.com, c'est B ; sinon C ». C'était déjà une
+ * dérivation, et la prise `sansReseauxSociaux` (§5.4) l'a rendue FAUSSE : les
+ * quatre gabarits du réseau d'apporteurs retirent la rangée sociale, donc ils
+ * se retrouvaient classés **C** — budget de 4 liens au lieu de 9, et partage
+ * interdit au lieu d'autorisé.
+ *
+ * Et la garde restait VERTE, par accident, à zéro marge : la charge d'essai de
+ * ce fichier ne porte ni `dossierUrl` ni `calendlyUrl`, donc ces gabarits
+ * rendent exactement 4 URL. `4 <= 4`. Le premier lien ajouté au corps — ou la
+ * simple application de la doctrine écrite plus haut dans ce fichier, « une
+ * charge d'essai trop douce mesure une situation qui n'arrive pas » — aurait
+ * fait rougir « famille C, budget 4 », et envoyé alléger un corps qui tient
+ * largement dans les 9 de sa vraie famille.
+ *
+ * On lit donc l'estampille, comme le fait déjà `lien-opposition.spec.tsx`. Un
+ * HTML sans estampille n'est pas passé par le châssis : on LÈVE au lieu de
+ * retomber sur une famille par défaut, qui redonnerait un verdict inventé.
+ */
 function familleDe(html: string): FamilleEmail {
-  // Le pied RÉDUIT du §6.3 est l'empreinte propre de la famille A : lui seul
-  // porte « envoyé automatiquement suite à une action » / « sent automatically
-  // following an action », et lui seul omet la rangée sociale.
-  if (html.includes("automatiquement suite") || html.includes("automatically following")) {
-    return "A";
+  const famille = familleDuHtml(html);
+  if (!famille) {
+    throw new Error(
+      "HTML sans estampille `data-famille` : ce gabarit n'est pas passé par `EmailLayout`.",
+    );
   }
-  // B et D portent les quatre profils ; C n'en porte qu'un, la page entreprise.
-  if (html.includes("facebook.com")) return "B";
-  return "C";
+  return famille;
 }
 
 /** Normalise pour comparer deux libellés sans buter sur la casse ou l'accent. */
