@@ -29,6 +29,7 @@
  */
 
 import { formatAmount } from "@/content/pricing";
+import { DOCUMENT_APPORTEUR_CHEMIN } from "@/lib/commercial-application/kit-apporteur";
 
 /**
  * Valeur du coup de projecteur TELLE QU'ELLE EST ENCRÉE sur le tirage en cours
@@ -212,7 +213,7 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
       "Le document de présentation du réseau d'apporteurs d'affaires : commissions, fonctionnement, prestations à recommander, profils recherchés. Envoyé automatiquement, avec le catalogue, à toute personne qui s'y intéresse — et dont le lien accompagne l'invitation à l'échange de 15 minutes.",
     fichiersPublics: [
       {
-        chemin: "imprimes/devenir-apporteur-d-affaires-axion-ia.pdf",
+        chemin: DOCUMENT_APPORTEUR_CHEMIN,
         nom: "Le PDF, 13 pages",
         role: "Le lien que portent les e-mails du réseau d'apporteurs (accusé du premier contact, rappels, confirmation du dossier, invitation) et la page de remerciement du tunnel Facebook. ⚠️ Ne pas renommer : le chemin part dans des e-mails déjà envoyés.",
       },

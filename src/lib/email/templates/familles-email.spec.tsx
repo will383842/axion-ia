@@ -456,3 +456,57 @@ describe("Référentiel e-mail — première phrase optimisée pour les résumé
     });
   }
 });
+
+/**
+ * Témoin de la LECTURE de famille (2026-09-21).
+ *
+ * Les quatre e-mails du réseau d'apporteurs sont les seuls de la famille B à
+ * retirer la rangée sociale (`sansReseauxSociaux`, §5.4). Ils sont donc le seul
+ * endroit du dépôt où un prédicat qui DEVINE la famille d'après le pied de page
+ * se trompe. C'est arrivé : `familleDe()` les classait en C, et la garde du
+ * budget juste au-dessus est restée VERTE parce qu'ils rendent exactement 4 URL
+ * — le budget de la famille C. Un `4 <= 4` fortuit.
+ *
+ * Corriger le prédicat ne suffit pas : rien, dans la garde du budget, ne
+ * distingue « lu correctement en B, budget 9 » de « deviné en C, budget 4 »
+ * tant que ces gabarits restent sous 4 liens. Ce témoin fixe donc le résultat
+ * lui-même, et il rougit si quelqu'un revient à une déduction par le contenu.
+ */
+const GABARITS_RESEAU_SANS_RANGEE_SOCIALE = [
+  "lead-apporteur-recu",
+  "lead-apporteur-relance",
+  "candidature-commercial-confirmee",
+  "apporteur-invitation-appel",
+] as const;
+
+describe("Référentiel e-mail — la famille se LIT, elle ne se devine pas", () => {
+  for (const name of GABARITS_RESEAU_SANS_RANGEE_SOCIALE) {
+    for (const locale of LOCALES) {
+      it(`${name} (${locale}) : famille B, sans porter un seul lien social`, async () => {
+        const { html } = await renderEmailTemplate(name, locale, PAYLOAD);
+
+        // La prémisse du témoin : ces gabarits retirent bien la rangée sociale.
+        // Si elle tombe, le témoin ne prouve plus rien — il doit le dire.
+        expect(
+          html,
+          `${name} : ce gabarit est censé retirer la rangée sociale ` +
+            `(sansReseauxSociaux). S'il la porte de nouveau, ce témoin ne garde ` +
+            `plus rien et le budget de liens est à recalculer.`,
+        ).not.toContain("facebook.com");
+
+        expect(
+          familleDe(html),
+          `${name} : famille lue dans le HTML. Un « C » ici signifie que la ` +
+            `famille est DÉDUITE du pied de page au lieu d'être lue sur ` +
+            `l'estampille data-famille — et que le budget appliqué est 4 au ` +
+            `lieu de 9.`,
+        ).toBe("B");
+
+        expect(
+          REGIME_FAMILLE[familleDe(html)].budgetLiens,
+          `${name} : budget de la famille B`,
+        ).toBe(9);
+      });
+    }
+  }
+});
