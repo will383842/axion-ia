@@ -104,8 +104,11 @@ export function CandidatureCommercialeDetail({
   /**
    * Horodatage de l'accord de conservation en vivier. Il vit à la RACINE de
    * `details`, pas dans `details.candidature` — il n'arrivait donc jamais
-   * jusqu'ici et n'était lisible que dans le dump JSON replié. Absent = pas
-   * d'accord (c'est la convention posée à l'écriture, cf. `actions.ts`).
+   * jusqu'ici et n'était lisible que dans le dump JSON replié.
+   *
+   * 🔑 Présent SEULEMENT sur un dossier antérieur au 19/09/2026 : la case vivier
+   * a été retirée du formulaire ce jour-là (décision B2), plus rien ne l'écrit.
+   * Absent = on n'a pas posé la question, et non « refus ».
    */
   vivierConsentAt?: string | null;
   /** Version du texte de consentement accepté — la preuve datée du geste. */
@@ -247,16 +250,17 @@ export function CandidatureCommercialeDetail({
               value={optionLabel(SOURCE_OPTIONS, asString(c.sourceConnaissance) as string)}
             />
           ) : null}
-          {/* Preuve de consentement — jusqu'ici invisible en console : elle
-              n'existait que dans le dump JSON « Informations techniques ». */}
-          <Row
-            label="Conservation en vivier"
-            value={
-              vivierConsentAt
-                ? `Accepté le ${formatDateFr(vivierConsentAt)}`
-                : "Non — pas d’accord enregistré"
-            }
-          />
+          {/* Preuve de consentement vivier — affichée SEULEMENT si un accord a
+              été donné, donc sur un dossier antérieur au 19/09/2026 (case
+              retirée ce jour-là, décision B2). Afficher « Non » sur les
+              nouveaux dossiers ferait lire un refus là où la question n'a
+              jamais été posée. */}
+          {vivierConsentAt ? (
+            <Row
+              label="Accord vivier (formulaire antérieur au 19/09/2026)"
+              value={`donné le ${formatDateFr(vivierConsentAt)}`}
+            />
+          ) : null}
           {consentVersion ? <Row label="Version du consentement" value={consentVersion} /> : null}
         </dl>
       </div>

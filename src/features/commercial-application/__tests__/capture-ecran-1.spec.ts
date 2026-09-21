@@ -41,7 +41,10 @@ vi.mock("next/headers", () => ({
 }));
 vi.mock("@/server/notifications", () => ({ notify: (a: unknown) => notifier(a) }));
 vi.mock("@/lib/consents", () => ({
-  CONSENT_FORM_REFS: { leadApporteur: "lead-apporteur" },
+  CONSENT_FORM_REFS: {
+    leadApporteur: "lead-apporteur",
+    commercialApplication: "commercial-tunnel",
+  },
   recordConsentEvent: (a: unknown) => consentement(a),
 }));
 vi.mock("@/server/queue/queues", () => ({
@@ -150,6 +153,21 @@ describe("capturerContactDossierAction", () => {
     for (const c of appels) {
       expect(c[4]?.delayMs ?? 0, `${c[0]} ne doit pas partir tout de suite`).toBeGreaterThan(0);
     }
+  });
+
+  it("consigne le consentement du texte AFFICHÉ à l'écran 1, pas celui du tunnel Facebook", async () => {
+    // 🔴 Correction RGPD du 19/09. L'écran 1 affiche « J'accepte que mes
+    // informations soient utilisées pour l'étude de ma candidature » — le texte
+    // du dossier. Il consignait pourtant la version du formulaire court
+    // Facebook, un autre texte : la preuve ne correspondait pas à ce que la
+    // personne avait lu. Une preuve de consentement vaut par ce texte-là.
+    await capturerContactDossierAction(valide, "fr");
+    expect(consentement).toHaveBeenCalledTimes(1);
+    expect(consentement.mock.calls[0]?.[0]).toMatchObject({
+      formRef: "commercial-tunnel",
+      consentVersion: "memo-v3-2026-09-19",
+      action: "optin",
+    });
   });
 
   it("un échec d'écriture rend ok:false sans lever — candidater doit rester possible", async () => {

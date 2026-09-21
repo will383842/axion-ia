@@ -19,7 +19,6 @@ import { headers, cookies } from "next/headers";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { destinataireCandidatures } from "@/lib/destinataires-internes";
-import { syncCandidateToCrm } from "@/server/crm-sync";
 import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
 import { SubmissionType } from "../../../prisma/generated/client";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -271,11 +270,6 @@ export async function submitCommercialApplicationAction(
     return b.debut.localeCompare(a.debut);
   });
 
-  // Horodatage de l'accord vivier, calculé UNE fois : la même valeur part en
-  // base (`details.vivierConsentAt`) et vers le CRM (`consent.vivier_at`). Deux
-  // `new Date()` distincts donneraient deux preuves divergentes du même geste.
-  const vivierConsentAt = d.consentVivier ? new Date() : null;
-
   // Score de tri (chantier C1). Calculé À LA SOUMISSION et FIGÉ dans
   // `details` : le barème évoluera (il doit être relu tous les mois face à
   // ceux qui vendent vraiment), et une note recalculée à l'affichage
@@ -326,12 +320,11 @@ export async function submitCommercialApplicationAction(
           message: d.pitch,
           source: "/devenir-commercial-ia/candidature",
           consentVersion: COMMERCIAL_APPLICATION_CONSENT_VERSION,
-          // Accord VIVIER (lot L4) — un HORODATAGE, pas un booléen : « oui »
-          // sans date ne prouve rien, et c'est cette date qui fait courir les
-          // 2 ans. Absent = refus (le défaut). `Submission.details` étant un
-          // JSON libre, aucune migration n'est nécessaire ici — contrairement à
-          // `JobApplication`, qui a reçu une vraie colonne.
-          ...(vivierConsentAt ? { vivierConsentAt: vivierConsentAt.toISOString() } : {}),
+          // Plus de `vivierConsentAt` depuis le 19/09 : la case vivier est
+          // retirée du formulaire (B2). Un ancien onglet peut encore envoyer
+          // `consentVivier` — le schéma le tolère, il n'écrit plus rien ici.
+          // Les dossiers antérieurs gardent leur horodatage, que la fiche
+          // console affiche comme tel.
           ...(Object.keys(funnel).length > 0 ? { funnel: funnel as unknown as object } : {}),
           // Bloc structuré rendu par la vue détail console (accordéons, chips).
           // PII minimisée : nom/email/téléphone vivent UNIQUEMENT dans les
@@ -384,79 +377,21 @@ export async function submitCommercialApplicationAction(
       });
     }
 
-    // 5 bis. Synchro CRM — univers VIVIER (lot L2).
+    // 5 bis. Pas d'envoi au CRM : ordre de Will du 04/09, décision B2 du 19/09.
+    // Les candidats apporteurs vivent dans la console jusqu'à l'échange ; Axion
+    // Partners prend le relais au contrat (ADR 0051).
     //
-    // ⚠️ CE COMMENTAIRE A MENTI (rectifié le 2026-08-23). Il affirmait :
-    // « Le texte actuel (`commercial-tunnel-v1-2026-08-12`) ne couvre que
-    // l'étude de la candidature — le refus est donc l'issue ATTENDUE tant que
-    // le texte v2 n'est pas servi en production. »
-    //
-    // C'est faux depuis le lot L4 : `COMMERCIAL_APPLICATION_CONSENT_VERSION`
-    // vaut `memo-v2-2026-08-13` et couvre BIEN les deux textes (étude de la
-    // candidature + conservation en vivier). C'est cette valeur-là qui part.
-    // Le commentaire décrivait un état dépassé, et laissait croire qu'un flux
-    // en échec était normal — le genre de phrase qui fait ignorer une panne
-    // réelle pendant des semaines.
-    //
-    // Ce qui reste vrai : le CRM refuse en 422 toute version de consentement
-    // qu'il ne connaît pas, et un 422 abandonne IMMÉDIATEMENT (pas de retry —
-    // rejouer un message que le contrat refuse ne le rendra jamais valide).
-    // Donc la liste des versions acceptées CÔTÉ CRM doit contenir
-    // `memo-v2-2026-08-13`. Ce dépôt ne peut pas le vérifier : le CRM est une
-    // application distincte. À contrôler sur la page console `/synchro-crm` —
-    // des `gave_up` en masse sur `candidat_commercial` = version non acceptée.
-    await syncCandidateToCrm({
-      subjectRef: `site:submission:${submission.id}`,
-      family: "candidat_commercial",
-      offerSlug: "commercial-memo",
-      sourceSlug: "site-candidature-commerciale",
-      occurredAt: submission.submittedAt,
-      person: {
-        email: d.email,
-        firstName: d.prenom,
-        lastName: d.nom,
-        phone: d.telephone,
-      },
-      consent: {
-        version: COMMERCIAL_APPLICATION_CONSENT_VERSION,
-        at: submission.submittedAt,
-        textRef: "commercial-tunnel",
-        // Renseigné UNIQUEMENT si la case optionnelle a été cochée : c'est ce
-        // que le CRM lit pour savoir s'il peut conserver la fiche au-delà du
-        // recrutement en cours.
-        vivierAt: vivierConsentAt,
-      },
-      attributes: {
-        ville: d.ville,
-        codePostal: d.codePostal,
-        b2bDejaVendu: d.b2bDejaVendu,
-        ...(d.b2bAnnees ? { b2bAnnees: d.b2bAnnees } : {}),
-        iaUtilise: d.iaUtilise,
-        disponibilite: d.disponibilite,
-        permisVehicule: d.permisVehicule,
-        ...(d.zones?.length ? { zones: d.zones } : {}),
-        // 2026-08-23 — L'ACQUISITION traverse désormais, elle aussi.
-        //
-        // Ces deux champs étaient stockés dans `Submission.details` côté site
-        // mais ne partaient PAS au CRM : la fiche candidat y arrivait sans
-        // aucune indication de provenance. Conséquence concrète : impossible,
-        // depuis le CRM, de dire si un candidat vient de l'annonce Le Bon Coin,
-        // du Mémorial de l'Isère ou de LinkedIn — donc impossible d'y arbitrer
-        // un budget d'annonces.
-        //
-        // `sourceConnaissance` = ce que le candidat DÉCLARE (chips du tunnel).
-        // `utm` = ce que le lien PROUVE (cookie posé au premier clic). Les deux,
-        // parce qu'ils divergent souvent : on clique une annonce Le Bon Coin,
-        // on revient trois jours plus tard par Google, et on coche « site web ».
-        ...(d.sourceConnaissance ? { sourceConnaissance: d.sourceConnaissance } : {}),
-        ...(funnel.utm ? { utm: funnel.utm } : {}),
-      },
-      experiences,
-    });
+    // 🔴 L'envoi existait jusqu'au 19/09 (synchro candidat, famille
+    // `candidat_commercial`), et des dossiers sont effectivement partis : leur
+    // sort revient à Will, le chiffre est tenu hors de ce dépôt PUBLIC. Le
+    // remettre ici rouvrirait un canal que l'ordre du 04/09 ferme ; la garde
+    // `tests/unit/ci/le-dossier-apporteur-ne-part-pas-au-crm.spec.ts` refuse
+    // tout import de `@/server/crm-sync` dans ce dossier.
 
-    // REGISTRE DE PREUVE (lot L4) — best-effort, jamais bloquant. Les deux
-    // accords sont consignés SÉPARÉMENT : ils ont deux finalités distinctes, et
-    // les fondre en une ligne rendrait impossible de prouver lequel a été donné.
+    // REGISTRE DE PREUVE (lot L4) — best-effort, jamais bloquant. Un seul
+    // accord depuis le 19/09 : l'étude de la candidature, le texte affiché.
+    // La preuve « vivier » (`commercialApplicationVivier`) n'est plus consignée,
+    // puisque la case n'existe plus.
     await recordConsentEvent({
       email: d.email,
       formRef: CONSENT_FORM_REFS.commercialApplication,
@@ -466,17 +401,6 @@ export async function submitCommercialApplicationAction(
       ip,
       userAgent,
     });
-    if (vivierConsentAt) {
-      await recordConsentEvent({
-        email: d.email,
-        formRef: CONSENT_FORM_REFS.commercialApplicationVivier,
-        consentVersion: COMMERCIAL_APPLICATION_CONSENT_VERSION,
-        action: "optin",
-        occurredAt: vivierConsentAt,
-        ip,
-        userAgent,
-      });
-    }
 
     // 5 ter. Alerte de VOLUME — elle prévient, elle ne bloque rien.
     //

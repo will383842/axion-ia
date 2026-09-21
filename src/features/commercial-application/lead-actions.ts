@@ -18,11 +18,11 @@
 //     « à qualifier », c'est l'appel qui qualifie.
 //   - Source posée AUTOMATIQUEMENT (`sourceConnaissance: "facebook"`) : le
 //     visiteur ne se voit pas poser la question, la page le sait.
-//   - PAS de synchro CRM à cette étape : le CRM refuse en 422 toute version de
-//     consentement qu'il ne connaît pas, et celle du formulaire court lui est
-//     inconnue. Le dossier complet, lui, part au CRM comme avant. ⛔ Reste
-//     Will : déclarer `LEAD_APPORTEUR_CONSENT_VERSION` côté CRM si l'on veut
-//     aussi y voir les premiers contacts.
+//   - Aucun envoi au CRM, ni au premier contact ni au dossier complet (B2,
+//     19/09) : ordre de Will du 04/09, les candidats apporteurs vivent dans la
+//     console jusqu'à l'échange, Axion Partners prend le relais au contrat
+//     (ADR 0051). La garde `tests/unit/ci/le-dossier-apporteur-ne-part-pas-au-crm.spec.ts`
+//     refuse tout import de `@/server/crm-sync` dans ce dossier.
 //   - Envoi serveur de l'événement `Lead` à Meta, SEULEMENT si le visiteur a
 //     accepté la bannière (cf. `server/meta/conversions-api.ts`).
 
