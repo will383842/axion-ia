@@ -25,6 +25,7 @@ import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { CandidatureCommercialeDetail } from "./CandidatureCommercialeDetail";
 import { BlocInvitationApporteur } from "@/components/admin/contacts/BlocInvitationApporteur";
+import { GestesApporteur } from "@/components/admin/contacts/GestesApporteur";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { RendezVousApporteur } from "@/components/admin/contacts/RendezVousApporteur";
 
@@ -212,6 +213,18 @@ export async function SubmissionDetailContent({
             submissionId={submission.id}
             role={(session.user as { role?: string | null }).role}
           />
+        ) : null}
+        {/* Les deux gestes de la fiche. Ils vivent SOUS l'invitation et sous
+            l'échange : c'est l'ordre dans lequel les décisions se prennent —
+            on invite, la personne réserve, puis on classe ou on enregistre
+            qu'elle ne veut plus rien recevoir. */}
+        {estContactApporteur ? (
+          <div className="admin-card p-[var(--space-admin-4)]">
+            <GestesApporteur
+              id={submission.id}
+              close={submission.status === "archived" || submission.archivedAt !== null}
+            />
+          </div>
         ) : null}
         {candidature ? (
           <CandidatureCommercialeDetail

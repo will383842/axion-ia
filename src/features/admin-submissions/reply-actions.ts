@@ -27,6 +27,7 @@ import { renderEmailTemplate } from "@/lib/email/templates";
 import { enqueueEmail } from "@/server/queue/queues";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { appliquerTransition } from "./transitions";
+import { enregistrerOppositionPourAdresse } from "@/server/email/opposition";
 import { annulerRelancesLeadApporteur } from "@/features/commercial-application/relances-lead-apporteur";
 
 async function requireAdminWriteSession() {
@@ -243,6 +244,52 @@ export async function classerSansSuiteAction(id: string): Promise<ResultatGeste>
 /** Remettre à traiter : la fiche redevient visible dans « à traiter ». */
 export async function remettreATraiterAction(id: string): Promise<ResultatGeste> {
   return geste(id, "remettre");
+}
+
+/**
+ * Enregistrer une opposition reçue AUTREMENT que par le lien de désinscription
+ * — au téléphone, par retour d'e-mail, de vive voix.
+ *
+ * 🔴 CE GESTE MANQUAIT, ET SON ABSENCE SE VOYAIT CHEZ LA PERSONNE. Une
+ * opposition dite à Will ne s'enregistrait nulle part : il fallait attendre
+ * qu'elle clique sur un lien dans un message qu'elle venait de dire ne plus
+ * vouloir. Entre-temps, les relances déjà programmées partaient.
+ *
+ * Passe par le MÊME chemin que le lien (`enregistrerOppositionPourAdresse`) :
+ * empreinte posée, CRM prévenu, envois programmés retirés. Un second chemin
+ * aurait oublié l'un des trois.
+ */
+export async function enregistrerOppositionDepuisFicheAction(
+  id: string,
+): Promise<{ ok: boolean; dejaOpposee?: boolean; erreur?: "introuvable" | "sans-adresse" }> {
+  try {
+    await requireAdminWriteSession();
+  } catch {
+    return { ok: false };
+  }
+  const parsed = singleIdSchema.safeParse({ id });
+  if (!parsed.success) return { ok: false };
+
+  const ligne = await prisma.submission.findUnique({
+    where: { id: parsed.data.id },
+    select: { contactEmail: true, deletedAt: true },
+  });
+  if (!ligne || ligne.deletedAt) return { ok: false, erreur: "introuvable" };
+
+  // Une fiche effacée (art. 17) porte une adresse synthétique : y poser une
+  // opposition n'apprendrait rien à personne et créerait une ligne fantôme.
+  const adresse = decryptPii(ligne.contactEmail);
+  if (!adresse || adresse.endsWith("@erased.local")) {
+    return { ok: false, erreur: "sans-adresse" };
+  }
+
+  const r = await enregistrerOppositionPourAdresse(adresse, { origine: "console-admin" });
+  if (!r.ok) return { ok: false };
+
+  revalidatePath(adminPath("fr", "contacts/messages"));
+  revalidatePath(adminPath("fr", "contacts/commercial"));
+  updateTag(INBOX_COUNTS_TAG);
+  return { ok: true, dejaOpposee: r.dejaOpposee };
 }
 
 export async function bulkArchiveSubmissionsAction(ids: string[]): Promise<{ archived: number }> {

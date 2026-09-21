@@ -44,6 +44,7 @@ import type { PilotageDashboard } from "@/server/admin/pilotage-dashboard";
 import type { ActivityIconKey } from "@/lib/admin/activity-labels";
 import { EnTetePilotage } from "./pilotage/EnTetePilotage";
 import { AlertesCritiques } from "./pilotage/AlertesCritiques";
+import { ApporteursEnAttenteSection } from "./pilotage/ApporteursEnAttenteSection";
 import { CalendrierPrevisionnel } from "./pilotage/CalendrierPrevisionnel";
 import { ActiviteSection } from "./pilotage/ActiviteSection";
 import { FormateursSection } from "./pilotage/FormateursSection";
@@ -197,6 +198,11 @@ export function DashboardV2({
 
       {/* 2 — Alertes critiques (toujours visible, même vide). */}
       <AlertesCritiques adminPrefix={adminPrefix} alertes={dashboard.alertesCritiques} />
+
+      {/* 2 bis — Apporteurs en attente. Une TUILE, pas une alerte : au 19/09,
+          15 personnes attendaient, la plus ancienne depuis 26 jours. Un seuil
+          horaire aurait sonné en permanence dès le premier jour. */}
+      <ApporteursEnAttenteSection adminPrefix={adminPrefix} apporteurs={dashboard.apporteurs} />
 
       {/* 3 — Calendrier & prévisionnel (le cœur). */}
       <CalendrierPrevisionnel

@@ -86,7 +86,28 @@ export async function enregistrerOpposition(
 ): Promise<ResultatOpposition> {
   const email = lireJetonOpposition(token);
   if (email === null) return { ok: false, error: "invalid_token" };
+  return enregistrerOppositionPourAdresse(email, { origine: "lien-email", ...source });
+}
+
+/**
+ * Le MEME enregistrement, pour une adresse deja connue.
+ *
+ * 🔑 EXTRAIT, JAMAIS RECOPIE. Une opposition posee depuis la console devait
+ * faire exactement ce que fait le lien de desinscription : poser l'empreinte,
+ * prevenir le CRM (la prospection HUMAINE ne lit que lui), et retirer les
+ * envois deja programmes. Une seconde implementation aurait oublie l'un des
+ * trois — et c'est precisement celui qu'on oublie qui se voit chez la personne.
+ *
+ * Elle existe parce que Will recoit des oppositions AU TELEPHONE : sans ce
+ * geste, il n'avait aucun moyen de les enregistrer autrement qu'en attendant
+ * que la personne clique sur un lien qu'elle ne veut plus recevoir.
+ */
+export async function enregistrerOppositionPourAdresse(
+  email: string,
+  source: { template?: string | null; origine?: string } = {},
+): Promise<ResultatOpposition> {
   if (estStub()) return { ok: false, error: "internal" };
+  const origine = source.origine ?? "console-admin";
   try {
     // La table ne porte QUE l'empreinte : voir le modèle Prisma pour le
     // raisonnement (une liste d'opposition survit à l'effacement, donc elle ne
@@ -108,7 +129,7 @@ export async function enregistrerOpposition(
     const ligne = await prisma.emailOpposition.create({
       data: {
         emailHash,
-        source: "lien-email",
+        source: origine.slice(0, 40),
         ...(source.template ? { template: source.template.slice(0, 60) } : {}),
       },
       select: { id: true },
@@ -120,7 +141,7 @@ export async function enregistrerOpposition(
     await syncNewsletterOptOutToCrm({
       subjectRef: `site:email_opposition:${ligne.id}`,
       person: { email },
-      payload: { reason: "opposition-link", template: source.template ?? null },
+      payload: { reason: origine, template: source.template ?? null },
     });
 
     await annulerEnvoisProgrammes(email);
