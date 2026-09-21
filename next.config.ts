@@ -251,6 +251,34 @@ const nextConfig: NextConfig = {
   // expose l'URL legacy au sitemap auto + au crawler.
   async redirects() {
     return [
+      // Alias de vocabulaire pour les apporteurs d'affaires (LinkedIn, 09/2026).
+      // Les publications disent « apporteur d'affaires » ; l'ecart avec une URL
+      // qui dit « commercial » se voit, et c'est le vocabulaire que Will a
+      // demande d'aligner (plan-recrutement-apporteurs-daffaires.md §3.2).
+      //
+      // 🔴 CE QU'ON NE FAIT PAS : renommer `/devenir-commercial-ia`. Cette URL
+      // n'est pas une page, c'est un module : elle porte le JobPosting Google
+      // for Jobs, 40 pages de villes et les 301 des villes T3/T4 vers leur hub,
+      // trois fichiers de sitemap, et le referencement de « devenir commercial
+      // IA » — la requete reellement tapee. La renommer produirait une cascade
+      // de 404 sur des URLs indexees.
+      //
+      // On AJOUTE donc une entree courte qui redirige vers l'existant. Les deux
+      // vivent, aucune ne casse. Le formulaire de candidature reste unique :
+      // meme `/apporteur-affaires-independant-formation-ia-entreprise` y envoie.
+      //
+      // ⚠️ Ne pas ajouter ces deux chemins a un sitemap : une URL qui repond 301
+      // n'a rien a y faire, seule la destination s'indexe.
+      {
+        source: "/:locale(fr|en)/apporteur/candidature",
+        destination: "/:locale/devenir-commercial-ia/candidature",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/apporteur",
+        destination: "/:locale/apporteur-affaires-independant-formation-ia-entreprise",
+        permanent: true,
+      },
       // Taxonomies blog SUPPRIMÉES (tag/secteur/service/taille/auteur) — leurs
       // routes n'existent plus, toute URL résiduelle connue de Google servait un
       // 404 sec (vérifié en prod le 2026-08-01, audit indexation GSC). 301 de
