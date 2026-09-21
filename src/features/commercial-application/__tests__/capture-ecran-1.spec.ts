@@ -22,6 +22,50 @@ const creer = vi.fn(async (_a: unknown) => ({
   submittedAt: new Date("2026-09-04T10:00:00Z"),
 }));
 const chercher = vi.fn(async (_a: unknown) => null as { id: string } | null);
+
+// ── Une mini-table en mémoire pour la recherche d'idempotence ─────────────
+// Un simple `mockResolvedValue` rendrait la même ligne QUEL QUE SOIT le filtre
+// — et c'est précisément le filtre qu'il faut éprouver : une ligne /contact
+// ordinaire, ou une ligne apporteur en corbeille, ne doit PAS être prise pour
+// « déjà capturée ». L'évaluateur ci-dessous applique le `where` réellement
+// envoyé, et REFUSE toute clause qu'il ne sait pas lire : une clause ignorée en
+// silence ferait passer le test pour une raison fausse.
+type LigneTable = {
+  id: string;
+  contactEmailHash: string;
+  type: string;
+  deletedAt: Date | null;
+  details: Record<string, unknown>;
+};
+let table: LigneTable[] = [];
+
+function satisfait(ligne: LigneTable, where: Record<string, unknown>): boolean {
+  return Object.entries(where).every(([cle, valeur]) => {
+    switch (cle) {
+      case "contactEmailHash":
+      case "type":
+        return ligne[cle] === valeur;
+      case "deletedAt":
+        if (valeur !== null) throw new Error("clause deletedAt non prise en charge");
+        return ligne.deletedAt === null;
+      case "AND":
+        return (valeur as Record<string, unknown>[]).every((c) => satisfait(ligne, c));
+      case "details": {
+        const { path, equals } = valeur as { path: string[]; equals: unknown };
+        if (path.length !== 1) throw new Error("chemin JSON profond non pris en charge");
+        return ligne.details[path[0] as string] === equals;
+      }
+      default:
+        throw new Error(`clause « ${cle} » non prise en charge par la table de test`);
+    }
+  });
+}
+
+function chercherDansLaTable(a: unknown): { id: string } | null {
+  const { where } = a as { where: Record<string, unknown> };
+  const trouvee = table.find((l) => satisfait(l, where));
+  return trouvee ? { id: trouvee.id } : null;
+}
 const notifier = vi.fn(async (_a: unknown) => ({ ok: true }));
 const consentement = vi.fn(async (_a: unknown) => true);
 const enfiler = vi.fn(async (..._a: unknown[]) => ({ enqueued: true }));
@@ -55,6 +99,7 @@ vi.mock("@/lib/pii-crypto", () => ({ encryptPii: (v: string) => `chiffre(${v})` 
 vi.mock("@/lib/security/ip-hash", () => ({ hashIp: () => "hash-ip" }));
 
 const { capturerContactDossierAction } = await import("../capture-actions");
+const { hashEmailForLookup } = await import("@/lib/security/email-hash");
 
 const valide = {
   prenom: "Camille",
@@ -64,10 +109,23 @@ const valide = {
   consent: true as const,
 };
 
+const APPORTEUR = { unifiedType: "recrutement", subType: "candidature-commerciale" };
+
+/** Une ligne de la table, à l'adresse de `valide` sauf mention contraire. */
+function ligne(l: Partial<LigneTable> & Pick<LigneTable, "id" | "details">): LigneTable {
+  return {
+    contactEmailHash: hashEmailForLookup(valide.email) ?? "",
+    type: "contact",
+    deletedAt: null,
+    ...l,
+  };
+}
+
 beforeEach(() => {
   creer.mockClear();
   chercher.mockClear();
-  chercher.mockResolvedValue(null);
+  table = [];
+  chercher.mockImplementation(async (a: unknown) => chercherDansLaTable(a));
   notifier.mockClear();
   consentement.mockClear();
   enfiler.mockClear();
@@ -115,11 +173,37 @@ describe("capturerContactDossierAction", () => {
     // 🔑 Le cas réel : quelqu'un vient du tunnel, a déjà une ligne « premier
     // contact », puis ouvre le dossier. Une seconde ligne lui vaudrait DEUX
     // séries de rappels J+2 / J+7.
-    chercher.mockResolvedValue({ id: "ligne-existante" });
+    table = [ligne({ id: "ligne-existante", details: APPORTEUR })];
     const r = await capturerContactDossierAction(valide, "fr");
     expect(r).toEqual({ ok: true, submissionId: "ligne-existante", deja: true });
     expect(creer, "aucune écriture ne doit avoir lieu").not.toHaveBeenCalled();
     expect(enfiler, "et surtout aucune seconde série de rappels").not.toHaveBeenCalled();
+  });
+
+  // 🔴 2026-09-19 — LE CANDIDAT PERDU À L'ÉCRAN 1. La garde cherchait « une
+  // ligne /contact à cette adresse », sans regarder ce qu'elle était. Quelqu'un
+  // qui avait un jour écrit par /contact (une question, une demande de devis),
+  // ou dont la candidature précédente avait été mise à la corbeille, était pris
+  // pour « déjà capturé » : aucune ligne, aucun kit, aucune relance — et rien
+  // dans la console pour le rappeler.
+  it("une ligne /contact ordinaire à la même adresse n'est PAS une capture : nouvelle ligne, kit et relances", async () => {
+    table = [ligne({ id: "message-contact", details: { unifiedType: "audit" } })];
+    const r = await capturerContactDossierAction(valide, "fr");
+    expect(r).toMatchObject({ ok: true, deja: false });
+    expect(creer, "le candidat doit avoir SA ligne").toHaveBeenCalledTimes(1);
+    const gabarits = enfiler.mock.calls.map((c) => c[0]);
+    expect(gabarits).toContain("lead-apporteur-recu");
+    expect(gabarits).toContain("lead-apporteur-relance");
+  });
+
+  it("une ligne apporteur EN CORBEILLE n'est pas une capture : nouvelle ligne, kit et relances", async () => {
+    table = [ligne({ id: "ancienne-candidature", details: APPORTEUR, deletedAt: new Date() })];
+    const r = await capturerContactDossierAction(valide, "fr");
+    expect(r).toMatchObject({ ok: true, deja: false });
+    expect(creer).toHaveBeenCalledTimes(1);
+    const gabarits = enfiler.mock.calls.map((c) => c[0]);
+    expect(gabarits).toContain("lead-apporteur-recu");
+    expect(gabarits).toContain("lead-apporteur-relance");
   });
 
   it("la recherche d'idempotence porte sur l'EMPREINTE, jamais sur l'adresse en clair", async () => {

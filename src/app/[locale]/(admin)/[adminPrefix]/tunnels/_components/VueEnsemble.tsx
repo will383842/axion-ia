@@ -198,7 +198,7 @@ export function VueEnsemble({
         Chiffres issus des balises de tunnel : anonymes, sans adresse IP, purgés au bout de 12 mois.
         Ils servent à comparer des pages et des campagnes, jamais à identifier quelqu&apos;un. Les
         prospects nominatifs, eux, sont dans la{" "}
-        <Link href={`/fr/${adminPrefix}/submissions`} className="admin-link">
+        <Link href={`/fr/${adminPrefix}/contacts`} className="admin-link">
           boîte de réception
         </Link>
         .

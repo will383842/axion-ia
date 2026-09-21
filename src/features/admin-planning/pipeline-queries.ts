@@ -13,6 +13,7 @@
 // Build-safety (ADR 0026) : stub-aware (try/catch → entonnoir vide).
 
 import { prisma } from "@/lib/prisma";
+import { estDemandeClient } from "@/lib/contact/perimetre-client";
 import {
   construirePipeline,
   type DemandeRow,
@@ -52,15 +53,27 @@ export async function getPipeline(
   return construirePipeline({ demandes, devis, sessions, factures }, maintenant);
 }
 
+/**
+ * Les demandes de la fenêtre — celles du PÉRIMÈTRE CLIENT seulement.
+ *
+ * La table `submissions` reçoit aussi les candidatures d'apporteurs, la presse,
+ * les partenariats : les compter ici gonflait l'étage « Demandes » de gens qui
+ * n'achèteront jamais (2026-09-19). La corbeille s'écarte en SQL ; le reste se
+ * décide EN MÉMOIRE par `estDemandeClient`, parce qu'il porte sur des clés du
+ * JSON `details` — et qu'un `NOT` sur un chemin JSON écarterait aussi, en
+ * silence, toutes les lignes où la clé est absente.
+ */
 async function lireDemandes(depuis: Date): Promise<DemandeRow[]> {
   try {
     const rows = await prisma.submission.findMany({
-      where: { submittedAt: { gte: depuis } },
-      select: { status: true, submittedAt: true },
+      where: { submittedAt: { gte: depuis }, deletedAt: null },
+      select: { status: true, submittedAt: true, type: true, details: true },
     });
     // `Submission` horodate avec `submittedAt`, pas `createdAt`. Le moteur pur
     // ne connaît qu'une notion de « date de création » : on la lui donne ici.
-    return rows.map((r) => ({ status: r.status, createdAt: r.submittedAt }));
+    return rows
+      .filter((r) => estDemandeClient(r))
+      .map((r) => ({ status: r.status, createdAt: r.submittedAt }));
   } catch {
     return [];
   }
