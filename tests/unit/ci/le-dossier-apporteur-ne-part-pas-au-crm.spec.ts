@@ -44,16 +44,31 @@ function estUnTest(relatif: string): boolean {
 }
 
 /**
- * Retire commentaires de ligne et de bloc.
+ * Retire les commentaires, LIGNE PAR LIGNE.
  *
- * 🔑 Sans ça, la garde ci-dessous accuse le texte qui ÉNONCE la règle : la
- * doctrine « jamais de `NOT: FILTRE_APPORTEUR_PRISMA` » est écrite en toutes
- * lettres dans l'en-tête de `est-apporteur.ts`. Mesuré au premier essai : un
- * seul coupable, et c'était le commentaire. Une règle doit pouvoir se citer
- * elle-même. Même procédé que `le-tunnel-apporteur-ne-dit-jamais-agent-commercial`.
+ * 🔑 Pourquoi pas une expression qui balaie tout le fichier : parce qu'elle
+ * avale du VRAI CODE. Une expression de la forme « tout entre un ouvrant et le
+ * prochain fermant » s'ouvre sur le `/*` d'une CHAÎNE de caractères et mange
+ * tout jusqu'au fermant suivant. Mesuré sur ce dépôt le 2026-09-21, avant
+ * correction : **9 002 lignes réelles invisibles sur 440 fichiers** de `src/` —
+ * dont 1 220 d'un seul (`admin-nav.ts`, à cause du chemin `"/contacts/*"`) et
+ * 75 sur la chaîne CSP `"https://*.clarity.ms"`. La garde se déclarait verte
+ * sur des zones qu'elle ne lisait pas : un vert qui ne regarde rien.
+ *
+ * Le découpage par ligne ne peut pas déborder. Il retire les lignes qui SONT un
+ * commentaire, et la queue `//…` d'une ligne de code — sauf après `:`, qui
+ * protège `https://`. Un commentaire de bloc au MILIEU d'une ligne de code
+ * n'est pas retiré : on préfère une garde qui en dit trop à une garde aveugle.
  */
 function codeSeul(source: string): string {
-  return source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:])\/\/.*/g, "$1");
+  return source
+    .split(/\r?\n/)
+    .map((ligne) => {
+      const debut = ligne.trimStart();
+      if (debut.startsWith("*") || debut.startsWith("//") || debut.startsWith("/*")) return "";
+      return ligne.replace(/(^|[^:])\/\/.*/, "$1");
+    })
+    .join(" ");
 }
 
 function sources(dossier: string): string[] {
@@ -132,10 +147,41 @@ describe("le dossier apporteur ne part pas au CRM (décision B2, 19/09)", () => 
     expect(NEGATION_DU_FILTRE.test(`where: { ...FILTRE_APPORTEUR_PRISMA }`)).toBe(false);
     // Ni sur la doctrine qui se cite elle-même : `est-apporteur.ts` écrit la
     // règle en toutes lettres dans son en-tête, et la garde l'accusait au
-    // premier essai. Commentaire de BLOC, comme celui du module.
-    expect(NEGATION_DU_FILTRE.test(codeSeul("/** NOT: FILTRE_APPORTEUR_PRISMA */"))).toBe(false);
-    // Et en commentaire de LIGNE, l'autre forme que `codeSeul` doit retirer.
+    // premier essai. Commentaire de BLOC, puis de LIGNE.
+    expect(NEGATION_DU_FILTRE.test(codeSeul(" * NOT: FILTRE_APPORTEUR_PRISMA"))).toBe(false);
     expect(NEGATION_DU_FILTRE.test(codeSeul("// NOT: FILTRE_APPORTEUR_PRISMA"))).toBe(false);
+  });
+
+  // ── 🔴 2026-09-21 — le témoin qui empêche le retour de l'AVEUGLEMENT ──────
+  //
+  // La première version de `codeSeul` balayait le fichier entier avec une
+  // expression « ouvrant … fermant ». Elle s'ouvrait sur le `/*` d'une CHAÎNE
+  // de caractères et avalait tout le reste : mesuré, 9 002 lignes réelles
+  // devenues invisibles sur 440 fichiers de `src/`. La garde restait VERTE en
+  // cessant de lire — le pire mode de défaillance.
+  //
+  // Ces trois cas échouent avec l'ancienne version et passent avec celle-ci.
+  // Sans eux, un « nettoyage » la restaurerait sans qu'un seul test bronche.
+  it("le filtrage des commentaires n'avale pas de vrai code", () => {
+    const apresUnCheminEtoile = [
+      'const chemin = "/contacts/*";',
+      "const faute = { NOT: FILTRE_APPORTEUR_PRISMA };",
+      'const fin = "*/";',
+    ].join("\n");
+    expect(
+      NEGATION_DU_FILTRE.test(codeSeul(apresUnCheminEtoile)),
+      "une faute écrite APRÈS une chaîne contenant `/*` doit rester visible",
+    ).toBe(true);
+
+    // La chaîne CSP réelle du dépôt, qui coûtait 75 lignes d'aveuglement.
+    const apresUneCsp = [
+      'const csp = "https://*.clarity.ms";',
+      "const faute = { NOT: { ...FILTRE_APPORTEUR_PRISMA } };",
+    ].join("\n");
+    expect(NEGATION_DU_FILTRE.test(codeSeul(apresUneCsp))).toBe(true);
+
+    // Et une URL ordinaire n'est pas prise pour un commentaire.
+    expect(codeSeul('const u = "https://axion-ia.com/fr";')).toContain("https://axion-ia.com/fr");
   });
 
   it("aucun module de src/ n'exclut les apporteurs par une négation en base", () => {
