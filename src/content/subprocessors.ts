@@ -142,7 +142,21 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     dataCategoriesEn:
       "For the network: visitor IP addresses, user-agent, HTTP requests, no advertising cookies. For storage: the contents of the documents — the identity of trainees, trainers and clients, their contact details, invoiced amounts, their handwritten signature stroke and their connection times. No object is served publicly by the application: every access goes through a time-limited signed link.",
     legalBasis: "6.1.f_legitimate_interest",
-    dpaStatus: "auto_signable_dashboard",
+    // 🟢 2026-09-20 — **LE DPA EST ACCEPTÉ**, confirmé par Will. Cette ligne
+    // portait `auto_signable_dashboard`, c'est-à-dire « acceptable en un
+    // clic » — pas « accepté ». La notice publique annonçait donc moins que
+    // la réalité, et le registre listait en tête de ses restes une action
+    // déjà faite.
+    //
+    // 🔑 L'écart joue ici EN DÉFAVEUR de l'organisme : il est en règle et ses
+    // propres documents disent le contraire. Un registre art. 30 qui
+    // sous-déclare sa conformité est aussi faux qu'un registre qui la
+    // sur-déclare, et c'est la pièce qu'un auditeur ouvre en premier.
+    //
+    // ⚠️ Le DPA Cloudflare couvre TOUS les services du compte, donc **aussi
+    // R2** : ce n'est plus un DPA « CDN ». C'est lui qui porte les clauses
+    // contractuelles types du transfert hors UE.
+    dpaStatus: "signed",
     transferFramework: "scc",
     category: "core_infra",
     activationStatus: "active",
