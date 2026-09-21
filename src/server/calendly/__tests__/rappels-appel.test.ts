@@ -232,15 +232,48 @@ describe("un cron ne rougit pas parce que la base a hoqueté", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("les trois moments partagent un cœur, pas un marqueur", () => {
-  it("chaque moment a son PROPRE nom de job et son PROPRE marqueur", () => {
-    // 🔴 LE CAS QUI PROTÈGE LE PLUS. Un marqueur partagé ferait taire les deux
-    // derniers moments : le premier envoi le poserait, et les passages suivants
-    // ne verraient plus aucun candidat. Le défaut serait SILENCIEUX — aucune
-    // erreur, simplement deux e-mails qui ne partent jamais.
+  it("chaque moment a son PROPRE nom de job", () => {
+    // 🔴 LE CAS QUI PROTÈGE LE PLUS. Un marqueur partagé entre deux MOMENTS
+    // ferait taire les suivants : le premier envoi le poserait, et les passages
+    // d'après ne verraient plus aucun candidat. Le défaut serait SILENCIEUX —
+    // aucune erreur, simplement des e-mails qui ne partent jamais.
     const jobs = PASSAGES.map((p) => p.job);
-    const marqueurs = PASSAGES.map((p) => p.marqueur);
-    expect(new Set(jobs).size, "deux moments partagent un nom de job").toBe(PASSAGES.length);
-    expect(new Set(marqueurs).size, "deux moments partagent un marqueur").toBe(PASSAGES.length);
+    expect(new Set(jobs).size, "deux passages partagent un nom de job").toBe(PASSAGES.length);
+  });
+
+  it("chaque moment a son PROPRE marqueur — POUR UN MÊME public", () => {
+    // ⚠️ 2026-09-21 — CE TEST EXIGEAIT SIX MARQUEURS DISTINCTS, ET IL AVAIT
+    // RAISON DE ROUGIR, mais pour une raison périmée : il datait d'une époque où
+    // un moment = un public. Les trois passages apporteur réutilisent
+    // DÉLIBÉRÉMENT les colonnes de marqueur du client.
+    //
+    // 🔑 C'est sûr parce qu'un événement Calendly appartient à UN SEUL public :
+    // il est un appel client ou un échange apporteur, jamais les deux. Le test
+    // suivant le prouve au lieu de le supposer — sans lui, ce partage
+    // deviendrait un pari.
+    for (const destinataire of ["client", "apporteur"] as const) {
+      const duPublic = PASSAGES.filter((p) => p.destinataire === destinataire);
+      const marqueurs = duPublic.map((p) => p.marqueur);
+      expect(new Set(marqueurs).size, `deux moments ${destinataire} partagent un marqueur`).toBe(
+        duPublic.length,
+      );
+    }
+  });
+
+  it("les deux publics ne se recouvrent PAS : c'est ce qui autorise le partage", () => {
+    // Si un même événement pouvait être vu par les deux publics, la
+    // confirmation client poserait le marqueur et l'apporteur ne recevrait
+    // jamais la sienne — en silence.
+    const parMoment = new Map<string, Set<string>>();
+    for (const p of PASSAGES) {
+      const vus = parMoment.get(p.moment) ?? new Set<string>();
+      expect(vus.has(p.destinataire), `deux passages ${p.moment} / ${p.destinataire}`).toBe(false);
+      vus.add(p.destinataire);
+      parMoment.set(p.moment, vus);
+    }
+    // Trois moments, deux publics chacun : la table est complète et sans trou.
+    expect(parMoment.size).toBe(3);
+    for (const vus of parMoment.values()) expect(vus.size).toBe(2);
   });
 
   it("la confirmation part SANS fenêtre, mais jamais vers le passé", async () => {
