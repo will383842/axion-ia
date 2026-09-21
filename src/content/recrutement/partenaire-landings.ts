@@ -130,7 +130,7 @@ export const PARTENAIRE_ETAPES: readonly { readonly titre: string; readonly text
     // retenus : l'étape ne le promet plus à chaque candidat.
     titre: "On se parle, si ça colle",
     texte:
-      "Si ton profil correspond, on te propose un échange de 15 minutes au téléphone, juste toi et nous. On t'explique l'offre, tu poses tes questions. Pas de réunion collective : un vrai échange.",
+      "Si ton profil correspond, on te propose un échange de 15 minutes en visio, juste toi et nous. On t'explique l'offre, tu poses tes questions. Pas de réunion collective : un vrai échange.",
   },
   {
     titre: "Tu présentes une entreprise",

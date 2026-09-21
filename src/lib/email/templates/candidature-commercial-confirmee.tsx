@@ -44,7 +44,7 @@ const COPY = {
     // « On répond à TOUTES les candidatures » tient la promesse de l'annonce
     // Le Bon Coin (docs/annonce-leboncoin-recrutement.md §2.5) : un candidat
     // non retenu reçoit, lui aussi, une réponse.
-    next: "On répond à toutes les candidatures : la tienne aura une réponse, quoi qu'il arrive, dans les prochaines heures. Si ton profil correspond, on te proposera un échange de 15 minutes au téléphone pour faire connaissance.",
+    next: "On répond à toutes les candidatures : la tienne aura une réponse, quoi qu'il arrive, dans les prochaines heures. Si ton profil correspond, on te proposera un échange de 15 minutes en visio pour faire connaissance.",
     spam: "Pense à vérifier tes spams si tu n'as pas de nouvelles : nos emails s'y égarent parfois.",
     cta: "Lire le document de présentation",
     refRow: (id: string) => `Référence : ${id}`,
@@ -55,7 +55,7 @@ const COPY = {
       "We answer EVERY application, within the next few hours. Meanwhile: the presentation document and the catalogue.",
     intro: (n: string) => (n ? `Hello ${n},` : "Hello,"),
     body: "Thanks for taking a few minutes: your application to join Axion-IA's network of business introducers has arrived, and it will be read carefully — by a human, promise.",
-    next: "We answer every application: yours will get a reply either way, within the next few hours. If your profile is a match, we will offer you a 15-minute phone call to get acquainted.",
+    next: "We answer every application: yours will get a reply either way, within the next few hours. If your profile is a match, we will offer you a 15-minute video call to get acquainted.",
     spam: "Check your spam folder if you do not hear from us: our emails sometimes end up there.",
     cta: "Read the presentation document",
     refRow: (id: string) => `Reference: ${id}`,

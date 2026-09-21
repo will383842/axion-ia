@@ -69,7 +69,7 @@ const APRES = [
   },
   {
     Icon: ShieldCheck,
-    title: "Un échange au téléphone",
+    title: "Un échange en visio",
     text: "15 minutes pour faire connaissance, répondre à tes questions et cadrer ton secteur.",
   },
   {
