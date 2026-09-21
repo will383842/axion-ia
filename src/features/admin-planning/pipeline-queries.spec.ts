@@ -73,11 +73,60 @@ describe("Submission — horodatage `submittedAt`", () => {
 
   it("mappe `submittedAt` vers la notion de date de création du moteur", async () => {
     mockSubmission.mockResolvedValue([
-      { status: "qualifying", submittedAt: new Date("2026-06-01T00:00:00Z") },
+      {
+        status: "qualifying",
+        submittedAt: new Date("2026-06-01T00:00:00Z"),
+        type: "audit",
+        details: null,
+      },
     ]);
     const p = await getPipeline(MAINTENANT);
     expect(etage(p, "demande")?.nb).toBe(1);
     expect(etage(p, "demande")?.ageMaxJours).toBe(9);
+  });
+});
+
+// 🔴 2026-09-19 — L'ÉTAGE « DEMANDES » COMPTAIT TOUT CE QUI ARRIVE PAR LE SITE.
+// Candidats apporteurs, presse, partenariats et corbeille y entraient comme des
+// prospects. Le chiffre baisse avec ce correctif, et c'est voulu : il ne compte
+// plus que le périmètre client (`src/lib/contact/perimetre-client.ts`).
+describe("Submission — seul le périmètre client est une « demande »", () => {
+  const LE = new Date("2026-06-01T00:00:00Z");
+
+  it("écarte la corbeille dès la requête", async () => {
+    await getPipeline(MAINTENANT);
+    const where = mockSubmission.mock.calls[0]?.[0]?.where as Record<string, unknown>;
+    expect(where).toHaveProperty("deletedAt", null);
+  });
+
+  it("lit `type` et `details`, sans lesquels le périmètre ne peut pas se décider", async () => {
+    await getPipeline(MAINTENANT);
+    const select = mockSubmission.mock.calls[0]?.[0]?.select as Record<string, unknown>;
+    expect(select).toMatchObject({ type: true, details: true });
+  });
+
+  it("compte un devis qualifié SANS `unifiedType` (le type suffit)", async () => {
+    mockSubmission.mockResolvedValue([
+      { status: "new", submittedAt: LE, type: "quote_request", details: {} },
+    ]);
+    const p = await getPipeline(MAINTENANT);
+    expect(etage(p, "demande")?.nb).toBe(1);
+  });
+
+  it("ne compte ni un candidat apporteur, ni la presse, ni un /contact sans objet", async () => {
+    mockSubmission.mockResolvedValue([
+      {
+        status: "new",
+        submittedAt: LE,
+        type: "contact",
+        details: { unifiedType: "recrutement", subType: "candidature-commerciale" },
+      },
+      { status: "new", submittedAt: LE, type: "contact", details: { unifiedType: "presse" } },
+      { status: "new", submittedAt: LE, type: "contact", details: {} },
+      { status: "new", submittedAt: LE, type: "contact", details: { unifiedType: "audit" } },
+    ]);
+    const p = await getPipeline(MAINTENANT);
+    expect(etage(p, "demande")?.nb).toBe(1);
   });
 });
 

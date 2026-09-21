@@ -19,7 +19,7 @@
 //
 // DEUX SOURCES, VOLONTAIREMENT :
 //   - `sourceConnaissance` = ce que le candidat DÉCLARE (les chips du tunnel) ;
-//   - `utm.source` = ce que le lien PROUVE (cookie posé au premier clic).
+//   - `utm.utm_source` = ce que le lien PROUVE (cookie posé au premier clic).
 // Elles divergent souvent : on clique une annonce, on revient trois jours plus
 // tard par Google, et on coche « site web ». Les afficher côte à côte est le
 // seul moyen de voir cet écart plutôt que de le subir.
@@ -145,6 +145,22 @@ function lireDetails(v: unknown): Record<string, unknown> | null {
 const SANS_PROVENANCE = "—";
 
 /**
+ * La source UTM d'une candidature.
+ *
+ * 🔴 2026-09-19 — cet écran lisait `utm.source`, clé que rien n'écrit : le
+ * cookie (`src/lib/utm.ts`, `UtmParams`) porte les noms de paramètres d'URL,
+ * `utm_source`, et c'est tel quel qu'il est recopié dans `details.funnel.utm`.
+ * Toutes les candidatures tombaient donc dans « Aucun UTM », Le Bon Coin
+ * compris — et l'écran qui doit dire quelle annonce rapporte ne le disait pour
+ * aucune. `source` reste lu en repli, au cas où une ligne ancienne le porterait.
+ */
+function lireUtmSource(utm: Record<string, unknown> | null): string {
+  if (!utm) return SANS_PROVENANCE;
+  const v = utm["utm_source"] ?? utm["source"];
+  return typeof v === "string" && v.length > 0 ? v : SANS_PROVENANCE;
+}
+
+/**
  * Agrège les candidatures commerciales par provenance.
  *
  * @param joursFenetre — profondeur d'observation. 90 jours par défaut : au-delà,
@@ -179,7 +195,7 @@ export async function getAnnoncesStats(joursFenetre = 90): Promise<AnnoncesStats
 
     const funnel = lireDetails(d?.funnel);
     const utm = lireDetails(funnel?.utm);
-    const utmSource = utm && typeof utm.source === "string" ? utm.source : SANS_PROVENANCE;
+    const utmSource = lireUtmSource(utm);
 
     if (declaree === SANS_PROVENANCE && utmSource === SANS_PROVENANCE) sansProvenance += 1;
 

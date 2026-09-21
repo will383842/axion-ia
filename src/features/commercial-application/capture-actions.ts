@@ -38,9 +38,10 @@
 // à l'écran 1 en créerait une seconde, et la personne recevrait deux séries de
 // rappels. La garde est double :
 //   1. côté client, l'appel n'est fait qu'une fois par session de wizard ;
-//   2. côté serveur, on cherche une ligne existante par EMPREINTE D'E-MAIL et on
-//      la renvoie telle quelle. C'est la garde qui compte : un rechargement de
-//      page, un retour arrière ou un second appareil contournent la première.
+//   2. côté serveur, on cherche une ligne APPORTEUR existante, hors corbeille,
+//      par EMPREINTE D'E-MAIL et on la renvoie telle quelle. C'est la garde qui
+//      compte : un rechargement de page, un retour arrière ou un second
+//      appareil contournent la première.
 
 "use server";
 
@@ -117,10 +118,19 @@ export async function capturerContactDossierAction(
     // ── IDEMPOTENCE. La garde qui compte : elle survit au rechargement, au
     // retour arrière et au changement d'appareil, là où un drapeau côté client
     // ne survit à rien.
+    //
+    // 🔴 Elle ne reconnaît QUE une ligne apporteur vivante (2026-09-19).
+    // Chercher « une ligne /contact à cette adresse » prenait pour déjà capturé
+    // quiconque avait un jour écrit par /contact, ou dont une candidature
+    // précédente était en corbeille : pas de ligne, pas de kit, pas de relance,
+    // et personne à rappeler. Le filtre JSON vit dans un `AND` explicite, pour
+    // qu'un second filtre sur `details` ajouté plus tard ne l'écrase pas.
     const existante = await prisma.submission.findFirst({
       where: {
         contactEmailHash: emailKey,
         type: SubmissionType.contact,
+        deletedAt: null,
+        AND: [{ details: { path: ["subType"], equals: CANDIDATURE_COMMERCIALE_SUBTYPE } }],
       },
       select: { id: true },
       orderBy: { submittedAt: "desc" },

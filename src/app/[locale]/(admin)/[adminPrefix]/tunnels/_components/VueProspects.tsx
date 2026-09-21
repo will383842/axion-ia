@@ -288,7 +288,7 @@ export function VueProspects({
         <p className="admin-lede">
           Des tranches, jamais des montants : un montant exact croisé au secteur et à
           l&apos;effectif réidentifierait une entreprise. Les montants nominatifs sont dans la{" "}
-          <Link href={`/fr/${adminPrefix}/submissions`} className="admin-link">
+          <Link href={`/fr/${adminPrefix}/contacts`} className="admin-link">
             boîte de réception
           </Link>
           , exportables en CSV pour un CRM.

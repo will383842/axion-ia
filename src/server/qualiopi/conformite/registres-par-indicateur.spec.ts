@@ -8,7 +8,7 @@
  * laissé passer cinq littéraux dans `conformite-service.ts`.
  */
 
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { describe, it, expect } from "vitest";
@@ -16,17 +16,9 @@ import { describe, it, expect } from "vitest";
 import { INDICATEURS_RNQ } from "./indicateurs-registre";
 import { REGISTRES_PAR_INDICATEUR, registresDeIndicateur } from "./registres-par-indicateur";
 
-const PAGE_MODE_AUDITEUR = join(
-  process.cwd(),
-  "src",
-  "app",
-  "[locale]",
-  "(admin)",
-  "[adminPrefix]",
-  "qualiopi",
-  "mode-auditeur",
-  "page.tsx",
-);
+const RACINE_CONSOLE = join(process.cwd(), "src", "app", "[locale]", "(admin)", "[adminPrefix]");
+
+const PAGE_MODE_AUDITEUR = join(RACINE_CONSOLE, "qualiopi", "mode-auditeur", "page.tsx");
 
 describe("registres par indicateur", () => {
   it("porte une entrée pour CHACUN des 32 indicateurs du registre", () => {
@@ -122,6 +114,34 @@ describe("registres par indicateur", () => {
       }
     }
     expect(collisions).toEqual([]);
+  });
+
+  /**
+   * 🔴 2026-09-19 — LE LIEN QUI MENAIT À UN ÉCRAN FERMÉ.
+   *
+   * L'indicateur 4 renvoyait vers « Entrées récentes », écran refermé le
+   * 2026-08-27 : il n'était plus qu'une redirection permanente vers la Boîte de
+   * réception, où l'auditrice trouvait toutes les demandes du site — candidats
+   * apporteurs et presse compris — et rien qui prouve l'analyse du besoin.
+   *
+   * La garde lit chaque page CIBLE sur le disque, jamais une liste recopiée :
+   * un écran qui disparaît ou devient une redirection la fait rougir.
+   */
+  it("chaque registre mène à un écran réel, jamais à une page disparue ou à une redirection", () => {
+    const fautes: string[] = [];
+    for (const [numero, registres] of Object.entries(REGISTRES_PAR_INDICATEUR)) {
+      for (const r of registres) {
+        const page = join(RACINE_CONSOLE, ...r.chemin.split("/").filter(Boolean), "page.tsx");
+        if (!existsSync(page)) {
+          fautes.push(`ind. ${numero} → ${r.chemin} : aucune page`);
+          continue;
+        }
+        if (readFileSync(page, "utf8").includes("permanentRedirect(")) {
+          fautes.push(`ind. ${numero} → ${r.chemin} : simple redirection`);
+        }
+      }
+    }
+    expect(fautes).toEqual([]);
   });
 
   it("aucun libellé n'est employé deux fois dans le registre", () => {

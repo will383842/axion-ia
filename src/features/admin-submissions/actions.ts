@@ -130,11 +130,19 @@ export async function updateSubmissionAction(
     return { ok: false, error: "Permission insuffisante." };
   }
 
+  // 🔴 Un champ ABSENT du formulaire n'écrit RIEN (2026-09-19). Le bouton
+  // « Marquer traité » de la liste n'envoie que `id` et `status` ; or
+  // `formData.get()` d'un champ absent rend `null`, qui devenait
+  // `internalNotes: null` — un clic de tri effaçait les notes de l'appel et
+  // l'assignation. Seul un champ PRÉSENT mais vide efface : c'est le geste
+  // « vider la note » de la fiche, qui envoie toujours ses deux champs.
   const parsed = updateSubmissionSchema.safeParse({
     id: formData.get("id"),
     status: formData.get("status") || undefined,
-    internalNotes: formData.get("internalNotes") || null,
-    assignedTo: formData.get("assignedTo") || null,
+    internalNotes: formData.has("internalNotes")
+      ? formData.get("internalNotes") || null
+      : undefined,
+    assignedTo: formData.has("assignedTo") ? formData.get("assignedTo") || null : undefined,
   });
   if (!parsed.success) return { ok: false, error: "Champs invalides." };
 
@@ -157,7 +165,7 @@ export async function updateSubmissionAction(
       },
     }),
   ]);
-  revalidatePath(adminPath("fr", "submissions"));
+  revalidateEcransDesDemandes();
   return { ok: true };
 }
 
@@ -263,8 +271,21 @@ export async function eraseSubmissionAction(
     });
   });
 
-  revalidatePath(adminPath("fr", "submissions"));
+  revalidateEcransDesDemandes();
   return { ok: true };
+}
+
+/**
+ * Rafraîchit les écrans qui LISTENT réellement les demandes.
+ *
+ * `/submissions` n'est plus qu'une redirection permanente vers
+ * `/contacts/messages` (2026-05-26) : la revalider ne rafraîchissait aucun
+ * écran. Les listes vivent sous `/contacts`, et les candidatures d'apporteurs
+ * sous `/contacts/commercial`.
+ */
+function revalidateEcransDesDemandes(): void {
+  revalidatePath(adminPath("fr", "contacts"));
+  revalidatePath(adminPath("fr", "contacts/commercial"));
 }
 
 // Hash email SHA-256 hex pour audit trail RGPD (Sprint 24 / D1).

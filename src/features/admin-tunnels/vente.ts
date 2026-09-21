@@ -27,6 +27,7 @@ import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import { normalizeEmail } from "@/lib/security/email-hash";
 import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
+import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 
 /** Bornes de lecture : la jonction se fait en mémoire, elle doit rester finie. */
 const PLAFOND_DEMANDES = 5_000;
@@ -75,12 +76,19 @@ export async function chargerTunnelVente(jours: number): Promise<SyntheseVente> 
   // Chaque lecture est isolée : au build (contrat ADR 0026, base stub) elles
   // rendent du vide, et la page doit s'afficher plutôt que d'échouer.
   try {
-    const demandes = await prisma.submission.findMany({
+    const lues = await prisma.submission.findMany({
       where: { submittedAt: { gte: depuis }, deletedAt: null },
       select: { id: true, type: true, details: true, contactEmail: true },
       orderBy: { submittedAt: "desc" },
       take: PLAFOND_DEMANDES,
     });
+
+    // Un candidat apporteur n'est pas une demande commerciale : il gonflait la
+    // colonne « demandes » et faisait baisser le taux de conversion d'une
+    // origine qui n'a jamais eu vocation à vendre (2026-09-19). Filtré EN
+    // MÉMOIRE — un `NOT` sur un chemin JSON écarterait aussi les lignes où la
+    // clé est absente, c'est-à-dire la plupart des demandes de clients.
+    const demandes = lues.filter((d) => !estApporteur(d.details));
 
     if (demandes.length === 0) return VIDE;
 
@@ -164,7 +172,9 @@ export async function chargerTunnelVente(jours: number): Promise<SyntheseVente> 
       parOrigine: [...paniers.entries()]
         .map(([cle, p]) => ({ cle, ...p, partClient: part(p.clients, p.demandes) }))
         .sort((a, b) => b.demandes - a.demandes || a.cle.localeCompare(b.cle)),
-      tronquee: demandes.length >= PLAFOND_DEMANDES,
+      // Le plafond porte sur la LECTURE : c'est elle qui a pu s'arrêter avant
+      // la fin de la fenêtre, apporteurs compris.
+      tronquee: lues.length >= PLAFOND_DEMANDES,
     };
   } catch {
     return VIDE;

@@ -64,10 +64,12 @@ export const REGISTRES_PAR_INDICATEUR: Record<number, readonly RegistreIndicateu
   3: [],
 
   // C2 — Objectifs et adaptation
-  4: [
-    { chemin: "/qualiopi/dossiers", libelle: "Dossiers : analyse du besoin à l'entrée" },
-    { chemin: "/qualiopi/entrees", libelle: "Demandes entrantes et qualification" },
-  ],
+  // 🔴 2026-09-19 — un second lien menait à « Entrées récentes », écran refermé
+  // le 2026-08-27 (308 vers la Boîte de réception). L'auditrice y tombait sur
+  // TOUTES les demandes du site, candidats apporteurs et presse compris : rien
+  // qui prouve l'analyse du besoin, et des données qui ne la regardent pas.
+  // La preuve de l'indicateur 4 est dans le dossier du bénéficiaire.
+  4: [{ chemin: "/qualiopi/dossiers", libelle: "Dossiers : analyse du besoin à l'entrée" }],
   5: [
     { chemin: "/qualiopi/formations", libelle: "Objectifs pédagogiques, formation par formation" },
   ],

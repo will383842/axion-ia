@@ -2,8 +2,9 @@
  * Qualiopi — Server Action « convertir une entrée en client » (Lot 3).
  *
  * Pont appel Calendly / message contact → CRM Qualiopi. La conversion reste
- * un geste HUMAIN (1 clic depuis /qualiopi/entrees, champs pré-remplis mais
- * modifiables) — aucune automatisation totale, c'est voulu.
+ * un geste HUMAIN (1 clic depuis la Boîte de réception, /contacts — l'ancien
+ * écran « Entrées récentes » y redirige depuis le 2026-08-27 —, champs
+ * pré-remplis mais modifiables) — aucune automatisation totale, c'est voulu.
  *
  * Réutilise `createClientAction` (numérotation AXI-CLI-NNN + inférence OPCO
  * par NAF + statut prospect + log qualiopi.client.create) — AUCUNE duplication
@@ -117,7 +118,8 @@ export async function convertirEntreeEnClientAction(
     session,
   });
 
-  revalidatePath(adminPath("fr", "qualiopi/entrees"));
+  // Seule la liste des clients change. L'ancien écran « Entrées récentes »
+  // n'est plus qu'une redirection : le revalider ne rafraîchissait rien.
   revalidatePath(adminPath("fr", "qualiopi/clients"));
 
   return { data: { id: created.data.id, numero: created.data.numero, dejaExistant: false } };
