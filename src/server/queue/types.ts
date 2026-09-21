@@ -42,6 +42,14 @@ export type EmailJobName =
   | "appel-rappel-j1"
   // Rappel H-1 avant l appel de decouverte. Calendly gratuit n en envoie aucun.
   | "appel-rappel"
+  // Les trois memes moments, pour un candidat APPORTEUR (2026-09-21).
+  // Noms distincts et gabarit distinct : les messages clients disent
+  // « votre appel de decouverte » et vouvoient, ce qui est faux pour un
+  // apporteur et ramene le vocabulaire que le tunnel vient de retirer.
+  // Le CANAL, lui, est mutualise (`rappels-appel.ts`).
+  | "apporteur-echange-confirme"
+  | "apporteur-echange-rappel-j1"
+  | "apporteur-echange-rappel"
   | "chatbot-demande-transmise"
   // Remplacent `contact-confirmed` sur deux flux ou il disait FAUX :
   // il promettait une reponse « sous 48 heures ouvrees » a un candidat

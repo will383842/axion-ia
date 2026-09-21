@@ -62,7 +62,7 @@ import { notify } from "@/server/notifications";
 
 import { prisma } from "@/lib/prisma";
 import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
-import { HORS_APPELS_APPORTEUR } from "@/server/calendly/appel-apporteur";
+import { HORS_APPELS_APPORTEUR, SEULS_APPELS_APPORTEUR } from "@/server/calendly/appel-apporteur";
 import { enqueueEmail } from "@/server/queue/queues";
 import type { MomentAppel } from "@/lib/email/templates/appel-rappel";
 
@@ -82,7 +82,32 @@ type ChampMarqueur = "confirmationEnvoyeeAt" | "rappelJ1EnvoyeAt" | "rappelEnvoy
 
 interface Passage {
   readonly moment: MomentAppel;
-  readonly job: "appel-confirme" | "appel-rappel-j1" | "appel-rappel";
+  readonly job:
+    | "appel-confirme"
+    | "appel-rappel-j1"
+    | "appel-rappel"
+    | "apporteur-echange-confirme"
+    | "apporteur-echange-rappel-j1"
+    | "apporteur-echange-rappel";
+  /**
+   * À QUI ce passage parle (2026-09-21).
+   *
+   * 🔑 Le canal est mutualisé, les MOTS ne le sont pas. Un client lit « votre
+   * appel de découverte » et est vouvoyé ; un candidat apporteur lit « ton
+   * échange » et est tutoyé. Réutiliser les messages clients pour les deux
+   * ferait dire au candidat qu'il est un prospect — le vocabulaire que le
+   * tunnel vient précisément de retirer.
+   */
+  readonly destinataire: "client" | "apporteur";
+  /**
+   * Le filtre Prisma qui borne la population de CE passage.
+   *
+   * 🔴 Les deux filtres sont écrits en POSITIF et en NÉGATIF explicitement
+   * (`appel-apporteur.ts`), jamais l'un dérivé de l'autre. Ensemble ils
+   * couvrent tout, sans recouvrement : aucun rendez-vous ne peut recevoir les
+   * deux jeux de messages, et aucun ne peut n'en recevoir aucun.
+   */
+  readonly filtre: typeof HORS_APPELS_APPORTEUR | typeof SEULS_APPELS_APPORTEUR;
   readonly marqueur: ChampMarqueur;
   /** `null` = pas de fenêtre : tout rendez-vous à venir est candidat. */
   readonly fenetre: { readonly minMinutes: number; readonly maxMinutes: number } | null;
@@ -100,6 +125,8 @@ export const PASSAGES: readonly Passage[] = [
   {
     moment: "confirmation",
     job: "appel-confirme",
+    destinataire: "client",
+    filtre: HORS_APPELS_APPORTEUR,
     marqueur: "confirmationEnvoyeeAt",
     fenetre: null,
     avecDate: true,
@@ -108,6 +135,8 @@ export const PASSAGES: readonly Passage[] = [
     // 24 h → 24 h 15. Même largeur que H-1 : trois fois la cadence.
     moment: "j1",
     job: "appel-rappel-j1",
+    destinataire: "client",
+    filtre: HORS_APPELS_APPORTEUR,
     marqueur: "rappelJ1EnvoyeAt",
     fenetre: { minMinutes: 1440, maxMinutes: 1455 },
     avecDate: false,
@@ -115,6 +144,40 @@ export const PASSAGES: readonly Passage[] = [
   {
     moment: "h1",
     job: "appel-rappel",
+    destinataire: "client",
+    filtre: HORS_APPELS_APPORTEUR,
+    marqueur: "rappelEnvoyeAt",
+    fenetre: { minMinutes: 60, maxMinutes: 75 },
+    avecDate: false,
+  },
+  // ── Les trois MÊMES moments, pour un candidat apporteur (2026-09-21) ────
+  //
+  // Mêmes fenêtres, mêmes marqueurs, même plafond : un échange apporteur et un
+  // appel client sont deux LIGNES distinctes, donc les colonnes de marquage ne
+  // se marchent pas dessus. Aucune migration.
+  {
+    moment: "confirmation",
+    job: "apporteur-echange-confirme",
+    destinataire: "apporteur",
+    filtre: SEULS_APPELS_APPORTEUR,
+    marqueur: "confirmationEnvoyeeAt",
+    fenetre: null,
+    avecDate: true,
+  },
+  {
+    moment: "j1",
+    job: "apporteur-echange-rappel-j1",
+    destinataire: "apporteur",
+    filtre: SEULS_APPELS_APPORTEUR,
+    marqueur: "rappelJ1EnvoyeAt",
+    fenetre: { minMinutes: 1440, maxMinutes: 1455 },
+    avecDate: false,
+  },
+  {
+    moment: "h1",
+    job: "apporteur-echange-rappel",
+    destinataire: "apporteur",
+    filtre: SEULS_APPELS_APPORTEUR,
     marqueur: "rappelEnvoyeAt",
     fenetre: { minMinutes: 60, maxMinutes: 75 },
     avecDate: false,
@@ -234,10 +297,17 @@ export async function executerPassage(
         // demandé qu'on l'oublie. Le marqueur est IMPORTÉ de la chaîne
         // d'effacement, jamais recopié.
         NOT: { inviteeName: ERASED_PLACEHOLDER },
-        // Un échange avec un candidat apporteur n'est pas un appel de
-        // découverte : ces trois messages parlent à un client
-        // (`appel-apporteur.ts`). Calendly envoie sa propre confirmation.
-        AND: [HORS_APPELS_APPORTEUR],
+        // 🔑 CHAQUE passage borne sa propre population (2026-09-21) : les
+        // trois messages clients excluent les échanges apporteur, les trois
+        // messages apporteur ne visent qu'eux. Les deux filtres sont écrits
+        // explicitement, jamais dérivés l'un de l'autre.
+        //
+        // ⚠️ Cette ligne portait auparavant `HORS_APPELS_APPORTEUR` en dur,
+        // justifié par « Calendly envoie sa propre confirmation ». C'ÉTAIT
+        // FAUX — relevé dans le compte le 2026-09-21 : Calendly envoie une
+        // INVITATION D'AGENDA, ses rappels par e-mail sont `Off` et aucun
+        // workflow n'existe. Le candidat ne recevait donc rien de personne.
+        AND: [p.filtre],
       },
       orderBy: { startTime: "asc" },
       take: MAX_PAR_PASSAGE + 1,

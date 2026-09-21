@@ -47,3 +47,20 @@ export function estAppelApporteur(nomTypeEvenement: string | null | undefined): 
 export const HORS_APPELS_APPORTEUR = {
   NOT: { eventTypeName: { contains: MOT_CLE_TYPE_APPEL_APPORTEUR, mode: "insensitive" as const } },
 };
+
+/**
+ * Le filtre INVERSE : « SEULEMENT les echanges apporteur ».
+ *
+ * 🔑 Ecrit en positif, jamais comme une negation de `HORS_APPELS_APPORTEUR`.
+ * `eventTypeName` est NON NULLABLE en base (`schema.prisma`), donc le piege du
+ * `NOT` sur une valeur absente ne s'applique pas ici — mais deriver un filtre
+ * d'un autre le rendrait faux le jour ou cette colonne deviendrait facultative.
+ * Deux clauses explicites coutent une ligne et ne mentent jamais.
+ *
+ * Ajoute le 2026-09-21 pour que les trois messages de l'echange apporteur
+ * (`apporteur-echange.tsx`) ciblent exactement la population que les messages
+ * clients excluent : ensemble, les deux filtres couvrent tout, sans recouvrement.
+ */
+export const SEULS_APPELS_APPORTEUR = {
+  eventTypeName: { contains: MOT_CLE_TYPE_APPEL_APPORTEUR, mode: "insensitive" as const },
+};

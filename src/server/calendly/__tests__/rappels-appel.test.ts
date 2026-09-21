@@ -47,10 +47,24 @@ import { executerPassage, PASSAGES } from "../rappels-appel";
  * passage le jour où l'ordre du tableau change — et un test vert pour la
  * mauvaise raison est pire qu'un test absent.
  */
-function passageDe(moment: "confirmation" | "j1" | "h1") {
-  const p = PASSAGES.find((x) => x.moment === moment);
-  if (!p) throw new Error(`passage « ${moment} » introuvable dans PASSAGES`);
-  return p;
+function passageDe(
+  moment: "confirmation" | "j1" | "h1",
+  destinataire: "client" | "apporteur" = "client",
+) {
+  // 🔴 2026-09-21 — UN SECOND PUBLIC EST ARRIVÉ, et `find` seul est devenu
+  // AMBIGU : il y a désormais deux passages par moment (client, apporteur), et
+  // `find` rendait le premier SANS RIEN DIRE. C'est exactement le défaut contre
+  // lequel l'en-tête de cette fonction met en garde, sous une autre forme que
+  // l'index. On exige donc un ET UN SEUL passage, et on lève si le compte
+  // change — le jour où un troisième public arrive, ce fichier le dira au lieu
+  // de tester le mauvais.
+  const trouves = PASSAGES.filter((x) => x.moment === moment && x.destinataire === destinataire);
+  if (trouves.length !== 1) {
+    throw new Error(
+      `passage « ${moment} / ${destinataire} » : ${trouves.length} trouvé(s) dans PASSAGES — il en faut exactement un`,
+    );
+  }
+  return trouves[0];
 }
 
 /** Les cas historiques portaient sur H-1 ; ils le testent toujours. */

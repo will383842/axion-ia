@@ -31,6 +31,7 @@ import {
 import { PodcastDemandeRecueEmail, podcastDemandeRecueSubject } from "./podcast-demande-recue";
 import { RappelConfirmeEmail, rappelConfirmeSubject } from "./rappel-confirme";
 import { AppelRappelEmail, appelRappelSubject } from "./appel-rappel";
+import { ApporteurEchangeEmail, apporteurEchangeSubject } from "./apporteur-echange";
 import {
   ChatbotDemandeTransmiseEmail,
   chatbotDemandeTransmiseSubject,
@@ -200,6 +201,20 @@ const TEMPLATES: TemplateMap = {
   "appel-rappel": {
     subject: appelRappelSubject,
     component: AppelRappelEmail,
+  },
+  // Les trois moments de l'echange APPORTEUR, meme principe que ci-dessus :
+  // trois noms pour un gabarit, qui lit `payload.moment`.
+  "apporteur-echange-confirme": {
+    subject: apporteurEchangeSubject,
+    component: ApporteurEchangeEmail,
+  },
+  "apporteur-echange-rappel-j1": {
+    subject: apporteurEchangeSubject,
+    component: ApporteurEchangeEmail,
+  },
+  "apporteur-echange-rappel": {
+    subject: apporteurEchangeSubject,
+    component: ApporteurEchangeEmail,
   },
   "chatbot-demande-transmise": {
     subject: chatbotDemandeTransmiseSubject,
