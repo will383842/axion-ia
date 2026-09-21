@@ -70,7 +70,7 @@ const APRES = [
   {
     Icon: ShieldCheck,
     title: "Un échange en visio",
-    text: "15 à 30 minutes pour faire connaissance, répondre à tes questions et cadrer ton secteur.",
+    text: "15 minutes pour faire connaissance, répondre à tes questions et cadrer ton secteur.",
   },
   {
     Icon: Rocket,
@@ -153,7 +153,7 @@ export default async function CommercialApplicationPage({ params }: Props) {
               </h1>
               <p className="text-fg-soft mt-5 text-lg leading-relaxed text-pretty">
                 Pas de CV. Pas de lettre de motivation. Quelques questions essentielles, une par
-                écran — et on te rappelle.
+                écran — et on te répond.
               </p>
 
               <ul

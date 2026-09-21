@@ -842,7 +842,7 @@ export const COMMERCIAL_COMMISSIONS: ReadonlyArray<CommercialCommission> = [
     flatEur: commissionFormation(1),
     basisTierId: "intervention-essentielle",
     descriptionFr:
-      "Commission fixe pour chaque formation collective d'une journée vendue — même taux à la journée que les formats longs.",
+      "Commission fixe pour chaque formation collective d'une journée signée et payée — même taux à la journée que les formats longs.",
     descriptionEn:
       "Flat commission for each one-day group training sold — same per-day rate as longer formats.",
   },

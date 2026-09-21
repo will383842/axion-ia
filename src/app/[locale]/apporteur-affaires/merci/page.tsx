@@ -14,7 +14,8 @@
 // ⛔ Plus de calendrier ici (2026-09-19). Le lien de réservation de l'échange
 // de 15 minutes n'est envoyé qu'aux personnes que Will choisit, depuis la
 // console : affiché à chaque personne qui laisse son numéro, il saturerait son
-// agenda. La page dit donc simplement qu'on appelle — sans délai chiffré.
+// agenda. La page ne promet donc AUCUN appel (décision Will B4) : elle dit que
+// c'est noté, donne le kit et propose le dossier — sans délai chiffré.
 //
 // `noindex` : page de fin de tunnel, sans contenu à indexer.
 

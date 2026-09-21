@@ -9,8 +9,8 @@
 // `app/sitemap-recrutement.xml/route.ts` documente déjà la règle pour les 40
 // pages ville : « offre commune ≈ 89 % de contenu identique → doorway ». Ces
 // landings sont dans le même cas face à `/devenir-commercial-ia`. Les indexer
-// cannibaliserait la page principale (qui porte, elle, le JobPosting Google
-// for Jobs) pour un gain nul : 100 % de leur trafic vient de l'annonce.
+// cannibaliserait la page principale pour un gain nul : 100 % de leur trafic
+// vient de l'annonce.
 // Cf. `docs/annonce-leboncoin-recrutement.md` §4.
 //
 // STRUCTURE — le fond est COMMUN (l'offre est la même partout), seul
@@ -59,7 +59,7 @@ export const PARTENAIRE_LANDINGS: Readonly<Record<PartenaireSource, PartenaireLa
     canal: "Vu sur Le Bon Coin",
     metaTitle: "Apporteur d'affaires IA — partout en France",
     metaDescription:
-      "Tu connais des dirigeants, nous formons leurs équipes à l'IA. Tu présentes, on vend, tu touches ta commission. Deux produits, zéro closing, aucune connaissance en IA requise.",
+      "Tu connais des dirigeants, nous formons leurs équipes à l'IA. Tu recommandes, on fait le reste, tu touches ta commission. Zéro closing, zéro IA à connaître.",
     h1: "Tu connais des dirigeants.",
     h1Em: "Nous formons leurs équipes.",
     chapo:
@@ -67,10 +67,10 @@ export const PARTENAIRE_LANDINGS: Readonly<Record<PartenaireSource, PartenaireLa
   },
 
   /**
-   * Indeed. ⚠️ Contrairement à Google for Jobs, Indeed ne moissonne PAS le
-   * balisage `JobPosting` du site : la publication y est manuelle (ou par flux
-   * XML). Cette landing est donc la cible du lien déposé À LA MAIN dans
-   * l'annonce Indeed — rien n'y arrive tout seul.
+   * Indeed. ⚠️ Indeed ne moissonne aucun balisage du site (et le site n'en
+   * publie plus pour les apporteurs depuis le 2026-09-19) : la publication y
+   * est manuelle (ou par flux XML). Cette landing est donc la cible du lien
+   * déposé À LA MAIN dans l'annonce Indeed — rien n'y arrive tout seul.
    *
    * Le chapô insiste sur « sans CV » : c'est LA différence qui compte face à
    * l'attente d'un candidat venu d'Indeed, où l'on postule presque toujours en
@@ -82,11 +82,11 @@ export const PARTENAIRE_LANDINGS: Readonly<Record<PartenaireSource, PartenaireLa
     canal: "Vu sur Indeed",
     metaTitle: "Apporteur d'affaires IA — indépendant, partout en France",
     metaDescription:
-      "Poste d'apporteur d'affaires indépendant pour des formations et audits IA en entreprise. Commission par journée vendue, statut libre, aucune connaissance en IA requise. Candidature en 3 minutes, sans CV.",
+      "Apporteur d'affaires indépendant, formations et audits IA. Commission par journée signée et payée, aucune connaissance en IA. Candidature en 3 min, sans CV.",
     h1: "Apporteur d'affaires IA,",
     h1Em: "indépendant et sans plafond",
     chapo:
-      "Candidature en 3 minutes, sans CV et sans lettre de motivation. Tu présentes des entreprises, nous vendons, tu touches ta commission. Deux produits à retenir, et tu ne closes jamais.",
+      "Candidature en 3 minutes, sans CV et sans lettre de motivation. Tu recommandes des entreprises, on s'occupe du reste, tu touches ta commission. Deux produits à retenir, et tu ne closes jamais.",
   },
 };
 
@@ -107,7 +107,7 @@ export const PARTENAIRE_LANDINGS: Readonly<Record<PartenaireSource, PartenaireLa
  * ce montage, et il a raison.
  */
 export const PARTENAIRE_REASSURANCE_BASE: readonly string[] = [
-  "Statut libre : micro-entreprise, agent commercial, apporteur",
+  "Statut libre : micro-entreprise ou société",
   "Cumulable avec ton activité actuelle",
   "Démarrer ne te coûte rien",
 ];
@@ -126,9 +126,11 @@ export const PARTENAIRE_ETAPES: readonly { readonly titre: string; readonly text
       "Trois minutes, zéro CV, zéro lettre de motivation. On répond à toutes les candidatures — personne ne reste sans réponse.",
   },
   {
-    titre: "On se parle en visio",
+    // 2026-09-19 (B4) — l'échange part sur invitation, aux seuls profils
+    // retenus : l'étape ne le promet plus à chaque candidat.
+    titre: "On se parle, si ça colle",
     texte:
-      "Juste toi et nous. On t'explique l'offre, tu poses tes questions. Pas de réunion collective : un vrai échange.",
+      "Si ton profil correspond, on te propose un échange de 15 minutes en visio, juste toi et nous. On t'explique l'offre, tu poses tes questions. Pas de réunion collective : un vrai échange.",
   },
   {
     titre: "Tu présentes une entreprise",
@@ -136,9 +138,9 @@ export const PARTENAIRE_ETAPES: readonly { readonly titre: string; readonly text
       "Tu parles d'Axion-IA à une entreprise que tu connais, tu nous la signales. Elle est enregistrée à ton nom.",
   },
   {
-    titre: "On vend",
+    titre: "On s'occupe du reste",
     texte:
-      "On appelle, on présente, on monte le dossier, on facture. Tu n'as ni à négocier, ni à faire de devis, ni à relancer un impayé.",
+      "On contacte l'entreprise, on présente, on monte le dossier, on facture. Tu n'as ni à négocier, ni à faire de devis, ni à relancer un impayé.",
   },
   {
     titre: "Tu touches ta commission",
@@ -162,10 +164,10 @@ export const PARTENAIRE_OBJECTION_IA: readonly string[] = [
 export const PARTENAIRE_PROFILS: readonly string[] = [
   "Commerciaux B2B (vente aux entreprises), en poste ou anciens",
   "Commerciaux qui visitent déjà des entreprises : télécom, énergie, mutuelle, sécurité, propreté, fournitures, logiciels",
-  "Agents commerciaux multicartes",
+  "Indépendants qui visitent plusieurs entreprises par semaine",
   "Courtiers en assurance ou en financement professionnel",
   "Consultants indépendants",
-  "Mandataires en immobilier d'entreprise",
+  "Professionnels de l'immobilier d'entreprise",
   "Anciens dirigeants",
   "Jeunes retraités du commerce",
 ];

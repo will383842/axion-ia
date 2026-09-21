@@ -52,7 +52,8 @@ export async function Footer() {
 
   // Identité + contact. Le recrutement est sorti dans un sous-groupe « Carrières »
   // distinct (Will 2026-06-10) pour mettre en avant l'embauche sans créer une 6e
-  // colonne. Ordonné : identité (qui/comment) → presse → joindre.
+  // colonne. Ordonné : identité (qui/comment) → presse → joindre → réseau
+  // d'apporteurs d'affaires.
   const company = [
     { href: "/a-propos", label: t("nav.about") },
     // Fiche fondateur (E-E-A-T / Knowledge Panel — audit 2026-07-06). FR only
@@ -67,20 +68,23 @@ export async function Footer() {
     { href: "/contact", label: t("nav.contact") },
     { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
     { href: "/appel", label: isFr ? "Réserver un appel" : "Book a call" },
+    // Réseau d'apporteurs d'affaires (déplacé ici depuis « Carrières » le
+    // 2026-09-19, décision Will B5). Un apporteur est un indépendant qui
+    // recommande, sans lien de subordination : le ranger parmi « Nos offres
+    // d'emploi », sur toutes les pages du site, le présentait comme un emploi.
+    // Le lien reste (maillage interne vers une page indexée), seul son rang change.
+    {
+      href: "/devenir-commercial-ia",
+      label: isFr ? "Devenir apporteur d'affaires" : "Become a business referrer",
+    },
   ];
 
-  // Sous-groupe « Carrières » de la colonne Entreprise (intertitre + 2 liens).
-  // « Carrières » → /carrieres relabellisé « Nos offres d'emploi » car l'intertitre
-  // porte déjà « Carrières » (évite la redite).
+  // Sous-groupe « Carrières » de la colonne Entreprise (intertitre + 1 lien) :
+  // les seuls emplois salariés. « Carrières » → /carrieres relabellisé « Nos
+  // offres d'emploi » car l'intertitre porte déjà « Carrières » (évite la redite).
   const careers = {
     title: isFr ? "Carrières" : "Careers",
-    items: [
-      { href: "/carrieres", label: isFr ? "Nos offres d'emploi" : "Our job openings" },
-      {
-        href: "/devenir-commercial-ia",
-        label: isFr ? "Recrutement commerciaux" : "Sales rep recruitment",
-      },
-    ],
+    items: [{ href: "/carrieres", label: isFr ? "Nos offres d'emploi" : "Our job openings" }],
   };
 
   const legal = [

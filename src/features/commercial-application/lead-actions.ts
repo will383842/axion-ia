@@ -134,8 +134,7 @@ export async function submitLeadApporteurAction(
     if (!rlEmail.allowed) {
       return {
         ok: false,
-        error:
-          "On a déjà bien reçu ta demande avec cet email — inutile de la renvoyer, on t'appelle.",
+        error: "On a déjà bien reçu ta demande avec cet email — inutile de la renvoyer.",
       };
     }
   }

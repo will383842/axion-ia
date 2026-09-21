@@ -56,8 +56,8 @@ export function CommercialProcess({ isFr }: CommercialProcessProps): ReactNode {
           </h2>
           <p className="text-fg-soft mt-4 text-lg leading-relaxed">
             {isFr
-              ? "Nous recrutons plus de 200 commerciaux partout en France. Remplissez le formulaire : sous quelques jours, nous vous donnons une première réponse par email pour convenir d'un appel visio."
-              : "We're hiring 200+ sales reps across France. Fill in the form: within a few days, we send you a first reply by email to arrange a video call."}
+              ? "Nous développons un réseau de plus de 200 apporteurs d'affaires partout en France. Remplissez le formulaire : sous quelques jours, nous vous donnons une première réponse par email pour convenir d'un appel visio."
+              : "We're building a network of 200+ business introducers across France. Fill in the form: within a few days, we send you a first reply by email to arrange a video call."}
           </p>
         </div>
 

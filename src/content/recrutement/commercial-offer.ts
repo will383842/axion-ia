@@ -69,22 +69,22 @@ export const COMMERCIAL_HERO_NODES: ReadonlyArray<ServiceHeroNode & { benefitEn:
 
 export const COMMERCIAL_HERO = {
   eyebrow: {
-    fr: "Recrutement · +200 commerciaux en France",
-    en: "Hiring · 200+ sales reps in France",
+    fr: "Réseau · +200 apporteurs d'affaires en France",
+    en: "Network · 200+ business introducers in France",
   },
   /** {ville} résolu dans le composant. */
   titleFr: "Devenez commercial IA à",
   titleEnPrefix: "Become an AI sales rep in",
   titleEm: { fr: "revenus déplafonnés", en: "uncapped income" },
   description: {
-    fr: "L'IA, le marché le plus porteur des prochaines décennies. Des produits simples, souvent finançables, que les entreprises s'arrachent. Commercial indépendant, agent commercial, VRP ou apporteur d'affaires : revenus sans plafond — démarrer ne vous coûte rien.",
-    en: "AI — the biggest market of the coming decades. Simple, often-fundable products that companies are eager to buy. Independent rep, sales agent or business introducer: uncapped income — getting started costs you nothing.",
+    fr: "L'IA, le marché le plus porteur des prochaines décennies. Des produits simples, souvent finançables, que les entreprises s'arrachent. Apporteur d'affaires indépendant, en micro-entreprise ou en société : revenus sans plafond — démarrer ne vous coûte rien.",
+    en: "AI — the biggest market of the coming decades. Simple, often-fundable products that companies are eager to buy. Independent business introducer, as a sole trader or a company: uncapped income — getting started costs you nothing.",
   },
   ariaLabel: {
     fr: "Le métier de commercial IA chez Axion-IA en 8 volets : prospection tous secteurs, vente de formations, audits, accompagnements 1-to-1, intégrations, produits financés à coût quasi nul pour le client, statut indépendant et suivi des commissions.",
     en: "The Axion-IA AI sales role in 8 facets: all-sector prospecting, selling trainings, audits, 1-on-1 support, integrations, funded near-zero-cost products, self-employed status and commission tracking.",
   },
-  ctaLabel: { fr: "Je veux devenir commercial", en: "I want to become a sales rep" },
+  ctaLabel: { fr: "Je veux rejoindre le réseau", en: "I want to join the network" },
 } as const;
 
 // ── L'OPPORTUNITÉ (section + encart noir) ─────────────────────────────────────
@@ -100,11 +100,11 @@ export const COMMERCIAL_OPPORTUNITY = {
   paragraphs: {
     fr: [
       "Chaque dirigeant veut l'IA, peu savent par où commencer. Votre rôle : faire connaître nos solutions aux entreprises de votre secteur — pas de pression de closing.",
-      "Et beaucoup de nos prestations sont finançables : nous montons le dossier avec l'entreprise, qui n'a parfois même pas à avancer les fonds. Un argument qui ouvre grand les portes.",
+      "Et beaucoup de nos prestations sont éligibles à des financements : la formation peut être financée selon éligibilité, et nous aidons l'entreprise à monter son dossier. Un argument qui ouvre grand les portes.",
     ],
     en: [
       "Every executive wants AI, few know where to start. Your role: introduce our solutions to companies in your area — no closing pressure.",
-      "And many of our services are fundable: we build the application with the company, which sometimes doesn't even advance the money. An argument that opens doors wide.",
+      "And many of our services are eligible for funding: the training may be funded depending on eligibility, and we help the company build its application. An argument that opens doors wide.",
     ],
   },
   /** Encart sombre à droite — le modèle de paiement (tracé, sans pression de closing). */
@@ -267,12 +267,12 @@ export const COMMERCIAL_FAQ_FIXED: ReadonlyArray<FaqItem> = [
   },
   {
     q: {
-      fr: "Pourquoi les produits sont-ils faciles à vendre ?",
-      en: "Why are the products easy to sell?",
+      fr: "Pourquoi les entreprises s'intéressent-elles à ces produits ?",
+      en: "Why are companies interested in these products?",
     },
     a: {
-      fr: "Parce que la demande IA est immense et que beaucoup de prestations sont éligibles à des financements. Nous aidons l'entreprise à monter son dossier, et parfois elle n'a même pas à avancer les fonds — le reste à charge devient minime, ce qui raccourcit fortement le cycle de vente.",
-      en: "Because AI demand is huge and many services are eligible for funding. We help the company build its application, and sometimes it doesn't even advance the money — the out-of-pocket cost becomes minimal, which dramatically shortens the sales cycle.",
+      fr: "Parce que la demande IA est immense et que beaucoup de prestations sont éligibles à des financements : la formation peut être financée selon éligibilité. Nous aidons l'entreprise à monter son dossier.",
+      en: "Because AI demand is huge and many services are eligible for funding: the training may be funded depending on eligibility. We help the company build its application.",
     },
   },
   {
@@ -301,6 +301,12 @@ export const COMMERCIAL_FAQ_FIXED: ReadonlyArray<FaqItem> = [
 // Portée maximale : métiers, synonymes, intentions (emploi/job/argent/liberté),
 // cibles entreprises. Consommés par `keywords` des metadata + enrichissent la
 // citabilité LLM. Les variantes par ville sont ajoutées dynamiquement.
+//
+// ⛔ 2026-09-19 (P4) : ni statut de mandataire, ni vocabulaire de la vente. Un
+// apporteur d'affaires RECOMMANDE, il ne vend pas et ne représente personne
+// (articles 1.2 et 8.2 du contrat) : ces mots-clés, lus par les moteurs, se
+// seraient ajoutés au faisceau d'indices que le contrat existe pour écarter.
+// `le-tunnel-apporteur-ne-dit-jamais-agent-commercial.spec.ts` le vérifie.
 
 export const COMMERCIAL_KEYWORDS_BASE: ReadonlyArray<string> = [
   "devenir commercial IA",
@@ -310,11 +316,11 @@ export const COMMERCIAL_KEYWORDS_BASE: ReadonlyArray<string> = [
   "job dans l'IA",
   "recrutement commercial",
   "commercial indépendant",
-  "agent commercial indépendant",
-  "VRP",
   "apporteur d'affaires",
+  "apporteur d'affaires indépendant",
+  "apport d'affaires formation IA",
+  "recommander des formations IA",
   "commercial freelance",
-  "vendre de l'IA",
   "réseau commercial",
   "rémunération à la commission",
   "revenus déplafonnés",
@@ -324,7 +330,6 @@ export const COMMERCIAL_KEYWORDS_BASE: ReadonlyArray<string> = [
   "emploi du temps libre",
   "travailler à son compte",
   "reconversion commerciale",
-  "vente B2B",
   "prospection entreprises",
   "formation IA",
   "audit IA",
@@ -344,7 +349,6 @@ export const COMMERCIAL_KEYWORDS_BASE: ReadonlyArray<string> = [
   "promouvoir l'IA",
   "promoteur IA",
   "distributeur IA",
-  "vendeur IA",
   "travailler dans l'IA",
   "métier d'avenir",
   "job d'avenir",
@@ -358,15 +362,10 @@ export const COMMERCIAL_KEYWORDS_BASE: ReadonlyArray<string> = [
   "se lancer dans l'IA",
   "opportunité IA",
   "rejoindre un réseau commercial",
-  "réseau de vente IA",
-  "vente à la commission",
-  "commission sur vente",
   "freelance commercial",
   "auto-entrepreneur commercial",
   "commercial terrain",
   "commercial B2B",
-  "recrutement agent commercial",
-  "recrutement VRP",
   "offre d'emploi commercial IA",
   "emploi indépendant",
   "travailler à domicile",
@@ -387,11 +386,6 @@ export const COMMERCIAL_KEYWORDS_BASE: ReadonlyArray<string> = [
   "poste de commercial",
   "offre commercial",
   "emploi commercial",
-  "emploi vente",
-  "métier de la vente",
-  "travailler dans la vente",
-  "vendeur",
-  "poste de vendeur",
   "emploi bien payé",
   "emploi rémunérateur",
   "job rémunérateur",
@@ -415,7 +409,6 @@ export function buildCommercialKeywords(
       `offre d'emploi IA ${villeName}`,
       `devenir commercial ${villeName}`,
       `commercial indépendant ${villeName}`,
-      `vendre de l'IA à ${villeName}`,
       `job IA ${villeName}`,
       `recrutement commercial ${villeName}`,
     );

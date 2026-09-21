@@ -8,14 +8,14 @@
 // Facebook n'a rien décidé : il a donné dix secondes à une page, sur son
 // téléphone. Lui présenter neuf écrans, c'est le perdre au premier.
 //
-// Ce formulaire ne demande que ce qu'il faut pour RAPPELER la personne : cinq
-// champs. Le dossier complet arrive ensuite, par le lien de l'e-mail, une fois
-// l'appel proposé — et le wizard s'ouvre pré-rempli (brouillon local posé par
-// la landing, cf. `LeadApporteurForm`).
+// Ce formulaire ne demande que ce qu'il faut pour ÉCRIRE à la personne et, si
+// son profil correspond, l'inviter à un échange : cinq champs. Le dossier
+// complet arrive ensuite, par le lien de l'e-mail — et le wizard s'ouvre
+// pré-rempli (brouillon local posé par la landing, cf. `LeadApporteurForm`).
 //
 // ── Ce que le schéma NE FAIT PAS ────────────────────────────────────────────
 // Il ne note pas, ne trie pas, ne refuse rien : un premier contact n'a pas de
-// score. La console l'affiche « à qualifier », et c'est l'appel qui qualifie.
+// score. La console l'affiche « à qualifier », et c'est Will qui qualifie.
 //
 // Partagé serveur / client (Zod pur, aucune dépendance Node) — comme `model.ts`.
 
@@ -26,8 +26,18 @@ import { STATUT_OPTIONS } from "./model";
  * Version du texte de consentement du formulaire court. Distincte de celle du
  * wizard (`COMMERCIAL_APPLICATION_CONSENT_VERSION`) : le texte est différent,
  * la preuve doit pointer vers le bon texte.
+ *
+ * v2 (2026-09-19, décision Will B4) : le texte ne promet plus de rappel
+ * (l'échange de 15 minutes part sur invitation, aux seuls profils retenus) et
+ * « jamais transmises » devient « jamais vendues ni cédées », la conservation
+ * étant dite telle qu'elle s'applique (24 mois après la clôture du dossier).
+ * Texte : `FORMULAIRE.consent` de `content/recrutement/tunnel-facebook.ts`.
+ *
+ * Cette version n'est JAMAIS envoyée au CRM (le premier contact n'y part pas,
+ * cf. `features/commercial-application/lead-actions.ts`) : la changer ne peut
+ * donc pas déclencher le refus 422 que le CRM oppose à une version inconnue.
  */
-export const LEAD_APPORTEUR_CONSENT_VERSION = "lead-apporteur-facebook-v1-2026-09-03";
+export const LEAD_APPORTEUR_CONSENT_VERSION = "lead-apporteur-facebook-v2-2026-09-19";
 
 /** Étape portée par `Submission.details.etape` — distingue le premier contact
  *  du dossier complet dans la même file console. */

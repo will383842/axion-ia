@@ -38,6 +38,7 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { buildCommercialKeywords } from "@/content/recrutement/commercial-offer";
 
 const RACINE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 
@@ -58,6 +59,23 @@ const SURFACES = [
   "src/lib/email/templates/candidature-commercial-confirmee.tsx",
   "src/lib/email/templates/apporteur-invitation-appel.tsx",
   "src/app/[locale]/apporteur-affaires/merci/page.tsx",
+  // 2026-09-19 (B5, P4) — les pages publiques qui recrutent des apporteurs
+  // HORS du tunnel Facebook. Elles disaient toutes « agent commercial » ou
+  // « VRP » : dans la FAQ statut de /memo-isere, dans la bande de réassurance
+  // des annonces, dans le JSON-LD `JobPosting` que Google lisait. La garde ne
+  // lisait que le tunnel Facebook : la même faute vivait à côté, en ligne.
+  "src/content/recrutement/partenaire-landings.ts",
+  "src/app/[locale]/devenir-commercial-ia/page.tsx",
+  "src/app/[locale]/devenir-commercial-ia/candidature/page.tsx",
+  "src/app/[locale]/apporteur-affaires-independant-formation-ia-entreprise/page.tsx",
+  "src/app/[locale]/memo-isere/page.tsx",
+  "src/components/services/devenir-commercial/CommercialProductsEarnings.tsx",
+  // 2026-09-21 — TROUVE HORS LISTE : cette page disait « Nous recrutons plus de
+  // 200 commerciaux » / « We're hiring 200+ sales reps ». P4 avait retire le
+  // balisage `JobPosting` que Google lisait, mais la page continuait de le DIRE
+  // en toutes lettres — et aucune garde ne la lisait. Le vocabulaire d'EMBAUCHE
+  // est plus lourd que « agent commercial » : il decrit un contrat de travail.
+  "src/components/services/devenir-commercial/CommercialProcess.tsx",
 ];
 
 /**
@@ -75,6 +93,34 @@ const TERMES_DE_MANDAT = [
   /nos\s+vendeurs/i,
   /votre\s+manager/i,
   /votre\s+responsable/i,
+  // 2026-09-21 — le vocabulaire d'EMBAUCHE. Un apporteur est un independant qui
+  // recommande : annoncer qu'on le « recrute » decrit un contrat de travail, et
+  // c'est la premiere piece qu'un conseil de prud'hommes lirait. Borne aux
+  // SURFACES ci-dessus : `/carrieres` recrute de vrais salaries, legitimement.
+  //
+  // 🔑 CES MOTIFS SONT POSSESSIFS OU EMBAUCHANTS, JAMAIS LE MOT SEUL — et ce
+  // n'est pas un detail. La liste francaise ci-dessus interdit « nos
+  // commerciaux », « notre force de vente », « nos vendeurs » : elle n'a JAMAIS
+  // interdit « commercial » tout court, parce que le mot nomme un metier que
+  // les gens tapent dans un moteur de recherche (arbitrage de Will du
+  // 2026-09-21 : le mot reste dans le TITRE et dans l'ADRESSE, il part de tout
+  // ce qui decrit une relation de travail).
+  //
+  // Un premier jet interdisait `sales reps?` tout court. Il etait donc PLUS
+  // STRICT en anglais qu'en francais, et il accusait deux titres de page dont
+  // l'equivalent francais est conserve — « independent AI sales rep » en face
+  // de « commercial IA independant ». Une garde qui punit une traduction
+  // fidele finit par etre desarmee.
+  /\bour\s+sales\s+reps?\b/i,
+  /\bwe(?:'|&#x27;|’)?re\s+hiring\b/i,
+  // Symetriques de `notre force de vente` et `nos vendeurs` ci-dessus :
+  // sans eux, l'anglais serait desormais MOINS strict que le francais —
+  // l'inverse exact du desequilibre qu'on vient de corriger.
+  /\bour\s+sales\s+force\b/i,
+  /\bour\s+sellers\b/i,
+  /\bwe\s+are\s+hiring\b/i,
+  /\bnous\s+recrutons\b/i,
+  /\blooking\s+for\s+(?:hungry\s+)?sales\s+reps?\b/i,
 ];
 
 /** Retire commentaires de ligne et de bloc : un commentaire n'est pas lu par un candidat. */
@@ -123,5 +169,91 @@ describe("le tunnel apporteurs ne nomme jamais un statut de mandataire", () => {
     // la défense pour satisfaire le contrôle.
     expect(voitUneFaute(negationProtectrice)).toBe(false);
     expect(voitUneFaute(enCommentaire)).toBe(false);
+  });
+
+  it("les mots-clés des pages apporteur ne nomment ni un mandat, ni la vente", () => {
+    // `keywords` n'est pas du texte visible, mais les moteurs le lisent : c'est
+    // la même déclaration publique que la page, sous une autre forme.
+    const motsCles = buildCommercialKeywords("Grenoble", "Isère", "Auvergne-Rhône-Alpes");
+    expect(motsCles.length).toBeGreaterThan(20); // témoin : la liste n'est pas vide
+    const fautes = motsCles.filter(
+      (k) => TERMES_DE_MANDAT.some((m) => m.test(k)) || /\bvend|\bvente/i.test(k),
+    );
+    expect(fautes).toEqual([]);
+  });
+
+  it("TÉMOIN — les fautes retirées des pages ajoutées le 2026-09-19 seraient vues", () => {
+    // Copies EXACTES de ce qui était en ligne avant la réécriture : si l'une
+    // d'elles revenait, la garde doit rougir. Sans ce témoin, élargir SURFACES
+    // prouverait seulement que les fichiers existent, pas qu'on y lit la faute.
+    const voitUneFaute = (s: string) => TERMES_DE_MANDAT.some((m) => m.test(texteVisible(s)));
+    for (const fauteRetiree of [
+      '"Indépendant : micro-entrepreneur, agent commercial, VRP multicartes ou apporteur d\'affaires."',
+      '"Statut libre : micro-entreprise, VRP, apporteur",',
+      '"Statut libre : micro-entreprise, agent commercial, apporteur",',
+      '"Agents commerciaux multicartes",',
+      '"Mandataires en immobilier d\'entreprise",',
+      'occupationalCategory: "Commercial indépendant · Agent commercial · VRP",',
+    ]) {
+      expect(voitUneFaute(fauteRetiree), fauteRetiree).toBe(true);
+    }
+  });
+});
+
+/**
+ * 🔴 LE TÉMOIN DES MOTIFS EUX-MÊMES (2026-09-21).
+ *
+ * Ce test existe à cause d'un défaut réel, et sa démonstration est cette PR.
+ *
+ * Un caractère de contrôle invisible (U+0008, né d'un `\\b` écrit dans un
+ * script Python où il désigne le retour arrière) s'était glissé DANS un motif.
+ * Le motif ne pouvait matcher aucun texte : la garde passait au vert EN NE
+ * CHERCHANT RIEN. Cet octet a traversé l'écriture, deux relectures, une CI
+ * verte et un premier passage de la lentille sécurité. Rien, dans le dépôt, ne
+ * pouvait le révéler — les deux TÉMOIN plus bas n'exercent que les motifs
+ * historiques.
+ *
+ * 🔑 La leçon n'est pas « attention aux octets » : c'est qu'un lexique de
+ * motifs doit prouver qu'il MORD, et pas seulement qu'il ne rougit pas. Les
+ * dix cas ci-dessous ont d'abord été vérifiés à la main dans une console — une
+ * console se referme, un test reste.
+ */
+describe("les motifs du lexique mordent vraiment", () => {
+  it("aucun motif ne porte de caractère de contrôle", () => {
+    // Le défaut exact du 2026-09-21 : un octet invisible rendait le motif
+    // inerte sans changer une ligne de code à l'œil nu.
+    for (const motif of TERMES_DE_MANDAT) {
+      const controles = [...motif.source].filter((c) => c.charCodeAt(0) < 32);
+      expect(controles, `le motif ${motif} porte un caractère de contrôle`).toEqual([]);
+    }
+  });
+
+  it.each([
+    "Nos commerciaux couvrent toute la France",
+    "Notre force de vente est à votre écoute",
+    "Nous recrutons 200 commerciaux",
+    "Nous cherchons un agent commercial",
+    "Our sales reps are everywhere",
+    "We are hiring across France",
+    "We're hiring 200+ sales reps",
+    "We are looking for hungry sales reps",
+  ])("attrape « %s »", (texte) => {
+    expect(TERMES_DE_MANDAT.some((m) => m.test(texte))).toBe(true);
+  });
+
+  it.each([
+    // Conservés par arbitrage de Will du 2026-09-21 : le mot nomme un métier
+    // que les gens tapent dans un moteur de recherche. Il reste dans le TITRE
+    // et l'ADRESSE ; il part de ce qui décrit une relation de travail.
+    "independent AI sales rep, Grenoble-Lyon",
+    "Axion-IA sales rep application · 3 minutes, no resume",
+    "Commerciaux indépendants",
+    "Independent sales reps",
+    "Devenez commercial IA partout en France",
+    // La formulation de remplacement, qui ne doit surtout pas rougir.
+    "Nous développons un réseau de plus de 200 apporteurs d'affaires",
+  ])("laisse passer « %s »", (texte) => {
+    const fautifs = TERMES_DE_MANDAT.filter((m) => m.test(texte));
+    expect(fautifs, `motif trop large : ${fautifs.join(", ")}`).toEqual([]);
   });
 });

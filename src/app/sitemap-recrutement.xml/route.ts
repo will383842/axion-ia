@@ -2,10 +2,12 @@
 // Route Handler XML brut isolé — ne touche PAS au sitemap.ts principal.
 // Référencé dans `sitemap-index.xml` (CUSTOM_SITEMAPS).
 //
-// N'émet QUE la page France + la candidature : les 40 pages ville sont en
-// `noindex` (offre commune ≈ 89 % de contenu identique → doorway). La visibilité
-// PAR VILLE passe par le JobPosting multi-lieux de la page France (Google for
-// Jobs), pas par 40 URLs indexées.
+// N'émet QUE la page France + la candidature : les 40 pages ville ont été
+// retirées, redirigées vers la page France par `proxy.ts` (offre commune
+// ≈ 89 % de contenu identique → doorway). Il n'y a plus de visibilité PAR
+// VILLE : l'offre d'emploi schema.org multi-lieux qui la portait a été retirée
+// le 2026-09-19 (décision Will B5 — un apporteur d'affaires indépendant n'est
+// pas un poste).
 //
 // FR canonique uniquement (EN désactivé 2026-05-16 → 301, hors crawl budget).
 
@@ -16,9 +18,9 @@ export const dynamic = "force-static";
 export const revalidate = 86400;
 
 export async function GET(): Promise<Response> {
-  // lastmod = date de (re)publication de l'offre commerciale — suit la même
-  // constante que le JobPosting de la page (pas BUILD_TIME, qui avançait à
-  // chaque deploy sans changement de l'offre).
+  // lastmod = date de référence de la page France (`dates.ts`) — une date
+  // stable, et surtout pas BUILD_TIME, qui avançait à chaque deploy sans
+  // changement de la page.
   const lm = COMMERCIAL_OFFER_DATE_POSTED;
   const entries: Array<{ path: string; priority: string; freq: string }> = [
     { path: "/devenir-commercial-ia", priority: "0.9", freq: "weekly" },

@@ -1,7 +1,8 @@
-// Server Component — corps de la page recrutement commerciaux (page France
+// Server Component — corps de la page /devenir-commercial-ia (page France
 // unique). Décision Will 2026-06-08 : une seule page indexée (pas de pages
-// ville, qui étaient quasi-dupliquées = doorway). La visibilité par ville passe
-// par le JobPosting multi-lieux (Google for Jobs) sur la page France.
+// ville, qui étaient quasi-dupliquées = doorway). L'offre d'emploi schema.org
+// multi-lieux qui portait la visibilité par ville a été retirée le 2026-09-19
+// (décision Will B5 : un apporteur d'affaires indépendant n'est pas un poste).
 
 import type { ReactNode } from "react";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
