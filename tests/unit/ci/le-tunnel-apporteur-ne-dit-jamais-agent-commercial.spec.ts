@@ -70,6 +70,12 @@ const SURFACES = [
   "src/app/[locale]/apporteur-affaires-independant-formation-ia-entreprise/page.tsx",
   "src/app/[locale]/memo-isere/page.tsx",
   "src/components/services/devenir-commercial/CommercialProductsEarnings.tsx",
+  // 2026-09-21 — TROUVE HORS LISTE : cette page disait « Nous recrutons plus de
+  // 200 commerciaux » / « We're hiring 200+ sales reps ». P4 avait retire le
+  // balisage `JobPosting` que Google lisait, mais la page continuait de le DIRE
+  // en toutes lettres — et aucune garde ne la lisait. Le vocabulaire d'EMBAUCHE
+  // est plus lourd que « agent commercial » : il decrit un contrat de travail.
+  "src/components/services/devenir-commercial/CommercialProcess.tsx",
 ];
 
 /**
@@ -87,6 +93,13 @@ const TERMES_DE_MANDAT = [
   /nos\s+vendeurs/i,
   /votre\s+manager/i,
   /votre\s+responsable/i,
+  // 2026-09-21 — le vocabulaire d'EMBAUCHE. Un apporteur est un independant qui
+  // recommande : annoncer qu'on le « recrute » decrit un contrat de travail, et
+  // c'est la premiere piece qu'un conseil de prud'hommes lirait. Borne aux
+  // SURFACES ci-dessus : `/carrieres` recrute de vrais salaries, legitimement.
+  /nous\s+recrutons/i,
+  /we(?:'|&#x27;|’)?re\s+hiring/i,
+  /sales\s+reps?/i,
 ];
 
 /** Retire commentaires de ligne et de bloc : un commentaire n'est pas lu par un candidat. */

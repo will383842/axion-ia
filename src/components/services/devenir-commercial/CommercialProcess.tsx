@@ -1,5 +1,5 @@
 // Server Component — « Comment nous rejoindre » : process de recrutement en 3
-// étapes (formulaire → réponse email → appel visio) + CTA vers la candidature.
+// étapes (formulaire → réponse email → appel téléphonique) + CTA vers la candidature.
 // Bande contrastée (façon bandeau de conversion). Contenu FIXE.
 
 import type { ReactNode } from "react";
@@ -30,8 +30,8 @@ export function CommercialProcess({ isFr }: CommercialProcessProps): ReactNode {
     },
     {
       icon: Video,
-      titleFr: "Appel visio",
-      titleEn: "Video call",
+      titleFr: "Appel téléphonique",
+      titleEn: "Phone call",
       textFr: "On fait connaissance, on répond à vos questions et on cale votre démarrage.",
       textEn: "We get to know each other, answer your questions and set up your start.",
     },
@@ -56,8 +56,8 @@ export function CommercialProcess({ isFr }: CommercialProcessProps): ReactNode {
           </h2>
           <p className="text-fg-soft mt-4 text-lg leading-relaxed">
             {isFr
-              ? "Nous recrutons plus de 200 commerciaux partout en France. Remplissez le formulaire : sous quelques jours, nous vous donnons une première réponse par email pour convenir d'un appel visio."
-              : "We're hiring 200+ sales reps across France. Fill in the form: within a few days, we send you a first reply by email to arrange a video call."}
+              ? "Nous développons un réseau de plus de 200 apporteurs d'affaires partout en France. Remplissez le formulaire : sous quelques jours, nous vous donnons une première réponse par email pour convenir d'un appel téléphonique."
+              : "We're building a network of 200+ business introducers across France. Fill in the form: within a few days, we send you a first reply by email to arrange a phone call."}
           </p>
         </div>
 

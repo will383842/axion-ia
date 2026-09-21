@@ -69,8 +69,8 @@ const APRES = [
   },
   {
     Icon: ShieldCheck,
-    title: "Un échange en visio",
-    text: "15 à 30 minutes pour faire connaissance, répondre à tes questions et cadrer ton secteur.",
+    title: "Un échange au téléphone",
+    text: "15 minutes pour faire connaissance, répondre à tes questions et cadrer ton secteur.",
   },
   {
     Icon: Rocket,

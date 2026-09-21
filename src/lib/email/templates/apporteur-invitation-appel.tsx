@@ -68,13 +68,13 @@ const ANCRE_POLITIQUE_EN = "business-introducer-network";
 const COPY = {
   fr: {
     title: "Et si on en parlait 15 minutes ?",
-    preview: "Choisis le moment qui t'arrange : 15 minutes en visio pour faire connaissance.",
+    preview: "Choisis le moment qui t'arrange : 15 minutes au téléphone pour faire connaissance.",
     intro: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
-    body: "Merci pour ton intérêt pour le réseau d'apporteurs d'affaires d'Axion-IA. On te propose un échange de 15 minutes en visio : faire connaissance, t'expliquer simplement comment ça marche et répondre à tes questions. Aucun engagement : tu décides après.",
+    body: "Merci pour ton intérêt pour le réseau d'apporteurs d'affaires d'Axion-IA. On te propose un échange de 15 minutes au téléphone : faire connaissance, t'expliquer simplement comment ça marche et répondre à tes questions. Aucun engagement : tu décides après.",
     provenanceDirecte: (l: string) => `Tu nous as donné ton adresse ${l}.`,
     provenanceIndirecte: (l: string) => `Nous avons ton adresse ${l}.`,
     bodyIndirecte:
-      "On te propose un échange de 15 minutes en visio sur le réseau d'apporteurs d'affaires d'Axion-IA : faire connaissance, t'expliquer simplement comment ça marche et répondre à tes questions. Aucun engagement : tu décides après.",
+      "On te propose un échange de 15 minutes au téléphone sur le réseau d'apporteurs d'affaires d'Axion-IA : faire connaissance, t'expliquer simplement comment ça marche et répondre à tes questions. Aucun engagement : tu décides après.",
     info: (responsable: string, adresse: string) =>
       `Qui traite ton adresse : ${responsable}, ${adresse}. ` +
       "Pourquoi : te proposer un échange sur le réseau d'apporteurs d'affaires. " +
@@ -92,13 +92,13 @@ const COPY = {
   },
   en: {
     title: "How about a 15-minute chat?",
-    preview: "Pick the time that suits you: 15 minutes on video to get acquainted.",
+    preview: "Pick the time that suits you: 15 minutes on the phone to get acquainted.",
     intro: (n: string) => (n ? `Hello ${n},` : "Hello,"),
-    body: "Thank you for your interest in Axion-IA's network of business introducers. We suggest a 15-minute video call: get acquainted, explain simply how it works and answer your questions. No commitment: you decide afterwards.",
+    body: "Thank you for your interest in Axion-IA's network of business introducers. We suggest a 15-minute phone call: get acquainted, explain simply how it works and answer your questions. No commitment: you decide afterwards.",
     provenanceDirecte: (l: string) => `You gave us your address ${l}.`,
     provenanceIndirecte: (l: string) => `We have your address ${l}.`,
     bodyIndirecte:
-      "We suggest a 15-minute video call about Axion-IA's network of business introducers: get acquainted, explain simply how it works and answer your questions. No commitment: you decide afterwards.",
+      "We suggest a 15-minute phone call about Axion-IA's network of business introducers: get acquainted, explain simply how it works and answer your questions. No commitment: you decide afterwards.",
     info: (responsable: string, adresse: string) =>
       `Who processes your address: ${responsable}, ${adresse}. ` +
       "Why: to offer you a call about the business introducer network. " +
