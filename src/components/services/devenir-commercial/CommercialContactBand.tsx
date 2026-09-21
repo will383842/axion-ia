@@ -56,8 +56,8 @@ export function CommercialContactBand({
               track={`commercial-band-apply${trackSuffix}`}
             >
               {isFr
-                ? "Je veux des renseignements pour devenir commercial Axion-IA"
-                : "I want details on becoming an Axion-IA sales rep"}
+                ? "Je veux des renseignements pour rejoindre le réseau Axion-IA"
+                : "I want details on joining the Axion-IA network"}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Cta>
           </div>

@@ -97,9 +97,25 @@ const TERMES_DE_MANDAT = [
   // recommande : annoncer qu'on le « recrute » decrit un contrat de travail, et
   // c'est la premiere piece qu'un conseil de prud'hommes lirait. Borne aux
   // SURFACES ci-dessus : `/carrieres` recrute de vrais salaries, legitimement.
-  /nous\s+recrutons/i,
-  /we(?:'|&#x27;|’)?re\s+hiring/i,
-  /sales\s+reps?/i,
+  //
+  // 🔑 CES MOTIFS SONT POSSESSIFS OU EMBAUCHANTS, JAMAIS LE MOT SEUL — et ce
+  // n'est pas un detail. La liste francaise ci-dessus interdit « nos
+  // commerciaux », « notre force de vente », « nos vendeurs » : elle n'a JAMAIS
+  // interdit « commercial » tout court, parce que le mot nomme un metier que
+  // les gens tapent dans un moteur de recherche (arbitrage de Will du
+  // 2026-09-21 : le mot reste dans le TITRE et dans l'ADRESSE, il part de tout
+  // ce qui decrit une relation de travail).
+  //
+  // Un premier jet interdisait `sales reps?` tout court. Il etait donc PLUS
+  // STRICT en anglais qu'en francais, et il accusait deux titres de page dont
+  // l'equivalent francais est conserve — « independent AI sales rep » en face
+  // de « commercial IA independant ». Une garde qui punit une traduction
+  // fidele finit par etre desarmee.
+  /\bour\s+sales\s+reps?\b/i,
+  /\bwe(?:'|&#x27;|’)?re\s+hiring\b/i,
+  /\bwe\s+are\s+hiring\b/i,
+  /\bnous\s+recrutons\b/i,
+  /\blooking\s+for\s+(?:hungry\s+)?sales\s+reps?\b/i,
 ];
 
 /** Retire commentaires de ligne et de bloc : un commentaire n'est pas lu par un candidat. */
