@@ -132,11 +132,11 @@ const CONTACT_EMAIL = EMAIL_LEGAL.contactEmail;
  * professionnels bloquent les images par défaut), accessibles, et le libellé
  * porte le nom — une icône muette ne dit pas QUI.
  *
- * ⛔ Rendus UNIQUEMENT en familles B et D, et réduits à la seule page entreprise
- * en famille C. Référentiel §5.2 ⑤ : les liens sociaux valent pour la
- * crédibilité, pas pour l'acquisition (0,1 à 0,4 % de clic) — ils ne méritent
- * pas de faire sauter le budget de liens d'une notification, et ils sont
- * proscrits en famille A.
+ * ⛔ Rendus UNIQUEMENT en familles B et D — et, dans ces deux familles, un
+ * gabarit peut encore les retirer par `sansReseauxSociaux`. Référentiel §5.2 ⑤ :
+ * les liens sociaux valent pour la crédibilité, pas pour l'acquisition (0,1 à
+ * 0,4 % de clic) — ils ne méritent pas de faire sauter le budget de liens, et
+ * ils sont proscrits en familles A et C.
  */
 const SOCIALS = {
   linkedinCompany:
@@ -634,6 +634,28 @@ export interface EmailLayoutProps {
    * message. Les autres gabarits n'en ont pas besoin.
    */
   campagne?: string;
+  /**
+   * Retire la RANGÉE DE RÉSEAUX SOCIAUX du pied de page, pour un gabarit dont le
+   * corps porte déjà plus de liens d'ACTION que le budget de sa famille n'en
+   * laisse (§5.4).
+   *
+   * 🔑 C'est l'arbitrage déjà écrit plus haut pour la famille C, appliqué à un
+   * gabarit et non à une famille : le §5.2 ⑤ mesure le rendement d'un lien
+   * social entre 0,1 et 0,4 % de clic, et on ne sacrifie pas un lien d'action —
+   * ni une mention exigée par la loi — à un lien de notoriété. Quatre liens
+   * sociaux valent ici quatre liens d'action en moins.
+   *
+   * Les quatre e-mails du réseau d'apporteurs s'en servent : ils portent le kit
+   * (document + catalogue, décision Will 2026-09-19), le dossier, le créneau,
+   * et pour une adresse venue d'un tiers l'information de l'art. 14 RGPD. Sans
+   * cette prise, l'invitation la plus complète rendait 12 URL distinctes pour un
+   * budget de 9 — et deux d'entre elles ne se coupent pas (la loi, et une
+   * décision de Will).
+   *
+   * ⛔ Ne PAS s'en servir pour faire tenir un gabarit dont le corps a simplement
+   * trop de liens de confort : c'est le corps qu'il faut alléger.
+   */
+  sansReseauxSociaux?: boolean;
   unsubscribeHref?: string;
   locale: "fr" | "en";
 }
@@ -734,6 +756,7 @@ export function EmailLayout({
   signature,
   tutoiement,
   campagne,
+  sansReseauxSociaux,
   unsubscribeHref,
   locale,
 }: EmailLayoutProps) {
@@ -939,7 +962,7 @@ export function EmailLayout({
               Familles B, C, D → forme COMPLÈTE du §6.2.
              ─────────────────────────────────────────────────────────────── */}
           <Section style={{ padding: "26px 12px 0 12px" }}>
-            {regime.reseauxSociaux === "complet" && (
+            {regime.reseauxSociaux === "complet" && sansReseauxSociaux !== true && (
               <Text style={socialRowStyle} className="ax-muted">
                 {t.followBrand} —{" "}
                 <Link href={SOCIALS.linkedinCompany} style={socialLinkStyle}>

@@ -29,6 +29,7 @@
  */
 
 import { formatAmount } from "@/content/pricing";
+import { DOCUMENT_APPORTEUR_CHEMIN } from "@/lib/commercial-application/kit-apporteur";
 
 /**
  * Valeur du coup de projecteur TELLE QU'ELLE EST ENCRÉE sur le tirage en cours
@@ -201,6 +202,33 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
       "Confirmer la certification Qualiopi : le flyer l’affiche à deux endroits.",
       "Vérifier les prix planchers — ils sont repris du catalogue, lui-même branché sur pricing.ts.",
       "Les deux QR réutilisent des slugs déjà vivants (cat-catalogue, formations) : leur destination se change sans réimprimer.",
+    ],
+  },
+  {
+    id: "devenir-apporteur",
+    icon: "Handshake",
+    nom: "Devenir apporteur d'affaires · 13 pages",
+    format: "A4 paysage · 297 × 210 mm · 13 pages, lecture à l'écran",
+    resume:
+      "Le document de présentation du réseau d'apporteurs d'affaires : commissions, fonctionnement, prestations à recommander, profils recherchés. Envoyé automatiquement, avec le catalogue, à toute personne qui s'y intéresse — et dont le lien accompagne l'invitation à l'échange de 15 minutes.",
+    fichiersPublics: [
+      {
+        chemin: DOCUMENT_APPORTEUR_CHEMIN,
+        nom: "Le PDF, 13 pages",
+        role: "Le lien que portent les e-mails du réseau d'apporteurs (accusé du premier contact, rappels, confirmation du dossier, invitation) et la page de remerciement du tunnel Facebook. ⚠️ Ne pas renommer : le chemin part dans des e-mails déjà envoyés.",
+      },
+    ],
+    fichiersHorsLigne: [
+      {
+        nom: "devenir-apporteur-d-affaires.html",
+        ou: "docs/imprimes/ (dans le dépôt)",
+        pourquoi:
+          "La source du PDF. Toute correction se fait là, puis le PDF se régénère — la commande est écrite en tête du fichier. Corriger le PDF à la main ferait diverger les deux.",
+      },
+    ],
+    avantTirage: [
+      "Le vocabulaire est celui de l'apporteur qui RECOMMANDE, jamais du commercial qui vend : ni « prospection », ni « argumentaire », ni « formation à l'offre ». Relire toute correction à l'aune de docs/partners/ANTI-REQUALIFICATION.md.",
+      "Les commissions imprimées dans le document (par journée de formation, audit, intégration) viennent de COMMERCIAL_COMMISSIONS dans pricing.ts : si la grille change, le document doit être régénéré.",
     ],
   },
   {

@@ -141,6 +141,33 @@ describe("verdictAvantEnvoi — désabonnement", () => {
     expect(oppositionFindUnique).not.toHaveBeenCalled();
   });
 
+  it("🔴 2026-09-19 : l'opposition retient AUSSI les relances et l'invitation du réseau d'apporteurs", async () => {
+    oppositionFindUnique.mockResolvedValue({ id: "opp-1" });
+    for (const template of ["lead-apporteur-relance", "apporteur-invitation-appel"]) {
+      const v = await verdictAvantEnvoi("oppose@exemple.fr", { template, marketing: false });
+      expect(v, template).toEqual({ retenu: true, motif: "oppose", depuis: null });
+    }
+  });
+
+  it("…mais un désabonnement NEWSLETTER ne les retient pas (ce n'est pas un refus d'être recontacté)", async () => {
+    findUnique.mockResolvedValue({ status: "unsubscribed", unsubscribedAt: new Date() });
+    const v = await verdictAvantEnvoi("desabonne@exemple.fr", {
+      template: "apporteur-invitation-appel",
+      marketing: false,
+    });
+    expect(v).toEqual({ retenu: false });
+    expect(findUnique).not.toHaveBeenCalled();
+  });
+
+  it("l'accusé d'une démarche reste envoyé malgré une opposition : la personne reprend contact", async () => {
+    oppositionFindUnique.mockResolvedValue({ id: "opp-1" });
+    const v = await verdictAvantEnvoi("oppose@exemple.fr", {
+      template: "candidature-commercial-confirmee",
+      marketing: false,
+    });
+    expect(v).toEqual({ retenu: false });
+  });
+
   it("un abonné actif ou inconnu passe", async () => {
     findUnique.mockResolvedValue({ status: "confirmed", unsubscribedAt: null });
     expect(
@@ -203,5 +230,35 @@ describe("signalerRetenue", () => {
       }),
     ).resolves.toBeUndefined();
     expect(console.error).toHaveBeenCalled();
+  });
+});
+
+describe("2026-09-19 — le verdict vit dans un module pur, `suppression.ts` le réexporte", () => {
+  it("réexporte les MÊMES références (aucun appelant ne change)", async () => {
+    const pur = await import("./verdict-envoi");
+    const reexport = await import("./suppression");
+    expect(reexport.verdictAvantEnvoi).toBe(pur.verdictAvantEnvoi);
+    expect(reexport.estSollicitationSoumiseAOpposition).toBe(
+      pur.estSollicitationSoumiseAOpposition,
+    );
+    expect(reexport.GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION).toBe(
+      pur.GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION,
+    );
+    expect(reexport.GABARITS_EXEMPTES_DU_DESABONNEMENT).toBe(
+      pur.GABARITS_EXEMPTES_DU_DESABONNEMENT,
+    );
+  });
+
+  it("🔴 une retenue pour OPPOSITION dit l'opposition, pas le désabonnement newsletter", async () => {
+    await signalerRetenue("oppose@exemple.fr", "lead-apporteur-relance", {
+      retenu: true,
+      motif: "oppose",
+      depuis: null,
+    });
+    const alerte = creerOuDedup.mock.calls[0]![0] as Record<string, unknown>;
+    const message = String(alerte["message"]);
+    expect(message).toContain("s'est opposée aux sollicitations");
+    expect(message).toContain("aucune action");
+    expect(message.toLowerCase()).not.toContain("newsletter");
   });
 });

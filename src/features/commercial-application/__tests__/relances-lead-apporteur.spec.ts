@@ -2,8 +2,9 @@
  * Relances du premier contact — deux invariants :
  *   1. le `jobId` dérive du HASH de l'e-mail (jamais l'adresse) et ne porte
  *      pas de « : » (séparateur de clés BullMQ) ;
- *   2. `annuler` retire exactement les deux jobs d'une adresse, et se tait si
- *      la file est absente ou si le job est déjà parti.
+ *   2. `annuler` retire exactement les jobs d'une adresse — le kit du dossier
+ *      commencé (2026-09-19) et les deux relances —, et se tait si la file est
+ *      absente ou si le job est déjà parti.
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
@@ -27,9 +28,15 @@ vi.mock("@/server/email/email-log", () => ({
 
 import {
   annulerRelancesLeadApporteur,
+  jobIdKitDossierCommence,
   jobIdRelance,
+  planifierKitDossierCommence,
   planifierRelancesLeadApporteur,
 } from "../relances-lead-apporteur";
+import {
+  DELAI_KIT_DOSSIER_COMMENCE_MS,
+  VARIANTE_DOSSIER_COMMENCE,
+} from "@/lib/commercial-application/kit-apporteur";
 
 beforeEach(() => {
   retirer.mockClear();
@@ -78,11 +85,41 @@ describe("planifierRelancesLeadApporteur", () => {
   });
 });
 
+describe("planifierKitDossierCommence — le kit de qui a quitté le dossier", () => {
+  it("pose UN job retardé de 30 min : l'accusé, variante « dossier commencé », sans lien d'appel", async () => {
+    const pose = await planifierKitDossierCommence({
+      email: "nadia@example.com",
+      prenom: "Nadia",
+      dossierUrl: "https://axion-ia.com/fr/devenir-commercial-ia/candidature",
+      submissionId: "s-1",
+    });
+    expect(pose).toBe(true);
+    expect(enfiler).toHaveBeenCalledTimes(1);
+    const [gabarit, , , payload, options] = enfiler.mock.calls[0] as [
+      string,
+      string,
+      string,
+      Record<string, unknown>,
+      { jobId: string; delayMs: number },
+    ];
+    expect(gabarit).toBe("lead-apporteur-recu");
+    expect(payload["variante"]).toBe(VARIANTE_DOSSIER_COMMENCE);
+    // ⛔ Le lien de réservation ne part jamais automatiquement (décision Will
+    // 2026-09-19) : il saturerait l'agenda.
+    expect(JSON.stringify(payload)).not.toMatch(/calendly|creneau/i);
+    expect(options.delayMs).toBe(DELAI_KIT_DOSSIER_COMMENCE_MS);
+    expect(options.jobId).toBe(jobIdKitDossierCommence("h-nadiaexamplecom"));
+    expect(options.jobId).not.toContain(":");
+    expect(JSON.stringify(options)).not.toContain("nadia@");
+  });
+});
+
 describe("annulerRelancesLeadApporteur", () => {
-  it("retire les deux jobs de l'adresse", async () => {
+  it("retire le kit ET les deux relances de l'adresse", async () => {
     const n = await annulerRelancesLeadApporteur("nadia@example.com");
-    expect(n).toBe(2);
+    expect(n).toBe(3);
     expect(retirer.mock.calls.map((c) => c[0])).toEqual([
+      "lead-apporteur-kit-h-nadiaexamplecom",
       "lead-apporteur-relance-j2-h-nadiaexamplecom",
       "lead-apporteur-relance-j7-h-nadiaexamplecom",
     ]);
@@ -99,8 +136,9 @@ describe("annulerRelancesLeadApporteur", () => {
       throw new Error("job not found");
     });
     retirer.mockImplementationOnce(async () => 0);
+    retirer.mockImplementationOnce(async () => 0);
     await expect(annulerRelancesLeadApporteur("nadia@example.com")).resolves.toBe(0);
-    expect(retirer).toHaveBeenCalledTimes(2);
+    expect(retirer).toHaveBeenCalledTimes(3);
   });
 });
 
@@ -113,7 +151,7 @@ describe("annulerRelancesLeadApporteur", () => {
  * comme un envoi bloqué — deux lignes dans cet état en production.
  */
 describe("annulerRelancesLeadApporteur — le journal est refermé, pas seulement la file", () => {
-  it("referme la ligne des DEUX étapes, avec le même identifiant que le job retiré", async () => {
+  it("referme la ligne de CHAQUE job, avec le même identifiant que le job retiré", async () => {
     await annulerRelancesLeadApporteur("nadia@example.com");
     const idsRetires = retirer.mock.calls.map((c) => c[0]);
     const idsRefermes = marquerAnnuleMock.mock.calls.map((c) => c[0]);
@@ -122,6 +160,7 @@ describe("annulerRelancesLeadApporteur — le journal est refermé, pas seulemen
     // vert sur un simple compte.
     expect(idsRefermes).toEqual(idsRetires);
     expect(idsRefermes).toEqual([
+      "lead-apporteur-kit-h-nadiaexamplecom",
       "lead-apporteur-relance-j2-h-nadiaexamplecom",
       "lead-apporteur-relance-j7-h-nadiaexamplecom",
     ]);
@@ -133,13 +172,13 @@ describe("annulerRelancesLeadApporteur — le journal est refermé, pas seulemen
     // retrait réussi laisserait précisément les lignes qu'on veut fermer.
     retirer.mockResolvedValue(0);
     await annulerRelancesLeadApporteur("nadia@example.com");
-    expect(marquerAnnuleMock).toHaveBeenCalledTimes(2);
+    expect(marquerAnnuleMock).toHaveBeenCalledTimes(3);
   });
 
   it("referme la ligne même si le retrait LÈVE", async () => {
     retirer.mockRejectedValue(new Error("redis indisponible"));
     await expect(annulerRelancesLeadApporteur("nadia@example.com")).resolves.toBe(0);
-    expect(marquerAnnuleMock).toHaveBeenCalledTimes(2);
+    expect(marquerAnnuleMock).toHaveBeenCalledTimes(3);
   });
 
   it("porte un motif lisible — le journal doit dire POURQUOI la ligne est close", async () => {
@@ -147,5 +186,12 @@ describe("annulerRelancesLeadApporteur — le journal est refermé, pas seulemen
     const motif = marquerAnnuleMock.mock.calls[0]?.[1] ?? "";
     expect(motif).toMatch(/annul/i);
     expect(motif).toMatch(/dossier complet/i);
+  });
+
+  it("l'appelant peut dire un AUTRE motif — l'invitation envoyée depuis la console", async () => {
+    await annulerRelancesLeadApporteur("nadia@example.com", "Envoi annulé : invitation envoyée.");
+    expect(
+      marquerAnnuleMock.mock.calls.every((c) => c[1] === "Envoi annulé : invitation envoyée."),
+    ).toBe(true);
   });
 });

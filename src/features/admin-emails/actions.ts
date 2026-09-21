@@ -25,7 +25,10 @@ import { PLAFOND_RENVOI_LOT, FENETRE_RENVOI_JOURS } from "./query";
 const LIBELLE_RETENUE: Readonly<Record<MotifRetenue, string>> = {
   rebond_dur: "en rebond définitif (adresse à corriger)",
   desabonne: "désabonné",
-  oppose: "opposé à tout envoi (RGPD)",
+  // 2026-09-19 — l'opposition ne retient QUE les sollicitations (marketing,
+  // relances et invitation du réseau d'apporteurs) : « tout envoi » était faux,
+  // une facture ou une convocation part toujours.
+  oppose: "opposé aux sollicitations",
 };
 
 const schema = z.object({ id: z.string().uuid() });

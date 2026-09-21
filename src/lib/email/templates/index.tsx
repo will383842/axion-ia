@@ -124,6 +124,10 @@ import {
 } from "./candidature-commercial-recap";
 import { leadApporteurRecuSubject, LeadApporteurRecuEmail } from "./lead-apporteur-recu";
 import { leadApporteurRelanceSubject, LeadApporteurRelanceEmail } from "./lead-apporteur-relance";
+import {
+  apporteurInvitationAppelSubject,
+  ApporteurInvitationAppelEmail,
+} from "./apporteur-invitation-appel";
 import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
 import { PieceExemplaireSigneEmail, pieceExemplaireSigneSubject } from "./piece-exemplaire-signe";
@@ -368,6 +372,11 @@ const TEMPLATES: TemplateMap = {
   "lead-apporteur-relance": {
     subject: leadApporteurRelanceSubject,
     component: LeadApporteurRelanceEmail,
+  },
+  // Invitation à l'échange de 15 minutes — envoi manuel depuis la console (2026-09-19)
+  "apporteur-invitation-appel": {
+    subject: apporteurInvitationAppelSubject,
+    component: ApporteurInvitationAppelEmail,
   },
   "vivier-information": {
     subject: vivierInformationSubject,

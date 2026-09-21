@@ -47,8 +47,17 @@ const SURFACES = [
   "src/components/recrutement/FacebookLandingPage.tsx",
   "src/components/recrutement/LeadApporteurForm.tsx",
   "src/components/recrutement/TunnelFacebookShell.tsx",
+  // 2026-09-19 — la landing des annonces (Indeed, Leboncoin, Mémorial) disait
+  // encore « micro-entreprise, agent commercial ou société » : la faute exacte
+  // retirée du tunnel Facebook le 2026-09-04, restée sur la page sœur.
+  "src/components/recrutement/PartenaireLandingPage.tsx",
   "src/lib/email/templates/lead-apporteur-recu.tsx",
   "src/lib/email/templates/lead-apporteur-relance.tsx",
+  // 2026-09-19 — le kit, la confirmation du dossier et l'invitation à l'échange.
+  "src/lib/email/templates/_kit-apporteur.tsx",
+  "src/lib/email/templates/candidature-commercial-confirmee.tsx",
+  "src/lib/email/templates/apporteur-invitation-appel.tsx",
+  "src/app/[locale]/apporteur-affaires/merci/page.tsx",
 ];
 
 /**

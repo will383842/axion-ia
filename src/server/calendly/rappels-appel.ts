@@ -62,6 +62,7 @@ import { notify } from "@/server/notifications";
 
 import { prisma } from "@/lib/prisma";
 import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
+import { HORS_APPELS_APPORTEUR } from "@/server/calendly/appel-apporteur";
 import { enqueueEmail } from "@/server/queue/queues";
 import type { MomentAppel } from "@/lib/email/templates/appel-rappel";
 
@@ -233,6 +234,10 @@ export async function executerPassage(
         // demandé qu'on l'oublie. Le marqueur est IMPORTÉ de la chaîne
         // d'effacement, jamais recopié.
         NOT: { inviteeName: ERASED_PLACEHOLDER },
+        // Un échange avec un candidat apporteur n'est pas un appel de
+        // découverte : ces trois messages parlent à un client
+        // (`appel-apporteur.ts`). Calendly envoie sa propre confirmation.
+        AND: [HORS_APPELS_APPORTEUR],
       },
       orderBy: { startTime: "asc" },
       take: MAX_PAR_PASSAGE + 1,

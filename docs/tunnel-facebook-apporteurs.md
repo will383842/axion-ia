@@ -6,6 +6,19 @@
 
 ---
 
+## 0. Kit pour tous, appel sur invitation (décision Will, 2026-09-19)
+
+- **Toute personne dont on a l'adresse reçoit le KIT** — le document de présentation
+  « Devenir apporteur d'affaires » (`public/imprimes/devenir-apporteur-d-affaires-axion-ia.pdf`,
+  source `docs/imprimes/devenir-apporteur-d-affaires.html`) et le catalogue (`/fr/catalogue`) —,
+  en liens : accusé Facebook, relances J+2/J+7, confirmation du dossier, et, pour qui quitte le
+  dossier à l'écran 1, un envoi différé de 30 min (annulé si le dossier arrive).
+- **Le lien de réservation (échange de 15 min) n'est JAMAIS automatique** : distribué à tous, il
+  saturerait l'agenda. Il part par l'**invitation**, depuis la fiche Contacts › Commercial ou à la
+  saisie manuelle d'un contact (case à cocher). Le champ est pré-rempli par `CALENDLY_APPORTEUR_URL`.
+- ⚠️ **Le nom de l'événement Calendly doit contenir « apporteur »** : c'est ce qui l'exclut des
+  e-mails « appel de découverte » et du CRM des ventes (`src/server/calendly/appel-apporteur.ts`).
+
 ## 1. La chaîne, telle qu'elle est livrée
 
 | #   | Étape              | Où                                                                      | Ce qui se passe                                                                                                                                                                                   |
@@ -14,10 +27,10 @@
 | 2   | Landing            | `/fr/apporteur-affaires` (`noindex`, sans menu ni pied de page du site) | Héro → bande de confiance → **formulaire court** → comment ça marche → combien (formulation indicative) → pour qui → cartes sur table → fondateur → FAQ → dernier appel. Bouton collant mobile.   |
 | 3   | Formulaire court   | `LeadApporteurForm`                                                     | Prénom, téléphone, e-mail, ville, situation (facultatif), case de consentement. Honeypot, sans captcha.                                                                                           |
 | 4   | Action serveur     | `submitLeadApporteurAction`                                             | Ligne `Submission` (source `facebook` posée seule, étape `premier-contact`, UTM + `fbclid`), preuve de consentement, Telegram, e-mail candidat, récap interne, relances J+2/J+7, API Conversions. |
-| 5   | Page merci         | `/fr/apporteur-affaires/merci?c=<id>`                                   | « C'est noté » + calendrier d'appel apporteur (si configuré) + bouton « Compléter mon dossier ». Tire l'événement `Lead` du pixel.                                                                |
-| 6   | E-mail automatique | `lead-apporteur-recu`                                                   | On t'appelle · choisis ton créneau · complète ton dossier (pré-rempli).                                                                                                                           |
+| 5   | Page merci         | `/fr/apporteur-affaires/merci?c=<id>`                                   | « C'est noté » + **kit** (document de présentation + catalogue) + bouton « Compléter mon dossier ». Tire l'événement `Lead` du pixel. Plus de calendrier (2026-09-19, voir §0).                   |
+| 6   | E-mail automatique | `lead-apporteur-recu`                                                   | On t'appelle · **kit** (document + catalogue) · complète ton dossier (pré-rempli). Aucun lien de réservation.                                                                                     |
 | 7   | Dossier complet    | `/devenir-commercial-ia/candidature`                                    | Le wizard existant, **pré-rempli** par le brouillon local posé à l'étape 3 (coordonnées + source `facebook`). Son arrivée **retire** les relances en attente.                                     |
-| 8   | Relances           | `lead-apporteur-relance` J+2, J+7                                       | « Ton dossier t'attend », deux fois, pas plus, et le second le dit.                                                                                                                               |
+| 8   | Relances           | `lead-apporteur-relance` J+2, J+7                                       | « Ton dossier t'attend », deux fois, pas plus, et le second le dit. Portent le kit.                                                                                                               |
 | 9   | Console            | Contacts → Commercial                                                   | Même file que les dossiers ; `details.etape = "premier-contact"` les distingue ; stats par canal dans « Annonces » (source `facebook`).                                                           |
 | 10  | Suite              | Partners (plan v3, phase 1)                                             | Décision retenu/vivier/refusé, contrat DocuSeal, onboarding J0/J2/J7 — non codé, à la main d'ici là.                                                                                              |
 
@@ -31,22 +44,29 @@ composant rend `null`, et rien ne le signale. C'est l'incident Plausible du 2026
 zéro événement d'analytique depuis la mise en ligne — documenté en tête du `Dockerfile`.
 Rejoué ici, il coûterait un budget publicitaire optimisé sur les clics au lieu des candidatures.
 
-| Valeur                               | Où elle se pose                                  | Pourquoi là                                                            |
-| ------------------------------------ | ------------------------------------------------ | ---------------------------------------------------------------------- |
-| `NEXT_PUBLIC_META_PIXEL_ID`          | GitHub → **Variables** du dépôt (`vars`)         | Lue par un composant « use client » → inlinée au build.                |
-| `NEXT_PUBLIC_CALENDLY_APPORTEUR_URL` | GitHub → **Variables** du dépôt (`vars`)         | Lue côté serveur, mais la page merci est prérendue (`revalidate=600`). |
-| `META_CAPI_ACCESS_TOKEN`             | GitHub → **Secrets**, puis workflow vers Coolify | Secret serveur, portée RUN.                                            |
-| `META_CAPI_TEST_EVENT_CODE`          | GitHub → **Secrets**, puis workflow vers Coolify | Temporaire, à retirer après la recette.                                |
+| Valeur                      | Où elle se pose                                  | Pourquoi là                                                          |
+| --------------------------- | ------------------------------------------------ | -------------------------------------------------------------------- |
+| `NEXT_PUBLIC_META_PIXEL_ID` | GitHub → **Variables** du dépôt (`vars`)         | Lue par un composant « use client » → inlinée au build.              |
+| `CALENDLY_APPORTEUR_URL`    | GitHub → **Secrets**, puis workflow vers Coolify | Serveur, lue à l'exécution : pré-remplit l'invitation de la console. |
+| `META_CAPI_ACCESS_TOKEN`    | GitHub → **Secrets**, puis workflow vers Coolify | Secret serveur, portée RUN.                                          |
+| `META_CAPI_TEST_EVENT_CODE` | GitHub → **Secrets**, puis workflow vers Coolify | Temporaire, à retirer après la recette.                              |
 
-Les deux premières sont câblées en build-arg (`Dockerfile` + `deploy-coolify.yml`), les deux
-dernières sont dans la liste fermée de `coolify-poser-variable.yml`.
+La première est câblée en build-arg (`Dockerfile` + `deploy-coolify.yml`), les trois
+autres sont dans la liste fermée de `coolify-poser-variable.yml`.
+
+⚠️ `NEXT_PUBLIC_CALENDLY_APPORTEUR_URL` n'existe plus (2026-09-19) : le lien de réservation
+n'est plus affiché à tous, il part sur invitation (§0).
 
 ### Les commandes, une fois les valeurs en main
 
 ```bash
-# 1. Les deux publiques — variables de dépôt, lues au prochain build.
+# 1. La publique — variable de dépôt, lue au prochain build.
 gh variable set NEXT_PUBLIC_META_PIXEL_ID --body "<identifiant numérique du pixel>"
-gh variable set NEXT_PUBLIC_CALENDLY_APPORTEUR_URL --body "https://calendly.com/<compte>/<événement>"
+
+# 1 bis. Le lien de l'échange de 15 minutes — secret GitHub, puis Coolify (portée RUN).
+#        ⚠️ Le NOM de l'événement dans Calendly doit contenir « apporteur ».
+gh secret set CALENDLY_APPORTEUR_URL            # colle https://calendly.com/<compte>/<événement>
+gh workflow run coolify-poser-variable.yml --ref main   -f variable=CALENDLY_APPORTEUR_URL -f confirmer=OUI
 
 # 2. Le jeton serveur — secret GitHub, puis écriture dans Coolify (portée RUN).
 gh secret set META_CAPI_ACCESS_TOKEN            # colle la valeur, elle n'apparaît nulle part

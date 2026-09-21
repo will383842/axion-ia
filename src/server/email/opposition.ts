@@ -27,6 +27,8 @@
 // (une chaîne opaque en base). Clé HMAC dérivée d'`AUTH_SECRET` avec séparation
 // de domaine : compromettre ce jeton ne donne rien d'autre qu'une opposition.
 
+import * as Sentry from "@sentry/nextjs";
+
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { syncNewsletterOptOutToCrm } from "@/server/crm-sync";
@@ -43,6 +45,32 @@ export {
   lireJetonOpposition,
   urlOpposition,
 } from "./opposition-jeton";
+
+/**
+ * 🔴 2026-09-19 — retire les envois déjà PROGRAMMÉS pour cette adresse :
+ * relances J+2 / J+7 et kit du dossier commencé. Ce sont des jobs retardés,
+ * vérifiés à l'enfilage : sans ce retrait, ils attendaient leur échéance dans
+ * la file, et seul le filet du worker les arrêtait au départ. Ici, ils sortent
+ * de la file et leur ligne de journal se clôt en « annulé ».
+ *
+ * Import DYNAMIQUE : le module des relances tire les files BullMQ, qui tirent
+ * la liste de suppression — l'import statique créerait un cycle sur un chemin
+ * que le lien d'opposition n'a pas à charger d'avance. Best-effort : une file
+ * indisponible ne doit jamais faire échouer l'opposition elle-même, déjà
+ * enregistrée (et le filet du worker reste là).
+ */
+async function annulerEnvoisProgrammes(email: string): Promise<void> {
+  try {
+    const { annulerRelancesLeadApporteur } =
+      await import("@/features/commercial-application/relances-lead-apporteur");
+    await annulerRelancesLeadApporteur(
+      email,
+      "Envoi annulé : la personne s'est opposée aux sollicitations.",
+    );
+  } catch (e) {
+    Sentry.captureException(e, { tags: { module: "email-opposition", step: "annuler-relances" } });
+  }
+}
 
 export type ResultatOpposition =
   | { readonly ok: true; readonly email: string; readonly dejaOpposee: boolean }
@@ -70,7 +98,12 @@ export async function enregistrerOpposition(
       where: { emailHash },
       select: { id: true },
     });
-    if (existante !== null) return { ok: true, email, dejaOpposee: true };
+    if (existante !== null) {
+      // Un second clic rattrape aussi un envoi resté en file (opposition
+      // antérieure à ce correctif, ou file indisponible au premier clic).
+      await annulerEnvoisProgrammes(email);
+      return { ok: true, email, dejaOpposee: true };
+    }
 
     const ligne = await prisma.emailOpposition.create({
       data: {
@@ -89,6 +122,8 @@ export async function enregistrerOpposition(
       person: { email },
       payload: { reason: "opposition-link", template: source.template ?? null },
     });
+
+    await annulerEnvoisProgrammes(email);
 
     return { ok: true, email, dejaOpposee: false };
   } catch (e) {

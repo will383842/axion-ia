@@ -164,7 +164,9 @@ describe("lireAccusesMessages — chaque message reçoit SON accusé", () => {
       ],
       [],
     );
-    expect(r.get("capture")?.absenceVoulue).toMatch(/voulu/);
+    // 2026-09-19 — l'écran 1 n'est plus « sans rien » : le kit part 30 min
+    // après si le dossier n'est pas terminé. La console le dit.
+    expect(r.get("capture")?.absenceVoulue).toMatch(/Pas d.accusé immédiat.*kit part 30 min/);
     expect(r.get("ordinaire")).toMatchObject({ etat: "absent", absenceVoulue: null });
   });
 

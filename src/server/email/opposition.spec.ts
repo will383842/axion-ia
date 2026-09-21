@@ -21,6 +21,10 @@ vi.mock("@/lib/prisma", () => ({
 vi.mock("@/server/crm-sync", () => ({
   syncNewsletterOptOutToCrm: (...a: unknown[]) => syncOptOut(...a),
 }));
+const annulerRelances = vi.fn();
+vi.mock("@/features/commercial-application/relances-lead-apporteur", () => ({
+  annulerRelancesLeadApporteur: (...a: unknown[]) => annulerRelances(...a),
+}));
 
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 
@@ -37,6 +41,7 @@ beforeEach(() => {
   findUnique.mockReset().mockResolvedValue(null);
   create.mockReset().mockResolvedValue({ id: "opp-1" });
   syncOptOut.mockReset().mockResolvedValue(undefined);
+  annulerRelances.mockReset().mockResolvedValue(0);
   process.env["AUTH_SECRET"] = "secret-de-test-suffisamment-long-0123456789";
   process.env["NEXT_PUBLIC_SITE_URL"] = "https://axion-ia.com";
   vi.spyOn(console, "error").mockImplementation(() => {});
@@ -130,5 +135,28 @@ describe("estOpposee", () => {
     expect(findUnique).toHaveBeenCalledWith(
       expect.objectContaining({ where: { emailHash: hashEmailForLookup("jean@client.fr") } }),
     );
+  });
+});
+
+describe("2026-09-19 — l'opposition annule les envois déjà programmés", () => {
+  it("🔴 une opposition neuve retire relances, kit et invitation en attente", async () => {
+    await enregistrerOpposition(jetonOpposition("jean@client.fr"));
+    expect(annulerRelances).toHaveBeenCalledWith(
+      "jean@client.fr",
+      "Envoi annulé : la personne s'est opposée aux sollicitations.",
+    );
+  });
+
+  it("🔴 AUSSI quand l'opposition existait déjà : un second clic rattrape un job resté en file", async () => {
+    findUnique.mockResolvedValue({ id: "opp-1" });
+    const r = await enregistrerOpposition(jetonOpposition("jean@client.fr"));
+    expect(r).toMatchObject({ ok: true, dejaOpposee: true });
+    expect(annulerRelances).toHaveBeenCalledWith("jean@client.fr", expect.any(String));
+  });
+
+  it("une file indisponible ne fait pas échouer l'opposition", async () => {
+    annulerRelances.mockRejectedValue(new Error("redis mort"));
+    const r = await enregistrerOpposition(jetonOpposition("jean@client.fr"));
+    expect(r).toEqual({ ok: true, email: "jean@client.fr", dejaOpposee: false });
   });
 });

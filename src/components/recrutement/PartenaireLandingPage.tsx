@@ -280,7 +280,7 @@ export async function PartenaireLandingPage({ params, source }: Props) {
       id: "statut",
       question: "Il faut un statut ? Ça coûte quoi ?",
       answer:
-        "Il faut être indépendant pour pouvoir facturer ta commission — micro-entreprise, agent commercial ou société. Si tu n'en as pas encore, la création en ligne est gratuite et prend un quart d'heure. Aucun frais d'entrée de notre côté, aucun kit à acheter.",
+        "Il faut être indépendant pour pouvoir facturer ta commission — micro-entreprise ou société. Si tu n'en as pas encore, la création en ligne est gratuite et prend un quart d'heure. Aucun frais d'entrée de notre côté, aucun kit à acheter.",
     },
     {
       id: "salarie",

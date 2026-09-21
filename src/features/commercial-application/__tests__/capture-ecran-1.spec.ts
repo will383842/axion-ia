@@ -129,19 +129,27 @@ describe("capturerContactDossierAction", () => {
     expect(JSON.stringify(where)).not.toContain("Camille.Durand");
   });
 
-  it("programme les rappels et prévient — mais N'ENVOIE PAS l'e-mail « c'est noté »", async () => {
+  it("programme le kit DIFFÉRÉ et les rappels, et prévient — mais n'écrit RIEN tout de suite", async () => {
     await capturerContactDossierAction(valide, "fr");
     expect(notifier).toHaveBeenCalledTimes(1);
 
-    const gabarits = enfiler.mock.calls.map((c) => c[0]);
+    const appels = enfiler.mock.calls as unknown as Array<
+      [string, string, string, Record<string, unknown>, { delayMs?: number } | undefined]
+    >;
+    const gabarits = appels.map((c) => c[0]);
     // Les rappels « ton dossier t'attend » : exactement ce qu'il faut à un
     // dossier abandonné.
     expect(gabarits).toContain("lead-apporteur-relance");
-    // ⛔ Mais pas la confirmation : écrire « c'est noté, on t'appelle » au
-    // milieu du formulaire dit à la personne qu'elle peut s'arrêter.
-    expect(gabarits, "l'e-mail de confirmation ne doit PAS partir ici").not.toContain(
-      "lead-apporteur-recu",
-    );
+    // Le KIT (décision Will 2026-09-19 : tout le monde le reçoit dès qu'on a
+    // son adresse) — variante « dossier commencé », sans promesse d'appel.
+    const kit = appels.find((c) => c[0] === "lead-apporteur-recu");
+    expect(kit, "le kit du dossier commencé doit être programmé").toBeDefined();
+    expect(kit?.[3]["variante"]).toBe("dossier-commence");
+    // ⛔ Mais RIEN d'immédiat : écrire « c'est noté » au milieu du formulaire
+    // dit à la personne qu'elle peut s'arrêter. Chaque envoi est différé.
+    for (const c of appels) {
+      expect(c[4]?.delayMs ?? 0, `${c[0]} ne doit pas partir tout de suite`).toBeGreaterThan(0);
+    }
   });
 
   it("un échec d'écriture rend ok:false sans lever — candidater doit rester possible", async () => {

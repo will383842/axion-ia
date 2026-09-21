@@ -170,3 +170,53 @@ describe("creerContactManuelAction", () => {
     }
   });
 });
+
+describe("🔴 art. 14 — origine de l'adresse (2026-09-19)", () => {
+  const LIEN = "https://calendly.com/axion-ia/echange-apporteur";
+
+  it("REFUSE une adresse relevée sur l'annonce d'un tiers : rien n'est créé", async () => {
+    const r = await creerContactManuelAction({ ...valide, origine: "site-annonces" });
+    expect(r).toMatchObject({ ok: false, erreur: "champs-invalides" });
+    expect(creer).not.toHaveBeenCalled();
+    expect(enfiler).not.toHaveBeenCalled();
+  });
+
+  it("recommandation + invitation SANS la case d'accord : refusé, rien n'est créé", async () => {
+    const r = await creerContactManuelAction({
+      ...valide,
+      origine: "recommandation",
+      envoyerInvitation: true,
+      calendlyUrl: LIEN,
+    });
+    expect(r).toMatchObject({ ok: false, erreur: "champs-invalides" });
+    if (!r.ok && r.erreur === "champs-invalides") expect(r.message).toMatch(/accepté/);
+    expect(creer).not.toHaveBeenCalled();
+  });
+
+  it("« autre » + invitation SANS la case d'accord : refusé aussi", async () => {
+    const r = await creerContactManuelAction({
+      ...valide,
+      origine: "autre",
+      envoyerInvitation: true,
+      calendlyUrl: LIEN,
+    });
+    expect(r).toMatchObject({ ok: false, erreur: "champs-invalides" });
+    expect(creer).not.toHaveBeenCalled();
+  });
+
+  it("recommandation avec l'accord coché : l'accord est daté sur la fiche", async () => {
+    const r = await creerContactManuelAction({
+      ...valide,
+      origine: "recommandation",
+      accordContact: true,
+    });
+    expect(r).toMatchObject({ ok: true });
+    const args = creer.mock.calls[0]?.[0] as { data: { details: Record<string, unknown> } };
+    expect(typeof args.data.details["accordContactAt"]).toBe("string");
+  });
+
+  it("« A répondu à notre annonce » est une origine directe acceptée", async () => {
+    const r = await creerContactManuelAction({ ...valide, origine: "reponse-annonce" });
+    expect(r).toMatchObject({ ok: true });
+  });
+});

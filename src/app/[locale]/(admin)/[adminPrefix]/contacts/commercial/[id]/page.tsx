@@ -14,10 +14,13 @@ export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ adminPrefix: string; id: string }>;
+  searchParams: Promise<{ invitation?: string | string[] }>;
 }
 
-export default async function ContactsCommercialDetailPage({ params }: PageProps) {
+export default async function ContactsCommercialDetailPage({ params, searchParams }: PageProps) {
   const { adminPrefix, id } = await params;
+  // Résultat de l'invitation apporteur, posé par la redirection de l'action.
+  const { invitation } = await searchParams;
   // 🔑 On appelle la garde pour son EFFET : sans session, elle redirige vers la
   // connexion. C'est ce que cette page doit garantir par elle-même — le proxy
   // ne peut pas être la seule couche (contournement du 2026-09-05).
@@ -39,6 +42,7 @@ export default async function ContactsCommercialDetailPage({ params }: PageProps
       id={id}
       backHref={`/fr/${adminPrefix}/contacts/commercial`}
       backLabel="← Commercial"
+      invitation={typeof invitation === "string" ? invitation : undefined}
     />
   );
 }

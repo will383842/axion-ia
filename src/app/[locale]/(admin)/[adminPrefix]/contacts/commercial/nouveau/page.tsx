@@ -5,14 +5,15 @@
  *
  * Six chemins créaient un contact, et tous les six étaient des formulaires
  * publics ou le chatbot. L'apporteur qui écrit par e-mail, celui rencontré sur
- * un salon, celui repéré sur un site d'annonces : aucun ne pouvait entrer dans
+ * un salon, celui qui a répondu à notre annonce : aucun ne pouvait entrer dans
  * le système. On ne pouvait que lui envoyer un lien et espérer.
  *
  * ## Trois règles, portées par l'action serveur
  *
- * 1. **Aucun envoi.** Cette personne n'a rien demandé : ni confirmation, ni
- *    rappels. Pour un apporteur, un rappel d'activité attendue est en outre un
- *    indice de requalification.
+ * 1. **Aucun envoi automatique.** Ni confirmation, ni rappels : pour un
+ *    apporteur, un rappel d'activité attendue est en outre un indice de
+ *    requalification. Une seule chose peut partir, si l'administrateur coche la
+ *    case : l'invitation à l'échange de 15 minutes (décision Will 2026-09-19).
  * 2. **Le consentement n'est pas simulé.** La ligne porte le fait — « aucun,
  *    contact saisi par un administrateur » — plutôt qu'un `optin` fabriqué.
  * 3. **Le doublon se traite avant l'écriture.** Après, il faudrait fusionner,
@@ -28,7 +29,11 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { FormulaireContactManuel } from "@/components/admin/campagnes/FormulaireContactManuel";
 import { adminPath } from "@/lib/admin-path";
-import { ORIGINES_SAISIE } from "@/lib/commercial-application/saisie-manuelle";
+import {
+  ORIGINES_ACCORD_REQUIS,
+  ORIGINES_SAISIE,
+} from "@/lib/commercial-application/saisie-manuelle";
+import { env } from "@/env";
 
 // 🔴 RÉDUIT ICI, dans un composant SERVEUR. `saisie-manuelle.ts` porte le schéma
 // Zod de l'écran : l'importer depuis le composant client créait une arête de
@@ -40,7 +45,13 @@ import { ORIGINES_SAISIE } from "@/lib/commercial-application/saisie-manuelle";
 // (700,49 Ko contre 700) : zod entre déjà dans le paquet du navigateur par les
 // formulaires publics. Cf. le commentaire détaillé en tête de
 // `FormulaireContactManuel.tsx`.
-const ORIGINES_PROPOSABLES = ORIGINES_SAISIE.map((o) => ({ id: o.id, libelle: o.libelle }));
+//
+// 2026-09-19 — les origines MASQUÉES (adresse relevée sur l'annonce d'un tiers)
+// ne sont plus proposées : l'action les refuse de toute façon.
+const ORIGINES_PROPOSABLES = ORIGINES_SAISIE.filter((o) => !o.masquee).map((o) => ({
+  id: o.id,
+  libelle: o.libelle,
+}));
 
 export const dynamic = "force-dynamic";
 
@@ -74,6 +85,8 @@ export default async function NouveauContactPage({ params }: PageProps) {
         <FormulaireContactManuel
           lienFiche={adminPath("fr", "contacts/commercial")}
           origines={ORIGINES_PROPOSABLES}
+          originesAccordRequis={ORIGINES_ACCORD_REQUIS}
+          lienCalendlyParDefaut={env.CALENDLY_APPORTEUR_URL ?? ""}
         />
       </AdminCard>
 
@@ -81,9 +94,9 @@ export default async function NouveauContactPage({ params }: PageProps) {
         <h2 className="admin-h2">Ce que cet écran ne fait pas</h2>
         <ul className="admin-help flex list-disc flex-col gap-1 pl-5">
           <li>
-            <strong>Il n&apos;envoie aucun e-mail.</strong> Ni confirmation, ni rappel « ton dossier
-            t&apos;attend ». Cette personne n&apos;a rien demandé, et lui écrire serait un message
-            non sollicité.
+            <strong>Il n&apos;envoie aucun e-mail de lui-même.</strong> Ni confirmation, ni rappel «
+            ton dossier t&apos;attend ». Seule l&apos;invitation à l&apos;échange de 15 minutes peut
+            partir — et seulement si tu coches la case.
           </li>
           <li>
             <strong>Il n&apos;invente pas de consentement.</strong> La fiche indiquera « aucun —

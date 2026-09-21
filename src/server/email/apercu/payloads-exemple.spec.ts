@@ -98,7 +98,10 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // 🔴 2026-09-15 — RELEVÉ À 54 : `formateur-contresignature`, la demande de
     // contresignature de l'émargement. Son champ `demiJournees` est déclaré
     // ci-dessous.
-    expect(tous.length).toBe(54);
+    // 🔴 2026-09-19 — RELEVÉ À 55 : `apporteur-invitation-appel`, l'invitation
+    // à l'échange de 15 minutes envoyée depuis la console. Son champ
+    // `calendlyUrl` est déclaré ci-dessous.
+    expect(tous.length).toBe(55);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

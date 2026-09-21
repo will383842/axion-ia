@@ -91,6 +91,22 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: "email_mismatch" }, { status: 401 });
   }
 
+  // 🔴 2026-09-19 — LES ENVOIS PROGRAMMÉS, AVANT TOUT EFFACEMENT. Relances
+  // J+2 / J+7 et kit du dossier commencé dorment dans la file, retrouvables par
+  // l'empreinte de l'adresse ; une fois les fiches anonymisées, plus rien ne
+  // les relie à la personne et ils partiraient vers quelqu'un qui vient
+  // d'obtenir l'oubli. Best-effort : une file indisponible ne doit pas priver
+  // la personne de son effacement (le filet du worker retient de toute façon
+  // un envoi vers une fiche effacée). Import dynamique : le module tire les
+  // files BullMQ, dont le reste de la route n'a besoin qu'à la fin.
+  await import("@/features/commercial-application/relances-lead-apporteur")
+    .then(({ annulerRelancesLeadApporteur }) =>
+      annulerRelancesLeadApporteur(email, "Envoi annulé : effacement RGPD."),
+    )
+    .catch((err: unknown) => {
+      console.error("[gdpr-erase] annulation des envois programmés impossible :", err);
+    });
+
   // Données chatbot (chat_*) AVANT l'anonymisation des Submissions : le
   // rattachement conversation↔lead se fait par `contactEmail`, qui sera hashé
   // par eraseSubmissionsForEmail.

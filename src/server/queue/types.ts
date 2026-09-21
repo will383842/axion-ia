@@ -129,6 +129,9 @@ export type EmailJobName =
   // contact (formulaire court) + rappels J+2 / J+7 « ton dossier t'attend ».
   | "lead-apporteur-recu"
   | "lead-apporteur-relance"
+  // Invitation à l'échange de 15 minutes, envoyée par Will depuis la console
+  // aux personnes qu'il choisit (2026-09-19) — jamais automatiquement.
+  | "apporteur-invitation-appel"
   // Lot L4 2026-08-14 — information RGPD au stock de candidatures avant
   // intégration au vivier (lien d'opposition, fenêtre de 30 jours).
   | "vivier-information";

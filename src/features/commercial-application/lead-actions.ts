@@ -46,7 +46,6 @@ import { getClientIp } from "@/lib/client-ip";
 import { parseUtmFromUrl, readUtmCookie, UTM_COOKIE_NAME, type UtmParams } from "@/lib/utm";
 import { adminPath } from "@/lib/admin-path";
 import { SITE_URL } from "@/lib/site-url";
-import { env } from "@/env";
 import {
   CANDIDATURE_COMMERCIALE_SUBTYPE,
   STATUT_OPTIONS,
@@ -225,7 +224,6 @@ export async function submitLeadApporteurAction(
     });
 
     const dossierUrl = `${SITE_URL}/${locale}${DOSSIER_COMPLET_PATH}`;
-    const creneauUrl = env.NEXT_PUBLIC_CALENDLY_APPORTEUR_URL;
 
     // 6. Telegram + WhatsApp — best-effort.
     try {
@@ -252,7 +250,9 @@ export async function submitLeadApporteurAction(
       });
     }
 
-    // 7. E-mail au candidat — best-effort.
+    // 7. E-mail au candidat — best-effort. Il porte le KIT (document de
+    // présentation + catalogue) ; le lien de réservation d'appel, lui, n'est
+    // envoyé que sur invitation depuis la console (décision Will 2026-09-19).
     try {
       await enqueueEmail(
         "lead-apporteur-recu",
@@ -262,7 +262,6 @@ export async function submitLeadApporteurAction(
           contactName: d.prenom,
           submissionId: submission.id,
           dossierUrl,
-          ...(creneauUrl ? { creneauUrl } : {}),
         },
         // Entité liée : la fiche du message dit EXACTEMENT si l'accusé est parti.
         { entityType: ENTITE_MESSAGE, entityId: submission.id },
@@ -324,7 +323,6 @@ export async function submitLeadApporteurAction(
         email: d.email,
         prenom: d.prenom,
         dossierUrl,
-        creneauUrl,
         submissionId: submission.id,
       });
     } catch (relErr) {

@@ -10,6 +10,7 @@ import { Queue } from "bullmq";
 import { getBullConnection, isBullmqDisabled } from "./connection";
 import { resoudreMode, garerPourValidation } from "@/server/email/outbox-service";
 import { verdictAvantEnvoi, signalerRetenue, type MotifRetenue } from "@/server/email/suppression";
+import { estSollicitationSoumiseAOpposition } from "@/server/email/verdict-envoi";
 import { journaliserEnAttente } from "@/server/email/email-log";
 import type {
   EmailJobData,
@@ -804,9 +805,15 @@ export async function enqueueEmail(
   // AVANT la file. Une adresse qui a rebondi dur ne reçoit plus rien ; une
   // personne désabonnée ne reçoit plus de marketing. Voir `suppression.ts` pour
   // les deux portées et le repli assumé (base muette = envoi maintenu).
+  //
+  // 2026-09-19 — le drapeau `sollicitation` voit aussi le PAYLOAD, et c'est ce
+  // qui fait tenir la règle : le kit du dossier commencé partage le gabarit de
+  // l'accusé immédiat et ne s'en distingue que par sa variante. Le nom du
+  // gabarit seul ne suffit donc pas à savoir si l'opposition s'applique.
   const verdict = await verdictAvantEnvoi(to, {
     template,
     marketing: options?.marketing === true,
+    sollicitation: estSollicitationSoumiseAOpposition(template, payload),
   });
   if (verdict.retenu) {
     await signalerRetenue(to, template, verdict);

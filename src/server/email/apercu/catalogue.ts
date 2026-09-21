@@ -306,15 +306,24 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   },
   "lead-apporteur-recu": {
     categorie: "recrutement",
-    quand: "Premier contact déposé sur la landing Facebook (formulaire court)",
+    quand:
+      "Premier contact déposé sur la landing Facebook (formulaire court) — ou 30 min après un dossier commencé et non fini",
     destinataire: "le candidat apporteur",
     source: "features/commercial-application/lead-actions.ts",
   },
   "lead-apporteur-relance": {
     categorie: "recrutement",
-    quand: "J+2 puis J+7 après le premier contact, si le dossier complet n'est pas arrivé",
+    quand:
+      "J+2 puis J+7 après le premier contact ou le début du dossier, si le dossier complet n'est pas arrivé",
     destinataire: "le candidat apporteur",
     source: "features/commercial-application/relances-lead-apporteur.ts",
+  },
+  "apporteur-invitation-appel": {
+    categorie: "recrutement",
+    quand:
+      "Envoyé par un administrateur depuis la fiche du contact (Contacts › Commercial) ou lors d'une saisie manuelle — jamais automatiquement",
+    destinataire: "la personne intéressée par le réseau d'apporteurs",
+    source: "features/commercial-application/invitation-apporteur.ts",
   },
   "vivier-information": {
     categorie: "recrutement",
