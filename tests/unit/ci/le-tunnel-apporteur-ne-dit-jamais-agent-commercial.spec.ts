@@ -113,6 +113,11 @@ const TERMES_DE_MANDAT = [
   // fidele finit par etre desarmee.
   /\bour\s+sales\s+reps?\b/i,
   /\bwe(?:'|&#x27;|’)?re\s+hiring\b/i,
+  // Symetriques de `notre force de vente` et `nos vendeurs` ci-dessus :
+  // sans eux, l'anglais serait desormais MOINS strict que le francais —
+  // l'inverse exact du desequilibre qu'on vient de corriger.
+  /\bour\s+sales\s+force\b/i,
+  /\bour\s+sellers\b/i,
   /\bwe\s+are\s+hiring\b/i,
   /\bnous\s+recrutons\b/i,
   /\blooking\s+for\s+(?:hungry\s+)?sales\s+reps?\b/i,
@@ -192,5 +197,63 @@ describe("le tunnel apporteurs ne nomme jamais un statut de mandataire", () => {
     ]) {
       expect(voitUneFaute(fauteRetiree), fauteRetiree).toBe(true);
     }
+  });
+});
+
+/**
+ * 🔴 LE TÉMOIN DES MOTIFS EUX-MÊMES (2026-09-21).
+ *
+ * Ce test existe à cause d'un défaut réel, et sa démonstration est cette PR.
+ *
+ * Un caractère de contrôle invisible (U+0008, né d'un `\\b` écrit dans un
+ * script Python où il désigne le retour arrière) s'était glissé DANS un motif.
+ * Le motif ne pouvait matcher aucun texte : la garde passait au vert EN NE
+ * CHERCHANT RIEN. Cet octet a traversé l'écriture, deux relectures, une CI
+ * verte et un premier passage de la lentille sécurité. Rien, dans le dépôt, ne
+ * pouvait le révéler — les deux TÉMOIN plus bas n'exercent que les motifs
+ * historiques.
+ *
+ * 🔑 La leçon n'est pas « attention aux octets » : c'est qu'un lexique de
+ * motifs doit prouver qu'il MORD, et pas seulement qu'il ne rougit pas. Les
+ * dix cas ci-dessous ont d'abord été vérifiés à la main dans une console — une
+ * console se referme, un test reste.
+ */
+describe("les motifs du lexique mordent vraiment", () => {
+  it("aucun motif ne porte de caractère de contrôle", () => {
+    // Le défaut exact du 2026-09-21 : un octet invisible rendait le motif
+    // inerte sans changer une ligne de code à l'œil nu.
+    for (const motif of TERMES_DE_MANDAT) {
+      const controles = [...motif.source].filter((c) => c.charCodeAt(0) < 32);
+      expect(controles, `le motif ${motif} porte un caractère de contrôle`).toEqual([]);
+    }
+  });
+
+  it.each([
+    "Nos commerciaux couvrent toute la France",
+    "Notre force de vente est à votre écoute",
+    "Nous recrutons 200 commerciaux",
+    "Nous cherchons un agent commercial",
+    "Our sales reps are everywhere",
+    "We are hiring across France",
+    "We're hiring 200+ sales reps",
+    "We are looking for hungry sales reps",
+  ])("attrape « %s »", (texte) => {
+    expect(TERMES_DE_MANDAT.some((m) => m.test(texte))).toBe(true);
+  });
+
+  it.each([
+    // Conservés par arbitrage de Will du 2026-09-21 : le mot nomme un métier
+    // que les gens tapent dans un moteur de recherche. Il reste dans le TITRE
+    // et l'ADRESSE ; il part de ce qui décrit une relation de travail.
+    "independent AI sales rep, Grenoble-Lyon",
+    "Axion-IA sales rep application · 3 minutes, no resume",
+    "Commerciaux indépendants",
+    "Independent sales reps",
+    "Devenez commercial IA partout en France",
+    // La formulation de remplacement, qui ne doit surtout pas rougir.
+    "Nous développons un réseau de plus de 200 apporteurs d'affaires",
+  ])("laisse passer « %s »", (texte) => {
+    const fautifs = TERMES_DE_MANDAT.filter((m) => m.test(texte));
+    expect(fautifs, `motif trop large : ${fautifs.join(", ")}`).toEqual([]);
   });
 });
