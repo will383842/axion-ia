@@ -44,6 +44,7 @@ import { prisma } from "@/lib/prisma";
 import { notify } from "@/server/notifications";
 import { syncCalendlyEventToCrm } from "@/server/crm-sync";
 import { fetchCalendlyInvitee, isCalendlyApiConfigured } from "./api";
+import { rattacherEchangeApporteur } from "./rattachement-apporteur";
 
 export type EnrichOutcome =
   | {
@@ -101,6 +102,8 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
     cancelUrl: string | null;
     rescheduleUrl: string | null;
     rawPayload: unknown;
+    linkedSubmissionId: string | null;
+    linkedJobApplicationId: string | null;
   } | null;
   try {
     row = await prisma.calendlyEvent.findUnique({
@@ -121,6 +124,10 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
         cancelUrl: true,
         rescheduleUrl: true,
         rawPayload: true,
+        // Lus pour le rattachement automatique d'un échange apporteur : on ne
+        // rattache qu'une ligne qui ne l'est à rien (cf. rattachement-apporteur).
+        linkedSubmissionId: true,
+        linkedJobApplicationId: true,
       },
     });
   } catch (e) {
@@ -255,7 +262,47 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
     return { ok: false, reason: "db_write_failed" };
   }
 
-  const inviteeEmail = (data["inviteeEmail"] as string | undefined) ?? row.inviteeEmail ?? "";
+  // 🔴 SEULE L'ADRESSE QUE CALENDLY CONFIRME DECIDE D'UN RATTACHEMENT, et ce
+  // n'est pas un exces de prudence : c'est la difference entre une ligne
+  // parasite et le dossier d'un tiers.
+  //
+  // `/api/calendly/client-event` est une route PUBLIQUE qui ecrit
+  // `inviteeEmail` depuis le corps de la requete. Son propre en-tete dit que la
+  // porte reste ouverte a l'appel scripte informe (`Origin` en dur dans
+  // `TRUSTED_ORIGINS`) et que « fabriquer une fiche au nom d'un tiers » reste
+  // atteignable. Jusqu'ici, cela ne produisait qu'une ligne fausse.
+  //
+  // `setIfEmpty` (plus haut) n'ecrase JAMAIS un champ deja rempli : l'adresse
+  // forgee survit donc a l'enrichissement. Lire `row.inviteeEmail` ici
+  // reviendrait a rattacher automatiquement, en silence et sans trace, le
+  // rendez-vous de quelqu'un au dossier apporteur d'une VICTIME choisie par
+  // l'appelant — puis a afficher « echange reserve » sur ce dossier.
+  //
+  // 🔑 On echoue donc FERME : sans adresse confirmee par l'API, aucun
+  // rattachement automatique. Le selecteur de la console reste la, et un admin
+  // rattache a la main — ce qui laisse, lui, un auteur.
+  const inviteeEmail = d.inviteeEmail ?? "";
+
+  // ── Rattachement d'un échange apporteur à son dossier (2026-09-19) ──────────
+  //
+  // C'est ICI que l'adresse de l'invité devient connue : la capture depuis le
+  // widget n'en porte aucune. Le rattachement se fait donc après l'écriture,
+  // avec l'adresse fraîche. Il n'écrit que sur une ligne rattachée à rien, et
+  // cette condition est posée dans sa requête d'écriture même.
+  //
+  // Best-effort strict : un rattachement raté laisse la fiche comme avant (le
+  // sélecteur de la console reste là), il ne fait pas échouer l'enrichissement.
+  try {
+    await rattacherEchangeApporteur({
+      id: eventId,
+      eventTypeName: (data["eventTypeName"] as string | undefined) ?? row.eventTypeName,
+      inviteeEmail,
+      linkedSubmissionId: row.linkedSubmissionId,
+      linkedJobApplicationId: row.linkedJobApplicationId,
+    });
+  } catch (e) {
+    Sentry.captureException(e, { tags: { service: "calendly-rattachement-apporteur" } });
+  }
   // Le nom et le type de RDV viennent de la ligne, complétés par ce que
   // l'enrichissement vient d'écrire. Sans eux, l'alerte disait seulement
   // « annulation » + un identifiant technique : illisible depuis un téléphone,

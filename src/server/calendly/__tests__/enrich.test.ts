@@ -36,6 +36,11 @@ vi.mock("@/server/crm-sync", () => ({
   syncCalendlyEventToCrm: (...args: unknown[]) => syncCrmMock(...args),
 }));
 
+const rattacherMock = vi.fn();
+vi.mock("../rattachement-apporteur", () => ({
+  rattacherEchangeApporteur: (...args: unknown[]) => rattacherMock(...args),
+}));
+
 import { enrichCalendlyEvent } from "../enrich";
 
 /** Ligne vierge type : ce que produit une capture Embed JS sans jeton. */
@@ -495,5 +500,83 @@ describe("enrichCalendlyEvent — issue du RDV vers le CRM, sans geste humain", 
 
     const res = await enrichCalendlyEvent("evt_1");
     expect(res.ok).toBe(true);
+  });
+});
+
+describe("🔴 le rattachement automatique ne croit QUE l'API", () => {
+  // ── Ce que ce bloc interdit, et pourquoi il vaut un veto ─────────────────
+  // `/api/calendly/client-event` est une route PUBLIQUE qui écrit
+  // `inviteeEmail` depuis le corps de la requête. Le dépôt SAIT que la porte
+  // reste ouverte à l'appel scripté informé : son en-tête le dit en toutes
+  // lettres, « fabriquer une fiche au nom d'un tiers reste atteignable ».
+  //
+  // Jusqu'ici cela ne produisait qu'une ligne fausse, visible et sans suite.
+  // Le rattachement automatique change la nature du défaut : il relie cette
+  // ligne, EN SILENCE ET SANS TRACE, au dossier apporteur d'une victime
+  // choisie par l'appelant — et la console affiche alors « échange réservé »
+  // sur le dossier de quelqu'un qui n'a rien réservé.
+  //
+  // 🔑 `setIfEmpty` est ce qui rend le piège invisible : il n'écrase JAMAIS un
+  // champ déjà rempli. L'adresse forgée SURVIT donc à l'enrichissement, et
+  // ressort intacte de la seule étape qui aurait pu la corriger.
+  beforeEach(() => {
+    rattacherMock.mockReset();
+    rattacherMock.mockResolvedValue(undefined);
+  });
+
+  it("une adresse déjà en base ne décide de RIEN quand l'API en donne une autre", async () => {
+    findUniqueMock.mockResolvedValue(
+      emptyRow({
+        inviteeEmail: "victime@exemple.invalid", // posée par la route publique
+        eventTypeName: "Échange apporteur (15 min)",
+      }),
+    );
+    fetchInviteeMock.mockResolvedValue({
+      ok: true,
+      data: { inviteeEmail: "vrai-reservant@exemple.invalid", inviteeName: "Mallory" },
+    });
+    updateMock.mockResolvedValue({});
+
+    await enrichCalendlyEvent("evt_1");
+
+    expect(rattacherMock).toHaveBeenCalledTimes(1);
+    expect(rattacherMock.mock.calls[0]?.[0]).toMatchObject({
+      inviteeEmail: "vrai-reservant@exemple.invalid",
+    });
+  });
+
+  it("sans adresse confirmée par l'API, on échoue FERMÉ — aucun rattachement sur la valeur stockée", async () => {
+    findUniqueMock.mockResolvedValue(
+      emptyRow({
+        inviteeEmail: "victime@exemple.invalid",
+        eventTypeName: "Échange apporteur (15 min)",
+      }),
+    );
+    fetchInviteeMock.mockResolvedValue({ ok: true, data: { inviteeName: "Mallory" } });
+    updateMock.mockResolvedValue({});
+
+    await enrichCalendlyEvent("evt_1");
+
+    // Le sélecteur de la console reste là : un admin rattache à la main, et ce
+    // rattachement-là a un auteur.
+    expect(rattacherMock.mock.calls[0]?.[0]).toMatchObject({ inviteeEmail: "" });
+  });
+
+  it("TÉMOIN — une réservation normale se rattache toujours", async () => {
+    // Sans ce témoin, couper le rattachement pour TOUT LE MONDE passerait les
+    // deux assertions ci-dessus. La fonction entière serait morte, et verte.
+    findUniqueMock.mockResolvedValue(emptyRow({ eventTypeName: "Échange apporteur (15 min)" }));
+    fetchInviteeMock.mockResolvedValue({
+      ok: true,
+      data: { inviteeEmail: "lea@exemple.invalid", inviteeName: "Léa" },
+    });
+    updateMock.mockResolvedValue({});
+
+    await enrichCalendlyEvent("evt_1");
+
+    expect(rattacherMock).toHaveBeenCalledTimes(1);
+    expect(rattacherMock.mock.calls[0]?.[0]).toMatchObject({
+      inviteeEmail: "lea@exemple.invalid",
+    });
   });
 });

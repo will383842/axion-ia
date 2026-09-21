@@ -59,8 +59,24 @@ export interface UnifiedRdv {
   createdAt: Date;
 }
 
+/**
+ * À qui s'adresse le rendez-vous : un client, ou un candidat apporteur
+ * (2026-09-19).
+ *
+ * DÉRIVÉ du nom du type d'événement Calendly (`estAppelApporteur`), jamais
+ * stocké — même doctrine que `format` : les lignes déjà en base répondent
+ * juste sans migration.
+ */
+export type PublicRdv = "clients" | "apporteurs";
+
 export interface RdvFilters {
   source?: RdvSource;
+  /**
+   * FACULTATIF, et c'est un contrat : sans lui, la liste est exactement celle
+   * d'avant (tous les rendez-vous). La boîte de réception et l'outil MCP
+   * l'appellent sans ce paramètre et doivent continuer de tout voir.
+   */
+  public?: PublicRdv;
   status?: RdvStatus;
   /** ISO « YYYY-MM-DD » inclusif. */
   from?: string;

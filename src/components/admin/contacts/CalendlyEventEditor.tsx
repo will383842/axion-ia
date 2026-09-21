@@ -6,6 +6,29 @@
 import { useState, useTransition } from "react";
 import { updateCalendlyEventAction } from "@/features/admin-calendly/actions";
 import { toParisLocalInput, fromParisLocalInput } from "@/lib/calendar-grid";
+import { JOURS_FICHES_RECENTES } from "@/lib/calendly/fenetre-rattachement";
+
+/**
+ * Une fiche proposée au rattachement — calculée côté serveur par
+ * `features/admin-calendly/fiches-rattachables.ts`. Recopié ici en type
+ * structurel plutôt qu'importé : ce composant client ne doit rien tirer d'un
+ * module qui lit la base.
+ */
+interface FicheRattachable {
+  readonly id: string;
+  readonly libelle: string;
+  readonly groupe: "meme-personne" | "recentes" | "actuelle";
+}
+
+// 🔑 La fenêtre est LUE, pas retapée. Le nombre de jours vit dans
+// `fiches-rattachables.ts`, qui s'en sert pour filtrer : écrit ici en dur, le
+// jour où on passerait à 60, le sélecteur annoncerait toujours 30 en proposant
+// des fiches de 45 jours — et rien ne rougirait.
+const INTITULE_GROUPE: Record<FicheRattachable["groupe"], string> = {
+  actuelle: "Fiche rattachée",
+  "meme-personne": "Même adresse e-mail",
+  recentes: `Reçues ces ${JOURS_FICHES_RECENTES} derniers jours`,
+};
 
 interface Initial {
   readonly inviteeName: string | null;
@@ -22,9 +45,15 @@ interface Initial {
 interface Props {
   readonly id: string;
   readonly initial: Initial;
+  /** Les fiches proposées au rattachement (vide = seule « Aucune fiche »). */
+  readonly fichesRattachables?: ReadonlyArray<FicheRattachable>;
 }
 
-export function CalendlyEventEditor({ id, initial }: Props): React.ReactElement {
+export function CalendlyEventEditor({
+  id,
+  initial,
+  fichesRattachables = [],
+}: Props): React.ReactElement {
   const [state, setState] = useState({
     inviteeName: initial.inviteeName ?? "",
     inviteeEmail: initial.inviteeEmail ?? "",
@@ -172,17 +201,35 @@ export function CalendlyEventEditor({ id, initial }: Props): React.ReactElement 
         </div>
         <div className="admin-field sm:col-span-2">
           <label htmlFor="linkedSubmissionId" className="admin-label">
-            Message du site rattaché (facultatif)
+            Fiche rattachée (facultatif)
           </label>
-          <input
+          {/* Un SÉLECTEUR, plus une saisie d'UUID (2026-09-19) : recopier un
+              identifiant depuis l'URL d'un autre onglet est un geste que
+              personne ne faisait — 37 rendez-vous sur 37 restaient rattachés
+              à rien. Les fiches proposées sont celles de la même personne,
+              puis les récentes du même public. */}
+          <select
             id="linkedSubmissionId"
-            className="admin-input admin-input-mono admin-input-sm"
+            className="admin-input"
             value={state.linkedSubmissionId}
-            onChange={(e) => setState({ ...state, linkedSubmissionId: e.target.value.trim() })}
-            maxLength={64}
+            onChange={(e) => setState({ ...state, linkedSubmissionId: e.target.value })}
             disabled={isPending}
-            placeholder="00000000-0000-0000-0000-000000000000"
-          />
+          >
+            <option value="">Aucune fiche</option>
+            {(["actuelle", "meme-personne", "recentes"] as const).map((groupe) => {
+              const fiches = fichesRattachables.filter((f) => f.groupe === groupe);
+              if (fiches.length === 0) return null;
+              return (
+                <optgroup key={groupe} label={INTITULE_GROUPE[groupe]}>
+                  {fiches.map((f) => (
+                    <option key={f.id} value={f.id}>
+                      {f.libelle}
+                    </option>
+                  ))}
+                </optgroup>
+              );
+            })}
+          </select>
         </div>
         <div className="admin-field sm:col-span-2">
           <label htmlFor="notes" className="admin-label">

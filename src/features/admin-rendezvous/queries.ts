@@ -7,8 +7,9 @@
 // → ces fonctions renvoient vide sans connexion DB. Rien à guarder ici.
 
 import { prisma } from "@/lib/prisma";
+import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import { fromCalendly, type CalendlyEventRow } from "./normalize";
-import type { RdvFilters, UnifiedRdv } from "./types";
+import type { PublicRdv, RdvFilters, UnifiedRdv } from "./types";
 
 const CAL_SELECT = {
   id: true,
@@ -64,6 +65,22 @@ async function fetchAllCalendly(): Promise<UnifiedRdv[]> {
   return rows;
 }
 
+/**
+ * Sépare les échanges apporteurs des appels clients (2026-09-19).
+ *
+ * Même règle que la découverte Calendly et la passe des rappels : le NOM du
+ * type d'événement contient « apporteur » (cf. `calendly/appel-apporteur.ts`).
+ * Filtré en mémoire, comme le reste de ce module : `title` porte déjà ce nom.
+ *
+ * Sans `public`, la liste est rendue telle quelle — les appelants historiques
+ * (boîte de réception, outil MCP) ne voient aucune différence.
+ */
+function filtrerParPublic(rows: UnifiedRdv[], cible: PublicRdv | undefined): UnifiedRdv[] {
+  if (cible === "apporteurs") return rows.filter((r) => estAppelApporteur(r.title));
+  if (cible === "clients") return rows.filter((r) => !estAppelApporteur(r.title));
+  return rows;
+}
+
 /** Tri intra-jour : créneaux horodatés d'abord (par heure), puis « heure ? ». */
 function sortWithinDay(arr: UnifiedRdv[]): void {
   arr.sort((a, b) => {
@@ -81,6 +98,7 @@ export async function listRendezVous(
   let rows = await fetchAllCalendly();
 
   if (filters.source && filters.source !== "calendly") rows = [];
+  rows = filtrerParPublic(rows, filters.public);
   if (filters.status) rows = rows.filter((r) => r.status === filters.status);
   if (filters.from) rows = rows.filter((r) => r.dayKey >= (filters.from as string));
   if (filters.to) rows = rows.filter((r) => r.dayKey <= (filters.to as string));
@@ -100,9 +118,42 @@ export async function listRendezVous(
   return { rows: paged, total };
 }
 
-/** RDV du mois regroupés par `dayKey` (« YYYY-MM-DD »), triés intra-jour. */
-export async function getRdvMonth(year: number, month: number): Promise<Map<string, UnifiedRdv[]>> {
-  const rows = await fetchAllCalendly();
+/**
+ * Les rendez-vous rattachés à UNE fiche (`linked_submission_id`), du plus
+ * récent au plus ancien (2026-09-19).
+ *
+ * Sert la fiche apporteur : le rattachement automatique pose le lien, encore
+ * fallait-il qu'on le voie depuis le dossier. Même normalisation que la liste,
+ * donc même statut dérivé (« Passé ») et même format.
+ *
+ * ⚠️ L'appelant décide du rôle AVANT d'appeler (`peutVoirLesAppels`) : ces
+ * lignes portent les coordonnées de l'invité.
+ */
+export async function listRendezVousDeFiche(submissionId: string): Promise<UnifiedRdv[]> {
+  const events = await prisma.calendlyEvent.findMany({
+    where: { linkedSubmissionId: submissionId },
+    select: CAL_SELECT,
+    orderBy: [{ startTime: "desc" }, { capturedAt: "desc" }],
+    take: 20,
+  });
+  const rows = (events as CalendlyEventRow[]).map(fromCalendly);
+  rows.sort(
+    (a, b) => (b.startTime ?? b.createdAt).getTime() - (a.startTime ?? a.createdAt).getTime(),
+  );
+  return rows;
+}
+
+/**
+ * RDV du mois regroupés par `dayKey` (« YYYY-MM-DD »), triés intra-jour.
+ *
+ * `options.public` est FACULTATIF : sans lui, tout le mois, comme avant.
+ */
+export async function getRdvMonth(
+  year: number,
+  month: number,
+  options: { public?: PublicRdv } = {},
+): Promise<Map<string, UnifiedRdv[]>> {
+  const rows = filtrerParPublic(await fetchAllCalendly(), options.public);
   const prefix = `${year}-${String(month).padStart(2, "0")}`;
   const byDay = new Map<string, UnifiedRdv[]>();
   for (const r of rows) {

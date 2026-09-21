@@ -12,21 +12,37 @@
 //
 // Il n'existe qu'un seul objet réservable côté public : le créneau Calendly
 // « premier contact » de /appel. D'où le singulier assumé de cet écran.
+//
+// ── CLIENTS ET APPORTEURS À PART (2026-09-19) ─────────────────────────────
+// Le même compte Calendly porte désormais l'échange de 15 minutes proposé aux
+// candidats apporteurs. Ces rendez-vous se mêlaient aux appels de découverte
+// des clients : on ne savait plus, en ouvrant l'agenda, qui on allait appeler.
+// D'où trois ajouts, tous DÉRIVÉS du nom du type d'événement
+// (`estAppelApporteur`) — rien n'est stocké, rien ne migre :
+//   · un filtre Tous / Clients / Apporteurs (`?public=`), appliqué APRÈS la
+//     garde, EN MÉMOIRE sur les lignes lues (`queries.ts` le dit aussi) — le
+//     public se déduit du nom du type d'événement, que SQL ne sait pas lire ;
+//   · une pastille « Apporteur » / « Client » sur chaque rendez-vous ;
+//   · une vue « Jour », ouverte par défaut : la question qu'on pose à cet écran
+//     est « qui j'appelle aujourd'hui », pas « combien en juillet ».
+// La liste reste à `?vue=liste`, le calendrier à `?vue=calendrier`.
 
 import Link from "next/link";
 import { getRdvMonth, listRendezVous } from "@/features/admin-rendezvous/queries";
 import {
   RDV_STATUS_LABELS,
+  type PublicRdv,
   type RdvFilters,
   type UnifiedRdv,
 } from "@/features/admin-rendezvous/types";
+import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import {
   INTITULE_FORMAT,
   LIBELLE_CANAL,
   TEINTE_CANAL,
   type CanalRendezVous,
 } from "@/server/calendly/canal";
-import { dayKeyInParis, timeInParis } from "@/lib/calendar-grid";
+import { dayKeyInParis, dayKeyOfGridDate, timeInParis } from "@/lib/calendar-grid";
 import { MonthGridCalendar, type MonthGridDay } from "@/components/admin/ui/MonthGridCalendar";
 import {
   AdminPageHeader,
@@ -98,6 +114,84 @@ function PastilleFormat({ format }: { format: CanalRendezVous }) {
   );
 }
 
+/**
+ * Pastille de PUBLIC — « Apporteur » ou « Client ».
+ *
+ * Deux teintes d'identité distinctes de celles du format (bleu = téléphone,
+ * teal = visio) : les deux pastilles voisinent sur la même ligne et ne doivent
+ * pas se lire comme une seule information.
+ */
+function PastillePublic({ titre }: { titre: string }) {
+  const apporteur = estAppelApporteur(titre);
+  const teinte = apporteur ? "violet" : "or";
+  return (
+    <span
+      className="inline-flex items-center rounded-[var(--radius-admin-sm)] px-2 py-0.5 text-[length:var(--text-admin-xs)] font-medium"
+      style={{
+        background: `var(--color-admin-id-${teinte}-soft)`,
+        color: `var(--color-admin-id-${teinte})`,
+      }}
+    >
+      {apporteur ? "Apporteur" : "Client"}
+    </span>
+  );
+}
+
+/** Lit `?public=` : toute autre valeur vaut « tous » (aucun filtre). */
+function lirePublic(v: string | undefined): PublicRdv | undefined {
+  return v === "clients" || v === "apporteurs" ? v : undefined;
+}
+
+/** Clé jour valide « YYYY-MM-DD », sinon `null` (on retombe sur aujourd'hui). */
+function lireJour(v: string | undefined): string | null {
+  return v && /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : null;
+}
+
+/** Décale une clé jour de `delta` jours, sans passer par le fuseau du serveur. */
+function decalerJour(dayKey: string, delta: number): string {
+  const [y = 1970, m = 1, d = 1] = dayKey.split("-").map(Number);
+  return dayKeyOfGridDate(new Date(Date.UTC(y, m - 1, d + delta)));
+}
+
+/** URL de l'écran, sans les paramètres vides. */
+function lien(base: string, params: Record<string, string | number | undefined>): string {
+  const qs = new URLSearchParams();
+  for (const [k, v] of Object.entries(params)) {
+    if (v !== undefined && v !== "") qs.set(k, String(v));
+  }
+  const texte = qs.toString();
+  return texte ? `${base}?${texte}` : base;
+}
+
+/** Une ligne de rendez-vous, telle que la montrent les vues Jour et Calendrier. */
+function LigneRdv({ r }: { r: UnifiedRdv }) {
+  return (
+    <li>
+      <Link
+        href={r.detailHref}
+        className="flex items-center justify-between gap-2 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-3 hover:bg-[color:var(--color-admin-surface-hover)]"
+      >
+        <span>
+          <span className="font-semibold">
+            {r.timeConfirmed && r.startTime ? timeInParis(r.startTime) : "heure ?"}
+          </span>{" "}
+          — {r.title}
+          {r.contactName ? (
+            <span className="text-[color:var(--color-admin-fg-muted)]"> · {r.contactName}</span>
+          ) : null}
+        </span>
+        <span className="flex shrink-0 flex-wrap items-center justify-end gap-2">
+          <PastillePublic titre={r.title} />
+          <PastilleFormat format={r.format} />
+          <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            {RDV_STATUS_LABELS[r.status]} ›
+          </span>
+        </span>
+      </Link>
+    </li>
+  );
+}
+
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
   searchParams: Promise<Record<string, string | undefined>>;
@@ -118,13 +212,16 @@ export default async function AppelsPage({
 
   const sp = await searchParams;
   const base = `/fr/${adminPrefix}/contacts/appels`;
-  const vue = sp["vue"] === "calendrier" ? "calendrier" : "liste";
+  // « Jour » par défaut (2026-09-19) : les deux autres vues se demandent.
+  const vue = sp["vue"] === "calendrier" ? "calendrier" : sp["vue"] === "liste" ? "liste" : "jour";
+  const publicRdv = lirePublic(sp["public"]);
+  const optionsPublic = publicRdv ? { public: publicRdv } : {};
   const apiConfigured = isCalendlyApiConfigured();
 
   const header = (
     <AdminPageHeader
       title="Appels réservés"
-      description="Créneaux pris via le widget Calendly de la page /appel — le seul rendez-vous réservable côté public."
+      description="Appels clients et échanges apporteurs réservés via Calendly — la pastille dit à qui s'adresse chaque rendez-vous."
       actions={
         <div className="flex gap-2">
           <ManualCalendlyEventButton />
@@ -142,15 +239,44 @@ export default async function AppelsPage({
     />
   );
 
+  // Le filtre de public SUIT l'utilisateur d'une vue à l'autre, et la vue suit
+  // le changement de public : sinon chaque clic en défait un autre.
+  const choixPublic: ReadonlyArray<{ value: string; label: string; cible?: PublicRdv }> = [
+    { value: "tous", label: "Tous" },
+    { value: "clients", label: "Clients", cible: "clients" },
+    { value: "apporteurs", label: "Apporteurs", cible: "apporteurs" },
+  ];
   const tabs = (
-    <AdminFilterTabs
-      label="Vue"
-      current={vue}
-      options={[
-        { value: "liste", label: "Liste", href: base },
-        { value: "calendrier", label: "Calendrier", href: `${base}?vue=calendrier` },
-      ]}
-    />
+    <div className="flex flex-wrap gap-[var(--space-admin-4)]">
+      <AdminFilterTabs
+        label="Vue"
+        current={vue}
+        options={[
+          { value: "jour", label: "Jour", href: lien(base, { public: publicRdv }) },
+          { value: "liste", label: "Liste", href: lien(base, { vue: "liste", public: publicRdv }) },
+          {
+            value: "calendrier",
+            label: "Calendrier",
+            href: lien(base, { vue: "calendrier", public: publicRdv }),
+          },
+        ]}
+      />
+      <AdminFilterTabs
+        label="Public"
+        current={publicRdv ?? "tous"}
+        options={choixPublic.map(({ value, label, cible }) => ({
+          value,
+          label,
+          href: lien(base, {
+            vue: vue === "jour" ? undefined : vue,
+            public: cible,
+            year: vue === "calendrier" ? sp["year"] : undefined,
+            month: vue === "calendrier" ? sp["month"] : undefined,
+            date: vue === "liste" ? undefined : sp["date"],
+          }),
+        }))}
+      />
+    </div>
   );
 
   // Bandeau honnête sur ce que la capture gratuite sait — et ne sait pas —
@@ -196,13 +322,13 @@ export default async function AppelsPage({
     const year = sp["year"] ? parseInt(sp["year"], 10) : now.getFullYear();
     const month = sp["month"] ? parseInt(sp["month"], 10) : now.getMonth() + 1;
     const selectedDate = sp["date"] ?? null;
-    const byDay = await getRdvMonth(year, month);
+    const byDay = await getRdvMonth(year, month, optionsPublic);
     const monthTotal = [...byDay.values()].reduce((n, a) => n + a.length, 0);
 
     const days: MonthGridDay[] = [...byDay.entries()].map(([dayKey, arr]) => ({
       dayKey,
       count: arr.length,
-      href: `${base}?vue=calendrier&year=${year}&month=${month}&date=${dayKey}`,
+      href: lien(base, { vue: "calendrier", public: publicRdv, year, month, date: dayKey }),
       selected: dayKey === selectedDate,
     }));
 
@@ -222,18 +348,22 @@ export default async function AppelsPage({
 
         <div className="mt-[var(--space-admin-3)] mb-[var(--space-admin-4)] flex flex-wrap items-center gap-2">
           <AdminButton
-            href={`${base}?vue=calendrier&year=${prev.y}&month=${prev.m}`}
+            href={lien(base, { vue: "calendrier", public: publicRdv, year: prev.y, month: prev.m })}
             variant="ghost"
             size="sm"
             icon={ArrowLeft}
           >
             {MONTHS[prev.m - 1]}
           </AdminButton>
-          <AdminButton href={`${base}?vue=calendrier`} variant="ghost" size="sm">
+          <AdminButton
+            href={lien(base, { vue: "calendrier", public: publicRdv })}
+            variant="ghost"
+            size="sm"
+          >
             Aujourd&apos;hui
           </AdminButton>
           <AdminButton
-            href={`${base}?vue=calendrier&year=${next.y}&month=${next.m}`}
+            href={lien(base, { vue: "calendrier", public: publicRdv, year: next.y, month: next.m })}
             variant="ghost"
             size="sm"
             iconAfter={ArrowRight}
@@ -258,35 +388,69 @@ export default async function AppelsPage({
             ) : (
               <ul className="mt-[var(--space-admin-3)] space-y-2">
                 {dayRdv.map((r) => (
-                  <li key={r.key}>
-                    <Link
-                      href={r.detailHref}
-                      className="flex items-center justify-between rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-3 hover:bg-[color:var(--color-admin-surface-hover)]"
-                    >
-                      <span>
-                        <span className="font-semibold">
-                          {r.timeConfirmed && r.startTime ? timeInParis(r.startTime) : "heure ?"}
-                        </span>{" "}
-                        — {r.title}
-                        {r.contactName ? (
-                          <span className="text-[color:var(--color-admin-fg-muted)]">
-                            {" "}
-                            · {r.contactName}
-                          </span>
-                        ) : null}
-                      </span>
-                      <span className="flex shrink-0 items-center gap-2">
-                        <PastilleFormat format={r.format} />
-                        <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                          {RDV_STATUS_LABELS[r.status]} ›
-                        </span>
-                      </span>
-                    </Link>
-                  </li>
+                  <LigneRdv key={r.key} r={r} />
                 ))}
               </ul>
             )}
           </div>
+        )}
+      </>
+    );
+  }
+
+  // ── Vue jour (par défaut) ─────────────────────────────────────────────────
+  //
+  // Lit le mois du jour demandé et n'en garde que ce jour : c'est la même
+  // requête que le calendrier, donc les deux vues ne peuvent pas diverger sur
+  // ce qu'elles comptent.
+  if (vue === "jour") {
+    const aujourdhui = dayKeyInParis(new Date());
+    const jour = lireJour(sp["date"]) ?? aujourdhui;
+    const [anneeJour = 1970, moisJour = 1] = jour.split("-").map(Number);
+    const rdvJour = (await getRdvMonth(anneeJour, moisJour, optionsPublic)).get(jour) ?? [];
+    const veille = decalerJour(jour, -1);
+    const lendemain = decalerJour(jour, 1);
+
+    return (
+      <>
+        {header}
+        <div className="mb-[var(--space-admin-4)]">{tabs}</div>
+        {banner}
+
+        <div className="mt-[var(--space-admin-4)] mb-[var(--space-admin-4)] flex flex-wrap items-center gap-2">
+          <AdminButton
+            href={lien(base, { public: publicRdv, date: veille })}
+            variant="ghost"
+            size="sm"
+            icon={ArrowLeft}
+          >
+            {formatDateFrShort(veille)}
+          </AdminButton>
+          <AdminButton href={lien(base, { public: publicRdv })} variant="ghost" size="sm">
+            Aujourd&apos;hui
+          </AdminButton>
+          <AdminButton
+            href={lien(base, { public: publicRdv, date: lendemain })}
+            variant="ghost"
+            size="sm"
+            iconAfter={ArrowRight}
+          >
+            {formatDateFrShort(lendemain)}
+          </AdminButton>
+        </div>
+
+        <h2 className="admin-h2">
+          {jour === aujourdhui ? "Aujourd'hui," : "Rendez-vous du"} {formatDateFrShort(jour)} ·{" "}
+          {rdvJour.length} rendez-vous
+        </h2>
+        {rdvJour.length === 0 ? (
+          <p className="text-[color:var(--color-admin-fg-muted)]">Aucun rendez-vous ce jour.</p>
+        ) : (
+          <ul className="mt-[var(--space-admin-3)] space-y-2">
+            {rdvJour.map((r) => (
+              <LigneRdv key={r.key} r={r} />
+            ))}
+          </ul>
         )}
       </>
     );
@@ -297,6 +461,7 @@ export default async function AppelsPage({
   const { rows, total } = await listRendezVous({
     page,
     pageSize: PAGE_SIZE,
+    ...optionsPublic,
     ...(sp["status"] ? { status: sp["status"] as NonNullable<RdvFilters["status"]> } : {}),
     ...(sp["q"] ? { q: sp["q"] } : {}),
     ...(sp["from"] ? { from: sp["from"] } : {}),
@@ -320,6 +485,7 @@ export default async function AppelsPage({
       ),
     },
     { key: "title", header: "Type d'appel", cell: (r) => r.title },
+    { key: "public", header: "Public", cell: (r) => <PastillePublic titre={r.title} /> },
     {
       key: "contact",
       header: "Contact",
@@ -381,7 +547,11 @@ export default async function AppelsPage({
         page={page}
         totalPages={totalPages}
         baseHref={base}
+        // `vue` et `public` voyagent avec la page : sans eux, « page 2 »
+        // ramènerait sur la vue Jour, désormais celle par défaut.
         preservedParams={{
+          vue: "liste",
+          public: publicRdv,
           status: sp["status"],
           q: sp["q"],
           from: sp["from"],

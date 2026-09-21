@@ -26,6 +26,7 @@ import { formatDateFrShort } from "@/lib/format-date-fr";
 import { CandidatureCommercialeDetail } from "./CandidatureCommercialeDetail";
 import { BlocInvitationApporteur } from "@/components/admin/contacts/BlocInvitationApporteur";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
+import { RendezVousApporteur } from "@/components/admin/contacts/RendezVousApporteur";
 
 interface Props {
   adminPrefix: string;
@@ -202,6 +203,14 @@ export async function SubmissionDetailContent({
             submissionId={submission.id}
             resultat={invitation}
             details={details}
+          />
+        ) : null}
+        {/* L'échange réservé, juste sous l'invitation qui l'a provoqué
+            (2026-09-19). Le bloc décide lui-même du rôle avant de lire. */}
+        {estContactApporteur ? (
+          <RendezVousApporteur
+            submissionId={submission.id}
+            role={(session.user as { role?: string | null }).role}
           />
         ) : null}
         {candidature ? (

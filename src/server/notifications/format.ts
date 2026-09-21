@@ -15,6 +15,7 @@ import { careerCategoryLabel } from "@/content/careers/categories";
 import { adminPath } from "@/lib/admin-path";
 import { SITE_URL } from "@/lib/site-url";
 import { LIBELLE_CANAL, type CanalRendezVous } from "@/server/calendly/canal";
+import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 
 const SEVERITY_EMOJI: Record<NotificationSeverity, string> = {
   info: "🟢",
@@ -64,7 +65,9 @@ const TITLES: Record<NotificationCategory, string> = {
   RECRUITMENT_RECEIVED: "Candidature spontanée",
   JOB_APPLICATION_RECEIVED: "Candidature à une offre",
   VIDEO_EDITOR_APPLICATION_RECEIVED: "Candidature monteur vidéo",
-  COMMERCIAL_APPLICATION_RECEIVED: "Candidature commercial",
+  // « apporteur », jamais « commercial » (2026-09-19) : la personne recommande,
+  // elle ne vend pas. Titre partagé avec WhatsApp, qui ne voit que la catégorie.
+  COMMERCIAL_APPLICATION_RECEIVED: "Nouveau candidat apporteur",
   JOB_OFFERS_STALE: "Offres d'emploi à republier",
   JOB_APPLICATIONS_STALE: "Candidatures oubliées",
   REVIEW_SUBMITTED: "Nouvel avis à modérer",
@@ -82,6 +85,9 @@ const TITLES: Record<NotificationCategory, string> = {
   OPTION_CONFIRMED: "Option confirmée",
   OPTION_REFUSED: "Option refusée",
   OPTION_EXPIRED: "Option expirée",
+  // Titre de REPLI : WhatsApp ne reçoit que la catégorie (aucune donnée), et
+  // Telegram l'affiche quand le type d'événement manque. Sinon Telegram précise
+  // « apporteur » ou « client » — cf. `titreDe`.
   CALENDLY_INVITEE_CREATED: "Nouvelle réservation",
   CALENDLY_INVITEE_CANCELED: "Rendez-vous annulé",
   CALENDLY_INVITEE_RESCHEDULED: "Rendez-vous déplacé",
@@ -203,6 +209,28 @@ function libelleFormat(v: string | undefined): string | undefined {
   return v in LIBELLE_CANAL ? LIBELLE_CANAL[v as CanalRendezVous] : undefined;
 }
 
+/**
+ * Titre d'une alerte Telegram : celui de la catégorie, précisé quand le
+ * payload permet de dire À QUI s'adresse le rendez-vous (2026-09-19).
+ *
+ * Un échange avec un candidat apporteur et un appel de découverte client
+ * tombent dans la même catégorie et le même salon (B6 : routage inchangé). Le
+ * titre est donc le seul endroit où les distinguer sans ouvrir le message.
+ *
+ * 🔑 DÉRIVÉ du nom du type d'événement, que le payload porte déjà : AUCUN champ
+ * n'est ajouté au contrat. Un payload d'avant se formate donc exactement comme
+ * un payload d'aujourd'hui. Sans nom de type (payload incomplet), on garde le
+ * titre neutre plutôt que d'affirmer « client » sans le savoir.
+ */
+function titreDe(event: NotificationEvent): string {
+  if (event.category === "CALENDLY_INVITEE_CREATED") {
+    const nomType = (event.payload as { eventName?: unknown }).eventName;
+    if (typeof nomType !== "string" || nomType.trim() === "") return TITLES[event.category];
+    return estAppelApporteur(nomType) ? "Échange apporteur réservé" : "Appel client réservé";
+  }
+  return TITLES[event.category];
+}
+
 function formatBody(event: NotificationEvent): string {
   switch (event.category) {
     case "CONTACT_FORM_SUBMITTED":
@@ -279,9 +307,11 @@ function formatBody(event: NotificationEvent): string {
         p.b2bYears ? formatKV("Expérience B2B", p.b2bYears) : null,
         p.availability ? formatKV("Disponible", p.availability) : null,
         formatKV("Utilise l'IA", p.usesAi ? "oui" : "non"),
+        // Ouvre la fiche DIRECTEMENT sur le bloc d'invitation : le geste qui
+        // suit l'alerte est d'inviter la personne à l'échange de 15 minutes.
         formatKV(
           "Voir en console",
-          `${SITE_URL}${adminPath("fr", "contacts/commercial")}/${p.submissionId}`,
+          `${SITE_URL}${adminPath("fr", "contacts/commercial")}/${p.submissionId}#invitation`,
         ),
       ]
         .filter((v): v is string => v !== null)
@@ -593,7 +623,7 @@ export function formatNotification(
   severity: NotificationSeverity,
 ): FormattedMessage {
   const emoji = SEVERITY_EMOJI[severity];
-  const title = TITLES[event.category];
+  const title = titreDe(event);
   const theme = THEME[telegramGroupFor(event.category)];
   const header =
     `${theme.emoji} *${escapeMarkdownV2(theme.label)}* · ` +
