@@ -1,11 +1,11 @@
 // Le dossier apporteur ne part pas au CRM — garde statique.
 //
 // ── Pourquoi une garde, en plus du test de l'action ───────────────────────
-// Ordre de Will du 04/09 : « rien ne part au CRM sans ma validation ». Il a
-// pourtant été contourné pendant un mois : le dossier complet du tunnel
-// apporteurs appelait `syncCandidateToCrm`, et 9 dossiers sont partis au CRM
-// entre le 17/08 et le 16/09 (mesure R8 du 19/09). La décision B2 du 19/09
-// coupe cet envoi.
+// Ordre de Will du 04/09 : « rien ne part au CRM sans ma validation ». Le
+// dossier complet du tunnel apporteurs appelait pourtant `syncCandidateToCrm`,
+// et des dossiers sont effectivement partis (mesure R8 du 19/09 ; le détail est
+// tenu hors de ce dépôt, qui est PUBLIC). La décision B2 du 19/09 coupe cet
+// envoi.
 //
 // Le test de `submitCommercialApplicationAction` prouve que l'action ne l'appelle
 // plus. Il ne dit rien du fichier voisin : une nouvelle action du tunnel (une

@@ -2,8 +2,9 @@
 //
 // ── La décision, et ce qu'elle corrige ────────────────────────────────────
 // Ordre de Will du 04/09 : « rien ne part au CRM sans ma validation ». Le dossier
-// complet appelait pourtant `syncCandidateToCrm`, et 9 fiches d'apporteurs sont
-// arrivées au CRM entre le 17/08 et le 16/09 (mesure R8 du 19/09). La décision
+// complet appelait pourtant `syncCandidateToCrm`, et des fiches d'apporteurs y sont
+// effectivement arrivées (mesure R8 du 19/09 ; le détail est tenu hors de ce dépôt,
+// qui est PUBLIC). La décision
 // B2 du 19/09 coupe cet envoi ; la case « vivier 2 ans », qui n'existait que
 // pour le CRM, disparaît avec lui.
 //

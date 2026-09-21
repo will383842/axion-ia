@@ -382,9 +382,9 @@ export async function submitCommercialApplicationAction(
     // Partners prend le relais au contrat (ADR 0051).
     //
     // 🔴 L'envoi existait jusqu'au 19/09 (synchro candidat, famille
-    // `candidat_commercial`) : 9 dossiers sont arrivés au CRM entre le 17/08 et
-    // le 16/09 — leur sort revient à Will. Le remettre ici rouvrirait un canal
-    // que l'ordre du 04/09 ferme ; la garde
+    // `candidat_commercial`), et des dossiers sont effectivement partis : leur
+    // sort revient à Will, le chiffre est tenu hors de ce dépôt PUBLIC. Le
+    // remettre ici rouvrirait un canal que l'ordre du 04/09 ferme ; la garde
     // `tests/unit/ci/le-dossier-apporteur-ne-part-pas-au-crm.spec.ts` refuse
     // tout import de `@/server/crm-sync` dans ce dossier.
 

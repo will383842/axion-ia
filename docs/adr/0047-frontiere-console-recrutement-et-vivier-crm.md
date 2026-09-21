@@ -195,8 +195,8 @@ lui, **à chaque nouvelle candidature**, dès que les deux drapeaux `CRM_SYNC_*`
 « Sans effet tant que le premier est fermé » était vrai pour le stock, **faux pour les
 nouvelles candidatures apporteurs**.
 
-Mesure R8 du 2026-09-19 : **9 dossiers apporteurs** sont arrivés au CRM entre le 17/08 et
-le 16/09 (`application_submitted` : 8 créations, 1 mise à jour).
+La mesure R8 du 2026-09-19 a chiffré ce qui était effectivement parti sur la période.
+Le détail est tenu **hors de ce dépôt**, qui est public.
 
 **Décision B2 (Will, 2026-09-19) : l'envoi est coupé.** Les dossiers
 `site-candidature-commerciale` ne partent plus au CRM ; la case « vivier 2 ans » du
@@ -205,8 +205,8 @@ formulaire, qui n'existait que pour lui, est retirée (version de consentement
 console ↔ Axion Partners : **ADR 0051**. Le rapprochement quotidien
 (`crm-sync/reconcile.ts`) ne les réclame plus.
 
-⛔ **Les 9 fiches déjà au CRM y restent** : leur sort revient à Will. Rien dans ce dépôt ne
-les touche, et aucune session ne les touche côté CRM.
+⛔ **Les fiches déjà transmises y restent** : leur sort revient à Will. Rien dans ce dépôt
+ne les touche, et aucune session ne les touche côté CRM.
 
 `/carrieres` n'est pas concerné : ses candidatures aux offres suivent toujours ce qui
 précède.

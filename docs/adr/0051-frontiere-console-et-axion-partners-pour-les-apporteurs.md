@@ -11,9 +11,8 @@ Trois systèmes voient un candidat apporteur, et aucun document ne disait lequel
 à quel moment :
 
 - la **console** du site, où arrivent le premier contact, le dossier et l'échange ;
-- le **CRM Pro**, qui recevait le dossier complet jusqu'au 2026-09-19 — contre l'ordre
-  de Will du 2026-09-04 (« rien ne part au CRM sans ma validation ») : 9 dossiers y sont
-  arrivés entre le 17/08 et le 16/09 (ADR 0047, § 4 bis, paragraphe du 2026-09-19) ;
+- le **CRM Pro**, qui recevait le dossier complet jusqu'au 2026-09-19, alors que la règle
+  du 2026-09-04 est que rien n'y part sans la validation de Will ;
 - **Axion Partners** (`axion-apporteurs`), l'application qui portera l'apporteur sous
   contrat, et qui n'a aucune production aujourd'hui (ni application, ni DNS).
 
@@ -134,10 +133,10 @@ continue donc de le réclamer s'il n'a pas été émis.
 
 ## Ce que cette décision coûte
 
-- **Les 9 fiches déjà au CRM y restent** tant que Will n'en a pas décidé (geste W4, hors
-  de ce dépôt). Ce dépôt ne les touche pas, et aucune session ne les touche côté CRM ;
-  qu'une opposition posée ici après le 19/09 leur parvienne n'est pas établi par cet ADR
-  — c'est à vérifier au moment de W4.
+- **Les fiches déjà transmises au CRM y restent** tant que Will n'en a pas décidé
+  (geste W4, hors de ce dépôt). Ce dépôt ne les touche pas, et aucune session ne les
+  touche côté CRM. Le détail de ce qui reste à vérifier au moment de W4 est tenu hors
+  du dépôt.
 - **La console porte seule la charge jusqu'au contrat**, sans import. Si le volume dépasse
   les seuils du point b, c'est cet ADR qu'il faut rouvrir, pas un import qu'il faut
   ajouter en silence.
