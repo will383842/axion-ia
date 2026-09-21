@@ -158,32 +158,6 @@ export async function replyToSubmissionAction(
     Sentry.captureException(e);
   }
 
-  // 🔴 REPONDRE ARRETE LES RELANCES EN ATTENTE. Demande de Will, mot pour mot :
-  // « il faudrait prévoir que je puisse répondre manuellement à des
-  // candidatures sans passer par le circuit normal, pour éviter d'avoir des
-  // messages en doublons ».
-  //
-  // Le doublon est réel et il est ICI : les rappels « ton dossier t'attend »
-  // sont des jobs RETARDES qui dorment dans Redis jusqu'à J+2 et J+7. Deux
-  // choses seulement les arrêtaient — la personne termine son dossier, ou elle
-  // s'oppose. **Rien ne les arrêtait parce qu'on lui avait répondu.** Elle
-  // recevait donc notre réponse, puis deux relances automatiques qui
-  // l'ignoraient.
-  //
-  // APRES l'envoi, et sans le défaire : un retrait qui échoue ne doit pas
-  // transformer une réponse partie en échec. Même doctrine que l'archivage.
-  const adresseClaire = decryptPii(submission.contactEmail);
-  if (adresseClaire) {
-    try {
-      await annulerRelancesLeadApporteur(
-        adresseClaire,
-        "Envoi annulé : une réponse a été envoyée depuis la console.",
-      );
-    } catch (e) {
-      Sentry.captureException(e, { tags: { step: "annuler-relances-apres-reponse" } });
-    }
-  }
-
   revalidatePath(adminPath("fr", "contacts/messages"));
   revalidatePath(adminPath("fr", `contacts/messages/${submission.id}`));
   // Sprint Notif Infra 2026-05-26 / fix P1-1 audit 2026-05-27 — invalide le
@@ -203,6 +177,50 @@ export async function replyToSubmissionAction(
       })
       .catch((e) => Sentry.captureException(e));
     return { ok: false, error: "enqueue_failed", replyId };
+  }
+
+  // ── REPONDRE ARRETE LES RELANCES EN ATTENTE ────────────────────────────
+  // Demande de Will, mot pour mot : « je voudrais pouvoir repondre manuellement
+  // sans passer par le circuit normal, pour eviter d'avoir des messages en
+  // doublons ». Les rappels « ton dossier t'attend » sont des jobs RETARDES qui
+  // dorment dans Redis jusqu'a J+2 et J+7 ; rien ne les arretait parce qu'on
+  // avait repondu.
+  //
+  // 🔴 DEUX CONDITIONS, ET J'AVAIS OUBLIE LES DEUX.
+  //
+  // 1. SEULEMENT SUR UN DOSSIER APPORTEUR. `annulerRelancesLeadApporteur`
+  //    retrouve les jobs par l'EMPREINTE DE L'ADRESSE, jamais par la fiche — et
+  //    `ReplyComposer` est monte sur TOUTE fiche de la console. Sans ce garde,
+  //    repondre a un simple message /contact retirait, en silence, les relances
+  //    programmees par la candidature d'apporteur de la meme personne, et
+  //    inscrivait au journal des envois un motif qui designe une reponse faite
+  //    sur un AUTRE dossier.
+  //
+  //    ⚠️ Le garde existait deja, dix lignes plus bas, dans `transitions.ts` —
+  //    avec le commentaire qui decrit ce scenario mot pour mot. Je l'avais ecrit
+  //    et pas applique ici : corriger le cas qu'on vous nomme n'est pas corriger
+  //    la famille.
+  //
+  // 2. SEULEMENT SI LA REPONSE EST PARTIE. Ce bloc tournait AVANT le
+  //    branchement ci-dessus : file indisponible ⇒ la personne ne recevait NI la
+  //    reponse NI les relances, et le journal affirmait un envoi qui n'avait pas
+  //    eu lieu. Elle sortait du tunnel en silence.
+  //
+  // Best-effort a partir d'ici : un retrait qui echoue ne transforme pas une
+  // reponse PARTIE en echec — sinon Will recommence, et la personne recoit deux
+  // fois la meme reponse. C'est exactement le doublon qu'on evite.
+  if (estApporteur(submission.details)) {
+    const adresseClaire = decryptPii(submission.contactEmail);
+    if (adresseClaire) {
+      try {
+        await annulerRelancesLeadApporteur(
+          adresseClaire,
+          "Envoi annulé : une réponse a été envoyée depuis la console.",
+        );
+      } catch (e) {
+        Sentry.captureException(e, { tags: { step: "annuler-relances-apres-reponse" } });
+      }
+    }
   }
 
   return { ok: true, replyId };
@@ -235,12 +253,7 @@ export interface ResultatGeste {
 async function geste(
   id: string,
   transition:
-    | "traite"
-    | "archiver"
-    | "desarchiver"
-    | "sans-suite"
-    | "remettre"
-    | "repondu-ailleurs",
+    "traite" | "archiver" | "desarchiver" | "sans-suite" | "remettre" | "repondu-ailleurs",
 ): Promise<ResultatGeste> {
   let session: { userId: string };
   try {

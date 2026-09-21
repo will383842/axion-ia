@@ -39,6 +39,7 @@ vi.mock("@/server/queue/queues", () => ({
 }));
 
 import { executerPassage, PASSAGES } from "../rappels-appel";
+import { HORS_APPELS_APPORTEUR, SEULS_APPELS_APPORTEUR } from "../appel-apporteur";
 
 /**
  * Le passage cherché par son MOMENT, jamais par son index.
@@ -257,6 +258,23 @@ describe("les trois moments partagent un cœur, pas un marqueur", () => {
       expect(new Set(marqueurs).size, `deux moments ${destinataire} partagent un marqueur`).toBe(
         duPublic.length,
       );
+    }
+  });
+
+  it("🔴 le FILTRE de chaque passage correspond à son public", () => {
+    // ⚠️ Le test suivant vérifie une propriété de la TABLE ; celui-ci vérifie
+    // la requête. Une relecture a montré que je confondais les deux : sans cette
+    // assertion, écrire `filtre: HORS_APPELS_APPORTEUR` sur un passage apporteur
+    // laissait TOUT vert — et ce passage serait allé chercher des appels
+    // CLIENTS pour leur envoyer un message d'apporteur, en posant au passage un
+    // marqueur partagé qui aurait fait taire le vrai rappel client.
+    //
+    // 🔑 C'est la SEULE assertion qui relie la table au monde. Les autres se
+    // vérifient entre elles.
+    for (const p of PASSAGES) {
+      const attendu =
+        p.destinataire === "apporteur" ? SEULS_APPELS_APPORTEUR : HORS_APPELS_APPORTEUR;
+      expect(p.filtre, `${p.moment} / ${p.destinataire} : mauvais filtre`).toBe(attendu);
     }
   });
 

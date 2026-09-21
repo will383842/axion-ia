@@ -69,6 +69,8 @@ vi.mock("@/features/commercial-application/relances-lead-apporteur", () => ({
 // ---------------------------------------------------------------------------
 
 const VALID_UUID = "11111111-1111-1111-1111-111111111111";
+/** Les deux marqueurs du prédicat unique `estApporteur`. */
+const APPORTEUR = { unifiedType: "recrutement", subType: "candidature-commerciale" };
 const REPLY_ID = "ckxxxxxx";
 
 beforeEach(() => {
@@ -181,13 +183,15 @@ describe("🔴 répondre depuis la console ARRÊTE les relances en attente", () 
   // poserait `relancesArretees: true` sans toucher à la file passerait toute
   // garde écrite sur l'état de la fiche — et la personne recevrait quand même
   // ses deux relances.
-  async function repondre() {
+  /** 🔑 Une fiche APPORTEUR : c'est la seule population dont les relances se retirent. */
+  async function repondre(details: unknown = APPORTEUR) {
     submissionFindUnique.mockResolvedValueOnce({
       id: VALID_UUID,
       contactEmail: "lea@exemple.invalid",
       locale: "fr",
       status: "new",
       firstRepliedAt: null,
+      details,
     });
     const { replyToSubmissionAction } = await import("../reply-actions");
     return replyToSubmissionAction({
@@ -203,6 +207,38 @@ describe("🔴 répondre depuis la console ARRÊTE les relances en attente", () 
     expect(r.ok).toBe(true);
     expect(annulerRelancesMock).toHaveBeenCalledTimes(1);
     expect(String(annulerRelancesMock.mock.calls[0]?.[1] ?? "")).toContain("réponse");
+  });
+
+  it("🔴 une fiche qui N'EST PAS un dossier apporteur : on ne touche à RIEN", async () => {
+    // Le défaut que ce test attrape, et il était DOUBLE.
+    //
+    // `annulerRelancesLeadApporteur` retrouve les jobs par l'EMPREINTE DE
+    // L'ADRESSE, jamais par la fiche. Et `ReplyComposer` est monté sur TOUTE
+    // fiche de la console. Sans garde : Léa dépose une candidature d'apporteur
+    // (relances J+2 et J+7 posées), envoie aussi un message /contact sans
+    // rapport, Will répond à CE message — et ses deux relances disparaissent en
+    // silence, avec au journal un motif qui parle d'une réponse faite ailleurs.
+    //
+    // ⚠️ Le précédent test de ce bloc montait une fiche SANS `details` : il
+    // ENTÉRINAIT l'absence de garde au lieu de l'attraper.
+    const r = await repondre({ unifiedType: "contact" });
+
+    expect(r.ok).toBe(true);
+    expect(annulerRelancesMock).not.toHaveBeenCalled();
+  });
+
+  it("🔴 si la réponse N'EST PAS PARTIE, les relances RESTENT", async () => {
+    // File indisponible. Retirer les relances ici ferait sortir la personne du
+    // tunnel EN SILENCE : ni la réponse, ni les rappels — et le journal des
+    // envois affirmerait un envoi qui n'a pas eu lieu.
+    enqueueEmailMock.mockResolvedValueOnce({ enqueued: false });
+    // La reply est alors marquée `failed` : le double du chemin d'échec.
+    submissionReplyUpdate.mockResolvedValueOnce({});
+
+    const r = await repondre();
+
+    expect(r.ok).toBe(false);
+    expect(annulerRelancesMock).not.toHaveBeenCalled();
   });
 
   it("un retrait qui ÉCHOUE ne transforme pas une réponse PARTIE en échec", async () => {
