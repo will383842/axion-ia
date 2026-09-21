@@ -217,6 +217,11 @@ export async function envoyerInvitationApporteur(input: {
   }
   // Même prédicat que la liste « Apporteurs » : on n'invite que ceux qui y
   // figurent (2026-09-19, prédicat unique).
+  //
+  // `details` sert plus bas (origine de la saisie, accord, provenance art. 14) :
+  // il est lu ICI, une fois. Perdre cette ligne fait échouer la provenance
+  // trente lignes plus loin, sans erreur de compilation — mesuré au pré-push.
+  const details = lireDetails(ligne.details);
   if (!estApporteur(ligne.details)) {
     return {
       ok: false,
