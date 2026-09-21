@@ -44,7 +44,6 @@ import {
   GraduationCap,
   Bot,
   Mail,
-  Megaphone,
   Gauge,
   Cog,
   CircleAlert,
@@ -95,7 +94,8 @@ const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
   "image-bank": Images,
   presse: Newspaper,
   chatbot: Bot,
-  engagement: Megaphone,
+  // Groupe `engagement` supprimé le 2026-09-19 : sa seule entrée, la
+  // newsletter, a rejoint « E-mails ».
   emails: Mail,
   ops: Gauge,
   system: Cog,

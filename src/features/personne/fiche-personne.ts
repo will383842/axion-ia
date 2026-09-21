@@ -38,7 +38,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
-import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
+import { estApporteur as estDetailsApporteur } from "@/lib/commercial-application/est-apporteur";
 
 /** Les deux mondes, tenus séparés jusque dans le type. */
 export type MondeTrace = "apporteur" | "emploi" | "autre";
@@ -138,9 +138,9 @@ export async function lireFichePersonne(empreinte: string): Promise<FichePersonn
     // jamais posé par le formulaire public. C'est déjà le filtre de la file
     // commerciale de la console (`admin-job-applications/actions.ts`) : cette
     // vue lit donc la MÊME population, sans redéfinir la sienne. Les quatre
-    // producteurs écrivent les DEUX clés : on exige les deux.
-    const estApporteur =
-      d?.unifiedType === "recrutement" && d?.subType === CANDIDATURE_COMMERCIALE_SUBTYPE;
+    // producteurs écrivent les DEUX clés : on exige les deux — par le
+    // prédicat UNIQUE (2026-09-19), celui de la liste et de la fiche.
+    const estApporteur = estDetailsApporteur(d);
     nom ??= dechiffrer(s.contactName);
     traces.push({
       id: s.id,

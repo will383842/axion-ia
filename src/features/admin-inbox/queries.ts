@@ -34,6 +34,7 @@ import { listApplications } from "@/features/admin-job-applications/reads";
 import { listRendezVous } from "@/features/admin-rendezvous/queries";
 import { RDV_STATUS_LABELS } from "@/features/admin-rendezvous/types";
 import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
+import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { podcastRequestStatusLabel } from "@/features/admin-podcast-requests/statuses";
 import type { InboxChannel, InboxItem } from "./types";
 import { ENTITY_BY_CHANNEL, fetchReadIds } from "./reads";
@@ -106,7 +107,14 @@ async function fetchMessages(): Promise<InboxItem[]> {
     sourceId: s.id,
     unread: false,
     channel: "message" as const,
-    detailHref: adminPath("fr", `contacts/messages/${s.id}`),
+    // Un apporteur s'ouvre sur SA fiche (2026-09-19) — retour vers la liste
+    // des apporteurs, résultat de l'invitation —, comme depuis Messages.
+    detailHref: adminPath(
+      "fr",
+      estApporteur({ unifiedType: s.unifiedType, subType: s.subType })
+        ? `contacts/commercial/${s.id}`
+        : `contacts/messages/${s.id}`,
+    ),
     receivedAt: s.submittedAt,
     subject: resolveSubmissionLabel(s.type, s.unifiedType),
     contactName: s.contactName || null,

@@ -1,21 +1,18 @@
-// Contacts admin — onglet « Clients » : demandes de prestation / projet
-// (audit, intégration, formation, coaching 1-to-1, devis, support client).
-// Vue filtrée multi-types de SubmissionsV2. Détail → /contacts/messages/[id].
+// Contacts admin — « Demandes clients » : demandes de prestation / projet
+// (audit, intégration, formation, coaching 1-to-1, devis, support client,
+// simulateur de gain). Vue filtrée multi-types de SubmissionsV2.
+// Détail → /contacts/messages/[id].
 
 import { SubmissionsV2 } from "../../submissions/_v2/SubmissionsV2";
 import { gardePage } from "@/server/auth/garde-page";
+import { PERIMETRE_CLIENT } from "@/lib/contact/perimetre-client";
 
 export const dynamic = "force-dynamic";
 
-// Types unifiés considérés comme « demande client / prestation ».
-const CLIENT_TYPES = [
-  "audit",
-  "implementation",
-  "formation",
-  "un_a_un",
-  "devis",
-  "support_client",
-] as const;
+// Types unifiés considérés comme « demande client / prestation » : le
+// périmètre client UNIQUE. La liste recopiée ici avait oublié le simulateur de
+// gain (2026-09-19) — ses leads ne se voyaient que dans Messages.
+const CLIENT_TYPES = PERIMETRE_CLIENT;
 
 interface PageProps {
   params: Promise<{ adminPrefix: string }>;

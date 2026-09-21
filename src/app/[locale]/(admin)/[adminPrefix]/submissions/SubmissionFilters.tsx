@@ -7,13 +7,16 @@ import { UNIFIED_TYPE_LABELS } from "@/features/admin-submissions/type-labels";
 
 // Refonte « Boîte de réception » 2026-07-29 — filtre « Catégorie ».
 //
-// Le sélecteur « Type » ci-dessous porte l'enum DB `SubmissionType`, qui ne
-// compte que 5 valeurs : partenariat, presse, recrutement, speaker,
-// investisseur, support et « autre » y sont TOUS écrasés en « contact ». Il
-// était donc impossible d'isoler la presse depuis cette page — d'où les cinq
-// entrées de sidebar figées qui existaient pour contourner ce manque.
-// Ce second sélecteur expose `details.unifiedType`, le type fin réel (12
-// valeurs, cf. UNIFIED_TYPE_LABELS), et rend ces raccourcis superflus.
+// Il expose `details.unifiedType`, le type fin réel (12 valeurs, cf.
+// UNIFIED_TYPE_LABELS).
+//
+// 🔴 Le sélecteur « Type » qui le précédait a été RETIRÉ le 2026-09-19. Il
+//    portait l'enum de la TABLE (`SubmissionType`, 5 valeurs), où partenariat,
+//    presse, recrutement, speaker, investisseur, support et « autre » sont tous
+//    écrasés en « contact » : deux filtres côte à côte pour la même question,
+//    dont l'un répondait faux — « Contact générique » mélangeait sept
+//    catégories que « Catégorie » distingue. Le paramètre `?type=` reste
+//    compris par le serveur : un lien ancien qui le porte filtre encore.
 //
 // Les deux groupes reprennent la structure du formulaire public : projet IA
 // d'un côté, autres demandes de l'autre.
@@ -53,7 +56,6 @@ export function SubmissionFilters({ initial, hideCategory = false }: FiltersProp
   const router = useRouter();
   const pathname = usePathname();
   const [state, setState] = useState({
-    type: initial.type ?? "all",
     unifiedType: initial.unifiedType ?? "all",
     status: initial.status ?? "all",
     locale: initial.locale ?? "all",
@@ -87,28 +89,6 @@ export function SubmissionFilters({ initial, hideCategory = false }: FiltersProp
   return (
     <form onSubmit={handleSubmit} className="admin-card admin-filters">
       <div className="admin-filters-grid">
-        <div className="admin-field">
-          <label htmlFor="type" className="admin-label">
-            Type
-          </label>
-          <select
-            id="type"
-            value={state.type}
-            onChange={(e) => setState({ ...state, type: e.target.value })}
-            className="admin-input"
-          >
-            <option value="all">Tous</option>
-            <option value="audit">Audit</option>
-            <option value="implementation">Implémentation</option>
-            <option value="intervention">Intervention (Formation / 1-to-1)</option>
-            <option value="contact">
-              Contact générique (Partenariat / Presse / Recrutement / Speaker / Investisseur /
-              Support / Autre)
-            </option>
-            <option value="quote_request">Devis</option>
-          </select>
-        </div>
-
         {hideCategory ? null : (
           <div className="admin-field">
             <label htmlFor="unifiedType" className="admin-label">

@@ -113,6 +113,11 @@ const PAGES_ADMIN = [
   //
   // Les routes à segment dynamique (`[id]`) restent hors périmètre : elles
   // demandent une donnée de seed stable, ce qui est un lot en soi.
+  //
+  // −9 le 2026-09-19 : les neuf écrans vides de la banque d'images (analytics,
+  // bulk-import, categories, licensing, seo-audit, settings, sitemap-status,
+  // tags, taxonomy) sont SUPPRIMÉS avec leurs routes. Retirés ligne par ligne ;
+  // library, quality, upload et usage-logs, qui existent, restent mesurés.
   // ═══════════════════════════════════════════════════════════════════
   { path: `/fr/${ADMIN_PREFIX}/2fa/setup`, label: "/2fa/setup" },
   { path: `/fr/${ADMIN_PREFIX}/activity-logs`, label: "/activity-logs" },
@@ -350,17 +355,8 @@ const PAGES_ADMIN = [
   { path: `/fr/${ADMIN_PREFIX}/help`, label: "/help" },
   { path: `/fr/${ADMIN_PREFIX}/help/new`, label: "/help/new" },
   { path: `/fr/${ADMIN_PREFIX}/image-bank`, label: "/image-bank" },
-  { path: `/fr/${ADMIN_PREFIX}/image-bank/analytics`, label: "/image-bank/analytics" },
-  { path: `/fr/${ADMIN_PREFIX}/image-bank/bulk-import`, label: "/image-bank/bulk-import" },
-  { path: `/fr/${ADMIN_PREFIX}/image-bank/categories`, label: "/image-bank/categories" },
   { path: `/fr/${ADMIN_PREFIX}/image-bank/library`, label: "/image-bank/library" },
-  { path: `/fr/${ADMIN_PREFIX}/image-bank/licensing`, label: "/image-bank/licensing" },
   { path: `/fr/${ADMIN_PREFIX}/image-bank/quality`, label: "/image-bank/quality" },
-  { path: `/fr/${ADMIN_PREFIX}/image-bank/seo-audit`, label: "/image-bank/seo-audit" },
-  { path: `/fr/${ADMIN_PREFIX}/image-bank/settings`, label: "/image-bank/settings" },
-  { path: `/fr/${ADMIN_PREFIX}/image-bank/sitemap-status`, label: "/image-bank/sitemap-status" },
-  { path: `/fr/${ADMIN_PREFIX}/image-bank/tags`, label: "/image-bank/tags" },
-  { path: `/fr/${ADMIN_PREFIX}/image-bank/taxonomy`, label: "/image-bank/taxonomy" },
   { path: `/fr/${ADMIN_PREFIX}/image-bank/upload`, label: "/image-bank/upload" },
   { path: `/fr/${ADMIN_PREFIX}/image-bank/usage-logs`, label: "/image-bank/usage-logs" },
   { path: `/fr/${ADMIN_PREFIX}/imprimes`, label: "/imprimes" },

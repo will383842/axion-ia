@@ -2,7 +2,7 @@
 //
 //   Tunnels
 //   ├── Vue d'ensemble     → les deux tunnels côte à côte
-//   ├── Tunnel de prospects → de la pub au rapport : où l'on perd les gens
+//   ├── Tunnel diagnostic & simulateur → de la pub au rapport : où l'on perd les gens
 //   └── Tunnel de vente     → du prospect au règlement
 //
 // Groupe distinct de « Boîte de réception » à dessein : celle-ci montre les
@@ -42,7 +42,7 @@ export default async function TunnelsLayout({
 
   const onglets: AdminTabItem[] = [
     { id: "ensemble", label: "Vue d'ensemble", href: base },
-    { id: "prospects", label: "Tunnel de prospects", href: `${base}/prospects` },
+    { id: "prospects", label: "Tunnel diagnostic & simulateur", href: `${base}/prospects` },
     { id: "vente", label: "Tunnel de vente", href: `${base}/vente` },
   ];
 

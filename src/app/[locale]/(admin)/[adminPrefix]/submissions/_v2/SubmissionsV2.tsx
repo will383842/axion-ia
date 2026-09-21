@@ -23,6 +23,8 @@ import { formatDateFrShort, formatTimeFr } from "@/lib/format-date-fr";
 import { splitNomPrenom } from "@/lib/nom-prenom";
 import { lireAccusesMessages } from "@/features/admin-submissions/accuse-reception";
 import { MentionAccuse } from "@/components/admin/accuse/AccuseReceptionAuto";
+import type { PerimetreSubmissions } from "@/features/admin-submissions/query";
+import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 
 /**
  * Computed reply badge — derives 4 visual states from SubmissionListItem :
@@ -83,6 +85,15 @@ interface Props {
    * `unifiedType` de l'URL.
    */
   forcedTypes?: ReadonlyArray<string>;
+  /**
+   * Périmètre nommé qui s'AJOUTE aux catégories (2026-09-19) : « apporteurs »
+   * pour la liste des apporteurs, « hors-apporteurs » pour Autres, qui
+   * accueille la catégorie « recrutement » sans les apporteurs. Transmis à la
+   * liste ET à l'export — un CSV plus large que l'écran serait pire qu'aucun.
+   */
+  perimetre?: PerimetreSubmissions;
+  /** Titre de l'écran. « Messages » par défaut ; « Apporteurs » pour leur liste. */
+  title?: string;
 }
 
 export async function SubmissionsV2({
@@ -90,6 +101,8 @@ export async function SubmissionsV2({
   searchParams,
   basePath = "submissions",
   forcedTypes,
+  perimetre,
+  title = "Messages",
 }: Props): Promise<React.ReactElement> {
   const includeArchived = searchParams["includeArchived"] === "true";
   const deleted = searchParams["deleted"] === "true";
@@ -97,6 +110,7 @@ export async function SubmissionsV2({
     type: searchParams["type"] as never,
     unifiedType: searchParams["unifiedType"],
     ...(forcedTypes && forcedTypes.length > 0 ? { unifiedTypeIn: [...forcedTypes] } : {}),
+    ...(perimetre ? { perimetre } : {}),
     status: searchParams["status"] as never,
     locale: searchParams["locale"] as never,
     search: searchParams["search"],
@@ -154,20 +168,23 @@ export async function SubmissionsV2({
     ...(searchParams["dateTo"] ? { dateTo: searchParams["dateTo"] } : {}),
     ...(includeArchived ? { includeArchived: "true" } : {}),
     ...(deleted ? { deleted: "true" } : {}),
+    ...(perimetre ? { perimetre } : {}),
   });
   for (const t of forcedTypes ?? []) csvParams.append("unifiedTypeIn", t);
   const csvUrl = `/api/admin/submissions/export?${csvParams.toString()}`;
 
   const base = `/fr/${adminPrefix}/${basePath}`;
-  // Le détail existe à /contacts/messages/[id] (canonique) — SAUF pour l'onglet
-  // Commercial, qui a sa propre route détail depuis le tunnel candidature
-  // (2026-08-12) : le retour ramène au listing Commercial, pas aux Messages.
-  // Les autres vues filtrées (presse, clients…) pointent toujours vers Messages,
-  // sinon /contacts/presse/[id] (inexistant) → 404 au clic sur une ligne.
-  const detailBase =
-    basePath === "contacts/commercial"
-      ? `/fr/${adminPrefix}/contacts/commercial`
-      : `/fr/${adminPrefix}/contacts/messages`;
+  // Le détail existe à /contacts/messages/[id] (canonique) — SAUF pour un
+  // apporteur, qui a sa propre fiche depuis le tunnel candidature (2026-08-12) :
+  // son retour ramène à la liste des apporteurs et porte le résultat de
+  // l'invitation. La règle suit la LIGNE, plus l'écran (2026-09-19) : un
+  // apporteur vu depuis Messages s'ouvrait jusque-là « comme un message ».
+  // Les vues filtrées (presse, clients…) n'ont pas de route détail propre :
+  // /contacts/presse/[id] n'existe pas, elles pointent donc vers Messages.
+  const lienDetail = (s: { id: string; unifiedType: string | null; subType: string | null }) =>
+    estApporteur({ unifiedType: s.unifiedType, subType: s.subType })
+      ? `/fr/${adminPrefix}/contacts/commercial/${s.id}`
+      : `/fr/${adminPrefix}/contacts/messages/${s.id}`;
 
   // Onglets Actifs / Archivés / Corbeille (fix P0-2 : les archivés et les
   // soft-deleted sont masqués par défaut ; chaque onglet force ses params).
@@ -203,7 +220,7 @@ export async function SubmissionsV2({
     const { prenom, nom } = splitNomPrenom(s.contactName);
     return {
       id: s.id,
-      detailHref: `${detailBase}/${s.id}`,
+      detailHref: lienDetail(s),
       cells: [
         <span key="reply" className="flex flex-col gap-[var(--space-admin-1)]">
           <AdminBadge tone={r.tone} className="gap-1">
@@ -247,12 +264,23 @@ export async function SubmissionsV2({
           ailleurs (nav, boîte de réception) l'écran s'appelle Messages. Dernier
           jargon base visible de la chaîne (audit réservation 2026-08-26). */}
       <AdminPageHeader
-        title="Messages"
+        title={title}
         description={`${result.total} message${result.total > 1 ? "s" : ""} · page ${result.page}/${result.totalPages}`}
         actions={
-          <Link href={csvUrl} className="admin-button-ghost" download>
-            Exporter CSV
-          </Link>
+          <>
+            {/* « Ajouter » remplace l'entrée de menu « Nouveau contact
+                apporteur » (2026-09-19) : ce n'était pas une catégorie de
+                Messages mais un geste sur CETTE liste, et c'est ici qu'on le
+                cherche. Aucune autre vue n'a d'écran de saisie. */}
+            {basePath === "contacts/commercial" ? (
+              <Link href={`${base}/nouveau`} className="admin-button">
+                Ajouter
+              </Link>
+            ) : null}
+            <Link href={csvUrl} className="admin-button-ghost" download>
+              Exporter CSV
+            </Link>
+          </>
         }
       />
       <div className="mb-[var(--space-admin-4)]">

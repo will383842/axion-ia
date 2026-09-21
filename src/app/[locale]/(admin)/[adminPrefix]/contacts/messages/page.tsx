@@ -23,7 +23,9 @@ const CAT_REDIRECTS: Readonly<Record<string, string>> = {
   partenariats: "contacts/partenariats",
   investisseurs: "contacts/investisseurs",
   conferences: "contacts/conferences",
-  recrutement: "contacts/commercial",
+  // Un lien ancien « ?cat=recrutement » visait la catégorie du formulaire, pas
+  // les apporteurs : depuis le 2026-09-19, ces messages vivent dans Autres.
+  recrutement: "contacts/autres",
   podcast: "podcast",
   autre: "contacts/autres",
 };

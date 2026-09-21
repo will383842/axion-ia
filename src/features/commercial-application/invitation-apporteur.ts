@@ -39,7 +39,7 @@ import { decryptPii } from "@/lib/pii-crypto";
 import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
 import { SITE_URL } from "@/lib/site-url";
 import { enqueueEmail } from "@/server/queue/queues";
-import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
+import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { DOSSIER_COMPLET_PATH } from "@/lib/commercial-application/lead-apporteur";
 import { estLienCalendlyValide } from "@/lib/commercial-application/kit-apporteur";
 import {
@@ -84,11 +84,6 @@ function lireDetails(v: unknown): DetailsContact {
   return v && typeof v === "object" && !Array.isArray(v) ? (v as DetailsContact) : {};
 }
 
-/** Une ligne est un contact apporteur si elle vit dans la file Contacts › Commercial. */
-function estContactApporteur(d: DetailsContact): boolean {
-  return d.unifiedType === "recrutement" && d.subType === CANDIDATURE_COMMERCIALE_SUBTYPE;
-}
-
 /** Ce que l'invitation dit à la personne de l'origine de son adresse (art. 14). */
 export interface Provenance {
   mode: "directe" | "indirecte";
@@ -127,7 +122,7 @@ async function lignesDeLaPersonne(
 function dossierDejaArrive(lignes: Array<{ details: unknown }>): boolean {
   return lignes.some((l) => {
     const d = lireDetails(l.details);
-    return estContactApporteur(d) && d.etape === undefined;
+    return estApporteur(d) && d.etape === undefined;
   });
 }
 
@@ -220,8 +215,14 @@ export async function envoyerInvitationApporteur(input: {
   if (!ligne || ligne.deletedAt) {
     return { ok: false, erreur: "introuvable", message: "Cette fiche n'existe plus." };
   }
+  // Même prédicat que la liste « Apporteurs » : on n'invite que ceux qui y
+  // figurent (2026-09-19, prédicat unique).
+  //
+  // `details` sert plus bas (origine de la saisie, accord, provenance art. 14) :
+  // il est lu ICI, une fois. Perdre cette ligne fait échouer la provenance
+  // trente lignes plus loin, sans erreur de compilation — mesuré au pré-push.
   const details = lireDetails(ligne.details);
-  if (!estContactApporteur(details)) {
+  if (!estApporteur(ligne.details)) {
     return {
       ok: false,
       erreur: "pas-un-apporteur",

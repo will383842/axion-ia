@@ -22,7 +22,49 @@
  */
 
 import { z } from "zod";
-import type { Prisma } from "../../../prisma/generated/client";
+import { Prisma } from "../../../prisma/generated/client";
+import { FILTRE_APPORTEUR_PRISMA } from "@/lib/commercial-application/est-apporteur";
+import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
+
+/**
+ * Périmètres NOMMÉS d'une vue, en plus de ses catégories (2026-09-19).
+ *
+ * `unifiedTypeIn` ne sait dire que « telle catégorie du formulaire ». Or la
+ * catégorie « recrutement » mélange deux populations : les apporteurs
+ * d'affaires (qui portent en plus `subType = candidature-commerciale`) et les
+ * messages /contact d'une personne qui cherche un poste. Le périmètre les
+ * sépare : « Apporteurs » ne montre que les premiers, « Autres » accueille les
+ * seconds.
+ *
+ * 🔑 Un NOM, pas un `where` Prisma passé en paramètre : le périmètre voyage
+ *    dans l'URL de l'export CSV, et `listSubmissionsAction` est un point
+ *    d'entrée réseau — une clause libre y serait une lecture arbitraire offerte
+ *    à qui appelle l'action. Une liste fermée ne peut dire que ce qui est prévu.
+ */
+export const PERIMETRES_SUBMISSIONS = ["apporteurs", "hors-apporteurs"] as const;
+export type PerimetreSubmissions = (typeof PERIMETRES_SUBMISSIONS)[number];
+
+/**
+ * Le complément EXACT de `FILTRE_APPORTEUR_PRISMA` : « pas (recrutement ET
+ * sous-type apporteur) ».
+ *
+ * 🔴 JAMAIS `NOT: FILTRE_APPORTEUR_PRISMA`. Postgres évalue
+ *    `details #> '{subType}' = 'x'` à NULL quand la clé est ABSENTE, et
+ *    `NOT NULL` reste NULL : la ligne sortirait des deux côtés de la négation.
+ *    C'est précisément la ligne qu'on veut garder — un message /contact
+ *    « recrutement », qui n'a pas de `subType`. Chaque branche nomme donc le cas
+ *    absent (`AnyNull` : clé absente ou JSON null) à côté du cas différent
+ *    (`not`, qui rend `<>` et ignore les absents). SQL relevé sur Postgres 16
+ *    le 2026-09-19 : `(x = 'null' OR x IS NULL)` et `x <> 'valeur'`.
+ */
+const FILTRE_HORS_APPORTEUR_PRISMA: Prisma.SubmissionWhereInput = {
+  OR: [
+    { details: { path: ["unifiedType"], equals: Prisma.AnyNull } },
+    { details: { path: ["unifiedType"], not: "recrutement" } },
+    { details: { path: ["subType"], equals: Prisma.AnyNull } },
+    { details: { path: ["subType"], not: CANDIDATURE_COMMERCIALE_SUBTYPE } },
+  ],
+};
 
 export const listSubmissionsSchema = z.object({
   type: z.enum(["audit", "implementation", "intervention", "contact", "all"]).default("all"),
@@ -34,6 +76,8 @@ export const listSubmissionsSchema = z.object({
    * sur `unifiedType` si fourni.
    */
   unifiedTypeIn: z.array(z.string()).optional(),
+  /** Périmètre nommé de la vue (cf. `PERIMETRES_SUBMISSIONS`). */
+  perimetre: z.enum(PERIMETRES_SUBMISSIONS).optional(),
   status: z.enum(["new", "in_progress", "processed", "archived", "all"]).default("all"),
   locale: z.enum(["fr", "en", "all"]).default("all"),
   search: z.string().optional(),
@@ -86,6 +130,13 @@ export function buildSubmissionsWhere(parsed: ListSubmissionsInput): Prisma.Subm
   } else if (parsed.unifiedType) {
     where.details = { path: ["unifiedType"], equals: parsed.unifiedType };
   }
+
+  // Le périmètre s'AJOUTE aux catégories, dans un `AND` : il ne remplace ni
+  // `where.OR` (les catégories), ni `where.details` (la catégorie unique). Deux
+  // clés `details` dans le même objet, la seconde écraserait la première en
+  // silence et la liste « Apporteurs » redeviendrait toute la catégorie.
+  if (parsed.perimetre === "apporteurs") where.AND = [FILTRE_APPORTEUR_PRISMA];
+  else if (parsed.perimetre === "hors-apporteurs") where.AND = [FILTRE_HORS_APPORTEUR_PRISMA];
 
   if (parsed.status !== "all") where.status = parsed.status;
   if (parsed.locale !== "all") where.locale = parsed.locale;
@@ -163,6 +214,7 @@ export function exportedScope(parsed: ListSubmissionsInput): Record<string, unkn
     includeArchived: parsed.includeArchived,
     ...(parsed.unifiedType ? { unifiedType: parsed.unifiedType } : {}),
     ...(parsed.unifiedTypeIn?.length ? { unifiedTypeIn: parsed.unifiedTypeIn } : {}),
+    ...(parsed.perimetre ? { perimetre: parsed.perimetre } : {}),
     ...(parsed.dateFrom ? { dateFrom: parsed.dateFrom } : {}),
     ...(parsed.dateTo ? { dateTo: parsed.dateTo } : {}),
     // 🔴 Le TERME de recherche n'est jamais consigné : un opérateur cherche par

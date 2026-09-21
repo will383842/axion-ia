@@ -115,7 +115,7 @@ const TITLES: Record<CandidaturesView, string> = {
   // candidatures Le Bon Coin, et sur celles de toute future annonce. Un onglet
   // qui nomme un canal en en agrégeant plusieurs fait chercher ailleurs des
   // candidatures qui sont sous les yeux. La ventilation par provenance vit
-  // dans l'écran Ops → Annonces recrutement.
+  // dans l'écran Ops → Provenance des annonces.
   // La CLÉ `memo` reste inchangée : les liens `?view=memo` existants marchent.
   memo: "Candidatures — Apporteurs d'affaires",
   standard: "Candidatures emploi",

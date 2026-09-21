@@ -34,7 +34,7 @@ import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Qualiopi — Partenariats | Axion-IA Admin",
+  title: "Qualiopi — Réseau de partenaires | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 
@@ -62,7 +62,7 @@ export default async function QualiopiPartenariatsPage({ params }: PageProps) {
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title="Partenariats"
+        title="Réseau de partenaires"
         description="Réseau de partenaires Qualiopi, dont le réseau handicap (off.26 — indicateur 26, super-indicateur). Traçabilité des conventions de partenariat actives et des échanges qui les prouvent."
         actions={
           <PdfExportButton

@@ -43,7 +43,7 @@ import { SCORE_SEUIL_HAUTE, SCORE_SEUIL_MOYENNE } from "@/lib/commercial-applica
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Annonces de recrutement | Axion-IA Admin",
+  title: "Provenance des annonces | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 
@@ -143,7 +143,7 @@ export default async function AnnoncesStatsPage({ params }: PageProps) {
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="Annonces de recrutement"
+        title="Provenance des annonces"
         description={`Provenance des candidatures commerciales depuis le ${formatDateFr(stats.depuis)}. Tout est recalculé à l'affichage depuis les candidatures elles-mêmes.`}
       />
 

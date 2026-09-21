@@ -1,4 +1,5 @@
-// Pilotage du recrutement — l'écran qui manquait au lot 3.
+// Suivi des candidatures emploi (ex-« Pilotage du recrutement », renommé le
+// 2026-09-19 avec son entrée de menu) — l'écran qui manquait au lot 3.
 //
 // 🔴 POURQUOI IL EXISTE. `lastActivityAt` et `firstResponseAt` sont alimentés
 //    depuis le lot 3, et rien ne les lisait. Une colonne tenue à jour que
@@ -118,7 +119,7 @@ export default async function PilotageRecrutementPage({ params }: PageProps) {
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title="Pilotage du recrutement"
+        title="Suivi des candidatures emploi"
         description={`${bilan.total} candidature${bilan.total > 1 ? "s" : ""} au total · ${sommeil.dossiers.length} dossier${sommeil.dossiers.length > 1 ? "s" : ""} à rattraper`}
       />
 

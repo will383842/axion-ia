@@ -41,7 +41,7 @@ export default async function ContactsCommercialDetailPage({ params, searchParam
       adminPrefix={adminPrefix}
       id={id}
       backHref={`/fr/${adminPrefix}/contacts/commercial`}
-      backLabel="← Commercial"
+      backLabel="← Apporteurs"
       invitation={typeof invitation === "string" ? invitation : undefined}
     />
   );
