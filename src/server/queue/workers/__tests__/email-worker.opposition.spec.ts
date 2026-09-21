@@ -1,9 +1,11 @@
 // Le filet du worker d'e-mails — 2026-09-19.
 //
-// Les relances J+2 / J+7, l'invitation à l'échange et le kit du dossier
-// commencé sont des jobs RETARDÉS : ils sont vérifiés à l'enfilage, puis
-// dorment des heures ou des jours dans Redis. Une opposition exprimée entre-
-// temps, ou un effacement RGPD, n'était relue par personne au moment du départ.
+// Les relances J+2 / J+7 et le kit du dossier commencé sont des jobs RETARDÉS :
+// vérifiés à l'enfilage, puis endormis des heures ou des jours dans Redis.
+// L'invitation à l'échange part tout de suite, mais peut séjourner en file de
+// validation. Dans les deux cas, une opposition exprimée entre-temps, ou un
+// effacement RGPD, ne se lit qu'au DÉPART — l'enfilage est passé depuis
+// longtemps.
 //
 // Gardé ici, sur le VRAI processeur et le VRAI verdict (seules la base, la file
 // et l'envoi sont doublés) :

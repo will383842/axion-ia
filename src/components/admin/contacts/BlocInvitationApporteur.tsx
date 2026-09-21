@@ -11,8 +11,9 @@
 // `CALENDLY_APPORTEUR_URL` et reste modifiable.
 //
 // 2026-09-19 — deux cases, sans JavaScript :
-//   · « Renvoyer quand même », seulement si une invitation existe déjà : sans
-//     elle, un second clic est refusé (jamais deux invitations par mégarde) ;
+//   · « Renvoyer quand même », seulement si une invitation existe déjà, et
+//     OBLIGATOIRE quand elle s'affiche : jamais deux invitations par mégarde. Le
+//     navigateur demande la confirmation avant l'envoi, et l'action la revérifie ;
 //   · « La personne a accepté d'être contactée », seulement pour une adresse
 //     venue d'ailleurs (recommandation, autre) dont l'accord n'est pas encore
 //     daté sur la fiche (L.34-5 CPCE).
@@ -175,8 +176,14 @@ export async function BlocInvitationApporteur({
             </label>
           ) : null}
           {invitations.length > 0 ? (
+            // `required` : le bouton dit déjà « Renvoyer l'invitation », donc un clic
+            // sans la case ressemblait à un bouton cassé — l'action rendait
+            // `deja-invitee` après l'aller-retour. Le navigateur demande la
+            // confirmation AVANT le voyage ; le garde-fou serveur reste en place pour
+            // un envoi qui arriverait sans elle.
             <label className="admin-checkbox-label" htmlFor="renvoyer">
-              <input id="renvoyer" name="renvoyer" type="checkbox" value="on" /> Renvoyer quand même
+              <input id="renvoyer" name="renvoyer" type="checkbox" value="on" required /> Renvoyer
+              quand même — à cocher pour confirmer un second envoi
             </label>
           ) : null}
           <button type="submit" className="admin-button">

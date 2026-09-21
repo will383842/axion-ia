@@ -198,14 +198,13 @@ export async function eraseSubmissionAction(
 
   // 🔴 2026-09-19 — L'ADRESSE EN CLAIR, LUE AVANT D'EFFACER.
   //
-  // Deux usages, et les deux étaient impossibles après coup :
+  // Deux usages, et aucun des deux n'est possible après coup :
   //   · retirer les envois programmés (relances J+2 / J+7, kit du dossier
   //     commencé) — des jobs retardés retrouvés par l'EMPREINTE de l'adresse.
-  //     Une fois la ligne supprimée, plus rien ne les relie à la personne : ils
-  //     partaient vers quelqu'un qui venait d'obtenir l'effacement ;
-  //   · l'empreinte d'audit, qui était calculée sur le texte CHIFFRÉ (IV
-  //     aléatoire) : elle ne permettait jamais de prouver sur quelle adresse
-  //     l'effacement avait porté.
+  //     Une fois la ligne supprimée, plus rien ne les relie à la personne, et
+  //     ils partiraient vers quelqu'un qui vient d'obtenir l'effacement ;
+  //   · l'empreinte d'audit, qui doit porter sur l'adresse EN CLAIR : calculée
+  //     sur le texte chiffré (IV aléatoire), elle ne prouverait sur rien.
   // `decryptPii` rend la valeur telle quelle pour une ligne ancienne non
   // chiffrée ; s'il échoue, on garde le texte stocké (comportement antérieur).
   const avant = await prisma.submission.findUnique({

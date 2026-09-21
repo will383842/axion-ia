@@ -96,13 +96,13 @@ export async function syncFormSubmissionToCrm(
   await dispatch("form_submission", input, { form_type: input.formType });
 }
 
-/** Un rendez-vous Calendly (pris, honoré, annulé, non honoré). */
 /** Le nom du type d'événement Calendly, tel que chaque appelant le porte dans `payload`. */
 function lireNomTypeEvenement(payload: Record<string, unknown> | undefined): string | null {
   const nom = payload?.["eventTypeName"];
   return typeof nom === "string" ? nom : null;
 }
 
+/** Un rendez-vous Calendly (pris, honoré, annulé, non honoré). */
 export async function syncCalendlyEventToCrm(
   input: BaseInput & { kind: "booked" | "completed" | "canceled" | "no_show" },
 ): Promise<void> {

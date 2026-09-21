@@ -14,6 +14,7 @@ import { LeadApporteurRecuEmail } from "../lead-apporteur-recu";
 import { LeadApporteurRelanceEmail } from "../lead-apporteur-relance";
 import { CandidatureCommercialConfirmeeEmail } from "../candidature-commercial-confirmee";
 import { ApporteurInvitationAppelEmail } from "../apporteur-invitation-appel";
+import { REGIME_FAMILLE } from "../_layout";
 import {
   DOCUMENT_APPORTEUR_CHEMIN,
   VARIANTE_DOSSIER_COMMENCE,
@@ -104,6 +105,86 @@ describe("l'invitation — le seul e-mail qui porte le lien de réservation", ()
       <ApporteurInvitationAppelEmail locale="fr" payload={{ calendlyUrl: CALENDLY }} />,
     );
     expect(h).not.toContain(DOSSIER);
+  });
+});
+
+/**
+ * 🔴 LE BUDGET DE LIENS, MESURÉ SUR LA VARIANTE LA PLUS CHARGÉE DE CHAQUE
+ * GABARIT — et non sur le payload d'aperçu.
+ *
+ * `lien-opposition.spec.tsx` et `familles-email.spec.tsx` mesurent déjà ce
+ * budget, mais avec `PAYLOAD_EXEMPLE`, qui donne LA MÊME URL de démonstration à
+ * `calendlyUrl` et à `dossierUrl` et ne porte aucune `provenance`. Deux liens y
+ * fusionnent donc en un, et le troisième n'apparaît pas : l'invitation y est
+ * comptée à 10 URL quand la vraie en porte 12. Un budget mesuré sur un payload
+ * qui fait fusionner les liens ne mesure pas le budget.
+ *
+ * On compte donc ici la variante la plus chargée qui part POUR DE VRAI :
+ * invitation à une personne recommandée par un tiers (art. 14 RGPD), dont le
+ * dossier n'est pas encore arrivé, avec le créneau Calendly.
+ *
+ * Le lien d'opposition, posé par `renderEmailTemplate` quand il connaît le
+ * destinataire, n'est pas rendu par `render` direct : on l'ajoute au compte.
+ */
+describe("le budget de liens de la famille B tient sur la variante la plus chargée", () => {
+  const OPPOSITION = 1;
+
+  const CAS: Array<[string, React.ReactElement]> = [
+    [
+      "invitation — recommandée par un tiers, dossier à compléter, créneau",
+      <ApporteurInvitationAppelEmail
+        key="i"
+        locale="fr"
+        payload={{
+          contactName: "Nadia Ben",
+          calendlyUrl: CALENDLY,
+          dossierUrl: DOSSIER,
+          provenance: { mode: "indirecte", libelle: "par une personne qui te recommande" },
+        }}
+      />,
+    ],
+    [
+      "accusé du premier contact — avec référence de dossier",
+      <LeadApporteurRecuEmail
+        key="r"
+        locale="fr"
+        payload={{ contactName: "Nadia", dossierUrl: DOSSIER, submissionId: "sub-1" }}
+      />,
+    ],
+    [
+      "relance J+7",
+      <LeadApporteurRelanceEmail
+        key="j"
+        locale="fr"
+        payload={{ dossierUrl: DOSSIER, etape: "j7" }}
+      />,
+    ],
+    [
+      "confirmation du dossier complet",
+      <CandidatureCommercialConfirmeeEmail
+        key="c"
+        locale="fr"
+        payload={{ contactName: "Nadia" }}
+      />,
+    ],
+  ];
+
+  it.each(CAS)("%s", async (_nom, el) => {
+    const h = await html(el);
+    const liens = new Set((h.match(/href="([^"]+)"/g) ?? []).map((x) => x.slice(6, -1)));
+    expect(
+      liens.size + OPPOSITION,
+      `${liens.size + OPPOSITION} URL distinctes (dont le lien d'opposition) pour un budget ` +
+        `de ${REGIME_FAMILLE.B.budgetLiens}. Liens : ${[...liens].join(", ")}`,
+    ).toBeLessThanOrEqual(REGIME_FAMILLE.B.budgetLiens);
+  });
+
+  it("⛔ et aucun lien social n'y revient : ce sont eux qui ont cédé", async () => {
+    for (const [nom, el] of CAS) {
+      const h = await html(el);
+      expect(h, `${nom} : lien social revenu dans le pied de page`).not.toContain("linkedin.com");
+      expect(h, `${nom} : lien social revenu dans le pied de page`).not.toContain("facebook.com");
+    }
   });
 });
 

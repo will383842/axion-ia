@@ -74,6 +74,7 @@ export function LeadApporteurRelanceEmail({
       cta={{ label: t.cta, href: p.dossierUrl }}
       locale={locale}
       tutoiement
+      sansReseauxSociaux
     >
       <Text style={emailStyles.paragraphStyle}>{t.intro(prenom)}</Text>
       <Text style={emailStyles.paragraphStyle}>{dernier ? t.j7 : t.j2}</Text>

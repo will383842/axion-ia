@@ -9,6 +9,21 @@
 // courant, pas celui du jour où il a été mis en file.
 //
 // Vocabulaire : « recommander », jamais « vendre » (anti-requalification).
+//
+// ── 🔑 CE BLOC COÛTE DEUX LIENS, ET C'EST POURQUOI LES QUATRE E-MAILS DU
+//    RÉSEAU PASSENT `sansReseauxSociaux` AU CHÂSSIS ────────────────────────
+// La famille B a un budget de 9 URL distinctes (§5.4). Le châssis en consomme
+// déjà sept à lui seul — le logo, QUATRE liens sociaux, l'adresse de contact et
+// l'opposition —, et le corps de ces messages en porte jusqu'à cinq : le
+// document, le catalogue, le dossier, le créneau Calendly, et l'information de
+// l'art. 14 RGPD quand l'adresse vient d'un tiers. Soit 12 pour un budget de 9.
+//
+// Aucun des cinq ne se coupe : deux sont une décision de Will (le kit part à
+// TOUS), un est exigé par la loi, et les deux autres sont l'action demandée. Les
+// quatre liens sociaux, eux, valent 0,1 à 0,4 % de clic (§5.2 ⑤) : ce sont eux
+// qui cèdent, exactement comme le référentiel l'a déjà tranché pour la
+// famille C. Mesuré par `le-kit-apporteur-part-avec-chaque-e-mail.spec.tsx`,
+// sur la variante la PLUS chargée de chaque gabarit.
 
 import { Text } from "@react-email/components";
 import { emailStyles } from "./_layout";

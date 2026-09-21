@@ -209,7 +209,7 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     nom: "Devenir apporteur d'affaires · 13 pages",
     format: "A4 paysage · 297 × 210 mm · 13 pages, lecture à l'écran",
     resume:
-      "Le document de présentation du réseau d'apporteurs d'affaires : commissions, fonctionnement, prestations à recommander, profils recherchés. Envoyé automatiquement, avec le catalogue, à toute personne qui s'y intéresse — et joint à l'invitation à l'échange de 15 minutes.",
+      "Le document de présentation du réseau d'apporteurs d'affaires : commissions, fonctionnement, prestations à recommander, profils recherchés. Envoyé automatiquement, avec le catalogue, à toute personne qui s'y intéresse — et dont le lien accompagne l'invitation à l'échange de 15 minutes.",
     fichiersPublics: [
       {
         chemin: "imprimes/devenir-apporteur-d-affaires-axion-ia.pdf",

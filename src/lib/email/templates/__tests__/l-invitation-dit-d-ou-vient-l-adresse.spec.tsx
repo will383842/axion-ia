@@ -10,7 +10,16 @@
  *
  * ⚠️ Les jobs enfilés AVANT ce changement n'ont pas de `provenance` : leur
  * rendu doit rester IDENTIQUE, octet pour octet (instantané pris avant la
- * modification du gabarit).
+ * modification du gabarit). Ce que l'instantané garde, c'est que LA PROVENANCE
+ * n'a rien changé pour eux — pas que le gabarit est gelé.
+ *
+ * 🔑 Il a bougé UNE fois depuis, et pour une seule raison, écrite ici pour que
+ * la prochaine divergence ne se lise pas comme celle-là : la RANGÉE DE RÉSEAUX
+ * SOCIAUX du pied de page a disparu (`sansReseauxSociaux`). Le corps portait
+ * jusqu'à 12 URL distinctes pour un budget de famille B de 9, et aucun des liens
+ * du corps ne pouvait céder — le kit est une décision de Will, l'information de
+ * l'art. 14 est exigée par la loi. Voir l'en-tête de `_kit-apporteur.tsx`. Toute
+ * AUTRE divergence de cet instantané est à examiner, pas à régénérer.
  */
 import { describe, it, expect } from "vitest";
 import { render } from "@react-email/render";

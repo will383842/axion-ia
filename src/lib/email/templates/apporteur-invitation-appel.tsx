@@ -35,12 +35,13 @@ import { BlocKitApporteur } from "./_kit-apporteur";
 import { IDENTITE_LEGALE, adresseSiegeUneLigne } from "@/lib/identite-legale-ssot";
 import { SITE_URL } from "@/lib/site-url";
 import type { Locale } from "../../../../prisma/generated/client";
-
-interface Provenance {
-  mode: "directe" | "indirecte";
-  /** Fragment déjà dans la langue du message : « par e-mail », « par une personne qui te recommande »… */
-  libelle: string;
-}
+// 🔑 `import type`, et rien d'autre : le type est celui que la console FABRIQUE
+// (`invitation-apporteur.ts`), le gabarit ne fait que le lire. L'import est
+// effacé à la compilation — aucun module serveur n'entre dans le graphe du
+// worker, que `email-worker.opposition.graphe-worker.spec.ts` surveille. Deux
+// déclarations jumelles auraient fini par diverger en silence : ce gabarit rend
+// un texte dont le sens dépend du `mode`.
+import type { Provenance } from "@/features/commercial-application/invitation-apporteur";
 
 interface Payload {
   contactName?: string;
@@ -156,6 +157,7 @@ export function ApporteurInvitationAppelEmail({
       cta={{ label: t.cta, href: p.calendlyUrl }}
       locale={locale}
       tutoiement
+      sansReseauxSociaux
     >
       <Text style={emailStyles.paragraphStyle}>{t.intro(prenom)}</Text>
       {provenance?.mode === "indirecte" ? (

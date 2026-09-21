@@ -806,9 +806,10 @@ export async function enqueueEmail(
   // personne désabonnée ne reçoit plus de marketing. Voir `suppression.ts` pour
   // les deux portées et le repli assumé (base muette = envoi maintenu).
   //
-  // 2026-09-19 — le drapeau `sollicitation` voit aussi le PAYLOAD : le kit du
-  // dossier commencé partage le gabarit de l'accusé immédiat et ne s'en
-  // distingue que par sa variante. Sans lui, le kit passait une opposition.
+  // 2026-09-19 — le drapeau `sollicitation` voit aussi le PAYLOAD, et c'est ce
+  // qui fait tenir la règle : le kit du dossier commencé partage le gabarit de
+  // l'accusé immédiat et ne s'en distingue que par sa variante. Le nom du
+  // gabarit seul ne suffit donc pas à savoir si l'opposition s'applique.
   const verdict = await verdictAvantEnvoi(to, {
     template,
     marketing: options?.marketing === true,

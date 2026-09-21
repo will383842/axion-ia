@@ -85,6 +85,7 @@ export function CandidatureCommercialConfirmeeEmail({
       cta={{ label: t.cta, href: liensKitApporteur(locale).documentUrl }}
       locale={locale}
       tutoiement
+      sansReseauxSociaux
     >
       <Text style={emailStyles.paragraphStyle}>{t.intro(prenom)}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.body}</Text>

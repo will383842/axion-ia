@@ -2,11 +2,13 @@
 //
 // 🔴 POURQUOI CE FICHIER EXISTE À CÔTÉ DE `suppression.ts`
 //
-// Le worker d'e-mails doit relire l'opposition AU MOMENT DU DÉPART : les
-// relances J+2 / J+7, l'invitation à l'échange et le kit du dossier commencé
-// sont des jobs retardés, vérifiés à l'enfilage puis endormis des heures ou des
-// jours dans Redis. Une opposition exprimée entre-temps n'était relue par
-// personne — la seule protection des jobs DÉJÀ en file, c'est le worker.
+// Le worker d'e-mails relit l'opposition AU MOMENT DU DÉPART, parce que c'est la
+// SEULE protection d'un job DÉJÀ en file. Les relances J+2 / J+7 et le kit du
+// dossier commencé sont des jobs retardés : vérifiés à l'enfilage, puis endormis
+// des heures ou des jours dans Redis. L'invitation à l'échange, elle, part tout
+// de suite — mais elle peut séjourner en file de validation, et une opposition
+// exprimée pendant ce séjour doit la retenir comme les autres. Dans les deux cas,
+// l'enfilage seul ne voit que l'état du moment ; le départ voit l'état réel.
 //
 // Or le worker ne peut pas importer `suppression.ts` : son `signalerRetenue`
 // importe paresseusement `alertes-service`, qui tire une garde `next/headers`,
@@ -50,9 +52,9 @@ export const GABARITS_EXEMPTES_DU_DESABONNEMENT: ReadonlySet<string> = new Set([
  *
  * Les relances « ton dossier t'attend » (J+2, J+7) et l'invitation à l'échange
  * de 15 minutes partent en famille B, sans le drapeau `marketing` : elles
- * répondent à une démarche de la personne, pas à une campagne. Or l'opposition
- * n'était lue QUE pour le marketing, alors que la page d'opposition promet de
- * ne plus solliciter.
+ * répondent à une démarche de la personne, pas à une campagne. Mais la page
+ * d'opposition promet de ne plus SOLLICITER, pas seulement de ne plus faire de
+ * marketing : sa portée est donc plus large que le drapeau `marketing`.
  *
  * Ces gabarits honorent donc l'opposition (et seulement elle : un
  * désabonnement de la NEWSLETTER n'est pas un refus d'être recontacté au sujet
@@ -102,10 +104,17 @@ export interface ContexteEnvoi {
   readonly template: string;
   readonly marketing: boolean;
   /**
-   * L'envoi est une sollicitation soumise à l'opposition. Absent : déduit du
-   * seul nom du gabarit (appelants antérieurs). Les deux chemins d'envoi — la
-   * file et le worker — le calculent avec `estSollicitationSoumiseAOpposition`,
-   * qui voit aussi la variante du payload.
+   * L'envoi est une sollicitation soumise à l'opposition.
+   *
+   * Les DEUX chemins d'envoi — l'enfilage (`queues.ts`) et le départ
+   * (`email-worker.ts`) — le passent désormais explicitement, calculé par
+   * `estSollicitationSoumiseAOpposition`, qui voit aussi la VARIANTE du payload
+   * (le kit du dossier commencé partage son gabarit avec l'accusé immédiat).
+   *
+   * Absent : repli sur le seul nom du gabarit. Code de REPLI, plus atteint par
+   * aucun appelant du dépôt — gardé pour ne pas rendre le contrat dépendant de
+   * l'ordre des arguments d'un appelant tiers, et parce que perdre le drapeau
+   * doit retenir quand même, pas laisser passer.
    */
   readonly sollicitation?: boolean;
 }
@@ -152,7 +161,10 @@ export async function verdictAvantEnvoi(
         }
       }
       // Lot 1b : l'opposition à la prospection, exprimée depuis n'importe quel
-      // e-mail, retient les envois marketing au même titre que le désabonnement.
+      // e-mail, retient les envois marketing au même titre que le désabonnement
+      // — ET, depuis le 2026-09-19, les SOLLICITATIONS du réseau d'apporteurs,
+      // qui ne portent pas le drapeau `marketing`. Sa portée est donc plus large
+      // que celle du désabonnement : c'est ce que la page d'opposition promet.
       // Lecture DIRECTE : `opposition.ts` tire la synchronisation CRM, qui tire
       // les files, qui tirent ce module — un cycle, et une chaîne d'imports qui
       // n'a rien à faire sur le chemin d'enfilage. La table ne porte que
@@ -170,7 +182,10 @@ export async function verdictAvantEnvoi(
       }
     } catch (e) {
       console.error(
-        `[email-suppression] lecture du désabonnement impossible pour ${adresse} — envoi maintenu :`,
+        // Le `try` couvre les DEUX lectures — désabonnement newsletter et
+        // opposition. Nommer la seule première laisserait chercher du côté de la
+        // newsletter un incident qui peut venir de `email_opposition`.
+        `[email-suppression] lecture du désabonnement ou de l'opposition impossible pour ${adresse} — envoi maintenu :`,
         e instanceof Error ? e.message : String(e),
       );
     }

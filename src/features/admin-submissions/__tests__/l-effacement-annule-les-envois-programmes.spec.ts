@@ -2,8 +2,9 @@
  * L'effacement RGPD depuis la console annule les envois programmés — AVANT
  * d'effacer (2026-09-19).
  *
- * Les relances J+2 / J+7, le kit du dossier commencé et l'invitation sont des
- * jobs retardés, retrouvés par l'EMPREINTE de l'adresse. Une fois la ligne
+ * Les relances J+2 / J+7 et le kit du dossier commencé sont des jobs retardés,
+ * retrouvés par l'EMPREINTE de l'adresse ; l'invitation, elle, peut séjourner en
+ * file de validation. Une fois la ligne
  * effacée, plus rien ne relie ces jobs à la personne : l'annulation doit donc
  * se faire avant, avec l'adresse DÉCHIFFRÉE (l'empreinte d'un texte chiffré à IV
  * aléatoire ne retrouve rien).

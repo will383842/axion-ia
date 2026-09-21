@@ -72,10 +72,12 @@ async function ficheEffacee(submissionId: string): Promise<boolean | null> {
  * 🔴 2026-09-19 — LE FILET DU DÉPART, pour les sollicitations du réseau
  * d'apporteurs (relances J+2 / J+7, invitation, kit du dossier commencé).
  *
- * Ce sont des jobs RETARDÉS : `enqueueEmail` les vérifie à l'enfilage, puis ils
- * dorment des heures ou des jours dans Redis. Une opposition cliquée, une fiche
- * mise à la corbeille ou effacée entre-temps n'étaient relues par personne —
- * pour les jobs déjà en file, ce filet est la SEULE protection.
+ * Pour un job DÉJÀ en file, ce filet est la SEULE protection : `enqueueEmail`
+ * vérifie à l'enfilage, et ne voit donc que l'état de cet instant. Les relances
+ * J+2 / J+7 et le kit du dossier commencé sont RETARDÉS — ils dorment des heures
+ * ou des jours dans Redis. L'invitation part tout de suite, mais peut séjourner
+ * en file de validation. Dans les deux cas, une opposition cliquée ou une fiche
+ * effacée entre-temps ne se lit qu'ici, au départ.
  *
  * Rend le motif de la retenue, ou `null` si l'envoi peut partir.
  */
@@ -188,8 +190,8 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
         return;
       }
 
-      // 🔴 2026-09-19 — sollicitation retardée : l'opposition et l'effacement
-      // se relisent AU DÉPART. Un envoi retenu se clôt en « annulé », JAMAIS en
+      // 🔴 2026-09-19 — sollicitation du réseau d'apporteurs : l'opposition et
+      // l'effacement se relisent AU DÉPART. Un envoi retenu se clôt en « annulé », JAMAIS en
       // « échec » : l'alarme des échecs (SEUIL_ECHECS) compterait une opposition
       // honorée comme une panne. Pas de `throw` — BullMQ rejouerait le job.
       // Pas d'alerte console non plus : une opposition respectée n'appelle
