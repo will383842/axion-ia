@@ -32,8 +32,9 @@ import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 import { annulerRelancesLeadApporteur } from "@/features/commercial-application/relances-lead-apporteur";
 
-/** Les cinq gestes qu'un admin pose sur une fiche. */
-export type Transition = "traite" | "archiver" | "desarchiver" | "sans-suite" | "remettre";
+/** Les six gestes qu'un admin pose sur une fiche. */
+export type Transition =
+  "traite" | "archiver" | "desarchiver" | "sans-suite" | "remettre" | "repondu-ailleurs";
 
 interface Effet {
   /** Les colonnes écrites. `undefined` = on ne touche pas. */
@@ -55,7 +56,7 @@ interface Effet {
   /** L'action consignée au journal d'activité, quand elle mérite une trace. */
   readonly journal?: string;
   /** Une marque posée dans `details`, pour les états que le schéma ne porte pas. */
-  readonly marqueDetails?: "sansSuiteAt";
+  readonly marqueDetails?: "sansSuiteAt" | "reponduHorsCircuitAt";
   /**
    * Les marques RETIRÉES de `details`.
    *
@@ -116,6 +117,24 @@ const EFFETS: Readonly<Record<Transition, Effet>> = {
     donnees: { status: "in_progress", archivedAt: null },
     annuleLesRelances: false,
     retireDetails: ["sansSuiteAt"],
+  },
+  // « J'ai répondu ailleurs » — depuis Gmail, au téléphone, de vive voix.
+  //
+  // 🔴 LE SEUL GESTE QUI NE CHANGE AUCUN STATUT, ET C'EST TOUT SON INTÉRÊT. La
+  // fiche reste exactement où elle est ; ce qui doit s'arrêter, ce sont les
+  // relances automatiques. Sans lui, répondre depuis Gmail laissait partir
+  // « ton dossier t'attend » à J+2 et J+7 — deux messages qui ignorent la
+  // conversation en cours, et qui font douter du sérieux de la maison.
+  //
+  // ⚠️ `needsAttention: false` est délibéré et c'est le SEUL effet : la fiche
+  // sort de « à traiter », puisqu'elle l'a été. La marquer « traité » serait
+  // décider à la place de Will — une réponse n'est pas toujours une clôture.
+  "repondu-ailleurs": {
+    donnees: { needsAttention: false },
+    annuleLesRelances: true,
+    motifAnnulation: "Envoi annulé : une réponse a été faite en dehors de la console.",
+    journal: "submission.repondu_ailleurs",
+    marqueDetails: "reponduHorsCircuitAt",
   },
   // Remettre à traiter : la fiche redevient visible dans « à traiter ».
   //

@@ -158,6 +158,32 @@ export async function replyToSubmissionAction(
     Sentry.captureException(e);
   }
 
+  // 🔴 REPONDRE ARRETE LES RELANCES EN ATTENTE. Demande de Will, mot pour mot :
+  // « il faudrait prévoir que je puisse répondre manuellement à des
+  // candidatures sans passer par le circuit normal, pour éviter d'avoir des
+  // messages en doublons ».
+  //
+  // Le doublon est réel et il est ICI : les rappels « ton dossier t'attend »
+  // sont des jobs RETARDES qui dorment dans Redis jusqu'à J+2 et J+7. Deux
+  // choses seulement les arrêtaient — la personne termine son dossier, ou elle
+  // s'oppose. **Rien ne les arrêtait parce qu'on lui avait répondu.** Elle
+  // recevait donc notre réponse, puis deux relances automatiques qui
+  // l'ignoraient.
+  //
+  // APRES l'envoi, et sans le défaire : un retrait qui échoue ne doit pas
+  // transformer une réponse partie en échec. Même doctrine que l'archivage.
+  const adresseClaire = decryptPii(submission.contactEmail);
+  if (adresseClaire) {
+    try {
+      await annulerRelancesLeadApporteur(
+        adresseClaire,
+        "Envoi annulé : une réponse a été envoyée depuis la console.",
+      );
+    } catch (e) {
+      Sentry.captureException(e, { tags: { step: "annuler-relances-apres-reponse" } });
+    }
+  }
+
   revalidatePath(adminPath("fr", "contacts/messages"));
   revalidatePath(adminPath("fr", `contacts/messages/${submission.id}`));
   // Sprint Notif Infra 2026-05-26 / fix P1-1 audit 2026-05-27 — invalide le
@@ -208,7 +234,13 @@ export interface ResultatGeste {
 
 async function geste(
   id: string,
-  transition: "traite" | "archiver" | "desarchiver" | "sans-suite" | "remettre",
+  transition:
+    | "traite"
+    | "archiver"
+    | "desarchiver"
+    | "sans-suite"
+    | "remettre"
+    | "repondu-ailleurs",
 ): Promise<ResultatGeste> {
   let session: { userId: string };
   try {
@@ -262,6 +294,18 @@ export async function classerSansSuiteAction(id: string): Promise<ResultatGeste>
 /** Remettre à traiter : la fiche redevient visible dans « à traiter ». */
 export async function remettreATraiterAction(id: string): Promise<ResultatGeste> {
   return geste(id, "remettre");
+}
+
+/**
+ * « J'ai répondu ailleurs — arrête tout ».
+ *
+ * Pour les réponses faites depuis Gmail, au téléphone ou de vive voix. Elle ne
+ * change aucun statut : elle retire les relances en attente et horodate le
+ * geste. Une réponse n'est pas toujours une clôture, et décider à la place de
+ * Will coûterait plus cher que de ne rien décider.
+ */
+export async function reponduHorsCircuitAction(id: string): Promise<ResultatGeste> {
+  return geste(id, "repondu-ailleurs");
 }
 
 /**

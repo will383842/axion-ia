@@ -160,8 +160,7 @@ const COPY = {
           : "Our " + duree + " call starts in one hour.",
       apres: null,
     },
-    duree: (m?: number) =>
-      typeof m === "number" && m > 0 ? String(m) + "-minute" : "15-minute",
+    duree: (m?: number) => (typeof m === "number" && m > 0 ? String(m) + "-minute" : "15-minute"),
     lienTitre: "The joining link: ",
     lienAbsent: "The video link is in the calendar invitation you received when you booked.",
     replanifier: "Need to move it? You can reschedule or cancel from the calendar invitation.",
@@ -227,9 +226,9 @@ export function ApporteurEchangeEmail({
       title={bloc.title}
       preview={bloc.preview}
     >
-      <Text style={emailStyles.paragraph}>{c.intro(texteOuNull(p.prenom))}</Text>
-      <Text style={emailStyles.paragraph}>{bloc.corps(quand, duree)}</Text>
-      {bloc.apres ? <Text style={emailStyles.paragraph}>{bloc.apres}</Text> : null}
+      <Text style={emailStyles.paragraphStyle}>{c.intro(texteOuNull(p.prenom))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{bloc.corps(quand, duree)}</Text>
+      {bloc.apres ? <Text style={emailStyles.paragraphStyle}>{bloc.apres}</Text> : null}
 
       {/*
         🔴 LE LIEN N'EST PAS TOUJOURS LÀ. Calendly crée la conférence de façon
@@ -239,7 +238,7 @@ export function ApporteurEchangeEmail({
         doctrine que `rappels-appel.ts`, qui alerte à H-1 sur ce cas précis.
       */}
       <Section>
-        <Text style={emailStyles.paragraph}>
+        <Text style={emailStyles.paragraphStyle}>
           {lienUtilisable ? (
             <>
               {c.lienTitre}
@@ -251,8 +250,8 @@ export function ApporteurEchangeEmail({
         </Text>
       </Section>
 
-      <Text style={emailStyles.paragraph}>{c.replanifier}</Text>
-      <Text style={emailStyles.paragraph}>{c.question}</Text>
+      <Text style={emailStyles.paragraphStyle}>{c.replanifier}</Text>
+      <Text style={emailStyles.paragraphStyle}>{c.question}</Text>
     </EmailLayout>
   );
 }

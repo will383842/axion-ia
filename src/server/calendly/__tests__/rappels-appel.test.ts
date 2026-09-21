@@ -64,7 +64,9 @@ function passageDe(
       `passage « ${moment} / ${destinataire} » : ${trouves.length} trouvé(s) dans PASSAGES — il en faut exactement un`,
     );
   }
-  return trouves[0];
+  // `!` legitime, et uniquement ici : la garde au-dessus vient de prouver
+  // qu'il y a EXACTEMENT un element. TypeScript ne sait pas lire une longueur.
+  return trouves[0]!;
 }
 
 /** Les cas historiques portaient sur H-1 ; ils le testent toujours. */

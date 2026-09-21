@@ -223,6 +223,7 @@ export async function SubmissionDetailContent({
             <GestesApporteur
               id={submission.id}
               close={submission.status === "archived" || submission.archivedAt !== null}
+              reponduAilleurs={typeof details?.["reponduHorsCircuitAt"] === "string"}
             />
           </div>
         ) : null}

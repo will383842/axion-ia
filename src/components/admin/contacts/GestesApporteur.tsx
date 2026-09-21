@@ -24,15 +24,18 @@ import { useState, useTransition } from "react";
 import {
   remettreATraiterAction,
   enregistrerOppositionDepuisFicheAction,
+  reponduHorsCircuitAction,
 } from "@/features/admin-submissions/reply-actions";
 
 interface Props {
   id: string;
   /** La fiche est-elle close (archivée ou sans suite) ? */
   close: boolean;
+  /** Une réponse a-t-elle déjà été faite hors de la console ? */
+  reponduAilleurs: boolean;
 }
 
-export function GestesApporteur({ id, close }: Props): React.ReactElement {
+export function GestesApporteur({ id, close, reponduAilleurs }: Props): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [confirmeOpposition, setConfirmeOpposition] = useState(false);
@@ -62,6 +65,36 @@ export function GestesApporteur({ id, close }: Props): React.ReactElement {
           Remettre à traiter
         </button>
       ) : null}
+
+      {/* 🔴 LE GESTE QUE WILL A DEMANDÉ, mot pour mot : « je voudrais pouvoir
+          répondre manuellement sans passer par le circuit normal, pour éviter
+          d'avoir des messages en doublons ».
+
+          Répondre DEPUIS la console arrête déjà les relances. Mais Will répond
+          souvent depuis Gmail, ou au téléphone — et rien, alors, n'arrêtait les
+          rappels « ton dossier t'attend » qui dorment dans Redis jusqu'à J+2 et
+          J+7. La personne recevait sa réponse, puis deux relances qui
+          l'ignoraient. */}
+      {reponduAilleurs ? (
+        <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          Réponse enregistrée hors console — les relances sont arrêtées.
+        </span>
+      ) : (
+        <button
+          type="button"
+          disabled={isPending}
+          onClick={() =>
+            poser(
+              () => reponduHorsCircuitAction(id),
+              "C'est noté : les relances en attente sont retirées.",
+            )
+          }
+          className="admin-button-ghost admin-button-sm"
+          title="Tu as répondu depuis Gmail, au téléphone ou de vive voix"
+        >
+          J&apos;ai répondu ailleurs
+        </button>
+      )}
 
       {confirmeOpposition ? (
         <span className="flex items-center gap-[var(--space-admin-2)]">

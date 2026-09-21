@@ -77,6 +77,33 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "la personne qui a réservé",
     source: "server/calendly/rappels-appel.ts",
   },
+  // ── L'échange de 15 minutes du candidat apporteur (2026-09-21) ───────────
+  // Mêmes trois moments que le client, même canal, même fichier — mais un
+  // gabarit à part : les e-mails clients disent « votre appel de découverte »
+  // et vouvoient. Les réutiliser ferait dire au candidat qu'il est un prospect.
+  //
+  // 🔑 Avant cette date, le candidat ne recevait RIEN. Le code justifiait le
+  // silence par « Calendly envoie sa propre confirmation » : c'était FAUX —
+  // rappels et suivis par e-mail sont à Off sur les deux event-types, relevé
+  // dans le compte le 2026-09-21. Il n'y a donc aucun doublon à craindre.
+  "apporteur-echange-confirme": {
+    categorie: "rendez-vous",
+    quand: "Dès que la réservation est vue par le worker (≤ 5 min après)",
+    destinataire: "le candidat apporteur qui a réservé",
+    source: "server/calendly/rappels-appel.ts",
+  },
+  "apporteur-echange-rappel-j1": {
+    categorie: "rendez-vous",
+    quand: "La veille de l'échange — fenêtre 24 h → 24 h 15 avant",
+    destinataire: "le candidat apporteur qui a réservé",
+    source: "server/calendly/rappels-appel.ts",
+  },
+  "apporteur-echange-rappel": {
+    categorie: "rendez-vous",
+    quand: "Une heure avant l'échange",
+    destinataire: "le candidat apporteur qui a réservé",
+    source: "server/calendly/rappels-appel.ts",
+  },
   "appel-rappel": {
     categorie: "rendez-vous",
     quand: "Une heure avant l'appel — fenêtre H-75 → H-60",
