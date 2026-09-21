@@ -333,7 +333,20 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     //
     // NE PAS passer à "pending" : dans cette SSOT, "pending" n'est employé que
     // conjointement à `pending_activation`, or Calendly est bel et bien actif.
-    dpaStatus: "auto_signable_dashboard",
+    // 🟢 2026-09-21 — **LE DPA EST ACCEPTÉ**, le 2026-08-28, confirmé par Will.
+    // Ce champ portait `auto_signable_dashboard` : « acceptable en un clic »,
+    // pas « accepté ». `_AUDIT/DPA-REGISTER.md` portait pourtant la bonne
+    // information — et sa DATE — depuis le 2026-08-28 :
+    //
+    //   | 16 | Calendly LLC | … | accepté | SCC | ✅ DPA accepté 2026-08-28 |
+    //
+    // 🔑 DEUXIÈME occurrence de la même divergence en deux jours, après
+    // Cloudflare (#1124) : le registre interne disait vrai, la notice
+    // PUBLIQUE disait moins. L'écart joue contre l'organisme — il est en
+    // règle et son propre site l'infirme. Rien ne relie ces deux sources :
+    // aucune garde ne compare `dpaStatus` à la cellule Statut du registre,
+    // et c'est ce qui laisse les deux dériver l'une de l'autre.
+    dpaStatus: "signed",
     transferFramework: "scc",
     category: "communications",
     activationStatus: "active",
