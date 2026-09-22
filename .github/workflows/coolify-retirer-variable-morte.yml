@@ -1,0 +1,147 @@
+# Retirer de Coolify une variable d'environnement que PLUS AUCUN code ne lit.
+#
+# 🔴 POURQUOI CE WORKFLOW EXISTE. Le 2026-09-22, la rotation du jeton DocuSeal a
+# mis au jour trois variables posées sur l'application de production et lues par
+# personne : `DOCUSEAL_API_TOKEN`, `DOCUSEAL_API_URL` et `DOCUSEAL_URL`. Le code
+# lit `DOCUSEAL_API_KEY` et `DOCUSEAL_BASE_URL` ; les trois autres sont des noms
+# d'un plan de mai qui n'a pas été suivi. Une variable morte n'est pas neutre :
+# elle porte souvent un identifiant périmé, elle se lit comme si elle servait, et
+# la prochaine personne qui tourne un secret tourne le mauvais.
+#
+# 🔑 LA GARDE EST LA RAISON D'ÊTRE DE CE FICHIER. Le workflow REFUSE de supprimer
+# une variable dont le nom apparaît ailleurs que dans la documentation — il fait
+# le `git grep` lui-même, sur le dépôt qu'il vient de cloner, au moment de
+# l'exécution. Ce n'est pas une liste que quelqu'un a vérifiée un jour : c'est une
+# mesure, refaite à chaque lancement. Une variable qu'on remettrait en service
+# entre deux lancements cesse d'être supprimable, sans que personne ait à y penser.
+name: Sécurité · retirer une variable d'environnement morte
+
+on:
+  workflow_dispatch:
+    inputs:
+      variable:
+        description: "La variable à retirer (liste fermée)"
+        required: true
+        type: choice
+        options:
+          - lister-seulement
+          - DOCUSEAL_API_TOKEN
+          - DOCUSEAL_API_URL
+          - DOCUSEAL_URL
+      confirmer:
+        description: "Taper exactement SUPPRIMER pour retirer réellement. Toute autre valeur = simulation."
+        required: true
+        default: "non"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  retirer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Les accès existent
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set -euo pipefail
+          manquants=""
+          [ -n "${COOLIFY_API_TOKEN:-}" ] || manquants="$manquants COOLIFY_API_TOKEN"
+          [ -n "${COOLIFY_URL:-}" ] || manquants="$manquants COOLIFY_URL"
+          [ -n "${COOLIFY_APP_UUID:-}" ] || manquants="$manquants COOLIFY_APP_UUID"
+          if [ -n "$manquants" ]; then
+            echo "::error::Secrets absents :$manquants. Rien n'a été modifié."
+            exit 1
+          fi
+
+      - name: Inventaire (NOMS seuls, jamais les valeurs)
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set -euo pipefail
+          # ⚠️ Ce dépôt est PUBLIC, donc ces journaux le sont aussi. On n'imprime
+          # jamais autre chose que des noms.
+          code=$(curl -sS -m 25 -o /tmp/envs.json -w "%{http_code}" \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs")
+          if [ "$code" != "200" ]; then
+            echo "::error::L'API a répondu $code. Rien n'a été modifié."
+            exit 1
+          fi
+          jq -r '.[] | select(.key | startswith("DOCUSEAL")) | "\(.key)\tpreview=\(.is_preview)"' /tmp/envs.json | sort
+          echo "Total : $(jq 'length' /tmp/envs.json) variable(s)."
+
+      - name: Aucun code ne lit cette variable
+        if: ${{ inputs.variable != 'lister-seulement' }}
+        env:
+          CIBLE: ${{ inputs.variable }}
+        run: |
+          set -euo pipefail
+          # La documentation et les rapports d'audit CITENT des noms de variables
+          # sans les lire : un plan de mai peut très bien nommer une variable qui
+          # n'a jamais existé. Ce sont les seuls chemins exclus, et ils sont
+          # nommés un par un.
+          lecteurs=$(git grep -l -- "$CIBLE" -- \
+            ':!docs/**' ':!_AUDIT/**' ':!Documents/**' ':!*.md' || true)
+          if [ -n "$lecteurs" ]; then
+            echo "::error::« $CIBLE » est encore lue par :"
+            printf '::error::  %s\n' $lecteurs
+            echo "::error::Refus de supprimer. Retirer d'abord le code qui la lit."
+            exit 1
+          fi
+          echo "Aucun fichier hors documentation ne nomme « $CIBLE »."
+
+      - name: Retirer
+        if: ${{ inputs.variable != 'lister-seulement' }}
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          CIBLE: ${{ inputs.variable }}
+          CONFIRMER: ${{ inputs.confirmer }}
+        run: |
+          set -euo pipefail
+          n=$(jq --arg k "$CIBLE" '[.[] | select(.key == $k)] | length' /tmp/envs.json)
+          if [ "$n" = "0" ]; then
+            echo "« $CIBLE » n'est plus sur l'application : rien à faire."
+            exit 0
+          fi
+          echo "$n entrée(s) portent ce nom."
+          if [ "$CONFIRMER" != "SUPPRIMER" ]; then
+            echo "SIMULATION — rien n'est supprimé. Relancer avec confirmer=SUPPRIMER."
+            exit 0
+          fi
+          jq -r --arg k "$CIBLE" '.[] | select(.key == $k) | .uuid' /tmp/envs.json > /tmp/uuids
+          while read -r u; do
+            [ -n "$u" ] || continue
+            code=$(curl -sS -m 25 -o /tmp/rep -w "%{http_code}" -X DELETE \
+              -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+              "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs/${u}")
+            if [ "${code:0:1}" != "2" ]; then
+              echo "::error::Suppression refusée (HTTP $code) : $(head -c 300 /tmp/rep)"
+              exit 1
+            fi
+            echo "supprimée ($code)"
+          done < /tmp/uuids
+
+          # 🔑 On RELIT. Une suppression qui répond 200 et laisse la ligne en place
+          # est exactement le genre de silence poli qui a coûté deux journées sur
+          # la rotation Redis : un code de retour n'est pas une mesure.
+          sleep 2
+          reste=$(curl -sS -m 25 -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs" \
+            | jq --arg k "$CIBLE" '[.[] | select(.key == $k)] | length')
+          if [ "$reste" != "0" ]; then
+            echo "::error::L'API a répondu 2xx mais « $CIBLE » est toujours là ($reste entrée(s))."
+            exit 1
+          fi
+          echo "✅ « $CIBLE » a disparu de l'application. La valeur ne partira des"
+          echo "   conteneurs qu'au prochain déploiement — aucun code ne la lit."
