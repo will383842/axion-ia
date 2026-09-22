@@ -79,34 +79,56 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null
 
-      - name: Lire le mot de passe que Redis utilise, et le PROUVER
+      - name: Trouver le mot de passe que Redis ACCEPTE, et le prouver
         id: lire
         env:
           REDIS_UUID: ${{ inputs.redis_uuid }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
         run: |
           set -euo pipefail
-          lecture="docker inspect ${REDIS_UUID} --format '{{json .Config.Cmd}}' | tr ',' '\n' | grep -A1 requirepass | tail -1 | tr -cd 'A-Za-z0-9'"
-          mdp=$(ssh -o BatchMode=yes -o ConnectTimeout=20 root@178.105.55.15 "$lecture")
-          echo "::add-mask::$mdp"
-          if [ "${#mdp}" -lt 16 ]; then
-            echo "::error::Mot de passe illisible dans la commande du conteneur (${#mdp} caractères)."
+          # 🔴 LA LIGNE DE COMMANDE DU CONTENEUR N'EST PAS TOUJOURS LA VÉRITÉ.
+          # Mesuré le 22/09 : après un `redis-cli CONFIG SET requirepass` posé à
+          # chaud pour rétablir le service, Redis répondait NOAUTH à la valeur
+          # inscrite dans son propre `--requirepass`. Une garde qui n'aurait lu
+          # que cette source aurait poussé aux applications un mot de passe que
+          # Redis refuse — soit exactement la panne qu'elle prétend réparer.
+          #
+          # 🔑 On essaie donc les DEUX sources possibles et on ne garde que celle
+          # qui obtient un PONG. C'est l'effet qui tranche, jamais la provenance.
+          serveur=root@178.105.55.15
+          lire_source() {
+            case "$1" in
+              cmd) ssh -o BatchMode=yes -o ConnectTimeout=20 "$serveur" \
+                     "docker inspect ${REDIS_UUID} --format '{{json .Config.Cmd}}' | tr ',' '\n' | grep -A1 requirepass | tail -1 | tr -cd 'A-Za-z0-9'" ;;
+              app) ssh -o BatchMode=yes -o ConnectTimeout=20 "$serveur" \
+                     "c=\$(docker ps --format '{{.Names}}' | grep '^${COOLIFY_APP_UUID}' | head -1); docker exec \$c printenv REDIS_URL" \
+                     | sed -E 's#^redis://[^:]*:([^@]*)@.*#\1#' ;;
+            esac
+          }
+          trouve=""
+          for source in cmd app; do
+            cand=$(lire_source "$source" 2>/dev/null | tr -d '\r' | tail -1) || true
+            echo "::add-mask::$cand"
+            if [ "${#cand}" -lt 16 ]; then
+              echo "source $source : illisible (${#cand} caractères)"
+              continue
+            fi
+            pong=$(ssh -o BatchMode=yes -o ConnectTimeout=20 "$serveur" \
+              "docker exec ${REDIS_UUID} redis-cli --no-auth-warning -a '$cand' ping" 2>&1 | tr -d '\r' | tail -1)
+            if [ "$pong" = "PONG" ]; then
+              echo "source $source : PONG — c'est celle-là."
+              trouve="$cand"
+              break
+            fi
+            echo "source $source : refusée par Redis."
+          done
+          if [ -z "$trouve" ]; then
+            echo "::error::Aucune des deux sources n'obtient un PONG : Redis n'accepte ni la valeur"
+            echo "::error::de sa ligne de commande, ni celle que porte le site. Il faut regarder à la main."
             echo "::error::Rien n'a été modifié."
             exit 1
           fi
-          echo "Mot de passe lu : ${#mdp} caractères (jamais affiché)."
-
-          # 🔑 UNE LECTURE N'EST PAS UNE PREUVE. On s'authentifie réellement auprès
-          # de Redis avec ce qu'on vient de lire : sans cela, on écrirait dans les
-          # deux applications une valeur mal extraite, et on remplacerait une panne
-          # par la même panne — en croyant l'avoir réparée.
-          pong=$(ssh -o BatchMode=yes -o ConnectTimeout=20 root@178.105.55.15 "docker exec ${REDIS_UUID} redis-cli --no-auth-warning -a '$mdp' ping" 2>&1 | tr -d '\r' | tail -1)
-          if [ "$pong" != "PONG" ]; then
-            echo "::error::Redis refuse ce mot de passe (réponse : $pong)."
-            echo "::error::Rien n'a été modifié."
-            exit 1
-          fi
-          echo "Redis répond PONG : le mot de passe lu est bien le sien."
-          echo "mdp=$mdp" >> "$GITHUB_OUTPUT"
+          echo "mdp=$trouve" >> "$GITHUB_OUTPUT"
 
       - name: Écrire REDIS_URL dans le SITE et le WORKER
         env:

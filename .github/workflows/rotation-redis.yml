@@ -1,65 +1,27 @@
-# ⛔⛔ NE PAS LANCER CE WORKFLOW EN L'ÉTAT — MESURÉ LE 2026-09-22 ⛔⛔
+# Rotation du mot de passe Redis de production.
 #
-# **Le `PATCH redis_password` de l'API Coolify ne persiste pas.** Trois
-# lancements, trois réponses 200, un canari qui prouve que le champ est bien
-# reconnu (l'API rend 422 sur un nom inventé) — et Redis, recréé DEUX fois à dix
-# minutes d'intervalle, a redémarré les deux fois sur son mot de passe d'origine.
-# Vérifié en s'authentifiant réellement auprès de lui (`redis-cli ping` → PONG
-# avec l'ancienne valeur).
+# 🔑 CE QU'IL A FALLU DEUX HEURES POUR COMPRENDRE (2026-09-22).
+# `PATCH /api/v1/databases/{uuid}` avec `{"redis_password": …}` répond **200 et
+# n'écrit rien**. Ce n'est pas un caprice de l'API : dans le modèle
+# `StandaloneRedis`, `redis_password` est un **attribut calculé en LECTURE
+# SEULE** — un `Attribute` avec un `get` et pas de `set` (ligne 395) — qui va
+# lire la variable d'environnement `REDIS_PASSWORD` de la ressource. La colonne
+# n'existe même pas en base : une écriture directe rend
+# « column "redis_password" of relation "standalone_redis" does not exist ».
+# Le contrôleur, lui, liste le champ dans ses `$allowedFields` et le documente
+# dans son schéma OpenAPI. **L'API expose donc un champ qu'elle ne peut
+# structurellement pas écrire, et répond 200.**
 #
-# Les applications, elles, recevaient bien la nouvelle valeur. Chaque lancement
-# éloignait donc un peu plus les deux côtés, et le troisième a mis la production
-# en « redis: error » pendant onze minutes.
+# Quatre lancements ont cru avoir tourné le mot de passe. Aucun ne l'avait fait,
+# et le troisième a mis la production en « redis: error » pendant onze minutes.
 #
-# 🔑 Ce workflow ne redeviendra lançable que le jour où l'on saura ÉCRIRE le mot
-# de passe côté Coolify — vraisemblablement par l'interface, la seule voie dont
-# on ait la preuve qu'elle fonctionne. Tant que ce n'est pas mesuré, le lancer
-# casse la production sans tourner quoi que ce soit.
+# 🔑 LA BONNE PORTE est `PATCH /api/v1/databases/{uuid}/envs`, qui écrit la
+# variable `REDIS_PASSWORD` — celle que l'accesseur lit et que `StartRedis`
+# reporte sur la ligne de commande du conteneur. Et cette porte-là se **relit** :
+# le GET des variables rend leur valeur, donc l'écriture se PROUVE au lieu de se
+# supposer. C'est la première fois de toute cette affaire qu'on dispose d'un
+# oracle direct.
 #
-# Pour réparer un désaccord : `redis-aligner-les-applications.yml`, qui lit la
-# valeur que Redis utilise VRAIMENT et la donne aux applications.
-#
-# Rotation du mot de passe Redis — sans qu'il passe par une main humaine.
-#
-# ── Pourquoi ce workflow existe ───────────────────────────────────────────
-# Le 2026-09-22, le mot de passe du Redis de production a été retrouvé EN CLAIR
-# dans un fichier d'audit du dépôt — qui est PUBLIC — présent depuis le 11 mai.
-# Il fallait le tourner.
-#
-# 🔴 LA ROTATION À LA MAIN EST LE VRAI DANGER, pas le mot de passe. Coolify n'a
-# pas de bouton « régénérer » : il faut taper 64 caractères dans un champ
-# MASQUÉ, puis les recopier dans DEUX chaînes de connexion complètes — sans
-# jamais pouvoir relire ce qu'on a écrit. Une faute de frappe n'est pas visible,
-# et son effet n'est pas visible non plus : les e-mails et les crons s'arrêtent,
-# en silence, jusqu'à ce que quelqu'un s'en aperçoive.
-#
-# Ce n'est pas une crainte théorique : le même jour, la rotation du jeton
-# DocuSeal faite « à la main » dans l'interface a écrit une valeur MASQUÉE
-# (`aV38c****…`, 43 caractères — une longueur parfaitement crédible) au lieu du
-# jeton. L'intégration est restée cassée deux heures sans que rien ne le signale.
-#
-# ── Ce que ce workflow garantit, et qu'un humain ne peut pas garantir ─────
-#  1. le mot de passe est FABRIQUÉ SUR LE RUNNER : personne ne le choisit,
-#     personne ne le lit, il n'est jamais affiché (masqué dans les journaux) ;
-#  2. il est écrit aux TROIS endroits par la même exécution — impossible d'en
-#     oublier un ;
-#  3. **RIEN N'EST MODIFIÉ TANT QUE TOUT N'EST PAS VÉRIFIÉ POSSIBLE.** Le
-#     préambule contrôle les accès, l'existence des trois ressources et la santé
-#     de départ. Si un seul contrôle échoue, on s'arrête AVANT d'avoir touché
-#     quoi que ce soit ;
-#  4. le résultat est VÉRIFIÉ par une mesure indépendante (`/api/healthz`, qui
-#     rapporte l'état Redis vu par l'application), pas par l'absence d'erreur.
-#
-# ⚠️ `Restart` de Coolify NE RECHARGE PAS les variables d'environnement : elles
-# sont figées à la CRÉATION du conteneur. Seul un `deploy` les applique. Mesuré
-# le 2026-09-22 (deux redémarrages sans effet).
-#
-# ── Ce que la rotation coûte ─────────────────────────────────────────────
-# Entre le changement du mot de passe et la fin des redéploiements, les deux
-# applications ne joignent plus Redis : ~3 à 8 minutes. Les jobs BullMQ ne sont
-# PAS perdus — ils dorment dans le volume Redis, que ce workflow ne touche
-# jamais — ils sont RETARDÉS.
-
 name: Sécurité · rotation du mot de passe Redis
 
 on:
@@ -253,7 +215,7 @@ jobs:
           echo "Mot de passe fabriqué : 64 caractères alphanumériques (masqué)."
 
       # ── 3. ÉCRITURE : Redis d'abord, puis les deux applications ─────────
-      - name: Écrire le mot de passe dans la base Redis
+      - name: Écrire le mot de passe — dans la VARIABLE, et le relire
         env:
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
           COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
@@ -261,24 +223,50 @@ jobs:
           MDP: ${{ steps.secret.outputs.mdp }}
         run: |
           set -euo pipefail
-          payload=$(jq -nc --arg p "$MDP" '{redis_password: $p}')
-          code=$(curl -sS -m 30 -o /tmp/resp -w "%{http_code}" -X PATCH \
-            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Content-Type: application/json" \
-            -d "$payload" "${COOLIFY_URL}/api/v1/databases/${REDIS_UUID}")
-          if [ "$code" != "200" ] && [ "$code" != "201" ]; then
-            echo "::error::PATCH base Redis → $code : $(head -c 300 /tmp/resp)"
-            echo "::error::Le mot de passe N'A PAS changé. Les applications sont intactes."
+          # On écrit la VARIABLE `REDIS_PASSWORD`, pas le champ `redis_password`
+          # du modèle : ce dernier est un accesseur en lecture seule (voir l'en-tête
+          # du fichier). C'est la variable que l'accesseur lit et que `StartRedis`
+          # reporte sur la ligne de commande du conteneur.
+          payload=$(jq -nc --arg v "$MDP" '{
+            key: "REDIS_PASSWORD", value: $v,
+            is_preview: false, is_literal: false, is_multiline: false, is_shown_once: false
+          }')
+          code=$(curl -sS -m 30 -o /tmp/resp -w "%{http_code}" -X PATCH             -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Content-Type: application/json"             -d "$payload" "${COOLIFY_URL}/api/v1/databases/${REDIS_UUID}/envs")
+          if [ "${code:0:1}" != "2" ]; then
+            # La variable n'existe peut-être pas encore : on la crée.
+            code=$(curl -sS -m 30 -o /tmp/resp -w "%{http_code}" -X POST               -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Content-Type: application/json"               -d "$payload" "${COOLIFY_URL}/api/v1/databases/${REDIS_UUID}/envs")
+          fi
+          if [ "${code:0:1}" != "2" ]; then
+            echo "::error::Écriture de REDIS_PASSWORD refusée (HTTP $code) : $(head -c 300 /tmp/resp)"
+            echo "::error::Rien d'autre n'a été modifié."
             exit 1
           fi
-          # 🔑 Ici, et UNIQUEMENT grâce au canari passé plus haut, le 200 est une
-          # preuve : on a constaté en direct que cette API rend 422 sur un champ
-          # qu'elle ne connaît pas. Elle a donc reconnu « redis_password », et
-          # l'a passé à l'écriture.
-          #
-          # ⚠️ Ce que le 200 ne dit PAS : que le conteneur Redis a adopté le mot
-          # de passe. Il ne l'adoptera qu'au redéploiement, deux étapes plus bas.
-          # La seule preuve de bout en bout reste `healthz`, à la fin.
-          echo "Mot de passe écrit dans la base Redis (champ accepté : 422 réservé aux inconnus)."
+
+          # 🔑 ON RELIT, ET C'EST LE PREMIER ORACLE DIRECT DE TOUTE CETTE AFFAIRE.
+          # Le GET des variables rend leur valeur : on peut donc comparer ce qui
+          # est stocké à ce qu'on a envoyé. Un 200 ne prouve rien — quatre
+          # lancements l'ont démontré. Une relecture, si.
+          # On compare des EMPREINTES : la valeur ne s'imprime jamais, et un
+          # message d'erreur qui recopierait une requête SQL a déjà suffi une fois
+          # à exposer un mot de passe de production.
+          sleep 2
+          curl -sS -m 25 -o /tmp/envs.json             -H "Authorization: Bearer ${COOLIFY_API_TOKEN}"             "${COOLIFY_URL}/api/v1/databases/${REDIS_UUID}/envs"
+          stocke=$(jq -r '[.[] | select(.key == "REDIS_PASSWORD")][0].value // ""' /tmp/envs.json)
+          if [ -z "$stocke" ]; then
+            echo "::error::Relecture impossible : l'API ne rend pas la valeur de REDIS_PASSWORD."
+            echo "::error::Clés rendues : $(jq -r '[.[].key] | join(",")' /tmp/envs.json | head -c 300)"
+            echo "::error::Sans relecture on ne PROUVE pas l'écriture, et c'est exactement"
+            echo "::error::l'erreur qui a coûté onze minutes de production le 22/09. On s'arrête."
+            exit 1
+          fi
+          a=$(printf '%s' "$stocke" | sha256sum | cut -c1-12)
+          b=$(printf '%s' "$MDP" | sha256sum | cut -c1-12)
+          if [ "$a" != "$b" ]; then
+            echo "::error::La valeur stockée ($a) n'est pas celle envoyée ($b)."
+            echo "::error::L'API a répondu $code sans écrire. Rien d'autre n'a été modifié."
+            exit 1
+          fi
+          echo "REDIS_PASSWORD écrit ET relu : empreintes identiques ($a)."
 
       - name: Écrire REDIS_URL dans le SITE et le WORKER
         env:
