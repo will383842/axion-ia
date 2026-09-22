@@ -103,29 +103,62 @@ jobs:
             echo "::error::La base ${REDIS_UUID} est introuvable (HTTP $code). Rien n'a été modifié."
             exit 1
           fi
-          # 🔴 CE CONTRÔLE A DÉJÀ ÉTÉ FAUX UNE FOIS (run 35703761957, 22/09). Il
-          # exigeait la présence de « redis_password » dans la réponse GET — or
-          # **l'API ne renvoie JAMAIS un champ secret**, comme il se doit. Le
-          # workflow refusait donc de tourner pour une raison inexistante.
+          # 🔴 CE CONTRÔLE A DÉJÀ ÉTÉ FAUX DEUX FOIS, et les deux erreurs sont la
+          # même erreur : chercher la preuve d'une ÉCRITURE dans une LECTURE.
+          #   • run 35703761957 — exigeait « redis_password » dans la réponse GET.
+          #     Une API ne rend jamais un champ secret : le workflow refusait de
+          #     tourner pour une raison inexistante.
+          #   • run 35720918385 — exigeait que `config_hash` bouge après le PATCH.
+          #     Il ne bouge pas : cette route ne le recalcule pas. Le PATCH, lui,
+          #     **avait bien écrit** (`$database->update($request->all())`,
+          #     DatabasesController::update_by_uuid). La garde a donc déclaré un
+          #     échec sur une écriture réussie — le pire des deux mondes, car elle
+          #     a laissé le mot de passe stocké et le conteneur en désaccord.
           #
-          # 🔑 La leçon : on ne prouve pas qu'une écriture est POSSIBLE en
-          # inspectant une lecture. On la prouve en ÉCRIVANT, puis en constatant
-          # que quelque chose a changé. `config_hash` sert exactement à ça — et
-          # il est rendu, lui.
+          # 🔑 La bonne preuve est ailleurs, et elle est SPÉCIFIQUE à cette API :
+          # Coolify refuse tout champ hors liste blanche par un **422 « This field
+          # is not allowed »**, AVANT la moindre écriture. Donc si — et seulement
+          # si — on constate en direct que l'API sait dire 422 sur un nom
+          # inventé, alors un 200 sur `redis_password` prouve que le champ a été
+          # accepté. C'est ce que fait le canari ci-dessous. Il n'écrit rien :
+          # il est rejeté par construction.
           type_base=$(jq -r '.database_type // "inconnu"' /tmp/db)
           case "$type_base" in
             *redis*) : ;;
             *) echo "::error::La base ${REDIS_UUID} est de type « $type_base », pas redis. Rien n'a été modifié."; exit 1 ;;
           esac
-          empreinte_avant=$(jq -r '.config_hash // ""' /tmp/db)
-          if [ -z "$empreinte_avant" ]; then
-            echo "::error::Pas de config_hash dans la réponse : impossible de PROUVER qu'une écriture a pris."
-            echo "::error::Champs rendus : $(jq -r 'keys|join(",")' /tmp/db | head -c 700)"
-            echo "::error::Rien n'a été modifié."
+          code_canari=$(curl -sS -m 30 -o /tmp/canari -w "%{http_code}" -X PATCH             -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Content-Type: application/json"             -d '{"champ_qui_n_existe_pas_canari": "x"}'             "${COOLIFY_URL}/api/v1/databases/${REDIS_UUID}")
+          if [ "$code_canari" != "422" ]; then
+            echo "::error::Canari : un champ inventé a reçu $code_canari au lieu de 422."
+            echo "::error::Cette API n'écarte donc PAS les champs inconnus, et un 200 sur"
+            echo "::error::« redis_password » ne prouverait rien. Rien n'a été modifié."
+            echo "::error::Réponse : $(head -c 300 /tmp/canari)"
             exit 1
           fi
-          echo "empreinte_avant=$empreinte_avant" >> "$GITHUB_ENV"
-          echo "Base Redis trouvée (type $type_base), empreinte de configuration relevée."
+          echo "Base Redis trouvée (type $type_base). Canari : l'API rend bien 422 sur un champ inconnu."
+
+          # 🔴 PIÈGE VOISIN, lu dans StartRedis::generate_environment_variables.
+          # Si la ressource Redis porte une variable « REDIS_PASSWORD » **partagée**
+          # (`is_shared`), Coolify fait l'inverse de ce qu'on attend au démarrage :
+          # il ÉCRASE `redis_password` avec la valeur de la variable. Notre écriture
+          # serait donc défaite au restart, Redis repartirait sur un autre mot de
+          # passe que celui donné aux applications, et on ne s'en apercevrait qu'à
+          # la panne. On regarde AVANT.
+          code_envs=$(curl -sS -m 20 -o /tmp/envs -w "%{http_code}"             -H "Authorization: Bearer ${COOLIFY_API_TOKEN}"             "${COOLIFY_URL}/api/v1/databases/${REDIS_UUID}/envs" || echo 000)
+          if [ "$code_envs" = "200" ]; then
+            partagee=$(jq -r '[.[] | select(.key=="REDIS_PASSWORD" and (.is_shared==true))] | length' /tmp/envs 2>/dev/null || echo 0)
+            if [ "${partagee:-0}" != "0" ]; then
+              echo "::error::La base porte une variable REDIS_PASSWORD PARTAGÉE. Au redémarrage,"
+              echo "::error::Coolify écraserait le mot de passe qu'on vient d'écrire avec la sienne."
+              echo "::error::Il faut tourner la variable partagée, pas le champ. Rien n'a été modifié."
+              exit 1
+            fi
+            echo "Aucune variable REDIS_PASSWORD partagée : le champ fera autorité au démarrage."
+          else
+            echo "::notice::Liste des variables de la base indisponible (HTTP $code_envs)."
+            echo "::notice::Le cas « REDIS_PASSWORD partagée » n'a pas pu être écarté d'avance ;"
+            echo "::notice::il reste couvert par la vérification healthz de la dernière étape."
+          fi
 
       - name: Santé de DÉPART (le témoin de la comparaison finale)
         run: |
@@ -186,22 +219,15 @@ jobs:
             echo "::error::Le mot de passe N'A PAS changé. Les applications sont intactes."
             exit 1
           fi
-          # 🔑 UN 200 NE PROUVE RIEN. Une API qui ignore un champ inconnu répond
-          # 200 et ne change rien : on tournerait alors les URL des applications
-          # vers un mot de passe que Redis n'a jamais adopté, et **les deux côtés
-          # se croiraient d'accord**. On EXIGE donc que l'empreinte de
-          # configuration ait bougé — c'est le seul signe qui distingue une
-          # écriture d'un silence poli.
-          sleep 3
-          curl -sS -m 20 -o /tmp/db2             -H "Authorization: Bearer ${COOLIFY_API_TOKEN}"             "${COOLIFY_URL}/api/v1/databases/${REDIS_UUID}" || true
-          empreinte_apres=$(jq -r '.config_hash // ""' /tmp/db2)
-          if [ "$empreinte_apres" = "$empreinte_avant" ]; then
-            echo "::error::L'API a répondu $code mais l'empreinte de configuration N'A PAS bougé."
-            echo "::error::Le champ « redis_password » n'a donc pas été pris en compte."
-            echo "::error::Rien d'autre n'a été modifié — les applications sont intactes."
-            exit 1
-          fi
-          echo "Mot de passe écrit ET pris en compte (l'empreinte a changé)."
+          # 🔑 Ici, et UNIQUEMENT grâce au canari passé plus haut, le 200 est une
+          # preuve : on a constaté en direct que cette API rend 422 sur un champ
+          # qu'elle ne connaît pas. Elle a donc reconnu « redis_password », et
+          # l'a passé à l'écriture.
+          #
+          # ⚠️ Ce que le 200 ne dit PAS : que le conteneur Redis a adopté le mot
+          # de passe. Il ne l'adoptera qu'au redéploiement, deux étapes plus bas.
+          # La seule preuve de bout en bout reste `healthz`, à la fin.
+          echo "Mot de passe écrit dans la base Redis (champ accepté : 422 réservé aux inconnus)."
 
       - name: Écrire REDIS_URL dans le SITE et le WORKER
         env:
@@ -289,5 +315,8 @@ jobs:
           echo "::error::  1. Coolify → application site ET worker → vérifier que REDIS_URL est identique"
           echo "::error::     dans les deux, et que son hôte est bien ${REDIS_UUID} ;"
           echo "::error::  2. Coolify → base Redis → relancer un Restart ;"
-          echo "::error::  3. redéployer les DEUX applications (deploy, jamais restart)."
+          echo "::error::  3. redéployer les DEUX applications (deploy, jamais restart) ;"
+          echo "::error::  4. le plus simple : RELANCER CE WORKFLOW. Il refabrique un mot de passe"
+          echo "::error::     et le réécrit aux trois endroits — il converge depuis n'importe quel"
+          echo "::error::     état incohérent, y compris celui-ci."
           exit 1
