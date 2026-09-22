@@ -53,6 +53,14 @@ on:
         required: true
         default: "hdfknlij6yqebr09p379m9q6"
         type: string
+      etat_de_depart:
+        description: "sain = refuser de tourner si Redis ne répond pas déjà (défaut). deja-en-panne = RÉPARER un désaccord en cours."
+        required: true
+        default: "sain"
+        type: choice
+        options:
+          - sain
+          - deja-en-panne
 
 permissions:
   contents: read
@@ -161,6 +169,8 @@ jobs:
           fi
 
       - name: Santé de DÉPART (le témoin de la comparaison finale)
+        env:
+          ETAT_DE_DEPART: ${{ inputs.etat_de_depart }}
         run: |
           set -euo pipefail
           # 🔑 Sans cette mesure, un « redis: ok » à l'arrivée ne prouverait rien :
@@ -168,11 +178,31 @@ jobs:
           # réparé, cassé, ou rien fait du tout.
           sante=$(curl -sS -m 20 https://axion-ia.com/api/healthz || echo '{}')
           echo "healthz avant : $sante"
-          if [ "$(echo "$sante" | jq -r '.redis // "absent"')" != "ok" ]; then
-            echo "::error::Redis n'est PAS sain avant la rotation. On ne tourne pas un mot de passe"
-            echo "::error::sur un système déjà en panne : on ne saurait plus quoi attribuer à quoi."
-            exit 1
+          etat=$(echo "$sante" | jq -r '.redis // "absent"')
+          if [ "$etat" = "ok" ]; then
+            echo "Redis répond avant la rotation : la comparaison finale aura un témoin."
+            exit 0
           fi
+          # 🔴 CETTE GARDE A BLOQUÉ SA PROPRE RÉPARATION (run 35729601528, 22/09).
+          # Elle refuse de tourner un mot de passe sur un système en panne — c'est
+          # juste quand on rote par hygiène, et exactement faux quand la panne EST
+          # un désaccord de mot de passe : le seul remède est alors de réécrire la
+          # même valeur aux trois endroits, c'est-à-dire de relancer ce workflow.
+          #
+          # 🔑 Une garde qui ne peut pas être levée délibérément n'est pas une
+          # garde, c'est une impasse. On la lève par une DÉCLARATION explicite,
+          # pas par un contournement : l'opérateur dit dans quel état il trouve le
+          # système, et le journal garde cette déclaration.
+          if [ "${ETAT_DE_DEPART}" = "deja-en-panne" ]; then
+            echo "::warning::Redis répond « $etat » et le lancement déclare « déjà en panne »."
+            echo "::warning::Mode RÉPARATION : on réécrit la même valeur aux trois endroits."
+            exit 0
+          fi
+          echo "::error::Redis n'est PAS sain avant la rotation (« $etat »). On ne tourne pas un"
+          echo "::error::mot de passe sur un système déjà en panne : on ne saurait plus quoi"
+          echo "::error::attribuer à quoi. Si la panne EST le mot de passe, relancer avec"
+          echo "::error::etat_de_depart = deja-en-panne."
+          exit 1
 
       # ── 2. LE MOT DE PASSE, FABRIQUÉ ICI ────────────────────────────────
       - name: Fabriquer le nouveau mot de passe (jamais affiché)
