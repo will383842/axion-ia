@@ -148,8 +148,18 @@ jobs:
           set -euo pipefail
           # 64 caractères alphanumériques : même forme que celui de Coolify, et
           # aucun caractère qui demanderait un échappement dans une URL — un
-          # `@`, un `:` ou un `/` couperait la chaîne de connexion en deux.
-          nouveau=$(LC_ALL=C tr -dc 'A-Za-z0-9' </dev/urandom | head -c 64)
+          # arobase, un deux-points ou une barre couperait la chaîne en deux.
+          #
+          # 🔴 PAS DE TUYAU ICI, ET C'EST LE FOND DU CORRECTIF (run 35711230444).
+          # `tr -dc … </dev/urandom | head -c 64` échoue sous `pipefail` : `head`
+          # ferme le tuyau dès le 64ᵉ caractère, `tr` reçoit un « broken pipe »,
+          # et le code de sortie du tuyau devient celui de `tr`. Le mot de passe
+          # était pourtant CORRECTEMENT fabriqué — l'échec portait sur la
+          # plomberie, pas sur le résultat.
+          #
+          # 🔑 `openssl rand -hex 32` rend 64 caractères hexadécimaux en une
+          # seule commande : pas de tuyau, pas de signal, 256 bits d'entropie.
+          nouveau=$(openssl rand -hex 32)
           if [ "${#nouveau}" -ne 64 ]; then
             echo "::error::Génération ratée (${#nouveau} caractères). Rien n'a été modifié."
             exit 1
