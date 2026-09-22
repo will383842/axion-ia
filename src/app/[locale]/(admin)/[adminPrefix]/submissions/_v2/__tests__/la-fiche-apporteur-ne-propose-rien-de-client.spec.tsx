@@ -48,11 +48,21 @@ vi.mock("@/components/admin/contacts/ReplyHistory", () => ({ ReplyHistory: () =>
 vi.mock("@/components/admin/contacts/BlocInvitationApporteur", () => ({
   BlocInvitationApporteur: () => <p>bloc-invitation</p>,
 }));
-// Le bloc des echanges reserves lit `calendly_events` : c'est un composant
-// serveur asynchrone, et un enfant asynchrone non resolu rend la fiche VIDE —
-// pas une erreur, un ecran blanc. Ses deux tests vivent a cote de lui.
+// 🔑 DEUX VOISINS, DEUX CAUSES DIFFERENTES, UN SEUL SYMPTOME — et les deux ont
+// casse ce fichier le meme jour.
+//
+// Le bloc des echanges reserves lit `calendly_events` : composant SERVEUR
+// asynchrone. React ne leve pas sur un enfant asynchrone non resolu, il ne rend
+// RIEN — la fiche devient un ecran blanc, et les assertions d'ABSENCE passent
+// toutes. Seul le temoin rougit.
 vi.mock("@/components/admin/contacts/RendezVousApporteur", () => ({
   RendezVousApporteur: () => null,
+}));
+// Les gestes de la fiche, eux, sont un composant CLIENT : ils appellent
+// `useRouter`, que ce fichier ne fournit pas (son mock de `next/navigation` ne
+// porte que `notFound` et `redirect`). Leurs tests vivent a cote d'eux.
+vi.mock("@/components/admin/contacts/GestesApporteur", () => ({
+  GestesApporteur: () => null,
 }));
 vi.mock("@/components/admin/accuse/AccuseReceptionAuto", () => ({ BlocAccuse: () => null }));
 vi.mock("../CandidatureCommercialeDetail", () => ({ CandidatureCommercialeDetail: () => null }));

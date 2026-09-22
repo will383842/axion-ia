@@ -9,7 +9,7 @@
 // Vue normale / archivés :
 //   - Archiver / Désarchiver   → archive/unarchiveSubmissionAction
 //   - Marquer lu / non-lu      → markNeedsAttentionAction (needsAttention)
-//   - Marquer traité           → updateSubmissionAction (status=processed)
+//   - Marquer traité           → marquerTraiteAction (table des transitions)
 //   - Supprimer                → softDeleteSubmissionAction (corbeille, récup.)
 //
 // Vue Corbeille (deleted) :
@@ -26,14 +26,14 @@ import { useState, useTransition } from "react";
 import {
   archiveSubmissionAction,
   unarchiveSubmissionAction,
+  classerSansSuiteAction,
+  remettreATraiterAction,
+  marquerTraiteAction,
   markNeedsAttentionAction,
   softDeleteSubmissionAction,
   restoreSubmissionAction,
 } from "@/features/admin-submissions/reply-actions";
-import {
-  updateSubmissionAction,
-  eraseSubmissionAction,
-} from "@/features/admin-submissions/actions";
+import { eraseSubmissionAction } from "@/features/admin-submissions/actions";
 import { MoreHorizontal, Undo2 } from "lucide-react";
 
 interface Props {
@@ -46,6 +46,8 @@ interface Props {
   status: string;
   /** deletedAt != null → la ligne est affichée dans l'onglet Corbeille. */
   deleted: boolean;
+  /** details.sansSuiteAt != null → la fiche a été écartée, pas seulement rangée. */
+  sansSuite: boolean;
 }
 
 const MENU_ITEM_CLASS =
@@ -57,6 +59,7 @@ export function SubmissionRowActions({
   needsAttention,
   status,
   deleted,
+  sansSuite,
 }: Props): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -71,11 +74,10 @@ export function SubmissionRowActions({
     });
   }
 
+  // Passe par la table des transitions, comme les cinq autres gestes : le
+  // formulaire général écrivait d'autres colonnes au passage.
   function markProcessed() {
-    const fd = new FormData();
-    fd.set("id", id);
-    fd.set("status", "processed");
-    return updateSubmissionAction({ ok: true }, fd);
+    return marquerTraiteAction(id);
   }
 
   function eraseForever() {
@@ -197,6 +199,32 @@ export function SubmissionRowActions({
               Marquer traité
             </button>
           ) : null}
+          {/* « Sans suite » et « Remettre à traiter » sont le MEME axe, dans les
+              deux sens : on n'offre jamais les deux à la fois. Le premier clot
+              (et retire les relances en attente), le second rouvre. */}
+          {sansSuite ? (
+            <button
+              type="button"
+              disabled={isPending}
+              onClick={() => run(() => remettreATraiterAction(id))}
+              className={MENU_ITEM_CLASS}
+              role="menuitem"
+              title="La fiche redevient visible dans « à traiter »"
+            >
+              Remettre à traiter
+            </button>
+          ) : (
+            <button
+              type="button"
+              disabled={isPending}
+              onClick={() => run(() => classerSansSuiteAction(id))}
+              className={MENU_ITEM_CLASS}
+              role="menuitem"
+              title="On ne donne pas suite : les relances en attente sont retirées"
+            >
+              Classer sans suite
+            </button>
+          )}
           <button
             type="button"
             disabled={isPending}

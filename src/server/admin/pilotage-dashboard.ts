@@ -19,6 +19,7 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { apporteursEnAttente, type ApporteursEnAttente } from "./apporteurs-en-attente";
 import type { ActiviteFacturation } from "../../../prisma/generated/client";
 import {
   lireDossiersPipeline,
@@ -306,6 +307,8 @@ export interface PipelineBloc {
   parActivite: { activite: ActiviteDossier; label: string; n: number }[];
 }
 
+export type { ApporteursEnAttente } from "./apporteurs-en-attente";
+
 export interface PilotageDashboard {
   periode: PeriodePilotage;
   /** Libellé FR de la période affichée (« août 2026 », « Semaine du … »). */
@@ -319,6 +322,7 @@ export interface PilotageDashboard {
   financier: FinancierBloc;
   objectif: ObjectifBloc;
   pipeline: PipelineBloc;
+  apporteurs: ApporteursEnAttente;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1015,6 +1019,7 @@ export async function getPilotageDashboard(
     margeFormations,
     dossiersRetard,
     devisSansRep,
+    apporteurs,
   ] = await Promise.all([
     lireDossiersPipeline(maintenant).then((l) => l.colonnes),
     listAlertes({ resolue: false, niveau: "critique", limit: 20 }),
@@ -1044,6 +1049,7 @@ export async function getPilotageDashboard(
     getMargeParFormation({ annee }),
     dossiersFinancementEnRetard(maintenant),
     devisSansReponseDepuis30j(maintenant),
+    apporteursEnAttente(maintenant),
   ]);
 
   // Tuiles. CA de la période = sessions/audits réalisés + coaching signé —
@@ -1194,5 +1200,6 @@ export async function getPilotageDashboard(
         n: parActivite.get(a) ?? 0,
       })),
     },
+    apporteurs,
   };
 }

@@ -35,6 +35,10 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import {
+  etapeLaPlusAvancee,
+  type EtapeApporteur,
+} from "@/lib/commercial-application/etape-apporteur";
 import { decryptPii } from "@/lib/pii-crypto";
 
 import {
@@ -88,6 +92,26 @@ export interface SubmissionListItem {
   /** details.origine — `ecran-1-du-dossier`, `saisie-manuelle`… Dit si l'absence
    * d'accusé de réception automatique est VOULUE (cf. `lib/contact/accuse-attendu`). */
   origine: string | null;
+  /**
+   * details.sansSuiteAt — horodatage du classement « sans suite ».
+   *
+   * 🔑 CE N'EST PAS UN SYNONYME D'ARCHIVÉ, et c'est tout l'intérêt. Les deux
+   * écrivent `status: archived` (une seule vérité pour la purge à 24 mois),
+   * mais « archivé » veut dire « rangé » et « sans suite » veut dire « on a
+   * décidé de ne pas donner suite ». Sans cette marque, la console ne sait plus
+   * distinguer un dossier qu'on a écarté d'un dossier qu'on a simplement rangé.
+   */
+  sansSuiteAt: string | null;
+  /**
+   * Combien de lignes la MÊME personne occupe dans ce périmètre (≥ 1).
+   *
+   * 🔑 `1` pour toute liste non regroupée : le champ dit toujours la vérité,
+   * il ne vaut jamais `null` « parce qu'on ne regroupe pas ici ». Un champ
+   * facultatif aurait forcé chaque lecteur à décider quoi faire du vide.
+   */
+  lignesDeLaPersonne: number;
+  /** L'étape la plus avancée de la personne — `null` hors périmètre apporteurs. */
+  etape: EtapeApporteur | null;
 }
 
 export interface SubmissionListResult {
@@ -117,6 +141,10 @@ export async function listSubmissions(
   // `contactName` sont chiffrés au repos (AES-GCM, IV aléatoire → non
   // déterministe), donc un `contains` SQL ne matche jamais. On filtre en mémoire
   // après déchiffrement (voir plus bas). `companyName` reste en clair.
+  // Plafond partagé par les deux lectures en mémoire (recherche, regroupement
+  // par personne). Une boîte admin ne l'approche pas : voir la mesure R1.
+  const SCAN_CAP = 2000;
+
   const where = buildSubmissionsWhere(parsed);
 
   // Sélection partagée liste + recherche.
@@ -137,6 +165,7 @@ export async function listSubmissions(
     archivedAt: true,
     deletedAt: true,
     lastRepliedAt: true,
+    contactEmailHash: true,
     // Form v2 — `details` JSON contient unifiedType (le champ `type` DB n'a que
     // 5 valeurs enum, vs 12 types unifiés).
     details: true,
@@ -160,6 +189,8 @@ export async function listSubmissions(
       details && typeof details.unifiedType === "string" ? details.unifiedType : null;
     const subType = details && typeof details.subType === "string" ? details.subType : null;
     const origine = details && typeof details.origine === "string" ? details.origine : null;
+    const sansSuiteAt =
+      details && typeof details.sansSuiteAt === "string" ? details.sansSuiteAt : null;
     const rawMessage = details && typeof details.message === "string" ? details.message.trim() : "";
     return {
       id: s.id,
@@ -187,6 +218,9 @@ export async function listSubmissions(
       unifiedType,
       subType,
       origine,
+      sansSuiteAt,
+      lignesDeLaPersonne: 1,
+      etape: null,
     };
   };
 
@@ -194,14 +228,66 @@ export async function listSubmissions(
 
   let mapped: ReturnType<typeof mapRow>[];
   let total: number;
+  // ── UNE LIGNE PAR PERSONNE, sur le seul périmètre apporteurs ───────────
+  //
+  // La console montrait une ligne par FORMULAIRE : une personne qui laisse ses
+  // cinq champs, revient valider l'écran 1, puis envoie son dossier complet
+  // occupait trois lignes. Mesuré le 19/09 (R2) : 2 personnes sur 2 lignes.
+  //
+  // 🔑 REGROUPEMENT EN MÉMOIRE, ET C'EST UN CHOIX MESURÉ. Un `groupBy` SQL
+  // paginerait en base, mais il rassemblerait TOUS les `contactEmailHash` nuls
+  // dans un seul groupe — c'est-à-dire cinq personnes distinctes fondues en une
+  // (R3 : 5 lignes sur 17 sans empreinte). La population entière du périmètre
+  // tient en 17 lignes, et grandit de 5 à 8 par mois (R1) : le plafond de 2000
+  // laisse vingt ans de marge, et le jour où il serait atteint la liste serait
+  // TRONQUÉE, pas fausse.
+  if (parsed.perimetre === "apporteurs" && !searchQ) {
+    const lignes = await prisma.submission.findMany({
+      where,
+      orderBy: { submittedAt: "desc" },
+      take: SCAN_CAP,
+      select,
+    });
+
+    // Clé : l'empreinte quand elle existe, l'identifiant sinon. 🔑 Se replier
+    // sur l'id isole la ligne au lieu de la confondre avec les autres orphelines
+    // — une personne de trop vaut mieux que deux personnes fondues en une.
+    const groupes = new Map<string, typeof lignes>();
+    for (const l of lignes) {
+      const cle = l.contactEmailHash ?? `id:${l.id}`;
+      const g = groupes.get(cle);
+      if (g) g.push(l);
+      else groupes.set(cle, [l]);
+    }
+
+    // `lignes` est déjà trié du plus récent au plus ancien : le premier élément
+    // de chaque groupe est donc la ligne la plus récente, et l'ordre
+    // d'insertion des groupes suit celui des personnes. Rien à retrier.
+    const personnes = [...groupes.values()].map((g) => ({
+      ...mapRow(g[0]!),
+      lignesDeLaPersonne: g.length,
+      etape: etapeLaPlusAvancee(g),
+    }));
+
+    const debut = (parsed.page - 1) * parsed.pageSize;
+    return {
+      items: personnes.slice(debut, debut + parsed.pageSize),
+      // Le total compte des PERSONNES, pas des lignes : sinon la pagination
+      // annoncerait des pages qui n'existent pas.
+      total: personnes.length,
+      page: parsed.page,
+      pageSize: parsed.pageSize,
+      totalPages: Math.max(1, Math.ceil(personnes.length / parsed.pageSize)),
+    };
+  }
+
   if (searchQ) {
     // Scan borné des plus récents (matchant les AUTRES filtres) → déchiffre →
     // filtre + pagine en mémoire. Une boîte admin dépasse rarement ce plafond.
-    const SEARCH_SCAN_CAP = 2000;
     const scanned = await prisma.submission.findMany({
       where,
       orderBy: { submittedAt: "desc" },
-      take: SEARCH_SCAN_CAP,
+      take: SCAN_CAP,
       select,
     });
     const filtered = scanned.map(mapRow).filter((r) => matchSubmissionSearch(r, searchQ));

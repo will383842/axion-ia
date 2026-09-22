@@ -150,10 +150,36 @@ export function buildSubmissionsWhere(parsed: ListSubmissionsInput): Prisma.Subm
     if (!parsed.includeArchived) where.archivedAt = null;
   }
 
-  // Statut réponse. « unanswered » = needsAttention (défaut à la création),
-  // « answered » = replyCount > 0, « failed » = au moins une reply en échec.
+  // Statut réponse. « answered » = replyCount > 0, « failed » = au moins une
+  // reply en échec.
+  //
+  // 🔴 2026-09-21 — « unanswered » LISAIT `needsAttention`, ET N'ÉTAIT DONC PAS
+  // LE CONTRAIRE D'« answered ». Une fiche à laquelle personne n'a répondu mais
+  // dont on a levé l'attention (« marquer comme lu ») sortait des DEUX filtres :
+  // absente de « sans réponse » parce que lue, absente de « répondu » parce que
+  // sans réponse. Elle n'existait sous aucun des deux.
+  //
+  // 🔑 Le dépôt avait déjà tranché ailleurs, avec son raisonnement écrit :
+  // `admin-inbox/counters.ts` explique qu'il a REFUSÉ `needsAttention` pour le
+  // badge de la barre latérale, parce qu'« un message dont on a levé l'attention
+  // sans y répondre comptait dans la liste et pas dans le badge ». Le même
+  // arbitrage n'avait jamais été reporté ici. Il l'est.
+  //
+  // Conséquence voulue : la tuile d'accueil « apporteurs en attente », le badge
+  // de la barre latérale et ce filtre comptent enfin la même chose — et le
+  // chiffre de l'accueil se REPRODUIT en ouvrant la liste.
   if (parsed.replyStatus === "unanswered") {
-    where.needsAttention = true;
+    // ⚠️ `replyCount` SEUL ne suffit pas, et l'oubli se voyait à l'accueil : une
+    // fiche marquée « traité » sans réponse écrite restait dans ce filtre, alors
+    // que la tuile « apporteurs en attente » l'excluait. Le chiffre de l'accueil
+    // annonçait alors zéro en ouvrant une liste qui montrait une ligne.
+    //
+    // 🔑 La définition de la maison pour « reste à faire » est écrite dans
+    // `admin-inbox/counters.ts` : `replyCount === 0` ET un statut qui n'est ni
+    // `processed` ni `archived`. C'est elle, et elle seule, dans les TROIS
+    // endroits — badge de la barre latérale, ce filtre, tuile d'accueil.
+    where.replyCount = 0;
+    where.status = { notIn: ["processed", "archived"] };
   } else if (parsed.replyStatus === "answered") {
     where.replyCount = { gt: 0 };
   } else if (parsed.replyStatus === "failed") {

@@ -26,6 +26,10 @@ import { adminPath } from "@/lib/admin-path";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { enqueueEmail } from "@/server/queue/queues";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
+import { appliquerTransition } from "./transitions";
+import { estApporteur } from "@/lib/commercial-application/est-apporteur";
+import { enregistrerOppositionPourAdresse } from "@/server/email/opposition";
+import { annulerRelancesLeadApporteur } from "@/features/commercial-application/relances-lead-apporteur";
 
 async function requireAdminWriteSession() {
   const session = await auth();
@@ -185,25 +189,97 @@ export async function replyToSubmissionAction(
 const idsSchema = z.object({ ids: z.array(z.string().uuid()).min(1).max(500) });
 const singleIdSchema = z.object({ id: z.string().uuid() });
 
-export async function archiveSubmissionAction(id: string): Promise<{ ok: boolean }> {
-  try {
-    await requireAdminWriteSession();
-  } catch {
-    return { ok: false };
-  }
-  const parsed = singleIdSchema.safeParse({ id });
-  if (!parsed.success) return { ok: false };
-  await prisma.submission.update({
-    where: { id: parsed.data.id },
-    data: { archivedAt: new Date(), needsAttention: false, status: "archived" },
-  });
-  revalidatePath(adminPath("fr", "contacts/messages"));
-  updateTag("admin:contacts-unread");
-  updateTag(INBOX_COUNTS_TAG);
-  return { ok: true };
+// 🔴 LES QUATRE GESTES UNITAIRES PASSENT PAR `transitions.ts`, ET C'EST LE FOND
+// DE CETTE PR. Chacun écrivait ses propres colonnes ici, et « Archiver »
+// n'annulait PAS les relances en attente : une personne archivée continuait de
+// recevoir « ton dossier t'attend » à J+2 et J+7, depuis des jobs retardés qui
+// dorment dans Redis. Ça ne se voit jamais depuis la console — ça se voit dans
+// sa boîte à elle.
+//
+// ⚠️ Les gestes EN LOT restent ci-dessous en `updateMany` : ils traitent
+// jusqu'à 500 lignes, et 500 transactions séquentielles feraient expirer
+// l'action. Ils annulent les relances en une passe APRÈS l'écriture.
+
+/** Nombre de relances retirees de la file — `0` est une reponse, pas un echec. */
+export interface ResultatGeste {
+  ok: boolean;
+  relancesRetirees?: number;
 }
 
-export async function unarchiveSubmissionAction(id: string): Promise<{ ok: boolean }> {
+async function geste(
+  id: string,
+  transition: "traite" | "archiver" | "desarchiver" | "sans-suite" | "remettre",
+): Promise<ResultatGeste> {
+  let session: { userId: string };
+  try {
+    session = await requireAdminWriteSession();
+  } catch {
+    return { ok: false };
+  }
+  const parsed = singleIdSchema.safeParse({ id });
+  if (!parsed.success) return { ok: false };
+  const res = await appliquerTransition(parsed.data.id, transition, session.userId);
+  return { ok: res.ok, relancesRetirees: res.relancesRetirees };
+}
+
+/**
+ * Marquer traité — RANGER, sans clore.
+ *
+ * 🔴 Ce geste passait par `updateSubmissionAction`, le formulaire général de la
+ * fiche, et pas par la table des transitions. Conséquence invisible : le témoin
+ * qui prouve que « traité » n'annule PAS les relances gardait du code que la
+ * production n'exécutait jamais. Il serait resté vert le jour où le vrai
+ * « marquer traité » se serait mis à couper des relances légitimes.
+ *
+ * Au passage, ce chemin-ci n'écrit QUE deux colonnes : il ne peut pas emporter
+ * les notes internes, contrairement au formulaire général — c'est exactement le
+ * défaut réparé le 19/09.
+ */
+export async function marquerTraiteAction(id: string): Promise<ResultatGeste> {
+  return geste(id, "traite");
+}
+
+export async function archiveSubmissionAction(id: string): Promise<ResultatGeste> {
+  return geste(id, "archiver");
+}
+
+export async function unarchiveSubmissionAction(id: string): Promise<ResultatGeste> {
+  return geste(id, "desarchiver");
+}
+
+/**
+ * Classer sans suite : on a décidé de ne pas donner suite.
+ *
+ * Même effet de base qu'archiver — les relances s'arrêtent, la purge à 24 mois
+ * s'applique par le MÊME chemin — plus une marque lisible sur la fiche et une
+ * entrée au journal d'activité. La console peut alors distinguer « écarté » de
+ * « rangé », ce qu'un seul `status: archived` ne permettait pas.
+ */
+export async function classerSansSuiteAction(id: string): Promise<ResultatGeste> {
+  return geste(id, "sans-suite");
+}
+
+/** Remettre à traiter : la fiche redevient visible dans « à traiter ». */
+export async function remettreATraiterAction(id: string): Promise<ResultatGeste> {
+  return geste(id, "remettre");
+}
+
+/**
+ * Enregistrer une opposition reçue AUTREMENT que par le lien de désinscription
+ * — au téléphone, par retour d'e-mail, de vive voix.
+ *
+ * 🔴 CE GESTE MANQUAIT, ET SON ABSENCE SE VOYAIT CHEZ LA PERSONNE. Une
+ * opposition dite à Will ne s'enregistrait nulle part : il fallait attendre
+ * qu'elle clique sur un lien dans un message qu'elle venait de dire ne plus
+ * vouloir. Entre-temps, les relances déjà programmées partaient.
+ *
+ * Passe par le MÊME chemin que le lien (`enregistrerOppositionPourAdresse`) :
+ * empreinte posée, CRM prévenu, envois programmés retirés. Un second chemin
+ * aurait oublié l'un des trois.
+ */
+export async function enregistrerOppositionDepuisFicheAction(
+  id: string,
+): Promise<{ ok: boolean; dejaOpposee?: boolean; erreur?: "introuvable" | "sans-adresse" }> {
   try {
     await requireAdminWriteSession();
   } catch {
@@ -211,14 +287,27 @@ export async function unarchiveSubmissionAction(id: string): Promise<{ ok: boole
   }
   const parsed = singleIdSchema.safeParse({ id });
   if (!parsed.success) return { ok: false };
-  await prisma.submission.update({
+
+  const ligne = await prisma.submission.findUnique({
     where: { id: parsed.data.id },
-    data: { archivedAt: null, status: "in_progress" },
+    select: { contactEmail: true, deletedAt: true },
   });
+  if (!ligne || ligne.deletedAt) return { ok: false, erreur: "introuvable" };
+
+  // Une fiche effacée (art. 17) porte une adresse synthétique : y poser une
+  // opposition n'apprendrait rien à personne et créerait une ligne fantôme.
+  const adresse = decryptPii(ligne.contactEmail);
+  if (!adresse || adresse.endsWith("@erased.local")) {
+    return { ok: false, erreur: "sans-adresse" };
+  }
+
+  const r = await enregistrerOppositionPourAdresse(adresse, { origine: "console-admin" });
+  if (!r.ok) return { ok: false };
+
   revalidatePath(adminPath("fr", "contacts/messages"));
-  updateTag("admin:contacts-unread");
+  revalidatePath(adminPath("fr", "contacts/commercial"));
   updateTag(INBOX_COUNTS_TAG);
-  return { ok: true };
+  return { ok: true, dejaOpposee: r.dejaOpposee };
 }
 
 export async function bulkArchiveSubmissionsAction(ids: string[]): Promise<{ archived: number }> {
@@ -229,10 +318,36 @@ export async function bulkArchiveSubmissionsAction(ids: string[]): Promise<{ arc
   }
   const parsed = idsSchema.safeParse({ ids });
   if (!parsed.success) return { archived: 0 };
+  // Les adresses sont lues AVANT l'écriture : après, le filtre `archivedAt:
+  // null` ne retrouve plus les lignes que cet appel vient de fermer.
+  const concernes = await prisma.submission.findMany({
+    where: { id: { in: parsed.data.ids }, archivedAt: null },
+    select: { contactEmail: true, details: true },
+  });
   const result = await prisma.submission.updateMany({
     where: { id: { in: parsed.data.ids }, archivedAt: null },
     data: { archivedAt: new Date(), needsAttention: false, status: "archived" },
   });
+  // Même règle que le geste unitaire : archiver CLÔT, donc plus aucune relance
+  // ne part. En lot on ne rend pas le compte — l'écran n'a pas où le dire — mais
+  // le retrait doit avoir lieu, sinon archiver cinquante fiches d'un coup
+  // laisserait cinquante « ton dossier t'attend » en vol.
+  for (const c of concernes) {
+    // 🔑 SEULS les dossiers apporteurs, comme pour le geste unitaire : les
+    // relances se retrouvent par l'ADRESSE, et archiver un simple message
+    // /contact de quelqu'un tuerait celles que sa candidature a programmées.
+    if (!estApporteur(c.details)) continue;
+    try {
+      // ⚠️ `decryptPii` DANS le filet : un chiffré altéré lève, et il
+      // interromprait la boucle APRES que les 500 fiches ont été archivées —
+      // les suivantes garderaient leurs relances, sans que rien ne le dise.
+      const adresse = decryptPii(c.contactEmail);
+      if (!adresse) continue;
+      await annulerRelancesLeadApporteur(adresse, "Envoi annulé : la fiche a été archivée.");
+    } catch {
+      // Un retrait qui échoue ne défait pas un archivage acquis.
+    }
+  }
   revalidatePath(adminPath("fr", "contacts/messages"));
   updateTag("admin:contacts-unread");
   updateTag(INBOX_COUNTS_TAG);
