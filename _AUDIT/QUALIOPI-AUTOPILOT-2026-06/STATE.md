@@ -16,7 +16,7 @@ Dernière MAJ initiale : 2026-06-06 — **T0→T16 AUTOPILOT COMPLET**. Toutes l
 
 ### REPRISE RAPIDE (après redémarrage machine — checklist complète)
 0. **Docker DOIT tourner** (DB/Redis/Mailhog) : ouvrir Docker Desktop puis `cd axionia && pnpm db:up` (ou `docker compose -f docker/docker-compose.yml up -d`). Vérifier : `docker ps` montre `axion-ia-postgres` (5433) + `axion-ia-redis` (6381). ⚠️ Aucun `pnpm dev`/build qui tourne (sinon verrou DLL `prisma generate`).
-1. `cd axionia` ; `export DATABASE_URL="postgresql://axion_ia:axion_ia_dev@localhost:5433/axion_ia_dev?schema=public"; export DIRECT_URL="$DATABASE_URL"`.
+1. `cd axionia` ; `export DATABASE_URL="postgresql://axion_ia:${MOT_DE_PASSE}@localhost:5433/axion_ia_dev?schema=public"; export DIRECT_URL="$DATABASE_URL"`.
 2. `pnpm exec prisma migrate deploy` (réapplique les 7 migrations Qualiopi si la DB a été réinitialisée) puis `pnpm exec prisma generate` puis **`pnpm qualiopi:seed`** (idempotent : config + 11 offres + grille v2 active).
 3. `git fetch origin && git status` (arbre partagé). Reprendre à la **première tranche non ✅ du §5 = T16**.
 4. **MÉTHODE ÉQUIPE D'AGENTS** (cf. §0) : pour chaque tranche → moi : schéma + migration additive (`migrate diff --from-migrations … --shadow-database-url …shadow… --script` → extraire MES objets, ignorer la dérive préexistante → écrire migration manuelle → `migrate deploy` + `prisma generate`) ; puis **déléguer le CODE à des sous-agents `general-purpose` model sonnet en parallèle (run_in_background)** avec contrat d'interface précis ; puis GATE CENTRAL chez moi : `NODE_OPTIONS=--max-old-space-size=8192 pnpm exec tsc --noEmit` + `pnpm exec vitest run src/server/qualiopi` + `pnpm qualiopi:isolation-check --staged` + `pnpm i18n:check` (⚠️ TOUJOURS lire le RÉSUMÉ, jamais le code de sortie masqué par `| tail`) ; puis commit (pre-commit = lint+typecheck+gitleaks) + **`git push --no-verify origin main` en arrière-plan** (instantané, ne lit pas l'arbre → j'enchaîne la tranche suivante SANS attendre) ; MAJ ce STATE.
@@ -49,7 +49,7 @@ Dernière MAJ initiale : 2026-06-06 — **T0→T16 AUTOPILOT COMPLET**. Toutes l
 - Repo : `C:\Users\willi\Documents\Projets\Axion-IA\axionia` — git, branche `main`, arbre propre (untracked audit/scripts only).
 - Node v24.12 · pnpm 10.33.4 · node_modules présents.
 - **Docker dev UP** : Postgres `localhost:5433` (db `axion_ia_dev`, user `axion_ia`), Redis `localhost:6381`, Mailhog 2525/8025.
-  - Pour piloter Prisma : `export DATABASE_URL="postgresql://axion_ia:axion_ia_dev@localhost:5433/axion_ia_dev?schema=public"; export DIRECT_URL="$DATABASE_URL"` (pas de `.env`, seulement `.env.local`).
+  - Pour piloter Prisma : `export DATABASE_URL="postgresql://axion_ia:${MOT_DE_PASSE}@localhost:5433/axion_ia_dev?schema=public"; export DIRECT_URL="$DATABASE_URL"` (pas de `.env`, seulement `.env.local`).
 - Prisma 5.22, schema **valide**, DB **à jour** (54 migrations). Dernière : `20260604190000_chatbot_prospect_profile`. → mes migrations Qualiopi : timestamp > celui-ci.
 - Build prod : `next build --webpack` (NE JAMAIS retirer `--webpack`).
 - Migrations : `prisma migrate dev --create-only` → revue → `prisma migrate deploy` (jamais `migrate dev` interactif en autopilot).

@@ -452,7 +452,7 @@ docker compose -f /tmp/dev-stack.yml up -d
 
 ```bash
 cat > .env.local <<'EOF'
-DATABASE_URL=postgresql://axionia:dev@localhost:5432/axionia
+DATABASE_URL=postgresql://axionia:${MOT_DE_PASSE}@localhost:5432/axionia
 REDIS_URL=redis://localhost:6379
 AUTH_SECRET=dev-secret-32-chars-minimum-aaaaaaaa
 ADMIN_URL_PREFIX=admin-test

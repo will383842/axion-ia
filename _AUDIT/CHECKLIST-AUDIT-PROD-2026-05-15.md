@@ -188,7 +188,7 @@ curl -sX POST -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H "Content-Type:
 # 9. DocuSeal live (API valid)
 curl -s -o /dev/null -w "DocuSeal /api/templates → %{http_code}\n" \
   "https://docuseal.axion-ia.com/api/templates?limit=1" \
-  -H "X-Auth-Token: aV3BczAykvbdsEaSbrxR7w2qfExDHDg3cZvR9rouW7o"
+  -H "X-Auth-Token: ${DOCUSEAL_API_KEY}   # ⚠️ jamais la valeur en clair (cf. note en tete)"
 # Attendu : 200
 
 # 10. Web Vitals dashboard /admin/web-vitals

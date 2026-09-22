@@ -7,27 +7,38 @@ useDefault = true
 [allowlist]
 description = "Allow placeholders in env templates and docs."
 
-# ⚠️ ANGLE MORT CONNU, RELEVÉ LE 2026-09-21 — deux ARBORESCENCES ENTIÈRES
-# exemptées, dans un dépôt PUBLIC.
+# ✅ 2026-09-22 — L'ANGLE MORT EST REFERMÉ. Ce bloc décrivait jusqu'ici deux
+# arborescences exemptées en bloc (`docs/**`, `_AUDIT/**`) comme une dette « à
+# mesurer un jour ». La mesure a été faite, elle a trouvé DEUX VRAIS SECRETS, et
+# les deux exemptions ont été retirées — voir la note à l'entrée `paths`.
 #
-# `docs/.*\.md` et `_AUDIT/.*\.md` font taire TOUTES les règles, y compris les
-# plus strictes, sur des milliers de fichiers. Ce n'est pas théorique : un
-# rapport d'audit du dépôt porte déjà un DSN complet
-# (`postgresql://…@localhost:5433/…`). Celui-là est du `localhost` de
-# développement, donc sans conséquence — mais **la forme montre qu'un DSN de
-# PRODUCTION collé dans un compte rendu passerait sans un mot.**
-#
-# 🔑 C'est exactement le genre de fichier où un secret atterrit : on y recopie
-# une sortie de terminal pour expliquer un incident.
-#
-# Resserrer ces deux lignes est un lot à part : il faut d'abord MESURER ce qui
-# rougirait, puis trancher fichier par fichier. Ne pas le faire « au passage »,
-# et ne pas élargir la liste en attendant.
+# 🔑 Ce que cet épisode enseigne, et qui vaut au-delà de ce fichier : une
+# exemption large ne coûte rien le jour où on l'écrit. Elle coûte le jour où
+# quelqu'un colle une sortie de terminal dans un compte rendu d'incident — et
+# personne ne le saura, puisque c'est précisément l'endroit où plus rien ne
+# regarde.
 paths = [
   '''\.env\.example''',
   '''README\.md''',
-  '''docs/.*\.md''',
-  '''_AUDIT/.*\.md''',
+  # 🔴 2026-09-22 — CES DEUX ARBORESCENCES NE SONT PLUS EXEMPTÉES EN BLOC.
+  #
+  # `docs/.*\.md` et `_AUDIT/.*\.md` faisaient taire TOUTES les règles, y compris
+  # les plus strictes, sur 2 877 fichiers. Une mesure du 2026-09-22 y a trouvé
+  # DEUX VRAIS SECRETS, publics depuis quatre mois dans un dépôt public :
+  #
+  #   · un jeton d'API DocuSeal (vérifié ENCORE VALIDE — HTTP 200 — au moment
+  #     de la mesure, donc exploitable par quiconque avait lu le dépôt) ;
+  #   · le mot de passe du Redis de production.
+  #
+  # 🔑 Ce n'est pas un hasard que ce soit ARRIVÉ LÀ : ces fichiers sont ceux où
+  # l'on colle une sortie de terminal pour expliquer un incident. C'est
+  # exactement l'endroit qu'il fallait le moins exempter.
+  #
+  # Les deux entrées sont remplacées par une exemption ÉTROITE : les seuls
+  # fichiers de documentation qui portent légitimement des valeurs ressemblant
+  # à des secrets sont les modèles d'environnement et les exemples. Le reste
+  # est scanné comme le code.
+  '''docs/.*\.example\.md''',
   # Portrait JPEG de la vCard, en base64 — PAS un secret.
   #
   # Ajouté 2026-08-16 : `src/lib/vcard/photo.ts` est GÉNÉRÉ par
@@ -49,6 +60,15 @@ paths = [
   '''src/lib/vcard/photo\.ts''',
 ]
 regexes = [
+  # 🔑 Une INTERPOLATION n'est pas une valeur. `${MOT_DE_PASSE}`,
+  # `${DOCUSEAL_API_KEY}` : c'est ce par quoi on REMPLACE un secret quand on
+  # nettoie une documentation. Sans cette ligne, le nettoyage du 2026-09-22
+  # ferait rougir la garde qu'il vient de resserrer — et la tentation serait
+  # alors de ré-élargir l'exemption.
+  #
+  # ⚠️ Étroite par construction : uniquement `${MAJUSCULES_ET_SOULIGNES}`, donc
+  # une vraie valeur ne peut pas s'y glisser.
+  '''\$\{[A-Z][A-Z0-9_]*\}''',
   '''(?i)your[_-]?(api[_-]?key|secret|token)''',
   '''placeholder''',
   '''xxxx+''',

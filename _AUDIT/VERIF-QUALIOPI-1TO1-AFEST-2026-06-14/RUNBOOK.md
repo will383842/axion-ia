@@ -41,7 +41,7 @@ couverte hors DB par 16 tests unitaires : `pnpm test src/server/qualiopi/coachin
 ### Manuel (équivalent, si besoin de garder la base)
 ```bash
 docker run -d --name qualiopi-e2e -e POSTGRES_PASSWORD=e2e -e POSTGRES_USER=e2e -e POSTGRES_DB=e2e -p 55433:5432 pgvector/pgvector:pg16
-export DATABASE_URL="postgresql://e2e:e2e@localhost:55433/e2e?schema=public"; export DIRECT_URL="$DATABASE_URL"; export SKIP_ENV_VALIDATION=true
+export DATABASE_URL="postgresql://e2e:${MOT_DE_PASSE}@localhost:55433/e2e?schema=public"; export DIRECT_URL="$DATABASE_URL"; export SKIP_ENV_VALIDATION=true
 pnpm exec prisma migrate deploy
 pnpm exec tsx scripts/qualiopi/e2e-afest-verif.ts   # → _AUDIT/VERIF-.../e2e-results.json + pdf/
 docker rm -f qualiopi-e2e
