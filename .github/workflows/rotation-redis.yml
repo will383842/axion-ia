@@ -251,6 +251,18 @@ jobs:
           # à exposer un mot de passe de production.
           sleep 2
           curl -sS -m 25 -o /tmp/envs.json             -H "Authorization: Bearer ${COOLIFY_API_TOKEN}"             "${COOLIFY_URL}/api/v1/databases/${REDIS_UUID}/envs"
+          # 🔴 COMPTER AVANT DE LIRE. Si le PATCH échoue et que le POST crée une
+          # SECONDE variable du même nom, `StartRedis` parcourt les variables dans
+          # l'ordre et peut très bien retenir l'ancienne — pendant qu'une lecture
+          # sur `[0]` affiche la nouvelle et déclare tout en ordre. Un doublon est
+          # ici plus dangereux qu'une absence.
+          combien=$(jq '[.[] | select(.key == "REDIS_PASSWORD")] | length' /tmp/envs.json)
+          if [ "$combien" != "1" ]; then
+            echo "::error::$combien variable(s) REDIS_PASSWORD sur la ressource, il en faut exactement une."
+            echo "::error::Un doublon rendrait le démarrage de Redis imprévisible. On s'arrête AVANT"
+            echo "::error::de toucher aux applications — elles sont intactes."
+            exit 1
+          fi
           stocke=$(jq -r '[.[] | select(.key == "REDIS_PASSWORD")][0].value // ""' /tmp/envs.json)
           if [ -z "$stocke" ]; then
             echo "::error::Relecture impossible : l'API ne rend pas la valeur de REDIS_PASSWORD."
