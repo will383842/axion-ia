@@ -277,6 +277,7 @@ jobs:
 
       # ── 4. APPLIQUER, puis MESURER ──────────────────────────────────────
       - name: Redémarrer Redis et redéployer les deux applications
+        id: appliquer
         env:
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
           COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
@@ -285,32 +286,106 @@ jobs:
           REDIS_UUID: ${{ inputs.redis_uuid }}
         run: |
           set -euo pipefail
-          echo "── Redis (restart : le mot de passe est lu au démarrage du service)"
-          curl -sS -m 30 -o /dev/null -w "restart Redis → %{http_code}\n" \
-            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
-            "${COOLIFY_URL}/api/v1/databases/${REDIS_UUID}/restart" || true
+          # 🔴 CE BLOC A DÉJÀ ÉCHOUÉ EN SILENCE (run 35728174752, 22/09). Les trois
+          # appels partaient en GET, Coolify répondait **405** aux trois, et le
+          # `|| true` avalait tout : rien n'a redémarré, et l'étape suivante a
+          # déclaré la rotation réussie quinze secondes plus tard.
+          #
+          # 🔑 La réponse était DÉJÀ dans le dépôt : `deploy-coolify.yml` porte
+          # depuis le 28/08 le commentaire « /api/v1/deploy est passé de GET à
+          # POST … répond 405 sur un GET ». On copie donc l'appel qui marche, et
+          # surtout : **plus un seul `|| true` sur un appel qui modifie**.
+          echo "── Redis (Stop + Start : le mot de passe stocké est relu au démarrage)"
+          code=$(curl -sS -m 30 -o /tmp/r -w "%{http_code}" -X POST             -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Accept: application/json"             "${COOLIFY_URL}/api/v1/databases/${REDIS_UUID}/restart")
+          if [ "${code:0:1}" != "2" ]; then
+            echo "::error::Redémarrage de Redis refusé (HTTP $code) : $(head -c 300 /tmp/r)"
+            echo "::error::Le mot de passe stocké et les URL des applications ont changé,"
+            echo "::error::mais RIEN n'a redémarré. Le service tourne encore sur l'ancien"
+            echo "::error::mot de passe : tout fonctionne, et le prochain déploiement casserait."
+            echo "::error::Relancer ce workflow dès que la cause du refus est levée."
+            exit 1
+          fi
+          echo "restart Redis → $code"
+
           echo "── Applications (deploy, PAS restart : Restart ne recharge pas les variables)"
-          for u in "$COOLIFY_APP_UUID" "$COOLIFY_WORKER_APP_UUID"; do
-            curl -sS -m 30 -o /dev/null -w "deploy $u → %{http_code}\n" \
-              -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
-              "${COOLIFY_URL}/api/v1/deploy?uuid=${u}" || true
-          done
+          # 🔑 La fonction n'écrit PAS son résultat sur la sortie standard, et
+          # personne ne la met dans un tuyau : `x=$(f | tail -1)` rend le code de
+          # sortie de `tail`, donc **zéro**, quoi qu'ait fait `f`. C'est la même
+          # famille d'erreur que le `|| true` d'hier — un échec qui traverse la
+          # garde sans la faire rougir.
+          deployer() {
+            uuid="$1"; nom="$2"
+            rep=$(curl -sS -m 30 -X POST               -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Accept: application/json"               --data-urlencode "uuid=${uuid}" --data-urlencode "force=true"               "${COOLIFY_URL}/api/v1/deploy")
+            du=$(printf '%s' "$rep" | grep -oE '"deployment_uuid":"[^"]+"' | head -1 | cut -d'"' -f4 || true)
+            if [ -z "$du" ]; then
+              echo "::error::$nom : Coolify n'a pas rendu de deployment_uuid : $(printf '%s' "$rep" | head -c 300)"
+              echo "::error::Redis a redémarré avec le NOUVEAU mot de passe et $nom ne s'est pas"
+              echo "::error::redéployé : ce côté-là est en panne. Relancer ce workflow."
+              exit 1
+            fi
+            echo "$nom : déploiement $du"
+            printf '%s' "$du" > "/tmp/du_$nom"
+          }
+          deployer "$COOLIFY_APP_UUID" "site"
+          deployer "$COOLIFY_WORKER_APP_UUID" "worker"
+          echo "du_site=$(cat /tmp/du_site)" >> "$GITHUB_OUTPUT"
+          echo "du_worker=$(cat /tmp/du_worker)" >> "$GITHUB_OUTPUT"
 
       - name: Vérifier — et échouer FORT si Redis ne répond pas
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          DU_SITE: ${{ steps.appliquer.outputs.du_site }}
+          DU_WORKER: ${{ steps.appliquer.outputs.du_worker }}
+          REDIS_UUID: ${{ inputs.redis_uuid }}
         run: |
           set -euo pipefail
-          echo "Attente de la reprise (jusqu'à 10 minutes)…"
-          for i in $(seq 1 40); do
-            sleep 15
+          # 🔴 LA VÉRIFICATION PRÉCÉDENTE ACCEPTAIT UN « ok » IMMÉDIAT. Elle
+          # sondait `healthz` quinze secondes après avoir demandé les
+          # redémarrages, et repartait au premier vert — c'est-à-dire sur les
+          # conteneurs d'AVANT, qui n'avaient évidemment aucune raison d'être en
+          # panne. Une mesure prise avant le changement ne mesure pas le
+          # changement.
+          #
+          # 🔑 On attend donc que les DÉPLOIEMENTS soient terminés, puis on sonde.
+          # À ce moment-là `healthz` devient un oracle honnête, et ce n'est pas
+          # un hasard : les trois côtés dépendent l'un de l'autre. Si Redis a
+          # redémarré sans les applications, elles présentent l'ancien mot de
+          # passe et c'est rouge ; si les applications ont redémarré sans Redis,
+          # elles présentent le nouveau et c'est rouge aussi. Un vert n'est
+          # possible que si les trois portent la même valeur.
+          attendre_deploiement() {
+            du="$1"; nom="$2"
+            for i in $(seq 1 60); do
+              etat=$(curl -sS -m 20 -H "Authorization: Bearer ${COOLIFY_API_TOKEN}"                 "${COOLIFY_URL}/api/v1/deployments/${du}" | grep -oE '"status":"[^"]+"' | head -1 | cut -d'"' -f4 || true)
+              case "${etat:-inconnu}" in
+                finished) echo "$nom : déploiement terminé"; return 0 ;;
+                failed|cancelled-by-user)
+                  echo "::error::$nom : déploiement $etat."; return 1 ;;
+                *) echo "  $nom : $etat…" ;;
+              esac
+              sleep 15
+            done
+            echo "::error::$nom : déploiement toujours pas terminé après 15 minutes."
+            return 1
+          }
+          attendre_deploiement "$DU_SITE" "site"
+          attendre_deploiement "$DU_WORKER" "worker"
+
+          echo "Trois mesures de santé consécutives, espacées de 20 s."
+          verts=0
+          for i in $(seq 1 30); do
             sante=$(curl -sS -m 15 https://axion-ia.com/api/healthz || echo '{}')
             etat=$(echo "$sante" | jq -r '.redis // "injoignable"')
             echo "  essai $i : redis=$etat"
-            if [ "$etat" = "ok" ]; then
-              echo "✅ Rotation terminée. L'application joint Redis avec le nouveau mot de passe."
+            if [ "$etat" = "ok" ]; then verts=$((verts+1)); else verts=0; fi
+            if [ "$verts" -ge 3 ]; then
+              echo "✅ Rotation terminée. Redis et les deux applications portent le nouveau mot de passe."
               exit 0
             fi
+            sleep 20
           done
-          echo "::error::Après 10 minutes, l'application ne joint toujours pas Redis."
+          echo "::error::L'application ne joint pas Redis de façon stable après les redéploiements."
           echo "::error::Les e-mails et les crons sont ARRÊTÉS. À faire, dans cet ordre :"
           echo "::error::  1. Coolify → application site ET worker → vérifier que REDIS_URL est identique"
           echo "::error::     dans les deux, et que son hôte est bien ${REDIS_UUID} ;"
