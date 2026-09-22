@@ -1,3 +1,24 @@
+# ⛔⛔ NE PAS LANCER CE WORKFLOW EN L'ÉTAT — MESURÉ LE 2026-09-22 ⛔⛔
+#
+# **Le `PATCH redis_password` de l'API Coolify ne persiste pas.** Trois
+# lancements, trois réponses 200, un canari qui prouve que le champ est bien
+# reconnu (l'API rend 422 sur un nom inventé) — et Redis, recréé DEUX fois à dix
+# minutes d'intervalle, a redémarré les deux fois sur son mot de passe d'origine.
+# Vérifié en s'authentifiant réellement auprès de lui (`redis-cli ping` → PONG
+# avec l'ancienne valeur).
+#
+# Les applications, elles, recevaient bien la nouvelle valeur. Chaque lancement
+# éloignait donc un peu plus les deux côtés, et le troisième a mis la production
+# en « redis: error » pendant onze minutes.
+#
+# 🔑 Ce workflow ne redeviendra lançable que le jour où l'on saura ÉCRIRE le mot
+# de passe côté Coolify — vraisemblablement par l'interface, la seule voie dont
+# on ait la preuve qu'elle fonctionne. Tant que ce n'est pas mesuré, le lancer
+# casse la production sans tourner quoi que ce soit.
+#
+# Pour réparer un désaccord : `redis-aligner-les-applications.yml`, qui lit la
+# valeur que Redis utilise VRAIMENT et la donne aux applications.
+#
 # Rotation du mot de passe Redis — sans qu'il passe par une main humaine.
 #
 # ── Pourquoi ce workflow existe ───────────────────────────────────────────
