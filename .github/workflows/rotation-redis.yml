@@ -103,17 +103,29 @@ jobs:
             echo "::error::La base ${REDIS_UUID} est introuvable (HTTP $code). Rien n'a été modifié."
             exit 1
           fi
-          # 🔑 On vérifie que le champ attendu EXISTE avant de tenter de l'écrire.
-          # Sans ce contrôle, un changement de nom de champ côté Coolify ferait
-          # un PATCH « réussi » qui ne change rien — et on tournerait les URL des
-          # applications vers un mot de passe que Redis n'a jamais adopté.
-          if ! jq -e 'has("redis_password")' /tmp/db >/dev/null; then
-            echo "::error::Le champ redis_password n'existe pas dans la réponse de l'API."
-            echo "::error::Champs disponibles : $(jq -r 'keys|join(",")' /tmp/db | head -c 300)"
+          # 🔴 CE CONTRÔLE A DÉJÀ ÉTÉ FAUX UNE FOIS (run 35703761957, 22/09). Il
+          # exigeait la présence de « redis_password » dans la réponse GET — or
+          # **l'API ne renvoie JAMAIS un champ secret**, comme il se doit. Le
+          # workflow refusait donc de tourner pour une raison inexistante.
+          #
+          # 🔑 La leçon : on ne prouve pas qu'une écriture est POSSIBLE en
+          # inspectant une lecture. On la prouve en ÉCRIVANT, puis en constatant
+          # que quelque chose a changé. `config_hash` sert exactement à ça — et
+          # il est rendu, lui.
+          type_base=$(jq -r '.database_type // "inconnu"' /tmp/db)
+          case "$type_base" in
+            *redis*) : ;;
+            *) echo "::error::La base ${REDIS_UUID} est de type « $type_base », pas redis. Rien n'a été modifié."; exit 1 ;;
+          esac
+          empreinte_avant=$(jq -r '.config_hash // ""' /tmp/db)
+          if [ -z "$empreinte_avant" ]; then
+            echo "::error::Pas de config_hash dans la réponse : impossible de PROUVER qu'une écriture a pris."
+            echo "::error::Champs rendus : $(jq -r 'keys|join(",")' /tmp/db | head -c 700)"
             echo "::error::Rien n'a été modifié."
             exit 1
           fi
-          echo "Base Redis trouvée, champ redis_password présent."
+          echo "empreinte_avant=$empreinte_avant" >> "$GITHUB_ENV"
+          echo "Base Redis trouvée (type $type_base), empreinte de configuration relevée."
 
       - name: Santé de DÉPART (le témoin de la comparaison finale)
         run: |
@@ -164,7 +176,22 @@ jobs:
             echo "::error::Le mot de passe N'A PAS changé. Les applications sont intactes."
             exit 1
           fi
-          echo "Mot de passe écrit dans la base Redis ($code)."
+          # 🔑 UN 200 NE PROUVE RIEN. Une API qui ignore un champ inconnu répond
+          # 200 et ne change rien : on tournerait alors les URL des applications
+          # vers un mot de passe que Redis n'a jamais adopté, et **les deux côtés
+          # se croiraient d'accord**. On EXIGE donc que l'empreinte de
+          # configuration ait bougé — c'est le seul signe qui distingue une
+          # écriture d'un silence poli.
+          sleep 3
+          curl -sS -m 20 -o /tmp/db2             -H "Authorization: Bearer ${COOLIFY_API_TOKEN}"             "${COOLIFY_URL}/api/v1/databases/${REDIS_UUID}" || true
+          empreinte_apres=$(jq -r '.config_hash // ""' /tmp/db2)
+          if [ "$empreinte_apres" = "$empreinte_avant" ]; then
+            echo "::error::L'API a répondu $code mais l'empreinte de configuration N'A PAS bougé."
+            echo "::error::Le champ « redis_password » n'a donc pas été pris en compte."
+            echo "::error::Rien d'autre n'a été modifié — les applications sont intactes."
+            exit 1
+          fi
+          echo "Mot de passe écrit ET pris en compte (l'empreinte a changé)."
 
       - name: Écrire REDIS_URL dans le SITE et le WORKER
         env:
