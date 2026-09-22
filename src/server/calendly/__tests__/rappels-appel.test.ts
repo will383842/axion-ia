@@ -39,6 +39,7 @@ vi.mock("@/server/queue/queues", () => ({
 }));
 
 import { executerPassage, PASSAGES } from "../rappels-appel";
+import { HORS_APPELS_APPORTEUR, SEULS_APPELS_APPORTEUR } from "../appel-apporteur";
 
 /**
  * Le passage cherché par son MOMENT, jamais par son index.
@@ -47,10 +48,26 @@ import { executerPassage, PASSAGES } from "../rappels-appel";
  * passage le jour où l'ordre du tableau change — et un test vert pour la
  * mauvaise raison est pire qu'un test absent.
  */
-function passageDe(moment: "confirmation" | "j1" | "h1") {
-  const p = PASSAGES.find((x) => x.moment === moment);
-  if (!p) throw new Error(`passage « ${moment} » introuvable dans PASSAGES`);
-  return p;
+function passageDe(
+  moment: "confirmation" | "j1" | "h1",
+  destinataire: "client" | "apporteur" = "client",
+) {
+  // 🔴 2026-09-21 — UN SECOND PUBLIC EST ARRIVÉ, et `find` seul est devenu
+  // AMBIGU : il y a désormais deux passages par moment (client, apporteur), et
+  // `find` rendait le premier SANS RIEN DIRE. C'est exactement le défaut contre
+  // lequel l'en-tête de cette fonction met en garde, sous une autre forme que
+  // l'index. On exige donc un ET UN SEUL passage, et on lève si le compte
+  // change — le jour où un troisième public arrive, ce fichier le dira au lieu
+  // de tester le mauvais.
+  const trouves = PASSAGES.filter((x) => x.moment === moment && x.destinataire === destinataire);
+  if (trouves.length !== 1) {
+    throw new Error(
+      `passage « ${moment} / ${destinataire} » : ${trouves.length} trouvé(s) dans PASSAGES — il en faut exactement un`,
+    );
+  }
+  // `!` legitime, et uniquement ici : la garde au-dessus vient de prouver
+  // qu'il y a EXACTEMENT un element. TypeScript ne sait pas lire une longueur.
+  return trouves[0]!;
 }
 
 /** Les cas historiques portaient sur H-1 ; ils le testent toujours. */
@@ -216,15 +233,65 @@ describe("un cron ne rougit pas parce que la base a hoqueté", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("les trois moments partagent un cœur, pas un marqueur", () => {
-  it("chaque moment a son PROPRE nom de job et son PROPRE marqueur", () => {
-    // 🔴 LE CAS QUI PROTÈGE LE PLUS. Un marqueur partagé ferait taire les deux
-    // derniers moments : le premier envoi le poserait, et les passages suivants
-    // ne verraient plus aucun candidat. Le défaut serait SILENCIEUX — aucune
-    // erreur, simplement deux e-mails qui ne partent jamais.
+  it("chaque moment a son PROPRE nom de job", () => {
+    // 🔴 LE CAS QUI PROTÈGE LE PLUS. Un marqueur partagé entre deux MOMENTS
+    // ferait taire les suivants : le premier envoi le poserait, et les passages
+    // d'après ne verraient plus aucun candidat. Le défaut serait SILENCIEUX —
+    // aucune erreur, simplement des e-mails qui ne partent jamais.
     const jobs = PASSAGES.map((p) => p.job);
-    const marqueurs = PASSAGES.map((p) => p.marqueur);
-    expect(new Set(jobs).size, "deux moments partagent un nom de job").toBe(PASSAGES.length);
-    expect(new Set(marqueurs).size, "deux moments partagent un marqueur").toBe(PASSAGES.length);
+    expect(new Set(jobs).size, "deux passages partagent un nom de job").toBe(PASSAGES.length);
+  });
+
+  it("chaque moment a son PROPRE marqueur — POUR UN MÊME public", () => {
+    // ⚠️ 2026-09-21 — CE TEST EXIGEAIT SIX MARQUEURS DISTINCTS, ET IL AVAIT
+    // RAISON DE ROUGIR, mais pour une raison périmée : il datait d'une époque où
+    // un moment = un public. Les trois passages apporteur réutilisent
+    // DÉLIBÉRÉMENT les colonnes de marqueur du client.
+    //
+    // 🔑 C'est sûr parce qu'un événement Calendly appartient à UN SEUL public :
+    // il est un appel client ou un échange apporteur, jamais les deux. Le test
+    // suivant le prouve au lieu de le supposer — sans lui, ce partage
+    // deviendrait un pari.
+    for (const destinataire of ["client", "apporteur"] as const) {
+      const duPublic = PASSAGES.filter((p) => p.destinataire === destinataire);
+      const marqueurs = duPublic.map((p) => p.marqueur);
+      expect(new Set(marqueurs).size, `deux moments ${destinataire} partagent un marqueur`).toBe(
+        duPublic.length,
+      );
+    }
+  });
+
+  it("🔴 le FILTRE de chaque passage correspond à son public", () => {
+    // ⚠️ Le test suivant vérifie une propriété de la TABLE ; celui-ci vérifie
+    // la requête. Une relecture a montré que je confondais les deux : sans cette
+    // assertion, écrire `filtre: HORS_APPELS_APPORTEUR` sur un passage apporteur
+    // laissait TOUT vert — et ce passage serait allé chercher des appels
+    // CLIENTS pour leur envoyer un message d'apporteur, en posant au passage un
+    // marqueur partagé qui aurait fait taire le vrai rappel client.
+    //
+    // 🔑 C'est la SEULE assertion qui relie la table au monde. Les autres se
+    // vérifient entre elles.
+    for (const p of PASSAGES) {
+      const attendu =
+        p.destinataire === "apporteur" ? SEULS_APPELS_APPORTEUR : HORS_APPELS_APPORTEUR;
+      expect(p.filtre, `${p.moment} / ${p.destinataire} : mauvais filtre`).toBe(attendu);
+    }
+  });
+
+  it("les deux publics ne se recouvrent PAS : c'est ce qui autorise le partage", () => {
+    // Si un même événement pouvait être vu par les deux publics, la
+    // confirmation client poserait le marqueur et l'apporteur ne recevrait
+    // jamais la sienne — en silence.
+    const parMoment = new Map<string, Set<string>>();
+    for (const p of PASSAGES) {
+      const vus = parMoment.get(p.moment) ?? new Set<string>();
+      expect(vus.has(p.destinataire), `deux passages ${p.moment} / ${p.destinataire}`).toBe(false);
+      vus.add(p.destinataire);
+      parMoment.set(p.moment, vus);
+    }
+    // Trois moments, deux publics chacun : la table est complète et sans trou.
+    expect(parMoment.size).toBe(3);
+    for (const vus of parMoment.values()) expect(vus.size).toBe(2);
   });
 
   it("la confirmation part SANS fenêtre, mais jamais vers le passé", async () => {

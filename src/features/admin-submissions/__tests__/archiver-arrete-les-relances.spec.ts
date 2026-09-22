@@ -88,6 +88,42 @@ describe("archiver et sans suite arrêtent les relances", () => {
   });
 });
 
+describe("« j'ai répondu ailleurs » arrête tout sans rien décider", () => {
+  // 🔴 LE GESTE DEMANDÉ PAR WILL, mot pour mot : « je voudrais pouvoir répondre
+  // manuellement sans passer par le circuit normal, pour éviter d'avoir des
+  // messages en doublons ». Il répond souvent depuis Gmail, ou au téléphone —
+  // et rien, alors, n'arrêtait les rappels qui dorment dans Redis jusqu'à J+2
+  // et J+7. La personne recevait sa réponse, puis deux relances qui
+  // l'ignoraient.
+  it("retire les relances, et le dit", async () => {
+    const res = await appliquerTransition("sub-1", "repondu-ailleurs", "admin-1");
+
+    expect(res.ok).toBe(true);
+    expect(annuler).toHaveBeenCalledTimes(1);
+    expect(String(annuler.mock.calls[0]?.[1] ?? "")).toContain("en dehors de la console");
+  });
+
+  it("🔑 ne change AUCUN statut — répondre n'est pas clore", async () => {
+    // Marquer « traité » à la place de Will serait décider pour lui : une
+    // réponse ouvre souvent une conversation au lieu de la fermer. Le seul
+    // effet sur la fiche est qu'elle sort de « à traiter », puisqu'elle l'a été.
+    await appliquerTransition("sub-1", "repondu-ailleurs", "admin-1");
+
+    const ecrit = update.mock.calls[0]?.[0] as { data: Record<string, unknown> };
+    expect(ecrit.data["status"]).toBeUndefined();
+    expect(ecrit.data["archivedAt"]).toBeUndefined();
+    expect(ecrit.data["needsAttention"]).toBe(false);
+  });
+
+  it("horodate le geste, pour que l'écran cesse de le proposer", async () => {
+    await appliquerTransition("sub-1", "repondu-ailleurs", "admin-1");
+
+    const ecrit = update.mock.calls[0]?.[0] as { data: { details: Record<string, unknown> } };
+    expect(typeof ecrit.data.details["reponduHorsCircuitAt"]).toBe("string");
+    expect(logCreate).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe("les transitions qui NE doivent PAS toucher aux relances", () => {
   // 🔴 CE BLOC EST LE TÉMOIN, et c'est lui qui rend le précédent probant.
   // Une implémentation qui annulerait à chaque transition passerait le premier

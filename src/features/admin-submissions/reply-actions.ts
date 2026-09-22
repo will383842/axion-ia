@@ -179,6 +179,50 @@ export async function replyToSubmissionAction(
     return { ok: false, error: "enqueue_failed", replyId };
   }
 
+  // ── REPONDRE ARRETE LES RELANCES EN ATTENTE ────────────────────────────
+  // Demande de Will, mot pour mot : « je voudrais pouvoir repondre manuellement
+  // sans passer par le circuit normal, pour eviter d'avoir des messages en
+  // doublons ». Les rappels « ton dossier t'attend » sont des jobs RETARDES qui
+  // dorment dans Redis jusqu'a J+2 et J+7 ; rien ne les arretait parce qu'on
+  // avait repondu.
+  //
+  // 🔴 DEUX CONDITIONS, ET J'AVAIS OUBLIE LES DEUX.
+  //
+  // 1. SEULEMENT SUR UN DOSSIER APPORTEUR. `annulerRelancesLeadApporteur`
+  //    retrouve les jobs par l'EMPREINTE DE L'ADRESSE, jamais par la fiche — et
+  //    `ReplyComposer` est monte sur TOUTE fiche de la console. Sans ce garde,
+  //    repondre a un simple message /contact retirait, en silence, les relances
+  //    programmees par la candidature d'apporteur de la meme personne, et
+  //    inscrivait au journal des envois un motif qui designe une reponse faite
+  //    sur un AUTRE dossier.
+  //
+  //    ⚠️ Le garde existait deja, dix lignes plus bas, dans `transitions.ts` —
+  //    avec le commentaire qui decrit ce scenario mot pour mot. Je l'avais ecrit
+  //    et pas applique ici : corriger le cas qu'on vous nomme n'est pas corriger
+  //    la famille.
+  //
+  // 2. SEULEMENT SI LA REPONSE EST PARTIE. Ce bloc tournait AVANT le
+  //    branchement ci-dessus : file indisponible ⇒ la personne ne recevait NI la
+  //    reponse NI les relances, et le journal affirmait un envoi qui n'avait pas
+  //    eu lieu. Elle sortait du tunnel en silence.
+  //
+  // Best-effort a partir d'ici : un retrait qui echoue ne transforme pas une
+  // reponse PARTIE en echec — sinon Will recommence, et la personne recoit deux
+  // fois la meme reponse. C'est exactement le doublon qu'on evite.
+  if (estApporteur(submission.details)) {
+    const adresseClaire = decryptPii(submission.contactEmail);
+    if (adresseClaire) {
+      try {
+        await annulerRelancesLeadApporteur(
+          adresseClaire,
+          "Envoi annulé : une réponse a été envoyée depuis la console.",
+        );
+      } catch (e) {
+        Sentry.captureException(e, { tags: { step: "annuler-relances-apres-reponse" } });
+      }
+    }
+  }
+
   return { ok: true, replyId };
 }
 
@@ -208,7 +252,8 @@ export interface ResultatGeste {
 
 async function geste(
   id: string,
-  transition: "traite" | "archiver" | "desarchiver" | "sans-suite" | "remettre",
+  transition:
+    "traite" | "archiver" | "desarchiver" | "sans-suite" | "remettre" | "repondu-ailleurs",
 ): Promise<ResultatGeste> {
   let session: { userId: string };
   try {
@@ -262,6 +307,18 @@ export async function classerSansSuiteAction(id: string): Promise<ResultatGeste>
 /** Remettre à traiter : la fiche redevient visible dans « à traiter ». */
 export async function remettreATraiterAction(id: string): Promise<ResultatGeste> {
   return geste(id, "remettre");
+}
+
+/**
+ * « J'ai répondu ailleurs — arrête tout ».
+ *
+ * Pour les réponses faites depuis Gmail, au téléphone ou de vive voix. Elle ne
+ * change aucun statut : elle retire les relances en attente et horodate le
+ * geste. Une réponse n'est pas toujours une clôture, et décider à la place de
+ * Will coûterait plus cher que de ne rien décider.
+ */
+export async function reponduHorsCircuitAction(id: string): Promise<ResultatGeste> {
+  return geste(id, "repondu-ailleurs");
 }
 
 /**

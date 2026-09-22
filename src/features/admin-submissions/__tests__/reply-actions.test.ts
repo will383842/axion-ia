@@ -61,9 +61,16 @@ vi.mock("next/cache", () => ({
   updateTag: vi.fn(),
 }));
 
+const annulerRelancesMock = vi.fn();
+vi.mock("@/features/commercial-application/relances-lead-apporteur", () => ({
+  annulerRelancesLeadApporteur: (...args: unknown[]) => annulerRelancesMock(...args),
+}));
+
 // ---------------------------------------------------------------------------
 
 const VALID_UUID = "11111111-1111-1111-1111-111111111111";
+/** Les deux marqueurs du prédicat unique `estApporteur`. */
+const APPORTEUR = { unifiedType: "recrutement", subType: "candidature-commerciale" };
 const REPLY_ID = "ckxxxxxx";
 
 beforeEach(() => {
@@ -159,6 +166,90 @@ describe("replyToSubmissionAction", () => {
       bodyMarkdown: "B",
     });
     expect(result.ok).toBe(false);
+  });
+});
+
+describe("🔴 répondre depuis la console ARRÊTE les relances en attente", () => {
+  // Demande de Will, mot pour mot : « je voudrais pouvoir répondre manuellement
+  // sans passer par le circuit normal, pour éviter d'avoir des messages en
+  // doublons ».
+  //
+  // Le doublon est REEL, et il est ici : les rappels « ton dossier t'attend »
+  // sont des jobs RETARDES, posés à J+2 et J+7, qui dorment dans Redis. Deux
+  // choses seulement les arrêtaient — la personne termine son dossier, ou elle
+  // s'oppose. **Rien ne les arrêtait parce qu'on lui avait répondu.**
+  //
+  // 🔑 Ce test regarde le RETRAIT, pas un drapeau. Une implémentation qui
+  // poserait `relancesArretees: true` sans toucher à la file passerait toute
+  // garde écrite sur l'état de la fiche — et la personne recevrait quand même
+  // ses deux relances.
+  /** 🔑 Une fiche APPORTEUR : c'est la seule population dont les relances se retirent. */
+  async function repondre(details: unknown = APPORTEUR) {
+    submissionFindUnique.mockResolvedValueOnce({
+      id: VALID_UUID,
+      contactEmail: "lea@exemple.invalid",
+      locale: "fr",
+      status: "new",
+      firstRepliedAt: null,
+      details,
+    });
+    const { replyToSubmissionAction } = await import("../reply-actions");
+    return replyToSubmissionAction({
+      submissionId: VALID_UUID,
+      subject: "Re: ta candidature",
+      bodyMarkdown: "Bonjour, on se parle quand tu veux.",
+    });
+  }
+
+  it("retire les relances de la file, avec un motif lisible au journal", async () => {
+    const r = await repondre();
+
+    expect(r.ok).toBe(true);
+    expect(annulerRelancesMock).toHaveBeenCalledTimes(1);
+    expect(String(annulerRelancesMock.mock.calls[0]?.[1] ?? "")).toContain("réponse");
+  });
+
+  it("🔴 une fiche qui N'EST PAS un dossier apporteur : on ne touche à RIEN", async () => {
+    // Le défaut que ce test attrape, et il était DOUBLE.
+    //
+    // `annulerRelancesLeadApporteur` retrouve les jobs par l'EMPREINTE DE
+    // L'ADRESSE, jamais par la fiche. Et `ReplyComposer` est monté sur TOUTE
+    // fiche de la console. Sans garde : Léa dépose une candidature d'apporteur
+    // (relances J+2 et J+7 posées), envoie aussi un message /contact sans
+    // rapport, Will répond à CE message — et ses deux relances disparaissent en
+    // silence, avec au journal un motif qui parle d'une réponse faite ailleurs.
+    //
+    // ⚠️ Le précédent test de ce bloc montait une fiche SANS `details` : il
+    // ENTÉRINAIT l'absence de garde au lieu de l'attraper.
+    const r = await repondre({ unifiedType: "contact" });
+
+    expect(r.ok).toBe(true);
+    expect(annulerRelancesMock).not.toHaveBeenCalled();
+  });
+
+  it("🔴 si la réponse N'EST PAS PARTIE, les relances RESTENT", async () => {
+    // File indisponible. Retirer les relances ici ferait sortir la personne du
+    // tunnel EN SILENCE : ni la réponse, ni les rappels — et le journal des
+    // envois affirmerait un envoi qui n'a pas eu lieu.
+    enqueueEmailMock.mockResolvedValueOnce({ enqueued: false });
+    // La reply est alors marquée `failed` : le double du chemin d'échec.
+    submissionReplyUpdate.mockResolvedValueOnce({});
+
+    const r = await repondre();
+
+    expect(r.ok).toBe(false);
+    expect(annulerRelancesMock).not.toHaveBeenCalled();
+  });
+
+  it("un retrait qui ÉCHOUE ne transforme pas une réponse PARTIE en échec", async () => {
+    // La file peut être indisponible. Le message, lui, est parti : dire le
+    // contraire ferait recommencer Will, et la personne recevrait deux fois la
+    // même réponse — exactement le doublon qu'on cherche à éviter.
+    annulerRelancesMock.mockRejectedValueOnce(new Error("redis down"));
+
+    const r = await repondre();
+
+    expect(r.ok).toBe(true);
   });
 });
 

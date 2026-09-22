@@ -101,7 +101,12 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // 🔴 2026-09-19 — RELEVÉ À 55 : `apporteur-invitation-appel`, l'invitation
     // à l'échange de 15 minutes envoyée depuis la console. Son champ
     // `calendlyUrl` est déclaré ci-dessous.
-    expect(tous.length).toBe(55);
+    // 🔴 2026-09-21 — RELEVÉ À 56 : `apporteur-echange`, la confirmation et
+    // les deux rappels de l'échange du candidat. ⚠️ UN SEUL de plus, pour TROIS
+    // noms de job : ce compteur lit des FICHIERS de gabarit, pas des envois —
+    // le même fichier sert les trois moments, comme `appel-rappel` le fait déjà
+    // côté client. Attendre 58 ici serait une erreur de lecture du compteur.
+    expect(tous.length).toBe(56);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

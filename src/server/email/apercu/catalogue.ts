@@ -59,6 +59,37 @@ export interface FicheEmail {
    * `null` = **dormant** : aucun appelant. Ce n'est pas une omission, c'est un
    * constat mesuré, et la garde le vérifie dans les DEUX sens — un dormant qui
    * se met à être envoyé rougit aussi.
+   *
+   * ── MESURE EN PRODUCTION, 2026-09-21 (lecture seule) ────────────────────
+   * Les cinq dormants vérifiés un par un sur la vraie base :
+   *
+   *   gabarit                          | envois 90 j | en file | règles auto
+   *   cancellation-confirmed-by-user   |      0      |    0    |      0
+   *   payment-link                     |      0      |    0    |      0
+   *   payment-receipt                  |      0      |    0    |      0
+   *   payment-failed                   |      0      |    0    |      0
+   *   force-majeure-notice             |      0      |    0    |      0
+   *
+   * 🔑 TÉMOIN POSITIF : **293** lignes dans `email_logs` sur les mêmes 90 jours.
+   * Sans lui, ces cinq zéros ne prouveraient rien — une requête qui ne regarde
+   * pas la bonne table rend zéro partout, et se lit comme un résultat.
+   *
+   * ── POURQUOI ON NE LES SUPPRIME PAS ─────────────────────────────────────
+   * ⚠️ Le plan du tunnel apporteurs annonçait « retrait sûr » après cette
+   * mesure. Elle est faite, et elle ne conclut PAS au retrait :
+   *
+   *   · les trois `payment-*` dorment parce que **Stripe est gelé**, pas
+   *     abandonné — les ADR 0013 et 0019 décrivent toujours ce flux, y compris
+   *     son mode dégradé. Les supprimer parie que Stripe ne revient jamais ;
+   *   · `force-majeure-notice` est écrit et jamais branché : c'est du travail
+   *     fait d'avance, pas du code mort ;
+   *   · `cancellation-confirmed-by-user` est le seul vraiment remplacé (Calendly
+   *     porte l'annulation), et il ne coûte rien à garder.
+   *
+   * Un gabarit dormant DOCUMENTÉ et SOUS GARDE ne coûte ni octet au visiteur ni
+   * risque d'envoi : il ne fait partie d'aucun bundle, et la garde ci-contre
+   * rougit s'il se met à partir. **La supprimer est une décision produit**
+   * (Stripe revient-il ?), pas un rangement — elle revient à Will.
    */
   readonly source: string | null;
 }
@@ -75,6 +106,33 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     categorie: "rendez-vous",
     quand: "La veille de l'appel — fenêtre 24 h → 24 h 15 avant",
     destinataire: "la personne qui a réservé",
+    source: "server/calendly/rappels-appel.ts",
+  },
+  // ── L'échange de 15 minutes du candidat apporteur (2026-09-21) ───────────
+  // Mêmes trois moments que le client, même canal, même fichier — mais un
+  // gabarit à part : les e-mails clients disent « votre appel de découverte »
+  // et vouvoient. Les réutiliser ferait dire au candidat qu'il est un prospect.
+  //
+  // 🔑 Avant cette date, le candidat ne recevait RIEN. Le code justifiait le
+  // silence par « Calendly envoie sa propre confirmation » : c'était FAUX —
+  // rappels et suivis par e-mail sont à Off sur les deux event-types, relevé
+  // dans le compte le 2026-09-21. Il n'y a donc aucun doublon à craindre.
+  "apporteur-echange-confirme": {
+    categorie: "rendez-vous",
+    quand: "Dès que la réservation est vue par le worker (≤ 5 min après)",
+    destinataire: "le candidat apporteur qui a réservé",
+    source: "server/calendly/rappels-appel.ts",
+  },
+  "apporteur-echange-rappel-j1": {
+    categorie: "rendez-vous",
+    quand: "La veille de l'échange — fenêtre 24 h → 24 h 15 avant",
+    destinataire: "le candidat apporteur qui a réservé",
+    source: "server/calendly/rappels-appel.ts",
+  },
+  "apporteur-echange-rappel": {
+    categorie: "rendez-vous",
+    quand: "Une heure avant l'échange",
+    destinataire: "le candidat apporteur qui a réservé",
     source: "server/calendly/rappels-appel.ts",
   },
   "appel-rappel": {
