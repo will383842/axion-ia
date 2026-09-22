@@ -1,0 +1,233 @@
+# Aligner les applications sur le mot de passe que Redis utilise VRAIMENT.
+#
+# 🔴 POURQUOI CE WORKFLOW EXISTE (2026-09-22).
+# `rotation-redis.yml` écrit un mot de passe neuf dans Coolify, le même dans les
+# deux applications, puis redémarre tout. Mesure de la journée : **le
+# `PATCH redis_password` ne persiste pas**. Redis a été recréé deux fois, à dix
+# minutes d'intervalle, et a redémarré les deux fois sur la MÊME valeur — qui
+# n'était aucune de celles qu'on venait d'écrire. Les applications, elles,
+# recevaient bien la nouvelle : les deux côtés se sont donc éloignés l'un de
+# l'autre à chaque lancement, et la production est passée en « redis: error ».
+#
+# 🔑 On renverse le sens. Au lieu d'imposer une valeur à Redis, on LIT celle
+# qu'il utilise — sur le serveur, dans la ligne de commande du conteneur — et on
+# la donne aux applications. C'est la seule des deux directions qui soit mesurable.
+#
+# ⚠️ La valeur ne sort jamais du runner : `::add-mask::` avant tout usage, et
+# aucune impression, même partielle. Ce dépôt est public.
+#
+# Ce workflow NE tourne PAS le mot de passe. Il répare un désaccord.
+name: Sécurité · aligner les applications sur le Redis réel
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: "Taper exactement ALIGNER pour confirmer (les deux applications seront redéployées)"
+        required: true
+        type: string
+      redis_uuid:
+        description: "UUID de la base Redis dans Coolify (= son nom d'hôte et le nom du conteneur)"
+        required: true
+        default: "hdfknlij6yqebr09p379m9q6"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  aligner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Confirmation explicite
+        env:
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          set -euo pipefail
+          if [ "$CONFIRMATION" != "ALIGNER" ]; then
+            echo "::error::Confirmation attendue : ALIGNER. Rien n'a été modifié."
+            exit 1
+          fi
+
+      - name: Les accès existent
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+        run: |
+          set -euo pipefail
+          manquants=""
+          for v in HETZNER_SSH_KEY COOLIFY_API_TOKEN COOLIFY_URL COOLIFY_APP_UUID COOLIFY_WORKER_APP_UUID; do
+            eval "val=\${$v:-}"
+            [ -n "$val" ] || manquants="$manquants $v"
+          done
+          if [ -n "$manquants" ]; then
+            echo "::error::Secrets absents :$manquants. Rien n'a été modifié."
+            exit 1
+          fi
+
+      - name: Accès SSH au serveur
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          printf '%s\n' "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Trouver le mot de passe que Redis ACCEPTE, et le prouver
+        id: lire
+        env:
+          REDIS_UUID: ${{ inputs.redis_uuid }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set -euo pipefail
+          # 🔴 LA LIGNE DE COMMANDE DU CONTENEUR N'EST PAS TOUJOURS LA VÉRITÉ.
+          # Mesuré le 22/09 : après un `redis-cli CONFIG SET requirepass` posé à
+          # chaud pour rétablir le service, Redis répondait NOAUTH à la valeur
+          # inscrite dans son propre `--requirepass`. Une garde qui n'aurait lu
+          # que cette source aurait poussé aux applications un mot de passe que
+          # Redis refuse — soit exactement la panne qu'elle prétend réparer.
+          #
+          # 🔑 On essaie donc les DEUX sources possibles et on ne garde que celle
+          # qui obtient un PONG. C'est l'effet qui tranche, jamais la provenance.
+          serveur=root@178.105.55.15
+          lire_source() {
+            case "$1" in
+              cmd) ssh -o BatchMode=yes -o ConnectTimeout=20 "$serveur" \
+                     "docker inspect ${REDIS_UUID} --format '{{json .Config.Cmd}}' | tr ',' '\n' | grep -A1 requirepass | tail -1 | tr -cd 'A-Za-z0-9'" ;;
+              app) ssh -o BatchMode=yes -o ConnectTimeout=20 "$serveur" \
+                     "c=\$(docker ps --format '{{.Names}}' | grep '^${COOLIFY_APP_UUID}' | head -1); docker exec \$c printenv REDIS_URL" \
+                     | sed -E 's#^redis://[^:]*:([^@]*)@.*#\1#' ;;
+            esac
+          }
+          trouve=""
+          for source in cmd app; do
+            cand=$(lire_source "$source" 2>/dev/null | tr -d '\r' | tail -1) || true
+            echo "::add-mask::$cand"
+            if [ "${#cand}" -lt 16 ]; then
+              echo "source $source : illisible (${#cand} caractères)"
+              continue
+            fi
+            pong=$(ssh -o BatchMode=yes -o ConnectTimeout=20 "$serveur" \
+              "docker exec ${REDIS_UUID} redis-cli --no-auth-warning -a '$cand' ping" 2>&1 | tr -d '\r' | tail -1)
+            if [ "$pong" = "PONG" ]; then
+              echo "source $source : PONG — c'est celle-là."
+              trouve="$cand"
+              break
+            fi
+            echo "source $source : refusée par Redis."
+          done
+          if [ -z "$trouve" ]; then
+            echo "::error::Aucune des deux sources n'obtient un PONG : Redis n'accepte ni la valeur"
+            echo "::error::de sa ligne de commande, ni celle que porte le site. Il faut regarder à la main."
+            echo "::error::Rien n'a été modifié."
+            exit 1
+          fi
+          echo "mdp=$trouve" >> "$GITHUB_OUTPUT"
+
+      - name: Écrire REDIS_URL dans le SITE et le WORKER
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+          REDIS_UUID: ${{ inputs.redis_uuid }}
+          MDP: ${{ steps.lire.outputs.mdp }}
+        run: |
+          set -euo pipefail
+          url="redis://default:${MDP}@${REDIS_UUID}:6379/0"
+          echo "::add-mask::$url"
+          payload=$(jq -nc --arg value "$url" '{
+            key: "REDIS_URL", value: $value,
+            is_preview: false, is_literal: false, is_multiline: false, is_shown_once: false
+          }')
+          ecrire() {
+            uuid="$1"; nom="$2"
+            code=$(curl -sS -m 20 -o /tmp/resp -w "%{http_code}" -X PATCH \
+              -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Content-Type: application/json" \
+              -d "$payload" "${COOLIFY_URL}/api/v1/applications/${uuid}/envs")
+            case "$code" in
+              200|201) echo "$nom : écrit ($code)"; return 0 ;;
+            esac
+            echo "::error::$nom : écriture impossible ($code) : $(head -c 300 /tmp/resp)"
+            exit 1
+          }
+          ecrire "$COOLIFY_APP_UUID" "site"
+          ecrire "$COOLIFY_WORKER_APP_UUID" "worker"
+
+      - name: Redéployer les deux applications
+        id: deployer
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+        run: |
+          set -euo pipefail
+          # POST, jamais GET : l'API a changé le 28/08 et répond 405 sur un GET
+          # (voir deploy-coolify.yml). Aucun `|| true` : un refus arrête tout.
+          deployer() {
+            uuid="$1"; nom="$2"
+            rep=$(curl -sS -m 30 -X POST \
+              -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Accept: application/json" \
+              --data-urlencode "uuid=${uuid}" --data-urlencode "force=true" \
+              "${COOLIFY_URL}/api/v1/deploy")
+            du=$(printf '%s' "$rep" | grep -oE '"deployment_uuid":"[^"]+"' | head -1 | cut -d'"' -f4 || true)
+            if [ -z "$du" ]; then
+              echo "::error::$nom : pas de deployment_uuid : $(printf '%s' "$rep" | head -c 300)"
+              exit 1
+            fi
+            echo "$nom : déploiement $du"
+            printf '%s' "$du" > "/tmp/du_$nom"
+          }
+          deployer "$COOLIFY_APP_UUID" "site"
+          deployer "$COOLIFY_WORKER_APP_UUID" "worker"
+          echo "du_site=$(cat /tmp/du_site)" >> "$GITHUB_OUTPUT"
+          echo "du_worker=$(cat /tmp/du_worker)" >> "$GITHUB_OUTPUT"
+
+      - name: Vérifier — trois mesures vertes APRÈS les déploiements
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          DU_SITE: ${{ steps.deployer.outputs.du_site }}
+          DU_WORKER: ${{ steps.deployer.outputs.du_worker }}
+        run: |
+          set -euo pipefail
+          attendre() {
+            du="$1"; nom="$2"
+            for i in $(seq 1 60); do
+              etat=$(curl -sS -m 20 -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+                "${COOLIFY_URL}/api/v1/deployments/${du}" \
+                | grep -oE '"status":"[^"]+"' | head -1 | cut -d'"' -f4 || true)
+              case "${etat:-inconnu}" in
+                finished) echo "$nom : déploiement terminé"; return 0 ;;
+                failed|cancelled-by-user) echo "::error::$nom : déploiement $etat."; exit 1 ;;
+                *) echo "  $nom : $etat…" ;;
+              esac
+              sleep 15
+            done
+            echo "::error::$nom : toujours pas terminé après 15 minutes."
+            exit 1
+          }
+          attendre "$DU_SITE" "site"
+          attendre "$DU_WORKER" "worker"
+
+          verts=0
+          for i in $(seq 1 30); do
+            etat=$(curl -sS -m 15 https://axion-ia.com/api/healthz | jq -r '.redis // "injoignable"' || echo injoignable)
+            echo "  essai $i : redis=$etat"
+            if [ "$etat" = "ok" ]; then verts=$((verts+1)); else verts=0; fi
+            if [ "$verts" -ge 3 ]; then
+              echo "✅ Les deux applications joignent Redis. L'accord est rétabli."
+              exit 0
+            fi
+            sleep 20
+          done
+          echo "::error::Les applications ne joignent toujours pas Redis."
+          echo "::error::Relancer ce workflow : il relit la valeur réelle et la réécrit."
+          exit 1
