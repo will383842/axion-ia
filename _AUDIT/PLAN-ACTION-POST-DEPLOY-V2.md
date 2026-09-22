@@ -60,7 +60,7 @@
 2. Trouver la ligne `REDIS_URL`
 3. **Edit** → remplacer la valeur par exactement :
    ```
-   redis://default:ITIt4N2p1pvPOPMXurMBYDrV8e1OtBjbz7OEO6Zbpgp8jw8o0kZfYS9eUyA0zh68@hdfknlij6yqebr09p379m9q6:6379/0
+   redis://default:${MOT_DE_PASSE}@hdfknlij6yqebr09p379m9q6:6379/0
    ```
    ⚠️ Copy-paste depuis ce fichier, **PAS** depuis screenshot.
 4. Cocher **Is Secret** (masque dans l'UI)

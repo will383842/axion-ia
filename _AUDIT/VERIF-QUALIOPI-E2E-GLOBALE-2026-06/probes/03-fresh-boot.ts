@@ -9,7 +9,7 @@ import {
   getQualiopiReferenceDataStatus,
 } from "@/server/qualiopi/seed/reference-data";
 
-const url = "postgresql://axion_ia:axion_ia_dev@localhost:5433/axion_ia_audit?schema=public";
+const url = "postgresql://axion_ia:${MOT_DE_PASSE}@localhost:5433/axion_ia_audit?schema=public";
 const prisma = new PrismaClient({ datasources: { db: { url } } });
 
 async function main() {
