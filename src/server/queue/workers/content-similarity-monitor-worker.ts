@@ -18,21 +18,12 @@ import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { persistContentGenConfig } from "@/server/content-gen/config-store";
+import { CLE_PAIRES_SIMILAIRES, type PaireSimilaire } from "@/server/content-gen/paires-similaires";
 
 const QUEUE_NAME = "content-similarity-monitor";
 
-interface SimilarityPair {
-  readonly jobIdA: string;
-  readonly jobIdB: string;
-  readonly contentTypeA: string;
-  readonly contentTypeB: string;
-  readonly titleA: string;
-  readonly titleB: string;
-  readonly anchorVilleA: string | null;
-  readonly anchorVilleB: string | null;
-  readonly jaccard: number;
-  readonly detectedAt: string;
-}
+// 🔑 La forme des paires est déclarée dans `paires-similaires.ts`, pas ici : la
+// page « Détection de doublons » lit la même clé et doit lire la MÊME forme.
 
 function tokenize(s: string): Set<string> {
   return new Set(
@@ -102,7 +93,7 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   }
 
   // Compare toutes paires (O(n²) — OK jusqu'à ~2000 docs sur cron 24h)
-  const pairs: SimilarityPair[] = [];
+  const pairs: PaireSimilaire[] = [];
   for (let i = 0; i < docs.length; i++) {
     for (let j = i + 1; j < docs.length; j++) {
       const a = docs[i]!;
@@ -129,7 +120,7 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   const top100 = pairs.slice(0, 100);
 
   await persistContentGenConfig(
-    "similarity_pairs",
+    CLE_PAIRES_SIMILAIRES,
     top100,
     "similarity-monitor-worker",
     `Top ${top100.length}/100 paires similaires détectées (Jaccard >= 0.5)`,
