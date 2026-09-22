@@ -1,0 +1,256 @@
+# Rotation du mot de passe Redis — sans qu'il passe par une main humaine.
+#
+# ── Pourquoi ce workflow existe ───────────────────────────────────────────
+# Le 2026-09-22, le mot de passe du Redis de production a été retrouvé EN CLAIR
+# dans un fichier d'audit du dépôt — qui est PUBLIC — présent depuis le 11 mai.
+# Il fallait le tourner.
+#
+# 🔴 LA ROTATION À LA MAIN EST LE VRAI DANGER, pas le mot de passe. Coolify n'a
+# pas de bouton « régénérer » : il faut taper 64 caractères dans un champ
+# MASQUÉ, puis les recopier dans DEUX chaînes de connexion complètes — sans
+# jamais pouvoir relire ce qu'on a écrit. Une faute de frappe n'est pas visible,
+# et son effet n'est pas visible non plus : les e-mails et les crons s'arrêtent,
+# en silence, jusqu'à ce que quelqu'un s'en aperçoive.
+#
+# Ce n'est pas une crainte théorique : le même jour, la rotation du jeton
+# DocuSeal faite « à la main » dans l'interface a écrit une valeur MASQUÉE
+# (`aV38c****…`, 43 caractères — une longueur parfaitement crédible) au lieu du
+# jeton. L'intégration est restée cassée deux heures sans que rien ne le signale.
+#
+# ── Ce que ce workflow garantit, et qu'un humain ne peut pas garantir ─────
+#  1. le mot de passe est FABRIQUÉ SUR LE RUNNER : personne ne le choisit,
+#     personne ne le lit, il n'est jamais affiché (masqué dans les journaux) ;
+#  2. il est écrit aux TROIS endroits par la même exécution — impossible d'en
+#     oublier un ;
+#  3. **RIEN N'EST MODIFIÉ TANT QUE TOUT N'EST PAS VÉRIFIÉ POSSIBLE.** Le
+#     préambule contrôle les accès, l'existence des trois ressources et la santé
+#     de départ. Si un seul contrôle échoue, on s'arrête AVANT d'avoir touché
+#     quoi que ce soit ;
+#  4. le résultat est VÉRIFIÉ par une mesure indépendante (`/api/healthz`, qui
+#     rapporte l'état Redis vu par l'application), pas par l'absence d'erreur.
+#
+# ⚠️ `Restart` de Coolify NE RECHARGE PAS les variables d'environnement : elles
+# sont figées à la CRÉATION du conteneur. Seul un `deploy` les applique. Mesuré
+# le 2026-09-22 (deux redémarrages sans effet).
+#
+# ── Ce que la rotation coûte ─────────────────────────────────────────────
+# Entre le changement du mot de passe et la fin des redéploiements, les deux
+# applications ne joignent plus Redis : ~3 à 8 minutes. Les jobs BullMQ ne sont
+# PAS perdus — ils dorment dans le volume Redis, que ce workflow ne touche
+# jamais — ils sont RETARDÉS.
+
+name: Sécurité · rotation du mot de passe Redis
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: "Taper exactement TOURNER pour confirmer (les e-mails et les crons seront retardés de quelques minutes)"
+        required: true
+        type: string
+      redis_uuid:
+        description: "UUID de la base Redis dans Coolify (= son nom d'hôte)"
+        required: true
+        default: "hdfknlij6yqebr09p379m9q6"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  tourner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      # ── 1. PRÉAMBULE : tout vérifier AVANT de rien changer ──────────────
+      - name: Confirmation explicite
+        env:
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          set -euo pipefail
+          if [ "$CONFIRMATION" != "TOURNER" ]; then
+            echo "::error::Confirmation absente ou incorrecte. Rien n'a été modifié."
+            exit 1
+          fi
+
+      - name: Les quatre accès existent
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+        run: |
+          set -euo pipefail
+          for v in COOLIFY_API_TOKEN COOLIFY_URL COOLIFY_APP_UUID COOLIFY_WORKER_APP_UUID; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Secret $v absent. Rien n'a été modifié."
+              exit 1
+            fi
+          done
+          echo "Les quatre secrets sont présents."
+
+      - name: La base Redis existe et l'API accepte de l'écrire
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          REDIS_UUID: ${{ inputs.redis_uuid }}
+        run: |
+          set -euo pipefail
+          code=$(curl -sS -m 20 -o /tmp/db -w "%{http_code}" \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            "${COOLIFY_URL}/api/v1/databases/${REDIS_UUID}")
+          if [ "$code" != "200" ]; then
+            echo "::error::La base ${REDIS_UUID} est introuvable (HTTP $code). Rien n'a été modifié."
+            exit 1
+          fi
+          # 🔑 On vérifie que le champ attendu EXISTE avant de tenter de l'écrire.
+          # Sans ce contrôle, un changement de nom de champ côté Coolify ferait
+          # un PATCH « réussi » qui ne change rien — et on tournerait les URL des
+          # applications vers un mot de passe que Redis n'a jamais adopté.
+          if ! jq -e 'has("redis_password")' /tmp/db >/dev/null; then
+            echo "::error::Le champ redis_password n'existe pas dans la réponse de l'API."
+            echo "::error::Champs disponibles : $(jq -r 'keys|join(",")' /tmp/db | head -c 300)"
+            echo "::error::Rien n'a été modifié."
+            exit 1
+          fi
+          echo "Base Redis trouvée, champ redis_password présent."
+
+      - name: Santé de DÉPART (le témoin de la comparaison finale)
+        run: |
+          set -euo pipefail
+          # 🔑 Sans cette mesure, un « redis: ok » à l'arrivée ne prouverait rien :
+          # il faut savoir que c'était ok AVANT, sinon on ne sait pas si on a
+          # réparé, cassé, ou rien fait du tout.
+          sante=$(curl -sS -m 20 https://axion-ia.com/api/healthz || echo '{}')
+          echo "healthz avant : $sante"
+          if [ "$(echo "$sante" | jq -r '.redis // "absent"')" != "ok" ]; then
+            echo "::error::Redis n'est PAS sain avant la rotation. On ne tourne pas un mot de passe"
+            echo "::error::sur un système déjà en panne : on ne saurait plus quoi attribuer à quoi."
+            exit 1
+          fi
+
+      # ── 2. LE MOT DE PASSE, FABRIQUÉ ICI ────────────────────────────────
+      - name: Fabriquer le nouveau mot de passe (jamais affiché)
+        id: secret
+        run: |
+          set -euo pipefail
+          # 64 caractères alphanumériques : même forme que celui de Coolify, et
+          # aucun caractère qui demanderait un échappement dans une URL — un
+          # `@`, un `:` ou un `/` couperait la chaîne de connexion en deux.
+          nouveau=$(LC_ALL=C tr -dc 'A-Za-z0-9' </dev/urandom | head -c 64)
+          if [ "${#nouveau}" -ne 64 ]; then
+            echo "::error::Génération ratée (${#nouveau} caractères). Rien n'a été modifié."
+            exit 1
+          fi
+          echo "::add-mask::$nouveau"
+          echo "mdp=$nouveau" >> "$GITHUB_OUTPUT"
+          echo "Mot de passe fabriqué : 64 caractères alphanumériques (masqué)."
+
+      # ── 3. ÉCRITURE : Redis d'abord, puis les deux applications ─────────
+      - name: Écrire le mot de passe dans la base Redis
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          REDIS_UUID: ${{ inputs.redis_uuid }}
+          MDP: ${{ steps.secret.outputs.mdp }}
+        run: |
+          set -euo pipefail
+          payload=$(jq -nc --arg p "$MDP" '{redis_password: $p}')
+          code=$(curl -sS -m 30 -o /tmp/resp -w "%{http_code}" -X PATCH \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Content-Type: application/json" \
+            -d "$payload" "${COOLIFY_URL}/api/v1/databases/${REDIS_UUID}")
+          if [ "$code" != "200" ] && [ "$code" != "201" ]; then
+            echo "::error::PATCH base Redis → $code : $(head -c 300 /tmp/resp)"
+            echo "::error::Le mot de passe N'A PAS changé. Les applications sont intactes."
+            exit 1
+          fi
+          echo "Mot de passe écrit dans la base Redis ($code)."
+
+      - name: Écrire REDIS_URL dans le SITE et le WORKER
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+          REDIS_UUID: ${{ inputs.redis_uuid }}
+          MDP: ${{ steps.secret.outputs.mdp }}
+        run: |
+          set -euo pipefail
+          url="redis://default:${MDP}@${REDIS_UUID}:6379/0"
+          echo "::add-mask::$url"
+          # ⚠️ is_preview:false — on ne touche jamais la ligne Preview, comme
+          # pour le jeton Calendly : un déploiement éphémère n'a rien à faire
+          # dans le Redis de production.
+          payload=$(jq -nc --arg value "$url" '{
+            key: "REDIS_URL",
+            value: $value,
+            is_preview: false,
+            is_literal: false,
+            is_multiline: false,
+            is_shown_once: false
+          }')
+          ecrire() {
+            local uuid="$1" nom="$2" code
+            code=$(curl -sS -m 20 -o /tmp/resp -w "%{http_code}" -X PATCH \
+              -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Content-Type: application/json" \
+              -d "$payload" "${COOLIFY_URL}/api/v1/applications/${uuid}/envs")
+            if [ "$code" = "200" ] || [ "$code" = "201" ]; then echo "$nom : écrit ($code)"; return 0; fi
+            code=$(curl -sS -m 20 -o /tmp/resp -w "%{http_code}" -X POST \
+              -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Content-Type: application/json" \
+              -d "$payload" "${COOLIFY_URL}/api/v1/applications/${uuid}/envs")
+            if [ "$code" = "200" ] || [ "$code" = "201" ]; then echo "$nom : créé ($code)"; return 0; fi
+            echo "::error::$nom : écriture impossible ($code) : $(head -c 300 /tmp/resp)"
+            return 1
+          }
+          # 🔴 Les DEUX ou rien. Si la seconde échoue, on le dit très fort : le
+          # système est alors dans l'état le plus dangereux — Redis a un nouveau
+          # mot de passe, une seule application le connaît.
+          ecrire "$COOLIFY_APP_UUID" "site"
+          if ! ecrire "$COOLIFY_WORKER_APP_UUID" "worker"; then
+            echo "::error::ÉTAT INCOHÉRENT : le site a la nouvelle URL, pas le worker."
+            echo "::error::Relancer ce workflow immédiatement, ou corriger le worker à la main."
+            exit 1
+          fi
+
+      # ── 4. APPLIQUER, puis MESURER ──────────────────────────────────────
+      - name: Redémarrer Redis et redéployer les deux applications
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+          REDIS_UUID: ${{ inputs.redis_uuid }}
+        run: |
+          set -euo pipefail
+          echo "── Redis (restart : le mot de passe est lu au démarrage du service)"
+          curl -sS -m 30 -o /dev/null -w "restart Redis → %{http_code}\n" \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            "${COOLIFY_URL}/api/v1/databases/${REDIS_UUID}/restart" || true
+          echo "── Applications (deploy, PAS restart : Restart ne recharge pas les variables)"
+          for u in "$COOLIFY_APP_UUID" "$COOLIFY_WORKER_APP_UUID"; do
+            curl -sS -m 30 -o /dev/null -w "deploy $u → %{http_code}\n" \
+              -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+              "${COOLIFY_URL}/api/v1/deploy?uuid=${u}" || true
+          done
+
+      - name: Vérifier — et échouer FORT si Redis ne répond pas
+        run: |
+          set -euo pipefail
+          echo "Attente de la reprise (jusqu'à 10 minutes)…"
+          for i in $(seq 1 40); do
+            sleep 15
+            sante=$(curl -sS -m 15 https://axion-ia.com/api/healthz || echo '{}')
+            etat=$(echo "$sante" | jq -r '.redis // "injoignable"')
+            echo "  essai $i : redis=$etat"
+            if [ "$etat" = "ok" ]; then
+              echo "✅ Rotation terminée. L'application joint Redis avec le nouveau mot de passe."
+              exit 0
+            fi
+          done
+          echo "::error::Après 10 minutes, l'application ne joint toujours pas Redis."
+          echo "::error::Les e-mails et les crons sont ARRÊTÉS. À faire, dans cet ordre :"
+          echo "::error::  1. Coolify → application site ET worker → vérifier que REDIS_URL est identique"
+          echo "::error::     dans les deux, et que son hôte est bien ${REDIS_UUID} ;"
+          echo "::error::  2. Coolify → base Redis → relancer un Restart ;"
+          echo "::error::  3. redéployer les DEUX applications (deploy, jamais restart)."
+          exit 1
