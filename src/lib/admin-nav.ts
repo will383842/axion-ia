@@ -1140,14 +1140,13 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "qualiopi",
       subGroup: "intervenants",
     },
-    // Cockpit financier (Lot 6.3) — marge par session/formation, heures & coût par
-    // formateur, consolidation mensuelle (lecture au-dessus des lignes de rémunération).
-    {
-      href: `${base}/qualiopi/cockpit-financier`,
-      label: "Cockpit financier",
-      icon: "ChartNoAxesCombined",
-      group: "finances",
-    },
+    // 🔴 2026-09-23 — « Cockpit financier » a QUITTÉ cette position : son bloc
+    // vit désormais en fin du groupe Finances, juste après « Alertes
+    // financement (sessions) » (chercher plus bas dans ce fichier). Motif :
+    // ordre « chaud avant froid » du groupe — voir le commentaire en tête de
+    // « Facturation (Hub) ». Ce repère reste ici pour qui cherchait l'ancien
+    // emplacement ; `group: "finances"` n'a jamais dépendu de la position
+    // dans ce tableau, seul l'ORDRE DE RENDU en dépend.
     {
       href: `${base}/qualiopi/audits`,
       label: "Audits IA",
@@ -1195,6 +1194,110 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "qualiopi",
       subGroup: "dossiers",
     },
+    // 🔴 2026-09-23 — GROUPE FINANCES RÉORDONNÉ : ACTION AVANT LECTURE.
+    //
+    //    `AdminSidebarNav.tsx` ne pose pas de pôles pour ce groupe (il n'est
+    //    pas dans `GROUP_POLE_ORDER`) : il rend les items de `group:
+    //    "finances"` dans l'ordre BRUT de ce tableau (filtre puis affichage,
+    //    aucun tri). Avant ce correctif l'ordre était Cockpit financier (un
+    //    rapport en lecture seule) → Tiime (un lien EXTERNE, aucune action
+    //    possible dans l'appli) → Facturation (Hub) (le vrai centre d'action
+    //    du groupe). Le fichier applique pourtant ailleurs la règle inverse,
+    //    explicitement — « chaud avant froid » (cf. le commentaire de
+    //    `CONTENT_GEN_POLE_ORDER` plus haut, et le pôle `a_traiter` placé en
+    //    tête de `QUALIOPI_POLE_ORDER`) — mais Finances n'a jamais eu de
+    //    pôles, donc n'a jamais hérité de cette doctrine.
+    //
+    //    Le Hub passe donc en tête ; Cockpit financier et Tiime sont
+    //    déplacés en QUEUE de groupe (leur bloc complet suit « Alertes
+    //    financement (sessions) », plus bas). Rien n'est retiré : seul
+    //    l'ordre change.
+    //
+    // Hub facturation unifié 5 activités (page gatée par FACTURATION_HUB_ENABLED).
+    {
+      href: `${base}/qualiopi/facturation`,
+      label: "Facturation (Hub)",
+      icon: "Receipt",
+      group: "finances",
+    },
+    // 🔴 2026-09-23 — MASQUÉE DE LA BARRE LATÉRALE, PAS SUPPRIMÉE.
+    //    « Facture directe » n'est qu'un formulaire de création
+    //    (`facturation/new/page.tsx` monte `FactureLibreForm` — un seul
+    //    geste, rien à consulter ni à filtrer). Le Hub porte déjà ce même
+    //    geste en bouton (« + Facture directe », visible si `peutEcrire`,
+    //    `facturation/page.tsx`) : un formulaire n'est pas une catégorie de
+    //    navigation, au même titre que « Nouveau contact apporteur » n'en
+    //    était pas une pour la liste Apporteurs (2026-09-19).
+    //
+    //    Traitement différent de ce précédent, volontairement : là-bas la
+    //    route avait quitté le SSOT ; ici on pose `parent` — même motif que
+    //    les sept onglets de la Boîte de réception ci-dessus (2026-09-23).
+    //    `parent` retire l'item du rendu sidebar (filtre `it.parent == null`
+    //    dans `AdminSidebarNav`) mais le laisse dans `buildAdminNav` : il
+    //    reste joignable par ⌘K, les favoris et le breadcrumb. Réversible en
+    //    retirant `parent`.
+    {
+      href: `${base}/qualiopi/facturation/new`,
+      label: "Facture directe",
+      icon: "FilePlus",
+      group: "finances",
+      parent: `${base}/qualiopi/facturation`,
+    },
+    // 🔴 2026-09-23 — RESTE DANS LE MENU, VOLONTAIREMENT.
+    //    Contrairement à « Facture directe » ci-dessus, « Plans récurrents »
+    //    est une vraie LISTE (les plans de facturation récurrente) : elle
+    //    mérite sa propre place stable dans la navigation, au même titre que
+    //    « Rapprochement bancaire » ou « Alertes financement » juste en
+    //    dessous — ni l'une ni l'autre n'est masquée.
+    //
+    //    Le bouton identique qui vivait sur le Hub, lui, EST retiré dans
+    //    cette même PR (`facturation/page.tsx`) : le fichier admettait déjà
+    //    que « Plans récurrents » et « FEC / Import » y étaient de la
+    //    « NAVIGATION déguisée en action ». Une fois cette entrée reconnue
+    //    comme une vraie destination de menu, garder un second bouton vers
+    //    la même route dans le bandeau d'actions du Hub ne fait que répéter
+    //    la porte que la sidebar ouvre déjà. « FEC / Import » n'a pas ce
+    //    problème : il n'a pas d'entrée de menu, le bouton du Hub reste donc
+    //    sa SEULE porte — il n'est pas touché.
+    {
+      href: `${base}/qualiopi/facturation/plans`,
+      label: "Plans récurrents",
+      icon: "Repeat",
+      group: "finances",
+    },
+    // Rapprochement bancaire v1 (import de l'export CSV Finom, suggestions
+    // contre les factures ouvertes, sans persistance du relevé). Même gate
+    // FACTURATION_HUB_ENABLED que le Hub — c'est la PAGE qui gate.
+    {
+      href: `${base}/qualiopi/facturation/rapprochement`,
+      label: "Rapprochement bancaire",
+      icon: "Landmark",
+      group: "finances",
+    },
+    {
+      // Renommé (2026-07-14) : la facturation est pilotée par « Facturation (Hub) ».
+      // Cet écran conserve sa valeur propre = alertes de financement au niveau
+      // session (OPCO sans accord, CPF sans vérif EDOF) + export compta CSV legacy.
+      href: `${base}/qualiopi/financements`,
+      label: "Alertes financement (sessions)",
+      icon: "Siren",
+      group: "finances",
+    },
+    // 🔴 2026-09-23 — DÉPLACÉ EN QUEUE DU GROUPE (cf. le commentaire en tête
+    // de « Facturation (Hub) », plus haut : ordre « chaud avant froid »). Un
+    // rapport en lecture seule se consulte après avoir agi, pas avant.
+    // Cockpit financier (Lot 6.3) — marge par session/formation, heures & coût par
+    // formateur, consolidation mensuelle (lecture au-dessus des lignes de rémunération).
+    {
+      href: `${base}/qualiopi/cockpit-financier`,
+      label: "Cockpit financier",
+      icon: "ChartNoAxesCombined",
+      group: "finances",
+    },
+    // 🔴 2026-09-23 — DÉPLACÉ EN DERNIER DU GROUPE : un lien EXTERNE, sans
+    // aucune action possible DANS cette console, est le plus froid des sept
+    // items du groupe Finances (cf. le commentaire en tête de « Facturation
+    // (Hub) », plus haut).
     // ── Tiime — notre PLATEFORME AGRÉÉE de facturation électronique ────────
     //
     // Pourquoi ce lien vit ICI, dans « Finances », et pas dans un coin :
@@ -1222,43 +1325,6 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       external: true,
     },
 
-    // Hub facturation unifié 5 activités (page gatée par FACTURATION_HUB_ENABLED).
-    {
-      href: `${base}/qualiopi/facturation`,
-      label: "Facturation (Hub)",
-      icon: "Receipt",
-      group: "finances",
-    },
-    {
-      href: `${base}/qualiopi/facturation/new`,
-      label: "Facture directe",
-      icon: "FilePlus",
-      group: "finances",
-    },
-    {
-      href: `${base}/qualiopi/facturation/plans`,
-      label: "Plans récurrents",
-      icon: "Repeat",
-      group: "finances",
-    },
-    // Rapprochement bancaire v1 (import de l'export CSV Finom, suggestions
-    // contre les factures ouvertes, sans persistance du relevé). Même gate
-    // FACTURATION_HUB_ENABLED que le Hub — c'est la PAGE qui gate.
-    {
-      href: `${base}/qualiopi/facturation/rapprochement`,
-      label: "Rapprochement bancaire",
-      icon: "Landmark",
-      group: "finances",
-    },
-    {
-      // Renommé (2026-07-14) : la facturation est pilotée par « Facturation (Hub) ».
-      // Cet écran conserve sa valeur propre = alertes de financement au niveau
-      // session (OPCO sans accord, CPF sans vérif EDOF) + export compta CSV legacy.
-      href: `${base}/qualiopi/financements`,
-      label: "Alertes financement (sessions)",
-      icon: "Siren",
-      group: "finances",
-    },
     // Référentiel OPCO centralisé et versionné (Lot 5) — plafonds de prise en charge.
     {
       href: `${base}/qualiopi/baremes-opco`,
