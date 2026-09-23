@@ -113,6 +113,13 @@ interface Props {
    * absente, parce qu'on en tire une conclusion.
    */
   balayageTronque?: boolean;
+  /**
+   * Le dossier « jamais répondu » le plus ancien, `null` s'il n'y en a
+   * aucun ou si l'écran n'est pas sur son atterrissage normal (voir
+   * `page.tsx`, qui ne le calcule que là). Un candidat oublié depuis deux
+   * mois ne doit pas dépendre d'un écran de pilotage que personne n'ouvre.
+   */
+  plusAncienJamaisRepondu?: { id: string; offerTitleSnap: string; jours: number } | null;
 }
 
 export function ApplicationsV2({
@@ -124,6 +131,7 @@ export function ApplicationsV2({
   page,
   totalPages,
   balayageTronque = false,
+  plusAncienJamaisRepondu = null,
 }: Props): React.ReactElement {
   const offerId = sp["offerId"];
   const baseHref = `/fr/${adminPrefix}/contacts/candidatures`;
@@ -214,6 +222,21 @@ export function ApplicationsV2({
           </div>
         }
       />
+
+      {/* 🔴 LE PLUS ANCIEN DOSSIER SANS RÉPONSE — dit ICI, pas seulement dans
+          `/pilotage`. Une liste de 178 lignes triées par offre cache le candidat
+          qui attend depuis deux mois aussi bien qu'une liste vide : il est
+          quelque part dedans, mais rien ne le désigne. */}
+      {plusAncienJamaisRepondu ? (
+        <p className="admin-alert admin-alert-error mb-[var(--space-admin-4)]" role="alert">
+          Le plus ancien dossier sans réponse attend depuis{" "}
+          <strong>{plusAncienJamaisRepondu.jours} j</strong> —{" "}
+          {plusAncienJamaisRepondu.offerTitleSnap}.{" "}
+          <Link href={`${baseHref}/${plusAncienJamaisRepondu.id}`} className="admin-link">
+            Ouvrir le dossier
+          </Link>
+        </p>
+      ) : null}
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <form className="admin-filters">
