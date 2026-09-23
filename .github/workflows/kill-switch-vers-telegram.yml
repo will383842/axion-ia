@@ -1,0 +1,188 @@
+name: Génération de contenu à l'arrêt → Telegram
+
+# POURQUOI CE WORKFLOW
+# --------------------
+# 🔴 LE 2026-09-16 À 21:01, LA GÉNÉRATION DE CONTENU S'EST ARRÊTÉE TOUTE SEULE
+# — quota OpenAI épuisé, trois échecs consécutifs, arrêt propre. C'est le bon
+# comportement. Ce qui ne l'était pas : **personne ne l'a su pendant six jours.**
+#
+# Le mécanisme est silencieux PAR CONSTRUCTION. Chaque nuit, les workers
+# content-gen lisent le drapeau `kill_switch`, voient « arrêt », et sortent en
+# se déclarant RÉUSSIS. Vu du dehors, tout est vert : zéro échec, file vide,
+# prochaine exécution programmée. La seule trace visible était un `updatedAt`
+# qui cessait d'avancer dans une table de configuration.
+#
+# Découvert le 2026-09-22 par accident, en vérifiant une date pour une tout
+# autre raison. Un arrêt automatique qui ne prévient personne dure six jours.
+#
+# CE QU'IL FAIT
+#   - toutes les 30 min, lit le drapeau en base, EN LECTURE SEULE ;
+#   - prévient sur Telegram **au changement d'état**, dans les deux sens :
+#     arrêt détecté (avec sa raison), et reprise ;
+#   - **re-signale toutes les 12 h** tant que l'arrêt dure. Une alerte perdue ne
+#     doit pas redevenir six jours de silence : c'est exactement la panne qu'on
+#     répare ici, et une garde qui ne se répète jamais la laisserait revenir à
+#     l'identique.
+#
+# CE QU'IL NE FAIT PAS
+#   - il n'écrit rien : la session est forcée en lecture seule par PGOPTIONS ;
+#   - il ne redémarre rien et ne désactive rien. Remettre l'interrupteur en
+#     marche reste un geste humain, tracé au nom de qui le fait (console →
+#     Content-gen → Réglages → « Kill switch »).
+#
+# ⚠️ Il ne remplace pas `uptime-external.yml`, qui sonde la prod depuis
+# l'extérieur précisément pour n'être aveugle à rien quand le VPS tombe.
+# Celui-ci parle d'un état INTERNE : si le serveur est injoignable, il se tait
+# et laisse l'autre crier — deux alertes qui disent des choses différentes pour
+# le même incident ne valent pas mieux qu'une seule.
+#
+# SECRETS REQUIS : HETZNER_SSH_KEY, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID.
+# Absents → le workflow reste vert et n'envoie rien (fail-soft, jamais bloquant).
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+    inputs:
+      essai:
+        description: "oui = envoyer un message d'essai sur Telegram et s'arrêter, sans rien lire ni changer"
+        required: false
+        default: "non"
+        type: string
+
+concurrency:
+  group: kill-switch-telegram
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  # Conteneur Postgres du SITE. ⚠️ Ce n'est PAS `postgres-wrunr6…`, qui porte la
+  # base de l'application d'audit (piège mesuré le 2026-09-19).
+  DB_CONTAINER: "u7zlql3bpb1xy5t4kg6jnvpm"
+  SERVEUR: "root@178.105.55.15"
+  # Au-delà de ce délai, on re-signale un arrêt déjà connu (secondes).
+  RAPPEL_SECONDES: "43200"
+
+jobs:
+  surveiller:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Restaurer l'état précédent
+        uses: actions/cache/restore@v6
+        with:
+          path: etat
+          key: kill-switch-etat-${{ github.run_id }}
+          restore-keys: |
+            kill-switch-etat-
+
+      - name: Accès SSH au serveur
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          set -uo pipefail
+          if [ -z "${HETZNER_SSH_KEY:-}" ]; then
+            echo "::warning::HETZNER_SSH_KEY absent — surveillance impossible, rien n'est envoyé."
+            exit 0
+          fi
+          mkdir -p ~/.ssh
+          printf '%s\n' "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Lire le drapeau et décider de l'alerte
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          ESSAI: ${{ inputs.essai }}
+        run: |
+          set -uo pipefail
+          mkdir -p etat
+          precedent="$(cat etat/actif 2>/dev/null || echo inconnu)"
+          dernier_cri="$(cat etat/dernier_cri 2>/dev/null || echo 0)"
+          maintenant="$(date +%s)"
+          nl=$'\n'
+
+          envoyer() {
+            if [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; then
+              curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+                -d "chat_id=${TELEGRAM_CHAT_ID}" \
+                --data-urlencode "text=$1" \
+                -d "parse_mode=Markdown" \
+                -d "disable_web_page_preview=true" > /dev/null || true
+            else
+              echo "::warning::Secrets Telegram absents — alerte non envoyée."
+            fi
+          }
+
+          # 🔑 UNE ALERTE QU'ON N'A JAMAIS VUE PARTIR EST UNE ALERTE DONT ON
+          # IGNORE SI ELLE MARCHE. Le chemin Telegram n'est emprunté qu'au moment
+          # exact où l'on a besoin qu'il fonctionne — c'est-à-dire trop tard pour
+          # découvrir qu'un jeton a expiré. Ce mode d'essai le parcourt à la
+          # demande, sans rien lire en base et sans toucher à l'état.
+          if [ "${ESSAI:-non}" = "oui" ]; then
+            envoyer "*[🧪 ESSAI]* La surveillance de l'interrupteur d'arrêt est en place. Si vous lisez ceci, le chemin d'alerte fonctionne. Aucun incident en cours."
+            echo "Message d'essai envoyé. Rien n'a été lu ni modifié."
+            exit 0
+          fi
+
+          # 🔑 LECTURE SEULE IMPOSÉE PAR LA SESSION, pas par la bonne volonté de
+          # la requête : PGOPTIONS refuse toute écriture au niveau du serveur.
+          sql="SELECT (value::jsonb->>'active') || '|' || COALESCE(value::jsonb->>'reason', '') FROM content_gen_config WHERE key = 'kill_switch';"
+          brut="$(ssh -o BatchMode=yes -o ConnectTimeout=20 "${SERVEUR}" \
+            "docker exec ${DB_CONTAINER} env PGOPTIONS='-c default_transaction_read_only=on' psql -U axionia -d axionia -At -c \"${sql}\"" 2>/dev/null | tr -d '\r' | head -1)"
+
+          if [ -z "${brut}" ]; then
+            # Serveur injoignable, conteneur absent, ou ligne inexistante. On ne
+            # crie PAS : `uptime-external.yml` couvre déjà « la prod est tombée »,
+            # et une seconde alerte disant autre chose sur le même incident ne
+            # ferait qu'ajouter du bruit. On laisse une trace, on garde l'état.
+            echo "::warning::Drapeau illisible (serveur injoignable ou ligne absente). Aucune alerte, état inchangé."
+            printf '%s' "${precedent}" > etat/actif
+            printf '%s' "${dernier_cri}" > etat/dernier_cri
+            exit 0
+          fi
+
+          actif="${brut%%|*}"
+          raison="${brut#*|}"
+          echo "drapeau=${actif} (précédent: ${precedent})"
+
+          if [ "${actif}" = "true" ]; then
+            if [ "${precedent}" != "true" ]; then
+              msg="*[🔴 GÉNÉRATION DE CONTENU ARRÊTÉE]* L'interrupteur d'arrêt vient de s'activer."
+              msg="${msg}${nl}Raison : ${raison}"
+              msg="${msg}${nl}Plus aucun contenu ne sera produit tant qu'il reste actif — et les tâches de nuit continueront à se déclarer RÉUSSIES."
+              msg="${msg}${nl}Remettre en marche : console → Content-gen → Réglages → « Kill switch »."
+              envoyer "${msg}"
+              echo "::error::Arrêt détecté : ${raison}"
+              printf '%s' "${maintenant}" > etat/dernier_cri
+            elif [ "$(( maintenant - dernier_cri ))" -ge "${RAPPEL_SECONDES}" ]; then
+              heures="$(( (maintenant - dernier_cri) / 3600 ))"
+              msg="*[🔴 TOUJOURS ARRÊTÉE]* La génération de contenu est à l'arrêt depuis au moins ${heures} h."
+              msg="${msg}${nl}Raison : ${raison}"
+              msg="${msg}${nl}Console → Content-gen → Réglages → « Kill switch »."
+              envoyer "${msg}"
+              echo "::warning::Rappel envoyé (${heures} h)."
+              printf '%s' "${maintenant}" > etat/dernier_cri
+            else
+              echo "::warning::Toujours arrêtée, rappel pas encore dû — pas d'alerte."
+              printf '%s' "${dernier_cri}" > etat/dernier_cri
+            fi
+            printf 'true' > etat/actif
+          else
+            if [ "${precedent}" = "true" ]; then
+              envoyer "*[✅ GÉNÉRATION DE CONTENU REPRISE]* L'interrupteur d'arrêt a été désactivé. La production repartira à la prochaine exécution nocturne."
+              echo "::notice::Reprise détectée."
+            fi
+            printf 'false' > etat/actif
+            printf '0' > etat/dernier_cri
+          fi
+
+      - name: Sauvegarder l'état
+        if: always()
+        uses: actions/cache/save@v6
+        with:
+          path: etat
+          key: kill-switch-etat-${{ github.run_id }}
