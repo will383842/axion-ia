@@ -77,7 +77,7 @@ describe("footer social — selon la famille de l'e-mail", () => {
    */
   const LIENS_SOCIAUX = [
     "https://www.linkedin.com/company/axion-ia-france/",
-    "https://www.facebook.com/profile.php?id=61591668644032",
+    "https://www.facebook.com/axioniacom",
     "https://x.com/AxionIAFrance",
     "https://www.linkedin.com/in/williamsjullin/",
   ];

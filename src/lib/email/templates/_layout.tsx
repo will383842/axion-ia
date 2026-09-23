@@ -141,7 +141,7 @@ const CONTACT_EMAIL = EMAIL_LEGAL.contactEmail;
 const SOCIALS = {
   linkedinCompany:
     process.env.COMPANY_LINKEDIN || "https://www.linkedin.com/company/axion-ia-france/",
-  facebookCompany: "https://www.facebook.com/profile.php?id=61591668644032",
+  facebookCompany: "https://www.facebook.com/axioniacom",
   /**
    * §5.3 : « Faible impact B2B France, mais gratuit et cohérent. » Manquait.
    */

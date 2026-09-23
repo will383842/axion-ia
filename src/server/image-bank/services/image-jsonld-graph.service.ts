@@ -62,7 +62,7 @@ function buildOrganization(args: { wikidataQid?: string; inLanguage: string }): 
   // brand "Axion-IA" (cf. mémoire axionia_naming_brand_vs_project 2026-05-08).
   // STOP & ASK : si le handle X officiel devient `@axionia` ou `@axion_ia`,
   // mettre à jour ici + dans image-seo-enrichment.service.ts User-Agent.
-  const sameAs: string[] = ["https://www.linkedin.com/company/axion-ia", "https://x.com/AxionIA"];
+  const sameAs: string[] = ["https://www.linkedin.com/company/axion-ia-france", "https://x.com/AxionIA"];
   if (args.wikidataQid) sameAs.push(`https://www.wikidata.org/wiki/${args.wikidataQid}`);
 
   return {

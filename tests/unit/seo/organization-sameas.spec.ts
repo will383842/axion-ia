@@ -56,6 +56,7 @@ describe("Organization sameAs — les fiches qui définissent l'entité", () => 
 
   for (const [nom, fragment] of [
     ["LinkedIn", "linkedin.com/company/axion-ia-france"],
+    ["Facebook", "facebook.com/axioniacom"],
     ["Crunchbase", "crunchbase.com/organization/axion-ia"],
     ["F6S", "f6s.com/axion-ia1"],
   ] as const) {

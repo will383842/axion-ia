@@ -176,7 +176,7 @@ async function seedAuthor() {
         "Fondateur d'Axion-IA, cabinet IA opérationnel pour entreprises. 10+ ans terrain dans la digitalisation et l'IA appliquée aux PME et ETI européennes.",
       bioEn:
         "Founder of Axion-IA, an operational AI consultancy. 10+ years of hands-on experience digitizing and bringing applied AI to European SMEs and mid-market companies.",
-      linkedinUrl: "https://www.linkedin.com/company/axionia",
+      linkedinUrl: "https://www.linkedin.com/in/williamsjullin/",
     },
   });
   console.log("✓ Author 'Will' seeded");

@@ -387,6 +387,25 @@ function LinkedinIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
+function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <rect x="3" y="3" width="18" height="18" rx="3.5" />
+      <path d="M15.5 8H14a2 2 0 0 0-2 2v11" />
+      <path d="M9.5 13h5.5" />
+    </svg>
+  );
+}
+
 /*
   Badge CodeTrendy — ajouté 2026-08-09.
 
@@ -465,13 +484,24 @@ function SocialLinks() {
     <ul className="flex items-center gap-2">
       <li>
         <a
-          href="https://www.linkedin.com/company/axion-ia"
+          href="https://www.linkedin.com/company/axion-ia-france/"
           target="_blank"
           rel="noopener noreferrer external"
           aria-label="LinkedIn"
           className="text-mocha-fg/80 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex h-11 w-11 items-center justify-center rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         >
           <LinkedinIcon className="h-[17px] w-[17px]" />
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://www.facebook.com/axioniacom"
+          target="_blank"
+          rel="noopener noreferrer external"
+          aria-label="Facebook"
+          className="text-mocha-fg/80 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex h-11 w-11 items-center justify-center rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+        >
+          <FacebookIcon className="h-[17px] w-[17px]" />
         </a>
       </li>
     </ul>
