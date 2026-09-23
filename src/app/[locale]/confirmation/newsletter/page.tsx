@@ -112,6 +112,20 @@ export default async function NewsletterConfirmPage({ params, searchParams }: Pr
                     <a className="underline" href={isFr ? "/fr#newsletter" : "/en#newsletter"}>
                       {isFr ? "remplissez le formulaire" : "use the signup form"}
                     </a>
+                    .{" "}
+                    {/* Les filtres de messagerie d'entreprise (Safe Links, Mimecast)
+                        ouvrent le lien avant la personne et le consomment : elle
+                        arrive ici sans le bouton du guide promis par l'e-mail.
+                        Refaire la demande repasse par la branche « déjà inscrit »,
+                        qui affiche le téléchargement. */}
+                    {isFr
+                      ? "Vous veniez chercher le guide IA entreprise ? Votre messagerie a peut-être déjà ouvert ce lien : "
+                      : "Looking for the enterprise AI guide? Your mail filter may have opened this link already: "}
+                    <a className="underline" href={isFr ? "/fr/guide-ia" : "/en/ai-guide"}>
+                      {isFr
+                        ? "refaites la demande depuis la page du guide"
+                        : "request it again from the guide page"}
+                    </a>
                     .
                   </span>
                 )}
