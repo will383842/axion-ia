@@ -1,9 +1,25 @@
-// Liste admin des candidatures — AdminPageShell + AdminCard + table CSS.
+// Liste admin des candidatures EMPLOI — AdminPageShell + AdminCard + table CSS.
 // Track 2 migration (juin 2026) : table `.admin-table` → <AdminTable>,
 // badge statut → <AdminBadge>.
-// Sous-onglets 2026-08-13 : Toutes / Monteur vidéo / Apporteurs d’affaires. Les lignes
-// sont des CandidatureUnifieeItem : les candidatures commerciales (Mémo
-// Isère) viennent de la table Submission et pointent vers leur propre détail.
+//
+// 🔴 2026-09-23 — REFONTE (mesure prod, 2026-09-23) : cet écran affichait
+// deux onglets qui n'auraient jamais dû exister ensemble.
+//
+//   · « Apporteurs d'affaires » dupliquait EXACTEMENT les 12 lignes déjà
+//     visibles sous `/contacts/commercial` (mêmes `Submission`, même filtre
+//     `subType = candidature-commerciale`) — deux portes vers les mêmes
+//     dossiers, ET la vue « Toutes » mélangeait au passage deux enums de
+//     statut différents (`JobApplicationStatus` / `SubmissionStatus`). Les
+//     deux onglets sont retirés ; cet écran ne montre plus QUE des
+//     `JobApplication` (164 lignes, un seul vocabulaire de statut).
+//   · « Monteur vidéo » promouvait UNE offre sur 34 au rang d'onglet. Un
+//     sélecteur « Offre », alimenté par les offres qui ont réellement des
+//     candidatures, répond à la question qu'on se pose en réalité
+//     (« qui a postulé à Rédacteur web ? ») pour les 34, pas pour une seule.
+//   · Sans offre choisie, 164 lignes triées par seule date (`reads.ts`)
+//     ressemblaient à un tas — la même offre revenait toutes les cinq lignes.
+//     Le tri par défaut passe par l'offre en premier (33 offres + 1 bucket
+//     « Candidature spontanée » contigus à l'écran), la date en second.
 
 import Link from "next/link";
 import { ArrowRight, Download, Gauge } from "lucide-react";
@@ -16,12 +32,13 @@ import {
   AdminEmptyState,
   AdminButton,
   AdminEtatBooleen,
-  AdminFilterTabs,
   AdminPagination,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
-import type { CandidatureUnifieeItem } from "@/features/admin-job-applications/actions";
-import type { SourceCandidatures } from "@/features/admin-job-applications/annonces-stats";
+import type {
+  JobApplicationListItem,
+  OffreAvecCandidatures,
+} from "@/features/admin-job-applications/reads";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import {
@@ -65,8 +82,6 @@ const OPTIONS_MOTIF = MOTIFS_REFUS_SAISISSABLES.map((m) => ({
   label: LIBELLE_MOTIF_REFUS[m],
 }));
 
-export type CandidaturesView = "all" | "monteur" | "memo" | "standard";
-
 /**
  * Ce qu'on affiche à la place d'une identité que le rôle courant n'a pas le
  * droit d'ouvrir. Un tiret cadratin, pas une chaîne vide : une cellule vide se
@@ -74,69 +89,20 @@ export type CandidaturesView = "all" | "monteur" | "memo" | "standard";
  */
 const MASQUE = "—";
 
-// 🔴 Ces deux tables étaient tenues À LA MAIN ici, et une troisième copie vivait
-// dans le formulaire de la fiche. Elles ne connaissaient que six statuts ; la
-// base en porte neuf depuis le lot 3. Un dossier « en entretien » se serait
-// affiché « interview » en pastille grise — le libellé brut de l'enum, et le
-// ton du défaut. Elles dérivent désormais de `@/content/recrutement/statuts`,
-// où le type refuse une table incomplète.
 const STATUS_LABELS: Record<string, string> = LIBELLE_STATUT;
 const STATUS_TONE: Record<string, "success" | "warning" | "neutral" | "info" | "destructive"> =
   TON_STATUT;
 
-// Statuts des candidatures commerciales (enum SubmissionStatus — la table
-// Submission porte aussi les états pipeline de /planning/pipeline).
-const COMMERCIALE_STATUS_LABELS: Record<string, string> = {
-  new: "Nouvelle",
-  in_progress: "En cours",
-  processed: "Traitée",
-  archived: "Archivée",
-  qualifying: "Qualification",
-  negotiating: "Négociation",
-  converted: "Convertie",
-  lost: "Perdue",
-};
-const COMMERCIALE_STATUS_TONE: Record<string, "success" | "warning" | "neutral"> = {
-  new: "warning",
-  in_progress: "warning",
-  qualifying: "warning",
-  negotiating: "warning",
-  processed: "success",
-  converted: "success",
-  archived: "neutral",
-  lost: "neutral",
-};
-
-const TITLES: Record<CandidaturesView, string> = {
-  all: "Candidatures",
-  monteur: "Candidatures — Monteur vidéo",
-  // Libellé SOURCE-NEUTRE (2026-08-23). Il disait « Mémo Isère » alors que le
-  // filtre porte sur `subType = candidature-commerciale` — donc AUSSI sur les
-  // candidatures Le Bon Coin, et sur celles de toute future annonce. Un onglet
-  // qui nomme un canal en en agrégeant plusieurs fait chercher ailleurs des
-  // candidatures qui sont sous les yeux. La ventilation par provenance vit
-  // dans l'écran Ops → Provenance des annonces.
-  // La CLÉ `memo` reste inchangée : les liens `?view=memo` existants marchent.
-  memo: "Candidatures — Apporteurs d'affaires",
-  standard: "Candidatures emploi",
-};
-
 interface Props {
   adminPrefix: string;
   searchParams: Record<string, string | undefined>;
-  view: CandidaturesView;
   /**
-   * Canaux d'annonce réellement présents dans les données, avec leur volume —
-   * les sous-onglets de la vue apporteurs. Vide sur les autres vues.
-   *
-   * Dérivés des données et non d'une liste figée : un canal ajouté à
-   * `SOURCE_OPTIONS` apparaît tout seul dès sa première candidature, et aucun
-   * onglet ne propose un filtre qui ne renverrait rien.
+   * Les offres ayant au moins une candidature, avec leur volume — alimente le
+   * sélecteur. Indépendant de la page/du filtre courants : la liste proposée
+   * ne doit pas rétrécir quand on choisit une offre.
    */
-  sources?: ReadonlyArray<SourceCandidatures>;
-  /** Canal actif, ou `undefined` pour « toutes provenances ». */
-  activeSource?: string | undefined;
-  items: ReadonlyArray<CandidatureUnifieeItem>;
+  offres: ReadonlyArray<OffreAvecCandidatures>;
+  items: ReadonlyArray<JobApplicationListItem>;
   total: number;
   page: number;
   totalPages: number;
@@ -152,9 +118,7 @@ interface Props {
 export function ApplicationsV2({
   adminPrefix,
   searchParams: sp,
-  view,
-  sources = [],
-  activeSource,
+  offres,
   items,
   total,
   page,
@@ -163,44 +127,39 @@ export function ApplicationsV2({
 }: Props): React.ReactElement {
   const offerId = sp["offerId"];
   const baseHref = `/fr/${adminPrefix}/contacts/candidatures`;
-  const viewQuery = view === "all" ? "" : `?view=${view}`;
-  // Le filtre statut n'a de sens que sur une vue mono-table : les vues
-  // fusionnée (Toutes) et commerciale (Apporteurs d’affaires) mélangent deux enums de
-  // statut différents — on n'y garde que « À traiter ».
-  const showStatusFilter = view === "monteur" || view === "standard" || Boolean(offerId);
+  const offreActive = offerId ? offres.find((o) => o.id === offerId) : undefined;
+  const totalOffres = offres.reduce((n, o) => n + o.count, 0);
 
   // Dérivée des paramètres RÉELLEMENT en vigueur, pas recopiée à la main : une
   // seconde liste de clés divergerait au premier filtre ajouté, et l'export
   // sortirait un périmètre différent de l'écran sans qu'on le voie.
+  //
+  // 🔑 `view=all` est FIXE, et non dérivé d'une prop : cet écran n'affiche
+  // plus que des candidatures emploi, toutes offres comprises — c'est
+  // exactement ce que l'export doit refléter, mot pour mot.
   const exportQuery = new URLSearchParams(
     Object.entries({
-      view: view === "all" ? "" : view,
+      view: "all",
       offerId: offerId ?? "",
-      status: showStatusFilter ? (sp["status"] ?? "") : "",
+      status: sp["status"] ?? "",
       attention: sp["attention"] ?? "",
       q: sp["q"] ?? "",
     }).filter(([, v]) => v !== "" && v !== "all"),
   ).toString();
 
-  // 🔴 La case n'apparaît QUE sur les lignes « emploi ». Les candidatures
-  //    commerciales viennent de `Submission` : leur enum de statut est un AUTRE
-  //    enum, et leur appliquer `JobApplicationStatus` écrirait une valeur que
-  //    leur écran ne sait pas afficher. Une case grisée dirait « pas ici » ;
-  //    une case absente dit la même chose sans inviter à essayer.
-  const columns: ReadonlyArray<AdminTableColumn<CandidatureUnifieeItem>> = [
+  const columns: ReadonlyArray<AdminTableColumn<JobApplicationListItem>> = [
     {
       key: "select",
       header: "",
-      cell: (a) =>
-        a.source === "emploi" ? (
-          <input
-            type="checkbox"
-            name="ids"
-            value={a.id}
-            className="admin-checkbox"
-            aria-label={`Sélectionner la candidature de ${a.contactName ?? "candidat"}`}
-          />
-        ) : null,
+      cell: (a) => (
+        <input
+          type="checkbox"
+          name="ids"
+          value={a.id}
+          className="admin-checkbox"
+          aria-label={`Sélectionner la candidature de ${a.contactName ?? "candidat"}`}
+        />
+      ),
     },
     { key: "date", header: "Date", cell: (a) => formatDateFrShort(a.submittedAt) },
     {
@@ -214,35 +173,28 @@ export function ApplicationsV2({
       ),
     },
     { key: "email", header: "Email", cell: (a) => a.contactEmail ?? MASQUE },
-    { key: "offer", header: "Offre", cell: (a) => a.offerLabel },
+    { key: "offer", header: "Offre", cell: (a) => a.offerTitleSnap },
     {
       key: "cv",
       header: "CV",
-      cell: (a) =>
-        a.hasCv === null ? (
-          "—"
-        ) : (
-          <AdminEtatBooleen actif={a.hasCv} libelles={{ vrai: "CV joint", faux: "Sans CV" }} />
-        ),
+      cell: (a) => (
+        <AdminEtatBooleen actif={a.hasCv} libelles={{ vrai: "CV joint", faux: "Sans CV" }} />
+      ),
     },
     {
       key: "status",
       header: "Statut",
-      cell: (a) => {
-        const labels = a.source === "commerciale" ? COMMERCIALE_STATUS_LABELS : STATUS_LABELS;
-        const tones = a.source === "commerciale" ? COMMERCIALE_STATUS_TONE : STATUS_TONE;
-        return (
-          <AdminBadge tone={tones[a.status] ?? "neutral"}>
-            {labels[a.status] ?? a.status}
-          </AdminBadge>
-        );
-      },
+      cell: (a) => (
+        <AdminBadge tone={STATUS_TONE[a.status] ?? "neutral"}>
+          {STATUS_LABELS[a.status] ?? a.status}
+        </AdminBadge>
+      ),
     },
   ];
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title={TITLES[view]}
+        title={offreActive ? `Candidatures — ${offreActive.label}` : "Candidatures"}
         description={`${total} candidature${total > 1 ? "s" : ""} · page ${page}/${totalPages}`}
         actions={
           <div className="flex items-center gap-[var(--space-admin-3)]">
@@ -263,68 +215,51 @@ export function ApplicationsV2({
         }
       />
 
-      <AdminFilterTabs
-        className="mb-[var(--space-admin-5)]"
-        current={view}
-        options={[
-          { value: "all", label: "Toutes", href: baseHref },
-          { value: "monteur", label: "Monteur vidéo", href: `${baseHref}?view=monteur` },
-          { value: "memo", label: "Apporteurs d'affaires", href: `${baseHref}?view=memo` },
-        ]}
-      />
-
-      {/* Sous-onglets par canal d'annonce — uniquement sous « Apporteurs
-          d'affaires », et uniquement s'il y a plus d'un canal. Avec une seule
-          provenance, un sous-onglet « Toutes » face à un unique canal ne
-          propose aucun choix : il n'ajoute qu'une ligne à lire.
-
-          Le compteur est porté par le libellé : sans lui, on clique un onglet
-          pour découvrir qu'il est vide, ce qui est exactement l'information
-          qu'un onglet devrait donner avant le clic. */}
-      {view === "memo" && sources.length > 1 ? (
-        <AdminFilterTabs
-          className="mb-[var(--space-admin-5)]"
-          current={activeSource ?? "__toutes__"}
-          options={[
-            {
-              value: "__toutes__",
-              label: `Toutes provenances (${sources.reduce((n, s) => n + s.count, 0)})`,
-              href: `${baseHref}?view=memo`,
-            },
-            ...sources.map((s) => ({
-              value: s.id,
-              label: `${s.label} (${s.count})`,
-              href: `${baseHref}?view=memo&source=${encodeURIComponent(s.id)}`,
-            })),
-          ]}
-        />
-      ) : null}
-
       <AdminCard className="mb-[var(--space-admin-5)]">
         <form className="admin-filters">
-          {offerId ? <input type="hidden" name="offerId" value={offerId} /> : null}
-          {view !== "all" ? <input type="hidden" name="view" value={view} /> : null}
           <div className="admin-filters-grid">
-            {showStatusFilter ? (
-              <div className="admin-field">
-                <label htmlFor="status" className="admin-label">
-                  Statut
-                </label>
-                <select
-                  id="status"
-                  name="status"
-                  defaultValue={sp["status"] ?? "all"}
-                  className="admin-input"
-                >
-                  <option value="all">Tous</option>
-                  {Object.entries(STATUS_LABELS).map(([k, v]) => (
-                    <option key={k} value={k}>
-                      {v}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            ) : null}
+            <div className="admin-field">
+              <label htmlFor="offerId" className="admin-label">
+                Offre
+              </label>
+              {/* 🔴 REMPLACE l'onglet « Monteur vidéo » (une offre sur 34).
+                  « Qui a postulé à Rédacteur web ? » est la question que cet
+                  écran doit savoir répondre pour CHACUNE des 34, pas pour une
+                  seule figée au code. Alimenté par les offres qui ont
+                  RÉELLEMENT des candidatures (`getOffresAvecCandidatures`) :
+                  aucune option qui rendrait zéro ligne. */}
+              <select
+                id="offerId"
+                name="offerId"
+                defaultValue={offerId ?? ""}
+                className="admin-input"
+              >
+                <option value="">Toutes les offres ({totalOffres})</option>
+                {offres.map((o) => (
+                  <option key={o.id} value={o.id}>
+                    {o.label} ({o.count})
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="admin-field">
+              <label htmlFor="status" className="admin-label">
+                Statut
+              </label>
+              <select
+                id="status"
+                name="status"
+                defaultValue={sp["status"] ?? "all"}
+                className="admin-input"
+              >
+                <option value="all">Tous</option>
+                {Object.entries(STATUS_LABELS).map(([k, v]) => (
+                  <option key={k} value={k}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+            </div>
             <div className="admin-field">
               <label htmlFor="q" className="admin-label">
                 Nom ou adresse
@@ -360,12 +295,19 @@ export function ApplicationsV2({
             <button type="submit" className="admin-button-ghost">
               Appliquer
             </button>
-            <Link href={`${baseHref}${viewQuery}`} className="admin-button-secondary">
+            <Link href={baseHref} className="admin-button-secondary">
               Réinitialiser
             </Link>
           </div>
         </form>
       </AdminCard>
+
+      {!offerId && !sp["q"] ? (
+        <p className="admin-meta-small mb-[var(--space-admin-4)]">
+          Triée par offre — {offres.length} offre{offres.length > 1 ? "s" : ""} concernée
+          {offres.length > 1 ? "s" : ""}.
+        </p>
+      ) : null}
 
       {balayageTronque ? (
         <p className="admin-alert admin-alert-warning mb-[var(--space-admin-4)]" role="status">
@@ -391,11 +333,7 @@ export function ApplicationsV2({
             caption="Liste des candidatures"
             rowAction={(a) => (
               <AdminButton
-                href={
-                  a.source === "commerciale"
-                    ? `/fr/${adminPrefix}/contacts/commercial/${a.id}`
-                    : `/fr/${adminPrefix}/contacts/candidatures/${a.id}`
-                }
+                href={`/fr/${adminPrefix}/contacts/candidatures/${a.id}`}
                 variant="ghost"
                 size="sm"
                 iconAfter={ArrowRight}
@@ -417,10 +355,9 @@ export function ApplicationsV2({
         totalPages={totalPages}
         baseHref={baseHref}
         preservedParams={{
-          status: showStatusFilter ? sp["status"] : undefined,
+          status: sp["status"],
           offerId: sp["offerId"],
           attention: sp["attention"],
-          view: view === "all" ? undefined : view,
           // Sans lui, passer à la page 2 d'une recherche repartait de la liste
           // complète — la page 2 ne parlait plus du même ensemble que la page 1.
           q: sp["q"],
