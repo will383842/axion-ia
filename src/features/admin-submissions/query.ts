@@ -84,6 +84,16 @@ export const listSubmissionsSchema = z.object({
   /** ISO date YYYY-MM-DD inclusif. */
   dateFrom: z.string().optional(),
   dateTo: z.string().optional(),
+  /**
+   * Ordre de la liste. Liste FERMÉE, comme `perimetre` et pour la même raison :
+   * `listSubmissionsAction` est un point d'entrée réseau, et une clause libre y
+   * serait une lecture arbitraire offerte à qui appelle l'action.
+   *
+   * Le défaut `recent` ne change rien nulle part — seule la vue « À traiter »
+   * demande `ancien`, parce qu'une liste de choses à faire se lit par le haut
+   * et que le plus vieux message est celui qui a le plus attendu.
+   */
+  tri: z.enum(["recent", "ancien"]).default("recent"),
   page: z.coerce.number().int().min(1).default(1),
   pageSize: z.coerce.number().int().min(10).max(100).default(25),
   /**

@@ -174,7 +174,10 @@ describe("buildAdminNav SSOT", () => {
     // pas encore ». Retirées ENSEMBLE avec leurs routes et leur composant :
     // en garder une partie aurait gardé l'arbitraire que le +4 du 2026-09-06
     // venait de supprimer. = 162.
-    expect(items.length).toBe(162);
+    // +1 (2026-09-23, « À traiter ») : la boîte triait par PROVENANCE et ne
+    // disait nulle part ce qui attendait une réponse. C'est la question du
+    // matin ; elle méritait la deuxième place, juste après « Tout ». = 163.
+    expect(items.length).toBe(163);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
@@ -341,11 +344,19 @@ describe("buildAdminNav SSOT", () => {
     // au nombre de 4 (+ Messages), et tout ce qui est indenté est une catégorie.
     // Le titre disait « 5 canaux » depuis que « Podcast » était passé sous
     // Messages : la liste en vérifie 4, c'est elle qui fait foi.
-    it("expose 4 canaux racine, un par type d'entrée réel", () => {
+    // 2026-09-23 : SIX racines, et deux nouveautés que l'ordre raconte.
+    //   • « À traiter » vient en DEUXIÈME, juste après « Tout » : c'est la
+    //     question du matin, et elle passe avant la provenance.
+    //   • « Apporteurs » n'est plus indentée sous « Messages ». Un apporteur
+    //     n'est pas une catégorie de courrier : c'est un pipeline, comme les
+    //     candidatures, à côté desquelles il est désormais rangé.
+    it("expose 6 canaux racine, un par type d'entrée réel", () => {
       expect(visible.filter((it) => it.navLevel == null).map((it) => it.href)).toEqual([
         "/fr/p/contacts",
+        "/fr/p/contacts/a-traiter",
         "/fr/p/contacts/appels",
         "/fr/p/contacts/messages",
+        "/fr/p/contacts/commercial",
         "/fr/p/contacts/candidatures",
       ]);
     });
@@ -369,10 +380,8 @@ describe("buildAdminNav SSOT", () => {
         "Partenariats",
         "Investisseurs",
         "Conférences",
-        "Apporteurs",
-        // « Nouveau contact apporteur » n'est plus une entrée (2026-09-19) :
-        // c'est le bouton « Ajouter » de la liste Apporteurs. Un geste n'est
-        // pas une catégorie de Messages.
+        // « Apporteurs » a quitté cette liste le 2026-09-23 : voir le test des
+        // canaux racine. Ce n'était pas une catégorie de courrier.
         "Podcast",
         "Autres",
         "Suivi des candidatures emploi",
@@ -422,13 +431,22 @@ describe("buildAdminNav SSOT", () => {
         "/fr/p/contacts/presse",
         "/fr/p/contacts/partenariats",
         "/fr/p/contacts/investisseurs",
-        "/fr/p/contacts/commercial",
       ]) {
         const hit = items.find((it) => it.href === href);
         expect(hit, href).toBeDefined();
         expect(hit?.navLevel, href).toBe(2);
         expect(hit?.parent, href).toBeUndefined();
       }
+
+      // 🔑 `/contacts/commercial` a quitté le niveau 2 le 2026-09-23, mais son
+      //    URL reste dans la nav — et c'est toute l'intention de cette garde.
+      //    La palette ⌘K se construit sur `buildAdminNav` : une entrée retirée
+      //    du menu disparaît AUSSI de la recherche, et la route ne serait plus
+      //    joignable qu'en tapant l'adresse. Indenter ou désindenter, oui ;
+      //    faire disparaître, non.
+      const apporteurs = items.find((it) => it.href === "/fr/p/contacts/commercial");
+      expect(apporteurs).toBeDefined();
+      expect(apporteurs?.navLevel).toBeUndefined();
     });
 
     // « Tout » est un préfixe de tous les autres : sans priorité au préfixe le

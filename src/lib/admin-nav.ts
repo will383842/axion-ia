@@ -494,6 +494,18 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Inbox",
       group: "contacts",
     },
+    // 🔑 « À TRAITER » EN TÊTE, PARCE QUE C'EST LA QUESTION DU MATIN.
+    //    La boîte se lisait par PROVENANCE — presse, partenariats,
+    //    investisseurs… — et rien ne disait ce qui attendait une réponse. Une
+    //    boîte de réception se lit par ce qui reste à faire, pas par l'origine
+    //    de ce qui est arrivé. La vue force trois critères : sans réponse, ni
+    //    traité ni archivé, le plus ANCIEN en tête (celui qui a le plus attendu).
+    {
+      href: `${base}/contacts/a-traiter`,
+      label: "À traiter",
+      icon: "ListOrdered",
+      group: "contacts",
+    },
     {
       href: `${base}/contacts/appels`,
       label: "Appels réservés",
@@ -551,21 +563,6 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "contacts",
       navLevel: 2,
     },
-    // « Apporteurs » (2026-09-19, ex-« Recrutement ») : la liste ne contient
-    // plus que les apporteurs d'affaires — les messages /contact « je cherche
-    // un poste » vont dans « Autres ». Le libellé dit enfin ce qu'on y trouve ;
-    // l'URL ne bouge pas.
-    //
-    // La saisie manuelle d'un apporteur n'est plus une entrée de menu : c'est
-    // le bouton « Ajouter » de cette liste. Un geste n'est pas une catégorie de
-    // Messages, et la garde réciproque range sa route parmi les sous-écrans.
-    {
-      href: `${base}/contacts/commercial`,
-      label: "Apporteurs",
-      icon: "UserSearch",
-      group: "contacts",
-      navLevel: 2,
-    },
     // Demandes de tournage podcast (2026-07-21) — lead entrant de la page
     // publique /podcast + du QR du flyer papier. Route hors `/contacts/*` (le
     // layout Contacts impose son propre AdminPageShell), d'où le `navLevel`
@@ -583,6 +580,30 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "MessagesSquare",
       group: "contacts",
       navLevel: 2,
+    },
+    // 🔴 2026-09-23 — « APPORTEURS » N'EST PAS UNE CATÉGORIE DE COURRIER.
+    //    Elle était indentée sous « Messages », entre « Conférences » et
+    //    « Podcast », comme si recevoir la candidature d'un apporteur était de
+    //    même nature que recevoir un communiqué. C'est un PIPELINE — candidature,
+    //    kit, invitation, échange, contrat — avec ses étapes et ses relances. Sa
+    //    place est à côté de « Candidatures », l'autre pipeline.
+    //
+    //    Mesure qui a déclenché le déplacement (production, 2026-09-23) : 12 des
+    //    18 lignes actives de « Messages » étaient des apporteurs. Les deux tiers
+    //    d'une boîte de réception occupés par une file qui se pilote ailleurs.
+    // « Apporteurs » (2026-09-19, ex-« Recrutement ») : la liste ne contient
+    // plus que les apporteurs d'affaires — les messages /contact « je cherche
+    // un poste » vont dans « Autres ». Le libellé dit enfin ce qu'on y trouve ;
+    // l'URL ne bouge pas.
+    //
+    // La saisie manuelle d'un apporteur n'est plus une entrée de menu : c'est
+    // le bouton « Ajouter » de cette liste. Un geste n'est pas une catégorie de
+    // Messages, et la garde réciproque range sa route parmi les sous-écrans.
+    {
+      href: `${base}/contacts/commercial`,
+      label: "Apporteurs",
+      icon: "UserSearch",
+      group: "contacts",
     },
     // Candidatures aux offres publiées (JobApplication : CV/photo, workflow RH).
     {
