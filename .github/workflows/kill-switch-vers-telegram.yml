@@ -105,16 +105,36 @@ jobs:
           maintenant="$(date +%s)"
           nl=$'\n'
 
+          # 🔴 « ENVOYÉ » N'EST PAS « ARRIVÉ ». Le workflow d'uptime dont ce
+          # fichier s'inspire termine son envoi par `|| true` et jette la réponse :
+          # un jeton révoqué, un identifiant de discussion erroné ou un bot expulsé
+          # du salon passeraient en silence, et la première fois qu'on s'en
+          # apercevrait serait le jour où l'alerte compte. C'est le motif exact qui
+          # a coûté onze minutes de production le 22/09 — un code de retour pris
+          # pour une mesure.
+          #
+          # 🔑 L'API Telegram rend `{"ok":true,…}`. On le LIT. Un envoi refusé se
+          # dit bruyamment ; il ne fait pas tomber la surveillance elle-même, qui
+          # doit continuer à tourner, mais il laisse une erreur visible dans le run.
           envoyer() {
-            if [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; then
-              curl -sX POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-                -d "chat_id=${TELEGRAM_CHAT_ID}" \
-                --data-urlencode "text=$1" \
-                -d "parse_mode=Markdown" \
-                -d "disable_web_page_preview=true" > /dev/null || true
-            else
-              echo "::warning::Secrets Telegram absents — alerte non envoyée."
+            if [ -z "${TELEGRAM_BOT_TOKEN:-}" ] || [ -z "${TELEGRAM_CHAT_ID:-}" ]; then
+              echo "::error::Secrets Telegram absents — alerte NON envoyée. La surveillance est aveugle."
+              return 1
             fi
+            reponse="$(curl -sS -m 25 -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+              -d "chat_id=${TELEGRAM_CHAT_ID}" \
+              --data-urlencode "text=$1" \
+              -d "parse_mode=Markdown" \
+              -d "disable_web_page_preview=true" 2>/dev/null || echo '')"
+            if printf '%s' "${reponse}" | grep -q '"ok":true'; then
+              echo "Telegram : message accepté par l'API."
+              return 0
+            fi
+            # Le corps d'erreur de Telegram ne contient jamais le jeton — il est
+            # dans l'URL, pas dans la réponse. On peut donc le montrer tel quel.
+            echo "::error::Telegram a REFUSÉ le message. Réponse : $(printf '%s' "${reponse}" | head -c 300)"
+            echo "::error::L'alerte n'est pas parvenue. Vérifier TELEGRAM_BOT_TOKEN et TELEGRAM_CHAT_ID."
+            return 1
           }
 
           # 🔑 UNE ALERTE QU'ON N'A JAMAIS VUE PARTIR EST UNE ALERTE DONT ON
@@ -123,9 +143,12 @@ jobs:
           # découvrir qu'un jeton a expiré. Ce mode d'essai le parcourt à la
           # demande, sans rien lire en base et sans toucher à l'état.
           if [ "${ESSAI:-non}" = "oui" ]; then
-            envoyer "*[🧪 ESSAI]* La surveillance de l'interrupteur d'arrêt est en place. Si vous lisez ceci, le chemin d'alerte fonctionne. Aucun incident en cours."
-            echo "Message d'essai envoyé. Rien n'a été lu ni modifié."
-            exit 0
+            if envoyer "*[🧪 ESSAI]* La surveillance de l'interrupteur d'arrêt est en place. Si vous lisez ceci, le chemin d'alerte fonctionne. Aucun incident en cours."; then
+              echo "Essai RÉUSSI : Telegram a accepté le message. Rien n'a été lu ni modifié."
+              exit 0
+            fi
+            echo "::error::Essai ÉCHOUÉ : le chemin d'alerte ne fonctionne pas."
+            exit 1
           fi
 
           # 🔑 LECTURE SEULE IMPOSÉE PAR LA SESSION, pas par la bonne volonté de
