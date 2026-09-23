@@ -59,6 +59,14 @@ describe("signature — e-mails qui ouvrent un dialogue", () => {
     }
   });
 
+  it("chaque signature porte le positionnement et la ligne de services", async () => {
+    for (const nom of [...SIGNE_FONDATEUR, ...SIGNE_EQUIPE]) {
+      const html = await rendre(nom);
+      expect(html, nom).toContain("de bout en bout");
+      expect(html, nom).toContain("Formation finançable OPCO");
+    }
+  });
+
   it("un reçu (famille A) ne porte aucune signature", async () => {
     const html = await rendre("payment-receipt");
     expect(html).not.toContain(ROLE_FONDATEUR);

@@ -718,7 +718,11 @@ const TXT = {
     referralCta: "Partager sur LinkedIn",
     signatureRole: EMAIL_SIGNATURE.roleFr,
     signatureEquipe: "L'équipe Axion-IA",
-    signatureEquipeRole: "Audit · Intégration · Automatisation · Formation IA",
+    /** Positionnement (Will, 2026-09-23) — même phrase que les signatures Zoho. */
+    signaturePositionnement:
+      "Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.",
+    signatureServices:
+      "Audit IA · Implémentation de systèmes automatisés · Formation finançable OPCO · Coaching 1-to-1",
     signatureRdv: "Prendre rendez-vous",
     signatureLinkedin: "LinkedIn",
     legalForm: EMAIL_LEGAL.legalFormFr,
@@ -752,7 +756,10 @@ const TXT = {
     referralCta: "Share on LinkedIn",
     signatureRole: EMAIL_SIGNATURE.roleEn,
     signatureEquipe: "The Axion-IA team",
-    signatureEquipeRole: "Audit · Integration · Automation · AI training",
+    signaturePositionnement:
+      "Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.",
+    signatureServices:
+      "AI audit · Automated systems implementation · OPCO-fundable training · 1-to-1 coaching",
     signatureRdv: "Book a call",
     signatureLinkedin: "LinkedIn",
     legalForm: EMAIL_LEGAL.legalFormEn,
@@ -961,9 +968,17 @@ export function EmailLayout({
                   {signatureEquipe ? t.signatureEquipe : EMAIL_SIGNATURE.fullName}
                 </span>
                 <br />
-                <span style={{ color: C.muted }}>
-                  {signatureEquipe ? t.signatureEquipeRole : t.signatureRole}
+                {!signatureEquipe && (
+                  <>
+                    <span style={{ color: C.muted }}>{t.signatureRole}</span>
+                    <br />
+                  </>
+                )}
+                <span style={{ color: C.muted, fontStyle: "italic" }}>
+                  {t.signaturePositionnement}
                 </span>
+                <br />
+                <span style={{ color: C.muted, fontSize: "13px" }}>{t.signatureServices}</span>
                 <br />
                 <Link
                   href={avecUtm(APPEL_URL, famille, "signature", campagne)}
