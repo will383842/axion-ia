@@ -215,7 +215,7 @@ jobs:
           echo "Mot de passe fabriqué : 64 caractères alphanumériques (masqué)."
 
       # ── 3. ÉCRITURE : Redis d'abord, puis les deux applications ─────────
-      - name: Écrire le mot de passe — dans la VARIABLE, et le relire
+      - name: Écrire le mot de passe dans la VARIABLE (une seule, vérifiée)
         env:
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
           COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
@@ -242,20 +242,25 @@ jobs:
             exit 1
           fi
 
-          # 🔑 ON RELIT, ET C'EST LE PREMIER ORACLE DIRECT DE TOUTE CETTE AFFAIRE.
-          # Le GET des variables rend leur valeur : on peut donc comparer ce qui
-          # est stocké à ce qu'on a envoyé. Un 200 ne prouve rien — quatre
-          # lancements l'ont démontré. Une relecture, si.
-          # On compare des EMPREINTES : la valeur ne s'imprime jamais, et un
-          # message d'erreur qui recopierait une requête SQL a déjà suffi une fois
-          # à exposer un mot de passe de production.
+          # 🔴 LA RELECTURE EST IMPOSSIBLE, ET C'EST MESURÉ (run 35788627369).
+          # Le GET des variables d'une base rend leurs CLÉS mais pas leurs
+          # VALEURS : le modèle masque les champs sensibles en sérialisation, et
+          # il faut un jeton portant `read:sensitive` pour les voir. Le nôtre ne
+          # l'a pas. `config_hash` ne sert pas davantage : il n'est recalculé
+          # qu'au DÉMARRAGE de la base (`isConfigurationChanged`), jamais à
+          # l'écriture d'une variable.
+          #
+          # 🔑 On vérifie donc ici ce qui est vérifiable — l'API a répondu 2xx et
+          # il existe EXACTEMENT une variable REDIS_PASSWORD — et la vraie preuve
+          # est reportée à l'étape suivante, où l'on redémarre Redis et où l'on
+          # S'AUTHENTIFIE auprès de lui.
+          #
+          # ⚠️ Un doublon serait pire qu'une absence : `StartRedis` parcourt les
+          # variables dans l'ordre et pourrait retenir l'ancienne.
           sleep 2
-          curl -sS -m 25 -o /tmp/envs.json             -H "Authorization: Bearer ${COOLIFY_API_TOKEN}"             "${COOLIFY_URL}/api/v1/databases/${REDIS_UUID}/envs"
-          # 🔴 COMPTER AVANT DE LIRE. Si le PATCH échoue et que le POST crée une
-          # SECONDE variable du même nom, `StartRedis` parcourt les variables dans
-          # l'ordre et peut très bien retenir l'ancienne — pendant qu'une lecture
-          # sur `[0]` affiche la nouvelle et déclare tout en ordre. Un doublon est
-          # ici plus dangereux qu'une absence.
+          curl -sS -m 25 -o /tmp/envs.json \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            "${COOLIFY_URL}/api/v1/databases/${REDIS_UUID}/envs"
           combien=$(jq '[.[] | select(.key == "REDIS_PASSWORD")] | length' /tmp/envs.json)
           if [ "$combien" != "1" ]; then
             echo "::error::$combien variable(s) REDIS_PASSWORD sur la ressource, il en faut exactement une."
@@ -263,22 +268,68 @@ jobs:
             echo "::error::de toucher aux applications — elles sont intactes."
             exit 1
           fi
-          stocke=$(jq -r '[.[] | select(.key == "REDIS_PASSWORD")][0].value // ""' /tmp/envs.json)
-          if [ -z "$stocke" ]; then
-            echo "::error::Relecture impossible : l'API ne rend pas la valeur de REDIS_PASSWORD."
-            echo "::error::Clés rendues : $(jq -r '[.[].key] | join(",")' /tmp/envs.json | head -c 300)"
-            echo "::error::Sans relecture on ne PROUVE pas l'écriture, et c'est exactement"
-            echo "::error::l'erreur qui a coûté onze minutes de production le 22/09. On s'arrête."
+          echo "REDIS_PASSWORD écrit (HTTP $code), une seule variable de ce nom."
+
+      - name: Accès SSH au serveur (pour PROUVER l'écriture)
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${HETZNER_SSH_KEY:-}" ]; then
+            echo "::error::HETZNER_SSH_KEY absent : on ne pourrait prouver l'écriture que par un"
+            echo "::error::code de retour, ce qui ne prouve rien. On s'arrête — applications intactes."
             exit 1
           fi
-          a=$(printf '%s' "$stocke" | sha256sum | cut -c1-12)
-          b=$(printf '%s' "$MDP" | sha256sum | cut -c1-12)
-          if [ "$a" != "$b" ]; then
-            echo "::error::La valeur stockée ($a) n'est pas celle envoyée ($b)."
-            echo "::error::L'API a répondu $code sans écrire. Rien d'autre n'a été modifié."
+          mkdir -p ~/.ssh
+          printf '%s\n' "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Redémarrer Redis et PROUVER qu'il a pris le nouveau mot de passe
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          REDIS_UUID: ${{ inputs.redis_uuid }}
+          MDP: ${{ steps.secret.outputs.mdp }}
+        run: |
+          set -euo pipefail
+          # 🔑 CETTE ÉTAPE EST SANS DANGER, ET C'EST LE POINT DE TOUTE LA
+          # RÉORGANISATION. On redémarre Redis AVANT de toucher aux applications :
+          #   • si l'écriture a pris, Redis repart sur le nouveau mot de passe et
+          #     les applications décrochent — le temps qu'on les redéploie, juste
+          #     après ;
+          #   • si l'écriture n'a PAS pris, Redis repart sur l'ANCIEN, les
+          #     applications ne s'aperçoivent de rien, et on s'arrête sans avoir
+          #     rien cassé.
+          # Le seul cas où l'on touche aux applications est donc celui où l'on a
+          # la PREUVE que Redis a changé.
+          echo "── Redémarrage de la base (Stop + Start : la variable est relue au démarrage)"
+          code=$(curl -sS -m 30 -o /tmp/r -w "%{http_code}" -X POST \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Accept: application/json" \
+            "${COOLIFY_URL}/api/v1/databases/${REDIS_UUID}/restart")
+          if [ "${code:0:1}" != "2" ]; then
+            echo "::error::Redémarrage refusé (HTTP $code) : $(head -c 300 /tmp/r)"
+            echo "::error::Les applications sont intactes."
             exit 1
           fi
-          echo "REDIS_PASSWORD écrit ET relu : empreintes identiques ($a)."
+          echo "restart → $code"
+
+          echo "── Preuve : on s'authentifie auprès de Redis avec le nouveau mot de passe"
+          for i in $(seq 1 24); do
+            sleep 10
+            pong=$(ssh -o BatchMode=yes -o ConnectTimeout=15 root@178.105.55.15 \
+              "docker exec ${REDIS_UUID} redis-cli --no-auth-warning -a '$MDP' ping" 2>&1 | tr -d '\r' | tail -1)
+            echo "  essai $i : $pong"
+            if [ "$pong" = "PONG" ]; then
+              echo "Redis a adopté le nouveau mot de passe. On peut tourner les applications."
+              exit 0
+            fi
+          done
+          echo "::error::Après quatre minutes, Redis n'accepte toujours pas le nouveau mot de passe."
+          echo "::error::L'écriture de la variable n'a donc pas pris — l'API avait pourtant répondu 2xx."
+          echo "::error::Redis tourne sur son ANCIENNE valeur et les applications fonctionnent :"
+          echo "::error::rien n'est cassé, rien n'a été modifié de leur côté."
+          exit 1
 
       - name: Écrire REDIS_URL dans le SITE et le WORKER
         env:
@@ -327,7 +378,7 @@ jobs:
           fi
 
       # ── 4. APPLIQUER, puis MESURER ──────────────────────────────────────
-      - name: Redémarrer Redis et redéployer les deux applications
+      - name: Redéployer les deux applications
         id: appliquer
         env:
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
@@ -346,18 +397,6 @@ jobs:
           # depuis le 28/08 le commentaire « /api/v1/deploy est passé de GET à
           # POST … répond 405 sur un GET ». On copie donc l'appel qui marche, et
           # surtout : **plus un seul `|| true` sur un appel qui modifie**.
-          echo "── Redis (Stop + Start : le mot de passe stocké est relu au démarrage)"
-          code=$(curl -sS -m 30 -o /tmp/r -w "%{http_code}" -X POST             -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Accept: application/json"             "${COOLIFY_URL}/api/v1/databases/${REDIS_UUID}/restart")
-          if [ "${code:0:1}" != "2" ]; then
-            echo "::error::Redémarrage de Redis refusé (HTTP $code) : $(head -c 300 /tmp/r)"
-            echo "::error::Le mot de passe stocké et les URL des applications ont changé,"
-            echo "::error::mais RIEN n'a redémarré. Le service tourne encore sur l'ancien"
-            echo "::error::mot de passe : tout fonctionne, et le prochain déploiement casserait."
-            echo "::error::Relancer ce workflow dès que la cause du refus est levée."
-            exit 1
-          fi
-          echo "restart Redis → $code"
-
           echo "── Applications (deploy, PAS restart : Restart ne recharge pas les variables)"
           # 🔑 La fonction n'écrit PAS son résultat sur la sortie standard, et
           # personne ne la met dans un tuyau : `x=$(f | tail -1)` rend le code de
@@ -382,67 +421,63 @@ jobs:
           echo "du_site=$(cat /tmp/du_site)" >> "$GITHUB_OUTPUT"
           echo "du_worker=$(cat /tmp/du_worker)" >> "$GITHUB_OUTPUT"
 
-      - name: Vérifier — et échouer FORT si Redis ne répond pas
+      - name: Vérifier — les DEUX conteneurs portent la valeur, puis healthz
         env:
-          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
-          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
-          DU_SITE: ${{ steps.appliquer.outputs.du_site }}
-          DU_WORKER: ${{ steps.appliquer.outputs.du_worker }}
           REDIS_UUID: ${{ inputs.redis_uuid }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+          MDP: ${{ steps.secret.outputs.mdp }}
         run: |
           set -euo pipefail
-          # 🔴 LA VÉRIFICATION PRÉCÉDENTE ACCEPTAIT UN « ok » IMMÉDIAT. Elle
-          # sondait `healthz` quinze secondes après avoir demandé les
-          # redémarrages, et repartait au premier vert — c'est-à-dire sur les
-          # conteneurs d'AVANT, qui n'avaient évidemment aucune raison d'être en
-          # panne. Une mesure prise avant le changement ne mesure pas le
-          # changement.
+          # 🔴 ON NE SUIT PLUS LA COMPTABILITÉ DES DÉPLOIEMENTS (run 35788924673).
+          # `GET /api/v1/deployments/{uuid}` rend un objet où le PREMIER champ
+          # « status » est celui de l'APPLICATION (« running:healthy »), pas celui
+          # du déploiement. La garde attendait « finished », ne l'a jamais vu, et
+          # a déclaré un échec alors que la rotation était parfaitement réussie —
+          # un faux négatif de plus, pour avoir lu à côté.
           #
-          # 🔑 On attend donc que les DÉPLOIEMENTS soient terminés, puis on sonde.
-          # À ce moment-là `healthz` devient un oracle honnête, et ce n'est pas
-          # un hasard : les trois côtés dépendent l'un de l'autre. Si Redis a
-          # redémarré sans les applications, elles présentent l'ancien mot de
-          # passe et c'est rouge ; si les applications ont redémarré sans Redis,
-          # elles présentent le nouveau et c'est rouge aussi. Un vert n'est
-          # possible que si les trois portent la même valeur.
-          attendre_deploiement() {
-            du="$1"; nom="$2"
-            for i in $(seq 1 60); do
-              etat=$(curl -sS -m 20 -H "Authorization: Bearer ${COOLIFY_API_TOKEN}"                 "${COOLIFY_URL}/api/v1/deployments/${du}" | grep -oE '"status":"[^"]+"' | head -1 | cut -d'"' -f4 || true)
-              case "${etat:-inconnu}" in
-                finished) echo "$nom : déploiement terminé"; return 0 ;;
-                failed|cancelled-by-user)
-                  echo "::error::$nom : déploiement $etat."; return 1 ;;
-                *) echo "  $nom : $etat…" ;;
-              esac
-              sleep 15
-            done
-            echo "::error::$nom : déploiement toujours pas terminé après 15 minutes."
-            return 1
-          }
-          attendre_deploiement "$DU_SITE" "site"
-          attendre_deploiement "$DU_WORKER" "worker"
+          # 🔑 On mesure l'EFFET, sur le serveur : les deux conteneurs doivent
+          # porter le nouveau mot de passe. C'est ce qu'on veut savoir, et cela ne
+          # dépend d'aucun vocabulaire d'API.
+          # 🔴 `tr -d '\n'` CÔTÉ SERVEUR, ET CE N'EST PAS UN DÉTAIL. `printenv`
+          # rend la valeur SUIVIE d'un retour à la ligne ; `sha256sum` le prend
+          # dans son calcul. Sans ce `tr`, l'empreinte distante ne coïncide
+          # JAMAIS avec celle d'ici (calculée par `printf '%s'`, sans saut de
+          # ligne) : la garde échouerait à tous les coups, sur une rotation
+          # parfaitement réussie. Vérifié à la main dans les deux sens le 22/09 —
+          # f9f3124ad5cf avec le saut de ligne, bcde250ea2b9 sans.
+          attendu=$(printf '%s' "$MDP" | sha256sum | cut -c1-12)
+          echo "Empreinte attendue : $attendu"
+          ok=0
+          for i in $(seq 1 60); do
+            rapport=$(ssh -o BatchMode=yes -o ConnectTimeout=15 root@178.105.55.15 \
+              "for p in ${COOLIFY_APP_UUID} ${COOLIFY_WORKER_APP_UUID}; do c=\$(docker ps --format '{{.Names}}' | grep \"^\$p\" | head -1); if [ -z \"\$c\" ]; then echo absent; else docker exec \$c printenv REDIS_URL 2>/dev/null | sed -E 's#^redis://[^:]*:([^@]*)@.*#\1#' | tr -d '\n' | sha256sum | cut -c1-12; fi; done" 2>/dev/null | tr -d '\r' || true)
+            site=$(printf '%s\n' "$rapport" | sed -n '1p')
+            worker=$(printf '%s\n' "$rapport" | sed -n '2p')
+            echo "  essai $i : site=$site worker=$worker"
+            if [ "$site" = "$attendu" ] && [ "$worker" = "$attendu" ]; then ok=1; break; fi
+            sleep 15
+          done
+          if [ "$ok" != "1" ]; then
+            echo "::error::Après quinze minutes, les conteneurs ne portent pas tous les deux le"
+            echo "::error::nouveau mot de passe. Redis, lui, l'a adopté : les e-mails et les crons"
+            echo "::error::sont ARRÊTÉS du côté qui n'a pas suivi."
+            echo "::error::Relancer ce workflow — il converge depuis n'importe quel état."
+            exit 1
+          fi
+          echo "Les deux conteneurs portent la nouvelle valeur."
 
-          echo "Trois mesures de santé consécutives, espacées de 20 s."
           verts=0
           for i in $(seq 1 30); do
-            sante=$(curl -sS -m 15 https://axion-ia.com/api/healthz || echo '{}')
-            etat=$(echo "$sante" | jq -r '.redis // "injoignable"')
-            echo "  essai $i : redis=$etat"
+            etat=$(curl -sS -m 15 https://axion-ia.com/api/healthz | jq -r '.redis // "injoignable"' || echo injoignable)
+            echo "  santé $i : redis=$etat"
             if [ "$etat" = "ok" ]; then verts=$((verts+1)); else verts=0; fi
             if [ "$verts" -ge 3 ]; then
-              echo "✅ Rotation terminée. Redis et les deux applications portent le nouveau mot de passe."
+              echo "Rotation terminée : Redis et les deux applications portent le nouveau mot de passe."
               exit 0
             fi
             sleep 20
           done
-          echo "::error::L'application ne joint pas Redis de façon stable après les redéploiements."
-          echo "::error::Les e-mails et les crons sont ARRÊTÉS. À faire, dans cet ordre :"
-          echo "::error::  1. Coolify → application site ET worker → vérifier que REDIS_URL est identique"
-          echo "::error::     dans les deux, et que son hôte est bien ${REDIS_UUID} ;"
-          echo "::error::  2. Coolify → base Redis → relancer un Restart ;"
-          echo "::error::  3. redéployer les DEUX applications (deploy, jamais restart) ;"
-          echo "::error::  4. le plus simple : RELANCER CE WORKFLOW. Il refabrique un mot de passe"
-          echo "::error::     et le réécrit aux trois endroits — il converge depuis n'importe quel"
-          echo "::error::     état incohérent, y compris celui-ci."
+          echo "::error::Les conteneurs portent la bonne valeur mais healthz ne se stabilise pas."
+          echo "::error::Regarder les journaux des deux applications."
           exit 1
