@@ -374,16 +374,12 @@ describe("buildAdminNav SSOT", () => {
     // paraîtrait appartenir aux candidatures.
     it("chaque entrée indentée est rendue sous LE canal auquel elle appartient", () => {
       const enfants = visible.filter((it) => it.navLevel === 2);
+      // 2026-09-23 : les SEPT catégories de Messages sont masquées par `parent`
+      // — mesuré en production, six ne contenaient rien et « Autres » montrait
+      // exactement ce que montre « Messages ». Elles restent dans ⌘K et
+      // joignables par URL (test « URLs historiques » ci-dessous). Ne restent
+      // indentées que les deux entrées de Candidatures.
       expect(enfants.map((it) => it.label)).toEqual([
-        "Demandes clients",
-        "Presse",
-        "Partenariats",
-        "Investisseurs",
-        "Conférences",
-        // « Apporteurs » a quitté cette liste le 2026-09-23 : voir le test des
-        // canaux racine. Ce n'était pas une catégorie de courrier.
-        "Podcast",
-        "Autres",
         "Suivi des candidatures emploi",
         // Les offres qu'on publie sont l'autre moitié des candidatures qu'on
         // reçoit : rangées sous elles, plus dans « Contenu ».
@@ -398,11 +394,7 @@ describe("buildAdminNav SSOT", () => {
       const canalDe = (enfant: (typeof visible)[number]) =>
         racines.filter(({ index }) => index < visible.indexOf(enfant)).at(-1)?.it.href;
 
-      const sousCandidatures = ["Suivi des candidatures emploi", "Offres d'emploi"];
-      for (const enfant of enfants.filter((it) => !sousCandidatures.includes(it.label))) {
-        expect(canalDe(enfant), enfant.label).toBe("/fr/p/contacts/messages");
-      }
-      for (const enfant of enfants.filter((it) => sousCandidatures.includes(it.label))) {
+      for (const enfant of enfants) {
         expect(canalDe(enfant), enfant.label).toBe("/fr/p/contacts/candidatures");
       }
     });
@@ -425,17 +417,26 @@ describe("buildAdminNav SSOT", () => {
     // Les URLs des vues filtrées n'ont PAS bougé en revenant dans la sidebar :
     // ⌘K, les favoris et les liens externes déjà posés restent valides. C'est
     // tout l'intérêt de `navLevel` — indenter sans déplacer.
+    // 🔑 L'INTENTION DE CETTE GARDE N'A PAS CHANGÉ : ces URLs restent valides,
+    //    pour ⌘K, les favoris et les liens déjà posés. Ce qui change est le
+    //    MOYEN. Le 2026-09-23 elles ont quitté la barre latérale — six ne
+    //    contenaient rien depuis le 6 juillet, « Autres » répétait « Messages »
+    //    — mais elles portent `parent` au lieu d'être supprimées : la palette
+    //    se construit sur `buildAdminNav`, donc une entrée retirée du menu
+    //    disparaîtrait AUSSI de la recherche. Masquer, jamais faire disparaître.
     it("les vues filtrées de Submission gardent leurs URLs historiques", () => {
       for (const href of [
         "/fr/p/contacts/clients",
         "/fr/p/contacts/presse",
         "/fr/p/contacts/partenariats",
         "/fr/p/contacts/investisseurs",
+        "/fr/p/contacts/conferences",
+        "/fr/p/contacts/autres",
+        "/fr/p/podcast",
       ]) {
         const hit = items.find((it) => it.href === href);
         expect(hit, href).toBeDefined();
-        expect(hit?.navLevel, href).toBe(2);
-        expect(hit?.parent, href).toBeUndefined();
+        expect(hit?.parent, href).toBe("/fr/p/contacts/messages");
       }
 
       // 🔑 `/contacts/commercial` a quitté le niveau 2 le 2026-09-23, mais son

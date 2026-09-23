@@ -18,6 +18,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { buildAdminNav } from "@/lib/admin-nav";
 
 const RACINE = "src/app/[locale]/(admin)/[adminPrefix]/contacts";
 const lire = (chemin: string) => readFileSync(join(process.cwd(), RACINE, chemin), "utf8");
@@ -52,5 +53,39 @@ describe("la vue « À traiter »", () => {
     // Une liste de choses à faire se lit par le haut, et le plus vieux message
     // est celui qui a le plus attendu. C'est l'inverse d'un journal.
     expect(aTraiter).toContain('tri: "ancien"');
+  });
+});
+
+describe("les catégories masquées restent joignables", () => {
+  const MASQUEES = [
+    "/fr/p/contacts/clients",
+    "/fr/p/contacts/presse",
+    "/fr/p/contacts/partenariats",
+    "/fr/p/contacts/investisseurs",
+    "/fr/p/contacts/conferences",
+    "/fr/p/contacts/autres",
+    "/fr/p/podcast",
+  ];
+
+  it("chacune porte `parent` : hors de la barre latérale, pas hors du menu", () => {
+    const items = buildAdminNav("p");
+    for (const href of MASQUEES) {
+      const hit = items.find((it) => it.href === href);
+      expect(hit, href).toBeDefined();
+      expect(hit?.parent, href).toBe("/fr/p/contacts/messages");
+    }
+  });
+
+  it("la palette ⌘K n'écarte PAS les entrées masquées", () => {
+    // 🔑 C'EST LA GARDE QUI REND CE MASQUAGE ACCEPTABLE. La palette se construit
+    //    sur `buildAdminNav` ; le jour où elle filtrerait `parent != null`, ces
+    //    sept routes disparaîtraient de la RECHERCHE en plus de la barre
+    //    latérale, et ne seraient plus joignables qu'en tapant leur adresse.
+    //    Personne ne s'en apercevrait avant d'en chercher une.
+    const palette = readFileSync(
+      join(process.cwd(), "src/app/[locale]/(admin)/[adminPrefix]/AdminCommandPalette.tsx"),
+      "utf8",
+    );
+    expect(palette).not.toMatch(/\.filter\([^)]*parent/);
   });
 });

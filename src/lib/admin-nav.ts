@@ -522,6 +522,21 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Mail",
       group: "contacts",
     },
+    // 🔴 2026-09-23 — SEPT ONGLETS QUI N'APPRENAIENT RIEN À PERSONNE.
+    //    Mesuré en production le même jour, sur la totalité de la table
+    //    (27 lignes depuis le 6 juillet) :
+    //      Demandes clients 0 · Presse 0 · Partenariats 0 · Investisseurs 0
+    //      Conférences 0 · Podcast 0 (sa table est vide)
+    //      Autres 9 — c'est-à-dire EXACTEMENT ce que montre « Messages ».
+    //    Sept lignes de menu permanentes : six vides, une qui répète son parent.
+    //    Will : « je suis complètement perdu entre toutes ces pages ».
+    //
+    // 🔑 On les MASQUE, on ne les supprime pas. `parent` les retire de la barre
+    //    latérale en les laissant dans `buildAdminNav` — donc dans la palette
+    //    ⌘K, dans les favoris et joignables par URL. Le sélecteur « Catégorie »
+    //    de l'écran Messages couvre le même besoin, là où on le cherche.
+    //    Réversible en retirant une ligne, catégorie par catégorie, le jour où
+    //    l'une d'elles reçoit son premier message.
     // ▸ Catégories de « Messages » (niveau 3 visuel). Ces routes existaient
     //   déjà, masquées de la sidebar depuis le 2026-07-29 ; elles y reviennent
     //   sous leur parent au lieu d'être un filtre interne à la page. Libellés
@@ -534,6 +549,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Briefcase",
       group: "contacts",
       navLevel: 2,
+      parent: `${base}/contacts/messages`,
     },
     {
       href: `${base}/contacts/presse`,
@@ -541,6 +557,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Newspaper",
       group: "contacts",
       navLevel: 2,
+      parent: `${base}/contacts/messages`,
     },
     {
       href: `${base}/contacts/partenariats`,
@@ -548,6 +565,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Handshake",
       group: "contacts",
       navLevel: 2,
+      parent: `${base}/contacts/messages`,
     },
     {
       href: `${base}/contacts/investisseurs`,
@@ -555,6 +573,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "TrendingUp",
       group: "contacts",
       navLevel: 2,
+      parent: `${base}/contacts/messages`,
     },
     {
       href: `${base}/contacts/conferences`,
@@ -562,6 +581,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Presentation",
       group: "contacts",
       navLevel: 2,
+      parent: `${base}/contacts/messages`,
     },
     // Demandes de tournage podcast (2026-07-21) — lead entrant de la page
     // publique /podcast + du QR du flyer papier. Route hors `/contacts/*` (le
@@ -573,6 +593,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Mic",
       group: "contacts",
       navLevel: 2,
+      parent: `${base}/contacts/messages`,
     },
     {
       href: `${base}/contacts/autres`,
@@ -580,6 +601,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "MessagesSquare",
       group: "contacts",
       navLevel: 2,
+      parent: `${base}/contacts/messages`,
     },
     // 🔴 2026-09-23 — « APPORTEURS » N'EST PAS UNE CATÉGORIE DE COURRIER.
     //    Elle était indentée sous « Messages », entre « Conférences » et
