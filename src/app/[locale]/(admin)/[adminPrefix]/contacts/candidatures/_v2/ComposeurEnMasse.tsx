@@ -20,7 +20,7 @@
 // dossier ÉCARTÉ dont le statut n'est pas `new` — s'il bascule, c'est que le
 // geste de statut a tourné en plus. Il ne bascule pas.
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 
 import { repondreEnMasseAction } from "@/features/admin-job-applications/actions-reponse-en-masse";
 import type {
@@ -98,6 +98,54 @@ export function ComposeurEnMasse({ modeles, plafond }: Props): React.ReactElemen
   const [retouche, setRetouche] = useState(false);
   const [choisi, setChoisi] = useState("libre");
 
+  /**
+   * 🔴 « COMBIEN DE PERSONNES VONT RECEVOIR CE MESSAGE », AVANT D'ENVOYER —
+   * ET PAS APRÈS.
+   *
+   * Le compte rendu existant (plus bas, `role="status"`) dit très bien ce qui
+   * EST PARTI. Il ne dit rien AVANT le clic : rien à cet écran n'affichait
+   * combien de dossiers cochés dans le tableau allaient recevoir le message.
+   * Un recruteur presse « Envoyer à la sélection » sans savoir s'il vient de
+   * cocher 3 ou 93 lignes — exactement le risque que la consigne « aucun
+   * geste groupé ne part sans dire combien de personnes il touche » vise.
+   *
+   * Le compte est lu dans le DOM plutôt que reçu en props : les cases à cocher
+   * appartiennent à `<AdminTable>`, un composant SERVEUR rendu comme `children`
+   * de `FormulaireEnMasse` — ce composant n'a ni les lignes ni leur nombre. La
+   * seule source commune est le `<form>` qui les enveloppe tous deux.
+   */
+  const detailsRef = useRef<HTMLDetailsElement>(null);
+  const [nbSelectionnes, setNbSelectionnes] = useState(0);
+
+  useEffect(() => {
+    const form = detailsRef.current?.closest("form");
+    if (!form) return;
+    const compter = (): void => {
+      setNbSelectionnes(form.querySelectorAll('input[name="ids"]:checked').length);
+    };
+    compter();
+    // `change` bubbles depuis chaque case cochée de la table, même si elle vit
+    // hors de ce `<details>` : les deux gestes partagent le même `<form>`.
+    form.addEventListener("change", compter);
+    return () => form.removeEventListener("change", compter);
+  }, []);
+
+  /**
+   * 🔑 `confirme` est DÉRIVÉ, pas synchronisé par effet.
+   *
+   * La première version réarmait la confirmation dans un `useEffect` dépendant
+   * de `[nbSelectionnes, objet, corps, choisi]` — `setState` synchrone dans un
+   * effet, que la garde `react-hooks/set-state-in-effect` refuse à raison
+   * (cascade de rendus). On mémorise à la place l'EMPREINTE de ce qui a été
+   * confirmé ; tant que rien n'a changé, l'empreinte actuelle y correspond
+   * encore. Toute retouche — sélection OU texte — change l'empreinte, et la
+   * confirmation retombe SANS écriture d'état supplémentaire : c'est une
+   * lecture, pas une synchronisation.
+   */
+  const [confirmePour, setConfirmePour] = useState<string | null>(null);
+  const empreinteActuelle = `${nbSelectionnes}|${choisi}|${objet}|${corps}`;
+  const confirme = confirmePour === empreinteActuelle;
+
   function choisirModele(id: string): void {
     const m = modeles.find((x) => x.value === id);
     if (!m) return;
@@ -111,12 +159,35 @@ export function ComposeurEnMasse({ modeles, plafond }: Props): React.ReactElemen
 
   const total = etat.ok ? etat.envoyees + etat.ecartees + etat.echouees : 0;
   const dejaEnvoye = etat.ok && total > 0 && !retouche;
+  const messagePret = objet.trim().length > 0 && corps.trim().length > 0;
+  const envoiPossible = messagePret && nbSelectionnes > 0 && confirme && !enCours && !dejaEnvoye;
 
   return (
-    <details className="mt-[var(--space-admin-4)]">
+    <details ref={detailsRef} className="mt-[var(--space-admin-4)]">
       <summary className="admin-label cursor-pointer">Écrire à la sélection</summary>
 
       <div className="mt-[var(--space-admin-3)] flex flex-col gap-[var(--space-admin-3)]">
+        {/* 🔑 LE COMPTE, EN CLAIR, AVANT TOUT LE RESTE — c'est la première
+            chose à lire en ouvrant ce bloc, pas une ligne parmi d'autres. */}
+        <p
+          className={
+            nbSelectionnes > 0 ? "admin-alert admin-alert-warning" : "admin-alert admin-alert-error"
+          }
+          role="status"
+        >
+          {nbSelectionnes > 0 ? (
+            <>
+              <strong>
+                {nbSelectionnes} destinataire{nbSelectionnes > 1 ? "s" : ""}
+              </strong>{" "}
+              sélectionné{nbSelectionnes > 1 ? "s" : ""} {nbSelectionnes > 1 ? "vont" : "va"}{" "}
+              recevoir ce message.
+            </>
+          ) : (
+            "Aucune candidature cochée dans le tableau — rien ne partira."
+          )}
+        </p>
+
         <p className="admin-meta-small">
           Un message <strong>par personne</strong>, jamais en copie : personne n’apprend qui d’autre
           a candidaté. Au plus {plafond} destinataires par envoi.{" "}
@@ -216,6 +287,25 @@ export function ComposeurEnMasse({ modeles, plafond }: Props): React.ReactElemen
           />
         </div>
 
+        {/* 🔑 CONFIRMATION EXPLICITE, DISTINCTE DU BOUTON D'ENVOI.
+            Le bouton seul ne suffit pas : un recruteur qui l'atteint au clavier
+            ou à la souris peut ne jamais avoir relu le nombre au-dessus. Cette
+            case oblige à lire « N destinataires » — son libellé le répète — et
+            se décoche toute seule (effet ci-dessus) dès que la sélection ou le
+            texte change : une confirmation ne vaut que pour CE texte, à CET
+            effectif, jamais pour un autre qu'on aurait oublié de reconfirmer. */}
+        <label className="admin-checkbox-label" htmlFor="masse-confirmer">
+          <input
+            id="masse-confirmer"
+            type="checkbox"
+            checked={confirme}
+            disabled={nbSelectionnes === 0}
+            onChange={(e) => setConfirmePour(e.target.checked ? empreinteActuelle : null)}
+          />{" "}
+          Je confirme l’envoi de ce message à{" "}
+          {nbSelectionnes > 0 ? `ces ${nbSelectionnes} destinataires` : "la sélection"}.
+        </label>
+
         <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
           {/* 🔑 `formAction` — ET IL FONCTIONNE, VÉRIFIÉ PAR L'INTERFACE.
 
@@ -245,7 +335,7 @@ export function ComposeurEnMasse({ modeles, plafond }: Props): React.ReactElemen
             type="submit"
             formAction={action}
             className="admin-button"
-            disabled={enCours || dejaEnvoye}
+            disabled={!envoiPossible}
             onClick={() => setRetouche(false)}
           >
             {enCours ? "Envoi…" : "Envoyer à la sélection"}
@@ -253,6 +343,10 @@ export function ComposeurEnMasse({ modeles, plafond }: Props): React.ReactElemen
           {dejaEnvoye ? (
             <span className="admin-meta-small">
               Ce message est parti. Modifier l’objet ou le texte pour en envoyer un autre.
+            </span>
+          ) : !confirme && messagePret && nbSelectionnes > 0 ? (
+            <span className="admin-meta-small">
+              Cocher la confirmation ci-dessus pour activer l’envoi.
             </span>
           ) : null}
         </div>
