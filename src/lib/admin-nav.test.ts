@@ -177,8 +177,18 @@ describe("buildAdminNav SSOT", () => {
     // +1 (2026-09-23, « À traiter ») : la boîte triait par PROVENANCE et ne
     // disait nulle part ce qui attendait une réponse. C'est la question du
     // matin ; elle méritait la deuxième place, juste après « Tout ». = 163.
+    // ±0 (2026-09-23, groupe Finances « action avant lecture ») : « Cockpit
+    // financier » et « Tiime » sont déplacés en fin de groupe (ordre « chaud
+    // avant froid », jusque-là jamais appliqué à Finances faute de pôles) ;
+    // « Facture directe » (un formulaire, pas une catégorie) est masquée de
+    // la sidebar par `parent` — même motif que les sept onglets de la Boîte
+    // de réception ci-dessus. `parent` retire l'item du RENDU sidebar mais
+    // le laisse dans `buildAdminNav` : ce compteur ne bouge PAS. « Plans
+    // récurrents », vraie liste, reste une entrée à part entière — seul son
+    // bouton dupliqué sur le Hub (`facturation/page.tsx`) est retiré, hors
+    // SSOT. = 163.
     // +1 (2026-09-23, Guide IA entreprise) : sous-onglet des Imprimés, dérivé
-    // de IMPRIMES — le PDF promis par /guide-ia existe enfin. = 164.
+    // de IMPRIMES — le PDF promis par /guide-ia existe enfin. 163 + 1 = 164.
     expect(items.length).toBe(164);
   });
 
@@ -464,6 +474,57 @@ describe("buildAdminNav SSOT", () => {
         "/fr/p/contacts/messages",
       );
     });
+  });
+});
+
+// ─── Finances : action avant lecture (2026-09-23) ──────────────────────────
+//
+// Le groupe Finances n'a pas de pôles (`GROUP_POLE_ORDER`) : `AdminSidebarNav`
+// rend ses items dans l'ordre BRUT de `buildAdminNav()`, sans tri. Avant ce
+// correctif, l'ordre était Cockpit financier (un rapport en lecture seule) →
+// Tiime (un lien externe, aucune action possible dans l'appli) → Facturation
+// (Hub) (le vrai centre d'action). Ces verrous empêchent qu'un rapport ou un
+// lien externe se réinstallent en tête du groupe, et qu'un formulaire de
+// création (masqué par `parent`) redevienne une catégorie de menu à part
+// entière.
+describe("groupe Finances — action avant lecture (2026-09-23)", () => {
+  const items = buildAdminNav("p");
+  const visibles = items.filter((it) => it.group === "finances" && it.parent == null);
+
+  it("« Facturation (Hub) » ouvre le groupe ; « Cockpit financier » et « Tiime » le ferment", () => {
+    // Contre-témoin : si le groupe perdait ou gagnait un item (masquage en
+    // trop, doublon), l'assertion d'ordre échouerait pour la mauvaise
+    // raison — on borne donc d'abord la population.
+    expect(visibles.length).toBe(6);
+    expect(visibles.map((it) => it.label)).toEqual([
+      "Facturation (Hub)",
+      "Plans récurrents",
+      "Rapprochement bancaire",
+      "Alertes financement (sessions)",
+      "Cockpit financier",
+      "Tiime — facturation électronique",
+    ]);
+  });
+
+  it("« Facture directe » est masquée de la sidebar mais reste dans le SSOT (⌘K, breadcrumb)", () => {
+    // « Facture directe » n'est qu'un formulaire de création — le Hub porte
+    // déjà ce même geste en bouton. `parent` la retire du RENDU sidebar sans
+    // la retirer de `buildAdminNav` : elle reste joignable par ⌘K, favoris et
+    // breadcrumb, comme les sept catégories de Messages plus haut.
+    const factureDirecte = items.find((it) => it.href === "/fr/p/qualiopi/facturation/new");
+    expect(factureDirecte).toBeDefined();
+    expect(factureDirecte?.parent).toBe("/fr/p/qualiopi/facturation");
+    expect(visibles.some((it) => it.label === "Facture directe")).toBe(false);
+  });
+
+  it("« Plans récurrents » n'est PAS masquée : une vraie liste garde sa place au menu", () => {
+    // Contrairement à « Facture directe », c'est une vraie LISTE — elle
+    // mérite sa propre entrée stable. Seul son bouton dupliqué sur le Hub
+    // (`facturation/page.tsx`) a été retiré, hors SSOT : ce test ne peut pas
+    // le voir, et ce n'est pas son rôle.
+    const plans = items.find((it) => it.href === "/fr/p/qualiopi/facturation/plans");
+    expect(plans).toBeDefined();
+    expect(plans?.parent).toBeUndefined();
   });
 });
 

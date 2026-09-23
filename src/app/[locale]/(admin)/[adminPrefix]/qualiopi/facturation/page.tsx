@@ -453,15 +453,23 @@ export default async function FacturationHubPage({
                   </Link>
                 </>
               )}
-              {/* « Plans récurrents » et « FEC / Import » sont de la NAVIGATION
-                  déguisée en action : ils portaient le même aplat terracotta
-                  que « + Nouveau devis », si bien que quatre boutons pleins se
-                  disputaient l'entête. Le devis ouvre le cycle de facturation,
-                  il reste seul en primaire ; les autres restent encadrés donc
-                  parfaitement visibles, mais cessent de crier. */}
-              <Link href={`${base}/plans`} className="admin-button-secondary">
-                Plans récurrents
-              </Link>
+              {/* 🔴 2026-09-23 — « Plans récurrents » RETIRÉ d'ici : le bouton
+                  était de la NAVIGATION déguisée en action, vers une route
+                  qui a maintenant sa propre entrée stable dans le menu
+                  Finances (`src/lib/admin-nav.ts`). Garder les deux portes
+                  ouvertes vers la même liste ne rendait service à personne ;
+                  la porte canonique d'une vraie LISTE est son entrée de
+                  menu, pas un bouton secondaire noyé dans le bandeau
+                  d'actions du Hub.
+
+                  « FEC / Import », lui, n'a PAS d'entrée de menu : ce bouton
+                  reste sa SEULE porte, il ne bouge pas. Il était déjà de la
+                  navigation déguisée en action, au même titre que « Plans
+                  récurrents » — il portait le même aplat terracotta que
+                  « + Nouveau devis », si bien que quatre boutons pleins se
+                  disputaient l'entête. Le devis ouvre le cycle de
+                  facturation, il reste seul en primaire ; celui-ci reste
+                  encadré donc parfaitement visible, mais cesse de crier. */}
               <Link href={`${base}/comptabilite`} className="admin-button-secondary">
                 FEC / Import
               </Link>

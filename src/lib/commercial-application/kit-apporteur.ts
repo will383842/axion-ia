@@ -19,6 +19,10 @@
 // d'e-mail (rendus dans le worker) et par la console.
 
 import { SITE_URL } from "@/lib/site-url";
+// Réexportée pour ne rien casser chez les appelants existants — la règle vit
+// désormais dans `@/lib/calendly/lien-valide`, partagée avec le recrutement.
+// Voir le commentaire de tête de ce module partagé pour le pourquoi du départ.
+export { estLienCalendlyValide } from "@/lib/calendly/lien-valide";
 
 /**
  * Chemin public du document de présentation, servi depuis `public/imprimes/`.
@@ -67,21 +71,3 @@ export const DUREE_ECHANGE_APPORTEUR_MINUTES = 15;
  * qui annule cet envoi), et celui qui l'a quitté reçoit le kit.
  */
 export const DELAI_KIT_DOSSIER_COMMENCE_MS = 30 * 60 * 1000;
-
-/**
- * Un lien Calendly acceptable pour l'invitation : https, sur calendly.com.
- * Refuser tout le reste empêche qu'une faute de frappe — ou un lien collé
- * depuis ailleurs — parte dans un e-mail signé Axion-IA.
- */
-export function estLienCalendlyValide(url: string): boolean {
-  try {
-    const u = new URL(url);
-    return (
-      u.protocol === "https:" &&
-      (u.hostname === "calendly.com" || u.hostname.endsWith(".calendly.com")) &&
-      u.pathname.length > 1
-    );
-  } catch {
-    return false;
-  }
-}

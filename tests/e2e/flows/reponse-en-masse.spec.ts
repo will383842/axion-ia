@@ -96,6 +96,16 @@ test.describe("@recrutement écrire à plusieurs postulants d'un seul geste", ()
     await expect(page.locator("#masse-corps")).toHaveValue(/\{prenom\}/);
     await expect(page.locator("#masse-objet")).toHaveValue(/\{poste\}/);
 
+    // ── 3bis. LA CONFIRMATION EXPLICITE — sans elle, le bouton reste désactivé.
+    // Le nombre affiché doit correspondre à la sélection réelle : c'est la
+    // preuve, PAR L'INTERFACE, que « combien de personnes vont recevoir ce
+    // message » n'est pas une phrase figée mais un compte qui suit les cases
+    // cochées du tableau.
+    await expect(
+      page.getByRole("status").filter({ hasText: `${choisis} destinataires` }),
+    ).toBeVisible();
+    await page.getByRole("checkbox", { name: /Je confirme l.envoi/ }).check();
+
     // ── 4. LE POINT À ÉPROUVER : `formAction` l'emporte sur l'action du `<form>`.
     //
     // 🔴 LE TÉMOIN N'EST PAS N'IMPORTE QUELLE LIGNE, et s'être trompé de témoin

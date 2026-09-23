@@ -18,6 +18,8 @@ import { lireAccuseReception } from "@/features/admin-job-applications/accuse-re
 import { Entretiens } from "./Entretiens";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { liensInsertionComposeur } from "@/lib/imprimes/liens-email";
+import { env } from "@/env";
 
 export const dynamic = "force-dynamic";
 
@@ -201,7 +203,17 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
       <AdminCard>
         <h3 className="admin-section-title">Historique</h3>
         <div className="mb-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-3)]">
-          <ComposerReponse applicationId={a.id} prenom={a.firstName} poste={a.offerTitleSnap} />
+          <ComposerReponse
+            applicationId={a.id}
+            prenom={a.firstName}
+            poste={a.offerTitleSnap}
+            // Calculés ICI, côté serveur : `liensInsertionComposeur` tire
+            // `@/content/imprimes` (donc `pricing.ts`) et lit `env` — deux
+            // imports qu'un composant CLIENT ne doit pas tirer dans son
+            // bundle pour trois boutons. Même doctrine que `OPTIONS_STATUT`
+            // dans `ApplicationsV2.tsx`.
+            liensInsertion={liensInsertionComposeur(env.CALENDLY_APPORTEUR_URL)}
+          />
           <ConsignerAuJournal applicationId={a.id} />
         </div>
         <FriseCandidature entrees={frise} accuse={accuse} />

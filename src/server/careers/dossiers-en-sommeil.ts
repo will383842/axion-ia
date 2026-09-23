@@ -175,6 +175,27 @@ export async function listerDossiersEnSommeil(
   return { dossiers, parMotif, plafondAtteint: lignes.length === PLAFOND_EXAMEN };
 }
 
+/**
+ * Le dossier « jamais répondu » le plus ancien — celui à traiter en premier.
+ *
+ * ── Pourquoi PAS `dossiers[0]` tel quel ────────────────────────────────────
+ * La liste est triée par gravité PUIS par ancienneté (`MOTIFS_OUBLI_PAR_GRAVITE`,
+ * plus haut) : `jamais_repondu` passe toujours avant `sans_activite`. Mais un
+ * stock qui n'aurait AUCUN dossier « jamais répondu » — seulement des dossiers
+ * « sans activité » — verrait `dossiers[0]` être un `sans_activite`, et
+ * l'afficher sous le libellé « jamais répondu » mentirait sur ce que le
+ * candidat vit. On filtre donc explicitement sur le motif, plutôt que de faire
+ * confiance à la position.
+ *
+ * La liste étant déjà triée, le premier élément qui passe le filtre EST le
+ * plus ancien : pas besoin de re-trier.
+ */
+export function plusAncienJamaisRepondu(
+  dossiers: readonly DossierEnSommeil[],
+): DossierEnSommeil | null {
+  return dossiers.find((d) => d.motif === "jamais_repondu") ?? null;
+}
+
 function nomLisible(prenom: string, nom: string): string {
   const decrypte = (v: string): string => {
     try {
