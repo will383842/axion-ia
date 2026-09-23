@@ -58,7 +58,7 @@ export function RappelConfirmeEmail({
   const p = payload as unknown as Payload;
   const t = COPY[locale];
   return (
-    <EmailLayout famille="B" preview={t.preview} title={t.title} locale={locale}>
+    <EmailLayout famille="B" signature preview={t.preview} title={t.title} locale={locale}>
       <Text style={emailStyles.paragraphStyle}>{t.body(p.telephone)}</Text>
       <Text style={emailStyles.paragraphStyle}>
         {t.intro(p.prenom)}

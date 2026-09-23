@@ -470,12 +470,27 @@ const soupapeStyle: React.CSSProperties = {
   paddingTop: "16px",
   borderTop: `1px solid ${C.border}`,
 };
-/** Bloc signature — §6.1. Pas de bannière image, pas de citation, pas de logo. */
+/**
+ * Bloc signature — §6.1. Pas de bannière image, pas de citation, pas de logo.
+ *
+ * Même dessin que les signatures Zoho Mail des boîtes humaines (refaites le
+ * 2026-09-23) : filet terracotta à gauche, nom en serif, rôle en gris chaud.
+ * Un client qui reçoit un e-mail automatique puis une réponse écrite à la main
+ * doit reconnaître la même signature — c'est la même personne.
+ */
 const signatureStyle: React.CSSProperties = {
   fontSize: "14px",
   lineHeight: 1.7,
   color: C.text,
   margin: "24px 0 0 0",
+  borderLeft: `3px solid ${C.orange}`,
+  paddingLeft: "14px",
+};
+const signatureNameStyle: React.CSSProperties = {
+  fontFamily: SERIF,
+  fontSize: "16px",
+  fontWeight: 700,
+  color: C.heading,
 };
 const footerStyle: React.CSSProperties = {
   // 12 px est le plancher du §6.2 pour rester lisible ; le gris a été assombri
@@ -927,9 +942,9 @@ export function EmailLayout({
             )}
             {signatureVisible && (
               <Text style={signatureStyle} className="ax-text">
-                {EMAIL_SIGNATURE.fullName}
+                <span style={signatureNameStyle}>{EMAIL_SIGNATURE.fullName}</span>
                 <br />
-                {t.signatureRole}
+                <span style={{ color: C.muted }}>{t.signatureRole}</span>
                 <br />
                 {EMAIL_LEGAL.phone}
                 <br />

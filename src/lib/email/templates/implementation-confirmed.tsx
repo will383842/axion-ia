@@ -53,6 +53,7 @@ export function ImplementationConfirmedEmail({
   return (
     <EmailLayout
       famille="B"
+      signature
       preview={t.preview}
       title={t.title}
       cta={{ label: t.cta, href: `${baseUrl}/${locale}/cas-concrets` }}
