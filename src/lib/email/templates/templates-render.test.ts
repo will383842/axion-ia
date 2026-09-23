@@ -95,14 +95,11 @@ describe("footer social — selon la famille de l'e-mail", () => {
    * linkedin ». Cette garde empêche qu'il revienne par recopie d'un ancien
    * gabarit ou par restauration d'une version antérieure du layout.
    *
-   * Le profil a changé d'adresse le 2026-09-23 : l'ancienne reste gardée (un
-   * vieux gabarit la porterait encore), la nouvelle l'est aussi — la règle vise
-   * le profil, pas une URL.
+   * ⚠️ Ne pas confondre avec `facebook.com/williamsjullin` : c'est la page
+   * Facebook PROFESSIONNELLE de Will (précisé par lui le 2026-09-23), elle
+   * n'est pas visée par cette garde.
    */
-  const FACEBOOK_PERSONNEL = [
-    "https://www.facebook.com/profile.php?id=61586489122989",
-    "facebook.com/williamsjullin",
-  ];
+  const FACEBOOK_PERSONNEL = ["https://www.facebook.com/profile.php?id=61586489122989"];
 
   it("famille B (force-majeure-notice) porte les 4 liens sociaux du footer", async () => {
     const r = await renderEmailTemplate(
