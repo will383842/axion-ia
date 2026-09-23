@@ -94,8 +94,15 @@ describe("footer social — selon la famille de l'e-mail", () => {
    * Arbitrage Will du 2026-09-01 : « enlève mon facebook mais laisse mon
    * linkedin ». Cette garde empêche qu'il revienne par recopie d'un ancien
    * gabarit ou par restauration d'une version antérieure du layout.
+   *
+   * Le profil a changé d'adresse le 2026-09-23 : l'ancienne reste gardée (un
+   * vieux gabarit la porterait encore), la nouvelle l'est aussi — la règle vise
+   * le profil, pas une URL.
    */
-  const FACEBOOK_PERSONNEL = "https://www.facebook.com/profile.php?id=61586489122989";
+  const FACEBOOK_PERSONNEL = [
+    "https://www.facebook.com/profile.php?id=61586489122989",
+    "facebook.com/williamsjullin",
+  ];
 
   it("famille B (force-majeure-notice) porte les 4 liens sociaux du footer", async () => {
     const r = await renderEmailTemplate(
@@ -111,12 +118,14 @@ describe("footer social — selon la famille de l'e-mail", () => {
   it("AUCUNE famille ne porte le profil Facebook personnel (§5.3)", async () => {
     for (const nom of ["force-majeure-notice", "payment-receipt"] as const) {
       const r = await renderEmailTemplate(nom as never, "fr", PAYLOADS[nom]!);
-      expect(
-        r.html,
-        `${nom} : le §5.3 refuse nommément le profil Facebook personnel — ` +
-          `« ne jamais mêler profil personnel non professionnel et communication ` +
-          `d'entreprise ».`,
-      ).not.toContain(FACEBOOK_PERSONNEL);
+      for (const lien of FACEBOOK_PERSONNEL) {
+        expect(
+          r.html,
+          `${nom} : le §5.3 refuse nommément le profil Facebook personnel — ` +
+            `« ne jamais mêler profil personnel non professionnel et communication ` +
+            `d'entreprise ».`,
+        ).not.toContain(lien);
+      }
     }
   });
 
