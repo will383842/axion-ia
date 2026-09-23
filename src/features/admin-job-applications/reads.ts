@@ -60,10 +60,20 @@ export function safeDecrypt(v: string): string {
   }
 }
 
+/**
+ * Sentinelle du filtre « aucune offre » (candidature spontanée, ou offre
+ * depuis supprimée — cf. `getOffresAvecCandidatures` plus bas, où les deux
+ * cas se regroupent). Déclarée ICI, avant le schéma qui la consomme : une
+ * `const` référencée dans son propre module avant son initialisation lève à
+ * l'import, pas à l'usage — l'aurait laissée après `listApplicationsSchema`
+ * cassé le chargement de CE fichier entier, pour tous ses appelants.
+ */
+export const AUCUNE_OFFRE_ID = "spontanee";
+
 export const listApplicationsSchema = z.object({
   offerId: z.preprocess(
     (v) => (v === "" || v == null ? undefined : v),
-    z.string().uuid().optional(),
+    z.union([z.string().uuid(), z.literal(AUCUNE_OFFRE_ID)]).optional(),
   ),
   status: z.enum([...STATUSES, "all"]).default("all"),
   // Vues séparées (demande Will 2026-08-12) : la vue standard EXCLUT l'offre
@@ -204,7 +214,13 @@ export function construireFiltreCandidatures(input: Partial<ListApplicationsInpu
 } {
   const parsed = listApplicationsSchema.parse(input);
   const where: Record<string, unknown> = {};
-  if (parsed.offerId) where.offerId = parsed.offerId;
+  // 🔴 `AUCUNE_OFFRE_ID` filtre EXPLICITEMENT `offerId IS NULL` (sélecteur
+  // « Candidature spontanée ») — distinct d'un `offerId` absent, qui ne
+  // contraint rien. Confondre les deux aurait fait du filtre « spontanée » un
+  // filtre muet : `where.offerId = "spontanee"` ne correspondrait à AUCUNE
+  // ligne, la colonne étant un UUID.
+  if (parsed.offerId === AUCUNE_OFFRE_ID) where.offerId = null;
+  else if (parsed.offerId) where.offerId = parsed.offerId;
   if (parsed.status !== "all") where.status = parsed.status;
   if (parsed.onlyAttention) where.needsAttention = true;
   if (parsed.view === "monteur") {
@@ -306,11 +322,26 @@ export async function listApplications(
     const debut = (parsed.page - 1) * parsed.pageSize;
     rows = retenues.slice(debut, debut + parsed.pageSize);
   } else {
+    // 🔴 2026-09-23 — TRIÉ PAR OFFRE quand la vue « Toutes » (34 offres, aucune
+    // vue mono-offre choisie) est lue SANS offre ni recherche. Mesuré en prod :
+    // 164 candidatures triées par seule date ressemblent à un tas — la même
+    // offre revient toutes les cinq lignes, jamais groupée. Trier par
+    // `offerTitleSnap` d'abord rend les 34 métiers contigus à l'écran, sans
+    // toucher à la pagination ni au total.
+    //
+    // ⚠️ Restreint à `view === "all"` SANS `offerId` : la Boîte de réception
+    // (`admin-inbox/queries.ts`) et les vues mono-offre (`monteur`, `standard`,
+    // lien depuis une fiche d'offre) veulent la chronologie pure — leur
+    // comportement ne bouge pas d'un octet.
+    const trierParOffre = parsed.view === "all" && !parsed.offerId;
+    const orderBy = trierParOffre
+      ? [{ offerTitleSnap: "asc" as const }, { submittedAt: "desc" as const }]
+      : [{ submittedAt: "desc" as const }];
     const [compte, page] = await Promise.all([
       prisma.jobApplication.count({ where }),
       prisma.jobApplication.findMany({
         where,
-        orderBy: [{ submittedAt: "desc" }],
+        orderBy,
         skip: (parsed.page - 1) * parsed.pageSize,
         take: parsed.pageSize,
         select: SELECTION,
@@ -372,4 +403,82 @@ export async function listApplications(
     totalPages: Math.max(1, Math.ceil(total / parsed.pageSize)),
     balayageTronque,
   };
+}
+
+// ── L'offre, comme SÉLECTEUR ────────────────────────────────────────────────
+//
+// 🔴 2026-09-23 — REMPLACE L'ONGLET « MONTEUR VIDÉO » (UNE offre sur 34
+// promue au rang d'onglet, mesuré en prod : 164 candidatures / 34 offres).
+// « Qui a postulé à Rédacteur web ? » est la question naturelle ; un onglet
+// fixe ne pouvait répondre qu'à UNE offre, toujours la même.
+
+export interface OffreAvecCandidatures {
+  /** UUID de l'offre, ou `AUCUNE_OFFRE_ID`. */
+  readonly id: string;
+  readonly label: string;
+  readonly count: number;
+}
+
+/**
+ * Les offres RÉELLEMENT présentes dans les candidatures, avec leur volume —
+ * pour alimenter le sélecteur (au lieu d'un onglet figé sur une seule offre).
+ *
+ * 🔴 `offerId` est `NULL` pour DEUX raisons distinctes, et ce sélecteur ne
+ * peut pas — et n'a pas besoin de — les démêler : une candidature spontanée
+ * (jamais d'offre visée), ou une offre depuis supprimée (`onDelete: SetNull`,
+ * lot 6 — cf. schema.prisma). Les deux se regroupent sous UN SEUL filtre :
+ * dans les deux cas, il n'existe aucune fiche d'offre vers laquelle filtrer,
+ * et c'est la seule chose que ce sélecteur a besoin de savoir. Les regrouper
+ * SOUS DES LIBELLÉS DIFFÉRENTS (texte saisi à la main par chaque candidat
+ * spontané) aurait produit jusqu'à six entrées à un seul candidat chacune —
+ * l'exact inverse d'un sélecteur qui doit tenir sur un écran.
+ *
+ * Dérivées des données et non d'une liste figée, même principe que
+ * `getSourcesCandidatures` : une offre pourvue puis dépubliée reste
+ * filtrable tant qu'un dossier lui est rattaché, et aucune offre à zéro
+ * candidature n'encombre le sélecteur.
+ */
+export async function getOffresAvecCandidatures(): Promise<readonly OffreAvecCandidatures[]> {
+  const groupes = await prisma.jobApplication.groupBy({
+    by: ["offerId"],
+    _count: { _all: true },
+  });
+
+  const idsReels = groupes.map((g) => g.offerId).filter((id): id is string => id !== null);
+
+  // Un représentant par offre — `offerTitleSnap` est figé à la soumission,
+  // donc stable pour une même offre. `distinct` + tri par date décroissante
+  // retient le libellé le plus RÉCENT si jamais deux candidatures d'une même
+  // offre en portaient un différent (renommage entre les deux dépôts).
+  const representants = idsReels.length
+    ? await prisma.jobApplication.findMany({
+        where: { offerId: { in: idsReels } },
+        distinct: ["offerId"],
+        orderBy: { submittedAt: "desc" },
+        select: { offerId: true, offerTitleSnap: true },
+      })
+    : [];
+  const labelParOffre = new Map(representants.map((r) => [r.offerId as string, r.offerTitleSnap]));
+
+  // 🔴 FUSIONNÉ PAR `id`, JAMAIS UNE PROJECTION DIRECTE DE `groupes`. Le
+  // `groupBy({ by: ["offerId"] })` ci-dessus garantit déjà UN SEUL groupe
+  // `offerId: null` — mais cette fusion est une DEUXIÈME digue, pas une
+  // simple reformulation : si `by` gagnait un jour un second champ (même
+  // raisonnement que `getSourcesCandidatures`, qui groupe par un texte), les
+  // candidatures spontanées se fragmenteraient en autant de groupes que de
+  // textes saisis à la main — jusqu'à six entrées à un seul candidat chacune,
+  // silencieusement. Merger par `id` ICI absorbe ce cas SANS dépendre de la
+  // requête amont.
+  const compteParId = new Map<string, number>();
+  for (const g of groupes) {
+    const id = g.offerId ?? AUCUNE_OFFRE_ID;
+    compteParId.set(id, (compteParId.get(id) ?? 0) + g._count._all);
+  }
+  const lignes: OffreAvecCandidatures[] = [...compteParId.entries()].map(([id, count]) => ({
+    id,
+    label: id === AUCUNE_OFFRE_ID ? "Candidature spontanée" : (labelParOffre.get(id) ?? "Offre"),
+    count,
+  }));
+
+  return lignes.sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, "fr"));
 }
