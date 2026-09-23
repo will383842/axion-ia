@@ -158,6 +158,13 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^\.github\/workflows\/enable-openai-embeddings\.yml$/,
   // Workflow de seed KB manuel — référence content-gen (seeding KB) en CI.
   /^\.github\/workflows\/seed-kb-manual\.yml$/,
+  // Surveillance de l'interrupteur d'arrêt (2026-09-23). Le workflow LIT le
+  // drapeau `kill_switch` de `content_gen_config` pour prévenir sur Telegram
+  // quand la génération s'arrête toute seule — elle l'a fait le 16/09 et
+  // personne ne l'a su pendant six jours. C'est une SURVEILLANCE, pas du code
+  // de pipeline : elle ne fait que lire, en session PostgreSQL forcée en
+  // lecture seule. Même nature que les cinq workflows ci-dessus.
+  /^\.github\/workflows\/kill-switch-vers-telegram\.yml$/,
   // Sprint Pricing SSOT 2026-05-29 : le garde-fou anti-prix-en-dur SCANNE
   // `src/server/content-gen/**` comme surface d'enforcement → référence
   // légitime à content-gen hors zone (test transverse, pas du code content-gen).
