@@ -77,7 +77,6 @@ interface Props {
   basePath?:
     | "submissions"
     | "contacts/messages"
-    | "contacts/a-traiter"
     | "contacts/commercial"
     | "contacts/presse"
     | "contacts/clients"

@@ -13,6 +13,14 @@
  *
  * Les trois critères sont FORCÉS, pas proposés : une vue nommée « À traiter »
  * qu'une URL pourrait élargir en silence ne vaudrait pas mieux qu'un filtre.
+ *
+ * 🔑 `basePath` reste « contacts/messages », et ce n'est pas un raccourci. Les
+ *    onglets « Archivés » et « Corbeille » se construisent dessus : pointés sur
+ *    cette vue, ils demanderaient des lignes archivées à un écran qui force
+ *    « sans réponse, ni traité ni archivé » — trois onglets dont deux seraient
+ *    vides par construction. Ils ramènent donc à la liste complète, où ils ont
+ *    un sens. Le lien de détail, lui, ne dépend pas de `basePath` : il vise
+ *    toujours la fiche canonique.
  */
 
 import { SubmissionsV2 } from "../../submissions/_v2/SubmissionsV2";
@@ -34,7 +42,7 @@ export default async function ContactsATraiterPage({ params, searchParams }: Pag
     <SubmissionsV2
       adminPrefix={adminPrefix}
       searchParams={{ ...sp, replyStatus: "unanswered", tri: "ancien" }}
-      basePath="contacts/a-traiter"
+      basePath="contacts/messages"
       perimetre="hors-apporteurs"
       title="À traiter"
     />
