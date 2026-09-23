@@ -1,16 +1,23 @@
 /**
- * Admin — Qualiopi · Financements / Facturation (T11).
+ * Admin — Qualiopi · Alertes financement (sessions).
  *
- * Liste toutes les factures de formation + alertes de validation (sessions
- * à risque : OPCO sans accord, CPF sans vérification EDOF) + bouton export
- * comptable CSV par année.
+ * Alertes de validation bloquantes au niveau SESSION (OPCO sans accord, CPF
+ * sans vérification EDOF) + export comptable CSV legacy (`exportComptaCsvAction`,
+ * absent du Hub — cf. `qualiopi/facturation/comptabilite` qui n'exporte que le
+ * FEC). Ne liste PLUS les factures : c'est un doublon visible de « Facturation
+ * (Hub) » (`qualiopi/facturation`), qui interroge la même table sans filtre par
+ * défaut. Retiré le 2026-09-23 — mesuré : 1 seule ligne dans `factures_formation`
+ * en prod, donc dette d'organisation, pas urgence opérationnelle. Cf. commentaire
+ * de `src/lib/admin-nav.ts` (la PR 320, 2026-07-14) : la fonction propre de cet
+ * écran a toujours été « alertes OPCO/CPF session + export CSV legacy », jamais
+ * la liste elle-même — restée par prudence, jamais retirée depuis.
  *
  * Server Component. Force-dynamic. Robots noindex.
  */
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { FileText, Hourglass, CheckCircle2, AlertTriangle } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
@@ -18,7 +25,6 @@ import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { ExportComptaButton } from "@/components/admin/qualiopi/ExportComptaButton";
 import { prisma } from "@/lib/prisma";
 import { libellerStatutOpco } from "@/server/qualiopi/financements/labels";
-import { ACTIVITE_LABELS } from "@/server/qualiopi/financements/facture-libre-pur";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 
@@ -31,26 +37,6 @@ export const metadata: Metadata = {
 // ─────────────────────────────────────────────────────────────────────────────
 // Libellés
 // ─────────────────────────────────────────────────────────────────────────────
-
-// 🔴 QUATRE STATUTS SUR SIX. Une facture `partiellement_payee` ou `en_retard`
-// — les deux que le cron de 06:30 UTC pose sur les impayés — s'affichait « ○
-// partiellement_payee » dans la colonne Statut. La table complète existe
-// pourtant, à l'identique, dans facturation/page.tsx.
-const STATUT_FACTURE_LABELS: Record<string, string> = {
-  brouillon: "Brouillon",
-  emise: "Émise",
-  partiellement_payee: "Partiellement payée",
-  en_retard: "En retard",
-  payee: "Payée",
-  annulee: "Annulée",
-};
-
-const DESTINATAIRE_LABELS: Record<string, string> = {
-  entreprise: "Entreprise",
-  opco: "OPCO",
-  stagiaire: "Stagiaire",
-  france_travail: "France Travail",
-};
 
 const FINANCEMENT_LABELS: Record<string, string> = {
   direct: "Direct",
@@ -79,32 +65,14 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
-  // ── Factures ──────────────────────────────────────────────────────────────
+  // ── Factures — total HT de l'année pour le contexte de l'export CSV ────────
+  // Select réduit au strict nécessaire depuis le retrait de la liste (2026-09-23) :
+  // seul le montant HT (hors annulées) sert encore, pour le sous-titre de
+  // l'export comptable. Le détail par facture vit désormais UNIQUEMENT dans
+  // « Facturation (Hub) ».
   const factures = await prisma.factureFormation.findMany({
     orderBy: { createdAt: "desc" },
-    select: {
-      id: true,
-      numero: true,
-      destinataire: true,
-      destinataireNom: true,
-      montantHtCents: true,
-      // [P1] régime TVA snapshot + montant TVA réel — pour afficher la mention
-      //   CONFORME au régime de la facture (et non un « Exonérée » codé en dur).
-      regimeTva: true,
-      montantTvaCents: true,
-      statut: true,
-      emiseAt: true,
-      subrogation: true,
-      numeroDossierOpco: true,
-      activite: true,
-      session: {
-        select: {
-          id: true,
-          numero: true,
-          titreSession: true,
-        },
-      },
-    },
+    select: { montantHtCents: true, statut: true },
     take: 200,
   });
 
@@ -144,8 +112,6 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
   const anneeEnCours = new Date().getFullYear();
 
   // ── Stats ─────────────────────────────────────────────────────────────────
-  const nbEmises = factures.filter((f) => f.statut === "emise").length;
-  const nbPayees = factures.filter((f) => f.statut === "payee").length;
   const totalHtCents = factures
     .filter((f) => f.statut !== "annulee")
     .reduce((acc, f) => acc + f.montantHtCents, 0);
@@ -153,9 +119,6 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
   const nbAlertes = sessionsOpcoSansAccord.length + sessionsCpfSansEdof.length;
 
   // ── Styles ────────────────────────────────────────────────────────────────
-  const cellCls = "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top";
-  const headCls =
-    "px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-left text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]";
   const sectionHeadCls =
     "text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)] mb-[var(--space-admin-3)]";
 
@@ -163,24 +126,12 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Alertes financement (sessions)"
-        description="Suivi des financements OPCO, CPF et France Travail au niveau session (alertes de risque). La facturation est désormais pilotée depuis « Facturation (Hub) »."
+        description="Suivi des financements OPCO, CPF et France Travail au niveau session (alertes de risque). La liste des factures est désormais UNIQUEMENT sur « Facturation (Hub) » — cet écran ne la double plus."
       />
 
-      {/* Stats */}
+      {/* Stats — un seul indicateur : les autres (total/émises/payées) */}
+      {/* duplicaient les KPIs du Hub sans filtre ni pagination. */}
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
-        <AdminStatCard label="Total factures" value={factures.length} icon={FileText} />
-        <AdminStatCard
-          label="Émises"
-          value={nbEmises}
-          tone={nbEmises > 0 ? "warning" : "default"}
-          icon={Hourglass}
-        />
-        <AdminStatCard
-          label="Payées"
-          value={nbPayees}
-          tone={nbPayees > 0 ? "success" : "default"}
-          icon={CheckCircle2}
-        />
         <AdminStatCard
           label="Alertes validation"
           value={nbAlertes}
@@ -278,150 +229,6 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
           </span>
         </p>
         <ExportComptaButton annee={anneeEnCours} />
-      </section>
-
-      {/* Liste des factures */}
-      <section>
-        <h2 className={sectionHeadCls}>Factures de formation ({factures.length})</h2>
-
-        {factures.length === 0 ? (
-          <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
-            Aucune facture. Générez une facture depuis le panneau de financement d&apos;une session.
-          </p>
-        ) : (
-          <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
-            <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-              <thead className="border-b border-[color:var(--color-admin-border)]">
-                <tr>
-                  <th className={headCls}>Numéro</th>
-                  <th className={headCls}>Session</th>
-                  <th className={headCls}>Destinataire</th>
-                  <th className={headCls}>Montant HT</th>
-                  <th className={headCls}>TVA</th>
-                  <th className={headCls}>Statut</th>
-                  <th className={headCls}>Date émission</th>
-                  <th className={headCls}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {factures.map((f) => (
-                  <tr
-                    key={f.id}
-                    className="border-b border-[color:var(--color-admin-border)] last:border-b-0"
-                  >
-                    {/* Numéro */}
-                    <td className={cellCls}>
-                      <span className="font-mono text-[length:var(--text-admin-xs)]">
-                        {f.numero}
-                      </span>
-                    </td>
-
-                    {/* Session */}
-                    <td className={cellCls}>
-                      <div className="font-medium">
-                        {/* 🔴 TOUTE FACTURE SANS SESSION ÉTAIT ÉTIQUETÉE
-                            « Coaching 1-to-1 ». Le Hub facture désormais aussi
-                            l'audit, l'implémentation et le site web : une
-                            facture d'audit s'affichait donc comme un coaching,
-                            sur l'écran des financements. */}
-                        {f.session?.titreSession ??
-                          (f.activite !== null ? ACTIVITE_LABELS[f.activite] : "Facture libre")}
-                      </div>
-                      <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                        {f.session?.numero ?? ""}
-                      </div>
-                    </td>
-
-                    {/* Destinataire */}
-                    <td className={cellCls}>
-                      <div>{DESTINATAIRE_LABELS[f.destinataire] ?? f.destinataire}</div>
-                      <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                        {f.destinataireNom}
-                      </div>
-                      {f.subrogation && (
-                        <div className="mt-0.5 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning-fg)]">
-                          Subrogation
-                        </div>
-                      )}
-                    </td>
-
-                    {/* Montant HT */}
-                    <td className={cellCls}>
-                      <span className="font-semibold">
-                        {(f.montantHtCents / 100).toLocaleString("fr-FR", {
-                          style: "currency",
-                          currency: "EUR",
-                        })}
-                      </span>
-                    </td>
-
-                    {/* TVA — [P1] mention dérivée du régime snapshot de la facture */}
-                    <td className={cellCls}>
-                      <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                        {f.regimeTva === "exoneration_261"
-                          ? "Exonérée (261-4-4° CGI)"
-                          : f.regimeTva === "franchise_293b"
-                            ? "Franchise en base (293 B)"
-                            : `${(f.montantTvaCents / 100).toLocaleString("fr-FR", {
-                                style: "currency",
-                                currency: "EUR",
-                              })} (TVA)`}
-                      </span>
-                    </td>
-
-                    {/* Statut */}
-                    <td className={cellCls}>
-                      {f.statut === "payee" ? (
-                        <span className="text-[color:var(--color-admin-success)]">
-                          ● {STATUT_FACTURE_LABELS[f.statut]}
-                        </span>
-                      ) : f.statut === "annulee" ? (
-                        <span className="text-[color:var(--color-admin-error)]">
-                          ○ {STATUT_FACTURE_LABELS[f.statut]}
-                        </span>
-                      ) : f.statut === "emise" ? (
-                        <span className="text-[color:var(--color-admin-warning-fg)]">
-                          ◑ {STATUT_FACTURE_LABELS[f.statut]}
-                        </span>
-                      ) : (
-                        <span className="text-[color:var(--color-admin-fg-muted)]">
-                          ○ {STATUT_FACTURE_LABELS[f.statut] ?? f.statut}
-                        </span>
-                      )}
-                    </td>
-
-                    {/* Date émission */}
-                    <td className={cellCls}>
-                      {f.emiseAt != null ? (
-                        <span className="whitespace-nowrap">
-                          {new Date(f.emiseAt).toLocaleDateString("fr-FR")}
-                        </span>
-                      ) : (
-                        <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
-                      )}
-                    </td>
-
-                    {/* Actions */}
-                    <td className={cellCls}>
-                      {f.session ? (
-                        <Link
-                          href={`/${locale}/${adminPrefix}/qualiopi/sessions/${f.session.id}/financement`}
-                          className="admin-button-ghost"
-                        >
-                          Voir session
-                        </Link>
-                      ) : (
-                        <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                          —
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
       </section>
     </AdminPageShell>
   );
