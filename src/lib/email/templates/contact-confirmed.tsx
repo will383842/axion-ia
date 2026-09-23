@@ -58,7 +58,7 @@ export function ContactConfirmedEmail({
   return (
     <EmailLayout
       famille="B"
-      signature
+      signature="equipe"
       preview={t.preview}
       title={t.title}
       // 🔴 Corrigé le 2026-08-16 : le bouton « Voir le calendrier » pointait sur

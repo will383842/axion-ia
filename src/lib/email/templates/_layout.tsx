@@ -629,11 +629,19 @@ export interface EmailLayoutProps {
   /** Bloc « boule de neige ». Ignoré hors familles B et D. */
   snowball?: "referral" | "review" | "both";
   /**
-   * Bloc signature du fondateur (§6.1). Familles B et D uniquement.
+   * Bloc signature (§6.1). Familles B et D uniquement.
    * À réserver aux messages qui ouvrent réellement un dialogue — l'apposer
    * partout le vide de son sens.
+   *
+   * - `true` / `"fondateur"` : Williams Jullin — quand c'est lui qui suit le
+   *   client (audit, implémentation, suivi J+30) ;
+   * - `"equipe"` : « L'équipe Axion-IA » — accusés de réception, où la
+   *   personne qui répondra n'est pas encore désignée.
+   *
+   * ⛔ Aucun numéro de téléphone dans ce bloc (Will, 2026-09-23 : son numéro
+   * ne figure que dans la signature Presse de Zoho).
    */
-  signature?: boolean;
+  signature?: boolean | "fondateur" | "equipe";
   /**
    * Tutoiement — lot 4 (2026-09-02). Le tunnel « devenir commercial » tutoie
    * de bout en bout (page, assistant, erreurs) et son e-mail de confirmation
@@ -709,6 +717,8 @@ const TXT = {
       "Si ce document éclaire une décision qui ne vous appartient pas seul, transférez cet e-mail : il se lit aussi bien sans contexte. En B2B, la décision est collective.",
     referralCta: "Partager sur LinkedIn",
     signatureRole: EMAIL_SIGNATURE.roleFr,
+    signatureEquipe: "L'équipe Axion-IA",
+    signatureEquipeRole: "Audit · Intégration · Automatisation · Formation IA",
     signatureRdv: "Prendre rendez-vous",
     signatureLinkedin: "LinkedIn",
     legalForm: EMAIL_LEGAL.legalFormFr,
@@ -741,6 +751,8 @@ const TXT = {
       "If this document informs a decision that is not yours alone, forward this email: it reads just as well without context. In B2B, the decision is collective.",
     referralCta: "Share on LinkedIn",
     signatureRole: EMAIL_SIGNATURE.roleEn,
+    signatureEquipe: "The Axion-IA team",
+    signatureEquipeRole: "Audit · Integration · Automation · AI training",
     signatureRdv: "Book a call",
     signatureLinkedin: "LinkedIn",
     legalForm: EMAIL_LEGAL.legalFormEn,
@@ -799,7 +811,10 @@ export function EmailLayout({
   // fichiers. (Référentiel §5.1 règle 3 et §2.5.)
   const bandeau = regime.bandeauConfiance && trust === true;
   const partage = regime.partage && snowball !== undefined;
-  const signatureVisible = signature === true && (famille === "B" || famille === "D");
+  const signatureVisible =
+    (signature === true || signature === "fondateur" || signature === "equipe") &&
+    (famille === "B" || famille === "D");
+  const signatureEquipe = signature === "equipe";
 
   const avgFr = rs.avg.toFixed(1).replace(".", locale === "fr" ? "," : ".");
   const reviewLine = `★★★★★  ${avgFr}/5 — ${rs.count} ${t.reviewsWord}`;
@@ -942,11 +957,13 @@ export function EmailLayout({
             )}
             {signatureVisible && (
               <Text style={signatureStyle} className="ax-text">
-                <span style={signatureNameStyle}>{EMAIL_SIGNATURE.fullName}</span>
+                <span style={signatureNameStyle}>
+                  {signatureEquipe ? t.signatureEquipe : EMAIL_SIGNATURE.fullName}
+                </span>
                 <br />
-                <span style={{ color: C.muted }}>{t.signatureRole}</span>
-                <br />
-                {EMAIL_LEGAL.phone}
+                <span style={{ color: C.muted }}>
+                  {signatureEquipe ? t.signatureEquipeRole : t.signatureRole}
+                </span>
                 <br />
                 <Link
                   href={avecUtm(APPEL_URL, famille, "signature", campagne)}
@@ -956,7 +973,7 @@ export function EmailLayout({
                 </Link>
                 {" · "}
                 <Link
-                  href={SOCIALS.linkedinWilliams}
+                  href={signatureEquipe ? SOCIALS.linkedinCompany : SOCIALS.linkedinWilliams}
                   style={{ color: C.orangeDeep, fontWeight: 600 }}
                 >
                   {t.signatureLinkedin}
