@@ -125,6 +125,7 @@ export async function SubmissionsV2({
     // sur son défaut `all`. Cliquer « Appliquer » ne changeait rien : la liste
     // était identique avant et après, sans que rien ne le dise.
     replyStatus: searchParams["replyStatus"] as never,
+    tri: searchParams["tri"] as never,
     dateFrom: searchParams["dateFrom"],
     dateTo: searchParams["dateTo"],
     page: searchParams["page"] ? parseInt(searchParams["page"], 10) : 1,

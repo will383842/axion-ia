@@ -494,6 +494,18 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Inbox",
       group: "contacts",
     },
+    // 🔑 « À TRAITER » EN TÊTE, PARCE QUE C'EST LA QUESTION DU MATIN.
+    //    La boîte se lisait par PROVENANCE — presse, partenariats,
+    //    investisseurs… — et rien ne disait ce qui attendait une réponse. Une
+    //    boîte de réception se lit par ce qui reste à faire, pas par l'origine
+    //    de ce qui est arrivé. La vue force trois critères : sans réponse, ni
+    //    traité ni archivé, le plus ANCIEN en tête (celui qui a le plus attendu).
+    {
+      href: `${base}/contacts/a-traiter`,
+      label: "À traiter",
+      icon: "ListOrdered",
+      group: "contacts",
+    },
     {
       href: `${base}/contacts/appels`,
       label: "Appels réservés",
@@ -510,6 +522,21 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Mail",
       group: "contacts",
     },
+    // 🔴 2026-09-23 — SEPT ONGLETS QUI N'APPRENAIENT RIEN À PERSONNE.
+    //    Mesuré en production le même jour, sur la totalité de la table
+    //    (27 lignes depuis le 6 juillet) :
+    //      Demandes clients 0 · Presse 0 · Partenariats 0 · Investisseurs 0
+    //      Conférences 0 · Podcast 0 (sa table est vide)
+    //      Autres 9 — c'est-à-dire EXACTEMENT ce que montre « Messages ».
+    //    Sept lignes de menu permanentes : six vides, une qui répète son parent.
+    //    Will : « je suis complètement perdu entre toutes ces pages ».
+    //
+    // 🔑 On les MASQUE, on ne les supprime pas. `parent` les retire de la barre
+    //    latérale en les laissant dans `buildAdminNav` — donc dans la palette
+    //    ⌘K, dans les favoris et joignables par URL. Le sélecteur « Catégorie »
+    //    de l'écran Messages couvre le même besoin, là où on le cherche.
+    //    Réversible en retirant une ligne, catégorie par catégorie, le jour où
+    //    l'une d'elles reçoit son premier message.
     // ▸ Catégories de « Messages » (niveau 3 visuel). Ces routes existaient
     //   déjà, masquées de la sidebar depuis le 2026-07-29 ; elles y reviennent
     //   sous leur parent au lieu d'être un filtre interne à la page. Libellés
@@ -522,6 +549,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Briefcase",
       group: "contacts",
       navLevel: 2,
+      parent: `${base}/contacts/messages`,
     },
     {
       href: `${base}/contacts/presse`,
@@ -529,6 +557,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Newspaper",
       group: "contacts",
       navLevel: 2,
+      parent: `${base}/contacts/messages`,
     },
     {
       href: `${base}/contacts/partenariats`,
@@ -536,6 +565,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Handshake",
       group: "contacts",
       navLevel: 2,
+      parent: `${base}/contacts/messages`,
     },
     {
       href: `${base}/contacts/investisseurs`,
@@ -543,6 +573,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "TrendingUp",
       group: "contacts",
       navLevel: 2,
+      parent: `${base}/contacts/messages`,
     },
     {
       href: `${base}/contacts/conferences`,
@@ -550,7 +581,38 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Presentation",
       group: "contacts",
       navLevel: 2,
+      parent: `${base}/contacts/messages`,
     },
+    // Demandes de tournage podcast (2026-07-21) — lead entrant de la page
+    // publique /podcast + du QR du flyer papier. Route hors `/contacts/*` (le
+    // layout Contacts impose son propre AdminPageShell), d'où le `navLevel`
+    // explicite : l'URL ne dit pas qu'elle est une catégorie de Messages.
+    {
+      href: `${base}/podcast`,
+      label: "Podcast",
+      icon: "Mic",
+      group: "contacts",
+      navLevel: 2,
+      parent: `${base}/contacts/messages`,
+    },
+    {
+      href: `${base}/contacts/autres`,
+      label: "Autres",
+      icon: "MessagesSquare",
+      group: "contacts",
+      navLevel: 2,
+      parent: `${base}/contacts/messages`,
+    },
+    // 🔴 2026-09-23 — « APPORTEURS » N'EST PAS UNE CATÉGORIE DE COURRIER.
+    //    Elle était indentée sous « Messages », entre « Conférences » et
+    //    « Podcast », comme si recevoir la candidature d'un apporteur était de
+    //    même nature que recevoir un communiqué. C'est un PIPELINE — candidature,
+    //    kit, invitation, échange, contrat — avec ses étapes et ses relances. Sa
+    //    place est à côté de « Candidatures », l'autre pipeline.
+    //
+    //    Mesure qui a déclenché le déplacement (production, 2026-09-23) : 12 des
+    //    18 lignes actives de « Messages » étaient des apporteurs. Les deux tiers
+    //    d'une boîte de réception occupés par une file qui se pilote ailleurs.
     // « Apporteurs » (2026-09-19, ex-« Recrutement ») : la liste ne contient
     // plus que les apporteurs d'affaires — les messages /contact « je cherche
     // un poste » vont dans « Autres ». Le libellé dit enfin ce qu'on y trouve ;
@@ -564,25 +626,6 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Apporteurs",
       icon: "UserSearch",
       group: "contacts",
-      navLevel: 2,
-    },
-    // Demandes de tournage podcast (2026-07-21) — lead entrant de la page
-    // publique /podcast + du QR du flyer papier. Route hors `/contacts/*` (le
-    // layout Contacts impose son propre AdminPageShell), d'où le `navLevel`
-    // explicite : l'URL ne dit pas qu'elle est une catégorie de Messages.
-    {
-      href: `${base}/podcast`,
-      label: "Podcast",
-      icon: "Mic",
-      group: "contacts",
-      navLevel: 2,
-    },
-    {
-      href: `${base}/contacts/autres`,
-      label: "Autres",
-      icon: "MessagesSquare",
-      group: "contacts",
-      navLevel: 2,
     },
     // Candidatures aux offres publiées (JobApplication : CV/photo, workflow RH).
     {

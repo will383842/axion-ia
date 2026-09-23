@@ -350,18 +350,43 @@ describe("contacts — le recrutement se partage entre Apporteurs et Autres", ()
       expect(rangees.has(l.id), `« ${l.id} » n'est plus dans aucune liste`).toBe(true);
   });
 
-  it("depuis Messages, un apporteur s'ouvre sur SA fiche, les autres sur la fiche message", async () => {
-    const racine = await (MessagesPage as unknown as Page)({
+  // 🔴 2026-09-23 — CETTE GARDE DISAIT « UN APPORTEUR VU DEPUIS MESSAGES ».
+  //    Il n'y en a plus : les apporteurs ont quitté la boîte de réception.
+  //    Mesuré en production le même jour — 12 des 18 lignes actives de
+  //    « Messages » étaient des captures du tunnel apporteurs, la trace d'un
+  //    formulaire EN COURS de remplissage. Les deux tiers d'une boîte occupés
+  //    par une file qui se pilote ailleurs.
+  //
+  //    L'intention d'origine ne change pas : un apporteur s'ouvre sur SA fiche,
+  //    pas « comme un message ». Elle se vérifie maintenant là où il apparaît.
+  const hrefsDe = async (page: Page) => {
+    const racine = await page({
       params: Promise.resolve({ adminPrefix: "p" }),
       searchParams: Promise.resolve({}),
     });
     const liste = await (racine.type as (p: unknown) => Promise<ReactElement>)(racine.props);
     const { container } = render(liste);
     const hrefs = [...container.querySelectorAll("a[href]")].map((a) => a.getAttribute("href"));
+    cleanup();
+    return hrefs;
+  };
+
+  it("un apporteur ne figure PLUS dans Messages, sous aucun lien", async () => {
+    const hrefs = await hrefsDe(MessagesPage as unknown as Page);
+    expect(hrefs).not.toContain("/fr/p/contacts/commercial/apporteur");
+    expect(hrefs).not.toContain("/fr/p/contacts/messages/apporteur");
+  });
+
+  it("un message /contact « recrutement » SANS sous-type reste dans Messages", async () => {
+    // Le pendant indispensable : sans lui, vider la boîte passerait au vert.
+    const hrefs = await hrefsDe(MessagesPage as unknown as Page);
+    expect(hrefs).toContain("/fr/p/contacts/messages/emploi-sans-soustype");
+  });
+
+  it("depuis SA liste, un apporteur s'ouvre sur sa fiche, pas « comme un message »", async () => {
+    const hrefs = await hrefsDe(ApporteursPage as unknown as Page);
     expect(hrefs).toContain("/fr/p/contacts/commercial/apporteur");
     expect(hrefs).not.toContain("/fr/p/contacts/messages/apporteur");
-    expect(hrefs).toContain("/fr/p/contacts/messages/emploi-sans-soustype");
-    cleanup();
   });
 
   it("la liste Apporteurs porte son nom, un bouton « Ajouter », et aucun bouton sur Messages", async () => {

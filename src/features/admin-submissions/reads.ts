@@ -244,7 +244,7 @@ export async function listSubmissions(
   if (parsed.perimetre === "apporteurs" && !searchQ) {
     const lignes = await prisma.submission.findMany({
       where,
-      orderBy: { submittedAt: "desc" },
+      orderBy: { submittedAt: parsed.tri === "ancien" ? "asc" : "desc" },
       take: SCAN_CAP,
       select,
     });
@@ -286,7 +286,7 @@ export async function listSubmissions(
     // filtre + pagine en mémoire. Une boîte admin dépasse rarement ce plafond.
     const scanned = await prisma.submission.findMany({
       where,
-      orderBy: { submittedAt: "desc" },
+      orderBy: { submittedAt: parsed.tri === "ancien" ? "asc" : "desc" },
       take: SCAN_CAP,
       select,
     });
@@ -299,7 +299,7 @@ export async function listSubmissions(
       prisma.submission.count({ where }),
       prisma.submission.findMany({
         where,
-        orderBy: { submittedAt: "desc" },
+        orderBy: { submittedAt: parsed.tri === "ancien" ? "asc" : "desc" },
         skip: (parsed.page - 1) * parsed.pageSize,
         take: parsed.pageSize,
         select,
