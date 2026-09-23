@@ -21,7 +21,7 @@
  * pris à l'endroit où il se produit.
  */
 
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 import {
@@ -48,10 +48,24 @@ type Phase =
   | { readonly nom: "remise" }
   | { readonly nom: "echec"; readonly message: string; readonly replyId?: string };
 
+/**
+ * Un lien à insérer d'un clic — imprimé, ou rendez-vous Calendly.
+ * Calculé côté SERVEUR par `liensInsertionComposeur` (voir la page) : le
+ * référentiel des imprimés et `env` ne doivent pas traverser vers ce composant
+ * client, qui n'a besoin que de trois `{ id, label, url }` réduits.
+ */
+export interface LienInsertionComposeur {
+  readonly id: string;
+  readonly label: string;
+  readonly url: string;
+}
+
 interface Props {
   readonly applicationId: string;
   readonly prenom: string;
   readonly poste: string;
+  /** Boutons « Insérer un lien » proposés à côté du corps du message. */
+  readonly liensInsertion?: readonly LienInsertionComposeur[];
 }
 
 /** Rendu de l'aperçu — mêmes fragments que l'e-mail, apparence de la console. */
@@ -81,7 +95,12 @@ function Apercu({ texte }: { texte: string }): React.ReactElement {
   );
 }
 
-export function ComposerReponse({ applicationId, prenom, poste }: Props): React.ReactElement {
+export function ComposerReponse({
+  applicationId,
+  prenom,
+  poste,
+  liensInsertion = [],
+}: Props): React.ReactElement {
   const router = useRouter();
   const [ouvert, setOuvert] = useState(false);
   const [modele, setModele] = useState<ModeleReponseId>("libre");
@@ -90,6 +109,35 @@ export function ComposerReponse({ applicationId, prenom, poste }: Props): React.
   const [note, setNote] = useState("");
   const [phase, setPhase] = useState<Phase>({ nom: "repos" });
   const [, demarrer] = useTransition();
+  const corpsRef = useRef<HTMLTextAreaElement>(null);
+
+  /**
+   * Insère `[libellé](url)` AU CURSEUR — pas en fin de texte. Le composeur
+   * n'accepte aucune pièce jointe (doctrine du dépôt : un lien suit la
+   * dernière version du document, une pièce jointe de 10 Mo pousse vers les
+   * indésirables) ; Will ne retient pas les adresses de tête, donc en
+   * pratique il n'en collait jamais. Sans position de curseur connue (aucune
+   * sélection faite), on ajoute en fin de message plutôt que d'échouer.
+   */
+  function insererLien(lien: LienInsertionComposeur): void {
+    const fragment = `[${lien.label}](${lien.url})`;
+    const el = corpsRef.current;
+    if (!el) {
+      setCorps((c) => (c.length > 0 ? `${c}\n\n${fragment}` : fragment));
+      return;
+    }
+    const debut = el.selectionStart ?? corps.length;
+    const fin = el.selectionEnd ?? corps.length;
+    const nouveau = corps.slice(0, debut) + fragment + corps.slice(fin);
+    setCorps(nouveau);
+    const position = debut + fragment.length;
+    // Après le prochain rendu : `el.value` doit déjà porter le texte inséré
+    // pour que `setSelectionRange` positionne le curseur au bon endroit.
+    requestAnimationFrame(() => {
+      el.focus();
+      el.setSelectionRange(position, position);
+    });
+  }
 
   function choisirModele(id: ModeleReponseId): void {
     setModele(id);
@@ -234,8 +282,34 @@ export function ComposerReponse({ applicationId, prenom, poste }: Props): React.
           <label htmlFor="corps" className="admin-label">
             Message
           </label>
+          {/* 🔑 Le composeur n'accepte aucune pièce jointe (doctrine du dépôt :
+              un lien suit la dernière version du document, une pièce jointe de
+              10 Mo pousse vers les indésirables). Sans ces boutons, Will devait
+              retenir les adresses de tête pour coller un lien markdown — en
+              pratique il n'en mettait jamais. Un clic insère `[libellé](url)`
+              au curseur, prêt à partir. */}
+          {liensInsertion.length > 0 ? (
+            <div
+              role="group"
+              aria-label="Insérer un lien"
+              className="mb-[var(--space-admin-2)] flex flex-wrap gap-[var(--space-admin-2)]"
+            >
+              <span className="admin-meta-small self-center">Insérer un lien :</span>
+              {liensInsertion.map((lien) => (
+                <button
+                  key={lien.id}
+                  type="button"
+                  className="admin-button-ghost"
+                  onClick={() => insererLien(lien)}
+                >
+                  {lien.label}
+                </button>
+              ))}
+            </div>
+          ) : null}
           <textarea
             id="corps"
+            ref={corpsRef}
             className="admin-input admin-textarea"
             rows={14}
             value={corps}

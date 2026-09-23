@@ -46,8 +46,12 @@ vi.mock("@/server/notifications", () => ({
   }),
 }));
 
-const { listerDossiersEnSommeil, signalerDossiersEnSommeil, PLAFOND_EXAMEN } =
-  await import("../dossiers-en-sommeil");
+const {
+  listerDossiersEnSommeil,
+  signalerDossiersEnSommeil,
+  plusAncienJamaisRepondu,
+  PLAFOND_EXAMEN,
+} = await import("../dossiers-en-sommeil");
 const { SEUIL_LE_PLUS_COURT_JOURS, SEUIL_SANS_ACTIVITE_JOURS, SEUIL_SANS_REPONSE_JOURS } =
   await import("@/content/recrutement/oubli");
 const { STATUTS_OUVERTS } = await import("@/content/recrutement/statuts");
@@ -139,6 +143,32 @@ describe("le cloisonnement de l'identité", () => {
     lignesRendues = [ligne()];
     const bilan = await listerDossiersEnSommeil(MAINTENANT, null);
     expect(bilan.dossiers[0]!.contactName).toBeNull();
+  });
+});
+
+describe("plusAncienJamaisRepondu — l'alerte de la liste principale", () => {
+  it("rend `null` sur une liste vide", () => {
+    expect(plusAncienJamaisRepondu([])).toBeNull();
+  });
+
+  it("🔴 IGNORE un « sans_activite » même placé EN TÊTE de liste", () => {
+    // Un stock sans AUCUN « jamais répondu » ne doit jamais afficher un
+    // « sans_activite » sous ce libellé : ce serait mentir sur ce que le
+    // candidat vit (lui a reçu une première réponse, l'autre non).
+    const dossiers = [
+      { id: "x", motif: "sans_activite", jours: 40 } as never,
+      { id: "y", motif: "sans_activite", jours: 21 } as never,
+    ];
+    expect(plusAncienJamaisRepondu(dossiers)).toBeNull();
+  });
+
+  it("rend le PREMIER « jamais_repondu » de la liste — déjà trié par ancienneté", () => {
+    const dossiers = [
+      { id: "recent-sans-activite", motif: "sans_activite", jours: 25 } as never,
+      { id: "plus-ancien-jamais-repondu", motif: "jamais_repondu", jours: 30 } as never,
+      { id: "moins-ancien-jamais-repondu", motif: "jamais_repondu", jours: 9 } as never,
+    ];
+    expect(plusAncienJamaisRepondu(dossiers)?.id).toBe("plus-ancien-jamais-repondu");
   });
 });
 
