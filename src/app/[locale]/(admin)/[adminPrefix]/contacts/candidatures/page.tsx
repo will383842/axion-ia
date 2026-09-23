@@ -93,11 +93,17 @@ export default async function ApplicationsListPage({ params, searchParams }: Pag
   // médiane et d'un tableau par statut. La liste, elle, se recharge à chaque
   // filtre — c'est ici qu'on regarde en travaillant.
   //
-  // Calculé seulement sur l'atterrissage NORMAL (vue « Toutes », première
-  // page, aucun filtre actif) : c'est l'écran que tout le monde voit d'abord,
-  // et la requête (bornée à 500 lignes) n'a pas de raison de tourner sur
-  // chaque page filtrée qu'on visite ensuite.
-  const alerteRepos = view === "all" && page === 1 && !sp.offerId && !recherche && !onlyAttention;
+  // Calculé seulement sur l'atterrissage NORMAL (première page, aucun filtre
+  // actif) : c'est l'écran que tout le monde voit d'abord, et la requête
+  // (bornée à 500 lignes) n'a pas de raison de tourner sur chaque page filtrée
+  // qu'on visite ensuite.
+  //
+  // 🔑 Le test `view === "all"` a disparu au rebase du 2026-09-23, et ce n'est
+  //    pas une perte : depuis la PR 1148 cet écran n'a plus de vues du tout — les
+  //    onglets « Monteur vidéo » et « Apporteurs d'affaires » ont cédé la place
+  //    à un sélecteur d'offre. Il n'y a donc plus qu'un atterrissage possible,
+  //    et c'est celui-ci.
+  const alerteRepos = page === 1 && !sp.offerId && !recherche && !onlyAttention;
   const plusAncien = alerteRepos
     ? plusAncienJamaisRepondu(
         (
