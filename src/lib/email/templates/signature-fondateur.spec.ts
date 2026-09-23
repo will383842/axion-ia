@@ -26,7 +26,11 @@ import { PAYLOAD_EXEMPLE } from "@/server/email/apercu/payloads-exemple";
 const ROLE_FONDATEUR = EMAIL_SIGNATURE.roleFr.replace("&", "&amp;");
 const EQUIPE = "L&#x27;équipe Axion-IA";
 
-const SIGNE_FONDATEUR = ["audit-confirmed", "implementation-confirmed", "qualiopi-suivi-j30"] as const;
+const SIGNE_FONDATEUR = [
+  "audit-confirmed",
+  "implementation-confirmed",
+  "qualiopi-suivi-j30",
+] as const;
 const SIGNE_EQUIPE = ["contact-confirmed", "quote-request-received", "rappel-confirme"] as const;
 
 async function rendre(nom: string): Promise<string> {
