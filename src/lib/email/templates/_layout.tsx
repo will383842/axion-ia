@@ -141,7 +141,7 @@ const CONTACT_EMAIL = EMAIL_LEGAL.contactEmail;
 const SOCIALS = {
   linkedinCompany:
     process.env.COMPANY_LINKEDIN || "https://www.linkedin.com/company/axion-ia-france/",
-  facebookCompany: "https://www.facebook.com/profile.php?id=61591668644032",
+  facebookCompany: "https://www.facebook.com/axioniacom",
   /**
    * §5.3 : « Faible impact B2B France, mais gratuit et cohérent. » Manquait.
    */
@@ -470,12 +470,27 @@ const soupapeStyle: React.CSSProperties = {
   paddingTop: "16px",
   borderTop: `1px solid ${C.border}`,
 };
-/** Bloc signature — §6.1. Pas de bannière image, pas de citation, pas de logo. */
+/**
+ * Bloc signature — §6.1. Pas de bannière image, pas de citation, pas de logo.
+ *
+ * Même dessin que les signatures Zoho Mail des boîtes humaines (refaites le
+ * 2026-09-23) : filet terracotta à gauche, nom en serif, rôle en gris chaud.
+ * Un client qui reçoit un e-mail automatique puis une réponse écrite à la main
+ * doit reconnaître la même signature — c'est la même personne.
+ */
 const signatureStyle: React.CSSProperties = {
   fontSize: "14px",
   lineHeight: 1.7,
   color: C.text,
   margin: "24px 0 0 0",
+  borderLeft: `3px solid ${C.orange}`,
+  paddingLeft: "14px",
+};
+const signatureNameStyle: React.CSSProperties = {
+  fontFamily: SERIF,
+  fontSize: "16px",
+  fontWeight: 700,
+  color: C.heading,
 };
 const footerStyle: React.CSSProperties = {
   // 12 px est le plancher du §6.2 pour rester lisible ; le gris a été assombri
@@ -614,11 +629,19 @@ export interface EmailLayoutProps {
   /** Bloc « boule de neige ». Ignoré hors familles B et D. */
   snowball?: "referral" | "review" | "both";
   /**
-   * Bloc signature du fondateur (§6.1). Familles B et D uniquement.
+   * Bloc signature (§6.1). Familles B et D uniquement.
    * À réserver aux messages qui ouvrent réellement un dialogue — l'apposer
    * partout le vide de son sens.
+   *
+   * - `true` / `"fondateur"` : Williams Jullin — quand c'est lui qui suit le
+   *   client (audit, implémentation, suivi J+30) ;
+   * - `"equipe"` : « L'équipe Axion-IA » — accusés de réception, où la
+   *   personne qui répondra n'est pas encore désignée.
+   *
+   * ⛔ Aucun numéro de téléphone dans ce bloc (Will, 2026-09-23 : son numéro
+   * ne figure que dans la signature Presse de Zoho).
    */
-  signature?: boolean;
+  signature?: boolean | "fondateur" | "equipe";
   /**
    * Tutoiement — lot 4 (2026-09-02). Le tunnel « devenir commercial » tutoie
    * de bout en bout (page, assistant, erreurs) et son e-mail de confirmation
@@ -694,6 +717,12 @@ const TXT = {
       "Si ce document éclaire une décision qui ne vous appartient pas seul, transférez cet e-mail : il se lit aussi bien sans contexte. En B2B, la décision est collective.",
     referralCta: "Partager sur LinkedIn",
     signatureRole: EMAIL_SIGNATURE.roleFr,
+    signatureEquipe: "L'équipe Axion-IA",
+    /** Positionnement (Will, 2026-09-23) — même phrase que les signatures Zoho. */
+    signaturePositionnement:
+      "Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.",
+    signatureServices:
+      "Audit IA · Implémentation de systèmes automatisés · Formation finançable OPCO · Coaching 1-to-1",
     signatureRdv: "Prendre rendez-vous",
     signatureLinkedin: "LinkedIn",
     legalForm: EMAIL_LEGAL.legalFormFr,
@@ -726,6 +755,11 @@ const TXT = {
       "If this document informs a decision that is not yours alone, forward this email: it reads just as well without context. In B2B, the decision is collective.",
     referralCta: "Share on LinkedIn",
     signatureRole: EMAIL_SIGNATURE.roleEn,
+    signatureEquipe: "The Axion-IA team",
+    signaturePositionnement:
+      "Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.",
+    signatureServices:
+      "AI audit · Automated systems implementation · OPCO-fundable training · 1-to-1 coaching",
     signatureRdv: "Book a call",
     signatureLinkedin: "LinkedIn",
     legalForm: EMAIL_LEGAL.legalFormEn,
@@ -784,7 +818,10 @@ export function EmailLayout({
   // fichiers. (Référentiel §5.1 règle 3 et §2.5.)
   const bandeau = regime.bandeauConfiance && trust === true;
   const partage = regime.partage && snowball !== undefined;
-  const signatureVisible = signature === true && (famille === "B" || famille === "D");
+  const signatureVisible =
+    (signature === true || signature === "fondateur" || signature === "equipe") &&
+    (famille === "B" || famille === "D");
+  const signatureEquipe = signature === "equipe";
 
   const avgFr = rs.avg.toFixed(1).replace(".", locale === "fr" ? "," : ".");
   const reviewLine = `★★★★★  ${avgFr}/5 — ${rs.count} ${t.reviewsWord}`;
@@ -927,11 +964,21 @@ export function EmailLayout({
             )}
             {signatureVisible && (
               <Text style={signatureStyle} className="ax-text">
-                {EMAIL_SIGNATURE.fullName}
+                <span style={signatureNameStyle}>
+                  {signatureEquipe ? t.signatureEquipe : EMAIL_SIGNATURE.fullName}
+                </span>
                 <br />
-                {t.signatureRole}
+                {!signatureEquipe && (
+                  <>
+                    <span style={{ color: C.muted }}>{t.signatureRole}</span>
+                    <br />
+                  </>
+                )}
+                <span style={{ color: C.muted, fontStyle: "italic" }}>
+                  {t.signaturePositionnement}
+                </span>
                 <br />
-                {EMAIL_LEGAL.phone}
+                <span style={{ color: C.muted, fontSize: "13px" }}>{t.signatureServices}</span>
                 <br />
                 <Link
                   href={avecUtm(APPEL_URL, famille, "signature", campagne)}
@@ -941,7 +988,7 @@ export function EmailLayout({
                 </Link>
                 {" · "}
                 <Link
-                  href={SOCIALS.linkedinWilliams}
+                  href={signatureEquipe ? SOCIALS.linkedinCompany : SOCIALS.linkedinWilliams}
                   style={{ color: C.orangeDeep, fontWeight: 600 }}
                 >
                   {t.signatureLinkedin}

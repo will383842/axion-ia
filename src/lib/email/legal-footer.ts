@@ -111,7 +111,7 @@ export const EMAIL_LEGAL = {
  */
 export const EMAIL_SIGNATURE = {
   fullName: "Williams Jullin",
-  roleFr: "Fondateur — Axion-IA",
-  roleEn: "Founder — Axion-IA",
+  roleFr: "Fondateur & CEO · Axion-IA",
+  roleEn: "Founder & CEO · Axion-IA",
   linkedin: "https://www.linkedin.com/in/williamsjullin/",
 } as const;

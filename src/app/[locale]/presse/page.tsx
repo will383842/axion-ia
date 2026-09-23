@@ -265,7 +265,10 @@ export default async function PressePage({ params, searchParams }: Props) {
           availableLanguage: ["French", "English"],
         },
       ],
-      sameAs: ["https://www.linkedin.com/company/axion-ia"],
+      sameAs: [
+        "https://www.linkedin.com/company/axion-ia-france",
+        "https://www.facebook.com/axioniacom",
+      ],
     },
   };
 

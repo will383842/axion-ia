@@ -1071,6 +1071,9 @@ export function buildOrganizationJsonLd({
     sameAs: [
       ...buildOrganizationSameAs(),
       "https://www.linkedin.com/company/axion-ia-france",
+      // Page Facebook entreprise — adresse propre fournie par Will le 2026-09-23
+      // (remplace `profile.php?id=61591668644032`). Jamais le profil PERSONNEL.
+      "https://www.facebook.com/axioniacom",
       "https://about.me/axion-ia",
       "https://www.indiehackers.com/AxionIA",
       // GEO-045 / arbitrage A4 — F6S DECLAREE le 2026-08-16, une fois la fiche
