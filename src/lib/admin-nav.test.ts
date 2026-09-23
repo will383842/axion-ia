@@ -177,7 +177,9 @@ describe("buildAdminNav SSOT", () => {
     // +1 (2026-09-23, « À traiter ») : la boîte triait par PROVENANCE et ne
     // disait nulle part ce qui attendait une réponse. C'est la question du
     // matin ; elle méritait la deuxième place, juste après « Tout ». = 163.
-    expect(items.length).toBe(163);
+    // +1 (2026-09-23, Guide IA entreprise) : sous-onglet des Imprimés, dérivé
+    // de IMPRIMES — le PDF promis par /guide-ia existe enfin. = 164.
+    expect(items.length).toBe(164);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {

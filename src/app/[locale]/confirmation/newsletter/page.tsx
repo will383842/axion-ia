@@ -20,6 +20,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata } from "@/lib/seo";
 import { confirmNewsletterAction } from "@/features/newsletter/actions";
+import { GUIDE_IA_CHEMIN, GUIDE_IA_PAGES } from "@/content/guide-ia";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -117,6 +118,37 @@ export default async function NewsletterConfirmPage({ params, searchParams }: Pr
               </AlertDescription>
             </Alert>
           )}
+
+          {/* 🔑 LA PROMESSE DE /guide-ia EST TENUE ICI (2026-09-23).
+              La page du guide promettait un PDF « après inscription » ; il
+              n'existait pas, et cette page n'en disait rien. Le guide se
+              télécharge désormais APRÈS la confirmation de l'adresse — c'est ce
+              que la page du guide annonce, et ce que l'e-mail de double opt-in
+              dit. Affiché aussi à qui était déjà inscrit : il n'a pas à se
+              désinscrire pour l'obtenir. */}
+          {result.ok ? (
+            <section
+              aria-labelledby="guide-ia-titre"
+              className="border-border mt-8 rounded-2xl border p-6"
+            >
+              <h2 id="guide-ia-titre" className="text-fg text-xl font-semibold">
+                {isFr ? "Votre guide IA entreprise" : "Your enterprise AI guide"}
+              </h2>
+              <p className="text-fg-soft mt-2 text-base leading-relaxed">
+                {isFr
+                  ? `${GUIDE_IA_PAGES} pages au format PDF : usages concrets, coûts réels, retour sur investissement, gouvernance et écueils à éviter. Commencez par la page 5, l'essentiel en une page.`
+                  : `${GUIDE_IA_PAGES} pages, PDF, in French: concrete use cases, real costs, return on investment, governance and pitfalls to avoid. Start with page 5, the essentials on one page.`}
+              </p>
+              <a
+                href={`/${GUIDE_IA_CHEMIN}`}
+                download
+                data-track="newsletter-confirm-guide-ia"
+                className="bg-primary text-primary-fg hover:bg-primary-hover shadow-subtle mt-5 inline-flex w-fit items-center gap-2 rounded-full px-6 py-3 text-base font-semibold"
+              >
+                {isFr ? "Télécharger le guide (PDF)" : "Download the guide (PDF)"}
+              </a>
+            </section>
+          ) : null}
 
           <div className="mt-8">
             <Cta

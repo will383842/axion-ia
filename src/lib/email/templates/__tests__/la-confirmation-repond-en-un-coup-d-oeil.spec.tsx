@@ -32,6 +32,7 @@
 import { describe, expect, it } from "vitest";
 
 import { renderEmailTemplate } from "../index";
+import { GUIDE_IA_CHEMIN } from "@/content/guide-ia";
 
 const BASE = {
   prenom: "Camille",
@@ -192,6 +193,72 @@ describe("🔴 le budget de liens de la famille B, mesuré sur le cas le plus lo
         `SATURÉ : tout nouveau lien exige d'en retirer un. Liens : ${[...liens].join(", ")}`,
     ).toBeLessThanOrEqual(9);
   });
+
+  /*
+   * 🔴 2026-09-23 — LE TÉMOIN CI-DESSUS ÉTAIT LUI AUSSI TROP DOUX.
+   *
+   * Il rend le message SANS destinataire. Or le worker en fournit toujours un, et
+   * le châssis ajoute alors le lien d'opposition au pied de page. Rendue comme
+   * elle part vraiment, la confirmation visio portait 10 URL pour un budget de 9
+   * — avant même l'ajout du guide. Ce cas-ci est celui de la production.
+   */
+  it("🔴 rendue AVEC son destinataire, comme par le worker : guide compris, ≤ 9", async () => {
+    const r = await renderEmailTemplate(
+      "appel-confirme",
+      "fr",
+      { ...BASE, moment: "confirmation", lieu: LIEN_VISIO },
+      { destinataire: "camille@exemple.fr" },
+    );
+    const liens = liensDistincts(r.html);
+    expect(
+      [...liens].some((l) => l.includes("/api/unsubscribe?token=")),
+      "prémisse : le lien d'opposition est rendu — sinon ce témoin ne mesure rien",
+    ).toBe(true);
+    expect(
+      [...liens].some((l) => l.endsWith(`/${GUIDE_IA_CHEMIN}`)),
+      "le guide IA entreprise doit être proposé en lien",
+    ).toBe(true);
+    expect(
+      liens.size,
+      `${liens.size} URL distinctes pour un budget de 9. Liens : ${[...liens].join(", ")}`,
+    ).toBeLessThanOrEqual(9);
+  });
+});
+
+describe("le guide IA entreprise — offert à la confirmation, et nulle part ailleurs", () => {
+  it("🔑 la confirmation le propose en LIEN, jamais en pièce jointe, sans en faire un devoir", async () => {
+    const { html, text } = await rendre({ ...BASE, moment: "confirmation", format: "visio" });
+    expect(html).toContain(`/${GUIDE_IA_CHEMIN}"`);
+    expect(text).toContain("Si vous avez dix minutes d'ici là");
+    expect(text).toContain("40 pages, offert");
+    // L'exercice de la p. 9 demande une heure (titre de la page) : ne pas le
+    // présenter comme la suite des dix minutes.
+    expect(text).toContain("l'exercice de la page 9 demande une heure");
+    // La même confirmation dit « Rien à préparer » : le guide ne la dément pas.
+    expect(text).toContain("Rien à préparer de votre côté.");
+    expect(text).not.toMatch(/pour préparer notre échange/i);
+  });
+
+  for (const [nom, moment] of [
+    ["appel-rappel-j1", "j1"],
+    ["appel-rappel", "h1"],
+  ] as const) {
+    it(`${nom} ne le porte PAS — famille C, trois lignes`, async () => {
+      const r = await renderEmailTemplate(nom, "fr", { ...BASE, moment, lieu: LIEN_VISIO });
+      expect(r.html).not.toContain(GUIDE_IA_CHEMIN);
+    });
+  }
+
+  for (const nom of [
+    "apporteur-echange-confirme",
+    "apporteur-echange-rappel-j1",
+    "apporteur-echange-rappel",
+  ] as const) {
+    it(`${nom} ne le porte PAS — le candidat apporteur a son propre kit`, async () => {
+      const r = await renderEmailTemplate(nom, "fr", { ...BASE, moment: "confirmation" });
+      expect(r.html).not.toContain(GUIDE_IA_CHEMIN);
+    });
+  }
 });
 
 describe("🔴 rien ne s'invente quand la charge est incomplète", () => {

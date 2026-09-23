@@ -30,6 +30,7 @@
 
 import { formatAmount } from "@/content/pricing";
 import { DOCUMENT_APPORTEUR_CHEMIN } from "@/lib/commercial-application/kit-apporteur";
+import { GUIDE_IA_CHEMIN, GUIDE_IA_PAGES } from "@/content/guide-ia";
 
 /**
  * Valeur du coup de projecteur TELLE QU'ELLE EST ENCRÉE sur le tirage en cours
@@ -229,6 +230,33 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     avantTirage: [
       "Le vocabulaire est celui de l'apporteur qui RECOMMANDE, jamais du commercial qui vend : ni « prospection », ni « argumentaire », ni « formation à l'offre ». Relire toute correction à l'aune de docs/partners/ANTI-REQUALIFICATION.md.",
       "Les commissions imprimées dans le document (par journée de formation, audit, intégration) viennent de COMMERCIAL_COMMISSIONS dans pricing.ts : si la grille change, le document doit être régénéré.",
+    ],
+  },
+  {
+    id: "guide-ia",
+    icon: "Lightbulb",
+    nom: `Guide IA entreprise · ${GUIDE_IA_PAGES} pages`,
+    format: `A4 portrait · 210 × 297 mm · ${GUIDE_IA_PAGES} pages, lecture à l'écran`,
+    resume:
+      "Le guide promis par la page /guide-ia : comprendre l'IA générative, les usages prouvés, les coûts réels, la gouvernance, le retour sur investissement et les écueils. Téléchargeable depuis la page de confirmation de la lettre, et proposé en lien dans la confirmation d'un appel de découverte.",
+    fichiersPublics: [
+      {
+        chemin: GUIDE_IA_CHEMIN,
+        nom: `Le PDF, ${GUIDE_IA_PAGES} pages`,
+        role: "Le lien de la page de confirmation de la lettre (après le double opt-in) et de l'e-mail de confirmation d'un appel de découverte. ⚠️ Ne pas renommer : le chemin part dans des e-mails déjà envoyés. Une nouvelle édition remplace le fichier sous le même nom.",
+      },
+    ],
+    fichiersHorsLigne: [
+      {
+        nom: "La source du guide",
+        ou: "_GUIDE-IA-2026/ (poste de fabrication, hors dépôt)",
+        pourquoi:
+          "Le PDF est un rendu : toute correction se fait dans la source, puis le PDF se régénère et remplace celui-ci. Corriger le PDF à la main ferait diverger les deux.",
+      },
+    ],
+    avantTirage: [
+      `La page /guide-ia annonce ${GUIDE_IA_PAGES} pages et six chapitres : une nouvelle édition qui change la pagination fait rougir src/content/__tests__/le-guide-promis-existe.spec.ts, qui recompte le PDF.`,
+      "Les pages 5 (l'essentiel en une page) et 9 (l'exercice d'une heure) sont citées dans l'e-mail de confirmation d'un appel : si elles bougent, corriger appel-rappel.tsx.",
     ],
   },
   {
