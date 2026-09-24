@@ -338,6 +338,32 @@ export type NotificationEvent =
       category: "NEWSLETTER_PENDING" | "NEWSLETTER_CONFIRMED" | "NEWSLETTER_UNSUBSCRIBED";
       payload: { email: string; locale?: "fr" | "en" };
     }
+  // === Guide IA (lot L2, 2026-09-24) ===
+  //
+  // `email` est TOUJOURS masqué à l'appel (`redactEmail`, ADR 0010) : le hub
+  // n'a pas à apprendre une adresse en clair pour dire qu'un guide est parti.
+  | {
+      category: "GUIDE_REQUESTED";
+      payload: {
+        email: string;
+        locale: "fr" | "en";
+        source: string;
+        lettre: "a-confirmer" | "deja-abonnee" | "non-demandee";
+        envoi: string;
+        nouvelle: boolean;
+      };
+    }
+  // Récapitulatif QUOTIDIEN : des nombres, jamais une adresse.
+  | {
+      category: "GUIDE_RECAP";
+      payload: {
+        demandes: number;
+        envois: number;
+        clics: number;
+        enAttente: number;
+        lettresAConfirmer: number;
+      };
+    }
   // === Booking interne (existant) ===
   | {
       category: "BOOKING_CREATED";

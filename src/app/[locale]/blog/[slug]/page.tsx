@@ -797,7 +797,7 @@ export default async function BlogArticle({ params }: Props) {
 
       {/* Refonte templates 2026-06-22 — capture newsletter (réutilise l'inscription
           existante du site, double opt-in + Turnstile). */}
-      <ArticleNewsletterInline locale={loc} />
+      <ArticleNewsletterInline locale={loc} source="blog-fin-article" />
 
       <CtaBlock
         spacing="compact"

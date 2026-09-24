@@ -142,7 +142,12 @@ export type EmailJobName =
   | "apporteur-invitation-appel"
   // Lot L4 2026-08-14 — information RGPD au stock de candidatures avant
   // intégration au vivier (lien d'opposition, fenêtre de 30 jours).
-  | "vivier-information";
+  | "vivier-information"
+  // Lot L2 (2026-09-24) — « Votre guide » : le guide IA, envoyé TOUT DE SUITE
+  // à la demande (décision n° 1 de Will), avec le bouton de confirmation de la
+  // lettre quand la case facultative était cochée. Transactionnel, jamais
+  // `marketing: true`.
+  | "guide-ia-envoi";
 
 /**
  * Lot L4 — passage quotidien du vivier candidats.
@@ -160,6 +165,18 @@ export type VivierCronJobType = "integrate-stock";
 
 export interface VivierCronJobData {
   readonly type?: VivierCronJobType;
+  readonly tick?: string;
+}
+
+/**
+ * Lot L2 (2026-09-24) — passages du GUIDE IA : rattrapage horaire des envois
+ * et des confirmations, sentinelle quotidienne. Types déclarés ICI pour la
+ * même raison que ceux du vivier (pas d'arête `queues.ts` → worker).
+ */
+export type GuideIaCronJobType = "rattrapage" | "sentinelle";
+
+export interface GuideIaCronJobData {
+  readonly type?: GuideIaCronJobType;
   readonly tick?: string;
 }
 

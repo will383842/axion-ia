@@ -157,9 +157,30 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       source: true,
       confirmedAt: true,
       unsubscribedAt: true,
+      consentVersion: true,
       createdAt: true,
     },
   });
+
+  // Lot L2 (2026-09-24) — demandes du guide IA : ce qui a été demandé, d'où,
+  // quand c'est parti et quand le guide a été ouvert. Le jeton du lien
+  // personnel n'est PAS exporté : c'est un secret d'accès, pas une donnée.
+  const guide = await prisma.guideRequest
+    .findMany({
+      where: { email },
+      select: {
+        aimant: true,
+        source: true,
+        locale: true,
+        createdAt: true,
+        sentAt: true,
+        sendCount: true,
+        firstSeenAt: true,
+        firstClickAt: true,
+      },
+      orderBy: { createdAt: "desc" },
+    })
+    .catch(() => []);
 
   // 🔴 `D5-5-03` (2026-08-20) — LES CANDIDATURES ÉTAIENT ABSENTES DE L'EXPORT.
   //
@@ -320,6 +341,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     email,
     submissions: submissionsLisibles,
     newsletter,
+    /** Demandes du guide IA entreprise. */
+    guide,
     kb,
     chat,
     consentEvents,

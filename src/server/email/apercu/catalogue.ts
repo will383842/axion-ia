@@ -467,9 +467,17 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   },
   "newsletter-confirm-optin": {
     categorie: "divers",
-    quand: "Inscription newsletter — double opt-in, confirmation à cliquer",
+    quand:
+      "Confirmation de la lettre restée sans envoi — rattrapage horaire (depuis le lot L2, la confirmation voyage dans « Votre guide »)",
     destinataire: "l'inscrit",
-    source: "features/newsletter/actions.ts",
+    source: "server/guide-ia/rattrapage.ts",
+  },
+  "guide-ia-envoi": {
+    categorie: "divers",
+    quand:
+      "Demande du guide IA (page du guide ou encart d'article) — envoyé tout de suite, avec le bouton de confirmation de la lettre si la case était cochée",
+    destinataire: "le demandeur",
+    source: "server/guide-ia/envoi.ts",
   },
   "ressources-magic-link": {
     categorie: "divers",

@@ -371,7 +371,7 @@ export default async function GuidePiliersPage({ params }: Props) {
       <ArticlePrevNext prev={adjacent.prev} next={adjacent.next} locale="fr" />
 
       {/* Refonte 2026-06-22 — newsletter (parité /blog). */}
-      <ArticleNewsletterInline locale="fr" />
+      <ArticleNewsletterInline locale="fr" source="guides-fin-article" />
 
       <CtaBlock
         title="Besoin d'un accompagnement opérationnel ?"

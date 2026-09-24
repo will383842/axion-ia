@@ -669,11 +669,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Finalités",
-          body: "Réponse aux demandes commerciales, suivi des prestations, sécurité du site, statistiques d'audience anonymes. Pas de profilage, pas de revente de données.",
+          body: "Réponse aux demandes commerciales, suivi des prestations, envoi du guide IA entreprise à qui le demande, lettre d'information aux personnes inscrites, sécurité du site, statistiques d'audience anonymes. Pas de profilage, pas de revente de données.",
         },
         {
           title: "Base légale",
-          body: "Exécution contractuelle (RGPD art. 6.1.b) pour les clients ; intérêt légitime (RGPD art. 6.1.f) pour la sécurité ; consentement (RGPD art. 6.1.a) pour la newsletter.",
+          body: "Exécution contractuelle (RGPD art. 6.1.b) pour les clients et pour l'envoi du guide que vous demandez ; intérêt légitime (RGPD art. 6.1.f) pour la sécurité et le suivi de la relation ; consentement (RGPD art. 6.1.a) pour la lettre d'information.",
         },
         {
           title: "Durée de conservation",
@@ -682,6 +682,13 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         {
           title: "Rendez-vous de découverte",
           body: "Le rendez-vous de premier contact réservé depuis la page /appel se tient au choix par téléphone ou en visioconférence. Si vous choisissez la visioconférence, un lien de réunion vous est transmis avec la confirmation ; la réunion se déroule alors sur un service tiers, dont la localisation et le cadre de transfert figurent sur /sous-processeurs. Ces rendez-vous ne sont ni enregistrés ni transcrits : aucune captation audio ou vidéo n'est réalisée, et il n'existe donc aucun enregistrement à conserver ou à demander. Seules les informations que vous saisissez au moment de la réservation — nom, adresse e-mail, téléphone et réponses aux questions du formulaire — sont conservées, dans les conditions décrites ci-dessus.",
+        },
+        {
+          // Lot L2 (2026-09-24) — publiée AVEC le nouveau formulaire du guide :
+          // l'information précède la collecte. Durées gardées par
+          // `src/content/__tests__/la-notice-dit-vrai-sur-le-guide.spec.ts`.
+          title: "Guide IA entreprise et lettre d'information",
+          body: "Lorsque vous demandez le guide IA entreprise — depuis la page /guide-ia ou depuis l'encart en fin d'article —, nous collectons votre adresse e-mail, la page d'où vient la demande et la langue du site. Le guide vous est envoyé tout de suite par e-mail : c'est l'exécution de votre demande (RGPD art. 6.1.b). La lettre d'information d'Axion-IA est facultative : vous ne la recevez que si vous avez coché la case prévue, puis confirmé votre inscription depuis l'e-mail reçu (consentement, art. 6.1.a). Quelques lettres par an, à chaque nouveauté utile ; chacune comporte un lien de désinscription en un clic. Comme preuve de ce consentement, nous conservons la version du texte que vous avez accepté, la date de votre confirmation et une empreinte non réversible de votre adresse IP. Nous enregistrons aussi la date d'envoi du guide et, lorsque vous cliquez sur le bouton de téléchargement, la date de ce clic ; les statistiques d'audience associées sont anonymes. Suivi de la relation : lorsque vous ouvrez le guide depuis l'e-mail, votre adresse est enregistrée dans notre logiciel interne de gestion de la relation client (CRM), sur la base de notre intérêt légitime (art. 6.1.f) à suivre les échanges avec les professionnels qui s'intéressent à nos services ; vous pouvez vous y opposer à tout moment. Aucune prospection commerciale n'est adressée à une adresse personnelle sans votre consentement. Destinataires : notre prestataire d'envoi d'e-mails ZeptoMail, qui achemine le guide et la confirmation ; la messagerie interne Telegram de l'équipe, qui ne reçoit qu'une version masquée de votre adresse. Vos données ne sont ni vendues ni cédées. Conservation : demande du guide, 3 ans après votre dernière demande ; inscription à la lettre, jusqu'à votre désinscription, puis 3 ans en liste d'opposition, pour qu'aucun envoi ne vous parvienne ; inscription jamais confirmée, 30 jours. Vous disposez des droits d'accès, de rectification, d'effacement, d'opposition, de limitation et de portabilité, en écrivant à contact@axion-ia.com, et du droit d'introduire une réclamation auprès de la CNIL.",
         },
         {
           title: "Candidatures et recrutement",
@@ -741,15 +748,19 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Purposes",
-          body: "Reply to commercial requests, service follow-up, site security, anonymous audience statistics. No profiling, no data resale.",
+          body: "Reply to commercial requests, service follow-up, sending the enterprise AI guide to those who request it, newsletter to subscribers, site security, anonymous audience statistics. No profiling, no data resale.",
         },
         {
           title: "Legal basis",
-          body: "Contractual performance (GDPR art. 6.1.b) for clients; legitimate interest (GDPR art. 6.1.f) for security; consent (GDPR art. 6.1.a) for the newsletter.",
+          body: "Contractual performance (GDPR art. 6.1.b) for clients and for sending the guide you request; legitimate interest (GDPR art. 6.1.f) for security and relationship follow-up; consent (GDPR art. 6.1.a) for the newsletter.",
         },
         {
           title: "Retention period",
           body: "Client data: 5 years after end of service (French accounting obligation). Commercial requests: 3 years. Technical logs: 12 months maximum. Applications submitted through the /carrieres page follow a distinct regime, detailed in the « Retention of job applications » section below.",
+        },
+        {
+          title: "Enterprise AI guide and newsletter",
+          body: "When you request the enterprise AI guide — from the /guide-ia page or from the box at the end of an article —, we collect your email address, the page the request comes from and the site language. The guide is sent to you straight away by email: this is the performance of your request (GDPR art. 6.1.b). Axion-IA's newsletter is optional: you only receive it if you ticked the dedicated box, then confirmed your subscription from the email you received (consent, art. 6.1.a). A few emails a year, only when there is something new and useful; each one carries a one-click unsubscribe link. As proof of that consent, we keep the version of the text you accepted, the date of your confirmation and a non-reversible fingerprint of your IP address. We also record the date the guide was sent and, when you click the download button, the date of that click; the related audience statistics are anonymous. Relationship follow-up: when you open the guide from the email, your address is recorded in our internal customer relationship management software (CRM), on the basis of our legitimate interest (art. 6.1.f) in following up with professionals interested in our services; you can object at any time. No commercial prospecting is sent to a personal address without your consent. Recipients: our email delivery provider ZeptoMail, which carries the guide and the confirmation; the team's internal Telegram messaging, which only receives a masked version of your address. Your data is neither sold nor transferred. Retention: guide request, 3 years after your last request; newsletter subscription, until you unsubscribe, then 3 years on the objection list, so that nothing reaches you; subscription never confirmed, 30 days. You have the rights of access, rectification, erasure, objection, limitation and portability, by writing to contact@axion-ia.com, and the right to lodge a complaint with the CNIL.",
         },
         {
           title: "Job applications and recruitment",

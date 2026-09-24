@@ -23,6 +23,8 @@ import type {
   SiteRouteGscJobData,
   VivierCronJobData,
   VivierCronJobType,
+  GuideIaCronJobData,
+  GuideIaCronJobType,
 } from "./types";
 import type { ImageBankEnrichJobData } from "./workers/image-bank-enrich-worker";
 import type { ImageBankImportJobData } from "./workers/image-bank-import-worker";
@@ -163,6 +165,28 @@ export const vivierCronsQueue: Queue<VivierCronJobData, void, VivierCronJobType>
       },
     })
   : null;
+
+/**
+ * Lot L2 (2026-09-24) — passages du GUIDE IA.
+ *
+ * Rattrapage horaire des guides et confirmations restés sans envoi, et
+ * sentinelle quotidienne. File SÉPARÉE de `emails` : une file d'envoi qui
+ * porterait aussi son propre contrôle ne pourrait pas dire qu'elle est coupée.
+ *
+ * `attempts: 1` : un passage raté est repris au suivant — l'état vit en base.
+ */
+export const guideIaCronsQueue: Queue<GuideIaCronJobData, void, GuideIaCronJobType> | null =
+  connection
+    ? new Queue<GuideIaCronJobData, void, GuideIaCronJobType>("guide-ia-crons", {
+        connection,
+        defaultJobOptions: {
+          ...defaultJobOptions,
+          attempts: 1,
+          removeOnComplete: { age: 7 * 24 * 3600, count: 50 },
+          removeOnFail: { age: 30 * 24 * 3600, count: 100 },
+        },
+      })
+    : null;
 
 // ============================================================
 // Content Generator V1 — Sprint 4/5 queues (§ 13.1 master prompt v1.7)
@@ -783,6 +807,13 @@ export async function enqueueEmail(
      * ne sert qu'à l'affichage de la corbeille.
      */
     sujetForce?: string;
+    /**
+     * Priorité BullMQ (lot L2, 2026-09-24). Un job SANS priorité passe avant
+     * tout job priorisé : un envoi de faible urgence (le guide IA) en porte
+     * une, pour que factures, convocations et liens de connexion — enfilés
+     * sans — soient toujours servis d'abord quand le limiteur de 40/h mord.
+     */
+    priority?: number;
   },
 ): Promise<{
   enqueued: boolean;
@@ -883,6 +914,7 @@ export async function enqueueEmail(
   const addOptions: Record<string, unknown> = {};
   if (options?.delayMs) addOptions["delay"] = options.delayMs;
   if (options?.jobId) addOptions["jobId"] = options.jobId;
+  if (options?.priority && options.priority > 0) addOptions["priority"] = options.priority;
   const job = await emailsQueue.add(
     template,
     data,
@@ -1086,6 +1118,32 @@ export async function bootRepeatableJobs(): Promise<void> {
       "integrate-stock",
       { type: "integrate-stock", tick: new Date().toISOString() },
       { repeat: { pattern: "0 5 * * *" }, jobId: "vivier-integrate-stock-cron" },
+    );
+  }
+
+  // ── Lot L2 — guide IA : rattrapage horaire + sentinelle quotidienne ──────
+  // Rattrapage à la 7ᵉ minute de chaque heure (hors des créneaux ronds déjà
+  // chargés). Sentinelle à 06:40 UTC : après la nuit, avant la journée de Will.
+  if (guideIaCronsQueue) {
+    await guideIaCronsQueue.removeRepeatable(
+      "rattrapage",
+      { pattern: "7 * * * *" },
+      "guide-ia-rattrapage-cron",
+    );
+    await guideIaCronsQueue.add(
+      "rattrapage",
+      { type: "rattrapage", tick: new Date().toISOString() },
+      { repeat: { pattern: "7 * * * *" }, jobId: "guide-ia-rattrapage-cron" },
+    );
+    await guideIaCronsQueue.removeRepeatable(
+      "sentinelle",
+      { pattern: "40 6 * * *" },
+      "guide-ia-sentinelle-cron",
+    );
+    await guideIaCronsQueue.add(
+      "sentinelle",
+      { type: "sentinelle", tick: new Date().toISOString() },
+      { repeat: { pattern: "40 6 * * *" }, jobId: "guide-ia-sentinelle-cron" },
     );
   }
 

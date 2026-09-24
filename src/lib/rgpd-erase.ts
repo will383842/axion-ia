@@ -40,6 +40,8 @@ export interface EraseSubmissionsResult {
 
 export interface EraseNewsletterResult {
   readonly deleted: number;
+  /** Demandes du guide IA supprimées (lot L2, 2026-09-24). */
+  readonly guideDeleted: number;
 }
 
 /**
@@ -90,7 +92,16 @@ export async function eraseSubmissionsForEmail(email: string): Promise<EraseSubm
  */
 export async function eraseNewsletterForEmail(email: string): Promise<EraseNewsletterResult> {
   const result = await prisma.newsletterSubscriber.deleteMany({ where: { email } });
-  return { deleted: result.count };
+  // Lot L2 (2026-09-24) — les demandes du guide IA suivent la lettre : même
+  // point de collecte, même personne. Suppression hard : la demande n'est la
+  // preuve de rien (le consentement à la lettre, lui, vit dans le registre de
+  // preuve, sous empreinte). Par l'adresse ET par l'empreinte, pour qu'une
+  // différence de casse ne laisse pas une ligne derrière.
+  const empreinte = hashEmailForLookup(email);
+  const guide = await prisma.guideRequest.deleteMany({
+    where: { OR: [{ email }, ...(empreinte ? [{ emailKey: empreinte }] : [])] },
+  });
+  return { deleted: result.count, guideDeleted: guide.count };
 }
 
 export interface EraseSignatureTokensResult {

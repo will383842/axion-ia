@@ -9,8 +9,10 @@
  * de confirmation ne parlait d'aucun guide. La promesse n'était tenue nulle part.
  *
  * Le guide existe désormais. Il est servi depuis `public/imprimes/` et lié à
- * trois endroits, qui lisent tous ce chemin — le recopier ferait trois chemins
+ * quatre endroits, qui lisent tous ce chemin — le recopier ferait quatre chemins
  * dont un finira par viser un fichier renommé :
+ *   · le lien personnel de l'e-mail « Votre guide » (lot L2, 2026-09-24) :
+ *     `/api/guide-ia/telecharger`, qui redirige ici après le clic ;
  *   · la page de confirmation de la lettre (`/confirmation/newsletter`) ;
  *   · l'e-mail de confirmation d'un appel de découverte (`appel-rappel.tsx`) ;
  *   · l'onglet Imprimés de la console (`content/imprimes.ts`), qui mesure le

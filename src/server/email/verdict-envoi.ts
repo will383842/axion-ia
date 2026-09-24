@@ -44,6 +44,13 @@ export type VerdictEnvoi =
  */
 export const GABARITS_EXEMPTES_DU_DESABONNEMENT: ReadonlySet<string> = new Set([
   "newsletter-confirm-optin",
+  // Lot L2 (2026-09-24) — « Votre guide » répond à une DEMANDE (6.1.b) : une
+  // personne désabonnée de la lettre qui redemande le guide doit le recevoir.
+  // Il ne porte pas le drapeau `marketing`, donc le désabonnement ne le
+  // retiendrait déjà pas ; l'exemption le rend EXPLICITE, pour qu'un futur
+  // passage en `marketing` ne le fasse pas taire en silence. Le rebond DUR,
+  // lui, le retient toujours : il est lu avant cette liste.
+  "guide-ia-envoi",
 ]);
 
 /**

@@ -9,6 +9,7 @@ import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
+import { libellesFormulaireGuide } from "@/content/guide-ia-formulaire";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
 import { EditorialPhotoCredit } from "@/components/media/EditorialPhotoCredit";
@@ -122,8 +123,8 @@ export default async function AiGuidePage({ params }: Props) {
         titleEm={isFr ? "opérationnel" : "operational"}
         description={
           isFr
-            ? "Tout ce qu'un dirigeant ou responsable opérations doit savoir avant de déployer l'IA en 2026. Téléchargement dès la confirmation de votre adresse e-mail."
-            : "Everything a CEO or operations lead must know before deploying AI in 2026. Download as soon as you confirm your email address."
+            ? "Tout ce qu'un dirigeant ou responsable opérations doit savoir avant de déployer l'IA en 2026. Envoyé tout de suite par e-mail, gratuitement."
+            : "Everything a CEO or operations lead must know before deploying AI in 2026. Sent to you straight away by email, free."
         }
       >
         <Container className="mt-8 max-w-2xl">
@@ -192,34 +193,10 @@ export default async function AiGuidePage({ params }: Props) {
 
       <Section eyebrow={isFr ? "Recevoir le PDF" : "Get the PDF"}>
         <Container className="max-w-2xl">
-          <NewsletterForm
-            labels={
-              isFr
-                ? {
-                    email: "Email professionnel",
-                    consent:
-                      "J'accepte de recevoir le guide PDF et la newsletter mensuelle. Désinscription en un clic.",
-                    submit: "Recevoir le guide",
-                    sending: "Envoi…",
-                    // 🔴 2026-09-23 — l'ancien message annonçait le guide comme envoyé. Rien
-                    // n'était envoyé : le formulaire ne pose que l'e-mail de double
-                    // opt-in, et le guide se télécharge sur la page de confirmation.
-                    success:
-                      "Presque fini : confirmez votre adresse depuis l'e-mail que nous venons de vous envoyer (pensez aux indésirables), puis téléchargez le guide.",
-                    failure: "Erreur. Réessayez ou écrivez à contact@axion-ia.com.",
-                  }
-                : {
-                    email: "Professional email",
-                    consent:
-                      "I agree to receive the PDF guide and monthly newsletter. One-click unsubscribe.",
-                    submit: "Get the guide",
-                    sending: "Sending…",
-                    success:
-                      "Almost done: confirm your address from the email we just sent (check your spam folder), then download the guide.",
-                    failure: "Error. Try again or email contact@axion-ia.com.",
-                  }
-            }
-          />
+          {/* Lot L2 (2026-09-24) — le guide part TOUT DE SUITE par e-mail ; la
+              lettre est une case FACULTATIVE, décochée. Textes : source unique
+              `content/guide-ia-formulaire.ts` (archive de preuve). */}
+          <NewsletterForm source="guide-ia" libelles={libellesFormulaireGuide("guide", loc)} />
         </Container>
       </Section>
 

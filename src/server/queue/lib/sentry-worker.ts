@@ -113,6 +113,8 @@ export type WorkerName =
   // Lot L4 2026-08-14 — intégration au vivier à échéance de la fenêtre
   // d'opposition de 30 jours (passage quotidien)
   | "vivier-crons"
+  // Lot L2 2026-09-24 — rattrapage horaire et sentinelle du guide IA
+  | "guide-ia-crons"
   // Qualiopi S5 2026-08-26 — production documentaire au jalon (queue horaire
   // `documents-auto`). Nom distinct de `formation-crons` : le rendu react-pdf
   // et l'upload R2 echouent pour d'autres raisons que les crons d'e-mail, et

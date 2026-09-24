@@ -22,8 +22,13 @@
 // La DB de test doit avoir le schéma Prisma appliqué :
 //   DATABASE_URL=$DATABASE_URL_TEST pnpm prisma migrate deploy
 
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
-import { newsletterSchema } from "@/lib/schemas/forms";
+import { describe, it, expect, beforeAll, afterAll, vi } from "vitest";
+import { demandeGuideSchema } from "@/lib/schemas/forms";
+
+// Le domaine de test (`.invalid`, RFC 2606) n'a par construction AUCUN MX : la
+// vérification réelle refuserait l'adresse. On la neutralise ici — elle a ses
+// propres tests (`server/guide-ia/__tests__/mx.spec.ts`).
+vi.mock("@/server/guide-ia/mx", () => ({ domaineRecoitDesEmails: async () => "oui" }));
 import { unifiedContactSchema } from "@/lib/schemas/unified-contact-schema";
 import { signInSchema } from "@/lib/schemas/auth";
 import { localeSchema, parseLocale } from "@/lib/schemas/locale";
@@ -90,7 +95,7 @@ describe("Server Actions integration — schemas chain", () => {
   describe("unified contact + newsletter schemas", () => {
     it("all reject empty payloads", () => {
       expect(unifiedContactSchema.safeParse({}).success).toBe(false);
-      expect(newsletterSchema.safeParse({}).success).toBe(false);
+      expect(demandeGuideSchema.safeParse({}).success).toBe(false);
     });
 
     it("intervention slug schema is strict", () => {
@@ -139,6 +144,7 @@ dbBound("Server Actions integration — pipeline DB complet (Audit E2E P0-CONF-1
     }
     await prisma.submission.deleteMany({ where: { contactEmail: EMAIL_MARKER } });
     await prisma.newsletterSubscriber.deleteMany({ where: { email: EMAIL_MARKER } });
+    await prisma.guideRequest.deleteMany({ where: { email: EMAIL_MARKER } });
     await prisma.$disconnect();
   });
 
@@ -177,23 +183,28 @@ dbBound("Server Actions integration — pipeline DB complet (Audit E2E P0-CONF-1
     if (submission) trackingIds.push(submission.id);
   });
 
-  it("subscribeNewsletterAction persists NewsletterSubscriber row", async () => {
-    const { subscribeNewsletterAction } = await import("@/features/newsletter/actions");
+  it("demanderGuideAction persists GuideRequest + pending NewsletterSubscriber (case cochée)", async () => {
+    const { demanderGuideAction } = await import("@/features/guide-ia/actions");
     const { prisma } = await import("@/lib/prisma");
 
     const fd = new FormData();
     fd.set("email", EMAIL_MARKER);
-    fd.set("consent", "true");
+    fd.set("lettre", "true");
     fd.set("locale", "fr");
+    fd.set("source", "guide-ia");
 
-    const result = await subscribeNewsletterAction({ ok: false, error: "" }, fd);
+    const result = await demanderGuideAction({ ok: false, error: "" }, fd);
     expect(result.ok, `Action failed: ${result.ok ? "" : result.error}`).toBe(true);
+
+    const demande = await prisma.guideRequest.findFirst({ where: { email: EMAIL_MARKER } });
+    expect(demande, "GuideRequest row not persisted").toBeTruthy();
+    expect(demande?.source).toBe("guide-ia");
 
     const row = await prisma.newsletterSubscriber.findUnique({
       where: { email: EMAIL_MARKER },
     });
     expect(row, "Newsletter row not persisted").toBeTruthy();
-    // Double opt-in : status pending tant que confirm token pas cliqué
+    // Double opt-in : status pending tant que le bouton de confirmation n'est pas cliqué
     expect(row?.status).toBe("pending");
   });
 

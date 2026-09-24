@@ -1561,10 +1561,28 @@ model NewsletterSubscriber {
   unsubscribeToken String?          @unique @map("unsubscribe_token") @db.VarChar(120)
   // Source / marketing
   source           String?          @db.VarChar(120)
-  /// Sprint Correctif S+1 P0-S1-3 (2026-05-16) — DEPRECATED, à drop S+2.
-  ipAddress        String?          @map("ip_address") @db.VarChar(64)
+  // 🔴 L2 (2026-09-24) — `ipAddress` (colonne `ip_address`, IP EN CLAIR) est
+  // RETIRÉ du modèle : étape 1 de sa suppression. Le client ne la lit ni ne
+  // l'écrit plus ; la COLONNE reste en base, sans migration, et tombe à
+  // l'étape 2 (lot L6, `DROP COLUMN` dans un déploiement POSTÉRIEUR — pendant
+  // `prisma migrate deploy`, l'ancien conteneur n'a déjà plus le champ).
+  // Seule l'empreinte ci-dessous est désormais écrite.
   /// Sprint Correctif S+1 P0-S1-3 (2026-05-16) — SHA-256(salt::ip) 16 hex.
   ipHash           String?          @map("ip_hash") @db.VarChar(64)
+  /// L2 (2026-09-24) — QUEL texte a été accepté. Deux points de collecte, deux
+  /// textes : la page du guide et l'encart des articles. Le registre de preuve
+  /// (`consent_events`) les recopie à la CONFIRMATION ; sans ces deux colonnes,
+  /// la confirmation ne saurait plus quel texte la personne avait sous les yeux.
+  /// Nulles sur les inscriptions antérieures (repli sur la référence historique).
+  consentFormRef   String?          @map("consent_form_ref") @db.VarChar(60)
+  consentVersion   String?          @map("consent_version") @db.VarChar(60)
+  // Engagement — champs VIDES, prêts pour l'outil d'envoi à venir (MailWizz,
+  // décision n° 2 de Will) : le connecteur n'exigera pas de migration le jour J.
+  // Rien ne les écrit aujourd'hui, et c'est voulu : aucune lettre ne part.
+  lastSentAt       DateTime?        @map("last_sent_at")
+  lastClickAt      DateTime?        @map("last_click_at")
+  softBounceCount  Int              @default(0) @map("soft_bounce_count")
+  lastSoftBounceAt DateTime?        @map("last_soft_bounce_at")
   // MailWizz sync
   mailwizzListUid  String?          @map("mailwizz_list_uid") @db.VarChar(120)
   mailwizzSubUid   String?          @map("mailwizz_sub_uid") @db.VarChar(120)
@@ -1574,6 +1592,65 @@ model NewsletterSubscriber {
   @@index([locale])
   @@index([status])
   @@map("newsletter_subscribers")
+}
+
+// ============================================================
+// 19 bis. guide_requests — demandes du guide IA (lot L2, 2026-09-24)
+// ============================================================
+//
+// Décision n° 1 de Will (24/09) : le guide part TOUT DE SUITE par e-mail, sans
+// confirmation ; la lettre devient une case facultative à double opt-in. Une
+// demande du guide n'est donc PAS un abonnement : elle vit ici, distincte de
+// `newsletter_subscribers`.
+//
+// Une ligne par (personne, aimant). Une nouvelle demande de la même adresse
+// REPASSE sur la même ligne (`send_count`, `queued_at`) : le lien personnel
+// reste le même, les anciens e-mails restent valides.
+
+enum GuideRequestOrigine {
+  /// Le visiteur a rempli un formulaire du site.
+  formulaire
+  /// Un administrateur a déclenché l'envoi depuis la console (lot L3).
+  /// ⚠️ Jamais repris par le rattrapage automatique.
+  admin
+}
+
+model GuideRequest {
+  id            String              @id @default(uuid()) @db.Uuid
+  /// Adresse du destinataire — nécessaire pour (r)envoyer le guide.
+  email         String              @db.Citext
+  /// Empreinte HMAC de l'adresse (`hashEmailForLookup`) — clé de dédoublonnage,
+  /// et la même clé que le registre de preuve et le CRM.
+  emailKey      String              @map("email_key") @db.VarChar(64)
+  /// Contenu demandé (« guide-ia »). Une colonne et pas une constante : un
+  /// second guide réutilisera la table sans migration.
+  aimant        String              @db.VarChar(40)
+  origine       GuideRequestOrigine @default(formulaire)
+  /// Point de collecte (« guide-ia », « blog-fin-article »…), jamais une donnée personnelle.
+  source        String?             @db.VarChar(120)
+  locale        Locale              @default(fr)
+  /// Version des textes affichés au point de collecte (mention d'information).
+  version       String              @db.VarChar(60)
+  /// Jeton ALÉATOIRE du lien personnel `/api/guide-ia/telecharger?t=…`.
+  downloadToken String              @unique @map("download_token") @db.VarChar(120)
+  /// Dernier passage en file (l'âge du rattrapage se compte depuis ICI).
+  queuedAt      DateTime?           @map("queued_at")
+  /// Premier envoi confirmé par le worker (journal `sent`).
+  sentAt        DateTime?           @map("sent_at")
+  sendCount     Int                 @default(0) @map("send_count")
+  /// Premier GET du lien : peut être un antivirus (Safe Links, prévisualisation).
+  firstSeenAt   DateTime?           @map("first_seen_at")
+  /// Premier POST du bouton : seul geste qui vaut clic humain.
+  firstClickAt  DateTime?           @map("first_click_at")
+  /// Émission vers le CRM (lot L4-S) — vide tant que ce lot n'existe pas.
+  crmEmittedAt  DateTime?           @map("crm_emitted_at")
+  createdAt     DateTime            @default(now()) @map("created_at")
+  updatedAt     DateTime            @updatedAt @map("updated_at")
+
+  @@unique([emailKey, aimant])
+  @@index([sentAt, queuedAt])
+  @@index([createdAt])
+  @@map("guide_requests")
 }
 
 // ============================================================
