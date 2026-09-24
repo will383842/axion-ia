@@ -384,27 +384,32 @@ export default async function AdminInfraPage({ params }: PageProps) {
       paid: "0 € (auto-hébergé)",
     },
     {
-      // Pas de vrai check ici : le repo est PRIVÉ, l'API GitHub y répondrait
-      // 404 sans token — il faudrait créer un secret dédié (PAT) rien que
-      // pour ce ping. Coût/complexité jugés disqualifiants pour une simple
-      // card de lien. Mieux vaut un badge honnête que faire semblant.
+      // 🔴 2026-09-24 — CE COMMENTAIRE AFFIRMAIT « le repo est PRIVÉ, l'API
+      // GitHub y répondrait 404 sans token ». C'est FAUX : `isPrivate` vaut
+      // `false`, et un GET anonyme sur l'API Actions rend 200. Aucun jeton
+      // n'était nécessaire, et la même croyance bloquait `deploiement/etat.ts`.
+      //
+      // La carte reste « non vérifiée » pour une raison qui, elle, tient : un
+      // ping par carte alourdirait le rendu de cet écran. Mais le motif écrit
+      // est maintenant le vrai — un badge honnête n'est honnête que si sa
+      // justification l'est.
       name: "GitHub repo",
       role: "Code source, branches, PRs",
       externalUrl: "https://github.com/will383842/axion-ia",
       status: "not-checked",
-      detail:
-        "main = production · non vérifié automatiquement (repo privé, nécessiterait un token dédié)",
-      paid: "0 € (dépôt privé gratuit)",
+      detail: "main = production · non vérifié automatiquement (choix d'allègement de cet écran)",
+      paid: "0 € (dépôt public)",
     },
     {
-      // Même raison que GitHub repo ci-dessus : l'API Actions runs d'un repo
-      // privé exige aussi un token dédié.
+      // Même remarque que GitHub repo ci-dessus. ⚠️ L'état du DÉPLOIEMENT,
+      // lui, est bel et bien lu — par `lireEtatDuDeploiement()`, en anonyme
+      // depuis le 2026-09-24. Cette carte-ci ne duplique pas cette lecture.
       name: "GitHub Actions",
       role: "CI tests + auto-deploy Coolify",
       externalUrl: "https://github.com/will383842/axion-ia/actions",
       status: "not-checked",
       detail:
-        "Workflow deploy-coolify.yml · non vérifié automatiquement (repo privé, nécessiterait un token dédié)",
+        "Workflow deploy-coolify.yml · l'état du dernier déploiement est lu ailleurs (carte « Déploiement »)",
       paid: "0 € (2 000 min/mois incluses)",
     },
     {

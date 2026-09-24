@@ -55,21 +55,54 @@ afterEach(() => {
   process.env = { ...ENV_ORIGINE };
 });
 
-describe("sans jeton, l'état est « non-configure » — jamais une panne, jamais un succès", () => {
-  it("ne fait AUCUN appel réseau et dit quelle variable poser", async () => {
+describe("🔴 SANS JETON, ON LIT QUAND MÊME — le dépôt est PUBLIC", () => {
+  /**
+   * Ce bloc s'appelait « sans jeton, l'état est non-configure » et exigeait
+   * qu'AUCUN appel réseau n'ait lieu. Il verrouillait une croyance fausse,
+   * écrite dans l'en-tête du module : « le dépôt est privé, l'API rend 404
+   * sans jeton ». Mesuré le 2026-09-24, sans en-tête d'autorisation :
+   * HTTP **200**, `total_count` 1675. `isPrivate` vaut `false`.
+   *
+   * Le coût de l'erreur n'était pas théorique : on attendait de Will qu'il
+   * crée un jeton pour une lecture qui ne demandait rien.
+   */
+  it("appelle l'API SANS en-tête d'autorisation, et lit le run", async () => {
     delete process.env["GITHUB_READ_TOKEN"];
     delete process.env["GH_DISPATCH_TOKEN"];
-    const espion = vi.spyOn(globalThis, "fetch");
+    const espion = vi.spyOn(globalThis, "fetch").mockResolvedValue(reponse(run()));
 
     const etat = await lireEtatDuDeploiement();
 
-    console.info(`[deploiement] sans jeton → ${etat.etat}`);
+    expect(etat.etat).toBe("a-jour");
+    expect(espion).toHaveBeenCalledOnce();
+    const entetes = (espion.mock.calls[0]?.[1] as RequestInit).headers as Record<string, string>;
+    // 🔑 `Bearer undefined` vaudrait un 401 : un refus FABRIQUÉ là où
+    //    l'anonyme obtient un 200. L'absence de la clé est la garde.
+    expect(entetes).not.toHaveProperty("Authorization");
+    expect(entetes["Accept"]).toBe("application/vnd.github+json");
+  });
+
+  it("« non-configure » ne survient QUE sur quota anonyme épuisé (403), et dit quoi poser", async () => {
+    delete process.env["GITHUB_READ_TOKEN"];
+    delete process.env["GH_DISPATCH_TOKEN"];
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(reponse({}, 403));
+
+    const etat = await lireEtatDuDeploiement();
+
     expect(etat.etat).toBe("non-configure");
     expect(etat.resume).toContain("GITHUB_READ_TOKEN");
-    // ⚠️ Le point qui compte : on n'appelle pas une API privée sans jeton pour
-    //    « voir ce qu'elle dit ». Elle dirait 404, et on lirait une absence de
-    //    droit comme une absence de déploiement.
-    expect(espion).not.toHaveBeenCalled();
+    expect(etat.resume).toContain("60");
+  });
+
+  it("un 403 AVEC jeton est une vraie indisponibilité, pas un défaut de configuration", async () => {
+    process.env["GITHUB_READ_TOKEN"] = "jeton-pose";
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(reponse({}, 403));
+
+    const etat = await lireEtatDuDeploiement();
+
+    // 5 000 requêtes/h ne s'épuisent pas par accident : c'est un jeton révoqué
+    // ou un quota réellement dépassé, et les deux se réparent autrement.
+    expect(etat.etat).toBe("indisponible");
   });
 
   it("se rabat sur le jeton de dispatch quand le jeton de lecture manque", async () => {
@@ -150,7 +183,9 @@ describe("les états que GitHub impose", () => {
 describe("ce que rend une API qui ne coopère pas — jamais « a-jour » par défaut", () => {
   const cas: readonly [string, () => void, string][] = [
     [
-      "404 (dépôt privé, jeton sans portée actions:read)",
+      // Un jeton est posé par `beforeEach` : on est donc sur la branche « avec
+      // jeton », qui reste celle où la portée est la piste la plus probable.
+      "404 avec jeton (fichier renommé, ou portée actions:read absente)",
       () => void vi.spyOn(globalThis, "fetch").mockResolvedValue(reponse({}, 404)),
       "actions: read",
     ],

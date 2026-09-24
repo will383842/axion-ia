@@ -22,13 +22,30 @@
  * ⚠️ En développement, `BUILD_SHA` vaut `dev` : la comparaison est alors sans
  *    objet, et c'est dit plutôt que rendu faux.
  *
- * ═══ LE DÉPÔT EST PRIVÉ — SANS JETON, L'API REND 404 ═══
+ * ═══ 🔴 LE DÉPÔT EST PUBLIC. LE JETON N'A JAMAIS ÉTÉ NÉCESSAIRE. ═══
  *
- * L'écran d'infra le dit déjà pour ses propres cartes GitHub, qu'il laisse
- * délibérément « non vérifiées » : « repo privé, l'API GitHub y répondrait 404
- * sans token ». Un 404 ici ne veut donc pas dire « le workflow n'existe pas »,
- * mais « je n'ai pas le droit de le voir » — les deux sont distingués, sans
- * quoi une absence d'autorisation se lirait comme une absence de déploiement.
+ * Ce bloc a affirmé jusqu'au 2026-09-24 : « LE DÉPÔT EST PRIVÉ — SANS JETON,
+ * L'API REND 404 ». **C'est faux.** Mesuré, sans le moindre en-tête
+ * d'autorisation :
+ *
+ *     GET /repos/will383842/axion-ia/actions/workflows/deploy-coolify.yml/runs
+ *     → HTTP 200, total_count 1675
+ *
+ * `gh repo view --json isPrivate` rend `false`. La croyance s'était propagée
+ * à quatre endroits — ici trois fois, et sur l'écran d'infra, qui laissait
+ * DEUX cartes GitHub en « non vérifié automatiquement (repo privé) » pour
+ * cette raison-là. Elle coûtait un blocage : on attendait de Will qu'il crée
+ * un jeton pour une lecture qui ne demandait rien.
+ *
+ * ⚠️ Le jeton garde une utilité, et une seule : le **quota**. Anonyme, GitHub
+ * concède 60 requêtes par heure et par IP ; authentifié, 5 000. Le jeton est
+ * donc un confort de débit, jamais une condition d'accès — et c'est pourquoi
+ * son absence ne rend plus « non-configure » d'emblée.
+ *
+ * 🔑 CE QU'UN 404 SIGNIFIE MAINTENANT, et c'est l'inverse d'avant : sur un
+ * dépôt public, il dit que le workflow n'existe pas. Il ne redevient « je
+ * n'ai pas le droit de le voir » que si le dépôt repasse en privé — cas que
+ * le message nomme, puisqu'il n'est plus déductible du contexte.
  */
 
 const HOTE_API = "https://api.github.com";
@@ -46,7 +63,12 @@ export const ETATS = [
   "en-retard",
   "en-cours",
   "echec",
-  /** Aucun jeton de lecture : on ne peut pas savoir. Ce n'est PAS une panne. */
+  /**
+   * On ne peut pas savoir, et ce n'est PAS une panne : le quota des lectures
+   * ANONYMES est épuisé (60/h par IP) et aucun jeton n'est posé. Poser un
+   * jeton porte la limite à 5 000/h. ⚠️ Ce n'est plus « aucun jeton » — sans
+   * jeton, la lecture marche, le dépôt étant public.
+   */
   "non-configure",
   /** L'API n'a pas répondu, ou a répondu ce qu'on ne sait pas lire. */
   "indisponible",
@@ -122,8 +144,9 @@ function nonConfigure(): DernierDeploiement {
   return {
     etat: "non-configure",
     resume:
-      "aucun jeton de lecture GitHub : définir GITHUB_READ_TOKEN (lecture seule) côté " +
-      "Coolify. Le dépôt est privé, l'API répond 404 sans jeton.",
+      "quota des lectures anonymes de l'API GitHub épuisé (60 requêtes/h par IP). " +
+      "Poser GITHUB_READ_TOKEN (lecture seule) côté Coolify porte la limite à 5 000/h. " +
+      "Le dépôt est public : ce n'est pas un défaut d'autorisation.",
     commit: null,
     titreDuCommit: null,
     branche: null,
@@ -154,8 +177,9 @@ function indisponible(motif: string): DernierDeploiement {
  * outil de pilotage qui jette une exception ne dit pas ce qui se passe.
  */
 export async function lireEtatDuDeploiement(): Promise<DernierDeploiement> {
+  // 🔑 `null` n'est plus un motif d'abandon : le dépôt est public, la lecture
+  //    anonyme fonctionne. Le jeton, quand il est là, n'achète que du quota.
   const jeton = jetonDeLecture();
-  if (jeton === null) return nonConfigure();
 
   const depot = process.env["GITHUB_REPOSITORY"] ?? DEPOT_PAR_DEFAUT;
   const url =
@@ -171,7 +195,10 @@ export async function lireEtatDuDeploiement(): Promise<DernierDeploiement> {
   try {
     reponse = await fetch(url, {
       headers: {
-        Authorization: `Bearer ${jeton.valeur}`,
+        // L'en-tête d'autorisation n'est posé QUE s'il y a quelque chose à
+        // poser. `Bearer undefined` vaudrait un 401 — un refus fabriqué là où
+        // l'anonyme aurait obtenu un 200.
+        ...(jeton === null ? {} : { Authorization: `Bearer ${jeton.valeur}` }),
         Accept: "application/vnd.github+json",
         "X-GitHub-Api-Version": "2022-11-28",
       },
@@ -183,11 +210,30 @@ export async function lireEtatDuDeploiement(): Promise<DernierDeploiement> {
     return indisponible(`l'API GitHub n'a pas répondu (${nom}).`);
   }
 
-  if (reponse.status === 404) {
+  // 🔑 QUOTA ÉPUISÉ — la seule panne que le jeton réparerait vraiment. GitHub
+  //    rend 403 (et parfois 429) quand les 60 lectures anonymes horaires sont
+  //    consommées. Sans jeton, c'est « non-configure » : actionnable, et ce
+  //    n'est pas une panne. Avec jeton, c'est une vraie indisponibilité — 5 000
+  //    requêtes par heure ne s'épuisent pas par accident.
+  if (reponse.status === 403 || reponse.status === 429) {
+    if (jeton === null) return nonConfigure();
     return indisponible(
-      `le workflow « ${WORKFLOW} » est introuvable avec ce jeton (${jeton.nom}). ` +
-        "Sur un dépôt privé, un 404 signifie le plus souvent que le jeton n'a pas " +
-        "la portée « actions: read » — pas que le workflow n'existe pas.",
+      `l'API GitHub a rendu HTTP ${String(reponse.status)} avec le jeton ${jeton.nom} : ` +
+        "quota dépassé, ou jeton révoqué.",
+    );
+  }
+  if (reponse.status === 404) {
+    // ⚠️ Le sens de ce code s'est INVERSÉ le 2026-09-24. Sur le dépôt public
+    //    qu'est celui-ci, un 404 dit ce qu'il dit. Il ne redevient un défaut
+    //    d'autorisation que si le dépôt repasse en privé — d'où les deux
+    //    hypothèses nommées plutôt qu'une seule devinée.
+    return indisponible(
+      `le workflow « ${WORKFLOW} » est introuvable` +
+        (jeton === null
+          ? " en lecture anonyme. Le dépôt est public : soit le fichier a été renommé, " +
+            "soit le dépôt est repassé en privé — dans ce cas, poser GITHUB_READ_TOKEN."
+          : ` avec le jeton ${jeton.nom}. Soit le fichier a été renommé, soit le jeton ` +
+            "n'a pas la portée « actions: read »."),
     );
   }
   if (!reponse.ok) {
