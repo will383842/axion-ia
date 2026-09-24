@@ -40,8 +40,14 @@ export interface DemandeAEnvoyer {
 }
 
 export interface OptionsEnvoiGuide {
-  /** Jeton de confirmation de la lettre — présent si la case était cochée et l'abonné en attente. */
+  /** Jeton de RÉINSCRIPTION à la lettre — une personne désabonnée à qui l'on propose de revenir. */
   readonly confirmToken?: string | null;
+  /**
+   * Jeton de désabonnement de la lettre — la personne y est inscrite. Le
+   * gabarit en fait un lien « Se désabonner » visible, et le worker l'en-tête
+   * `List-Unsubscribe` One-Click (RFC 8058) : amendement de Will du 24/09.
+   */
+  readonly unsubscribeToken?: string | null;
   /** Phrase de reprise « inscrit avant la parution du guide » (envoi unique, lot L7). */
   readonly reprise?: boolean;
   readonly maintenant?: Date;
@@ -50,7 +56,11 @@ export interface OptionsEnvoiGuide {
 export type ResultatEnvoiGuide =
   "en-file" | "en-validation" | "suspendu" | "limite-destinataire" | "plafond" | "non-parti";
 
-/** Nombre d'e-mails du guide mis en file vers ce destinataire sur la fenêtre. */
+/**
+ * Nombre d'e-mails du guide mis en file vers ce destinataire sur la fenêtre.
+ * C'est le SEUL e-mail de ce parcours : le rattrapage des confirmations
+ * (ancien gabarit), qui échappait à cette limite, a été retiré.
+ */
 export async function envoisRecentsVers(email: string, maintenant: Date): Promise<number> {
   return prisma.emailLog.count({
     where: {
@@ -85,6 +95,7 @@ export async function mettreEnFileGuide(
 
   const payload: Record<string, unknown> = { downloadToken: demande.downloadToken };
   if (options.confirmToken) payload["confirmToken"] = options.confirmToken;
+  if (options.unsubscribeToken) payload["unsubscribeToken"] = options.unsubscribeToken;
   if (options.reprise === true) payload["reprise"] = true;
 
   // ⛔ JAMAIS `marketing: true` : « Votre guide » répond à une demande

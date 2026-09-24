@@ -54,7 +54,8 @@ vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: (...a: unknown[]) => enqueueEmail(...a),
 }));
 
-import { rattraperGuides, rattraperConfirmations } from "../rattrapage";
+import * as rattrapage from "../rattrapage";
+import { rattraperGuides } from "../rattrapage";
 import { PLAFOND_HORAIRE_GUIDE } from "../config";
 
 const MAINTENANT = new Date("2026-09-24T12:00:00Z");
@@ -109,14 +110,33 @@ describe("rattraperGuides — ce qui est repris", () => {
     ]);
   });
 
-  it("porte la confirmation de la lettre si l'abonné l'attend encore", async () => {
-    abonneFindUnique.mockResolvedValue({ status: "pending", confirmToken: "c".repeat(64) });
+  it("abonnée : l'e-mail repris porte le lien de désinscription (One-Click)", async () => {
+    abonneFindUnique.mockResolvedValue({
+      status: "confirmed",
+      unsubscribeToken: "u".repeat(64),
+      confirmToken: null,
+    });
     await rattraperGuides(MAINTENANT);
+    expect(mettreEnFileGuide.mock.calls[0]?.[1]).toMatchObject({
+      unsubscribeToken: "u".repeat(64),
+      confirmToken: null,
+    });
+    expect(abonneUpdateMany).not.toHaveBeenCalled();
+  });
+
+  it("désabonnée avec une réinscription proposée : le bouton voyage, confirm_sent_at suit", async () => {
+    abonneFindUnique.mockResolvedValue({
+      status: "unsubscribed",
+      unsubscribeToken: "u".repeat(64),
+      confirmToken: "c".repeat(64),
+    });
+    const r = await rattraperGuides(MAINTENANT);
     expect(mettreEnFileGuide.mock.calls[0]?.[1]).toMatchObject({ confirmToken: "c".repeat(64) });
     expect(abonneUpdateMany).toHaveBeenCalledWith({
-      where: { email: CANDIDATE.email, status: "pending" },
+      where: { email: CANDIDATE.email, confirmToken: "c".repeat(64) },
       data: { confirmSentAt: MAINTENANT },
     });
+    expect(r.confirmationsRelancees).toBe(1);
   });
 });
 
@@ -192,33 +212,18 @@ describe("rattraperGuides — les freins", () => {
   });
 });
 
-describe("rattraperConfirmations", () => {
-  const ABONNE = {
-    id: "abonne-1",
-    email: "paul@example.invalid",
-    locale: "fr",
-    confirmToken: "c".repeat(64),
-    unsubscribeToken: "u".repeat(64),
-  };
-
-  it("relance une confirmation orpheline, et ne pose confirm_sent_at qu'une fois en file", async () => {
-    abonneFindMany.mockResolvedValue([ABONNE]);
-    expect(await rattraperConfirmations(MAINTENANT)).toBe(1);
-    expect(enqueueEmail.mock.calls[0]?.[0]).toBe("newsletter-confirm-optin");
-    expect(abonneUpdate).toHaveBeenCalledTimes(1);
-  });
-
-  it("n'y touche pas si une demande du guide l'emporte déjà", async () => {
-    abonneFindMany.mockResolvedValue([ABONNE]);
-    guideCount.mockResolvedValue(1);
-    expect(await rattraperConfirmations(MAINTENANT)).toBe(0);
+describe("🔴 plus de rattrapage des confirmations (relecture du 24/09)", () => {
+  it("le module n'exporte plus rattraperConfirmations, et n'envoie jamais l'ancien gabarit", async () => {
+    // Il échappait à la limite de 3 e-mails par destinataire : en redemandant
+    // le guide toutes les heures avec l'adresse d'un tiers, on lui faisait
+    // envoyer jusqu'à 24 e-mails par jour.
+    expect("rattraperConfirmations" in rattrapage).toBe(false);
+    abonneFindMany.mockResolvedValue([
+      { id: "abonne-1", email: "paul@example.invalid", locale: "fr", confirmToken: "c" },
+    ]);
+    guideFindMany.mockResolvedValue([]);
+    await rattraperGuides(MAINTENANT);
     expect(enqueueEmail).not.toHaveBeenCalled();
-  });
-
-  it("envoi retenu : confirm_sent_at reste vide", async () => {
-    abonneFindMany.mockResolvedValue([ABONNE]);
-    enqueueEmail.mockResolvedValue({ enqueued: false, retenu: "desabonne" });
-    expect(await rattraperConfirmations(MAINTENANT)).toBe(0);
-    expect(abonneUpdate).not.toHaveBeenCalled();
+    expect(abonneFindMany).not.toHaveBeenCalled();
   });
 });

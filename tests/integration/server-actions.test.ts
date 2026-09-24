@@ -183,13 +183,16 @@ dbBound("Server Actions integration — pipeline DB complet (Audit E2E P0-CONF-1
     if (submission) trackingIds.push(submission.id);
   });
 
-  it("demanderGuideAction persists GuideRequest + pending NewsletterSubscriber (case cochée)", async () => {
+  it("demanderGuideAction persists GuideRequest + NewsletterSubscriber inscrit (adresse pro, intérêt légitime)", async () => {
     const { demanderGuideAction } = await import("@/features/guide-ia/actions");
     const { prisma } = await import("@/lib/prisma");
 
     const fd = new FormData();
+    // Case NON cochée : pour une adresse professionnelle, le serveur l'ignore
+    // (amendement de Will du 24/09) — l'inscription vaut au titre de
+    // l'intérêt légitime, après information.
     fd.set("email", EMAIL_MARKER);
-    fd.set("lettre", "true");
+    fd.set("lettre", "false");
     fd.set("locale", "fr");
     fd.set("source", "guide-ia");
 
@@ -199,13 +202,15 @@ dbBound("Server Actions integration — pipeline DB complet (Audit E2E P0-CONF-1
     const demande = await prisma.guideRequest.findFirst({ where: { email: EMAIL_MARKER } });
     expect(demande, "GuideRequest row not persisted").toBeTruthy();
     expect(demande?.source).toBe("guide-ia");
+    expect(demande?.version).toBe("guide-mention-pro-v1-2026-09-24");
 
     const row = await prisma.newsletterSubscriber.findUnique({
       where: { email: EMAIL_MARKER },
     });
     expect(row, "Newsletter row not persisted").toBeTruthy();
-    // Double opt-in : status pending tant que le bouton de confirmation n'est pas cliqué
-    expect(row?.status).toBe("pending");
+    // Plus de double opt-in : inscrite tout de suite, avec la version de la mention.
+    expect(row?.status).toBe("confirmed");
+    expect(row?.consentVersion).toBe("guide-mention-pro-v1-2026-09-24");
   });
 
   it("submitUnifiedContactAction is idempotent under double-click within 1s", async () => {

@@ -194,8 +194,9 @@ export default async function AiGuidePage({ params }: Props) {
       <Section eyebrow={isFr ? "Recevoir le PDF" : "Get the PDF"}>
         <Container className="max-w-2xl">
           {/* Lot L2 (2026-09-24) — le guide part TOUT DE SUITE par e-mail ; la
-              lettre est une case FACULTATIVE, décochée. Textes : source unique
-              `content/guide-ia-formulaire.ts` (archive de preuve). */}
+              lettre suit la nature de l'adresse (amendement de Will du 24/09).
+              Textes : source unique `content/guide-ia-formulaire.ts` (archive
+              de preuve). */}
           <NewsletterForm source="guide-ia" libelles={libellesFormulaireGuide("guide", loc)} />
         </Container>
       </Section>

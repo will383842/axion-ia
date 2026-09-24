@@ -4,9 +4,13 @@
 // Formulaire du GUIDE IA — page du guide et encarts d'articles (lot L2, 2026-09-24).
 //
 // Le nom du fichier est historique (il n'inscrivait qu'à la lettre) ; son contrat
-// a changé : l'adresse suffit pour recevoir le guide TOUT DE SUITE par e-mail,
-// et la lettre est une case FACULTATIVE, DÉCOCHÉE, à double opt-in (décision
-// n° 1 de Will). La refonte visuelle vient avec le lot L1.
+// a changé : l'adresse suffit pour recevoir le guide TOUT DE SUITE par e-mail.
+// La lettre suit la nature de l'adresse (amendement de Will du 24/09) : pour
+// une adresse PERSONNELLE (webmail grand public), une case FACULTATIVE,
+// DÉCOCHÉE, apparaît ; pour une adresse professionnelle, la mention sous le
+// bouton informe de l'inscription. ⚠️ Ce calcul ne sert qu'à l'AFFICHAGE : le
+// serveur refait le sien, et c'est le sien qui décide. La refonte visuelle
+// vient avec le lot L1.
 //
 // Tous les textes arrivent par `libelles`, calculés côté serveur depuis
 // `content/guide-ia-formulaire.ts` — l'archive de preuve des textes affichés.
@@ -26,6 +30,10 @@ import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 import { HoneypotField } from "@/components/forms/HoneypotField";
 import { isStaleServerActionError } from "@/lib/forms/form-errors";
 import type { LibellesFormulaireGuide, SourceGuide } from "@/content/guide-ia-formulaire";
+import { natureAdresse } from "@/lib/email/nature-adresse";
+
+/** Un domaine est-il saisi ? Avant, on ne sait rien de l'adresse : pas de case. */
+const DOMAINE_SAISI = /@[^@\s]+\.[^@\s]{2,}$/;
 
 interface NewsletterFormProps {
   libelles: LibellesFormulaireGuide;
@@ -49,7 +57,8 @@ export function NewsletterForm({ libelles, source, variant = "stacked" }: Newsle
     defaultValues: { email: "", lettre: false },
   });
   const lettre = watch("lettre");
-  const [lettreEnvoyee, setLettreEnvoyee] = React.useState(false);
+  const emailSaisi = watch("email") ?? "";
+  const perso = DOMAINE_SAISI.test(emailSaisi.trim()) && natureAdresse(emailSaisi) === "perso";
   const {
     token: turnstileToken,
     widget: turnstileWidget,
@@ -64,10 +73,16 @@ export function NewsletterForm({ libelles, source, variant = "stacked" }: Newsle
 
   async function onSubmit(values: DemandeGuideInput) {
     setServerError(null);
+    // 🔴 `serverError` lu dans le `catch` serait la valeur figée au rendu (donc
+    // `null`) : le message précis (MX, Turnstile, débit) était ÉCRASÉ par le
+    // message générique. On retient ici qu'il a déjà été affiché.
+    let dejaSignale = false;
     try {
       const fd = new FormData();
       fd.set("email", values.email);
-      fd.set("lettre", values.lettre ? "true" : "false");
+      // Case cachée (adresse pro) = case non cochée : on n'envoie jamais un
+      // accord que la personne n'a pas pu voir.
+      fd.set("lettre", perso && values.lettre ? "true" : "false");
       fd.set("locale", locale);
       fd.set("source", source);
       // Turnstile est BLOQUANT (D3) : sans jeton, le serveur refuse et le dit.
@@ -78,14 +93,14 @@ export function NewsletterForm({ libelles, source, variant = "stacked" }: Newsle
         resetTurnstile();
         const message = result.error || libelles.failure;
         setServerError(message);
+        dejaSignale = true;
         throw new Error(message);
       }
-      setLettreEnvoyee(values.lettre === true);
     } catch (err) {
       // Deploy-skew (Server Action introuvable, page chargée avant un déploiement).
       if (isStaleServerActionError(err)) {
         setServerError(pageOutdatedMsg);
-      } else if (!serverError) {
+      } else if (!dejaSignale) {
         setServerError(libelles.failure);
       }
       throw err instanceof Error ? err : new Error(String(err));
@@ -95,10 +110,7 @@ export function NewsletterForm({ libelles, source, variant = "stacked" }: Newsle
   if (isSubmitSuccessful && !serverError) {
     return (
       <Alert variant="success" role="status">
-        <AlertDescription>
-          {libelles.success}
-          {lettreEnvoyee ? ` ${libelles.successLettre}` : null}
-        </AlertDescription>
+        <AlertDescription>{libelles.success}</AlertDescription>
       </Alert>
     );
   }
@@ -134,20 +146,23 @@ export function NewsletterForm({ libelles, source, variant = "stacked" }: Newsle
         {isSubmitting ? libelles.sending : libelles.submit}
       </Button>
 
-      {/* Case FACULTATIVE, DÉCOCHÉE par défaut : le guide ne dépend pas d'elle. */}
-      <div className="flex items-start gap-3 sm:basis-full">
-        <Checkbox
-          id={idLettre}
-          checked={!!lettre}
-          onCheckedChange={(c) => setValue("lettre", c === true)}
-        />
-        <Label htmlFor={idLettre} className="text-fg-soft text-xs leading-relaxed">
-          {libelles.lettre}
-        </Label>
-      </div>
+      {/* Adresse PERSONNELLE seulement : case FACULTATIVE, DÉCOCHÉE par
+          défaut. Le guide ne dépend jamais d'elle. */}
+      {perso ? (
+        <div className="flex items-start gap-3 sm:basis-full">
+          <Checkbox
+            id={idLettre}
+            checked={!!lettre}
+            onCheckedChange={(c) => setValue("lettre", c === true)}
+          />
+          <Label htmlFor={idLettre} className="text-fg-soft text-xs leading-relaxed">
+            {libelles.lettre}
+          </Label>
+        </div>
+      ) : null}
 
-      <p className="text-fg-muted text-xs leading-relaxed sm:basis-full">
-        {libelles.mention}{" "}
+      <p className="text-fg-muted text-xs leading-relaxed sm:basis-full" aria-live="polite">
+        {perso ? libelles.mention.perso : libelles.mention.pro}{" "}
         <a className="underline" href={libelles.politique.href}>
           {libelles.politique.libelle}
         </a>

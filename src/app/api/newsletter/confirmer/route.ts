@@ -11,6 +11,7 @@
 
 import { NextResponse, type NextRequest } from "next/server";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { ipDepuisEntetes } from "@/lib/client-ip";
 import { confirmerLettre } from "@/server/newsletter/confirmer";
 
 export const runtime = "nodejs";
@@ -18,12 +19,9 @@ export const dynamic = "force-dynamic";
 
 const LIMITE_PAR_MINUTE = 20;
 
+/** IP du client, `x-forwarded-for` n'étant cru que d'un proxy de confiance. */
 function ipDe(req: NextRequest): string {
-  return (
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    req.headers.get("x-real-ip") ||
-    "unknown"
-  );
+  return ipDepuisEntetes(req.headers);
 }
 
 function pageResultat(locale: "fr" | "en", statut: string): URL {

@@ -18,7 +18,8 @@ interface ArticleNewsletterInlineProps {
  * 🔴 Lot L2 — l'encart ENVOIE DÉSORMAIS LE GUIDE. Il n'offrait que la lettre, et
  * affichait « Inscription confirmée — à bientôt. » avant toute confirmation. Il
  * partage maintenant le formulaire de la page du guide : l'adresse suffit pour
- * recevoir le guide par e-mail, la lettre est une case facultative, décochée.
+ * recevoir le guide par e-mail ; la lettre suit la nature de l'adresse
+ * (amendement de Will du 24/09, voir `NewsletterForm.tsx`).
  * Le formulaire est un îlot client déjà présent sur la page du guide ; bloc
  * serveur, hauteur réservée (CLS = 0).
  *

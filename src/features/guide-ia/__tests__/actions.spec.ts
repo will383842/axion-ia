@@ -14,7 +14,10 @@ const signalerHoneypot = vi.fn();
 
 vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: (...a: unknown[]) => checkRateLimit(...a) }));
 vi.mock("@/lib/turnstile", () => ({ verifyTurnstile: (...a: unknown[]) => verifyTurnstile(...a) }));
-vi.mock("@/lib/client-ip", () => ({ getClientIp: async () => "192.0.2.1" }));
+vi.mock("@/lib/client-ip", () => ({
+  getClientIp: async () => "192.0.2.1",
+  getClientUserAgent: async () => "navigateur-de-test",
+}));
 vi.mock("@/lib/security/honeypot-observable", () => ({
   signalerHoneypot: (...a: unknown[]) => signalerHoneypot(...a),
 }));
@@ -51,33 +54,35 @@ beforeEach(() => {
 });
 
 describe("demanderGuideAction", () => {
-  it("témoin : une demande valide est enregistrée, sans lettre si la case n'est pas cochée", async () => {
+  it("témoin : une demande valide est enregistrée, case non cochée transmise telle quelle", async () => {
     expect(await demanderGuideAction(ETAT, formulaire(VALIDE))).toEqual({ ok: true });
     expect(enregistrerDemandeGuide).toHaveBeenCalledWith(
       expect.objectContaining({
         email: "jeanne@example.invalid",
         locale: "fr",
         source: "guide-ia",
-        lettre: null,
+        variante: "guide",
+        caseLettre: false,
       }),
     );
   });
 
-  it("case cochée : la référence et la version du TEXTE de la page du guide", async () => {
+  it("case cochée : transmise ; c'est le serveur qui décidera selon la nature de l'adresse", async () => {
     await demanderGuideAction(ETAT, formulaire({ ...VALIDE, lettre: "true" }));
     expect(enregistrerDemandeGuide.mock.calls[0]?.[0]).toMatchObject({
-      lettre: { formRef: "newsletter-guide-ia", version: "lettre-guide-v2-2026-09-24" },
+      variante: "guide",
+      caseLettre: true,
     });
   });
 
-  it("depuis un encart d'article : la référence de l'ENCART, pas celle de la page", async () => {
+  it("depuis un encart d'article : la variante de l'ENCART, pas celle de la page", async () => {
     await demanderGuideAction(
       ETAT,
       formulaire({ ...VALIDE, source: "blog-fin-article", lettre: "true" }),
     );
     expect(enregistrerDemandeGuide.mock.calls[0]?.[0]).toMatchObject({
       source: "blog-fin-article",
-      lettre: { formRef: "newsletter-encart-article", version: "lettre-article-v2-2026-09-24" },
+      variante: "article",
     });
   });
 
@@ -127,9 +132,11 @@ describe("demanderGuideAction", () => {
     expect((await demanderGuideAction(ETAT, formulaire(VALIDE))).ok).toBe(false);
   });
 
-  it("n'écrit que l'EMPREINTE de l'IP, jamais l'IP", async () => {
+  it("la ligne ne reçoit que l'EMPREINTE de l'IP ; l'IP brute ne va qu'au registre, qui la hache", async () => {
     await demanderGuideAction(ETAT, formulaire(VALIDE));
     const entree = enregistrerDemandeGuide.mock.calls[0]?.[0] as Record<string, unknown>;
-    expect(JSON.stringify(entree)).not.toContain("192.0.2.1");
+    expect(entree["ipHash"]).not.toBe("192.0.2.1");
+    expect(entree["ip"]).toBe("192.0.2.1");
+    expect(entree["userAgent"]).toBe("navigateur-de-test");
   });
 });

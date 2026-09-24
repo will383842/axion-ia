@@ -113,11 +113,16 @@ const TITLES: Record<NotificationCategory, string> = {
  * pas. Une alerte dont on ne saurait pas dire ce qu'elle signale ne vaudrait
  * pas mieux que pas d'alerte du tout.
  */
-/** État de la case « lettre » d'une demande du guide, en clair. */
-const LETTRE_LIBELLES: Record<"a-confirmer" | "deja-abonnee" | "non-demandee", string> = {
-  "a-confirmer": "case cochée, confirmation à cliquer",
+/** État de la lettre après une demande du guide, en clair (amendement de Will du 24/09). */
+const LETTRE_LIBELLES: Record<
+  "inscrite" | "deja-abonnee" | "reinscription-proposee" | "opposition-maintenue" | "non-demandee",
+  string
+> = {
+  inscrite: "inscrite",
   "deja-abonnee": "déjà abonnée",
-  "non-demandee": "case non cochée",
+  "reinscription-proposee": "désabonnée : réinscription proposée dans l'e-mail",
+  "opposition-maintenue": "rebond dur : non inscrite",
+  "non-demandee": "adresse personnelle, case non cochée",
 };
 
 const CRM_SYNC_ALERT_LABELS: Record<CrmSyncAlertKind, string> = {
@@ -448,7 +453,7 @@ function formatBody(event: NotificationEvent): string {
         formatKV("Guides envoyés (24 h)", p.envois),
         formatKV("Guides ouverts (24 h)", p.clics),
         formatKV("En attente d'envoi", p.enAttente),
-        formatKV("Lettres à confirmer (24 h)", p.lettresAConfirmer),
+        formatKV("Inscriptions à la lettre (24 h)", p.inscriptionsLettre),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");

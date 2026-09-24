@@ -12,9 +12,14 @@
 //     un bouton, et non le PDF direct : les antivirus des messageries
 //     d'entreprise (Safe Links, prévisualisation) suivent les liens d'un GET,
 //     et seul le clic sur le bouton (un POST) vaut « guide ouvert » ;
-//   · SI la case « lettre » était cochée et l'adresse pas encore confirmée : le
-//     bouton « Confirmer l'abonnement à la lettre ». UN seul e-mail pour les
-//     deux, jamais deux e-mails d'un coup ;
+//   · SI la personne est inscrite à la lettre (amendement de Will du 24/09 :
+//     adresse professionnelle, ou case cochée) : un paragraphe qui le dit, et
+//     le lien « Se désabonner de la lettre » VISIBLE dans le corps — le worker
+//     fait aussi du jeton l'en-tête `List-Unsubscribe` One-Click (RFC 8058).
+//     Le pied de page garde le lien d'opposition de la famille B (lot 1b) ;
+//   · SI elle s'était désabonnée : le bouton qui lui PROPOSE de revenir. Sa
+//     demande du guide ne lève jamais son opposition ; seul ce clic le fait.
+//     UN seul e-mail, jamais deux d'un coup ;
 //   · SI `reprise` : la phrase pour un abonné inscrit avant la parution du guide
 //     (envoi unique, lot L7).
 //
@@ -26,15 +31,18 @@
 //
 // ⛔ Tous les textes de ce gabarit sont PUBLICS : validés par Will avant envoi.
 
-import { Button, Section, Text } from "@react-email/components";
+import { Button, Link, Section, Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import type { Locale } from "../../../../prisma/generated/client";
 import { GUIDE_IA_PAGES } from "@/content/guide-ia";
-import { CADENCE_LETTRE } from "@/content/guide-ia-formulaire";
+import { CADENCE_LETTRE, TEXTE_REINSCRIPTION } from "@/content/guide-ia-formulaire";
 
 interface Payload {
   downloadToken: string;
+  /** Réinscription proposée à une personne désabonnée. */
   confirmToken?: string;
+  /** Inscrite à la lettre : lien de désinscription visible + en-tête One-Click. */
+  unsubscribeToken?: string;
   reprise?: boolean;
 }
 
@@ -48,10 +56,14 @@ const COPY = {
     body: `Voici le guide que vous avez demandé : ${GUIDE_IA_PAGES} pages sur les usages concrets de l'IA en entreprise, les coûts réels, le retour sur investissement, la gouvernance et les écueils à éviter.`,
     astuce: "Commencez par la page 5 : l'essentiel en une page.",
     cta: "Télécharger le guide (PDF)",
-    lettreTitre: "Votre inscription à la lettre",
-    lettre: `Vous avez aussi demandé à recevoir la lettre IA d'Axion-IA. ${CADENCE_LETTRE.fr} Confirmez d'un clic : sans cette confirmation, vous ne la recevrez pas.`,
-    lettreCta: "Confirmer l'abonnement à la lettre",
+    lettreTitre: "La lettre d'Axion-IA",
+    lettreInscrite: `Vous recevrez aussi la lettre d'Axion-IA. ${CADENCE_LETTRE.fr} Pour ne pas la recevoir, un clic suffit :`,
+    desinscription: "Se désabonner de la lettre",
+    reinscription: TEXTE_REINSCRIPTION.fr,
+    reinscriptionCta: "Recevoir à nouveau la lettre",
     note: "Vous n'avez pas fait cette demande ? Ignorez simplement ce message : vous ne recevrez rien d'autre.",
+    noteInscrite:
+      "Vous n'avez pas fait cette demande ? Cliquez sur « Se désabonner de la lettre » ci-dessus : vous ne recevrez rien d'autre.",
   },
   en: {
     subject: `Your enterprise AI guide (PDF, ${GUIDE_IA_PAGES} pages)`,
@@ -61,10 +73,14 @@ const COPY = {
     body: `Here is the guide you requested: ${GUIDE_IA_PAGES} pages, in French, on concrete uses of AI in business, real costs, return on investment, governance and pitfalls to avoid.`,
     astuce: "Start with page 5: the essentials on one page.",
     cta: "Download the guide (PDF)",
-    lettreTitre: "Your letter subscription",
-    lettre: `You also asked to receive Axion-IA's AI letter. ${CADENCE_LETTRE.en} Confirm with one click: without it, you will not receive it.`,
-    lettreCta: "Confirm my letter subscription",
+    lettreTitre: "Axion-IA's letter",
+    lettreInscrite: `You will also receive Axion-IA's letter. ${CADENCE_LETTRE.en} If you do not want it, one click is enough:`,
+    desinscription: "Unsubscribe from the letter",
+    reinscription: TEXTE_REINSCRIPTION.en,
+    reinscriptionCta: "Receive the letter again",
     note: "Didn't request this? Just ignore this message: you will receive nothing else.",
+    noteInscrite:
+      'Didn\'t request this? Click "Unsubscribe from the letter" above: you will receive nothing else.',
   },
 } as const;
 
@@ -74,6 +90,11 @@ export const guideIaEnvoiSubject = (locale: Locale, _p: Record<string, unknown>)
 /** URL du lien personnel — page du site, jamais le PDF direct. */
 export function urlLienGuide(baseUrl: string, downloadToken: string): string {
   return `${baseUrl.replace(/\/+$/, "")}/api/guide-ia/telecharger?t=${encodeURIComponent(downloadToken)}`;
+}
+
+/** URL de désinscription de la lettre — la page porte le bouton (un POST), comme ailleurs. */
+export function urlDesinscriptionLettre(baseUrl: string, locale: Locale, token: string): string {
+  return `${baseUrl.replace(/\/+$/, "")}/${locale}/desabonnement?token=${encodeURIComponent(token)}`;
 }
 
 /** URL de confirmation de la lettre — une page avec un bouton, jamais un GET qui confirme. */
@@ -111,30 +132,43 @@ export function GuideIaEnvoiEmail({
       // copiable et transférable, qui compterait comme « ouvert » le clic d'un
       // autre. Le bouton reste bulletproof.
       ctaSecret
-      // Avec le bouton de confirmation de la lettre, le message porte deux
-      // liens d'ACTION : la rangée de réseaux sociaux (lien de notoriété) cède
-      // sa place, comme sur les e-mails du réseau d'apporteurs (§5.4).
-      sansReseauxSociaux={Boolean(p.confirmToken)}
+      // Deux liens d'ACTION dans le corps (le guide, et la lettre) : la rangée
+      // de réseaux sociaux (lien de notoriété) cède sa place, comme sur les
+      // e-mails du réseau d'apporteurs (§5.4).
+      sansReseauxSociaux={Boolean(p.confirmToken || p.unsubscribeToken)}
       locale={locale}
     >
       {p.reprise === true ? <Text style={emailStyles.paragraphStyle}>{t.reprise}</Text> : null}
       <Text style={emailStyles.paragraphStyle}>{t.body}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.astuce}</Text>
-      {p.confirmToken ? (
+      {p.unsubscribeToken ? (
         <Section style={{ margin: "8px 0 4px 0" }}>
           <Text style={{ ...emailStyles.paragraphStyle, fontWeight: 700 }}>{t.lettreTitre}</Text>
-          <Text style={emailStyles.paragraphStyle}>{t.lettre}</Text>
+          <Text style={emailStyles.paragraphStyle}>
+            {t.lettreInscrite}{" "}
+            <Link
+              href={urlDesinscriptionLettre(baseUrl, locale, p.unsubscribeToken)}
+              style={{ color: emailStyles.COLORS.accent, textDecoration: "underline" }}
+            >
+              {t.desinscription}
+            </Link>
+          </Text>
+        </Section>
+      ) : p.confirmToken ? (
+        <Section style={{ margin: "8px 0 4px 0" }}>
+          <Text style={{ ...emailStyles.paragraphStyle, fontWeight: 700 }}>{t.lettreTitre}</Text>
+          <Text style={emailStyles.paragraphStyle}>{t.reinscription}</Text>
           <Button
             href={urlConfirmationLettre(baseUrl, locale, p.confirmToken)}
             style={boutonSecondaire}
             className="ax-cta"
           >
-            {t.lettreCta}
+            {t.reinscriptionCta}
           </Button>
         </Section>
       ) : null}
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
-        {t.note}
+        {p.unsubscribeToken ? t.noteInscrite : t.note}
       </Text>
     </EmailLayout>
   );

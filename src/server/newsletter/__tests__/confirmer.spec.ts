@@ -66,8 +66,34 @@ describe("confirmerLettre", () => {
     expect(await confirmerLettre(JETON)).toEqual({ ok: false, error: "invalid_token" });
   });
 
-  it("désabonné entre-temps : unsubscribed, rien n'est écrit", async () => {
-    findUnique.mockResolvedValue({ ...ABONNE, status: "unsubscribed" });
+  it("🔴 RÉINSCRIPTION : un désabonné qui présente SON jeton est réinscrit, au POST seulement", async () => {
+    findUnique.mockResolvedValue({
+      ...ABONNE,
+      status: "unsubscribed",
+      consentFormRef: "newsletter-reinscription-email",
+      consentVersion: "lettre-reinscription-email-v1-2026-09-24",
+    });
+    const r = await confirmerLettre(JETON, { maintenant: MAINTENANT });
+    expect(r).toEqual({ ok: true, alreadyConfirmed: false, locale: "fr" });
+    expect(updateMany).toHaveBeenCalledWith({
+      where: { id: "abonne-1", confirmToken: JETON, status: { in: ["pending", "unsubscribed"] } },
+      data: {
+        status: "confirmed",
+        confirmedAt: MAINTENANT,
+        confirmToken: null,
+        // C'est ICI, sur son geste, que la date de désabonnement s'efface.
+        unsubscribedAt: null,
+      },
+    });
+    expect(recordConsentEvent.mock.calls[0]?.[0]).toMatchObject({
+      action: "optin",
+      formRef: "newsletter-reinscription-email",
+      consentVersion: "lettre-reinscription-email-v1-2026-09-24",
+    });
+  });
+
+  it("rebond dur : aucune réinscription possible, rien n'est écrit", async () => {
+    findUnique.mockResolvedValue({ ...ABONNE, status: "bounced" });
     expect(await confirmerLettre(JETON)).toEqual({ ok: false, error: "unsubscribed" });
     expect(updateMany).not.toHaveBeenCalled();
     expect(recordConsentEvent).not.toHaveBeenCalled();
@@ -96,8 +122,13 @@ describe("confirmerLettre", () => {
     });
     expect(r).toEqual({ ok: true, alreadyConfirmed: false, locale: "fr" });
     expect(updateMany).toHaveBeenCalledWith({
-      where: { id: "abonne-1", confirmToken: JETON, status: { not: "confirmed" } },
-      data: { status: "confirmed", confirmedAt: MAINTENANT, confirmToken: null },
+      where: { id: "abonne-1", confirmToken: JETON, status: { in: ["pending", "unsubscribed"] } },
+      data: {
+        status: "confirmed",
+        confirmedAt: MAINTENANT,
+        confirmToken: null,
+        unsubscribedAt: null,
+      },
     });
     expect(recordConsentEvent).toHaveBeenCalledWith({
       email: ABONNE.email,

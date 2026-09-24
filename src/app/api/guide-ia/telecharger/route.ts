@@ -25,6 +25,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { ipDepuisEntetes } from "@/lib/client-ip";
 import { urlGuideIa } from "@/content/guide-ia";
 import { emettreEvenementPlausible } from "@/lib/analytics/plausible-serveur";
 import { CHEMIN_LIEN_GUIDE, pageDuLien } from "@/server/guide-ia/page-du-lien";
@@ -47,12 +48,9 @@ const ENTETES_PAGE: Record<string, string> = {
     "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
 };
 
+/** IP du client, `x-forwarded-for` n'étant cru que d'un proxy de confiance. */
 function ipDe(req: NextRequest): string {
-  return (
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    req.headers.get("x-real-ip") ||
-    "unknown"
-  );
+  return ipDepuisEntetes(req.headers);
 }
 
 async function debitDepasse(req: NextRequest): Promise<boolean> {
@@ -129,13 +127,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   // Mesure d'audience, SANS donnée personnelle : la provenance seulement, et
   // si c'est la première ouverture. Le chemin transmis ne porte pas le jeton.
-  await emettreEvenementPlausible({
+  // ⚠️ PAS d'`await` : Plausible peut mettre jusqu'à 1,5 s à répondre, et
+  // c'est la personne qui attendait son PDF. L'envoi part, la redirection
+  // aussi ; une mesure perdue ne coûte qu'une mesure.
+  void emettreEvenementPlausible({
     nom: "Guide Downloaded",
     chemin: CHEMIN_LIEN_GUIDE,
     props: { source: demande.source ?? "inconnue", premier: premier.count > 0 ? "oui" : "non" },
     userAgent: req.headers.get("user-agent"),
     ip: ipDe(req),
-  });
+  }).catch(() => undefined);
 
   // ⚠️ L'émission vers le CRM (`lead_magnet_requested`, décision D1 : au clic)
   // arrive avec le lot L4-S, une fois le CRM prêt à la recevoir. `crm_emitted_at`

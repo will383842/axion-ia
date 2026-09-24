@@ -1,5 +1,5 @@
 /**
- * RATTRAPAGE DU GUIDE ET DES CONFIRMATIONS — passage horaire (lot L2, 2026-09-24).
+ * RATTRAPAGE DU GUIDE — passage horaire (lot L2, 2026-09-24).
  *
  * Modèle : ADR 0050 (rattrapage automatique des exemplaires signés). Une mise
  * en file peut échouer — Redis coupé, plafond horaire atteint, corbeille muette
@@ -24,8 +24,16 @@
  *   · le coupe-circuit : tant qu'il est déclenché, le passage ne fait RIEN ;
  *   · le plafond horaire du guide : il ne relâche que la place restante.
  *
- * Idem pour les confirmations de la lettre (`confirm_sent_at` nul) dont aucune
- * demande du guide n'attend déjà — sinon l'e-mail du guide la porte.
+ * L'e-mail repris porte ce que la ligne d'abonné dit AU MOMENT DE L'ENVOI :
+ * lien de désinscription (abonnée) ou bouton de réinscription (désabonnée à
+ * qui l'on propose de revenir) — `lettreDansLEmail`.
+ *
+ * 🔴 Il n'y a PLUS de rattrapage des confirmations de la lettre (ancien gabarit
+ * `newsletter-confirm-optin`). Depuis l'amendement de Will (24/09), aucune
+ * inscription n'attend de confirmation ; et ce rattrapage-là échappait à la
+ * limite de 3 e-mails par destinataire : en redemandant le guide toutes les
+ * heures avec l'adresse d'un tiers, on lui faisait envoyer jusqu'à 24
+ * e-mails par jour.
  *
  * ⚠️ Fenêtre app/worker : ce module tourne dans le WORKER, qui atterrit ~50 min
  * avant la migration. Une table absente (P2021) se lit « rien à faire », en
@@ -33,7 +41,6 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { enqueueEmail } from "@/server/queue/queues";
 import { verdictAvantEnvoi } from "@/server/email/verdict-envoi";
 import {
   AGE_RATTRAPAGE_MS,
@@ -45,6 +52,7 @@ import {
 } from "./config";
 import { coupeCircuitDeclenche } from "./coupe-circuit";
 import { envoisDeLaDerniereHeure, mettreEnFileGuide } from "./envoi";
+import { lettreDansLEmail } from "./lettre";
 
 export interface RapportRattrapage {
   readonly suspendu: boolean;
@@ -52,6 +60,7 @@ export interface RapportRattrapage {
   readonly relancees: number;
   readonly reparees: number;
   readonly ecartees: number;
+  /** E-mails repris qui portaient un bouton de réinscription à la lettre. */
   readonly confirmationsRelancees: number;
 }
 
@@ -93,16 +102,6 @@ async function estGareeEnValidation(demandeId: string): Promise<boolean> {
     where: { entityType: ENTITE_GUIDE, entityId: demandeId, statut: "a_valider" },
   });
   return n > 0;
-}
-
-async function jetonDeConfirmationEnAttente(email: string): Promise<string | null> {
-  // Sélection EXPLICITE des colonnes historiques : ce module tourne dans le
-  // worker, qui peut précéder la migration des nouvelles colonnes.
-  const abonne = await prisma.newsletterSubscriber.findUnique({
-    where: { email },
-    select: { status: true, confirmToken: true },
-  });
-  return abonne?.status === "pending" && abonne.confirmToken ? abonne.confirmToken : null;
 }
 
 export async function rattraperGuides(maintenant: Date = new Date()): Promise<RapportRattrapage> {
@@ -168,7 +167,7 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
         continue;
       }
 
-      const confirmToken = await jetonDeConfirmationEnAttente(c.email);
+      const lettre = await lettreDansLEmail(c.email);
       const r = await mettreEnFileGuide(
         {
           id: c.id,
@@ -176,15 +175,19 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
           locale: c.locale === "en" ? "en" : "fr",
           downloadToken: c.downloadToken,
         },
-        { confirmToken, maintenant },
+        {
+          confirmToken: lettre.confirmToken ?? null,
+          unsubscribeToken: lettre.unsubscribeToken ?? null,
+          maintenant,
+        },
       );
       if (r === "en-file") {
         relancees++;
-        if (confirmToken) {
+        if (lettre.confirmToken) {
           confirmationsViaGuide++;
           await prisma.newsletterSubscriber
             .updateMany({
-              where: { email: c.email, status: "pending" },
+              where: { email: c.email, confirmToken: lettre.confirmToken },
               data: { confirmSentAt: maintenant },
             })
             .catch(() => undefined);
@@ -196,62 +199,16 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
       }
     }
 
-    const confirmations = await rattraperConfirmations(maintenant);
     return {
       suspendu: false,
       candidates: candidates.length,
       relancees,
       reparees,
       ecartees,
-      confirmationsRelancees: confirmations + confirmationsViaGuide,
+      confirmationsRelancees: confirmationsViaGuide,
     };
   } catch (e) {
     if (estSchemaAbsent(e)) return RAPPORT_VIDE;
     throw e;
   }
-}
-
-/**
- * Confirmations de la lettre restées sans envoi, et qu'AUCUNE demande du guide
- * n'emporte déjà (sinon c'est l'e-mail du guide qui les porte). Gabarit
- * historique `newsletter-confirm-optin`.
- */
-export async function rattraperConfirmations(maintenant: Date = new Date()): Promise<number> {
-  const t = maintenant.getTime();
-  const enAttente = await prisma.newsletterSubscriber.findMany({
-    where: {
-      status: "pending",
-      confirmSentAt: null,
-      confirmToken: { not: null },
-      updatedAt: { lt: new Date(t - AGE_RATTRAPAGE_MS) },
-      createdAt: { gte: new Date(t - HORIZON_RATTRAPAGE_MS) },
-    },
-    select: { id: true, email: true, locale: true, confirmToken: true, unsubscribeToken: true },
-    take: 50,
-  });
-
-  let relancees = 0;
-  for (const a of enAttente) {
-    const guideEnAttente = await prisma.guideRequest.count({
-      where: { email: a.email, sentAt: null, origine: "formulaire" },
-    });
-    if (guideEnAttente > 0) continue;
-    const r = await enqueueEmail(
-      "newsletter-confirm-optin",
-      a.email,
-      a.locale === "en" ? "en" : "fr",
-      {
-        confirmToken: a.confirmToken,
-        ...(a.unsubscribeToken ? { unsubscribeToken: a.unsubscribeToken } : {}),
-      },
-      { marketing: true },
-    );
-    if (r.enqueued) {
-      relancees++;
-      await prisma.newsletterSubscriber
-        .update({ where: { id: a.id }, data: { confirmSentAt: maintenant }, select: { id: true } })
-        .catch(() => undefined);
-    }
-  }
-  return relancees;
 }

@@ -2,8 +2,11 @@
 //
 // Remplace `subscribeNewsletterAction`. Deux finalités, découplées :
 //   · le GUIDE part tout de suite, sur la seule adresse (RGPD 6.1.b) ;
-//   · la LETTRE est une case facultative, décochée, à double opt-in (6.1.a) —
-//     sa confirmation voyage dans le même e-mail.
+//   · la LETTRE suit la nature de l'adresse, décidée CÔTÉ SERVEUR par
+//     `server/guide-ia/demande.ts` (amendement de Will du 24/09) : adresse
+//     professionnelle → inscrite (intérêt légitime) ; adresse personnelle →
+//     inscrite seulement si la case facultative est cochée (consentement).
+//     Ici, on ne transmet que ce que la personne a coché.
 //
 // Les contrôles d'entrée, dans l'ordre :
 //   1. débit par IP (3 / 5 min) ;
@@ -27,17 +30,10 @@ import { demandeGuideSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { parseLocale } from "@/lib/schemas/locale";
-import { getClientIp } from "@/lib/client-ip";
+import { getClientIp, getClientUserAgent } from "@/lib/client-ip";
 import { hashIp } from "@/lib/security/ip-hash";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
-import {
-  FORM_REF_LETTRE,
-  SOURCES_GUIDE,
-  VERSION_LETTRE,
-  VERSION_MENTION_GUIDE,
-  varianteDeSource,
-  type SourceGuide,
-} from "@/content/guide-ia-formulaire";
+import { SOURCES_GUIDE, varianteDeSource, type SourceGuide } from "@/content/guide-ia-formulaire";
 import { domaineRecoitDesEmails } from "@/server/guide-ia/mx";
 import { enregistrerDemandeGuide } from "@/server/guide-ia/demande";
 
@@ -115,18 +111,18 @@ export async function demanderGuideAction(
   }
 
   const source = lireSource(formData.get("source"));
-  const variante = varianteDeSource(source ?? "guide-ia");
 
   try {
     await enregistrerDemandeGuide({
       email: parsed.data.email,
       locale,
       source,
-      versionMention: VERSION_MENTION_GUIDE,
-      lettre: parsed.data.lettre
-        ? { formRef: FORM_REF_LETTRE[variante], version: VERSION_LETTRE[variante] }
-        : null,
+      variante: varianteDeSource(source ?? "guide-ia"),
+      caseLettre: parsed.data.lettre,
       ipHash: empreinteIp(ip),
+      // Contexte du geste pour le registre de preuve (qui les hache).
+      ip,
+      userAgent: await getClientUserAgent(),
     });
   } catch (err) {
     console.error(
@@ -142,7 +138,7 @@ export async function demanderGuideAction(
     };
   }
 
-  // La preuve de la LETTRE (IP hachée, agent) s'écrit à la CONFIRMATION, sur
-  // le geste qui la vaut — pas ici, où rien n'est encore accepté.
+  // Anti-énumération : la réponse est la même, que l'adresse soit inscrite,
+  // déjà abonnée, désabonnée ou en rebond.
   return { ok: true };
 }

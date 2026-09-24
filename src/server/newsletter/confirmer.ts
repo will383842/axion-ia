@@ -12,6 +12,14 @@
  * (`/api/newsletter/confirmer`) appelle cette fonction. Les anciens liens
  * (`?token=…`) restent valides : ils mènent à la même page, au même bouton.
  *
+ * Depuis l'amendement de Will (24/09), plus aucune inscription neuve n'attend
+ * de confirmation. Cette fonction sert encore à deux choses :
+ *   · les liens de l'ancien double opt-in (`pending`) ;
+ *   · la RÉINSCRIPTION d'une personne désabonnée : son opposition n'est jamais
+ *     levée par une demande du guide (`guide-ia/lettre.ts`) — seulement ici,
+ *     par son clic, sur un jeton que seul l'e-mail « Votre guide » lui a
+ *     apporté. C'est à ce moment, et pas avant, que `unsubscribed_at` s'efface.
+ *
  * La preuve écrite au registre porte :
  *   · la référence et la version du texte EFFECTIVEMENT accepté (colonnes de
  *     l'inscription ; repli historique pour les inscriptions antérieures) ;
@@ -65,7 +73,8 @@ export async function confirmerLettre(
     });
     if (!sub) return { ok: false, error: "invalid_token" };
     const locale = sub.locale === "en" ? "en" : "fr";
-    if (sub.status === "unsubscribed") return { ok: false, error: "unsubscribed" };
+    // Rebond dur : l'adresse ne reçoit pas — aucune réinscription possible.
+    if (sub.status === "bounced") return { ok: false, error: "unsubscribed" };
     if (sub.status === "confirmed") {
       // 🔑 Le jeton est RETIRÉ ici aussi : il restait valable indéfiniment
       // quand une personne déjà inscrite refaisait la demande.
@@ -79,9 +88,16 @@ export async function confirmerLettre(
 
     // Jeton à usage unique : la mise à jour ne passe que s'il est encore là.
     // Deux POST simultanés (double clic) ne produisent qu'UNE confirmation.
+    // `pending` (ancien double opt-in) ou `unsubscribed` (réinscription) : le
+    // jeton présenté est celui de la ligne, le geste est humain (POST).
     const r = await prisma.newsletterSubscriber.updateMany({
-      where: { id: sub.id, confirmToken: token, status: { not: "confirmed" } },
-      data: { status: "confirmed", confirmedAt: maintenant, confirmToken: null },
+      where: { id: sub.id, confirmToken: token, status: { in: ["pending", "unsubscribed"] } },
+      data: {
+        status: "confirmed",
+        confirmedAt: maintenant,
+        confirmToken: null,
+        unsubscribedAt: null,
+      },
     });
     if (r.count === 0) return { ok: true, alreadyConfirmed: true, locale };
 

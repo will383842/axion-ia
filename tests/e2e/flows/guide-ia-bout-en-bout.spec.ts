@@ -1,8 +1,9 @@
 // Le guide IA, DE BOUT EN BOUT — demande → e-mail → POST → PDF (lot L2, 2026-09-24).
 //
 // Ce que ce fichier prouve et qu'aucun test unitaire ne peut prouver :
-//   · la page du guide sert un formulaire où la case « lettre » est DÉCOCHÉE par
-//     défaut, avec la mention d'information et le lien vers la politique ;
+//   · la page du guide sert un formulaire « Votre e-mail » ; pour une adresse
+//     professionnelle, aucune case, et la mention d'information (amendement de
+//     Will du 24/09) avec le lien vers la politique ;
 //   · le lien personnel de l'e-mail, servi par le vrai serveur sur une vraie
 //     base : un GET pose « vu » et JAMAIS « cliqué » (un antivirus suit les GET) ;
 //     le POST du bouton pose « cliqué » et redirige (303) vers le PDF, qui existe ;
@@ -43,7 +44,7 @@ async function semerDemande(): Promise<{ id: string; jeton: string }> {
       origine: "formulaire",
       source: "guide-ia",
       locale: "fr",
-      version: "guide-mention-v1-2026-09-24",
+      version: "guide-mention-pro-v1-2026-09-24",
       downloadToken: jeton,
       queuedAt: new Date(),
     },
@@ -56,14 +57,22 @@ async function semerDemande(): Promise<{ id: string; jeton: string }> {
 test.describe("@guide-ia parcours du guide", () => {
   test.setTimeout(240_000);
 
-  test("la page sert le formulaire : case « lettre » DÉCOCHÉE, mention et politique visibles", async ({
+  test("la page sert le formulaire : « Votre e-mail », mention d'information et politique visibles", async ({
     page,
   }) => {
     await page.goto("/fr/guide-ia");
-    await expect(page.locator('input[name="email"]').first()).toBeVisible();
-    const caseLettre = page.getByRole("checkbox", { name: /recevoir la lettre IA/ });
-    await expect(caseLettre).toBeVisible();
-    await expect(caseLettre).not.toBeChecked();
+    const champ = page.locator('input[name="email"]').first();
+    await expect(champ).toBeVisible();
+    await expect(page.getByText("Votre e-mail").first()).toBeVisible();
+    // Adresse professionnelle (amendement de Will du 24/09) : AUCUNE case, la
+    // mention annonce l'inscription et la désinscription en un clic. La case
+    // des adresses personnelles est couverte par les tests unitaires (liste
+    // des webmails testée par domaine : aucune adresse réelle dans un test).
+    await champ.fill("recette@example.invalid");
+    await expect(page.getByRole("checkbox")).toHaveCount(0);
+    await expect(
+      page.getByText("En recevant le guide, vous recevrez aussi quelques lettres par an").first(),
+    ).toBeVisible();
     await expect(page.getByText("Politique de confidentialité").first()).toBeVisible();
     const html = await page.content();
     expect(html).not.toMatch(/newsletter mensuelle/i);

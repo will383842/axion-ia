@@ -28,7 +28,7 @@ export interface ReleveSentinelle {
   readonly echecs: number;
   readonly enAttente: number;
   readonly clics: number;
-  readonly lettresAConfirmer: number;
+  readonly inscriptionsLettre: number;
   readonly crmAbandons: number;
   readonly coupeCircuitDepuis: Date | null;
   readonly anomalies: readonly string[];
@@ -36,7 +36,7 @@ export interface ReleveSentinelle {
 
 export async function releverSentinelle(maintenant: Date = new Date()): Promise<ReleveSentinelle> {
   const depuis = new Date(maintenant.getTime() - 24 * 3_600_000);
-  const [demandes, envois, echecs, enAttente, clics, lettresAConfirmer, crmAbandons, coupe] =
+  const [demandes, envois, echecs, enAttente, clics, inscriptionsLettre, crmAbandons, coupe] =
     await Promise.all([
       prisma.guideRequest.count({
         where: { OR: [{ createdAt: { gte: depuis } }, { queuedAt: { gte: depuis } }] },
@@ -49,8 +49,10 @@ export async function releverSentinelle(maintenant: Date = new Date()): Promise<
       }),
       prisma.guideRequest.count({ where: { sentAt: null, origine: "formulaire" } }),
       prisma.guideRequest.count({ where: { firstClickAt: { gte: depuis } } }),
+      // Inscriptions à la lettre du jour (amendement de Will : plus de double
+      // opt-in, donc plus rien « à confirmer »).
       prisma.newsletterSubscriber.count({
-        where: { status: "pending", createdAt: { gte: depuis } },
+        where: { status: "confirmed", confirmedAt: { gte: depuis } },
       }),
       prisma.crmSyncOutbox.count({
         where: {
@@ -87,7 +89,7 @@ export async function releverSentinelle(maintenant: Date = new Date()): Promise<
     echecs,
     enAttente,
     clics,
-    lettresAConfirmer,
+    inscriptionsLettre,
     crmAbandons,
     coupeCircuitDepuis,
     anomalies,
@@ -126,7 +128,7 @@ export async function passerSentinelle(
         envois: releve.envois,
         clics: releve.clics,
         enAttente: releve.enAttente,
-        lettresAConfirmer: releve.lettresAConfirmer,
+        inscriptionsLettre: releve.inscriptionsLettre,
       },
       dedupKey: `guide-ia-recap-${jour}`,
     }).catch(() => undefined);

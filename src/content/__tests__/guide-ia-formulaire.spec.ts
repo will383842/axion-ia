@@ -15,10 +15,13 @@ import { describe, expect, it } from "vitest";
 
 import {
   FORM_REF_LETTRE,
+  FORM_REF_REINSCRIPTION,
   TEXTE_CASE_LETTRE,
-  TEXTE_MENTION_GUIDE,
+  TEXTE_MENTION,
+  TEXTE_REINSCRIPTION,
   VERSION_LETTRE,
-  VERSION_MENTION_GUIDE,
+  VERSION_MENTION,
+  VERSION_REINSCRIPTION,
   libellesFormulaireGuide,
 } from "@/content/guide-ia-formulaire";
 
@@ -30,14 +33,26 @@ const empreinte = (s: unknown): string =>
  * ici l'empreinte nouvelle, dans le même commit.
  */
 const FIGEES: ReadonlyArray<readonly [string, string, string, unknown]> = [
-  ["lettre-guide-v2-2026-09-24", "71ff0ec985d837b1", VERSION_LETTRE.guide, TEXTE_CASE_LETTRE.guide],
+  ["lettre-guide-v3-2026-09-24", "393bf5b38714ae6c", VERSION_LETTRE.guide, TEXTE_CASE_LETTRE.guide],
   [
-    "lettre-article-v2-2026-09-24",
-    "eb223708369a0e0c",
+    "lettre-article-v3-2026-09-24",
+    "393bf5b38714ae6c",
     VERSION_LETTRE.article,
     TEXTE_CASE_LETTRE.article,
   ],
-  ["guide-mention-v1-2026-09-24", "953e3fa46d2dbb13", VERSION_MENTION_GUIDE, TEXTE_MENTION_GUIDE],
+  ["guide-mention-pro-v1-2026-09-24", "9ac098c73985c73f", VERSION_MENTION.pro, TEXTE_MENTION.pro],
+  [
+    "guide-mention-perso-v1-2026-09-24",
+    "339cc5e7fbf0aeaa",
+    VERSION_MENTION.perso,
+    TEXTE_MENTION.perso,
+  ],
+  [
+    "lettre-reinscription-email-v1-2026-09-24",
+    "64ee6d85b35aab42",
+    VERSION_REINSCRIPTION,
+    TEXTE_REINSCRIPTION,
+  ],
 ];
 
 describe("🔴 changer un texte = changer sa version", () => {
@@ -54,30 +69,48 @@ describe("🔴 changer un texte = changer sa version", () => {
   it("deux points de collecte, deux références, deux versions distinctes", () => {
     expect(FORM_REF_LETTRE.guide).not.toBe(FORM_REF_LETTRE.article);
     expect(VERSION_LETTRE.guide).not.toBe(VERSION_LETTRE.article);
+    expect(FORM_REF_REINSCRIPTION).not.toBe(FORM_REF_LETTRE.guide);
   });
 });
 
-describe("la case « lettre » est honnête", () => {
+describe("les textes suivent l'amendement de Will (24/09)", () => {
+  it("le champ accepte toute adresse : « Votre e-mail », plus « professionnel »", () => {
+    expect(libellesFormulaireGuide("guide", "fr").email).toBe("Votre e-mail");
+    expect(libellesFormulaireGuide("article", "en").email).toBe("Your email");
+  });
+
   for (const variante of ["guide", "article"] as const) {
-    it(`${variante} : elle ne conditionne pas le guide, et dit la cadence réelle`, () => {
-      const fr = TEXTE_CASE_LETTRE[variante].fr;
-      expect(fr).toMatch(/^Je souhaite aussi recevoir/);
-      expect(fr).toContain("Quelques lettres par an, à chaque nouveauté utile.");
-      expect(fr).toContain("Désinscription en un clic");
-      expect(fr).not.toMatch(/mensuel/i);
+    it(`${variante} : la case dit le texte de l'amendement, et jamais « mensuel »`, () => {
+      expect(TEXTE_CASE_LETTRE[variante].fr).toBe(
+        "Je souhaite aussi recevoir la lettre d'Axion-IA (quelques lettres par an).",
+      );
+      expect(TEXTE_CASE_LETTRE[variante].fr).not.toMatch(/mensuel/i);
     });
   }
 
-  it("la mention d'information est affichée par le formulaire, avec le lien vers la politique", () => {
+  it("mention PRO : elle annonce l'inscription et la désinscription en un clic", () => {
+    expect(TEXTE_MENTION.pro.fr).toMatch(
+      /^En recevant le guide, vous recevrez aussi quelques lettres par an, à chaque nouveauté utile\. Désinscription en un clic, à tout moment\./,
+    );
+  });
+
+  it("mention PERSO : elle renvoie à la case, et ne promet aucune inscription", () => {
+    expect(TEXTE_MENTION.perso.fr).toContain("que si vous cochez la case");
+    expect(TEXTE_MENTION.perso.fr).not.toContain("vous recevrez aussi");
+  });
+
+  it("la mention est affichée par le formulaire, selon la nature, avec le lien vers la politique", () => {
     const l = libellesFormulaireGuide("guide", "fr");
-    expect(l.mention).toBe(TEXTE_MENTION_GUIDE.fr);
+    expect(l.mention).toEqual({ pro: TEXTE_MENTION.pro.fr, perso: TEXTE_MENTION.perso.fr });
     expect(l.politique.href).toBe("/fr/politique-confidentialite");
     const form = readFileSync(
       join(process.cwd(), "src/components/forms/NewsletterForm.tsx"),
       "utf8",
     );
-    expect(form).toContain("{libelles.mention}");
+    expect(form).toContain("libelles.mention.perso : libelles.mention.pro");
     expect(form).toContain("libelles.politique.href");
+    // La case n'apparaît que pour une adresse personnelle.
+    expect(form).toMatch(/\{perso \? \(\s*<div/);
   });
 
   it("⛔ aucun numéro de téléphone, jamais « Zoom », dans les textes du formulaire", () => {
@@ -85,6 +118,7 @@ describe("la case « lettre » est honnête", () => {
       libellesFormulaireGuide("guide", "fr"),
       libellesFormulaireGuide("article", "fr"),
       libellesFormulaireGuide("guide", "en"),
+      TEXTE_REINSCRIPTION,
     ]);
     expect(tout).not.toMatch(/\b0[1-9](?:[ .]?\d{2}){4}\b|\+33/);
     expect(tout).not.toMatch(/zoom/i);

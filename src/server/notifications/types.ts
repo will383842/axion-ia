@@ -348,7 +348,12 @@ export type NotificationEvent =
         email: string;
         locale: "fr" | "en";
         source: string;
-        lettre: "a-confirmer" | "deja-abonnee" | "non-demandee";
+        lettre:
+          | "inscrite"
+          | "deja-abonnee"
+          | "reinscription-proposee"
+          | "opposition-maintenue"
+          | "non-demandee";
         envoi: string;
         nouvelle: boolean;
       };
@@ -361,7 +366,7 @@ export type NotificationEvent =
         envois: number;
         clics: number;
         enAttente: number;
-        lettresAConfirmer: number;
+        inscriptionsLettre: number;
       };
     }
   // === Booking interne (existant) ===

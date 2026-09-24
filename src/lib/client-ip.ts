@@ -43,15 +43,16 @@ function isTrustedSource(remoteAddr: string | null): boolean {
 }
 
 /**
- * Extrait l'IP client depuis les headers Next.js (Server Action / Server Comp).
- * En prod, exige que le proxy upstream soit dans la liste de confiance.
- * En dev, accepte n'importe quel x-forwarded-for (utile pour test local).
+ * Même règle que `getClientIp`, sur des en-têtes DÉJÀ en main — pour une route
+ * (`req.headers`), où l'on n'a pas besoin de `headers()` de `next/headers`.
+ *
+ * 🔴 Lot L2 (2026-09-24) : deux routes lisaient `x-forwarded-for` BRUT. Le
+ * client choisissait alors l'IP de sa limite de débit, et celle dont
+ * l'empreinte entre dans la preuve du consentement.
  */
-export async function getClientIp(): Promise<string> {
-  const h = await headers();
+export function ipDepuisEntetes(h: Pick<Headers, "get">): string {
   // remoteAddr du proxy direct (set par Caddy/Coolify via X-Real-IP ou socket)
   const remoteAddr = h.get("x-real-ip");
-
   if (isTrustedSource(remoteAddr)) {
     const fwd = h.get("x-forwarded-for");
     if (fwd) {
@@ -60,4 +61,19 @@ export async function getClientIp(): Promise<string> {
     }
   }
   return remoteAddr ?? "unknown";
+}
+
+/**
+ * Extrait l'IP client depuis les headers Next.js (Server Action / Server Comp).
+ * En prod, exige que le proxy upstream soit dans la liste de confiance.
+ * En dev, accepte n'importe quel x-forwarded-for (utile pour test local).
+ */
+export async function getClientIp(): Promise<string> {
+  return ipDepuisEntetes(await headers());
+}
+
+/** Agent du navigateur (Server Action), pour le contexte d'une preuve de consentement. */
+export async function getClientUserAgent(): Promise<string | null> {
+  const ua = (await headers()).get("user-agent");
+  return ua ? ua.slice(0, 500) : null;
 }

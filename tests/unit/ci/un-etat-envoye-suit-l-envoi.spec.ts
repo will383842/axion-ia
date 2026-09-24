@@ -50,8 +50,8 @@ function source(...segments: string[]): string {
 
 // 🔑 Lot L2 (2026-09-24) — l'envoi de la confirmation a quitté
 // `features/newsletter/actions.ts` : il voyage dans l'e-mail du guide
-// (`server/guide-ia/envoi.ts`), et le rattrapage relance les confirmations
-// orphelines (`server/guide-ia/rattrapage.ts`). La règle suit le code.
+// (`server/guide-ia/envoi.ts`), que le rattrapage réutilise
+// (`server/guide-ia/rattrapage.ts`). La règle suit le code.
 const GUIDE_ENVOI = ["src", "server", "guide-ia", "envoi.ts"];
 const GUIDE_DEMANDE = ["src", "server", "guide-ia", "demande.ts"];
 const RATTRAPAGE = ["src", "server", "guide-ia", "rattrapage.ts"];
@@ -59,7 +59,8 @@ const DOCUMENTS = ["src", "server", "intervention-documents", "notifications.ts"
 
 const FICHIERS: ReadonlyArray<readonly [string, string[]]> = [
   ["guide-ia/envoi.ts", GUIDE_ENVOI],
-  ["guide-ia/rattrapage.ts", RATTRAPAGE],
+  // `guide-ia/rattrapage.ts` n'appelle plus `enqueueEmail` : il passe par
+  // `mettreEnFileGuide` (envoi.ts), gardé ci-dessus, et par l'assertion dédiée.
   ["intervention-documents/notifications.ts", DOCUMENTS],
 ];
 
@@ -113,13 +114,14 @@ describe("un état « envoyé » suit l'envoi", () => {
     expect(src).toContain('envoi === "en-file"');
   });
 
-  it("🔴 le rattrapage des confirmations ne pose confirmSentAt qu'APRÈS l'envoi", () => {
-    const tout = source(...RATTRAPAGE);
-    const src = tout.slice(tout.indexOf("export async function rattraperConfirmations"));
-    // Les ÉCRITURES seulement (`data: { confirmSentAt`) : le filtre de la requête
-    // (`where: { confirmSentAt: null }`) lit la colonne, il ne la pose pas.
-    expect(posesAvant(src, /data:\s*\{\s*confirmSentAt:/g, "enqueueEmail(")).toEqual([]);
-    expect(src).toMatch(/\.enqueued/);
+  it("🔴 le rattrapage ne pose confirmSentAt qu'APRÈS la mise en file du guide qui le porte", () => {
+    const src = source(...RATTRAPAGE);
+    // Les ÉCRITURES seulement (`data: { confirmSentAt`) : depuis la relecture du
+    // 24/09, le rattrapage des confirmations n'existe plus ; le bouton de
+    // réinscription voyage dans l'e-mail du guide, et sa trace suit l'envoi.
+    expect(posesAvant(src, /data:\s*\{\s*confirmSentAt:/g, "mettreEnFileGuide(")).toEqual([]);
+    expect(src).toContain('r === "en-file"');
+    expect(src).not.toContain("newsletter-confirm-optin");
   });
 
   it("🔴 le compteur de notifyNewVersion ne s'incrémente que sur un envoi réel", () => {

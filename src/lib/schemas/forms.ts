@@ -23,7 +23,9 @@ const email = z.string().trim().toLowerCase().email("Email invalide.");
  * finalités d'une seule case OBLIGATOIRE : recevoir le guide ET la lettre. Un
  * consentement à la lettre dont dépend le guide est présumé non libre (RGPD
  * art. 7.4, considérant 43). Décision n° 1 de Will : le guide part sur la seule
- * adresse ; la lettre est une case FACULTATIVE, décochée par défaut.
+ * adresse. `lettre` = la case FACULTATIVE, décochée par défaut, proposée aux
+ * adresses personnelles ; pour une adresse professionnelle, le serveur
+ * l'ignore (amendement du 24/09, `server/guide-ia/demande.ts`).
  */
 export const demandeGuideSchema = z.object({
   email,

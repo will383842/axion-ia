@@ -8,11 +8,12 @@
  * de connexion. Décision n° 2 de Will (24/09) : la lettre partira un jour par
  * MailWizz + PowerMTA, JAMAIS par ZeptoMail.
  *
- * Le seul envoi `marketing: true` légitime est la confirmation du double
- * opt-in : elle répond au geste de la personne. Cette garde relit TOUS les
- * appels `enqueueEmail(` du code de production et rougit si un autre gabarit
- * part avec ce drapeau — c'est-à-dire si quelqu'un commence à envoyer une
- * « lettre » par le tuyau transactionnel.
+ * Le seul envoi `marketing: true` légitime était la confirmation du double
+ * opt-in. Depuis l'amendement de Will (24/09), elle ne part plus d'aucun
+ * parcours (gabarit dormant) : AUCUN appel du code de production ne porte ce
+ * drapeau. Cette garde relit TOUS les appels `enqueueEmail(` et rougit si un
+ * gabarit hors liste part avec lui — c'est-à-dire si quelqu'un commence à
+ * envoyer une « lettre » par le tuyau transactionnel.
  *
  * Elle rougit AUSSI si un appel `marketing: true` passe un gabarit qui n'est pas
  * une chaîne littérale : ce qu'on ne peut pas lire, on ne peut pas garder.
@@ -24,6 +25,8 @@ import { describe, expect, it } from "vitest";
 
 /** La liste FERMÉE. L'allonger est une décision, pas un correctif. */
 const GABARITS_MARKETING_AUTORISES: ReadonlySet<string> = new Set(["newsletter-confirm-optin"]);
+
+const MARKETING = /marketing:\s*true/;
 
 const SRC = join(process.cwd(), "src");
 
@@ -75,8 +78,12 @@ describe("aucune lettre ne part par ZeptoMail", () => {
     ).toBe(true);
   });
 
-  it("témoin : la garde voit bien le seul envoi marketing autorisé", () => {
-    expect(APPELS.some((a) => /marketing:\s*true/.test(a.texte))).toBe(true);
+  it("témoin : la garde SAIT lire un appel `marketing: true` (aucun n'existe plus en production)", () => {
+    // Plus aucun appel réel ne porte le drapeau : sans ce témoin synthétique,
+    // un détecteur cassé passerait au vert en ne voyant rien.
+    const faux = appels('await enqueueEmail("lettre-exemple", to, "fr", {}, { marketing: true });');
+    expect(faux).toHaveLength(1);
+    expect(MARKETING.test(faux[0] ?? "")).toBe(true);
   });
 
   it("🔴 tout envoi `marketing: true` porte un gabarit de la liste fermée", () => {

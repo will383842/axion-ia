@@ -6,10 +6,14 @@
  *
  *   1. enregistre (ou retrouve) la demande dans `guide_requests` — une ligne par
  *      adresse, le lien personnel ne change pas d'une demande à l'autre ;
- *   2. si — et seulement si — la case « lettre » est cochée, inscrit l'adresse
- *      en `pending` (double opt-in) ;
- *   3. met en file UN seul e-mail, « Votre guide », qui porte aussi le bouton de
- *      confirmation de la lettre quand il y a lieu ;
+ *   2. décide la LETTRE d'après la nature de l'adresse, CÔTÉ SERVEUR
+ *      (amendement de Will du 24/09) : adresse professionnelle → inscrite
+ *      (intérêt légitime) ; adresse personnelle → inscrite seulement si la case
+ *      est cochée (consentement). Ce qu'envoie le navigateur ne décide pas de
+ *      la nature ;
+ *   3. met en file UN seul e-mail, « Votre guide », qui porte aussi le lien de
+ *      désinscription de la lettre (abonnée) ou le bouton de réinscription
+ *      (désabonnée à qui l'on propose de revenir) ;
  *   4. prévient Telegram, adresse MASQUÉE (ADR 0010).
  *
  * Elle ne lève pas pour un envoi retenu : l'internaute voit toujours « c'est
@@ -22,25 +26,38 @@ import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { redactEmail } from "@/lib/pii-redaction";
 import { notify } from "@/server/notifications";
+import { natureAdresse, type NatureAdresse } from "@/lib/email/nature-adresse";
+import {
+  FORM_REF_LETTRE,
+  VERSION_LETTRE,
+  VERSION_MENTION,
+  type VarianteFormulaireGuide,
+} from "@/content/guide-ia-formulaire";
 import { AIMANT_GUIDE_IA } from "./config";
 import { mettreEnFileGuide, type ResultatEnvoiGuide } from "./envoi";
-import { inscrireALaLettre } from "./lettre";
+import { inscrireALaLettre, lettreDansLEmail, type ResultatInscriptionLettre } from "./lettre";
 
 export interface NouvelleDemandeGuide {
   readonly email: string;
   readonly locale: "fr" | "en";
   readonly source: string | null;
-  /** Version de la mention d'information affichée. */
-  readonly versionMention: string;
-  /** Case « lettre » cochée : sa référence et sa version de texte. */
-  readonly lettre: { readonly formRef: string; readonly version: string } | null;
+  /** Point de collecte : il fixe la référence et la version des textes affichés. */
+  readonly variante: VarianteFormulaireGuide;
+  /** Case « lettre » cochée. Sans effet pour une adresse professionnelle. */
+  readonly caseLettre: boolean;
   readonly ipHash: string | null;
+  /** IP et agent du geste, hachés par le registre de preuve. */
+  readonly ip?: string | null;
+  readonly userAgent?: string | null;
 }
+
+export type EtatLettreDemande = ResultatInscriptionLettre["etat"] | "non-demandee";
 
 export interface ResultatDemandeGuide {
   readonly demandeId: string;
   readonly envoi: ResultatEnvoiGuide;
-  readonly lettre: "a-confirmer" | "deja-abonnee" | "non-demandee";
+  readonly nature: NatureAdresse;
+  readonly lettre: EtatLettreDemande;
 }
 
 function estConflitUnique(e: unknown): boolean {
@@ -49,7 +66,7 @@ function estConflitUnique(e: unknown): boolean {
 
 /** Crée la ligne, ou retrouve celle de cette adresse (une par personne et par aimant). */
 async function retrouverOuCreer(
-  entree: NouvelleDemandeGuide,
+  entree: NouvelleDemandeGuide & { readonly versionMention: string },
   emailKey: string,
 ): Promise<{ id: string; downloadToken: string; nouvelle: boolean }> {
   const cle = { emailKey_aimant: { emailKey, aimant: AIMANT_GUIDE_IA } };
@@ -100,24 +117,35 @@ export async function enregistrerDemandeGuide(
   const emailKey = hashEmailForLookup(entree.email);
   if (!emailKey) throw new Error("[guide-ia] adresse vide — la validation aurait dû l'arrêter");
 
-  const demande = await retrouverOuCreer(entree, emailKey);
+  // 🔑 La nature se décide ICI, jamais d'après le navigateur.
+  const nature = natureAdresse(entree.email);
+  const versionMention = VERSION_MENTION[nature];
+  const demande = await retrouverOuCreer({ ...entree, versionMention }, emailKey);
 
-  let confirmToken: string | null = null;
+  let lettre: EtatLettreDemande = "non-demandee";
   let abonneId: string | null = null;
-  let lettre: ResultatDemandeGuide["lettre"] = "non-demandee";
-  if (entree.lettre) {
+  const base = nature === "pro" ? "interet-legitime" : entree.caseLettre ? "consentement" : null;
+  if (base !== null) {
     const r = await inscrireALaLettre({
       email: entree.email,
       locale: entree.locale,
       source: entree.source,
+      base,
+      formRef: FORM_REF_LETTRE[entree.variante],
+      // Intérêt légitime : le texte prouvé est la MENTION ; consentement : la CASE.
+      version: base === "interet-legitime" ? versionMention : VERSION_LETTRE[entree.variante],
       ipHash: entree.ipHash,
-      formRef: entree.lettre.formRef,
-      version: entree.lettre.version,
+      ip: entree.ip ?? null,
+      userAgent: entree.userAgent ?? null,
     });
     lettre = r.etat;
     abonneId = r.id;
-    if (r.etat === "a-confirmer") confirmToken = r.confirmToken;
   }
+
+  // Ce que l'e-mail porte pour la lettre se lit sur la ligne d'abonné, quelle
+  // que soit la case : une personne déjà abonnée reçoit toujours son lien de
+  // désinscription.
+  const dansLEmail = await lettreDansLEmail(entree.email);
 
   const envoi = await mettreEnFileGuide(
     {
@@ -126,15 +154,21 @@ export async function enregistrerDemandeGuide(
       locale: entree.locale,
       downloadToken: demande.downloadToken,
     },
-    { confirmToken },
+    {
+      confirmToken: dansLEmail.confirmToken ?? null,
+      unsubscribeToken: dansLEmail.unsubscribeToken ?? null,
+    },
   );
 
-  // La confirmation de la lettre voyage DANS l'e-mail du guide : elle n'est
-  // « envoyée » que si cet e-mail est parti en file. Même contrat que le
+  // Le bouton de réinscription voyage DANS l'e-mail du guide : il n'est
+  // « envoyé » que si cet e-mail est parti en file. Même contrat que le
   // 2026-09-05 — la trace suit l'envoi, jamais l'intention.
-  if (confirmToken && abonneId && envoi === "en-file") {
+  if (dansLEmail.confirmToken && envoi === "en-file") {
     await prisma.newsletterSubscriber
-      .update({ where: { id: abonneId }, data: { confirmSentAt: new Date() } })
+      .updateMany({
+        where: { email: entree.email, confirmToken: dansLEmail.confirmToken },
+        data: { confirmSentAt: new Date() },
+      })
       .catch(() => undefined);
   }
 
@@ -154,13 +188,13 @@ export async function enregistrerDemandeGuide(
     dedupKey: `guide-ia-${demande.id}-${new Date().toISOString().slice(0, 13)}`,
   }).catch(() => undefined);
 
-  if (lettre === "a-confirmer") {
+  if (lettre === "inscrite" && abonneId) {
     await notify({
-      category: "NEWSLETTER_PENDING",
+      category: "NEWSLETTER_CONFIRMED",
       payload: { email: redactEmail(entree.email), locale: entree.locale },
-      dedupKey: `newsletter-pending-${abonneId}`,
+      dedupKey: `newsletter-confirmed-${abonneId}`,
     }).catch(() => undefined);
   }
 
-  return { demandeId: demande.id, envoi, lettre };
+  return { demandeId: demande.id, envoi, nature, lettre };
 }

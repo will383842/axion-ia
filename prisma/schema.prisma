@@ -11459,7 +11459,8 @@ model ConsentEvent {
   /// permet de reconstituer ce que la personne a réellement lu.
   consentVersion String @map("consent_version") @db.VarChar(64)
 
-  /// `optin` | `optout`.
+  /// `optin` | `optout` | `information` (lot L2 : inscription à la lettre
+  /// fondée sur l'intérêt légitime — ce qui se prouve est l'information donnée).
   action String @db.VarChar(16)
 
   /// Quand le consentement a été DONNÉ (≠ `createdAt`, quand la ligne a été

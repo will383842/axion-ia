@@ -1,4 +1,6 @@
-// Page de confirmation de la LETTRE — double opt-in (P0-4, refondu au lot L2).
+// Page de confirmation de la LETTRE (P0-4, refondue au lot L2). Depuis
+// l'amendement de Will (24/09), elle sert aux liens de l'ancien double opt-in
+// et à la RÉINSCRIPTION proposée à une personne désabonnée.
 //
 // 🔴 Lot L2 (2026-09-24) — cette page NE CONFIRME PLUS RIEN au rendu. Elle
 // appelait `confirmNewsletterAction(token)` sur un simple GET : les scanneurs
@@ -45,7 +47,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ? "Confirmation de votre inscription à la lettre IA d'Axion-IA."
         : "Confirmation of your Axion-IA AI letter subscription.",
   });
-  return { ...meta, robots: { index: false, follow: false } };
+  // `no-referrer` : l'URL porte le jeton (`?token=…`) ; un clic vers un autre
+  // site depuis cette page ne doit pas le lui transmettre.
+  return { ...meta, robots: { index: false, follow: false }, referrer: "no-referrer" };
 }
 
 const ERREURS = {

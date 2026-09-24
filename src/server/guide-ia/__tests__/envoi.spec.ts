@@ -95,6 +95,14 @@ describe("mettreEnFileGuide — le chemin nominal (témoin positif)", () => {
       confirmToken: "c".repeat(64),
     });
   });
+
+  it("abonnée à la lettre : porte son jeton de désinscription (lien visible + One-Click)", async () => {
+    await mettreEnFileGuide(DEMANDE, { unsubscribeToken: "u".repeat(64), maintenant: MAINTENANT });
+    expect(enqueueEmail.mock.calls[0]?.[3]).toEqual({
+      downloadToken: DEMANDE.downloadToken,
+      unsubscribeToken: "u".repeat(64),
+    });
+  });
 });
 
 describe("les bornes", () => {

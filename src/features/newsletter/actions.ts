@@ -2,9 +2,10 @@
 //
 // 🔴 Lot L2 (2026-09-24) — `subscribeNewsletterAction` N'EXISTE PLUS. Le seul
 // point d'entrée est le formulaire du guide (`features/guide-ia/actions.ts`) :
-// le guide part tout de suite, et la lettre est une case FACULTATIVE, décochée,
-// à double opt-in (décision n° 1 de Will). Sa confirmation voyage dans l'e-mail
-// « Votre guide ».
+// le guide part tout de suite, et la lettre suit la nature de l'adresse
+// (amendement de Will du 24/09 : adresse pro → intérêt légitime ; adresse
+// perso → case facultative, décochée). Plus de double opt-in pour les
+// nouvelles inscriptions.
 //
 // Ce module garde :
 //   · `confirmNewsletterAction` — appelée par le bouton (POST) de la page de
@@ -12,9 +13,9 @@
 //     messageries d'entreprise confirmaient à la place de la personne) ;
 //   · `unsubscribeNewsletterAction` — RFC 8058.
 //
-// Droit : le double opt-in n'est PAS une obligation légale en France ; c'est la
-// meilleure preuve du consentement (art. 7.1 RGPD), et c'est pour cela qu'on
-// le garde.
+// Droit : le double opt-in n'est PAS une obligation légale en France. Depuis
+// l'amendement, la preuve est écrite à la demande (`consent_events`) : le
+// texte présenté, sa version, l'horodatage, les empreintes IP et agent.
 
 "use server";
 
@@ -70,6 +71,11 @@ export async function unsubscribeNewsletterAction(token: string | null): Promise
       data: {
         status: "unsubscribed",
         unsubscribedAt: new Date(),
+        // 🔴 Lot L2 : un jeton de confirmation resté sur la ligne vaudrait
+        // réinscription (`confirmerLettre` accepte un désabonné qui présente
+        // SON jeton). Seul un jeton posé APRÈS le désabonnement — l'offre de
+        // réinscription de l'e-mail « Votre guide » — doit pouvoir le faire.
+        confirmToken: null,
       },
     });
     // Synchro CRM (lot L2) — l'opposition doit valoir PARTOUT : le CRM inscrit

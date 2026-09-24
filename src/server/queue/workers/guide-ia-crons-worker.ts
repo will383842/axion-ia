@@ -1,8 +1,8 @@
 /**
  * GUIDE IA — passages planifiés (lot L2, 2026-09-24).
  *
- *   · `rattrapage` (horaire, :07)  — reprend les guides et les confirmations de
- *     la lettre restés sans envoi (`server/guide-ia/rattrapage.ts`) ;
+ *   · `rattrapage` (horaire, :07)  — reprend les guides restés sans envoi
+ *     (`server/guide-ia/rattrapage.ts`) ;
  *   · `sentinelle` (06:40 UTC)     — compare demandes et envois, alerte si la
  *     chaîne est coupée, et envoie le récapitulatif du jour.
  *
@@ -42,7 +42,7 @@ async function processJob(job: Job<GuideIaCronJobData>): Promise<void> {
     console.warn(
       `[guide-ia-crons] rattrapage : ${r.relancees}/${r.candidates} guide(s) relancé(s), ` +
         `${r.reparees} trace(s) réparée(s), ${r.ecartees} écartée(s), ` +
-        `${r.confirmationsRelancees} confirmation(s) de la lettre relancée(s)`,
+        `${r.confirmationsRelancees} proposition(s) de réinscription à la lettre`,
     );
   }
 }

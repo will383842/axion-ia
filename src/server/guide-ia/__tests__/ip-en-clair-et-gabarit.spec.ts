@@ -45,23 +45,39 @@ describe("🔴 ip_address : plus aucune lecture ni écriture", () => {
 });
 
 describe("l'e-mail « Votre guide »", () => {
-  it("sans case cochée : AUCUN bouton de confirmation de la lettre", async () => {
+  it("non abonnée : ni bouton de réinscription, ni lien « Se désabonner » de la lettre", async () => {
     const r = await renderEmailTemplate("guide-ia-envoi", "fr", { downloadToken: "d".repeat(64) });
     expect(r.html).not.toContain("/confirmation/newsletter");
-    expect(r.text).not.toContain("Confirmer l'abonnement à la lettre");
+    expect(r.html).not.toContain("/fr/desabonnement?token=");
+    expect(r.text).not.toContain("Recevoir à nouveau la lettre");
     expect(r.subject).toBe("Votre guide IA entreprise (PDF, 40 pages)");
     expect(r.famille).toBe("B");
   });
 
-  it("case cochée : UN seul e-mail porte les deux — le guide et la confirmation de la lettre", async () => {
+  it("🔴 abonnée (amendement de Will) : la lettre est annoncée, et « Se désabonner » est VISIBLE", async () => {
+    const r = await renderEmailTemplate("guide-ia-envoi", "fr", {
+      downloadToken: "d".repeat(64),
+      unsubscribeToken: "u".repeat(64),
+    });
+    expect(r.html).toContain(`/fr/desabonnement?token=${"u".repeat(64)}`);
+    expect(r.text).toContain("Se désabonner");
+    expect(r.text).toContain("Vous recevrez aussi la lettre d'Axion-IA.");
+    expect(r.text).toContain("Quelques lettres par an, à chaque nouveauté utile.");
+    // « Ignorez ce message » serait faux : sans clic, la lettre partirait.
+    expect(r.text).not.toContain("Ignorez simplement ce message");
+    // Aucun bouton de confirmation : l'inscription vaut sans double opt-in.
+    expect(r.html).not.toContain("/confirmation/newsletter");
+  });
+
+  it("désabonnée : UN seul e-mail porte le guide et la PROPOSITION de revenir", async () => {
     const r = await renderEmailTemplate("guide-ia-envoi", "fr", {
       downloadToken: "d".repeat(64),
       confirmToken: "c".repeat(64),
     });
     expect(r.html).toContain(`/api/guide-ia/telecharger?t=${"d".repeat(64)}`);
     expect(r.html).toContain(`/fr/confirmation/newsletter?token=${"c".repeat(64)}`);
-    expect(r.text).toContain("Confirmer l'abonnement à la lettre");
-    expect(r.text).toContain("Quelques lettres par an, à chaque nouveauté utile.");
+    expect(r.text).toContain("Recevoir à nouveau la lettre");
+    expect(r.text).toContain("sans ce clic, rien ne change");
   });
 
   it("le lien personnel n'est pas recopié en clair sous le bouton (il ne se transfère pas)", async () => {
@@ -84,12 +100,17 @@ describe("l'e-mail « Votre guide »", () => {
 
   it("⛔ aucun numéro de téléphone, jamais « Zoom »", async () => {
     for (const locale of ["fr", "en"] as const) {
-      const r = await renderEmailTemplate("guide-ia-envoi", locale, {
-        downloadToken: "d".repeat(64),
-        confirmToken: "c".repeat(64),
-      });
-      expect(r.text).not.toMatch(/zoom/i);
-      expect(r.text).not.toMatch(/\+33\s?\d|\b0[67](?:[ .]?\d{2}){4}\b/);
+      for (const lettre of [
+        { confirmToken: "c".repeat(64) },
+        { unsubscribeToken: "u".repeat(64) },
+      ]) {
+        const r = await renderEmailTemplate("guide-ia-envoi", locale, {
+          downloadToken: "d".repeat(64),
+          ...lettre,
+        });
+        expect(r.text).not.toMatch(/zoom/i);
+        expect(r.text).not.toMatch(/\+33\s?\d|\b0[67](?:[ .]?\d{2}){4}\b/);
+      }
     }
   });
 });
