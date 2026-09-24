@@ -122,8 +122,8 @@ export default async function AiGuidePage({ params }: Props) {
         titleEm={isFr ? "opérationnel" : "operational"}
         description={
           isFr
-            ? "Tout ce qu'un dirigeant ou responsable opérations doit savoir avant de déployer l'IA en 2026. Téléchargement immédiat après inscription."
-            : "Everything a CEO or operations lead must know before deploying AI in 2026. Instant download after signup."
+            ? "Tout ce qu'un dirigeant ou responsable opérations doit savoir avant de déployer l'IA en 2026. Téléchargement dès la confirmation de votre adresse e-mail."
+            : "Everything a CEO or operations lead must know before deploying AI in 2026. Download as soon as you confirm your email address."
         }
       >
         <Container className="mt-8 max-w-2xl">
@@ -201,7 +201,11 @@ export default async function AiGuidePage({ params }: Props) {
                       "J'accepte de recevoir le guide PDF et la newsletter mensuelle. Désinscription en un clic.",
                     submit: "Recevoir le guide",
                     sending: "Envoi…",
-                    success: "Guide envoyé. Vérifiez votre boîte (et les spams).",
+                    // 🔴 2026-09-23 — l'ancien message annonçait le guide comme envoyé. Rien
+                    // n'était envoyé : le formulaire ne pose que l'e-mail de double
+                    // opt-in, et le guide se télécharge sur la page de confirmation.
+                    success:
+                      "Presque fini : confirmez votre adresse depuis l'e-mail que nous venons de vous envoyer (pensez aux indésirables), puis téléchargez le guide.",
                     failure: "Erreur. Réessayez ou écrivez à contact@axion-ia.com.",
                   }
                 : {
@@ -210,7 +214,8 @@ export default async function AiGuidePage({ params }: Props) {
                       "I agree to receive the PDF guide and monthly newsletter. One-click unsubscribe.",
                     submit: "Get the guide",
                     sending: "Sending…",
-                    success: "Guide sent. Check your inbox (and spam).",
+                    success:
+                      "Almost done: confirm your address from the email we just sent (check your spam folder), then download the guide.",
                     failure: "Error. Try again or email contact@axion-ia.com.",
                   }
             }
@@ -320,11 +325,11 @@ export default async function AiGuidePage({ params }: Props) {
       </Section>
 
       <CtaBlock
-        title={isFr ? "Préfèrez parler en direct ?" : "Prefer talking directly?"}
+        title={isFr ? "Envie d'aller plus loin ?" : "Want to go further?"}
         description={
           isFr
-            ? "Réservez notre formation en groupe — identification de 3-5 quick-wins en une journée."
-            : "Book our group training — identify 3-5 quick-wins in one day."
+            ? "Découvrez notre formation en groupe — identification de 3-5 quick-wins en une journée."
+            : "Discover our group training — identify 3-5 quick-wins in one day."
         }
         cta={
           <Cta href="/formations" variant="outline">

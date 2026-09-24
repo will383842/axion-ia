@@ -88,6 +88,23 @@
 // compte les adresses DISTINCTES, pas leurs occurrences. Si un CTA paraît un
 // jour indispensable, la question à trancher d'abord est ce qu'on enlève.
 //
+// ### 🔑 2026-09-23 — LE BUDGET ÉTAIT DÉPASSÉ EN PRODUCTION, ET LE GUIDE Y ENTRE
+//
+// Le décompte ci-dessus oubliait le lien d'OPPOSITION, que le worker pose dans
+// le pied de page de tout message B/C/D dès qu'il connaît le destinataire —
+// c'est-à-dire toujours. Mesuré en rendant la confirmation visio AVEC un
+// destinataire : **10 URL pour un budget de 9**, avant tout ajout. Les tests ne
+// le voyaient pas : aucun ne passait de destinataire.
+//
+// Will a demandé le même jour que la confirmation propose le guide IA
+// entreprise (un LIEN, jamais une pièce jointe). La confirmation retire donc la
+// rangée de réseaux sociaux du pied (`sansReseauxSociaux`), selon l'arbitrage
+// déjà écrit dans `_layout` : quatre liens de notoriété (0,1 à 0,4 % de clic,
+// §5.2 ⑤) ne passent pas devant le lien de réunion, l'annulation, le report
+// et l'opposition — dont un est exigé par la loi. Résultat mesuré : 7 URL sur 9
+// en visio, guide compris. J-1 et H-1 (famille C) n'ont jamais porté de rangée
+// sociale et ne portent pas le guide.
+//
 // ## Ce qu'il porte, et pourquoi
 //
 // Le lien d'annulation et celui de report sont là à dessein, aux trois moments.
@@ -101,6 +118,7 @@ import { objetCompose } from "../objet-email";
 import { EmailLayout, emailStyles } from "./_layout";
 import type { Locale } from "../../../../prisma/generated/client";
 import { canalDuRendezVous, type CanalRendezVous } from "@/server/calendly/canal";
+import { GUIDE_IA_PAGES, urlGuideIa } from "@/content/guide-ia";
 
 /**
  * Le moment auquel ce message part.
@@ -217,6 +235,35 @@ const DEROULE = {
 const INVITATION_AGENDA = {
   fr: "L'invitation d'agenda vous parvient séparément, par Calendly.",
   en: "Your calendar invitation arrives separately, from Calendly.",
+} as const;
+
+/**
+ * Le guide IA entreprise, proposé dans la CONFIRMATION seule (décision Will,
+ * 2026-09-23).
+ *
+ * 🔑 OFFERT, PAS UN DEVOIR. La même confirmation dit « Rien à préparer de votre
+ * côté » : le guide ne doit pas le démentir. D'où « si vous avez dix minutes »,
+ * et d'où la précision sur l'exercice de la page 9 — il demande UNE HEURE (c'est
+ * le titre de la page), le présenter comme la suite des dix minutes serait faux.
+ *
+ * Les pages citées ont été LUES dans le PDF servi (2026-09-23) : p. 5 =
+ * « L'essentiel en une page », p. 9 = « Exercice d'une heure : tracez votre
+ * frontière ». Une nouvelle édition qui les déplace oblige à corriger ici.
+ *
+ * ⛔ Pas dans J-1 ni H-1 : famille C, trois lignes, se lit en deux secondes.
+ * ⛔ Pas dans les e-mails du candidat apporteur : il a son propre kit.
+ */
+const GUIDE_AVANT_APPEL = {
+  fr: {
+    avant: "Si vous avez dix minutes d'ici là : ",
+    lien: "notre guide IA entreprise",
+    apres: ` (${GUIDE_IA_PAGES} pages, offert). Commencez par la page 5, l'essentiel en une page ; l'exercice de la page 9 demande une heure, il peut attendre.`,
+  },
+  en: {
+    avant: "If you have ten minutes before we meet: ",
+    lien: "our enterprise AI guide",
+    apres: ` (${GUIDE_IA_PAGES} pages, free, in French). Start with page 5, the essentials on one page; the exercise on page 9 takes an hour and can wait.`,
+  },
 } as const;
 
 /** Ce qui ne dépend PAS du moment : lieu, attente, liens, signature. */
@@ -715,6 +762,23 @@ function CeQuiSePasseMaintenant({ c }: { c: Copie }) {
   );
 }
 
+/**
+ * Le paragraphe du guide. Un `<Link>` et non une URL en clair : beaucoup de
+ * clients ne rendent pas cliquable une adresse posée dans du texte.
+ */
+function GuideAvantLAppel({ locale }: { locale: Locale }) {
+  const g = GUIDE_AVANT_APPEL[locale];
+  return (
+    <Text style={{ ...emailStyles.paragraphStyle, margin: "22px 0 0 0" }}>
+      {g.avant}
+      <Link href={urlGuideIa()} style={{ color: emailStyles.COLORS.accent }}>
+        {g.lien}
+      </Link>
+      {g.apres}
+    </Text>
+  );
+}
+
 export function AppelRappelEmail({
   locale,
   payload,
@@ -742,6 +806,9 @@ export function AppelRappelEmail({
         eyebrow={t.eyebrow}
         title={t.title}
         locale={locale}
+        // 🔑 Voir l'en-tête, « le budget était dépassé en production » : sans
+        // cette prise, la confirmation visio rend 11 URL pour un budget de 9.
+        sansReseauxSociaux
       >
         {/* 🔑 LE RÉCAPITULATIF EN PREMIER, avant même la salutation. C'est ce
             que les résumés d'Apple Intelligence / Gemini / Copilot affichent
@@ -761,6 +828,7 @@ export function AppelRappelEmail({
         </Text>
 
         <CeQuiSePasseMaintenant c={c} />
+        <GuideAvantLAppel locale={locale} />
         <ActionsSecondaires p={p} c={c} encadre />
         <Text style={emailStyles.paragraphStyle}>{t.signature}</Text>
       </EmailLayout>
