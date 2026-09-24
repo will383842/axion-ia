@@ -202,7 +202,7 @@ export async function submitCommercialApplicationAction(
   // 2. Honeypot — bot silent success
   const leurre = formData.get("website");
   if (leurre) {
-    signalerHoneypot("candidature-commerciale", leurre);
+    await signalerHoneypot("candidature-commerciale", leurre);
     return { ok: true, submissionId: "" };
   }
 

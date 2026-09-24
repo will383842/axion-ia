@@ -96,7 +96,7 @@ const LABELS = {
     email: "Email professionnel",
     emailPlaceholder: "vous@entreprise.com",
     telephone: "Téléphone",
-    telephoneHint: "Avec l'indicatif pays — ex. +33 6 12 34 56 78",
+    telephoneHint: "06 12 34 56 78, ou avec l'indicatif pays — ex. +212 6 61 23 45 67",
     telephonePlaceholder: "+33 6 12 34 56 78",
     ville: "Ville",
     villePlaceholder: "Paris",

@@ -80,7 +80,7 @@ export async function submitRoiReportAction(
   // remplissage ; un robot qui croit avoir réussi n'apprend rien.
   const leurre = formData.get("website");
   if (leurre) {
-    signalerHoneypot("rapport-roi", leurre);
+    await signalerHoneypot("rapport-roi", leurre);
     return { ok: true, submissionId: "" };
   }
 

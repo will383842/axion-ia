@@ -54,7 +54,7 @@ export async function subscribeNewsletterAction(
   const leurre = formData.get("website");
   if (leurre) {
     // Succes SILENCIEUX cote visiteur (inchange) — mais trace cote serveur.
-    signalerHoneypot("newsletter", leurre);
+    await signalerHoneypot("newsletter", leurre);
     return { ok: true };
   }
 

@@ -7,6 +7,8 @@
 
 import { z } from "zod";
 
+import { FORMES_ACCEPTEES, telephoneEstLisible } from "@/lib/telephone";
+
 // ---- Types & enums ---------------------------------------------------------
 
 // 12 types couvrant 100 % des demandes possibles (v2 2026-05-28).
@@ -99,12 +101,17 @@ export const unifiedContactSchema = z.object({
   telephone: z
     .string()
     .trim()
-    .min(8, "Téléphone requis avec indicatif pays.")
+    .min(8, "Numéro trop court.")
     .max(30, "Téléphone trop long.")
-    .regex(
-      /^(\+|00)[0-9]{1,3}[\s0-9()\-.]{4,28}$/,
-      "Indicatif pays obligatoire (ex : +33 6 12 34 56 78 ou 0033 6 12 34 56 78).",
-    ),
+    // 🔴 2026-09-24 — CE CHAMP REFUSAIT LES NUMÉROS FRANÇAIS.
+    //    L'expression exigeait un indicatif pays : `0639981234` était rejeté,
+    //    mesuré au navigateur sur la production. Trois candidats ont écrit en
+    //    septembre que le formulaire ne marchait pas pour eux.
+    //
+    // 🔑 La règle vit désormais dans `lib/telephone.ts`, PARTAGÉE avec le
+    //    formulaire de réservation d'appel, qui portait la même expression
+    //    recopiée au caractère près. Deux copies d'une règle divergent.
+    .refine(telephoneEstLisible, FORMES_ACCEPTEES),
   ville: z.string().trim().min(2, "Ville requise.").max(120, "Ville trop longue."),
   message: z
     .string()

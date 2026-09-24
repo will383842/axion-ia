@@ -354,8 +354,33 @@ function FooterLinkList({ items }: { items: ReadonlyArray<{ href: string; label:
     <ul className="space-y-1.5 text-sm">
       {items.map((item) => (
         <li key={item.href}>
+          {/*
+            🔴 `prefetch={false}` — POSE LE 2026-09-24, SUR MESURE.
+
+            Mesure du HTML servi par `/fr` : `/fr/contact` y figure **5 fois**,
+            `/fr/tarifs` et `/fr/audit` **4 fois** — menu bureau, menu mobile,
+            pied de page, corps. Chaque occurrence déclenche son propre
+            préchargement RSC.
+
+            Relevé au navigateur sur deux chargements distincts de la page
+            d'accueil : **chaque URL était demandée deux fois, et la seconde
+            répondait 503**, sans exception. Une cinquantaine de requêtes
+            perdues par visite, à la charge de l'origine.
+
+            ⚠️ CE QUE CETTE LIGNE NE FAIT PAS : expliquer le 503. La cause
+            n'est pas identifiée — non reproductible en ligne de commande, et
+            les journaux d'accès du proxy sont désactivés, donc on ne sait
+            même pas si la seconde requête atteint le serveur. Elle retire la
+            PLUS GROSSE SOURCE de doublons, ce qui vaut indépendamment : un
+            lien de pied de page est le moins probable des clics suivants.
+
+            Même motif que le lien « espace formateur » plus haut dans ce
+            fichier. L'en-tête, lui, garde son préchargement : c'est par là
+            qu'on navigue.
+          */}
           <Link
             href={item.href as never}
+            prefetch={false}
             className="text-mocha-fg/80 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex min-h-[36px] items-center rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             {item.label}

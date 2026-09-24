@@ -183,7 +183,7 @@ export async function submitJobApplicationAction(
   // 2. Honeypot
   const leurre = formData.get("website");
   if (leurre) {
-    signalerHoneypot("candidature-emploi", leurre);
+    await signalerHoneypot("candidature-emploi", leurre);
     return { ok: true, applicationId: "" };
   }
 

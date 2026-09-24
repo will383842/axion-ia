@@ -46,6 +46,7 @@ import { REFERRER_CITY_COOKIE_NAME } from "@/lib/pseo-referrer";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 import { ENTITE_MESSAGE } from "@/lib/contact/accuse-attendu";
+import { normaliserTelephone } from "@/lib/telephone";
 
 export type UnifiedContactState = { ok: true; submissionId: string } | { ok: false; error: string };
 
@@ -171,7 +172,7 @@ export async function submitUnifiedContactAction(
   // 2. Honeypot — bot silent success
   const leurre = formData.get("website");
   if (leurre) {
-    signalerHoneypot("contact", leurre);
+    await signalerHoneypot("contact", leurre);
     return { ok: true, submissionId: "" };
   }
 
@@ -206,6 +207,13 @@ export async function submitUnifiedContactAction(
     return { ok: false, error: "Champs invalides." };
   }
   const data = parsed.data;
+
+  // 🔑 UNE SEULE FORME RANGÉE, pour les TROIS destinations de ce champ :
+  //    la base (chiffrée), le CRM et la notification Telegram. Depuis que le
+  //    formulaire accepte `06 12 34 56 78`, normaliser ici est ce qui évite
+  //    que la même personne porte deux numéros différents selon l'écran qui
+  //    la regarde — et que Will compose un national depuis l'étranger.
+  const telephone = data.telephone ? normaliserTelephone(data.telephone) : null;
   const locale = parseLocale(data.locale);
 
   // 5. UTM funnel + referrerCity
@@ -228,7 +236,7 @@ export async function submitUnifiedContactAction(
         contactName: encryptPii(data.nom),
         contactEmail: encryptPii(data.email),
         contactEmailHash: hashEmailForLookup(data.email),
-        contactPhone: encryptPii(data.telephone) ?? null,
+        contactPhone: telephone === null ? null : encryptPii(telephone),
         sector: data.companySector ?? null,
         employeesCount: data.companySize ?? null,
         details: {
@@ -262,7 +270,7 @@ export async function submitUnifiedContactAction(
       person: {
         email: data.email,
         fullName: data.nom,
-        phone: data.telephone ?? null,
+        phone: telephone,
       },
       company: {
         name: data.companyName ?? null,
@@ -305,7 +313,7 @@ export async function submitUnifiedContactAction(
       submissionId: submission.id,
       contactName: data.nom,
       contactEmail: data.email,
-      ...(data.telephone ? { contactPhone: data.telephone } : {}),
+      ...(telephone ? { contactPhone: telephone } : {}),
       // Le contenu du message part dans la notif (demande Will 2026-08-12) —
       // tronqué : Telegram plafonne à 4096 c. et l'écran verrouillé n'en montre
       // que quelques lignes de toute façon.

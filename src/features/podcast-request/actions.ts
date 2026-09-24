@@ -57,7 +57,7 @@ export async function submitPodcastRequestAction(
   // 2. Honeypot (bot → succès silencieux, on ne lui apprend rien)
   const leurre = formData.get("website");
   if (leurre) {
-    signalerHoneypot("podcast", leurre);
+    await signalerHoneypot("podcast", leurre);
     return { ok: true, requestId: "" };
   }
 
