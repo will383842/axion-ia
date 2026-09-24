@@ -16,6 +16,7 @@ import { ConsignerAuJournal } from "./ConsignerAuJournal";
 import { lireFrise, lireEntretiens } from "@/features/admin-job-applications/timeline";
 import { lireAccuseReception } from "@/features/admin-job-applications/accuse-reception";
 import { Entretiens } from "./Entretiens";
+import { DeposerCv } from "./DeposerCv";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { liensInsertionComposeur } from "@/lib/imprimes/liens-email";
@@ -136,7 +137,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
                 Télécharger {a.cvOriginalName ?? ""}
               </Link>
             ) : (
-              "non fourni"
+              <DeposerCv applicationId={a.id} />
             )}
           </dd>
           <dt className="font-medium">Photo</dt>
