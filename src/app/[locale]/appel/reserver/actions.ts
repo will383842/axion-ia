@@ -182,7 +182,7 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
   // rien — et l'humain, lui, a une porte de sortie qui marche.
   const leurre = fd.get(CHAMP_LEURRE);
   if (leurre) {
-    signalerHoneypot("reservation-directe", leurre);
+    await signalerHoneypot("reservation-directe", leurre);
     await replier(
       locale,
       debutBrut,

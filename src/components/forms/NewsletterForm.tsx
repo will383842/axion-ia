@@ -119,6 +119,29 @@ export function NewsletterForm({ libelles, source, variant = "stacked" }: Newsle
   const idEmail = `${idBase}-email`;
   const idLettre = `${idBase}-lettre`;
 
+  // 🔴 2026-09-24 (PR 1156) — LA CASE ÉTAIT SOUS LE BOUTON. On lisait « Recevoir
+  //    le guide » AVANT de voir ce qu'on acceptait. En variante EMPILÉE (page
+  //    du guide), la case précède donc le bouton. En variante « en ligne »
+  //    (encart de fin d'article), la rangée flex sans retour ne supporte pas
+  //    un bloc pleine largeur avant le bouton : la case y reste après.
+  //    Gardé par `le-consentement-precede-le-bouton.spec.ts`.
+  //
+  // Adresse PERSONNELLE seulement : case FACULTATIVE, DÉCOCHÉE par défaut. Le
+  // guide ne dépend jamais d'elle. La MENTION, elle, reste sous le bouton
+  // (amendement de Will du 24/09).
+  const blocConsentement = perso ? (
+    <div className="flex items-start gap-3 sm:basis-full">
+      <Checkbox
+        id={idLettre}
+        checked={!!lettre}
+        onCheckedChange={(c) => setValue("lettre", c === true)}
+      />
+      <Label htmlFor={idLettre} className="text-fg-soft text-xs leading-relaxed">
+        {libelles.lettre}
+      </Label>
+    </div>
+  ) : null;
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -142,24 +165,13 @@ export function NewsletterForm({ libelles, source, variant = "stacked" }: Newsle
         ) : null}
       </div>
 
+      {inline ? null : blocConsentement}
+
       <Button type="submit" loading={isSubmitting} className={inline ? "sm:self-end" : undefined}>
         {isSubmitting ? libelles.sending : libelles.submit}
       </Button>
 
-      {/* Adresse PERSONNELLE seulement : case FACULTATIVE, DÉCOCHÉE par
-          défaut. Le guide ne dépend jamais d'elle. */}
-      {perso ? (
-        <div className="flex items-start gap-3 sm:basis-full">
-          <Checkbox
-            id={idLettre}
-            checked={!!lettre}
-            onCheckedChange={(c) => setValue("lettre", c === true)}
-          />
-          <Label htmlFor={idLettre} className="text-fg-soft text-xs leading-relaxed">
-            {libelles.lettre}
-          </Label>
-        </div>
-      ) : null}
+      {inline ? blocConsentement : null}
 
       <p className="text-fg-muted text-xs leading-relaxed sm:basis-full" aria-live="polite">
         {perso ? libelles.mention.perso : libelles.mention.pro}{" "}

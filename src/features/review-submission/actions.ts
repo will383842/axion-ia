@@ -85,7 +85,7 @@ export async function submitReviewAction(
   // 2. Honeypot (bot → succès silencieux)
   const leurre = formData.get("website");
   if (leurre) {
-    signalerHoneypot("avis", leurre);
+    await signalerHoneypot("avis", leurre);
     return { ok: true, reviewId: "" };
   }
 

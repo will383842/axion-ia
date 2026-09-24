@@ -75,7 +75,7 @@ export async function demanderGuideAction(
   // 2. Piège à robots.
   const leurre = formData.get("website");
   if (leurre) {
-    signalerHoneypot("newsletter", leurre);
+    await signalerHoneypot("newsletter", leurre);
     return { ok: true };
   }
 

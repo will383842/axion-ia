@@ -33,6 +33,7 @@
 import type { DemandeReservation, FormatDemande } from "./reservation";
 import { MAX_INVITES } from "./reservation";
 import type { QuestionEventType } from "./questions";
+import { FORMES_ACCEPTEES, normaliserTelephone, telephoneEstLisible } from "@/lib/telephone";
 
 /** Les champs fixes du formulaire. Les questions ajoutent `q0`, `q1`, … */
 export const CHAMPS = {
@@ -153,7 +154,10 @@ const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
  * incomposable depuis l'étranger. Là-bas c'est un moyen de rappel. Un jour où
  * l'un des deux s'assouplira, l'autre ne doit pas suivre par accident.
  */
-const TELEPHONE = /^(\+|00)[0-9]{1,3}[\s0-9()\-.]{4,28}$/;
+// 🔑 L'expression qui vivait ici exigeait un indicatif pays et refusait
+//    donc `06 12 34 56 78`. Elle était en outre le JUMEAU exact de celle du
+//    formulaire de contact : la règle est désormais unique, dans
+//    `lib/telephone.ts`, et accepte le national français comme l'international.
 
 /** Sépare une liste d'adresses saisie librement : virgules, points-virgules, retours. */
 export function separerLesInvites(brut: string): readonly string[] {
@@ -257,8 +261,7 @@ export function validerFormulaire(fd: FormData, o: OptionsValidation): ResultatV
   valeurs[CHAMPS.telephone] = telephone;
   if (telephone === "")
     erreurs[CHAMPS.telephone] = "Indiquez votre numéro de téléphone, avec l'indicatif pays.";
-  else if (!TELEPHONE.test(telephone))
-    erreurs[CHAMPS.telephone] = "Indicatif pays obligatoire (exemple : +33 6 12 34 56 78).";
+  else if (!telephoneEstLisible(telephone)) erreurs[CHAMPS.telephone] = FORMES_ACCEPTEES;
 
   // -- Fuseau
   const fuseauBrut = lire(fd, CHAMPS.fuseau);
@@ -335,7 +338,12 @@ export function validerFormulaire(fd: FormData, o: OptionsValidation): ResultatV
       fuseau,
       format: format as FormatDemande,
       // Toujours transmis, visio comprise : voir la note du champ plus haut.
-      telephone,
+      // 🔴 NORMALISÉ, et ce n'est pas un détail de rangement : ce numéro
+      //    part chez Calendly en `text_reminder_number`. Depuis qu'on accepte
+      //    la forme nationale française, l'envoyer telle quelle donnerait un
+      //    `06 11 22 33 44` que personne ne peut composer depuis l'étranger —
+      //    on aurait réparé le refus en cassant le rappel.
+      telephone: normaliserTelephone(telephone),
       ...(reponses.length > 0 ? { reponses } : {}),
       ...(invites.length > 0 ? { invites } : {}),
       utmSource: o.utmSource ?? null,

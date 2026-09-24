@@ -110,7 +110,7 @@ describe("les textes suivent l'amendement de Will (24/09)", () => {
     expect(form).toContain("libelles.mention.perso : libelles.mention.pro");
     expect(form).toContain("libelles.politique.href");
     // La case n'apparaît que pour une adresse personnelle.
-    expect(form).toMatch(/\{perso \? \(\s*<div/);
+    expect(form).toMatch(/const blocConsentement = perso \? \(\s*<div/);
   });
 
   it("⛔ aucun numéro de téléphone, jamais « Zoom », dans les textes du formulaire", () => {
