@@ -93,6 +93,12 @@ interface BaseInput {
 export async function syncFormSubmissionToCrm(
   input: BaseInput & { formType: CrmFormType },
 ): Promise<void> {
+  // 🔴 Rien du recrutement ne part au CRM (ADR 0047, révision « aucune
+  // candidature ne franchit la frontière ») : un `/contact` de type
+  // « recrutement » est une candidature, et il partait dans l'univers
+  // `vivier`. Garde posée ICI, au point d'entrée unique, plutôt que chez
+  // l'appelant. Le type reste au contrat (`CRM_FORM_TYPES`, miroir du CRM).
+  if (input.formType === "recrutement") return;
   await dispatch("form_submission", input, { form_type: input.formType });
 }
 
@@ -145,6 +151,10 @@ export async function syncReviewToCrm(input: BaseInput): Promise<void> {
 /**
  * Candidature (offre d'emploi ou tunnel commercial) — univers VIVIER.
  *
+ * 🔴 Ni l'action de candidature à une offre ni le tunnel commercial ne
+ * l'appellent plus (ADR 0047, révision) : seule l'intégration du stock
+ * (`vivier/stock.ts`, derrière `VIVIER_STOCK_ENABLED`, fermé) y passe encore.
+ *
  * Deux verrous en amont : le drapeau `CRM_SYNC_CANDIDATES_ENABLED` côté site,
  * et le REJET par le CRM de toute fiche sans consentement v2. Le second n'est
  * pas une redondance : c'est lui qui fait foi, le drapeau ne dispense de rien.
@@ -181,10 +191,14 @@ export async function syncCandidateToCrm(
  *    lettre d'information ;
  *  · `payload.scope = "vivier"` le dit une seconde fois, dans le corps même du
  *    message, pour que le CRM n'ait pas à le déduire de l'univers ;
- *  · comme tout flux `vivier`, il reste soumis à `CRM_SYNC_CANDIDATES_ENABLED`.
- *    Ce n'est pas gênant : tant que ce drapeau est à OFF, aucune fiche candidat
- *    n'est jamais partie au CRM, il n'y a donc rien à y opposer. La source de
- *    vérité de l'opposition est et reste `vivierOpposedAt` côté site.
+ *  · comme tout flux `vivier`, il reste soumis à `CRM_SYNC_CANDIDATES_ENABLED`,
+ *    et ce drapeau reste OUVERT pour lui : des fiches candidat SONT parties au
+ *    CRM avant la coupure (ADR 0047, révision), et leur opposition doit les y
+ *    rejoindre. Fermer le drapeau la perdrait sans que rien ne la rattrape ;
+ *  · l'APPELANT (`vivier/opposition.ts`) n'émet que si une candidature de la
+ *    personne est déjà partie : sinon l'opposition ferait voyager au CRM
+ *    l'adresse d'un candidat qui n'y a jamais eu de fiche. La source de vérité
+ *    de l'opposition est et reste `vivierOpposedAt` côté site.
  */
 export async function syncVivierOppositionToCrm(input: BaseInput): Promise<void> {
   await dispatch(

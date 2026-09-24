@@ -21,6 +21,7 @@ const updateMock = vi.fn();
 const updateManyMock = vi.fn();
 const consentCreateMock = vi.fn();
 const outboxCreateMock = vi.fn();
+const outboxFindFirstMock = vi.fn();
 const queueAddMock = vi.fn();
 const enqueueEmailMock = vi.fn();
 
@@ -33,7 +34,10 @@ vi.mock("@/lib/prisma", () => ({
       updateMany: (...args: unknown[]) => updateManyMock(...args),
     },
     consentEvent: { create: (...args: unknown[]) => consentCreateMock(...args) },
-    crmSyncOutbox: { create: (...args: unknown[]) => outboxCreateMock(...args) },
+    crmSyncOutbox: {
+      create: (...args: unknown[]) => outboxCreateMock(...args),
+      findFirst: (...args: unknown[]) => outboxFindFirstMock(...args),
+    },
   },
 }));
 
@@ -74,6 +78,7 @@ beforeEach(() => {
   updateManyMock.mockResolvedValue({ count: 1 });
   consentCreateMock.mockResolvedValue({});
   outboxCreateMock.mockResolvedValue({ id: "outbox-1" });
+  outboxFindFirstMock.mockResolvedValue(null);
   queueAddMock.mockResolvedValue(undefined);
   enqueueEmailMock.mockResolvedValue({ enqueued: true });
   // Secret de test CONSTRUIT (jamais de littéral à haute entropie en clair —
@@ -380,7 +385,10 @@ describe("enregistrement de l'opposition", () => {
     expect(updateManyMock.mock.calls[0]?.[0]?.where.id.in).toEqual(["app-1", "app-2"]);
   });
 
-  it("consigne le retrait au registre et le propage au CRM", async () => {
+  it("consigne le retrait au registre et le propage au CRM (candidature déjà transmise)", async () => {
+    // `app-2` — une candidature SŒUR, pas celle du lien — est déjà partie au CRM.
+    outboxFindFirstMock.mockResolvedValue({ subjectRef: "site:job_application:app-2" });
+
     await recordVivierOpposition("app-1");
 
     expect(consentCreateMock.mock.calls[0]?.[0]?.data).toMatchObject({
@@ -395,6 +403,36 @@ describe("enregistrement de l'opposition", () => {
     // Le champ d'application est dit DANS le message, pas seulement déduit de
     // l'univers : le CRM ne doit pas avoir à l'inférer.
     expect(payload.payload.payload.scope).toBe("vivier");
+    // Une seule ligne, `opt_out`, qui vise la candidature que le CRM CONNAÎT.
+    expect(outboxCreateMock).toHaveBeenCalledTimes(1);
+    expect(payload.payload.subject_ref).toBe("site:job_application:app-2");
+
+    // La recherche porte sur TOUTES les candidatures de la personne, et sur
+    // les seules lignes qui ont créé (ou peuvent encore créer) une fiche.
+    const where = outboxFindFirstMock.mock.calls[0]?.[0]?.where;
+    expect(where.eventType).toBe("application_submitted");
+    expect(where.subjectRef.in).toEqual([
+      "site:job_application:app-1",
+      "site:job_application:app-2",
+    ]);
+    expect(where.status.in).toEqual(["sent", "pending", "failed"]);
+  });
+
+  it("n'envoie RIEN au CRM pour un candidat qui n'y a jamais été transmis", async () => {
+    // 🔴 La fuite fermée : l'opposition faisait partir au CRM l'adresse de
+    // TOUT candidat qui s'opposait, fiche existante ou non.
+    outboxFindFirstMock.mockResolvedValue(null);
+
+    const result = await recordVivierOpposition("app-1");
+
+    // L'opposition est bien enregistrée côté site — c'est elle qui fait foi…
+    expect(result).toEqual({ ok: true, alreadyOpposed: false, applications: 2 });
+    expect(updateManyMock).toHaveBeenCalledTimes(1);
+    expect(consentCreateMock).toHaveBeenCalledTimes(1);
+    // …et rien ne part : aucune ligne d'outbox, aucune mise en file.
+    expect(outboxFindFirstMock).toHaveBeenCalledTimes(1);
+    expect(outboxCreateMock).not.toHaveBeenCalled();
+    expect(queueAddMock).not.toHaveBeenCalled();
   });
 
   it("est idempotente : re-cliquer le lien ne ré-émet rien", async () => {

@@ -229,6 +229,20 @@ describe("construction de l'événement", () => {
     expect(payload.person.last_name).toBe("TEST");
   });
 
+  it("un formulaire de type « recrutement » ne part PAS (ADR 0047, révision)", async () => {
+    // Drapeaux candidats ouverts, comme en production : la garde ne doit rien
+    // devoir à un drapeau.
+    process.env.CRM_SYNC_CANDIDATES_ENABLED = "true";
+
+    await syncFormSubmissionToCrm({ ...baseInput, formType: "recrutement" });
+    expect(createMock).not.toHaveBeenCalled();
+    expect(queueAddMock).not.toHaveBeenCalled();
+
+    // Témoin : le même appel, d'un autre type, part bien.
+    await syncFormSubmissionToCrm(baseInput);
+    expect(createMock).toHaveBeenCalledTimes(1);
+  });
+
   it("ne transmet JAMAIS le workspace ni le type de relation", async () => {
     await syncFormSubmissionToCrm(baseInput);
 

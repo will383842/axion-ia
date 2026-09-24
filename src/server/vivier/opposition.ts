@@ -7,7 +7,8 @@
  *      s'opposer, c'est s'opposer pour de bon, pas pour une seule des trois
  *      offres auxquelles on a postulé ;
  *   2. une ligne `optout` est ajoutée au registre de preuve ;
- *   3. l'opposition est propagée au CRM (univers vivier).
+ *   3. l'opposition est propagée au CRM (univers vivier) — SEULEMENT si une
+ *      candidature de la personne y est déjà partie (voir `transmittedSubjectRef`).
  *
  * IDEMPOTENTE : re-cliquer le même lien ne casse rien et ne ré-émet rien.
  */
@@ -63,12 +64,20 @@ export async function recordVivierOpposition(
         userAgent: options.userAgent ?? null,
       });
 
-      await syncVivierOppositionToCrm({
-        subjectRef: `site:job_application:${application.id}`,
-        occurredAt: now,
-        person: { email },
-        consent: { version: application.consentVersion, at: now },
-      });
+      // 🔴 Pas de fiche au CRM, rien à y opposer — et surtout rien à y
+      // ENVOYER : émettre l'opposition d'un candidat jamais transmis ferait
+      // partir son adresse vers le CRM par la seule porte qui restait ouverte
+      // (ADR 0047, révision « aucune candidature ne franchit la frontière »).
+      // La vérité de l'opposition reste `vivierOpposedAt`, posé plus haut.
+      const subjectRef = await transmittedSubjectRef(siblings);
+      if (subjectRef) {
+        await syncVivierOppositionToCrm({
+          subjectRef,
+          occurredAt: now,
+          person: { email },
+          consent: { version: application.consentVersion, at: now },
+        });
+      }
     }
 
     return { ok: true, alreadyOpposed: false, applications: siblings.length };
@@ -76,6 +85,32 @@ export async function recordVivierOpposition(
     console.error("[vivier] opposition non enregistrée:", error);
     return { ok: false, reason: "internal" };
   }
+}
+
+/**
+ * La référence d'une candidature de la personne DÉJÀ partie au CRM, ou `null`.
+ *
+ * Une ligne `application_submitted` compte si elle a été acquittée (`sent`) ou
+ * si elle peut encore l'être (`pending`, `failed` : le rejeu la fera partir, et
+ * l'opposition doit alors la suivre). Un refus définitif (`gave_up`) n'a créé
+ * aucune fiche : il ne compte pas. Liste FERMÉE à dessein — un statut ajouté
+ * plus tard ne fera rien partir tant qu'on ne l'a pas rangé ici.
+ *
+ * On renvoie la référence de la candidature TRANSMISE, pas celle du lien
+ * cliqué : c'est celle que le CRM connaît.
+ */
+async function transmittedSubjectRef(applicationIds: string[]): Promise<string | null> {
+  if (applicationIds.length === 0) return null;
+  const row = await prisma.crmSyncOutbox.findFirst({
+    where: {
+      eventType: "application_submitted",
+      status: { in: ["sent", "pending", "failed"] },
+      subjectRef: { in: applicationIds.map((id) => `site:job_application:${id}`) },
+    },
+    orderBy: { createdAt: "asc" },
+    select: { subjectRef: true },
+  });
+  return row?.subjectRef ?? null;
 }
 
 /**

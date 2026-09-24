@@ -116,6 +116,11 @@ soumis aux drapeaux du vivier CRM** (ADR 0047). Décision consignée : il n'est 
 par B2, et le prédicat `estApporteur` l'exclut explicitement — le rapprochement quotidien
 continue donc de le réclamer s'il n'a pas été émis.
 
+> **Mise à jour (2026-09-24, ADR 0047 § 4 ter).** Ce message ne part plus au CRM :
+> `syncFormSubmissionToCrm` écarte le type « recrutement » au point d'entrée, et le
+> rapprochement quotidien ne le réclame plus. Il reste distinct d'un dossier
+> apporteur (`estApporteur` inchangé) ; seule son émission a changé.
+
 ## Ce qui porte la décision dans le code
 
 - **Aucun import de `@/server/crm-sync`** dans `src/features/commercial-application/` ni
