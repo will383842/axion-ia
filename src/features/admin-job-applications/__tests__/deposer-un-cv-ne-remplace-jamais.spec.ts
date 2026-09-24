@@ -35,6 +35,7 @@ const findUniqueMock = vi.fn();
 const updateMock = vi.fn();
 const storeCvMock = vi.fn();
 const consignerMock = vi.fn();
+const activiteMock = vi.fn();
 const requireAdminWriteMock = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
@@ -43,8 +44,10 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: (...a: unknown[]) => findUniqueMock(...a),
       update: (...a: unknown[]) => updateMock(...a),
     },
+    activityLog: { create: (...a: unknown[]) => activiteMock(...a) },
   },
 }));
+vi.mock("@/lib/client-ip", () => ({ getClientIp: async () => "203.0.113.7" }));
 // 🔑 `importOriginal` : extensions, MIME et plafond viennent du VRAI module.
 // Les figer ici ferait passer le test le jour où le module change d'avis, ce
 // qui est exactement l'écart que l'action cherche à rendre impossible.
@@ -105,6 +108,7 @@ beforeEach(() => {
   storeCvMock.mockResolvedValue("2026/09/abc.pdf");
   updateMock.mockResolvedValue({});
   consignerMock.mockResolvedValue({});
+  activiteMock.mockResolvedValue({});
 });
 
 describe("déposer un CV sur une candidature", () => {
@@ -123,6 +127,32 @@ describe("déposer un CV sur une candidature", () => {
     const evenement = consignerMock.mock.calls[0]?.[0] as { type: string; authorId: string };
     expect(evenement.type).toBe("piece_recue");
     expect(evenement.authorId).toBe("u1");
+  });
+
+  it("🔴 laisse une TRACE D'ACCÈS nominative — c'est elle qui rend l'accès défendable", async () => {
+    // Exigé par le cliquet `dossier-candidat-cloisonne.spec.ts` pour TOUTE
+    // surface qui touche un dossier de candidat, et il a refusé la première
+    // version de ce fichier. Distinct du journal métier : celui-ci dit QUI a
+    // ouvert QUEL dossier, depuis quelle IP.
+    await televerserCvAction(null, formulaire(fichier("cv.pdf", 100, "application/pdf")));
+
+    const trace = (activiteMock.mock.calls[0]?.[0] as { data: Record<string, unknown> }).data;
+    expect(trace.action).toBe("careers.candidature.cv.depose");
+    expect(trace.adminUserId).toBe("u1");
+    expect(trace.targetId).toBe("abc");
+    expect(trace.ipAddress).toBe("203.0.113.7");
+  });
+
+  it("un registre d'accès en panne ne défait PAS un dépôt réussi", async () => {
+    activiteMock.mockRejectedValue(new Error("journal indisponible"));
+
+    const res = await televerserCvAction(
+      null,
+      formulaire(fichier("cv.pdf", 100, "application/pdf")),
+    );
+
+    expect(res.ok).toBe(true);
+    expect(consignerMock).toHaveBeenCalledOnce();
   });
 
   it("🔴 REFUSE d'écraser un CV existant — rien n'est écrit sur le disque", async () => {

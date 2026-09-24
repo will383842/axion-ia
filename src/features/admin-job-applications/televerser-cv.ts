@@ -18,6 +18,20 @@
  *    et l'écart se serait vu le jour où un candidat dépose un fichier que l'une
  *    accepte et l'autre refuse.
  *
+ * 🔑 DEUX JOURNAUX, ET CE N'EST PAS UN DOUBLON. Le cliquet
+ *    `dossier-candidat-cloisonne.spec.ts` a refusé la première version de ce
+ *    fichier, et il avait raison :
+ *
+ *    · `activityLog` / `careers.candidature.*` trace **l'ACCÈS** — qui a ouvert
+ *      le dossier de quel candidat, depuis quelle IP. C'est ce qui rend l'accès
+ *      défendable devant un candidat qui demanderait des comptes, et c'est ce
+ *      que le cliquet exige de TOUTE surface touchant un dossier ;
+ *    · `consignerEvenement` / `piece_recue` raconte **LE FAIT MÉTIER** dans la
+ *      frise du dossier, que le recruteur lit.
+ *
+ *    L'un est un registre d'accès, l'autre une chronologie de dossier. Ils ne
+ *    se remplacent pas.
+ *
  * 🔑 LA GARDE N'EST PAS RECOPIÉE : `requireAdminWrite()` de `session.ts`.
  *    Ce module dit en toutes lettres pourquoi les gardes de la zone y vivent —
  *    « deux copies d'une garde de rôle, c'est la mécanique exacte du constat
@@ -35,6 +49,7 @@ import * as Sentry from "@sentry/nextjs";
 
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
+import { getClientIp } from "@/lib/client-ip";
 import {
   CV_ALLOWED_EXTENSIONS,
   CV_ALLOWED_MIME,
@@ -120,6 +135,22 @@ export async function televerserCvAction(
         cvSizeBytes: octets.byteLength,
       },
     });
+    // Trace d'ACCÈS — idiome du dépôt : écriture directe, best-effort. Un
+    // registre indisponible ne doit pas défaire un dépôt déjà réussi ; la
+    // même décision est écrite sur la route de téléchargement du CV.
+    try {
+      await prisma.activityLog.create({
+        data: {
+          adminUserId: session.userId,
+          action: "careers.candidature.cv.depose",
+          targetType: "JobApplication",
+          targetId: id,
+          ipAddress: await getClientIp(),
+        },
+      });
+    } catch {
+      // silence volontaire : cf. ci-dessus
+    }
     // 🔑 `piece_recue` existe déjà dans le vocabulaire du journal — on ne crée
     //    pas un type de plus pour un fait qu'il sait déjà nommer. La frise du
     //    dossier affichera ce dépôt à sa date, entre les autres gestes.
