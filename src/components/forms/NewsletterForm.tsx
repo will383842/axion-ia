@@ -95,6 +95,39 @@ export function NewsletterForm({ labels, variant = "stacked" }: NewsletterFormPr
 
   const inline = variant === "inline";
 
+  // 🔴 2026-09-24 — LA CASE ÉTAIT SOUS LE BOUTON.
+  //    Constaté à l'œil sur `/fr/guide-ia` en production : on lisait
+  //    « Recevoir le guide » AVANT de voir ce qu'on devait accepter. Un
+  //    consentement qu'on découvre après avoir cliqué n'en est pas un.
+  //
+  // ⚠️ LE DÉPLACEMENT NE VAUT QUE POUR LA VARIANTE EMPILÉE. En variante
+  //    « en ligne » (encart de fin d'article), le formulaire tient sur UNE
+  //    rangée flex sans retour : y insérer un bloc `basis-full` avant le
+  //    bouton décomposerait la rangée entière. Là, la case reste où elle est
+  //    — elle jouxte déjà le bouton, sur un encart compact. Reprendre cette
+  //    variante est une question de maquette, pas de correctif.
+  const blocConsentement = (
+    <>
+      <div className="flex items-start gap-3 sm:basis-full">
+        <Checkbox
+          id="newsletter-consent"
+          checked={!!consent}
+          onCheckedChange={(c) =>
+            setValue("consent", c === true ? true : (false as never), { shouldValidate: true })
+          }
+        />
+        <Label htmlFor="newsletter-consent" className="text-fg-soft text-xs leading-relaxed">
+          {labels.consent}
+        </Label>
+      </div>
+      {errors.consent ? (
+        <p role="alert" className="text-error text-xs sm:basis-full">
+          {errors.consent.message}
+        </p>
+      ) : null}
+    </>
+  );
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -118,27 +151,13 @@ export function NewsletterForm({ labels, variant = "stacked" }: NewsletterFormPr
         ) : null}
       </div>
 
+      {inline ? null : blocConsentement}
+
       <Button type="submit" loading={isSubmitting} className={inline ? "sm:self-end" : undefined}>
         {isSubmitting ? labels.sending : labels.submit}
       </Button>
 
-      <div className="flex items-start gap-3 sm:basis-full">
-        <Checkbox
-          id="newsletter-consent"
-          checked={!!consent}
-          onCheckedChange={(c) =>
-            setValue("consent", c === true ? true : (false as never), { shouldValidate: true })
-          }
-        />
-        <Label htmlFor="newsletter-consent" className="text-fg-soft text-xs leading-relaxed">
-          {labels.consent}
-        </Label>
-      </div>
-      {errors.consent ? (
-        <p role="alert" className="text-error text-xs sm:basis-full">
-          {errors.consent.message}
-        </p>
-      ) : null}
+      {inline ? blocConsentement : null}
 
       {serverError ? (
         <Alert variant="danger" role="alert" className="sm:basis-full">

@@ -106,7 +106,7 @@ export async function submitLeadApporteurAction(
   // 2. Honeypot — succès silencieux pour le robot.
   const leurre = formData.get("website");
   if (leurre) {
-    signalerHoneypot("lead-apporteur-facebook", leurre);
+    await signalerHoneypot("lead-apporteur-facebook", leurre);
     return { ok: true, submissionId: "" };
   }
 

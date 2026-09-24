@@ -234,13 +234,31 @@ describe("🔴 le numéro est obligatoire dans les DEUX formats", () => {
     expect(r.erreurs[CHAMPS.telephone]).toBeTruthy();
   });
 
-  it("l'indicatif pays est exigé, quel que soit le format", () => {
+  // 🔴 2026-09-24 — CE TEST VERROUILLAIT LE DÉFAUT.
+  //    Il s'appelait « l'indicatif pays est exigé, quel que soit le format »
+  //    et EXIGEAIT que `06 11 22 33 44` soit refusé. Mesuré au navigateur sur
+  //    la production le même jour : c'est exactement ce refus qui renvoyait de
+  //    vraies personnes. Trois candidats ont écrit en septembre que le
+  //    formulaire du site n'avait pas marché pour eux.
+  //
+  // 🔑 Ce qui le remplace n'est pas un relâchement : le numéro national est
+  //    accepté ET CONVERTI. Sans la conversion, Calendly recevrait un `06…`
+  //    pour son rappel SMS — on aurait réparé le refus en cassant le rappel.
+  it("🔴 un numéro français normal passe, et part en forme internationale", () => {
     for (const format of ["telephone", "visio"]) {
       const r = valider(saisie({ [CHAMPS.format]: format, [CHAMPS.telephone]: "06 11 22 33 44" }));
-      expect(r.ok, `« ${format} » sans indicatif ne devrait pas passer`).toBe(false);
-      if (r.ok) return;
-      expect(r.erreurs[CHAMPS.telephone]).toContain("+33");
+      expect(r.ok, `« ${format} » devrait passer`).toBe(true);
+      if (!r.ok) return;
+      expect(r.demande.telephone, `converti en « ${format} »`).toBe("+33611223344");
     }
+  });
+
+  it("ce qui n'est pas un numéro reste refusé, et le motif nomme les deux formes", () => {
+    const r = valider(saisie({ [CHAMPS.telephone]: "appelez le standard" }));
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    expect(r.erreurs[CHAMPS.telephone]).toContain("06 12 34 56 78");
+    expect(r.erreurs[CHAMPS.telephone]).toContain("+212");
   });
 
   it("🔑 le numéro suit dans la demande pour les DEUX formats", () => {
@@ -254,9 +272,10 @@ describe("🔴 le numéro est obligatoire dans les DEUX formats", () => {
       );
       expect(r.ok, `« ${format} » devrait passer`).toBe(true);
       if (!r.ok) return;
-      expect(r.demande.telephone, `le numéro doit suivre en « ${format} »`).toBe(
-        "+33 6 11 22 33 44",
-      );
+      // ⚠️ Attendu MIS À JOUR : la demande porte désormais la forme
+      //    internationale compacte, pas la saisie telle quelle. C'est ce que
+      //    Calendly doit recevoir pour pouvoir composer le numéro.
+      expect(r.demande.telephone, `le numéro doit suivre en « ${format} »`).toBe("+33611223344");
     }
   });
 
