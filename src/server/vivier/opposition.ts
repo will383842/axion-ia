@@ -88,29 +88,50 @@ export async function recordVivierOpposition(
 }
 
 /**
- * La référence d'une candidature de la personne DÉJÀ partie au CRM, ou `null`.
+ * La référence d'une candidature de la personne qui a PU atteindre le CRM, ou `null`.
  *
- * Une ligne `application_submitted` compte si elle a été acquittée (`sent`) ou
- * si elle peut encore l'être (`pending`, `failed` : le rejeu la fera partir, et
- * l'opposition doit alors la suivre). Un refus définitif (`gave_up`) n'a créé
- * aucune fiche : il ne compte pas. Liste FERMÉE à dessein — un statut ajouté
- * plus tard ne fera rien partir tant qu'on ne l'a pas rangé ici.
+ * Depuis la coupure (ADR 0047, révision § 4 ter), plus aucune ligne
+ * `application_submitted` n'est émise : `emitOutboxRow` solde en `gave_up`,
+ * sans appel réseau, celles qui étaient encore en file. Le statut seul ne dit
+ * donc plus rien, et c'est l'HISTOIRE de la ligne qui compte :
+ *   · `sent` : le CRM l'a acquittée, la fiche existe ;
+ *   · au moins une tentative réelle (`attempts > 0`) dont la dernière réponse
+ *     n'est pas un refus 4xx : un délai dépassé ou une erreur 5xx a pu créer
+ *     la fiche sans que l'accusé revienne. Dans le doute, l'opposition suit ;
+ *   · jamais tentée (`attempts = 0`), ou refusée par un 4xx (le 422 d'un
+ *     consentement v1) : aucune fiche, rien à y opposer — et surtout rien à y
+ *     envoyer.
  *
  * On renvoie la référence de la candidature TRANSMISE, pas celle du lien
  * cliqué : c'est celle que le CRM connaît.
  */
 async function transmittedSubjectRef(applicationIds: string[]): Promise<string | null> {
   if (applicationIds.length === 0) return null;
-  const row = await prisma.crmSyncOutbox.findFirst({
+  const rows = await prisma.crmSyncOutbox.findMany({
     where: {
       eventType: "application_submitted",
-      status: { in: ["sent", "pending", "failed"] },
       subjectRef: { in: applicationIds.map((id) => `site:job_application:${id}`) },
     },
     orderBy: { createdAt: "asc" },
-    select: { subjectRef: true },
+    select: { subjectRef: true, status: true, attempts: true, responseStatus: true },
   });
-  return row?.subjectRef ?? null;
+  return rows.find(aPuAtteindreLeCrm)?.subjectRef ?? null;
+}
+
+/**
+ * Règle PURE, exportée pour être testée cas par cas (voir ci-dessus). Une
+ * ligne compte si elle a été acquittée, ou si une tentative réelle a pu créer
+ * la fiche sans que l'accusé revienne. Un refus 4xx n'a rien créé.
+ */
+export function aPuAtteindreLeCrm(row: {
+  status: string;
+  attempts: number;
+  responseStatus: number | null;
+}): boolean {
+  if (row.status === "sent") return true;
+  if (row.attempts <= 0) return false;
+  const code = row.responseStatus;
+  return code === null || code < 400 || code >= 500;
 }
 
 /**

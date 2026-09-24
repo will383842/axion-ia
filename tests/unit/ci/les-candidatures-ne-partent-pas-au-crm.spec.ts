@@ -13,6 +13,15 @@
 // candidatures : aucun de leurs modules n'importe `@/server/crm-sync`, imports
 // dynamiques compris.
 //
+// ── Et dans tout `src/` ──────────────────────────────────────────────────
+// `syncCandidateToCrm` est SUPPRIMÉE : son nom ne doit plus apparaître dans
+// aucun code de `src/` (commentaires exclus), réexportation comprise — un
+// module intermédiaire contournerait le motif d'import par chemin. Et le type
+// `"application_submitted"` n'est écrit qu'aux endroits qui le LISENT ou le
+// REFUSENT (la synchro elle-même, l'opposition). Le couvercle d'exécution est
+// `crm-sync/coupure-recrutement.ts` ; cette garde empêche qu'on le contourne
+// en silence.
+//
 // ── Ce qu'elle ne couvre pas, délibérément ────────────────────────────────
 // Les fichiers de test : un test peut légitimement simuler le module pour
 // prouver qu'il n'est PAS appelé. Et l'opposition au vivier
@@ -36,6 +45,13 @@ const DOSSIERS = ["src/features/job-application", "src/features/admin-job-applic
  */
 const IMPORT_CRM =
   /(?:\bfrom\s*|\bimport\s*\(?\s*|\brequire\s*\(\s*)["'`][^"'`]*server\/crm-sync(?:\/[^"'`]*)?["'`]/;
+
+const IDENTIFIANT = /\bsyncCandidateToCrm\b/;
+
+/** Retire les commentaires (bloc et ligne entière) : un rappel historique n'est pas un appel. */
+function sansCommentaires(code: string): string {
+  return code.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
+}
 
 function estUnTest(relatif: string): boolean {
   return (
@@ -86,6 +102,41 @@ describe("les candidatures ne partent pas au CRM (ADR 0047, révision)", () => {
       fautifs,
       "ces fichiers rouvrent l'envoi des candidatures au CRM, coupé par décision de Will " +
         "(ADR 0047, révision) — le rouvrir exige sa validation explicite :",
+    ).toEqual([]);
+  });
+
+  it("le nom `syncCandidateToCrm` n'apparaît dans aucun code de src/", () => {
+    // Témoin : l'ancien appelant `vivier/stock.ts` est bien lu, sinon la garde
+    // serait verte pour rien.
+    const tous = sources("src");
+    expect(tous).toContain("src/server/vivier/stock.ts");
+    expect(IDENTIFIANT.test(sansCommentaires(`export { syncCandidateToCrm } from "./x";`))).toBe(
+      true,
+    );
+    expect(IDENTIFIANT.test(sansCommentaires(`// syncCandidateToCrm est supprimée`))).toBe(false);
+
+    const fautifs = tous.filter((f) =>
+      IDENTIFIANT.test(sansCommentaires(readFileSync(path.join(RACINE, f), "utf8"))),
+    );
+    expect(
+      fautifs,
+      "ces fichiers rappellent l'envoi des candidatures au CRM, coupé par décision de Will " +
+        "(ADR 0047, révision) — le rouvrir exige sa validation explicite :",
+    ).toEqual([]);
+  });
+
+  it("le type application_submitted n'est écrit que là où il est lu ou refusé", () => {
+    const fautifs = sources("src").filter(
+      (f) =>
+        !f.startsWith("src/server/crm-sync/") &&
+        f !== "src/server/vivier/opposition.ts" &&
+        /["'`]application_submitted["'`]/.test(
+          sansCommentaires(readFileSync(path.join(RACINE, f), "utf8")),
+        ),
+    );
+    expect(
+      fautifs,
+      "ces fichiers fabriquent un événement de candidature pour le CRM (ADR 0047, révision) :",
     ).toEqual([]);
   });
 });

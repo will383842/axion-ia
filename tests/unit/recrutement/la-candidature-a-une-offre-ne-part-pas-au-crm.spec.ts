@@ -92,7 +92,8 @@ function candidatureAUneOffre(): FormData {
   fd.set("firstName", "Camille");
   fd.set("lastName", "Roux");
   fd.set("email", "camille@example.invalid");
-  fd.set("phone", "0600000001");
+  // Numéro de la plage réservée à la fiction par l'ARCEP (06 39 98) : attribuable à personne.
+  fd.set("phone", "0639980001");
   fd.set("city", "Grenoble");
   fd.set("consent", "true");
   fd.set("locale", "fr");

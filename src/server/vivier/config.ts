@@ -30,15 +30,15 @@
  * inoffensifs quand celui-ci était fermé : l'action de candidature à une offre
  * émettait directement, sans passer par ce drapeau, et des fiches sont parties.
  * Ce qui tient aujourd'hui, c'est le CODE, pas les drapeaux :
- *   · l'action de candidature n'importe plus la synchro (ADR 0047, révision
- *     « aucune candidature ne franchit la frontière »), et une garde statique
- *     rougit si l'import revient ;
+ *   · `syncCandidateToCrm` est supprimée, l'outbox refuse toute candidature
+ *     (`crm-sync/coupure-recrutement.ts`), et une garde statique rougit si
+ *     l'envoi revient (ADR 0047, révision § 4 ter) ;
  *   · `CRM_SYNC_CANDIDATES_ENABLED` reste ouvert pour une seule raison : porter
  *     l'OPPOSITION au vivier jusqu'aux fiches déjà parties — et `opposition.ts`
- *     n'émet que pour une personne dont une candidature est déjà partie.
- * Celui-ci, lui, déclencherait la campagne d'information au stock ET son
- * intégration au vivier J+30 : un lecteur qui le pose « puisque les autres sont
- * déjà ouverts » ouvre le canal pour de bon.
+ *     n'émet que pour une personne dont une candidature a PU atteindre le CRM.
+ * Celui-ci, lui, déclencherait la campagne d'information au stock : des
+ * e-mails à des candidats, qui ne se rappellent pas. Son intégration J+30 au
+ * CRM est coupée ; ce que deviendrait le stock informé reste à décider par Will.
  *
  * 🔑 ET L'OUVERTURE N'EST PAS RÉVERSIBLE COMME ELLE S'OUVRE. Refermer le
  * drapeau arrête les envois SUIVANTS ; il ne rappelle pas les e-mails partis, et
