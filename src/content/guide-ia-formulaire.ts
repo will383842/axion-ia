@@ -143,7 +143,13 @@ export interface LibellesFormulaireGuide {
   politique: { libelle: string; href: string };
   submit: string;
   sending: string;
+  /** Titre de l'état « envoyé » (lot L1). */
+  successTitre: string;
   success: string;
+  /** Rappel de l'adresse saisie, suivi de l'adresse (lot L1). */
+  envoyeA: string;
+  /** Bouton qui rouvre le formulaire pour corriger l'adresse (lot L1). */
+  corriger: string;
   failure: string;
 }
 
@@ -154,6 +160,9 @@ const COMMUNS: Record<
   fr: {
     submit: "Recevoir le guide",
     sending: "Envoi…",
+    successTitre: "Le guide est en route",
+    envoyeA: "Envoyé à",
+    corriger: "Corriger l'adresse",
     success:
       "C'est parti : le guide arrive dans votre boîte e-mail d'ici quelques minutes. Pensez à regarder dans les indésirables.",
     failure: "Erreur. Réessayez ou écrivez à contact@axion-ia.com.",
@@ -161,6 +170,9 @@ const COMMUNS: Record<
   en: {
     submit: "Get the guide",
     sending: "Sending…",
+    successTitre: "The guide is on its way",
+    envoyeA: "Sent to",
+    corriger: "Fix the address",
     success:
       "On its way: the guide will reach your inbox within a few minutes. Check your spam folder too.",
     failure: "Error. Try again or email contact@axion-ia.com.",
@@ -187,6 +199,9 @@ export function libellesFormulaireGuide(
  */
 export const SOURCES_GUIDE = [
   "guide-ia",
+  // Lot L1 (2026-09-25) — second formulaire, en bas de la page du guide. Le
+  // premier garde « guide-ia » : les demandes déjà enregistrées restent lisibles.
+  "guide-ia-bas",
   "blog-fin-article",
   "actualites-fin-article",
   "guides-fin-article",
@@ -195,5 +210,5 @@ export type SourceGuide = (typeof SOURCES_GUIDE)[number];
 
 /** Point de collecte d'une provenance : la page du guide, ou un encart d'article. */
 export function varianteDeSource(source: SourceGuide): VarianteFormulaireGuide {
-  return source === "guide-ia" ? "guide" : "article";
+  return source === "guide-ia" || source === "guide-ia-bas" ? "guide" : "article";
 }

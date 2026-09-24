@@ -36,7 +36,7 @@ export async function Footer() {
   const resources = [
     { href: "/secteurs", label: isFr ? "L'IA par secteur" : "AI by sector" },
     { href: "/stack-ia", label: isFr ? "Stack IA 2026" : "AI Stack 2026" },
-    { href: "/guide-ia", label: isFr ? "Guide IA opérationnelle" : "Operational AI guide" },
+    { href: "/guide-ia", label: isFr ? "Guide IA entreprise" : "Enterprise AI guide" },
     { href: "/blog", label: t("nav.blog") },
     { href: "/blog/categorie", label: isFr ? "Catégories du blog" : "Blog categories" },
     { href: "/actualites", label: isFr ? "Actualités de l'IA" : "AI news" },

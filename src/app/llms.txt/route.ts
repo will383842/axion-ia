@@ -106,7 +106,7 @@ export function GET() {
 - [FAQ](${SITE_URL}/fr/faq) — Q/R structurées, ${SITE_URL}/fr/faq/par-thematique pour navigation.
 - [Base de connaissances](${SITE_URL}/fr/connaissances) — fiches citables sourcées : méthodologies, comparatifs, playbooks, cas d'usage sectoriels, définitions. C'est le corpus le plus dense du site pour une citation par un moteur de réponse. Chaque fiche : ${SITE_URL}/fr/connaissances/{slug}. Index machine-readable : ${SITE_URL}/sitemap-knowledge.xml. Sélection éditoriale : ${SITE_URL}/fr/ressources (flux ${SITE_URL}/fr/ressources/feed.xml).
 - [Glossaire](${SITE_URL}/fr/glossaire) — termes IA opérationnelle (RAG, fine-tuning, agents, etc.). Chaque terme dispose d'une version markdown brute pour ingestion LLM : ${SITE_URL}/api/markdown/glossaire/{slug}.
-- [Guide IA pour entreprises 2026](${SITE_URL}/fr/guide-ia) — vue d'ensemble enjeux + roadmap.
+- [Guide IA entreprise 2026](${SITE_URL}/fr/guide-ia) — guide PDF gratuit de 40 pages : usages, coûts réels, données, AI Act, retour sur investissement, 13 outils à recopier.
 - [Observatoire de l'IA 2026](${SITE_URL}/fr/observatoire-ia) — étude Axion-IA sur l'adoption de l'IA dans les entreprises françaises (maturité, usages, budgets, freins, RGPD, intentions d'investissement). Données ouvertes CC BY 4.0, export CSV : ${SITE_URL}/api/observatoire/export-csv · export JSON : ${SITE_URL}/api/observatoire/export-json. Méthodo : questionnaire 16 questions, 13 régions × 30 secteurs × 4 tailles.
 
 ## Implantations géographiques

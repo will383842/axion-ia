@@ -63,20 +63,6 @@ const SLOTS = [
     query: "sticky notes wall planning strategy matrix",
   },
   {
-    slot: "guide-ia-hero",
-    file: "illustrations/guide-ia-hero",
-    w: 1600,
-    h: 900,
-    query: "open book on light table minimal desk",
-  },
-  {
-    slot: "guide-ia-closing",
-    file: "illustrations/guide-ia-closing",
-    w: 1600,
-    h: 900,
-    query: "hands turning page of book reading close up",
-  },
-  {
     slot: "stack-ia-closing",
     file: "illustrations/stack-ia-closing",
     w: 1600,

@@ -32,6 +32,7 @@ import { FAQ_CATEGORIES } from "@/content/faq-categories";
 
 /** Emplacement de rendu de l'image sur la page (pour que la page filtre son manifeste). */
 import { HOME_IMAGES } from "@/content/home/home-images";
+import { APERCU_DIMENSIONS, COUVERTURE_GUIDE, textesPageGuide } from "@/content/guide-ia-page";
 
 export type PageImageSlot =
   | "grid" // grille de photos illustratives
@@ -1546,34 +1547,38 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
       },
     ],
   },
+  // Lot L1 (2026-09-25) — les deux photos Unsplash d'ambiance (bureau, livre
+  // ouvert) sont retirées : la page montre désormais le GUIDE lui-même. Les
+  // fichiers sont tirés du rendu du PDF, produit par Axion-IA : `origin` par
+  // défaut (`own`). Alt et noms construits depuis `content/guide-ia-page.ts`,
+  // que la page rend : ils ne peuvent pas diverger.
   {
     path: "/guide-ia",
     images: [
       {
-        src: "/illustrations/guide-ia-hero.avif",
-        nameFr: "Guide IA Axion-IA — un manuel opérationnel pour dirigeants",
-        nameEn: "Axion-IA AI guide — an operational manual for executives",
-        altFr:
-          "Une main tient une feuille de graphiques imprimés au-dessus d'un ordinateur portable, à côté d'un carnet ouvert — image du guide IA opérationnel publié par Axion-IA.",
-        altEn:
-          "A hand holding a sheet of printed charts above a laptop, next to an open notebook — illustrating the operational AI guide published by Axion-IA.",
-        width: 1600,
-        height: 900,
+        src: COUVERTURE_GUIDE.src,
+        nameFr: "Couverture du Guide IA entreprise 2026 — Axion-IA",
+        nameEn: "Cover of the Enterprise AI guide 2026 — Axion-IA",
+        altFr: textesPageGuide("fr").hero.altCouverture,
+        altEn: textesPageGuide("en").hero.altCouverture,
+        width: COUVERTURE_GUIDE.width,
+        height: COUVERTURE_GUIDE.height,
         representativeOfPage: true,
         slot: "hero",
       },
-      {
-        src: "/illustrations/guide-ia-closing.avif",
-        nameFr: "Du guide IA à l'application concrète en entreprise",
-        nameEn: "From the AI guide to concrete application in the company",
-        altFr:
-          "Des mains tournent la page d'un livre ouvert : passer de la lecture du guide IA à son application dans l'entreprise.",
-        altEn:
-          "Hands turning the page of an open book: moving from reading the AI guide to applying it in the company.",
-        width: 1600,
-        height: 900,
-        slot: "inline",
-      },
+      ...textesPageGuide("fr").apercu.pages.map((fr, i) => {
+        const en = textesPageGuide("en").apercu.pages[i]!;
+        return {
+          src: fr.src,
+          nameFr: `Guide IA entreprise 2026, page ${fr.page} : ${fr.titre}`,
+          nameEn: `Enterprise AI guide 2026, page ${en.page}: ${en.titre}`,
+          altFr: fr.alt,
+          altEn: en.alt,
+          width: APERCU_DIMENSIONS.width,
+          height: APERCU_DIMENSIONS.height,
+          slot: "inline" as const,
+        };
+      }),
     ],
   },
   // ===== Recrutement commercial (/memo-isere + tunnel de candidature) =====
