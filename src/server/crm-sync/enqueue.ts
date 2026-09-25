@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { crmSyncQueue } from "@/server/queue/queues";
 
 import { isCrmSyncCandidatesEnabled, isCrmSyncEnabled } from "./config";
+import { estEnvoiCoupe } from "./coupure-recrutement";
 import type { CrmSyncEvent, CrmUniverse } from "./types";
 
 /**
@@ -79,6 +80,10 @@ export async function enqueueCrmSyncEvent(
   // OFF : le comportement est identique à celui d'avant le lot.
   if (!isCrmSyncEnabled()) return null;
   if (universe === "vivier" && !isCrmSyncCandidatesEnabled()) return null;
+  // 🔴 Rien du recrutement ne part au CRM, quel que soit l'appelant et quel
+  // que soit le drapeau (ADR 0047, révision § 4 ter). Le couvercle est dans le
+  // code : `CRM_SYNC_CANDIDATES_ENABLED` reste ouvert pour l'opposition.
+  if (estEnvoiCoupe(event.event_type, event)) return null;
 
   try {
     const writer = (options.tx ?? prisma) as unknown as CrmOutboxWriter;

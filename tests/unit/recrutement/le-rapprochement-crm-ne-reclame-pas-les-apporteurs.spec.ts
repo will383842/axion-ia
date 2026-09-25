@@ -84,14 +84,18 @@ describe("rapprochement CRM — famille submission (B2, 19/09)", () => {
     expect(famille?.missingIds).toEqual(["site:submission:s-client"]);
   });
 
-  it("le /contact « recrutement » (sans sous-type apporteur) reste réclamé", async () => {
-    // Il reste soumis aux drapeaux du vivier CRM (ADR 0051 § l) : ce n'est pas
-    // un dossier apporteur, son absence d'émission est une vraie anomalie.
+  it("le /contact « recrutement » (sans sous-type apporteur) n'est plus réclamé", async () => {
+    // Ce n'est pas un dossier apporteur, mais c'est une candidature : depuis la
+    // révision de l'ADR 0047 (§ 4 ter), rien du recrutement ne part au CRM —
+    // `syncFormSubmissionToCrm` l'écarte au point d'entrée. Son absence
+    // d'émission est voulue, pas une anomalie.
     submission.findMany.mockResolvedValue([
       { id: "s-contact-recrutement", details: { unifiedType: "recrutement" } },
+      { id: "s-client", details: { unifiedType: "projet" } },
     ]);
     const famille = await familleSubmission();
-    expect(famille?.missingIds).toEqual(["site:submission:s-contact-recrutement"]);
+    // Témoin : la demande client voisine reste réclamée.
+    expect(famille?.missingIds).toEqual(["site:submission:s-client"]);
   });
 
   it("le tri se fait EN MÉMOIRE : la requête ne porte aucun NOT sur un chemin JSON", async () => {

@@ -11,9 +11,9 @@
  * Deux temps, deux fonctions, deux drapeaux :
  *   1. `sendVivierInformationBatch()` — envoie l'email d'information et
  *      horodate `vivierInfoSentAt`. Gaté par `VIVIER_STOCK_ENABLED`.
- *   2. `integrateVivierStock()` — 30 jours plus tard, intègre au vivier CRM
- *      ceux qui n'ont pas dit non. Gaté par `CRM_SYNC_CANDIDATES_ENABLED`
- *      (via l'outbox, qui refuse tout flux `vivier` sans lui).
+ *   2. `integrateVivierStock()` — intégrait au vivier CRM, 30 jours plus tard,
+ *      ceux qui n'avaient pas dit non. COUPÉE (ADR 0047, révision § 4 ter) :
+ *      aucune candidature ne part plus au CRM ; voir la fonction.
  *
  * 🔴 L'horloge des 30 jours n'est JAMAIS raccourcie en dur. Les tests passent un
  * `windowDays` explicite en paramètre — la règle reste intacte, l'écart se voit
@@ -23,17 +23,9 @@
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import { normalizeEmail } from "@/lib/security/email-hash";
-import { candidateFamilyForOffer } from "@/lib/careers/candidate-family";
-import { syncCandidateToCrm } from "@/server/crm-sync";
-import { isCrmSyncCandidatesEnabled } from "@/server/crm-sync/config";
 import { enqueueEmail } from "@/server/queue/queues";
 
-import {
-  isVivierStockEnabled,
-  vivierIntegrationCutoff,
-  VIVIER_OPPOSITION_WINDOW_DAYS,
-  VIVIER_STOCK_CONSENT_VERSION,
-} from "./config";
+import { isVivierStockEnabled, VIVIER_OPPOSITION_WINDOW_DAYS } from "./config";
 import { signVivierOppositionToken } from "./token";
 
 /** Plafond par passage : on n'envoie pas 71 emails en rafale sans respirer. */
@@ -182,133 +174,27 @@ export interface VivierIntegrationReport {
 }
 
 /**
- * Intègre au vivier CRM les candidatures dont la fenêtre d'opposition est
- * ÉCHUE et qui n'ont pas fait l'objet d'une opposition.
+ * Intégration J+30 au vivier CRM — COUPÉE (ADR 0047, révision § 4 ter).
  *
- * @param options.windowDays OVERRIDE DE TEST UNIQUEMENT. La règle métier est
- *   `VIVIER_OPPOSITION_WINDOW_DAYS` (30 jours) et ne se modifie pas ; un test
- *   qui a besoin d'une autre fenêtre la passe ici, explicitement, et cela se
- *   voit dans le test.
+ * Décision de Will : aucune candidature ne franchit la frontière vers le CRM,
+ * et le vivier est tenu par la console du site. Cette fonction émettait une
+ * ligne `application_submitted` par candidature du stock ; elle ne lit plus la
+ * base et n'écrit plus rien. Le couvercle est dans le CODE, pas dans un
+ * drapeau : `CRM_SYNC_CANDIDATES_ENABLED` reste ouvert (il porte l'opposition
+ * des fiches déjà parties), et c'est lui seul qui fermait ce chemin avant.
+ *
+ * Ce que devient le stock informé (entrée au vivier du SITE, marquage de
+ * `vivierSyncedAt` côté site ou non) n'est pas tranché ici : c'est une
+ * décision de Will, à prendre avec le sort des fiches déjà parties. Tant
+ * qu'elle ne l'est pas, rien n'est consommé : `vivierSyncedAt` reste nul, et
+ * l'échéance survit à la décision, quelle qu'elle soit.
+ *
+ * Signature conservée : le worker `vivier-crons` l'appelle chaque jour.
  */
 export async function integrateVivierStock(
-  options: { now?: Date; windowDays?: number; limit?: number } = {},
+  _options: { now?: Date; windowDays?: number; limit?: number } = {},
 ): Promise<VivierIntegrationReport> {
-  const now = options.now ?? new Date();
-  const windowDays = options.windowDays ?? VIVIER_OPPOSITION_WINDOW_DAYS;
-  const cutoff = vivierIntegrationCutoff(now, windowDays);
-
-  // ── GARDE D'ETAT MIXTE (defaut BLOQUANT trouve en revue adversariale) ────
-  // La sequence d'exploitation PREVUE informe le stock AVANT d'ouvrir le
-  // canal candidats. Dans cet etat, `enqueueCrmSyncEvent` refuse EN SILENCE
-  // (drapeau OFF => null) : sans cette garde, on posait quand meme
-  // `vivierSyncedAt`, et les 71 fiches du stock etaient exclues A JAMAIS du
-  // rattrapage (`where vivierSyncedAt: null`) sans qu'une seule ligne
-  // d'outbox existe. On ne consomme l'echeance QUE si le canal peut ecrire.
-  if (!isCrmSyncCandidatesEnabled()) {
-    console.warn(
-      "[vivier] integration J+30 differee : CRM_SYNC_CANDIDATES_ENABLED est ferme — rien n'est consomme, le passage suivant rattrapera.",
-    );
-    return { due: 0, integrated: 0, skipped: 0 };
-  }
-
-  const rows = await prisma.jobApplication.findMany({
-    where: {
-      // Informée…
-      vivierInfoSentAt: { not: null, lte: cutoff },
-      // …sans opposition…
-      vivierOpposedAt: null,
-      // …et pas déjà intégrée (idempotence : rejouer ne crée pas de doublon).
-      vivierSyncedAt: null,
-    },
-    orderBy: { vivierInfoSentAt: "asc" },
-    take: options.limit ?? BATCH_LIMIT,
-    select: {
-      id: true,
-      email: true,
-      firstName: true,
-      lastName: true,
-      phone: true,
-      offerTitleSnap: true,
-      submittedAt: true,
-      vivierInfoSentAt: true,
-      consentVersion: true,
-      cvStoragePath: true,
-      experienceBand: true,
-      offer: { select: { slug: true, category: true } },
-    },
-  });
-
-  const report: VivierIntegrationReport = { due: rows.length, integrated: 0, skipped: 0 };
-
-  for (const row of rows) {
-    const email = safeDecrypt(row.email);
-    if (!email) {
-      report.skipped += 1;
-      continue;
-    }
-
-    const outboxId = await syncCandidateToCrm({
-      subjectRef: `site:job_application:${row.id}`,
-      family: candidateFamilyForOffer(row.offer?.slug, row.offer?.category),
-      offerSlug: row.offer?.slug ?? null,
-      sourceSlug: "site-candidature-offre",
-      occurredAt: row.submittedAt,
-      person: {
-        email,
-        firstName: safeDecrypt(row.firstName),
-        lastName: safeDecrypt(row.lastName),
-        phone: safeDecrypt(row.phone),
-      },
-      consent: {
-        // PAS `row.consentVersion` (v1 : etude de la candidature seulement,
-        // le CRM la rejette a raison). L'acte juridique qui fonde l'entree en
-        // vivier du STOCK est l'email d'information + 30 j sans opposition —
-        // il a sa propre version FERME, enumeree cote CRM.
-        version: VIVIER_STOCK_CONSENT_VERSION,
-        at: row.vivierInfoSentAt ?? row.submittedAt,
-        textRef: "vivier-information-email",
-        // La base légale de la conservation en vivier n'est PAS un accord
-        // exprès ici : c'est l'information loyale + absence d'opposition
-        // pendant 30 jours. On horodate donc l'accord réputé acquis à la date
-        // d'échéance de la fenêtre, pas à la date de candidature — cette date
-        // est celle à partir de laquelle la conservation devient licite.
-        vivierAt: row.vivierInfoSentAt
-          ? new Date(row.vivierInfoSentAt.getTime() + windowDays * 24 * 60 * 60 * 1000)
-          : null,
-      },
-      cvRef: row.cvStoragePath ? `site:cv:${row.id}` : null,
-      attributes: {
-        ...(row.experienceBand ? { experienceBand: row.experienceBand } : {}),
-        vivierEntryMode: "stock-information-sans-opposition",
-      },
-      payload: { offerTitle: row.offerTitleSnap },
-    });
-
-    if (outboxId === null) {
-      // Aucune ligne d'outbox posee (drapeau retombe entre-temps, echec
-      // d'ecriture « evenement perdu ») : on NE consomme PAS l'echeance —
-      // le passage suivant reessaiera. Marquer « integre » sans ecriture
-      // confirmee serait une perte silencieuse.
-      report.skipped += 1;
-      continue;
-    }
-
-    await prisma.jobApplication.update({
-      where: { id: row.id },
-      data: { vivierSyncedAt: now },
-    });
-    report.integrated += 1;
-  }
-
-  // Doctrine de log : on ne journalise QUE ce qui s'est passé. Un « rien à
-  // faire » quotidien noierait les logs sans rien apprendre.
-  if (report.due > 0) {
-    console.warn(
-      `[vivier] intégration J+${windowDays} : ${report.integrated}/${report.due} intégrée(s), ${report.skipped} écartée(s)`,
-    );
-  }
-
-  return report;
+  return { due: 0, integrated: 0, skipped: 0 };
 }
 
 /** Horodate l'envoi de l'information sur une candidature. */

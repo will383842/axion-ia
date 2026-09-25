@@ -34,7 +34,7 @@ import { prisma } from "@/lib/prisma";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { HORS_APPELS_APPORTEUR } from "@/server/calendly/appel-apporteur";
 import { alertCrmSync } from "./alerts";
-import { isCrmSyncCandidatesEnabled, isCrmSyncEnabled } from "./config";
+import { isCrmSyncEnabled } from "./config";
 import type { CrmUniverse } from "./types";
 
 /** Profondeur de la comparaison. Au-delà, l'anomalie n'est plus fraîche. */
@@ -188,43 +188,31 @@ export async function collectReconciliation(): Promise<ReconcileReport> {
           orderBy: { submittedAt: "asc" },
           take: MAX_SOURCES_PER_FAMILY,
         });
-        return lignes.filter((ligne) => !estApporteur(ligne.details));
+        return lignes.filter(
+          (ligne) => !estApporteur(ligne.details) && !estFormulaireRecrutement(ligne.details),
+        );
       },
     }),
   );
 
-  // Le vivier a son propre verrou (`CRM_SYNC_CANDIDATES_ENABLED`). Tant qu'il
-  // est fermé, AUCUNE candidature n'est censée avoir de ligne d'outbox :
-  // comparer produirait un écart de 100 % qui ne signale rien.
-  if (isCrmSyncCandidatesEnabled()) {
-    families.push(
-      await compareFamily({
-        family: "job_application",
-        universe: "vivier",
-        since,
-        until,
-        loadIds: (from, to) =>
-          prisma.jobApplication.findMany({
-            where: { submittedAt: { gte: from, lt: to } },
-            select: { id: true },
-            orderBy: { submittedAt: "asc" },
-            take: MAX_SOURCES_PER_FAMILY,
-          }),
-      }),
-    );
-  } else {
-    families.push({
-      family: "job_application",
-      label: FAMILY_LABELS.job_application,
-      universe: "vivier",
-      sources: 0,
-      emitted: 0,
-      missing: 0,
-      missingIds: [],
-      skipped: "flux candidats fermé (CRM_SYNC_CANDIDATES_ENABLED)",
-      truncated: false,
-    });
-  }
+  // Les candidatures ne partent PLUS au CRM (ADR 0047, révision « aucune
+  // candidature ne franchit la frontière ») : ni l'action, ni le tunnel
+  // apporteurs n'émettent. Les comparer produirait un « manquant » par
+  // candidature, donc une alerte quotidienne qui ne signale rien — et le
+  // drapeau `CRM_SYNC_CANDIDATES_ENABLED` reste OUVERT pour l'opposition au
+  // vivier, il ne dit donc plus rien de l'envoi. La famille reste dans le
+  // rapport (les cinq, jamais moins), toujours ignorée, SANS lecture en base.
+  families.push({
+    family: "job_application",
+    label: FAMILY_LABELS.job_application,
+    universe: "vivier",
+    sources: 0,
+    emitted: 0,
+    missing: 0,
+    missingIds: [],
+    skipped: "envoi des candidatures coupé par décision de Will (ADR 0047)",
+    truncated: false,
+  });
 
   // ── Les trois familles ajoutées le 2026-08-18 (ligne 12) ─────────────────
   // Chacune ne compte que ce qui DOIT émettre :
@@ -307,6 +295,17 @@ interface CompareInput {
    * générique qui imposerait un nom de colonne serait faux dès le 3e modèle.
    */
   loadIds: (since: Date, until: Date) => PromiseLike<Array<{ id: string }>>;
+}
+
+/**
+ * Un `/contact` de type « recrutement » n'émet plus (garde de
+ * `syncFormSubmissionToCrm`, ADR 0047 révisée) : il n'a donc, par construction,
+ * aucune ligne d'outbox et ne doit pas compter comme manquant. Même lecture
+ * DÉFENSIVE que `estApporteur` — le JSON vient de la base, rien ne doit lever.
+ */
+function estFormulaireRecrutement(details: unknown): boolean {
+  if (!details || typeof details !== "object" || Array.isArray(details)) return false;
+  return (details as Record<string, unknown>).unifiedType === "recrutement";
 }
 
 async function compareFamily(input: CompareInput): Promise<ReconcileFamilyReport> {

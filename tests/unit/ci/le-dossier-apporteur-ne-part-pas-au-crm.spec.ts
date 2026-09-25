@@ -95,15 +95,13 @@ describe("le dossier apporteur ne part pas au CRM (décision B2, 19/09)", () => 
     expect(tous).toContain("src/components/forms/commercial-application/wizard-state.ts");
   });
 
-  it("le motif reconnaît un import réel — témoin positif sur /carrieres", () => {
-    // `/carrieres` part toujours au CRM (ADR 0047) : son action importe la
-    // synchro. Si le motif ne la reconnaissait pas, la garde ci-dessous ne
+  it("le motif reconnaît un import réel — témoin positif sur l'opposition au vivier", () => {
+    // `/carrieres` n'émet plus (ADR 0047, révision) : le témoin est rebranché
+    // sur l'opposition au vivier, qui importe la synchro et doit continuer de
+    // le faire. Si le motif ne la reconnaissait pas, la garde ci-dessous ne
     // prouverait rien.
-    const carrieres = readFileSync(
-      path.join(RACINE, "src/features/job-application/actions.ts"),
-      "utf8",
-    );
-    expect(IMPORT_CRM.test(carrieres)).toBe(true);
+    const opposition = readFileSync(path.join(RACINE, "src/server/vivier/opposition.ts"), "utf8");
+    expect(IMPORT_CRM.test(opposition)).toBe(true);
     // Et les formes dynamiques, qu'une réouverture discrète emprunterait.
     expect(IMPORT_CRM.test(`const m = await import("@/server/crm-sync");`)).toBe(true);
     expect(IMPORT_CRM.test(`import { x } from "../../server/crm-sync/enqueue";`)).toBe(true);
