@@ -86,6 +86,10 @@ export const env = createEnv({
     // par défaut ; ne s'ouvre qu'après le drapeau `crm.ingest.personnes_enabled`
     // du CRM, contrôlé sur un premier événement réel. Web ET worker.
     CRM_SYNC_GUIDE_ENABLED: z.enum(["true", "false"]).optional(),
+    // Exclusions PERSISTANTES du flux lettre et guide (lot L4-S, décision D4) :
+    // empreintes SHA-256 de l'adresse normalisée (trim + minuscules), séparées
+    // par des virgules. Jamais une adresse en clair. Voir `crm-sync/exclusions.ts`.
+    CRM_SYNC_EXCLUSIONS_SHA256: z.string().optional(),
     CRM_SYNC_URL: z.string().url().optional(),
     // Secret partagé du canal signé (64 hex). Jamais dans un commit.
     SITE_SYNC_HMAC_SECRET: z.string().optional(),
@@ -632,6 +636,7 @@ export const env = createEnv({
     CRM_SYNC_ENABLED: process.env.CRM_SYNC_ENABLED,
     CRM_SYNC_CANDIDATES_ENABLED: process.env.CRM_SYNC_CANDIDATES_ENABLED,
     CRM_SYNC_GUIDE_ENABLED: process.env.CRM_SYNC_GUIDE_ENABLED,
+    CRM_SYNC_EXCLUSIONS_SHA256: process.env.CRM_SYNC_EXCLUSIONS_SHA256,
     CRM_SYNC_URL: process.env.CRM_SYNC_URL,
     SITE_SYNC_HMAC_SECRET: process.env.SITE_SYNC_HMAC_SECRET,
     VIVIER_STOCK_ENABLED: process.env.VIVIER_STOCK_ENABLED,

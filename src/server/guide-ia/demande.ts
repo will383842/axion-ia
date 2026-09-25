@@ -33,6 +33,8 @@ import {
   VERSION_MENTION,
   type VarianteFormulaireGuide,
 } from "@/content/guide-ia-formulaire";
+import { auPlus } from "@/server/crm-sync/enqueue";
+import { transmettreInscriptionApresClic } from "@/server/crm-sync/lettre-guide";
 import { AIMANT_GUIDE_IA } from "./config";
 import { mettreEnFileGuide, type ResultatEnvoiGuide } from "./envoi";
 import { inscrireALaLettre, lettreDansLEmail, type ResultatInscriptionLettre } from "./lettre";
@@ -151,6 +153,15 @@ export async function enregistrerDemandeGuide(
     });
     lettre = r.etat;
     abonneId = r.id;
+  }
+
+  // Lot L4-S (relecture du 25/09) — une inscription faite APRÈS un premier
+  // clic déjà transmis au CRM (adresse perso : guide seul, puis la case à une
+  // nouvelle demande) n'attend pas un second clic : l'adresse est déjà
+  // vérifiée. Derrière `CRM_SYNC_GUIDE_ENABLED` (fermé : aucune lecture). Ne
+  // lève pas ; attente bornée, la mise en file n'est jamais attendue.
+  if (lettre === "inscrite") {
+    await auPlus(transmettreInscriptionApresClic(demande.id), 1_500);
   }
 
   // Ce que l'e-mail porte pour la lettre se lit sur la ligne d'abonné, quelle

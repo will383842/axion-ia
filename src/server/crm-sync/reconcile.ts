@@ -36,6 +36,8 @@ import { HORS_APPELS_APPORTEUR } from "@/server/calendly/appel-apporteur";
 import { FORM_REF_LETTRE } from "@/content/guide-ia-formulaire";
 import { alertCrmSync } from "./alerts";
 import { isCrmSyncEnabled, isCrmSyncGuideEnabled } from "./config";
+import { estExclueDuCrm } from "./exclusions";
+import { adressesOpposees } from "./oppositions-par-lot";
 import type { CrmUniverse } from "./types";
 
 /** Profondeur de la comparaison. Au-delà, l'anomalie n'est plus fraîche. */
@@ -114,7 +116,7 @@ const FAMILY_LABELS: Record<CrmSyncFamily, string> = {
   submission: "Formulaires (submissions)",
   job_application: "Candidatures aux offres",
   calendly_event: "Rendez-vous Calendly (invité identifié)",
-  newsletter_subscriber: "Newsletter (inscriptions confirmées)",
+  newsletter_subscriber: "Lettre (inscriptions)",
   customer_review: "Avis clients",
   guide_request: "Guide IA (demandes cliquées)",
 };
@@ -123,13 +125,77 @@ const FAMILY_LABELS: Record<CrmSyncFamily, string> = {
  * Références de collecte des inscriptions faites À LA DEMANDE DU GUIDE
  * (amendement du 24/09, `guide-ia/lettre.ts`). Elles ne sont pas émises à
  * l'inscription : elles entrent au CRM au CLIC sur le lien du guide (décision
- * D1), derrière `CRM_SYNC_GUIDE_ENABLED` — c'est la famille `guide_request`
- * qui les suit. Les compter dans `newsletter_subscriber` les ferait toutes
- * passer pour des émissions perdues.
+ * D1), derrière `CRM_SYNC_GUIDE_ENABLED`.
  */
 const FORM_REFS_INSCRIPTION_PAR_LE_GUIDE: ReadonlySet<string> = new Set(
   Object.values(FORM_REF_LETTRE),
 );
+
+function normaliser(adresse: string): string {
+  return adresse.trim().toLowerCase();
+}
+
+/**
+ * Les inscriptions de la fenêtre qui DOIVENT avoir leur `newsletter_optin`
+ * (lot L4-S, relecture du 25/09) :
+ *
+ *   · confirmées par bouton (référence nulle ou hors guide) : émises à la
+ *     confirmation, comme avant — GARDÉES ;
+ *   · faites à la demande du guide : elles n'émettent qu'une fois l'adresse
+ *     vérifiée par le clic. GARDÉES seulement si une demande de cette adresse
+ *     a été TRANSMISE (une ligne `lead_magnet_requested` existe) ; jamais
+ *     cliquée, ou cliquée drapeau fermé, elles sont ÉCARTÉES (rien à attendre).
+ *     Avant ce filtre, elles étaient toutes écartées : une inscription du
+ *     guide dont la demande était partie sans elle n'était contrôlée par rien.
+ *
+ * Écartées aussi : les adresses exclues (`CRM_SYNC_EXCLUSIONS_SHA256`) et,
+ * pour le guide, opposées — le site ne les émet pas, ce ne sont pas des pertes.
+ * Tri EN MÉMOIRE, jamais par un `notIn` SQL : sur une colonne nullable,
+ * `NOT IN` écarte aussi les NULL — c'est-à-dire toutes les inscriptions
+ * antérieures au lot L2, que le filet doit justement voir.
+ */
+export async function inscriptionsAControler(
+  lignes: ReadonlyArray<{ id: string; email: string; consentFormRef: string | null }>,
+): Promise<Array<{ id: string }>> {
+  const retenues = lignes.filter((l) => !estExclueDuCrm(l.email));
+  const parLeGuide = retenues.filter(
+    (l) => l.consentFormRef !== null && FORM_REFS_INSCRIPTION_PAR_LE_GUIDE.has(l.consentFormRef),
+  );
+  const transmises = new Set<string>();
+  let opposees = new Set<string>();
+  if (parLeGuide.length > 0) {
+    const demandes = await prisma.guideRequest.findMany({
+      where: {
+        email: { in: parLeGuide.map((l) => l.email) },
+        firstClickAt: { not: null },
+        crmEmittedAt: { not: null },
+      },
+      select: { id: true, email: true },
+    });
+    const emailParRef = new Map<string, string>(
+      demandes.map((d) => [`site:guide_request:${d.id}`, normaliser(d.email)] as const),
+    );
+    if (emailParRef.size > 0) {
+      const lignesOutbox = await prisma.crmSyncOutbox.findMany({
+        where: { subjectRef: { in: [...emailParRef.keys()] }, eventType: "lead_magnet_requested" },
+        select: { subjectRef: true },
+      });
+      for (const l of lignesOutbox) {
+        const email = emailParRef.get(l.subjectRef);
+        if (email !== undefined) transmises.add(email);
+      }
+    }
+    if (transmises.size > 0) opposees = await adressesOpposees([...transmises]);
+  }
+  const guide = new Set(parLeGuide.map((l) => l.id));
+  return retenues
+    .filter((l) => {
+      if (!guide.has(l.id)) return true;
+      const email = normaliser(l.email);
+      return transmises.has(email) && !opposees.has(email);
+    })
+    .map((l) => ({ id: l.id }));
+}
 
 /**
  * Compare les enregistrements SOURCE aux `subject_ref` émis, sans rien écrire
@@ -270,24 +336,20 @@ export async function collectReconciliation(): Promise<ReconcileReport> {
       universe: "business",
       since,
       until,
-      // Lot L4-S : seules les inscriptions CONFIRMÉES PAR BOUTON (ancien
-      // double opt-in, réinscription) émettent à la confirmation. Celles de la
-      // demande du guide sont écartées (voir `FORM_REFS_INSCRIPTION_PAR_LE_GUIDE`).
-      // Tri EN MÉMOIRE, jamais par un `notIn` SQL : sur une colonne nullable,
-      // `NOT IN` écarte aussi les NULL — c'est-à-dire toutes les inscriptions
-      // antérieures au lot L2, que le filet doit justement voir.
-      loadIds: async (from, to) => {
-        const lignes = await prisma.newsletterSubscriber.findMany({
-          where: { confirmedAt: { gte: from, lt: to } },
-          select: { id: true, consentFormRef: true },
-          orderBy: { confirmedAt: "asc" },
-          take: MAX_SOURCES_PER_FAMILY,
-        });
-        return lignes.filter(
-          (l) =>
-            l.consentFormRef === null || !FORM_REFS_INSCRIPTION_PAR_LE_GUIDE.has(l.consentFormRef),
-        );
-      },
+      // Lot L4-S : confirmées par bouton, ou faites à la demande du guide dont
+      // une demande a été transmise (`inscriptionsAControler`). Une ligne
+      // `newsletter_optin` exactement : un rebond ou un désabonnement sur la
+      // même référence ne masque pas une inscription jamais transmise.
+      eventType: "newsletter_optin",
+      loadIds: async (from, to) =>
+        inscriptionsAControler(
+          await prisma.newsletterSubscriber.findMany({
+            where: { confirmedAt: { gte: from, lt: to } },
+            select: { id: true, email: true, consentFormRef: true },
+            orderBy: { confirmedAt: "asc" },
+            take: MAX_SOURCES_PER_FAMILY,
+          }),
+        ),
     }),
     await compareFamily({
       family: "customer_review",
@@ -361,6 +423,8 @@ interface CompareInput {
    * générique qui imposerait un nom de colonne serait faux dès le 3e modèle.
    */
   loadIds: (since: Date, until: Date) => PromiseLike<Array<{ id: string }>>;
+  /** Type d'événement exigé (lot L4-S). Absent : n'importe quelle ligne de la référence. */
+  eventType?: string;
 }
 
 /**
@@ -395,7 +459,10 @@ async function compareFamily(input: CompareInput): Promise<ReconcileFamilyReport
   // On demande les `subject_ref` PRÉSENTS et on déduit les absents en mémoire :
   // l'inverse (un NOT IN) ne saurait pas dire quels identifiants manquent.
   const emitted = await prisma.crmSyncOutbox.findMany({
-    where: { subjectRef: { in: refs } },
+    where: {
+      subjectRef: { in: refs },
+      ...(input.eventType !== undefined ? { eventType: input.eventType } : {}),
+    },
     select: { subjectRef: true },
   });
 

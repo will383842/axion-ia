@@ -71,6 +71,25 @@ describe("la politique dit vrai sur le guide et la lettre", () => {
     expect(en).toContain("newsletter sent to personal addresses");
   });
 
+  it("CRM (lot L4-S) : l'intérêt légitime vise les personnes qui ont demandé le guide, et l'inscription y est reportée", () => {
+    const fr = section("fr", /^Guide IA entreprise/);
+    expect(fr).toContain(
+      "à suivre les échanges avec les personnes qui ont demandé le guide ; vous pouvez vous y opposer à tout moment.",
+    );
+    expect(fr).toContain(
+      "y compris dans notre outil de suivi de la relation client. Votre inscription à la lettre y est aussi reportée, lorsque vous ouvrez le guide ou confirmez votre inscription par le bouton prévu.",
+    );
+    expect(fr).not.toContain("suivre les échanges avec les professionnels qui s'intéressent");
+    const en = section("en", /^Enterprise AI guide/);
+    expect(en).toContain(
+      "in following up with people who requested the guide; you can object at any time.",
+    );
+    expect(en).toContain(
+      "Your subscription to the letter is also recorded there when you open the guide or confirm your subscription with the button provided.",
+    );
+    expect(en).not.toContain("following up with professionals interested in our services");
+  });
+
   it("⛔ aucune lettre par ZeptoMail : la politique ne lui prête que l'e-mail du guide", () => {
     expect(section("fr", /^Guide IA entreprise/)).toContain(
       "ZeptoMail, qui achemine l'e-mail du guide ;",

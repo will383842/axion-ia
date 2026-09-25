@@ -33,6 +33,7 @@
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { syncNewsletterOptInToCrm } from "@/server/crm-sync";
+import { estExclueDuCrm } from "@/server/crm-sync/exclusions";
 import { evenementInscriptionLettre } from "@/server/crm-sync/inscription-lettre";
 import { notify } from "@/server/notifications";
 import { redactEmail } from "@/lib/pii-redaction";
@@ -110,17 +111,21 @@ export async function confirmerLettre(
     // Lot L4-S : format du CRM L4-C (`occurred_at` = date d'inscription,
     // `source_slug = "newsletter"`, placement, langue, base légale, nature),
     // `event_id` déterministe. Même déclencheur qu'avant, même drapeau (maître).
-    await syncNewsletterOptInToCrm(
-      evenementInscriptionLettre({
-        id: sub.id,
-        email: sub.email,
-        locale: sub.locale,
-        source: sub.source,
-        inscritLe: maintenant,
-        consentFormRef: formRef,
-        consentVersion: version,
-      }),
-    );
+    // Une adresse exclue (`CRM_SYNC_EXCLUSIONS_SHA256`, décision D4) n'y part
+    // pas, par ce chemin non plus.
+    if (!estExclueDuCrm(sub.email)) {
+      await syncNewsletterOptInToCrm(
+        evenementInscriptionLettre({
+          id: sub.id,
+          email: sub.email,
+          locale: sub.locale,
+          source: sub.source,
+          inscritLe: maintenant,
+          consentFormRef: formRef,
+          consentVersion: version,
+        }),
+      );
+    }
 
     await recordConsentEvent({
       email: sub.email,

@@ -92,6 +92,11 @@ interface BaseInput {
    * Absent : UUID aléatoire, comme avant.
    */
   eventId?: string;
+  /**
+   * `false` : écrire sans mettre en file (lot L4-S) — l'appelant écrit dans
+   * une transaction et met en file APRÈS le commit (`mettreEnFileCrm`).
+   */
+  mettreEnFile?: boolean;
 }
 
 /** Un formulaire du site (les 12 types unifiés + podcast + simulateur). */
@@ -161,7 +166,15 @@ export async function syncEmailHardBouncedToCrm(input: BaseInput): Promise<strin
   return dispatch("email_hard_bounced", input, {});
 }
 
-/** Désinscription — inscrit l'opposition côté CRM (univers business). */
+/**
+ * Désinscription. Le CRM (lot L4-C, `PersonnesIngestService::
+ * PREFIXES_DESABONNEMENT_LETTRE`) lit le `subject_ref` : `site:newsletter_subscriber:*`
+ * est un désabonnement de la LETTRE SEULE (scope `lettre`) quand son drapeau
+ * `crm.ingest.personnes_enabled` est ouvert — fermé, le chemin historique
+ * l'inscrit encore en opposition `business`. Tout autre préfixe
+ * (`site:email_opposition:*`…) est une opposition GÉNÉRALE (scope `business`).
+ * Sous le seul drapeau maître du site : un retrait part toujours.
+ */
 export async function syncNewsletterOptOutToCrm(input: BaseInput): Promise<void> {
   await dispatch("newsletter_optout", input, {});
 }
@@ -244,6 +257,7 @@ async function dispatch(
   return enqueueCrmSyncEvent(event, {
     ...(input.tx ? { tx: input.tx } : {}),
     ...(universe ? { universe } : {}),
+    ...(input.mettreEnFile === false ? { mettreEnFile: false } : {}),
   });
 }
 

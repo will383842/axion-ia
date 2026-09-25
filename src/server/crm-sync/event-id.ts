@@ -31,16 +31,21 @@ function octetsUuid(uuid: string): Buffer {
   return Buffer.from(uuid.replace(/-/g, ""), "hex");
 }
 
-/** UUID v5 de `nom` dans l'espace de la synchro CRM. */
-export function eventIdDeterministe(nom: string): string {
+/** UUID v5 (RFC 4122 §4.3) de `nom` dans l'espace `espace`. */
+export function uuidV5(espace: string, nom: string): string {
   const empreinte = createHash("sha1")
-    .update(Buffer.concat([octetsUuid(ESPACE_EVENT_ID_CRM), Buffer.from(nom, "utf8")]))
+    .update(Buffer.concat([octetsUuid(espace), Buffer.from(nom, "utf8")]))
     .digest();
   const o = Buffer.from(empreinte.subarray(0, 16));
   o[6] = (o[6]! & 0x0f) | 0x50; // version 5
   o[8] = (o[8]! & 0x3f) | 0x80; // variante RFC 4122
   const h = o.toString("hex");
   return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
+}
+
+/** UUID v5 de `nom` dans l'espace de la synchro CRM. */
+export function eventIdDeterministe(nom: string): string {
+  return uuidV5(ESPACE_EVENT_ID_CRM, nom);
 }
 
 /** Demande du guide : UNE entrée au CRM par demande, au premier clic humain. */

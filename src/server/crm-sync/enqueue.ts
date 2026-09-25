@@ -63,6 +63,66 @@ export interface EnqueueOptions {
   /** Client de transaction, quand l'écriture métier est déjà transactionnelle. */
   tx?: CrmOutboxWriter | undefined;
   universe?: CrmUniverse | undefined;
+  /**
+   * `false` : écrire la ligne SANS la mettre en file (lot L4-S). Pour un
+   * appelant qui écrit DANS une transaction : un job ajouté avant le COMMIT
+   * chercherait une ligne encore invisible. L'appelant met en file APRÈS la
+   * transaction (`mettreEnFileCrm`) ; à défaut, le balayage la prend.
+   */
+  mettreEnFile?: boolean | undefined;
+}
+
+/**
+ * Nom et code d'une erreur, JAMAIS son message (lot L4-S). Un message Prisma
+ * recopie les arguments de la requête — une adresse, un `where: { email }`.
+ */
+export function erreurSansDonnees(e: unknown): string {
+  if (typeof e !== "object" || e === null) return typeof e;
+  const { name, code } = e as { name?: unknown; code?: unknown };
+  const nom = typeof name === "string" ? name : "Error";
+  return typeof code === "string" ? `${nom} ${code}` : nom;
+}
+
+/**
+ * Demande d'émission immédiate d'une ligne d'outbox, SANS L'ATTENDRE (lot
+ * L4-S). La file vit dans Redis, avec `maxRetriesPerRequest: null` : un Redis
+ * injoignable ne fait pas échouer `add`, il le fait ATTENDRE, indéfiniment.
+ * La personne qui attend son PDF, ou le webhook qui doit répondre 200, ne
+ * peut pas dépendre de ça. L'appel part ; s'il échoue ou ne revient jamais,
+ * la ligne reste `pending` et le balayage périodique la prendra.
+ */
+export function mettreEnFileCrm(outboxId: string): void {
+  try {
+    const envoi = crmSyncQueue?.add("emit", { outboxId }, { jobId: `crm-sync-emit-${outboxId}` });
+    if (envoi) {
+      void Promise.resolve(envoi).catch((queueError: unknown) => {
+        console.error(
+          "[crm-sync] mise en file best-effort échouée :",
+          erreurSansDonnees(queueError),
+        );
+      });
+    }
+  } catch (queueError) {
+    console.error("[crm-sync] mise en file best-effort échouée :", erreurSansDonnees(queueError));
+  }
+}
+
+/**
+ * Attend `promesse` au plus `ms` millisecondes, puis rend la main quoi qu'il
+ * arrive (lot L4-S). La promesse continue sa course : ce qu'elle écrit reste
+ * écrit, et ce qu'elle n'écrit pas est repris par le rattrapage ou le
+ * balayage. Ne lève jamais.
+ */
+export async function auPlus<T>(promesse: Promise<T>, ms: number): Promise<T | "delai-depasse"> {
+  let minuterie: ReturnType<typeof setTimeout> | undefined;
+  const delai = new Promise<"delai-depasse">((resolve) => {
+    minuterie = setTimeout(() => resolve("delai-depasse"), ms);
+  });
+  try {
+    return await Promise.race([promesse.catch(() => "delai-depasse" as const), delai]);
+  } finally {
+    if (minuterie !== undefined) clearTimeout(minuterie);
+  }
 }
 
 export function newCrmEventId(): string {
@@ -104,15 +164,11 @@ export async function enqueueCrmSyncEvent(
       },
     });
 
-    // Émission immédiate déléguée à la queue : la Server Action rend la main
-    // sans attendre le réseau. Si BullMQ est coupé (build, `BULLMQ_DISABLED`),
+    // Émission immédiate déléguée à la queue, SANS l'attendre (lot L4-S :
+    // `mettreEnFileCrm`). Si BullMQ est coupé (build, `BULLMQ_DISABLED`),
     // `crmSyncQueue` vaut `null` — la ligne reste simplement `pending` et le
     // balayage périodique la prendra.
-    try {
-      await crmSyncQueue?.add("emit", { outboxId: row.id }, { jobId: `crm-sync-emit-${row.id}` });
-    } catch (queueError) {
-      console.error("[crm-sync] mise en file best-effort échouée:", queueError);
-    }
+    if (options.mettreEnFile !== false) mettreEnFileCrm(row.id);
 
     return row.id;
   } catch (error) {
@@ -124,7 +180,10 @@ export async function enqueueCrmSyncEvent(
       return null;
     }
     // Un échec d'outbox ne doit jamais faire échouer la capture du lead.
-    console.error("[crm-sync] écriture outbox échouée (événement perdu):", error);
+    console.error(
+      "[crm-sync] écriture outbox échouée (événement perdu) :",
+      erreurSansDonnees(error),
+    );
     return null;
   }
 }
