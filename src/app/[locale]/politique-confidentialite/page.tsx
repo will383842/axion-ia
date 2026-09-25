@@ -14,10 +14,10 @@ interface Props {
 }
 
 const SLUG = "politique-confidentialite" as const;
-// Date de dernière révision éditoriale des pages légales (alignée sur la
-// déclaration d'accessibilité, 6 mai 2026). À mettre à jour à chaque révision
-// de fond. Label affiché localisé ; `lastUpdatedIso` alimente <time dateTime>.
-const LAST_UPDATED_ISO = "2026-05-06";
+// Date de dernière révision de fond de la politique (25 septembre 2026 :
+// l'inscription à la lettre reportée dans l'outil de suivi de la relation
+// client, lot L4-S). À mettre à jour à chaque révision de fond. Label affiché localisé ; `lastUpdatedIso` alimente <time dateTime>.
+const LAST_UPDATED_ISO = "2026-09-25";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -57,7 +57,7 @@ export default async function PolitiqueConfidentialite({ params }: Props) {
         {...(copy.titleEm !== undefined ? { titleEm: copy.titleEm } : {})}
         intro={copy.intro}
         sections={copy.sections}
-        lastUpdated={isFr ? "6 mai 2026" : "May 6, 2026"}
+        lastUpdated={isFr ? "25 septembre 2026" : "September 25, 2026"}
         lastUpdatedIso={LAST_UPDATED_ISO}
         relatedLinks={[
           { href: "/sous-processeurs", label: isFr ? "Sous-processeurs" : "Sub-processors" },

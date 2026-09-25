@@ -86,6 +86,17 @@ interface BaseInput {
   tags?: string[];
   payload?: Record<string, unknown>;
   tx?: CrmOutboxWriter;
+  /**
+   * `event_id` imposé (lot L4-S) — DÉTERMINISTE (`event-id.ts`) quand le même
+   * événement peut être posé par deux chemins (geste en direct et rattrapage).
+   * Absent : UUID aléatoire, comme avant.
+   */
+  eventId?: string;
+  /**
+   * `false` : écrire sans mettre en file (lot L4-S) — l'appelant écrit dans
+   * une transaction et met en file APRÈS le commit (`mettreEnFileCrm`).
+   */
+  mettreEnFile?: boolean;
 }
 
 /** Un formulaire du site (les 12 types unifiés + podcast + simulateur). */
@@ -128,16 +139,42 @@ export async function syncCalendlyEventToCrm(
 }
 
 /**
- * Abonnement à la lettre — émis à la CONFIRMATION du double opt-in, jamais à
- * la demande d'inscription : tant que l'adresse n'est pas confirmée, il n'y a
- * pas de consentement à transmettre (et l'inscription peut être le fait d'un
- * tiers).
+ * Abonnement à la lettre — émis quand l'adresse est VÉRIFIÉE, jamais à la
+ * simple demande (l'inscription peut être le fait d'un tiers) :
+ *   · à la confirmation par bouton (POST) — anciens liens du double opt-in et
+ *     réinscription d'un désabonné (`newsletter/confirmer.ts`), drapeau maître ;
+ *   · depuis l'amendement du 24/09 (inscription immédiate à la demande du
+ *     guide), au CLIC sur le lien du guide (`crm-sync/lettre-guide.ts`), derrière
+ *     `CRM_SYNC_GUIDE_ENABLED` : décision D1, on entre au CRM au clic.
  */
-export async function syncNewsletterOptInToCrm(input: BaseInput): Promise<void> {
-  await dispatch("newsletter_optin", input, {});
+export async function syncNewsletterOptInToCrm(input: BaseInput): Promise<string | null> {
+  return dispatch("newsletter_optin", input, {});
 }
 
-/** Désinscription — inscrit l'opposition côté CRM (univers business). */
+/**
+ * Demande du guide (lot L4-S) — émise au CLIC HUMAIN (POST) sur le lien
+ * personnel, jamais à la demande (décision D1). Derrière
+ * `CRM_SYNC_GUIDE_ENABLED` (verrou dans `enqueue.ts`). Rend l'identifiant de
+ * la ligne d'outbox, ou `null` si rien n'a été écrit.
+ */
+export async function syncLeadMagnetRequestedToCrm(input: BaseInput): Promise<string | null> {
+  return dispatch("lead_magnet_requested", input, {});
+}
+
+/** Rebond dur constaté sur un abonné (lot L4-S), derrière `CRM_SYNC_GUIDE_ENABLED`. */
+export async function syncEmailHardBouncedToCrm(input: BaseInput): Promise<string | null> {
+  return dispatch("email_hard_bounced", input, {});
+}
+
+/**
+ * Désinscription. Le CRM (lot L4-C, `PersonnesIngestService::
+ * PREFIXES_DESABONNEMENT_LETTRE`) lit le `subject_ref` : `site:newsletter_subscriber:*`
+ * est un désabonnement de la LETTRE SEULE (scope `lettre`) quand son drapeau
+ * `crm.ingest.personnes_enabled` est ouvert — fermé, le chemin historique
+ * l'inscrit encore en opposition `business`. Tout autre préfixe
+ * (`site:email_opposition:*`…) est une opposition GÉNÉRALE (scope `business`).
+ * Sous le seul drapeau maître du site : un retrait part toujours.
+ */
 export async function syncNewsletterOptOutToCrm(input: BaseInput): Promise<void> {
   await dispatch("newsletter_optout", input, {});
 }
@@ -198,7 +235,7 @@ async function dispatch(
 
   const event: CrmSyncEvent = {
     schema_version: CRM_SYNC_SCHEMA_VERSION,
-    event_id: newCrmEventId(),
+    event_id: input.eventId ?? newCrmEventId(),
     event_type: eventType,
     occurred_at: (input.occurredAt ?? new Date()).toISOString(),
     subject_ref: input.subjectRef,
@@ -220,6 +257,7 @@ async function dispatch(
   return enqueueCrmSyncEvent(event, {
     ...(input.tx ? { tx: input.tx } : {}),
     ...(universe ? { universe } : {}),
+    ...(input.mettreEnFile === false ? { mettreEnFile: false } : {}),
   });
 }
 
