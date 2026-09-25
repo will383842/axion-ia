@@ -29,6 +29,10 @@ Le sous-domaine proposé est `news.axion-ia.com`. Son nom définitif est à conf
 | MX   | `news`                          | `<serveur de rebonds>`                                            | seulement si MailWizz reçoit les rebonds sur ce sous-domaine |
 | A    | `<nom de l'interface MailWizz>` | `<IP du serveur MailWizz>`                                        | interface d'administration, protégée                         |
 
+⚠️ **Chaque nom se saisit tel quel (`news`, `<serveur>.news`), jamais `@`.** La racine ne doit porter qu'**un seul** TXT `v=spf1` : saisir la ligne SPF de la lettre sous `@` créerait un second SPF à la racine, ce qui est une erreur permanente.
+
+**DMARC du sous-domaine** : sans `_dmarc.news`, c'est le `p=reject` de la racine qui s'applique. C'est sûr, mais les rapports se mêleraient à ceux du transactionnel. On publie donc un `_dmarc.news` explicite, en `p=reject`, avec une adresse `rua` dédiée : le rapport de l'étape 4 porte alors sur ce seul flux.
+
 L'expéditeur d'une lettre est une adresse `@news.axion-ia.com`, avec `Reply-To: contact@axion-ia.com`. Le DKIM signe en `d=news.axion-ia.com`, ce qui l'aligne sur l'expéditeur.
 
 ## Ordre d'application (repris de `client.ts`, à ne pas inverser)

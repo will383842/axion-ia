@@ -228,8 +228,8 @@ docker exec axion-ia-redis-prod redis-cli -a "${REDIS_PASSWORD}" DEL bull:emails
 ### 6.1 Vérifier PowerMTA
 
 > ⚠️ **Périmé (ADR 0052)** : aucun PowerMTA ne tourne. En cas d'échec d'envoi, lire les
-> journaux du **worker** (`axion-ia-worker` : `[email-worker] relais SMTP joignable et
-authentifié ✓`), `email_logs`, et le tableau de bord ZeptoMail. La section ci-dessous ne
+> journaux du **worker** (`axion-ia-worker`, ligne « relais SMTP joignable et authentifié »),
+> `email_logs`, et le tableau de bord ZeptoMail. La section ci-dessous ne
 > vaudra que pour la future lettre, sur son infrastructure dédiée.
 
 ```bash
