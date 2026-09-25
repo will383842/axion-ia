@@ -15,6 +15,7 @@
  *   · `eraseNewsletterForEmail`   — l'abonné ET ses demandes du guide ;
  *   · `eraseEmailTracesForEmail`  — journal pseudonymisé (preuve gardée),
  *                                    corbeille supprimée ;
+ *   · `eraseCrmOutboxForEmail`    — file vers le CRM (charge en clair) supprimée ;
  *   · `propagateGdprToCrm(erase)` — le CRM efface par `person_key` et inscrit
  *                                    l'empreinte en liste de suppression.
  * Les autres tables (demandes de contact, candidatures, podcast…) restent le
@@ -36,7 +37,11 @@
 import { createHash } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
-import { eraseEmailTracesForEmail, eraseNewsletterForEmail } from "@/lib/rgpd-erase";
+import {
+  eraseCrmOutboxForEmail,
+  eraseEmailTracesForEmail,
+  eraseNewsletterForEmail,
+} from "@/lib/rgpd-erase";
 import { propagateGdprToCrm } from "@/server/crm-sync/gdpr";
 
 export type IssueEffacement =
@@ -71,9 +76,11 @@ export async function effacerAbonneDepuisConsole(entree: {
     email,
   });
 
-  const [lettre, traces] = await Promise.all([
+  const [lettre, traces, outboxCrm] = await Promise.all([
     eraseNewsletterForEmail(email),
     eraseEmailTracesForEmail(email),
+    // L6 — la file vers le CRM porte l'adresse en clair dans sa charge.
+    eraseCrmOutboxForEmail(email),
   ]);
 
   await prisma.activityLog.create({
@@ -89,6 +96,7 @@ export async function effacerAbonneDepuisConsole(entree: {
         guideDeleted: lettre.guideDeleted,
         logsPseudonymises: traces.logsPseudonymises,
         outboxSupprimes: traces.outboxSupprimes,
+        outboxCrmSupprimes: outboxCrm.supprimees,
         crmStatus: crm.status,
       },
       ipAddress: entree.ip ?? null,

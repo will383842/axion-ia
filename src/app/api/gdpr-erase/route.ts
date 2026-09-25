@@ -41,6 +41,7 @@ import {
   eraseChatDataForEmail,
   eraseSignatureTokensForEmail,
   eraseEmailTracesForEmail,
+  eraseCrmOutboxForEmail,
   eraseNewsletterForEmail,
   eraseSubmissionsForEmail,
   eraseClientsForEmail,
@@ -121,6 +122,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     kbResult,
     candidaturesResult,
     emailTracesResult,
+    crmOutboxResult,
     podcastResult,
     signatureTokensResult,
     clientsResult,
@@ -157,6 +159,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // pseudonymise l'adresse et on garde la ligne ; la corbeille ne prouve rien
     // — on supprime.
     eraseEmailTracesForEmail(email),
+    // Lot L6 (relecture du 2026-09-25) — `crm_sync_outbox.payload` porte
+    // l'adresse EN CLAIR (charge déchiffrée envoyée au CRM). Supprimée, tous
+    // statuts : une ligne `pending` laissée ici ferait REPARTIR les données
+    // vers le CRM après l'effacement. Détail dans `rgpd-erase.ts`.
+    eraseCrmOutboxForEmail(email),
     // QUATRIEME occurrence de la meme faute (`D5-5-04`, 2026-08-24).
     //
     // `podcast_requests` n'etait NI effacee NI declaree en exception. La
@@ -240,6 +247,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         submissionsAnonymized: submissionsResult.anonymized,
         newsletterDeleted: newsletterResult.deleted,
         guideRequestsDeleted: newsletterResult.guideDeleted,
+        crmOutboxDeleted: crmOutboxResult.supprimees,
         kbBookmarksDeleted: kbResult.bookmarksDeleted,
         chatConversationsDeleted: chatResult.conversationsDeleted,
         chatEscalationsAnonymized: chatResult.escalationsAnonymized,
@@ -329,6 +337,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       chatEscalationsAnonymized: chatResult.escalationsAnonymized,
       emailLogsPseudonymises: emailTracesResult.logsPseudonymises,
       emailOutboxSupprimes: emailTracesResult.outboxSupprimes,
+      crmOutboxSupprimes: crmOutboxResult.supprimees,
       podcastSupprimes: podcastResult.supprimees,
       jetonsSignatureRevoques: signatureTokensResult.revoques,
       jetonsSignaturePseudonymises: signatureTokensResult.pseudonymises,

@@ -16,7 +16,8 @@ interface Props {
 const SLUG = "politique-confidentialite" as const;
 // Date de dernière révision de fond de la politique (25 septembre 2026 :
 // l'inscription à la lettre reportée dans l'outil de suivi de la relation
-// client, lot L4-S). À mettre à jour à chaque révision de fond. Label affiché localisé ; `lastUpdatedIso` alimente <time dateTime>.
+// client, lot L4-S ; durées de la lettre et du guide, empreintes de la preuve,
+// retrait du consentement, lot L6). À mettre à jour à chaque révision de fond. Label affiché localisé ; `lastUpdatedIso` alimente <time dateTime>.
 const LAST_UPDATED_ISO = "2026-09-25";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

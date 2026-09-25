@@ -32,3 +32,30 @@ export function hashIp(ip: string | null | undefined): string | null {
   }
   return createHash("sha256").update(`${salt}::${ip}`).digest("hex").slice(0, 16);
 }
+
+/**
+ * Préfixe des agents navigateur HACHÉS (lot L6, relecture du 2026-09-25).
+ *
+ * `consent_events.user_agent` a été écrit EN CLAIR jusqu'à ce lot. La purge
+ * quotidienne rattrape les valeurs anciennes ; le préfixe est ce qui lui dit
+ * qu'une valeur est déjà traitée — sans lui, elle hacherait l'empreinte.
+ */
+export const PREFIXE_AGENT_HACHE = "h:" as const;
+
+/** Vrai si la valeur est déjà une empreinte d'agent (`h:` + 16 hex). */
+export function estAgentHache(valeur: string): boolean {
+  return /^h:[0-9a-f]{16}$/.test(valeur);
+}
+
+/**
+ * Empreinte de l'agent navigateur : MÊME mécanisme et MÊME sel que l'IP
+ * (`hashIp`), préfixée `h:`. Une valeur déjà hachée est rendue telle quelle
+ * (idempotent). `null` si l'agent est absent ; lève en production si le sel
+ * manque, comme `hashIp`.
+ */
+export function hashUserAgent(ua: string | null | undefined): string | null {
+  if (!ua) return null;
+  if (estAgentHache(ua)) return ua;
+  const h = hashIp(ua);
+  return h === null ? null : `${PREFIXE_AGENT_HACHE}${h}`;
+}

@@ -68,7 +68,7 @@ function estConflitUnique(e: unknown): boolean {
 
 /** Crée la ligne, ou retrouve celle de cette adresse (une par personne et par aimant). */
 async function retrouverOuCreer(
-  entree: NouvelleDemandeGuide & { readonly versionMention: string },
+  entree: NouvelleDemandeGuide & { readonly versionMention: string; readonly maintenant: Date },
   emailKey: string,
 ): Promise<{ id: string; downloadToken: string; nouvelle: boolean }> {
   const cle = { emailKey_aimant: { emailKey, aimant: AIMANT_GUIDE_IA } };
@@ -91,6 +91,11 @@ async function retrouverOuCreer(
       data: {
         locale: entree.locale,
         version: entree.versionMention,
+        // L6 (relecture du 25/09) — SEUL écrivain de cette date : une demande
+        // de la personne, par le formulaire, fait courir les 3 ans de
+        // conservation. La console et le rattrapage n'y touchent jamais
+        // (cliquet : `retention.spec.ts`).
+        derniereDemandeFormulaireAt: entree.maintenant,
         ...(repriseDeLaConsole ? { origine: "formulaire", source: entree.source } : {}),
       },
       select: { id: true },
@@ -108,6 +113,7 @@ async function retrouverOuCreer(
         locale: entree.locale,
         version: entree.versionMention,
         downloadToken: crypto.randomBytes(32).toString("hex"),
+        derniereDemandeFormulaireAt: entree.maintenant,
       },
       select: { id: true, downloadToken: true },
     });
@@ -133,7 +139,10 @@ export async function enregistrerDemandeGuide(
   // 🔑 La nature se décide ICI, jamais d'après le navigateur.
   const nature = natureAdresse(entree.email);
   const versionMention = VERSION_MENTION[nature];
-  const demande = await retrouverOuCreer({ ...entree, versionMention }, emailKey);
+  const demande = await retrouverOuCreer(
+    { ...entree, versionMention, maintenant: new Date() },
+    emailKey,
+  );
 
   let lettre: EtatLettreDemande = "non-demandee";
   let abonneId: string | null = null;

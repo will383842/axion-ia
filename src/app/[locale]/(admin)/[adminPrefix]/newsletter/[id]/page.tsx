@@ -42,6 +42,9 @@ const ACTION_PREUVE: Record<string, string> = {
   optin: "Consentement donné",
   optout: "Retrait",
   information: "Information (intérêt légitime)",
+  // L6 — fin d'une inscription précédente constatée par la purge (inactivité,
+  // rebond, désinscription arrivée à son terme) : fait courir les 5 ans de la preuve.
+  fin: "Fin d'inscription (conservation)",
 };
 
 const BASE: Record<BaseInscription, string> = {

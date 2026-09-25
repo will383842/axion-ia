@@ -60,7 +60,9 @@ export async function noterRebondSurAbonne(
     if (type === "hard") {
       const r = await prisma.newsletterSubscriber.updateMany({
         where: { email: destinataire, status: { in: ["pending", "confirmed"] } },
-        data: { status: "bounced" },
+        // L6 — la date du rebond fait courir les 3 ans de conservation de
+        // l'adresse rejetée (`retention.ts`).
+        data: { status: "bounced", bouncedAt: quand },
       });
       if (r.count > 0) await auPlus(transmettreRebondDur(destinataire, quand), ATTENTE_MAX_CRM_MS);
       return r.count;

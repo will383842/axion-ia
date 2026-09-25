@@ -33,7 +33,9 @@ interface Payload {
    * adresse en clair, dates d'envoi et de clic). L'effacement les supprimait
    * depuis L2, mais cette liste, qui se donne pour exhaustive, les taisait.
    * Facultatif : une tâche mise en file par l'ancienne version de la route,
-   * pendant le déploiement, n'en porte pas — elle se lit alors 0.
+   * pendant le déploiement, n'en porte pas — le segment est alors OMIS (écrire
+   * « 0 » affirmerait qu'on a cherché et rien trouvé, ce que l'ancienne route
+   * ne disait pas).
    */
   demandesGuide?: number;
   /** Conversations du chatbot supprimées. */
@@ -69,14 +71,33 @@ const COPY = {
     fait: (d: string) =>
       `Votre demande d'effacement (article 17 du RGPD) a été exécutée le ${d}. Ce message en est la confirmation ; conservez-le, il constitue votre preuve.`,
     detail: "Ont été traités :",
-    ligne: (dem: number, nl: number, gd: number, conv: number, cand: number, rdv: number) =>
-      `${dem} demande(s) de contact anonymisée(s), ${nl} inscription(s) à la lettre d'information supprimée(s), ${gd} demande(s) du guide IA supprimée(s), ${conv} conversation(s) avec l'assistant supprimée(s), ${cand} candidature(s) supprimée(s) avec leur CV et leur photo, ${rdv} rendez-vous anonymisé(s) avec leurs coordonnées et leurs liens d'annulation.`,
+    ligne: (
+      dem: number,
+      nl: number,
+      gd: number | undefined,
+      conv: number,
+      cand: number,
+      rdv: number,
+    ) =>
+      [
+        `${dem} demande(s) de contact anonymisée(s)`,
+        `${nl} inscription(s) à la lettre d'information supprimée(s)`,
+        ...(gd === undefined ? [] : [`${gd} demande(s) du guide IA supprimée(s)`]),
+        `${conv} conversation(s) avec l'assistant supprimée(s)`,
+        `${cand} candidature(s) supprimée(s) avec leur CV et leur photo`,
+        `${rdv} rendez-vous anonymisé(s) avec leurs coordonnées et leurs liens d'annulation`,
+      ].join(", ") + ".",
+    // Texte validé par Will (lot L6, relecture du 2026-09-25). L'ancien disait
+    // « sous forme anonymisée » (c'est une pseudonymisation) et prêtait à la loi
+    // la conservation du « registre des traitements » (qui ne contient aucune
+    // donnée sur la personne) : deux affirmations fausses dans une preuve.
     conserve:
-      "Certaines écritures restent conservées sous forme anonymisée : les pièces comptables et le registre des traitements, que la loi nous impose de garder. Elles ne permettent plus de vous identifier.",
+      "Certaines traces sont conservées sans votre adresse : les pièces comptables que la loi nous impose de garder, le journal de nos envois, et la preuve de ce que vous aviez accepté ou refusé (texte présenté, date). Votre adresse y est remplacée par une empreinte, qui ne permet pas de la retrouver ; elle sert seulement à ne plus vous écrire si votre adresse nous parvenait de nouveau.",
     contact:
       "Si vous estimez que cet effacement est incomplet, écrivez à contact@axion-ia.com. Vous pouvez également saisir la CNIL.",
-    dernier:
-      "Ce message est le dernier que vous recevrez de notre part : votre adresse ne figure plus dans nos fichiers.",
+    // « votre adresse ne figure plus dans nos fichiers » est RETIRÉ (L6) : ce
+    // message-ci est journalisé à son envoi, adresse comprise (`email_logs`).
+    dernier: "Ce message est le dernier que vous recevrez de notre part.",
   },
   en: {
     title: "Your data has been erased",
@@ -85,14 +106,27 @@ const COPY = {
     fait: (d: string) =>
       `Your erasure request (GDPR article 17) was carried out on ${d}. This message is your confirmation — keep it, it is your proof.`,
     detail: "The following were processed:",
-    ligne: (dem: number, nl: number, gd: number, conv: number, cand: number, rdv: number) =>
-      `${dem} contact request(s) anonymised, ${nl} newsletter subscription(s) deleted, ${gd} AI guide request(s) deleted, ${conv} assistant conversation(s) deleted, ${cand} job application(s) deleted along with their CV and photo, ${rdv} appointment(s) anonymised along with their contact details and cancellation links.`,
+    ligne: (
+      dem: number,
+      nl: number,
+      gd: number | undefined,
+      conv: number,
+      cand: number,
+      rdv: number,
+    ) =>
+      [
+        `${dem} contact request(s) anonymised`,
+        `${nl} newsletter subscription(s) deleted`,
+        ...(gd === undefined ? [] : [`${gd} AI guide request(s) deleted`]),
+        `${conv} assistant conversation(s) deleted`,
+        `${cand} job application(s) deleted along with their CV and photo`,
+        `${rdv} appointment(s) anonymised along with their contact details and cancellation links`,
+      ].join(", ") + ".",
     conserve:
-      "Some records are kept in anonymised form: accounting documents and the processing register, which the law requires us to retain. They can no longer identify you.",
+      "Some records are kept without your address: accounting documents that the law requires us to retain, the log of the messages we sent, and the proof of what you had accepted or refused (text shown, date). In them, your address is replaced by a fingerprint from which it cannot be recovered; its only use is to stop us writing to you should your address reach us again.",
     contact:
       "If you believe this erasure is incomplete, write to contact@axion-ia.com. You may also contact your supervisory authority.",
-    dernier:
-      "This is the last message you will receive from us: your address is no longer in our files.",
+    dernier: "This is the last message you will receive from us.",
   },
 } as const;
 
@@ -122,7 +156,7 @@ export function RgpdEffacementConfirmeEmail({
         {t.ligne(
           p.demandes,
           p.newsletter,
-          p.demandesGuide ?? 0,
+          typeof p.demandesGuide === "number" ? p.demandesGuide : undefined,
           p.conversations,
           p.candidatures,
           p.appels,
