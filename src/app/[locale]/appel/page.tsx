@@ -78,7 +78,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale,
       path: "/appel",
       title: titleStr,
-      // 157 car. — sous `META_DESCRIPTION_MAX` (158), donc servie ENTIÈRE.
+      // 144 car. — sous `META_DESCRIPTION_MAX` (158), donc servie ENTIÈRE.
+      // 2026-09-25 : « Sans engagement ni pression commerciale » → « Gratuit et
+      // sans engagement ». Règle de Will : le diagnostic est GRATUIT, et
+      // « sans engagement » seul laisse croire qu'il est payant.
       // Avant le 2026-08-31 elle en faisait 212 : la prod s'arrêtait sur
       // « …SaaS web… » et perdait la clause finale, qui est la seule promesse
       // différenciante de la page. Elle figurait à ce titre dans la `DETTE` du
@@ -86,8 +89,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       // retirée en même temps que ce raccourcissement — le cliquet exige que le
       // chiffre reste exact, il rougit donc si l'un bouge sans l'autre.
       description: isFr
-        ? "Un échange de 45 minutes pour explorer votre projet IA — formation, audit, automatisation, implémentation, SaaS web. Sans engagement ni pression commerciale."
-        : "Un échange de 45 minutes pour explorer votre projet IA — formation, audit, automatisation, implémentation, SaaS web. Sans engagement ni pression commerciale.",
+        ? "Un échange de 45 minutes pour explorer votre projet IA — formation, audit, automatisation, implémentation, SaaS web. Gratuit et sans engagement."
+        : "Un échange de 45 minutes pour explorer votre projet IA — formation, audit, automatisation, implémentation, SaaS web. Gratuit et sans engagement.",
       alternates: { fr: "/appel", en: "/book-a-call" },
     })),
     title: { absolute: titleStr },
@@ -119,8 +122,8 @@ export default async function AppelPage({ params, searchParams }: Props) {
     path: "/appel",
     name: isFr ? "Premier contact projet IA · Axion-IA" : "Premier contact projet IA · Axion-IA",
     description: isFr
-      ? "Premier échange de 45 minutes, par téléphone ou en visioconférence, avec un consultant IA Axion-IA pour explorer votre projet — formation, accompagnement 1-to-1, audit, automatisation, implémentation, SaaS web. Aucun engagement."
-      : "Premier échange de 45 minutes, par téléphone ou en visioconférence, avec un consultant IA Axion-IA pour explorer votre projet — formation, accompagnement 1-to-1, audit, automatisation, implémentation, SaaS web. Aucun engagement.",
+      ? "Premier échange de 45 minutes, par téléphone ou en visioconférence, avec un consultant IA Axion-IA pour explorer votre projet — formation, accompagnement 1-to-1, audit, automatisation, implémentation, SaaS web. Gratuit et sans engagement."
+      : "Premier échange de 45 minutes, par téléphone ou en visioconférence, avec un consultant IA Axion-IA pour explorer votre projet — formation, accompagnement 1-to-1, audit, automatisation, implémentation, SaaS web. Gratuit et sans engagement.",
   });
 
   const breadcrumbJsonLd = {
@@ -164,7 +167,7 @@ export default async function AppelPage({ params, searchParams }: Props) {
             <div className="mx-auto max-w-3xl text-center">
               <p className="text-terracotta mb-2 inline-flex items-center gap-2 text-[11px] font-semibold tracking-widest uppercase sm:text-xs">
                 <Calendar className="h-3.5 w-3.5" aria-hidden="true" />
-                Premier contact · Sans engagement
+                Premier contact · Gratuit et sans engagement
               </p>
               <h1
                 id="appel-hero-h1"
@@ -282,7 +285,9 @@ export default async function AppelPage({ params, searchParams }: Props) {
                   </div>
                   <div className="bg-paper border-border rounded-xl border p-3 text-center">
                     <Shield className="text-terracotta mx-auto mb-1 h-4 w-4" aria-hidden="true" />
-                    <p className="text-fg-soft text-[11px] leading-tight">Sans engagement</p>
+                    <p className="text-fg-soft text-[11px] leading-tight">
+                      Gratuit et sans engagement
+                    </p>
                   </div>
                   <div className="bg-paper border-border rounded-xl border p-3 text-center">
                     <CheckCircle

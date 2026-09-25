@@ -37,6 +37,7 @@ La doctrine V1 doit donc être : **toute automatisation est désactivable et a u
 #### 3. `automaticEmailsEnabled` (Boolean, défaut `true`)
 
 - `true` → tous les emails transactionnels envoyés via PMTA + MailWizz (templates MJML).
+  > ⚠️ Périmé (ADR 0052) : le transactionnel part par ZeptoMail. MailWizz ne portera jamais le transactionnel, seulement la future lettre.
 - `false` → les emails sont **générés** (rendu MJML → HTML + texte clair) et stockés dans `BookingEmailQueue` avec status `pending_manual_send`. Will copie-colle le contenu dans Outlook/Gmail et envoie manuellement.
 - Bouton **« Envoyer email manuel »** dans le drawer booking — toujours disponible (rendu template à la volée pour copy-paste).
 
