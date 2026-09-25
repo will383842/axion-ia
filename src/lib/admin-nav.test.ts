@@ -189,10 +189,13 @@ describe("buildAdminNav SSOT", () => {
     // SSOT. = 163.
     // +1 (2026-09-23, Guide IA entreprise) : sous-onglet des Imprimés, dérivé
     // de IMPRIMES — le PDF promis par /guide-ia existe enfin. 163 + 1 = 164.
+    // +1 (2026-09-25, Fiches offertes) : sous-onglet des Imprimés, dérivé de
+    // IMPRIMES — les 3 fiches promises en message privé par Instagram et
+    // Facebook (FICHE, FUITES, PLAN). 164 + 1 = 165.
     // +1 (2026-09-24, lot L3, « Demandes du guide ») : une demande du guide
     // n'est pas un abonnement ; l'écran qui dit si le guide est parti, ouvert,
-    // cliqué, transmis au CRM. La fiche abonné n'a pas d'entrée. = 165.
-    expect(items.length).toBe(165);
+    // cliqué, transmis au CRM. La fiche abonné n'a pas d'entrée. 165 + 1 = 166.
+    expect(items.length).toBe(166);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
