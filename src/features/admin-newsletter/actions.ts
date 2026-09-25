@@ -1,11 +1,16 @@
-// Server Actions admin /newsletter (M9 Tier 3 section 1).
+// Server Actions admin /newsletter (M9 Tier 3 section 1, refondu au lot L3).
 //
-// Newsletter subscribers : pas de creation manuelle (subscribers s'inscrivent
-// via form public + double opt-in RFC 8058). Admin peut :
+// Newsletter subscribers : pas de creation manuelle (les inscriptions passent
+// par le formulaire du guide). Admin peut :
 //  - lister avec filtres (status, locale, source, search, dateRange)
-//  - desabonner manuellement (force unsubscribe)
-//  - exporter CSV pour MailWizz import / segmentation
+//  - desabonner manuellement — par le MEME chemin que le lien public (lot L3)
+//  - effacer (RGPD) — par les fonctions de l'effacement public (lot L3)
+//  - envoyer / renvoyer le guide (lot L3, idempotent, journalise)
+//  - exporter les confirmes au format MailWizz et la liste de suppression
 //  - voir stats par status × locale
+//
+// ⚠️ Fichier `"use server"` : n'exporter QUE des fonctions async (et des types).
+// La logique vit dans `server/newsletter/*` et `server/guide-ia/envoi-console.ts`.
 
 "use server";
 
@@ -15,6 +20,15 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
+import { desabonnerAbonne } from "@/server/newsletter/desabonner";
+import { effacerAbonneDepuisConsole } from "@/server/newsletter/effacer";
+import { exporterAbonnesMailwizz, exporterListeSuppression } from "@/server/newsletter/exports";
+import {
+  envoyerGuideAAbonne,
+  renvoyerGuide,
+  LIBELLE_ISSUE_CONSOLE,
+  type ResultatEnvoiConsole,
+} from "@/server/guide-ia/envoi-console";
 import type { NewsletterStatus, Locale } from "../../../prisma/generated/client";
 
 async function requireAdminWrite() {
@@ -154,30 +168,45 @@ export async function forceUnsubscribeAction(
   });
   if (!parsed.success) return { ok: false, error: "ID invalide." };
 
-  const ip = await getClientIp();
-  const logData: {
-    adminUserId: string;
-    action: string;
-    targetType: string;
-    targetId: string;
-    ipAddress: string;
-    changes?: { reason: string };
-  } = {
-    adminUserId: session.userId,
-    action: "newsletter.force_unsubscribe",
-    targetType: "newsletter_subscriber",
-    targetId: parsed.data.id,
-    ipAddress: ip,
-  };
-  if (parsed.data.reason) logData.changes = { reason: parsed.data.reason };
+  const abonne = await prisma.newsletterSubscriber.findUnique({
+    where: { id: parsed.data.id },
+    select: {
+      id: true,
+      email: true,
+      locale: true,
+      status: true,
+      consentFormRef: true,
+      consentVersion: true,
+    },
+  });
+  if (!abonne) return { ok: false, error: "Abonné introuvable (déjà effacé ?)." };
+  if (abonne.status === "unsubscribed") return { ok: true };
 
-  await prisma.$transaction([
-    prisma.newsletterSubscriber.update({
-      where: { id: parsed.data.id },
-      data: { status: "unsubscribed", unsubscribedAt: new Date() },
-    }),
-    prisma.activityLog.create({ data: logData }),
-  ]);
+  // 🔴 Lot L3 (2026-09-24) — le MÊME chemin que le lien public : statut,
+  // opposition au CRM (`newsletter_optout`), preuve `optout` au registre,
+  // Telegram. Avant, ce bouton ne faisait que le statut et le journal : le CRM
+  // et le registre de preuve n'apprenaient jamais la désinscription.
+  await desabonnerAbonne(
+    {
+      id: abonne.id,
+      email: abonne.email,
+      locale: abonne.locale,
+      consentFormRef: abonne.consentFormRef,
+      consentVersion: abonne.consentVersion,
+    },
+    "admin-console",
+  );
+
+  await prisma.activityLog.create({
+    data: {
+      adminUserId: session.userId,
+      action: "newsletter.force_unsubscribe",
+      targetType: "newsletter_subscriber",
+      targetId: parsed.data.id,
+      ipAddress: await getClientIp(),
+      ...(parsed.data.reason ? { changes: { reason: parsed.data.reason } } : {}),
+    },
+  });
   revalidatePath(adminPath("fr", "newsletter"));
   return { ok: true };
 }
@@ -186,9 +215,10 @@ export async function forceUnsubscribeAction(
 // eraseSubscriber — droit a l'effacement RGPD (Sprint 24 / D1)
 // ============================================================
 //
-// Suppression hard de la ligne newsletter_subscribers. Conserve la trace
-// activity_log avec hash email pour audit RGPD (sans réintroduire le PII).
-// Reservé super_admin uniquement.
+// Lot L3 : abonné + demandes du guide supprimés, traces d'e-mail
+// pseudonymisées, effacement demandé au CRM (`server/newsletter/effacer.ts`).
+// Conserve la trace activity_log avec l'empreinte de l'adresse (sans
+// réintroduire la donnée). Reservé super_admin uniquement.
 
 const eraseSubscriberSchema = z.object({
   id: z.string().uuid(),
@@ -214,123 +244,164 @@ export async function eraseSubscriberAction(
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Champs invalides." };
   }
 
-  const ip = await getClientIp();
-
-  await prisma.$transaction(async (tx) => {
-    const sub = await tx.newsletterSubscriber.findUnique({
-      where: { id: parsed.data.id },
-      select: { id: true, email: true },
-    });
-    if (!sub) throw new Error("subscriber_not_found");
-
-    await tx.newsletterSubscriber.delete({ where: { id: parsed.data.id } });
-
-    const emailHash = await hashEmailForAudit(sub.email);
-    await tx.activityLog.create({
-      data: {
-        adminUserId: session.user.id,
-        action: "newsletter.erased",
-        targetType: "newsletter_subscriber",
-        targetId: parsed.data.id,
-        changes: {
-          reason: parsed.data.reason,
-          emailHash,
-        },
-        ipAddress: ip,
-      },
-    });
+  // 🔴 Lot L3 (2026-09-24) — les fonctions de l'effacement PUBLIC : l'abonné,
+  // ses demandes du guide, ses traces d'e-mail, et le CRM. Une fiche absente
+  // se dit, elle ne fait plus tomber l'écran.
+  const issue = await effacerAbonneDepuisConsole({
+    abonneId: parsed.data.id,
+    motif: parsed.data.reason,
+    adminUserId: session.user.id,
+    ip: await getClientIp(),
   });
+  if (!issue.ok) return { ok: false, error: "Abonné introuvable (déjà effacé ?)." };
 
   revalidatePath(adminPath("fr", "newsletter"));
   return { ok: true };
 }
 
-// Hash email SHA-256 hex pour audit trail RGPD (Sprint 24 / D1).
-async function hashEmailForAudit(email: string): Promise<string> {
-  const data = new TextEncoder().encode(email.toLowerCase().trim());
-  const buf = await crypto.subtle.digest("SHA-256", data);
-  return Array.from(new Uint8Array(buf))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
-}
-
 // ============================================================
-// export CSV (RGPD-friendly : pas d'export des unsubscribed)
+// export CSV — format MailWizz (lot L3)
 // ============================================================
+//
+// Confirmés ÉLIGIBLES seulement (ni opposés, ni en rebond dur), colonnes
+// EMAIL, LOCALE, SOURCE, OPTIN_AT, OPTIN_VERSION, UNSUB_URL, GUIDE. Les filtres
+// de l'écran (langue, provenance, dates, recherche) s'appliquent : le fichier
+// est ce que l'écran montre. Un filtre de statut autre que « confirmé » est
+// REFUSÉ, jamais ignoré en silence.
 
 export async function exportSubscribersCsvAction(
   input: Partial<ListSubscribersInput> = {},
 ): Promise<{ filename: string; csv: string }> {
-  // Sprint 15 fix Fork 2 C1-2 : RGPD — export PII reservé super_admin/admin
-  // (write privilege), avec activity log d'audit. Avant : requireAdminRead
-  // permettait à tous les admin (incl. reader/editor) d'exfiltrer la base.
+  // RGPD — export réservé super_admin/admin, tracé.
   const session = await requireAdminWrite();
   const parsed = listSchema.parse({ ...input, pageSize: 200, page: 1 });
-  const where: Record<string, unknown> = {};
-  // Sprint 15 fix Fork 3 §15 RGPD : refuse explicitement unsubscribed/bounced
-  // pour eviter exfiltration accidentelle (RGPD art. 17 droit a l'oubli).
-  if (parsed.status === "unsubscribed" || parsed.status === "bounced") {
+  if (parsed.status !== "all" && parsed.status !== "confirmed") {
     throw new Error("forbidden_status");
   }
-  where.status = parsed.status === "all" ? "confirmed" : parsed.status;
-  if (parsed.locale !== "all") where.locale = parsed.locale;
-  if (parsed.source) where.source = parsed.source;
 
-  // Activity log d'audit RGPD : qui a exporte combien quand
+  const resultat = await exporterAbonnesMailwizz(
+    {
+      locale: parsed.locale,
+      ...(parsed.source ? { source: parsed.source } : {}),
+      ...(parsed.search ? { search: parsed.search } : {}),
+      ...(parsed.dateFrom ? { dateFrom: parsed.dateFrom } : {}),
+      ...(parsed.dateTo ? { dateTo: parsed.dateTo } : {}),
+    },
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com",
+  );
+
   await prisma.activityLog.create({
     data: {
       adminUserId: session.userId,
       action: "newsletter.exported",
       targetType: "newsletter_subscriber",
       changes: {
+        format: "mailwizz",
         filters: {
-          status: String(where.status ?? "all"),
+          status: "confirmed",
           locale: parsed.locale,
           source: parsed.source ?? null,
+          // La recherche peut contenir un morceau d'adresse : on trace qu'elle
+          // existait, pas ce qu'elle contenait.
+          search: parsed.search ? "oui" : null,
+          dateFrom: parsed.dateFrom ?? null,
+          dateTo: parsed.dateTo ?? null,
         },
+        lignes: resultat.lignes,
+        ecartes: resultat.ecartes,
       },
       ipAddress: await getClientIp(),
     },
   });
 
-  const rows = await prisma.newsletterSubscriber.findMany({
-    where,
-    orderBy: { createdAt: "desc" },
-    take: 10000,
-    select: {
-      email: true,
-      locale: true,
-      status: true,
-      source: true,
-      confirmedAt: true,
-      unsubscribedAt: true,
-      createdAt: true,
-      mailwizzListUid: true,
-      mailwizzSubUid: true,
+  const filename = `axion-ia-lettre-mailwizz-${new Date().toISOString().slice(0, 10)}.csv`;
+  return { filename, csv: resultat.csv };
+}
+
+/** Liste de suppression : empreintes SHA-256, motif, date. Aucune adresse. */
+export async function exportSuppressionCsvAction(): Promise<{ filename: string; csv: string }> {
+  const session = await requireAdminWrite();
+  const resultat = await exporterListeSuppression();
+  await prisma.activityLog.create({
+    data: {
+      adminUserId: session.userId,
+      action: "newsletter.suppression.exported",
+      targetType: "newsletter_subscriber",
+      changes: { lignes: resultat.lignes },
+      ipAddress: await getClientIp(),
     },
   });
+  const filename = `axion-ia-lettre-suppression-${new Date().toISOString().slice(0, 10)}.csv`;
+  return { filename, csv: resultat.csv };
+}
 
-  const headers = [
-    "email",
-    "locale",
-    "status",
-    "source",
-    "confirmedAt",
-    "unsubscribedAt",
-    "createdAt",
-    "mailwizzListUid",
-    "mailwizzSubUid",
-  ];
-  const escape = (v: unknown): string => {
-    if (v == null) return "";
-    const s = v instanceof Date ? v.toISOString() : String(v);
-    if (/[",\n;]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
-    return s;
-  };
-  const lines = rows.map((r) =>
-    headers.map((h) => escape((r as unknown as Record<string, unknown>)[h])).join(";"),
-  );
-  const csv = "﻿" + headers.join(";") + "\r\n" + lines.join("\r\n");
-  const filename = `axion-ia-newsletter-${new Date().toISOString().slice(0, 10)}.csv`;
-  return { filename, csv };
+// ============================================================
+// Envoyer / renvoyer le guide (lot L3)
+// ============================================================
+
+export type EnvoiGuideState =
+  { ok: true; resultat: ResultatEnvoiConsole; message: string } | { ok: false; error: string };
+
+const envoiSchema = z.object({
+  id: z.string().uuid(),
+  reprise: z.enum(["on"]).optional(),
+});
+
+async function lireEnvoi(
+  formData: FormData,
+): Promise<{ userId: string; id: string; reprise: boolean } | EnvoiGuideState> {
+  let session;
+  try {
+    session = await requireAdminWrite();
+  } catch {
+    return { ok: false, error: "Permission insuffisante." };
+  }
+  const parsed = envoiSchema.safeParse({
+    id: formData.get("id"),
+    reprise: formData.get("reprise") ?? undefined,
+  });
+  if (!parsed.success) return { ok: false, error: "Identifiant invalide." };
+  return { userId: session.userId, id: parsed.data.id, reprise: parsed.data.reprise === "on" };
+}
+
+function etatEnvoi(resultat: ResultatEnvoiConsole): EnvoiGuideState {
+  const message = LIBELLE_ISSUE_CONSOLE[resultat];
+  // « Parti » ou « retenu pour relecture » : le geste a abouti. Le reste est
+  // dit comme un refus — l'administrateur doit savoir que RIEN n'est parti.
+  return resultat === "en-file" || resultat === "en-validation"
+    ? { ok: true, resultat, message }
+    : { ok: false, error: message };
+}
+
+/** « Envoyer le guide », depuis la fiche d'un abonné. */
+export async function envoyerGuideAAbonneAction(
+  _prev: EnvoiGuideState,
+  formData: FormData,
+): Promise<EnvoiGuideState> {
+  const e = await lireEnvoi(formData);
+  if ("ok" in e) return e;
+  const issue = await envoyerGuideAAbonne(e.id, {
+    adminUserId: e.userId,
+    reprise: e.reprise,
+    ip: await getClientIp(),
+  });
+  revalidatePath(adminPath("fr", `newsletter/${e.id}`));
+  revalidatePath(adminPath("fr", "newsletter/demandes-guide"));
+  return etatEnvoi(issue.resultat);
+}
+
+/** « Renvoyer le guide », depuis l'écran des demandes. */
+export async function renvoyerGuideAction(
+  _prev: EnvoiGuideState,
+  formData: FormData,
+): Promise<EnvoiGuideState> {
+  const e = await lireEnvoi(formData);
+  if ("ok" in e) return e;
+  const issue = await renvoyerGuide(e.id, {
+    adminUserId: e.userId,
+    reprise: e.reprise,
+    ip: await getClientIp(),
+  });
+  revalidatePath(adminPath("fr", "newsletter/demandes-guide"));
+  return etatEnvoi(issue.resultat);
 }

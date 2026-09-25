@@ -42,6 +42,9 @@
 import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 
 import { prisma } from "@/lib/prisma";
+import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
+// Module PUR — surtout pas `desabonner.ts`, qui émet vers le CRM (anti-boucle).
+import { VERSION_LETTRE_HISTORIQUE } from "@/server/newsletter/versions";
 import { alertCrmSync } from "./alerts";
 
 import { crmSyncSecret } from "./config";
@@ -249,12 +252,27 @@ async function applyEffect(payload: CrmInboundPayload): Promise<CrmInboundOutcom
   // répercuter aujourd'hui. L'événement est conservé pour la preuve.
   if (payload.scope !== "business") return "ignored";
 
-  const subscriberId = await findSubscriberIdByHash(payload.email_hash);
-  if (!subscriberId) return "no_match";
+  const abonne = await findSubscriberByHash(payload.email_hash);
+  if (!abonne) return "no_match";
 
+  const maintenant = new Date();
   await prisma.newsletterSubscriber.update({
-    where: { id: subscriberId },
-    data: { status: "unsubscribed", unsubscribedAt: new Date() },
+    where: { id: abonne.id },
+    data: { status: "unsubscribed", unsubscribedAt: maintenant },
+  });
+
+  // 🔴 Lot L3 (2026-09-24) — le RETRAIT s'écrit au registre de preuve, comme
+  // sur les deux autres chemins (lien public, console). Sans cette ligne, le
+  // registre gardait l'accord et jamais son retrait : il racontait une
+  // personne toujours consentante. Même référence que l'accord retiré.
+  // ⚠️ Registre LOCAL seulement : `recordConsentEvent` n'émet rien vers le
+  // CRM — l'anti-boucle ci-dessus reste entière (aucun `sync*ToCrm` ici).
+  await recordConsentEvent({
+    email: abonne.email,
+    formRef: abonne.consentFormRef ?? CONSENT_FORM_REFS.newsletter,
+    consentVersion: abonne.consentVersion ?? VERSION_LETTRE_HISTORIQUE,
+    action: "optout",
+    occurredAt: maintenant,
   });
 
   return "applied";
@@ -268,9 +286,21 @@ async function applyEffect(payload: CrmInboundPayload): Promise<CrmInboundOutcom
  * rien, et `pending` n'a jamais confirmé, donc n'est abonné à rien.
  */
 export async function findSubscriberIdByHash(emailHash: string): Promise<string | null> {
+  return (await findSubscriberByHash(emailHash))?.id ?? null;
+}
+
+interface AbonneTrouve {
+  readonly id: string;
+  readonly email: string;
+  readonly consentFormRef: string | null;
+  readonly consentVersion: string | null;
+}
+
+/** Comme `findSubscriberIdByHash`, avec ce qu'il faut pour écrire la preuve du retrait. */
+async function findSubscriberByHash(emailHash: string): Promise<AbonneTrouve | null> {
   const subscribers = await prisma.newsletterSubscriber.findMany({
     where: { status: "confirmed" },
-    select: { id: true, email: true },
+    select: { id: true, email: true, consentFormRef: true, consentVersion: true },
     // Ordre STABLE : sans lui, le sous-ensemble tronqué au plafond serait
     // non déterministe — le même optout pourrait alterner match/no_match.
     orderBy: { id: "asc" },
@@ -279,7 +309,14 @@ export async function findSubscriberIdByHash(emailHash: string): Promise<string 
 
   const target = emailHash.toLowerCase();
   for (const sub of subscribers) {
-    if (sha256Email(sub.email) === target) return sub.id;
+    if (sha256Email(sub.email) === target) {
+      return {
+        id: sub.id,
+        email: sub.email,
+        consentFormRef: sub.consentFormRef ?? null,
+        consentVersion: sub.consentVersion ?? null,
+      };
+    }
   }
 
   if (subscribers.length >= MAX_SCAN_SUBSCRIBERS) {

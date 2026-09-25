@@ -6,6 +6,7 @@ import {
   listSubscribersAction,
   getNewsletterStatsAction,
 } from "@/features/admin-newsletter/actions";
+import { lireStatistiquesLettre } from "@/server/newsletter/console";
 import { NewsletterV2 } from "./_v2/NewsletterV2";
 
 export const dynamic = "force-dynamic";
@@ -21,7 +22,7 @@ export default async function NewsletterListPage({ params, searchParams }: PageP
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-  const [result, stats] = await Promise.all([
+  const [result, stats, statistiques] = await Promise.all([
     listSubscribersAction({
       status: sp.status as never,
       locale: sp.locale as never,
@@ -32,12 +33,20 @@ export default async function NewsletterListPage({ params, searchParams }: PageP
       page: sp.page ? parseInt(sp.page, 10) : 1,
     }),
     getNewsletterStatsAction(),
+    lireStatistiquesLettre(),
   ]);
 
+  // 🔴 Lot L3 : le lien d'export ne transmettait ni la recherche ni les dates —
+  // l'écran filtré et le fichier ne disaient pas la même chose. Tous les
+  // filtres passent désormais ; le statut, lui, reste « confirmé » côté
+  // serveur (un autre statut est refusé).
   const csvUrl = `/api/admin/newsletter/export?${new URLSearchParams({
     ...(sp.status ? { status: sp.status } : {}),
     ...(sp.locale ? { locale: sp.locale } : {}),
     ...(sp.source ? { source: sp.source } : {}),
+    ...(sp.search ? { search: sp.search } : {}),
+    ...(sp.dateFrom ? { dateFrom: sp.dateFrom } : {}),
+    ...(sp.dateTo ? { dateTo: sp.dateTo } : {}),
   }).toString()}`;
 
   return (
@@ -50,6 +59,7 @@ export default async function NewsletterListPage({ params, searchParams }: PageP
       totalPages={result.totalPages}
       stats={stats}
       csvUrl={csvUrl}
+      statistiques={statistiques}
     />
   );
 }
