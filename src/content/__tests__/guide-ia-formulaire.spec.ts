@@ -48,8 +48,8 @@ const FIGEES: ReadonlyArray<readonly [string, string, string, unknown]> = [
     TEXTE_MENTION.perso,
   ],
   [
-    "lettre-reinscription-email-v1-2026-09-24",
-    "64ee6d85b35aab42",
+    "lettre-reinscription-email-v2-2026-09-25",
+    "331b82ae25e1207c",
     VERSION_REINSCRIPTION,
     TEXTE_REINSCRIPTION,
   ],

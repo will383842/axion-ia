@@ -267,7 +267,7 @@ describe("inscrireALaLettre", () => {
     expect(appel.data).not.toHaveProperty("unsubscribedAt");
     expect(appel.data).not.toHaveProperty("unsubscribeToken");
     expect(appel.data["confirmToken"]).toMatch(/^[0-9a-f]{64}$/);
-    expect(appel.data["consentVersion"]).toBe("lettre-reinscription-email-v1-2026-09-24");
+    expect(appel.data["consentVersion"]).toBe("lettre-reinscription-email-v2-2026-09-25");
     // Aucune preuve : rien n'a été accepté.
     expect(recordConsentEvent).not.toHaveBeenCalled();
   });

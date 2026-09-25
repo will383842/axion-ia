@@ -26,11 +26,13 @@ import { describe, expect, it } from "vitest";
 
 import { GUIDE_IA_CHEMIN, GUIDE_IA_PAGES, urlGuideIa } from "@/content/guide-ia";
 import { IMPRIMES } from "@/content/imprimes";
+import { textesPageGuide } from "@/content/guide-ia-page";
 import { renderEmailTemplate } from "@/lib/email/templates";
 
 const RACINE = process.cwd();
 const PDF = path.join(RACINE, "public", GUIDE_IA_CHEMIN);
 const PAGE_GUIDE = path.join(RACINE, "src/app/[locale]/guide-ia/page.tsx");
+const TEXTES_GUIDE = path.join(RACINE, "src/content/guide-ia-page.ts");
 const PAGE_CONFIRMATION = path.join(RACINE, "src/app/[locale]/confirmation/newsletter/page.tsx");
 
 /**
@@ -68,7 +70,12 @@ describe("le PDF du guide est servi", () => {
 });
 
 describe("la page /guide-ia dit vrai sur la façon d'obtenir le guide", () => {
-  const source = readFileSync(PAGE_GUIDE, "utf8");
+  // Lot L1 (2026-09-25) : les textes de la page vivent dans
+  // `content/guide-ia-page.ts`. La promesse se lit donc dans les deux sources
+  // — la page (structure, JSON-LD) et son module de textes.
+  const source = `${readFileSync(PAGE_GUIDE, "utf8")}
+${readFileSync(TEXTES_GUIDE, "utf8")}`;
+  const fr = textesPageGuide("fr");
 
   it("🔴 ne promet plus un envoi qui n'a pas lieu, ni un téléchargement « immédiat »", () => {
     expect(source).not.toContain("Guide envoyé");
@@ -78,13 +85,16 @@ describe("la page /guide-ia dit vrai sur la façon d'obtenir le guide", () => {
   });
 
   it("🔴 L2 — dit que le guide part tout de suite par e-mail (et ne promet plus une confirmation préalable)", () => {
-    expect(source).toContain("Envoyé tout de suite par e-mail, gratuitement.");
+    expect(fr.hero.envoi).toBe("Envoyé par e-mail dans les minutes qui suivent, gratuitement.");
+    expect(source).toContain("{t.hero.envoi}");
     expect(source).not.toContain("Téléchargement dès la confirmation de votre adresse e-mail.");
   });
 
   it(`annonce ${GUIDE_IA_PAGES} pages, comme le PDF`, () => {
-    expect(source).toContain(`Guide IA entreprise · ${GUIDE_IA_PAGES} pages`);
-    expect(source).toContain(`numberOfPages: ${GUIDE_IA_PAGES}`);
+    expect(fr.hero.titre).toBe(`Guide IA entreprise · ${GUIDE_IA_PAGES} pages`);
+    expect(source).toContain("{t.hero.titre}");
+    // Le JSON-LD lit la constante recomptée dans le PDF, jamais un nombre recopié.
+    expect(source).toContain("numberOfPages: GUIDE_IA_PAGES");
   });
 
   it("ne propose jamais de « réserver » une formation", () => {

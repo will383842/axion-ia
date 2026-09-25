@@ -62,7 +62,7 @@ const COLUMNS: ReadonlyArray<Column> = [
       { href: "/stack-ia", labelFr: "Stack IA", labelEn: "AI stack" },
       { href: "/implantations", labelFr: "Nos implantations", labelEn: "Our locations" },
       { href: "/observatoire-ia", labelFr: "Observatoire IA", labelEn: "AI observatory" },
-      { href: "/guide-ia", labelFr: "Guide de l'IA", labelEn: "AI guide" },
+      { href: "/guide-ia", labelFr: "Guide IA entreprise", labelEn: "Enterprise AI guide" },
     ],
   },
 ];

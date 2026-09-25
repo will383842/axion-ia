@@ -19,6 +19,8 @@ import { CADENCE_LETTRE } from "@/content/guide-ia-formulaire";
 
 const LISTE_FERMEE = [
   "src/app/[locale]/guide-ia/page.tsx",
+  // Lot L1 : les textes de la page du guide.
+  "src/content/guide-ia-page.ts",
   "src/messages/fr.json",
   "src/messages/en.json",
   "src/components/content-gen/ArticleNewsletterInline.tsx",
