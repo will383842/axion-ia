@@ -100,10 +100,15 @@ const CLASSEMENT: Readonly<Record<string, Rattachement>> = {
     exempt:
       "Clé de la même instance PowerMTA auto-hébergée que PMTA_API_URL, jamais déployée : aucun flux, aucun tiers.",
   },
-  MAILWIZZ_API_URL: { exempt: "Mailwizz auto-hébergé sur le VPS — Axion-IA seule responsable." },
+  // ⚠️ ADR 0052 §h.2 : l'exemption ne vaut que tant qu'AUCUNE instance n'existe, ou
+  // si elle tourne sur un serveur d'Axion-IA. Hébergée par une autre entité, elle
+  // devient un sous-traitant : passer ces deux clés en `tiers` et la déclarer.
+  MAILWIZZ_API_URL: {
+    exempt: "MailWizz — aucune instance aujourd'hui, variable inerte (ADR 0052).",
+  },
   MAILWIZZ_API_KEY: {
     exempt:
-      "Clé de la même instance Mailwizz auto-hébergée sur le VPS : Axion-IA est seule responsable du traitement, pas un sous-traitant externe.",
+      "Clé de la même instance MailWizz, inexistante aujourd'hui : aucun flux, aucun tiers (ADR 0052).",
   },
   DOCUSEAL_BASE_URL: { tiers: "DocuSeal" },
   DOCUSEAL_API_KEY: { tiers: "DocuSeal" },

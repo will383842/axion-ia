@@ -18,7 +18,7 @@ Hetzner CPX32 (Frankfurt)
    ├── BullMQ workers — emails / cron expiration / cron reminder
    ├── PostgreSQL 16 — DB (volume persistent)
    ├── Redis 7 — BullMQ + rate-limit (volume persistent)
-   ├── PowerMTA + MailWizz (Sprint 19) — email maison localhost:2525
+   ├── (PowerMTA + MailWizz : jamais déployés — ADR 0052 ; transactionnel = ZeptoMail)
    ├── Sentry self-hosted (Sprint 23) — sentry.axion-ia.com
    ├── Plausible self-hosted (Sprint 23) — plausible.axion-ia.com
    └── Uptime Kuma (Sprint 23) — uptime.axion-ia.com
@@ -40,8 +40,7 @@ Voir `docs/ops/dns-records.md` pour la liste exhaustive. Records principaux :
 A     axion-ia.com           → <IP-CPX32>     (proxied)
 A     www.axion-ia.com       → <IP-CPX32>     (proxied)
 A     admin.axion-ia.com     → <IP-CPX32>     (proxied — pour Coolify UI)
-A     mail.axion-ia.com      → <IP-CPX32>     (DNS-only, pas proxied — SMTP)
-A     mailwizz.axion-ia.com  → <IP-CPX32>     (proxied)
+# 🛑 mail.* et mailwizz.* : NE PAS créer (ADR 0052, docs/ops/dns-lettre-mailwizz.md)
 A     sentry.axion-ia.com    → <IP-CPX32>     (proxied)
 A     plausible.axion-ia.com → <IP-CPX32>     (proxied)
 A     uptime.axion-ia.com    → <IP-CPX32>     (proxied)
@@ -159,9 +158,8 @@ Voir `docs/ops/runbook-incident.md` (Sprint 23) section "Restauration sauvegarde
 - [ ] DNS records Cloudflare configurés + propagés
 - [ ] SSL Let's Encrypt actif (Caddy auto)
 - [ ] Cloudflare SSL/TLS = Full (strict)
-- [ ] PowerMTA installé + DKIM 2048 + SPF/DMARC validés (mxtoolbox)
-- [ ] MailWizz UI accessible https://mailwizz.axion-ia.com
-- [ ] Warmup IP démarré (10/jour S1 → 50 → 200 → 500 → 1000+)
+- [ ] E-mail transactionnel : ZeptoMail sur l'app `axion-ia-worker`, `dkim=pass` / `dmarc=pass` lus sur un envoi réel (`src/lib/email/client.ts`)
+- (PowerMTA, MailWizz et chauffe d'IP : hors de ce déploiement — liste de contrôle de l'ADR 0052 §h)
 - [ ] Turnstile prod keys configurées (pas dev keys 1x000…)
 - [ ] AUTH*SECRET généré 32+ chars random (pas dev*\*)
 - [ ] ADMIN_URL_PREFIX généré random (pas admin-dev-x7k2n9)

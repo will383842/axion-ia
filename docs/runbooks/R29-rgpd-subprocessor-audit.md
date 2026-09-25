@@ -126,7 +126,11 @@ grep -E "^\| 20[0-9]{2}-" _AUDIT/DPA-REGISTER.md | awk -F'|' '{ gsub(/^[ \t]+|[ 
 
 > ⚠️ « Zoho Mail » a été retiré de cette matrice le 2026-07-26 : il n'est plus
 > utilisé. L'email de production part par Nodemailer → SMTP local → PowerMTA
-> auto-hébergé (`src/lib/email/client.ts`). Auditer un fournisseur fantôme
+> auto-hébergé (`src/lib/email/client.ts`).
+> 🛑 **Périmé (ADR 0052, 2026-09-25)** : cette phrase est fausse. PowerMTA n'a jamais été
+> déployé. Le transactionnel part par **ZeptoMail** et la boîte `contact@` est chez **Zoho
+> Mail** (`client.ts`, en-tête). Le futur MailWizz + PowerMTA de la lettre sera un
+> sous-traitant **si** son serveur n'appartient pas à Axion-IA (ADR 0052 §h.2). Auditer un fournisseur fantôme
 > donnait l'illusion d'une couverture pendant que cinq fournisseurs réels —
 > dont Calendly — n'étaient dans aucune ligne.
 

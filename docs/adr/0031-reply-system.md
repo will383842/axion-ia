@@ -188,6 +188,7 @@ Effort estimé : 1-2 semaines (IMAP IDLE + MIME parser + déduplication).
   V2 si le volume justifie.
 - **Délivrabilité dépend de PowerMTA** local (déjà configuré SPF + DKIM +
   DMARC).
+  > ⚠️ Périmé (ADR 0052) : PowerMTA n'a jamais été déployé ; les réponses partent par ZeptoMail (`src/lib/email/client.ts`).
 - **Markdown léger custom** vs react-markdown : trade-off poids bundle.
   Si Will veut des images / tableaux / listes complexes en V2, on switchera
   vers react-markdown.
