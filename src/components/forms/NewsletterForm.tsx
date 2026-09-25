@@ -236,7 +236,9 @@ export function NewsletterForm({ libelles, source, variant = "stacked" }: Newsle
           />
           {errors.email ? (
             <p id={idErreur} role="alert" className="text-error text-xs">
-              {errors.email.message}
+              {/* Le seul refus possible du champ : une adresse mal formée. Le
+                  message suit la langue de la page (celui du schéma est en français). */}
+              {libelles.emailInvalide}
             </p>
           ) : null}
         </div>

@@ -447,7 +447,7 @@ const FR: TextesPageGuide = {
       {
         question: "Le guide est-il vraiment gratuit ?",
         answer:
-          "Oui. Il vous est envoyé par e-mail dès que vous indiquez votre adresse. Avec une adresse professionnelle, vous recevez aussi quelques lettres par an, dont vous pouvez vous désinscrire en un clic ; avec une adresse personnelle, seulement si vous cochez la case.",
+          "Oui. Il vous est envoyé par e-mail dès que vous indiquez votre adresse. Avec une adresse professionnelle, vous recevez aussi quelques lettres par an, à chaque nouveauté utile, dont vous pouvez vous désinscrire en un clic ; avec une adresse personnelle, seulement si vous cochez la case.",
       },
       {
         question: "Faut-il une adresse e-mail professionnelle ?",
@@ -661,7 +661,7 @@ const EN: TextesPageGuide = {
       {
         question: "Is the guide really free?",
         answer:
-          "Yes. It is sent to you by email as soon as you enter your address. With a business address, you also receive a few emails a year, which you can unsubscribe from in one click; with a personal address, only if you tick the box.",
+          "Yes. It is sent to you by email as soon as you enter your address. With a business address, you also receive a few emails a year, only when there is something new and useful, which you can unsubscribe from in one click; with a personal address, only if you tick the box.",
       },
       {
         question: "Do I need a business email address?",

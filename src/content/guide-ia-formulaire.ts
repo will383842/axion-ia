@@ -121,10 +121,12 @@ export const TEXTE_MENTION: Record<"pro" | "perso", Record<LocaleFormulaire, str
  * ce texte-ci qu'elle a accepté.
  */
 export const FORM_REF_REINSCRIPTION = "newsletter-reinscription-email";
-export const VERSION_REINSCRIPTION = "lettre-reinscription-email-v1-2026-09-24";
+// v2 (25/09) : « Vous vous étiez désabonné(e) » → « Vous aviez quitté » (décision de Will :
+// pas d'écriture inclusive, une forme neutre). Aucune v1 n'a été enregistrée en production.
+export const VERSION_REINSCRIPTION = "lettre-reinscription-email-v2-2026-09-25";
 export const TEXTE_REINSCRIPTION: Record<LocaleFormulaire, string> = {
-  fr: "Vous vous étiez désabonné(e) de la lettre d'Axion-IA. Pour la recevoir à nouveau (quelques lettres par an, à chaque nouveauté utile), confirmez d'un clic ; sans ce clic, rien ne change.",
-  en: "You had unsubscribed from Axion-IA's letter. To receive it again (a few emails a year, only when there is something new and useful), confirm with one click; without it, nothing changes.",
+  fr: "Vous aviez quitté la lettre d'Axion-IA. Pour la recevoir à nouveau (quelques lettres par an, à chaque nouveauté utile), confirmez d'un clic ; sans ce clic, rien ne change.",
+  en: "You had left Axion-IA's letter. To receive it again (a few emails a year, only when there is something new and useful), confirm with one click; without it, nothing changes.",
 };
 
 /** Libellé du lien vers la politique, et son chemin localisé. */
@@ -143,6 +145,11 @@ export interface LibellesFormulaireGuide {
   politique: { libelle: string; href: string };
   submit: string;
   sending: string;
+  /**
+   * Adresse mal formée, vérifiée dans le navigateur : le même message que le
+   * serveur (`features/guide-ia/actions.ts`), dans la langue de la page.
+   */
+  emailInvalide: string;
   /** Titre de l'état « envoyé » (lot L1). */
   successTitre: string;
   success: string;
@@ -163,6 +170,7 @@ const COMMUNS: Record<
   fr: {
     submit: "Recevoir le guide",
     sending: "Envoi…",
+    emailInvalide: "Adresse e-mail invalide.",
     successTitre: "Le guide est en route",
     envoyeA: "Envoyé à",
     corriger: "Ce n'est pas la bonne adresse ? Saisir la bonne",
@@ -173,6 +181,7 @@ const COMMUNS: Record<
   en: {
     submit: "Get the guide",
     sending: "Sending…",
+    emailInvalide: "Invalid email address.",
     successTitre: "The guide is on its way",
     envoyeA: "Sent to",
     corriger: "Wrong address? Enter the right one",
