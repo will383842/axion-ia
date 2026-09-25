@@ -8,14 +8,16 @@
  * préchargement RSC.
  *
  * Relevé au navigateur sur DEUX chargements distincts : chaque URL était
- * demandée deux fois, et la seconde répondait **503**, sans exception. Une
- * cinquantaine de requêtes perdues par visite.
+ * demandée deux fois, et la seconde était affichée « 503 ». Une cinquantaine
+ * de requêtes doublées par visite.
  *
- * ⚠️ CE QUE CE FICHIER NE PRÉTEND PAS. Il ne garde pas « le 503 est réparé » :
- *    la cause du 503 n'est pas identifiée (non reproductible en ligne de
- *    commande, et les journaux d'accès du proxy sont désactivés). Il garde la
- *    seule chose qu'on ait mesurée et corrigée : le pied de page ne relance
- *    plus un préchargement que l'en-tête a déjà lancé.
+ * 🔑 Ce « 503 » n'a jamais été une réponse du serveur (établi le 2026-09-25) :
+ *    l'extension Chrome qui servait au relevé écrit 503 sur tout
+ *    `Network.loadingFailed`, et ces requêtes avaient reçu un HTTP 200 avant
+ *    d'être abandonnées par le navigateur (`net::ERR_ABORTED`). Le détail est
+ *    dans le commentaire de `Footer.tsx`. Ce fichier garde donc ce qui était
+ *    réel : le pied de page ne relance plus un préchargement que l'en-tête a
+ *    déjà lancé.
  *
  * 🔑 L'en-tête, lui, DOIT garder son préchargement — c'est par là qu'on
  *    navigue. Une garde qui interdirait `prefetch` partout aurait l'air plus

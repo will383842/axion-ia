@@ -10,6 +10,7 @@ import {
   isCrmSyncEnabled,
   nextAttemptDelayMs,
 } from "./config";
+import { ENVOI_COUPE, estEnvoiCoupe } from "./coupure-recrutement";
 import type { CrmIngestResponse } from "./types";
 import { notify } from "@/server/notifications";
 
@@ -51,6 +52,22 @@ export async function emitOutboxRow(outboxId: string): Promise<EmitResult> {
   const row = await prisma.crmSyncOutbox.findUnique({ where: { id: outboxId } });
   if (!row) return { status: "skipped" };
   if (row.status === "sent" || row.status === "gave_up") return { status: "skipped" };
+
+  // 🔴 Rien du recrutement ne part au CRM (ADR 0047, révision § 4 ter) — pas
+  // même ce qui était DÉJÀ en file avant la coupure. Couper la création des
+  // lignes ne suffit pas : une candidature `pending` ou `failed` d'avant le
+  // déploiement serait rejouée par le balayage, et partirait après coup.
+  // Soldée en `gave_up` SANS appel réseau, sans consommer de tentative, sans
+  // `responseStatus` (le CRM n'a rien reçu) et SANS alerte d'abandon : ce n'est
+  // pas une perte, c'est la règle. `skipped` rendu au balayage pour qu'il ne
+  // la compte pas comme un abandon.
+  if (estEnvoiCoupe(row.eventType, row.payload)) {
+    await prisma.crmSyncOutbox.update({
+      where: { id: outboxId },
+      data: { status: "gave_up", nextAttemptAt: null, lastError: ENVOI_COUPE },
+    });
+    return { status: "skipped", error: "envoi coupé (ADR 0047)" };
+  }
 
   const url = crmSyncUrl();
   const secret = crmSyncSecret();

@@ -1,14 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 /**
- * VIVIER CANDIDATS — consentements v2, fenêtre d'opposition, intégration J+30.
+ * VIVIER CANDIDATS — consentements v2, fenêtre d'opposition, opposition.
  *
- * Les trois tests qui comptent le plus portent chacun sur une GARDE, et chacun
- * a été vu ROUGIR avant d'être vu vert (règle : une garde ne vaut que si elle
+ * Les tests qui comptent le plus portent chacun sur une GARDE, et chacun a été
+ * vu ROUGIR avant d'être vu vert (règle : une garde ne vaut que si elle
  * rougit) :
- *   (a) une candidature OPPOSÉE n'est jamais intégrée ;
- *   (b) une candidature n'est pas intégrée AVANT l'échéance des 30 jours ;
- *   (c) un jeton d'opposition invalide ne pose RIEN en base.
+ *   · l'intégration J+30 au CRM est COUPÉE (ADR 0047, révision § 4 ter) —
+ *     les anciennes gardes (a) et (b) de l'intégration sont parties avec elle ;
+ *   · (c) un jeton d'opposition invalide ne pose RIEN en base ;
+ *   · une opposition ne fait partir au CRM que l'adresse d'une personne qui y
+ *     a PU être transmise.
  *
  * La fenêtre de 30 jours n'est jamais raccourcie dans le code : les cas qui ont
  * besoin d'une autre durée passent `windowDays` explicitement — l'écart se voit
@@ -21,6 +23,7 @@ const updateMock = vi.fn();
 const updateManyMock = vi.fn();
 const consentCreateMock = vi.fn();
 const outboxCreateMock = vi.fn();
+const outboxFindManyMock = vi.fn();
 const queueAddMock = vi.fn();
 const enqueueEmailMock = vi.fn();
 
@@ -33,7 +36,10 @@ vi.mock("@/lib/prisma", () => ({
       updateMany: (...args: unknown[]) => updateManyMock(...args),
     },
     consentEvent: { create: (...args: unknown[]) => consentCreateMock(...args) },
-    crmSyncOutbox: { create: (...args: unknown[]) => outboxCreateMock(...args) },
+    crmSyncOutbox: {
+      create: (...args: unknown[]) => outboxCreateMock(...args),
+      findMany: (...args: unknown[]) => outboxFindManyMock(...args),
+    },
   },
 }));
 
@@ -60,7 +66,7 @@ vi.mock("@/lib/security/ip-hash", () => ({
 }));
 
 import { integrateVivierStock, sendVivierInformationBatch } from "../stock";
-import { recordVivierOpposition } from "../opposition";
+import { aPuAtteindreLeCrm, recordVivierOpposition } from "../opposition";
 import { signVivierOppositionToken, verifyVivierOppositionToken } from "../token";
 import { VIVIER_OPPOSITION_WINDOW_DAYS, vivierIntegrationCutoff } from "../config";
 
@@ -74,6 +80,7 @@ beforeEach(() => {
   updateManyMock.mockResolvedValue({ count: 1 });
   consentCreateMock.mockResolvedValue({});
   outboxCreateMock.mockResolvedValue({ id: "outbox-1" });
+  outboxFindManyMock.mockResolvedValue([]);
   queueAddMock.mockResolvedValue(undefined);
   enqueueEmailMock.mockResolvedValue({ enqueued: true });
   // Secret de test CONSTRUIT (jamais de littéral à haute entropie en clair —
@@ -136,49 +143,34 @@ describe("inertie", () => {
     expect(enqueueEmailMock).not.toHaveBeenCalled();
   });
 
-  it("l'intégration ne consomme RIEN tant que le flux candidats est fermé (état mixte de la séquence d'activation)", async () => {
-    // 🔴 Défaut BLOQUANT trouvé en revue adversariale : dans l'état PRÉVU par
-    // la séquence d'activation (stock informé AVANT l'ouverture du canal),
-    // l'enqueue refusait en silence et `vivierSyncedAt` était quand même
-    // posé — les 71 fiches sortaient à jamais du rattrapage. La garde doit
-    // sortir AVANT toute lecture : rien de lu, rien d'écrit, rien de consommé.
-    delete process.env.CRM_SYNC_CANDIDATES_ENABLED;
-    findManyMock.mockResolvedValue([candidature()]);
-
-    const report = await integrateVivierStock({ now: new Date("2026-08-14T10:00:00Z") });
-
-    expect(report).toEqual({ due: 0, integrated: 0, skipped: 0 });
-    expect(findManyMock).not.toHaveBeenCalled();
-    expect(outboxCreateMock).not.toHaveBeenCalled();
-    // SURTOUT : `vivierSyncedAt` n'est jamais posé — l'échéance survit.
-    expect(updateMock).not.toHaveBeenCalled();
-  });
-
-  it("une échéance n'est consommée QUE si la ligne d'outbox existe réellement", async () => {
-    // Canal ouvert mais écriture d'outbox en échec (« événement perdu ») :
-    // l'enqueue rend null — la fiche ne doit PAS être marquée intégrée.
+  it("l'intégration J+30 au CRM est COUPÉE : rien de lu, rien d'émis, rien de consommé", async () => {
+    // 🔴 ADR 0047, révision § 4 ter : aucune candidature ne part plus au CRM.
+    // Tous les drapeaux ouverts, une candidature due en base : la fonction ne
+    // la lit même pas. Le couvercle est dans le CODE, pas dans un drapeau.
     enableCandidates();
+    process.env.VIVIER_STOCK_ENABLED = "true";
     const now = new Date("2026-08-14T10:00:00Z");
     findManyMock.mockResolvedValue([
       candidature({ vivierInfoSentAt: new Date(now.getTime() - 31 * JOUR_MS) }),
     ]);
-    outboxCreateMock.mockRejectedValueOnce(new Error("base indisponible"));
 
     const report = await integrateVivierStock({ now });
 
-    expect(report.integrated).toBe(0);
-    expect(report.skipped).toBe(1);
+    expect(report).toEqual({ due: 0, integrated: 0, skipped: 0 });
+    expect(findManyMock).not.toHaveBeenCalled();
+    expect(outboxCreateMock).not.toHaveBeenCalled();
+    expect(queueAddMock).not.toHaveBeenCalled();
+    // `vivierSyncedAt` n'est jamais posé : l'échéance survit à la décision de
+    // Will sur le sort du stock, quelle qu'elle soit.
     expect(updateMock).not.toHaveBeenCalled();
   });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 2. LA FENÊTRE DE 30 JOURS — gardes (a) et (b)
+// 2. LA FENÊTRE DE 30 JOURS
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("fenêtre d'opposition", () => {
-  beforeEach(enableCandidates);
-
   it("la règle est de 30 jours, et cette valeur est pinnée", () => {
     // Ce test existe pour qu'un raccourcissement « juste pour tester » ne
     // puisse pas passer inaperçu : il faudrait modifier CE test pour y arriver.
@@ -186,90 +178,6 @@ describe("fenêtre d'opposition", () => {
 
     const now = new Date("2026-08-14T00:00:00Z");
     expect(vivierIntegrationCutoff(now).toISOString()).toBe("2026-07-15T00:00:00.000Z");
-  });
-
-  // ── GARDE (b) ────────────────────────────────────────────────────────────
-  it("n'intègre PAS une candidature dont la fenêtre n'est pas échue", async () => {
-    // Informée il y a 29 jours : il reste un jour de réflexion.
-    const now = new Date("2026-08-14T10:00:00Z");
-    const informeeIlYA29Jours = new Date(now.getTime() - 29 * JOUR_MS);
-
-    // La sélection se fait EN BASE (`vivierInfoSentAt <= cutoff`) : on vérifie
-    // donc que la requête porte bien la borne, et qu'une ligne trop récente
-    // n'en ferait pas partie.
-    findManyMock.mockResolvedValue([]);
-
-    const report = await integrateVivierStock({ now });
-
-    expect(report.integrated).toBe(0);
-    expect(outboxCreateMock).not.toHaveBeenCalled();
-
-    const where = findManyMock.mock.calls[0]?.[0]?.where;
-    const cutoff = where.vivierInfoSentAt.lte as Date;
-    expect(cutoff.getTime()).toBe(now.getTime() - 30 * JOUR_MS);
-    // La borne EXCLUT bien une candidature informée il y a 29 jours…
-    expect(informeeIlYA29Jours.getTime()).toBeGreaterThan(cutoff.getTime());
-    // …et INCLUT celle informée il y a 31 jours (sinon le test serait vert
-    // pour une mauvaise raison : « la borne exclut tout »).
-    expect(now.getTime() - 31 * JOUR_MS).toBeLessThan(cutoff.getTime());
-  });
-
-  it("intègre une candidature dont la fenêtre est échue", async () => {
-    enableCandidates();
-    const now = new Date("2026-08-14T10:00:00Z");
-    findManyMock.mockResolvedValue([
-      candidature({ vivierInfoSentAt: new Date(now.getTime() - 31 * JOUR_MS) }),
-    ]);
-
-    const report = await integrateVivierStock({ now });
-
-    expect(report.integrated).toBe(1);
-    expect(outboxCreateMock).toHaveBeenCalledTimes(1);
-    // La version envoyée est celle du STOCK (l'acte = information + 30 j sans
-    // opposition), JAMAIS la v1 de la fiche : le CRM n'accepte que des
-    // versions énumérées, et v1 = 422 en masse au J+30.
-    const sent = outboxCreateMock.mock.calls[0]?.[0]?.data?.payload;
-    expect(sent.consent.version).toBe("vivier-stock-2026-08-14");
-    expect(sent.consent.text_ref).toBe("vivier-information-email");
-
-    const data = outboxCreateMock.mock.calls[0]?.[0]?.data;
-    expect(data.universe).toBe("vivier");
-    expect(data.payload.event_type).toBe("application_submitted");
-    // L'accord réputé acquis est horodaté à l'ÉCHÉANCE, pas à la candidature :
-    // c'est à partir de cette date que la conservation devient licite.
-    expect(data.payload.consent.vivier_at).toBe(new Date(now.getTime() - JOUR_MS).toISOString());
-
-    // Marqueur d'idempotence posé : rejouer ne créera pas de doublon.
-    expect(updateMock.mock.calls[0]?.[0]?.data).toEqual({ vivierSyncedAt: now });
-  });
-
-  // ── GARDE (a) ────────────────────────────────────────────────────────────
-  it("n'intègre JAMAIS une candidature opposée, même sa fenêtre échue", async () => {
-    const now = new Date("2026-08-14T10:00:00Z");
-
-    // La garde vit dans le `where` de la requête : une candidature opposée
-    // n'est simplement jamais sélectionnée. On l'asserte explicitement, sinon
-    // le test passerait avec une requête qui aurait perdu la condition.
-    findManyMock.mockResolvedValue([]);
-
-    await integrateVivierStock({ now });
-
-    const where = findManyMock.mock.calls[0]?.[0]?.where;
-    expect(where.vivierOpposedAt).toBeNull();
-    expect(where.vivierSyncedAt).toBeNull();
-    expect(outboxCreateMock).not.toHaveBeenCalled();
-  });
-
-  it("l'override de fenêtre est EXPLICITE et ne change pas la règle", async () => {
-    const now = new Date("2026-08-14T10:00:00Z");
-    findManyMock.mockResolvedValue([]);
-
-    await integrateVivierStock({ now, windowDays: 1 });
-
-    const cutoff = findManyMock.mock.calls[0]?.[0]?.where.vivierInfoSentAt.lte as Date;
-    expect(cutoff.getTime()).toBe(now.getTime() - JOUR_MS);
-    // La constante métier, elle, n'a pas bougé.
-    expect(VIVIER_OPPOSITION_WINDOW_DAYS).toBe(30);
   });
 });
 
@@ -380,7 +288,24 @@ describe("enregistrement de l'opposition", () => {
     expect(updateManyMock.mock.calls[0]?.[0]?.where.id.in).toEqual(["app-1", "app-2"]);
   });
 
-  it("consigne le retrait au registre et le propage au CRM", async () => {
+  it("consigne le retrait au registre et le propage au CRM (candidature déjà transmise)", async () => {
+    // `app-1` n'a jamais été tentée ; `app-2` — une candidature SŒUR, pas
+    // celle du lien — a été acquittée par le CRM.
+    outboxFindManyMock.mockResolvedValue([
+      {
+        subjectRef: "site:job_application:app-1",
+        status: "gave_up",
+        attempts: 0,
+        responseStatus: null,
+      },
+      {
+        subjectRef: "site:job_application:app-2",
+        status: "sent",
+        attempts: 1,
+        responseStatus: 201,
+      },
+    ]);
+
     await recordVivierOpposition("app-1");
 
     expect(consentCreateMock.mock.calls[0]?.[0]?.data).toMatchObject({
@@ -389,12 +314,80 @@ describe("enregistrement de l'opposition", () => {
       action: "optout",
     });
 
-    const payload = outboxCreateMock.mock.calls[0]?.[0]?.data;
-    expect(payload.universe).toBe("vivier");
-    expect(payload.payload.event_type).toBe("opt_out");
+    const data = outboxCreateMock.mock.calls[0]?.[0]?.data;
+    expect(data.universe).toBe("vivier");
+    expect(data.payload.event_type).toBe("opt_out");
     // Le champ d'application est dit DANS le message, pas seulement déduit de
     // l'univers : le CRM ne doit pas avoir à l'inférer.
-    expect(payload.payload.payload.scope).toBe("vivier");
+    expect(data.payload.payload.scope).toBe("vivier");
+    // Une seule ligne, `opt_out`, qui vise la candidature que le CRM CONNAÎT.
+    expect(outboxCreateMock).toHaveBeenCalledTimes(1);
+    expect(data.payload.subject_ref).toBe("site:job_application:app-2");
+
+    // La recherche porte sur TOUTES les candidatures de la personne.
+    const where = outboxFindManyMock.mock.calls[0]?.[0]?.where;
+    expect(where.eventType).toBe("application_submitted");
+    expect(where.subjectRef.in).toEqual([
+      "site:job_application:app-1",
+      "site:job_application:app-2",
+    ]);
+  });
+
+  it("n'envoie RIEN au CRM pour un candidat qui n'y a jamais été transmis", async () => {
+    // 🔴 La fuite fermée : l'opposition faisait partir au CRM l'adresse de
+    // TOUT candidat qui s'opposait, fiche existante ou non. Ici : une ligne
+    // jamais tentée (soldée par la coupure) et une refusée par un 422.
+    outboxFindManyMock.mockResolvedValue([
+      {
+        subjectRef: "site:job_application:app-1",
+        status: "gave_up",
+        attempts: 0,
+        responseStatus: null,
+      },
+      {
+        subjectRef: "site:job_application:app-2",
+        status: "gave_up",
+        attempts: 1,
+        responseStatus: 422,
+      },
+    ]);
+
+    const result = await recordVivierOpposition("app-1");
+
+    // L'opposition est bien enregistrée côté site — c'est elle qui fait foi…
+    expect(result).toEqual({ ok: true, alreadyOpposed: false, applications: 2 });
+    expect(updateManyMock).toHaveBeenCalledTimes(1);
+    expect(consentCreateMock).toHaveBeenCalledTimes(1);
+    // …et rien ne part : aucune ligne d'outbox, aucune mise en file.
+    expect(outboxFindManyMock).toHaveBeenCalledTimes(1);
+    expect(outboxCreateMock).not.toHaveBeenCalled();
+    expect(queueAddMock).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["acquittée", { status: "sent", attempts: 1, responseStatus: 201 }, true],
+    ["jamais tentée, en attente", { status: "pending", attempts: 0, responseStatus: null }, false],
+    [
+      "jamais tentée, soldée par la coupure",
+      { status: "gave_up", attempts: 0, responseStatus: null },
+      false,
+    ],
+    ["refusée par un 422", { status: "gave_up", attempts: 1, responseStatus: 422 }, false],
+    [
+      "refusée par un 4xx puis rejouée",
+      { status: "failed", attempts: 2, responseStatus: 409 },
+      false,
+    ],
+    [
+      "délai dépassé, plafond atteint",
+      { status: "gave_up", attempts: 5, responseStatus: null },
+      true,
+    ],
+    ["erreur 5xx", { status: "failed", attempts: 1, responseStatus: 502 }, true],
+  ])("une ligne « %s » : a-t-elle pu atteindre le CRM ?", (_label, row, attendu) => {
+    // Un délai dépassé ou une erreur 5xx a pu créer la fiche sans accusé :
+    // l'opposition doit suivre. Un refus 4xx, ou aucune tentative, n'a rien créé.
+    expect(aPuAtteindreLeCrm(row)).toBe(attendu);
   });
 
   it("est idempotente : re-cliquer le lien ne ré-émet rien", async () => {

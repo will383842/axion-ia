@@ -54,7 +54,10 @@ vi.mock("@/lib/security/email-hash", () => ({
 }));
 
 import { emitOutboxRow, signBody } from "../emit";
-import { syncCandidateToCrm, syncFormSubmissionToCrm, normalizeSiren } from "../index";
+import { syncFormSubmissionToCrm, syncVivierOppositionToCrm, normalizeSiren } from "../index";
+import { enqueueCrmSyncEvent } from "../enqueue";
+import { ENVOI_COUPE } from "../coupure-recrutement";
+import { notify } from "@/server/notifications";
 import { CRM_FORM_TYPES } from "../types";
 import { UNIFIED_CONTACT_TYPES } from "@/lib/schemas/unified-contact-schema";
 import { sweepCrmSyncOutbox } from "@/server/queue/workers/crm-sync-worker";
@@ -110,32 +113,55 @@ describe("inertie (drapeaux à OFF)", () => {
     expect(createMock).not.toHaveBeenCalled();
   });
 
-  it("laisse le flux CANDIDATS fermé tant que son drapeau propre est à OFF", async () => {
+  it("laisse le flux VIVIER fermé tant que son drapeau propre est à OFF", async () => {
+    // Depuis la coupure du recrutement (ADR 0047, révision), le seul flux
+    // `vivier` qui reste est l'opposition d'une personne déjà au CRM.
     enableSync();
     delete process.env.CRM_SYNC_CANDIDATES_ENABLED;
-
-    await syncCandidateToCrm({
+    const opposition = {
       subjectRef: "site:job_application:42",
-      family: "candidat_commercial",
-      person: { email: "candidat@example.invalid", firstName: "A", lastName: "B" },
+      person: { email: "candidat@example.invalid" },
       consent: { version: "careers-v2-2026-08-13" },
-    });
+    };
+
+    await syncVivierOppositionToCrm(opposition);
 
     expect(createMock).not.toHaveBeenCalled();
 
     // …et s'ouvre quand il passe à ON (sinon le test ci-dessus serait vert
     // pour une mauvaise raison : « rien ne marche »).
     process.env.CRM_SYNC_CANDIDATES_ENABLED = "true";
-    await syncCandidateToCrm({
-      subjectRef: "site:job_application:42",
-      family: "candidat_commercial",
-      person: { email: "candidat@example.invalid", firstName: "A", lastName: "B" },
-      consent: { version: "careers-v2-2026-08-13" },
-    });
+    await syncVivierOppositionToCrm(opposition);
 
     expect(createMock).toHaveBeenCalledTimes(1);
     expect(createMock.mock.calls[0]?.[0]?.data?.universe).toBe("vivier");
   });
+
+  it.each([
+    ["une candidature", { event_type: "application_submitted" }],
+    ["un /contact « recrutement »", { event_type: "form_submission", form_type: "recrutement" }],
+  ])(
+    "n'écrit JAMAIS %s dans l'outbox, tous drapeaux ouverts (ADR 0047, révision)",
+    async (_label, forme) => {
+      // Le couvercle est au passage obligé de TOUTE écriture : un appelant
+      // futur qui fabriquerait l'événement à la main se heurterait à lui.
+      enableSync();
+      process.env.CRM_SYNC_CANDIDATES_ENABLED = "true";
+
+      const id = await enqueueCrmSyncEvent({
+        schema_version: 1,
+        event_id: "11111111-2222-3333-4444-555555555555",
+        occurred_at: "2026-09-24T09:00:00.000Z",
+        subject_ref: "site:job_application:42",
+        person: { person_key: "hash-candidat@example.invalid", email: "candidat@example.invalid" },
+        ...forme,
+      } as Parameters<typeof enqueueCrmSyncEvent>[0]);
+
+      expect(id).toBeNull();
+      expect(createMock).not.toHaveBeenCalled();
+      expect(queueAddMock).not.toHaveBeenCalled();
+    },
+  );
 
   it("le balayage ne touche pas la base quand le drapeau est à OFF", async () => {
     delete process.env.CRM_SYNC_ENABLED;
@@ -227,6 +253,20 @@ describe("construction de l'événement", () => {
     // n'a aucune conséquence sur le rapprochement.
     expect(payload.person.first_name).toBe("Jean ZZ");
     expect(payload.person.last_name).toBe("TEST");
+  });
+
+  it("un formulaire de type « recrutement » ne part PAS (ADR 0047, révision)", async () => {
+    // Drapeaux candidats ouverts, comme en production : la garde ne doit rien
+    // devoir à un drapeau.
+    process.env.CRM_SYNC_CANDIDATES_ENABLED = "true";
+
+    await syncFormSubmissionToCrm({ ...baseInput, formType: "recrutement" });
+    expect(createMock).not.toHaveBeenCalled();
+    expect(queueAddMock).not.toHaveBeenCalled();
+
+    // Témoin : le même appel, d'un autre type, part bien.
+    await syncFormSubmissionToCrm(baseInput);
+    expect(createMock).toHaveBeenCalledTimes(1);
   });
 
   it("ne transmet JAMAIS le workspace ni le type de relation", async () => {
@@ -355,6 +395,64 @@ describe("émission", () => {
     expect(data.attempts).toBe(1);
     expect(data.nextAttemptAt).toBeInstanceOf(Date);
     expect(data.status).toBe("failed");
+  });
+
+  it.each([
+    ["une candidature", "application_submitted", { event_type: "application_submitted" }],
+    [
+      "un /contact « recrutement »",
+      "form_submission",
+      { event_type: "form_submission", form_type: "recrutement" },
+    ],
+  ])(
+    "solde SANS appel réseau une ligne d'avant la coupure : %s",
+    async (_label, eventType, payload) => {
+      // 🔴 Couper la création ne suffit pas : une ligne `failed` d'avant le
+      // déploiement serait rejouée par le balayage et partirait après coup.
+      findUniqueMock.mockResolvedValue({
+        id: "outbox-1",
+        eventType,
+        status: "failed",
+        attempts: 0,
+        payload,
+      });
+      const fetchMock = vi.fn();
+      vi.stubGlobal("fetch", fetchMock);
+
+      const res = await emitOutboxRow("outbox-1");
+
+      expect(fetchMock).not.toHaveBeenCalled();
+      // `skipped` pour le balayage : ce n'est pas un abandon, pas d'alerte.
+      expect(res.status).toBe("skipped");
+      expect(notify).not.toHaveBeenCalled();
+      const data = updateMock.mock.calls[0]?.[0]?.data;
+      expect(data).toEqual({ status: "gave_up", nextAttemptAt: null, lastError: ENVOI_COUPE });
+      // Ni tentative consommée, ni code HTTP : le CRM n'a rien reçu, et
+      // l'opposition au vivier s'en sert pour savoir qu'aucune fiche n'existe.
+      expect(data).not.toHaveProperty("attempts");
+      expect(data).not.toHaveProperty("responseStatus");
+    },
+  );
+
+  it("émet toujours un /contact qui n'est PAS du recrutement", async () => {
+    findUniqueMock.mockResolvedValue({
+      id: "outbox-1",
+      eventType: "form_submission",
+      status: "pending",
+      attempts: 0,
+      payload: { event_type: "form_submission", form_type: "audit" },
+    });
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({ ok: true, result: { status: "created" } }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const res = await emitOutboxRow("outbox-1");
+
+    expect(res.status).toBe("sent");
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
   it("ne réémet jamais une ligne déjà envoyée", async () => {

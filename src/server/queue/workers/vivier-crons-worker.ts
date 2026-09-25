@@ -3,7 +3,10 @@
  *
  * Un seul travail : intégrer au vivier CRM les candidatures dont la fenêtre
  * d'opposition de 30 jours est ÉCHUE et qui n'ont pas fait l'objet d'une
- * opposition. Rien d'autre — l'envoi des emails d'information est une campagne
+ * opposition. 🔴 COUPÉ depuis l'ADR 0047 (révision § 4 ter) : aucune
+ * candidature ne part plus au CRM, `integrateVivierStock()` rend un compte
+ * rendu vide sans lire la base. Le worker reste branché pour que la décision de
+ * Will sur le stock n'exige pas de recâbler la file. Rien d'autre — l'envoi des emails d'information est une campagne
  * déclenchée à la main (drapeau `VIVIER_STOCK_ENABLED`), pas un automatisme.
  *
  * ── Pourquoi une file séparée de `crm-sync` ─────────────────────────────────
@@ -13,11 +16,8 @@
  * illisible le tableau de bord des deux.
  *
  * ── Inertie ────────────────────────────────────────────────────────────────
- * `integrateVivierStock()` lit la base, mais n'écrit vers le CRM qu'à travers
- * l'outbox, qui REFUSE tout flux `vivier` tant que `CRM_SYNC_CANDIDATES_ENABLED`
- * est à OFF. Et tant que personne n'a été informé, `vivierInfoSentAt` est NULL
- * partout : la requête ne remonte rien. Le worker tourne donc à vide, sans un
- * seul appel réseau.
+ * `integrateVivierStock()` ne lit plus la base et n'écrit rien (voir plus
+ * haut). Le worker tourne donc à vide, sans un seul appel réseau.
  *
  * 🔴 La fenêtre de 30 jours n'est PAS un paramètre de ce worker. Elle vit dans
  * `VIVIER_OPPOSITION_WINDOW_DAYS` et ne se règle pas depuis une file de jobs :
