@@ -285,7 +285,7 @@ const FR: TextesPageGuide = {
     titre: `Guide IA entreprise · ${GUIDE_IA_PAGES} pages`,
     promesse:
       "Ce qu'un dirigeant doit savoir avant de déployer l'IA : usages, coûts réels, données, AI Act, retour sur investissement.",
-    envoi: "Envoyé tout de suite par e-mail, gratuitement.",
+    envoi: "Envoyé par e-mail dans les minutes qui suivent, gratuitement.",
     reperes: ["13 outils à recopier", "Sources publiques citées", "PME, ETI, grands groupes"],
     altCouverture:
       "Couverture du Guide IA entreprise d'Axion-IA, édition septembre 2026 : tout ce qu'un dirigeant doit savoir avant de déployer l'intelligence artificielle, pour les PME, ETI et grands groupes.",
@@ -296,7 +296,7 @@ const FR: TextesPageGuide = {
       ["Vous indiquez votre e-mail.", "Toute adresse convient, professionnelle ou personnelle."],
       [
         "Le guide arrive dans votre boîte.",
-        "En quelques minutes, avec votre lien de téléchargement. Pensez aux indésirables.",
+        "Dans les minutes qui suivent, avec votre lien de téléchargement. Pensez aux indésirables.",
       ],
       [
         "Vous le lisez, et vous le partagez.",
@@ -304,7 +304,7 @@ const FR: TextesPageGuide = {
       ],
     ],
     lettre:
-      "Ensuite, quelques lettres par an, à chaque nouveauté utile : avec une adresse professionnelle, ou si vous cochez la case. Désinscription en un clic.",
+      "Avec une adresse professionnelle, ou si vous cochez la case, vous recevrez ensuite quelques lettres par an, à chaque nouveauté utile. Désinscription en un clic, à tout moment. Quand vous ouvrez le guide depuis l'e-mail, votre adresse est aussi enregistrée dans notre outil de suivi de la relation client ; vous pouvez vous y opposer à tout moment.",
   },
   apercu: {
     surtitre: "Aperçu",
@@ -438,7 +438,7 @@ const FR: TextesPageGuide = {
   },
   second: {
     titre: "Recevoir le guide",
-    texte: `${GUIDE_IA_PAGES} pages, 13 outils à recopier. Envoyé tout de suite par e-mail, gratuitement.`,
+    texte: `${GUIDE_IA_PAGES} pages, 13 outils à recopier. Envoyé par e-mail dans les minutes qui suivent, gratuitement.`,
   },
   faq: {
     surtitre: "Questions fréquentes",
@@ -447,7 +447,7 @@ const FR: TextesPageGuide = {
       {
         question: "Le guide est-il vraiment gratuit ?",
         answer:
-          "Oui. Il vous est envoyé par e-mail dès que vous indiquez votre adresse, sans autre formalité.",
+          "Oui. Il vous est envoyé par e-mail dès que vous indiquez votre adresse. Avec une adresse professionnelle, vous recevez aussi quelques lettres par an, dont vous pouvez vous désinscrire en un clic ; avec une adresse personnelle, seulement si vous cochez la case.",
       },
       {
         question: "Faut-il une adresse e-mail professionnelle ?",
@@ -456,12 +456,12 @@ const FR: TextesPageGuide = {
       {
         question: "Pourquoi demander mon e-mail ?",
         answer:
-          "Pour vous envoyer le guide : l'e-mail contient votre lien de téléchargement. Avec une adresse professionnelle, vous recevez aussi quelques lettres par an, à chaque nouveauté utile ; avec une adresse personnelle, seulement si vous cochez la case. Désinscription en un clic, à tout moment.",
+          "Pour vous envoyer le guide : l'e-mail contient votre lien de téléchargement. Avec une adresse professionnelle, vous recevez aussi quelques lettres par an, à chaque nouveauté utile ; avec une adresse personnelle, seulement si vous cochez la case. Désinscription en un clic, à tout moment. Quand vous ouvrez le guide depuis l'e-mail, votre adresse est aussi enregistrée dans notre outil de suivi de la relation client ; vous pouvez vous y opposer à tout moment. Détails dans notre politique de confidentialité.",
       },
       {
         question: "Je n'ai rien reçu. Que faire ?",
         answer:
-          "Regardez dans les indésirables et dans l'onglet Promotions : l'e-mail part quelques minutes après votre demande. Toujours rien ? Vérifiez l'adresse saisie et refaites la demande sur cette page, ou écrivez à contact@axion-ia.com.",
+          "Regardez dans les indésirables et dans l'onglet Promotions : l'e-mail part dans les minutes qui suivent votre demande. Toujours rien ? Vérifiez l'adresse saisie et refaites la demande sur cette page, ou écrivez à contact@axion-ia.com.",
       },
       {
         question: "Puis-je le partager avec mes équipes ?",
@@ -508,7 +508,7 @@ const EN: TextesPageGuide = {
     titre: `Enterprise AI guide · ${GUIDE_IA_PAGES} pages`,
     promesse:
       "What an executive must know before deploying AI: uses, real costs, data, the AI Act, return on investment.",
-    envoi: "Sent to you straight away by email, free.",
+    envoi: "Sent to you by email within minutes, free.",
     reperes: ["13 ready-to-use tools", "Public sources cited", "SMEs, mid-caps, large groups"],
     altCouverture:
       "Cover of Axion-IA's Enterprise AI guide, September 2026 edition, for SMEs, mid-caps and large groups (in French).",
@@ -527,7 +527,7 @@ const EN: TextesPageGuide = {
       ],
     ],
     lettre:
-      "Then a few emails a year, only when there is something new and useful: with a business address, or if you tick the box. One-click unsubscribe.",
+      "With a business address, or if you tick the box, you will then receive a few emails a year, only when there is something new and useful. One-click unsubscribe, at any time. When you open the guide from the email, your address is also recorded in our customer relationship tool; you can object at any time.",
   },
   apercu: {
     surtitre: "Preview",
@@ -652,7 +652,7 @@ const EN: TextesPageGuide = {
   },
   second: {
     titre: "Get the guide",
-    texte: `${GUIDE_IA_PAGES} pages, 13 ready-to-use tools. Sent to you straight away by email, free.`,
+    texte: `${GUIDE_IA_PAGES} pages, 13 ready-to-use tools. Sent to you by email within minutes, free.`,
   },
   faq: {
     surtitre: "FAQ",
@@ -660,7 +660,8 @@ const EN: TextesPageGuide = {
     items: [
       {
         question: "Is the guide really free?",
-        answer: "Yes. It is sent to you by email as soon as you enter your address.",
+        answer:
+          "Yes. It is sent to you by email as soon as you enter your address. With a business address, you also receive a few emails a year, which you can unsubscribe from in one click; with a personal address, only if you tick the box.",
       },
       {
         question: "Do I need a business email address?",
@@ -669,7 +670,7 @@ const EN: TextesPageGuide = {
       {
         question: "Why do you ask for my email?",
         answer:
-          "To send you the guide: the email holds your download link. With a business address, you also receive a few emails a year, only when there is something new and useful; with a personal address, only if you tick the box. One-click unsubscribe, at any time.",
+          "To send you the guide: the email holds your download link. With a business address, you also receive a few emails a year, only when there is something new and useful; with a personal address, only if you tick the box. One-click unsubscribe, at any time. When you open the guide from the email, your address is also recorded in our customer relationship tool; you can object at any time. Details in our privacy policy.",
       },
       {
         question: "I received nothing. What should I do?",

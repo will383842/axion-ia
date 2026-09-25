@@ -4,7 +4,7 @@
 // 3,2 écrans du haut sur mobile, la page ne montrait jamais le guide (deux
 // photos Unsplash d'ambiance), affichait du jargon interne (« Lead magnet »,
 // « pSEO », « quick-wins ») et sortait vers `/formations` alors que le guide
-// propose `/diagnostic` puis `/appel`. 3 inscriptions en trois mois.
+// propose `/diagnostic` puis `/appel` (constat chiffré : audit hors dépôt).
 //
 // La page, désormais :
 //   · premier écran mobile (390 × 664) = couverture réelle + titre + promesse +

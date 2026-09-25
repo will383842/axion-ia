@@ -148,7 +148,10 @@ export interface LibellesFormulaireGuide {
   success: string;
   /** Rappel de l'adresse saisie, suivi de l'adresse (lot L1). */
   envoyeA: string;
-  /** Bouton qui rouvre le formulaire pour corriger l'adresse (lot L1). */
+  /**
+   * Bouton qui rouvre le formulaire pour saisir la bonne adresse (lot L1). Jamais
+   * « Corriger » : la première demande N'EST PAS annulée (elle reste envoyée).
+   */
   corriger: string;
   failure: string;
 }
@@ -162,7 +165,7 @@ const COMMUNS: Record<
     sending: "Envoi…",
     successTitre: "Le guide est en route",
     envoyeA: "Envoyé à",
-    corriger: "Corriger l'adresse",
+    corriger: "Ce n'est pas la bonne adresse ? Saisir la bonne",
     success:
       "C'est parti : le guide arrive dans votre boîte e-mail d'ici quelques minutes. Pensez à regarder dans les indésirables.",
     failure: "Erreur. Réessayez ou écrivez à contact@axion-ia.com.",
@@ -172,7 +175,7 @@ const COMMUNS: Record<
     sending: "Sending…",
     successTitre: "The guide is on its way",
     envoyeA: "Sent to",
-    corriger: "Fix the address",
+    corriger: "Wrong address? Enter the right one",
     success:
       "On its way: the guide will reach your inbox within a few minutes. Check your spam folder too.",
     failure: "Error. Try again or email contact@axion-ia.com.",

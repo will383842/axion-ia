@@ -12,3 +12,9 @@ export const ATTRIBUT_FORMULAIRE_GUIDE = "data-formulaire-guide";
 
 /** Identifiant de la barre collante, que l'observateur montre ou cache. */
 export const ID_BARRE_GUIDE = "barre-guide";
+
+/**
+ * Événement (window) émis par le formulaire du guide quand une demande est
+ * ACCEPTÉE : la barre collante se retire, elle n'a plus rien à proposer.
+ */
+export const EVENEMENT_GUIDE_ENVOYE = "axion:guide-envoye";

@@ -8,8 +8,14 @@
 //   · champ, bouton ET mention d'information entiers au-dessus de 664 px ;
 //   · aucun débordement horizontal à 390 px ;
 //   · la couverture du guide est visible dans ce premier écran ;
+//   · « formulaire complet » s'entend à l'ÉTAT INITIAL (adresse pro ou pas
+//     encore saisie). Avec une adresse personnelle, la case s'ajoute et la
+//     mention passe sous la ligne de flottaison : assumé. Non figé ici, faute
+//     de pouvoir saisir un domaine de webmail réel dans un dépôt public
+//     (adresses de test en `@example.invalid`, reconnues « pro ») ;
 //   · la barre collante est absente au chargement, apparaît une fois le
-//     formulaire dépassé, et s'efface devant le second formulaire.
+//     formulaire dépassé, et s'efface devant le second formulaire et devant
+//     le pied de page (elle en recouvrirait les liens légaux).
 //
 // Le projet CI est `chromium` (ci.yml) : la fenêtre est fixée ici, pas par le
 // projet. Le bandeau cookies est écarté (consentement « refusé » posé avant le
@@ -21,6 +27,8 @@ import { expect, test } from "@playwright/test";
 const LARGEUR = 390;
 const HAUTEUR = 664;
 
+// `isMobile` n'existe pas sous Firefox : ce test est propre à Chromium (projet CI).
+test.skip(({ browserName }) => browserName !== "chromium", "isMobile : Chromium seulement");
 test.use({ viewport: { width: LARGEUR, height: HAUTEUR }, hasTouch: true, isMobile: true });
 
 test.beforeEach(async ({ page }) => {
@@ -86,6 +94,10 @@ test.describe("@guide-ia premier écran mobile", () => {
 
     // Devant le second formulaire : la barre s'efface.
     await page.locator("#recevoir-bas").scrollIntoViewIfNeeded();
+    await expect(barre).not.toBeInViewport();
+
+    // Tout en bas : la barre ne recouvre pas le pied de page.
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
     await expect(barre).not.toBeInViewport();
   });
 });

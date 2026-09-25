@@ -85,7 +85,7 @@ ${readFileSync(TEXTES_GUIDE, "utf8")}`;
   });
 
   it("🔴 L2 — dit que le guide part tout de suite par e-mail (et ne promet plus une confirmation préalable)", () => {
-    expect(fr.hero.envoi).toBe("Envoyé tout de suite par e-mail, gratuitement.");
+    expect(fr.hero.envoi).toBe("Envoyé par e-mail dans les minutes qui suivent, gratuitement.");
     expect(source).toContain("{t.hero.envoi}");
     expect(source).not.toContain("Téléchargement dès la confirmation de votre adresse e-mail.");
   });
