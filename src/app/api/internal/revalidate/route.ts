@@ -18,6 +18,7 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { revalidateAndPurge } from "@/server/cache/revalidate-and-purge";
 import { EXPIRATION_IMMEDIATE } from "@/server/cache/expiration-immediate";
+import { ipDepuisEntetes } from "@/lib/client-ip";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -44,10 +45,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   // Rate-limit best-effort (sliding window Redis, fail-open si Redis down).
   // Cap par IP : un worker légitime envoie quelques revalidations/min ; au-delà
   // c'est un abus/brute-force du secret. Clé par IP forwarded (Caddy/Cloudflare).
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    req.headers.get("x-real-ip") ||
-    "unknown";
+  const ip = ipDepuisEntetes(req.headers);
   const rl = await checkRateLimit(`internal:revalidate:${ip}`, { limit: 60, windowSec: 60 });
   if (!rl.allowed) {
     return new Response("rate_limited", { status: 429 });

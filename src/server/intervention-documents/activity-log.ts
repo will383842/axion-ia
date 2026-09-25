@@ -6,6 +6,7 @@
 
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import { ipVisiteurOuNull } from "@/lib/client-ip";
 
 export interface ActivityLogInput {
   readonly action: string;
@@ -18,11 +19,9 @@ export interface ActivityLogInput {
 export async function logActivity(input: ActivityLogInput): Promise<void> {
   try {
     const h = await headers();
-    const ipAddress =
-      h.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      h.get("x-real-ip") ||
-      h.get("cf-connecting-ip") ||
-      null;
+    // IP du visiteur par la règle unique (cf. lib/client-ip-core) : via Cloudflare,
+    // x-forwarded-for et x-real-ip ne portaient que le relais Cloudflare.
+    const ipAddress = ipVisiteurOuNull(h);
     const userAgent = h.get("user-agent") || null;
     await prisma.activityLog.create({
       data: {

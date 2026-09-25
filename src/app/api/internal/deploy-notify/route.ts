@@ -29,6 +29,7 @@ import type { NextRequest } from "next/server";
 import { z } from "zod";
 import { notify } from "@/server/notifications";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { ipDepuisEntetes } from "@/lib/client-ip";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -60,10 +61,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   const secret = process.env.REVALIDATE_SECRET;
   if (!secret) return new Response("revalidate_secret_missing", { status: 503 });
 
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    req.headers.get("x-real-ip") ||
-    "unknown";
+  const ip = ipDepuisEntetes(req.headers);
   // Plafond bas : un déploiement légitime appelle cette route UNE fois.
   const rl = await checkRateLimit(`internal:deploy-notify:${ip}`, { limit: 10, windowSec: 60 });
   if (!rl.allowed) return new Response("rate_limited", { status: 429 });

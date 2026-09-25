@@ -73,8 +73,26 @@ describe("logActivity — la console journalise exactement comme avant", () => {
     expect(Object.keys(dernier().changes)).toEqual(["before", "after"]);
   });
 
-  it("retombe sur `x-real-ip` puis `cf-connecting-ip`, comme avant", async () => {
+  // 🔴 Retourné le 2026-09-25 (plan « IP client unifiée ») : ce test s'appelait
+  // « retombe sur x-real-ip puis cf-connecting-ip, comme avant » et croyait
+  // `cf-connecting-ip` SEUL — forgeable, l'origine répondant sans Cloudflare.
+  // Il n'est cru que si `x-real-ip` est un relais Cloudflare (forme réelle en
+  // production) ; seul, il n'est jamais inscrit.
+  it("🔴 `cf-connecting-ip` seul n'est jamais inscrit au journal", async () => {
     headersMock.mockReturnValue(entetes({ "cf-connecting-ip": "198.51.100.4" }));
+
+    await logActivity({
+      session: { userId: ADMIN, email: "a@b.c", role: "admin" },
+      action: "content-gen.campaign.pause",
+    });
+
+    expect(dernier().ipAddress).toBeNull();
+  });
+
+  it("derrière Cloudflare : l'IP du visiteur, pas celle du relais", async () => {
+    headersMock.mockReturnValue(
+      entetes({ "x-real-ip": "162.159.122.108", "cf-connecting-ip": "198.51.100.4" }),
+    );
 
     await logActivity({
       session: { userId: ADMIN, email: "a@b.c", role: "admin" },

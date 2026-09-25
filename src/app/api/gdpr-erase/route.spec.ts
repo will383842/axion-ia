@@ -80,10 +80,10 @@ import { empreinteSha256 } from "@/server/newsletter/exports";
  */
 const JETON_FACTICE = "jeton-de-test-assez-long-0123456789";
 
-function requete(): NextRequest {
+function requete(entetes: Record<string, string> = {}): NextRequest {
   return new NextRequest("https://axion-ia.com/api/gdpr-erase", {
     method: "POST",
-    headers: { "content-type": "application/json" },
+    headers: { "content-type": "application/json", ...entetes },
     body: JSON.stringify({
       email: "nadia@exemple.fr",
       token: JETON_FACTICE,
@@ -130,5 +130,24 @@ describe("POST /api/gdpr-erase — la trace relue par la liste de suppression (l
     expect(trace!.changes["emailHash"]).toBe(hashEmailForLookup("nadia@exemple.fr"));
     expect(trace!.changes["emailHash"]).not.toBe(trace!.changes["emailSha256"]);
     expect(JSON.stringify(trace)).not.toContain("nadia@exemple.fr");
+  });
+});
+
+describe("POST /api/gdpr-erase — l'IP de la preuve d'effacement", () => {
+  it("🔴 derrière Cloudflare, la preuve porte l'IP du VISITEUR, pas le relais ni x-forwarded-for brut", async () => {
+    // Forme réelle en production : Traefik pose le relais Cloudflare en
+    // `x-real-ip` ET en `x-forwarded-for`. La route inscrivait ce dernier BRUT.
+    const res = await POST(
+      requete({
+        "x-real-ip": "162.159.122.108",
+        "x-forwarded-for": "162.159.122.108",
+        "cf-connecting-ip": "198.51.100.23",
+      }),
+    );
+    expect(res.status).toBe(200);
+    const trace = journal.create.mock.calls
+      .map((c) => (c[0] as { data: { action: string; ipAddress: string | null } }).data)
+      .find((dd) => dd.action === "gdpr.erase.completed");
+    expect(trace?.ipAddress).toBe("198.51.100.23");
   });
 });

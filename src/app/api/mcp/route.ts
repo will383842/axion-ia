@@ -48,6 +48,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { executerAppel } from "@/server/mcp/appel";
 import { construireManifeste } from "@/server/mcp/manifeste";
 import { outilsPublies } from "@/server/mcp/registre";
+import { ipDepuisEntetes } from "@/lib/client-ip";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -183,10 +184,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   // ── Limitation de débit par IP, AVANT la comparaison du secret ────────────
   //    La placer après ferait de cette route un oracle à force brute : chaque
   //    tentative coûterait un hash et rien d'autre.
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    req.headers.get("x-real-ip") ||
-    "unknown";
+  const ip = ipDepuisEntetes(req.headers);
   const debit = await checkRateLimit(`mcp:${ip}`, {
     limit: PLAFOND_PAR_MINUTE,
     windowSec: 60,

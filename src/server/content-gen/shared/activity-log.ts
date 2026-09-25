@@ -32,6 +32,7 @@
 import { headers } from "next/headers";
 import type { AdminSession } from "@/server/actions/content-gen/_auth";
 import { ecrireJournalActivite } from "@/server/content-gen/shared/activity-log-writer";
+import { ipVisiteurOuNull } from "@/lib/client-ip";
 
 export interface ActivityLogInput {
   /** Identifiant canonique de l'action ex. "content-gen.review.approve". */
@@ -58,11 +59,9 @@ export async function logActivity(input: ActivityLogInput): Promise<void> {
   let userAgent: string | null = null;
   try {
     const h = await headers();
-    ipAddress =
-      h.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      h.get("x-real-ip") ||
-      h.get("cf-connecting-ip") ||
-      null;
+    // IP du visiteur par la règle unique (cf. lib/client-ip-core) : via Cloudflare,
+    // x-forwarded-for et x-real-ip ne portaient que le relais Cloudflare.
+    ipAddress = ipVisiteurOuNull(h);
     userAgent = h.get("user-agent") || null;
   } catch {
     // Hors requête (script, test, réentrée worker) : on perd l'IP et le

@@ -33,6 +33,7 @@ import crypto from "node:crypto";
 import type { NextRequest } from "next/server";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { fetchAvailableSlots, parisDayKey } from "@/server/calendly/availability";
+import { ipDepuisEntetes } from "@/lib/client-ip";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -47,10 +48,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   const secret = process.env.REVALIDATE_SECRET;
   if (!secret) return new Response("revalidate_secret_missing", { status: 503 });
 
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    req.headers.get("x-real-ip") ||
-    "unknown";
+  const ip = ipDepuisEntetes(req.headers);
   const rl = await checkRateLimit(`internal:calendly-availability:${ip}`, {
     limit: 12,
     windowSec: 60,

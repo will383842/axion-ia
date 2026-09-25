@@ -43,6 +43,7 @@ import { invaliderCreneaux } from "@/server/calendly/revalider-creneaux";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { hashIp } from "@/lib/security/ip-hash";
 import { notify } from "@/server/notifications";
+import { ipDepuisEntetes } from "@/lib/client-ip";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -67,10 +68,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     return new Response("payload_too_large", { status: 413 });
   }
 
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    req.headers.get("x-real-ip") ||
-    "unknown";
+  const ip = ipDepuisEntetes(req.headers);
   const rl = await checkRateLimit(`calendly-webhook:${ip}`, { limit: 60, windowSec: 60 });
   if (!rl.allowed) return new Response("rate_limited", { status: 429 });
 

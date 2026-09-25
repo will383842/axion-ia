@@ -23,6 +23,7 @@
 
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import { ipVisiteurOuNull } from "@/lib/client-ip";
 
 export interface AuditLogInput {
   /** Action canonique (writeContentGenConfig | updateBatchSettings | ...). */
@@ -54,14 +55,10 @@ export async function writeAuditLog(input: AuditLogInput): Promise<void> {
   try {
     const h = await headers();
     actorUa = (h.get("user-agent") ?? "").slice(0, 500) || null;
-    // Priorité X-Forwarded-For (Caddy + Cloudflare). On garde uniquement le
-    // premier hop (client réel — les hops Caddy/Cloudflare sont après).
-    const xff = h.get("x-forwarded-for");
-    if (xff) {
-      actorIp = xff.split(",")[0]?.trim().slice(0, 64) ?? null;
-    } else {
-      actorIp = (h.get("x-real-ip") ?? "").slice(0, 64) || null;
-    }
+    // 🔴 « Priorité X-Forwarded-For, premier hop = client réel » était faux en
+    // production : Traefik réécrit cet en-tête avec l'adresse du relais
+    // Cloudflare. La règle unique lit le visiteur (cf. lib/client-ip-core).
+    actorIp = ipVisiteurOuNull(h)?.slice(0, 64) ?? null;
   } catch {
     // headers() throw si hors request context — c'est OK, on log sans IP/UA.
   }

@@ -24,6 +24,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { imageWatermarkService } from "@/server/image-bank/services/image-watermark.service";
 import { hashImageBankIp } from "@/server/image-bank/utils/ip-hash";
 import { getStorageBasePath } from "@/server/image-bank/utils/paths";
+import { ipDepuisEntetes } from "@/lib/client-ip";
 
 const RATE_LIMIT_MAX = 10;
 const RATE_LIMIT_WINDOW_SEC = 60;
@@ -48,7 +49,7 @@ export async function GET(
   const variant = variantParam as VariantKey;
 
   const reqHeaders = await headers();
-  const ip = reqHeaders.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const ip = ipDepuisEntetes(reqHeaders);
   const ipHash = hashImageBankIp(ip);
 
   const rate = await checkRateLimit(`${RATE_LIMIT_KEY_PREFIX}${ipHash}`, {

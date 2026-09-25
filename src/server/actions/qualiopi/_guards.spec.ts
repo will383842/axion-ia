@@ -87,8 +87,15 @@ describe("logQualiopiActivity — A-02 RGPD : hachage IP", () => {
     expect(createCall.data.ipAddress).toBe("hashed:1.2.3.4");
   });
 
-  it("hache l'IP cf-connecting-ip si x-forwarded-for absent", async () => {
-    mockHeaders.mockResolvedValue(makeHeadersMap({ "cf-connecting-ip": "5.6.7.8" }));
+  // 🔴 Retourné le 2026-09-25 (plan « IP client unifiée »). Ce test disait
+  // « cf-connecting-ip si x-forwarded-for absent » : l'en-tête était cru SEUL.
+  // Or l'origine répond aussi sans Cloudflare, donc il se forge. Il n'est cru
+  // désormais que si la connexion (`x-real-ip`) vient d'un relais Cloudflare —
+  // la forme exacte des requêtes réelles en production.
+  it("derrière Cloudflare : hache l'IP du VISITEUR (cf-connecting-ip), pas celle du relais", async () => {
+    mockHeaders.mockResolvedValue(
+      makeHeadersMap({ "x-real-ip": "162.159.122.108", "cf-connecting-ip": "5.6.7.8" }),
+    );
 
     await logQualiopiActivity({
       action: "qualiopi.test.action",
@@ -96,6 +103,18 @@ describe("logQualiopiActivity — A-02 RGPD : hachage IP", () => {
     });
 
     expect(mockHashIp).toHaveBeenCalledWith("5.6.7.8");
+  });
+
+  it("🔴 cf-connecting-ip SEUL (origine contournée) n'est jamais cru", async () => {
+    mockHeaders.mockResolvedValue(makeHeadersMap({ "cf-connecting-ip": "5.6.7.8" }));
+
+    await logQualiopiActivity({
+      action: "qualiopi.test.action",
+      session: SESSION,
+    });
+
+    expect(mockHashIp).not.toHaveBeenCalledWith("5.6.7.8");
+    expect(mockHashIp).toHaveBeenCalledWith(null);
   });
 
   it("stocke null si aucune IP dans les headers", async () => {
