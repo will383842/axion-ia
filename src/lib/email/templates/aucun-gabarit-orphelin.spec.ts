@@ -115,7 +115,13 @@ describe("registre des gabarits — aucun orphelin", () => {
 
 describe("registre des gabarits — les dormants sont vraiment dormants", () => {
   it("🔴 un gabarit déclaré dormant par le catalogue n'est cité par aucun code de production", () => {
-    const sources = fichiersDeProduction().map((f) => readFileSync(f, "utf8"));
+    // Seule exception, nominative : la purge de conservation (lot L6) cite des
+    // gabarits dormants pour EFFACER leurs anciennes lignes d'`email_logs`, jamais
+    // pour les envoyer. Tout autre fichier qui les cite les réveille.
+    const PURGES = ["src/server/newsletter/retention.ts"];
+    const sources = fichiersDeProduction()
+      .filter((f) => !PURGES.some((p) => f.replace(/\\/g, "/").endsWith(p)))
+      .map((f) => readFileSync(f, "utf8"));
     const reveilles = DORMANTS.filter((nom) => sources.some((s) => s.includes(`"${nom}"`)));
     expect(
       reveilles,

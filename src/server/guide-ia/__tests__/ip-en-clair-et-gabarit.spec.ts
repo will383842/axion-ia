@@ -31,6 +31,29 @@ describe("🔴 ip_address : plus aucune lecture ni écriture", () => {
     expect(migration).not.toMatch(/DROP COLUMN/i);
   });
 
+  it("🔴 étape 2 (L6) : une migration POSTÉRIEURE supprime la colonne, et elle seule", () => {
+    const migration = lire(
+      "prisma/migrations/20260925120000_newsletter_drop_ip_address/migration.sql",
+    );
+    const ordres = migration
+      .split(/\r?\n/)
+      .filter((l) => !l.trim().startsWith("--") && l.trim() !== "");
+    // Discriminant positif : la migration fait BIEN le DROP attendu…
+    expect(ordres.join(" ")).toMatch(
+      /ALTER TABLE "newsletter_subscribers" DROP COLUMN IF EXISTS "ip_address";/,
+    );
+    // …et rien d'autre : ni la colonne homonyme de `submissions`, ni l'empreinte.
+    expect(ordres).toHaveLength(1);
+    expect(migration).not.toMatch(/ALTER TABLE "submissions"/);
+    expect(ordres.join(" ")).not.toMatch(/ip_hash/);
+  });
+
+  it("🔴 le script de rattrapage d'empreinte ne vise plus la table des abonnés", () => {
+    const script = lire("prisma/scripts/backfill-ip-hash-2026-05-16.ts");
+    expect(script).toMatch(/backfillTable\("submission"\)/);
+    expect(script).not.toMatch(/backfillTable\("newsletterSubscriber"\)/);
+  });
+
   for (const f of [
     "src/features/guide-ia/actions.ts",
     "src/features/newsletter/actions.ts",

@@ -186,6 +186,26 @@ describe("enregistrerDemandeGuide — la nature de l'adresse décide, côté ser
     expect(data).toMatchObject({ origine: "formulaire", source: "guide-ia" });
   });
 
+  it("L6 — la date de la dernière demande par le FORMULAIRE est posée à la création ET à chaque nouvelle demande", async () => {
+    const avant = Date.now();
+    await enregistrerDemandeGuide({ ...BASE, email: PERSO, caseLettre: false });
+    const creation = (guideCreate.mock.calls[0]?.[0] as { data: Record<string, unknown> }).data;
+    expect(creation["derniereDemandeFormulaireAt"]).toBeInstanceOf(Date);
+    expect((creation["derniereDemandeFormulaireAt"] as Date).getTime()).toBeGreaterThanOrEqual(
+      avant,
+    );
+
+    guideFindUnique.mockResolvedValue({
+      id: "demande-1",
+      downloadToken: "b".repeat(64),
+      origine: "formulaire",
+    });
+    await enregistrerDemandeGuide({ ...BASE, email: PERSO, caseLettre: false });
+    const maj = (guideUpdate.mock.calls[0]?.[0] as { data: Record<string, unknown> }).data;
+    expect(maj["derniereDemandeFormulaireAt"]).toBeInstanceOf(Date);
+    expect((maj["derniereDemandeFormulaireAt"] as Date).getTime()).toBeGreaterThanOrEqual(avant);
+  });
+
   it("une ligne déjà du formulaire garde sa PREMIÈRE provenance", async () => {
     guideFindUnique.mockResolvedValue({
       id: "demande-1",

@@ -71,11 +71,13 @@ beforeEach(() => {
 
 describe("rebond sur l'abonné", () => {
   it("🔴 dur → `bounced`, seulement pour un abonné actif (un désabonné le reste)", async () => {
-    const n = await noterRebondSurAbonne("boite-morte@example.invalid", "hard");
+    const quand = new Date("2026-09-25T08:00:00Z");
+    const n = await noterRebondSurAbonne("boite-morte@example.invalid", "hard", quand);
     expect(n).toBe(1);
     expect(d.subUpdateMany).toHaveBeenCalledWith({
       where: { email: "boite-morte@example.invalid", status: { in: ["pending", "confirmed"] } },
-      data: { status: "bounced" },
+      // L6 — la date du rebond fait courir les 3 ans de conservation.
+      data: { status: "bounced", bouncedAt: quand },
     });
   });
 

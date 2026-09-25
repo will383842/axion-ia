@@ -1,6 +1,11 @@
 /**
- * Backfill `ip_hash` à partir de `ip_address` pour Submission +
- * NewsletterSubscriber (Sprint Correctif S+1 P0-S1-3 RGPD 2026-05-16).
+ * Backfill `ip_hash` à partir de `ip_address` pour Submission
+ * (Sprint Correctif S+1 P0-S1-3 RGPD 2026-05-16).
+ *
+ * ⚠️ Lot L6 (2026-09-25) — NewsletterSubscriber est RETIRÉ de ce script : sa
+ * colonne `ip_address` a quitté le modèle (L2) puis la base (migration
+ * `20260925120000_newsletter_drop_ip_address`). Le rejouer sur cette table
+ * échouerait sur une colonne inexistante.
  *
  * Exécution :
  *   ```bash
@@ -15,9 +20,9 @@
  *
  * Après exécution, vérifier :
  *   - SELECT COUNT(*) FROM submissions WHERE ip_address IS NOT NULL AND ip_hash IS NULL; → 0
- *   - SELECT COUNT(*) FROM newsletter_subscribers WHERE ip_address IS NOT NULL AND ip_hash IS NULL; → 0
  *
- * Puis S+2 : migration DROP COLUMN ip_address sur les 2 tables.
+ * Puis : migration DROP COLUMN ip_address sur `submissions` (celle de
+ * `newsletter_subscribers` est faite, lot L6).
  */
 
 import { PrismaClient } from "../generated/client";
@@ -26,7 +31,7 @@ import { hashIp } from "../../src/lib/security/ip-hash";
 const prisma = new PrismaClient();
 const BATCH = 1000;
 
-async function backfillTable(table: "submission" | "newsletterSubscriber"): Promise<number> {
+async function backfillTable(table: "submission"): Promise<number> {
   let processed = 0;
   let offset = 0;
   // Cast escape-hatch — TS strict ne déduit pas l'union via index dynamique.
@@ -68,10 +73,9 @@ async function main(): Promise<void> {
   if (!process.env.IP_HASH_SALT || process.env.IP_HASH_SALT.length < 32) {
     throw new Error("IP_HASH_SALT manquant ou < 32 chars — abort.");
   }
-  console.log("[backfill-ip-hash] Démarrage backfill Submission + NewsletterSubscriber");
+  console.log("[backfill-ip-hash] Démarrage backfill Submission");
   const sub = await backfillTable("submission");
-  const news = await backfillTable("newsletterSubscriber");
-  console.log(`[backfill-ip-hash] DONE — submissions: ${sub}, newsletter: ${news}`);
+  console.log(`[backfill-ip-hash] DONE — submissions: ${sub}`);
   await prisma.$disconnect();
 }
 

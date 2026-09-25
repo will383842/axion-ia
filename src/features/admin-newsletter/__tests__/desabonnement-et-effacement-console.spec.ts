@@ -19,6 +19,7 @@ const d = vi.hoisted(() => ({
   notify: vi.fn(),
   eraseNewsletter: vi.fn(),
   eraseTraces: vi.fn(),
+  eraseOutboxCrm: vi.fn(),
   propagate: vi.fn(),
   revalidatePath: vi.fn(),
   envoyerGuide: vi.fn(),
@@ -51,6 +52,7 @@ vi.mock("@/server/notifications", () => ({ notify: (...a: unknown[]) => d.notify
 vi.mock("@/lib/rgpd-erase", () => ({
   eraseNewsletterForEmail: (...a: unknown[]) => d.eraseNewsletter(...a),
   eraseEmailTracesForEmail: (...a: unknown[]) => d.eraseTraces(...a),
+  eraseCrmOutboxForEmail: (...a: unknown[]) => d.eraseOutboxCrm(...a),
 }));
 vi.mock("@/server/crm-sync/gdpr", () => ({
   propagateGdprToCrm: (...a: unknown[]) => d.propagate(...a),
@@ -103,6 +105,7 @@ beforeEach(() => {
   d.notify.mockResolvedValue({ ok: true });
   d.eraseNewsletter.mockResolvedValue({ deleted: 1, guideDeleted: 1 });
   d.eraseTraces.mockResolvedValue({ logsPseudonymises: 2, outboxSupprimes: 0 });
+  d.eraseOutboxCrm.mockResolvedValue({ supprimees: 1 });
   d.propagate.mockResolvedValue({ status: "deferred", detail: "drapeau" });
 });
 
@@ -248,6 +251,8 @@ describe("effacement RGPD depuis la console", () => {
     expect(r).toEqual({ ok: true });
     expect(d.eraseNewsletter).toHaveBeenCalledWith(ABONNE.email);
     expect(d.eraseTraces).toHaveBeenCalledWith(ABONNE.email);
+    // L6 — la file vers le CRM (charge en clair) est effacée aussi.
+    expect(d.eraseOutboxCrm).toHaveBeenCalledWith(ABONNE.email);
     expect(d.propagate).toHaveBeenCalledWith(
       expect.objectContaining({ action: "erase", email: ABONNE.email }),
     );

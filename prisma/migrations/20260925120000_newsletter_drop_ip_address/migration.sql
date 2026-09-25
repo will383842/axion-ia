@@ -1,0 +1,23 @@
+-- Lot L6 (2026-09-25) — ÉTAPE 2 de la suppression de `newsletter_subscribers.ip_address`.
+--
+-- La colonne portait l'adresse IP EN CLAIR des abonnés à la lettre. L'empreinte
+-- `ip_hash` (SHA-256 salé, écrite depuis le 2026-05-16) la remplace ; le registre de
+-- preuve (`consent_events.ip_hash`) garde la sienne. Rien de ce qui prouve un
+-- consentement ne vit dans cette colonne.
+--
+-- Étape 1 (lot L2, PR #1157, déjà en production) : le champ a été RETIRÉ de
+-- `schema.prisma`, sans migration. Depuis, le client Prisma généré ne connaît plus la
+-- colonne : aucun code ne peut la lire ni l'écrire (preuve : `git grep` dans la PR).
+--
+-- ⚠️ Fenêtre app/worker : le worker atterrit ~50 min AVANT que l'entrypoint de l'app
+-- ne joue cette migration, et l'ancien conteneur de l'app reste en service pendant
+-- `prisma migrate deploy`. Les deux tournent sur un client généré SANS ce champ
+-- (L2) : aucune requête en vol ne nomme `ip_address`. Un `delete` sans `select`
+-- (RETURNING *) ne liste que les colonnes du modèle, pas celles de la table.
+--
+-- 🔴 IRRÉVERSIBLE : les valeurs sont perdues. C'est le but.
+--
+-- ⚠️ La colonne homonyme de `submissions` n'est PAS touchée : son champ est encore
+-- dans le modèle `Submission` (lecture seule) et relève d'un autre lot.
+
+ALTER TABLE "newsletter_subscribers" DROP COLUMN IF EXISTS "ip_address";

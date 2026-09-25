@@ -46,7 +46,8 @@ vi.mock("@/lib/rgpd-erase", () => ({
   },
   eraseSignatureTokensForEmail: async () => ({ revoques: 0, pseudonymises: 0 }),
   eraseEmailTracesForEmail: async () => ({ logsPseudonymises: 0, outboxSupprimes: 0 }),
-  eraseNewsletterForEmail: async () => ({ deleted: 0 }),
+  eraseCrmOutboxForEmail: async () => ({ supprimees: 0 }),
+  eraseNewsletterForEmail: async () => ({ deleted: 0, guideDeleted: 0 }),
   eraseSubmissionsForEmail: async () => {
     ordre.push("submissions");
     return { anonymized: 1 };

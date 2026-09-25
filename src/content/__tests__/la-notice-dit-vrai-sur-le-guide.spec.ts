@@ -55,11 +55,45 @@ describe("la politique dit vrai sur le guide et la lettre", () => {
     );
   });
 
-  it("durées : 3 ans après le dernier contact, 3 ans en liste d'opposition", () => {
+  // L6, relecture du 2026-09-25 — textes validés par Will, mot pour mot. « Dernier
+  // contact » disparaît : seules les actions de la personne comptent, et la
+  // politique les nomme (demande, clic, inscription). Mêmes durées que
+  // `src/server/newsletter/retention.ts`.
+  const CONSERVATION_FR =
+    "Conservation : demande du guide, 3 ans après votre dernière demande ou votre dernier clic sur le bouton de téléchargement ; inscription à la lettre, 3 ans après votre inscription, votre dernière demande du guide ou votre dernier clic dans une lettre, sauf désinscription avant ce terme ; après une désinscription, votre adresse est gardée 3 ans, puis seule une empreinte en est conservée, sans limite de durée, pour qu'aucun envoi ne vous parvienne ; adresse en échec de distribution définitif, 3 ans, pour ne plus y écrire ; preuve de l'information ou de votre consentement, 5 ans après la fin de votre inscription ; inscription jamais confirmée (ancien parcours), 30 jours.";
+  const CONSERVATION_EN =
+    "Retention: guide request, 3 years after your last request or your last click on the download button; newsletter subscription, 3 years after you subscribed, last requested the guide or last clicked in a newsletter, unless you unsubscribe earlier; after an unsubscription, your address is kept for 3 years, then only a fingerprint of it is kept, with no time limit, so that nothing reaches you; address with a permanent delivery failure, 3 years, so that we no longer write to it; proof of information or of your consent, 5 years after your subscription ends; subscription never confirmed (former process), 30 days.";
+
+  it("durées : le texte validé, mot pour mot (FR et EN)", () => {
     const fr = section("fr", /^Guide IA entreprise/);
-    expect(fr).toContain("inscription à la lettre, 3 ans après votre dernier contact avec nous");
-    expect(fr).toContain("3 ans en liste d'opposition");
-    expect(fr).toContain("demande du guide, 3 ans après votre dernière demande");
+    expect(fr).toContain(CONSERVATION_FR);
+    expect(fr).not.toContain("dernier contact avec nous");
+    expect(fr).not.toContain("3 ans en liste d'opposition");
+    const en = section("en", /^Enterprise AI guide/);
+    expect(en).toContain(CONSERVATION_EN);
+    expect(en).not.toContain("last contact with us");
+  });
+
+  it("preuve : empreintes de l'adresse e-mail et de l'IP, rien en clair ; plus d'« empreinte non réversible »", () => {
+    const fr = section("fr", /^Guide IA entreprise/);
+    expect(fr).toContain(
+      "Comme preuve, nous conservons la version du texte qui vous a été présenté (la mention d'information, ou le texte de la case), la date de votre demande, une empreinte de votre adresse e-mail et une empreinte de votre adresse IP ; ni l'une ni l'autre n'est gardée en clair.",
+    );
+    expect(fr).not.toContain("non réversible");
+    const en = section("en", /^Enterprise AI guide/);
+    expect(en).toContain(
+      "As proof, we keep the version of the text you were shown (the information notice, or the text of the box), the date of your request, a fingerprint of your email address and a fingerprint of your IP address; neither is kept in clear.",
+    );
+    expect(en).not.toContain("non-reversible");
+  });
+
+  it("adresse personnelle : le retrait du consentement est annoncé", () => {
+    expect(section("fr", /^Guide IA entreprise/)).toContain(
+      "(consentement, art. 6.1.a), et vous pouvez retirer votre consentement à tout moment ;",
+    );
+    expect(section("en", /^Enterprise AI guide/)).toContain(
+      "(consent, art. 6.1.a), and you can withdraw your consent at any time;",
+    );
   });
 
   it("la base légale générale cite les deux régimes de la lettre", () => {

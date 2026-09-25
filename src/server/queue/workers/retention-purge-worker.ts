@@ -7,6 +7,14 @@
 //                              On ne conserve que email_hash dans activity_log
 //                              (handle propre RGPD art. 17 droit à l'oubli +
 //                              audit trail nominatif).
+//   - lettre et guide (lot L6, 2026-09-25) : `pending` jamais confirmés à 30 jours,
+//                              abonnés confirmés et demandes du guide sans contact
+//                              de la personne depuis 36 mois, rebonds à 36 mois,
+//                              preuves lettre/guide à 5 ans après la fin, agents
+//                              navigateur hachés, outbox CRM `sent` à 30 jours —
+//                              `src/server/newsletter/retention.ts`. Comptes seulement.
+//                              JAMAIS `email_oppositions` ; dans `consent_events`,
+//                              seules les références de la lettre et du guide.
 //   - generation_logs (audit B5 P0-7) : logs techniques content-gen — purge à N mois
 //                              (default 12). Ces logs sont append-only et lient les
 //                              prompts content-gen à un job_id non-PII. Pas d'export
@@ -31,6 +39,12 @@
 //   RETENTION_EMAIL_OUTBOX_MONTHS=36      (audit e-mail — etats terminaux seuls)
 //   RETENTION_CHAT_MONTHS=12              (chatbot — conversations/messages/escalades + cache/idempotence)
 //   RETENTION_CANDIDATURES_MONTHS=24      (`D4` — candidatures NON RETENUES seulement)
+//   RETENTION_NEWSLETTER_PENDING_DAYS=30   (L6 — inscription jamais confirmée)
+//   RETENTION_NEWSLETTER_INACTIVE_MONTHS=36 (L6 — abonné sans contact)
+//   RETENTION_GUIDE_REQUESTS_MONTHS=36     (L6 — demande du guide sans contact)
+//   RETENTION_NEWSLETTER_BOUNCED_MONTHS=36 (L6 — adresse rejetée, après le rebond)
+//   RETENTION_LETTRE_PREUVES_MONTHS=60     (L6 — preuve lettre/guide, après la fin)
+//   RETENTION_CRM_OUTBOX_SENT_DAYS=30      (L6 — outbox CRM acquittée)
 //
 // ⚠️ `RETENTION_CANDIDATURES_MONTHS` ne s'applique PAS à tout le monde. Une
 // candidature en statut `hired` n'est JAMAIS purgée automatiquement : elle est
@@ -47,6 +61,11 @@ import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { deleteCv } from "@/server/careers/cv-storage";
 import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
+import {
+  purgerDesinscrits,
+  purgerLettreEtGuide,
+  purgerOutboxCrm,
+} from "@/server/newsletter/retention";
 import type { RetentionPurgeJobData } from "../types";
 
 const DEFAULTS = {
@@ -254,37 +273,62 @@ export async function executerPurgeRetention(): Promise<void> {
   });
   counts.reservationsAppel = rdvPurges.count;
 
-  // 3) newsletter_subscribers unsubscribed anciens
+  // 3) newsletter_subscribers unsubscribed anciens — lot L6 (relecture du
+  // 2026-09-25) : la boucle qui vivait ici est déplacée dans
+  // `newsletter/retention.ts` (`purgerDesinscrits`), testée par l'effet. Même
+  // durée, même trace `newsletter.purged` ; en plus, l'EMPREINTE de l'adresse
+  // est posée en liste d'opposition AVANT la suppression (« puis seule une
+  // empreinte en est conservée, sans limite de durée »), et la fin de
+  // l'inscription est consignée au registre (les 5 ans de la preuve en partent).
+  //
+  // Chaque étape de la lettre a son propre `try` : une erreur (colonne pas
+  // encore migrée pendant la fenêtre app/worker, sel absent…) est remontée à
+  // Sentry et n'arrête pas le reste de la purge.
   const newsMonths = readMonths("RETENTION_NEWSLETTER_UNSUB_MONTHS", DEFAULTS.newsletterUnsub);
-  const oldUnsub = await prisma.newsletterSubscriber.findMany({
-    where: {
-      status: "unsubscribed",
-      unsubscribedAt: { lt: monthsAgo(newsMonths) },
-    },
-    select: { id: true, email: true },
-  });
-  for (const sub of oldUnsub) {
-    await prisma.$transaction(async (tx) => {
-      // `select` explicite (lot L2, 2026-09-24) : sans lui, `delete` relit TOUTES
-      // les colonnes (RETURNING *) — y compris celles qu'une migration vient
-      // d'ajouter. Le worker atterrit ~50 min avant la migration : pendant cette
-      // fenêtre, la purge échouerait sur une colonne encore absente.
-      await tx.newsletterSubscriber.delete({ where: { id: sub.id }, select: { id: true } });
-      await tx.activityLog.create({
-        data: {
-          adminUserId: null,
-          action: "newsletter.purged",
-          targetType: "newsletter_subscriber",
-          targetId: sub.id,
-          changes: {
-            emailHash: await hashEmail(sub.email),
-            policy: "retention",
-            ageMonths: newsMonths,
-          },
-        },
-      });
-    });
-    counts.newsletter++;
+  try {
+    const desinscrits = await purgerDesinscrits(new Date(), newsMonths);
+    counts.newsletter = desinscrits.purges;
+    console.log(
+      `[retention-purge][desinscrits] purges=${desinscrits.purges} ` +
+        `empreintes=${desinscrits.empreintesGardees} reportes=${desinscrits.reportes}`,
+    );
+  } catch (err) {
+    console.error("[retention-purge][desinscrits] étape en échec, reprise demain.");
+    captureWorkerError("retention-purge", "retention-purge", undefined, err);
+  }
+
+  // 3 bis) lot L6 (2026-09-25) — lettre et guide : `pending` à 30 jours, abonnés
+  // confirmés et demandes du guide sans contact de la personne depuis 3 ans,
+  // rebonds à 3 ans, preuves de la lettre et du guide à 5 ans après la fin,
+  // agents navigateur hachés. Les durées sont celles que publie la politique de
+  // confidentialité ; la définition du « dernier contact » et ce qui n'est
+  // JAMAIS supprimé (`email_oppositions`, preuves des autres formulaires) sont
+  // écrits dans le module. Journal : comptes seuls.
+  try {
+    const lettre = await purgerLettreEtGuide();
+    console.log(
+      `[retention-purge][lettre] pending=${lettre.pendingPurges} ` +
+        `inactifs=${lettre.abonnesInactifsPurges} ` +
+        `gardesParDemandeRecente=${lettre.abonnesGardesParDemandeRecente} ` +
+        `rebonds=${lettre.rebondsPurges} ` +
+        `demandesGuide=${lettre.demandesGuidePurgees} ` +
+        `journauxEnvoi=${lettre.journauxEnvoiPurges} ` +
+        `preuves=${lettre.preuvesPurgees} agentsHaches=${lettre.agentsHaches}`,
+    );
+  } catch (err) {
+    console.error("[retention-purge] étape lettre et guide en échec, reprise demain.");
+    captureWorkerError("retention-purge", "retention-purge", undefined, err);
+  }
+
+  // 3 ter) lot L6 — `crm_sync_outbox` : la charge porte les données en clair.
+  // Lignes `sent` (acquittées par le CRM) à 30 jours ; jamais `pending`,
+  // `failed` ni `gave_up`.
+  try {
+    const outboxCrm = await purgerOutboxCrm();
+    console.log(`[retention-purge][crm-outbox] envoyees=${outboxCrm}`);
+  } catch (err) {
+    console.error("[retention-purge][crm-outbox] étape en échec, reprise demain.");
+    captureWorkerError("retention-purge", "retention-purge", undefined, err);
   }
 
   // 5) generation_logs anciens (content-gen audit trail technique, audit B5 P0-7).

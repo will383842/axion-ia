@@ -28,12 +28,17 @@ vi.mock("@/lib/security/email-hash", () => ({
   },
 }));
 
-vi.mock("@/lib/security/ip-hash", () => ({
-  hashIp: (ip: string | null) => {
-    if (ip === "boom") throw new Error("IP_HASH_SALT manquant");
-    return ip ? `iphash-${ip}` : null;
-  },
-}));
+vi.mock("@/lib/security/ip-hash", async (importOriginal) => {
+  const vrai = await importOriginal<typeof import("@/lib/security/ip-hash")>();
+  return {
+    hashIp: (ip: string | null) => {
+      if (ip === "boom") throw new Error("IP_HASH_SALT manquant");
+      return ip ? `iphash-${ip}` : null;
+    },
+    // L6 — le VRAI hachage de l'agent : le test prouve le mécanisme, pas un double.
+    hashUserAgent: vrai.hashUserAgent,
+  };
+});
 
 import { CONSENT_FORM_REFS, recordConsentEvent } from "../index";
 
@@ -72,6 +77,25 @@ describe("registre de preuve", () => {
     // régression, pas une garantie.
     expect(JSON.stringify(data)).not.toContain("Jean.Test");
     expect(JSON.stringify(data)).not.toContain("jean.test@example.invalid");
+  });
+
+  it("L6 — l'agent navigateur est HACHÉ (préfixe `h:`, même sel que l'IP), jamais gardé en clair", async () => {
+    const agent = "Mozilla/5.0 (navigateur-de-test-L6)";
+    await recordConsentEvent({
+      email: "agent@example.invalid",
+      formRef: CONSENT_FORM_REFS.unifiedContact,
+      consentVersion: "v-test",
+      action: "optin",
+      ip: "203.0.113.9",
+      userAgent: agent,
+    });
+    const data = createMock.mock.calls[0]?.[0]?.data;
+    // Discriminant positif : une valeur est bien écrite, et c'est l'empreinte.
+    expect(data.userAgent).toMatch(/^h:[0-9a-f]{16}$/);
+    const { hashIp: vraiHashIp } =
+      await vi.importActual<typeof import("@/lib/security/ip-hash")>("@/lib/security/ip-hash");
+    expect(data.userAgent).toBe(`h:${vraiHashIp(agent)}`);
+    expect(JSON.stringify(data)).not.toContain("navigateur-de-test-L6");
   });
 
   it("ne lève pas et n'empêche rien quand la base tombe", async () => {

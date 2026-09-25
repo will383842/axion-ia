@@ -158,30 +158,59 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       source: true,
       confirmedAt: true,
       unsubscribedAt: true,
+      consentFormRef: true,
       consentVersion: true,
+      // Lot L6 — les champs d'engagement (vides tant qu'aucune lettre ne part)
+      // sont des données sur la personne : l'art. 15 les couvre aussi.
+      lastSentAt: true,
+      lastClickAt: true,
+      softBounceCount: true,
+      lastSoftBounceAt: true,
       createdAt: true,
     },
   });
 
+  // Lot L6 (relecture du 2026-09-25) — une lecture qui échoue n'est plus
+  // avalée en « liste vide » (`.catch(() => [])`) : l'export présenterait
+  // comme complet un résultat amputé. L'échec est DIT, dans l'export même.
+  const avertissements: string[] = [];
+  const ouAvertir = async <T>(nom: string, lecture: Promise<T[]>): Promise<T[]> => {
+    try {
+      return await lecture;
+    } catch {
+      avertissements.push(
+        `${nom} : lecture impossible au moment de l'export — cette rubrique peut être incomplète. ` +
+          "Écrivez à contact@axion-ia.com pour une vérification manuelle.",
+      );
+      return [];
+    }
+  };
+
   // Lot L2 (2026-09-24) — demandes du guide IA : ce qui a été demandé, d'où,
   // quand c'est parti et quand le guide a été ouvert. Le jeton du lien
-  // personnel n'est PAS exporté : c'est un secret d'accès, pas une donnée.
-  const guide = await prisma.guideRequest
-    .findMany({
+  // personnel n'est PAS exporté : c'est un secret d'accès, pas une donnée
+  // (déclaré dans `excludedTables`).
+  const guide = await ouAvertir(
+    "guide",
+    prisma.guideRequest.findMany({
       where: { email },
       select: {
         aimant: true,
+        origine: true,
         source: true,
         locale: true,
+        version: true,
         createdAt: true,
+        queuedAt: true,
         sentAt: true,
         sendCount: true,
         firstSeenAt: true,
         firstClickAt: true,
+        derniereDemandeFormulaireAt: true,
       },
       orderBy: { createdAt: "desc" },
-    })
-    .catch(() => []);
+    }),
+  );
 
   // 🔴 `D5-5-03` (2026-08-20) — LES CANDIDATURES ÉTAIENT ABSENTES DE L'EXPORT.
   //
@@ -217,8 +246,43 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           consentVersion: true,
           action: true,
           occurredAt: true,
+          // L6 — les empreintes font partie de la preuve, donc de ses données :
+          // l'IP et l'agent navigateur, tous deux hachés (jamais en clair).
+          ipHash: true,
+          userAgent: true,
         },
       })
+    : [];
+
+  // L6 — liste d'opposition : la seule trace de la personne est l'empreinte
+  // de son adresse. Elle lui est rendue avec la date et l'origine.
+  const oppositions = lookupHash
+    ? await ouAvertir(
+        "oppositions",
+        prisma.emailOpposition.findMany({
+          where: { emailHash: lookupHash },
+          select: { emailHash: true, source: true, template: true, createdAt: true },
+        }),
+      )
+    : [];
+
+  // L6 — file vers le CRM : quels événements la concernant sont partis (ou
+  // attendent), et quand. La charge elle-même est déclarée dans les exclusions.
+  const fileCrm = lookupHash
+    ? await ouAvertir(
+        "fileCrm",
+        prisma.crmSyncOutbox.findMany({
+          where: { payload: { path: ["person", "person_key"], equals: lookupHash } },
+          select: {
+            eventType: true,
+            status: true,
+            createdAt: true,
+            sentAt: true,
+            crmResult: true,
+          },
+          orderBy: { createdAt: "desc" },
+        }),
+      )
     : [];
 
   // ART. 15 BI-SYSTÈME (lot L4) — le CRM détient peut-être aussi des données.
@@ -299,8 +363,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
    * 🔑 `inviteeEmail` désigne le TITULAIRE, jamais ses invités. Verrou :
    * `src/lib/__tests__/un-invite-ne-voit-pas-la-fiche-du-prospect.spec.ts`.
    */
-  const rendezVous = await prisma.calendlyEvent
-    .findMany({
+  const rendezVous = await ouAvertir(
+    "rendezVous",
+    prisma.calendlyEvent.findMany({
       where: { inviteeEmail: email },
       orderBy: { capturedAt: "desc" },
       select: {
@@ -335,8 +400,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         // elle-même écrit.
         rawPayload: true,
       },
-    })
-    .catch(() => []);
+    }),
+  );
 
   return NextResponse.json({
     ok: true,
@@ -349,6 +414,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     kb,
     chat,
     consentEvents,
+    /** Liste d'opposition : l'empreinte de votre adresse, si vous vous êtes opposé(e). */
+    oppositions,
+    /** Événements vous concernant transmis (ou à transmettre) à notre outil de suivi client. */
+    fileCrm,
+    ...(avertissements.length > 0 ? { avertissements } : {}),
     /** Messages qui vous ont été adressés : quoi, quand, et s'ils sont arrivés. */
     emailsEnvoyes,
     /** Messages vous concernant en attente d'envoi ou de validation interne. */
@@ -436,6 +506,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         // table présente serait exactement le défaut que cette notice existe
         // pour éviter.
         "calendly_events.raw_payload (charge technique renvoyée par Calendly : les réponses au formulaire y figurent, et elles sont restituées ci-dessus sous forme lisible)",
+        // L6 (relecture du 2026-09-25) — déclarés, jamais tus.
+        "crm_sync_outbox.payload (copie des données déjà restituées ci-dessus — demandes, inscription — envoyée à notre outil de suivi client ; ses métadonnées sont exportées sous « fileCrm »)",
+        "newsletter_subscribers.confirm_token, newsletter_subscribers.unsubscribe_token, guide_requests.download_token (jetons d'accès : les exporter reviendrait à remettre une clé, pas une donnée ; ils ne décrivent rien de vous)",
       ],
       excludedReason:
         "Logs techniques RGPD art. 23 — voir politique-confidentialite § IA générative et transparence. Purgés automatiquement (cf. retention-purge-worker).",

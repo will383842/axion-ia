@@ -27,7 +27,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
-import { hashIp } from "@/lib/security/ip-hash";
+import { hashIp, hashUserAgent } from "@/lib/security/ip-hash";
 
 /**
  * Sens de l'événement : accord donné, accord retiré — ou, depuis le lot L2
@@ -36,8 +36,16 @@ import { hashIp } from "@/lib/security/ip-hash";
  * repose sur aucun accord ; ce qui se prouve, c'est que la personne a été
  * informée, par quel texte (sa version) et quand. Ce n'est pas un `optin`, et
  * le registre ne doit jamais le laisser croire.
+ *
+ * `fin` (lot L6, relecture du 2026-09-25) — FIN de l'inscription à la lettre
+ * constatée par la purge (inactivité, rebond, désinscription arrivée à son
+ * terme). Ce n'est ni un accord ni un retrait : c'est la date à partir de
+ * laquelle courent les 5 ans de conservation de la preuve (« 5 ans après la
+ * fin de votre inscription »). Sans elle, la preuve d'un abonné resté actif six
+ * ans serait purgée le lendemain de sa sortie. `occurredAt` = la date réelle de
+ * la fin (rebond, désinscription), jamais celle de la purge si elle diffère.
  */
-export type ConsentAction = "optin" | "optout" | "information";
+export type ConsentAction = "optin" | "optout" | "information" | "fin";
 
 /**
  * Références FERMES des points de capture. Sans elles, deux consentements de
@@ -67,6 +75,7 @@ export interface RecordConsentEventInput {
   /** Quand le consentement a été DONNÉ (défaut : maintenant). */
   occurredAt?: Date | undefined;
   ip?: string | null | undefined;
+  /** Agent navigateur en clair — haché ici (`h:` + empreinte), jamais stocké tel quel. */
   userAgent?: string | null | undefined;
 }
 
@@ -93,7 +102,10 @@ export async function recordConsentEvent(input: RecordConsentEventInput): Promis
         action: input.action,
         occurredAt: input.occurredAt ?? new Date(),
         ipHash: safeHashIp(input.ip),
-        userAgent: input.userAgent ?? null,
+        // L6 (relecture du 2026-09-25) — l'agent navigateur n'est plus gardé en
+        // clair : même mécanisme et même sel que l'IP, préfixe `h:`. Les valeurs
+        // anciennes sont hachées par la purge quotidienne (`retention.ts`).
+        userAgent: safeHashUserAgent(input.userAgent),
       },
     });
 
@@ -113,6 +125,16 @@ function safeHashIp(ip: string | null | undefined): string | null {
   if (!ip) return null;
   try {
     return hashIp(ip);
+  } catch {
+    return null;
+  }
+}
+
+/** Même tolérance que `safeHashIp` : sans sel, on renonce à l'agent, pas à la preuve. */
+function safeHashUserAgent(ua: string | null | undefined): string | null {
+  if (!ua) return null;
+  try {
+    return hashUserAgent(ua);
   } catch {
     return null;
   }

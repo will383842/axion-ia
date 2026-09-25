@@ -219,6 +219,51 @@ export async function eraseEmailTracesForEmail(email: string): Promise<EraseEmai
   return { logsPseudonymises: logs.count, outboxSupprimes: outbox.count };
 }
 
+export interface EraseCrmOutboxResult {
+  /** Lignes de `crm_sync_outbox` supprimées (tous statuts). */
+  readonly supprimees: number;
+}
+
+/**
+ * Lot L6 (relecture du 2026-09-25) — `crm_sync_outbox` GARDAIT L'ADRESSE EN CLAIR.
+ *
+ * La charge (`payload`) est le corps exact envoyé au CRM, « PII déchiffrées au
+ * moment de la construction » : adresse, nom, téléphone. L'effacement ne la
+ * touchait pas. On SUPPRIME les lignes de la personne, quel que soit leur
+ * statut :
+ *   · `sent` — le CRM les a reçues ; leur effacement côté CRM passe par
+ *     `propagateGdprToCrm` (appel direct, pas cette table) ;
+ *   · `pending` / `failed` — les garder ferait REPARTIR ses données vers le CRM
+ *     après l'effacement, au prochain balayage : c'est le pire des cas ;
+ *   · `gave_up` — ne repartira plus, mais la charge porte toujours l'adresse.
+ *
+ * 🔑 Comment on les retrouve : la table n'a PAS de colonne d'empreinte. Chaque
+ * événement porte en revanche `person.person_key` (= `hashEmailForLookup`,
+ * normalisé : insensible à la casse), posé par tous les producteurs
+ * (`crm-sync/index.ts`). On cherche donc DANS LA CHARGE, par ce chemin JSON —
+ * et, en second filet, par `person.email` tel que saisi (comparaison JSON,
+ * sensible à la casse), pour une ligne dont la clé aurait manqué.
+ *
+ * ⚠️ Recherche non indexée (filtre `jsonb` sur toute la table). Acceptable :
+ * l'effacement est un geste rare, et la purge garde la table courte (lignes
+ * `sent` à 30 jours, `newsletter/retention.ts`).
+ */
+export async function eraseCrmOutboxForEmail(email: string): Promise<EraseCrmOutboxResult> {
+  const empreinte = hashEmailForLookup(email);
+  // L'adresse telle que saisie ET sa forme normalisée : le filtre JSON est
+  // sensible à la casse, contrairement aux colonnes `citext`.
+  const formes = [...new Set([email, email.trim().toLowerCase()])];
+  const r = await prisma.crmSyncOutbox.deleteMany({
+    where: {
+      OR: [
+        ...(empreinte ? [{ payload: { path: ["person", "person_key"], equals: empreinte } }] : []),
+        ...formes.map((f) => ({ payload: { path: ["person", "email"], equals: f } })),
+      ],
+    },
+  });
+  return { supprimees: r.count };
+}
+
 export interface EraseChatResult {
   /** Conversations chatbot supprimées (messages cascade). */
   readonly conversationsDeleted: number;
