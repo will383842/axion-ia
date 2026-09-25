@@ -151,3 +151,52 @@ describe("jeton invalide → 404", () => {
     expect((await POST(post(JETON))).status).toBe(429);
   });
 });
+
+describe("pages d'erreur : une vraie phrase, dans la langue de la personne (décision du 25/09)", () => {
+  function avecLangue(req: NextRequest, langue: string): NextRequest {
+    req.headers.set("accept-language", langue);
+    return req;
+  }
+
+  it("🔴 429 : une phrase, jamais le code « rate_limited »", async () => {
+    checkRateLimit.mockResolvedValue({ allowed: false });
+    for (const res of [await GET(get(JETON)), await POST(post(JETON))]) {
+      const html = await res.text();
+      expect(res.status).toBe(429);
+      expect(html).not.toContain("rate_limited");
+      expect(html).toContain("Trop de demandes en peu de temps. Réessayez dans quelques minutes.");
+      expect(res.headers.get("content-type")).toContain("text/html");
+    }
+    const en = await GET(avecLangue(get(JETON), "en-GB,en;q=0.9"));
+    expect(await en.text()).toContain(
+      "Too many requests in a short time. Try again in a few minutes.",
+    );
+    // Le débit est vérifié AVANT la base : rien n'est lu.
+    expect(findUnique).not.toHaveBeenCalled();
+  });
+
+  it("🔴 404 : la phrase dit où redemander le guide, en français par défaut", async () => {
+    findUnique.mockResolvedValue(null);
+    const html = await (await GET(get(JETON))).text();
+    expect(html).toContain('lang="fr"');
+    expect(html).toContain("Ce lien n&#39;est plus valable. Demandez à nouveau le guide sur");
+    expect(html).toContain('<a href="/fr/guide-ia">axion-ia.com/fr/guide-ia</a>.');
+    expect(html).not.toMatch(/<script/i);
+  });
+
+  it("404 en anglais quand le navigateur demande l'anglais", async () => {
+    findUnique.mockResolvedValue(null);
+    const res = await POST(avecLangue(post(JETON), "en-US,en;q=0.8,fr;q=0.5"));
+    expect(res.status).toBe(404);
+    const html = await res.text();
+    expect(html).toContain('lang="en"');
+    expect(html).toContain("This link is no longer valid. Request the guide again at");
+    expect(html).toContain('<a href="/en/ai-guide">axion-ia.com/en/ai-guide</a>.');
+  });
+
+  it("un navigateur qui préfère le français garde la page en français", async () => {
+    const res = await GET(avecLangue(get("abc"), "fr-FR,fr;q=0.9,en;q=0.8"));
+    expect(res.status).toBe(404);
+    expect(await res.text()).toContain('lang="fr"');
+  });
+});

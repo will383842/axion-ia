@@ -498,17 +498,48 @@ describe("batch de réconciliation", () => {
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
-  it("ne compare PAS le vivier tant que le flux candidats est fermé", async () => {
+  // ADR 0047, révision : aucune candidature ne part plus au CRM. La famille
+  // est TOUJOURS ignorée, sans lecture en base, quel que soit le drapeau —
+  // `CRM_SYNC_CANDIDATES_ENABLED` reste ouvert pour la seule opposition au
+  // vivier, et ne dit plus rien de l'envoi.
+  it.each([
+    ["fermé", undefined],
+    ["ouvert", "true"],
+  ])("ne compare PAS les candidatures, flux candidats %s", async (_libelle, drapeau) => {
     enable();
-    delete process.env.CRM_SYNC_CANDIDATES_ENABLED;
+    if (drapeau) process.env.CRM_SYNC_CANDIDATES_ENABLED = drapeau;
+    else delete process.env.CRM_SYNC_CANDIDATES_ENABLED;
+    const fetchMock = vi.fn().mockResolvedValue(new Response("{}", { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+    // Des candidatures existent : si la famille les lisait, elles seraient
+    // toutes « manquantes » (aucune n'a de ligne d'outbox).
+    jobApplication.findMany.mockResolvedValue([{ id: "ja-1" }, { id: "ja-2" }]);
     submission.findMany.mockResolvedValue([]);
+    outbox.findMany.mockResolvedValue([]);
+
+    const rapport = await runCrmSyncReconciliation();
+
+    const vivier = rapport.families.find((f) => f.family === "job_application");
+    expect(vivier?.skipped).toContain("ADR 0047");
+    expect(vivier?.missing).toBe(0);
+    expect(jobApplication.findMany).not.toHaveBeenCalled();
+    expect(rapport.totalMissing).toBe(0);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("un /contact de type « recrutement » n'est pas réclamé (il n'émet plus)", async () => {
+    enable();
+    submission.findMany.mockResolvedValue([
+      { id: "s-client", details: { unifiedType: "audit" } },
+      { id: "s-recrutement", details: { unifiedType: "recrutement" } },
+    ]);
     outbox.findMany.mockResolvedValue([]);
 
     const rapport = await collectReconciliation();
 
-    const vivier = rapport.families.find((f) => f.family === "job_application");
-    expect(vivier?.skipped).toContain("CRM_SYNC_CANDIDATES_ENABLED");
-    expect(jobApplication.findMany).not.toHaveBeenCalled();
+    // Témoin : la demande client, elle, reste réclamée.
+    const famille = rapport.families.find((f) => f.family === "submission");
+    expect(famille?.missingIds).toEqual(["site:submission:s-client"]);
   });
 
   it("aucun écart : le rapport reste émis (signal de vie) et n'alerte pas", async () => {

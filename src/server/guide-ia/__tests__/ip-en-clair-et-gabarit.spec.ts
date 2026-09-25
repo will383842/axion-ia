@@ -86,6 +86,41 @@ describe("l'e-mail « Votre guide »", () => {
     expect(occurrences).toBe(1);
   });
 
+  it("🔴 le bouton du guide vient juste après « Commencez par la page 5 », AVANT le bloc « lettre » (décision du 25/09)", async () => {
+    const lien = `/api/guide-ia/telecharger?t=${"d".repeat(64)}`;
+    for (const locale of ["fr", "en"] as const) {
+      const abonnee = await renderEmailTemplate("guide-ia-envoi", locale, {
+        downloadToken: "d".repeat(64),
+        unsubscribeToken: "u".repeat(64),
+      });
+      const desabonnee = await renderEmailTemplate("guide-ia-envoi", locale, {
+        downloadToken: "d".repeat(64),
+        confirmToken: "c".repeat(64),
+      });
+      const astuce = locale === "fr" ? "Commencez par la page 5" : "Start with page 5";
+      const seDesabonner =
+        locale === "fr" ? "Se désabonner de la lettre" : "Unsubscribe from the letter";
+      const revenir = locale === "fr" ? "Recevoir à nouveau la lettre" : "Receive the letter again";
+      const note = locale === "fr" ? "Vous n&#x27;avez pas fait" : "Didn&#x27;t request this";
+
+      const a = abonnee.html;
+      expect(a.indexOf(astuce), "astuce absente").toBeGreaterThan(-1);
+      expect(a.indexOf(lien)).toBeGreaterThan(a.indexOf(astuce));
+      expect(a.indexOf(lien)).toBeLessThan(a.indexOf(seDesabonner));
+      expect(a.indexOf(lien)).toBeLessThan(a.indexOf(note));
+
+      const d = desabonnee.html;
+      expect(d.indexOf(lien)).toBeGreaterThan(d.indexOf(astuce));
+      expect(d.indexOf(lien)).toBeLessThan(d.indexOf(revenir));
+      expect(d.indexOf(lien)).toBeLessThan(d.indexOf(note));
+
+      // Même ordre dans la version texte : le libellé du bouton précède le lien de désinscription.
+      const libelle = locale === "fr" ? "Télécharger le guide (PDF)" : "Download the guide (PDF)";
+      expect(abonnee.text.indexOf(libelle)).toBeGreaterThan(-1);
+      expect(abonnee.text.indexOf(libelle)).toBeLessThan(abonnee.text.indexOf(seDesabonner));
+    }
+  });
+
   it("phrase de reprise, seulement quand elle est demandée (envoi unique, lot L7)", async () => {
     const sans = await renderEmailTemplate("guide-ia-envoi", "fr", {
       downloadToken: "d".repeat(64),

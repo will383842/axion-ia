@@ -28,6 +28,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 import { HoneypotField } from "@/components/forms/HoneypotField";
+import { reporterLeurre } from "@/components/forms/reporter-leurre";
 import { isStaleServerActionError } from "@/lib/forms/form-errors";
 import type { LibellesFormulaireGuide, SourceGuide } from "@/content/guide-ia-formulaire";
 import { natureAdresse } from "@/lib/email/nature-adresse";
@@ -71,7 +72,7 @@ export function NewsletterForm({ libelles, source, variant = "stacked" }: Newsle
     ? "Cette page a expiré suite à une mise à jour du site. Rechargez la page (Ctrl+R / ⌘+R) puis réessayez."
     : "This page expired after a site update. Reload the page (Ctrl+R / ⌘+R) and try again.";
 
-  async function onSubmit(values: DemandeGuideInput) {
+  async function onSubmit(values: DemandeGuideInput, event?: React.BaseSyntheticEvent) {
     setServerError(null);
     // 🔴 `serverError` lu dans le `catch` serait la valeur figée au rendu (donc
     // `null`) : le message précis (MX, Turnstile, débit) était ÉCRASÉ par le
@@ -87,6 +88,7 @@ export function NewsletterForm({ libelles, source, variant = "stacked" }: Newsle
       fd.set("source", source);
       // Turnstile est BLOQUANT (D3) : sans jeton, le serveur refuse et le dit.
       if (turnstileToken) fd.set("cf-turnstile-response", turnstileToken);
+      reporterLeurre(fd, event?.target);
 
       const result = await demanderGuideAction({ ok: false, error: "" }, fd);
       if (!result.ok) {

@@ -1,6 +1,6 @@
 # ADR 0047 — Recrutement : où s'arrête la console, où commence le CRM Pro
 
-- **Statut** : **ACCEPTÉ — les trois arbitrages du §4 ont été tranchés par Will le 2026-09-04**
+- **Statut** : **ACCEPTÉ — les trois arbitrages du §4 ont été tranchés par Will le 2026-09-04 ; RÉVISÉ le 2026-09-24 : aucune candidature ne franchit plus la frontière (§ 4 ter)**
 - **Date** : 2026-09-03
 - **Auteur** : Claude, en fermant le lot 6 du chantier « pilotage du recrutement »
 - **Référence** : `src/server/vivier/`, `src/server/crm-sync/`, `prisma/schema.prisma` (`JobApplication`, l. 8320-8470), `src/server/auth/habilitations.ts`, PR #952 / #955 / #959 / #961 / #966 / #968
@@ -209,9 +209,101 @@ console ↔ Axion Partners : **ADR 0051**. Le rapprochement quotidien
 ne les touche, et aucune session ne les touche côté CRM.
 
 `/carrieres` n'est pas concerné : ses candidatures aux offres suivent toujours ce qui
-précède.
+précède. _(Ce n'est plus vrai depuis la révision du § 4 ter.)_
+
+## 4 ter. 🔴 RÉVISION (2026-09-24) — aucune candidature ne franchit la frontière
+
+**Décision de Will : les candidatures aux offres d'emploi ne partent plus au CRM
+Pro.** Le vivier est tenu par la console du site, qui lit `JobApplication` et non
+l'outbox. La ligne de partage du § 2 devient : **la console porte le recrutement,
+actif comme vivier ; le CRM Pro ne reçoit rien du recrutement.**
+
+🔴 **Le même piège que pour les apporteurs, une seconde fois.** Le § 4 bis disait
+les deux drapeaux `CRM_SYNC_*` « sans effet tant que [`VIVIER_STOCK_ENABLED`] est
+fermé ». C'était faux aussi pour `/carrieres` : l'action de candidature appelait
+`syncCandidateToCrm` directement, à chaque candidature à une offre publiée, sans
+passer par ce drapeau. Des fiches sont effectivement parties ; le détail est tenu
+**hors de ce dépôt**, qui est public.
+
+Ce que le code fait désormais :
+
+| Chemin                                                                | Avant                                                                                | Après                                                                                                                      |
+| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| Candidature à une offre (`job-application/actions.ts`)                | `application_submitted` à chaque envoi                                               | **rien** — l'import de la synchro est supprimé                                                                             |
+| `/contact` de type « recrutement » (`syncFormSubmissionToCrm`)        | `form_submission` univers `vivier` (refusé par le CRM)                               | **rien** — garde au point d'entrée unique                                                                                  |
+| `syncCandidateToCrm` (`crm-sync/index.ts`)                            | exportée, appelée par l'action et par le stock                                       | **supprimée** — pas désactivée : aucun appelant futur ne peut la rappeler                                                  |
+| Intégration J+30 du stock (`vivier/stock.ts`, `integrateVivierStock`) | `application_submitted` par candidature, derrière `CRM_SYNC_CANDIDATES_ENABLED` seul | **coupée** — ne lit plus la base, n'émet rien, ne pose pas `vivierSyncedAt` ; `VIVIER_STOCK_ENABLED` reste fermé (§ 4 bis) |
+| Toute écriture d'outbox (`enqueueCrmSyncEvent`)                       | tout type accepté                                                                    | **refuse** `application_submitted` et le `form_submission` « recrutement », quels que soient l'appelant et les drapeaux    |
+| Lignes restées en file d'avant la coupure (`emitOutboxRow`)           | rejouées par le balayage                                                             | **soldées** en `gave_up`, sans appel réseau, sans tentative consommée, sans alerte d'abandon                               |
+| Opposition au vivier (`vivier/opposition.ts`)                         | `opt_out` pour **tout** candidat qui s'oppose                                        | `opt_out` **seulement** si une candidature de la personne a PU atteindre le CRM (voir ci-dessous)                          |
+| Rapprochement quotidien (`crm-sync/reconcile.ts`)                     | famille `job_application` comparée drapeau ouvert                                    | **toujours** `skipped`, sans lecture en base ; les `/contact` « recrutement » ne sont plus réclamés                        |
+
+La règle de la couverture est dans `crm-sync/coupure-recrutement.ts`, **une** fois,
+appliquée aux deux passages obligés de la synchro : la création des lignes et leur
+émission. Le couvercle est dans le code ; aucun drapeau ne le soulève.
+
+**Quand une candidature « a pu atteindre le CRM ».** Extension voulue du plan, qui ne
+comptait que les lignes `sent` : une ligne `application_submitted` compte si elle a
+été acquittée (`sent`), **ou** si au moins une tentative réelle a eu lieu
+(`attempts > 0`) et que la dernière réponse n'est pas un refus 4xx. Un délai dépassé
+ou une erreur 5xx a pu créer la fiche sans que l'accusé revienne : dans le doute,
+l'opposition suit. Ne comptent pas : une ligne jamais tentée (dont celles soldées par
+la coupure, qui ne consomment pas de tentative) et un refus 4xx (le 422 d'un
+consentement v1 n'a créé aucune fiche). Règle pure : `aPuAtteindreLeCrm`, testée cas
+par cas.
+
+**Pourquoi `CRM_SYNC_CANDIDATES_ENABLED` reste ouvert.** Il porte l'opposition au
+vivier. Des fiches candidat SONT au CRM ; si une de ces personnes s'oppose sur le
+site, l'`opt_out` doit les y rejoindre. Fermer le drapeau perdrait cette opposition,
+et rien ne la rattrape (`reconcile.ts` alerte, il ne réémet pas). En revanche,
+l'opposition d'un candidat **jamais transmis** ne part plus : elle aurait fait
+voyager son adresse vers un CRM où il n'a aucune fiche.
+
+**Ce qui verrouille**, et rougit si l'envoi revient :
+
+- `tests/unit/ci/les-candidatures-ne-partent-pas-au-crm.spec.ts` — aucun module de
+  `src/features/job-application` ni de `src/features/admin-job-applications`
+  n'importe `@/server/crm-sync`, imports dynamiques compris ; le nom
+  `syncCandidateToCrm` n'apparaît dans aucun code de `src/`, réexportation
+  comprise ; le type `application_submitted` n'est écrit que dans la synchro et
+  dans l'opposition ;
+- `src/server/crm-sync/__tests__/crm-sync.test.ts` — l'outbox refuse une
+  candidature et un `/contact` « recrutement » tous drapeaux ouverts, et une ligne
+  d'avant la coupure est soldée sans appel réseau ni alerte ;
+- `tests/unit/recrutement/la-candidature-a-une-offre-ne-part-pas-au-crm.spec.ts` —
+  l'action, appelée avec une vraie `FormData`, n'émet pas, et l'accusé de réception
+  comme la notification partent toujours ;
+- `src/server/vivier/__tests__/vivier.test.ts` — opposition d'un candidat jamais
+  transmis : aucune ligne d'outbox ; l'intégration J+30 ne lit ni n'émet rien, tous
+  drapeaux ouverts ;
+- `src/server/crm-sync/__tests__/crm-sync-l5.test.ts` — `job_application` ignorée,
+  drapeau ouvert comme fermé.
+
+⛔ **Les fiches déjà transmises y restent** : leur sort revient à Will, par une
+décision distincte. Rien dans ce dépôt ne les touche, et aucune session ne les
+touche côté CRM.
+
+⚠️ **L'opposition « portée par le drapeau ouvert » n'a aujourd'hui presque aucun
+chemin pour arriver.** Le seul émetteur de jeton d'opposition est la campagne
+d'information du stock (`vivier/stock.ts`), derrière `VIVIER_STOCK_ENABLED`, qui n'a
+jamais tourné. Aucun message envoyé aujourd'hui ne porte de lien d'opposition, et
+aucune action de la console n'enregistre une opposition. **Une opposition reçue par
+e-mail n'est donc pas propagée au CRM : elle doit y être posée à la main.** À
+trancher avec le sort des fiches déjà transmises.
+
+⚠️ **Le sort du stock informé est ouvert.** L'intégration J+30 étant coupée, une
+campagne d'information lancée un jour n'aboutirait à rien : `vivierSyncedAt` reste
+nul et l'échéance survit. Ce que devient cette intégration (entrée au vivier du
+site, ou abandon de la campagne) est une décision de Will ; `VIVIER_STOCK_ENABLED`
+reste fermé d'ici là.
 
 ## 5. Comment revenir sur cette décision
+
+> Depuis la révision du § 4 ter, la frontière n'est plus portée par les drapeaux
+> mais par le **code** : rouvrir l'envoi des candidatures exige de réécrire l'appel,
+> de lever la garde statique, et la validation explicite de Will. Le paragraphe
+> ci-dessous décrit l'état antérieur (et changer un drapeau exige un
+> **déploiement** : le Restart de Coolify ne relit pas l'environnement).
 
 La frontière est portée par deux drapeaux d'environnement. La fermer se fait sans
 déploiement : `CRM_SYNC_CANDIDATES_ENABLED=false` suffit à arrêter les envois, et

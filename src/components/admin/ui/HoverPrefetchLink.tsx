@@ -10,8 +10,12 @@ import { useState, type ComponentProps } from "react";
  * 🔴 2026-09-02 — audit UI de la console. La barre latérale rend jusqu'à
  * ~150 liens, tous dans la fenêtre d'affichage. Avec le `<Link>` de base, Next
  * précharge chaque lien visible dès l'ouverture de la page : 16 à 30 requêtes
- * `?_rsc=` par page admin, dont 20 à 60 % en 503 ou en attente > 10 s, et la
- * première page restée 40 s sur « Chargement de la page admin ». Les routes
+ * `?_rsc=` par page admin, dont 20 à 60 % « en 503 » ou en attente > 10 s, et
+ * la première page restée 40 s sur « Chargement de la page admin ». (⚠️ Ces
+ * « 503 » ont été relevés avec l'extension Chrome de Claude, qui écrit 503 sur
+ * toute requête abandonnée par le navigateur — cf. le commentaire du pied de
+ * page dans `Footer.tsx` : ce sont des abandons côté client, pas des réponses
+ * du serveur. L'attente > 10 s, elle, est bien un coût serveur.) Les routes
  * admin sont dynamiques (`force-dynamic`) avec un `loading.tsx` : chaque
  * préchargement coûte un rendu serveur partiel, pour des pages que
  * l'exploitant n'ouvrira pas.
