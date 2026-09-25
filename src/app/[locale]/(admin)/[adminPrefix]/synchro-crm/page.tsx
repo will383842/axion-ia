@@ -99,6 +99,10 @@ export default async function SynchroCrmPage({ params }: PageProps): Promise<Rea
             {sante.candidatesEnabled ? "ouvert" : "fermé (CRM_SYNC_CANDIDATES_ENABLED)"}
           </p>
           <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+            <span className="font-semibold">Flux lettre et guide : </span>
+            {sante.guideEnabled ? "ouvert" : "fermé (CRM_SYNC_GUIDE_ENABLED)"}
+          </p>
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
             <span className="font-semibold">Canal : </span>
             {sante.configured ? "URL et secret présents" : "URL ou secret absent"}
           </p>

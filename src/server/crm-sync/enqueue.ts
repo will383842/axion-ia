@@ -3,9 +3,9 @@ import { randomUUID } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { crmSyncQueue } from "@/server/queue/queues";
 
-import { isCrmSyncCandidatesEnabled, isCrmSyncEnabled } from "./config";
+import { isCrmSyncCandidatesEnabled, isCrmSyncEnabled, isCrmSyncGuideEnabled } from "./config";
 import { estEnvoiCoupe } from "./coupure-recrutement";
-import type { CrmSyncEvent, CrmUniverse } from "./types";
+import { CRM_EVENT_TYPES_DU_FLUX_GUIDE, type CrmSyncEvent, type CrmUniverse } from "./types";
 
 /**
  * Écriture d'un événement dans l'OUTBOX, puis demande d'émission immédiate.
@@ -84,6 +84,12 @@ export async function enqueueCrmSyncEvent(
   // que soit le drapeau (ADR 0047, révision § 4 ter). Le couvercle est dans le
   // code : `CRM_SYNC_CANDIDATES_ENABLED` reste ouvert pour l'opposition.
   if (estEnvoiCoupe(event.event_type, event)) return null;
+  // Lot L4-S : les types du flux lettre et guide n'existent que derrière
+  // `CRM_SYNC_GUIDE_ENABLED`. Verrou posé ICI, au passage obligé : un appelant
+  // qui oublierait le drapeau n'écrirait quand même rien.
+  if (CRM_EVENT_TYPES_DU_FLUX_GUIDE.includes(event.event_type) && !isCrmSyncGuideEnabled()) {
+    return null;
+  }
 
   try {
     const writer = (options.tx ?? prisma) as unknown as CrmOutboxWriter;
@@ -110,10 +116,27 @@ export async function enqueueCrmSyncEvent(
 
     return row.id;
   } catch (error) {
+    // `event_id` DÉTERMINISTE déjà en outbox (lot L4-S, `event-id.ts`) : le
+    // même événement a déjà été posé — par le geste en direct ou par le
+    // rattrapage. Ce n'est pas une perte, c'est l'idempotence qui joue.
+    if (estDoublonEventId(error)) {
+      console.warn(`[crm-sync] événement ${event.event_id} déjà en outbox : rien de plus.`);
+      return null;
+    }
     // Un échec d'outbox ne doit jamais faire échouer la capture du lead.
     console.error("[crm-sync] écriture outbox échouée (événement perdu):", error);
     return null;
   }
+}
+
+/** Violation d'unicité Prisma (P2002) sur `event_id`. */
+function estDoublonEventId(error: unknown): boolean {
+  if (typeof error !== "object" || error === null) return false;
+  const e = error as { code?: unknown; meta?: { target?: unknown } };
+  if (e.code !== "P2002") return false;
+  const cible = e.meta?.target;
+  const champs = Array.isArray(cible) ? cible.map(String) : [String(cible ?? "")];
+  return champs.some((c) => c === "eventId" || c === "event_id" || c.includes("event_id"));
 }
 
 function universeOf(event: CrmSyncEvent): CrmUniverse {

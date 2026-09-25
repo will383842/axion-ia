@@ -27,6 +27,23 @@ export function isCrmSyncCandidatesEnabled(): boolean {
   return isCrmSyncEnabled() && process.env.CRM_SYNC_CANDIDATES_ENABLED === "true";
 }
 
+/**
+ * Troisième verrou (lot L4-S, 2026-09-25) : le flux LETTRE ET GUIDE vers les
+ * « personnes » du CRM — `lead_magnet_requested` au clic sur le lien du guide,
+ * l'inscription à la lettre transmise à ce même clic, `email_hard_bounced`.
+ *
+ * FERMÉ par défaut. Il ne s'ouvre qu'une fois le CRM prêt à les recevoir
+ * (drapeau `crm.ingest.personnes_enabled` ouvert et contrôlé) : sinon le CRM
+ * répond 503 et les lignes s'accumulent, ou pire, une inscription tombe dans
+ * sa file d'arbitrage avec l'adresse en clair. Ordre de bascule : voir la PR
+ * L4-S et `docs/` du plan.
+ *
+ * Soumis au drapeau MAÎTRE : `CRM_SYNC_ENABLED` fermé ⇒ fermé.
+ */
+export function isCrmSyncGuideEnabled(): boolean {
+  return isCrmSyncEnabled() && process.env.CRM_SYNC_GUIDE_ENABLED === "true";
+}
+
 /** URL de l'endpoint d'ingestion du CRM (`…/api/internal/site-sync`). */
 export function crmSyncUrl(): string | null {
   const url = process.env.CRM_SYNC_URL?.trim();

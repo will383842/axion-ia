@@ -80,6 +80,12 @@ export const env = createEnv({
     // textes de consentement v2 sont servis en production (le CRM rejette de
     // toute façon toute fiche candidat sans consentement v2).
     CRM_SYNC_CANDIDATES_ENABLED: z.enum(["true", "false"]).optional(),
+    // Troisième verrou (lot L4-S, 2026-09-25) : flux LETTRE ET GUIDE vers les
+    // « personnes » du CRM (`lead_magnet_requested` au clic sur le lien du
+    // guide, inscription transmise au même clic, `email_hard_bounced`). Fermé
+    // par défaut ; ne s'ouvre qu'après le drapeau `crm.ingest.personnes_enabled`
+    // du CRM, contrôlé sur un premier événement réel. Web ET worker.
+    CRM_SYNC_GUIDE_ENABLED: z.enum(["true", "false"]).optional(),
     CRM_SYNC_URL: z.string().url().optional(),
     // Secret partagé du canal signé (64 hex). Jamais dans un commit.
     SITE_SYNC_HMAC_SECRET: z.string().optional(),
@@ -625,6 +631,7 @@ export const env = createEnv({
     MAILWIZZ_API_KEY: process.env.MAILWIZZ_API_KEY,
     CRM_SYNC_ENABLED: process.env.CRM_SYNC_ENABLED,
     CRM_SYNC_CANDIDATES_ENABLED: process.env.CRM_SYNC_CANDIDATES_ENABLED,
+    CRM_SYNC_GUIDE_ENABLED: process.env.CRM_SYNC_GUIDE_ENABLED,
     CRM_SYNC_URL: process.env.CRM_SYNC_URL,
     SITE_SYNC_HMAC_SECRET: process.env.SITE_SYNC_HMAC_SECRET,
     VIVIER_STOCK_ENABLED: process.env.VIVIER_STOCK_ENABLED,

@@ -33,8 +33,9 @@ import { prisma } from "@/lib/prisma";
 
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { HORS_APPELS_APPORTEUR } from "@/server/calendly/appel-apporteur";
+import { FORM_REF_LETTRE } from "@/content/guide-ia-formulaire";
 import { alertCrmSync } from "./alerts";
-import { isCrmSyncEnabled } from "./config";
+import { isCrmSyncEnabled, isCrmSyncGuideEnabled } from "./config";
 import type { CrmUniverse } from "./types";
 
 /** Profondeur de la comparaison. Au-delà, l'anomalie n'est plus fraîche. */
@@ -62,7 +63,8 @@ const MAX_SOURCES_PER_FAMILY = 2000;
 const MAX_REPORTED_IDS = 20;
 
 /**
- * Les cinq familles de capture du site qui émettent vers le CRM.
+ * Les six familles de capture du site qui émettent vers le CRM (la sixième,
+ * `guide_request`, arrive avec le lot L4-S).
  *
  * Étape 0, ligne 12 (2026-08-18) : la réconciliation ne comparait que les
  * formulaires et les candidatures — le critère de PARITÉ du cahier des charges
@@ -72,7 +74,12 @@ const MAX_REPORTED_IDS = 20;
  * enregistrement qui, par construction, n'émet pas n'est pas un manquant).
  */
 export type CrmSyncFamily =
-  "submission" | "job_application" | "calendly_event" | "newsletter_subscriber" | "customer_review";
+  | "submission"
+  | "job_application"
+  | "calendly_event"
+  | "newsletter_subscriber"
+  | "customer_review"
+  | "guide_request";
 
 export interface ReconcileFamilyReport {
   family: CrmSyncFamily;
@@ -109,7 +116,20 @@ const FAMILY_LABELS: Record<CrmSyncFamily, string> = {
   calendly_event: "Rendez-vous Calendly (invité identifié)",
   newsletter_subscriber: "Newsletter (inscriptions confirmées)",
   customer_review: "Avis clients",
+  guide_request: "Guide IA (demandes cliquées)",
 };
+
+/**
+ * Références de collecte des inscriptions faites À LA DEMANDE DU GUIDE
+ * (amendement du 24/09, `guide-ia/lettre.ts`). Elles ne sont pas émises à
+ * l'inscription : elles entrent au CRM au CLIC sur le lien du guide (décision
+ * D1), derrière `CRM_SYNC_GUIDE_ENABLED` — c'est la famille `guide_request`
+ * qui les suit. Les compter dans `newsletter_subscriber` les ferait toutes
+ * passer pour des émissions perdues.
+ */
+const FORM_REFS_INSCRIPTION_PAR_LE_GUIDE: ReadonlySet<string> = new Set(
+  Object.values(FORM_REF_LETTRE),
+);
 
 /**
  * Compare les enregistrements SOURCE aux `subject_ref` émis, sans rien écrire
@@ -201,7 +221,7 @@ export async function collectReconciliation(): Promise<ReconcileReport> {
   // candidature, donc une alerte quotidienne qui ne signale rien — et le
   // drapeau `CRM_SYNC_CANDIDATES_ENABLED` reste OUVERT pour l'opposition au
   // vivier, il ne dit donc plus rien de l'envoi. La famille reste dans le
-  // rapport (les cinq, jamais moins), toujours ignorée, SANS lecture en base.
+  // rapport (toutes, jamais moins), toujours ignorée, SANS lecture en base.
   families.push({
     family: "job_application",
     label: FAMILY_LABELS.job_application,
@@ -250,13 +270,24 @@ export async function collectReconciliation(): Promise<ReconcileReport> {
       universe: "business",
       since,
       until,
-      loadIds: (from, to) =>
-        prisma.newsletterSubscriber.findMany({
+      // Lot L4-S : seules les inscriptions CONFIRMÉES PAR BOUTON (ancien
+      // double opt-in, réinscription) émettent à la confirmation. Celles de la
+      // demande du guide sont écartées (voir `FORM_REFS_INSCRIPTION_PAR_LE_GUIDE`).
+      // Tri EN MÉMOIRE, jamais par un `notIn` SQL : sur une colonne nullable,
+      // `NOT IN` écarte aussi les NULL — c'est-à-dire toutes les inscriptions
+      // antérieures au lot L2, que le filet doit justement voir.
+      loadIds: async (from, to) => {
+        const lignes = await prisma.newsletterSubscriber.findMany({
           where: { confirmedAt: { gte: from, lt: to } },
-          select: { id: true },
+          select: { id: true, consentFormRef: true },
           orderBy: { confirmedAt: "asc" },
           take: MAX_SOURCES_PER_FAMILY,
-        }),
+        });
+        return lignes.filter(
+          (l) =>
+            l.consentFormRef === null || !FORM_REFS_INSCRIPTION_PAR_LE_GUIDE.has(l.consentFormRef),
+        );
+      },
     }),
     await compareFamily({
       family: "customer_review",
@@ -272,6 +303,41 @@ export async function collectReconciliation(): Promise<ReconcileReport> {
         }),
     }),
   );
+
+  // Lot L4-S — la demande du guide entre au CRM au CLIC (`first_click_at`),
+  // derrière `CRM_SYNC_GUIDE_ENABLED`. Drapeau fermé : famille présente,
+  // ignorée, SANS lecture en base (rien n'émet, rien ne manque). Ouvert : les
+  // clics de la fenêtre doivent tous avoir leur `site:guide_request:<id>`.
+  // Les clics antérieurs à l'ouverture relèvent de la commande de rattrapage.
+  if (!isCrmSyncGuideEnabled()) {
+    families.push({
+      family: "guide_request",
+      label: FAMILY_LABELS.guide_request,
+      universe: "business",
+      sources: 0,
+      emitted: 0,
+      missing: 0,
+      missingIds: [],
+      skipped: "flux lettre et guide fermé (CRM_SYNC_GUIDE_ENABLED)",
+      truncated: false,
+    });
+  } else {
+    families.push(
+      await compareFamily({
+        family: "guide_request",
+        universe: "business",
+        since,
+        until,
+        loadIds: (from, to) =>
+          prisma.guideRequest.findMany({
+            where: { firstClickAt: { gte: from, lt: to } },
+            select: { id: true },
+            orderBy: { firstClickAt: "asc" },
+            take: MAX_SOURCES_PER_FAMILY,
+          }),
+      }),
+    );
+  }
 
   return {
     ranAt,

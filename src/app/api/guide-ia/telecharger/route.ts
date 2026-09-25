@@ -28,6 +28,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { ipDepuisEntetes } from "@/lib/client-ip";
 import { urlGuideIa } from "@/content/guide-ia";
 import { emettreEvenementPlausible } from "@/lib/analytics/plausible-serveur";
+import { transmettreClicGuide } from "@/server/crm-sync/lettre-guide";
 import {
   CHEMIN_LIEN_GUIDE,
   langueDeLaRequete,
@@ -152,8 +153,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     ip: ipDe(req),
   }).catch(() => undefined);
 
-  // ⚠️ L'émission vers le CRM (`lead_magnet_requested`, décision D1 : au clic)
-  // arrive avec le lot L4-S, une fois le CRM prêt à la recevoir. `crm_emitted_at`
-  // reste vide d'ici là ; le rattrapage de L4-S reprendra les lignes cliquées.
+  // Lot L4-S — entrée au CRM AU CLIC (décision D1) : `lead_magnet_requested`,
+  // et l'inscription à la lettre s'il y en a une. Derrière
+  // `CRM_SYNC_GUIDE_ENABLED` (fermé : rien, `crm_emitted_at` reste vide et le
+  // rattrapage reprendra la ligne). Une seule fois par demande, même au
+  // second clic (réservation par `crm_emitted_at`). JAMAIS au GET.
+  // Ne lève pas ; aucun appel réseau (l'outbox est une écriture en base).
+  await transmettreClicGuide(demande.id, maintenant);
+
   return NextResponse.redirect(urlGuideIa(), { status: 303 });
 }
