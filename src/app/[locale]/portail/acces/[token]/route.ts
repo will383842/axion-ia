@@ -24,15 +24,11 @@ import { verifierToken } from "@/server/qualiopi/portail/portail-service";
 import { setPortailCookie } from "@/server/qualiopi/portail/cookie";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { SITE_URL } from "@/lib/site-url";
+import { ipDepuisEntetes } from "@/lib/client-ip";
 
 /** Extrait l'IP réelle depuis les headers Cloudflare / proxy / fallback. */
 function clientIp(req: NextRequest): string {
-  return (
-    req.headers.get("cf-connecting-ip") ??
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    req.headers.get("x-real-ip") ??
-    "unknown"
-  );
+  return ipDepuisEntetes(req.headers);
 }
 
 interface RouteContext {

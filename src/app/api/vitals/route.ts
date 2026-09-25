@@ -10,6 +10,7 @@ import type { NextRequest } from "next/server";
 import { z } from "zod";
 import { appendVitalsRecord } from "@/lib/observability/vitals-store";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { ipDepuisEntetes } from "@/lib/client-ip-core";
 
 const VitalsSchema = z.object({
   id: z.string().min(1).max(200), // 200 pour accepter les ID INP-attribution + LoAF suffixés
@@ -35,11 +36,7 @@ const VitalsSchema = z.object({
 });
 
 function getClientIp(req: NextRequest): string {
-  return (
-    req.headers.get("cf-connecting-ip") ??
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    "unknown"
-  );
+  return ipDepuisEntetes(req.headers);
 }
 
 export async function POST(req: NextRequest): Promise<Response> {

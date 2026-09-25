@@ -259,3 +259,28 @@ describe("signerDepuisPortailAction — échecs de stockage", () => {
     expect(r).toMatchObject({ ok: false, raison: "porteur_non_autorise" });
   });
 });
+
+describe("🔴 l'IP de la preuve d'émargement passe par la règle commune (client-ip-core)", () => {
+  // `hashIp` est un double qui rend toujours "iphash" : sans ces deux tests,
+  // AUCUN test de ce fichier ne dit QUELLE IP entre dans la preuve.
+
+  it("derrière Cloudflare : la preuve hache l'IP du VISITEUR", async () => {
+    mockHeaders.mockResolvedValue(
+      new Map([
+        ["x-real-ip", "162.159.122.108"],
+        ["cf-connecting-ip", "198.51.100.23"],
+        ["user-agent", "Mozilla/5.0"],
+      ]) as unknown as Headers,
+    );
+    await signerDepuisPortailAction(entree());
+    expect(mockHashIp).toHaveBeenCalledWith("198.51.100.23");
+  });
+
+  it("🔴 `cf-connecting-ip` sans relais Cloudflare (origine contournée) : jamais haché tel quel", async () => {
+    // L'en-tête par défaut de ce fichier est exactement cette forme :
+    // `cf-connecting-ip` seul. L'ancienne lecture directe l'aurait haché.
+    await signerDepuisPortailAction(entree());
+    expect(mockHashIp).not.toHaveBeenCalledWith("203.0.113.7");
+    expect(mockHashIp).toHaveBeenCalledWith(null);
+  });
+});

@@ -32,6 +32,7 @@
 import { createHash } from "node:crypto";
 import * as Sentry from "@sentry/nextjs";
 import { headers } from "next/headers";
+import { ipVisiteurOuNull } from "@/lib/client-ip";
 import { z } from "zod";
 
 import { prisma } from "@/lib/prisma";
@@ -78,10 +79,9 @@ async function contexteRequete(): Promise<{
   userAgentSha256: string | null;
 }> {
   const entetes = await headers();
-  const ipBrute =
-    entetes.get("cf-connecting-ip") ??
-    entetes.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    null;
+  // `cf-connecting-ip` n'est cru que si la connexion vient de Cloudflare :
+  // lu en direct, il se forgeait en contournant Cloudflare (cf. client-ip-core).
+  const ipBrute = ipVisiteurOuNull(entetes);
   const ua = entetes.get("user-agent");
   return {
     ipHash: hashIp(ipBrute),

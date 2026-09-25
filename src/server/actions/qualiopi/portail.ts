@@ -45,6 +45,7 @@ import {
 } from "@/server/qualiopi/portail/portail-service";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { headers } from "next/headers";
+import { ipDepuisEntetes } from "@/lib/client-ip";
 import { getPortailToken, clearPortailCookie } from "@/server/qualiopi/portail/cookie";
 import { creerDemandeRgpd } from "@/server/qualiopi/portail/rgpd-service";
 import { soumettreReponses } from "@/server/qualiopi/satisfaction/satisfaction-service";
@@ -171,10 +172,7 @@ export async function demanderAccesPortailAction(input: {
 
   try {
     const hdrs = await headers();
-    const ip =
-      hdrs.get("cf-connecting-ip") ??
-      hdrs.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-      "unknown";
+    const ip = ipDepuisEntetes(hdrs);
     const rl = await checkRateLimit(`portail:reacces:${ip}`, { limit: 5, windowSec: 900 });
     if (!rl.allowed) return generic; // silencieux
   } catch {
