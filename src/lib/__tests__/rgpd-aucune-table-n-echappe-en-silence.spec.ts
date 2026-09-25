@@ -121,6 +121,13 @@ const INVENTAIRE: ReadonlyArray<{ modele: string; statut: Statut; note: string }
     statut: "traite",
     note: "suppression (`eraseNewsletterForEmail`).",
   },
+  {
+    // Lot L2 (2026-09-24) — la demande du guide IA porte l'adresse (il faut
+    // pouvoir renvoyer le guide). Supprimée avec l'abonné par la même fonction.
+    modele: "GuideRequest",
+    statut: "traite",
+    note: "suppression (`eraseNewsletterForEmail`, par adresse ET empreinte).",
+  },
   { modele: "ChatEscalation", statut: "traite", note: "anonymisation (`eraseChatDataForEmail`)." },
   {
     modele: "JobApplication",

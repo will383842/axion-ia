@@ -17,6 +17,7 @@ import { startRetentionPurgeWorker } from "./workers/retention-purge-worker";
 import { startCalendlyPollWorker } from "./workers/calendly-poll-worker";
 import { startCrmSyncWorker } from "./workers/crm-sync-worker";
 import { startVivierCronsWorker } from "./workers/vivier-crons-worker";
+import { startGuideIaCronsWorker } from "./workers/guide-ia-crons-worker";
 import { startContentGenWorker } from "./workers/content-gen-worker";
 import { startOrchestratorWorker } from "./workers/content-orchestrator-worker";
 import { startQualityImproverWorker } from "./workers/content-quality-improver-worker";
@@ -104,6 +105,10 @@ async function main() {
     // échue. Inerte tant que personne n'a été informé : `vivierInfoSentAt` est
     // alors NULL partout et la requête ne remonte rien.
     startVivierCronsWorker(),
+    // Guide IA (lot L2, 2026-09-24) — rattrapage horaire des guides et des
+    // confirmations restés sans envoi, sentinelle quotidienne. Suspendu tant
+    // que le coupe-circuit des rebonds est déclenché.
+    startGuideIaCronsWorker(),
     // Content Generator V1 — 14 workers (§ 13 master prompt v1.7 + Pass B P0-7
     // + Sprints 9-12.5 V2 + Audit final P0-3 + Sprint S6.3 doc-sync P3-15)
     startContentGenWorker(),

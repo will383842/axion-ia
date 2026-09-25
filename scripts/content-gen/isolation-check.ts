@@ -366,6 +366,12 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // exactement l'inverse de ce que les deux gates cherchent à obtenir. Aucun
   // couplage à l'exécution : le § 4.1bis n'interdit rien de ce qui se passe ici.
   /^tests\/unit\/ci\/un-fichier-use-server-n-exporte-que-des-fonctions\.spec\.ts$/,
+  // Décision n° 4 de Will (lot L2, 2026-09-24) — la LISTE FERMÉE des textes
+  // qui promettaient une lettre « mensuelle » LIT l'encart de fin d'article
+  // (`components/content-gen/ArticleNewsletterInline.tsx`), qui en faisait
+  // partie. Le marqueur est un CHEMIN cité dans une liste de fichiers à relire,
+  // pas un import : aucun couplage à l'exécution.
+  /^src\/content\/__tests__\/decision-4-plus-de-mensuel\.spec\.ts$/,
   // Exceptions ajoutées 2026-05-20 (sessions city-quality + S+5 P2 + keywords + sentry).
   // Ces fichiers mentionnent "content-gen" uniquement dans des commentaires JSDoc
   // ou des commentaires de code (référence à un consommateur, contexte audit, URL

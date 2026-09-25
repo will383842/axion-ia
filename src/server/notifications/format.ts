@@ -79,6 +79,8 @@ const TITLES: Record<NotificationCategory, string> = {
   NEWSLETTER_PENDING: "Newsletter — opt-in en attente",
   NEWSLETTER_CONFIRMED: "Newsletter — opt-in confirmé",
   NEWSLETTER_UNSUBSCRIBED: "Newsletter — désinscription",
+  GUIDE_REQUESTED: "Guide IA — demande",
+  GUIDE_RECAP: "Guide IA — récapitulatif du jour",
   BOOKING_CREATED: "Nouvelle réservation",
   BOOKING_CANCELLED: "Réservation annulée",
   OPTION_POSTED: "Option 48h posée",
@@ -111,6 +113,18 @@ const TITLES: Record<NotificationCategory, string> = {
  * pas. Une alerte dont on ne saurait pas dire ce qu'elle signale ne vaudrait
  * pas mieux que pas d'alerte du tout.
  */
+/** État de la lettre après une demande du guide, en clair (amendement de Will du 24/09). */
+const LETTRE_LIBELLES: Record<
+  "inscrite" | "deja-abonnee" | "reinscription-proposee" | "opposition-maintenue" | "non-demandee",
+  string
+> = {
+  inscrite: "inscrite",
+  "deja-abonnee": "déjà abonnée",
+  "reinscription-proposee": "désabonnée : réinscription proposée dans l'e-mail",
+  "opposition-maintenue": "rebond dur : non inscrite",
+  "non-demandee": "adresse personnelle, case non cochée",
+};
+
 const CRM_SYNC_ALERT_LABELS: Record<CrmSyncAlertKind, string> = {
   gave_up: "Abandon définitif — le lead n'arrivera pas au CRM",
   backlog: "File d'attente au-dessus du seuil",
@@ -416,6 +430,31 @@ function formatBody(event: NotificationEvent): string {
     case "NEWSLETTER_UNSUBSCRIBED": {
       const p = event.payload;
       return [formatKV("Email", p.email), formatKV("Locale", p.locale)]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "GUIDE_REQUESTED": {
+      const p = event.payload;
+      // `p.email` arrive DÉJÀ masqué (`redactEmail`) — ADR 0010.
+      return [
+        formatKV("Email", p.email),
+        formatKV("Provenance", p.source),
+        formatKV("Lettre", LETTRE_LIBELLES[p.lettre]),
+        formatKV("Envoi", p.envoi),
+        formatKV("Première demande", p.nouvelle ? "oui" : "non (redemande)"),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "GUIDE_RECAP": {
+      const p = event.payload;
+      return [
+        formatKV("Demandes (24 h)", p.demandes),
+        formatKV("Guides envoyés (24 h)", p.envois),
+        formatKV("Guides ouverts (24 h)", p.clics),
+        formatKV("En attente d'envoi", p.enAttente),
+        formatKV("Inscriptions à la lettre (24 h)", p.inscriptionsLettre),
+      ]
         .filter((v): v is string => v !== null)
         .join("\n");
     }

@@ -38,12 +38,22 @@ export type VerdictEnvoi =
   | { readonly retenu: true; readonly motif: MotifRetenue; readonly depuis: Date | null };
 
 /**
- * Gabarits marketing qui passent MALGRÉ un désabonnement : la confirmation de
- * double opt-in est la porte par laquelle on se réabonne. La retenir rendrait
- * le désabonnement irréversible.
+ * Gabarits qui passent MALGRÉ un désabonnement.
+ *
+ * 🔑 Lot L2 (amendement de Will du 24/09) — `newsletter-confirm-optin` en est
+ * SORTI : il est dormant (plus aucun double opt-in), et c'est désormais
+ * l'e-mail « Votre guide » qui porte la porte de réinscription (un bouton,
+ * puis un POST). S'il repart un jour, l'y remettre : sans exemption, une
+ * confirmation adressée à un désabonné serait retenue.
  */
 export const GABARITS_EXEMPTES_DU_DESABONNEMENT: ReadonlySet<string> = new Set([
-  "newsletter-confirm-optin",
+  // Lot L2 (2026-09-24) — « Votre guide » répond à une DEMANDE (6.1.b) : une
+  // personne désabonnée de la lettre qui redemande le guide doit le recevoir.
+  // Il ne porte pas le drapeau `marketing`, donc le désabonnement ne le
+  // retiendrait déjà pas ; l'exemption le rend EXPLICITE, pour qu'un futur
+  // passage en `marketing` ne le fasse pas taire en silence. Le rebond DUR,
+  // lui, le retient toujours : il est lu avant cette liste.
+  "guide-ia-envoi",
 ]);
 
 /**

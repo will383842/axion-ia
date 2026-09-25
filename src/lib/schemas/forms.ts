@@ -5,7 +5,8 @@
 // _AUDIT/FORMS-UNIFICATION-2026-05-24/.
 //
 // Schemas restants :
-//   - newsletterSchema : NewsletterForm + double opt-in (RFC 8058)
+//   - demandeGuideSchema : formulaire du guide IA (page du guide + encarts
+//     d'articles) — lot L2, 2026-09-24.
 //
 // `bookingSchema` et `option48hSchema` ont été supprimés avec le système de
 // réservation payante (2026-08-26).
@@ -13,11 +14,24 @@
 import { z } from "zod";
 
 // Shared field validators
-const email = z.string().email("Email invalide.");
+// Même message que le serveur (`features/guide-ia/actions.ts`) — décision de
+// Will du 25/09 : « Adresse e-mail invalide. » partout. Ce validateur ne sert
+// qu'au formulaire du guide (`demandeGuideSchema`).
+const email = z.string().trim().toLowerCase().email("Adresse e-mail invalide.");
 
-// Newsletter (single-step)
-export const newsletterSchema = z.object({
+/**
+ * Demande du guide IA (lot L2, 2026-09-24).
+ *
+ * 🔴 Remplace `newsletterSchema`, dont `consent: z.literal(true)` couvrait DEUX
+ * finalités d'une seule case OBLIGATOIRE : recevoir le guide ET la lettre. Un
+ * consentement à la lettre dont dépend le guide est présumé non libre (RGPD
+ * art. 7.4, considérant 43). Décision n° 1 de Will : le guide part sur la seule
+ * adresse. `lettre` = la case FACULTATIVE, décochée par défaut, proposée aux
+ * adresses personnelles ; pour une adresse professionnelle, le serveur
+ * l'ignore (amendement du 24/09, `server/guide-ia/demande.ts`).
+ */
+export const demandeGuideSchema = z.object({
   email,
-  consent: z.literal(true, { errorMap: () => ({ message: "Consentement requis." }) }),
+  lettre: z.boolean().default(false),
 });
-export type NewsletterInput = z.infer<typeof newsletterSchema>;
+export type DemandeGuideInput = z.infer<typeof demandeGuideSchema>;

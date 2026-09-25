@@ -32,8 +32,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: locale === "fr" ? "Désabonnement · Axion-IA" : "Unsubscribe · Axion-IA",
     description:
       locale === "fr"
-        ? "Confirmer votre désabonnement de la newsletter ou des emails Axion-IA."
-        : "Confirm unsubscription from the Axion-IA newsletter or emails.",
+        ? "Confirmer votre désabonnement de la lettre d'Axion-IA ou de ses e-mails."
+        : "Confirm unsubscription from Axion-IA's letter or emails.",
     alternates: { fr: "/desabonnement", en: "/unsubscribe" },
   });
   // Don't index unsubscribe pages.
@@ -58,7 +58,7 @@ export default async function DesabonnementPage({ params, searchParams }: Props)
           title:
             already === "1"
               ? isFr
-                ? "Vous étiez déjà désinscrit·e."
+                ? "Votre désinscription était déjà enregistrée."
                 : "You were already unsubscribed."
               : isFr
                 ? "Désabonnement confirmé."

@@ -109,10 +109,11 @@ describe("verdictAvantEnvoi — désabonnement", () => {
     expect(findUnique).not.toHaveBeenCalled();
   });
 
-  it("laisse passer la confirmation de double opt-in, sinon un désabonnement serait irréversible", async () => {
+  it("laisse passer « Votre guide » à un désabonné : il porte la porte de réinscription", async () => {
+    // Lot L2 : même passé un jour en `marketing`, l'exemption le garde.
     findUnique.mockResolvedValue({ status: "unsubscribed", unsubscribedAt: new Date() });
     const v = await verdictAvantEnvoi("revient@client.fr", {
-      template: "newsletter-confirm-optin",
+      template: "guide-ia-envoi",
       marketing: true,
     });
     expect(v).toEqual({ retenu: false });

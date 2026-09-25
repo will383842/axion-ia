@@ -48,11 +48,19 @@ function source(...segments: string[]): string {
     .replace(/(^|[^:])\/\/.*$/gm, "$1");
 }
 
-const NEWSLETTER = ["src", "features", "newsletter", "actions.ts"];
+// 🔑 Lot L2 (2026-09-24) — l'envoi de la confirmation a quitté
+// `features/newsletter/actions.ts` : il voyage dans l'e-mail du guide
+// (`server/guide-ia/envoi.ts`), que le rattrapage réutilise
+// (`server/guide-ia/rattrapage.ts`). La règle suit le code.
+const GUIDE_ENVOI = ["src", "server", "guide-ia", "envoi.ts"];
+const GUIDE_DEMANDE = ["src", "server", "guide-ia", "demande.ts"];
+const RATTRAPAGE = ["src", "server", "guide-ia", "rattrapage.ts"];
 const DOCUMENTS = ["src", "server", "intervention-documents", "notifications.ts"];
 
 const FICHIERS: ReadonlyArray<readonly [string, string[]]> = [
-  ["newsletter/actions.ts", NEWSLETTER],
+  ["guide-ia/envoi.ts", GUIDE_ENVOI],
+  // `guide-ia/rattrapage.ts` n'appelle plus `enqueueEmail` : il passe par
+  // `mettreEnFileGuide` (envoi.ts), gardé ci-dessus, et par l'assertion dédiée.
   ["intervention-documents/notifications.ts", DOCUMENTS],
 ];
 
@@ -83,26 +91,37 @@ describe("un état « envoyé » suit l'envoi", () => {
     }
   });
 
-  it("🔴 la newsletter ne pose confirmSentAt qu'APRÈS l'appel d'envoi", () => {
-    const src = source(...NEWSLETTER);
-    const appel = src.indexOf("enqueueEmail(");
-    expect(appel, "l'appel d'envoi est introuvable").toBeGreaterThan(-1);
+  /** Toutes les positions de `motif` dans `src`, qui doivent suivre `apres`. */
+  function posesAvant(src: string, motif: RegExp, apres: string): number[] {
+    const appel = src.indexOf(apres);
+    expect(appel, `« ${apres} » introuvable`).toBeGreaterThan(-1);
+    const poses = [...src.matchAll(motif)].map((m) => m.index ?? -1);
+    expect(poses.length, `${motif} n'est plus écrit du tout`).toBeGreaterThanOrEqual(1);
+    return poses.filter((p) => p < appel);
+  }
 
-    const poses = [...src.matchAll(/confirmSentAt:/g)].map((m) => m.index ?? -1);
-    expect(poses.length, "confirmSentAt n'est plus écrit du tout").toBeGreaterThanOrEqual(1);
-
-    // C'EST L'ASSERTION QUI ROUGIT sur la version d'avant : la colonne était
-    // écrite dans les DEUX branches de l'upsert, donc bien avant l'envoi.
-    const avant = poses.filter((p) => p < appel);
-    expect(
-      avant,
-      "confirmSentAt est posé AVANT l'envoi : il affirmerait qu'une confirmation " +
-        "est partie alors que la liste de suppression ou une file coupée l'ont retenue",
-    ).toEqual([]);
+  it("🔴 le guide ne pose queued_at qu'APRÈS l'appel d'envoi, et lit son verdict", () => {
+    const src = source(...GUIDE_ENVOI);
+    expect(posesAvant(src, /queuedAt:/g, "enqueueEmail(")).toEqual([]);
+    expect(src).toMatch(/\.enqueued/);
   });
 
-  it("🔴 la newsletter lit le verdict de l'envoi", () => {
-    expect(source(...NEWSLETTER)).toMatch(/\.enqueued/);
+  it("🔴 la confirmation portée par le guide ne pose confirmSentAt que si le guide est EN FILE", () => {
+    const src = source(...GUIDE_DEMANDE);
+    // C'EST L'ASSERTION QUI ROUGIT si la colonne revient avant l'envoi : c'était
+    // le défaut du 2026-09-05, écrit dans les deux branches d'un upsert.
+    expect(posesAvant(src, /confirmSentAt:/g, "mettreEnFileGuide(")).toEqual([]);
+    expect(src).toContain('envoi === "en-file"');
+  });
+
+  it("🔴 le rattrapage ne pose confirmSentAt qu'APRÈS la mise en file du guide qui le porte", () => {
+    const src = source(...RATTRAPAGE);
+    // Les ÉCRITURES seulement (`data: { confirmSentAt`) : depuis la relecture du
+    // 24/09, le rattrapage des confirmations n'existe plus ; le bouton de
+    // réinscription voyage dans l'e-mail du guide, et sa trace suit l'envoi.
+    expect(posesAvant(src, /data:\s*\{\s*confirmSentAt:/g, "mettreEnFileGuide(")).toEqual([]);
+    expect(src).toContain('r === "en-file"');
+    expect(src).not.toContain("newsletter-confirm-optin");
   });
 
   it("🔴 le compteur de notifyNewVersion ne s'incrémente que sur un envoi réel", () => {

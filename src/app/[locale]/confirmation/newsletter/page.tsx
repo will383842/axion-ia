@@ -1,10 +1,17 @@
-// Page consommatrice de confirmToken — P0-4 fix (RFC 8058 double opt-in).
+// Page de confirmation de la LETTRE (P0-4, refondue au lot L2). Depuis
+// l'amendement de Will (24/09), elle sert aux liens de l'ancien double opt-in
+// et à la RÉINSCRIPTION proposée à une personne désabonnée.
 //
-// Le template `newsletter-confirm-optin.tsx` envoie l'utilisateur ici via
-// `${baseUrl}/${locale}/confirmation/newsletter?token=...`. Cette page :
-//   1. Lit le token depuis searchParams
-//   2. Appelle `confirmNewsletterAction(token)` côté server
-//   3. Rend le résultat (succès, déjà confirmé, token expiré, désinscrit)
+// 🔴 Lot L2 (2026-09-24) — cette page NE CONFIRME PLUS RIEN au rendu. Elle
+// appelait `confirmNewsletterAction(token)` sur un simple GET : les scanneurs
+// de liens des messageries d'entreprise (Safe Links, Mimecast) confirmaient à
+// la place de la personne, qui arrivait ensuite sur « lien expiré ».
+//
+// Trois états, lus dans l'URL :
+//   1. `?token=…` (le lien de l'e-mail, anciens liens compris) : un bouton
+//      « Confirmer », qui POSTE vers `/api/newsletter/confirmer` ;
+//   2. `?statut=ok|deja` : le résultat, après la redirection 303 du POST ;
+//   3. `?statut=<erreur>` ou rien : l'explication, et une issue.
 //
 // noindex: true (page transactionnelle, jamais de signal SEO).
 
@@ -19,12 +26,12 @@ import { Cta } from "@/components/marketing/Cta";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata } from "@/lib/seo";
-import { confirmNewsletterAction } from "@/features/newsletter/actions";
 import { GUIDE_IA_CHEMIN, GUIDE_IA_PAGES } from "@/content/guide-ia";
+import { CADENCE_LETTRE } from "@/content/guide-ia-formulaire";
 
 interface Props {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ token?: string }>;
+  searchParams: Promise<{ token?: string; statut?: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -34,14 +41,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: "/confirmation/newsletter",
     title:
-      locale === "fr" ? "Confirmation newsletter · Axion-IA" : "Newsletter confirmation · Axion-IA",
+      locale === "fr" ? "Confirmation de la lettre · Axion-IA" : "Letter confirmation · Axion-IA",
     description:
       locale === "fr"
-        ? "Confirmation de votre inscription à la newsletter Axion-IA."
-        : "Confirmation of your Axion-IA newsletter subscription.",
+        ? "Confirmation de votre inscription à la lettre d'Axion-IA."
+        : "Confirmation of your subscription to Axion-IA's letter.",
   });
-  return { ...meta, robots: { index: false, follow: false } };
+  // `no-referrer` : l'URL porte le jeton (`?token=…`) ; un clic vers un autre
+  // site depuis cette page ne doit pas le lui transmettre.
+  return { ...meta, robots: { index: false, follow: false }, referrer: "no-referrer" };
 }
+
+const ERREURS = {
+  missing_token: { fr: "Lien invalide.", en: "Invalid link." },
+  invalid_token: { fr: "Lien expiré ou déjà utilisé.", en: "Link expired or already used." },
+  unsubscribed: {
+    fr: "Cette adresse s'est désinscrite de la lettre.",
+    en: "This address has unsubscribed from the letter.",
+  },
+  internal: {
+    fr: "Erreur interne — réessayez plus tard.",
+    en: "Internal error — please retry later.",
+  },
+} as const;
+
+type CodeErreur = keyof typeof ERREURS;
 
 export default async function NewsletterConfirmPage({ params, searchParams }: Props) {
   const { locale } = await params;
@@ -50,15 +74,23 @@ export default async function NewsletterConfirmPage({ params, searchParams }: Pr
   const loc = locale as Locale;
   const isFr = loc === "fr";
 
-  const { token = null } = await searchParams;
-  const result = await confirmNewsletterAction(token);
+  const { token, statut } = await searchParams;
+  const aConfirmer = typeof token === "string" && token.length > 0 && !statut;
+  const reussi = statut === "ok" || statut === "deja";
+  const erreur: CodeErreur | null =
+    aConfirmer || reussi
+      ? null
+      : statut && statut in ERREURS
+        ? (statut as CodeErreur)
+        : "missing_token";
 
   const breadcrumbItems = [
     {
-      href: isFr ? "/confirmation/newsletter" : "/confirmation/newsletter",
-      label: isFr ? "Confirmation newsletter" : "Newsletter confirmation",
+      href: "/confirmation/newsletter",
+      label: isFr ? "Confirmation de la lettre" : "Letter confirmation",
     },
   ];
+  const pageGuide = isFr ? "/fr/guide-ia" : "/en/ai-guide";
 
   return (
     <>
@@ -67,12 +99,42 @@ export default async function NewsletterConfirmPage({ params, searchParams }: Pr
       </Container>
       <Section>
         <Container>
-          {result.ok ? (
+          {aConfirmer ? (
+            <div className="max-w-2xl space-y-5">
+              <h1 className="text-fg text-2xl font-semibold">
+                {isFr
+                  ? "Confirmez votre inscription à la lettre"
+                  : "Confirm your letter subscription"}
+              </h1>
+              <p className="text-fg-soft text-base leading-relaxed">
+                {isFr
+                  ? `La lettre d'Axion-IA : ${CADENCE_LETTRE.fr.charAt(0).toLowerCase()}${CADENCE_LETTRE.fr.slice(1)} Un clic sur le bouton ci-dessous, et c'est fait. Désinscription en un clic dans chaque e-mail.`
+                  : `Axion-IA's letter: ${CADENCE_LETTRE.en.charAt(0).toLowerCase()}${CADENCE_LETTRE.en.slice(1)} One click on the button below and you are done. One-click unsubscribe in every email.`}
+              </p>
+              {/* 🔑 Un FORMULAIRE, pas un lien : seul un POST confirme. C'est ce
+                  qui distingue la personne du scanneur qui a ouvert le lien. */}
+              <form action="/api/newsletter/confirmer" method="POST">
+                <input type="hidden" name="token" value={token} />
+                <input type="hidden" name="locale" value={loc} />
+                <button
+                  type="submit"
+                  className="bg-primary text-primary-fg cta-lift hover:bg-primary-hover focus-visible:ring-primary inline-flex min-h-11 items-center gap-2 rounded-md px-5 py-3 text-base font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  {isFr ? "Confirmer mon inscription" : "Confirm my subscription"} →
+                </button>
+              </form>
+              <p className="text-fg-muted text-sm">
+                {isFr
+                  ? "Vous n'avez rien demandé ? Fermez simplement cette page : sans ce clic, votre adresse n'est pas inscrite."
+                  : "Didn't ask for this? Just close this page: without this click, your address is not subscribed."}
+              </p>
+            </div>
+          ) : reussi ? (
             <Alert variant="success" role="status">
               <AlertTitle>
-                {result.alreadyConfirmed
+                {statut === "deja"
                   ? isFr
-                    ? "Vous étiez déjà inscrit·e."
+                    ? "Votre inscription était déjà enregistrée."
                     : "You were already subscribed."
                   : isFr
                     ? "Inscription confirmée."
@@ -80,67 +142,35 @@ export default async function NewsletterConfirmPage({ params, searchParams }: Pr
               </AlertTitle>
               <AlertDescription>
                 {isFr
-                  ? `Merci pour votre confiance. Vous recevrez nos prochaines lettres à l'adresse ${result.email}.`
-                  : `Thanks for the trust. You'll receive our next letters at ${result.email}.`}
+                  ? `Merci. Vous recevrez nos prochains envois : ${CADENCE_LETTRE.fr.charAt(0).toLowerCase()}${CADENCE_LETTRE.fr.slice(1)}`
+                  : `Thank you. You will receive our next letters: ${CADENCE_LETTRE.en.charAt(0).toLowerCase()}${CADENCE_LETTRE.en.slice(1)}`}
               </AlertDescription>
             </Alert>
           ) : (
             <Alert variant="danger" role="alert">
-              <AlertTitle>
-                {result.error === "missing_token"
-                  ? isFr
-                    ? "Lien invalide."
-                    : "Invalid link."
-                  : result.error === "invalid_token"
-                    ? isFr
-                      ? "Lien expiré ou déjà utilisé."
-                      : "Link expired or already used."
-                    : result.error === "unsubscribed"
-                      ? isFr
-                        ? "Cet email s'est précédemment désinscrit."
-                        : "This email previously unsubscribed."
-                      : isFr
-                        ? "Erreur interne — réessayez plus tard."
-                        : "Internal error — please retry later."}
-              </AlertTitle>
+              <AlertTitle>{ERREURS[erreur ?? "missing_token"][loc]}</AlertTitle>
               <AlertDescription>
-                {result.error === "invalid_token" && (
-                  <span>
+                <span>
+                  {isFr
+                    ? "Vous veniez chercher le guide IA entreprise ? Il vous est envoyé par e-mail : "
+                    : "Looking for the enterprise AI guide? It is sent to you by email: "}
+                  {/* 🔴 Lot L2 — ce lien visait `/fr#newsletter`, une ancre qui
+                      n'existe nulle part sur le site. */}
+                  <a className="underline" href={pageGuide}>
                     {isFr
-                      ? "Si vous souhaitez vous inscrire à nouveau, "
-                      : "If you wish to subscribe again, "}
-                    <a className="underline" href={isFr ? "/fr#newsletter" : "/en#newsletter"}>
-                      {isFr ? "remplissez le formulaire" : "use the signup form"}
-                    </a>
-                    .{" "}
-                    {/* Les filtres de messagerie d'entreprise (Safe Links, Mimecast)
-                        ouvrent le lien avant la personne et le consomment : elle
-                        arrive ici sans le bouton du guide promis par l'e-mail.
-                        Refaire la demande repasse par la branche « déjà inscrit »,
-                        qui affiche le téléchargement. */}
-                    {isFr
-                      ? "Vous veniez chercher le guide IA entreprise ? Votre messagerie a peut-être déjà ouvert ce lien : "
-                      : "Looking for the enterprise AI guide? Your mail filter may have opened this link already: "}
-                    <a className="underline" href={isFr ? "/fr/guide-ia" : "/en/ai-guide"}>
-                      {isFr
-                        ? "refaites la demande depuis la page du guide"
-                        : "request it again from the guide page"}
-                    </a>
-                    .
-                  </span>
-                )}
+                      ? "faites la demande depuis la page du guide"
+                      : "request it from the guide page"}
+                  </a>
+                  .
+                </span>
               </AlertDescription>
             </Alert>
           )}
 
-          {/* 🔑 LA PROMESSE DE /guide-ia EST TENUE ICI (2026-09-23).
-              La page du guide promettait un PDF « après inscription » ; il
-              n'existait pas, et cette page n'en disait rien. Le guide se
-              télécharge désormais APRÈS la confirmation de l'adresse — c'est ce
-              que la page du guide annonce, et ce que l'e-mail de double opt-in
-              dit. Affiché aussi à qui était déjà inscrit : il n'a pas à se
-              désinscrire pour l'obtenir. */}
-          {result.ok ? (
+          {/* Le guide reste téléchargeable ici après une confirmation réussie :
+              la personne qui arrive de l'e-mail l'a déjà, celle qui arrive
+              d'un ancien e-mail de confirmation le trouve. */}
+          {reussi ? (
             <section
               aria-labelledby="guide-ia-titre"
               className="border-border mt-8 rounded-2xl border p-6"
@@ -156,7 +186,6 @@ export default async function NewsletterConfirmPage({ params, searchParams }: Pr
               <a
                 href={`/${GUIDE_IA_CHEMIN}`}
                 download
-                data-track="newsletter-confirm-guide-ia"
                 className="bg-primary text-primary-fg hover:bg-primary-hover shadow-subtle mt-5 inline-flex w-fit items-center gap-2 rounded-full px-6 py-3 text-base font-semibold"
               >
                 {isFr ? "Télécharger le guide (PDF)" : "Download the guide (PDF)"}

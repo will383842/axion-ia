@@ -175,3 +175,9 @@ export function ipDepuisEntetes(h: Pick<Headers, "get">): string {
 export async function getClientIp(): Promise<string> {
   return ipDepuisEntetes(await headers());
 }
+
+/** Agent du navigateur (Server Action), pour le contexte d'une preuve de consentement. */
+export async function getClientUserAgent(): Promise<string | null> {
+  const ua = (await headers()).get("user-agent");
+  return ua ? ua.slice(0, 500) : null;
+}

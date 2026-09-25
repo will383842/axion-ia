@@ -25,6 +25,9 @@ import { jetonOpposition } from "@/server/email/opposition-jeton";
 import { prisma } from "@/lib/prisma";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
 import { cloturerJournal, marquerAnnule, noterTentativeEchouee } from "@/server/email/email-log";
+// Base seule : sûr sur le trajet du worker (cf. l'en-tête de `journal.ts`).
+import { marquerGuideEnvoye } from "@/server/guide-ia/journal";
+import { ENTITE_GUIDE } from "@/server/guide-ia/config";
 // 🔴 `verdict-envoi`, JAMAIS `suppression` : ce dernier importe paresseusement
 // un service qui tire `next-auth` et `next/headers`. Sous `tsx`, hors de Next,
 // tous les e-mails du site mourraient au premier départ. Gardé par
@@ -268,6 +271,11 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
           ...(entityId ? { entityId } : {}),
           ...(jobId ? { jobId } : {}),
         });
+        // Lot L2 (2026-09-24) — « Votre guide » : la demande n'est « envoyée »
+        // qu'ICI, après l'accord du relais. Le rattrapage lit ce champ.
+        if (entityType === ENTITE_GUIDE && entityId) {
+          await marquerGuideEnvoye(entityId);
+        }
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
         // 🔴 Lot 2 (2026-09-02) — UNE ligne par job, et « échec » seulement quand

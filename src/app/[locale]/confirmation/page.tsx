@@ -36,7 +36,7 @@ const TYPE_LABELS = {
   intervention: { fr: "réservation d'intervention", en: "session booking" },
   implementation: { fr: "demande d'implémentation IA", en: "AI implementation request" },
   contact: { fr: "message", en: "message" },
-  newsletter: { fr: "inscription newsletter", en: "newsletter signup" },
+  newsletter: { fr: "inscription à la lettre", en: "letter signup" },
 } as const;
 
 type ConfirmationType = keyof typeof TYPE_LABELS;

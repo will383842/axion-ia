@@ -37,6 +37,7 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   calendlyUrl: "https://exemple.invalid/lien-de-demonstration",
   cancelUrl: "https://exemple.invalid/lien-de-demonstration",
   dossierUrl: "https://exemple.invalid/lien-de-demonstration",
+  downloadToken: "jeton-de-demonstration",
   etape: "j2",
   cancellationWindow: "14 jours",
   candidatures: 3,

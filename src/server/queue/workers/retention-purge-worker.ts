@@ -265,7 +265,11 @@ export async function executerPurgeRetention(): Promise<void> {
   });
   for (const sub of oldUnsub) {
     await prisma.$transaction(async (tx) => {
-      await tx.newsletterSubscriber.delete({ where: { id: sub.id } });
+      // `select` explicite (lot L2, 2026-09-24) : sans lui, `delete` relit TOUTES
+      // les colonnes (RETURNING *) — y compris celles qu'une migration vient
+      // d'ajouter. Le worker atterrit ~50 min avant la migration : pendant cette
+      // fenêtre, la purge échouerait sur une colonne encore absente.
+      await tx.newsletterSubscriber.delete({ where: { id: sub.id }, select: { id: true } });
       await tx.activityLog.create({
         data: {
           adminUserId: null,

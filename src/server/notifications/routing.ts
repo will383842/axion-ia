@@ -49,6 +49,13 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   NEWSLETTER_CONFIRMED: { channels: ["telegram"], severity: "info" },
   NEWSLETTER_UNSUBSCRIBED: { channels: ["telegram"], severity: "info" },
 
+  // --- Guide IA (lot L2, 2026-09-24) ---
+  // Bridé à 10 par heure : au-delà, une notification par demande devient du
+  // bruit. Le récapitulatif quotidien de la sentinelle (`GUIDE_RECAP`) donne
+  // alors les nombres exacts — rien n'est perdu, seul le détail unitaire l'est.
+  GUIDE_REQUESTED: { channels: ["telegram"], severity: "info", rateLimitPerHour: 10 },
+  GUIDE_RECAP: { channels: ["telegram"], severity: "info" },
+
   // --- Booking interne ---
   BOOKING_CREATED: { channels: ["telegram"], severity: "info" },
   BOOKING_CANCELLED: { channels: ["telegram"], severity: "warn" },
@@ -224,6 +231,8 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   NEWSLETTER_PENDING: "system",
   NEWSLETTER_CONFIRMED: "system",
   NEWSLETTER_UNSUBSCRIBED: "system",
+  GUIDE_REQUESTED: "system",
+  GUIDE_RECAP: "system",
   ADMIN_REPLIED_TO_SUBMISSION: "system",
   DEPLOY_SUCCESS: "system",
   DEPLOY_FAILED: "system",

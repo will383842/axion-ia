@@ -106,7 +106,9 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // noms de job : ce compteur lit des FICHIERS de gabarit, pas des envois —
     // le même fichier sert les trois moments, comme `appel-rappel` le fait déjà
     // côté client. Attendre 58 ici serait une erreur de lecture du compteur.
-    expect(tous.length).toBe(56);
+    // 🔴 2026-09-24 — RELEVÉ À 57 : `guide-ia-envoi` (lot L2), le guide IA
+    // envoyé à la demande. Son champ `downloadToken` est déclaré ci-dessous.
+    expect(tous.length).toBe(57);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

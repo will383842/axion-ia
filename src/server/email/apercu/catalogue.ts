@@ -70,6 +70,9 @@ export interface FicheEmail {
    *   payment-failed                   |      0      |    0    |      0
    *   force-majeure-notice             |      0      |    0    |      0
    *
+   * Un sixième depuis le lot L2 : `newsletter-confirm-optin` (amendement de
+   * Will du 24/09 — plus aucun double opt-in pour une inscription neuve).
+   *
    * 🔑 TÉMOIN POSITIF : **293** lignes dans `email_logs` sur les mêmes 90 jours.
    * Sans lui, ces cinq zéros ne prouveraient rien — une requête qui ne regarde
    * pas la bonne table rend zéro partout, et se lit comme un résultat.
@@ -467,9 +470,17 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   },
   "newsletter-confirm-optin": {
     categorie: "divers",
-    quand: "Inscription newsletter — double opt-in, confirmation à cliquer",
+    quand:
+      "DORMANT depuis le lot L2 (amendement de Will du 24/09) : plus aucune inscription n'attend de double opt-in, et le rattrapage des confirmations, qui échappait à la limite par destinataire, a été retiré. Gardé pour les liens déjà envoyés, qui mènent à la même page de confirmation.",
     destinataire: "l'inscrit",
-    source: "features/newsletter/actions.ts",
+    source: null,
+  },
+  "guide-ia-envoi": {
+    categorie: "divers",
+    quand:
+      "Demande du guide IA (page du guide ou encart d'article) — envoyé tout de suite ; porte le lien « Se désabonner de la lettre » si la personne y est inscrite, ou le bouton de réinscription si elle s'était désabonnée",
+    destinataire: "le demandeur",
+    source: "server/guide-ia/envoi.ts",
   },
   "ressources-magic-link": {
     categorie: "divers",

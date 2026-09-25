@@ -20,6 +20,7 @@ import {
   NewsletterConfirmOptinEmail,
   newsletterConfirmOptinSubject,
 } from "./newsletter-confirm-optin";
+import { GuideIaEnvoiEmail, guideIaEnvoiSubject } from "./guide-ia-envoi";
 import { ContactConfirmedEmail, contactConfirmedSubject } from "./contact-confirmed";
 import { RoiReportEmail, roiReportSubject } from "./roi-report";
 import { GdprExportLinkEmail, gdprExportLinkSubject } from "./gdpr-export-link";
@@ -157,6 +158,12 @@ const TEMPLATES: TemplateMap = {
   "newsletter-confirm-optin": {
     subject: newsletterConfirmOptinSubject,
     component: NewsletterConfirmOptinEmail,
+  },
+  // Lot L2 (2026-09-24) — le guide IA, envoyé à la demande ; porte aussi la
+  // confirmation de la lettre quand la case facultative était cochée.
+  "guide-ia-envoi": {
+    subject: guideIaEnvoiSubject,
+    component: GuideIaEnvoiEmail,
   },
   "contact-confirmed": {
     subject: contactConfirmedSubject,

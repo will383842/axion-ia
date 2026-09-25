@@ -29,8 +29,15 @@ import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { hashIp } from "@/lib/security/ip-hash";
 
-/** Sens de l'événement : accord donné, ou accord retiré. */
-export type ConsentAction = "optin" | "optout";
+/**
+ * Sens de l'événement : accord donné, accord retiré — ou, depuis le lot L2
+ * (amendement de Will du 24/09), INFORMATION donnée : une inscription fondée
+ * sur l'intérêt légitime (lettre adressée à une adresse professionnelle) ne
+ * repose sur aucun accord ; ce qui se prouve, c'est que la personne a été
+ * informée, par quel texte (sa version) et quand. Ce n'est pas un `optin`, et
+ * le registre ne doit jamais le laisser croire.
+ */
+export type ConsentAction = "optin" | "optout" | "information";
 
 /**
  * Références FERMES des points de capture. Sans elles, deux consentements de

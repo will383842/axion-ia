@@ -649,7 +649,7 @@ export default async function NewsArticlePage({ params }: Props) {
       <ArticlePrevNext prev={adjacentNews.prev} next={adjacentNews.next} locale="fr" />
 
       {/* Refonte 2026-06-22 — newsletter (parité /blog). */}
-      <ArticleNewsletterInline locale="fr" />
+      <ArticleNewsletterInline locale="fr" source="actualites-fin-article" />
 
       <CtaBlock
         spacing="compact"

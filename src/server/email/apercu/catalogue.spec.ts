@@ -157,6 +157,17 @@ describe("le catalogue décrit le code réel", () => {
   it("les dormants sont ceux qu'on croit — ni plus, ni moins", () => {
     // Un compte figé attraperait un gabarit devenu dormant en silence : le
     // fichier qui l'envoyait a été supprimé, personne ne l'a vu.
-    expect(DORMANTS.length, "le nombre de gabarits dormants a changé").toBe(5);
+    // La LISTE, pas un effectif : un compte inchangé laisserait passer un
+    // échange (un dormant qui repart, un autre qui s'arrête).
+    // `newsletter-confirm-optin` : dormant depuis le lot L2 (amendement de Will
+    // du 24/09, plus aucun double opt-in pour une inscription neuve).
+    expect([...DORMANTS].sort(), "la liste des gabarits dormants a changé").toEqual([
+      "cancellation-confirmed-by-user",
+      "force-majeure-notice",
+      "newsletter-confirm-optin",
+      "payment-failed",
+      "payment-link",
+      "payment-receipt",
+    ]);
   });
 });

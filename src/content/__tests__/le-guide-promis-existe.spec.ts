@@ -14,7 +14,10 @@
  *   1. le PDF est servi, et il a le nombre de pages que la page annonce ;
  *   2. la page ne promet plus un envoi ni un téléchargement « immédiat » ;
  *   3. la page de confirmation porte le lien de téléchargement ;
- *   4. l'e-mail de double opt-in annonce le guide sans ajouter de lien (famille A).
+ *   4. l'e-mail de double opt-in annonce le guide sans ajouter de lien (famille A) ;
+ *   5. (lot L2, 2026-09-24) la page dit que le guide part TOUT DE SUITE par
+ *      e-mail — c'est désormais vrai — et l'e-mail « Votre guide » porte le lien
+ *      PERSONNEL, jamais le PDF direct.
  */
 
 import { existsSync, readFileSync, statSync } from "node:fs";
@@ -74,9 +77,9 @@ describe("la page /guide-ia dit vrai sur la façon d'obtenir le guide", () => {
     expect(source).not.toContain("Instant download");
   });
 
-  it("dit que le téléchargement suit la confirmation de l'adresse", () => {
-    expect(source).toContain("Téléchargement dès la confirmation de votre adresse e-mail.");
-    expect(source).toContain("confirmez votre adresse depuis l'e-mail");
+  it("🔴 L2 — dit que le guide part tout de suite par e-mail (et ne promet plus une confirmation préalable)", () => {
+    expect(source).toContain("Envoyé tout de suite par e-mail, gratuitement.");
+    expect(source).not.toContain("Téléchargement dès la confirmation de votre adresse e-mail.");
   });
 
   it(`annonce ${GUIDE_IA_PAGES} pages, comme le PDF`, () => {
@@ -107,6 +110,19 @@ describe("l'e-mail de double opt-in annonce le guide", () => {
       expect(r.text).toContain(locale === "fr" ? "guide IA entreprise" : "enterprise AI guide");
       expect(r.text).toContain(`${GUIDE_IA_PAGES} pages`);
       expect(r.html).not.toContain(GUIDE_IA_CHEMIN);
+    });
+  }
+});
+
+describe("🔴 L2 — l'e-mail « Votre guide » porte le lien personnel", () => {
+  for (const locale of ["fr", "en"] as const) {
+    it(`${locale} : lien /api/guide-ia/telecharger, jamais le PDF direct`, async () => {
+      const r = await renderEmailTemplate("guide-ia-envoi", locale, {
+        downloadToken: "d".repeat(64),
+      });
+      expect(r.html).toContain(`/api/guide-ia/telecharger?t=${"d".repeat(64)}`);
+      expect(r.html).not.toContain(GUIDE_IA_CHEMIN);
+      expect(r.text).toContain(`${GUIDE_IA_PAGES} pages`);
     });
   }
 });
