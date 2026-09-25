@@ -12,6 +12,7 @@ import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { getDefaultTenant, resolveTenantByKey } from "@/server/chatbot/tenant";
 import { capturerLead } from "@/server/chatbot/tools/capturer-lead";
+import { ipDepuisEntetes } from "@/lib/client-ip";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -28,11 +29,7 @@ const bodySchema = z.object({
 });
 
 function clientIp(req: NextRequest): string {
-  return (
-    req.headers.get("cf-connecting-ip") ??
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    "unknown"
-  );
+  return ipDepuisEntetes(req.headers);
 }
 
 function hashIp(ip: string): string | null {

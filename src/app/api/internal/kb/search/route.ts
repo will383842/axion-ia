@@ -18,6 +18,7 @@ import { searchKnowledge } from "@/lib/knowledge/search-fts";
 import { checkRateLimit } from "@/lib/rate-limit";
 import type { KbType, Locale } from "../../../../../../prisma/generated/client";
 import { KB_TYPES } from "@/content/knowledge/types";
+import { ipDepuisEntetes } from "@/lib/client-ip";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -31,11 +32,7 @@ const querySchema = z.object({
 });
 
 function getClientIp(req: Request): string {
-  return (
-    req.headers.get("cf-connecting-ip") ??
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    "unknown"
-  );
+  return ipDepuisEntetes(req.headers);
 }
 
 export async function GET(req: Request) {

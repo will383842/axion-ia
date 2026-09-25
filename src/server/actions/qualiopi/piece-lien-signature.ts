@@ -43,6 +43,7 @@
 
 import * as Sentry from "@sentry/nextjs";
 import { headers } from "next/headers";
+import { ipVisiteurOuNull } from "@/lib/client-ip";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { hashIp } from "@/lib/security/ip-hash";
@@ -344,10 +345,9 @@ export async function emettreLienSignatureAction(
   });
 
   const entetes = await headers();
-  const ipBrute =
-    entetes.get("cf-connecting-ip") ??
-    entetes.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    null;
+  // `cf-connecting-ip` n'est cru que si la connexion vient de Cloudflare :
+  // lu en direct, il se forgeait en contournant Cloudflare (cf. client-ip-core).
+  const ipBrute = ipVisiteurOuNull(entetes);
 
   try {
     const { token, expiresAt } = await creerTokenDocument({

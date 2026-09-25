@@ -25,6 +25,7 @@ import { getActivePromptContent } from "@/server/chatbot/generation/prompt-versi
 import type { SearchSlots } from "@/server/chatbot/catalog/slot-filling";
 import type { LinkFlowState } from "@/server/chatbot/catalog/link-flow";
 import type { TenantSettings } from "@/server/chatbot/constants";
+import { ipDepuisEntetes } from "@/lib/client-ip";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -50,11 +51,7 @@ const RATE_LIMIT_IP = { limit: 20, windowSec: 60 } as const;
 const RATE_LIMIT_SESSION = { limit: 30, windowSec: 60 } as const;
 
 function clientIp(req: NextRequest): string {
-  return (
-    req.headers.get("cf-connecting-ip") ??
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    "unknown"
-  );
+  return ipDepuisEntetes(req.headers);
 }
 
 function hashIp(ip: string): string | null {
