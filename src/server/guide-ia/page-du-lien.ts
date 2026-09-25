@@ -34,6 +34,97 @@ const TEXTES = {
   },
 } as const;
 
+/**
+ * Pages d'ERREUR du lien (décision de Will du 25/09, point 4) : une vraie
+ * phrase, jamais un code technique (`rate_limited` s'affichait tel quel), et
+ * dans la langue de la personne.
+ *
+ * Ni le jeton inconnu (404) ni le débit dépassé (429, vérifié AVANT toute
+ * lecture en base) ne donnent accès à la demande : sa langue n'est pas connue.
+ * On retient alors la première langue préférée du navigateur
+ * (`Accept-Language`), et le français par défaut.
+ */
+export type LangueLien = "fr" | "en";
+export type ErreurLien = "introuvable" | "debit";
+
+export function langueDeLaRequete(acceptLanguage: string | null): LangueLien {
+  const premiere = (acceptLanguage ?? "").split(",")[0]?.trim().toLowerCase() ?? "";
+  return premiere.startsWith("en") ? "en" : "fr";
+}
+
+const ERREURS: Record<
+  ErreurLien,
+  Record<
+    LangueLien,
+    {
+      titre: string;
+      texte: string;
+      lien?: { avant: string; href: string; libelle: string; apres: string };
+    }
+  >
+> = {
+  introuvable: {
+    fr: {
+      titre: "Lien introuvable",
+      texte: "Ce lien n'est plus valable.",
+      lien: {
+        avant: "Demandez à nouveau le guide sur ",
+        href: "/fr/guide-ia",
+        libelle: "axion-ia.com/fr/guide-ia",
+        apres: ".",
+      },
+    },
+    en: {
+      titre: "Link not found",
+      texte: "This link is no longer valid.",
+      lien: {
+        avant: "Request the guide again at ",
+        href: "/en/ai-guide",
+        libelle: "axion-ia.com/en/ai-guide",
+        apres: ".",
+      },
+    },
+  },
+  debit: {
+    fr: {
+      titre: "Trop de demandes",
+      texte: "Trop de demandes en peu de temps. Réessayez dans quelques minutes.",
+    },
+    en: {
+      titre: "Too many requests",
+      texte: "Too many requests in a short time. Try again in a few minutes.",
+    },
+  },
+};
+
+/** Page d'erreur du lien : une phrase, et pour un lien périmé, où redemander le guide. Aucun script. */
+export function pageErreurLien(erreur: ErreurLien, locale: LangueLien): string {
+  const t = ERREURS[erreur][locale];
+  const relance = t.lien
+    ? ` ${echapper(t.lien.avant)}<a href="${t.lien.href}">${echapper(t.lien.libelle)}</a>${echapper(t.lien.apres)}`
+    : "";
+  return `<!doctype html>
+<html lang="${locale}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>${echapper(t.titre)} · Axion-IA</title>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:#faf7f2;color:#2b2320}
+main{max-width:34rem;margin:0 auto;padding:3rem 1.25rem}
+p{font-size:1.05rem;line-height:1.6;margin:0 0 1.5rem;color:#4a403b}
+a{color:#1f4e8c}
+</style>
+</head>
+<body>
+<main>
+<p>${echapper(t.texte)}${relance}</p>
+</main>
+</body>
+</html>`;
+}
+
 /** La page du lien : un titre, une phrase, un bouton. Aucun script. */
 export function pageDuLien(jeton: string, locale: "fr" | "en"): string {
   const t = TEXTES[locale];

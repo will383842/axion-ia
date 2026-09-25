@@ -52,7 +52,7 @@ const COPY = {
     preview: "Le lien de téléchargement est dans ce message, et il reste valable.",
     title: "Votre guide IA entreprise",
     reprise:
-      "Vous vous étiez inscrit à notre lettre avant la parution du guide : le voici, comme promis.",
+      "Vous aviez demandé à recevoir notre lettre avant la parution du guide : le voici, comme promis.",
     body: `Voici le guide que vous avez demandé : ${GUIDE_IA_PAGES} pages sur les usages concrets de l'IA en entreprise, les coûts réels, le retour sur investissement, la gouvernance et les écueils à éviter.`,
     astuce: "Commencez par la page 5 : l'essentiel en une page.",
     cta: "Télécharger le guide (PDF)",
@@ -69,7 +69,7 @@ const COPY = {
     subject: `Your enterprise AI guide (PDF, ${GUIDE_IA_PAGES} pages)`,
     preview: "The download link is in this message, and it stays valid.",
     title: "Your enterprise AI guide",
-    reprise: "You subscribed to our letter before the guide came out: here it is, as promised.",
+    reprise: "You asked to receive our letter before the guide came out: here it is, as promised.",
     body: `Here is the guide you requested: ${GUIDE_IA_PAGES} pages, in French, on concrete uses of AI in business, real costs, return on investment, governance and pitfalls to avoid.`,
     astuce: "Start with page 5: the essentials on one page.",
     cta: "Download the guide (PDF)",
@@ -127,11 +127,6 @@ export function GuideIaEnvoiEmail({
       signature="equipe"
       preview={t.preview}
       title={t.title}
-      cta={{ label: t.cta, href: urlLienGuide(baseUrl, p.downloadToken) }}
-      // Le lien est PERSONNEL : l'afficher en clair en ferait une adresse
-      // copiable et transférable, qui compterait comme « ouvert » le clic d'un
-      // autre. Le bouton reste bulletproof.
-      ctaSecret
       // Deux liens d'ACTION dans le corps (le guide, et la lettre) : la rangée
       // de réseaux sociaux (lien de notoriété) cède sa place, comme sur les
       // e-mails du réseau d'apporteurs (§5.4).
@@ -141,6 +136,27 @@ export function GuideIaEnvoiEmail({
       {p.reprise === true ? <Text style={emailStyles.paragraphStyle}>{t.reprise}</Text> : null}
       <Text style={emailStyles.paragraphStyle}>{t.body}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.astuce}</Text>
+      {/*
+        Le bouton du guide vient JUSTE APRÈS « Commencez par la page 5 », avant
+        le bloc « lettre » (décision de Will du 25/09, point 1). Le CTA du
+        châssis (`cta`) est rendu APRÈS tout le corps : il aurait placé le
+        guide sous « Se désabonner » et sous « Recevoir à nouveau la lettre ».
+        Il est donc rendu ici, avec le même style et la même classe.
+
+        ⛔ Le lien est PERSONNEL : aucun repli en clair (ce que `ctaSecret`
+        garantissait avec le CTA du châssis). L'afficher en ferait une adresse
+        copiable et transférable, qui compterait comme « ouvert » le clic d'un
+        autre. Verrou : `ip-en-clair-et-gabarit.spec.ts` (une seule occurrence).
+      */}
+      <Section style={{ textAlign: "center", margin: "30px 0 8px 0" }}>
+        <Button
+          href={urlLienGuide(baseUrl, p.downloadToken)}
+          style={emailStyles.ctaStyle}
+          className="ax-cta"
+        >
+          {t.cta} &nbsp;→
+        </Button>
+      </Section>
       {p.unsubscribeToken ? (
         <Section style={{ margin: "8px 0 4px 0" }}>
           <Text style={{ ...emailStyles.paragraphStyle, fontWeight: 700 }}>{t.lettreTitre}</Text>

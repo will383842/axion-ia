@@ -28,7 +28,12 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { ipDepuisEntetes } from "@/lib/client-ip";
 import { urlGuideIa } from "@/content/guide-ia";
 import { emettreEvenementPlausible } from "@/lib/analytics/plausible-serveur";
-import { CHEMIN_LIEN_GUIDE, pageDuLien } from "@/server/guide-ia/page-du-lien";
+import {
+  CHEMIN_LIEN_GUIDE,
+  langueDeLaRequete,
+  pageDuLien,
+  pageErreurLien,
+} from "@/server/guide-ia/page-du-lien";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -61,23 +66,32 @@ async function debitDepasse(req: NextRequest): Promise<boolean> {
   return !rl.allowed;
 }
 
-function introuvable(): NextResponse {
+/** Jeton inconnu ou mal formé : la demande n'est pas lue, la langue vient du navigateur. */
+function introuvable(req: NextRequest): NextResponse {
   return new NextResponse(
-    "<!doctype html><meta charset=utf-8><title>Lien introuvable</title><p>Ce lien n'existe pas ou n'est plus valable.</p>",
+    pageErreurLien("introuvable", langueDeLaRequete(req.headers.get("accept-language"))),
     { status: 404, headers: ENTETES_PAGE },
   );
 }
 
+/** Débit dépassé : une vraie phrase, jamais le code `rate_limited`. */
+function tropDeDemandes(req: NextRequest): NextResponse {
+  return new NextResponse(
+    pageErreurLien("debit", langueDeLaRequete(req.headers.get("accept-language"))),
+    { status: 429, headers: { ...ENTETES_PAGE, "retry-after": "60" } },
+  );
+}
+
 export async function GET(req: NextRequest): Promise<NextResponse> {
-  if (await debitDepasse(req)) return new NextResponse("rate_limited", { status: 429 });
+  if (await debitDepasse(req)) return tropDeDemandes(req);
   const jeton = new URL(req.url).searchParams.get("t") ?? "";
-  if (!FORMAT_JETON.test(jeton)) return introuvable();
+  if (!FORMAT_JETON.test(jeton)) return introuvable(req);
 
   const demande = await prisma.guideRequest.findUnique({
     where: { downloadToken: jeton },
     select: { id: true, locale: true },
   });
-  if (demande === null) return introuvable();
+  if (demande === null) return introuvable(req);
 
   // « Vu », pas « ouvert » : peut être un antivirus. Premier passage seulement.
   await prisma.guideRequest
@@ -102,15 +116,15 @@ async function jetonDuCorps(req: NextRequest): Promise<string> {
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
-  if (await debitDepasse(req)) return new NextResponse("rate_limited", { status: 429 });
+  if (await debitDepasse(req)) return tropDeDemandes(req);
   const jeton = await jetonDuCorps(req);
-  if (!FORMAT_JETON.test(jeton)) return introuvable();
+  if (!FORMAT_JETON.test(jeton)) return introuvable(req);
 
   const demande = await prisma.guideRequest.findUnique({
     where: { downloadToken: jeton },
     select: { id: true, source: true },
   });
-  if (demande === null) return introuvable();
+  if (demande === null) return introuvable(req);
 
   const maintenant = new Date();
   // Premier clic seulement. `first_seen_at` aussi, au cas où le GET n'a pas eu

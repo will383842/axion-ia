@@ -14,7 +14,10 @@
 import { z } from "zod";
 
 // Shared field validators
-const email = z.string().trim().toLowerCase().email("Email invalide.");
+// Même message que le serveur (`features/guide-ia/actions.ts`) — décision de
+// Will du 25/09 : « Adresse e-mail invalide. » partout. Ce validateur ne sert
+// qu'au formulaire du guide (`demandeGuideSchema`).
+const email = z.string().trim().toLowerCase().email("Adresse e-mail invalide.");
 
 /**
  * Demande du guide IA (lot L2, 2026-09-24).

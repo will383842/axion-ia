@@ -44,8 +44,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale === "fr" ? "Confirmation de la lettre · Axion-IA" : "Letter confirmation · Axion-IA",
     description:
       locale === "fr"
-        ? "Confirmation de votre inscription à la lettre IA d'Axion-IA."
-        : "Confirmation of your Axion-IA AI letter subscription.",
+        ? "Confirmation de votre inscription à la lettre d'Axion-IA."
+        : "Confirmation of your subscription to Axion-IA's letter.",
   });
   // `no-referrer` : l'URL porte le jeton (`?token=…`) ; un clic vers un autre
   // site depuis cette page ne doit pas le lui transmettre.
@@ -108,8 +108,8 @@ export default async function NewsletterConfirmPage({ params, searchParams }: Pr
               </h1>
               <p className="text-fg-soft text-base leading-relaxed">
                 {isFr
-                  ? `La lettre IA d'Axion-IA : ${CADENCE_LETTRE.fr.charAt(0).toLowerCase()}${CADENCE_LETTRE.fr.slice(1)} Un clic sur le bouton ci-dessous, et c'est fait. Désinscription en un clic dans chaque e-mail.`
-                  : `Axion-IA's AI letter: ${CADENCE_LETTRE.en.charAt(0).toLowerCase()}${CADENCE_LETTRE.en.slice(1)} One click on the button below and you are done. One-click unsubscribe in every email.`}
+                  ? `La lettre d'Axion-IA : ${CADENCE_LETTRE.fr.charAt(0).toLowerCase()}${CADENCE_LETTRE.fr.slice(1)} Un clic sur le bouton ci-dessous, et c'est fait. Désinscription en un clic dans chaque e-mail.`
+                  : `Axion-IA's letter: ${CADENCE_LETTRE.en.charAt(0).toLowerCase()}${CADENCE_LETTRE.en.slice(1)} One click on the button below and you are done. One-click unsubscribe in every email.`}
               </p>
               {/* 🔑 Un FORMULAIRE, pas un lien : seul un POST confirme. C'est ce
                   qui distingue la personne du scanneur qui a ouvert le lien. */}
@@ -134,7 +134,7 @@ export default async function NewsletterConfirmPage({ params, searchParams }: Pr
               <AlertTitle>
                 {statut === "deja"
                   ? isFr
-                    ? "Vous étiez déjà inscrit·e."
+                    ? "Votre inscription était déjà enregistrée."
                     : "You were already subscribed."
                   : isFr
                     ? "Inscription confirmée."
@@ -142,7 +142,7 @@ export default async function NewsletterConfirmPage({ params, searchParams }: Pr
               </AlertTitle>
               <AlertDescription>
                 {isFr
-                  ? `Merci. Vous recevrez nos prochaines lettres : ${CADENCE_LETTRE.fr.charAt(0).toLowerCase()}${CADENCE_LETTRE.fr.slice(1)}`
+                  ? `Merci. Vous recevrez nos prochains envois : ${CADENCE_LETTRE.fr.charAt(0).toLowerCase()}${CADENCE_LETTRE.fr.slice(1)}`
                   : `Thank you. You will receive our next letters: ${CADENCE_LETTRE.en.charAt(0).toLowerCase()}${CADENCE_LETTRE.en.slice(1)}`}
               </AlertDescription>
             </Alert>

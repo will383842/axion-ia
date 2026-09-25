@@ -26,8 +26,6 @@ import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
 import { provenanceDepuisLeTunnel } from "@/lib/careers/provenance";
 import { notify } from "@/server/notifications";
 import { isVideoEditorOffer } from "@/lib/careers/video-editor-offer";
-import { candidateFamilyForOffer } from "@/lib/careers/candidate-family";
-import { syncCandidateToCrm } from "@/server/crm-sync";
 import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
 import { enqueueEmail } from "@/server/queue/queues";
 import { adminPath } from "@/lib/admin-path";
@@ -467,63 +465,13 @@ export async function submitJobApplicationAction(
       });
     }
 
-    // ── 8 bis. Synchro CRM — univers VIVIER (lot L2) ──────────────────────
+    // ── 8 bis. AUCUNE candidature ne part au CRM Pro ──────────────────────
     //
-    // 🔴 UNE CANDIDATURE SPONTANÉE NE FRANCHIT PAS LA FRONTIÈRE. Décision
-    // conservatrice, écrite et motivée dans l'ADR 0047 §4 (arbitrage 1,
-    // option C), et voici la mine qu'elle désamorce :
-    //
-    // `candidateFamilyForOffer` produit une valeur qui doit exister dans un
-    // `CHECK` SQL **de l'autre dépôt**. Une famille inconnue là-bas fait
-    // refuser TOUTES les fiches qui la portent — pas seulement les nouvelles.
-    // Émettre une spontanée exigerait donc soit une migration distante
-    // déployée AVANT, soit de la ranger dans `candidat_autre`, ce qui perdrait
-    // l'information à la lecture.
-    //
-    // 🔑 Ne rien émettre est la seule option qui ne dépende d'aucun
-    // déploiement ailleurs, et elle est réversible : le jour où Will tranche,
-    // `reconcile.ts` sait rattraper un stock non émis. Une spontanée qu'on n'a
-    // pas encore lue n'a de toute façon rien à faire dans un vivier long terme.
-    //
-    // 🔴 DOUBLE VERROU, et le second est le vrai : le drapeau
-    // `CRM_SYNC_CANDIDATES_ENABLED` évite d'émettre pour rien, mais c'est le
-    // CRM qui REFUSE (422) toute fiche candidat dont la version de
-    // consentement n'est pas v2. Les 71 candidatures du stock portent
-    // `careers-v1-2026-06-09`, dont le texte ne couvre QUE l'étude de la
-    // candidature en cours : elles ne peuvent pas entrer au vivier tant que le
-    // texte v2 n'est pas servi. Le refus est donc attendu, et sain.
-    if (offer)
-      await syncCandidateToCrm({
-        subjectRef: `site:job_application:${app.id}`,
-        family: candidateFamilyForOffer(offer.slug, offer.category),
-        offerSlug: offer.slug,
-        sourceSlug: "site-candidature-offre",
-        occurredAt: app.submittedAt,
-        person: {
-          email: d.email,
-          firstName: d.firstName,
-          lastName: d.lastName,
-          phone: d.phone ?? null,
-        },
-        consent: {
-          version: CONSENT_VERSION,
-          at: app.submittedAt,
-          textRef: "job-application-form",
-          // Renseigné UNIQUEMENT si la case optionnelle a été cochée. Le CRM lit
-          // `consent.vivier_at` pour savoir s'il a le droit de conserver la fiche
-          // au-delà du recrutement en cours.
-          vivierAt: consentVivier ? app.submittedAt : null,
-        },
-        cvRef: cvStoragePath ? `site:cv:${app.id}` : null,
-        attributes: {
-          ...(d.experienceBand ? { experienceBand: d.experienceBand } : {}),
-          ...(d.availability ? { availability: d.availability } : {}),
-          ...(d.city ? { city: d.city } : {}),
-          hasDriverLicense,
-          hasVehicle,
-        },
-        payload: { offerTitle: titrePoste },
-      });
+    // 🔴 Décision de Will, ADR 0047 (révision « aucune candidature ne franchit
+    // la frontière »). Le vivier est tenu par la console du site, qui lit
+    // `jobApplication` et non l'outbox : la candidature n'est donc pas perdue.
+    // Rouvrir cet envoi exige sa validation explicite ; la garde statique
+    // `les-candidatures-ne-partent-pas-au-crm.spec.ts` rougit sinon.
 
     // 9. Telegram (+ WhatsApp pour l'offre monteur vidéo) — catégorie séparée
     // pour cette offre : salon 🎬 dédié, pas mélangée aux autres candidatures.

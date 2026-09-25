@@ -2,7 +2,8 @@
  * La barre latérale ne précharge plus ses ~150 liens à l'ouverture de la page.
  *
  * Audit UI du 2026-09-02 : 16 à 30 requêtes `?_rsc=` par page admin, 20 à 60 %
- * en 503. Le lien de navigation doit dire `prefetch={false}` tant qu'il n'a
+ * abandonnées ou en attente (affichées « 503 » par l'outil de relevé, cf.
+ * `HoverPrefetchLink.tsx`). Le lien de navigation doit dire `prefetch={false}` tant qu'il n'a
  * pas été survolé (ou focalisé), puis rendre la main au comportement par
  * défaut de Next (`null`).
  */

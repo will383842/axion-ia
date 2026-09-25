@@ -46,6 +46,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 import { HoneypotField } from "@/components/forms/HoneypotField";
+import { reporterLeurre } from "@/components/forms/reporter-leurre";
 import { isStaleServerActionError } from "@/lib/forms/form-errors";
 import type { LibellesFormulaireGuide, SourceGuide } from "@/content/guide-ia-formulaire";
 import { natureAdresse } from "@/lib/email/nature-adresse";
@@ -134,7 +135,7 @@ export function NewsletterForm({ libelles, source, variant = "stacked" }: Newsle
     return jetonRef.current;
   }
 
-  async function onSubmit(values: DemandeGuideInput) {
+  async function onSubmit(values: DemandeGuideInput, event?: React.BaseSyntheticEvent) {
     setServerError(null);
     activerTurnstile();
     try {
@@ -148,6 +149,7 @@ export function NewsletterForm({ libelles, source, variant = "stacked" }: Newsle
       fd.set("source", source);
       // Turnstile est BLOQUANT (D3) : sans jeton, le serveur refuse et le dit.
       if (jeton) fd.set("cf-turnstile-response", jeton);
+      reporterLeurre(fd, event?.target);
 
       const result = await demanderGuideAction({ ok: false, error: "" }, fd);
       if (!result.ok) {

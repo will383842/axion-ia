@@ -363,16 +363,22 @@ function FooterLinkList({ items }: { items: ReadonlyArray<{ href: string; label:
             préchargement RSC.
 
             Relevé au navigateur sur deux chargements distincts de la page
-            d'accueil : **chaque URL était demandée deux fois, et la seconde
-            répondait 503**, sans exception. Une cinquantaine de requêtes
-            perdues par visite, à la charge de l'origine.
+            d'accueil : chaque URL était demandée deux fois, et la seconde
+            était affichée « 503 ». Une cinquantaine de requêtes doublées par
+            visite, à la charge de l'origine.
 
-            ⚠️ CE QUE CETTE LIGNE NE FAIT PAS : expliquer le 503. La cause
-            n'est pas identifiée — non reproductible en ligne de commande, et
-            les journaux d'accès du proxy sont désactivés, donc on ne sait
-            même pas si la seconde requête atteint le serveur. Elle retire la
-            PLUS GROSSE SOURCE de doublons, ce qui vaut indépendamment : un
-            lien de pied de page est le moins probable des clics suivants.
+            🔑 LE « 503 » N'ÉTAIT PAS UNE RÉPONSE DU SERVEUR (établi le
+            2026-09-25). L'outil de relevé — l'extension Chrome de Claude —
+            écrit `status = 503` sur TOUT évènement `Network.loadingFailed`.
+            Mesuré au protocole Chrome : la requête « en échec » avait reçu
+            un HTTP 200, puis le navigateur l'avait abandonnée
+            (`net::ERR_ABORTED`, `canceled: true`) sans qu'aucun code de la
+            page appelle `abort()` ni `cancel()`, et l'abandon disparaît quand
+            le corps est lu jusqu'au bout (0 cas sur 12 passes, contre ~45 %
+            sinon). Next ne produit aucun 503 ; six requêtes identiques
+            simultanées sur une connexion HTTP/2 rendent six 200. Le doublon,
+            lui, était bien réel — c'est ce que cette ligne retire : un lien
+            de pied de page est le moins probable des clics suivants.
 
             Même motif que le lien « espace formateur » plus haut dans ce
             fichier. L'en-tête, lui, garde son préchargement : c'est par là
