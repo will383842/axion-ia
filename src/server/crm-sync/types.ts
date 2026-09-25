@@ -21,17 +21,59 @@ export const CRM_SYNC_SCHEMA_VERSION = 1;
 /** Univers de destination — informatif ; le CRM tranche de son côté. */
 export type CrmUniverse = "business" | "vivier";
 
-export type CrmEventType =
-  | "form_submission"
-  | "calendly_booked"
-  | "calendly_completed"
-  | "calendly_canceled"
-  | "calendly_no_show"
-  | "newsletter_optin"
-  | "newsletter_optout"
-  | "review_posted"
-  | "application_submitted"
-  | "opt_out";
+/**
+ * Types d'événement — 🔴 MIROIR EXACT de `SiteSyncEvent::EVENT_TYPES` (CRM).
+ * Liste RUNTIME pour être pinnée par un test (`contract.spec.ts`), comme
+ * `CRM_FORM_TYPES`.
+ *
+ * Lot L4-S (2026-09-25) — deux types de plus, arrivés au CRM avec son lot L4-C :
+ *   · `lead_magnet_requested` : clic HUMAIN (POST) sur le lien personnel du
+ *     guide (décision D1) — jamais la simple demande, qu'un tiers peut faire ;
+ *   · `email_hard_bounced` : rebond dur constaté sur un abonné.
+ * Tous deux derrière `CRM_SYNC_GUIDE_ENABLED` (OFF) : le CRM les refuse en 503
+ * tant que sa propre ingestion « personnes » est fermée.
+ */
+export const CRM_EVENT_TYPES = [
+  "form_submission",
+  "calendly_booked",
+  "calendly_completed",
+  "calendly_canceled",
+  "calendly_no_show",
+  "newsletter_optin",
+  "newsletter_optout",
+  "review_posted",
+  "application_submitted",
+  "opt_out",
+  "lead_magnet_requested",
+  "email_hard_bounced",
+] as const;
+
+export type CrmEventType = (typeof CRM_EVENT_TYPES)[number];
+
+/**
+ * Les types qui n'existent que derrière `CRM_SYNC_GUIDE_ENABLED`. Le verrou est
+ * posé dans `enqueue.ts`, au point de passage unique : un appelant qui
+ * oublierait le drapeau n'écrirait quand même rien.
+ */
+export const CRM_EVENT_TYPES_DU_FLUX_GUIDE: readonly CrmEventType[] = [
+  "lead_magnet_requested",
+  "email_hard_bounced",
+];
+
+/**
+ * `payload` des événements « personnes » (lettre et guide), clés lues par
+ * `PersonnesIngestService` côté CRM (`CLES_PAYLOAD_CONSIGNEES`) :
+ *   · `base_legale`  — `consent` | `legitimate_interest_b2b`
+ *                      (`Taxonomy::ABONNEMENT_LEGAL_BASES`) ;
+ *   · `email_nature` — `pro` | `perso`, décidée par le SITE ;
+ *   · `placement`, `locale`, `aimant`, `verifie`.
+ * `lettre` (statut de la lettre au moment du clic) voyage aussi : le CRM
+ * l'accepte (le `payload` n'est pas à clés fermées) sans le consigner — c'est
+ * `newsletter_optin` qui porte l'abonnement.
+ */
+export type CrmBaseLegaleLettre = "consent" | "legitimate_interest_b2b";
+export type CrmNatureEmail = "pro" | "perso";
+export type CrmStatutLettre = "abonne" | "non_abonne" | "desabonne";
 
 /**
  * Types métier du formulaire unifié (12) + podcast + simulateur de gains.

@@ -618,11 +618,12 @@ describe("réconciliation — parité sur les CINQ familles de capture", () => {
     outbox.findFirst.mockResolvedValue({ createdAt: new Date(Date.now() - 6 * 24 * 3600 * 1000) });
   });
 
-  it("le rapport porte les cinq familles, jamais moins", async () => {
+  it("le rapport porte les six familles, jamais moins (lot L4-S : guide_request)", async () => {
     const rapport = await collectReconciliation();
     expect(rapport.families.map((f) => f.family).sort()).toEqual([
       "calendly_event",
       "customer_review",
+      "guide_request",
       "job_application",
       "newsletter_subscriber",
       "submission",

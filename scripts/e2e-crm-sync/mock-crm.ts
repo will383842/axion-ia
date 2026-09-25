@@ -39,6 +39,9 @@ const EVENT_TYPES = [
   "review_posted",
   "application_submitted",
   "opt_out",
+  // Lot L4-C du CRM / L4-S du site.
+  "lead_magnet_requested",
+  "email_hard_bounced",
 ];
 
 const FORM_TYPES = [

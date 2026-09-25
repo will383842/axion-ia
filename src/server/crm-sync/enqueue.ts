@@ -3,9 +3,9 @@ import { randomUUID } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { crmSyncQueue } from "@/server/queue/queues";
 
-import { isCrmSyncCandidatesEnabled, isCrmSyncEnabled } from "./config";
+import { isCrmSyncCandidatesEnabled, isCrmSyncEnabled, isCrmSyncGuideEnabled } from "./config";
 import { estEnvoiCoupe } from "./coupure-recrutement";
-import type { CrmSyncEvent, CrmUniverse } from "./types";
+import { CRM_EVENT_TYPES_DU_FLUX_GUIDE, type CrmSyncEvent, type CrmUniverse } from "./types";
 
 /**
  * Écriture d'un événement dans l'OUTBOX, puis demande d'émission immédiate.
@@ -63,6 +63,66 @@ export interface EnqueueOptions {
   /** Client de transaction, quand l'écriture métier est déjà transactionnelle. */
   tx?: CrmOutboxWriter | undefined;
   universe?: CrmUniverse | undefined;
+  /**
+   * `false` : écrire la ligne SANS la mettre en file (lot L4-S). Pour un
+   * appelant qui écrit DANS une transaction : un job ajouté avant le COMMIT
+   * chercherait une ligne encore invisible. L'appelant met en file APRÈS la
+   * transaction (`mettreEnFileCrm`) ; à défaut, le balayage la prend.
+   */
+  mettreEnFile?: boolean | undefined;
+}
+
+/**
+ * Nom et code d'une erreur, JAMAIS son message (lot L4-S). Un message Prisma
+ * recopie les arguments de la requête — une adresse, un `where: { email }`.
+ */
+export function erreurSansDonnees(e: unknown): string {
+  if (typeof e !== "object" || e === null) return typeof e;
+  const { name, code } = e as { name?: unknown; code?: unknown };
+  const nom = typeof name === "string" ? name : "Error";
+  return typeof code === "string" ? `${nom} ${code}` : nom;
+}
+
+/**
+ * Demande d'émission immédiate d'une ligne d'outbox, SANS L'ATTENDRE (lot
+ * L4-S). La file vit dans Redis, avec `maxRetriesPerRequest: null` : un Redis
+ * injoignable ne fait pas échouer `add`, il le fait ATTENDRE, indéfiniment.
+ * La personne qui attend son PDF, ou le webhook qui doit répondre 200, ne
+ * peut pas dépendre de ça. L'appel part ; s'il échoue ou ne revient jamais,
+ * la ligne reste `pending` et le balayage périodique la prendra.
+ */
+export function mettreEnFileCrm(outboxId: string): void {
+  try {
+    const envoi = crmSyncQueue?.add("emit", { outboxId }, { jobId: `crm-sync-emit-${outboxId}` });
+    if (envoi) {
+      void Promise.resolve(envoi).catch((queueError: unknown) => {
+        console.error(
+          "[crm-sync] mise en file best-effort échouée :",
+          erreurSansDonnees(queueError),
+        );
+      });
+    }
+  } catch (queueError) {
+    console.error("[crm-sync] mise en file best-effort échouée :", erreurSansDonnees(queueError));
+  }
+}
+
+/**
+ * Attend `promesse` au plus `ms` millisecondes, puis rend la main quoi qu'il
+ * arrive (lot L4-S). La promesse continue sa course : ce qu'elle écrit reste
+ * écrit, et ce qu'elle n'écrit pas est repris par le rattrapage ou le
+ * balayage. Ne lève jamais.
+ */
+export async function auPlus<T>(promesse: Promise<T>, ms: number): Promise<T | "delai-depasse"> {
+  let minuterie: ReturnType<typeof setTimeout> | undefined;
+  const delai = new Promise<"delai-depasse">((resolve) => {
+    minuterie = setTimeout(() => resolve("delai-depasse"), ms);
+  });
+  try {
+    return await Promise.race([promesse.catch(() => "delai-depasse" as const), delai]);
+  } finally {
+    if (minuterie !== undefined) clearTimeout(minuterie);
+  }
 }
 
 export function newCrmEventId(): string {
@@ -84,6 +144,12 @@ export async function enqueueCrmSyncEvent(
   // que soit le drapeau (ADR 0047, révision § 4 ter). Le couvercle est dans le
   // code : `CRM_SYNC_CANDIDATES_ENABLED` reste ouvert pour l'opposition.
   if (estEnvoiCoupe(event.event_type, event)) return null;
+  // Lot L4-S : les types du flux lettre et guide n'existent que derrière
+  // `CRM_SYNC_GUIDE_ENABLED`. Verrou posé ICI, au passage obligé : un appelant
+  // qui oublierait le drapeau n'écrirait quand même rien.
+  if (CRM_EVENT_TYPES_DU_FLUX_GUIDE.includes(event.event_type) && !isCrmSyncGuideEnabled()) {
+    return null;
+  }
 
   try {
     const writer = (options.tx ?? prisma) as unknown as CrmOutboxWriter;
@@ -98,22 +164,38 @@ export async function enqueueCrmSyncEvent(
       },
     });
 
-    // Émission immédiate déléguée à la queue : la Server Action rend la main
-    // sans attendre le réseau. Si BullMQ est coupé (build, `BULLMQ_DISABLED`),
+    // Émission immédiate déléguée à la queue, SANS l'attendre (lot L4-S :
+    // `mettreEnFileCrm`). Si BullMQ est coupé (build, `BULLMQ_DISABLED`),
     // `crmSyncQueue` vaut `null` — la ligne reste simplement `pending` et le
     // balayage périodique la prendra.
-    try {
-      await crmSyncQueue?.add("emit", { outboxId: row.id }, { jobId: `crm-sync-emit-${row.id}` });
-    } catch (queueError) {
-      console.error("[crm-sync] mise en file best-effort échouée:", queueError);
-    }
+    if (options.mettreEnFile !== false) mettreEnFileCrm(row.id);
 
     return row.id;
   } catch (error) {
+    // `event_id` DÉTERMINISTE déjà en outbox (lot L4-S, `event-id.ts`) : le
+    // même événement a déjà été posé — par le geste en direct ou par le
+    // rattrapage. Ce n'est pas une perte, c'est l'idempotence qui joue.
+    if (estDoublonEventId(error)) {
+      console.warn(`[crm-sync] événement ${event.event_id} déjà en outbox : rien de plus.`);
+      return null;
+    }
     // Un échec d'outbox ne doit jamais faire échouer la capture du lead.
-    console.error("[crm-sync] écriture outbox échouée (événement perdu):", error);
+    console.error(
+      "[crm-sync] écriture outbox échouée (événement perdu) :",
+      erreurSansDonnees(error),
+    );
     return null;
   }
+}
+
+/** Violation d'unicité Prisma (P2002) sur `event_id`. */
+function estDoublonEventId(error: unknown): boolean {
+  if (typeof error !== "object" || error === null) return false;
+  const e = error as { code?: unknown; meta?: { target?: unknown } };
+  if (e.code !== "P2002") return false;
+  const cible = e.meta?.target;
+  const champs = Array.isArray(cible) ? cible.map(String) : [String(cible ?? "")];
+  return champs.some((c) => c === "eventId" || c === "event_id" || c.includes("event_id"));
 }
 
 function universeOf(event: CrmSyncEvent): CrmUniverse {

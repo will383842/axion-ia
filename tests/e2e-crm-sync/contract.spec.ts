@@ -39,6 +39,7 @@ vi.mock("@/lib/prisma", () => ({ prisma: {} }));
 
 import { signBody } from "@/server/crm-sync/emit";
 import {
+  CRM_EVENT_TYPES,
   CRM_FORM_TYPES,
   CRM_SYNC_SCHEMA_VERSION,
   type CrmEventType,
@@ -66,7 +67,11 @@ const CRM_EXPECTED_FORM_TYPES = [
   "simulateur_roi",
 ];
 
-/** Miroir de `SiteSyncEvent::EVENT_TYPES` — les 14 points de capture, liste FERMÉE. */
+/**
+ * Miroir de `SiteSyncEvent::EVENT_TYPES` — liste FERMÉE. Les deux derniers
+ * arrivent avec le lot L4-C du CRM (`axion-crm-pro`, #246) et le lot L4-S du
+ * site : `lead_magnet_requested`, `email_hard_bounced`.
+ */
 const CRM_EXPECTED_EVENT_TYPES = [
   "form_submission",
   "calendly_booked",
@@ -78,6 +83,8 @@ const CRM_EXPECTED_EVENT_TYPES = [
   "review_posted",
   "application_submitted",
   "opt_out",
+  "lead_magnet_requested",
+  "email_hard_bounced",
 ];
 
 /** Miroir de `SiteSyncEvent::TOP_LEVEL_KEYS` — toute clé hors liste ⇒ 422. */
@@ -133,6 +140,8 @@ const EVENT_TYPE_MIRROR: Record<CrmEventType, true> = {
   review_posted: true,
   application_submitted: true,
   opt_out: true,
+  lead_magnet_requested: true,
+  email_hard_bounced: true,
 };
 
 /** Même verrou pour les statuts rendus par le CRM. */
@@ -157,6 +166,12 @@ describe("contrat site ↔ CRM — listes gouvernées", () => {
 
   it("les types d'événement du site sont EXACTEMENT ceux de SiteSyncEvent::EVENT_TYPES", () => {
     expect(Object.keys(EVENT_TYPE_MIRROR).sort()).toEqual([...CRM_EXPECTED_EVENT_TYPES].sort());
+  });
+
+  it("la liste RUNTIME des types d'événement est, dans l'ordre, celle du CRM (lot L4-S)", () => {
+    // L'ordre compte ici comme pour les formulaires : relecture en vis-à-vis
+    // avec `SiteSyncEvent::EVENT_TYPES`.
+    expect([...CRM_EVENT_TYPES]).toEqual(CRM_EXPECTED_EVENT_TYPES);
   });
 
   it("les statuts d'ingestion attendus sont ceux d'IngestOutcome", () => {

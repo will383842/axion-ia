@@ -14,7 +14,13 @@
 import { prisma } from "@/lib/prisma";
 
 import { CRM_SYNC_BACKLOG_THRESHOLD } from "./alerts";
-import { crmSyncSecret, crmSyncUrl, isCrmSyncCandidatesEnabled, isCrmSyncEnabled } from "./config";
+import {
+  crmSyncSecret,
+  crmSyncUrl,
+  isCrmSyncCandidatesEnabled,
+  isCrmSyncEnabled,
+  isCrmSyncGuideEnabled,
+} from "./config";
 import { collectReconciliation, type ReconcileReport } from "./reconcile";
 
 /** Statuts possibles d'une ligne d'outbox (miroir de l'enum Prisma). */
@@ -43,6 +49,8 @@ export interface CrmSyncHealth {
   /** Drapeaux — une carte vide n'est une anomalie que si la synchro est allumée. */
   enabled: boolean;
   candidatesEnabled: boolean;
+  /** Flux lettre et guide vers les « personnes » du CRM (lot L4-S). */
+  guideEnabled: boolean;
   /** URL + secret présents : sans eux aucune émission n'est possible. */
   configured: boolean;
 
@@ -133,6 +141,7 @@ export async function getCrmSyncHealth(): Promise<CrmSyncHealth> {
   return {
     enabled: isCrmSyncEnabled(),
     candidatesEnabled: isCrmSyncCandidatesEnabled(),
+    guideEnabled: isCrmSyncGuideEnabled(),
     configured: crmSyncUrl() !== null && crmSyncSecret() !== null,
     counts,
     backlog: counts.pending + counts.failed,

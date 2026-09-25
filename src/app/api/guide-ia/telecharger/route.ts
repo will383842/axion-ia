@@ -28,6 +28,8 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { ipDepuisEntetes } from "@/lib/client-ip";
 import { urlGuideIa } from "@/content/guide-ia";
 import { emettreEvenementPlausible } from "@/lib/analytics/plausible-serveur";
+import { auPlus } from "@/server/crm-sync/enqueue";
+import { transmettreClicGuide } from "@/server/crm-sync/lettre-guide";
 import {
   CHEMIN_LIEN_GUIDE,
   langueDeLaRequete,
@@ -39,6 +41,8 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const LIMITE_PAR_MINUTE = 30;
+/** Attente maximale de l'écriture CRM avant la redirection vers le PDF (lot L4-S). */
+const ATTENTE_MAX_CRM_MS = 1_500;
 /** Jeton : 64 caractères hexadécimaux (`randomBytes(32)`). Tout autre format est refusé d'emblée. */
 const FORMAT_JETON = /^[0-9a-f]{64}$/;
 
@@ -152,8 +156,17 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     ip: ipDe(req),
   }).catch(() => undefined);
 
-  // ⚠️ L'émission vers le CRM (`lead_magnet_requested`, décision D1 : au clic)
-  // arrive avec le lot L4-S, une fois le CRM prêt à la recevoir. `crm_emitted_at`
-  // reste vide d'ici là ; le rattrapage de L4-S reprendra les lignes cliquées.
+  // Lot L4-S — entrée au CRM AU CLIC (décision D1) : `lead_magnet_requested`,
+  // et l'inscription à la lettre s'il y en a une. Derrière
+  // `CRM_SYNC_GUIDE_ENABLED` (fermé : rien, `crm_emitted_at` reste vide et le
+  // rattrapage reprendra la ligne). Une seule fois par demande, même au
+  // second clic (réservation par `crm_emitted_at`). JAMAIS au GET.
+  // Ne lève pas. L'écriture en base est attendue, mais AU PLUS
+  // `ATTENTE_MAX_CRM_MS` : au-delà, la redirection part et l'écriture finit
+  // seule (ou le rattrapage la reprend). La mise en file Redis, elle, n'est
+  // JAMAIS attendue (`mettreEnFileCrm`) : un Redis injoignable la ferait
+  // attendre sans fin, et c'est la personne qui attend son PDF.
+  await auPlus(transmettreClicGuide(demande.id, maintenant), ATTENTE_MAX_CRM_MS);
+
   return NextResponse.redirect(urlGuideIa(), { status: 303 });
 }
