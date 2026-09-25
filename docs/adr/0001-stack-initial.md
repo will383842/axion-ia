@@ -16,6 +16,7 @@ Particularités à acter dès maintenant :
 3. **Sous-repo Git** : `axionia/` a son propre `.git`. Le repo parent `Axion-IA/` reste l'umbrella docs/audits. Husky/lint-staged opèrent à l'intérieur du sous-repo.
 4. **Pas de Stripe** : aucune dépendance facturation incluse. `_NO-STRIPE.md` fait foi.
 5. **Email maison** : Resend / SendGrid / Mailgun / Brevo INTERDITS. Stack = PowerMTA + MailWizz self-hosted + Nodemailer + React Email. Cf. `axionia-emails/SKILL.md`.
+   > ⚠️ **Révisé par l'ADR 0052 (2026-09-25)** : PowerMTA n'a jamais été déployé. Le transactionnel part par ZeptoMail (`src/lib/email/client.ts`). MailWizz + PowerMTA restent l'outil **futur** de la seule lettre, sur une infrastructure dédiée, et rien n'est construit d'avance.
 6. **Observability dès Sprint 0** : Sentry (server + edge + client), endpoint `/api/vitals` (Edge runtime), Plausible stub. Pas d'OpenTelemetry SDK installé en Sprint 0 — `@vercel/otel` ou `@opentelemetry/sdk-node` arrivera quand on aura un endpoint OTLP self-hosted (Tempo/Jaeger Sprint 23).
 
 ## Décision

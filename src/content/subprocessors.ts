@@ -18,9 +18,10 @@
 // la récidive — pas la formulation ci-dessus. Il est adossé à `src/lib/csp.ts`,
 // seul goulot qu'un tiers ne peut pas contourner pour charger.
 //
-// Auto-hébergés (DocuSeal, Mailwizz/PowerMTA, Plausible, Uptime Kuma) : pas
-// des sous-traitants externes au sens RGPD (Axion-IA est seule responsable),
-// mais référencés en transparence (Hetzner DE = hébergement physique).
+// Auto-hébergés (DocuSeal, Plausible, Uptime Kuma) : pas des sous-traitants
+// externes au sens RGPD (Axion-IA est seule responsable), mais référencés en
+// transparence (Hetzner DE = hébergement physique). MailWizz/PowerMTA n'existe
+// pas aujourd'hui : son statut se décidera à l'ADR 0052 §h.2 (qui l'exploite).
 //
 // Cette SSOT est la SOURCE UNIQUE de vérité publique sous-processeurs. La page
 // `politique-confidentialite` (`src/content/legal.ts`) en cite seulement un
