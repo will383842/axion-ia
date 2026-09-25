@@ -36,6 +36,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { exportKbDataForEmail } from "@/lib/knowledge/rgpd-export";
 import { exportChatDataForEmail } from "@/lib/rgpd-export-chat";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { ipVisiteurOuNull } from "@/lib/client-ip";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -245,7 +246,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         consentEventsCount: consentEvents.length,
         crmStatus: crm.status,
       },
-      ipAddress: req.headers.get("x-forwarded-for") ?? null,
+      // Était `x-forwarded-for` BRUT, non découpé : en production, le relais
+      // Cloudflare. La preuve porte désormais l'IP du visiteur.
+      ipAddress: ipVisiteurOuNull(req.headers),
     },
   });
 

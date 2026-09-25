@@ -629,12 +629,6 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^prisma\/seeds\/editorial\/index\.ts$/,
   /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/console-editoriale\/page\.tsx$/,
   /^src\/server\/editorial\/referentiels\/comptes\.ts$/,
-  // Cliquet « une seule lecture de l'IP client » (plan IP client unifiée,
-  // 2026-09-25). Sa liste `EN_ATTENTE` CITE des chemins de fichiers qui lisent
-  // encore les en-têtes d'IP eux-mêmes — dont deux sous `src/server/content-gen/`.
-  // Le marqueur est une chaîne de chemin comparée à un résultat de `readdir`,
-  // jamais un import : le couplage que le § 4.1bis interdit n'existe pas ici.
-  /^src\/lib\/__tests__\/une-seule-lecture-de-l-ip-client\.spec\.ts$/,
 ];
 
 /**

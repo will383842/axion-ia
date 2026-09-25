@@ -30,6 +30,7 @@ import { verifierSignatureZeptomail } from "@/server/email/zeptomail-webhook-sig
 import { lireRebond, FENETRE_RATTACHEMENT_HEURES } from "@/server/email/bounce-service";
 import { noterRebondSurAbonne } from "@/server/newsletter/rebonds";
 import { noterAppelRecu, noterAppelWebhook } from "@/server/email/webhook-battement";
+import { ipDepuisEntetes } from "@/lib/client-ip";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -98,10 +99,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     return new Response("payload_too_large", { status: 413 });
   }
 
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    req.headers.get("x-real-ip") ||
-    "unknown";
+  const ip = ipDepuisEntetes(req.headers);
   const rl = await checkRateLimit(`zeptomail-webhook:${ip}`, { limit: 120, windowSec: 60 });
   if (!rl.allowed) return new Response("rate_limited", { status: 429 });
 

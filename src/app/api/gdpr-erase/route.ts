@@ -51,6 +51,7 @@ import {
 import { alertIncident } from "@/lib/telegram";
 import { empreinteSha256 } from "@/server/newsletter/exports";
 import { enqueueEmail } from "@/server/queue/queues";
+import { ipVisiteurOuNull } from "@/lib/client-ip";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -245,7 +246,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         // local doit se voir dans le journal, jamais se supposer.
         crmStatus: crmResult.status,
       },
-      ipAddress: req.headers.get("x-forwarded-for") ?? null,
+      // Était `x-forwarded-for` BRUT, non découpé : en production, le relais
+      // Cloudflare. La preuve porte désormais l'IP du visiteur.
+      ipAddress: ipVisiteurOuNull(req.headers),
     },
   });
 
