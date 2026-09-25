@@ -14,6 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 import { HoneypotField } from "@/components/forms/HoneypotField";
+import { reporterLeurre } from "@/components/forms/reporter-leurre";
 import { isStaleServerActionError } from "@/lib/forms/form-errors";
 
 interface NewsletterFormProps {
@@ -56,7 +57,7 @@ export function NewsletterForm({ labels, variant = "stacked" }: NewsletterFormPr
   // E4 cert 2026-05-08 — wired to Sprint 15 `subscribeNewsletterAction`
   // (rate-limit + Turnstile + double opt-in token via email queue).
   // Audit E2E 2026-05-11 P0-CONF-02 — Turnstile widget client câblé.
-  async function onSubmit(values: NewsletterInput) {
+  async function onSubmit(values: NewsletterInput, event?: React.BaseSyntheticEvent) {
     setServerError(null);
     // Zéro friction (Will 2026-07-01) : on tente toujours l'envoi. Le serveur
     // soft-fail le captcha (honeypot + rate-limit + double opt-in protègent).
@@ -66,6 +67,7 @@ export function NewsletterForm({ labels, variant = "stacked" }: NewsletterFormPr
       fd.set("consent", values.consent ? "true" : "false");
       fd.set("locale", locale);
       if (turnstileToken) fd.set("cf-turnstile-response", turnstileToken);
+      reporterLeurre(fd, event?.target);
 
       const result = await subscribeNewsletterAction({ ok: false, error: "" }, fd);
       if (!result.ok) {
