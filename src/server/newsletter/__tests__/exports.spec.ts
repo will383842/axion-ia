@@ -26,6 +26,8 @@ vi.mock("@/lib/prisma", () => ({
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import {
   COLONNES_MAILWIZZ,
+  PLAFOND_EXPORT,
+  SEUIL_REBONDS_MOUS,
   celluleCsv,
   empreinteSha256,
   exporterAbonnesMailwizz,
@@ -40,6 +42,7 @@ const CONFIRMEE = {
   confirmedAt: new Date("2026-09-01T08:00:00Z"),
   consentVersion: "lettre-guide-v1",
   unsubscribeToken: "a".repeat(64),
+  softBounceCount: 0,
 };
 
 beforeEach(() => {
@@ -108,6 +111,42 @@ describe("export MailWizz", () => {
     expect(r.ecartes).toBe(1);
   });
 
+  it("🔴 rebonds temporaires répétés (seuil du CRM) : écarté et compté ; en dessous, gardé", async () => {
+    expect(SEUIL_REBONDS_MOUS).toBe(3);
+    const pleine = { ...CONFIRMEE, email: "pleine@example.invalid", softBounceCount: 3 };
+    const presque = { ...CONFIRMEE, email: "presque@example.invalid", softBounceCount: 2 };
+    d.subFindMany.mockResolvedValue([pleine, presque]);
+    const r = await exporterAbonnesMailwizz({}, SITE);
+    expect(r.ecartes).toBe(1);
+    expect(r.lignes).toBe(1);
+    expect(r.csv).not.toContain(pleine.email);
+    expect(r.csv).toContain(presque.email);
+  });
+
+  it("🔴 l'ADRESSE sort telle quelle (pas d'apostrophe) ; les autres colonnes restent neutralisées", async () => {
+    d.subFindMany.mockResolvedValue([
+      { ...CONFIRMEE, email: "-tiret@example.invalid", source: "=FORMULE()" },
+    ]);
+    const r = await exporterAbonnesMailwizz({}, SITE);
+    const ligne = r.csv.split("\r\n")[1]!;
+    expect(ligne.startsWith("-tiret@example.invalid,")).toBe(true);
+    expect(ligne).not.toContain("'-tiret");
+    expect(ligne.split(",")[2]).toBe("'=FORMULE()");
+  });
+
+  it("plafond atteint : le résultat le DIT (`tronque`), sinon non", async () => {
+    let r = await exporterAbonnesMailwizz({}, SITE);
+    expect(r.tronque).toBe(false);
+    d.subFindMany.mockResolvedValue(
+      Array.from({ length: PLAFOND_EXPORT }, (_, i) => ({
+        ...CONFIRMEE,
+        email: `n${i}@example.invalid`,
+      })),
+    );
+    r = await exporterAbonnesMailwizz({}, SITE);
+    expect(r.tronque).toBe(true);
+  });
+
   it("inscription antérieure sans version : repli sur la version historique", async () => {
     d.subFindMany.mockResolvedValue([{ ...CONFIRMEE, consentVersion: null }]);
     const r = await exporterAbonnesMailwizz({}, SITE);
@@ -161,6 +200,51 @@ describe("liste de suppression", () => {
     );
   });
 
+  it("🔴 l'effacement PUBLIC est relu par son `emailSha256` (pas par son empreinte HMAC)", async () => {
+    d.subFindMany.mockResolvedValue([]);
+    d.activity.mockImplementation(async (arg: { where: { action: string } }) =>
+      arg.where.action === "gdpr.erase.completed"
+        ? [
+            {
+              changes: {
+                emailHash: hashEmailForLookup("publique@example.invalid"),
+                emailSha256: empreinteSha256("publique@example.invalid"),
+              },
+              createdAt: new Date("2026-09-20T00:00:00Z"),
+            },
+          ]
+        : [],
+    );
+    const r = await exporterListeSuppression();
+    const lignes = r.csv.trim().split("\r\n").slice(1);
+    expect(lignes).toEqual([
+      `${empreinteSha256("publique@example.invalid")},efface,2026-09-20T00:00:00.000Z`,
+    ]);
+  });
+
+  it("chaque source est lue de la plus récente à la plus ancienne", async () => {
+    await exporterListeSuppression();
+    const sub = d.subFindMany.mock.calls[0]![0] as { orderBy: Record<string, string> };
+    expect(sub.orderBy).toEqual({ updatedAt: "desc" });
+    const log = d.emailLogs.mock.calls[0]![0] as { orderBy: Record<string, string> };
+    expect(log.orderBy).toEqual({ bouncedAt: "desc" });
+    for (const c of d.activity.mock.calls) {
+      expect((c[0] as { orderBy: Record<string, string> }).orderBy).toEqual({ createdAt: "desc" });
+    }
+  });
+
+  it("🔴 une source au plafond : `tronque` le dit ; sous le plafond, non", async () => {
+    d.subFindMany.mockResolvedValue([]);
+    expect((await exporterListeSuppression()).tronque).toBe(false);
+    d.emailLogs.mockResolvedValue(
+      Array.from({ length: PLAFOND_EXPORT }, (_, i) => ({
+        recipient: `r${i}@example.invalid`,
+        bouncedAt: null,
+      })),
+    );
+    expect((await exporterListeSuppression()).tronque).toBe(true);
+  });
+
   it("une même personne n'apparaît qu'une fois", async () => {
     d.subFindMany.mockResolvedValue([
       {
@@ -180,6 +264,7 @@ describe("cellule CSV", () => {
   it("échappe virgules et guillemets, neutralise une formule de tableur", () => {
     expect(celluleCsv('a,"b"')).toBe('"a,""b"""');
     expect(celluleCsv("=SOMME(A1)")).toBe("'=SOMME(A1)");
+    expect(celluleCsv("=SOMME(A1)", { neutraliser: false })).toBe("=SOMME(A1)");
     expect(celluleCsv(null)).toBe("");
   });
 });

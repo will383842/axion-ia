@@ -72,17 +72,28 @@ async function retrouverOuCreer(
   const cle = { emailKey_aimant: { emailKey, aimant: AIMANT_GUIDE_IA } };
   const existante = await prisma.guideRequest.findUnique({
     where: cle,
-    select: { id: true, downloadToken: true },
+    select: { id: true, downloadToken: true, origine: true },
   });
   if (existante) {
     // La langue suit la DERNIÈRE demande ; la provenance reste la PREMIÈRE
     // (c'est elle qui dit par où la personne est arrivée).
+    //
+    // 🔴 Lot L3 — sauf si la ligne est née d'un envoi CONSOLE (`origine =
+    // admin`) : la personne vient de demander le guide elle-même, la ligne
+    // devient la sienne (`formulaire`, avec la provenance du formulaire).
+    // Restée `admin`, elle ne serait jamais reprise par le rattrapage, qui ne
+    // rejoue que les demandes du formulaire.
+    const repriseDeLaConsole = existante.origine === "admin";
     await prisma.guideRequest.update({
       where: { id: existante.id },
-      data: { locale: entree.locale, version: entree.versionMention },
+      data: {
+        locale: entree.locale,
+        version: entree.versionMention,
+        ...(repriseDeLaConsole ? { origine: "formulaire", source: entree.source } : {}),
+      },
       select: { id: true },
     });
-    return { ...existante, nouvelle: false };
+    return { id: existante.id, downloadToken: existante.downloadToken, nouvelle: false };
   }
   try {
     const creee = await prisma.guideRequest.create({

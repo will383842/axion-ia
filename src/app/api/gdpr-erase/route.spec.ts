@@ -14,6 +14,7 @@ import { NextRequest } from "next/server";
 
 const ordre: string[] = [];
 const annuler = vi.fn();
+const journal = vi.hoisted(() => ({ create: vi.fn() }));
 
 vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: async () => ({ allowed: true }) }));
 vi.mock("@/lib/gdpr-token", () => ({
@@ -31,7 +32,9 @@ vi.mock("@/server/careers/candidature-rgpd", () => ({
 vi.mock("@/features/podcast-request/rgpd", () => ({
   effacerDemandesPodcastPour: async () => ({ supprimees: 0, tronque: false }),
 }));
-vi.mock("@/lib/prisma", () => ({ prisma: { activityLog: { create: async () => ({}) } } }));
+vi.mock("@/lib/prisma", () => ({
+  prisma: { activityLog: { create: (...a: unknown[]) => journal.create(...a) } },
+}));
 vi.mock("@/server/crm-sync/gdpr", () => ({ propagateGdprToCrm: async () => ({ status: "ok" }) }));
 vi.mock("@/lib/knowledge/rgpd-export", () => ({
   eraseKbDataForEmail: async () => ({ bookmarksDeleted: 0 }),
@@ -57,6 +60,8 @@ vi.mock("@/lib/telegram", () => ({ alertIncident: async () => undefined }));
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: async () => ({ enqueued: true }) }));
 
 import { POST } from "./route";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { empreinteSha256 } from "@/server/newsletter/exports";
 
 /**
  * Jeton factice du corps de requete, sorti en constante EXPRES.
@@ -90,6 +95,7 @@ function requete(): NextRequest {
 beforeEach(() => {
   ordre.length = 0;
   annuler.mockReset().mockResolvedValue(3);
+  journal.create.mockReset().mockResolvedValue({});
   vi.spyOn(console, "error").mockImplementation(() => {});
 });
 
@@ -107,5 +113,22 @@ describe("POST /api/gdpr-erase — envois programmés", () => {
     const res = await POST(requete());
     expect(res.status).toBe(200);
     expect(ordre).toContain("submissions");
+  });
+});
+
+describe("POST /api/gdpr-erase — la trace relue par la liste de suppression (lot L3)", () => {
+  it("🔴 écrit le SHA-256 de l'adresse normalisée (`emailSha256`), à côté de l'empreinte HMAC", async () => {
+    const res = await POST(requete());
+    expect(res.status).toBe(200);
+    const trace = journal.create.mock.calls
+      .map((c) => (c[0] as { data: { action: string; changes: Record<string, unknown> } }).data)
+      .find((dd) => dd.action === "gdpr.erase.completed");
+    expect(trace).toBeDefined();
+    expect(trace!.changes["emailSha256"]).toBe(empreinteSha256("nadia@exemple.fr"));
+    // Les deux empreintes ne se confondent pas : l'outil d'envoi ne sait lire
+    // que le SHA-256, le site que la sienne.
+    expect(trace!.changes["emailHash"]).toBe(hashEmailForLookup("nadia@exemple.fr"));
+    expect(trace!.changes["emailHash"]).not.toBe(trace!.changes["emailSha256"]);
+    expect(JSON.stringify(trace)).not.toContain("nadia@exemple.fr");
   });
 });

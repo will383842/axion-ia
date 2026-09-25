@@ -22,7 +22,9 @@ import { StatistiquesLettreSection } from "./StatistiquesLettre";
 
 const STATUS_LABELS: Record<string, string> = {
   pending: "En attente",
-  confirmed: "Confirmé",
+  // Lot L3 : « Inscrit », pas « Confirmé » — une adresse pro est inscrite au
+  // titre de l'intérêt légitime, sans rien avoir confirmé.
+  confirmed: "Inscrit",
   unsubscribed: "Désabonné",
   bounced: "Rejeté",
 };
@@ -108,7 +110,7 @@ export function NewsletterV2({
     },
     {
       key: "confirmedAt",
-      header: "Confirmé le",
+      header: "Inscrit à la lettre le",
       cell: (s) => formatDateFrShort(s.confirmedAt),
     },
     {
@@ -134,9 +136,9 @@ export function NewsletterV2({
               Demandes du guide
             </Link>
             {/* Lot L3 : le fichier suit les filtres de l'écran, restreint aux
-                confirmés ÉLIGIBLES (ni opposés, ni en rebond dur). */}
+                inscrits ÉLIGIBLES (ni opposés, ni en rebond). */}
             <a href={csvUrl} className="admin-button-ghost" download>
-              Exporter pour MailWizz (confirmés)
+              Exporter pour MailWizz (inscrits éligibles)
             </a>
             <a href="/api/admin/newsletter/suppression" className="admin-button-ghost" download>
               Liste de suppression (empreintes)
@@ -149,10 +151,10 @@ export function NewsletterV2({
         aria-label="KPIs newsletter"
         className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4"
       >
-        <AdminStatCard label="Confirmés FR" value={stats.confirmed?.fr ?? 0} icon={CheckCircle2} />
-        <AdminStatCard label="Confirmés EN" value={stats.confirmed?.en ?? 0} icon={CheckCircle2} />
+        <AdminStatCard label="Inscrits FR" value={stats.confirmed?.fr ?? 0} icon={CheckCircle2} />
+        <AdminStatCard label="Inscrits EN" value={stats.confirmed?.en ?? 0} icon={CheckCircle2} />
         <AdminStatCard
-          label="En attente (double opt-in)"
+          label="En attente (ancien double opt-in, jamais confirmé)"
           value={(stats.pending?.fr ?? 0) + (stats.pending?.en ?? 0)}
           icon={Hourglass}
         />

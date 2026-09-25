@@ -29,6 +29,7 @@ import {
   type EtatDemandeFiltre,
   type LigneDemandeGuide,
 } from "@/server/newsletter/console";
+import { LIBELLE_REFUS_CONSOLE } from "@/server/guide-ia/refus-console";
 import { EnvoyerGuideBouton } from "../_v2/EnvoyerGuideBouton";
 
 export const dynamic = "force-dynamic";
@@ -46,7 +47,7 @@ const ETATS: ReadonlyArray<{ valeur: EtatDemandeFiltre; libelle: string }> = [
 ];
 
 const STATUT_LETTRE: Record<string, string> = {
-  confirmed: "Abonné",
+  confirmed: "Inscrit",
   pending: "En attente",
   unsubscribed: "Désabonné",
   bounced: "Rejeté",
@@ -98,7 +99,11 @@ export default async function DemandesGuidePage({ params, searchParams }: PagePr
       cell: (l) => (l.origine === "admin" ? "Console" : libelleSource(l.source)),
     },
     { key: "envoi", header: "Envoi", cell: envoi },
-    { key: "vu", header: "Lien ouvert", cell: (l) => formatDateFrShort(l.firstSeenAt) },
+    {
+      key: "vu",
+      header: "Lien ouvert (peut-être un antivirus)",
+      cell: (l) => formatDateFrShort(l.firstSeenAt),
+    },
     { key: "clic", header: "Téléchargé", cell: (l) => formatDateFrShort(l.firstClickAt) },
     {
       key: "lettre",
@@ -115,8 +120,19 @@ export default async function DemandesGuidePage({ params, searchParams }: PagePr
     {
       key: "actions",
       header: "Actions",
+      // Masqué quand le geste refuserait : la phrase du refus à la place.
       cell: (l) =>
-        l.abonneStatut === "bounced" ? "—" : <EnvoyerGuideBouton id={l.id} mode="renvoyer" />,
+        l.refusEnvoi === null ? (
+          <EnvoyerGuideBouton id={l.id} mode="renvoyer" />
+        ) : l.refusEnvoi === "introuvable" ? (
+          "—"
+        ) : (
+          <EnvoyerGuideBouton
+            id={l.id}
+            mode="renvoyer"
+            refus={LIBELLE_REFUS_CONSOLE[l.refusEnvoi]}
+          />
+        ),
     },
   ];
 

@@ -70,12 +70,12 @@ export function StatistiquesLettreSection({
         <AdminStatCard
           label="Taux de désabonnement"
           value={taux(stats.tauxDesabonnement)}
-          meta={`${stats.desabonnes} sur ${stats.confirmes + stats.desabonnes} abonnés confirmés un jour`}
+          meta={`${stats.desabonnes} sur ${stats.confirmes + stats.desabonnes} inscrits un jour`}
         />
         <AdminStatCard
           label="Taux de rejet"
           value={taux(stats.tauxRejet)}
-          meta={`${stats.rejetes} adresse${stats.rejetes > 1 ? "s" : ""} en rebond définitif`}
+          meta={`${stats.rejetes} en rebond définitif sur ${stats.abonnesTous} fiche${stats.abonnesTous > 1 ? "s" : ""} d'abonné (tous statuts)`}
         />
         <AdminStatCard
           label="Guides envoyés"
@@ -85,7 +85,7 @@ export function StatistiquesLettreSection({
         <AdminStatCard
           label="Taux de clic sur le guide"
           value={taux(stats.tauxClic)}
-          meta={`${stats.demandesCliquees} clic${stats.demandesCliquees > 1 ? "s" : ""} (bouton) · ${stats.demandesVues} lien${stats.demandesVues > 1 ? "s" : ""} ouvert${stats.demandesVues > 1 ? "s" : ""}`}
+          meta={`sur ${stats.demandesEnvoyees} guide${stats.demandesEnvoyees > 1 ? "s" : ""} envoyé${stats.demandesEnvoyees > 1 ? "s" : ""} · ${stats.demandesCliquees} clic${stats.demandesCliquees > 1 ? "s" : ""} (bouton) · ${stats.demandesVues} lien${stats.demandesVues > 1 ? "s" : ""} ouvert${stats.demandesVues > 1 ? "s" : ""}`}
         />
       </div>
 
@@ -124,7 +124,7 @@ export function StatistiquesLettreSection({
           Par provenance
         </h2>
         <div className="grid grid-cols-1 gap-[var(--space-admin-6)] lg:grid-cols-2">
-          <Repartition titre="Abonnés confirmés" lignes={stats.abonnesParSource} />
+          <Repartition titre="Inscrits à la lettre" lignes={stats.abonnesParSource} />
           <Repartition titre="Demandes du guide" lignes={stats.demandesParSource} />
         </div>
       </AdminCard>

@@ -17,7 +17,14 @@ import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { CONSENT_FORM_REFS } from "@/lib/consents";
 import { FORM_REF_LETTRE, FORM_REF_REINSCRIPTION } from "@/content/guide-ia-formulaire";
-import { AIMANT_GUIDE_IA, GABARIT_GUIDE } from "@/server/guide-ia/config";
+import {
+  AIMANT_GUIDE_IA,
+  ENTITE_GUIDE,
+  GABARIT_GUIDE,
+  HORIZON_RATTRAPAGE_MS,
+} from "@/server/guide-ia/config";
+import { refusConsole, type RefusConsole } from "@/server/guide-ia/refus-console";
+import { verdictAvantEnvoi } from "@/server/email/verdict-envoi";
 import type { GuideRequestOrigine, NewsletterStatus } from "../../../prisma/generated/client";
 
 // ============================================================
@@ -74,6 +81,11 @@ export interface LigneDemandeGuide {
   /** Fiche abonné de la même adresse, s'il y en a une. */
   readonly abonneId: string | null;
   readonly abonneStatut: NewsletterStatus | null;
+  /**
+   * Pourquoi « Renvoyer » est refusé, ou `null` s'il est permis — la règle des
+   * gestes (`refusConsole`), appliquée ici pour masquer le bouton.
+   */
+  readonly refusEnvoi: RefusConsole | "introuvable" | null;
 }
 
 export const TAILLE_PAGE_DEMANDES = 50;
@@ -108,6 +120,7 @@ export async function listerDemandesGuide(f: FiltresDemandes = {}): Promise<{
       select: {
         id: true,
         email: true,
+        emailKey: true,
         origine: true,
         source: true,
         locale: true,
@@ -122,19 +135,48 @@ export async function listerDemandesGuide(f: FiltresDemandes = {}): Promise<{
     }),
   ]);
 
-  const abonnes =
+  // Trois lectures GROUPÉES pour la page entière (pas une par ligne) : l'abonné,
+  // l'opposition (même empreinte HMAC que `email_oppositions`), le rebond dur
+  // (même critère que `verdictAvantEnvoi` : `bounced` + `hard`).
+  const emails = demandes.map((d) => d.email);
+  const [abonnes, oppositions, rebonds] =
     demandes.length === 0
-      ? []
-      : await prisma.newsletterSubscriber.findMany({
-          where: { email: { in: demandes.map((d) => d.email) } },
-          select: { id: true, email: true, status: true },
-        });
+      ? [[], [], []]
+      : await Promise.all([
+          prisma.newsletterSubscriber.findMany({
+            where: { email: { in: emails } },
+            select: { id: true, email: true, status: true },
+          }),
+          prisma.emailOpposition.findMany({
+            where: { emailHash: { in: demandes.map((d) => d.emailKey) } },
+            select: { emailHash: true },
+          }),
+          prisma.emailLog.findMany({
+            where: { recipient: { in: emails }, status: "bounced", bounceType: "hard" },
+            select: { recipient: true },
+          }),
+        ]);
   const parEmail = new Map(abonnes.map((a) => [a.email.toLowerCase(), a]));
+  const opposees = new Set(oppositions.map((o) => o.emailHash));
+  const mortes = new Set(rebonds.map((r) => r.recipient.toLowerCase()));
 
   return {
-    lignes: demandes.map((d) => {
+    lignes: demandes.map(({ emailKey, ...d }) => {
       const a = parEmail.get(d.email.toLowerCase());
-      return { ...d, abonneId: a?.id ?? null, abonneStatut: a?.status ?? null };
+      const statut = a?.status ?? null;
+      return {
+        ...d,
+        abonneId: a?.id ?? null,
+        abonneStatut: statut,
+        refusEnvoi: refusConsole(
+          {
+            statut,
+            opposee: opposees.has(emailKey),
+            rebondDur: mortes.has(d.email.toLowerCase()),
+          },
+          d.origine,
+        ),
+      };
     }),
     total,
     page,
@@ -198,6 +240,26 @@ export interface FicheAbonne {
     readonly createdAt: Date;
     readonly sentAt: Date | null;
   }>;
+  /**
+   * Base de l'inscription, lue sur la DERNIÈRE preuve de la lettre :
+   * `information` → intérêt légitime, `optin` → consentement, sinon non
+   * établie (aucune preuve, ou la dernière est un retrait).
+   */
+  readonly base: BaseInscription;
+  /** Pourquoi « Envoyer / Renvoyer le guide » est refusé, ou `null`. */
+  readonly refusEnvoi: RefusConsole | "introuvable" | null;
+}
+
+export type BaseInscription = "interet-legitime" | "consentement" | "non-etablie";
+
+/** La base se lit sur la preuve la plus récente — `preuves` est trié du plus récent au plus ancien. */
+export function baseDInscription(
+  preuves: ReadonlyArray<{ readonly action: string }>,
+): BaseInscription {
+  const derniere = preuves[0]?.action;
+  if (derniere === "information") return "interet-legitime";
+  if (derniere === "optin") return "consentement";
+  return "non-etablie";
 }
 
 export async function lireFicheAbonne(id: string): Promise<FicheAbonne | null> {
@@ -222,7 +284,7 @@ export async function lireFicheAbonne(id: string): Promise<FicheAbonne | null> {
   if (!abonne) return null;
 
   const personKey = hashEmailForLookup(abonne.email);
-  const [demandeGuide, preuves, envois, synchroCrm] = await Promise.all([
+  const [demandeGuide, preuves, envois, synchroCrm, opposition, verdict] = await Promise.all([
     personKey
       ? prisma.guideRequest.findUnique({
           where: { emailKey_aimant: { emailKey: personKey, aimant: AIMANT_GUIDE_IA } },
@@ -260,6 +322,14 @@ export async function lireFicheAbonne(id: string): Promise<FicheAbonne | null> {
       take: 20,
       select: { id: true, eventType: true, status: true, createdAt: true, sentAt: true },
     }),
+    personKey
+      ? prisma.emailOpposition.findUnique({
+          where: { emailHash: personKey },
+          select: { id: true },
+        })
+      : Promise.resolve(null),
+    // Le MÊME verdict que le geste et le rattrapage (contexte du guide).
+    verdictAvantEnvoi(abonne.email, { template: GABARIT_GUIDE, marketing: false }),
   ]);
 
   const { ipHash, ...reste } = abonne;
@@ -269,6 +339,15 @@ export async function lireFicheAbonne(id: string): Promise<FicheAbonne | null> {
     preuves,
     envois,
     synchroCrm: synchroCrm.map((s) => ({ ...s, status: String(s.status) })),
+    base: baseDInscription(preuves),
+    refusEnvoi: refusConsole(
+      {
+        statut: abonne.status,
+        opposee: opposition !== null,
+        rebondDur: verdict.retenu && verdict.motif === "rebond_dur",
+      },
+      demandeGuide?.origine ?? null,
+    ),
   };
 }
 
@@ -291,13 +370,19 @@ export interface StatistiquesLettre {
   readonly rejetes: number;
   /** Désabonnés / (confirmés + désabonnés), en %, ou `null` sans dénominateur. */
   readonly tauxDesabonnement: number | null;
-  /** Rejetés / tous les abonnés, en %. */
+  /** Toutes les lignes d'abonné, tous statuts : le dénominateur du taux de rejet. */
+  readonly abonnesTous: number;
+  /** Rejetés / toutes les lignes d'abonné (tous statuts), en %. */
   readonly tauxRejet: number | null;
   readonly demandes: number;
   readonly demandesEnvoyees: number;
   readonly demandesVues: number;
   readonly demandesCliquees: number;
-  /** Cliquées / envoyées, en %. Seul le clic (POST) vaut geste humain. */
+  /**
+   * Demandes ENVOYÉES et cliquées / demandes envoyées, en %, plafonné à 100.
+   * Seul le clic (POST) vaut geste humain. Une demande cliquée sans `sent_at`
+   * (clôture non consignée) n'entre ni au numérateur ni au dénominateur.
+   */
   readonly tauxClic: number | null;
   readonly parMois: ReadonlyArray<PointMensuel>;
   /** Abonnés CONFIRMÉS par provenance. */
@@ -310,6 +395,11 @@ export interface StatistiquesLettre {
 export function pourcentage(numerateur: number, denominateur: number): number | null {
   if (denominateur <= 0) return null;
   return Math.round((numerateur / denominateur) * 1000) / 10;
+}
+
+/** Un taux ne dépasse jamais 100 % (deux comptages lus à deux instants peuvent se croiser). */
+function plafonne100(v: number | null): number | null {
+  return v === null ? null : Math.min(100, v);
 }
 
 /** Les `n` derniers mois (le plus ancien d'abord), clés « AAAA-MM » en UTC. */
@@ -342,6 +432,7 @@ export async function lireStatistiquesLettre(
     demandesEnvoyees,
     demandesVues,
     demandesCliquees,
+    envoyeesCliquees,
     inscrits,
     partis,
     demandesDates,
@@ -353,6 +444,9 @@ export async function lireStatistiquesLettre(
     prisma.guideRequest.count({ where: { aimant: AIMANT_GUIDE_IA, sentAt: { not: null } } }),
     prisma.guideRequest.count({ where: { aimant: AIMANT_GUIDE_IA, firstSeenAt: { not: null } } }),
     prisma.guideRequest.count({ where: { aimant: AIMANT_GUIDE_IA, firstClickAt: { not: null } } }),
+    prisma.guideRequest.count({
+      where: { aimant: AIMANT_GUIDE_IA, sentAt: { not: null }, firstClickAt: { not: null } },
+    }),
     prisma.newsletterSubscriber.findMany({
       where: { confirmedAt: { gte: debut } },
       select: { confirmedAt: true },
@@ -419,13 +513,14 @@ export async function lireStatistiquesLettre(
     enAttente,
     desabonnes,
     rejetes,
+    abonnesTous: tous,
     tauxDesabonnement: pourcentage(desabonnes, confirmes + desabonnes),
     tauxRejet: pourcentage(rejetes, tous),
     demandes,
     demandesEnvoyees,
     demandesVues,
     demandesCliquees,
-    tauxClic: pourcentage(demandesCliquees, demandesEnvoyees),
+    tauxClic: plafonne100(pourcentage(envoyeesCliquees, demandesEnvoyees)),
     parMois: mois.map((m) => ({ mois: m, ...grille.get(m)! })),
     abonnesParSource: trier(abonnesSource),
     demandesParSource: trier(demandesSource),
@@ -439,7 +534,11 @@ export async function lireStatistiquesLettre(
 export interface TuileGuideLettre {
   readonly abonnesConfirmes: number;
   readonly demandes30j: number;
-  /** Demandes du formulaire sans envoi depuis plus d'une heure : à regarder. */
+  /**
+   * Demandes du FORMULAIRE, des 7 derniers jours (l'horizon du rattrapage),
+   * sans envoi depuis plus d'une heure — hors celles retenues en validation
+   * et celles d'une adresse en rebond dur : ce qui reste est à regarder.
+   */
   readonly demandesEnSouffrance: number;
 }
 
@@ -448,6 +547,48 @@ const TUILE_VIDE: TuileGuideLettre = {
   demandes30j: 0,
   demandesEnSouffrance: 0,
 };
+
+/** Plafond de lecture de la tuile : au-delà, la tuile dit « au moins ». */
+const PLAFOND_TUILE = 500;
+
+/** Demandes en retard, hors celles qu'une cause CONNUE retient (validation, rebond dur). */
+async function compterEnSouffrance(maintenant: Date): Promise<number> {
+  const t = maintenant.getTime();
+  const enRetard = await prisma.guideRequest.findMany({
+    where: {
+      aimant: AIMANT_GUIDE_IA,
+      // Une demande console est un geste humain : l'administrateur voit
+      // l'issue au clic, et le rattrapage ne la reprend jamais.
+      origine: "formulaire",
+      sentAt: null,
+      createdAt: { gte: new Date(t - HORIZON_RATTRAPAGE_MS), lte: new Date(t - 3_600_000) },
+    },
+    select: { id: true, email: true },
+    take: PLAFOND_TUILE,
+  });
+  if (enRetard.length === 0) return 0;
+  const [garees, rebonds] = await Promise.all([
+    prisma.emailOutbox.findMany({
+      where: {
+        entityType: ENTITE_GUIDE,
+        entityId: { in: enRetard.map((d) => d.id) },
+        statut: "a_valider",
+      },
+      select: { entityId: true },
+    }),
+    prisma.emailLog.findMany({
+      where: {
+        recipient: { in: enRetard.map((d) => d.email) },
+        status: "bounced",
+        bounceType: "hard",
+      },
+      select: { recipient: true },
+    }),
+  ]);
+  const retenues = new Set(garees.map((g) => g.entityId));
+  const mortes = new Set(rebonds.map((r) => r.recipient.toLowerCase()));
+  return enRetard.filter((d) => !retenues.has(d.id) && !mortes.has(d.email.toLowerCase())).length;
+}
 
 /** Ne lève jamais : une tuile d'accueil ne doit pas faire tomber le tableau de bord. */
 export async function lireTuileGuideLettre(
@@ -460,13 +601,7 @@ export async function lireTuileGuideLettre(
       prisma.guideRequest.count({
         where: { aimant: AIMANT_GUIDE_IA, createdAt: { gte: new Date(t - 30 * 86_400_000) } },
       }),
-      prisma.guideRequest.count({
-        where: {
-          aimant: AIMANT_GUIDE_IA,
-          sentAt: null,
-          createdAt: { lte: new Date(t - 3_600_000) },
-        },
-      }),
+      compterEnSouffrance(maintenant),
     ]);
     return { abonnesConfirmes, demandes30j, demandesEnSouffrance };
   } catch {

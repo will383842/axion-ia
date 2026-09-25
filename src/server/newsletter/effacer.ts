@@ -8,7 +8,7 @@
  *     d'envoi (`email_outbox`, charge utile complète) ;
  *   · la fiche du CRM, qui n'en apprenait rien ;
  * et, s'il n'y avait pas de ligne, il levait une erreur non rattrapée : l'écran
- * tombait au lieu de dire « introuvable » (audit du 24/09, `console-admin.md`).
+ * tombait au lieu de dire « introuvable ».
  *
  * Il passe désormais par les MÊMES fonctions que l'effacement public
  * (`/api/gdpr-erase`) pour tout ce qui touche la lettre et le guide :
@@ -18,8 +18,14 @@
  *   · `propagateGdprToCrm(erase)` — le CRM efface par `person_key` et inscrit
  *                                    l'empreinte en liste de suppression.
  * Les autres tables (demandes de contact, candidatures, podcast…) restent le
- * périmètre de l'effacement complet : ce bouton ne prétend pas les couvrir, et
- * l'écran le dit.
+ * périmètre de l'effacement complet : ce bouton ne les couvre PAS. Son libellé
+ * le dit (« Effacer de la lettre et du guide (RGPD) »), et l'aide affichée
+ * sous lui aussi : « N'efface pas les demandes de contact, candidatures ni
+ * autres données. Pour une demande d'effacement complète, utilisez la
+ * procédure d'effacement complet. »
+ *
+ * Le motif saisi est gardé au journal : le champ demande « sans adresse
+ * e-mail », sans quoi l'effacement laisserait l'adresse dans sa propre trace.
  *
  * Journal : `newsletter.erased`, avec le SHA-256 de l'adresse (jamais
  * l'adresse) — c'est aussi ce que relit la liste de suppression exportée.

@@ -1,10 +1,10 @@
 // Fiche d'un abonné à la lettre (lot L3, 2026-09-24).
 //
 // Il n'existait aucune fiche : rien pour voir l'histoire d'une personne —
-// preuves de consentement, e-mails du guide, synchronisation CRM (audit du
-// 24/09, `console-admin.md` §1). Et c'est d'ICI que part « Envoyer le guide »
-// (décision n° 5 de Will : l'envoi unique à l'abonné inscrit avant la parution
-// du guide passe par ce bouton, pas par un script).
+// preuves de consentement, e-mails du guide, synchronisation CRM. Et c'est
+// d'ICI que part « Envoyer le guide » : un envoi ponctuel à un inscrit passe
+// par ce bouton, pas par un script. Le bouton n'est affiché que si le geste
+// l'accepterait (`refusConsole`) ; sinon, la fiche dit pourquoi.
 //
 // Lecture : `server/newsletter/console.ts`. Gestes : Server Actions de
 // `features/admin-newsletter/actions.ts`, chacun sur son chemin public.
@@ -20,7 +20,8 @@ import {
   AdminPageShell,
 } from "@/components/admin/ui";
 import { formatDateFrShort } from "@/lib/format-date-fr";
-import { libelleSource, lireFicheAbonne } from "@/server/newsletter/console";
+import { libelleSource, lireFicheAbonne, type BaseInscription } from "@/server/newsletter/console";
+import { LIBELLE_REFUS_CONSOLE } from "@/server/guide-ia/refus-console";
 import { SubscriberRowActions } from "../_v2/SubscriberRowActions";
 import { EnvoyerGuideBouton } from "../_v2/EnvoyerGuideBouton";
 
@@ -41,6 +42,12 @@ const ACTION_PREUVE: Record<string, string> = {
   optin: "Consentement donné",
   optout: "Retrait",
   information: "Information (intérêt légitime)",
+};
+
+const BASE: Record<BaseInscription, string> = {
+  "interet-legitime": "Intérêt légitime (adresse professionnelle, information donnée)",
+  consentement: "Consentement (case cochée)",
+  "non-etablie": "Non établie",
 };
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -78,7 +85,14 @@ export default async function FicheAbonnePage({ params }: PageProps) {
 
   const fiche = await lireFicheAbonne(id);
   if (!fiche) notFound();
-  const { abonne, demandeGuide, preuves, envois, synchroCrm } = fiche;
+  const { abonne, demandeGuide, preuves, envois, synchroCrm, base: baseInscription } = fiche;
+  // Pourquoi le guide ne peut pas partir d'ici — la phrase même du refus.
+  const refus =
+    fiche.refusEnvoi === null
+      ? undefined
+      : fiche.refusEnvoi === "introuvable"
+        ? "Introuvable : la fiche a peut-être été effacée."
+        : LIBELLE_REFUS_CONSOLE[fiche.refusEnvoi];
   const base = `/fr/${adminPrefix}`;
   const statut = STATUT[abonne.status] ?? { libelle: abonne.status, ton: "neutral" as const };
 
@@ -105,9 +119,11 @@ export default async function FicheAbonnePage({ params }: PageProps) {
           <Ligne libelle="Langue">{abonne.locale.toUpperCase()}</Ligne>
           <Ligne libelle="Provenance">{libelleSource(abonne.source)}</Ligne>
           <Ligne libelle="Inscrit le">{dateHeure(abonne.createdAt)}</Ligne>
-          <Ligne libelle="Confirmé le">{dateHeure(abonne.confirmedAt)}</Ligne>
+          <Ligne libelle="Inscrit à la lettre le">{dateHeure(abonne.confirmedAt)}</Ligne>
           <Ligne libelle="Désabonné le">{dateHeure(abonne.unsubscribedAt)}</Ligne>
-          <Ligne libelle="Texte accepté (référence)">{abonne.consentFormRef ?? "—"}</Ligne>
+          {/* Lue sur la DERNIÈRE preuve de la lettre : un retrait la rend « non établie ». */}
+          <Ligne libelle="Base">{BASE[baseInscription]}</Ligne>
+          <Ligne libelle="Texte présenté (référence)">{abonne.consentFormRef ?? "—"}</Ligne>
           <Ligne libelle="Version du texte">
             {abonne.consentVersion ?? "— (inscription antérieure)"}
           </Ligne>
@@ -138,7 +154,9 @@ export default async function FicheAbonnePage({ params }: PageProps) {
             </Ligne>
             <Ligne libelle="Premier envoi">{dateHeure(demandeGuide.sentAt)}</Ligne>
             <Ligne libelle="Envois">{demandeGuide.sendCount}</Ligne>
-            <Ligne libelle="Lien ouvert">{dateHeure(demandeGuide.firstSeenAt)}</Ligne>
+            <Ligne libelle="Lien ouvert (peut-être un antivirus)">
+              {dateHeure(demandeGuide.firstSeenAt)}
+            </Ligne>
             <Ligne libelle="Guide téléchargé (clic)">{dateHeure(demandeGuide.firstClickAt)}</Ligne>
             <Ligne libelle="Transmis au CRM">
               {demandeGuide.crmEmittedAt ? dateHeure(demandeGuide.crmEmittedAt) : "Pas encore"}
@@ -151,18 +169,24 @@ export default async function FicheAbonnePage({ params }: PageProps) {
         )}
         {demandeGuide?.sentAt ? (
           <>
-            <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-              Déjà envoyé. Un nouvel envoi est un « Renvoyer » : il compte dans la limite de 3
-              envois par 24 h à cette adresse.
-            </p>
-            <EnvoyerGuideBouton id={demandeGuide.id} mode="renvoyer" />
+            {refus === undefined ? (
+              <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                Déjà envoyé. Un nouvel envoi est un « Renvoyer » : il compte dans la limite de 3
+                envois par 24 h à cette adresse.
+              </p>
+            ) : null}
+            <EnvoyerGuideBouton
+              id={demandeGuide.id}
+              mode="renvoyer"
+              {...(refus !== undefined ? { refus } : {})}
+            />
           </>
-        ) : abonne.status === "bounced" ? (
-          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-            Adresse rejetée : aucun envoi n&apos;arriverait.
-          </p>
         ) : (
-          <EnvoyerGuideBouton id={abonne.id} mode="envoyer" />
+          <EnvoyerGuideBouton
+            id={abonne.id}
+            mode="envoyer"
+            {...(refus !== undefined ? { refus } : {})}
+          />
         )}
       </AdminCard>
 

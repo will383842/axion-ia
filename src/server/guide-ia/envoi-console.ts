@@ -26,6 +26,30 @@
  * Une demande `origine = admin` n'est JAMAIS reprise par le rattrapage : un
  * geste humain ne se rejoue pas dans le dos de celui qui l'a fait.
  *
+ * ── Qui peut recevoir un envoi de la console ────────────────────────────────
+ * « Votre guide » est exempté du verdict « désabonné » parce qu'il répond à une
+ * DEMANDE. Un envoi à l'initiative de la console n'en est pas une : sans
+ * demande du formulaire, seule une personne INSCRITE (`confirmed`) le reçoit.
+ * Sont refusés, AVANT toute création de ligne `guide_requests` :
+ *   · un désabonné          → `adresse-desabonnee` (il peut redemander le guide
+ *                              lui-même sur le site) ;
+ *   · un `pending`           → `inscription-non-confirmee` (ancien double
+ *                              opt-in, jamais confirmé) ;
+ *   · une opposition         → `adresse-opposee` (`email_oppositions`) ;
+ *   · un rebond dur connu    → `adresse-rejetee` (même verdict que le
+ *                              rattrapage : `email_logs`, pas seulement le
+ *                              statut de l'abonné).
+ * Une demande du FORMULAIRE garde son droit au renvoi (la personne l'a
+ * demandé) : seul le rebond dur l'arrête. `refusConsole` est la règle, pure ;
+ * les écrans l'appliquent pour masquer les boutons, les gestes pour refuser.
+ *
+ * ── Idempotence au-delà de la fenêtre ───────────────────────────────────────
+ * La réservation ne tient que 10 minutes. Après elle, et AVANT la mise en
+ * file, le journal est relu comme le fait le rattrapage : un `email_logs`
+ * encore en file (`pending`), ou un e-mail garé en corbeille de validation,
+ * suffit à rendre la réservation et à répondre `deja-en-file` — un e-mail
+ * coincé dans une file lente n'est pas une raison d'en mettre un second.
+ *
  * ── Journal ─────────────────────────────────────────────────────────────────
  * Chaque tentative qui a réservé la demande est journalisée (`activity_logs`),
  * avec son résultat, SANS l'adresse : l'identifiant de la demande suffit.
@@ -36,9 +60,24 @@
 import crypto from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
-import { AIMANT_GUIDE_IA } from "./config";
+import { verdictAvantEnvoi } from "@/server/email/verdict-envoi";
+import { AIMANT_GUIDE_IA, GABARIT_GUIDE } from "./config";
 import { mettreEnFileGuide, type ResultatEnvoiGuide } from "./envoi";
 import { lettreDansLEmail } from "./lettre";
+import { estGareeEnValidation, etatJournal } from "./rattrapage";
+import {
+  LIBELLE_REFUS_CONSOLE,
+  refusConsole,
+  type EtatAdresseConsole,
+  type RefusConsole,
+} from "./refus-console";
+
+export {
+  LIBELLE_REFUS_CONSOLE,
+  refusConsole,
+  type EtatAdresseConsole,
+  type RefusConsole,
+} from "./refus-console";
 
 /** Fenêtre pendant laquelle un second clic ne renvoie rien. */
 export const FENETRE_ANTI_DOUBLON_CONSOLE_MS = 10 * 60_000;
@@ -51,13 +90,38 @@ export const SOURCE_CONSOLE = "console";
 
 export type ResultatEnvoiConsole =
   | ResultatEnvoiGuide
+  | RefusConsole
   /** « Envoyer » sur une personne qui a déjà reçu le guide : rien ne part. */
   | "deja-envoye"
-  /** Un envoi est déjà en file depuis moins de 10 minutes : rien ne part. */
+  /** Un envoi est déjà en file (réservation, journal ou corbeille) : rien ne part. */
   | "deja-en-file"
-  /** Adresse rejetée (rebond dur) : aucun envoi n'arriverait. */
-  | "adresse-rejetee"
   | "introuvable";
+
+/**
+ * Lit l'état d'une adresse : opposition (empreinte HMAC) et rebond dur (le
+ * MÊME verdict que le rattrapage et l'enfilage, avec le contexte du guide —
+ * non marketing, donc seul le rebond dur y compte).
+ */
+export async function lireEtatAdresse(
+  email: string,
+  statut: EtatAdresseConsole["statut"],
+): Promise<EtatAdresseConsole> {
+  const empreinte = hashEmailForLookup(email);
+  const [opposition, verdict] = await Promise.all([
+    empreinte === null
+      ? Promise.resolve(null)
+      : prisma.emailOpposition.findUnique({
+          where: { emailHash: empreinte },
+          select: { id: true },
+        }),
+    verdictAvantEnvoi(email, { template: GABARIT_GUIDE, marketing: false }),
+  ]);
+  return {
+    statut,
+    opposee: opposition !== null,
+    rebondDur: verdict.retenu && verdict.motif === "rebond_dur",
+  };
+}
 
 export interface IssueEnvoiConsole {
   readonly resultat: ResultatEnvoiConsole;
@@ -83,6 +147,7 @@ interface DemandeReservable {
   readonly email: string;
   readonly locale: "fr" | "en";
   readonly downloadToken: string;
+  readonly origine: "formulaire" | "admin";
   readonly queuedAt: Date | null;
   readonly sentAt: Date | null;
 }
@@ -92,6 +157,7 @@ const SELECTION = {
   email: true,
   locale: true,
   downloadToken: true,
+  origine: true,
   queuedAt: true,
   sentAt: true,
 } as const;
@@ -143,7 +209,7 @@ async function journaliser(
     );
 }
 
-/** Réserve, met en file, et rend la place si rien n'est parti. */
+/** Réserve, relit le journal, met en file, et rend la place si rien n'est parti. */
 async function reserverEtMettreEnFile(
   demande: DemandeReservable,
   mode: "envoyer" | "renvoyer",
@@ -160,33 +226,76 @@ async function reserverEtMettreEnFile(
     return mode === "envoyer" && relue?.sentAt ? "deja-envoye" : "deja-en-file";
   }
 
-  const lettre = await lettreDansLEmail(demande.email);
-  const resultat = await mettreEnFileGuide(
-    {
-      id: demande.id,
-      email: demande.email,
-      locale: demande.locale,
-      downloadToken: demande.downloadToken,
-    },
-    {
-      confirmToken: lettre.confirmToken ?? null,
-      unsubscribeToken: lettre.unsubscribeToken ?? null,
-      reprise: options.reprise === true,
-      maintenant,
-    },
-  );
-
-  if (resultat !== "en-file" && resultat !== "en-validation") {
-    // Rien n'est parti : la réservation est rendue, pour qu'un nouveau clic
-    // (après la cause levée) ne se heurte pas à « déjà en file ».
-    await prisma.guideRequest
+  // Rend la réservation : un nouveau clic (après la cause levée) ne doit pas
+  // se heurter à « déjà en file ». Conditionnel : si `mettreEnFileGuide` a
+  // réécrit `queued_at` entre-temps, on n'y touche pas.
+  const rendre = (): Promise<unknown> =>
+    prisma.guideRequest
       .updateMany({
         where: { id: demande.id, queuedAt: maintenant },
         data: { queuedAt: precedent },
       })
       .catch(() => undefined);
+
+  let resultat: ResultatEnvoiConsole | undefined;
+  try {
+    // 🔴 Au-delà des 10 minutes de la réservation, le journal fait foi, comme
+    // pour le rattrapage : un e-mail encore en file ou garé en validation ne
+    // s'en voit pas ajouter un second. Pour « envoyer », un e-mail déjà parti
+    // (ligne `sent` dont la clôture n'a pas été consignée) vaut « déjà
+    // envoyé » ; pour « renvoyer », c'est justement ce qu'on renvoie.
+    const [journal, garee] = await Promise.all([
+      etatJournal(demande.id),
+      estGareeEnValidation(demande.id),
+    ]);
+    if (mode === "envoyer" && journal.envoye !== null) {
+      resultat = "deja-envoye";
+      return resultat;
+    }
+    if (journal.enFile || garee) {
+      resultat = "deja-en-file";
+      return resultat;
+    }
+
+    const lettre = await lettreDansLEmail(demande.email);
+    resultat = await mettreEnFileGuide(
+      {
+        id: demande.id,
+        email: demande.email,
+        locale: demande.locale,
+        downloadToken: demande.downloadToken,
+      },
+      {
+        confirmToken: lettre.confirmToken ?? null,
+        unsubscribeToken: lettre.unsubscribeToken ?? null,
+        reprise: options.reprise === true,
+        maintenant,
+      },
+    );
+    if (resultat === "non-parti") {
+      // L'enfilage a pu retenir l'e-mail pour un rebond dur apparu entre le
+      // contrôle et la mise en file : le dire tel quel, pas « réessayez ».
+      const verdict = await verdictAvantEnvoi(demande.email, {
+        template: GABARIT_GUIDE,
+        marketing: false,
+      });
+      if (verdict.retenu && verdict.motif === "rebond_dur") resultat = "adresse-rejetee";
+    }
+    return resultat;
+  } finally {
+    // `finally` : une mise en file qui LÈVE rend aussi la réservation — sans
+    // quoi la demande resterait « en file » dix minutes sans que rien ne parte.
+    if (resultat !== "en-file" && resultat !== "en-validation") await rendre();
   }
-  return resultat;
+}
+
+/** L'abonné ou la demande a-t-il le droit de recevoir un envoi console ? */
+async function controler(
+  email: string,
+  statut: EtatAdresseConsole["statut"],
+  origine: "formulaire" | "admin" | null,
+): Promise<RefusConsole | "introuvable" | null> {
+  return refusConsole(await lireEtatAdresse(email, statut), origine);
 }
 
 /**
@@ -203,15 +312,21 @@ export async function envoyerGuideAAbonne(
     select: { id: true, email: true, locale: true, status: true },
   });
   if (!abonne) return { resultat: "introuvable", demandeId: null, creee: false };
-  if (abonne.status === "bounced") {
-    return { resultat: "adresse-rejetee", demandeId: null, creee: false };
-  }
 
   const emailKey = hashEmailForLookup(abonne.email);
   if (!emailKey) return { resultat: "introuvable", demandeId: null, creee: false };
   const cle = { emailKey_aimant: { emailKey, aimant: AIMANT_GUIDE_IA } };
 
   let demande = await prisma.guideRequest.findUnique({ where: cle, select: SELECTION });
+
+  // 🔴 Contrôlé AVANT de créer la ligne : un refus ne laisse aucune demande
+  // derrière lui (une ligne `admin` créée pour rien apparaîtrait « en
+  // attente » sur l'écran des demandes).
+  const refus = await controler(abonne.email, abonne.status, demande?.origine ?? null);
+  if (refus !== null) {
+    return { resultat: refus, demandeId: demande?.id ?? null, creee: false };
+  }
+
   let creee = false;
   if (!demande) {
     try {
@@ -264,9 +379,10 @@ export async function renvoyerGuide(
     where: { email: demande.email },
     select: { status: true },
   });
-  if (abonne?.status === "bounced") {
-    return { resultat: "adresse-rejetee", demandeId, creee: false };
-  }
+  // Demande du formulaire : la personne l'a demandé, seul le rebond dur
+  // l'arrête. Demande console : les mêmes contrôles qu'à l'envoi.
+  const refus = await controler(demande.email, abonne?.status ?? null, demande.origine);
+  if (refus !== null) return { resultat: refus, demandeId, creee: false };
 
   const resultat = await reserverEtMettreEnFile(demande, "renvoyer", options, maintenant);
   if (resultat !== "deja-en-file" && resultat !== "deja-envoye") {
@@ -284,8 +400,7 @@ export const LIBELLE_ISSUE_CONSOLE: Readonly<Record<ResultatEnvoiConsole, string
   plafond: "Plafond horaire du guide atteint : réessayez dans une heure.",
   "non-parti": "La mise en file a échoué : rien n'est parti. Réessayez.",
   "deja-envoye": "Cette personne a déjà reçu le guide. Utilisez « Renvoyer » depuis ses demandes.",
-  "deja-en-file":
-    "Un envoi est déjà en file depuis moins de 10 minutes : rien de plus n'est parti.",
-  "adresse-rejetee": "Adresse rejetée (rebond définitif) : aucun envoi n'arriverait.",
+  "deja-en-file": "Un envoi du guide est déjà en file : rien de plus n'est parti.",
+  ...LIBELLE_REFUS_CONSOLE,
   introuvable: "Introuvable : la fiche a peut-être été effacée.",
 };

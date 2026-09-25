@@ -57,7 +57,9 @@ export async function unsubscribeNewsletterAction(token: string | null): Promise
     // Lot L3 (2026-09-24) : le MÊME chemin que le bouton de la console —
     // statut, opposition au CRM, preuve `optout` au registre, Telegram. Les
     // deux ne peuvent plus diverger (`server/newsletter/desabonner.ts`).
-    await desabonnerAbonne(
+    // `false` : un autre geste l'a désabonné entre la lecture et l'écriture
+    // (double clic, bouton de la console) — déjà fait, rien de plus n'est émis.
+    const fait = await desabonnerAbonne(
       {
         id: sub.id,
         email: sub.email,
@@ -67,7 +69,7 @@ export async function unsubscribeNewsletterAction(token: string | null): Promise
       },
       "unsubscribe-link",
     );
-    return { ok: true, alreadyUnsubscribed: false, email: sub.email };
+    return { ok: true, alreadyUnsubscribed: !fait, email: sub.email };
   } catch (err) {
     Sentry.captureException(err);
     return { ok: false, error: "internal" };

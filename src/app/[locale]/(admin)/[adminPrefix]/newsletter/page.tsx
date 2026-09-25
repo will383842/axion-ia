@@ -37,11 +37,12 @@ export default async function NewsletterListPage({ params, searchParams }: PageP
   ]);
 
   // 🔴 Lot L3 : le lien d'export ne transmettait ni la recherche ni les dates —
-  // l'écran filtré et le fichier ne disaient pas la même chose. Tous les
-  // filtres passent désormais ; le statut, lui, reste « confirmé » côté
-  // serveur (un autre statut est refusé).
+  // l'écran filtré et le fichier ne disaient pas la même chose. Ces filtres
+  // passent désormais. Le STATUT, lui, n'est PAS transmis : le fichier ne
+  // contient que des inscrits éligibles, et la route refuse tout autre statut
+  // (400) — transmis depuis un écran filtré sur « Désabonné », il aurait fait
+  // télécharger une erreur JSON à la place du fichier.
   const csvUrl = `/api/admin/newsletter/export?${new URLSearchParams({
-    ...(sp.status ? { status: sp.status } : {}),
     ...(sp.locale ? { locale: sp.locale } : {}),
     ...(sp.source ? { source: sp.source } : {}),
     ...(sp.search ? { search: sp.search } : {}),

@@ -49,6 +49,7 @@ import {
   eraseCalendlyEventsForEmail,
 } from "@/lib/rgpd-erase";
 import { alertIncident } from "@/lib/telegram";
+import { empreinteSha256 } from "@/server/newsletter/exports";
 import { enqueueEmail } from "@/server/queue/queues";
 
 export const runtime = "nodejs";
@@ -229,6 +230,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         // avec : le hachage est déterministe, donc re-hacher l'adresse fournie
         // suffit à retrouver la trace le jour où quelqu'un conteste.
         emailHash: hashEmailForLookup(email),
+        // Lot L3 — le SHA-256 de l'adresse normalisée, le format des outils
+        // d'envoi et du CRM : relu par la liste de suppression de la lettre
+        // (`server/newsletter/exports.ts`), pour qu'une personne effacée ne
+        // soit jamais réimportée. Non salé, donc comparable par qui détient
+        // l'adresse : c'est son rôle, et le même choix que l'effacement console.
+        emailSha256: empreinteSha256(email),
         submissionsAnonymized: submissionsResult.anonymized,
         newsletterDeleted: newsletterResult.deleted,
         kbBookmarksDeleted: kbResult.bookmarksDeleted,

@@ -186,7 +186,9 @@ export async function forceUnsubscribeAction(
   // opposition au CRM (`newsletter_optout`), preuve `optout` au registre,
   // Telegram. Avant, ce bouton ne faisait que le statut et le journal : le CRM
   // et le registre de preuve n'apprenaient jamais la désinscription.
-  await desabonnerAbonne(
+  // `false` : un autre geste (second clic, lien public) l'a désabonné entre la
+  // lecture ci-dessus et l'écriture — rien n'a été émis, rien à journaliser.
+  const fait = await desabonnerAbonne(
     {
       id: abonne.id,
       email: abonne.email,
@@ -196,6 +198,7 @@ export async function forceUnsubscribeAction(
     },
     "admin-console",
   );
+  if (!fait) return { ok: true };
 
   await prisma.activityLog.create({
     data: {
@@ -263,7 +266,8 @@ export async function eraseSubscriberAction(
 // export CSV — format MailWizz (lot L3)
 // ============================================================
 //
-// Confirmés ÉLIGIBLES seulement (ni opposés, ni en rebond dur), colonnes
+// Inscrits ÉLIGIBLES seulement (ni opposés, ni en rebond dur, ni en rebonds
+// temporaires répétés), colonnes
 // EMAIL, LOCALE, SOURCE, OPTIN_AT, OPTIN_VERSION, UNSUB_URL, GUIDE. Les filtres
 // de l'écran (langue, provenance, dates, recherche) s'appliquent : le fichier
 // est ce que l'écran montre. Un filtre de statut autre que « confirmé » est
@@ -271,7 +275,7 @@ export async function eraseSubscriberAction(
 
 export async function exportSubscribersCsvAction(
   input: Partial<ListSubscribersInput> = {},
-): Promise<{ filename: string; csv: string }> {
+): Promise<{ filename: string; csv: string; tronque: boolean }> {
   // RGPD — export réservé super_admin/admin, tracé.
   const session = await requireAdminWrite();
   const parsed = listSchema.parse({ ...input, pageSize: 200, page: 1 });
@@ -309,17 +313,26 @@ export async function exportSubscribersCsvAction(
         },
         lignes: resultat.lignes,
         ecartes: resultat.ecartes,
+        tronque: resultat.tronque,
       },
       ipAddress: await getClientIp(),
     },
   });
 
-  const filename = `axion-ia-lettre-mailwizz-${new Date().toISOString().slice(0, 10)}.csv`;
-  return { filename, csv: resultat.csv };
+  // Un fichier INCOMPLET le dit jusque dans son nom : c'est ce que l'écran
+  // montre à qui le télécharge.
+  const filename = `axion-ia-lettre-mailwizz-${new Date().toISOString().slice(0, 10)}${
+    resultat.tronque ? "-INCOMPLET" : ""
+  }.csv`;
+  return { filename, csv: resultat.csv, tronque: resultat.tronque };
 }
 
 /** Liste de suppression : empreintes SHA-256, motif, date. Aucune adresse. */
-export async function exportSuppressionCsvAction(): Promise<{ filename: string; csv: string }> {
+export async function exportSuppressionCsvAction(): Promise<{
+  filename: string;
+  csv: string;
+  tronque: boolean;
+}> {
   const session = await requireAdminWrite();
   const resultat = await exporterListeSuppression();
   await prisma.activityLog.create({
@@ -327,12 +340,14 @@ export async function exportSuppressionCsvAction(): Promise<{ filename: string; 
       adminUserId: session.userId,
       action: "newsletter.suppression.exported",
       targetType: "newsletter_subscriber",
-      changes: { lignes: resultat.lignes },
+      changes: { lignes: resultat.lignes, tronque: resultat.tronque },
       ipAddress: await getClientIp(),
     },
   });
-  const filename = `axion-ia-lettre-suppression-${new Date().toISOString().slice(0, 10)}.csv`;
-  return { filename, csv: resultat.csv };
+  const filename = `axion-ia-lettre-suppression-${new Date().toISOString().slice(0, 10)}${
+    resultat.tronque ? "-INCOMPLET" : ""
+  }.csv`;
+  return { filename, csv: resultat.csv, tronque: resultat.tronque };
 }
 
 // ============================================================

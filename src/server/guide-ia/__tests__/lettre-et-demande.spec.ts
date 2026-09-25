@@ -175,6 +175,30 @@ describe("enregistrerDemandeGuide — la nature de l'adresse décide, côté ser
     expect(mettreEnFileGuide.mock.calls[0]?.[0]).toMatchObject({ downloadToken: "b".repeat(64) });
   });
 
+  it("🔴 une ligne née d'un envoi console redevient celle du FORMULAIRE (sinon le rattrapage l'ignore)", async () => {
+    guideFindUnique.mockResolvedValue({
+      id: "demande-1",
+      downloadToken: "b".repeat(64),
+      origine: "admin",
+    });
+    await enregistrerDemandeGuide({ ...BASE, email: PRO, caseLettre: false });
+    const data = (guideUpdate.mock.calls[0]?.[0] as { data: Record<string, unknown> }).data;
+    expect(data).toMatchObject({ origine: "formulaire", source: "guide-ia" });
+  });
+
+  it("une ligne déjà du formulaire garde sa PREMIÈRE provenance", async () => {
+    guideFindUnique.mockResolvedValue({
+      id: "demande-1",
+      downloadToken: "b".repeat(64),
+      origine: "formulaire",
+    });
+    await enregistrerDemandeGuide({ ...BASE, email: PRO, caseLettre: false, source: "autre" });
+    const data = (guideUpdate.mock.calls[0]?.[0] as { data: Record<string, unknown> }).data;
+    expect(data).not.toHaveProperty("origine");
+    expect(data).not.toHaveProperty("source");
+    expect(data).toMatchObject({ locale: "fr" });
+  });
+
   it("désabonné : l'e-mail PROPOSE la réinscription, et confirm_sent_at suit la mise en file", async () => {
     abonneFindUnique
       .mockResolvedValueOnce({

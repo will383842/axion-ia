@@ -1,10 +1,11 @@
 // Tableau de bord de pilotage — la lettre et le guide (lot L3, 2026-09-24).
 //
-// Avant ce lot, l'accueil de la console n'affichait AUCUN chiffre de la lettre
-// (audit du 24/09, `console-admin.md` §1). Trois chiffres, et le troisième est
-// le seul qui réclame un geste : une demande du formulaire restée sans envoi
-// depuis plus d'une heure veut dire que le rattrapage n'a pas pu la reprendre
-// (coupe-circuit, plafond, file indisponible).
+// Avant ce lot, l'accueil de la console n'affichait AUCUN chiffre de la lettre.
+// Trois chiffres, et le troisième est le seul qui réclame un geste : une
+// demande du formulaire de la semaine, restée sans envoi depuis plus d'une
+// heure, et que rien de connu ne retient (validation, rebond dur), veut dire
+// que le rattrapage n'a pas pu la reprendre (coupe-circuit, plafond, file
+// indisponible).
 //
 // Une TUILE, pas une alerte : même parti pris que « Apporteurs en attente »,
 // juste au-dessus. Elle reste visible quand tout va bien, et le dit.
@@ -53,15 +54,15 @@ export function GuideLettreSection({ adminPrefix, tuile }: Props): React.ReactEl
           valeur={tuile.demandes30j}
           libelle={`demande${tuile.demandes30j > 1 ? "s" : ""} du guide sur 30 jours`}
         />
-        {/* Le lien ouvre les demandes « pas encore parties » : la liste montre
-            AUSSI celles de la dernière heure, que le compte ne retient pas
-            (elles sont normales). Les plus anciennes y sont en bas. */}
+        {/* Le lien ouvre les demandes du formulaire « pas encore parties » : la
+            liste montre AUSSI celles de la dernière heure et celles que le
+            compte écarte (validation, rebond dur, plus de 7 jours). */}
         {tuile.demandesEnSouffrance === 0 ? (
           <AdminBadge tone="success" dot>
             Aucun guide en retard
           </AdminBadge>
         ) : (
-          <Link href={`${base}/newsletter/demandes-guide?etat=non-envoyees`}>
+          <Link href={`${base}/newsletter/demandes-guide?etat=non-envoyees&origine=formulaire`}>
             <AdminBadge tone="warning" dot>
               {tuile.demandesEnSouffrance} guide{tuile.demandesEnSouffrance > 1 ? "s" : ""} pas
               encore parti{tuile.demandesEnSouffrance > 1 ? "s" : ""} après une heure

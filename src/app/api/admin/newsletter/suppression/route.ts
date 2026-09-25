@@ -12,13 +12,16 @@ export const runtime = "nodejs";
 
 export async function GET() {
   try {
-    const { filename, csv } = await exportSuppressionCsvAction();
+    const { filename, csv, tronque } = await exportSuppressionCsvAction();
     return new NextResponse(csv, {
       status: 200,
       headers: {
         "content-type": "text/csv; charset=utf-8",
         "content-disposition": `attachment; filename="${filename}"`,
         "cache-control": "no-store",
+        // Plafond atteint : le fichier est INCOMPLET, et il le dit (en-tête
+        // lu par l'écran et par tout script d'import) au lieu de le taire.
+        "x-export-tronque": tronque ? "1" : "0",
       },
     });
   } catch (err) {

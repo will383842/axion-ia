@@ -16,15 +16,33 @@ export interface EnvoyerGuideBoutonProps {
   /** « envoyer » : id de l'ABONNÉ ; « renvoyer » : id de la DEMANDE du guide. */
   id: string;
   mode: "envoyer" | "renvoyer";
+  /**
+   * Le geste serait refusé (`refusConsole`, calculé côté serveur) : le bouton
+   * n'est PAS affiché, la phrase du refus l'est à sa place. Le geste refuse de
+   * toute façon — masquer évite seulement un clic qui ne mène nulle part.
+   */
+  refus?: string;
 }
 
-export function EnvoyerGuideBouton({ id, mode }: EnvoyerGuideBoutonProps): React.ReactElement {
+export function EnvoyerGuideBouton({
+  id,
+  mode,
+  refus,
+}: EnvoyerGuideBoutonProps): React.ReactElement {
   const [state, action, pending] = useActionState(
     mode === "envoyer" ? envoyerGuideAAbonneAction : renvoyerGuideAction,
     IDLE,
   );
   const [confirmer, setConfirmer] = useState(false);
   const libelle = mode === "envoyer" ? "Envoyer le guide" : "Renvoyer le guide";
+
+  if (refus !== undefined) {
+    return (
+      <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+        {refus}
+      </p>
+    );
+  }
 
   return (
     <div className="flex flex-col items-start gap-[var(--space-admin-2)]">

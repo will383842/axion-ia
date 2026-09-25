@@ -79,8 +79,13 @@ export function estSchemaAbsent(e: unknown): boolean {
   return code === "P2021" || code === "P2022";
 }
 
-/** Le journal dit-il que cette demande est DÉJÀ partie, ou en file ? */
-async function etatJournal(demandeId: string): Promise<{ envoye: Date | null; enFile: boolean }> {
+/**
+ * Le journal dit-il que cette demande est DÉJÀ partie, ou en file ?
+ * Exporté : l'envoi console relit le même journal avant de mettre en file.
+ */
+export async function etatJournal(
+  demandeId: string,
+): Promise<{ envoye: Date | null; enFile: boolean }> {
   const lignes = await prisma.emailLog.findMany({
     where: {
       entityType: ENTITE_GUIDE,
@@ -97,7 +102,7 @@ async function etatJournal(demandeId: string): Promise<{ envoye: Date | null; en
   };
 }
 
-async function estGareeEnValidation(demandeId: string): Promise<boolean> {
+export async function estGareeEnValidation(demandeId: string): Promise<boolean> {
   const n = await prisma.emailOutbox.count({
     where: { entityType: ENTITE_GUIDE, entityId: demandeId, statut: "a_valider" },
   });

@@ -1,18 +1,18 @@
 // @vitest-environment node
 //
-// Lot L3 (2026-09-24) — le bouton « Désabonner » et le bouton « Effacer (RGPD) »
-// de la console passent par les chemins PUBLICS.
+// Lot L3 (2026-09-24) — le bouton « Désabonner » et le bouton « Effacer de la
+// lettre et du guide (RGPD) » de la console passent par les chemins PUBLICS.
 //
-// 🔴 Constat de l'audit du 24/09, en production : un désabonnement fait depuis
-// la console, et ZÉRO `optout` au registre de preuve, ZÉRO `newsletter_optout`
-// dans l'outbox du CRM. Le bouton ne faisait que le statut et le journal.
+// 🔴 Avant ce lot, le bouton de la console ne changeait que le statut : ni le
+// registre de preuve ni le CRM n'apprenaient la désinscription.
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const d = vi.hoisted(() => ({
   session: { user: { id: "admin-1", role: "admin" } } as unknown,
   subFindUnique: vi.fn(),
-  subUpdate: vi.fn(),
+  subUpdateMany: vi.fn(),
+  transaction: vi.fn(),
   activityCreate: vi.fn(),
   syncOptOut: vi.fn(),
   recordConsent: vi.fn(),
@@ -21,6 +21,8 @@ const d = vi.hoisted(() => ({
   eraseTraces: vi.fn(),
   propagate: vi.fn(),
   revalidatePath: vi.fn(),
+  envoyerGuide: vi.fn(),
+  renvoyerGuide: vi.fn(),
 }));
 
 vi.mock("@/auth", () => ({ auth: async () => d.session }));
@@ -30,9 +32,12 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     newsletterSubscriber: {
       findUnique: (...a: unknown[]) => d.subFindUnique(...a),
-      update: (...a: unknown[]) => d.subUpdate(...a),
+      updateMany: (...a: unknown[]) => d.subUpdateMany(...a),
     },
     activityLog: { create: (...a: unknown[]) => d.activityCreate(...a) },
+    // La transaction reçoit un client de transaction : ici, le même faux
+    // client, marqué pour que le test voie qu'il a bien été TRANSMIS à l'outbox.
+    $transaction: (fn: (tx: unknown) => Promise<unknown>) => d.transaction(fn),
   },
 }));
 vi.mock("@/server/crm-sync", () => ({
@@ -52,8 +57,24 @@ vi.mock("@/server/crm-sync/gdpr", () => ({
 }));
 // Tirés par le module d'actions, sans rapport avec ces deux gestes.
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: vi.fn() }));
+vi.mock("@/server/guide-ia/envoi-console", () => ({
+  envoyerGuideAAbonne: (...a: unknown[]) => d.envoyerGuide(...a),
+  renvoyerGuide: (...a: unknown[]) => d.renvoyerGuide(...a),
+  LIBELLE_ISSUE_CONSOLE: { "en-file": "Guide mis en file." },
+}));
 
-import { forceUnsubscribeAction, eraseSubscriberAction } from "../actions";
+import {
+  forceUnsubscribeAction,
+  eraseSubscriberAction,
+  envoyerGuideAAbonneAction,
+  renvoyerGuideAction,
+} from "../actions";
+
+/** Le client de transaction transmis par `$transaction` — reconnaissable. */
+const TX = {
+  marque: "client-de-transaction",
+  newsletterSubscriber: { updateMany: (...a: unknown[]) => d.subUpdateMany(...a) },
+};
 
 const ABONNE = {
   id: "00000000-0000-4000-8000-0000000000a1",
@@ -74,7 +95,8 @@ beforeEach(() => {
   vi.clearAllMocks();
   d.session = { user: { id: "admin-1", role: "admin" } };
   d.subFindUnique.mockResolvedValue(ABONNE);
-  d.subUpdate.mockResolvedValue({});
+  d.subUpdateMany.mockResolvedValue({ count: 1 });
+  d.transaction.mockImplementation(async (fn: (tx: unknown) => Promise<unknown>) => fn(TX));
   d.activityCreate.mockResolvedValue({});
   d.syncOptOut.mockResolvedValue(undefined);
   d.recordConsent.mockResolvedValue(true);
@@ -89,16 +111,18 @@ describe("désabonnement forcé depuis la console", () => {
     const r = await forceUnsubscribeAction({ ok: false, error: "" }, form({ id: ABONNE.id }));
     expect(r).toEqual({ ok: true });
 
-    // Statut
-    expect(d.subUpdate).toHaveBeenCalledWith({
-      where: { id: ABONNE.id },
+    // Statut — CONDITIONNEL : seul l'appel qui fait la transition émet.
+    expect(d.subUpdateMany).toHaveBeenCalledWith({
+      where: { id: ABONNE.id, status: { not: "unsubscribed" } },
       data: expect.objectContaining({ status: "unsubscribed", confirmToken: null }),
     });
-    // Outbox CRM (newsletter_optout), avec le motif console
+    // Outbox CRM (newsletter_optout), avec le motif console, DANS la
+    // transaction du statut (le client de transaction lui est transmis).
     expect(d.syncOptOut).toHaveBeenCalledWith({
       subjectRef: `site:newsletter_subscriber:${ABONNE.id}`,
       person: { email: ABONNE.email },
       payload: { reason: "admin-console" },
+      tx: TX,
     });
     // Registre de preuve : le retrait, sous la référence de l'accord retiré,
     // sans l'IP de l'administrateur.
@@ -136,16 +160,71 @@ describe("désabonnement forcé depuis la console", () => {
     d.subFindUnique.mockResolvedValue({ ...ABONNE, status: "unsubscribed" });
     const r = await forceUnsubscribeAction({ ok: false, error: "" }, form({ id: ABONNE.id }));
     expect(r).toEqual({ ok: true });
-    expect(d.subUpdate).not.toHaveBeenCalled();
+    expect(d.subUpdateMany).not.toHaveBeenCalled();
     expect(d.syncOptOut).not.toHaveBeenCalled();
     expect(d.recordConsent).not.toHaveBeenCalled();
+  });
+
+  it("🔴 course (deux clics, ou le lien public entre-temps) : la transition perdue n'émet RIEN", async () => {
+    // La lecture voit « inscrit », mais l'écriture conditionnelle ne touche
+    // aucune ligne : quelqu'un d'autre vient de désabonner.
+    d.subUpdateMany.mockResolvedValue({ count: 0 });
+    const r = await forceUnsubscribeAction({ ok: false, error: "" }, form({ id: ABONNE.id }));
+    expect(r).toEqual({ ok: true });
+    // Discriminant positif : l'écriture conditionnelle a bien été TENTÉE…
+    expect(d.subUpdateMany).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { id: ABONNE.id, status: { not: "unsubscribed" } } }),
+    );
+    // … et rien de ce qui suit une transition n'a eu lieu.
+    expect(d.syncOptOut).not.toHaveBeenCalled();
+    expect(d.recordConsent).not.toHaveBeenCalled();
+    expect(d.activityCreate).not.toHaveBeenCalled();
+  });
+
+  it("transaction en échec : repli hors transaction, la personne est quand même désabonnée", async () => {
+    const erreur = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    d.transaction.mockRejectedValue(new Error("transaction avortée"));
+    const r = await forceUnsubscribeAction({ ok: false, error: "" }, form({ id: ABONNE.id }));
+    expect(r).toEqual({ ok: true });
+    expect(d.subUpdateMany).toHaveBeenCalledTimes(1);
+    // L'outbox est écrite HORS transaction (aucun `tx` transmis).
+    expect(d.syncOptOut).toHaveBeenCalledWith(
+      expect.not.objectContaining({ tx: expect.anything() }),
+    );
+    expect(d.recordConsent).toHaveBeenCalledWith(expect.objectContaining({ action: "optout" }));
+    expect(erreur).toHaveBeenCalledWith(
+      expect.stringContaining("repli hors transaction"),
+      "transaction avortée",
+    );
+    erreur.mockRestore();
+  });
+
+  it("🔴 preuve `optout` NON écrite : alerte (journal + Telegram, adresse MASQUÉE)", async () => {
+    const erreur = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    d.recordConsent.mockResolvedValue(false);
+    const r = await forceUnsubscribeAction({ ok: false, error: "" }, form({ id: ABONNE.id }));
+    expect(r).toEqual({ ok: true });
+    const incident = d.notify.mock.calls
+      .map((c) => c[0] as { category: string; payload: Record<string, string> })
+      .find((n) => n.category === "INCIDENT_DETECTED");
+    expect(incident).toBeDefined();
+    expect(incident!.payload["title"]).toMatch(/sans preuve « optout »/);
+    expect(JSON.stringify(incident)).not.toContain(ABONNE.email);
+    expect(erreur).toHaveBeenCalledWith(expect.stringContaining("NON écrite au registre"));
+    erreur.mockRestore();
+  });
+
+  it("preuve écrite : aucune alerte d'incident", async () => {
+    await forceUnsubscribeAction({ ok: false, error: "" }, form({ id: ABONNE.id }));
+    const categories = d.notify.mock.calls.map((c) => (c[0] as { category: string }).category);
+    expect(categories).toEqual(["NEWSLETTER_UNSUBSCRIBED"]);
   });
 
   it("un rôle sans droit d'écriture est refusé, et rien n'est écrit", async () => {
     d.session = { user: { id: "lecteur-1", role: "editor" } };
     const r = await forceUnsubscribeAction({ ok: false, error: "" }, form({ id: ABONNE.id }));
-    expect(r.ok).toBe(false);
-    expect(d.subUpdate).not.toHaveBeenCalled();
+    expect(r).toEqual({ ok: false, error: "Permission insuffisante." });
+    expect(d.subUpdateMany).not.toHaveBeenCalled();
     expect(d.syncOptOut).not.toHaveBeenCalled();
   });
 
@@ -200,5 +279,34 @@ describe("effacement RGPD depuis la console", () => {
     );
     expect(r.ok).toBe(false);
     expect(d.eraseNewsletter).not.toHaveBeenCalled();
+  });
+});
+
+describe("envoyer / renvoyer le guide : droits", () => {
+  const DEMANDE = "00000000-0000-4000-8000-0000000000d1";
+
+  it("🔴 « Envoyer le guide » : un rôle editor est refusé, rien ne part", async () => {
+    d.session = { user: { id: "lecteur-1", role: "editor" } };
+    const r = await envoyerGuideAAbonneAction({ ok: false, error: "" }, form({ id: ABONNE.id }));
+    expect(r).toEqual({ ok: false, error: "Permission insuffisante." });
+    expect(d.envoyerGuide).not.toHaveBeenCalled();
+  });
+
+  it("🔴 « Renvoyer le guide » : un rôle editor est refusé, rien ne part", async () => {
+    d.session = { user: { id: "lecteur-1", role: "editor" } };
+    const r = await renvoyerGuideAction({ ok: false, error: "" }, form({ id: DEMANDE }));
+    expect(r).toEqual({ ok: false, error: "Permission insuffisante." });
+    expect(d.renvoyerGuide).not.toHaveBeenCalled();
+  });
+
+  it("le témoin : un admin passe, et le geste est bien appelé", async () => {
+    d.envoyerGuide.mockResolvedValue({ resultat: "en-file", demandeId: DEMANDE, creee: true });
+    d.renvoyerGuide.mockResolvedValue({ resultat: "en-file", demandeId: DEMANDE, creee: false });
+    const a = await envoyerGuideAAbonneAction({ ok: false, error: "" }, form({ id: ABONNE.id }));
+    const b = await renvoyerGuideAction({ ok: false, error: "" }, form({ id: DEMANDE }));
+    expect(a).toMatchObject({ ok: true, resultat: "en-file" });
+    expect(b).toMatchObject({ ok: true, resultat: "en-file" });
+    expect(d.envoyerGuide).toHaveBeenCalledWith(ABONNE.id, expect.anything());
+    expect(d.renvoyerGuide).toHaveBeenCalledWith(DEMANDE, expect.anything());
   });
 });

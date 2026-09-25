@@ -12,7 +12,7 @@ export const runtime = "nodejs";
 export async function GET(request: NextRequest) {
   try {
     const sp = request.nextUrl.searchParams;
-    const { filename, csv } = await exportSubscribersCsvAction({
+    const { filename, csv, tronque } = await exportSubscribersCsvAction({
       status: (sp.get("status") as never) ?? undefined,
       locale: (sp.get("locale") as never) ?? undefined,
       source: sp.get("source") ?? undefined,
@@ -26,6 +26,9 @@ export async function GET(request: NextRequest) {
         "content-type": "text/csv; charset=utf-8",
         "content-disposition": `attachment; filename="${filename}"`,
         "cache-control": "no-store",
+        // Plafond atteint : le fichier est INCOMPLET, et il le dit (en-tête
+        // lu par l'écran et par tout script d'import) au lieu de le taire.
+        "x-export-tronque": tronque ? "1" : "0",
       },
     });
   } catch (err) {

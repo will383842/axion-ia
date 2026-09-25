@@ -406,11 +406,11 @@ describe("contrat du corps entrant", () => {
 });
 
 describe("correspondance d'adresse (sha256 NON salé du CRM)", () => {
-  it("ne balaie que les abonnés confirmés", async () => {
+  it("balaie les abonnés non désabonnés (`pending` compris, lot L3)", async () => {
     subscriber.findMany.mockResolvedValue([]);
     await findSubscriberIdByHash(sha256Email("qui@example.invalid"));
     expect(subscriber.findMany).toHaveBeenCalledWith(
-      expect.objectContaining({ where: { status: "confirmed" } }),
+      expect.objectContaining({ where: { status: { in: ["pending", "confirmed"] } } }),
     );
   });
 
