@@ -260,6 +260,42 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     ],
   },
   {
+    id: "fiches-reseaux",
+    icon: "ClipboardList",
+    nom: "Fiches offertes · 3 × 2 pages",
+    format: "A4 portrait · 210 × 297 mm · 2 pages chacune, à imprimer",
+    resume:
+      "Les trois fiches que les publications Instagram et Facebook promettent à qui écrit un mot-clé en message privé : FICHE (le test des 20 minutes), FUITES (les 7 fuites de temps), PLAN (le plan 90 jours). Le lien part dans la réponse automatique de la messagerie.",
+    fichiersPublics: [
+      {
+        chemin: "imprimes/fiche-test-20-minutes-axion-ia.pdf",
+        nom: "FICHE — Le test des 20 minutes",
+        role: "Promise par la publication Instagram du 25/09 (et du 15/12) et par Facebook. ⚠️ Ne pas renommer : le lien part dans la réponse automatique au mot-clé FICHE.",
+      },
+      {
+        chemin: "imprimes/fiche-7-fuites-de-temps-axion-ia.pdf",
+        nom: "FUITES — Les 7 fuites de temps",
+        role: "Promise par les publications du 02/11 (Facebook) et du 03/11 (Instagram). ⚠️ Ne pas renommer : le lien part dans la réponse automatique au mot-clé FUITES.",
+      },
+      {
+        chemin: "imprimes/fiche-plan-90-jours-axion-ia.pdf",
+        nom: "PLAN — Le plan 90 jours",
+        role: "Promise par Facebook en janvier. ⚠️ Ne pas renommer : le lien part dans la réponse automatique au mot-clé PLAN.",
+      },
+    ],
+    fichiersHorsLigne: [
+      {
+        nom: "La source des fiches",
+        ou: "_FICHES-OFFERTES-2026/ (poste de fabrication, hors dépôt)",
+        pourquoi:
+          "Les PDF sont des rendus : toute correction se fait dans la source (python build.py), puis le PDF remplace celui-ci sous le même nom.",
+      },
+    ],
+    avantTirage: [
+      "Les réponses automatiques de la messagerie Instagram/Facebook pointent vers ces trois chemins : un renommage casse la promesse sans que rien ne rougisse.",
+    ],
+  },
+  {
     id: "livre-kdp",
     icon: "BookUser",
     nom: "Livre KDP",
