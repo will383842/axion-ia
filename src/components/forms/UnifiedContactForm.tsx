@@ -63,6 +63,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 import { HoneypotField } from "@/components/forms/HoneypotField";
+import { reporterLeurre } from "@/components/forms/reporter-leurre";
 import { isStaleServerActionError } from "@/lib/forms/form-errors";
 import { cn } from "@/lib/utils";
 
@@ -529,7 +530,7 @@ function UnifiedContactFormBody({
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [submissionId, setSubmissionId] = React.useState<string | null>(null);
 
-  async function onSubmit(values: UnifiedContactInput) {
+  async function onSubmit(values: UnifiedContactInput, event?: React.BaseSyntheticEvent) {
     setServerError(null);
     // Zéro friction (Will 2026-07-01) : on n'empêche PLUS l'envoi si Turnstile
     // n'a pas produit de token (bloqueur/DNS). Le serveur soft-fail le captcha
@@ -552,6 +553,7 @@ function UnifiedContactFormBody({
       if (effectiveSubType) fd.set("subType", effectiveSubType);
       fd.set("consent", values.consent ? "true" : "false");
       if (turnstileToken) fd.set("cf-turnstile-response", turnstileToken);
+      reporterLeurre(fd, event?.target);
 
       const result = await submitUnifiedContactAction({ ok: false, error: "" }, fd);
       if (!result.ok) {
