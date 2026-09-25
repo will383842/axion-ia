@@ -26,8 +26,10 @@ describe("demandeGuideSchema", () => {
     expect(r.success && r.data.email).toBe("jeanne@example.invalid");
   });
 
-  it("rejects email malformé", () => {
-    expect(demandeGuideSchema.safeParse({ email: "broken" }).success).toBe(false);
+  it("rejects email malformé, avec le même message que le serveur (décision du 25/09)", () => {
+    const r = demandeGuideSchema.safeParse({ email: "broken" });
+    expect(r.success).toBe(false);
+    expect(r.success ? null : r.error.issues[0]?.message).toBe("Adresse e-mail invalide.");
   });
 
   it("rejects empty payload", () => {
