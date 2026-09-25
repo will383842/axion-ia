@@ -30,8 +30,8 @@
  * Décision (documentée, pas subie) : `newsletter_subscribers.email` est stocké
  * EN CLAIR (colonne `citext`, jamais chiffrée — contrairement aux
  * submissions). Le sha256 de chaque abonné est donc calculable à la volée. On
- * balaie les abonnés ACTIFS (`confirmed`, quelques milliers au plus, deux
- * colonnes lues) plutôt que d'ajouter une colonne d'index qu'il faudrait
+ * balaie les abonnés NON DÉSABONNÉS (`pending` et `confirmed`, quelques
+ * milliers au plus, quatre colonnes lues) plutôt que d'ajouter une colonne d'index qu'il faudrait
  * remplir, maintenir et migrer pour un flux dont le volume attendu est de
  * quelques événements par jour. Si la liste franchissait
  * `MAX_SCAN_SUBSCRIBERS`, le balayage s'arrête et l'événement est consigné
@@ -42,6 +42,9 @@
 import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 
 import { prisma } from "@/lib/prisma";
+import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
+// Module PUR — surtout pas `desabonner.ts`, qui émet vers le CRM (anti-boucle).
+import { VERSION_LETTRE_HISTORIQUE } from "@/server/newsletter/versions";
 import { alertCrmSync } from "./alerts";
 
 import { crmSyncSecret } from "./config";
@@ -56,7 +59,11 @@ export const INBOUND_REPLAY_WINDOW_SEC = 300;
 export const MAX_SCAN_SUBSCRIBERS = 20_000;
 
 export type CrmInboundEventType = "consent_optout" | "consent_optin" | "erasure";
-export type CrmInboundScope = "business" | "vivier";
+/**
+ * `lettre` : l'univers de la LETTRE seule (lot L4-C du CRM, qui y fera passer
+ * son désabonnement) ; traité comme `business` pour l'abonné du site.
+ */
+export type CrmInboundScope = "business" | "vivier" | "lettre";
 
 export interface CrmInboundPayload {
   event_id: string;
@@ -131,7 +138,7 @@ export function verifyInboundRequest(input: {
 // ── Contrat du corps ────────────────────────────────────────────────────────
 
 const EVENT_TYPES: ReadonlySet<string> = new Set(["consent_optout", "consent_optin", "erasure"]);
-const SCOPES: ReadonlySet<string> = new Set(["business", "vivier"]);
+const SCOPES: ReadonlySet<string> = new Set(["business", "vivier", "lettre"]);
 const SHA256_HEX = /^[0-9a-f]{64}$/i;
 
 /**
@@ -247,14 +254,45 @@ async function applyEffect(payload: CrmInboundPayload): Promise<CrmInboundOutcom
 
   // Le vivier candidats n'a pas d'équivalent « abonné » côté site : rien à
   // répercuter aujourd'hui. L'événement est conservé pour la preuve.
-  if (payload.scope !== "business") return "ignored";
+  // `lettre` (lot L4-C du CRM) désabonne comme `business`.
+  if (payload.scope !== "business" && payload.scope !== "lettre") return "ignored";
 
-  const subscriberId = await findSubscriberIdByHash(payload.email_hash);
-  if (!subscriberId) return "no_match";
+  const abonne = await findSubscriberByHash(payload.email_hash);
+  if (!abonne) return "no_match";
+
+  const maintenant = new Date();
+
+  // 🔴 Lot L3 (2026-09-24) — le RETRAIT s'écrit au registre de preuve, comme
+  // sur les deux autres chemins (lien public, console). Sans cette ligne, le
+  // registre gardait l'accord et jamais son retrait : il racontait une
+  // personne toujours consentante. Même référence que l'accord retiré.
+  // ⚠️ Registre LOCAL seulement : `recordConsentEvent` n'émet rien vers le
+  // CRM — l'anti-boucle ci-dessus reste entière (aucun `sync*ToCrm` ici).
+  //
+  // La preuve D'ABORD, le statut ENSUITE : si l'écriture du statut échoue,
+  // l'erreur remonte, le CRM retente, l'abonné est encore trouvé (il n'est pas
+  // désabonné) et la transition se rejoue. Dans l'ordre inverse, la nouvelle
+  // tentative ne le trouvait plus : `no_match`, et l'`optout` jamais écrit.
+  // Le prix : une seconde ligne `optout` si l'on rejoue — le registre est
+  // append-only, un retrait répété ne ment pas.
+  const preuve = await recordConsentEvent({
+    email: abonne.email,
+    formRef: abonne.consentFormRef ?? CONSENT_FORM_REFS.newsletter,
+    consentVersion: abonne.consentVersion ?? VERSION_LETTRE_HISTORIQUE,
+    action: "optout",
+    occurredAt: maintenant,
+  });
+  if (!preuve) {
+    // L'opposition gagne quand même : la désinscription est appliquée, c'est
+    // sa preuve qui manque — dit, jamais tu.
+    console.error(
+      `[crm-sync][entrant] opposition appliquée SANS preuve « optout » au registre (abonné ${abonne.id}).`,
+    );
+  }
 
   await prisma.newsletterSubscriber.update({
-    where: { id: subscriberId },
-    data: { status: "unsubscribed", unsubscribedAt: new Date() },
+    where: { id: abonne.id },
+    data: { status: "unsubscribed", unsubscribedAt: maintenant },
   });
 
   return "applied";
@@ -263,14 +301,28 @@ async function applyEffect(payload: CrmInboundPayload): Promise<CrmInboundOutcom
 /**
  * Retrouve un abonné par sha256 non salé de son adresse.
  *
- * Un balayage, assumé : cf. l'en-tête du module. On ne regarde que les abonnés
- * ACTIFS (`confirmed`) — désinscrire un abonné déjà `unsubscribed` ne changerait
- * rien, et `pending` n'a jamais confirmé, donc n'est abonné à rien.
+ * Un balayage, assumé : cf. l'en-tête du module. On regarde les abonnés
+ * `pending` ET `confirmed` — désinscrire un abonné déjà `unsubscribed` ne
+ * changerait rien ; un `pending` (ancien double opt-in) n'est abonné à rien,
+ * mais sa ligne peut encore être confirmée ou exportée demain : une opposition
+ * venue du CRM doit la fermer aussi, et en laisser la preuve.
  */
 export async function findSubscriberIdByHash(emailHash: string): Promise<string | null> {
+  return (await findSubscriberByHash(emailHash))?.id ?? null;
+}
+
+interface AbonneTrouve {
+  readonly id: string;
+  readonly email: string;
+  readonly consentFormRef: string | null;
+  readonly consentVersion: string | null;
+}
+
+/** Comme `findSubscriberIdByHash`, avec ce qu'il faut pour écrire la preuve du retrait. */
+async function findSubscriberByHash(emailHash: string): Promise<AbonneTrouve | null> {
   const subscribers = await prisma.newsletterSubscriber.findMany({
-    where: { status: "confirmed" },
-    select: { id: true, email: true },
+    where: { status: { in: ["pending", "confirmed"] } },
+    select: { id: true, email: true, consentFormRef: true, consentVersion: true },
     // Ordre STABLE : sans lui, le sous-ensemble tronqué au plafond serait
     // non déterministe — le même optout pourrait alterner match/no_match.
     orderBy: { id: "asc" },
@@ -279,7 +331,14 @@ export async function findSubscriberIdByHash(emailHash: string): Promise<string 
 
   const target = emailHash.toLowerCase();
   for (const sub of subscribers) {
-    if (sha256Email(sub.email) === target) return sub.id;
+    if (sha256Email(sub.email) === target) {
+      return {
+        id: sub.id,
+        email: sub.email,
+        consentFormRef: sub.consentFormRef ?? null,
+        consentVersion: sub.consentVersion ?? null,
+      };
+    }
   }
 
   if (subscribers.length >= MAX_SCAN_SUBSCRIBERS) {
@@ -294,7 +353,7 @@ export async function findSubscriberIdByHash(emailHash: string): Promise<string 
     );
     await alertCrmSync({
       kind: "scan_capped",
-      detail: `Balayage plafonné à ${MAX_SCAN_SUBSCRIBERS} abonnés confirmés : un optout CRM peut être raté. Poser une colonne d'empreinte indexée.`,
+      detail: `Balayage plafonné à ${MAX_SCAN_SUBSCRIBERS} abonnés non désabonnés : un optout CRM peut être raté. Poser une colonne d'empreinte indexée.`,
     });
   }
 

@@ -1684,6 +1684,17 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // groupe « Engagement » d'une entrée, un titre de plus pour un seul lien.
     // Pas `Mail` : « Gabarits » le porte déjà dans ce groupe.
     { href: `${base}/newsletter`, label: "Newsletter", icon: "Newspaper", group: "emails" },
+    // Lot L3 (2026-09-24) — une demande du guide n'est PAS un abonnement
+    // (décision n° 1 de Will) : elle vit dans `guide_requests`, et cet écran
+    // est le seul endroit où l'on voit si le guide est parti, ouvert, cliqué,
+    // transmis au CRM — avec le « Renvoyer » unitaire. La fiche abonné
+    // (`/newsletter/[id]`) n'a pas d'entrée : on l'ouvre depuis une liste.
+    {
+      href: `${base}/newsletter/demandes-guide`,
+      label: "Demandes du guide",
+      icon: "BookOpen",
+      group: "emails",
+    },
     // ⚠️ Le lien vers le tableau de bord ZeptoMail (demande Will, 2026-08-16)
     // n'est VOLONTAIREMENT pas ici. Un lien sortant est possible depuis le
     // 2026-08-24 (`external: true`, cf. Tiime) ; ce n'est pas la raison. Il vit

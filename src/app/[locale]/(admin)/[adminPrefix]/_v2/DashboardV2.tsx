@@ -45,6 +45,8 @@ import type { ActivityIconKey } from "@/lib/admin/activity-labels";
 import { EnTetePilotage } from "./pilotage/EnTetePilotage";
 import { AlertesCritiques } from "./pilotage/AlertesCritiques";
 import { ApporteursEnAttenteSection } from "./pilotage/ApporteursEnAttenteSection";
+import { GuideLettreSection } from "./pilotage/GuideLettreSection";
+import type { TuileGuideLettre } from "@/server/newsletter/console";
 import { CalendrierPrevisionnel } from "./pilotage/CalendrierPrevisionnel";
 import { ActiviteSection } from "./pilotage/ActiviteSection";
 import { FormateursSection } from "./pilotage/FormateursSection";
@@ -118,6 +120,8 @@ interface DashboardV2Props {
   role: string;
   logoutAction: () => Promise<void> | void;
   dashboard: PilotageDashboard;
+  /** Lot L3 : la lettre et le guide. */
+  guideLettre: TuileGuideLettre;
   activityRows: ReadonlyArray<{
     id: string;
     icone: ActivityIconKey;
@@ -131,6 +135,7 @@ export function DashboardV2({
   role,
   logoutAction,
   dashboard,
+  guideLettre,
   activityRows,
 }: DashboardV2Props): React.ReactElement {
   const base = `/fr/${adminPrefix}`;
@@ -203,6 +208,9 @@ export function DashboardV2({
           15 personnes attendaient, la plus ancienne depuis 26 jours. Un seuil
           horaire aurait sonné en permanence dès le premier jour. */}
       <ApporteursEnAttenteSection adminPrefix={adminPrefix} apporteurs={dashboard.apporteurs} />
+
+      {/* 2 ter — Lettre et guide (lot L3). Une tuile, pas une alerte. */}
+      <GuideLettreSection adminPrefix={adminPrefix} tuile={guideLettre} />
 
       {/* 3 — Calendrier & prévisionnel (le cœur). */}
       <CalendrierPrevisionnel

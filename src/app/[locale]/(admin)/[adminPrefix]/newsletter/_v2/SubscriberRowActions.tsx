@@ -72,13 +72,15 @@ export function SubscriberRowActions({
             className="flex flex-wrap items-center gap-[var(--space-admin-2)]"
           >
             <input type="hidden" name="id" value={id} />
+            {/* Le motif est conservé au journal d'activité : jamais d'adresse
+                dedans, sinon l'effacement laisserait l'adresse derrière lui. */}
             <input
-              aria-label="Motif RGPD (obligatoire)"
+              aria-label="Motif (sans adresse e-mail)"
               name="reason"
               required
               minLength={3}
               maxLength={500}
-              placeholder="Motif RGPD (obligatoire)"
+              placeholder="Motif (sans adresse e-mail)"
               className="admin-input"
               style={{ minWidth: "180px" }}
             />
@@ -106,10 +108,19 @@ export function SubscriberRowActions({
             style={{ color: "var(--color-admin-error)" }}
             title="Droit à l'effacement RGPD — réservé super_admin"
           >
-            Effacer (RGPD)
+            Effacer de la lettre et du guide (RGPD)
           </button>
         )}
       </div>
+      {/* Le périmètre du bouton, dit sous lui AVANT de confirmer : il ne couvre
+          que la lettre et le guide (`server/newsletter/effacer.ts`). Affiché à
+          l'ouverture seulement, pour ne pas le répéter sur chaque ligne. */}
+      {confirmErase ? (
+        <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          N&apos;efface pas les demandes de contact, candidatures ni autres données. Pour une
+          demande d&apos;effacement complète, utilisez la procédure d&apos;effacement complet.
+        </span>
+      ) : null}
       {unsubErr ? (
         <span
           role="alert"

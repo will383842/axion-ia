@@ -21,19 +21,7 @@
 
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
-import { syncNewsletterOptOutToCrm } from "@/server/crm-sync";
-import { notify } from "@/server/notifications";
-import { redactEmail } from "@/lib/pii-redaction";
-import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
-
-/**
- * Première version de consentement NOMMÉE pour la lettre (décision actée
- * 2026-08-13). Depuis le lot L2, chaque inscription porte SA référence et SA
- * version (`consentFormRef` / `consentVersion`, textes archivés dans
- * `content/guide-ia-formulaire.ts`) ; cette constante ne sert plus que de
- * REPLI pour les inscriptions antérieures, qui n'en portent pas.
- */
-const NEWSLETTER_CONSENT_VERSION = "newsletter-v1-2026-08-13";
+import { desabonnerAbonne } from "@/server/newsletter/desabonner";
 
 // `confirmNewsletterAction` a quitté ce fichier au lot L2 (2026-09-24) :
 // elle vit dans `server/newsletter/confirmer.ts`, appelée par la route POST
@@ -66,45 +54,22 @@ export async function unsubscribeNewsletterAction(token: string | null): Promise
     if (sub.status === "unsubscribed") {
       return { ok: true, alreadyUnsubscribed: true, email: sub.email };
     }
-    await prisma.newsletterSubscriber.update({
-      where: { id: sub.id },
-      data: {
-        status: "unsubscribed",
-        unsubscribedAt: new Date(),
-        // 🔴 Lot L2 : un jeton de confirmation resté sur la ligne vaudrait
-        // réinscription (`confirmerLettre` accepte un désabonné qui présente
-        // SON jeton). Seul un jeton posé APRÈS le désabonnement — l'offre de
-        // réinscription de l'e-mail « Votre guide » — doit pouvoir le faire.
-        confirmToken: null,
+    // Lot L3 (2026-09-24) : le MÊME chemin que le bouton de la console —
+    // statut, opposition au CRM, preuve `optout` au registre, Telegram. Les
+    // deux ne peuvent plus diverger (`server/newsletter/desabonner.ts`).
+    // `false` : un autre geste l'a désabonné entre la lecture et l'écriture
+    // (double clic, bouton de la console) — déjà fait, rien de plus n'est émis.
+    const fait = await desabonnerAbonne(
+      {
+        id: sub.id,
+        email: sub.email,
+        locale: sub.locale,
+        consentFormRef: sub.consentFormRef,
+        consentVersion: sub.consentVersion,
       },
-    });
-    // Synchro CRM (lot L2) — l'opposition doit valoir PARTOUT : le CRM inscrit
-    // l'adresse (hashée) en liste d'opposition business, ce qui empêche aussi
-    // toute réinsertion par un futur re-scrape.
-    await syncNewsletterOptOutToCrm({
-      subjectRef: `site:newsletter_subscriber:${sub.id}`,
-      person: { email: sub.email },
-      payload: { reason: "unsubscribe-link" },
-    });
-
-    // Le RETRAIT est une preuve au même titre que l'accord : il s'AJOUTE au
-    // registre (`optout`), il n'efface pas la ligne d'opt-in. C'est la
-    // succession des deux qui raconte l'histoire complète.
-    // Lot L2 : le retrait se range sous la MÊME référence que l'accord qu'il
-    // retire — sinon le registre raconterait deux histoires disjointes.
-    await recordConsentEvent({
-      email: sub.email,
-      formRef: sub.consentFormRef ?? CONSENT_FORM_REFS.newsletter,
-      consentVersion: sub.consentVersion ?? NEWSLETTER_CONSENT_VERSION,
-      action: "optout",
-    });
-
-    await notify({
-      category: "NEWSLETTER_UNSUBSCRIBED",
-      payload: { email: redactEmail(sub.email), locale: sub.locale },
-      dedupKey: `newsletter-unsub-${sub.id}`,
-    });
-    return { ok: true, alreadyUnsubscribed: false, email: sub.email };
+      "unsubscribe-link",
+    );
+    return { ok: true, alreadyUnsubscribed: !fait, email: sub.email };
   } catch (err) {
     Sentry.captureException(err);
     return { ok: false, error: "internal" };

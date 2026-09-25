@@ -17,19 +17,14 @@ import type { AdminTableColumn } from "@/components/admin/ui";
 import { SubscriberRowActions } from "./SubscriberRowActions";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { CheckCircle2, Hourglass, MailX } from "lucide-react";
-
-const SOURCE_LABELS: Record<string, string> = {
-  footer: "Pied de page",
-  "blog-cta": "Encart en fin d'article",
-  "exit-intent": "Fenêtre de sortie",
-  homepage: "Page d'accueil",
-  ressources: "Page Ressources",
-  manual: "Ajout manuel",
-};
+import { libelleSource, type StatistiquesLettre } from "@/server/newsletter/console";
+import { StatistiquesLettreSection } from "./StatistiquesLettre";
 
 const STATUS_LABELS: Record<string, string> = {
   pending: "En attente",
-  confirmed: "Confirmé",
+  // Lot L3 : « Inscrit », pas « Confirmé » — une adresse pro est inscrite au
+  // titre de l'intérêt légitime, sans rien avoir confirmé.
+  confirmed: "Inscrit",
   unsubscribed: "Désabonné",
   bounced: "Rejeté",
 };
@@ -67,6 +62,8 @@ interface Props {
   totalPages: number;
   stats: Stats;
   csvUrl: string;
+  /** Lot L3 : taux, courbe mensuelle, provenances. */
+  statistiques: StatistiquesLettre;
 }
 
 export function NewsletterV2({
@@ -78,14 +75,21 @@ export function NewsletterV2({
   totalPages,
   stats,
   csvUrl,
+  statistiques,
 }: Props): React.ReactElement {
+  const base = `/fr/${adminPrefix}`;
   const columns: ReadonlyArray<AdminTableColumn<SubscriberRow>> = [
     {
       key: "createdAt",
       header: "Date inscription",
       cell: (s) => formatDateFrShort(s.createdAt),
     },
-    { key: "email", header: "Email", cell: (s) => s.email },
+    {
+      key: "email",
+      header: "Email",
+      // Lot L3 : la fiche abonné (preuves, envois, synchro CRM, « Envoyer le guide »).
+      cell: (s) => <Link href={`${base}/newsletter/${s.id}`}>{s.email}</Link>,
+    },
     { key: "locale", header: "Langue", cell: (s) => s.locale.toUpperCase() },
     {
       key: "status",
@@ -99,13 +103,14 @@ export function NewsletterV2({
     {
       key: "source",
       header: "Source",
-      // La colonne affichait l'identifiant interne posé par le formulaire
-      // d'inscription : « footer », « blog-cta », « exit-intent ».
-      cell: (s) => (s.source === null ? "—" : (SOURCE_LABELS[s.source] ?? s.source)),
+      // Lot L3 : les libellés suivent la liste FERMÉE des provenances du
+      // formulaire du guide ; les anciens (« footer », « blog-cta »…) ne
+      // correspondaient à rien de ce qui était réellement envoyé.
+      cell: (s) => (s.source === null ? "—" : libelleSource(s.source)),
     },
     {
       key: "confirmedAt",
-      header: "Confirmé le",
+      header: "Inscrit à la lettre le",
       cell: (s) => formatDateFrShort(s.confirmedAt),
     },
     {
@@ -126,9 +131,19 @@ export function NewsletterV2({
         title="Newsletter"
         description={`${total} abonné${total > 1 ? "s" : ""} · page ${page}/${totalPages}`}
         actions={
-          <a href={csvUrl} className="admin-button-ghost" download>
-            Exporter CSV (confirmés)
-          </a>
+          <>
+            <Link href={`${base}/newsletter/demandes-guide`} className="admin-button-ghost">
+              Demandes du guide
+            </Link>
+            {/* Lot L3 : le fichier suit les filtres de l'écran, restreint aux
+                inscrits ÉLIGIBLES (ni opposés, ni en rebond). */}
+            <a href={csvUrl} className="admin-button-ghost" download>
+              Exporter pour MailWizz (inscrits éligibles)
+            </a>
+            <a href="/api/admin/newsletter/suppression" className="admin-button-ghost" download>
+              Liste de suppression (empreintes)
+            </a>
+          </>
         }
       />
 
@@ -136,10 +151,10 @@ export function NewsletterV2({
         aria-label="KPIs newsletter"
         className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4"
       >
-        <AdminStatCard label="Confirmés FR" value={stats.confirmed?.fr ?? 0} icon={CheckCircle2} />
-        <AdminStatCard label="Confirmés EN" value={stats.confirmed?.en ?? 0} icon={CheckCircle2} />
+        <AdminStatCard label="Inscrits FR" value={stats.confirmed?.fr ?? 0} icon={CheckCircle2} />
+        <AdminStatCard label="Inscrits EN" value={stats.confirmed?.en ?? 0} icon={CheckCircle2} />
         <AdminStatCard
-          label="En attente (double opt-in)"
+          label="En attente (ancien double opt-in, jamais confirmé)"
           value={(stats.pending?.fr ?? 0) + (stats.pending?.en ?? 0)}
           icon={Hourglass}
         />
@@ -149,6 +164,8 @@ export function NewsletterV2({
           icon={MailX}
         />
       </section>
+
+      <StatistiquesLettreSection stats={statistiques} />
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <form className="admin-filters">
@@ -212,7 +229,7 @@ export function NewsletterV2({
                 type="text"
                 defaultValue={sp["source"] ?? ""}
                 className="admin-input"
-                placeholder="ex: footer, blog-cta…"
+                placeholder="ex. : guide-ia, blog-fin-article"
               />
             </div>
             <div className="admin-field">

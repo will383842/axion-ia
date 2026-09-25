@@ -192,7 +192,10 @@ describe("buildAdminNav SSOT", () => {
     // +1 (2026-09-25, Fiches offertes) : sous-onglet des Imprimés, dérivé de
     // IMPRIMES — les 3 fiches promises en message privé par Instagram et
     // Facebook (FICHE, FUITES, PLAN). 164 + 1 = 165.
-    expect(items.length).toBe(165);
+    // +1 (2026-09-24, lot L3, « Demandes du guide ») : une demande du guide
+    // n'est pas un abonnement ; l'écran qui dit si le guide est parti, ouvert,
+    // cliqué, transmis au CRM. La fiche abonné n'a pas d'entrée. 165 + 1 = 166.
+    expect(items.length).toBe(166);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
@@ -573,6 +576,17 @@ describe("menu rangé, sans écrans vides (2026-09-19)", () => {
     expect(items.some((it) => (it.group as string) === "engagement")).toBe(false);
     expect(ADMIN_NAV_GROUP_ORDER as ReadonlyArray<string>).not.toContain("engagement");
     expect(Object.keys(ADMIN_NAV_GROUP_LABELS)).not.toContain("engagement");
+  });
+
+  it("les demandes du guide vivent dans « E-mails », juste après la newsletter (lot L3)", () => {
+    const demandes = parLibelle("Demandes du guide");
+    expect(demandes?.group).toBe("emails");
+    expect(demandes?.href).toBe(`${base}/newsletter/demandes-guide`);
+    // Visible dans la barre latérale : pas de `parent`, sinon elle serait
+    // masquée et l'écran ne serait atteignable que par l'URL.
+    expect(demandes?.parent).toBeUndefined();
+    const emails = items.filter((it) => it.group === "emails").map((it) => it.label);
+    expect(emails.indexOf("Demandes du guide")).toBe(emails.indexOf("Newsletter") + 1);
   });
 
   it("les offres d'emploi sont rangées sous Candidatures, plus dans Contenu", () => {

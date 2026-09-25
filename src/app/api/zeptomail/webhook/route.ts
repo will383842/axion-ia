@@ -28,6 +28,7 @@ import { notify } from "@/server/notifications";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { verifierSignatureZeptomail } from "@/server/email/zeptomail-webhook-signature";
 import { lireRebond, FENETRE_RATTACHEMENT_HEURES } from "@/server/email/bounce-service";
+import { noterRebondSurAbonne } from "@/server/newsletter/rebonds";
 import { noterAppelRecu, noterAppelWebhook } from "@/server/email/webhook-battement";
 
 export const runtime = "nodejs";
@@ -256,6 +257,12 @@ export async function POST(req: NextRequest): Promise<Response> {
       // ci-dessous part quand même. Répondre en erreur ferait retenter — et
       // ZeptoMail finirait par désabonner.
     }
+
+    // Lot L3 (2026-09-24) — le rebond se lit AUSSI sur l'abonné à la lettre :
+    // dur → `bounced`, mou → compteur. Jusque-là, le statut « Rejeté » n'était
+    // posé par aucun code. Fail-soft, hors du bloc ci-dessus : un échec du
+    // rattachement à l'envoi ne doit pas empêcher celui-ci, ni l'inverse.
+    await noterRebondSurAbonne(rebond.destinataire, rebond.type, survenuLe);
   }
 
   // ── Alerte ────────────────────────────────────────────────────────────────
