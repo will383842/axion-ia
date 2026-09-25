@@ -195,12 +195,12 @@ V2+ : ajouter Vector ou Promtail → Grafana Loki si volume justifie.
 
 ## 6. SLO / SLI
 
-| SLI                  | SLO V1       | SLO V2   | Mesure                       |
-| -------------------- | ------------ | -------- | ---------------------------- |
-| Availability         | 99.5% / mois | 99.9%    | Uptime Kuma                  |
-| LCP p75              | ≤ 2500ms     | ≤ 1800ms | Plausible web vitals         |
-| INP p75              | ≤ 200ms      | ≤ 100ms  | Plausible web vitals         |
-| Booking success rate | 95%          | 99%      | Plausible goals              |
-| Email delivery rate  | 95%          | 99%      | PowerMTA logs + bounce table |
+| SLI                  | SLO V1       | SLO V2   | Mesure                                                 |
+| -------------------- | ------------ | -------- | ------------------------------------------------------ |
+| Availability         | 99.5% / mois | 99.9%    | Uptime Kuma                                            |
+| LCP p75              | ≤ 2500ms     | ≤ 1800ms | Plausible web vitals                                   |
+| INP p75              | ≤ 200ms      | ≤ 100ms  | Plausible web vitals                                   |
+| Booking success rate | 95%          | 99%      | Plausible goals                                        |
+| Email delivery rate  | 95%          | 99%      | `email_logs` + rebonds ZeptoMail (PowerMTA : ADR 0052) |
 
 Review trimestriel SLO → Will, ajustements.

@@ -1,5 +1,15 @@
 # DNS Records — Axion-IA Cloudflare zone
 
+> 🛑 **PÉRIMÉ — NE PAS APPLIQUER (ADR 0052, 2026-09-25).** Ce document décrit un PowerMTA
+> et un MailWizz sur le serveur du site qui **n'ont jamais existé**. Appliqués, ses
+> enregistrements `MX @ → mail.axion-ia.com`, SPF de la racine `v=spf1 mx ip4:… -all` et
+> `default._domainkey` couperaient la réception de `contact@` (Zoho Mail) et retireraient
+> ZeptoMail du SPF. Avec DMARC en `p=reject`, **toutes** les factures, convocations et liens
+> de connexion seraient refusés.
+>
+> - État réel mesuré : en-tête de `src/lib/email/client.ts`.
+> - Plan de la future lettre (sous-domaine dédié, non appliqué) : `docs/ops/dns-lettre-mailwizz.md`.
+
 **Provider** : Cloudflare (Free plan suffit V1-V2 — ADR 0009).
 **Origin** : Hetzner Cloud CPX32 Frankfurt — IP `<TO_FILL>`.
 **SSL/TLS mode Cloudflare** : Full (strict).
