@@ -285,7 +285,9 @@ export default async function AppelPage({ params, searchParams }: Props) {
                   </div>
                   <div className="bg-paper border-border rounded-xl border p-3 text-center">
                     <Shield className="text-terracotta mx-auto mb-1 h-4 w-4" aria-hidden="true" />
-                    <p className="text-fg-soft text-[11px] leading-tight">Gratuit et sans engagement</p>
+                    <p className="text-fg-soft text-[11px] leading-tight">
+                      Gratuit et sans engagement
+                    </p>
                   </div>
                   <div className="bg-paper border-border rounded-xl border p-3 text-center">
                     <CheckCircle
