@@ -239,6 +239,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         emailSha256: empreinteSha256(email),
         submissionsAnonymized: submissionsResult.anonymized,
         newsletterDeleted: newsletterResult.deleted,
+        guideRequestsDeleted: newsletterResult.guideDeleted,
         kbBookmarksDeleted: kbResult.bookmarksDeleted,
         chatConversationsDeleted: chatResult.conversationsDeleted,
         chatEscalationsAnonymized: chatResult.escalationsAnonymized,
@@ -274,6 +275,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       }),
       demandes: submissionsResult.anonymized,
       newsletter: newsletterResult.deleted,
+      // Lot L6 — les demandes du guide étaient effacées (L2) mais tues ici.
+      demandesGuide: newsletterResult.guideDeleted,
       conversations: chatResult.conversationsDeleted,
       // 🔴 `D5-5-03` — la candidature ENTRE dans l'énumération. Le courriel
       // dressait la liste de ce qui avait été effacé sans jamais mentionner le
@@ -307,7 +310,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Telegram alert (DPO doit savoir — art. 30 RGPD register update)
   try {
     await alertIncident(
-      `🗑️ RGPD art. 17 effacement effectué : ${submissionsResult.anonymized} submissions anonymisées, ${newsletterResult.deleted} newsletter, ${kbResult.bookmarksDeleted} KB bookmarks, ${chatResult.conversationsDeleted} conversations chatbot supprimées, ${chatResult.escalationsAnonymized} escalades anonymisées, ${clientsResult.anonymises} fiches client pseudonymisées (${clientsResult.retenusObligationComptable} RETENUES au titre de l'obligation comptable), ${destinatairesResult.anonymises} destinataires de documents, ${signaturesCoachingResult.anonymises} signatures de coaching.`,
+      `🗑️ RGPD art. 17 effacement effectué : ${submissionsResult.anonymized} submissions anonymisées, ${newsletterResult.deleted} newsletter, ${newsletterResult.guideDeleted} demandes du guide, ${kbResult.bookmarksDeleted} KB bookmarks, ${chatResult.conversationsDeleted} conversations chatbot supprimées, ${chatResult.escalationsAnonymized} escalades anonymisées, ${clientsResult.anonymises} fiches client pseudonymisées (${clientsResult.retenusObligationComptable} RETENUES au titre de l'obligation comptable), ${destinatairesResult.anonymises} destinataires de documents, ${signaturesCoachingResult.anonymises} signatures de coaching.`,
       { userId: v.jti },
     );
   } catch {
@@ -320,6 +323,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     summary: {
       submissionsAnonymized: submissionsResult.anonymized,
       newsletterDeleted: newsletterResult.deleted,
+      guideRequestsDeleted: newsletterResult.guideDeleted,
       kbBookmarksDeleted: kbResult.bookmarksDeleted,
       chatConversationsDeleted: chatResult.conversationsDeleted,
       chatEscalationsAnonymized: chatResult.escalationsAnonymized,

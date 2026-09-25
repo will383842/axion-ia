@@ -7,6 +7,11 @@
 //                              On ne conserve que email_hash dans activity_log
 //                              (handle propre RGPD art. 17 droit à l'oubli +
 //                              audit trail nominatif).
+//   - lettre et guide (lot L6, 2026-09-25) : `pending` jamais confirmés à 30 jours,
+//                              abonnés confirmés et demandes du guide sans contact
+//                              depuis 36 mois — `src/server/newsletter/retention.ts`,
+//                              qui définit le « dernier contact ». Comptes seulement.
+//                              JAMAIS `consent_events` ni `email_oppositions`.
 //   - generation_logs (audit B5 P0-7) : logs techniques content-gen — purge à N mois
 //                              (default 12). Ces logs sont append-only et lient les
 //                              prompts content-gen à un job_id non-PII. Pas d'export
@@ -31,6 +36,9 @@
 //   RETENTION_EMAIL_OUTBOX_MONTHS=36      (audit e-mail — etats terminaux seuls)
 //   RETENTION_CHAT_MONTHS=12              (chatbot — conversations/messages/escalades + cache/idempotence)
 //   RETENTION_CANDIDATURES_MONTHS=24      (`D4` — candidatures NON RETENUES seulement)
+//   RETENTION_NEWSLETTER_PENDING_DAYS=30   (L6 — inscription jamais confirmée)
+//   RETENTION_NEWSLETTER_INACTIVE_MONTHS=36 (L6 — abonné sans contact)
+//   RETENTION_GUIDE_REQUESTS_MONTHS=36     (L6 — demande du guide sans contact)
 //
 // ⚠️ `RETENTION_CANDIDATURES_MONTHS` ne s'applique PAS à tout le monde. Une
 // candidature en statut `hired` n'est JAMAIS purgée automatiquement : elle est
@@ -47,6 +55,7 @@ import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { deleteCv } from "@/server/careers/cv-storage";
 import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
+import { purgerLettreEtGuide } from "@/server/newsletter/retention";
 import type { RetentionPurgeJobData } from "../types";
 
 const DEFAULTS = {
@@ -286,6 +295,20 @@ export async function executerPurgeRetention(): Promise<void> {
     });
     counts.newsletter++;
   }
+
+  // 3 bis) lot L6 (2026-09-25) — lettre et guide : `pending` à 30 jours, abonnés
+  // confirmés et demandes du guide sans contact depuis 3 ans. Les durées sont
+  // celles que publie la politique de confidentialité ; la définition du
+  // « dernier contact » et ce qui n'est JAMAIS purgé (`consent_events`,
+  // `email_oppositions`) sont écrits dans le module. Journal : comptes seuls.
+  const lettre = await purgerLettreEtGuide();
+  console.log(
+    `[retention-purge][lettre] pending=${lettre.pendingPurges} ` +
+      `inactifs=${lettre.abonnesInactifsPurges} ` +
+      `gardesParDemandeRecente=${lettre.abonnesGardesParDemandeRecente} ` +
+      `demandesGuide=${lettre.demandesGuidePurgees} ` +
+      `journauxEnvoi=${lettre.journauxEnvoiPurges}`,
+  );
 
   // 5) generation_logs anciens (content-gen audit trail technique, audit B5 P0-7).
   // GenerationLog.timestamp = createdAt — pas de updatedAt (table append-only).

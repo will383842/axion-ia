@@ -117,6 +117,7 @@ const PAYLOAD: Record<string, unknown> = {
   type: "suppression",
   demandes: 2,
   newsletter: 1,
+  demandesGuide: 1,
   conversations: 3,
   candidatures: 1,
   appels: 1,

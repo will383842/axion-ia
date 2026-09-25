@@ -158,7 +158,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       source: true,
       confirmedAt: true,
       unsubscribedAt: true,
+      consentFormRef: true,
       consentVersion: true,
+      // Lot L6 — les champs d'engagement (vides tant qu'aucune lettre ne part)
+      // sont des données sur la personne : l'art. 15 les couvre aussi.
+      lastSentAt: true,
+      lastClickAt: true,
+      softBounceCount: true,
+      lastSoftBounceAt: true,
       createdAt: true,
     },
   });
@@ -171,9 +178,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       where: { email },
       select: {
         aimant: true,
+        origine: true,
         source: true,
         locale: true,
+        version: true,
         createdAt: true,
+        queuedAt: true,
         sentAt: true,
         sendCount: true,
         firstSeenAt: true,

@@ -1561,12 +1561,11 @@ model NewsletterSubscriber {
   unsubscribeToken String?          @unique @map("unsubscribe_token") @db.VarChar(120)
   // Source / marketing
   source           String?          @db.VarChar(120)
-  // 🔴 L2 (2026-09-24) — `ipAddress` (colonne `ip_address`, IP EN CLAIR) est
-  // RETIRÉ du modèle : étape 1 de sa suppression. Le client ne la lit ni ne
-  // l'écrit plus ; la COLONNE reste en base, sans migration, et tombe à
-  // l'étape 2 (lot L6, `DROP COLUMN` dans un déploiement POSTÉRIEUR — pendant
-  // `prisma migrate deploy`, l'ancien conteneur n'a déjà plus le champ).
-  // Seule l'empreinte ci-dessous est désormais écrite.
+  // 🔴 `ipAddress` (colonne `ip_address`, IP EN CLAIR) n'existe plus. Étape 1
+  // (L2, 2026-09-24) : champ retiré du modèle, sans migration. Étape 2 (L6,
+  // 2026-09-25) : `DROP COLUMN` (migration `20260925120000_newsletter_drop_ip_address`),
+  // dans un déploiement POSTÉRIEUR — l'ancien conteneur n'avait déjà plus le champ.
+  // Seule l'empreinte ci-dessous est écrite.
   /// Sprint Correctif S+1 P0-S1-3 (2026-05-16) — SHA-256(salt::ip) 16 hex.
   ipHash           String?          @map("ip_hash") @db.VarChar(64)
   /// L2 (2026-09-24) — QUEL texte a été accepté. Deux points de collecte, deux

@@ -59,7 +59,13 @@ describe("la politique dit vrai sur le guide et la lettre", () => {
     const fr = section("fr", /^Guide IA entreprise/);
     expect(fr).toContain("inscription à la lettre, 3 ans après votre dernier contact avec nous");
     expect(fr).toContain("3 ans en liste d'opposition");
-    expect(fr).toContain("demande du guide, 3 ans après votre dernière demande");
+    // L6 (2026-09-25) : « dernière demande » → « dernier contact » (amendement de
+    // Will : 3 ans après le dernier contact ; un clic sur le guide en est un).
+    expect(fr).toContain("demande du guide, 3 ans après votre dernier contact avec nous");
+    expect(fr).not.toContain("3 ans après votre dernière demande");
+    const en = section("en", /^Enterprise AI guide/);
+    expect(en).toContain("guide request, 3 years after your last contact with us");
+    expect(en).not.toContain("after your last request");
   });
 
   it("la base légale générale cite les deux régimes de la lettre", () => {
