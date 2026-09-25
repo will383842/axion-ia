@@ -31,6 +31,7 @@ import { discoverNewCalendlyEvents } from "@/server/calendly/discover";
 import { refreshUpcomingCalendlyEvents } from "@/server/calendly/refresh";
 import { updateTag } from "next/cache";
 import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
+import { ipDepuisEntetes } from "@/lib/client-ip";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -52,10 +53,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   const secret = process.env.REVALIDATE_SECRET;
   if (!secret) return new Response("revalidate_secret_missing", { status: 503 });
 
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    req.headers.get("x-real-ip") ||
-    "unknown";
+  const ip = ipDepuisEntetes(req.headers);
   const rl = await checkRateLimit(`internal:calendly-refresh:${ip}`, { limit: 12, windowSec: 60 });
   if (!rl.allowed) return new Response("rate_limited", { status: 429 });
 

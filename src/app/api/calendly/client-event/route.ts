@@ -44,6 +44,7 @@ import {
   type CanalRendezVous,
 } from "@/server/calendly/canal";
 import { colorerReservationCalendly } from "@/server/google-calendar/events";
+import { ipDepuisEntetes } from "@/lib/client-ip";
 
 const ClientEventSchema = z.object({
   eventName: z.literal("calendly.event_scheduled"),
@@ -190,7 +191,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   // 1. Rate limit par IP
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const ip = ipDepuisEntetes(req.headers);
   const ipHash = hashIp(ip) ?? "unknown";
   const rl = await checkRateLimit(`calendly-client-event:${ipHash}`, {
     limit: 5,

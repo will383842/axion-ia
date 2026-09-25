@@ -20,6 +20,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { recordVivierOpposition } from "@/server/vivier/opposition";
 import { verifyVivierOppositionToken } from "@/server/vivier/token";
+import { ipVisiteurOuNull } from "@/lib/client-ip";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -45,7 +46,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   }
 
   const result = await recordVivierOpposition(verified.applicationId, {
-    ip: req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null,
+    ip: ipVisiteurOuNull(req.headers),
     userAgent: req.headers.get("user-agent"),
   });
 

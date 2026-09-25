@@ -48,6 +48,7 @@ import {
   type AdminSession,
 } from "@/server/actions/knowledge/_guards";
 import { peutEngager, MOTIF_REFUS, type ActeEngageant } from "@/server/auth/habilitations";
+import { ipVisiteurOuNull } from "@/lib/client-ip";
 
 export {
   requireAdminRead,
@@ -109,11 +110,9 @@ export interface QualiopiActivityInput {
 export async function logQualiopiActivity(input: QualiopiActivityInput): Promise<void> {
   try {
     const h = await headers();
-    const rawIp =
-      h.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      h.get("x-real-ip") ||
-      h.get("cf-connecting-ip") ||
-      null;
+    // IP du visiteur par la règle unique (cf. lib/client-ip-core) : via Cloudflare,
+    // x-forwarded-for et x-real-ip ne portaient que le relais Cloudflare.
+    const rawIp = ipVisiteurOuNull(h);
     // A-02 (RGPD) : hachage de l'IP avant stockage (aligné sur le reste du repo).
     const ipAddress = hashIp(rawIp);
     const userAgent = h.get("user-agent") || null;

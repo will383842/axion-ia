@@ -36,6 +36,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { unsubscribeNewsletterAction } from "@/features/newsletter/actions";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { enregistrerOpposition, estJetonOpposition } from "@/server/email/opposition";
+import { ipDepuisEntetes } from "@/lib/client-ip";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -57,10 +58,7 @@ function pageDesabonnement(locale: "fr" | "en", query: string): URL {
 }
 
 async function debitDepasse(req: NextRequest): Promise<boolean> {
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    req.headers.get("x-real-ip") ||
-    "unknown";
+  const ip = ipDepuisEntetes(req.headers);
   const rl = await checkRateLimit(`unsubscribe:${ip}`, {
     limit: LIMITE_PAR_MINUTE,
     windowSec: 60,

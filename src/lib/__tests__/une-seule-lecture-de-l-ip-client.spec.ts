@@ -37,23 +37,9 @@ const SOURCE_DE_VERITE = "src/lib/client-ip-core.ts";
  * fusion de la série newsletter (#1157, #1159) qui les modifie.
  */
 const EN_ATTENTE: Record<string, string> = {
-  "src/server/actions/qualiopi/_guards.ts": "famille B — journal d'audit Qualiopi",
-  "src/server/content-gen/shared/activity-log.ts": "famille B — activity_logs console",
-  "src/server/content-gen/audit-log.ts": "famille B — audit content-gen",
-  "src/server/intervention-documents/activity-log.ts": "famille B — journal documents",
   "src/app/api/gdpr-erase/route.ts": "famille B — attend #1159",
   "src/app/api/gdpr-export/route.ts": "famille B — attend #1157",
-  "src/app/api/vivier-opposition/route.ts": "famille B — preuve d'opposition",
-  "src/app/api/unsubscribe/route.ts": "famille B — désinscription",
-  "src/app/api/calendly/client-event/route.ts": "famille B — limite / journal",
-  "src/app/[locale]/galerie/[slug]/telecharger/route.ts": "famille B — limite téléchargements",
-  "src/app/api/calendly/webhook/route.ts": "famille B — webhook (appelant = Calendly)",
   "src/app/api/zeptomail/webhook/route.ts": "famille B — webhook, attend #1159",
-  "src/app/api/mcp/route.ts": "famille B — route à secret",
-  "src/app/api/internal/revalidate/route.ts": "famille B — route à secret",
-  "src/app/api/internal/deploy-notify/route.ts": "famille B — route à secret",
-  "src/app/api/internal/calendly-refresh/route.ts": "famille B — route à secret",
-  "src/app/api/internal/calendly-availability/route.ts": "famille B — route à secret",
 };
 
 const LECTURE_DIRECTE = /\.get\(\s*["'`](?:cf-connecting-ip|x-forwarded-for|x-real-ip)["'`]\s*\)/i;
