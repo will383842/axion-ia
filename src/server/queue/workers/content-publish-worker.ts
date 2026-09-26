@@ -68,6 +68,7 @@ import { injectBodyImages } from "@/server/content-gen/images/inject-body-images
 import { injectDeepArticleLinks } from "@/server/content-gen/links/inject-deep-links";
 // Sprint Final P1-14 — Release global keyword lock Redis (Fl-08 multi-campagnes).
 import { releaseKeywordLock } from "@/server/content-gen/lib/keyword-lock";
+import { resolveNewArticleSlug } from "@/server/content-gen/lib/new-article-slug";
 import { resolveCategoryIdForSector } from "@/server/content-gen/lib/category-mapper";
 // SSOT slug-history 2026-06-25 — toute mutation de slug (publish ET refresh)
 // passe par ce helper idempotent pour garantir le 301 (au lieu d'un 404) sur
@@ -517,33 +518,40 @@ async function executePublishPipeline(
   // downstream (revalidate, IndexNow, logs) utilise le NOUVEAU slug.
   const refreshSlugChanged =
     refreshPreservedSlug !== null && regeneratedSlug !== refreshPreservedSlug;
-  let slugCandidate = refreshSlugChanged
+  const slugCandidate = refreshSlugChanged
     ? regeneratedSlug
     : (refreshPreservedSlug ?? regeneratedSlug);
-  // Anti-collision slug (2026-07-01) — NOUVEL article uniquement. La contrainte
-  // @@unique([locale, slug]) fait CRASHER le job si deux articles produisent le
-  // même slug (fréquent en campagne multi-villes : le LLM peut omettre la ville
-  // du slug). On suffixe donc -2, -3, … au lieu de laisser le job échouer.
-  // Le chemin REFRESH est intact (rename historisé géré plus bas). NB : une race
-  // rarissime entre ce check et l'insert reste couverte par la contrainte DB (le
-  // job échoue alors comme avant) — l'orchestrateur (dedup + keyword-lock) la rend
-  // très improbable.
+  // Slug déjà pris (2026-09-26) — NOUVEL article uniquement : le sujet est déjà
+  // couvert, on REFUSE de publier au lieu de suffixer -2, -3 (cf.
+  // new-article-slug.ts : les suffixes publiaient de vrais doublons). Le chemin
+  // REFRESH est intact (rename historisé géré plus bas). Une race rarissime
+  // entre ce check et l'insert reste couverte par la contrainte DB.
   if (!refreshArticleId) {
-    const baseSlug = slugCandidate;
-    let resolved = false;
-    for (let i = 1; i <= 50; i++) {
-      const trySlug = i === 1 ? baseSlug : `${baseSlug}-${i}`;
-      const clash = await prisma.articleTranslation.findFirst({
-        where: { locale: "fr", slug: trySlug },
-        select: { id: true },
-      });
-      if (!clash) {
-        slugCandidate = trySlug;
-        resolved = true;
-        break;
-      }
+    // Pris = slug d'un article existant OU ancien slug redirigé (301) : un
+    // doublon fusionné le 2026-09-26 ne doit pas renaître sous son ancienne URL.
+    const freeSlug = await resolveNewArticleSlug(slugCandidate, async (slug) => {
+      const [current, redirected] = await Promise.all([
+        prisma.articleTranslation.findFirst({
+          where: { locale: "fr", slug },
+          select: { id: true },
+        }),
+        prisma.articleSlugHistory.findFirst({
+          where: { oldLocale: "fr", oldSlug: slug },
+          select: { id: true },
+        }),
+      ]);
+      return Boolean(current ?? redirected);
+    });
+    if (!freeSlug) {
+      await logStep(
+        cgJob.id,
+        "validation",
+        `Doublon refusé : le slug "${slugCandidate}" est déjà publié`,
+        { slug: slugCandidate, duplicate: true },
+      );
+      await markPublishJobFailed(reviewQueueId, `duplicate_slug: ${slugCandidate}`);
+      return;
     }
-    if (!resolved) slugCandidate = `${baseSlug}-${Date.now().toString(36).slice(-5)}`;
   }
   const wordCount = typeof output.wordCount === "number" ? output.wordCount : null;
   const readingTimeMinutes =
