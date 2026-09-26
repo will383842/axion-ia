@@ -2,6 +2,8 @@
 
 import { describe, it, expect } from "vitest";
 import { escapeMarkdownV2, formatNotification, formatParisDateTime } from "../format";
+import { preparerPourTelegram } from "../channels/telegram";
+import { labeledAnswers, parseScreeningQuestions } from "@/lib/careers/screening-answers";
 
 describe("escapeMarkdownV2", () => {
   it("échappe les 18 caractères réservés MarkdownV2", () => {
@@ -262,5 +264,100 @@ describe("formatNotification", () => {
       "info",
     ).text;
     expect(libre).toContain("voir mail Calendly");
+  });
+});
+
+// 2026-09-26 — mesuré en production : le message vidéaste était coupé après le
+// deuxième prix (« TRONQUE 11 lignes »). Ce test rejoue les questions RÉELLES
+// des deux offres vidéo, avec des réponses complètes et des liens longs, et
+// exige que le message arrive ENTIER : tous les prix, le matériel, les liens et
+// le lien console, sans troncature.
+describe("candidature vidéo freelance : le message Telegram arrive entier", () => {
+  const VIDEASTE = parseScreeningQuestions([
+    { id: "prix_demi_journee", type: "price", court: "demi-journée", labelFr: "x" },
+    { id: "prix_journee", type: "price", court: "journée", labelFr: "x" },
+    { id: "prix_soiree", type: "price", court: "soirée", labelFr: "x" },
+    { id: "materiel_image", type: "short", ligne: "Matériel", court: "image", labelFr: "x" },
+    {
+      id: "materiel_son_lumiere",
+      type: "short",
+      ligne: "Matériel",
+      court: "son/lumière",
+      labelFr: "x",
+    },
+    { id: "formats_plans", type: "short", ligne: "Tournage", court: "formats", labelFr: "x" },
+    { id: "deplacement", type: "short", ligne: "Tournage", court: "déplacement", labelFr: "x" },
+    { id: "prix_binome_journee", type: "price", court: "à deux (journée)", labelFr: "x" },
+    { id: "exemples", ligne: "Exemples", labelFr: "x" },
+  ]);
+  const MONTEUR = parseScreeningQuestions([
+    { id: "prix_vertical_30", type: "price", court: "30 s", labelFr: "x" },
+    { id: "prix_vertical_60", type: "price", court: "60 s", labelFr: "x" },
+    { id: "prix_vertical_90", type: "price", court: "90 s", labelFr: "x" },
+    { id: "prix_horizontal_3", type: "price", court: "3 min", labelFr: "x" },
+    { id: "prix_horizontal_5", type: "price", court: "5 min", labelFr: "x" },
+    { id: "prix_minute_sup", type: "price", court: "min en +", labelFr: "x" },
+    { id: "exemples_vertical", ligne: "Exemples", court: "vertical", labelFr: "x" },
+    { id: "exemples_horizontal", ligne: "Exemples", court: "horizontal", labelFr: "x" },
+  ]);
+  const LIEN = "https://www.youtube.com/watch?v=abcdefghijk&list=PL1234567890";
+
+  function message(questions: typeof VIDEASTE, answers: Record<string, string>) {
+    const { text } = formatNotification(
+      {
+        category: "VIDEO_EDITOR_APPLICATION_RECEIVED",
+        payload: {
+          applicationId: "3ae6506a-40d0-4998-b762-bbd08bda7250",
+          contactName: "Jean-Baptiste Témoin-Durand",
+          contactEmail: "jean-baptiste.temoin@exemple-temoin.fr",
+          contactPhone: "+33 6 00 00 00 00",
+          offerTitle: "Vidéaste freelance (F/H) — tournage, sans montage",
+          offerCategory: "design",
+          city: "Saint-Martin-d'Hères",
+          answers: labeledAnswers(questions, answers),
+          hasCv: false,
+          locale: "fr",
+        },
+      },
+      "info",
+    );
+    return preparerPourTelegram(text);
+  }
+
+  it("vidéaste : tout tient, aucune ligne écartée", () => {
+    const envoye = message(VIDEASTE, {
+      prix_demi_journee: "180",
+      prix_journee: "320",
+      prix_soiree: "200",
+      materiel_image: "iPhone 15 Pro + Sony ZV-E10",
+      materiel_son_lumiere: "Rode Wireless GO II, panneau LED",
+      formats_plans: "les deux, plusieurs plans",
+      deplacement: "toute la région",
+      prix_binome_journee: "550",
+      exemples: `${LIEN}\n${LIEN}`,
+    });
+    expect(envoye).not.toContain("TRONQUE");
+    expect(envoye).toContain("soirée 200 €");
+    // Parenthèses échappées : c'est le texte MarkdownV2 réellement envoyé.
+    expect(envoye).toContain(String.raw`à deux \(journée\) 550 €`);
+    expect(envoye).toContain("déplacement");
+    expect(envoye).toContain("Voir en console");
+    expect(envoye).not.toContain("Catégorie");
+  });
+
+  it("monteur : les six prix et les liens tiennent aussi", () => {
+    const envoye = message(MONTEUR, {
+      prix_vertical_30: "40",
+      prix_vertical_60: "60",
+      prix_vertical_90: "80",
+      prix_horizontal_3: "120",
+      prix_horizontal_5: "180",
+      prix_minute_sup: "25",
+      exemples_vertical: LIEN,
+      exemples_horizontal: LIEN,
+    });
+    expect(envoye).not.toContain("TRONQUE");
+    expect(envoye).toContain(String.raw`min en \+ 25 €`);
+    expect(envoye).toContain("Voir en console");
   });
 });

@@ -66,7 +66,9 @@ const TITLES: Record<NotificationCategory, string> = {
   PRESS_REQUEST_SUBMITTED: "Demande presse / média",
   RECRUITMENT_RECEIVED: "Candidature spontanée",
   JOB_APPLICATION_RECEIVED: "Candidature à une offre",
-  VIDEO_EDITOR_APPLICATION_RECEIVED: "Candidature vidéo freelance (montage ou tournage)",
+  // Court : l'en-tête dit déjà « VIDÉO FREELANCE », et chaque caractère compte
+  // contre le plafond de 800 du message (`channels/telegram.ts`).
+  VIDEO_EDITOR_APPLICATION_RECEIVED: "Candidature",
   // « apporteur », jamais « commercial » (2026-09-19) : la personne recommande,
   // elle ne vend pas. Titre partagé avec WhatsApp, qui ne voit que la catégorie.
   COMMERCIAL_APPLICATION_RECEIVED: "Nouveau candidat apporteur",
@@ -295,8 +297,34 @@ function formatBody(event: NotificationEvent): string {
       ].filter((v): v is string => v !== null);
       return lines.join("\n");
     }
-    case "JOB_APPLICATION_RECEIVED":
     case "VIDEO_EDITOR_APPLICATION_RECEIVED": {
+      // Candidatures vidéo freelance (montage, tournage) — gabarit COMPACT.
+      // Mesuré le 2026-09-26 : l'ancien gabarit (une ligne par champ, une par
+      // question) dépassait le plafond de 10 lignes de `channels/telegram.ts`
+      // et coupait le message au deuxième prix. Ici : identité et ville sur une
+      // ligne, contact sur une ligne, les réponses déjà regroupées par
+      // `labeledAnswers` (tous les prix sur « Prix »), et le lien console en
+      // dernier. Plus de « Catégorie » : elle ne sert à rien pour trier.
+      const p = event.payload;
+      return [
+        formatKV("Candidat", p.city ? `${p.contactName} · ${p.city}` : p.contactName),
+        formatKV(
+          "Contact",
+          p.contactPhone ? `${p.contactEmail} · ${p.contactPhone}` : p.contactEmail,
+        ),
+        // « Vidéaste freelance (F/H) » suffit à distinguer les deux offres : la
+        // suite du titre (après le tiret long) est l'accroche de l'annonce.
+        formatKV("Offre", p.offerTitle.split(" — ")[0]),
+        ...(p.answers ?? []).map((r) => formatKV(r.label, r.value)),
+        formatKV(
+          "Voir en console",
+          `${SITE_URL}${adminPath("fr", "contacts/candidatures")}/${p.applicationId}`,
+        ),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "JOB_APPLICATION_RECEIVED": {
       const p = event.payload;
       return [
         formatKV("Candidat", p.contactName),
@@ -677,6 +705,12 @@ export function formatNotification(
     `${theme.emoji} *${escapeMarkdownV2(theme.label)}* · ` +
     `${emoji} *${escapeMarkdownV2(title)}*`;
   const body = formatBody(event);
+  // Candidatures vidéo : pas de pied de message. Telegram affiche déjà l'heure,
+  // et ses deux lignes (vide + date · catégorie) comptaient contre le plafond de
+  // 10 lignes — elles poussaient le lien console hors du message.
+  if (event.category === "VIDEO_EDITOR_APPLICATION_RECEIVED") {
+    return { text: [header, "", body].join("\n") };
+  }
   const footer = [
     `🕐 ${escapeMarkdownV2(formatParisDateTime(new Date()))}`,
     `🏷️ ${escapeMarkdownV2(event.category)}`,

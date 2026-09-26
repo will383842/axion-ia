@@ -92,7 +92,40 @@ describe("prix : UN montant, jamais une fourchette (demande Will 2026-09-26)", (
 
   it("Telegram lit un prix « 250 € », quelle que soit la saisie", () => {
     expect(labeledAnswers(Q, { journee: "1 200 euros" })).toEqual([
-      { label: "Prix journée", value: "1200 €" },
+      { label: "Prix", value: "1200 €" },
     ]);
+  });
+});
+
+describe("réponses regroupées en lignes Telegram (plafond de 10 lignes)", () => {
+  const Q = parseScreeningQuestions([
+    { id: "demi", type: "price", court: "demi-journée", labelFr: "Prix demi-journée" },
+    { id: "jour", type: "price", court: "journée", labelFr: "Prix journée" },
+    { id: "cam", type: "short", ligne: "Matériel", court: "image", labelFr: "Caméra ?" },
+    { id: "son", type: "short", ligne: "Matériel", court: "son/lumière", labelFr: "Son ?" },
+    { id: "liens", ligne: "Exemples", labelFr: "Liens" },
+    { id: "libre", labelFr: "Question libre" },
+  ]);
+
+  it("tous les prix sur UNE ligne, les groupes sur la leur, dans l'ordre des questions", () => {
+    const out = labeledAnswers(Q, {
+      demi: "180",
+      jour: "320 €",
+      cam: "iPhone 15 Pro",
+      son: "Rode GO II",
+      liens: "https://a.fr\nhttps://b.fr",
+      libre: "oui",
+    });
+    expect(out).toEqual([
+      { label: "Prix", value: "demi-journée 180 € · journée 320 €" },
+      { label: "Matériel", value: "image iPhone 15 Pro · son/lumière Rode GO II" },
+      { label: "Exemples", value: "https://a.fr · https://b.fr" },
+      { label: "Question libre", value: "oui" },
+    ]);
+  });
+
+  it("une réponse sur plusieurs lignes ne crée jamais de ligne de plus", () => {
+    const out = labeledAnswers(Q, { liens: "a\n\nb\n c" });
+    expect(out[0]?.value).toBe("a · b · c");
   });
 });

@@ -27,6 +27,21 @@ export interface ScreeningQuestion {
    * console ne doit jamais casser le formulaire.
    */
   type?: "price" | "short";
+  /**
+   * Libellé COURT pour Telegram (« demi-journée », « 30 s », « son/lumière »).
+   * Le libellé complet reste celui du formulaire et de la console.
+   */
+  court?: string;
+  /**
+   * Ligne Telegram où regrouper la réponse (« Matériel », « Exemples »).
+   * Les prix se regroupent d'office sur la ligne « Prix ».
+   *
+   * 🔑 Pourquoi : un message Telegram est plafonné à 10 lignes (règle de Will,
+   * `channels/telegram.ts`). Neuf questions sur neuf lignes coupaient le
+   * message au deuxième prix — mesuré en production le 2026-09-26 (« TRONQUE
+   * 11 lignes »). Regroupées, elles tiennent en quatre.
+   */
+  ligne?: string;
 }
 
 /** Longueur maximale d'une réponse stockée. */
@@ -91,27 +106,39 @@ export function missingRequired(
 }
 
 /**
- * Réponses dans l'ordre des questions, avec leur libellé FR, pour la
- * notification. Tronquées à `maxLen` : Telegram refuse un message de plus de
- * 4 096 caractères, et cinq réponses de 2 000 le dépasseraient. Le texte
- * complet reste en console.
+ * Les réponses, en LIGNES prêtes pour Telegram, dans l'ordre des questions.
+ *
+ *  - Une question sans `ligne` (et qui n'est pas un prix) fait sa propre ligne,
+ *    sous son libellé court, sinon complet.
+ *  - Les questions d'une même `ligne` — et tous les prix, sur « Prix » — sont
+ *    réunies : « Prix : demi-journée 180 € · journée 320 € ».
+ *  - Un retour à la ligne dans une réponse (plusieurs liens) devient « · » : il
+ *    compterait sinon comme une ligne de plus contre le plafond de 10.
+ *  - Chaque ligne est tronquée à `maxLen` : le message entier est plafonné à
+ *    800 caractères. Le texte complet reste en console.
  */
 export function labeledAnswers(
   questions: ScreeningQuestion[],
   answers: Record<string, string>,
-  maxLen = 400,
+  maxLen = 180,
 ): Array<{ label: string; value: string }> {
-  return questions.flatMap((q) => {
+  const lignes = new Map<string, string[]>();
+  for (const q of questions) {
     const brut = answers[q.id]?.trim();
-    if (!brut) return [];
-    // Un prix se lit « 250 € » dans Telegram, quelle que soit la saisie.
+    if (!brut) continue;
+    // Un prix se lit « 250 € », quelle que soit la saisie.
     const montant = q.type === "price" ? normaliserMontant(brut) : null;
-    const v = montant !== null ? `${montant} €` : brut;
-    return [
-      {
-        label: q.labelFr ?? q.labelEn ?? q.id,
-        value: v.length > maxLen ? `${v.slice(0, maxLen)}…` : v,
-      },
-    ];
+    const valeur = (montant !== null ? `${montant} €` : brut).replace(/\s*\n\s*/g, " · ");
+    const groupe = q.ligne ?? (q.type === "price" ? "Prix" : undefined);
+    if (groupe) {
+      const morceau = q.court ? `${q.court} ${valeur}` : valeur;
+      lignes.set(groupe, [...(lignes.get(groupe) ?? []), morceau]);
+    } else {
+      lignes.set(q.court ?? q.labelFr ?? q.labelEn ?? q.id, [valeur]);
+    }
+  }
+  return [...lignes].map(([label, morceaux]) => {
+    const v = morceaux.join(" · ");
+    return { label, value: v.length > maxLen ? `${v.slice(0, maxLen)}…` : v };
   });
 }
