@@ -26,6 +26,7 @@ import {
   type OffreVideo,
 } from "@/features/admin-job-applications/video-freelance";
 import { LIBELLE_STATUT, TON_STATUT } from "@/content/recrutement/statuts";
+import { valeurAffichee } from "@/lib/careers/screening-answers";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 
 export const dynamic = "force-dynamic";
@@ -89,7 +90,11 @@ function TableauOffre({ offre, base }: { offre: OffreVideo; base: string }) {
     ...offre.questions.map((q): AdminTableColumn<CandidatVideo> => ({
       key: `q_${q.id}`,
       header: `${entete(q.labelFr ?? q.id)}${q.required ? " *" : ""}`,
-      cell: (c) => <Reponse texte={c.reponses[q.id]} />,
+      // Un prix se lit « 250 € » dans la colonne, quelle que soit la saisie.
+      cell: (c) => {
+        const brut = c.reponses[q.id];
+        return <Reponse texte={brut ? valeurAffichee(q, brut) : undefined} />;
+      },
     })),
   ];
 

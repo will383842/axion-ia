@@ -21,6 +21,8 @@ import { DeposerCv } from "./DeposerCv";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { liensInsertionComposeur } from "@/lib/imprimes/liens-email";
 import { env } from "@/env";
+import { parseScreeningQuestions, valeurAffichee } from "@/lib/careers/screening-answers";
+import { isVideoFreelanceOffer } from "@/lib/careers/video-editor-offer";
 
 export const dynamic = "force-dynamic";
 
@@ -75,15 +77,17 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
     // Même prédicat que la frise — il lit l'adresse du candidat.
     lireAccuseReception({ id: a.id, email: a.email, submittedAt: a.submittedAt }, acteur),
   ]);
+  const questions = parseScreeningQuestions(offer?.screeningQuestions);
+  const qParId = new Map(questions.map((q) => [q.id, q]));
   const qLabels: Record<string, string> = {};
-  if (offer && Array.isArray(offer.screeningQuestions)) {
-    for (const q of offer.screeningQuestions as Array<{
-      id?: string;
-      labelFr?: string;
-    }>) {
-      if (q.id) qLabels[q.id] = q.labelFr ?? q.id;
-    }
-  }
+  for (const q of questions) qLabels[q.id] = q.labelFr ?? q.id;
+
+  // Formulaire COURT des offres vidéo freelance (2026-09-26) : ni poste, ni
+  // expérience, ni disponibilité, ni prétention, ni LinkedIn, ni photo ne sont
+  // demandés. Afficher ces lignes à « — » ferait croire à un dossier incomplet ;
+  // elles ne réapparaissent que si une valeur existe (dossier antérieur).
+  const formulaireCourt = isVideoFreelanceOffer(offer?.slug);
+  const montrer = (v: unknown) => !formulaireCourt || (v !== null && v !== undefined && v !== "");
 
   return (
     <AdminPageShell>
@@ -105,28 +109,56 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           <dd>{a.phone}</dd>
           <dt className="font-medium">Ville</dt>
           <dd>{a.city ?? "—"}</dd>
-          <dt className="font-medium">Poste actuel</dt>
-          <dd>{a.currentRole ?? "—"}</dd>
-          <dt className="font-medium">Expérience</dt>
-          <dd>{a.experienceBand ?? "—"}</dd>
-          <dt className="font-medium">Disponibilité</dt>
-          <dd>{a.availability ?? "—"}</dd>
-          <dt className="font-medium">Prétention de revenus</dt>
-          <dd>{a.salaryExpectation ?? "—"}</dd>
-          <dt className="font-medium">LinkedIn</dt>
-          <dd>
-            {a.linkedinUrl ? (
-              <a href={a.linkedinUrl} target="_blank" rel="noopener" className="admin-link">
-                {a.linkedinUrl}
-              </a>
-            ) : (
-              "—"
-            )}
-          </dd>
-          <dt className="font-medium">Permis</dt>
-          <dd>{yn(a.hasDriverLicense)}</dd>
-          <dt className="font-medium">Véhicule</dt>
-          <dd>{yn(a.hasVehicle)}</dd>
+          {montrer(a.currentRole) ? (
+            <>
+              <dt className="font-medium">Poste actuel</dt>
+              <dd>{a.currentRole ?? "—"}</dd>
+            </>
+          ) : null}
+          {montrer(a.experienceBand) ? (
+            <>
+              <dt className="font-medium">Expérience</dt>
+              <dd>{a.experienceBand ?? "—"}</dd>
+            </>
+          ) : null}
+          {montrer(a.availability) ? (
+            <>
+              <dt className="font-medium">Disponibilité</dt>
+              <dd>{a.availability ?? "—"}</dd>
+            </>
+          ) : null}
+          {montrer(a.salaryExpectation) ? (
+            <>
+              <dt className="font-medium">Prétention de revenus</dt>
+              <dd>{a.salaryExpectation ?? "—"}</dd>
+            </>
+          ) : null}
+          {montrer(a.linkedinUrl) ? (
+            <>
+              <dt className="font-medium">LinkedIn</dt>
+              <dd>
+                {a.linkedinUrl ? (
+                  <a href={a.linkedinUrl} target="_blank" rel="noopener" className="admin-link">
+                    {a.linkedinUrl}
+                  </a>
+                ) : (
+                  "—"
+                )}
+              </dd>
+            </>
+          ) : null}
+          {montrer(a.hasDriverLicense) ? (
+            <>
+              <dt className="font-medium">Permis</dt>
+              <dd>{yn(a.hasDriverLicense)}</dd>
+            </>
+          ) : null}
+          {montrer(a.hasVehicle) ? (
+            <>
+              <dt className="font-medium">Véhicule</dt>
+              <dd>{yn(a.hasVehicle)}</dd>
+            </>
+          ) : null}
           <dt className="font-medium">CV</dt>
           <dd>
             {a.hasCv ? (
@@ -140,18 +172,22 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
               <DeposerCv applicationId={a.id} />
             )}
           </dd>
-          <dt className="font-medium">Photo</dt>
-          <dd>
-            {a.hasPhoto ? (
-              <PhotoCandidat
-                href={`/fr/${adminPrefix}/contacts/candidatures/${a.id}/photo`}
-                mimeType={a.photoMimeType}
-                nomOriginal={a.photoOriginalName}
-              />
-            ) : (
-              "non fournie"
-            )}
-          </dd>
+          {montrer(a.hasPhoto || null) ? (
+            <>
+              <dt className="font-medium">Photo</dt>
+              <dd>
+                {a.hasPhoto ? (
+                  <PhotoCandidat
+                    href={`/fr/${adminPrefix}/contacts/candidatures/${a.id}/photo`}
+                    mimeType={a.photoMimeType}
+                    nomOriginal={a.photoOriginalName}
+                  />
+                ) : (
+                  "non fournie"
+                )}
+              </dd>
+            </>
+          ) : null}
         </dl>
       </AdminCard>
 
@@ -178,7 +214,9 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
               .map(([qid, val]) => (
                 <Fragment key={qid}>
                   <dt className="font-medium">{qLabels[qid] ?? qid}</dt>
-                  <dd className="text-fg-muted whitespace-pre-wrap">{val}</dd>
+                  <dd className="text-fg-muted whitespace-pre-wrap">
+                    {val ? valeurAffichee(qParId.get(qid), val) : val}
+                  </dd>
                 </Fragment>
               ))}
           </dl>
