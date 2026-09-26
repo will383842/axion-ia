@@ -33,14 +33,14 @@ const empreinte = (s: unknown): string =>
  * ici l'empreinte nouvelle, dans le même commit.
  */
 const FIGEES: ReadonlyArray<readonly [string, string, string, unknown]> = [
-  ["lettre-guide-v3-2026-09-24", "393bf5b38714ae6c", VERSION_LETTRE.guide, TEXTE_CASE_LETTRE.guide],
+  ["lettre-guide-v4-2026-09-26", "29a51c1bb199a915", VERSION_LETTRE.guide, TEXTE_CASE_LETTRE.guide],
   [
-    "lettre-article-v3-2026-09-24",
-    "393bf5b38714ae6c",
+    "lettre-article-v4-2026-09-26",
+    "29a51c1bb199a915",
     VERSION_LETTRE.article,
     TEXTE_CASE_LETTRE.article,
   ],
-  ["guide-mention-pro-v1-2026-09-24", "9ac098c73985c73f", VERSION_MENTION.pro, TEXTE_MENTION.pro],
+  ["guide-mention-pro-v2-2026-09-26", "d687d5c090122de4", VERSION_MENTION.pro, TEXTE_MENTION.pro],
   [
     "guide-mention-perso-v1-2026-09-24",
     "339cc5e7fbf0aeaa",
@@ -48,8 +48,8 @@ const FIGEES: ReadonlyArray<readonly [string, string, string, unknown]> = [
     TEXTE_MENTION.perso,
   ],
   [
-    "lettre-reinscription-email-v2-2026-09-25",
-    "331b82ae25e1207c",
+    "lettre-reinscription-email-v3-2026-09-26",
+    "1979abb533a3b28b",
     VERSION_REINSCRIPTION,
     TEXTE_REINSCRIPTION,
   ],
@@ -80,9 +80,12 @@ describe("les textes suivent l'amendement de Will (24/09)", () => {
   });
 
   for (const variante of ["guide", "article"] as const) {
-    it(`${variante} : la case dit le texte de l'amendement, et jamais « mensuel »`, () => {
+    it(`${variante} : la case dit le texte validé par Will (26/09), et jamais « mensuel »`, () => {
       expect(TEXTE_CASE_LETTRE[variante].fr).toBe(
-        "Je souhaite aussi recevoir la lettre d'Axion-IA (quelques lettres par an).",
+        "Je veux aussi recevoir les nouveautés IA utiles (1 à 2 e-mails par mois).",
+      );
+      expect(TEXTE_CASE_LETTRE[variante].en).toBe(
+        "I also want to receive useful AI updates (1 to 2 emails a month).",
       );
       expect(TEXTE_CASE_LETTRE[variante].fr).not.toMatch(/mensuel/i);
     });
@@ -90,7 +93,7 @@ describe("les textes suivent l'amendement de Will (24/09)", () => {
 
   it("mention PRO : elle annonce l'inscription et la désinscription en un clic", () => {
     expect(TEXTE_MENTION.pro.fr).toMatch(
-      /^En recevant le guide, vous recevrez aussi quelques lettres par an, à chaque nouveauté utile\. Désinscription en un clic, à tout moment\./,
+      /^En recevant le guide, vous recevrez aussi 1 à 2 e-mails par mois, à chaque nouveauté utile\. Désinscription en un clic, à tout moment\./,
     );
   });
 

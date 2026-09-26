@@ -202,7 +202,7 @@ dbBound("Server Actions integration — pipeline DB complet (Audit E2E P0-CONF-1
     const demande = await prisma.guideRequest.findFirst({ where: { email: EMAIL_MARKER } });
     expect(demande, "GuideRequest row not persisted").toBeTruthy();
     expect(demande?.source).toBe("guide-ia");
-    expect(demande?.version).toBe("guide-mention-pro-v1-2026-09-24");
+    expect(demande?.version).toBe("guide-mention-pro-v2-2026-09-26");
 
     const row = await prisma.newsletterSubscriber.findUnique({
       where: { email: EMAIL_MARKER },
@@ -210,7 +210,7 @@ dbBound("Server Actions integration — pipeline DB complet (Audit E2E P0-CONF-1
     expect(row, "Newsletter row not persisted").toBeTruthy();
     // Plus de double opt-in : inscrite tout de suite, avec la version de la mention.
     expect(row?.status).toBe("confirmed");
-    expect(row?.consentVersion).toBe("guide-mention-pro-v1-2026-09-24");
+    expect(row?.consentVersion).toBe("guide-mention-pro-v2-2026-09-26");
   });
 
   it("submitUnifiedContactAction is idempotent under double-click within 1s", async () => {
