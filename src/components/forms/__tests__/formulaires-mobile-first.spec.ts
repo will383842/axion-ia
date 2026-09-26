@@ -201,4 +201,27 @@ describe("Formulaires publics — mobile-first", () => {
 
     expect(fautes, `\n${fautes.join("\n")}\n`).toEqual([]);
   });
+
+  // 2026-09-26 — mesuré sur iPhone 13 (Playwright) : tous les champs du
+  // formulaire de candidature avaient une police de 15 px (`text-sm`, rebasé à
+  // 15 px dans ce thème). Sous 16 px, Safari iOS ZOOME sur le champ dès qu'on le
+  // touche, et le candidat doit dézoomer à la main pour continuer. La constante
+  // `FIELD` de chaque formulaire doit donc porter une taille de base ≥ 16 px ;
+  // `sm:text-sm` reste permis au-delà du mobile.
+  it("la classe FIELD d'un formulaire ne descend pas sous 16 px sur mobile", () => {
+    const fautes: string[] = [];
+    for (const abs of FICHIERS) {
+      const src = masquerCommentaires(readFileSync(abs, "utf8"));
+      const decl = /const\s+FIELD\s*=\s*["'`]([^"'`]*)["'`]/.exec(src);
+      if (!decl) continue;
+      const tailleDeBase = decl[1]!.split(/\s+/).filter((c) => /^text-(xs|sm)$/.test(c));
+      if (tailleDeBase.length > 0) {
+        fautes.push(
+          `${court(abs)} → FIELD porte « ${tailleDeBase.join(" ")} » sans préfixe de largeur.\n` +
+            `    Sous 16 px, Safari iOS zoome sur le champ au toucher. Écrire \`text-[16px] sm:text-sm\`.`,
+        );
+      }
+    }
+    expect(fautes, `\n${fautes.join("\n")}\n`).toEqual([]);
+  });
 });

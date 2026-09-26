@@ -312,6 +312,16 @@ export const CAREERS_IMAGES: Record<string, CareerImage> = {
   // Seule offre du pôle média restée sans image : elle servait CAREERS_HERO,
   // une photo de réunion en open space — pour une mission solo à distance,
   // jusque dans le champ `image` du JobPosting vu par Google for Jobs.
+  // Vidéaste de tournage (2026-09-26) : une caméra et une lumière en plein
+  // tournage d'interview — le cœur de la mission. Même cliché que
+  // `videaste-content-creator` : c'est la photo juste pour une captation, et le
+  // texte alternatif dit ce qu'elle montre au lieu du libellé anglais générique.
+  "videaste-freelance-tournage": {
+    url: "https://images.unsplash.com/photo-1497015289639-54688650d173?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHx2aWRlb2dyYXBoZXIlMjBmaWxtaW5nJTIwY2FtZXJhfGVufDF8MHx8fDE3ODEwMTAwMTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    alt: "caméra et éclairage en plein tournage d'une interview",
+    byName: "Sam McGhee",
+    byUrl: "https://unsplash.com/@sammcghee",
+  },
   "monteur-video-freelance-distance": {
     url: "https://images.unsplash.com/photo-1613909207039-6b173b755cc1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NTEzMjN8MHwxfHNlYXJjaHwxfHxmcmVlbGFuY2UlMjB2aWRlbyUyMGVkaXRvciUyMGhvbWUlMjBkZXNrJTIwaGVhZHBob25lc3xlbnwxfDB8fHwxNzg4MzM1NzAyfDA&ixlib=rb-4.1.0&q=80&w=1080",
     alt: "monteur vidéo au travail sur son poste de montage",

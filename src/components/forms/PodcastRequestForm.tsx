@@ -14,8 +14,10 @@ import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 import { HoneypotField } from "@/components/forms/HoneypotField";
 import { PODCAST_ACTIVITY_MAX } from "@/lib/schemas/podcast-request-schema";
 
+// 16 px sous `sm` : en dessous, Safari iOS zoome sur le champ dès qu'on le
+// touche (garde : `formulaires-mobile-first.spec.ts`).
 const FIELD =
-  "border-border-strong bg-paper focus:border-terracotta focus:ring-terracotta/25 w-full rounded-lg border px-3.5 py-2.5 text-sm outline-none transition-colors focus:ring-4";
+  "border-border-strong bg-paper focus:border-terracotta focus:ring-terracotta/25 w-full rounded-lg border px-3.5 py-2.5 text-[16px] sm:text-sm outline-none transition-colors focus:ring-4";
 const LABEL = "text-fg mb-1.5 block text-sm font-medium";
 
 /**

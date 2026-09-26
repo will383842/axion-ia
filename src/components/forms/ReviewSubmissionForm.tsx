@@ -14,8 +14,10 @@ import { CLIENT_SECTORS } from "@/content/sectors";
 import { SERVICE_LINES } from "@/lib/reviews/service-lines";
 import { REVIEW_COMMENT_MIN, REVIEW_COMMENT_MAX } from "@/lib/schemas/review-submission-schema";
 
+// 16 px sous `sm` : en dessous, Safari iOS zoome sur le champ dès qu'on le
+// touche (garde : `formulaires-mobile-first.spec.ts`).
 const FIELD =
-  "border-border-strong bg-paper focus:border-terracotta focus:ring-terracotta/25 w-full rounded-lg border px-3.5 py-2.5 text-sm outline-none transition-colors focus:ring-4";
+  "border-border-strong bg-paper focus:border-terracotta focus:ring-terracotta/25 w-full rounded-lg border px-3.5 py-2.5 text-[16px] sm:text-sm outline-none transition-colors focus:ring-4";
 const LABEL = "text-fg mb-1.5 block text-sm font-medium";
 const SECTION = "font-serif text-xl font-semibold border-l-4 border-terracotta pl-3 leading-tight";
 

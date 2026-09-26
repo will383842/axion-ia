@@ -12,6 +12,24 @@ export function isVideoEditorOffer(offerSlug: string | null | undefined): boolea
   return offerSlug === VIDEO_EDITOR_OFFER_SLUG;
 }
 
+// Demande Will 2026-09-26 : l'offre « vidéaste freelance tournage » (captation
+// ponctuelle, sans montage) rejoint le même circuit que le monteur — salon
+// Telegram 🎬, doublon WhatsApp, et la vue console qui compare les prix. Les
+// deux offres forment une chaîne (l'un filme, l'autre monte) et se recrutent
+// ensemble.
+export const VIDEO_SHOOTING_OFFER_SLUG = "videaste-freelance-tournage";
+
+/** Les offres vidéo FREELANCE : salon dédié et vue console des prix. */
+export const VIDEO_FREELANCE_OFFER_SLUGS: readonly string[] = [
+  VIDEO_SHOOTING_OFFER_SLUG,
+  VIDEO_EDITOR_OFFER_SLUG,
+];
+
+/** Vrai si les candidatures à cette offre partent dans le salon vidéo dédié. */
+export function isVideoFreelanceOffer(offerSlug: string | null | undefined): boolean {
+  return offerSlug != null && VIDEO_FREELANCE_OFFER_SLUGS.includes(offerSlug);
+}
+
 /**
  * Offres dont les candidats relèvent de la famille CRM « vidéo » (création et
  * production audiovisuelle).
@@ -31,6 +49,7 @@ export function isVideoEditorOffer(offerSlug: string | null | undefined): boolea
  */
 export const VIDEO_FAMILY_OFFER_SLUGS: ReadonlySet<string> = new Set([
   VIDEO_EDITOR_OFFER_SLUG,
+  VIDEO_SHOOTING_OFFER_SLUG,
   "monteur-video-motion",
   "monteur-son-podcast",
   "videaste-content-creator",

@@ -195,7 +195,10 @@ describe("buildAdminNav SSOT", () => {
     // +1 (2026-09-24, lot L3, « Demandes du guide ») : une demande du guide
     // n'est pas un abonnement ; l'écran qui dit si le guide est parti, ouvert,
     // cliqué, transmis au CRM. La fiche abonné n'a pas d'entrée. 165 + 1 = 166.
-    expect(items.length).toBe(166);
+    // +1 (2026-09-26, « Monteurs & vidéastes », indenté sous Candidatures) :
+    // les deux offres vidéo freelance avec les tarifs en colonnes — la seule
+    // vue qui compare des prix sans ouvrir chaque fiche. 166 + 1 = 167.
+    expect(items.length).toBe(167);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
@@ -398,6 +401,8 @@ describe("buildAdminNav SSOT", () => {
       // joignables par URL (test « URLs historiques » ci-dessous). Ne restent
       // indentées que les deux entrées de Candidatures.
       expect(enfants.map((it) => it.label)).toEqual([
+        // Les deux offres vidéo freelance, tarifs en colonnes (2026-09-26).
+        "Monteurs & vidéastes",
         "Suivi des candidatures emploi",
         // Les offres qu'on publie sont l'autre moitié des candidatures qu'on
         // reçoit : rangées sous elles, plus dans « Contenu ».

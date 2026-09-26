@@ -653,6 +653,18 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // « Suivi des candidatures emploi » (2026-09-19, ex-« Pilotage du
     // recrutement ») : « recrutement » désignait aussi les apporteurs, qui n'y
     // figurent pas. Le libellé nomme ce que l'écran mesure.
+    // « Monteurs & vidéastes » (2026-09-26, demande Will) : les deux offres
+    // vidéo freelance, avec les TARIFS et le matériel de chaque candidat en
+    // colonnes. Ce n'est pas l'onglet « Monteur vidéo » retiré le 2026-09-23
+    // (une liste de noms, comme les autres) : c'est la seule vue qui compare des
+    // prix sans ouvrir chaque fiche.
+    {
+      href: `${base}/contacts/candidatures/video`,
+      label: "Monteurs & vidéastes",
+      icon: "Clapperboard",
+      group: "contacts",
+      navLevel: 2,
+    },
     {
       href: `${base}/contacts/candidatures/pilotage`,
       label: "Suivi des candidatures emploi",
