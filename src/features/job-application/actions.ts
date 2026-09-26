@@ -56,8 +56,7 @@ import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 const CONSENT_VERSION = "careers-v2-2026-08-13";
 
 export type JobApplicationState =
-  | { ok: true; applicationId: string }
-  | { ok: false; error: string };
+  { ok: true; applicationId: string } | { ok: false; error: string };
 
 const opt = (max: number) =>
   z.preprocess((v) => (v === "" || v == null ? undefined : v), z.string().max(max).optional());
