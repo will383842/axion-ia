@@ -38,8 +38,15 @@
  * les dates où ELLE a agi :
  *
  *   · demande du guide : `derniereDemandeFormulaireAt` (dernière demande par le
- *     formulaire public — seul `guide-ia/demande.ts` l'écrit) et `firstClickAt`
- *     (clic sur le bouton de téléchargement). `createdAt` sert de PLANCHER : une
+ *     formulaire public — seul `guide-ia/demande.ts` l'écrit) et `lastClickAt`
+ *     (DERNIER clic sur le bouton de téléchargement ; audit du 26/09 : on ne
+ *     comptait que le premier, `firstClickAt`, gardé ici par sûreté — il ne
+ *     lui est jamais postérieur).
+ *
+ *     ⚠️ Fenêtre app/worker : cette purge tourne dans le worker, qui atterrit
+ *     ~50 min avant la migration de `last_click_at`. Si la colonne manque
+ *     (P2022), la requête est rejouée SANS elle — la règle d'avant, jamais
+ *     plus agressive (`sansDernierClicSiAbsent`). `createdAt` sert de PLANCHER : une
  *     ligne ne disparaît pas avant 3 ans d'existence, ce qui couvre la ligne
  *     créée par un envoi console (`origine = admin`) — cette date ne bouge
  *     jamais, elle ne prolonge donc rien ;
@@ -180,10 +187,31 @@ function avantAbonne(
 }
 
 function avantDemande(
-  champ: "derniereDemandeFormulaireAt" | "firstClickAt",
+  champ: "derniereDemandeFormulaireAt" | "firstClickAt" | "lastClickAt",
   limite: Date,
 ): Prisma.GuideRequestWhereInput {
   return { OR: [{ [champ]: null }, { [champ]: { lt: limite } }] };
+}
+
+/** Colonne absente de la base (Prisma P2022) : migration pas encore jouée. */
+function estColonneAbsente(e: unknown): boolean {
+  return typeof e === "object" && e !== null && (e as { code?: unknown }).code === "P2022";
+}
+
+/**
+ * Exécute `requete(true)` (avec `last_click_at`) ; si la colonne n'existe pas
+ * encore (fenêtre app/worker), rejoue `requete(false)` — la règle d'avant, qui
+ * ne comptait que le premier clic. Toute autre erreur remonte.
+ */
+async function sansDernierClicSiAbsent<T>(
+  requete: (avecDernierClic: boolean) => Promise<T>,
+): Promise<T> {
+  try {
+    return await requete(true);
+  } catch (e) {
+    if (!estColonneAbsente(e)) throw e;
+    return requete(false);
+  }
 }
 
 /** Lit une durée d'environnement ; toute valeur < 1 retombe sur le défaut (anti-misconfig). */
@@ -279,16 +307,19 @@ export async function purgerLettreEtGuide(
       const k = hashEmailForLookup(c.email);
       if (k) cles.set(c.id, k);
     }
-    const recentes = await prisma.guideRequest.findMany({
-      where: {
-        emailKey: { in: [...new Set(cles.values())] },
-        OR: [
-          { derniereDemandeFormulaireAt: { gte: limiteAbonne } },
-          { firstClickAt: { gte: limiteAbonne } },
-        ],
-      },
-      select: { emailKey: true },
-    });
+    const recentes = await sansDernierClicSiAbsent((avecDernierClic) =>
+      prisma.guideRequest.findMany({
+        where: {
+          emailKey: { in: [...new Set(cles.values())] },
+          OR: [
+            { derniereDemandeFormulaireAt: { gte: limiteAbonne } },
+            { firstClickAt: { gte: limiteAbonne } },
+            ...(avecDernierClic ? [{ lastClickAt: { gte: limiteAbonne } }] : []),
+          ],
+        },
+        select: { emailKey: true },
+      }),
+    );
     const actives = new Set(recentes.map((r) => r.emailKey));
     for (const c of lot) {
       const k = cles.get(c.id);
@@ -333,17 +364,21 @@ export async function purgerLettreEtGuide(
     }
   }
 
-  // 4) demandes du guide sans demande ni clic de la personne depuis 3 ans.
+  // 4) demandes du guide sans demande ni clic de la personne depuis 3 ans —
+  //    le DERNIER clic (`lastClickAt`), pas le premier.
   const limiteGuide = moisAvant(maintenant, durees.demandeGuideMois);
-  const guide = await prisma.guideRequest.deleteMany({
-    where: {
-      createdAt: { lt: limiteGuide },
-      AND: [
-        avantDemande("derniereDemandeFormulaireAt", limiteGuide),
-        avantDemande("firstClickAt", limiteGuide),
-      ],
-    },
-  });
+  const guide = await sansDernierClicSiAbsent((avecDernierClic) =>
+    prisma.guideRequest.deleteMany({
+      where: {
+        createdAt: { lt: limiteGuide },
+        AND: [
+          avantDemande("derniereDemandeFormulaireAt", limiteGuide),
+          avantDemande("firstClickAt", limiteGuide),
+          ...(avecDernierClic ? [avantDemande("lastClickAt", limiteGuide)] : []),
+        ],
+      },
+    }),
+  );
 
   // 5) journaux d'envoi du guide et de la confirmation de la lettre.
   const journaux = await prisma.emailLog.deleteMany({

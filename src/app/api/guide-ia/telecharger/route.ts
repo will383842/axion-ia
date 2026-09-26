@@ -10,7 +10,8 @@
 //            avec un bouton ;
 //   · POST — le bouton de cette page. Un scanneur ne soumet pas de formulaire :
 //            c'est le seul geste qui vaut « guide ouvert par un humain ». On
-//            pose `first_click_at`, on émet l'événement Plausible « Guide
+//            pose `first_click_at` (premier clic) et `last_click_at` (à CHAQUE
+//            clic : la conservation court depuis lui), on émet l'événement Plausible « Guide
 //            Downloaded » (sans donnée personnelle), puis 303 vers le PDF.
 //
 // Le PDF garde son adresse publique (`content/guide-ia.ts` : elle part déjà dans
@@ -131,14 +132,22 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if (demande === null) return introuvable(req);
 
   const maintenant = new Date();
-  // Premier clic seulement. `first_seen_at` aussi, au cas où le GET n'a pas eu
-  // lieu (bouton recopié, navigateur qui a gardé la page).
+  // Premier clic : `first_click_at` et `last_click_at` ensemble. Clics
+  // suivants : `last_click_at` seul — « 3 ans après votre dernier échange »
+  // (mention du formulaire) se compte depuis LUI (`newsletter/retention.ts`).
+  // `first_seen_at` aussi, au cas où le GET n'a pas eu lieu (bouton recopié,
+  // navigateur qui a gardé la page).
   const premier = await prisma.guideRequest
     .updateMany({
       where: { id: demande.id, firstClickAt: null },
-      data: { firstClickAt: maintenant },
+      data: { firstClickAt: maintenant, lastClickAt: maintenant },
     })
     .catch(() => ({ count: 0 }));
+  if (premier.count === 0) {
+    await prisma.guideRequest
+      .updateMany({ where: { id: demande.id }, data: { lastClickAt: maintenant } })
+      .catch(() => undefined);
+  }
   await prisma.guideRequest
     .updateMany({ where: { id: demande.id, firstSeenAt: null }, data: { firstSeenAt: maintenant } })
     .catch(() => undefined);
