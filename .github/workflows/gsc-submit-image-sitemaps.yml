@@ -53,6 +53,9 @@ jobs:
             -d "refresh_token=${GSC_OAUTH_REFRESH_TOKEN}" \
             -d "grant_type=refresh_token")
           ACCESS_TOKEN=$(echo "$RESP" | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
+          # 2026-09-26 — sans ce masque, le jeton `ya29.…` s'affichait en clair dans les étapes
+          # suivantes (13 runs publics). Un jeton obtenu à l'exécution n'est pas un secret GitHub.
+          echo "::add-mask::$ACCESS_TOKEN"
           if [ -z "$ACCESS_TOKEN" ]; then
             echo "::error::Failed to get access token. Response: $RESP"
             exit 1

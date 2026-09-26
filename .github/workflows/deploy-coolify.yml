@@ -455,8 +455,16 @@ jobs:
             local reason="$2"
             echo "::error::Deployment ${reason}"
             echo "──── Coolify deployment logs (last 200 entries) ────"
+            # 🔴 2026-09-26 — Le journal Coolify recopie `ARG NOM=valeur` pour CHAQUE variable de build :
+            # deux runs publics de coolify-diagnose l'ont affiché en clair (Hetzner, Cloudflare, AUTH_SECRET,
+            # OAuth Google…). GitHub ne masque que SES secrets, pas ceux que Coolify renvoie. Tout journal
+            # Coolify passe donc par ce filtre avant d'être affiché — jamais `.output` brut.
+            JQ_MASQUE='def masquer: gsub("(?<k>ARG[ ]+[A-Za-z0-9_]+=)[^\n]*"; "\(.k)<masqué>")
+                | gsub("(?<k>[A-Za-z0-9_]*(SECRET|TOKEN|PASSWORD|PASSPHRASE|_KEY|SALT|DSN|PRIVATE|CREDENTIAL)[A-Za-z0-9_]*[=:][ ]*)[^ \t\n<]+"; "\(.k)<masqué>"; "i")
+                | gsub("(?<k>://[^:/@ \t\n]+:)[^@ \t\n]+@"; "\(.k)<masqué>@");
+              .logs | fromjson? // . | if type=="array" then .[-200:] else [] end | .[] | "[\(.order // "?")] \(.type // "?"): \(.output // "" | masquer)"'
             echo "${response}" \
-              | jq -r '.logs | fromjson? // . | if type=="array" then .[-200:] else [] end | .[] | "[\(.order // "?")] \(.type // "?"): \(.output // "")"' \
+              | jq -r "$JQ_MASQUE" \
               2>/dev/null || echo "(could not parse logs)"
             echo "──── End logs ────"
             # SSH dump si HETZNER_SSH_KEY accessible (même job depuis Setup SSH)
