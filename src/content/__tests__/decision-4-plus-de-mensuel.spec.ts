@@ -37,6 +37,9 @@ const LISTE_FERMEE = [
   "src/lib/email/templates/newsletter-confirm-optin.tsx",
   "src/content/imprimes.ts",
   "src/content/legal.ts",
+  // Gabarit de référence des futures lettres (MailWizz) : son en-tête annonce
+  // la cadence à chaque lecteur.
+  "docs/newsletter/gabarit-lettre-reference.html",
 ] as const;
 
 const lire = (f: string) => readFileSync(join(process.cwd(), f), "utf8");
@@ -94,6 +97,12 @@ describe("la cadence réelle est écrite, et depuis UNE source", () => {
         /quelques (lettres|e-mails) par an|a few emails a year/i,
       );
     }
+  });
+
+  it("le gabarit de référence des lettres annonce la cadence en vigueur, mot pour mot", () => {
+    // Discriminant POSITIF : l'absence de l'ancienne cadence ne suffit pas, un
+    // en-tête vidé passerait. On exige la phrase de `CADENCE_LETTRE`.
+    expect(lire("docs/newsletter/gabarit-lettre-reference.html")).toContain(CADENCE_LETTRE.fr);
   });
 
   it("l'e-mail « Votre guide » et la page de confirmation la lisent depuis la source", () => {

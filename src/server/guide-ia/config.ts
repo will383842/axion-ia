@@ -32,9 +32,9 @@ export const FENETRE_DESTINATAIRE_MS = 24 * 3_600_000;
  * priorité BullMQ (`PRIORITE_GUIDE`). Une demande au-delà du plafond n'est pas
  * perdue : elle attend en base, et le rattrapage horaire la reprend.
  *
- * Mesure (test `un-pic-de-300-demandes.spec.ts`) : 300 demandes en une heure →
- * 30 mises en file tout de suite, 270 reprises par le rattrapage à raison de 30
- * par heure. Les factures ne font jamais la queue derrière le guide.
+ * Mesure (test `__tests__/envoi.spec.ts`, bloc « un pic de 300 demandes ») :
+ * 300 demandes en une heure → 30 mises en file tout de suite, 270 reprises par
+ * le rattrapage à raison de 30 par heure. Les factures ne font jamais la queue derrière le guide.
  */
 export const PLAFOND_HORAIRE_GUIDE = 30;
 
