@@ -1,0 +1,99 @@
+name: Coolify — recopier une variable du site vers le worker (manuel)
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  POURQUOI CE WORKFLOW (2026-09-26)
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Sentry AXION-IA-1M, 2026-09-26 03:00 : « IP_HASH_SALT manquant en production »
+# dans le WORKER (`retention.ts` → `hacherAgentsEnClair` → `hashIp`). Mesuré par
+# `docker exec … printenv` : le conteneur web a `IP_HASH_SALT`, le worker NON.
+# La purge RGPD de rétention, qui tourne dans le worker, échoue donc.
+#
+# `coolify-poser-variable.yml` ne peut pas le réparer : il pose une valeur tirée
+# d'un secret GitHub et refuse volontairement de CRÉER une variable sur le worker.
+# Ici la valeur de référence est celle du SITE : on la relit dans Coolify et on la
+# recopie telle quelle sur le worker. Elle ne transite que dans la mémoire du
+# runner — jamais dans un secret GitHub, jamais dans un journal.
+#
+# ⚠️ LISTE FERMÉE, comme le workflow voisin. Ajouter une clé = une revue.
+# ⚠️ IL NE REDÉPLOIE PAS le worker (même doctrine que le voisin) : la variable est
+#    prise au prochain démarrage. Le worker se reconstruit en ~3 min à chaque
+#    fusion sur main ; un redémarrage manuel reste une décision humaine.
+# ⚠️ N'écrase JAMAIS une valeur existante du worker : si elle y est déjà, on
+#    compare seulement (identique / différente) et on s'arrête.
+
+on:
+  workflow_dispatch:
+    inputs:
+      variable:
+        description: "La variable à recopier (liste fermée)"
+        required: true
+        type: choice
+        options:
+          - IP_HASH_SALT
+      confirmer:
+        description: "Taper OUI pour écrire réellement. Toute autre valeur = simulation."
+        required: true
+        default: "non"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  recopier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Recopier du site vers le worker
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+          CIBLE: ${{ inputs.variable }}
+          CONFIRMER: ${{ inputs.confirmer }}
+        run: |
+          set -euo pipefail
+          for nom in COOLIFY_API_TOKEN COOLIFY_URL COOLIFY_APP_UUID COOLIFY_WORKER_APP_UUID; do
+            [ -n "${!nom:-}" ] || { echo "::error::secret $nom absent"; exit 1; }
+          done
+          lire() {
+            curl -sS -m 20 -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+              "${COOLIFY_URL}/api/v1/applications/$1/envs"
+          }
+          site=$(lire "$COOLIFY_APP_UUID")
+          worker=$(lire "$COOLIFY_WORKER_APP_UUID")
+          valeur=$(printf '%s' "$site" | jq -r --arg k "$CIBLE" \
+            '[.[] | select(.key == $k and .is_preview == false)][0].value // empty')
+          [ -n "$valeur" ] || { echo "::error::« $CIBLE » absente du site : rien de sûr à recopier"; exit 1; }
+          echo "::add-mask::$valeur"
+          existante=$(printf '%s' "$worker" | jq -r --arg k "$CIBLE" \
+            '[.[] | select(.key == $k and .is_preview == false)][0].value // empty')
+          if [ -n "$existante" ]; then
+            if [ "$existante" = "$valeur" ]; then echo "Worker : déjà présente et IDENTIQUE au site. Rien à faire."
+            else echo "::warning::Worker : présente mais DIFFÉRENTE du site. Non écrasée — décision humaine."; fi
+            exit 0
+          fi
+          echo "Worker : « $CIBLE » absente."
+          if [ "$CONFIRMER" != "OUI" ]; then
+            echo "Simulation : relancer avec confirmer=OUI pour écrire."
+            exit 0
+          fi
+          jq -n --arg k "$CIBLE" --arg v "$valeur" \
+            '{key: $k, value: $v, is_preview: false, is_literal: true}' > /tmp/corps.json
+          code=$(curl -sS -m 20 -o /tmp/rep.json -w '%{http_code}' -X POST \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            -H "Content-Type: application/json" --data @/tmp/corps.json \
+            "${COOLIFY_URL}/api/v1/applications/${COOLIFY_WORKER_APP_UUID}/envs")
+          rm -f /tmp/corps.json
+          echo "HTTP $code"
+          case "$code" in
+            200 | 201) ;;
+            *) echo "::error::écriture refusée ($code)"; head -c 500 /tmp/rep.json; exit 1 ;;
+          esac
+          # Preuve par relecture, pas par le code HTTP.
+          apres=$(lire "$COOLIFY_WORKER_APP_UUID" | jq -r --arg k "$CIBLE" \
+            '[.[] | select(.key == $k and .is_preview == false)][0].value // empty')
+          [ "$apres" = "$valeur" ] || { echo "::error::relecture : valeur absente ou différente"; exit 1; }
+          echo "✅ « $CIBLE » posée sur le worker, IDENTIQUE au site (relue). Prise au prochain démarrage du worker."
