@@ -26,6 +26,11 @@ const abonneUpdateMany = vi.fn();
 const mettreEnFileGuide = vi.fn();
 const notify = vi.fn();
 const recordConsentEvent = vi.fn();
+/** Liste d'opposition : ne porte que l'empreinte HMAC (`email_oppositions.email_hash`). */
+const empreintesOpposees = new Set<string>();
+const oppositionFindUnique = vi.fn(async (arg: { where: { emailHash: string } }) =>
+  empreintesOpposees.has(arg.where.emailHash) ? { id: "opposition-1" } : null,
+);
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -40,6 +45,9 @@ vi.mock("@/lib/prisma", () => ({
       create: (...a: unknown[]) => abonneCreate(...a),
       update: (...a: unknown[]) => abonneUpdate(...a),
       updateMany: (...a: unknown[]) => abonneUpdateMany(...a),
+    },
+    emailOpposition: {
+      findUnique: (arg: { where: { emailHash: string } }) => oppositionFindUnique(arg),
     },
   },
 }));
@@ -60,6 +68,7 @@ vi.mock("@/lib/email/nature-adresse", () => ({
 
 import { enregistrerDemandeGuide } from "../demande";
 import { inscrireALaLettre, lettreDansLEmail } from "../lettre";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 
 const PRO = "jeanne@example.invalid";
 const PERSO = "perso.paul@example.invalid";
@@ -90,6 +99,8 @@ beforeEach(() => {
   mettreEnFileGuide.mockReset().mockResolvedValue("en-file");
   notify.mockReset().mockResolvedValue({ ok: true });
   recordConsentEvent.mockReset().mockResolvedValue(true);
+  empreintesOpposees.clear();
+  oppositionFindUnique.mockClear();
 });
 
 describe("enregistrerDemandeGuide — la nature de l'adresse décide, côté serveur", () => {
@@ -278,6 +289,93 @@ describe("enregistrerDemandeGuide — la nature de l'adresse décide, côté ser
     const creation = (abonneCreate.mock.calls[0]?.[0] as { data: Record<string, unknown> }).data;
     expect(creation).not.toHaveProperty("ipAddress");
     expect(creation["ipHash"]).toBe("empreinte");
+  });
+});
+
+describe("🔴 adresse en liste d'OPPOSITION : jamais (ré)inscrite, le guide part quand même", () => {
+  /** Désinscrit purgé à 3 ans : sa ligne n'existe plus, SEULE son empreinte reste. */
+  function desinscritPurge(email: string): void {
+    empreintesOpposees.add(hashEmailForLookup(email) as string);
+    abonneFindUnique.mockResolvedValue(null);
+  }
+
+  it("désinscrit purgé (empreinte seule) puis nouvelle demande PRO → aucune ligne d'abonné, aucune preuve, guide envoyé", async () => {
+    desinscritPurge(PRO);
+    const r = await enregistrerDemandeGuide({ ...BASE, email: PRO, caseLettre: false });
+    // Discriminant POSITIF : c'est bien l'opposition qui a refusé, pas une
+    // sortie anticipée (la nature « pro » aurait inscrit sans elle).
+    expect(r).toMatchObject({ nature: "pro", lettre: "opposee", envoi: "en-file" });
+    expect(oppositionFindUnique).toHaveBeenCalledWith({
+      where: { emailHash: hashEmailForLookup(PRO) },
+      select: { id: true },
+    });
+    expect(abonneCreate).not.toHaveBeenCalled();
+    expect(abonneUpdateMany).not.toHaveBeenCalled();
+    expect(recordConsentEvent).not.toHaveBeenCalled();
+    // Le guide part, sans lien de lettre.
+    expect(mettreEnFileGuide).toHaveBeenCalledTimes(1);
+    expect(mettreEnFileGuide.mock.calls[0]?.[1]).toEqual({
+      confirmToken: null,
+      unsubscribeToken: null,
+    });
+    // Aucune alerte « inscrite » : la notification dit l'opposition.
+    expect(notify.mock.calls.map((c) => (c[0] as { category: string }).category)).toEqual([
+      "GUIDE_REQUESTED",
+    ]);
+    expect(notify.mock.calls[0]?.[0]).toMatchObject({ payload: { lettre: "opposee" } });
+  });
+
+  it("adresse PERSO opposée, case COCHÉE → aucune inscription, aucune preuve « optin », guide envoyé", async () => {
+    desinscritPurge(PERSO);
+    const r = await enregistrerDemandeGuide({ ...BASE, email: PERSO, caseLettre: true });
+    expect(r.lettre).toBe("opposee");
+    expect(abonneCreate).not.toHaveBeenCalled();
+    expect(recordConsentEvent).not.toHaveBeenCalled();
+    expect(mettreEnFileGuide).toHaveBeenCalledTimes(1);
+  });
+
+  it("empreinte calculée sur l'adresse NORMALISÉE : la casse ne contourne pas l'opposition", async () => {
+    desinscritPurge(PRO);
+    const r = await enregistrerDemandeGuide({
+      ...BASE,
+      email: "  Jeanne@Example.Invalid ",
+      caseLettre: false,
+    });
+    expect(r.lettre).toBe("opposee");
+    expect(abonneCreate).not.toHaveBeenCalled();
+  });
+
+  it("ancienne inscription `pending` d'une adresse opposée : PAS réactivée, aucune preuve", async () => {
+    empreintesOpposees.add(hashEmailForLookup(PRO) as string);
+    abonneFindUnique.mockResolvedValue({
+      id: "abonne-1",
+      status: "pending",
+      unsubscribeToken: "u",
+      confirmToken: "c".repeat(64),
+    });
+    const r = await inscrireALaLettre({
+      email: PRO,
+      locale: "fr",
+      source: "guide-ia",
+      base: "interet-legitime",
+      formRef: "newsletter-guide-ia",
+      version: "guide-mention-pro-v2-2026-09-26",
+      ipHash: null,
+    });
+    expect(r).toEqual({ etat: "opposee", id: "abonne-1" });
+    expect(abonneUpdateMany).not.toHaveBeenCalled();
+    expect(recordConsentEvent).not.toHaveBeenCalled();
+  });
+
+  it("TÉMOIN sans opposition : la même demande PRO inscrit et écrit la preuve", async () => {
+    // Une AUTRE adresse est opposée : le contrôle compare bien des empreintes.
+    empreintesOpposees.add(hashEmailForLookup("autre@example.invalid") as string);
+    abonneApres({ status: "confirmed", unsubscribeToken: "u".repeat(64), confirmToken: null });
+    const r = await enregistrerDemandeGuide({ ...BASE, email: PRO, caseLettre: false });
+    expect(r.lettre).toBe("inscrite");
+    expect(oppositionFindUnique).toHaveBeenCalledTimes(1);
+    expect(abonneCreate).toHaveBeenCalledTimes(1);
+    expect(recordConsentEvent.mock.calls[0]?.[0]).toMatchObject({ action: "information" });
   });
 });
 

@@ -28,8 +28,18 @@
  * Le motif saisi est gardé au journal : le champ demande « sans adresse
  * e-mail », sans quoi l'effacement laisserait l'adresse dans sa propre trace.
  *
- * Journal : `newsletter.erased`, avec le SHA-256 de l'adresse (jamais
+ * Journal : `gdpr.newsletter.erased`, avec le SHA-256 de l'adresse (jamais
  * l'adresse) — c'est aussi ce que relit la liste de suppression exportée.
+ *
+ * 🔴 Préfixe `gdpr.` depuis l'audit final du 2026-09-26. Sous son ancien nom
+ * (`newsletter.erased`), la trace tombait à 12 mois avec les journaux
+ * ordinaires (`retention-purge-worker.ts` n'épargne que `gdpr.*`) : passé un
+ * an, la liste de suppression oubliait la personne effacée, et un import
+ * pouvait la réintroduire dans l'outil de lettres. Renommer plutôt qu'exempter :
+ * le préfixe protège déjà les traces de l'effacement public
+ * (`gdpr.erase.completed`), avec la même échéance (celle des pièces, 5 ans) —
+ * aucune liste d'exceptions à tenir dans le worker. Les traces déjà écrites
+ * sous l'ancien nom restent lues par l'export (`exports.ts`).
  *
  * ⚠️ Module serveur ordinaire, PAS `"use server"`.
  */
@@ -43,6 +53,7 @@ import {
   eraseNewsletterForEmail,
 } from "@/lib/rgpd-erase";
 import { propagateGdprToCrm } from "@/server/crm-sync/gdpr";
+import { ACTION_EFFACEMENT_CONSOLE } from "./actions-journal";
 
 export type IssueEffacement =
   | {
@@ -86,7 +97,7 @@ export async function effacerAbonneDepuisConsole(entree: {
   await prisma.activityLog.create({
     data: {
       adminUserId: entree.adminUserId,
-      action: "newsletter.erased",
+      action: ACTION_EFFACEMENT_CONSOLE,
       targetType: "newsletter_subscriber",
       targetId: abonne.id,
       changes: {

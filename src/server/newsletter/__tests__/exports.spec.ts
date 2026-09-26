@@ -23,7 +23,14 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
+import {
+  ACTION_DESINSCRIT_PURGE,
+  ACTION_EFFACEMENT_CONSOLE,
+  ACTION_EFFACEMENT_CONSOLE_HISTORIQUE,
+} from "../actions-journal";
 import {
   COLONNES_MAILWIZZ,
   PLAFOND_EXPORT,
@@ -220,6 +227,64 @@ describe("liste de suppression", () => {
     expect(lignes).toEqual([
       `${empreinteSha256("publique@example.invalid")},efface,2026-09-20T00:00:00.000Z`,
     ]);
+  });
+
+  it("🔴 un désinscrit PURGÉ (ligne disparue) reste dans la liste, par sa trace `newsletter.purged`", async () => {
+    d.subFindMany.mockResolvedValue([]);
+    d.activity.mockImplementation(async (arg: { where: { action: unknown } }) =>
+      arg.where.action === ACTION_DESINSCRIT_PURGE
+        ? [
+            {
+              // Forme écrite par `retention.ts` (`sha256Adresse`).
+              changes: {
+                emailHash: empreinteSha256("purgee@example.invalid"),
+                policy: "retention",
+                ageMonths: 36,
+              },
+              createdAt: new Date("2026-09-21T03:00:00Z"),
+            },
+          ]
+        : [],
+    );
+    const r = await exporterListeSuppression();
+    expect(r.csv.trim().split("\r\n").slice(1)).toEqual([
+      `${empreinteSha256("purgee@example.invalid")},desabonne,2026-09-21T03:00:00.000Z`,
+    ]);
+  });
+
+  it("la trace des purgés porte bien le nom que `retention.ts` écrit (littéral, verrouillé ailleurs)", () => {
+    const src = readFileSync(join(process.cwd(), "src/server/newsletter/retention.ts"), "utf8");
+    expect(src).toContain(`action: "${ACTION_DESINSCRIT_PURGE}"`);
+  });
+
+  it("🔴 l'effacement console est relu sous ses DEUX noms : le nouveau (`gdpr.*`) et l'ancien", async () => {
+    d.subFindMany.mockResolvedValue([]);
+    d.activity.mockImplementation(async (arg: { where: { action: unknown } }) => {
+      const a = arg.where.action as { in?: string[] } | string;
+      if (typeof a === "object" && a.in?.includes(ACTION_EFFACEMENT_CONSOLE)) {
+        // La requête doit couvrir les deux noms ; on rend une trace de chaque.
+        expect(a.in).toEqual(
+          expect.arrayContaining([ACTION_EFFACEMENT_CONSOLE, ACTION_EFFACEMENT_CONSOLE_HISTORIQUE]),
+        );
+        return [
+          {
+            changes: { emailHash: empreinteSha256("nouvelle@example.invalid") },
+            createdAt: new Date("2026-09-26T00:00:00Z"),
+          },
+          {
+            changes: { emailHash: empreinteSha256("ancienne@example.invalid") },
+            createdAt: new Date("2026-09-24T00:00:00Z"),
+          },
+        ];
+      }
+      return [];
+    });
+    const r = await exporterListeSuppression();
+    expect(r.csv.trim().split("\r\n").slice(1)).toEqual([
+      `${empreinteSha256("nouvelle@example.invalid")},efface,2026-09-26T00:00:00.000Z`,
+      `${empreinteSha256("ancienne@example.invalid")},efface,2026-09-24T00:00:00.000Z`,
+    ]);
+    expect(ACTION_EFFACEMENT_CONSOLE.startsWith("gdpr.")).toBe(true);
   });
 
   it("chaque source est lue de la plus récente à la plus ancienne", async () => {

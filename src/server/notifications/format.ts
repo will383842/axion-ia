@@ -117,13 +117,19 @@ const TITLES: Record<NotificationCategory, string> = {
  */
 /** État de la lettre après une demande du guide, en clair (amendement de Will du 24/09). */
 const LETTRE_LIBELLES: Record<
-  "inscrite" | "deja-abonnee" | "reinscription-proposee" | "opposition-maintenue" | "non-demandee",
+  | "inscrite"
+  | "deja-abonnee"
+  | "reinscription-proposee"
+  | "opposition-maintenue"
+  | "opposee"
+  | "non-demandee",
   string
 > = {
   inscrite: "inscrite",
   "deja-abonnee": "déjà abonnée",
   "reinscription-proposee": "désabonnée : réinscription proposée dans l'e-mail",
   "opposition-maintenue": "rebond dur : non inscrite",
+  opposee: "opposée à la prospection : non inscrite",
   "non-demandee": "adresse personnelle, case non cochée",
 };
 

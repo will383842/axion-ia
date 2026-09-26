@@ -105,8 +105,13 @@ describe("POST — le bouton : seul geste qui vaut clic humain", () => {
     expect(res.headers.get("location")).toContain(GUIDE_IA_CHEMIN);
     expect(updateMany).toHaveBeenCalledWith({
       where: { id: "demande-1", firstClickAt: null },
-      data: { firstClickAt: expect.any(Date) },
+      data: { firstClickAt: expect.any(Date), lastClickAt: expect.any(Date) },
     });
+    // Premier clic : les deux dates sont LA MÊME.
+    const premier = updateMany.mock.calls[0]?.[0] as { data: Record<string, Date> };
+    expect(premier.data["lastClickAt"]).toBe(premier.data["firstClickAt"]);
+    // Et aucune seconde écriture de `lastClickAt` : elle est déjà posée.
+    expect(champsEcrits().filter((c) => c === "lastClickAt")).toHaveLength(1);
     expect(emettreEvenementPlausible).toHaveBeenCalledTimes(1);
     const evenement = emettreEvenementPlausible.mock.calls[0]?.[0] as {
       nom: string;
@@ -117,6 +122,25 @@ describe("POST — le bouton : seul geste qui vaut clic humain", () => {
     expect(evenement.props).toEqual({ source: "guide-ia", premier: "oui" });
     // Le chemin transmis ne porte PAS le jeton personnel.
     expect(evenement.chemin).not.toContain(JETON);
+  });
+
+  it("🔴 un second clic avance `lastClickAt` (la conservation court depuis le DERNIER), jamais `firstClickAt`", async () => {
+    // `firstClickAt` déjà posé : la première mise à jour ne trouve rien.
+    updateMany.mockResolvedValueOnce({ count: 0 });
+    await POST(post(JETON));
+    expect(updateMany).toHaveBeenCalledWith({
+      where: { id: "demande-1" },
+      data: { lastClickAt: expect.any(Date) },
+    });
+    const ecritsSansCondition = updateMany.mock.calls
+      .map((c) => c[0] as { where: Record<string, unknown>; data: Record<string, unknown> })
+      .filter((a) => Object.keys(a.where).length === 1);
+    expect(ecritsSansCondition.map((a) => Object.keys(a.data))).toEqual([["lastClickAt"]]);
+  });
+
+  it("GET : `lastClickAt` n'est jamais posé (un antivirus n'est pas un échange)", async () => {
+    await GET(get(JETON));
+    expect(champsEcrits()).not.toContain("lastClickAt");
   });
 
   it("un second clic n'est plus « premier »", async () => {

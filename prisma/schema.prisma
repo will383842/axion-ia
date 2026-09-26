@@ -1644,6 +1644,9 @@ model GuideRequest {
   firstSeenAt   DateTime?           @map("first_seen_at")
   /// Premier POST du bouton : seul geste qui vaut clic humain.
   firstClickAt  DateTime?           @map("first_click_at")
+  /// DERNIER POST du bouton (audit du 26/09) : la conservation annoncée court
+  /// depuis le dernier échange, pas depuis le premier. Posé à chaque POST.
+  lastClickAt   DateTime?           @map("last_click_at")
   /// Dernière demande faite PAR LA PERSONNE depuis le formulaire public (L6,
   /// relecture du 25/09). Fait courir, avec `firstClickAt`, les 3 ans de
   /// conservation. Jamais écrite par la console ni par le rattrapage, qui

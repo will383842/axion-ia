@@ -101,6 +101,7 @@ function demande(id: string, champs: Partial<Ligne>): Ligne {
     derniereDemandeFormulaireAt: TRES_VIEUX,
     firstSeenAt: null,
     firstClickAt: null,
+    lastClickAt: null,
     ...champs,
   };
 }
@@ -353,6 +354,75 @@ describe("🔴 « dernier contact » : seules les actions de la personne (relect
     expect(restants(demandes)).toEqual(["sa-demande"]);
     expect(restants(abonnes)).toEqual(["personne"]);
     expect(r.abonnesGardesParDemandeRecente).toBe(1);
+  });
+});
+
+describe("🔴 le DERNIER clic sur le bouton du guide, pas le premier (audit du 26/09)", () => {
+  // Premier clic il y a plus de 3 ans, dernier clic il y a 40 jours. Sous la
+  // règle d'avant (premier clic seulement), tout partait.
+  const ADRESSE = "reclique@example.invalid";
+
+  function scenario(): void {
+    abonnes = table([abonne("reclique", { email: ADRESSE })]);
+    demandes = table([
+      demande("sa-demande", {
+        email: ADRESSE,
+        derniereDemandeFormulaireAt: TRES_VIEUX,
+        firstClickAt: avantLimite,
+        lastClickAt: jours(40),
+      }),
+      // Témoin : mêmes dates sauf le dernier clic, lui aussi ancien → purgée.
+      demande("demande-oubliee", { firstClickAt: avantLimite, lastClickAt: avantLimite }),
+    ]);
+    journaux = table([]);
+    preuves = table([]);
+    brancher();
+  }
+
+  it("un dernier clic récent GARDE la demande et l'abonné ; un dernier clic ancien ne garde rien", async () => {
+    scenario();
+    const r = await purgerLettreEtGuide(MAINTENANT);
+    expect(restants(demandes)).toEqual(["sa-demande"]);
+    expect(restants(abonnes)).toEqual(["reclique"]);
+    // Discriminant positif : l'abonné est gardé PAR la demande récente.
+    expect(r.abonnesGardesParDemandeRecente).toBe(1);
+    expect(r.demandesGuidePurgees).toBe(1);
+  });
+
+  it("⚠️ fenêtre app/worker : colonne absente (P2022) → repli sur la règle d'avant, la purge ne s'arrête pas", async () => {
+    scenario();
+    const vraie = demandes;
+    const appelsAvecColonne: string[] = [];
+    const sansColonne = (nom: "findMany" | "deleteMany") => async (a?: { where?: Ligne }) => {
+      if (JSON.stringify(a?.where ?? {}).includes("lastClickAt")) {
+        appelsAvecColonne.push(nom);
+        throw Object.assign(new Error("The column `last_click_at` does not exist"), {
+          code: "P2022",
+        });
+      }
+      return nom === "findMany" ? vraie.findMany(a) : vraie.deleteMany(a);
+    };
+    base.tables["guideRequest"] = {
+      ...vraie,
+      findMany: sansColonne("findMany"),
+      deleteMany: sansColonne("deleteMany"),
+    };
+    const r = await purgerLettreEtGuide(MAINTENANT);
+    // Les deux lectures ont bien TENTÉ la colonne, puis rejoué sans elle.
+    expect(appelsAvecColonne.sort()).toEqual(["deleteMany", "findMany"]);
+    // Règle d'avant : premier clic ancien → la demande part (comme avant ce lot).
+    expect(r.demandesGuidePurgees).toBe(2);
+  });
+
+  it("une AUTRE erreur n'est pas avalée par le repli", async () => {
+    scenario();
+    base.tables["guideRequest"] = {
+      ...demandes,
+      findMany: async () => {
+        throw Object.assign(new Error("connexion perdue"), { code: "P1001" });
+      },
+    };
+    await expect(purgerLettreEtGuide(MAINTENANT)).rejects.toThrow("connexion perdue");
   });
 });
 

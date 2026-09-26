@@ -258,7 +258,8 @@ describe("effacement RGPD depuis la console", () => {
     );
 
     const journal = d.activityCreate.mock.calls[0]![0] as { data: Record<string, unknown> };
-    expect(journal.data["action"]).toBe("newsletter.erased");
+    // Préfixe `gdpr.` : la trace survit à la purge des journaux à 12 mois.
+    expect(journal.data["action"]).toBe("gdpr.newsletter.erased");
     const serialise = JSON.stringify(journal);
     expect(serialise).not.toContain(ABONNE.email);
     expect(serialise).not.toContain("@");

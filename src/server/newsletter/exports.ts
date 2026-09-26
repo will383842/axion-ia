@@ -20,8 +20,10 @@
  *
  * ── 2. La liste de suppression (empreintes) ─────────────────────────────────
  * Ce qui ne doit JAMAIS être importé, ni rester dans l'outil : désabonnés,
- * rejetés, rebonds durs, effacés (depuis la console — `newsletter.erased` —
- * ET par l'effacement public — `gdpr.erase.completed`, champ `emailSha256`).
+ * rejetés, rebonds durs, effacés (depuis la console — `gdpr.newsletter.erased`,
+ * et son ancien nom `newsletter.erased` — ET par l'effacement public —
+ * `gdpr.erase.completed`, champ `emailSha256`), et désinscrits PURGÉS à 3 ans
+ * (`newsletter.purged`, champ `emailHash`, écrit par `retention.ts`).
  * AUCUNE adresse : seulement le SHA-256 de l'adresse normalisée (minuscules,
  * sans espaces) — le format que les outils d'envoi savent comparer, et celui
  * du CRM (`email_hash`). Jamais l'empreinte HMAC du site
@@ -31,16 +33,28 @@
  * plafond ; si une source l'atteint, le résultat le dit (`tronque`) et le
  * fichier téléchargé aussi (nom et en-tête) — jamais une troncature muette.
  *
+ * Durée de vie des traces relues (purge des journaux,
+ * `retention-purge-worker.ts`) :
+ *   · `gdpr.*` (effacements console et public) : 5 ans, l'échéance des pièces ;
+ *   · `newsletter.erased` (ancien nom, avant le 2026-09-26) et
+ *     `newsletter.purged` : 12 mois, comme tout journal ordinaire.
+ *
  * ⚠️ Angles morts DÉCLARÉS de la liste de suppression :
  *   · les oppositions (`email_oppositions`) ne portent que l'empreinte HMAC,
  *     par doctrine ; on ne peut ni les lister ni les convertir en SHA-256 ;
+ *   · un désinscrit PURGÉ ne sort ici que 12 mois après sa purge (durée de
+ *     sa trace `newsletter.purged`) ; ensuite, seule son empreinte HMAC reste
+ *     (`email_oppositions`, sans limite de durée) — donc le cas précédent ;
+ *   · un effacement (console ou public) sort 5 ans, pas davantage ; les
+ *     effacements console antérieurs au 2026-09-26 (ancien nom) seulement
+ *     12 mois après l'effacement ;
  *   · les effacements venus du CRM ne laissent sur le site aucune trace
  *     d'effacement propre : l'abonné trouvé y est seulement désabonné, et ne
  *     sort ici que comme `desabonne` tant que sa ligne subsiste.
- * Les deux sont écartés de l'export des abonnés (fichier 1, qui teste chaque
+ * Tous sont écartés de l'export des abonnés (fichier 1, qui teste chaque
  * adresse : l'opposition par HMAC, l'effacé parce qu'il n'a plus de ligne),
- * mais absents du fichier 2. Un import ne passe que par le fichier 1 : c'est
- * suffisant tant que l'outil ne reçoit rien d'autre.
+ * mais peuvent manquer au fichier 2. Un import ne passe que par le fichier 1 :
+ * c'est suffisant tant que l'outil ne reçoit rien d'autre.
  *
  * ⚠️ Module serveur ordinaire, PAS `"use server"`.
  */
@@ -50,6 +64,11 @@ import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { AIMANT_GUIDE_IA } from "@/server/guide-ia/config";
 import { VERSION_LETTRE_HISTORIQUE } from "./versions";
+import {
+  ACTION_DESINSCRIT_PURGE,
+  ACTION_EFFACEMENT_CONSOLE,
+  ACTION_EFFACEMENT_CONSOLE_HISTORIQUE,
+} from "./actions-journal";
 
 export const COLONNES_MAILWIZZ = [
   "EMAIL",
@@ -238,7 +257,7 @@ export type MotifSuppression = "desabonne" | "rejete" | "rebond_dur" | "efface";
 export async function exporterListeSuppression(): Promise<ResultatExport> {
   // Chaque source, la plus RÉCENTE d'abord : sous le plafond, ce qu'on perd
   // est le plus ancien — et on le dit (`tronque`).
-  const [abonnes, rebonds, effacesConsole, effacesPublics] = await Promise.all([
+  const [abonnes, rebonds, effacesConsole, effacesPublics, purges] = await Promise.all([
     prisma.newsletterSubscriber.findMany({
       where: { status: { in: ["unsubscribed", "bounced"] } },
       select: { email: true, status: true, unsubscribedAt: true, updatedAt: true },
@@ -253,9 +272,11 @@ export async function exporterListeSuppression(): Promise<ResultatExport> {
     }),
     // L'effacement console trace le SHA-256 de l'adresse (jamais l'adresse) :
     // c'est la seule mémoire qui reste d'une personne effacée, et elle suffit
-    // à ne jamais la réimporter.
+    // à ne jamais la réimporter. Les DEUX noms : l'ancien (`newsletter.erased`,
+    // purgé à 12 mois) pour les traces déjà écrites, le nouveau (`gdpr.*`,
+    // conservé comme les autres preuves d'effacement) pour les suivantes.
     prisma.activityLog.findMany({
-      where: { action: "newsletter.erased" },
+      where: { action: { in: [ACTION_EFFACEMENT_CONSOLE, ACTION_EFFACEMENT_CONSOLE_HISTORIQUE] } },
       select: { changes: true, createdAt: true },
       orderBy: { createdAt: "desc" },
       take: PLAFOND_EXPORT,
@@ -268,8 +289,17 @@ export async function exporterListeSuppression(): Promise<ResultatExport> {
       orderBy: { createdAt: "desc" },
       take: PLAFOND_EXPORT,
     }),
+    // Désinscrits PURGÉS à 3 ans (`retention.ts`, `purgerDesinscrits`) : leur
+    // ligne a disparu, la trace garde le SHA-256 (`emailHash`). Sans elle, un
+    // désinscrit sortait de la liste le jour même de sa purge.
+    prisma.activityLog.findMany({
+      where: { action: ACTION_DESINSCRIT_PURGE },
+      select: { changes: true, createdAt: true },
+      orderBy: { createdAt: "desc" },
+      take: PLAFOND_EXPORT,
+    }),
   ]);
-  const tronque = [abonnes, rebonds, effacesConsole, effacesPublics].some(
+  const tronque = [abonnes, rebonds, effacesConsole, effacesPublics, purges].some(
     (source) => source.length >= PLAFOND_EXPORT,
   );
 
@@ -300,6 +330,12 @@ export async function exporterListeSuppression(): Promise<ResultatExport> {
     // l'empreinte HMAC du site, qui ne correspondrait à rien dans l'outil.
     const c = e.changes as { emailSha256?: unknown } | null;
     if (c && typeof c.emailSha256 === "string") ajouter(c.emailSha256, "efface", e.createdAt);
+  }
+  for (const p of purges) {
+    // Sur cette trace, `emailHash` EST le SHA-256 (`retention.ts`,
+    // `sha256Adresse`) ; `ajouter` écarte tout ce qui n'en a pas la forme.
+    const c = p.changes as { emailHash?: unknown } | null;
+    if (c && typeof c.emailHash === "string") ajouter(c.emailHash, "desabonne", p.createdAt);
   }
 
   const lignes = [...vues.entries()].map(([hash, v]) =>

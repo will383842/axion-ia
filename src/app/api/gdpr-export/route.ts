@@ -206,6 +206,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         sendCount: true,
         firstSeenAt: true,
         firstClickAt: true,
+        lastClickAt: true,
         derniereDemandeFormulaireAt: true,
       },
       orderBy: { createdAt: "desc" },
