@@ -299,6 +299,7 @@ function formatBody(event: NotificationEvent): string {
         p.city ? formatKV("Ville", p.city) : null,
         p.salaryExpectation ? formatKV("Prétention", p.salaryExpectation) : null,
         p.motivationExcerpt ? formatKV("Motivation", p.motivationExcerpt) : null,
+        ...(p.answers ?? []).map((r) => formatKV(r.label, r.value)),
         formatKV("CV", p.hasCv ? "joint ✅" : "non fourni"),
         p.hasPhoto ? formatKV("Photo", "jointe ✅") : null,
         formatKV(
