@@ -64,6 +64,21 @@ on:
           # quiconque l'avait lue pouvait écrire dans la base de connaissances.
           # Porté par le secret GitHub du même nom.
           - KB_INGEST_SECRET
+          # ── Rotation du 2026-09-26, suite ─────────────────────────────────
+          # Valeurs lues en clair dans deux journaux Actions PUBLICS (runs
+          # 25993848523 et 33198266099, supprimés le 26/09). Chacune est portée
+          # par le secret GitHub du même nom. Si la variable existe AUSSI sur le
+          # worker, elle y est posée dans le même run (« Poser sur le worker »).
+          - AUTH_SECRET
+          - SITE_SYNC_HMAC_SECRET
+          - HETZNER_API_TOKEN
+          - CLOUDFLARE_API_TOKEN
+          - GSC_OAUTH_CLIENT_SECRET
+          - GSC_OAUTH_REFRESH_TOKEN
+          - INDEXING_OAUTH_REFRESH_TOKEN
+          - TELEGRAM_CALENDLY_BOT_TOKEN
+          - DOCUSEAL_WEBHOOK_SECRET
+          - STRIPE_WEBHOOK_SECRET
           - lister-seulement
       confirmer:
         description: "Taper OUI pour écrire réellement. Toute autre valeur = simulation."
@@ -139,6 +154,16 @@ jobs:
           META_CAPI_TEST_EVENT_CODE: ${{ secrets.META_CAPI_TEST_EVENT_CODE }}
           CALENDLY_APPORTEUR_URL: ${{ secrets.CALENDLY_APPORTEUR_URL }}
           KB_INGEST_SECRET: ${{ secrets.KB_INGEST_SECRET }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+          SITE_SYNC_HMAC_SECRET: ${{ secrets.SITE_SYNC_HMAC_SECRET }}
+          HETZNER_API_TOKEN: ${{ secrets.HETZNER_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          GSC_OAUTH_CLIENT_SECRET: ${{ secrets.GSC_OAUTH_CLIENT_SECRET }}
+          GSC_OAUTH_REFRESH_TOKEN: ${{ secrets.GSC_OAUTH_REFRESH_TOKEN }}
+          INDEXING_OAUTH_REFRESH_TOKEN: ${{ secrets.INDEXING_OAUTH_REFRESH_TOKEN }}
+          TELEGRAM_CALENDLY_BOT_TOKEN: ${{ secrets.TELEGRAM_CALENDLY_BOT_TOKEN }}
+          DOCUSEAL_WEBHOOK_SECRET: ${{ secrets.DOCUSEAL_WEBHOOK_SECRET }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
           CIBLE: ${{ inputs.variable }}
           CONFIRMER: ${{ inputs.confirmer }}
         run: |
@@ -233,3 +258,55 @@ jobs:
           echo "⚠️ La variable ne sera prise en compte qu'au PROCHAIN déploiement."
           echo "   Ce workflow ne redéploie pas volontairement : deux producteurs"
           echo "   dans la file Coolify font passer un déploiement de 25 min à ~1 h."
+
+      # 2026-09-26 — le worker (BullMQ) lit la plupart des mêmes secrets. Ne poser
+      # que sur l'application web laisserait l'ancienne valeur, publique, active
+      # côté worker. On ne CRÉE rien sur le worker : on ne met à jour que si la
+      # variable y existe déjà.
+      - name: Poser sur le worker (si la variable y existe)
+        if: ${{ inputs.variable != 'lister-seulement' && inputs.confirmer == 'OUI' }}
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+          KB_INGEST_SECRET: ${{ secrets.KB_INGEST_SECRET }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+          SITE_SYNC_HMAC_SECRET: ${{ secrets.SITE_SYNC_HMAC_SECRET }}
+          HETZNER_API_TOKEN: ${{ secrets.HETZNER_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          GSC_OAUTH_CLIENT_SECRET: ${{ secrets.GSC_OAUTH_CLIENT_SECRET }}
+          GSC_OAUTH_REFRESH_TOKEN: ${{ secrets.GSC_OAUTH_REFRESH_TOKEN }}
+          INDEXING_OAUTH_REFRESH_TOKEN: ${{ secrets.INDEXING_OAUTH_REFRESH_TOKEN }}
+          TELEGRAM_CALENDLY_BOT_TOKEN: ${{ secrets.TELEGRAM_CALENDLY_BOT_TOKEN }}
+          DOCUSEAL_WEBHOOK_SECRET: ${{ secrets.DOCUSEAL_WEBHOOK_SECRET }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+          CIBLE: ${{ inputs.variable }}
+        run: |
+          set -euo pipefail
+          if [ -z "${COOLIFY_WORKER_APP_UUID:-}" ]; then
+            echo "::error::secret COOLIFY_WORKER_APP_UUID absent"; exit 1
+          fi
+          envs=$(curl -sS -m 20 -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            "${COOLIFY_URL}/api/v1/applications/${COOLIFY_WORKER_APP_UUID}/envs")
+          existe=$(printf '%s' "$envs" | jq --arg k "$CIBLE" \
+            '[.[] | select(.key == $k and .is_preview == false)] | length')
+          echo "Présente sur le worker : $existe"
+          if [ "$existe" -eq 0 ]; then
+            echo "Absente du worker : rien à faire."
+            exit 0
+          fi
+          valeur="${!CIBLE:-}"
+          valeur="${valeur%%[$'\r\n']*}"
+          valeur="${valeur#$'\xEF\xBB\xBF'}"
+          [ -n "$valeur" ] || { echo "::error::secret GitHub « $CIBLE » vide"; exit 1; }
+          jq -n --arg k "$CIBLE" --arg v "$valeur" \
+            '{key: $k, value: $v, is_preview: false, is_literal: true}' > /tmp/corps.json
+          code=$(curl -sS -m 20 -o /tmp/rep.json -w '%{http_code}' -X PATCH \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            -H "Content-Type: application/json" --data @/tmp/corps.json \
+            "${COOLIFY_URL}/api/v1/applications/${COOLIFY_WORKER_APP_UUID}/envs")
+          echo "HTTP $code"
+          case "$code" in
+            200 | 201) echo "Écriture worker acceptée." ;;
+            *) echo "::error::écriture worker refusée ($code)"; head -c 1000 /tmp/rep.json; exit 1 ;;
+          esac
