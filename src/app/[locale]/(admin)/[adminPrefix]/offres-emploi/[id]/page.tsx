@@ -56,6 +56,11 @@ export default async function EditJobOfferPage({ params }: PageProps) {
     requiresVehicle: o.requiresVehicle,
     screeningQuestions: fmtJson(o.screeningQuestions),
     perks: fmtJson(o.perks),
+    // Absent jusqu'au 2026-09-26 : la fiche d'édition affichait un champ VIDE
+    // pour une offre qui déclarait pourtant 16 villes à Google. On ne pouvait
+    // ni les voir ni les corriger (un champ vide est ignoré à l'enregistrement,
+    // donc elles ne s'effaçaient pas non plus).
+    jobLocations: fmtJson(o.jobLocations),
     startDate: fmtDate(o.startDate),
     applicationDeadline: fmtDate(o.applicationDeadline),
     validThrough: fmtDate(o.validThrough),
