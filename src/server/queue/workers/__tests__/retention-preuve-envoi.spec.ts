@@ -75,6 +75,11 @@ vi.mock("@/server/queue/lib/sentry-worker", () => ({ captureWorkerError: vi.fn()
 
 import { executerPurgeRetention } from "../retention-purge-worker";
 import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
+import { correspond } from "@/server/newsletter/__tests__/base-en-memoire";
+import {
+  ACTION_EFFACEMENT_CONSOLE,
+  ACTION_EFFACEMENT_CONSOLE_HISTORIQUE,
+} from "@/server/newsletter/actions-journal";
 
 /** Nombre de mois entre `date` et maintenant, arrondi au plus proche. */
 function moisEcoules(date: Date): number {
@@ -144,6 +149,18 @@ describe("purge de rétention — la preuve ne meurt pas avant ce qu'elle prouve
     const rgpd = appels("activityLog").find((a) => a.where?.action?.startsWith === "gdpr.");
     expect(rgpd, "les traces RGPD doivent avoir leur propre purge").toBeDefined();
     expect(moisEcoules(rgpd!.where!.createdAt!.lt!)).toBe(DOCUMENT_RETENTION_YEARS * 12);
+  });
+
+  it("🔴 l'effacement d'un abonné depuis la console survit à la purge à 12 mois (liste de suppression)", () => {
+    // Audit final du plan newsletter (2026-09-26) : la trace porte le SHA-256
+    // que relit la liste de suppression. On évalue la clause RÉELLEMENT passée
+    // sur une trace de 2 ans, sous le nom actuel et sous l'ancien (témoin).
+    const courante = appels("activityLog").find((a) => a.where?.NOT !== undefined)!;
+    const deuxAns = new Date(Date.now() - 730 * 86_400_000);
+    const trace = (action: string) => ({ id: action, action, createdAt: deuxAns });
+    expect(correspond(trace(ACTION_EFFACEMENT_CONSOLE), courante.where)).toBe(false);
+    // Témoin : sous l'ancien nom, la même trace tombait — c'était le défaut.
+    expect(correspond(trace(ACTION_EFFACEMENT_CONSOLE_HISTORIQUE), courante.where)).toBe(true);
   });
 
   it("les traces `gdpr.*` sont bien purgées un jour — la rétention n'est pas l'éternité", () => {

@@ -16,6 +16,8 @@
  * Situations, et ce qu'on en fait :
  *   · inconnue               → `confirmed`, preuve écrite ;
  *   · `pending` (ancien flux) → `confirmed`, preuve écrite ;
+ *   · inconnue ou `pending`, mais adresse en liste d'OPPOSITION
+ *     (`email_oppositions`) → 🔴 RIEN : aucune ligne, aucune preuve. Voir plus bas ;
  *   · `confirmed`             → rien : déjà inscrite ;
  *   · `unsubscribed`          → 🔴 RIEN SUR LE STATUT. Voir plus bas ;
  *   · `bounced`               → rien : l'adresse ne reçoit pas.
@@ -29,11 +31,23 @@
  * bouton de la page qui suit (un POST, `confirmerLettre`) le réinscrit. Un
  * jeton déjà posé est GARDÉ : le lien d'un e-mail précédent reste valable, et
  * redemander ne renouvelle rien.
+ *
+ * 🔴 UNE ADRESSE OPPOSÉE N'EST JAMAIS (RÉ)INSCRITE (audit final du plan
+ * newsletter, 2026-09-26 ; demande 6.1.b). Un désinscrit purgé après 3 ans ne
+ * laisse QUE son empreinte en liste d'opposition (`retention.ts`,
+ * `purgerDesinscrits`) : sans ce contrôle, sa ligne n'existant plus, une
+ * nouvelle demande du guide depuis une adresse pro le recréait `confirmed`
+ * au titre de l'intérêt légitime — l'opposition promise « sans limite de
+ * durée » tombait. Même règle pour la case cochée d'une adresse perso : la
+ * saisie peut venir d'un tiers. Le guide, lui, part quand même (`demande.ts`) ;
+ * aucune preuve `information`/`optin` n'est écrite, puisqu'il n'y a pas
+ * d'inscription.
  */
 
 import crypto from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { recordConsentEvent } from "@/lib/consents";
+import { estOpposee } from "@/server/email/opposition";
 import { FORM_REF_REINSCRIPTION, VERSION_REINSCRIPTION } from "@/content/guide-ia-formulaire";
 
 export type BaseLettre = "interet-legitime" | "consentement";
@@ -59,7 +73,9 @@ export type ResultatInscriptionLettre =
   | { readonly etat: "inscrite"; readonly id: string; readonly nouvelle: boolean }
   | { readonly etat: "deja-abonnee"; readonly id: string }
   | { readonly etat: "reinscription-proposee"; readonly id: string }
-  | { readonly etat: "opposition-maintenue"; readonly id: string };
+  | { readonly etat: "opposition-maintenue"; readonly id: string }
+  /** Adresse en liste d'opposition : ni ligne créée ni réactivée, ni preuve. */
+  | { readonly etat: "opposee"; readonly id: string | null };
 
 function jeton(): string {
   return crypto.randomBytes(32).toString("hex");
@@ -92,6 +108,7 @@ export async function inscrireALaLettre(
   });
 
   if (existante === null) {
+    if (await estOpposee(entree.email)) return { etat: "opposee", id: null };
     try {
       const creee = await prisma.newsletterSubscriber.create({
         data: {
@@ -141,7 +158,9 @@ export async function inscrireALaLettre(
 
     default: {
       // `pending` : inscription de l'ancien double opt-in, jamais confirmée. La
-      // nouvelle base (information ou case cochée) l'inscrit maintenant.
+      // nouvelle base (information ou case cochée) l'inscrit maintenant —
+      // sauf opposition enregistrée entre-temps.
+      if (await estOpposee(entree.email)) return { etat: "opposee", id: existante.id };
       const r = await prisma.newsletterSubscriber.updateMany({
         where: { id: existante.id, status: "pending" },
         data: {

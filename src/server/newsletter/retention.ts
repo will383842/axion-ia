@@ -93,7 +93,8 @@
  * Des COMPTES seulement, jamais d'adresse ni d'empreinte : une purge par âge ne
  * répond à aucune demande individuelle, rien ne justifie d'en garder la liste.
  * (Exception héritée : `purgerDesinscrits` garde la trace `newsletter.purged`
- * du worker d'origine, SHA-256 de l'adresse, purgée à 12 mois.)
+ * du worker d'origine, SHA-256 de l'adresse, purgée à 12 mois — relue d'ici là
+ * par la liste de suppression, `exports.ts`.)
  *
  * ⚠️ `deleteMany` seulement sur les abonnés et les demandes : il ne relit
  * aucune colonne (pas de RETURNING *).

@@ -358,6 +358,7 @@ export type NotificationEvent =
           | "deja-abonnee"
           | "reinscription-proposee"
           | "opposition-maintenue"
+          | "opposee"
           | "non-demandee";
         envoi: string;
         nouvelle: boolean;
