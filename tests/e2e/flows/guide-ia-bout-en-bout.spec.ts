@@ -71,7 +71,7 @@ test.describe("@guide-ia parcours du guide", () => {
     await champ.fill("recette@example.invalid");
     await expect(page.getByRole("checkbox")).toHaveCount(0);
     await expect(
-      page.getByText("En recevant le guide, vous recevrez aussi quelques lettres par an").first(),
+      page.getByText("En recevant le guide, vous recevrez aussi 1 à 2 e-mails par mois").first(),
     ).toBeVisible();
     await expect(page.getByText("Politique de confidentialité").first()).toBeVisible();
     const html = await page.content();

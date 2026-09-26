@@ -85,7 +85,7 @@ describe("l'e-mail « Votre guide »", () => {
     expect(r.html).toContain(`/fr/desabonnement?token=${"u".repeat(64)}`);
     expect(r.text).toContain("Se désabonner");
     expect(r.text).toContain("Vous recevrez aussi la lettre d'Axion-IA.");
-    expect(r.text).toContain("Quelques lettres par an, à chaque nouveauté utile.");
+    expect(r.text).toContain("1 à 2 e-mails par mois, à chaque nouveauté utile.");
     // « Ignorez ce message » serait faux : sans clic, la lettre partirait.
     expect(r.text).not.toContain("Ignorez simplement ce message");
     // Aucun bouton de confirmation : l'inscription vaut sans double opt-in.

@@ -47,10 +47,16 @@ export const FORM_REF_LETTRE: Record<VarianteFormulaireGuide, string> = {
   article: "newsletter-encart-article",
 };
 
-/** Version du texte de la case « lettre » (adresses personnelles), par point de collecte. */
+/**
+ * Version du texte de la case « lettre » (adresses personnelles), par point de collecte.
+ * v4 (26/09) : l'ancien texte de la case (v3, lettre d'Axion-IA, cadence annuelle)
+ * → « Je veux aussi recevoir les nouveautés IA utiles (1 à 2 e-mails par mois). » (texte
+ * validé par Will). Les preuves déjà enregistrées gardent leur version (v3) : rien n'est
+ * réécrit en base.
+ */
 export const VERSION_LETTRE: Record<VarianteFormulaireGuide, string> = {
-  guide: "lettre-guide-v3-2026-09-24",
-  article: "lettre-article-v3-2026-09-24",
+  guide: "lettre-guide-v4-2026-09-26",
+  article: "lettre-article-v4-2026-09-26",
 };
 
 /**
@@ -59,19 +65,22 @@ export const VERSION_LETTRE: Record<VarianteFormulaireGuide, string> = {
  * EST le fondement de l'inscription (information + intérêt légitime) ; pour
  * une adresse personnelle, elle renvoie à la case.
  */
+// pro v2 (26/09) : la cadence annoncée passe de « quelques envois annuels » à « 1 à 2 e-mails
+// par mois » (décision de Will). La mention perso n'annonce aucune cadence : elle garde sa v1.
 export const VERSION_MENTION: Record<"pro" | "perso", string> = {
-  pro: "guide-mention-pro-v1-2026-09-24",
+  pro: "guide-mention-pro-v2-2026-09-26",
   perso: "guide-mention-perso-v1-2026-09-24",
 };
 
 /**
  * Décision n° 4 de Will (24/09) — la cadence réelle de la lettre. Remplace la
- * promesse « mensuelle », jamais tenue. Liste fermée de ses emplois :
+ * promesse « mensuelle », jamais tenue. 26/09 (Will) : la cadence annuelle
+ * devient « 1 à 2 e-mails par mois ». Liste fermée de ses emplois :
  * `decision-4-plus-de-mensuel.spec.ts`.
  */
 export const CADENCE_LETTRE: Record<LocaleFormulaire, string> = {
-  fr: "Quelques lettres par an, à chaque nouveauté utile.",
-  en: "A few emails a year, only when there is something new and useful.",
+  fr: "1 à 2 e-mails par mois, à chaque nouveauté utile.",
+  en: "1 to 2 emails a month, only when there is something new and useful.",
 };
 
 /**
@@ -83,12 +92,12 @@ export const TEXTE_CASE_LETTRE: Record<
   Record<LocaleFormulaire, string>
 > = {
   guide: {
-    fr: "Je souhaite aussi recevoir la lettre d'Axion-IA (quelques lettres par an).",
-    en: "I would also like to receive Axion-IA's letter (a few emails a year).",
+    fr: "Je veux aussi recevoir les nouveautés IA utiles (1 à 2 e-mails par mois).",
+    en: "I also want to receive useful AI updates (1 to 2 emails a month).",
   },
   article: {
-    fr: "Je souhaite aussi recevoir la lettre d'Axion-IA (quelques lettres par an).",
-    en: "I would also like to receive Axion-IA's letter (a few emails a year).",
+    fr: "Je veux aussi recevoir les nouveautés IA utiles (1 à 2 e-mails par mois).",
+    en: "I also want to receive useful AI updates (1 to 2 emails a month).",
   },
 };
 
@@ -104,8 +113,8 @@ const MENTION_SUITE: Record<LocaleFormulaire, string> = {
  */
 export const TEXTE_MENTION: Record<"pro" | "perso", Record<LocaleFormulaire, string>> = {
   pro: {
-    fr: `En recevant le guide, vous recevrez aussi quelques lettres par an, à chaque nouveauté utile. Désinscription en un clic, à tout moment. ${MENTION_SUITE.fr}`,
-    en: `Along with the guide, you will also receive a few emails a year, only when there is something new and useful. One-click unsubscribe, at any time. ${MENTION_SUITE.en}`,
+    fr: `En recevant le guide, vous recevrez aussi 1 à 2 e-mails par mois, à chaque nouveauté utile. Désinscription en un clic, à tout moment. ${MENTION_SUITE.fr}`,
+    en: `Along with the guide, you will also receive 1 to 2 emails a month, only when there is something new and useful. One-click unsubscribe, at any time. ${MENTION_SUITE.en}`,
   },
   perso: {
     fr: `Le guide vous est envoyé par e-mail. La lettre d'Axion-IA ne vous est envoyée que si vous cochez la case ci-dessus ; désinscription en un clic, à tout moment. ${MENTION_SUITE.fr}`,
@@ -123,10 +132,11 @@ export const TEXTE_MENTION: Record<"pro" | "perso", Record<LocaleFormulaire, str
 export const FORM_REF_REINSCRIPTION = "newsletter-reinscription-email";
 // v2 (25/09) : « Vous vous étiez désabonné(e) » → « Vous aviez quitté » (décision de Will :
 // pas d'écriture inclusive, une forme neutre). Aucune v1 n'a été enregistrée en production.
-export const VERSION_REINSCRIPTION = "lettre-reinscription-email-v2-2026-09-25";
+// v3 (26/09) : la cadence annoncée devient « 1 à 2 e-mails par mois » (décision de Will).
+export const VERSION_REINSCRIPTION = "lettre-reinscription-email-v3-2026-09-26";
 export const TEXTE_REINSCRIPTION: Record<LocaleFormulaire, string> = {
-  fr: "Vous aviez quitté la lettre d'Axion-IA. Pour la recevoir à nouveau (quelques lettres par an, à chaque nouveauté utile), confirmez d'un clic ; sans ce clic, rien ne change.",
-  en: "You had left Axion-IA's letter. To receive it again (a few emails a year, only when there is something new and useful), confirm with one click; without it, nothing changes.",
+  fr: "Vous aviez quitté la lettre d'Axion-IA. Pour la recevoir à nouveau (1 à 2 e-mails par mois, à chaque nouveauté utile), confirmez d'un clic ; sans ce clic, rien ne change.",
+  en: "You had left Axion-IA's letter. To receive it again (1 to 2 emails a month, only when there is something new and useful), confirm with one click; without it, nothing changes.",
 };
 
 /** Libellé du lien vers la politique, et son chemin localisé. */

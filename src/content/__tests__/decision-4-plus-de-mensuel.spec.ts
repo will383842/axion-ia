@@ -1,12 +1,13 @@
 /**
- * Décision n° 4 de Will (24/09/2026) — « quelques lettres par an, à chaque
- * nouveauté utile ». LISTE FERMÉE des endroits où la cadence de la lettre, ou
+ * Décision n° 4 de Will (24/09/2026), cadence révisée le 26/09 — « 1 à 2 e-mails
+ * par mois, à chaque nouveauté utile ». LISTE FERMÉE des endroits où la cadence de la lettre, ou
  * l'inscription elle-même, apparaît (plan v2, lot L2).
  *
  * La promesse d'une « newsletter mensuelle » n'a jamais été tenue : aucune
  * lettre n'est partie depuis la première inscription. Une information inexacte
  * au moment de la collecte fragilise le caractère « éclairé » du consentement
- * (art. 4.11 RGPD). Ce verrou rougit si le mot revient dans l'un de ces
+ * (art. 4.11 RGPD). On annonce un NOMBRE d'envois (« 1 à 2 e-mails par mois »),
+ * jamais l'étiquette « newsletter mensuelle ». Ce verrou rougit si le mot revient dans l'un de ces
  * fichiers — en français comme en anglais, parce que la locale EN est prérendue
  * et qu'une réactivation ressortirait la vieille promesse.
  */
@@ -80,11 +81,19 @@ describe("🔴 plus aucune promesse « mensuelle »", () => {
 });
 
 describe("la cadence réelle est écrite, et depuis UNE source", () => {
-  it("les deux phrases validées", () => {
-    expect(CADENCE_LETTRE.fr).toBe("Quelques lettres par an, à chaque nouveauté utile.");
+  it("les deux phrases validées (Will, 26/09)", () => {
+    expect(CADENCE_LETTRE.fr).toBe("1 à 2 e-mails par mois, à chaque nouveauté utile.");
     expect(CADENCE_LETTRE.en).toBe(
-      "A few emails a year, only when there is something new and useful.",
+      "1 to 2 emails a month, only when there is something new and useful.",
     );
+  });
+
+  it("l'ancienne cadence annuelle ne revient dans aucun texte servi", () => {
+    for (const f of LISTE_FERMEE) {
+      expect(texteServi(f), f).not.toMatch(
+        /quelques (lettres|e-mails) par an|a few emails a year/i,
+      );
+    }
   });
 
   it("l'e-mail « Votre guide » et la page de confirmation la lisent depuis la source", () => {

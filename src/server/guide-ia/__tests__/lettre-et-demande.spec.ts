@@ -117,7 +117,7 @@ describe("enregistrerDemandeGuide — la nature de l'adresse décide, côté ser
     expect(creation).toMatchObject({
       status: "confirmed",
       consentFormRef: "newsletter-guide-ia",
-      consentVersion: "lettre-guide-v3-2026-09-24",
+      consentVersion: "lettre-guide-v4-2026-09-26",
     });
     expect(creation["confirmedAt"]).toBeInstanceOf(Date);
     expect(recordConsentEvent).toHaveBeenCalledWith(
@@ -125,7 +125,7 @@ describe("enregistrerDemandeGuide — la nature de l'adresse décide, côté ser
         email: PERSO,
         action: "optin",
         formRef: "newsletter-guide-ia",
-        consentVersion: "lettre-guide-v3-2026-09-24",
+        consentVersion: "lettre-guide-v4-2026-09-26",
         ip: "192.0.2.1",
         userAgent: "navigateur-de-test",
       }),
@@ -139,7 +139,7 @@ describe("enregistrerDemandeGuide — la nature de l'adresse décide, côté ser
     expect(recordConsentEvent).toHaveBeenCalledWith(
       expect.objectContaining({
         action: "information",
-        consentVersion: "guide-mention-pro-v1-2026-09-24",
+        consentVersion: "guide-mention-pro-v2-2026-09-26",
       }),
     );
     // L'e-mail porte le lien de désinscription (et l'en-tête One-Click).
@@ -311,7 +311,7 @@ describe("inscrireALaLettre", () => {
     expect(appel.data).not.toHaveProperty("unsubscribedAt");
     expect(appel.data).not.toHaveProperty("unsubscribeToken");
     expect(appel.data["confirmToken"]).toMatch(/^[0-9a-f]{64}$/);
-    expect(appel.data["consentVersion"]).toBe("lettre-reinscription-email-v2-2026-09-25");
+    expect(appel.data["consentVersion"]).toBe("lettre-reinscription-email-v3-2026-09-26");
     // Aucune preuve : rien n'a été accepté.
     expect(recordConsentEvent).not.toHaveBeenCalled();
   });

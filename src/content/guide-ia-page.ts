@@ -304,7 +304,7 @@ const FR: TextesPageGuide = {
       ],
     ],
     lettre:
-      "Avec une adresse professionnelle, ou si vous cochez la case, vous recevrez ensuite quelques lettres par an, à chaque nouveauté utile. Désinscription en un clic, à tout moment. Quand vous ouvrez le guide depuis l'e-mail, votre adresse est aussi enregistrée dans notre outil de suivi de la relation client ; vous pouvez vous y opposer à tout moment.",
+      "Avec une adresse professionnelle, ou si vous cochez la case, vous recevrez ensuite 1 à 2 e-mails par mois, à chaque nouveauté utile. Désinscription en un clic, à tout moment. Quand vous ouvrez le guide depuis l'e-mail, votre adresse est aussi enregistrée dans notre outil de suivi de la relation client ; vous pouvez vous y opposer à tout moment.",
   },
   apercu: {
     surtitre: "Aperçu",
@@ -447,7 +447,7 @@ const FR: TextesPageGuide = {
       {
         question: "Le guide est-il vraiment gratuit ?",
         answer:
-          "Oui. Il vous est envoyé par e-mail dès que vous indiquez votre adresse. Avec une adresse professionnelle, vous recevez aussi quelques lettres par an, à chaque nouveauté utile, dont vous pouvez vous désinscrire en un clic ; avec une adresse personnelle, seulement si vous cochez la case.",
+          "Oui. Il vous est envoyé par e-mail dès que vous indiquez votre adresse. Avec une adresse professionnelle, vous recevez aussi 1 à 2 e-mails par mois, à chaque nouveauté utile, dont vous pouvez vous désinscrire en un clic ; avec une adresse personnelle, seulement si vous cochez la case.",
       },
       {
         question: "Faut-il une adresse e-mail professionnelle ?",
@@ -456,7 +456,7 @@ const FR: TextesPageGuide = {
       {
         question: "Pourquoi demander mon e-mail ?",
         answer:
-          "Pour vous envoyer le guide : l'e-mail contient votre lien de téléchargement. Avec une adresse professionnelle, vous recevez aussi quelques lettres par an, à chaque nouveauté utile ; avec une adresse personnelle, seulement si vous cochez la case. Désinscription en un clic, à tout moment. Quand vous ouvrez le guide depuis l'e-mail, votre adresse est aussi enregistrée dans notre outil de suivi de la relation client ; vous pouvez vous y opposer à tout moment. Détails dans notre politique de confidentialité.",
+          "Pour vous envoyer le guide : l'e-mail contient votre lien de téléchargement. Avec une adresse professionnelle, vous recevez aussi 1 à 2 e-mails par mois, à chaque nouveauté utile ; avec une adresse personnelle, seulement si vous cochez la case. Désinscription en un clic, à tout moment. Quand vous ouvrez le guide depuis l'e-mail, votre adresse est aussi enregistrée dans notre outil de suivi de la relation client ; vous pouvez vous y opposer à tout moment. Détails dans notre politique de confidentialité.",
       },
       {
         question: "Je n'ai rien reçu. Que faire ?",
@@ -527,7 +527,7 @@ const EN: TextesPageGuide = {
       ],
     ],
     lettre:
-      "With a business address, or if you tick the box, you will then receive a few emails a year, only when there is something new and useful. One-click unsubscribe, at any time. When you open the guide from the email, your address is also recorded in our customer relationship tool; you can object at any time.",
+      "With a business address, or if you tick the box, you will then receive 1 to 2 emails a month, only when there is something new and useful. One-click unsubscribe, at any time. When you open the guide from the email, your address is also recorded in our customer relationship tool; you can object at any time.",
   },
   apercu: {
     surtitre: "Preview",
@@ -661,7 +661,7 @@ const EN: TextesPageGuide = {
       {
         question: "Is the guide really free?",
         answer:
-          "Yes. It is sent to you by email as soon as you enter your address. With a business address, you also receive a few emails a year, only when there is something new and useful, which you can unsubscribe from in one click; with a personal address, only if you tick the box.",
+          "Yes. It is sent to you by email as soon as you enter your address. With a business address, you also receive 1 to 2 emails a month, only when there is something new and useful, which you can unsubscribe from in one click; with a personal address, only if you tick the box.",
       },
       {
         question: "Do I need a business email address?",
@@ -670,7 +670,7 @@ const EN: TextesPageGuide = {
       {
         question: "Why do you ask for my email?",
         answer:
-          "To send you the guide: the email holds your download link. With a business address, you also receive a few emails a year, only when there is something new and useful; with a personal address, only if you tick the box. One-click unsubscribe, at any time. When you open the guide from the email, your address is also recorded in our customer relationship tool; you can object at any time. Details in our privacy policy.",
+          "To send you the guide: the email holds your download link. With a business address, you also receive 1 to 2 emails a month, only when there is something new and useful; with a personal address, only if you tick the box. One-click unsubscribe, at any time. When you open the guide from the email, your address is also recorded in our customer relationship tool; you can object at any time. Details in our privacy policy.",
       },
       {
         question: "I received nothing. What should I do?",
