@@ -15,7 +15,9 @@ import { initialiserSentryWorker } from "./lib/sentry-worker-init";
 import { startEmailWorker } from "./workers/email-worker";
 import { startRetentionPurgeWorker } from "./workers/retention-purge-worker";
 import { startCalendlyPollWorker } from "./workers/calendly-poll-worker";
+import { canalPartnersOuvert } from "../partners-sync/config";
 import { startCrmSyncWorker } from "./workers/crm-sync-worker";
+import { programmerRelaisPartners, startPartnersSyncWorker } from "./workers/partners-sync-worker";
 import { startVivierCronsWorker } from "./workers/vivier-crons-worker";
 import { startGuideIaCronsWorker } from "./workers/guide-ia-crons-worker";
 import { startContentGenWorker } from "./workers/content-gen-worker";
@@ -100,6 +102,9 @@ async function main() {
     // `CRM_SYNC_ENABLED` n'est pas à "true" : aucune ligne d'outbox n'existe,
     // donc le balayage ne trouve rien et aucun appel réseau n'est émis.
     startCrmSyncWorker(),
+    // Relais vers Axion Partners (INT-T02). INEXISTANT sans `PARTNERS_SYNC_ENABLED=true` : ni
+    // worker, ni job répété — le constructeur refuse d'ailleurs de démarrer canal fermé.
+    ...(canalPartnersOuvert() ? [startPartnersSyncWorker()] : []),
     // Vivier candidats (lot L4, 2026-08-14) — passage quotidien qui intègre au
     // vivier les candidatures dont la fenêtre d'opposition de 30 jours est
     // échue. Inerte tant que personne n'a été informé : `vivierInfoSentAt` est
@@ -177,6 +182,8 @@ async function main() {
   ];
 
   await bootRepeatableJobs();
+  // INT-T02 — même verrou : drapeau fermé, aucune file `partners-sync` n'est créée.
+  if (canalPartnersOuvert()) await programmerRelaisPartners();
 
   console.log(`✓ ${workers.length} workers running. Cron jobs scheduled.`);
 

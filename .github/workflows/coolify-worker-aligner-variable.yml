@@ -31,6 +31,11 @@ on:
         type: choice
         options:
           - IP_HASH_SALT
+          # INT-T02 — le relais vers Axion Partners tourne dans le WORKER et signe
+          # chaque envoi avec ce secret ; le site le pose d'abord (voisin), puis
+          # on le recopie ici. `PARTNERS_RELECTURE_SECRET` n'y va PAS : seule la
+          # route web `/api/partners/evenements` le lit.
+          - PARTNERS_SYNC_SECRET
       confirmer:
         description: "Taper OUI pour écrire réellement. Toute autre valeur = simulation."
         required: true
