@@ -6,6 +6,7 @@ import {
   normaliserMontant,
   parseScreeningQuestions,
   prixInvalides,
+  valeurAffichee,
 } from "../screening-answers";
 
 const QUESTIONS = parseScreeningQuestions([
@@ -127,5 +128,23 @@ describe("réponses regroupées en lignes Telegram (plafond de 10 lignes)", () =
   it("une réponse sur plusieurs lignes ne crée jamais de ligne de plus", () => {
     const out = labeledAnswers(Q, { liens: "a\n\nb\n c" });
     expect(out[0]?.value).toBe("a · b · c");
+  });
+});
+
+describe("réponse affichée en console (même lecture que Telegram)", () => {
+  const prix = { id: "p", labelFr: "Prix", type: "price" as const };
+  const materiel = { id: "m", labelFr: "Matériel", type: "short" as const };
+
+  it("un prix se lit toujours « N € », quelle que soit la saisie", () => {
+    // Le 2026-09-26, la console montrait « 250 » et « 450 € » pour le même candidat.
+    expect(valeurAffichee(prix, "250")).toBe("250 €");
+    expect(valeurAffichee(prix, "450 €")).toBe("450 €");
+    expect(valeurAffichee(prix, "1 200,50")).toBe("1200,50 €");
+  });
+
+  it("un prix illisible (saisi avant le contrôle) et une autre réponse restent tels quels", () => {
+    expect(valeurAffichee(prix, "200 à 300")).toBe("200 à 300");
+    expect(valeurAffichee(materiel, "250")).toBe("250");
+    expect(valeurAffichee(undefined, "250")).toBe("250");
   });
 });
