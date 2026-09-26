@@ -1214,6 +1214,16 @@ jobs:
             exit 0
           fi
 
+          # 2026-09-26 — `cancelled` n'est PAS un échec : c'est la fusion suivante
+          # qui annule ce run (`concurrency: cancel-in-progress`) et elle
+          # déploiera à sa place. Mesuré : Sentry AXION-IA-R, 31 « Échec
+          # déploiement » en 14 jours, tous des runs annulés — zéro vrai échec.
+          # Une alarme qui sonne à chaque fusion rapprochée finit ignorée.
+          if [ "${BUILD_RESULT}" = "cancelled" ] || [ "${DEPLOY_RESULT}" = "cancelled" ]; then
+            echo "::notice::Run annulé (remplacé par un run plus récent) — aucune notification."
+            exit 0
+          fi
+
           # Succès = build ET deploy OK. `skipped` (workflow_dispatch avec
           # skip_deploy) n'est pas un échec et ne doit pas déclencher d'alarme.
           if [ "${BUILD_RESULT}" = "success" ] && { [ "${DEPLOY_RESULT}" = "success" ] || [ "${DEPLOY_RESULT}" = "skipped" ]; }; then
