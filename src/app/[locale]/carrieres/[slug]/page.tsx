@@ -349,7 +349,10 @@ export default async function JobOfferDetailPage({
       {jobPosting ? <JsonLd data={jobPosting} scriptId="jsonld-jobposting" /> : null}
       <JsonLd data={webPage} scriptId="jsonld-webpage" />
 
-      <Section tone="halo-warm">
+      {/* Haut de page : l'espacement d'un hero (`Section` titleAs="h1"), pas
+          celui d'une section de contenu — 96 px de vide sur mobile avant le
+          fil d'Ariane (mesuré sur iPhone 13, 2026-09-26). */}
+      <Section tone="halo-warm" className="pt-12 sm:pt-14 lg:pt-20">
         <Container>
           <Breadcrumbs
             items={[
