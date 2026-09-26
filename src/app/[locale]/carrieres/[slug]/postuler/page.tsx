@@ -11,6 +11,7 @@ import { Section } from "@/components/layout/Section";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata } from "@/lib/seo";
 import { getJobOfferBySlug, isOfferOpen } from "@/lib/careers/job-offers";
+import { isVideoFreelanceOffer } from "@/lib/careers/video-editor-offer";
 import { JobApplicationForm, type ScreeningQuestion } from "@/components/forms/JobApplicationForm";
 
 export const revalidate = 3600;
@@ -50,6 +51,8 @@ export default async function PostulerPage({
   if (!offer || !isOfferOpen(offer)) notFound();
 
   const title = isFr ? offer.titleFr : offer.titleEn;
+  // Offres vidéo freelance : formulaire court (ni CV, ni photo, ni lettre).
+  const compact = isVideoFreelanceOffer(offer.slug);
   const screeningQuestions: ScreeningQuestion[] = Array.isArray(offer.screeningQuestions)
     ? (offer.screeningQuestions as unknown as ScreeningQuestion[])
     : [];
@@ -91,14 +94,18 @@ export default async function PostulerPage({
             <strong className="text-fg">{title}</strong>.
           </p>
           <ul className="text-fg-muted mt-5 flex flex-wrap justify-center gap-2 text-sm">
-            {(isFr
-              ? [
-                  "📄 CV optionnel",
-                  "⚡ Réponse rapide",
-                  "🙌 Process simple",
-                  "🔒 Données protégées",
-                ]
-              : ["📄 CV optional", "⚡ Fast reply", "🙌 Simple process", "🔒 Data protected"]
+            {(compact
+              ? isFr
+                ? ["⏱️ 2 minutes", "📄 Sans CV", "💶 Tes prix", "🔗 Tes réalisations"]
+                : ["⏱️ 2 minutes", "📄 No CV", "💶 Your rates", "🔗 Your work"]
+              : isFr
+                ? [
+                    "📄 CV optionnel",
+                    "⚡ Réponse rapide",
+                    "🙌 Process simple",
+                    "🔒 Données protégées",
+                  ]
+                : ["📄 CV optional", "⚡ Fast reply", "🙌 Simple process", "🔒 Data protected"]
             ).map((chip) => (
               <li key={chip} className="border-border bg-paper rounded-full border px-3 py-1">
                 {chip}
@@ -114,6 +121,7 @@ export default async function PostulerPage({
             requiresVehicle={offer.requiresVehicle}
             screeningQuestions={screeningQuestions}
             freelance={offer.employmentType === "CONTRACTOR"}
+            compact={compact}
           />
         </div>
       </Container>

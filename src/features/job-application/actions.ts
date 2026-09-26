@@ -31,6 +31,7 @@ import {
   labeledAnswers,
   missingRequired,
   parseScreeningQuestions,
+  prixInvalides,
 } from "@/lib/careers/screening-answers";
 import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
 import { enqueueEmail } from "@/server/queue/queues";
@@ -293,6 +294,14 @@ export async function submitJobApplicationAction(
     return {
       ok: false,
       error: `Réponse obligatoire manquante : ${manquante.labelFr ?? manquante.labelEn ?? manquante.id}`,
+    };
+  }
+  // Un prix = UN montant. Une fourchette laisserait la négociation ouverte.
+  const prixFaux = prixInvalides(questions, answers)[0];
+  if (prixFaux) {
+    return {
+      ok: false,
+      error: `Indique un seul montant en euros, sans fourchette : ${prixFaux.labelFr ?? prixFaux.labelEn ?? prixFaux.id}`,
     };
   }
 

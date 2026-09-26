@@ -15,6 +15,18 @@ export interface ScreeningQuestion {
   labelFr?: string;
   labelEn?: string;
   required?: boolean;
+  /**
+   * Forme du champ (2026-09-26, demande Will) :
+   *  - `price` : UN SEUL montant en euros, jamais une fourchette. « 200 à
+   *    300 € » laisse la négociation ouverte ; Will veut le prix exact de
+   *    chaque prestation pour comparer les candidats. Refusé côté serveur
+   *    s'il ne s'agit pas d'un nombre.
+   *  - `short` : une ligne (matériel, ville de départ…).
+   *  - absent : zone de texte libre, comme avant.
+   * Une valeur inconnue retombe sur la zone de texte : un JSON saisi en
+   * console ne doit jamais casser le formulaire.
+   */
+  type?: "price" | "short";
 }
 
 /** Longueur maximale d'une réponse stockée. */
@@ -43,6 +55,33 @@ export function collectAnswers(formData: FormData): Record<string, string> {
   return answers;
 }
 
+/**
+ * Un montant, et un seul : « 250 », « 250 € », « 1 200 », « 49,90 ». Tout ce
+ * qui ressemble à une fourchette (« 200-300 », « 200 à 300 », « à partir de »)
+ * est refusé.
+ */
+const MONTANT = /^\d{1,3}(?:[ \u00a0\u202f]?\d{3})*(?:[.,]\d{1,2})?$/;
+
+/** Le montant nettoyé (« 1 200,50 € » → « 1200,50 »), ou `null` s'il n'en est pas un. */
+export function normaliserMontant(brut: string): string | null {
+  const v = brut
+    .trim()
+    .replace(/\s*(€|eur|euros?)\s*$/i, "")
+    .trim();
+  if (!MONTANT.test(v)) return null;
+  return v.replace(/[ \u00a0\u202f]/g, "");
+}
+
+/** Questions `price` dont la réponse n'est pas UN montant. */
+export function prixInvalides(
+  questions: ScreeningQuestion[],
+  answers: Record<string, string>,
+): ScreeningQuestion[] {
+  return questions.filter(
+    (q) => q.type === "price" && answers[q.id] && normaliserMontant(answers[q.id]!) === null,
+  );
+}
+
 /** Questions obligatoires restées sans réponse. */
 export function missingRequired(
   questions: ScreeningQuestion[],
@@ -63,8 +102,11 @@ export function labeledAnswers(
   maxLen = 400,
 ): Array<{ label: string; value: string }> {
   return questions.flatMap((q) => {
-    const v = answers[q.id]?.trim();
-    if (!v) return [];
+    const brut = answers[q.id]?.trim();
+    if (!brut) return [];
+    // Un prix se lit « 250 € » dans Telegram, quelle que soit la saisie.
+    const montant = q.type === "price" ? normaliserMontant(brut) : null;
+    const v = montant !== null ? `${montant} €` : brut;
     return [
       {
         label: q.labelFr ?? q.labelEn ?? q.id,

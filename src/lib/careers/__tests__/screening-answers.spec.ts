@@ -3,7 +3,9 @@ import {
   collectAnswers,
   labeledAnswers,
   missingRequired,
+  normaliserMontant,
   parseScreeningQuestions,
+  prixInvalides,
 } from "../screening-answers";
 
 const QUESTIONS = parseScreeningQuestions([
@@ -44,6 +46,53 @@ describe("questions propres à l'offre", () => {
     expect(out).toEqual([
       { label: "Prix vidéo verticale", value: `${"x".repeat(10)}…` },
       { label: "Liens d'exemples", value: "https://a" },
+    ]);
+  });
+});
+
+describe("prix : UN montant, jamais une fourchette (demande Will 2026-09-26)", () => {
+  const Q = parseScreeningQuestions([
+    { id: "journee", labelFr: "Prix journée", required: true, type: "price" },
+    { id: "materiel", labelFr: "Matériel", type: "short" },
+  ]);
+
+  it.each([
+    ["250", "250"],
+    ["250 €", "250"],
+    ["250€", "250"],
+    ["1 200", "1200"],
+    ["1 200 euros", "1200"],
+    ["49,90", "49,90"],
+    ["80.5", "80.5"],
+  ])("accepte « %s »", (saisie, attendu) => {
+    expect(normaliserMontant(saisie)).toBe(attendu);
+  });
+
+  it.each([
+    "200-300",
+    "200 à 300",
+    "200/300",
+    "à partir de 200",
+    "entre 200 et 300",
+    "200 ou 250",
+    "sur devis",
+    "",
+  ])("refuse « %s »", (saisie) => {
+    expect(normaliserMontant(saisie)).toBeNull();
+  });
+
+  it("une fourchette dans un champ prix est signalée ; le texte libre ne l'est jamais", () => {
+    expect(
+      prixInvalides(Q, { journee: "200 à 300", materiel: "Sony FX3 et 2 à 3 micros" }).map(
+        (q) => q.id,
+      ),
+    ).toEqual(["journee"]);
+    expect(prixInvalides(Q, { journee: "250", materiel: "Sony FX3" })).toEqual([]);
+  });
+
+  it("Telegram lit un prix « 250 € », quelle que soit la saisie", () => {
+    expect(labeledAnswers(Q, { journee: "1 200 euros" })).toEqual([
+      { label: "Prix journée", value: "1200 €" },
     ]);
   });
 });
