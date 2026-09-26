@@ -41,7 +41,9 @@ const SEVERITY_EMOJI: Record<NotificationSeverity, string> = {
 const THEME: Record<TelegramGroup, { emoji: string; label: string }> = {
   calendly: { emoji: "📅", label: "CALENDLY" },
   candidatures: { emoji: "💼", label: "CANDIDATURE" },
-  "monteur-video": { emoji: "🎬", label: "MONTEUR VIDÉO" },
+  // Monteurs ET vidéastes de tournage depuis le 2026-09-26 : le même salon
+  // reçoit les deux offres vidéo freelance, la ligne « Offre » les distingue.
+  "monteur-video": { emoji: "🎬", label: "VIDÉO FREELANCE" },
   "commercial-memo": { emoji: "🧲", label: "COMMERCIAL MÉMO" },
   presse: { emoji: "📰", label: "PRESSE" },
   investisseurs: { emoji: "💰", label: "INVESTISSEUR" },
@@ -64,7 +66,7 @@ const TITLES: Record<NotificationCategory, string> = {
   PRESS_REQUEST_SUBMITTED: "Demande presse / média",
   RECRUITMENT_RECEIVED: "Candidature spontanée",
   JOB_APPLICATION_RECEIVED: "Candidature à une offre",
-  VIDEO_EDITOR_APPLICATION_RECEIVED: "Candidature monteur vidéo",
+  VIDEO_EDITOR_APPLICATION_RECEIVED: "Candidature vidéo freelance (montage ou tournage)",
   // « apporteur », jamais « commercial » (2026-09-19) : la personne recommande,
   // elle ne vend pas. Titre partagé avec WhatsApp, qui ne voit que la catégorie.
   COMMERCIAL_APPLICATION_RECEIVED: "Nouveau candidat apporteur",

@@ -25,7 +25,7 @@ import { parseLocale } from "@/lib/schemas/locale";
 import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
 import { provenanceDepuisLeTunnel } from "@/lib/careers/provenance";
 import { notify } from "@/server/notifications";
-import { isVideoEditorOffer } from "@/lib/careers/video-editor-offer";
+import { isVideoFreelanceOffer } from "@/lib/careers/video-editor-offer";
 import {
   collectAnswers,
   labeledAnswers,
@@ -487,11 +487,12 @@ export async function submitJobApplicationAction(
     // Rouvrir cet envoi exige sa validation explicite ; la garde statique
     // `les-candidatures-ne-partent-pas-au-crm.spec.ts` rougit sinon.
 
-    // 9. Telegram (+ WhatsApp pour l'offre monteur vidéo) — catégorie séparée
-    // pour cette offre : salon 🎬 dédié, pas mélangée aux autres candidatures.
+    // 9. Telegram (+ WhatsApp pour les offres vidéo freelance : montage et
+    // tournage) — catégorie séparée : salon 🎬 dédié, pas mélangée aux autres
+    // candidatures.
     await notify({
       category:
-        offer && isVideoEditorOffer(offer.slug)
+        offer && isVideoFreelanceOffer(offer.slug)
           ? "VIDEO_EDITOR_APPLICATION_RECEIVED"
           : "JOB_APPLICATION_RECEIVED",
       payload: {

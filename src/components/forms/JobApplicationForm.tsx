@@ -26,8 +26,10 @@ import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 import { HoneypotField } from "@/components/forms/HoneypotField";
 import { isStaleServerActionError } from "@/lib/forms/form-errors";
 
+// 16 px sous `sm` : en dessous, Safari iOS zoome sur le champ dès qu'on le
+// touche (garde : `formulaires-mobile-first.spec.ts`).
 const FIELD =
-  "border-border bg-bg focus:border-terracotta focus:ring-terracotta/20 w-full rounded-lg border px-3.5 py-2.5 text-sm outline-none focus:ring-4";
+  "border-border bg-bg focus:border-terracotta focus:ring-terracotta/20 w-full rounded-lg border px-3.5 py-2.5 text-[16px] sm:text-sm outline-none focus:ring-4";
 const LABEL = "text-fg mb-1.5 block text-sm font-medium";
 const SECTION = "font-serif text-xl font-semibold border-l-4 border-terracotta pl-3 leading-tight";
 

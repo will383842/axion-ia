@@ -54,8 +54,11 @@ export default async function PostulerPage({
     ? (offer.screeningQuestions as unknown as ScreeningQuestion[])
     : [];
 
+  // Haut de page : l'espacement d'un hero (`Section` titleAs="h1"), pas celui
+  // d'une section de contenu — 96 px de vide sur mobile avant le fil d'Ariane
+  // (mesuré sur iPhone 13, 2026-09-26).
   return (
-    <Section tone="halo-cool">
+    <Section tone="halo-cool" className="pt-12 sm:pt-14 lg:pt-20">
       <Container>
         <Breadcrumbs
           items={[

@@ -1143,6 +1143,37 @@
         "LB",
         "HT"
       ]
+    },
+    {
+      "slug": "videaste-freelance-tournage",
+      "num": 56,
+      "titre": "Vidéaste freelance tournage — captation ponctuelle, sans montage",
+      "categorie": "design",
+      "emploi": "CONTRACTOR",
+      "type_loc": "itinerant",
+      "sal_min": 0,
+      "sal_max": 0,
+      "sal_note": "tarif proposé par le candidat (demi-journée, journée, soirée) — jamais affiché",
+      "missions": [
+        "filmer sur place formations, interventions, interviews et événements",
+        "varier les plans (large, serré, détails, second angle) et soigner le son",
+        "tourner en vertical, en horizontal ou les deux selon le brief",
+        "livrer les rushes bruts et le son, sans montage, le jour même ou le lendemain"
+      ],
+      "profil": [],
+      "tech": false,
+      "skills": [
+        "captation vidéo (smartphone ou caméra)",
+        "prise de son (micro-cravate, micro directionnel)",
+        "cadrage et variété de plans",
+        "formats vertical et horizontal",
+        "discrétion en situation réelle"
+      ],
+      "media": true,
+      "group": "media",
+      "workMode": "on_site",
+      "multiCity": true,
+      "city": null
     }
   ],
   "cities": [
