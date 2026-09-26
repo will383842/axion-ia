@@ -527,14 +527,21 @@ async function executePublishPipeline(
   // REFRESH est intact (rename historisé géré plus bas). Une race rarissime
   // entre ce check et l'insert reste couverte par la contrainte DB.
   if (!refreshArticleId) {
-    const freeSlug = await resolveNewArticleSlug(slugCandidate, async (slug) =>
-      Boolean(
-        await prisma.articleTranslation.findFirst({
+    // Pris = slug d'un article existant OU ancien slug redirigé (301) : un
+    // doublon fusionné le 2026-09-26 ne doit pas renaître sous son ancienne URL.
+    const freeSlug = await resolveNewArticleSlug(slugCandidate, async (slug) => {
+      const [current, redirected] = await Promise.all([
+        prisma.articleTranslation.findFirst({
           where: { locale: "fr", slug },
           select: { id: true },
         }),
-      ),
-    );
+        prisma.articleSlugHistory.findFirst({
+          where: { oldLocale: "fr", oldSlug: slug },
+          select: { id: true },
+        }),
+      ]);
+      return Boolean(current ?? redirected);
+    });
     if (!freeSlug) {
       await logStep(
         cgJob.id,
