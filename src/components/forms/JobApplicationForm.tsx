@@ -84,12 +84,10 @@ const FIELDSET = "min-w-0 space-y-4";
 const FILE_TRIGGER =
   "border-terracotta/45 bg-terracotta-soft/40 text-terracotta-deep hover:bg-terracotta-soft hover:border-terracotta focus-within:ring-terracotta/30 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed px-4 py-3.5 text-center text-sm font-semibold shadow-sm transition-colors focus-within:ring-4";
 
-export interface ScreeningQuestion {
-  id: string;
-  labelFr?: string;
-  labelEn?: string;
-  required?: boolean;
-}
+// Une seule définition, partagée avec le serveur (qui refuse une fourchette
+// là où la question attend un prix).
+export type { ScreeningQuestion } from "@/lib/careers/screening-answers";
+import type { ScreeningQuestion } from "@/lib/careers/screening-answers";
 
 interface Props {
   /**
@@ -110,6 +108,15 @@ interface Props {
    * inutilisable.
    */
   freelance?: boolean;
+  /**
+   * Formulaire COURT (offres vidéo freelance, demande Will 2026-09-26) : ni
+   * CV, ni photo, ni lettre de motivation, ni profil (poste actuel,
+   * expérience, disponibilité, LinkedIn, prétention). Restent les
+   * coordonnées, la ville, et les questions de l'offre — les prix, le
+   * matériel et les liens vers ce que le candidat a déjà fait. Tout le reste
+   * faisait abandonner pour rien.
+   */
+  compact?: boolean;
 }
 
 export function JobApplicationForm({
@@ -118,6 +125,7 @@ export function JobApplicationForm({
   requiresVehicle,
   screeningQuestions,
   freelance = false,
+  compact = false,
 }: Props) {
   const locale = useLocale();
   const isFr = locale === "fr";
@@ -287,25 +295,27 @@ export function JobApplicationForm({
       <fieldset className={FIELDSET}>
         <legend className={SECTION}>{isFr ? "👋 Toi & contact" : "👋 You & contact"}</legend>
         <div className="grid gap-4 sm:grid-cols-3">
-          <div>
-            <label htmlFor="civility" className={LABEL}>
-              {isFr ? "Civilité" : "Title"}
-            </label>
-            {/* Facultative, et AUCUNE valeur présélectionnée : la CJUE
-                (Mousse c. SNCF, C-394/23, janvier 2025) a jugé que collecter
-                systématiquement la civilité n'est pas « nécessaire à
-                l'exécution du contrat ». Un champ vide par défaut est la
-                preuve qu'il ne l'est pas.
-                Les valeurs STOCKÉES restent « Mme » et « M. » : les
-                candidatures déjà en base les utilisent, et changer la valeur
-                rendrait les anciennes lignes incohérentes avec les nouvelles.
-                Seuls les libellés affichés sont en toutes lettres. */}
-            <select id="civility" name="civility" className={FIELD} disabled={submitting}>
-              <option value="">{isFr ? "— non précisé" : "— not specified"}</option>
-              <option value="Mme">{isFr ? "Madame" : "Ms"}</option>
-              <option value="M.">{isFr ? "Monsieur" : "Mr"}</option>
-            </select>
-          </div>
+          {compact ? null : (
+            <div>
+              <label htmlFor="civility" className={LABEL}>
+                {isFr ? "Civilité" : "Title"}
+              </label>
+              {/* Facultative, et AUCUNE valeur présélectionnée : la CJUE
+                  (Mousse c. SNCF, C-394/23, janvier 2025) a jugé que collecter
+                  systématiquement la civilité n'est pas « nécessaire à
+                  l'exécution du contrat ». Un champ vide par défaut est la
+                  preuve qu'il ne l'est pas.
+                  Les valeurs STOCKÉES restent « Mme » et « M. » : les
+                  candidatures déjà en base les utilisent, et changer la valeur
+                  rendrait les anciennes lignes incohérentes avec les nouvelles.
+                  Seuls les libellés affichés sont en toutes lettres. */}
+              <select id="civility" name="civility" className={FIELD} disabled={submitting}>
+                <option value="">{isFr ? "— non précisé" : "— not specified"}</option>
+                <option value="Mme">{isFr ? "Madame" : "Ms"}</option>
+                <option value="M.">{isFr ? "Monsieur" : "Mr"}</option>
+              </select>
+            </div>
+          )}
           <div>
             <label htmlFor="firstName" className={LABEL}>
               {isFr ? "Prénom *" : "First name *"}
@@ -425,106 +435,171 @@ export function JobApplicationForm({
 
       {/* 3. Profil + questions de l'offre */}
       <fieldset className={FIELDSET}>
-        <legend className={SECTION}>{isFr ? "💼 Ton profil" : "💼 Your profile"}</legend>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label htmlFor="currentRole" className={LABEL}>
-              {isFr ? "Poste / expérience actuelle" : "Current role / experience"}
-            </label>
-            <input
-              id="currentRole"
-              name="currentRole"
-              autoComplete="organization-title"
-              maxLength={200}
-              className={FIELD}
-              disabled={submitting}
-            />
+        <legend className={SECTION}>
+          {compact
+            ? isFr
+              ? "💶 Tes prix et ce que tu as déjà fait"
+              : "💶 Your rates and past work"
+            : isFr
+              ? "💼 Ton profil"
+              : "💼 Your profile"}
+        </legend>
+        {compact ? null : (
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label htmlFor="currentRole" className={LABEL}>
+                {isFr ? "Poste / expérience actuelle" : "Current role / experience"}
+              </label>
+              <input
+                id="currentRole"
+                name="currentRole"
+                autoComplete="organization-title"
+                maxLength={200}
+                className={FIELD}
+                disabled={submitting}
+              />
+            </div>
+            <div>
+              <label htmlFor="experienceBand" className={LABEL}>
+                {isFr ? "Années d'expérience" : "Years of experience"}
+              </label>
+              <select
+                id="experienceBand"
+                name="experienceBand"
+                className={FIELD}
+                disabled={submitting}
+              >
+                <option value="">—</option>
+                <option value="0-2">0–2</option>
+                <option value="2-5">2–5</option>
+                <option value="5-10">5–10</option>
+                <option value="10+">10+</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="availability" className={LABEL}>
+                {isFr ? "Disponibilité" : "Availability"}
+              </label>
+              <input
+                id="availability"
+                name="availability"
+                maxLength={120}
+                className={FIELD}
+                disabled={submitting}
+                placeholder={isFr ? "immédiate, préavis…" : "immediate, notice…"}
+              />
+            </div>
+            <div>
+              <label htmlFor="linkedinUrl" className={LABEL}>
+                {isFr ? "LinkedIn / portfolio" : "LinkedIn / portfolio"}
+              </label>
+              <input
+                id="linkedinUrl"
+                name="linkedinUrl"
+                autoComplete="url"
+                inputMode="url"
+                type="url"
+                maxLength={255}
+                className={FIELD}
+                disabled={submitting}
+              />
+            </div>
+            <div>
+              <label htmlFor="salaryExpectation" className={LABEL}>
+                {isFr ? "Prétention de revenus — optionnel" : "Salary expectation — optional"}
+              </label>
+              <input
+                id="salaryExpectation"
+                name="salaryExpectation"
+                maxLength={80}
+                className={FIELD}
+                disabled={submitting}
+                placeholder={
+                  freelance
+                    ? isFr
+                      ? "ex. prix par vidéo, par jour ou par mission"
+                      : "e.g. price per video, per day or per project"
+                    : isFr
+                      ? "ex. 35–42 k€ brut/an" /* price-exempt: fourchette salariale marché candidat, pas un prix Axion-IA */
+                      : "e.g. 35–42 k€ gross/yr" /* price-exempt: market salary range, not an Axion-IA price */
+                }
+              />
+            </div>
           </div>
-          <div>
-            <label htmlFor="experienceBand" className={LABEL}>
-              {isFr ? "Années d'expérience" : "Years of experience"}
-            </label>
-            <select
-              id="experienceBand"
-              name="experienceBand"
-              className={FIELD}
-              disabled={submitting}
-            >
-              <option value="">—</option>
-              <option value="0-2">0–2</option>
-              <option value="2-5">2–5</option>
-              <option value="5-10">5–10</option>
-              <option value="10+">10+</option>
-            </select>
-          </div>
-          <div>
-            <label htmlFor="availability" className={LABEL}>
-              {isFr ? "Disponibilité" : "Availability"}
-            </label>
-            <input
-              id="availability"
-              name="availability"
-              maxLength={120}
-              className={FIELD}
-              disabled={submitting}
-              placeholder={isFr ? "immédiate, préavis…" : "immediate, notice…"}
-            />
-          </div>
-          <div>
-            <label htmlFor="linkedinUrl" className={LABEL}>
-              {isFr ? "LinkedIn / portfolio" : "LinkedIn / portfolio"}
-            </label>
-            <input
-              id="linkedinUrl"
-              name="linkedinUrl"
-              autoComplete="url"
-              inputMode="url"
-              type="url"
-              maxLength={255}
-              className={FIELD}
-              disabled={submitting}
-            />
-          </div>
-          <div>
-            <label htmlFor="salaryExpectation" className={LABEL}>
-              {isFr ? "Prétention de revenus — optionnel" : "Salary expectation — optional"}
-            </label>
-            <input
-              id="salaryExpectation"
-              name="salaryExpectation"
-              maxLength={80}
-              className={FIELD}
-              disabled={submitting}
-              placeholder={
-                freelance
-                  ? isFr
-                    ? "ex. prix par vidéo, par jour ou par mission"
-                    : "e.g. price per video, per day or per project"
-                  : isFr
-                    ? "ex. 35–42 k€ brut/an" /* price-exempt: fourchette salariale marché candidat, pas un prix Axion-IA */
-                    : "e.g. 35–42 k€ gross/yr" /* price-exempt: market salary range, not an Axion-IA price */
-              }
-            />
-          </div>
-        </div>
+        )}
 
+        {/* Demande Will 2026-09-26 : le candidat sait qu'il est en concurrence :
+            c'est ce qui le pousse à donner
+            directement son meilleur tarif, sans fermer la porte à l'échange. */}
+        {compact && screeningQuestions.some((q) => q.type === "price") ? (
+          <p className="border-terracotta/40 bg-terracotta-soft/30 text-fg rounded-lg border px-3.5 py-2.5 text-sm">
+            {isFr
+              ? "On compare toutes les propositions : indique directement ton meilleur prix."
+              : "We compare every proposal: give your best price straight away."}
+          </p>
+        ) : null}
         {screeningQuestions.map((q) => (
           <div key={q.id}>
             <label htmlFor={`answer_${q.id}`} className={LABEL}>
               {(isFr ? q.labelFr : q.labelEn) ?? q.labelFr ?? q.labelEn}
               {q.required ? " *" : ""}
             </label>
-            <textarea
-              id={`answer_${q.id}`}
-              name={`answer_${q.id}`}
-              required={q.required}
-              rows={3}
-              maxLength={2000}
-              className={FIELD}
-              disabled={submitting}
-              value={answers[q.id] ?? ""}
-              onChange={(ev) => setAnswers((p) => ({ ...p, [q.id]: ev.target.value }))}
-            />
+            {q.type === "price" ? (
+              // UN montant : clavier numérique sur mobile, « € » affiché, et le
+              // serveur refuse une fourchette (`prixInvalides`).
+              <div className="relative max-w-[12rem]">
+                <input
+                  id={`answer_${q.id}`}
+                  name={`answer_${q.id}`}
+                  type="text"
+                  inputMode="decimal"
+                  autoComplete="off"
+                  required={q.required}
+                  maxLength={12}
+                  pattern="[0-9 ]+([.,][0-9]{1,2})?"
+                  title={
+                    isFr
+                      ? "Un seul montant en euros, sans fourchette"
+                      : "A single amount in euros, no range"
+                  }
+                  placeholder={isFr ? "ex. 25" : "e.g. 25"}
+                  className={`${FIELD} pr-9`}
+                  disabled={submitting}
+                  value={answers[q.id] ?? ""}
+                  onChange={(ev) => setAnswers((p) => ({ ...p, [q.id]: ev.target.value }))}
+                />
+                <span
+                  aria-hidden="true"
+                  className="text-fg-muted pointer-events-none absolute inset-y-0 right-3.5 flex items-center"
+                >
+                  €
+                </span>
+              </div>
+            ) : q.type === "short" ? (
+              <input
+                id={`answer_${q.id}`}
+                name={`answer_${q.id}`}
+                type="text"
+                required={q.required}
+                maxLength={300}
+                className={FIELD}
+                disabled={submitting}
+                value={answers[q.id] ?? ""}
+                onChange={(ev) => setAnswers((p) => ({ ...p, [q.id]: ev.target.value }))}
+              />
+            ) : (
+              <textarea
+                id={`answer_${q.id}`}
+                name={`answer_${q.id}`}
+                required={q.required}
+                rows={compact ? 2 : 3}
+                maxLength={2000}
+                className={FIELD}
+                disabled={submitting}
+                value={answers[q.id] ?? ""}
+                onChange={(ev) => setAnswers((p) => ({ ...p, [q.id]: ev.target.value }))}
+              />
+            )}
           </div>
         ))}
       </fieldset>
@@ -532,137 +607,144 @@ export function JobApplicationForm({
       {/* 4. Pour finir */}
       <fieldset className={FIELDSET}>
         <legend className={SECTION}>{isFr ? "🚀 Pour finir" : "🚀 Finishing up"}</legend>
-        <div>
-          {/* `<span>` et non `<label>` : le libellé de section ne doit pas
-              voler le `for` au déclencheur ci-dessous, sinon un clic dessus
-              ouvrirait le sélecteur de fichiers sans qu'on l'ait demandé. */}
-          <span className={LABEL}>
-            {isFr ? "CV (PDF, DOC, DOCX) — optionnel" : "CV (PDF, DOC, DOCX) — optional"}
-          </span>
-          <label
-            htmlFor="cv"
-            className={`${FILE_TRIGGER} ${submitting ? "pointer-events-none opacity-60" : ""}`}
-          >
-            <FileUp aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={2} />
-            {cvName
-              ? isFr
-                ? "Changer de CV"
-                : "Change CV"
-              : isFr
-                ? "Choisir mon CV"
-                : "Choose my CV"}
-          </label>
-          <input
-            id="cv"
-            name="cv"
-            type="file"
-            accept=".pdf,.doc,.docx"
-            ref={cvRef}
-            className="sr-only"
-            disabled={submitting}
-            onChange={(ev) => setCvName(ev.target.files?.[0]?.name ?? "")}
-          />
-          {cvName ? (
-            <p className="text-fg-soft mt-2 flex items-center gap-1.5 text-xs">
-              <Check
-                aria-hidden="true"
-                className="text-sage h-3.5 w-3.5 shrink-0"
-                strokeWidth={2.5}
-              />
-              {/* `truncate` + `min-w-0` : un nom de fichier n'a pas d'espace où
-                  se couper. Sans ça, « Mon-CV-Prenom-Nom-2026-version-finale.pdf »
-                  ressortait de la carte au lieu de s'abréger. */}
-              <span className="min-w-0 truncate font-medium">{cvName}</span>
-              <button
-                type="button"
-                onClick={() => {
-                  if (cvRef.current) cvRef.current.value = "";
-                  setCvName("");
-                }}
-                className="text-fg-muted hover:text-terracotta ml-auto inline-flex shrink-0 items-center gap-0.5"
-                aria-label={isFr ? "Retirer le CV" : "Remove CV"}
+        {/* Formulaire court (offres vidéo freelance) : ni CV, ni photo, ni mot de
+            motivation — les liens vers ce que le candidat a déjà fait les
+            remplacent, dans les questions de l'offre. */}
+        {compact ? null : (
+          <>
+            <div>
+              {/* `<span>` et non `<label>` : le libellé de section ne doit pas
+                  voler le `for` au déclencheur ci-dessous, sinon un clic dessus
+                  ouvrirait le sélecteur de fichiers sans qu'on l'ait demandé. */}
+              <span className={LABEL}>
+                {isFr ? "CV (PDF, DOC, DOCX) — optionnel" : "CV (PDF, DOC, DOCX) — optional"}
+              </span>
+              <label
+                htmlFor="cv"
+                className={`${FILE_TRIGGER} ${submitting ? "pointer-events-none opacity-60" : ""}`}
               >
-                <X aria-hidden="true" className="h-3.5 w-3.5" /> {isFr ? "retirer" : "remove"}
-              </button>
-            </p>
-          ) : null}
-        </div>
-        <div>
-          <span className={LABEL}>
-            {isFr
-              ? "Photo (JPG, PNG, WebP, HEIC) — facultative"
-              : "Photo (JPG, PNG, WebP, HEIC) — optional"}
-          </span>
-          {/* `accept` aligné sur ce que le serveur valide réellement
-              (`validatePhoto`). Avec `image/*`, le sélecteur laissait choisir
-              un GIF ou un AVIF : le fichier partait, puis était refusé APRÈS
-              le téléversement. Sur mobile, c'est plusieurs mégaoctets envoyés
-              en 4G pour un message d'erreur — le genre de friction qui fait
-              abandonner une candidature.
-              HEIC est explicite : c'est le format par défaut des iPhone. */}
-          <label
-            htmlFor="photo"
-            className={`${FILE_TRIGGER} ${submitting ? "pointer-events-none opacity-60" : ""}`}
-          >
-            <ImageUp aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={2} />
-            {photoName
-              ? isFr
-                ? "Changer la photo"
-                : "Change photo"
-              : isFr
-                ? "Choisir une photo"
-                : "Choose a photo"}
-          </label>
-          <input
-            id="photo"
-            name="photo"
-            type="file"
-            accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
-            ref={photoRef}
-            className="sr-only"
-            disabled={submitting}
-            onChange={(ev) => setPhotoName(ev.target.files?.[0]?.name ?? "")}
-          />
-          <p className="text-fg-muted mt-2 text-xs">
-            {isFr
-              ? "Totalement facultative — ne pas en mettre ne te pénalise pas."
-              : "Entirely optional — leaving it out won't penalise you."}
-          </p>
-          {photoName ? (
-            <p className="text-fg-soft mt-2 flex items-center gap-1.5 text-xs">
-              <Check
-                aria-hidden="true"
-                className="text-sage h-3.5 w-3.5 shrink-0"
-                strokeWidth={2.5}
+                <FileUp aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={2} />
+                {cvName
+                  ? isFr
+                    ? "Changer de CV"
+                    : "Change CV"
+                  : isFr
+                    ? "Choisir mon CV"
+                    : "Choose my CV"}
+              </label>
+              <input
+                id="cv"
+                name="cv"
+                type="file"
+                accept=".pdf,.doc,.docx"
+                ref={cvRef}
+                className="sr-only"
+                disabled={submitting}
+                onChange={(ev) => setCvName(ev.target.files?.[0]?.name ?? "")}
               />
-              <span className="min-w-0 truncate font-medium">{photoName}</span>
-              <button
-                type="button"
-                onClick={() => {
-                  if (photoRef.current) photoRef.current.value = "";
-                  setPhotoName("");
-                }}
-                className="text-fg-muted hover:text-terracotta ml-auto inline-flex shrink-0 items-center gap-0.5"
-                aria-label={isFr ? "Retirer la photo" : "Remove photo"}
+              {cvName ? (
+                <p className="text-fg-soft mt-2 flex items-center gap-1.5 text-xs">
+                  <Check
+                    aria-hidden="true"
+                    className="text-sage h-3.5 w-3.5 shrink-0"
+                    strokeWidth={2.5}
+                  />
+                  {/* `truncate` + `min-w-0` : un nom de fichier n'a pas d'espace où
+                      se couper. Sans ça, « Mon-CV-Prenom-Nom-2026-version-finale.pdf »
+                      ressortait de la carte au lieu de s'abréger. */}
+                  <span className="min-w-0 truncate font-medium">{cvName}</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (cvRef.current) cvRef.current.value = "";
+                      setCvName("");
+                    }}
+                    className="text-fg-muted hover:text-terracotta ml-auto inline-flex shrink-0 items-center gap-0.5"
+                    aria-label={isFr ? "Retirer le CV" : "Remove CV"}
+                  >
+                    <X aria-hidden="true" className="h-3.5 w-3.5" /> {isFr ? "retirer" : "remove"}
+                  </button>
+                </p>
+              ) : null}
+            </div>
+            <div>
+              <span className={LABEL}>
+                {isFr
+                  ? "Photo (JPG, PNG, WebP, HEIC) — facultative"
+                  : "Photo (JPG, PNG, WebP, HEIC) — optional"}
+              </span>
+              {/* `accept` aligné sur ce que le serveur valide réellement
+                  (`validatePhoto`). Avec `image/*`, le sélecteur laissait choisir
+                  un GIF ou un AVIF : le fichier partait, puis était refusé APRÈS
+                  le téléversement. Sur mobile, c'est plusieurs mégaoctets envoyés
+                  en 4G pour un message d'erreur — le genre de friction qui fait
+                  abandonner une candidature.
+                  HEIC est explicite : c'est le format par défaut des iPhone. */}
+              <label
+                htmlFor="photo"
+                className={`${FILE_TRIGGER} ${submitting ? "pointer-events-none opacity-60" : ""}`}
               >
-                <X aria-hidden="true" className="h-3.5 w-3.5" /> {isFr ? "retirer" : "remove"}
-              </button>
-            </p>
-          ) : null}
-        </div>
-        <div>
-          <label htmlFor="motivation" className={LABEL}>
-            {isFr ? "Dis-nous un petit mot sur toi 👋" : "Tell us a bit about you 👋"}
-          </label>
-          <textarea
-            id="motivation"
-            name="motivation"
-            rows={4}
-            maxLength={4000}
-            className={FIELD}
-            disabled={submitting}
-          />
-        </div>
+                <ImageUp aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={2} />
+                {photoName
+                  ? isFr
+                    ? "Changer la photo"
+                    : "Change photo"
+                  : isFr
+                    ? "Choisir une photo"
+                    : "Choose a photo"}
+              </label>
+              <input
+                id="photo"
+                name="photo"
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+                ref={photoRef}
+                className="sr-only"
+                disabled={submitting}
+                onChange={(ev) => setPhotoName(ev.target.files?.[0]?.name ?? "")}
+              />
+              <p className="text-fg-muted mt-2 text-xs">
+                {isFr
+                  ? "Totalement facultative — ne pas en mettre ne te pénalise pas."
+                  : "Entirely optional — leaving it out won't penalise you."}
+              </p>
+              {photoName ? (
+                <p className="text-fg-soft mt-2 flex items-center gap-1.5 text-xs">
+                  <Check
+                    aria-hidden="true"
+                    className="text-sage h-3.5 w-3.5 shrink-0"
+                    strokeWidth={2.5}
+                  />
+                  <span className="min-w-0 truncate font-medium">{photoName}</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (photoRef.current) photoRef.current.value = "";
+                      setPhotoName("");
+                    }}
+                    className="text-fg-muted hover:text-terracotta ml-auto inline-flex shrink-0 items-center gap-0.5"
+                    aria-label={isFr ? "Retirer la photo" : "Remove photo"}
+                  >
+                    <X aria-hidden="true" className="h-3.5 w-3.5" /> {isFr ? "retirer" : "remove"}
+                  </button>
+                </p>
+              ) : null}
+            </div>
+            <div>
+              <label htmlFor="motivation" className={LABEL}>
+                {isFr ? "Dis-nous un petit mot sur toi 👋" : "Tell us a bit about you 👋"}
+              </label>
+              <textarea
+                id="motivation"
+                name="motivation"
+                rows={4}
+                maxLength={4000}
+                className={FIELD}
+                disabled={submitting}
+              />
+            </div>
+          </>
+        )}
         {/*
           CONSENTEMENTS v2 (lot L4, plan §2.3) — textes VALIDÉS, repris MOT POUR
           MOT. Ne pas les reformuler : c'est la version `careers-v2-2026-08-13`
