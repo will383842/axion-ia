@@ -166,12 +166,21 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         <AdminCard>
           <h3 className="admin-section-title">Réponses aux questions</h3>
           <dl className="space-y-3 text-sm">
-            {Object.entries(a.answers).map(([qid, val]) => (
-              <Fragment key={qid}>
-                <dt className="font-medium">{qLabels[qid] ?? qid}</dt>
-                <dd className="text-fg-muted whitespace-pre-wrap">{val}</dd>
-              </Fragment>
-            ))}
+            {/* Dans l'ordre des QUESTIONS, pas dans celui de la base : Postgres
+                range les clés d'un JSONB à sa façon (mesuré le 2026-09-26 : les
+                prix sortaient mélangés au matériel et aux liens). Une réponse à
+                une question retirée depuis garde sa place, à la fin. */}
+            {[
+              ...Object.keys(qLabels).filter((qid) => qid in a.answers),
+              ...Object.keys(a.answers).filter((qid) => !(qid in qLabels)),
+            ]
+              .map((qid) => [qid, a.answers[qid]] as const)
+              .map(([qid, val]) => (
+                <Fragment key={qid}>
+                  <dt className="font-medium">{qLabels[qid] ?? qid}</dt>
+                  <dd className="text-fg-muted whitespace-pre-wrap">{val}</dd>
+                </Fragment>
+              ))}
           </dl>
         </AdminCard>
       ) : null}
