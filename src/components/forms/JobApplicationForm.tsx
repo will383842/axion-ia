@@ -102,6 +102,12 @@ interface Props {
   requiresDriverLicense: boolean;
   requiresVehicle: boolean;
   screeningQuestions: ScreeningQuestion[];
+  /**
+   * Offre en freelance : l'exemple de prétention ne parle plus de salaire
+   * annuel brut, qui oriente un monteur payé à la vidéo vers une réponse
+   * inutilisable.
+   */
+  freelance?: boolean;
 }
 
 export function JobApplicationForm({
@@ -109,6 +115,7 @@ export function JobApplicationForm({
   requiresDriverLicense,
   requiresVehicle,
   screeningQuestions,
+  freelance = false,
 }: Props) {
   const locale = useLocale();
   const isFr = locale === "fr";
@@ -487,9 +494,13 @@ export function JobApplicationForm({
               className={FIELD}
               disabled={submitting}
               placeholder={
-                isFr
-                  ? "ex. 35–42 k€ brut/an" /* price-exempt: fourchette salariale marché candidat, pas un prix Axion-IA */
-                  : "e.g. 35–42 k€ gross/yr" /* price-exempt: market salary range, not an Axion-IA price */
+                freelance
+                  ? isFr
+                    ? "ex. prix par vidéo, par jour ou par mission"
+                    : "e.g. price per video, per day or per project"
+                  : isFr
+                    ? "ex. 35–42 k€ brut/an" /* price-exempt: fourchette salariale marché candidat, pas un prix Axion-IA */
+                    : "e.g. 35–42 k€ gross/yr" /* price-exempt: market salary range, not an Axion-IA price */
               }
             />
           </div>

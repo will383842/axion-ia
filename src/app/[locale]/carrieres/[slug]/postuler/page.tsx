@@ -110,6 +110,7 @@ export default async function PostulerPage({
             requiresDriverLicense={offer.requiresDriverLicense}
             requiresVehicle={offer.requiresVehicle}
             screeningQuestions={screeningQuestions}
+            freelance={offer.employmentType === "CONTRACTOR"}
           />
         </div>
       </Container>

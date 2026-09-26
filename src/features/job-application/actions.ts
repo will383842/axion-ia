@@ -26,6 +26,12 @@ import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
 import { provenanceDepuisLeTunnel } from "@/lib/careers/provenance";
 import { notify } from "@/server/notifications";
 import { isVideoEditorOffer } from "@/lib/careers/video-editor-offer";
+import {
+  collectAnswers,
+  labeledAnswers,
+  missingRequired,
+  parseScreeningQuestions,
+} from "@/lib/careers/screening-answers";
 import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
 import { enqueueEmail } from "@/server/queue/queues";
 import { adminPath } from "@/lib/admin-path";
@@ -262,6 +268,7 @@ export async function submitJobApplicationAction(
           status: true,
           filledAt: true,
           validThrough: true,
+          screeningQuestions: true,
         },
       })
     : null;
@@ -274,6 +281,19 @@ export async function submitJobApplicationAction(
         error: "Cette offre n'est plus ouverte aux candidatures.",
       };
     }
+  }
+
+  // 6bis. Questions propres à l'offre. Une question `required` manquante est
+  // refusée ICI, avant toute écriture disque : l'attribut HTML seul se
+  // contourne, et l'offre monteur vidéo exige le prix du candidat.
+  const questions = parseScreeningQuestions(offer?.screeningQuestions);
+  const answers = collectAnswers(formData);
+  const manquante = missingRequired(questions, answers)[0];
+  if (manquante) {
+    return {
+      ok: false,
+      error: `Réponse obligatoire manquante : ${manquante.labelFr ?? manquante.labelEn ?? manquante.id}`,
+    };
   }
 
   /**
@@ -357,13 +377,7 @@ export async function submitJobApplicationAction(
   const cvStoragePath = cvBuffer ? await storeCv(cvBuffer, cvRawName) : null;
   const photoStoragePath = photoBuffer ? await storeCv(photoBuffer, photoRawName) : null;
 
-  // 8. Réponses aux questions de l'offre (champs answer_<id>)
-  const answers: Record<string, string> = {};
-  for (const [key, value] of formData.entries()) {
-    if (key.startsWith("answer_") && typeof value === "string" && value.trim()) {
-      answers[key.slice("answer_".length)] = value.slice(0, 2000);
-    }
-  }
+  // 8. Réponses aux questions de l'offre : collectées et vérifiées au §6bis.
 
   const userAgent = (await headers()).get("user-agent") ?? null;
   const hasDriverLicense = triState(formData.get("hasDriverLicense"));
@@ -490,6 +504,7 @@ export async function submitJobApplicationAction(
         ...(d.city ? { city: d.city } : {}),
         ...(d.salaryExpectation ? { salaryExpectation: d.salaryExpectation } : {}),
         ...(d.motivation ? { motivationExcerpt: d.motivation.slice(0, 500) } : {}),
+        answers: labeledAnswers(questions, answers),
         hasCv: Boolean(cvStoragePath),
         hasPhoto: Boolean(photoStoragePath),
         locale,

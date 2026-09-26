@@ -145,6 +145,11 @@ export type NotificationEvent =
         salaryExpectation?: string;
         /** Début du texte de motivation (tronqué côté émetteur). */
         motivationExcerpt?: string;
+        /**
+         * Réponses aux questions propres à l'offre, avec leur libellé (tronquées
+         * côté émetteur). C'est là qu'arrivent les prix des monteurs vidéo.
+         */
+        answers?: Array<{ label: string; value: string }>;
         hasCv: boolean;
         hasPhoto?: boolean;
         locale: "fr" | "en";

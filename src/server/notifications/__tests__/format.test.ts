@@ -110,6 +110,26 @@ describe("formatNotification", () => {
     expect(text).toContain("montage documentaire");
   });
 
+  it("candidature monteur : les réponses aux questions de l'offre (prix) sont rendues", () => {
+    const { text } = formatNotification(
+      {
+        category: "VIDEO_EDITOR_APPLICATION_RECEIVED",
+        payload: {
+          applicationId: "app_2",
+          contactName: "Ali",
+          contactEmail: "a@x.fr",
+          offerTitle: "Monteur vidéo freelance",
+          answers: [{ label: "Prix vidéo verticale 30 s", value: "45 € HT" }],
+          hasCv: false,
+          locale: "fr",
+        },
+      },
+      "info",
+    );
+    expect(text).toContain("*Prix vidéo verticale 30 s*");
+    expect(text).toContain("45 € HT");
+  });
+
   it("les réponses du formulaire Calendly sont rendues", () => {
     const { text } = formatNotification(
       {
