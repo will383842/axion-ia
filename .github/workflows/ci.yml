@@ -236,6 +236,13 @@ jobs:
         run: pnpm image-bank:isolation-check
       - name: Zod schemas have tests
         run: pnpm zod:check
+      # INT-T02 (2026-09-26) — inertie du canal Axion Partners (REQ-INT-008).
+      # Refuse tout point d'entrée qui ne commence pas par le verrou, tout effet
+      # au chargement, toute page qui l'importe. Son vert imprime ce qu'il a
+      # confronté ; une mesure à zéro rougit. Contre-témoins :
+      # `src/server/partners-sync/__tests__/la-garde-d-inertie-voit-ses-rouges.spec.ts`.
+      - name: Inertie du canal Axion Partners
+        run: pnpm partners:inertie
       # ── Ce que ce bloc a coûté à apprendre, écrit pour la prochaine fois ──
       #
       # 1. `config-path` N'EST PAS une entrée de `gitleaks-action@v3` (son
@@ -1280,6 +1287,16 @@ jobs:
             await p.\$disconnect();
           })().catch(err => { console.error('::error::', err.message); process.exit(1); });
           "
+
+      # INT-T02 (2026-09-26) — la file de sortie Axion Partners contre un VRAI
+      # Postgres : retour arrière → 0 ligne, validation → 1 ; deux transactions
+      # validées dans l'ordre inverse ne font sauter aucune ligne ; deux relais
+      # concurrents ne posent jamais deux fois le même numéro ; le corps revient
+      # octet pour octet. Un faux client ne peut prouver aucune de ces quatre
+      # choses, et Gate D est le seul endroit qui a une base migrée à neuf. Le
+      # test ne laisse aucune ligne derrière lui (volumétrie juste en dessous).
+      - name: File de sortie Axion Partners (Postgres réel)
+        run: pnpm test:integration tests/integration/partners-sync
 
       # ── T0 — volumétrie (plan de tenue à la charge, § T0) ─────────────────
       #

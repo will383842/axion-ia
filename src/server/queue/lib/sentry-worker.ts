@@ -119,7 +119,9 @@ export type WorkerName =
   // `documents-auto`). Nom distinct de `formation-crons` : le rendu react-pdf
   // et l'upload R2 echouent pour d'autres raisons que les crons d'e-mail, et
   // un fingerprint partage les aurait melanges dans le meme groupe Sentry.
-  | "documents-auto";
+  | "documents-auto"
+  // INT-T02 2026-09-26 — relais de la file de sortie vers Axion Partners
+  | "partners-sync";
 
 /**
  * Resout `captureException`, en contournant les exports conditionnels du paquet.

@@ -79,6 +79,16 @@ on:
           - TELEGRAM_CALENDLY_BOT_TOKEN
           - DOCUSEAL_WEBHOOK_SECRET
           - STRIPE_WEBHOOK_SECRET
+          # ── Canal Axion Partners (INT-T02, REQ-INT-031) ────────────────────
+          # Signe chaque envoi vers Partners (« t.corps exact ») et chaque
+          # réponse de relecture. Même valeur que `AXIONIA_WEBHOOK_SECRET` côté
+          # Partners. Portée par le secret GitHub du même nom ; le worker la
+          # reçoit ensuite par `coolify-worker-aligner-variable.yml`.
+          - PARTNERS_SYNC_SECRET
+          # Le secret que Partners présente pour RELIRE la file
+          # (`GET /api/partners/evenements`). Distinct du précédent : un secret
+          # par sens. Web seulement. ≥ 32 caractères, sinon la route reste 404.
+          - PARTNERS_RELECTURE_SECRET
           - lister-seulement
       confirmer:
         description: "Taper OUI pour écrire réellement. Toute autre valeur = simulation."
@@ -164,6 +174,8 @@ jobs:
           TELEGRAM_CALENDLY_BOT_TOKEN: ${{ secrets.TELEGRAM_CALENDLY_BOT_TOKEN }}
           DOCUSEAL_WEBHOOK_SECRET: ${{ secrets.DOCUSEAL_WEBHOOK_SECRET }}
           STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+          PARTNERS_SYNC_SECRET: ${{ secrets.PARTNERS_SYNC_SECRET }}
+          PARTNERS_RELECTURE_SECRET: ${{ secrets.PARTNERS_RELECTURE_SECRET }}
           CIBLE: ${{ inputs.variable }}
           CONFIRMER: ${{ inputs.confirmer }}
         run: |
@@ -280,6 +292,7 @@ jobs:
           TELEGRAM_CALENDLY_BOT_TOKEN: ${{ secrets.TELEGRAM_CALENDLY_BOT_TOKEN }}
           DOCUSEAL_WEBHOOK_SECRET: ${{ secrets.DOCUSEAL_WEBHOOK_SECRET }}
           STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+          PARTNERS_SYNC_SECRET: ${{ secrets.PARTNERS_SYNC_SECRET }}
           CIBLE: ${{ inputs.variable }}
         run: |
           set -euo pipefail

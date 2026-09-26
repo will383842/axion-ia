@@ -11437,6 +11437,62 @@ model CrmSyncOutbox {
   @@map("crm_sync_outbox")
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// FILE DE SORTIE vers Axion Partners (INT-T02, partners/ADR-0022 point 15).
+//
+// ⚠️ À LA DIFFÉRENCE de `CrmSyncOutbox`, cette file est écrite DANS la
+// transaction de l'écriture métier (REQ-INT-001) : un retour arrière ne laisse
+// aucun événement, une validation en laisse exactement un. Ici une perte coûte
+// une commission due à un tiers ; la doctrine « zéro perte de lead » du CRM ne
+// s'applique pas à l'envers.
+//
+// INERTIE : tant que `PARTNERS_SYNC_ENABLED` n'est pas `true`, rien n'écrit dans
+// cette table (src/server/partners-sync) — elle reste vide, et c'est vérifiable.
+// ─────────────────────────────────────────────────────────────────────────────
+
+enum PartnersSyncStatus {
+  /// En attente du premier envoi, ou d'une nouvelle tentative.
+  pending
+  /// Acquittée par Partners (2xx), doublon compris.
+  sent
+  /// Dernière tentative en échec — sera rejouée.
+  failed
+  /// Refus DÉFINITIF (422) ou plafond de tentatives atteint. Reste visible et
+  /// rejouable à la main par `event_id` (REQ-INT-009).
+  gave_up
+}
+
+model PartnersSyncOutbox {
+  id             String             @id @default(uuid()) @db.Uuid
+  /// Clé d'idempotence, DÉTERMINISTE (type + clé du fait) : le même fait écrit
+  /// deux fois ne donne qu'une ligne, et Partners ne le compte qu'une fois.
+  eventId        String             @unique @map("event_id") @db.Uuid
+  /// Validé contre TYPES_EVENEMENT du contrat AVANT l'insertion ; 422 sinon.
+  eventType      String             @map("event_type") @db.VarChar(64)
+  /// Le sujet mis à plat (`client:<id>`), même règle que le récepteur.
+  subjectRef     String             @map("subject_ref") @db.VarChar(180)
+  /// Séquence d'ÉMISSION : attribuée par le relais sous verrou consultatif au
+  /// premier envoi, jamais dans la transaction métier. Nulle tant que la ligne
+  /// n'a pas été prise.
+  sequence       BigInt?            @unique
+  /// Le corps EXACT signé et transmis (enveloppe sérialisée). Texte, jamais
+  /// Json : jsonb réordonne les clés et la relecture de REQ-INT-012 ne serait
+  /// plus octet pour octet. Figé dès que `sequence` est posée.
+  corps          String             @db.Text
+  status         PartnersSyncStatus @default(pending)
+  attempts       Int                @default(0)
+  lastError      String?            @map("last_error") @db.VarChar(500)
+  lastAttemptAt  DateTime?          @map("last_attempt_at")
+  nextAttemptAt  DateTime?          @map("next_attempt_at")
+  sentAt         DateTime?          @map("sent_at")
+  responseStatus Int?               @map("response_status")
+  createdAt      DateTime           @default(now()) @map("created_at")
+
+  @@index([status, nextAttemptAt])
+  @@index([subjectRef])
+  @@map("partners_sync_outbox")
+}
+
 /// REGISTRE DE PREUVE DES CONSENTEMENTS (lot L4, plan §2.8.1).
 ///
 /// Avant ce registre, la preuve était ÉCLATÉE et partiellement absente :
