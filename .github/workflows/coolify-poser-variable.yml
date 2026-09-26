@@ -58,6 +58,12 @@ on:
           # pré-remplit l'invitation envoyée depuis la console). Pas un secret,
           # mais il passe par le même chemin : un secret GitHub du même nom.
           - CALENDLY_APPORTEUR_URL
+          # ── Rotation du 2026-09-26 ─────────────────────────────────────────
+          # Clé HMAC de `POST /api/internal/kb/ingest`. L'ancienne valeur était
+          # PUBLIQUE (`.env.production.example`, du 2026-05-22 au 2026-09-26) :
+          # quiconque l'avait lue pouvait écrire dans la base de connaissances.
+          # Porté par le secret GitHub du même nom.
+          - KB_INGEST_SECRET
           - lister-seulement
       confirmer:
         description: "Taper OUI pour écrire réellement. Toute autre valeur = simulation."
@@ -132,6 +138,7 @@ jobs:
           META_CAPI_ACCESS_TOKEN: ${{ secrets.META_CAPI_ACCESS_TOKEN }}
           META_CAPI_TEST_EVENT_CODE: ${{ secrets.META_CAPI_TEST_EVENT_CODE }}
           CALENDLY_APPORTEUR_URL: ${{ secrets.CALENDLY_APPORTEUR_URL }}
+          KB_INGEST_SECRET: ${{ secrets.KB_INGEST_SECRET }}
           CIBLE: ${{ inputs.variable }}
           CONFIRMER: ${{ inputs.confirmer }}
         run: |
