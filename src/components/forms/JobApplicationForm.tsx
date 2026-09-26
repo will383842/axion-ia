@@ -528,6 +528,16 @@ export function JobApplicationForm({
           </div>
         )}
 
+        {/* Demande Will 2026-09-26 : le candidat sait qu'il est en concurrence :
+            c'est ce qui le pousse à donner
+            directement son meilleur tarif, sans fermer la porte à l'échange. */}
+        {compact && screeningQuestions.some((q) => q.type === "price") ? (
+          <p className="border-terracotta/40 bg-terracotta-soft/30 text-fg rounded-lg border px-3.5 py-2.5 text-sm">
+            {isFr
+              ? "On compare toutes les propositions : indique directement ton meilleur prix."
+              : "We compare every proposal: give your best price straight away."}
+          </p>
+        ) : null}
         {screeningQuestions.map((q) => (
           <div key={q.id}>
             <label htmlFor={`answer_${q.id}`} className={LABEL}>
@@ -552,7 +562,7 @@ export function JobApplicationForm({
                       ? "Un seul montant en euros, sans fourchette"
                       : "A single amount in euros, no range"
                   }
-                  placeholder={isFr ? "ex. 80" : "e.g. 80"}
+                  placeholder={isFr ? "ex. 25" : "e.g. 25"}
                   className={`${FIELD} pr-9`}
                   disabled={submitting}
                   value={answers[q.id] ?? ""}
