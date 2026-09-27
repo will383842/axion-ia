@@ -77,6 +77,31 @@ export async function listRendezVousAFaireLePoint(
   });
 }
 
+/**
+ * Combien de rendez-vous attendent leur point — la pastille du lien
+ * « Rendez-vous » de la barre latérale. Même règle que la liste, sans lire
+ * la charge brute : ce compteur tourne à chaque affichage de la console.
+ */
+export async function compterRendezVousAFaireLePoint(
+  maintenant: Date = new Date(),
+): Promise<number> {
+  const lignes = await prisma.calendlyEvent.findMany({
+    where: {
+      status: "scheduled",
+      suivi: null,
+      startTime: {
+        gte: new Date(maintenant.getTime() - JOURS_A_FAIRE_LE_POINT * 86_400_000),
+        lte: maintenant,
+      },
+    },
+    select: { startTime: true, endTime: true },
+    take: 200,
+  });
+  return lignes.filter(
+    (e) => e.startTime && momentVisio(e.startTime, e.endTime, maintenant) === "terminee",
+  ).length;
+}
+
 export interface BilanDuMois {
   euLieu: number;
   absents: number;

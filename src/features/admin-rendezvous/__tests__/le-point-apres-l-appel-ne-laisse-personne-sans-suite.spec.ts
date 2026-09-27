@@ -23,13 +23,17 @@ vi.mock("@/lib/prisma", () => ({
     rendezVousSuivi: { upsert: (...a: unknown[]) => upsert(...a) },
   },
 }));
-vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
+const updateTag = vi.fn();
+vi.mock("next/cache", () => ({
+  revalidatePath: vi.fn(),
+  updateTag: (...a: unknown[]) => updateTag(...a),
+}));
 vi.mock("@/lib/admin-path", () => ({ adminPath: (_l: string, p: string) => `/fr/adm/${p}` }));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 
 import { mailtoRelanceAbsent, normaliserSuivi, prenomDe, suiviSchema } from "../suivi";
 import { enregistrerSuiviAction } from "../suivi-actions";
-import { listRendezVousAFaireLePoint } from "../suivi-queries";
+import { compterRendezVousAFaireLePoint, listRendezVousAFaireLePoint } from "../suivi-queries";
 
 function formulaire(champs: Record<string, string>): FormData {
   const fd = new FormData();
@@ -129,6 +133,8 @@ describe("enregistrerSuiviAction", () => {
       suite: "devis",
       renseignePar: "w@example.com",
     });
+    // La pastille du menu tombe tout de suite.
+    expect(updateTag).toHaveBeenCalledWith("admin:rendez-vous-a-faire");
   });
 
   it.each(["reader", "secretaire", "responsable_qualite"])(
@@ -197,5 +203,18 @@ describe("listRendezVousAFaireLePoint", () => {
     expect(arg.where.status).toBe("scheduled");
     expect(arg.where.suivi).toBeNull();
     expect(arg.where.startTime.gte.toISOString()).toBe("2026-08-29T16:00:00.000Z");
+  });
+});
+
+describe("compterRendezVousAFaireLePoint — la pastille du menu", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("ne compte que les rendez-vous sortis de « À venir »", async () => {
+    findMany.mockResolvedValue([
+      { startTime: new Date("2026-09-28T13:30:00Z"), endTime: new Date("2026-09-28T14:15:00Z") },
+      { startTime: new Date("2026-09-28T15:00:00Z"), endTime: new Date("2026-09-28T15:45:00Z") },
+    ]);
+
+    expect(await compterRendezVousAFaireLePoint(new Date("2026-09-28T15:30:00Z"))).toBe(1);
   });
 });

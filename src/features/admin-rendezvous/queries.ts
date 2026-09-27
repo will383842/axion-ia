@@ -189,10 +189,23 @@ export async function listRendezVousAVenir(
       // ci-dessous, là où l'heure de fin manquante est gérée.
       startTime: { gte: new Date(maintenant.getTime() - 6 * 3_600_000) },
     },
-    select: CAL_SELECT,
+    select: {
+      ...CAL_SELECT,
+      // Le point déjà fait : la carte le montre au lieu de le redemander.
+      suivi: { select: { issue: true, suite: true, suiteLe: true, note: true } },
+    },
     orderBy: [{ startTime: "asc" }],
     take: 200,
-  })) as CalendlyEventRow[];
+  })) as Array<
+    CalendlyEventRow & {
+      suivi: {
+        issue: NonNullable<RdvAVenir["suivi"]>["issue"];
+        suite: NonNullable<RdvAVenir["suivi"]>["suite"];
+        suiteLe: Date | null;
+        note: string | null;
+      } | null;
+    }
+  >;
 
   const rows = events.flatMap((e): RdvAVenir[] => {
     if (!e.startTime) return [];
@@ -210,6 +223,14 @@ export async function listRendezVousAVenir(
         entreprise,
         besoin,
         autresInvites: invitesSupplementaires(e.rawPayload),
+        suivi: e.suivi
+          ? {
+              issue: e.suivi.issue,
+              suite: e.suivi.suite,
+              suiteLe: e.suivi.suiteLe ? e.suivi.suiteLe.toISOString().slice(0, 10) : null,
+              note: e.suivi.note,
+            }
+          : null,
       },
     ];
   });

@@ -74,6 +74,13 @@ export interface RdvAVenir extends UnifiedRdv {
   besoin: ReadonlyArray<{ question: string; reponse: string }>;
   /** Personnes ajoutées par l'invité à la réservation. */
   autresInvites: string[];
+  /** Le point déjà fait après l'appel, ou `null`. `suiteLe` en « AAAA-MM-JJ ». */
+  suivi: {
+    issue: "eu_lieu" | "absent" | "reporte";
+    suite: "devis" | "relance" | "proposition" | "aucune" | null;
+    suiteLe: string | null;
+    note: string | null;
+  } | null;
 }
 
 /**
