@@ -386,6 +386,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "la personne intéressée par le réseau d'apporteurs",
     source: "features/commercial-application/invitation-apporteur.ts",
   },
+  "apporteur-invitation-relance": {
+    categorie: "recrutement",
+    quand:
+      "J+3 puis J+7 après l'invitation à l'échange, si la personne n'a ni réservé, ni reçu de réponse, ni été archivée — passage quotidien à 10 h (Paris), deux rappels au plus",
+    destinataire: "la personne invitée à l'échange apporteur",
+    source: "features/commercial-application/relances-invitation-apporteur.ts",
+  },
   "vivier-information": {
     categorie: "recrutement",
     quand: "Information envoyée à une personne du vivier",

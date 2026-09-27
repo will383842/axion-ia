@@ -478,6 +478,7 @@ const GABARITS_RESEAU_SANS_RANGEE_SOCIALE = [
   "lead-apporteur-relance",
   "candidature-commercial-confirmee",
   "apporteur-invitation-appel",
+  "apporteur-invitation-relance",
 ] as const;
 
 describe("Référentiel e-mail — la famille se LIT, elle ne se devine pas", () => {

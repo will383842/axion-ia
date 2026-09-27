@@ -54,6 +54,11 @@ import {
   phraseInvitation,
   type CodeIssueInvitation,
 } from "@/lib/commercial-application/issues-invitation";
+import {
+  GABARIT_RELANCE_INVITATION,
+  type SuiviInvitation,
+} from "@/lib/commercial-application/relance-invitation";
+import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 
 /** Nom du gabarit — aussi la clé de lecture de l'historique (`EmailLog.template`). */
 export const GABARIT_INVITATION_APPORTEUR = "apporteur-invitation-appel";
@@ -461,19 +466,24 @@ export async function lireInvitationsDeLaPersonne(
 }
 
 /**
- * Pour la LISTE des apporteurs : la date de la dernière invitation partie (ou
- * en file) de chaque personne affichée, clé = l'identifiant de la ligne de la
- * liste (2026-09-27, Will : « que l'on sache dans la console qu'ils ont bien été
- * contactés »). Sans elle, une personne invitée restait « Sans réponse » dans la
- * liste — l'invitation n'est pas une réponse au sens du composeur.
+ * Pour la LISTE des apporteurs : où en est chaque personne affichée depuis son
+ * invitation, clé = l'identifiant de la ligne de la liste.
+ *
+ * 2026-09-27 (Will) : « que l'on sache dans la console qu'ils ont bien été
+ * contactés » — d'abord la date de l'invitation ; puis, avec les rappels
+ * automatiques, les rappels partis et l'échange réservé ou annulé. Le badge
+ * lui-même est choisi par `badgeSuiviInvitation` (règle pure, testée).
  *
  * Lue par EMPREINTE d'adresse, comme `lireInvitationsDeLaPersonne` : la liste
  * montre la ligne la plus récente de la personne, l'invitation a pu partir d'une
- * autre de ses lignes. Trois requêtes pour toute la page, pas une par ligne.
- * Une invitation garée en validation n'y figure pas : elle n'est pas partie.
+ * autre de ses lignes, et l'échange est rattaché à une troisième. Cinq requêtes
+ * pour toute la page, pas une par ligne. Une invitation garée en validation n'y
+ * figure pas : elle n'est pas partie.
  */
-export async function lireDatesInvitationListe(ids: readonly string[]): Promise<Map<string, Date>> {
-  const resultat = new Map<string, Date>();
+export async function lireSuiviInvitationListe(
+  ids: readonly string[],
+): Promise<Map<string, SuiviInvitation>> {
+  const resultat = new Map<string, SuiviInvitation>();
   if (ids.length === 0) return resultat;
   const affichees = await prisma.submission.findMany({
     where: { id: { in: [...ids] } },
@@ -492,26 +502,61 @@ export async function lireDatesInvitationListe(ids: readonly string[]): Promise<
   const personneDe = new Map<string, string>();
   for (const l of affichees) personneDe.set(l.id, l.contactEmailHash ?? `id:${l.id}`);
   for (const l of lignesPersonnes) personneDe.set(l.id, l.contactEmailHash ?? `id:${l.id}`);
+  const toutes = [...personneDe.keys()];
 
-  const journal = await prisma.emailLog.findMany({
-    where: {
-      template: GABARIT_INVITATION_APPORTEUR,
-      entityType: "Submission",
-      entityId: { in: [...personneDe.keys()] },
-      status: { in: ["pending", "sent"] },
-    },
-    select: { entityId: true, createdAt: true },
-  });
-  const dernierePar = new Map<string, Date>();
+  const [journal, evenements] = await Promise.all([
+    prisma.emailLog.findMany({
+      where: {
+        template: { in: [GABARIT_INVITATION_APPORTEUR, GABARIT_RELANCE_INVITATION] },
+        entityType: "Submission",
+        entityId: { in: toutes },
+        status: { in: ["pending", "sent"] },
+      },
+      select: { template: true, entityId: true, createdAt: true },
+    }),
+    prisma.calendlyEvent.findMany({
+      where: { linkedSubmissionId: { in: toutes } },
+      select: { linkedSubmissionId: true, eventTypeName: true, status: true },
+    }),
+  ]);
+
+  const invitationPar = new Map<string, Date>();
   for (const e of journal) {
+    if (e.template !== GABARIT_INVITATION_APPORTEUR) continue;
     const p = e.entityId ? personneDe.get(e.entityId) : undefined;
     if (!p) continue;
-    const avant = dernierePar.get(p);
-    if (!avant || e.createdAt > avant) dernierePar.set(p, e.createdAt);
+    const avant = invitationPar.get(p);
+    if (!avant || e.createdAt > avant) invitationPar.set(p, e.createdAt);
   }
+  const relancesPar = new Map<string, Date[]>();
+  for (const e of journal) {
+    if (e.template !== GABARIT_RELANCE_INVITATION) continue;
+    const p = e.entityId ? personneDe.get(e.entityId) : undefined;
+    const invitation = p ? invitationPar.get(p) : undefined;
+    // Un rappel ne compte que pour l'invitation qu'il suit.
+    if (!p || !invitation || e.createdAt <= invitation) continue;
+    relancesPar.set(p, [...(relancesPar.get(p) ?? []), e.createdAt]);
+  }
+  const echangePar = new Map<string, "reserve" | "annule">();
+  for (const ev of evenements) {
+    if (!estAppelApporteur(ev.eventTypeName)) continue;
+    const p = ev.linkedSubmissionId ? personneDe.get(ev.linkedSubmissionId) : undefined;
+    if (!p) continue;
+    // Un échange non annulé l'emporte sur un échange annulé (reprise d'un créneau).
+    if (ev.status !== "canceled") echangePar.set(p, "reserve");
+    else if (!echangePar.has(p)) echangePar.set(p, "annule");
+  }
+
   for (const l of affichees) {
-    const d = dernierePar.get(personneDe.get(l.id)!);
-    if (d) resultat.set(l.id, d);
+    const p = personneDe.get(l.id)!;
+    const invitation = invitationPar.get(p) ?? null;
+    const echange = echangePar.get(p) ?? null;
+    if (!invitation && !echange) continue;
+    resultat.set(l.id, {
+      invitation,
+      relances: (relancesPar.get(p) ?? []).sort((a, b) => a.getTime() - b.getTime()),
+      echange,
+    });
   }
   return resultat;
 }

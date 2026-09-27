@@ -4,7 +4,17 @@
 
 import Link from "next/link";
 import * as Sentry from "@sentry/nextjs";
-import { Archive, AlertTriangle, CheckCircle2, XCircle, CircleSlash, Send } from "lucide-react";
+import {
+  Archive,
+  AlertTriangle,
+  CalendarCheck,
+  CalendarX,
+  CheckCircle2,
+  XCircle,
+  CircleSlash,
+  BellRing,
+  Send,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { SubmissionListItem } from "@/features/admin-submissions/actions";
 import { listSubmissionsAction } from "@/features/admin-submissions/actions";
@@ -26,7 +36,12 @@ import { MentionAccuse } from "@/components/admin/accuse/AccuseReceptionAuto";
 import type { PerimetreSubmissions } from "@/features/admin-submissions/query";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { LIBELLE_ETAPE } from "@/lib/commercial-application/etape-apporteur";
-import { lireDatesInvitationListe } from "@/features/commercial-application/invitation-apporteur";
+import { lireSuiviInvitationListe } from "@/features/commercial-application/invitation-apporteur";
+import {
+  badgeSuiviInvitation,
+  type BadgeSuivi,
+  type SuiviInvitation,
+} from "@/lib/commercial-application/relance-invitation";
 
 /**
  * Computed reply badge — derives 4 visual states from SubmissionListItem :
@@ -65,6 +80,27 @@ function replyBadge(s: SubmissionListItem): { label: string; tone: TonBadge; Ico
     };
   }
   return { label: "Sans réponse", tone: "destructive", Icone: XCircle };
+}
+
+/**
+ * Le badge du suivi de l'invitation (2026-09-27), qui remplace « Sans réponse ».
+ * L'ordre de priorité est dans `badgeSuiviInvitation` ; ici, seulement le rendu.
+ */
+function badgeInvitation(b: BadgeSuivi): { label: string; tone: TonBadge; Icone: LucideIcon } {
+  switch (b.type) {
+    case "echange-reserve":
+      return { label: "Échange réservé", tone: "success", Icone: CalendarCheck };
+    case "echange-annule":
+      return { label: "Échange annulé", tone: "warning", Icone: CalendarX };
+    case "rappel":
+      return {
+        label: `Rappel ${b.numero} le ${formatDateFrShort(b.le)}`,
+        tone: "info",
+        Icone: BellRing,
+      };
+    case "invite":
+      return { label: `Invité le ${formatDateFrShort(b.le)}`, tone: "info", Icone: Send };
+  }
 }
 
 interface Props {
@@ -157,15 +193,16 @@ export async function SubmissionsV2({
 
   // 2026-09-27 (Will) : savoir, DANS LA LISTE, qui a déjà reçu l'invitation à
   // l'échange — sinon une personne invitée reste « Sans réponse » et risque
-  // d'être invitée une seconde fois. Seulement pour les apporteurs ; accessoire
-  // comme l'accusé : si le journal ne répond pas, la liste s'affiche sans.
-  let invitations = new Map<string, Date>();
+  // d'être invitée une seconde fois — puis ses rappels et son échange réservé.
+  // Seulement pour les apporteurs ; accessoire comme l'accusé : si le journal ne
+  // répond pas, la liste s'affiche sans.
+  let invitations = new Map<string, SuiviInvitation>();
   const idsApporteurs = result.items
     .filter((s) => estApporteur({ unifiedType: s.unifiedType, subType: s.subType }))
     .map((s) => s.id);
   if (idsApporteurs.length > 0) {
     try {
-      invitations = await lireDatesInvitationListe(idsApporteurs);
+      invitations = await lireSuiviInvitationListe(idsApporteurs);
     } catch (err) {
       Sentry.captureException(err, { tags: { ecran: "messages", etape: "invitations" } });
     }
@@ -238,18 +275,12 @@ export async function SubmissionsV2({
   // nom / prénom / email / téléphone. Société, statut pipeline et langue
   // restent visibles dans le détail — ils encombraient la liste.
   const rows = result.items.map((s) => {
-    const invitee = invitations.get(s.id);
-    // Une vraie réponse (composeur) ou un état terminal prime ; sinon, une
-    // personne invitée se lit « Invité le … », plus « Sans réponse ».
+    // Une vraie réponse (composeur) ou un état terminal prime ; sinon, le suivi
+    // de l'invitation (échange réservé, rappel, invité) remplace « Sans réponse ».
     const base = replyBadge(s);
-    const r =
-      invitee && base.label === "Sans réponse"
-        ? {
-            label: `Invité le ${formatDateFrShort(invitee)}`,
-            tone: "info" as TonBadge,
-            Icone: Send,
-          }
-        : base;
+    const suivi =
+      base.label === "Sans réponse" ? badgeSuiviInvitation(invitations.get(s.id)) : null;
+    const r = suivi ? badgeInvitation(suivi) : base;
     const accuse = accuses.get(s.id);
     const { prenom, nom } = splitNomPrenom(s.contactName);
     return {

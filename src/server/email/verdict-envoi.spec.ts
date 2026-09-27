@@ -47,6 +47,11 @@ describe("estSollicitationSoumiseAOpposition — table de vérité", () => {
     ["lead-apporteur-relance", {}, true],
     ["lead-apporteur-relance", undefined, true],
     ["apporteur-invitation-appel", { calendlyUrl: "https://calendly.com/x/y" }, true],
+    [
+      "apporteur-invitation-relance",
+      { calendlyUrl: "https://calendly.com/x/y", etape: "j3" },
+      true,
+    ],
     ["lead-apporteur-recu", { variante: "dossier-commence" }, true],
     // L'accusé immédiat d'une démarche n'est PAS une sollicitation.
     ["lead-apporteur-recu", {}, false],
@@ -67,6 +72,7 @@ describe("estSollicitationSoumiseAOpposition — table de vérité", () => {
   it("l'ensemble des sollicitations n'a pas bougé", () => {
     expect([...GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION].sort()).toEqual([
       "apporteur-invitation-appel",
+      "apporteur-invitation-relance",
       "lead-apporteur-relance",
     ]);
   });
