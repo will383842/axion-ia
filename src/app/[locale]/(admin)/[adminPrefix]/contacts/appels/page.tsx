@@ -172,6 +172,10 @@ function lien(base: string, params: Record<string, string | number | undefined>)
  * dedans : un lien dans un lien n'est pas du HTML valide, et le doigt doit
  * pouvoir viser l'un sans déclencher l'autre sur téléphone.
  */
+//
+// Le bouton suit `momentVisio` (il disparaît 30 min après la fin), PAS le
+// statut affiché : celui-ci passe à « Passé » dès l'heure de fin, et un appel
+// qui déborde perdrait son bouton en pleine visio. Seule l'annulation le retire.
 function LigneRdv({ r }: { r: UnifiedRdv }) {
   const quand = r.timeConfirmed && r.startTime ? timeInParis(r.startTime) : "heure ?";
   return (
@@ -194,7 +198,7 @@ function LigneRdv({ r }: { r: UnifiedRdv }) {
           </span>
         </span>
       </Link>
-      {r.lienVisio && r.status === "scheduled" ? (
+      {r.lienVisio && r.status !== "canceled" ? (
         <span className="flex items-center">
           <RejoindreVisioBouton href={r.lienVisio} debut={r.startTime} fin={r.endTime} />
         </span>
@@ -534,7 +538,7 @@ export default async function AppelsPage({
       key: "visio",
       header: "Visio",
       cell: (r) =>
-        r.lienVisio && r.status === "scheduled" ? (
+        r.lienVisio && r.status !== "canceled" ? (
           // Au-dessus du lien étiré de la ligne (`z-[1]` dans `AdminTable`) :
           // sans lui, le clic ouvrirait la fiche au lieu de la visio.
           <span className="relative z-[2] inline-flex">

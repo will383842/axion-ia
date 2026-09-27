@@ -14,7 +14,6 @@ import * as Sentry from "@sentry/nextjs";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { adminPath } from "@/lib/admin-path";
 import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
 import {
   avecCompteGoogle,
@@ -73,7 +72,13 @@ export async function GET(
 ): Promise<NextResponse> {
   // La garde d'abord, la base ensuite (cf. `features/admin-calendly/acces.ts`).
   const session = await auth();
-  if (!session?.user) return rediriger(adminPath("fr", "login"));
+  // 401 en texte, PAS une redirection vers la connexion : le chemin de cette
+  // route est public (il est dans le dépôt), et un `Location:` vers la page de
+  // connexion livrerait le préfixe secret de la console à n'importe quel
+  // `curl -I`. Même réponse que les autres routes `api/admin/*`.
+  if (!session?.user) {
+    return page(401, "Session expirée : reconnectez-vous à la console, puis rouvrez le lien.");
+  }
   const role = (session.user as { role?: string | null }).role ?? null;
   if (!peutVoirLesAppels(role)) {
     return page(403, "Votre rôle ne donne pas accès aux appels réservés.");

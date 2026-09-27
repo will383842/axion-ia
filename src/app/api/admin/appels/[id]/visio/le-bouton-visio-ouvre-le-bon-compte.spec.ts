@@ -141,13 +141,14 @@ describe("GET /api/admin/appels/[id]/visio", () => {
     expect(res.headers.get("location")).toContain("authuser=");
   });
 
-  it("sans session : vers la connexion, sans lire la base", async () => {
+  it("sans session : 401, SANS redirection qui livrerait le préfixe de la console", async () => {
     authMock.mockResolvedValue(null);
 
     const res = await appeler();
 
-    expect(res.status).toBe(302);
-    expect(res.headers.get("location")).toBe("/fr/adm/login");
+    expect(res.status).toBe(401);
+    expect(res.headers.get("location")).toBeNull();
+    expect(await res.text()).not.toContain("/adm");
     expect(findUnique).not.toHaveBeenCalled();
   });
 

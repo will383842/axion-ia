@@ -35,4 +35,19 @@ describe("RejoindreVisioBouton", () => {
     expect(rendu("2026-09-28T14:40:00Z")).toContain("Rejoindre maintenant");
     expect(rendu("2026-09-28T14:46:00Z")).toBe("");
   });
+
+  it("en icône (frise de l'agenda) : 20 px, libellé lu par aria-label, sans classe .admin-button", () => {
+    const html = renderToStaticMarkup(
+      <RejoindreVisioBouton
+        href={href}
+        debut={debut}
+        fin={fin}
+        maintenant={new Date("2026-09-28T13:25:00Z")}
+        icone
+      />,
+    );
+    expect(html).toContain('aria-label="Rejoindre la visio maintenant"');
+    expect(html).toContain("h-5 w-5");
+    expect(html).not.toContain("admin-button");
+  });
 });

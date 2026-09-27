@@ -232,9 +232,9 @@ export function AgendaTimeline({
                 ) : (
                   contenu
                 )}
-                {/* En surimpression, en haut à droite du bloc : un rendez-vous de
-                    45 minutes n'a pas la hauteur d'une ligne de plus, et le
-                    bouton doit rester visible sans ouvrir la fiche. */}
+                {/* En surimpression, en haut à droite du bloc, et en ICÔNE SEULE :
+                    un bloc de 15 ou 30 minutes mesure ~25 px, un bouton texte y
+                    serait rogné et masquerait le titre. */}
                 {i.lienVisio && (
                   <span className="absolute top-[2px] right-[2px] z-[2]">
                     <RejoindreVisioBouton
@@ -242,7 +242,7 @@ export function AgendaTimeline({
                       debut={i.debut}
                       fin={i.fin}
                       maintenant={maintenant}
-                      compact
+                      icone
                     />
                   </span>
                 )}

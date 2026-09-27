@@ -19,8 +19,14 @@ export interface RejoindreVisioBoutonProps {
   readonly fin: Date | null;
   /** Instant du rendu, injectable pour les tests. */
   readonly maintenant?: Date;
-  /** Gabarit compact pour les lignes de liste et la frise. */
+  /** Gabarit compact pour les lignes de liste. */
   readonly compact?: boolean;
+  /**
+   * Icône seule, 20 px — pour la frise de l'agenda, où un bloc de 15 ou
+   * 30 minutes mesure ~25 px : un bouton `admin-button-sm` (30 px) y serait
+   * rogné et recouvrirait le titre. Le libellé reste lu par `aria-label`.
+   */
+  readonly icone?: boolean;
 }
 
 export function RejoindreVisioBouton({
@@ -29,10 +35,34 @@ export function RejoindreVisioBouton({
   fin,
   maintenant = new Date(),
   compact = false,
+  icone = false,
 }: RejoindreVisioBoutonProps): React.ReactElement | null {
   const moment = momentVisio(debut, fin, maintenant);
   if (moment === "terminee") return null;
   const imminente = moment === "imminente";
+
+  if (icone) {
+    // Pas de classe `.admin-*` ici : elles l'emporteraient sur les utilitaires
+    // de taille, et c'est justement la taille qu'on fixe.
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={imminente ? "Rejoindre la visio maintenant" : "Rejoindre la visio"}
+        title={imminente ? "Rejoindre la visio maintenant" : "Rejoindre la visio"}
+        data-moment={moment}
+        className={[
+          "inline-flex h-5 w-5 items-center justify-center rounded-[var(--radius-admin-sm)]",
+          imminente
+            ? "bg-[color:var(--color-admin-accent)] text-[color:var(--color-admin-accent-fg)]"
+            : "bg-[color:var(--color-admin-paper)] text-[color:var(--color-admin-accent)] ring-1 ring-[color:var(--color-admin-accent)]",
+        ].join(" ")}
+      >
+        <Video size={12} aria-hidden="true" />
+      </a>
+    );
+  }
 
   return (
     <a
