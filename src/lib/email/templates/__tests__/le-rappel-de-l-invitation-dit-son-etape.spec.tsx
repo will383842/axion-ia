@@ -100,6 +100,8 @@ describe("les deux étapes, les deux langues", () => {
     const r = await rendu(l, e);
     expect(EMAIL_SIGNATURE.fullName).toBe("Williams Jullin");
     expect(r.html).toContain("Williams Jullin");
+    // Signature COURTE (2026-09-27) : pas de lien vers l'agenda CLIENT.
+    expect(r.html).not.toMatch(/Prendre rendez-vous|Book a call/);
     expect(r.html).toContain(
       (l === "fr" ? EMAIL_SIGNATURE.roleFr : EMAIL_SIGNATURE.roleEn).replace("&", "&amp;"),
     );

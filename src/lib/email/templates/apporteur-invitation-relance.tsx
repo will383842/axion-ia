@@ -104,7 +104,7 @@ export function ApporteurInvitationRelanceEmail({
       // téléphone. Il ajoute deux liens (rendez-vous, LinkedIn) : le message en
       // porte alors 8 pour un budget de 9 en famille B, mesuré par
       // `le-rappel-de-l-invitation-dit-son-etape.spec.tsx`.
-      signature="fondateur"
+      signature="fondateur-court"
     >
       <Text style={emailStyles.paragraphStyle}>{dernier ? t.j7(prenom) : t.j3(prenom)}</Text>
       <BlocKitApporteur locale={locale === "fr" ? "fr" : "en"} intro={t.kit} />

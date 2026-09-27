@@ -56,6 +56,10 @@ describe("invitation d'un candidat", () => {
     });
     expect(html).toContain("Williams Jullin");
     expect(html).toMatch(/Fondateur/);
+    // Signature COURTE : ni le discours client (vouvoiement) ni l'agenda client.
+    expect(html).not.toMatch(/Prendre rendez-vous/);
+    expect(html).not.toMatch(/Vous entendez parler/);
+    expect(html).toMatch(/LinkedIn/);
     expect(html).not.toMatch(/\+33|0[67](?:[ .]?\d{2}){4}/);
   });
 
