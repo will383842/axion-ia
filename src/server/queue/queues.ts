@@ -214,6 +214,13 @@ export const apporteurCronsQueue: Queue<ApporteurCronJobData, void, ApporteurCro
 /** Cadence des rappels de l'invitation : 08:00 UTC, soit 10 h à Paris l'été, 9 h l'hiver. */
 export const PATTERN_RELANCES_INVITATION = "0 8 * * *";
 
+/**
+ * Cadence du relevé des réponses des candidats dans la boîte Zoho Mail
+ * (2026-09-27) : toutes les 15 minutes. Une réponse arrivée à 7 h 50 est vue
+ * avant le passage des rappels de 8 h — qui ne lui écrit donc pas.
+ */
+export const PATTERN_REPONSES_ENTRANTES = "*/15 * * * *";
+
 // ============================================================
 // Content Generator V1 — Sprint 4/5 queues (§ 13.1 master prompt v1.7)
 // ============================================================
@@ -1186,6 +1193,11 @@ export async function bootRepeatableJobs(): Promise<void> {
         type: "relance-invitation" as const,
         pattern: PATTERN_RELANCES_INVITATION,
         jobId: "apporteur-relance-invitation-cron",
+      },
+      {
+        type: "reponses-entrantes" as const,
+        pattern: PATTERN_REPONSES_ENTRANTES,
+        jobId: "apporteur-reponses-entrantes-cron",
       },
     ];
     const wanted = new Set(programme.map((s) => `${s.type}|${s.pattern}`));

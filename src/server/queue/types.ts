@@ -188,7 +188,10 @@ export interface GuideIaCronJobData {
  * l'invitation à l'échange. Types déclarés ICI pour la même raison que ceux du
  * vivier (pas d'arête `queues.ts` → worker).
  */
-export type ApporteurCronJobType = "relance-invitation";
+export type ApporteurCronJobType =
+  | "relance-invitation"
+  // 2026-09-27 — relevé des réponses des candidats dans la boîte Zoho Mail.
+  | "reponses-entrantes";
 
 export interface ApporteurCronJobData {
   readonly type?: ApporteurCronJobType;

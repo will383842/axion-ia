@@ -34,6 +34,7 @@ import {
   type EtatRelanceInvitation,
   type MotifSansRelance,
 } from "@/lib/commercial-application/relance-invitation";
+import { estTableAbsente } from "@/lib/commercial-application/reponse-entrante";
 
 /**
  * Nom du gabarit de l'invitation. Copie LOCALE de `GABARIT_INVITATION_APPORTEUR`
@@ -126,7 +127,31 @@ function nomLisible(l: LigneSubmission): string {
 }
 
 /**
- * L'état de chaque personne — CINQ requêtes pour tout le lot, pas une par
+ * Les réponses HUMAINES reçues par e-mail (relevé Zoho, 2026-09-27) sur ces
+ * lignes depuis `depuis`. Une réponse automatique n'arrête pas les rappels.
+ *
+ * Table absente (P2021) = aucune réponse, et c'est VRAI : pendant l'heure qui
+ * suit la fusion, le worker tourne avant que l'app n'ait migré, et rien n'a pu
+ * y être écrit. Toute AUTRE erreur remonte — le filet du départ retient alors
+ * le rappel (« base muette = retenu »).
+ */
+async function reponsesEntrantesHumaines(
+  ids: readonly string[],
+  depuis: Date,
+): Promise<Array<{ submissionId: string; receivedAt: Date }>> {
+  try {
+    return await prisma.submissionInboundReply.findMany({
+      where: { submissionId: { in: [...ids] }, auto: false, receivedAt: { gt: depuis } },
+      select: { submissionId: true, receivedAt: true },
+    });
+  } catch (e) {
+    if (estTableAbsente(e)) return [];
+    throw e;
+  }
+}
+
+/**
+ * L'état de chaque personne — SIX requêtes pour tout le lot, pas une par
  * personne. Lève si la base ne répond pas : à l'appelant de choisir (le
  * passage abandonne, le filet retient).
  */
@@ -150,7 +175,7 @@ export async function lireEtatsRelance(
   const emails = [...personneDeLAdresse.keys()];
   const depuisMin = new Date(Math.min(...personnes.map((p) => p.invitationLe.getTime())));
 
-  const [evenements, reponses, journal, corbeille] = await Promise.all([
+  const [evenements, reponses, journal, corbeille, entrantes] = await Promise.all([
     prisma.calendlyEvent.findMany({
       where: {
         OR: [
@@ -182,6 +207,7 @@ export async function lireEtatsRelance(
       },
       select: { entityId: true, createdAt: true },
     }),
+    reponsesEntrantesHumaines(ids, depuisMin),
   ]);
 
   const reservees = new Set<string>();
@@ -203,7 +229,9 @@ export async function lireEtatsRelance(
       .sort((a, b) => a.getTime() - b.getTime());
     const repondu =
       reponses.some((r) => mesLignes.has(r.submissionId) && apres(r.repliedAt)) ||
-      p.lignes.some((l) => reponduHorsCircuitApres(l, p.invitationLe));
+      p.lignes.some((l) => reponduHorsCircuitApres(l, p.invitationLe)) ||
+      // 2026-09-27 — la personne a répondu elle-même, par e-mail.
+      entrantes.some((r) => mesLignes.has(r.submissionId) && apres(r.receivedAt));
     const email = adresses.get(p.cle) ?? null;
     resultat.set(p.cle, {
       email,
@@ -235,7 +263,7 @@ export async function lignesDeLaPersonne(ligne: LigneSubmission): Promise<LigneS
 const MOTIFS_LISIBLES: Record<Exclude<MotifSansRelance, "pas-encore">, string> = {
   efface: "la fiche a été supprimée ou effacée",
   reserve: "la personne a réservé son échange",
-  repondu: "une réponse lui a été faite depuis l'invitation",
+  repondu: "une réponse a été échangée avec la personne depuis l'invitation",
   close: "la fiche est archivée ou classée sans suite",
   "trop-ancienne": "l'invitation est trop ancienne",
   termine: "les deux rappels sont déjà partis",

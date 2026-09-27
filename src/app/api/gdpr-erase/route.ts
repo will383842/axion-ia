@@ -48,6 +48,7 @@ import {
   eraseDocumentRecipientsForEmail,
   eraseCoachingSignaturesForEmail,
   eraseCalendlyEventsForEmail,
+  eraseReponsesEntrantesForEmail,
 } from "@/lib/rgpd-erase";
 import { alertIncident } from "@/lib/telegram";
 import { empreinteSha256 } from "@/server/newsletter/exports";
@@ -129,6 +130,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     destinatairesResult,
     signaturesCoachingResult,
     appelsResult,
+    reponsesEntrantesResult,
   ] = await Promise.all([
     eraseSubmissionsForEmail(email),
     eraseNewsletterForEmail(email),
@@ -207,6 +209,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     eraseDocumentRecipientsForEmail(email),
     eraseCoachingSignaturesForEmail(email),
     eraseCalendlyEventsForEmail(email),
+    // 2026-09-27 — les réponses de la personne à son invitation d'apporteur,
+    // relevées dans la boîte Zoho : objet et extrait de SES messages.
+    eraseReponsesEntrantesForEmail(email),
   ]);
 
   // ART. 17 BI-SYSTÈME (lot L4) — le CRM efface par `person_key` dans les deux
@@ -251,6 +256,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         kbBookmarksDeleted: kbResult.bookmarksDeleted,
         chatConversationsDeleted: chatResult.conversationsDeleted,
         chatEscalationsAnonymized: chatResult.escalationsAnonymized,
+        reponsesEntrantesSupprimees: reponsesEntrantesResult.supprimees,
         // Le compte rendu du volet CRM est TRACÉ : un effacement seulement
         // local doit se voir dans le journal, jamais se supposer.
         crmStatus: crmResult.status,
@@ -338,6 +344,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       emailLogsPseudonymises: emailTracesResult.logsPseudonymises,
       emailOutboxSupprimes: emailTracesResult.outboxSupprimes,
       emailCopiesSupprimees: emailTracesResult.copiesSupprimees,
+      reponsesEntrantesSupprimees: reponsesEntrantesResult.supprimees,
       crmOutboxSupprimes: crmOutboxResult.supprimees,
       podcastSupprimes: podcastResult.supprimees,
       jetonsSignatureRevoques: signatureTokensResult.revoques,

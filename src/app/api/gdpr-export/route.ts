@@ -26,7 +26,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { exporterCandidaturesPour } from "@/server/careers/candidature-rgpd";
 import { trouverDemandesPodcast } from "@/features/podcast-request/rgpd";
-import { decryptPiiObject } from "@/lib/pii-crypto";
+import { decryptPii, decryptPiiObject } from "@/lib/pii-crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { extractAnswersText } from "@/server/calendly/api";
@@ -417,6 +417,21 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }),
   );
 
+  // 2026-09-27 — les réponses que la personne a envoyées par e-mail à son
+  // invitation d'apporteur, relevées dans la boîte Zoho : ce que NOUS en
+  // gardons (date, objet, extrait). Par l'empreinte de l'expéditeur, posée à
+  // l'enregistrement : c'est la clé que l'effacement utilise aussi.
+  const reponsesRecues = lookupHash
+    ? await ouAvertir(
+        "reponsesRecues",
+        prisma.submissionInboundReply.findMany({
+          where: { fromEmailHash: lookupHash },
+          orderBy: { receivedAt: "desc" },
+          select: { receivedAt: true, subject: true, excerpt: true, auto: true },
+        }),
+      )
+    : [];
+
   return NextResponse.json({
     ok: true,
     exportedAt: new Date().toISOString(),
@@ -437,6 +452,17 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     emailsEnvoyes,
     /** Messages vous concernant en attente d'envoi ou de validation interne. */
     emailsEnAttente,
+    /**
+     * Vos réponses par e-mail à notre invitation (réseau d'apporteurs) : ce que
+     * nous en conservons — la date, l'objet et un court extrait, jamais le
+     * message entier ni ses pièces jointes.
+     */
+    reponsesRecues: reponsesRecues.map((r) => ({
+      recueLe: r.receivedAt,
+      objet: r.subject,
+      extrait: r.excerpt ? decryptPii(r.excerpt) : null,
+      reponseAutomatique: r.auto,
+    })),
     candidatures: candidatures.candidatures,
     /** Demandes de tournage de podcast deposees via le formulaire public. */
     podcast: podcast.demandes,

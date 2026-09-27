@@ -13,6 +13,7 @@ import {
   XCircle,
   CircleSlash,
   BellRing,
+  MailCheck,
   Send,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -90,6 +91,12 @@ function badgeInvitation(b: BadgeSuivi): { label: string; tone: TonBadge; Icone:
   switch (b.type) {
     case "echange-reserve":
       return { label: "Échange réservé", tone: "success", Icone: CalendarCheck };
+    case "a-repondu":
+      return {
+        label: `A répondu le ${formatDateFrShort(b.le)}`,
+        tone: "success",
+        Icone: MailCheck,
+      };
     case "echange-annule":
       return { label: "Échange annulé", tone: "warning", Icone: CalendarX };
     case "rappel":

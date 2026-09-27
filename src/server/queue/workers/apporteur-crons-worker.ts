@@ -4,6 +4,10 @@
  *   · `relance-invitation` (08:00 UTC) — rappels J+3 / J+7 de l'invitation à
  *     l'échange de 15 minutes, pour les personnes qui n'ont pas réservé
  *     (`features/commercial-application/relances-invitation-apporteur.ts`).
+ *   · `reponses-entrantes` (toutes les 15 minutes, 2026-09-27) — relève dans
+ *     la boîte Zoho Mail les réponses des candidats à leur invitation ; une
+ *     réponse humaine arrête leurs rappels
+ *     (`features/commercial-application/reponses-entrantes-apporteur.ts`).
  *
  * Doctrine de log : on ne journalise que ce qui s'est passé. Un passage qui ne
  * trouve rien à faire se tait ; un passage suspendu (lien de réservation absent)
@@ -19,7 +23,18 @@ export const APPORTEUR_CRONS_QUEUE_NAME = "apporteur-crons";
 
 export type { ApporteurCronJobData, ApporteurCronJobType };
 
-async function processJob(_job: Job<ApporteurCronJobData>): Promise<void> {
+async function processJob(job: Job<ApporteurCronJobData>): Promise<void> {
+  // 🔑 Aiguillage par le NOM du job (celui que `bootRepeatableJobs` pose),
+  // repli sur `data.type`. Un job sans nom connu reste un passage des rappels :
+  // c'est ce que faisait ce processeur avant qu'il ait deux passages.
+  const type =
+    job.name === "reponses-entrantes" || job.data?.type === "reponses-entrantes"
+      ? "reponses-entrantes"
+      : "relance-invitation";
+  if (type === "reponses-entrantes") {
+    await passerReponses();
+    return;
+  }
   // Import PARESSEUX : le passage tire `queues.ts`, importé par toute Server
   // Action — chargé à l'exécution, ce coût n'existe que dans le worker.
   const { passerRelancesInvitation } =
@@ -32,6 +47,21 @@ async function processJob(_job: Job<ApporteurCronJobData>): Promise<void> {
       `[apporteur-crons] rappels d'invitation : ${r.envoyees.j3} premier(s) rappel(s), ` +
         `${r.envoyees.j7} dernier(s) rappel(s), sur ${r.personnes} personne(s) invitée(s) ` +
         `dans la fenêtre — écartées : ${JSON.stringify(r.ecartees)}`,
+    );
+  }
+}
+
+async function passerReponses(): Promise<void> {
+  const { passerReponsesEntrantes } =
+    await import("@/features/commercial-application/reponses-entrantes-apporteur");
+  const r = await passerReponsesEntrantes();
+  if (r.suspendu) return; // déjà dit par le passage lui-même (une fois, pour la config)
+  const { humaines, automatiques } = r.enregistrees;
+  if (humaines + automatiques > 0 || r.erreurs > 0) {
+    console.warn(
+      `[apporteur-crons] réponses entrantes : ${humaines} réponse(s) de candidat(s), ` +
+        `${automatiques} réponse(s) automatique(s), sur ${r.lus} message(s) lu(s)` +
+        (r.erreurs > 0 ? ` — ${r.erreurs} non enregistrée(s), reprises au passage suivant` : ""),
     );
   }
 }

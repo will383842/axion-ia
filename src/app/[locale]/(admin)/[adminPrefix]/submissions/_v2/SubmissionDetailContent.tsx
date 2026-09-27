@@ -28,6 +28,7 @@ import { BlocInvitationApporteur } from "@/components/admin/contacts/BlocInvitat
 import { GestesApporteur } from "@/components/admin/contacts/GestesApporteur";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { RendezVousApporteur } from "@/components/admin/contacts/RendezVousApporteur";
+import { ReponsesRecuesApporteur } from "@/components/admin/contacts/ReponsesRecuesApporteur";
 
 interface Props {
   adminPrefix: string;
@@ -214,6 +215,9 @@ export async function SubmissionDetailContent({
             role={(session.user as { role?: string | null }).role}
           />
         ) : null}
+        {/* Ce que la personne a répondu à l'invitation, par e-mail (2026-09-27).
+            Rien tant qu'aucune réponse n'est arrivée. */}
+        {estContactApporteur ? <ReponsesRecuesApporteur submissionId={submission.id} /> : null}
         {/* Les deux gestes de la fiche. Ils vivent SOUS l'invitation et sous
             l'échange : c'est l'ordre dans lequel les décisions se prennent —
             on invite, la personne réserve, puis on classe ou on enregistre

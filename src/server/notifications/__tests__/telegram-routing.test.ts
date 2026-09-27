@@ -39,11 +39,13 @@ describe("telegramGroupFor", () => {
 
   // Même logique pour le tunnel commercial Mémorial de l'Isère (2026-08-12) :
   // une campagne de recrutement = un salon, jamais mélangée aux autres.
+  // 2026-09-27 — la RÉPONSE d'un candidat apporteur à son invitation y entre :
+  // c'est la suite de la même conversation, pas une autre campagne.
   it("🧲 Commercial Mémo : salon dédié, seul", () => {
     const memo = ALL_NOTIFICATION_CATEGORIES.filter(
       (c) => telegramGroupFor(c) === "commercial-memo",
     );
-    expect(memo).toEqual(["COMMERCIAL_APPLICATION_RECEIVED"]);
+    expect(memo).toEqual(["COMMERCIAL_APPLICATION_RECEIVED", "APPORTEUR_REPLIED"]);
   });
 
   it("📰 Presse · 💰 Investisseurs : un groupe chacun", () => {

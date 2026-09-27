@@ -571,6 +571,8 @@ model Submission {
   deletedAt      DateTime?         @map("deleted_at")
   // Sprint Notif Infra 2026-05-26 / Chantier 3 — relation inverse Calendly.
   calendlyEvents CalendlyEvent[]
+  // 2026-09-27 — réponses d'un candidat apporteur reçues dans la boîte Zoho.
+  inboundReplies SubmissionInboundReply[]
 
   @@index([type])
   @@index([status])
@@ -643,6 +645,48 @@ enum SubmissionReplyStatus {
   failed // erreur définitive (4xx persistant ou 5xx)
 
   @@map("submission_reply_status")
+}
+
+// ============================================================
+// 1c. submission_inbound_replies (2026-09-27, décision Will)
+// ============================================================
+//
+// Une personne invitée à l'échange apporteur RÉPOND par e-mail à son
+// invitation : sa réponse arrive dans la boîte Zoho Mail. Un passage toutes
+// les 15 minutes (`reponses-entrantes-apporteur.ts`) la relève et l'enregistre
+// ici, rattachée à la fiche invitée. Une réponse humaine arrête les rappels
+// J+3 / J+7 ; une réponse automatique (absence, accusé) est gardée, marquée
+// `auto`, et n'arrête rien.
+//
+// Minimisation : ni le corps complet, ni les pièces jointes, ni l'adresse en
+// clair — l'empreinte de l'expéditeur, l'objet, un extrait court CHIFFRÉ.
+// Rétention : suit la fiche (suppression en cascade avec elle, purgée 24 mois
+// après classement par `retention-purge-worker.ts`) ; effacée par l'art. 17
+// (`eraseReponsesEntrantesForEmail`), restituée par l'art. 15.
+model SubmissionInboundReply {
+  id                String   @id @default(cuid())
+  submissionId      String   @map("submission_id") @db.Uuid
+  /// Date de réception dans la boîte (heure Zoho).
+  receivedAt        DateTime @map("received_at")
+  /// `hashEmailForLookup` de l'expéditeur — égale au `contactEmailHash` de la fiche.
+  fromEmailHash     String   @map("from_email_hash") @db.VarChar(64)
+  subject           String   @db.VarChar(500)
+  /// Extrait du corps (≤ 300 caractères), chiffré par `encryptPii`.
+  excerpt           String?  @db.Text
+  /// Identifiant du message DANS Zoho — clé d'idempotence du relevé.
+  zohoMessageId     String   @unique @map("zoho_message_id") @db.VarChar(64)
+  zohoFolderId      String?  @map("zoho_folder_id") @db.VarChar(64)
+  /// En-tête `Message-ID` du courriel, s'il a été lu.
+  internetMessageId String?  @map("internet_message_id") @db.VarChar(500)
+  /// Réponse automatique (absence, accusé) : gardée, n'arrête pas les rappels.
+  auto              Boolean  @default(false)
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([submissionId, receivedAt])
+  @@index([fromEmailHash])
+  @@map("submission_inbound_replies")
 }
 
 // ============================================================

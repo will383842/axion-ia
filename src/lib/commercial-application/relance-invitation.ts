@@ -70,7 +70,12 @@ export interface EtatRelanceInvitation {
   readonly relancesApres: readonly Date[];
   /** Un rendez-vous Calendly existe pour la personne — quel que soit son statut, annulé compris. */
   readonly reserve: boolean;
-  /** Une réponse a été faite après l'invitation (composeur, ou « j'ai répondu ailleurs »). */
+  /**
+   * Une réponse a été échangée après l'invitation : faite par la maison
+   * (composeur, « j'ai répondu ailleurs ») OU reçue de la personne — sa
+   * réponse par e-mail, relevée dans la boîte Zoho (2026-09-27). Une réponse
+   * AUTOMATIQUE (absence, accusé) ne compte pas.
+   */
   readonly repondu: boolean;
   /** Une de ses fiches est archivée ou classée sans suite. */
   readonly close: boolean;
@@ -132,22 +137,33 @@ export interface SuiviInvitation {
   readonly relances: readonly Date[];
   /** Échange apporteur rattaché à une de ses fiches : réservé (non annulé), annulé, ou rien. */
   readonly echange: "reserve" | "annule" | null;
+  /**
+   * Dernière réponse HUMAINE reçue de la personne par e-mail après son
+   * invitation (2026-09-27). Absente ou `null` : aucune.
+   */
+  readonly reponse?: Date | null;
 }
 
 export type BadgeSuivi =
   | { readonly type: "echange-reserve" }
+  | { readonly type: "a-repondu"; readonly le: Date }
   | { readonly type: "echange-annule" }
   | { readonly type: "rappel"; readonly numero: 1 | 2; readonly le: Date }
   | { readonly type: "invite"; readonly le: Date };
 
 /**
  * Le badge qui remplace « Sans réponse », par ordre de priorité : échange
- * réservé > échange annulé > rappel 2 > rappel 1 > invité. `null` : rien à
- * dire, la liste garde son badge.
+ * réservé > a répondu > échange annulé > rappel 2 > rappel 1 > invité. `null` :
+ * rien à dire, la liste garde son badge.
+ *
+ * « A répondu » passe AVANT « échange annulé » (décision Will, 2026-09-27) : une
+ * personne qui a annulé puis écrit a dit quelque chose de plus récent que son
+ * annulation — c'est son message qu'il faut lire.
  */
 export function badgeSuiviInvitation(s: SuiviInvitation | undefined): BadgeSuivi | null {
   if (!s) return null;
   if (s.echange === "reserve") return { type: "echange-reserve" };
+  if (s.reponse) return { type: "a-repondu", le: s.reponse };
   if (s.echange === "annule") return { type: "echange-annule" };
   if (!s.invitation) return null;
   const n = s.relances.length;
