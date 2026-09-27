@@ -76,6 +76,14 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 > « l'app Axion-IA » : la boîte relève du registre art. 30 de l'organisme, pas
 > des sous-traitants de l'application. Si le périmètre de la page devait être
 > élargi, ce serait une décision à écrire — pas un oubli à corriger.
+>
+> 🆕 **2026-09-27 — l'application LIT désormais cette boîte** (lecture seule,
+> OAuth `ZohoMail.messages.READ`) : le worker y reconnaît les réponses des
+> candidats apporteurs à leur invitation (`src/server/zoho-mail/client.ts`). La
+> boîte entre donc dans le périmètre de l'app ; même groupe Zoho, même région UE.
+> L'entrée ZeptoMail de la page publique le mentionne. ⛔ **ACTION WILL** —
+> vérifier que le DPA Zoho signé couvre aussi Zoho Mail (et pas seulement
+> ZeptoMail), ou l'étendre.
 
 > 🆕 **Ligne 18 ajoutée 2026-08-20** (renumérotée 17 → 18 à la fusion : la ligne 17 était prise par ZeptoMail, arrivé le même jour par une autre branche). LinkedIn Insight Tag intégré au code
 > (`src/components/analytics/LinkedInInsight.tsx`) mais **non activé** : la
