@@ -10,7 +10,8 @@
 //
 // Même châssis que l'invitation : famille B (lien d'opposition dans le pied de
 // page), tutoiement, sans rangée sociale (le kit coûte deux liens, cf.
-// `_kit-apporteur.tsx`). Le bouton porte le lien de réservation Calendly.
+// `_kit-apporteur.tsx`), signature du fondateur (§6.1, sans téléphone). Le
+// bouton porte le lien de réservation Calendly.
 //
 // Vocabulaire (anti-requalification, `docs/partners/ANTI-REQUALIFICATION.md`) :
 // « échange », « candidature retenue » ; jamais « entretien », « poste »,
@@ -99,6 +100,11 @@ export function ApporteurInvitationRelanceEmail({
       locale={locale}
       tutoiement
       sansReseauxSociaux
+      // 2026-09-27 (Will) : signé du fondateur — bloc §6.1 du châssis, sans
+      // téléphone. Il ajoute deux liens (rendez-vous, LinkedIn) : le message en
+      // porte alors 8 pour un budget de 9 en famille B, mesuré par
+      // `le-rappel-de-l-invitation-dit-son-etape.spec.tsx`.
+      signature="fondateur"
     >
       <Text style={emailStyles.paragraphStyle}>{dernier ? t.j7(prenom) : t.j3(prenom)}</Text>
       <BlocKitApporteur locale={locale === "fr" ? "fr" : "en"} intro={t.kit} />

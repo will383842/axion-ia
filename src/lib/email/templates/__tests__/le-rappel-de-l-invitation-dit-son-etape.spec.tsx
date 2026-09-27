@@ -11,6 +11,7 @@ import { COPY_RELANCE_INVITATION } from "../apporteur-invitation-relance";
 import { REGIME_FAMILLE } from "../_layout";
 import { OBJET_MAX } from "../../objet-email";
 import { DOCUMENT_APPORTEUR_CHEMIN } from "@/lib/commercial-application/kit-apporteur";
+import { EMAIL_LEGAL, EMAIL_SIGNATURE } from "@/lib/email/legal-footer";
 
 const CALENDLY = "https://calendly.com/axion-ia/echange-apporteur";
 const DESTINATAIRE = "camille@exemple.fr";
@@ -93,6 +94,17 @@ describe("les deux étapes, les deux langues", () => {
     expect(r.html).not.toContain("facebook.com");
     const liens = new Set((r.html.match(/href="([^"]+)"/g) ?? []).map((x) => x.slice(6, -1)));
     expect(liens.size).toBeLessThanOrEqual(REGIME_FAMILLE.B.budgetLiens);
+  });
+
+  it.each(CAS)("%s %s : signé Williams Jullin, fondateur — sans téléphone", async (l, e) => {
+    const r = await rendu(l, e);
+    expect(EMAIL_SIGNATURE.fullName).toBe("Williams Jullin");
+    expect(r.html).toContain("Williams Jullin");
+    expect(r.html).toContain(
+      (l === "fr" ? EMAIL_SIGNATURE.roleFr : EMAIL_SIGNATURE.roleEn).replace("&", "&amp;"),
+    );
+    expect(r.html).not.toContain(EMAIL_LEGAL.phone);
+    expect(r.html).not.toContain(EMAIL_LEGAL.phoneTel);
   });
 
   it.each(CAS)("%s %s : objet ≤ %s caractères, sans « ! » ni suffixe de marque", async (l, e) => {
