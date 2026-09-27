@@ -6,7 +6,7 @@
 
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import * as Sentry from "@sentry/nextjs";
 
 import { auth } from "@/auth";
@@ -56,5 +56,7 @@ export async function enregistrerSuiviAction(
 
   revalidatePath(adminPath("fr", "rendez-vous"));
   revalidatePath(adminPath("fr", `contacts/appels/${calendlyEventId}`));
+  // La pastille du menu doit tomber tout de suite, pas dans 60 s.
+  updateTag("admin:rendez-vous-a-faire");
   return { etat: "ok", message: "Point enregistré." };
 }

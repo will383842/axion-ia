@@ -191,6 +191,12 @@ interface AdminSidebarNavProps {
    * republication (bouton « Republier » sur la fiche offre).
    */
   staleJobOffersCount?: number;
+  /**
+   * Rendez-vous dont le point n'est pas fait (2026-09-27) — pastille du lien
+   * épinglé « Rendez-vous ». Même philosophie « reste à faire » : descend à
+   * zéro. Zéro aussi pour un rôle qui ne voit pas les appels.
+   */
+  rendezVousAFaireCount?: number;
   /** Email de l'utilisateur connecté (footer profil). */
   userEmail?: string | null;
   /** Href base admin (ex. /fr/<adminPrefix>) — lien profil/paramètres. */
@@ -231,6 +237,7 @@ export function AdminSidebarNav({
   inboxCounts,
   qualiopiCounts,
   staleJobOffersCount = 0,
+  rendezVousAFaireCount = 0,
   userEmail,
   accountHref,
   logoutAction,
@@ -978,6 +985,18 @@ export function AdminSidebarNav({
           >
             <CalendarClock className="h-[18px] w-[18px] shrink-0 opacity-80" aria-hidden />
             {!collapsed && <span className="flex-1 text-sm font-medium">Rendez-vous</span>}
+            {rendezVousAFaireCount > 0 ? (
+              <span
+                className={cn(
+                  "rounded-full px-[6px] py-[1px] text-[10px] font-bold tabular-nums",
+                  encreDeBadge("warn"),
+                )}
+                style={{ backgroundColor: "var(--color-admin-rail-badge-warn)" }}
+                aria-label={`${rendezVousAFaireCount} rendez-vous attendent leur point`}
+              >
+                {rendezVousAFaireCount > 99 ? "99+" : rendezVousAFaireCount}
+              </span>
+            ) : null}
           </Link>
           {ADMIN_NAV_GROUP_ORDER.map((g, gi) => {
             // Exclut les items `parent != null` : atteignables par URL/palette

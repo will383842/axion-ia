@@ -33,6 +33,8 @@ import {
 } from "@/features/admin-rendezvous/suivi-queries";
 import {
   JOURS_A_FAIRE_LE_POINT,
+  LIBELLE_ISSUE,
+  LIBELLE_SUITE,
   mailtoRelanceAbsent,
   prenomDe,
 } from "@/features/admin-rendezvous/suivi";
@@ -65,6 +67,16 @@ function libelleJour(dayKey: string, aujourdhui: string): string {
 function CarteRdv({ r, maintenant }: { r: RdvAVenir; maintenant: Date }) {
   const debut = r.startTime as Date;
   const apporteur = estAppelApporteur(r.title);
+  // Le brouillon de relance, pour « Absent » — même texte que dans « À faire
+  // le point », vers la page de réservation d'appel.
+  const mailto = r.contactEmail
+    ? mailtoRelanceAbsent({
+        email: r.contactEmail,
+        prenom: prenomDe(r.contactName),
+        quand: `${formatDateFrShort(r.dayKey)} à ${timeInParis(debut)}`,
+        lienNouveauCreneau: `${SITE_URL}/fr/appel`,
+      })
+    : null;
   return (
     <li className="admin-card flex flex-col gap-[var(--space-admin-3)]">
       <div className="flex flex-wrap items-start justify-between gap-[var(--space-admin-3)]">
@@ -152,6 +164,29 @@ function CarteRdv({ r, maintenant }: { r: RdvAVenir; maintenant: Date }) {
           <p>{b.reponse}</p>
         </div>
       ))}
+
+      {/* 🔑 LE POINT SE FAIT ICI, dès que l'appel a commencé (demande de Will,
+          2026-09-27 : « pas intuitif » dans un écran à part). La visio s'ouvre
+          dans un NOUVEL onglet : en raccrochant, on revient sur cette carte, et
+          les trois boutons attendent sous le bouton de visio. L'onglet « À faire
+          le point » ne sert plus que de filet, pour ce qui a été oublié. */}
+      {r.enCours ? (
+        <section
+          aria-label="Le point après l'appel"
+          className="border-t border-[color:var(--color-admin-border)] pt-[var(--space-admin-3)]"
+        >
+          <p className="mb-[var(--space-admin-2)] font-medium">
+            {r.suivi
+              ? `Point fait : ${LIBELLE_ISSUE[r.suivi.issue]}${r.suivi.suite ? ` · ${LIBELLE_SUITE[r.suivi.suite]}` : ""} — modifiable ci-dessous`
+              : "L'appel est terminé ? Faites le point :"}
+          </p>
+          <SuiviRendezVousForm
+            calendlyEventId={r.sourceRecordId}
+            initial={r.suivi}
+            mailtoRelance={mailto}
+          />
+        </section>
+      ) : null}
 
       <p>
         <Link href={r.detailHref} className="admin-link">
