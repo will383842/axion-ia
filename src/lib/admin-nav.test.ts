@@ -198,7 +198,10 @@ describe("buildAdminNav SSOT", () => {
     // +1 (2026-09-26, « Monteurs & vidéastes », indenté sous Candidatures) :
     // les deux offres vidéo freelance avec les tarifs en colonnes — la seule
     // vue qui compare des prix sans ouvrir chaque fiche. 166 + 1 = 167.
-    expect(items.length).toBe(167);
+    // +1 (2026-09-27, Dossier intervenant) : sous-onglet des Imprimés, dérivé
+    // de IMPRIMES — le dossier de conférencier de Williams, envoyé aux
+    // organisateurs d'événements qui ont répondu. 167 + 1 = 168.
+    expect(items.length).toBe(168);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
