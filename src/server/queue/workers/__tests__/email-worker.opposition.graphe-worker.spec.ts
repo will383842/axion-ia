@@ -108,6 +108,13 @@ describe("🔴 le worker d'e-mails tourne hors de Next", () => {
     );
     expect(noms).not.toContain("src/server/queue/queues.ts");
     expect(noms).not.toContain("src/server/email/suppression.ts");
+    // 2026-09-27 — la lecture des réponses reçues par e-mail entre dans le
+    // filet par une règle PURE ; le relevé Zoho, lui, n'a rien à y faire.
+    expect(noms).toContain("src/lib/commercial-application/reponse-entrante.ts");
+    expect(noms).not.toContain("src/server/zoho-mail/client.ts");
+    expect(noms).not.toContain(
+      "src/features/commercial-application/reponses-entrantes-apporteur.ts",
+    );
   });
 
   it("aucun module du graphe n'importe `server-only`", () => {
@@ -128,6 +135,24 @@ describe("🔴 le worker d'e-mails tourne hors de Next", () => {
     const fautifs = [...graphe.entries()]
       .filter(([, specs]) => specs.some(PAQUETS_INTERDITS))
       .map(([f, specs]) => `${rel(f)} -> ${specs.filter(PAQUETS_INTERDITS).join(", ")}`);
+    expect(fautifs).toEqual([]);
+  });
+
+  it("🔴 le relevé des réponses Zoho (worker `apporteur-crons`) tourne lui aussi hors de Next", () => {
+    const releve = fermeture(
+      join(SRC, "features/commercial-application/reponses-entrantes-apporteur.ts"),
+    );
+    const nomsReleve = [...releve.keys()].map(rel);
+    expect(nomsReleve).toContain("src/server/zoho-mail/client.ts");
+    expect(nomsReleve).toContain("src/server/notifications/index.ts");
+    const fautifs = [...releve.entries()]
+      .filter(
+        ([f, specs]) =>
+          specs.some(PAQUETS_INTERDITS) ||
+          IMPORTE_SERVER_ONLY.test(readFileSync(f, "utf8")) ||
+          DIRECTIVE_USE_SERVER.test(readFileSync(f, "utf8")),
+      )
+      .map(([f]) => rel(f));
     expect(fautifs).toEqual([]);
   });
 

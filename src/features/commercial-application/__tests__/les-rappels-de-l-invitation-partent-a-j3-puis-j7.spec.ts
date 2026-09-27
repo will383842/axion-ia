@@ -78,6 +78,9 @@ vi.mock("@/lib/prisma", () => ({
     submissionReply: {
       findMany: async (a: { where?: Record<string, unknown> }) => trouver(db.replies, a),
     },
+    // 2026-09-27 — réponses reçues par e-mail : couvertes par
+    // `les-reponses-entrantes-arretent-les-rappels.spec.ts`, vides ici.
+    submissionInboundReply: { findMany: async () => [] },
   },
 }));
 vi.mock("@/lib/pii-crypto", () => ({
@@ -441,7 +444,12 @@ describe("la liste des apporteurs lit le suivi par PERSONNE", () => {
       },
     ];
     let suivi = (await lireSuiviInvitationListe(["affichee"])).get("affichee");
-    expect(suivi).toEqual({ invitation: INVITATION, relances: [passage(4)], echange: null });
+    expect(suivi).toEqual({
+      invitation: INVITATION,
+      relances: [passage(4)],
+      echange: null,
+      reponse: null,
+    });
 
     db.calendly = [
       { linkedSubmissionId: "ligne-c", status: "canceled", eventTypeName: "Échange apporteur" },

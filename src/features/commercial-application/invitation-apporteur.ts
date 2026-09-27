@@ -471,7 +471,8 @@ export async function lireInvitationsDeLaPersonne(
  *
  * 2026-09-27 (Will) : « que l'on sache dans la console qu'ils ont bien été
  * contactés » — d'abord la date de l'invitation ; puis, avec les rappels
- * automatiques, les rappels partis et l'échange réservé ou annulé. Le badge
+ * automatiques, les rappels partis et l'échange réservé ou annulé ; puis la
+ * réponse de la personne reçue par e-mail (relevé Zoho, 2026-09-27). Le badge
  * lui-même est choisi par `badgeSuiviInvitation` (règle pure, testée).
  *
  * Lue par EMPREINTE d'adresse, comme `lireInvitationsDeLaPersonne` : la liste
@@ -504,7 +505,7 @@ export async function lireSuiviInvitationListe(
   for (const l of lignesPersonnes) personneDe.set(l.id, l.contactEmailHash ?? `id:${l.id}`);
   const toutes = [...personneDe.keys()];
 
-  const [journal, evenements] = await Promise.all([
+  const [journal, evenements, entrantes] = await Promise.all([
     prisma.emailLog.findMany({
       where: {
         template: { in: [GABARIT_INVITATION_APPORTEUR, GABARIT_RELANCE_INVITATION] },
@@ -518,6 +519,18 @@ export async function lireSuiviInvitationListe(
       where: { linkedSubmissionId: { in: toutes } },
       select: { linkedSubmissionId: true, eventTypeName: true, status: true },
     }),
+    // 2026-09-27 — les réponses HUMAINES de la personne, relevées dans la boîte
+    // Zoho. Accessoires : si elles ne se lisent pas (table pas encore migrée,
+    // base lente), la liste garde les autres badges plutôt que de tout perdre.
+    prisma.submissionInboundReply
+      .findMany({
+        where: { submissionId: { in: toutes }, auto: false },
+        select: { submissionId: true, receivedAt: true },
+      })
+      .catch((err: unknown) => {
+        Sentry.captureException(err, { tags: { lecture: "reponses-entrantes-liste" } });
+        return [] as Array<{ submissionId: string; receivedAt: Date }>;
+      }),
   ]);
 
   const invitationPar = new Map<string, Date>();
@@ -547,6 +560,16 @@ export async function lireSuiviInvitationListe(
     else if (!echangePar.has(p)) echangePar.set(p, "annule");
   }
 
+  const reponsePar = new Map<string, Date>();
+  for (const r of entrantes) {
+    const p = personneDe.get(r.submissionId);
+    const invitation = p ? invitationPar.get(p) : undefined;
+    // Une réponse ne compte que si elle suit l'invitation qu'on affiche.
+    if (!p || !invitation || r.receivedAt <= invitation) continue;
+    const avant = reponsePar.get(p);
+    if (!avant || r.receivedAt > avant) reponsePar.set(p, r.receivedAt);
+  }
+
   for (const l of affichees) {
     const p = personneDe.get(l.id)!;
     const invitation = invitationPar.get(p) ?? null;
@@ -556,6 +579,7 @@ export async function lireSuiviInvitationListe(
       invitation,
       relances: (relancesPar.get(p) ?? []).sort((a, b) => a.getTime() - b.getTime()),
       echange,
+      reponse: reponsePar.get(p) ?? null,
     });
   }
   return resultat;

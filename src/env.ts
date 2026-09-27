@@ -179,6 +179,30 @@ export const env = createEnv({
     // build GitHub Actions, où il n'est pas posé.
     CALENDLY_APPORTEUR_URL: z.string().url().optional(),
 
+    // ── Zoho Mail, LECTURE SEULE — réponses des candidats apporteurs (2026-09-27)
+    // Le worker relève toutes les 15 minutes, dans la boîte de réception de
+    // contact@axion-ia.com, les réponses des personnes invitées à l'échange :
+    // une réponse arrête leurs rappels et s'affiche sur la fiche
+    // (`server/zoho-mail/client.ts`, `reponses-entrantes-apporteur.ts`).
+    //
+    // Client OAuth « Self Client » de la console API Zoho (api-console.zoho.eu),
+    // jeton de rafraîchissement généré avec les portées MINIMALES :
+    //   ZohoMail.messages.READ,ZohoMail.folders.READ,ZohoMail.accounts.READ
+    // (la dernière est inutile si ZOHO_MAIL_ACCOUNT_ID est posé).
+    //
+    // TOUTES FACULTATIVES : une des trois premières absente = le relevé ne fait
+    // rien et le dit une fois dans le journal du worker. À poser sur le WORKER
+    // (c'est lui qui relève) ; l'app ne lit que ZOHO_MAIL_DC, pour le lien
+    // « Ouvrir dans Zoho » de la fiche. Lues par `process.env` dans le worker,
+    // qui ne charge pas ce module.
+    ZOHO_MAIL_CLIENT_ID: z.string().optional(),
+    ZOHO_MAIL_CLIENT_SECRET: z.string().optional(),
+    ZOHO_MAIL_REFRESH_TOKEN: z.string().optional(),
+    // Identifiant du compte à lire. Absent : premier compte visible avec le jeton.
+    ZOHO_MAIL_ACCOUNT_ID: z.string().optional(),
+    // Centre de données : `eu` (défaut) → accounts.zoho.eu / mail.zoho.eu.
+    ZOHO_MAIL_DC: z.string().optional(),
+
     // ── Tunnel Facebook — API Conversions Meta (2026-09-03) ────────────────
     // Jeton « système » généré dans le Gestionnaire d'événements Meta (Pixel →
     // Paramètres → API Conversions → Générer un token). SERVEUR UNIQUEMENT.
@@ -649,6 +673,11 @@ export const env = createEnv({
     CALENDLY_API_TOKEN: process.env.CALENDLY_API_TOKEN,
     CALENDLY_WEBHOOK_SIGNING_KEY: process.env.CALENDLY_WEBHOOK_SIGNING_KEY,
     CALENDLY_APPORTEUR_URL: process.env.CALENDLY_APPORTEUR_URL,
+    ZOHO_MAIL_CLIENT_ID: process.env.ZOHO_MAIL_CLIENT_ID,
+    ZOHO_MAIL_CLIENT_SECRET: process.env.ZOHO_MAIL_CLIENT_SECRET,
+    ZOHO_MAIL_REFRESH_TOKEN: process.env.ZOHO_MAIL_REFRESH_TOKEN,
+    ZOHO_MAIL_ACCOUNT_ID: process.env.ZOHO_MAIL_ACCOUNT_ID,
+    ZOHO_MAIL_DC: process.env.ZOHO_MAIL_DC,
     META_CAPI_ACCESS_TOKEN: process.env.META_CAPI_ACCESS_TOKEN,
     META_CAPI_TEST_EVENT_CODE: process.env.META_CAPI_TEST_EVENT_CODE,
     GOOGLE_CALENDAR_CLIENT_EMAIL: process.env.GOOGLE_CALENDAR_CLIENT_EMAIL,

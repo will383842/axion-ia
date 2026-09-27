@@ -87,6 +87,33 @@ export async function eraseSubmissionsForEmail(email: string): Promise<EraseSubm
 }
 
 /**
+ * Supprime les RÉPONSES que la personne a envoyées par e-mail à son invitation
+ * d'apporteur, relevées dans la boîte Zoho (`submission_inbound_replies`,
+ * 2026-09-27) : objet et extrait de SES messages.
+ *
+ * Suppression hard : la ligne ne prouve rien (le message lui-même vit dans la
+ * boîte Zoho, hors de ce système), et l'anonymisation in-place de la fiche ne
+ * la toucherait pas — elle survivrait, rattachée à une fiche « effacée ».
+ *
+ * 🔑 Par l'EMPREINTE DE L'EXPÉDITEUR, jamais par la fiche : cette fonction
+ * tourne EN MÊME TEMPS que `eraseSubmissionsForEmail`, qui remet
+ * `contactEmailHash` à NULL — une jointure sur la fiche pourrait ne plus rien
+ * trouver. L'empreinte de l'expéditeur, elle, est posée à l'enregistrement et
+ * ne bouge pas (le relevé n'enregistre qu'un expéditeur dont l'empreinte est
+ * celle de la fiche).
+ */
+export async function eraseReponsesEntrantesForEmail(
+  email: string,
+): Promise<{ readonly supprimees: number }> {
+  const empreinte = hashEmailForLookup(email);
+  if (!empreinte) return { supprimees: 0 };
+  const r = await prisma.submissionInboundReply.deleteMany({
+    where: { fromEmailHash: empreinte },
+  });
+  return { supprimees: r.count };
+}
+
+/**
  * Supprime hard le NewsletterSubscriber ayant `email`. Si consent retiré,
  * aucune raison de conserver la ligne (pas d'audit business).
  */

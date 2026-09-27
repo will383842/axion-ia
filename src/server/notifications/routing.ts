@@ -71,6 +71,8 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
 
   // --- Reply admin (Chantier 5) — décision Will figée : pas de notif ---
   ADMIN_REPLIED_TO_SUBMISSION: { channels: [], severity: "info" },
+  // --- Réponse entrante d'un candidat apporteur (2026-09-27) ---
+  APPORTEUR_REPLIED: { channels: ["telegram"], severity: "info" },
 
   // --- Ops ---
   DEPLOY_SUCCESS: { channels: ["telegram"], severity: "info" },
@@ -186,6 +188,9 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   // dans leur propre salon (même logique que le monteur vidéo : une campagne de
   // recrutement = un fil, jamais mélangée aux autres candidatures).
   COMMERCIAL_APPLICATION_RECEIVED: "commercial-memo",
+  // La réponse d'un candidat apporteur à son invitation (2026-09-27) : même
+  // fil que sa candidature — c'est la suite de la même conversation.
+  APPORTEUR_REPLIED: "commercial-memo",
 
   // 📰 Presse
   PRESS_REQUEST_SUBMITTED: "presse",

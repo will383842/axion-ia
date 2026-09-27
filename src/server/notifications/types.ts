@@ -469,6 +469,20 @@ export type NotificationEvent =
         eventName?: string;
       };
     }
+  // === Réponse entrante d'un candidat apporteur (2026-09-27) ===
+  // Relevée dans la boîte Zoho Mail par le passage `reponses-entrantes` : la
+  // personne a répondu à son invitation, ses rappels viennent de s'arrêter.
+  // Ni adresse ni extrait : le nom, l'objet, et le lien vers la fiche.
+  | {
+      category: "APPORTEUR_REPLIED";
+      payload: {
+        submissionId: string;
+        contactName: string;
+        subject: string;
+        /** ISO 8601. */
+        receivedAt: string;
+      };
+    }
   // === Reply admin (Chantier 5) ===
   | {
       category: "ADMIN_REPLIED_TO_SUBMISSION";

@@ -26,6 +26,7 @@ const d = vi.hoisted(() => ({
   abonne: vi.fn(),
   calendly: vi.fn(),
   reponses: vi.fn(),
+  entrantes: vi.fn(),
   journal: vi.fn(),
   corbeille: vi.fn(),
 }));
@@ -71,6 +72,7 @@ vi.mock("@/lib/prisma", () => ({
     newsletterSubscriber: { findUnique: (...a: unknown[]) => d.abonne(...a) },
     calendlyEvent: { findMany: (...a: unknown[]) => d.calendly(...a) },
     submissionReply: { findMany: (...a: unknown[]) => d.reponses(...a) },
+    submissionInboundReply: { findMany: (...a: unknown[]) => d.entrantes(...a) },
   },
 }));
 vi.mock("@/lib/r2-storage", () => ({ isR2Configured: () => false, getObjectBufferR2: vi.fn() }));
@@ -139,6 +141,7 @@ beforeEach(() => {
   d.abonne.mockResolvedValue(null);
   d.calendly.mockResolvedValue([]);
   d.reponses.mockResolvedValue([]);
+  d.entrantes.mockResolvedValue([]);
   d.journal.mockResolvedValue([]);
   d.corbeille.mockResolvedValue([]);
   process.env["AUTH_SECRET"] = "secret-de-test-suffisamment-long-0123456789";
@@ -181,7 +184,30 @@ describe("le rappel de l'invitation au départ", () => {
       { submissionId: LIGNE_ID, repliedAt: new Date("2026-09-29T10:00:00Z") },
     ]);
     await processeur()(job());
-    attendRetenu(/une réponse lui a été faite/);
+    attendRetenu(/une réponse a été échangée/);
+  });
+
+  it("🔴 une réponse de la PERSONNE, reçue par e-mail depuis l'invitation, le retient", async () => {
+    d.entrantes.mockResolvedValue([
+      { submissionId: LIGNE_ID, receivedAt: new Date("2026-09-29T10:00:00Z") },
+    ]);
+    await processeur()(job());
+    attendRetenu(/une réponse a été échangée/);
+    // La lecture ne demande que les réponses HUMAINES : une réponse
+    // automatique n'arrête pas un rappel.
+    expect(d.entrantes.mock.calls[0]![0]).toMatchObject({ where: { auto: false } });
+  });
+
+  it("la table des réponses pas encore migrée (fenêtre app/worker) : le rappel part", async () => {
+    d.entrantes.mockRejectedValue(Object.assign(new Error("absente"), { code: "P2021" }));
+    await processeur()(job());
+    expect(d.sendEmail).toHaveBeenCalledTimes(1);
+  });
+
+  it("toute AUTRE panne de cette lecture : retenu (base muette = retenu)", async () => {
+    d.entrantes.mockRejectedValue(new Error("ECONNRESET"));
+    await processeur()(job());
+    attendRetenu(/état illisible/);
   });
 
   it("🔴 une fiche archivée entre-temps le retient", async () => {
