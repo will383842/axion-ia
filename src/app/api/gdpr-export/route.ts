@@ -118,6 +118,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // peut nommer d'autres personnes, et le corps se reconstitue de toute façon à
   // partir du gabarit. Ce que l'art. 15 doit rendre est « quels messages
   // m'avez-vous adressés, quand, et sont-ils arrivés ».
+  //
+  // 2026-09-27 — depuis que la COPIE de l'e-mail envoyé est conservée
+  // (`email_log_contents`, 12 mois), elle est rendue ici : objet, texte et noms
+  // des pièces jointes du message que CETTE personne a reçu, liens personnels
+  // masqués. Le texte plutôt que le HTML : c'est la version lisible, et elle
+  // porte le même contenu. Une copie conservée et non exportée serait le
+  // défaut `D5-5-02` recommencé.
   const [emailsEnvoyes, emailsEnAttente] = await Promise.all([
     prisma.emailLog.findMany({
       where: { recipient: email },
@@ -130,6 +137,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         bounceType: true,
         bouncedAt: true,
         createdAt: true,
+        contenu: { select: { subject: true, text: true, attachmentNames: true } },
       },
       orderBy: { createdAt: "desc" },
     }),

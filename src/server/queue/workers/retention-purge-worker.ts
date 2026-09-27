@@ -37,6 +37,7 @@
 //   RETENTION_GDPR_TRACES_MONTHS=60       (`D5-5-05` — preuve qu'un droit a ete honore)
 //   RETENTION_EMAIL_LOGS_MARKETING_MONTHS=13 (audit e-mail — norme CNIL prospection)
 //   RETENTION_EMAIL_OUTBOX_MONTHS=36      (audit e-mail — etats terminaux seuls)
+//   RETENTION_EMAIL_CONTENTS_MONTHS=12    (copie des e-mails envoyes, 2026-09-27)
 //   RETENTION_CHAT_MONTHS=12              (chatbot — conversations/messages/escalades + cache/idempotence)
 //   RETENTION_CANDIDATURES_MONTHS=24      (`D4` — candidatures NON RETENUES seulement)
 //   RETENTION_NEWSLETTER_PENDING_DAYS=30   (L6 — inscription jamais confirmée)
@@ -98,6 +99,12 @@ const DEFAULTS = {
   emailLogsTransac: DOCUMENT_RETENTION_YEARS * 12,
   emailLogsMarketing: 13,
   emailOutbox: 36,
+  // Copie des e-mails envoyés (2026-09-27). 12 mois, et PAS la durée du journal
+  // (5 ans) : la PREUVE d'envoi est la ligne `email_logs`, qui reste. La copie
+  // porte le CONTENU — nom, formation, dates, montants — et ne sert qu'à relire
+  // un message récent. La garder cinq ans conserverait des données personnelles
+  // sans finalité qui le justifie.
+  emailContents: 12,
   // 🔴 `D5-5-05` — voir le bloc « activity_logs » du handler.
   tracesRgpd: DOCUMENT_RETENTION_YEARS * 12,
 } as const;
@@ -175,6 +182,7 @@ export async function executerPurgeRetention(): Promise<void> {
      */
     candidaturesRetenuesEpargnees: 0,
     emailLogs: 0,
+    emailLogContents: 0,
     emailOutbox: 0,
   };
 
@@ -568,6 +576,15 @@ export async function executerPurgeRetention(): Promise<void> {
   });
   counts.emailLogs = emailLogsTransac.count + emailLogsMarketing.count;
 
+  // Copie des e-mails envoyés (2026-09-27) — la copie meurt à 12 mois ; la
+  // ligne du journal qu'elle illustre survit (preuve d'envoi). La cascade de la clé étrangère emporte déjà la copie d'une ligne
+  // purgée ; cette passe-ci emporte les copies des lignes qui RESTENT.
+  const contentsMonths = readMonths("RETENTION_EMAIL_CONTENTS_MONTHS", DEFAULTS.emailContents);
+  const contentsPurge = await prisma.emailLogContent.deleteMany({
+    where: { createdAt: { lt: monthsAgo(contentsMonths) } },
+  });
+  counts.emailLogContents = contentsPurge.count;
+
   // Corbeille de validation : on ne purge QUE les états terminaux.
   //
   // 🔴 `a_valider` et `approuve` sont volontairement exclus, et ce n'est
@@ -590,6 +607,7 @@ export async function executerPurgeRetention(): Promise<void> {
     `[retention-purge][email] logs=${counts.emailLogs} ` +
       `(transac ${emailLogsTransac.count}/${emailTransacMonths}m + ` +
       `marketing ${emailLogsMarketing.count}/${emailMarketingMonths}m) ` +
+      `copies=${counts.emailLogContents}/${contentsMonths}m ` +
       `outbox=${counts.emailOutbox}/${outboxMonths}m`,
   );
 

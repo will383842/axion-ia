@@ -79,6 +79,11 @@ beforeEach(() => {
       { id: "l1", recipient: DEMANDEUR, template: "guide-ia-envoi", bounceReason: DEMANDEUR },
       { id: "l2", recipient: AUTRE, template: "guide-ia-envoi", bounceReason: null },
     ]),
+    // 2026-09-27 — la copie de l'e-mail envoyé : son contenu porte l'adresse.
+    emailLogContent: table([
+      { emailLogId: "l1", subject: "Votre guide", html: `<p>${DEMANDEUR}</p>`, text: DEMANDEUR },
+      { emailLogId: "l2", subject: "Votre guide", html: `<p>${AUTRE}</p>`, text: AUTRE },
+    ]),
     emailOutbox: table([
       { id: "o1", recipient: DEMANDEUR, payload: { email: DEMANDEUR } },
       { id: "o2", recipient: AUTRE, payload: { email: AUTRE } },
@@ -114,7 +119,7 @@ describe("effacement d'un demandeur du guide", () => {
 
     // Discriminant positif : l'effacement a bien TROUVÉ ses lignes.
     expect(nl).toEqual({ deleted: 1, guideDeleted: 2 });
-    expect(traces).toEqual({ logsPseudonymises: 1, outboxSupprimes: 1 });
+    expect(traces).toEqual({ logsPseudonymises: 1, outboxSupprimes: 1, copiesSupprimees: 1 });
     expect(crm).toEqual({ supprimees: 3 });
 
     const fuites = toutesLesValeurs().filter((v) => v.includes(DEMANDEUR));
@@ -154,6 +159,7 @@ describe("effacement d'un demandeur du guide", () => {
     expect(tables["guideRequest"]!.lignes.map((l) => l["id"])).toEqual(["g3"]);
     expect(tables["emailLog"]!.lignes.find((l) => l["id"] === "l2")?.["recipient"]).toBe(AUTRE);
     expect(tables["emailOutbox"]!.lignes.map((l) => l["id"])).toEqual(["o2"]);
+    expect(tables["emailLogContent"]!.lignes.map((l) => l["emailLogId"])).toEqual(["l2"]);
     expect(tables["consentEvent"]!.lignes).toHaveLength(2);
   });
 });

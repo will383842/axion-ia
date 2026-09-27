@@ -130,7 +130,7 @@ async function lignesDeLaPersonne(
  * `details.etape` ; le dossier complet n'en porte pas. On regarde TOUTES les
  * lignes de la personne, pas seulement la fiche ouverte.
  */
-function dossierDejaArrive(lignes: Array<{ details: unknown }>): boolean {
+export function dossierDejaArrive(lignes: Array<{ details: unknown }>): boolean {
   return lignes.some((l) => {
     const d = lireDetails(l.details);
     return estApporteur(d) && d.etape === undefined;

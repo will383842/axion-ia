@@ -60,6 +60,13 @@ interface Payload {
   candidature?: boolean;
   /** Numéro de l'objet parmi `sujetsCandidature`, stable par fiche (2026-09-27). */
   variante?: number;
+  /**
+   * Réservé à l'APERÇU RECONSTITUÉ de la console (2026-09-27) — jamais posé par
+   * un envoi. Les invitations parties avant l'ajout de la signature (le 27/09,
+   * avant 18:15 UTC) n'en portaient pas : les reconstituer avec la signature
+   * ferait mentir l'aperçu. Cf. `reconstitution-invitation.ts`.
+   */
+  sansSignature?: boolean;
 }
 
 /**
@@ -230,7 +237,9 @@ export function ApporteurInvitationAppelEmail({
       // 2026-09-27 (Will) : l'invitation d'un CANDIDAT ouvre un vrai dialogue
       // avec Will, qui mène l'échange — elle porte sa signature (§6.1, sans
       // téléphone). Hors candidature, rendu inchangé (instantané des jobs anciens).
-      {...(candidature ? { signature: "fondateur-court" as const } : {})}
+      {...(candidature && p.sansSignature !== true
+        ? { signature: "fondateur-court" as const }
+        : {})}
     >
       <Text style={emailStyles.paragraphStyle}>{t.intro(prenom)}</Text>
       {provenance?.mode === "indirecte" ? (
