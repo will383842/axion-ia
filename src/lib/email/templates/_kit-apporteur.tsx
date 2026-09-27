@@ -51,12 +51,19 @@ const lien: React.CSSProperties = {
   fontWeight: 600,
 };
 
-export function BlocKitApporteur({ locale }: { locale: "fr" | "en" }) {
+export function BlocKitApporteur({
+  locale,
+  intro,
+}: {
+  locale: "fr" | "en";
+  /** Phrase d'introduction propre à un e-mail (invitation d'un candidat retenu, 2026-09-27). */
+  intro?: string;
+}) {
   const t = COPY[locale];
   const { documentUrl, catalogueUrl } = liensKitApporteur(locale);
   return (
     <>
-      <Text style={emailStyles.paragraphStyle}>{t.intro}</Text>
+      <Text style={emailStyles.paragraphStyle}>{intro ?? t.intro}</Text>
       <Text style={{ ...emailStyles.paragraphStyle, margin: "0 0 6px" }}>
         →{" "}
         <a href={documentUrl} style={lien}>

@@ -51,6 +51,15 @@ interface Payload {
   dossierUrl?: string;
   /** Saisie manuelle seulement. Absent : texte d'origine (jobs anciens compris). */
   provenance?: Provenance;
+  /**
+   * La personne a CANDIDATÉ (formulaire du site, annonce Indeed importée) —
+   * posé par la console pour toute fiche qui n'est pas une saisie manuelle
+   * (2026-09-27). L'objet et l'ouverture disent alors « ta candidature ».
+   * Absent (saisie manuelle, job ancien) : texte d'origine.
+   */
+  candidature?: boolean;
+  /** Numéro de l'objet parmi `sujetsCandidature`, stable par fiche (2026-09-27). */
+  variante?: number;
 }
 
 /**
@@ -69,6 +78,29 @@ const COPY = {
   fr: {
     title: "Et si on en parlait 15 minutes ?",
     preview: "Choisis le moment qui t'arrange : 15 minutes en visio pour faire connaissance.",
+    // 2026-09-27 (Will) : la personne a POSTULÉ, et c'est nous qui retenons sa
+    // candidature — le message ne se place pas en demandeur. Quatre objets en
+    // rotation : un envoi groupé aux objets identiques ressemble à une campagne.
+    // Vocabulaire tenu : « étape suivante », « échange » — jamais « entretien ».
+    sujetsCandidature: [
+      "Ta candidature apporteur d'affaires chez Axion-IA est retenue",
+      "Axion-IA : ta candidature d'apporteur d'affaires passe à l'étape suivante",
+      "Ta candidature apporteur d'affaires Axion-IA : réserve ton échange en visio",
+      "Suite à ta candidature apporteur d'affaires chez Axion-IA : l'étape suivante",
+    ],
+    titleCandidature: "Ta candidature est retenue",
+    previewCandidature:
+      "Ta candidature au réseau d'apporteurs d'affaires d'Axion-IA est retenue pour l'étape suivante : un échange de 15 minutes en visio.",
+    bodyCandidature:
+      "Nous avons étudié ta candidature au réseau d'apporteurs d'affaires d'Axion-IA : elle est retenue pour l'étape suivante, un échange de 15 minutes en visio avec nous.",
+    bodyCandidatureSuite:
+      "On y fait connaissance, on te présente concrètement le fonctionnement du réseau et on répond à tes questions. Sans engagement : à l'issue, chacun décide librement de la suite.",
+    kitCandidature: "Pour préparer l'échange :",
+    dossierCandidature:
+      "Il nous manque encore ton dossier : complète-le avant l'échange — trois minutes, sans CV. Tes coordonnées sont déjà remplies : ",
+    creneauCandidature:
+      "Les créneaux sont limités : réserve le tien dès maintenant avec le bouton ci-dessous.",
+    ctaCandidature: "Réserver mon créneau",
     intro: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
     body: "Merci pour ton intérêt pour le réseau d'apporteurs d'affaires d'Axion-IA. On te propose un échange de 15 minutes en visio : faire connaissance, t'expliquer simplement comment ça marche et répondre à tes questions. Aucun engagement : tu décides après.",
     provenanceDirecte: (l: string) => `Tu nous as donné ton adresse ${l}.`,
@@ -93,6 +125,24 @@ const COPY = {
   en: {
     title: "How about a 15-minute chat?",
     preview: "Pick the time that suits you: 15 minutes on video to get acquainted.",
+    sujetsCandidature: [
+      "Your business introducer application at Axion-IA has been selected",
+      "Axion-IA: your business introducer application moves to the next step",
+      "Your Axion-IA business introducer application: book your video call",
+      "Following your business introducer application at Axion-IA: the next step",
+    ],
+    titleCandidature: "Your application has been selected",
+    previewCandidature:
+      "Your application to Axion-IA's business introducer network has been selected for the next step: a 15-minute video call.",
+    bodyCandidature:
+      "We have reviewed your application to Axion-IA's network of business introducers: it has been selected for the next step, a 15-minute video call with us.",
+    bodyCandidatureSuite:
+      "We get acquainted, show you concretely how the network works and answer your questions. No commitment: afterwards, each side freely decides what comes next.",
+    kitCandidature: "To prepare for the call:",
+    dossierCandidature:
+      "We are still missing your file: please complete it before the call — three minutes, no resume. Your details are already filled in: ",
+    creneauCandidature: "Slots are limited: book yours now with the button below.",
+    ctaCandidature: "Book my slot",
     intro: (n: string) => (n ? `Hello ${n},` : "Hello,"),
     body: "Thank you for your interest in Axion-IA's network of business introducers. We suggest a 15-minute video call: get acquainted, explain simply how it works and answer your questions. No commitment: you decide afterwards.",
     provenanceDirecte: (l: string) => `You gave us your address ${l}.`,
@@ -116,10 +166,26 @@ const COPY = {
   },
 } as const;
 
+/** Vrai si la console a marqué la fiche comme une candidature (lecture défensive). */
+function estCandidature(p: Record<string, unknown>): boolean {
+  return p["candidature"] === true;
+}
+
+/** L'objet d'une candidature, choisi par `variante` — un nombre inattendu retombe sur le premier. */
+function sujetCandidature(locale: Locale, variante: unknown): string {
+  const sujets = COPY[locale === "fr" ? "fr" : "en"].sujetsCandidature;
+  const n =
+    typeof variante === "number" && Number.isInteger(variante) && variante >= 0 ? variante : 0;
+  return sujets[n % sujets.length] ?? sujets[0];
+}
+
 export const apporteurInvitationAppelSubject = (
   locale: Locale,
-  _p: Record<string, unknown>,
-): string => COPY[locale === "fr" ? "fr" : "en"].title;
+  p: Record<string, unknown>,
+): string =>
+  estCandidature(p)
+    ? sujetCandidature(locale, p["variante"])
+    : COPY[locale === "fr" ? "fr" : "en"].title;
 
 /** Provenance lue défensivement : un payload ancien ou malformé rend le texte d'origine. */
 function lireProvenance(v: unknown): Provenance | null {
@@ -145,6 +211,9 @@ export function ApporteurInvitationAppelEmail({
   const dossierUrl =
     typeof p.dossierUrl === "string" && p.dossierUrl.length > 0 ? p.dossierUrl : null;
   const provenance = lireProvenance(p.provenance);
+  // Une candidature n'a jamais de `provenance` (celle-ci ne naît que d'une
+  // saisie manuelle) : les deux ne se croisent pas.
+  const candidature = !provenance && estCandidature(payload);
   const lienPolitique =
     locale === "fr"
       ? `${SITE_URL}/fr/politique-confidentialite#${ANCRE_POLITIQUE}`
@@ -152,9 +221,9 @@ export function ApporteurInvitationAppelEmail({
   return (
     <EmailLayout
       famille="B"
-      preview={t.preview}
-      title={t.title}
-      cta={{ label: t.cta, href: p.calendlyUrl }}
+      preview={candidature ? t.previewCandidature : t.preview}
+      title={candidature ? t.titleCandidature : t.title}
+      cta={{ label: candidature ? t.ctaCandidature : t.cta, href: p.calendlyUrl }}
       locale={locale}
       tutoiement
       sansReseauxSociaux
@@ -184,12 +253,17 @@ export function ApporteurInvitationAppelEmail({
           <Text style={emailStyles.paragraphStyle}>{t.body}</Text>
         </>
       ) : (
-        <Text style={emailStyles.paragraphStyle}>{t.body}</Text>
+        <>
+          <Text style={emailStyles.paragraphStyle}>{candidature ? t.bodyCandidature : t.body}</Text>
+          {candidature ? (
+            <Text style={emailStyles.paragraphStyle}>{t.bodyCandidatureSuite}</Text>
+          ) : null}
+        </>
       )}
-      <BlocKitApporteur locale={locale} />
+      <BlocKitApporteur locale={locale} {...(candidature ? { intro: t.kitCandidature } : {})} />
       {dossierUrl ? (
         <Text style={emailStyles.paragraphStyle}>
-          {t.dossier}
+          {candidature ? t.dossierCandidature : t.dossier}
           <a href={dossierUrl} style={{ color: emailStyles.COLORS.terracotta }}>
             {t.dossierLien}
           </a>
@@ -197,7 +271,9 @@ export function ApporteurInvitationAppelEmail({
         </Text>
       ) : null}
       {/* Juste au-dessus du bouton, qui porte le lien de réservation. */}
-      <Text style={emailStyles.paragraphStyle}>{t.creneau}</Text>
+      <Text style={emailStyles.paragraphStyle}>
+        {candidature ? t.creneauCandidature : t.creneau}
+      </Text>
     </EmailLayout>
   );
 }

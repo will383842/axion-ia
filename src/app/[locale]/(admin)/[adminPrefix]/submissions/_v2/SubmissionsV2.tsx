@@ -4,7 +4,7 @@
 
 import Link from "next/link";
 import * as Sentry from "@sentry/nextjs";
-import { Archive, AlertTriangle, CheckCircle2, XCircle, CircleSlash } from "lucide-react";
+import { Archive, AlertTriangle, CheckCircle2, XCircle, CircleSlash, Send } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { SubmissionListItem } from "@/features/admin-submissions/actions";
 import { listSubmissionsAction } from "@/features/admin-submissions/actions";
@@ -26,6 +26,7 @@ import { MentionAccuse } from "@/components/admin/accuse/AccuseReceptionAuto";
 import type { PerimetreSubmissions } from "@/features/admin-submissions/query";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { LIBELLE_ETAPE } from "@/lib/commercial-application/etape-apporteur";
+import { lireDatesInvitationListe } from "@/features/commercial-application/invitation-apporteur";
 
 /**
  * Computed reply badge — derives 4 visual states from SubmissionListItem :
@@ -45,7 +46,7 @@ import { LIBELLE_ETAPE } from "@/lib/commercial-application/etape-apporteur";
 // donc en texte nu, sans fond ni couleur : seul « Échec envoi » était teinté,
 // c'est-à-dire que le seul état visuellement distinct était l'exception.
 // Les tons deviennent ceux d'`AdminBadge`, qui les définit pour de bon.
-type TonBadge = "neutral" | "success" | "warning" | "destructive";
+type TonBadge = "neutral" | "info" | "success" | "warning" | "destructive";
 
 function replyBadge(s: SubmissionListItem): { label: string; tone: TonBadge; Icone: LucideIcon } {
   // 🔑 « Sans suite » AVANT « Archivé », et ce n'est pas cosmétique : les deux
@@ -154,6 +155,22 @@ export async function SubmissionsV2({
     Sentry.captureException(err, { tags: { ecran: "messages", etape: "accuses" } });
   }
 
+  // 2026-09-27 (Will) : savoir, DANS LA LISTE, qui a déjà reçu l'invitation à
+  // l'échange — sinon une personne invitée reste « Sans réponse » et risque
+  // d'être invitée une seconde fois. Seulement pour les apporteurs ; accessoire
+  // comme l'accusé : si le journal ne répond pas, la liste s'affiche sans.
+  let invitations = new Map<string, Date>();
+  const idsApporteurs = result.items
+    .filter((s) => estApporteur({ unifiedType: s.unifiedType, subType: s.subType }))
+    .map((s) => s.id);
+  if (idsApporteurs.length > 0) {
+    try {
+      invitations = await lireDatesInvitationListe(idsApporteurs);
+    } catch (err) {
+      Sentry.captureException(err, { tags: { ecran: "messages", etape: "invitations" } });
+    }
+  }
+
   // L'export doit porter le MÊME périmètre que l'écran : filtres de l'URL +
   // types forcés de la vue (Clients / Presse / …). Sans `unifiedTypeIn`, le CSV
   // d'un onglet filtré ramènerait toutes les soumissions du site.
@@ -221,7 +238,18 @@ export async function SubmissionsV2({
   // nom / prénom / email / téléphone. Société, statut pipeline et langue
   // restent visibles dans le détail — ils encombraient la liste.
   const rows = result.items.map((s) => {
-    const r = replyBadge(s);
+    const invitee = invitations.get(s.id);
+    // Une vraie réponse (composeur) ou un état terminal prime ; sinon, une
+    // personne invitée se lit « Invité le … », plus « Sans réponse ».
+    const base = replyBadge(s);
+    const r =
+      invitee && base.label === "Sans réponse"
+        ? {
+            label: `Invité le ${formatDateFrShort(invitee)}`,
+            tone: "info" as TonBadge,
+            Icone: Send,
+          }
+        : base;
     const accuse = accuses.get(s.id);
     const { prenom, nom } = splitNomPrenom(s.contactName);
     return {
