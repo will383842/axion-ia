@@ -13,7 +13,8 @@ interface LegalPageTemplateProps {
   /** Optional emphasized portion rendered in serif italic terracotta (parity v3). */
   titleEm?: string;
   intro: string;
-  sections: ReadonlyArray<{ title: string; body: string }>;
+  /** `anchor` : identifiant explicite et stable ; à défaut, titre slugifié. */
+  sections: ReadonlyArray<{ title: string; body: string; anchor?: string }>;
   /**
    * Optional "last updated" date. Human-readable label (ex. "6 mai 2026").
    * If `lastUpdatedIso` est fourni, il alimente l'attribut `dateTime` du <time>.
@@ -57,10 +58,10 @@ function slugify(input: string): string {
     .replace(/(^-|-$)/g, "");
 }
 
-function buildAnchors(sections: ReadonlyArray<{ title: string }>): string[] {
+function buildAnchors(sections: ReadonlyArray<{ title: string; anchor?: string }>): string[] {
   const seen = new Map<string, number>();
   return sections.map((s, i) => {
-    const base = slugify(s.title) || `section-${i + 1}`;
+    const base = (s.anchor && slugify(s.anchor)) || slugify(s.title) || `section-${i + 1}`;
     const count = seen.get(base) ?? 0;
     seen.set(base, count + 1);
     return count === 0 ? base : `${base}-${count + 1}`;
@@ -115,7 +116,7 @@ export function LegalPageTemplate({
   const tocLabel = isFr ? "Sommaire" : "Contents";
 
   // Une section de contenu — carte distincte, numérotée, deep-linkable.
-  const renderSection = (section: { title: string; body: string }, i: number) => {
+  const renderSection = (section: { title: string; body: string; anchor?: string }, i: number) => {
     const id = anchors[i] as string;
     return (
       <section
