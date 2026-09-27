@@ -42,6 +42,12 @@ export function SuiviRendezVousForm({
   const [etat, action, enCours] = useActionState(enregistrerSuiviAction, ETAT_INITIAL);
   const [issue, setIssue] = useState<IssueRdv | null>(initial?.issue ?? null);
   const [suite, setSuite] = useState<SuiteRdv | "">(initial?.suite ?? "");
+  // 🔑 CONTRÔLÉS, tous. React 19 remet un `<form action>` à zéro une fois
+  // l'action terminée — y compris quand elle rend une erreur. Un champ en
+  // `defaultValue` perdrait alors la note tapée, précisément au moment où il
+  // faut la renvoyer.
+  const [suiteLe, setSuiteLe] = useState(initial?.suiteLe ?? "");
+  const [note, setNote] = useState(initial?.note ?? "");
 
   return (
     <form action={action} className="flex flex-col gap-[var(--space-admin-3)]">
@@ -94,7 +100,8 @@ export function SuiviRendezVousForm({
               <input
                 type="date"
                 name="suiteLe"
-                defaultValue={initial?.suiteLe ?? ""}
+                value={suiteLe}
+                onChange={(e) => setSuiteLe(e.target.value)}
                 className="admin-input"
                 required
               />
@@ -120,7 +127,8 @@ export function SuiviRendezVousForm({
           name="note"
           rows={2}
           maxLength={5000}
-          defaultValue={initial?.note ?? ""}
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
           className="admin-input"
         />
       </label>

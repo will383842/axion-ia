@@ -168,9 +168,10 @@ function CarteRdv({ r, maintenant }: { r: RdvAVenir; maintenant: Date }) {
  */
 function CartePoint({ r }: { r: RdvAFaireLePoint }) {
   const quand = `${formatDateFrShort(r.dayKey)} à ${timeInParis(r.debut)}`;
-  // Le lien personnel de report si Calendly l'a fourni, sinon la page publique
-  // de réservation : dans les deux cas, l'absent choisit un nouveau créneau.
-  const lienNouveauCreneau = r.rescheduleUrl ?? `${SITE_URL}/fr/appel`;
+  // La page publique de réservation d'appel, et PAS le lien de report Calendly
+  // de l'invité : ce dernier vise un rendez-vous déjà passé, que Calendly peut
+  // refuser de déplacer — l'absent recevrait un lien mort.
+  const lienNouveauCreneau = `${SITE_URL}/fr/appel`;
   const mailto = r.contactEmail
     ? mailtoRelanceAbsent({
         email: r.contactEmail,

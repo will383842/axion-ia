@@ -8,14 +8,17 @@ const authMock = vi.fn();
 vi.mock("@/auth", () => ({ auth: () => authMock() }));
 const findUnique = vi.fn();
 const findMany = vi.fn();
-const update = vi.fn();
 const upsert = vi.fn();
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    // 🔑 LECTURE SEULE, volontairement : aucune méthode d'écriture sur
+    // `calendlyEvent`. Si l'action tentait d'y écrire (`update`,
+    // `updateMany`…), l'appel lèverait, l'action rendrait « erreur » et le
+    // test « ok » ci-dessous rougirait. Un `not.toHaveBeenCalled()` sur une
+    // seule méthode ne prouvait rien des autres.
     calendlyEvent: {
       findUnique: (...a: unknown[]) => findUnique(...a),
       findMany: (...a: unknown[]) => findMany(...a),
-      update: (...a: unknown[]) => update(...a),
     },
     rendezVousSuivi: { upsert: (...a: unknown[]) => upsert(...a) },
   },
@@ -115,14 +118,17 @@ describe("enregistrerSuiviAction", () => {
     expect(etat.etat).toBe("ok");
     expect(upsert).toHaveBeenCalledTimes(1);
     const arg = upsert.mock.calls[0]?.[0] as { create: Record<string, unknown> };
+    // 🔑 Le statut Calendly pilote la synchro CRM : seul le suivi est écrit,
+    // avec exactement ces champs.
+    expect(Object.keys(arg.create).sort()).toEqual(
+      ["calendlyEventId", "issue", "note", "renseignePar", "suite", "suiteLe"].sort(),
+    );
     expect(arg.create).toMatchObject({
       calendlyEventId: "evt_1",
       issue: "eu_lieu",
       suite: "devis",
       renseignePar: "w@example.com",
     });
-    // 🔑 Le statut Calendly pilote la synchro CRM : il ne bouge pas.
-    expect(update).not.toHaveBeenCalled();
   });
 
   it.each(["reader", "secretaire", "responsable_qualite"])(
@@ -166,7 +172,6 @@ describe("listRendezVousAFaireLePoint", () => {
     endTime: new Date("2026-09-28T14:15:00Z"),
     inviteeName: "Philippe Legrand",
     inviteeEmail: "client@example.com",
-    rescheduleUrl: null,
     rawPayload: {},
   };
 

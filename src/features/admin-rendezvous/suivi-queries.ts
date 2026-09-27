@@ -21,8 +21,6 @@ export interface RdvAFaireLePoint {
   contactName: string | null;
   contactEmail: string | null;
   entreprise: string | null;
-  /** Lien Calendly pour reprendre un créneau — celui de l'invité. */
-  rescheduleUrl: string | null;
 }
 
 /**
@@ -54,7 +52,6 @@ export async function listRendezVousAFaireLePoint(
       endTime: true,
       inviteeName: true,
       inviteeEmail: true,
-      rescheduleUrl: true,
       rawPayload: true,
     },
   });
@@ -75,7 +72,6 @@ export async function listRendezVousAFaireLePoint(
         contactName: e.inviteeName,
         contactEmail: e.inviteeEmail,
         entreprise: entrepriseEtBesoin(reponsesFormulaire(e.rawPayload)).entreprise,
-        rescheduleUrl: e.rescheduleUrl,
       },
     ];
   });

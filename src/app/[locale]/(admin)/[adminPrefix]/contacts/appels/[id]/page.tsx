@@ -93,7 +93,8 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
           email: event.inviteeEmail,
           prenom: prenomDe(event.inviteeName),
           quand: formatDateFr(event.startTime),
-          lienNouveauCreneau: event.rescheduleUrl ?? `${SITE_URL}/fr/appel`,
+          // La page de réservation, pas le lien de report d'un rendez-vous passé.
+          lienNouveauCreneau: `${SITE_URL}/fr/appel`,
         })
       : null;
   const apiConfigured = isCalendlyApiConfigured();
