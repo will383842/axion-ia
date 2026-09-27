@@ -227,6 +227,10 @@ export function ApporteurInvitationAppelEmail({
       locale={locale}
       tutoiement
       sansReseauxSociaux
+      // 2026-09-27 (Will) : l'invitation d'un CANDIDAT ouvre un vrai dialogue
+      // avec Will, qui mène l'échange — elle porte sa signature (§6.1, sans
+      // téléphone). Hors candidature, rendu inchangé (instantané des jobs anciens).
+      {...(candidature ? { signature: "fondateur" as const } : {})}
     >
       <Text style={emailStyles.paragraphStyle}>{t.intro(prenom)}</Text>
       {provenance?.mode === "indirecte" ? (

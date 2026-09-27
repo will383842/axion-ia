@@ -49,6 +49,16 @@ describe("invitation d'un candidat", () => {
     expect(html).not.toMatch(/septembre|octobre/);
   });
 
+  it("porte la signature du fondateur, sans numéro de téléphone", async () => {
+    const { html } = await renderEmailTemplate("apporteur-invitation-appel", "fr", {
+      ...BASE,
+      candidature: true,
+    });
+    expect(html).toContain("Williams Jullin");
+    expect(html).toMatch(/Fondateur/);
+    expect(html).not.toMatch(/\+33|0[67](?:[ .]?\d{2}){4}/);
+  });
+
   it("une invitation SANS la marque candidature garde son objet et son texte d'origine", async () => {
     const r = await renderEmailTemplate("apporteur-invitation-appel", "fr", BASE);
     expect(r.subject).toBe("Et si on en parlait 15 minutes ?");
