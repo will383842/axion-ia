@@ -179,6 +179,17 @@ async function invitationsDesLignes(ids: string[]): Promise<InvitationEnvoyee[]>
   ].sort((a, b) => b.le.getTime() - a.le.getTime());
 }
 
+/**
+ * Numéro d'objet stable pour une fiche : la somme des codes de son identifiant.
+ * Stable (un « Renvoyer quand même » garde le même objet) et réparti à peu près
+ * également entre les quatre objets du gabarit, sans état à tenir.
+ */
+export function varianteObjet(id: string): number {
+  let somme = 0;
+  for (const c of id) somme += c.charCodeAt(0);
+  return somme % 4;
+}
+
 /** « 12/09 », heure de Paris — le jour dit à l'administrateur. */
 function jourMois(d: Date): string {
   return d.toLocaleDateString("fr-FR", {
@@ -344,6 +355,12 @@ export async function envoyerInvitationApporteur(input: {
       calendlyUrl,
       ...(dossierUrl ? { dossierUrl } : {}),
       ...(provenance ? { provenance } : {}),
+      // 2026-09-27 (Will) : toute fiche qui n'est pas une saisie manuelle est
+      // une CANDIDATURE (formulaire du site, annonce Indeed importée) — l'objet
+      // le dit, avec un objet parmi quatre, stable par fiche.
+      ...(details.origine !== ORIGINE_SAISIE_MANUELLE
+        ? { candidature: true, variante: varianteObjet(ligne.id) }
+        : {}),
     },
     { entityType: "Submission", entityId: ligne.id },
   );
@@ -441,4 +458,60 @@ export async function lireInvitationsDeLaPersonne(
     Sentry.captureException(err, { tags: { lecture: "invitations-apporteur" } });
     return [];
   }
+}
+
+/**
+ * Pour la LISTE des apporteurs : la date de la dernière invitation partie (ou
+ * en file) de chaque personne affichée, clé = l'identifiant de la ligne de la
+ * liste (2026-09-27, Will : « que l'on sache dans la console qu'ils ont bien été
+ * contactés »). Sans elle, une personne invitée restait « Sans réponse » dans la
+ * liste — l'invitation n'est pas une réponse au sens du composeur.
+ *
+ * Lue par EMPREINTE d'adresse, comme `lireInvitationsDeLaPersonne` : la liste
+ * montre la ligne la plus récente de la personne, l'invitation a pu partir d'une
+ * autre de ses lignes. Trois requêtes pour toute la page, pas une par ligne.
+ * Une invitation garée en validation n'y figure pas : elle n'est pas partie.
+ */
+export async function lireDatesInvitationListe(ids: readonly string[]): Promise<Map<string, Date>> {
+  const resultat = new Map<string, Date>();
+  if (ids.length === 0) return resultat;
+  const affichees = await prisma.submission.findMany({
+    where: { id: { in: [...ids] } },
+    select: { id: true, contactEmailHash: true },
+  });
+  const empreintes = [
+    ...new Set(affichees.map((l) => l.contactEmailHash).filter((h): h is string => !!h)),
+  ];
+  const lignesPersonnes = empreintes.length
+    ? await prisma.submission.findMany({
+        where: { contactEmailHash: { in: empreintes } },
+        select: { id: true, contactEmailHash: true },
+      })
+    : [];
+  // Ligne quelconque → clé de la personne (l'empreinte, ou la ligne seule sans empreinte).
+  const personneDe = new Map<string, string>();
+  for (const l of affichees) personneDe.set(l.id, l.contactEmailHash ?? `id:${l.id}`);
+  for (const l of lignesPersonnes) personneDe.set(l.id, l.contactEmailHash ?? `id:${l.id}`);
+
+  const journal = await prisma.emailLog.findMany({
+    where: {
+      template: GABARIT_INVITATION_APPORTEUR,
+      entityType: "Submission",
+      entityId: { in: [...personneDe.keys()] },
+      status: { in: ["pending", "sent"] },
+    },
+    select: { entityId: true, createdAt: true },
+  });
+  const dernierePar = new Map<string, Date>();
+  for (const e of journal) {
+    const p = e.entityId ? personneDe.get(e.entityId) : undefined;
+    if (!p) continue;
+    const avant = dernierePar.get(p);
+    if (!avant || e.createdAt > avant) dernierePar.set(p, e.createdAt);
+  }
+  for (const l of affichees) {
+    const d = dernierePar.get(personneDe.get(l.id)!);
+    if (d) resultat.set(l.id, d);
+  }
+  return resultat;
 }

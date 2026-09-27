@@ -43,7 +43,11 @@ vi.mock("../relances-lead-apporteur", () => ({
   annulerRelancesLeadApporteur: (...a: unknown[]) => annuler(...a),
 }));
 
-import { envoyerInvitationApporteur, GABARIT_INVITATION_APPORTEUR } from "../invitation-apporteur";
+import {
+  envoyerInvitationApporteur,
+  GABARIT_INVITATION_APPORTEUR,
+  varianteObjet,
+} from "../invitation-apporteur";
 
 const LIEN = "https://calendly.com/axion-ia/echange-apporteur";
 
@@ -287,5 +291,37 @@ describe("🔴 art. 14 — origine de l'adresse et accord (2026-09-19)", () => {
     await envoyer();
     const payload = enfiler.mock.calls[0]?.[3] as Record<string, unknown>;
     expect(payload).not.toHaveProperty("provenance");
+  });
+
+  // 2026-09-27 (Will) : une personne qui a postulé doit lire « ta candidature ».
+  it("une CANDIDATURE (pas une saisie manuelle) est marquée, avec un objet stable par fiche", async () => {
+    await envoyer();
+    const payload = enfiler.mock.calls[0]?.[3] as Record<string, unknown>;
+    expect(payload["candidature"]).toBe(true);
+    expect(payload["variante"]).toBe(varianteObjet(fiche().id));
+  });
+
+  it("une saisie manuelle n'est PAS une candidature : ni marque ni variante", async () => {
+    trouver.mockResolvedValue(ficheSaisie("email-direct"));
+    await envoyer();
+    const payload = enfiler.mock.calls[0]?.[3] as Record<string, unknown>;
+    expect(payload).not.toHaveProperty("candidature");
+    expect(payload).not.toHaveProperty("variante");
+  });
+});
+
+describe("varianteObjet", () => {
+  it("est stable, bornée à 0..3, et répartit des identifiants différents", () => {
+    const ids = Array.from(
+      { length: 40 },
+      (_, i) => `4a2ce60d-8da0-4b34-a1a0-61d43b92${String(i).padStart(4, "0")}`,
+    );
+    const vus = new Set(ids.map(varianteObjet));
+    for (const id of ids) {
+      expect(varianteObjet(id)).toBe(varianteObjet(id));
+      expect(varianteObjet(id)).toBeGreaterThanOrEqual(0);
+      expect(varianteObjet(id)).toBeLessThan(4);
+    }
+    expect(vus.size).toBe(4);
   });
 });
