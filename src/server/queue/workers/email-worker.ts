@@ -36,6 +36,10 @@ import {
   estSollicitationSoumiseAOpposition,
   verdictAvantEnvoi,
 } from "@/server/email/verdict-envoi";
+// Base + déchiffrement + règle pure seulement : sûr sur le trajet du worker
+// (même garde de graphe que `verdict-envoi`).
+import { motifRetenueRelanceInvitation } from "@/features/commercial-application/relance-invitation-etat";
+import { GABARIT_RELANCE_INVITATION } from "@/lib/commercial-application/relance-invitation";
 import { EmailLogStatus } from "../../../../prisma/generated/client";
 import type { EmailJobData, EmailJobName } from "../types";
 
@@ -101,6 +105,15 @@ async function motifDeRetenueAuDepart(data: EmailJobData): Promise<string | null
     if ((await ficheEffacee(data.entityId)) === true) {
       return "la fiche a été supprimée ou effacée (RGPD)";
     }
+  }
+  // 2026-09-27 — les rappels de l'invitation à l'échange : une réservation,
+  // une réponse, un classement arrivés depuis le passage qui les a posés les
+  // retiennent ICI. Sans fiche liée, on ne peut rien vérifier : on retient.
+  if (data.template === GABARIT_RELANCE_INVITATION) {
+    if (data.entityType !== "Submission" || !data.entityId) {
+      return "rappel d'invitation sans fiche liée — état invérifiable";
+    }
+    return motifRetenueRelanceInvitation(data.entityId);
   }
   return null;
 }

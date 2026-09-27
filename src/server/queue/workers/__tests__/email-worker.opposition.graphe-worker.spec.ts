@@ -100,6 +100,13 @@ describe("🔴 le worker d'e-mails tourne hors de Next", () => {
     expect(noms).toContain("src/server/email/verdict-envoi.ts");
     expect(noms).toContain("src/server/email/email-log.ts");
     expect(noms).toContain("src/lib/email/templates/index.tsx");
+    // 2026-09-27 — le filet des rappels d'invitation est bien sur le trajet :
+    // sans ce témoin, un import déplacé le sortirait de la surveillance.
+    expect(noms).toContain("src/features/commercial-application/relance-invitation-etat.ts");
+    expect(noms).not.toContain(
+      "src/features/commercial-application/relances-invitation-apporteur.ts",
+    );
+    expect(noms).not.toContain("src/server/queue/queues.ts");
     expect(noms).not.toContain("src/server/email/suppression.ts");
   });
 

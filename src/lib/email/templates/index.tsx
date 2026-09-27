@@ -130,6 +130,10 @@ import {
   apporteurInvitationAppelSubject,
   ApporteurInvitationAppelEmail,
 } from "./apporteur-invitation-appel";
+import {
+  apporteurInvitationRelanceSubject,
+  ApporteurInvitationRelanceEmail,
+} from "./apporteur-invitation-relance";
 import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
 import { PieceExemplaireSigneEmail, pieceExemplaireSigneSubject } from "./piece-exemplaire-signe";
@@ -399,6 +403,11 @@ const TEMPLATES: TemplateMap = {
   "apporteur-invitation-appel": {
     subject: apporteurInvitationAppelSubject,
     component: ApporteurInvitationAppelEmail,
+  },
+  // Rappels J+3 / J+7 de l'invitation, passage quotidien (2026-09-27)
+  "apporteur-invitation-relance": {
+    subject: apporteurInvitationRelanceSubject,
+    component: ApporteurInvitationRelanceEmail,
   },
   "vivier-information": {
     subject: vivierInformationSubject,

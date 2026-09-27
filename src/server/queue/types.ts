@@ -140,6 +140,9 @@ export type EmailJobName =
   // Invitation à l'échange de 15 minutes, envoyée par Will depuis la console
   // aux personnes qu'il choisit (2026-09-19) — jamais automatiquement.
   | "apporteur-invitation-appel"
+  // Rappels J+3 / J+7 de cette invitation, posés par un passage quotidien tant
+  // que la personne n'a pas réservé (décision Will, 2026-09-27).
+  | "apporteur-invitation-relance"
   // Lot L4 2026-08-14 — information RGPD au stock de candidatures avant
   // intégration au vivier (lien d'opposition, fenêtre de 30 jours).
   | "vivier-information"
@@ -177,6 +180,18 @@ export type GuideIaCronJobType = "rattrapage" | "sentinelle";
 
 export interface GuideIaCronJobData {
   readonly type?: GuideIaCronJobType;
+  readonly tick?: string;
+}
+
+/**
+ * 2026-09-27 — passages du réseau d'apporteurs : rappels J+3 / J+7 de
+ * l'invitation à l'échange. Types déclarés ICI pour la même raison que ceux du
+ * vivier (pas d'arête `queues.ts` → worker).
+ */
+export type ApporteurCronJobType = "relance-invitation";
+
+export interface ApporteurCronJobData {
+  readonly type?: ApporteurCronJobType;
   readonly tick?: string;
 }
 
