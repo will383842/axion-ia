@@ -604,6 +604,15 @@ export async function eraseCalendlyEventsForEmail(email: string): Promise<EraseC
    * Verrou : `src/lib/__tests__/un-invite-ne-voit-pas-la-fiche-du-prospect.spec.ts`.
    */
 
+  // La note du suivi après l'appel (2026-09-27) est une appréciation écrite
+  // SUR la personne : elle part avec le reste. AVANT l'anonymisation
+  // ci-dessous, qui remplace l'adresse par laquelle on retrouve la ligne. Le
+  // constat (a eu lieu / absent) reste, comme le statut du rendez-vous.
+  await prisma.rendezVousSuivi.updateMany({
+    where: { calendlyEvent: { inviteeEmail: email } },
+    data: { note: null },
+  });
+
   // UNE SEULE instruction, donc atomique : la ligne perd ses coordonnées ET
   // sort de la fenêtre du cron au même instant. En deux temps, un passage de
   // `refresh` glissé entre les deux réécrirait la charge brute.

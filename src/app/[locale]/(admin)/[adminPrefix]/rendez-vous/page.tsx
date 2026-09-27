@@ -21,10 +21,22 @@ import { Phone } from "lucide-react";
 import { AdminPageHeader, AdminFilterTabs, AdminEmptyState } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { RejoindreVisioBouton } from "@/components/admin/contacts/RejoindreVisioBouton";
+import { SuiviRendezVousForm } from "@/components/admin/contacts/SuiviRendezVousForm";
 import { gardeLectureAppels } from "@/features/admin-calendly/acces";
 import { listRendezVousAVenir } from "@/features/admin-rendezvous/queries";
 import type { PublicRdv, RdvAVenir } from "@/features/admin-rendezvous/types";
 import { MINUTES_APRES_FIN } from "@/features/admin-rendezvous/visio";
+import {
+  bilanDuMois,
+  listRendezVousAFaireLePoint,
+  type RdvAFaireLePoint,
+} from "@/features/admin-rendezvous/suivi-queries";
+import {
+  JOURS_A_FAIRE_LE_POINT,
+  mailtoRelanceAbsent,
+  prenomDe,
+} from "@/features/admin-rendezvous/suivi";
+import { SITE_URL } from "@/lib/site-url";
 import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import { LIBELLE_CANAL } from "@/server/calendly/canal";
 import { dayKeyInParis, dayKeyOfGridDate, timeInParis } from "@/lib/calendar-grid";
@@ -150,6 +162,55 @@ function CarteRdv({ r, maintenant }: { r: RdvAVenir; maintenant: Date }) {
   );
 }
 
+/**
+ * Un rendez-vous passé, en attente de son point. Le formulaire est sur la
+ * carte : faire le point ne doit pas demander d'ouvrir la fiche.
+ */
+function CartePoint({ r }: { r: RdvAFaireLePoint }) {
+  const quand = `${formatDateFrShort(r.dayKey)} à ${timeInParis(r.debut)}`;
+  // Le lien personnel de report si Calendly l'a fourni, sinon la page publique
+  // de réservation : dans les deux cas, l'absent choisit un nouveau créneau.
+  const lienNouveauCreneau = r.rescheduleUrl ?? `${SITE_URL}/fr/appel`;
+  const mailto = r.contactEmail
+    ? mailtoRelanceAbsent({
+        email: r.contactEmail,
+        prenom: prenomDe(r.contactName),
+        quand,
+        lienNouveauCreneau,
+      })
+    : null;
+  return (
+    <li className="admin-card flex flex-col gap-[var(--space-admin-3)]">
+      <div>
+        <p className="font-semibold">
+          {r.contactName ?? "Invité à compléter"}
+          {r.entreprise ? (
+            <span className="font-normal text-[color:var(--color-admin-fg-muted)]">
+              {" "}
+              · {r.entreprise}
+            </span>
+          ) : null}
+        </p>
+        <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          {quand} · {estAppelApporteur(r.titre) ? "Apporteur" : "Client"} · {r.titre}
+        </p>
+      </div>
+      <SuiviRendezVousForm calendlyEventId={r.id} mailtoRelance={mailto} />
+    </li>
+  );
+}
+
+function Chiffre({ valeur, libelle }: { valeur: number; libelle: string }) {
+  return (
+    <div className="admin-card">
+      <p className="text-[length:var(--text-admin-2xl)] font-semibold tabular-nums">{valeur}</p>
+      <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+        {libelle}
+      </p>
+    </div>
+  );
+}
+
 export default async function RendezVousPage({
   params,
   searchParams,
@@ -164,13 +225,24 @@ export default async function RendezVousPage({
 
   const sp = await searchParams;
   const publicRdv = lirePublic(sp["public"]);
+  const vue = sp["vue"] === "point" ? "point" : "avenir";
   const base = `/fr/${adminPrefix}/rendez-vous`;
   const maintenant = new Date();
   const aujourdhui = dayKeyInParis(maintenant);
-  const rdv = await listRendezVousAVenir({
-    maintenant,
-    ...(publicRdv ? { public: publicRdv } : {}),
-  });
+  const optionsPublic = publicRdv ? { public: publicRdv } : {};
+  // Les deux listes sont lues quelle que soit la vue : l'onglet « À faire le
+  // point » porte son compteur, qui doit se voir depuis « À venir ».
+  const [rdv, aFaire] = await Promise.all([
+    listRendezVousAVenir({ maintenant, ...optionsPublic }),
+    listRendezVousAFaireLePoint({ maintenant, ...optionsPublic }),
+  ]);
+  const lien = (v: "avenir" | "point", p: PublicRdv | undefined): string => {
+    const qs = new URLSearchParams();
+    if (v === "point") qs.set("vue", "point");
+    if (p) qs.set("public", p);
+    const t = qs.toString();
+    return t ? `${base}?${t}` : base;
+  };
 
   const parJour = new Map<string, RdvAVenir[]>();
   for (const r of rdv) {
@@ -186,19 +258,33 @@ export default async function RendezVousPage({
         description={`Vos prochains appels : avec qui, à quelle heure, et le bouton pour lancer la visio. Un rendez-vous quitte cette liste ${MINUTES_APRES_FIN} minutes après sa fin.`}
       />
 
-      <div className="mb-[var(--space-admin-4)]">
+      <div className="mb-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-4)]">
+        <AdminFilterTabs
+          label="Vue"
+          current={vue}
+          options={[
+            { value: "avenir", label: `À venir (${rdv.length})`, href: lien("avenir", publicRdv) },
+            {
+              value: "point",
+              label: `À faire le point (${aFaire.length})`,
+              href: lien("point", publicRdv),
+            },
+          ]}
+        />
         <AdminFilterTabs
           label="Public"
           current={publicRdv ?? "tous"}
           options={[
-            { value: "tous", label: "Tous", href: base },
-            { value: "clients", label: "Clients", href: `${base}?public=clients` },
-            { value: "apporteurs", label: "Apporteurs", href: `${base}?public=apporteurs` },
+            { value: "tous", label: "Tous", href: lien(vue, undefined) },
+            { value: "clients", label: "Clients", href: lien(vue, "clients") },
+            { value: "apporteurs", label: "Apporteurs", href: lien(vue, "apporteurs") },
           ]}
         />
       </div>
 
-      {rdv.length === 0 ? (
+      {vue === "point" ? (
+        <VuePoint aFaire={aFaire} maintenant={maintenant} />
+      ) : rdv.length === 0 ? (
         <AdminEmptyState
           title="Aucun rendez-vous à venir"
           description="Une réservation prise sur Calendly apparaîtra ici quelques minutes plus tard."
@@ -220,6 +306,48 @@ export default async function RendezVousPage({
             </ul>
           </section>
         ))
+      )}
+    </>
+  );
+}
+
+/**
+ * « À faire le point » : le bilan du mois, puis un formulaire par rendez-vous
+ * passé. Le but est de ramener le compteur à zéro chaque jour.
+ */
+async function VuePoint({
+  aFaire,
+  maintenant,
+}: {
+  aFaire: RdvAFaireLePoint[];
+  maintenant: Date;
+}): Promise<React.ReactElement> {
+  const bilan = await bilanDuMois(maintenant);
+  return (
+    <>
+      <section aria-labelledby="bilan-mois" className="mb-[var(--space-admin-6)]">
+        <h2 id="bilan-mois" className="admin-h2">
+          Ce mois-ci
+        </h2>
+        <div className="mt-[var(--space-admin-3)] grid grid-cols-2 gap-[var(--space-admin-3)] sm:grid-cols-4">
+          <Chiffre valeur={bilan.euLieu} libelle="ont eu lieu" />
+          <Chiffre valeur={bilan.absents} libelle="absents" />
+          <Chiffre valeur={bilan.reportes} libelle="reportés" />
+          <Chiffre valeur={bilan.devis} libelle="devis à envoyer" />
+        </div>
+      </section>
+
+      {aFaire.length === 0 ? (
+        <AdminEmptyState
+          title="Tout est à jour"
+          description={`Aucun rendez-vous des ${JOURS_A_FAIRE_LE_POINT} derniers jours n'attend son point.`}
+        />
+      ) : (
+        <ul className="flex flex-col gap-[var(--space-admin-3)]">
+          {aFaire.map((r) => (
+            <CartePoint key={r.id} r={r} />
+          ))}
+        </ul>
       )}
     </>
   );

@@ -19,6 +19,15 @@ import { CalendlyEventEditor } from "@/components/admin/contacts/CalendlyEventEd
 import { EnrichCalendlyEventButton } from "@/components/admin/contacts/EnrichCalendlyEventButton";
 import { RejoindreVisioBouton } from "@/components/admin/contacts/RejoindreVisioBouton";
 import { invitesSupplementaires, lienRejoindreVisio } from "@/features/admin-rendezvous/visio";
+import { SuiviRendezVousForm } from "@/components/admin/contacts/SuiviRendezVousForm";
+import { lireSuivi } from "@/features/admin-rendezvous/suivi-queries";
+import {
+  LIBELLE_ISSUE,
+  LIBELLE_SUITE,
+  mailtoRelanceAbsent,
+  prenomDe,
+} from "@/features/admin-rendezvous/suivi";
+import { SITE_URL } from "@/lib/site-url";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
 import * as Sentry from "@sentry/nextjs";
 import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
@@ -74,6 +83,19 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
   const lienVisio =
     event.status === "scheduled" ? lienRejoindreVisio(event.id, event.location) : null;
   const autresInvites = invitesSupplementaires(event.rawPayload);
+  // Le point se fait une fois l'appel commencé, jamais sur un appel annulé.
+  const peutFaireLePoint =
+    event.status !== "canceled" && event.startTime != null && event.startTime <= new Date();
+  const suivi = peutFaireLePoint ? await lireSuivi(event.id) : null;
+  const mailtoRelance =
+    peutFaireLePoint && event.inviteeEmail && event.startTime
+      ? mailtoRelanceAbsent({
+          email: event.inviteeEmail,
+          prenom: prenomDe(event.inviteeName),
+          quand: formatDateFr(event.startTime),
+          lienNouveauCreneau: event.rescheduleUrl ?? `${SITE_URL}/fr/appel`,
+        })
+      : null;
   const apiConfigured = isCalendlyApiConfigured();
   // Les fiches proposées au sélecteur de rattachement (2026-09-19) — à la place
   // de la saisie d'UUID. Information ACCESSOIRE : si la lecture échoue, le
@@ -136,6 +158,28 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
       ) : null}
 
       <div className="admin-detail-grid mt-[var(--space-admin-4)]">
+        {peutFaireLePoint ? (
+          <div className="admin-card admin-card-wide">
+            <h2 className="admin-h2">Le point après l&apos;appel</h2>
+            {suivi ? (
+              <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                {LIBELLE_ISSUE[suivi.issue]}
+                {suivi.suite ? ` · ${LIBELLE_SUITE[suivi.suite]}` : ""}
+                {suivi.suiteLe
+                  ? ` pour le ${formatDateFr(new Date(`${suivi.suiteLe}T12:00:00Z`))}`
+                  : ""}
+                {` — noté le ${formatDateFr(suivi.renseigneLe)}`}
+                {suivi.renseignePar ? ` par ${suivi.renseignePar}` : ""}
+              </p>
+            ) : null}
+            <SuiviRendezVousForm
+              calendlyEventId={event.id}
+              initial={suivi}
+              mailtoRelance={mailtoRelance}
+            />
+          </div>
+        ) : null}
+
         <div className="admin-card admin-card-wide">
           <h2 className="admin-h2">Édition</h2>
           {/* `key` indexée sur la dernière écriture : `CalendlyEventEditor` est un

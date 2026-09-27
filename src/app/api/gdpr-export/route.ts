@@ -400,6 +400,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         // ne les porte. Les omettre reviendrait à taire ce que la personne a
         // elle-même écrit.
         rawPayload: true,
+        // Le point fait après l'appel (2026-09-27) : sa note est une
+        // appréciation écrite sur la personne — même raison que `notes`.
+        suivi: {
+          select: { issue: true, suite: true, suiteLe: true, note: true, renseigneLe: true },
+        },
       },
     }),
   );

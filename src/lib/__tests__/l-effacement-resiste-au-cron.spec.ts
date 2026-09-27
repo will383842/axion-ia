@@ -36,10 +36,13 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 
 const updateMany = vi.fn();
+const suiviUpdateMany = vi.fn();
 const queryRaw = vi.fn();
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     calendlyEvent: { updateMany: (...a: unknown[]) => updateMany(...a) },
+    // Le suivi après l'appel (2026-09-27) : sa note part avec le reste.
+    rendezVousSuivi: { updateMany: (...a: unknown[]) => suiviUpdateMany(...a) },
     // 🔑 Ajouté le 2026-08-31 avec l'élargissement de l'effacement à la charge
     // brute : `eraseCalendlyEventsForEmail` cherche d'abord les lignes dont le
     // `raw_payload` contient l'adresse, parce qu'une réservation non enrichie a
@@ -55,7 +58,23 @@ vi.mock("@/lib/security/email-hash", () => ({ hashEmailForLookup: () => "hash" }
 beforeEach(() => {
   vi.clearAllMocks();
   updateMany.mockResolvedValue({ count: 1 });
+  suiviUpdateMany.mockResolvedValue({ count: 1 });
   queryRaw.mockResolvedValue([]);
+});
+
+describe("la note du suivi après l'appel", () => {
+  it("est effacée, et AVANT que l'adresse qui permet de la retrouver ne soit remplacée", async () => {
+    const { eraseCalendlyEventsForEmail } = await import("../rgpd-erase");
+    await eraseCalendlyEventsForEmail("temoin@example.invalid");
+
+    expect(suiviUpdateMany).toHaveBeenCalledWith({
+      where: { calendlyEvent: { inviteeEmail: "temoin@example.invalid" } },
+      data: { note: null },
+    });
+    expect(suiviUpdateMany.mock.invocationCallOrder[0]).toBeLessThan(
+      updateMany.mock.invocationCallOrder[0] ?? 0,
+    );
+  });
 });
 
 /** Lit un fichier de production, en rougissant si la cible a déménagé. */

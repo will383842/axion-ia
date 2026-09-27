@@ -1,0 +1,141 @@
+// Lectures du suivi des rendez-vous (2026-09-27). Read-only, appelées depuis
+// les RSC — l'appelant a déjà passé `gardeLectureAppels`.
+//
+// Build-safety (ADR 0026) : au build, `prisma` est un Proxy stub qui renvoie
+// [] / null → ces fonctions rendent vide sans connexion DB.
+
+import { prisma } from "@/lib/prisma";
+import { dayKeyInParis } from "@/lib/calendar-grid";
+import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
+import { entrepriseEtBesoin, reponsesFormulaire } from "./a-venir";
+import { momentVisio } from "./visio";
+import { JOURS_A_FAIRE_LE_POINT, type IssueRdv, type SuiteRdv } from "./suivi";
+import type { PublicRdv } from "./types";
+
+export interface RdvAFaireLePoint {
+  id: string;
+  titre: string;
+  debut: Date;
+  fin: Date | null;
+  dayKey: string;
+  contactName: string | null;
+  contactEmail: string | null;
+  entreprise: string | null;
+  /** Lien Calendly pour reprendre un créneau — celui de l'invité. */
+  rescheduleUrl: string | null;
+}
+
+/**
+ * Les rendez-vous passés sur lesquels personne n'a encore fait le point.
+ *
+ * Un rendez-vous y arrive quand il quitte « À venir » (30 min après sa fin),
+ * et en sort dès que le point est enregistré. Les annulés n'y figurent pas :
+ * il n'y a rien à constater sur un appel qui n'a pas été maintenu.
+ */
+export async function listRendezVousAFaireLePoint(
+  options: { public?: PublicRdv; maintenant?: Date } = {},
+): Promise<RdvAFaireLePoint[]> {
+  const maintenant = options.maintenant ?? new Date();
+  const lignes = await prisma.calendlyEvent.findMany({
+    where: {
+      status: "scheduled",
+      suivi: null,
+      startTime: {
+        gte: new Date(maintenant.getTime() - JOURS_A_FAIRE_LE_POINT * 86_400_000),
+        lte: maintenant,
+      },
+    },
+    orderBy: { startTime: "asc" },
+    take: 200,
+    select: {
+      id: true,
+      eventTypeName: true,
+      startTime: true,
+      endTime: true,
+      inviteeName: true,
+      inviteeEmail: true,
+      rescheduleUrl: true,
+      rawPayload: true,
+    },
+  });
+
+  return lignes.flatMap((e): RdvAFaireLePoint[] => {
+    if (!e.startTime) return [];
+    // Encore dans « À venir » : pas encore l'heure de faire le point.
+    if (momentVisio(e.startTime, e.endTime, maintenant) !== "terminee") return [];
+    if (options.public === "apporteurs" && !estAppelApporteur(e.eventTypeName)) return [];
+    if (options.public === "clients" && estAppelApporteur(e.eventTypeName)) return [];
+    return [
+      {
+        id: e.id,
+        titre: e.eventTypeName,
+        debut: e.startTime,
+        fin: e.endTime,
+        dayKey: dayKeyInParis(e.startTime),
+        contactName: e.inviteeName,
+        contactEmail: e.inviteeEmail,
+        entreprise: entrepriseEtBesoin(reponsesFormulaire(e.rawPayload)).entreprise,
+        rescheduleUrl: e.rescheduleUrl,
+      },
+    ];
+  });
+}
+
+export interface BilanDuMois {
+  euLieu: number;
+  absents: number;
+  reportes: number;
+  /** Parmi les rendez-vous tenus, ceux dont la suite est un devis. */
+  devis: number;
+}
+
+/**
+ * Le bilan du mois en cours (heure de Paris), compté sur la date du
+ * RENDEZ-VOUS et pas sur celle de la saisie : un appel du 30 dont on fait le
+ * point le 2 appartient au mois où il a eu lieu.
+ */
+export async function bilanDuMois(maintenant: Date = new Date()): Promise<BilanDuMois> {
+  const mois = dayKeyInParis(maintenant).slice(0, 7);
+  const suivis = await prisma.rendezVousSuivi.findMany({
+    where: {
+      calendlyEvent: {
+        startTime: { gte: new Date(maintenant.getTime() - 40 * 86_400_000), lte: maintenant },
+      },
+    },
+    select: { issue: true, suite: true, calendlyEvent: { select: { startTime: true } } },
+  });
+  const bilan: BilanDuMois = { euLieu: 0, absents: 0, reportes: 0, devis: 0 };
+  for (const s of suivis) {
+    const debut = s.calendlyEvent.startTime;
+    if (!debut || !dayKeyInParis(debut).startsWith(mois)) continue;
+    if (s.issue === "eu_lieu") bilan.euLieu += 1;
+    if (s.issue === "absent") bilan.absents += 1;
+    if (s.issue === "reporte") bilan.reportes += 1;
+    if (s.issue === "eu_lieu" && s.suite === "devis") bilan.devis += 1;
+  }
+  return bilan;
+}
+
+export interface SuiviEnregistre {
+  issue: IssueRdv;
+  suite: SuiteRdv | null;
+  /** « AAAA-MM-JJ » — prêt pour un `<input type="date">`. */
+  suiteLe: string | null;
+  note: string | null;
+  renseignePar: string | null;
+  renseigneLe: Date;
+}
+
+/** Le point déjà fait sur un rendez-vous, ou `null`. */
+export async function lireSuivi(calendlyEventId: string): Promise<SuiviEnregistre | null> {
+  const s = await prisma.rendezVousSuivi.findUnique({ where: { calendlyEventId } });
+  if (!s) return null;
+  return {
+    issue: s.issue,
+    suite: s.suite,
+    suiteLe: s.suiteLe ? s.suiteLe.toISOString().slice(0, 10) : null,
+    note: s.note,
+    renseignePar: s.renseignePar,
+    renseigneLe: s.renseigneLe,
+  };
+}
