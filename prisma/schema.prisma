@@ -724,6 +724,8 @@ model EmailLog {
   dueAt             DateTime?      @map("due_at")
   createdAt         DateTime       @default(now()) @map("created_at")
   updatedAt         DateTime       @updatedAt @map("updated_at")
+  /// Copie de l'e-mail tel qu'il est parti (2026-09-27) — table à part, cf. `EmailLogContent`.
+  contenu           EmailLogContent?
 
   @@index([template])
   @@index([status])
@@ -743,6 +745,39 @@ model EmailLog {
   /// index couvre donc les deux acces.
   @@index([jobId, status])
   @@map("email_logs")
+}
+
+/// Copie d'un e-mail TEL QU'IL EST PARTI — objet, HTML et texte rendus par le
+/// worker au moment de l'envoi (décision Will 2026-09-27 : « voir l'e-mail
+/// envoyé » depuis Emails › Envoyés).
+///
+/// 🔑 Table séparée, 1-1 avec `email_logs`, et pas trois colonnes de plus : le
+/// journal est lu en liste (50 lignes, compteurs, filtres) et par la
+/// surveillance ; un corps HTML fait 20 à 60 Ko. Le garder hors de la ligne
+/// évite qu'un `findMany` sans `select` traîne des mégaoctets, et laisse la
+/// copie vivre sa propre durée.
+///
+/// Données personnelles : durée **12 mois** (`RETENTION_EMAIL_CONTENTS_MONTHS`,
+/// purge de rétention), SUPPRIMÉE par l'effacement art. 17 (la ligne du journal,
+/// elle, reste pseudonymisée comme preuve), rendue par l'export art. 15.
+/// Les liens personnels (signature, émargement, connexion, désinscription…)
+/// sont MASQUÉS avant l'écriture (`masquerSecretsEmail`) : la console ne doit
+/// pas pouvoir rejouer un lien qui vaut signature ou connexion.
+/// Les pièces jointes ne sont pas copiées : seuls leurs noms le sont.
+model EmailLogContent {
+  emailLogId      String   @id @map("email_log_id") @db.Uuid
+  emailLog        EmailLog @relation(fields: [emailLogId], references: [id], onDelete: Cascade)
+  subject         String   @db.VarChar(998)
+  html            String   @db.Text
+  text            String   @db.Text
+  /// Noms des pièces jointes annoncées (le contenu binaire n'est pas copié).
+  attachmentNames String[] @default([]) @map("attachment_names")
+  /// Nombre de liens personnels masqués dans la copie — dit à l'écran.
+  secretsMasques  Int      @default(0) @map("secrets_masques")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@map("email_log_contents")
 }
 
 /// Statut d'un email en attente de validation humaine.

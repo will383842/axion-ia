@@ -169,6 +169,8 @@ export interface EraseEmailTracesResult {
   readonly logsPseudonymises: number;
   /** Lignes de `email_outbox` supprimées (messages non envoyés). */
   readonly outboxSupprimes: number;
+  /** Copies d'e-mails envoyés (`email_log_contents`) supprimées. */
+  readonly copiesSupprimees: number;
 }
 
 /**
@@ -208,6 +210,28 @@ export async function eraseEmailTracesForEmail(email: string): Promise<EraseEmai
   // Une SEULE écriture de ce format dans le module — un format recopié diverge.
   const pseudonyme = `erased:${hashEmail(email)}@erased.local`;
 
+  // 2026-09-27 — LA COPIE DES E-MAILS ENVOYÉS, D'ABORD, et hors du
+  // `Promise.all` : elle se retrouve par l'adresse de sa ligne de journal, que
+  // la pseudonymisation ci-dessous va réécrire. Lancées ensemble, la
+  // suppression pourrait ne plus rien trouver.
+  //
+  // Supprimée, pas pseudonymisée : la PREUVE d'envoi est la ligne du journal
+  // (qui reste) ; la copie porte le CONTENU — nom, formation, dates, montants —
+  // et rien ne justifie de le garder pour une personne qui a demandé l'oubli.
+  //
+  // Deux requêtes plutôt qu'un filtre de relation : les identifiants d'abord,
+  // la suppression ensuite — une personne n'a que quelques envois.
+  const sesEnvois = await prisma.emailLog.findMany({
+    where: { recipient: email },
+    select: { id: true },
+  });
+  const copies =
+    sesEnvois.length > 0
+      ? await prisma.emailLogContent.deleteMany({
+          where: { emailLogId: { in: sesEnvois.map((l) => l.id) } },
+        })
+      : { count: 0 };
+
   const [logs, outbox] = await Promise.all([
     prisma.emailLog.updateMany({
       where: { recipient: email },
@@ -216,7 +240,11 @@ export async function eraseEmailTracesForEmail(email: string): Promise<EraseEmai
     prisma.emailOutbox.deleteMany({ where: { recipient: email } }),
   ]);
 
-  return { logsPseudonymises: logs.count, outboxSupprimes: outbox.count };
+  return {
+    logsPseudonymises: logs.count,
+    outboxSupprimes: outbox.count,
+    copiesSupprimees: copies.count,
+  };
 }
 
 export interface EraseCrmOutboxResult {
