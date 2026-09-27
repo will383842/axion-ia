@@ -374,6 +374,9 @@ export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
 export const ADMIN_LIENS_EPINGLES = {
   consoleEditoriale: "/console-editoriale",
   agenda: "/agenda",
+  // Épinglé sous l'agenda à la demande de Will (2026-09-27) : les prochains
+  // appels et leur bouton de visio, à portée de pouce sur téléphone.
+  rendezVous: "/rendez-vous",
 } as const;
 
 /** Les chemins épinglés, sous la forme que consomme la garde réciproque. */

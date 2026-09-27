@@ -4334,6 +4334,8 @@ model CalendlyEvent {
   /// le rendez-vous de l'agenda, qui a sa propre vie et sa propre rétention.
   linkedJobApplicationId String?         @map("linked_job_application_id") @db.Uuid
   linkedJobApplication   JobApplication? @relation(fields: [linkedJobApplicationId], references: [id], onDelete: SetNull)
+  /// Le point fait après l'appel (2026-09-27) — table dédiée, voir `RendezVousSuivi`.
+  suivi                  RendezVousSuivi?
 
   @@index([status])
   @@index([startTime])
@@ -4343,6 +4345,63 @@ model CalendlyEvent {
   @@index([linkedJobApplicationId])
   @@index([enrichedAt])
   @@map("calendly_events")
+}
+
+// ============================================================
+// Suivi des rendez-vous — « le rendez-vous a-t-il eu lieu ? » (2026-09-27)
+// ============================================================
+//
+// Demande de Will : après chaque appel, noter s'il a eu lieu, et la suite à
+// donner. La console ne disait jusqu'ici que « Passé » : l'heure est écoulée,
+// sans savoir si l'échange a eu lieu.
+//
+// TABLE DÉDIÉE plutôt que des colonnes sur `calendly_events`, pour deux raisons :
+//   1. le worker (sondage Calendly) écrit `calendly_events` en continu et
+//      atterrit ~50 min AVANT la migration de l'app (AGENTS.md). Une colonne
+//      ajoutée là ferait échouer ses `upsert` pendant cette fenêtre ; une table
+//      à part, qu'il ne lit jamais, ne le concerne pas ;
+//   2. `calendly_events.status` pilote la synchro CRM (`completed`, `no_show`) :
+//      le suivi ne la déclenche pas, rien de neuf ne part au CRM.
+//
+// RGPD : `note` est une appréciation écrite sur la personne — exportée
+// (art. 15, `api/gdpr-export`) et effacée avec le reste (`lib/rgpd-erase`).
+
+enum RendezVousIssue {
+  eu_lieu
+  absent
+  reporte
+
+  @@map("rendez_vous_issue")
+}
+
+enum RendezVousSuite {
+  devis
+  relance
+  proposition
+  aucune
+
+  @@map("rendez_vous_suite")
+}
+
+model RendezVousSuivi {
+  id              String           @id @default(cuid())
+  calendlyEventId String           @unique @map("calendly_event_id")
+  calendlyEvent   CalendlyEvent    @relation(fields: [calendlyEventId], references: [id], onDelete: Cascade)
+  issue           RendezVousIssue
+  /// Obligatoire quand l'appel a eu lieu : c'est ce qui empêche un client de
+  /// tomber entre deux chaises.
+  suite           RendezVousSuite?
+  /// Échéance de la suite (devis à envoyer, relance…). Nulle pour « aucune ».
+  suiteLe         DateTime?        @map("suite_le") @db.Date
+  note            String?          @db.Text
+  /// Adresse du compte console qui a fait le point.
+  renseignePar    String?          @map("renseigne_par") @db.VarChar(255)
+  renseigneLe     DateTime         @default(now()) @map("renseigne_le")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+
+  @@index([issue])
+  @@index([suiteLe])
+  @@map("rendez_vous_suivis")
 }
 
 enum CalendlyEventStatus {

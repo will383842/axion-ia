@@ -9,7 +9,9 @@
 import { prisma } from "@/lib/prisma";
 import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import { fromCalendly, type CalendlyEventRow } from "./normalize";
-import type { PublicRdv, RdvFilters, UnifiedRdv } from "./types";
+import type { PublicRdv, RdvAVenir, RdvFilters, UnifiedRdv } from "./types";
+import { invitesSupplementaires, momentVisio } from "./visio";
+import { entrepriseEtBesoin, reponsesFormulaire } from "./a-venir";
 
 const CAL_SELECT = {
   id: true,
@@ -164,4 +166,52 @@ export async function getRdvMonth(
   }
   for (const arr of byDay.values()) sortWithinDay(arr);
   return byDay;
+}
+
+/**
+ * Les rendez-vous à venir, du plus proche au plus lointain (2026-09-27).
+ *
+ * Sert l'onglet « Rendez-vous ». Un rendez-vous y reste jusqu'à 30 minutes
+ * après sa fin (`momentVisio`) : c'est pendant l'appel, et juste après, qu'on
+ * a le plus besoin de sa carte.
+ *
+ * Les annulés sont écartés : la carte d'un appel qui n'aura pas lieu est du
+ * bruit dans une liste qui répond à « qui j'appelle ? ».
+ */
+export async function listRendezVousAVenir(
+  options: { public?: PublicRdv; maintenant?: Date; limite?: number } = {},
+): Promise<RdvAVenir[]> {
+  const maintenant = options.maintenant ?? new Date();
+  const events = (await prisma.calendlyEvent.findMany({
+    where: {
+      status: "scheduled",
+      // Borne large côté base ; la fenêtre exacte (fin + 30 min) se décide
+      // ci-dessous, là où l'heure de fin manquante est gérée.
+      startTime: { gte: new Date(maintenant.getTime() - 6 * 3_600_000) },
+    },
+    select: CAL_SELECT,
+    orderBy: [{ startTime: "asc" }],
+    take: 200,
+  })) as CalendlyEventRow[];
+
+  const rows = events.flatMap((e): RdvAVenir[] => {
+    if (!e.startTime) return [];
+    const moment = momentVisio(e.startTime, e.endTime, maintenant);
+    if (moment === "terminee") return [];
+    const { entreprise, besoin } = entrepriseEtBesoin(reponsesFormulaire(e.rawPayload));
+    const base = fromCalendly(e);
+    return [
+      {
+        ...base,
+        // `fromCalendly` dérive « Passé » dès la fin ; ici l'appel reste
+        // affiché 30 minutes de plus, et il est toujours programmé.
+        status: "scheduled",
+        enCours: e.startTime.getTime() <= maintenant.getTime(),
+        entreprise,
+        besoin,
+        autresInvites: invitesSupplementaires(e.rawPayload),
+      },
+    ];
+  });
+  return filtrerParPublic(rows, options.public).slice(0, options.limite ?? 50) as RdvAVenir[];
 }

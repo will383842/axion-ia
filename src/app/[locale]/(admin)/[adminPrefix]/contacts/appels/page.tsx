@@ -57,9 +57,11 @@ import type { AdminTableColumn } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardeLectureAppels } from "@/features/admin-calendly/acces";
 import { ManualCalendlyEventButton } from "@/components/admin/contacts/ManualCalendlyEventButton";
+import { RejoindreVisioBouton } from "@/components/admin/contacts/RejoindreVisioBouton";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { adminPath } from "@/lib/admin-path";
 
 export const dynamic = "force-dynamic";
 
@@ -163,19 +165,27 @@ function lien(base: string, params: Record<string, string | number | undefined>)
   return texte ? `${base}?${texte}` : base;
 }
 
-/** Une ligne de rendez-vous, telle que la montrent les vues Jour et Calendrier. */
+/**
+ * Une ligne de rendez-vous, telle que la montrent les vues Jour et Calendrier.
+ *
+ * Le bouton « Rejoindre la visio » est posé À CÔTÉ du lien vers la fiche, pas
+ * dedans : un lien dans un lien n'est pas du HTML valide, et le doigt doit
+ * pouvoir viser l'un sans déclencher l'autre sur téléphone.
+ */
+//
+// Le bouton suit `momentVisio` (il disparaît 30 min après la fin), PAS le
+// statut affiché : celui-ci passe à « Passé » dès l'heure de fin, et un appel
+// qui déborde perdrait son bouton en pleine visio. Seule l'annulation le retire.
 function LigneRdv({ r }: { r: UnifiedRdv }) {
+  const quand = r.timeConfirmed && r.startTime ? timeInParis(r.startTime) : "heure ?";
   return (
-    <li>
+    <li className="flex flex-wrap items-stretch gap-2">
       <Link
         href={r.detailHref}
-        className="flex items-center justify-between gap-2 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-3 hover:bg-[color:var(--color-admin-surface-hover)]"
+        className="flex min-w-0 flex-1 items-center justify-between gap-2 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-3 hover:bg-[color:var(--color-admin-surface-hover)]"
       >
         <span>
-          <span className="font-semibold">
-            {r.timeConfirmed && r.startTime ? timeInParis(r.startTime) : "heure ?"}
-          </span>{" "}
-          — {r.title}
+          <span className="font-semibold">{quand}</span> — {r.title}
           {r.contactName ? (
             <span className="text-[color:var(--color-admin-fg-muted)]"> · {r.contactName}</span>
           ) : null}
@@ -188,6 +198,11 @@ function LigneRdv({ r }: { r: UnifiedRdv }) {
           </span>
         </span>
       </Link>
+      {r.lienVisio && r.status !== "canceled" ? (
+        <span className="flex items-center">
+          <RejoindreVisioBouton href={r.lienVisio} debut={r.startTime} fin={r.endTime} />
+        </span>
+      ) : null}
     </li>
   );
 }
@@ -415,6 +430,16 @@ export default async function AppelsPage({
       <>
         {header}
         <div className="mb-[var(--space-admin-4)]">{tabs}</div>
+
+        {/* Les prochains rendez-vous, avec leur bouton de visio, ont leur
+            propre onglet (épinglé sous « Agenda »). Cet écran-ci reste celui
+            des réservations, jour par jour. */}
+        <p className="mt-[var(--space-admin-4)]">
+          <Link href={adminPath("fr", "rendez-vous")} className="admin-link">
+            Voir les rendez-vous à venir, avec le lien de visio ›
+          </Link>
+        </p>
+
         {banner}
 
         <div className="mt-[var(--space-admin-4)] mb-[var(--space-admin-4)] flex flex-wrap items-center gap-2">
@@ -509,6 +534,18 @@ export default async function AppelsPage({
       cell: (r) => <PastilleFormat format={r.format} />,
     },
     { key: "status", header: "Statut", cell: (r) => RDV_STATUS_LABELS[r.status] },
+    {
+      key: "visio",
+      header: "Visio",
+      cell: (r) =>
+        r.lienVisio && r.status !== "canceled" ? (
+          // Au-dessus du lien étiré de la ligne (`z-[1]` dans `AdminTable`) :
+          // sans lui, le clic ouvrirait la fiche au lieu de la visio.
+          <span className="relative z-[2] inline-flex">
+            <RejoindreVisioBouton href={r.lienVisio} debut={r.startTime} fin={r.endTime} compact />
+          </span>
+        ) : null,
+    },
   ];
 
   return (

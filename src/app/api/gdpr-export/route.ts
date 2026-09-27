@@ -400,6 +400,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         // ne les porte. Les omettre reviendrait à taire ce que la personne a
         // elle-même écrit.
         rawPayload: true,
+        // Le point fait après l'appel (2026-09-27) : sa note est une
+        // appréciation écrite sur la personne — même raison que `notes`.
+        suivi: {
+          select: { issue: true, suite: true, suiteLe: true, note: true, renseigneLe: true },
+        },
       },
     }),
   );
@@ -472,6 +477,18 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         (r.rawPayload as { invitee?: { questions_and_answers?: unknown } } | null)?.invitee
           ?.questions_and_answers,
       ),
+      // Le point fait après l'appel (2026-09-27). Lu en base plus haut, et
+      // RENDU ici : un champ sélectionné mais jamais restitué est le défaut que
+      // ce bloc corrigeait déjà le 2026-08-31.
+      pointApresAppel: r.suivi
+        ? {
+            constat: r.suivi.issue,
+            suite: r.suivi.suite,
+            echeance: r.suivi.suiteLe,
+            note: r.suivi.note,
+            noteLe: r.suivi.renseigneLe,
+          }
+        : null,
     })),
     ...(podcast.tronque
       ? {

@@ -20,6 +20,7 @@ import { listerEvenements, MARQUEUR_CONSOLE } from "@/server/google-calendar/eve
 import { isGoogleCalendarConfigured } from "@/server/google-calendar/auth";
 import type { AgendaFenetre, AgendaItem } from "./types";
 import { canalDuRendezVous } from "@/server/calendly/canal";
+import { lienRejoindreVisio } from "@/features/admin-rendezvous/visio";
 
 /**
  * Les statuts qui retirent le rendez-vous de l'occupation réelle.
@@ -119,6 +120,7 @@ async function chargerCalendly(
         lieu: peutVoirAppels ? texteOuNull(e.location) : null,
         // Dérivé, puis seul à traverser : le format sans la coordonnée.
         format: canalDuRendezVous(e.location, e.rawPayload),
+        lienVisio: peutVoirAppels && !annule ? lienRejoindreVisio(e.id, e.location) : null,
         // Le lien mène à la fiche, qui EST gardée : le laisser produirait un
         // refus au clic. On le retire pour ne pas promettre ce qu'on refuse.
         detailHref: peutVoirAppels ? adminPath("fr", `contacts/appels/${e.id}`) : null,
@@ -188,6 +190,8 @@ export async function getAgendaFenetre(
             // pas de type de lieu à interroger : on ne dispose que du texte, et
             // « inconnu » est alors la réponse honnête plutôt qu'un défaut.
             format: canalDuRendezVous(e.location),
+            // Hors périmètre : la console ne sait ouvrir que les visios Calendly.
+            lienVisio: null,
             detailHref: e.htmlLink,
             // Seules les indisponibilités posées ici sont retirables. La console
             // n'a aucune raison de supprimer un vrai rendez-vous, et une

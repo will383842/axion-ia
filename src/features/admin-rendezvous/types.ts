@@ -40,6 +40,11 @@ export interface UnifiedRdv {
   contactPhone: string | null;
   location: string | null;
   /**
+   * Adresse du bouton « Rejoindre la visio » (route console), ou `null` quand
+   * le lieu n'est pas un lien de visio. Cf. `visio.ts`.
+   */
+  lienVisio: string | null;
+  /**
    * Téléphone ou visio — **dérivé** de `location`, jamais stocké.
    *
    * Deux champs qui doivent dire la même chose finissent par diverger : le
@@ -57,6 +62,18 @@ export interface UnifiedRdv {
   notes: string | null;
   /** Date de tri de repli quand `startTime` est null (capture/création). */
   createdAt: Date;
+}
+
+/** Une carte de l'onglet « Rendez-vous » : le rendez-vous et ce qu'on lit avant l'appel. */
+export interface RdvAVenir extends UnifiedRdv {
+  /** L'heure de début est passée : l'appel a commencé (ou vient de finir). */
+  enCours: boolean;
+  /** Réponse à la question « Nom de l'entreprise » du formulaire Calendly. */
+  entreprise: string | null;
+  /** Les autres réponses du formulaire — le besoin exprimé. */
+  besoin: ReadonlyArray<{ question: string; reponse: string }>;
+  /** Personnes ajoutées par l'invité à la réservation. */
+  autresInvites: string[];
 }
 
 /**

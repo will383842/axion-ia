@@ -5,6 +5,7 @@ import { adminPath } from "@/lib/admin-path";
 import { dayKeyInParis } from "@/lib/calendar-grid";
 import type { RdvStatus, UnifiedRdv } from "./types";
 import { canalDuRendezVous } from "@/server/calendly/canal";
+import { lienRejoindreVisio } from "./visio";
 
 /** Sous-ensemble des colonnes `CalendlyEvent` consommées (découplé de Prisma). */
 export interface CalendlyEventRow {
@@ -120,6 +121,7 @@ export function fromCalendly(e: CalendlyEventRow): UnifiedRdv {
     contactEmail: e.inviteeEmail,
     contactPhone: e.inviteePhone,
     location: e.location,
+    lienVisio: lienRejoindreVisio(e.id, e.location),
     // Dérivé ici, au seul endroit où une ligne Calendly devient un rendez-vous
     // affichable : tous les écrans en héritent sans le recalculer chacun.
     format: canalDuRendezVous(e.location, e.rawPayload),
