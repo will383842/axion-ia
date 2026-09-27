@@ -10,6 +10,7 @@ import { prisma } from "@/lib/prisma";
 import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import { fromCalendly, type CalendlyEventRow } from "./normalize";
 import type { PublicRdv, RdvFilters, UnifiedRdv } from "./types";
+import { momentVisio } from "./visio";
 
 const CAL_SELECT = {
   id: true,
@@ -164,4 +165,26 @@ export async function getRdvMonth(
   }
   for (const arr of byDay.values()) sortWithinDay(arr);
   return byDay;
+}
+
+/**
+ * Les prochains rendez-vous, du plus proche au plus lointain (2026-09-27).
+ *
+ * Sert le bloc « À venir » de la vue Jour : c'est là que Will vient chercher le
+ * bouton « Rejoindre la visio », sans avoir à naviguer jusqu'au bon jour. Un
+ * rendez-vous en cours y reste jusqu'à son heure de fin — c'est le moment où
+ * l'on a le plus besoin du bouton.
+ */
+export async function listProchainsRendezVous(
+  options: { public?: PublicRdv; limite?: number; maintenant?: Date } = {},
+): Promise<UnifiedRdv[]> {
+  const maintenant = options.maintenant ?? new Date();
+  const rows = filtrerParPublic(await fetchAllCalendly(), options.public).filter(
+    (r) =>
+      r.status === "scheduled" &&
+      r.startTime != null &&
+      momentVisio(r.startTime, r.endTime, maintenant) !== "terminee",
+  );
+  rows.sort((a, b) => (a.startTime as Date).getTime() - (b.startTime as Date).getTime());
+  return rows.slice(0, options.limite ?? 10);
 }

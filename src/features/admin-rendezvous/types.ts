@@ -40,6 +40,11 @@ export interface UnifiedRdv {
   contactPhone: string | null;
   location: string | null;
   /**
+   * Adresse du bouton « Rejoindre la visio » (route console), ou `null` quand
+   * le lieu n'est pas un lien de visio. Cf. `visio.ts`.
+   */
+  lienVisio: string | null;
+  /**
    * Téléphone ou visio — **dérivé** de `location`, jamais stocké.
    *
    * Deux champs qui doivent dire la même chose finissent par diverger : le

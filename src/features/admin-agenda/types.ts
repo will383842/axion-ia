@@ -64,6 +64,13 @@ export interface AgendaItem {
    * non habilité voit donc le format sans jamais voir la coordonnée.
    */
   readonly format: CanalRendezVous;
+  /**
+   * Bouton « Rejoindre la visio » (route console), ou `null`.
+   *
+   * Gardé comme `lieu` : il ouvre la réunion d'un prospect, donc seul un rôle
+   * qui peut lire les appels le reçoit. Réservations Calendly seulement.
+   */
+  readonly lienVisio: string | null;
   /** Fiche de détail dans la console, quand elle existe (réservations Calendly). */
   readonly detailHref: string | null;
   /** Identifiant Google — présent seulement pour ce qui est retirable. */

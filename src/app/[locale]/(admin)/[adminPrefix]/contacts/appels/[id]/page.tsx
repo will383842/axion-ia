@@ -17,6 +17,8 @@ import { gardeLectureAppels } from "@/features/admin-calendly/acces";
 import { ExternalLink } from "lucide-react";
 import { CalendlyEventEditor } from "@/components/admin/contacts/CalendlyEventEditor";
 import { EnrichCalendlyEventButton } from "@/components/admin/contacts/EnrichCalendlyEventButton";
+import { RejoindreVisioBouton } from "@/components/admin/contacts/RejoindreVisioBouton";
+import { invitesSupplementaires, lienRejoindreVisio } from "@/features/admin-rendezvous/visio";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
 import * as Sentry from "@sentry/nextjs";
 import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
@@ -67,6 +69,11 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
   await markInboxRead(session?.user?.id, "calendly_event", event.id);
 
   const backHref = `/fr/${adminPrefix}/contacts/appels`;
+  // Seulement sur un rendez-vous encore programmé : sur un appel annulé, le
+  // bouton inviterait dans une salle que Calendly a déjà libérée.
+  const lienVisio =
+    event.status === "scheduled" ? lienRejoindreVisio(event.id, event.location) : null;
+  const autresInvites = invitesSupplementaires(event.rawPayload);
   const apiConfigured = isCalendlyApiConfigured();
   // Les fiches proposées au sélecteur de rattachement (2026-09-19) — à la place
   // de la saisie d'UUID. Information ACCESSOIRE : si la lecture échoue, le
@@ -95,7 +102,10 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
           </Link>
         }
         actions={
-          <div className="flex items-start gap-2">
+          <div className="flex flex-wrap items-start gap-2">
+            {lienVisio ? (
+              <RejoindreVisioBouton href={lienVisio} debut={event.startTime} fin={event.endTime} />
+            ) : null}
             <EnrichCalendlyEventButton id={event.id} apiConfigured={apiConfigured} />
             <AdminButton
               href="https://calendly.com/event_types/user/me"
@@ -164,6 +174,22 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
           <dl className="admin-dl">
             <dt className="admin-dt">Statut</dt>
             <dd className="admin-dd">{STATUS_LABEL[event.status] ?? event.status}</dd>
+            {/* L'invité principal est dans le formulaire ; ceux qu'il a ajoutés
+                à la réservation n'existaient que dans les données brutes. */}
+            {autresInvites.length > 0 && (
+              <>
+                <dt className="admin-dt">
+                  {autresInvites.length > 1 ? "Autres invités" : "Autre invité"}
+                </dt>
+                <dd className="admin-dd">
+                  {autresInvites.map((email) => (
+                    <span key={email} className="block">
+                      {email}
+                    </span>
+                  ))}
+                </dd>
+              </>
+            )}
             <dt className="admin-dt">Enrichi depuis Calendly</dt>
             <dd className="admin-dd">
               {event.enrichedAt ? (
