@@ -28,11 +28,7 @@
 // La liste reste à `?vue=liste`, le calendrier à `?vue=calendrier`.
 
 import Link from "next/link";
-import {
-  getRdvMonth,
-  listProchainsRendezVous,
-  listRendezVous,
-} from "@/features/admin-rendezvous/queries";
+import { getRdvMonth, listRendezVous } from "@/features/admin-rendezvous/queries";
 import {
   RDV_STATUS_LABELS,
   type PublicRdv,
@@ -65,6 +61,7 @@ import { RejoindreVisioBouton } from "@/components/admin/contacts/RejoindreVisio
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { adminPath } from "@/lib/admin-path";
 
 export const dynamic = "force-dynamic";
 
@@ -174,11 +171,8 @@ function lien(base: string, params: Record<string, string | number | undefined>)
  * Le bouton « Rejoindre la visio » est posé À CÔTÉ du lien vers la fiche, pas
  * dedans : un lien dans un lien n'est pas du HTML valide, et le doigt doit
  * pouvoir viser l'un sans déclencher l'autre sur téléphone.
- *
- * `avecDate` : le bloc « À venir » couvre plusieurs jours, l'heure seule n'y
- * suffit pas.
  */
-function LigneRdv({ r, avecDate = false }: { r: UnifiedRdv; avecDate?: boolean }) {
+function LigneRdv({ r }: { r: UnifiedRdv }) {
   const quand = r.timeConfirmed && r.startTime ? timeInParis(r.startTime) : "heure ?";
   return (
     <li className="flex flex-wrap items-stretch gap-2">
@@ -187,10 +181,7 @@ function LigneRdv({ r, avecDate = false }: { r: UnifiedRdv; avecDate?: boolean }
         className="flex min-w-0 flex-1 items-center justify-between gap-2 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-3 hover:bg-[color:var(--color-admin-surface-hover)]"
       >
         <span>
-          <span className="font-semibold">
-            {avecDate ? `${formatDateFrShort(r.dayKey)} · ${quand}` : quand}
-          </span>{" "}
-          — {r.title}
+          <span className="font-semibold">{quand}</span> — {r.title}
           {r.contactName ? (
             <span className="text-[color:var(--color-admin-fg-muted)]"> · {r.contactName}</span>
           ) : null}
@@ -427,11 +418,7 @@ export default async function AppelsPage({
     const aujourdhui = dayKeyInParis(new Date());
     const jour = lireJour(sp["date"]) ?? aujourdhui;
     const [anneeJour = 1970, moisJour = 1] = jour.split("-").map(Number);
-    const [parJour, prochains] = await Promise.all([
-      getRdvMonth(anneeJour, moisJour, optionsPublic),
-      listProchainsRendezVous(optionsPublic),
-    ]);
-    const rdvJour = parJour.get(jour) ?? [];
+    const rdvJour = (await getRdvMonth(anneeJour, moisJour, optionsPublic)).get(jour) ?? [];
     const veille = decalerJour(jour, -1);
     const lendemain = decalerJour(jour, 1);
 
@@ -440,24 +427,14 @@ export default async function AppelsPage({
         {header}
         <div className="mb-[var(--space-admin-4)]">{tabs}</div>
 
-        {/* 🔑 EN TÊTE, AVANT LE BANDEAU : c'est ce qu'on vient chercher ici, au
-            bureau comme sur téléphone — le prochain appel et son bouton de visio.
-            Affiché quel que soit le jour consulté : il répond à « et
-            maintenant ? », pas à « et ce jour-là ? ». */}
-        <section className="mt-[var(--space-admin-4)]" aria-labelledby="rdv-a-venir">
-          <h2 id="rdv-a-venir" className="admin-h2">
-            À venir · {prochains.length} rendez-vous
-          </h2>
-          {prochains.length === 0 ? (
-            <p className="text-[color:var(--color-admin-fg-muted)]">Aucun rendez-vous à venir.</p>
-          ) : (
-            <ul className="mt-[var(--space-admin-3)] space-y-2">
-              {prochains.map((r) => (
-                <LigneRdv key={r.key} r={r} avecDate />
-              ))}
-            </ul>
-          )}
-        </section>
+        {/* Les prochains rendez-vous, avec leur bouton de visio, ont leur
+            propre onglet (épinglé sous « Agenda »). Cet écran-ci reste celui
+            des réservations, jour par jour. */}
+        <p className="mt-[var(--space-admin-4)]">
+          <Link href={adminPath("fr", "rendez-vous")} className="admin-link">
+            Voir les rendez-vous à venir, avec le lien de visio ›
+          </Link>
+        </p>
 
         {banner}
 

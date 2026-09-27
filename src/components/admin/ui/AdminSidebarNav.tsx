@@ -30,6 +30,7 @@ import {
   FolderOpen,
   ScanSearch,
   CalendarDays,
+  CalendarClock,
   CalendarRange,
   Activity,
   ChevronRight,
@@ -958,6 +959,25 @@ export function AdminSidebarNav({
           >
             <CalendarDays className="h-[18px] w-[18px] shrink-0 opacity-80" aria-hidden />
             {!collapsed && <span className="flex-1 text-sm font-medium">Agenda</span>}
+          </Link>
+
+          {/* Rendez-vous — épinglé sous l'Agenda (demande Will du 2026-09-27).
+              L'Agenda dit « où suis-je libre ? » ; cet écran dit « qui
+              j'appelle, et comment je le rejoins ? » : une carte par appel à
+              venir, avec le bouton de visio. */}
+          <Link
+            href={`${accountHref ?? ""}${ADMIN_LIENS_EPINGLES.rendezVous}`}
+            title="Ouvrir les rendez-vous à venir"
+            className={cn(
+              "mb-[var(--space-admin-3)] flex items-center gap-[var(--space-admin-4)]",
+              "rounded-[var(--radius-admin-md)] px-[var(--space-admin-3)] py-[var(--space-admin-3)]",
+              "text-[color:var(--color-admin-rail-text)] ring-1 ring-[color:var(--color-admin-rail-border)]",
+              "transition-opacity hover:opacity-80",
+              collapsed && "justify-center",
+            )}
+          >
+            <CalendarClock className="h-[18px] w-[18px] shrink-0 opacity-80" aria-hidden />
+            {!collapsed && <span className="flex-1 text-sm font-medium">Rendez-vous</span>}
           </Link>
           {ADMIN_NAV_GROUP_ORDER.map((g, gi) => {
             // Exclut les items `parent != null` : atteignables par URL/palette

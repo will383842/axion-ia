@@ -31,7 +31,8 @@ describe("RejoindreVisioBouton", () => {
     expect(html).not.toContain("admin-button-secondary");
   });
 
-  it("après la fin : plus de bouton", () => {
-    expect(rendu("2026-09-28T14:30:00Z")).toBe("");
+  it("30 minutes après la fin : plus de bouton", () => {
+    expect(rendu("2026-09-28T14:40:00Z")).toContain("Rejoindre maintenant");
+    expect(rendu("2026-09-28T14:46:00Z")).toBe("");
   });
 });

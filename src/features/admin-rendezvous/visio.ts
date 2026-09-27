@@ -30,6 +30,13 @@
 /** Le bouton passe en évidence ce nombre de minutes avant le début. */
 export const MINUTES_AVANT_VISIO = 10;
 
+/**
+ * Le rendez-vous reste « à venir » (et son bouton affiché) ce nombre de minutes
+ * APRÈS l'heure de fin. Décision de Will, 2026-09-27 : un appel qui déborde ou
+ * un client en retard ne doit pas faire disparaître le bouton en pleine visio.
+ */
+export const MINUTES_APRES_FIN = 30;
+
 /** Marge après le début quand l'heure de fin est inconnue (appel client : 45 min). */
 const DUREE_PAR_DEFAUT_MINUTES = 60;
 
@@ -132,10 +139,10 @@ export type MomentVisio = "a-venir" | "imminente" | "terminee";
 /**
  * Où en est la visio par rapport à maintenant.
  *
- * · `imminente` — de 10 minutes avant le début jusqu'à la fin : le bouton passe
- *   en évidence ;
- * · `terminee` — après la fin : le bouton disparaît, rejoindre une salle vide
- *   n'aide personne ;
+ * · `imminente` — de 10 minutes avant le début jusqu'à 30 minutes après la
+ *   fin : le bouton passe en évidence ;
+ * · `terminee` — au-delà : le rendez-vous quitte « À venir » et le bouton
+ *   disparaît ;
  * · `a-venir` — le reste du temps : le bouton est là, discret.
  */
 export function momentVisio(
@@ -146,7 +153,7 @@ export function momentVisio(
   if (!debut) return "a-venir";
   const t = maintenant.getTime();
   const finEffective = fin ?? new Date(debut.getTime() + DUREE_PAR_DEFAUT_MINUTES * 60_000);
-  if (t > finEffective.getTime()) return "terminee";
+  if (t > finEffective.getTime() + MINUTES_APRES_FIN * 60_000) return "terminee";
   if (t >= debut.getTime() - MINUTES_AVANT_VISIO * 60_000) return "imminente";
   return "a-venir";
 }

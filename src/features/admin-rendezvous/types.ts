@@ -64,6 +64,18 @@ export interface UnifiedRdv {
   createdAt: Date;
 }
 
+/** Une carte de l'onglet « Rendez-vous » : le rendez-vous et ce qu'on lit avant l'appel. */
+export interface RdvAVenir extends UnifiedRdv {
+  /** L'heure de début est passée : l'appel a commencé (ou vient de finir). */
+  enCours: boolean;
+  /** Réponse à la question « Nom de l'entreprise » du formulaire Calendly. */
+  entreprise: string | null;
+  /** Les autres réponses du formulaire — le besoin exprimé. */
+  besoin: ReadonlyArray<{ question: string; reponse: string }>;
+  /** Personnes ajoutées par l'invité à la réservation. */
+  autresInvites: string[];
+}
+
 /**
  * À qui s'adresse le rendez-vous : un client, ou un candidat apporteur
  * (2026-09-19).

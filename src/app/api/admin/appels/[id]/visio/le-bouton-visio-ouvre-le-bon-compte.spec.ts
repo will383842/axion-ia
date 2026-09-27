@@ -85,11 +85,13 @@ describe("le moment de la visio", () => {
   const debut = new Date("2026-09-28T13:30:00Z");
   const fin = new Date("2026-09-28T14:15:00Z");
 
-  it("passe en évidence 10 minutes avant, reste pendant, disparaît après", () => {
+  it("passe en évidence 10 minutes avant, reste 30 minutes après la fin, puis disparaît", () => {
     expect(momentVisio(debut, fin, new Date("2026-09-28T13:19:00Z"))).toBe("a-venir");
     expect(momentVisio(debut, fin, new Date("2026-09-28T13:20:00Z"))).toBe("imminente");
     expect(momentVisio(debut, fin, new Date("2026-09-28T14:00:00Z"))).toBe("imminente");
-    expect(momentVisio(debut, fin, new Date("2026-09-28T14:16:00Z"))).toBe("terminee");
+    // Un appel qui déborde garde son bouton.
+    expect(momentVisio(debut, fin, new Date("2026-09-28T14:45:00Z"))).toBe("imminente");
+    expect(momentVisio(debut, fin, new Date("2026-09-28T14:46:00Z"))).toBe("terminee");
   });
 });
 
