@@ -92,6 +92,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ? "Un échange de 45 minutes pour explorer votre projet IA — formation, audit, automatisation, implémentation, SaaS web. Gratuit et sans engagement."
         : "Un échange de 45 minutes pour explorer votre projet IA — formation, audit, automatisation, implémentation, SaaS web. Gratuit et sans engagement.",
       alternates: { fr: "/appel", en: "/book-a-call" },
+      // Image de partage dédiée (2026-09-27) : ce lien est épinglé dans la
+      // « Sélection » du profil LinkedIn, où la vignette ne fait que ~190 px de
+      // large. La carte générique `/api/og` y devenait illisible ; celle-ci est
+      // calibrée pour rester lisible à cette taille. Dimensions MESURÉES.
+      ogImage: `${SITE_URL}/og/pages/appel-45-min-gratuit.png`,
+      ogImageWidth: 1200,
+      ogImageHeight: 628,
     })),
     title: { absolute: titleStr },
   };
