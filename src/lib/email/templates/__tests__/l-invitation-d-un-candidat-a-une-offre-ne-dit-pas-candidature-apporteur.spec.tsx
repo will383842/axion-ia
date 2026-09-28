@@ -30,11 +30,10 @@ describe("invitation — variante « offre »", () => {
       ...BASE,
       offreEmploi: OFFRE,
     });
-    expect(r.subject).toBe("Ta candidature chez Axion-IA : une autre proposition");
-    // ⚠️ 52 caractères, au-delà de la borne de 45 du référentiel (§3.4) :
-    // objet DICTÉ par Will le 2026-09-28. Le référentiel ne le mesure pas (son
-    // payload d'exemple ne porte pas `offreEmploi`) — ce témoin le fixe.
-    expect(r.subject.length).toBe(52);
+    expect(r.subject).toBe("Ta candidature Axion-IA : autre proposition");
+    // Borne de 45 du référentiel (§3.4), que le référentiel ne mesure pas ici
+    // (son payload d'exemple ne porte pas `offreEmploi`) — ce témoin la tient.
+    expect(r.subject.length).toBeLessThanOrEqual(45);
   });
 
   it("🔴 PRIORITAIRE sur `candidature` : même marquée candidature, elle ne dit pas « retenue »", async () => {
@@ -44,7 +43,7 @@ describe("invitation — variante « offre »", () => {
       variante: 2,
       offreEmploi: OFFRE,
     });
-    expect(r.subject).toBe("Ta candidature chez Axion-IA : une autre proposition");
+    expect(r.subject).toBe("Ta candidature Axion-IA : autre proposition");
     const t = texte(r.html);
     expect(t).not.toContain("Ta candidature apporteur d'affaires est retenue");
     expect(t).not.toMatch(/candidature apporteur/i);
@@ -135,7 +134,7 @@ describe("invitation — variante « offre »", () => {
       offreEmploi: "",
     });
     const t = texte(r.html);
-    expect(r.subject).toBe("Ta candidature chez Axion-IA : une autre proposition");
+    expect(r.subject).toBe("Ta candidature Axion-IA : autre proposition");
     expect(t).toContain("Merci pour ta candidature à l'une de nos offres d'emploi.");
     expect(t).not.toContain("« »");
   });

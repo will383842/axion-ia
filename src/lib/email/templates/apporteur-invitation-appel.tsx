@@ -127,7 +127,7 @@ const COPY = {
       "Les créneaux sont limités : réserve le tien dès maintenant avec le bouton ci-dessous.",
     ctaCandidature: "Réserver mon créneau",
     // 2026-09-28 (Will) — variante `offre` : texte validé par Will.
-    sujetOffre: "Ta candidature chez Axion-IA : une autre proposition",
+    sujetOffre: "Ta candidature Axion-IA : autre proposition",
     titleOffre: "Une autre proposition",
     previewOffre:
       "En parallèle de ta candidature, une proposition différente : notre réseau d'apporteurs d'affaires indépendants.",
