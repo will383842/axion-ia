@@ -27,7 +27,7 @@
 //
 // Idempotent : une fiche qui porte déjà un CV du même nom est laissée telle quelle.
 
-import { randomUUID, createCipheriv, randomBytes, createHmac } from "node:crypto";
+import { randomUUID, createCipheriv, createDecipheriv, randomBytes, createHmac } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join, extname } from "node:path";
 import { createRequire } from "node:module";
@@ -60,6 +60,24 @@ function encryptPii(clair) {
   const ct = Buffer.concat([c.update(clair, "utf8"), c.final()]);
   return `enc:v1:${iv.toString("hex")}:${ct.toString("hex")}:${c.getAuthTag().toString("hex")}`;
 }
+function decryptPii(v) {
+  if (typeof v !== "string" || !v.startsWith("enc:v1:")) return v ?? "";
+  const [iv, ct, tag] = v.slice(7).split(":");
+  const d = createDecipheriv("aes-256-gcm", Buffer.from(KEY_HEX, "hex"), Buffer.from(iv, "hex"));
+  d.setAuthTag(Buffer.from(tag, "hex"));
+  return Buffer.concat([d.update(Buffer.from(ct, "hex")), d.final()]).toString("utf8");
+}
+// « Prénom NOM » et « Nom Prénom » donnent la même clé : mots triés, sans accents.
+function cleNom(t) {
+  return (t ?? "")
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .split(/[^a-z]+/)
+    .filter((m) => m.length > 1)
+    .sort()
+    .join(" ");
+}
 function hashEmail(email) {
   const n = (email ?? "").trim().toLowerCase();
   if (!n) return null;
@@ -84,8 +102,16 @@ const prisma = new PrismaClient();
 const manifeste = JSON.parse(await readFile(manifestPath, "utf8"));
 const fiches = await prisma.submission.findMany({
   where: { details: { path: ["subType"], equals: "candidature-commerciale" } },
-  select: { id: true, details: true, contactEmailHash: true, contactPhone: true },
+  select: {
+    id: true,
+    details: true,
+    contactEmailHash: true,
+    contactPhone: true,
+    contactName: true,
+  },
 });
+// Le nom n'est comparé qu'ici, en mémoire : il n'est jamais affiché.
+const cleParId = new Map(fiches.map((f) => [f.id, cleNom(decryptPii(f.contactName))]));
 const parId = new Map(fiches.map((f) => [f.id, f]));
 
 let crees = 0;
@@ -103,16 +129,24 @@ for (const [i, e] of manifeste.entries()) {
     ids.add(e.cible);
   }
   if (empreinte) for (const f of fiches) if (f.contactEmailHash === empreinte) ids.add(f.id);
+  // Même nom complet (au moins deux mots) : le dossier complet rempli sur le
+  // site sous une autre adresse que le relais Indeed.
+  const cle = cleNom(`${cv.prenom} ${cv.nom}`);
+  if (cle.includes(" ")) for (const [id, c] of cleParId) if (c === cle) ids.add(id);
 
-  const octets = await readFile(join(dossierCv, e.fichier));
-  const ext = extname(e.fichier).toLowerCase();
+  // Entrée SANS fichier (`fichier: null`) : candidature reçue par simple
+  // e-mail — la fiche porte alors le message et l'analyse, sans CV.
+  const octets = e.fichier ? await readFile(join(dossierCv, e.fichier)) : null;
+  const ext = e.fichier ? extname(e.fichier).toLowerCase() : "";
   const blocCv = (storagePath) => ({
-    fichier: {
-      storagePath,
-      nomOriginal: nomSain(e.fichier),
-      mimeType: MIME[ext] ?? null,
-      tailleOctets: octets.byteLength,
-    },
+    fichier: storagePath
+      ? {
+          storagePath,
+          nomOriginal: nomSain(e.fichier),
+          mimeType: MIME[ext] ?? null,
+          tailleOctets: octets.byteLength,
+        }
+      : null,
     extrait: {
       email: cv.email ?? null,
       telephone: cv.telephone ?? null,
@@ -132,10 +166,13 @@ for (const [i, e] of manifeste.entries()) {
     analyse: cv.analyse,
     analyseLe: new Date().toISOString(),
   });
-  const candidatureSalariee = { canal: "indeed", annonce: ANNONCE };
+  // `salarie: false` : la personne n'a PAS répondu à l'annonce salariée.
+  const candidatureSalariee =
+    e.salarie === false ? undefined : { canal: "indeed", annonce: ANNONCE };
   const villeCv = [cv.ville, cv.codePostal ? `(${cv.codePostal})` : null].filter(Boolean).join(" ");
 
   async function stocker() {
+    if (!octets) return null;
     const dir = join(BASE_CV, randomUUID());
     await mkdir(dir, { recursive: true });
     const p = join(dir, nomSain(e.fichier));
@@ -146,7 +183,8 @@ for (const [i, e] of manifeste.entries()) {
   if (ids.size === 0) {
     // Même garde d'idempotence qu'en mise à jour : une fiche déjà CRÉÉE par ce
     // script pour ce fichier ne se recrée pas.
-    const existe = fiches.some((f) => f.details?.cv?.fichier?.nomOriginal === nomSain(e.fichier));
+    const existe =
+      e.fichier && fiches.some((f) => f.details?.cv?.fichier?.nomOriginal === nomSain(e.fichier));
     if (existe) {
       console.log(`#${i} déjà créée — rien`);
       deja++;
@@ -168,10 +206,12 @@ for (const [i, e] of manifeste.entries()) {
             nom: cv.nom,
             prenom: cv.prenom,
             ville: villeCv || cv.pays || "",
-            message: `Candidature reçue via l'annonce Indeed « ${ANNONCE} ». Fiche créée le ${new Date().toLocaleDateString("fr-FR")} à partir du CV — aucun e-mail n'a été envoyé.${cv.email ? "" : " Pas d'adresse e-mail sur le CV : la joindre par la messagerie Indeed."}`,
+            message:
+              e.message ??
+              `Candidature reçue via l'annonce Indeed « ${ANNONCE} ». Fiche créée le ${new Date().toLocaleDateString("fr-FR")} à partir du CV — aucun e-mail n'a été envoyé.${cv.email ? "" : " Pas d'adresse e-mail sur le CV : la joindre par la messagerie Indeed."}`,
             subType: "candidature-commerciale",
             unifiedType: "recrutement",
-            sourceConnaissance: "indeed",
+            sourceConnaissance: e.source ?? "indeed",
             candidatureSalariee,
             cv: blocCv(storagePath),
           },
@@ -186,12 +226,16 @@ for (const [i, e] of manifeste.entries()) {
 
   for (const id of ids) {
     const f = parId.get(id);
-    if (f.details?.cv?.fichier?.nomOriginal === nomSain(e.fichier)) {
+    const dejaFait = e.fichier
+      ? f.details?.cv?.fichier?.nomOriginal === nomSain(e.fichier)
+      : Boolean(f.details?.cv);
+    if (dejaFait) {
       console.log(`#${i} ${id} a déjà ce CV — rien`);
       deja++;
       continue;
     }
-    const origine = id === e.cible ? "cible" : "même e-mail";
+    const origine =
+      id === e.cible ? "cible" : f.contactEmailHash === empreinte ? "même e-mail" : "même nom";
     console.log(
       `#${i} COMPLÉTER ${id} (${origine})${f.contactPhone ? "" : " + téléphone"}${f.details?.ville ? "" : " + ville"}`,
     );
