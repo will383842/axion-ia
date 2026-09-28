@@ -40,6 +40,8 @@ export const LIBELLES_ERREUR_REPONSE: Record<string, string> = {
   enqueue_failed: "File d'envoi indisponible — la réponse est enregistrée, réessayez.",
   champs_invalides: "Champs invalides.",
   deja_envoyee: "Cette réponse est déjà partie.",
+  lien_complement_indisponible:
+    "{lien_complement} impossible : l'offre de ce candidat ne pose aucune question.",
 };
 
 /** Consignation au journal — `journal-actions.ts`. */
