@@ -301,7 +301,7 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     nom: "Dossier intervenant · 12 pages",
     format: "A4 portrait · 210 × 297 mm · 12 pages, lecture à l'écran et envoi par e-mail",
     resume:
-      "Le dossier de conférencier de Williams Jullin pour les organisateurs d'événements : la conférence « L'IA, tout le monde en parle. Personne ne sait par où commencer. Vous, en repartant, vous saurez. », tous les formats d'intervention (conférence, invité, table ronde, café-débat, ciné-débat, format court, jury, remplacement de dernière minute), les engagements et le contact. Envoyé en pièce jointe quand un organisateur répond « oui ».",
+      "Le dossier de conférencier de Williams Jullin pour les organisateurs d'événements : la conférence « L'IA, tout le monde en parle. Personne ne sait par où commencer. Vous, en repartant, vous saurez. », tous les formats d'intervention (conférence, invité, table ronde, café-débat, ciné-débat, ouverture ou clôture, jury, remplacement de dernière minute), les engagements et le contact. Envoyé en pièce jointe quand un organisateur répond « oui ».",
     fichiersPublics: [
       {
         chemin: "imprimes/dossier-intervenant-williams-jullin-axion-ia.pdf",
