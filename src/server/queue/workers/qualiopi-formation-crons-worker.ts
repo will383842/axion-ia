@@ -146,6 +146,8 @@ export type FormationCronJobType =
   // aucun statut n'est changé, aucun e-mail ne part au candidat. Décider de
   // répondre reste un geste humain.
   | "formation-crons.candidatures-en-sommeil"
+  // 2026-09-28 (Will) — liens vidéo des candidats vérifiés chaque lundi.
+  | "formation-crons.liens-surveilles"
   // 2026-09-28 (Will) — réponse automatique « poste pourvu » aux candidats hors
   // vidéo restés sans réponse 7 jours. HORAIRE, plafonnée, coupable en console.
   | "formation-crons.reponse-poste-pourvu"
@@ -2366,6 +2368,24 @@ async function handleReponsePostePourvu(): Promise<void> {
 }
 
 /**
+ * Liens vidéo des candidats, vérifiés chaque lundi (Will, 2026-09-28) — corps
+ * et doctrine dans `server/careers/liens-surveilles.ts`. Import PARESSEUX.
+ */
+async function handleLiensSurveilles(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  const { surveillerLiens } = await import("@/server/careers/liens-surveilles");
+  const b = await surveillerLiens(new Date());
+  // Journalisé même vide : un passage qu'on ne voit jamais ne se distingue pas
+  // d'un passage qui ne tourne plus.
+  console.log(
+    b.abstenu
+      ? "[formation-crons] liens-surveilles: table absente (migration à venir), passage suivant"
+      : `[formation-crons] liens-surveilles: ${b.verifies} lien(s) vérifié(s), ` +
+          `${b.morts} mort(s), ${b.inverifiables} invérifiable(s)`,
+  );
+}
+
+/**
  * Remise des exemplaires signés que le hook de complétion n'a pas pu servir.
  *
  * ADR 0050 — renversement assumé de la décision « bouton seul » du matin même, sur
@@ -2477,6 +2497,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.offres-fraicheur": handleOffresFraicheur,
   "formation-crons.rappels-entretien": handleRappelsEntretien,
   "formation-crons.candidatures-en-sommeil": handleCandidaturesEnSommeil,
+  "formation-crons.liens-surveilles": handleLiensSurveilles,
   "formation-crons.reponse-poste-pourvu": handleReponsePostePourvu,
   "formation-crons.email-sante": handleEmailSante,
   "formation-crons.missions-formateur": handleMissionsFormateur,
