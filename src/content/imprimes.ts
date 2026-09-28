@@ -23,6 +23,15 @@
  * 25 Mo avec fond perdu et repères de coupe, téléchargeable par n'importe qui,
  * n'a aucun sens. La console dit où il est plutôt que de laisser chercher.
  *
+ * `fichiersInternes` (2026-09-28) est la troisième famille : des documents de
+ * TRAVAIL de l'équipe (la trame de l'échange avec un candidat apporteur), qui
+ * doivent être dans l'image — la console les sert — mais jamais publics. Ils
+ * vivent sous `private/imprimes/`, que Next ne sert par aucun chemin, et ne
+ * sortent que par `/api/admin/imprimes/<id>/<fichier>`, route gardée par la
+ * même frontière que la console (`peutConsulter`) et bornée à cette liste.
+ * Le Dockerfile copie `private/` dans l'image finale : sans cette ligne, la
+ * route rendrait 404 en production (`imprimes-internes.spec.ts` la vérifie).
+ *
  * AUCUNE DATE N'EST EXPOSÉE. Dans une image Docker, les dates de fichier sont
  * celles de la COPIE, pas de la fabrication : elles diraient toutes la même
  * chose et donneraient une fausse fraîcheur. Règle déjà posée pour les PDF KDP.
@@ -65,6 +74,26 @@ export interface FichierHorsLigne {
   pourquoi: string;
 }
 
+/**
+ * Un document INTERNE : présent dans l'image, servi aux seuls comptes console.
+ *
+ * ⚠️ `fichier` est un NOM, pas un chemin : il est résolu sous
+ * `private/imprimes/` par la route de téléchargement, qui le compare mot pour
+ * mot à cette liste. `FICHIER_INTERNE_VALIDE` en borne la forme — ni `/`, ni
+ * `..`, ni espace — et un test refuse toute entrée qui n'y répond pas.
+ */
+export interface FichierInterne {
+  fichier: string;
+  nom: string;
+  role: string;
+}
+
+/** Dossier, relatif à la racine de l'application, des fichiers internes. */
+export const DOSSIER_FICHIERS_INTERNES = "private/imprimes";
+
+/** La seule forme de nom acceptée pour un fichier interne. */
+export const FICHIER_INTERNE_VALIDE = /^[a-z0-9]+(?:-[a-z0-9]+)*\.pdf$/;
+
 export interface Imprime {
   /** Segment d'URL sous `/imprimes/`. */
   id: string;
@@ -81,6 +110,16 @@ export interface Imprime {
   resume: string;
   fichiersPublics: ReadonlyArray<FichierImprime>;
   fichiersHorsLigne: ReadonlyArray<FichierHorsLigne>;
+  /**
+   * Documents internes, téléchargeables depuis la console SEULEMENT. Absent
+   * pour tout imprimé destiné au public.
+   */
+  fichiersInternes?: ReadonlyArray<FichierInterne>;
+  /**
+   * Présent ⇔ l'imprimé est un document de travail interne. Le texte est
+   * affiché en tête de l'écran : ce qu'il ne faut jamais en faire.
+   */
+  usageInterne?: string;
   /** Ce qu'il faut vérifier avant de lancer un tirage. */
   avantTirage: ReadonlyArray<string>;
   /** Renvoi vers un autre écran de la console, s'il y en a un d'utile. */
@@ -233,6 +272,38 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     ],
   },
   {
+    id: "trame-echange-apporteur",
+    icon: "MessagesSquare",
+    nom: "Trame de l'échange découverte apporteur (15 min)",
+    format: "A4 portrait · 3 pages · usage interne",
+    resume:
+      "La trame pour conduire et noter l'échange de 15 minutes avec un candidat apporteur d'affaires : déroulé minute par minute, questions sur des faits vécus, présentation du réseau, réponses aux questions fréquentes, mots à dire et à bannir, critères éliminatoires fixés avant l'appel, et une fiche de notes à grille qui débouche sur une décision structurée juste après l'échange.",
+    usageInterne:
+      "Usage interne — ne pas transmettre au candidat. Ce document n'est pas en ligne : il ne se télécharge que depuis la console, par un compte administrateur.",
+    fichiersPublics: [],
+    fichiersInternes: [
+      {
+        fichier: "trame-echange-apporteur.pdf",
+        nom: "La trame, 3 pages",
+        role: "À imprimer avant chaque échange : pages 1 et 2 pour conduire l'appel, page 3 pour noter le candidat pendant et juste après. Une fiche par candidat.",
+      },
+    ],
+    fichiersHorsLigne: [
+      {
+        nom: "trame-echange-apporteur.html",
+        ou: "docs/imprimes/ (dans le dépôt)",
+        pourquoi:
+          "La source du PDF. Toute correction se fait là, puis le PDF se régénère dans private/imprimes/ — la commande est écrite en tête du fichier. Corriger le PDF à la main ferait diverger les deux.",
+      },
+    ],
+    avantTirage: [
+      "Les commissions et la durée de protection des contacts citées dans la trame doivent rester celles du document « Devenir apporteur d'affaires » et de COMMERCIAL_COMMISSIONS dans pricing.ts : si la grille change, régénérer les deux documents ensemble.",
+      "Le vocabulaire face au candidat est celui de l'échange entre indépendants — jamais « entretien », « poste », « recrutement », « objectifs » ni « exclusivité ». Relire toute correction à l'aune de docs/partners/ANTI-REQUALIFICATION.md.",
+      "Ne jamais déposer ce PDF sous public/, ni l'envoyer en pièce jointe : il contient la grille de notation et les critères éliminatoires.",
+    ],
+    voirAussi: { href: "/contacts/commercial", label: "Contacts › Apporteurs" },
+  },
+  {
     id: "guide-ia",
     icon: "Lightbulb",
     nom: `Guide IA entreprise · ${GUIDE_IA_PAGES} pages`,
@@ -354,4 +425,25 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
 
 export function imprimeParId(id: string): Imprime | undefined {
   return IMPRIMES.find((i) => i.id === id);
+}
+
+/** Le lien de téléchargement, gardé, d'un fichier interne. */
+export function lienFichierInterne(imprimeId: string, fichier: string): string {
+  return `/api/admin/imprimes/${encodeURIComponent(imprimeId)}/${encodeURIComponent(fichier)}`;
+}
+
+/**
+ * La LISTE BLANCHE de la route de téléchargement : rend le fichier interne
+ * déclaré sous cet imprimé et ce nom exact, ou `undefined`.
+ *
+ * Comparaison stricte sur le nom — jamais un préfixe, jamais un chemin
+ * normalisé : `../x.pdf` ou `trame-echange-apporteur.pdf/..` ne sont égaux à
+ * aucune entrée, et la forme est revérifiée par `FICHIER_INTERNE_VALIDE`.
+ */
+export function fichierInterneAutorise(
+  imprimeId: string,
+  fichier: string,
+): FichierInterne | undefined {
+  if (!FICHIER_INTERNE_VALIDE.test(fichier)) return undefined;
+  return imprimeParId(imprimeId)?.fichiersInternes?.find((f) => f.fichier === fichier);
 }

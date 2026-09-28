@@ -84,6 +84,8 @@ export default async function ImprimesPage({ params }: PageProps) {
                     <b> — {manquants.join(", ")} absent(s), le lien public renverra 404</b>
                   ) : null}
                 </>
+              ) : imprime.usageInterne ? (
+                <b>Usage interne — ne pas transmettre. Téléchargement réservé à la console.</b>
               ) : (
                 "Aucun fichier publié — cet imprimé vit hors ligne."
               )}
