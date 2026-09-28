@@ -39,22 +39,17 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import * as Sentry from "@sentry/nextjs";
 
-import { prisma } from "@/lib/prisma";
 import { env } from "@/env";
-import { SubmissionSource, SubmissionType } from "../../../prisma/generated/client";
-import { encryptPii, decryptPii } from "@/lib/pii-crypto";
-import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { adminPath } from "@/lib/admin-path";
-import { ORIGINE_CANDIDATURE_OFFRE } from "@/lib/contact/accuse-attendu";
-import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
-import { LEAD_APPORTEUR_ETAPE } from "@/lib/commercial-application/lead-apporteur";
-import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { estLienCalendlyValide } from "@/lib/commercial-application/kit-apporteur";
 import { envoyerInvitationApporteur } from "@/features/commercial-application/invitation-apporteur";
 
 import { requireAdminWrite } from "./session";
 import { consignerEvenement } from "./journal";
-import { ficheApporteurDeLaCandidature } from "./proposer-reseau";
+import {
+  creerFicheApporteurDepuisCandidature,
+  ficheApporteurDeLaCandidature,
+} from "./fiche-apporteur-depuis-candidature";
 
 export type IssueInvitationReseau =
   { envoyee: true; enValidation?: true } | { envoyee: false; message: string };
@@ -119,74 +114,10 @@ export async function proposerReseauApporteursAction(
   }
   const { applicationId, envoyerInvitation } = parsed.data;
 
-  const candidature = await prisma.jobApplication.findUnique({
-    where: { id: applicationId },
-    select: {
-      id: true,
-      offerTitleSnap: true,
-      firstName: true,
-      lastName: true,
-      email: true,
-      phone: true,
-      city: true,
-      locale: true,
-    },
-  });
-  if (!candidature) {
-    return { ok: false, erreur: "introuvable", message: "Candidature introuvable." };
-  }
-
   // ── IDEMPOTENCE : la fiche née de CETTE candidature, avant tout le reste.
   const existante = await ficheApporteurDeLaCandidature(applicationId);
   if (existante) {
     return { ok: true, deja: true, submissionId: existante.id, lien: lienFiche(existante.id) };
-  }
-
-  let prenom: string;
-  let nom: string;
-  let email: string;
-  let telephone: string;
-  try {
-    prenom = decryptPii(candidature.firstName).trim();
-    nom = decryptPii(candidature.lastName).trim();
-    email = decryptPii(candidature.email).trim();
-    telephone = candidature.phone ? decryptPii(candidature.phone).trim() : "";
-  } catch (err) {
-    Sentry.captureException(err, {
-      tags: { action: "proposerReseauApporteursAction", step: "pii" },
-    });
-    return {
-      ok: false,
-      erreur: "illisible",
-      message: "Les coordonnées de cette candidature ne se déchiffrent pas : rien n'a été créé.",
-    };
-  }
-
-  const empreinte = hashEmailForLookup(email);
-  if (!empreinte) {
-    return { ok: false, erreur: "echec", message: "Empreinte d'e-mail indisponible." };
-  }
-
-  // ── LE DOUBLON SE TRAITE AVANT L'ÉCRITURE — par empreinte, jamais par
-  // adresse en clair (colonne chiffrée à IV aléatoire : une égalité SQL n'y
-  // trouverait jamais rien). Seule une fiche APPORTEUR compte : un message du
-  // formulaire de contact n'empêche pas de proposer le réseau.
-  const lignes = await prisma.submission.findMany({
-    where: { contactEmailHash: empreinte, deletedAt: null },
-    select: { id: true, details: true },
-    orderBy: { submittedAt: "desc" },
-    take: 20,
-  });
-  const dejaApporteur = lignes.find((l) => estApporteur(l.details));
-  if (dejaApporteur) {
-    return {
-      ok: false,
-      erreur: "doublon",
-      message:
-        "Cette personne a déjà une fiche apporteur : rien n'a été créé. Ouvre-la pour l'inviter.",
-      submissionId: dejaApporteur.id,
-      lien: lienFiche(dejaApporteur.id),
-    };
   }
 
   // Le lien se vérifie AVANT d'écrire : une invitation demandée sans lien
@@ -201,60 +132,45 @@ export async function proposerReseauApporteursAction(
     };
   }
 
-  const offreTitre = candidature.offerTitleSnap.trim();
-  const ville = candidature.city?.trim() ?? "";
-
-  let submissionId: string;
-  try {
-    const submission = await prisma.submission.create({
-      data: {
-        type: SubmissionType.contact,
-        locale: candidature.locale,
-        companyName: "—",
-        contactName: encryptPii(`${prenom}${nom ? ` ${nom}` : ""}`.trim()),
-        contactEmail: encryptPii(email),
-        contactEmailHash: empreinte,
-        contactPhone: telephone ? encryptPii(telephone) : null,
-        source: SubmissionSource.import,
-        details: {
-          unifiedType: "recrutement",
-          subType: CANDIDATURE_COMMERCIALE_SUBTYPE,
-          etape: LEAD_APPORTEUR_ETAPE,
-          origine: ORIGINE_CANDIDATURE_OFFRE,
-          jobApplicationId: candidature.id,
-          offreTitre,
-          ...(ville ? { ville } : {}),
-          // 🔴 Le FAIT : la personne a consenti à l'étude de sa candidature à
-          // un poste, pas au réseau. Aucun `optin` fabriqué.
-          consentement:
-            "aucun pour le réseau — fiche créée par un administrateur depuis une candidature à une offre d'emploi",
-          saisiPar: acteur.userId,
-          message: envoyerInvitation
-            ? "Fiche créée depuis une candidature à une offre d'emploi. Invitation à l'échange de 15 minutes demandée."
-            : "Fiche créée depuis une candidature à une offre d'emploi. Aucun e-mail ne lui a été envoyé.",
-        } as object,
-      },
-      select: { id: true },
-    });
-    submissionId = submission.id;
-
-    await prisma.activityLog.create({
-      data: {
-        adminUserId: acteur.userId,
-        action: "submission.depuis_candidature_offre",
-        targetType: "submission",
-        targetId: submissionId,
-        changes: {
-          jobApplicationId: candidature.id,
-          contactEmailHash: empreinte,
-          envoi: envoyerInvitation ? "invitation" : "aucun",
-        },
-      },
-    });
-  } catch (err) {
-    Sentry.captureException(err, { tags: { action: "proposerReseauApporteursAction" } });
-    return { ok: false, erreur: "echec", message: "L'enregistrement a échoué. Réessaie." };
+  // La création (idempotence, doublon par empreinte, chiffrement, journal) est
+  // partagée avec le passage automatique du worker (2026-09-28).
+  const creation = await creerFicheApporteurDepuisCandidature({
+    applicationId,
+    acteurId: acteur.userId,
+    message: envoyerInvitation
+      ? "Fiche créée depuis une candidature à une offre d'emploi. Invitation à l'échange de 15 minutes demandée."
+      : "Fiche créée depuis une candidature à une offre d'emploi. Aucun e-mail ne lui a été envoyé.",
+  });
+  if (!creation.ok) {
+    switch (creation.erreur) {
+      case "introuvable":
+        return { ok: false, erreur: "introuvable", message: "Candidature introuvable." };
+      case "illisible":
+        return {
+          ok: false,
+          erreur: "illisible",
+          message:
+            "Les coordonnées de cette candidature ne se déchiffrent pas : rien n'a été créé.",
+        };
+      case "doublon":
+        return {
+          ok: false,
+          erreur: "doublon",
+          message:
+            "Cette personne a déjà une fiche apporteur : rien n'a été créé. Ouvre-la pour l'inviter.",
+          ...(creation.submissionId
+            ? { submissionId: creation.submissionId, lien: lienFiche(creation.submissionId) }
+            : {}),
+        };
+      default:
+        return { ok: false, erreur: "echec", message: "L'enregistrement a échoué. Réessaie." };
+    }
   }
+  const submissionId = creation.submissionId;
+  if (creation.deja) {
+    return { ok: true, deja: true, submissionId, lien: lienFiche(submissionId) };
+  }
+  const candidature = { id: applicationId };
 
   // L'invitation, si cochée. La fiche est écrite : un échec d'envoi ne la
   // défait pas, il est RAPPORTÉ — la fiche garde son bouton pour réessayer.

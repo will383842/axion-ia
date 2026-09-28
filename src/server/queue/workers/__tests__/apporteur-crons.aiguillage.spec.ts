@@ -12,6 +12,7 @@ const d = vi.hoisted(() => ({
   ctor: vi.fn(),
   relances: vi.fn(),
   reponses: vi.fn(),
+  invitations: vi.fn(),
 }));
 
 vi.mock("bullmq", () => ({
@@ -32,6 +33,10 @@ vi.mock("@/features/commercial-application/reponses-entrantes-apporteur", () => 
   passerReponsesEntrantes: (...a: unknown[]) => d.reponses(...a),
 }));
 
+vi.mock("@/features/commercial-application/invitation-auto", () => ({
+  passerInvitationsAuto: (...a: unknown[]) => d.invitations(...a),
+}));
+
 import { startApporteurCronsWorker } from "../apporteur-crons-worker";
 
 type Processeur = (job: Record<string, unknown>) => Promise<void>;
@@ -46,6 +51,7 @@ beforeEach(() => {
     dejaConnues: 0,
     erreurs: 0,
   });
+  d.invitations.mockResolvedValue({ fichesCreees: 0, envoyees: 0, ecartees: {}, aReessayer: 0 });
 });
 
 function processeur(): Processeur {
@@ -75,5 +81,23 @@ describe("🔴 l'aiguillage de la file apporteur-crons", () => {
       /type: "reponses-entrantes" as const,\s*pattern: PATTERN_REPONSES_ENTRANTES,\s*jobId: "apporteur-reponses-entrantes-cron"/,
     );
     expect(queues).toMatch(/jobId: "apporteur-relance-invitation-cron"/);
+  });
+
+  it("un job `invitation-auto` invite, et ne lance ni les rappels ni le relevé", async () => {
+    d.reponses.mockClear();
+    d.relances.mockClear();
+    d.invitations.mockClear();
+    await processeur()({ name: "invitation-auto", data: { type: "invitation-auto" } });
+    expect(d.invitations).toHaveBeenCalledTimes(1);
+    expect(d.relances).not.toHaveBeenCalled();
+    expect(d.reponses).not.toHaveBeenCalled();
+  });
+
+  it("le programme pose l'invitation automatique toutes les 5 minutes, jobId stable", () => {
+    const queues = readFileSync(join(process.cwd(), "src/server/queue/queues.ts"), "utf8");
+    expect(queues).toMatch(/PATTERN_INVITATION_AUTO = "\*\/5 \* \* \* \*"/);
+    expect(queues).toMatch(
+      /type: "invitation-auto" as const,\s*pattern: PATTERN_INVITATION_AUTO,\s*jobId: "apporteur-invitation-auto-cron"/,
+    );
   });
 });

@@ -196,7 +196,9 @@ export interface GuideIaCronJobData {
 export type ApporteurCronJobType =
   | "relance-invitation"
   // 2026-09-27 — relevé des réponses des candidats dans la boîte Zoho Mail.
-  | "reponses-entrantes";
+  | "reponses-entrantes"
+  // 2026-09-28 — invitation automatique 15 minutes après la candidature.
+  | "invitation-auto";
 
 export interface ApporteurCronJobData {
   readonly type?: ApporteurCronJobType;
