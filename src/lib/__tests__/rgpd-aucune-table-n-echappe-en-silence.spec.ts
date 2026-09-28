@@ -140,6 +140,16 @@ const INVENTAIRE: ReadonlyArray<{ modele: string; statut: Statut; note: string }
     note: "adresse PSEUDONYMISÉE, ligne conservée comme preuve Qualiopi — `D5-5-01`.",
   },
   { modele: "EmailOutbox", statut: "traite", note: "SUPPRIMÉ, charge utile comprise — `D5-5-02`." },
+  {
+    // Chantier visio (2026-09-29) — les adresses d'une personne du dossier
+    // client. Elles sont supprimées EN DERNIER par `effacerCibleParAdresses`,
+    // après que ses paroles, ses faits et son nom ont été effacés : si
+    // l'effacement échouait en cours de route, une nouvelle demande la
+    // retrouverait encore par elles.
+    modele: "ClientContactAdresse",
+    statut: "traite",
+    note: "SUPPRIMÉES (`effacerCibleParAdresses`), après le reste du dossier de la personne.",
+  },
 
   // ── Comptes internes : ce ne sont pas des personnes concernées par la route
   //    publique d'exercice des droits, mais des accès de l'organisme. ─────────

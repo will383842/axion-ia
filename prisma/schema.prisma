@@ -883,6 +883,10 @@ model EmailOutbox {
   createdAt           DateTime          @default(now()) @map("created_at")
   updatedAt           DateTime          @updatedAt @map("updated_at")
 
+  /// Chantier visio — l'e-mail de suivi d'une rencontre qui a produit ce
+  /// message. Champ de RELATION seulement (le lien vit dans `emails_suivi`).
+  emailSuivi          EmailSuivi?
+
   @@index([statut])
   @@index([template])
   @@index([clientId])
@@ -4415,6 +4419,10 @@ model CalendlyEvent {
   linkedJobApplication   JobApplication?  @relation(fields: [linkedJobApplicationId], references: [id], onDelete: SetNull)
   /// Le point fait après l'appel (2026-09-27) — table dédiée, voir `RendezVousSuivi`.
   suivi                  RendezVousSuivi?
+  /// Chantier visio (2026-09-29) — la rencontre du dossier client née de ce
+  /// rendez-vous. Champ de RELATION seulement : aucune colonne ajoutée à
+  /// `calendly_events` (le lien vit dans `rencontres.calendly_event_id`, SetNull).
+  rencontre              Rencontre?
 
   @@index([status])
   @@index([startTime])
@@ -5034,9 +5042,24 @@ model Client {
   venteBrouillons  VenteBrouillon[]
   coachingSessions CoachingSession[]
 
+  // ── Dossier client (chantier visio, 2026-09-29) ──
+  // Champs de RELATION seulement : aucune colonne n'est ajoutée à `clients`
+  // (PA-1, PA-2). Les liens vivent dans les tables neuves.
+  contacts          ClientContact[]
+  projets           Projet[]
+  rencontres        Rencontre[]
+  faits             Fait[]
+  fusionsAbsorbee   ClientFusion[]     @relation("FusionAbsorbee")
+  fusionsAbsorbante ClientFusion[]     @relation("FusionAbsorbante")
+  testInterne       ClientTestInterne?
+
   @@index([statut])
   @@index([nafCode])
   @@index([opcoIdentifie])
+  // Recherche par SIREN (chantier visio) : l'anti-doublon à la création et
+  // Axion Partners, qui rattache un apporteur au SIREN. PAS d'unicité : une
+  // fiche absorbée par une fusion garde ses pièces et son SIREN.
+  @@index([siren])
   @@map("clients")
 }
 
@@ -12651,4 +12674,1737 @@ model EmailOpposition {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("email_oppositions")
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+// DOSSIER CLIENT ET ENREGISTREMENT DES VISIOS (chantier visio, 2026-09-29)
+//
+// ADR 0053 (dossier client), 0054 (enregistrement), 0055 (transcription et
+// compte rendu par l'API OpenAI), 0056 (consentement, conservation, droits).
+//
+// Règles de cette section, tenues par des gardes :
+//   · TABLES NEUVES UNIQUEMENT — aucune colonne sur `clients`, `devis`,
+//     `calendly_events`, `rendez_vous_suivis`, `submissions`, `formations`.
+//     Les seuls ajouts aux modèles existants sont des champs de RELATION
+//     (aucune colonne) et deux index : `clients(siren)`, unique
+//     `devis(id, client_id)` (SQL brut).
+//   · Chaque modèle porte `rgpd: dossier-client` (traité par l'export art. 15
+//     ET l'effacement art. 17) ou `rgpd: technique — <motif>`
+//     (`tests/unit/ci/les-tables-du-dossier-client-suivent-la-personne.spec.ts`).
+//   · `(enc)` = colonne chiffrée par `src/lib/chiffrer-parole.ts`, sans repli
+//     en clair (PA-11).
+//   · Les objets que Prisma n'exprime pas (index partiels, CHECK, clés
+//     étrangères composées, triggers) sont listés dans
+//     `prisma/objets-sql-bruts.ts` et vérifiés en Gate D.
+//   · Toutes les valeurs d'énumération dont le chantier a besoin sont posées
+//     ICI, avant tout code qui les écrit (le worker atterrit avant que
+//     l'application ne joue une migration).
+// ═════════════════════════════════════════════════════════════════════════════
+
+// ── a) Personnes ─────────────────────────────────────────────────────────────
+
+/// Une personne DANS une entreprise cliente : la relation personne ↔ entreprise
+/// ↔ rôle. Ce n'est PAS une identité globale : l'identité reste l'empreinte
+/// d'adresse, portée par `ClientContactAdresse`.
+/// Conservation : celle du dossier de l'entreprise.
+/// rgpd: dossier-client
+model ClientContact {
+  id                    String         @id @default(uuid()) @db.Uuid
+  clientId              String         @map("client_id") @db.Uuid
+  client                Client         @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  nom                   String         @db.VarChar(200)
+  fonction              String?        @db.VarChar(150)
+  telephone             String?        @db.VarChar(40)
+  statut                ContactStatut  @default(actif)
+  /// Départ de l'entreprise : on ne supprime pas une personne partie, ses faits
+  /// passés restent vrais à leur date.
+  partiLe               DateTime?      @map("parti_le") @db.Date
+  origine               ContactOrigine
+  /// Un seul par fiche (index partiel SQL brut). `Client.contact*` en est la copie.
+  estContactFacturation Boolean        @default(false) @map("est_contact_facturation")
+  /// Art. 21 : la personne s'oppose au traitement par IA → enregistrement et
+  /// dictée refusés pour sa fiche.
+  oppositionIaLe        DateTime?      @map("opposition_ia_le")
+  creeParId             String?        @map("cree_par_id") @db.Uuid
+  createdAt             DateTime       @default(now()) @map("created_at")
+  updatedAt             DateTime       @updatedAt @map("updated_at")
+
+  adresses ClientContactAdresse[]
+
+  @@unique([id, clientId])
+  @@index([clientId])
+  @@map("client_contacts")
+}
+
+enum ContactStatut {
+  /// La personne travaille toujours dans l'entreprise.
+  actif
+  /// La personne a quitté l'entreprise (`partiLe`) ; ses faits passés restent.
+  parti
+
+  @@map("contact_statut")
+}
+
+enum ContactOrigine {
+  /// Saisie par Will dans la console.
+  saisie
+  /// Née d'une réservation Calendly (adresse confirmée par l'API).
+  calendly
+  /// Reprise du contact de facturation d'une fiche existante.
+  reprise_client
+  /// Citée dans un rendez-vous sans y être présente (art. 14 : information due).
+  mention
+
+  @@map("contact_origine")
+}
+
+/// Une adresse d'une personne. L'empreinte est son identité.
+/// rgpd: dossier-client
+model ClientContactAdresse {
+  id                   String        @id @default(uuid()) @db.Uuid
+  contactId            String        @map("contact_id") @db.Uuid
+  contact              ClientContact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  email                String        @db.Citext
+  /// `hashEmailForLookup(email)` : même clé que la fiche personne et le CRM.
+  emailHash            String        @map("email_hash") @db.VarChar(64)
+  nature               NatureAdresse
+  confirmeeParCalendly Boolean       @default(false) @map("confirmee_par_calendly")
+  ajouteeLe            DateTime      @default(now()) @map("ajoutee_le")
+
+  @@unique([contactId, emailHash])
+  @@index([emailHash])
+  @@map("client_contact_adresses")
+}
+
+enum NatureAdresse {
+  /// Adresse professionnelle (domaine de l'entreprise).
+  pro
+  /// Adresse personnelle ou messagerie grand public.
+  perso
+
+  @@map("nature_adresse")
+}
+
+// ── b) Projets ───────────────────────────────────────────────────────────────
+
+/// Un projet (une « affaire ») d'un client : ce qui distingue la formation RH
+/// d'octobre de l'audit de mars. Numéro AXI-PRJ-AAAA-NNN, série HORS des pièces
+/// officielles (`DOCUMENT_NUMBER_REGEX`).
+/// rgpd: dossier-client
+model Projet {
+  id                    String               @id @default(uuid()) @db.Uuid
+  numero                String               @unique @db.VarChar(40)
+  clientId              String               @map("client_id") @db.Uuid
+  client                Client               @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  /// Le titre peut nommer une personne : exporté et effacé avec le dossier.
+  titre                 String               @db.VarChar(200)
+  activite              ActiviteFacturation?
+  statut                ProjetStatut         @default(ouvert)
+  derniereReouvertureLe DateTime?            @map("derniere_reouverture_le")
+  fusionneDansId        String?              @map("fusionne_dans_id") @db.Uuid
+  creeParId             String?              @map("cree_par_id") @db.Uuid
+  createdAt             DateTime             @default(now()) @map("created_at")
+  updatedAt             DateTime             @updatedAt @map("updated_at")
+
+  @@unique([id, clientId])
+  @@index([clientId, statut])
+  @@map("projets")
+}
+
+enum ProjetStatut {
+  /// En cours de discussion.
+  ouvert
+  /// Mis en attente par le client ou par Will.
+  en_pause
+  /// Devis signé.
+  gagne
+  /// Le client a choisi une autre solution ou renoncé.
+  perdu
+  /// Abandonné sans décision du client.
+  abandonne
+  /// Prestation réalisée.
+  termine
+
+  @@map("projet_statut")
+}
+
+/// Journal en ajout seul (trigger) : statuts avant/après, réouvertures, fusions.
+/// rgpd: technique — identifiants et statuts seulement
+model ProjetEvenement {
+  id            String                @id @default(uuid()) @db.Uuid
+  /// Sans clé étrangère : le journal survit au projet.
+  projetId      String                @map("projet_id") @db.Uuid
+  action        ProjetEvenementAction
+  ancienStatut  ProjetStatut?         @map("ancien_statut")
+  nouveauStatut ProjetStatut?         @map("nouveau_statut")
+  autreProjetId String?               @map("autre_projet_id") @db.Uuid
+  motif         String?               @db.VarChar(300)
+  /// NULL = la machine.
+  parAdminId    String?               @map("par_admin_id") @db.Uuid
+  survenuLe     DateTime              @default(now()) @map("survenu_le")
+
+  @@index([projetId])
+  @@map("projet_evenements")
+}
+
+enum ProjetEvenementAction {
+  /// Projet créé.
+  cree
+  /// Statut changé.
+  statut_change
+  /// Projet rouvert après une clôture.
+  reouvert
+  /// Projet fusionné dans un autre (`autreProjetId`).
+  fusionne
+  /// Projet déplacé vers une autre fiche par une fusion de fiches.
+  deplace
+  /// Titre changé.
+  renomme
+
+  @@map("projet_evenement_action")
+}
+
+/// Le rôle d'une personne DANS un projet (la DAF est financeuse ici, absente là).
+/// Clés composées (SQL brut) : le projet et la personne sont du même client.
+/// rgpd: dossier-client
+model ProjetContact {
+  projetId  String         @map("projet_id") @db.Uuid
+  contactId String         @map("contact_id") @db.Uuid
+  clientId  String         @map("client_id") @db.Uuid
+  role      RoleDansProjet
+
+  @@id([projetId, contactId, role])
+  @@index([contactId])
+  @@map("projet_contacts")
+}
+
+enum RoleDansProjet {
+  /// Décide de l'achat.
+  decideur
+  /// Porte le financement (DAF, OPCO interne…).
+  financeur
+  /// Interlocuteur au quotidien.
+  referent
+  /// Bénéficiaire de la prestation.
+  utilisateur
+  /// A recommandé Axion-IA.
+  prescripteur
+  /// Autre rôle.
+  autre
+
+  @@map("role_dans_projet")
+}
+
+/// Lien projet ↔ devis, sans colonne sur `devis`. Un devis = un projet.
+/// Clés composées (SQL brut) : devis et projet du même client.
+/// rgpd: technique — lien entre deux pièces
+model ProjetDevis {
+  devisId  String   @id @map("devis_id") @db.Uuid
+  projetId String   @map("projet_id") @db.Uuid
+  clientId String   @map("client_id") @db.Uuid
+  lieParId String?  @map("lie_par_id") @db.Uuid
+  lieLe    DateTime @default(now()) @map("lie_le")
+
+  @@index([projetId])
+  @@map("projet_devis")
+}
+
+/// « La fiche B a été absorbée par A ». Une fusion défaite GARDE sa ligne
+/// (`defaiteLe`) ; une seule fusion vivante par fiche absorbée (index partiel).
+/// rgpd: technique — identifiants seulement ; journal jamais supprimé
+model ClientFusion {
+  id                  String    @id @default(uuid()) @db.Uuid
+  absorbeId           String    @map("absorbe_id") @db.Uuid
+  absorbe             Client    @relation("FusionAbsorbee", fields: [absorbeId], references: [id], onDelete: Restrict)
+  absorbantId         String    @map("absorbant_id") @db.Uuid
+  absorbant           Client    @relation("FusionAbsorbante", fields: [absorbantId], references: [id], onDelete: Restrict)
+  parAdminId          String    @map("par_admin_id") @db.Uuid
+  le                  DateTime  @default(now())
+  motif               String    @db.VarChar(300)
+  /// La case « reporter le SIREN sur la fiche absorbée » était cochée.
+  sirenReporte        Boolean   @default(false) @map("siren_reporte")
+  /// SIREN de l'absorbée AVANT le report (NULL = elle n'en avait pas) : « Défaire » le rétablit.
+  sirenAbsorbeAvant   String?   @map("siren_absorbe_avant") @db.VarChar(9)
+  defaiteLe           DateTime? @map("defaite_le")
+  defaiteParAdminId   String?   @map("defaite_par_admin_id") @db.Uuid
+  motifDefaite        String?   @map("motif_defaite") @db.VarChar(300)
+  /// Toujours NULL en v1 : l'événement Partners de fusion est préparé, jamais émis.
+  emiseVersPartnersLe DateTime? @map("emise_vers_partners_le")
+
+  elements ClientFusionElement[]
+
+  @@index([absorbeId])
+  @@index([absorbantId])
+  @@map("client_fusions")
+}
+
+/// Ce qu'une fusion a déplacé, pour pouvoir le rendre. Ajout seul (trigger).
+/// rgpd: technique — identifiants seulement
+model ClientFusionElement {
+  fusionId  String        @map("fusion_id") @db.Uuid
+  fusion    ClientFusion  @relation(fields: [fusionId], references: [id], onDelete: Restrict)
+  type      ElementFusion
+  elementId String        @map("element_id") @db.Uuid
+
+  @@id([fusionId, type, elementId])
+  @@map("client_fusion_elements")
+}
+
+enum ElementFusion {
+  /// Une personne (`ClientContact`).
+  contact
+  /// Une rencontre.
+  rencontre
+  /// Un projet.
+  projet
+
+  @@map("element_fusion")
+}
+
+/// Le client fictif du pilote, sans colonne sur `clients`.
+/// rgpd: technique — identifiant seulement
+model ClientTestInterne {
+  clientId String   @id @map("client_id") @db.Uuid
+  client   Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  creeLe   DateTime @default(now()) @map("cree_le")
+
+  @@map("clients_test_interne")
+}
+
+// ── c) Rencontres ────────────────────────────────────────────────────────────
+
+/// Un rendez-vous, une réunion ou une dictée, QUELLE QUE SOIT sa source. Ne
+/// dépend pas de la purge de `calendly_events` (lien SetNull, copie de la date
+/// et du titre).
+/// rgpd: dossier-client
+model Rencontre {
+  id                            String             @id @default(uuid()) @db.Uuid
+  source                        RencontreSource
+  type                          RencontreType
+  /// Rencontre du pilote (client fictif) : seule enregistrable en mode `pilote`.
+  estTestInterne                Boolean            @default(false) @map("est_test_interne")
+  calendlyEventId               String?            @unique @map("calendly_event_id")
+  calendlyEvent                 CalendlyEvent?     @relation(fields: [calendlyEventId], references: [id], onDelete: SetNull)
+  /// Copie : survit à la purge des 36 mois de `calendly_events`.
+  calendlyEventUri              String?            @map("calendly_event_uri") @db.VarChar(255)
+  calendlyInviteeUri            String?            @map("calendly_invitee_uri") @db.VarChar(255)
+  /// Report : l'invité Calendly remplacé.
+  ancienInviteeUri              String?            @map("ancien_invitee_uri") @db.VarChar(255)
+  googleEventId                 String?            @map("google_event_id") @db.VarChar(255)
+  /// Code Meet « abc-defg-hij ». Non unique (lien personnel réutilisé).
+  meetCode                      String?            @map("meet_code") @db.VarChar(20)
+  titre                         String             @db.VarChar(255)
+  debutPrevu                    DateTime?          @map("debut_prevu")
+  finPrevue                     DateTime?          @map("fin_prevue")
+  debutReel                     DateTime?          @map("debut_reel")
+  finReelle                     DateTime?          @map("fin_reelle")
+  datesSynchroniseesLe          DateTime?          @map("dates_synchronisees_le")
+  /// NULL tant que le lien Calendly vit (CHECK) ; figé à la purge.
+  statut                        RencontreStatut?
+  /// Issue copiée depuis `rendez_vous_suivis` avant la purge Calendly.
+  issueFigee                    RendezVousIssue?   @map("issue_figee")
+  clientId                      String?            @map("client_id") @db.Uuid
+  client                        Client?            @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  /// Projet PRINCIPAL. Clé composée (SQL brut) : projet du même client.
+  projetId                      String?            @map("projet_id") @db.Uuid
+  rattachementStatut            RattachementStatut @default(a_classer) @map("rattachement_statut")
+  clientProposeId               String?            @map("client_propose_id") @db.Uuid
+  projetProposeId               String?            @map("projet_propose_id") @db.Uuid
+  motifProposition              MotifProposition?  @map("motif_proposition")
+  rattacheParId                 String?            @map("rattache_par_id") @db.Uuid
+  rattacheLe                    DateTime?          @map("rattache_le")
+  /// Rencontre saisie dans la console : l'admin qui l'a créée.
+  creeeParId                    String?            @map("creee_par_id") @db.Uuid
+  /// Antérieure à la mise en service : exclue des relances automatiques.
+  repriseHistorique             Boolean            @default(false) @map("reprise_historique")
+  fusionneeDansId               String?            @map("fusionnee_dans_id") @db.Uuid
+  audioPurgeSansTranscriptionLe DateTime?          @map("audio_purge_sans_transcription_le")
+  createdAt                     DateTime           @default(now()) @map("created_at")
+  updatedAt                     DateTime           @updatedAt @map("updated_at")
+
+  participants    RencontreParticipant[]
+  suivi           RencontreSuivi?
+  emailsSuivi     EmailSuivi[]
+  comptesRendus   CompteRendu[]
+  faits           Fait[]
+  enregistrements Enregistrement[]
+  traitements     TraitementVisio[]
+
+  @@index([clientId, debutPrevu])
+  @@index([projetId])
+  @@index([meetCode, debutPrevu])
+  @@index([rattachementStatut])
+  @@index([calendlyEventUri])
+  @@map("rencontres")
+}
+
+enum RencontreSource {
+  /// Réservation Calendly (liste blanche des types de rendez-vous).
+  calendly
+  /// Événement de l'agenda Google.
+  agenda
+  /// Créée par Will dans la console, sur une fiche client existante.
+  saisie_manuelle
+  /// Dictée de Will après un appel.
+  dictee
+
+  @@map("rencontre_source")
+}
+
+enum RencontreType {
+  /// Visioconférence Google Meet.
+  visio
+  /// Appel téléphonique.
+  telephone
+  /// Rencontre en personne.
+  presentiel
+  /// Non renseigné.
+  inconnu
+
+  @@map("rencontre_type")
+}
+
+enum RencontreStatut {
+  /// À venir.
+  planifie
+  /// A eu lieu.
+  tenu
+  /// Annulée.
+  annule
+  /// Le client ne s'est pas présenté.
+  absent
+  /// Reportée à une autre date.
+  reporte
+
+  @@map("rencontre_statut")
+}
+
+enum RattachementStatut {
+  /// Aucune fiche proposée.
+  a_classer
+  /// Une fiche est proposée, Will n'a pas encore validé (A4).
+  propose
+  /// Will a validé la fiche.
+  valide
+
+  @@map("rattachement_statut")
+}
+
+enum MotifProposition {
+  /// Adresse confirmée par l'API Calendly.
+  email_calendly
+  /// L'adresse est celle d'un contact déjà validé.
+  contact_connu
+  /// Même domaine professionnel qu'un contact existant.
+  domaine_email
+  /// « Nom de l'entreprise » déclaré dans le formulaire Calendly.
+  entreprise_declaree
+  /// Liée à une demande du site.
+  demande_liee
+  /// Héritée de la rencontre reportée.
+  report
+  /// Choisie par Will au démarrage de l'enregistrement.
+  choix_extension
+  /// Déduite du contenu du compte rendu.
+  contenu_compte_rendu
+
+  @@map("motif_proposition")
+}
+
+/// Qui était là. Une parole est attribuée à un participant, jamais à
+/// « l'invité principal » par défaut.
+/// rgpd: dossier-client
+model RencontreParticipant {
+  id            String          @id @default(uuid()) @db.Uuid
+  rencontreId   String          @map("rencontre_id") @db.Uuid
+  rencontre     Rencontre       @relation(fields: [rencontreId], references: [id], onDelete: Cascade)
+  clientId      String?         @map("client_id") @db.Uuid
+  /// Clé composée (SQL brut) : la personne est du même client.
+  contactId     String?         @map("contact_id") @db.Uuid
+  nomAffiche    String          @map("nom_affiche") @db.VarChar(200)
+  emailHash     String?         @map("email_hash") @db.VarChar(64)
+  role          RoleParticipant
+  /// « CLIENT_1 » : correspondance de voix VALIDÉE par Will.
+  etiquetteVoix String?         @map("etiquette_voix") @db.VarChar(40)
+  voixValideeLe DateTime?       @map("voix_validee_le")
+
+  @@index([rencontreId])
+  @@index([emailHash])
+  @@index([contactId])
+  @@map("rencontre_participants")
+}
+
+enum RoleParticipant {
+  /// Williams (Axion-IA).
+  axion
+  /// Une personne côté client.
+  client
+  /// Une personne présente mais non identifiée.
+  invite_non_identifie
+
+  @@map("role_participant")
+}
+
+/// Journal en ajout seul (trigger) des rattachements d'une rencontre.
+/// rgpd: technique — identifiants seulement
+model RencontreRattachementEvenement {
+  id              String                      @id @default(uuid()) @db.Uuid
+  /// Sans clé étrangère : le journal survit à la rencontre.
+  rencontreId     String                      @map("rencontre_id") @db.Uuid
+  action          RencontreRattachementAction
+  ancienClientId  String?                     @map("ancien_client_id") @db.Uuid
+  nouveauClientId String?                     @map("nouveau_client_id") @db.Uuid
+  ancienProjetId  String?                     @map("ancien_projet_id") @db.Uuid
+  nouveauProjetId String?                     @map("nouveau_projet_id") @db.Uuid
+  motif           MotifProposition?
+  parAdminId      String?                     @map("par_admin_id") @db.Uuid
+  survenuLe       DateTime                    @default(now()) @map("survenu_le")
+
+  @@index([rencontreId])
+  @@map("rencontre_rattachement_evenements")
+}
+
+enum RencontreRattachementAction {
+  /// Une fiche a été proposée.
+  propose
+  /// Will a validé la fiche.
+  valide
+  /// La rencontre a été rangée ailleurs.
+  deplace
+  /// Déplacée par une fusion de fiches.
+  fusionne
+  /// Rattachement annulé (dont « Défaire la fusion »).
+  annule
+
+  @@map("rencontre_rattachement_action")
+}
+
+/// Report fait depuis /appel/reporter : réservation neuve + annulation.
+/// rgpd: technique — URI Calendly seulement
+model CalendlyReport {
+  ancienEventUri String   @id @map("ancien_event_uri") @db.VarChar(255)
+  nouvelEventUri String   @unique @map("nouvel_event_uri") @db.VarChar(255)
+  reporteLe      DateTime @default(now()) @map("reporte_le")
+
+  @@map("calendly_reports")
+}
+
+/// Suivi d'UNE rencontre, quelle que soit sa source. `RendezVousSuivi` exige un
+/// rendez-vous Calendly et meurt à sa purge ; celui-ci vit avec la rencontre.
+/// PAS de note libre : une appréciation devient un fait `saisie_manuelle`.
+/// rgpd: technique — issue et échéance d'une rencontre, aucune donnée sur la personne
+model RencontreSuivi {
+  rencontreId String           @id @map("rencontre_id") @db.Uuid
+  rencontre   Rencontre        @relation(fields: [rencontreId], references: [id], onDelete: Cascade)
+  issue       RendezVousIssue
+  suite       RendezVousSuite?
+  suiteLe     DateTime?        @map("suite_le") @db.Date
+  /// NULL = proposé par la machine, pas encore validé.
+  auteurId    String?          @map("auteur_id") @db.Uuid
+  valideLe    DateTime?        @map("valide_le")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+
+  @@index([suiteLe])
+  @@map("rencontre_suivis")
+}
+
+// ── c-bis) Questionnaires de cadrage et e-mails de suivi ─────────────────────
+
+/// Un questionnaire envoyé pour UN projet d'UN client. Distinct du
+/// `Questionnaire` Qualiopi (qui exige un stagiaire). Versionné.
+/// Clés composées (SQL brut) : projet et destinataire du même client.
+/// rgpd: dossier-client
+model QuestionnaireCadrage {
+  id                    String              @id @default(uuid()) @db.Uuid
+  projetId              String              @map("projet_id") @db.Uuid
+  clientId              String              @map("client_id") @db.Uuid
+  contactDestinataireId String?             @map("contact_destinataire_id") @db.Uuid
+  version               Int                 @db.SmallInt
+  mode                  QuestionnaireMode
+  statut                QuestionnaireStatut
+  genereLe              DateTime            @map("genere_le")
+  /// Will a cliqué « Copier » : l'envoi réel est hors du site en V1.
+  copieLe               DateTime?           @map("copie_le")
+  reponseRecueLe        DateTime?           @map("reponse_recue_le")
+  closLe                DateTime?           @map("clos_le")
+  modele                String?             @db.VarChar(60)
+  promptHash            String?             @map("prompt_hash") @db.VarChar(64)
+  creeParId             String?             @map("cree_par_id") @db.Uuid
+
+  questions QuestionnaireQuestion[]
+
+  @@unique([projetId, version])
+  @@index([clientId])
+  @@index([contactDestinataireId])
+  @@map("questionnaires_cadrage")
+}
+
+enum QuestionnaireMode {
+  /// Texte à copier par Will dans son propre e-mail (V1).
+  a_copier
+  /// Questionnaire en ligne (phase 2).
+  en_ligne
+
+  @@map("questionnaire_mode")
+}
+
+enum QuestionnaireStatut {
+  /// Généré, pas encore copié.
+  brouillon
+  /// Copié par Will.
+  copie
+  /// Réponse collée par Will.
+  reponse_recue
+  /// Clos.
+  clos
+
+  @@map("questionnaire_statut")
+}
+
+/// Une question, la raison pour laquelle elle est posée, et la réponse reçue.
+/// Une question qui a produit un fait ne se supprime pas (FK RESTRICT depuis
+/// `faits`) : l'effacement vide `texte` et `reponse` et garde la ligne.
+/// rgpd: dossier-client
+model QuestionnaireQuestion {
+  id              String               @id @default(uuid()) @db.Uuid
+  questionnaireId String               @map("questionnaire_id") @db.Uuid
+  questionnaire   QuestionnaireCadrage @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
+  ordre           Int                  @db.SmallInt
+  /// (enc)
+  texte           String               @db.Text
+  typeVise        FaitType             @map("type_vise")
+  cleVisee        String?              @map("cle_visee") @db.VarChar(80)
+  /// La `question_ouverte` d'origine, ou NULL si c'est un « trou » du dossier.
+  faitSourceId    String?              @map("fait_source_id") @db.Uuid
+  faitSource      Fait?                @relation("QuestionMotiveeParFait", fields: [faitSourceId], references: [id], onDelete: SetNull)
+  poseeDeViveVoix Boolean              @default(false) @map("posee_de_vive_voix")
+  /// (enc) texte collé par Will, tel quel.
+  reponse         String?              @db.Text
+  reponseRecueLe  DateTime?            @map("reponse_recue_le")
+
+  faitsProduits Fait[] @relation("FaitIssuDeLaReponse")
+
+  @@unique([questionnaireId, ordre])
+  @@index([faitSourceId])
+  @@map("questionnaire_questions")
+}
+
+/// Un brouillon d'e-mail de suivi d'une rencontre, et ce qu'il est devenu. Le
+/// texte vit dans `email_outbox` (exception écrite à PA-11, ADR 0057).
+/// Clé composée (SQL brut) : le destinataire est du client de la rencontre.
+/// rgpd: dossier-client
+model EmailSuivi {
+  id            String       @id @default(uuid()) @db.Uuid
+  rencontreId   String       @map("rencontre_id") @db.Uuid
+  rencontre     Rencontre    @relation(fields: [rencontreId], references: [id], onDelete: Cascade)
+  clientId      String       @map("client_id") @db.Uuid
+  contactId     String       @map("contact_id") @db.Uuid
+  emailOutboxId String?      @unique @map("email_outbox_id") @db.Uuid
+  emailOutbox   EmailOutbox? @relation(fields: [emailOutboxId], references: [id], onDelete: SetNull)
+  creeLe        DateTime     @default(now()) @map("cree_le")
+  creeParId     String?      @map("cree_par_id") @db.Uuid
+
+  @@index([rencontreId])
+  @@index([contactId])
+  @@map("emails_suivi")
+}
+
+// ── d) Comptes rendus et faits ───────────────────────────────────────────────
+
+/// Compte rendu d'une rencontre, versionné. Un seul validé, un seul en cours
+/// (index partiels SQL brut).
+/// rgpd: dossier-client
+model CompteRendu {
+  id            String             @id @default(uuid()) @db.Uuid
+  rencontreId   String             @map("rencontre_id") @db.Uuid
+  rencontre     Rencontre          @relation(fields: [rencontreId], references: [id], onDelete: Cascade)
+  version       Int                @db.SmallInt
+  origine       CompteRenduOrigine
+  mode          ModeGeneration?
+  statut        CompteRenduStatut  @default(brouillon)
+  /// Modèle réellement servi (`response.model`).
+  modele        String?            @db.VarChar(60)
+  promptHash    String?            @map("prompt_hash") @db.VarChar(64)
+  schemaVersion Int                @map("schema_version") @db.SmallInt
+  /// (enc) JSON du compte rendu, chiffré en un bloc. Vide si `a_regenerer` (CHECK).
+  contenu       String             @db.Text
+  /// (enc) compteurs et motifs de vérification ; JAMAIS le texte d'une citation rejetée.
+  verification  String?            @db.Text
+  valideParId   String?            @map("valide_par_id") @db.Uuid
+  valideLe      DateTime?          @map("valide_le")
+  createdAt     DateTime           @default(now()) @map("created_at")
+
+  faits   Fait[]
+  sources CompteRenduSource[]
+
+  @@unique([rencontreId, version])
+  @@map("comptes_rendus")
+}
+
+enum CompteRenduOrigine {
+  /// Rédigé par l'IA depuis l'enregistrement.
+  ia
+  /// Note manuelle de Will (« pas d'enregistrement »).
+  manuel
+  /// Rédigé depuis une dictée de Will.
+  dictee
+
+  @@map("compte_rendu_origine")
+}
+
+enum ModeGeneration {
+  /// Première génération.
+  initial
+  /// Rédaction refaite sur les mêmes faits.
+  reecrire
+  /// Extraction refaite depuis la transcription.
+  reextraire
+  /// Complétée après le rattachement à une fiche.
+  completer_apres_rattachement
+
+  @@map("mode_generation")
+}
+
+enum CompteRenduStatut {
+  /// En cours de génération ou d'écriture.
+  brouillon
+  /// Prêt, attend la validation de Will.
+  a_valider
+  /// Validé par Will (un seul par rencontre).
+  valide
+  /// Remplacé par une version plus récente.
+  remplace
+  /// Rejeté (par Will ou par la vérification).
+  rejete
+  /// Contenu vidé par un effacement ciblé ou un retrait d'accord ; une
+  /// réécriture sans la personne est proposée.
+  a_regenerer
+
+  @@map("compte_rendu_statut")
+}
+
+/// Un fait appris sur le client : UNE information, UNE provenance, UN
+/// rattachement. Contenu IMMUABLE (trigger `faits_contenu_immuable`) : seuls
+/// le rattachement, le statut et le suivi changent, sauf effacement RGPD sous
+/// le drapeau posé par `src/lib/rgpd-erase.ts` seul.
+/// rgpd: dossier-client
+model Fait {
+  id                      String                 @id @default(uuid()) @db.Uuid
+  // ── Rattachement (modifiable, journalisé) ──
+  clientId                String?                @map("client_id") @db.Uuid
+  client                  Client?                @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  portee                  FaitPortee
+  /// Clé composée (SQL brut) : projet du même client.
+  projetId                String?                @map("projet_id") @db.Uuid
+  /// La personne DONT parle le fait. Clé composée (SQL brut).
+  contactSujetId          String?                @map("contact_sujet_id") @db.Uuid
+  // ── Contenu (immuable) ──
+  type                    FaitType
+  cle                     String                 @db.VarChar(80)
+  /// (enc)
+  enonce                  String                 @db.Text
+  montantMinCents         Int?                   @map("montant_min_cents")
+  montantMaxCents         Int?                   @map("montant_max_cents")
+  baseMontant             BaseMontant?           @map("base_montant")
+  periodeMontant          PeriodeMontant?        @map("periode_montant")
+  dateCible               DateTime?              @map("date_cible") @db.Date
+  precisionDate           PrecisionDate?         @map("precision_date")
+  /// (enc) les mots exacts : « avant le 15 décembre ».
+  expressionTemporelle    String?                @map("expression_temporelle") @db.Text
+  quantite                Int?
+  unite                   UniteFait?
+  /// OFF:… ou TIER:… tiré du catalogue envoyé.
+  refCatalogue            String?                @map("ref_catalogue") @db.VarChar(80)
+  /// (enc) « DAF », « OPCO EP », « Lyon ».
+  texteCourt              String?                @map("texte_court") @db.Text
+  certitude               FaitCertitude
+  confiance               Confiance
+  source                  FaitSource
+  rencontreId             String?                @map("rencontre_id") @db.Uuid
+  rencontre               Rencontre?             @relation(fields: [rencontreId], references: [id], onDelete: SetNull)
+  compteRenduId           String?                @map("compte_rendu_id") @db.Uuid
+  compteRendu             CompteRendu?           @relation(fields: [compteRenduId], references: [id], onDelete: SetNull)
+  /// Provenance d'un fait `questionnaire_cadrage` (CHECK). RESTRICT : une
+  /// question qui a produit un fait ne se supprime pas.
+  questionnaireQuestionId String?                @map("questionnaire_question_id") @db.Uuid
+  questionnaireQuestion   QuestionnaireQuestion? @relation("FaitIssuDeLaReponse", fields: [questionnaireQuestionId], references: [id], onDelete: Restrict)
+  /// « F07 » : relie le fait au compte rendu.
+  refExtraction           String?                @map("ref_extraction") @db.VarChar(8)
+  locuteur                RoleParticipant?
+  participantLocuteurId   String?                @map("participant_locuteur_id") @db.Uuid
+  /// Clé composée (SQL brut).
+  contactLocuteurId       String?                @map("contact_locuteur_id") @db.Uuid
+  /// (enc) citation MOT POUR MOT.
+  citation                String?                @db.Text
+  citationDebutMs         Int?                   @map("citation_debut_ms")
+  citationFinMs           Int?                   @map("citation_fin_ms")
+  /// (enc)
+  confirmationCitation    String?                @map("confirmation_citation") @db.Text
+  confirmationDebutMs     Int?                   @map("confirmation_debut_ms")
+  confirmationFinMs       Int?                   @map("confirmation_fin_ms")
+  /// Posé par le CODE (recherche exacte), jamais par l'IA.
+  citationVerifiee        Boolean                @default(false) @map("citation_verifiee")
+  /// (enc)
+  ambiguite               String?                @db.Text
+  /// Date de la rencontre (pas de la validation).
+  constateLe              DateTime               @map("constate_le")
+  // ── Cycle de vie (modifiable, journalisé) ──
+  statut                  FaitStatut             @default(propose)
+  motifRejet              MotifRejetFait?        @map("motif_rejet")
+  suivi                   FaitSuivi?
+  resoluParFaitId         String?                @map("resolu_par_fait_id") @db.Uuid
+  relation                RelationFait?
+  relationAvecFaitId      String?                @map("relation_avec_fait_id") @db.Uuid
+  remplaceParId           String?                @map("remplace_par_id") @db.Uuid
+  doublonDeFaitId         String?                @map("doublon_de_fait_id") @db.Uuid
+  createdAt               DateTime               @default(now()) @map("created_at")
+
+  questionsMotivees QuestionnaireQuestion[] @relation("QuestionMotiveeParFait")
+  preRemplissages   PreRemplissage[]
+
+  @@unique([compteRenduId, refExtraction])
+  @@index([clientId, portee, projetId, type, cle])
+  @@index([rencontreId])
+  @@index([statut])
+  @@index([suivi])
+  @@index([contactSujetId])
+  @@index([contactLocuteurId])
+  @@index([questionnaireQuestionId])
+  @@map("faits")
+}
+
+enum FaitPortee {
+  /// Vrai pour toute l'entreprise.
+  entreprise
+  /// Vrai pour UN projet (`projetId`).
+  projet
+  /// Pas encore rangé : jamais validable (CHECK).
+  a_ranger
+
+  @@map("fait_portee")
+}
+
+enum FaitType {
+  /// Ce que fait l'entreprise, son histoire.
+  info_societe
+  /// Secteur d'activité.
+  activite
+  /// Nombre de salariés.
+  effectif
+  /// Un outil utilisé (clé = l'outil).
+  outil_utilise
+  /// Niveau de maturité sur l'IA.
+  niveau_ia
+  /// Qui décide.
+  decideur
+  /// Comment la décision se prend.
+  processus_decision
+  /// Un problème rencontré.
+  probleme
+  /// Un besoin exprimé.
+  besoin
+  /// Un objectif visé.
+  objectif
+  /// Les personnes à former (clé = le métier).
+  public_cible
+  /// Nombre de participants.
+  nb_participants
+  /// Modalité souhaitée (distanciel, présentiel…).
+  modalite_souhaitee
+  /// Lieu de l'intervention (unique par projet).
+  lieu_intervention
+  /// Une contrainte.
+  contrainte
+  /// Budget annoncé par le client.
+  budget
+  /// Financement envisagé (OPCO…).
+  financement
+  /// Échéance.
+  echeance
+  /// Une objection.
+  objection
+  /// Un concurrent en lice.
+  concurrent
+  /// Un engagement pris par Williams.
+  engagement_axion
+  /// Un engagement pris par le client.
+  engagement_client
+  /// Un prix annoncé par Williams pendant l'appel.
+  prix_annonce_axion
+  /// Une offre du catalogue envisagée (clé = la référence).
+  offre_envisagee
+  /// Une question restée ouverte.
+  question_ouverte
+  /// Une question du client à laquelle Williams a répondu.
+  question_client_repondue
+  /// La prochaine étape convenue.
+  prochaine_etape
+  /// « C'est X qui m'a recommandé » : validé un par un, rien n'est envoyé à Axion Partners.
+  mise_en_relation
+  /// Autre.
+  autre
+
+  @@map("fait_type")
+}
+
+enum BaseMontant {
+  /// Hors taxes.
+  ht
+  /// Toutes taxes comprises.
+  ttc
+  /// Non précisé par le client.
+  non_precise
+
+  @@map("base_montant")
+}
+
+enum PeriodeMontant {
+  /// Montant total.
+  total
+  /// Par an.
+  par_an
+  /// Par mois.
+  par_mois
+  /// Par personne.
+  par_personne
+  /// Non précisé.
+  non_precise
+
+  @@map("periode_montant")
+}
+
+enum PrecisionDate {
+  /// Jour précis.
+  jour
+  /// Semaine.
+  semaine
+  /// Mois.
+  mois
+  /// Trimestre (« au printemps »).
+  trimestre
+  /// Année.
+  annee
+  /// « Avant le … ».
+  avant_le
+  /// « Après le … ».
+  apres_le
+
+  @@map("precision_date")
+}
+
+enum UniteFait {
+  /// Personnes.
+  personnes
+  /// Groupes.
+  groupes
+  /// Jours.
+  jours
+  /// Heures.
+  heures
+  /// Demi-journées.
+  demi_journees
+  /// Mois.
+  mois
+  /// Sessions.
+  sessions
+  /// Salariés.
+  salaries
+  /// Forfait (ébauche de devis).
+  forfait
+
+  @@map("unite_fait")
+}
+
+enum FaitCertitude {
+  /// Dit explicitement par le locuteur.
+  dit_explicitement
+  /// Confirmé par le client sur une reformulation de Williams.
+  confirme_sur_reformulation
+  /// Déduit (permis pour quelques types seulement).
+  deduit
+  /// Rapporté par Williams (dictée, note manuelle).
+  rapporte_par_williams
+
+  @@map("fait_certitude")
+}
+
+enum Confiance {
+  /// Dit clairement.
+  haute
+  /// Formulation vague.
+  moyenne
+  /// Doute : jamais validé en lot.
+  faible
+
+  @@map("confiance")
+}
+
+enum FaitSource {
+  /// Transcription d'un enregistrement.
+  transcription
+  /// Dictée de Williams après l'appel.
+  dictee
+  /// Réponse au formulaire Calendly.
+  formulaire_calendly
+  /// Saisie par Will dans la console.
+  saisie_manuelle
+  /// Réponse à un questionnaire de cadrage (question source obligatoire).
+  questionnaire_cadrage
+
+  @@map("fait_source")
+}
+
+enum FaitStatut {
+  /// Proposé, attend la validation de Will.
+  propose
+  /// Mis en attente (passage sensible) : jamais validable en un clic.
+  en_attente
+  /// Validé par Will.
+  valide
+  /// Rejeté (motif dans `motifRejet`).
+  rejete
+  /// Remplacé par un fait plus récent.
+  remplace
+  /// Contenu effacé (RGPD) ; le journal reste.
+  efface
+
+  @@map("fait_statut")
+}
+
+enum MotifRejetFait {
+  /// La citation ne se retrouve pas mot pour mot.
+  citation_introuvable
+  /// Citation trop courte pour prouver quoi que ce soit.
+  citation_trop_courte
+  /// Citation trop longue.
+  citation_trop_longue
+  /// Segment inexistant ou non consécutif.
+  segment_inconnu
+  /// La preuve cite l'historique, pas l'échange du jour.
+  preuve_historique
+  /// La personne qui parle n'est pas admise pour ce type.
+  locuteur_non_admis
+  /// Une valeur absente de la citation.
+  valeur_non_prouvee
+  /// Déduction interdite pour ce type.
+  deduction_interdite
+  /// Référence du catalogue inconnue.
+  reference_catalogue_inconnue
+  /// Relation vers un fait d'un autre projet.
+  relation_hors_projet
+  /// Une nouvelle version du compte rendu l'a remplacé.
+  version_remplacee
+  /// Doublon d'un fait déjà validé.
+  doublon
+  /// Rejeté par Will.
+  rejete_par_williams
+  /// Fait inexact, corrigé à la demande de la personne (art. 16).
+  rectification
+
+  @@map("motif_rejet_fait")
+}
+
+enum FaitSuivi {
+  /// À suivre.
+  ouvert
+  /// Engagement tenu.
+  tenu
+  /// Question répondue (`resoluParFaitId`).
+  repondu
+  /// Objection levée.
+  leve
+  /// Abandonné.
+  abandonne
+  /// À reconfirmer au prochain échange.
+  a_reconfirmer
+
+  @@map("fait_suivi")
+}
+
+enum RelationFait {
+  /// Confirme un fait connu.
+  confirme
+  /// Précise un fait connu.
+  precise
+  /// La situation a changé.
+  change
+  /// Contredit un fait connu.
+  contredit
+  /// Remet en cause un fait connu sans nouvelle valeur.
+  remet_en_cause
+
+  @@map("relation_fait")
+}
+
+/// Journal en ajout seul (trigger), SANS donnée personnelle. Survit à
+/// l'effacement du fait.
+/// rgpd: technique — identifiants seulement ; survit à l'effacement du fait
+model FaitEvenement {
+  id              String              @id @default(uuid()) @db.Uuid
+  /// Sans clé étrangère : le journal survit au fait.
+  faitId          String              @map("fait_id") @db.Uuid
+  action          FaitEvenementAction
+  ancienClientId  String?             @map("ancien_client_id") @db.Uuid
+  nouveauClientId String?             @map("nouveau_client_id") @db.Uuid
+  ancienPortee    FaitPortee?         @map("ancien_portee")
+  nouveauPortee   FaitPortee?         @map("nouveau_portee")
+  ancienProjetId  String?             @map("ancien_projet_id") @db.Uuid
+  nouveauProjetId String?             @map("nouveau_projet_id") @db.Uuid
+  ancienSuivi     FaitSuivi?          @map("ancien_suivi")
+  nouveauSuivi    FaitSuivi?          @map("nouveau_suivi")
+  motif           MotifRejetFait?
+  /// NULL = la machine.
+  parAdminId      String?             @map("par_admin_id") @db.Uuid
+  survenuLe       DateTime            @default(now()) @map("survenu_le")
+
+  @@index([faitId])
+  @@map("fait_evenements")
+}
+
+enum FaitEvenementAction {
+  /// Proposé.
+  propose
+  /// Validé.
+  valide
+  /// Rejeté.
+  rejete
+  /// Rangé ailleurs (client, portée, projet).
+  deplace
+  /// Remplacé.
+  remplace
+  /// Contenu effacé.
+  efface
+  /// Suivi changé.
+  suivi_change
+  /// Relation posée avec un autre fait.
+  relation_posee
+  /// Lié comme doublon.
+  doublon_lie
+  /// Clé alignée sur un fait existant.
+  aligne_cle
+  /// Rejeté par la génération d'une nouvelle version.
+  rejete_regeneration
+
+  @@map("fait_evenement_action")
+}
+
+/// Trace de chaque case pré-remplie, écrite dans la transaction de l'action
+/// de création.
+/// rgpd: dossier-client
+model PreRemplissage {
+  id             String              @id @default(uuid()) @db.Uuid
+  cible          CiblePreRemplissage
+  cibleId        String              @map("cible_id") @db.Uuid
+  champ          ChampPreRempli
+  faitId         String?             @map("fait_id") @db.Uuid
+  fait           Fait?               @relation(fields: [faitId], references: [id], onDelete: SetNull)
+  /// (enc) JSON
+  valeurProposee String              @map("valeur_proposee") @db.Text
+  /// (enc) JSON : ce que Will a envoyé.
+  valeurRetenue  String?             @map("valeur_retenue") @db.Text
+  sort           SortPreRemplissage
+  parAdminId     String              @map("par_admin_id") @db.Uuid
+  le             DateTime            @default(now())
+
+  @@index([cible, cibleId])
+  @@index([faitId])
+  @@map("pre_remplissages")
+}
+
+enum CiblePreRemplissage {
+  /// Un devis.
+  devis
+  /// Une formation.
+  formation
+  /// Un questionnaire de cadrage.
+  questionnaire_cadrage
+  /// Une fiche client.
+  client
+  /// Un e-mail de suivi.
+  email_suivi
+
+  @@map("cible_pre_remplissage")
+}
+
+enum ChampPreRempli {
+  /// Activité du devis.
+  devis_activite
+  /// Ligne d'offre du devis.
+  devis_ligne_offre
+  /// Quantité d'une ligne.
+  devis_quantite
+  /// Nombre de participants.
+  devis_nb_participants
+  /// Durée en heures.
+  devis_duree_heures
+  /// Financement.
+  devis_financement
+  /// Référence client.
+  devis_ref_client
+  /// « Mise en relation par ».
+  devis_mise_en_relation
+  /// Niveau de la formation.
+  formation_niveau
+  /// Prérequis.
+  formation_prerequis
+  /// Secteur visé.
+  formation_secteur_cible
+  /// Outils du client.
+  formation_outils_client
+  /// Une question du questionnaire.
+  questionnaire_question
+  /// SIREN de la fiche.
+  client_siren
+  /// Ville de l'entreprise.
+  client_ville
+  /// Raison sociale.
+  client_raison_sociale
+  /// Corps de l'e-mail de suivi.
+  email_suivi_corps
+
+  @@map("champ_pre_rempli")
+}
+
+enum SortPreRemplissage {
+  /// Gardé tel quel.
+  garde
+  /// Modifié par Will.
+  modifie
+  /// Retiré par Will.
+  retire
+
+  @@map("sort_pre_remplissage")
+}
+
+// ── e) Tables techniques du dossier ──────────────────────────────────────────
+
+/// Une alerte du circuit, marquée en base (Telegram n'est qu'un doublon).
+/// rgpd: technique — clé d'alerte et dates, aucun contenu
+model AlerteVisio {
+  cle            String               @id @db.VarChar(120)
+  categorie      CategorieAlerteVisio
+  premiereLe     DateTime             @default(now()) @map("premiere_le")
+  envoyeeLe      DateTime?            @map("envoyee_le")
+  dernierEssaiLe DateTime?            @map("dernier_essai_le")
+  essais         Int                  @default(0)
+
+  @@map("alertes_visio")
+}
+
+enum CategorieAlerteVisio {
+  /// Clé de chiffrement, clé d'API, variable manquante.
+  configuration
+  /// Une étape du circuit bloquée ou en échec définitif.
+  circuit
+  /// Son non purgé dans les délais.
+  audio
+  /// Conservation, effacement, accord.
+  rgpd
+  /// Plafond de dépense OpenAI ou crédit épuisé.
+  cout
+  /// Préavis aux clients non échu.
+  preavis
+
+  @@map("categorie_alerte_visio")
+}
+
+/// Battement du balayage et du worker.
+/// rgpd: technique — horodatages et versions
+model BattementCircuit {
+  nom                String    @id @db.VarChar(40)
+  /// Écrit une fois : borne du balayage.
+  premierLe          DateTime  @default(now()) @map("premier_le")
+  dernierLe          DateTime  @map("dernier_le")
+  drapeauVuParWorker String    @map("drapeau_vu_par_worker") @db.VarChar(10)
+  temoinCleOkLe      DateTime? @map("temoin_cle_ok_le")
+  version            String    @db.VarChar(40)
+
+  @@map("battements_circuit")
+}
+
+/// Identifiants effacés, rejoués après une restauration. Ajout seul (trigger).
+/// rgpd: technique — identifiants effacés, jamais de contenu
+model EffacementJournal {
+  id         String          @id @default(uuid()) @db.Uuid
+  tableCible String          @map("table_cible") @db.VarChar(60)
+  ligneId    String          @map("ligne_id") @db.VarChar(64)
+  motif      MotifEffacement
+  le         DateTime        @default(now())
+
+  @@index([tableCible, ligneId])
+  @@map("effacements_journal")
+}
+
+enum MotifEffacement {
+  /// Effacement art. 17 de toute la personne.
+  art17
+  /// Effacement art. 17 ciblé (ses paroles et citations).
+  art17_cible
+  /// Retrait de l'accord après l'appel.
+  retrait
+  /// Fin de la durée de conservation.
+  conservation
+  /// Données du pilote (client fictif).
+  pilote
+
+  @@map("motif_effacement")
+}
+
+// ── f) Enregistrement (version API OpenAI, ADR 0054-0055) ────────────────────
+
+/// Le poste de Will : jeton de l'extension Meet, haché, expirant (90 j),
+/// révocable.
+/// rgpd: technique — jeton haché, versions
+model AppareilEnregistrement {
+  id                    String    @id @default(uuid()) @db.Uuid
+  nom                   String    @db.VarChar(80)
+  jetonHash             String    @unique @map("jeton_hash") @db.VarChar(64)
+  adminUserId           String    @map("admin_user_id") @db.Uuid
+  creeLe                DateTime  @default(now()) @map("cree_le")
+  expireLe              DateTime  @map("expire_le")
+  derniereUtilisationLe DateTime? @map("derniere_utilisation_le")
+  revoqueLe             DateTime? @map("revoque_le")
+  versionExtension      String?   @map("version_extension") @db.VarChar(20)
+  dernierBattementLe    DateTime? @map("dernier_battement_le")
+
+  enregistrements Enregistrement[]
+
+  @@map("appareils_enregistrement")
+}
+
+/// Une captation (visio ou dictée) d'une rencontre. Un seul actif par rencontre
+/// (index partiel dérivé de `ETATS_ENREGISTREMENT_ACTIFS`).
+/// rgpd: technique — statut, dates et versions ; aucune parole (elle est dans les segments)
+model Enregistrement {
+  id                 String                 @id @default(uuid()) @db.Uuid
+  rencontreId        String                 @map("rencontre_id") @db.Uuid
+  rencontre          Rencontre              @relation(fields: [rencontreId], references: [id], onDelete: Cascade)
+  nature             NatureEnregistrement
+  /// Généré par l'extension : rejouer la création ne crée pas de doublon.
+  cleClient          String                 @unique @map("cle_client") @db.Uuid
+  appareilId         String                 @map("appareil_id") @db.Uuid
+  appareil           AppareilEnregistrement @relation(fields: [appareilId], references: [id], onDelete: Restrict)
+  statut             EnregistrementStatut
+  debut              DateTime
+  fin                DateTime?
+  accordConfirmeLe   DateTime?              @map("accord_confirme_le")
+  motifArret         MotifArret?            @map("motif_arret")
+  incomplet          Boolean                @default(false)
+  /// JSON des périodes perdues.
+  perdus             String?                @db.Text
+  /// JSON des fenêtres hors accord (exclues du traitement).
+  fenetresHorsAccord String?                @map("fenetres_hors_accord") @db.Text
+  /// Journal technique (pauses, rechargements…), sans parole.
+  evenements         String                 @db.Text
+  versionExtension   String                 @map("version_extension") @db.VarChar(20)
+  versionContrat     Int                    @map("version_contrat")
+  audioAPurgerAvant  DateTime?              @map("audio_a_purger_avant")
+  audioSupprimeLe    DateTime?              @map("audio_supprime_le")
+  createdAt          DateTime               @default(now()) @map("created_at")
+  updatedAt          DateTime               @updatedAt @map("updated_at")
+
+  tranches       EnregistrementTranche[]
+  consentements  EnregistrementConsentement[]
+  transcriptions Transcription[]
+
+  @@index([rencontreId])
+  @@index([statut])
+  @@index([audioAPurgerAvant])
+  @@map("enregistrements")
+}
+
+enum NatureEnregistrement {
+  /// Visioconférence Meet (deux pistes).
+  visio
+  /// Dictée de Will après l'appel.
+  dictee
+
+  @@map("nature_enregistrement")
+}
+
+enum EnregistrementStatut {
+  /// Capture démarrée, accord pas encore confirmé : rien n'est envoyé.
+  accord_en_attente
+  /// Accord confirmé, morceaux reçus.
+  en_cours
+  /// Coupure (onglet, réseau) : reprise possible.
+  interrompu
+  /// Toutes les tranches annoncées sont déposées.
+  depose
+  /// Traitement en cours.
+  en_traitement
+  /// Transcription obtenue.
+  transcrit
+  /// Compte rendu prêt à valider.
+  compte_rendu_pret
+  /// Compte rendu validé.
+  valide
+  /// Échec définitif.
+  echec
+  /// Abandonné par Will.
+  abandonne
+  /// Un participant a refusé : tout est détruit.
+  refuse
+  /// Accord non confirmé sous 3 minutes : tout est détruit.
+  accord_non_confirme
+
+  @@map("enregistrement_statut")
+}
+
+enum MotifArret {
+  /// Arrêt par Will.
+  manuel
+  /// Onglet Meet fermé.
+  onglet_ferme
+  /// Will a quitté la salle.
+  salle_quittee
+  /// Durée maximale atteinte.
+  duree_max
+  /// Plantage du navigateur ou de l'extension.
+  plantage
+  /// Un participant a refusé l'enregistrement.
+  refus_participant
+  /// Accord non confirmé dans le délai.
+  accord_non_confirme
+  /// Clôturé par le serveur (inactivité).
+  cloture_serveur
+  /// Inconnu.
+  inconnu
+
+  @@map("motif_arret")
+}
+
+enum PisteAudio {
+  /// Son de l'onglet Meet (les participants côté client).
+  client
+  /// Micro de Williams.
+  axion
+
+  @@map("piste_audio")
+}
+
+/// Une tranche autonome de 180 s d'une piste (fichier WebM complet).
+/// rgpd: technique — durée, empreinte ; le son chiffré est dans R2 et purgé
+model EnregistrementTranche {
+  id                  String            @id @default(uuid()) @db.Uuid
+  enregistrementId    String            @map("enregistrement_id") @db.Uuid
+  enregistrement      Enregistrement    @relation(fields: [enregistrementId], references: [id], onDelete: Cascade)
+  piste               PisteAudio
+  numero              Int               @db.SmallInt
+  debutCaptureEpochMs BigInt            @map("debut_capture_epoch_ms")
+  motifDebut          MotifDebutTranche @map("motif_debut")
+  dureeMs             Int?              @map("duree_ms")
+  nbMorceauxAnnonces  Int?              @map("nb_morceaux_annonces")
+  empreinteAnnoncee   String?           @map("empreinte_annoncee") @db.VarChar(64)
+  tailleOctets        Int               @default(0) @map("taille_octets")
+  /// Niveau mesuré par l'extension à la fin de la tranche (contrôle de troncature).
+  niveauFinMuet       Boolean?          @map("niveau_fin_muet")
+  statut              TrancheStatut
+  transcriteLe        DateTime?         @map("transcrite_le")
+  audioSupprimeLe     DateTime?         @map("audio_supprime_le")
+
+  morceaux EnregistrementMorceau[]
+
+  @@unique([enregistrementId, piste, numero])
+  @@map("enregistrement_tranches")
+}
+
+enum MotifDebutTranche {
+  /// Début de l'enregistrement.
+  demarrage
+  /// Tranche suivante (toutes les 180 s).
+  nouvelle_tranche
+  /// Reprise après un plantage.
+  reprise_apres_plantage
+  /// Micro reconnecté.
+  micro_reconnecte
+
+  @@map("motif_debut_tranche")
+}
+
+enum TrancheStatut {
+  /// Morceaux en cours de réception.
+  en_reception
+  /// Tous les morceaux annoncés reçus.
+  complete
+  /// Des morceaux manquent.
+  incomplete
+  /// Transcrite.
+  transcrite
+  /// Échec de transcription.
+  echec
+  /// Son supprimé de R2.
+  purgee
+
+  @@map("tranche_statut")
+}
+
+/// Un morceau de 10 s déposé dans R2 (chiffré par le serveur). Clé choisie
+/// par le serveur.
+/// rgpd: technique — clé R2 et empreinte
+model EnregistrementMorceau {
+  trancheId    String                @map("tranche_id") @db.Uuid
+  tranche      EnregistrementTranche @relation(fields: [trancheId], references: [id], onDelete: Cascade)
+  seq          Int
+  cleR2        String                @unique @map("cle_r2") @db.VarChar(200)
+  tailleOctets Int                   @map("taille_octets")
+  empreinte    String                @db.VarChar(64)
+  recuLe       DateTime              @default(now()) @map("recu_le")
+
+  @@id([trancheId, seq])
+  @@map("enregistrement_morceaux")
+}
+
+/// Preuves de l'accord. Ajout seul (trigger) : la preuve survit au son, aux
+/// segments et à la rencontre (pas de clé étrangère vers `rencontres`).
+/// Conservée jusqu'à la fin de conservation du dossier + 5 ans (ADR 0056).
+/// rgpd: dossier-client
+model EnregistrementConsentement {
+  id               String           @id @default(uuid()) @db.Uuid
+  enregistrementId String?          @map("enregistrement_id") @db.Uuid
+  enregistrement   Enregistrement?  @relation(fields: [enregistrementId], references: [id], onDelete: SetNull)
+  rencontreId      String           @map("rencontre_id") @db.Uuid
+  type             TypeConsentement
+  versionTexte     String           @map("version_texte") @db.VarChar(64)
+  nbParticipants   Int?             @map("nb_participants") @db.SmallInt
+  /// (enc) phrase de Williams.
+  texteAnnonce     String?          @map("texte_annonce") @db.Text
+  /// (enc) réponse du client, vérifiée mot pour mot.
+  texteReponse     String?          @map("texte_reponse") @db.Text
+  annonceMs        Int?             @map("annonce_ms")
+  reponseMs        Int?             @map("reponse_ms")
+  /// Empreinte de la tranche client qui porte l'accord.
+  empreinteAudio   String?          @map("empreinte_audio") @db.VarChar(64)
+  declareParId     String?          @map("declare_par_id") @db.Uuid
+  survenuLe        DateTime         @map("survenu_le")
+
+  @@index([rencontreId])
+  @@index([enregistrementId])
+  @@map("enregistrement_consentements")
+}
+
+enum TypeConsentement {
+  /// Clic de Williams : « tous les participants ont accepté ».
+  declaration_axion
+  /// Phrase d'accord retrouvée et vérifiée dans la transcription.
+  phrase_retrouvee_verifiee
+  /// Réponse à la question Calendly (indice seulement).
+  reponse_calendly
+  /// Un nouveau participant arrivé en cours d'appel a été signalé.
+  nouveau_participant_signale
+  /// La personne retire son accord.
+  retrait
+
+  @@map("type_consentement")
+}
+
+/// Une transcription d'un enregistrement, versionnée ; une seule retenue.
+/// rgpd: technique — modèle, langue, empreinte ; la parole est dans `transcription_segments`
+model Transcription {
+  id                  String              @id @default(uuid()) @db.Uuid
+  enregistrementId    String              @map("enregistrement_id") @db.Uuid
+  enregistrement      Enregistrement      @relation(fields: [enregistrementId], references: [id], onDelete: Cascade)
+  version             Int                 @db.SmallInt
+  /// Modèle réellement servi (constante `MODELE_TRANSCRIPTION`).
+  modele              String              @db.VarChar(80)
+  statut              StatutTranscription
+  langue              String              @db.VarChar(10)
+  dureeAudioSecondes  Int?                @map("duree_audio_secondes")
+  /// Idempotence : même empreinte d'entrée = même transcription.
+  empreinteEntree     String              @map("empreinte_entree") @db.VarChar(64)
+  segmentsSupprimesLe DateTime?           @map("segments_supprimes_le")
+  createdAt           DateTime            @default(now()) @map("created_at")
+
+  segments TranscriptionSegment[]
+  sources  CompteRenduSource[]
+
+  @@unique([enregistrementId, version])
+  @@unique([enregistrementId, empreinteEntree])
+  @@map("transcriptions")
+}
+
+enum StatutTranscription {
+  /// En cours.
+  en_cours
+  /// Échec.
+  echec
+  /// Obtenue, pas encore retenue.
+  obtenue
+  /// Retenue (une seule par enregistrement).
+  retenue
+  /// Écartée.
+  ecartee
+
+  @@map("statut_transcription")
+}
+
+/// Un segment de parole. `texte` chiffré.
+/// rgpd: dossier-client
+model TranscriptionSegment {
+  transcriptionId String        @map("transcription_id") @db.Uuid
+  transcription   Transcription @relation(fields: [transcriptionId], references: [id], onDelete: Cascade)
+  ordre           Int
+  /// La tranche d'origine (sans clé étrangère : la tranche peut être purgée).
+  trancheId       String        @map("tranche_id") @db.Uuid
+  /// Millisecondes depuis le début de la RENCONTRE.
+  debutMs         Int           @map("debut_ms")
+  finMs           Int           @map("fin_ms")
+  piste           PisteAudio
+  /// Étiquette de voix rendue par le modèle (« A », « B »…).
+  locuteurBrut    String?       @map("locuteur_brut") @db.VarChar(8)
+  etiquetteVoix   String?       @map("etiquette_voix") @db.VarChar(40)
+  participantId   String?       @map("participant_id") @db.Uuid
+  /// (enc)
+  texte           String        @db.Text
+  apresRefus      Boolean       @default(false) @map("apres_refus")
+  horsAccord      Boolean       @default(false) @map("hors_accord")
+
+  @@id([transcriptionId, ordre])
+  @@index([participantId])
+  @@map("transcription_segments")
+}
+
+/// Quelles transcriptions un compte rendu a lues.
+/// rgpd: technique — identifiants seulement
+model CompteRenduSource {
+  compteRenduId   String        @map("compte_rendu_id") @db.Uuid
+  compteRendu     CompteRendu   @relation(fields: [compteRenduId], references: [id], onDelete: Cascade)
+  transcriptionId String        @map("transcription_id") @db.Uuid
+  transcription   Transcription @relation(fields: [transcriptionId], references: [id], onDelete: Cascade)
+
+  @@id([compteRenduId, transcriptionId])
+  @@map("compte_rendu_sources")
+}
+
+/// État de chaque étape du circuit, en base (pas dans Redis).
+/// rgpd: technique — état et codes, jamais de message d'un outil ni de texte
+model TraitementVisio {
+  id                   String           @id @default(uuid()) @db.Uuid
+  rencontreId          String           @map("rencontre_id") @db.Uuid
+  rencontre            Rencontre        @relation(fields: [rencontreId], references: [id], onDelete: Cascade)
+  etape                EtapeVisio
+  statut               StatutEtape      @default(a_faire)
+  /// Jeton de propriété : incrémenté à chaque prise.
+  execution            Int              @default(0)
+  echecs               Int              @default(0)
+  interruptions        Int              @default(0)
+  classeErreur         ClasseErreur?    @map("classe_erreur")
+  derniereErreur       CodeErreurVisio? @map("derniere_erreur")
+  verrouJusqua         DateTime?        @map("verrou_jusqua")
+  prochaineTentativeLe DateTime?        @map("prochaine_tentative_le")
+  premierEchecLe       DateTime?        @map("premier_echec_le")
+  termineLe            DateTime?        @map("termine_le")
+  compteRenduId        String?          @map("compte_rendu_id") @db.Uuid
+
+  @@unique([rencontreId, etape, compteRenduId])
+  @@index([statut, prochaineTentativeLe])
+  @@map("traitements_visio")
+}
+
+enum EtapeVisio {
+  /// Transcrire les tranches (OpenAI).
+  transcrire
+  /// Contrôles avant l'IA (piste muette, durée, refus).
+  precontroler
+  /// P1 — extraction des faits.
+  extraire
+  /// Vérification des faits par le code.
+  verifier_faits
+  /// P2 — rattachement aux projets.
+  rattacher
+  /// P3 — consolidation avec l'historique.
+  consolider
+  /// P4 — ébauche de devis.
+  ebaucher
+  /// P5 — rédaction du compte rendu.
+  rediger
+  /// Vérification du compte rendu par le code.
+  verifier_compte_rendu
+  /// Purge du son dans R2.
+  purger_audio
+  /// P6 — questionnaire de cadrage.
+  questionnaire
+  /// Lecture des réponses collées par Will.
+  lire_reponses
+  /// Brouillon d'e-mail de suivi.
+  email_suivi
+
+  @@map("etape_visio")
+}
+
+enum StatutEtape {
+  /// À faire.
+  a_faire
+  /// En cours.
+  en_cours
+  /// Réussie.
+  reussie
+  /// Échec définitif (note manuelle proposée).
+  echec_definitif
+  /// Annulée (retrait de l'accord, nouvelle version).
+  annule
+  /// Suspendue (crédit, plafond) : reprise manuelle.
+  suspendu
+
+  @@map("statut_etape")
+}
+
+enum ClasseErreur {
+  /// Erreur passagère : nouvel essai.
+  passagere
+  /// Configuration (clé absente, authentification).
+  configuration
+  /// Contenu refusé ou invalide.
+  contenu
+  /// Base pas encore migrée.
+  schema_en_retard
+  /// Plafond de dépense atteint.
+  plafond
+  /// Crédit OpenAI épuisé.
+  quota
+
+  @@map("classe_erreur")
+}
+
+enum CodeErreurVisio {
+  /// Des morceaux manquent.
+  audio_incomplet
+  /// Son illisible.
+  audio_illisible
+  /// Tranche trop grosse.
+  audio_trop_gros
+  /// Piste client muette.
+  piste_muette
+  /// Délai dépassé.
+  delai_depasse
+  /// Sortie invalide au regard du schéma.
+  sortie_invalide
+  /// Sortie tronquée.
+  sortie_tronquee
+  /// Refus du modèle.
+  refus_modele
+  /// Plafond de dépense atteint.
+  plafond_atteint
+  /// Crédit épuisé.
+  quota_epuise
+  /// Authentification OpenAI refusée.
+  authentification_openai
+  /// Limite de débit.
+  limite_debit
+  /// Fournisseur indisponible.
+  fournisseur_indisponible
+  /// Clé de chiffrement absente.
+  cle_chiffrement_absente
+  /// Stockage R2 indisponible.
+  stockage_indisponible
+  /// Base pas encore migrée.
+  schema_en_retard
+  /// Interrompu par un arrêt du worker.
+  interrompu_par_arret
+  /// Table absente.
+  table_absente
+  /// Inconnu.
+  inconnu
+
+  @@map("code_erreur_visio")
 }

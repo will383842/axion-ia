@@ -35,6 +35,7 @@ import { propagateGdprToCrm } from "@/server/crm-sync/gdpr";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { exportKbDataForEmail } from "@/lib/knowledge/rgpd-export";
 import { exportChatDataForEmail } from "@/lib/rgpd-export-chat";
+import { exporterDossierClientPour, NOTICE_EXCLUSIONS_DOSSIER } from "@/lib/rgpd-dossier-client";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { ipVisiteurOuNull } from "@/lib/client-ip";
 
@@ -244,6 +245,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Données chatbot RGPD art. 15 (T-23) : conversations + messages + escalades.
   const chat = await exportChatDataForEmail(email);
 
+  // Chantier visio (2026-09-29) — le dossier client : sa fiche, ses
+  // participations, SES paroles, les faits la concernant (énoncé seul quand
+  // un tiers les a dits), ses preuves d'accord, les questions reçues. Rien de
+  // ce qui ne concerne que d'autres personnes. Détail et exclusions déclarées
+  // dans `src/lib/rgpd-dossier-client.ts`.
+  const dossierClient = await exporterDossierClientPour(email);
+
   // Registre de consentements (lot L4) — la PREUVE de ce que la personne a
   // accepté, et quand. Elle fait partie de « toutes les données la concernant ».
   const consentEvents = lookupHash
@@ -452,6 +460,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     guide,
     kb,
     chat,
+    /**
+     * Dossier client : votre fiche dans l'entreprise, vos rendez-vous, vos
+     * paroles, les faits vous concernant, les preuves de votre accord.
+     */
+    dossierClient,
     consentEvents,
     /** Liste d'opposition : l'empreinte de votre adresse, si vous vous êtes opposé(e). */
     oppositions,
@@ -573,6 +586,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         // L6 (relecture du 2026-09-25) — déclarés, jamais tus.
         "crm_sync_outbox.payload (copie des données déjà restituées ci-dessus — demandes, inscription — envoyée à notre outil de suivi client ; ses métadonnées sont exportées sous « fileCrm »)",
         "newsletter_subscribers.confirm_token, newsletter_subscribers.unsubscribe_token, guide_requests.download_token (jetons d'accès : les exporter reviendrait à remettre une clé, pas une donnée ; ils ne décrivent rien de vous)",
+        // Chantier visio — déclarées, jamais tues (`EXCLUSIONS_EXPORT_DOSSIER`).
+        ...NOTICE_EXCLUSIONS_DOSSIER,
       ],
       excludedReason:
         "Logs techniques RGPD art. 23 — voir politique-confidentialite § IA générative et transparence. Purgés automatiquement (cf. retention-purge-worker).",
