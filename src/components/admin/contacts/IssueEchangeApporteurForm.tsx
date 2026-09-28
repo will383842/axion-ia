@@ -154,7 +154,7 @@ export function IssueEchangeApporteurForm({
               inputMode="numeric"
               value={noteSur20}
               onChange={(e) => setNoteSur20(e.target.value)}
-              className="admin-input w-24"
+              className="admin-input admin-input-w-sm"
             />
           </label>
           <label className={`${CHAMP} min-w-[16rem] flex-1`}>
