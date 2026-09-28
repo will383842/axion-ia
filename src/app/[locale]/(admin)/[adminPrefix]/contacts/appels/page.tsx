@@ -28,7 +28,12 @@
 // La liste reste à `?vue=liste`, le calendrier à `?vue=calendrier`.
 
 import Link from "next/link";
-import { getRdvMonth, listRendezVous } from "@/features/admin-rendezvous/queries";
+import {
+  getRdvMonth,
+  listRendezVous,
+  lirePointsDesRendezVous,
+} from "@/features/admin-rendezvous/queries";
+import { libelleDuPoint, type PointLu } from "@/features/admin-rendezvous/point";
 import {
   RDV_STATUS_LABELS,
   type PublicRdv,
@@ -176,7 +181,7 @@ function lien(base: string, params: Record<string, string | number | undefined>)
 // Le bouton suit `momentVisio` (il disparaît 30 min après la fin), PAS le
 // statut affiché : celui-ci passe à « Passé » dès l'heure de fin, et un appel
 // qui déborde perdrait son bouton en pleine visio. Seule l'annulation le retire.
-function LigneRdv({ r }: { r: UnifiedRdv }) {
+function LigneRdv({ r, point }: { r: UnifiedRdv; point?: PointLu | undefined }) {
   const quand = r.timeConfirmed && r.startTime ? timeInParis(r.startTime) : "heure ?";
   return (
     <li className="flex flex-wrap items-stretch gap-2">
@@ -194,7 +199,7 @@ function LigneRdv({ r }: { r: UnifiedRdv }) {
           <PastillePublic titre={r.title} />
           <PastilleFormat format={r.format} />
           <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-            {RDV_STATUS_LABELS[r.status]} ›
+            {libelleStatut(r, point)} ›
           </span>
         </span>
       </Link>
@@ -205,6 +210,31 @@ function LigneRdv({ r }: { r: UnifiedRdv }) {
       ) : null}
     </li>
   );
+}
+
+/**
+ * Le statut affiché, avec l'issue du point quand il existe (2026-09-28).
+ *
+ * « Passé » dit que l'heure est écoulée, pas que l'échange a eu lieu : dès que
+ * le point est fait, c'est lui qui parle (« A eu lieu · Retenu », « Absent »…).
+ * Une annulation garde son statut : il n'y a pas de point sur un appel annulé.
+ */
+function libelleStatut(r: UnifiedRdv, point: PointLu | undefined): string {
+  return point && r.status !== "canceled" ? libelleDuPoint(point) : RDV_STATUS_LABELS[r.status];
+}
+
+/**
+ * Les points des rendez-vous affichés. Information ACCESSOIRE : si la lecture
+ * échoue, la page retombe sur les statuts d'avant, elle ne tombe pas.
+ */
+async function pointsDe(rows: readonly UnifiedRdv[]): Promise<Map<string, PointLu>> {
+  try {
+    return await lirePointsDesRendezVous(
+      rows.filter((r) => r.source === "calendly").map((r) => r.sourceRecordId),
+    );
+  } catch {
+    return new Map();
+  }
 }
 
 interface PageProps {
@@ -350,6 +380,7 @@ export default async function AppelsPage({
     const prev = month === 1 ? { y: year - 1, m: 12 } : { y: year, m: month - 1 };
     const next = month === 12 ? { y: year + 1, m: 1 } : { y: year, m: month + 1 };
     const dayRdv = selectedDate ? (byDay.get(selectedDate) ?? []) : [];
+    const pointsJourChoisi = await pointsDe(dayRdv);
 
     return (
       <>
@@ -403,7 +434,7 @@ export default async function AppelsPage({
             ) : (
               <ul className="mt-[var(--space-admin-3)] space-y-2">
                 {dayRdv.map((r) => (
-                  <LigneRdv key={r.key} r={r} />
+                  <LigneRdv key={r.key} r={r} point={pointsJourChoisi.get(r.sourceRecordId)} />
                 ))}
               </ul>
             )}
@@ -423,6 +454,7 @@ export default async function AppelsPage({
     const jour = lireJour(sp["date"]) ?? aujourdhui;
     const [anneeJour = 1970, moisJour = 1] = jour.split("-").map(Number);
     const rdvJour = (await getRdvMonth(anneeJour, moisJour, optionsPublic)).get(jour) ?? [];
+    const pointsJour = await pointsDe(rdvJour);
     const veille = decalerJour(jour, -1);
     const lendemain = decalerJour(jour, 1);
 
@@ -473,7 +505,7 @@ export default async function AppelsPage({
         ) : (
           <ul className="mt-[var(--space-admin-3)] space-y-2">
             {rdvJour.map((r) => (
-              <LigneRdv key={r.key} r={r} />
+              <LigneRdv key={r.key} r={r} point={pointsJour.get(r.sourceRecordId)} />
             ))}
           </ul>
         )}
@@ -493,6 +525,7 @@ export default async function AppelsPage({
     ...(sp["to"] ? { to: sp["to"] } : {}),
   });
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const points = await pointsDe(rows);
 
   const columns: ReadonlyArray<AdminTableColumn<UnifiedRdv>> = [
     {
@@ -533,7 +566,11 @@ export default async function AppelsPage({
       header: INTITULE_FORMAT,
       cell: (r) => <PastilleFormat format={r.format} />,
     },
-    { key: "status", header: "Statut", cell: (r) => RDV_STATUS_LABELS[r.status] },
+    {
+      key: "status",
+      header: "Statut",
+      cell: (r) => libelleStatut(r, points.get(r.sourceRecordId)),
+    },
     {
       key: "visio",
       header: "Visio",

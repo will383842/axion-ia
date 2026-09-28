@@ -231,6 +231,24 @@ export async function SubmissionDetailContent({
             />
           </div>
         ) : null}
+        {/* 2026-09-28 — deux raccourcis : ce qui est déjà parti chez la
+            personne (journal filtré sur son adresse, toute période), et la
+            trame à imprimer avant l'échange. */}
+        {estContactApporteur ? (
+          <div className="admin-card flex flex-wrap gap-[var(--space-admin-4)] p-[var(--space-admin-4)]">
+            {submission.contactEmail ? (
+              <a
+                href={`/fr/${adminPrefix}/emails-envoyes?fenetre=0&destinataire=${encodeURIComponent(submission.contactEmail)}`}
+                className="admin-link"
+              >
+                E-mails envoyés à cette personne ›
+              </a>
+            ) : null}
+            <a href={`/fr/${adminPrefix}/imprimes/trame-echange-apporteur`} className="admin-link">
+              Trame d&apos;échange apporteur (à imprimer) ›
+            </a>
+          </div>
+        ) : null}
         {candidature ? (
           <CandidatureCommercialeDetail
             candidature={candidature}
