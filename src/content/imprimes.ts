@@ -275,7 +275,7 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     id: "trame-echange-apporteur",
     icon: "MessagesSquare",
     nom: "Trame de l'échange découverte apporteur (15 min)",
-    format: "A4 portrait · 3 pages · usage interne",
+    format: "A4 portrait · 8 pages · usage interne",
     resume:
       "La trame pour conduire et noter l'échange de 15 minutes avec un candidat apporteur d'affaires : déroulé minute par minute, questions sur des faits vécus, présentation du réseau, réponses aux questions fréquentes, mots à dire et à bannir, critères éliminatoires fixés avant l'appel, et une fiche de notes à grille qui débouche sur une décision structurée juste après l'échange.",
     usageInterne:
@@ -284,7 +284,7 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     fichiersInternes: [
       {
         fichier: "trame-echange-apporteur.pdf",
-        nom: "La trame, 3 pages",
+        nom: "La trame, 8 pages",
         role: "À imprimer avant chaque échange : pages 1 et 2 pour conduire l'appel, page 3 pour noter le candidat pendant et juste après. Une fiche par candidat.",
       },
     ],
