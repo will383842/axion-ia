@@ -20,8 +20,9 @@ describe("fusion des réponses complétées en ligne", () => {
   });
 
   it("une question laissée vide n'efface pas une réponse du dépôt", () => {
-    expect(fusionnerReponses(Q, { exemples: "https://a" }, { prix_vertical_30: "70", exemples: "  " }))
-      .toEqual({ exemples: "https://a", prix_vertical_30: "70" });
+    expect(
+      fusionnerReponses(Q, { exemples: "https://a" }, { prix_vertical_30: "70", exemples: "  " }),
+    ).toEqual({ exemples: "https://a", prix_vertical_30: "70" });
   });
 
   it("ne garde que les valeurs texte stockées", () => {

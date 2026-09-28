@@ -58,7 +58,10 @@ export default async function CompleterCandidaturePage({ params, searchParams }:
               reponses={dossier.reponses}
             />
           ) : (
-            <div role="alert" className="border-accent-red/40 bg-accent-red/10 rounded-xl border-2 p-5">
+            <div
+              role="alert"
+              className="border-accent-red/40 bg-accent-red/10 rounded-xl border-2 p-5"
+            >
               <p className="text-fg text-base font-semibold">
                 {dossier.reason === "expired" ? "Ce lien a expiré." : "Ce lien n’est pas valide."}
               </p>

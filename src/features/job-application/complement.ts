@@ -15,10 +15,7 @@ import "server-only";
 
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
-import {
-  parseScreeningQuestions,
-  type ScreeningQuestion,
-} from "@/lib/careers/screening-answers";
+import { parseScreeningQuestions, type ScreeningQuestion } from "@/lib/careers/screening-answers";
 import {
   signerJetonComplement,
   verifierJetonComplement,

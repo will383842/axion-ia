@@ -99,7 +99,14 @@ export async function completerCandidatureAction(
   try {
     const c = await prisma.jobApplication.findUnique({
       where: { id: dossier.applicationId },
-      select: { firstName: true, lastName: true, email: true, phone: true, city: true, locale: true },
+      select: {
+        firstName: true,
+        lastName: true,
+        email: true,
+        phone: true,
+        city: true,
+        locale: true,
+      },
     });
     if (c) {
       const phone = lire(c.phone);

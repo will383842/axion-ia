@@ -139,9 +139,7 @@ export async function repondreEnMasseAction(
   // Le lien n'est signé que s'il est employé : inutile de fabriquer cinquante
   // jetons pour un message qui n'en contient pas.
   const avecLien = `${parsed.data.subject}
-${parsed.data.bodyMarkdown}`.includes(
-    "{lien_complement}",
-  );
+${parsed.data.bodyMarkdown}`.includes("{lien_complement}");
   const destinataires: DestinatairePrepare[] = await Promise.all(
     dossiers.map(async (d) => ({
       id: d.id,

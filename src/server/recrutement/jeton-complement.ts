@@ -84,8 +84,7 @@ export async function signerJetonComplement(
 }
 
 export type JetonComplement =
-  | { ok: true; applicationId: string; offerId: string }
-  | { ok: false; reason: string };
+  { ok: true; applicationId: string; offerId: string } | { ok: false; reason: string };
 
 /**
  * Vérifie un jeton. 🔴 La SIGNATURE est vérifiée avant que le payload ne soit
