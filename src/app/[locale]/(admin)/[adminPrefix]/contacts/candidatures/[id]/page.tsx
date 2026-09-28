@@ -6,7 +6,7 @@ import { Fragment } from "react";
 import { redirect, notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { markInboxRead } from "@/features/admin-inbox/reads";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import { AdminPageShell, AdminPageHeader, AdminCard, AdminBadge } from "@/components/admin/ui";
 import { getApplicationDetailAction } from "@/features/admin-job-applications/actions";
 import { getJobOfferDetailAction } from "@/features/admin-job-offers/actions";
 import { ApplicationStatusForm } from "./ApplicationStatusForm";
@@ -26,6 +26,7 @@ import { formatDateFrShort } from "@/lib/format-date-fr";
 import { liensInsertionComposeur } from "@/lib/imprimes/liens-email";
 import { env } from "@/env";
 import { parseScreeningQuestions, valeurAffichee } from "@/lib/careers/screening-answers";
+import { extraireLiensVideo, montreDuTravail } from "@/lib/careers/liens-video";
 import { isVideoFreelanceOffer } from "@/lib/careers/video-editor-offer";
 
 export const dynamic = "force-dynamic";
@@ -95,6 +96,20 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
   // elles ne réapparaissent que si une valeur existe (dossier antérieur).
   const formulaireCourt = isVideoFreelanceOffer(offer?.slug);
   const montrer = (v: unknown) => !formulaireCourt || (v !== null && v !== undefined && v !== "");
+
+  // « Ses vidéos » (Will, 2026-09-28) : tous les liens vers son travail, d'où
+  // qu'ils viennent — formulaire, petit mot, portfolio, et ce qui est arrivé par
+  // e-mail et a été recopié au journal. Nos propres messages sont exclus : ils ne
+  // portent que nos liens.
+  const liens = extraireLiensVideo([
+    { source: "formulaire", texte: Object.values(a.answers).join(" ") },
+    { source: "petit mot", texte: a.motivation },
+    { source: "portfolio", texte: a.linkedinUrl },
+    ...frise
+      .filter((e) => e.type === "piece_recue" || e.type === "email_recu" || e.type === "note")
+      .map((e) => ({ source: `${e.summary} · ${formatDateFrShort(e.occurredAt)}`, texte: e.body })),
+  ]);
+  const montreVideo = liens.some(montreDuTravail);
 
   return (
     <AdminPageShell>
@@ -204,6 +219,34 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           <p className="text-sm whitespace-pre-wrap">{a.motivation}</p>
         </AdminCard>
       ) : null}
+
+      <AdminCard>
+        <h3 className="admin-section-title">Ses vidéos</h3>
+        {liens.length === 0 || !montreVideo ? (
+          <p className="admin-alert admin-alert-warning mb-[var(--space-admin-3)]">
+            Aucun lien vers son travail. Demande-lui 2 ou 3 montages.
+          </p>
+        ) : null}
+        {liens.length > 0 ? (
+          <ul className="space-y-2 text-sm">
+            {liens.map((l) => (
+              <li key={l.url}>
+                <AdminBadge tone="neutral">{l.plateforme}</AdminBadge>{" "}
+                <a
+                  href={l.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="admin-link"
+                  style={{ wordBreak: "break-all" }}
+                >
+                  {l.url}
+                </a>{" "}
+                <span className="admin-meta-small">· {l.source}</span>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </AdminCard>
 
       {Object.keys(a.answers).length > 0 ? (
         <AdminCard>
