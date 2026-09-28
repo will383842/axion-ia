@@ -51,6 +51,8 @@ import {
 import { PLAFOND_EN_MASSE } from "@/features/admin-job-applications/en-masse";
 import { MODELES_REPONSE } from "@/content/recrutement/modeles-reponse";
 import { FormulaireEnMasse } from "./FormulaireEnMasse";
+import { basculerReponsePostePourvuAction } from "@/features/admin-job-applications/reponse-poste-pourvu-actions";
+import { AGE_MIN_JOURS } from "@/server/careers/reponse-poste-pourvu";
 
 /**
  * Les menus du geste groupé, DÉRIVÉS du vocabulaire — jamais recopiés.
@@ -120,6 +122,8 @@ interface Props {
    * mois ne doit pas dépendre d'un écran de pilotage que personne n'ouvre.
    */
   plusAncienJamaisRepondu?: { id: string; offerTitleSnap: string; jours: number } | null;
+  /** Réponse automatique « poste pourvu » — état et dossiers qu'elle a devant elle. */
+  reponseAuto?: { active: boolean; enAttente: number } | null;
 }
 
 export function ApplicationsV2({
@@ -132,6 +136,7 @@ export function ApplicationsV2({
   totalPages,
   balayageTronque = false,
   plusAncienJamaisRepondu = null,
+  reponseAuto = null,
 }: Props): React.ReactElement {
   const offerId = sp["offerId"];
   const baseHref = `/fr/${adminPrefix}/contacts/candidatures`;
@@ -236,6 +241,26 @@ export function ApplicationsV2({
             Ouvrir le dossier
           </Link>
         </p>
+      ) : null}
+
+      {/* Réponse automatique « poste pourvu » (Will, 2026-09-28) — visible et
+          arrêtable ici, là où l'on travaille les candidatures. */}
+      {reponseAuto ? (
+        <form
+          action={basculerReponsePostePourvuAction}
+          className={`admin-alert ${reponseAuto.active ? "admin-alert-success" : "admin-alert-info"} mb-[var(--space-admin-4)]`}
+        >
+          <input type="hidden" name="actif" value={reponseAuto.active ? "0" : "1"} />
+          <strong>
+            Réponse automatique « poste pourvu » : {reponseAuto.active ? "active" : "arrêtée"}.
+          </strong>{" "}
+          Chaque heure, au plus 15 candidats hors vidéo restés « nouvelle » sans réponse depuis{" "}
+          {AGE_MIN_JOURS} jours reçoivent « poste pourvu, nous gardons votre dossier ». Passer un
+          dossier « en revue » le protège. En attente : <strong>{reponseAuto.enAttente}</strong>.{" "}
+          <button type="submit" className="admin-button-ghost">
+            {reponseAuto.active ? "Arrêter" : "Mettre en marche"}
+          </button>
+        </form>
       ) : null}
 
       <AdminCard className="mb-[var(--space-admin-5)]">
