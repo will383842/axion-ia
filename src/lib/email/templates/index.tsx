@@ -134,6 +134,14 @@ import {
   apporteurInvitationRelanceSubject,
   ApporteurInvitationRelanceEmail,
 } from "./apporteur-invitation-relance";
+import {
+  apporteurIssueAbsentSubject,
+  ApporteurIssueAbsentEmail,
+  apporteurIssueRetenuSubject,
+  ApporteurIssueRetenuEmail,
+  apporteurIssueNonRetenuSubject,
+  ApporteurIssueNonRetenuEmail,
+} from "./apporteur-issue-echange";
 import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
 import { PieceExemplaireSigneEmail, pieceExemplaireSigneSubject } from "./piece-exemplaire-signe";
@@ -408,6 +416,19 @@ const TEMPLATES: TemplateMap = {
   "apporteur-invitation-relance": {
     subject: apporteurInvitationRelanceSubject,
     component: ApporteurInvitationRelanceEmail,
+  },
+  // L'issue de l'échange de 15 minutes, après aperçu confirmé (2026-09-28)
+  "apporteur-issue-absent": {
+    subject: apporteurIssueAbsentSubject,
+    component: ApporteurIssueAbsentEmail,
+  },
+  "apporteur-issue-retenu": {
+    subject: apporteurIssueRetenuSubject,
+    component: ApporteurIssueRetenuEmail,
+  },
+  "apporteur-issue-non-retenu": {
+    subject: apporteurIssueNonRetenuSubject,
+    component: ApporteurIssueNonRetenuEmail,
   },
   "vivier-information": {
     subject: vivierInformationSubject,

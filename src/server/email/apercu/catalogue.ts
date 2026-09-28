@@ -393,6 +393,27 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "la personne invitée à l'échange apporteur",
     source: "features/commercial-application/relances-invitation-apporteur.ts",
   },
+  "apporteur-issue-absent": {
+    categorie: "recrutement",
+    quand:
+      "Après un échange apporteur manqué : bouton « Absent » de la fiche ou de la carte du rendez-vous, aperçu puis confirmation — une fois par personne, jamais à la deuxième absence",
+    destinataire: "le candidat apporteur absent à son échange",
+    source: "features/admin-rendezvous/issue-apporteur-envoi.ts",
+  },
+  "apporteur-issue-retenu": {
+    categorie: "recrutement",
+    quand:
+      "Après l'échange apporteur : bouton « Retenu », aperçu puis confirmation — une fois par personne",
+    destinataire: "le candidat apporteur retenu",
+    source: "features/admin-rendezvous/issue-apporteur-envoi.ts",
+  },
+  "apporteur-issue-non-retenu": {
+    categorie: "recrutement",
+    quand:
+      "Après l'échange apporteur : bouton « Non retenu », aperçu puis confirmation — une fois par personne ; la fiche est classée sans suite",
+    destinataire: "le candidat apporteur non retenu",
+    source: "features/admin-rendezvous/issue-apporteur-envoi.ts",
+  },
   "vivier-information": {
     categorie: "recrutement",
     quand: "Information envoyée à une personne du vivier",

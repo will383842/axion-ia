@@ -143,6 +143,11 @@ export type EmailJobName =
   // Rappels J+3 / J+7 de cette invitation, posés par un passage quotidien tant
   // que la personne n'a pas réservé (décision Will, 2026-09-27).
   | "apporteur-invitation-relance"
+  // L'issue de l'échange de 15 minutes, envoyée par Will depuis la console
+  // APRÈS un aperçu confirmé (2026-09-28) — absent, retenu, non retenu.
+  | "apporteur-issue-absent"
+  | "apporteur-issue-retenu"
+  | "apporteur-issue-non-retenu"
   // Lot L4 2026-08-14 — information RGPD au stock de candidatures avant
   // intégration au vivier (lien d'opposition, fenêtre de 30 jours).
   | "vivier-information"

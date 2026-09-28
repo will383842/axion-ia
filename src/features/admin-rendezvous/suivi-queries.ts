@@ -11,6 +11,7 @@ import { entrepriseEtBesoin, reponsesFormulaire } from "./a-venir";
 import { momentVisio } from "./visio";
 import { JOURS_A_FAIRE_LE_POINT, type IssueRdv, type SuiteRdv } from "./suivi";
 import type { PublicRdv } from "./types";
+import type { DecisionApporteur } from "./issue-apporteur";
 
 export interface RdvAFaireLePoint {
   id: string;
@@ -143,6 +144,9 @@ export interface SuiviEnregistre {
   /** « AAAA-MM-JJ » — prêt pour un `<input type="date">`. */
   suiteLe: string | null;
   note: string | null;
+  /** Échange apporteur tenu : la décision (2026-09-28), sinon `null`. */
+  decision: DecisionApporteur | null;
+  noteSur20: number | null;
   renseignePar: string | null;
   renseigneLe: Date;
 }
@@ -156,7 +160,53 @@ export async function lireSuivi(calendlyEventId: string): Promise<SuiviEnregistr
     suite: s.suite,
     suiteLe: s.suiteLe ? s.suiteLe.toISOString().slice(0, 10) : null,
     note: s.note,
+    decision: s.decision,
+    noteSur20: s.noteSur20,
     renseignePar: s.renseignePar,
     renseigneLe: s.renseigneLe,
   };
+}
+
+/** Le point d'un échange APPORTEUR, prêt pour la fiche du candidat (2026-09-28). */
+export interface PointApporteurEnregistre {
+  issue: IssueRdv;
+  decision: DecisionApporteur | null;
+  noteSur20: number | null;
+  /** La phrase de justification de la note. */
+  note: string | null;
+  /** « À revoir » : date de rappel « AAAA-MM-JJ », ou `null`. */
+  rappelLe: string | null;
+  renseigneLe: Date;
+}
+
+/** Les points déjà faits sur ces rendez-vous, clé = identifiant du rendez-vous. */
+export async function lirePointsApporteur(
+  calendlyEventIds: readonly string[],
+): Promise<Map<string, PointApporteurEnregistre>> {
+  const resultat = new Map<string, PointApporteurEnregistre>();
+  if (calendlyEventIds.length === 0) return resultat;
+  const lignes = await prisma.rendezVousSuivi.findMany({
+    where: { calendlyEventId: { in: [...calendlyEventIds] } },
+    select: {
+      calendlyEventId: true,
+      issue: true,
+      decision: true,
+      noteSur20: true,
+      note: true,
+      suiteLe: true,
+      renseigneLe: true,
+    },
+  });
+  for (const s of lignes) {
+    resultat.set(s.calendlyEventId, {
+      issue: s.issue,
+      decision: s.decision,
+      noteSur20: s.noteSur20,
+      note: s.note,
+      rappelLe:
+        s.decision === "a_revoir" && s.suiteLe ? s.suiteLe.toISOString().slice(0, 10) : null,
+      renseigneLe: s.renseigneLe,
+    });
+  }
+  return resultat;
 }

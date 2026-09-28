@@ -71,3 +71,15 @@ export const DUREE_ECHANGE_APPORTEUR_MINUTES = 15;
  * qui annule cet envoi), et celui qui l'a quitté reçoit le kit.
  */
 export const DELAI_KIT_DOSSIER_COMMENCE_MS = 30 * 60 * 1000;
+
+/**
+ * Durée pendant laquelle une entreprise présentée par un apporteur lui est
+ * attribuée — décision de Will du 2026-09-22 : SIX mois (était douze).
+ *
+ * 🔴 Première constante de cette règle côté axionia : elle n'était écrite
+ * nulle part dans le code. Les documents `docs/contrat-apporteur-clauses.md`,
+ * `docs/fonctionnement-reseau-apporteurs.md` et
+ * `docs/audit-attribution-apporteurs-siren.md` disent encore 12 mois : à
+ * aligner par une décision explicite, pas en passant.
+ */
+export const FENETRE_ATTRIBUTION_APPORTEUR_MOIS = 6;

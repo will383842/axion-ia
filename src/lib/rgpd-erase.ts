@@ -665,7 +665,8 @@ export async function eraseCalendlyEventsForEmail(email: string): Promise<EraseC
   // constat (a eu lieu / absent) reste, comme le statut du rendez-vous.
   await prisma.rendezVousSuivi.updateMany({
     where: { calendlyEvent: { inviteeEmail: email } },
-    data: { note: null },
+    // 2026-09-28 — la note /20 d'un échange apporteur part avec sa phrase.
+    data: { note: null, noteSur20: null },
   });
 
   // UNE SEULE instruction, donc atomique : la ligne perd ses coordonnées ET

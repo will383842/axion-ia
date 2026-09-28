@@ -112,7 +112,10 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // J+3 / J+7 de l'invitation à l'échange. Ses champs requis (`calendlyUrl`)
     // ont déjà une valeur d'exemple, et `etape` y vaut « j2 » : le gabarit rend
     // alors le premier rappel.
-    expect(tous.length).toBe(58);
+    // 🔴 2026-09-28 — RELEVÉ À 59 : `apporteur-issue-echange`, l'issue de
+    // l'échange apporteur (absent, retenu, non retenu). UN fichier pour TROIS
+    // noms de job, comme `apporteur-echange`. Ses champs sont tous facultatifs.
+    expect(tous.length).toBe(59);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

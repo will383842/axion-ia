@@ -40,6 +40,7 @@ import { LIBELLE_ETAPE } from "@/lib/commercial-application/etape-apporteur";
 import { lireSuiviInvitationListe } from "@/features/commercial-application/invitation-apporteur";
 import {
   badgeSuiviInvitation,
+  estBadgeDecision,
   type BadgeSuivi,
   type SuiviInvitation,
 } from "@/lib/commercial-application/relance-invitation";
@@ -107,6 +108,23 @@ function badgeInvitation(b: BadgeSuivi): { label: string; tone: TonBadge; Icone:
       };
     case "invite":
       return { label: `Invité le ${formatDateFrShort(b.le)}`, tone: "info", Icone: Send };
+    // 2026-09-28 — l'issue de l'échange, décidée par Will.
+    case "retenu":
+      return {
+        label: `Retenu le ${formatDateFrShort(b.le)}`,
+        tone: "success",
+        Icone: CheckCircle2,
+      };
+    case "non-retenu":
+      return { label: "Non retenu", tone: "neutral", Icone: CircleSlash };
+    case "a-revoir":
+      return { label: "À revoir", tone: "warning", Icone: BellRing };
+    case "absent":
+      return {
+        label: b.le ? `Absent le ${formatDateFrShort(b.le)}` : "Absent",
+        tone: "warning",
+        Icone: CalendarX,
+      };
   }
 }
 
@@ -285,8 +303,10 @@ export async function SubmissionsV2({
     // Une vraie réponse (composeur) ou un état terminal prime ; sinon, le suivi
     // de l'invitation (échange réservé, rappel, invité) remplace « Sans réponse ».
     const base = replyBadge(s);
-    const suivi =
-      base.label === "Sans réponse" ? badgeSuiviInvitation(invitations.get(s.id)) : null;
+    // 2026-09-28 — une DÉCISION (retenu, non retenu, à revoir, absent) prime sur
+    // tout badge de réponse : « Non retenu » se lit mieux que « Sans suite ».
+    const badge = badgeSuiviInvitation(invitations.get(s.id));
+    const suivi = estBadgeDecision(badge) || base.label === "Sans réponse" ? badge : null;
     const r = suivi ? badgeInvitation(suivi) : base;
     const accuse = accuses.get(s.id);
     const { prenom, nom } = splitNomPrenom(s.contactName);

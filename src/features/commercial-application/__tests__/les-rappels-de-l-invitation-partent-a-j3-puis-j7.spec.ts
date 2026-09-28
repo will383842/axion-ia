@@ -97,7 +97,10 @@ vi.mock("@/server/email/verdict-envoi", () => ({
 import { passerRelancesInvitation } from "../relances-invitation-apporteur";
 import { GABARIT_INVITATION } from "../relance-invitation-etat";
 import { GABARIT_INVITATION_APPORTEUR, lireSuiviInvitationListe } from "../invitation-apporteur";
-import { GABARIT_RELANCE_INVITATION } from "@/lib/commercial-application/relance-invitation";
+import {
+  GABARIT_RELANCE_INVITATION,
+  badgeSuiviInvitation,
+} from "@/lib/commercial-application/relance-invitation";
 
 const JOUR = 24 * 60 * 60 * 1000;
 /** Soir du 27/09 : les 58 invitations. */
@@ -472,6 +475,30 @@ describe("la liste des apporteurs lit le suivi par PERSONNE", () => {
     ];
     const suivi = (await lireSuiviInvitationListe(["ligne-a"])).get("ligne-a");
     expect(suivi?.echange).toBeNull();
+  });
+
+  it("2026-09-28 : l'issue de l'échange (retenu) remonte sur la ligne affichée, et prime dans le badge", async () => {
+    db.submissions = [ligne({ id: "affichee" }), ligne({ id: "ligne-c" })];
+    db.calendly = [
+      {
+        linkedSubmissionId: "ligne-c",
+        status: "scheduled",
+        eventTypeName: "Échange apporteur",
+        startTime: new Date("2026-09-22T08:00:00Z"),
+        suivi: {
+          issue: "eu_lieu",
+          decision: "retenu",
+          renseigneLe: new Date("2026-09-22T09:00:00Z"),
+        },
+      },
+    ];
+    const suivi = (await lireSuiviInvitationListe(["affichee"])).get("affichee");
+    expect(suivi?.echange).toBe("reserve");
+    expect(suivi?.decision).toEqual({ type: "retenu", le: new Date("2026-09-22T09:00:00Z") });
+    expect(badgeSuiviInvitation(suivi)).toEqual({
+      type: "retenu",
+      le: new Date("2026-09-22T09:00:00Z"),
+    });
   });
 
   it("ni invitation ni échange : rien, la liste garde son badge", async () => {

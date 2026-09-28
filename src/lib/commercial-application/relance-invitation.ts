@@ -129,6 +129,14 @@ export function decisionRelance(e: EtatRelanceInvitation, maintenant: Date): Dec
 
 // ── La console ───────────────────────────────────────────────────────────
 
+/** Les badges qui disent une DÉCISION de Will : ils priment sur tout badge de réponse. */
+export function estBadgeDecision(b: BadgeSuivi | null): b is DecisionSuivi {
+  return (
+    b !== null &&
+    (b.type === "retenu" || b.type === "non-retenu" || b.type === "a-revoir" || b.type === "absent")
+  );
+}
+
 /** Ce que la liste des apporteurs sait du suivi d'une personne. */
 export interface SuiviInvitation {
   /** Dernière invitation partie (ou en file), s'il y en a une. */
@@ -142,9 +150,23 @@ export interface SuiviInvitation {
    * invitation (2026-09-27). Absente ou `null` : aucune.
    */
   readonly reponse?: Date | null;
+  /**
+   * L'issue de l'échange décidée par Will (2026-09-28) — retenu, non retenu,
+   * à revoir, absent. Calculée par `decisionAffichee`
+   * (`features/admin-rendezvous/issue-apporteur.ts`). Absente : aucune.
+   */
+  readonly decision?: DecisionSuivi | null;
 }
 
+/** L'issue d'un échange apporteur, telle que la liste l'affiche (2026-09-28). */
+export type DecisionSuivi =
+  | { readonly type: "retenu"; readonly le: Date }
+  | { readonly type: "non-retenu"; readonly le: Date }
+  | { readonly type: "a-revoir" }
+  | { readonly type: "absent"; readonly le: Date | null };
+
 export type BadgeSuivi =
+  | DecisionSuivi
   | { readonly type: "echange-reserve" }
   | { readonly type: "a-repondu"; readonly le: Date }
   | { readonly type: "echange-annule" }
@@ -152,9 +174,14 @@ export type BadgeSuivi =
   | { readonly type: "invite"; readonly le: Date };
 
 /**
- * Le badge qui remplace « Sans réponse », par ordre de priorité : échange
- * réservé > a répondu > échange annulé > rappel 2 > rappel 1 > invité. `null` :
- * rien à dire, la liste garde son badge.
+ * Le badge qui remplace « Sans réponse », par ordre de priorité : DÉCISION
+ * (retenu, non retenu, à revoir, absent — 2026-09-28) > échange réservé >
+ * a répondu > échange annulé > rappel 2 > rappel 1 > invité. `null` : rien à
+ * dire, la liste garde son badge.
+ *
+ * La décision passe AVANT « échange réservé » : un échange tenu reste
+ * « programmé » dans Calendly, et c'est l'issue qu'il faut lire, pas la
+ * réservation.
  *
  * « A répondu » passe AVANT « échange annulé » (décision Will, 2026-09-27) : une
  * personne qui a annulé puis écrit a dit quelque chose de plus récent que son
@@ -162,6 +189,7 @@ export type BadgeSuivi =
  */
 export function badgeSuiviInvitation(s: SuiviInvitation | undefined): BadgeSuivi | null {
   if (!s) return null;
+  if (s.decision) return s.decision;
   if (s.echange === "reserve") return { type: "echange-reserve" };
   if (s.reponse) return { type: "a-repondu", le: s.reponse };
   if (s.echange === "annule") return { type: "echange-annule" };

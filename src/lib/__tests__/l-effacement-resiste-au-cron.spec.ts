@@ -69,7 +69,8 @@ describe("la note du suivi après l'appel", () => {
 
     expect(suiviUpdateMany).toHaveBeenCalledWith({
       where: { calendlyEvent: { inviteeEmail: "temoin@example.invalid" } },
-      data: { note: null },
+      // 2026-09-28 — la note /20 d'un échange apporteur part avec sa phrase.
+      data: { note: null, noteSur20: null },
     });
     expect(suiviUpdateMany.mock.invocationCallOrder[0]).toBeLessThan(
       updateMany.mock.invocationCallOrder[0] ?? 0,

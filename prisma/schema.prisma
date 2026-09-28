@@ -4462,6 +4462,17 @@ enum RendezVousSuite {
   @@map("rendez_vous_suite")
 }
 
+/// Décision prise après l'échange avec un CANDIDAT APPORTEUR (2026-09-28).
+/// Remplace, pour ce public, la « suite » des rendez-vous clients : on ne
+/// devise pas un apporteur, on décide s'il rejoint le réseau.
+enum RendezVousDecisionApporteur {
+  retenu
+  a_revoir
+  non_retenu
+
+  @@map("rendez_vous_decision_apporteur")
+}
+
 model RendezVousSuivi {
   id              String           @id @default(cuid())
   calendlyEventId String           @unique @map("calendly_event_id")
@@ -4473,6 +4484,14 @@ model RendezVousSuivi {
   /// Échéance de la suite (devis à envoyer, relance…). Nulle pour « aucune ».
   suiteLe         DateTime?        @map("suite_le") @db.Date
   note            String?          @db.Text
+  /// Échange APPORTEUR tenu (2026-09-28) : retenu, à revoir ou non retenu —
+  /// `suite` reste alors nulle. Pour « à revoir », la date de rappel interne
+  /// facultative est portée par `suiteLe`.
+  decision        RendezVousDecisionApporteur?
+  /// Note d'échange sur 20 (grille de la trame imprimée), facultative. Sa
+  /// phrase de justification est `note`. Appréciation sur la personne :
+  /// exportée (art. 15) et effacée (art. 17) avec `note`.
+  noteSur20       Int?             @map("note_sur_20") @db.SmallInt
   /// Adresse du compte console qui a fait le point.
   renseignePar    String?          @map("renseigne_par") @db.VarChar(255)
   renseigneLe     DateTime         @default(now()) @map("renseigne_le")
