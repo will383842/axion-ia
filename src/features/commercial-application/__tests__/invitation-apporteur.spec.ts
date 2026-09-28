@@ -14,6 +14,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 const trouver = vi.fn();
 const lister = vi.fn();
 const mettreAJour = vi.fn(async (..._a: unknown[]) => ({}));
+const ranger = vi.fn(async (..._a: unknown[]) => ({ count: 1 }));
 const journaliser = vi.fn(async (..._a: unknown[]) => ({}));
 const journalEnvois = vi.fn(async (..._a: unknown[]): Promise<unknown[]> => []);
 const corbeille = vi.fn(async (..._a: unknown[]): Promise<unknown[]> => []);
@@ -23,6 +24,7 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: (...a: unknown[]) => trouver(...a),
       findMany: (...a: unknown[]) => lister(...a),
       update: (...a: unknown[]) => mettreAJour(...a),
+      updateMany: (...a: unknown[]) => ranger(...a),
     },
     activityLog: { create: (...a: unknown[]) => journaliser(...a) },
     emailLog: { findMany: (...a: unknown[]) => journalEnvois(...a) },
@@ -180,6 +182,25 @@ describe("envoyerInvitationApporteur", () => {
     const data = (journaliser.mock.calls[0]?.[0] as { data: Record<string, unknown> }).data;
     expect(data["action"]).toBe("submission.invitation_apporteur");
     expect(JSON.stringify(data)).not.toContain("nadia@");
+  });
+});
+
+describe("🔴 la console se met à jour (2026-09-28)", () => {
+  it("une invitation partie RANGE la fiche — elle quitte « à traiter », les rappels continuent", async () => {
+    await envoyer();
+    expect(ranger).toHaveBeenCalledWith({
+      where: { id: fiche().id, status: { in: ["new", "in_progress"] }, archivedAt: null },
+      data: { status: "processed", needsAttention: false },
+    });
+  });
+
+  it("une invitation qui n'est PAS partie ne range rien", async () => {
+    enfiler.mockResolvedValue({ enqueued: false });
+    await envoyer();
+    expect(ranger).not.toHaveBeenCalled();
+    enfiler.mockResolvedValue({ enqueued: false, garePourValidation: true });
+    await envoyer();
+    expect(ranger).not.toHaveBeenCalled();
   });
 });
 
