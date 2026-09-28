@@ -109,7 +109,9 @@ export const COPY_ISSUE_ECHANGE = {
       statut:
         "Tu restes indépendant, libre de ton organisation, sans objectif ni exclusivité. Pour facturer tes commissions, il te faut un numéro SIRET (une micro-entreprise, par exemple).",
       suiteTitre: "La suite",
-      contrat: "Tu recevras dans les prochains jours ton contrat d'apporteur à signer en ligne.",
+      // 2026-09-28 (Will) : pas de délai promis — le contrat v2 (prorata, paiement
+      // à 100 %, confirmation par l'entreprise) est relu avant toute signature.
+      contrat: "Nous t'enverrons ton contrat d'apporteur, à signer en ligne.",
       espace:
         "Ton espace apporteur personnel ouvrira d'ici un mois. D'ici là, pour nous présenter une entreprise, réponds simplement à cet e-mail avec son nom et celui de ton contact.",
       kit: "Le document de présentation et le catalogue restent à ta disposition :",
@@ -168,7 +170,7 @@ export const COPY_ISSUE_ECHANGE = {
       statut:
         "You remain independent, free to organise yourself, with no target and no exclusivity. To invoice your commissions, you need a French SIRET number (a micro-enterprise, for example).",
       suiteTitre: "Next steps",
-      contrat: "In the coming days you will receive your introducer agreement to sign online.",
+      contrat: "We will send you your introducer agreement to sign online.",
       espace:
         "Your personal introducer space will open within a month. Until then, to introduce a company, simply reply to this email with its name and your contact's name.",
       kit: "The presentation document and the catalogue remain at your disposal:",

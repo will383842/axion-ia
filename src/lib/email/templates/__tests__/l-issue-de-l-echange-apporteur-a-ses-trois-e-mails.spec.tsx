@@ -87,7 +87,8 @@ describe("Retenu — bienvenue dans le réseau", () => {
     expect(t).toContain("versée dès que le client a réglé l'intégralité de sa facture");
     expect(t).toContain("sans objectif ni exclusivité");
     expect(t).toContain("numéro SIRET");
-    expect(t).toContain("ton contrat d'apporteur à signer en ligne");
+    expect(t).toContain("ton contrat d'apporteur, à signer en ligne");
+    expect(t).not.toContain("prochains jours");
     expect(t).toContain("Ton espace apporteur personnel ouvrira d'ici un mois");
     expect(t).toContain("réponds simplement à cet e-mail avec son nom et celui de ton contact");
     // Le châssis porte « Une question ? Réponds simplement à cet e-mail » : une
