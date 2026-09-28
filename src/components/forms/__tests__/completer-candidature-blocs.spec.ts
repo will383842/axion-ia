@@ -1,8 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
-
-vi.mock("@/features/job-application/complement-actions", () => ({
-  completerCandidatureAction: vi.fn(),
-}));
+import { describe, expect, it } from "vitest";
 
 import { enBlocs } from "../CompleterCandidatureForm";
 
