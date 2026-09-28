@@ -37,6 +37,13 @@ export const ENTITE_MESSAGE = "Submission";
 export const ORIGINE_ECRAN_1_DOSSIER = "ecran-1-du-dossier";
 /** `details.origine` d'un contact apporteur saisi à la main dans la console. */
 export const ORIGINE_SAISIE_MANUELLE = "saisie-manuelle";
+/**
+ * `details.origine` d'un contact apporteur créé depuis la fiche d'une
+ * candidature à une OFFRE D'EMPLOI salariée (« Proposer le réseau
+ * d'apporteurs », 2026-09-28). La personne a postulé à un poste, pas au
+ * réseau : son invitation le dit (variante `offre` du gabarit).
+ */
+export const ORIGINE_CANDIDATURE_OFFRE = "candidature-offre-emploi";
 
 /**
  * Les dépôts qui, VOLONTAIREMENT, ne reçoivent aucun accusé — et pourquoi.
@@ -55,6 +62,10 @@ export function absenceVoulue(details: { origine?: string | null }): string | nu
     // déposée par la personne.
     case ORIGINE_SAISIE_MANUELLE:
       return "Aucun accusé, et c’est voulu : contact saisi à la main dans la console.";
+    // `proposer-reseau-actions.ts` : la fiche naît d'un geste de la console sur
+    // une candidature à une offre d'emploi — la personne n'a rien déposé ici.
+    case ORIGINE_CANDIDATURE_OFFRE:
+      return "Aucun accusé, et c’est voulu : fiche créée depuis une candidature à une offre d’emploi.";
     default:
       return null;
   }

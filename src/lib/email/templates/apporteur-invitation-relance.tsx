@@ -16,6 +16,13 @@
 // Vocabulaire (anti-requalification, `docs/partners/ANTI-REQUALIFICATION.md`) :
 // « échange », « candidature retenue » ; jamais « entretien », « poste »,
 // « recrutement », « commercial », « vendre ».
+//
+// ── Variante `offre` (2026-09-28) ─────────────────────────────────────────
+// Une personne qui a postulé à une OFFRE D'EMPLOI salariée et à qui Will a
+// proposé le réseau n'a JAMAIS candidaté au réseau : « ta candidature est
+// retenue » serait faux. Ses rappels parlent de la proposition, et le dernier
+// précise que sa candidature à l'offre n'est pas concernée. « offre » désigne
+// l'offre d'emploi à laquelle elle a postulé, jamais l'activité d'apporteur.
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
@@ -28,6 +35,8 @@ interface Payload {
   calendlyUrl: string;
   /** `j3` (premier rappel) ou `j7` (dernier). Toute autre valeur rend le premier. */
   etape?: string;
+  /** Titre de l'offre d'emploi (variante `offre`, cf. l'invitation). Présent, même vide : variante. */
+  offreEmploi?: string;
 }
 
 export const COPY_RELANCE_INVITATION = {
@@ -49,6 +58,17 @@ export const COPY_RELANCE_INVITATION = {
     desinscription:
       "Si tu ne souhaites plus recevoir de message de notre part, un clic suffit : le lien est en bas de ce message.",
     cta: "Réserver mon créneau",
+    // Variante `offre` (2026-09-28).
+    subjectOffre: (dernier: boolean) =>
+      dernier ? "Dernier rappel : l'échange sur le réseau" : "Ton échange sur le réseau t'attend",
+    previewOffre: (dernier: boolean) =>
+      dernier
+        ? "Notre dernier message à ce sujet : l'échange de 15 minutes en visio reste ouvert."
+        : "Il ne reste qu'à choisir le moment de notre échange de 15 minutes sur le réseau d'apporteurs d'affaires.",
+    j3Offre: (n: string, o: string) =>
+      `${n ? `Bonjour ${n}, suite` : "Bonjour, suite"} à ta candidature ${o ? `à notre offre « ${o} »` : "à l'une de nos offres d'emploi"}, nous t'avons proposé de découvrir aussi notre réseau d'apporteurs d'affaires indépendants. Si la proposition t'intéresse, il ne te reste plus qu'à choisir le moment de notre échange de 15 minutes en visio, en un clic avec le bouton ci-dessous.`,
+    j7Offre: (n: string, o: string) =>
+      `${n ? `Bonjour ${n}, c'est` : "Bonjour, c'est"} notre dernier message au sujet du réseau d'apporteurs d'affaires : l'échange de 15 minutes en visio reste ouvert si tu veux le découvrir. Si ce n'est pas le bon moment, aucun souci : sans réservation de ta part, on ne te relancera plus. Ta candidature ${o ? `à notre offre « ${o} »` : "à notre offre d'emploi"}, elle, n'est pas concernée par ce message.`,
   },
   en: {
     subject: (dernier: boolean) =>
@@ -68,6 +88,16 @@ export const COPY_RELANCE_INVITATION = {
     desinscription:
       "If you no longer wish to hear from us, one click is enough: the link is at the bottom of this message.",
     cta: "Book my slot",
+    subjectOffre: (dernier: boolean) =>
+      dernier ? "Last reminder: the network call" : "Your call about the network awaits",
+    previewOffre: (dernier: boolean) =>
+      dernier
+        ? "Our last message on the subject: the 15-minute video call remains open."
+        : "All that is left is to pick the time of our 15-minute call about the business introducer network.",
+    j3Offre: (n: string, o: string) =>
+      `${n ? `Hello ${n}, following` : "Hello, following"} your application ${o ? `to our “${o}” opening` : "to one of our job openings"}, we offered you to also discover our network of independent business introducers. If the proposal interests you, all that is left is to choose the time of our 15-minute video call, in one click with the button below.`,
+    j7Offre: (n: string, o: string) =>
+      `${n ? `Hello ${n}, this` : "Hello, this"} is our last message about the business introducer network: the 15-minute video call remains open if you would like to discover it. If now is not the right time, no problem: without a booking from you, we will not remind you again. Your application ${o ? `to our “${o}” opening` : "to our job opening"} is not affected by this message.`,
   },
 } as const;
 
@@ -75,10 +105,19 @@ function estDernier(p: Record<string, unknown>): boolean {
   return p["etape"] === "j7";
 }
 
+/** Titre de l'offre (variante `offre`), ou `null` hors variante. Lecture défensive. */
+function lireOffre(p: Record<string, unknown>): string | null {
+  const o = p["offreEmploi"];
+  return typeof o === "string" ? o.trim() : null;
+}
+
 export const apporteurInvitationRelanceSubject = (
   locale: Locale,
   p: Record<string, unknown>,
-): string => COPY_RELANCE_INVITATION[locale === "fr" ? "fr" : "en"].subject(estDernier(p));
+): string => {
+  const t = COPY_RELANCE_INVITATION[locale === "fr" ? "fr" : "en"];
+  return lireOffre(p) !== null ? t.subjectOffre(estDernier(p)) : t.subject(estDernier(p));
+};
 
 export function ApporteurInvitationRelanceEmail({
   locale,
@@ -91,10 +130,19 @@ export function ApporteurInvitationRelanceEmail({
   const t = COPY_RELANCE_INVITATION[locale === "fr" ? "fr" : "en"];
   const dernier = estDernier(payload);
   const prenom = (p.contactName ?? "").trim().split(/\s+/)[0] ?? "";
+  const offre = lireOffre(payload);
+  const texte =
+    offre !== null
+      ? dernier
+        ? t.j7Offre(prenom, offre)
+        : t.j3Offre(prenom, offre)
+      : dernier
+        ? t.j7(prenom)
+        : t.j3(prenom);
   return (
     <EmailLayout
       famille="B"
-      preview={t.preview(dernier)}
+      preview={offre !== null ? t.previewOffre(dernier) : t.preview(dernier)}
       title={t.title(dernier)}
       cta={{ label: t.cta, href: p.calendlyUrl }}
       locale={locale}
@@ -106,7 +154,7 @@ export function ApporteurInvitationRelanceEmail({
       // `le-rappel-de-l-invitation-dit-son-etape.spec.tsx`.
       signature="fondateur-court"
     >
-      <Text style={emailStyles.paragraphStyle}>{dernier ? t.j7(prenom) : t.j3(prenom)}</Text>
+      <Text style={emailStyles.paragraphStyle}>{texte}</Text>
       <BlocKitApporteur locale={locale === "fr" ? "fr" : "en"} intro={t.kit} />
       <Text style={emailStyles.paragraphStyle}>{t.desinscription}</Text>
     </EmailLayout>

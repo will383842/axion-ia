@@ -37,6 +37,7 @@
 //     puis de nouveau au départ, par le filet du worker.
 
 import { prisma } from "@/lib/prisma";
+import { offreDeLaFiche } from "@/lib/commercial-application/demarche-invitation";
 import { estLienCalendlyValide } from "@/lib/calendly/lien-valide";
 import { enqueueEmail } from "@/server/queue/queues";
 import { verdictAvantEnvoi } from "@/server/email/verdict-envoi";
@@ -196,7 +197,14 @@ export async function passerRelancesInvitation(
       "apporteur-invitation-relance",
       email,
       p.ligneInvitee.locale === "en" ? "en" : "fr",
-      { contactName: lu.nom, calendlyUrl, etape: decision.etape },
+      {
+        contactName: lu.nom,
+        calendlyUrl,
+        etape: decision.etape,
+        // 2026-09-28 — fiche née d'une candidature à une offre d'emploi : les
+        // rappels ne disent pas « ta candidature apporteur est retenue ».
+        ...offreDeLaFiche(p.ligneInvitee.details),
+      },
       {
         entityType: "Submission",
         entityId: p.ligneInvitee.id,

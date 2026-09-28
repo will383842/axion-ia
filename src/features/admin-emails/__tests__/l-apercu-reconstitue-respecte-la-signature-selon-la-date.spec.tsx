@@ -161,6 +161,26 @@ describe("les données de l'aperçu suivent la règle de l'envoi", () => {
     expect(a.html).toContain("api/unsubscribe?token=[masqué]");
   });
 
+  it("2026-09-28 — une fiche née d'une candidature à une OFFRE D'EMPLOI se reconstitue en variante « offre »", async () => {
+    d.fiche = {
+      ...(d.fiche as object),
+      details: {
+        unifiedType: "recrutement",
+        subType: "candidature-commerciale",
+        etape: "premier-contact",
+        origine: "candidature-offre-emploi",
+        offreTitre: "Business Developer B2B",
+      },
+    };
+    const a = await reconstituerInvitation(ligne(APRES_SIGNATURE));
+    if (!a.ok) throw new Error(a.motif);
+    expect(a.subject).toBe("Ta candidature Axion-IA : autre proposition");
+    expect(a.html).toContain("Business Developer B2B");
+    expect(a.html).not.toMatch(/candidature apporteur d(?:&#x27;|')affaires/i);
+    expect(a.html).not.toMatch(/est retenue/);
+    expect(a.html).toContain("Williams Jullin");
+  });
+
   it("une fiche effacée (art. 17) n'est pas reconstituée", async () => {
     d.fiche = { ...(d.fiche as object), contactName: "[erased-rgpd-art17]" };
     const a = await reconstituerInvitation(ligne(APRES_SIGNATURE));

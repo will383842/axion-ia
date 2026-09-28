@@ -49,6 +49,7 @@ import {
   PROVENANCE_ADRESSE,
 } from "@/lib/commercial-application/saisie-manuelle";
 import { ORIGINE_SAISIE_MANUELLE } from "@/lib/contact/accuse-attendu";
+import { marqueDemarche, varianteObjet } from "@/lib/commercial-application/demarche-invitation";
 import { annulerRelancesLeadApporteur } from "./relances-lead-apporteur";
 import {
   phraseInvitation,
@@ -184,16 +185,10 @@ async function invitationsDesLignes(ids: string[]): Promise<InvitationEnvoyee[]>
   ].sort((a, b) => b.le.getTime() - a.le.getTime());
 }
 
-/**
- * Numéro d'objet stable pour une fiche : la somme des codes de son identifiant.
- * Stable (un « Renvoyer quand même » garde le même objet) et réparti à peu près
- * également entre les quatre objets du gabarit, sans état à tenir.
- */
-export function varianteObjet(id: string): number {
-  let somme = 0;
-  for (const c of id) somme += c.charCodeAt(0);
-  return somme % 4;
-}
+// `varianteObjet` et `marqueDemarche` vivent dans un module PUR (les rappels,
+// qui tournent dans le worker, les lisent aussi) ; ré-exportés ici pour les
+// lecteurs existants.
+export { varianteObjet, marqueDemarche };
 
 /** « 12/09 », heure de Paris — le jour dit à l'administrateur. */
 function jourMois(d: Date): string {
@@ -362,10 +357,10 @@ export async function envoyerInvitationApporteur(input: {
       ...(provenance ? { provenance } : {}),
       // 2026-09-27 (Will) : toute fiche qui n'est pas une saisie manuelle est
       // une CANDIDATURE (formulaire du site, annonce Indeed importée) — l'objet
-      // le dit, avec un objet parmi quatre, stable par fiche.
-      ...(details.origine !== ORIGINE_SAISIE_MANUELLE
-        ? { candidature: true, variante: varianteObjet(ligne.id) }
-        : {}),
+      // le dit, avec un objet parmi quatre, stable par fiche. 2026-09-28 : une
+      // fiche née d'une candidature à une offre d'emploi porte `offre` à la
+      // place — cf. `marqueDemarche`.
+      ...marqueDemarche(ligne.details, ligne.id),
     },
     { entityType: "Submission", entityId: ligne.id },
   );

@@ -382,7 +382,7 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   "apporteur-invitation-appel": {
     categorie: "recrutement",
     quand:
-      "Envoyé par un administrateur depuis la fiche du contact (Contacts › Commercial) ou lors d'une saisie manuelle — jamais automatiquement",
+      "Envoyé par un administrateur depuis la fiche du contact (Contacts › Commercial), lors d'une saisie manuelle ou depuis la fiche d'une candidature à une offre d'emploi (« Proposer le réseau d'apporteurs », variante « une autre proposition ») — jamais automatiquement",
     destinataire: "la personne intéressée par le réseau d'apporteurs",
     source: "features/commercial-application/invitation-apporteur.ts",
   },
