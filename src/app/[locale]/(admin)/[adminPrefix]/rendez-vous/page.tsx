@@ -290,9 +290,10 @@ function CartePoint({ r }: { r: RdvAFaireLePoint }) {
     : null;
   return (
     <li
-      className={`admin-card flex flex-col gap-[var(--space-admin-3)]${
-        r.retardJours !== null ? "border-[color:var(--color-admin-danger)]" : ""
-      }`}
+      className="admin-card flex flex-col gap-[var(--space-admin-3)]"
+      // Style en ligne, pas un utilitaire : `.admin-card` pose sa bordure hors
+      // couche, un `border-[…]` Tailwind à côté serait inerte.
+      style={r.retardJours !== null ? { borderColor: "var(--color-admin-danger)" } : undefined}
     >
       <div>
         {r.retardJours !== null ? (
@@ -386,10 +387,13 @@ export default async function RendezVousPage({
       {/* Demande de Will (2026-09-28) : « une fois la visio terminée, je ne
           sais pas s'il se passe quelque chose ». Réponse : rien, tant que le
           point n'est pas fait — et c'est voulu. */}
-      <p className="admin-help mb-[var(--space-admin-4)]">
-        Après chaque échange, indiquez comment il s&apos;est passé : c&apos;est ce bouton qui
-        envoie, si vous le choisissez, l&apos;e-mail adapté. Rien ne part automatiquement.
-      </p>
+      {/* La marge sur un conteneur : `.admin-help` pose `margin: 0` hors couche. */}
+      <div className="mb-[var(--space-admin-4)]">
+        <p className="admin-help">
+          Après chaque échange, indiquez comment il s&apos;est passé : c&apos;est ce bouton qui
+          envoie, si vous le choisissez, l&apos;e-mail adapté. Rien ne part automatiquement.
+        </p>
+      </div>
 
       <div className="mb-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-4)]">
         <AdminFilterTabs
