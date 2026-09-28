@@ -1839,6 +1839,14 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "20 8 * * *",
         jobId: "formation-crons-candidatures-en-sommeil-cron",
       },
+      // Liens vidéo des candidats (Will, 2026-09-28) — HEBDOMADAIRE, lundi 05:45
+      // UTC : un lien ne meurt pas d'une heure à l'autre, et la fiche doit être
+      // à jour quand la semaine de recrutement commence.
+      {
+        type: "formation-crons.liens-surveilles",
+        pattern: "45 5 * * 1",
+        jobId: "formation-crons-liens-surveilles-cron",
+      },
       // Réponse automatique « poste pourvu » (Will, 2026-09-28) — HORAIRE, à :35,
       // au plus 15 réponses par passage (plafond boîte 40/h partagé). Arrêtée
       // tant que l'interrupteur de la console n'est pas mis.

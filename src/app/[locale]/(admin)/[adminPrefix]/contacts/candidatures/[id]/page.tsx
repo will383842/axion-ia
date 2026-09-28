@@ -26,7 +26,8 @@ import { formatDateFrShort } from "@/lib/format-date-fr";
 import { liensInsertionComposeur } from "@/lib/imprimes/liens-email";
 import { env } from "@/env";
 import { parseScreeningQuestions, valeurAffichee } from "@/lib/careers/screening-answers";
-import { extraireLiensVideo, montreDuTravail } from "@/lib/careers/liens-video";
+import { extraireLiensVideo, montreDuTravail, sourcesDeLiens } from "@/lib/careers/liens-video";
+import { prisma } from "@/lib/prisma";
 import { isVideoFreelanceOffer } from "@/lib/careers/video-editor-offer";
 
 export const dynamic = "force-dynamic";
@@ -101,14 +102,33 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
   // qu'ils viennent — formulaire, petit mot, portfolio, et ce qui est arrivé par
   // e-mail et a été recopié au journal. Nos propres messages sont exclus : ils ne
   // portent que nos liens.
-  const liens = extraireLiensVideo([
-    { source: "formulaire", texte: Object.values(a.answers).join(" ") },
-    { source: "petit mot", texte: a.motivation },
-    { source: "portfolio", texte: a.linkedinUrl },
-    ...frise
-      .filter((e) => e.type === "piece_recue" || e.type === "email_recu" || e.type === "note")
-      .map((e) => ({ source: `${e.summary} · ${formatDateFrShort(e.occurredAt)}`, texte: e.body })),
-  ]);
+  const liens = extraireLiensVideo(
+    sourcesDeLiens(
+      {
+        answers: a.answers,
+        motivation: a.motivation,
+        linkedinUrl: a.linkedinUrl,
+        evenements: frise.map((e) => ({
+          type: e.type,
+          summary: e.summary,
+          occurredAt: e.occurredAt,
+          body: e.body,
+        })),
+      },
+      formatDateFrShort,
+    ),
+  );
+  // État de chaque lien au dernier passage du lundi (table absente = rien à dire).
+  const etats = new Map(
+    (
+      await prisma.jobApplicationLink
+        .findMany({
+          where: { applicationId: a.id },
+          select: { url: true, etat: true, verifieLe: true, mortDepuis: true },
+        })
+        .catch(() => [])
+    ).map((l) => [l.url, l]),
+  );
   const montreVideo = liens.some(montreDuTravail);
 
   return (
@@ -242,6 +262,27 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
                   {l.url}
                 </a>{" "}
                 <span className="admin-meta-small">· {l.source}</span>
+                {(() => {
+                  const e = etats.get(l.url.slice(0, 2000));
+                  if (!e) return null;
+                  if (e.etat === "mort")
+                    return (
+                      <>
+                        {" "}
+                        <AdminBadge tone="destructive">
+                          lien mort depuis le {formatDateFrShort(e.mortDepuis ?? e.verifieLe)}
+                        </AdminBadge>
+                      </>
+                    );
+                  if (e.etat === "vivant")
+                    return (
+                      <span className="admin-meta-small">
+                        {" "}
+                        · vérifié le {formatDateFrShort(e.verifieLe)}
+                      </span>
+                    );
+                  return null;
+                })()}
               </li>
             ))}
           </ul>

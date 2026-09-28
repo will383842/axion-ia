@@ -100,3 +100,79 @@ export function extraireLiensVideo(sources: readonly SourceTexte[]): LienVideo[]
   }
   return out;
 }
+
+/** Ce qu'il faut d'une candidature pour trouver ses liens — lu par la fiche ET le passage hebdo. */
+export interface CandidatureALiens {
+  readonly answers: Record<string, unknown> | null;
+  readonly motivation: string | null;
+  readonly linkedinUrl: string | null;
+  readonly evenements: ReadonlyArray<{
+    readonly type: string;
+    readonly summary: string;
+    readonly occurredAt: Date;
+    readonly body: string | null;
+  }>;
+}
+
+/** Types de journal qui portent ce que le CANDIDAT a envoyé (jamais nos propres messages). */
+export const TYPES_JOURNAL_DU_CANDIDAT: ReadonlySet<string> = new Set([
+  "piece_recue",
+  "email_recu",
+  "note",
+]);
+
+/**
+ * Les sources, dans l'ordre d'affichage. Une SEULE définition : si la fiche et
+ * le passage hebdomadaire ne lisaient pas les mêmes textes, la fiche montrerait
+ * un lien que personne ne vérifie.
+ */
+export function sourcesDeLiens(
+  c: CandidatureALiens,
+  dateCourte: (d: Date) => string,
+): SourceTexte[] {
+  const reponses = Object.values(c.answers ?? {})
+    .filter((v): v is string => typeof v === "string")
+    .join(" ");
+  return [
+    { source: "formulaire", texte: reponses },
+    { source: "petit mot", texte: c.motivation },
+    { source: "portfolio", texte: c.linkedinUrl },
+    ...c.evenements
+      .filter((e) => TYPES_JOURNAL_DU_CANDIDAT.has(e.type))
+      .map((e) => ({ source: `${e.summary} · ${dateCourte(e.occurredAt)}`, texte: e.body })),
+  ];
+}
+
+export type EtatLien = "vivant" | "mort" | "inverifiable";
+
+/** Plateformes derrière une connexion : on ne peut PAS savoir, on ne dit pas « mort ». */
+const DERRIERE_CONNEXION = new Set(["Instagram", "Facebook", "LinkedIn"]);
+
+/** Service oEmbed officiel : il dit si la VIDÉO existe (une page YouTube répond 200 même vidéo retirée). */
+export function urlOembed(url: string): string | null {
+  const p = plateformeDe(url);
+  const u = encodeURIComponent(url);
+  if (p === "YouTube") return `https://www.youtube.com/oembed?format=json&url=${u}`;
+  if (p === "Vimeo") return `https://vimeo.com/api/oembed.json?url=${u}`;
+  if (p === "TikTok") return `https://www.tiktok.com/oembed?url=${u}`;
+  return null;
+}
+
+export function estDerriereConnexion(url: string): boolean {
+  return DERRIERE_CONNEXION.has(plateformeDe(url));
+}
+
+/**
+ * L'état d'un lien d'après le code HTTP obtenu (de la page ou de l'oEmbed).
+ * 🔑 Seuls 404 et 410 — et 400 sur un oEmbed, qui veut dire « cette URL ne
+ * désigne aucune vidéo » — valent « mort ». 401/403 (privé, anti-robot), 429,
+ * 5xx et `null` (délai, réseau) valent « invérifiable » : une panne passagère
+ * lue comme une mort ferait écarter un candidat à tort.
+ */
+export function etatDepuisStatut(statut: number | null, viaOembed: boolean): EtatLien {
+  if (statut === null) return "inverifiable";
+  if (statut >= 200 && statut < 400) return "vivant";
+  if (statut === 404 || statut === 410) return "mort";
+  if (viaOembed && statut === 400) return "mort";
+  return "inverifiable";
+}
