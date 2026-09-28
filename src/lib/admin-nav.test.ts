@@ -201,7 +201,10 @@ describe("buildAdminNav SSOT", () => {
     // +1 (2026-09-27, Dossier intervenant) : sous-onglet des Imprimés, dérivé
     // de IMPRIMES — le dossier de conférencier de Williams, envoyé aux
     // organisateurs d'événements qui ont répondu. 167 + 1 = 168.
-    expect(items.length).toBe(168);
+    // +1 (2026-09-28, Trame de l'échange découverte apporteur) : sous-onglet
+    // des Imprimés, dérivé de IMPRIMES — document INTERNE, téléchargeable par
+    // la seule route console `/api/admin/imprimes/<id>/<fichier>`. 168 + 1 = 169.
+    expect(items.length).toBe(169);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
