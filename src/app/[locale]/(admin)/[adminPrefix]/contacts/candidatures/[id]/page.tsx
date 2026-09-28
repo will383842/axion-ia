@@ -17,6 +17,10 @@ import { lireFrise, lireEntretiens } from "@/features/admin-job-applications/tim
 import { lireAccuseReception } from "@/features/admin-job-applications/accuse-reception";
 import { Entretiens } from "./Entretiens";
 import { DeposerCv } from "./DeposerCv";
+import { ProposerReseauApporteurs } from "./ProposerReseauApporteurs";
+import { ficheApporteurDeLaCandidature } from "@/features/admin-job-applications/proposer-reseau";
+import { estLienCalendlyValide } from "@/lib/commercial-application/kit-apporteur";
+import { adminPath } from "@/lib/admin-path";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { liensInsertionComposeur } from "@/lib/imprimes/liens-email";
@@ -70,12 +74,15 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
   // sa lecture réapplique le prédicat d'ouverture du dossier plutôt que de se
   // fier à la garde de la page. Deux étages qui ne peuvent pas diverger.
   const acteur = { role: (session.user as { role?: string }).role };
-  const [frise, entretiens, accuse] = await Promise.all([
+  const [frise, entretiens, accuse, ficheApporteur] = await Promise.all([
     lireFrise(a.id, acteur),
     lireEntretiens(a.id, acteur),
     // L'accusé de réception automatique : parti, en échec, ou introuvable.
     // Même prédicat que la frise — il lit l'adresse du candidat.
     lireAccuseReception({ id: a.id, email: a.email, submittedAt: a.submittedAt }, acteur),
+    // « Proposer le réseau d'apporteurs » (2026-09-28) : la fiche apporteur
+    // déjà née de cette candidature, pour afficher le lien plutôt que le bouton.
+    ficheApporteurDeLaCandidature(a.id),
   ]);
   const questions = parseScreeningQuestions(offer?.screeningQuestions);
   const qParId = new Map(questions.map((q) => [q.id, q]));
@@ -265,6 +272,25 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           <ConsignerAuJournal applicationId={a.id} />
         </div>
         <FriseCandidature entrees={frise} accuse={accuse} />
+      </AdminCard>
+
+      {/* 2026-09-28 (Will) — proposer AUSSI le réseau d'apporteurs d'affaires
+          indépendants à une personne qui a postulé à une offre salariée. La
+          candidature au poste n'en est pas modifiée. */}
+      <AdminCard>
+        <h3 className="admin-section-title">Réseau d&apos;apporteurs</h3>
+        <ProposerReseauApporteurs
+          applicationId={a.id}
+          ficheExistante={
+            ficheApporteur
+              ? {
+                  lien: adminPath("fr", `contacts/commercial/${ficheApporteur.id}`),
+                  creeeLe: formatDateFrShort(ficheApporteur.creeeLe),
+                }
+              : null
+          }
+          lienCalendlyConfigure={estLienCalendlyValide(env.CALENDLY_APPORTEUR_URL ?? "")}
+        />
       </AdminCard>
 
       <AdminCard>

@@ -11,8 +11,9 @@
 //   · le lien de réservation : `CALENDLY_APPORTEUR_URL` — le lien PAR DÉFAUT de
 //     la console. L'administrateur pouvait le modifier au moment d'inviter :
 //     l'aperçu le dit ;
-//   · candidature / variante d'objet : même règle que l'envoi (toute fiche qui
-//     n'est pas une saisie manuelle est une candidature ; `varianteObjet`) ;
+//   · candidature / variante d'objet / offre : même règle que l'envoi
+//     (`marqueDemarche` — offre d'emploi d'abord, puis toute fiche qui n'est
+//     pas une saisie manuelle est une candidature ; `varianteObjet`) ;
 //   · provenance (saisie manuelle seulement) : même règle que l'envoi ;
 //   · le lien du dossier : `dossierDejaArrive`, évalué sur les lignes de la
 //     personne qui existaient AU MOMENT DE L'ENVOI (un dossier arrivé depuis
@@ -49,7 +50,7 @@ import { ORIGINE_SAISIE_MANUELLE } from "@/lib/contact/accuse-attendu";
 import {
   GABARIT_INVITATION_APPORTEUR,
   dossierDejaArrive,
-  varianteObjet,
+  marqueDemarche,
   type Provenance,
 } from "@/features/commercial-application/invitation-apporteur";
 import type { DetailEmail } from "./detail";
@@ -214,9 +215,9 @@ export async function reconstituerInvitation(e: DetailEmail): Promise<ApercuReco
       calendlyUrl,
       ...(dossierUrl ? { dossierUrl } : {}),
       ...(provenance ? { provenance } : {}),
-      ...(details.origine !== ORIGINE_SAISIE_MANUELLE
-        ? { candidature: true, variante: varianteObjet(fiche.id) }
-        : {}),
+      // Même règle que l'envoi : `offre` (fiche née d'une candidature à une
+      // offre d'emploi, 2026-09-28), sinon `candidature` hors saisie manuelle.
+      ...marqueDemarche(fiche.details, fiche.id),
       ...(regles.signature ? {} : { sansSignature: true }),
     };
 
