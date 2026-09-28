@@ -4,8 +4,6 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 
 import { routing } from "@/i18n/routing";
-import { Section } from "@/components/layout/Section";
-import { Container } from "@/components/layout/Container";
 import { CompleterCandidatureForm } from "@/components/forms/CompleterCandidatureForm";
 import { chargerDossierComplement } from "@/features/job-application/complement";
 
@@ -13,8 +11,13 @@ import { chargerDossierComplement } from "@/features/job-application/complement"
 //
 // Atteinte UNIQUEMENT par le lien personnel envoyé depuis la console
 // (variable `{lien_complement}`). Le candidat répond aux questions de l'offre,
-// et ses réponses s'écrivent dans sa fiche : plus de réponse par e-mail à
-// recopier à la main. Non indexée, rendue à la demande (le jeton est lu en base).
+// et ses réponses s'écrivent dans sa fiche.
+//
+// MOBILE D'ABORD (Will, même jour : « beaucoup de blabla pour pas grand-chose ») :
+// pas de bandeau décoratif, un titre, une ligne, les champs. La plupart des
+// candidats ouvrent le lien depuis l'e-mail, sur leur téléphone.
+//
+// Non indexée, rendue à la demande (le jeton est lu en base).
 
 export const dynamic = "force-dynamic";
 
@@ -23,8 +26,9 @@ interface Props {
   searchParams: Promise<{ jeton?: string }>;
 }
 
+// Le gabarit du layout ajoute déjà « · Axion-IA ».
 export const metadata: Metadata = {
-  title: "Compléter ma candidature · Axion-IA",
+  title: "Tes tarifs",
   robots: { index: false, follow: false },
 };
 
@@ -37,46 +41,37 @@ export default async function CompleterCandidaturePage({ params, searchParams }:
   const dossier = await chargerDossierComplement(jeton);
 
   return (
-    <>
-      <Section
-        titleAs="h1"
-        eyebrow="Recrutement"
-        title="Compléter ma"
-        titleEm="candidature"
-        description={
-          dossier.ok
-            ? `${dossier.prenom ? `${dossier.prenom}, merci` : "Merci"} pour ta candidature « ${dossier.poste.split(" — ")[0]} ». Il nous manque quelques réponses pour comparer les propositions.`
-            : undefined
-        }
-      />
-      <Section>
-        <Container className="max-w-2xl">
-          {dossier.ok ? (
-            <CompleterCandidatureForm
-              jeton={jeton ?? ""}
-              questions={dossier.questions}
-              reponses={dossier.reponses}
-            />
-          ) : (
-            <div
-              role="alert"
-              className="border-accent-red/40 bg-accent-red/10 rounded-xl border-2 p-5"
-            >
-              <p className="text-fg text-base font-semibold">
-                {dossier.reason === "expired" ? "Ce lien a expiré." : "Ce lien n’est pas valide."}
-              </p>
-              <p className="text-fg-soft mt-2 text-sm leading-relaxed">
-                Il a peut-être été coupé par ta messagerie. Tu peux aussi répondre directement à
-                notre e-mail, ou écrire à{" "}
-                <a className="text-primary underline" href="mailto:contact@axion-ia.com">
-                  contact@axion-ia.com
-                </a>
-                .
-              </p>
-            </div>
-          )}
-        </Container>
-      </Section>
-    </>
+    <div className="mx-auto w-full max-w-md px-4 pt-6 pb-12 sm:pt-10">
+      {dossier.ok ? (
+        <>
+          <h1 className="text-fg font-serif text-3xl font-semibold">Tes tarifs</h1>
+          <p className="text-fg-soft mt-1 mb-4 text-sm">
+            {dossier.prenom ? `${dossier.prenom} · ` : ""}
+            {dossier.poste.split(" — ")[0]}
+          </p>
+          <p className="border-terracotta/40 bg-terracotta-soft/30 text-fg mb-6 rounded-lg border px-3 py-2 text-sm">
+            On compare toutes les propositions : indique directement ton meilleur prix.
+          </p>
+          <CompleterCandidatureForm
+            jeton={jeton ?? ""}
+            questions={dossier.questions}
+            reponses={dossier.reponses}
+          />
+        </>
+      ) : (
+        <div role="alert" className="border-accent-red/40 bg-accent-red/10 rounded-xl border-2 p-5">
+          <h1 className="text-fg text-lg font-semibold">
+            {dossier.reason === "expired" ? "Ce lien a expiré." : "Ce lien n’est pas valide."}
+          </h1>
+          <p className="text-fg-soft mt-2 text-sm">
+            Réponds directement à notre e-mail, ou écris à{" "}
+            <a className="text-primary underline" href="mailto:contact@axion-ia.com">
+              contact@axion-ia.com
+            </a>
+            .
+          </p>
+        </div>
+      )}
+    </div>
   );
 }
