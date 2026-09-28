@@ -20,6 +20,8 @@ import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
 import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 
 import { ecrireEtEnfilerReponse } from "./envoyer-reponse";
+import { remplirModele } from "@/content/recrutement/modeles-reponse";
+import { lienComplement } from "@/features/job-application/complement";
 import { MODELES_REPONSE_IDS } from "@/content/recrutement/modeles-reponse";
 
 /**
@@ -99,9 +101,20 @@ export async function repondreAuCandidatAction(
       offerTitleSnap: true,
       firstName: true,
       lastName: true,
+      offer: { select: { id: true, screeningQuestions: true } },
     },
   });
   if (!candidature) return { ok: false, error: "candidature_introuvable" };
+
+  // `{lien_complement}` se résout ICI, côté serveur : le lien est signé avec
+  // AUTH_SECRET, que le navigateur n'a pas. Une offre sans questions n'a pas
+  // de lien — on refuse plutôt que d'envoyer « {lien_complement} » en clair.
+  let corps = data.bodyMarkdown;
+  if (corps.includes("{lien_complement}")) {
+    const lien = await lienComplement(candidature.id, candidature.offer);
+    if (!lien) return { ok: false, error: "lien_complement_indisponible" };
+    corps = remplirModele(corps, { lien_complement: lien });
+  }
 
   // 🔑 L'ÉCRITURE PASSE PAR `ecrireEtEnfilerReponse`, ET C'EST LE MÊME CHEMIN
   // QUE L'ENVOI GROUPÉ. Ces cent lignes vivaient ici ; les recopier dans le
@@ -111,7 +124,7 @@ export async function repondreAuCandidatAction(
   // `reviewing`, et le `failed` posé quand la file d'envoi refuse.
   const issue = await ecrireEtEnfilerReponse(candidature, acteur, {
     subject: data.subject,
-    bodyMarkdown: data.bodyMarkdown,
+    bodyMarkdown: corps,
     modele: data.modele,
     internalNote: data.internalNote,
   });

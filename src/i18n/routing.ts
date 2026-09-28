@@ -414,6 +414,10 @@ export const routing = defineRouting({
     // correctif — et le mot « vivier » n'a de toute façon pas à être traduit
     // sur un site francophone.
     "/vivier-opposition": { fr: "/vivier-opposition", en: "/vivier-opposition" },
+    "/completer-ma-candidature": {
+      fr: "/completer-ma-candidature",
+      en: "/completer-ma-candidature",
+    },
     "/preferences-cookies": { fr: "/preferences-cookies", en: "/cookie-preferences" },
     "/mes-donnees": { fr: "/mes-donnees", en: "/my-data" },
     "/mes-donnees/export": { fr: "/mes-donnees/export", en: "/my-data/export" },
