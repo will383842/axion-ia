@@ -31,6 +31,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { auth } from "@/auth";
 import { DOSSIER_FICHIERS_INTERNES, fichierInterneAutorise } from "@/content/imprimes";
+import { dispositionDemandee, enTeteContentDisposition } from "@/lib/content-disposition";
 import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
 
 export const runtime = "nodejs";
@@ -46,7 +47,7 @@ function texte(status: number, message: string): NextResponse {
 }
 
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string; fichier: string }> },
 ): Promise<NextResponse> {
   const session = await auth();
@@ -75,7 +76,8 @@ export async function GET(
     headers: {
       ...PRIVE,
       "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="${entree.fichier}"`,
+      // S'ouvre dans l'onglet par défaut ; `?dl=1` l'enregistre (SSOT).
+      "Content-Disposition": enTeteContentDisposition(dispositionDemandee(req.url), entree.fichier),
       "Content-Length": String(octets.byteLength),
       "X-Content-Type-Options": "nosniff",
       "X-Robots-Tag": "noindex, nofollow",

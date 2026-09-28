@@ -10,13 +10,19 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const authMock = vi.fn();
 vi.mock("@/auth", () => ({ auth: () => authMock() }));
 
+import { CONSULTATION, ENREGISTREMENT } from "@/lib/content-disposition";
+
 import { GET } from "./route";
 
 const RACINE = path.resolve(__dirname, "../../../../../../..");
 const PDF = path.join(RACINE, "private/imprimes/trame-echange-apporteur.pdf");
 
-function appeler(id = "trame-echange-apporteur", fichier = "trame-echange-apporteur.pdf") {
-  return GET({} as never, { params: Promise.resolve({ id, fichier }) });
+function appeler(
+  id = "trame-echange-apporteur",
+  fichier = "trame-echange-apporteur.pdf",
+  url = `https://axion-ia.com/api/admin/imprimes/${id}/${fichier}`,
+) {
+  return GET({ url } as never, { params: Promise.resolve({ id, fichier }) });
 }
 
 function connecte(role: string | undefined) {
@@ -52,13 +58,25 @@ describe("téléchargement d'un imprimé interne", () => {
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toBe("application/pdf");
     expect(res.headers.get("content-disposition")).toBe(
-      'attachment; filename="trame-echange-apporteur.pdf"',
+      `${CONSULTATION}; filename="trame-echange-apporteur.pdf"`,
     );
     expect(res.headers.get("cache-control")).toBe("private, no-store");
     const corps = Buffer.from(await res.arrayBuffer());
     expect(corps.subarray(0, 5).toString("latin1")).toBe("%PDF-");
     // Les octets servis sont ceux du dépôt, pas un fichier voisin.
     expect(corps.equals(readFileSync(PDF))).toBe(true);
+  });
+
+  it("s'enregistre au lieu de s'ouvrir avec ?dl=1", async () => {
+    connecte("admin");
+    const res = await appeler(
+      "trame-echange-apporteur",
+      "trame-echange-apporteur.pdf",
+      "https://axion-ia.com/api/admin/imprimes/trame-echange-apporteur/trame-echange-apporteur.pdf?dl=1",
+    );
+    expect(res.headers.get("content-disposition")).toBe(
+      `${ENREGISTREMENT}; filename="trame-echange-apporteur.pdf"`,
+    );
   });
 
   it("sert aussi le super-administrateur et le secrétariat, qui mènent les échanges", async () => {
