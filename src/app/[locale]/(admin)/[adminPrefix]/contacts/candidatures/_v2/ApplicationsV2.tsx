@@ -51,8 +51,6 @@ import {
 import { PLAFOND_EN_MASSE } from "@/features/admin-job-applications/en-masse";
 import { MODELES_REPONSE } from "@/content/recrutement/modeles-reponse";
 import { FormulaireEnMasse } from "./FormulaireEnMasse";
-import { basculerReponsePostePourvuAction } from "@/features/admin-job-applications/reponse-poste-pourvu-actions";
-import { AGE_MIN_JOURS } from "@/server/careers/reponse-poste-pourvu";
 
 /**
  * Les menus du geste groupé, DÉRIVÉS du vocabulaire — jamais recopiés.
@@ -123,7 +121,14 @@ interface Props {
    */
   plusAncienJamaisRepondu?: { id: string; offerTitleSnap: string; jours: number } | null;
   /** Réponse automatique « poste pourvu » — état et dossiers qu'elle a devant elle. */
-  reponseAuto?: { active: boolean; enAttente: number } | null;
+  // Action et délai passés PAR LA PAGE : les importer ici tirerait l'auth
+  // (next-auth) dans ce composant, que ses tests rendent sans serveur.
+  reponseAuto?: {
+    active: boolean;
+    enAttente: number;
+    ageMinJours: number;
+    basculer: (formData: FormData) => Promise<void>;
+  } | null;
 }
 
 export function ApplicationsV2({
@@ -247,7 +252,7 @@ export function ApplicationsV2({
           arrêtable ici, là où l'on travaille les candidatures. */}
       {reponseAuto ? (
         <form
-          action={basculerReponsePostePourvuAction}
+          action={reponseAuto.basculer}
           className={`admin-alert ${reponseAuto.active ? "admin-alert-success" : "admin-alert-info"} mb-[var(--space-admin-4)]`}
         >
           <input type="hidden" name="actif" value={reponseAuto.active ? "0" : "1"} />
@@ -255,8 +260,9 @@ export function ApplicationsV2({
             Réponse automatique « poste pourvu » : {reponseAuto.active ? "active" : "arrêtée"}.
           </strong>{" "}
           Chaque heure, au plus 15 candidats hors vidéo restés « nouvelle » sans réponse depuis{" "}
-          {AGE_MIN_JOURS} jours reçoivent « poste pourvu, nous gardons votre dossier ». Passer un
-          dossier « en revue » le protège. En attente : <strong>{reponseAuto.enAttente}</strong>.{" "}
+          {reponseAuto.ageMinJours} jours reçoivent « poste pourvu, nous gardons votre dossier ».
+          Passer un dossier « en revue » le protège. En attente :{" "}
+          <strong>{reponseAuto.enAttente}</strong>.{" "}
           <button type="submit" className="admin-button-ghost">
             {reponseAuto.active ? "Arrêter" : "Mettre en marche"}
           </button>
