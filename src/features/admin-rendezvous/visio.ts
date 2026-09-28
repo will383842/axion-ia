@@ -157,3 +157,33 @@ export function momentVisio(
   if (t >= debut.getTime() - MINUTES_AVANT_VISIO * 60_000) return "imminente";
   return "a-venir";
 }
+
+/** L'heure de fin, ou le début + 60 minutes quand Calendly ne l'a pas donnée. */
+export function finEffective(debut: Date, fin: Date | null): Date {
+  return fin ?? new Date(debut.getTime() + DUREE_PAR_DEFAUT_MINUTES * 60_000);
+}
+
+/**
+ * Où en est le rendez-vous lui-même — distinct de `momentVisio`, qui décide du
+ * BOUTON (2026-09-28).
+ *
+ * Demande de Will : « une fois la visio passée, ça indique toujours "en
+ * cours" ». La carte ne connaissait qu'un booléen (« le début est passé ») :
+ * pendant les 30 minutes de grâce qui suivent la fin, elle affirmait donc un
+ * appel en cours qui était terminé.
+ *
+ * · `a_venir`  — maintenant < début ;
+ * · `en_cours` — début ≤ maintenant < fin ;
+ * · `termine`  — fin ≤ maintenant (fin inconnue : début + 60 min).
+ *
+ * « Terminé » parle du CRÉNEAU, pas de l'échange : savoir s'il a eu lieu, c'est
+ * le point qui le dit — d'où « Terminé — faites le point » sur la carte.
+ */
+export type EtatRdv = "a_venir" | "en_cours" | "termine";
+
+export function etatRendezVous(debut: Date, fin: Date | null, maintenant: Date): EtatRdv {
+  const t = maintenant.getTime();
+  if (t < debut.getTime()) return "a_venir";
+  if (t < finEffective(debut, fin).getTime()) return "en_cours";
+  return "termine";
+}

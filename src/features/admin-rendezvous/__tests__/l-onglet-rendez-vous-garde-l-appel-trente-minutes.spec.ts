@@ -71,7 +71,10 @@ describe("listRendezVousAVenir", () => {
     const pendant = await listRendezVousAVenir({ maintenant: new Date("2026-09-28T14:40:00Z") });
     expect(pendant).toHaveLength(1);
     expect(pendant[0]?.status).toBe("scheduled");
+    // Après la fin, dans la grâce : les boutons du point restent ouverts
+    // (`enCours`), mais la carte ne dit plus « en cours » (2026-09-28).
     expect(pendant[0]?.enCours).toBe(true);
+    expect(pendant[0]?.etat).toBe("termine");
 
     const apres = await listRendezVousAVenir({ maintenant: new Date("2026-09-28T14:46:00Z") });
     expect(apres).toHaveLength(0);
@@ -87,6 +90,7 @@ describe("listRendezVousAVenir", () => {
     expect(r?.autresInvites).toEqual(["collegue@example.com"]);
     expect(r?.lienVisio).toBe("/api/admin/appels/evt_1/visio");
     expect(r?.enCours).toBe(false);
+    expect(r?.etat).toBe("a_venir");
   });
 
   it("ne demande à la base que les rendez-vous programmés", async () => {

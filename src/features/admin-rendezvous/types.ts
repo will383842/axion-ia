@@ -1,4 +1,5 @@
 import type { CanalRendezVous } from "@/server/calendly/canal";
+import type { EtatRdv } from "./visio";
 // Module RV téléphonique — view-model unifié des rendez-vous (read-only).
 //
 // V1 = source `CalendlyEvent` (seul canal public actif). La couche est conçue
@@ -66,8 +67,16 @@ export interface UnifiedRdv {
 
 /** Une carte de l'onglet « Rendez-vous » : le rendez-vous et ce qu'on lit avant l'appel. */
 export interface RdvAVenir extends UnifiedRdv {
-  /** L'heure de début est passée : l'appel a commencé (ou vient de finir). */
+  /**
+   * Le début est passé : l'échange a commencé, OU il est terminé et la carte
+   * vit ses 30 minutes de grâce. C'est ce qui ouvre les boutons du point.
+   *
+   * ⚠️ Ne dit PAS « en cours » : c'était le défaut signalé par Will le
+   * 2026-09-28 (« ça indique toujours en cours »). Pour l'affichage, lire `etat`.
+   */
   enCours: boolean;
+  /** À venir, en cours (début ≤ maintenant < fin) ou terminé (fin ≤ maintenant). */
+  etat: EtatRdv;
   /** Réponse à la question « Nom de l'entreprise » du formulaire Calendly. */
   entreprise: string | null;
   /** Les autres réponses du formulaire — le besoin exprimé. */
@@ -85,6 +94,15 @@ export interface RdvAVenir extends UnifiedRdv {
     /** Note d'échange /20 d'un échange apporteur. */
     noteSur20?: number | null;
   } | null;
+}
+
+/**
+ * Une ligne de l'onglet « Passés » (2026-09-28) : un rendez-vous terminé et ce
+ * que son point a dit — ou rien, et l'écran affiche alors « Sans point ».
+ */
+export interface RdvPasse extends UnifiedRdv {
+  entreprise: string | null;
+  suivi: RdvAVenir["suivi"];
 }
 
 /**

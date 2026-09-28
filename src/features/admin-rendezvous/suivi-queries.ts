@@ -8,7 +8,8 @@ import { prisma } from "@/lib/prisma";
 import { dayKeyInParis } from "@/lib/calendar-grid";
 import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import { entrepriseEtBesoin, reponsesFormulaire } from "./a-venir";
-import { momentVisio } from "./visio";
+import { finEffective, momentVisio } from "./visio";
+import { joursDeRetard } from "./point";
 import { JOURS_A_FAIRE_LE_POINT, type IssueRdv, type SuiteRdv } from "./suivi";
 import type { PublicRdv } from "./types";
 import type { DecisionApporteur } from "./issue-apporteur";
@@ -22,6 +23,11 @@ export interface RdvAFaireLePoint {
   contactName: string | null;
   contactEmail: string | null;
   entreprise: string | null;
+  /**
+   * Jours écoulés depuis la fin quand le point attend depuis plus de 24 h,
+   * sinon `null` (2026-09-28). La carte passe alors au rouge.
+   */
+  retardJours: number | null;
 }
 
 /**
@@ -30,6 +36,11 @@ export interface RdvAFaireLePoint {
  * Un rendez-vous y arrive quand il quitte « À venir » (30 min après sa fin),
  * et en sort dès que le point est enregistré. Les annulés n'y figurent pas :
  * il n'y a rien à constater sur un appel qui n'a pas été maintenu.
+ *
+ * Ordre (2026-09-28) : les RETARDS d'abord (fin il y a plus de 24 h), du plus
+ * ancien au plus récent, puis les autres par date. Au-delà de 30 jours, un
+ * rendez-vous sans point ne disparaît plus en silence : il est dans l'onglet
+ * « Passés », marqué « Sans point ».
  */
 export async function listRendezVousAFaireLePoint(
   options: { public?: PublicRdv; maintenant?: Date } = {},
@@ -57,7 +68,7 @@ export async function listRendezVousAFaireLePoint(
     },
   });
 
-  return lignes.flatMap((e): RdvAFaireLePoint[] => {
+  const liste = lignes.flatMap((e): RdvAFaireLePoint[] => {
     if (!e.startTime) return [];
     // Encore dans « À venir » : pas encore l'heure de faire le point.
     if (momentVisio(e.startTime, e.endTime, maintenant) !== "terminee") return [];
@@ -73,9 +84,13 @@ export async function listRendezVousAFaireLePoint(
         contactName: e.inviteeName,
         contactEmail: e.inviteeEmail,
         entreprise: entrepriseEtBesoin(reponsesFormulaire(e.rawPayload)).entreprise,
+        retardJours: joursDeRetard(finEffective(e.startTime, e.endTime), maintenant),
       },
     ];
   });
+  // Tri stable : la base a déjà rangé par début croissant — les retards
+  // passent devant sans perdre cet ordre (le plus ancien d'abord).
+  return liste.sort((a, b) => Number(b.retardJours !== null) - Number(a.retardJours !== null));
 }
 
 /**

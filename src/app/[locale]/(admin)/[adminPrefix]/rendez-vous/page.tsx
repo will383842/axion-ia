@@ -18,7 +18,12 @@
 import Link from "next/link";
 import { Phone } from "lucide-react";
 
-import { AdminPageHeader, AdminFilterTabs, AdminEmptyState } from "@/components/admin/ui";
+import {
+  AdminPageHeader,
+  AdminFilterTabs,
+  AdminEmptyState,
+  AdminBadge,
+} from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { RejoindreVisioBouton } from "@/components/admin/contacts/RejoindreVisioBouton";
 import { SuiviRendezVousForm } from "@/components/admin/contacts/SuiviRendezVousForm";
@@ -29,8 +34,13 @@ import {
   type DecisionApporteur,
 } from "@/features/admin-rendezvous/issue-apporteur";
 import { gardeLectureAppels } from "@/features/admin-calendly/acces";
-import { listRendezVousAVenir } from "@/features/admin-rendezvous/queries";
-import type { PublicRdv, RdvAVenir } from "@/features/admin-rendezvous/types";
+import {
+  JOURS_PASSES,
+  listRendezVousAVenir,
+  listRendezVousPasses,
+} from "@/features/admin-rendezvous/queries";
+import type { PublicRdv, RdvAVenir, RdvPasse } from "@/features/admin-rendezvous/types";
+import { enJours, libelleDuPoint } from "@/features/admin-rendezvous/point";
 import { MINUTES_APRES_FIN } from "@/features/admin-rendezvous/visio";
 import {
   bilanDuMois,
@@ -51,6 +61,8 @@ import { dayKeyInParis, dayKeyOfGridDate, timeInParis } from "@/lib/calendar-gri
 import { formatDateFrShort } from "@/lib/format-date-fr";
 
 export const dynamic = "force-dynamic";
+
+type Vue = "avenir" | "point" | "passes";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
@@ -79,6 +91,34 @@ function libelleIssue(
   return i ? LIBELLE_ISSUE_APPORTEUR[i] : LIBELLE_ISSUE[issue];
 }
 
+/**
+ * L'état affiché à côté de l'heure (2026-09-28). Avant : « ● en cours » dès le
+ * début, et jusqu'à 30 minutes APRÈS la fin — Will lisait « en cours » sur un
+ * appel terminé, sans savoir s'il se passait quelque chose ensuite.
+ */
+function EtatCarte({ r, apporteur }: { r: RdvAVenir; apporteur: boolean }) {
+  const classe = "ml-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-medium";
+  if (r.etat === "en_cours") {
+    return <span className={`${classe} text-[color:var(--color-admin-danger)]`}>● En cours</span>;
+  }
+  if (r.etat !== "termine") return null;
+  if (r.suivi) {
+    const issue = apporteur
+      ? libelleIssue(r.suivi.issue, r.suivi.decision ?? null)
+      : libelleDuPoint(r.suivi);
+    return (
+      <span className={`${classe} text-[color:var(--color-admin-success-fg)]`}>
+        Point fait ✓ — {issue}
+      </span>
+    );
+  }
+  return (
+    <span className={`${classe} text-[color:var(--color-admin-warning-fg)]`}>
+      Terminé — faites le point
+    </span>
+  );
+}
+
 function CarteRdv({ r, maintenant }: { r: RdvAVenir; maintenant: Date }) {
   const debut = r.startTime as Date;
   const apporteur = estAppelApporteur(r.title);
@@ -99,11 +139,7 @@ function CarteRdv({ r, maintenant }: { r: RdvAVenir; maintenant: Date }) {
           <p className="text-[length:var(--text-admin-lg)] font-semibold tabular-nums">
             {timeInParis(debut)}
             {r.endTime ? ` – ${timeInParis(r.endTime)}` : ""}
-            {r.enCours ? (
-              <span className="ml-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-danger)]">
-                ● en cours
-              </span>
-            ) : null}
+            <EtatCarte r={r} apporteur={apporteur} />
           </p>
           <p className="font-semibold">
             {r.contactName ?? "Invité à compléter"}
@@ -253,8 +289,20 @@ function CartePoint({ r }: { r: RdvAFaireLePoint }) {
       })
     : null;
   return (
-    <li className="admin-card flex flex-col gap-[var(--space-admin-3)]">
+    <li
+      className="admin-card flex flex-col gap-[var(--space-admin-3)]"
+      // Style en ligne, pas un utilitaire : `.admin-card` pose sa bordure hors
+      // couche, un `border-[…]` Tailwind à côté serait inerte.
+      style={r.retardJours !== null ? { borderColor: "var(--color-admin-danger)" } : undefined}
+    >
       <div>
+        {r.retardJours !== null ? (
+          <p className="mb-[var(--space-admin-1)]">
+            <AdminBadge tone="destructive" dot>
+              En retard depuis {enJours(r.retardJours)}
+            </AdminBadge>
+          </p>
+        ) : null}
         <p className="font-semibold">
           {r.contactName ?? "Invité à compléter"}
           {r.entreprise ? (
@@ -302,7 +350,7 @@ export default async function RendezVousPage({
 
   const sp = await searchParams;
   const publicRdv = lirePublic(sp["public"]);
-  const vue = sp["vue"] === "point" ? "point" : "avenir";
+  const vue: Vue = sp["vue"] === "point" ? "point" : sp["vue"] === "passes" ? "passes" : "avenir";
   const base = `/fr/${adminPrefix}/rendez-vous`;
   const maintenant = new Date();
   const aujourdhui = dayKeyInParis(maintenant);
@@ -313,9 +361,10 @@ export default async function RendezVousPage({
     listRendezVousAVenir({ maintenant, ...optionsPublic }),
     listRendezVousAFaireLePoint({ maintenant, ...optionsPublic }),
   ]);
-  const lien = (v: "avenir" | "point", p: PublicRdv | undefined): string => {
+  const enRetard = aFaire.filter((r) => r.retardJours !== null).length;
+  const lien = (v: Vue, p: PublicRdv | undefined): string => {
     const qs = new URLSearchParams();
-    if (v === "point") qs.set("vue", "point");
+    if (v !== "avenir") qs.set("vue", v);
     if (p) qs.set("public", p);
     const t = qs.toString();
     return t ? `${base}?${t}` : base;
@@ -332,8 +381,19 @@ export default async function RendezVousPage({
     <>
       <AdminPageHeader
         title="Rendez-vous"
-        description={`Vos prochains appels : avec qui, à quelle heure, et le bouton pour lancer la visio. Un rendez-vous quitte cette liste ${MINUTES_APRES_FIN} minutes après sa fin.`}
+        description={`Vos prochains appels : avec qui, à quelle heure, et le bouton pour lancer la visio. Un rendez-vous quitte cette liste ${MINUTES_APRES_FIN} minutes après sa fin, puis se retrouve dans « Passés ».`}
       />
+
+      {/* Demande de Will (2026-09-28) : « une fois la visio terminée, je ne
+          sais pas s'il se passe quelque chose ». Réponse : rien, tant que le
+          point n'est pas fait — et c'est voulu. */}
+      {/* La marge sur un conteneur : `.admin-help` pose `margin: 0` hors couche. */}
+      <div className="mb-[var(--space-admin-4)]">
+        <p className="admin-help">
+          Après chaque échange, indiquez comment il s&apos;est passé : c&apos;est ce bouton qui
+          envoie, si vous le choisissez, l&apos;e-mail adapté. Rien ne part automatiquement.
+        </p>
+      </div>
 
       <div className="mb-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-4)]">
         <AdminFilterTabs
@@ -343,9 +403,13 @@ export default async function RendezVousPage({
             { value: "avenir", label: `À venir (${rdv.length})`, href: lien("avenir", publicRdv) },
             {
               value: "point",
-              label: `À faire le point (${aFaire.length})`,
+              label:
+                enRetard > 0
+                  ? `À faire le point (${aFaire.length} · ${enRetard} en retard)`
+                  : `À faire le point (${aFaire.length})`,
               href: lien("point", publicRdv),
             },
+            { value: "passes", label: "Passés", href: lien("passes", publicRdv) },
           ]}
         />
         <AdminFilterTabs
@@ -361,6 +425,8 @@ export default async function RendezVousPage({
 
       {vue === "point" ? (
         <VuePoint aFaire={aFaire} maintenant={maintenant} />
+      ) : vue === "passes" ? (
+        <VuePasses maintenant={maintenant} {...optionsPublic} />
       ) : rdv.length === 0 ? (
         <AdminEmptyState
           title="Aucun rendez-vous à venir"
@@ -427,5 +493,98 @@ async function VuePoint({
         </ul>
       )}
     </>
+  );
+}
+
+/**
+ * « Passés » (2026-09-28) : les rendez-vous terminés des 90 derniers jours, du
+ * plus récent au plus ancien, et ce que le point a dit. Des lignes plutôt que
+ * des cartes : on y cherche un rendez-vous, on n'y agit pas — l'action se fait
+ * sur la fiche, ou dans « À faire le point ».
+ */
+async function VuePasses({
+  maintenant,
+  public: publicRdv,
+}: {
+  maintenant: Date;
+  public?: PublicRdv;
+}): Promise<React.ReactElement> {
+  const passes = await listRendezVousPasses({
+    maintenant,
+    ...(publicRdv ? { public: publicRdv } : {}),
+  });
+  if (passes.length === 0) {
+    return (
+      <AdminEmptyState
+        title="Aucun rendez-vous passé"
+        description={`Aucun rendez-vous terminé ces ${JOURS_PASSES} derniers jours.`}
+      />
+    );
+  }
+  const sansPoint = passes.filter((r) => !r.suivi).length;
+  return (
+    <>
+      <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+        {passes.length} rendez-vous terminé{passes.length > 1 ? "s" : ""} ces {JOURS_PASSES}{" "}
+        derniers jours
+        {sansPoint > 0 ? ` · ${sansPoint} sans point` : " · tous ont leur point"}
+      </p>
+      <ul className="flex flex-col gap-[var(--space-admin-2)]">
+        {passes.map((r) => (
+          <LignePasse key={r.key} r={r} />
+        ))}
+      </ul>
+    </>
+  );
+}
+
+function LignePasse({ r }: { r: RdvPasse }) {
+  const debut = r.startTime as Date;
+  const apporteur = estAppelApporteur(r.title);
+  return (
+    <li>
+      <Link
+        href={r.detailHref}
+        className="flex flex-wrap items-start justify-between gap-[var(--space-admin-3)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-3 hover:bg-[color:var(--color-admin-surface-hover)]"
+      >
+        <span className="min-w-0">
+          <span className="block font-semibold">
+            {r.contactName ?? "Invité à compléter"}
+            {r.entreprise ? (
+              <span className="font-normal text-[color:var(--color-admin-fg-muted)]">
+                {" "}
+                · {r.entreprise}
+              </span>
+            ) : null}
+          </span>
+          <span className="block text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            {formatDateFrShort(r.dayKey)} à {timeInParis(debut)} ·{" "}
+            {apporteur ? "Apporteur" : "Client"} · {r.title}
+          </span>
+          {r.suivi?.note ? (
+            <span className="mt-[var(--space-admin-1)] block text-[length:var(--text-admin-sm)] italic">
+              « {r.suivi.note} »
+            </span>
+          ) : null}
+        </span>
+        <span className="flex shrink-0 flex-wrap items-center gap-[var(--space-admin-2)]">
+          {r.suivi ? (
+            <AdminBadge tone={r.suivi.issue === "eu_lieu" ? "success" : "neutral"}>
+              {libelleDuPoint(r.suivi)}
+              {r.suivi.noteSur20 !== null && r.suivi.noteSur20 !== undefined
+                ? ` · ${r.suivi.noteSur20}/20`
+                : ""}
+            </AdminBadge>
+          ) : (
+            <AdminBadge tone="warning" dot>
+              Sans point
+            </AdminBadge>
+          )}
+          <span aria-hidden="true" className="text-[color:var(--color-admin-fg-muted)]">
+            ›
+          </span>
+        </span>
+      </Link>
+    </li>
   );
 }
