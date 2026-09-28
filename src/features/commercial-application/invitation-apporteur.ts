@@ -408,6 +408,25 @@ export async function envoyerInvitationApporteur(input: {
     });
   }
 
+  // 🔴 2026-09-28 (Will) — « on les a contactés, et la console ne se met pas à
+  // jour ». L'invitation ne touchait ni le statut ni `replyCount` : les 58
+  // invités du 27/09 restaient comptés « à traiter » (58 des 68 du badge).
+  // La balle est désormais dans le camp du candidat : la fiche est RANGÉE,
+  // exactement le geste « Traité » de la console (`transitions.ts`) — elle
+  // reste vivante et les rappels J+3/J+7 continuent. Une réponse humaine
+  // reçue dans Zoho la rouvre (`reponses-entrantes-apporteur.ts`).
+  // Best-effort : l'invitation est partie, un statut non rangé n'est que du bruit.
+  try {
+    await prisma.submission.updateMany({
+      where: { id: ligne.id, status: { in: ["new", "in_progress"] }, archivedAt: null },
+      data: { status: "processed", needsAttention: false },
+    });
+  } catch (err) {
+    Sentry.captureException(err, {
+      tags: { action: "envoyerInvitationApporteur", step: "ranger-la-fiche" },
+    });
+  }
+
   await journaliser(input.adminId, ligne, dossierUrl !== undefined, false);
   return { ok: true };
 }

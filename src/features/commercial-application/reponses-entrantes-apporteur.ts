@@ -329,7 +329,23 @@ export async function passerReponsesEntrantes(
         continue;
       }
       if (auto) enregistrees.automatiques += 1;
-      else enregistrees.humaines += 1;
+      else {
+        enregistrees.humaines += 1;
+        // Une fiche rangée à l'invitation (`invitation-apporteur.ts`) revient
+        // « à traiter » quand le candidat répond : sans ça, sa réponse ne se
+        // verrait que sur Telegram. Une réponse automatique (absence) ne rouvre rien.
+        try {
+          await prisma.submission.updateMany({
+            where: { id: r.fiche.id, status: "processed", archivedAt: null },
+            data: { status: "in_progress", needsAttention: true },
+          });
+        } catch (e) {
+          console.warn(
+            "[reponses-entrantes] fiche non rouverte :",
+            e instanceof Error ? e.message : String(e),
+          );
+        }
+      }
       await notifier(r, auto, objet);
     }
   }

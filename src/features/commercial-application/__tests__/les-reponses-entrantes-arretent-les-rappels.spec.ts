@@ -79,6 +79,16 @@ vi.mock("@/lib/prisma", () => ({
       findMany: async (a: { where?: Record<string, unknown> }) => trouver(db.submissions, a),
       findUnique: async (a: { where: { id: string } }) =>
         db.submissions.find((l) => l["id"] === a.where.id) ?? null,
+      updateMany: async (a: {
+        where: { id: string; status: string };
+        data: Record<string, unknown>;
+      }) => {
+        const cibles = db.submissions.filter(
+          (l) => l["id"] === a.where.id && l["status"] === a.where.status,
+        );
+        for (const l of cibles) Object.assign(l, a.data);
+        return { count: cibles.length };
+      },
     },
     emailLog: {
       findMany: async (a: { where?: Record<string, unknown> }) => trouver(db.emailLogs, a),
@@ -381,6 +391,22 @@ describe("🔴 ce qu'une réponse change aux rappels", () => {
     expect(await motifRetenueRelanceInvitation("ligne-a")).toBeNull();
     const r = await passerRelancesInvitation(passage(4));
     expect(r.envoyees.j3).toBe(1);
+  });
+
+  it("🔴 une réponse HUMAINE remet « à traiter » la fiche rangée à l'invitation", async () => {
+    db.submissions = [ligne({ status: "processed" })];
+    await passerReponsesEntrantes({ client: clientDouble([message()]), maintenant: MAINTENANT });
+    expect(db.submissions[0]).toMatchObject({ status: "in_progress", needsAttention: true });
+  });
+
+  it("une réponse AUTOMATIQUE laisse la fiche rangée", async () => {
+    db.submissions = [ligne({ status: "processed" })];
+    const m = message({ subject: "Re: Ton échange de 15 minutes" });
+    await passerReponsesEntrantes({
+      client: clientDouble([m], { [m.messageId]: AUTOMATIQUE }),
+      maintenant: MAINTENANT,
+    });
+    expect(db.submissions[0]!["status"]).toBe("processed");
   });
 
   it("un objet « Réponse automatique » suffit quand les en-têtes ne se lisent pas", async () => {
