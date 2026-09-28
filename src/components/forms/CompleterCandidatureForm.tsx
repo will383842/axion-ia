@@ -1,4 +1,5 @@
 "use client";
+// use-client: useActionState — état d'envoi et message d'erreur du formulaire.
 
 // Formulaire de la page `/completer-ma-candidature` — les SEULES questions de
 // l'offre, pré-remplies avec ce que le candidat a déjà répondu. Mêmes champs
