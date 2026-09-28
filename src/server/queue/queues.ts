@@ -1827,6 +1827,14 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "20 8 * * *",
         jobId: "formation-crons-candidatures-en-sommeil-cron",
       },
+      // Réponse automatique « poste pourvu » (Will, 2026-09-28) — HORAIRE, à :35,
+      // au plus 15 réponses par passage (plafond boîte 40/h partagé). Arrêtée
+      // tant que l'interrupteur de la console n'est pas mis.
+      {
+        type: "formation-crons.reponse-poste-pourvu",
+        pattern: "35 * * * *",
+        jobId: "formation-crons-reponse-poste-pourvu-cron",
+      },
       // Surveillance de la chaîne d'envoi (audit 2026-08-16) — HORAIRE, et non
       // quotidienne comme ses voisines. Une panne d'e-mails découverte le
       // lendemain matin, c'est une journée de convocations et d'attestations

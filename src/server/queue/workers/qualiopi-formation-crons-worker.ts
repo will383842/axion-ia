@@ -146,6 +146,9 @@ export type FormationCronJobType =
   // aucun statut n'est changé, aucun e-mail ne part au candidat. Décider de
   // répondre reste un geste humain.
   | "formation-crons.candidatures-en-sommeil"
+  // 2026-09-28 (Will) — réponse automatique « poste pourvu » aux candidats hors
+  // vidéo restés sans réponse 7 jours. HORAIRE, plafonnée, coupable en console.
+  | "formation-crons.reponse-poste-pourvu"
   // Surveillance de la chaîne d'envoi (audit 2026-08-16) — HORAIRE.
   //
   // ⚠️ Ce passage n'est pas « formation », et il vit pourtant ici. C'est un
@@ -2345,6 +2348,24 @@ async function handleCandidaturesEnSommeil(): Promise<void> {
 }
 
 /**
+ * Réponse automatique « poste pourvu » (décision Will 2026-09-28) — le corps et
+ * sa doctrine vivent dans `server/careers/reponse-poste-pourvu.ts`. Arrêtée tant
+ * que l'interrupteur de la console n'est pas mis. Import PARESSEUX.
+ */
+async function handleReponsePostePourvu(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  const { passerReponsePostePourvu } = await import("@/server/careers/reponse-poste-pourvu");
+  const b = await passerReponsePostePourvu(new Date());
+  if (!b.actif) return; // arrêt voulu : rien à dire à chaque heure
+  if (b.envoyees + b.ecartees + b.echouees > 0 || b.restantes > 0) {
+    console.log(
+      `[formation-crons] reponse-poste-pourvu: ${b.envoyees} envoyée(s), ` +
+        `${b.echouees} en échec de file, ${b.ecartees} écartée(s), ${b.restantes} restante(s)`,
+    );
+  }
+}
+
+/**
  * Remise des exemplaires signés que le hook de complétion n'a pas pu servir.
  *
  * ADR 0050 — renversement assumé de la décision « bouton seul » du matin même, sur
@@ -2456,6 +2477,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.offres-fraicheur": handleOffresFraicheur,
   "formation-crons.rappels-entretien": handleRappelsEntretien,
   "formation-crons.candidatures-en-sommeil": handleCandidaturesEnSommeil,
+  "formation-crons.reponse-poste-pourvu": handleReponsePostePourvu,
   "formation-crons.email-sante": handleEmailSante,
   "formation-crons.missions-formateur": handleMissionsFormateur,
   "formation-crons.formateur-convocation-j7": handleFormateurConvocationJ7,
