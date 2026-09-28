@@ -52,8 +52,7 @@ import {
 } from "./fiche-apporteur-depuis-candidature";
 
 export type IssueInvitationReseau =
-  | { envoyee: true; enValidation?: true }
-  | { envoyee: false; message: string };
+  { envoyee: true; enValidation?: true } | { envoyee: false; message: string };
 
 export type EtatPropositionReseau =
   | {
