@@ -22,6 +22,12 @@ import { AdminPageHeader, AdminFilterTabs, AdminEmptyState } from "@/components/
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { RejoindreVisioBouton } from "@/components/admin/contacts/RejoindreVisioBouton";
 import { SuiviRendezVousForm } from "@/components/admin/contacts/SuiviRendezVousForm";
+import { IssueEchangeApporteurForm } from "@/components/admin/contacts/IssueEchangeApporteurForm";
+import {
+  LIBELLE_ISSUE_APPORTEUR,
+  issueDepuisSuivi,
+  type DecisionApporteur,
+} from "@/features/admin-rendezvous/issue-apporteur";
 import { gardeLectureAppels } from "@/features/admin-calendly/acces";
 import { listRendezVousAVenir } from "@/features/admin-rendezvous/queries";
 import type { PublicRdv, RdvAVenir } from "@/features/admin-rendezvous/types";
@@ -62,6 +68,15 @@ function libelleJour(dayKey: string, aujourdhui: string): string {
   const demain = dayKeyOfGridDate(new Date(Date.UTC(y, m - 1, d + 1)));
   if (dayKey === demain) return "Demain";
   return formatDateFrShort(dayKey);
+}
+
+/** « Retenu », « Absent »… — l'issue d'un échange apporteur, en un mot. */
+function libelleIssue(
+  issue: "eu_lieu" | "absent" | "reporte",
+  decision: DecisionApporteur | null,
+): string {
+  const i = issueDepuisSuivi(issue, decision);
+  return i ? LIBELLE_ISSUE_APPORTEUR[i] : LIBELLE_ISSUE[issue];
 }
 
 function CarteRdv({ r, maintenant }: { r: RdvAVenir; maintenant: Date }) {
@@ -177,14 +192,36 @@ function CarteRdv({ r, maintenant }: { r: RdvAVenir; maintenant: Date }) {
         >
           <p className="mb-[var(--space-admin-2)] font-medium">
             {r.suivi
-              ? `Point fait : ${LIBELLE_ISSUE[r.suivi.issue]}${r.suivi.suite ? ` · ${LIBELLE_SUITE[r.suivi.suite]}` : ""} — modifiable ci-dessous`
-              : "L'appel est terminé ? Faites le point :"}
+              ? apporteur
+                ? `Issue : ${libelleIssue(r.suivi.issue, r.suivi.decision ?? null)} — modifiable ci-dessous`
+                : `Point fait : ${LIBELLE_ISSUE[r.suivi.issue]}${r.suivi.suite ? ` · ${LIBELLE_SUITE[r.suivi.suite]}` : ""} — modifiable ci-dessous`
+              : apporteur
+                ? "L'échange est terminé ? Donnez son issue :"
+                : "L'appel est terminé ? Faites le point :"}
           </p>
-          <SuiviRendezVousForm
-            calendlyEventId={r.sourceRecordId}
-            initial={r.suivi}
-            mailtoRelance={mailto}
-          />
+          {/* 2026-09-28 — un échange APPORTEUR a ses propres boutons (retenu,
+              à revoir, non retenu…) et ses e-mails, avec aperçu avant envoi. */}
+          {apporteur ? (
+            <IssueEchangeApporteurForm
+              calendlyEventId={r.sourceRecordId}
+              initial={
+                r.suivi
+                  ? {
+                      issue: issueDepuisSuivi(r.suivi.issue, r.suivi.decision ?? null),
+                      noteSur20: r.suivi.noteSur20 ?? null,
+                      justification: r.suivi.note,
+                      rappelLe: r.suivi.decision === "a_revoir" ? r.suivi.suiteLe : null,
+                    }
+                  : null
+              }
+            />
+          ) : (
+            <SuiviRendezVousForm
+              calendlyEventId={r.sourceRecordId}
+              initial={r.suivi}
+              mailtoRelance={mailto}
+            />
+          )}
         </section>
       ) : null}
 
@@ -231,7 +268,11 @@ function CartePoint({ r }: { r: RdvAFaireLePoint }) {
           {quand} · {estAppelApporteur(r.titre) ? "Apporteur" : "Client"} · {r.titre}
         </p>
       </div>
-      <SuiviRendezVousForm calendlyEventId={r.id} mailtoRelance={mailto} />
+      {estAppelApporteur(r.titre) ? (
+        <IssueEchangeApporteurForm calendlyEventId={r.id} />
+      ) : (
+        <SuiviRendezVousForm calendlyEventId={r.id} mailtoRelance={mailto} />
+      )}
     </li>
   );
 }

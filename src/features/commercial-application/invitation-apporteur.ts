@@ -59,6 +59,10 @@ import {
   type SuiviInvitation,
 } from "@/lib/commercial-application/relance-invitation";
 import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
+import {
+  decisionAffichee,
+  type EchangeAvecPoint,
+} from "@/features/admin-rendezvous/issue-apporteur";
 
 /** Nom du gabarit — aussi la clé de lecture de l'historique (`EmailLog.template`). */
 export const GABARIT_INVITATION_APPORTEUR = "apporteur-invitation-appel";
@@ -517,7 +521,14 @@ export async function lireSuiviInvitationListe(
     }),
     prisma.calendlyEvent.findMany({
       where: { linkedSubmissionId: { in: toutes } },
-      select: { linkedSubmissionId: true, eventTypeName: true, status: true },
+      select: {
+        linkedSubmissionId: true,
+        eventTypeName: true,
+        status: true,
+        startTime: true,
+        // 2026-09-28 — l'issue de l'échange (badge Retenu / Non retenu…).
+        suivi: { select: { issue: true, decision: true, renseigneLe: true } },
+      },
     }),
     // 2026-09-27 — les réponses HUMAINES de la personne, relevées dans la boîte
     // Zoho. Accessoires : si elles ne se lisent pas (table pas encore migrée,
@@ -551,10 +562,15 @@ export async function lireSuiviInvitationListe(
     relancesPar.set(p, [...(relancesPar.get(p) ?? []), e.createdAt]);
   }
   const echangePar = new Map<string, "reserve" | "annule">();
+  const echangesPar = new Map<string, EchangeAvecPoint[]>();
   for (const ev of evenements) {
     if (!estAppelApporteur(ev.eventTypeName)) continue;
     const p = ev.linkedSubmissionId ? personneDe.get(ev.linkedSubmissionId) : undefined;
     if (!p) continue;
+    echangesPar.set(p, [
+      ...(echangesPar.get(p) ?? []),
+      { debut: ev.startTime, annule: ev.status === "canceled", point: ev.suivi ?? null },
+    ]);
     // Un échange non annulé l'emporte sur un échange annulé (reprise d'un créneau).
     if (ev.status !== "canceled") echangePar.set(p, "reserve");
     else if (!echangePar.has(p)) echangePar.set(p, "annule");
@@ -575,11 +591,13 @@ export async function lireSuiviInvitationListe(
     const invitation = invitationPar.get(p) ?? null;
     const echange = echangePar.get(p) ?? null;
     if (!invitation && !echange) continue;
+    const decision = decisionAffichee(echangesPar.get(p) ?? []);
     resultat.set(l.id, {
       invitation,
       relances: (relancesPar.get(p) ?? []).sort((a, b) => a.getTime() - b.getTime()),
       echange,
       reponse: reponsePar.get(p) ?? null,
+      ...(decision ? { decision } : {}),
     });
   }
   return resultat;

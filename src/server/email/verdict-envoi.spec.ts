@@ -73,6 +73,9 @@ describe("estSollicitationSoumiseAOpposition — table de vérité", () => {
     expect([...GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION].sort()).toEqual([
       "apporteur-invitation-appel",
       "apporteur-invitation-relance",
+      // 2026-09-28 — « on t'a attendu, on reprend un créneau ? » ; retenu et
+      // non retenu répondent à l'échange réservé, ils n'y sont pas.
+      "apporteur-issue-absent",
       "lead-apporteur-relance",
     ]);
   });

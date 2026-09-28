@@ -20,6 +20,11 @@ import { EnrichCalendlyEventButton } from "@/components/admin/contacts/EnrichCal
 import { RejoindreVisioBouton } from "@/components/admin/contacts/RejoindreVisioBouton";
 import { invitesSupplementaires, lienRejoindreVisio } from "@/features/admin-rendezvous/visio";
 import { SuiviRendezVousForm } from "@/components/admin/contacts/SuiviRendezVousForm";
+import { IssueEchangeApporteurForm } from "@/components/admin/contacts/IssueEchangeApporteurForm";
+import {
+  LIBELLE_ISSUE_APPORTEUR,
+  issueDepuisSuivi,
+} from "@/features/admin-rendezvous/issue-apporteur";
 import { lireSuivi } from "@/features/admin-rendezvous/suivi-queries";
 import {
   LIBELLE_ISSUE,
@@ -164,7 +169,10 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
             <h2 className="admin-h2">Le point après l&apos;appel</h2>
             {suivi ? (
               <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-                {LIBELLE_ISSUE[suivi.issue]}
+                {suivi.decision
+                  ? LIBELLE_ISSUE_APPORTEUR[suivi.decision]
+                  : LIBELLE_ISSUE[suivi.issue]}
+                {suivi.noteSur20 !== null ? ` · ${suivi.noteSur20}/20` : ""}
                 {suivi.suite ? ` · ${LIBELLE_SUITE[suivi.suite]}` : ""}
                 {suivi.suiteLe
                   ? ` pour le ${formatDateFr(new Date(`${suivi.suiteLe}T12:00:00Z`))}`
@@ -173,11 +181,29 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
                 {suivi.renseignePar ? ` par ${suivi.renseignePar}` : ""}
               </p>
             ) : null}
-            <SuiviRendezVousForm
-              calendlyEventId={event.id}
-              initial={suivi}
-              mailtoRelance={mailtoRelance}
-            />
+            {/* 2026-09-28 — un échange APPORTEUR a ses propres boutons et ses
+                e-mails, avec aperçu avant envoi. */}
+            {estAppelApporteur(event.eventTypeName) ? (
+              <IssueEchangeApporteurForm
+                calendlyEventId={event.id}
+                initial={
+                  suivi
+                    ? {
+                        issue: issueDepuisSuivi(suivi.issue, suivi.decision),
+                        noteSur20: suivi.noteSur20,
+                        justification: suivi.note,
+                        rappelLe: suivi.decision === "a_revoir" ? suivi.suiteLe : null,
+                      }
+                    : null
+                }
+              />
+            ) : (
+              <SuiviRendezVousForm
+                calendlyEventId={event.id}
+                initial={suivi}
+                mailtoRelance={mailtoRelance}
+              />
+            )}
           </div>
         ) : null}
 

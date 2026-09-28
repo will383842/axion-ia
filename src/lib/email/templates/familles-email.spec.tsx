@@ -479,6 +479,10 @@ const GABARITS_RESEAU_SANS_RANGEE_SOCIALE = [
   "candidature-commercial-confirmee",
   "apporteur-invitation-appel",
   "apporteur-invitation-relance",
+  // 2026-09-28 — l'issue de l'échange (absent, retenu, non retenu).
+  "apporteur-issue-absent",
+  "apporteur-issue-retenu",
+  "apporteur-issue-non-retenu",
 ] as const;
 
 describe("Référentiel e-mail — la famille se LIT, elle ne se devine pas", () => {

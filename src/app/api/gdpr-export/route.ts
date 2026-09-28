@@ -410,8 +410,18 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         rawPayload: true,
         // Le point fait après l'appel (2026-09-27) : sa note est une
         // appréciation écrite sur la personne — même raison que `notes`.
+        // 2026-09-28 — `decision` et `noteSur20` : l'issue d'un échange
+        // apporteur et sa note /20, appréciations sur la personne.
         suivi: {
-          select: { issue: true, suite: true, suiteLe: true, note: true, renseigneLe: true },
+          select: {
+            issue: true,
+            suite: true,
+            suiteLe: true,
+            note: true,
+            decision: true,
+            noteSur20: true,
+            renseigneLe: true,
+          },
         },
       },
     }),
@@ -520,6 +530,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             suite: r.suivi.suite,
             echeance: r.suivi.suiteLe,
             note: r.suivi.note,
+            decision: r.suivi.decision,
+            noteSur20: r.suivi.noteSur20,
             noteLe: r.suivi.renseigneLe,
           }
         : null,

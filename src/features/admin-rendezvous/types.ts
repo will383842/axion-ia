@@ -80,6 +80,10 @@ export interface RdvAVenir extends UnifiedRdv {
     suite: "devis" | "relance" | "proposition" | "aucune" | null;
     suiteLe: string | null;
     note: string | null;
+    /** Échange apporteur tenu : la décision (2026-09-28). Absente : aucune. */
+    decision?: "retenu" | "a_revoir" | "non_retenu" | null;
+    /** Note d'échange /20 d'un échange apporteur. */
+    noteSur20?: number | null;
   } | null;
 }
 

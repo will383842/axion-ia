@@ -192,7 +192,16 @@ export async function listRendezVousAVenir(
     select: {
       ...CAL_SELECT,
       // Le point déjà fait : la carte le montre au lieu de le redemander.
-      suivi: { select: { issue: true, suite: true, suiteLe: true, note: true } },
+      suivi: {
+        select: {
+          issue: true,
+          suite: true,
+          suiteLe: true,
+          note: true,
+          decision: true,
+          noteSur20: true,
+        },
+      },
     },
     orderBy: [{ startTime: "asc" }],
     take: 200,
@@ -203,6 +212,8 @@ export async function listRendezVousAVenir(
         suite: NonNullable<RdvAVenir["suivi"]>["suite"];
         suiteLe: Date | null;
         note: string | null;
+        decision: "retenu" | "a_revoir" | "non_retenu" | null;
+        noteSur20: number | null;
       } | null;
     }
   >;
@@ -229,6 +240,8 @@ export async function listRendezVousAVenir(
               suite: e.suivi.suite,
               suiteLe: e.suivi.suiteLe ? e.suivi.suiteLe.toISOString().slice(0, 10) : null,
               note: e.suivi.note,
+              decision: e.suivi.decision,
+              noteSur20: e.suivi.noteSur20,
             }
           : null,
       },
