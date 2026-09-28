@@ -1,5 +1,5 @@
 "use client";
-// use-client: useActionState — état d'envoi et message d'erreur du formulaire.
+// use-client: useActionState + fetch — état d'envoi et message d'erreur du formulaire.
 
 // Formulaire de la page `/completer-ma-candidature` — MOBILE D'ABORD
 // (2026-09-28, Will : « beaucoup de blabla pour pas grand-chose »).
@@ -15,10 +15,26 @@
 import { useActionState } from "react";
 
 import type { ScreeningQuestion } from "@/lib/careers/screening-answers";
-import {
-  completerCandidatureAction,
-  type EtatComplement,
-} from "@/features/job-application/complement-actions";
+import type { EtatComplement } from "@/features/job-application/complement-envoi";
+
+/**
+ * Envoi par une ROUTE FIXE, pas par une Server Action : une page restée ouverte
+ * pendant une mise en ligne doit pouvoir envoyer (cf. `complement-envoi.ts`).
+ */
+async function envoyer(_prev: EtatComplement, formData: FormData): Promise<EtatComplement> {
+  try {
+    const rep = await fetch("/api/candidature/complement", { method: "POST", body: formData });
+    const json = (await rep.json().catch(() => null)) as EtatComplement;
+    if (json) return json;
+  } catch {
+    // réseau coupé : dit ci-dessous
+  }
+  return {
+    ok: false,
+    error:
+      "L'envoi n'a pas abouti. Vérifie ta connexion et réessaie — tes réponses sont toujours là.",
+  };
+}
 
 const FIELD =
   "border-border bg-bg focus:border-terracotta focus:ring-terracotta/20 w-full rounded-lg border px-3 py-3 text-[16px] outline-none focus:ring-4";
@@ -51,10 +67,7 @@ export function enBlocs(questions: readonly ScreeningQuestion[]): Bloc[] {
 }
 
 export function CompleterCandidatureForm({ jeton, questions, reponses }: Props) {
-  const [etat, action, envoi] = useActionState<EtatComplement, FormData>(
-    completerCandidatureAction,
-    null,
-  );
+  const [etat, action, envoi] = useActionState<EtatComplement, FormData>(envoyer, null);
 
   if (etat?.ok) {
     return (

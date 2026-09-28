@@ -1,12 +1,23 @@
-// COMPLÉTER SA CANDIDATURE EN LIGNE — Server Action (page publique, sans login).
+// COMPLÉTER SA CANDIDATURE EN LIGNE — l'enregistrement (page publique, sans login).
+//
+// 🔴 2026-09-28 — CE N'EST PLUS UNE SERVER ACTION. Un monteur a eu deux fois une
+// erreur 500 : il avait ouvert la page juste avant une mise en ligne et l'a
+// envoyée juste après. Une Server Action est identifiée par un numéro propre à
+// CHAQUE build (« Failed to find Server Action … older or newer deployment ») :
+// toute page restée ouverte pendant un déploiement ne peut plus envoyer. Et un
+// candidat ouvre le lien depuis l'e-mail puis met plusieurs minutes à chiffrer
+// ses prix, sur un site qui se déploie plusieurs fois par jour.
+// Le formulaire poste donc sur une route FIXE, `/api/candidature/complement`,
+// qui appelle cette fonction : la même adresse d'un build à l'autre.
 //
 // Le jeton signé est la seule autorisation : il est RE-vérifié ici, à l'envoi,
 // et non seulement à l'affichage — un formulaire se rejoue hors de la page.
 
-"use server";
+import "server-only";
 
 import * as Sentry from "@sentry/nextjs";
-import { updateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
+import { EXPIRATION_IMMEDIATE } from "@/server/cache/expiration-immediate";
 
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
@@ -27,10 +38,7 @@ import { chargerDossierComplement, fusionnerReponses } from "./complement";
 
 export type EtatComplement = { ok: true } | { ok: false; error: string } | null;
 
-export async function completerCandidatureAction(
-  _prev: EtatComplement,
-  formData: FormData,
-): Promise<EtatComplement> {
+export async function completerCandidature(formData: FormData): Promise<EtatComplement> {
   const jeton = formData.get("jeton");
   const dossier = await chargerDossierComplement(typeof jeton === "string" ? jeton : null);
   if (!dossier.ok) {
@@ -92,7 +100,13 @@ export async function completerCandidatureAction(
       error: "L'enregistrement a échoué. Réessaie, ou écris-nous à contact@axion-ia.com.",
     };
   }
-  updateTag(INBOX_COUNTS_TAG);
+  // `updateTag` est réservé aux Server Actions ; ceci est appelé depuis une
+  // route. Expiration IMMÉDIATE, cf. `server/cache/expiration-immediate`.
+  try {
+    revalidateTag(INBOX_COUNTS_TAG, EXPIRATION_IMMEDIATE);
+  } catch (e) {
+    Sentry.captureException(e, { tags: { action: "completerCandidature", step: "badge" } });
+  }
 
   // Telegram — même salon que la candidature d'origine. Best-effort : les
   // réponses sont déjà dans la fiche, une notification perdue ne perd rien.
