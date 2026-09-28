@@ -9,6 +9,8 @@
 
 "use server";
 
+import { deleteCv } from "@/server/careers/cv-storage";
+import { lireCvCandidat } from "@/lib/commercial-application/cv-candidat";
 import { z } from "zod";
 import * as Sentry from "@sentry/nextjs";
 import { revalidatePath } from "next/cache";
@@ -243,12 +245,14 @@ export async function eraseSubmissionAction(
     }
   }
 
+  let cheminCv: string | null = null;
   await prisma.$transaction(async (tx) => {
     const sub = await tx.submission.findUnique({
       where: { id: parsed.data.id },
-      select: { id: true, type: true, contactEmail: true },
+      select: { id: true, type: true, contactEmail: true, details: true },
     });
     if (!sub) throw new Error("submission_not_found");
+    cheminCv = lireCvCandidat(sub.details)?.fichier?.storagePath ?? null;
 
     await tx.submission.delete({ where: { id: parsed.data.id } });
 
@@ -270,6 +274,11 @@ export async function eraseSubmissionAction(
       },
     });
   });
+
+  // Le CV d'un candidat apporteur (2026-09-28) vit sur le disque, pas en base :
+  // la ligne supprimée ne l'emporte pas. Après la transaction, jamais avant —
+  // un fichier effacé pour une ligne qui survit serait une perte sans effacement.
+  await deleteCv(cheminCv);
 
   revalidateEcransDesDemandes();
   return { ok: true };

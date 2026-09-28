@@ -24,6 +24,8 @@ import { lireAccuseMessage } from "@/features/admin-submissions/accuse-reception
 import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { CandidatureCommercialeDetail } from "./CandidatureCommercialeDetail";
+import { CadreCandidatureSalariee, CvCandidatDetail } from "./CvCandidatDetail";
+import { lireCandidatureSalariee, lireCvCandidat } from "@/lib/commercial-application/cv-candidat";
 import { BlocInvitationApporteur } from "@/components/admin/contacts/BlocInvitationApporteur";
 import { GestesApporteur } from "@/components/admin/contacts/GestesApporteur";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
@@ -128,6 +130,10 @@ export async function SubmissionDetailContent({
   const score = details && typeof details.score === "number" ? details.score : null;
   const scorePriorite =
     details && typeof details.scorePriorite === "string" ? details.scorePriorite : null;
+  // CV + analyse, et candidature à un poste salarié (2026-09-28) — lus
+  // seulement sur un dossier apporteur : ailleurs, ces blocs n'ont pas de sens.
+  const candidatureSalariee = estContactApporteur ? lireCandidatureSalariee(details) : null;
+  const cvCandidat = estContactApporteur ? lireCvCandidat(details) : null;
   // L'accusé de réception automatique (2026-09-18) — lu avec la même règle que
   // la liste. Ce n'est pas une réponse : il s'affiche à côté de l'historique.
   const origine = details && typeof details.origine === "string" ? details.origine : null;
@@ -200,6 +206,7 @@ export async function SubmissionDetailContent({
         }
       />
       <div className="admin-detail-grid">
+        {candidatureSalariee ? <CadreCandidatureSalariee info={candidatureSalariee} /> : null}
         {estContactApporteur ? (
           <BlocInvitationApporteur
             submissionId={submission.id}
@@ -253,6 +260,12 @@ export async function SubmissionDetailContent({
               </a>
             </div>
           </div>
+        ) : null}
+        {cvCandidat ? (
+          <CvCandidatDetail
+            cv={cvCandidat}
+            cvHref={`/fr/${adminPrefix}/contacts/commercial/${submission.id}/cv`}
+          />
         ) : null}
         {candidature ? (
           <CandidatureCommercialeDetail

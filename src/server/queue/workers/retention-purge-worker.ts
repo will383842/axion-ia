@@ -61,6 +61,7 @@ import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { deleteCv } from "@/server/careers/cv-storage";
+import { lireCvCandidat } from "@/lib/commercial-application/cv-candidat";
 import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
 import {
   purgerDesinscrits,
@@ -226,7 +227,7 @@ export async function executerPurgeRetention(): Promise<void> {
   const subsMonths = readMonths("RETENTION_SUBS_ARCHIVE_MONTHS", DEFAULTS.submissionsArchived);
   const archivedSubs = await prisma.submission.findMany({
     where: { status: "archived", updatedAt: { lt: monthsAgo(subsMonths) } },
-    select: { id: true, contactEmail: true, type: true },
+    select: { id: true, contactEmail: true, type: true, details: true },
   });
   for (const s of archivedSubs) {
     await prisma.$transaction(async (tx) => {
@@ -246,6 +247,11 @@ export async function executerPurgeRetention(): Promise<void> {
         },
       });
     });
+    // CV d'un candidat apporteur (2026-09-28) : fichier disque, hors de la ligne.
+    // Best-effort et idempotent ; ⚠️ le conteneur worker ne monte pas le volume
+    // des CV aujourd'hui — l'appel ne fait alors rien, comme pour les
+    // candidatures plus bas, et l'effacement console reste le chemin qui efface.
+    await deleteCv(lireCvCandidat(s.details)?.fichier?.storagePath);
     counts.submissions++;
   }
 
