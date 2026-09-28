@@ -221,6 +221,13 @@ export const PATTERN_RELANCES_INVITATION = "0 8 * * *";
  */
 export const PATTERN_REPONSES_ENTRANTES = "*/15 * * * *";
 
+/**
+ * Cadence de l'invitation automatique (2026-09-28) : toutes les 5 minutes. Une
+ * candidature est invitée 15 minutes après sa réception, donc entre 15 et
+ * 20 minutes (`features/commercial-application/invitation-auto.ts`).
+ */
+export const PATTERN_INVITATION_AUTO = "*/5 * * * *";
+
 // ============================================================
 // Content Generator V1 — Sprint 4/5 queues (§ 13.1 master prompt v1.7)
 // ============================================================
@@ -1198,6 +1205,11 @@ export async function bootRepeatableJobs(): Promise<void> {
         type: "reponses-entrantes" as const,
         pattern: PATTERN_REPONSES_ENTRANTES,
         jobId: "apporteur-reponses-entrantes-cron",
+      },
+      {
+        type: "invitation-auto" as const,
+        pattern: PATTERN_INVITATION_AUTO,
+        jobId: "apporteur-invitation-auto-cron",
       },
     ];
     const wanted = new Set(programme.map((s) => `${s.type}|${s.pattern}`));

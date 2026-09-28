@@ -3,11 +3,12 @@
 //   · le bouton « Envoyer l'invitation » de la fiche (Contacts › Commercial) ;
 //   · la case « Envoyer l'invitation » de la saisie manuelle d'un contact.
 //
-// ── Pourquoi c'est un geste MANUEL ────────────────────────────────────────
-// Décision de Will : le lien de réservation n'est PAS distribué à toute
-// personne qui laisse son adresse — il saturerait son agenda. Tout le monde
-// reçoit automatiquement le KIT (document de présentation + catalogue) ; le
-// lien d'appel, lui, part à la main, à qui Will choisit.
+// ── Geste manuel, ET depuis le 2026-09-28 passage automatique ─────────────
+// Décision de Will du 19/09 : le lien de réservation partait à la main, à qui
+// il choisissait. Décision du 28/09 : TOUTE candidature d'apporteur, et toute
+// candidature à une offre d'emploi commerciale, reçoit cette invitation
+// 15 minutes après sa réception — troisième porte, le passage du worker
+// (`invitation-auto.ts`, `adminId: null`). La saisie manuelle reste manuelle.
 //
 // ── Ce que l'envoi fait, dans l'ordre ─────────────────────────────────────
 //   1. vérifie le lien (https, calendly.com) — une faute de frappe ne part pas ;
@@ -206,7 +207,8 @@ function jourMois(d: Date): string {
 export async function envoyerInvitationApporteur(input: {
   submissionId: string;
   calendlyUrl: string;
-  adminId: string;
+  /** `null` : envoi du passage automatique (worker), sans administrateur. */
+  adminId: string | null;
   /** « Renvoyer quand même » : passe outre une invitation déjà partie ou en validation. */
   renvoyer?: boolean;
   /** « La personne a accepté d'être contactée », coché sur la fiche (recommandation, autre). */
@@ -433,7 +435,7 @@ export async function envoyerInvitationApporteur(input: {
 
 /** Journal du geste : qui, quand, sur quelle fiche. L'adresse n'y est pas recopiée. */
 async function journaliser(
-  adminId: string,
+  adminId: string | null,
   ligne: { id: string; contactEmailHash: string | null },
   lienDossier: boolean,
   enValidation: boolean,
