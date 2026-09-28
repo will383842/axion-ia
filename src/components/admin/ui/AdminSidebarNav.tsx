@@ -45,7 +45,6 @@ import {
   GraduationCap,
   Bot,
   Mail,
-  Gauge,
   Cog,
   CircleAlert,
   BookOpen,
@@ -54,6 +53,11 @@ import {
   Building2,
   type LucideIcon,
   Filter,
+  Handshake,
+  UserPlus,
+  Printer,
+  ListOrdered,
+  Wrench,
 } from "lucide-react";
 import { navIcon } from "@/lib/admin-nav-icons";
 import type { AdminNavItem, AdminNavGroup } from "@/lib/admin-nav";
@@ -78,10 +82,15 @@ const ALL_POLE_KEYS: ReadonlyArray<string> = Object.values(GROUP_POLE_ORDER).fla
 // lucide) résolu par `navIcon()` — l'ancien ICON_MAP par label est supprimé
 // (refonte visuelle console 2026-08, chantier icônes).
 const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
+  // « Planification » (ex-« Activité quotidienne ») depuis le 2026-09-28.
   main: Activity,
   // Groupe `rendez-vous` supprimé le 2026-07-29 : les appels réservés sont un
   // canal de la boîte de réception, pas une rubrique à part (cf. admin-nav.ts).
   contacts: Inbox,
+  // Groupes créés le 2026-09-28 (menu rangé par fréquence d'usage).
+  apporteurs: Handshake,
+  recrutement: UserPlus,
+  imprimes: Printer,
   tunnels: Filter,
   content: Newspaper,
   content_gen: Sparkles,
@@ -98,8 +107,8 @@ const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
   // Groupe `engagement` supprimé le 2026-09-19 : sa seule entrée, la
   // newsletter, a rejoint « E-mails ».
   emails: Mail,
-  ops: Gauge,
-  system: Cog,
+  // « Technique » : Ops & monitoring + Système, réunis le 2026-09-28.
+  ops: Wrench,
 };
 
 /**
@@ -895,80 +904,24 @@ export function AdminSidebarNav({
           aria-label="Sections admin"
           className="flex-1 overflow-x-hidden overflow-y-auto px-[var(--space-admin-4)] pb-[var(--space-admin-4)]"
         >
-          {/* Accès direct à Axion CRM Pro — outil de prospection dédié (appli séparée,
-              ouverte dans un nouvel onglet). La prospection se pilote là-bas. */}
-          <a
-            href="https://app.axion-crm-pro.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Ouvrir Axion CRM Pro (outil de prospection)"
-            className={cn(
-              "mb-[var(--space-admin-3)] flex items-center gap-[var(--space-admin-4)]",
-              "rounded-[var(--radius-admin-md)] px-[var(--space-admin-3)] py-[var(--space-admin-3)]",
-              "text-[color:var(--color-admin-rail-text)] ring-1 ring-[color:var(--color-admin-rail-border)]",
-              "transition-opacity hover:opacity-80",
-              collapsed && "justify-center",
-            )}
-          >
-            <ScanSearch className="h-[18px] w-[18px] shrink-0 opacity-80" aria-hidden />
-            {!collapsed && (
-              <>
-                <span className="flex-1 text-sm font-medium">Prospection</span>
-                <span aria-hidden className="text-sm opacity-60">
-                  ↗
-                </span>
-              </>
-            )}
-          </a>
-
-          {/* Console éditoriale — épinglée sous Prospection, et pour la même
-              raison : c'est un poste de travail quotidien, pas une section
-              qu'on visite. On l'ouvre le matin et on y reste.
-
-              ⚠️ Lien INTERNE, contrairement à Prospection : la console vit
-              dans cette application. Pas de `target="_blank"`, pas de flèche
-              sortante — les deux annonceraient un départ qui n'a pas lieu. */}
-          <Link
-            href={`${accountHref ?? ""}${ADMIN_LIENS_EPINGLES.consoleEditoriale}`}
-            title="Ouvrir la console éditoriale"
-            className={cn(
-              "mb-[var(--space-admin-3)] flex items-center gap-[var(--space-admin-4)]",
-              "rounded-[var(--radius-admin-md)] px-[var(--space-admin-3)] py-[var(--space-admin-3)]",
-              "text-[color:var(--color-admin-rail-text)] ring-1 ring-[color:var(--color-admin-rail-border)]",
-              "transition-opacity hover:opacity-80",
-              collapsed && "justify-center",
-            )}
-          >
-            <CalendarRange className="h-[18px] w-[18px] shrink-0 opacity-80" aria-hidden />
-            {!collapsed && <span className="flex-1 text-sm font-medium">Console éditoriale</span>}
-          </Link>
-
-          {/* Agenda — épinglé juste sous la console éditoriale (demande Will du
-              2026-08-26), et pour la même raison que les deux liens au-dessus :
-              c'est un écran qu'on consulte avant de répondre à quelqu'un, pas
-              une rubrique qu'on visite.
-
-              Il ne fait doublon avec aucun onglet existant. « Appels réservés »
-              répond à « qui a réservé ? » — une liste de réservations Calendly
-              lues en base. L'Agenda répond à « où suis-je libre ? », en
-              fusionnant ces réservations avec l'agenda Google : les rendez-vous
-              personnels et ceux de l'iPhone, que la base ne connaît pas. */}
-          <Link
-            href={`${accountHref ?? ""}${ADMIN_LIENS_EPINGLES.agenda}`}
-            title="Ouvrir l'agenda"
-            className={cn(
-              "mb-[var(--space-admin-3)] flex items-center gap-[var(--space-admin-4)]",
-              "rounded-[var(--radius-admin-md)] px-[var(--space-admin-3)] py-[var(--space-admin-3)]",
-              "text-[color:var(--color-admin-rail-text)] ring-1 ring-[color:var(--color-admin-rail-border)]",
-              "transition-opacity hover:opacity-80",
-              collapsed && "justify-center",
-            )}
-          >
-            <CalendarDays className="h-[18px] w-[18px] shrink-0 opacity-80" aria-hidden />
-            {!collapsed && <span className="flex-1 text-sm font-medium">Agenda</span>}
-          </Link>
-
-          {/* Rendez-vous — épinglé sous l'Agenda (demande Will du 2026-09-27).
+          {/* ── « Aujourd'hui » : les postes de travail quotidiens ──────────
+              Ordre du 2026-09-28 (menu rangé par fréquence d'usage, demande
+              Will) : qui j'appelle (Rendez-vous), où je suis libre (Agenda), à
+              qui je dois répondre (À traiter), ce que je publie (Console
+              éditoriale), puis la prospection, qui ouvre une autre application.
+              Les rubriques, elles, suivent en dessous. */}
+          {!collapsed ? (
+            <p
+              className={cn(
+                "px-[var(--space-admin-3)] pb-[var(--space-admin-2)]",
+                "text-[10px] font-semibold tracking-wider uppercase",
+                "text-[color:var(--color-admin-rail-fg-muted)]",
+              )}
+            >
+              Aujourd&apos;hui
+            </p>
+          ) : null}
+          {/* Rendez-vous — épinglé le 2026-09-27, en TÊTE depuis le 2026-09-28.
               L'Agenda dit « où suis-je libre ? » ; cet écran dit « qui
               j'appelle, et comment je le rejoins ? » : une carte par appel à
               venir, avec le bouton de visio. */}
@@ -998,10 +951,107 @@ export function AdminSidebarNav({
               </span>
             ) : null}
           </Link>
+
+          {/* Agenda — épinglé le 2026-08-26 (sous la console éditoriale à l'époque ; demande Will du
+              2026-08-26), et pour la même raison que les deux liens au-dessus :
+              c'est un écran qu'on consulte avant de répondre à quelqu'un, pas
+              une rubrique qu'on visite.
+
+              Il ne fait doublon avec aucun onglet existant. « Appels réservés »
+              répond à « qui a réservé ? » — une liste de réservations Calendly
+              lues en base. L'Agenda répond à « où suis-je libre ? », en
+              fusionnant ces réservations avec l'agenda Google : les rendez-vous
+              personnels et ceux de l'iPhone, que la base ne connaît pas. */}
+          <Link
+            href={`${accountHref ?? ""}${ADMIN_LIENS_EPINGLES.agenda}`}
+            title="Ouvrir l'agenda"
+            className={cn(
+              "mb-[var(--space-admin-3)] flex items-center gap-[var(--space-admin-4)]",
+              "rounded-[var(--radius-admin-md)] px-[var(--space-admin-3)] py-[var(--space-admin-3)]",
+              "text-[color:var(--color-admin-rail-text)] ring-1 ring-[color:var(--color-admin-rail-border)]",
+              "transition-opacity hover:opacity-80",
+              collapsed && "justify-center",
+            )}
+          >
+            <CalendarDays className="h-[18px] w-[18px] shrink-0 opacity-80" aria-hidden />
+            {!collapsed && <span className="flex-1 text-sm font-medium">Agenda</span>}
+          </Link>
+
+          {/* À traiter (contacts) — épinglé le 2026-09-28 : les messages sans
+              réponse, le plus ancien en tête. C'est la question du matin ; son
+              entrée de menu porte `epingle` et n'est donc plus répétée dans
+              « Contacts & demandes ». */}
+          <Link
+            href={`${accountHref ?? ""}${ADMIN_LIENS_EPINGLES.aTraiter}`}
+            title="Ouvrir les messages à traiter"
+            className={cn(
+              "mb-[var(--space-admin-3)] flex items-center gap-[var(--space-admin-4)]",
+              "rounded-[var(--radius-admin-md)] px-[var(--space-admin-3)] py-[var(--space-admin-3)]",
+              "text-[color:var(--color-admin-rail-text)] ring-1 ring-[color:var(--color-admin-rail-border)]",
+              "transition-opacity hover:opacity-80",
+              collapsed && "justify-center",
+            )}
+          >
+            <ListOrdered className="h-[18px] w-[18px] shrink-0 opacity-80" aria-hidden />
+            {!collapsed && <span className="flex-1 text-sm font-medium">À traiter</span>}
+          </Link>
+
+          {/* Console éditoriale — épinglée (au-dessus de Prospection jusqu'au 2026-09-28), pour la même
+              raison : c'est un poste de travail quotidien, pas une section
+              qu'on visite. On l'ouvre le matin et on y reste.
+
+              ⚠️ Lien INTERNE, contrairement à Prospection : la console vit
+              dans cette application. Pas de `target="_blank"`, pas de flèche
+              sortante — les deux annonceraient un départ qui n'a pas lieu. */}
+          <Link
+            href={`${accountHref ?? ""}${ADMIN_LIENS_EPINGLES.consoleEditoriale}`}
+            title="Ouvrir la console éditoriale"
+            className={cn(
+              "mb-[var(--space-admin-3)] flex items-center gap-[var(--space-admin-4)]",
+              "rounded-[var(--radius-admin-md)] px-[var(--space-admin-3)] py-[var(--space-admin-3)]",
+              "text-[color:var(--color-admin-rail-text)] ring-1 ring-[color:var(--color-admin-rail-border)]",
+              "transition-opacity hover:opacity-80",
+              collapsed && "justify-center",
+            )}
+          >
+            <CalendarRange className="h-[18px] w-[18px] shrink-0 opacity-80" aria-hidden />
+            {!collapsed && <span className="flex-1 text-sm font-medium">Console éditoriale</span>}
+          </Link>
+
+          {/* Accès direct à Axion CRM Pro — outil de prospection dédié (appli séparée,
+              ouverte dans un nouvel onglet). La prospection se pilote là-bas. */}
+          <a
+            href="https://app.axion-crm-pro.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Ouvrir Axion CRM Pro (outil de prospection)"
+            className={cn(
+              "mb-[var(--space-admin-3)] flex items-center gap-[var(--space-admin-4)]",
+              "rounded-[var(--radius-admin-md)] px-[var(--space-admin-3)] py-[var(--space-admin-3)]",
+              "text-[color:var(--color-admin-rail-text)] ring-1 ring-[color:var(--color-admin-rail-border)]",
+              "transition-opacity hover:opacity-80",
+              collapsed && "justify-center",
+            )}
+          >
+            <ScanSearch className="h-[18px] w-[18px] shrink-0 opacity-80" aria-hidden />
+            {!collapsed && (
+              <>
+                <span className="flex-1 text-sm font-medium">Prospection</span>
+                <span aria-hidden className="text-sm opacity-60">
+                  ↗
+                </span>
+              </>
+            )}
+          </a>
+
           {ADMIN_NAV_GROUP_ORDER.map((g, gi) => {
             // Exclut les items `parent != null` : atteignables par URL/palette
             // mais volontairement masqués de la sidebar (placeholders non livrés).
-            const groupItems = filtered.filter((it) => it.group === g && it.parent == null);
+            // Exclut aussi les entrées ÉPINGLÉES (`epingle`) : elles sont déjà
+            // rendues dans le bloc « Aujourd'hui » au-dessus.
+            const groupItems = filtered.filter(
+              (it) => it.group === g && it.parent == null && it.epingle !== true,
+            );
             if (groupItems.length === 0) return null;
             // Les groupes déclarés dans GROUP_POLE_ORDER (« Génération de
             // contenu », « Formation / Qualiopi ») sont rendus en sous-pôles

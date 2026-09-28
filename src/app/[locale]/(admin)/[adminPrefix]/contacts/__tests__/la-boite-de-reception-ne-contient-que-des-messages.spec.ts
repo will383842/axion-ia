@@ -57,8 +57,10 @@ describe("la vue « À traiter »", () => {
 });
 
 describe("les catégories masquées restent joignables", () => {
+  // « Demandes clients » (/contacts/clients) est revenue dans la barre latérale
+  // le 2026-09-28, à la demande de Will (menu rangé par fréquence d'usage) :
+  // elle n'est plus masquée, mais elle reste dans le menu — vérifié ci-dessous.
   const MASQUEES = [
-    "/fr/p/contacts/clients",
     "/fr/p/contacts/presse",
     "/fr/p/contacts/partenariats",
     "/fr/p/contacts/investisseurs",
@@ -74,6 +76,9 @@ describe("les catégories masquées restent joignables", () => {
       expect(hit, href).toBeDefined();
       expect(hit?.parent, href).toBe("/fr/p/contacts/messages");
     }
+    const clients = items.find((it) => it.href === "/fr/p/contacts/clients");
+    expect(clients, "/fr/p/contacts/clients").toBeDefined();
+    expect(clients?.parent).toBeUndefined();
   });
 
   it("la palette ⌘K n'écarte PAS les entrées masquées", () => {
