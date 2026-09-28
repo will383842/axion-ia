@@ -12,6 +12,7 @@ import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
 import { estSuperAdmin } from "@/server/auth/habilitations";
 import { deleteCv } from "@/server/careers/cv-storage";
+import { supprimerVideosCandidature } from "@/server/careers/videos-candidat";
 import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
 // La lecture SANS session, et les trois valeurs qu'un module `"use server"` ne
 // peut pas exporter (statuts, schéma, déchiffrement tolérant). Une seule
@@ -550,6 +551,7 @@ export async function deleteApplicationAction(
 
   await deleteCv(a.cvStoragePath); // purge CV AVANT le delete
   await deleteCv(a.photoStoragePath); // purge photo AVANT le delete (RGPD)
+  await supprimerVideosCandidature(id); // vidéos déposées (2026-09-28), même règle
   await prisma.jobApplication.delete({ where: { id } });
   await prisma.activityLog.create({
     data: {

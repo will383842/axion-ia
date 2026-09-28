@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 
 import { routing } from "@/i18n/routing";
 import { CompleterCandidatureForm } from "@/components/forms/CompleterCandidatureForm";
+import { DeposerVideos } from "@/components/forms/DeposerVideos";
+import { isVideoFamilyOffer } from "@/lib/careers/video-editor-offer";
 import { chargerDossierComplement } from "@/features/job-application/complement";
 
 // Compléter sa candidature en ligne (demande Will 2026-09-28).
@@ -57,6 +59,8 @@ export default async function CompleterCandidaturePage({ params, searchParams }:
             questions={dossier.questions}
             reponses={dossier.reponses}
           />
+          {/* Dépôt de vidéos (2026-09-28) : seulement pour les métiers de l'image. */}
+          {isVideoFamilyOffer(dossier.offreSlug) ? <DeposerVideos jeton={jeton ?? ""} /> : null}
         </>
       ) : (
         <div role="alert" className="border-accent-red/40 bg-accent-red/10 rounded-xl border-2 p-5">

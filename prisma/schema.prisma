@@ -9262,6 +9262,8 @@ model JobApplication {
   replies        JobApplicationReply[]
   /// Vérification hebdomadaire des liens vers son travail (2026-09-28).
   liensVerifies  JobApplicationLink[]
+  /// Vidéos déposées par le candidat (2026-09-28), analysées par l'antivirus.
+  videos         JobApplicationVideo[]
   /// Lot 2 — les entretiens, et les rendez-vous d'agenda qui leur sont
   /// rattachés. Les entretiens tombent avec la candidature (ils n'existent que
   /// par elle) ; les rendez-vous, non — voir `CalendlyEvent`.
@@ -9351,6 +9353,36 @@ enum JobApplicationEventType {
 /// hors cascade d'effacement. Un journal qu'on peut réécrire ne prouve rien, et
 /// c'est précisément ce qu'on lui demande : dire qui a écrit quoi à un candidat,
 /// et quand. La garde `le-journal-est-en-ajout-seul.spec.ts` le vérifie.
+/// VIDÉOS DÉPOSÉES PAR LE CANDIDAT (Will, 2026-09-28).
+///
+/// « Ça me sera utile plus tard de voir la qualité de ce qu'ils font. » Un lien
+/// meurt ; un fichier déposé chez nous reste. 1 à 3 vidéos, 200 Mo au plus,
+/// déposées depuis la page « Tes tarifs » par morceaux (Cloudflare refuse un
+/// corps de plus de 100 Mo), puis ANALYSÉES PAR L'ANTIVIRUS avant d'être
+/// lisibles en console. Fichiers hors web-root, sous le volume des CV.
+///
+/// `statut` : `envoi` (morceaux en cours) → `analyse` (antivirus) →
+/// `disponible` | `rejetee` (virus, format réel refusé ; le fichier est effacé).
+/// Supprimées avec la candidature (cascade + effacement disque aux trois
+/// chemins : suppression console, effacement RGPD, purge de rétention).
+model JobApplicationVideo {
+  id            String         @id @default(uuid()) @db.Uuid
+  applicationId String         @map("application_id") @db.Uuid
+  application   JobApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  nomOriginal   String         @map("nom_original") @db.VarChar(255)
+  taille        Int
+  octetsRecus   Int            @default(0) @map("octets_recus")
+  mime          String         @db.VarChar(80)
+  statut        String         @db.VarChar(20)
+  motifRejet    String?        @map("motif_rejet") @db.VarChar(300)
+  analyseLe     DateTime?      @map("analyse_le")
+  createdAt     DateTime       @default(now()) @map("created_at")
+
+  @@index([applicationId])
+  @@index([statut])
+  @@map("job_application_videos")
+}
+
 /// LIENS VIDÉO SURVEILLÉS (Will, 2026-09-28) — « un lien meurt ».
 ///
 /// Les candidats vidéo montrent leur travail par des liens (YouTube, Drive,
