@@ -1,13 +1,13 @@
-# DPA Register — Axion-IA OÜ
+# DPA Register — AXION IA SAS
 
-**Responsable** : Will (gérant Axion-IA OÜ) · contact RGPD = `contact@axion-ia.com`
-**Désignation DPO** : pas d'obligation formelle (RGPD art. 37 — Axion-IA OÜ
-est gérant unique, < 250 employés, pas de profilage à grande échelle).
+**Responsable** : AXION IA SAS (RCS Grenoble, SIREN 108 018 631), représentée par Will, président · contact RGPD = `contact@axion-ia.com`
+**Désignation DPO** : pas d'obligation formelle (RGPD art. 37 — AXION IA SAS
+a un dirigeant unique, < 250 employés, pas de profilage à grande échelle).
 Will agit comme **DPO de fait** : toute demande RGPD passe par
 `contact@axion-ia.com`.
 **Tenue** : ce fichier sert de registre RGPD art. 30 (registre des activités
 de traitement) côté sous-processeurs. Révision trimestrielle minimum.
-**Statut juridique** : RGPD (UE) 2016/679, droit estonien (AKI compétent).
+**Statut juridique** : RGPD (UE) 2016/679, droit français (CNIL compétente).
 
 ---
 
@@ -164,12 +164,9 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 > (`ingest.de.sentry.io`, vérifié dans le HTML de production), ce que la SSOT
 > publique déclarait déjà correctement. Le DPA est donc bien à signer.
 >
-> ⚠️ **À traiter hors L10 — chantier `france-only`** : l'en-tête de ce registre
-> désigne « Axion-IA OÜ » et le droit estonien (AKI compétent), alors que
-> `legal.ts` publie « Axion-IA, société française » et « Autorité de contrôle
-> compétente : CNIL ». Ce n'est PAS une correction de deux lignes : « OÜ » et
-> « AKI » apparaissent aux lignes 1, 3, 4, 10, 263, 267 et 333 (dont une
-> échéance « Audit AKI annuel Q4 2026 »). Réécriture de document entier.
+> ✅ Entité corrigée le 29/09/2026 : reste de la bascule de juin. Le
+> responsable est AXION IA SAS (droit français, CNIL compétente), comme
+> dans `legal.ts` et `src/lib/identite-legale-ssot.ts`.
 
 > ⚠️ **Backblaze N'EST PAS utilisé**. Le code utilise Hetzner Storage Box uniquement
 > (`HETZNER_STORAGE_*` env vars). La mention Backblaze dans `src/content/legal.ts`
@@ -469,11 +466,11 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | Champ                     | Valeur                                                                                                   |
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Nom légal**             | Auto-hébergement (open-source DocuSeal Community Edition)                                                |
-| **Adresse**               | Hébergement Hetzner Frankfurt (VPS dédié Axion-IA OÜ)                                                    |
+| **Adresse**               | Hébergement Hetzner Frankfurt (VPS dédié AXION IA SAS)                                                   |
 | **Finalité**              | Signature électronique des contrats et devis (Sprint X.3+)                                               |
 | **Données traitées**      | Nom et email des signataires, contenu signé du contrat, horodatage cryptographique, hash PDF             |
 | **Localisation physique** | Allemagne (UE) — auto-hébergé                                                                            |
-| **Garanties**             | Pas de tiers extérieur (Axion-IA OÜ seul responsable). Backups chiffrés AES-256 sur Hetzner Storage Box. |
+| **Garanties**             | Pas de tiers extérieur (AXION IA SAS seul responsable). Backups chiffrés AES-256 sur Hetzner Storage Box. |
 | **DPA**                   | NA — pas de sous-traitant externe                                                                        |
 | **Lien**                  | https://www.docuseal.com                                                                                 |
 | **Statut**                | ✅ **CONFORME** (self-hosted UE)                                                                         |
@@ -532,6 +529,7 @@ Cf. `src/app/[locale]/mes-donnees/page.tsx` (page exposée) +
 | 2026-05-14 | Pass B fix P0-3 : ajout OpenAI / Anthropic / Perplexity (3 sous-processeurs IA content-gen).                                                             |
 | 2026-05-15 | Audit B5 fix P0-2/P0-3/P0-5 : ajout Unsplash / Voyage AI / Stripe / OSM / DocuSeal (5 lignes). SSOT publique unifiée sur `src/content/subprocessors.ts`. |
 | 2026-09-15 | ⏳ **En attente de validation de Will.** Donnée de santé (art. 9) : le détail du besoin d'adaptation des positionnements répondus du 2026-07-26 au 2026-08-20 reste présent **en clair** dans les dumps PostgreSQL **chiffrés** (Hetzner Storage Box, R2) antérieurs à la date du passage du rattrapage (`docs/runbooks/R34-rattrapage-chiffrement-details-adaptation.md`), jusqu'à leur rotation (mensuels : ≤ 12 mois). Aucune purge de sauvegarde proposée. |
+| 2026-09-29 | Entité corrigée le 29/09/2026 : reste de la bascule de juin. Responsable AXION IA SAS, droit français, CNIL compétente.                                   |
 | _(date)_   | DPA Hetzner signé (Will). Référence : **\*\*\*\***\_**\*\*\*\***                                                                                         |
 | 2026-05-09 | DPA Cloudflare accepté (Will). Couvre TOUS les services du compte, **R2 compris**. Source : `docs/runbooks/R28-dpa-renewal.md`. Date inscrite le 2026-09-20. |
 | _(date)_   | DPA OpenAI signé + ZDR activé (Will). ID compte : **\*\*\*\***\_**\*\*\*\***                                                                             |
@@ -540,7 +538,7 @@ Cf. `src/app/[locale]/mes-donnees/page.tsx` (page exposée) +
 | _(date)_   | DPA Unsplash signé (Will). ID compte : **\*\*\*\***\_**\*\*\*\***                                                                                        |
 | _(date)_   | DPA Voyage AI signé (Will) — avant ajout `VOYAGE_API_KEY` à Coolify env.                                                                                 |
 | _(date)_   | DPA Stripe accepté (Will) — Stripe Dashboard.                                                                                                            |
-| _(date)_   | Audit AKI annuel (rappel : prévoir Q4 2026).                                                                                                             |
+| _(date)_   | Revue annuelle du registre (rappel : prévoir Q4 2026).                                                                                                   |
 | _(date)_   | Renouvellement annuel DPA (rappel : revue trimestrielle minimum, signature ré-évaluée 1× /an).                                                           |
 
 > 🆕 **Lignes 20 et 21 ajoutées le 2026-08-31**, en même temps que le code qui

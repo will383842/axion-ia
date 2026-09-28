@@ -150,6 +150,7 @@ import {
   AutofactureTransmissionEmail,
   autofactureTransmissionSubject,
 } from "./autofacture-transmission";
+import { PreavisSousTraitantsEmail, preavisSousTraitantsSubject } from "./preavis-sous-traitants";
 
 type TemplateMap = {
   [K in EmailJobName]: {
@@ -433,6 +434,12 @@ const TEMPLATES: TemplateMap = {
   "vivier-information": {
     subject: vivierInformationSubject,
     component: VivierInformationEmail,
+  },
+  // Chantier visio (2026-09-29) — préavis de 30 jours aux clients actifs,
+  // toujours garé pour validation (`src/server/visio/preavis-envoi.ts`).
+  "preavis-sous-traitants": {
+    subject: preavisSousTraitantsSubject,
+    component: PreavisSousTraitantsEmail,
   },
 };
 

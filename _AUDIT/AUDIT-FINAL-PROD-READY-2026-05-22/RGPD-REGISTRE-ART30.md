@@ -1,7 +1,7 @@
 # Registre des activités de traitement — Article 30 RGPD
 
-**Responsable de traitement** : Axion-IA (société française)
-**Adresse postale** : _[à compléter]_
+**Responsable de traitement** : AXION IA SAS (société française, RCS Grenoble)
+**Adresse postale** : 11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
 **Représentant légal** : le représentant légal d'Axion-IA
 **Contact** : `contact@axion-ia.com`
 **Date du registre** : 2026-05-22
@@ -14,10 +14,12 @@
 
 | Champ              | Valeur                                                           |
 | ------------------ | ---------------------------------------------------------------- |
-| Raison sociale     | Axion-IA                                                         |
-| Forme juridique    | Société française                                                |
-| SIREN              | _[À compléter post-immatriculation]_                             |
-| Adresse            | _[à compléter]_                                                  |
+| Raison sociale     | AXION IA SAS (marque commerciale : Axion-IA)                     |
+| Forme juridique    | Société par actions simplifiée (SAS), droit français            |
+| RCS                | Grenoble                                                         |
+| SIREN              | 108 018 631                                                      |
+| Adresse            | 11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble |
+| Autorité de contrôle | CNIL                                                           |
 | Site web           | https://axion-ia.com                                             |
 | Contact général    | `contact@axion-ia.com`                                           |
 | Représentant légal | Le représentant légal d'Axion-IA                                 |
@@ -275,8 +277,8 @@ Procédure de purge automatisée : `src/server/queue/workers/retention-purge-wor
 
 ## TODOs à finaliser avant audit CNIL
 
-1. **[P0]** Compléter l'adresse postale (siège social — section §1 + mentions légales du site)
-2. **[P0]** Compléter le SIREN
+1. ~~**[P0]** Compléter l'adresse postale~~ — fait le 29/09/2026 (§1, identique à `src/lib/identite-legale-ssot.ts`)
+2. ~~**[P0]** Compléter le SIREN~~ — fait le 29/09/2026 (§1)
 3. **[P1]** Signer les DPA avec Anthropic, OpenAI, Sentry (SCC Commission UE 2021/914) — runbook `R28-dpa-renewal.md`
 4. **[P1]** Vérifier la certification DPF US des sous-traitants (Cloudflare/GitHub OK ; Anthropic/OpenAI/Sentry à vérifier)
 5. **[P2]** Initialiser `docs/rgpd/breach-register.md` (template registre violations)

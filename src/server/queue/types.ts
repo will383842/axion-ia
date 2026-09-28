@@ -155,7 +155,11 @@ export type EmailJobName =
   // à la demande (décision n° 1 de Will), avec le bouton de confirmation de la
   // lettre quand la case facultative était cochée. Transactionnel, jamais
   // `marketing: true`.
-  | "guide-ia-envoi";
+  | "guide-ia-envoi"
+  // Chantier visio (2026-09-29) — PRÉAVIS de 30 jours aux clients actifs avant
+  // tout enregistrement de visioconférence (règle B3, ADR 0056). Toujours garé
+  // en « E-mails à valider » : Will le relit avant qu'il parte.
+  | "preavis-sous-traitants";
 
 /**
  * Lot L4 — passage quotidien du vivier candidats.

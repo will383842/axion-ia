@@ -115,7 +115,11 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // 🔴 2026-09-28 — RELEVÉ À 59 : `apporteur-issue-echange`, l'issue de
     // l'échange apporteur (absent, retenu, non retenu). UN fichier pour TROIS
     // noms de job, comme `apporteur-echange`. Ses champs sont tous facultatifs.
-    expect(tous.length).toBe(59);
+    // 🔴 2026-09-29 — RELEVÉ À 60 : `preavis-sous-traitants`, le préavis de
+    // 30 jours aux clients actifs avant l'enregistrement des visioconférences
+    // (chantier visio). Ses deux champs sont facultatifs : l'aperçu sans charge
+    // utile nomme la SSOT et la date du jour + 30 jours.
+    expect(tous.length).toBe(60);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {
