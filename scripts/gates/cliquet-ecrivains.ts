@@ -33,6 +33,19 @@
  *   · `sansEcrivainMesure` — un fait dont le dépôt n'a, mesuré, AUCUN écrivain aujourd'hui.
  *     La règle garde l'écrivain de demain ; zéro n'est alors pas une panne de mesure.
  *
+ * Un troisième (INT-T22) : `cleJson`, pour un état qui n'est pas une colonne mais une CLÉ d'un
+ * champ Json (`submission.details.pretASignerAt`). `data: { details }` y est presque toujours
+ * une variable : lire la valeur écrite est impossible, et refuser toute écriture de `details`
+ * rougirait sur des écrivains qui ne touchent pas la clé. Le cliquet suit donc la CLÉ, partout
+ * où elle se CONSTRUIT dans `src/` :
+ *   · une propriété d'objet littéral `cle: …` (ou `cle,`) — la marque posée dans un objet ;
+ *   · une affectation `x.cle = …` / `x["cle"] = …` ;
+ * et chacune est un écrivain, confronté à E1-E3 (E2 : un `<client>.<modele>.<écriture>(…)` dans
+ * la même fonction, et l'émission sur ce client). Le littéral `"cle"` hors de ces formes et
+ * hors d'une LECTURE (`x["cle"]` lu, `"cle" in x`, `path: ["cle"]`, un type) est E0 : une clé
+ * qui circule dans une variable finira dans un `details[variable] = …` qu'on ne sait pas suivre.
+ * Conséquence assumée : un LECTEUR n'expose jamais la clé sous son propre nom dans un objet.
+ *
  * Lancement : `pnpm partners:cliquet-ecrivains`. Témoin à deux faces :
  * `tests/unit/ci/cliquet-ecrivains-devis.spec.ts`.
  */
@@ -69,6 +82,11 @@ export type RegleEcrivain = {
   };
   /** Zéro écrivain MESURÉ aujourd'hui : la règle garde l'avenir. Le texte dit la mesure. */
   readonly sansEcrivainMesure?: string;
+  /**
+   * L'état est une CLÉ du champ Json `champ` : poser cette clé, quelle que soit sa valeur, fait
+   * le fait. Le cliquet suit la clé, pas l'écriture de `champ` (voir l'en-tête).
+   */
+  readonly cleJson?: string;
 };
 
 const TRANSACTIONS_FACTURATION = ["$transaction", "transactionFaitFacturation"] as const;
@@ -149,6 +167,17 @@ export const REGLES: readonly RegleEcrivain[] = [
     sansEcrivainMesure:
       "2026-09-29 : aucune écriture de src/ ne pose payment.status = refunded " +
       "ni ne crée de Payment de type refund",
+  },
+  // INT-T22, ADR 0051 §c : le fait part au clic console « prêt à signer », qui pose la marque
+  // `details.pretASignerAt` — JAMAIS à l'écriture de la Submission par le tunnel.
+  {
+    evenement: "candidature.recue",
+    modele: "submission",
+    champ: "details",
+    valeurs: ["<clé pretASignerAt posée>"],
+    cleJson: "pretASignerAt",
+    emission: "emettreCandidatureRecue",
+    transactions: ["$transaction"],
   },
 ];
 
@@ -464,6 +493,146 @@ function confronterFichier(
   visiter(sf);
 }
 
+/** Les clients qui écrivent sur `modele` dans le corps de `f` (sans les fonctions imbriquées). */
+function clientsQuiEcrivent(f: FonctionLike, modele: string): string[] {
+  const clients: string[] = [];
+  const visiter = (n: ts.Node): void => {
+    if (n !== f && estFonction(n)) return;
+    if (
+      ts.isCallExpression(n) &&
+      ts.isPropertyAccessExpression(n.expression) &&
+      METHODES_D_ECRITURE[n.expression.name.text] !== undefined &&
+      ts.isPropertyAccessExpression(n.expression.expression) &&
+      n.expression.expression.name.text === modele
+    ) {
+      clients.push(n.expression.expression.expression.getText());
+    }
+    ts.forEachChild(n, visiter);
+  };
+  if (f.body) visiter(f.body);
+  return clients;
+}
+
+/** `x.cle` ou `x["cle"]`. */
+function designeLaCle(e: ts.Expression, cle: string): boolean {
+  const x = nu(e);
+  if (ts.isPropertyAccessExpression(x)) return x.name.text === cle;
+  if (ts.isElementAccessExpression(x)) return litteral(x.argumentExpression) === cle;
+  return false;
+}
+
+const AFFECTATIONS: readonly ts.SyntaxKind[] = [
+  ts.SyntaxKind.EqualsToken,
+  ts.SyntaxKind.QuestionQuestionEqualsToken,
+  ts.SyntaxKind.BarBarEqualsToken,
+  ts.SyntaxKind.AmpersandAmpersandEqualsToken,
+];
+
+/**
+ * Le littéral `"cle"` est-il à une place qui ne CONSTRUIT pas la clé : une lecture (`x["cle"]`
+ * hors affectation, `"cle" in x`), un filtre Json (`path: ["cle"]`), un type, ou le nom d'une
+ * propriété d'objet (déjà comptée comme écrivain) ?
+ */
+function litteralSansEcriture(n: ts.StringLiteralLike): boolean {
+  const p = n.parent;
+  if (ts.isLiteralTypeNode(p)) return true;
+  if (ts.isElementAccessExpression(p) && p.argumentExpression === n) return true;
+  if (ts.isPropertyAssignment(p) && p.name === n) return true;
+  if (
+    ts.isBinaryExpression(p) &&
+    p.left === n &&
+    p.operatorToken.kind === ts.SyntaxKind.InKeyword
+  ) {
+    return true;
+  }
+  return (
+    ts.isArrayLiteralExpression(p) &&
+    ts.isPropertyAssignment(p.parent) &&
+    nomDePropriete(p.parent) === "path"
+  );
+}
+
+/** Confronte, dans UN fichier, chaque construction de la clé Json d'une règle `cleJson`. */
+function confronterMarqueJson(
+  fichier: string,
+  texte: string,
+  regle: RegleEcrivain,
+  cle: string,
+  ecrivains: Ecrivain[],
+  fautes: Faute[],
+): void {
+  if (!texte.includes(cle)) return;
+  const sf = ts.createSourceFile(fichier, texte, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+
+  const visiter = (n: ts.Node): void => {
+    ts.forEachChild(n, visiter);
+    const construit =
+      ((ts.isPropertyAssignment(n) || ts.isShorthandPropertyAssignment(n)) &&
+        ts.isObjectLiteralExpression(n.parent) &&
+        nomDePropriete(n) === cle) ||
+      (ts.isBinaryExpression(n) &&
+        AFFECTATIONS.includes(n.operatorToken.kind) &&
+        designeLaCle(n.left, cle));
+    const indecidable =
+      !construit && ts.isStringLiteralLike(n) && n.text === cle && !litteralSansEcriture(n);
+    if (!construit && !indecidable) return;
+
+    const ecrivain: Ecrivain = {
+      evenement: regle.evenement,
+      fichier,
+      ligne: sf.getLineAndCharacterOfPosition(n.getStart()).line + 1,
+      fonction: fonctionNommee(n),
+    };
+    if (indecidable) {
+      fautes.push({
+        ...ecrivain,
+        regle: "E0",
+        detail:
+          `le littéral "${cle}" circule hors d'une écriture lisible : une clé portée par une ` +
+          `variable finit dans \`${regle.champ}[variable] = …\`, que le cliquet ne sait pas suivre`,
+      });
+      return;
+    }
+    ecrivains.push(ecrivain);
+
+    const f = fonctionEnglobante(n);
+    const emissions = f === null ? [] : appelsDans(f, regle.emission);
+    if (f === null || emissions.length === 0) {
+      fautes.push({
+        ...ecrivain,
+        regle: "E1",
+        detail: `la clé ${regle.champ}.${cle} est posée sans appeler ${regle.emission}() dans la même fonction`,
+      });
+      return;
+    }
+    const clients = clientsQuiEcrivent(f, regle.modele);
+    const surLeMemeClient = emissions.some((c) => {
+      const premier = c.arguments[0]?.getText();
+      return premier !== undefined && clients.includes(premier);
+    });
+    if (!surLeMemeClient) {
+      fautes.push({
+        ...ecrivain,
+        regle: "E2",
+        detail:
+          clients.length === 0
+            ? `aucune écriture de ${regle.modele} dans la fonction qui pose ${regle.champ}.${cle}`
+            : `${regle.emission}() ne reçoit pas le client qui écrit ${regle.modele} ` +
+              `(${clients.join(", ")}) : hors de la même transaction`,
+      });
+      return;
+    }
+    if (!estTravailDeTransaction(f, regle)) {
+      fautes.push({
+        ...ecrivain,
+        regle: "E3",
+        detail: `la fonction englobante n'est pas le travail d'une transaction (${regle.transactions.join(", ")})`,
+      });
+    }
+  };
+  visiter(sf);
+}
+
 /** Le cliquet, sur un jeu de sources (chemins relatifs à la racine du dépôt). */
 export function confronterEcrivains(
   sources: Sources,
@@ -477,6 +646,10 @@ export function confronterEcrivains(
     const avant = ecrivains.length;
     for (const [fichier, texte] of sources) {
       if (estTest(fichier)) continue;
+      if (regle.cleJson !== undefined) {
+        confronterMarqueJson(fichier, texte, regle, regle.cleJson, ecrivains, fautes);
+        continue;
+      }
       confronterFichier(fichier, texte, regle, ecrivains, fautes, horsFait);
     }
     parEvenement[regle.evenement] = ecrivains.length - avant;
