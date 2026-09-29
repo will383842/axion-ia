@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "properties": {
+    "objet": {
+      "type": "string"
+    },
+    "paragraphes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "texte": {
+            "type": "string"
+          },
+          "faits_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["texte", "faits_refs"],
+        "additionalProperties": false
+      }
+    },
+    "formule_de_fin": {
+      "type": "string"
+    }
+  },
+  "required": ["objet", "paragraphes", "formule_de_fin"],
+  "additionalProperties": false,
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

@@ -1,0 +1,168 @@
+{
+  "type": "object",
+  "properties": {
+    "lignes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ref_catalogue": {
+            "type": "string"
+          },
+          "quantite": {
+            "type": "integer"
+          },
+          "unite": {
+            "type": "string",
+            "enum": ["groupes", "jours", "mois", "sessions", "forfait", "personnes"]
+          },
+          "faits_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "justification": {
+            "type": "string"
+          }
+        },
+        "required": ["ref_catalogue", "quantite", "unite", "faits_refs", "justification"],
+        "additionalProperties": false
+      }
+    },
+    "sans_reference": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "activite": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": ["formation", "un_a_un", "audit", "implementation", "site_web"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "financement_suggere": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": ["direct", "opco", "france_travail"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "nb_participants": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "duree_heures": {
+      "type": "number",
+      "nullable": true
+    },
+    "modalite_opco": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": ["intra", "inter_presentiel", "inter_distanciel"]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "ref_client": {
+      "type": "string",
+      "nullable": true
+    },
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "alternatives": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "manquant_pour_chiffrer": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "personnalisation_formation": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "niveau": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": ["debutant", "intermediaire", "avance", "tous_niveaux"]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "prerequis": {
+              "type": "string",
+              "nullable": true
+            },
+            "secteur_cible": {
+              "type": "string",
+              "nullable": true
+            },
+            "outils_client": {
+              "type": "string",
+              "nullable": true
+            },
+            "faits_refs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": ["niveau", "prerequis", "secteur_cible", "outils_client", "faits_refs"],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "lignes",
+    "sans_reference",
+    "activite",
+    "financement_suggere",
+    "nb_participants",
+    "duree_heures",
+    "modalite_opco",
+    "ref_client",
+    "hypotheses",
+    "alternatives",
+    "manquant_pour_chiffrer",
+    "personnalisation_formation"
+  ],
+  "additionalProperties": false,
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

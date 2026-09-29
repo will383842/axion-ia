@@ -1,0 +1,263 @@
+{
+  "version_schema": "extraction.v1",
+  "nature_echange": {
+    "nature": "echange_complet",
+    "explication": "Rendez-vous diagnostic complet."
+  },
+  "consentement": {
+    "segment_ids": ["S0002"],
+    "citation": "Oui, pas de souci, vous pouvez enregistrer"
+  },
+  "demande_arret_enregistrement": null,
+  "participants": [
+    {
+      "etiquette": "AXION",
+      "personne_ref": null
+    },
+    {
+      "etiquette": "CLIENT_1",
+      "personne_ref": "P1"
+    }
+  ],
+  "personnes": [],
+  "projets_evoques": [
+    {
+      "ref": "J1",
+      "intitule": "Former les commerciaux à l'IA",
+      "activite": "formation",
+      "projet_connu_ref": null,
+      "preuves": []
+    }
+  ],
+  "faits": [
+    {
+      "cle": "global",
+      "valeur": {
+        "montant_min_cents": null,
+        "montant_max_cents": null,
+        "base_montant": null,
+        "periode_montant": null,
+        "date_cible": null,
+        "precision_date": null,
+        "expression_temporelle": null,
+        "quantite": 12,
+        "unite": "personnes",
+        "ref_catalogue": null,
+        "texte_court": null
+      },
+      "certitude": "dit_explicitement",
+      "confiance": "haute",
+      "locuteur_declare": "client",
+      "confirmation_client": null,
+      "portee": "projet",
+      "projet_ref": "J1",
+      "personne_sujet_ref": null,
+      "ambiguite": null,
+      "ref": "F01",
+      "type": "nb_participants",
+      "enonce": "La gérante veut former 12 commerciaux.",
+      "preuves": [
+        {
+          "segment_ids": ["S0004"],
+          "citation": "On serait douze commerciaux à former"
+        }
+      ]
+    },
+    {
+      "cle": "global",
+      "valeur": {
+        "montant_min_cents": 300000,
+        "montant_max_cents": 300000,
+        "base_montant": "ht",
+        "periode_montant": "total",
+        "date_cible": null,
+        "precision_date": null,
+        "expression_temporelle": null,
+        "quantite": null,
+        "unite": null,
+        "ref_catalogue": null,
+        "texte_court": null
+      },
+      "certitude": "dit_explicitement",
+      "confiance": "haute",
+      "locuteur_declare": "client",
+      "confirmation_client": null,
+      "portee": "projet",
+      "projet_ref": "J1",
+      "personne_sujet_ref": null,
+      "ambiguite": null,
+      "ref": "F02",
+      "type": "budget",
+      "enonce": "Le budget prévu est d'environ 3 000 € HT.",
+      "preuves": [
+        {
+          "segment_ids": ["S0006"],
+          "citation": "On avait prévu autour de trois mille euros hors taxes"
+        }
+      ]
+    },
+    {
+      "cle": "global",
+      "valeur": {
+        "montant_min_cents": null,
+        "montant_max_cents": null,
+        "base_montant": null,
+        "periode_montant": null,
+        "date_cible": "2026-12-15",
+        "precision_date": "avant_le",
+        "expression_temporelle": "avant le 15 décembre",
+        "quantite": null,
+        "unite": null,
+        "ref_catalogue": null,
+        "texte_court": null
+      },
+      "certitude": "dit_explicitement",
+      "confiance": "haute",
+      "locuteur_declare": "client",
+      "confirmation_client": null,
+      "portee": "projet",
+      "projet_ref": "J1",
+      "personne_sujet_ref": null,
+      "ambiguite": null,
+      "ref": "F03",
+      "type": "echeance",
+      "enonce": "La formation doit avoir lieu avant le 15 décembre.",
+      "preuves": [
+        {
+          "segment_ids": ["S0009"],
+          "citation": "que ce soit fait avant le 15 décembre"
+        }
+      ]
+    },
+    {
+      "cle": "programme",
+      "valeur": {
+        "montant_min_cents": null,
+        "montant_max_cents": null,
+        "base_montant": null,
+        "periode_montant": null,
+        "date_cible": null,
+        "precision_date": null,
+        "expression_temporelle": null,
+        "quantite": null,
+        "unite": null,
+        "ref_catalogue": null,
+        "texte_court": null
+      },
+      "certitude": "dit_explicitement",
+      "confiance": "haute",
+      "locuteur_declare": "axion",
+      "confirmation_client": null,
+      "portee": "projet",
+      "projet_ref": "J1",
+      "personne_sujet_ref": null,
+      "ambiguite": null,
+      "ref": "F04",
+      "type": "engagement_axion",
+      "enonce": "Williams envoie le programme de la formation vendredi.",
+      "preuves": [
+        {
+          "segment_ids": ["S0010"],
+          "citation": "Je vous envoie le programme de la formation vendredi"
+        }
+      ]
+    },
+    {
+      "cle": "relances",
+      "valeur": {
+        "montant_min_cents": null,
+        "montant_max_cents": null,
+        "base_montant": null,
+        "periode_montant": null,
+        "date_cible": null,
+        "precision_date": null,
+        "expression_temporelle": null,
+        "quantite": null,
+        "unite": null,
+        "ref_catalogue": null,
+        "texte_court": null
+      },
+      "certitude": "dit_explicitement",
+      "confiance": "haute",
+      "locuteur_declare": "client",
+      "confirmation_client": null,
+      "portee": "projet",
+      "projet_ref": "J1",
+      "personne_sujet_ref": null,
+      "ambiguite": null,
+      "ref": "F05",
+      "type": "probleme",
+      "enonce": "L'équipe perd des heures sur les relances clients, tout est sur Excel.",
+      "preuves": [
+        {
+          "segment_ids": ["S0011"],
+          "citation": "tout est sur Excel et on perd des heures sur les relances clients"
+        }
+      ]
+    }
+  ],
+  "suivi_du_connu": [],
+  "couverture": {
+    "entreprise": {
+      "statut": "non_aborde",
+      "faits_refs": [],
+      "remarque": null
+    },
+    "decision": {
+      "statut": "non_aborde",
+      "faits_refs": [],
+      "remarque": null
+    },
+    "problemes": {
+      "statut": "aborde",
+      "faits_refs": ["F05"],
+      "remarque": null
+    },
+    "besoins": {
+      "statut": "non_aborde",
+      "faits_refs": [],
+      "remarque": null
+    },
+    "perimetre": {
+      "statut": "aborde",
+      "faits_refs": ["F01"],
+      "remarque": null
+    },
+    "budget_financement": {
+      "statut": "aborde",
+      "faits_refs": ["F02"],
+      "remarque": null
+    },
+    "calendrier": {
+      "statut": "aborde",
+      "faits_refs": ["F03"],
+      "remarque": null
+    },
+    "objections_concurrence": {
+      "statut": "non_aborde",
+      "faits_refs": [],
+      "remarque": null
+    },
+    "engagements": {
+      "statut": "aborde",
+      "faits_refs": ["F04"],
+      "remarque": null
+    },
+    "offres": {
+      "statut": "non_aborde",
+      "faits_refs": [],
+      "remarque": null
+    },
+    "questions_ouvertes": {
+      "statut": "non_aborde",
+      "faits_refs": [],
+      "remarque": null
+    },
+    "prochaine_etape": {
+      "statut": "non_aborde",
+      "faits_refs": [],
+      "remarque": null
+    }
+  },
+  "passages_ecartes": []
+}

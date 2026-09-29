@@ -94,6 +94,7 @@
     "i18n:check": "tsx scripts/check-i18n.ts",
     "zod:check": "tsx scripts/check-zod.ts",
     "enregistreur:contrat": "tsx scripts/visio/generer-contrat.ts",
+    "visio:eval": "tsx scripts/visio/evaluer.ts",
     "use-client:check": "tsx scripts/check-use-client.ts",
     "anti-siren:check": "bash scripts/check-anti-siren.sh",
     "anti-hex:check": "bash scripts/check-anti-hex.sh",

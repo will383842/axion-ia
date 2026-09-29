@@ -1,0 +1,50 @@
+{
+  "text": "Bonjour Madame, je vous annonce que j'enregistre notre échange pour le compte rendu, êtes-vous d'accord ? Parfait. Combien de personnes voulez-vous former ? Et côté budget, vous aviez une idée ? Donc vous êtes bien douze personnes ? Je vous envoie le programme de la formation vendredi.",
+  "segments": [
+    {
+      "type": "transcript.text.segment",
+      "id": "seg_0",
+      "start": 4,
+      "end": 8,
+      "speaker": "A",
+      "text": "Bonjour Madame, je vous annonce que j'enregistre notre échange pour le compte rendu, êtes-vous d'accord ?"
+    },
+    {
+      "type": "transcript.text.segment",
+      "id": "seg_1",
+      "start": 20,
+      "end": 24,
+      "speaker": "A",
+      "text": "Parfait. Combien de personnes voulez-vous former ?"
+    },
+    {
+      "type": "transcript.text.segment",
+      "id": "seg_2",
+      "start": 40,
+      "end": 44,
+      "speaker": "A",
+      "text": "Et côté budget, vous aviez une idée ?"
+    },
+    {
+      "type": "transcript.text.segment",
+      "id": "seg_3",
+      "start": 60,
+      "end": 64,
+      "speaker": "A",
+      "text": "Donc vous êtes bien douze personnes ?"
+    },
+    {
+      "type": "transcript.text.segment",
+      "id": "seg_4",
+      "start": 100,
+      "end": 104,
+      "speaker": "A",
+      "text": "Je vous envoie le programme de la formation vendredi."
+    }
+  ],
+  "usage": {
+    "type": "tokens",
+    "input_tokens": 6800,
+    "output_tokens": 240
+  }
+}

@@ -74,6 +74,8 @@ import { startQualiopiDocumentsWorker } from "./workers/qualiopi-documents-worke
 import { startChatbotIngestWorker } from "./workers/chatbot-ingest-worker";
 // Chantier visio (PR 4) — balayage du dossier client, env-gated DOSSIER_BALAYAGE_ENABLED.
 import { startVisioBalayageWorker } from "./workers/visio-balayage-worker";
+// Chantier visio (PR 6) — transcription et compte rendu par l'API OpenAI, file `visio`.
+import { startVisioWorker } from "./workers/visio-worker";
 import { bootRepeatableJobs } from "./queues";
 import { isBullmqDisabled } from "./connection";
 
@@ -190,6 +192,10 @@ async function main() {
     // Allumé APRÈS la reprise réelle de l'historique Calendly (sinon l'historique
     // arriverait en rafale « à classer »). Éteint : ni worker ni entrée répétable.
     ...(process.env.DOSSIER_BALAYAGE_ENABLED === "true" ? [startVisioBalayageWorker()] : []),
+    // Chantier visio (PR 6) — le circuit du compte rendu (concurrence 1). Inerte
+    // tant qu'aucun enregistrement n'est déposé : le balayage ne trouve rien et
+    // aucun appel à OpenAI n'est émis. Charges de job : identifiants seulement.
+    startVisioWorker(),
   ];
 
   await bootRepeatableJobs();

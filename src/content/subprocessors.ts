@@ -66,7 +66,13 @@ export interface Subprocessor {
    * publique pour distinguer infrastructure CORE vs services applicatifs vs
    * content-gen IA.
    */
-  category: "core_infra" | "payments" | "communications" | "analytics_obs" | "content_gen_ai";
+  category:
+    | "core_infra"
+    | "payments"
+    | "communications"
+    | "analytics_obs"
+    | "content_gen_ai"
+    | "meeting_ai";
   /**
    * Statut d'activation effectif en prod. `active` = le code envoie
    * effectivement des données au provider aujourd'hui. `pending_activation` =
@@ -741,6 +747,31 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     dpaStatus: "pending",
     transferFramework: "scc",
     category: "content_gen_ai",
+    activationStatus: "pending_activation",
+    documentationUrl: "https://openai.com/policies/data-processing-addendum",
+  },
+  // ───────────────────────────── IA des comptes rendus de rendez-vous (chantier visio, PR 6)
+  // Entrée DISTINCTE de l'entrée éditoriale ci-dessus : autre finalité, autres
+  // données (le son et la parole des rendez-vous), autre base légale.
+  // `pending_activation` tant que l'enregistrement n'est pas ouvert (drapeau
+  // `ENREGISTREMENT_VISIO_OUVERT`) : la notice publique ne change qu'avec la
+  // PR 8 (garde `la-notice-ne-retarde-pas-sur-la-visio.spec.ts`).
+  {
+    name: "OpenAI, LLC (comptes rendus de rendez-vous)",
+    location: "San Francisco, USA",
+    serversLocation: "USA",
+    purposeFr:
+      "Transcription du son des rendez-vous en visioconférence enregistrés avec l'accord oral des participants, puis aide à la rédaction du compte rendu interne relu et validé par Williams. Aucune donnée n'est utilisée pour entraîner les modèles ; les réponses ne sont pas conservées par OpenAI (option « store: false »), la transcription n'est pas conservée.",
+    purposeEn:
+      "Transcription of the audio of video-conference meetings recorded with the participants' oral consent, then help drafting the internal meeting summary reviewed and approved by Williams. No data is used to train models; responses are not stored by OpenAI (\u201cstore: false\u201d), transcriptions are not retained.",
+    dataCategoriesFr:
+      "Son des visioconférences (piste du client et piste d'Axion-IA), texte transcrit, informations professionnelles dites pendant le rendez-vous (besoins, projet, budget, calendrier).",
+    dataCategoriesEn:
+      "Video-conference audio (client and Axion-IA tracks), transcribed text, business information said during the meeting (needs, project, budget, schedule).",
+    legalBasis: "6.1.a_consent",
+    dpaStatus: "pending",
+    transferFramework: "scc",
+    category: "meeting_ai",
     activationStatus: "pending_activation",
     documentationUrl: "https://openai.com/policies/data-processing-addendum",
   },

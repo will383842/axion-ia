@@ -42,6 +42,7 @@ import {
   finConservationRencontreOrpheline,
   plusAns,
 } from "@/server/visio/conservation";
+import { planifierDans } from "@/server/visio/prise-d-etape";
 
 export const ERASED_PLACEHOLDER = "[erased-rgpd-art17]";
 
@@ -1135,7 +1136,7 @@ export async function effacerCibleParAdresses(
     );
     const crVides = await tx.compteRendu.findMany({
       where: { rencontreId: { in: aReecrire }, statut: { not: "a_regenerer" } },
-      select: { id: true },
+      select: { id: true, rencontreId: true },
     });
     await tx.compteRendu.updateMany({
       where: { id: { in: crVides.map((c) => c.id) } },
@@ -1147,6 +1148,9 @@ export async function effacerCibleParAdresses(
       crVides.map((c) => c.id),
       motif,
     );
+    // ⛔ Une réécriture SANS la personne est programmée (PR 6) : P5 relit les
+    // faits restants, jamais la transcription — ses faits sont vidés ci-dessus.
+    await programmerReecritures(tx, crVides);
 
     // 4-5. Les questions qu'on lui a adressées (vidées, jamais supprimées : un
     //    fait peut les citer comme source — clé RESTRICT), ses e-mails de suivi
@@ -1173,6 +1177,209 @@ export async function effacerCibleParAdresses(
   await prisma.clientContactAdresse.deleteMany({ where: { contactId: { in: contactIds } } });
 
   return resultat;
+}
+
+/**
+ * Programme la RÉÉCRITURE (P5) de comptes rendus vidés (`a_regenerer`) : le
+ * worker en produira une nouvelle version depuis les faits RESTANTS de leur
+ * rencontre — jamais depuis la transcription.
+ */
+async function programmerReecritures(
+  tx: Prisma.TransactionClient,
+  comptesRendus: ReadonlyArray<{ readonly id: string; readonly rencontreId: string }>,
+): Promise<void> {
+  for (const cr of comptesRendus) {
+    await planifierDans(tx, cr.rencontreId, {
+      etape: "rediger",
+      compteRenduId: cr.id,
+      reinitialiser: true,
+    });
+  }
+}
+
+export interface RetraitAccordResultat {
+  readonly segments: number;
+  readonly comptesRendus: number;
+  readonly faits: number;
+  readonly comptesRendusARegenerer: number;
+  readonly etapesAnnulees: number;
+}
+
+/**
+ * RETRAIT DE L'ACCORD APRÈS L'APPEL (décision B2 ; plan §3.15) — « Le client
+ * retire son accord pour ce rendez-vous ».
+ *
+ * En UNE transaction, sous le drapeau d'effacement :
+ *   · les segments de transcription sont supprimés (les transcriptions
+ *     restent, écartées, sans parole) ;
+ *   · TOUTES les versions du compte rendu sont supprimées ;
+ *   · les faits de la rencontre sont vidés et passent `efface` (le journal
+ *     reste) ; les cases pré-remplies depuis eux sont vidées ; les liens des
+ *     autres faits vers eux sont retirés ;
+ *   · les comptes rendus SUIVANTS du même client passent `a_regenerer` (ils
+ *     ont pu reprendre ces faits) et une réécriture est programmée ;
+ *   · les étapes en cours ou à venir de la rencontre sont ANNULÉES (une étape
+ *     déjà en vol n'écrira rien : son écriture finale vérifie le retrait) ;
+ *   · un `EnregistrementConsentement(retrait)` et les `EffacementJournal`
+ *     (motif `retrait`) sont écrits.
+ *
+ * Ce qui RESTE : la PREUVE INITIALE de l'accord (art. 17(3)(e) : elle établit
+ * que l'enregistrement était licite), les devis et e-mails déjà émis.
+ *
+ * Le son est supprimé de R2 par l'étape `purger_audio`, programmée dans la
+ * même transaction (le worker la prend dans les minutes qui suivent).
+ */
+export async function retirerAccordRencontre(
+  rencontreId: string,
+  parAdminId: string,
+  options: { readonly db?: OuvreurDeTransaction; readonly maintenant?: Date } = {},
+): Promise<RetraitAccordResultat> {
+  const maintenant = options.maintenant ?? new Date();
+  return executerSousDrapeauEffacement(options.db ?? prisma, async (tx) => {
+    const rencontre = await tx.rencontre.findUnique({
+      where: { id: rencontreId },
+      select: { id: true, clientId: true, debutPrevu: true, debutReel: true, createdAt: true },
+    });
+    if (!rencontre) throw new Error("Rendez-vous introuvable.");
+
+    // 1. La parole transcrite.
+    const enregistrements = await tx.enregistrement.findMany({
+      where: { rencontreId },
+      select: { id: true },
+    });
+    const transcriptions = await tx.transcription.findMany({
+      where: { enregistrementId: { in: enregistrements.map((e) => e.id) } },
+      select: { id: true },
+    });
+    const transcriptionIds = transcriptions.map((t) => t.id);
+    const segments = await tx.transcriptionSegment.findMany({
+      where: { transcriptionId: { in: transcriptionIds } },
+      select: { transcriptionId: true, ordre: true },
+    });
+    await tx.transcriptionSegment.deleteMany({
+      where: { transcriptionId: { in: transcriptionIds } },
+    });
+    await tx.transcription.updateMany({
+      where: { id: { in: transcriptionIds } },
+      data: { statut: "ecartee", segmentsSupprimesLe: maintenant },
+    });
+    await journaliserEffacements(
+      tx,
+      "transcription_segments",
+      segments.map((s) => `${s.transcriptionId}:${s.ordre}`),
+      "retrait",
+    );
+
+    // 2. Les faits de la rencontre (contenu vidé, journal gardé).
+    const faits = await tx.fait.findMany({
+      where: { rencontreId, statut: { not: "efface" } },
+      select: { id: true },
+    });
+    const faitIds = faits.map((f) => f.id);
+    await tx.fait.updateMany({
+      where: { id: { in: faitIds } },
+      data: { ...FAIT_CONTENU_VIDE, statut: "efface" },
+    });
+    await journaliserFaitsEffaces(tx, faitIds, parAdminId);
+    await journaliserEffacements(tx, "faits", faitIds, "retrait");
+    await tx.preRemplissage.updateMany({
+      where: { faitId: { in: faitIds } },
+      data: { valeurProposee: "", valeurRetenue: null },
+    });
+    // Les liens des AUTRES faits vers eux sont retirés.
+    await tx.fait.updateMany({
+      where: { relationAvecFaitId: { in: faitIds } },
+      data: { relationAvecFaitId: null, relation: null },
+    });
+    await tx.fait.updateMany({
+      where: { resoluParFaitId: { in: faitIds } },
+      data: { resoluParFaitId: null },
+    });
+    await tx.fait.updateMany({
+      where: { remplaceParId: { in: faitIds } },
+      data: { remplaceParId: null },
+    });
+    await tx.fait.updateMany({
+      where: { doublonDeFaitId: { in: faitIds } },
+      data: { doublonDeFaitId: null },
+    });
+
+    // 3. Toutes les versions du compte rendu.
+    const crs = await tx.compteRendu.findMany({ where: { rencontreId }, select: { id: true } });
+    await tx.compteRendu.deleteMany({ where: { rencontreId } });
+    await journaliserEffacements(
+      tx,
+      "comptes_rendus",
+      crs.map((c) => c.id),
+      "retrait",
+    );
+
+    // 4. Les comptes rendus SUIVANTS du client : vidés, réécriture programmée.
+    const debut = rencontre.debutReel ?? rencontre.debutPrevu ?? rencontre.createdAt;
+    const suivants =
+      rencontre.clientId === null
+        ? []
+        : await tx.compteRendu.findMany({
+            where: {
+              statut: { in: ["brouillon", "a_valider", "valide"] },
+              rencontre: {
+                clientId: rencontre.clientId,
+                id: { not: rencontreId },
+                OR: [{ debutReel: { gt: debut } }, { debutReel: null, debutPrevu: { gt: debut } }],
+              },
+            },
+            select: { id: true, rencontreId: true },
+          });
+    await tx.compteRendu.updateMany({
+      where: { id: { in: suivants.map((c) => c.id) } },
+      data: { statut: "a_regenerer", contenu: "", verification: null },
+    });
+    await journaliserEffacements(
+      tx,
+      "comptes_rendus",
+      suivants.map((c) => c.id),
+      "retrait",
+    );
+    await programmerReecritures(tx, suivants);
+
+    // 5. Les étapes de la rencontre : annulées ; le son part par `purger_audio`.
+    const annulees = await tx.traitementVisio.updateMany({
+      where: { rencontreId, statut: { in: ["a_faire", "en_cours", "suspendu"] } },
+      data: { statut: "annule", verrouJusqua: null },
+    });
+    await planifierDans(tx, rencontreId, {
+      etape: "purger_audio",
+      compteRenduId: null,
+      reinitialiser: true,
+    });
+    await tx.enregistrement.updateMany({
+      where: {
+        rencontreId,
+        statut: { notIn: ["accord_en_attente", "en_cours", "interrompu"] },
+      },
+      data: { statut: "abandonne" },
+    });
+
+    // 6. La trace du retrait. La PREUVE INITIALE n'est pas touchée.
+    await tx.enregistrementConsentement.create({
+      data: {
+        rencontreId,
+        enregistrementId: null,
+        type: "retrait",
+        versionTexte: "retrait-apres-appel-v1",
+        declareParId: parAdminId,
+        survenuLe: maintenant,
+      },
+    });
+
+    return {
+      segments: segments.length,
+      comptesRendus: crs.length,
+      faits: faitIds.length,
+      comptesRendusARegenerer: suivants.length,
+      etapesAnnulees: annulees.count,
+    };
+  });
 }
 
 /**

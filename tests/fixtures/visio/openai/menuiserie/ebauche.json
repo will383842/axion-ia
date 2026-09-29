@@ -1,0 +1,22 @@
+{
+  "lignes": [
+    {
+      "ref_catalogue": "TIER:intervention-4h",
+      "quantite": 1,
+      "unite": "groupes",
+      "faits_refs": ["F01"],
+      "justification": "Un groupe de 12 commerciaux."
+    }
+  ],
+  "sans_reference": [],
+  "activite": "formation",
+  "financement_suggere": null,
+  "nb_participants": 12,
+  "duree_heures": null,
+  "modalite_opco": null,
+  "ref_client": null,
+  "hypotheses": ["Un seul groupe suffit pour 12 personnes."],
+  "alternatives": [],
+  "manquant_pour_chiffrer": ["Quelle durée souhaitez-vous pour la formation ?"],
+  "personnalisation_formation": null
+}

@@ -1,0 +1,1127 @@
+{
+  "type": "object",
+  "properties": {
+    "version_schema": {
+      "type": "string",
+      "const": "extraction.v1"
+    },
+    "nature_echange": {
+      "type": "object",
+      "properties": {
+        "nature": {
+          "type": "string",
+          "enum": [
+            "echange_complet",
+            "echange_partiel",
+            "echange_interrompu",
+            "pas_un_rendez_vous_client",
+            "inexploitable"
+          ]
+        },
+        "explication": {
+          "type": "string"
+        }
+      },
+      "required": ["nature", "explication"],
+      "additionalProperties": false
+    },
+    "consentement": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "segment_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "citation": {
+              "type": "string"
+            }
+          },
+          "required": ["segment_ids", "citation"],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "demande_arret_enregistrement": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/extraction_v1_properties_consentement_anyOf_0"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "participants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "etiquette": {
+            "type": "string"
+          },
+          "personne_ref": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": ["etiquette", "personne_ref"],
+        "additionalProperties": false
+      }
+    },
+    "personnes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ref": {
+            "type": "string"
+          },
+          "nom_dit": {
+            "type": "string",
+            "nullable": true
+          },
+          "fonction_dite": {
+            "type": "string",
+            "nullable": true
+          },
+          "entreprise_dite": {
+            "type": "string",
+            "nullable": true
+          },
+          "presente": {
+            "type": "boolean"
+          },
+          "contact_connu_ref": {
+            "type": "string",
+            "nullable": true
+          },
+          "statut_dit": {
+            "type": "string",
+            "enum": ["en_poste", "partie", "arrivee_recemment", "non_precise"]
+          },
+          "preuves": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/extraction_v1_properties_consentement_anyOf_0"
+            }
+          }
+        },
+        "required": [
+          "ref",
+          "nom_dit",
+          "fonction_dite",
+          "entreprise_dite",
+          "presente",
+          "contact_connu_ref",
+          "statut_dit",
+          "preuves"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "projets_evoques": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ref": {
+            "type": "string"
+          },
+          "intitule": {
+            "type": "string"
+          },
+          "activite": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": ["formation", "un_a_un", "audit", "implementation", "site_web"]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "projet_connu_ref": {
+            "type": "string",
+            "nullable": true
+          },
+          "preuves": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/extraction_v1_properties_consentement_anyOf_0"
+            }
+          }
+        },
+        "required": ["ref", "intitule", "activite", "projet_connu_ref", "preuves"],
+        "additionalProperties": false
+      }
+    },
+    "faits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ref": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "info_societe",
+              "activite",
+              "effectif",
+              "outil_utilise",
+              "niveau_ia",
+              "decideur",
+              "processus_decision",
+              "mise_en_relation",
+              "probleme",
+              "besoin",
+              "objectif",
+              "public_cible",
+              "nb_participants",
+              "modalite_souhaitee",
+              "lieu_intervention",
+              "contrainte",
+              "budget",
+              "financement",
+              "echeance",
+              "objection",
+              "concurrent",
+              "engagement_axion",
+              "engagement_client",
+              "prix_annonce_axion",
+              "offre_envisagee",
+              "question_ouverte",
+              "question_client_repondue",
+              "prochaine_etape",
+              "autre"
+            ]
+          },
+          "cle": {
+            "type": "string"
+          },
+          "enonce": {
+            "type": "string"
+          },
+          "valeur": {
+            "type": "object",
+            "properties": {
+              "montant_min_cents": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "montant_max_cents": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "base_montant": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": ["ht", "ttc", "non_precise"]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "periode_montant": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": ["total", "par_an", "par_mois", "par_personne", "non_precise"]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "date_cible": {
+                "type": "string",
+                "nullable": true
+              },
+              "precision_date": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "jour",
+                      "semaine",
+                      "mois",
+                      "trimestre",
+                      "annee",
+                      "avant_le",
+                      "apres_le"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "expression_temporelle": {
+                "type": "string",
+                "nullable": true
+              },
+              "quantite": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "unite": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "personnes",
+                      "groupes",
+                      "jours",
+                      "heures",
+                      "demi_journees",
+                      "mois",
+                      "sessions",
+                      "salaries"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "ref_catalogue": {
+                "type": "string",
+                "nullable": true
+              },
+              "texte_court": {
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "required": [
+              "montant_min_cents",
+              "montant_max_cents",
+              "base_montant",
+              "periode_montant",
+              "date_cible",
+              "precision_date",
+              "expression_temporelle",
+              "quantite",
+              "unite",
+              "ref_catalogue",
+              "texte_court"
+            ],
+            "additionalProperties": false
+          },
+          "certitude": {
+            "type": "string",
+            "enum": ["dit_explicitement", "deduit"]
+          },
+          "confiance": {
+            "type": "string",
+            "enum": ["haute", "moyenne", "faible"]
+          },
+          "locuteur_declare": {
+            "type": "string",
+            "enum": ["client", "axion"]
+          },
+          "preuves": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/extraction_v1_properties_consentement_anyOf_0"
+            }
+          },
+          "confirmation_client": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/extraction_v1_properties_consentement_anyOf_0"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "portee": {
+            "type": "string",
+            "enum": ["entreprise", "projet"]
+          },
+          "projet_ref": {
+            "type": "string",
+            "nullable": true
+          },
+          "personne_sujet_ref": {
+            "type": "string",
+            "nullable": true
+          },
+          "ambiguite": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "ref",
+          "type",
+          "cle",
+          "enonce",
+          "valeur",
+          "certitude",
+          "confiance",
+          "locuteur_declare",
+          "preuves",
+          "confirmation_client",
+          "portee",
+          "projet_ref",
+          "personne_sujet_ref",
+          "ambiguite"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "suivi_du_connu": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "connu_ref": {
+            "type": "string"
+          },
+          "statut": {
+            "type": "string",
+            "enum": ["tenu", "repondu", "en_cours", "abandonne"]
+          },
+          "preuve": {
+            "$ref": "#/definitions/extraction_v1_properties_consentement_anyOf_0"
+          }
+        },
+        "required": ["connu_ref", "statut", "preuve"],
+        "additionalProperties": false
+      }
+    },
+    "couverture": {
+      "type": "object",
+      "properties": {
+        "entreprise": {
+          "type": "object",
+          "properties": {
+            "statut": {
+              "type": "string",
+              "enum": ["aborde", "evoque_sans_precision", "non_aborde"]
+            },
+            "faits_refs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "remarque": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "required": ["statut", "faits_refs", "remarque"],
+          "additionalProperties": false
+        },
+        "decision": {
+          "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+        },
+        "problemes": {
+          "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+        },
+        "besoins": {
+          "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+        },
+        "perimetre": {
+          "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+        },
+        "budget_financement": {
+          "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+        },
+        "calendrier": {
+          "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+        },
+        "objections_concurrence": {
+          "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+        },
+        "engagements": {
+          "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+        },
+        "offres": {
+          "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+        },
+        "questions_ouvertes": {
+          "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+        },
+        "prochaine_etape": {
+          "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+        }
+      },
+      "required": [
+        "entreprise",
+        "decision",
+        "problemes",
+        "besoins",
+        "perimetre",
+        "budget_financement",
+        "calendrier",
+        "objections_concurrence",
+        "engagements",
+        "offres",
+        "questions_ouvertes",
+        "prochaine_etape"
+      ],
+      "additionalProperties": false
+    },
+    "passages_ecartes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "motif": {
+            "type": "string",
+            "enum": ["donnee_sensible", "appreciation_personne", "vie_privee_hors_sujet"]
+          },
+          "segment_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["motif", "segment_ids"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "version_schema",
+    "nature_echange",
+    "consentement",
+    "demande_arret_enregistrement",
+    "participants",
+    "personnes",
+    "projets_evoques",
+    "faits",
+    "suivi_du_connu",
+    "couverture",
+    "passages_ecartes"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "extraction_v1_properties_consentement_anyOf_0": {
+      "type": "object",
+      "properties": {
+        "segment_ids": {
+          "$ref": "#/definitions/extraction_v1_properties_consentement_anyOf_0_properties_segment_ids"
+        },
+        "citation": {
+          "$ref": "#/definitions/extraction_v1_properties_consentement_anyOf_0_properties_citation"
+        }
+      },
+      "required": ["segment_ids", "citation"],
+      "additionalProperties": false
+    },
+    "extraction_v1_properties_couverture_properties_entreprise": {
+      "type": "object",
+      "properties": {
+        "statut": {
+          "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise_properties_statut"
+        },
+        "faits_refs": {
+          "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise_properties_faits_refs"
+        },
+        "remarque": {
+          "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise_properties_remarque"
+        }
+      },
+      "required": ["statut", "faits_refs", "remarque"],
+      "additionalProperties": false
+    },
+    "extraction_v1_properties_consentement_anyOf_0_properties_segment_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/extraction_v1_properties_consentement_anyOf_0_properties_segment_ids_items"
+      }
+    },
+    "extraction_v1_properties_consentement_anyOf_0_properties_citation": {
+      "type": "string"
+    },
+    "extraction_v1_properties_couverture_properties_entreprise_properties_statut": {
+      "type": "string",
+      "enum": ["aborde", "evoque_sans_precision", "non_aborde"]
+    },
+    "extraction_v1_properties_couverture_properties_entreprise_properties_faits_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise_properties_faits_refs_items"
+      }
+    },
+    "extraction_v1_properties_couverture_properties_entreprise_properties_remarque": {
+      "type": "string",
+      "nullable": true
+    },
+    "extraction_v1_properties_consentement_anyOf_0_properties_segment_ids_items": {
+      "type": "string"
+    },
+    "extraction_v1_properties_couverture_properties_entreprise_properties_faits_refs_items": {
+      "type": "string"
+    },
+    "extraction_v1": {
+      "type": "object",
+      "properties": {
+        "version_schema": {
+          "type": "string",
+          "const": "extraction.v1"
+        },
+        "nature_echange": {
+          "type": "object",
+          "properties": {
+            "nature": {
+              "type": "string",
+              "enum": [
+                "echange_complet",
+                "echange_partiel",
+                "echange_interrompu",
+                "pas_un_rendez_vous_client",
+                "inexploitable"
+              ]
+            },
+            "explication": {
+              "type": "string"
+            }
+          },
+          "required": ["nature", "explication"],
+          "additionalProperties": false
+        },
+        "consentement": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "segment_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "citation": {
+                  "type": "string"
+                }
+              },
+              "required": ["segment_ids", "citation"],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "demande_arret_enregistrement": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/extraction_v1_properties_consentement_anyOf_0"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "participants": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "etiquette": {
+                "type": "string"
+              },
+              "personne_ref": {
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "required": ["etiquette", "personne_ref"],
+            "additionalProperties": false
+          }
+        },
+        "personnes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ref": {
+                "type": "string"
+              },
+              "nom_dit": {
+                "type": "string",
+                "nullable": true
+              },
+              "fonction_dite": {
+                "type": "string",
+                "nullable": true
+              },
+              "entreprise_dite": {
+                "type": "string",
+                "nullable": true
+              },
+              "presente": {
+                "type": "boolean"
+              },
+              "contact_connu_ref": {
+                "type": "string",
+                "nullable": true
+              },
+              "statut_dit": {
+                "type": "string",
+                "enum": ["en_poste", "partie", "arrivee_recemment", "non_precise"]
+              },
+              "preuves": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/extraction_v1_properties_consentement_anyOf_0"
+                }
+              }
+            },
+            "required": [
+              "ref",
+              "nom_dit",
+              "fonction_dite",
+              "entreprise_dite",
+              "presente",
+              "contact_connu_ref",
+              "statut_dit",
+              "preuves"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "projets_evoques": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ref": {
+                "type": "string"
+              },
+              "intitule": {
+                "type": "string"
+              },
+              "activite": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": ["formation", "un_a_un", "audit", "implementation", "site_web"]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "projet_connu_ref": {
+                "type": "string",
+                "nullable": true
+              },
+              "preuves": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/extraction_v1_properties_consentement_anyOf_0"
+                }
+              }
+            },
+            "required": ["ref", "intitule", "activite", "projet_connu_ref", "preuves"],
+            "additionalProperties": false
+          }
+        },
+        "faits": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ref": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "info_societe",
+                  "activite",
+                  "effectif",
+                  "outil_utilise",
+                  "niveau_ia",
+                  "decideur",
+                  "processus_decision",
+                  "mise_en_relation",
+                  "probleme",
+                  "besoin",
+                  "objectif",
+                  "public_cible",
+                  "nb_participants",
+                  "modalite_souhaitee",
+                  "lieu_intervention",
+                  "contrainte",
+                  "budget",
+                  "financement",
+                  "echeance",
+                  "objection",
+                  "concurrent",
+                  "engagement_axion",
+                  "engagement_client",
+                  "prix_annonce_axion",
+                  "offre_envisagee",
+                  "question_ouverte",
+                  "question_client_repondue",
+                  "prochaine_etape",
+                  "autre"
+                ]
+              },
+              "cle": {
+                "type": "string"
+              },
+              "enonce": {
+                "type": "string"
+              },
+              "valeur": {
+                "type": "object",
+                "properties": {
+                  "montant_min_cents": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "montant_max_cents": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "base_montant": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": ["ht", "ttc", "non_precise"]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "periode_montant": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": ["total", "par_an", "par_mois", "par_personne", "non_precise"]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "date_cible": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "precision_date": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "jour",
+                          "semaine",
+                          "mois",
+                          "trimestre",
+                          "annee",
+                          "avant_le",
+                          "apres_le"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "expression_temporelle": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "quantite": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "unite": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "personnes",
+                          "groupes",
+                          "jours",
+                          "heures",
+                          "demi_journees",
+                          "mois",
+                          "sessions",
+                          "salaries"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "ref_catalogue": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "texte_court": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "montant_min_cents",
+                  "montant_max_cents",
+                  "base_montant",
+                  "periode_montant",
+                  "date_cible",
+                  "precision_date",
+                  "expression_temporelle",
+                  "quantite",
+                  "unite",
+                  "ref_catalogue",
+                  "texte_court"
+                ],
+                "additionalProperties": false
+              },
+              "certitude": {
+                "type": "string",
+                "enum": ["dit_explicitement", "deduit"]
+              },
+              "confiance": {
+                "type": "string",
+                "enum": ["haute", "moyenne", "faible"]
+              },
+              "locuteur_declare": {
+                "type": "string",
+                "enum": ["client", "axion"]
+              },
+              "preuves": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/extraction_v1_properties_consentement_anyOf_0"
+                }
+              },
+              "confirmation_client": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/extraction_v1_properties_consentement_anyOf_0"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "portee": {
+                "type": "string",
+                "enum": ["entreprise", "projet"]
+              },
+              "projet_ref": {
+                "type": "string",
+                "nullable": true
+              },
+              "personne_sujet_ref": {
+                "type": "string",
+                "nullable": true
+              },
+              "ambiguite": {
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "required": [
+              "ref",
+              "type",
+              "cle",
+              "enonce",
+              "valeur",
+              "certitude",
+              "confiance",
+              "locuteur_declare",
+              "preuves",
+              "confirmation_client",
+              "portee",
+              "projet_ref",
+              "personne_sujet_ref",
+              "ambiguite"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "suivi_du_connu": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "connu_ref": {
+                "type": "string"
+              },
+              "statut": {
+                "type": "string",
+                "enum": ["tenu", "repondu", "en_cours", "abandonne"]
+              },
+              "preuve": {
+                "$ref": "#/definitions/extraction_v1_properties_consentement_anyOf_0"
+              }
+            },
+            "required": ["connu_ref", "statut", "preuve"],
+            "additionalProperties": false
+          }
+        },
+        "couverture": {
+          "type": "object",
+          "properties": {
+            "entreprise": {
+              "type": "object",
+              "properties": {
+                "statut": {
+                  "type": "string",
+                  "enum": ["aborde", "evoque_sans_precision", "non_aborde"]
+                },
+                "faits_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "remarque": {
+                  "type": "string",
+                  "nullable": true
+                }
+              },
+              "required": ["statut", "faits_refs", "remarque"],
+              "additionalProperties": false
+            },
+            "decision": {
+              "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+            },
+            "problemes": {
+              "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+            },
+            "besoins": {
+              "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+            },
+            "perimetre": {
+              "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+            },
+            "budget_financement": {
+              "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+            },
+            "calendrier": {
+              "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+            },
+            "objections_concurrence": {
+              "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+            },
+            "engagements": {
+              "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+            },
+            "offres": {
+              "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+            },
+            "questions_ouvertes": {
+              "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+            },
+            "prochaine_etape": {
+              "$ref": "#/definitions/extraction_v1_properties_couverture_properties_entreprise"
+            }
+          },
+          "required": [
+            "entreprise",
+            "decision",
+            "problemes",
+            "besoins",
+            "perimetre",
+            "budget_financement",
+            "calendrier",
+            "objections_concurrence",
+            "engagements",
+            "offres",
+            "questions_ouvertes",
+            "prochaine_etape"
+          ],
+          "additionalProperties": false
+        },
+        "passages_ecartes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "motif": {
+                "type": "string",
+                "enum": ["donnee_sensible", "appreciation_personne", "vie_privee_hors_sujet"]
+              },
+              "segment_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": ["motif", "segment_ids"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "version_schema",
+        "nature_echange",
+        "consentement",
+        "demande_arret_enregistrement",
+        "participants",
+        "personnes",
+        "projets_evoques",
+        "faits",
+        "suivi_du_connu",
+        "couverture",
+        "passages_ecartes"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

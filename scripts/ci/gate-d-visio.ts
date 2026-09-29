@@ -28,6 +28,12 @@
  *   deux recherches passent avant les deux écritures : deux fiches). Angle
  *   mort : sans verrou, la course reste probabiliste ; on la joue cinq fois.
  *
+ *   ⛔ (PR 6) LA CHAÎNE VISIO DE BOUT EN BOUT (`gate-d-chaine-visio.ts`) :
+ *   dépôt des morceaux → transcription → précontrôles → passes → vérifications
+ *   → validation → purge → 2ᵉ rendez-vous → retrait, avec un faux client
+ *   OpenAI sur la vraie base. Contre-témoin : une P1 tronquée n'atteint jamais
+ *   « à valider ».
+ *
  * Aucune ligne ne reste : tout ce qui est créé est supprimé à la fin, et le
  * script le vérifie.
  */
@@ -35,6 +41,7 @@
 import { PrismaClient } from "../../prisma/generated/client";
 import { executerSousDrapeauEffacement } from "../../src/lib/rgpd-erase";
 import { creerOuRetrouverClient } from "../../src/server/qualiopi/crm/porte-client";
+import { chaineVisioDeBoutEnBout } from "./gate-d-chaine-visio";
 
 const CLIENT_ID = "00000000-0000-4000-8000-0000000000c9";
 const FAIT_ID = "00000000-0000-4000-8000-0000000000f9";
@@ -177,6 +184,13 @@ async function main(): Promise<void> {
   }
 
   fautes.push(...(await deuxCreationsSimultanees()));
+
+  // (PR 6) ⛔ La chaîne visio de bout en bout, faux OpenAI, vraie base.
+  try {
+    fautes.push(...(await chaineVisioDeBoutEnBout()));
+  } catch (err) {
+    fautes.push(`chaîne visio : ${err instanceof Error ? err.message : String(err)}`);
+  }
 
   if (fautes.length > 0) {
     for (const f of fautes) console.error(`::error::[visio] ${f}`);

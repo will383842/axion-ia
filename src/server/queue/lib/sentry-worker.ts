@@ -125,7 +125,9 @@ export type WorkerName =
   // INT-T02 2026-09-26 — relais de la file de sortie vers Axion Partners
   | "partners-sync"
   // Chantier visio (PR 4, 2026-09-29) — balayage du dossier client (5 min)
-  | "visio-balayage";
+  | "visio-balayage"
+  // Chantier visio (PR 6, 2026-09-29) — transcription et compte rendu (file `visio`)
+  | "visio";
 
 /**
  * Resout `captureException`, en contournant les exports conditionnels du paquet.
