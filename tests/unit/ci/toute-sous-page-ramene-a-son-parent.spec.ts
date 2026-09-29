@@ -21,6 +21,13 @@
  * personne le voie. Toute sous-page AJOUTÉE demain est donc assujettie sans que
  * quiconque pense à ce fichier.
  *
+ * ## Troisième famille : la fiche client (chantier visio, PR 3)
+ *
+ * Le dossier client ajoute des sous-pages à `clients/[id]` : « Préparer », et la
+ * page d'un projet (`projets/[projetId]`, un niveau plus bas). Elles ramènent à
+ * la fiche du client, pas à la liste. La page « Éditer » existante, qui
+ * ramenait à la LISTE, ramène désormais à la fiche.
+ *
  * ⚠️ Ces gardes-là ne s'exécutent PAS quand on cible un sous-ensemble de tests.
  * C'est voulu, et c'est aussi leur faiblesse : il faut lancer `tests/unit/ci/`
  * avant de pousser.
@@ -32,11 +39,18 @@ import path from "node:path";
 
 const RACINE = process.cwd();
 
-/** Les deux familles qui ont une FICHE parente à `[id]`. */
+/** Les familles qui ont une FICHE parente à `[id]`. */
 const FAMILLES = [
   "src/app/[locale]/(admin)/[adminPrefix]/qualiopi/sessions/[id]",
   "src/app/[locale]/(admin)/[adminPrefix]/qualiopi/formations/[id]",
+  "src/app/[locale]/(admin)/[adminPrefix]/qualiopi/clients/[id]",
 ] as const;
+
+/** `…/qualiopi/<parent>/[id]` → `<parent>`. */
+function parentDe(famille: string): string {
+  const segments = famille.split("/");
+  return segments[segments.length - 2] ?? "";
+}
 
 /** Sous-pages découvertes : un dossier sous `[id]` qui porte un `page.tsx`. */
 function sousPages(): ReadonlyArray<{ chemin: string; parent: string; source: string }> {
@@ -47,12 +61,24 @@ function sousPages(): ReadonlyArray<{ chemin: string; parent: string; source: st
     for (const entree of fs.readdirSync(abs, { withFileTypes: true })) {
       if (!entree.isDirectory()) continue;
       const page = path.join(abs, entree.name, "page.tsx");
-      if (!fs.existsSync(page)) continue;
-      trouvees.push({
-        chemin: `${famille}/${entree.name}`,
-        parent: famille.endsWith("sessions/[id]") ? "sessions" : "formations",
-        source: fs.readFileSync(page, "utf-8"),
-      });
+      if (fs.existsSync(page)) {
+        trouvees.push({
+          chemin: `${famille}/${entree.name}`,
+          parent: parentDe(famille),
+          source: fs.readFileSync(page, "utf-8"),
+        });
+        continue;
+      }
+      // Un niveau plus bas : une sous-fiche dynamique (`projets/[projetId]`).
+      for (const sous of fs.readdirSync(path.join(abs, entree.name), { withFileTypes: true })) {
+        const pageSous = path.join(abs, entree.name, sous.name, "page.tsx");
+        if (!sous.isDirectory() || !fs.existsSync(pageSous)) continue;
+        trouvees.push({
+          chemin: `${famille}/${entree.name}/${sous.name}`,
+          parent: parentDe(famille),
+          source: fs.readFileSync(pageSous, "utf-8"),
+        });
+      }
     }
   }
   return trouvees;
@@ -102,6 +128,8 @@ describe("🔴 toute sous-page de session ou de formation ramène à son parent"
     const noms = p.map((x) => x.chemin.split("/").pop());
     expect(noms).toContain("emargement");
     expect(noms).toContain("financement");
+    expect(noms).toContain("preparer");
+    expect(noms).toContain("[projetId]");
   });
 
   it("aucune sous-page ne laisse l'utilisateur sans retour vers sa fiche", () => {

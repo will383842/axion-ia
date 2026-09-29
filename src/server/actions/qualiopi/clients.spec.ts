@@ -43,6 +43,27 @@ vi.mock("@/lib/prisma", () => {
   };
   const prisma = {
     client,
+    // Porte unique de création (chantier visio, PR 3) : verrou consultatif,
+    // personne de la fiche et son adresse, journal de « créer quand même ».
+    $executeRaw: async () => 1,
+    clientContact: {
+      findFirst: async () => null,
+      create: async (a: {
+        data: { nom: string; telephone?: string | null; fonction?: string | null };
+      }) => ({
+        id: "contact-1",
+        nom: a.data.nom,
+        telephone: a.data.telephone ?? null,
+        fonction: a.data.fonction ?? null,
+      }),
+      update: async () => ({ id: "contact-1", nom: "", telephone: null, fonction: null }),
+    },
+    clientContactAdresse: {
+      findFirst: async () => null,
+      create: async () => ({}),
+      deleteMany: async () => ({ count: 0 }),
+    },
+    activityLog: { create: async () => ({}) },
     // Passthrough : inoffensif aujourd'hui (l'action n'ouvre pas de
     // transaction), nécessaire dès que V20 enveloppera l'allocation.
     $transaction: async (fn: unknown) =>
@@ -253,7 +274,9 @@ describe("🔴 updateClientAction — le CONTACT est corrigible (chantier V18)",
     });
 
     expect("data" in r).toBe(true);
-    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    // Chantier visio (PR 3) : la copie `contact*` est écrite par
+    // `definirContactFacturation`, dans la même transaction, APRÈS le reste.
+    const data = mockUpdate.mock.calls.at(-1)?.[0]?.data as Record<string, unknown>;
     expect(data.contactNom).toBe("Camille Durand");
     expect(data.contactEmail).toBe("camille@client.test");
     expect(data.contactFonction).toBe("Directrice des ressources humaines");
@@ -267,7 +290,7 @@ describe("🔴 updateClientAction — le CONTACT est corrigible (chantier V18)",
     const r = await updateClientAction({ id: ID, contactEmail: null });
 
     expect("data" in r).toBe(true);
-    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    const data = mockUpdate.mock.calls.at(-1)?.[0]?.data as Record<string, unknown>;
     expect(data.contactEmail).toBeNull();
   });
 
