@@ -41,8 +41,10 @@ import {
 } from "@/content/recrutement/tunnel-facebook";
 import { LEAD_APPORTEUR_CONSENT_VERSION } from "@/lib/commercial-application/lead-apporteur";
 
-/** Toute promesse d'appel sortant, apostrophe droite ou typographique. */
-const PROMESSE_D_APPEL = /rappel|(?:on|qu['’]on) (?:t|m)['’]appel|appel\sde\snotre/i;
+/** Toute promesse d'appel sortant, apostrophe droite ou typographique —
+ *  au tutoiement d'hier comme au vouvoiement d'aujourd'hui (29/09). */
+const PROMESSE_D_APPEL =
+  /rappel|(?:on|qu['’]on) (?:t|m)['’]appel|nous vous appel|appel\sde\snotre/i;
 
 describe("le formulaire court ne promet plus d'appel", () => {
   it("la case de consentement : ni rappel, ni « jamais transmises », 24 mois après la clôture", () => {
@@ -69,10 +71,30 @@ describe("le formulaire court ne promet plus d'appel", () => {
     expect(FORMULAIRE.bouton).toBe("Recevoir le kit");
   });
 
+  it("aucun texte du formulaire court ne promet d'invitation automatique (29/09)", () => {
+    // L'invitation à réserver l'échange part seule, mais pour le DOSSIER
+    // COMPLET uniquement (`invitation-auto.ts`). Le formulaire court envoie le
+    // kit puis des rappels pour compléter le dossier : l'annoncer ici serait
+    // promettre un envoi qui n'a pas lieu.
+    for (const texte of [
+      FORMULAIRE.titre,
+      FORMULAIRE.sousTitre,
+      ...FORMULAIRE.points,
+      FORMULAIRE.micro,
+      MERCI.description,
+      MERCI.email,
+      MERCI.dossierTexte,
+    ]) {
+      expect(texte, texte).not.toMatch(/invitation|réserver/i);
+    }
+  });
+
   it("le formulaire RENDU : la case, le bouton, et l'erreur de la case oubliée", async () => {
     const { container } = render(<LeadApporteurForm />);
     await userEvent.click(screen.getByRole("button", { name: /Recevoir le kit/ }));
-    expect(await screen.findByText("Coche la case pour qu'on puisse t'écrire.")).toBeTruthy();
+    expect(
+      await screen.findByText("Cochez la case pour que nous puissions vous écrire."),
+    ).toBeTruthy();
     // Tout ce que la personne voit, erreurs comprises, avant d'avoir rien envoyé.
     expect(container.textContent ?? "").not.toMatch(PROMESSE_D_APPEL);
     expect(container.textContent ?? "").not.toMatch(/jamais transmises/i);

@@ -262,55 +262,55 @@ export async function PartenaireLandingPage({ params, source }: Props) {
     {
       id: "gains",
       question: "Combien je gagne, concrètement ?",
-      answer: `${commission(1)} par journée de formation vendue : une formation de 2 journées, c'est ${commission(2)} ; de 3 journées, ${commission(3)}. Sur un audit, ${pctAudit} % de la facture — le plus petit audit démarre à ${euros(auditTpe)} HT, soit au moins ${euros(commissionAuditTpe)} pour toi. Ce sont des exemples de calcul, pas une promesse : tes revenus dépendent de tes ventes.`,
+      answer: `${commission(1)} par journée de formation vendue : une formation de 2 journées, c'est ${commission(2)} ; de 3 journées, ${commission(3)}. Sur un audit, ${pctAudit} % de la facture — le plus petit audit démarre à ${euros(auditTpe)} HT, soit au moins ${euros(commissionAuditTpe)} pour vous. Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.`,
     },
     {
       id: "connaissances-ia",
       question: "Il faut connaître l'IA ?",
       answer:
-        "Non, et ce n'est pas ton rôle. Le B2B, c'est ton métier — l'IA, c'est le nôtre. Tu n'as pas besoin de savoir comment fonctionne un extincteur pour dire à un commerçant que la loi lui en impose un. Aucune démo, aucun outil à installer : tu ouvres la porte, on fait le reste.",
+        "Non, et ce n'est pas votre rôle. Le B2B, c'est votre métier — l'IA, c'est le nôtre. Vous n'avez pas besoin de savoir comment fonctionne un extincteur pour dire à un commerçant que la loi lui en impose un. Aucune démo, aucun outil à installer : vous ouvrez la porte, nous faisons le reste.",
     },
     {
       id: "closing",
       question: "Je dois vendre, négocier, faire des devis ?",
       answer:
-        "Jamais. Tu ne closes pas. C'est nous qui appelons, présentons, chiffrons et facturons. Tu n'as ni négociation, ni devis, ni relance d'impayés à gérer.",
+        "Jamais. Vous ne concluez pas la vente. C'est nous qui appelons, présentons, chiffrons et facturons. Vous n'avez ni négociation, ni devis, ni relance d'impayés à gérer.",
     },
     {
       id: "statut",
       question: "Il faut un statut ? Ça coûte quoi ?",
       answer:
-        "Il faut être indépendant pour pouvoir facturer ta commission — micro-entreprise ou société. Si tu n'en as pas encore, la création en ligne est gratuite et prend un quart d'heure. Aucun frais d'entrée de notre côté, aucun kit à acheter.",
+        "Il faut être indépendant pour pouvoir facturer votre commission — micro-entreprise ou société. Si vous n'en avez pas encore, la création en ligne est gratuite et prend un quart d'heure. Aucun frais d'entrée de notre côté, aucun kit à acheter.",
     },
     {
       id: "salarie",
       question: "Je suis salarié, j'ai le droit ?",
       answer:
-        "En général oui, mais vérifie ton contrat de travail : une clause d'exclusivité ou de non-concurrence peut te l'interdire, et c'est à toi de t'en assurer avant de démarrer. Beaucoup de nos apporteurs exercent en complément de leur activité principale.",
+        "En général oui, mais vérifiez votre contrat de travail : une clause d'exclusivité ou de non-concurrence peut vous l'interdire, et c'est à vous de vous en assurer avant de démarrer. Beaucoup de nos apporteurs exercent en complément de leur activité principale.",
     },
     {
       id: "retraite",
       question: "Je suis à la retraite, est-ce que ça change quelque chose ?",
       answer:
-        "Aucune limite d'âge, et les commerciaux à la retraite sont particulièrement les bienvenus : le carnet d'adresses vaut de l'or et le rythme est libre. En revanche, l'effet d'une activité indépendante sur ta pension dépend de ta situation personnelle — fais-le confirmer par ta caisse de retraite ou ton comptable avant de te lancer. Nous ne donnons pas de conseil sur ce point.",
+        "Aucune limite d'âge, et les commerciaux à la retraite sont particulièrement les bienvenus : le carnet d'adresses vaut de l'or et le rythme est libre. En revanche, l'effet d'une activité indépendante sur votre pension dépend de votre situation personnelle — faites-le confirmer par votre caisse de retraite ou votre comptable avant de vous lancer. Nous ne donnons pas de conseil sur ce point.",
     },
     {
       id: "paiement",
       question: "Quand suis-je payé ?",
       answer:
-        "Quand l'entreprise nous a payés. C'est la règle de l'apport d'affaires : la commission est due à l'encaissement, pas à la signature. Tu la factures ensuite à Axion-IA.",
+        "Quand l'entreprise nous a payés. C'est la règle de l'apport d'affaires : la commission est due à l'encaissement, pas à la signature. Vous la facturez ensuite à Axion-IA.",
     },
     {
       id: "contact-direct",
       question: "Et si l'entreprise nous contacte directement ensuite ?",
       answer:
-        "Elle reste enregistrée à ton nom. Qu'elle signe avec toi ou qu'elle nous appelle de son côté, la commission te revient.",
+        "Elle reste enregistrée à votre nom. Qu'elle signe par votre intermédiaire ou qu'elle nous appelle de son côté, la commission vous revient.",
     },
     {
       id: "reponse",
       question: "Vous répondez à toutes les candidatures ?",
       answer:
-        "Oui, à toutes — y compris celles qu'on ne retient pas. On revient vers toi dans les prochaines semaines.",
+        "Oui, à toutes. Dès l'envoi de votre dossier, vous recevez un e-mail de confirmation, puis, dans les minutes qui suivent, une invitation à réserver un échange de 15 minutes en visio.",
     },
   ];
 
@@ -377,7 +377,7 @@ export async function PartenaireLandingPage({ params, source }: Props) {
         </ul>
       </Section>
 
-      {/* 3 ── Tu n'arrives pas avec un produit à pousser */}
+      {/* 3 ── Vous n'arrivez pas avec un produit à pousser */}
       <Section className="py-8 sm:py-12">
         <div className="bg-mocha relative overflow-hidden rounded-2xl px-6 py-8 sm:px-10 sm:py-11">
           <span
@@ -390,9 +390,9 @@ export async function PartenaireLandingPage({ params, source }: Props) {
           />
           <div className="relative">
             <h2 className="font-serif text-[26px] leading-snug font-semibold text-[color:var(--color-bg)] sm:text-4xl">
-              Tu n&apos;arrives pas avec un produit à pousser.{" "}
+              Vous n&apos;arrivez pas avec un produit à pousser.{" "}
               <span className="text-terracotta-soft italic">
-                Tu arrives avec une obligation légale que le dirigeant ignore.
+                Vous arrivez avec une obligation légale que le dirigeant ignore.
               </span>
             </h2>
             <p className="mt-5 max-w-2xl leading-relaxed text-[color:var(--color-bg)]/80">
@@ -416,7 +416,7 @@ export async function PartenaireLandingPage({ params, source }: Props) {
         eyebrow="L'offre"
         title="Deux produits."
         titleEm="C'est tout."
-        description="Pas de catalogue de 40 pages à apprendre. Deux choses à retenir, et tu es opérationnel."
+        description="Pas de catalogue de 40 pages à apprendre. Deux choses à retenir, et c'est tout."
         className="py-10 sm:py-14"
       >
         <div className="mt-8 grid gap-5 sm:grid-cols-2">
@@ -425,7 +425,7 @@ export async function PartenaireLandingPage({ params, source }: Props) {
             <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">
               {commission(1)}
             </p>
-            <p className="text-fg-muted text-sm font-medium">pour toi, par journée vendue</p>
+            <p className="text-fg-muted text-sm font-medium">pour vous, par journée vendue</p>
             <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
               <li>Une formation de 2 journées : {commission(2)}</li>
               <li>De 3 journées : {commission(3)}</li>
@@ -438,7 +438,7 @@ export async function PartenaireLandingPage({ params, source }: Props) {
           <article className="bg-paper border-border rounded-2xl border p-6 sm:p-7">
             <h3 className="text-fg font-serif text-xl font-semibold">Un audit IA</h3>
             <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">{pctAudit} %</p>
-            <p className="text-fg-muted text-sm font-medium">de la facture, pour toi</p>
+            <p className="text-fg-muted text-sm font-medium">de la facture, pour vous</p>
             <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
               <li>
                 Le plus petit audit démarre à {euros(auditTpe)} HT → au moins{" "}
@@ -453,7 +453,7 @@ export async function PartenaireLandingPage({ params, source }: Props) {
         </div>
 
         <p className="text-fg-muted mt-5 text-sm">
-          Ce sont des exemples de calcul, pas une promesse : tes revenus dépendent de tes ventes.
+          Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.
         </p>
       </Section>
 
@@ -467,11 +467,11 @@ export async function PartenaireLandingPage({ params, source }: Props) {
         <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-12">
           <div>
             <p className="text-fg text-lg leading-relaxed font-medium">
-              Ce n&apos;est pas ton rôle. Le B2B, c&apos;est ton métier — l&apos;IA, c&apos;est le
-              nôtre.
+              Ce n&apos;est pas votre rôle. Le B2B, c&apos;est votre métier — l&apos;IA, c&apos;est
+              le nôtre.
             </p>
             <p className="text-fg-soft mt-4 leading-relaxed">
-              Tu n&apos;as pas besoin de savoir comment fonctionne un extincteur pour dire à un
+              Vous n&apos;avez pas besoin de savoir comment fonctionne un extincteur pour dire à un
               commerçant que la loi lui en impose un.
             </p>
             <div className="border-border-strong mt-6 border-l-2 pl-4">
@@ -507,7 +507,7 @@ export async function PartenaireLandingPage({ params, source }: Props) {
         </div>
       </Section>
 
-      <BandeCta title="Ton carnet d'adresses vaut de l'argent 💶" track="partenaire-band-apply" />
+      <BandeCta title="Votre carnet d'adresses vaut de l'argent 💶" track="partenaire-band-apply" />
 
       {/* 6 ── Comment ça se passe */}
       <Section
@@ -544,9 +544,11 @@ export async function PartenaireLandingPage({ params, source }: Props) {
         </div>
 
         <div className="bg-sand-deep/40 border-border mt-8 rounded-2xl border p-6">
-          <p className="text-fg font-serif text-xl font-semibold">Tu ne closes jamais.</p>
+          <p className="text-fg font-serif text-xl font-semibold">
+            Vous ne concluez jamais la vente.
+          </p>
           <p className="text-fg-soft mt-2 leading-relaxed">
-            C&apos;est nous qui vendons. Tu ouvres la porte, c&apos;est tout. Pas de négociation,
+            C&apos;est nous qui vendons. Vous ouvrez la porte, c&apos;est tout. Pas de négociation,
             pas de devis, pas de relance d&apos;impayés.
           </p>
         </div>
@@ -556,9 +558,9 @@ export async function PartenaireLandingPage({ params, source }: Props) {
       <Section
         tone="sand"
         eyebrow="Les profils"
-        title="Ton carnet d'adresses"
+        title="Votre carnet d'adresses"
         titleEm="vaut de l'argent"
-        description="Tu as déjà vendu aux entreprises ? Tu as l'essentiel. Et si tu visites déjà des entreprises toute la journée, tu es déjà en face de la bonne personne : une phrase de plus dans un rendez-vous que tu faisais de toute façon."
+        description="Vous avez déjà vendu aux entreprises ? Vous avez l'essentiel. Et si vous visitez déjà des entreprises toute la journée, vous êtes déjà en face de la bonne personne : une phrase de plus dans un rendez-vous que vous faisiez de toute façon."
         className="py-10 sm:py-14"
       >
         <ul className="mt-7 grid gap-2.5 sm:grid-cols-2" role="list">
@@ -581,13 +583,13 @@ export async function PartenaireLandingPage({ params, source }: Props) {
         <div className="bg-paper border-border mt-8 rounded-2xl border p-6 sm:p-7">
           <h3 className="text-fg font-serif text-xl font-semibold">Aucune limite d&apos;âge</h3>
           <p className="text-fg-soft mt-2 leading-relaxed">
-            25 ans ou 70 ans : ce qui compte, c&apos;est ton carnet d&apos;adresses et ton envie.
-            Les commerciaux et apporteurs d&apos;affaires à la retraite sont particulièrement les
-            bienvenus — ton réseau vaut de l&apos;or, tu n&apos;as plus rien à prouver, et tu
-            choisis ton rythme.
+            25 ans ou 70 ans : ce qui compte, c&apos;est votre carnet d&apos;adresses et votre
+            envie. Les commerciaux et apporteurs d&apos;affaires à la retraite sont particulièrement
+            les bienvenus — votre réseau vaut de l&apos;or, vous n&apos;avez plus rien à prouver, et
+            vous choisissez votre rythme.
           </p>
           <p className="text-fg-muted mt-3 text-sm">
-            Tu pars de zéro ? C&apos;est possible aussi. Ce sera juste plus long.
+            Vous partez de zéro ? C&apos;est possible aussi. Ce sera juste plus long.
           </p>
         </div>
       </Section>
@@ -613,10 +615,10 @@ export async function PartenaireLandingPage({ params, source }: Props) {
 
         <div className="bg-sand-deep/40 border-border mt-8 rounded-2xl border p-6">
           <p className="text-fg font-serif text-xl font-semibold">
-            On est une jeune boîte, et ça se sent
+            Une équipe à taille humaine, et ça se sent
           </p>
           <p className="text-fg-soft mt-2 leading-relaxed">
-            Tu parles directement à ceux qui décident : pas de service RH, pas de formulaire
+            Vous parlez directement à ceux qui décident : pas de service RH, pas de formulaire
             interne, pas de manager intermédiaire. Une idée ? On l&apos;essaie la semaine
             d&apos;après. Et surtout : on est des gens sympas. Ce n&apos;est pas un slogan,
             c&apos;est notre façon de travailler.

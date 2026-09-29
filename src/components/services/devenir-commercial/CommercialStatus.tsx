@@ -29,8 +29,8 @@ export function CommercialStatus({ isFr }: CommercialStatusProps): ReactNode {
           </h3>
           <p className="text-fg-soft mt-2 leading-relaxed">
             {isFr
-              ? "Vous organisez vos journées, votre secteur, votre rythme. Pas de hiérarchie pesante, pas d'horaires imposés — juste vos résultats et vos commissions."
-              : "You organise your days, your territory, your pace. No heavy hierarchy, no imposed hours — just your results and your commissions."}
+              ? "Vous organisez vos journées et votre rythme, en toute indépendance. Pas de hiérarchie pesante, pas d'horaires imposés — juste vos résultats et vos commissions."
+              : "You organise your days and your pace, fully independently. No heavy hierarchy, no imposed hours — just your results and your commissions."}
           </p>
         </div>
 
@@ -44,8 +44,8 @@ export function CommercialStatus({ isFr }: CommercialStatusProps): ReactNode {
           </h3>
           <p className="text-fg-soft mt-2 leading-relaxed">
             {isFr
-              ? "Vous n'êtes jamais seul : supports de vente prêts à l'emploi, formation à l'offre, réponses techniques rapides et suivi de vos commissions."
-              : "You're never alone: ready-to-use sales materials, training on the offer, fast technical answers and commission tracking."}
+              ? "Vous n'êtes jamais seul : supports de vente prêts à l'emploi, présentation de l'offre, réponses techniques rapides et suivi de vos commissions."
+              : "You're never alone: ready-to-use sales materials, a walkthrough of the offer, fast technical answers and commission tracking."}
           </p>
         </div>
       </div>

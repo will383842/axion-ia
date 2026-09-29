@@ -35,7 +35,7 @@ export const CANDIDATURE_COMMERCIALE_SUBTYPE = "candidature-commerciale";
  *
  * v3 (19/09, décisions B2 et B4) — elle ne couvre plus QUE l'étude de la
  * candidature : « J'accepte que mes informations soient utilisées pour l'étude
- * de ma candidature », seul texte affiché, à l'écran 1 comme au dernier. La
+ * de ma candidature », seul texte affiché, à l'écran 1 seulement depuis le 29/09. La
  * case optionnelle « vivier 2 ans » de la v2 (`memo-v2-2026-08-13`) est
  * retirée : elle n'existait que pour le CRM, et le dossier apporteur ne part
  * plus au CRM.
@@ -354,7 +354,7 @@ export const experienceSchema = z
       .optional(),
   })
   .refine((e) => e.posteActuel || Boolean(e.fin), {
-    message: "Indique la date de fin ou coche « poste actuel ».",
+    message: "Indiquez la date de fin ou cochez « poste actuel ».",
     path: ["fin"],
   });
 
@@ -448,13 +448,13 @@ export const commercialApplicationSchema = z
     consentVivier: z.boolean().optional(),
   })
   .refine((d) => d.zoneMobile || (d.zones?.length ?? 0) > 0, {
-    message: "Choisis au moins une zone, ou « Peu importe, je suis mobile ».",
+    message: "Choisissez au moins une zone, ou « Peu importe, je suis mobile ».",
     path: ["zones"],
   })
   // « Pourquoi, et pour quoi faire ? » est OBLIGATOIRE quand la réponse IA
   // est Oui (retour Will 2026-08-13) — gardé aussi côté serveur.
   .refine((d) => !d.iaUtilise || Boolean(d.iaUsage && d.iaUsage.trim().length > 0), {
-    message: "Explique en quelques mots pourquoi, et pour quoi faire.",
+    message: "Expliquez en quelques mots pourquoi, et pour quoi faire.",
     path: ["iaUsage"],
   });
 

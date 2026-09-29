@@ -1,5 +1,7 @@
 // Server Component — « Comment nous rejoindre » : process de recrutement en 3
-// étapes (formulaire → réponse email → appel visio) + CTA vers la candidature.
+// étapes (formulaire → invitation par e-mail → échange visio de 15 min) + CTA
+// vers la candidature. 29/09 : l'invitation part seule ~15 min après un dossier
+// complet (`invitation-auto.ts`) — plus de « réponse sous quelques jours ».
 // Bande contrastée (façon bandeau de conversion). Contenu FIXE.
 
 import type { ReactNode } from "react";
@@ -23,17 +25,19 @@ export function CommercialProcess({ isFr }: CommercialProcessProps): ReactNode {
     },
     {
       icon: Mail,
-      titleFr: "Réponse sous quelques jours",
-      titleEn: "Reply within a few days",
-      textFr: "Nous revenons vers vous par email avec un premier retour sur votre candidature.",
-      textEn: "We get back to you by email with a first response on your application.",
+      titleFr: "Une invitation par e-mail",
+      titleEn: "An invitation by email",
+      textFr:
+        "Vous recevez un e-mail de confirmation, puis, dans les minutes qui suivent, une invitation à réserver un échange.",
+      textEn:
+        "You receive a confirmation email, then, within minutes, an invitation to book a call.",
     },
     {
       icon: Video,
-      titleFr: "Appel visio",
-      titleEn: "Video call",
-      textFr: "On fait connaissance, on répond à vos questions et on cale votre démarrage.",
-      textEn: "We get to know each other, answer your questions and set up your start.",
+      titleFr: "Un échange de 15 minutes en visio",
+      titleEn: "A 15-minute video call",
+      textFr: "Nous faisons connaissance et répondons à vos questions.",
+      textEn: "We get to know each other and answer your questions.",
     },
   ];
 
@@ -56,8 +60,8 @@ export function CommercialProcess({ isFr }: CommercialProcessProps): ReactNode {
           </h2>
           <p className="text-fg-soft mt-4 text-lg leading-relaxed">
             {isFr
-              ? "Nous développons un réseau de plus de 200 apporteurs d'affaires partout en France. Remplissez le formulaire : sous quelques jours, nous vous donnons une première réponse par email pour convenir d'un appel visio."
-              : "We're building a network of 200+ business introducers across France. Fill in the form: within a few days, we send you a first reply by email to arrange a video call."}
+              ? "Nous développons un réseau de plus de 200 apporteurs d'affaires partout en France. Remplissez le formulaire : dans les minutes qui suivent, vous recevez une invitation à réserver un échange de 15 minutes en visio."
+              : "We're building a network of 200+ business introducers across France. Fill in the form: within minutes, you receive an invitation to book a 15-minute video call."}
           </p>
         </div>
 

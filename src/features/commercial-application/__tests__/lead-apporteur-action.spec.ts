@@ -273,7 +273,7 @@ describe("submitLeadApporteurAction", () => {
     const r = await submitLeadApporteurAction({ ok: false, error: "" }, formulaire(valide));
     expect(r).toEqual({
       ok: false,
-      error: "On a déjà bien reçu ta demande avec cet email — inutile de la renvoyer.",
+      error: "Nous avons déjà bien reçu votre demande avec cet e-mail — inutile de la renvoyer.",
     });
     expect(creer).not.toHaveBeenCalled();
   });
