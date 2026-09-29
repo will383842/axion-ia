@@ -13,6 +13,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   fautesDeRemuneration,
+  lireSurfacesPubliques,
   type FamilleRemuneration,
 } from "../../../scripts/gates/jur-copy-indicative";
 import { lireSurfacesApporteur } from "../../../scripts/gates/vocab-public";
@@ -24,9 +25,20 @@ const temoin = (texte: string): FamilleRemuneration[] =>
 
 describe("REQ-JUR-001, REQ-JUR-002, REQ-JUR-019, REQ-JUR-041 — le dépôt tel qu'il est", () => {
   it("REQ-JUR-019 — le dépôt réel est sans faute, sur un périmètre NON vide", () => {
-    const surfaces = lireSurfacesApporteur();
+    const surfaces = lireSurfacesPubliques();
     expect(surfaces.length).toBeGreaterThan(10);
     expect(fautesDeRemuneration(surfaces)).toEqual([]);
+  });
+
+  it("REQ-JUR-019 : les e-mails privés sont hors de la copy publique, les pages y sont toutes", () => {
+    const publiques = lireSurfacesPubliques().map((s) => s.chemin);
+    const toutes = lireSurfacesApporteur().map((s) => s.chemin);
+    expect(publiques.some((c) => c.startsWith("src/lib/email/templates/"))).toBe(false);
+    // Rien d'autre n'est retiré : seules les surfaces d'e-mail manquent à l'appel.
+    expect(toutes.filter((c) => !publiques.includes(c)).every((c) => c.includes("/email/"))).toBe(
+      true,
+    );
+    expect(publiques.length).toBeGreaterThan(10);
   });
 });
 

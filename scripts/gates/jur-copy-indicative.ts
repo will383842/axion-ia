@@ -24,11 +24,22 @@
  * n'est pas vue, et la faute est alors signalée à tort — on rapproche la mention, on n'élargit
  * pas la fenêtre.
  *
- * SURFACES : EXACTEMENT celles de `jur:vocab-public` (`lireSurfacesApporteur`), lues par le même
- * lecteur, jamais une liste recopiée. Les lignes sont jugées telles que le candidat les LIT
+ * SURFACES : les surfaces PUBLIQUES de `jur:vocab-public` (`lireSurfacesApporteur`), lues par le
+ * même lecteur, jamais une liste recopiée. Les gabarits d'e-mail en sont RETIRÉS : l'acceptance
+ * vise la copy publique, et un e-mail privé à un candidat retenu lui transmet le barème de SON
+ * contrat. Le dire « indicatif » y affaiblirait l'engagement que le contrat porte. Ils restent
+ * gardés par `jur:vocab-public` (déclencheur, financement). Les lignes sont jugées telles que le candidat les LIT
  * (`telleQueLue` : entités JSX décodées).
  */
 import { lireSurfacesApporteur, telleQueLue } from "./vocab-public";
+
+/** Les gabarits d'e-mail : privés, hors de la copy publique (voir l'en-tête). */
+const GABARITS_EMAIL = "src/lib/email/templates/";
+
+/** Les surfaces PUBLIQUES d'un candidat apporteur : celles de vocab-public, sans les e-mails. */
+export function lireSurfacesPubliques(racine = process.cwd()): { chemin: string; texte: string }[] {
+  return lireSurfacesApporteur(racine).filter((s) => !s.chemin.startsWith(GABARITS_EMAIL));
+}
 
 export type FamilleRemuneration = "remuneration_ferme" | "kit_de_vente" | "jsonld_remuneration";
 
@@ -74,7 +85,7 @@ export function fautesDeRemuneration(
 }
 
 if (/jur-copy-indicative\.ts$/.test(process.argv[1] ?? "")) {
-  const surfaces = lireSurfacesApporteur();
+  const surfaces = lireSurfacesPubliques();
   if (surfaces.length === 0) {
     console.error("[jur:remuneration-indicative] ROUGE — aucune surface lue : rien à juger.");
     process.exit(1);
@@ -87,6 +98,6 @@ if (/jur-copy-indicative\.ts$/.test(process.argv[1] ?? "")) {
     process.exit(1);
   }
   console.log(
-    `[jur:remuneration-indicative] VERT — ${surfaces.length} surfaces apporteur lues, aucune faute.`,
+    `[jur:remuneration-indicative] VERT — ${surfaces.length} surfaces apporteur publiques lues, aucune faute.`,
   );
 }
