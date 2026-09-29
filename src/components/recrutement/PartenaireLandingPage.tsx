@@ -615,7 +615,7 @@ export async function PartenaireLandingPage({ params, source }: Props) {
 
         <div className="bg-sand-deep/40 border-border mt-8 rounded-2xl border p-6">
           <p className="text-fg font-serif text-xl font-semibold">
-            On est une jeune boîte, et ça se sent
+            Une équipe à taille humaine, et ça se sent
           </p>
           <p className="text-fg-soft mt-2 leading-relaxed">
             Vous parlez directement à ceux qui décident : pas de service RH, pas de formulaire
