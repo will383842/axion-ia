@@ -143,6 +143,9 @@ export const LIBELLE_ETAPE_VISIO = {
   rediger: "Rédaction",
   verifier_compte_rendu: "Vérification du compte rendu",
   purger_audio: "Suppression du son",
+  questionnaire: "Questionnaire de cadrage",
+  lire_reponses: "Lecture des réponses au questionnaire",
+  email_suivi: "E-mail de suivi",
 } as const satisfies Record<EtapeVisio, string>;
 
 export const LIBELLE_STATUT_ETAPE = {
