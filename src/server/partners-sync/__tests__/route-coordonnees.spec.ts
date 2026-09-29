@@ -17,7 +17,7 @@
  *   (7) au plus 5 lectures réussies par candidature sur 24 h : la sixième ne rend rien, est
  *       journalisée et alertée ; la première lecture d'une AUTRE candidature passe.
  */
-import { createHmac } from "node:crypto";
+import { createHash, createHmac } from "node:crypto";
 
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
@@ -28,6 +28,8 @@ import {
   type LigneJournalCoordonnees,
 } from "@/server/partners-sync/coordonnees";
 import { signerCibleRelecture } from "@/server/partners-sync/relecture";
+
+import { fautes, resoudre } from "../../partners/__tests__/contrat-schema";
 
 const SECRET_RELECTURE = "r".repeat(40);
 const SECRET_EMISSION = "e".repeat(40);
@@ -166,6 +168,10 @@ describe("REQ-INT-032 — (3) une candidature émise rend ses quatre champs, et 
       email: "camille@example.test",
       telephone: "0600000000",
     });
+    // Jugé par le `$defs` PUBLIÉ du contrat copié, pas seulement par la forme tapée ci-dessus.
+    expect(
+      fautes(resoudre("#/$defs/api_coordonnees_candidature_reponse"), JSON.parse(corps)),
+    ).toEqual([]);
     expect(r.headers.get("cache-control")).toBe("no-store");
     const t = r.headers.get("x-axionia-timestamp")!;
     expect(r.headers.get("x-axionia-signature")).toBe(
@@ -271,6 +277,10 @@ describe("REQ-INT-029 — (4) le journal ne porte jamais une coordonnée", () =>
     expect(texte).not.toMatch(/camille|durand|example\.test|0600|sam|petit/i);
     expect(texte).not.toContain(IP_PARTNERS);
     expect(m.journal[0]!.adresseEmpreinte).toMatch(/^[0-9a-f]{16}$/);
+    // SALÉE : l'empreinte nue d'une IPv4 se retrouve en 2^32 essais (relevé securite).
+    expect(m.journal[0]!.adresseEmpreinte).not.toBe(
+      createHash("sha256").update(IP_PARTNERS).digest("hex").slice(0, 16),
+    );
   });
 });
 

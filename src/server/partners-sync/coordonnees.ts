@@ -28,7 +28,7 @@
  * composé la fausse. Le nom complet est donc rendu tel que saisi dans `nom`, et `prenom` est nul,
  * ce que le contrat admet pour un champ absent. Séparer à la source est une dette nommée.
  */
-import { createHash } from "node:crypto";
+import { hashIp } from "@/lib/security/ip-hash";
 
 import { dansLaPlage, ipVisiteurOuNull } from "@/lib/client-ip-core";
 import type { RateLimitConfig } from "@/lib/rate-limit";
@@ -130,11 +130,8 @@ function adresseAutorisee(ip: string | null): boolean {
   return adressesAutorisees().some((a) => (a.includes("/") ? dansLaPlage(ip, a) : a === ip));
 }
 
-const empreinteAdresse = (ip: string | null) =>
-  createHash("sha256")
-    .update(ip ?? "inconnue", "utf8")
-    .digest("hex")
-    .slice(0, 16);
+/** L'empreinte SALÉE de `hashIp` (IP_HASH_SALT) : une IPv4 non salée se retrouve par force brute. */
+const empreinteAdresse = (ip: string | null) => hashIp(ip) ?? "inconnue";
 
 /** Une coordonnée déchiffrée, ou nulle ; `undefined` si le déchiffrement a échoué. */
 function enClair(

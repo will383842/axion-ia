@@ -601,7 +601,7 @@ export type PayloadPaiementRecu = {
   paidAt: string;
   provider: string;
   /** REQ-DM-018 — le HT encaissé est FOURNI, pas laissé à déduire. */
-  amountHtCents: number;
+  montantHtCents: number;
   /** Vrai si cet encaissement solde la facture : c'est lui qui absorbe le reliquat. */
   soldeLaFacture: boolean;
 };
@@ -650,7 +650,7 @@ export function payloadPaiementRecu({
     totalEncaisseTtcCents,
     paidAt,
     provider: paiement.provider,
-    amountHtCents,
+    montantHtCents: amountHtCents,
     soldeLaFacture,
   });
 }

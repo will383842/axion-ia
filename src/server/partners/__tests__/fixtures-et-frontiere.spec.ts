@@ -105,7 +105,7 @@ describe("REQ-INT-005 — le reliquat, vérifié sur les fixtures PRODUITES", ()
     );
     expect(recus.length).toBeGreaterThan(1);
 
-    const total = recus.reduce((a, p) => a + Number(p["amountHtCents"]), 0);
+    const total = recus.reduce((a, p) => a + Number(p["montantHtCents"]), 0);
     expect(total).toBe(Number(recus[0]?.["factureMontantHtCents"]));
     expect(recus.filter((p) => p["soldeLaFacture"] === true)).toHaveLength(1);
   });
@@ -159,7 +159,7 @@ describe("REQ-INT-029 — la frontière tient sur les fixtures, ET elle sait rou
     // Sans lui, on aurait pu couper tous les montants partout et croire la frontière
     // tenue. REQ-INT-005 et REQ-INT-006 EXIGENT que les montants post-signature passent.
     expect(champsInterditsSelonFrontiere("facture.emise", { montantHtCents: 100_000 })).toEqual([]);
-    expect(champsInterditsSelonFrontiere("paiement.recu", { amountHtCents: 33_333 })).toEqual([]);
+    expect(champsInterditsSelonFrontiere("paiement.recu", { montantHtCents: 33_333 })).toEqual([]);
   });
 
   it("un primitif DANS UN TABLEAU est inspecté — la fuite la plus banale", () => {

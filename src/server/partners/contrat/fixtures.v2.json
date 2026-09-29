@@ -169,7 +169,7 @@
         "totalEncaisseTtcCents": 40000,
         "paidAt": "2026-03-10T12:00:00.000Z",
         "provider": "stripe",
-        "amountHtCents": 33333,
+        "montantHtCents": 33333,
         "soldeLaFacture": false
       }
     },
@@ -196,7 +196,7 @@
         "totalEncaisseTtcCents": 80000,
         "paidAt": "2026-04-10T12:00:00.000Z",
         "provider": "stripe",
-        "amountHtCents": 33333,
+        "montantHtCents": 33333,
         "soldeLaFacture": false
       }
     },
@@ -223,7 +223,7 @@
         "totalEncaisseTtcCents": 120000,
         "paidAt": "2026-05-10T12:00:00.000Z",
         "provider": "stripe",
-        "amountHtCents": 33334,
+        "montantHtCents": 33334,
         "soldeLaFacture": true
       }
     },
