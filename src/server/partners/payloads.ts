@@ -248,9 +248,17 @@ export function resoudreClientBeneficiaire(facture: FacturePourEvenement): Resol
   if (facture.clientId !== null) return { clientId: facture.clientId, origine: "facture" };
 
   const parLaSession = facture.session?.clientId ?? null;
-  if (parLaSession !== null) return { clientId: parLaSession, origine: "session" };
-
   const parLInscription = facture.enrollment?.clientId ?? null;
+
+  // 🔴 SESSION ET INSCRIPTION EN DÉSACCORD : NI L'UNE NI L'AUTRE EN SILENCE (veto securite de
+  // #1228). Une facture inter-entreprises porte l'inscription d'un participant, dont le client
+  // est SON employeur ; la session peut porter un autre client. Prendre la session d'office
+  // commissionnerait A pour le participant de B. L'ordre entre les deux relève de REQ-DM-021 et
+  // de Williams : d'ici là, le désaccord part `non_resolue`, donc alerté, jamais attribué.
+  if (parLaSession !== null && parLInscription !== null && parLaSession !== parLInscription) {
+    return { clientId: null, origine: "non_resolue" };
+  }
+  if (parLaSession !== null) return { clientId: parLaSession, origine: "session" };
   if (parLInscription !== null) return { clientId: parLInscription, origine: "enrollment" };
 
   const parLeDossier = facture.dossierFinancement?.clientId ?? null;

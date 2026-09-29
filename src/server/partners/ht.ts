@@ -58,7 +58,8 @@ export type DerivationHt = {
 
 /** Le prorata d'un TTC sur le HT de la facture, ARRONDI VERS LE BAS (REQ-INT-005). */
 function prorataPlancher(ttcPartiel: number, htFacture: number, ttcFacture: number): number {
-  return Math.floor((ttcPartiel * htFacture) / ttcFacture);
+  // En BigInt : le produit de deux montants en centimes dépasse vite 2⁵³.
+  return Number((BigInt(ttcPartiel) * BigInt(htFacture)) / BigInt(ttcFacture));
 }
 
 /**
@@ -95,26 +96,18 @@ export function derivationHt(e: EntreeDerivationHt): DerivationHt {
 
   const soldeLaFacture = e.totalEncaisseTtcCents >= ttcFacture;
 
-  if (!soldeLaFacture) {
-    return {
-      amountHtCents: prorataPlancher(
-        e.montantEncaisseTtcCents,
-        e.facture.montantHtCents,
-        ttcFacture,
-      ),
-      soldeLaFacture: false,
-    };
-  }
-
-  // L'encaissement SOLDANT prend tout ce qui reste. « Ce qui reste » se calcule sur le
-  // cumul ANTÉRIEUR, dérivé par la même règle de plancher que les encaissements
-  // partiels — sans quoi les deux moitiés du calcul ne se rejoindraient pas.
-  const anterieurTtc = e.totalEncaisseTtcCents - e.montantEncaisseTtcCents;
-  const anterieurHt = prorataPlancher(
-    Math.min(anterieurTtc, ttcFacture),
-    e.facture.montantHtCents,
-    ttcFacture,
-  );
-
-  return { amountHtCents: e.facture.montantHtCents - anterieurHt, soldeLaFacture: true };
+  // 🔴 CUMULATIF POUR TOUT ENCAISSEMENT, jamais un plancher par partiel. Arrondir chaque
+  // partiel à part perd des centimes : Σ⌊pᵢ·HT/TTC⌋ < ⌊Σpᵢ·HT/TTC⌋ (100 000 HT / 120 000 TTC
+  // payée 5 × 1 000 puis 115 000 : Σ = 99 999 ; relecture exactitude de #1228). Le HT d'un
+  // encaissement est la différence des planchers de ses deux cumuls, BORNÉS au TTC : la somme
+  // se télescope exactement en HT de la facture (REQ-INT-005 amendée, comme le prorata de
+  // REQ-DM-017), et un trop-perçu au-delà du TTC n'acquiert rien.
+  const cumul = Math.min(e.totalEncaisseTtcCents, ttcFacture);
+  const anterieur = Math.min(e.totalEncaisseTtcCents - e.montantEncaisseTtcCents, ttcFacture);
+  const ht = e.facture.montantHtCents;
+  return {
+    amountHtCents:
+      prorataPlancher(cumul, ht, ttcFacture) - prorataPlancher(anterieur, ht, ttcFacture),
+    soldeLaFacture,
+  };
 }

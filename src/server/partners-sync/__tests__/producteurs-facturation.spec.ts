@@ -137,6 +137,11 @@ function fauxTx(
     client(OPCO, "999888777", "OPCO"),
   ];
   const tx = {
+    // Le verrou de ligne de la facture : consigné, pour prouver qu'il PRÉCÈDE la lecture du cumul.
+    $queryRaw: async (gabarit: TemplateStringsArray, ...valeurs: unknown[]) => {
+      if (gabarit.join("?").includes("FOR UPDATE")) lectures.push(`verrou:${String(valeurs[0])}`);
+      return [];
+    },
     factureFormation: {
       findUnique: async ({ where }: { where: { id: string } }) => {
         lectures.push(`facture:${where.id}`);
@@ -168,6 +173,7 @@ function fauxTx(
       }: {
         where: { factureFormationId: string; status: string; type: { not: string } };
       }) => {
+        lectures.push(`cumul:${where.factureFormationId}`);
         const retenus = paiements.filter(
           (p) =>
             p["factureFormationId"] === where.factureFormationId &&
@@ -410,10 +416,13 @@ describe("REQ-INT-004 — des modèles réels, une liste de types FERMÉE", () =
     const p = paiement("pa000000-0000-4000-8000-000000000009", F_OPCO, 1_000, "10");
     const { tx, lectures } = fauxTx([facture()], [p]);
     await emettreFaitPaiement(tx, String(p["id"]));
+    // Le verrou vise la table de FactureFormation, le cumul celle de Payment : les mêmes modèles.
     expect(lectures).toEqual([
       `payment:${String(p["id"])}`,
       `facture:${F_OPCO}`,
       `client:${ENTREPRISE}`,
+      `verrou:${F_OPCO}`,
+      `cumul:${F_OPCO}`,
     ]);
   });
 });
@@ -458,6 +467,32 @@ describe("REQ-INT-005 — paiement.recu porte ses champs, et le HT encaissé cal
     }
     expect(hts).toEqual([33_333, 33_333, 33_334]);
     expect(hts.reduce((a, b) => a + b, 0)).toBe(100_000);
+  });
+
+  it("REQ-INT-005 : cinq petits encaissements puis le solde — Σ HT = HT au centime (relecture #1228)", async () => {
+    const connus: Enregistrement[] = [];
+    const { tx, outbox } = fauxTx([facture()], connus);
+    const montants = [1_000, 1_000, 1_000, 1_000, 1_000, 115_000];
+    const hts: number[] = [];
+    for (const [i, m] of montants.entries()) {
+      const p = paiement(`pa000000-0000-4000-8000-00000000004${i}`, F_OPCO, m, "10");
+      connus.push(p);
+      hts.push(
+        jugee(outbox, await emettreFaitPaiement(tx, String(p["id"]))).payload[
+          "montantHtCents"
+        ] as number,
+      );
+    }
+    expect(hts.reduce((a, b) => a + b, 0)).toBe(100_000);
+  });
+
+  it("REQ-INT-005 : le cumul est relu SOUS le verrou de ligne de la facture, jamais avant", async () => {
+    const p = paiement("pa000000-0000-4000-8000-000000000051", F_OPCO, 40_000, "10");
+    const { tx, lectures } = fauxTx([facture()], [p]);
+    await emettreFaitPaiement(tx, String(p["id"]));
+    const verrou = lectures.indexOf(`verrou:${F_OPCO}`);
+    expect(verrou).toBeGreaterThanOrEqual(0);
+    expect(verrou).toBeLessThan(lectures.indexOf(`cumul:${F_OPCO}`));
   });
 });
 

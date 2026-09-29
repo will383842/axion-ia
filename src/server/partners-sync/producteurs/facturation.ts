@@ -462,6 +462,11 @@ export async function emettreFaitPaiement(
     return eventId;
   }
 
+  // 🔒 VERROU DE LIGNE SUR LA FACTURE AVANT DE RELIRE LE CUMUL. Deux encaissements concurrents
+  // de la même facture se manqueraient : chacun relirait un cumul sans l'autre, et le HT
+  // dérivé ne se télescoperait plus (relecture exactitude de #1228). Sous le verrou, le second
+  // attend le premier et relit son encaissement validé (READ COMMITTED).
+  await tx.$queryRaw`SELECT id FROM "factures_formation" WHERE id = ${l.facture.id}::uuid FOR UPDATE`;
   const cumul = await tx.payment.aggregate({
     where: {
       factureFormationId: l.facture.id,

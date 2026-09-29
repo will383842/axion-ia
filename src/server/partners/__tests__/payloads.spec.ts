@@ -93,6 +93,31 @@ describe("REQ-ARG-005 / REQ-DM-021 — la résolution du client BÉNÉFICIAIRE",
     expect(parLeDossier.origine).toBe("dossier");
   });
 
+  it("🔴 TÉMOIN (veto securite #1228) — session A, participant de B : jamais A, la facture part non résolue", () => {
+    const A = "aaaa1111-1111-4111-8111-111111111111";
+    const B = "bbbb2222-2222-4222-8222-222222222222";
+    const r = resoudreClientBeneficiaire({
+      ...factureBase,
+      clientId: null,
+      session: { clientId: A },
+      enrollment: { clientId: B },
+    });
+    expect(r).toEqual({ clientId: null, origine: "non_resolue" });
+    // Contre-témoin : d'accord, l'inscription et la session désignent le même client.
+    expect(
+      resoudreClientBeneficiaire({
+        ...factureBase,
+        clientId: null,
+        session: { clientId: B },
+        enrollment: { clientId: B },
+      }),
+    ).toEqual({ clientId: B, origine: "session" });
+    // Sans session, l'inscription (l'employeur du participant) porte l'attribution.
+    expect(
+      resoudreClientBeneficiaire({ ...factureBase, clientId: null, enrollment: { clientId: B } }),
+    ).toEqual({ clientId: B, origine: "enrollment" });
+  });
+
   it("🔴 n'utilise JAMAIS `destinataireSiret` — le destinataire n'est pas le bénéficiaire", () => {
     // C'est le cœur de REQ-ARG-005 : sur une facture subrogée, le destinataire est
     // l'OPCO. Commissionner l'OPCO au lieu de l'entreprise formée serait attribuer la
