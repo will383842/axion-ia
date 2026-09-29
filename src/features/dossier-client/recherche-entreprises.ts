@@ -20,7 +20,23 @@
  */
 
 import { checkSirenFormat } from "@/lib/siret";
-import { normaliserNom, normaliserVille } from "@/server/qualiopi/crm/normaliser-nom";
+/**
+ * Clé de cache et comparaison de ville : minuscules, sans accents ni
+ * ponctuation. Volontairement locale et simple (pas l'import de la
+ * normalisation du CRM) : ce module ne décide d'aucun rapprochement de fiches,
+ * il ne fait que proposer, et il reste hors du domaine Qualiopi.
+ */
+function normaliserTexte(v: string | null | undefined): string {
+  if (!v) return "";
+  return v
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+const normaliserNom = normaliserTexte;
+const normaliserVille = normaliserTexte;
 
 export const URL_ANNUAIRE = "https://recherche-entreprises.api.gouv.fr/search";
 export const DELAI_ANNUAIRE_MS = 3_000;

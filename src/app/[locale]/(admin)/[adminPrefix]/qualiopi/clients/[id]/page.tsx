@@ -29,7 +29,7 @@
  * (Will et les administrateurs), ils ne sont NI RENDUS NI REQUÊTÉS — la lecture
  * `features/dossier-client/queries` n'est appelée qu'après
  * `peutVoirLesEchanges(acces.role)` — et un message NOMME la raison.
- * Garde : `features/dossier-client/__tests__/un-lecteur-ne-voit-ni-synthese-ni-echanges.spec.tsx`.
+ * Garde : `./__tests__/un-lecteur-ne-voit-ni-synthese-ni-echanges.spec.tsx`.
  */
 
 import type { Metadata } from "next";

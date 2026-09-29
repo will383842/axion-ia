@@ -37,7 +37,7 @@ export const MOTS_RETIRES_DU_NOM: ReadonlySet<string> = new Set([
 
 /** Retire les accents : « Société Générale » → « Societe Generale ». */
 function sansAccents(texte: string): string {
-  return texte.normalize("NFD").replace(/[̀-ͯ]/g, "");
+  return texte.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
 /**

@@ -388,6 +388,21 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    module PUR : l'import ne tire aucun runtime, seulement une donnée.
   "tests/unit/qualiopi/le-ppt-projete-nest-jamais-genere.spec.ts",
   "tests/unit/ci/origine-de-prod-jamais-en-repli.spec.ts",
+  // ── Dossier client (chantier visio, PR 3, 2026-09-29). La fiche `Client` est
+  //    une donnée du CRM Qualiopi : le dossier client s'y greffe sans colonne
+  //    nouvelle (ADR 0053). Trois arêtes, nommées, et pas une de plus :
+  //    · les actions du dossier appellent la PORTE UNIQUE de création
+  //      (`crm/porte-client.ts`, décision B18) et la garde d'écriture de la
+  //      console — une seconde porte hors du domaine serait exactement le
+  //      doublon que B18 interdit ;
+  //    · la création d'un projet numérote dans la série `AXI-PRJ`, posée par la
+  //      PR 2 dans `numbering/formats.ts` (hors des pièces officielles) ;
+  //    · le script de reprise des contacts écrit la personne par la fonction
+  //      unique `crm/contact-facturation.ts`.
+  //    Les pages et leurs tests vivent, eux, sous `qualiopi/clients/[id]/`.
+  "src/features/dossier-client/actions.ts",
+  "src/features/dossier-client/creer-projet.ts",
+  "scripts/visio/reprendre-contacts.ts",
 ]);
 
 /**
