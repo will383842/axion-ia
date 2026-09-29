@@ -11,7 +11,6 @@
 // Formulaires sans JavaScript (le poids de la console ne bouge pas).
 
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
@@ -24,16 +23,7 @@ import {
 } from "@/components/admin/visio/CompteRenduVisio";
 import { gardeLectureEchanges } from "@/features/dossier-client/acces";
 import { lireCompteRendu } from "@/features/dossier-client/compte-rendu";
-import {
-  attribuerVoixAction,
-  completerCompteRenduAction,
-  confirmerEnregistrementCourtAction,
-  reecrireCompteRenduAction,
-  reextraireCompteRenduAction,
-  reprendreCircuitAction,
-  retirerAccordAction,
-  validerCompteRenduAction,
-} from "@/features/dossier-client/compte-rendu-actions";
+import { gesteCompteRenduAction } from "@/features/dossier-client/compte-rendu-actions";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -125,9 +115,9 @@ export default async function PageCompteRendu({ params, searchParams }: PageProp
   return (
     <AdminPageShell width="wide">
       <div className="mb-[var(--space-admin-4)]">
-        <Link href={base} className={discret}>
+        <a href={base} className={discret}>
           ← Rendez-vous
-        </Link>
+        </a>
       </div>
       <AdminPageHeader
         title={`Compte rendu — ${vue.rencontre.titre}`}
@@ -166,8 +156,9 @@ export default async function PageCompteRendu({ params, searchParams }: PageProp
             Rien n&apos;a été transcrit. Le client a-t-il refusé l&apos;enregistrement ? Si oui,
             utilisez « Le client retire son accord » plus bas : tout sera supprimé.
           </p>
-          <form action={confirmerEnregistrementCourtAction}>
+          <form action={gesteCompteRenduAction}>
             {cache}
+            <input type="hidden" name="geste" value="court" />
             <button type="submit" className={bouton}>
               Non, traiter cet enregistrement court
             </button>
@@ -184,8 +175,9 @@ export default async function PageCompteRendu({ params, searchParams }: PageProp
               : "Le compte rendu est en préparation : il apparaît ici dès qu'il est prêt."}
           </p>
           {cr || enEchec ? (
-            <form action={reextraireCompteRenduAction} className="mt-[var(--space-admin-3)]">
+            <form action={gesteCompteRenduAction} className="mt-[var(--space-admin-3)]">
               {cache}
+              <input type="hidden" name="geste" value="reextraire" />
               <button type="submit" className={bouton}>
                 Relancer
               </button>
@@ -203,10 +195,11 @@ export default async function PageCompteRendu({ params, searchParams }: PageProp
               {vue.voix.voixClient.map((v, i) => (
                 <form
                   key={v}
-                  action={attribuerVoixAction}
+                  action={gesteCompteRenduAction}
                   className="mb-[var(--space-admin-2)] flex items-center gap-[var(--space-admin-2)]"
                 >
                   {cache}
+                  <input type="hidden" name="geste" value="voix" />
                   <input type="hidden" name="voix" value={v} />
                   <label className="text-[length:var(--text-admin-sm)]" htmlFor={`voix-${v}`}>
                     CLIENT_{i + 1} =
@@ -235,29 +228,33 @@ export default async function PageCompteRendu({ params, searchParams }: PageProp
 
           <section className={`${carte} flex flex-wrap gap-[var(--space-admin-2)]`}>
             {cr.statut === "a_valider" ? (
-              <form action={validerCompteRenduAction}>
+              <form action={gesteCompteRenduAction}>
                 {cache}
+                <input type="hidden" name="geste" value="valider" />
                 <input type="hidden" name="compteRenduId" value={cr.id} />
                 <button type="submit" className={`${bouton} font-semibold`}>
                   Valider le compte rendu
                 </button>
               </form>
             ) : null}
-            <form action={reecrireCompteRenduAction}>
+            <form action={gesteCompteRenduAction}>
               {cache}
+              <input type="hidden" name="geste" value="reecrire" />
               <button type="submit" className={bouton}>
                 Réécrire
               </button>
             </form>
-            <form action={reextraireCompteRenduAction}>
+            <form action={gesteCompteRenduAction}>
               {cache}
+              <input type="hidden" name="geste" value="reextraire" />
               <button type="submit" className={bouton}>
                 Réextraire
               </button>
             </form>
             {attenteRattachement ? (
-              <form action={completerCompteRenduAction}>
+              <form action={gesteCompteRenduAction}>
                 {cache}
+                <input type="hidden" name="geste" value="completer" />
                 <button type="submit" className={bouton}>
                   Compléter avec la fiche client
                 </button>
@@ -293,8 +290,9 @@ export default async function PageCompteRendu({ params, searchParams }: PageProp
           </p>
         ))}
         {suspendu ? (
-          <form action={reprendreCircuitAction} className="mt-[var(--space-admin-3)]">
+          <form action={gesteCompteRenduAction} className="mt-[var(--space-admin-3)]">
             {cache}
+            <input type="hidden" name="geste" value="reprendre" />
             <button type="submit" className={bouton}>
               Reprendre le traitement (crédit rechargé, configuration corrigée)
             </button>
@@ -322,8 +320,12 @@ export default async function PageCompteRendu({ params, searchParams }: PageProp
           rendez-vous seront effacés, et le son supprimé. La preuve de l&apos;accord donné au départ
           est gardée. Les devis et e-mails déjà envoyés ne changent pas.
         </p>
-        <form action={retirerAccordAction} className="flex items-center gap-[var(--space-admin-2)]">
+        <form
+          action={gesteCompteRenduAction}
+          className="flex items-center gap-[var(--space-admin-2)]"
+        >
           {cache}
+          <input type="hidden" name="geste" value="retrait" />
           <label className="text-[length:var(--text-admin-sm)]">
             <input type="checkbox" name="confirmation" value="oui" required /> Je confirme le
             retrait de l&apos;accord

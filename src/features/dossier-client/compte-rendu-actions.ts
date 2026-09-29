@@ -73,42 +73,33 @@ async function executer(
   redirect(`${retour}?${cle}=${encodeURIComponent(message)}`);
 }
 
-export async function validerCompteRenduAction(fd: FormData): Promise<void> {
-  await executer(fd, async (_rencontreId, adminId) => {
+/** Les gestes de la page, par leur nom (champ caché `geste` du formulaire). */
+const GESTES: Readonly<
+  Record<string, (fd: FormData, rencontreId: string, adminId: string) => Promise<string>>
+> = {
+  valider: async (fd, _rencontreId, adminId) => {
     await validerCompteRendu(prisma, {
       compteRenduId: uuid.parse(fd.get("compteRenduId")),
       parAdminId: adminId,
       maintenant: new Date(),
     });
     return "Compte rendu validé. Le son de l'appel va être supprimé.";
-  });
-}
-
-export async function reecrireCompteRenduAction(fd: FormData): Promise<void> {
-  await executer(fd, async (rencontreId) => {
+  },
+  reecrire: async (_fd, rencontreId) => {
     await reecrireCompteRendu(prisma, rencontreId);
     return "La réécriture est lancée : le compte rendu revient dans quelques minutes.";
-  });
-}
-
-export async function reextraireCompteRenduAction(fd: FormData): Promise<void> {
-  await executer(fd, async (rencontreId) => {
+  },
+  reextraire: async (_fd, rencontreId) => {
     await reextraireCompteRendu(prisma, rencontreId);
     return "L'extraction est relancée depuis la transcription.";
-  });
-}
-
-export async function completerCompteRenduAction(fd: FormData): Promise<void> {
-  await executer(fd, async (rencontreId) => {
+  },
+  completer: async (_fd, rencontreId) => {
     const id = await relancerApresRattachement(prisma, rencontreId);
     return id === null
       ? "Rien à compléter pour ce rendez-vous."
       : "Le compte rendu est complété avec la fiche client (sans refaire l'extraction).";
-  });
-}
-
-export async function attribuerVoixAction(fd: FormData): Promise<void> {
-  await executer(fd, async (rencontreId) => {
+  },
+  voix: async (fd, rencontreId) => {
     await attribuerVoix(prisma, {
       rencontreId,
       voix: z.string().min(1).max(8).parse(fd.get("voix")),
@@ -116,18 +107,12 @@ export async function attribuerVoixAction(fd: FormData): Promise<void> {
       maintenant: new Date(),
     });
     return "Voix attribuée.";
-  });
-}
-
-export async function confirmerEnregistrementCourtAction(fd: FormData): Promise<void> {
-  await executer(fd, async (rencontreId) => {
+  },
+  court: async (_fd, rencontreId) => {
     await confirmerEnregistrementCourt(prisma, rencontreId, new Date());
     return "L'enregistrement court sera traité.";
-  });
-}
-
-export async function retirerAccordAction(fd: FormData): Promise<void> {
-  await executer(fd, async (rencontreId, adminId) => {
+  },
+  retrait: async (fd, rencontreId, adminId) => {
     if (fd.get("confirmation") !== "oui") {
       throw new GesteRefuse("Cochez la case pour confirmer le retrait de l'accord.");
     }
@@ -137,12 +122,23 @@ export async function retirerAccordAction(fd: FormData): Promise<void> {
       `du compte rendu et ${r.faits} fait(s) effacés ; le son est supprimé. La preuve de l'accord ` +
       `initial est gardée.`
     );
-  });
-}
-
-export async function reprendreCircuitAction(fd: FormData): Promise<void> {
-  await executer(fd, async () => {
+  },
+  reprendre: async () => {
     const n = await reprendreEtapesSuspendues(prisma);
     return `${n} étape(s) reprise(s).`;
+  },
+};
+
+/**
+ * UNE seule action pour toute la page (champ caché `geste`) : chaque action
+ * importée par une page ajoute sa référence au JavaScript de la console, et le
+ * cliquet de poids de la console n'a pas de marge (mesuré sur #1229 : huit
+ * actions séparées le dépassaient de 209 o).
+ */
+export async function gesteCompteRenduAction(fd: FormData): Promise<void> {
+  const geste = GESTES[String(fd.get("geste") ?? "")];
+  await executer(fd, async (rencontreId, adminId) => {
+    if (!geste) throw new GesteRefuse("Geste inconnu.");
+    return geste(fd, rencontreId, adminId);
   });
 }
