@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Enregistreur Axion-IA</title>
+    <style>
+      body { font: 15px/1.4 system-ui, sans-serif; margin: 12px; color: #1a1a1a; }
+      button { min-height: 44px; font-size: 15px; margin: 4px 0; width: 100%; border-radius: 8px; border: 1px solid #888; background: #fff; cursor: pointer; }
+      button.principal { background: #1d4ed8; color: #fff; border-color: #1d4ed8; }
+      button.refus { background: #b91c1c; color: #fff; border-color: #b91c1c; }
+      .bandeau { padding: 8px; border-radius: 8px; margin: 8px 0; }
+      .rouge { background: #fee2e2; color: #7f1d1d; }
+      .orange { background: #ffedd5; color: #7c2d12; }
+      .info { background: #e0e7ff; color: #1e1b4b; }
+      .cache { display: none; }
+      meter { width: 100%; }
+      .phrase { font-style: italic; background: #f5f5f5; padding: 8px; border-radius: 8px; }
+      .rebours { font-size: 28px; font-weight: 700; text-align: center; }
+    </style>
+    <script type="module" src="panneau.js"></script>
+  </head>
+  <body>
+    <h1 style="font-size: 18px">Enregistreur</h1>
+    <div id="jeton" class="bandeau cache"></div>
+    <div id="message" class="bandeau info cache"></div>
+
+    <label for="rencontre">Rendez-vous</label>
+    <select id="rencontre" style="width: 100%; min-height: 44px"></select>
+    <div id="alerte-rencontre" class="bandeau rouge cache"></div>
+    <button id="actualiser">Actualiser</button>
+    <button id="creer">Créer ce rendez-vous dans la console</button>
+
+    <section id="repos">
+      <p>Cliquez sur Démarrer juste avant de dire la phrase d'annonce.</p>
+      <button id="demarrer" class="principal">Démarrer</button>
+    </section>
+
+    <section id="attente" class="cache">
+      <p class="phrase" id="phrase"></p>
+      <div class="rebours" id="rebours">3:00</div>
+      <button id="accord" class="principal">Accord obtenu</button>
+      <button id="refus" class="refus">Refus</button>
+    </section>
+
+    <section id="encours" class="cache">
+      <p>Enregistrement en cours.</p>
+      <div id="badges"></div>
+      <button id="pause">Pause</button>
+      <button id="nouvelle">Nouvelle personne : accord obtenu</button>
+      <button id="arreter" class="principal">Arrêter</button>
+      <button id="refus2" class="refus">Refus</button>
+    </section>
+
+    <p>Son du client <meter id="vu-client" min="0" max="0.3" value="0"></meter></p>
+    <p>Votre micro <meter id="vu-axion" min="0" max="0.3" value="0"></meter></p>
+
+    <button id="copier">Copier le message d'information</button>
+  </body>
+</html>

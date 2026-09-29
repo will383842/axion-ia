@@ -178,7 +178,7 @@ describe("admin-nav:routes-check refuse une route admin sans entrée de menu", (
     expect(code, `retirer le témoin devait rendre le vert.\n${sortie}`).toBe(0);
   });
 
-  it("lit BIEN les liens épinglés — les neutraliser fait ressortir les treize écrans", () => {
+  it("lit BIEN les liens épinglés — les neutraliser fait ressortir les quatorze écrans", () => {
     // 🔴 CE TEST EXISTE À CAUSE D'UN AUDIT QUI S'EST TROMPÉ. Le 2026-09-04,
     //    `/console-editoriale`, ses dix écrans et `/agenda` ont été comptés
     //    comme orphelins et proposés à l'arbitrage — parce que leurs liens
@@ -202,7 +202,10 @@ describe("admin-nav:routes-check refuse une route admin sans entrée de menu", (
         1,
       );
       // 13 depuis le 2026-09-27 : `/rendez-vous`, épinglé sous l'agenda.
-      expect(sortie).toMatch(/13 route\(s\) admin sans aucune entrée de menu/);
+      // 14 depuis le 2026-09-29 : `/rendez-vous/enregistreur` (chantier visio,
+      // PR 5), sous-écran de `/rendez-vous`, orphelin dès que l'épingle tombe.
+      expect(sortie).toMatch(/14 route\(s\) admin sans aucune entrée de menu/);
+      expect(sortie).toContain("- /rendez-vous/enregistreur");
       expect(sortie).toContain("- /agenda");
       expect(sortie).toContain("- /rendez-vous");
       expect(sortie).toContain("- /console-editoriale");

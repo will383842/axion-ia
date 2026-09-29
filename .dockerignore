@@ -33,6 +33,14 @@ lhci
 !.env.dev.example
 !.env.production.example
 
+# Extension Chrome de l'enregistreur Meet (PR 5) : chargée sur le poste de
+# Will, jamais servie par le site.
+# ⚠️ Ses tests partent AVEC elle : `next build` vérifie les types de tout le
+# contexte (tsconfig `**/*.ts`), et un test qui importe `extensions/…` absent
+# de l'image casse le build de production (mesuré sur Gate C, run 36571…).
+extensions
+tests/unit/extension-enregistreur
+
 # Docs / audits (pas needed runtime)
 docs
 _AUDIT

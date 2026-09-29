@@ -23,6 +23,9 @@ import { Worker, type Job } from "bullmq";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import type { VisioBalayageJobData } from "@/server/queue/types";
 
+type ModuleEnregistreur = typeof import("@/server/visio/balayage-enregistreur");
+type BaseEnregistreur = Parameters<ModuleEnregistreur["balayerEnregistreur"]>[0];
+
 export const VISIO_BALAYAGE_QUEUE_NAME = "visio-balayage";
 
 /** Le drapeau qui allume le balayage (lu à l'exécution, jamais figé au build). */
@@ -34,10 +37,11 @@ async function processJob(_job: Job<VisioBalayageJobData>): Promise<void> {
   if (!balayageActive()) return;
   // Imports PARESSEUX : ces modules tirent Prisma ; ils ne sont chargés que
   // dans le worker, au premier passage.
-  const [{ prisma }, { notify }, { passerBalayage }] = await Promise.all([
+  const [{ prisma }, { notify }, { passerBalayage }, enregistreur] = await Promise.all([
     import("@/lib/prisma"),
     import("@/server/notifications"),
     import("@/server/visio/balayage"),
+    import("@/server/visio/balayage-enregistreur"),
   ]);
   const r = await passerBalayage(prisma, {
     notifier: notify,
@@ -50,6 +54,34 @@ async function processJob(_job: Job<VisioBalayageJobData>): Promise<void> {
         `à valider depuis 3 j, ${r.suitesEchues} suite(s) échue(s)` +
         (r.etapesEnEchec.length > 0 ? ` — étapes en échec : ${r.etapesEnEchec.join(", ")}` : ""),
     );
+  }
+  await passerEnregistreur(prisma, enregistreur);
+}
+
+/**
+ * L'enregistreur (PR 5) : clôture d'office, reprise des purges de refus,
+ * témoin de clé, alertes jeton J-14 / J-3 et extension silencieuse.
+ * Après le dossier client, dans son propre `try` : une panne de l'un
+ * n'arrête pas l'autre. Garde : `le-worker-de-balayage-appelle-l-enregistreur.spec.ts`.
+ */
+async function passerEnregistreur(prisma: BaseEnregistreur, m: ModuleEnregistreur): Promise<void> {
+  try {
+    const b = await m.balayerEnregistreur(prisma, m.notifierParTelegram, {
+      maintenant: new Date(),
+      version: process.env.BUILD_SHA ?? "inconnue",
+    });
+    if (b.alertes > 0 || !b.temoinOk) {
+      console.warn(
+        `[visio-balayage-worker] enregistreur : ${b.alertes} alerte(s) envoyée(s), ` +
+          `témoin de clé ${b.temoinOk ? "lu" : "en échec"}`,
+      );
+    }
+  } catch (err) {
+    console.error(
+      "[visio-balayage-worker] enregistreur en échec :",
+      err instanceof Error ? err.name : "inconnue",
+    );
+    captureWorkerError("visio-balayage", VISIO_BALAYAGE_QUEUE_NAME, undefined, err);
   }
 }
 

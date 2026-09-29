@@ -106,6 +106,12 @@ export const env = createEnv({
     // refuse de s'exécuter sans même lire la base.
     VIVIER_STOCK_ENABLED: z.enum(["true", "false"]).optional(),
 
+    // ── Enregistrement des visios (chantier visio, PR 5) ────────────────────
+    // Drapeau à trois états lu À L'EXÉCUTION (`src/server/visio/drapeau.ts`) :
+    // aucun des deux = `ferme` (toutes les routes de l'enregistreur en 503).
+    ENREGISTREMENT_VISIO_PILOTE: z.enum(["true", "false"]).optional(),
+    ENREGISTREMENT_VISIO_OUVERT: z.enum(["true", "false"]).optional(),
+
     TELEGRAM_BOT_TOKEN: z.string().optional(),
     TELEGRAM_CHAT_ID: z.string().optional(),
 
@@ -669,6 +675,8 @@ export const env = createEnv({
     CRM_SYNC_URL: process.env.CRM_SYNC_URL,
     SITE_SYNC_HMAC_SECRET: process.env.SITE_SYNC_HMAC_SECRET,
     VIVIER_STOCK_ENABLED: process.env.VIVIER_STOCK_ENABLED,
+    ENREGISTREMENT_VISIO_PILOTE: process.env.ENREGISTREMENT_VISIO_PILOTE,
+    ENREGISTREMENT_VISIO_OUVERT: process.env.ENREGISTREMENT_VISIO_OUVERT,
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
     TELEGRAM_CALENDLY_BOT_TOKEN: process.env.TELEGRAM_CALENDLY_BOT_TOKEN,
     TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID,

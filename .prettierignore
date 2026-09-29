@@ -34,3 +34,11 @@ docs/kits
 src/server/partners/contrat/contracts.v2.json
 src/server/partners/contrat/contracts.sha256
 src/server/partners/contrat/fixtures.v2.json
+
+# ── Enregistreur Meet (chantier visio, PR 5) : contrat GÉNÉRÉ ─────────────────
+# `pnpm enregistreur:contrat` écrit `contrat.json` et son empreinte
+# `contrat.sha256` ; `le-contrat-genere-suit-le-zod` les compare à l'octet.
+# Même règle que ci-dessus : un fichier dont le contenu exact est la preuve ne
+# se formate pas.
+extensions/enregistreur-meet/contrat.json
+extensions/enregistreur-meet/contrat.sha256

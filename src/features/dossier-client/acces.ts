@@ -20,7 +20,8 @@
  *     sont refusées entières, garde en PREMIÈRE instruction, avant tout accès
  *     à la base.
  *
- * ⚠️ CE FICHIER EST LA SEULE LISTE. Les pages et les actions la consomment ;
+ * ⚠️ LA LISTE vit dans `./roles-echanges.ts` (module pur, lu aussi par le
+ * worker de l'enregistreur) et n'est ré-exportée qu'ici. Les pages et les actions la consomment ;
  * personne ne la recopie. Garde dérivée :
  * `src/features/admin-calendly/__tests__/la-lecture-est-gardee-comme-l-ecriture.spec.ts`.
  */
@@ -30,17 +31,9 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { LIBELLE_ROLE, type ResultatAcces } from "@/server/auth/garde-page";
 import { peutConsulter, type RoleAdmin } from "@/server/auth/habilitations";
+import { peutVoirLesEchanges } from "./roles-echanges";
 
-/** Décision A2 : Will (super-administrateur) et les administrateurs, personne d'autre. */
-export const ROLES_DOSSIER_ECHANGES = [
-  "super_admin",
-  "admin",
-] as const satisfies ReadonlyArray<RoleAdmin>;
-
-/** Ce rôle peut-il lire (et écrire) les échanges du dossier client ? */
-export function peutVoirLesEchanges(role: string | null | undefined): boolean {
-  return (ROLES_DOSSIER_ECHANGES as ReadonlyArray<string>).includes(role ?? "");
-}
+export { peutVoirLesEchanges, ROLES_DOSSIER_ECHANGES } from "./roles-echanges";
 
 /** Le message montré à un rôle qui n'a pas accès : il NOMME le rôle et la raison. */
 export function motifSansAccesAuxEchanges(role: string | null | undefined): string {
@@ -61,8 +54,14 @@ export function motifSansAccesAuxEchanges(role: string | null | undefined): stri
  * 🔴 À APPELER EN PREMIÈRE INSTRUCTION, avant tout accès Prisma : un
  * `notFound()` émis avant la garde renseignerait un visiteur non habilité sur
  * l'existence d'un projet.
+ *
+ * `motif` : le texte du refus pour une page qui n'est pas du dossier client
+ * (l'Enregistreur, PR 5) — même liste, autre explication.
  */
-export async function gardeLectureEchanges(destinationLogin: string): Promise<ResultatAcces> {
+export async function gardeLectureEchanges(
+  destinationLogin: string,
+  motif: (role: string | null | undefined) => string = motifSansAccesAuxEchanges,
+): Promise<ResultatAcces> {
   const session = await auth();
   if (!session?.user) redirect(destinationLogin);
   const role = ((session.user as { role?: string | null }).role ?? null) as RoleAdmin | null;
@@ -77,7 +76,7 @@ export async function gardeLectureEchanges(destinationLogin: string): Promise<Re
     };
   }
   if (!peutVoirLesEchanges(role)) {
-    return { autorise: false, role, motif: motifSansAccesAuxEchanges(role) };
+    return { autorise: false, role, motif: motif(role) };
   }
   return { autorise: true, role: role as RoleAdmin, peutEcrire: true };
 }
@@ -87,11 +86,13 @@ export async function gardeLectureEchanges(destinationLogin: string): Promise<Re
  * une erreur lisible. Une action s'appelle directement : masquer un bouton
  * n'est pas interdire.
  */
-export async function exigerAccesEchanges(): Promise<{ userId: string; role: RoleAdmin }> {
+export async function exigerAccesEchanges(
+  motif: (role: string | null | undefined) => string = motifSansAccesAuxEchanges,
+): Promise<{ userId: string; role: RoleAdmin }> {
   const session = await auth();
   const user = session?.user as { id?: string; role?: string | null } | undefined;
   if (!user?.id) throw new Error("Session expirée : reconnectez-vous.");
   const role = (user.role ?? null) as RoleAdmin | null;
-  if (!peutVoirLesEchanges(role)) throw new Error(motifSansAccesAuxEchanges(role));
+  if (!peutVoirLesEchanges(role)) throw new Error(motif(role));
   return { userId: user.id, role: role as RoleAdmin };
 }

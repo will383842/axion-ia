@@ -1,0 +1,276 @@
+// Machine d'états d'une capture — fonctions PURES (aucun appel à Chrome).
+//
+// Chaque fonction reçoit l'état et un instant, et rend `{ etat, actions }`.
+// Les actions sont exécutées par le service worker : envoyer, détruire,
+// couper le son, notifier, arrêter. Tout ce qui décide est ici, et testé.
+//
+// Règles (plan §3.7, ADR 0054) :
+//   · la capture démarre `accord_en_attente` : RIEN ne part au site ;
+//   · « Accord obtenu » dans les 3 min → `en_cours` ; sinon arrêt et
+//     DESTRUCTION locale ; rappel à 2 min ;
+//   · « Refus » : destruction immédiate ;
+//   · pause = gain à zéro (jamais `MediaRecorder.pause`) ;
+//   · piste client muette 60 s → badge ; silence des deux pistes : badge 3 min,
+//     notification 5 min, arrêt 30 min (jamais avant) ;
+//   · salle quittée depuis 2 min, ou 2 h 55 → arrêt ;
+//   · une personne en plus sans « Nouvelle personne : accord obtenu » → son
+//     coupé au bout de 2 min, fenêtre journalisée hors accord ;
+//   · 3 participants ou plus → « à trois, Meet coupe à 1 h ».
+
+import { DELAIS_LOCAUX, PARTICIPANTS_LIMITE_MEET, SEUIL_SILENCE } from "./constantes.js";
+import { etatJeton } from "./jeton.js";
+
+/**
+ * Types (JSDoc, lus par TypeScript côté tests ; aucune construction).
+ * @typedef {Record<string, any>} EtatCapture
+ * @typedef {{ type: string, [cle: string]: unknown }} Action
+ * @typedef {{ etat: EtatCapture, actions: Action[] }} Resultat
+ */
+
+/** L'état de repos (aucune capture). */
+/** @returns {EtatCapture} */
+export function etatInitial() {
+  return { phase: "repos" };
+}
+
+/**
+ * Démarre une capture. Refuse si le jeton ne le permet pas.
+ * @param {{ jeton: string | null, jetonExpireLe: string | null, cleClient: string, rencontreId: string | null, nbParticipants?: number }} entree
+ * @returns {Resultat}
+ */
+export function demarrer(etat, entree, maintenantMs) {
+  if (etat.phase !== "repos" && etat.phase !== "detruit" && etat.phase !== "termine") {
+    return { etat, actions: [{ type: "refuser", message: "Une capture est déjà en cours." }] };
+  }
+  const j = etatJeton(entree.jeton, entree.jetonExpireLe, maintenantMs);
+  if (!j.peutDemarrer) {
+    return { etat, actions: [{ type: "refuser", message: j.message }] };
+  }
+  const n = entree.nbParticipants ?? 2;
+  return {
+    etat: {
+      phase: "accord_en_attente",
+      cleClient: entree.cleClient,
+      rencontreId: entree.rencontreId,
+      enregistrementId: null,
+      debutMs: maintenantMs,
+      accordMs: null,
+      rappelAccordFait: false,
+      enPause: false,
+      nbParticipants: n,
+      participantsAccordes: n,
+      nouvellePersonneDepuisMs: null,
+      sonCoupe: false,
+      fenetresHorsAccord: [],
+      dernierSonClientMs: maintenantMs,
+      dernierSonMs: maintenantMs,
+      notificationSilenceFaite: false,
+      salleQuitteeDepuisMs: null,
+      badges: [],
+    },
+    actions: [{ type: "demarrer_capture" }, { type: "creer_session", debutMs: maintenantMs }],
+  };
+}
+
+/** Vrai si le son de cette capture peut partir au site. */
+export function peutEnvoyerDuSon(etat) {
+  return etat.accordMs !== null && etat.accordMs !== undefined && etat.phase !== "detruit";
+}
+
+/** @returns {Resultat} */
+export function accordObtenu(etat, maintenantMs) {
+  if (etat.phase !== "accord_en_attente") return { etat, actions: [] };
+  if (maintenantMs - etat.debutMs > DELAIS_LOCAUX.accordMaxMs) {
+    return detruire(etat, "accord_hors_delai");
+  }
+  return {
+    etat: { ...etat, phase: "en_cours", accordMs: maintenantMs },
+    actions: [
+      { type: "declarer_accord", accordLe: maintenantMs, nouvellePersonne: false },
+      { type: "vider_file" },
+    ],
+  };
+}
+
+/** @returns {Resultat} */
+export function refus(etat, maintenantMs) {
+  if (etat.phase === "repos" || etat.phase === "detruit") return { etat, actions: [] };
+  const r = detruire(etat, "refus");
+  return {
+    etat: r.etat,
+    actions: [...r.actions, { type: "declarer_refus", refusLe: maintenantMs }],
+  };
+}
+
+/** @returns {Resultat} */
+function detruire(etat, motif) {
+  return {
+    etat: { ...etat, phase: "detruit", motif },
+    actions: [{ type: "arreter_capture" }, { type: "detruire_local", cleClient: etat.cleClient }],
+  };
+}
+
+/** @returns {Resultat} */
+export function pause(etat) {
+  if (etat.phase !== "en_cours") return { etat, actions: [] };
+  return { etat: { ...etat, enPause: true }, actions: [{ type: "gain", valeur: 0 }] };
+}
+
+/** @returns {Resultat} */
+export function reprendre(etat) {
+  if (etat.phase !== "en_cours" || !etat.enPause) return { etat, actions: [] };
+  return {
+    etat: { ...etat, enPause: false },
+    actions: etat.sonCoupe ? [] : [{ type: "gain", valeur: 1 }],
+  };
+}
+
+/** @returns {Resultat} */
+export function arreter(etat, maintenantMs, motif = "manuel") {
+  if (etat.phase === "accord_en_attente") return detruire(etat, "arret_sans_accord");
+  if (etat.phase !== "en_cours") return { etat, actions: [] };
+  const fenetres = fermerFenetre(etat, maintenantMs);
+  return {
+    etat: { ...etat, phase: "termine", fenetresHorsAccord: fenetres },
+    actions: [
+      { type: "arreter_capture" },
+      { type: "terminer_session", motif, finLe: maintenantMs, fenetresHorsAccord: fenetres },
+    ],
+  };
+}
+
+function fermerFenetre(etat, maintenantMs) {
+  const t = maintenantMs - etat.debutMs;
+  return etat.fenetresHorsAccord.map((x) => ({ debutMs: x.debutMs, finMs: x.finMs ?? t }));
+}
+
+/**
+ * « Nouvelle personne : accord obtenu » : le son revient, la fenêtre se ferme.
+ * @returns {Resultat}
+ */
+export function nouvellePersonneAccord(etat, maintenantMs) {
+  if (etat.phase !== "en_cours") return { etat, actions: [] };
+  const fenetres = etat.sonCoupe ? fermerFenetre(etat, maintenantMs) : etat.fenetresHorsAccord;
+  return {
+    etat: {
+      ...etat,
+      participantsAccordes: etat.nbParticipants,
+      nouvellePersonneDepuisMs: null,
+      sonCoupe: false,
+      fenetresHorsAccord: fenetres,
+    },
+    actions: [
+      ...(etat.sonCoupe && !etat.enPause ? [{ type: "gain", valeur: 1 }] : []),
+      { type: "declarer_accord", accordLe: maintenantMs, nouvellePersonne: true },
+    ],
+  };
+}
+
+/**
+ * Le tic d'une seconde : niveaux mesurés, participants vus, présence dans la salle.
+ * @param {{ niveauClient: number, niveauAxion: number, nbParticipants: number, dansLaSalle: boolean }} mesure
+ * @returns {Resultat}
+ */
+export function tic(etat, mesure, maintenantMs) {
+  if (etat.phase !== "accord_en_attente" && etat.phase !== "en_cours") return { etat, actions: [] };
+  const actions = [];
+  let e = { ...etat };
+
+  // 1. Accord : rappel à 2 min, destruction à 3 min.
+  if (e.phase === "accord_en_attente") {
+    const ecoule = maintenantMs - e.debutMs;
+    if (ecoule > DELAIS_LOCAUX.accordMaxMs) return detruire(e, "accord_absent");
+    if (ecoule >= DELAIS_LOCAUX.rappelAccordMs && !e.rappelAccordFait) {
+      e.rappelAccordFait = true;
+      actions.push({
+        type: "notifier",
+        message: "L'accord n'est pas encore cliqué : il reste une minute.",
+      });
+    }
+  }
+
+  // 2. Niveaux.
+  const sonClient = mesure.niveauClient > SEUIL_SILENCE;
+  const sonAxion = mesure.niveauAxion > SEUIL_SILENCE;
+  if (sonClient) e.dernierSonClientMs = maintenantMs;
+  if (sonClient || sonAxion) {
+    e.dernierSonMs = maintenantMs;
+    e.notificationSilenceFaite = false;
+  }
+  const badges = new Set();
+  if (maintenantMs - e.dernierSonClientMs >= DELAIS_LOCAUX.badgePisteClientMuetteMs)
+    badges.add("piste_client_muette");
+  const silence = maintenantMs - e.dernierSonMs;
+  if (!e.enPause && silence >= DELAIS_LOCAUX.badgeSilenceMs) badges.add("silence");
+  if (!e.enPause && silence >= DELAIS_LOCAUX.notificationSilenceMs && !e.notificationSilenceFaite) {
+    e.notificationSilenceFaite = true;
+    actions.push({
+      type: "notifier",
+      message: "Aucun son depuis 5 minutes : l'enregistrement continue.",
+    });
+  }
+
+  // 3. Participants.
+  if (mesure.nbParticipants >= PARTICIPANTS_LIMITE_MEET) badges.add("limite_meet");
+  e.nbParticipants = mesure.nbParticipants;
+  if (e.phase === "en_cours" && mesure.nbParticipants > e.participantsAccordes) {
+    if (e.nouvellePersonneDepuisMs === null) {
+      e.nouvellePersonneDepuisMs = maintenantMs;
+      actions.push({
+        type: "notifier",
+        message:
+          "Une personne de plus : obtenez son accord (« Nouvelle personne : accord obtenu »).",
+      });
+    } else if (
+      !e.sonCoupe &&
+      maintenantMs - e.nouvellePersonneDepuisMs >= DELAIS_LOCAUX.coupureNouvellePersonneMs
+    ) {
+      e.sonCoupe = true;
+      e.fenetresHorsAccord = [
+        ...e.fenetresHorsAccord,
+        { debutMs: maintenantMs - e.debutMs, finMs: null },
+      ];
+      actions.push(
+        { type: "gain", valeur: 0 },
+        { type: "journal", evenement: "son_coupe_personne_sans_accord" },
+      );
+    }
+  } else if (mesure.nbParticipants <= e.participantsAccordes) {
+    e.nouvellePersonneDepuisMs = null;
+    if (e.sonCoupe) {
+      e.fenetresHorsAccord = fermerFenetre(e, maintenantMs);
+      e.sonCoupe = false;
+      if (!e.enPause) actions.push({ type: "gain", valeur: 1 });
+    }
+  }
+  if (e.sonCoupe) badges.add("son_coupe");
+  e.badges = [...badges];
+
+  // 4. Salle quittée, durée maximale, silence prolongé : arrêt.
+  if (!mesure.dansLaSalle) {
+    e.salleQuitteeDepuisMs = e.salleQuitteeDepuisMs ?? maintenantMs;
+  } else {
+    e.salleQuitteeDepuisMs = null;
+  }
+  if (e.phase === "en_cours") {
+    if (
+      e.salleQuitteeDepuisMs !== null &&
+      maintenantMs - e.salleQuitteeDepuisMs >= DELAIS_LOCAUX.arretSalleQuitteeMs
+    ) {
+      const r = arreter(e, maintenantMs, "salle_quittee");
+      return { etat: r.etat, actions: [...actions, ...r.actions] };
+    }
+    if (maintenantMs - e.debutMs >= DELAIS_LOCAUX.dureeMaxMs) {
+      const r = arreter(e, maintenantMs, "duree_max");
+      return { etat: r.etat, actions: [...actions, ...r.actions] };
+    }
+    if (!e.enPause && silence >= DELAIS_LOCAUX.arretSilenceMs) {
+      const r = arreter(e, maintenantMs, "inconnu");
+      return {
+        etat: r.etat,
+        actions: [...actions, { type: "journal", evenement: "arret_silence_30_min" }, ...r.actions],
+      };
+    }
+  }
+  return { etat: e, actions };
+}
