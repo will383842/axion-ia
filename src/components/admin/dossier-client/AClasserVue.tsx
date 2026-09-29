@@ -1,80 +1,50 @@
 /**
- * Admin — « À classer » : les rendez-vous du dossier client qui ne sont
- * encore rangés chez aucun client (chantier visio, PR 4 ; plan V-06, V-07b).
+ * « À classer » : les rendez-vous du dossier client rangés chez aucun client
+ * (chantier visio, PR 4 ; plan V-06, V-07b) — un ONGLET de la page Rendez-vous
+ * (`?vue=a-classer`), pas une page de plus (cliquet de poids, ADR 0058).
  *
- * Décision A4 : la machine PROPOSE une fiche, Will valide d'un clic
- * (« Confirmer le client proposé »), ou ouvre « Après l'appel » pour choisir
- * une autre fiche ou créer la fiche prospect.
+ * Décision A4 : la machine PROPOSE une fiche, Will valide d'un clic, ou ouvre
+ * « Après l'appel » pour en choisir une autre ou créer la fiche prospect.
+ * Deux listes : les récents (ils font le compteur) et « Historique » — les
+ * rendez-vous d'avant la mise en service, ni compteur ni rappel.
  *
- * Deux listes : les rendez-vous récents (ils font le badge), et
- * « Historique » — les rendez-vous d'avant la mise en service, repris par le
- * script de reprise : ni badge ni alerte, Will les range quand un prospect
- * revient, pas avant.
- *
- * Régime REFUS (décision A2) : `gardeLectureEchanges` est la PREMIÈRE instruction.
+ * La page appelante a DÉJÀ consulté le rôle (`peutVoirLesEchanges`, A2).
  */
 
-import type { Metadata } from "next";
 import Link from "next/link";
 
-import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
-import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminFilterTabs } from "@/components/admin/ui/AdminFilterTabs";
 import { AdminEmptyState } from "@/components/admin/ui";
-import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
-import { gardeLectureEchanges } from "@/features/dossier-client/acces";
 import { rangerRencontreAction } from "@/features/dossier-client/actions-rencontres";
 import { lireRencontresAClasser } from "@/features/dossier-client/queries-rencontres";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 
-export const dynamic = "force-dynamic";
-export const metadata: Metadata = {
-  title: "Rendez-vous à classer | Axion-IA Admin",
-  robots: { index: false, follow: false },
-};
-
-interface PageProps {
-  params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
-  searchParams: Promise<Record<string, string | undefined>>;
-}
-
 const mutedCls = "text-[color:var(--color-admin-fg-muted)]";
 const lienCls = "text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline";
 
-export default async function AClasserPage({ params, searchParams }: PageProps) {
-  const { locale, adminPrefix } = await params;
-  // 🔴 Première instruction : la garde, AVANT toute lecture.
-  const acces = await gardeLectureEchanges(`/${locale}/${adminPrefix}/login`);
-  const rdvBase = `/${locale}/${adminPrefix}/rendez-vous`;
-  if (!acces.autorise) {
-    return <AccesRefuse motif={acces.motif} retourHref={rdvBase} />;
-  }
-  const sp = await searchParams;
-  const historique = sp.filtre === "historique";
-  const erreur = typeof sp.erreur === "string" && sp.erreur !== "" ? sp.erreur.slice(0, 300) : null;
+export async function AClasserVue({
+  rdvBase,
+  historique,
+  erreur,
+}: {
+  rdvBase: string;
+  historique: boolean;
+  erreur: string | null;
+}) {
   const liste = await lireRencontresAClasser(historique);
 
   return (
-    <AdminPageShell width="wide">
-      <div className="mb-[var(--space-admin-4)]">
-        <Link href={rdvBase} className={`text-[length:var(--text-admin-xs)] ${lienCls}`}>
-          ← Rendez-vous
-        </Link>
-      </div>
-      <AdminPageHeader
-        title="Rendez-vous à classer"
-        description="Les rendez-vous rangés chez aucun client. Une fiche est proposée quand elle ressemble ; rien n'est rangé sans votre clic."
-      />
+    <>
       <AdminFilterTabs
         className="mb-[var(--space-admin-5)]"
         label="Liste"
         current={historique ? "historique" : "recents"}
         options={[
-          { value: "recents", label: "Récents", href: `${rdvBase}/a-classer` },
+          { value: "recents", label: "Récents", href: `${rdvBase}?vue=a-classer` },
           {
             value: "historique",
             label: "Historique (avant la mise en service)",
-            href: `${rdvBase}/a-classer?filtre=historique`,
+            href: `${rdvBase}?vue=a-classer&filtre=historique`,
           },
         ]}
       />
@@ -119,7 +89,7 @@ export default async function AClasserPage({ params, searchParams }: PageProps) 
                     Aucune fiche proposée
                   </span>
                 )}
-                <Link href={`${rdvBase}/${r.id}/apres-l-appel`} className={lienCls}>
+                <Link href={`${rdvBase}/rencontres/${r.id}?vue=apres-l-appel`} className={lienCls}>
                   Choisir ou créer la fiche →
                 </Link>
               </div>
@@ -127,6 +97,6 @@ export default async function AClasserPage({ params, searchParams }: PageProps) 
           ))}
         </ul>
       )}
-    </AdminPageShell>
+    </>
   );
 }

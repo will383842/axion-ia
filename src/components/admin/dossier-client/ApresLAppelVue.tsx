@@ -1,6 +1,8 @@
 /**
- * Admin — « Après l'appel » : l'écran unique du geste quotidien
- * (chantier visio, PR 4 ; plan §3.13).
+ * « Après l'appel » : l'écran unique du geste quotidien (chantier visio, PR 4 ;
+ * plan §3.13) — rendu comme une VUE de la page du rendez-vous
+ * (`rendez-vous/rencontres/[rencontreId]?vue=apres-l-appel`), pour ne pas
+ * ajouter une page à la console (cliquet de poids, ADR 0058).
  *
  * Dans l'ordre :
  *   1. le RANGEMENT : la fiche proposée (« Confirmer le client proposé »), une
@@ -13,20 +15,16 @@
  *   4. l'issue, la suite et son échéance (relance proposée par défaut) ;
  *   5. UN bouton : « Valider et préparer le devis ».
  *
- * Régime REFUS (décision A2) : `gardeLectureEchanges` est la PREMIÈRE
- * instruction. Aucun JavaScript : des formulaires HTML reliés à des actions
- * serveur qui vérifient elles-mêmes le rôle.
+ * La page appelante a DÉJÀ posé la garde (`gardeLectureEchanges`, A2) et lu la
+ * rencontre. Composant SERVEUR, sans JavaScript : des formulaires HTML reliés à
+ * des actions qui revérifient le rôle.
  */
 
-import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
-import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
-import { gardeLectureEchanges } from "@/features/dossier-client/acces";
 import {
   creerProspectAction,
   rangerRencontreAction,
@@ -37,24 +35,13 @@ import { CHAMPS_DE_LA_NOTE } from "@/features/dossier-client/note-manuelle";
 import {
   lireFichesVivantes,
   lireProjetsCourts,
-  lireRencontreDetaillee,
+  type RencontreDetaillee,
 } from "@/features/dossier-client/queries-rencontres";
 import { rechercherSiren } from "@/features/dossier-client/recherche-entreprises";
 import { suiteParDefaut } from "@/features/dossier-client/suite-proposee";
 import { validableEnLot } from "@/features/dossier-client/valider";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { timeInParis } from "@/lib/calendar-grid";
-
-export const dynamic = "force-dynamic";
-export const metadata: Metadata = {
-  title: "Après l'appel | Axion-IA Admin",
-  robots: { index: false, follow: false },
-};
-
-interface PageProps {
-  params: Promise<{ locale: "fr" | "en"; adminPrefix: string; rencontreId: string }>;
-  searchParams: Promise<Record<string, string | undefined>>;
-}
 
 const carteCls =
   "mb-[var(--space-admin-5)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]";
@@ -78,20 +65,18 @@ const LIBELLE_MOTIF: Readonly<Record<string, string>> = {
   contenu_compte_rendu: "déduite du compte rendu",
 };
 
-export default async function ApresLAppelPage({ params, searchParams }: PageProps) {
-  const { locale, adminPrefix, rencontreId } = await params;
-  // 🔴 Première instruction : la garde, AVANT toute lecture.
-  const acces = await gardeLectureEchanges(`/${locale}/${adminPrefix}/login`);
+export async function ApresLAppelVue({
+  r,
+  locale,
+  adminPrefix,
+  erreur,
+}: {
+  r: RencontreDetaillee;
+  locale: string;
+  adminPrefix: string;
+  erreur: string | null;
+}) {
   const rdvBase = `/${locale}/${adminPrefix}/rendez-vous`;
-  if (!acces.autorise) {
-    return <AccesRefuse motif={acces.motif} retourHref={rdvBase} />;
-  }
-  const sp = await searchParams;
-  const erreur = typeof sp.erreur === "string" && sp.erreur !== "" ? sp.erreur.slice(0, 300) : null;
-
-  const r = await lireRencontreDetaillee(rencontreId);
-  if (r === null) notFound();
-
   const client = r.client;
   const [projets, fiches, annuaire] = await Promise.all([
     client ? lireProjetsCourts(client.id) : Promise.resolve([]),

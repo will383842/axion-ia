@@ -70,10 +70,15 @@ import {
   type DossierDuRendezVous,
 } from "@/features/dossier-client/queries-rencontres";
 import { LiensApresLAppel } from "@/components/admin/dossier-client/LiensApresLAppel";
+import { AClasserVue } from "@/components/admin/dossier-client/AClasserVue";
+import { EtatDuCircuitVue } from "@/components/admin/dossier-client/EtatDuCircuitVue";
 
 export const dynamic = "force-dynamic";
 
-type Vue = "avenir" | "point" | "passes";
+// « a-classer » et « circuit » (chantier visio, PR 4) : des ONGLETS, pas des
+// pages de plus (cliquet de poids de la console, ADR 0058) ; montrés aux seuls
+// rôles du dossier client (A2).
+type Vue = "avenir" | "point" | "passes" | "a-classer" | "circuit";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
@@ -420,7 +425,13 @@ export default async function RendezVousPage({
   const voitDossier = peutVoirLesEchanges(acces.role);
   const sp = await searchParams;
   const publicRdv = publicDemande(sp["public"]);
-  const vue: Vue = sp["vue"] === "point" ? "point" : sp["vue"] === "passes" ? "passes" : "avenir";
+  const vueDemandee = sp["vue"];
+  const vue: Vue =
+    vueDemandee === "point" || vueDemandee === "passes"
+      ? vueDemandee
+      : voitDossier && (vueDemandee === "a-classer" || vueDemandee === "circuit")
+        ? vueDemandee
+        : "avenir";
   const base = `/fr/${adminPrefix}/rendez-vous`;
   const maintenant = new Date();
   const aujourdhui = dayKeyInParis(maintenant);
@@ -457,18 +468,6 @@ export default async function RendezVousPage({
       <AdminPageHeader
         title="Rendez-vous"
         description={`Vos prochains appels : avec qui, à quelle heure, et le bouton pour lancer la visio. Un rendez-vous quitte cette liste ${MINUTES_APRES_FIN} minutes après sa fin, puis se retrouve dans « Passés ».`}
-        actions={
-          voitDossier ? (
-            <>
-              <Link href={`${base}/a-classer`} className="admin-button-ghost">
-                À classer ({nombreAClasser})
-              </Link>
-              <Link href={`${base}/etat-du-circuit`} className="admin-button-ghost">
-                État du circuit
-              </Link>
-            </>
-          ) : undefined
-        }
       />
 
       {/* Demande de Will (2026-09-28) : « une fois la visio terminée, je ne
@@ -497,6 +496,16 @@ export default async function RendezVousPage({
               href: lien("point", publicRdv),
             },
             { value: "passes", label: "Passés", href: lien("passes", publicRdv) },
+            ...(voitDossier
+              ? [
+                  {
+                    value: "a-classer",
+                    label: `À classer (${nombreAClasser})`,
+                    href: `${base}?vue=a-classer`,
+                  },
+                  { value: "circuit", label: "État du circuit", href: `${base}?vue=circuit` },
+                ]
+              : []),
           ]}
         />
         <AdminFilterTabs
@@ -510,7 +519,19 @@ export default async function RendezVousPage({
         />
       </div>
 
-      {vue === "point" ? (
+      {vue === "a-classer" ? (
+        <AClasserVue
+          rdvBase={base}
+          historique={sp["filtre"] === "historique"}
+          erreur={
+            typeof sp["erreur"] === "string" && sp["erreur"] !== ""
+              ? sp["erreur"].slice(0, 300)
+              : null
+          }
+        />
+      ) : vue === "circuit" ? (
+        <EtatDuCircuitVue rdvBase={base} />
+      ) : vue === "point" ? (
         <VuePoint aFaire={aFaire} maintenant={maintenant} dossierVisible={voitDossier} />
       ) : vue === "passes" ? (
         <VuePasses maintenant={maintenant} {...optionsPublic} />

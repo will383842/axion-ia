@@ -42,7 +42,7 @@ afterEach(() => {
 
 describe("⛔ un premier rendez-vous de prospect est validable de bout en bout", () => {
   it("rendez-vous → fiche prospect → projet + note + suite, validés", async () => {
-    const ev = rendezVousCalendly({ inviteeEmail: "camille@gmail.com" });
+    const ev = rendezVousCalendly({ inviteeEmail: "camille@exemple-prospect.fr" });
     const base = dossierEnMemoire({ calendlyEvent: [ev] });
 
     const a = await assurerRencontrePourCalendly(base.client as never, ev["id"] as string, {

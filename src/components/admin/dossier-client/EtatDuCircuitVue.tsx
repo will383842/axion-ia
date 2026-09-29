@@ -1,42 +1,25 @@
 /**
- * Admin — « État du circuit » du dossier client (chantier visio, PR 4 ; plan
- * §3.14, modèle `webhook-battement.ts`).
+ * « État du circuit » du dossier client (chantier visio, PR 4 ; plan §3.14,
+ * modèle `webhook-battement.ts`) — un ONGLET de la page Rendez-vous
+ * (`?vue=circuit`), pas une page de plus (cliquet de poids, ADR 0058).
  *
- * Tout est CALCULÉ par le site depuis la base, à l'affichage : le battement
- * du balayage (rouge au-delà de 30 minutes), le drapeau vu par le worker, les
- * pannes techniques signalées, et les rappels de travail — rendez-vous tenus
- * sans compte rendu, comptes rendus à valider, suites échues, rendez-vous de
- * demain, couverture du mois. Telegram n'est qu'un doublon (PA-14).
- *
- * Les lignes du témoin de clé, des appareils, des enregistrements et des
+ * Tout est CALCULÉ par le site depuis la base, à l'affichage : le battement du
+ * balayage (rouge au-delà de 30 minutes), le drapeau vu par le worker, les
+ * pannes techniques signalées, et les rappels de travail. Telegram n'est qu'un
+ * doublon (PA-14). Le témoin de clé, les appareils, les enregistrements et les
  * étapes du circuit arrivent avec leur PR (5 et 6).
  *
- * Régime REFUS (décision A2) : `gardeLectureEchanges` est la PREMIÈRE instruction.
+ * La page appelante a DÉJÀ consulté le rôle (`peutVoirLesEchanges`, A2).
  */
 
-import type { Metadata } from "next";
 import Link from "next/link";
 
-import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
-import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
-import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
-import { gardeLectureEchanges } from "@/features/dossier-client/acces";
 import { prisma } from "@/lib/prisma";
 import { lireEtatDuCircuit } from "@/server/visio/balayage";
 import { BATTEMENT_ROUGE_MIN } from "@/server/visio/battement";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { timeInParis } from "@/lib/calendar-grid";
-
-export const dynamic = "force-dynamic";
-export const metadata: Metadata = {
-  title: "État du circuit | Axion-IA Admin",
-  robots: { index: false, follow: false },
-};
-
-interface PageProps {
-  params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
-}
 
 const carteCls =
   "mb-[var(--space-admin-5)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]";
@@ -55,30 +38,13 @@ function Ligne({ libelle, valeur }: { libelle: string; valeur: React.ReactNode }
   );
 }
 
-export default async function EtatDuCircuitPage({ params }: PageProps) {
-  const { locale, adminPrefix } = await params;
-  // 🔴 Première instruction : la garde, AVANT toute lecture.
-  const acces = await gardeLectureEchanges(`/${locale}/${adminPrefix}/login`);
-  const rdvBase = `/${locale}/${adminPrefix}/rendez-vous`;
-  if (!acces.autorise) {
-    return <AccesRefuse motif={acces.motif} retourHref={rdvBase} />;
-  }
+export async function EtatDuCircuitVue({ rdvBase }: { rdvBase: string }) {
   const maintenant = new Date();
   const e = await lireEtatDuCircuit(prisma, maintenant);
   const b = e.battement;
 
   return (
-    <AdminPageShell width="wide">
-      <div className="mb-[var(--space-admin-4)]">
-        <Link href={rdvBase} className={`text-[length:var(--text-admin-xs)] ${lienCls}`}>
-          ← Rendez-vous
-        </Link>
-      </div>
-      <AdminPageHeader
-        title="État du circuit"
-        description="Ce que le balayage du dossier client surveille, calculé à l'instant depuis la base."
-      />
-
+    <>
       <section className={carteCls}>
         <h2 className={titreCls}>Le balayage</h2>
         <ul className={listeCls}>
@@ -133,7 +99,10 @@ export default async function EtatDuCircuitPage({ params }: PageProps) {
           <ul className={`mt-[var(--space-admin-3)] ${listeCls}`}>
             {e.f1.slice(0, 20).map((x) => (
               <li key={x.rencontreId}>
-                <Link href={`${rdvBase}/${x.rencontreId}/apres-l-appel#note`} className={lienCls}>
+                <Link
+                  href={`${rdvBase}/rencontres/${x.rencontreId}?vue=apres-l-appel#note`}
+                  className={lienCls}
+                >
                   {x.attendu === "note"
                     ? "Appel téléphonique : écrire la note"
                     : "Visio : compte rendu ou note à écrire"}
@@ -175,6 +144,6 @@ export default async function EtatDuCircuitPage({ params }: PageProps) {
           </ul>
         )}
       </section>
-    </AdminPageShell>
+    </>
   );
 }

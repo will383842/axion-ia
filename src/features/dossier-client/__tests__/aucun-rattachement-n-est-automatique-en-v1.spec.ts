@@ -48,7 +48,7 @@ describe("⛔ aucun rattachement n'est automatique en V1", () => {
   it("une entreprise déclarée identique propose aussi — sans ranger", async () => {
     const f = fiche({ raisonSociale: "Menuiserie Fictive SARL" });
     const ev = rendezVousCalendly({
-      inviteeEmail: "quelquun@gmail.com",
+      inviteeEmail: "quelquun@exemple-sans-fiche.fr",
       rawPayload: {
         invitee: {
           questions_and_answers: [

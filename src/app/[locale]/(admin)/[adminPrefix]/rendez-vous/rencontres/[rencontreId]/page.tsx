@@ -20,6 +20,7 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { ApresLAppelVue } from "@/components/admin/dossier-client/ApresLAppelVue";
 import { gardeLectureEchanges } from "@/features/dossier-client/acces";
 import { deplacerRencontreAction } from "@/features/dossier-client/actions-rencontres";
 import {
@@ -83,6 +84,11 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
 
   const r = await lireRencontreDetaillee(rencontreId);
   if (r === null) notFound();
+  // « Après l'appel » est une VUE de cette page (pas une page de plus :
+  // cliquet de poids de la console, ADR 0058). Même garde, déjà posée.
+  if (sp.vue === "apres-l-appel") {
+    return <ApresLAppelVue r={r} locale={locale} adminPrefix={adminPrefix} erreur={erreur} />;
+  }
   const fiches = r.client ? (await lireFichesVivantes()).filter((f) => f.id !== r.client?.id) : [];
   const ficheHref = r.client ? `/${locale}/${adminPrefix}/qualiopi/clients/${r.client.id}` : null;
   const valide = r.comptesRendus.find((c) => c.statut === "valide") ?? null;
@@ -92,7 +98,7 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
     <AdminPageShell width="wide">
       <div className="mb-[var(--space-admin-4)]">
         <Link
-          href={ficheHref ? `${ficheHref}?onglet=echanges` : `${rdvBase}/a-classer`}
+          href={ficheHref ? `${ficheHref}?onglet=echanges` : `${rdvBase}?vue=a-classer`}
           className={`text-[length:var(--text-admin-xs)] ${lienCls}`}
         >
           ← {r.client ? r.client.raisonSociale : "À classer"}
@@ -119,7 +125,9 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
         }
         actions={
           <>
-            <AdminButton href={`${rdvBase}/${r.id}/apres-l-appel`}>Après l&apos;appel</AdminButton>
+            <AdminButton href={`${rdvBase}/rencontres/${r.id}?vue=apres-l-appel`}>
+              Après l&apos;appel
+            </AdminButton>
             {ficheHref ? (
               <AdminButton variant="secondary" href={`${ficheHref}/preparer`}>
                 Préparer le prochain échange
@@ -223,7 +231,7 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
           >
             <input type="hidden" name="rencontreId" value={r.id} />
             <label className="flex flex-col gap-1 text-[length:var(--text-admin-sm)]">
-              Déplacer ce rendez-vous, ses faits et ses participants vers
+              Déplacer ce rendez-vous, ce qui y a été dit et les personnes présentes vers
               <select name="versClientId" defaultValue="" className={inputCls}>
                 <option value="" disabled>
                   Choisir la fiche…

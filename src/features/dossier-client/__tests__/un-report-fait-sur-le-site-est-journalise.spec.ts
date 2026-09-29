@@ -130,8 +130,8 @@ describe("un report fait sur le site est journalisé", () => {
 
   it("le journal propose la fiche de l'ancien au nouveau (motif « report »), sans ranger", async () => {
     const f = fiche({ raisonSociale: "Fiche Fictive" });
-    const ancien = rendezVousCalendly({ eventUri: ANCIEN, inviteeEmail: "x@gmail.com" });
-    const nouveau = rendezVousCalendly({ eventUri: NOUVEAU, inviteeEmail: "x@gmail.com" });
+    const ancien = rendezVousCalendly({ eventUri: ANCIEN, inviteeEmail: "x@exemple-report.fr" });
+    const nouveau = rendezVousCalendly({ eventUri: NOUVEAU, inviteeEmail: "x@exemple-report.fr" });
     const base = dossierEnMemoire({
       client: [f],
       calendlyEvent: [ancien, nouveau],

@@ -83,7 +83,9 @@ export async function ouvrirApresLAppelAction(fd: FormData): Promise<void> {
       ),
     );
   }
-  redirect(`${base(`rendez-vous/${rencontreId}/apres-l-appel`)}${note ? "#note" : ""}`);
+  redirect(
+    `${base(`rendez-vous/rencontres/${rencontreId}`)}?vue=apres-l-appel${note ? "#note" : ""}`,
+  );
 }
 
 /** « Confirmer le client proposé », ou « Ranger chez… » un autre client (A4 : Will valide). */
@@ -93,8 +95,8 @@ export async function rangerRencontreAction(fd: FormData): Promise<void> {
   const clientId = uuid.safeParse(texte(fd, "clientId"));
   const retour =
     texte(fd, "retour") === "a-classer"
-      ? "rendez-vous/a-classer"
-      : `rendez-vous/${rencontreId}/apres-l-appel`;
+      ? "rendez-vous?vue=a-classer"
+      : `rendez-vous/rencontres/${rencontreId}?vue=apres-l-appel`;
   if (!clientId.success) erreurVers(retour, new Error("Choisissez la fiche client."));
   try {
     await prisma.$transaction((tx) =>
@@ -114,7 +116,7 @@ export async function rangerRencontreAction(fd: FormData): Promise<void> {
 export async function creerProspectAction(fd: FormData): Promise<void> {
   const { userId } = await exigerAccesEchanges();
   const rencontreId = uuid.parse(texte(fd, "rencontreId"));
-  const retour = `rendez-vous/${rencontreId}/apres-l-appel`;
+  const retour = `rendez-vous/rencontres/${rencontreId}?vue=apres-l-appel`;
   const siren = texte(fd, "siren");
   const r = await creerProspectDepuisRencontre(
     prisma,
@@ -155,7 +157,7 @@ const suiviSchema = z.object({
 export async function validerApresLAppelAction(fd: FormData): Promise<void> {
   const { userId } = await exigerAccesEchanges();
   const rencontreId = uuid.parse(texte(fd, "rencontreId"));
-  const retour = `rendez-vous/${rencontreId}/apres-l-appel`;
+  const retour = `rendez-vous/rencontres/${rencontreId}?vue=apres-l-appel`;
 
   const suivi = suiviSchema.safeParse({
     issue: texte(fd, "issue") || null,
