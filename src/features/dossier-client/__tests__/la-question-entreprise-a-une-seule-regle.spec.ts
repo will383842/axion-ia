@@ -62,7 +62,7 @@ describe("⛔ la question entreprise a une seule règle", () => {
     // Le rattachement proposé.
     const f = fiche({ raisonSociale: "Menuiserie Fictive SARL" });
     const ev = rendezVousCalendly({
-      inviteeEmail: "quelquun.fictif@gmail.com",
+      inviteeEmail: "quelquun@exemple-sans-fiche.fr",
       rawPayload: CHARGE,
     });
     const base = dossierEnMemoire({ client: [f], calendlyEvent: [ev] });

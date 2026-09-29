@@ -28,9 +28,9 @@ const DEMANDE = "00000000-0000-4000-8000-00000000d001";
 
 function scene(relie: boolean) {
   const f = fiche({ raisonSociale: "Atelier Sans Rapport", siren: SIREN });
-  // Invité à une messagerie grand public : aucun autre motif ne s'applique.
+  // Adresse inconnue de toute fiche : aucun autre motif ne s'applique.
   const ev = rendezVousCalendly({
-    inviteeEmail: "quelquun.fictif@gmail.com",
+    inviteeEmail: "quelquun@exemple-sans-fiche.fr",
     linkedSubmissionId: relie ? DEMANDE : null,
   });
   const base = dossierEnMemoire({
