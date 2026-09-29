@@ -197,6 +197,67 @@ export function decryptPiiObject<
   };
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// OCTETS — chiffrement binaire du son (chantier visio, 2026-09-29, ADR 0054)
+//
+// Les morceaux audio de l'enregistreur Meet sont chiffrés PAR LE SERVEUR avant
+// leur écriture dans R2. Même clé, même algorithme que les chaînes ci-dessus,
+// dans une enveloppe binaire (pas d'hexadécimal : un morceau de 10 s pèse
+// ~40 Ko, le doubler serait gratuit en rien) :
+//
+//     "AXB1" (4 octets) | IV (12) | étiquette GCM (16) | chiffré
+//
+// ⚠️ DIFFÉRENCE VOULUE AVEC `encryptPii` : ces deux fonctions LÈVENT si la clé
+// manque. `encryptPii` rend le clair sans clé (repli de développement) — un
+// comportement existant qu'on ne touche pas. Pour du son, un repli silencieux
+// écrirait une conversation en clair dans un stockage : on préfère l'échec.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** En-tête de l'enveloppe binaire `v1`. */
+export const ENTETE_OCTETS_V1 = Buffer.from("AXB1", "ascii");
+
+function cleOuErreur(usage: string): Buffer {
+  const key = getKey();
+  if (!key) {
+    throw new Error(
+      `[pii-crypto] PII_ENCRYPTION_KEY absente ou invalide : ${usage} refusé (aucun repli en clair).`,
+    );
+  }
+  return key;
+}
+
+/** Chiffre des octets (AES-256-GCM, IV aléatoire). Lève si la clé manque. */
+export function chiffrerOctetsPii(clair: Buffer): Buffer {
+  const key = cleOuErreur("chiffrement d'octets");
+  const iv = crypto.randomBytes(IV_BYTES);
+  const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
+  const chiffre = Buffer.concat([cipher.update(clair), cipher.final()]);
+  return Buffer.concat([ENTETE_OCTETS_V1, iv, cipher.getAuthTag(), chiffre]);
+}
+
+/**
+ * Déchiffre une enveloppe produite par `chiffrerOctetsPii`. Lève si la clé
+ * manque, si l'en-tête est absent ou si l'étiquette ne correspond pas
+ * (altération).
+ */
+export function dechiffrerOctetsPii(enveloppe: Buffer): Buffer {
+  const key = cleOuErreur("déchiffrement d'octets");
+  const minimum = ENTETE_OCTETS_V1.length + IV_BYTES + TAG_BYTES;
+  if (enveloppe.length < minimum) {
+    throw new Error("[pii-crypto] enveloppe binaire trop courte");
+  }
+  if (!enveloppe.subarray(0, ENTETE_OCTETS_V1.length).equals(ENTETE_OCTETS_V1)) {
+    throw new Error("[pii-crypto] en-tête binaire inconnu (AXB1 attendu)");
+  }
+  const debutIv = ENTETE_OCTETS_V1.length;
+  const iv = enveloppe.subarray(debutIv, debutIv + IV_BYTES);
+  const tag = enveloppe.subarray(debutIv + IV_BYTES, minimum);
+  const chiffre = enveloppe.subarray(minimum);
+  const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
+  decipher.setAuthTag(tag);
+  return Buffer.concat([decipher.update(chiffre), decipher.final()]);
+}
+
 /**
  * Détection rapide d'une valeur chiffrée (pour log/debug + future migration
  * batch re-encrypt v2).

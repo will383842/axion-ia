@@ -49,6 +49,7 @@ import {
   eraseCoachingSignaturesForEmail,
   eraseCalendlyEventsForEmail,
   eraseReponsesEntrantesForEmail,
+  effacerCibleParAdresses,
 } from "@/lib/rgpd-erase";
 import { alertIncident } from "@/lib/telegram";
 import { empreinteSha256 } from "@/server/newsletter/exports";
@@ -131,6 +132,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     signaturesCoachingResult,
     appelsResult,
     reponsesEntrantesResult,
+    dossierClientResult,
   ] = await Promise.all([
     eraseSubmissionsForEmail(email),
     eraseNewsletterForEmail(email),
@@ -212,6 +214,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // 2026-09-27 — les réponses de la personne à son invitation d'apporteur,
     // relevées dans la boîte Zoho : objet et extrait de SES messages.
     eraseReponsesEntrantesForEmail(email),
+    // Chantier visio (2026-09-29) — le dossier client : ses paroles, les faits
+    // dont elle est sujet ou locutrice, son nom dans la fiche et les
+    // rencontres ; les comptes rendus qui la citent sont vidés pour être
+    // réécrits sans elle. Les preuves d'accord restent (art. 17(3)(e)).
+    effacerCibleParAdresses([email], { motif: "art17" }),
   ]);
 
   // ART. 17 BI-SYSTÈME (lot L4) — le CRM efface par `person_key` dans les deux
@@ -257,6 +264,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         chatConversationsDeleted: chatResult.conversationsDeleted,
         chatEscalationsAnonymized: chatResult.escalationsAnonymized,
         reponsesEntrantesSupprimees: reponsesEntrantesResult.supprimees,
+        dossierClient: dossierClientResult,
         // Le compte rendu du volet CRM est TRACÉ : un effacement seulement
         // local doit se voir dans le journal, jamais se supposer.
         crmStatus: crmResult.status,

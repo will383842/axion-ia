@@ -24,6 +24,12 @@
  */
 
 import { createHash } from "node:crypto";
+import type {
+  CibleEffacement,
+  MotifEffacement,
+  Prisma,
+  PrismaClient,
+} from "../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 
@@ -698,3 +704,484 @@ export async function eraseCalendlyEventsForEmail(email: string): Promise<EraseC
 
   return { anonymized: result.count };
 }
+
+// ═════════════════════════════════════════════════════════════════════════════
+// DOSSIER CLIENT ET ENREGISTREMENT DES VISIOS (chantier visio, 2026-09-29)
+//
+// ADR 0056 ; plan §3.15. Ce module est le SEUL à poser le drapeau de session
+// `axion.effacement_rgpd` (garde `tests/unit/ci/seul-rgpd-erase-pose-le-drapeau-d-effacement.spec.ts`).
+// Sans lui, le trigger `faits_contenu_immuable` refuse de vider un énoncé ou
+// une citation, et `enregistrement_consentements_ajout_seul` de toucher une
+// preuve d'accord. Le drapeau est posé en `SET LOCAL` : il meurt avec la
+// transaction et ne peut pas fuir sur la connexion suivante du pool (vérifié
+// sur une vraie base par `scripts/ci/gate-d-visio.ts`).
+//
+// Tout appelant — conservation, pilote, « Réextraire », retrait d'accord —
+// passe par les fonctions ci-dessous ; aucun ne pose le drapeau lui-même.
+// ═════════════════════════════════════════════════════════════════════════════
+
+/** Texte mis à la place d'un nom effacé dans le dossier client. */
+export const PERSONNE_EFFACEE = "Personne effacée";
+
+/** Ce dont `executerSousDrapeauEffacement` a besoin : un client qui ouvre une transaction. */
+export type OuvreurDeTransaction = Pick<PrismaClient, "$transaction">;
+
+/**
+ * Exécute `fn` dans UNE transaction où le drapeau d'effacement est posé.
+ *
+ * `SET LOCAL` : la valeur disparaît au COMMIT comme au ROLLBACK. Une simple
+ * `SET` survivrait sur la connexion rendue au pool, et la requête suivante —
+ * n'importe laquelle, de n'importe quel écran — pourrait réécrire un fait.
+ */
+export async function executerSousDrapeauEffacement<R>(
+  client: OuvreurDeTransaction,
+  fn: (tx: Prisma.TransactionClient) => Promise<R>,
+): Promise<R> {
+  return client.$transaction(
+    async (tx) => {
+      await tx.$executeRawUnsafe("SET LOCAL axion.effacement_rgpd = 'on'");
+      return fn(tx);
+    },
+    { timeout: 60_000 },
+  );
+}
+
+/** Colonnes de CONTENU d'un fait vidées par un effacement (le journal reste). */
+const FAIT_CONTENU_VIDE = {
+  enonce: "",
+  expressionTemporelle: null,
+  texteCourt: null,
+  citation: null,
+  confirmationCitation: null,
+  ambiguite: null,
+} as const;
+
+async function journaliserEffacements(
+  tx: Prisma.TransactionClient,
+  tableCible: CibleEffacement,
+  ids: readonly string[],
+  motif: MotifEffacement,
+): Promise<void> {
+  if (ids.length === 0) return;
+  await tx.effacementJournal.createMany({
+    data: ids.map((ligneId) => ({ tableCible, ligneId, motif })),
+  });
+}
+
+async function journaliserFaitsEffaces(
+  tx: Prisma.TransactionClient,
+  faitIds: readonly string[],
+  parAdminId: string | null,
+): Promise<void> {
+  if (faitIds.length === 0) return;
+  await tx.faitEvenement.createMany({
+    data: faitIds.map((faitId) => ({ faitId, action: "efface" as const, parAdminId })),
+  });
+}
+
+// Un `type` et non une `interface` : le résultat est versé tel quel dans le
+// journal d'activité (colonne JSON), qui exige un type sans signature fermée.
+export type EffacementCibleResultat = {
+  /** Personnes du dossier (`client_contacts`) pseudonymisées. */
+  readonly personnes: number;
+  /** Segments de SA voix supprimés. */
+  readonly segments: number;
+  /** Faits dont elle est sujet ou locutrice, contenu vidé (statut `efface`). */
+  readonly faits: number;
+  /** Comptes rendus vidés (`a_regenerer`) : une réécriture sans elle est proposée. */
+  readonly comptesRendusARegenerer: number;
+  /** Comptes rendus supprimés : elle était la seule interlocutrice côté client. */
+  readonly comptesRendusSupprimes: number;
+  /** Questions de questionnaire reçues, texte et réponse vidés (la ligne reste). */
+  readonly questions: number;
+};
+
+const EFFACEMENT_VIDE: EffacementCibleResultat = {
+  personnes: 0,
+  segments: 0,
+  faits: 0,
+  comptesRendusARegenerer: 0,
+  comptesRendusSupprimes: 0,
+  questions: 0,
+};
+
+/**
+ * EFFACEMENT CIBLÉ (art. 17) d'une personne dans le dossier client, par
+ * TOUTES ses adresses (plan §3.15, ADR 0056 §6).
+ *
+ * Ce qui part : ses segments de voix, le contenu des faits dont elle est
+ * sujet ou locutrice (y compris ceux repris du formulaire Calendly), les
+ * questions qu'on lui a adressées (texte et réponse vidés, la ligne reste :
+ * un fait peut la citer comme source), ses e-mails de suivi (le lien ; le
+ * message lui-même est traité avec `email_outbox`), ses rôles dans les
+ * projets, ses adresses ; son nom est remplacé dans la fiche et dans les
+ * participations.
+ *
+ * Les comptes rendus des rencontres où elle a parlé ou été citée passent
+ * `a_regenerer` — contenu vidé, car le bloc chiffré contient ses phrases —
+ * sauf si elle y était la SEULE interlocutrice côté client : ils sont alors
+ * supprimés.
+ *
+ * La personne est retrouvée par ses fiches personne (`client_contact_adresses`)
+ * ET par ses participations (`rencontre_participants.email_hash`), même sans
+ * fiche personne : un rendez-vous resté « à classer » (A4, aucun rattachement
+ * automatique) porte son empreinte d'adresse mais `contact_id` NULL. L'export
+ * la retrouve ainsi (`rgpd-dossier-client.ts`) ; l'effacement doit la
+ * retrouver pareil, sinon il confirmerait un effacement qui n'a rien effacé.
+ *
+ * Ses segments de voix : ceux qui lui sont attribués (`participantId`) ; et,
+ * dans une rencontre où elle était la SEULE voix côté client, aussi les
+ * segments de la piste client pas encore attribués (ils ne peuvent être que
+ * les siens).
+ *
+ * Ce qui RESTE, et pourquoi : les preuves d'accord
+ * (`enregistrement_consentements`) — art. 17(3)(e), elles établissent que
+ * l'enregistrement était licite ; les journaux (sans donnée personnelle) ;
+ * la fiche de l'entreprise.
+ *
+ * ANGLES MORTS DÉCLARÉS (aucune garde ne les couvre) :
+ *   · dans une rencontre PARTAGÉE avec d'autres voix côté client, un segment
+ *     de la piste client pas encore attribué (voix non validée) reste : on ne
+ *     sait pas qui parle. Il reste chiffré et part avec la purge des segments
+ *     (ADR 0056) ; la réécriture d'un compte rendu `a_regenerer` ne doit pas
+ *     s'en servir (à tenir dans la PR du circuit, PR 6) ;
+ *   · un texte libre saisi par Will qui NOMMERAIT la personne (titre de
+ *     projet, motif d'un journal) n'est pas réécrit : l'effaceur ne peut pas
+ *     savoir quel nom y figure. Un titre de projet, Will le corrige à la
+ *     main ; le motif d'un journal, lui, ne se réécrit PAS (trigger
+ *     `visio_journal_ajout_seul`, ajout seul sans exception, même sous le
+ *     drapeau) : il reste tel quel.
+ */
+export async function effacerCibleParAdresses(
+  emails: readonly string[],
+  options: { readonly parAdminId?: string | null; readonly motif?: MotifEffacement } = {},
+): Promise<EffacementCibleResultat> {
+  const motif = options.motif ?? "art17_cible";
+  const parAdminId = options.parAdminId ?? null;
+  const empreintes = [
+    ...new Set(emails.map((e) => hashEmailForLookup(e)).filter((h): h is string => !!h)),
+  ];
+  if (empreintes.length === 0) return EFFACEMENT_VIDE;
+
+  // La personne, puis TOUTES ses adresses (une adresse pro, une perso…).
+  const trouvees = await prisma.clientContactAdresse.findMany({
+    where: { emailHash: { in: empreintes } },
+    select: { contactId: true },
+  });
+  const contactIds = [...new Set(trouvees.map((a) => a.contactId))];
+  const toutes =
+    contactIds.length === 0
+      ? []
+      : await prisma.clientContactAdresse.findMany({
+          where: { contactId: { in: contactIds } },
+          select: { emailHash: true },
+        });
+  const toutesEmpreintes = [...new Set([...empreintes, ...toutes.map((a) => a.emailHash)])];
+  // Sans fiche personne, elle peut encore exister par ses seules
+  // participations (rendez-vous « à classer ») : on ne sort à vide que si
+  // AUCUNE des deux voies ne la trouve.
+  if (contactIds.length === 0) {
+    const participationsSansFiche = await prisma.rencontreParticipant.findMany({
+      where: { emailHash: { in: toutesEmpreintes } },
+      select: { id: true },
+    });
+    if (participationsSansFiche.length === 0) return EFFACEMENT_VIDE;
+  }
+
+  const resultat = await executerSousDrapeauEffacement(prisma, async (tx) => {
+    const participants = await tx.rencontreParticipant.findMany({
+      where: {
+        OR: [{ emailHash: { in: toutesEmpreintes } }, { contactId: { in: contactIds } }],
+      },
+      select: { id: true, rencontreId: true },
+    });
+    const participantIds = participants.map((p) => p.id);
+
+    // 1. Sa voix : les segments qui lui sont attribués.
+    const segmentsAttribues = await tx.transcriptionSegment.findMany({
+      where: { participantId: { in: participantIds } },
+      select: { transcriptionId: true, ordre: true },
+    });
+    await tx.transcriptionSegment.deleteMany({ where: { participantId: { in: participantIds } } });
+
+    // 2. Les faits dont elle est sujet ou locutrice.
+    const faits = await tx.fait.findMany({
+      where: {
+        statut: { not: "efface" },
+        OR: [
+          { contactSujetId: { in: contactIds } },
+          { contactLocuteurId: { in: contactIds } },
+          { participantLocuteurId: { in: participantIds } },
+        ],
+      },
+      select: { id: true, rencontreId: true },
+    });
+    const faitIds = faits.map((f) => f.id);
+    await tx.fait.updateMany({
+      where: { id: { in: faitIds } },
+      data: { ...FAIT_CONTENU_VIDE, statut: "efface" },
+    });
+    await journaliserFaitsEffaces(tx, faitIds, parAdminId);
+    await journaliserEffacements(tx, "faits", faitIds, motif);
+    // Les cases pré-remplies depuis ces faits portent leur valeur : vidées.
+    await tx.preRemplissage.updateMany({
+      where: { faitId: { in: faitIds } },
+      data: { valeurProposee: "", valeurRetenue: null },
+    });
+
+    // 3. Les comptes rendus des rencontres où elle a parlé ou été citée.
+    const rencontreIds = [
+      ...new Set([
+        ...participants.map((p) => p.rencontreId),
+        ...faits.map((f) => f.rencontreId).filter((id): id is string => id !== null),
+      ]),
+    ];
+    const cotesClient = await tx.rencontreParticipant.findMany({
+      where: { rencontreId: { in: rencontreIds }, role: "client" },
+      select: { id: true, rencontreId: true },
+    });
+    const siens = new Set(participantIds);
+    const seuleInterlocutrice = rencontreIds.filter((rid) => {
+      const cote = cotesClient.filter((p) => p.rencontreId === rid);
+      return cote.length > 0 && cote.every((p) => siens.has(p.id));
+    });
+    const aReecrire = rencontreIds.filter((rid) => !seuleInterlocutrice.includes(rid));
+
+    // 1 bis. Là où elle était la SEULE voix côté client, les segments de la
+    //    piste client encore non attribués sont forcément les siens.
+    const enregistrementsSeule = await tx.enregistrement.findMany({
+      where: { rencontreId: { in: seuleInterlocutrice } },
+      select: { id: true },
+    });
+    const transcriptionsSeule = await tx.transcription.findMany({
+      where: { enregistrementId: { in: enregistrementsSeule.map((e) => e.id) } },
+      select: { id: true },
+    });
+    const ouNonAttribues = {
+      transcriptionId: { in: transcriptionsSeule.map((t) => t.id) },
+      piste: "client" as const,
+      participantId: null,
+    };
+    const segmentsNonAttribues = await tx.transcriptionSegment.findMany({
+      where: ouNonAttribues,
+      select: { transcriptionId: true, ordre: true },
+    });
+    await tx.transcriptionSegment.deleteMany({ where: ouNonAttribues });
+    const segments = [...segmentsAttribues, ...segmentsNonAttribues];
+    await journaliserEffacements(
+      tx,
+      "transcription_segments",
+      segments.map((s) => `${s.transcriptionId}:${s.ordre}`),
+      motif,
+    );
+
+    const crSupprimes = await tx.compteRendu.findMany({
+      where: { rencontreId: { in: seuleInterlocutrice } },
+      select: { id: true },
+    });
+    await tx.compteRendu.deleteMany({ where: { rencontreId: { in: seuleInterlocutrice } } });
+    await journaliserEffacements(
+      tx,
+      "comptes_rendus",
+      crSupprimes.map((c) => c.id),
+      motif,
+    );
+    const crVides = await tx.compteRendu.findMany({
+      where: { rencontreId: { in: aReecrire }, statut: { not: "a_regenerer" } },
+      select: { id: true },
+    });
+    await tx.compteRendu.updateMany({
+      where: { id: { in: crVides.map((c) => c.id) } },
+      data: { statut: "a_regenerer", contenu: "", verification: null },
+    });
+    await journaliserEffacements(
+      tx,
+      "comptes_rendus",
+      crVides.map((c) => c.id),
+      motif,
+    );
+
+    // 4. Les questions qu'on lui a adressées : vidées, jamais supprimées (un
+    //    fait peut les citer comme source — clé RESTRICT).
+    const questionnaires = await tx.questionnaireCadrage.findMany({
+      where: { contactDestinataireId: { in: contactIds } },
+      select: { id: true },
+    });
+    const questions = await tx.questionnaireQuestion.updateMany({
+      where: { questionnaireId: { in: questionnaires.map((q) => q.id) } },
+      data: { texte: "", reponse: null },
+    });
+
+    // 5. Ses liens : e-mails de suivi, rôles dans les projets. Le corps
+    //    pré-rempli d'un e-mail de suivi qui lui était adressé porte son nom
+    //    et ses propos : vidé avant que le lien ne parte.
+    const emailsSuivi = await tx.emailSuivi.findMany({
+      where: { contactId: { in: contactIds } },
+      select: { id: true },
+    });
+    await tx.preRemplissage.updateMany({
+      where: { cible: "email_suivi", cibleId: { in: emailsSuivi.map((e) => e.id) } },
+      data: { valeurProposee: "", valeurRetenue: null },
+    });
+    await tx.emailSuivi.deleteMany({ where: { contactId: { in: contactIds } } });
+    await tx.projetContact.deleteMany({ where: { contactId: { in: contactIds } } });
+
+    // 6. Son nom : pseudonymisé dans ses participations et dans la fiche.
+    await tx.rencontreParticipant.updateMany({
+      where: { id: { in: participantIds } },
+      data: { nomAffiche: PERSONNE_EFFACEE, emailHash: null, etiquetteVoix: null },
+    });
+    const personnes = await tx.clientContact.updateMany({
+      where: { id: { in: contactIds } },
+      data: { nom: PERSONNE_EFFACEE, fonction: null, telephone: null },
+    });
+    await journaliserEffacements(tx, "client_contacts", contactIds, motif);
+
+    return {
+      personnes: personnes.count,
+      segments: segments.length,
+      faits: faitIds.length,
+      comptesRendusARegenerer: crVides.length,
+      comptesRendusSupprimes: crSupprimes.length,
+      questions: questions.count,
+    };
+  });
+
+  // 7. Ses adresses EN DERNIER : si la transaction ci-dessus avait échoué, une
+  //    nouvelle demande la retrouverait encore par elles.
+  await prisma.clientContactAdresse.deleteMany({ where: { contactId: { in: contactIds } } });
+
+  return resultat;
+}
+
+/**
+ * Vide les CITATIONS des faits constatés avant `avant` (conservation des
+ * citations, ADR 0056). L'énoncé reste : c'est la phrase mot pour mot qui part.
+ */
+export async function purgerCitations(avant: Date): Promise<{ readonly faits: number }> {
+  return executerSousDrapeauEffacement(prisma, async (tx) => {
+    const cibles = await tx.fait.findMany({
+      where: {
+        constateLe: { lt: avant },
+        OR: [{ citation: { not: null } }, { confirmationCitation: { not: null } }],
+      },
+      select: { id: true },
+    });
+    const ids = cibles.map((c) => c.id);
+    await tx.fait.updateMany({
+      where: { id: { in: ids } },
+      data: { citation: null, confirmationCitation: null },
+    });
+    await journaliserEffacements(tx, "faits_citation", ids, "conservation");
+    return { faits: ids.length };
+  });
+}
+
+/**
+ * Vide le contenu des faits REJETÉS avant `avant` (plan §3.15 : « contenu des
+ * faits `rejete` vidé à la validation ou à 30 jours »).
+ */
+export async function viderFaitsRejetes(avant: Date): Promise<{ readonly faits: number }> {
+  return executerSousDrapeauEffacement(prisma, async (tx) => {
+    const cibles = await tx.fait.findMany({
+      where: { statut: "rejete", createdAt: { lt: avant }, NOT: { enonce: "" } },
+      select: { id: true },
+    });
+    const ids = cibles.map((c) => c.id);
+    await tx.fait.updateMany({ where: { id: { in: ids } }, data: FAIT_CONTENU_VIDE });
+    await journaliserEffacements(tx, "faits", ids, "conservation");
+    return { faits: ids.length };
+  });
+}
+
+export interface PurgePiloteResultat {
+  readonly rencontres: number;
+  readonly faits: number;
+  readonly projets: number;
+  readonly personnes: number;
+  readonly preuvesAccord: number;
+}
+
+/**
+ * Supprime les données du PILOTE : tout ce qui est rattaché à une fiche
+ * inscrite dans `clients_test_interne`, et toute rencontre marquée
+ * `estTestInterne`. La fiche fictive elle-même reste (Will l'a créée ; elle
+ * resservira).
+ *
+ * Ordre imposé par les clés : les faits d'abord (ils retiennent les questions
+ * de questionnaire), puis les preuves d'accord (sous le drapeau), les
+ * questionnaires, les rencontres (le reste suit en cascade), les projets, et
+ * les personnes.
+ */
+export async function purgerPilote(): Promise<PurgePiloteResultat> {
+  const fiches = await prisma.clientTestInterne.findMany({ select: { clientId: true } });
+  const clientIds = fiches.map((f) => f.clientId);
+
+  return executerSousDrapeauEffacement(prisma, async (tx) => {
+    const rencontres = await tx.rencontre.findMany({
+      where: { OR: [{ estTestInterne: true }, { clientId: { in: clientIds } }] },
+      select: { id: true },
+    });
+    const rencontreIds = rencontres.map((r) => r.id);
+
+    const faits = await tx.fait.deleteMany({
+      where: { OR: [{ clientId: { in: clientIds } }, { rencontreId: { in: rencontreIds } }] },
+    });
+    const preuves = await tx.enregistrementConsentement.deleteMany({
+      where: { rencontreId: { in: rencontreIds } },
+    });
+    await tx.questionnaireCadrage.deleteMany({ where: { clientId: { in: clientIds } } });
+    await tx.rencontre.deleteMany({ where: { id: { in: rencontreIds } } });
+    const projets = await tx.projet.findMany({
+      where: { clientId: { in: clientIds } },
+      select: { id: true },
+    });
+    await tx.projet.deleteMany({ where: { id: { in: projets.map((p) => p.id) } } });
+    const personnes = await tx.clientContact.findMany({
+      where: { clientId: { in: clientIds } },
+      select: { id: true },
+    });
+    await tx.clientContact.deleteMany({ where: { id: { in: personnes.map((p) => p.id) } } });
+
+    await journaliserEffacements(tx, "rencontres", rencontreIds, "pilote");
+    await journaliserEffacements(
+      tx,
+      "projets",
+      projets.map((p) => p.id),
+      "pilote",
+    );
+    await journaliserEffacements(
+      tx,
+      "client_contacts",
+      personnes.map((p) => p.id),
+      "pilote",
+    );
+
+    return {
+      rencontres: rencontreIds.length,
+      faits: faits.count,
+      projets: projets.length,
+      personnes: personnes.length,
+      preuvesAccord: preuves.count,
+    };
+  });
+}
+
+/**
+ * Ce que l'effacement art. 17 laisse, dans le dossier client, et pourquoi.
+ * Déclaré plutôt que tu : la garde
+ * `tests/unit/ci/les-tables-du-dossier-client-suivent-la-personne.spec.ts`
+ * accepte un modèle `rgpd: dossier-client` soit parce que ce module le mute,
+ * soit parce qu'il figure ici avec son motif.
+ */
+export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
+  readonly modele: string;
+  readonly motif: string;
+}> = [
+  {
+    modele: "EnregistrementConsentement",
+    motif:
+      "preuve que l'enregistrement était licite (art. 17(3)(e)) ; conservée jusqu'à la fin " +
+      "du dossier + 5 ans, puis purgée (ADR 0056). Supprimée avec les données du pilote.",
+  },
+];
