@@ -10,7 +10,9 @@ import {
   extraireFbclid,
   leadApporteurSchema,
   LEAD_APPORTEUR_SOURCE,
+  leadCompteChezMeta,
   sourceConnueDepuisUtm,
+  suiteDuPremierContact,
   sourceDepuisUtm,
 } from "../lead-apporteur";
 import { SOURCE_OPTIONS } from "../model";
@@ -104,5 +106,40 @@ describe("sourceDepuisUtm — le canal suit le lien d'arrivée (29/09)", () => {
       expect(id && SOURCE_OPTIONS.some((o) => o.id === id)).toBe(true);
     }
     expect(sourceConnueDepuisUtm("inconnu")).toBeNull();
+  });
+});
+
+describe("Meta et Plausible suivent le canal réel (29/09)", () => {
+  const ID = "11111111-1111-4111-8111-111111111111";
+
+  it("seul un contact Facebook (ou sans source) compte comme Lead Meta", () => {
+    expect(leadCompteChezMeta("facebook")).toBe(true);
+    expect(leadCompteChezMeta(undefined)).toBe(true);
+    expect(leadCompteChezMeta("linkedin")).toBe(false);
+    expect(leadCompteChezMeta("indeed")).toBe(false);
+  });
+
+  it("Facebook : page merci AVEC l'identifiant (pixel Lead), landing facebook", () => {
+    expect(suiteDuPremierContact(ID, "facebook")).toEqual({
+      merci: `/apporteur-affaires/merci?c=${ID}`,
+      landing: "facebook",
+      source: "facebook",
+    });
+  });
+
+  it("LinkedIn : page merci SANS identifiant (aucun Lead Meta), landing linkedin", () => {
+    expect(suiteDuPremierContact(ID, "linkedin")).toEqual({
+      merci: "/apporteur-affaires/merci",
+      landing: "linkedin",
+      source: "linkedin",
+    });
+  });
+
+  it("un serveur plus ancien qui ne rend pas la source : repli facebook, comme avant", () => {
+    expect(suiteDuPremierContact(ID, undefined)).toEqual({
+      merci: `/apporteur-affaires/merci?c=${ID}`,
+      landing: "facebook",
+      source: "facebook",
+    });
   });
 });

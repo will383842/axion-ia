@@ -61,6 +61,7 @@ import {
   TUNNEL_FACEBOOK_PATH,
   extraireFbclid,
   leadApporteurSchema,
+  leadCompteChezMeta,
   sourceDepuisUtm,
 } from "@/lib/commercial-application/lead-apporteur";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
@@ -340,23 +341,26 @@ export async function submitLeadApporteurAction(
       });
     }
 
-    // 10. API Conversions Meta — best-effort, et SEULEMENT avec consentement.
-    await envoyerLeadMeta(
-      {
-        submissionId: submission.id,
-        email: d.email,
-        telephone: d.telephone,
-        prenom: d.prenom,
-        ville: d.ville ?? "",
-        ip,
-        userAgent,
-        fbp: d.contexte?.fbp ?? null,
-        fbclid,
-        sourceUrl: `${SITE_URL}/${locale}${TUNNEL_FACEBOOK_PATH}`,
-        at: submission.submittedAt,
-      },
-      { consentPub: d.contexte?.consentPub },
-    );
+    // 10. API Conversions Meta — best-effort, SEULEMENT avec consentement, et
+    // SEULEMENT pour un contact venu de Facebook (29/09) : un contact LinkedIn
+    // compté par Meta gonflerait une campagne qui ne l'a pas amené.
+    if (leadCompteChezMeta(source))
+      await envoyerLeadMeta(
+        {
+          submissionId: submission.id,
+          email: d.email,
+          telephone: d.telephone,
+          prenom: d.prenom,
+          ville: d.ville ?? "",
+          ip,
+          userAgent,
+          fbp: d.contexte?.fbp ?? null,
+          fbclid,
+          sourceUrl: `${SITE_URL}/${locale}${TUNNEL_FACEBOOK_PATH}`,
+          at: submission.submittedAt,
+        },
+        { consentPub: d.contexte?.consentPub },
+      );
 
     return { ok: true, submissionId: submission.id, source };
   } catch (err) {

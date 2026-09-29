@@ -181,6 +181,21 @@ describe("submitLeadApporteurAction", () => {
     expect(String(d.message)).not.toContain("Facebook");
   });
 
+  it("un contact LinkedIn n'est PAS envoyé à l'API Conversions Meta, même avec consentement", async () => {
+    cookieUtm = serializeUtmCookie({ utm_source: "linkedin" });
+    await submitLeadApporteurAction(
+      { ok: false, error: "" },
+      formulaire({ ...valide, contexte: { ...valide.contexte, query: "?utm_source=linkedin" } }),
+    );
+    expect(creer).toHaveBeenCalledTimes(1);
+    expect(envoyerMeta).not.toHaveBeenCalled();
+  });
+
+  it("un contact Facebook consenti part bien à l'API Conversions (contre-témoin)", async () => {
+    await submitLeadApporteurAction({ ok: false, error: "" }, formulaire(valide));
+    expect(envoyerMeta).toHaveBeenCalledTimes(1);
+  });
+
   it("sans utm_source, ou avec une valeur inconnue, le canal reste facebook", async () => {
     for (const query of ["", "?utm_source=newsletter-x", "?utm_source=autre"]) {
       creer.mockClear();

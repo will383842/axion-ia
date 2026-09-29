@@ -19,10 +19,11 @@
 //     sera attribuée au bon canal sans qu'on le lui demande.
 //     Aucune donnée personnelle ne transite dans une URL.
 //  2. envoie l'événement Plausible « Lead Apporteur Submitted » (sans cookie,
-//     sans consentement) ;
+//     sans consentement), `landing` = le canal réel (`facebook`, `linkedin`…) ;
 //  3. navigue vers `/apporteur-affaires/merci?c=<id>` — la page qui tire l'événement
 //     `Lead` du pixel Meta avec cet identifiant, dédoublonné avec l'envoi
-//     serveur fait par l'action.
+//     serveur fait par l'action. Sans `?c=` quand le contact ne vient pas de
+//     Facebook (29/09) : aucun `Lead` Meta pour un contact LinkedIn.
 //
 // ── Contexte d'attribution posté avec le formulaire ─────────────────────────
 // `location.search` (utm_* et fbclid), le cookie `_fbp` s'il existe (donc
@@ -43,8 +44,7 @@ import { lireCookieFbp } from "@/lib/analytics/meta-pixel";
 import { readAnalyticsConsent } from "@/components/analytics/CookieConsent";
 import { HoneypotField } from "@/components/forms/HoneypotField";
 import {
-  LEAD_APPORTEUR_SOURCE,
-  TUNNEL_FACEBOOK_MERCI_PATH,
+  suiteDuPremierContact,
   type LeadApporteurInput,
 } from "@/lib/commercial-application/lead-apporteur";
 import { emptyAnswers, saveDraft } from "@/components/forms/commercial-application/wizard-state";
@@ -173,18 +173,19 @@ export function LeadApporteurForm() {
         setEnvoi(false);
         return;
       }
+      // Source, page merci et libellé Plausible suivent le canal RÉEL (utm_source
+      // lu par le serveur) : le `Lead` du pixel Meta ne part que pour Facebook.
+      const suite = suiteDuPremierContact(result.submissionId, result.source);
       // Brouillon du dossier complet : coordonnées + source, jamais dans l'URL.
       saveDraft(0, {
         ...emptyAnswers(),
         prenom: payload.prenom,
         email: payload.email,
         telephone: payload.telephone,
-        sourceConnaissance: result.source ?? LEAD_APPORTEUR_SOURCE,
+        sourceConnaissance: suite.source,
       });
-      trackFunnel("Lead Apporteur Submitted", { landing: "facebook" });
-      router.push(
-        `${TUNNEL_FACEBOOK_MERCI_PATH}?c=${encodeURIComponent(result.submissionId)}` as never,
-      );
+      trackFunnel("Lead Apporteur Submitted", { landing: suite.landing });
+      router.push(suite.merci as never);
     } catch (err) {
       setErreurServeur(
         isStaleServerActionError(err)

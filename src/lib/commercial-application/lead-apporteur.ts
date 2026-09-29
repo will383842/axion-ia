@@ -97,6 +97,35 @@ export const TUNNEL_FACEBOOK_MERCI_PATH = "/apporteur-affaires/merci";
 /** Cible du dossier complet — le wizard existant, pré-rempli par le brouillon. */
 export const DOSSIER_COMPLET_PATH = "/devenir-commercial-ia/candidature";
 
+/**
+ * Le premier contact compte-t-il comme conversion Meta ? SEULEMENT s'il vient
+ * de Facebook / Instagram (source enregistrée `facebook`, repli compris) —
+ * 2026-09-29. Un contact venu de l'annonce LinkedIn, compté par Meta, ferait
+ * croire que la campagne Facebook convertit ce qu'elle n'a pas amené.
+ * Lu des DEUX côtés : l'API Conversions (serveur) et le pixel (page merci).
+ */
+export function leadCompteChezMeta(source: string | undefined | null): boolean {
+  return (source ?? LEAD_APPORTEUR_SOURCE) === LEAD_APPORTEUR_SOURCE;
+}
+
+/**
+ * Ce que le navigateur fait après un premier contact enregistré : la page
+ * merci (avec `?c=<id>` — qui déclenche le `Lead` du pixel — seulement si le
+ * contact compte chez Meta), le libellé `landing` de l'événement Plausible, et
+ * la source posée dans le brouillon du dossier.
+ */
+export function suiteDuPremierContact(
+  submissionId: string,
+  sourceRendue: string | undefined,
+): { merci: string; landing: string; source: string } {
+  const source = sourceRendue ?? LEAD_APPORTEUR_SOURCE;
+  const merci =
+    leadCompteChezMeta(source) && submissionId
+      ? `${TUNNEL_FACEBOOK_MERCI_PATH}?c=${encodeURIComponent(submissionId)}`
+      : TUNNEL_FACEBOOK_MERCI_PATH;
+  return { merci, landing: source, source };
+}
+
 const STATUT_IDS = STATUT_OPTIONS.map((o) => o.id) as [string, ...string[]];
 
 /** Un téléphone plausible : commence par un chiffre ou `+`, au moins six chiffres. */
