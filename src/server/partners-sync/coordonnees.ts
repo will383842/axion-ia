@@ -46,8 +46,11 @@ export const PLAFOND_LECTURES_COORDONNEES: RateLimitConfig = {
 
 const cleDuPlafond = (candidatureId: string) => `partners:coordonnees:${candidatureId}`;
 
-/** Un identifiant de candidature plausible : sinon, il n'est même pas cherché. */
-const IDENTIFIANT = /^[A-Za-z0-9_-]{1,64}$/;
+/**
+ * Un identifiant de candidature est l'UUID d'une `Submission` (`@db.Uuid`). Toute autre forme
+ * n'est même pas cherchée : passée à Prisma, elle lèverait (500) au lieu de rendre l'introuvable.
+ */
+const IDENTIFIANT = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export type ResultatCoordonnees =
   | "rendue"

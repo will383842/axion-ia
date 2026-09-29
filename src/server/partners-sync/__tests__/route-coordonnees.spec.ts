@@ -35,10 +35,10 @@ const IP_PARTNERS = "203.0.113.7";
 const MAINTENANT_MS = Date.UTC(2026, 8, 29, 12, 0, 0);
 const T = String(Math.floor(MAINTENANT_MS / 1000));
 
-const EMISE = "cand_emise_01";
-const AUTRE_EMISE = "cand_emise_02";
-const NON_EMISE = "cand_non_emise";
-const INEXISTANTE = "cand_inexistante";
+const EMISE = "0a1b2c3d-0001-4000-8000-000000000001";
+const AUTRE_EMISE = "0a1b2c3d-0002-4000-8000-000000000002";
+const NON_EMISE = "0a1b2c3d-0003-4000-8000-000000000003";
+const INEXISTANTE = "0a1b2c3d-0004-4000-8000-000000000004";
 
 /** Les coordonnées stockées CHIFFRÉES — le faux déchiffreur retire le préfixe. */
 const SUBMISSIONS: Record<
@@ -227,6 +227,20 @@ describe("REQ-INT-032 — (1) authentification : refusée, et rien n'est lu", ()
     const m = monde();
     const r = await repondreCoordonnees(requete(EMISE), EMISE, dependances(m));
     expect(r.status).toBe(401);
+    expect(m.lectures).toEqual([]);
+  });
+});
+
+describe("REQ-INT-029 — un identifiant qui n'est pas un UUID n'est même pas cherché", () => {
+  it("TÉMOIN — la même réponse qu'un identifiant inexistant, sans aucune lecture", async () => {
+    const reference = await lue(
+      await repondreCoordonnees(requete(INEXISTANTE), INEXISTANTE, dependances(monde())),
+    );
+    const m = monde();
+    const r = await lue(
+      await repondreCoordonnees(requete("pas-un-uuid"), "pas-un-uuid", dependances(m)),
+    );
+    expect(r).toEqual(reference);
     expect(m.lectures).toEqual([]);
   });
 });
