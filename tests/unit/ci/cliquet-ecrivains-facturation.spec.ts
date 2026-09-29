@@ -100,6 +100,35 @@ describe("REQ-INT-007 — face ROUGE : un écrivain de facturation qui n'émet p
     expect(b.fautes.map(regles)).toEqual(["facture.annulee:2:E1"]);
   });
 
+  it("REQ-INT-032 : une échéance de financeur posée hors émission rougit, QUELLE QUE SOIT la date", () => {
+    const b = un(
+      [
+        "export async function decalerEcheance(id: string, echeance: Date) {",
+        "  await prisma.dossierFinancement.update({",
+        "    where: { id },",
+        "    data: { echeanceFinanceurAt: echeance },",
+        "  });",
+        "}",
+      ].join("\n"),
+    );
+    expect(b.fautes.map(regles)).toEqual(["financement.mis_a_jour:2:E1"]);
+  });
+
+  it("REQ-INT-032 : contre-témoin — dans une transaction qui émet, l'échéance passe", () => {
+    const b = un(
+      [
+        "export async function decalerEcheance(id: string, factureId: string, echeance: Date) {",
+        "  await transactionFaitFacturation(prisma, async (tx) => {",
+        "    await tx.dossierFinancement.update({ where: { id }, data: { echeanceFinanceurAt: echeance } });",
+        "    await emettreFinancementMisAJour(tx, factureId);",
+        "  });",
+        "}",
+      ].join("\n"),
+    );
+    expect(b.fautes).toEqual([]);
+    expect(b.parEvenement["financement.mis_a_jour"]).toBe(1);
+  });
+
   it("REQ-INT-007 : écriture sur le client global, émission sur tx → E2", () => {
     const b = un(
       [
@@ -189,6 +218,9 @@ describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
         "src/server/qualiopi/financements/facture-libre.ts (genererAvoirFacture › travail de transactionFaitFacturation())",
         "src/server/qualiopi/financements/facture-libre.ts (genererFactureLibre › travail de transactionFaitFacturation())",
         "src/server/qualiopi/financements/plan-recurrent.ts (emettreFactureBrouillon › travail de transactionFaitFacturation())",
+      ]);
+      expect(nommes("financement.mis_a_jour")).toEqual([
+        "src/server/qualiopi/financements/dossier-financement.ts (transitionnerDossier › travail de transactionFaitFacturation())",
       ]);
       expect(nommes("paiement.recu")).toEqual([
         "src/server/qualiopi/financements/facture-libre.ts (enregistrerPaiementFacture › travail de prisma.$transaction())",

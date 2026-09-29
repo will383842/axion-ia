@@ -52,6 +52,11 @@ export type RegleEcrivain = {
   readonly champ: string;
   /** Les valeurs du champ qui FONT le fait. */
   readonly valeurs: readonly string[];
+  /**
+   * Vrai quand POSER le champ, quelle que soit sa valeur, fait le fait : une date, un montant.
+   * `valeurs` n'est alors lu que pour le message.
+   */
+  readonly touteValeur?: true;
   /** L'unique fonction d'émission. */
   readonly emission: string;
   /** Les appels dont le travail (la fonction passée en argument) est transactionnel. */
@@ -111,6 +116,17 @@ export const REGLES: readonly RegleEcrivain[] = [
     horsFait: FACTURE_IMPORTEE,
     sansEcrivainMesure:
       "2026-09-29 : aucune écriture de src/ ne pose factureFormation.statut = annulee",
+  },
+  // L'échéance du financeur fait partie de la charge de CHAQUE facture du dossier : la poser,
+  // quelle que soit la date, est un fait pour chacune.
+  {
+    evenement: "financement.mis_a_jour",
+    modele: "dossierFinancement",
+    champ: "echeanceFinanceurAt",
+    valeurs: ["<toute date>"],
+    touteValeur: true,
+    emission: "emettreFinancementMisAJour",
+    transactions: TRANSACTIONS_FACTURATION,
   },
   // Un `Payment` `succeeded` est un encaissement — ou, de type `refund`, une annulation
   // d'encaissement : `emettreFaitPaiement` lit la ligne et choisit. `pending`, `failed`,
@@ -255,6 +271,10 @@ function verdictDonnees(e: ts.Expression, regle: RegleEcrivain, siOpaque: Verdic
         ? p.name
         : null;
     if (valeur === null) return pire(v, "indecidable");
+    if (regle.touteValeur) {
+      v = pire(v, "pose");
+      continue;
+    }
     const brut = nu(valeur);
     // `{ set: "accepte" }` — la forme d'opération de Prisma.
     const premiere = ts.isObjectLiteralExpression(brut) ? brut.properties[0] : undefined;
