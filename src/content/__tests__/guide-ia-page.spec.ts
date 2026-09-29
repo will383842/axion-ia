@@ -3,7 +3,7 @@
  *
  * Ce qui est figé ici, et pourquoi :
  *   · les ordres de marque sur TOUT texte de la page (aucun téléphone, jamais
- *     Zoom, jamais « mensuel », appel = 45 minutes, téléphone ou visio, gratuit
+ *     Zoom, jamais « mensuel », appel = 45 minutes, en visio (B5 : Google Meet seul), gratuit
  *     et sans engagement) et le jargon interne retiré (« Lead magnet », « pSEO »,
  *     « quick-wins ») ;
  *   · la page MONTRE le guide : couverture et aperçus existent sur le disque,
@@ -49,10 +49,12 @@ describe("ordres de marque, sur tous les textes de la page", () => {
     });
   }
 
-  it("fr : l'appel est de 45 minutes, par téléphone ou en visio, gratuit et sans engagement", () => {
+  it("fr : l'appel est de 45 minutes, en visio, gratuit et sans engagement", () => {
     const { appel } = textesPageGuide("fr").suite;
     expect(appel.texte).toContain("45 minutes");
-    expect(appel.texte).toContain("par téléphone ou en visio");
+    expect(appel.texte).toContain("en visio");
+    // B5 (Will, 28/09) : « Discutons » en Google Meet seulement.
+    expect(appel.texte).not.toContain("téléphone");
     expect(appel.texte).toContain("gratuit et sans engagement");
   });
 

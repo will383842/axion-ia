@@ -33,6 +33,7 @@ Vous y entrerez votre adresse email. Vous recevrez ensuite un lien de téléchar
 - vos demandes (formulaires audit, contact, intervention, implémentation)
 - votre statut newsletter (le cas échéant)
 - vos réservations (le cas échéant)
+- votre dossier client (le cas échéant) : les rendez-vous auxquels vous avez participé, vos paroles transcrites lorsque vous avez accepté l'enregistrement, les informations tirées de nos échanges avec la phrase dont chacune vient, les comptes rendus qui vous concernent, et la preuve de votre accord (date, version du texte annoncé)
 
 Si vous préférez recevoir cet export par email, répondez à ce message et nous vous le transmettrons manuellement sous 30 jours.
 
@@ -67,6 +68,7 @@ You will enter your email address. You will then receive a unique download link 
 - your requests (audit, contact, on-site session, implementation forms)
 - your newsletter status (if applicable)
 - your bookings (if applicable)
+- your client record (if applicable): the meetings you took part in, your transcribed words where you accepted the recording, the facts drawn from our exchanges with the sentence each one comes from, the summaries that concern you, and the proof of your consent (date, version of the text announced)
 
 If you prefer to receive this export by email, reply to this message and we'll send it manually within 30 days.
 

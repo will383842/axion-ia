@@ -59,6 +59,14 @@ interface Payload {
    * RGPD, et cette liste, qui se donne pour exhaustive, ne la mentionnait pas.
    */
   appels: number;
+  /**
+   * Chantier visio (PR 8, T24) — éléments du dossier client effacés ou vidés :
+   * segments de sa voix, faits dont elle est sujet ou locutrice, comptes rendus
+   * qui la citent, questions qui lui étaient adressées. Facultatif, pour la
+   * même raison que `demandesGuide` : une tâche posée par l'ancienne route
+   * n'en porte pas, et le segment est alors OMIS.
+   */
+  dossierClient?: number;
 }
 
 const COPY = {
@@ -78,6 +86,7 @@ const COPY = {
       conv: number,
       cand: number,
       rdv: number,
+      dc: number | undefined,
     ) =>
       [
         `${dem} demande(s) de contact anonymisée(s)`,
@@ -86,6 +95,11 @@ const COPY = {
         `${conv} conversation(s) avec l'assistant supprimée(s)`,
         `${cand} candidature(s) supprimée(s) avec leur CV et leur photo`,
         `${rdv} rendez-vous anonymisé(s) avec leurs coordonnées et leurs liens d'annulation`,
+        ...(dc === undefined
+          ? []
+          : [
+              `${dc} élément(s) de votre dossier client effacé(s) ou vidé(s) (vos paroles enregistrées, les informations tirées de nos échanges et les comptes rendus qui vous citent)`,
+            ]),
       ].join(", ") + ".",
     // Texte validé par Will (lot L6, relecture du 2026-09-25). L'ancien disait
     // « sous forme anonymisée » (c'est une pseudonymisation) et prêtait à la loi
@@ -113,6 +127,7 @@ const COPY = {
       conv: number,
       cand: number,
       rdv: number,
+      dc: number | undefined,
     ) =>
       [
         `${dem} contact request(s) anonymised`,
@@ -121,6 +136,11 @@ const COPY = {
         `${conv} assistant conversation(s) deleted`,
         `${cand} job application(s) deleted along with their CV and photo`,
         `${rdv} appointment(s) anonymised along with their contact details and cancellation links`,
+        ...(dc === undefined
+          ? []
+          : [
+              `${dc} item(s) of your client record erased or emptied (your recorded words, the facts drawn from our exchanges and the summaries that quote you)`,
+            ]),
       ].join(", ") + ".",
     conserve:
       "Some records are kept without your address: accounting documents that the law requires us to retain, the log of the messages we sent, and the proof of what you had accepted or refused (text shown, date). In them, your address is replaced by a fingerprint from which it cannot be recovered; its only use is to stop us writing to you should your address reach us again.",
@@ -160,6 +180,7 @@ export function RgpdEffacementConfirmeEmail({
           p.conversations,
           p.candidatures,
           p.appels,
+          typeof p.dossierClient === "number" ? p.dossierClient : undefined,
         )}
       </Text>
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>

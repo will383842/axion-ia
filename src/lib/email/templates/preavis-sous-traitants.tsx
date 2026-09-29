@@ -33,13 +33,18 @@
 import { Link, Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { IDENTITE_LEGALE } from "@/lib/identite-legale-ssot";
+import { CONSERVATION_VISIO } from "@/content/visio-annonce-textes";
 import type { Locale } from "../../../../prisma/generated/client";
 
 /** Délai du préavis, en jours : la date d'effet est la date d'envoi + ce délai. */
 export const DELAI_PREAVIS_JOURS = 30;
 
-/** Durée maximale de conservation du son sur nos serveurs, annoncée au client. */
-export const CONSERVATION_SON_MAX_JOURS = 30;
+/**
+ * Durée maximale de conservation du son sur nos serveurs, annoncée au client.
+ * DÉRIVÉE de la notice publique (`CONSERVATION_VISIO`, que la purge applique) :
+ * le préavis et la politique de confidentialité ne peuvent pas diverger.
+ */
+export const CONSERVATION_SON_MAX_JOURS: number = CONSERVATION_VISIO.audioJoursMax;
 
 interface Payload {
   /** Raison sociale du responsable, lue par `resolveLegalIdentity()` à la mise en file. */
