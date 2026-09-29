@@ -16,7 +16,7 @@ import { adminPath } from "@/lib/admin-path";
 import { creerAppareil, revoquerAppareil } from "@/server/visio/jeton";
 import { exigerAccesEchanges } from "@/features/dossier-client/acces";
 import { motifSansAccesEnregistreur } from "./motif";
-import type { EtatJeton } from "./etat-jeton";
+import { etatJetonCree, type EtatJeton } from "./etat-jeton";
 
 const CHEMIN = "rendez-vous/enregistreur";
 
@@ -26,7 +26,7 @@ export async function creerJetonAction(_prec: EtatJeton, form: FormData): Promis
     const nom = String(form.get("nom") ?? "").trim() || "Poste de Williams";
     const cree = await creerAppareil(prisma, { nom, adminUserId: userId, maintenant: new Date() });
     revalidatePath(adminPath("fr", CHEMIN));
-    return { etat: "cree", jeton: cree.jeton, expireLe: cree.expireLe.toISOString() };
+    return etatJetonCree(cree.jeton, cree.expireLe);
   } catch (err) {
     return { etat: "erreur", message: err instanceof Error ? err.message : "Création impossible." };
   }
@@ -46,7 +46,7 @@ export async function renouvelerJetonAction(_prec: EtatJeton, form: FormData): P
     const cree = await creerAppareil(prisma, { nom: ancien.nom, adminUserId: userId, maintenant });
     await revoquerAppareil(prisma, ancien.id, maintenant);
     revalidatePath(adminPath("fr", CHEMIN));
-    return { etat: "cree", jeton: cree.jeton, expireLe: cree.expireLe.toISOString() };
+    return etatJetonCree(cree.jeton, cree.expireLe);
   } catch (err) {
     return {
       etat: "erreur",
