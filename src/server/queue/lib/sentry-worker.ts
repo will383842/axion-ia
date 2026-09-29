@@ -123,7 +123,9 @@ export type WorkerName =
   // un fingerprint partage les aurait melanges dans le meme groupe Sentry.
   | "documents-auto"
   // INT-T02 2026-09-26 — relais de la file de sortie vers Axion Partners
-  | "partners-sync";
+  | "partners-sync"
+  // Chantier visio (PR 4, 2026-09-29) — balayage du dossier client (5 min)
+  | "visio-balayage";
 
 /**
  * Resout `captureException`, en contournant les exports conditionnels du paquet.

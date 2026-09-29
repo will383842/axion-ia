@@ -36,6 +36,7 @@
  * ferait abandonner — et introduirait une occasion de les saisir différemment.
  */
 
+import type { Prisma } from "../../../prisma/generated/client";
 import type { DemandeReservation, FormatDemande } from "./reservation";
 import { reserverCreneau } from "./reservation";
 import { annulerRendezVous } from "./annulation";
@@ -289,15 +290,7 @@ function raisonNonTraitee(r: never): never {
  * tire pas Prisma).
  */
 export async function journaliserReport(
-  db: {
-    calendlyReport: {
-      upsert(args: {
-        where: { ancienEventUri: string };
-        create: { ancienEventUri: string; nouvelEventUri: string };
-        update: { nouvelEventUri: string };
-      }): Promise<unknown>;
-    };
-  },
+  db: Pick<Prisma.TransactionClient, "calendlyReport">,
   ancienEventUri: string,
   nouvelEventUri: string,
 ): Promise<void> {

@@ -147,13 +147,14 @@ export async function chargerFichesPourRattachement(
       : [];
 
   const nomDeclare = indices.entrepriseDeclaree?.trim() ?? "";
+  const premiereAdresse = adresses[0];
   const clientIds = [...new Set(contacts.map((c) => c.clientId))];
   const fichesBrutes = await tx.client.findMany({
     where: {
       OR: [
         ...(clientIds.length > 0 ? [{ id: { in: clientIds } }] : []),
-        ...(adresses[0]
-          ? [{ contactEmail: { equals: adresses[0], mode: "insensitive" as const } }]
+        ...(premiereAdresse
+          ? [{ contactEmail: { equals: premiereAdresse, mode: "insensitive" as const } }]
           : []),
         ...(nomDeclare !== ""
           ? [

@@ -190,7 +190,7 @@ export interface DependancesBalayage {
   readonly maintenant?: Date;
   readonly notifier: Notifier;
   /** Valeur brute du drapeau, recopiée dans le battement. */
-  readonly drapeauBrut?: string;
+  readonly drapeauBrut?: string | undefined;
 }
 
 /** Le premier jour du mois de Paris qui contient `d`, à 00:00 UTC (borne large). */
@@ -379,7 +379,7 @@ export async function passerBalayage(
   }
 
   // 1. Battement (et borne au premier passage).
-  await etape("battement", undefined, () =>
+  await etape<void>("battement", undefined, () =>
     ecrireBattement(db, { maintenant, drapeauBrut: deps.drapeauBrut }),
   );
   const borne = (await lireBorneDuBalayage(db)) ?? maintenant;

@@ -432,12 +432,10 @@ export default async function RendezVousPage({
     listRendezVousAFaireLePoint({ maintenant, ...optionsPublic }),
   ]);
   const enRetard = aFaire.filter((r) => r.retardJours !== null).length;
-  const [dossiers, nombreAClasser] = voitDossier
-    ? await Promise.all([
-        lireDossiersDesRendezVous(rdv.map((r) => r.sourceRecordId)),
-        lireNombreAClasser(),
-      ])
-    : [new Map<string, DossierDuRendezVous>(), 0];
+  const dossiers: Map<string, DossierDuRendezVous> = voitDossier
+    ? await lireDossiersDesRendezVous(rdv.map((r) => r.sourceRecordId))
+    : new Map();
+  const nombreAClasser = voitDossier ? await lireNombreAClasser() : 0;
   const consoleBase = `/fr/${adminPrefix}`;
   const lien = (v: Vue, p: PublicRdv | undefined): string => {
     const qs = new URLSearchParams();
