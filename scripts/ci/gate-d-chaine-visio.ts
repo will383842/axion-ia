@@ -38,6 +38,7 @@ import { construireEntreeP1, faitsDejaConnus } from "../../src/server/visio/cont
 import { entrelacer } from "../../src/server/visio/dialogue";
 import type { AlerteCircuit } from "../../src/server/visio/etapes";
 import { executerEtape } from "../../src/server/visio/etapes";
+import { creerOuRetrouverClient } from "../../src/server/qualiopi/crm/porte-client";
 import { validerCompteRendu } from "../../src/server/visio/gestes-compte-rendu";
 import { deposerMorceau, empreinteSha256 } from "../../src/server/visio/morceaux";
 import type { ClientOpenAIVisio, ReponseBrute } from "../../src/server/visio/openai/client";
@@ -228,9 +229,15 @@ export async function chaineVisioDeBoutEnBout(): Promise<string[]> {
   if (!process.env["PII_ENCRYPTION_KEY"]) process.env["PII_ENCRYPTION_KEY"] = CLE_CI;
   const fautes: string[] = [];
   const db = new PrismaClient();
-  const client = await db.client.create({
-    data: { numero: `AXI-CLI-GATE-D-${Date.now()}`, raisonSociale: "Menuiserie fictive (Gate D)" },
-  });
+  // La fiche passe par la PORTE UNIQUE (B18), comme toute création de client.
+  const porte = await creerOuRetrouverClient(
+    db,
+    { raisonSociale: `Menuiserie fictive chaîne visio ${Date.now()}` },
+    null,
+    { parAdminId: null },
+  );
+  if (porte.statut !== "cree") throw new Error(`chaîne visio : fiche refusée (${porte.statut})`);
+  const client = { id: porte.id };
   await db.clientTestInterne.create({ data: { clientId: client.id } });
   const alertes: AlerteCircuit[] = [];
   const couts: EcritureCout[] = [];

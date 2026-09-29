@@ -21,6 +21,7 @@
  * des propositions. Will valide.
  */
 
+import { CODES_ALERTES_CIRCUIT } from "./alertes-circuit";
 import { chiffrerEbauche } from "./catalogue-ia";
 import { construireEntreeP1, faitsDejaConnus, type FaitPourPasse } from "./contexte";
 import {
@@ -598,7 +599,7 @@ export const verifierCompteRenduEtape: Gestionnaire = async (ctx) => {
         modele: null,
       });
       await deps.alerter({
-        code: "visio.compte_rendu_a_valider",
+        code: CODES_ALERTES_CIRCUIT.compteRenduAValider,
         niveau: "info",
         titre: "Un compte rendu de rendez-vous attend votre validation",
         message: "Ouvrez la page du rendez-vous pour le relire et le valider.",

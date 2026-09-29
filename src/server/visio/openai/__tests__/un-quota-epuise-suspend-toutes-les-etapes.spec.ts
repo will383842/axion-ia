@@ -43,7 +43,7 @@ describe("un quota épuisé suspend toutes les étapes", () => {
       prochaineTentativeLe: null,
     });
     expect(autres.map((a) => depot.ligne(a.id).statut)).toEqual(["suspendu", "suspendu"]);
-    expect(deps.alertes[0]).toMatchObject({ code: "visio.suspendu_quota", niveau: "critique" });
+    expect(deps.alertes[0]).toMatchObject({ code: "visio.circuit_suspendu", niveau: "critique" });
   });
 
   it("contre-témoin : une limite de débit reste passagère", () => {

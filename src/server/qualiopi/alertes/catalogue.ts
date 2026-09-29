@@ -1833,6 +1833,57 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — levée par le balayage de l'enregistreur des visios (`src/server/visio/balayage-enregistreur.ts`), hors d'`evaluerAlertes`. C'est ce balayage qui la ferme quand la cause disparaît ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture.",
     guichet: "direction",
   },
+  // ── Circuit du compte rendu (chantier visio, PR 6 ; anti-doublon A3) ────
+  // Même plomberie que l'enregistreur : AlerteSysteme + creerOuDedup, sans
+  // parole ni nom. Codes posés par `src/server/visio/alertes-circuit.ts`.
+  "visio.circuit_suspendu": {
+    niveau: "critique",
+    titre: "Visio : le circuit du compte rendu est en pause (crédit, plafond ou configuration)",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par le circuit du compte rendu (`src/server/visio/etapes.ts`, `balayage-circuit.ts`), hors d'`evaluerAlertes`. Elle décrit un fait constaté par le worker ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture. Will la ferme à la main.",
+    guichet: "direction",
+  },
+  "visio.etape_en_echec": {
+    niveau: "important",
+    titre: "Visio : un compte rendu n'a pas pu être produit (note manuelle proposée)",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par le circuit du compte rendu (`src/server/visio/etapes.ts`, `balayage-circuit.ts`), hors d'`evaluerAlertes`. Elle décrit un fait constaté par le worker ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture. Will la ferme à la main.",
+    guichet: "direction",
+  },
+  "visio.schema_en_retard": {
+    niveau: "critique",
+    titre: "Visio : la base n'est pas migrée depuis plus de 2 heures",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par le circuit du compte rendu (`src/server/visio/etapes.ts`, `balayage-circuit.ts`), hors d'`evaluerAlertes`. Elle décrit un fait constaté par le worker ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture. Will la ferme à la main.",
+    guichet: "direction",
+  },
+  "visio.demande_d_arret": {
+    niveau: "important",
+    titre: "Visio : une demande d'arrêt de l'enregistrement a été entendue",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par le circuit du compte rendu (`src/server/visio/etapes.ts`, `balayage-circuit.ts`), hors d'`evaluerAlertes`. Elle décrit un fait constaté par le worker ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture. Will la ferme à la main.",
+    guichet: "direction",
+  },
+  "visio.compte_rendu_a_valider": {
+    niveau: "info",
+    titre: "Visio : un compte rendu de rendez-vous attend votre validation",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par le circuit du compte rendu (`src/server/visio/etapes.ts`, `balayage-circuit.ts`), hors d'`evaluerAlertes`. Elle décrit un fait constaté par le worker ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture. Will la ferme à la main.",
+    guichet: "direction",
+  },
+  "visio.audio_non_purge": {
+    niveau: "critique",
+    titre: "Visio : le son d'un rendez-vous n'a pas été supprimé à son échéance",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par le circuit du compte rendu (`src/server/visio/etapes.ts`, `balayage-circuit.ts`), hors d'`evaluerAlertes`. Elle décrit un fait constaté par le worker ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture. Will la ferme à la main.",
+    guichet: "direction",
+  },
 } as const;
 
 /**

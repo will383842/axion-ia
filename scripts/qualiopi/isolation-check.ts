@@ -359,6 +359,16 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/server/visio/balayage-enregistreur.ts",
   // Sa garde : vérifie que chaque code `visio.*` levé est au catalogue.
   "tests/unit/ci/la-table-alertes-visio-reste-vide.spec.ts",
+  // ── Circuit du compte rendu (chantier visio, PR 6). Deux arêtes, nommées :
+  //    · `circuit.ts` crée ses alertes techniques (`visio.*`, au catalogue) par
+  //      `creerOuDedup`, import DYNAMIQUE au point d'usage — même emprunt que
+  //      l'enregistreur ci-dessus (l'audit A3 interdit un service parallèle) ;
+  //    · `catalogue-ia.ts` lit les offres du site (`listOffres`) et le
+  //      résolveur de prix (`resolveOffrePriceEur`) pour montrer le catalogue
+  //      SANS prix à l'IA et chiffrer l'ébauche par le code (C4) : recopier le
+  //      résolveur ferait diverger le prix d'un devis et celui d'une ébauche.
+  "src/server/visio/circuit.ts",
+  "src/server/visio/catalogue-ia.ts",
   "src/server/queue/workers/retention-purge-worker.ts",
   // ── Recherche admin : partage le garde d'habilitation `actions/qualiopi/_guards`.
   "src/server/actions/admin-recherche.ts",

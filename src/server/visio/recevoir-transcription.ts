@@ -47,9 +47,12 @@ export const transcrire: Gestionnaire = async (ctx) => {
   const { deps, t } = ctx;
   const e = await deps.donnees.aTranscrire(t.rencontreId);
   if (e === null || ETATS_JAMAIS_TRANSCRITS.has(e.statut) || e.motifArret === "refus_participant") {
-    // Rien à transcrire : le son (s'il en reste) est purgé tout de suite.
+    // Rien à transcrire. Un REFUS est purgé par la PR 5 (`purgerLeSonDUnRefus`) ;
+    // pour les autres cas, le son (s'il en reste) est purgé tout de suite.
+    const refus = e?.statut === "refuse";
     return {
-      ecrire: async () => [{ etape: "purger_audio", compteRenduId: null, reinitialiser: true }],
+      ecrire: async () =>
+        refus ? [] : [{ etape: "purger_audio", compteRenduId: null, reinitialiser: true }],
     };
   }
   const dureeMs = (e.fin ?? deps.maintenant()).getTime() - e.debut.getTime();

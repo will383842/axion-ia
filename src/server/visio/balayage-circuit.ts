@@ -2,8 +2,10 @@
  * Le BALAYAGE du circuit de compte rendu (toutes les 5 minutes, file `visio`).
  *
  *   1. ENTRÉE dans le circuit : un enregistrement `depose` sans étape
- *      `transcrire` la reçoit ; un enregistrement refusé ou non confirmé qui
- *      garde du son reçoit `purger_audio` ;
+ *      `transcrire` la reçoit ; un enregistrement non confirmé, abandonné ou
+ *      validé qui garde du son reçoit `purger_audio`. Un REFUS n'est pas
+ *      repris ici : la PR 5 le purge elle-même (`reprendrePurgesDesRefus`) —
+ *      une seule responsabilité par cas ;
  *   2. VERROUS EXPIRÉS (worker tué, mémoire) : l'étape repasse `a_faire`, sans
  *      compter d'échec (le plafond de 10 exécutions borne la boucle) ;
  *   3. AUDIO : purge programmée à l'échéance (`audioAPurgerAvant`, 30 jours
@@ -19,6 +21,7 @@
  */
 
 import type { EtapeVisio, PrismaClient } from "../../../prisma/generated/client";
+import { CODES_ALERTES_CIRCUIT } from "./alertes-circuit";
 import type { AlerteCircuit } from "./etapes";
 import type { PortCout } from "./openai/cout";
 import { audioEnRetard } from "./purge-audio";
@@ -69,7 +72,7 @@ export async function balayerCircuit(
     const aPurger = await db.$queryRaw<Array<{ rencontre_id: string }>>`
       SELECT DISTINCT e."rencontre_id" FROM "enregistrements" e
        WHERE e."audio_supprime_le" IS NULL
-         AND (e."statut" IN ('refuse', 'accord_non_confirme', 'abandonne', 'valide')
+         AND (e."statut" IN ('accord_non_confirme', 'abandonne', 'valide')
               OR e."audio_a_purger_avant" <= (now() AT TIME ZONE 'UTC'))
          AND EXISTS (SELECT 1 FROM "enregistrement_tranches" tr WHERE tr."enregistrement_id" = e."id")`;
     await db.$transaction(async (tx) => {
@@ -96,7 +99,7 @@ export async function balayerCircuit(
       if (!audioEnRetard({ ...e, maintenant })) continue;
       audiosEnRetard += 1;
       await deps.alerter({
-        code: "visio.audio_non_purge",
+        code: CODES_ALERTES_CIRCUIT.audioNonPurge,
         niveau: "critique",
         titre: "Le son d'un rendez-vous n'a pas été supprimé à son échéance",
         message: `Enregistrement ${e.id} : échéance du ${e.audioAPurgerAvant!.toISOString().slice(0, 10)} dépassée. La purge est reprogrammée ; vérifier R2 si l'alerte revient.`,

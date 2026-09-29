@@ -44,6 +44,7 @@ import {
   type Tx,
 } from "./prise-d-etape";
 import type { PortDonnees } from "./port-donnees";
+import { CODES_ALERTES_CIRCUIT } from "./alertes-circuit";
 
 /** L'ordre du circuit du compte rendu. */
 export const ENCHAINEMENT = [
@@ -246,7 +247,7 @@ export async function executerEtape(
       premierEchecLe: t.premierEchecLe,
     });
     await deps.alerter({
-      code: "visio.etape_plafond_executions",
+      code: CODES_ALERTES_CIRCUIT.etapeEnEchec,
       niveau: "important",
       titre: "Circuit visio : une étape a atteint 10 exécutions",
       message: `Étape « ${t.etape} » arrêtée après ${PLAFOND_EXECUTIONS} exécutions. Une note manuelle est proposée sur la page du rendez-vous.`,
@@ -352,7 +353,7 @@ async function traiterErreur(
     if (e.classe === "quota" || e.classe === "plafond")
       await deps.depot.suspendreTout(e.classe, e.code);
     await deps.alerter({
-      code: `visio.suspendu_${e.classe}`,
+      code: CODES_ALERTES_CIRCUIT.circuitSuspendu,
       niveau: "critique",
       titre: TITRES_SUSPENSION[e.classe] ?? "Circuit visio suspendu",
       message:
@@ -367,7 +368,7 @@ async function traiterErreur(
   }
   if (d.statut === "echec_definitif") {
     await deps.alerter({
-      code: "visio.etape_en_echec",
+      code: CODES_ALERTES_CIRCUIT.etapeEnEchec,
       niveau: "important",
       titre: "Circuit visio : un compte rendu n'a pas pu être produit",
       message: `Étape « ${t.etape} » en échec (${e.code}). Une note manuelle est proposée sur la page du rendez-vous.`,
@@ -381,7 +382,7 @@ async function traiterErreur(
     maintenant.getTime() - d.premierEchecLe.getTime() > ALERTE_SCHEMA_APRES_MS
   ) {
     await deps.alerter({
-      code: "visio.schema_en_retard",
+      code: CODES_ALERTES_CIRCUIT.schemaEnRetard,
       niveau: "critique",
       titre: "Circuit visio : la base n'est pas migrée depuis plus de 2 heures",
       message:

@@ -71,7 +71,7 @@ describe("un plafond atteint suspend le circuit sans toucher au kill switch de c
       derniereErreur: "plafond_atteint",
     });
     expect(depot.ligne(autre.id).statut).toBe("suspendu");
-    expect(deps.alertes.map((a) => a.code)).toEqual(["visio.suspendu_plafond"]);
+    expect(deps.alertes.map((a) => a.code)).toEqual(["visio.circuit_suspendu"]);
   });
 
   it("contre-témoin : aucun module du circuit ne touche au kill switch de content-gen", () => {

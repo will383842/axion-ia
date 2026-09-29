@@ -18,6 +18,7 @@
  * fait que lire et écrire.
  */
 
+import { CODES_ALERTES_CIRCUIT } from "./alertes-circuit";
 import type { SegmentStocke } from "./dialogue";
 import { ArretVisio, type Gestionnaire } from "./etapes";
 import type { DonneesPrecontrole } from "./port-donnees";
@@ -79,7 +80,7 @@ export const precontroler: Gestionnaire = async (ctx) => {
       deps.donnees.marquerApresRefus(tx, d.transcriptionId, plan.ordresApresRefus),
     );
     await deps.alerter({
-      code: "visio.demande_d_arret",
+      code: CODES_ALERTES_CIRCUIT.demandeDArret,
       niveau: "important",
       titre: "Rendez-vous : une demande d'arrêt de l'enregistrement a été entendue",
       message:
