@@ -52,6 +52,15 @@ const EXCEPTIONS_SIREN: Readonly<Record<string, string>> = {
   "scripts/visio/deriver-siren.ts":
     "rattrapage unique de la PR 2 (1 fiche sans SIREN en production le 28/09), " +
     "essai à blanc par défaut, n'écrit que sur une fiche SANS SIREN",
+  // Chantier visio, PR 4 (décision A3 : fusion réversible, plan §3.17 point 6).
+  "src/features/dossier-client/fusionner.ts":
+    "reporte le SIREN de la fiche qui RESTE sur la fiche ABSORBÉE, dans la transaction " +
+    "même de l'absorption : la fiche absorbée sort de la règle « un seul SIREN parmi les " +
+    "fiches vivantes » (exigerSirenLibre la refuserait, l'autre fiche portant ce SIREN)",
+  "src/features/dossier-client/defaire-fusion.ts":
+    "rétablit `sirenAbsorbeAvant`, toujours NUL quand un report a eu lieu (le report ne " +
+    "vise qu'une fiche sans SIREN) ; un doublon au même SIREN recréé par « Défaire » est " +
+    "tracé comme un « créer quand même » (ActivityLog client.creation_forcee)",
 };
 
 const MOTIFS: ReadonlyArray<RegExp> = [

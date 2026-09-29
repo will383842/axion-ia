@@ -41,7 +41,7 @@ import {
   CHAMP_LOCALE_ANNULATION,
   CHAMP_NOUVEAU_DEBUT,
 } from "@/server/calendly/liens-rendez-vous";
-import { reporterRendezVous } from "@/server/calendly/report";
+import { journaliserReport, reporterRendezVous } from "@/server/calendly/report";
 import { resoudreEventTypePourReservation } from "@/server/calendly/availability";
 import { enrichCalendlyEvent } from "@/server/calendly/enrich";
 import { invaliderCreneaux } from "@/server/calendly/revalider-creneaux";
@@ -87,7 +87,11 @@ export async function reporterDepuisLeLien(fd: FormData): Promise<void> {
   );
   if (!et) redirect(retour("&echec=refus"));
 
-  const r = await reporterRendezVous(rdv, et.uri, new Date(debutBrut));
+  // Le lien ancien → nouveau est journalisé pour le dossier client (chantier
+  // visio, PR 4) : la rencontre du nouveau rendez-vous héritera de la fiche.
+  const r = await reporterRendezVous(rdv, et.uri, new Date(debutBrut), (ancien, nouveau) =>
+    journaliserReport(prisma, ancien, nouveau),
+  );
 
   if (r.ok) {
     // L'ancienne ligne : on passe par l'UNIQUE chemin d'écriture, qui relira

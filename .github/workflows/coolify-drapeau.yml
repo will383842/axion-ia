@@ -29,6 +29,8 @@ on:
         options:
           - "RESERVATION_DIRECTE_ACTIVE"
           - "EN_LOCALE_ENABLED"
+          # Chantier visio (PR 4) — balayage du dossier client. Cible : worker.
+          - "DOSSIER_BALAYAGE_ENABLED"
       valeur:
         description: "Valeur"
         required: true

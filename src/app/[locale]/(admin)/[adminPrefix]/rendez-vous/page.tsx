@@ -59,17 +59,33 @@ import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import { LIBELLE_CANAL } from "@/server/calendly/canal";
 import { dayKeyInParis, dayKeyOfGridDate, timeInParis } from "@/lib/calendar-grid";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+// Chantier visio (PR 4) — le dossier client sur les cartes : « Après l'appel »,
+// « Préparer », « Confirmer le client proposé ». Rendus seulement pour les
+// rôles du dossier (décision A2).
+import { peutVoirLesEchanges } from "@/features/dossier-client/acces";
+import { rangerRencontreAction } from "@/features/dossier-client/actions-rencontres";
+import {
+  lireDossiersDesRendezVous,
+  lireNombreAClasser,
+  type DossierDuRendezVous,
+} from "@/features/dossier-client/queries-rencontres";
+import { LiensApresLAppel } from "@/components/admin/dossier-client/LiensApresLAppel";
+import { AClasserVue } from "@/components/admin/dossier-client/AClasserVue";
+import { EtatDuCircuitVue } from "@/components/admin/dossier-client/EtatDuCircuitVue";
 
 export const dynamic = "force-dynamic";
 
-type Vue = "avenir" | "point" | "passes";
+// « a-classer » et « circuit » (chantier visio, PR 4) : des ONGLETS, pas des
+// pages de plus (cliquet de poids de la console, ADR 0058) ; montrés aux seuls
+// rôles du dossier client (A2).
+type Vue = "avenir" | "point" | "passes" | "a-classer" | "circuit";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string }>;
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-function lirePublic(v: string | undefined): PublicRdv | undefined {
+function publicDemande(v: string | undefined): PublicRdv | undefined {
   return v === "clients" || v === "apporteurs" ? v : undefined;
 }
 
@@ -119,7 +135,51 @@ function EtatCarte({ r, apporteur }: { r: RdvAVenir; apporteur: boolean }) {
   );
 }
 
-function CarteRdv({ r, maintenant }: { r: RdvAVenir; maintenant: Date }) {
+/** Le dossier client d'une carte, quand le rôle le permet (A2). */
+interface DossierCarte {
+  readonly dossier: DossierDuRendezVous | null;
+  readonly base: string;
+}
+
+/**
+ * « Préparer », « compte rendu non validé », « Confirmer le client proposé »
+ * (chantier visio, PR 4, V5-C4) — sur la carte d'un rendez-vous CLIENT.
+ */
+function DossierSurLaCarte({ d }: { d: DossierCarte }) {
+  const x = d.dossier;
+  if (x === null) return null;
+  return (
+    <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+      {x.clientId !== null ? (
+        <Link href={`${d.base}/qualiopi/clients/${x.clientId}/preparer`} className="admin-link">
+          Préparer ›
+        </Link>
+      ) : null}
+      {x.compteRenduNonValide ? (
+        <AdminBadge tone="warning">compte rendu non validé</AdminBadge>
+      ) : null}
+      {x.rattachementStatut === "propose" && x.clientPropose !== null ? (
+        <form action={rangerRencontreAction}>
+          <input type="hidden" name="rencontreId" value={x.rencontreId} />
+          <input type="hidden" name="clientId" value={x.clientPropose.id} />
+          <button type="submit" className="admin-button-ghost">
+            Confirmer le client proposé : {x.clientPropose.raisonSociale}
+          </button>
+        </form>
+      ) : null}
+    </div>
+  );
+}
+
+function CarteRdv({
+  r,
+  maintenant,
+  dossier,
+}: {
+  r: RdvAVenir;
+  maintenant: Date;
+  dossier: DossierCarte | null;
+}) {
   const debut = r.startTime as Date;
   const apporteur = estAppelApporteur(r.title);
   // Le brouillon de relance, pour « Absent » — même texte que dans « À faire
@@ -261,6 +321,13 @@ function CarteRdv({ r, maintenant }: { r: RdvAVenir; maintenant: Date }) {
         </section>
       ) : null}
 
+      {dossier !== null && !apporteur ? (
+        <>
+          <DossierSurLaCarte d={dossier} />
+          {r.enCours ? <LiensApresLAppel calendlyEventId={r.sourceRecordId} /> : null}
+        </>
+      ) : null}
+
       <p>
         <Link href={r.detailHref} className="admin-link">
           Ouvrir la fiche ›
@@ -274,7 +341,7 @@ function CarteRdv({ r, maintenant }: { r: RdvAVenir; maintenant: Date }) {
  * Un rendez-vous passé, en attente de son point. Le formulaire est sur la
  * carte : faire le point ne doit pas demander d'ouvrir la fiche.
  */
-function CartePoint({ r }: { r: RdvAFaireLePoint }) {
+function CartePoint({ r, dossierVisible }: { r: RdvAFaireLePoint; dossierVisible: boolean }) {
   const quand = `${formatDateFrShort(r.dayKey)} à ${timeInParis(r.debut)}`;
   // La page publique de réservation d'appel, et PAS le lien de report Calendly
   // de l'invité : ce dernier vise un rendez-vous déjà passé, que Calendly peut
@@ -319,7 +386,13 @@ function CartePoint({ r }: { r: RdvAFaireLePoint }) {
       {estAppelApporteur(r.titre) ? (
         <IssueEchangeApporteurForm calendlyEventId={r.id} />
       ) : (
-        <SuiviRendezVousForm calendlyEventId={r.id} mailtoRelance={mailto} />
+        <>
+          {/* Chantier visio (PR 4) : le point complet — rangement, projet,
+              note, suite — se fait dans « Après l'appel ». Le formulaire
+              court ci-dessous reste pour « Absent » et « Reporté ». */}
+          {dossierVisible ? <LiensApresLAppel calendlyEventId={r.id} /> : null}
+          <SuiviRendezVousForm calendlyEventId={r.id} mailtoRelance={mailto} />
+        </>
       )}
     </li>
   );
@@ -348,9 +421,17 @@ export default async function RendezVousPage({
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
+  // 🔴 Le rôle est consulté AVANT toute lecture du dossier client (A2).
+  const voitDossier = peutVoirLesEchanges(acces.role);
   const sp = await searchParams;
-  const publicRdv = lirePublic(sp["public"]);
-  const vue: Vue = sp["vue"] === "point" ? "point" : sp["vue"] === "passes" ? "passes" : "avenir";
+  const publicRdv = publicDemande(sp["public"]);
+  const vueDemandee = sp["vue"];
+  const vue: Vue =
+    vueDemandee === "point" || vueDemandee === "passes"
+      ? vueDemandee
+      : voitDossier && (vueDemandee === "a-classer" || vueDemandee === "circuit")
+        ? vueDemandee
+        : "avenir";
   const base = `/fr/${adminPrefix}/rendez-vous`;
   const maintenant = new Date();
   const aujourdhui = dayKeyInParis(maintenant);
@@ -362,6 +443,11 @@ export default async function RendezVousPage({
     listRendezVousAFaireLePoint({ maintenant, ...optionsPublic }),
   ]);
   const enRetard = aFaire.filter((r) => r.retardJours !== null).length;
+  const dossiers: Map<string, DossierDuRendezVous> = voitDossier
+    ? await lireDossiersDesRendezVous(rdv.map((r) => r.sourceRecordId))
+    : new Map();
+  const nombreAClasser = voitDossier ? await lireNombreAClasser() : 0;
+  const consoleBase = `/fr/${adminPrefix}`;
   const lien = (v: Vue, p: PublicRdv | undefined): string => {
     const qs = new URLSearchParams();
     if (v !== "avenir") qs.set("vue", v);
@@ -410,6 +496,16 @@ export default async function RendezVousPage({
               href: lien("point", publicRdv),
             },
             { value: "passes", label: "Passés", href: lien("passes", publicRdv) },
+            ...(voitDossier
+              ? [
+                  {
+                    value: "a-classer",
+                    label: `À classer (${nombreAClasser})`,
+                    href: `${base}?vue=a-classer`,
+                  },
+                  { value: "circuit", label: "État du circuit", href: `${base}?vue=circuit` },
+                ]
+              : []),
           ]}
         />
         <AdminFilterTabs
@@ -423,8 +519,20 @@ export default async function RendezVousPage({
         />
       </div>
 
-      {vue === "point" ? (
-        <VuePoint aFaire={aFaire} maintenant={maintenant} />
+      {vue === "a-classer" ? (
+        <AClasserVue
+          rdvBase={base}
+          historique={sp["filtre"] === "historique"}
+          erreur={
+            typeof sp["erreur"] === "string" && sp["erreur"] !== ""
+              ? sp["erreur"].slice(0, 300)
+              : null
+          }
+        />
+      ) : vue === "circuit" ? (
+        <EtatDuCircuitVue rdvBase={base} />
+      ) : vue === "point" ? (
+        <VuePoint aFaire={aFaire} maintenant={maintenant} dossierVisible={voitDossier} />
       ) : vue === "passes" ? (
         <VuePasses maintenant={maintenant} {...optionsPublic} />
       ) : rdv.length === 0 ? (
@@ -444,7 +552,16 @@ export default async function RendezVousPage({
             </h2>
             <ul className="mt-[var(--space-admin-3)] flex flex-col gap-[var(--space-admin-3)]">
               {cartes.map((r) => (
-                <CarteRdv key={r.key} r={r} maintenant={maintenant} />
+                <CarteRdv
+                  key={r.key}
+                  r={r}
+                  maintenant={maintenant}
+                  dossier={
+                    voitDossier
+                      ? { dossier: dossiers.get(r.sourceRecordId) ?? null, base: consoleBase }
+                      : null
+                  }
+                />
               ))}
             </ul>
           </section>
@@ -461,9 +578,11 @@ export default async function RendezVousPage({
 async function VuePoint({
   aFaire,
   maintenant,
+  dossierVisible,
 }: {
   aFaire: RdvAFaireLePoint[];
   maintenant: Date;
+  dossierVisible: boolean;
 }): Promise<React.ReactElement> {
   const bilan = await bilanDuMois(maintenant);
   return (
@@ -488,7 +607,7 @@ async function VuePoint({
       ) : (
         <ul className="flex flex-col gap-[var(--space-admin-3)]">
           {aFaire.map((r) => (
-            <CartePoint key={r.id} r={r} />
+            <CartePoint key={r.id} r={r} dossierVisible={dossierVisible} />
           ))}
         </ul>
       )}

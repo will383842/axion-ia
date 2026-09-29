@@ -7,6 +7,15 @@
 // partagée avec les factures). Will renseigne SIREN/SIRET/capital/adresse/TVA
 // une seule fois en console admin → page (ISR) + factures se synchronisent.
 
+import { complementsNotice, sectionRendezVousDecouverte } from "./visio-annonce-textes";
+
+// Chantier visio (PR 8) — ce que la politique dit de l'enregistrement des
+// rendez-vous bascule sur UN interrupteur (`src/server/visio/visio-annonce.ts`).
+// Les phrases qui changent vivent dans `./visio-annonce-textes.ts`, écrites en
+// entier, relisibles ; ici, elles ne sont qu'appelées.
+const CN_FR = complementsNotice("fr");
+const CN_EN = complementsNotice("en");
+
 export type LegalSlug =
   | "mentions-legales"
   | "conditions-generales"
@@ -670,23 +679,31 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Données collectées",
-          body: "Email, nom, raison sociale, contenu des messages, métadonnées techniques (user-agent, langue), pages visitées (Plausible self-hosted, anonymisé). Aucun cookie publicitaire, aucun tracker cross-site. Deux services tiers peuvent déposer des cookies, chacun uniquement après une action explicite de votre part : Microsoft Clarity (bandeau cookies) et le calendrier de réservation Calendly sur la page /appel.",
+          body:
+            "Email, nom, raison sociale, contenu des messages, métadonnées techniques (user-agent, langue), pages visitées (Plausible self-hosted, anonymisé). Aucun cookie publicitaire, aucun tracker cross-site. Deux services tiers peuvent déposer des cookies, chacun uniquement après une action explicite de votre part : Microsoft Clarity (bandeau cookies) et le calendrier de réservation Calendly sur la page /appel." +
+            CN_FR.donnees,
         },
         {
           title: "Finalités",
-          body: "Réponse aux demandes commerciales, suivi des prestations, envoi du guide IA entreprise à qui le demande, lettre d'information aux personnes inscrites, sécurité du site, statistiques d'audience anonymes. Pas de profilage, pas de revente de données.",
+          body:
+            "Réponse aux demandes commerciales, suivi des prestations, envoi du guide IA entreprise à qui le demande, lettre d'information aux personnes inscrites, sécurité du site, statistiques d'audience anonymes. Pas de profilage, pas de revente de données." +
+            CN_FR.finalites,
         },
         {
           title: "Base légale",
-          body: "Exécution contractuelle (RGPD art. 6.1.b) pour les clients et pour l'envoi du guide que vous demandez ; intérêt légitime (RGPD art. 6.1.f) pour la sécurité, le suivi de la relation et la lettre d'information adressée aux adresses professionnelles ; consentement (RGPD art. 6.1.a) pour la lettre d'information adressée aux adresses personnelles.",
+          body:
+            "Exécution contractuelle (RGPD art. 6.1.b) pour les clients et pour l'envoi du guide que vous demandez ; intérêt légitime (RGPD art. 6.1.f) pour la sécurité, le suivi de la relation et la lettre d'information adressée aux adresses professionnelles ; consentement (RGPD art. 6.1.a) pour la lettre d'information adressée aux adresses personnelles." +
+            CN_FR.baseLegale,
         },
         {
           title: "Durée de conservation",
-          body: "Données clients : 5 ans après fin de prestation (obligation comptable française). Demandes commerciales : 3 ans. Logs techniques : 12 mois maximum. Les candidatures adressées via la page /carrieres relèvent d'un régime distinct, détaillé dans la section « Conservation des candidatures » ci-dessous.",
+          body:
+            "Données clients : 5 ans après fin de prestation (obligation comptable française). Demandes commerciales : 3 ans. Logs techniques : 12 mois maximum. Les candidatures adressées via la page /carrieres relèvent d'un régime distinct, détaillé dans la section « Conservation des candidatures » ci-dessous." +
+            CN_FR.conservation,
         },
         {
           title: "Rendez-vous de découverte",
-          body: "Le rendez-vous de premier contact réservé depuis la page /appel se tient au choix par téléphone ou en visioconférence. Si vous choisissez la visioconférence, un lien de réunion vous est transmis avec la confirmation ; la réunion se déroule alors sur un service tiers, dont la localisation et le cadre de transfert figurent sur /sous-processeurs. Ces rendez-vous ne sont ni enregistrés ni transcrits : aucune captation audio ou vidéo n'est réalisée, et il n'existe donc aucun enregistrement à conserver ou à demander. Seules les informations que vous saisissez au moment de la réservation — nom, adresse e-mail, téléphone et réponses aux questions du formulaire — sont conservées, dans les conditions décrites ci-dessus.",
+          body: sectionRendezVousDecouverte("fr"),
         },
         {
           // Lot L2 (2026-09-24) — publiée AVEC le nouveau formulaire du guide :
@@ -733,15 +750,23 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Hébergement et transferts",
-          body: "Hébergement principal dans l'Union européenne (Allemagne) et services edge à présence européenne prioritaire. Plusieurs sous-traitants sont toutefois établis hors UE, ou y traitent des données : notamment des modèles d'IA américains lorsqu'un contenu éditorial est généré ou vérifié, et le service tiers de prise de rendez-vous embarqué sur la page /appel. La liste complète, avec pour chacun sa localisation et son cadre de transfert (Clauses Contractuelles Types, décision d'adéquation), est publiée et tenue à jour sur /sous-processeurs. Cette politique n'en donne volontairement aucune énumération nominative : /sous-processeurs est la source unique de vérité, et une prose qui n'énumère pas ne peut pas diverger d'elle. Aucune donnée personnelle de visiteur n'est transmise aux modèles d'IA (helper `pii-safe` + hard gate code).",
+          body:
+            "Hébergement principal dans l'Union européenne (Allemagne) et services edge à présence européenne prioritaire. Plusieurs sous-traitants sont toutefois établis hors UE, ou y traitent des données : notamment des modèles d'IA américains lorsqu'un contenu éditorial est généré ou vérifié, et le service tiers de prise de rendez-vous embarqué sur la page /appel. La liste complète, avec pour chacun sa localisation et son cadre de transfert (Clauses Contractuelles Types, décision d'adéquation), est publiée et tenue à jour sur /sous-processeurs. Cette politique n'en donne volontairement aucune énumération nominative : /sous-processeurs est la source unique de vérité, et une prose qui n'énumère pas ne peut pas diverger d'elle." +
+            CN_FR.hebergementIA,
         },
         {
           title: "Sous-processeurs et destinataires des données",
-          body: "Conformément à l'article 13.1.e du RGPD, Axion-IA tient une liste exhaustive et publique de ses sous-processeurs sur la page /sous-processeurs (catégories : infrastructure principale, paiements & contrats, communications, analytics & observabilité, génération de contenu IA). Cette page indique pour chaque sous-processeur sa finalité, les catégories de données traitées, la localisation des serveurs, la base légale, le statut du DPA et le cadre de transfert international. Toute évolution est notifiée par email aux clients actifs au moins 30 jours avant prise d'effet. Aucune donnée n'est vendue ni partagée à des fins publicitaires.",
+          body:
+            "Conformément à l'article 13.1.e du RGPD, Axion-IA tient une liste exhaustive et publique de ses sous-processeurs sur la page /sous-processeurs (catégories : " +
+            CN_FR.categories +
+            "). Cette page indique pour chaque sous-processeur sa finalité, les catégories de données traitées, la localisation des serveurs, la base légale, le statut du DPA et le cadre de transfert international. Toute évolution est notifiée par email aux clients actifs au moins 30 jours avant prise d'effet. Aucune donnée n'est vendue ni partagée à des fins publicitaires.",
         },
         {
           title: "IA générative et transparence (AI Act EU)",
-          body: "Certains contenus éditoriaux du site (Articles signés Manon, fiches de villes, FAQ) sont rédigés par des modèles d'IA générative (OpenAI GPT-4o pour la rédaction, Perplexity Sonar pour la vérification factuelle) puis soumis à des contrôles automatisés avant publication — vérification factuelle, contrôle éditorial et alignement doctrine. La relecture humaine n'est pas systématique. Conformément à l'article 50 du Règlement européen sur l'IA (AI Act 2024/1689), la nature IA-assistée de ces contenus est divulguée publiquement — voir la fiche transparence sur /equipe/manon. Les prompts envoyés à ces modèles ne contiennent aucune donnée personnelle de visiteur (helper `pii-safe` + hard gate code sur la base de connaissances). Vous pouvez vous opposer à tout traitement de vos données par un modèle IA (RGPD art. 21) en écrivant à contact@axion-ia.com.",
+          body:
+            "Certains contenus éditoriaux du site (Articles signés Manon, fiches de villes, FAQ) sont rédigés par des modèles d'IA générative (OpenAI GPT-4o pour la rédaction, Perplexity Sonar pour la vérification factuelle) puis soumis à des contrôles automatisés avant publication — vérification factuelle, contrôle éditorial et alignement doctrine. La relecture humaine n'est pas systématique. Conformément à l'article 50 du Règlement européen sur l'IA (AI Act 2024/1689), la nature IA-assistée de ces contenus est divulguée publiquement — voir la fiche transparence sur /equipe/manon." +
+            CN_FR.iaGenerativeIA +
+            " Vous pouvez vous opposer à tout traitement de vos données par un modèle IA (RGPD art. 21) en écrivant à contact@axion-ia.com.",
         },
       ],
       metaSeo: {
@@ -762,19 +787,33 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Data collected",
-          body: "Email, name, company name, message content, technical metadata (user-agent, language), pages visited (self-hosted Plausible, anonymized). No advertising cookies, no cross-site trackers. Two third-party services may set cookies, each only after an explicit action on your part: Microsoft Clarity (cookie banner) and the Calendly booking calendar on the /appel page.",
+          body:
+            "Email, name, company name, message content, technical metadata (user-agent, language), pages visited (self-hosted Plausible, anonymized). No advertising cookies, no cross-site trackers. Two third-party services may set cookies, each only after an explicit action on your part: Microsoft Clarity (cookie banner) and the Calendly booking calendar on the /appel page." +
+            CN_EN.donnees,
         },
         {
           title: "Purposes",
-          body: "Reply to commercial requests, service follow-up, sending the enterprise AI guide to those who request it, newsletter to subscribers, site security, anonymous audience statistics. No profiling, no data resale.",
+          body:
+            "Reply to commercial requests, service follow-up, sending the enterprise AI guide to those who request it, newsletter to subscribers, site security, anonymous audience statistics. No profiling, no data resale." +
+            CN_EN.finalites,
         },
         {
           title: "Legal basis",
-          body: "Contractual performance (GDPR art. 6.1.b) for clients and for sending the guide you request; legitimate interest (GDPR art. 6.1.f) for security, relationship follow-up and the newsletter sent to business addresses; consent (GDPR art. 6.1.a) for the newsletter sent to personal addresses.",
+          body:
+            "Contractual performance (GDPR art. 6.1.b) for clients and for sending the guide you request; legitimate interest (GDPR art. 6.1.f) for security, relationship follow-up and the newsletter sent to business addresses; consent (GDPR art. 6.1.a) for the newsletter sent to personal addresses." +
+            CN_EN.baseLegale,
         },
         {
           title: "Retention period",
-          body: "Client data: 5 years after end of service (French accounting obligation). Commercial requests: 3 years. Technical logs: 12 months maximum. Applications submitted through the /carrieres page follow a distinct regime, detailed in the « Retention of job applications » section below.",
+          body:
+            "Client data: 5 years after end of service (French accounting obligation). Commercial requests: 3 years. Technical logs: 12 months maximum. Applications submitted through the /carrieres page follow a distinct regime, detailed in the « Retention of job applications » section below." +
+            CN_EN.conservation,
+        },
+        {
+          // Chantier visio (PR 8, T2) — pendant anglais de « Rendez-vous de
+          // découverte », absent jusqu'ici. Même interrupteur, même garde.
+          title: "Discovery appointments",
+          body: sectionRendezVousDecouverte("en"),
         },
         {
           title: "Enterprise AI guide and newsletter",
@@ -805,15 +844,23 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Hosting and transfers",
-          body: "Primary hosting in the European Union (Germany) and edge services with EU presence prioritized. Several sub-processors are however established outside the EU, or process data there: notably US AI models when editorial content is generated or fact-checked, and the third-party appointment booking service embedded on the /appel page. The complete list, with each one's location and transfer framework (Standard Contractual Clauses, adequacy decision), is published and kept up to date at /subprocessors. This policy deliberately gives no nominative enumeration: /subprocessors is the single source of truth, and prose that does not enumerate cannot diverge from it. No visitor personal data is sent to the AI models (`pii-safe` helper + code-level hard gate).",
+          body:
+            "Primary hosting in the European Union (Germany) and edge services with EU presence prioritized. Several sub-processors are however established outside the EU, or process data there: notably US AI models when editorial content is generated or fact-checked, and the third-party appointment booking service embedded on the /appel page. The complete list, with each one's location and transfer framework (Standard Contractual Clauses, adequacy decision), is published and kept up to date at /subprocessors. This policy deliberately gives no nominative enumeration: /subprocessors is the single source of truth, and prose that does not enumerate cannot diverge from it." +
+            CN_EN.hebergementIA,
         },
         {
           title: "Sub-processors and data recipients",
-          body: "In accordance with GDPR article 13.1.e, Axion-IA maintains an exhaustive public list of its sub-processors at /subprocessors (categories: core infrastructure, payments & contracts, communications, analytics & observability, AI content generation). That page specifies for each sub-processor its purpose, the categories of data processed, server location, legal basis, DPA status and international transfer framework. Any change is notified by email to active clients at least 30 days before taking effect. No data is ever sold or shared for advertising purposes.",
+          body:
+            "In accordance with GDPR article 13.1.e, Axion-IA maintains an exhaustive public list of its sub-processors at /subprocessors (categories: " +
+            CN_EN.categories +
+            "). That page specifies for each sub-processor its purpose, the categories of data processed, server location, legal basis, DPA status and international transfer framework. Any change is notified by email to active clients at least 30 days before taking effect. No data is ever sold or shared for advertising purposes.",
         },
         {
           title: "Generative AI and transparency (EU AI Act)",
-          body: "Certain editorial content on the site (articles signed by Manon, city pages, FAQs) is written by generative AI models (OpenAI GPT-4o for drafting, Perplexity Sonar for fact-checking) and then subjected to automated checks before publication — fact-checking, editorial control and doctrine alignment. Human review is not systematic. In accordance with article 50 of the EU AI Act (2024/1689), the AI-assisted nature of this content is publicly disclosed — see the transparency notice at /equipe/manon. Prompts sent to these models contain no visitor personal data (`pii-safe` helper + code-level hard gate on the knowledge base). You may object to any processing of your data by an AI model (GDPR art. 21) by writing to contact@axion-ia.com.",
+          body:
+            "Certain editorial content on the site (articles signed by Manon, city pages, FAQs) is written by generative AI models (OpenAI GPT-4o for drafting, Perplexity Sonar for fact-checking) and then subjected to automated checks before publication — fact-checking, editorial control and doctrine alignment. Human review is not systematic. In accordance with article 50 of the EU AI Act (2024/1689), the AI-assisted nature of this content is publicly disclosed — see the transparency notice at /equipe/manon." +
+            CN_EN.iaGenerativeIA +
+            " You may object to any processing of your data by an AI model (GDPR art. 21) by writing to contact@axion-ia.com.",
         },
       ],
       metaSeo: {

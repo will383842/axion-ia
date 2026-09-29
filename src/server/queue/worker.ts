@@ -72,6 +72,8 @@ import { startFormationCronsWorker } from "./workers/qualiopi-formation-crons-wo
 import { startQualiopiDocumentsWorker } from "./workers/qualiopi-documents-worker";
 // Chatbot (T-05) — env-gated CHATBOT_ENABLED (réversible sans redeploy).
 import { startChatbotIngestWorker } from "./workers/chatbot-ingest-worker";
+// Chantier visio (PR 4) — balayage du dossier client, env-gated DOSSIER_BALAYAGE_ENABLED.
+import { startVisioBalayageWorker } from "./workers/visio-balayage-worker";
 import { bootRepeatableJobs } from "./queues";
 import { isBullmqDisabled } from "./connection";
 
@@ -184,6 +186,10 @@ async function main() {
     startQualiopiDocumentsWorker(),
     // Chatbot ingest — démarre uniquement si le flag est explicitement activé.
     ...(process.env.CHATBOT_ENABLED === "true" ? [startChatbotIngestWorker()] : []),
+    // Chantier visio (PR 4) — balayage du dossier client, toutes les 5 minutes.
+    // Allumé APRÈS la reprise réelle de l'historique Calendly (sinon l'historique
+    // arriverait en rafale « à classer »). Éteint : ni worker ni entrée répétable.
+    ...(process.env.DOSSIER_BALAYAGE_ENABLED === "true" ? [startVisioBalayageWorker()] : []),
   ];
 
   await bootRepeatableJobs();

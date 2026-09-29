@@ -146,6 +146,14 @@ describe("REQ-JUR-001 — le financement : formules interdites, drapeau ou non",
       );
     });
 
+    it.each([
+      ["niée : servie HORS certification", "{!certifie ? X_CERTIFIE : null}"],
+      ["dans les deux branches : servie TOUJOURS", "{certifie ? X_CERTIFIE : X_CERTIFIE}"],
+      ["dans la branche fausse seule", "{certifie ? null : X_CERTIFIE}"],
+    ])("TÉMOIN — la constante %s rougit (relecture exactitude)", (_, emploi) => {
+      expect(juge(`${DECL}\n${LIEE}\n${emploi}`)).toContain("financement_non_gate:X_CERTIFIE");
+    });
+
     it("TÉMOIN — sans `const certifie = isQualiopiCertificationObtenue()`, la déclaration n'exempte rien", () => {
       expect(juge(`${DECL}\nconst certifie = true;\n[...(certifie ? X_CERTIFIE : [])]`)).toContain(
         "financement_non_gate:OPCO",

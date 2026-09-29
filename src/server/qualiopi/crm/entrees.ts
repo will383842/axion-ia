@@ -5,8 +5,9 @@
  * `Submission` (messages /contact & formulaires) en une liste unifiée triée
  * par date desc, chaque ligne annotée du client CRM existant le cas échéant.
  *
- * Match « déjà converti » : correspondance email insensible à la casse contre
- * `Client.contactEmail` (colonne citext). La PII Submission (contactName /
+ * Match « déjà client » : l'adresse de la fiche (`Client.contactEmail`, citext)
+ * OU celle de l'une de ses personnes (`client_contact_adresses`, par
+ * empreinte) — le critère de la porte unique (correction anti-doublon A2). La PII Submission (contactName /
  * contactEmail / contactPhone) est stockée chiffrée (`enc:v1:` — cf.
  * `src/lib/pii-crypto.ts`) → déchiffrement applicatif AVANT match, le lookup
  * SQL direct sur `Submission.contactEmail` étant impossible. Les emails
@@ -17,6 +18,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -81,6 +83,12 @@ function extraitSubmission(details: unknown): string | null {
 function emailCle(email: string | null | undefined): string | null {
   if (!isDecryptedEmailUsable(email)) return null;
   return (email as string).trim().toLowerCase();
+}
+
+/** Une fiche lue pour l'appariement par adresse. */
+interface FicheParAdresses extends ClientExistant {
+  contactEmail: string | null;
+  contacts?: Array<{ adresses?: Array<{ emailHash: string }> }>;
 }
 
 // Lignes DB minimales (découplées du client Prisma généré → testable en mock).
@@ -214,10 +222,12 @@ export async function listEntreesRecentes(opts?: ListEntreesOpts): Promise<Entre
  * désormais vers la Boîte de réception, qui reprend l'annotation **en appelant
  * cette fonction**, pas en la recopiant.
  *
- * 🔑 Un prédicat recopié diverge au premier correctif. Ici, deux règles
- * subtiles doivent rester communes aux deux appelants : la comparaison
- * insensible à la casse, et « le PREMIER client créé gagne » en cas de doublon
- * d'e-mail. Dupliquées, elles auraient fini par ne plus désigner le même client
+ * 🔑 Un prédicat recopié diverge au premier correctif. Ici, trois règles
+ * subtiles doivent rester communes à tous les appelants : la comparaison
+ * insensible à la casse, l'adresse de la fiche OU de l'une de ses personnes
+ * (critère de la porte unique, correction anti-doublon A2 — sinon une personne
+ * rangée comme deuxième contact n'était pas « déjà client »), et « le PREMIER
+ * client créé gagne » en cas de doublon d'e-mail. Dupliquées, elles auraient fini par ne plus désigner le même client
  * sur deux écrans qui montrent la même demande.
  *
  * Un seul `findMany` sur les e-mails distincts, quelle que soit la taille de la
@@ -230,14 +240,45 @@ export async function clientsParEmail(
   const cles = [...new Set(emails.map(emailCle).filter((c): c is string => !!c))];
   if (cles.length === 0) return parEmail;
 
-  let clients: Array<ClientExistant & { contactEmail: string | null }>;
+  let clients: FicheParAdresses[];
+  let empreintes: Map<string, string>;
   try {
+    // Empreinte de chaque adresse cherchée — la clé de `client_contact_adresses`
+    // (`hashEmailForLookup`, la même que la porte unique). Lève en production
+    // sans clé : on rend alors une Map vide, comme pour une base absente.
+    empreintes = new Map(
+      cles.flatMap((c) => {
+        const h = hashEmailForLookup(c);
+        return h === null ? [] : [[h, c] as const];
+      }),
+    );
     clients = await prisma.client.findMany({
-      // `contactEmail` est citext → l'égalité est déjà case-insensitive côté
-      // Postgres ; `mode: "insensitive"` double la garantie (et documente
-      // l'intention). Les clés sont lowercased côté JS.
-      where: { contactEmail: { in: cles, mode: "insensitive" } },
-      select: { id: true, numero: true, raisonSociale: true, contactEmail: true },
+      where: {
+        // Comme la porte unique (`chargerFichesCandidates`) : l'adresse de la
+        // fiche OU celle de n'importe laquelle de ses personnes. Une fiche
+        // absorbée par une fusion vivante n'est plus « le client ».
+        OR: [
+          // `contactEmail` est citext ; `mode: "insensitive"` documente l'intention.
+          { contactEmail: { in: cles, mode: "insensitive" } },
+          ...(empreintes.size > 0
+            ? [
+                {
+                  contacts: {
+                    some: { adresses: { some: { emailHash: { in: [...empreintes.keys()] } } } },
+                  },
+                },
+              ]
+            : []),
+        ],
+        fusionsAbsorbee: { none: { defaiteLe: null } },
+      },
+      select: {
+        id: true,
+        numero: true,
+        raisonSociale: true,
+        contactEmail: true,
+        contacts: { select: { adresses: { select: { emailHash: true } } } },
+      },
       orderBy: { createdAt: "asc" },
     });
   } catch {
@@ -245,30 +286,32 @@ export async function clientsParEmail(
   }
 
   for (const c of clients ?? []) {
+    const trouvees = new Set<string>();
     const cle = emailCle(c.contactEmail);
+    if (cle) trouvees.add(cle);
+    for (const p of c.contacts ?? []) {
+      for (const a of p.adresses ?? []) {
+        const cherchee = empreintes.get(a.emailHash);
+        if (cherchee) trouvees.add(cherchee);
+      }
+    }
     // Premier client créé gagne en cas de doublon (orderBy createdAt asc).
-    if (cle && !parEmail.has(cle)) {
-      parEmail.set(cle, { id: c.id, numero: c.numero, raisonSociale: c.raisonSociale });
+    for (const t of trouvees) {
+      if (!parEmail.has(t)) {
+        parEmail.set(t, { id: c.id, numero: c.numero, raisonSociale: c.raisonSociale });
+      }
     }
   }
   return parEmail;
 }
 
 /**
- * Client CRM dont le `contactEmail` matche (insensible à la casse).
- * Utilisé par la conversion pour dédupliquer. Stub-safe → null.
+ * Le client CRM d'une adresse : celle de la fiche OU celle de l'une de ses
+ * personnes (correction anti-doublon A2 : même critère que la porte unique).
+ * Délègue à `clientsParEmail` — une seule règle d'appariement. Stub-safe → null.
  */
 export async function findClientByEmail(email: string): Promise<ClientExistant | null> {
-  const cleaned = email.trim();
-  if (cleaned === "") return null;
-  try {
-    const client = await prisma.client.findFirst({
-      where: { contactEmail: { equals: cleaned, mode: "insensitive" } },
-      select: { id: true, numero: true, raisonSociale: true },
-      orderBy: { createdAt: "asc" },
-    });
-    return client ?? null;
-  } catch {
-    return null;
-  }
+  const cle = emailCle(email);
+  if (cle === null) return null;
+  return (await clientsParEmail([cle])).get(cle) ?? null;
 }

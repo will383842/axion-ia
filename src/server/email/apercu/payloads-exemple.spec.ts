@@ -119,7 +119,10 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // 30 jours aux clients actifs avant l'enregistrement des visioconférences
     // (chantier visio). Ses deux champs sont facultatifs : l'aperçu sans charge
     // utile nomme la SSOT et la date du jour + 30 jours.
-    expect(tous.length).toBe(60);
+    // 🔴 2026-09-29 — RELEVÉ À 61 : `rencontre-invitation`, l'invitation à un
+    // rendez-vous de visio créé dans la console (chantier visio, PR 4). Ses
+    // champs sont tous facultatifs.
+    expect(tous.length).toBe(61);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {
