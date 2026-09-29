@@ -114,8 +114,9 @@ export async function ajouterPersonneALaFicheAction(
   saisie: z.input<typeof personneSchema>,
 ): Promise<{ ok: true; cree: boolean } | { ok: false; erreur: string }> {
   let userId: string;
+  let role: string;
   try {
-    ({ userId } = await exigerAccesEchanges());
+    ({ userId, role } = await exigerAccesEchanges());
   } catch (e) {
     return { ok: false, erreur: e instanceof Error ? e.message : "Accès refusé." };
   }
@@ -135,6 +136,17 @@ export async function ajouterPersonneALaFicheAction(
     },
     userId,
   );
+  // Registre (art. 30) : l'ajout d'une personne au dossier est tracé — sans
+  // son nom ni son adresse, seulement la fiche et la personne concernées.
+  if (r.cree) {
+    await logQualiopiActivity({
+      action: "dossier_client.personne_ajoutee",
+      targetType: "ClientContact",
+      targetId: r.contactId,
+      changes: { clientId: v.data.clientId },
+      session: { userId, role },
+    });
+  }
   revalidatePath(adminPath("fr", `qualiopi/clients/${v.data.clientId}`));
   return { ok: true, cree: r.cree };
 }
@@ -159,7 +171,7 @@ export async function ajouterPersonneFormAction(formData: FormData): Promise<voi
  * seront refusés pour cette personne. Réversible.
  */
 export async function basculerOppositionIaFormAction(formData: FormData): Promise<void> {
-  const { userId } = await exigerAccesEchanges();
+  const { userId, role } = await exigerAccesEchanges();
   const contactId = z
     .string()
     .uuid()
@@ -174,7 +186,7 @@ export async function basculerOppositionIaFormAction(formData: FormData): Promis
     action: oppose ? "dossier_client.opposition_ia" : "dossier_client.opposition_ia_levee",
     targetType: "ClientContact",
     targetId: contactId,
-    session: { userId, role: "admin" },
+    session: { userId, role },
   });
   redirect(`${adminPath("fr", `qualiopi/clients/${contact.clientId}`)}?onglet=personnes`);
 }

@@ -463,7 +463,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
                   {annuaire !== null && !annuaire.ok ? (
                     <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
                       L&apos;annuaire des entreprises ne répond pas pour l&apos;instant. Saisissez
-                      le SIREN dans « Éditer », ou réessayez plus tard.
+                      le SIRET dans « Éditer » (le SIREN en sera tiré), ou réessayez plus tard.
                     </p>
                   ) : null}
                   {annuaire !== null && annuaire.ok && annuaire.propositions.length === 0 ? (

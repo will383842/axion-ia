@@ -56,7 +56,7 @@
  */
 
 import type { ClientType, CompanySize, Prisma } from "../../../../prisma/generated/client";
-import { natureAdresse } from "@/lib/email/nature-adresse";
+import { domaineDe, natureAdresse } from "@/lib/email/nature-adresse";
 import { checkSirenFormat } from "@/lib/siret";
 import { hashEmailForLookup, normalizeEmail } from "@/lib/security/email-hash";
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
@@ -153,11 +153,6 @@ export interface CandidatSaisi {
   readonly codePostal?: string | null;
 }
 
-function domaineDe(email: string): string {
-  const i = email.lastIndexOf("@");
-  return i === -1 ? "" : email.slice(i + 1);
-}
-
 /** Calcule empreintes et domaines pro. Seule étape non pure (clé d'empreinte). */
 export function preparerCandidat(saisi: CandidatSaisi): CandidatPrepare {
   const emails = [
@@ -243,48 +238,79 @@ export function trouverFichesProches(
 
 type LecteurFiches = Pick<Prisma.TransactionClient, "client">;
 
-/** Plafond de lignes examinées : la recherche est filtrée, ce n'est qu'un filet. */
-const PLAFOND_FICHES_EXAMINEES = 200;
+/**
+ * Plafond des PROPOSITIONS (domaine pro, nom et ville) : un filet contre une
+ * ville ou un domaine très chargés. Il ne s'applique JAMAIS aux signaux qui
+ * bloquent ou rattachent (même SIREN, même adresse) : ceux-là sont lus sans
+ * plafond, dans une requête à part — sinon, au-delà de 200 fiches dans la même
+ * ville, la fiche au même SIREN sortirait de la fenêtre et le doublon passerait.
+ */
+const PLAFOND_PROPOSITIONS = 200;
+
+const CHAMPS_FICHE_CONNUE = {
+  id: true,
+  numero: true,
+  raisonSociale: true,
+  siren: true,
+  adresseVille: true,
+  adresseCodePostal: true,
+  contactEmail: true,
+  contacts: { select: { adresses: { select: { email: true, emailHash: true } } } },
+  fusionsAbsorbee: { where: { defaiteLe: null }, select: { id: true } },
+} satisfies Prisma.ClientSelect;
 
 export async function chargerFichesCandidates(
   db: LecteurFiches,
   c: CandidatPrepare,
 ): Promise<FicheConnue[]> {
-  const ou: Prisma.ClientWhereInput[] = [];
-  if (c.siren !== null) ou.push({ siren: c.siren });
-  if (c.emails.length > 0) ou.push({ contactEmail: { in: [...c.emails] } });
+  // Signaux forts : SIREN (bloquant) et même adresse — SANS plafond. Ils sont
+  // sélectifs par nature (un SIREN, une adresse exacte) : aucun balayage.
+  const forts: Prisma.ClientWhereInput[] = [];
+  if (c.siren !== null) forts.push({ siren: c.siren });
+  if (c.emails.length > 0) forts.push({ contactEmail: { in: [...c.emails] } });
   if (c.emailHashes.length > 0) {
-    ou.push({
+    forts.push({
       contacts: { some: { adresses: { some: { emailHash: { in: [...c.emailHashes] } } } } },
     });
   }
+  // Propositions : domaine pro, ville, code postal — larges, donc plafonnées,
+  // et sans les fiches absorbées (elles ne prennent pas la place d'une vivante).
+  const larges: Prisma.ClientWhereInput[] = [];
   for (const d of c.domainesPro) {
-    ou.push({ contactEmail: { endsWith: `@${d}`, mode: "insensitive" } });
-    ou.push({
+    larges.push({ contactEmail: { endsWith: `@${d}`, mode: "insensitive" } });
+    larges.push({
       contacts: {
         some: { adresses: { some: { email: { endsWith: `@${d}`, mode: "insensitive" } } } },
       },
     });
   }
-  if (c.ville !== null) ou.push({ adresseVille: { equals: c.ville, mode: "insensitive" } });
-  if (c.codePostal !== null) ou.push({ adresseCodePostal: c.codePostal });
-  if (ou.length === 0) return [];
+  if (c.ville !== null) larges.push({ adresseVille: { equals: c.ville, mode: "insensitive" } });
+  if (c.codePostal !== null) larges.push({ adresseCodePostal: c.codePostal });
 
-  const lignes = await db.client.findMany({
-    where: { OR: ou },
-    select: {
-      id: true,
-      numero: true,
-      raisonSociale: true,
-      siren: true,
-      adresseVille: true,
-      adresseCodePostal: true,
-      contactEmail: true,
-      contacts: { select: { adresses: { select: { email: true, emailHash: true } } } },
-      fusionsAbsorbee: { where: { defaiteLe: null }, select: { id: true } },
-    },
-    orderBy: { numero: "asc" },
-    take: PLAFOND_FICHES_EXAMINEES,
+  // L'une après l'autre : dans une transaction interactive, jamais deux
+  // requêtes en parallèle sur la même connexion.
+  const lignesFortes =
+    forts.length > 0
+      ? await db.client.findMany({
+          where: { OR: forts },
+          select: CHAMPS_FICHE_CONNUE,
+          orderBy: { numero: "asc" },
+        })
+      : [];
+  const lignesLarges =
+    larges.length > 0
+      ? await db.client.findMany({
+          where: { OR: larges, fusionsAbsorbee: { none: { defaiteLe: null } } },
+          select: CHAMPS_FICHE_CONNUE,
+          orderBy: { numero: "asc" },
+          take: PLAFOND_PROPOSITIONS,
+        })
+      : [];
+  const vues = new Set<string>();
+  const lignes = [...lignesFortes, ...lignesLarges].filter((l) => {
+    if (vues.has(l.id)) return false;
+    vues.add(l.id);
+    return true;
   });
 
   return lignes.map((l) => {

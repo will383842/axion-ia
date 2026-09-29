@@ -77,7 +77,8 @@ export const FAMILLES_WEBMAIL: ReadonlySet<string> = new Set([
 /** Une extension : un ou deux labels courts, en lettres (`fr`, `com`, `co.uk`, `com.br`). */
 const EXTENSION = /^[a-z]{2,3}(\.[a-z]{2,3})?$/;
 
-function domaineDe(email: string): string {
+/** Le domaine d'une adresse, en minuscules, sans point final — la règle unique. */
+export function domaineDe(email: string): string {
   const brut = email.trim().toLowerCase();
   const arobase = brut.lastIndexOf("@");
   return arobase === -1 ? "" : brut.slice(arobase + 1).replace(/\.+$/, "");

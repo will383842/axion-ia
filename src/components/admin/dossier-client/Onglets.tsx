@@ -397,10 +397,10 @@ export function OngletEchanges({
             r.statut !== null
               ? LIBELLE_STATUT_RENCONTRE[r.statut]
               : aVenir
-                ? "À venir"
+                ? LIBELLE_STATUT_RENCONTRE.planifie
                 : r.issue === "absent"
-                  ? "Client absent"
-                  : "Tenu";
+                  ? LIBELLE_STATUT_RENCONTRE.absent
+                  : LIBELLE_STATUT_RENCONTRE.tenu;
           return (
             <li
               key={r.id}

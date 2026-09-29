@@ -142,6 +142,12 @@ export function baseEnMemoire(initial?: Partial<Etat>) {
         } else inconnue("contactEmail", v);
         continue;
       }
+      if (cle === "fusionsAbsorbee") {
+        const o = v as { none?: { defaiteLe: null } };
+        if (o.none === undefined || o.none.defaiteLe !== null) inconnue("fusionsAbsorbee", v);
+        if (etat.fusionsVivantes.has(c.id)) return false;
+        continue;
+      }
       if (cle === "contacts") {
         const o = v as { some?: { adresses: { some: Condition } }; none?: Condition };
         if (o.none !== undefined) {

@@ -76,7 +76,7 @@
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
-import type { ResultatAcces } from "@/server/auth/garde-page";
+import { LIBELLE_ROLE, type ResultatAcces } from "@/server/auth/garde-page";
 import { peutConsulter, type RoleAdmin } from "@/server/auth/habilitations";
 
 /**
@@ -100,16 +100,6 @@ export type RoleAppels = (typeof ROLES_APPELS)[number];
 export function peutVoirLesAppels(role: string | null | undefined): boolean {
   return (ROLES_APPELS as ReadonlyArray<string>).includes(role ?? "");
 }
-
-/** Libellés destinés au motif de refus — repris de `garde-page.ts`. */
-const LIBELLE_ROLE: Readonly<Record<RoleAdmin, string>> = {
-  super_admin: "super-administrateur",
-  admin: "administrateur",
-  responsable_qualite: "responsable qualité",
-  secretaire: "secrétaire",
-  editor: "rédacteur",
-  reader: "lecteur",
-};
 
 /**
  * Garde les pages du domaine « appels réservés ».

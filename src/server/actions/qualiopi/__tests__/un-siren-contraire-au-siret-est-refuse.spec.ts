@@ -8,6 +8,12 @@
  *
  * Mutation qui fait rougir : faire rendre `{ ok: true, siren: derive }` à
  * `resoudreSiren` quand les deux divergent.
+ *
+ * Même refus motivé pour un SIRET à la clé juste dont les 9 premiers chiffres
+ * ne forment pas un SIREN valide (deux chiffres faux qui se compensent) : sans
+ * lui, la porte levait une erreur brute (écran d'erreur au lieu d'un message).
+ * Mutation qui fait rougir : retirer le contrôle du SIREN dérivé dans
+ * `resoudreSiren`.
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -107,5 +113,20 @@ describe("un SIREN contraire au SIRET est refusé", () => {
     });
     expect("error" in r).toBe(true);
     expect(mockCreate).not.toHaveBeenCalled();
+  });
+
+  it("un SIRET à la clé juste mais au SIREN faux : refus en français, rien n'est écrit", async () => {
+    // 14 chiffres qui passent Luhn ; les 9 premiers (732829321) ne le passent pas.
+    const r = await createClientAction({ raisonSociale: "X", siret: "73282932100007" });
+    expect("error" in r).toBe(true);
+    if (!("error" in r)) return;
+    expect(r.error).toContain("SIRET");
+    expect(mockCreate).not.toHaveBeenCalled();
+  });
+
+  it("idem à la mise à jour", async () => {
+    const r = await updateClientAction({ id: ID, siret: "73282932100007" });
+    expect("error" in r).toBe(true);
+    expect(mockUpdate).not.toHaveBeenCalled();
   });
 });

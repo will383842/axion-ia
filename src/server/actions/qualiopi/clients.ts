@@ -20,7 +20,7 @@ import {
   creerOuRetrouverClient,
   ErreurSirenDejaPris,
   exigerSirenLibre,
-  type SignalProche,
+  type FicheProche,
 } from "@/server/qualiopi/crm/porte-client";
 
 type ActionResult<T> = { data: T } | { error: string };
@@ -215,13 +215,7 @@ const updateClientSchema = z
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Une fiche proche, telle que l'écran l'affiche (« c'est peut-être déjà… »). */
-export interface FicheProcheAffichee {
-  readonly ficheId: string;
-  readonly numero: string;
-  readonly raisonSociale: string;
-  readonly signal: SignalProche;
-  readonly force: "bloquant" | "fort" | "proposition";
-}
+export type FicheProcheAffichee = FicheProche;
 
 /**
  * Résultat de la création. En cas de refus, `proches` dit POURQUOI et vers
