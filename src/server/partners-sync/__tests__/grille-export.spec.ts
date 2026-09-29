@@ -25,6 +25,7 @@ import {
   canonique,
   construireContenuGrille,
   empreinteGrille,
+  empreintesDesLignes,
   entreesDepuisPricing,
   lirePublications,
   prochainePublication,
@@ -244,6 +245,20 @@ describe("DM-03-A · dérivation : empreinte publiée = empreinte recalculée (R
     };
     expect(verifierPublications([trafiquee]).join("\n")).toMatch(
       /hash embarqué .* ≠ hash recalculé/,
+    );
+    // L'empreinte de la ligne touchée ne tient plus non plus : c'est elle que Partners nomme.
+    expect(verifierPublications([trafiquee]).join("\n")).toMatch(
+      /empreintes de ligne absentes ou ≠ recalculées/,
+    );
+  });
+
+  it("chaque ligne publiée porte son empreinte ; une publication sans elles est rouge", () => {
+    const [pub] = lirePublications();
+    expect(pub!.empreintesLignes).toEqual(empreintesDesLignes(pub!.contenu));
+    expect(Object.keys(pub!.empreintesLignes.paliers)).toHaveLength(pub!.contenu.paliers.length);
+    const { empreintesLignes: _retiree, ...sans } = pub!;
+    expect(verifierPublications([sans as unknown as NonNullable<typeof pub>]).join("\n")).toMatch(
+      /empreintes de ligne absentes/,
     );
   });
 
