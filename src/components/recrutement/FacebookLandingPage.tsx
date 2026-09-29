@@ -210,7 +210,7 @@ export async function FacebookLandingPage({ params }: Props) {
       id: "quoi",
       question: "Concrètement, je fais quoi ?",
       answer:
-        "Tu parles d'Axion-IA à un dirigeant que tu connais et tu nous le signales. On appelle, on chiffre, on forme. Tu ne négocies rien, tu ne signes rien.",
+        "Vous parlez d'Axion-IA à un dirigeant que vous connaissez et vous nous le signalez. Nous appelons, chiffrons, formons. Vous ne négociez rien, vous ne signez rien.",
     },
     {
       id: "gains",
@@ -249,7 +249,7 @@ export async function FacebookLandingPage({ params }: Props) {
       // aucun intérêt ici, et deux statuts suffisent à facturer.
       question: "Il faut un statut ?",
       answer:
-        "Pour facturer ta commission, oui : micro-entreprise ou société. La création en ligne est gratuite et prend un quart d'heure. Salarié : vérifie qu'aucune clause d'exclusivité ne te l'interdit.",
+        "Pour facturer votre commission, oui : micro-entreprise ou société. La création en ligne est gratuite et prend un quart d'heure. Salarié : vérifiez qu'aucune clause d'exclusivité ne vous l'interdit.",
     },
     {
       id: "paiement",
@@ -374,8 +374,8 @@ export async function FacebookLandingPage({ params }: Props) {
       {/* 4 ── Comment ça marche */}
       <Section
         eyebrow="Comment ça marche"
-        title="Tu ouvres la porte."
-        titleEm="On fait le reste."
+        title="Vous ouvrez la porte."
+        titleEm="Nous faisons le reste."
         className="py-10 sm:py-14 lg:py-16"
       >
         <ol className="mt-8 grid gap-5 sm:grid-cols-3" role="list">
@@ -429,7 +429,7 @@ export async function FacebookLandingPage({ params }: Props) {
             <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">
               jusqu&apos;à {commission(1)}
             </p>
-            <p className="text-fg-muted text-sm font-medium">pour toi, par journée vendue</p>
+            <p className="text-fg-muted text-sm font-medium">pour vous, par journée vendue</p>
             <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
               <li>Une formation de 2 journées : jusqu&apos;à {commission(2)}</li>
               <li>De 3 journées : jusqu&apos;à {commission(3)}</li>
@@ -443,18 +443,18 @@ export async function FacebookLandingPage({ params }: Props) {
             <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">
               jusqu&apos;à {pctAudit} %
             </p>
-            <p className="text-fg-muted text-sm font-medium">de la facture, pour toi</p>
+            <p className="text-fg-muted text-sm font-medium">de la facture, pour vous</p>
             <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
               <li>
                 Le plus petit audit démarre à {euros(auditTpe)} HT, soit jusqu&apos;à{" "}
-                {euros(commissionAuditTpe)} pour toi
+                {euros(commissionAuditTpe)} pour vous
               </li>
               <li>Payé à l&apos;encaissement</li>
             </ul>
           </article>
         </div>
         <p className="text-fg-muted mt-5 text-sm">
-          Grille en vigueur, précisée dans ton contrat. Rien n&apos;est garanti : tout dépend des
+          Grille en vigueur, précisée dans votre contrat. Rien n&apos;est garanti : tout dépend des
           ventes réellement payées.
         </p>
         <div className="mt-7">
@@ -463,7 +463,7 @@ export async function FacebookLandingPage({ params }: Props) {
       </Section>
 
       {/* 6 ── Pour qui / pas pour qui : qualifie, et crédibilise. */}
-      <Section eyebrow="Pour qui" title="C'est pour toi si…" className="py-10 sm:py-14 lg:py-16">
+      <Section eyebrow="Pour qui" title="C'est pour vous si…" className="py-10 sm:py-14 lg:py-16">
         <div className="mt-7 grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-12">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-1">
             <ul className="space-y-2.5" role="list">
@@ -475,7 +475,7 @@ export async function FacebookLandingPage({ params }: Props) {
               ))}
             </ul>
             <div className="border-border rounded-2xl border p-5">
-              <p className="text-fg font-semibold">Ce n&apos;est pas pour toi si…</p>
+              <p className="text-fg font-semibold">Ce n&apos;est pas pour vous si…</p>
               <ul className="mt-3 space-y-2.5" role="list">
                 {PAS_POUR_QUI.map((t) => (
                   <li key={t} className="text-fg-soft flex gap-2.5 text-sm leading-relaxed">
@@ -561,8 +561,8 @@ export async function FacebookLandingPage({ params }: Props) {
       <section className="py-12 sm:py-16">
         <Container className="text-center">
           <h2 className="text-fg font-serif text-3xl leading-tight font-semibold text-balance sm:text-4xl">
-            Tu connais des dirigeants ?{" "}
-            <span className="text-terracotta italic">Reçois le kit.</span>
+            Vous connaissez des dirigeants ?{" "}
+            <span className="text-terracotta italic">Recevez le kit.</span>
           </h2>
           <p className="text-fg-soft mx-auto mt-4 max-w-xl text-lg">
             Quatre champs, zéro CV, aucun engagement.

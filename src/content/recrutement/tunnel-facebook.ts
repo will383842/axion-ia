@@ -4,7 +4,7 @@
 // ── D'où vient le visiteur, et ce que ça change ─────────────────────────────
 // D'un post ou d'une publicité, sur son téléphone, sans rien avoir demandé.
 // Il donne dix secondes. Tout ce fichier est écrit pour ces dix secondes :
-// une promesse dans SES mots (« tu connais des dirigeants »), une action
+// une promesse dans SES mots (« vous connaissez des dirigeants »), une action
 // unique (« recevoir le kit »), la preuve avant l'argument — et PEU DE TEXTE
 // (demande Will 2026-09-03 : « pas trop de blabla »). Une phrase par idée.
 //
@@ -41,7 +41,7 @@
 // calculés dans la page. Deux barèmes publics ont déjà divergé de 150 € pour
 // un montant recopié à la main.
 //
-// 🔴 AUCUN DÉLAI DE RÉPONSE PROMIS (règle Will 2026-08-23) : « on te répond »,
+// 🔴 AUCUN DÉLAI DE RÉPONSE PROMIS (règle Will 2026-08-23) : « nous vous répondons »,
 // jamais « sous 48 h ».
 //
 // 🔴 AUCUN APPEL PROMIS (décision Will 2026-09-19, B4). L'échange de
@@ -50,18 +50,23 @@
 // annoncer un service qu'on ne rend pas. Ce qui arrive vraiment, et que la
 // page dit : le kit par e-mail tout de suite, puis une réponse.
 //
-// TUTOIEMENT, comme tout le tunnel de candidature.
+// VOUVOIEMENT, comme tout le tunnel de candidature (décision Will du 29/09/2026 :
+// « on reste sur le vouvoiement »).
+//
+// 🔴 AUCUNE INVITATION PROMISE ICI : ce formulaire court n'envoie PAS
+// l'invitation automatique (réservée au dossier complet, `invitation-auto.ts`).
+// Il envoie le kit, puis des rappels pour compléter le dossier.
 
 export const TUNNEL_FACEBOOK_META = {
-  title: "Apporteur d'affaires IA : recommande, sans vendre",
+  title: "Apporteur d'affaires IA : recommandez, sans vendre",
   description:
-    "Tu connais des dirigeants ? Présente-leur Axion-IA, on s'occupe du reste, tu touches une commission sur chaque formation payée. Quatre champs, zéro CV.",
+    "Vous connaissez des dirigeants ? Présentez-leur Axion-IA, nous faisons le reste, vous touchez une commission sur chaque formation payée. 4 champs, zéro CV.",
 } as const;
 
 export const HERO = {
   badge: "Réseau d'apporteurs d'affaires · partout en France",
-  h1: "Tu connais des dirigeants ?",
-  h1Em: "Ton carnet d'adresses vaut une commission.",
+  h1: "Vous connaissez des dirigeants ?",
+  h1Em: "Votre carnet d'adresses vaut une commission.",
   /** Bloc du montant — LE point d'accroche des deux premières secondes.
    *  Le chiffre lui-même n'est PAS ici : il est dérivé de
    *  `COMMISSION_FORMATION_PAR_JOURNEE_EUR` (`pricing.ts`, SSOT) par la page.
@@ -69,14 +74,14 @@ export const HERO = {
   montantLegende: "par journée de formation vendue",
   montantSous: "Versé dès que l'entreprise nous a payés.",
   chapo:
-    "La loi européenne oblige désormais les entreprises à former leurs équipes à l'IA. Tu présentes Axion-IA aux dirigeants que tu connais, on fait tout le reste, tu touches une commission sur chaque formation payée.",
+    "La loi européenne oblige désormais les entreprises à former leurs équipes à l'IA. Vous présentez Axion-IA aux dirigeants que vous connaissez, nous faisons tout le reste, vous touchez une commission sur chaque formation payée.",
   cta: "Recevoir le kit",
   micro: "30 secondes · 4 champs · zéro CV",
   /** Couverture nationale, dite en clair sous le formulaire ET dans le héro :
    *  la question « est-ce que ça marche chez moi ? » est le premier frein d'un
    *  visiteur qui n'est ni à Paris ni à Lyon. Aucune restriction géographique
    *  n'existe côté serveur (`ville` est un champ libre). */
-  france: "Partout en France — ta ville n'a aucune importance.",
+  france: "Partout en France — votre ville n'a aucune importance.",
 } as const;
 
 /** Mentions de confiance INCONDITIONNELLES. Les mentions liées à la
@@ -84,16 +89,16 @@ export const HERO = {
 export const CONFIANCE_BASE: readonly string[] = [
   "Aucun frais, rien à acheter",
   "Aucune exclusivité, aucun quota",
-  "Cumulable avec ton activité",
+  "Cumulable avec votre activité",
 ];
 
 export const FORMULAIRE = {
-  titre: "Reçois le kit, on te répond",
-  sousTitre: "Quatre champs. Aucun engagement : tu décides après.",
+  titre: "Recevez le kit, nous vous répondons",
+  sousTitre: "Quatre champs. Aucun engagement : vous décidez après.",
   points: [
-    "On te répond par e-mail et on répond à tes questions.",
-    "Tu complètes ensuite un dossier de 3 minutes, sans CV.",
-    "Tu décides après. Jamais avant.",
+    "Nous vous répondons par e-mail et répondons à vos questions.",
+    "Vous complétez ensuite un dossier de 3 minutes, sans CV.",
+    "Vous décidez après. Jamais avant.",
   ],
   // ⚠️ Texte versionné : toute modification change `LEAD_APPORTEUR_CONSENT_VERSION`
   // (`lib/commercial-application/lead-apporteur.ts`) — la preuve enregistrée
@@ -109,41 +114,42 @@ export const FORMULAIRE = {
 
 export const ETAPES: readonly { readonly titre: string; readonly texte: string }[] = [
   {
-    titre: "Tu présentes",
-    texte: "Tu parles d'Axion-IA à un dirigeant que tu connais. Il est enregistré à ton nom.",
+    titre: "Vous présentez",
+    texte:
+      "Vous parlez d'Axion-IA à un dirigeant que vous connaissez. Il est enregistré à votre nom.",
   },
   {
     titre: "On vend, on forme",
-    texte: "On appelle, on chiffre, on facture, on forme. Ni devis, ni négociation pour toi.",
+    texte: "Nous appelons, chiffrons, facturons, formons. Ni devis, ni négociation pour vous.",
   },
   {
-    titre: "Tu es payé",
-    texte: "Quand l'entreprise nous a payés, on te paie ta commission.",
+    titre: "Vous êtes payé",
+    texte: "Quand l'entreprise nous a payés, nous vous versons votre commission.",
   },
 ];
 
 export const ARGUMENT = {
-  titre: "Tu n'arrives pas avec un produit à pousser.",
-  em: "Tu arrives avec une obligation légale que le dirigeant ignore.",
+  titre: "Vous n'arrivez pas avec un produit à pousser.",
+  em: "Vous arrivez avec une obligation légale que le dirigeant ignore.",
 } as const;
 
 export const POUR_QUI: readonly string[] = [
-  "Tu as vendu aux entreprises, ou tu en visites toute la journée",
+  "Vous avez vendu aux entreprises, ou vous en visitez toute la journée",
   "Consultant, courtier, agent, indépendant",
   "Dirigeant, ancien dirigeant, jeune retraité du commerce",
-  "Tu connais des patrons de PME et tu aimes rendre service",
+  "Vous connaissez des patrons de PME et aimez rendre service",
 ];
 
 export const PAS_POUR_QUI: readonly string[] = [
-  "Tu cherches un salaire fixe",
-  "Tu ne connais aucun dirigeant",
-  "Tu veux un résultat sans passer un coup de fil",
+  "Vous cherchez un salaire fixe",
+  "Vous ne connaissez aucun dirigeant",
+  "Vous voulez un résultat sans passer un coup de fil",
 ];
 
 export const CARTES_SUR_TABLE: readonly { readonly t: string; readonly d: string }[] = [
   { t: "Aucun frais d'entrée", d: "Rien à acheter, aucun abonnement, aucune avance." },
-  { t: "Aucun recrutement en cascade", d: "Ta commission vient des formations vendues, point." },
-  { t: "Aucun objectif, aucun quota", d: "Pas de reporting, pas d'exclusivité. Ton rythme." },
+  { t: "Aucun recrutement en cascade", d: "Votre commission vient des formations vendues, point." },
+  { t: "Aucun objectif, aucun quota", d: "Pas de reporting, pas d'exclusivité. Votre rythme." },
   {
     t: "Pas de salaire fixe",
     d: "Une commission sur les ventes réelles, une fois la facture réglée.",
@@ -162,19 +168,20 @@ export const FONDATEUR = {
 
 export const MERCI = {
   title: "C'est noté 🎉",
-  description: "En attendant, deux choses si tu veux.",
-  email: "Un e-mail arrive dans les prochaines minutes. Regarde tes spams si tu ne le vois pas.",
+  description: "En attendant, deux choses si vous le souhaitez.",
+  email:
+    "Un e-mail arrive dans les prochaines minutes. Regardez vos courriers indésirables si vous ne le voyez pas.",
   // 2026-09-19 — le bloc « choisis le moment de l'appel » est remplacé par le
   // KIT : le lien de réservation n'est plus distribué à tous (il saturerait
   // l'agenda de Will), il part sur invitation depuis la console.
-  kitTitre: "Découvre ce que tu pourras recommander",
+  kitTitre: "Découvrez ce que vous pourrez recommander",
   kitTexte:
-    "Le document de présentation — statut, commissions, fonctionnement — et le catalogue complet de nos prestations : formations, audit IA, accompagnement, implémentation. Tu les retrouves aussi dans l'e-mail.",
+    "Le document de présentation — statut, commissions, fonctionnement — et le catalogue complet de nos prestations : formations, audit IA, accompagnement, implémentation. Vous les retrouvez aussi dans l'e-mail.",
   kitDocument: "Le document de présentation",
   kitCatalogue: "Le catalogue des prestations",
-  dossierTitre: "Complète ton dossier",
+  dossierTitre: "Complétez votre dossier",
   dossierTexte:
-    "Trois minutes, sans CV. Tes coordonnées sont déjà remplies. Tes réponses nous disent si un échange de 15 minutes a du sens.",
+    "Trois minutes, sans CV. Vos coordonnées sont déjà remplies. Vos réponses nous disent si un échange de 15 minutes a du sens.",
   dossierCta: "Compléter mon dossier",
 } as const;
 

@@ -24,12 +24,12 @@ export function CommercialReassurance({ isFr }: CommercialReassuranceProps): Rea
     },
     {
       icon: Handshake,
-      titleFr: "On vous forme à la prospection",
-      titleEn: "We train you in prospecting",
+      titleFr: "Une méthode à votre disposition",
+      titleEn: "A method at your disposal",
       textFr:
-        "Comment trouver les bonnes entreprises, les contacter, présenter l'offre et conclure : on vous donne une méthode claire, pas à pas.",
+        "Comment repérer les bonnes entreprises et leur présenter Axion-IA : une méthode claire, que vous utilisez librement.",
       textEn:
-        "How to find the right companies, reach out, present the offer and close: we give you a clear, step-by-step method.",
+        "How to spot the right companies and introduce Axion-IA to them: a clear method, yours to use freely.",
     },
     {
       icon: Boxes,

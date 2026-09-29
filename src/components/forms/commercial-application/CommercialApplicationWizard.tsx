@@ -195,7 +195,7 @@ export function CommercialApplicationWizard(): React.ReactNode {
       fd.set("locale", locale);
       const result = await submitCommercialApplicationAction({ ok: false, error: "" }, fd);
       if (!result.ok) {
-        setServerError(result.error || "Une erreur est survenue. Réessaie.");
+        setServerError(result.error || "Une erreur est survenue. Réessayez.");
         return;
       }
       setSubmissionId(result.submissionId);
@@ -205,8 +205,8 @@ export function CommercialApplicationWizard(): React.ReactNode {
     } catch (err) {
       setServerError(
         isStaleServerActionError(err)
-          ? "Cette page a expiré suite à une mise à jour du site. Recharge la page — tes réponses sont sauvegardées, tu ne perdras rien."
-          : "Une erreur est survenue. Réessaie dans un instant.",
+          ? "Cette page a expiré suite à une mise à jour du site. Rechargez la page — vos réponses sont sauvegardées, vous ne perdrez rien."
+          : "Une erreur est survenue. Réessayez dans un instant.",
       );
     } finally {
       setSubmitting(false);
@@ -265,6 +265,18 @@ export function CommercialApplicationWizard(): React.ReactNode {
       setScreen(screen + 1);
       return;
     }
+
+    // 🔑 Consentement demandé UNE seule fois, à l'écran 1 (29/09). Le dernier
+    // écran ne le redemande plus, et le payload l'envoie à `true` : on vérifie
+    // donc ici qu'il a bien été donné. Seul cas où il manquerait : un brouillon
+    // d'avant le 04/09 (accord alors au dernier écran) repris directement à
+    // l'écran 9. On renvoie la personne à l'écran 1 plutôt que d'envoyer un
+    // accord qu'elle n'aurait pas coché.
+    if (!answers.consent) {
+      setErrors(validateStep(1, answers));
+      setScreen(1);
+      return;
+    }
     void submitToServer();
   }, [screen, answers, confirmParcours, submitToServer, locale]);
 
@@ -296,12 +308,11 @@ export function CommercialApplicationWizard(): React.ReactNode {
               C’est envoyé 🎉
             </h2>
             <p className="text-fg mt-4 text-lg leading-relaxed">
-              Tu vas recevoir un email de confirmation dans les prochaines minutes. Pense à vérifier
-              tes spams.
+              Vous allez recevoir un e-mail de confirmation, puis, dans les minutes qui suivent, une
+              invitation à réserver un échange de 15 minutes en visio.
             </p>
             <p className="text-fg-soft mt-3 leading-relaxed">
-              Si ta candidature est retenue, on te contacte par email pour caler un premier échange
-              en visio de 15 à 30 minutes.
+              Pensez à vérifier vos courriers indésirables.
             </p>
             {submissionId ? (
               <p className="text-fg-muted mt-4 font-mono text-xs">Réf. {submissionId}</p>
@@ -329,7 +340,7 @@ export function CommercialApplicationWizard(): React.ReactNode {
                compte les marches restantes d'un coup d'œil, ce qu'une barre
                lisse ne permet pas.
              • ENCOURAGEMENT qui change avec l'avancement — le seul élément qui
-               dise « tu y es presque » avant l'écran final. */
+               dise « vous y êtes presque » avant l'écran final. */
           <div className="border-terracotta/25 bg-paper/95 shadow-subtle sticky top-[calc(var(--header-h)+0.5rem)] z-20 mb-6 rounded-2xl border px-4 py-3 backdrop-blur">
             <div className="flex items-baseline justify-between gap-3">
               <p className="text-fg-muted text-[13px] font-bold tracking-[0.08em] uppercase">
@@ -380,22 +391,22 @@ export function CommercialApplicationWizard(): React.ReactNode {
                   On y va ? 👋
                 </h2>
                 <p className="text-fg-soft mt-2.5 text-[15px] leading-relaxed text-pretty">
-                  9 écrans, une question à la fois. Tu peux revenir en arrière à tout moment, rien
-                  n’est perdu.
+                  9 écrans, une question à la fois. Vous pouvez revenir en arrière à tout moment,
+                  rien n’est perdu.
                 </p>
 
                 <ol className="mt-6 space-y-2.5" role="list">
                   {[
-                    { n: "1", t: "Qui tu es", d: "Contact, ville, code postal." },
+                    { n: "1", t: "Qui vous êtes", d: "Contact, ville, code postal." },
                     {
                       n: "2",
-                      t: "Ton expérience",
+                      t: "Votre expérience",
                       d: "Vente B2B, postes des 10 dernières années.",
                     },
-                    { n: "3", t: "Ton terrain", d: "IA, outils, secteur souhaité, déplacements." },
+                    { n: "3", t: "Votre terrain", d: "IA, outils, zone souhaitée, déplacements." },
                     {
                       n: "4",
-                      t: "Toi, en vrai",
+                      t: "Vous, en vrai",
                       d: "Quelques lignes libres — pas de formulaire type.",
                     },
                   ].map((c) => (
@@ -445,11 +456,11 @@ export function CommercialApplicationWizard(): React.ReactNode {
           <div
             className="border-terracotta bg-terracotta-soft/50 mt-6 rounded-2xl border-2 p-5"
             role="group"
-            aria-label="Confirmation de ton parcours"
+            aria-label="Confirmation de votre parcours"
           >
             <p className="text-fg font-semibold">
-              Es-tu sûr d’avoir mis TOUTES tes expériences professionnelles des 10 dernières années
-              ?
+              Êtes-vous sûr d’avoir indiqué TOUTES vos expériences professionnelles des 10 dernières
+              années ?
             </p>
             <div className="mt-4 flex flex-col gap-2 sm:flex-row">
               <button
@@ -523,8 +534,8 @@ export function CommercialApplicationWizard(): React.ReactNode {
 
         {screen === 0 ? (
           <p className="text-fg-muted mt-6 text-xs leading-relaxed">
-            RGPD · UE — tes données ne servent qu’à l’étude de ta candidature et sont conservées 2
-            ans au maximum.
+            RGPD · UE — vos données ne servent qu’à l’étude de votre candidature et sont conservées
+            2 ans au maximum.
           </p>
         ) : null}
       </form>

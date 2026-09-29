@@ -22,9 +22,8 @@
 // publics ont divergé de 150 €/journée parce qu'un montant avait été
 // réécrit à la main.
 //
-// TUTOIEMENT — aligné sur `/memo-isere`, qui tutoie de bout en bout, et sur
-// le tunnel de candidature. (⚠️ Le `<h1>` de memo-isere vouvoie encore :
-// incohérence connue, à traiter sur les deux pages ensemble.)
+// VOUVOIEMENT — décision Will du 29/09/2026 (« on reste sur le vouvoiement ») :
+// `/memo-isere`, ces landings et tout le tunnel de candidature vouvoient.
 
 /** Sources reconnues. L'`id` DOIT exister dans `SOURCE_OPTIONS`
  *  (`lib/commercial-application/model.ts`) — sans quoi la candidature arrive
@@ -59,11 +58,11 @@ export const PARTENAIRE_LANDINGS: Readonly<Record<PartenaireSource, PartenaireLa
     canal: "Vu sur Le Bon Coin",
     metaTitle: "Apporteur d'affaires IA — partout en France",
     metaDescription:
-      "Tu connais des dirigeants, nous formons leurs équipes à l'IA. Tu recommandes, on fait le reste, tu touches ta commission. Zéro closing, zéro IA à connaître.",
-    h1: "Tu connais des dirigeants.",
+      "Vous connaissez des dirigeants ? Nous formons leurs équipes à l'IA. Vous recommandez, nous faisons le reste, vous touchez votre commission.",
+    h1: "Vous connaissez des dirigeants.",
     h1Em: "Nous formons leurs équipes.",
     chapo:
-      "Tu présentes, on s'occupe du reste, tu touches ta commission. Deux produits à retenir, pas un catalogue. Et tu ne closes jamais.",
+      "Vous présentez, nous nous occupons du reste, vous touchez votre commission. Deux produits à retenir, pas un catalogue. Et vous ne concluez jamais la vente.",
   },
 
   /**
@@ -86,7 +85,7 @@ export const PARTENAIRE_LANDINGS: Readonly<Record<PartenaireSource, PartenaireLa
     h1: "Apporteur d'affaires IA,",
     h1Em: "indépendant et sans plafond",
     chapo:
-      "Candidature en 3 minutes, sans CV et sans lettre de motivation. Tu recommandes des entreprises, on s'occupe du reste, tu touches ta commission. Deux produits à retenir, et tu ne closes jamais.",
+      "Candidature en 3 minutes, sans CV et sans lettre de motivation. Vous recommandez des entreprises, nous nous occupons du reste, vous touchez votre commission. Deux produits à retenir, et vous ne concluez jamais la vente.",
   },
 };
 
@@ -108,8 +107,8 @@ export const PARTENAIRE_LANDINGS: Readonly<Record<PartenaireSource, PartenaireLa
  */
 export const PARTENAIRE_REASSURANCE_BASE: readonly string[] = [
   "Statut libre : micro-entreprise ou société",
-  "Cumulable avec ton activité actuelle",
-  "Démarrer ne te coûte rien",
+  "Cumulable avec votre activité actuelle",
+  "Démarrer ne vous coûte rien",
 ];
 
 export interface Produit {
@@ -121,42 +120,42 @@ export interface Produit {
 /** Le bloc « Comment ça se passe ». Cinq étapes, celles de l'annonce. */
 export const PARTENAIRE_ETAPES: readonly { readonly titre: string; readonly texte: string }[] = [
   {
-    titre: "Tu candidates",
+    titre: "Vous candidatez",
     texte:
-      "Trois minutes, zéro CV, zéro lettre de motivation. On répond à toutes les candidatures — personne ne reste sans réponse.",
+      "Trois minutes, zéro CV, zéro lettre de motivation. Un e-mail de confirmation vous est envoyé dès l'envoi — personne ne reste sans réponse.",
   },
   {
-    // 2026-09-19 (B4) — l'échange part sur invitation, aux seuls profils
-    // retenus : l'étape ne le promet plus à chaque candidat.
-    titre: "On se parle, si ça colle",
+    // 2026-09-29 — l'invitation part seule, ~15 minutes après un DOSSIER
+    // COMPLET (`invitation-auto.ts`) ; ces landings mènent au dossier complet.
+    titre: "Un échange de 15 minutes",
     texte:
-      "Si ton profil correspond, on te propose un échange de 15 minutes en visio, juste toi et nous. On t'explique l'offre, tu poses tes questions. Pas de réunion collective : un vrai échange.",
+      "Dans les minutes qui suivent votre candidature, vous recevez une invitation à réserver un échange de 15 minutes en visio. Nous vous présentons l'offre, vous posez vos questions. Pas de réunion collective : un vrai échange.",
   },
   {
-    titre: "Tu présentes une entreprise",
+    titre: "Vous présentez une entreprise",
     texte:
-      "Tu parles d'Axion-IA à une entreprise que tu connais, tu nous la signales. Elle est enregistrée à ton nom.",
+      "Vous parlez d'Axion-IA à une entreprise que vous connaissez, vous nous la signalez. Elle est enregistrée à votre nom.",
   },
   {
     titre: "On s'occupe du reste",
     texte:
-      "On contacte l'entreprise, on présente, on monte le dossier, on facture. Tu n'as ni à négocier, ni à faire de devis, ni à relancer un impayé.",
+      "Nous contactons l'entreprise, présentons, montons le dossier, facturons. Vous n'avez ni à négocier, ni à faire de devis, ni à relancer un impayé.",
   },
   {
-    titre: "Tu touches ta commission",
+    titre: "Vous touchez votre commission",
     texte:
-      "Quand l'entreprise nous a payés, on te paie. C'est la règle de l'apport d'affaires : la commission est due à l'encaissement.",
+      "Quand l'entreprise nous a payés, nous vous payons. C'est la règle de l'apport d'affaires : la commission est due à l'encaissement.",
   },
 ];
 
 /** « Je n'y connais rien en IA » — le frein n°1 de ce recrutement.
- *  Le recadrage bat l'argument « on te formera », qui sous-entend qu'il faut
+ *  Le recadrage bat l'argument « on vous formera », qui sous-entend qu'il faut
  *  savoir. Cf. `docs/annonce-leboncoin-recrutement.md` §2.3. */
 export const PARTENAIRE_OBJECTION_IA: readonly string[] = [
   "Le dirigeant en face n'y connaît rien non plus — c'est bien pour ça qu'il a besoin de nous.",
   "Aucune démo à faire. Aucun outil à installer. Aucun devis à monter.",
   "Une question technique ? « Excellente question, c'est exactement ce que l'expert vous détaillera. Je vous cale un rendez-vous ? »",
-  "Ton premier rendez-vous, on peut le faire à deux, en visio.",
+  "Votre premier rendez-vous, nous pouvons le faire à deux, en visio, si vous le souhaitez.",
 ];
 
 /** Les profils visés. Nommer les métiers est ce qui déclenche la
@@ -178,19 +177,19 @@ export const PARTENAIRE_CE_QUE_CE_NEST_PAS: readonly { readonly t: string; reado
   [
     {
       t: "Pas de salaire fixe",
-      d: "Tu es payé à la commission, sur les ventes réelles, une fois que le client a réglé sa facture.",
+      d: "Vous êtes payé à la commission, sur les ventes réelles, une fois que le client a réglé sa facture.",
     },
     {
       t: "Pas de frais d'entrée",
-      d: "Aucun kit à acheter, aucun stock, aucune avance. Démarrer ne te coûte rien.",
+      d: "Aucun kit à acheter, aucun stock, aucune avance. Démarrer ne vous coûte rien.",
     },
     {
       t: "Pas de recrutement en cascade",
-      d: "On ne te demandera jamais de recruter qui que ce soit pour gagner de l'argent.",
+      d: "Nous ne vous demanderons jamais de recruter qui que ce soit pour gagner de l'argent.",
     },
     {
       t: "Pas d'objectif imposé",
-      d: "Pas de reporting, pas de hiérarchie. Tu y consacres le temps que tu veux.",
+      d: "Pas de reporting, pas de hiérarchie. Vous y consacrez le temps que vous voulez.",
     },
   ];
 
