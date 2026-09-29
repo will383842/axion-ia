@@ -28,7 +28,7 @@ export async function POST(
     const message =
       r.raison === "format"
         ? "Ce fichier n'est pas une vidéo MP4, MOV ou WebM."
-        : "La vidéo n'est pas arrivée en entier, réessaie.";
+        : "La vidéo n'est pas arrivée en entier, réessayez.";
     return NextResponse.json({ ok: false, error: message }, { status: 422 });
   }
   return NextResponse.json({ ok: true });

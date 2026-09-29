@@ -39,7 +39,7 @@ export async function candidatureDuJeton(
     return {
       ok: false,
       reponse: NextResponse.json(
-        { ok: false, error: "Trop d'essais, réessaie plus tard." },
+        { ok: false, error: "Trop d'essais, réessayez plus tard." },
         { status: 429 },
       ),
     };

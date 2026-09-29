@@ -184,7 +184,7 @@ function buildOfferFaq(
       id: "remuneration",
       question: isFr ? "Quelle est la rémunération ?" : "What is the salary?",
       answer: isFr
-        ? `La rémunération proposée est de ${sal}, selon ton profil et ton expérience.`
+        ? `La rémunération proposée est de ${sal}, selon votre profil et votre expérience.`
         : `The offered pay is ${sal}, depending on your profile and experience.`,
     });
   }
@@ -193,7 +193,7 @@ function buildOfferFaq(
     id: "candidature",
     question: isFr ? "Comment postuler à cette offre ?" : "How do I apply?",
     answer: isFr
-      ? "Tu postules en ligne en quelques minutes via le bouton « Postuler ». Le CV est optionnel : ce qui compte, c'est ta motivation et ce que tu sais faire."
+      ? "Vous postulez en ligne en quelques minutes via le bouton « Postuler ». Le CV est optionnel : ce qui compte, c'est votre motivation et ce que vous savez faire."
       : "Apply online in a few minutes via the « Apply » button. A CV is optional — what matters is your motivation and skills.",
   });
 
@@ -605,7 +605,7 @@ export default async function JobOfferDetailPage({
           titleEm={isFr ? "ouvert" : "open"}
           description={
             isFr
-              ? "Poste itinérant, organisé par secteurs : tu interviens chez nos clients partout en France — dans ces villes et leurs alentours."
+              ? "Poste itinérant, organisé par secteurs : vous intervenez chez nos clients partout en France — dans ces villes et leurs alentours."
               : "Itinerant role, organised by sector: you work at our clients across France — in these cities and surroundings."
           }
         >
@@ -637,13 +637,13 @@ export default async function JobOfferDetailPage({
               {
                 Icon: GraduationCap,
                 eyebrow: "01",
-                title: isFr ? "Ta formation" : "Your training",
+                title: isFr ? "Votre formation" : "Your training",
                 description: isFr ? EMPLOYER_BRAND.formationFr : EMPLOYER_BRAND.formationEn,
               },
               {
                 Icon: Handshake,
                 eyebrow: "02",
-                title: isFr ? "Ton intégration" : "Your onboarding",
+                title: isFr ? "Votre intégration" : "Your onboarding",
                 description: isFr ? EMPLOYER_BRAND.integrationFr : EMPLOYER_BRAND.integrationEn,
               },
               {
@@ -676,7 +676,7 @@ export default async function JobOfferDetailPage({
         <Section
           tone="sand"
           eyebrow={isFr ? "Et aussi" : "Also"}
-          title={isFr ? "D'autres offres qui pourraient te" : "Other roles you might"}
+          title={isFr ? "D'autres offres qui pourraient vous" : "Other roles you might"}
           titleEm={isFr ? "plaire" : "like"}
         >
           <Container>
@@ -721,7 +721,7 @@ export default async function JobOfferDetailPage({
           titleEm={isFr ? "rejoindre ?" : "join us?"}
           description={
             isFr
-              ? "La candidature prend quelques minutes. Le CV est optionnel : ce qui compte, c'est ta motivation et ce que tu sais faire."
+              ? "La candidature prend quelques minutes. Le CV est optionnel : ce qui compte, c'est votre motivation et ce que vous savez faire."
               : "Applying takes a few minutes. A CV is optional — what matters is your motivation and skills."
           }
           cta={

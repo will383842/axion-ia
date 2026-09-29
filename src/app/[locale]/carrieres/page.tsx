@@ -153,7 +153,7 @@ export default async function CarrieresHubPage({
         }
         title={
           isFr
-            ? "On recrute — viens construire l'IA qui change"
+            ? "Nous recrutons — venez construire l'IA qui change"
             : "We're hiring — build the AI that"
         }
         titleEm={isFr ? "vraiment le quotidien des boîtes" : "actually changes how companies work"}
@@ -178,7 +178,7 @@ export default async function CarrieresHubPage({
             </Cta>
           </>
         }
-        schemaCenterLabel={isFr ? "Ton poste" : "Your role"}
+        schemaCenterLabel={isFr ? "Votre poste" : "Your role"}
         schemaAriaLabel={
           isFr
             ? "Les domaines où Axion-IA.com recrute : développement, IA, data, design, produit, marketing, conseil, support."
@@ -500,17 +500,17 @@ export default async function CarrieresHubPage({
                     {
                       question: "Faut-il un CV pour postuler ?",
                       answer:
-                        "Non, le CV est optionnel. Tu réponds à quelques questions et tu peux joindre un CV si tu en as un — l'essentiel pour nous, c'est ta motivation et ce que tu sais faire.",
+                        "Non, le CV est optionnel. Vous répondez à quelques questions et pouvez joindre un CV si vous en avez un — l'essentiel pour nous, c'est votre motivation et ce que vous savez faire.",
                     },
                     {
                       question: "Comment se passe le recrutement ?",
                       answer:
-                        "Tu postules en ligne en quelques minutes. On revient vers toi rapidement, puis on échange (visio ou téléphone) pour faire connaissance et te présenter le poste et l'équipe.",
+                        "Vous postulez en ligne en quelques minutes. Nous revenons vers vous rapidement, puis nous échangeons (visio ou téléphone) pour faire connaissance et vous présenter le poste et l'équipe.",
                     },
                     {
                       question: "Le télétravail est-il possible ?",
                       answer:
-                        "Ça dépend de l'offre : chaque annonce précise si le poste est sur site, hybride ou 100 % remote. Tu peux filtrer les offres par mode de travail.",
+                        "Ça dépend de l'offre : chaque annonce précise si le poste est sur site, hybride ou 100 % remote. Vous pouvez filtrer les offres par mode de travail.",
                     },
                     {
                       question: "Sous combien de temps avez-vous une réponse ?",
@@ -520,7 +520,7 @@ export default async function CarrieresHubPage({
                     {
                       question: "Puis-je envoyer une candidature spontanée ?",
                       answer:
-                        "Oui : si aucune offre ne correspond, utilise la page « Candidature spontanée » en précisant le poste qui t'intéresse. Ton dossier est suivi comme une candidature à une offre — CV, entretien, réponse.",
+                        "Oui : si aucune offre ne correspond, utilisez la page « Candidature spontanée » en précisant le poste qui vous intéresse. Votre dossier est suivi comme une candidature à une offre — CV, entretien, réponse.",
                     },
                   ]
                 : [
@@ -578,7 +578,7 @@ export default async function CarrieresHubPage({
               </h2>
               <p className="mt-3 max-w-2xl opacity-80">
                 {isFr
-                  ? "Les expertises sur lesquelles tu travailleras chez nous :"
+                  ? "Les expertises sur lesquelles vous travaillerez chez nous :"
                   : "The expertise you'll work on with us:"}
               </p>
               <ul className="mt-6 flex flex-wrap gap-3" role="list">
