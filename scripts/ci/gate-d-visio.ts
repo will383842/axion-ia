@@ -18,12 +18,23 @@
  * Mutation qui fait rougir : remplacer `SET LOCAL` par `SET` dans
  * `executerSousDrapeauEffacement`.
  *
+ *   ⛔ (PR 3) DEUX CRÉATIONS SIMULTANÉES AU MÊME SIREN NE DONNENT QU'UNE FICHE.
+ *   Deux clients Prisma (deux connexions, deux transactions) appellent en même
+ *   temps la porte unique `creerOuRetrouverClient` avec le même SIREN : le
+ *   verrou consultatif `pg_advisory_xact_lock(hashtext(…))` fait attendre la
+ *   seconde, qui refait sa recherche APRÈS la validation de la première et la
+ *   trouve. Attendu : une création, un refus, une seule fiche.
+ *   Mutation qui fait rougir : retirer la boucle des verrous de la porte (les
+ *   deux recherches passent avant les deux écritures : deux fiches). Angle
+ *   mort : sans verrou, la course reste probabiliste ; on la joue cinq fois.
+ *
  * Aucune ligne ne reste : tout ce qui est créé est supprimé à la fin, et le
  * script le vérifie.
  */
 
 import { PrismaClient } from "../../prisma/generated/client";
 import { executerSousDrapeauEffacement } from "../../src/lib/rgpd-erase";
+import { creerOuRetrouverClient } from "../../src/server/qualiopi/crm/porte-client";
 
 const CLIENT_ID = "00000000-0000-4000-8000-0000000000c9";
 const FAIT_ID = "00000000-0000-4000-8000-0000000000f9";
@@ -52,6 +63,49 @@ async function reecritureRefusee(db: PrismaClient, valeur: string): Promise<bool
     if (!/immuable|AXV01/.test(message)) throw err;
     return true;
   }
+}
+
+/**
+ * SIREN fictifs de la course (un par manche), jamais ceux d'une vraie
+ * entreprise. Clé de Luhn VALIDE : la porte contrôle le SIREN comme la saisie
+ * (`checkSirenFormat`) et refuse d'écrire un SIREN invalide.
+ */
+const SIRENS_COURSE = ["900000001", "900000019", "900000027", "900000035", "900000043"];
+
+/**
+ * ⛔ Deux créations simultanées au même SIREN, par deux connexions : une seule
+ * fiche. Rend la liste des fautes ; nettoie ce qu'elle a créé.
+ */
+async function deuxCreationsSimultanees(): Promise<string[]> {
+  const fautes: string[] = [];
+  const a = new PrismaClient();
+  const b = new PrismaClient();
+  try {
+    await Promise.all([a.$connect(), b.$connect()]);
+    for (const siren of SIRENS_COURSE) {
+      const [ra, rb] = await Promise.all([
+        creerOuRetrouverClient(a, { raisonSociale: "Course A (Gate D)", siren }, null, {
+          parAdminId: null,
+        }),
+        creerOuRetrouverClient(b, { raisonSociale: "Course B (Gate D)", siren }, null, {
+          parAdminId: null,
+        }),
+      ]);
+      const statuts = [ra.statut, rb.statut].sort();
+      const fiches = await a.client.count({ where: { siren } });
+      if (fiches !== 1 || statuts[0] !== "cree" || statuts[1] !== "refuse_siren") {
+        fautes.push(
+          `deux créations simultanées au SIREN ${siren} : ${fiches} fiche(s), statuts ${statuts.join(" / ")} (attendu : 1 fiche, cree / refuse_siren)`,
+        );
+      }
+    }
+  } finally {
+    await a.client.deleteMany({ where: { siren: { in: SIRENS_COURSE } } });
+    const restes = await a.client.count({ where: { siren: { in: SIRENS_COURSE } } });
+    if (restes !== 0) fautes.push(`${restes} fiche(s) de la course restée(s) en base`);
+    await Promise.all([a.$disconnect(), b.$disconnect()]);
+  }
+  return fautes;
 }
 
 async function main(): Promise<void> {
@@ -122,12 +176,17 @@ async function main(): Promise<void> {
     await db.$disconnect();
   }
 
+  fautes.push(...(await deuxCreationsSimultanees()));
+
   if (fautes.length > 0) {
     for (const f of fautes) console.error(`::error::[visio] ${f}`);
     process.exit(1);
   }
   console.log(
     "[visio] le drapeau d'effacement ne fuit pas hors de sa transaction (COMMIT et ROLLBACK)",
+  );
+  console.log(
+    `[visio] deux créations simultanées au même SIREN ne donnent qu'une fiche (${SIRENS_COURSE.length} manches)`,
   );
 }
 

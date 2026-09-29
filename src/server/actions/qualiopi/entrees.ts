@@ -11,6 +11,12 @@
  * de la logique de création. Dédup : si un client au même email existe déjà
  * (match citext, cf. `findClientByEmail`), on renvoie son id avec
  * `dejaExistant: true` au lieu de créer un doublon.
+ *
+ * Chantier visio (PR 3) : `createClientAction` passe désormais par la PORTE
+ * UNIQUE `creerOuRetrouverClient` (même SIREN refusé, même adresse connue sur
+ * une autre fiche → motif exigé, verrou par SIREN). « Convertir » hérite donc
+ * de toute la vérification, et le contact saisi devient la première personne de
+ * la fiche (`ClientContact`). Le refus de la porte remonte tel quel à l'écran.
  */
 
 "use server";

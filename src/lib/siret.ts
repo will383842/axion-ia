@@ -205,6 +205,16 @@ export function resoudreSiren(
           "il sera rempli à partir du SIRET.",
       };
     }
+    // Un SIRET à la clé juste peut porter un SIREN à la clé fausse (deux
+    // chiffres faux qui se compensent) : le SIREN dérivé est contrôlé aussi.
+    if (!checkSirenFormat(derive).ok) {
+      return {
+        ok: false,
+        message:
+          "SIRET : ses 9 premiers chiffres (le SIREN) ne forment pas un numéro valide. " +
+          "Vérifiez la saisie sur annuaire-entreprises.data.gouv.fr.",
+      };
+    }
     return { ok: true, siren: derive };
   }
   return { ok: true, siren: saisi === "" ? undefined : saisi };

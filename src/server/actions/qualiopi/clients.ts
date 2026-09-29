@@ -15,8 +15,13 @@ import { siretField } from "@/lib/siret-schema";
 import { premierMessageZod } from "@/lib/zod-message";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { inferOpco } from "@/server/qualiopi/crm/naf-opco";
-import { nextNumero } from "@/server/qualiopi/numbering/allocate";
-import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
+import { definirContactFacturation } from "@/server/qualiopi/crm/contact-facturation";
+import {
+  creerOuRetrouverClient,
+  ErreurSirenDejaPris,
+  exigerSirenLibre,
+  type FicheProche,
+} from "@/server/qualiopi/crm/porte-client";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -105,6 +110,9 @@ const createClientSchema = z
     secteur: z.string().max(200).optional(),
     taille: z.enum(COMPANY_SIZES).optional(),
     adresse: z.string().optional(),
+    /** Ville et code postal : l'anti-doublon compare « même nom dans la même ville ». */
+    adresseVille: z.string().max(120).optional(),
+    adresseCodePostal: z.string().max(12).optional(),
     contactNom: z.string().max(200).optional(),
     contactEmail: z.string().email().optional(),
     contactTelephone: z.string().max(40).optional(),
@@ -124,6 +132,12 @@ const createClientSchema = z
     source: z.string().max(120).optional(),
     contexteIa: z.string().optional(),
     notes: z.string().optional(),
+    /**
+     * « Créer quand même » : motif exigé quand l'adresse e-mail est déjà connue
+     * sur une autre fiche (≥ 10 caractères, journalisé). Sans effet sur un même
+     * SIREN, qui reste refusé.
+     */
+    motifCreationForcee: z.string().max(300).optional(),
   })
   .superRefine(refuserChampsEntreprisePourParticulier);
 
@@ -200,11 +214,27 @@ const updateClientSchema = z
 // Actions
 // ─────────────────────────────────────────────────────────────────────────────
 
+/** Une fiche proche, telle que l'écran l'affiche (« c'est peut-être déjà… »). */
+export type FicheProcheAffichee = FicheProche;
+
 /**
- * Crée un client prospect.
+ * Résultat de la création. En cas de refus, `proches` dit POURQUOI et vers
+ * quelle fiche aller ; `motifRequis` dit que « créer quand même » est possible
+ * avec un motif (signal « même adresse e-mail »), jamais pour un même SIREN.
+ */
+export type ResultatCreationClient =
+  | { data: { id: string; numero: string } }
+  | { error: string; proches?: FicheProcheAffichee[]; motifRequis?: boolean };
+
+/**
+ * Crée un client prospect — PAR LA PORTE UNIQUE (`creerOuRetrouverClient`).
+ * - Même SIREN qu'une fiche existante : refus, avec la fiche à ouvrir.
+ * - Même adresse e-mail : refus, sauf motif de « créer quand même » journalisé.
  * - Numéro alloué séquentiellement : AXI-CLI-NNN (borne haute + 1, sans millésime).
  * - opcoIdentifie inféré via inferOpco (IDCC prioritaire, repli NAF) si absent.
  * - Statut initial : prospect.
+ * - Le contact saisi devient la première personne de la fiche et son contact
+ *   de facturation (`definirContactFacturation`, même transaction).
  */
 export async function createClientAction(
   // `z.input` et non `z.infer` : `siretField` porte un `.transform()`, donc le
@@ -212,7 +242,7 @@ export async function createClientAction(
   // Zod rend). Avec `exactOptionalPropertyTypes`, `z.infer` compilerait par
   // coïncidence aujourd'hui et casserait au premier champ transformé suivant.
   input: z.input<typeof createClientSchema>,
-): Promise<ActionResult<{ id: string; numero: string }>> {
+): Promise<ResultatCreationClient> {
   const session = await requireAdminWrite();
   const parsed = createClientSchema.safeParse(input);
   // Remonter le message du premier champ fautif : avec « Données invalides » en
@@ -231,72 +261,70 @@ export async function createClientAction(
   // convention collective qui rattache légalement à un OPCO.
   const opcoIdentifie = v.opcoIdentifie ?? inferOpco({ idcc: v.idcc, naf: v.nafCode });
 
-  // Allocation numéro séquentiel + insertion, avec retry sur collision (R7)
-  const created = await withNumberRetry(async () => {
-    // 🔴 V20. `client.count()` portait sur TOUTE la table, sans le moindre
-    // filtre de préfixe : une ligne importée hors série, ou un client supprimé,
-    // décalait le compteur et faisait réémettre un numéro déjà attribué.
-    //
-    // ⚠️ `null` en second argument, et ce n'est PAS un oubli : `client` est la
-    // SEULE série sans millésime. Deux numéros `AXI-CLI-001` / `AXI-CLI-002`
-    // sont déjà émis sous ce format en production. Passer `year` ici ferait lire
-    // le préfixe `AXI-CLI-2026-`, qui ne correspond à aucune ligne existante →
-    // borne 0 → réémission de `AXI-CLI-001` → collision immédiate sur
-    // `clients_numero_key`. `seriesPrefix` connaît l'exception ; ne pas la
-    // contourner.
-    const numero = await nextNumero("client", null, (prefixe) =>
-      prisma.client.findMany({
-        where: { numero: { startsWith: prefixe } },
-        select: { numero: true },
-      }),
-    );
-    return prisma.client.create({
-      data: {
-        numero,
-        raisonSociale: v.raisonSociale,
-        statut: "prospect",
-        ...(v.type !== undefined ? { type: v.type } : {}),
-        ...(v.siret !== undefined ? { siret: v.siret } : {}),
-        ...(siren !== undefined ? { siren } : {}),
-        ...(v.nafCode !== undefined ? { nafCode: v.nafCode } : {}),
-        ...(v.conventionCollective !== undefined
-          ? { conventionCollective: v.conventionCollective }
-          : {}),
-        ...(v.idcc !== undefined ? { idcc: v.idcc } : {}),
-        ...(v.secteur !== undefined ? { secteur: v.secteur } : {}),
-        ...(v.taille !== undefined ? { taille: v.taille } : {}),
-        ...(v.adresse !== undefined ? { adresse: v.adresse } : {}),
-        ...(v.contactNom !== undefined ? { contactNom: v.contactNom } : {}),
-        ...(v.contactEmail !== undefined ? { contactEmail: v.contactEmail } : {}),
-        ...(v.contactTelephone !== undefined ? { contactTelephone: v.contactTelephone } : {}),
-        ...(v.contactFonction !== undefined ? { contactFonction: v.contactFonction } : {}),
-        ...(opcoIdentifie !== null ? { opcoIdentifie } : {}),
-        ...(v.opcoNumeroAdherent !== undefined ? { opcoNumeroAdherent: v.opcoNumeroAdherent } : {}),
-        ...(v.opcoEnveloppeAnnuelleCents !== undefined
-          ? { opcoEnveloppeAnnuelleCents: v.opcoEnveloppeAnnuelleCents }
-          : {}),
-        ...(v.source !== undefined ? { source: v.source } : {}),
-        ...(v.contexteIa !== undefined ? { contexteIa: v.contexteIa } : {}),
-        ...(v.notes !== undefined ? { notes: v.notes } : {}),
-      },
-      select: { id: true, numero: true },
-    });
-  });
+  // ⚠️ `numero` est alloué PAR LA PORTE, dans sa transaction, avec la même
+  // borne haute que V20 (série `client` sans millésime : voir `nextNumero`).
+  const resultat = await creerOuRetrouverClient(
+    prisma,
+    {
+      raisonSociale: v.raisonSociale,
+      ...(v.type !== undefined ? { type: v.type } : {}),
+      ...(v.siret !== undefined ? { siret: v.siret } : {}),
+      ...(siren !== undefined ? { siren } : {}),
+      ...(v.nafCode !== undefined ? { nafCode: v.nafCode } : {}),
+      ...(v.conventionCollective !== undefined
+        ? { conventionCollective: v.conventionCollective }
+        : {}),
+      ...(v.idcc !== undefined ? { idcc: v.idcc } : {}),
+      ...(v.secteur !== undefined ? { secteur: v.secteur } : {}),
+      ...(v.taille !== undefined ? { taille: v.taille } : {}),
+      ...(v.adresse !== undefined ? { adresse: v.adresse } : {}),
+      ...(v.adresseVille !== undefined ? { adresseVille: v.adresseVille } : {}),
+      ...(v.adresseCodePostal !== undefined ? { adresseCodePostal: v.adresseCodePostal } : {}),
+      ...(opcoIdentifie !== null ? { opcoIdentifie } : {}),
+      ...(v.opcoNumeroAdherent !== undefined ? { opcoNumeroAdherent: v.opcoNumeroAdherent } : {}),
+      ...(v.opcoEnveloppeAnnuelleCents !== undefined
+        ? { opcoEnveloppeAnnuelleCents: v.opcoEnveloppeAnnuelleCents }
+        : {}),
+      ...(v.source !== undefined ? { source: v.source } : {}),
+      ...(v.contexteIa !== undefined ? { contexteIa: v.contexteIa } : {}),
+      ...(v.notes !== undefined ? { notes: v.notes } : {}),
+    },
+    {
+      ...(v.contactNom !== undefined ? { nom: v.contactNom } : {}),
+      ...(v.contactEmail !== undefined ? { email: v.contactEmail } : {}),
+      ...(v.contactTelephone !== undefined ? { telephone: v.contactTelephone } : {}),
+      ...(v.contactFonction !== undefined ? { fonction: v.contactFonction } : {}),
+    },
+    {
+      parAdminId: session.userId,
+      ...(v.motifCreationForcee !== undefined
+        ? { motifCreationForcee: v.motifCreationForcee }
+        : {}),
+    },
+  );
+
+  if (resultat.statut === "refuse_siren") {
+    return { error: resultat.message, proches: [resultat.fiche] };
+  }
+  if (resultat.statut === "motif_requis") {
+    return { error: resultat.message, proches: [...resultat.proches], motifRequis: true };
+  }
 
   await logQualiopiActivity({
     action: "qualiopi.client.create",
     targetType: "Client",
-    targetId: created.id,
+    targetId: resultat.id,
     changes: {
-      numero: created.numero,
+      numero: resultat.numero,
       raisonSociale: v.raisonSociale,
       opcoIdentifie,
       ...(siren !== undefined ? { siren } : {}),
+      ...(resultat.creationForcee ? { creationForcee: true } : {}),
     },
     session,
   });
 
-  return { data: { id: created.id, numero: created.numero } };
+  return { data: { id: resultat.id, numero: resultat.numero } };
 }
 
 /**
@@ -386,46 +414,70 @@ export async function updateClientAction(
     }
   }
 
-  await prisma.client.update({
-    where: { id },
-    data: {
-      ...(fields.type !== undefined ? { type: fields.type } : {}),
-      ...(fields.raisonSociale !== undefined ? { raisonSociale: fields.raisonSociale } : {}),
-      ...(fields.siret !== undefined ? { siret: fields.siret } : {}),
-      ...(sirenAEcrire !== undefined ? { siren: sirenAEcrire } : {}),
-      ...(fields.nafCode !== undefined ? { nafCode: fields.nafCode } : {}),
-      ...(fields.conventionCollective !== undefined
-        ? { conventionCollective: fields.conventionCollective }
-        : {}),
-      ...(fields.idcc !== undefined ? { idcc: fields.idcc } : {}),
-      ...(fields.secteur !== undefined ? { secteur: fields.secteur } : {}),
-      ...(fields.taille !== undefined ? { taille: fields.taille } : {}),
-      ...(fields.adresse !== undefined ? { adresse: fields.adresse } : {}),
-      ...(fields.contactNom !== undefined ? { contactNom: fields.contactNom } : {}),
-      ...(fields.contactEmail !== undefined ? { contactEmail: fields.contactEmail } : {}),
-      ...(fields.contactTelephone !== undefined
-        ? { contactTelephone: fields.contactTelephone }
-        : {}),
-      ...(fields.contactFonction !== undefined ? { contactFonction: fields.contactFonction } : {}),
-      ...(opcoAEcrire !== undefined ? { opcoIdentifie: opcoAEcrire } : {}),
-      ...(fields.opcoNumeroAdherent !== undefined
-        ? { opcoNumeroAdherent: fields.opcoNumeroAdherent }
-        : {}),
-      ...(fields.opcoEnveloppeAnnuelleCents !== undefined
-        ? { opcoEnveloppeAnnuelleCents: fields.opcoEnveloppeAnnuelleCents }
-        : {}),
-      ...(fields.statut !== undefined ? { statut: fields.statut } : {}),
-      ...(fields.source !== undefined ? { source: fields.source } : {}),
-      ...(fields.contexteIa !== undefined ? { contexteIa: fields.contexteIa } : {}),
-      ...(fields.notes !== undefined ? { notes: fields.notes } : {}),
-      ...(fields.besoinsIdentifies !== undefined
-        ? { besoinsIdentifies: fields.besoinsIdentifies as never }
-        : {}),
-      ...(fields.penalitesRetardActives !== undefined
-        ? { penalitesRetardActives: fields.penalitesRetardActives }
-        : {}),
-    },
-  });
+  // ── Contact : par la fonction unique, jamais en écriture directe ──────────
+  // `Client.contact*` est la COPIE du contact de facturation (dossier client,
+  // PA-1). Les écrire ici à côté de lui ferait deux vérités.
+  const contactTransmis =
+    fields.contactNom !== undefined ||
+    fields.contactEmail !== undefined ||
+    fields.contactTelephone !== undefined ||
+    fields.contactFonction !== undefined;
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      // B18 : un SIREN écrit sur une fiche EXISTANTE passe par le même verrou et
+      // la même recherche que la création — jamais deux fiches vivantes au même
+      // SIREN (« C'est elle », SIRET saisi dans « Éditer »).
+      if (typeof sirenAEcrire === "string") await exigerSirenLibre(tx, id, sirenAEcrire);
+      await tx.client.update({
+        where: { id },
+        data: {
+          ...(fields.type !== undefined ? { type: fields.type } : {}),
+          ...(fields.raisonSociale !== undefined ? { raisonSociale: fields.raisonSociale } : {}),
+          ...(fields.siret !== undefined ? { siret: fields.siret } : {}),
+          ...(sirenAEcrire !== undefined ? { siren: sirenAEcrire } : {}),
+          ...(fields.nafCode !== undefined ? { nafCode: fields.nafCode } : {}),
+          ...(fields.conventionCollective !== undefined
+            ? { conventionCollective: fields.conventionCollective }
+            : {}),
+          ...(fields.idcc !== undefined ? { idcc: fields.idcc } : {}),
+          ...(fields.secteur !== undefined ? { secteur: fields.secteur } : {}),
+          ...(fields.taille !== undefined ? { taille: fields.taille } : {}),
+          ...(fields.adresse !== undefined ? { adresse: fields.adresse } : {}),
+          ...(opcoAEcrire !== undefined ? { opcoIdentifie: opcoAEcrire } : {}),
+          ...(fields.opcoNumeroAdherent !== undefined
+            ? { opcoNumeroAdherent: fields.opcoNumeroAdherent }
+            : {}),
+          ...(fields.opcoEnveloppeAnnuelleCents !== undefined
+            ? { opcoEnveloppeAnnuelleCents: fields.opcoEnveloppeAnnuelleCents }
+            : {}),
+          ...(fields.statut !== undefined ? { statut: fields.statut } : {}),
+          ...(fields.source !== undefined ? { source: fields.source } : {}),
+          ...(fields.contexteIa !== undefined ? { contexteIa: fields.contexteIa } : {}),
+          ...(fields.notes !== undefined ? { notes: fields.notes } : {}),
+          ...(fields.besoinsIdentifies !== undefined
+            ? { besoinsIdentifies: fields.besoinsIdentifies as never }
+            : {}),
+          ...(fields.penalitesRetardActives !== undefined
+            ? { penalitesRetardActives: fields.penalitesRetardActives }
+            : {}),
+        },
+      });
+      if (contactTransmis) {
+        await definirContactFacturation(tx, {
+          clientId: id,
+          ...(fields.contactNom !== undefined ? { nom: fields.contactNom } : {}),
+          ...(fields.contactEmail !== undefined ? { email: fields.contactEmail } : {}),
+          ...(fields.contactTelephone !== undefined ? { telephone: fields.contactTelephone } : {}),
+          ...(fields.contactFonction !== undefined ? { fonction: fields.contactFonction } : {}),
+          parAdminId: session.userId,
+        });
+      }
+    });
+  } catch (e) {
+    if (e instanceof ErreurSirenDejaPris) return { error: e.message };
+    throw e;
+  }
 
   await logQualiopiActivity({
     action: "qualiopi.client.update",

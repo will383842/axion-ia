@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { createClientAction } from "@/server/actions/qualiopi/clients";
 import { checkSiretFormat } from "@/lib/siret";
 import type { CompanySize } from "@/server/qualiopi/crm/types";
+import { FichesProches } from "@/components/admin/qualiopi/FichesProches";
 
 type ClientType = "entreprise" | "particulier";
 
@@ -56,6 +57,13 @@ export function ClientForm({
   const [type, setType] = useState<ClientType>(iv.type ?? "entreprise");
   const [raisonSociale, setRaisonSociale] = useState(iv.raisonSociale ?? "");
   const [siret, setSiret] = useState("");
+  const [siren, setSiren] = useState("");
+  const [ville, setVille] = useState("");
+  const [codePostal, setCodePostal] = useState("");
+  // « Créer quand même » : n'apparaît que si le serveur l'a demandé (même
+  // adresse e-mail sur une autre fiche). Un même SIREN, lui, est refusé.
+  const [motifRequis, setMotifRequis] = useState(false);
+  const [motif, setMotif] = useState("");
   const [nafCode, setNafCode] = useState("");
   const [taille, setTaille] = useState<string>(iv.taille ?? "");
   const [idcc, setIdcc] = useState("");
@@ -91,18 +99,23 @@ export function ClientForm({
         ...(contactTelephone ? { contactTelephone } : {}),
         ...(contactFonction ? { contactFonction } : {}),
         ...(adresse ? { adresse } : {}),
+        ...(ville.trim() ? { adresseVille: ville.trim() } : {}),
+        ...(codePostal.trim() ? { adresseCodePostal: codePostal.trim() } : {}),
+        ...(motifRequis && motif.trim() ? { motifCreationForcee: motif.trim() } : {}),
         // Champs pré-remplis non éditables ici, propagés tels quels.
         ...(secteur ? { secteur } : {}),
         ...(contexteIa ? { contexteIa } : {}),
         ...(source ? { source } : {}),
         // Champs entreprise uniquement
         ...(!isParticulier && siret ? { siret } : {}),
+        ...(!isParticulier && siren.trim() ? { siren: siren.trim() } : {}),
         ...(!isParticulier && nafCode ? { nafCode } : {}),
         ...(!isParticulier && taille ? { taille: taille as CompanySize } : {}),
         ...(!isParticulier && idcc ? { idcc } : {}),
       });
       if ("error" in result) {
         setError(result.error);
+        if (result.motifRequis) setMotifRequis(true);
       } else {
         router.push(baseHref);
       }
@@ -195,6 +208,30 @@ export function ClientForm({
                   {siretErreur}
                 </p>
               ) : null}
+            </div>
+            <div className={fieldCls}>
+              <label className={labelCls} htmlFor="c-siren">
+                SIREN
+              </label>
+              <input
+                id="c-siren"
+                value={siren}
+                onChange={(e) => setSiren(e.target.value)}
+                disabled={isPending}
+                inputMode="numeric"
+                autoComplete="off"
+                maxLength={11}
+                placeholder="9 chiffres"
+                aria-describedby="c-siren-hint"
+                className={inputCls}
+              />
+              <p
+                id="c-siren-hint"
+                className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+              >
+                Facultatif : tiré du SIRET s&apos;il est saisi. Sinon, la fiche le proposera depuis
+                l&apos;annuaire public (« SIREN à compléter ») ; vous confirmez d&apos;un clic.
+              </p>
             </div>
             <div className={fieldCls}>
               <label className={labelCls} htmlFor="c-naf">
@@ -309,7 +346,72 @@ export function ClientForm({
             className={inputCls}
           />
         </div>
+        <div className={fieldCls}>
+          <label className={labelCls} htmlFor="c-cp">
+            Code postal
+          </label>
+          <input
+            id="c-cp"
+            value={codePostal}
+            onChange={(e) => setCodePostal(e.target.value)}
+            disabled={isPending}
+            maxLength={12}
+            className={inputCls}
+          />
+        </div>
+        <div className={fieldCls}>
+          <label className={labelCls} htmlFor="c-ville">
+            Ville
+          </label>
+          <input
+            id="c-ville"
+            value={ville}
+            onChange={(e) => setVille(e.target.value)}
+            disabled={isPending}
+            maxLength={120}
+            className={inputCls}
+          />
+        </div>
       </div>
+
+      <FichesProches
+        saisie={{
+          type,
+          raisonSociale,
+          ...(!isParticulier && siret ? { siret } : {}),
+          ...(!isParticulier && siren ? { siren } : {}),
+          ...(contactEmail ? { email: contactEmail } : {}),
+          ...(ville ? { ville } : {}),
+          ...(codePostal ? { codePostal } : {}),
+        }}
+        baseFicheHref={baseHref}
+        personne={{
+          ...(contactNom ? { nom: contactNom } : {}),
+          ...(contactEmail ? { email: contactEmail } : {}),
+          ...(contactTelephone ? { telephone: contactTelephone } : {}),
+          ...(contactFonction ? { fonction: contactFonction } : {}),
+        }}
+      />
+
+      {motifRequis ? (
+        <div className={`${fieldCls} mt-[var(--space-admin-4)]`}>
+          <label className={labelCls} htmlFor="c-motif">
+            Pourquoi créer quand même une nouvelle fiche ?
+          </label>
+          <textarea
+            id="c-motif"
+            value={motif}
+            onChange={(e) => setMotif(e.target.value)}
+            disabled={isPending}
+            maxLength={300}
+            rows={2}
+            className={inputCls}
+          />
+          <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            10 caractères au moins. Le motif est gardé dans le journal de la console.
+          </p>
+        </div>
+      ) : null}
 
       {error && (
         <p
@@ -322,7 +424,7 @@ export function ClientForm({
 
       <div className="mt-[var(--space-admin-5)]">
         <button type="submit" disabled={isPending} className="admin-button">
-          {isPending ? "Création…" : "Créer le client"}
+          {isPending ? "Création…" : motifRequis ? "Créer quand même" : "Créer le client"}
         </button>
       </div>
     </form>

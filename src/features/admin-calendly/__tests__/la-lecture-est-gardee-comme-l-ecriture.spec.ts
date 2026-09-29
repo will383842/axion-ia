@@ -250,3 +250,134 @@ describe("les deux pages gardent AVANT de toucher la base", () => {
     }
   });
 });
+
+// ═════════════════════════════════════════════════════════════════════════════
+// ⛔ DOSSIER CLIENT (chantier visio, PR 3, décision A2) — même doctrine, même
+// balayage DÉRIVÉ, deuxième domaine.
+//
+// Toute page de la console qui lit le dossier client — par le marqueur
+// `dossier-client/queries`, ou DIRECTEMENT par un modèle annoté
+// `/// rgpd: dossier-client` dans `prisma/schema.prisma` (liste lue dans le
+// schéma, jamais recopiée) — doit consulter le rôle :
+//   · REFUS  — `gardeLectureEchanges()`, AVANT toute lecture ;
+//   · FILTRE — `peutVoirLesEchanges()`, AVANT le premier appel de lecture.
+//
+// Mutation qui fait rougir : une page qui lit `prisma.fait` sans garde (le
+// contre-témoin ci-dessous l'exécute sur un source fictif) ; ou, dans la fiche
+// client, un `lireFaitsDuClient(` remonté au-dessus de `peutVoirLesEchanges(`.
+// Angle mort : une lecture passée par un module tiers qui n'importe ni le
+// marqueur ni `prisma.<modèle>` (un helper générique) n'est pas vue.
+// ═════════════════════════════════════════════════════════════════════════════
+
+/** Les accesseurs Prisma des modèles `rgpd: dossier-client`, lus dans le schéma. */
+function accesseursDossierClient(): string[] {
+  const schema = readFileSync(join(process.cwd(), "prisma/schema.prisma"), "utf8");
+  const trouves: string[] = [];
+  const re = /\/\/\/\s*rgpd:\s*dossier-client\s*\n(?:\s*\/\/\/.*\n)*\s*model\s+(\w+)\s*\{/g;
+  for (const m of schema.matchAll(re)) {
+    const modele = m[1] ?? "";
+    trouves.push(`prisma.${modele.charAt(0).toLowerCase()}${modele.slice(1)}`);
+  }
+  return trouves;
+}
+
+const MARQUEUR_DOSSIER = "dossier-client/queries";
+
+function lisLeDossier(source: string, accesseurs: ReadonlyArray<string>): boolean {
+  return (
+    source.includes(MARQUEUR_DOSSIER) ||
+    accesseurs.some((a) => source.includes(`${a}.`) || source.includes(`${a})`))
+  );
+}
+
+/** Position de la première LECTURE : un appel `lire…(` ou un `prisma.<modèle du dossier>`. */
+function premiereLecture(source: string, accesseurs: ReadonlyArray<string>): number {
+  const positions = [
+    ...[...source.matchAll(/\blire[A-Z]\w*\(/g)].map((m) => m.index ?? -1),
+    ...accesseurs.map((a) => source.indexOf(`${a}.`)),
+  ].filter((p) => p >= 0);
+  return positions.length === 0 ? -1 : Math.min(...positions);
+}
+
+/** Verdict : `null` si la page est bien gardée, sinon la raison. */
+function verdictDossier(brut: string, accesseurs: ReadonlyArray<string>): string | null {
+  // Une garde CITÉE dans un commentaire n'en est pas une : on les retire avant
+  // de chercher les positions (sinon l'en-tête de la page « garderait » tout).
+  const source = brut.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:"'`])\/\/.*$/gm, "$1");
+  const refus = source.indexOf("await gardeLectureEchanges(");
+  const filtre = source.indexOf("peutVoirLesEchanges(");
+  if (refus === -1 && filtre === -1) {
+    return "lit le dossier client sans consulter le rôle (gardeLectureEchanges / peutVoirLesEchanges)";
+  }
+  const garde = refus !== -1 ? refus : filtre;
+  const lecture = premiereLecture(source, accesseurs);
+  if (lecture !== -1 && lecture < garde) {
+    return "lit le dossier client AVANT d'avoir consulté le rôle";
+  }
+  return null;
+}
+
+function pagesQuiLisentLeDossier(accesseurs: ReadonlyArray<string>): string[] {
+  const racine = join(process.cwd(), "src/app");
+  const trouvees: string[] = [];
+  const parcourir = (dossier: string): void => {
+    for (const entree of readdirSync(dossier, { withFileTypes: true })) {
+      const complet = join(dossier, entree.name);
+      if (entree.isDirectory()) {
+        parcourir(complet);
+        continue;
+      }
+      if (entree.name !== "page.tsx" || !complet.includes("(admin)")) continue;
+      if (lisLeDossier(readFileSync(complet, "utf8"), accesseurs)) {
+        trouvees.push(relative(process.cwd(), complet).split("\\").join("/"));
+      }
+    }
+  };
+  parcourir(racine);
+  return trouvees.sort();
+}
+
+describe("⛔ dossier client : toute page qui le lit consulte d'abord le rôle", () => {
+  const accesseurs = accesseursDossierClient();
+  const pages = pagesQuiLisentLeDossier(accesseurs);
+
+  it("la liste des modèles est lue dans le schéma (témoin)", () => {
+    expect(accesseurs).toContain("prisma.fait");
+    expect(accesseurs).toContain("prisma.compteRendu");
+    expect(accesseurs).toContain("prisma.clientContact");
+    expect(accesseurs.length).toBeGreaterThanOrEqual(10);
+  });
+
+  it("le balayage trouve la fiche client, le projet et « Préparer » (témoin)", () => {
+    for (const attendue of [
+      "qualiopi/clients/[id]/page.tsx",
+      "qualiopi/clients/[id]/projets/[projetId]/page.tsx",
+      "qualiopi/clients/[id]/preparer/page.tsx",
+    ]) {
+      expect(
+        pages.some((p) => p.endsWith(attendue)),
+        attendue,
+      ).toBe(true);
+    }
+  });
+
+  it.each(pages)("« %s » consulte le rôle avant de lire le dossier", (relatif) => {
+    const verdict = verdictDossier(readFileSync(join(process.cwd(), relatif), "utf8"), accesseurs);
+    expect(verdict, `${relatif} ${verdict ?? ""}`).toBeNull();
+  });
+
+  it("contre-témoin : une page qui lit prisma.fait sans garde est refusée", () => {
+    const fautive = `export default async function P() {
+      const faits = await prisma.fait.findMany({});
+      return <div>{faits.length}</div>;
+    }`;
+    expect(lisLeDossier(fautive, accesseurs)).toBe(true);
+    expect(verdictDossier(fautive, accesseurs)).toMatch(/sans consulter le rôle/);
+
+    const tardive = `export default async function P() {
+      const faits = await lireFaitsDuClient(id);
+      if (!peutVoirLesEchanges(role)) return null;
+    }`;
+    expect(verdictDossier(tardive, accesseurs)).toMatch(/AVANT/);
+  });
+});
