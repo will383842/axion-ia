@@ -409,7 +409,9 @@ export default async function ApporteurAffairesPage({ params }: Props) {
             <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
               <li>Deux journées : {commission(2)}</li>
               <li>Trois journées : {commission(3)}</li>
-              {certifie ? <li>Finançable jusqu&apos;à 100 % par l&apos;OPCO</li> : null}
+              {certifie ? (
+                <li>Peut être prise en charge par l&apos;OPCO, selon ses critères</li>
+              ) : null}
             </ul>
           </article>
 

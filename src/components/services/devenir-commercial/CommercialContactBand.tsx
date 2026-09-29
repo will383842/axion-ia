@@ -37,7 +37,7 @@ export function CommercialContactBand({
             <p className="text-mocha-fg/90 mt-3 text-base leading-relaxed sm:text-lg">
               {isFr
                 ? "Quelques informations suffisent pour postuler. Statut indépendant, produits simples à présenter, revenus déplafonnés — et démarrer ne vous coûte rien."
-                : "A few details are enough to apply. Self-employed status, easy-to-sell funded products, uncapped income — and getting started costs you nothing."}
+                : "A few details are enough to apply. Self-employed status, straightforward products to present, uncapped income — and getting started costs you nothing."}
             </p>
           </div>
           {/* 🔴 2026-08-21 — `shrink-0` faisait déborder la page de 39 px à 768 px.

@@ -5,7 +5,7 @@
  *
  *     pnpm exec tsx scripts/gates/vocab-public.ts    # code 1 et chaque faute nommée, sinon 0
  *
- * Trois familles, et une limite déclarée :
+ * Cinq familles, et une limite déclarée :
  *   — `declencheur_hors_encaissement` : une commission se déclenche à l'ENCAISSEMENT (contrat
  *     d'apporteur). « Vente signée » ou « dès la signature » promettent un droit que le
  *     contrat ne donne pas ;
@@ -22,6 +22,11 @@
  *     derrière le drapeau ;
  *   — `cpf` : le CPF n'est pas mobilisable (`CPF_ELIGIBLE = false`) : ni « CPF », ni « Mon
  *     Compte Formation ».
+ *
+ * ELLE LIT COMME LE CANDIDAT. Une ligne est jugée APRÈS décodage des entités que le JSX sert en
+ * clair (`&apos;`, `&rsquo;`, `&nbsp;`, `&quot;`…) : « jusqu&apos;à 100 % » s'affiche « jusqu'à
+ * 100 % ». Et les branches anglaises (`isFr ? … : …`) sont servies : le financement s'y lit aussi
+ * (`fund…`, `fully funded`, `100 % covered`, `funded products`).
  *
  * CE QU'ELLE NE LIT PAS. Les commentaires (une ligne qui commence par `//` ou `*`) : ils
  * expliquent les interdits, ils ne sont pas servis. Et seulement les surfaces que lit ou
@@ -46,7 +51,7 @@ export type FamilleVocabulaire =
  * que la phrase est derrière le test, seulement que le fichier sait qu'il y en a un — la
  * preuve fine reste `assertion-flag-surfaces.spec.ts`.
  */
-const MENTION_FINANCEMENT = /finan[cç]|\bOPCO\b|France\s+Travail/i;
+const MENTION_FINANCEMENT = /finan[cç]|\bfund(?:ed|ing|able|s)?\b|\bOPCO\b|France\s+Travail/i;
 const CONSULTE_LA_CERTIFICATION =
   /isQualiopiCertificationObtenue|getPublicFinancing(?:Blurb|Micro)|financementAffichable/;
 
@@ -62,7 +67,7 @@ const REGLES: ReadonlyArray<{ famille: FamilleVocabulaire; motif: RegExp }> = [
   {
     famille: "financement_inconditionnel",
     motif:
-      /pris(?:e|es)?\s+en\s+charge\s+(?:à|a)\s+100|(?:finan[cç]|pris)[\wÀ-ÿ]*\s+(?:jusqu['’]à\s+|à\s+)?100\s*%|100\s*%\s*(?:finan[cç]|pris)|finan[cç][\wÀ-ÿ]*\s+par\s+qualiopi|sans\s+avance\s+de\s+frais|avancer\s+les\s+fonds|trésorerie\s+à\s+sortir|co[uû]t\s+(?:quasi[\s-]+)?nul/i,
+      /pris(?:e|es)?\s+en\s+charge\s+(?:à|a)\s+100|(?:finan[cç]|pris)[\wÀ-ÿ]*\s+(?:jusqu['’]à\s+|à\s+)?100\s*%|100\s*%\s*(?:finan[cç]|pris)|finan[cç][\wÀ-ÿ]*\s+par\s+qualiopi|sans\s+avance\s+de\s+frais|avancer\s+les\s+fonds|trésorerie\s+à\s+sortir|co[uû]t\s+(?:quasi[\s-]+)?nul|fully\s+(?:funded|covered)|100\s*%\s*(?:funded|covered)|funded\s+products|no\s+upfront\s+cost/i,
   },
   { famille: "qualiopi_nu", motif: /(?<!certifi[a-zéèê]{0,3}\s)\bQualiopi\b/ },
   {
@@ -73,14 +78,34 @@ const REGLES: ReadonlyArray<{ famille: FamilleVocabulaire; motif: RegExp }> = [
 
 const COMMENTAIRE = /^\s*(?:\/\/|\*|\/\*)/;
 
+/** Les entités que le JSX sert en clair : la ligne est jugée telle que le candidat la LIT. */
+const ENTITES: Readonly<Record<string, string>> = {
+  apos: "'",
+  rsquo: "’",
+  lsquo: "‘",
+  quot: '"',
+  nbsp: " ",
+  amp: "&",
+  laquo: "«",
+  raquo: "»",
+};
+
+export function telleQueLue(ligne: string): string {
+  return ligne
+    .replace(/&([a-z]+);/gi, (e, nom: string) => ENTITES[nom.toLowerCase()] ?? e)
+    .replace(/&#(\d+);/g, (_, n: string) => String.fromCodePoint(Number(n)))
+    .replace(/[  ]/g, " ");
+}
+
 export function fautesDeVocabulaire(
   fichiers: ReadonlyArray<{ chemin: string; texte: string }>,
 ): FauteVocabulaire[] {
   const fautes: FauteVocabulaire[] = [];
   for (const { chemin, texte } of fichiers) {
     const consulte = CONSULTE_LA_CERTIFICATION.test(texte);
-    texte.split("\n").forEach((contenu, i) => {
-      if (COMMENTAIRE.test(contenu)) return;
+    texte.split("\n").forEach((brute, i) => {
+      if (COMMENTAIRE.test(brute)) return;
+      const contenu = telleQueLue(brute);
       for (const { famille, motif } of REGLES) {
         const m = motif.exec(contenu);
         if (m) fautes.push({ famille, chemin, ligne: i + 1, extrait: m[0] });

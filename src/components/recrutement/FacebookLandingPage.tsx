@@ -436,7 +436,9 @@ export async function FacebookLandingPage({ params }: Props) {
               <li>Une formation de 2 journées : jusqu&apos;à {commission(2)}</li>
               <li>De 3 journées : jusqu&apos;à {commission(3)}</li>
               {certifie ? (
-                <li>Finançable jusqu&apos;à 100 % par l&apos;OPCO de l&apos;entreprise</li>
+                <li>
+                  Peut être prise en charge par l&apos;OPCO de l&apos;entreprise, selon ses critères
+                </li>
               ) : null}
             </ul>
           </article>

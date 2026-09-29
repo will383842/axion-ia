@@ -84,6 +84,26 @@ describe("REQ-JUR-001 — le financement : formules interdites, drapeau ou non",
     expect(temoin('"Organisme certifié Qualiopi"')).toEqual([]);
   });
 
+  it("TÉMOIN — la ligne EXACTE refusée en revue : l'entité JSX `&apos;` ne masque pas la formule", () => {
+    const ligne =
+      "                <li>Finançable jusqu&apos;à 100 % par l&apos;OPCO de l&apos;entreprise</li>";
+    expect(
+      temoin(`const certifie = isQualiopiCertificationObtenue();\n${ligne}`),
+    ).toContain<FamilleVocabulaire>("financement_inconditionnel");
+    expect(temoin("prise&nbsp;en charge à&nbsp;100&nbsp;%")).toContain<FamilleVocabulaire>(
+      "financement_inconditionnel",
+    );
+  });
+
+  it.each([
+    ["easy-to-sell funded products", "financement_inconditionnel"],
+    ["training can be fully funded", "financement_inconditionnel"],
+    ["100 % covered by the OPCO", "financement_inconditionnel"],
+    ["funding is available", "financement_non_gate"],
+  ] as const)("TÉMOIN — la branche anglaise est lue : « %s » est refusé (%s)", (texte, famille) => {
+    expect(temoin(texte)).toContain<FamilleVocabulaire>(famille);
+  });
+
   it("un commentaire de code n'est pas une page : il n'est pas lu", () => {
     expect(temoin("// sans avance de frais : formule interdite, voir JUR-T03")).toEqual([]);
     expect(temoin(" * « prise en charge à 100 % » est refusé")).toEqual([]);
