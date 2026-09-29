@@ -176,7 +176,22 @@ async function exigerLaMain(tx: Tx, t: EtapeTenue): Promise<void> {
   if (tenueEncore.length === 0) throw new ResultatOrphelin();
 }
 
-async function exigerAucunRetrait(tx: Tx, rencontreId: string): Promise<void> {
+/**
+ * Les étapes qui DOIVENT aboutir malgré un retrait de l'accord : la purge du
+ * son est précisément ce que le retrait demande (B2). Sans cette exemption,
+ * `terminer` levait `RetraitConstate` : les objets R2 étaient supprimés, mais
+ * `audioSupprimeLe` n'était jamais posé — aucune preuve de la suppression, le
+ * son encore affiché, une purge reprogrammée toutes les 5 minutes jusqu'au
+ * plafond, puis une FAUSSE alerte critique « audio non purgé ».
+ */
+export const ETAPES_PERMISES_APRES_RETRAIT: ReadonlySet<EtapeVisio> = new Set(["purger_audio"]);
+
+async function exigerAucunRetrait(
+  tx: Tx,
+  t: Pick<EtapeTenue, "rencontreId" | "etape">,
+): Promise<void> {
+  if (ETAPES_PERMISES_APRES_RETRAIT.has(t.etape)) return;
+  const rencontreId = t.rencontreId;
   const retrait = await tx.$queryRaw<Array<{ un: number }>>`
     SELECT 1 AS "un" FROM "enregistrement_consentements"
      WHERE "rencontre_id" = ${rencontreId}::uuid AND "type" = 'retrait' AND "enregistrement_id" IS NULL
@@ -219,7 +234,7 @@ export function depotEtapesPrisma(db: Client): DepotEtapes {
     ecrireEnCours: async (t, fn) =>
       db.$transaction(async (tx) => {
         await exigerLaMain(tx, t);
-        await exigerAucunRetrait(tx, t.rencontreId);
+        await exigerAucunRetrait(tx, t);
         return fn(tx);
       }),
     terminer: async (t, fn) =>
@@ -231,7 +246,7 @@ export function depotEtapesPrisma(db: Client): DepotEtapes {
                    "classe_erreur" = NULL, "derniere_erreur" = NULL
              WHERE "id" = ${t.id}::uuid AND "statut" = 'en_cours' AND "execution" = ${t.execution}`;
           if (n === 0) throw new ResultatOrphelin();
-          await exigerAucunRetrait(tx, t.rencontreId);
+          await exigerAucunRetrait(tx, t);
           const suites = await fn(tx);
           for (const s of suites) await planifierDans(tx, t.rencontreId, s);
           return suites;

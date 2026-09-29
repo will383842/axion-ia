@@ -13,6 +13,7 @@ import type { EtapeVisio } from "../../prisma/generated/client";
 import type { AlerteCircuit, DepsCircuit, Gestionnaire } from "@/server/visio/etapes";
 import type { PortDonnees } from "@/server/visio/port-donnees";
 import {
+  ETAPES_PERMISES_APRES_RETRAIT,
   priseNonImputee,
   ResultatOrphelin,
   RetraitConstate,
@@ -103,7 +104,8 @@ export class FauxDepot implements DepotEtapes {
   private garder(t: EtapeTenue): LigneEtape {
     const l = this.ligne(t.id);
     if (l.statut !== "en_cours" || l.execution !== t.execution) throw new ResultatOrphelin();
-    if (this.retraits.has(t.rencontreId)) throw new RetraitConstate();
+    if (this.retraits.has(t.rencontreId) && !ETAPES_PERMISES_APRES_RETRAIT.has(t.etape))
+      throw new RetraitConstate();
     return l;
   }
 
