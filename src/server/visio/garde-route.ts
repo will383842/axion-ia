@@ -2,15 +2,17 @@
  * LA GARDE COMMUNE des routes `/api/enregistreur/*` (PR 5), sur le modèle de
  * `src/app/api/mcp/route.ts`.
  *
- * Dans cet ordre, et rien n'est lu de la base avant l'étape 5 :
+ * Dans cet ordre, et rien n'est lu de la base avant l'étape 6 :
  *
  *   1. build hors ligne (`stub.invalid`, ADR 0026) → 503, avant toute lecture ;
  *   2. drapeau `ferme` → 503 (rien n'est servi tant que Will n'a rien ouvert) ;
- *   3. version du contrat (`x-enregistreur-contrat: 1`) → 400 sinon ;
- *   4. type de contenu : seule la route des morceaux accepte du son
+ *   3. `Authorization: Bearer <64 hex>` → 401 sinon. AVANT la version du
+ *      contrat : un appel anonyme (le `curl` du critère d'acceptation, sans
+ *      en-tête de contrat) reçoit 401, pas 400 ;
+ *   4. version du contrat (`x-enregistreur-contrat: 1`) → 400 sinon ;
+ *   5. type de contenu : seule la route des morceaux accepte du son
  *      (`application/octet-stream`, ≤ 262 144 octets) ; toutes les autres
  *      refusent `audio/*` et `application/octet-stream` (415) ;
- *   5. `Authorization: Bearer <64 hex>` → 401 sinon ;
  *   6. témoin de clé de chiffrement → 503 si la clé manque ou diffère ;
  *   7. jeton : connu, non révoqué, non expiré, titulaire toujours habilité ;
  *   8. limite de débit PAR APPAREIL (60/min pour les morceaux, 120/min sinon).
@@ -149,7 +151,20 @@ export async function garderEnregistreur(
     };
   }
 
-  // 3. Version du contrat.
+  // 3. Jeton : la forme, sans la base. Avant le contrat : sans jeton, 401.
+  const jeton = lireJetonBearer(req.headers.get("authorization"));
+  if (!jeton) {
+    return {
+      ok: false,
+      reponse: erreur(
+        401,
+        "jeton_absent",
+        "Jeton absent : collez-le dans les options de l'extension.",
+      ),
+    };
+  }
+
+  // 4. Version du contrat.
   if (req.headers.get(ENTETE_CONTRAT) !== String(VERSION_CONTRAT_ENREGISTREUR)) {
     return {
       ok: false,
@@ -161,7 +176,7 @@ export async function garderEnregistreur(
     };
   }
 
-  // 4. Type de contenu et taille, AVANT de lire le corps.
+  // 5. Type de contenu et taille, AVANT de lire le corps.
   const type = req.headers.get("content-type") ?? "";
   const longueur = Number(req.headers.get("content-length") ?? "0");
   if (famille === "morceaux") {
@@ -188,19 +203,6 @@ export async function garderEnregistreur(
     if (!Number.isFinite(longueur) || longueur > TAILLE_MAX_JSON_OCTETS) {
       return { ok: false, reponse: erreur(413, "corps_trop_gros", "Corps trop gros.") };
     }
-  }
-
-  // 5. Jeton : la forme, sans la base.
-  const jeton = lireJetonBearer(req.headers.get("authorization"));
-  if (!jeton) {
-    return {
-      ok: false,
-      reponse: erreur(
-        401,
-        "jeton_absent",
-        "Jeton absent : collez-le dans les options de l'extension.",
-      ),
-    };
   }
 
   const db = await deps.db();

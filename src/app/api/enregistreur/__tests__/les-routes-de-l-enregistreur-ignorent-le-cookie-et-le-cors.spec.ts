@@ -156,6 +156,21 @@ describe("⛔ les routes de l'enregistreur ignorent le cookie et le CORS", () =>
       depsDeTest(db),
     );
     expect(pilote.status).toBe(401);
+    // Le `curl` du critère : ni jeton NI en-tête de contrat → 401, pas 400.
+    const curlNu = await traiterRencontresDuJour(
+      new Request("https://axion-ia.com/api/enregistreur/rencontres-du-jour"),
+      depsDeTest(db),
+    );
+    expect(curlNu.status).toBe(401);
+    // Contre-témoin : avec un jeton, un contrat absent reste un 400.
+    const { jeton } = semerAppareil(db);
+    const sansContrat = await traiterRencontresDuJour(
+      new Request("https://axion-ia.com/api/enregistreur/rencontres-du-jour", {
+        headers: { authorization: `Bearer ${jeton}` },
+      }),
+      depsDeTest(db),
+    );
+    expect(sansContrat.status).toBe(400);
   });
 
   it("aucune réponse ne contient le préfixe de la console", async () => {
