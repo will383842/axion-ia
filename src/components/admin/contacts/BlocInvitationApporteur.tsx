@@ -74,9 +74,10 @@ export async function BlocInvitationApporteur({
       <p className="admin-help">
         Un e-mail avec le lien de réservation Calendly, le document de présentation et le catalogue
         — et le lien du dossier si la personne ne l&apos;a pas encore envoyé. Un dossier complet, ou
-        une candidature à une offre commerciale, reçoit cette invitation automatiquement 15 minutes
-        après son arrivée ; pour un premier contact ou un dossier commencé, c&apos;est toi qui
-        choisis qui inviter.
+        une candidature à une offre commerciale (même si la personne avait déjà laissé un premier
+        contact), reçoit cette invitation automatiquement 15 minutes après son arrivée. Pour un
+        premier contact seul, un dossier commencé, une saisie manuelle ou une fiche importée (CV
+        Indeed), rien ne part tout seul : c&apos;est toi qui choisis qui inviter.
       </p>
 
       {retour ? (

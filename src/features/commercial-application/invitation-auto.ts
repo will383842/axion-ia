@@ -26,7 +26,9 @@
 // aujourd'hui est invité.
 //
 // Inchangé : la candidature à une offre COMMERCIALE (fiche créée
-// automatiquement, `creationAutomatique`), décision du 28/09.
+// automatiquement, `creationAutomatique`), décision du 28/09. Et si la
+// personne avait DÉJÀ une fiche (premier contact, écran 1), c'est cette fiche
+// qui est invitée (29/09) — sans quoi le doublon la laissait sans invitation.
 //
 // Hors champ, volontairement :
 //   · la SAISIE MANUELLE de la console : elle a sa propre case « Envoyer
@@ -136,6 +138,59 @@ async function inviter(submissionId: string, calendlyUrl: string): Promise<Issue
   return issue;
 }
 
+/**
+ * Invite la fiche apporteur qui existait AVANT la candidature à l'offre.
+ * Rend `"sautee"` si elle n'est pas à inviter : déjà passée par l'invitation
+ * automatique (marque `invitationAuto`), effacée, archivée, ou rangée par Will
+ * (statut autre que nouveau / en cours) — même périmètre que l'étape 2.
+ */
+async function inviterFicheExistante(
+  submissionId: string,
+  calendlyUrl: string,
+): Promise<Issue | "sautee" | null> {
+  const fiche = await prisma.submission.findUnique({
+    where: { id: submissionId },
+    select: { details: true, deletedAt: true, archivedAt: true, status: true },
+  });
+  if (!fiche || fiche.deletedAt || fiche.archivedAt) return "sautee";
+  if (fiche.status !== "new" && fiche.status !== "in_progress") return "sautee";
+  const d =
+    fiche.details && typeof fiche.details === "object" && !Array.isArray(fiche.details)
+      ? (fiche.details as Record<string, unknown>)
+      : {};
+  if (d["invitationAuto"] !== undefined) return "sautee";
+  return inviter(submissionId, calendlyUrl);
+}
+
+/** Trace le geste sur la candidature (best-effort). */
+async function journaliserCandidature(
+  applicationId: string,
+  submissionId: string,
+  issue: Issue,
+  ficheCreee: boolean,
+): Promise<void> {
+  const envoyee = issue === "envoyee" || issue === "en-validation";
+  try {
+    await consignerEvenement({
+      applicationId,
+      type: "note",
+      authorId: null,
+      authorName: "Envoi automatique",
+      summary: envoyee
+        ? "Réseau d'apporteurs proposé automatiquement — invitation à l'échange de 15 minutes envoyée"
+        : ficheCreee
+          ? `Réseau d'apporteurs : fiche créée automatiquement, invitation non envoyée (${issue})`
+          : `Réseau d'apporteurs : invitation non envoyée (${issue})`,
+      body: ficheCreee
+        ? "Fiche apporteur créée dans Contacts › Commercial."
+        : "La personne avait déjà une fiche apporteur dans Contacts › Commercial : l'invitation porte sur celle-ci.",
+      meta: { geste: "reseau-apporteurs-auto", submissionId, issue },
+    });
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "invitation-auto", step: "journal" } });
+  }
+}
+
 export async function passerInvitationsAuto(
   maintenant: Date = new Date(),
 ): Promise<CompteRenduInvitationsAuto> {
@@ -181,7 +236,23 @@ export async function passerInvitationsAuto(
           "Fiche créée automatiquement depuis une candidature à une offre d'emploi commerciale. Invitation à l'échange de 15 minutes envoyée automatiquement.",
       });
       if (!creation.ok) {
-        // Doublon : la personne est déjà dans le tunnel, sa fiche suit son cours.
+        // 🔑 DOUBLON (2026-09-29, décision Will) : la personne a déjà une fiche
+        // apporteur — typiquement un premier contact ou un écran 1, qui ne sont
+        // plus invités d'eux-mêmes. Sa candidature à l'offre commerciale lui
+        // vaut l'invitation quand même : on invite la fiche EXISTANTE. La garde
+        // « une invitation par personne » d'`envoyerInvitationApporteur`
+        // empêche toujours un second envoi.
+        if (creation.erreur === "doublon" && creation.submissionId) {
+          const issue = await inviterFicheExistante(creation.submissionId, calendlyUrl);
+          if (issue === "sautee") continue; // déjà traitée, ou rangée par Will
+          if (issue === null) {
+            aReessayer++; // la candidature reste dans la fenêtre : repassage
+            continue;
+          }
+          compter(issue);
+          await journaliserCandidature(c.id, creation.submissionId, issue, false);
+          continue;
+        }
         ecartees[`candidature-${creation.erreur}`] =
           (ecartees[`candidature-${creation.erreur}`] ?? 0) + 1;
         continue;
@@ -194,22 +265,7 @@ export async function passerInvitationsAuto(
         continue;
       }
       compter(issue);
-      try {
-        await consignerEvenement({
-          applicationId: c.id,
-          type: "note",
-          authorId: null,
-          authorName: "Envoi automatique",
-          summary:
-            issue === "envoyee" || issue === "en-validation"
-              ? "Réseau d'apporteurs proposé automatiquement — invitation à l'échange de 15 minutes envoyée"
-              : `Réseau d'apporteurs : fiche créée automatiquement, invitation non envoyée (${issue})`,
-          body: "Fiche apporteur créée dans Contacts › Commercial.",
-          meta: { geste: "reseau-apporteurs-auto", submissionId: creation.submissionId, issue },
-        });
-      } catch (err) {
-        Sentry.captureException(err, { tags: { action: "invitation-auto", step: "journal" } });
-      }
+      await journaliserCandidature(c.id, creation.submissionId, issue, true);
     } catch (err) {
       aReessayer++;
       Sentry.captureException(err, { tags: { action: "invitation-auto", step: "candidature" } });

@@ -219,11 +219,78 @@ describe("passerInvitationsAuto", () => {
     );
   });
 
-  it("une candidature dont la personne est déjà dans le tunnel n'envoie rien", async () => {
-    d.jobFindMany.mockResolvedValue([{ id: "ja2" }]);
-    d.creer.mockResolvedValue({ ok: false, erreur: "doublon", submissionId: "exist" });
-    await passerInvitationsAuto(MAINTENANT);
-    expect(d.envoyer).not.toHaveBeenCalled();
+  describe("offre commerciale d'une personne qui a DÉJÀ une fiche (29/09)", () => {
+    const FICHE_VIVANTE = { deletedAt: null, archivedAt: null, status: "new" };
+
+    it("un premier contact antérieur n'empêche plus l'invitation : sa fiche est invitée", async () => {
+      d.jobFindMany.mockResolvedValue([{ id: "ja2" }]);
+      d.creer.mockResolvedValue({ ok: false, erreur: "doublon", submissionId: "lead" });
+      d.subFindUnique.mockResolvedValue({ ...FICHE_VIVANTE, details: PREMIER_CONTACT });
+      const r = await passerInvitationsAuto(MAINTENANT);
+      expect(d.envoyer).toHaveBeenCalledTimes(1);
+      expect(d.envoyer).toHaveBeenCalledWith(
+        expect.objectContaining({ submissionId: "lead", adminId: null }),
+      );
+      expect(r.envoyees).toBe(1);
+      expect(r.fichesCreees).toBe(0);
+      // Marquée : le passage suivant ne la reprend pas.
+      const data = d.subUpdate.mock.calls[0]?.[0]?.data;
+      expect(data.details.invitationAuto.issue).toBe("envoyee");
+      expect(d.consigner).toHaveBeenCalledWith(expect.objectContaining({ applicationId: "ja2" }));
+    });
+
+    it("même chose pour un contact capturé à l'écran 1", async () => {
+      d.jobFindMany.mockResolvedValue([{ id: "ja3" }]);
+      d.creer.mockResolvedValue({ ok: false, erreur: "doublon", submissionId: "e1" });
+      d.subFindUnique.mockResolvedValue({ ...FICHE_VIVANTE, details: ECRAN_1 });
+      await passerInvitationsAuto(MAINTENANT);
+      expect(d.envoyer).toHaveBeenCalledWith(expect.objectContaining({ submissionId: "e1" }));
+    });
+
+    it("une fiche déjà passée par l'invitation automatique n'est pas reprise à chaque passage", async () => {
+      d.jobFindMany.mockResolvedValue([{ id: "ja4" }]);
+      d.creer.mockResolvedValue({ ok: false, erreur: "doublon", submissionId: "lead" });
+      d.subFindUnique.mockResolvedValue({
+        ...FICHE_VIVANTE,
+        details: { ...PREMIER_CONTACT, invitationAuto: { issue: "envoyee" } },
+      });
+      await passerInvitationsAuto(MAINTENANT);
+      expect(d.envoyer).not.toHaveBeenCalled();
+      expect(d.subUpdate).not.toHaveBeenCalled();
+    });
+
+    it("une fiche archivée, effacée ou rangée par Will n'est pas invitée", async () => {
+      d.jobFindMany.mockResolvedValue([{ id: "ja5" }]);
+      d.creer.mockResolvedValue({ ok: false, erreur: "doublon", submissionId: "lead" });
+      for (const etat of [
+        { ...FICHE_VIVANTE, archivedAt: new Date() },
+        { ...FICHE_VIVANTE, deletedAt: new Date() },
+        { ...FICHE_VIVANTE, status: "archived" },
+      ]) {
+        d.subFindUnique.mockResolvedValue({ ...etat, details: PREMIER_CONTACT });
+        await passerInvitationsAuto(MAINTENANT);
+      }
+      expect(d.envoyer).not.toHaveBeenCalled();
+    });
+
+    it("la personne déjà invitée n'en reçoit pas une seconde : le refus est marqué", async () => {
+      d.jobFindMany.mockResolvedValue([{ id: "ja6" }]);
+      d.creer.mockResolvedValue({ ok: false, erreur: "doublon", submissionId: "lead" });
+      d.subFindUnique.mockResolvedValue({ ...FICHE_VIVANTE, details: PREMIER_CONTACT });
+      d.envoyer.mockResolvedValue({ ok: false, erreur: "deja-invitee", message: "x" });
+      const r = await passerInvitationsAuto(MAINTENANT);
+      expect(r.envoyees).toBe(0);
+      expect(r.ecartees["deja-invitee"]).toBe(1);
+      expect(d.subUpdate).toHaveBeenCalledTimes(1);
+    });
+
+    it("un autre refus de création (candidature illisible) n'envoie rien", async () => {
+      d.jobFindMany.mockResolvedValue([{ id: "ja7" }]);
+      d.creer.mockResolvedValue({ ok: false, erreur: "illisible" });
+      const r = await passerInvitationsAuto(MAINTENANT);
+      expect(d.envoyer).not.toHaveBeenCalled();
+      expect(r.ecartees["candidature-illisible"]).toBe(1);
+    });
   });
 
   it("sans lien Calendly configuré, rien ne part", async () => {
