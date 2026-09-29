@@ -197,7 +197,7 @@ describe("passerInvitationsAuto", () => {
   });
 
   it("🔴 une fiche « déjà invitée » (le dossier après la capture) est RANGÉE si encore nouvelle — pas de bruit", async () => {
-    d.subFindMany.mockResolvedValue([{ id: "dossier-1", details: APPORTEUR }]);
+    d.subFindMany.mockResolvedValue([{ id: "dossier-1", details: DOSSIER_COMPLET }]);
     d.envoyer.mockResolvedValue({ ok: false, erreur: "deja-invitee", message: "x" });
     await passerInvitationsAuto(MAINTENANT);
     expect(d.subUpdateMany).toHaveBeenCalledWith({
@@ -207,8 +207,10 @@ describe("passerInvitationsAuto", () => {
   });
 
   it("une invitation envoyée ne passe pas par ce rangement (déjà fait par l'envoi)", async () => {
-    d.subFindMany.mockResolvedValue([{ id: "fiche-1", details: APPORTEUR }]);
+    d.subFindMany.mockResolvedValue([{ id: "fiche-1", details: DOSSIER_COMPLET }]);
     await passerInvitationsAuto(MAINTENANT);
+    // Témoin : la fiche est bien passée par l'envoi (sinon ce test passe à vide).
+    expect(d.envoyer).toHaveBeenCalledTimes(1);
     expect(d.subUpdateMany).not.toHaveBeenCalled();
   });
 
