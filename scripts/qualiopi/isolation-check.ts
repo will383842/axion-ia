@@ -371,6 +371,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/server/visio/catalogue-ia.ts",
   // Sa garde : chaque code `visio.*` du circuit est au catalogue.
   "src/server/visio/__tests__/les-codes-d-alerte-du-circuit-sont-au-catalogue.spec.ts",
+  // Ses gardes : le catalogue lit LA règle de tarif du site (`deriveTarifType`,
+  // `resolveOffreEffectifFr`), et une alerte du circuit a un lien (`lienCible`).
+  "src/server/visio/__tests__/le-catalogue-du-circuit-lit-les-regles-du-site.spec.ts",
+  "src/server/visio/__tests__/une-alerte-du-circuit-mene-au-compte-rendu.spec.ts",
   "src/server/queue/workers/retention-purge-worker.ts",
   // ── Recherche admin : partage le garde d'habilitation `actions/qualiopi/_guards`.
   "src/server/actions/admin-recherche.ts",
