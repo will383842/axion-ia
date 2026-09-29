@@ -42,6 +42,21 @@ export interface ScreeningQuestion {
    * 11 lignes »). Regroupées, elles tiennent en quatre.
    */
   ligne?: string;
+  /**
+   * Bloc d'affichage de la page « compléter ma candidature » (2026-09-28,
+   * Will : « trop de blabla, mobile first »). Les questions consécutives d'un
+   * même `groupe` s'affichent sous ce titre, en GRILLE pour les prix, chacune
+   * sous son libellé `court`. Sans `groupe`, la question garde son libellé
+   * complet. Le formulaire de candidature l'ignore.
+   */
+  groupe?: string;
+  /**
+   * Ce qui est attendu, en mots courts (« hook dès la 1re seconde », « LUT /
+   * étalonnage »…), affiché en PASTILLES sous le titre du groupe, par la
+   * première question du groupe qui en porte. Un prix se chiffre sur un cahier
+   * des charges : le lister évite un prix qui ne couvre pas la prestation.
+   */
+  attendus?: string[];
 }
 
 /** Longueur maximale d'une réponse stockée. */
@@ -97,6 +112,18 @@ export function prixInvalides(
   );
 }
 
+/**
+ * Une réponse telle qu'on la LIT : un prix devient « 250 € », quelle que soit
+ * la saisie (« 250 », « 250 € », « 250 euros »). Telegram et la console passent
+ * par ici : le 2026-09-26, la console affichait « 250 » et « 450 € » côte à
+ * côte pour le même candidat, pendant que Telegram lisait « 250 € ».
+ * Tout le reste est rendu tel quel.
+ */
+export function valeurAffichee(q: ScreeningQuestion | undefined, brut: string): string {
+  const montant = q?.type === "price" ? normaliserMontant(brut) : null;
+  return montant !== null ? `${montant} €` : brut;
+}
+
 /** Questions obligatoires restées sans réponse. */
 export function missingRequired(
   questions: ScreeningQuestion[],
@@ -126,9 +153,7 @@ export function labeledAnswers(
   for (const q of questions) {
     const brut = answers[q.id]?.trim();
     if (!brut) continue;
-    // Un prix se lit « 250 € », quelle que soit la saisie.
-    const montant = q.type === "price" ? normaliserMontant(brut) : null;
-    const valeur = (montant !== null ? `${montant} €` : brut).replace(/\s*\n\s*/g, " · ");
+    const valeur = valeurAffichee(q, brut).replace(/\s*\n\s*/g, " · ");
     const groupe = q.ligne ?? (q.type === "price" ? "Prix" : undefined);
     if (groupe) {
       const morceau = q.court ? `${q.court} ${valeur}` : valeur;

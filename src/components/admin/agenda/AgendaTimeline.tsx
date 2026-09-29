@@ -29,6 +29,7 @@ import { AGENDA_SOURCE_LABELS, type AgendaItem } from "@/features/admin-agenda/t
 import { RetirerIndisponibiliteButton } from "./RetirerIndisponibiliteButton";
 import { RendezVousForm } from "./RendezVousForm";
 import { LIBELLE_CANAL } from "@/server/calendly/canal";
+import { RejoindreVisioBouton } from "@/components/admin/contacts/RejoindreVisioBouton";
 
 /**
  * Amplitude affichée. 7 h → 21 h couvre la plage réservable (9 h – 19 h) avec
@@ -230,6 +231,20 @@ export function AgendaTimeline({
                   </Link>
                 ) : (
                   contenu
+                )}
+                {/* En surimpression, en haut à droite du bloc, et en ICÔNE SEULE :
+                    un bloc de 15 ou 30 minutes mesure ~25 px, un bouton texte y
+                    serait rogné et masquerait le titre. */}
+                {i.lienVisio && (
+                  <span className="absolute top-[2px] right-[2px] z-[2]">
+                    <RejoindreVisioBouton
+                      href={i.lienVisio}
+                      debut={i.debut}
+                      fin={i.fin}
+                      maintenant={maintenant}
+                      icone
+                    />
+                  </span>
                 )}
                 {/* Retrait proposé UNIQUEMENT sur les blocages posés par la
                     console : `googleEventId` n'est renseigné que là (cf.

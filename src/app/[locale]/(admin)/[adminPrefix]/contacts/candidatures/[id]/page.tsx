@@ -6,7 +6,7 @@ import { Fragment } from "react";
 import { redirect, notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { markInboxRead } from "@/features/admin-inbox/reads";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import { AdminPageShell, AdminPageHeader, AdminCard, AdminBadge } from "@/components/admin/ui";
 import { getApplicationDetailAction } from "@/features/admin-job-applications/actions";
 import { getJobOfferDetailAction } from "@/features/admin-job-offers/actions";
 import { ApplicationStatusForm } from "./ApplicationStatusForm";
@@ -17,10 +17,20 @@ import { lireFrise, lireEntretiens } from "@/features/admin-job-applications/tim
 import { lireAccuseReception } from "@/features/admin-job-applications/accuse-reception";
 import { Entretiens } from "./Entretiens";
 import { DeposerCv } from "./DeposerCv";
+import { ProposerReseauApporteurs } from "./ProposerReseauApporteurs";
+import { ficheApporteurDeLaCandidature } from "@/features/admin-job-applications/proposer-reseau";
+import { estLienCalendlyValide } from "@/lib/commercial-application/kit-apporteur";
+import { adminPath } from "@/lib/admin-path";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { liensInsertionComposeur } from "@/lib/imprimes/liens-email";
 import { env } from "@/env";
+import { parseScreeningQuestions, valeurAffichee } from "@/lib/careers/screening-answers";
+import { extraireLiensVideo, montreDuTravail, sourcesDeLiens } from "@/lib/careers/liens-video";
+import { prisma } from "@/lib/prisma";
+import { relancerAnalysesEnAttente } from "@/server/careers/videos-candidat";
+import { tailleLisible } from "@/lib/careers/videos";
+import { isVideoFreelanceOffer } from "@/lib/careers/video-editor-offer";
 
 export const dynamic = "force-dynamic";
 
@@ -68,22 +78,70 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
   // sa lecture réapplique le prédicat d'ouverture du dossier plutôt que de se
   // fier à la garde de la page. Deux étages qui ne peuvent pas diverger.
   const acteur = { role: (session.user as { role?: string }).role };
-  const [frise, entretiens, accuse] = await Promise.all([
+  const [frise, entretiens, accuse, ficheApporteur] = await Promise.all([
     lireFrise(a.id, acteur),
     lireEntretiens(a.id, acteur),
     // L'accusé de réception automatique : parti, en échec, ou introuvable.
     // Même prédicat que la frise — il lit l'adresse du candidat.
     lireAccuseReception({ id: a.id, email: a.email, submittedAt: a.submittedAt }, acteur),
+    // « Proposer le réseau d'apporteurs » (2026-09-28) : la fiche apporteur
+    // déjà née de cette candidature, pour afficher le lien plutôt que le bouton.
+    ficheApporteurDeLaCandidature(a.id),
   ]);
+  const questions = parseScreeningQuestions(offer?.screeningQuestions);
+  const qParId = new Map(questions.map((q) => [q.id, q]));
   const qLabels: Record<string, string> = {};
-  if (offer && Array.isArray(offer.screeningQuestions)) {
-    for (const q of offer.screeningQuestions as Array<{
-      id?: string;
-      labelFr?: string;
-    }>) {
-      if (q.id) qLabels[q.id] = q.labelFr ?? q.id;
-    }
-  }
+  for (const q of questions) qLabels[q.id] = q.labelFr ?? q.id;
+
+  // Formulaire COURT des offres vidéo freelance (2026-09-26) : ni poste, ni
+  // expérience, ni disponibilité, ni prétention, ni LinkedIn, ni photo ne sont
+  // demandés. Afficher ces lignes à « — » ferait croire à un dossier incomplet ;
+  // elles ne réapparaissent que si une valeur existe (dossier antérieur).
+  const formulaireCourt = isVideoFreelanceOffer(offer?.slug);
+  const montrer = (v: unknown) => !formulaireCourt || (v !== null && v !== undefined && v !== "");
+
+  // « Ses vidéos » (Will, 2026-09-28) : tous les liens vers son travail, d'où
+  // qu'ils viennent — formulaire, petit mot, portfolio, et ce qui est arrivé par
+  // e-mail et a été recopié au journal. Nos propres messages sont exclus : ils ne
+  // portent que nos liens.
+  const liens = extraireLiensVideo(
+    sourcesDeLiens(
+      {
+        answers: a.answers,
+        motivation: a.motivation,
+        linkedinUrl: a.linkedinUrl,
+        evenements: frise.map((e) => ({
+          type: e.type,
+          summary: e.summary,
+          occurredAt: e.occurredAt,
+          body: e.body,
+        })),
+      },
+      formatDateFrShort,
+    ),
+  );
+  // État de chaque lien au dernier passage du lundi (table absente = rien à dire).
+  const etats = new Map(
+    (
+      await prisma.jobApplicationLink
+        .findMany({
+          where: { applicationId: a.id },
+          select: { url: true, etat: true, verifieLe: true, mortDepuis: true },
+        })
+        .catch(() => [])
+    ).map((l) => [l.url, l]),
+  );
+  // Vidéos DÉPOSÉES (2026-09-28) : lues ici, relancées si l'antivirus a été
+  // interrompu (le worker n'a pas le volume : pas de cron possible).
+  await relancerAnalysesEnAttente(a.id);
+  const videos = await prisma.jobApplicationVideo
+    .findMany({
+      where: { applicationId: a.id, statut: { in: ["analyse", "disponible", "rejetee"] } },
+      orderBy: { createdAt: "asc" },
+      select: { id: true, nomOriginal: true, taille: true, statut: true, motifRejet: true },
+    })
+    .catch(() => []);
+  const montreVideo = liens.some(montreDuTravail) || videos.some((v) => v.statut === "disponible");
 
   return (
     <AdminPageShell>
@@ -105,28 +163,56 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           <dd>{a.phone}</dd>
           <dt className="font-medium">Ville</dt>
           <dd>{a.city ?? "—"}</dd>
-          <dt className="font-medium">Poste actuel</dt>
-          <dd>{a.currentRole ?? "—"}</dd>
-          <dt className="font-medium">Expérience</dt>
-          <dd>{a.experienceBand ?? "—"}</dd>
-          <dt className="font-medium">Disponibilité</dt>
-          <dd>{a.availability ?? "—"}</dd>
-          <dt className="font-medium">Prétention de revenus</dt>
-          <dd>{a.salaryExpectation ?? "—"}</dd>
-          <dt className="font-medium">LinkedIn</dt>
-          <dd>
-            {a.linkedinUrl ? (
-              <a href={a.linkedinUrl} target="_blank" rel="noopener" className="admin-link">
-                {a.linkedinUrl}
-              </a>
-            ) : (
-              "—"
-            )}
-          </dd>
-          <dt className="font-medium">Permis</dt>
-          <dd>{yn(a.hasDriverLicense)}</dd>
-          <dt className="font-medium">Véhicule</dt>
-          <dd>{yn(a.hasVehicle)}</dd>
+          {montrer(a.currentRole) ? (
+            <>
+              <dt className="font-medium">Poste actuel</dt>
+              <dd>{a.currentRole ?? "—"}</dd>
+            </>
+          ) : null}
+          {montrer(a.experienceBand) ? (
+            <>
+              <dt className="font-medium">Expérience</dt>
+              <dd>{a.experienceBand ?? "—"}</dd>
+            </>
+          ) : null}
+          {montrer(a.availability) ? (
+            <>
+              <dt className="font-medium">Disponibilité</dt>
+              <dd>{a.availability ?? "—"}</dd>
+            </>
+          ) : null}
+          {montrer(a.salaryExpectation) ? (
+            <>
+              <dt className="font-medium">Prétention de revenus</dt>
+              <dd>{a.salaryExpectation ?? "—"}</dd>
+            </>
+          ) : null}
+          {montrer(a.linkedinUrl) ? (
+            <>
+              <dt className="font-medium">LinkedIn</dt>
+              <dd>
+                {a.linkedinUrl ? (
+                  <a href={a.linkedinUrl} target="_blank" rel="noopener" className="admin-link">
+                    {a.linkedinUrl}
+                  </a>
+                ) : (
+                  "—"
+                )}
+              </dd>
+            </>
+          ) : null}
+          {montrer(a.hasDriverLicense) ? (
+            <>
+              <dt className="font-medium">Permis</dt>
+              <dd>{yn(a.hasDriverLicense)}</dd>
+            </>
+          ) : null}
+          {montrer(a.hasVehicle) ? (
+            <>
+              <dt className="font-medium">Véhicule</dt>
+              <dd>{yn(a.hasVehicle)}</dd>
+            </>
+          ) : null}
           <dt className="font-medium">CV</dt>
           <dd>
             {a.hasCv ? (
@@ -140,18 +226,22 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
               <DeposerCv applicationId={a.id} />
             )}
           </dd>
-          <dt className="font-medium">Photo</dt>
-          <dd>
-            {a.hasPhoto ? (
-              <PhotoCandidat
-                href={`/fr/${adminPrefix}/contacts/candidatures/${a.id}/photo`}
-                mimeType={a.photoMimeType}
-                nomOriginal={a.photoOriginalName}
-              />
-            ) : (
-              "non fournie"
-            )}
-          </dd>
+          {montrer(a.hasPhoto || null) ? (
+            <>
+              <dt className="font-medium">Photo</dt>
+              <dd>
+                {a.hasPhoto ? (
+                  <PhotoCandidat
+                    href={`/fr/${adminPrefix}/contacts/candidatures/${a.id}/photo`}
+                    mimeType={a.photoMimeType}
+                    nomOriginal={a.photoOriginalName}
+                  />
+                ) : (
+                  "non fournie"
+                )}
+              </dd>
+            </>
+          ) : null}
         </dl>
       </AdminCard>
 
@@ -161,6 +251,82 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           <p className="text-sm whitespace-pre-wrap">{a.motivation}</p>
         </AdminCard>
       ) : null}
+
+      <AdminCard>
+        <h3 className="admin-section-title">Ses vidéos</h3>
+        {videos.length > 0 ? (
+          <div className="mb-[var(--space-admin-4)] space-y-[var(--space-admin-4)]">
+            {videos.map((v) => (
+              <div key={v.id}>
+                <p className="text-sm font-medium">
+                  {v.nomOriginal}{" "}
+                  <span className="admin-meta-small">· {tailleLisible(v.taille)}</span>{" "}
+                  {v.statut === "analyse" ? (
+                    <AdminBadge tone="warning">analyse antivirus en cours</AdminBadge>
+                  ) : v.statut === "rejetee" ? (
+                    <AdminBadge tone="destructive">
+                      refusée — {v.motifRejet ?? "motif inconnu"}
+                    </AdminBadge>
+                  ) : null}
+                </p>
+                {v.statut === "disponible" ? (
+                  <video
+                    controls
+                    preload="metadata"
+                    src={`/fr/${adminPrefix}/contacts/candidatures/${a.id}/video/${v.id}`}
+                    style={{ width: "100%", maxWidth: 360, maxHeight: 480, background: "black" }}
+                  />
+                ) : null}
+              </div>
+            ))}
+          </div>
+        ) : null}
+        {!montreVideo ? (
+          <p className="admin-alert admin-alert-warning mb-[var(--space-admin-3)]">
+            Aucune vidéo ni lien vers son travail. Demande-lui 2 ou 3 montages.
+          </p>
+        ) : null}
+        {liens.length > 0 ? (
+          <ul className="space-y-2 text-sm">
+            {liens.map((l) => (
+              <li key={l.url}>
+                <AdminBadge tone="neutral">{l.plateforme}</AdminBadge>{" "}
+                <a
+                  href={l.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="admin-link"
+                  style={{ wordBreak: "break-all" }}
+                >
+                  {l.url}
+                </a>{" "}
+                <span className="admin-meta-small">· {l.source}</span>
+                {(() => {
+                  const e = etats.get(l.url.slice(0, 2000));
+                  if (!e) return null;
+                  if (e.etat === "mort")
+                    return (
+                      <>
+                        {" "}
+                        <AdminBadge tone="destructive">
+                          lien mort depuis le {formatDateFrShort(e.mortDepuis ?? e.verifieLe)}
+                        </AdminBadge>
+                      </>
+                    );
+                  if (e.etat === "vivant")
+                    return (
+                      <span className="admin-meta-small">
+                        {" "}
+                        · vérifié le {formatDateFrShort(e.verifieLe)}
+                      </span>
+                    );
+                  return null;
+                })()}
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </AdminCard>
 
       {Object.keys(a.answers).length > 0 ? (
         <AdminCard>
@@ -178,7 +344,9 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
               .map(([qid, val]) => (
                 <Fragment key={qid}>
                   <dt className="font-medium">{qLabels[qid] ?? qid}</dt>
-                  <dd className="text-fg-muted whitespace-pre-wrap">{val}</dd>
+                  <dd className="text-fg-muted whitespace-pre-wrap">
+                    {val ? valeurAffichee(qParId.get(qid), val) : val}
+                  </dd>
                 </Fragment>
               ))}
           </dl>
@@ -227,6 +395,25 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           <ConsignerAuJournal applicationId={a.id} />
         </div>
         <FriseCandidature entrees={frise} accuse={accuse} />
+      </AdminCard>
+
+      {/* 2026-09-28 (Will) — proposer AUSSI le réseau d'apporteurs d'affaires
+          indépendants à une personne qui a postulé à une offre salariée. La
+          candidature au poste n'en est pas modifiée. */}
+      <AdminCard>
+        <h3 className="admin-section-title">Réseau d&apos;apporteurs</h3>
+        <ProposerReseauApporteurs
+          applicationId={a.id}
+          ficheExistante={
+            ficheApporteur
+              ? {
+                  lien: adminPath("fr", `contacts/commercial/${ficheApporteur.id}`),
+                  creeeLe: formatDateFrShort(ficheApporteur.creeeLe),
+                }
+              : null
+          }
+          lienCalendlyConfigure={estLienCalendlyValide(env.CALENDLY_APPORTEUR_URL ?? "")}
+        />
       </AdminCard>
 
       <AdminCard>

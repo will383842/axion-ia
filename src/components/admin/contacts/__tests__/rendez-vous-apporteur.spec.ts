@@ -6,8 +6,18 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const findMany = vi.fn();
+const suiviFindMany = vi.fn();
 vi.mock("@/lib/prisma", () => ({
-  prisma: { calendlyEvent: { findMany: (...a: unknown[]) => findMany(...a) } },
+  prisma: {
+    calendlyEvent: { findMany: (...a: unknown[]) => findMany(...a) },
+    rendezVousSuivi: { findMany: (...a: unknown[]) => suiviFindMany(...a) },
+  },
+}));
+// Le formulaire d'issue est un composant client : ses actions serveur ne se
+// chargent pas ici.
+vi.mock("@/features/admin-rendezvous/issue-apporteur-actions", () => ({
+  apercuIssueApporteurAction: vi.fn(),
+  enregistrerIssueApporteurAction: vi.fn(),
 }));
 vi.mock("@/lib/admin-path", () => ({ adminPath: (_l: string, p: string) => `/fr/adm/${p}` }));
 vi.mock("@/auth", () => ({ auth: vi.fn() }));
@@ -15,9 +25,11 @@ vi.mock("next/navigation", () => ({ redirect: vi.fn() }));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 
 import { RendezVousApporteur } from "../RendezVousApporteur";
+import { IssueEchangeApporteurForm } from "../IssueEchangeApporteurForm";
 
 beforeEach(() => {
   vi.clearAllMocks();
+  suiviFindMany.mockResolvedValue([]);
   findMany.mockResolvedValue([
     {
       id: "evt_1",
@@ -52,6 +64,15 @@ function rendreEnTexte(n: unknown): string {
   return el.props ? rendreEnTexte(el.props.children) : "";
 }
 
+/** Les éléments de l'arbre dont le type est `composant`, sans DOM. */
+function trouver(n: unknown, composant: unknown): Array<{ props: Record<string, unknown> }> {
+  if (n === null || n === undefined || typeof n !== "object") return [];
+  if (Array.isArray(n)) return n.flatMap((x) => trouver(x, composant));
+  const el = n as { type?: unknown; props?: { children?: unknown } };
+  const ici = el.type === composant ? [el as { props: Record<string, unknown> }] : [];
+  return [...ici, ...(el.props ? trouver(el.props.children, composant) : [])];
+}
+
 describe("RendezVousApporteur", () => {
   it("un rôle qui ne voit pas les appels ne rend rien ET ne lit rien", async () => {
     const rendu = await RendezVousApporteur({ submissionId: "sub_42", role: "reader" });
@@ -72,5 +93,51 @@ describe("RendezVousApporteur", () => {
     const texte = rendreEnTexte(rendu);
     expect(texte).toContain("Échange apporteur");
     expect(texte).toContain("22"); // le jour du rendez-vous
+  });
+
+  it("2026-09-28 : un échange passé porte les boutons d'issue, et l'issue déjà donnée se lit", async () => {
+    suiviFindMany.mockResolvedValue([
+      {
+        calendlyEventId: "evt_1",
+        issue: "eu_lieu",
+        decision: "retenu",
+        noteSur20: 16,
+        note: "Réseau solide dans le BTP.",
+        suiteLe: null,
+        renseigneLe: new Date("2026-09-22T10:00:00Z"),
+      },
+    ]);
+    const rendu = await RendezVousApporteur({ submissionId: "sub_42", role: "admin" });
+    const texte = rendreEnTexte(rendu);
+    expect(texte).toContain("Retenu le 22/09");
+    expect(texte).toContain("16/20");
+
+    const formulaires = trouver(rendu, IssueEchangeApporteurForm);
+    expect(formulaires).toHaveLength(1);
+    expect(formulaires[0]?.props).toMatchObject({
+      calendlyEventId: "evt_1",
+      initial: { issue: "retenu", noteSur20: 16, justification: "Réseau solide dans le BTP." },
+    });
+  });
+
+  it("un échange ANNULÉ ne propose aucune issue", async () => {
+    findMany.mockResolvedValue([
+      {
+        id: "evt_2",
+        eventTypeName: "Échange apporteur (15 min)",
+        status: "canceled",
+        startTime: new Date("2026-09-22T08:00:00Z"),
+        endTime: new Date("2026-09-22T08:15:00Z"),
+        inviteeName: "Léa",
+        inviteeEmail: "lea@example.com",
+        inviteePhone: null,
+        location: null,
+        rawPayload: {},
+        notes: null,
+        capturedAt: new Date("2026-09-19T08:00:00Z"),
+      },
+    ]);
+    const rendu = await RendezVousApporteur({ submissionId: "sub_42", role: "admin" });
+    expect(trouver(rendu, IssueEchangeApporteurForm)).toHaveLength(0);
   });
 });

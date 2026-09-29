@@ -3,11 +3,12 @@
 //   · le bouton « Envoyer l'invitation » de la fiche (Contacts › Commercial) ;
 //   · la case « Envoyer l'invitation » de la saisie manuelle d'un contact.
 //
-// ── Pourquoi c'est un geste MANUEL ────────────────────────────────────────
-// Décision de Will : le lien de réservation n'est PAS distribué à toute
-// personne qui laisse son adresse — il saturerait son agenda. Tout le monde
-// reçoit automatiquement le KIT (document de présentation + catalogue) ; le
-// lien d'appel, lui, part à la main, à qui Will choisit.
+// ── Geste manuel, ET depuis le 2026-09-28 passage automatique ─────────────
+// Décision de Will du 19/09 : le lien de réservation partait à la main, à qui
+// il choisissait. Décision du 28/09 : TOUTE candidature d'apporteur, et toute
+// candidature à une offre d'emploi commerciale, reçoit cette invitation
+// 15 minutes après sa réception — troisième porte, le passage du worker
+// (`invitation-auto.ts`, `adminId: null`). La saisie manuelle reste manuelle.
 //
 // ── Ce que l'envoi fait, dans l'ordre ─────────────────────────────────────
 //   1. vérifie le lien (https, calendly.com) — une faute de frappe ne part pas ;
@@ -49,11 +50,21 @@ import {
   PROVENANCE_ADRESSE,
 } from "@/lib/commercial-application/saisie-manuelle";
 import { ORIGINE_SAISIE_MANUELLE } from "@/lib/contact/accuse-attendu";
+import { marqueDemarche, varianteObjet } from "@/lib/commercial-application/demarche-invitation";
 import { annulerRelancesLeadApporteur } from "./relances-lead-apporteur";
 import {
   phraseInvitation,
   type CodeIssueInvitation,
 } from "@/lib/commercial-application/issues-invitation";
+import {
+  GABARIT_RELANCE_INVITATION,
+  type SuiviInvitation,
+} from "@/lib/commercial-application/relance-invitation";
+import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
+import {
+  decisionAffichee,
+  type EchangeAvecPoint,
+} from "@/features/admin-rendezvous/issue-apporteur";
 
 /** Nom du gabarit — aussi la clé de lecture de l'historique (`EmailLog.template`). */
 export const GABARIT_INVITATION_APPORTEUR = "apporteur-invitation-appel";
@@ -125,7 +136,7 @@ async function lignesDeLaPersonne(
  * `details.etape` ; le dossier complet n'en porte pas. On regarde TOUTES les
  * lignes de la personne, pas seulement la fiche ouverte.
  */
-function dossierDejaArrive(lignes: Array<{ details: unknown }>): boolean {
+export function dossierDejaArrive(lignes: Array<{ details: unknown }>): boolean {
   return lignes.some((l) => {
     const d = lireDetails(l.details);
     return estApporteur(d) && d.etape === undefined;
@@ -179,6 +190,11 @@ async function invitationsDesLignes(ids: string[]): Promise<InvitationEnvoyee[]>
   ].sort((a, b) => b.le.getTime() - a.le.getTime());
 }
 
+// `varianteObjet` et `marqueDemarche` vivent dans un module PUR (les rappels,
+// qui tournent dans le worker, les lisent aussi) ; ré-exportés ici pour les
+// lecteurs existants.
+export { varianteObjet, marqueDemarche };
+
 /** « 12/09 », heure de Paris — le jour dit à l'administrateur. */
 function jourMois(d: Date): string {
   return d.toLocaleDateString("fr-FR", {
@@ -191,7 +207,8 @@ function jourMois(d: Date): string {
 export async function envoyerInvitationApporteur(input: {
   submissionId: string;
   calendlyUrl: string;
-  adminId: string;
+  /** `null` : envoi du passage automatique (worker), sans administrateur. */
+  adminId: string | null;
   /** « Renvoyer quand même » : passe outre une invitation déjà partie ou en validation. */
   renvoyer?: boolean;
   /** « La personne a accepté d'être contactée », coché sur la fiche (recommandation, autre). */
@@ -344,6 +361,12 @@ export async function envoyerInvitationApporteur(input: {
       calendlyUrl,
       ...(dossierUrl ? { dossierUrl } : {}),
       ...(provenance ? { provenance } : {}),
+      // 2026-09-27 (Will) : toute fiche qui n'est pas une saisie manuelle est
+      // une CANDIDATURE (formulaire du site, annonce Indeed importée) — l'objet
+      // le dit, avec un objet parmi quatre, stable par fiche. 2026-09-28 : une
+      // fiche née d'une candidature à une offre d'emploi porte `offre` à la
+      // place — cf. `marqueDemarche`.
+      ...marqueDemarche(ligne.details, ligne.id),
     },
     { entityType: "Submission", entityId: ligne.id },
   );
@@ -387,13 +410,32 @@ export async function envoyerInvitationApporteur(input: {
     });
   }
 
+  // 🔴 2026-09-28 (Will) — « on les a contactés, et la console ne se met pas à
+  // jour ». L'invitation ne touchait ni le statut ni `replyCount` : les 58
+  // invités du 27/09 restaient comptés « à traiter » (58 des 68 du badge).
+  // La balle est désormais dans le camp du candidat : la fiche est RANGÉE,
+  // exactement le geste « Traité » de la console (`transitions.ts`) — elle
+  // reste vivante et les rappels J+3/J+7 continuent. Une réponse humaine
+  // reçue dans Zoho la rouvre (`reponses-entrantes-apporteur.ts`).
+  // Best-effort : l'invitation est partie, un statut non rangé n'est que du bruit.
+  try {
+    await prisma.submission.updateMany({
+      where: { id: ligne.id, status: { in: ["new", "in_progress"] }, archivedAt: null },
+      data: { status: "processed", needsAttention: false },
+    });
+  } catch (err) {
+    Sentry.captureException(err, {
+      tags: { action: "envoyerInvitationApporteur", step: "ranger-la-fiche" },
+    });
+  }
+
   await journaliser(input.adminId, ligne, dossierUrl !== undefined, false);
   return { ok: true };
 }
 
 /** Journal du geste : qui, quand, sur quelle fiche. L'adresse n'y est pas recopiée. */
 async function journaliser(
-  adminId: string,
+  adminId: string | null,
   ligne: { id: string; contactEmailHash: string | null },
   lienDossier: boolean,
   enValidation: boolean,
@@ -441,4 +483,138 @@ export async function lireInvitationsDeLaPersonne(
     Sentry.captureException(err, { tags: { lecture: "invitations-apporteur" } });
     return [];
   }
+}
+
+/**
+ * Pour la LISTE des apporteurs : où en est chaque personne affichée depuis son
+ * invitation, clé = l'identifiant de la ligne de la liste.
+ *
+ * 2026-09-27 (Will) : « que l'on sache dans la console qu'ils ont bien été
+ * contactés » — d'abord la date de l'invitation ; puis, avec les rappels
+ * automatiques, les rappels partis et l'échange réservé ou annulé ; puis la
+ * réponse de la personne reçue par e-mail (relevé Zoho, 2026-09-27). Le badge
+ * lui-même est choisi par `badgeSuiviInvitation` (règle pure, testée).
+ *
+ * Lue par EMPREINTE d'adresse, comme `lireInvitationsDeLaPersonne` : la liste
+ * montre la ligne la plus récente de la personne, l'invitation a pu partir d'une
+ * autre de ses lignes, et l'échange est rattaché à une troisième. Cinq requêtes
+ * pour toute la page, pas une par ligne. Une invitation garée en validation n'y
+ * figure pas : elle n'est pas partie.
+ */
+export async function lireSuiviInvitationListe(
+  ids: readonly string[],
+): Promise<Map<string, SuiviInvitation>> {
+  const resultat = new Map<string, SuiviInvitation>();
+  if (ids.length === 0) return resultat;
+  const affichees = await prisma.submission.findMany({
+    where: { id: { in: [...ids] } },
+    select: { id: true, contactEmailHash: true },
+  });
+  const empreintes = [
+    ...new Set(affichees.map((l) => l.contactEmailHash).filter((h): h is string => !!h)),
+  ];
+  const lignesPersonnes = empreintes.length
+    ? await prisma.submission.findMany({
+        where: { contactEmailHash: { in: empreintes } },
+        select: { id: true, contactEmailHash: true },
+      })
+    : [];
+  // Ligne quelconque → clé de la personne (l'empreinte, ou la ligne seule sans empreinte).
+  const personneDe = new Map<string, string>();
+  for (const l of affichees) personneDe.set(l.id, l.contactEmailHash ?? `id:${l.id}`);
+  for (const l of lignesPersonnes) personneDe.set(l.id, l.contactEmailHash ?? `id:${l.id}`);
+  const toutes = [...personneDe.keys()];
+
+  const [journal, evenements, entrantes] = await Promise.all([
+    prisma.emailLog.findMany({
+      where: {
+        template: { in: [GABARIT_INVITATION_APPORTEUR, GABARIT_RELANCE_INVITATION] },
+        entityType: "Submission",
+        entityId: { in: toutes },
+        status: { in: ["pending", "sent"] },
+      },
+      select: { template: true, entityId: true, createdAt: true },
+    }),
+    prisma.calendlyEvent.findMany({
+      where: { linkedSubmissionId: { in: toutes } },
+      select: {
+        linkedSubmissionId: true,
+        eventTypeName: true,
+        status: true,
+        startTime: true,
+        // 2026-09-28 — l'issue de l'échange (badge Retenu / Non retenu…).
+        suivi: { select: { issue: true, decision: true, renseigneLe: true } },
+      },
+    }),
+    // 2026-09-27 — les réponses HUMAINES de la personne, relevées dans la boîte
+    // Zoho. Accessoires : si elles ne se lisent pas (table pas encore migrée,
+    // base lente), la liste garde les autres badges plutôt que de tout perdre.
+    prisma.submissionInboundReply
+      .findMany({
+        where: { submissionId: { in: toutes }, auto: false },
+        select: { submissionId: true, receivedAt: true },
+      })
+      .catch((err: unknown) => {
+        Sentry.captureException(err, { tags: { lecture: "reponses-entrantes-liste" } });
+        return [] as Array<{ submissionId: string; receivedAt: Date }>;
+      }),
+  ]);
+
+  const invitationPar = new Map<string, Date>();
+  for (const e of journal) {
+    if (e.template !== GABARIT_INVITATION_APPORTEUR) continue;
+    const p = e.entityId ? personneDe.get(e.entityId) : undefined;
+    if (!p) continue;
+    const avant = invitationPar.get(p);
+    if (!avant || e.createdAt > avant) invitationPar.set(p, e.createdAt);
+  }
+  const relancesPar = new Map<string, Date[]>();
+  for (const e of journal) {
+    if (e.template !== GABARIT_RELANCE_INVITATION) continue;
+    const p = e.entityId ? personneDe.get(e.entityId) : undefined;
+    const invitation = p ? invitationPar.get(p) : undefined;
+    // Un rappel ne compte que pour l'invitation qu'il suit.
+    if (!p || !invitation || e.createdAt <= invitation) continue;
+    relancesPar.set(p, [...(relancesPar.get(p) ?? []), e.createdAt]);
+  }
+  const echangePar = new Map<string, "reserve" | "annule">();
+  const echangesPar = new Map<string, EchangeAvecPoint[]>();
+  for (const ev of evenements) {
+    if (!estAppelApporteur(ev.eventTypeName)) continue;
+    const p = ev.linkedSubmissionId ? personneDe.get(ev.linkedSubmissionId) : undefined;
+    if (!p) continue;
+    echangesPar.set(p, [
+      ...(echangesPar.get(p) ?? []),
+      { debut: ev.startTime, annule: ev.status === "canceled", point: ev.suivi ?? null },
+    ]);
+    // Un échange non annulé l'emporte sur un échange annulé (reprise d'un créneau).
+    if (ev.status !== "canceled") echangePar.set(p, "reserve");
+    else if (!echangePar.has(p)) echangePar.set(p, "annule");
+  }
+
+  const reponsePar = new Map<string, Date>();
+  for (const r of entrantes) {
+    const p = personneDe.get(r.submissionId);
+    const invitation = p ? invitationPar.get(p) : undefined;
+    // Une réponse ne compte que si elle suit l'invitation qu'on affiche.
+    if (!p || !invitation || r.receivedAt <= invitation) continue;
+    const avant = reponsePar.get(p);
+    if (!avant || r.receivedAt > avant) reponsePar.set(p, r.receivedAt);
+  }
+
+  for (const l of affichees) {
+    const p = personneDe.get(l.id)!;
+    const invitation = invitationPar.get(p) ?? null;
+    const echange = echangePar.get(p) ?? null;
+    if (!invitation && !echange) continue;
+    const decision = decisionAffichee(echangesPar.get(p) ?? []);
+    resultat.set(l.id, {
+      invitation,
+      relances: (relancesPar.get(p) ?? []).sort((a, b) => a.getTime() - b.getTime()),
+      echange,
+      reponse: reponsePar.get(p) ?? null,
+      ...(decision ? { decision } : {}),
+    });
+  }
+  return resultat;
 }

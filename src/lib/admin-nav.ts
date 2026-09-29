@@ -29,6 +29,13 @@
 import { QR_CATEGORIES } from "@/features/admin-qr-codes/categories";
 import { IMPRIMES } from "@/content/imprimes";
 
+/**
+ * Identifiant, dans `IMPRIMES`, de la trame de l'échange avec un candidat
+ * apporteur (PR #1193). Son entrée de menu est rangée dans « Apporteurs
+ * d'affaires » plutôt que parmi les imprimés.
+ */
+export const ID_TRAME_ECHANGE_APPORTEUR = "trame-echange-apporteur";
+
 // Refonte « Boîte de réception » 2026-07-29 : le groupe `rendez-vous` est
 // SUPPRIMÉ. Ses 3 items lisaient la même table `calendly_events` et le clic sur
 // une ligne du premier renvoyait déjà au détail du troisième — ce n'était donc
@@ -38,6 +45,9 @@ import { IMPRIMES } from "@/content/imprimes";
 export type AdminNavGroup =
   | "main"
   | "contacts"
+  | "apporteurs"
+  | "recrutement"
+  | "imprimes"
   | "tunnels"
   | "content"
   | "content_gen"
@@ -51,8 +61,7 @@ export type AdminNavGroup =
   | "presse"
   | "chatbot"
   | "emails"
-  | "ops"
-  | "system";
+  | "ops";
 
 /**
  * Pôle (sous-groupe niveau 1) du groupe `content_gen` — refonte UX 2026-06-16
@@ -170,13 +179,43 @@ export interface AdminNavItem {
    * appartient métier, plutôt qu'en tuile isolée.
    */
   external?: true;
+  /**
+   * Entrée ÉPINGLÉE en tête de barre latérale (bloc « Aujourd'hui »), et donc
+   * absente de la liste de son groupe — sinon elle apparaîtrait deux fois.
+   *
+   * Elle reste dans `buildAdminNav` : la palette ⌘K, le fil d'Ariane et le
+   * surlignage du groupe actif continuent de la connaître. Son `href` DOIT
+   * figurer dans `ADMIN_LIENS_EPINGLES` (verrouillé par admin-nav.test.ts) :
+   * c'est là que la barre latérale lit ce qu'elle épingle.
+   */
+  epingle?: true;
 }
 
+// 🔑 2026-09-28 — MENU RANGÉ PAR FRÉQUENCE D'USAGE (demande Will : « la
+//    console est mal organisée »). Mesure de départ : 17 groupes, ~150 entrées
+//    visibles, sept écrans de planification en tête et les e-mails en 15e
+//    position. Aucune page supprimée, aucune URL changée : seuls les groupes,
+//    leur ordre et les libellés du MENU bougent (les titres de page restent).
 export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
-  main: "Activité quotidienne",
-  contacts: "Boîte de réception",
+  // Ex-« Activité quotidienne » : ses sept écrans (pilotage, planning,
+  // occupation, charge, affaires, prévisionnel) servent à planifier, pas au
+  // quotidien. Le groupe descend sous le contenu.
+  main: "Planification",
+  // Ex-« Boîte de réception » : ce qui arrive du dehors par écrit ou par
+  // réservation. Les deux pipelines qui y vivaient (apporteurs, candidatures
+  // emploi) ont chacun leur groupe.
+  contacts: "Contacts & demandes",
+  // Le pipeline apporteurs (candidature, kit, invitation, échange, contrat),
+  // avec les deux écrans qui disent d'où ils viennent — sortis de « Ops ».
+  apporteurs: "Apporteurs d'affaires",
+  // Les candidatures aux offres d'emploi publiées. Distinct des apporteurs :
+  // « Candidatures » seul se lisait des deux façons.
+  recrutement: "Recrutement salariés",
+  // Imprimés et QR étaient rangés dans « Ops & monitoring », entre les alertes
+  // et la synchro CRM : du matériel commercial, pas de l'exploitation.
+  imprimes: "Imprimés & QR",
   tunnels: "Tunnels",
-  content: "Contenu",
+  content: "Contenu du site",
   content_gen: "Génération de contenu",
   // Renommé le 2026-08-01 (question Will : « pourquoi l'activité audit IA est
   // dans Qualiopi ? ») : l'onglet contient TOUTE l'activité (formations,
@@ -212,8 +251,9 @@ export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   "image-bank": "Banque d'images",
   presse: "Salle de presse",
   chatbot: "Chatbot",
-  ops: "Ops & monitoring",
-  system: "Système",
+  // « Ops & monitoring » + « Système », réunis le 2026-09-28 : les deux
+  // servent au même rare usage (vérifier que le site tourne, gérer les accès).
+  ops: "Technique",
 };
 
 /**
@@ -316,8 +356,10 @@ export const IMAGE_BANK_POLE_ORDER: ReadonlyArray<ImageBankPole> = [
  * Les valeurs sont des `string` (les clés de pôles), volontairement disjointes
  * entre groupes pour un état plié/déplié `Set<string>` sans collision.
  */
+// `main` (« Planification ») n'est plus rendu en pôles depuis le 2026-09-28 :
+// son unique pôle « Vue d'ensemble » ajoutait un en-tête — et un clic — devant
+// sept entrées, sous un nom que portaient déjà quatre autres écrans.
 export const GROUP_POLE_ORDER: Partial<Record<AdminNavGroup, ReadonlyArray<string>>> = {
-  main: MAIN_POLE_ORDER,
   content_gen: CONTENT_GEN_POLE_ORDER,
   qualiopi: QUALIOPI_POLE_ORDER,
   "documents-interventions": DOCUMENTS_POLE_ORDER,
@@ -325,31 +367,37 @@ export const GROUP_POLE_ORDER: Partial<Record<AdminNavGroup, ReadonlyArray<strin
 };
 
 export const GROUP_POLE_LABELS: Partial<Record<AdminNavGroup, Readonly<Record<string, string>>>> = {
-  main: MAIN_POLE_LABELS,
   content_gen: CONTENT_GEN_POLE_LABELS,
   qualiopi: QUALIOPI_POLE_LABELS,
   "documents-interventions": DOCUMENTS_POLE_LABELS,
   "image-bank": IMAGE_BANK_POLE_LABELS,
 };
 
+// Ordre du 2026-09-28 : du plus fréquent au plus rare. Ce qui arrive (contacts,
+// apporteurs, candidatures), puis ce qu'on envoie (e-mails), puis l'activité
+// (formations, coaching, finances, imprimés), puis le site (contenu,
+// génération, tunnels), puis ce qu'on consulte rarement, et la technique en
+// dernier.
 export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
-  "main",
   "contacts",
-  "tunnels",
+  "apporteurs",
+  "recrutement",
+  "emails",
+  "qualiopi",
+  "coaching-1to1",
+  "finances",
+  "imprimes",
   "content",
   "content_gen",
-  "qualiopi",
-  "finances",
+  "tunnels",
+  "main",
+  "presse",
+  "chatbot",
+  "image-bank",
   "documents-interventions",
   "societe",
   "equipe",
-  "coaching-1to1",
-  "image-bank",
-  "presse",
-  "chatbot",
-  "emails",
   "ops",
-  "system",
 ];
 
 /**
@@ -374,6 +422,14 @@ export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
 export const ADMIN_LIENS_EPINGLES = {
   consoleEditoriale: "/console-editoriale",
   agenda: "/agenda",
+  // Épinglé sous l'agenda à la demande de Will (2026-09-27) : les prochains
+  // appels et leur bouton de visio, à portée de pouce sur téléphone.
+  rendezVous: "/rendez-vous",
+  // « À traiter » des contacts, épinglé le 2026-09-28 (bloc « Aujourd'hui ») :
+  // c'est la question du matin. Contrairement aux trois autres, cette route a
+  // AUSSI une entrée dans `buildAdminNav` (drapeau `epingle`), pour rester
+  // dans la palette ⌘K et le fil d'Ariane.
+  aTraiter: "/contacts/a-traiter",
 } as const;
 
 /** Les chemins épinglés, sous la forme que consomme la garde réciproque. */
@@ -423,7 +479,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // à une question qu'on n'a pas encore pensé à se poser.
     {
       href: `${base}/planning/hub`,
-      label: "Hub de pilotage",
+      label: "Pilotage",
       icon: "Radar",
       group: "main",
       subGroup: "agenda",
@@ -437,7 +493,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     {
       href: `${base}/planning/timeline`,
-      label: "Timeline ressources",
+      label: "Occupation",
       icon: "ChartGantt",
       group: "main",
       subGroup: "agenda",
@@ -451,7 +507,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     {
       href: `${base}/planning/pipeline`,
-      label: "Pipeline commercial",
+      label: "Affaires en cours",
       icon: "Funnel",
       group: "main",
       subGroup: "agenda",
@@ -488,12 +544,6 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     //    leur route et restent joignables par la command palette (⌘K) et les
     //    favoris — elles portent `parent`, ce qui les retire de la sidebar sans
     //    rien casser. Réversible : retirer `parent`.
-    {
-      href: `${base}/contacts`,
-      label: "Tout",
-      icon: "Inbox",
-      group: "contacts",
-    },
     // 🔑 « À TRAITER » EN TÊTE, PARCE QUE C'EST LA QUESTION DU MATIN.
     //    La boîte se lisait par PROVENANCE — presse, partenariats,
     //    investisseurs… — et rien ne disait ce qui attendait une réponse. Une
@@ -502,15 +552,13 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     //    traité ni archivé, le plus ANCIEN en tête (celui qui a le plus attendu).
     {
       href: `${base}/contacts/a-traiter`,
-      label: "À traiter",
+      label: "À traiter — messages",
       icon: "ListOrdered",
       group: "contacts",
-    },
-    {
-      href: `${base}/contacts/appels`,
-      label: "Appels réservés",
-      icon: "PhoneCall",
-      group: "contacts",
+      // Épinglée « Aujourd'hui » en tête de barre (demande Will, 2026-09-28) :
+      // rendue avec Rendez-vous et Agenda, donc retirée de la liste du groupe
+      // pour ne pas apparaître deux fois. Reste dans ⌘K et le fil d'Ariane.
+      epingle: true,
     },
     // « Messages » = TOUTES les soumissions. Ses 8 catégories sont rendues
     // juste en dessous, indentées d'un cran (`navLevel: 2`) — demande Will
@@ -518,9 +566,10 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // Elles remplacent la rangée d'onglets qui vivait dans l'écran.
     {
       href: `${base}/contacts/messages`,
-      label: "Messages",
+      label: "Tous les messages",
       icon: "Mail",
       group: "contacts",
+      navLevel: 0,
     },
     // 🔴 2026-09-23 — SEPT ONGLETS QUI N'APPRENAIENT RIEN À PERSONNE.
     //    Mesuré en production le même jour, sur la totalité de la table
@@ -548,15 +597,19 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Demandes clients",
       icon: "Briefcase",
       group: "contacts",
-      navLevel: 2,
-      parent: `${base}/contacts/messages`,
+      navLevel: 1,
+      // 🔑 2026-09-28 — REVIENT dans la barre latérale (demande Will, refonte
+      //    du menu par fréquence d'usage) : une demande de client est ce que
+      //    la boîte de réception existe pour ne pas rater. Les six autres
+      //    catégories restent masquées (`parent`), pour la raison écrite plus
+      //    haut.
     },
     {
       href: `${base}/contacts/presse`,
-      label: "Presse",
+      label: "Demandes presse",
       icon: "Newspaper",
       group: "contacts",
-      navLevel: 2,
+      navLevel: 1,
       parent: `${base}/contacts/messages`,
     },
     {
@@ -564,7 +617,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Partenariats",
       icon: "Handshake",
       group: "contacts",
-      navLevel: 2,
+      navLevel: 1,
       parent: `${base}/contacts/messages`,
     },
     {
@@ -572,7 +625,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Investisseurs",
       icon: "TrendingUp",
       group: "contacts",
-      navLevel: 2,
+      navLevel: 1,
       parent: `${base}/contacts/messages`,
     },
     {
@@ -580,7 +633,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Conférences",
       icon: "Presentation",
       group: "contacts",
-      navLevel: 2,
+      navLevel: 1,
       parent: `${base}/contacts/messages`,
     },
     // Demandes de tournage podcast (2026-07-21) — lead entrant de la page
@@ -592,16 +645,34 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Podcast",
       icon: "Mic",
       group: "contacts",
-      navLevel: 2,
+      navLevel: 1,
       parent: `${base}/contacts/messages`,
     },
     {
       href: `${base}/contacts/autres`,
-      label: "Autres",
+      label: "Autres messages",
       icon: "MessagesSquare",
       group: "contacts",
-      navLevel: 2,
+      navLevel: 1,
       parent: `${base}/contacts/messages`,
+    },
+    // 2026-09-28 — « Tout ce qui arrive » et « Toutes les réservations »
+    //    passent APRÈS les messages (refonte du menu par fréquence d'usage).
+    //    Les prochains appels ont désormais leur poste épinglé (« Rendez-vous »,
+    //    en tête de barre) : la liste complète des réservations Calendly est une
+    //    archive qu'on consulte, pas l'écran du matin.
+    {
+      href: `${base}/contacts`,
+      label: "Tout ce qui arrive",
+      icon: "Inbox",
+      group: "contacts",
+    },
+    {
+      href: `${base}/contacts/appels`,
+      label: "Toutes les réservations (Calendly)",
+      icon: "PhoneCall",
+      group: "contacts",
+      navLevel: 0,
     },
     // 🔴 2026-09-23 — « APPORTEURS » N'EST PAS UNE CATÉGORIE DE COURRIER.
     //    Elle était indentée sous « Messages », entre « Conférences » et
@@ -623,16 +694,18 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // Messages, et la garde réciproque range sa route parmi les sous-écrans.
     {
       href: `${base}/contacts/commercial`,
-      label: "Apporteurs",
+      label: "Candidats apporteurs",
       icon: "UserSearch",
-      group: "contacts",
+      group: "apporteurs",
+      navLevel: 0,
     },
     // Candidatures aux offres publiées (JobApplication : CV/photo, workflow RH).
     {
       href: `${base}/contacts/candidatures`,
-      label: "Candidatures",
+      label: "Candidatures emploi",
       icon: "UserPlus",
-      group: "contacts",
+      group: "recrutement",
+      navLevel: 0,
     },
     // 🔴 2026-09-04 — CET ÉCRAN EXISTAIT ET PERSONNE NE POUVAIT LE TROUVER.
     //
@@ -662,15 +735,15 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       href: `${base}/contacts/candidatures/video`,
       label: "Monteurs & vidéastes",
       icon: "Clapperboard",
-      group: "contacts",
-      navLevel: 2,
+      group: "recrutement",
+      navLevel: 1,
     },
     {
       href: `${base}/contacts/candidatures/pilotage`,
-      label: "Suivi des candidatures emploi",
+      label: "Suivi des candidatures",
       icon: "Gauge",
-      group: "contacts",
-      navLevel: 2,
+      group: "recrutement",
+      navLevel: 1,
     },
     // Les offres qu'on PUBLIE sont l'autre moitié des candidatures qu'on
     // REÇOIT (2026-09-19) : elles vivaient dans « Contenu », entre le blog et
@@ -680,8 +753,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       href: `${base}/offres-emploi`,
       label: "Offres d'emploi",
       icon: "FileUser",
-      group: "contacts",
-      navLevel: 2,
+      group: "recrutement",
+      navLevel: 1,
     },
     // ── Tunnels d'acquisition (2026-08-12) ────────────────────────────
     // Groupe distinct de « Boîte de réception » à dessein : celle-ci montre
@@ -689,7 +762,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // C'est la seule lecture qui dise quoi corriger sur les pages.
     {
       href: `${base}/tunnels`,
-      label: "Vue d'ensemble",
+      label: "Tunnels — vue d'ensemble",
       icon: "Funnel",
       group: "tunnels",
     },
@@ -773,7 +846,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // ▾ SUIVRE (quotidien)
     {
       href: `${base}/content-gen`,
-      label: "Tableau de bord",
+      label: "Génération — tableau de bord",
       icon: "LayoutDashboard",
       group: "content_gen",
       subGroup: "suivre",
@@ -1047,7 +1120,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // vient de `compterQualiopiNav()` (SSOT partagé avec la page elle-même).
     {
       href: `${base}/qualiopi/a-traiter`,
-      label: "À traiter",
+      label: "À traiter — formations",
       icon: "CircleAlert",
       group: "qualiopi",
       subGroup: "a_traiter",
@@ -1086,7 +1159,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     {
       href: `${base}/qualiopi/formation-engine`,
-      label: "Formation Engine",
+      label: "Générateur de formations",
       icon: "Cpu",
       group: "qualiopi",
       subGroup: "catalogue",
@@ -1357,7 +1430,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     {
       href: `${base}/qualiopi/pilotage`,
-      label: "Pilotage",
+      label: "Pilotage Qualiopi",
       icon: "Compass",
       group: "qualiopi",
       subGroup: "conformite",
@@ -1472,7 +1545,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // ▸ PAR ACTIVITÉ (buckets documentaires rattachés à une prestation + Autres)
     {
       href: `${base}/documents-interventions/formations`,
-      label: "Formations",
+      label: "Formations (documents)",
       icon: "BookOpen",
       group: "documents-interventions",
       subGroup: "activite",
@@ -1507,7 +1580,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     {
       href: `${base}/documents-interventions/autres`,
-      label: "Autres",
+      label: "Autres documents",
       icon: "Paperclip",
       group: "documents-interventions",
       subGroup: "activite",
@@ -1533,7 +1606,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // dans une colonne.
     {
       href: `${base}/societe`,
-      label: "Vue d'ensemble",
+      label: "Société — vue d'ensemble",
       icon: "Landmark",
       group: "societe",
     },
@@ -1576,7 +1649,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // ── Coaching 1-to-1 (séances de conseil remplies par les formateurs) ──
     {
       href: `${base}/coaching`,
-      label: "Tableau de bord",
+      label: "Coaching — tableau de bord",
       icon: "LayoutDashboard",
       group: "coaching-1to1",
     },
@@ -1590,7 +1663,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // ▸ BIBLIOTHÈQUE
     {
       href: `${base}/image-bank`,
-      label: "Vue d'ensemble",
+      label: "Banque d'images — accueil",
       icon: "Images",
       group: "image-bank",
       subGroup: "bibliotheque",
@@ -1635,7 +1708,12 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       subGroup: "admin",
     },
     // ── salle de presse (communiqués + kit média de marque) ──────────────
-    { href: `${base}/presse`, label: "Vue d'ensemble", icon: "Newspaper", group: "presse" },
+    {
+      href: `${base}/presse`,
+      label: "Presse — vue d'ensemble",
+      icon: "Newspaper",
+      group: "presse",
+    },
     { href: `${base}/presse/communiques`, label: "Communiqués", icon: "FileText", group: "presse" },
     { href: `${base}/presse/kit-media`, label: "Kit média", icon: "Palette", group: "presse" },
     {
@@ -1647,7 +1725,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // ── chatbot (console conversationnelle) ──────────────────────────────
     {
       href: `${base}/chatbot`,
-      label: "Tableau de bord",
+      label: "Chatbot — accueil",
       icon: "LayoutDashboard",
       group: "chatbot",
     },
@@ -1670,9 +1748,9 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "chatbot",
     },
     { href: `${base}/chatbot/reglages`, label: "Réglages", icon: "Settings", group: "chatbot" },
-    // ── ops & monitoring ─────────────────────────────────────────────────
+    // ── Technique (ex-« Ops & monitoring » + « Système », 2026-09-28) ───
     { href: `${base}/analytics`, label: "Statistiques & SEO", icon: "BarChart3", group: "ops" },
-    { href: `${base}/web-vitals`, label: "Web Vitals", icon: "Activity", group: "ops" },
+    { href: `${base}/web-vitals`, label: "Vitesse du site", icon: "Activity", group: "ops" },
     // ── e-mails ──────────────────────────────────────────────────────────
     // Les 44 gabarits, avec leur rendu reel, leur declencheur et leur
     // destinataire. Derive de CATALOGUE — la page ne porte aucune liste.
@@ -1739,7 +1817,16 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // traite aucune candidature.
     // « Provenance des annonces » (2026-09-19) : l'écran dit d'où viennent les
     // apporteurs, annonce par annonce — ce n'est pas un écran de recrutement.
-    { href: `${base}/annonces`, label: "Provenance des annonces", icon: "Megaphone", group: "ops" },
+    // 🔑 2026-09-28 — passe d'« ops » au groupe « Apporteurs d'affaires », avec
+    //    « Liens de campagne » : c'est là qu'on les cherche. Le bloc reste ici
+    //    dans le fichier, mais le groupe se rend dans l'ordre du tableau, donc
+    //    après « Candidats apporteurs », déclaré plus haut.
+    {
+      href: `${base}/annonces`,
+      label: "Provenance des annonces",
+      icon: "Megaphone",
+      group: "apporteurs",
+    },
     // Fabrique de liens de campagne (2026-09-04). Rangée juste après
     // « Annonces » parce que les deux répondent aux deux moitiés de la même
     // question : celle-ci FABRIQUE le lien qu'on diffuse, celle-là dit ce qu'il
@@ -1748,7 +1835,13 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // 🔑 L'entrée de navigation N'EST PAS un ornement ici : sans elle, l'écran
     // existe et n'est atteignable par aucun chemin. Un écran qu'on ne peut pas
     // ouvrir ne vaut pas mieux qu'un écran non écrit.
-    { href: `${base}/annonces/liens`, label: "Liens de campagne", icon: "Link2", group: "ops" },
+    {
+      href: `${base}/annonces/liens`,
+      label: "Liens de campagne",
+      icon: "Link2",
+      group: "apporteurs",
+      navLevel: 0,
+    },
     // Santé de la synchronisation vers Axion CRM Pro (lot L5, 2026-08-14) :
     // dernier succès, file d'attente, abandons définitifs, écart de
     // réconciliation, lignes en erreur avec rejeu. Rangée en « ops » et non en
@@ -1759,27 +1852,6 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "RefreshCw",
       group: "ops",
     },
-    { href: `${base}/qr-codes`, label: "QR codes & liens", icon: "QrCode", group: "ops" },
-    // ▸ Sous-onglets des QR (niveau 2). Demande Will 2026-08-15 : « il faut que
-    //   ce soit dans le sidebar et pas dans le header de la page ». Chacun
-    //   pointe une VRAIE route enfant plutôt qu'un `?category=` : le surlignage
-    //   compare `usePathname()`, qui ne porte jamais la query string — des
-    //   entrées en query n'auraient jamais été surlignées.
-    //
-    //   🔑 DÉRIVÉES de `QR_CATEGORIES`, plus recopiées. Elles l'étaient jusqu'au
-    //   2026-08-17, et la copie avait divergé en silence : la catégorie
-    //   « general » existait dans le SSOT mais n'avait NI entrée ici NI page.
-    //   Les deux QR de la carte de visite n'avaient donc aucun tiroir et ne se
-    //   voyaient que dans la liste racine, noyés parmi 45 QR de catalogue.
-    //   Une liste recopiée à la main finit toujours par diverger de sa source ;
-    //   la seule correction durable est de supprimer la copie.
-    ...QR_CATEGORIES.map((cat) => ({
-      href: `${base}/qr-codes/${cat.route}`,
-      label: cat.label,
-      icon: cat.icon,
-      group: "ops" as const,
-      navLevel: 2 as const,
-    })),
     // ── IMPRIMÉS ─────────────────────────────────────────────────────────
     //
     // Demande Will 2026-08-17 : « un onglet qui rassemble tous les imprimés, et
@@ -1800,25 +1872,61 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       href: `${base}/imprimes`,
       label: "Imprimés",
       icon: "Printer",
-      group: "ops",
+      group: "imprimes",
     },
-    ...IMPRIMES.map((i) => ({
-      href: `${base}/imprimes/${i.id}`,
-      label: i.nom,
-      icon: i.icon,
-      group: "ops" as const,
+    // 🔑 2026-09-28 — la trame de l'échange apporteur (PR #1193, dérivée de
+    //    `IMPRIMES` comme les autres) est rangée dans « Apporteurs d'affaires »,
+    //    à côté des candidats qu'elle sert à recevoir, sous un libellé court.
+    //    Tant que #1193 n'a pas atterri, cet identifiant n'existe pas dans
+    //    `IMPRIMES` et la branche ne s'applique à rien : aucun lien mort.
+    ...IMPRIMES.map((i) =>
+      i.id === ID_TRAME_ECHANGE_APPORTEUR
+        ? {
+            href: `${base}/imprimes/${i.id}`,
+            label: "Trame d'échange",
+            icon: i.icon,
+            group: "apporteurs" as const,
+            navLevel: 0 as const,
+          }
+        : {
+            href: `${base}/imprimes/${i.id}`,
+            label: i.nom,
+            icon: i.icon,
+            group: "imprimes" as const,
+            navLevel: 2 as const,
+          },
+    ),
+    { href: `${base}/qr-codes`, label: "QR codes & liens", icon: "QrCode", group: "imprimes" },
+    // ▸ Sous-onglets des QR (niveau 2). Demande Will 2026-08-15 : « il faut que
+    //   ce soit dans le sidebar et pas dans le header de la page ». Chacun
+    //   pointe une VRAIE route enfant plutôt qu'un `?category=` : le surlignage
+    //   compare `usePathname()`, qui ne porte jamais la query string — des
+    //   entrées en query n'auraient jamais été surlignées.
+    //
+    //   🔑 DÉRIVÉES de `QR_CATEGORIES`, plus recopiées. Elles l'étaient jusqu'au
+    //   2026-08-17, et la copie avait divergé en silence : la catégorie
+    //   « general » existait dans le SSOT mais n'avait NI entrée ici NI page.
+    //   Les deux QR de la carte de visite n'avaient donc aucun tiroir et ne se
+    //   voyaient que dans la liste racine, noyés parmi 45 QR de catalogue.
+    //   Une liste recopiée à la main finit toujours par diverger de sa source ;
+    //   la seule correction durable est de supprimer la copie.
+    ...QR_CATEGORIES.map((cat) => ({
+      href: `${base}/qr-codes/${cat.route}`,
+      label: cat.label,
+      icon: cat.icon,
+      group: "imprimes" as const,
       navLevel: 2 as const,
     })),
-    // ── système ──────────────────────────────────────────────────────────
-    { href: `${base}/users`, label: "Utilisateurs", icon: "Users", group: "system" },
+    // ── système (groupe « Technique » depuis le 2026-09-28) ──────────────
+    { href: `${base}/users`, label: "Utilisateurs", icon: "Users", group: "ops" },
     {
       href: `${base}/activity-logs`,
       label: "Journaux d'activité",
       icon: "ScrollText",
-      group: "system",
+      group: "ops",
     },
-    { href: `${base}/settings`, label: "Paramètres", icon: "Settings", group: "system" },
-    { href: `${base}/2fa/setup`, label: "2FA — sécurité", icon: "KeyRound", group: "system" },
+    { href: `${base}/settings`, label: "Paramètres", icon: "Settings", group: "ops" },
+    { href: `${base}/2fa/setup`, label: "2FA — sécurité", icon: "KeyRound", group: "ops" },
   ];
 }
 

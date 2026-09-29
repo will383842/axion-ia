@@ -90,6 +90,13 @@ const CLASSEMENT: Readonly<Record<string, Rattachement>> = {
   // l'agent ZeptoMail qui poste, et il nous renvoie le destinataire et le sujet
   // des messages rebondis. Le flux est entrant, le sous-traitant est le même.
   ZEPTOMAIL_WEBHOOK_KEY: { tiers: "Zoho" },
+  // 2026-09-27 — lecture de la boîte Zoho Mail contact@ par le worker (réponses
+  // des candidats apporteurs). MÊME groupe Zoho, même région UE ; le flux est
+  // entrant : expéditeur, date, objet, résumé du corps. `ZOHO_MAIL_CLIENT_ID`
+  // n'a pas la forme « tiers » (identifiant public du client OAuth).
+  ZOHO_MAIL_CLIENT_SECRET: { tiers: "Zoho" },
+  ZOHO_MAIL_REFRESH_TOKEN: { tiers: "Zoho" },
+  ZOHO_MAIL_ACCOUNT_ID: { tiers: "Zoho" },
   SMTP_FROM_ADDRESS: { exempt: "Adresse d'expédition d'Axion-IA, pas un tiers." },
   SMTP_FROM_NAME: { exempt: "Nom d'expéditeur affiché, pas un tiers." },
   SMTP_FROM_MARKETING: { exempt: "Seconde adresse d'expédition d'Axion-IA." },

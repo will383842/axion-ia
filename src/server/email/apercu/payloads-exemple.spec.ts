@@ -108,7 +108,18 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // côté client. Attendre 58 ici serait une erreur de lecture du compteur.
     // 🔴 2026-09-24 — RELEVÉ À 57 : `guide-ia-envoi` (lot L2), le guide IA
     // envoyé à la demande. Son champ `downloadToken` est déclaré ci-dessous.
-    expect(tous.length).toBe(57);
+    // 🔴 2026-09-27 — RELEVÉ À 58 : `apporteur-invitation-relance`, les rappels
+    // J+3 / J+7 de l'invitation à l'échange. Ses champs requis (`calendlyUrl`)
+    // ont déjà une valeur d'exemple, et `etape` y vaut « j2 » : le gabarit rend
+    // alors le premier rappel.
+    // 🔴 2026-09-28 — RELEVÉ À 59 : `apporteur-issue-echange`, l'issue de
+    // l'échange apporteur (absent, retenu, non retenu). UN fichier pour TROIS
+    // noms de job, comme `apporteur-echange`. Ses champs sont tous facultatifs.
+    // 🔴 2026-09-29 — RELEVÉ À 60 : `preavis-sous-traitants`, le préavis de
+    // 30 jours aux clients actifs avant l'enregistrement des visioconférences
+    // (chantier visio). Ses deux champs sont facultatifs : l'aperçu sans charge
+    // utile nomme la SSOT et la date du jour + 30 jours.
+    expect(tous.length).toBe(60);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

@@ -140,6 +140,14 @@ export type EmailJobName =
   // Invitation à l'échange de 15 minutes, envoyée par Will depuis la console
   // aux personnes qu'il choisit (2026-09-19) — jamais automatiquement.
   | "apporteur-invitation-appel"
+  // Rappels J+3 / J+7 de cette invitation, posés par un passage quotidien tant
+  // que la personne n'a pas réservé (décision Will, 2026-09-27).
+  | "apporteur-invitation-relance"
+  // L'issue de l'échange de 15 minutes, envoyée par Will depuis la console
+  // APRÈS un aperçu confirmé (2026-09-28) — absent, retenu, non retenu.
+  | "apporteur-issue-absent"
+  | "apporteur-issue-retenu"
+  | "apporteur-issue-non-retenu"
   // Lot L4 2026-08-14 — information RGPD au stock de candidatures avant
   // intégration au vivier (lien d'opposition, fenêtre de 30 jours).
   | "vivier-information"
@@ -147,7 +155,11 @@ export type EmailJobName =
   // à la demande (décision n° 1 de Will), avec le bouton de confirmation de la
   // lettre quand la case facultative était cochée. Transactionnel, jamais
   // `marketing: true`.
-  | "guide-ia-envoi";
+  | "guide-ia-envoi"
+  // Chantier visio (2026-09-29) — PRÉAVIS de 30 jours aux clients actifs avant
+  // tout enregistrement de visioconférence (règle B3, ADR 0056). Toujours garé
+  // en « E-mails à valider » : Will le relit avant qu'il parte.
+  | "preavis-sous-traitants";
 
 /**
  * Lot L4 — passage quotidien du vivier candidats.
@@ -177,6 +189,23 @@ export type GuideIaCronJobType = "rattrapage" | "sentinelle";
 
 export interface GuideIaCronJobData {
   readonly type?: GuideIaCronJobType;
+  readonly tick?: string;
+}
+
+/**
+ * 2026-09-27 — passages du réseau d'apporteurs : rappels J+3 / J+7 de
+ * l'invitation à l'échange. Types déclarés ICI pour la même raison que ceux du
+ * vivier (pas d'arête `queues.ts` → worker).
+ */
+export type ApporteurCronJobType =
+  | "relance-invitation"
+  // 2026-09-27 — relevé des réponses des candidats dans la boîte Zoho Mail.
+  | "reponses-entrantes"
+  // 2026-09-28 — invitation automatique 15 minutes après la candidature.
+  | "invitation-auto";
+
+export interface ApporteurCronJobData {
+  readonly type?: ApporteurCronJobType;
   readonly tick?: string;
 }
 

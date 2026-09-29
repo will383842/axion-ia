@@ -36,6 +36,7 @@ import {
 } from "@/components/admin/ui";
 import type { AdminNotificationItem } from "@/components/admin/ui";
 import { unstable_cache } from "next/cache";
+import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
 import { buildAdminNav, type AdminNavItem } from "@/lib/admin-nav";
 import { AdminCommandPalette } from "./AdminCommandPalette";
 import { getFailedJobsCount } from "@/server/actions/content-gen/jobs";
@@ -91,6 +92,18 @@ const getStaleJobPostingsCount = unstable_cache(
   // balaie toutes les chaînes `admin-*` comme des classes CSS candidates.
   ["job-offers-stale-count"],
   { revalidate: 300, tags: ["admin:job-offers-stale"] },
+);
+
+// Pastille « Rendez-vous » : les points à faire après les appels (2026-09-27).
+// Cache 60 s — invalidé à l'enregistrement d'un point (`suivi-actions.ts`).
+const getRendezVousAFaireCount = unstable_cache(
+  async (): Promise<number> => {
+    const { compterRendezVousAFaireLePoint } =
+      await import("@/features/admin-rendezvous/suivi-queries");
+    return compterRendezVousAFaireLePoint().catch(() => 0);
+  },
+  ["rendez-vous-a-faire-count"],
+  { revalidate: 60, tags: ["admin:rendez-vous-a-faire"] },
 );
 
 import {
@@ -281,6 +294,8 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   let qualiopiCounts: QualiopiNavCounts = COMPTEURS_VIDES;
   // Pastille « offres d'emploi à republier » (fraîcheur Google for Jobs).
   let staleJobOffersCount = 0;
+  // Pastille « Rendez-vous » — seulement pour qui peut voir les appels.
+  let rendezVousAFaireCount = 0;
 
   if (showSidebar) {
     // Fetch failedJobsCount + DB-stored anomaly alerts in parallel.
@@ -299,6 +314,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
       inboxActionCounts,
       qualiopiNavCounts,
       staleJobsCount,
+      rdvAFaireCount,
     ] = await Promise.all([
       getFailedJobsCount().catch(() => 0),
       prisma.contentGenConfig
@@ -314,6 +330,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
       getInboxActionCounts(),
       compterQualiopiNav().catch(() => COMPTEURS_VIDES),
       getStaleJobPostingsCount().catch(() => 0),
+      peutVoirLesAppels(roleSession) ? getRendezVousAFaireCount().catch(() => 0) : 0,
     ]);
 
     failedJobsCount = failedCount;
@@ -322,6 +339,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
     inboxCounts = inboxActionCounts;
     qualiopiCounts = qualiopiNavCounts;
     staleJobOffersCount = staleJobsCount;
+    rendezVousAFaireCount = rdvAFaireCount;
 
     // Build notification items from DB anomaly alerts.
     for (const row of anomalyRows) {
@@ -475,6 +493,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
             inboxCounts={inboxCounts}
             qualiopiCounts={qualiopiCounts}
             staleJobOffersCount={staleJobOffersCount}
+            rendezVousAFaireCount={rendezVousAFaireCount}
             userEmail={session.user.email ?? null}
             accountHref={adminBase}
             logoutAction={logoutAction}

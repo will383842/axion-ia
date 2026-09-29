@@ -248,13 +248,13 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     location: "Groupe Zoho — service souscrit sur la région UE",
     serversLocation: "Union européenne (`smtp.zeptomail.eu`)",
     purposeFr:
-      "Relais SMTP transactionnel : achemine la totalité des e-mails sortants du site (convocations, conventions, attestations, liens d'émargement, accusés de demande RGPD, notifications internes).",
+      "Relais SMTP transactionnel : achemine la totalité des e-mails sortants du site (convocations, conventions, attestations, liens d'émargement, accusés de demande RGPD, notifications internes). Depuis le 2026-09-27, l'application lit aussi, en lecture seule, la boîte Zoho Mail contact@axion-ia.com pour y reconnaître les réponses des candidats apporteurs à leur invitation.",
     purposeEn:
-      "Transactional SMTP relay: carries every outbound email from the site (invitations, agreements, certificates, attendance links, GDPR acknowledgements, internal notifications).",
+      "Transactional SMTP relay: carries every outbound email from the site (invitations, agreements, certificates, attendance links, GDPR acknowledgements, internal notifications). Since 2026-09-27, the application also reads, read-only, the Zoho Mail mailbox contact@axion-ia.com to recognise replies from business introducer candidates to their invitation.",
     dataCategoriesFr:
-      "Adresse e-mail du destinataire et CORPS COMPLET du message : nom et prénom, intitulé et dates de formation, numéros de pièces, liens personnels d'accès. Aucune minimisation possible — c'est le message lui-même qui transite.",
+      "Adresse e-mail du destinataire et CORPS COMPLET du message : nom et prénom, intitulé et dates de formation, numéros de pièces, liens personnels d'accès. Aucune minimisation possible — c'est le message lui-même qui transite. Pour la lecture de la boîte : expéditeur, date, objet et résumé du corps des messages reçus ; seuls l'objet et un court extrait des réponses reconnues sont conservés.",
     dataCategoriesEn:
-      "Recipient email address and FULL message body: first and last name, training title and dates, document numbers, personal access links. No minimisation possible — the message itself is what transits.",
+      "Recipient email address and FULL message body: first and last name, training title and dates, document numbers, personal access links. No minimisation possible — the message itself is what transits. For the mailbox reading: sender, date, subject and body summary of received messages; only the subject and a short excerpt of recognised replies are kept.",
     legalBasis: "6.1.b_contract",
     dpaStatus: "signed",
     transferFramework: "intra_eu",

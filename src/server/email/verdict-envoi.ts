@@ -75,6 +75,13 @@ export const GABARITS_EXEMPTES_DU_DESABONNEMENT: ReadonlySet<string> = new Set([
 export const GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION: ReadonlySet<string> = new Set([
   "lead-apporteur-relance",
   "apporteur-invitation-appel",
+  // 2026-09-27 — les rappels J+3 / J+7 de l'invitation : une personne opposée
+  // ne les reçoit pas, et l'opposition est relue au départ par le worker.
+  "apporteur-invitation-relance",
+  // 2026-09-28 — « on t'a attendu, on reprend un créneau ? » : une nouvelle
+  // proposition, donc une sollicitation. Retenu / non retenu, eux, RÉPONDENT à
+  // l'échange que la personne a elle-même réservé : ils n'y sont pas.
+  "apporteur-issue-absent",
 ]);
 
 /**

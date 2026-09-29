@@ -107,6 +107,7 @@ function job(
 const SOLLICITATIONS: Array<[string, Record<string, unknown>]> = [
   ["lead-apporteur-relance", { etape: "j2", dossierUrl: "https://axion-ia.com/fr/x" }],
   ["apporteur-invitation-appel", { calendlyUrl: "https://calendly.com/axion-ia/x" }],
+  ["apporteur-invitation-relance", { calendlyUrl: "https://calendly.com/axion-ia/x", etape: "j3" }],
   ["lead-apporteur-recu", { variante: "dossier-commence", dossierUrl: "https://axion-ia.com/x" }],
 ];
 
