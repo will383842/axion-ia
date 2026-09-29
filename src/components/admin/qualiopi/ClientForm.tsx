@@ -15,7 +15,6 @@ import { createClientAction } from "@/server/actions/qualiopi/clients";
 import { checkSiretFormat } from "@/lib/siret";
 import type { CompanySize } from "@/server/qualiopi/crm/types";
 import { FichesProches } from "@/components/admin/qualiopi/FichesProches";
-import { SirenAnnuaire } from "@/components/admin/qualiopi/SirenAnnuaire";
 
 type ClientType = "entreprise" | "particulier";
 
@@ -230,14 +229,9 @@ export function ClientForm({
                 id="c-siren-hint"
                 className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
               >
-                Facultatif : tiré du SIRET s&apos;il est saisi. Sinon, l&apos;annuaire public peut
-                le proposer ; vous confirmez d&apos;un clic.
+                Facultatif : tiré du SIRET s&apos;il est saisi. Sinon, la fiche le proposera depuis
+                l&apos;annuaire public (« SIREN à compléter ») ; vous confirmez d&apos;un clic.
               </p>
-              <SirenAnnuaire
-                nom={raisonSociale}
-                ville={ville.trim() !== "" ? ville.trim() : null}
-                onChoisir={setSiren}
-              />
             </div>
             <div className={fieldCls}>
               <label className={labelCls} htmlFor="c-naf">

@@ -5,9 +5,9 @@
  * directement, masquer un bouton n'est pas interdire.
  *   · Les actions qui touchent au dossier (personnes, projets) exigent
  *     `peutVoirLesEchanges` (décision A2) ;
- *   · « c'est peut-être déjà… » et « proposer le SIREN » servent la CRÉATION
- *     d'une fiche : elles suivent la garde d'écriture de la création
- *     (`requireAdminWrite`), et ne rendent que numéro et raison sociale.
+ *   · « c'est peut-être déjà… » et « C'est elle » (SIREN de l'annuaire)
+ *     servent la fiche elle-même : elles suivent la garde d'écriture de la
+ *     console (`requireAdminWrite`), et ne rendent que numéro et raison sociale.
  *
  * ⚠️ Module `"use server"` : il n'exporte QUE des fonctions asynchrones (garde
  * `tests/unit/ci/un-fichier-use-server-n-exporte-que-des-fonctions.spec.ts`).
@@ -31,10 +31,7 @@ import {
 } from "@/server/qualiopi/crm/porte-client";
 import { exigerAccesEchanges } from "@/features/dossier-client/acces";
 import { creerProjet, ErreurCreationProjet } from "@/features/dossier-client/creer-projet";
-import {
-  rechercherSiren,
-  type ResultatAnnuaire,
-} from "@/features/dossier-client/recherche-entreprises";
+import { updateClientAction } from "@/server/actions/qualiopi/clients";
 
 const candidatSchema = z.object({
   type: z.enum(["entreprise", "particulier"]).optional(),
@@ -79,13 +76,26 @@ export async function fichesProchesAction(
   );
 }
 
-/** SIREN proposés par l'annuaire public, à confirmer d'un clic. Ne lève jamais. */
-export async function rechercherSirenAction(
-  nom: string,
-  ville: string | null,
-): Promise<ResultatAnnuaire> {
+/**
+ * « C'est elle » : Will confirme d'un clic le SIREN proposé par l'annuaire
+ * (fiche « SIREN à compléter »). L'écriture passe par `updateClientAction`, qui
+ * garde l'écriture et compare le SIREN au SIRET déjà saisi. Rien n'est écrit
+ * sans ce clic.
+ */
+export async function confirmerSirenFormAction(formData: FormData): Promise<void> {
   await requireAdminWrite();
-  return rechercherSiren(String(nom).slice(0, 250), ville ? String(ville).slice(0, 120) : null);
+  const clientId = z
+    .string()
+    .uuid()
+    .parse(String(formData.get("clientId") ?? ""));
+  const siren = String(formData.get("siren") ?? "").replace(/\D/g, "");
+  const base = adminPath("fr", `qualiopi/clients/${clientId}`);
+  const r = await updateClientAction({ id: clientId, siren });
+  if ("error" in r) {
+    redirect(`${base}?onglet=facturation&erreur=${encodeURIComponent(r.error)}`);
+  }
+  revalidatePath(base);
+  redirect(base);
 }
 
 const personneSchema = z.object({

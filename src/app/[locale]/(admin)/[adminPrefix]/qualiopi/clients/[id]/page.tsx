@@ -58,9 +58,13 @@ import {
   OngletProjets,
   OngletSynthese,
 } from "@/components/admin/dossier-client/Onglets";
-import { SirenAnnuaire } from "@/components/admin/qualiopi/SirenAnnuaire";
 import { motifSansAccesAuxEchanges, peutVoirLesEchanges } from "@/features/dossier-client/acces";
 import { consoliderFaits } from "@/features/dossier-client/consolider-faits";
+import { confirmerSirenFormAction } from "@/features/dossier-client/actions";
+import {
+  rechercherSiren,
+  type ResultatAnnuaire,
+} from "@/features/dossier-client/recherche-entreprises";
 import {
   lireFaitsARanger,
   lireFaitsDuClient,
@@ -229,7 +233,7 @@ function SectionVide({ message }: { message: string }): React.ReactElement {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
-  searchParams?: Promise<{ onglet?: string; erreur?: string }>;
+  searchParams?: Promise<{ onglet?: string; erreur?: string; annuaire?: string }>;
 }
 
 const ONGLETS_DOSSIER = ["synthese", "projets", "echanges", "personnes"] as const;
@@ -274,6 +278,17 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
   const onglet = ongletAffiche(sp.onglet, voitEchanges);
   const erreur = typeof sp.erreur === "string" && sp.erreur !== "" ? sp.erreur.slice(0, 300) : null;
   const maintenant = new Date();
+
+  // « SIREN à compléter » : l'annuaire public n'est interrogé que sur demande
+  // (lien « Chercher le SIREN »), côté serveur, 3 s au plus. Aucun JavaScript
+  // dans le navigateur : la console est au bord de son cliquet de poids.
+  const sirenACompleter = client.type === "entreprise" && !client.siren;
+  const annuaire: ResultatAnnuaire | null =
+    sirenACompleter && acces.peutEcrire && sp.annuaire === "1"
+      ? await rechercherSiren(client.raisonSociale, client.adresseVille ?? null)
+      : null;
+  const ongletCourant = typeof sp.onglet === "string" ? sp.onglet : "";
+
   let contenuDossier: React.ReactNode = null;
   if (voitEchanges && onglet === "synthese") {
     const [faits, projets] = await Promise.all([lireFaitsDuClient(id), lireProjetsDuClient(id)]);
@@ -406,6 +421,12 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
         </p>
       )}
 
+      {erreur !== null && onglet === "facturation" ? (
+        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]">
+          {erreur}
+        </p>
+      ) : null}
+
       {/* ── Identité + contact ─────────────────────────────────────────────── */}
       <section className={sectionCls}>
         <div className="grid grid-cols-2 gap-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)] sm:grid-cols-4">
@@ -431,12 +452,47 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
                   <AdminBadge tone="warning" className="self-start">
                     SIREN à compléter
                   </AdminBadge>
-                  {acces.peutEcrire ? (
-                    <SirenAnnuaire
-                      nom={client.raisonSociale}
-                      ville={client.adresseVille ?? null}
-                      clientId={client.id}
-                    />
+                  {acces.peutEcrire && annuaire === null ? (
+                    <Link
+                      href={`${ficheHref}?${ongletCourant ? `onglet=${ongletCourant}&` : ""}annuaire=1`}
+                      className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                    >
+                      Chercher le SIREN dans l&apos;annuaire
+                    </Link>
+                  ) : null}
+                  {annuaire !== null && !annuaire.ok ? (
+                    <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+                      L&apos;annuaire des entreprises ne répond pas pour l&apos;instant. Saisissez
+                      le SIREN dans « Éditer », ou réessayez plus tard.
+                    </p>
+                  ) : null}
+                  {annuaire !== null && annuaire.ok && annuaire.propositions.length === 0 ? (
+                    <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+                      Aucune entreprise trouvée à ce nom.
+                    </p>
+                  ) : null}
+                  {annuaire !== null && annuaire.ok && annuaire.propositions.length > 0 ? (
+                    <ul className="space-y-[var(--space-admin-1)] text-[length:var(--text-admin-xs)]">
+                      {annuaire.propositions.map((prop) => (
+                        <li key={prop.siren}>
+                          <form
+                            action={confirmerSirenFormAction}
+                            className="flex flex-wrap items-center gap-[var(--space-admin-2)]"
+                          >
+                            <input type="hidden" name="clientId" value={client.id} />
+                            <input type="hidden" name="siren" value={prop.siren} />
+                            <span className="font-mono">{prop.siren}</span>
+                            <span>{prop.nom}</span>
+                            <span className="text-[color:var(--color-admin-fg-muted)]">
+                              {[prop.codePostal, prop.ville].filter(Boolean).join(" ")}
+                            </span>
+                            <button type="submit" className="admin-button-ghost">
+                              C&apos;est elle
+                            </button>
+                          </form>
+                        </li>
+                      ))}
+                    </ul>
                   ) : null}
                 </div>
               )
