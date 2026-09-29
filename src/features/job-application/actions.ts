@@ -302,7 +302,7 @@ export async function submitJobApplicationAction(
   if (prixFaux) {
     return {
       ok: false,
-      error: `Indique un seul montant en euros, sans fourchette : ${prixFaux.labelFr ?? prixFaux.labelEn ?? prixFaux.id}`,
+      error: `Indiquez un seul montant en euros, sans fourchette : ${prixFaux.labelFr ?? prixFaux.labelEn ?? prixFaux.id}`,
     };
   }
 

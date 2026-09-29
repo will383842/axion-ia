@@ -52,24 +52,26 @@ beforeAll(() => {
   process.env["AUTH_SECRET"] = "secret-de-test-suffisamment-long-0123456789";
 });
 
-describe("Absent — « on t'a attendu »", () => {
+describe("Absent — « nous vous avons attendu »", () => {
   it("objet, ton bienveillant, date de l'échange, bouton vers le lien de réservation apporteur", async () => {
     const r = await rendu("apporteur-issue-absent");
-    expect(r.subject).toBe("On t'a attendu : on reprend un créneau ?");
+    expect(r.subject).toBe("Nous vous avons attendu : un autre créneau ?");
     const t = texte(r.html);
     expect(t).toContain("Bonjour Camille,");
-    expect(t).toContain("Nous t'avons attendu pour notre échange en visio du mardi 22 septembre.");
+    expect(t).toContain(
+      "Nous vous avons attendu pour notre échange en visio du mardi 22 septembre.",
+    );
     expect(t).toContain("un imprévu arrive à tout le monde");
     expect(t).toContain("Choisir un nouveau créneau");
     expect(r.html).toContain(CALENDLY);
     // Aucune relance automatique ensuite, et c'est dit.
-    expect(t).toContain("nous ne te relancerons pas");
+    expect(t).toContain("nous ne vous relancerons pas");
   });
 
   it("sans lien de réservation, pas de bouton mort", async () => {
     const r = await renderEmailTemplate("apporteur-issue-absent", "fr", { contactName: "Camille" });
     expect(texte(r.html)).not.toContain("Choisir un nouveau créneau");
-    expect(texte(r.html)).toContain("Nous t'avons attendu pour notre échange en visio.");
+    expect(texte(r.html)).toContain("Nous vous avons attendu pour notre échange en visio.");
   });
 });
 
@@ -79,19 +81,19 @@ describe("Retenu — bienvenue dans le réseau", () => {
     expect(r.subject).toBe("Bienvenue parmi les apporteurs d'Axion-IA");
     const t = texte(r.html);
     expect(t).toContain(
-      "Merci pour notre échange. Nous sommes ravis de t'accueillir dans le réseau d'apporteurs d'affaires indépendants d'Axion-IA.",
+      "Merci pour notre échange. Nous sommes ravis de vous accueillir dans le réseau d'apporteurs d'affaires indépendants d'Axion-IA.",
     );
-    expect(t).toContain("Tu nous mets en relation avec une entreprise qui a un besoin");
+    expect(t).toContain("Vous nous mettez en relation avec une entreprise qui a un besoin");
     expect(t).toContain("Nous gérons tout le reste : rendez-vous, devis et réalisation.");
-    expect(t).toContain("Tu touches une commission.");
+    expect(t).toContain("Vous touchez une commission.");
     expect(t).toContain("versée dès que le client a réglé l'intégralité de sa facture");
     expect(t).toContain("sans objectif ni exclusivité");
     expect(t).toContain("numéro SIRET");
-    expect(t).toContain("ton contrat d'apporteur, à signer en ligne");
+    expect(t).toContain("votre contrat d'apporteur, à signer en ligne");
     expect(t).not.toContain("prochains jours");
-    expect(t).toContain("Ton espace apporteur personnel ouvrira d'ici un mois");
-    expect(t).toContain("réponds simplement à cet e-mail avec son nom et celui de ton contact");
-    // Le châssis porte « Une question ? Réponds simplement à cet e-mail » : une
+    expect(t).toContain("Votre espace apporteur personnel ouvrira d'ici un mois");
+    expect(t).toContain("répondez simplement à cet e-mail avec son nom et celui de votre contact");
+    // Le châssis porte « Une question ? Répondez simplement à cet e-mail » : une
     // seule fois, pas deux.
     expect(t.match(/Une question \?/g)).toHaveLength(1);
     // Le kit : document de présentation et catalogue.
@@ -123,10 +125,10 @@ describe("Non retenu — refus courtois, porte ouverte", () => {
     const r = await rendu("apporteur-issue-non-retenu");
     expect(r.subject).toBe("Suite à notre échange");
     const t = texte(r.html);
-    expect(t).toContain("Merci pour le temps que tu nous as accordé");
+    expect(t).toContain("Merci pour le temps que vous nous avez accordé");
     expect(t).toContain("nous ne donnons pas suite pour le moment");
-    expect(t).toContain("Si ta situation évolue, n'hésite pas à revenir vers nous");
-    expect(t).toContain("Nous te souhaitons sincèrement le meilleur");
+    expect(t).toContain("Si votre situation évolue, n'hésitez pas à revenir vers nous");
+    expect(t).toContain("Nous vous souhaitons sincèrement le meilleur");
     // Pas de bouton, pas de kit : ce message ne sollicite rien.
     expect(r.html).not.toContain(DOCUMENT_APPORTEUR_CHEMIN);
     expect(r.html).not.toContain("calendly.com");
@@ -163,10 +165,10 @@ describe("les trois, les deux langues", () => {
   it.each(CAS)(
     "%s (%s) : le mot personnel s'affiche en haut, juste après le bonjour",
     async (g, l) => {
-      const r = await rendu(g, l, { motPersonnel: "Encore merci pour ta franchise." });
+      const r = await rendu(g, l, { motPersonnel: "Encore merci pour votre franchise." });
       const t = texte(r.html);
       const bonjour = t.indexOf(l === "fr" ? "Bonjour Camille," : "Hello Camille,");
-      const mot = t.indexOf("Encore merci pour ta franchise.");
+      const mot = t.indexOf("Encore merci pour votre franchise.");
       expect(bonjour).toBeGreaterThan(-1);
       expect(mot).toBeGreaterThan(bonjour);
       // Sans mot personnel, rien de vide ni d'« undefined ».

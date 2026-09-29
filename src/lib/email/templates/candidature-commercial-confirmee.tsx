@@ -1,8 +1,8 @@
 // Email — accusé de réception du DOSSIER COMPLET d'apporteur d'affaires
 // (tunnel sans CV, Mémorial de l'Isère 2026-08-12 ; refondu le 2026-09-19).
 //
-// Ton : chaleureux, TUTOIEMENT (cohérent avec le formulaire, qui tutoie de
-// bout en bout). Confirme la réception, annonce la suite et donne le KIT
+// Ton : chaleureux, VOUVOIEMENT (Will, 2026-09-29 : tout ce que reçoit un
+// candidat vouvoie, comme les accusés de réception des offres d'emploi). Confirme la réception, annonce la suite et donne le KIT
 // (document de présentation + catalogue).
 //
 // 🔴 2026-09-19 — trois décisions de Will, appliquées ici :
@@ -29,23 +29,23 @@ import type { Locale } from "../../../../prisma/generated/client";
 import { liensKitApporteur } from "@/lib/commercial-application/kit-apporteur";
 
 interface Payload {
-  /** Prénom du candidat (le tutoiement appelle le prénom seul). */
+  /** Prénom du candidat (seul le premier mot est dit). */
   contactName?: string;
   submissionId?: string;
 }
 
 const COPY = {
   fr: {
-    title: "On a bien reçu ta candidature",
+    title: "Nous avons bien reçu votre candidature",
     preview:
-      "On répond à TOUTES les candidatures, dans les prochaines heures. En attendant : le document de présentation et le catalogue.",
+      "Nous répondons à TOUTES les candidatures, dans les prochaines heures. En attendant : le document de présentation et le catalogue.",
     intro: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
-    body: "Merci d'avoir pris ces quelques minutes : ta candidature pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA est bien arrivée, et elle sera lue avec attention — c'est promis, pas par un robot.",
+    body: "Merci d'avoir pris ces quelques minutes : votre candidature pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA est bien arrivée, et elle sera lue avec attention — c'est promis, pas par un robot.",
     // « On répond à TOUTES les candidatures » tient la promesse de l'annonce
     // Le Bon Coin (docs/annonce-leboncoin-recrutement.md §2.5) : un candidat
     // non retenu reçoit, lui aussi, une réponse.
-    next: "On répond à toutes les candidatures : la tienne aura une réponse, quoi qu'il arrive, dans les prochaines heures. Si ton profil correspond, on te proposera un échange de 15 minutes en visio pour faire connaissance.",
-    spam: "Pense à vérifier tes spams si tu n'as pas de nouvelles : nos emails s'y égarent parfois.",
+    next: "Nous répondons à toutes les candidatures : la vôtre aura une réponse, quoi qu'il arrive, dans les prochaines heures. Si votre profil correspond, nous vous proposerons un échange de 15 minutes en visio pour faire connaissance.",
+    spam: "Pensez à vérifier vos spams si vous n'avez pas de nouvelles : nos emails s'y égarent parfois.",
     cta: "Lire le document de présentation",
     refRow: (id: string) => `Référence : ${id}`,
   },
@@ -65,7 +65,8 @@ const COPY = {
 export const candidatureCommercialConfirmeeSubject = (
   locale: Locale,
   _p: Record<string, unknown>,
-): string => (locale === "fr" ? "On a bien reçu ta candidature" : "We received your application");
+): string =>
+  locale === "fr" ? "Nous avons bien reçu votre candidature" : "We received your application";
 
 export function CandidatureCommercialConfirmeeEmail({
   locale,
@@ -84,7 +85,6 @@ export function CandidatureCommercialConfirmeeEmail({
       title={t.title}
       cta={{ label: t.cta, href: liensKitApporteur(locale).documentUrl }}
       locale={locale}
-      tutoiement
       sansReseauxSociaux
     >
       <Text style={emailStyles.paragraphStyle}>{t.intro(prenom)}</Text>

@@ -152,16 +152,16 @@ export function validateStep(step: number, a: WizardAnswers): FieldErrors {
       //
       // ⛔ Ne pas le redescendre. Verrouillé par
       // `le-consentement-precede-l-ecriture.spec.ts`.
-      if (!a.consent) e.consent = "Ton accord est nécessaire pour traiter ta candidature.";
-      if (!a.prenom.trim()) e.prenom = "Ton prénom est nécessaire.";
-      if (!a.nom.trim()) e.nom = "Ton nom est nécessaire.";
-      if (!a.email.trim()) e.email = "Ton email est nécessaire.";
-      else if (!EMAIL_RE.test(a.email.trim())) e.email = "Cet email ne semble pas valide.";
-      if (!a.telephone.trim()) e.telephone = "Ton téléphone est nécessaire.";
+      if (!a.consent) e.consent = "Votre accord est nécessaire pour traiter votre candidature.";
+      if (!a.prenom.trim()) e.prenom = "Votre prénom est nécessaire.";
+      if (!a.nom.trim()) e.nom = "Votre nom est nécessaire.";
+      if (!a.email.trim()) e.email = "Votre e-mail est nécessaire.";
+      else if (!EMAIL_RE.test(a.email.trim())) e.email = "Cet e-mail ne semble pas valide.";
+      if (!a.telephone.trim()) e.telephone = "Votre téléphone est nécessaire.";
       else if (a.telephone.replace(/\D/g, "").length < 6)
         e.telephone = "Ce numéro semble trop court.";
-      if (!a.ville.trim()) e.ville = "Ta ville est nécessaire.";
-      if (!a.codePostal.trim()) e.codePostal = "Ton code postal est nécessaire.";
+      if (!a.ville.trim()) e.ville = "Votre ville est nécessaire.";
+      if (!a.codePostal.trim()) e.codePostal = "Votre code postal est nécessaire.";
       else if (!/^[0-9A-Za-z][0-9A-Za-z -]{2,9}$/.test(a.codePostal.trim()))
         e.codePostal = "Ce code postal ne semble pas valide.";
       // Date de naissance FACULTATIVE — mais si elle est commencée, elle doit
@@ -169,7 +169,7 @@ export function validateStep(step: number, a: WizardAnswers): FieldErrors {
       const naissance = [a.naissanceJour, a.naissanceMois, a.naissanceAnnee];
       const remplis = naissance.filter((v) => v.trim() !== "").length;
       if (remplis > 0 && remplis < 3) {
-        e.naissance = "Complète les trois champs, ou laisse-les vides (c’est facultatif).";
+        e.naissance = "Complétez les trois champs, ou laissez-les vides (c’est facultatif).";
       } else if (remplis === 3) {
         const j = Number(a.naissanceJour);
         const m = Number(a.naissanceMois);
@@ -182,13 +182,14 @@ export function validateStep(step: number, a: WizardAnswers): FieldErrors {
       return e;
     }
     case 2: {
-      if (a.b2bDejaVendu === null) e.b2bDejaVendu = "Réponds par oui ou par non.";
-      if (a.b2bDejaVendu === true && !a.b2bAnnees) e.b2bAnnees = "Indique depuis combien d’années.";
+      if (a.b2bDejaVendu === null) e.b2bDejaVendu = "Répondez par oui ou par non.";
+      if (a.b2bDejaVendu === true && !a.b2bAnnees)
+        e.b2bAnnees = "Indiquez depuis combien d’années.";
       return e;
     }
     case 3: {
       if (a.experiences.length === 0) {
-        e.experiences = "Ajoute au moins une expérience.";
+        e.experiences = "Ajoutez au moins une expérience.";
         return e;
       }
       a.experiences.forEach((exp, i) => {
@@ -198,9 +199,9 @@ export function validateStep(step: number, a: WizardAnswers): FieldErrors {
         if (!exp.ville.trim()) e[`${pre}-ville`] = "La ville ou le département est nécessaire.";
         if (!exp.poste.trim()) e[`${pre}-poste`] = "Le poste occupé est nécessaire.";
         if (!exp.debutMois || !exp.debutAnnee)
-          e[`${pre}-debut`] = "Indique le mois et l’année de début.";
+          e[`${pre}-debut`] = "Indiquez le mois et l’année de début.";
         if (!exp.posteActuel && (!exp.finMois || !exp.finAnnee))
-          e[`${pre}-fin`] = "Indique la fin, ou coche « poste actuel ».";
+          e[`${pre}-fin`] = "Indiquez la fin, ou cochez « poste actuel ».";
         if (
           exp.debutMois &&
           exp.debutAnnee &&
@@ -216,45 +217,46 @@ export function validateStep(step: number, a: WizardAnswers): FieldErrors {
       return e;
     }
     case 4: {
-      if (a.iaUtilise === null) e.iaUtilise = "Réponds par oui ou par non.";
+      if (a.iaUtilise === null) e.iaUtilise = "Répondez par oui ou par non.";
       // OBLIGATOIRE quand la réponse est Oui (retour Will 2026-08-13).
       if (a.iaUtilise === true && !a.iaUsage.trim())
-        e.iaUsage = "Explique en quelques mots pourquoi, et pour quoi faire.";
+        e.iaUsage = "Expliquez en quelques mots pourquoi, et pour quoi faire.";
       return e;
     }
     case 5: {
-      if (a.informatiqueUtilise === null) e.informatiqueUtilise = "Réponds par oui ou par non.";
+      if (a.informatiqueUtilise === null) e.informatiqueUtilise = "Répondez par oui ou par non.";
       return e;
     }
     case 6: {
       if (!a.zoneMobile && a.zones.length === 0)
-        e.zones = "Choisis au moins une zone, ou « Peu importe, je suis mobile ».";
+        e.zones = "Choisissez au moins une zone, ou « Peu importe, je suis mobile ».";
       // Le déplacement chez le client n'est PLUS facultatif (Will 2026-08-18) :
       // c'est un métier de terrain, la réponse conditionne l'exploitabilité de
       // la candidature. Garde miroir côté serveur dans `model.ts`.
-      if (!a.deplacement) e.deplacement = "Dis-nous si tu peux te déplacer chez les clients.";
+      if (!a.deplacement)
+        e.deplacement = "Dites-nous si vous pouvez vous déplacer chez les clients.";
       return e;
     }
     case 7: {
       const len = a.pitch.trim().length;
       if (len < 150)
-        e.pitch = `Encore ${150 - len} caractère${150 - len > 1 ? "s" : ""} — développe un peu, ça compte.`;
+        e.pitch = `Encore ${150 - len} caractère${150 - len > 1 ? "s" : ""} — développez un peu, ça compte.`;
       else if (len > 800) e.pitch = `${len - 800} caractère${len - 800 > 1 ? "s" : ""} de trop.`;
       return e;
     }
     case 8:
       return e;
     case 9: {
-      if (!a.dispoMois || !a.dispoAnnee) e.dispo = "Indique le mois et l’année.";
+      if (!a.dispoMois || !a.dispoAnnee) e.dispo = "Indiquez le mois et l’année.";
       else {
         // Une disponibilité ne peut pas être dans le passé (retour Will
         // 2026-08-13) : le mois courant est accepté, pas avant.
         const now = new Date();
         const courant = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
         if (mmYYYY(a.dispoMois.padStart(2, "0"), a.dispoAnnee) < courant)
-          e.dispo = "Cette date est déjà passée — indique le mois courant ou un mois à venir.";
+          e.dispo = "Cette date est déjà passée — indiquez le mois courant ou un mois à venir.";
       }
-      if (a.permisVehicule === null) e.permisVehicule = "Réponds par oui ou par non.";
+      if (a.permisVehicule === null) e.permisVehicule = "Répondez par oui ou par non.";
       if (
         a.linkedin.trim() &&
         !/^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/\S*)?$/.test(a.linkedin.trim())

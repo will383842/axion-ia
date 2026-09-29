@@ -53,14 +53,14 @@ const DISPO_YEARS: readonly string[] = [
   String(CURRENT_YEAR + 2),
 ];
 
-// ── Étape 1 — Qui es-tu ─────────────────────────────────────────────────────
+// ── Étape 1 — Qui êtes-vous ─────────────────────────────────────────────────────
 
 export function StepIdentite({ a, set, errors }: StepProps) {
   return (
     <div>
       <StepHeading
-        title="Qui es-tu ?"
-        hint="Le minimum pour te répondre — rien de plus. Les champs marqués * sont obligatoires."
+        title="Qui êtes-vous ?"
+        hint="Le minimum pour vous répondre — rien de plus. Les champs marqués * sont obligatoires."
       />
       <div className="grid gap-4 sm:grid-cols-2">
         <TextField
@@ -195,7 +195,10 @@ export function StepIdentite({ a, set, errors }: StepProps) {
           validation de cet écran : un abandon à l'écran 5 laisse une personne
           rappelable au lieu de rien. L'accord doit donc PRÉCÉDER l'écriture.
           C'est aussi plus honnête — on dit ce qu'on fait des réponses au moment
-          où on les demande, pas après huit écrans de travail. */}
+          où on les demande, pas après huit écrans de travail.
+          🔑 29/09 : c'est désormais le SEUL endroit où l'accord est demandé (le
+          dernier écran ne le répète plus) ; le wizard vérifie qu'il est coché
+          avant l'envoi final. */}
       <div className="mt-7">
         <label className="flex cursor-pointer items-start gap-3">
           <input
@@ -229,7 +232,7 @@ export function StepB2b({ a, set, errors }: StepProps) {
         title="Le prérequis"
         hint="Ce poste demande une vraie expérience de la vente B2B. C’est le seul prérequis, mais il est indispensable."
       />
-      <ChipGroup legend="As-tu déjà vendu en B2B ?" requiredField error={errors.b2bDejaVendu}>
+      <ChipGroup legend="Avez-vous déjà vendu en B2B ?" requiredField error={errors.b2bDejaVendu}>
         <Chip
           name="b2b"
           value="oui"
@@ -275,7 +278,7 @@ export function StepB2b({ a, set, errors }: StepProps) {
           collectif au lieu d'un appel prioritaire. */}
       <div className="mt-6">
         <ChipGroup
-          legend="Combien de dirigeants d’entreprise pourrais-tu appeler demain matin ?"
+          legend="Combien de dirigeants d’entreprise pourriez-vous appeler demain matin ?"
           optionalHint
           error={errors.carnetDirigeants}
         >
@@ -294,8 +297,8 @@ export function StepB2b({ a, set, errors }: StepProps) {
 
       {a.b2bDejaVendu === false ? (
         <p className="bg-paper border-border text-fg-soft mt-6 rounded-2xl border px-4 py-3.5 text-[15px] leading-relaxed">
-          Le profil recherché est vraiment orienté vente B2B. Tu peux quand même envoyer ta
-          candidature, on la lira.
+          Le profil recherché est vraiment orienté vente B2B. Vous pouvez quand même envoyer votre
+          candidature, nous la lirons.
         </p>
       ) : null}
     </div>
@@ -330,8 +333,8 @@ export function StepParcours({
   return (
     <div>
       <StepHeading
-        title="Ton parcours des 10 dernières années"
-        hint="Pas besoin de tout ton parcours de vie — seulement les 10 dernières années. Une seule entreprise sur la période ? C’est très bien aussi : un seul bloc suffit."
+        title="Votre parcours des 10 dernières années"
+        hint="Pas besoin de tout votre parcours de vie — seulement les 10 dernières années. Une seule entreprise sur la période ? C’est très bien aussi : un seul bloc suffit."
       />
       {errors.experiences ? (
         <p className="text-terracotta-deep mb-3 text-sm" role="alert">
@@ -503,7 +506,7 @@ export function StepIa({ a, set, errors }: StepProps) {
     <div>
       <StepHeading title="L’IA au quotidien 🤖" />
       <ChipGroup
-        legend="Utilises-tu déjà l’IA au quotidien ?"
+        legend="Utilisez-vous déjà l’IA au quotidien ?"
         requiredField
         error={errors.iaUtilise}
       >
@@ -570,7 +573,7 @@ export function StepIa({ a, set, errors }: StepProps) {
               className={cn(FIELD_CLASS, errors.iaUsage && "border-terracotta-deep")}
               value={a.iaUsage}
               onChange={(e) => set({ iaUsage: e.target.value })}
-              placeholder="2-3 lignes suffisent : préparer tes rendez-vous, rédiger tes emails, chercher des infos sur un prospect…"
+              placeholder="2-3 lignes suffisent : préparer vos rendez-vous, rédiger vos e-mails, chercher des infos sur un prospect…"
               aria-required={true}
               aria-invalid={errors.iaUsage ? true : undefined}
               aria-describedby={errors.iaUsage ? "ca-ia-usage-error" : undefined}
@@ -598,7 +601,7 @@ export function StepInformatique({ a, set, errors }: StepProps) {
     <div>
       <StepHeading title="L’informatique" />
       <ChipGroup
-        legend="Utilises-tu l’informatique dans ton travail ?"
+        legend="Utilisez-vous l’informatique dans votre travail ?"
         requiredField
         error={errors.informatiqueUtilise}
       >
@@ -660,7 +663,7 @@ export function StepInformatique({ a, set, errors }: StepProps) {
   );
 }
 
-// ── Étape 6 — Ta zone 📍 ────────────────────────────────────────────────────
+// ── Étape 6 — Votre zone 📍 ────────────────────────────────────────────────────
 
 export function StepZone({ a, set, errors }: StepProps) {
   const [search, setSearch] = React.useState("");
@@ -680,8 +683,8 @@ export function StepZone({ a, set, errors }: StepProps) {
   return (
     <div>
       <StepHeading
-        title="Ta zone 📍"
-        hint="Sur quelle zone souhaites-tu travailler ? Régions, départements — ou partout."
+        title="Votre zone 📍"
+        hint="Sur quelle zone souhaitez-vous travailler ? Régions, départements — ou partout."
       />
       <Chip
         name="zone-mobile"
@@ -693,7 +696,7 @@ export function StepZone({ a, set, errors }: StepProps) {
       />
 
       <div className="mt-5">
-        <ChipGroup legend="Ou choisis une ou plusieurs régions" error={errors.zones}>
+        <ChipGroup legend="Ou choisissez une ou plusieurs régions" error={errors.zones}>
           {REGIONS_ZONE.map((r) => (
             <Chip
               key={r}
@@ -710,7 +713,7 @@ export function StepZone({ a, set, errors }: StepProps) {
 
       <div className="mt-5">
         <label className={LABEL_CLASS} htmlFor="ca-zone-recherche">
-          Ou cherche un département
+          Ou cherchez un département
         </label>
         <div className="relative">
           <Search
@@ -765,7 +768,7 @@ export function StepZone({ a, set, errors }: StepProps) {
             DÉ-sélectionne donc plus (un radio obligatoire qu'on peut vider
             laisserait le candidat bloqué sans comprendre pourquoi). */}
         <ChipGroup
-          legend="Es-tu prêt à te déplacer chez les clients ?"
+          legend="Êtes-vous prêt à vous déplacer chez les clients ?"
           requiredField
           columns={1}
           error={errors.deplacement}
@@ -786,18 +789,18 @@ export function StepZone({ a, set, errors }: StepProps) {
   );
 }
 
-// ── Étape 7 — Toi, en quelques lignes ✨ ────────────────────────────────────
+// ── Étape 7 — Vous, en quelques lignes ✨ ────────────────────────────────────
 
 export function StepPitch({ a, set, errors }: StepProps) {
   const len = a.pitch.trim().length;
   return (
     <div>
       <StepHeading
-        title="Toi, en quelques lignes ✨"
-        hint="Si tu devais te décrire, de façon qui te mette vraiment en valeur ?"
+        title="Vous, en quelques lignes ✨"
+        hint="Si vous deviez vous décrire, de façon à vraiment vous mettre en valeur ?"
       />
       <label className="sr-only" htmlFor="ca-pitch">
-        Décris-toi en 150 à 800 caractères
+        Décrivez-vous en 150 à 800 caractères
       </label>
       <textarea
         id="ca-pitch"
@@ -806,7 +809,7 @@ export function StepPitch({ a, set, errors }: StepProps) {
         className={cn(FIELD_CLASS, errors.pitch && "border-terracotta-deep")}
         value={a.pitch}
         onChange={(e) => set({ pitch: e.target.value })}
-        placeholder="Ce que tu sais faire mieux que les autres, ce dont tu es fier, la vente que tu racontes encore aujourd’hui…"
+        placeholder="Ce que vous savez faire mieux que les autres, ce dont vous êtes fier, la vente que vous racontez encore aujourd’hui…"
         aria-required={true}
         aria-describedby="ca-pitch-compteur"
         aria-invalid={errors.pitch ? true : undefined}
@@ -832,24 +835,24 @@ export function StepPitch({ a, set, errors }: StepProps) {
       {/* Anti-tassement (retour Will 2026-08-13) : annoncer le message libre
           qui vient juste après, pour que le candidat ne mette pas tout ici. */}
       <p className="text-fg-muted mt-3 text-sm">
-        Étape suivante : ton message libre (facultatif) — garde ce que tu veux nous dire pour
+        Étape suivante : votre message libre (facultatif) — gardez ce que vous voulez nous dire pour
         l’écran d’après.
       </p>
     </div>
   );
 }
 
-// ── Étape 8 — Ton message (facultatif) ──────────────────────────────────────
+// ── Étape 8 — Votre message (facultatif) ──────────────────────────────────────
 
 export function StepMessage({ a, set }: StepProps) {
   return (
     <div>
       <StepHeading
-        title="Ton message"
-        hint="On ne veut pas de lettre de motivation. Mais si tu as quelque chose à nous dire, c’est ici."
+        title="Votre message"
+        hint="Pas de lettre de motivation. Mais si vous avez quelque chose à nous dire, c’est ici."
       />
       <label className="sr-only" htmlFor="ca-message">
-        Ton message (facultatif)
+        Votre message (facultatif)
       </label>
       <textarea
         id="ca-message"
@@ -858,7 +861,7 @@ export function StepMessage({ a, set }: StepProps) {
         className={FIELD_CLASS}
         value={a.messageLibre}
         onChange={(e) => set({ messageLibre: e.target.value })}
-        placeholder="Tout ce qui te semble utile — ou rien du tout, c’est très bien aussi."
+        placeholder="Tout ce qui vous semble utile — ou rien du tout, c’est très bien aussi."
       />
     </div>
   );
@@ -872,7 +875,7 @@ export function StepDetails({ a, set, errors }: StepProps) {
       <StepHeading title="Derniers détails" hint="Promis, c’est le dernier écran." />
       <MonthYearSelect
         idPrefix="ca-dispo"
-        label="À partir de quand es-tu disponible ?"
+        label="À partir de quand êtes-vous disponible ?"
         requiredField
         monthValue={a.dispoMois}
         yearValue={a.dispoAnnee}
@@ -885,7 +888,7 @@ export function StepDetails({ a, set, errors }: StepProps) {
 
       <div className="mt-6">
         <ChipGroup
-          legend="As-tu le permis et un véhicule ?"
+          legend="Avez-vous le permis et un véhicule ?"
           requiredField
           error={errors.permisVehicule}
         >
@@ -907,7 +910,7 @@ export function StepDetails({ a, set, errors }: StepProps) {
       </div>
 
       <div className="mt-6">
-        <ChipGroup legend="Ton statut aujourd’hui" optionalHint>
+        <ChipGroup legend="Votre statut aujourd’hui" optionalHint>
           {STATUT_OPTIONS.map((o) => (
             <Chip
               key={o.id}
@@ -940,7 +943,7 @@ export function StepDetails({ a, set, errors }: StepProps) {
       </div>
 
       <div className="mt-6">
-        <ChipGroup legend="Comment as-tu connu cette offre ?" optionalHint>
+        <ChipGroup legend="Comment avez-vous connu cette offre ?" optionalHint>
           {SOURCE_OPTIONS.map((o) => (
             <Chip
               key={o.id}
@@ -953,26 +956,9 @@ export function StepDetails({ a, set, errors }: StepProps) {
           ))}
         </ChipGroup>
       </div>
-
-      <div className="mt-7">
-        <label className="flex cursor-pointer items-start gap-3">
-          <input
-            type="checkbox"
-            checked={a.consent}
-            onChange={(e) => set({ consent: e.target.checked })}
-            className="accent-terracotta mt-0.5 h-5 w-5 shrink-0"
-            aria-describedby={errors.consent ? "ca-consent-error" : undefined}
-          />
-          <span className="text-fg-soft text-sm leading-relaxed">
-            J’accepte que mes informations soient utilisées pour l’étude de ma candidature.
-          </span>
-        </label>
-        {errors.consent ? (
-          <p id="ca-consent-error" className="text-terracotta-deep mt-1.5 text-sm" role="alert">
-            {errors.consent}
-          </p>
-        ) : null}
-      </div>
+      {/* Plus de case de consentement ici (29/09) : l'accord est demandé une
+          seule fois, à l'écran 1, avant toute écriture. Le redemander au
+          dernier écran faisait cocher deux fois la même chose. */}
     </div>
   );
 }

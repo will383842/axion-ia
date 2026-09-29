@@ -353,9 +353,9 @@ describe("Référentiel e-mail — régime de famille (§2.5, §5.1, §5.4)", ()
       // ⛔ Jamais en famille A : un e-mail de sécurité doit avoir exactement un
       // lien et zéro distraction. C'est ce dépouillement qu'on apprend aux gens
       // à reconnaître comme la marque d'un vrai message de sécurité.
-      // Lot 4 : un gabarit qui tutoie (tunnel commercial) reçoit la soupape au
-      // tutoiement — même phrase, même place, autre personne grammaticale.
-      const soupape = /R(?:épondez|éponds) simplement à cet e-mail/;
+      // 2026-09-29 (Will) : plus de variante tutoyée — tous les gabarits
+      // vouvoient, tunnel apporteur compris.
+      const soupape = /Répondez simplement à cet e-mail/;
       if (regime.soupapeReponse) {
         expect(html, `${name} : soupape de réponse attendue en famille ${famille}`).toMatch(
           soupape,

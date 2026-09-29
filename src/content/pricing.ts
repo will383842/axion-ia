@@ -111,6 +111,21 @@ export interface PricingTier {
   groupSizeFr?: string;
   /** Effectif EN. */
   groupSizeEn?: string;
+  /**
+   * Barème de commission du réseau apporteurs qui s'applique à ce palier : un id de
+   * `COMMERCIAL_COMMISSIONS` (Axion Partners, DM-03-A, HYP-W6-BIS).
+   *
+   * ⚠️ N'EST PAS UN MONTANT, ET N'EN PORTE AUCUN. Le montant reste dans la commission
+   * visée. Un palier SANS `commissionId` n'a pas de barème : il doit alors figurer dans
+   * `BAREMES_INDEFINIS` (plus bas), avec sa date et son motif — sinon la garde
+   * `src/server/partners-sync/__tests__/grille-export.spec.ts` rougit. Aucun défaut
+   * silencieux : un palier sans barème BLOQUE la commission, il ne vaut jamais 0.
+   *
+   * Sens de lecture : `CommercialCommission.basisTierId` désigne UN palier d'exemple
+   * pour l'affichage ; `commissionId` dit, pour CHAQUE palier, quel barème s'applique.
+   * La garde vérifie que les deux concordent.
+   */
+  commissionId?: string;
 }
 
 // ============================================================================
@@ -231,6 +246,7 @@ export const AUDIT_STRATEGIQUE_ETI_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
 export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
   {
     id: "audit-flash",
+    commissionId: "com-audit",
     labelFr: "Audit sur place",
     labelEn: "On-site audit",
     // Will 2026-05-31 — présentiel uniquement, 1 journée complète sur site.
@@ -248,6 +264,7 @@ export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
   },
   {
     id: "audit-cible",
+    commissionId: "com-audit",
     labelFr: "Audit Ciblé",
     labelEn: "Targeted audit",
     // Will 2026-06-03 — affichage « À partir de 1 900 € · sur devis » (suppression
@@ -260,6 +277,7 @@ export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
   },
   {
     id: "audit-strategique-pme",
+    commissionId: "com-audit",
     labelFr: "Audit Stratégique PME",
     labelEn: "SME Strategic audit",
     // Will 2026-06-03 — en-tête uniforme « À partir de 1 900 € · sur devis »
@@ -273,6 +291,7 @@ export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
   },
   {
     id: "audit-strategique-eti",
+    commissionId: "com-audit",
     labelFr: "Audit Stratégique ETI",
     labelEn: "Mid-cap Strategic audit",
     // Will 2026-06-03 — passage de 12 000 € à « À partir de 1 900 € · sur devis ».
@@ -401,6 +420,7 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
   },
   {
     id: "intervention-essentielle",
+    commissionId: "com-formation-1j",
     labelFr: "Essentielle",
     labelEn: "Essential",
     // Will 2026-06-03 — prix d'entrée = palier 2-15 pers (2 450 €).
@@ -415,6 +435,7 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
   },
   {
     id: "intervention-temps",
+    commissionId: "com-formation-1j",
     labelFr: "Gagner du temps",
     labelEn: "Save Time",
     // Will 2026-06-03 — passage à 2 paliers (prix d'entrée 2-15 pers = 2 450 €),
@@ -433,6 +454,7 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
   },
   {
     id: "intervention-approfondie",
+    commissionId: "com-formation-2j",
     labelFr: "Approfondie",
     labelEn: "Deep dive",
     // Will 2026-06-03 — prix d'entrée = palier 2-15 pers (3 250 €).
@@ -461,6 +483,7 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     // Plus de CODIR/COMEX : c'est une journée 1-to-1 avec le dirigeant pour
     // structurer l'entreprise et chiffrer précisément les gains d'implémentation IA.
     id: "intervention-dirigeants",
+    commissionId: "com-un-a-un",
     // Will 2026-06-23 — label SSOT « Public · Durée » (aligné sur booking-catalog
     // qui utilise déjà « Dirigeant · 1 jour »). FR uniquement (EN désactivé).
     labelFr: "Dirigeant · 1 jour",
@@ -487,6 +510,7 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     // 990 € HT (nouveau prix collaborateur ; propagé aux 393 villes + /un-a-un
     // via les tokens de prix).
     id: "intervention-membre-equipe",
+    commissionId: "com-un-a-un",
     // Will 2026-06-23 — label SSOT « Public · Durée » (FR only, EN désactivé).
     labelFr: "Collaborateur · 1 jour",
     labelEn: "Team member",
@@ -507,6 +531,7 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     // 2026-05-24 (Will) : alignement à 990 € HT (parité avec Gagner du
     // temps / Dirigeants, journée flagship 1-to-many sur Claude).
     id: "intervention-claude",
+    commissionId: "com-formation-1j",
     labelFr: "Intervention Claude",
     labelEn: "Claude intervention",
     // Will 2026-06-03 — passage à 2 paliers (prix d'entrée 2-15 pers = 2 650 €),
@@ -524,6 +549,7 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
   {
     // Will 2026-06-03 — 1-to-1 dirigeant « Vision IA stratégique », prix fixe.
     id: "intervention-dirigeant-vision",
+    commissionId: "com-un-a-un",
     labelFr: "Vision IA stratégique",
     labelEn: "Strategic AI vision",
     priceFlat: 1390,
@@ -540,6 +566,7 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     // Will 2026-06-13 — 1-to-1 dirigeant « 2 jours ». Prix = 1 390 × ~1,85
     // (règle 1j→2j de la grille formations). HT.
     id: "intervention-dirigeant-vision-2j",
+    commissionId: "com-un-a-un",
     labelFr: "Dirigeant · 2 jours",
     labelEn: "Executive · 2 days",
     priceFlat: 2590,
@@ -557,6 +584,7 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     // Will 2026-06-13 — collaborateur « Optimisation du poste · 2 jours » (1-to-1).
     // Prix = 990 × ~1,85. HT.
     id: "intervention-membre-equipe-2j",
+    commissionId: "com-un-a-un",
     // Will 2026-06-23 — label SSOT « Public · Durée » (FR only, EN désactivé).
     labelFr: "Collaborateur · 2 jours",
     labelEn: "Team member · 2 days",
@@ -658,6 +686,7 @@ export const IMPLEMENTATION_TIERS: ReadonlyArray<PricingTier> = [
     // compréhensible sans jargon tech). L'id `impl-poc` reste stable
     // (URLs, JSON-LD, intégrations DB inchangés). Prix d'entrée conservé.
     id: "impl-poc",
+    commissionId: "com-integration",
     labelFr: "Pilote IA",
     labelEn: "AI Pilot",
     priceMin: 990,
@@ -671,6 +700,7 @@ export const IMPLEMENTATION_TIERS: ReadonlyArray<PricingTier> = [
     // pour publier un range pertinent : nombre de cas d'usage, intégrations,
     // formation interne ajustent fortement le chiffrage).
     id: "impl-mission-pme",
+    commissionId: "com-integration",
     labelFr: "Mission PME",
     labelEn: "SME mission",
     onQuote: true,
@@ -682,6 +712,7 @@ export const IMPLEMENTATION_TIERS: ReadonlyArray<PricingTier> = [
     // 2026-05-24 (Will) — passage en Sur devis (gouvernance + intégrations
     // avancées trop variables pour publier un range).
     id: "impl-mission-eti",
+    commissionId: "com-integration",
     labelFr: "Mission ETI",
     labelEn: "Mid-cap mission",
     onQuote: true,
@@ -692,6 +723,7 @@ export const IMPLEMENTATION_TIERS: ReadonlyArray<PricingTier> = [
   {
     // 2026-05-24 (Will) — sur devis pur (pas de floor publié).
     id: "impl-grand-programme",
+    commissionId: "com-integration",
     labelFr: "Grand programme",
     labelEn: "Large program",
     onQuote: true,
@@ -707,6 +739,7 @@ export const IMPLEMENTATION_TIERS: ReadonlyArray<PricingTier> = [
   // 2026-05-24 (Will) — passage en Sur devis.
   {
     id: "impl-ia-custom",
+    commissionId: "com-integration",
     labelFr: "IA custom d'entreprise",
     labelEn: "Custom enterprise AI",
     onQuote: true,
@@ -918,6 +951,55 @@ export const PRICING_CATEGORIES = {
   maintenance: MAINTENANCE_TIERS,
   codage: CODAGE_TIERS,
 } as const;
+
+/**
+ * Pourquoi un palier n'a PAS de barème de commission (Axion Partners, HYP-W6-BIS).
+ * Vocabulaire fermé : c'est lui que la grille exportée porte vers Partners.
+ *
+ * - `hors_perimetre_w6` : famille que la décision W6 (tranchée le 2026-09-03) écrit
+ *   NON commissionnée — développement web, maintenance, coaching récurrent,
+ *   conférences, interventions sur demande.
+ * - `bareme_non_publie` : le palier vise une commission `scale`, dont le montant
+ *   n'est pas publié (REQ-DM-015 : une forme `scale` bloque, elle ne vaut jamais 0).
+ * - `palier_sans_bareme` : famille commissionnée, mais aucune entrée de
+ *   `COMMERCIAL_COMMISSIONS` ne correspond à ce palier.
+ */
+export type MotifBaremeIndefini = "hors_perimetre_w6" | "bareme_non_publie" | "palier_sans_bareme";
+
+export interface BaremeIndefini {
+  /** id du `PricingTier` concerné. */
+  readonly tierId: string;
+  /** Date (AAAA-MM-JJ) depuis laquelle le palier est déclaré sans barème. */
+  readonly depuis: string;
+  readonly motif: MotifBaremeIndefini;
+}
+
+/**
+ * Les paliers SANS taux de commission, déclarés un par un, datés (HYP-W6-BIS).
+ *
+ * 🔑 Chaque palier de `PRICING_CATEGORIES` (et `UN_A_UN_RECURRING_TIER`) a SOIT un
+ * `commissionId` qui mène à un taux (`flat` ou `percent`), SOIT une ligne ici — jamais
+ * les deux, jamais aucun des deux. Un palier ajouté sans y penser fait rougir
+ * `grille-export.spec.ts` : c'est le but. Le barème d'un palier listé ici est
+ * « indéfini » et BLOQUE la commission (libellé apporteur « Prestation hors grille de
+ * commissions ») — il n'est jamais remplacé par un défaut.
+ *
+ * Ce tableau ne porte aucun montant. Le modifier change l'empreinte de la grille
+ * publiée vers Partners : republier ensuite (`scripts/gates/grille-check.ts --publier`).
+ */
+export const BAREMES_INDEFINIS: ReadonlyArray<BaremeIndefini> = [
+  { tierId: "intervention-4h", depuis: "2026-09-27", motif: "palier_sans_bareme" },
+  { tierId: "intervention-conference", depuis: "2026-09-27", motif: "hors_perimetre_w6" },
+  { tierId: "intervention-sur-demande", depuis: "2026-09-27", motif: "hors_perimetre_w6" },
+  { tierId: "intervention-dirigeants", depuis: "2026-09-27", motif: "bareme_non_publie" },
+  { tierId: "intervention-membre-equipe", depuis: "2026-09-27", motif: "bareme_non_publie" },
+  { tierId: "intervention-dirigeant-vision", depuis: "2026-09-27", motif: "bareme_non_publie" },
+  { tierId: "intervention-dirigeant-vision-2j", depuis: "2026-09-27", motif: "bareme_non_publie" },
+  { tierId: "intervention-membre-equipe-2j", depuis: "2026-09-27", motif: "bareme_non_publie" },
+  { tierId: "maintenance-standard", depuis: "2026-09-27", motif: "hors_perimetre_w6" },
+  { tierId: "codage-web", depuis: "2026-09-27", motif: "hors_perimetre_w6" },
+  { tierId: "un-a-un-recurrent", depuis: "2026-09-27", motif: "hors_perimetre_w6" },
+];
 
 /**
  * Valeur de référence du coup de projecteur — le montant BARRÉ affiché face au

@@ -69,13 +69,14 @@ function valider(c: Champs): Erreurs {
   const e: Erreurs = {};
   // 2026-09-19 (B4) — plus aucun message ne promet d'appel : l'échange de
   // 15 minutes part sur invitation, aux seuls profils retenus.
-  if (!c.prenom.trim()) e.prenom = "Ton prénom, pour savoir à qui on écrit.";
-  if (!c.telephone.trim()) e.telephone = "Ton numéro, pour te joindre si on te propose un échange.";
+  if (!c.prenom.trim()) e.prenom = "Votre prénom, pour savoir à qui nous écrivons.";
+  if (!c.telephone.trim())
+    e.telephone = "Votre numéro, pour vous joindre si nous vous proposons un échange.";
   else if (!TELEPHONE_RE.test(c.telephone.trim()))
     e.telephone = "Ce numéro ne ressemble pas à un téléphone.";
-  if (!c.email.trim()) e.email = "Ton e-mail, pour t'envoyer le lien du dossier.";
+  if (!c.email.trim()) e.email = "Votre e-mail, pour vous envoyer le lien du dossier.";
   else if (!EMAIL_RE.test(c.email.trim())) e.email = "Cet e-mail ne ressemble pas à une adresse.";
-  if (!c.consent) e.consent = "Coche la case pour qu'on puisse t'écrire.";
+  if (!c.consent) e.consent = "Cochez la case pour que nous puissions vous écrire.";
   return e;
 }
 
@@ -189,8 +190,8 @@ export function LeadApporteurForm() {
     } catch (err) {
       setErreurServeur(
         isStaleServerActionError(err)
-          ? "Le site vient d'être mis à jour. Recharge la page et renvoie le formulaire."
-          : "Une erreur est survenue. Réessaie ou écris-nous à contact@axion-ia.com.",
+          ? "Le site vient d'être mis à jour. Rechargez la page et renvoyez le formulaire."
+          : "Une erreur est survenue. Réessayez ou écrivez-nous à contact@axion-ia.com.",
       );
       setEnvoi(false);
     }

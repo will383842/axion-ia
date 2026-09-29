@@ -32,6 +32,27 @@ vi.mock("@/lib/prisma", () => {
   };
   const prisma = {
     client,
+    // Porte unique de création (chantier visio, PR 3) : verrou consultatif,
+    // personne de la fiche et son adresse, journal de « créer quand même ».
+    $executeRaw: async () => 1,
+    clientContact: {
+      findFirst: async () => null,
+      create: async (a: {
+        data: { nom: string; telephone?: string | null; fonction?: string | null };
+      }) => ({
+        id: "contact-1",
+        nom: a.data.nom,
+        telephone: a.data.telephone ?? null,
+        fonction: a.data.fonction ?? null,
+      }),
+      update: async () => ({ id: "contact-1", nom: "", telephone: null, fonction: null }),
+    },
+    clientContactAdresse: {
+      findFirst: async () => null,
+      create: async () => ({}),
+      deleteMany: async () => ({ count: 0 }),
+    },
+    activityLog: { create: async () => ({}) },
     $transaction: async (fn: unknown) =>
       typeof fn === "function" ? (fn as (tx: unknown) => unknown)(prisma) : fn,
   };

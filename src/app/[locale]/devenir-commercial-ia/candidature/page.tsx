@@ -3,7 +3,7 @@
 // client unique (CommercialApplicationWizard) ; la coquille reste
 // server-rendered.
 //
-// Contenu FR tutoyé uniquement : le locale EN est 301 → FR au runtime
+// Contenu FR au vouvoiement uniquement (décision Will du 29/09/2026) : le locale EN est 301 → FR au runtime
 // (cf. AGENTS.md), les métadonnées EN restent pour le jour du re-enable.
 //
 // ── Refonte MOBILE-FIRST 2026-08-18 ────────────────────────────────────────
@@ -56,27 +56,33 @@ const ATOUTS = [
   {
     Icon: Save,
     title: "Reprise possible",
-    text: "Tes réponses restent sur ton appareil : ferme, reviens, tu reprends où tu étais.",
+    text: "Vos réponses restent sur votre appareil : fermez, revenez, vous reprenez où vous en étiez.",
   },
 ] as const;
 
-/** Ce qui se passe APRÈS l'envoi. Repris mot pour mot de l'écran de
- *  confirmation du wizard et de la FAQ /memo-isere — jamais un délai inventé. */
+/** Ce qui se passe APRÈS l'envoi. Aligné sur l'écran de confirmation du
+ *  wizard — jamais un délai inventé. L'invitation à réserver l'échange part
+ *  seule ~15 min après un dossier complet (`invitation-auto.ts`), d'où « dans
+ *  les minutes qui suivent ».
+ *
+ *  ⚖️ Vocabulaire neutre d'apporteur INDÉPENDANT : pas de formation imposée,
+ *  pas de zone ni de secteur attribués, pas d'objectifs (risque de
+ *  requalification en agent commercial ou en salariat). */
 const APRES = [
   {
     Icon: PhoneCall,
-    title: "On lit, puis on t'écrit",
-    text: "Tu reçois un email de confirmation tout de suite. Si ta candidature est retenue, on te contacte par email pour caler un premier échange.",
+    title: "Un e-mail, puis une invitation",
+    text: "Vous recevez un e-mail de confirmation, puis, dans les minutes qui suivent, une invitation à réserver un échange de 15 minutes en visio.",
   },
   {
     Icon: ShieldCheck,
     title: "Un échange en visio",
-    text: "15 minutes pour faire connaissance, répondre à tes questions et cadrer ton secteur.",
+    text: "15 minutes pour faire connaissance et répondre à vos questions.",
   },
   {
     Icon: Rocket,
-    title: "Formation, puis terrain",
-    text: "On te forme à l'offre (produits, argumentaires) et tu démarres sur ta zone.",
+    title: "Vous recommandez, à votre rythme",
+    text: "Nous vous présentons l'offre (produits, argumentaires) et vous recommandez Axion-IA auprès des entreprises que vous connaissez, en toute indépendance.",
   },
 ] as const;
 
@@ -144,17 +150,17 @@ export default async function CommercialApplicationPage({ params }: Props) {
                 </span>
               </p>
               <h1 className="text-fg mt-5 text-[32px] leading-[1.08] font-bold tracking-tight text-balance sm:text-[40px] lg:text-[44px]">
-                Deviens commercial IA indépendant{" "}
+                Devenez commercial IA indépendant{" "}
                 <span
                   className="text-terracotta italic"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  sur ton secteur
+                  à votre rythme
                 </span>
               </h1>
               <p className="text-fg-soft mt-5 text-lg leading-relaxed text-pretty">
                 Pas de CV. Pas de lettre de motivation. Quelques questions essentielles, une par
-                écran — et on te répond.
+                écran — et nous vous répondons.
               </p>
 
               <ul
@@ -202,7 +208,7 @@ export default async function CommercialApplicationPage({ params }: Props) {
                   {PROMESSE}
                 </p>
                 <p className="text-fg-soft mt-1 text-sm leading-relaxed">
-                  Revenus non plafonnés, statut indépendant, secteur à toi.
+                  Revenus non plafonnés, statut indépendant, en toute liberté.
                 </p>
               </div>
 
@@ -238,7 +244,7 @@ export default async function CommercialApplicationPage({ params }: Props) {
                 <div className="border-border shadow-card relative aspect-[4/3] overflow-hidden rounded-3xl border">
                   <Image
                     src={photo.src}
-                    alt="Un homme sourit devant son téléphone, une vallée en arrière-plan : la candidature se remplit en 3 minutes, d'où que tu sois."
+                    alt="Un homme sourit devant son téléphone, une vallée en arrière-plan : la candidature se remplit en 3 minutes, d'où que vous soyez."
                     fill
                     sizes="(max-width: 1024px) 100vw, 42vw"
                     className="object-cover"

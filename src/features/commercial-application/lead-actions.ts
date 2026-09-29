@@ -104,7 +104,7 @@ export async function submitLeadApporteurAction(
     return {
       ok: false,
       error:
-        "Trop d'essais depuis cette connexion. Patiente quelques minutes — ou écris-nous à contact@axion-ia.com.",
+        "Trop d'essais depuis cette connexion. Patientez quelques minutes — ou écrivez-nous à contact@axion-ia.com.",
     };
   }
 
@@ -124,7 +124,7 @@ export async function submitLeadApporteurAction(
   }
   const parsed = leadApporteurSchema.safeParse(raw);
   if (!parsed.success) {
-    return { ok: false, error: "Champs invalides — vérifie tes réponses." };
+    return { ok: false, error: "Champs invalides — vérifiez vos réponses." };
   }
   const d = parsed.data;
   const locale = parseLocale(formData.get("locale") ?? "fr");
@@ -139,7 +139,7 @@ export async function submitLeadApporteurAction(
     if (!rlEmail.allowed) {
       return {
         ok: false,
-        error: "On a déjà bien reçu ta demande avec cet email — inutile de la renvoyer.",
+        error: "Nous avons déjà bien reçu votre demande avec cet e-mail — inutile de la renvoyer.",
       };
     }
   }
@@ -370,7 +370,7 @@ export async function submitLeadApporteurAction(
     });
     return {
       ok: false,
-      error: "Une erreur est survenue. Réessaie ou écris-nous à contact@axion-ia.com.",
+      error: "Une erreur est survenue. Réessayez ou écrivez-nous à contact@axion-ia.com.",
     };
   }
 }

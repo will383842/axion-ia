@@ -15,8 +15,15 @@
 // déjà que l'action refuse d'écrire sans accord. Ici on vérifie que la personne
 // a bien eu l'occasion de le donner AVANT que l'écriture ne parte.
 
+import * as React from "react";
 import { describe, expect, it } from "vitest";
-import { emptyAnswers, validateStep } from "../wizard-state";
+import { render } from "@testing-library/react";
+import { commercialApplicationSchema } from "@/lib/commercial-application/model";
+import { StepDetails, StepIdentite } from "../steps";
+import { buildSubmissionPayload, emptyAnswers, validateStep } from "../wizard-state";
+
+/** Le texte de l'accord, tel qu'il est affiché (apostrophes typographiques). */
+const TEXTE_ACCORD = /J’accepte que mes informations soient utilisées/;
 
 /** Réponses valides pour l'écran 1, consentement mis à part. */
 function identiteValide(consent: boolean) {
@@ -74,5 +81,72 @@ describe("le consentement précède l'écriture", () => {
       ecransQuiExigent,
       "le consentement doit être exigé à l'écran 1, et là seulement",
     ).toEqual([1]);
+  });
+});
+
+// ── Demandé UNE fois (29/09) ──────────────────────────────────────────────
+// Test de bout en bout du 29/09 : la case était AFFICHÉE deux fois, à l'écran 1
+// et au dernier — la validation, elle, ne l'exigeait déjà qu'à l'écran 1. On
+// vérifie donc ce que la personne VOIT, pas seulement ce que la validation
+// exige, puis que l'accord donné à l'écran 1 part bien avec l'envoi final.
+describe("le consentement n'est demandé qu'une fois", () => {
+  const sansEffet = () => {};
+
+  it("l'écran 1 AFFICHE la case d'accord", () => {
+    const { container } = render(
+      React.createElement(StepIdentite, { a: emptyAnswers(), set: sansEffet, errors: {} }),
+    );
+    expect(container.textContent ?? "").toMatch(TEXTE_ACCORD);
+    expect(container.querySelector('input[type="checkbox"][name="consent"]')).not.toBeNull();
+  });
+
+  it("le dernier écran ne l'affiche PLUS", () => {
+    const { container } = render(
+      React.createElement(StepDetails, { a: emptyAnswers(), set: sansEffet, errors: {} }),
+    );
+    expect(container.textContent ?? "", "la case réapparaît au dernier écran").not.toMatch(
+      TEXTE_ACCORD,
+    );
+  });
+
+  it("l'envoi final transporte l'accord et passe le schéma serveur", () => {
+    // Dossier complet et valide, accord donné à l'écran 1 : c'est ce que le
+    // wizard envoie. Le schéma serveur exige `consent: true` (littéral) — c'est
+    // lui qui conditionne l'enregistrement ET la preuve (`recordConsentEvent`).
+    const reponses = {
+      ...emptyAnswers(),
+      prenom: "Camille",
+      nom: "Durand",
+      email: "camille.durand@example.com",
+      telephone: "0612345678",
+      ville: "Grenoble",
+      codePostal: "38000",
+      consent: true,
+      b2bDejaVendu: true,
+      b2bAnnees: "5-10",
+      experiences: [
+        {
+          ...emptyAnswers().experiences[0]!,
+          entreprise: "Exemple SA",
+          ville: "Grenoble",
+          poste: "Commercial",
+          debutMois: "01",
+          debutAnnee: "2020",
+          posteActuel: true,
+        },
+      ],
+      iaUtilise: false,
+      informatiqueUtilise: false,
+      zoneMobile: true,
+      deplacement: "oui",
+      pitch: "x".repeat(200),
+      dispoMois: "12",
+      dispoAnnee: String(new Date().getFullYear() + 1),
+      permisVehicule: true,
+    };
+    const payload = buildSubmissionPayload(reponses);
+    expect(payload.consent).toBe(true);
+    const verdict = commercialApplicationSchema.safeParse(payload);
+    expect(verdict.success, JSON.stringify(verdict.error?.issues)).toBe(true);
   });
 });

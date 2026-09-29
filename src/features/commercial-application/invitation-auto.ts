@@ -135,6 +135,19 @@ async function inviter(submissionId: string, calendlyUrl: string): Promise<Issue
     where: { id: submissionId },
     data: { details: { ...details, invitationAuto: { le: new Date().toISOString(), issue } } },
   });
+  // 🔴 Test de bout en bout du 29/09 : le formulaire complet crée DEUX fiches
+  // pour une même personne (la capture du premier écran, puis le dossier).
+  // L'invitation part sur la première, qui est rangée ; la seconde, « déjà
+  // invitée », restait « à traiter » — une ligne de bruit par candidat du Mémo,
+  // d'Indeed ou de Leboncoin. Elle est rangée de la même façon (geste
+  // « Traité » : les rappels J+3/J+7 continuent, une réponse humaine la
+  // rouvre), et SEULEMENT si elle est encore nouvelle.
+  if (issue === "deja-invitee") {
+    await prisma.submission.updateMany({
+      where: { id: submissionId, status: "new", archivedAt: null },
+      data: { status: "processed", needsAttention: false },
+    });
+  }
   return issue;
 }
 

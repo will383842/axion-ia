@@ -91,7 +91,7 @@ export function DeposerVideos({ jeton }: { jeton: string }) {
     }).catch(() => null);
     const ij = (await init?.json().catch(() => null)) as
       { ok: true; id: string; tailleMorceau: number } | { ok: false; error: string } | null;
-    if (!ij || !ij.ok) return setErreur(ij && !ij.ok ? ij.error : "Envoi impossible, réessaie.");
+    if (!ij || !ij.ok) return setErreur(ij && !ij.ok ? ij.error : "Envoi impossible, réessayez.");
 
     const n = nombreDeMorceaux(fichier.size);
     setProgres({ nom: fichier.name, pct: 0 });
@@ -108,7 +108,7 @@ export function DeposerVideos({ jeton }: { jeton: string }) {
       }
       if (!reussi) {
         setProgres(null);
-        return setErreur("La connexion a coupé pendant l'envoi. Réessaie.");
+        return setErreur("La connexion a coupé pendant l'envoi. Réessayez.");
       }
       setProgres({ nom: fichier.name, pct: Math.round(((i + 1) / n) * 100) });
     }
@@ -118,7 +118,7 @@ export function DeposerVideos({ jeton }: { jeton: string }) {
     }).catch(() => null);
     const fj = (await fin?.json().catch(() => null)) as { ok: boolean; error?: string } | null;
     setProgres(null);
-    if (!fj?.ok) setErreur(fj?.error ?? "L'envoi n'a pas abouti, réessaie.");
+    if (!fj?.ok) setErreur(fj?.error ?? "L'envoi n'a pas abouti, réessayez.");
     await relire();
   }
 
@@ -132,11 +132,11 @@ export function DeposerVideos({ jeton }: { jeton: string }) {
   return (
     <section className="mt-10 space-y-3" aria-labelledby="titre-videos">
       <h2 id="titre-videos" className="text-fg text-base font-semibold">
-        Tes meilleurs montages <span className="text-fg-soft font-normal">(facultatif)</span>
+        Vos meilleurs montages <span className="text-fg-soft font-normal">(facultatif)</span>
       </h2>
       <p className="text-fg-soft text-sm">
         Jusqu’à {VIDEOS_MAX} vidéos (MP4, MOV ou WebM, 200 Mo max chacune). Elles servent uniquement
-        à évaluer ta candidature, sont vérifiées par un antivirus et supprimées avec elle.
+        à évaluer votre candidature, sont vérifiées par un antivirus et supprimées avec elle.
       </p>
 
       {visibles.length > 0 ? (

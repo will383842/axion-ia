@@ -293,8 +293,8 @@ interface ScenarioMois {
 
 const SCENARIOS_MOIS: readonly ScenarioMois[] = [
   {
-    titre: "Ton premier mois",
-    detail: "Deux Essentielles vendues à deux PME de ton secteur.",
+    titre: "Un premier mois",
+    detail: "Deux Essentielles vendues à deux PME de votre entourage.",
     jours: 2,
   },
   {
@@ -303,7 +303,7 @@ const SCENARIOS_MOIS: readonly ScenarioMois[] = [
     jours: 5,
   },
   {
-    titre: "Une ETI dans ton portefeuille",
+    titre: "Une ETI dans votre portefeuille",
     detail:
       "40 salariés à former, ça se découpe en 3 groupes de 15 maximum. Trois Approfondies chez UN seul client.",
     jours: 6,
@@ -626,30 +626,30 @@ export default async function MemoIserePage({ params }: Props) {
     {
       id: "remuneration",
       question: "Combien gagne-t-on exactement ?",
-      answer: `Ta commission se compte en JOURNÉES de formation vendues : ${commission(1)} par journée, sans plafond. Une formation Essentielle dure 1 journée — ${commission(1)} pour toi. Une Approfondie dure 2 journées consécutives — ${commission(2)}. Un programme sur mesure de 3 journées — ${commission(3)}. Et une grande équipe se forme en plusieurs groupes : 40 salariés, c'est 3 groupes, donc 3 sessions facturées chez un seul client. Les audits et intégrations IA rapportent en plus un pourcentage de la facture. Ce sont des exemples de calcul, pas une promesse : tes revenus dépendent de tes ventes.`,
+      answer: `Votre commission se compte en JOURNÉES de formation vendues : ${commission(1)} par journée, sans plafond. Une formation Essentielle dure 1 journée — ${commission(1)} pour vous. Une Approfondie dure 2 journées consécutives — ${commission(2)}. Un programme sur mesure de 3 journées — ${commission(3)}. Et une grande équipe se forme en plusieurs groupes : 40 salariés, c'est 3 groupes, donc 3 sessions facturées chez un seul client. Les audits et intégrations IA rapportent en plus un pourcentage de la facture. Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.`,
     },
     {
       id: "statut",
       question: "Quel statut faut-il ?",
       answer:
-        "Un statut d'indépendant qui permet de facturer ta commission : micro-entreprise ou société. Si tu n'as pas encore de statut, la micro-entreprise se crée en ligne en quelques jours et ne coûte rien — on t'oriente au démarrage.",
+        "Un statut d'indépendant qui permet de facturer votre commission : micro-entreprise ou société. Si vous n'avez pas encore de statut, la micro-entreprise se crée en ligne en quelques jours et ne coûte rien — nous vous orientons au démarrage.",
     },
     {
       id: "cumul",
       question: "Peut-on cumuler avec un emploi ou une retraite ?",
       answer:
-        "Oui. L'activité est 100 % à la commission et sans quota horaire : tu prospectes quand tu veux, en complément d'un emploi salarié, d'une autre activité indépendante ou d'une retraite.",
+        "Oui. L'activité est 100 % à la commission et sans quota horaire : vous recommandez quand vous le souhaitez, en complément d'un emploi salarié, d'une autre activité indépendante ou d'une retraite.",
     },
     {
       id: "zone",
-      question: "Quelle est la zone exacte ? Puis-je choisir la mienne ?",
-      answer: `Tu choisis un SECTEUR, pas une seule commune : l'un des 13 territoires du corridor Grenoble - Lyon - Valence - Die (${villesPhares.join(", ")}…), soit ${MEMO_ZONE_TOTAL} communes au total, petites incluses. Tant qu'un secteur est disponible, il devient le tien — un vrai territoire de plusieurs dizaines de communes.`,
+      question: "Quelle est la zone concernée ? Suis-je limité à un territoire ?",
+      answer: `Non. Cette annonce couvre les 13 territoires du corridor Grenoble - Lyon - Valence - Die (${villesPhares.join(", ")}…), soit ${MEMO_ZONE_TOTAL} communes au total, petites incluses. Aucun territoire n'est attribué ni réservé : vous recommandez Axion-IA là où vous avez votre réseau, et Axion-IA intervient partout en France.`,
     },
     {
       id: "debutant",
       question: "Faut-il connaître l'IA ou avoir déjà vendu ?",
       answer:
-        "Non. On te forme complètement à l'offre (formations, audits, accompagnement) et on te fournit les supports et les argumentaires. Ce qui compte : l'aisance relationnelle et l'envie d'aller voir les entreprises de ta zone.",
+        "Non. Nous vous présentons l'offre en détail (formations, audits, accompagnement) et vous fournissons les supports. Ce qui compte : l'aisance relationnelle et des entreprises autour de vous à qui la recommander.",
     },
     {
       id: "quelles-entreprises",
@@ -667,24 +667,24 @@ export default async function MemoIserePage({ params }: Props) {
       id: "demarrage",
       question: "Quand est-ce que ça démarre ?",
       answer:
-        "Dès que ta candidature est validée : un échange téléphonique, la formation à l'offre, et tu démarres sur ton secteur.",
+        "Dès que votre candidature est validée : un échange de 15 minutes en visio, la présentation de l'offre, puis vous recommandez Axion-IA à votre rythme.",
     },
     {
       id: "paiement",
       question: "Comment et quand suis-je payé ?",
-      answer: `En tant qu'indépendant, tu factures ta commission à Axion-IA une fois que le client a réglé sa facture — pas à la signature. C'est la règle du jeu de l'apport d'affaires : la commission est due quand l'argent est encaissé. ${commission(1)} par journée de formation vendue, pourcentage sur les audits et intégrations. Chaque entreprise que tu nous déclares est enregistrée à ton nom par notre équipe : c'est cette déclaration qui fait foi.`,
+      answer: `En tant qu'indépendant, vous facturez votre commission à Axion-IA une fois que le client a réglé sa facture — pas à la signature. C'est la règle du jeu de l'apport d'affaires : la commission est due quand l'argent est encaissé. ${commission(1)} par journée de formation vendue, pourcentage sur les audits et intégrations. Chaque entreprise que vous nous déclarez est enregistrée à votre nom par notre équipe : c'est cette déclaration qui fait foi.`,
     },
     {
       id: "engagement",
       question: "Y a-t-il un engagement ou une exclusivité ?",
       answer:
-        "Aucune exclusivité imposée et aucun engagement de durée : tu restes indépendant. Ton portefeuille de clients reste le tien, et tu arrêtes quand tu veux.",
+        "Aucune exclusivité imposée et aucun engagement de durée : vous restez indépendant. Votre portefeuille de clients reste le vôtre, et vous arrêtez quand vous voulez.",
     },
     {
       id: "candidater",
       question: "Comment candidater ?",
       answer:
-        "En 3 minutes chrono : zéro CV demandé, et la lettre de motivation ? On a remplacé cette vieillerie par un message libre 😉 — raconte-nous qui tu es, ce que tu connais de ton coin et pourquoi ton secteur, c'est toi. On te répond, et si ton profil correspond, on te propose un échange de 15 minutes.",
+        "En 3 minutes chrono : zéro CV demandé, et la lettre de motivation ? Nous l'avons remplacée par un message libre 😉 — racontez-nous qui vous êtes et ce que vous connaissez de votre région. Vous recevez un e-mail de confirmation, puis, dans les minutes qui suivent, une invitation à réserver un échange de 15 minutes en visio.",
     },
   ];
 
@@ -733,7 +733,7 @@ export default async function MemoIserePage({ params }: Props) {
                   className="text-terracotta italic"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  sur votre territoire
+                  près de chez vous
                 </span>
               </h1>
               {/* Chapô TENU COURT : c'est lui qui décide si le bouton reste
@@ -742,10 +742,10 @@ export default async function MemoIserePage({ params }: Props) {
                   chiffres-clés — la répéter ici coûtait deux lignes et
                   repoussait le CTA hors du premier écran. */}
               <p data-speakable className="text-fg-soft mt-5 max-w-xl text-lg leading-relaxed">
-                Tu proposes aux <strong>PME, ETI et grands groupes</strong> de ta zone des
-                formations IA — l’AI Act les rend incontournables. Toi, tu touches{" "}
-                <strong>{`${commission(1)} par journée vendue`}</strong>. De Grenoble à Lyon, tu
-                choisis ton secteur.
+                Vous recommandez aux <strong>PME, ETI et grands groupes</strong> que vous connaissez
+                des formations IA — l’AI Act les rend incontournables. Vous touchez{" "}
+                <strong>{`${commission(1)} par journée vendue`}</strong>. De Grenoble à Lyon, là où
+                vous avez votre réseau.
               </p>
 
               {/* CTA remonté AVANT la photo : sur mobile il était sous une image
@@ -761,7 +761,7 @@ export default async function MemoIserePage({ params }: Props) {
             <div>
               <Photo
                 slot="hero"
-                alt="Deux dirigeantes de PME en rendez-vous autour d'une tablette : le rendez-vous commercial que tu décrocheras sur ta zone."
+                alt="Deux dirigeantes de PME en rendez-vous autour d'une tablette : le rendez-vous que votre recommandation peut ouvrir."
                 ratio="aspect-[4/3]"
                 sizes="(max-width: 1024px) 100vw, 46vw"
                 priority
@@ -850,7 +850,7 @@ export default async function MemoIserePage({ params }: Props) {
               "Formations au poste de travail, sur mesure",
               ...(certifie ? REASSURANCE_CERTIFIE : []),
               "Statut libre : micro-entreprise ou société",
-              "Cumulable avec ton job actuel",
+              "Cumulable avec votre emploi actuel",
             ].map((t) => (
               <li
                 key={t}
@@ -881,13 +881,13 @@ export default async function MemoIserePage({ params }: Props) {
               <h2 className="font-serif text-[26px] leading-snug font-semibold text-[color:var(--color-bg)] sm:text-4xl">
                 L’IA, tout le monde en parle.{" "}
                 <span className="text-terracotta-soft italic">
-                  Toi, tu es payé à la journée vendue. 💶
+                  Vous, vous êtes payé à la journée vendue. 💶
                 </span>
               </h2>
               <dl className="grid grid-cols-3 gap-3 sm:gap-4">
                 {[
                   { v: commission(1), l: "par journée vendue" },
-                  { v: String(MEMO_ZONE_CLUSTERS.length), l: "secteurs au choix" },
+                  { v: String(MEMO_ZONE_CLUSTERS.length), l: "territoires couverts" },
                   { v: totalAll > 0 ? `${totalAll} avis` : "4,9/5", l: "clients conquis" },
                 ].map((s) => (
                   <div key={s.l}>
@@ -913,7 +913,7 @@ export default async function MemoIserePage({ params }: Props) {
         eyebrow="L'opportunité"
         title="Pourquoi c'est si"
         titleEm="facile à vendre"
-        description="Tu n'arrives pas avec un produit à pousser : tu arrives avec une obligation légale, un besoin concret et une demande qui explose."
+        description="Vous n'arrivez pas avec un produit à pousser : vous arrivez avec une obligation légale, un besoin concret et une demande qui explose."
       >
         <>
           <ol className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
@@ -939,15 +939,15 @@ export default async function MemoIserePage({ params }: Props) {
                 Icon: TrendingUp,
                 title: "La demande explose",
                 description:
-                  "Du cabinet d'avocats de trois personnes au site industriel de mille : tout le monde parle d'IA — et personne n'est venu les voir sur ta zone. Tu arrives premier.",
-                stat: { figure: "1er", label: "sur ta zone" },
+                  "Du cabinet d'avocats de trois personnes au site industriel de mille : tout le monde parle d'IA — et personne n'est venu les voir. Vous arrivez parmi les premiers.",
+                stat: { figure: "1er", label: "à venir les voir" },
               },
               {
                 accent: "plum" as const,
                 Icon: Presentation,
                 title: "Ça se démontre",
                 description:
-                  "On montre l'IA en direct sur les documents du client, pas sur des slides. La démonstration fait la vente à ta place.",
+                  "On montre l'IA en direct sur les documents du client, pas sur des slides. La démonstration fait la vente à votre place.",
                 stat: { figure: "Démo", label: "sur leurs dossiers" },
               },
             ].map((c, i) => (
@@ -976,10 +976,10 @@ export default async function MemoIserePage({ params }: Props) {
       <Section
         id="ton-secteur"
         className={SEC}
-        eyebrow="Ton secteur"
+        eyebrow="Où recommander"
         title={`${MEMO_ZONE_TOTAL} communes, de Grenoble à`}
         titleEm="Lyon, Valence et Die"
-        description="Tu choisis TON SECTEUR — pas une commune : l'un de ces 13 territoires, des dizaines de communes chacun. Tant qu'il est disponible, il est à toi."
+        description="L'annonce couvre ces 13 territoires, des dizaines de communes chacun. Aucun secteur n'est attribué : vous recommandez Axion-IA là où vous avez votre réseau."
       >
         <>
           <Photo
@@ -1004,7 +1004,7 @@ export default async function MemoIserePage({ params }: Props) {
             />
             <div className="absolute inset-x-4 bottom-4 sm:inset-x-8 sm:bottom-7">
               <p className="font-serif text-2xl leading-tight font-semibold text-white sm:text-4xl">
-                Un vrai territoire, pas une liste d’adresses
+                Tout un corridor, pas une liste d’adresses
               </p>
               <p className="mt-1.5 max-w-xl text-sm leading-snug text-white/85 sm:text-base">
                 {MEMO_ZONE_TOTAL} communes réparties en {MEMO_ZONE_CLUSTERS.length} secteurs, les
@@ -1070,8 +1070,8 @@ export default async function MemoIserePage({ params }: Props) {
             </div>
           </details>
           <p data-speakable className="text-fg-muted mt-5 max-w-2xl text-sm leading-relaxed">
-            Ta commune n’est pas dans la liste mais tu es à proximité ? Candidate quand même — on
-            regarde ensemble, le secteur s’adapte.
+            Votre commune n’est pas dans la liste ? Candidatez quand même : Axion-IA intervient
+            partout en France.
           </p>
           <div className="mt-7">
             <CtaCandidature track="memo-zone-apply" />
@@ -1085,11 +1085,11 @@ export default async function MemoIserePage({ params }: Props) {
       <Section
         tone="sand"
         className={SEC}
-        eyebrow="Tes futurs clients"
-        title="Ton prochain client ? Le site industriel"
+        eyebrow="Vos futurs clients"
+        title="Votre prochain client ? Le site industriel"
         titleEm="d'à côté"
         titleTail=" — ou le cabinet d'avocats d'en face"
-        description="De la PME au grand groupe : l'AI Act ne fait pas de tri entre les tailles ni entre les secteurs. Les PME signent vite, les grandes rapportent gros — les quatre se prospectent, et voici à quoi elles ressemblent sur ta zone."
+        description="De la PME au grand groupe : l'AI Act ne fait pas de tri entre les tailles ni entre les secteurs. Les PME signent vite, les grandes rapportent gros — les quatre sont concernées, et voici à quoi elles ressemblent autour de vous."
       >
         <>
           {/* Triptyque : trois tuiles VERTICALES sur mobile (une bande d'un seul
@@ -1101,7 +1101,7 @@ export default async function MemoIserePage({ params }: Props) {
               {
                 slot: "secteur-industrie" as const,
                 titre: "Industrie",
-                alt: "Atelier de production moderne et lumineux : les sites industriels de ta zone, premiers acheteurs de formation IA.",
+                alt: "Atelier de production moderne et lumineux : les sites industriels de la région, premiers acheteurs de formation IA.",
               },
               {
                 slot: "secteur-tertiaire" as const,
@@ -1111,7 +1111,7 @@ export default async function MemoIserePage({ params }: Props) {
               {
                 slot: "secteur-commerce" as const,
                 titre: "Commerces",
-                alt: "Commerçant servant un client derrière son comptoir : les PME et ETI de ta zone, excellentes premières ventes.",
+                alt: "Commerçant servant un client derrière son comptoir : les PME et ETI de la région, excellentes premières ventes.",
               },
             ].map((c) => (
               <li key={c.slot}>
@@ -1154,15 +1154,15 @@ export default async function MemoIserePage({ params }: Props) {
               Une grille de cartes, pas un carrousel : les listes d'exemples
               doivent rester lisibles au clavier et par un lecteur d'écran. */}
           <h3 className="text-fg mt-2 text-center font-serif text-xl font-semibold sm:text-2xl">
-            Les quatre tailles que tu vas démarcher
+            Les quatre tailles d’entreprises concernées
           </h3>
           <p className="text-fg-muted mx-auto mt-2 max-w-2xl text-center text-sm">
             Effectifs selon la nomenclature officielle (INSEE / décret LME).{" "}
             <strong className="text-fg-soft font-semibold">
               Ce qui suit n’est qu’une liste d’exemples
             </strong>{" "}
-            — des types d’entreprises que tu croiseras sur ta zone, ni des clients existants ni une
-            liste fermée.
+            — des types d’entreprises que vous croiserez autour de vous, ni des clients existants ni
+            une liste fermée.
           </p>
           <ul
             className="mx-auto mt-6 grid max-w-5xl gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4"
@@ -1204,7 +1204,7 @@ export default async function MemoIserePage({ params }: Props) {
                     flottait à quatre hauteurs différentes. */}
                 <p className="border-border/70 text-fg-muted mt-auto border-t pt-4 text-[13px] leading-relaxed">
                   <span className="text-fg-soft font-semibold">
-                    Ce que ça vaut pour toi&nbsp;:{" "}
+                    Ce que ça vaut pour vous&nbsp;:{" "}
                   </span>
                   {t.ceQueCaVaut}
                 </p>
@@ -1221,9 +1221,9 @@ export default async function MemoIserePage({ params }: Props) {
             ⚠️ <strong className="text-fg font-semibold">Ce ne sont que des exemples.</strong> La
             liste n’est ni limitative ni exclusive : ça peut tout aussi bien être un magasin, une
             entreprise du bâtiment, un établissement de santé, un hôtel ou un restaurant, une
-            exploitation agricole, une collectivité, un grand groupe… Dès qu’une organisation de ta
-            zone a des salariés qui utilisent l’IA, elle est concernée par l’AI Act — donc par ton
-            offre.
+            exploitation agricole, une collectivité, un grand groupe… Dès qu’une organisation a des
+            salariés qui utilisent l’IA, elle est concernée par l’AI Act — donc par l’offre que vous
+            recommandez.
           </p>
 
           <h3 className="text-fg mt-10 text-center font-serif text-xl font-semibold sm:mt-14 sm:text-2xl">
@@ -1253,14 +1253,14 @@ export default async function MemoIserePage({ params }: Props) {
             ))}
           </ul>
           <p className="text-fg-muted mx-auto mt-5 max-w-2xl text-center text-sm">
-            … et tous les autres, de la PME au grand groupe : si une entreprise de ta zone a des
-            équipes et des dossiers à traiter, elle est concernée.
+            … et tous les autres, de la PME au grand groupe : si une entreprise a des équipes et des
+            dossiers à traiter, elle est concernée.
           </p>
         </>
       </Section>
 
       {/* CTA band terracotta — pattern /fr/audit */}
-      <BandeCta title="Les secteurs partent un par un ⏳" track="memo-band-apply" />
+      <BandeCta title="Les candidatures sont ouvertes ⏳" track="memo-band-apply" />
 
       {/* 6 ── Rémunération — la RÈGLE d'abord, le catalogue ensuite, les
           mois-types en dernier. Retour Will 2026-08-18 : le visiteur doit
@@ -1271,9 +1271,9 @@ export default async function MemoIserePage({ params }: Props) {
       <Section
         className={SEC}
         eyebrow="Rémunération"
-        title="Tu ne vends pas des contrats."
-        titleEm="Tu vends des journées."
-        description="Ta commission ne dépend ni du prix payé par le client, ni de la taille de l’équipe formée : elle se compte en journées de formation. Une journée vendue, une commission. Deux journées, deux commissions."
+        title="Vous ne vendez pas des contrats."
+        titleEm="Vous vendez des journées."
+        description="Votre commission ne dépend ni du prix payé par le client, ni de la taille de l’équipe formée : elle se compte en journées de formation. Une journée vendue, une commission. Deux journées, deux commissions."
       >
         <>
           {/* ── L'équation, en trois temps ───────────────────────────────── */}
@@ -1298,7 +1298,7 @@ export default async function MemoIserePage({ params }: Props) {
                   {commission(1)}
                 </p>
                 <p className="text-fg-soft mt-2 text-[11px] leading-tight font-bold tracking-[0.12em] uppercase sm:text-xs">
-                  pour toi
+                  pour vous
                 </p>
               </li>
             </ol>
@@ -1309,7 +1309,7 @@ export default async function MemoIserePage({ params }: Props) {
 
           {/* ── Le catalogue réel, avec la commission en face ─────────────── */}
           <h3 className="text-fg mt-10 text-center font-serif text-xl font-semibold sm:mt-14 sm:text-2xl">
-            Ce que tu vends · ce que tu touches
+            Ce que vous vendez · ce que vous touchez
           </h3>
           <p className="text-fg-muted mx-auto mt-2 max-w-2xl text-center text-sm">
             Le catalogue Axion-IA, tel qu’il est vendu aujourd’hui.
@@ -1339,7 +1339,7 @@ export default async function MemoIserePage({ params }: Props) {
                     {f.etPlus ? <span className="text-lg sm:text-xl">+</span> : null}
                   </span>
                   <span className="text-fg-muted mt-1 block text-[11px] font-semibold tracking-wide uppercase">
-                    pour toi
+                    pour vous
                   </span>
                 </span>
               </li>
@@ -1381,8 +1381,8 @@ export default async function MemoIserePage({ params }: Props) {
                 Ici les montants sont CALCULÉS, donc plus aucun littéral à
                 exempter — mais le principe reste : un exemple n'est pas une
                 promesse, et ça doit se lire. */}
-            Ce sont des exemples de calcul, pas une promesse de revenus : tes commissions dépendent
-            de tes ventes. Rien ne t’interdit d’aller au-delà — il n’y a pas de plafond.
+            Ce sont des exemples de calcul, pas une promesse de revenus : vos commissions dépendent
+            de vos ventes. Rien ne vous interdit d’aller au-delà — il n’y a pas de plafond.
           </p>
 
           <div className="mx-auto mt-10 grid max-w-3xl gap-4 sm:grid-cols-2">
@@ -1409,7 +1409,7 @@ export default async function MemoIserePage({ params }: Props) {
               <p className="text-fg-soft mt-2 text-sm leading-relaxed">
                 Un audit IA, c’est simple à expliquer : on cartographie les process de l’entreprise,
                 on chiffre où l’IA fait gagner du temps et de l’argent, et le dirigeant repart avec
-                un plan d’action priorisé. Quatre niveaux selon la taille (PME → ETI) — ta
+                un plan d’action priorisé. Quatre niveaux selon la taille (PME → ETI) — votre
                 commission suit le niveau vendu, et elle s’ajoute aux journées de formation.
               </p>
             </div>
@@ -1450,31 +1450,34 @@ export default async function MemoIserePage({ params }: Props) {
                 {
                   accent: "terracotta" as const,
                   Icon: Rocket,
-                  title: "Tu candidates",
+                  title: "Vous candidatez",
                   description:
-                    "3 minutes chrono : pas de CV, pas de lettre de motivation à l'ancienne — un message libre pour te présenter. On te répond, et si ton profil correspond, on te propose un échange de 15 minutes.",
+                    "3 minutes chrono : pas de CV, pas de lettre de motivation à l'ancienne — un message libre pour vous présenter. Dans les minutes qui suivent, vous recevez une invitation à réserver un échange de 15 minutes en visio.",
                   stat: { figure: "3 min", label: "pour candidater" },
                 },
                 {
                   accent: "primary" as const,
                   Icon: GraduationCap,
-                  title: "On te forme à l'offre",
+                  title: "Nous vous présentons l'offre",
                   description:
-                    "Formations, audits, intégrations : tu maîtrises l'offre et les argumentaires avant ton premier rendez-vous.",
-                  stat: { figure: "Offre", label: "maîtrisée avant de vendre" },
+                    "Formations, audits, intégrations : vous disposez des informations et des supports utiles, à consulter librement.",
+                  stat: { figure: "Offre", label: "présentée dès le départ" },
                 },
                 {
                   accent: "sage" as const,
                   Icon: MapPin,
-                  title: "Tu choisis TA zone",
+                  title: "Vous recommandez, à votre rythme",
                   description:
-                    "De Grenoble à Lyon, de Valence à Die : tu prends le secteur que tu connais — des dizaines de communes, à toi tant qu'il est disponible.",
-                  stat: { figure: String(MEMO_ZONE_CLUSTERS.length), label: "secteurs au choix" },
+                    "De Grenoble à Lyon, de Valence à Die : vous recommandez Axion-IA auprès des entreprises que vous connaissez, en toute indépendance.",
+                  stat: {
+                    figure: String(MEMO_ZONE_CLUSTERS.length),
+                    label: "territoires couverts",
+                  },
                 },
                 {
                   accent: "plum" as const,
                   Icon: LineChart,
-                  title: "Tu touches à chaque vente",
+                  title: "Vous touchez à chaque vente",
                   description: `${commission(1)} par journée de formation vendue — donc ${commission(2)} pour une Approfondie de 2 journées, ${commission(3)} pour un programme de 3. Commission en plus sur les audits IA.`,
                   stat: { figure: commission(1), label: "par journée vendue" },
                 },
@@ -1500,7 +1503,7 @@ export default async function MemoIserePage({ params }: Props) {
         <div className="mx-auto max-w-4xl">
           <Photo
             slot="terrain"
-            alt="Formateur devant une petite équipe et un tableau blanc couvert de notes : la journée de formation IA que tu auras vendue."
+            alt="Formateur devant une petite équipe et un tableau blanc couvert de notes : la journée de formation IA que vous aurez vendue."
             ratio="aspect-[16/10] sm:aspect-[16/9]"
             sizes="(max-width: 640px) 100vw, 896px"
             className={BLEED}
@@ -1518,7 +1521,7 @@ export default async function MemoIserePage({ params }: Props) {
           tone="sand"
           className={SEC}
           eyebrow="La preuve"
-          title="Le produit que tu vendras, nos clients le"
+          title="Le produit que vous recommanderez, nos clients le"
           titleEm="recommandent"
           description={
             totalAll > 0
@@ -1538,7 +1541,7 @@ export default async function MemoIserePage({ params }: Props) {
               ))}
             </ul>
             <p aria-hidden="true" className="text-fg-muted mt-2 text-xs sm:hidden">
-              Fais glisser pour lire les autres avis →
+              Faites glisser pour lire les autres avis →
             </p>
             <div className="mt-7">
               <CtaCandidature track="memo-reviews-apply" />
@@ -1551,8 +1554,8 @@ export default async function MemoIserePage({ params }: Props) {
       <Section
         className={SEC}
         eyebrow="Jamais seul"
-        title="Intégration et aide au"
-        titleEm="démarrage"
+        title="Des outils et un appui,"
+        titleEm="à la demande"
       >
         <>
           <DarkTriadPanel
@@ -1560,23 +1563,23 @@ export default async function MemoIserePage({ params }: Props) {
               {
                 Icon: GraduationCap,
                 eyebrow: "01",
-                title: "Formation complète à l'offre",
+                title: "Présentation complète de l'offre",
                 description:
-                  "Produits, tarifs, argumentaires : tu pars sur le terrain en sachant exactement quoi dire, à qui, et comment répondre aux objections.",
+                  "Produits, tarifs, argumentaires : vous savez précisément ce que propose Axion-IA et comment répondre aux questions des entreprises.",
               },
               {
                 Icon: Handshake,
                 eyebrow: "02",
                 title: "Outils fournis",
                 description:
-                  "Supports de présentation, plaquettes, démos prêtes à montrer et catalogue complet des prestations — tu n'as rien à créer.",
+                  "Supports de présentation, plaquettes, démos prêtes à montrer et catalogue complet des prestations — vous n'avez rien à créer.",
               },
               {
                 Icon: Rocket,
                 eyebrow: "03",
-                title: "Accompagné au démarrage",
+                title: "Un interlocuteur disponible",
                 description:
-                  "Tes premiers rendez-vous se préparent ensemble, et tu as toujours quelqu'un à appeler. Jamais lâché seul dans le grand bain.",
+                  "Vous avez toujours quelqu'un à qui poser vos questions, quand vous en avez besoin. Jamais seul dans le grand bain.",
               },
             ]}
           />
@@ -1603,15 +1606,15 @@ export default async function MemoIserePage({ params }: Props) {
         eyebrow="La suite"
         title="Une activité qui"
         titleEm="évolue"
-        description="Apporteur d'affaires aujourd'hui, responsable demain : les meilleurs commerciaux de chaque zone prennent l'animation de leur secteur, puis du réseau."
+        description="Apporteur d'affaires aujourd'hui, et demain, si vous le souhaitez, un rôle plus large dans le réseau — toujours en indépendant."
       >
         <>
           <ol className="mx-auto grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3 sm:items-end">
             {[
               {
                 step: "Aujourd'hui",
-                title: "Commercial indépendant",
-                text: "Tu vends sur ta zone, tu encaisses tes commissions.",
+                title: "Apporteur d'affaires indépendant",
+                text: "Vous recommandez Axion-IA autour de vous et percevez vos commissions.",
                 // ⚠️ L'écart de `padding-top` DESCEND avec le rang : combiné à
                 // `sm:items-end`, c'est le bord HAUT qui monte de marche en
                 // marche. L'ordre inverse dessinait un escalier qui descend —
@@ -1621,15 +1624,15 @@ export default async function MemoIserePage({ params }: Props) {
               },
               {
                 step: "Ensuite",
-                title: "Responsable de secteur",
-                text: "Tu animes les commerciaux de ton secteur et touches sur leurs ventes.",
+                title: "Référent local",
+                text: "Si vous le souhaitez, vous partagez votre expérience avec les nouveaux apporteurs.",
                 height: "sm:pt-10",
                 tint: "from-ochre-soft",
               },
               {
                 step: "Demain",
-                title: "Responsable réseau",
-                text: "Tu structures la force de vente sur plusieurs départements.",
+                title: "Rôle élargi",
+                text: "Des missions plus larges peuvent vous être proposées, toujours en indépendant.",
                 height: "sm:pt-0",
                 tint: "from-sage-soft",
               },
@@ -1749,9 +1752,9 @@ export default async function MemoIserePage({ params }: Props) {
         <CtaBlock
           className="py-14 sm:py-20 lg:py-28"
           eyebrow="On recrute"
-          title="Prêt à devenir le commercial IA de"
-          titleEm="ta zone ?"
-          description="Les candidatures sont ouvertes 🚀 3 minutes chrono, zéro CV, une question par écran : un message libre qui te ressemble remplace la lettre de motivation. En indépendant ou apporteur d'affaires — débutants bienvenus."
+          title="Prêt à devenir commercial IA indépendant"
+          titleEm="près de chez vous ?"
+          description="Les candidatures sont ouvertes 🚀 3 minutes chrono, zéro CV, une question par écran : un message libre qui vous ressemble remplace la lettre de motivation. En indépendant ou apporteur d'affaires — débutants bienvenus."
           cta={<CtaCandidature track="memo-final-apply" />}
         />
       </div>

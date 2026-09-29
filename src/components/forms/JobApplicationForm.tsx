@@ -117,6 +117,13 @@ interface Props {
    * faisait abandonner pour rien.
    */
   compact?: boolean;
+  /**
+   * Offre COMMERCIALE (2026-09-29, test de bout en bout) : ses candidats sont
+   * orientés vers le réseau d'apporteurs d'affaires INDÉPENDANTS, rémunérés à
+   * la commission. Leur demander une prétention salariale annonçait un
+   * salaire qui n'existera pas : le champ est retiré.
+   */
+  sansPretention?: boolean;
 }
 
 export function JobApplicationForm({
@@ -126,6 +133,7 @@ export function JobApplicationForm({
   screeningQuestions,
   freelance = false,
   compact = false,
+  sansPretention = false,
 }: Props) {
   const locale = useLocale();
   const isFr = locale === "fr";
@@ -247,7 +255,7 @@ export function JobApplicationForm({
         </div>
         <p className="text-fg text-lg">
           {isFr
-            ? "Merci ! On a bien reçu ta candidature et on revient vers toi rapidement."
+            ? "Merci ! Nous avons bien reçu votre candidature et revenons vers vous rapidement."
             : "Thanks! We've received your application and will get back to you shortly."}
         </p>
         {done ? <p className="text-fg-muted mt-2 font-mono text-xs">Réf. {done}</p> : null}
@@ -293,7 +301,7 @@ export function JobApplicationForm({
 
       {/* 1. Toi & contact */}
       <fieldset className={FIELDSET}>
-        <legend className={SECTION}>{isFr ? "👋 Toi & contact" : "👋 You & contact"}</legend>
+        <legend className={SECTION}>{isFr ? "👋 Vous & contact" : "👋 You & contact"}</legend>
         <div className="grid gap-4 sm:grid-cols-3">
           {compact ? null : (
             <div>
@@ -438,10 +446,10 @@ export function JobApplicationForm({
         <legend className={SECTION}>
           {compact
             ? isFr
-              ? "💶 Tes prix et ce que tu as déjà fait"
+              ? "💶 Vos prix et ce que vous avez déjà fait"
               : "💶 Your rates and past work"
             : isFr
-              ? "💼 Ton profil"
+              ? "💼 Votre profil"
               : "💼 Your profile"}
         </legend>
         {compact ? null : (
@@ -504,27 +512,29 @@ export function JobApplicationForm({
                 disabled={submitting}
               />
             </div>
-            <div>
-              <label htmlFor="salaryExpectation" className={LABEL}>
-                {isFr ? "Prétention de revenus — optionnel" : "Salary expectation — optional"}
-              </label>
-              <input
-                id="salaryExpectation"
-                name="salaryExpectation"
-                maxLength={80}
-                className={FIELD}
-                disabled={submitting}
-                placeholder={
-                  freelance
-                    ? isFr
-                      ? "ex. prix par vidéo, par jour ou par mission"
-                      : "e.g. price per video, per day or per project"
-                    : isFr
-                      ? "ex. 35–42 k€ brut/an" /* price-exempt: fourchette salariale marché candidat, pas un prix Axion-IA */
-                      : "e.g. 35–42 k€ gross/yr" /* price-exempt: market salary range, not an Axion-IA price */
-                }
-              />
-            </div>
+            {sansPretention ? null : (
+              <div>
+                <label htmlFor="salaryExpectation" className={LABEL}>
+                  {isFr ? "Prétention de revenus — optionnel" : "Salary expectation — optional"}
+                </label>
+                <input
+                  id="salaryExpectation"
+                  name="salaryExpectation"
+                  maxLength={80}
+                  className={FIELD}
+                  disabled={submitting}
+                  placeholder={
+                    freelance
+                      ? isFr
+                        ? "ex. prix par vidéo, par jour ou par mission"
+                        : "e.g. price per video, per day or per project"
+                      : isFr
+                        ? "ex. 35–42 k€ brut/an" /* price-exempt: fourchette salariale marché candidat, pas un prix Axion-IA */
+                        : "e.g. 35–42 k€ gross/yr" /* price-exempt: market salary range, not an Axion-IA price */
+                  }
+                />
+              </div>
+            )}
           </div>
         )}
 
@@ -534,7 +544,7 @@ export function JobApplicationForm({
         {compact && screeningQuestions.some((q) => q.type === "price") ? (
           <p className="border-terracotta/40 bg-terracotta-soft/30 text-fg rounded-lg border px-3.5 py-2.5 text-sm">
             {isFr
-              ? "On compare toutes les propositions : indique directement ton meilleur prix."
+              ? "Nous comparons toutes les propositions : indiquez directement votre meilleur prix."
               : "We compare every proposal: give your best price straight away."}
           </p>
         ) : null}
@@ -705,7 +715,7 @@ export function JobApplicationForm({
               />
               <p className="text-fg-muted mt-2 text-xs">
                 {isFr
-                  ? "Totalement facultative — ne pas en mettre ne te pénalise pas."
+                  ? "Totalement facultative — ne pas en mettre ne vous pénalise pas."
                   : "Entirely optional — leaving it out won't penalise you."}
               </p>
               {photoName ? (
@@ -732,7 +742,7 @@ export function JobApplicationForm({
             </div>
             <div>
               <label htmlFor="motivation" className={LABEL}>
-                {isFr ? "Dis-nous un petit mot sur toi 👋" : "Tell us a bit about you 👋"}
+                {isFr ? "Dites-nous un petit mot sur vous 👋" : "Tell us a bit about you 👋"}
               </label>
               <textarea
                 id="motivation"

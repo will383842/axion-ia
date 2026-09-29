@@ -79,8 +79,8 @@ const REASSURANCE_CERTIFIE: readonly string[] = [
 
 const REASSURANCE_BASE: readonly string[] = [
   "Statut libre : micro-entreprise ou société",
-  "Cumulable avec ton activité actuelle",
-  "Démarrer ne te coûte rien",
+  "Cumulable avec votre activité actuelle",
+  "Démarrer ne vous coûte rien",
 ];
 
 interface Props {

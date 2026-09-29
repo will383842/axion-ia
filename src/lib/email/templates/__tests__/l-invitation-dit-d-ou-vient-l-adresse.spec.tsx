@@ -6,7 +6,7 @@
  * premier message qu'elle reçoit doit lui dire comment on a eu son adresse, qui
  * traite ses données, pourquoi, combien de temps, et quels sont ses droits —
  * dont la réclamation auprès de la CNIL. Il ne peut donc pas commencer par
- * « Merci pour ton intérêt » : elle n'en a exprimé aucun.
+ * « Merci pour votre intérêt » : elle n'en a exprimé aucun.
  *
  * ⚠️ Les jobs enfilés AVANT ce changement n'ont pas de `provenance` : leur
  * rendu doit rester IDENTIQUE, octet pour octet (instantané pris avant la
@@ -52,13 +52,13 @@ describe("invitation — provenance indirecte (recommandation, autre)", () => {
   const PAYLOAD = {
     contactName: "Nadia Ben",
     calendlyUrl: CALENDLY,
-    provenance: { mode: "indirecte", libelle: "par une personne qui te recommande" },
+    provenance: { mode: "indirecte", libelle: "par une personne qui vous recommande" },
   };
 
   it("🔴 ne remercie pas d'un intérêt jamais exprimé, et dit d'où vient l'adresse", async () => {
     const t = texte(await rendu(PAYLOAD));
-    expect(t).not.toContain("Merci pour ton intérêt");
-    expect(t).toContain("Nous avons ton adresse par une personne qui te recommande.");
+    expect(t).not.toContain("Merci pour votre intérêt");
+    expect(t).toContain("Nous avons votre adresse par une personne qui vous recommande.");
   });
 
   it("🔴 nomme le responsable, la finalité, la durée, les droits et la CNIL", async () => {
@@ -99,7 +99,7 @@ describe("invitation — provenance directe", () => {
         provenance: { mode: "directe", libelle: "par e-mail" },
       }),
     );
-    expect(t).toContain("Tu nous as donné ton adresse par e-mail.");
+    expect(t).toContain("Vous nous avez communiqué votre adresse par e-mail.");
   });
 });
 

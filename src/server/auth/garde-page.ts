@@ -56,7 +56,12 @@ export interface AccesRefuse {
 
 export type ResultatAcces = AccesAutorise | AccesRefuse;
 
-const LIBELLE_ROLE: Readonly<Record<RoleAdmin, string>> = {
+/**
+ * Le nom de chaque rôle tel que Will le lit dans un message de refus.
+ * SOURCE UNIQUE : les autres gardes (appels réservés, dossier client)
+ * l'importent — garde : `src/features/dossier-client/__tests__/les-libelles-de-role-ont-une-seule-source.spec.ts`.
+ */
+export const LIBELLE_ROLE: Readonly<Record<RoleAdmin, string>> = {
   super_admin: "super-administrateur",
   admin: "administrateur",
   responsable_qualite: "responsable qualité",

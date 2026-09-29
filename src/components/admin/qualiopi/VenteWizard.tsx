@@ -32,6 +32,7 @@ import {
 } from "@/components/admin/ui";
 import { cn } from "@/lib/utils";
 import { createClientAction } from "@/server/actions/qualiopi/clients";
+import { FichesProches } from "@/components/admin/qualiopi/FichesProches";
 import { createDevisAction, sendDevisAction } from "@/server/actions/qualiopi/devis";
 import { duplicateFormationAction } from "@/server/actions/qualiopi/formations";
 import { createSessionAction } from "@/server/actions/qualiopi/sessions";
@@ -726,6 +727,23 @@ export function VenteWizard({
                       className="admin-input"
                     />
                   </label>
+                  {/* « C'est peut-être déjà… » : une entreprise n'a qu'une fiche
+                      (décision B18). « Utiliser cette fiche » bascule sur le
+                      client existant au lieu d'en créer un second. */}
+                  <FichesProches
+                    saisie={{
+                      type: "entreprise",
+                      raisonSociale,
+                      ...(siret.trim() !== "" ? { siret: siret.trim() } : {}),
+                      ...(contactEmail.trim() !== "" ? { email: contactEmail.trim() } : {}),
+                    }}
+                    baseFicheHref={`${base}/qualiopi/clients`}
+                    onUtiliser={(fiche) => {
+                      setModeClient("existant");
+                      setClientId(fiche.ficheId);
+                      setSale(true);
+                    }}
+                  />
                   <div>
                     <AdminButton onClick={creerClient} loading={isPending}>
                       Créer le client

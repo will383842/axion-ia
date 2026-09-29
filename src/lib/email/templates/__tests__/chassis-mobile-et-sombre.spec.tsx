@@ -54,11 +54,13 @@ describe("châssis — mode sombre", () => {
 });
 
 describe("châssis — personne grammaticale", () => {
-  it("🔴 le gabarit qui tutoie n'est pas vouvoyé par son châssis", async () => {
+  // 2026-09-29 (Will) : « on reste sur le vouvoiement » — le tunnel apporteur
+  // vouvoie désormais comme le reste ; le châssis n'a plus de variante tutoyée.
+  it("🔴 l'e-mail d'un candidat apporteur est vouvoyé, châssis compris", async () => {
     const h = await html("candidature-commercial-confirmee");
-    expect(h).toContain("Réponds simplement à cet e-mail");
-    expect(h).not.toContain("Répondez simplement");
-    expect(h).not.toContain("chez vous");
+    expect(h).toContain("Répondez simplement à cet e-mail");
+    expect(h).not.toContain("Réponds simplement");
+    expect(h).not.toContain("Copie cette adresse");
   });
 
   it("les autres gabarits gardent le vouvoiement", async () => {

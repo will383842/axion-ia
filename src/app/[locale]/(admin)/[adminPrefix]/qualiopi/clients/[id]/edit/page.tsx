@@ -47,15 +47,17 @@ export default async function ModifierClientPage({ params }: PageProps) {
   if (!client) notFound();
 
   const base = `/${locale}/${adminPrefix}/qualiopi/clients`;
+  // Retour à la FICHE du client (et non à la liste) : on vient de la fiche.
+  const ficheHref = `/${locale}/${adminPrefix}/qualiopi/clients/${id}`;
 
   return (
     <AdminPageShell width="narrow">
       <div className="mb-[var(--space-admin-4)]">
         <Link
-          href={base}
+          href={ficheHref}
           className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
         >
-          ← Clients
+          ← {client.raisonSociale}
         </Link>
       </div>
 
