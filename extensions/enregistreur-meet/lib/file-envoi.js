@@ -21,6 +21,10 @@ const ORDRE = { refus: -1, session: 0, accord: 1, morceau: 2, tranche: 3, battem
  * L'élément « refus » d'un enregistrement côté site. Pas de `cleClient` : il
  * n'appartient à aucune capture, donc aucune destruction locale ne l'emporte.
  * Un seul par enregistrement (même `id`).
+ *
+ * @param {string} enregistrementId
+ * @param {number} refusLeMs
+ * @param {number} maintenantMs
  */
 export function elementRefus(enregistrementId, refusLeMs, maintenantMs) {
   return {
@@ -41,7 +45,9 @@ export function delaiRenvoi(essais) {
 
 /**
  * Les éléments envoyables maintenant, dans l'ordre.
- * @param {Array<{ id: string, type: string, cleClient: string, prochainEssaiMs?: number, creeLe: number }>} elements
+ * Un refus n'a pas de `cleClient` (il n'appartient à aucune capture).
+ * @template {{ id: string, type: string, cleClient?: string, enregistrementId?: string, prochainEssaiMs?: number, creeLe: number }} E
+ * @param {E[]} elements
  * @param {Record<string, { accord: boolean, enregistrementId: string | null, detruit?: boolean }>} captures
  */
 export function envoyablesMaintenant(elements, captures, maintenantMs) {
@@ -50,7 +56,7 @@ export function envoyablesMaintenant(elements, captures, maintenantMs) {
       if ((el.prochainEssaiMs ?? 0) > maintenantMs) return false;
       // Le refus ne dépend d'aucune capture : il part tant qu'il n'a pas abouti.
       if (el.type === "refus") return typeof el.enregistrementId === "string";
-      const c = captures[el.cleClient];
+      const c = el.cleClient === undefined ? undefined : captures[el.cleClient];
       if (!c || c.detruit) return false;
       if (el.type === "session") return true;
       // Tout le reste vise un enregistrement existant côté site.
@@ -88,7 +94,7 @@ export function classerReponse(type, statut, erreur) {
 
 /**
  * Détruit tout ce qui appartient à une capture (refus, accord absent, cas A).
- * @template {{ cleClient: string }} T
+ * @template {{ id: string, cleClient?: string }} T
  * @param {T[]} elements
  * @param {string} cleClient
  * @returns {T[]}
