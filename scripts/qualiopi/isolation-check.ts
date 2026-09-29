@@ -369,6 +369,8 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //      résolveur ferait diverger le prix d'un devis et celui d'une ébauche.
   "src/server/visio/circuit.ts",
   "src/server/visio/catalogue-ia.ts",
+  // Sa garde : chaque code `visio.*` du circuit est au catalogue.
+  "src/server/visio/__tests__/les-codes-d-alerte-du-circuit-sont-au-catalogue.spec.ts",
   "src/server/queue/workers/retention-purge-worker.ts",
   // ── Recherche admin : partage le garde d'habilitation `actions/qualiopi/_guards`.
   "src/server/actions/admin-recherche.ts",
