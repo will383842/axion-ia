@@ -21,6 +21,12 @@ interface Payload {
   contactName?: string;
   /** Intitulé de l'offre, tel qu'affiché au moment de la candidature. */
   offerTitle?: string;
+  /**
+   * Lien personnel « compléter ma candidature » (2026-09-29) — posé pour les
+   * métiers de l'image : sans lui, un nouveau monteur n'avait AUCUN moyen de
+   * déposer ses montages (la page n'était atteinte que par un e-mail manuel).
+   */
+  lienDepot?: string;
 }
 
 const COPY = {
@@ -42,6 +48,9 @@ const COPY = {
     reponse:
       "Nous vous répondrons, que la réponse soit positive ou non. Si vous n'avez pas de nouvelles rapidement, ce n'est pas un refus tacite — c'est que nous n'avons pas encore terminé.",
     contact: "Un élément à ajouter à votre dossier ? Répondez simplement à ce message.",
+    depot:
+      "Vous pouvez dès maintenant déposer 1 à 3 de vos meilleurs montages (MP4, MOV ou WebM, 200 Mo max) et vérifier vos tarifs sur votre page personnelle. Nous les gardons avec votre candidature pour juger votre travail.",
+    depotCta: "Déposer mes montages",
   },
   en: {
     title: "Your application has arrived",
@@ -56,6 +65,9 @@ const COPY = {
     reponse:
       "We will reply to you, whether the answer is positive or not. If you do not hear from us quickly, it is not a silent rejection — it means we have not finished yet.",
     contact: "Anything to add to your file? Simply reply to this message.",
+    depot:
+      "You can already upload 1 to 3 of your best edits (MP4, MOV or WebM, 200 MB max) and check your rates on your personal page. We keep them with your application to assess your work.",
+    depotCta: "Upload my edits",
   },
 } as const;
 
@@ -72,7 +84,13 @@ export function CandidatureRecueEmail({
   const p = payload as unknown as Payload;
   const t = COPY[locale];
   return (
-    <EmailLayout famille="B" preview={t.preview} title={t.title} locale={locale}>
+    <EmailLayout
+      famille="B"
+      preview={t.preview}
+      title={t.title}
+      locale={locale}
+      {...(p.lienDepot ? { cta: { label: t.depotCta, href: p.lienDepot } } : {})}
+    >
       <Text style={emailStyles.paragraphStyle}>{t.body(p.offerTitle)}</Text>
       <Text style={emailStyles.paragraphStyle}>
         {t.intro(p.contactName)}
@@ -80,6 +98,7 @@ export function CandidatureRecueEmail({
         {t.lecture}
       </Text>
       <Text style={emailStyles.paragraphStyle}>{t.reponse}</Text>
+      {p.lienDepot ? <Text style={emailStyles.paragraphStyle}>{t.depot}</Text> : null}
     </EmailLayout>
   );
 }

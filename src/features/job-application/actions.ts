@@ -25,7 +25,8 @@ import { parseLocale } from "@/lib/schemas/locale";
 import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
 import { provenanceDepuisLeTunnel } from "@/lib/careers/provenance";
 import { notify } from "@/server/notifications";
-import { isVideoFreelanceOffer } from "@/lib/careers/video-editor-offer";
+import { isVideoFamilyOffer, isVideoFreelanceOffer } from "@/lib/careers/video-editor-offer";
+import { lienComplement } from "@/features/job-application/complement";
 import {
   collectAnswers,
   labeledAnswers,
@@ -534,6 +535,10 @@ export async function submitJobApplicationAction(
     // candidat de dire, EXACTEMENT, si son accusé est parti — cf.
     // `admin-job-applications/accuse-reception.ts`. Sans elle, la fiche ne
     // peut que le deviner par l'adresse et l'heure.
+    const lienDepot =
+      offer && isVideoFamilyOffer(offer.slug)
+        ? await lienComplement(app.id, offer).catch(() => null)
+        : null;
     await enqueueEmail(
       "candidature-recue",
       d.email,
@@ -541,6 +546,9 @@ export async function submitJobApplicationAction(
       {
         contactName: `${d.firstName} ${d.lastName}`.trim(),
         offerTitle: titrePoste,
+        // Métiers de l'image (2026-09-29) : le lien de dépôt des montages dès
+        // l'accusé — sans lui, un nouveau candidat ne pouvait pas y accéder.
+        ...(lienDepot ? { lienDepot } : {}),
       },
       { entityType: "JobApplication", entityId: app.id },
     );
