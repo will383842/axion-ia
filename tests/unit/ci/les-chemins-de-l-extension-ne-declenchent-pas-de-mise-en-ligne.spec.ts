@@ -59,6 +59,10 @@ describe("⛔ les chemins de l'extension ne déclenchent pas de mise en ligne", 
 
   it("l'image Docker n'embarque pas l'extension", () => {
     const ignore = readFileSync(join(RACINE, ".dockerignore"), "utf8");
-    expect(ignore.split(/\r?\n/)).toContain("extensions");
+    const lignes = ignore.split(/\r?\n/);
+    expect(lignes).toContain("extensions");
+    // Ses tests importent `extensions/…` : présents sans elle dans l'image, ils
+    // cassent la vérification de types de `next build` (Gate C, et le déploiement).
+    expect(lignes).toContain("tests/unit/extension-enregistreur");
   });
 });
