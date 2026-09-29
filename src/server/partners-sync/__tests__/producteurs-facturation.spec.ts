@@ -563,7 +563,7 @@ describe("REQ-ARG-030 — une attribution impossible est ALERTÉE, jamais tue", 
       const SANS = "cccc3333-3333-4333-8333-333333333333";
       const f = facture({ id: F_ORPHELINE, clientId: SANS });
       const p = paiement("pa000000-0000-4000-8000-000000000061", F_ORPHELINE, 10_000, "10");
-      const autre = { ...client(SANS, "000000000", "Sans SIREN"), siren };
+      const autre = { ...client(SANS, "000000000", "Sans SIREN"), siren, siret: null };
       const { tx, outbox } = fauxTx([f], [p], [], [autre]);
       const alertes: AlerteFacturation[] = [];
       const id = await emettreFaitPaiement(tx, String(p["id"]), {
@@ -574,6 +574,22 @@ describe("REQ-ARG-030 — une attribution impossible est ALERTÉE, jamais tue", 
         origineClient: "non_resolue",
       });
       expect(alertes.map((a) => a.motif)).toEqual(["client_non_resolu"]);
+    },
+  );
+
+  it.each([
+    ["saisi avec des espaces", "123 456 782", null, "123456782"],
+    ["absent, dérivé du SIRET", null, "12345678200010", "123456782"],
+  ])(
+    "REQ-INT-015 : un SIREN %s part normalisé à 9 chiffres (même règle que client.*)",
+    async (_, siren, siret, attendu) => {
+      const C = "dddd4444-4444-4444-8444-444444444444";
+      const f = facture({ id: F_ORPHELINE, clientId: C });
+      const p = paiement("pa000000-0000-4000-8000-000000000063", F_ORPHELINE, 10_000, "10");
+      const fiche = { ...client(C, "000000000", "Saisie libre"), siren, siret };
+      const { tx, outbox } = fauxTx([f], [p], [], [fiche]);
+      const charge = jugee(outbox, await emettreFaitPaiement(tx, String(p["id"]))).payload;
+      expect(charge).toMatchObject({ clientId: C, siren: attendu });
     },
   );
 
