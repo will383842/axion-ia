@@ -152,6 +152,56 @@ docker exec -it <worker> node_modules/.bin/tsx src/scripts/qualiopi/chiffrer-det
 Puis **Q1 = 0** (requête Q1 de `R34-rattrapage-chiffrement-details-adaptation.md`). Le script est
 idempotent : sur un état déjà chiffré, il n'écrit rien.
 
+### Étape 3 ter — Rejouer les effacements RGPD (dossier client, enregistrements des visios)
+
+⚠️ **Vaut pour les trois voies (A, B et C).** Un dump ou un snapshot pris **avant** un effacement
+RGPD (art. 17, retrait d'accord, fin de conservation, purge du pilote) fait **revenir** ce qui avait
+été effacé : paroles, faits, comptes rendus, nom d'une personne dans le dossier client. Le journal
+`effacements_journal` (ajout seul, identifiants seulement) désigne chaque ligne à ré-effacer — mais
+il vit dans la **même base** : le dump restauré ne contient que le journal d'avant le dump.
+
+1. **AVANT de restaurer**, si l'ancienne base répond encore, sauver son journal **en INSERT
+   idempotents** (un `COPY`, format par défaut, échouerait EN BLOC sur la première ligne déjà
+   présente dans le dump restauré) et noter son nombre de lignes :
+   `pg_dump --data-only --inserts --on-conflict-do-nothing -t effacements_journal "$DATABASE_URL" > /root/effacements_journal.sql`
+   `psql "$DATABASE_URL" -Atc "SELECT count(*) FROM effacements_journal"` → noter **N_ancien**.
+2. Restaurer (voie A, B ou C), puis réinjecter ce journal, **en s'arrêtant à la première erreur** :
+   `psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f /root/effacements_journal.sql` (les lignes déjà
+   présentes sont ignorées par `ON CONFLICT DO NOTHING`, les autres entrent). Puis
+   `psql "$DATABASE_URL" -Atc "SELECT count(*) FROM effacements_journal"` doit valoir **au moins
+   N_ancien**. Moins : la réinjection n'a pas tout passé — **ne pas continuer**, la cause est dans
+   la sortie de `psql`. Sans cette comparaison, un journal non réinjecté donne un « Cibles
+   revenues = 0 » à l'étape 4 qui est un FAUX vert.
+3. Rejouer, dans le conteneur worker :
+
+```bash
+# s'il n'est pas dans l'image : docker cp scripts/rgpd-rejouer-effacements.ts <worker>:/app/scripts/
+docker exec -it <worker> node_modules/.bin/tsx scripts/rgpd-rejouer-effacements.ts             # à blanc : compte
+docker exec -it <worker> node_modules/.bin/tsx scripts/rgpd-rejouer-effacements.ts --appliquer # ré-efface
+```
+
+4. Relancer **à blanc** : « Cibles revenues » doit valoir **0**. Le script est idempotent et
+   n'affiche que des nombres. Il compte : faits, citations, segments, comptes rendus (supprimés
+   de nouveau si l'effacement d'origine était une suppression, vidés sinon), personnes, leurs
+   participations, les questions qu'on leur a adressées, leurs e-mails de suivi, leurs rôles
+   dans les projets, et les données du pilote.
+5. Laisser tourner la **purge de nuit** (`retention-purge-worker.ts`) : elle recalcule les
+   échéances de conservation sur les dates restaurées et ré-efface ce qui était échu, y compris
+   les questions et e-mails de suivi des dossiers échus, que le journal ne liste pas ligne à ligne.
+
+⚠️ Angles morts déclarés :
+
+- si l'ancienne base est détruite (le 1 impossible), les effacements postérieurs au dump ne
+  peuvent pas être rejoués par ce moyen : ils sont à refaire à la main, à partir des demandes
+  reçues sur contact@axion-ia.com ;
+- une personne effacée **sans fiche personne** (rendez-vous resté « à classer », retrouvée par
+  sa seule empreinte d'adresse) n'est pas journalisée comme personne : son **nom affiché** dans la
+  participation revient. Ses paroles et ses faits, journalisés, repartent. À refaire à la main
+  depuis la demande d'effacement reçue ;
+- une **purge du pilote** qui n'avait trouvé ni rencontre, ni projet, ni personne n'a laissé
+  aucune ligne au journal : les faits et questionnaires de la fiche de test ne sont pas rejoués.
+  Ce sont des données de test : relancer la purge du pilote suffit.
+
 ### Étape 4 — Données annexes (chacune : télécharger → déchiffrer AES → restaurer dans le volume)
 
 - **Fichiers utilisateurs** : `files/daily/*.tar.gz.enc` → détar dans les volumes `cv-storage`,

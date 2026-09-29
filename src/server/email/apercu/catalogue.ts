@@ -159,6 +159,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "la personne qui a réservé un rendez-vous salon",
     source: "server/calendly/rappels-appel.ts",
   },
+  "rencontre-invitation": {
+    categorie: "rendez-vous",
+    quand:
+      "Rendez-vous de visio créé dans la console sur une fiche client (hors Calendly) — toujours garé dans « E-mails à valider »",
+    destinataire: "la première personne invitée de la fiche client",
+    source: "features/dossier-client/actions-rencontres.ts",
+  },
   "appel-rappel": {
     categorie: "rendez-vous",
     quand: "Une heure avant l'appel — fenêtre H-75 → H-60",

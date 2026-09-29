@@ -324,6 +324,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       // rendez-vous sans authentification. Elle n'était dans aucun des trois
       // mécanismes RGPD, et cette énumération ne la mentionnait pas.
       appels: appelsResult.anonymized,
+      // Chantier visio (PR 8, T24) — le dossier client entre dans
+      // l'énumération : ses paroles, les informations tirées de nos échanges et
+      // les comptes rendus qui la citent. Même motif que les tables ci-dessus :
+      // une liste qui se donne pour exhaustive ne tait pas une table.
+      dossierClient:
+        dossierClientResult.segments +
+        dossierClientResult.faits +
+        dossierClientResult.comptesRendusARegenerer +
+        dossierClientResult.comptesRendusSupprimes +
+        dossierClientResult.questions,
     });
   } catch (err) {
     console.error("[gdpr-erase] confirmation impossible à mettre en file :", err);

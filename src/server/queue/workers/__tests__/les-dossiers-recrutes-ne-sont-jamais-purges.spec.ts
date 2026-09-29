@@ -76,7 +76,13 @@ vi.mock("@/lib/prisma", () => {
     prisma: new Proxy(
       {},
       {
-        get(_cible, modele: string) {
+        get(_cible, modele: string, recepteur: unknown) {
+          // 2026-09-29 (chantier visio, PR 4) — la purge des 36 mois de
+          // `calendly_events` passe par une transaction (elle fige d'abord les
+          // rencontres du dossier client) : la transaction rejoue ce même proxy.
+          if (modele === "$transaction") {
+            return (fn: (tx: unknown) => unknown) => fn(recepteur);
+          }
           if (!cache.has(modele)) cache.set(modele, enregistrer(modele));
           return cache.get(modele);
         },

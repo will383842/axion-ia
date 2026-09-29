@@ -412,3 +412,21 @@ Le bug 307 self-loop apparaît quand :
 Symptôme : `/en/about` retourne `307 → /en/about` (loop infini) avec `x-middleware-rewrite: /en/a-propos` (la rewrite interne marche, mais Next émet aussi un 307 vers la même URL).
 
 Fix probable : upgrade next-intl ou downgrade Next, OU patch custom dans le middleware. À investiguer en Sprint dédié quand re-activation EN devient prioritaire.
+
+## Circuit visio et fusions (chantier « enregistrement des visios », 2026-09-29)
+
+Le worker porte, depuis la PR 4 du chantier, le **balayage du dossier client** (file
+`visio-balayage`, toutes les 5 minutes, allumé par `DOSSIER_BALAYAGE_ENABLED=true` sur le
+worker seulement) ; les PR 5 et 6 y ajoutent le circuit de transcription et de compte rendu
+(file `visio`). Ce que cela change pour une fusion :
+
+- **Une fusion pendant une étape ne perd rien.** Le déploiement relance le worker ; au
+  `SIGTERM`, il vide ses tâches en 25 s, et une étape interrompue repasse « à faire » **sans
+  compter d'essai** (la reprise est dans l'état en base, pas dans Redis). Le balayage, lui,
+  reprend au passage suivant : il ne tient aucun état en mémoire.
+- **Mais une fusion inutile se voit.** Le panneau « État du circuit » de la console
+  (onglet Rendez-vous) dit « étape en cours » quand une étape tourne : si c'est le cas, et
+  que la fusion peut attendre, attendre évite de relancer une transcription pour rien.
+- La fenêtre app/worker (~50 min) s'applique : le balayage n'utilise que des tables et des
+  énumérations déjà posées par la migration du chantier (PR 2), et aucune forme de tâche
+  BullMQ n'y porte de donnée du dossier (`{ tick }` seulement).

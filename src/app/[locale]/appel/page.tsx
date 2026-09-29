@@ -129,8 +129,8 @@ export default async function AppelPage({ params, searchParams }: Props) {
     path: "/appel",
     name: isFr ? "Premier contact projet IA · Axion-IA" : "Premier contact projet IA · Axion-IA",
     description: isFr
-      ? "Premier échange de 45 minutes, par téléphone ou en visioconférence, avec un consultant IA Axion-IA pour explorer votre projet — formation, accompagnement 1-to-1, audit, automatisation, implémentation, SaaS web. Gratuit et sans engagement."
-      : "Premier échange de 45 minutes, par téléphone ou en visioconférence, avec un consultant IA Axion-IA pour explorer votre projet — formation, accompagnement 1-to-1, audit, automatisation, implémentation, SaaS web. Gratuit et sans engagement.",
+      ? "Premier échange de 45 minutes, en visioconférence Google Meet, avec un consultant IA Axion-IA pour explorer votre projet — formation, accompagnement 1-to-1, audit, automatisation, implémentation, SaaS web. Gratuit et sans engagement."
+      : "Premier échange de 45 minutes, en visioconférence Google Meet, avec un consultant IA Axion-IA pour explorer votre projet — formation, accompagnement 1-to-1, audit, automatisation, implémentation, SaaS web. Gratuit et sans engagement.",
   });
 
   const breadcrumbJsonLd = {
@@ -257,7 +257,11 @@ export default async function AppelPage({ params, searchParams }: Props) {
                       // C'est l'étape 1 parce que c'est le moment où l'on
                       // s'apprête à cliquer : l'annoncer plus bas serait
                       // l'annoncer après.
-                      "Choisissez un créneau, puis le format : par téléphone ou en visioconférence.",
+                      // Chantier visio (B5, Will 28/09) : « Discutons » se tient en
+                      // Google Meet SEULEMENT (`DISCUTONS_MEET_SEUL`). Le
+                      // réglage de Calendly suit, par Will, après la mise en
+                      // ligne.
+                      "Choisissez un créneau : le rendez-vous se tient en visioconférence Google Meet.",
                       // 🔴 Disait « Vous recevez une confirmation par email
                       // immédiatement » — vrai au sens strict (Calendly envoie
                       // l'invitation d'agenda), mais la phrase laissait attendre

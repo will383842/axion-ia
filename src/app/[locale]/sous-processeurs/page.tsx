@@ -16,6 +16,7 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
+import { textesPagesIa } from "@/content/visio-annonce-textes";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
@@ -303,8 +304,8 @@ export default async function SubprocessorsPage({ params }: Props) {
         },
         {
           question: "Mes données quittent-elles l'Union européenne ?",
-          answer:
-            "L'hébergement principal (Hetzner) et les outils auto-hébergés (DocuSeal, Plausible) sont en Allemagne, dans l'UE. Les transferts vers des prestataires hors UE sont encadrés par des Clauses contractuelles types (SCC) ou une décision d'adéquation. Les modèles d'IA ne reçoivent que des prompts éditoriaux, jamais de données client.",
+          // Chantier visio (PR 8, T11) — bascule avec l'annonce de l'enregistrement.
+          answer: textesPagesIa("fr").spHorsUe,
         },
         {
           question: "Que signifie le statut « activation en attente » ?",
@@ -313,8 +314,7 @@ export default async function SubprocessorsPage({ params }: Props) {
         },
         {
           question: "Une IA générative a-t-elle accès à mes données personnelles ?",
-          answer:
-            "Non. Les modèles d'IA ne reçoivent que des prompts éditoriaux et des contenus publics de la base de connaissances. Une barrière logicielle refuse les contenus confidentiels ou secrets, et aucune donnée personnelle client n'est transmise. L'option « zéro rétention » / opt-out d'entraînement est activée.",
+          answer: textesPagesIa("fr").spIa,
         },
       ]
     : [
@@ -335,8 +335,7 @@ export default async function SubprocessorsPage({ params }: Props) {
         },
         {
           question: "Does my data leave the European Union?",
-          answer:
-            "Core hosting (Hetzner) and self-hosted tools (DocuSeal, Plausible) are in Germany, within the EU. Transfers to non-EU providers are framed by Standard Contractual Clauses (SCC) or an adequacy decision. AI models only receive editorial prompts, never client data.",
+          answer: textesPagesIa("en").spHorsUe,
         },
         {
           question: "What does the “pending activation” status mean?",
@@ -345,8 +344,7 @@ export default async function SubprocessorsPage({ params }: Props) {
         },
         {
           question: "Does a generative AI have access to my personal data?",
-          answer:
-            "No. AI models only receive editorial prompts and public knowledge-base content. A code-level gate refuses confidential or secret content, and no client personal data is sent. Zero-retention / training opt-out is enabled.",
+          answer: textesPagesIa("en").spIa,
         },
       ];
 
@@ -459,8 +457,8 @@ export default async function SubprocessorsPage({ params }: Props) {
       <Section tone="paper" titleAs="h2" title={isFr ? "En bref" : "At a glance"}>
         <p className="text-fg-soft -mt-6 mb-10 max-w-2xl text-base leading-relaxed" data-answer>
           {isFr
-            ? `Axion-IA fait appel à ${total} sous-traitants pour héberger, sécuriser et exploiter son application. ${activeCount} sont actifs en production aujourd'hui et ${pendingCount} restent en attente d'activation (DPA non signé ou clé API absente). Aucune donnée personnelle client n'est transmise aux modèles d'IA.`
-            : `Axion-IA relies on ${total} subprocessors to host, secure and run its application. ${activeCount} are active in production today and ${pendingCount} remain pending activation (unsigned DPA or missing API key). No client personal data is sent to AI models.`}
+            ? `Axion-IA fait appel à ${total} sous-traitants pour héberger, sécuriser et exploiter son application. ${activeCount} sont actifs en production aujourd'hui et ${pendingCount} restent en attente d'activation (DPA non signé ou clé API absente). ${textesPagesIa("fr").spEnBrefIa}`
+            : `Axion-IA relies on ${total} subprocessors to host, secure and run its application. ${activeCount} are active in production today and ${pendingCount} remain pending activation (unsigned DPA or missing API key). ${textesPagesIa("en").spEnBrefIa}`}
         </p>
         <dl className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
           <StatCard

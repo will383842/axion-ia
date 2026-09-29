@@ -72,6 +72,7 @@ import { TeteDeParcours, SortiesDeParcours } from "@/components/booking/parcours
 import { RemonterAuMessage } from "@/components/booking/RemonterAuMessage";
 import { CALENDLY_API_BASE } from "@/server/calendly/api";
 import { canalDuRendezVous } from "@/server/calendly/canal";
+import { phraseConfirmationVisio } from "@/content/visio-annonce-textes";
 
 export const dynamic = "force-dynamic";
 
@@ -390,6 +391,11 @@ function CarteRendezVous({
                     Le lien de connexion arrive dans votre e-mail de confirmation.
                   </p>
                 )
+              ) : null}
+              {/* Chantier visio (PR 8, T22) — information, sans lien. Rien
+                  tant que l'enregistrement n'est pas annoncé. */}
+              {format === "visio" && phraseConfirmationVisio("fr") ? (
+                <p className="text-fg-soft mt-2 text-sm">{phraseConfirmationVisio("fr")}</p>
               ) : null}
             </div>
           </div>
