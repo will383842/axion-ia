@@ -238,6 +238,9 @@ const CODES_ATTENDUS: string[] = [
   "email_retenu_rebond_dur",
   "email_retenu_desabonne",
   "email_retenu_oppose",
+  // Chantier visio, PR 4 (correction anti-doublon A3) : les pannes du balayage
+  // du dossier client, levées hors du balayage quotidien.
+  "visio.balayage_en_panne",
 ];
 
 const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];
@@ -345,6 +348,7 @@ describe("ALERTE_CATALOGUE", () => {
     "email_retenu_rebond_dur",
     "email_retenu_desabonne",
     "email_retenu_oppose",
+    "visio.balayage_en_panne",
   ])("%s — levé hors balayage, donc jamais auto-résolu, et le motif est écrit", (code) => {
     const entree = ALERTE_CATALOGUE[code];
     expect(entree, `« ${code} » est émis par le code mais absent du catalogue`).toBeDefined();

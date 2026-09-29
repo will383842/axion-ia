@@ -18,17 +18,18 @@
  * rendez-vous créé après —, rendre l'élément casserait ces liens. On refuse,
  * et on liste les liens à défaire d'abord.
  *
- * Refus aussi si la fusion a été émise vers Axion Partners
- * (`emiseVersPartnersLe`, impossible en v1) : aucun événement « défusion »
- * n'existe chez eux.
+ * Refus aussi si la fusion a été écrite dans la file de sortie vers Axion
+ * Partners (`emiseVersPartnersLe`, posé par `fusionnerFiches` ; jamais en
+ * contrat v1) : le contrat n'a AUCUN événement « fusion défaite », et
+ * « Défaire » n'en émet donc aucun (question ouverte pour Partners).
  *
  * ## Le journal ne s'efface pas
  *
  * La ligne `ClientFusion` reste : « Défaire » remplit `defaiteLe`, qui,
  * quand, pourquoi — et écrit `RencontreRattachementEvenement(annule)` pour
  * chaque rendez-vous rendu. Si la fusion avait reporté un SIREN, l'ancien
- * (`sirenAbsorbeAvant`) est rétabli. Une fusion défaite n'est JAMAIS rejouée
- * vers Partners (`FUSIONS_A_REJOUER`).
+ * (`sirenAbsorbeAvant`) est rétabli. Une fusion défaite n'émet rien vers
+ * Partners : seule une fusion écrit dans la file, au moment où elle se fait.
  *
  * Deux fiches au même SIREN redeviennent vivantes : c'est un doublon choisi.
  * Il est permis, avec le motif, et laissé tracé comme un « créer quand même »

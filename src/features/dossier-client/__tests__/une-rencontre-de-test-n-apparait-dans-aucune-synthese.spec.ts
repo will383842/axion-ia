@@ -1,7 +1,7 @@
 // @vitest-environment node
 /**
  * ⛔ Une rencontre de TEST (pilote, client fictif) n'apparaît dans aucune
- * synthèse ni aucun compteur : ni F1, ni la veille, ni la couverture du mois,
+ * synthèse ni aucun compteur : ni la veille, ni la couverture du mois,
  * ni « À classer ». Le pilote joue en production ; il ne doit rien fausser.
  *
  * Mutation qui fait rougir : retirer `...HORS_RENCONTRES_DE_TEST` du filtre
@@ -56,13 +56,13 @@ function scene(estTestInterne: boolean) {
 }
 
 describe("⛔ une rencontre de test n'apparaît dans aucune synthèse", () => {
-  it("rencontres de test : F1, veille et couverture à zéro", async () => {
+  it("rencontres de test : veille et couverture à zéro", async () => {
     const base = scene(true);
     const r = await passerBalayage(base.client as never, {
       maintenant: MAINTENANT,
       notifier: vi.fn() as never,
     });
-    expect(r.f1).toBe(0);
+    expect(r.etapesEnEchec).toEqual([]);
     expect(await compterVeille(base.client as never, MAINTENANT)).toBe(0);
     expect((await couvertureDuMois(base.client as never, MAINTENANT)).visios).toBe(0);
   });
@@ -73,7 +73,7 @@ describe("⛔ une rencontre de test n'apparaît dans aucune synthèse", () => {
       maintenant: MAINTENANT,
       notifier: vi.fn() as never,
     });
-    expect(r.f1).toBe(1);
+    expect(r.etapesEnEchec).toEqual([]);
     expect(await compterVeille(base.client as never, MAINTENANT)).toBe(1);
     expect((await couvertureDuMois(base.client as never, MAINTENANT)).visios).toBe(1);
   });
@@ -111,7 +111,6 @@ describe("⛔ une rencontre de test n'apparaît dans aucune synthèse", () => {
   it("chaque compteur du balayage pose le filtre (lecture du code)", () => {
     const src = readFileSync(join(process.cwd(), "src/server/visio/balayage.ts"), "utf8");
     for (const fn of [
-      "async function rencontresPourF1(",
       "export async function compterVeille(",
       "export async function couvertureDuMois(",
     ]) {

@@ -1653,6 +1653,20 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "administratif",
   },
 
+  // ── Circuit visio (chantier « enregistrement des visios », PR 4) ──────────
+  //
+  // Correction anti-doublon A3 : les pannes du circuit s'écrivent ICI, pas dans
+  // une table d'alertes parallèle (`AlerteVisio`, posée par la PR 2, reste vide).
+  // Code préfixé `visio.` ; producteur unique `src/server/visio/alertes.ts`.
+  "visio.balayage_en_panne": {
+    niveau: "important",
+    titre: "Balayage du dossier client en panne",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par le balayage du dossier client (worker `visio-balayage`, toutes les 5 minutes), jamais par `evaluerAlertes`. Le balayage la résout lui-même quand toutes ses étapes sont revenues au vert ; `synchroniserAlertes` la fermerait au premier tour, pendant la panne.",
+    guichet: "direction",
+  },
+
   // ── Pilotage — cadence trimestrielle (LOT 4) ──────────────────────────────
   // Non bloquante (décision B4) : gatée par la clé de config
   // `revue_trimestrielle_activee` (défaut true).

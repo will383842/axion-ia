@@ -26,6 +26,7 @@ import type {
 import { prisma } from "@/lib/prisma";
 import { dechiffrerParole } from "@/lib/chiffrer-parole";
 import { TEXTE_ILLISIBLE } from "./queries";
+import { debriefsExistants, type DebriefExistant } from "./debriefs-existants";
 import { entrepriseDeclaree, reponsesFormulaire } from "@/features/admin-rendezvous/a-venir";
 import {
   caseTestInterneVisible,
@@ -81,6 +82,8 @@ export interface RencontreDetaillee {
   readonly titulaire: { readonly nom: string | null; readonly email: string | null } | null;
   readonly entrepriseDeclaree: { readonly nom: string | null; readonly ville: string | null };
   readonly reponsesFormulaire: ReadonlyArray<{ question: string; reponse: string }>;
+  /** Les débriefs déjà écrits (notes Calendly, point de l'onglet) — A4. */
+  readonly debriefs: ReadonlyArray<DebriefExistant>;
   readonly participants: ReadonlyArray<{ nom: string; role: string }>;
   readonly suivi: {
     readonly issue: RendezVousIssue;
@@ -162,7 +165,13 @@ export async function lireRencontreDetaillee(
   const ev = r.calendlyEventId
     ? await prisma.calendlyEvent.findUnique({
         where: { id: r.calendlyEventId },
-        select: { inviteeName: true, inviteeEmail: true, rawPayload: true },
+        select: { inviteeName: true, inviteeEmail: true, rawPayload: true, notes: true },
+      })
+    : null;
+  const point = r.calendlyEventId
+    ? await prisma.rendezVousSuivi.findUnique({
+        where: { calendlyEventId: r.calendlyEventId },
+        select: { note: true },
       })
     : null;
 
@@ -186,6 +195,7 @@ export async function lireRencontreDetaillee(
     entrepriseDeclaree: ev ? entrepriseDeclaree(ev.rawPayload) : { nom: null, ville: null },
     // Le téléphone est déjà écarté par la règle de l'onglet « Rendez-vous ».
     reponsesFormulaire: ev ? reponsesFormulaire(ev.rawPayload) : [],
+    debriefs: debriefsExistants({ notesCalendly: ev?.notes, noteDuPoint: point?.note }),
     participants: r.participants.map((p) => ({ nom: p.nomAffiche, role: p.role })),
     suivi: r.suivi,
     comptesRendus: r.comptesRendus.map((c) => {

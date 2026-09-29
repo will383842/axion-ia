@@ -27,7 +27,8 @@
  * l'envoie ou l'écarte s'il a déjà écrit au client. Rien ne part sans lui.
  * La phrase d'information sur l'enregistrement n'y figure que lorsque
  * l'enregistrement est ANNONCÉ par la notice (`ENREGISTREMENT_ANNONCE_AUX_CLIENTS`,
- * posé par la PR 8) ou pour une rencontre de test : avant, elle promettrait
+ * DÉRIVÉ de la source unique `src/server/visio/visio-annonce.ts`, correction
+ * anti-doublon D2) ou pour une rencontre de test : avant, elle promettrait
  * au client un traitement que la politique de confidentialité ne décrit pas.
  */
 
@@ -36,12 +37,7 @@ import { hashEmailForLookup } from "@/lib/security/email-hash";
 import type { BaseTransactionnelle } from "./base";
 import { codeMeet, NOM_WILLIAMS } from "./rencontre-calendly";
 import { estClientTestInterne, modePiloteDisponible, caseTestInterneVisible } from "./client-test";
-
-/**
- * L'enregistrement des visios est-il annoncé aux clients par la notice ?
- * `false` jusqu'à la PR 8 (mise en service légale), qui le passe à `true`.
- */
-export const ENREGISTREMENT_ANNONCE_AUX_CLIENTS = false;
+import { ENREGISTREMENT_ANNONCE_AUX_CLIENTS } from "@/server/visio/visio-annonce";
 
 /** Durées proposées (minutes). */
 export const DUREES_RENDEZ_VOUS = [15, 30, 45, 60, 90, 120] as const;

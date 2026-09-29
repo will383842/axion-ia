@@ -1,115 +1,176 @@
 /**
- * Les ALERTES du circuit visio (chantier visio, PR 4 ; plan §3.14).
+ * Les ALERTES du circuit visio (chantier visio, PR 4 ; plan §3.14) — sur le
+ * magasin d'alertes EXISTANT (correction anti-doublon A3).
  *
- * ## Deux familles, deux destinations
+ * ## Une seule table d'alertes : `AlerteSysteme`
  *
- *   · les PANNES TECHNIQUES (une étape du balayage qui échoue, plus tard la
- *     clé de chiffrement, le plafond OpenAI…) partent sur Telegram, par
- *     `notify()`, UNE fois par témoin qui passe au rouge ;
- *   · les RAPPELS DE TRAVAIL (rendez-vous tenu sans compte rendu — « F1 » —,
- *     compte rendu à valider depuis 3 jours, suite échue, veille du rendez-vous
- *     suivant) restent dans la CONSOLE : panneau, badge, carte. Will a refusé
- *     le 27/09 le rappel Telegram 30 minutes après la fin ; la question lui
- *     est reposée en B17, et tant qu'il n'a pas dit oui, `F1_SUR_TELEGRAM`
- *     vaut `false`. Garde : `un-rappel-de-travail-ne-part-jamais-sur-telegram`.
+ * Aucune table ni aucun service parallèle : une panne du circuit s'écrit dans
+ * `AlerteSysteme` par `creerOuDedup` (`qualiopi/alertes/alertes-service.ts`),
+ * avec un code `visio.*` déclaré au catalogue (`VISIO_BALAYAGE_EN_PANNE`). Elle
+ * apparaît donc dans l'écran d'alertes de la console, avec sa dé-duplication
+ * (code, cible), sa résolution et son routage. La table `AlerteVisio` posée
+ * par la PR 2 reste VIDE et abandonnée (aucune migration destructive : son
+ * retrait, s'il vient, sera une PR `schema` à part).
  *
- * ## Une alerte part une fois, et repart si l'envoi a échoué
+ * ## Pannes techniques seulement — pas de rappel de travail
  *
- * Chaque alerte a une CLÉ stable (`balayage-etape:rencontres`, `f1:<id>`) et
- * une ligne dans `alertes_visio`. Elle n'est tenue pour ENVOYÉE que si
- * `notify()` répond `sent` sur Telegram : un envoi raté laisse `envoyeeLe`
- * nul, et le passage suivant réessaie. Un témoin revenu au vert efface sa
- * ligne (`leverAlerte`) : s'il repasse au rouge plus tard, il repart.
+ * « Rendez-vous tenu sans compte rendu » (l'ancien « F1 ») n'est PAS une alerte :
+ * c'est la pastille « À faire le point » qui existe déjà
+ * (`admin-rendezvous/suivi-queries.ts`). Deux rappels pour le même geste après
+ * un appel, c'était un doublon. Rien de ce qui est du travail de Will ne part
+ * sur Telegram (décision B17 sans réponse).
  *
- * Aucune parole, aucun nom de personne dans une alerte (PA-12) : des
- * identifiants et des nombres.
+ * ## Une panne part une fois, et repart si l'envoi a échoué
  *
- * Module neutre (le worker l'appelle). `notify` est INJECTÉ : les tests
- * n'envoient rien.
+ * Une panne OUVERTE = une alerte `visio.balayage_en_panne` non résolue. Les
+ * étapes en panne sont listées dans `metadata.etapes` ; l'envoi Telegram est
+ * tenu pour fait SEULEMENT si `notify()` répond `sent` (`metadata.telegramLe`),
+ * et chaque essai est compté (`metadata.essais`) — le seul besoin qui n'existait
+ * pas. Toutes les étapes revenues au vert → l'alerte est résolue ; une rechute
+ * ouvre une NOUVELLE alerte (son message porte l'instant de la panne : pour
+ * `creerOuDedup`, c'est un fait nouveau) et repart.
+ *
+ * Aucune parole, aucun nom de personne dans une alerte (PA-12).
+ *
+ * Module neutre (le worker l'appelle). `notify` et la création sont INJECTÉS :
+ * les tests n'envoient rien. Par défaut, `creerOuDedup` est chargé à la
+ * demande (il tire le client Prisma global).
  */
 
-import type { CategorieAlerteVisio } from "../../../prisma/generated/client";
 import type { NotifyInput, NotifyResult } from "@/server/notifications/types";
+import type { AlerteInput } from "@/server/qualiopi/alertes/alertes-service";
 import type { Tx } from "@/features/dossier-client/base";
 
-/**
- * Décision B17 (pas encore prise) : les rappels de travail sur Telegram.
- * `false` tant que Will n'a pas répondu oui.
- */
-export const F1_SUR_TELEGRAM = false;
+/** Le code (catalogue `ALERTE_CATALOGUE`) d'une panne du balayage du dossier client. */
+export const VISIO_BALAYAGE_EN_PANNE = "visio.balayage_en_panne";
 
-export type CanalAlerte = "telegram" | "console";
+/** Tous les codes d'alerte du circuit visio : chacun est au catalogue (garde). */
+export const CODES_ALERTE_VISIO = [VISIO_BALAYAGE_EN_PANNE] as const;
 
 export type Notifier = (input: NotifyInput<"MONITORING_ALERT">) => Promise<NotifyResult>;
 
-export interface AlerteASignaler {
-  /** Clé stable : un même témoin, une même ligne. ≤ 120 caractères. */
-  readonly cle: string;
-  readonly categorie: CategorieAlerteVisio;
-  /** Où elle doit partir. Un rappel de travail : `canalDesRappels()`. */
-  readonly canal: CanalAlerte;
-  /** Texte technique court, SANS donnée personnelle. */
-  readonly message: string;
-  /** Détails techniques (identifiants, nombres). */
-  readonly details?: Record<string, string | number | boolean | null>;
+export type CreerAlerte = (input: AlerteInput) => Promise<unknown>;
+
+export type ResultatSignalement = "envoyee" | "deja_envoyee" | "echec_envoi";
+
+type TxAlertes = Pick<Tx, "alerteSysteme">;
+
+interface MetaPanne {
+  etapes: string[];
+  essais: number;
+  telegramLe: string | null;
+  dernierEssaiLe: string | null;
 }
 
-export type ResultatSignalement =
-  "nouvelle" | "envoyee" | "deja_envoyee" | "echec_envoi" | "console";
-
-/** Le canal des rappels de travail (F1…) : la console, tant que B17 n'est pas « oui ». */
-export function canalDesRappels(f1SurTelegram: boolean = F1_SUR_TELEGRAM): CanalAlerte {
-  return f1SurTelegram ? "telegram" : "console";
+function lireMeta(brut: unknown): MetaPanne {
+  const m = brut !== null && typeof brut === "object" ? (brut as Record<string, unknown>) : {};
+  return {
+    etapes: Array.isArray(m["etapes"])
+      ? m["etapes"].filter((e): e is string => typeof e === "string")
+      : [],
+    essais: typeof m["essais"] === "number" ? m["essais"] : 0,
+    telegramLe: typeof m["telegramLe"] === "string" ? m["telegramLe"] : null,
+    dernierEssaiLe: typeof m["dernierEssaiLe"] === "string" ? m["dernierEssaiLe"] : null,
+  };
 }
 
-type TxAlertes = Pick<Tx, "alerteVisio">;
+async function creerOuDedupParDefaut(input: AlerteInput): Promise<unknown> {
+  const { creerOuDedup } = await import("@/server/qualiopi/alertes/alertes-service");
+  return creerOuDedup(input);
+}
+
+async function panneOuverte(db: TxAlertes) {
+  return db.alerteSysteme.findFirst({
+    where: { code: VISIO_BALAYAGE_EN_PANNE, resolue: false, cibleId: null },
+    select: { id: true, metadata: true },
+  });
+}
 
 /**
- * Marque l'alerte en base et, si elle doit partir sur Telegram et n'est pas
- * encore partie, l'envoie. Voir l'en-tête.
+ * Une étape du balayage échoue : l'alerte est ouverte (ou complétée) dans
+ * `AlerteSysteme`, puis envoyée sur Telegram si elle n'est pas encore partie.
  */
-export async function signalerAlerte(
-  tx: TxAlertes,
-  alerte: AlerteASignaler,
-  notifier: Notifier,
-  maintenant: Date = new Date(),
+export async function signalerPanneDuBalayage(
+  db: TxAlertes,
+  panne: { readonly etape: string; readonly erreur: string },
+  deps: { readonly notifier: Notifier; readonly creer?: CreerAlerte; readonly maintenant?: Date },
 ): Promise<ResultatSignalement> {
-  const cle = alerte.cle.slice(0, 120);
-  const existante = await tx.alerteVisio.findUnique({ where: { cle } });
-  if (existante === null) {
-    await tx.alerteVisio.create({
-      data: { cle, categorie: alerte.categorie, premiereLe: maintenant },
+  const maintenant = deps.maintenant ?? new Date();
+  const creer = deps.creer ?? creerOuDedupParDefaut;
+  const titre = "Balayage du dossier client en panne";
+  await creer({
+    code: VISIO_BALAYAGE_EN_PANNE,
+    niveau: "important",
+    titre,
+    message:
+      `Le balayage du dossier client échoue depuis le ${maintenant.toISOString()} ` +
+      `(étape « ${panne.etape} »). Il continue de tourner ; les autres étapes passent.`,
+    metadata: { etapes: [panne.etape], essais: 0, telegramLe: null, dernierEssaiLe: null },
+  });
+
+  const ouverte = await panneOuverte(db);
+  if (ouverte === null) return "echec_envoi";
+  const meta = lireMeta(ouverte.metadata);
+  if (!meta.etapes.includes(panne.etape)) meta.etapes.push(panne.etape);
+  if (meta.telegramLe !== null) {
+    await db.alerteSysteme.update({
+      where: { id: ouverte.id },
+      data: { metadata: { ...meta } },
     });
+    return "deja_envoyee";
   }
-  if (alerte.canal === "console") return existante === null ? "nouvelle" : "console";
-  if (existante?.envoyeeLe) return "deja_envoyee";
 
   let envoyee = false;
   try {
-    const r = await notifier({
+    const r = await deps.notifier({
       category: "MONITORING_ALERT",
       payload: {
-        kind: `visio:${alerte.categorie}`,
-        details: { message: alerte.message, cle, ...(alerte.details ?? {}) },
+        kind: VISIO_BALAYAGE_EN_PANNE,
+        details: {
+          legacyBody: `${titre}\n\nÉtape « ${panne.etape} » en échec (${panne.erreur}).`,
+          etape: panne.etape,
+          erreur: panne.erreur,
+        },
       },
     });
     envoyee = r.channels.telegram === "sent";
   } catch {
     envoyee = false;
   }
-  await tx.alerteVisio.update({
-    where: { cle },
+  await db.alerteSysteme.update({
+    where: { id: ouverte.id },
     data: {
-      dernierEssaiLe: maintenant,
-      essais: { increment: 1 },
-      ...(envoyee ? { envoyeeLe: maintenant } : {}),
+      metadata: {
+        ...meta,
+        essais: meta.essais + 1,
+        dernierEssaiLe: maintenant.toISOString(),
+        telegramLe: envoyee ? maintenant.toISOString() : null,
+      },
     },
   });
   return envoyee ? "envoyee" : "echec_envoi";
 }
 
-/** Le témoin est revenu au vert : sa ligne disparaît (il repartira s'il rechute). */
-export async function leverAlerte(tx: TxAlertes, cle: string): Promise<boolean> {
-  const r = await tx.alerteVisio.deleteMany({ where: { cle: cle.slice(0, 120) } });
-  return r.count > 0;
+/**
+ * L'étape est revenue au vert : elle sort de la panne ; plus aucune étape en
+ * panne → l'alerte est résolue (une rechute en ouvrira une nouvelle).
+ */
+export async function leverPanneDuBalayage(
+  db: TxAlertes,
+  etape: string,
+  maintenant: Date = new Date(),
+): Promise<boolean> {
+  const ouverte = await panneOuverte(db);
+  if (ouverte === null) return false;
+  const meta = lireMeta(ouverte.metadata);
+  if (!meta.etapes.includes(etape)) return false;
+  const reste = meta.etapes.filter((e) => e !== etape);
+  await db.alerteSysteme.update({
+    where: { id: ouverte.id },
+    data:
+      reste.length === 0
+        ? { resolue: true, resolueAt: maintenant, metadata: { ...meta, etapes: [] } }
+        : { metadata: { ...meta, etapes: reste } },
+  });
+  return reste.length === 0;
 }

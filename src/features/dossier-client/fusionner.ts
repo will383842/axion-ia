@@ -33,13 +33,30 @@
  * (`SET CONSTRAINTS ALL DEFERRED`, prévu par la migration) : projets et
  * personnes changent de fiche l'un après l'autre, tout est contrôlé au COMMIT.
  *
- * ## Axion Partners : préparé, jamais émis
+ * ## Axion Partners : la file existante, le constructeur du contrat
  *
- * L'événement « fiche fusionnée » n'existe pas dans le contrat v1 de Partners.
- * `evenementFusionPourPartners()` le CONSTRUIT, `fusionsARejouerVersPartners()`
- * dit lesquelles seraient rejouées (jamais une fusion défaite) ;
- * `emiseVersPartnersLe` reste nul. Rien n'est envoyé.
+ * Correction anti-doublon D3 : aucun événement maison, aucune file de rejeu
+ * maison. La fusion s'écrit, DANS sa transaction, par la file de sortie déjà
+ * en place (`ecrireEvenementPartners`, `partners-sync/outbox.ts`), avec le
+ * constructeur du contrat (`payloadClientFusionne({ survivorId, absorbedId })`,
+ * `partners/payloads.ts`) : l'absorbante est le `survivorId`, l'absorbée
+ * l'`absorbedId`, la clé de fait est l'identifiant de la fusion.
+ *
+ *   · `client.fusionne` n'est émissible que si la version PUBLIÉE du contrat
+ *     le porte (`TYPES_EVENEMENT`) : en v1 il n'y est pas, rien n'est écrit ;
+ *     le jour où la copie v2 est posée (#1223), l'émission part d'elle-même ;
+ *   · canal fermé (`PARTNERS_SYNC_ENABLED` absent) : inertie totale ;
+ *   · une ligne écrite pose `emiseVersPartnersLe` : « Défaire » la refuse
+ *     alors, puisque le contrat n'a AUCUN événement « fusion défaite »
+ *     (question ouverte pour Partners, notée dans la PR).
  */
+
+import {
+  ecrireEvenementPartners,
+  type EcrivainOutboxPartners,
+} from "@/server/partners-sync/outbox";
+import { TYPES_EVENEMENT } from "@/server/partners/contrat";
+import { payloadClientFusionne } from "@/server/partners/payloads";
 
 import type { BaseTransactionnelle, Tx } from "./base";
 
@@ -123,6 +140,7 @@ async function estAbsorbee(tx: Tx, id: string): Promise<boolean> {
 export async function fusionnerFiches(
   db: BaseTransactionnelle,
   e: EntreeFusion,
+  options: { readonly typesDuContrat?: readonly string[] } = {},
 ): Promise<{ fusionId: string; contacts: number; projets: number; rencontres: number }> {
   const motif = e.motif.trim();
   if (motif.length < LONGUEUR_MIN_MOTIF_FUSION) {
@@ -178,7 +196,7 @@ export async function fusionnerFiches(
         sirenReporte: decision.reporterSiren,
         sirenAbsorbeAvant: absorbee.siren,
       },
-      select: { id: true },
+      select: { id: true, le: true },
     });
 
     const elements = [
@@ -255,6 +273,24 @@ export async function fusionnerFiches(
       await tx.client.update({ where: { id: e.absorbeeId }, data: { siren: absorbante.siren } });
     }
 
+    // Axion Partners : même transaction, file existante (D3). Voir l'en-tête.
+    const eventId = await emettreFusionVersPartners(
+      tx,
+      {
+        fusionId: fusion.id,
+        absorbanteId: e.absorbanteId,
+        absorbeeId: e.absorbeeId,
+        le: fusion.le,
+      },
+      options.typesDuContrat,
+    );
+    if (eventId !== null) {
+      await tx.clientFusion.update({
+        where: { id: fusion.id },
+        data: { emiseVersPartnersLe: new Date() },
+      });
+    }
+
     return {
       fusionId: fusion.id,
       contacts: contacts.length,
@@ -264,43 +300,39 @@ export async function fusionnerFiches(
   });
 }
 
-// ── Axion Partners : préparé, jamais émis ────────────────────────────────────
+// ── Axion Partners : la file existante (correction anti-doublon D3) ─────────
 
-export interface EvenementFusionPartners {
-  readonly type: "client.fusionne";
-  readonly fusionId: string;
-  readonly absorbeeId: string;
-  readonly absorbanteId: string;
-  readonly survenueLe: string;
+export const TYPE_EVENEMENT_FUSION = "client.fusionne";
+
+/** Vrai si la version publiée du contrat porte `client.fusionne`. */
+export function fusionEmissibleVersPartners(
+  typesDuContrat: readonly string[] = TYPES_EVENEMENT,
+): boolean {
+  return typesDuContrat.includes(TYPE_EVENEMENT_FUSION);
 }
 
-/** L'événement qui serait émis vers Partners. PUR. Jamais envoyé en v1. */
-export function evenementFusionPourPartners(f: {
-  readonly id: string;
-  readonly absorbeId: string;
-  readonly absorbantId: string;
-  readonly le: Date;
-}): EvenementFusionPartners {
-  return {
-    type: "client.fusionne",
-    fusionId: f.id,
-    absorbeeId: f.absorbeId,
-    absorbanteId: f.absorbantId,
-    survenueLe: f.le.toISOString(),
-  };
-}
-
-/** Le filtre du rejeu : jamais une fusion défaite, jamais une fusion déjà émise. */
-export const FUSIONS_A_REJOUER = { defaiteLe: null, emiseVersPartnersLe: null } as const;
-
-/** Les fusions qui seraient rejouées vers Partners le jour où son contrat les porte. */
-export async function fusionsARejouerVersPartners(
-  tx: Pick<Tx, "clientFusion">,
-): Promise<EvenementFusionPartners[]> {
-  const fusions = await tx.clientFusion.findMany({
-    where: FUSIONS_A_REJOUER,
-    select: { id: true, absorbeId: true, absorbantId: true, le: true },
-    orderBy: { le: "asc" },
+/**
+ * Écrit `client.fusionne` dans la file de sortie Partners, dans la transaction
+ * de la fusion. Rend l'`event_id`, ou `null` si rien n'est écrit (type absent
+ * du contrat publié, ou canal fermé). SEUL producteur de cet événement
+ * (cliquet `tests/unit/ci/toute-fusion-de-fiches-passe-par-la-file-partners.spec.ts`).
+ */
+export async function emettreFusionVersPartners(
+  tx: EcrivainOutboxPartners,
+  f: {
+    readonly fusionId: string;
+    readonly absorbanteId: string;
+    readonly absorbeeId: string;
+    readonly le: Date;
+  },
+  typesDuContrat: readonly string[] = TYPES_EVENEMENT,
+): Promise<string | null> {
+  if (!fusionEmissibleVersPartners(typesDuContrat)) return null;
+  return ecrireEvenementPartners(tx, {
+    type: TYPE_EVENEMENT_FUSION,
+    cleDeFait: `${TYPE_EVENEMENT_FUSION}:${f.fusionId}`,
+    occurredAt: f.le,
+    sujet: { client_id: f.absorbanteId },
+    payload: payloadClientFusionne({ survivorId: f.absorbanteId, absorbedId: f.absorbeeId }),
   });
-  return fusions.map(evenementFusionPourPartners);
 }

@@ -72,7 +72,6 @@ export function dossierEnMemoire(initial: Tables = {}): BaseEnMemoire {
     clesPrimaires: {
       rencontreSuivi: ["rencontreId"],
       battementCircuit: ["nom"],
-      alerteVisio: ["cle"],
       calendlyReport: ["ancienEventUri"],
       clientTestInterne: ["clientId"],
       clientFusionElement: ["fusionId", "type", "elementId"],
@@ -85,7 +84,6 @@ export function dossierEnMemoire(initial: Tables = {}): BaseEnMemoire {
       compteRendu: [["rencontreId", "version"]],
       projet: [["numero"]],
       client: [["numero"]],
-      alerteVisio: [["cle"]],
       battementCircuit: [["nom"]],
       calendlyReport: [["ancienEventUri"], ["nouvelEventUri"]],
     },
@@ -115,11 +113,15 @@ export function dossierEnMemoire(initial: Tables = {}): BaseEnMemoire {
         createdAt: new Date(),
       }),
       compteRendu: () => ({ statut: "brouillon", createdAt: new Date() }),
-      alerteVisio: () => ({
-        premiereLe: new Date(),
-        envoyeeLe: null,
-        essais: 0,
-        dernierEssaiLe: null,
+      alerteSysteme: () => ({
+        cibleType: null,
+        cibleId: null,
+        lu: false,
+        resolue: false,
+        resolueAt: null,
+        notifiedAt: null,
+        metadata: {},
+        createdAt: new Date(),
       }),
       clientFusion: () => ({
         le: new Date(),

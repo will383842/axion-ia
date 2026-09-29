@@ -10,7 +10,9 @@
 import { describe, expect, it, vi } from "vitest";
 
 import { dossierEnMemoire } from "@/features/dossier-client/__tests__/_dossier-en-memoire";
+import { VISIO_BALAYAGE_EN_PANNE } from "../alertes";
 import { passerBalayage } from "../balayage";
+import { creerEnMemoire } from "./_alertes-en-memoire";
 
 const MAINTENANT = new Date("2026-10-08T14:00:00Z");
 
@@ -42,9 +44,11 @@ describe("le balayage tourne même si une étape est bloquée", () => {
     const r = await passerBalayage(avecPanne(base, "calendlyEvent") as never, {
       maintenant: MAINTENANT,
       notifier: notify,
+      creerAlerte: creerEnMemoire(base),
       drapeauBrut: "true",
     });
     expect(r.etapesEnEchec).toEqual(["rencontres"]);
+    expect(base.tables["alerteSysteme"]?.map((a) => a["code"])).toEqual([VISIO_BALAYAGE_EN_PANNE]);
     expect(r.couverture).not.toBeNull();
     expect(base.tables["battementCircuit"]?.[0]?.["dernierLe"]).toEqual(MAINTENANT);
     expect(base.tables["battementCircuit"]?.[0]?.["drapeauVuParWorker"]).toBe("true");

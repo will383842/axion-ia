@@ -5,8 +5,10 @@
  *
  * Tout est CALCULÉ par le site depuis la base, à l'affichage : le battement du
  * balayage (rouge au-delà de 30 minutes), le drapeau vu par le worker, les
- * pannes techniques signalées, et les rappels de travail. Telegram n'est qu'un
- * doublon (PA-14). Le témoin de clé, les appareils, les enregistrements et les
+ * pannes techniques (lues dans `AlerteSysteme`, codes `visio.*`), et les
+ * rappels de travail. « Tenus sans compte rendu » est le compteur de la
+ * pastille « À faire le point » existante, pas un second calcul (correction
+ * anti-doublon A3). Telegram n'est qu'un doublon (PA-14). Le témoin de clé, les appareils, les enregistrements et les
  * étapes du circuit arrivent avec leur PR (5 et 6).
  *
  * La page appelante a DÉJÀ consulté le rôle (`peutVoirLesEchanges`, A2).
@@ -16,6 +18,7 @@ import Link from "next/link";
 
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { prisma } from "@/lib/prisma";
+import { compterRendezVousAFaireLePoint } from "@/features/admin-rendezvous/suivi-queries";
 import { lireEtatDuCircuit } from "@/server/visio/balayage";
 import { BATTEMENT_ROUGE_MIN } from "@/server/visio/battement";
 import { formatDateFrShort } from "@/lib/format-date-fr";
@@ -41,6 +44,7 @@ function Ligne({ libelle, valeur }: { libelle: string; valeur: React.ReactNode }
 export async function EtatDuCircuitVue({ rdvBase }: { rdvBase: string }) {
   const maintenant = new Date();
   const e = await lireEtatDuCircuit(prisma, maintenant);
+  const aFaireLePoint = await compterRendezVousAFaireLePoint(maintenant);
   const b = e.battement;
 
   return (
@@ -85,8 +89,16 @@ export async function EtatDuCircuitVue({ rdvBase }: { rdvBase: string }) {
         <h2 className={titreCls}>À faire</h2>
         <ul className={listeCls}>
           <Ligne
-            libelle="Rendez-vous tenus sans compte rendu ni note"
-            valeur={e.f1.length > 0 ? <AdminBadge tone="warning">{e.f1.length}</AdminBadge> : "0"}
+            libelle="Rendez-vous où faire le point (la pastille de l'onglet)"
+            valeur={
+              aFaireLePoint > 0 ? (
+                <Link href={rdvBase} className={lienCls}>
+                  <AdminBadge tone="warning">{aFaireLePoint}</AdminBadge>
+                </Link>
+              ) : (
+                "0"
+              )
+            }
           />
           <Ligne
             libelle="Comptes rendus à valider depuis plus de 3 jours"
@@ -95,22 +107,6 @@ export async function EtatDuCircuitVue({ rdvBase }: { rdvBase: string }) {
           <Ligne libelle="Suites échues" valeur={e.suitesEchues} />
           <Ligne libelle="Rendez-vous demain (à préparer)" valeur={e.veille} />
         </ul>
-        {e.f1.length > 0 ? (
-          <ul className={`mt-[var(--space-admin-3)] ${listeCls}`}>
-            {e.f1.slice(0, 20).map((x) => (
-              <li key={x.rencontreId}>
-                <Link
-                  href={`${rdvBase}/rencontres/${x.rencontreId}?vue=apres-l-appel#note`}
-                  className={lienCls}
-                >
-                  {x.attendu === "note"
-                    ? "Appel téléphonique : écrire la note"
-                    : "Visio : compte rendu ou note à écrire"}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : null}
       </section>
 
       <section className={carteCls}>
@@ -133,11 +129,11 @@ export async function EtatDuCircuitVue({ rdvBase }: { rdvBase: string }) {
         ) : (
           <ul className={listeCls}>
             {e.alertesTechniques.map((a) => (
-              <li key={a.cle}>
-                <span className="font-mono text-[length:var(--text-admin-xs)]">{a.cle}</span>{" "}
+              <li key={a.id}>
+                {a.titre}{" "}
                 <span className={mutedCls}>
-                  depuis le {formatDateFrShort(a.premiereLe)} ·{" "}
-                  {a.envoyeeLe ? "signalée sur Telegram" : "pas encore partie sur Telegram"}
+                  depuis le {formatDateFrShort(a.createdAt)} ·{" "}
+                  <span className="font-mono text-[length:var(--text-admin-xs)]">{a.code}</span>
                 </span>
               </li>
             ))}

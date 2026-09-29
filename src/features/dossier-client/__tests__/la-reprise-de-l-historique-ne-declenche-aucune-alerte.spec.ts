@@ -1,25 +1,20 @@
 // @vitest-environment node
 /**
  * ⛔ La reprise de l'historique Calendly (plan V-07b) ne déclenche AUCUNE
- * alerte : ses rencontres sont marquées `repriseHistorique`, que F1 ignore, et
- * n'entrent pas dans le badge « à classer ». Sans cela, ~40 rendez-vous
- * d'avant la mise en service deviendraient 40 rappels le premier jour.
+ * alerte : ses rencontres sont marquées `repriseHistorique` et n'entrent pas
+ * dans le badge « à classer ». Le balayage n'écrit plus aucun rappel de travail
+ * (« tenu sans compte rendu » est la pastille « À faire le point » existante,
+ * correction anti-doublon A3) : aucune ligne d'alerte, rien vers Telegram.
  *
- * TROIS protections, et chacune est vérifiée seule : la requête de F1
- * (`repriseHistorique: false`), la règle `attenduF1`, et la borne (une
- * reprise précède toujours la mise en service). Mutation qui fait rougir :
- * dans `attenduF1`, retirer le test `r.repriseHistorique` → le cas « même
- * postérieure à la borne » rougit (les deux autres protections tiennent encore
- * le premier cas, à dessein).
- * Contre-témoin : la même rencontre, SANS le marqueur, déclencherait F1.
+ * Mutation qui fait rougir : faire écrire au balayage une alerte par rendez-vous
+ * repris → le 1ᵉʳ test rougit.
  * Angle mort : le filtre « Historique » de l'écran « À classer » se lit par
  * la requête `lireRencontresAClasser(true)` (non rejouée ici).
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { attenduF1, passerBalayage } from "@/server/visio/balayage";
-import { rencontreF1 } from "@/server/visio/__tests__/_scene-f1";
+import { passerBalayage } from "@/server/visio/balayage";
 import { reprendreHistoriqueCalendly } from "../reprise-historique";
 import { CLE_TEST, dossierEnMemoire, rendezVousCalendly } from "./_dossier-en-memoire";
 
@@ -68,7 +63,7 @@ function scene() {
 }
 
 describe("⛔ la reprise de l'historique ne déclenche aucune alerte", () => {
-  it("rencontres reprises : F1 = 0, aucune ligne d'alerte", async () => {
+  it("rencontres reprises : aucune ligne d'alerte, rien vers notify()", async () => {
     const { base } = scene();
     const bilan = await reprendreHistoriqueCalendly(base.client as never, { appliquer: true });
     expect(bilan.rencontresCreees).toBe(1);
@@ -79,23 +74,10 @@ describe("⛔ la reprise de l'historique ne déclenche aucune alerte", () => {
       maintenant: new Date("2026-10-08T10:00:00Z"),
       notifier: notify as never,
     });
-    expect(r.f1).toBe(0);
+    expect(r.etapesEnEchec).toEqual([]);
+    expect(base.tables["alerteSysteme"] ?? []).toHaveLength(0);
     expect(base.tables["alerteVisio"] ?? []).toHaveLength(0);
     expect(notify).not.toHaveBeenCalled();
-  });
-
-  it("la règle seule : une rencontre reprise n'attend rien, même postérieure à la borne", () => {
-    expect(
-      attenduF1(
-        rencontreF1({
-          repriseHistorique: true,
-          debutPrevu: new Date("2026-10-06T08:00:00Z"),
-          finPrevue: new Date("2026-10-06T08:45:00Z"),
-        }),
-        new Date("2026-10-01T00:00:00Z"),
-        new Date("2026-10-08T14:00:00Z"),
-      ),
-    ).toBeNull();
   });
 
   it("les réponses deviennent des faits proposés, chiffrés, à ranger ; le téléphone non", async () => {

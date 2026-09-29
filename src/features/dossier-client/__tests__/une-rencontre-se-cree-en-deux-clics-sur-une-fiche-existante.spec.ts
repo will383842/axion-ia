@@ -14,7 +14,12 @@
 
 import { describe, expect, it } from "vitest";
 
-import { creerRencontre, ENREGISTREMENT_ANNONCE_AUX_CLIENTS } from "../creer-rencontre";
+import {
+  ANNONCE_VISIO_ACTIVE,
+  ENREGISTREMENT_ANNONCE_AUX_CLIENTS,
+} from "@/server/visio/visio-annonce";
+
+import { creerRencontre } from "../creer-rencontre";
 import { dossierEnMemoire, fiche, id } from "./_dossier-en-memoire";
 
 const ADMIN = "00000000-0000-4000-8000-0000000000ad";
@@ -68,7 +73,7 @@ describe("un rendez-vous se crée en deux clics sur une fiche existante", () => 
     ]);
     expect(r.invitation?.destinataire).toBe("camille@exemple-fictif.fr");
     expect(r.invitation?.payload.phraseEnregistrement).toBe(ENREGISTREMENT_ANNONCE_AUX_CLIENTS);
-    expect(ENREGISTREMENT_ANNONCE_AUX_CLIENTS).toBe(false);
+    expect(ENREGISTREMENT_ANNONCE_AUX_CLIENTS).toBe(ANNONCE_VISIO_ACTIVE);
   });
 
   it("contre-témoin : téléphone, pas d'invitation", async () => {

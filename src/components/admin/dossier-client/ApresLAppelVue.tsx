@@ -10,6 +10,8 @@
  *      porte unique, SIREN proposé par l'annuaire et confirmé d'un clic.
  *      Jamais de rangement automatique (A4) ;
  *   2. le PROJET du rendez-vous : un projet ouvert, ou « nouveau projet » ;
+ *   0. les DÉBRIEFS déjà écrits (notes Calendly, point de l'onglet), affichés
+ *      sans ressaisie (A4) ;
  *   3. les FAITS proposés (cochés d'avance seulement s'ils sont validables en
  *      lot) et la NOTE MANUELLE (sept champs et une case) ;
  *   4. l'issue, la suite et son échéance (relance proposée par défaut) ;
@@ -31,6 +33,7 @@ import {
   validerApresLAppelAction,
 } from "@/features/dossier-client/actions-rencontres";
 import { LIBELLE_MOTIF, LIBELLE_TYPE_FAIT } from "@/features/dossier-client/libelles";
+import { LIBELLE_ORIGINE_DEBRIEF } from "@/features/dossier-client/debriefs-existants";
 import { CHAMPS_DE_LA_NOTE } from "@/features/dossier-client/note-manuelle";
 import {
   lireFichesVivantes,
@@ -135,6 +138,21 @@ export async function ApresLAppelVue({
               </div>
             ))}
           </dl>
+        ) : null}
+        {r.debriefs.length > 0 ? (
+          <div className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
+            <h3 className="font-semibold">Débriefs déjà écrits</h3>
+            <dl className="mt-[var(--space-admin-2)] space-y-[var(--space-admin-2)]">
+              {r.debriefs.map((d) => (
+                <div key={d.origine}>
+                  <dt className={`text-[length:var(--text-admin-xs)] ${mutedCls}`}>
+                    {LIBELLE_ORIGINE_DEBRIEF[d.origine]}
+                  </dt>
+                  <dd className="whitespace-pre-line">{d.texte}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         ) : null}
       </section>
 

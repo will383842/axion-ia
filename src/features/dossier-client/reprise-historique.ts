@@ -17,7 +17,10 @@
  *     vous a recommandé ? » devient un fait `mise_en_relation` proposé (rien
  *     n'est envoyé à Axion Partners) ;
  *   · le point déjà fait (`RendezVousSuivi`) est repris dans `RencontreSuivi`
- *     PAR LA FONCTION UNIQUE `enregistrerSuivi()`.
+ *     PAR LA FONCTION UNIQUE `enregistrerSuivi()` ;
+ *   · les DÉBRIEFS déjà écrits (`CalendlyEvent.notes`, `RendezVousSuivi.note`,
+ *     règle unique `debriefsExistants`) deviennent des faits `autre`, proposés,
+ *     « à ranger », CHIFFRÉS, rapportés par Williams (correction A4).
  *
  * IDEMPOTENTE : une rencontre qui existe déjà ne reçoit ni fait ni suivi de
  * plus ; un second lancement ne crée rien. S'ARRÊTE si la clé de chiffrement
@@ -33,6 +36,7 @@ import { lireBorneDuBalayage } from "@/server/visio/battement";
 import { estRendezVousDuDossier } from "@/server/visio/liste-blanche-types";
 import { dansLaTransaction, type BaseTransactionnelle, type Tx } from "./base";
 import { cleDuFait } from "./note-manuelle";
+import { debriefsExistants, LIBELLE_ORIGINE_DEBRIEF } from "./debriefs-existants";
 import {
   estQuestionEntreprise,
   estQuestionTelephone,
@@ -68,7 +72,7 @@ export function typeDeLaReponse(question: string): FaitType | null {
 
 async function reprendreUn(
   tx: Tx,
-  ev: { id: string; startTime: Date | null; rawPayload: unknown },
+  ev: { id: string; startTime: Date | null; rawPayload: unknown; notes?: string | null },
   maintenant: Date,
 ): Promise<{ creee: boolean; faits: number; suivi: "repris" | "incomplet" | "aucun" }> {
   const r = await assurerRencontrePourCalendly(dansLaTransaction(tx), ev.id, {
@@ -115,6 +119,33 @@ async function reprendreUn(
     where: { calendlyEventId: ev.id },
     select: { issue: true, suite: true, suiteLe: true, note: true, renseignePar: true },
   });
+
+  // Les débriefs déjà écrits : des faits « à ranger », jamais validés (A4).
+  for (const d of debriefsExistants({ notesCalendly: ev.notes, noteDuPoint: ancien?.note })) {
+    const fait = await tx.fait.create({
+      data: {
+        clientId: null,
+        portee: "a_ranger",
+        type: "autre",
+        cle: cleDuFait("autre"),
+        enonce: chiffrerParole(d.texte),
+        texteCourt: chiffrerParole(LIBELLE_ORIGINE_DEBRIEF[d.origine]),
+        certitude: "rapporte_par_williams",
+        confiance: "moyenne",
+        source: "saisie_manuelle",
+        rencontreId: r.rencontreId,
+        locuteur: "axion",
+        constateLe: ev.startTime ?? maintenant,
+        statut: "propose",
+      },
+      select: { id: true },
+    });
+    await tx.faitEvenement.create({
+      data: { faitId: fait.id, action: "propose", nouveauPortee: "a_ranger", parAdminId: null },
+    });
+    faits += 1;
+  }
+
   if (ancien === null) return { creee: true, faits, suivi: "aucun" };
   try {
     await enregistrerSuiviDansLaTransaction(tx, {
@@ -156,6 +187,7 @@ export async function reprendreHistoriqueCalendly(
         linkedJobApplicationId: true,
         startTime: true,
         rawPayload: true,
+        notes: true,
       },
       orderBy: { startTime: "asc" },
     })

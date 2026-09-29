@@ -43,10 +43,10 @@ async function processJob(_job: Job<VisioBalayageJobData>): Promise<void> {
     notifier: notify,
     drapeauBrut: process.env.DOSSIER_BALAYAGE_ENABLED,
   });
-  if (r.etapesEnEchec.length > 0 || r.rencontresAssurees > 0 || r.f1 > 0) {
+  if (r.etapesEnEchec.length > 0 || r.rencontresAssurees > 0) {
     console.warn(
       `[visio-balayage-worker] ${r.rencontresAssurees} rencontre(s) assurée(s), ` +
-        `${r.f1} rendez-vous sans compte rendu, ${r.comptesRendusAValider} compte(s) rendu(s) ` +
+        `${r.comptesRendusAValider} compte(s) rendu(s) ` +
         `à valider depuis 3 j, ${r.suitesEchues} suite(s) échue(s)` +
         (r.etapesEnEchec.length > 0 ? ` — étapes en échec : ${r.etapesEnEchec.join(", ")}` : ""),
     );

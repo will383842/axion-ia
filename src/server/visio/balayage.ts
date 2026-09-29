@@ -7,29 +7,31 @@
  *   2. les rencontres des rendez-vous Calendly de la liste blanche POSTÉRIEURS
  *      à la borne : créées ou resynchronisées (`assurerRencontrePourCalendly`),
  *      jamais rangées (A4) ;
- *   3. « F1 » — rendez-vous tenu sans compte rendu : calculé sur `CompteRendu`
- *      SEUL (aucune table d'enregistrement n'est encore écrite). Une note
- *      manuelle l'éteint. Rappel de CONSOLE, pas Telegram (`F1_SUR_TELEGRAM`) ;
- *   4. les comptes rendus à valider depuis 3 jours ;
- *   5. les suites échues ;
- *   6. la veille du rendez-vous suivant (demain, heure de Paris) ;
- *   7. la couverture du mois (visios client : enregistrées / notes / rien).
+ *   3. les comptes rendus à valider depuis 3 jours ;
+ *   4. les suites échues ;
+ *   5. la veille du rendez-vous suivant (demain, heure de Paris) ;
+ *   6. la couverture du mois (visios client : enregistrées / notes / rien).
+ *
+ * « Rendez-vous tenu sans compte rendu » n'est PAS calculé ici : c'est la
+ * pastille « À faire le point » qui existe déjà (`suivi-queries.ts`) —
+ * correction anti-doublon A3, un seul rappel pour un seul geste.
  * La clé de chiffrement, les appareils, les enregistrements, les étapes du
  * circuit arrivent avec leur PR (5 et 6), chacun avec son test.
  *
  * ## Une étape bloquée n'arrête pas les autres
  *
- * Chaque étape a son `try` : une erreur est comptée, signalée une fois sur
- * Telegram (panne technique : `balayage-etape:<nom>`), et le passage continue.
+ * Chaque étape a son `try` : une erreur est comptée, signalée une fois — dans
+ * `AlerteSysteme` (code `visio.balayage_en_panne`, `alertes.ts`) et sur
+ * Telegram —, et le passage continue.
  * Le battement est écrit EN PREMIER : un balayage qui tourne mais dont une
  * étape échoue n'est pas un balayage arrêté. Garde :
  * `le-balayage-tourne-meme-si-une-etape-est-bloquee.spec.ts`.
  *
  * ## L'historique n'est jamais remonté
  *
- * Aucune rencontre n'est créée pour un rendez-vous antérieur à la borne, et
- * F1 ignore `repriseHistorique` : les ~40 « Discutons » d'avant la mise en
- * service ne deviennent ni 40 lignes « à classer » ni 40 alertes. Ils passent
+ * Aucune rencontre n'est créée pour un rendez-vous antérieur à la borne : les
+ * ~40 « Discutons » d'avant la mise en service ne deviennent ni 40 lignes « à
+ * classer » ni 40 alertes. Ils passent
  * par `scripts/visio/reprendre-historique-calendly.ts`.
  *
  * ## Les dates se jugent à l'heure de Paris
@@ -45,7 +47,13 @@ import type { Tx, BaseTransactionnelle } from "@/features/dossier-client/base";
 import { HORS_RENCONTRES_DE_TEST } from "@/features/dossier-client/client-test";
 import { assurerRencontrePourCalendly } from "@/features/dossier-client/rencontre-calendly";
 import { dayKeyInParis } from "@/lib/calendar-grid";
-import { canalDesRappels, leverAlerte, signalerAlerte, type Notifier } from "./alertes";
+import {
+  CODES_ALERTE_VISIO,
+  leverPanneDuBalayage,
+  signalerPanneDuBalayage,
+  type CreerAlerte,
+  type Notifier,
+} from "./alertes";
 import {
   BATTEMENT_BALAYAGE,
   ecrireBattement,
@@ -55,118 +63,15 @@ import {
 } from "./battement";
 import { estRendezVousDuDossier } from "./liste-blanche-types";
 
-/** Délai après la fin prévue au-delà duquel un rendez-vous tenu attend son compte rendu. */
-export const DELAI_F1_MIN = 120;
-
 /** Un compte rendu à valider depuis plus longtemps est rappelé. */
 export const JOURS_COMPTE_RENDU_A_VALIDER = 3;
 
 /** Jusqu'où, dans l'avenir, les rendez-vous Calendly sont assurés. */
 export const FENETRE_AVENIR_JOURS = 60;
 
-const DUREE_PAR_DEFAUT_MIN = 60;
 const JOUR_MS = 24 * 60 * 60 * 1000;
 
 export type BaseBalayage = Tx & BaseTransactionnelle;
-
-// ── F1 : la règle, pure ──────────────────────────────────────────────────────
-
-export interface RencontrePourF1 {
-  readonly id: string;
-  readonly type: "visio" | "telephone" | "presentiel" | "inconnu";
-  readonly debutPrevu: Date | null;
-  readonly finPrevue: Date | null;
-  readonly statut: "planifie" | "tenu" | "annule" | "absent" | "reporte" | null;
-  readonly repriseHistorique: boolean;
-  readonly estTestInterne: boolean;
-  /** Issue du suivi, s'il est fait. */
-  readonly issue: "eu_lieu" | "absent" | "reporte" | null;
-  /** Le rendez-vous Calendly a été annulé. */
-  readonly annuleCalendly: boolean;
-  /** Un compte rendu (brouillon, à valider ou validé) existe. */
-  readonly aUnCompteRendu: boolean;
-}
-
-export type AttenduF1 = "note" | "compte_rendu_ou_note";
-
-/**
- * Ce rendez-vous attend-il son compte rendu ? `null` sinon ; sinon ce qu'il
- * attend : un appel TÉLÉPHONIQUE n'est jamais enregistré, il attend une note.
- */
-export function attenduF1(r: RencontrePourF1, borne: Date, maintenant: Date): AttenduF1 | null {
-  if (r.repriseHistorique || r.estTestInterne) return null;
-  if (r.type !== "visio" && r.type !== "telephone") return null;
-  if (r.debutPrevu === null || r.debutPrevu.getTime() < borne.getTime()) return null;
-  if (r.annuleCalendly) return null;
-  if (r.statut === "annule" || r.statut === "absent" || r.statut === "reporte") return null;
-  if (r.issue === "absent" || r.issue === "reporte") return null;
-  if (r.aUnCompteRendu) return null;
-  const fin = r.finPrevue ?? new Date(r.debutPrevu.getTime() + DUREE_PAR_DEFAUT_MIN * 60_000);
-  if (fin.getTime() + DELAI_F1_MIN * 60_000 > maintenant.getTime()) return null;
-  return r.type === "telephone" ? "note" : "compte_rendu_ou_note";
-}
-
-/** Clé de l'alerte F1 d'une rencontre. */
-export function cleF1(rencontreId: string): string {
-  return `f1:${rencontreId}`;
-}
-
-// ── Lectures ─────────────────────────────────────────────────────────────────
-
-async function rencontresPourF1(tx: Tx, borne: Date, maintenant: Date): Promise<RencontrePourF1[]> {
-  const lignes = await tx.rencontre.findMany({
-    where: {
-      repriseHistorique: false,
-      ...HORS_RENCONTRES_DE_TEST,
-      type: { in: ["visio", "telephone"] },
-      debutPrevu: { gte: borne, lt: maintenant },
-    },
-    select: {
-      id: true,
-      type: true,
-      debutPrevu: true,
-      finPrevue: true,
-      statut: true,
-      repriseHistorique: true,
-      estTestInterne: true,
-      calendlyEventId: true,
-    },
-    take: 500,
-  });
-  if (lignes.length === 0) return [];
-  const ids = lignes.map((l) => l.id);
-  const suivis = await tx.rencontreSuivi.findMany({
-    where: { rencontreId: { in: ids } },
-    select: { rencontreId: true, issue: true },
-  });
-  const crs = await tx.compteRendu.findMany({
-    where: { rencontreId: { in: ids }, statut: { in: ["brouillon", "a_valider", "valide"] } },
-    select: { rencontreId: true },
-  });
-  const evIds = lignes.map((l) => l.calendlyEventId).filter((x): x is string => x !== null);
-  const annules =
-    evIds.length > 0
-      ? await tx.calendlyEvent.findMany({
-          where: { id: { in: evIds }, status: "canceled" },
-          select: { id: true },
-        })
-      : [];
-  const issue = new Map(suivis.map((s) => [s.rencontreId, s.issue]));
-  const avecCr = new Set(crs.map((c) => c.rencontreId));
-  const evAnnules = new Set(annules.map((a) => a.id));
-  return lignes.map((l) => ({
-    id: l.id,
-    type: l.type,
-    debutPrevu: l.debutPrevu,
-    finPrevue: l.finPrevue,
-    statut: l.statut,
-    repriseHistorique: l.repriseHistorique,
-    estTestInterne: l.estTestInterne,
-    issue: issue.get(l.id) ?? null,
-    annuleCalendly: l.calendlyEventId !== null && evAnnules.has(l.calendlyEventId),
-    aUnCompteRendu: avecCr.has(l.id),
-  }));
-}
 
 // ── Le passage ───────────────────────────────────────────────────────────────
 
@@ -179,7 +84,6 @@ export interface CouvertureDuMois {
 
 export interface ResultatBalayage {
   readonly rencontresAssurees: number;
-  readonly f1: number;
   readonly comptesRendusAValider: number;
   readonly suitesEchues: number;
   readonly veille: number;
@@ -190,6 +94,8 @@ export interface ResultatBalayage {
 export interface DependancesBalayage {
   readonly maintenant?: Date;
   readonly notifier: Notifier;
+  /** Création d'alerte (`creerOuDedup` par défaut) : injectée par les tests. */
+  readonly creerAlerte?: CreerAlerte;
   /** Valeur brute du drapeau, recopiée dans le battement. */
   readonly drapeauBrut?: string | undefined;
 }
@@ -203,19 +109,6 @@ function debutDuMoisParis(d: Date): Date {
 }
 
 // ── Les lectures (partagées par le passage et le panneau de la console) ──────
-
-/** Les rendez-vous qui attendent leur compte rendu (F1). */
-export async function listerF1(
-  db: Tx,
-  borne: Date,
-  maintenant: Date,
-): Promise<Array<{ rencontreId: string; attendu: AttenduF1 }>> {
-  const rencontres = await rencontresPourF1(db, borne, maintenant);
-  return rencontres.flatMap((r) => {
-    const attendu = attenduF1(r, borne, maintenant);
-    return attendu === null ? [] : [{ rencontreId: r.id, attendu }];
-  });
-}
 
 /** Comptes rendus à valider depuis plus de 3 jours. */
 export async function compterComptesRendusAValider(db: Tx, maintenant: Date): Promise<number> {
@@ -299,16 +192,16 @@ export interface EtatDuCircuit {
   readonly battement: EtatBattement;
   readonly drapeauVuParWorker: string | null;
   readonly borne: Date | null;
-  readonly f1: ReadonlyArray<{ rencontreId: string; attendu: AttenduF1 }>;
   readonly comptesRendusAValider: number;
   readonly suitesEchues: number;
   readonly veille: number;
   readonly couverture: CouvertureDuMois;
+  /** Pannes ouvertes du circuit, lues dans `AlerteSysteme` (codes `visio.*`). */
   readonly alertesTechniques: ReadonlyArray<{
-    cle: string;
-    categorie: string;
-    premiereLe: Date;
-    envoyeeLe: Date | null;
+    id: string;
+    code: string;
+    titre: string;
+    createdAt: Date;
   }>;
   /** Étapes du circuit en cours : « ne pas fusionner maintenant ». */
   readonly etapesEnCours: number;
@@ -322,15 +215,14 @@ export async function lireEtatDuCircuit(db: Tx, maintenant: Date): Promise<EtatD
   });
   const borne = b?.premierLe ?? null;
   // L'une après l'autre : jamais deux requêtes en parallèle sur une même connexion.
-  const f1 = borne ? await listerF1(db, borne, maintenant) : [];
   const comptesRendusAValider = await compterComptesRendusAValider(db, maintenant);
   const suitesEchues = await compterSuitesEchues(db, maintenant);
   const veille = await compterVeille(db, maintenant);
   const couverture = await couvertureDuMois(db, maintenant);
-  const alertesTechniques = await db.alerteVisio.findMany({
-    where: { NOT: { cle: { startsWith: "f1:" } } },
-    select: { cle: true, categorie: true, premiereLe: true, envoyeeLe: true },
-    orderBy: { premiereLe: "desc" },
+  const alertesTechniques = await db.alerteSysteme.findMany({
+    where: { code: { in: [...CODES_ALERTE_VISIO] }, resolue: false },
+    select: { id: true, code: true, titre: true, createdAt: true },
+    orderBy: { createdAt: "desc" },
     take: 50,
   });
   const etapesEnCours = await db.traitementVisio.count({ where: { statut: "en_cours" } });
@@ -338,7 +230,6 @@ export async function lireEtatDuCircuit(db: Tx, maintenant: Date): Promise<EtatD
     battement: jugerBattement(b?.dernierLe ?? null, maintenant),
     drapeauVuParWorker: b?.drapeauVuParWorker ?? null,
     borne,
-    f1,
     comptesRendusAValider,
     suitesEchues,
     veille,
@@ -359,21 +250,18 @@ export async function passerBalayage(
   async function etape<T>(nom: string, defaut: T, fn: () => Promise<T>): Promise<T> {
     try {
       const r = await fn();
-      await leverAlerte(db, `balayage-etape:${nom}`).catch(() => false);
+      await leverPanneDuBalayage(db, nom, maintenant).catch(() => false);
       return r;
     } catch (err) {
       echecs.push(nom);
-      await signalerAlerte(
+      await signalerPanneDuBalayage(
         db,
+        { etape: nom, erreur: err instanceof Error ? err.name : "inconnue" },
         {
-          cle: `balayage-etape:${nom}`,
-          categorie: "circuit",
-          canal: "telegram",
-          message: `Balayage du dossier client : l'étape « ${nom} » échoue.`,
-          details: { erreur: err instanceof Error ? err.name : "inconnue" },
+          notifier: deps.notifier,
+          maintenant,
+          ...(deps.creerAlerte ? { creer: deps.creerAlerte } : {}),
         },
-        deps.notifier,
-        maintenant,
       ).catch(() => "echec_envoi");
       return defaut;
     }
@@ -406,36 +294,7 @@ export async function passerBalayage(
     return n;
   });
 
-  // 3. F1 — rappel de console.
-  const f1 = await etape("f1", 0, async () => {
-    const enAttente = await listerF1(db, borne, maintenant);
-    const cles = new Set(enAttente.map((r) => cleF1(r.rencontreId)));
-    for (const r of enAttente) {
-      await signalerAlerte(
-        db,
-        {
-          cle: cleF1(r.rencontreId),
-          categorie: "circuit",
-          canal: canalDesRappels(),
-          message: "Rendez-vous tenu sans compte rendu ni note.",
-          details: { rencontreId: r.rencontreId, attendu: r.attendu },
-        },
-        deps.notifier,
-        maintenant,
-      );
-    }
-    // Les alertes F1 éteintes (compte rendu écrit, rendez-vous déplacé ou annulé).
-    const anciennes = await db.alerteVisio.findMany({
-      where: { cle: { startsWith: "f1:" } },
-      select: { cle: true },
-    });
-    for (const a of anciennes) {
-      if (!cles.has(a.cle)) await leverAlerte(db, a.cle);
-    }
-    return enAttente.length;
-  });
-
-  // 4 à 7. Les compteurs (les mêmes lectures que le panneau de la console).
+  // 3 à 6. Les compteurs (les mêmes lectures que le panneau de la console).
   const comptesRendusAValider = await etape("comptes-rendus", 0, () =>
     compterComptesRendusAValider(db, maintenant),
   );
@@ -447,7 +306,6 @@ export async function passerBalayage(
 
   return {
     rencontresAssurees,
-    f1,
     comptesRendusAValider,
     suitesEchues,
     veille,
