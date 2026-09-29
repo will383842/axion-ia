@@ -326,6 +326,10 @@ function messageSirenDejaPris(f: FicheProche): string {
   );
 }
 
+/** Un SIREN mal formé ou à la clé fausse n'est jamais écrit par la porte. */
+const SIREN_REFUSE_PAR_LA_PORTE =
+  "porte client : SIREN invalide (9 chiffres et clé de contrôle attendus) — à contrôler avant la porte";
+
 /** Longueur minimale du motif de « créer quand même ». */
 export const LONGUEUR_MIN_MOTIF_CREATION_FORCEE = 10;
 
@@ -424,6 +428,12 @@ export async function creerOuRetrouverClient(
     ville: donnees.adresseVille ?? null,
     codePostal: donnees.adresseCodePostal ?? null,
   });
+  // Jamais un SIREN écrit sans être comparé : un SIREN que le contrôle de
+  // `src/lib/siret.ts` refuse n'entre pas par la porte (les actions le
+  // vérifient avant ; une erreur ici est une erreur de programmation).
+  if (donnees.siren && candidat.siren === null) {
+    throw new Error(SIREN_REFUSE_PAR_LA_PORTE);
+  }
 
   return withNumberRetry(() =>
     db.$transaction(async (tx): Promise<ResultatCreation> => {
@@ -469,7 +479,13 @@ export async function creerOuRetrouverClient(
         }),
       );
       const cree = await tx.client.create({
-        data: { ...donnees, numero, statut: "prospect" },
+        data: {
+          ...donnees,
+          // La valeur COMPARÉE (normalisée), jamais une autre.
+          ...(candidat.siren !== null ? { siren: candidat.siren } : {}),
+          numero,
+          statut: "prospect",
+        },
         select: { id: true, numero: true },
       });
 
@@ -544,7 +560,7 @@ export async function exigerSirenLibre(
   const actuelle = await tx.client.findUnique({ where: { id: clientId }, select: { siren: true } });
   if (actuelle?.siren === siren) return;
   const candidat = preparerCandidat({ raisonSociale: "", siren });
-  if (candidat.siren === null) return;
+  if (candidat.siren === null) throw new Error(SIREN_REFUSE_PAR_LA_PORTE);
   const autre = trouverFichesProches(candidat, await chargerFichesCandidates(tx, candidat)).find(
     (p) => p.signal === "siren" && p.ficheId !== clientId,
   );

@@ -65,8 +65,12 @@ async function reecritureRefusee(db: PrismaClient, valeur: string): Promise<bool
   }
 }
 
-/** SIREN fictifs de la course (un par manche), jamais ceux d'une vraie entreprise. */
-const SIRENS_COURSE = ["900000001", "900000002", "900000003", "900000004", "900000005"];
+/**
+ * SIREN fictifs de la course (un par manche), jamais ceux d'une vraie
+ * entreprise. Clé de Luhn VALIDE : la porte contrôle le SIREN comme la saisie
+ * (`checkSirenFormat`) et refuse d'écrire un SIREN invalide.
+ */
+const SIRENS_COURSE = ["900000001", "900000019", "900000027", "900000035", "900000043"];
 
 /**
  * ⛔ Deux créations simultanées au même SIREN, par deux connexions : une seule

@@ -97,4 +97,17 @@ describe("⛔ deux fiches de même SIREN ne peuvent pas être créées", () => {
     if (r.statut !== "cree") return;
     expect(r.numero).toBe("AXI-CLI-005");
   });
+
+  it("un SIREN à la clé fausse n'entre jamais sans comparaison : la porte refuse de l'écrire", async () => {
+    // Sans ce refus, un SIREN que `checkSirenFormat` écarte ne serait ni
+    // verrouillé ni comparé… mais serait écrit (Gate D l'a vu : 2 fiches).
+    const { db } = base();
+    const cleFausse = `${SIREN.slice(0, 8)}${(Number(SIREN[8]) + 1) % 10}`;
+    await expect(
+      creerOuRetrouverClient(commePrisma(db), { raisonSociale: "X", siren: cleFausse }, null, {
+        parAdminId: null,
+      }),
+    ).rejects.toThrow(/SIREN invalide/);
+    expect(db.etat.clients).toHaveLength(1);
+  });
 });
