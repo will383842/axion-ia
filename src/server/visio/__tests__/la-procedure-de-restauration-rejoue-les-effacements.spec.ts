@@ -61,6 +61,18 @@ describe("la procédure de restauration rejoue les effacements", () => {
   it("🔴 la procédure de restauration cite le script et la sauvegarde du journal", () => {
     const r33 = lire("docs/runbooks/R33-disaster-recovery-cold-start.md");
     expect(r33).toContain("scripts/rgpd-rejouer-effacements.ts");
-    expect(r33).toMatch(/pg_dump --data-only -t effacements_journal/);
+    // INSERT idempotents : un COPY échouerait en bloc sur la première ligne déjà restaurée.
+    expect(r33).toMatch(
+      /pg_dump --data-only --inserts --on-conflict-do-nothing -t effacements_journal/,
+    );
+  });
+
+  it("🔴 la réinjection du journal s'arrête à la première erreur et compte ses lignes", () => {
+    const r33 = lire("docs/runbooks/R33-disaster-recovery-cold-start.md");
+    // ON_ERROR_STOP=0 continuait en silence après un COPY rejeté : faux vert à l'étape 4.
+    expect(r33).not.toMatch(/ON_ERROR_STOP=0/);
+    expect(r33).toMatch(/ON_ERROR_STOP=1 -f \/root\/effacements_journal\.sql/);
+    expect(r33).toMatch(/SELECT count\(\*\) FROM effacements_journal/);
+    expect(r33).toContain("N_ancien");
   });
 });

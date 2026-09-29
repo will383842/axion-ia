@@ -89,6 +89,15 @@ describe("une durée annoncée pour les rendez-vous a sa purge", () => {
     expect(CONSERVATION_VISIO.prospectAns).toBe(annees);
   });
 
+  it("🔴 le préavis annonce la durée du son DÉRIVÉE de la notice, pas une copie", () => {
+    // Le préavis (e-mail aux clients actifs) et la notice annoncent la même
+    // durée : une seule constante, sinon l'une bougerait sans l'autre.
+    const preavis = lire("src/lib/email/templates/preavis-sous-traitants.tsx");
+    expect(preavis).toMatch(
+      /export const CONSERVATION_SON_MAX_JOURS: number = CONSERVATION_VISIO\.audioJoursMax;/,
+    );
+  });
+
   it("🔑 CONTRE-TÉMOIN : une notice à une autre durée ne donne pas la constante", () => {
     const faux = sectionRendezVousDecouverte("fr", true).replace(
       "son, au plus tard 30 jours",

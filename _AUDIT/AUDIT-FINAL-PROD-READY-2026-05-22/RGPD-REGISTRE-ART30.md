@@ -219,9 +219,10 @@ Procédure de purge automatisée : `src/server/queue/workers/retention-purge-wor
 
 > **À relire par le dirigeant avant fusion** (dépôt public). Aucune donnée réelle.
 > Responsable : AXION IA SAS (§1, identité lue dans `src/lib/identite-legale-ssot.ts`).
-> **Non activé** à la date d'écriture : le circuit n'enregistre qu'après le préavis de
-> 30 jours aux clients actifs, le DPA OpenAI signé et la notice publiée
-> (`src/content/visio-annonce.ts`, `src/server/visio/ouverture.ts`). Analyse
+> **Non activé** à la date d'écriture : le circuit n'enregistre de vrais clients qu'une fois
+> le DPA OpenAI signé et la notice publiée (`src/content/visio-annonce.ts`,
+> `src/server/visio/ouverture.ts`) ; les rencontres des clients actifs restent refusées tant
+> que leur préavis de 30 jours court (décision du dirigeant du 29/09). Analyse
 > d'impact : hors du dépôt (Drive, dossier 00 Juridique).
 
 ### Traitement D — Enregistrement et compte rendu des rendez-vous (6.1.a)

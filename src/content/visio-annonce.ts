@@ -25,11 +25,13 @@
  * ## Pourquoi un interrupteur et pas un texte réécrit tout de suite
  *
  * Le texte « après » est ÉCRIT ici, relisible par Will, mais il ne s'affiche
- * pas encore : il décrit un circuit qui n'enregistre rien tant que le drapeau
- * d'exécution n'est pas `ouvert` (`src/server/visio/ouverture.ts`), et qui ne
- * peut pas l'être avant la fin du préavis de 30 jours aux clients actifs.
- * Publier aujourd'hui « nous enregistrons, avec votre accord » serait inexact
- * dans l'autre sens.
+ * pas encore. Réciproquement, le drapeau d'exécution `ouvert` n'enregistre
+ * aucun vrai client tant que cet interrupteur n'a pas basculé
+ * (`modeEffectif`, `src/server/visio/ouverture.ts`) : le site ne peut ni
+ * promettre l'absence d'enregistrement pendant qu'on enregistre, ni annoncer
+ * un enregistrement qui n'est pas en service. Le préavis de 30 jours ne
+ * conditionne plus l'ouverture (décision de Will du 29/09) : il bloque les
+ * seules rencontres des clients actifs, route par route (PR 5).
  *
  * Passer à `active` suppose, dans cet ordre (LOTS-EXECUTION §5, PR 8) :
  *   1. le texte ci-dessous LU ET ACCEPTÉ par Will (point d'arrêt : texte lu par
@@ -84,7 +86,10 @@ export const DICTEE_ANNONCEE: boolean = ANNONCE_VISIO_ACTIVE;
  * `une-duree-annoncee-a-sa-purge.spec.ts` relit la notice et compare.
  */
 export const CONSERVATION_VISIO = {
-  /** Son : effacé à la validation du compte rendu, au plus tard (jours). */
+  /**
+   * Son : effacé à la validation du compte rendu, au plus tard (jours). SOURCE
+   * UNIQUE : le préavis (`CONSERVATION_SON_MAX_JOURS`) en dérive.
+   */
   audioJoursMax: 30,
   /** Segments de transcription, après le rendez-vous (mois). */
   segmentsMois: 12,

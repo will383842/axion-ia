@@ -1,99 +1,71 @@
 /**
- * Ouverture du circuit visio : le préavis aux clients actifs, contrôlé par le
- * CODE (chantier visio, PR 8 ; LOTS-EXECUTION §5 PR 8, §8 point 5 ; B3).
+ * Ouverture du circuit visio : `ouvert` n'enregistre de vrais clients que si le
+ * site l'ANNONCE (chantier visio, PR 8 ; V-15 ; LOTS-EXECUTION §0, ligne
+ * « Préavis », décision de Will du 29/09).
  *
  * ## La règle
  *
  * Le mode demandé (`ferme | pilote | ouvert`) se lit à l'exécution dans les
  * variables `ENREGISTREMENT_VISIO_PILOTE` et `ENREGISTREMENT_VISIO_OUVERT`
  * (module `drapeau.ts` de la PR 5). Ce module-ci décide seulement de ce que
- * vaut `ouvert` : il n'est EFFECTIF que si aujourd'hui ≥ `PREAVIS.finLe`, date
- * d'envoi réel du préavis + 30 jours. Avant, `ouvert` vaut `pilote` (seule une
- * rencontre du client fictif est enregistrable) et une alerte « préavis non
- * échu » est levée — on ne le découvre pas en regardant un appel qui n'a pas
- * été enregistré.
+ * vaut `ouvert` : il n'est EFFECTIF que si la notice publique annonce
+ * l'enregistrement (`ANNONCE_VISIO_ACTIVE`, `src/content/visio-annonce.ts`).
+ * Sinon `ouvert` vaut `pilote` (seule une rencontre du client fictif est
+ * enregistrable) et une alerte « notice non publiée » est levée.
  *
- * Un préavis NON ENVOYÉ (`PREAVIS_SOUS_TRAITANTS = null`) n'échoit jamais :
- * `ouvert` reste `pilote` tant qu'une PR n'a pas posé la date réelle, relevée
- * dans `email_outbox` et écrite dans `07-execution/PREAVIS.md`. Poser une date
- * se fait par une PR relue, jamais par une variable d'environnement : c'est
- * une promesse faite aux clients (« au moins 30 jours avant la prise
- * d'effet », politique de confidentialité), pas un réglage.
+ * Pourquoi : V-15 exige de dire ce que fait le circuit AVANT le premier
+ * enregistrement réel. Tant que l'interrupteur de la notice n'a pas basculé
+ * — il attend le texte relu par Will, le DPA d'OpenAI signé et le partage
+ * pour l'entraînement désactivé —, le site promet « ni enregistrés ni
+ * transcrits ». Une variable `ENREGISTREMENT_VISIO_OUVERT=true` posée dans
+ * Coolify ne doit pas suffire à rompre cette promesse.
  *
- * ## Pourquoi un module à part de `drapeau.ts`
+ * ## Le préavis n'est PAS ici
  *
- * `drapeau.ts` est écrit par la PR 5 (lecture des variables, battement du
- * worker). Cette PR-ci ne dépend que du schéma déjà en production : elle pose
- * la règle du préavis en fonction PURE, que `drapeau.ts` appelle au rebase
- * (ordre de fusion 3 → 8). Aucune duplication : la PR 5 ne recode pas le
- * calcul de date, elle le lit ici.
+ * Décision de Will du 29/09 (« 1 ») : l'ouverture n'attend plus la fin du
+ * préavis de 30 jours. Le préavis protège les seuls CLIENTS ACTIFS : leurs
+ * rencontres sont refusées à l'enregistrement, route par route, tant que le
+ * préavis court (`clientsActifsPourPreavis`, PR 5). Ce module ne porte donc
+ * AUCUNE date : une seconde règle de préavis, ici, bloquerait l'ouverture
+ * décidée par Will. La date d'effet se calcule d'un seul endroit,
+ * `dateEffetPreavis` (`src/lib/email/templates/preavis-sous-traitants.tsx`).
+ *
+ * Garde : `__tests__/le-drapeau-ouvert-attend-la-notice-publique.spec.ts`
+ * (règle, et `drapeau.ts` qui doit passer par `modeEffectif`).
  *
  * Module PUR : aucun import d'exécution (lu par le site, le worker et la CI).
  */
 
-/** Durée du préavis promis aux clients actifs (politique de confidentialité). */
-export const DUREE_PREAVIS_JOURS = 30;
+import { ANNONCE_VISIO_ACTIVE } from "@/content/visio-annonce";
 
 export type ModeCircuitVisio = "ferme" | "pilote" | "ouvert";
 
-export interface PreavisSousTraitants {
-  /** Date d'envoi RÉEL du préavis (relevée dans `email_outbox`), ISO `AAAA-MM-JJ`. */
-  readonly envoyeLe: string;
-  /** Fin du préavis : `envoyeLe` + 30 jours, ISO `AAAA-MM-JJ`. */
-  readonly finLe: string;
-}
-
-/**
- * Le préavis RÉELLEMENT envoyé. `null` : il n'est pas encore parti (le 29/09,
- * l'e-mail attend la validation de Will dans la file ; `07-execution/PREAVIS.md`
- * n'est pas rempli). Le jour où il part : une PR d'une ligne, par exemple
- * `{ envoyeLe: "2026-09-30", finLe: "2026-10-30" }`.
- */
-// `as` : sans lui, TypeScript réduirait le type à `null` et refuserait de
-// compiler toute lecture de la date le jour où elle sera posée.
-export const PREAVIS_SOUS_TRAITANTS = null as PreavisSousTraitants | null;
-
-/** `envoyeLe` + 30 jours, au jour près (UTC). */
-export function finDuPreavis(envoyeLe: string): string {
-  const d = new Date(`${envoyeLe}T00:00:00.000Z`);
-  if (Number.isNaN(d.getTime())) throw new Error(`date de préavis illisible : « ${envoyeLe} »`);
-  d.setUTCDate(d.getUTCDate() + DUREE_PREAVIS_JOURS);
-  return d.toISOString().slice(0, 10);
-}
-
-/**
- * Un préavis est cohérent si sa fin est EXACTEMENT l'envoi + 30 jours. Une fin
- * avancée à la main (« finLe: aujourd'hui ») raccourcirait une promesse
- * publique : refusée ici, et par la garde
- * `le-drapeau-ouvert-attend-la-fin-du-preavis.spec.ts`.
- */
-export function preavisCoherent(p: PreavisSousTraitants): boolean {
-  return finDuPreavis(p.envoyeLe) === p.finLe;
-}
-
 export interface ModeEffectif {
   readonly mode: ModeCircuitVisio;
-  /** Alerte à lever (`AlerteVisio`, catégorie `preavis`), ou `null`. */
-  readonly alerte: "preavis_non_echu" | "preavis_incoherent" | null;
+  /** Alerte à lever (`AlerteVisio`), ou `null`. */
+  readonly alerte: "notice_non_publiee" | null;
+  /** Pourquoi `mode` diffère de la demande, en français pour Will, ou `null`. */
+  readonly motif: string | null;
 }
 
+export const MOTIF_NOTICE_NON_PUBLIEE =
+  "La politique de confidentialité n'annonce pas encore l'enregistrement : il reste limité au rendez-vous de test.";
+
 /**
- * Ce que vaut réellement le mode demandé, compte tenu du préavis.
+ * Ce que vaut réellement le mode demandé.
  *
  * - `ferme` et `pilote` passent tels quels (le pilote n'enregistre que le
- *   client fictif : il ne touche aucun client et n'attend pas le préavis) ;
- * - `ouvert` n'est effectif que si le préavis est parti, cohérent, et échu
- *   (`maintenant` ≥ `finLe` à 00:00 UTC) ; sinon `pilote` + alerte.
+ *   client fictif : il ne touche aucun client et n'attend pas la notice) ;
+ * - `ouvert` n'est effectif que si la notice publique annonce
+ *   l'enregistrement ; sinon `pilote` + alerte.
  */
 export function modeEffectif(
   demande: ModeCircuitVisio,
-  maintenant: Date,
-  preavis: PreavisSousTraitants | null = PREAVIS_SOUS_TRAITANTS,
+  annonceActive: boolean = ANNONCE_VISIO_ACTIVE,
 ): ModeEffectif {
-  if (demande !== "ouvert") return { mode: demande, alerte: null };
-  if (preavis === null) return { mode: "pilote", alerte: "preavis_non_echu" };
-  if (!preavisCoherent(preavis)) return { mode: "pilote", alerte: "preavis_incoherent" };
-  const fin = new Date(`${preavis.finLe}T00:00:00.000Z`).getTime();
-  if (maintenant.getTime() < fin) return { mode: "pilote", alerte: "preavis_non_echu" };
-  return { mode: "ouvert", alerte: null };
+  if (demande !== "ouvert") return { mode: demande, alerte: null, motif: null };
+  if (!annonceActive) {
+    return { mode: "pilote", alerte: "notice_non_publiee", motif: MOTIF_NOTICE_NON_PUBLIEE };
+  }
+  return { mode: "ouvert", alerte: null, motif: null };
 }

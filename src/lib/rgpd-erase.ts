@@ -1527,6 +1527,12 @@ export interface RejeuResultat {
   readonly reappliquees: number;
 }
 
+/** Motifs pour lesquels l'effacement d'un compte rendu a TOUJOURS été une suppression. */
+const MOTIFS_SUPPRESSION_COMPTE_RENDU: ReadonlySet<MotifEffacement> = new Set<MotifEffacement>([
+  "conservation",
+  "pilote",
+]);
+
 /**
  * REJOUE le journal des effacements après une restauration de la base.
  *
@@ -1534,6 +1540,30 @@ export interface RejeuResultat {
  * elle réapparaîtrait en silence. Chaque ligne est réappliquée comme
  * l'effacement d'origine l'a faite (vider, pseudonymiser ou supprimer), de
  * façon IDEMPOTENTE : une cible déjà effacée ne compte pas.
+ *
+ * Comptes rendus : l'opération d'origine se lit dans le motif.
+ *   · `conservation` (versions à 90 jours, dossier échu) et `pilote` : ils
+ *     avaient été SUPPRIMÉS, ils le sont de nouveau ;
+ *   · `art17`, `art17_cible`, `retrait` : supprimés si la personne effacée
+ *     était la SEULE interlocutrice côté client (tous les participants
+ *     `client` de la rencontre sont des personnes journalisées), sinon vidés
+ *     et passés `a_regenerer`, exactement comme `effacerCibleParAdresses`.
+ *
+ * Personnes effacées (art. 17) : on refait aussi ce qui ne se journalise pas
+ * ligne à ligne mais se retrouve à partir d'elles — questions qu'on leur a
+ * adressées (vidées), e-mails de suivi (corps vidé, lien supprimé), rôles
+ * dans les projets, participations (nom pseudonymisé), adresses.
+ *
+ * ANGLES MORTS DÉCLARÉS (repris dans R33) :
+ *   · une participation SANS fiche personne (rendez-vous « à classer »,
+ *     retrouvée à l'origine par sa seule empreinte d'adresse) n'est pas
+ *     journalisée : son nom affiché revient. Ses segments et ses faits, eux,
+ *     sont journalisés et repartent ; un compte rendu dont elle était la seule
+ *     voix est alors VIDÉ au lieu d'être supprimé (aucun contenu ne revient) ;
+ *   · les questions et e-mails de suivi vidés par la fin de conservation d'un
+ *     dossier ne sont pas journalisés : c'est la purge de nuit
+ *     (`purgerDossiersVisioEchus`), qui recalcule les mêmes échéances sur les
+ *     dates restaurées, qui les ré-efface.
  *
  * `appliquer = false` (défaut du script) : compte seulement, n'écrit rien.
  * Procédure : `docs/runbooks/R33-disaster-recovery-cold-start.md`, étape
@@ -1557,6 +1587,15 @@ export async function rejouerEffacements(
     return { transcriptionId, ordre: Number(ordre) };
   });
   const comptesRendus = ids("comptes_rendus");
+  const crSupprimesALOrigine = new Set(
+    lignes
+      .filter(
+        (l) => l.tableCible === "comptes_rendus" && MOTIFS_SUPPRESSION_COMPTE_RENDU.has(l.motif),
+      )
+      .map((l) => l.ligneId),
+  );
+  const crToujoursSupprimes = comptesRendus.filter((id) => crSupprimesALOrigine.has(id));
+  const crDesPersonnes = comptesRendus.filter((id) => !crSupprimesALOrigine.has(id));
   const contacts = ids("client_contacts");
   const rencontresPilote = ids("rencontres").filter((id) => pilote.has(id));
   const projetsPilote = ids("projets").filter((id) => pilote.has(id));
@@ -1565,10 +1604,57 @@ export async function rejouerEffacements(
 
   type Lecteur = Pick<
     Prisma.TransactionClient,
-    "fait" | "transcriptionSegment" | "compteRendu" | "clientContact" | "rencontre" | "projet"
+    | "fait"
+    | "transcriptionSegment"
+    | "compteRendu"
+    | "clientContact"
+    | "rencontre"
+    | "projet"
+    | "rencontreParticipant"
+    | "questionnaireCadrage"
+    | "questionnaireQuestion"
+    | "emailSuivi"
+    | "projetContact"
   >;
+
+  /** Comptes rendus art. 17 / retrait : à supprimer (seule voix client) ou à vider. */
+  const trierComptesRendus = async (
+    db: Lecteur,
+  ): Promise<{ readonly supprimer: string[]; readonly vider: string[] }> => {
+    const presents = await db.compteRendu.findMany({
+      where: { id: { in: crDesPersonnes } },
+      select: { id: true, rencontreId: true },
+    });
+    const cotesClient = await db.rencontreParticipant.findMany({
+      where: {
+        rencontreId: { in: [...new Set(presents.map((c) => c.rencontreId))] },
+        role: "client",
+      },
+      select: { rencontreId: true, contactId: true },
+    });
+    const effaces = new Set(contactsEffaces);
+    const seuleVoixEffacee = (rid: string): boolean => {
+      const cote = cotesClient.filter((p) => p.rencontreId === rid);
+      return cote.length > 0 && cote.every((p) => p.contactId !== null && effaces.has(p.contactId));
+    };
+    return {
+      supprimer: presents.filter((c) => seuleVoixEffacee(c.rencontreId)).map((c) => c.id),
+      vider: presents.filter((c) => !seuleVoixEffacee(c.rencontreId)).map((c) => c.id),
+    };
+  };
+
+  const questionnairesDesEffaces = async (db: Lecteur): Promise<string[]> =>
+    (
+      await db.questionnaireCadrage.findMany({
+        where: { contactDestinataireId: { in: contactsEffaces } },
+        select: { id: true },
+      })
+    ).map((q) => q.id);
+
   const compter = async (db: Lecteur): Promise<number> => {
-    const [f, c, s, cr, pe, re, pr] = await Promise.all([
+    const cr = await trierComptesRendus(db);
+    const questionnaires = await questionnairesDesEffaces(db);
+    const nombres = await Promise.all([
       db.fait.count({ where: { id: { in: faits }, statut: { not: "efface" } } }),
       db.fait.count({
         where: {
@@ -1577,7 +1663,9 @@ export async function rejouerEffacements(
         },
       }),
       segments.length === 0 ? 0 : db.transcriptionSegment.count({ where: { OR: segments } }),
-      db.compteRendu.count({ where: { id: { in: comptesRendus }, NOT: { contenu: "" } } }),
+      db.compteRendu.count({ where: { id: { in: crToujoursSupprimes } } }),
+      cr.supprimer.length,
+      db.compteRendu.count({ where: { id: { in: cr.vider }, NOT: { contenu: "" } } }),
       db.clientContact.count({
         where: {
           OR: [
@@ -1586,16 +1674,26 @@ export async function rejouerEffacements(
           ],
         },
       }),
+      db.rencontreParticipant.count({
+        where: { contactId: { in: contactsEffaces }, NOT: { nomAffiche: PERSONNE_EFFACEE } },
+      }),
+      db.questionnaireQuestion.count({
+        where: { questionnaireId: { in: questionnaires }, NOT: { texte: "" } },
+      }),
+      db.emailSuivi.count({ where: { contactId: { in: contactsEffaces } } }),
+      db.projetContact.count({ where: { contactId: { in: contactsEffaces } } }),
       db.rencontre.count({ where: { id: { in: rencontresPilote } } }),
       db.projet.count({ where: { id: { in: projetsPilote } } }),
     ]);
-    return f + c + s + cr + pe + re + pr;
+    return nombres.reduce((a, b) => a + b, 0);
   };
 
   if (!options.appliquer) return { lues: lignes.length, reappliquees: await compter(prisma) };
 
   return executerSousDrapeauEffacement(prisma, async (tx) => {
     const reappliquees = await compter(tx);
+    const cr = await trierComptesRendus(tx);
+    const questionnaires = await questionnairesDesEffaces(tx);
     await tx.fait.updateMany({
       where: { id: { in: faits }, statut: { not: "efface" } },
       data: { ...FAIT_CONTENU_VIDE, statut: "efface" },
@@ -1605,10 +1703,12 @@ export async function rejouerEffacements(
       data: { citation: null, confirmationCitation: null },
     });
     if (segments.length > 0) await tx.transcriptionSegment.deleteMany({ where: { OR: segments } });
-    // Un compte rendu effacé a été vidé (`a_regenerer`) ou supprimé : le rejeu
-    // le VIDE dans les deux cas — aucun contenu ne revient.
+    // Comptes rendus : l'opération d'origine, lue dans le motif (voir plus haut).
+    await tx.compteRendu.deleteMany({
+      where: { id: { in: [...crToujoursSupprimes, ...cr.supprimer] } },
+    });
     await tx.compteRendu.updateMany({
-      where: { id: { in: comptesRendus }, NOT: { contenu: "" } },
+      where: { id: { in: cr.vider }, NOT: { contenu: "" } },
       data: { statut: "a_regenerer", contenu: "", verification: null },
     });
     // Données du pilote : supprimées, dans l'ordre des clés (faits d'abord).
@@ -1623,7 +1723,25 @@ export async function rejouerEffacements(
     await tx.rencontre.deleteMany({ where: { id: { in: rencontresPilote } } });
     await tx.projet.deleteMany({ where: { id: { in: projetsPilote } } });
     await tx.clientContact.deleteMany({ where: { id: { in: contactsPilote } } });
-    // Personnes effacées (art. 17) : pseudonymisées, adresses supprimées.
+    // Personnes effacées (art. 17) : ce qui les suit, comme `effacerCibleParAdresses`.
+    await tx.questionnaireQuestion.updateMany({
+      where: { questionnaireId: { in: questionnaires }, NOT: { texte: "" } },
+      data: { texte: "", reponse: null },
+    });
+    const emailsSuivi = await tx.emailSuivi.findMany({
+      where: { contactId: { in: contactsEffaces } },
+      select: { id: true },
+    });
+    await tx.preRemplissage.updateMany({
+      where: { cible: "email_suivi", cibleId: { in: emailsSuivi.map((e) => e.id) } },
+      data: { valeurProposee: "", valeurRetenue: null },
+    });
+    await tx.emailSuivi.deleteMany({ where: { contactId: { in: contactsEffaces } } });
+    await tx.projetContact.deleteMany({ where: { contactId: { in: contactsEffaces } } });
+    await tx.rencontreParticipant.updateMany({
+      where: { contactId: { in: contactsEffaces } },
+      data: { nomAffiche: PERSONNE_EFFACEE, emailHash: null, etiquetteVoix: null },
+    });
     await tx.clientContact.updateMany({
       where: { id: { in: contactsEffaces } },
       data: { nom: PERSONNE_EFFACEE, fonction: null, telephone: null },
