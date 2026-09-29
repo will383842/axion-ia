@@ -65,9 +65,9 @@ export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsP
   return (
     <Section
       tone="canvas"
-      eyebrow={isFr ? "Vos commissions, sans plafond" : "Your commissions, uncapped"}
+      eyebrow={isFr ? "Vos commissions, à titre indicatif" : "Your commissions, as a guide"}
       title={isFr ? "Combien" : "How much"}
-      titleEm={isFr ? "pouvez-vous gagner ?" : "could you earn?"}
+      titleEm={isFr ? "pouvez-vous gagner ?" : "could it bring you?"}
       description={
         isFr
           ? "À titre indicatif, le barème de chaque produit que vous faites connaître, commission versée à l'encaissement. Plus vous en présentez, plus vos commissions progressent — sans aucune limite."
@@ -151,8 +151,8 @@ export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsP
         </div>
         <p className="text-fg-muted mt-4 text-xs">
           {isFr
-            ? "Et ce ne sont que les formations 1 jour : en y ajoutant les formats longs, les audits (30 %) et les intégrations (15 %), vos revenus n'ont aucune limite."
-            : "And that's just 1-day trainings: add longer formats, audits (30%) and integrations (15%) and your income has no limit."}
+            ? `Et ce ne sont que les formations 1 jour : les formats longs, les audits (${audit?.percent ?? "—"} %) et les intégrations (${integration?.percent ?? "—"} %) s'y ajoutent, à titre indicatif.`
+            : `And that's just 1-day trainings: longer formats, audits (${audit?.percent ?? "—"}%) and integrations (${integration?.percent ?? "—"}%) come on top, as a guide.`}
         </p>
       </div>
 

@@ -85,7 +85,9 @@ describe("Retenu — bienvenue dans le réseau", () => {
     );
     expect(t).toContain("Vous nous mettez en relation avec une entreprise qui a un besoin");
     expect(t).toContain("Nous gérons tout le reste : rendez-vous, devis et réalisation.");
-    expect(t).toContain("Vous touchez une commission.");
+    expect(t).toContain(
+      "Vous touchez une commission. Le barème ci-dessous est donné à titre indicatif : votre contrat d'apporteur fait foi.",
+    );
     expect(t).toContain("versée dès que le client a réglé l'intégralité de sa facture");
     expect(t).toContain("sans objectif ni exclusivité");
     expect(t).toContain("numéro SIRET");

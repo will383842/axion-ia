@@ -789,9 +789,9 @@ export default async function MemoIserePage({ params }: Props) {
                 <div className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5">
                   <p className="font-serif text-3xl leading-none font-semibold text-white drop-shadow sm:text-4xl">
                     {commission(1)}
-                  </p>
-                  <p className="mt-1 text-[11px] font-bold tracking-[0.14em] text-white/85 uppercase">
-                    par journée de formation vendue, à titre indicatif
+                    <span className="mt-1 block font-sans text-[11px] leading-normal font-bold tracking-[0.14em] text-white/85 uppercase">
+                      par journée de formation vendue, à titre indicatif
+                    </span>
                   </p>
                 </div>
               </Photo>
@@ -1304,9 +1304,9 @@ export default async function MemoIserePage({ params }: Props) {
               <li>
                 <p className="text-terracotta-deep font-serif text-3xl leading-none font-semibold sm:text-5xl">
                   {commission(1)}
-                </p>
-                <p className="text-fg-soft mt-2 text-[11px] leading-tight font-bold tracking-[0.12em] uppercase sm:text-xs">
-                  pour vous, à titre indicatif
+                  <span className="text-fg-soft mt-2 block font-sans text-[11px] leading-tight font-bold tracking-[0.12em] uppercase sm:text-xs">
+                    pour vous, à titre indicatif
+                  </span>
                 </p>
               </li>
             </ol>
@@ -1343,6 +1343,9 @@ export default async function MemoIserePage({ params }: Props) {
                 </span>
                 <span className="shrink-0 text-right">
                   <span className="text-terracotta-deep block font-serif text-2xl leading-none font-semibold whitespace-nowrap sm:text-3xl">
+                    <span className="text-fg-muted mb-1 block font-sans text-[11px] font-semibold tracking-wide uppercase">
+                      à titre indicatif
+                    </span>
                     {commission(f.jours)}
                     {f.etPlus ? <span className="text-lg sm:text-xl">+</span> : null}
                   </span>
@@ -1374,9 +1377,9 @@ export default async function MemoIserePage({ params }: Props) {
                 </p>
                 <p className="text-terracotta-deep mt-2 font-serif text-3xl leading-none font-semibold sm:text-4xl">
                   {commission(s.jours)}
-                </p>
-                <p className="text-fg-muted mt-1 text-xs font-semibold tracking-wide uppercase">
-                  {`${s.jours} journées vendues`}
+                  <span className="text-fg-muted mt-1 block font-sans text-xs leading-normal font-semibold tracking-wide uppercase">
+                    {`${s.jours} journées vendues, à titre indicatif`}
+                  </span>
                 </p>
                 <p className="text-fg-soft mt-3 text-sm leading-relaxed">{s.detail}</p>
               </li>
@@ -1389,8 +1392,9 @@ export default async function MemoIserePage({ params }: Props) {
                 Ici les montants sont CALCULÉS, donc plus aucun littéral à
                 exempter — mais le principe reste : un exemple n'est pas une
                 promesse, et ça doit se lire. */}
-            Ce sont des exemples de calcul, pas une promesse de revenus : vos commissions dépendent
-            de vos ventes. Rien ne vous interdit d’aller au-delà — il n’y a pas de plafond.
+            Ce sont des exemples de calcul, à titre indicatif, pas une promesse de revenus : vos
+            commissions dépendent de vos ventes. Rien ne vous interdit d’aller au-delà — il n’y a
+            pas de plafond.
           </p>
 
           <div className="mx-auto mt-10 grid max-w-3xl gap-4 sm:grid-cols-2">

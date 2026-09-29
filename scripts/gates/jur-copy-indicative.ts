@@ -41,7 +41,8 @@ export function lireSurfacesPubliques(racine = process.cwd()): { chemin: string;
   return lireSurfacesApporteur(racine).filter((s) => !s.chemin.startsWith(GABARITS_EMAIL));
 }
 
-export type FamilleRemuneration = "remuneration_ferme" | "kit_de_vente" | "jsonld_remuneration";
+export type FamilleRemuneration =
+  "remuneration_ferme" | "kit_de_vente" | "jsonld_remuneration" | "exception_perimee";
 
 export type FauteRemuneration = {
   readonly famille: FamilleRemuneration;
@@ -50,25 +51,114 @@ export type FauteRemuneration = {
   readonly extrait: string;
 };
 
-const FERME =
-  /\b(?:vous|tu)\s+(?:touchez|touches|gagnez|gagnes|percevez|perçois)\b|\bcommissions?\s+de\s+\d|\$\{\s*commission\s*\(|\bpar\s+journée\s+vendue\b/i;
+/**
+ * Les formules fermes : tout MONTANT ou TAUX de rémunération affiché sans mention indicative,
+ * verbe ou pas. Élargies après les relectures securite et exactitude de #1232, qui en ont
+ * trouvé de servies sans être vues :
+ *   — le verbe : « vous touchez / gagnez / percevez », et l'impératif « Gagnez », « Touchez » ;
+ *   — un montant TAPÉ (« 500 € », « €500 ») ou INTERPOLÉ (`${X} €`, `{X} €`, `€${X}`) à moins
+ *     de 60 caractères d'une journée, d'un jour, d'une formation, d'une mission, d'une vente,
+ *     d'un « pour vous » ou d'une commission ;
+ *   — un TAUX (« 30 % », `{pct} %`) à moins de 60 caractères, dans un sens ou dans l'autre,
+ *     d'une commission, de revenus, d'une rémunération, de « gagn… » ou de « pour vous » ;
+ *   — un montant de commission interpolé, en gabarit (`${commission(`) comme en JSX
+ *     (`{commission(`, `{montantJournee}`) ;
+ *   — « par journée … vendue | payée | signée », avec jusqu'à six mots entre les deux ;
+ *   — le revenu ILLIMITÉ : « sans plafond », « non plafonnés », « pas de plafond », « aucune
+ *     limite », « déplafonné », « uncapped », « no limit » ;
+ *   — l'ANGLAIS : « you earn / pocket », « you get / receive / make » suivis d'une commission
+ *     ou d'un montant, « per … day », « for you per ».
+ * AJUSTEMENT (faux positif démontré) : « you receive / get / make » SEULS rougissaient sur
+ * « You receive a confirmation email » (CommercialProcess.tsx). Un e-mail n'est pas une
+ * rémunération : ils ne rougissent plus que suivis d'une commission ou d'un montant. « You
+ * receive your commission » reste rouge (témoin de remuneration-indicative.spec.ts).
+ * Fin de mot : `(?![\wÀ-ÿ])` et non `\b`, qui ne voit pas la fin de « journée » (é hors de \w).
+ */
+const FIN = String.raw`(?![\wÀ-ÿ])`;
+const DEBUT = String.raw`(?<![\wÀ-ÿ])`;
+const REMUNERATION = String.raw`(?:commissions?|revenus?|rémunérations?|gagn[\wÀ-ÿ]*|pour\s+vous)${FIN}`;
+const TAUX = String.raw`(?:\d+(?:[,.]\d+)?|\})[\s  ]?%`;
+const MONTANT = String.raw`(?:(?:\d|\})[\d\s  .]*(?:€|euros?${FIN})|€[\s  ]?(?:\d|\$\{))`;
+const OBJET = String.raw`(?:journées?|jours?|days?|formations?|missions?|ventes?|vendues?|pour\s+vous|for\s+you|commissions?)${FIN}`;
+const FERME = new RegExp(
+  [
+    String.raw`${DEBUT}(?:vous|tu)\s+(?:touchez|touches|gagnez|gagnes|percevez|perçois)${FIN}`,
+    String.raw`${DEBUT}(?:gagnez|touchez)${FIN}`,
+    String.raw`\bcommissions?\s+de\s+\d`,
+    String.raw`\$?\{\s*(?:commission\s*\(|montant[A-Z]\w*\s*\})`,
+    String.raw`${MONTANT}(?=[^.;!?]{0,60}?${DEBUT}${OBJET})`,
+    String.raw`${TAUX}(?=[^.;!?]{0,60}?${DEBUT}${REMUNERATION})`,
+    String.raw`${DEBUT}${REMUNERATION}[^.;!?]{0,60}?${TAUX}`,
+    String.raw`\bpar\s+journée(?:\s+[\wÀ-ÿ'’-]+){0,6}?\s+(?:vendue|payée|signée)s?${FIN}`,
+    String.raw`\bsans\s+(?:aucun\s+)?plafond|\bnon\s+plafonn|\bpas\s+de\s+plafond|\baucune\s+limite|\bdéplafonn|\buncapped\b|\bno\s+(?:limit|cap)\b`,
+    String.raw`\byou\s+(?:earn|pocket)\b|\byou\s+(?:get|receive|make)\s+(?:(?:your|a|an|the)\s+)?(?:commissions?\b|€|\d|\$?\{)`,
+    String.raw`\bper\s+(?:[a-z]+\s+){0,3}days?\b|\bfor\s+you\s+per\b`,
+  ].join("|"),
+  "i",
+);
 const INDICATIF =
-  /à\s+partir\s+de|selon\s+(?:votre\s+|ton\s+|son\s+)?profil|à\s+titre\s+indicatif|\bindicati(?:f|ve|fs|ves)\b/i;
+  /à\s+partir\s+de|selon\s+(?:votre\s+|ton\s+|son\s+)?profil|à\s+titre\s+indicatif|\bindicati(?:f|ve|fs|ves)\b|\bas\s+a\s+guide\b|\bfrom\s+€|\bdepending\s+on\s+(?:your\s+)?profile\b/i;
 const KIT = /\bkit\s+de\s+vente\b/i;
 const JSONLD = /\b(?:incentiveCompensation|baseSalary|MonetaryAmount)\b|"JobPosting"/;
 const COMMENTAIRE = /^\s*(?:\/\/|\*|\/\*)/;
 const FENETRE = 2;
 
+/**
+ * EXCEPTIONS NOMMÉES : des faux positifs DÉMONTRÉS, jamais un motif affaibli. Chacune nomme
+ * son fichier, un extrait de SA ligne (texte source brut) et son motif. Elle ne couvre que la
+ * PREMIÈRE ligne du fichier qui porte l'extrait : la même phrase ailleurs, ou une seconde fois
+ * dans le même fichier, rougit. Une exception qui ne trouve plus sa ligne est une faute
+ * (`exception_perimee`) : la liste ne peut pas survivre à la copy qu'elle excuse.
+ */
+export const EXCEPTIONS_REMUNERATION: ReadonlyArray<{
+  readonly chemin: string;
+  readonly ligne: string;
+  readonly motif: string;
+}> = [
+  {
+    chemin: "src/components/recrutement/PartenaireLandingPage.tsx",
+    ligne: `"Aucune limite d'âge, et les commerciaux à la retraite`,
+    motif: "« aucune limite » d'ÂGE : une condition d'accès, pas un revenu illimité.",
+  },
+  {
+    chemin: "src/components/recrutement/PartenaireLandingPage.tsx",
+    ligne: "{/* 7 ── À qui ça va + aucune limite d'âge */}",
+    motif: "Commentaire JSX (non servi) sur la limite d'ÂGE, pas sur un revenu.",
+  },
+  {
+    chemin: "src/components/recrutement/PartenaireLandingPage.tsx",
+    ligne: "Aucune limite d&apos;âge</h3>",
+    motif: "Titre « Aucune limite d'âge » : une condition d'accès, pas un revenu illimité.",
+  },
+  {
+    chemin: "src/app/[locale]/apporteur-affaires-independant-formation-ia-entreprise/page.tsx",
+    ligne: "Aucune limite d&apos;âge</h3>",
+    motif: "Titre « Aucune limite d'âge » : une condition d'accès, pas un revenu illimité.",
+  },
+  {
+    chemin: "src/app/[locale]/memo-isere/page.tsx",
+    ligne: `"Oui. L'activité est 100 % à la commission et sans quota horaire`,
+    motif: "« 100 % à la commission » dit le MODE de rémunération (aucun fixe), pas un taux.",
+  },
+];
+
 export function fautesDeRemuneration(
   fichiers: ReadonlyArray<{ chemin: string; texte: string }>,
+  exceptions: typeof EXCEPTIONS_REMUNERATION = EXCEPTIONS_REMUNERATION,
 ): FauteRemuneration[] {
   const fautes: FauteRemuneration[] = [];
   for (const { chemin, texte } of fichiers) {
     const brutes = texte.split("\n");
     const lues = brutes.map((l) => (COMMENTAIRE.test(l) ? null : telleQueLue(l)));
+    const exemptees = new Set<number>();
+    for (const e of exceptions.filter((x) => x.chemin === chemin)) {
+      const i = brutes.findIndex((l) => l.includes(e.ligne));
+      if (i < 0) fautes.push({ famille: "exception_perimee", chemin, ligne: 0, extrait: e.ligne });
+      else exemptees.add(i);
+    }
     lues.forEach((contenu, i) => {
       if (contenu === null) return;
-      const ferme = FERME.exec(contenu);
+      const ferme = exemptees.has(i) ? null : FERME.exec(contenu);
       if (ferme) {
         const voisines = lues.slice(Math.max(0, i - FENETRE), i + FENETRE + 1);
         if (!voisines.some((v) => v !== null && INDICATIF.test(v))) {

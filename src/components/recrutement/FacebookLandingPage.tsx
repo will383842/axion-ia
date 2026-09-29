@@ -29,10 +29,11 @@
 // `assertion-flag-surfaces.spec.ts`.
 //
 // 🔴 Aucun montant en dur : tout vient de `pricing.ts`. Le reste de la page
-// l'écrit « jusqu'à » (W12 : la grille publiée est un plafond) — SAUF le bloc
-// du héro, qui affiche le montant NU depuis le 2026-09-04. Exception assumée
-// par Will, motivée et chiffrée en tête de `content/recrutement/tunnel-facebook.ts`.
-// 🛑 Ne pas l'uniformiser dans un sens ou dans l'autre sans repasser par lui.
+// l'écrit « jusqu'à » (W12 : la grille publiée est un plafond). Le bloc du héro
+// affichait le montant NU depuis le 2026-09-04 (exception de Will) : exception
+// levée le 2026-09-29 par arbitrage -d7 (délégation de Williams), qui pourra la
+// rétablir. Le chiffre reste en grand, « À titre indicatif » est écrit à côté
+// (JUR-T29, garde `jur:remuneration-indicative`). Voir `tunnel-facebook.ts`.
 //
 // Vocabulaire : « apporteur d'affaires », jamais « commercial » / « poste » /
 // « recrute ». Décision Will 2026-09-03.
@@ -202,7 +203,9 @@ export async function FacebookLandingPage({ params }: Props) {
   // Montant du héro. Même dérivation que la FAQ (`commission(1)`), donc les
   // deux ne peuvent pas diverger — c'est précisément l'écart de 150 € qui avait
   // fait passer les barèmes en SSOT. Seule la FORMULATION diffère : le héro
-  // l'affiche nu (décision Will 2026-09-04), la FAQ garde « Jusqu'à ».
+  // l'affiche en grand, « À titre indicatif » à côté (l'exception du montant nu
+  // du 2026-09-04 est levée le 2026-09-29 par arbitrage -d7, délégation de
+  // Williams, qui pourra la rétablir), la FAQ garde « Jusqu'à ».
   const montantJournee = commission(1);
 
   const faq = [
@@ -291,10 +294,13 @@ export async function FacebookLandingPage({ params }: Props) {
                 ⚠️ Aucune opacité sur le texte : le vérificateur ne sait pas
                 calculer une opacité (cf. globals.css). Jetons pleins seulement.
                 Le chiffre vient de `pricing.ts`, jamais écrit à la main.
-                🛑 « 500 € » NU, sans « jusqu'à » — exception assumée par Will
-                le 2026-09-04, motivée en tête de `tunnel-facebook.ts`. */}
+                « À titre indicatif » À CÔTÉ du chiffre, à deux lignes au plus :
+                l'exception du montant nu (Will, 2026-09-04) est levée le
+                2026-09-29 par arbitrage -d7 (délégation de Williams), qui pourra
+                la rétablir. Voir l'en-tête de `tunnel-facebook.ts`. */}
             <div className="bg-ink mt-6 rounded-2xl px-5 py-5 sm:px-7 sm:py-6">
               <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <span className="text-mocha-fg-muted basis-full text-sm">À titre indicatif</span>
                 <span className="text-mocha-fg text-[clamp(2.75rem,11vw,4rem)] leading-none font-bold tracking-tight tabular-nums">
                   {montantJournee}
                 </span>
@@ -430,12 +436,12 @@ export async function FacebookLandingPage({ params }: Props) {
             <h3 className="text-fg font-serif text-xl font-semibold">Une formation IA</h3>
             <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">
               jusqu&apos;à {commission(1)}
-            </p>
-            <p className="text-fg-muted text-sm font-medium">
-              pour vous, à titre indicatif, par journée vendue
+              <span className="text-fg-muted block font-sans text-sm font-medium">
+                pour vous, à titre indicatif, par journée vendue
+              </span>
             </p>
             <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
-              <li>Une formation de 2 journées : jusqu&apos;à {commission(2)}</li>
+              <li>À titre indicatif, 2 journées : jusqu&apos;à {commission(2)}</li>
               <li>De 3 journées : jusqu&apos;à {commission(3)}</li>
               {certifie ? (
                 <li>

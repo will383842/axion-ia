@@ -409,12 +409,12 @@ export default async function ApporteurAffairesPage({ params }: Props) {
             <h3 className="text-fg font-serif text-xl font-semibold">Une formation IA</h3>
             <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">
               {commission(1)}
-            </p>
-            <p className="text-fg-muted text-sm font-medium">
-              par journée vendue, à titre indicatif
+              <span className="text-fg-muted block font-sans text-sm font-medium">
+                par journée vendue, à titre indicatif
+              </span>
             </p>
             <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
-              <li>Deux journées : {commission(2)}</li>
+              <li>À titre indicatif, deux journées : {commission(2)}</li>
               <li>Trois journées : {commission(3)}</li>
               {certifie ? (
                 <li>Peut être prise en charge par l&apos;OPCO, selon ses critères</li>
