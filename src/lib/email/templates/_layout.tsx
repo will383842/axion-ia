@@ -541,18 +541,6 @@ const snowballLink: React.CSSProperties = {
   textDecoration: "none",
 };
 
-/** Les seules chaînes du châssis à la 2e personne, au tutoiement (lot 4). */
-const TXT_TUTOIEMENT_FR = {
-  ctaFallback: "Le bouton ne fonctionne pas ? Copie cette adresse :",
-  soupape:
-    "Une question ? Réponds simplement à cet e-mail — il arrive directement chez nous, et c'est un humain qui lit.",
-  reviewTitle: "Ton retour d'expérience",
-  reviewText:
-    "Deux minutes pour décrire ce que l'intervention a changé chez toi. C'est ce que lisent les dirigeants qui évaluent la même démarche.",
-  referralText:
-    "Si ce document éclaire une décision qui ne t'appartient pas seul, transfère cet e-mail : il se lit aussi bien sans contexte. En B2B, la décision est collective.",
-} as const;
-
 const DARK_MODE_STYLE = `
   :root { color-scheme: light dark; supported-color-schemes: light dark; }
   @media (prefers-color-scheme: dark) {
@@ -648,14 +636,6 @@ export interface EmailLayoutProps {
    * ne figure que dans la signature Presse de Zoho).
    */
   signature?: boolean | "fondateur" | "fondateur-court" | "equipe";
-  /**
-   * Tutoiement — lot 4 (2026-09-02). Le tunnel « devenir commercial » tutoie
-   * de bout en bout (page, assistant, erreurs) et son e-mail de confirmation
-   * aussi ; le châssis, lui, vouvoyait sous le même message (« Répondez
-   * simplement », « chez vous »). Un e-mail ne mélange pas les deux : le
-   * gabarit qui tutoie le dit, et le châssis suit.
-   */
-  tutoiement?: boolean;
   /**
    * Nom de campagne pour le `utm_campaign` des liens de partage (§5.5).
    * À renseigner sur les gabarits qui portent un bloc de partage — sans lui, le
@@ -794,14 +774,12 @@ export function EmailLayout({
   trust,
   snowball,
   signature,
-  tutoiement,
   campagne,
   sansReseauxSociaux,
   unsubscribeHref,
   locale,
 }: EmailLayoutProps) {
-  const t: { readonly [K in keyof (typeof TXT)["fr"]]: string } =
-    tutoiement && locale === "fr" ? { ...TXT.fr, ...TXT_TUTOIEMENT_FR } : TXT[locale];
+  const t: { readonly [K in keyof (typeof TXT)["fr"]]: string } = TXT[locale];
   const regime = REGIME_FAMILLE[famille];
   assertPreEnTeteDistinct(preview, title, famille);
 

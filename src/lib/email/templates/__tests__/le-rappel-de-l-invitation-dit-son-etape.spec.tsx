@@ -40,13 +40,13 @@ beforeAll(() => {
 describe("rappel J+3", () => {
   it("objet, titre et corps du premier rappel (fr)", async () => {
     const r = await rendu("fr", "j3");
-    expect(r.subject).toBe("Ton échange apporteur d'affaires t'attend");
+    expect(r.subject).toBe("Votre échange apporteur vous attend");
     const t = texte(r.html);
-    expect(t).toContain("Ton créneau t'attend");
+    expect(t).toContain("Votre créneau vous attend");
     expect(t).toContain(
-      "Bonjour Camille, ta candidature au réseau d'apporteurs d'affaires d'Axion-IA est retenue, et il ne te reste plus qu'à choisir le moment de notre échange de 15 minutes en visio.",
+      "Bonjour Camille, votre candidature au réseau d'apporteurs d'affaires d'Axion-IA est retenue, et il ne vous reste plus qu'à choisir le moment de notre échange de 15 minutes en visio.",
     );
-    expect(t).toContain("Les créneaux sont limités : réserve le tien en un clic");
+    expect(t).toContain("Les créneaux sont limités : réservez le vôtre en un clic");
     expect(t).not.toContain("Dernier rappel");
   });
 
@@ -60,11 +60,11 @@ describe("rappel J+3", () => {
 describe("rappel J+7", () => {
   it("objet, titre et corps du dernier rappel (fr) — il dit qu'il n'y en aura plus", async () => {
     const r = await rendu("fr", "j7");
-    expect(r.subject).toBe("Dernier rappel : ta candidature apporteur");
+    expect(r.subject).toBe("Dernier rappel : votre candidature apporteur");
     const t = texte(r.html);
     expect(t).toContain("Dernier rappel");
     expect(t).toContain("Bonjour Camille, c'est notre dernier message à ce sujet");
-    expect(t).toContain("sans réservation de ta part, on ne te relancera plus.");
+    expect(t).toContain("sans réservation de votre part, nous ne vous relancerons plus.");
   });
 
   it("anglais", async () => {
@@ -150,7 +150,7 @@ describe("les deux étapes, les deux langues", () => {
       calendlyUrl: CALENDLY,
       etape: "j3",
     });
-    expect(texte(r.html)).toContain("Bonjour, ta candidature");
+    expect(texte(r.html)).toContain("Bonjour, votre candidature");
   });
 
   it("une étape inattendue rend le premier rappel, pas le dernier", async () => {
@@ -158,6 +158,6 @@ describe("les deux étapes, les deux langues", () => {
       calendlyUrl: CALENDLY,
       etape: "j2",
     });
-    expect(r.subject).toBe("Ton échange apporteur d'affaires t'attend");
+    expect(r.subject).toBe("Votre échange apporteur vous attend");
   });
 });

@@ -139,7 +139,7 @@ describe("le budget de liens de la famille B tient sur la variante la plus charg
           contactName: "Nadia Ben",
           calendlyUrl: CALENDLY,
           dossierUrl: DOSSIER,
-          provenance: { mode: "indirecte", libelle: "par une personne qui te recommande" },
+          provenance: { mode: "indirecte", libelle: "par une personne qui vous recommande" },
         }}
       />,
     ],
@@ -207,7 +207,8 @@ describe("la confirmation du dossier suit les décisions du 2026-09-19", () => {
 describe("l'accusé du premier contact ne promet plus d'appel (B4, 2026-09-19)", () => {
   // L'échange de 15 minutes part sur invitation, aux seuls profils retenus :
   // l'accusé ne peut donc ni l'annoncer à tous, ni en faire son objet.
-  const APPEL_PROMIS = /rappel|on t'appelle|we(?:'|&#x27;)?ll call|our call|l'appel/i;
+  const APPEL_PROMIS =
+    /rappel|on t'appelle|nous vous appel|on vous appelle|we(?:'|&#x27;)?ll call|our call|l'appel/i;
 
   it.each(["fr", "en"] as const)(
     "%s : objet « C'est noté » / « Noted », corps sans appel promis",
@@ -218,7 +219,7 @@ describe("l'accusé du premier contact ne promet plus d'appel (B4, 2026-09-19)",
       const t = texte(await html(<LeadApporteurRecuEmail locale={l} payload={payload} />));
       expect(t).not.toMatch(APPEL_PROMIS);
       // Ce qui suit vraiment : le document, puis un échange SI le profil correspond.
-      expect(t).toMatch(l === "fr" ? /si ton profil correspond/i : /if your profile is a match/i);
+      expect(t).toMatch(l === "fr" ? /si votre profil correspond/i : /if your profile is a match/i);
       expect(t).toMatch(/15 minutes|15-minute/);
     },
   );

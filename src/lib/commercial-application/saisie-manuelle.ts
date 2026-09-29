@@ -67,9 +67,9 @@ export const ORIGINES_DIRECTES: ReadonlyArray<string> = [
 export const ORIGINES_ACCORD_REQUIS: ReadonlyArray<string> = ["recommandation", "autre"];
 
 /**
- * D'où vient l'adresse, dit À LA PERSONNE dans l'invitation — tutoiement,
- * comme le reste du tunnel. Fragments qui complètent « Tu nous as donné ton
- * adresse … » (directe) ou « Nous avons ton adresse … » (indirecte).
+ * D'où vient l'adresse, dit À LA PERSONNE dans l'invitation — vouvoiement,
+ * comme tout ce que reçoit un candidat. Fragments qui complètent « Vous nous avez communiqué votre
+ * adresse … » (directe) ou « Nous avons votre adresse … » (indirecte).
  */
 export const PROVENANCE_ADRESSE: Readonly<
   Record<string, { readonly fr: string; readonly en: string }>
@@ -79,7 +79,7 @@ export const PROVENANCE_ADRESSE: Readonly<
   salon: { fr: "lors d'un salon ou d'un événement", en: "at a trade show or an event" },
   "reponse-annonce": { fr: "en répondant à notre annonce", en: "by answering our ad" },
   recommandation: {
-    fr: "par une personne qui te recommande",
+    fr: "par une personne qui vous recommande",
     en: "from someone who recommends you",
   },
   autre: { fr: "hors de ce site", en: "outside this website" },

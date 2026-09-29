@@ -1,6 +1,6 @@
 // E-mails — l'ISSUE de l'échange de 15 minutes avec un candidat apporteur
 // (2026-09-28). Trois messages, trois noms de job, un seul fichier :
-//   · `apporteur-issue-absent`     — « on t'a attendu », un nouveau créneau ;
+//   · `apporteur-issue-absent`     — « nous vous avons attendu », un nouveau créneau ;
 //   · `apporteur-issue-retenu`     — bienvenue dans le réseau, le récapitulatif ;
 //   · `apporteur-issue-non-retenu` — le refus courtois, porte ouverte.
 //
@@ -10,12 +10,12 @@
 // dans `issue-apporteur-envoi.ts` (un envoi par issue et par personne).
 //
 // Même châssis que l'invitation : famille B (lien d'opposition dans le pied de
-// page), tutoiement, sans rangée sociale, signature du fondateur (§6.1, sans
+// page), vouvoiement, sans rangée sociale, signature du fondateur (§6.1, sans
 // téléphone).
 //
 // ── Vocabulaire (anti-requalification) ────────────────────────────────────
 // « échange », « rejoindre le réseau », « apporteur indépendant »,
-// « commission », « mis à ta disposition ». JAMAIS « entretien », « poste »,
+// « commission », « mis à votre disposition ». JAMAIS « entretien », « poste »,
 // « embauche », « recrutement », « objectifs », « horaires », « salaire »,
 // « mission ». Balayé sur le rendu texte par
 // `__tests__/l-issue-de-l-echange-apporteur-a-ses-trois-e-mails.spec.tsx`.
@@ -71,62 +71,63 @@ export const COPY_ISSUE_ECHANGE = {
   fr: {
     bonjour: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
     absent: {
-      subject: "On t'a attendu : on reprend un créneau ?",
+      // ≤ 45 caractères (§3.4).
+      subject: "Nous vous avons attendu : un autre créneau ?",
       title: "On reprend un créneau ?",
       preview:
-        "Un imprévu arrive à tout le monde : choisis un nouveau moment pour notre échange de 15 minutes.",
+        "Un imprévu arrive à tout le monde : choisissez un nouveau moment pour notre échange de 15 minutes.",
       attendu: (date: string | null) =>
         date
-          ? `Nous t'avons attendu pour notre échange en visio du ${date}. Aucun souci : un imprévu arrive à tout le monde.`
-          : "Nous t'avons attendu pour notre échange en visio. Aucun souci : un imprévu arrive à tout le monde.",
+          ? `Nous vous avons attendu pour notre échange en visio du ${date}. Aucun souci : un imprévu arrive à tout le monde.`
+          : "Nous vous avons attendu pour notre échange en visio. Aucun souci : un imprévu arrive à tout le monde.",
       reprendre:
-        "Si le réseau d'apporteurs d'affaires d'Axion-IA t'intéresse toujours, choisis simplement un nouveau créneau avec le bouton ci-dessous : 15 minutes suffisent.",
+        "Si le réseau d'apporteurs d'affaires d'Axion-IA vous intéresse toujours, choisissez simplement un nouveau créneau avec le bouton ci-dessous : 15 minutes suffisent.",
       sinon:
-        "Et si ce n'est plus d'actualité pour toi, tu n'as rien à faire : nous ne te relancerons pas.",
+        "Et si ce n'est plus d'actualité pour vous, vous n'avez rien à faire : nous ne vous relancerons pas.",
       cta: "Choisir un nouveau créneau",
     },
     retenu: {
       subject: "Bienvenue parmi les apporteurs d'Axion-IA",
       title: "Bienvenue dans le réseau",
       preview:
-        "Merci pour notre échange : voici comment fonctionne le réseau, ta commission et les prochaines étapes.",
+        "Merci pour notre échange : voici comment fonctionne le réseau, votre commission et les prochaines étapes.",
       merci:
-        "Merci pour notre échange. Nous sommes ravis de t'accueillir dans le réseau d'apporteurs d'affaires indépendants d'Axion-IA.",
+        "Merci pour notre échange. Nous sommes ravis de vous accueillir dans le réseau d'apporteurs d'affaires indépendants d'Axion-IA.",
       fonctionnementTitre: "Comment ça marche",
       fonctionnement: [
-        "Tu nous mets en relation avec une entreprise qui a un besoin : formation à l'IA, audit ou intégration.",
+        "Vous nous mettez en relation avec une entreprise qui a un besoin : formation à l'IA, audit ou intégration.",
         "Nous gérons tout le reste : rendez-vous, devis et réalisation.",
-        "Tu touches une commission.",
+        "Vous touchez une commission.",
       ],
-      commissionTitre: "Ta commission",
+      commissionTitre: "Votre commission",
       formation: (eur: number) =>
         `Formation : ${eur} € HT par journée de formation au tarif public (réduite au prorata en cas de remise accordée au client).`,
       audit: (pct: string) => `Audit : ${pct} du montant HT de la facture.`,
       integration: (pct: string) => `Intégration : ${pct} du montant HT de la facture.`,
       versement: (mois: number) =>
-        `Elle t'est versée dès que le client a réglé l'intégralité de sa facture. Chaque entreprise que tu nous présentes t'est attribuée pendant ${mois} mois.`,
-      statutTitre: "Ton statut",
+        `Elle vous est versée dès que le client a réglé l'intégralité de sa facture. Chaque entreprise que vous nous présentez vous est attribuée pendant ${mois} mois.`,
+      statutTitre: "Votre statut",
       statut:
-        "Tu restes indépendant, libre de ton organisation, sans objectif ni exclusivité. Pour facturer tes commissions, il te faut un numéro SIRET (une micro-entreprise, par exemple).",
+        "Vous restez indépendant, libre de votre organisation, sans objectif ni exclusivité. Pour facturer vos commissions, il vous faut un numéro SIRET (une micro-entreprise, par exemple).",
       suiteTitre: "La suite",
       // 2026-09-28 (Will) : pas de délai promis — le contrat v2 (prorata, paiement
       // à 100 %, confirmation par l'entreprise) est relu avant toute signature.
-      contrat: "Nous t'enverrons ton contrat d'apporteur, à signer en ligne.",
+      contrat: "Nous vous enverrons votre contrat d'apporteur, à signer en ligne.",
       espace:
-        "Ton espace apporteur personnel ouvrira d'ici un mois. D'ici là, pour nous présenter une entreprise, réponds simplement à cet e-mail avec son nom et celui de ton contact.",
-      kit: "Le document de présentation et le catalogue restent à ta disposition :",
+        "Votre espace apporteur personnel ouvrira d'ici un mois. D'ici là, pour nous présenter une entreprise, répondez simplement à cet e-mail avec son nom et celui de votre contact.",
+      kit: "Le document de présentation et le catalogue restent à votre disposition :",
     },
     nonRetenu: {
       subject: "Suite à notre échange",
       title: "Merci pour notre échange",
-      preview: "Merci pour le temps que tu nous as accordé.",
+      preview: "Merci pour le temps que vous nous avez accordé.",
       merci:
-        "Merci pour le temps que tu nous as accordé lors de notre échange, et pour l'intérêt que tu portes à Axion-IA.",
+        "Merci pour le temps que vous nous avez accordé lors de notre échange, et pour l'intérêt que vous portez à Axion-IA.",
       decision:
-        "Après réflexion, nous ne donnons pas suite pour le moment à ta candidature au réseau d'apporteurs d'affaires.",
+        "Après réflexion, nous ne donnons pas suite pour le moment à votre candidature au réseau d'apporteurs d'affaires.",
       porte:
-        "Si ta situation évolue, n'hésite pas à revenir vers nous : notre porte reste ouverte.",
-      souhait: "Nous te souhaitons sincèrement le meilleur pour la suite de tes projets.",
+        "Si votre situation évolue, n'hésitez pas à revenir vers nous : notre porte reste ouverte.",
+      souhait: "Nous vous souhaitons sincèrement le meilleur pour la suite de vos projets.",
     },
   },
   en: {
@@ -228,7 +229,6 @@ export function ApporteurIssueAbsentEmail({ locale, payload }: Props) {
       title={t.absent.title}
       {...(calendlyUrl ? { cta: { label: t.absent.cta, href: calendlyUrl } } : {})}
       locale={locale}
-      tutoiement
       sansReseauxSociaux
       signature="fondateur-court"
     >
@@ -256,7 +256,6 @@ export function ApporteurIssueRetenuEmail({ locale, payload }: Props) {
       preview={t.preview}
       title={t.title}
       locale={locale}
-      tutoiement
       sansReseauxSociaux
       signature="fondateur-court"
     >
@@ -287,7 +286,7 @@ export function ApporteurIssueRetenuEmail({ locale, payload }: Props) {
       <Text style={emailStyles.paragraphStyle}>• {t.espace}</Text>
 
       <BlocKitApporteur locale={l} intro={t.kit} />
-      {/* « Une question ? Réponds à cet e-mail. » : le châssis le dit déjà,
+      {/* « Une question ? Répondez à cet e-mail. » : le châssis le dit déjà,
           juste au-dessus de la signature — le répéter ferait doublon. */}
     </EmailLayout>
   );
@@ -308,7 +307,6 @@ export function ApporteurIssueNonRetenuEmail({ locale, payload }: Props) {
       preview={t.preview}
       title={t.title}
       locale={locale}
-      tutoiement
       sansReseauxSociaux
       signature="fondateur-court"
     >

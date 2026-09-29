@@ -31,7 +31,7 @@ import { liensKitApporteur } from "@/lib/commercial-application/kit-apporteur";
 
 const COPY = {
   fr: {
-    intro: "Pour découvrir le réseau et ce que tu pourras recommander :",
+    intro: "Pour découvrir le réseau et ce que vous pourrez recommander :",
     document: "Le document de présentation",
     documentDetail: " — statut, commissions, fonctionnement (13 pages)",
     catalogue: "Le catalogue complet de nos prestations",

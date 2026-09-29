@@ -1,7 +1,7 @@
 // 2026-09-28 (Will) — une personne qui a postulé à une OFFRE D'EMPLOI salariée
 // (commercial terrain, directeur commercial…) et à qui l'on propose AUSSI le
 // réseau d'apporteurs n'a JAMAIS candidaté au réseau. Son invitation ne doit
-// pas lui dire « ta candidature apporteur d'affaires est retenue » : c'est faux.
+// pas lui dire « votre candidature apporteur d'affaires est retenue » : c'est faux.
 // Elle dit « une autre proposition », différente du poste, et d'où vient son
 // adresse (art. 14). Ses rappels J+3 / J+7 aussi.
 
@@ -30,7 +30,7 @@ describe("invitation — variante « offre »", () => {
       ...BASE,
       offreEmploi: OFFRE,
     });
-    expect(r.subject).toBe("Ta candidature Axion-IA : autre proposition");
+    expect(r.subject).toBe("Votre candidature : une autre proposition");
     // Borne de 45 du référentiel (§3.4), que le référentiel ne mesure pas ici
     // (son payload d'exemple ne porte pas `offreEmploi`) — ce témoin la tient.
     expect(r.subject.length).toBeLessThanOrEqual(45);
@@ -43,12 +43,12 @@ describe("invitation — variante « offre »", () => {
       variante: 2,
       offreEmploi: OFFRE,
     });
-    expect(r.subject).toBe("Ta candidature Axion-IA : autre proposition");
+    expect(r.subject).toBe("Votre candidature : une autre proposition");
     const t = texte(r.html);
-    expect(t).not.toContain("Ta candidature apporteur d'affaires est retenue");
+    expect(t).not.toContain("Votre candidature apporteur d'affaires est retenue");
     expect(t).not.toMatch(/candidature apporteur/i);
     expect(t).not.toMatch(/est retenue/);
-    expect(t).not.toMatch(/Merci pour ton intérêt/);
+    expect(t).not.toMatch(/Merci pour votre intérêt/);
   });
 
   it("dit la vérité : l'offre, la différence avec le poste, la candidature qui suit son cours", async () => {
@@ -61,11 +61,11 @@ describe("invitation — variante « offre »", () => {
       ).html,
     );
     expect(t).toContain("Bonjour Camille,");
-    expect(t).toContain(`Merci pour ta candidature à notre offre « ${OFFRE} ».`);
+    expect(t).toContain(`Merci pour votre candidature à notre offre « ${OFFRE} ».`);
     expect(t).toContain("réseau d'apporteurs d'affaires indépendants partout en France");
-    expect(t).toContain("C'est différent du poste auquel tu as postulé");
+    expect(t).toContain("C'est différent du poste auquel vous avez postulé");
     expect(t).toContain("rémunéré à la commission");
-    expect(t).toContain("Ta candidature au poste, elle, suit son cours normalement.");
+    expect(t).toContain("Votre candidature au poste, elle, suit son cours normalement.");
     expect(t).toContain("un échange de 15 minutes en visio");
     expect(t).toContain("Sans engagement : à l'issue, chacun décide librement de la suite.");
     expect(t).toContain("Réserver mon créneau");
@@ -87,7 +87,7 @@ describe("invitation — variante « offre »", () => {
         })
       ).html,
     );
-    expect(t).toContain("Merci pour ta candidature à notre offre « Data Scientist ».");
+    expect(t).toContain("Merci pour votre candidature à notre offre « Data Scientist ».");
     expect(t).toContain("ce poste est aujourd'hui pourvu");
     expect(t).toContain("rémunéré à la commission");
     expect(t).not.toContain("suit son cours normalement");
@@ -95,7 +95,7 @@ describe("invitation — variante « offre »", () => {
     expect(t).toContain("Réserver mon créneau");
   });
 
-  it("candidature SPONTANÉE : « ta candidature spontanée au poste de … », jamais « notre offre »", async () => {
+  it("candidature SPONTANÉE : « votre candidature spontanée au poste de … », jamais « notre offre »", async () => {
     const t = texte(
       (
         await renderEmailTemplate("apporteur-invitation-appel", "fr", {
@@ -111,7 +111,7 @@ describe("invitation — variante « offre »", () => {
         })
       ).html,
     );
-    expect(t).toContain("Merci pour ta candidature spontanée au poste de Commercial terrain.");
+    expect(t).toContain("Merci pour votre candidature spontanée au poste de Commercial terrain.");
     expect(t).not.toContain("notre offre");
   });
 
@@ -130,8 +130,10 @@ describe("invitation — variante « offre »", () => {
         })
       ).html,
     );
-    expect(t).toContain(`Tu nous as donné ton adresse en postulant à notre offre « ${OFFRE} ».`);
-    expect(t).toMatch(/Qui traite ton adresse/);
+    expect(t).toContain(
+      `Vous nous avez communiqué votre adresse en postulant à notre offre « ${OFFRE} ».`,
+    );
+    expect(t).toMatch(/Qui traite votre adresse/);
     expect(t).toMatch(/réclamation auprès de la CNIL/);
     expect(t).toMatch(/politique de confidentialité/);
   });
@@ -174,8 +176,8 @@ describe("invitation — variante « offre »", () => {
     // Les deux seules occurrences de « poste » désignent l'offre salariée.
     const postes = t.match(/\bposte\b/gi) ?? [];
     expect(postes).toHaveLength(2);
-    expect(t).toContain("du poste auquel tu as postulé");
-    expect(t).toContain("Ta candidature au poste");
+    expect(t).toContain("du poste auquel vous avez postulé");
+    expect(t).toContain("Votre candidature au poste");
   });
 
   it("sans titre d'offre : « l'une de nos offres d'emploi », toujours pas « candidature apporteur »", async () => {
@@ -184,8 +186,8 @@ describe("invitation — variante « offre »", () => {
       offreEmploi: "",
     });
     const t = texte(r.html);
-    expect(r.subject).toBe("Ta candidature Axion-IA : autre proposition");
-    expect(t).toContain("Merci pour ta candidature à l'une de nos offres d'emploi.");
+    expect(r.subject).toBe("Votre candidature : une autre proposition");
+    expect(t).toContain("Merci pour votre candidature à l'une de nos offres d'emploi.");
     expect(t).not.toContain("« »");
   });
 
@@ -195,7 +197,7 @@ describe("invitation — variante « offre »", () => {
       candidature: true,
       variante: 0,
     });
-    expect(r.subject).toBe("Ta candidature apporteur d'affaires chez Axion-IA est retenue");
+    expect(r.subject).toBe("Votre candidature apporteur d'affaires chez Axion-IA est retenue");
   });
 
   it("anglais : même structure", async () => {
@@ -209,7 +211,7 @@ describe("invitation — variante « offre »", () => {
 });
 
 describe("rappels J+3 / J+7 — variante « offre »", () => {
-  it("J+3 : ne dit pas « ta candidature est retenue », rappelle l'offre", async () => {
+  it("J+3 : ne dit pas « votre candidature est retenue », rappelle l'offre", async () => {
     const r = await renderEmailTemplate("apporteur-invitation-relance", "fr", {
       ...BASE,
       etape: "j3",
@@ -218,7 +220,7 @@ describe("rappels J+3 / J+7 — variante « offre »", () => {
     const t = texte(r.html);
     expect(r.subject).not.toMatch(/candidature apporteur/i);
     expect(t).not.toMatch(/est retenue|toujours retenue/);
-    expect(t).toContain(`à ta candidature à notre offre « ${OFFRE} »`);
+    expect(t).toContain(`à votre candidature à notre offre « ${OFFRE} »`);
     expect(t).toContain("réseau d'apporteurs d'affaires indépendants");
   });
 
@@ -232,7 +234,7 @@ describe("rappels J+3 / J+7 — variante « offre »", () => {
     expect(r.subject).toBe("Dernier rappel : l'échange sur le réseau");
     expect(r.subject.length).toBeLessThanOrEqual(45);
     expect(t).not.toMatch(/est retenue|toujours retenue/);
-    expect(t).toContain(`Ta candidature à notre offre « ${OFFRE} », elle, n'est pas concernée`);
+    expect(t).toContain(`Votre candidature à notre offre « ${OFFRE} », elle, n'est pas concernée`);
   });
 
   it("témoin : sans `offre`, le rappel d'une candidature reste celui d'origine", async () => {
@@ -240,7 +242,7 @@ describe("rappels J+3 / J+7 — variante « offre »", () => {
       ...BASE,
       etape: "j7",
     });
-    expect(r.subject).toBe("Dernier rappel : ta candidature apporteur");
+    expect(r.subject).toBe("Dernier rappel : votre candidature apporteur");
   });
 });
 

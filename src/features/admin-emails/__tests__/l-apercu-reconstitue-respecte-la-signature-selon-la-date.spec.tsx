@@ -174,7 +174,7 @@ describe("les données de l'aperçu suivent la règle de l'envoi", () => {
     };
     const a = await reconstituerInvitation(ligne(APRES_SIGNATURE));
     if (!a.ok) throw new Error(a.motif);
-    expect(a.subject).toBe("Ta candidature Axion-IA : autre proposition");
+    expect(a.subject).toBe("Votre candidature : une autre proposition");
     expect(a.html).toContain("Business Developer B2B");
     expect(a.html).not.toMatch(/candidature apporteur d(?:&#x27;|')affaires/i);
     expect(a.html).not.toMatch(/est retenue/);
