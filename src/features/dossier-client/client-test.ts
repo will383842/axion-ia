@@ -13,7 +13,9 @@
  * `la-case-test-interne-n-existe-qu-en-pilote-et-sur-le-client-fictif.spec.ts`.
  *
  * Une rencontre de test n'apparaît dans AUCUNE synthèse d'un autre client ni
- * dans aucun compteur : `exclureLesTests()` est le filtre à poser.
+ * dans aucun compteur : `HORS_RENCONTRES_DE_TEST` est le filtre à poser, par
+ * étalement (`where: { ...HORS_RENCONTRES_DE_TEST, … }`) — jamais le littéral
+ * retapé (garde `une-rencontre-de-test-n-apparait-dans-aucune-synthese.spec.ts`).
  *
  * Module neutre.
  */

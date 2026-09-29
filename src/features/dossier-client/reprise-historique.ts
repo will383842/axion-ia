@@ -34,10 +34,12 @@ import { estRendezVousDuDossier } from "@/server/visio/liste-blanche-types";
 import { dansLaTransaction, type BaseTransactionnelle, type Tx } from "./base";
 import { cleDuFait } from "./note-manuelle";
 import {
-  assurerRencontrePourCalendly,
-  DEBUT_BALAYAGE_DOSSIER_PAR_DEFAUT,
-  reponsesCalendly,
-} from "./rencontre-calendly";
+  estQuestionEntreprise,
+  estQuestionTelephone,
+  estQuestionVille,
+  reponsesFormulaire,
+} from "@/features/admin-rendezvous/a-venir";
+import { assurerRencontrePourCalendly, limiteDeLHistorique } from "./rencontre-calendly";
 import { enregistrerSuiviDansLaTransaction, ErreurSuivi } from "./suivi";
 
 export interface BilanReprise {
@@ -55,9 +57,10 @@ export interface BilanReprise {
 
 /** Le type d'un fait tiré d'une réponse au formulaire. PUR. `null` : à ne pas reprendre. */
 export function typeDeLaReponse(question: string): FaitType | null {
-  if (/t[ée]l[ée]phone|phone|mobile|portable/i.test(question)) return null;
-  if (/ville/i.test(question)) return null;
-  if (/nom de l.entreprise|^entreprise|soci[ée]t[ée]|structure/i.test(question)) return null;
+  // L'identité (téléphone, ville, entreprise) n'est pas un fait : mêmes règles
+  // que la carte « à venir » et le rattachement proposé (`a-venir.ts`).
+  if (estQuestionTelephone(question) || estQuestionVille(question)) return null;
+  if (estQuestionEntreprise(question)) return null;
   if (/recommand|recommend|parrain/i.test(question)) return "mise_en_relation";
   if (/besoin|projet|attente|objectif/i.test(question)) return "besoin";
   return "autre";
@@ -80,7 +83,7 @@ async function reprendreUn(
     select: { id: true },
   });
   let faits = 0;
-  for (const { question, reponse } of reponsesCalendly(ev.rawPayload)) {
+  for (const { question, reponse } of reponsesFormulaire(ev.rawPayload)) {
     const type = typeDeLaReponse(question);
     if (type === null) continue;
     const fait = await tx.fait.create({
@@ -88,7 +91,7 @@ async function reprendreUn(
         clientId: null,
         portee: "a_ranger",
         type,
-        cle: cleDuFait(type, reponse),
+        cle: cleDuFait(type),
         enonce: chiffrerParole(reponse.slice(0, 2000)),
         texteCourt: chiffrerParole(question.slice(0, 300)),
         certitude: "dit_explicitement",
@@ -140,10 +143,13 @@ export async function reprendreHistoriqueCalendly(
   // Aucune réponse en clair : sans clé, on s'arrête avant d'écrire quoi que ce soit.
   chiffrerParole("vérification de la clé");
 
-  const borne = (await lireBorneDuBalayage(db)) ?? DEBUT_BALAYAGE_DOSSIER_PAR_DEFAUT;
+  // Jamais un rendez-vous à venir : l'historique s'arrête à la borne du
+  // balayage ET à maintenant (garde
+  // `un-rendez-vous-futur-n-est-jamais-repris-comme-historique.spec.ts`).
+  const limite = limiteDeLHistorique(await lireBorneDuBalayage(db), maintenant);
   const evs = (
     await db.calendlyEvent.findMany({
-      where: { startTime: { lt: borne } },
+      where: { startTime: { lt: limite } },
       select: {
         id: true,
         eventTypeName: true,

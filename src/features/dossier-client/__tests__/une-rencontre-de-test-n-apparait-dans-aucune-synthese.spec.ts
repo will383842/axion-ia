@@ -4,19 +4,22 @@
  * synthèse ni aucun compteur : ni F1, ni la veille, ni la couverture du mois,
  * ni « À classer ». Le pilote joue en production ; il ne doit rien fausser.
  *
- * Mutation qui fait rougir : retirer `estTestInterne: false` du filtre de
- * `couvertureDuMois` → la couverture compte la visio de test.
+ * Mutation qui fait rougir : retirer `...HORS_RENCONTRES_DE_TEST` du filtre
+ * de `couvertureDuMois` → la couverture compte la visio de test ; retaper
+ * `estTestInterne: false` dans une requête → le test « une source » rougit.
  * Contre-témoin : la même rencontre, sans le marqueur, est comptée partout.
  * Angle mort : la synthèse d'un AUTRE client ne lit que les faits de ce
  * client (`lireFaitsDuClient(clientId)`) : une rencontre de test, rangée sur
  * le client fictif, n'y entre pas par construction — non rejoué ici.
  */
 
+import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it, vi } from "vitest";
 
 import { couvertureDuMois, compterVeille, passerBalayage } from "@/server/visio/balayage";
+import { HORS_RENCONTRES_DE_TEST } from "../client-test";
 import { dossierEnMemoire, fiche, id } from "./_dossier-en-memoire";
 
 const BORNE = new Date("2026-10-01T00:00:00Z");
@@ -82,7 +85,39 @@ describe("⛔ une rencontre de test n'apparaît dans aucune synthèse", () => {
     );
     const debut = src.indexOf("export async function lireRencontresAClasser(");
     const fin = src.indexOf("export async function lireNombreAClasser(");
-    expect(src.slice(debut, fin)).toContain("estTestInterne: false");
-    expect(src.slice(fin, fin + 400)).toContain("estTestInterne: false");
+    expect(src.slice(debut, fin)).toContain("...HORS_RENCONTRES_DE_TEST");
+    expect(src.slice(fin, fin + 400)).toContain("...HORS_RENCONTRES_DE_TEST");
+  });
+
+  it("le filtre a UNE source : personne ne retape `estTestInterne: false`", () => {
+    expect(HORS_RENCONTRES_DE_TEST).toEqual({ estTestInterne: false });
+    // Toute lecture de rencontres du circuit et du dossier passe par le filtre
+    // nommé ; un littéral retapé est une requête qu'on oubliera de corriger.
+    // `git grep` rend 1 quand il ne trouve rien : on lit la sortie, pas le code.
+    const sortie = spawnSync(
+      "git",
+      ["grep", "-n", "-E", "estTestInterne:[[:space:]]*false", "--", "src"],
+      { encoding: "utf8", cwd: process.cwd() },
+    );
+    expect(sortie.error).toBeUndefined();
+    const fautifs = sortie.stdout
+      .split("\n")
+      .filter((l) => l !== "")
+      .filter((l) => !/__tests__|\.spec\.tsx?:/.test(l))
+      .filter((l) => !l.startsWith("src/features/dossier-client/client-test.ts:"));
+    expect(fautifs).toEqual([]);
+  });
+
+  it("chaque compteur du balayage pose le filtre (lecture du code)", () => {
+    const src = readFileSync(join(process.cwd(), "src/server/visio/balayage.ts"), "utf8");
+    for (const fn of [
+      "async function rencontresPourF1(",
+      "export async function compterVeille(",
+      "export async function couvertureDuMois(",
+    ]) {
+      const debut = src.indexOf(fn);
+      expect(debut, fn).toBeGreaterThan(-1);
+      expect(src.slice(debut, debut + 900), fn).toContain("...HORS_RENCONTRES_DE_TEST");
+    }
   });
 });

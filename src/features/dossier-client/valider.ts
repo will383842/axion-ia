@@ -251,7 +251,8 @@ export async function validerApresLAppel(
       suite: e.suivi.suite,
       suiteLe: e.suivi.suiteLe,
       auteurId: e.parAdminId,
-      renseignePar: e.renseignePar ?? null,
+      // Absent : l'appréciation et l'auteur de l'onglet « Rendez-vous » restent.
+      ...(e.renseignePar !== undefined ? { renseignePar: e.renseignePar } : {}),
       maintenant,
     });
 

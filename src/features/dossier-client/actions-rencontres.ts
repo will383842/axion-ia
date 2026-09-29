@@ -19,6 +19,11 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
 import { fromParisLocalInput } from "@/lib/calendar-grid";
+import {
+  dateDeLEcheance,
+  garderSuiteEtEcheance,
+  suiviApresLAppelSchema,
+} from "@/features/admin-rendezvous/suivi";
 import { exigerAccesEchanges } from "./acces";
 import { assurerRencontrePourCalendly } from "./rencontre-calendly";
 import { relancerApresRattachement, validerRattachement } from "./rattacher";
@@ -144,27 +149,25 @@ function lireNote(fd: FormData): SaisieNote {
   return saisie as SaisieNote;
 }
 
-const suiviSchema = z.object({
-  issue: z.enum(["eu_lieu", "absent", "reporte"]),
-  suite: z.enum(["devis", "relance", "proposition", "aucune"]).nullable(),
-  suiteLe: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/)
-    .nullable(),
-});
-
 /** Le bouton unique « Valider et préparer le devis ». */
 export async function validerApresLAppelAction(fd: FormData): Promise<void> {
   const { userId } = await exigerAccesEchanges();
   const rencontreId = uuid.parse(texte(fd, "rencontreId"));
   const retour = `rendez-vous/rencontres/${rencontreId}?vue=apres-l-appel`;
 
-  const suivi = suiviSchema.safeParse({
+  // Le schéma et la règle de l'onglet « Rendez-vous » : une seule source.
+  const suivi = suiviApresLAppelSchema.safeParse({
     issue: texte(fd, "issue") || null,
     suite: texte(fd, "suite") || null,
     suiteLe: texte(fd, "suiteLe") || null,
   });
-  if (!suivi.success) erreurVers(retour, new Error("Indiquez comment s'est passé le rendez-vous."));
+  if (!suivi.success) {
+    erreurVers(
+      retour,
+      new Error(suivi.error.issues[0]?.message ?? "Indiquez comment s'est passé le rendez-vous."),
+    );
+  }
+  const garde = garderSuiteEtEcheance(suivi.data.issue, suivi.data.suite, suivi.data.suiteLe);
 
   const modeProjet = texte(fd, "projet");
   const projet: ChoixProjet =
@@ -182,14 +185,14 @@ export async function validerApresLAppelAction(fd: FormData): Promise<void> {
     note: lireNote(fd),
     suivi: {
       issue: suivi.data.issue,
-      suite: suivi.data.suite,
-      suiteLe: suivi.data.suiteLe ? new Date(`${suivi.data.suiteLe}T00:00:00Z`) : null,
+      suite: garde.suite,
+      suiteLe: garde.suiteLe ? dateDeLEcheance(garde.suiteLe) : null,
     },
   }).catch((e: unknown) => erreurVers(retour, e));
 
   revalidatePath(base("rendez-vous"));
   updateTag("admin:rendez-vous-a-faire");
-  if (suivi.data.issue === "eu_lieu" && suivi.data.suite === "devis") {
+  if (garde.suite === "devis") {
     const q = new URLSearchParams({ clientId: r.clientId });
     if (r.projetId) q.set("projetId", r.projetId);
     redirect(`${base("qualiopi/devis/new")}?${q.toString()}`);

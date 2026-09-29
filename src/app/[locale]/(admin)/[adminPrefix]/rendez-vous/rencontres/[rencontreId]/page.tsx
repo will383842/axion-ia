@@ -24,6 +24,7 @@ import { ApresLAppelVue } from "@/components/admin/dossier-client/ApresLAppelVue
 import { gardeLectureEchanges } from "@/features/dossier-client/acces";
 import { deplacerRencontreAction } from "@/features/dossier-client/actions-rencontres";
 import {
+  LIBELLE_ISSUE,
   LIBELLE_STATUT_RENCONTRE,
   LIBELLE_SUITE,
   LIBELLE_TYPE_FAIT,
@@ -56,7 +57,6 @@ const lienCls = "text-[color:var(--color-admin-accent)] underline-offset-2 hover
 const inputCls =
   "w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]";
 
-const LIBELLE_ISSUE = { eu_lieu: "A eu lieu", absent: "Absent", reporte: "Reporté" } as const;
 const LIBELLE_ORIGINE: Readonly<Record<string, string>> = {
   manuel: "Note manuelle",
   ia: "Compte rendu rédigé depuis l'enregistrement",

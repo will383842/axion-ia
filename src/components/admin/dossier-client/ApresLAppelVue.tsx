@@ -30,7 +30,7 @@ import {
   rangerRencontreAction,
   validerApresLAppelAction,
 } from "@/features/dossier-client/actions-rencontres";
-import { LIBELLE_TYPE_FAIT } from "@/features/dossier-client/libelles";
+import { LIBELLE_MOTIF, LIBELLE_TYPE_FAIT } from "@/features/dossier-client/libelles";
 import { CHAMPS_DE_LA_NOTE } from "@/features/dossier-client/note-manuelle";
 import {
   lireFichesVivantes,
@@ -38,7 +38,8 @@ import {
   type RencontreDetaillee,
 } from "@/features/dossier-client/queries-rencontres";
 import { rechercherSiren } from "@/features/dossier-client/recherche-entreprises";
-import { suiteParDefaut } from "@/features/dossier-client/suite-proposee";
+import { valeursInitialesDuSuivi } from "@/features/dossier-client/suite-proposee";
+import { ISSUES, LIBELLE_ISSUE, LIBELLE_SUITE, SUITES } from "@/features/admin-rendezvous/suivi";
 import { validableEnLot } from "@/features/dossier-client/valider";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { timeInParis } from "@/lib/calendar-grid";
@@ -52,18 +53,6 @@ const lienCls = "text-[color:var(--color-admin-accent)] underline-offset-2 hover
 const inputCls =
   "w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]";
 const labelCls = "flex flex-col gap-1 text-[length:var(--text-admin-sm)]";
-
-/** Pourquoi cette fiche est proposée, en français. */
-const LIBELLE_MOTIF: Readonly<Record<string, string>> = {
-  email_calendly: "même adresse e-mail que la fiche",
-  contact_connu: "l'adresse d'une personne de la fiche",
-  domaine_email: "même domaine d'entreprise qu'une personne de la fiche",
-  entreprise_declaree: "le nom d'entreprise donné dans la réservation",
-  demande_liee: "une demande envoyée depuis le site",
-  report: "le rendez-vous qu'il remplace était chez ce client",
-  choix_extension: "choisie au démarrage de l'enregistrement",
-  contenu_compte_rendu: "déduite du compte rendu",
-};
 
 export async function ApresLAppelVue({
   r,
@@ -86,7 +75,7 @@ export async function ApresLAppelVue({
       : Promise.resolve(null),
   ]);
   const maintenant = new Date();
-  const suite = suiteParDefaut(maintenant);
+  const initial = valeursInitialesDuSuivi(r.suivi, maintenant);
   const propositionsSiren = annuaire && annuaire.ok ? annuaire.propositions : [];
   const ficheHref = client ? `/${locale}/${adminPrefix}/qualiopi/clients/${client.id}` : null;
 
@@ -390,23 +379,22 @@ export async function ApresLAppelVue({
             <div className="grid gap-[var(--space-admin-3)] sm:grid-cols-3">
               <label className={labelCls}>
                 Le rendez-vous
-                <select
-                  name="issue"
-                  defaultValue={r.suivi?.issue ?? "eu_lieu"}
-                  className={inputCls}
-                >
-                  <option value="eu_lieu">A eu lieu</option>
-                  <option value="absent">Absent</option>
-                  <option value="reporte">Reporté</option>
+                <select name="issue" defaultValue={initial.issue} className={inputCls}>
+                  {ISSUES.map((i) => (
+                    <option key={i} value={i}>
+                      {LIBELLE_ISSUE[i]}
+                    </option>
+                  ))}
                 </select>
               </label>
               <label className={labelCls}>
                 La suite
-                <select name="suite" defaultValue={r.suivi?.suite ?? "devis"} className={inputCls}>
-                  <option value="devis">Devis à envoyer</option>
-                  <option value="relance">Relance</option>
-                  <option value="proposition">Proposition à faire</option>
-                  <option value="aucune">Pas de suite</option>
+                <select name="suite" defaultValue={initial.suite} className={inputCls}>
+                  {SUITES.map((s) => (
+                    <option key={s} value={s}>
+                      {LIBELLE_SUITE[s]}
+                    </option>
+                  ))}
                 </select>
               </label>
               <label className={labelCls}>
@@ -414,7 +402,7 @@ export async function ApresLAppelVue({
                 <input
                   type="date"
                   name="suiteLe"
-                  defaultValue={r.suivi?.suiteLe?.toISOString().slice(0, 10) ?? suite.suiteLe}
+                  defaultValue={initial.suiteLe}
                   className={inputCls}
                 />
               </label>

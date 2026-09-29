@@ -21,12 +21,7 @@ import type {
   RendezVousIssue,
 } from "../../../prisma/generated/client";
 import type { Tx } from "@/features/dossier-client/base";
-
-const PAR_ISSUE: Readonly<Record<RendezVousIssue, RencontreStatut>> = {
-  eu_lieu: "tenu",
-  absent: "absent",
-  reporte: "reporte",
-};
+import { STATUT_DE_L_ISSUE } from "@/features/dossier-client/suivi";
 
 const PAR_STATUT_CALENDLY: Readonly<Record<CalendlyEventStatus, RencontreStatut | null>> = {
   scheduled: null,
@@ -40,7 +35,7 @@ export function statutFige(
   issue: RendezVousIssue | null,
   statutCalendly: CalendlyEventStatus,
 ): RencontreStatut | null {
-  if (issue !== null) return PAR_ISSUE[issue];
+  if (issue !== null) return STATUT_DE_L_ISSUE[issue];
   return PAR_STATUT_CALENDLY[statutCalendly];
 }
 
@@ -60,15 +55,24 @@ export async function figerRencontresAvantPurge(
     select: { id: true, calendlyEventId: true },
   });
   if (rencontres.length === 0) return 0;
-  const suivis = await tx.rendezVousSuivi.findMany({
+  // L'issue vient de `RencontreSuivi`, l'AUTORITÉ du suivi
+  // (`dossier-client/suivi.ts`). La recopie `RendezVousSuivi` ne sert qu'à
+  // défaut : un ancien point incomplet (« a eu lieu » sans suite) que la
+  // reprise de l'historique n'a pas pu reprendre.
+  const autorite = await tx.rencontreSuivi.findMany({
+    where: { rencontreId: { in: rencontres.map((r) => r.id) } },
+    select: { rencontreId: true, issue: true },
+  });
+  const recopies = await tx.rendezVousSuivi.findMany({
     where: { calendlyEventId: { in: ids } },
     select: { calendlyEventId: true, issue: true },
   });
-  const issue = new Map(suivis.map((s) => [s.calendlyEventId, s.issue]));
+  const issueDeLaRencontre = new Map(autorite.map((s) => [s.rencontreId, s.issue]));
+  const issueRecopiee = new Map(recopies.map((s) => [s.calendlyEventId, s.issue]));
   const statut = new Map(evs.map((e) => [e.id, e.status]));
   for (const r of rencontres) {
     const evId = r.calendlyEventId as string;
-    const i = issue.get(evId) ?? null;
+    const i = issueDeLaRencontre.get(r.id) ?? issueRecopiee.get(evId) ?? null;
     await tx.rencontre.update({
       where: { id: r.id },
       data: {

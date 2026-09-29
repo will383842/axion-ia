@@ -29,10 +29,16 @@ import type { FaitType } from "../../../prisma/generated/client";
 import { chiffrerParole } from "@/lib/chiffrer-parole";
 import { TYPES_DE_FAITS } from "@/server/visio/types-de-faits";
 import type { Tx } from "./base";
+import { LIBELLE_TYPE_FAIT } from "./libelles";
 
-/** Les champs de la note, dans l'ordre de l'écran, et le type de fait de chacun. */
+/**
+ * Les champs de la note, dans l'ordre de l'écran, et le type de fait de
+ * chacun. `libelle` est l'INTITULÉ DU CHAMP à l'écran (une question pour Will) ;
+ * le texte STOCKÉ (« En bref ») nomme le fait par `LIBELLE_TYPE_FAIT`, la
+ * même source que la page du rendez-vous et l'onglet Échanges.
+ */
 export const CHAMPS_DE_LA_NOTE = [
-  { champ: "activite", type: "activite", libelle: "Ce que fait la société" },
+  { champ: "activite", type: "activite", libelle: "Activité de la société" },
   { champ: "effectif", type: "effectif", libelle: "Effectif" },
   { champ: "besoin", type: "besoin", libelle: "Besoin" },
   { champ: "budget", type: "budget", libelle: "Budget annoncé" },
@@ -70,17 +76,20 @@ function texte(v: string | null | undefined): string | null {
   return t === "" ? null : t.slice(0, TAILLE_MAX_CHAMP);
 }
 
-/** La clé d'un fait : « global » pour un type à valeur unique, sinon le texte réduit. */
-export function cleDuFait(type: FaitType, enonce: string): string {
+/**
+ * La clé de consolidation d'un fait SAISI (note manuelle, réponse au
+ * formulaire Calendly) : « global » pour un type à valeur unique ; sinon une
+ * clé OPAQUE, propre à ce fait — chaque élément tapé est un élément distinct.
+ *
+ * 🔴 Jamais dérivée du texte. `faits.cle` est EN CLAIR (colonne de
+ * regroupement) alors que `enonce` est chiffré : une clé « former_l_equipe »
+ * ou « recommande_par_… » recopierait la parole du client en clair dans la
+ * base, les `pg_dump` et les sauvegardes immuables, où elle ne s'efface plus.
+ * Garde : `la-cle-d-un-fait-ne-contient-jamais-son-enonce.spec.ts`.
+ */
+export function cleDuFait(type: FaitType): string {
   if (TYPES_DE_FAITS[type].cardinalite === "unique") return "global";
-  const reduit = enonce
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "_")
-    .replace(/^_+|_+$/g, "")
-    .slice(0, 80);
-  return reduit === "" ? "global" : reduit;
+  return `saisie_${globalThis.crypto.randomUUID().replace(/-/g, "")}`;
 }
 
 /** La saisie est-elle vide ? */
@@ -113,7 +122,7 @@ export function faitsDeLaNote(s: SaisieNote, avecProjet: boolean): FaitDeLaNote[
     const nombre = type === "effectif" ? /(\d[\d\s]*)/.exec(enonce)?.[1] : undefined;
     faits.push({
       type,
-      cle: cleDuFait(type, enonce),
+      cle: cleDuFait(type),
       portee,
       enonce,
       quantite: nombre ? Number(nombre.replace(/\s/g, "")) : null,
@@ -125,7 +134,7 @@ export function faitsDeLaNote(s: SaisieNote, avecProjet: boolean): FaitDeLaNote[
     const enonce = texte(s.objectionTexte) ?? "Une objection a été exprimée.";
     faits.push({
       type: "objection",
-      cle: cleDuFait("objection", enonce),
+      cle: cleDuFait("objection"),
       portee: avecProjet ? "projet" : "entreprise",
       enonce,
       quantite: null,
@@ -173,12 +182,11 @@ export async function enregistrerNoteManuelle(
     orderBy: { version: "desc" },
     select: { version: true },
   });
-  const libelle = (type: FaitType): string =>
-    CHAMPS_DE_LA_NOTE.find((c) => c.type === type)?.libelle ?? "Objection";
   const contenu = {
     origine: "manuel",
-    // Lu par l'onglet Échanges et la page du projet (« En bref »).
-    enBref: faits.map((f) => `${libelle(f.type)} : ${f.enonce}`).join(" · "),
+    // Lu par l'onglet Échanges et la page du projet (« En bref ») : le fait
+    // s'y nomme comme partout ailleurs (`LIBELLE_TYPE_FAIT`).
+    enBref: faits.map((f) => `${LIBELLE_TYPE_FAIT[f.type]} : ${f.enonce}`).join(" · "),
     champs: faits.map((f) => ({ type: f.type, enonce: f.enonce })),
   };
   const cr = await tx.compteRendu.create({

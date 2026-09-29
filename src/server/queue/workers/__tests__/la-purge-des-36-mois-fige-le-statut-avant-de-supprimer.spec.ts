@@ -71,6 +71,38 @@ describe("⛔ la purge des 36 mois fige le statut avant de supprimer", () => {
     expect(recente?.["statut"] ?? null).toBeNull();
   });
 
+  it("l'issue vient de `RencontreSuivi`, l'autorité — pas de sa recopie", async () => {
+    const vieux = rendezVousCalendly({ startTime: new Date("2023-07-01T08:00:00Z") });
+    const r = {
+      id: id(5),
+      source: "calendly",
+      type: "visio",
+      titre: "t",
+      calendlyEventId: vieux["id"],
+    };
+    const base = dossierEnMemoire({
+      calendlyEvent: [vieux],
+      rencontre: [r],
+      // Divergence volontaire : l'autorité dit « a eu lieu », la recopie « absent ».
+      rencontreSuivi: [{ rencontreId: r.id, issue: "eu_lieu", suite: "aucune", suiteLe: null }],
+      rendezVousSuivi: [{ id: "s", calendlyEventId: vieux["id"], issue: "absent" }],
+    });
+    await base.client.$transaction((tx) =>
+      figerRencontresAvantPurge(tx as never, {
+        startTime: { lt: new Date("2023-10-01T00:00:00Z") },
+      }),
+    );
+    const figee = base.tables["rencontre"]?.[0];
+    expect(figee?.["statut"]).toBe("tenu");
+    expect(figee?.["issueFigee"]).toBe("eu_lieu");
+  });
+
+  it("le statut de l'issue a une seule table (lecture du code)", () => {
+    const src = readFileSync(join(process.cwd(), "src/server/visio/figer-avant-purge.ts"), "utf8");
+    expect(src).toContain("STATUT_DE_L_ISSUE");
+    expect(src).not.toMatch(/eu_lieu:\s*"tenu"/);
+  });
+
   it("sans point fait, le statut vient de Calendly", () => {
     expect(statutFige(null, "canceled")).toBe("annule");
     expect(statutFige(null, "no_show")).toBe("absent");

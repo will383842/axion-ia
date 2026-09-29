@@ -34,7 +34,7 @@ import {
   type FicheProche,
 } from "@/server/qualiopi/crm/porte-client";
 import { dansLaTransaction, type BaseTransactionnelle, type Tx } from "./base";
-import { entrepriseDeclaree } from "./rencontre-calendly";
+import { entrepriseDeclaree } from "@/features/admin-rendezvous/a-venir";
 import { validerRattachement } from "./rattacher";
 
 export interface EntreeCreerProspect {

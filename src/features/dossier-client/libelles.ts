@@ -8,11 +8,17 @@
 
 import type {
   FaitType,
+  MotifProposition,
   ProjetStatut,
   RencontreStatut,
+  RendezVousIssue,
   RendezVousSuite,
   RoleDansProjet,
 } from "../../../prisma/generated/client";
+import {
+  LIBELLE_ISSUE as LIBELLE_ISSUE_RDV,
+  LIBELLE_SUITE as LIBELLE_SUITE_RDV,
+} from "@/features/admin-rendezvous/suivi";
 
 export const LIBELLE_TYPE_FAIT = {
   info_societe: "Ce que fait la société",
@@ -89,12 +95,26 @@ export const LIBELLE_STATUT_RENCONTRE = {
   reporte: "Reporté",
 } as const satisfies Record<RencontreStatut, string>;
 
-export const LIBELLE_SUITE = {
-  devis: "Envoyer un devis",
-  relance: "Relancer",
-  proposition: "Envoyer une proposition",
-  aucune: "Aucune suite",
-} as const satisfies Record<RendezVousSuite, string>;
+/**
+ * Les libellés de la suite et de l'issue d'un rendez-vous : CEUX de l'onglet
+ * « Rendez-vous » (`admin-rendezvous/suivi.ts`), une seule table — la même
+ * suite ne s'appelle pas « Devis à envoyer » dans un formulaire et « Envoyer
+ * un devis » sur la page d'à côté.
+ */
+export const LIBELLE_SUITE: Readonly<Record<RendezVousSuite, string>> = LIBELLE_SUITE_RDV;
+export const LIBELLE_ISSUE: Readonly<Record<RendezVousIssue, string>> = LIBELLE_ISSUE_RDV;
+
+/** Pourquoi cette fiche est proposée, en français. */
+export const LIBELLE_MOTIF = {
+  email_calendly: "même adresse e-mail que la fiche",
+  contact_connu: "l'adresse d'une personne de la fiche",
+  domaine_email: "même domaine d'entreprise qu'une personne de la fiche",
+  entreprise_declaree: "le nom d'entreprise donné dans la réservation",
+  demande_liee: "une demande envoyée depuis le site",
+  report: "le rendez-vous qu'il remplace était chez ce client",
+  choix_extension: "choisie au démarrage de l'enregistrement",
+  contenu_compte_rendu: "déduite du compte rendu",
+} as const satisfies Record<MotifProposition, string>;
 
 /** Montant en euros, sans centimes inutiles. */
 export function euros(cents: number): string {

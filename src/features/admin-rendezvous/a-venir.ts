@@ -20,11 +20,31 @@ function invite(rawPayload: unknown): Record<string, unknown> | null {
   return typeof v === "object" && v !== null ? (v as Record<string, unknown>) : null;
 }
 
-/** Une question qui demande un téléphone : sa réponse est déjà dans `inviteePhone`. */
-const QUESTION_TELEPHONE = /t[ée]l[ée]phone|phone|mobile|portable/i;
+/**
+ * LES règles qui reconnaissent une question du formulaire Calendly — une
+ * seule source pour la carte « à venir », le rattachement proposé du dossier
+ * client et la reprise de l'historique (chantier visio, PR 4). Deux règles
+ * différentes feraient afficher une entreprise sur la carte sans que le
+ * rattachement la voie.
+ */
 
-/** La question « Nom de l'entreprise » du formulaire Calendly. */
-const QUESTION_ENTREPRISE = /entreprise|soci[ée]t[ée]|structure|organisation/i;
+/** Une question qui demande un téléphone : sa réponse est déjà dans `inviteePhone`. */
+export function estQuestionTelephone(question: string): boolean {
+  return /t[ée]l[ée]phone|phone|mobile|portable/i.test(question);
+}
+
+/** « Ville de l'entreprise » : un lieu, pas un nom. */
+export function estQuestionVille(question: string): boolean {
+  return /ville|commune/i.test(question);
+}
+
+/** La question « Nom de l'entreprise » (ou de la société, de l'organisation…). */
+export function estQuestionEntreprise(question: string): boolean {
+  return (
+    /entreprise|soci[ée]t[ée]|structure|organisation|organisme/i.test(question) &&
+    !estQuestionVille(question)
+  );
+}
 
 /**
  * Les réponses du formulaire Calendly, dans l'ordre où l'invité les a données.
@@ -39,7 +59,7 @@ export function reponsesFormulaire(rawPayload: unknown): ReponseFormulaire[] {
     const q = (x as Record<string, unknown>)["question"];
     const a = (x as Record<string, unknown>)["answer"];
     if (typeof q !== "string" || typeof a !== "string" || !a.trim()) return [];
-    if (QUESTION_TELEPHONE.test(q)) return [];
+    if (estQuestionTelephone(q)) return [];
     return [{ question: q.trim(), reponse: a.trim() }];
   });
 }
@@ -52,10 +72,25 @@ export function entrepriseEtBesoin(reponses: readonly ReponseFormulaire[]): {
   entreprise: string | null;
   besoin: ReponseFormulaire[];
 } {
-  const i = reponses.findIndex((r) => QUESTION_ENTREPRISE.test(r.question));
+  const i = reponses.findIndex((r) => estQuestionEntreprise(r.question));
   if (i === -1) return { entreprise: null, besoin: [...reponses] };
   return {
     entreprise: reponses[i]?.reponse ?? null,
     besoin: reponses.filter((_, j) => j !== i),
+  };
+}
+
+/**
+ * L'entreprise que l'invité a déclarée, et sa ville, telles que le formulaire
+ * les porte. Le rattachement proposé et « Créer la fiche prospect » la lisent.
+ */
+export function entrepriseDeclaree(rawPayload: unknown): {
+  nom: string | null;
+  ville: string | null;
+} {
+  const reponses = reponsesFormulaire(rawPayload);
+  return {
+    nom: entrepriseEtBesoin(reponses).entreprise,
+    ville: reponses.find((r) => estQuestionVille(r.question))?.reponse ?? null,
   };
 }

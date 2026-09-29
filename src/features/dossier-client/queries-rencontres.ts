@@ -26,8 +26,13 @@ import type {
 import { prisma } from "@/lib/prisma";
 import { dechiffrerParole } from "@/lib/chiffrer-parole";
 import { TEXTE_ILLISIBLE } from "./queries";
-import { entrepriseDeclaree, reponsesCalendly } from "./rencontre-calendly";
-import { caseTestInterneVisible, estClientTestInterne, modePiloteDisponible } from "./client-test";
+import { entrepriseDeclaree, reponsesFormulaire } from "@/features/admin-rendezvous/a-venir";
+import {
+  caseTestInterneVisible,
+  estClientTestInterne,
+  HORS_RENCONTRES_DE_TEST,
+  modePiloteDisponible,
+} from "./client-test";
 
 function lire(valeur: string | null): string | null {
   if (valeur === null) return null;
@@ -179,11 +184,8 @@ export async function lireRencontreDetaillee(
     calendlyEventId: r.calendlyEventId,
     titulaire: ev ? { nom: ev.inviteeName, email: ev.inviteeEmail } : null,
     entrepriseDeclaree: ev ? entrepriseDeclaree(ev.rawPayload) : { nom: null, ville: null },
-    reponsesFormulaire: ev
-      ? reponsesCalendly(ev.rawPayload).filter(
-          (x) => !/t[ée]l[ée]phone|phone|mobile|portable/i.test(x.question),
-        )
-      : [],
+    // Le téléphone est déjà écarté par la règle de l'onglet « Rendez-vous ».
+    reponsesFormulaire: ev ? reponsesFormulaire(ev.rawPayload) : [],
     participants: r.participants.map((p) => ({ nom: p.nomAffiche, role: p.role })),
     suivi: r.suivi,
     comptesRendus: r.comptesRendus.map((c) => {
@@ -267,7 +269,7 @@ export async function lireRencontresAClasser(historique: boolean): Promise<Renco
     where: {
       rattachementStatut: { in: ["a_classer", "propose"] },
       repriseHistorique: historique,
-      estTestInterne: false,
+      ...HORS_RENCONTRES_DE_TEST,
     },
     select: {
       id: true,
@@ -304,7 +306,7 @@ export async function lireNombreAClasser(): Promise<number> {
     where: {
       rattachementStatut: { in: ["a_classer", "propose"] },
       repriseHistorique: false,
-      estTestInterne: false,
+      ...HORS_RENCONTRES_DE_TEST,
     },
   });
 }

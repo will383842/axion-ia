@@ -10,6 +10,7 @@
  * (21 h 30 UTC) est un appel du vendredi. Module PUR.
  */
 
+import type { RendezVousIssue, RendezVousSuite } from "../../../prisma/generated/client";
 import { dayKeyInParis } from "@/lib/calendar-grid";
 import { RELANCE_PAR_DEFAUT_JOURS_OUVRES } from "./seuils";
 
@@ -29,4 +30,27 @@ export function jourOuvreApres(depuis: Date, n: number): string {
 /** La suite proposée par défaut. */
 export function suiteParDefaut(maintenant: Date): { suite: "relance"; suiteLe: string } {
   return { suite: "relance", suiteLe: jourOuvreApres(maintenant, RELANCE_PAR_DEFAUT_JOURS_OUVRES) };
+}
+
+/**
+ * Ce que le bloc « Et ensuite ? » d'« Après l'appel » montre au chargement.
+ * PUR. Un point déjà fait se relit tel quel ; sinon « A eu lieu », la suite
+ * proposée (`suiteParDefaut`, B11 : relance) et SON échéance — la suite et la
+ * date viennent de la même source, jamais l'une de la règle et l'autre d'une
+ * valeur écrite en dur dans l'écran.
+ */
+export function valeursInitialesDuSuivi(
+  suivi: {
+    readonly issue: RendezVousIssue;
+    readonly suite: RendezVousSuite | null;
+    readonly suiteLe: Date | null;
+  } | null,
+  maintenant: Date,
+): { issue: RendezVousIssue; suite: RendezVousSuite; suiteLe: string } {
+  const proposee = suiteParDefaut(maintenant);
+  return {
+    issue: suivi?.issue ?? "eu_lieu",
+    suite: suivi?.suite ?? proposee.suite,
+    suiteLe: suivi?.suiteLe?.toISOString().slice(0, 10) ?? proposee.suiteLe,
+  };
 }

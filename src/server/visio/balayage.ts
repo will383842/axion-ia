@@ -42,6 +42,7 @@
  */
 
 import type { Tx, BaseTransactionnelle } from "@/features/dossier-client/base";
+import { HORS_RENCONTRES_DE_TEST } from "@/features/dossier-client/client-test";
 import { assurerRencontrePourCalendly } from "@/features/dossier-client/rencontre-calendly";
 import { dayKeyInParis } from "@/lib/calendar-grid";
 import { canalDesRappels, leverAlerte, signalerAlerte, type Notifier } from "./alertes";
@@ -116,7 +117,7 @@ async function rencontresPourF1(tx: Tx, borne: Date, maintenant: Date): Promise<
   const lignes = await tx.rencontre.findMany({
     where: {
       repriseHistorique: false,
-      estTestInterne: false,
+      ...HORS_RENCONTRES_DE_TEST,
       type: { in: ["visio", "telephone"] },
       debutPrevu: { gte: borne, lt: maintenant },
     },
@@ -245,7 +246,7 @@ export async function compterVeille(db: Tx, maintenant: Date): Promise<number> {
   const demain = dayKeyInParis(new Date(maintenant.getTime() + JOUR_MS));
   const proches = await db.rencontre.findMany({
     where: {
-      estTestInterne: false,
+      ...HORS_RENCONTRES_DE_TEST,
       debutPrevu: { gte: maintenant, lt: new Date(maintenant.getTime() + 2 * JOUR_MS) },
     },
     select: { debutPrevu: true },
@@ -261,7 +262,7 @@ export async function couvertureDuMois(db: Tx, maintenant: Date): Promise<Couver
     await db.rencontre.findMany({
       where: {
         type: "visio",
-        estTestInterne: false,
+        ...HORS_RENCONTRES_DE_TEST,
         repriseHistorique: false,
         debutPrevu: { gte: debutDuMoisParis(maintenant), lt: maintenant },
       },

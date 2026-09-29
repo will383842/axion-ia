@@ -42,6 +42,7 @@ import type {
   RendezVousIssue,
   RendezVousSuite,
 } from "../../../prisma/generated/client";
+import { garderSuiteEtEcheance, manquementDuSuivi } from "@/features/admin-rendezvous/suivi";
 import { dansLaTransaction, type BaseTransactionnelle, type Tx } from "./base";
 import { assurerRencontrePourCalendly } from "./rencontre-calendly";
 
@@ -52,11 +53,16 @@ export interface EntreeSuivi {
   readonly issue: RendezVousIssue;
   readonly suite: RendezVousSuite | null;
   readonly suiteLe: Date | null;
-  /** Appréciation libre : `RendezVousSuivi` seulement. */
+  /**
+   * Appréciation libre : `RendezVousSuivi` seulement. ABSENTE (`undefined`) :
+   * l'appréciation déjà saisie dans l'onglet « Rendez-vous » est GARDÉE —
+   * « Après l'appel » ne la montre pas, il ne doit pas l'effacer. `null` :
+   * effacée (le formulaire de l'onglet l'a vidée).
+   */
   readonly note?: string | null;
   /** L'administrateur (NULL = proposé par la machine). */
   readonly auteurId: string | null;
-  /** Adresse du compte console, recopiée dans `RendezVousSuivi.renseignePar`. */
+  /** Adresse du compte console, recopiée dans `RendezVousSuivi.renseignePar`. Absente : gardée. */
   readonly renseignePar?: string | null;
   readonly maintenant?: Date;
 }
@@ -75,21 +81,20 @@ export const STATUT_DE_L_ISSUE: Readonly<Record<RendezVousIssue, RencontreStatut
   reporte: "reporte",
 };
 
-/** La suite n'a de sens que si l'appel a eu lieu ; l'échéance, que si une suite est prévue. */
+/**
+ * La règle issue / suite / échéance est CELLE de l'onglet « Rendez-vous »
+ * (`admin-rendezvous/suivi.ts`, source unique) : on l'applique, on ne la
+ * réécrit pas.
+ */
 export function normaliserEntreeSuivi(e: EntreeSuivi): {
   issue: RendezVousIssue;
   suite: RendezVousSuite | null;
   suiteLe: Date | null;
 } {
-  const suite = e.issue === "eu_lieu" ? e.suite : null;
-  const suiteLe = suite && suite !== "aucune" ? e.suiteLe : null;
-  if (e.issue === "eu_lieu" && suite === null) {
-    throw new ErreurSuivi("Le rendez-vous a eu lieu : choisissez la suite à donner.");
-  }
-  if (suite !== null && suite !== "aucune" && suiteLe === null) {
-    throw new ErreurSuivi("Indiquez pour quand : une suite sans date ne se fait jamais.");
-  }
-  return { issue: e.issue, suite, suiteLe };
+  const garde = garderSuiteEtEcheance(e.issue, e.suite, e.suiteLe);
+  const manque = manquementDuSuivi({ issue: e.issue, ...garde });
+  if (manque !== null) throw new ErreurSuivi(manque.message);
+  return { issue: e.issue, ...garde };
 }
 
 /**
@@ -168,15 +173,17 @@ async function enregistrerSuiviDans(
   // La recopie dans l'onglet « Rendez-vous », tant que Calendly vit.
   let suiviCalendlyEcrit = false;
   if (calendlyEventId !== null) {
-    const donnees = {
-      ...valeurs,
-      note: e.note && e.note.trim() !== "" ? e.note.trim() : null,
-      renseignePar: e.renseignePar ?? null,
-    };
+    // `note` et `renseignePar` ne s'écrivent que si l'appelant les donne :
+    // « Valider et préparer le devis » ne connaît pas l'appréciation de
+    // l'onglet, il ne l'efface pas (garde
+    // `apres-l-appel-ne-perd-pas-la-note-de-l-onglet.spec.ts`).
+    const note =
+      e.note === undefined ? {} : { note: e.note && e.note.trim() !== "" ? e.note.trim() : null };
+    const renseignePar = e.renseignePar === undefined ? {} : { renseignePar: e.renseignePar };
     await tx.rendezVousSuivi.upsert({
       where: { calendlyEventId },
-      create: { calendlyEventId, ...donnees },
-      update: donnees,
+      create: { calendlyEventId, ...valeurs, ...note, ...renseignePar },
+      update: { ...valeurs, ...note, ...renseignePar },
     });
     suiviCalendlyEcrit = true;
   }

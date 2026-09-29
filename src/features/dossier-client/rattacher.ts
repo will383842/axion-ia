@@ -22,11 +22,16 @@
  *      d'une fiche (`Client.contactEmail`) ;
  *   2. `contact_connu` — l'adresse d'un participant est celle d'une personne
  *      d'une fiche (`client_contact_adresses`, par empreinte) ;
- *   3. `report` — le rendez-vous remplace un rendez-vous déjà rangé ;
- *   4. `domaine_email` — même domaine PROFESSIONNEL qu'une personne d'une
+ *   3. `demande_liee` — Will a relié le rendez-vous à une DEMANDE envoyée
+ *      depuis le site (`CalendlyEvent.linkedSubmissionId`), et cette demande
+ *      ressemble à une fiche : même SIREN (tiré du numéro saisi), même
+ *      adresse qu'une personne de la fiche (par empreinte), ou même raison
+ *      sociale normalisée (plan V-06, correction EX-M5) ;
+ *   4. `report` — le rendez-vous remplace un rendez-vous déjà rangé ;
+ *   5. `domaine_email` — même domaine PROFESSIONNEL qu'une personne d'une
  *      fiche. Jamais une messagerie grand public (`DOMAINES_WEBMAIL`) : deux
  *      clients Gmail n'ont rien en commun ;
- *   5. `entreprise_declaree` — le « Nom de l'entreprise » du formulaire
+ *   6. `entreprise_declaree` — le « Nom de l'entreprise » du formulaire
  *      Calendly, normalisé, est la raison sociale d'une fiche.
  *
  * Une fiche ABSORBÉE par une fusion vivante n'est jamais proposée : on propose
@@ -45,6 +50,7 @@
 import type { MotifProposition } from "../../../prisma/generated/client";
 import { domaineDe, natureAdresse } from "@/lib/email/nature-adresse";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { checkSirenFormat, normalizeSiret, sirenDuSiret } from "@/lib/siret";
 import { normaliserNom } from "@/server/qualiopi/crm/normaliser-nom";
 import type { Tx } from "./base";
 
@@ -58,6 +64,28 @@ export interface IndicesDeRattachement {
   readonly entrepriseDeclaree: string | null;
   /** Fiche de la rencontre que celle-ci remplace (report), rangée ou proposée. */
   readonly clientDuReport: string | null;
+  /** La demande du site reliée au rendez-vous (`linkedSubmissionId`), s'il y en a une. */
+  readonly demandeLiee: DemandeLiee | null;
+}
+
+/** Ce que la proposition lit d'une demande envoyée depuis le site. */
+export interface DemandeLiee {
+  /** SIREN tiré du numéro saisi (SIREN ou SIRET), ou `null`. */
+  readonly siren: string | null;
+  /** Empreinte de l'adresse de la demande (`Submission.contactEmailHash`). */
+  readonly emailHash: string | null;
+  readonly raisonSociale: string | null;
+}
+
+/**
+ * Le SIREN d'un numéro saisi dans une demande (un SIREN, ou un SIRET dont il
+ * est le début), par les règles de `lib/siret.ts`. `null` si le numéro n'est
+ * pas un SIREN valide : une faute de frappe ne propose jamais une fiche. PUR.
+ */
+export function sirenDuNumeroSaisi(numero: string | null | undefined): string | null {
+  const v = normalizeSiret(numero ?? "");
+  const controle = checkSirenFormat(/^\d{14}$/.test(v) ? sirenDuSiret(v) : v);
+  return controle.ok ? controle.value : null;
 }
 
 export interface Proposition {
@@ -69,6 +97,7 @@ export interface Proposition {
 export interface FicheConnuePourRattachement {
   readonly id: string;
   readonly raisonSociale: string;
+  readonly siren: string | null;
   readonly contactEmail: string | null;
   /** Empreintes des adresses de ses personnes. */
   readonly empreintes: readonly string[];
@@ -98,6 +127,24 @@ export function calculerProposition(
   const parContact = fiches.find((x) => x.empreintes.some((h) => empreintes.has(h)));
   if (parContact) return { clientId: parContact.id, motif: "contact_connu" };
 
+  const demande = indices.demandeLiee;
+  if (demande) {
+    const nomDemande = normaliserNom(demande.raisonSociale);
+    const f =
+      (demande.siren ? fiches.find((x) => x.siren === demande.siren) : undefined) ??
+      (demande.emailHash
+        ? fiches.find(
+            (x) =>
+              x.empreintes.includes(demande.emailHash as string) ||
+              hashEmailForLookup(x.contactEmail) === demande.emailHash,
+          )
+        : undefined) ??
+      (nomDemande !== ""
+        ? fiches.find((x) => normaliserNom(x.raisonSociale) === nomDemande)
+        : undefined);
+    if (f) return { clientId: f.id, motif: "demande_liee" };
+  }
+
   if (indices.clientDuReport) return { clientId: indices.clientDuReport, motif: "report" };
 
   const domainesPro = new Set(
@@ -124,7 +171,11 @@ export async function chargerFichesPourRattachement(
   const adresses = [indices.emailTitulaire, ...indices.emailsInvites]
     .filter((e): e is string => !!e && e.includes("@"))
     .map((e) => e.trim().toLowerCase());
-  const empreintes = adresses.map((a) => hashEmailForLookup(a)).filter((h): h is string => !!h);
+  const demande = indices.demandeLiee;
+  const empreintes = [
+    ...adresses.map((a) => hashEmailForLookup(a)),
+    demande?.emailHash ?? null,
+  ].filter((h): h is string => !!h);
   const domaines = [...new Set(adresses.filter((a) => natureAdresse(a) === "pro").map(domaineDe))];
 
   // Personnes dont une adresse est connue, ou au même domaine professionnel.
@@ -156,19 +207,18 @@ export async function chargerFichesPourRattachement(
         ...(premiereAdresse
           ? [{ contactEmail: { equals: premiereAdresse, mode: "insensitive" as const } }]
           : []),
-        ...(nomDeclare !== ""
-          ? [
-              {
-                raisonSociale: {
-                  contains: nomDeclare.split(/\s+/)[0] ?? "",
-                  mode: "insensitive" as const,
-                },
-              },
-            ]
-          : []),
+        ...[nomDeclare, demande?.raisonSociale?.trim() ?? ""]
+          .filter((n) => n !== "")
+          .map((n) => ({
+            raisonSociale: {
+              contains: n.split(/\s+/)[0] ?? "",
+              mode: "insensitive" as const,
+            },
+          })),
+        ...(demande?.siren ? [{ siren: demande.siren }] : []),
       ],
     },
-    select: { id: true, raisonSociale: true, contactEmail: true },
+    select: { id: true, raisonSociale: true, siren: true, contactEmail: true },
     take: 50,
   });
   if (fichesBrutes.length === 0) return [];
@@ -190,6 +240,7 @@ export async function chargerFichesPourRattachement(
       return {
         id: f.id,
         raisonSociale: f.raisonSociale,
+        siren: f.siren,
         contactEmail: f.contactEmail,
         empreintes: sesAdresses.map((a) => a.emailHash),
         domainesPro: sesAdresses

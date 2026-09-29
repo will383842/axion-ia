@@ -24,33 +24,57 @@
  *     (`event_guests`), et Williams — chacun avec l'empreinte de son adresse,
  *     jamais l'adresse elle-même ;
  *   · une PROPOSITION de fiche (`rattacher.ts`, A4 : jamais un rattachement) ;
- *   · `repriseHistorique = true` si le rendez-vous commence AVANT la borne du
- *     balayage : il n'appelle alors ni rappel ni alerte (V-07b).
+ *   · `repriseHistorique = true` si le rendez-vous commence AVANT la limite de
+ *     l'historique : il n'appelle alors ni rappel ni alerte (V-07b). Un
+ *     rendez-vous À VENIR ne l'est JAMAIS.
  *
  * ## La borne
  *
  * Tant que le balayage n'a jamais tourné, la borne est
- * `DEBUT_BALAYAGE_DOSSIER_PAR_DEFAUT` (la mise en ligne de cette PR). Dès son
+ * `DEBUT_BALAYAGE_DOSSIER_PAR_DEFAUT` (jour cible de la mise en ligne). Dès son
  * premier passage, c'est la date de ce passage, lue dans
- * `battements_circuit` (`premierLe`, écrit une seule fois). Tout ce qui
- * précède passe par `scripts/visio/reprendre-historique-calendly.ts`.
+ * `battements_circuit` (`premierLe`, écrit une seule fois). Dans les deux
+ * cas, la limite ne dépasse jamais « maintenant » (`limiteDeLHistorique`) :
+ * la reprise est lancée AVANT d'allumer le balayage, et un rendez-vous déjà
+ * réservé pour demain n'est pas de l'historique. Tout ce qui précède passe
+ * par `scripts/visio/reprendre-historique-calendly.ts`.
  *
  * Module NEUTRE (sans `server-only`, sans Next) : le worker l'importe.
  */
 
 import type { RencontreType } from "../../../prisma/generated/client";
+import { entrepriseDeclaree } from "@/features/admin-rendezvous/a-venir";
+import { compteOrganisateur, invitesSupplementaires } from "@/features/admin-rendezvous/visio";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { canalDuRendezVous } from "@/server/calendly/canal";
 import { estRendezVousDuDossier } from "@/server/visio/liste-blanche-types";
 import { lireBorneDuBalayage } from "@/server/visio/battement";
 import type { BaseTransactionnelle, Tx } from "./base";
-import { proposerRattachement, type IndicesDeRattachement } from "./rattacher";
+import {
+  proposerRattachement,
+  sirenDuNumeroSaisi,
+  type DemandeLiee,
+  type IndicesDeRattachement,
+} from "./rattacher";
 
 /**
- * Borne par défaut du balayage : la mise en ligne de cette PR (jour cible du
- * plan, 03/10/2026). Un rendez-vous plus ancien est une REPRISE d'historique.
+ * Borne par défaut du balayage, tant qu'il n'a jamais tourné : le jour cible
+ * de mise en ligne du plan (03/10/2026). Elle ne vaut JAMAIS seule : la
+ * limite réelle est `limiteDeLHistorique`, qui ne dépasse pas « maintenant »
+ * — si la PR atterrit avant le 03/10, un « Discutons » déjà réservé pour le
+ * 02/10 n'est pas de l'historique.
  */
 export const DEBUT_BALAYAGE_DOSSIER_PAR_DEFAUT = new Date("2026-10-03T00:00:00+02:00");
+
+/**
+ * Ce qui commence AVANT cette date est de l'historique : la borne du balayage
+ * (son premier passage, ou la constante par défaut), mais jamais au-delà de
+ * maintenant. PURE.
+ */
+export function limiteDeLHistorique(borneLue: Date | null, maintenant: Date): Date {
+  const borne = borneLue ?? DEBUT_BALAYAGE_DOSSIER_PAR_DEFAUT;
+  return borne.getTime() < maintenant.getTime() ? borne : maintenant;
+}
 
 /** Nom affiché de Williams dans les participants. */
 export const NOM_WILLIAMS = "Williams Jullin";
@@ -60,6 +84,8 @@ export interface RendezVousCalendlyLu {
   readonly id: string;
   readonly eventTypeName: string;
   readonly linkedJobApplicationId: string | null;
+  /** La demande du site que Will a reliée au rendez-vous (motif `demande_liee`). */
+  readonly linkedSubmissionId: string | null;
   readonly startTime: Date | null;
   readonly endTime: Date | null;
   readonly inviteeName: string | null;
@@ -84,59 +110,10 @@ export interface OptionsAssurer {
 }
 
 // ── Lecture de la charge Calendly (pure) ─────────────────────────────────────
-
-function objet(v: unknown): Record<string, unknown> | null {
-  return typeof v === "object" && v !== null ? (v as Record<string, unknown>) : null;
-}
-
-function adresses(liste: unknown, champ: string): string[] {
-  if (!Array.isArray(liste)) return [];
-  return liste.flatMap((x) => {
-    const v = objet(x)?.[champ];
-    return typeof v === "string" && v.includes("@") ? [v.trim()] : [];
-  });
-}
-
-/** Les invités ajoutés par le titulaire (`event.event_guests`). */
-export function invitesDuRendezVous(rawPayload: unknown): string[] {
-  return adresses(objet(objet(rawPayload)?.["event"])?.["event_guests"], "email");
-}
-
-/** Le compte de l'hôte Calendly (Williams), s'il est dans la charge. */
-export function compteDeLHote(rawPayload: unknown): string | null {
-  return (
-    adresses(objet(objet(rawPayload)?.["event"])?.["event_memberships"], "user_email")[0] ?? null
-  );
-}
-
-/** Les réponses au formulaire, question → réponse (texte non vide). */
-export function reponsesCalendly(
-  rawPayload: unknown,
-): Array<{ question: string; reponse: string }> {
-  const qa = objet(objet(rawPayload)?.["invitee"])?.["questions_and_answers"];
-  if (!Array.isArray(qa)) return [];
-  return qa.flatMap((x) => {
-    const q = objet(x)?.["question"];
-    const a = objet(x)?.["answer"];
-    return typeof q === "string" && typeof a === "string" && a.trim() !== ""
-      ? [{ question: q.trim(), reponse: a.trim() }]
-      : [];
-  });
-}
-
-/** « Nom de l'entreprise » et « Ville de l'entreprise » du formulaire. */
-export function entrepriseDeclaree(rawPayload: unknown): {
-  nom: string | null;
-  ville: string | null;
-} {
-  const r = reponsesCalendly(rawPayload);
-  const ville = r.find((x) => /ville/i.test(x.question))?.reponse ?? null;
-  const nom =
-    r.find(
-      (x) => /entreprise|soci[ée]t[ée]|structure/i.test(x.question) && !/ville/i.test(x.question),
-    )?.reponse ?? null;
-  return { nom, ville };
-}
+// Les invités, l'hôte, les réponses et l'entreprise déclarée se lisent par les
+// fonctions de l'onglet « Rendez-vous » (`admin-rendezvous/visio.ts`,
+// `admin-rendezvous/a-venir.ts`, sans import : le worker peut les charger) —
+// jamais par une copie.
 
 /** Le code Meet « abc-defg-hij » d'un lien Meet, ou `null`. */
 export function codeMeet(location: string | null | undefined): string | null {
@@ -157,6 +134,7 @@ const CHAMPS_CALENDLY = {
   id: true,
   eventTypeName: true,
   linkedJobApplicationId: true,
+  linkedSubmissionId: true,
   startTime: true,
   endTime: true,
   inviteeName: true,
@@ -180,6 +158,21 @@ async function clientDuReport(tx: Tx, eventUri: string | null): Promise<string |
     select: { clientId: true, clientProposeId: true },
   });
   return ancienne?.clientId ?? ancienne?.clientProposeId ?? null;
+}
+
+/** La demande du site reliée au rendez-vous, vue par la proposition. */
+async function demandeLiee(tx: Tx, submissionId: string | null): Promise<DemandeLiee | null> {
+  if (!submissionId) return null;
+  const d = await tx.submission.findUnique({
+    where: { id: submissionId },
+    select: { companyName: true, registrationNumber: true, contactEmailHash: true },
+  });
+  if (d === null) return null;
+  return {
+    siren: sirenDuNumeroSaisi(d.registrationNumber),
+    emailHash: d.contactEmailHash,
+    raisonSociale: d.companyName,
+  };
 }
 
 /**
@@ -218,15 +211,25 @@ export async function assurerRencontrePourCalendly(
       select: { id: true },
     });
     if (existante !== null) {
-      await tx.rencontre.update({ where: { id: existante.id }, data: copie });
+      // Un rendez-vous À VENIR n'est jamais de l'historique : un marquage
+      // posé à tort (déplacé par Calendly vers le futur) se corrige ici.
+      const futur = ev.startTime !== null && ev.startTime.getTime() > maintenant.getTime();
+      await tx.rencontre.update({
+        where: { id: existante.id },
+        data: { ...copie, ...(futur ? { repriseHistorique: false } : {}) },
+      });
       return { statut: "existante", rencontreId: existante.id };
     }
 
-    const borne =
-      options.borne ?? (await lireBorneDuBalayage(tx)) ?? DEBUT_BALAYAGE_DOSSIER_PAR_DEFAUT;
+    const limite = limiteDeLHistorique(
+      options.borne ?? (await lireBorneDuBalayage(tx)),
+      maintenant,
+    );
+    const futur = ev.startTime !== null && ev.startTime.getTime() > maintenant.getTime();
     const reprise =
-      options.repriseHistorique === true ||
-      (ev.startTime !== null && ev.startTime.getTime() < borne.getTime());
+      !futur &&
+      (options.repriseHistorique === true ||
+        (ev.startTime !== null && ev.startTime.getTime() < limite.getTime()));
 
     const rencontre = await tx.rencontre.create({
       data: {
@@ -240,7 +243,7 @@ export async function assurerRencontrePourCalendly(
     });
 
     // Les participants : jamais une adresse, seulement son empreinte.
-    const invites = invitesDuRendezVous(ev.rawPayload);
+    const invites = invitesSupplementaires(ev.rawPayload);
     await tx.rencontreParticipant.create({
       data: {
         rencontreId: rencontre.id,
@@ -263,7 +266,7 @@ export async function assurerRencontrePourCalendly(
       data: {
         rencontreId: rencontre.id,
         nomAffiche: NOM_WILLIAMS,
-        emailHash: hashEmailForLookup(compteDeLHote(ev.rawPayload)),
+        emailHash: hashEmailForLookup(compteOrganisateur(ev.rawPayload)),
         role: "axion",
       },
     });
@@ -273,6 +276,7 @@ export async function assurerRencontrePourCalendly(
       emailsInvites: invites,
       entrepriseDeclaree: entrepriseDeclaree(ev.rawPayload).nom,
       clientDuReport: await clientDuReport(tx, ev.eventUri),
+      demandeLiee: await demandeLiee(tx, ev.linkedSubmissionId),
     };
     await proposerRattachement(tx, rencontre.id, indices);
 
