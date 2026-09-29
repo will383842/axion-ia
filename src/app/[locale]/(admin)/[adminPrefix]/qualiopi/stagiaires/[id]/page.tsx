@@ -1,6 +1,7 @@
 /**
  * Admin — Qualiopi · Fiche stagiaire (R10).
- * Édition identité + handicap (write-only chiffré) + consentements.
+ * Édition identité + handicap (write-only chiffré) + consentements, puis le
+ * parcours de la personne (inscriptions et pièces nominatives, lecture seule).
  * Le détail handicap chiffré n'est jamais déchiffré ni affiché ici (RGPD).
  */
 
@@ -14,6 +15,8 @@ import { BesoinAdaptationReveal } from "@/components/admin/qualiopi/BesoinAdapta
 import { lireBesoinAdaptationAction } from "@/server/actions/qualiopi/portail";
 import { TraineeForm } from "@/components/admin/qualiopi/TraineeForm";
 import { getTrainee } from "@/server/qualiopi/trainees/trainees";
+import { getParcoursStagiaire } from "@/server/qualiopi/trainees/parcours-stagiaire";
+import { ParcoursStagiaireSection } from "@/components/admin/qualiopi/ParcoursStagiaire";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { listClients } from "@/server/qualiopi/crm/clients";
 import { gardePage } from "@/server/auth/garde-page";
@@ -38,6 +41,7 @@ export default async function FicheStagiairePage({ params }: PageProps) {
   const base = `/${locale}/${adminPrefix}/qualiopi/stagiaires`;
   const trainee = await getTrainee(id);
   if (!trainee) notFound();
+  const parcours = await getParcoursStagiaire(trainee.id);
 
   // 🔴 F1 — mêmes clients qu'à la création. Une fiche déjà enregistrée dont
   // l'entreprise DÉSIGNE un client existant se rouvre sur ce client : c'est
@@ -50,7 +54,7 @@ export default async function FicheStagiairePage({ params }: PageProps) {
   }));
 
   return (
-    <AdminPageShell width="narrow">
+    <AdminPageShell width="wide">
       <AdminPageHeader title={`${trainee.prenom} ${trainee.nom}`} description={trainee.email} />
 
       <div className="mb-[var(--space-admin-5)]">
@@ -96,6 +100,11 @@ export default async function FicheStagiairePage({ params }: PageProps) {
           <BesoinAdaptationReveal traineeId={trainee.id} lireAction={lireBesoinAdaptationAction} />
         </section>
       ) : null}
+
+      <ParcoursStagiaireSection
+        parcours={parcours}
+        sessionsHref={`/${locale}/${adminPrefix}/qualiopi/sessions`}
+      />
     </AdminPageShell>
   );
 }
