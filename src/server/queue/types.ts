@@ -50,6 +50,12 @@ export type EmailJobName =
   | "apporteur-echange-confirme"
   | "apporteur-echange-rappel-j1"
   | "apporteur-echange-rappel"
+  // Rendez-vous pris POUR UN SALON (GOFAB, 13/10/2026) : une rencontre EN
+  // PERSONNE. Les messages d'appel parleraient de visio ; ceux-ci disent ou
+  // venir. Pas de H-1 (la personne est deja sur le salon), un J-2 a la place.
+  | "rdv-salon-confirme"
+  | "rdv-salon-rappel-j2"
+  | "rdv-salon-rappel-j1"
   | "chatbot-demande-transmise"
   // Remplacent `contact-confirmed` sur deux flux ou il disait FAUX :
   // il promettait une reponse « sous 48 heures ouvrees » a un candidat

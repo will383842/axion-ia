@@ -40,6 +40,7 @@ vi.mock("@/server/queue/queues", () => ({
 
 import { executerPassage, PASSAGES } from "../rappels-appel";
 import { HORS_APPELS_APPORTEUR, SEULS_APPELS_APPORTEUR } from "../appel-apporteur";
+import { HORS_RDV_SALON, SEULS_RDV_SALON } from "../rdv-salon";
 
 /**
  * Le passage cherché par son MOMENT, jamais par son index.
@@ -252,7 +253,7 @@ describe("les trois moments partagent un cœur, pas un marqueur", () => {
     // il est un appel client ou un échange apporteur, jamais les deux. Le test
     // suivant le prouve au lieu de le supposer — sans lui, ce partage
     // deviendrait un pari.
-    for (const destinataire of ["client", "apporteur"] as const) {
+    for (const destinataire of ["client", "apporteur", "salon"] as const) {
       const duPublic = PASSAGES.filter((p) => p.destinataire === destinataire);
       const marqueurs = duPublic.map((p) => p.marqueur);
       expect(new Set(marqueurs).size, `deux moments ${destinataire} partagent un marqueur`).toBe(
@@ -271,10 +272,16 @@ describe("les trois moments partagent un cœur, pas un marqueur", () => {
     //
     // 🔑 C'est la SEULE assertion qui relie la table au monde. Les autres se
     // vérifient entre elles.
+    // 2026-09-29 : un troisième public, le rendez-vous SALON (GOFAB).
+    const ATTENDUS = {
+      client: [HORS_APPELS_APPORTEUR, HORS_RDV_SALON],
+      apporteur: [SEULS_APPELS_APPORTEUR],
+      salon: [SEULS_RDV_SALON, HORS_APPELS_APPORTEUR],
+    } as const;
     for (const p of PASSAGES) {
-      const attendu =
-        p.destinataire === "apporteur" ? SEULS_APPELS_APPORTEUR : HORS_APPELS_APPORTEUR;
-      expect(p.filtre, `${p.moment} / ${p.destinataire} : mauvais filtre`).toBe(attendu);
+      expect(p.filtres, `${p.moment} / ${p.destinataire} : mauvais filtres`).toEqual(
+        ATTENDUS[p.destinataire],
+      );
     }
   });
 
@@ -289,9 +296,14 @@ describe("les trois moments partagent un cœur, pas un marqueur", () => {
       vus.add(p.destinataire);
       parMoment.set(p.moment, vus);
     }
-    // Trois moments, deux publics chacun : la table est complète et sans trou.
-    expect(parMoment.size).toBe(3);
-    for (const vus of parMoment.values()) expect(vus.size).toBe(2);
+    // Client et apporteur : confirmation, J-1, H-1. Salon : confirmation, J-2,
+    // J-1 — pas de H-1 (la personne est déjà sur le salon).
+    expect(Object.fromEntries([...parMoment].map(([m, v]) => [m, [...v].sort()]))).toEqual({
+      confirmation: ["apporteur", "client", "salon"],
+      j1: ["apporteur", "client", "salon"],
+      h1: ["apporteur", "client"],
+      j2: ["salon"],
+    });
   });
 
   it("la confirmation part SANS fenêtre, mais jamais vers le passé", async () => {

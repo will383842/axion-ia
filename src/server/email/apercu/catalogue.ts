@@ -138,6 +138,27 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "le candidat apporteur qui a réservé",
     source: "server/calendly/rappels-appel.ts",
   },
+  // ── La rencontre réservée sur un SALON (GOFAB, 2026-09-29) ───────────────
+  // Rencontre EN PERSONNE : les messages disent où venir (espace affaires),
+  // proposent de déplacer, d'annuler, ou de basculer en visio.
+  "rdv-salon-confirme": {
+    categorie: "rendez-vous",
+    quand: "Dès que la réservation est vue par le worker (≤ 5 min après)",
+    destinataire: "la personne qui a réservé un rendez-vous salon",
+    source: "server/calendly/rappels-appel.ts",
+  },
+  "rdv-salon-rappel-j2": {
+    categorie: "rendez-vous",
+    quand: "Deux jours avant — fenêtre 48 h → 48 h 15 avant",
+    destinataire: "la personne qui a réservé un rendez-vous salon",
+    source: "server/calendly/rappels-appel.ts",
+  },
+  "rdv-salon-rappel-j1": {
+    categorie: "rendez-vous",
+    quand: "La veille — fenêtre 24 h → 24 h 15 avant",
+    destinataire: "la personne qui a réservé un rendez-vous salon",
+    source: "server/calendly/rappels-appel.ts",
+  },
   "appel-rappel": {
     categorie: "rendez-vous",
     quand: "Une heure avant l'appel — fenêtre H-75 → H-60",

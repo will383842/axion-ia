@@ -63,8 +63,10 @@ import { notify } from "@/server/notifications";
 import { prisma } from "@/lib/prisma";
 import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
 import { HORS_APPELS_APPORTEUR, SEULS_APPELS_APPORTEUR } from "@/server/calendly/appel-apporteur";
+import { HORS_RDV_SALON, SEULS_RDV_SALON, salonDuNom } from "@/server/calendly/rdv-salon";
 import { enqueueEmail } from "@/server/queue/queues";
 import type { MomentAppel } from "@/lib/email/templates/appel-rappel";
+import type { MomentSalon } from "@/lib/email/templates/rdv-salon";
 
 /**
  * Plafond par passage.
@@ -78,17 +80,21 @@ import type { MomentAppel } from "@/lib/email/templates/appel-rappel";
 const MAX_PAR_PASSAGE = 50;
 
 /** Le marqueur d'idempotence propre à chaque moment. */
-type ChampMarqueur = "confirmationEnvoyeeAt" | "rappelJ1EnvoyeAt" | "rappelEnvoyeAt";
+type ChampMarqueur =
+  "confirmationEnvoyeeAt" | "rappelJ2EnvoyeAt" | "rappelJ1EnvoyeAt" | "rappelEnvoyeAt";
 
 interface Passage {
-  readonly moment: MomentAppel;
+  readonly moment: MomentAppel | MomentSalon;
   readonly job:
     | "appel-confirme"
     | "appel-rappel-j1"
     | "appel-rappel"
     | "apporteur-echange-confirme"
     | "apporteur-echange-rappel-j1"
-    | "apporteur-echange-rappel";
+    | "apporteur-echange-rappel"
+    | "rdv-salon-confirme"
+    | "rdv-salon-rappel-j2"
+    | "rdv-salon-rappel-j1";
   /**
    * À QUI ce passage parle (2026-09-21).
    *
@@ -98,7 +104,7 @@ interface Passage {
    * ferait dire au candidat qu'il est un prospect — le vocabulaire que le
    * tunnel vient précisément de retirer.
    */
-  readonly destinataire: "client" | "apporteur";
+  readonly destinataire: "client" | "apporteur" | "salon";
   /**
    * Le filtre Prisma qui borne la population de CE passage.
    *
@@ -107,7 +113,12 @@ interface Passage {
    * couvrent tout, sans recouvrement : aucun rendez-vous ne peut recevoir les
    * deux jeux de messages, et aucun ne peut n'en recevoir aucun.
    */
-  readonly filtre: typeof HORS_APPELS_APPORTEUR | typeof SEULS_APPELS_APPORTEUR;
+  readonly filtres: readonly (
+    | typeof HORS_APPELS_APPORTEUR
+    | typeof SEULS_APPELS_APPORTEUR
+    | typeof HORS_RDV_SALON
+    | typeof SEULS_RDV_SALON
+  )[];
   readonly marqueur: ChampMarqueur;
   /** `null` = pas de fenêtre : tout rendez-vous à venir est candidat. */
   readonly fenetre: { readonly minMinutes: number; readonly maxMinutes: number } | null;
@@ -126,7 +137,7 @@ export const PASSAGES: readonly Passage[] = [
     moment: "confirmation",
     job: "appel-confirme",
     destinataire: "client",
-    filtre: HORS_APPELS_APPORTEUR,
+    filtres: [HORS_APPELS_APPORTEUR, HORS_RDV_SALON],
     marqueur: "confirmationEnvoyeeAt",
     fenetre: null,
     avecDate: true,
@@ -136,7 +147,7 @@ export const PASSAGES: readonly Passage[] = [
     moment: "j1",
     job: "appel-rappel-j1",
     destinataire: "client",
-    filtre: HORS_APPELS_APPORTEUR,
+    filtres: [HORS_APPELS_APPORTEUR, HORS_RDV_SALON],
     marqueur: "rappelJ1EnvoyeAt",
     fenetre: { minMinutes: 1440, maxMinutes: 1455 },
     avecDate: false,
@@ -145,7 +156,7 @@ export const PASSAGES: readonly Passage[] = [
     moment: "h1",
     job: "appel-rappel",
     destinataire: "client",
-    filtre: HORS_APPELS_APPORTEUR,
+    filtres: [HORS_APPELS_APPORTEUR, HORS_RDV_SALON],
     marqueur: "rappelEnvoyeAt",
     fenetre: { minMinutes: 60, maxMinutes: 75 },
     avecDate: false,
@@ -159,7 +170,7 @@ export const PASSAGES: readonly Passage[] = [
     moment: "confirmation",
     job: "apporteur-echange-confirme",
     destinataire: "apporteur",
-    filtre: SEULS_APPELS_APPORTEUR,
+    filtres: [SEULS_APPELS_APPORTEUR],
     marqueur: "confirmationEnvoyeeAt",
     fenetre: null,
     avecDate: true,
@@ -168,7 +179,7 @@ export const PASSAGES: readonly Passage[] = [
     moment: "j1",
     job: "apporteur-echange-rappel-j1",
     destinataire: "apporteur",
-    filtre: SEULS_APPELS_APPORTEUR,
+    filtres: [SEULS_APPELS_APPORTEUR],
     marqueur: "rappelJ1EnvoyeAt",
     fenetre: { minMinutes: 1440, maxMinutes: 1455 },
     avecDate: false,
@@ -177,16 +188,54 @@ export const PASSAGES: readonly Passage[] = [
     moment: "h1",
     job: "apporteur-echange-rappel",
     destinataire: "apporteur",
-    filtre: SEULS_APPELS_APPORTEUR,
+    filtres: [SEULS_APPELS_APPORTEUR],
     marqueur: "rappelEnvoyeAt",
     fenetre: { minMinutes: 60, maxMinutes: 75 },
+    avecDate: false,
+  },
+  // ── Rencontre sur un SALON (2026-09-29, GOFAB) ───────────────────────────
+  //
+  // Confirmation, J-2, J-1 — et PAS de H-1 : une heure avant, la personne est
+  // déjà en route ou sur le salon. Le J-2 laisse le temps de s'inscrire comme
+  // visiteur. Le J-1 réutilise le marqueur `rappelJ1EnvoyeAt` : une rencontre
+  // salon est une LIGNE distincte d'un appel, les colonnes ne se marchent pas
+  // dessus.
+  //
+  // 🔑 `HORS_APPELS_APPORTEUR` en plus de `SEULS_RDV_SALON` : un nom qui
+  // contiendrait les deux mots reste un échange apporteur (`rdv-salon.ts`).
+  {
+    moment: "confirmation",
+    job: "rdv-salon-confirme",
+    destinataire: "salon",
+    filtres: [SEULS_RDV_SALON, HORS_APPELS_APPORTEUR],
+    marqueur: "confirmationEnvoyeeAt",
+    fenetre: null,
+    avecDate: true,
+  },
+  {
+    // 48 h → 48 h 15. Même largeur que les autres rappels : trois fois la cadence.
+    moment: "j2",
+    job: "rdv-salon-rappel-j2",
+    destinataire: "salon",
+    filtres: [SEULS_RDV_SALON, HORS_APPELS_APPORTEUR],
+    marqueur: "rappelJ2EnvoyeAt",
+    fenetre: { minMinutes: 2880, maxMinutes: 2895 },
+    avecDate: true,
+  },
+  {
+    moment: "j1",
+    job: "rdv-salon-rappel-j1",
+    destinataire: "salon",
+    filtres: [SEULS_RDV_SALON, HORS_APPELS_APPORTEUR],
+    marqueur: "rappelJ1EnvoyeAt",
+    fenetre: { minMinutes: 1440, maxMinutes: 1455 },
     avecDate: false,
   },
 ] as const;
 
 export interface PassageResultat {
   readonly ok: boolean;
-  readonly moment: MomentAppel;
+  readonly moment: MomentAppel | MomentSalon;
   /** Rendez-vous entrés dans la fenêtre à ce passage. */
   readonly candidats: number;
   /** Messages réellement mis en file. */
@@ -243,6 +292,8 @@ function filtreNonEnvoye(marqueur: ChampMarqueur) {
   switch (marqueur) {
     case "confirmationEnvoyeeAt":
       return { confirmationEnvoyeeAt: null };
+    case "rappelJ2EnvoyeAt":
+      return { rappelJ2EnvoyeAt: null };
     case "rappelJ1EnvoyeAt":
       return { rappelJ1EnvoyeAt: null };
     case "rappelEnvoyeAt":
@@ -255,6 +306,8 @@ function marqueurPose(marqueur: ChampMarqueur, quand: Date) {
   switch (marqueur) {
     case "confirmationEnvoyeeAt":
       return { confirmationEnvoyeeAt: quand };
+    case "rappelJ2EnvoyeAt":
+      return { rappelJ2EnvoyeAt: quand };
     case "rappelJ1EnvoyeAt":
       return { rappelJ1EnvoyeAt: quand };
     case "rappelEnvoyeAt":
@@ -307,7 +360,7 @@ export async function executerPassage(
         // FAUX — relevé dans le compte le 2026-09-21 : Calendly envoie une
         // INVITATION D'AGENDA, ses rappels par e-mail sont `Off` et aucun
         // workflow n'existe. Le candidat ne recevait donc rien de personne.
-        AND: [p.filtre],
+        AND: [...p.filtres],
       },
       orderBy: { startTime: "asc" },
       take: MAX_PAR_PASSAGE + 1,
@@ -324,6 +377,8 @@ export async function executerPassage(
         rawPayload: true,
         cancelUrl: true,
         rescheduleUrl: true,
+        // Le salon (lieu, accès) se déduit du NOM du type d'événement.
+        eventTypeName: true,
       },
     });
   } catch (e) {
@@ -367,7 +422,7 @@ export async function executerPassage(
     //
     // L'e-mail part quand même : il renvoie vers l'invitation d'agenda, qui
     // portera le lien s'il finit par exister. Alerter n'est pas retenir.
-    if (p.moment === "h1" && format === "visio" && !lienUtilisable) {
+    if (p.moment === "h1" && p.destinataire !== "salon" && format === "visio" && !lienUtilisable) {
       try {
         await notify({
           category: "MONITORING_ALERT",
@@ -431,6 +486,8 @@ export async function executerPassage(
         // forme, mais c'est son dernier recours : un rendez-vous en visio dont
         // le lieu aurait été ressaisi à la main annoncerait sinon un appel.
         format,
+        // Rencontre salon : la clé du salon, dont le gabarit tire lieu et accès.
+        ...(p.destinataire === "salon" ? { salon: salonDuNom(rdv.eventTypeName) } : {}),
         // ⚠️ Le repli reste utile APRÈS l'allumage : si la signature échoue, on
         // préfère un lien Calendly qui marche à un e-mail sans aucun moyen
         // d'annuler. Un prospect qui ne peut pas se décommander ne prévient
