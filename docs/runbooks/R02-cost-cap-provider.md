@@ -5,6 +5,7 @@
 - **Date dernière maj** : 2026-05-15
 - **Sévérité** : 🔴 **P0 — critique** (100 %) · 🟡 **P1** (80 % warning)
 - **Impact si non traité** : kill switch auto déjà déclenché (100 %) → toutes générations stoppées jusqu'au prochain mois OU action humaine.
+- **⚠️ Plafond OpenAI partagé avec les comptes rendus de visio (ADR 0055, 2026-09-29)** : le plafond `openai` atteint suspend aussi la transcription et les comptes rendus des rendez-vous (lignes `cost_ledger` au `jobId` `visio-…`), et un OpenAI désactivé à la main ici les arrête aussi ; le circuit visio ne touche jamais au kill switch de content-gen.
 
 ## Trigger
 

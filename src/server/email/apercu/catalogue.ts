@@ -428,6 +428,14 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   },
 
   // ── RGPD ──────────────────────────────────────────────────────────────────
+  "preavis-sous-traitants": {
+    categorie: "rgpd",
+    quand:
+      "Préavis de 30 jours aux clients actifs avant l'enregistrement des visioconférences — mis en file UNE fois par le script du chantier visio, toujours garé dans « E-mails à valider »",
+    destinataire:
+      "le contact d'un client actif (au moins un devis, une facture, une session, un contrat ou un dossier)",
+    source: "server/visio/preavis-envoi.ts",
+  },
   "rgpd-demande-recue": {
     categorie: "rgpd",
     quand: "Accusé de réception d'une demande RGPD",
