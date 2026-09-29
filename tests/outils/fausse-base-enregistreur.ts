@@ -475,5 +475,7 @@ export function fauxStockage(options: { echecDepot?: boolean; echecSuppression?:
       if (options.echecSuppression) throw new Error("R2 injoignable");
       objets.delete(cle);
     },
+    lire: async (cle: string) => objets.get(cle) ?? null,
+    existe: async (cle: string) => objets.has(cle),
   };
 }

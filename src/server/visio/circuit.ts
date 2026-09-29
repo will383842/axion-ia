@@ -8,7 +8,8 @@
 
 import type { EtapeVisio, PrismaClient } from "../../../prisma/generated/client";
 import { chargerCatalogue } from "./catalogue-ia";
-import { depotDonneesPrisma, stockageLectureR2, type StockageLecture } from "./depot-donnees";
+import { depotDonneesPrisma } from "./depot-donnees";
+import { stockageR2, type LectureAudio } from "./stockage-audio";
 import type { AlerteCircuit, DepsCircuit, Gestionnaire } from "./etapes";
 import { obtenirClientOpenAI, type ClientOpenAIVisio } from "./openai/client";
 import { portCoutReel, type PortCout } from "./openai/cout";
@@ -59,7 +60,7 @@ export function demanderArretDuCircuit(): void {
 
 export interface OptionsCircuit {
   readonly db: PrismaClient;
-  readonly stockage?: StockageLecture;
+  readonly stockage?: LectureAudio;
   readonly openai?: () => ClientOpenAIVisio;
   readonly cout?: PortCout;
   readonly alerter?: (a: AlerteCircuit) => Promise<void>;
@@ -69,7 +70,7 @@ export interface OptionsCircuit {
 export function construireCircuit(o: OptionsCircuit): DepsCircuit {
   return {
     depot: depotEtapesPrisma(o.db),
-    donnees: depotDonneesPrisma(o.db, o.stockage ?? stockageLectureR2),
+    donnees: depotDonneesPrisma(o.db, o.stockage ?? stockageR2),
     openai: o.openai ?? obtenirClientOpenAI,
     cout: o.cout ?? portCoutReel,
     catalogue: chargerCatalogue,

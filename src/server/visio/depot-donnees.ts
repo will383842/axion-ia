@@ -25,6 +25,7 @@ import { ETATS_ENREGISTREMENT_ACTIFS } from "./etats";
 import { lireEtat } from "./etat-compte-rendu";
 import { ajouterAuJournal, lireJournal } from "./journal-enregistrement";
 import { ErreurVisio } from "./openai/erreurs";
+import { stockageR2, type LectureAudio } from "./stockage-audio";
 import type {
   DonneesPasses,
   DonneesPrecontrole,
@@ -32,29 +33,6 @@ import type {
   PortDonnees,
   TrancheATraiter,
 } from "./port-donnees";
-
-/** Le stockage des objets audio (R2 ; en mémoire pour Gate D). */
-export interface StockageLecture {
-  /** `null` = panne (jamais un fichier vide). */
-  readonly lire: (cle: string) => Promise<Buffer | null>;
-  readonly supprimer: (cle: string) => Promise<void>;
-  readonly existe: (cle: string) => Promise<boolean>;
-}
-
-export const stockageLectureR2: StockageLecture = {
-  lire: async (cle) => {
-    const { getObjectBufferR2 } = await import("@/lib/r2-storage");
-    return getObjectBufferR2(cle);
-  },
-  supprimer: async (cle) => {
-    const { deleteFromR2 } = await import("@/lib/r2-storage");
-    await deleteFromR2(cle);
-  },
-  existe: async (cle) => {
-    const { existsInR2 } = await import("@/lib/r2-storage");
-    return existsInR2(cle);
-  },
-};
 
 type Db = PrismaClient;
 
@@ -273,10 +251,7 @@ async function contactsDuClient(db: Db, clientId: string | null): Promise<Contac
   return c.map((x) => ({ ...x, statut: x.statut }));
 }
 
-export function depotDonneesPrisma(
-  db: Db,
-  stockage: StockageLecture = stockageLectureR2,
-): PortDonnees {
+export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2): PortDonnees {
   return {
     enregistrementActif: async (rencontreId) =>
       (await db.enregistrement.count({

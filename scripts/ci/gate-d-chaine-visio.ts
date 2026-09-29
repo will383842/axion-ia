@@ -155,6 +155,8 @@ async function semer(db: PrismaClient, clientId: string, suffixe: string): Promi
     disponible: () => true,
     deposer: async (cle: string, octets: Buffer) => void r2.set(cle, Buffer.from(octets)),
     supprimer: async (cle: string) => void r2.delete(cle),
+    lire: async (cle: string) => r2.get(cle) ?? null,
+    existe: async (cle: string) => r2.has(cle),
   };
   const a = { id: appareil.id, adminUserId: appareil.adminUserId };
   for (const piste of ["client", "axion"] as const) {
