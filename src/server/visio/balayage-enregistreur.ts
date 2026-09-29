@@ -193,7 +193,10 @@ export const notifierParTelegram: Notifieur = async (alerte) => {
   const { notify } = await import("@/server/notifications");
   const r = await notify({
     category: "MONITORING_ALERT",
-    payload: { kind: "visio_enregistreur", details: { titre: alerte.titre, detail: alerte.detail } },
+    payload: {
+      kind: "visio_enregistreur",
+      details: { titre: alerte.titre, detail: alerte.detail },
+    },
     dedupKey: alerte.cle,
   });
   return Object.values(r.channels).includes("sent");
