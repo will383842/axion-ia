@@ -12,6 +12,7 @@ import {
   CheckCircle2,
   XCircle,
   CircleSlash,
+  FileSignature,
   BellRing,
   MailCheck,
   Send,
@@ -319,6 +320,15 @@ export async function SubmissionsV2({
             <r.Icone size={12} aria-hidden="true" className="shrink-0" />
             {r.label}
           </AdminBadge>
+          {/* INT-T22 — une pastille À CÔTÉ du badge de réponse, pas à sa place :
+              « Prêt à signer » ne dit rien de la réponse ni de l'invitation, il
+              dit que le candidat est parti vers l'outil du contrat. */}
+          {s.pretASignerLe ? (
+            <AdminBadge tone="success" className="gap-1">
+              <FileSignature size={12} aria-hidden="true" className="shrink-0" />
+              Prêt à signer
+            </AdminBadge>
+          ) : null}
           {/* Où en est la personne, et combien de formulaires elle a remplis.
               Le second n'apparaît qu'au-delà de UN : « 1 ligne » sur toute la
               liste n'apprendrait rien et ferait du bruit sur chaque ligne. */}
@@ -352,6 +362,8 @@ export async function SubmissionsV2({
           id={s.id}
           archived={s.archivedAt !== null}
           sansSuite={s.sansSuiteAt !== null}
+          apporteur={estApporteur({ unifiedType: s.unifiedType, subType: s.subType })}
+          pretASigner={s.pretASignerLe !== null}
           needsAttention={s.needsAttention}
           status={s.status}
           deleted={s.deletedAt !== null}
