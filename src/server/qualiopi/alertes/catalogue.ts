@@ -1798,6 +1798,41 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — la sonde la lève tant que `ZEPTOMAIL_WEBHOOK_KEY` est absente. Elle se ferme quand la clé est posée ET qu'un rebond de contrôle a été reçu — pas avant, sous peine de refermer sur un instrument toujours muet.",
     guichet: "direction",
   },
+  // ── Enregistreur des visios (chantier visio, PR 5 ; anti-doublon A3) ──────
+  // Pannes TECHNIQUES seulement, sans nom ni parole. La table `alertes_visio`
+  // est abandonnée au profit de ces codes (ADR 0053, amendement du 29/09).
+  "visio.temoin_cle": {
+    niveau: "important",
+    titre: "Visio : le worker ne relit pas le témoin de clé de chiffrement",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par le balayage de l'enregistreur des visios (`src/server/visio/balayage-enregistreur.ts`), hors d'`evaluerAlertes`. C'est ce balayage qui la ferme quand la cause disparaît ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture.",
+    guichet: "direction",
+  },
+  "visio.jeton_expire_j14": {
+    niveau: "important",
+    titre: "Visio : le jeton de l'enregistreur expire dans moins de 14 jours",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par le balayage de l'enregistreur des visios (`src/server/visio/balayage-enregistreur.ts`), hors d'`evaluerAlertes`. C'est ce balayage qui la ferme quand la cause disparaît ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture.",
+    guichet: "direction",
+  },
+  "visio.jeton_expire_j3": {
+    niveau: "important",
+    titre: "Visio : le jeton de l'enregistreur expire dans moins de 3 jours",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par le balayage de l'enregistreur des visios (`src/server/visio/balayage-enregistreur.ts`), hors d'`evaluerAlertes`. C'est ce balayage qui la ferme quand la cause disparaît ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture.",
+    guichet: "direction",
+  },
+  "visio.extension_silencieuse": {
+    niveau: "important",
+    titre: "Visio : l'extension ne donne aucun signe pendant un rendez-vous",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par le balayage de l'enregistreur des visios (`src/server/visio/balayage-enregistreur.ts`), hors d'`evaluerAlertes`. C'est ce balayage qui la ferme quand la cause disparaît ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture.",
+    guichet: "direction",
+  },
 } as const;
 
 /**

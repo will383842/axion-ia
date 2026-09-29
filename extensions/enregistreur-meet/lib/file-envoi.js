@@ -6,11 +6,32 @@
 //   · ordre : sessions, accords et refus, morceaux, fins de tranche, fins —
 //     chacun par date de création (un accord passe avant le son qu’il libère) ;
 //   · nouvel essai avec délai doublé (2 s → 5 min) ;
-//   · un refus, une clôture ou un accord manquant détruisent ce qui reste.
+//   · un refus, une clôture ou un accord manquant détruisent ce qui reste ;
+//   · LE REFUS LUI-MÊME survit à la destruction : c'est un élément sans
+//     `cleClient` (l'index de `detruireCapture` ne le voit pas), renvoyé
+//     jusqu'à ce que le site réponde 2xx. Sans lui, un refus perdu (réseau
+//     coupé) laissait l'enregistrement vivre côté site, puis partir en
+//     transcription.
 
 import { DELAIS_LOCAUX } from "./constantes.js";
 
-const ORDRE = { session: 0, accord: 1, refus: 1, morceau: 2, tranche: 3, battement: 4, fin: 5 };
+const ORDRE = { refus: -1, session: 0, accord: 1, morceau: 2, tranche: 3, battement: 4, fin: 5 };
+
+/**
+ * L'élément « refus » d'un enregistrement côté site. Pas de `cleClient` : il
+ * n'appartient à aucune capture, donc aucune destruction locale ne l'emporte.
+ * Un seul par enregistrement (même `id`).
+ */
+export function elementRefus(enregistrementId, refusLeMs, maintenantMs) {
+  return {
+    id: `refus:${enregistrementId}`,
+    type: "refus",
+    enregistrementId,
+    creeLe: maintenantMs,
+    essais: 0,
+    corps: { refusLe: new Date(refusLeMs).toISOString() },
+  };
+}
 
 /** Le délai avant le prochain essai, après `essais` échecs. */
 export function delaiRenvoi(essais) {
@@ -27,6 +48,8 @@ export function envoyablesMaintenant(elements, captures, maintenantMs) {
   return elements
     .filter((el) => {
       if ((el.prochainEssaiMs ?? 0) > maintenantMs) return false;
+      // Le refus ne dépend d'aucune capture : il part tant qu'il n'a pas abouti.
+      if (el.type === "refus") return typeof el.enregistrementId === "string";
       const c = captures[el.cleClient];
       if (!c || c.detruit) return false;
       if (el.type === "session") return true;
@@ -43,6 +66,14 @@ export function envoyablesMaintenant(elements, captures, maintenantMs) {
 export function classerReponse(type, statut, erreur) {
   if (statut >= 200 && statut < 300) return "fait";
   if (statut === 401 || statut === 403) return "jeton";
+  if (type === "refus") {
+    // Un refus se renvoie jusqu'au succès ; il ne s'abandonne que si le site
+    // dit qu'il n'a plus d'objet (enregistrement inconnu, déjà traité).
+    if (statut === 400 || statut === 404 || statut === 409) return "abandonner";
+    return "reessayer";
+  }
+  // Client actif sous préavis : rien ne s'enregistrera, le son local est détruit.
+  if (statut === 409 && erreur === "client_actif_preavis_en_cours") return "detruire";
   if (statut === 409) {
     if (erreur === "accord_en_attente") return "reessayer";
     if (erreur === "enregistrement_actif") return "fait";

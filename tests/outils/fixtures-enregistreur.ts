@@ -90,7 +90,7 @@ export function semerRencontreCalendly(
     inviteeEmail: o.inviteeEmail ?? "prospect@exemple.test",
     inviteeName: o.inviteeName ?? "Camille Exemple",
     location: "https://meet.google.com/abc-defg-hij",
-    rawPayload: { questions_and_answers: o.reponses ?? [] },
+    rawPayload: { invitee: { questions_and_answers: o.reponses ?? [] } },
     linkedJobApplicationId: o.linkedJobApplicationId ?? null,
   });
   if (o.avecRencontre === false) return { calendlyEventId: String(ev["id"]), rencontreId: null };

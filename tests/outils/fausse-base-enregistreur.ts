@@ -47,6 +47,21 @@ const RELATIONS: Readonly<Record<string, Readonly<Record<string, Relation>>>> = 
   enregistrementMorceau: {
     tranche: { table: "enregistrementTranche", local: "trancheId", distant: "id", un: true },
   },
+  // Les sept relations de la règle B3 (`RELATIONS_B3`), pour `_count`.
+  client: Object.fromEntries(
+    [
+      ["devis", "devis"],
+      ["facturesFormation", "factureFormation"],
+      ["sessions", "trainingSession"],
+      ["enrollmentsFinances", "enrollment"],
+      ["coachingContracts", "coachingContract"],
+      ["auditMissions", "auditMission"],
+      ["dossiersFinancement", "dossierFinancement"],
+    ].map(([rel, table]) => [
+      rel as string,
+      { table: table as string, local: "id", distant: "clientId", un: false },
+    ]),
+  ),
 };
 
 /** Clés composées : `a_b_c: { a, b, c }` → trois égalités. */
@@ -85,6 +100,17 @@ const DEFAUTS: Readonly<Record<string, () => Ligne>> = {
   }),
   appareilEnregistrement: () => ({ id: randomUUID(), creeLe: new Date() }),
   alerteVisio: () => ({ premiereLe: new Date(), essais: 0, envoyeeLe: null, dernierEssaiLe: null }),
+  alerteSysteme: () => ({
+    id: randomUUID(),
+    cibleId: null,
+    cibleType: null,
+    lu: false,
+    resolue: false,
+    resolueAt: null,
+    notifiedAt: null,
+    metadata: {},
+    createdAt: new Date(),
+  }),
   battementCircuit: () => ({ premierLe: new Date() }),
   consentEvent: () => ({ id: randomUUID(), createdAt: new Date() }),
   calendlyEvent: () => ({ id: randomUUID(), status: "scheduled", rawPayload: {} }),
@@ -190,6 +216,21 @@ export class FausseBase {
       const rel = RELATIONS[table]?.[cle];
       if (rel) {
         const lies = this.lies(ligne, rel);
+        const quantif = attendu as Record<string, unknown>;
+        if (!rel.un && ("some" in quantif || "none" in quantif || "every" in quantif)) {
+          // Filtres de relation à plusieurs, comme Prisma : `some`, `none`, `every`.
+          const sous = (k: string) => quantif[k] as Record<string, unknown>;
+          if ("some" in quantif && !lies.some((l) => this.correspond(rel.table, l, sous("some"))))
+            return false;
+          if ("none" in quantif && lies.some((l) => this.correspond(rel.table, l, sous("none"))))
+            return false;
+          if (
+            "every" in quantif &&
+            !lies.every((l) => this.correspond(rel.table, l, sous("every")))
+          )
+            return false;
+          continue;
+        }
         if (rel.un) {
           const lie = lies[0];
           if (!lie || !this.correspond(rel.table, lie, attendu as Record<string, unknown>))

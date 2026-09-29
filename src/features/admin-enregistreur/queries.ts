@@ -6,6 +6,7 @@
 import { prisma } from "@/lib/prisma";
 import { BATTEMENT_TEMOIN, lireTemoinCle, type EtatTemoin } from "@/server/visio/temoin-cle";
 import { lireDrapeauEnregistrement, type LectureDrapeau } from "@/server/visio/drapeau";
+import { etatDuPreavis } from "@/server/visio/preavis-clients-actifs";
 import { joursAvantExpiration, seuilAlerteJeton } from "@/server/visio/jeton";
 import { SILENCE_APPAREIL_MS } from "@/server/visio/battement-appareil";
 
@@ -25,6 +26,8 @@ export interface AppareilAffiche {
 
 export interface EtatEnregistreur {
   readonly drapeau: LectureDrapeau;
+  /** Où en est le préavis aux clients actifs, en une phrase. */
+  readonly preavis: string;
   readonly temoinSite: EtatTemoin | "absent";
   readonly temoinWorkerOkLe: Date | null;
   readonly drapeauVuParWorker: string | null;
@@ -52,7 +55,8 @@ export async function lireEtatEnregistreur(
     }),
   ]);
   return {
-    drapeau: lireDrapeauEnregistrement(process.env, maintenant),
+    drapeau: lireDrapeauEnregistrement(process.env),
+    preavis: etatDuPreavis(maintenant),
     temoinSite,
     temoinWorkerOkLe: battement?.temoinCleOkLe ?? null,
     drapeauVuParWorker: battement?.drapeauVuParWorker ?? null,

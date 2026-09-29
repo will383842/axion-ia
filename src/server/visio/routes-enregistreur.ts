@@ -96,7 +96,12 @@ export async function traiterAccord(
   const corps = await lireCorpsJson(req, DeclarerAccord);
   if (!corps.ok) return corps.reponse;
   return repondreResultat(
-    await declarerAccord(g.db, { appareil: g.appareil, enregistrementId: id, corps: corps.valeur }),
+    await declarerAccord(g.db, {
+      appareil: g.appareil,
+      enregistrementId: id,
+      corps: corps.valeur,
+      maintenant: g.maintenant,
+    }),
   );
 }
 

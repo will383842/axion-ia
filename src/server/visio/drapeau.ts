@@ -15,25 +15,23 @@
  * Les routes sont `force-dynamic` : `drapeau-runtime-jamais-fige-au-build`
  * reste vert (un drapeau lu par une route figée au build aurait DEUX valeurs).
  *
- * ## `ouvert` attend la fin du préavis
+ * ## Ce fichier ne lit QUE ces deux variables (décision de Will du 29/09)
  *
- * Le préavis aux clients actifs (décision B3, PR 1) fixe la date d'ouverture :
- * tant que `PREAVIS_SOUS_TRAITANTS` vaut `null`, ou que sa fin n'est pas
- * atteinte, `ouvert` se comporte comme `pilote`. La PR 8 pose la date réelle
- * d'envoi relevée dans `email_outbox`. Test
- * `avant-la-pr8-ouvert-vaut-pilote.spec.ts`.
+ * L'ouverture n'attend plus le préavis aux clients actifs : `ouvert` est
+ * `ouvert`, sans date. Le préavis protège les seuls clients ACTIFS (règle B3),
+ * rencontre par rencontre, dans les routes `sessions` et `accord`
+ * (`preavis-clients-actifs.ts`, 409 `client_actif_preavis_en_cours`).
+ * Garde : `le-drapeau-ne-lit-que-ses-deux-variables.spec.ts`.
+ *
+ * `effectif` existe pour la PR 8 : elle y branchera `modeEffectif` (la notice
+ * publique doit annoncer l'enregistrement avant que `ouvert` s'applique). Ici,
+ * `effectif` vaut `demande`. La dictée annoncée (`DICTEE_ANNONCEE`) n'est PAS
+ * déclarée ici : sa source unique est `src/content/visio-annonce.ts` (PR 8).
  *
  * Module PUR : lu par les routes, la console et le worker.
  */
 
 export type ModeEnregistrement = "ferme" | "pilote" | "ouvert";
-
-/** Posé par la PR 8 : `{ envoyeLe, finLe }` en ISO 8601. `null` = pas de préavis envoyé. */
-export const PREAVIS_SOUS_TRAITANTS: { readonly envoyeLe: string; readonly finLe: string } | null =
-  null;
-
-/** La dictée après l'appel (B5) n'est pas encore annoncée aux clients (PR 7-8). */
-export const DICTEE_ANNONCEE = false;
 
 export const VARIABLE_PILOTE = "ENREGISTREMENT_VISIO_PILOTE";
 export const VARIABLE_OUVERT = "ENREGISTREMENT_VISIO_OUVERT";
@@ -41,53 +39,26 @@ export const VARIABLE_OUVERT = "ENREGISTREMENT_VISIO_OUVERT";
 export interface LectureDrapeau {
   /** Ce que disent les variables. */
   readonly demande: ModeEnregistrement;
-  /** Ce qui s'applique réellement (`ouvert` avant la fin du préavis → `pilote`). */
+  /** Ce qui s'applique réellement (la PR 8 y branchera la notice publique). */
   readonly effectif: ModeEnregistrement;
   /** Pourquoi `effectif` diffère de `demande`, en français, ou `null`. */
   readonly motif: string | null;
 }
 
 type Env = Readonly<Record<string, string | undefined>>;
-type Preavis = { readonly envoyeLe: string; readonly finLe: string } | null;
 
-/** Lit le drapeau. Les arguments ne servent qu'aux tests. */
-export function lireDrapeauEnregistrement(
-  env: Env = process.env,
-  maintenant: Date = new Date(),
-  preavis: Preavis = PREAVIS_SOUS_TRAITANTS,
-): LectureDrapeau {
+/** Lit le drapeau. L'argument ne sert qu'aux tests. */
+export function lireDrapeauEnregistrement(env: Env = process.env): LectureDrapeau {
   const demande: ModeEnregistrement =
     env[VARIABLE_OUVERT] === "true"
       ? "ouvert"
       : env[VARIABLE_PILOTE] === "true"
         ? "pilote"
         : "ferme";
-
-  if (demande !== "ouvert") return { demande, effectif: demande, motif: null };
-
-  if (preavis === null) {
-    return {
-      demande,
-      effectif: "pilote",
-      motif:
-        "Le préavis aux clients n'a pas encore été envoyé : l'enregistrement reste limité au rendez-vous de test.",
-    };
-  }
-  const fin = Date.parse(preavis.finLe);
-  if (!Number.isFinite(fin) || maintenant.getTime() < fin) {
-    return {
-      demande,
-      effectif: "pilote",
-      motif: `Le préavis aux clients court jusqu'au ${preavis.finLe.slice(0, 10)} : l'enregistrement reste limité au rendez-vous de test.`,
-    };
-  }
-  return { demande, effectif: "ouvert", motif: null };
+  return { demande, effectif: demande, motif: null };
 }
 
 /** Raccourci : le mode qui s'applique maintenant. */
-export function modeEnregistrement(
-  env: Env = process.env,
-  maintenant: Date = new Date(),
-): ModeEnregistrement {
-  return lireDrapeauEnregistrement(env, maintenant).effectif;
+export function modeEnregistrement(env: Env = process.env): ModeEnregistrement {
+  return lireDrapeauEnregistrement(env).effectif;
 }

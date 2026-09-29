@@ -28,8 +28,10 @@ describe("un non sur Calendly est renvoyé", () => {
 
   it("lecture de la réponse et du non", () => {
     expect(
+      // Forme RÉELLE de `CalendlyEvent.rawPayload` (`invitee.questions_and_answers`),
+      // lue par le lecteur unique de la console (`a-venir.ts`, anti-doublon A1).
       reponseEnregistrementCalendly({
-        questions_and_answers: [{ question: QUESTION, answer: "Non merci" }],
+        invitee: { questions_and_answers: [{ question: QUESTION, answer: "Non merci" }] },
       }),
     ).toBe("Non merci");
     expect(estUnNon("Non merci")).toBe(true);

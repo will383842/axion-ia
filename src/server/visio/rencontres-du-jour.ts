@@ -19,12 +19,13 @@
 import type { Prisma, PrismaClient } from "../../../prisma/generated/client";
 import type { TRencontreDuJour } from "@/lib/schemas/enregistreur";
 import { chiffrerParole } from "@/lib/chiffrer-parole";
+import { entrepriseEtBesoin, reponsesFormulaire } from "@/features/admin-rendezvous/a-venir";
 import {
-  entrepriseDeclaree,
   estTypeEnregistrable,
   estUnNon,
   reponseEnregistrementCalendly,
 } from "./enregistreur-calendly";
+import { blocagePreavis, PREAVIS_SOUS_TRAITANTS, type Preavis } from "./preavis-clients-actifs";
 import type { ModeEnregistrement } from "./drapeau";
 import { ETATS_ENREGISTREMENT_ACTIFS } from "./etats";
 
@@ -38,6 +39,12 @@ type Db = Pick<
   PrismaClient,
   "calendlyEvent" | "rencontre" | "client" | "enregistrementConsentement" | "enregistrement"
 >;
+
+/** L'entreprise déclarée, par le lecteur UNIQUE de la console (anti-doublon A1). */
+function entrepriseDeclaree(rawPayload: unknown): string | null {
+  const e = entrepriseEtBesoin(reponsesFormulaire(rawPayload)).entreprise;
+  return e === null ? null : e.slice(0, 200);
+}
 
 /** La fenêtre « du jour » autour d'un instant. */
 export function fenetreDuJour(maintenant: Date): { readonly debut: Date; readonly fin: Date } {
@@ -105,8 +112,14 @@ export async function assurerRencontreMinimale(
 /** Liste les rencontres enregistrables de la fenêtre du jour. */
 export async function listerRencontresDuJour(
   db: Db,
-  entree: { readonly maintenant: Date; readonly mode: Exclude<ModeEnregistrement, "ferme"> },
+  entree: {
+    readonly maintenant: Date;
+    readonly mode: Exclude<ModeEnregistrement, "ferme">;
+    /** Injecté par les tests ; la déclaration unique sinon. */
+    readonly preavis?: Preavis | null;
+  },
 ): Promise<TRencontreDuJour[]> {
+  const preavis = entree.preavis === undefined ? PREAVIS_SOUS_TRAITANTS : entree.preavis;
   const { debut, fin } = fenetreDuJour(entree.maintenant);
 
   // 1. Calendly de la liste blanche : upsert à la demande (hors mode pilote :
@@ -191,6 +204,8 @@ export async function listerRencontresDuJour(
       : null;
     if (reponse !== null) await consignerIndiceCalendly(db, r.id, reponse, entree.maintenant);
     const idClient = r.clientId ?? r.clientProposeId;
+    // Client VALIDÉ et actif sous préavis : bandeau, et `POST sessions` refusera.
+    const blocage = await blocagePreavis(db, r.clientId, entree.maintenant, preavis);
     sortie.push({
       rencontreId: r.id,
       source: r.source === "calendly" ? "calendly" : "saisie_manuelle",
@@ -213,6 +228,9 @@ export async function listerRencontresDuJour(
       }),
       estTestInterne: r.estTestInterne,
       enregistrementActifId: r.enregistrements[0]?.id ?? null,
+      preavis: blocage
+        ? { finLe: blocage.finLe === null ? null : new Date(blocage.finLe).toISOString() }
+        : null,
     });
   }
   return sortie;

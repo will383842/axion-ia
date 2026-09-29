@@ -35,7 +35,8 @@ import { cloturerEnregistrements } from "./cloture";
 import { lireDrapeauEnregistrement, type ModeEnregistrement } from "./drapeau";
 import { authentifierAppareil, lireJetonBearer } from "./jeton";
 import type { Resultat } from "./resultat";
-import type { Appareil } from "./sessions";
+import { reprendrePurgesDesRefus, type Appareil } from "./sessions";
+import { stockageR2 } from "./stockage-audio";
 import { assurerTemoinCle, type EtatTemoin } from "./temoin-cle";
 
 /** La chaîne magique du build hors ligne (ADR 0026) — ne pas la changer sans la propager. */
@@ -105,7 +106,13 @@ export const dependancesParDefaut: DependancesGarde = {
     return r.allowed;
   },
   temoin: (db, maintenant) => assurerTemoinCle(db, maintenant),
-  cloturer: (db, maintenant) => cloturerEnregistrements(db, maintenant),
+  // Clôture d'office, puis reprise des purges de refus (un son qui a résisté à
+  // la suppression, un morceau arrivé pendant un refus) : sans attendre le
+  // balayage du worker, qui les refait aussi.
+  cloturer: async (db, maintenant) => {
+    await cloturerEnregistrements(db, maintenant);
+    await reprendrePurgesDesRefus(db, stockageR2, maintenant);
+  },
   env: () => process.env,
   maintenant: () => new Date(),
 };
@@ -134,7 +141,7 @@ export async function garderEnregistreur(
 
   // 2. Drapeau.
   const maintenant = deps.maintenant();
-  const drapeau = lireDrapeauEnregistrement(env, maintenant);
+  const drapeau = lireDrapeauEnregistrement(env);
   if (drapeau.effectif === "ferme") {
     return {
       ok: false,

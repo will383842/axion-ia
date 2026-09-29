@@ -65,3 +65,9 @@ Les durées de conservation (ADR 0056). Le pré-remplissage (ADR 0057). Le poids
 ## Annexe — correspondance des identifiants de décision
 
 Seules les lettres de la liste des décisions de Will font foi (A0 à A11, B1 à B20). Correspondance avec les anciens identifiants des brouillons : A1 = D1 + D14 ; A2 = D12 ; A4 = D4 ; A5 = D9 ; B1 = D2 + D13 ; B2 = D3 ; B3 = D10 ; B4 = D11 ; B5 = D-U1 ; B6 = D-U3 ; B7 = D-U6 ; B8 = D-U4 + D-U5 ; B9 = D15 ; B12 = D7 ; B13 = D8. D5, D6 et D-U2 sont tranchés par le plan (plus de question).
+
+## Amendement du 29/09/2026 — `AlerteVisio` est abandonnée (anti-doublon A3)
+
+La table technique `alertes_visio` (modèle `AlerteVisio`, énumération `CategorieAlerteVisio`), posée par la migration du chantier, **n'est plus écrite**. L'audit anti-doublon du 29/09 a tranché : pas de table ni de service d'alerte parallèle. Les alertes du circuit passent par `AlerteSysteme` et `creerOuDedup` (`src/server/qualiopi/alertes/alertes-service.ts`), avec des codes `visio.*` déclarés dans `ALERTE_CATALOGUE` (guichet « direction », `resolutionAuto: false` : le balayage du circuit les ferme lui-même quand la cause disparaît).
+
+La table reste en base, vide : aucune migration destructive. Sa suppression, si elle est décidée, se fera par une PR `schema` dédiée. Garde : `tests/unit/ci/la-table-alertes-visio-reste-vide.spec.ts` (aucun code de `src/` ne touche au modèle).

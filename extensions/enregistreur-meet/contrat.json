@@ -73,7 +73,8 @@
       "pilote_rencontre_non_test",
       "reprise_historique",
       "opposition_ia",
-      "refus_anterieur_definitif"
+      "refus_anterieur_definitif",
+      "client_actif_preavis_en_cours"
     ]
   },
   "schemas": {
@@ -199,6 +200,33 @@
               "type": "null"
             }
           ]
+        },
+        "preavis": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "finLe": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "finLe"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -215,7 +243,8 @@
         "nonSurCalendly",
         "refusAnterieur",
         "estTestInterne",
-        "enregistrementActifId"
+        "enregistrementActifId",
+        "preavis"
       ],
       "additionalProperties": false
     },
@@ -361,6 +390,33 @@
                     "type": "null"
                   }
                 ]
+              },
+              "preavis": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "finLe": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "finLe"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
               }
             },
             "required": [
@@ -377,7 +433,8 @@
               "nonSurCalendly",
               "refusAnterieur",
               "estTestInterne",
-              "enregistrementActifId"
+              "enregistrementActifId",
+              "preavis"
             ],
             "additionalProperties": false
           }

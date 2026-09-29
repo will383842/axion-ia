@@ -22,6 +22,7 @@ import {
   capturesADetruire,
   classerReponse,
   delaiRenvoi,
+  elementRefus,
   envoyablesMaintenant,
   interpreterReponseSession,
 } from "./lib/file-envoi.js";
@@ -170,13 +171,15 @@ async function executer(actions) {
       case "declarer_refus": {
         const captures = await lireCaptures();
         const k = captures[c.cleClient];
-        if (k?.enregistrementId) {
-          // Le refus part tout de suite, hors file : la file vient d'être détruite.
-          await appeler({
-            route: `sessions/${k.enregistrementId}/refus`,
-            jeton: etat.jeton,
-            json: { refusLe: new Date(a.refusLe).toISOString() },
-          });
+        if (!k) break;
+        // Marqué sur la capture : si la création de la session était en vol,
+        // sa réponse (plus tard) déclenchera le refus de l'enregistrement créé.
+        await ecrireCapture({ ...k, refuseLe: a.refusLe });
+        if (k.enregistrementId) {
+          // Un élément de file qui SURVIT à la destruction locale, renvoyé
+          // jusqu'au 2xx (réseau coupé, site en déploiement, R2 en panne).
+          await ajouterALaFile(elementRefus(k.enregistrementId, a.refusLe, Date.now()));
+          viderFile();
         }
         break;
       }
@@ -262,8 +265,10 @@ async function mettreSessionEnFile(cleClient) {
 let envoiEnCours = false;
 
 async function envoyer(el, k) {
-  const id = k.enregistrementId;
+  const id = k?.enregistrementId ?? el.enregistrementId;
   switch (el.type) {
+    case "refus":
+      return appeler({ route: `sessions/${id}/refus`, jeton: etat.jeton, json: el.corps });
     case "session":
       return appeler({
         route: "sessions",
@@ -311,15 +316,23 @@ async function viderFile() {
     );
     const file = envoyablesMaintenant(await lireLaFile(), vue, maintenant);
     for (const el of file) {
-      const k = captures[el.cleClient];
-      if (!k || k.detruit) continue;
+      // Relu AVANT CHAQUE ENVOI : un refus a pu détruire la capture pendant
+      // que la boucle travaillait sur sa copie (les PUT continuaient).
+      const k = el.type === "refus" ? null : (await lireCaptures())[el.cleClient];
+      if (el.type !== "refus" && (!k || k.detruit)) continue;
       const r = await envoyer(el, k);
       if (el.type === "session") {
         const s = interpreterReponseSession(r.statut, r.corps);
         if (s.etat === "ok") {
-          captures[el.cleClient] = { ...k, enregistrementId: s.enregistrementId };
+          const frais = (await lireCaptures())[el.cleClient] ?? k;
+          // Jamais `{ ...k }` : ce serait ressusciter une capture détruite.
+          captures[el.cleClient] = { ...frais, enregistrementId: s.enregistrementId };
           await ecrireCapture(captures[el.cleClient]);
           await retirerDeLaFile(el.id);
+          if (frais.detruit && frais.refuseLe) {
+            // Refus cliqué pendant que la création était en vol.
+            await ajouterALaFile(elementRefus(s.enregistrementId, frais.refuseLe, Date.now()));
+          }
           if (etat.capture.cleClient === el.cleClient) {
             etat.capture = { ...etat.capture, enregistrementId: s.enregistrementId };
           }
@@ -344,6 +357,15 @@ async function viderFile() {
       if (suite === "fait" || suite === "abandonner") {
         await retirerDeLaFile(el.id);
       } else if (suite === "detruire") {
+        // La capture en cours s'arrête aussi (préavis d'un client actif,
+        // enregistrement clos) : le message du site est montré tel quel.
+        if (r.corps?.message) etat.message = r.corps.message;
+        if (etat.capture.cleClient === el.cleClient && etat.capture.phase !== "detruit") {
+          await appliquer({
+            etat: { ...etat.capture, phase: "detruit" },
+            actions: [{ type: "arreter_capture" }],
+          });
+        }
         await detruireCapture(el.cleClient);
       } else if (suite === "jeton") {
         if (jetonRefuseParLeSite(r.statut)) {

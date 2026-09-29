@@ -1,6 +1,7 @@
 // Panneau latéral de l'enregistreur : il reste ouvert pendant que Will clique
 // dans Meet. Il n'envoie que des GESTES au service worker, qui décide.
 
+import { bandeauPreavis } from "./lib/bandeau-preavis.js";
 import { DELAIS_LOCAUX } from "./lib/constantes.js";
 import { messageInformation, phraseAnnonce } from "./lib/message-information.js";
 
@@ -58,7 +59,12 @@ function rendreRencontres(e) {
   }
   const r = e.rencontres.find((x) => x.rencontreId === choix.value);
   const alerte = $("alerte-rencontre");
-  if (r && (r.nonSurCalendly || r.refusAnterieur)) {
+  const preavis = bandeauPreavis(r);
+  if (preavis) {
+    // Client actif sous préavis : le site refuserait, on le dit avant.
+    alerte.textContent = preavis;
+    afficher("alerte-rencontre", true);
+  } else if (r && (r.nonSurCalendly || r.refusAnterieur)) {
     alerte.textContent = r.nonSurCalendly
       ? `Réponse « ${r.reponseCalendly} » à la question sur l'enregistrement : ne pas enregistrer sans un accord explicite.`
       : "Un refus a déjà été exprimé par ce client : ne pas enregistrer sans un accord explicite.";
@@ -79,7 +85,8 @@ function rendre(e) {
   afficher("repos", phase === "repos" || phase === "termine" || phase === "detruit");
   afficher("attente", phase === "accord_en_attente");
   afficher("encours", phase === "en_cours");
-  $("demarrer").disabled = !j.peutDemarrer;
+  const choisie = e.rencontres.find((x) => x.rencontreId === $("rencontre").value);
+  $("demarrer").disabled = !j.peutDemarrer || bandeauPreavis(choisie) !== null;
   $("pause").textContent = e.capture.enPause ? "Reprendre" : "Pause";
   $("badges").textContent = "";
   for (const b of e.capture.badges ?? []) {

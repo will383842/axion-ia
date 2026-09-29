@@ -14,6 +14,17 @@
  *
  * Une écriture R2 qui échoue rend 503 : l'extension garde le morceau dans son
  * IndexedDB et réessaie.
+ *
+ * ## Un refus peut passer PENDANT le dépôt
+ *
+ * Le statut est lu au début ; le refus peut tomber entre cette lecture et
+ * l'écriture de la ligne (l'extension a encore des PUT en vol quand Will
+ * clique « Refus »). Le refus liste les morceaux UNE fois : le morceau écrit
+ * juste après lui échapperait. D'où la relecture du statut APRÈS l'écriture :
+ * `refuse` ou `abandonne` → l'objet R2 et la ligne sont supprimés, 409. Si
+ * cette suppression échoue, la ligne reste, et `reprendrePurgesDesRefus` la
+ * reprend (un enregistrement `refuse` qui a encore un morceau).
+ * Test : `un-morceau-arrive-pendant-un-refus-est-supprime.spec.ts`.
  */
 
 import { createHash } from "node:crypto";
@@ -227,6 +238,26 @@ export async function deposerMorceau(
       : echec(409, "morceau_divergent", "Un autre morceau a déjà été reçu à cette place.");
   }
 
+  // Le refus a pu passer pendant l'écriture : relire, et défaire si besoin.
+  const apres = await db.enregistrement.findUnique({
+    where: { id: enr.id },
+    select: { statut: true },
+  });
+  if (!apres || apres.statut === "refuse" || apres.statut === "abandonne") {
+    try {
+      await stockage.supprimer(cle);
+      await db.enregistrementMorceau.delete({
+        where: { trancheId_seq: { trancheId: tranche.id, seq: e.seq } },
+      });
+    } catch (err) {
+      // La ligne reste : la reprise des purges de refus la supprimera.
+      console.error("[enregistreur] morceau arrivé pendant un refus, suppression reportée :", err);
+    }
+    return echec(409, "enregistrement_clos", "Un refus a été déclaré : ce morceau est supprimé.", {
+      statut: apres?.statut ?? "refuse",
+    });
+  }
+
   const recus = await db.enregistrementMorceau.count({ where: { trancheId: tranche.id } });
   await db.enregistrementTranche.update({
     where: { id: tranche.id },
@@ -237,13 +268,18 @@ export async function deposerMorceau(
         : {}),
     },
   });
-  // Un morceau est un signe de vie : il rouvre un `interrompu`.
-  await db.enregistrement.update({
-    where: { id: enr.id },
-    data: {
-      updatedAt: entree.maintenant,
-      ...(enr.statut === "interrompu" ? { statut: "en_cours" as const } : {}),
-    },
+  // Un morceau est un signe de vie : il rouvre un `interrompu`. Écriture
+  // CONDITIONNÉE au statut : un refus tombé entre-temps n'est jamais écrasé
+  // (un `update` nu remettait `en_cours` sur un enregistrement refusé).
+  await db.enregistrement.updateMany({
+    where: { id: enr.id, statut: { in: [...ETATS_ACCEPTANT_DU_SON] } },
+    data: { updatedAt: entree.maintenant },
   });
+  if (apres.statut === "interrompu") {
+    await db.enregistrement.updateMany({
+      where: { id: enr.id, statut: "interrompu" },
+      data: { statut: "en_cours" },
+    });
+  }
   return ok({ recu: true });
 }

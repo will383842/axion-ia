@@ -241,6 +241,12 @@ const CODES_ATTENDUS: string[] = [
   // Chantier visio, PR 4 (correction anti-doublon A3) : les pannes du balayage
   // du dossier client, levées hors du balayage quotidien.
   "visio.balayage_en_panne",
+  // Chantier visio, PR 5 (anti-doublon A3) : les pannes techniques de
+  // l'enregistreur passent par ce catalogue, plus par une table à part.
+  "visio.temoin_cle",
+  "visio.jeton_expire_j14",
+  "visio.jeton_expire_j3",
+  "visio.extension_silencieuse",
 ];
 
 const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];

@@ -148,6 +148,7 @@ export const MOTIFS_REFUS_SESSION = [
   "reprise_historique",
   "opposition_ia",
   "refus_anterieur_definitif",
+  "client_actif_preavis_en_cours",
 ] as const;
 
 const horodatage = z.string().datetime({ offset: true });
@@ -184,6 +185,12 @@ export const RencontreDuJour = z.object({
   estTestInterne: z.boolean(),
   /** Enregistrement actif de la rencontre, s'il existe (reprise après plantage). */
   enregistrementActifId: uuid.nullable(),
+  /**
+   * Client ACTIF sous préavis (décision de Will du 29/09) : bandeau « pas
+   * d'enregistrement avant le <finLe> », et `POST sessions` répondra 409.
+   * `finLe` nul = préavis pas encore envoyé. `null` = rencontre non concernée.
+   */
+  preavis: z.object({ finLe: horodatage.nullable() }).nullable(),
 });
 
 export const ReponseRencontresDuJour = z.object({

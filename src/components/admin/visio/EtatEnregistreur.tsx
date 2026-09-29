@@ -36,6 +36,9 @@ export function EtatEnregistreur({ etat }: { readonly etat: Etat }): React.React
         ) : null}
       </dd>
 
+      <dt className="font-medium">Clients actifs (préavis)</dt>
+      <dd>{etat.preavis}</dd>
+
       <dt className="font-medium">Mode vu par le worker</dt>
       <dd>{etat.drapeauVuParWorker ?? "pas encore de battement"}</dd>
 
