@@ -94,7 +94,7 @@ export async function lireFichePersonne(empreinte: string): Promise<FichePersonn
   };
   if (!empreinte || !/^[0-9a-f]{64}$/i.test(empreinte)) return vide;
 
-  const [submissions, candidatures] = await Promise.all([
+  const [submissions, candidatures, participations] = await Promise.all([
     prisma.submission.findMany({
       where: { contactEmailHash: empreinte },
       select: { id: true, type: true, details: true, submittedAt: true, contactName: true },
@@ -114,7 +114,22 @@ export async function lireFichePersonne(empreinte: string): Promise<FichePersonn
       orderBy: { submittedAt: "desc" },
       take: 50,
     }),
+    // 2026-09-29 (chantier visio, PR 4) — ses RENDEZ-VOUS du dossier client,
+    // par la même empreinte. Date et titre SEULEMENT : ce qui s'y est dit reste
+    // dans le dossier, réservé aux administrateurs (décision A2).
+    prisma.rencontreParticipant.findMany({
+      where: { emailHash: empreinte, role: { not: "axion" } },
+      select: { rencontreId: true },
+      take: 50,
+    }),
   ]);
+  const rencontres =
+    participations.length > 0
+      ? await prisma.rencontre.findMany({
+          where: { id: { in: [...new Set(participations.map((p) => p.rencontreId))] } },
+          select: { id: true, titre: true, debutPrevu: true, createdAt: true },
+        })
+      : [];
 
   const traces: TracePersonne[] = [];
   let nom: string | null = null;
@@ -170,6 +185,18 @@ export async function lireFichePersonne(empreinte: string): Promise<FichePersonn
       detail: c.offerTitleSnap ?? null,
       quand: c.submittedAt,
       chemin: `contacts/candidatures/${c.id}`,
+    });
+  }
+
+  for (const r of rencontres) {
+    traces.push({
+      id: r.id,
+      monde: "autre",
+      // Un rendez-vous client : ni monde apporteur, ni monde emploi.
+      intitule: "Rendez-vous",
+      detail: r.titre,
+      quand: r.debutPrevu ?? r.createdAt,
+      chemin: `rendez-vous/rencontres/${r.id}`,
     });
   }
 

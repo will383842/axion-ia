@@ -70,6 +70,7 @@ import {
   purgerOutboxCrm,
 } from "@/server/newsletter/retention";
 import type { RetentionPurgeJobData } from "../types";
+import { figerRencontresAvantPurge } from "@/server/visio/figer-avant-purge";
 
 const DEFAULTS = {
   logs: 12,
@@ -160,6 +161,8 @@ export async function executerPurgeRetention(): Promise<void> {
     logs: 0,
     submissions: 0,
     reservationsAppel: 0,
+    // Rencontres du dossier client figées avant la purge de leur rendez-vous.
+    rencontresFigees: 0,
     newsletter: 0,
     generationLogs: 0,
     costLedger: 0,
@@ -281,10 +284,18 @@ export async function executerPurgeRetention(): Promise<void> {
   // l'effacement RGPD de cette même table.
   const rdvMonths = readMonths("RETENTION_CALENDLY_MONTHS", DEFAULTS.reservationsAppel);
   const limiteRdv = monthsAgo(rdvMonths);
-  const rdvPurges = await prisma.calendlyEvent.deleteMany({
-    where: {
-      OR: [{ startTime: { lt: limiteRdv } }, { startTime: null, capturedAt: { lt: limiteRdv } }],
-    },
+  //
+  // 🔑 2026-09-29 (chantier visio, PR 4) — la RENCONTRE du dossier client née
+  // d'un rendez-vous survit à cette purge (lien `SetNull`), mais son statut,
+  // tant que Calendly vit, EST celui de Calendly. On le fige (avec l'issue du
+  // point) et on coupe le lien DANS LA MÊME TRANSACTION que la suppression :
+  // sans cela, la rencontre perdrait en silence « a eu lieu / absent ».
+  const ouRdv = {
+    OR: [{ startTime: { lt: limiteRdv } }, { startTime: null, capturedAt: { lt: limiteRdv } }],
+  };
+  const rdvPurges = await prisma.$transaction(async (tx) => {
+    counts.rencontresFigees = await figerRencontresAvantPurge(tx, ouRdv);
+    return tx.calendlyEvent.deleteMany({ where: ouRdv });
   });
   counts.reservationsAppel = rdvPurges.count;
 
@@ -622,6 +633,7 @@ export async function executerPurgeRetention(): Promise<void> {
   console.log(
     `[retention-purge] logs=${counts.logs} submissions=${counts.submissions} ` +
       `reservationsAppel=${counts.reservationsAppel}/${rdvMonths}m ` +
+      `rencontresFigees=${counts.rencontresFigees} ` +
       `newsletter=${counts.newsletter} ` +
       `generationLogs=${counts.generationLogs} costLedger=${counts.costLedger} ` +
       `webVitals=${counts.webVitals} ` +

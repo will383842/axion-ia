@@ -40,6 +40,12 @@ import {
   lireRencontresDuClient,
 } from "@/features/dossier-client/queries";
 import { getClient } from "@/server/qualiopi/crm/clients";
+import {
+  lireCaseTestVisible,
+  lirePersonnesCourtes,
+} from "@/features/dossier-client/queries-rencontres";
+import { NouveauRendezVous } from "@/components/admin/dossier-client/NouveauRendezVous";
+import { toParisLocalInput } from "@/lib/calendar-grid";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 
 export const dynamic = "force-dynamic";
@@ -89,7 +95,14 @@ export default async function ProjetPage({ params }: PageProps) {
   if (!client || projet === undefined) notFound();
 
   const historique = await lireHistoriqueProjet(projet.id);
-  const conso = consoliderFaits(faits, projets, new Date());
+  const [personnesCourtes, caseTest] = await Promise.all([
+    lirePersonnesCourtes(id),
+    lireCaseTestVisible(id),
+  ]);
+  const maintenant = new Date();
+  const demainDixHeures =
+    toParisLocalInput(new Date(maintenant.getTime() + 24 * 3_600_000)).slice(0, 11) + "10:00";
+  const conso = consoliderFaits(faits, projets, maintenant);
   const portee = conso.projets[projet.id];
   const personnesDuProjet = personnes.filter((p) => p.roles.some((r) => r.projetId === projet.id));
   const rencontresDuProjet = rencontres.filter((r) => r.projetId === projet.id);
@@ -190,6 +203,14 @@ export default async function ProjetPage({ params }: PageProps) {
 
       <section className={carteCls}>
         <h2 className={titreCls}>Rendez-vous du projet</h2>
+        {/* Chantier visio (PR 4, B9) : un rendez-vous en 2 clics depuis le projet. */}
+        <NouveauRendezVous
+          clientId={id}
+          projetId={projet.id}
+          personnes={personnesCourtes}
+          caseTestVisible={caseTest}
+          debutParDefaut={demainDixHeures}
+        />
         {rencontresDuProjet.length === 0 ? (
           <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>
             Aucun rendez-vous rangé dans ce projet.

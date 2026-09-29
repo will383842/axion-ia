@@ -27,6 +27,7 @@ import type {
   GuideIaCronJobType,
   ApporteurCronJobData,
   ApporteurCronJobType,
+  VisioBalayageJobData,
 } from "./types";
 import type { ImageBankEnrichJobData } from "./workers/image-bank-enrich-worker";
 import type { ImageBankImportJobData } from "./workers/image-bank-import-worker";
@@ -227,6 +228,28 @@ export const PATTERN_REPONSES_ENTRANTES = "*/15 * * * *";
  * 20 minutes (`features/commercial-application/invitation-auto.ts`).
  */
 export const PATTERN_INVITATION_AUTO = "*/5 * * * *";
+
+/**
+ * 2026-09-29 (chantier visio, PR 4) — le BALAYAGE du dossier client
+ * (`server/visio/balayage.ts`) : rencontres des rendez-vous Calendly, rappel
+ * « rendez-vous tenu sans compte rendu », battement. Passe par `connection`
+ * (nulle si `BULLMQ_DISABLED`) comme toutes les files ; `attempts: 1` : un
+ * passage raté est repris 5 minutes plus tard, l'état vit en base.
+ */
+export const visioBalayageQueue: Queue<VisioBalayageJobData> | null = connection
+  ? new Queue<VisioBalayageJobData>("visio-balayage", {
+      connection,
+      defaultJobOptions: {
+        ...defaultJobOptions,
+        attempts: 1,
+        removeOnComplete: { age: 24 * 3600, count: 50 },
+        removeOnFail: { age: 7 * 24 * 3600, count: 100 },
+      },
+    })
+  : null;
+
+/** Cadence du balayage du dossier client : toutes les 5 minutes. */
+export const PATTERN_BALAYAGE_VISIO = "*/5 * * * *";
 
 // ============================================================
 // Content Generator V1 — Sprint 4/5 queues (§ 13.1 master prompt v1.7)
@@ -1226,6 +1249,23 @@ export async function bootRepeatableJobs(): Promise<void> {
         type,
         { type, tick: new Date().toISOString() },
         { repeat: { pattern }, jobId },
+      );
+    }
+  }
+
+  // ── 2026-09-29 — balayage du dossier client (chantier visio, PR 4) ──────
+  // Purge EXHAUSTIVE d'abord : le jour où le drapeau repasse à « false »,
+  // l'entrée répétable ne doit pas continuer à se déclencher. Puis ajout,
+  // SEULEMENT si `DOSSIER_BALAYAGE_ENABLED === "true"` (lu à l'exécution).
+  if (visioBalayageQueue) {
+    for (const existing of await visioBalayageQueue.getRepeatableJobs()) {
+      await visioBalayageQueue.removeRepeatableByKey(existing.key);
+    }
+    if (process.env.DOSSIER_BALAYAGE_ENABLED === "true") {
+      await visioBalayageQueue.add(
+        "balayage",
+        { tick: new Date().toISOString() },
+        { repeat: { pattern: PATTERN_BALAYAGE_VISIO }, jobId: "visio-balayage-cron" },
       );
     }
   }
