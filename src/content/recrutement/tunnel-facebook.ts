@@ -69,9 +69,10 @@ export const HERO = {
    *  Le chiffre lui-même n'est PAS ici : il est dérivé de
    *  `COMMISSION_FORMATION_PAR_JOURNEE_EUR` (`pricing.ts`, SSOT) par la page.
    *  Deux barèmes publics ont déjà divergé de 150 € pour un montant recopié. */
-  // « À titre indicatif » est écrit dans la page, à côté du chiffre : la légende
-  // ne le répète pas, elle dit de quoi il dépend.
-  montantLegende: "par journée de formation vendue, selon votre profil",
+  // La légende porte « à titre indicatif » ELLE-MÊME : lue seule (garde jur:remuneration-indicative),
+  // elle ne promet rien. « Selon votre profil » a été retiré : la grille publiée ne dépend pas de
+  // l'apporteur, ce serait une affirmation fausse.
+  montantLegende: "par journée de formation vendue, à titre indicatif",
   montantSous: "Versé dès que l'entreprise nous a payés.",
   chapo:
     "La loi européenne oblige désormais les entreprises à former leurs équipes à l'IA. Vous présentez Axion-IA aux dirigeants que vous connaissez, nous faisons tout le reste, vous touchez une commission sur chaque formation payée, selon un barème indicatif.",
