@@ -2,9 +2,11 @@
  * Admin — la page d'un RENDEZ-VOUS et de son compte rendu (chantier visio,
  * PR 4 ; plan §3.13, vérifications V1-C1 et V5-C1).
  *
- * Dans cette PR : la note manuelle validée, les faits du rendez-vous, le
- * suivi, et l'EMPLACEMENT du compte rendu rédigé depuis l'enregistrement (il
- * arrive avec la PR 6). Plus « Après l'appel », « Préparer » et « Déplacer ».
+ * La note manuelle validée, les faits du rendez-vous, le suivi, et le LIEN
+ * vers le compte rendu rédigé depuis l'enregistrement (PR 6 : la vue
+ * `rendez-vous?compteRendu=<rencontreId>`, où Will le lit, le valide ou
+ * retire l'accord ; les alertes du circuit mènent ici). Plus « Après
+ * l'appel », « Préparer » et « Déplacer ».
  *
  * Texte BRUT partout : aucun HTML venant d'une donnée n'est interprété.
  * Régime REFUS (décision A2) : `gardeLectureEchanges` est la PREMIÈRE
@@ -172,10 +174,20 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
             Aucun compte rendu validé. Ouvrez « Après l&apos;appel » pour écrire la note.
           </p>
         )}
-        <p className={`mt-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] ${mutedCls}`}>
-          Le compte rendu rédigé depuis l&apos;enregistrement de la visio apparaîtra ici, à valider,
-          quand l&apos;enregistrement sera en service.
-        </p>
+        {r.comptesRendus.some((c) => c.origine === "ia") ? (
+          <p className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
+            <Link href={`${rdvBase}?compteRendu=${r.id}`} className={lienCls}>
+              Ouvrir le compte rendu de l&apos;enregistrement
+            </Link>{" "}
+            <span className={mutedCls}>
+              — le lire, le valider, le faire réécrire, ou retirer l&apos;accord du client.
+            </span>
+          </p>
+        ) : (
+          <p className={`mt-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] ${mutedCls}`}>
+            Aucun enregistrement de ce rendez-vous n&apos;a encore donné de compte rendu.
+          </p>
+        )}
         {r.comptesRendus.length > 1 ? (
           <details className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
             <summary className="cursor-pointer">Versions ({r.comptesRendus.length})</summary>
