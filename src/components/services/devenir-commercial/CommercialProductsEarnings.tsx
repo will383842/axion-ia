@@ -67,11 +67,11 @@ export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsP
       tone="canvas"
       eyebrow={isFr ? "Vos commissions, sans plafond" : "Your commissions, uncapped"}
       title={isFr ? "Combien" : "How much"}
-      titleEm={isFr ? "vous gagnez ?" : "you earn?"}
+      titleEm={isFr ? "pouvez-vous gagner ?" : "could you earn?"}
       description={
         isFr
-          ? "Pour chaque produit que vous faites connaître, vous savez exactement ce que vous touchez. Plus vous en présentez, plus vous gagnez — sans aucune limite."
-          : "For each product you introduce, you know exactly what you earn. The more you present, the more you earn — with no limit."
+          ? "À titre indicatif, le barème de chaque produit que vous faites connaître, commission versée à l'encaissement. Plus vous en présentez, plus vos commissions progressent — sans aucune limite."
+          : "As an indication, the rate for each product you introduce, commission paid on collection. The more you present, the more your commissions grow — with no limit."
       }
     >
       {/* FORMATIONS — commission fixe par vente (cartes phares) */}
@@ -104,7 +104,9 @@ export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsP
             <span className="text-fg-muted mt-1 text-xs">
               {/* « signée et payée » (2026-09-19, P4) : la commission est due à
                   l'encaissement, et un apporteur recommande, il ne vend pas. */}
-              {isFr ? "par formation signée et payée" : "per training signed and paid"}
+              {isFr
+                ? "par formation signée et payée, à titre indicatif"
+                : "per training signed and paid, as an indication"}
             </span>
           </Link>
         ))}
@@ -114,7 +116,7 @@ export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsP
       <div className="border-sage/30 from-sage-soft to-bg mt-6 rounded-2xl border-2 bg-gradient-to-br p-6 sm:p-8">
         <p className="text-sage-deep flex items-center gap-2 text-[12px] font-semibold tracking-[0.14em] uppercase">
           <TrendingUp aria-hidden="true" className="h-4 w-4" />
-          {isFr ? "Votre potentiel" : "Your potential"}
+          {isFr ? "Votre potentiel, à titre indicatif" : "Your potential, as an indication"}
         </p>
         <p className="text-fg mt-3 text-xl leading-snug font-semibold sm:text-2xl">
           {isFr ? (

@@ -215,7 +215,7 @@ export async function FacebookLandingPage({ params }: Props) {
     {
       id: "gains",
       question: "Combien ça rapporte ?",
-      answer: `Jusqu'à ${commission(1)} par journée de formation vendue, selon la grille en vigueur. Sur un audit, jusqu'à ${pctAudit} % de la facture. Exemples de calcul, pas une promesse : tout dépend des ventes réellement payées.`,
+      answer: `À titre indicatif, jusqu'à ${commission(1)} par journée de formation vendue et encaissée, selon la grille en vigueur. Sur un audit, jusqu'à ${pctAudit} % de la facture. Exemples de calcul, pas une promesse : tout dépend des ventes réellement payées.`,
     },
     {
       id: "ia",
@@ -431,7 +431,9 @@ export async function FacebookLandingPage({ params }: Props) {
             <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">
               jusqu&apos;à {commission(1)}
             </p>
-            <p className="text-fg-muted text-sm font-medium">pour vous, par journée vendue</p>
+            <p className="text-fg-muted text-sm font-medium">
+              pour vous, à titre indicatif, par journée vendue
+            </p>
             <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
               <li>Une formation de 2 journées : jusqu&apos;à {commission(2)}</li>
               <li>De 3 journées : jusqu&apos;à {commission(3)}</li>

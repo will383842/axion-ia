@@ -112,8 +112,8 @@ export const COMMERCIAL_OPPORTUNITY = {
   darkCard: {
     label: { fr: "Comment vous êtes payé", en: "How you get paid" },
     headline: {
-      fr: "« Vous présentez. C'est tracé. Vous touchez. »",
-      en: '"You introduce. It\'s tracked. You get paid."',
+      fr: "« Vous présentez. C'est tracé. Vous touchez votre commission, selon un barème indicatif. »",
+      en: '"You introduce. It\'s tracked. You get your commission, on an indicative scale."',
     },
     sub: {
       fr: "Pas besoin d'être un closeur. Chaque entreprise que vous faites connaître est enregistrée à votre nom par notre équipe. Qu'elle signe avec vous ou qu'elle nous contacte directement, la commission vous revient, versée à l'encaissement de chaque facture.",
@@ -157,12 +157,12 @@ export const COMMERCIAL_STEPS: ReadonlyArray<CommercialStep> = [
       "You declare prospected companies to us under your name — that declaration secures your commissions, paid when each invoice is collected.",
   },
   {
-    titleFr: "Vous touchez vos commissions",
-    titleEn: "You earn your commissions",
+    titleFr: "Vos commissions, à l'encaissement",
+    titleEn: "Your commissions, on collection",
     textFr:
-      "Commission fixe sur les formations, pourcentage de la facture sur les audits et les intégrations. Plus vous vendez, plus vous gagnez — sans plafond.",
+      "À titre indicatif : commission fixe sur les formations, pourcentage de la facture sur les audits et les intégrations. Plus vous recommandez d'entreprises, plus vos commissions progressent — sans plafond.",
     textEn:
-      "Flat commission on trainings, a percentage of the invoice on audits and integrations. The more you sell, the more you earn — with no cap.",
+      "As an indication: flat commission on trainings, a percentage of the invoice on audits and integrations. The more companies you introduce, the more your commissions grow — with no cap.",
   },
 ];
 

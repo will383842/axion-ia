@@ -106,6 +106,7 @@
     "mcp:fixtures": "tsx scripts/mcp/ecrire-fixtures-max.ts",
     "partners:fixtures": "tsx scripts/partners/fixtures.ts",
     "partners:inertie": "tsx scripts/gates/inertie.ts",
+    "jur:remuneration-indicative": "tsx scripts/gates/jur-copy-indicative.ts",
     "mcp:verifier-la-porte": "tsx scripts/mcp/verifier-la-porte.ts",
     "bundle:analyze": "ANALYZE=true next build",
     "linkcheck": "linkinator http://localhost:3000 --recurse --silent",

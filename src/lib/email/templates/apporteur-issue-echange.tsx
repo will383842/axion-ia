@@ -97,7 +97,7 @@ export const COPY_ISSUE_ECHANGE = {
       fonctionnement: [
         "Vous nous mettez en relation avec une entreprise qui a un besoin : formation à l'IA, audit ou intégration.",
         "Nous gérons tout le reste : rendez-vous, devis et réalisation.",
-        "Vous touchez une commission.",
+        "Vous touchez une commission. Le barème ci-dessous est donné à titre indicatif : votre contrat d'apporteur fait foi.",
       ],
       commissionTitre: "Votre commission",
       formation: (eur: number) =>

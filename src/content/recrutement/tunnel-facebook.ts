@@ -60,7 +60,7 @@
 export const TUNNEL_FACEBOOK_META = {
   title: "Apporteur d'affaires IA : recommandez, sans vendre",
   description:
-    "Vous connaissez des dirigeants ? Présentez-leur Axion-IA, nous faisons le reste, vous touchez une commission sur chaque formation payée. 4 champs, zéro CV.",
+    "Vous connaissez des dirigeants ? Présentez-leur Axion-IA, nous faisons le reste : une commission indicative par formation payée. 4 champs, zéro CV.",
 } as const;
 
 export const HERO = {
@@ -71,10 +71,10 @@ export const HERO = {
    *  Le chiffre lui-même n'est PAS ici : il est dérivé de
    *  `COMMISSION_FORMATION_PAR_JOURNEE_EUR` (`pricing.ts`, SSOT) par la page.
    *  Deux barèmes publics ont déjà divergé de 150 € pour un montant recopié. */
-  montantLegende: "par journée de formation vendue",
+  montantLegende: "par journée de formation vendue, à titre indicatif",
   montantSous: "Versé dès que l'entreprise nous a payés.",
   chapo:
-    "La loi européenne oblige désormais les entreprises à former leurs équipes à l'IA. Vous présentez Axion-IA aux dirigeants que vous connaissez, nous faisons tout le reste, vous touchez une commission sur chaque formation payée.",
+    "La loi européenne oblige désormais les entreprises à former leurs équipes à l'IA. Vous présentez Axion-IA aux dirigeants que vous connaissez, nous faisons tout le reste, vous touchez une commission sur chaque formation payée, selon un barème indicatif.",
   cta: "Recevoir le kit",
   micro: "30 secondes · 4 champs · zéro CV",
   /** Couverture nationale, dite en clair sous le formulaire ET dans le héro :
