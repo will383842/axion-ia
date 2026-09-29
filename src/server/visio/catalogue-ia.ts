@@ -20,7 +20,7 @@
 
 import { createHash } from "node:crypto";
 
-import type { PricingTier } from "@/content/pricing";
+import { PRICING_CATEGORIES, type PricingTier } from "@/content/pricing";
 
 export type TypeTarif = "fixe" | "a_partir_de" | "sur_devis";
 
@@ -79,29 +79,22 @@ export function construireCatalogue(entrees: readonly EntreeCatalogue[]): Catalo
   };
 }
 
-/** Activité d'une catégorie de `PRICING_CATEGORIES`. */
-const ACTIVITE_PAR_CATEGORIE: Readonly<Record<string, string>> = {
+/** Activité d'une catégorie de `PRICING_CATEGORIES` — la clé est celle du catalogue du site. */
+const ACTIVITE_PAR_CATEGORIE = {
   audit: "audit",
   interventions: "formation",
   implementation: "implementation",
   maintenance: "implementation",
   codage: "site_web",
-};
-
-export function typeTarifDuTier(t: PricingTier): TypeTarif {
-  if (t.onQuote && t.priceFlat == null && t.priceMin == null) return "sur_devis";
-  if (t.isFromPrice === true || (t.subTiers?.length ?? 0) > 0 || t.priceMax != null)
-    return "a_partir_de";
-  return t.priceFlat != null ? "fixe" : "sur_devis";
-}
+} as const satisfies Record<keyof typeof PRICING_CATEGORIES, string>;
 
 /** Lit les offres actives et les paliers ; rend le catalogue. */
 export async function chargerCatalogue(): Promise<CatalogueIA> {
-  const [{ listOffres }, { PRICING_CATEGORIES }, { resolveOffrePriceEur }] = await Promise.all([
-    import("@/server/qualiopi/offres/offres"),
-    import("@/content/pricing"),
-    import("@/server/qualiopi/offres/pricing-resolver"),
-  ]);
+  const [{ listOffres }, { deriveTarifType, resolveOffreEffectifFr, resolveOffrePriceEur }] =
+    await Promise.all([
+      import("@/server/qualiopi/offres/offres"),
+      import("@/server/qualiopi/offres/pricing-resolver"),
+    ]);
   const offres = await listOffres({ actifOnly: true });
   const tiersAvecOffre = new Set(offres.map((o) => o.offre.tierId).filter((x): x is string => !!x));
   const entrees: EntreeCatalogue[] = offres.map((o) => ({
@@ -112,7 +105,7 @@ export async function chargerCatalogue(): Promise<CatalogueIA> {
       o.offre.dureeHeuresMin === o.offre.dureeHeuresMax
         ? `${o.offre.dureeHeuresMin} h`
         : `${o.offre.dureeHeuresMin} à ${o.offre.dureeHeuresMax} h`,
-    effectif: o.noteDevisFr.split(" — ")[0] ?? "",
+    effectif: resolveOffreEffectifFr(o.offre) ?? "",
     typeTarif:
       o.offre.tarifType === "sur_devis"
         ? "sur_devis"
@@ -121,16 +114,19 @@ export async function chargerCatalogue(): Promise<CatalogueIA> {
           : "fixe",
     prixHtEur: o.prixHtEur,
   }));
-  for (const [categorie, tiers] of Object.entries(PRICING_CATEGORIES)) {
-    for (const t of tiers as ReadonlyArray<PricingTier>) {
+  for (const categorie of Object.keys(PRICING_CATEGORIES) as Array<
+    keyof typeof PRICING_CATEGORIES
+  >) {
+    for (const t of PRICING_CATEGORIES[categorie] as ReadonlyArray<PricingTier>) {
       if (tiersAvecOffre.has(t.id)) continue;
       entrees.push({
         ref: `TIER:${t.id}`,
         intitule: t.labelFr,
-        activite: ACTIVITE_PAR_CATEGORIE[categorie] ?? categorie,
+        activite: ACTIVITE_PAR_CATEGORIE[categorie],
         duree: t.durationFr ?? "",
         effectif: t.groupSizeFr ?? "",
-        typeTarif: typeTarifDuTier(t),
+        // LA règle du site (une seule) : `deriveTarifType`.
+        typeTarif: deriveTarifType(t),
         prixHtEur: resolveOffrePriceEur({ tierId: t.id, gamme: null, dureeCode: null }),
       });
     }
