@@ -364,6 +364,7 @@ export async function SubmissionsV2({
           sansSuite={s.sansSuiteAt !== null}
           apporteur={estApporteur({ unifiedType: s.unifiedType, subType: s.subType })}
           pretASigner={s.pretASignerLe !== null}
+          transmissionOuverte={result.transmissionPartnersOuverte}
           needsAttention={s.needsAttention}
           status={s.status}
           deleted={s.deletedAt !== null}

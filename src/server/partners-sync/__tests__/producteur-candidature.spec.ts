@@ -336,14 +336,12 @@ describe("REQ-INT-032 — la transition console « prêt à signer »", () => {
     expect(lignes()).toHaveLength(0);
   });
 
-  it("REQ-INT-032 : canal fermé, la marque est posée et journalisée, aucun événement", async () => {
+  it("REQ-INT-032 — TÉMOIN : canal fermé, le geste est REFUSÉ, sans marque ni événement (la fiche reste transmissible)", async () => {
     process.env.PARTNERS_SYNC_ENABLED = "false";
     etat.submissions.push(candidature());
     const res = await marquerPretASigner(ID, "admin-1");
-    expect(res.ok).toBe(true);
-    expect(typeof (etat.submissions[0]?.["details"] as Enregistrement)["pretASignerAt"]).toBe(
-      "string",
-    );
+    expect(res).toEqual({ ok: false, erreur: "canal_ferme" });
+    expect((etat.submissions[0]?.["details"] as Enregistrement)["pretASignerAt"]).toBeUndefined();
     expect(lignes()).toHaveLength(0);
   });
 

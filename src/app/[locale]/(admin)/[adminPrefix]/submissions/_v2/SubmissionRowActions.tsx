@@ -57,6 +57,8 @@ interface Props {
   apporteur: boolean;
   /** details.pretASignerAt != null → le candidat a déjà été transmis à Axion Partners. */
   pretASigner: boolean;
+  /** Le canal Partners est ouvert : sans lui, « Prêt à signer » n'est pas proposé. */
+  transmissionOuverte: boolean;
 }
 
 /** Ce que l'écran dit d'un refus de « prêt à signer » — en clair, jamais un code. */
@@ -69,6 +71,8 @@ const MOTIF_PRET_A_SIGNER: Readonly<Record<ErreurPretASigner, string>> = {
     "Le dossier est incomplet (score ou réponses illisibles) : rien n'a été transmis.",
   interdit: "Votre rôle ne permet pas ce geste.",
   db: "La transmission a échoué, rien n'a été enregistré. Réessayer.",
+  canal_ferme:
+    "La transmission vers Axion Partners n'est pas encore ouverte : rien n'a été enregistré.",
 };
 
 const MENU_ITEM_CLASS =
@@ -83,6 +87,7 @@ export function SubmissionRowActions({
   sansSuite,
   apporteur,
   pretASigner,
+  transmissionOuverte,
 }: Props): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -240,7 +245,7 @@ export function SubmissionRowActions({
               suite ». Le clic transmet le candidat à Axion Partners (ADR 0051
               §c) ; il n'est offert ni hors d'un dossier apporteur, ni sur une
               fiche écartée, ni deux fois. */}
-          {apporteur && !sansSuite && !pretASigner ? (
+          {apporteur && transmissionOuverte && !sansSuite && !pretASigner ? (
             <button
               type="button"
               disabled={isPending}
