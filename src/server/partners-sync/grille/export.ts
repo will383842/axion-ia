@@ -481,6 +481,29 @@ export function prochainePublication(
   };
 }
 
+/**
+ * La publication PSEUDONYMISÉE que Partners prend pour fixture (DM-03-P, RM-03). Le dépôt de
+ * Partners est public et n'accepte AUCUNE valeur de la grille (`docs/PRESEANCE.md` §3.4 de ce
+ * dépôt-là) : sa fixture ne peut pas être la vraie publication, et une fixture tapée à la main n'est
+ * pas une fixture. Celle-ci garde la structure, les identifiants, les libellés, les statuts et la
+ * version réels ; chaque montant et chaque taux NON NUL devient son rang (1, 2, 3…) dans l'ordre des
+ * commissions ; l'empreinte est recalculée ICI, par la même `empreinteGrille` que la vraie.
+ */
+export function pseudonymiserPublication(pub: PublicationGrille): PublicationGrille {
+  let rang = 0;
+  const commissions = pub.contenu.commissions.map((c) => {
+    if (c.montantCents === null && c.tauxBps === null) return c;
+    rang += 1;
+    return {
+      ...c,
+      montantCents: c.montantCents === null ? null : rang,
+      tauxBps: c.tauxBps === null ? null : rang,
+    };
+  });
+  const contenu: ContenuGrille = { ...pub.contenu, commissions };
+  return { ...pub, hash: empreinteGrille(contenu), contenu };
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // L'alerte au démarrage (HYP-W6-BIS) — inerte sans PARTNERS_SYNC_ENABLED
 // ─────────────────────────────────────────────────────────────────────────────

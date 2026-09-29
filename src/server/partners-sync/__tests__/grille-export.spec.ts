@@ -28,6 +28,7 @@ import {
   entreesDepuisPricing,
   lirePublications,
   prochainePublication,
+  pseudonymiserPublication,
   verifierCoherenceGrille,
   verifierPublications,
   type EntreesGrille,
@@ -263,6 +264,26 @@ describe("DM-03-A · dérivation : empreinte publiée = empreinte recalculée (R
 
   it("la grille porte la grilleVersion des événements, dérivée et non recopiée", () => {
     expect(construireContenuGrille().grilleVersionEvenement).toBe(GRILLE_VERSION);
+  });
+});
+
+describe("DM-03-A · la fixture pseudonymisée de Partners (DM-03-P, RM-03)", () => {
+  it("même structure, mêmes identifiants et statuts ; aucun montant ni taux réel ; empreinte recalculée", () => {
+    const vraie = lirePublications().at(-1)!;
+    const fixture = pseudonymiserPublication(vraie);
+    expect(fixture.version).toBe(vraie.version);
+    expect(fixture.contenu.paliers).toEqual(vraie.contenu.paliers);
+    expect(fixture.contenu.commissions.map((c) => [c.commissionId, c.kind])).toEqual(
+      vraie.contenu.commissions.map((c) => [c.commissionId, c.kind]),
+    );
+    const valeurs = (p: typeof vraie) =>
+      p.contenu.commissions.flatMap((c) => [c.montantCents, c.tauxBps]).filter((v) => v !== null);
+    // Chaque valeur non nulle devient son rang : 1, 2, 3… — aucune valeur réelle ne survit.
+    expect(valeurs(fixture)).toEqual(valeurs(fixture).map((_v, i) => i + 1));
+    for (const v of valeurs(vraie)) expect(valeurs(fixture)).not.toContain(v);
+    expect(fixture.hash).toBe(empreinteGrille(fixture.contenu));
+    expect(fixture.hash).not.toBe(vraie.hash);
+    expect(verifierPublications([fixture])).toEqual([]);
   });
 });
 

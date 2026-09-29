@@ -4,6 +4,7 @@
  *
  *     pnpm exec tsx scripts/gates/grille-check.ts             # vérifie (code 1 si défaut)
  *     pnpm exec tsx scripts/gates/grille-check.ts --publier   # écrit commissions.v<N+1>.json si la grille a changé
+ *     pnpm exec tsx scripts/gates/grille-check.ts --fixture-pseudonymisee  # fixture de Partners, sur stdout
  *
  * Ce qu'elle vérifie (REQ-DM-014, REQ-INT-017, HYP-W6-BIS) :
  *   1. COHÉRENCE — chaque palier de `pricing.ts` a SOIT un taux, SOIT une entrée
@@ -32,11 +33,23 @@ import {
   entreesDepuisPricing,
   lirePublications,
   prochainePublication,
+  pseudonymiserPublication,
   verifierCoherenceGrille,
   verifierPublications,
 } from "../../src/server/partners-sync/grille/export";
 
 function main(): number {
+  // La fixture de Partners (DM-03-P) : la DERNIÈRE publication, pseudonymisée, sur la sortie
+  // standard. Rien n'est écrit dans ce dépôt.
+  if (process.argv.includes("--fixture-pseudonymisee")) {
+    const derniere = lirePublications(dossierPublications()).at(-1);
+    if (derniere === undefined) {
+      console.error("[partners:grille:check] aucune publication à pseudonymiser.");
+      return 1;
+    }
+    process.stdout.write(`${JSON.stringify(pseudonymiserPublication(derniere), null, 2)}\n`);
+    return 0;
+  }
   const publier = process.argv.includes("--publier");
   const entrees = entreesDepuisPricing();
   const contenu = construireContenuGrille(entrees);
