@@ -80,7 +80,7 @@ describe("la page du compte rendu n'affiche aucun HTML produit par l'IA", () => 
   it("aucun dangerouslySetInnerHTML, aucun moteur Markdown dans la page et le composant", () => {
     for (const f of [
       "src/components/admin/visio/CompteRenduVisio.tsx",
-      "src/app/[locale]/(admin)/[adminPrefix]/rendez-vous/rencontres/[rencontreId]/compte-rendu/page.tsx",
+      "src/components/admin/visio/VueCompteRendu.tsx",
     ]) {
       const code = readFileSync(path.resolve(__dirname, "../../../../..", f), "utf8");
       expect(code, f).not.toMatch(/dangerouslySetInnerHTML=|react-markdown|marked\(|remark|rehype/);

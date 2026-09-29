@@ -35,12 +35,10 @@ function lireRencontre(fd: FormData): string {
   return uuid.parse(fd.get("rencontreId"));
 }
 
-/** L'adresse de retour : la page du compte rendu (jamais une URL extérieure). */
+/** L'adresse de retour : la vue du compte rendu (jamais une URL extérieure). */
 function lireRetour(fd: FormData): string {
   const r = String(fd.get("retour") ?? "");
-  return /^\/[a-z]{2}\/[\w-]+\/rendez-vous\/rencontres\/[0-9a-f-]{36}\/compte-rendu$/.test(r)
-    ? r
-    : "/";
+  return /^\/[a-z]{2}\/[\w-]+\/rendez-vous\?compteRendu=[0-9a-f-]{36}$/.test(r) ? r : "/";
 }
 
 /**
@@ -58,7 +56,7 @@ async function executer(
     const { userId } = await exigerAccesEchanges();
     const rencontreId = lireRencontre(fd);
     message = await geste(rencontreId, userId);
-    revalidatePath(retour);
+    revalidatePath(retour.split("?")[0] ?? "/");
   } catch (err) {
     cle = "erreur";
     message =
@@ -70,7 +68,8 @@ async function executer(
             ? err.message
             : "Erreur inattendue.";
   }
-  redirect(`${retour}?${cle}=${encodeURIComponent(message)}`);
+  const joint = retour.includes("?") ? "&" : "?";
+  redirect(`${retour}${joint}${cle}=${encodeURIComponent(message)}`);
 }
 
 /** Les gestes de la page, par leur nom (champ caché `geste` du formulaire). */

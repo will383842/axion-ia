@@ -1,4 +1,10 @@
-// « Compte rendu » d'un rendez-vous enregistré (chantier visio, PR 6).
+// « Compte rendu » d'un rendez-vous enregistré (chantier visio, PR 6) — vue de
+// l'onglet « Rendez-vous » (`/rendez-vous?compteRendu=<rencontreId>`).
+//
+// Pourquoi une VUE de l'onglet et pas une page à elle : chaque page de la
+// console ajoute ~1 kB au cliquet des pages de la console, qui n'en avait plus
+// que 0,97 (mesuré sur #1229 : 470,14 kB pour 470). Au rebase sur la PR 4, elle
+// s'affiche sur la page de la rencontre, qui existe alors.
 //
 // Ce que Will fait ici : lire le compte rendu rédigé depuis l'enregistrement,
 // vérifier les faits et leurs citations horodatées, dire qui est qui quand
@@ -10,7 +16,6 @@
 // lecture. Rendu en TEXTE BRUT : aucun HTML, aucun lien produit par l'IA.
 // Formulaires sans JavaScript (le poids de la console ne bouge pas).
 
-import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
@@ -26,15 +31,12 @@ import { lireCompteRendu } from "@/features/dossier-client/compte-rendu";
 import { gesteCompteRenduAction } from "@/features/dossier-client/compte-rendu-actions";
 import { prisma } from "@/lib/prisma";
 
-export const dynamic = "force-dynamic";
-export const metadata: Metadata = {
-  title: "Compte rendu du rendez-vous | Axion-IA Admin",
-  robots: { index: false, follow: false },
-};
-
-interface PageProps {
-  params: Promise<{ locale: string; adminPrefix: string; rencontreId: string }>;
-  searchParams: Promise<{ message?: string; erreur?: string }>;
+interface Props {
+  readonly locale: string;
+  readonly adminPrefix: string;
+  readonly rencontreId: string;
+  readonly message: string | undefined;
+  readonly erreur: string | undefined;
 }
 
 const LIBELLE_STATUT_CR: Readonly<Record<string, string>> = {
@@ -85,8 +87,7 @@ function dateFr(d: Date | null): string {
     : "—";
 }
 
-export default async function PageCompteRendu({ params, searchParams }: PageProps) {
-  const { locale, adminPrefix, rencontreId } = await params;
+export async function VueCompteRendu({ locale, adminPrefix, rencontreId, message, erreur }: Props) {
   // 🔴 Première instruction : la garde, AVANT toute lecture.
   const acces = await gardeLectureEchanges(`/${locale}/${adminPrefix}/login`);
   const base = `/${locale}/${adminPrefix}/rendez-vous`;
@@ -95,8 +96,7 @@ export default async function PageCompteRendu({ params, searchParams }: PageProp
 
   const vue = await lireCompteRendu(prisma, rencontreId);
   if (!vue) notFound();
-  const { message, erreur } = await searchParams;
-  const retour = `${base}/rencontres/${rencontreId}/compte-rendu`;
+  const retour = `${base}?compteRendu=${rencontreId}`;
   const cr = vue.courant;
   const cache = (
     <>
