@@ -35,7 +35,7 @@ export function JetonAppareilForm({
   if (etat.etat === "cree") {
     return (
       <div role="status">
-        <input readOnly value={etat.jeton} aria-label="Jeton" className="admin-input font-mono" />
+        <input readOnly value={etat.jeton} aria-label="Jeton" className="admin-input" />
         <p className="font-medium">{etat.consigne}</p>
       </div>
     );
