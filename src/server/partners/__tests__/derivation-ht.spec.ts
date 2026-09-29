@@ -40,6 +40,54 @@ describe("REQ-DM-018 — le TTC de la facture, et son repli", () => {
   });
 });
 
+/** Les HT dérivés d'un échéancier, encaissement par encaissement, cumul compris à chaque pas. */
+function hts(facture: Parameters<typeof derivationHt>[0]["facture"], echeancier: number[]) {
+  let cumul = 0;
+  return echeancier.map((p) => {
+    cumul += p;
+    return derivationHt({ facture, montantEncaisseTtcCents: p, totalEncaisseTtcCents: cumul })
+      .amountHtCents;
+  });
+}
+const somme = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
+
+describe("REQ-INT-005 — Σ des HT = HT de la facture, quel que soit l'échéancier (relecture de #1228)", () => {
+  it("TÉMOIN — 100 000 HT / 120 000 TTC payée 5 × 1 000 puis 115 000 : Σ = 100 000, pas 99 999", () => {
+    const f = { montantHtCents: 100_000, montantTvaCents: 20_000, montantTtcCents: 120_000 };
+    expect(somme(hts(f, [1_000, 1_000, 1_000, 1_000, 1_000, 115_000]))).toBe(100_000);
+  });
+
+  it("TÉMOIN — facture 6 HT / 10 TTC payée 1, 1, 8 : Σ = 6, pas 5", () => {
+    const f = { montantHtCents: 6, montantTvaCents: 4, montantTtcCents: 10 };
+    expect(somme(hts(f, [1, 1, 8]))).toBe(6);
+  });
+
+  it("PROPRIÉTÉ — 500 échéanciers tirés : Σ HT = HT facture au centime, chaque HT ≥ 0, trop-perçu à 0", () => {
+    let graine = 42;
+    const tirer = (n: number) => {
+      graine = (graine * 1_103_515_245 + 12_345) % 2_147_483_648;
+      return graine % n;
+    };
+    for (let k = 0; k < 500; k++) {
+      const ht = 1 + tirer(5_000_000);
+      const tva = tirer(1_000_000);
+      const f = { montantHtCents: ht, montantTvaCents: tva, montantTtcCents: ht + tva };
+      const echeancier: number[] = [];
+      let reste = ht + tva;
+      while (reste > 0) {
+        const p = Math.min(reste, 1 + tirer(Math.max(1, Math.floor((ht + tva) / 3))));
+        echeancier.push(p);
+        reste -= p;
+      }
+      echeancier.push(1 + tirer(10_000)); // un trop-perçu, qui n'acquiert rien
+      const r = hts(f, echeancier);
+      expect(somme(r)).toBe(ht);
+      expect(r.every((x) => x >= 0)).toBe(true);
+      expect(r[r.length - 1]).toBe(0);
+    }
+  });
+});
+
 describe("REQ-INT-005 — le HT encaissé, arrondi vers le bas", () => {
   const facture = { montantHtCents: 100_000, montantTvaCents: 20_000, montantTtcCents: 120_000 };
 

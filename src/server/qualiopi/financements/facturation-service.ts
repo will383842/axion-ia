@@ -48,6 +48,10 @@ import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
 import { resolveRibFacture } from "@/lib/legal-identity";
 import { resoudreConditions, type ModeFacturation } from "./conditions-client";
+import {
+  emettreFaitFacture,
+  transactionFaitFacturation,
+} from "@/server/partners-sync/producteurs/facturation";
 
 /** Garde de type : la colonne est un enum Prisma, la config une chaîne libre. */
 function estModeFacturation(v: unknown): v is ModeFacturation {
@@ -305,34 +309,40 @@ export async function genererFactureFormation(
     // artefact de stockage, sans valeur comptable ; unification complète = chantier
     // à part, l'historique des deux séquences se chevauche.)
     try {
-      const facture = await prisma.factureFormation.create({
-        data: {
-          numero,
-          activite: "formation",
-          sessionId: input.sessionId,
-          ...(session.clientId != null ? { clientId: session.clientId } : {}),
-          destinataire: destinataireReel,
-          destinataireNom,
-          ...(destinataireSiret !== undefined ? { destinataireSiret } : {}),
-          ...(session.client?.tvaIntracom != null
-            ? { destinataireTvaIntracom: session.client.tvaIntracom }
-            : {}),
-          ...(destinataireAdresse !== undefined ? { destinataireAdresse } : {}),
-          montantHtCents: totalHtCents,
-          tvaExoneree: totaux.totalTvaCents === 0,
-          regimeTva,
-          montantTvaCents: totaux.totalTvaCents,
-          montantTtcCents: totaux.totalTtcCents,
-          lignes: lignes as never,
-          subrogation: session.opcoSubrogation,
-          ...(session.numeroDossierOpco !== null && session.numeroDossierOpco !== undefined
-            ? { numeroDossierOpco: session.numeroDossierOpco }
-            : {}),
-          statut: "emise",
-          emiseAt: now,
-          echeanceAt: echeance,
-        },
-        select: { id: true, numero: true },
+      // INT-T05 : l'émission et `facture.emise` vivent et meurent ensemble ; une collision de
+      // numéro (P2002) annule la transaction entière, la reprise en ouvre une neuve.
+      const facture = await transactionFaitFacturation(prisma, async (tx) => {
+        const creee = await tx.factureFormation.create({
+          data: {
+            numero,
+            activite: "formation",
+            sessionId: input.sessionId,
+            ...(session.clientId != null ? { clientId: session.clientId } : {}),
+            destinataire: destinataireReel,
+            destinataireNom,
+            ...(destinataireSiret !== undefined ? { destinataireSiret } : {}),
+            ...(session.client?.tvaIntracom != null
+              ? { destinataireTvaIntracom: session.client.tvaIntracom }
+              : {}),
+            ...(destinataireAdresse !== undefined ? { destinataireAdresse } : {}),
+            montantHtCents: totalHtCents,
+            tvaExoneree: totaux.totalTvaCents === 0,
+            regimeTva,
+            montantTvaCents: totaux.totalTvaCents,
+            montantTtcCents: totaux.totalTtcCents,
+            lignes: lignes as never,
+            subrogation: session.opcoSubrogation,
+            ...(session.numeroDossierOpco !== null && session.numeroDossierOpco !== undefined
+              ? { numeroDossierOpco: session.numeroDossierOpco }
+              : {}),
+            statut: "emise",
+            emiseAt: now,
+            echeanceAt: echeance,
+          },
+          select: { id: true, numero: true },
+        });
+        await emettreFaitFacture(tx, creee.id);
+        return creee;
       });
       factureCreee = facture;
       break;

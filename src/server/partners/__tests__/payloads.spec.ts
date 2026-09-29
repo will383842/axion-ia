@@ -93,6 +93,51 @@ describe("REQ-ARG-005 / REQ-DM-021 — la résolution du client BÉNÉFICIAIRE",
     expect(parLeDossier.origine).toBe("dossier");
   });
 
+  describe("REQ-DM-021 amendée (arbitrage -d7 sur délégation de Williams du 2026-09-29) : l'inscription avant la session", () => {
+    const A = "aaaa1111-1111-4111-8111-111111111111";
+    const B = "bbbb2222-2222-4222-8222-222222222222";
+
+    it("🔴 TÉMOIN (veto securite #1228) — session A, participant de B : B porte l'attribution, JAMAIS A", () => {
+      const r = resoudreClientBeneficiaire({
+        ...factureBase,
+        clientId: null,
+        session: { clientId: A },
+        enrollment: { clientId: B },
+      });
+      expect(r).toEqual({ clientId: B, origine: "enrollment" });
+      expect(r.clientId).not.toBe(A);
+    });
+
+    it("REQ-DM-021 : inscription sans client → on descend à la session", () => {
+      expect(
+        resoudreClientBeneficiaire({
+          ...factureBase,
+          clientId: null,
+          session: { clientId: A },
+          enrollment: { clientId: null },
+        }),
+      ).toEqual({ clientId: A, origine: "session" });
+    });
+
+    it("REQ-DM-021 : aucun client nulle part → non_resolue, jamais une devinette", () => {
+      expect(
+        resoudreClientBeneficiaire({
+          ...factureBase,
+          clientId: null,
+          session: { clientId: null },
+          enrollment: { clientId: null },
+          dossierFinancement: { clientId: null },
+        }),
+      ).toEqual({ clientId: null, origine: "non_resolue" });
+    });
+
+    it("REQ-DM-021 : le client de la FACTURE prime sur tout, inscription comprise", () => {
+      expect(
+        resoudreClientBeneficiaire({ ...factureBase, enrollment: { clientId: B } }).origine,
+      ).toBe("facture");
+    });
+  });
+
   it("🔴 n'utilise JAMAIS `destinataireSiret` — le destinataire n'est pas le bénéficiaire", () => {
     // C'est le cœur de REQ-ARG-005 : sur une facture subrogée, le destinataire est
     // l'OPCO. Commissionner l'OPCO au lieu de l'entreprise formée serait attribuer la

@@ -29,6 +29,10 @@ import type { FactureData, LigneFacture } from "@/server/qualiopi/documents/temp
 import { resolveRibFacture } from "@/lib/legal-identity";
 import { resoudreConditions } from "./conditions-client";
 import {
+  emettreFaitFacture,
+  transactionFaitFacturation,
+} from "@/server/partners-sync/producteurs/facturation";
+import {
   normaliserLignesPourActivite,
   calculerProchaineGeneration,
 } from "@/server/qualiopi/financements/facture-libre-pur";
@@ -237,20 +241,26 @@ export async function emettreFactureBrouillon(
     try {
       // Le `updateMany` conditionné au statut `brouillon` reste le verrou
       // anti-double-émission : ne pas le remplacer par un `update` par id.
-      const { count: updated } = await prisma.factureFormation.updateMany({
-        where: { id: facture.id, statut: "brouillon" },
-        data: {
-          numero,
-          statut: "emise",
-          emiseAt: now,
-          echeanceAt: echeance,
-          regimeTva,
-          montantHtCents: totaux.totalHtCents,
-          montantTvaCents: totaux.totalTvaCents,
-          montantTtcCents: totaux.totalTtcCents,
-          tvaExoneree: totaux.totalTvaCents === 0,
-          lignes: lignes as never,
-        },
+      // INT-T05 : l'émission et `facture.emise` vivent et meurent ensemble — et seul
+      // l'écrivain qui a gagné le verrou (count = 1) émet.
+      const { count: updated } = await transactionFaitFacturation(prisma, async (tx) => {
+        const emission = await tx.factureFormation.updateMany({
+          where: { id: facture.id, statut: "brouillon" },
+          data: {
+            numero,
+            statut: "emise",
+            emiseAt: now,
+            echeanceAt: echeance,
+            regimeTva,
+            montantHtCents: totaux.totalHtCents,
+            montantTvaCents: totaux.totalTvaCents,
+            montantTtcCents: totaux.totalTtcCents,
+            tvaExoneree: totaux.totalTvaCents === 0,
+            lignes: lignes as never,
+          },
+        });
+        if (emission.count === 1) await emettreFaitFacture(tx, facture.id);
+        return emission;
       });
       if (updated === 0) {
         throw new Error("Cette facture a déjà été émise (émission concurrente).");

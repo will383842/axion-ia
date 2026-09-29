@@ -38,6 +38,7 @@ import {
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
+import { emettreDevisSigne, transactionDevisSigne } from "@/server/partners-sync/producteurs/devis";
 import {
   ACTIVITE_LABELS,
   normaliserLignesPourActivite,
@@ -687,9 +688,14 @@ export async function acceptDevisAction(id: string): Promise<ActionResult<{ id: 
   const idParsed = z.string().uuid().safeParse(id);
   if (!idParsed.success) return { error: "Identifiant invalide" };
 
-  await prisma.devis.update({
-    where: { id: idParsed.data },
-    data: { statut: "accepte", acceptedAt: new Date() },
+  // INT-T04 (REQ-INT-007) : l'acceptation et l'événement `devis.signe` dans UNE transaction.
+  const devisId = idParsed.data;
+  await transactionDevisSigne(prisma, async (tx) => {
+    await tx.devis.update({
+      where: { id: devisId },
+      data: { statut: "accepte", acceptedAt: new Date() },
+    });
+    await emettreDevisSigne(tx, devisId);
   });
 
   await logQualiopiActivity({

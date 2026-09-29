@@ -59,6 +59,11 @@ import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/tok
 import { transmettreExemplaireSigne } from "@/server/qualiopi/documents/signature/transmission-exemplaire";
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
 import { envoyerPositionnement } from "@/server/qualiopi/notifications/notifications-service";
+import {
+  devisConcernesPourEmission,
+  emettreDevisSigne,
+  transactionDevisSigne,
+} from "@/server/partners-sync/producteurs/devis";
 import { requireAdminWrite, logQualiopiActivity } from "./_guards";
 
 /**
@@ -374,9 +379,19 @@ async function consequenceSignatureComplete(type: string, documentGenereId: stri
     // signature était écrite mais le devis restait « expiré » et
     // createSessionAction le refusait sans explication. Une signature
     // intégrale vaut accord, même reçue après l'échéance.
-    await prisma.devis.updateMany({
-      where: { documentGenereId, statut: { in: ["envoye", "expire"] } },
-      data: { statut: "accepte", acceptedAt: new Date() },
+    //
+    // INT-T04 (REQ-INT-007) : l'acceptation et l'événement `devis.signe` dans UNE transaction.
+    // Canal Partners ouvert, les devis concernés sont relus SOUS LA MÊME GARDE avant l'écriture,
+    // puis émis un à un ; `emettreDevisSigne` n'émet que pour un devis relu `accepte`. Canal
+    // fermé, l'écriture est exactement celle d'avant, et rien n'est relu.
+    const garde = { documentGenereId, statut: { in: ["envoye" as const, "expire" as const] } };
+    await transactionDevisSigne(prisma, async (tx) => {
+      const concernes = await devisConcernesPourEmission(tx, garde);
+      await tx.devis.updateMany({
+        where: garde,
+        data: { statut: "accepte", acceptedAt: new Date() },
+      });
+      for (const id of concernes) await emettreDevisSigne(tx, id);
     });
   } catch (err) {
     Sentry.captureException(err, {

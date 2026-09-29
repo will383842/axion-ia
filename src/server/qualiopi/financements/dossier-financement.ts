@@ -13,6 +13,10 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import {
+  emettreFinancementMisAJour,
+  transactionFaitFacturation,
+} from "@/server/partners-sync/producteurs/facturation";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import { opcoLabel } from "./opco-referentiel";
 import { montantPrisEnChargeCents } from "./prise-en-charge-montant";
@@ -157,18 +161,35 @@ export async function transitionnerDossier(input: {
   }
 
   const tsField = STATUT_TIMESTAMP[input.vers];
-  const { count } = await prisma.dossierFinancement.updateMany({
-    where: { id: input.dossierId, statut: dossier.statut },
-    data: {
-      statut: input.vers,
-      ...(tsField !== undefined ? { [tsField]: new Date() } : {}),
-      ...(input.montantAccordeCents !== undefined
-        ? { montantAccordeCents: input.montantAccordeCents }
-        : {}),
-      ...(input.echeanceFinanceurAt !== undefined
-        ? { echeanceFinanceurAt: input.echeanceFinanceurAt }
-        : {}),
-    },
+  const { count } = await transactionFaitFacturation(prisma, async (tx) => {
+    const ecrit = await tx.dossierFinancement.updateMany({
+      where: { id: input.dossierId, statut: dossier.statut },
+      data: {
+        statut: input.vers,
+        ...(tsField !== undefined ? { [tsField]: new Date() } : {}),
+        ...(input.montantAccordeCents !== undefined
+          ? { montantAccordeCents: input.montantAccordeCents }
+          : {}),
+        ...(input.echeanceFinanceurAt !== undefined
+          ? { echeanceFinanceurAt: input.echeanceFinanceurAt }
+          : {}),
+      },
+    });
+    // 🔑 `financement.mis_a_jour` (INT-T05, REQ-INT-032) : l'échéance du financeur est dans la
+    // charge de CHAQUE facture émise du dossier. La poser est un fait pour chacune, écrit dans la
+    // transaction de l'écriture — canal fermé, rien ne change (inertie).
+    if (ecrit.count > 0 && input.echeanceFinanceurAt !== undefined) {
+      const factures = await tx.factureFormation.findMany({
+        where: {
+          dossierFinancementId: input.dossierId,
+          avoirDeId: null,
+          statut: { not: "brouillon" },
+        },
+        select: { id: true },
+      });
+      for (const f of factures) await emettreFinancementMisAJour(tx, f.id);
+    }
+    return ecrit;
   });
   if (count === 0) {
     throw new Error("Transition concurrente détectée — recharger le dossier.");

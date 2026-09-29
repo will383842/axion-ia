@@ -231,7 +231,7 @@ export type ResolutionBeneficiaire = {
 };
 
 /**
- * Le client BÉNÉFICIAIRE d'une facture — `facture ?? session ?? enrollment ?? dossier`.
+ * Le client BÉNÉFICIAIRE d'une facture — `facture ?? enrollment ?? session ?? dossier`.
  *
  * 🔴 `destinataireSiret` N'APPARAÎT NULLE PART DANS CETTE FONCTION, et REQ-ARG-005
  * l'exige mot pour mot : « jamais par `destinataireSiret` ». Sur une facture subrogée le
@@ -247,11 +247,16 @@ export type ResolutionBeneficiaire = {
 export function resoudreClientBeneficiaire(facture: FacturePourEvenement): ResolutionBeneficiaire {
   if (facture.clientId !== null) return { clientId: facture.clientId, origine: "facture" };
 
-  const parLaSession = facture.session?.clientId ?? null;
-  if (parLaSession !== null) return { clientId: parLaSession, origine: "session" };
-
+  // 🔴 L'INSCRIPTION AVANT LA SESSION (REQ-DM-021 amendée : arbitrage -d7 sur délégation de
+  // Williams du 2026-09-29, après le veto securite de #1228). Sur une facture inter-entreprises,
+  // l'inscription porte le client qui paie la place de CE participant — son employeur, celui
+  // qu'un apporteur a pu amener. La session n'est qu'un contenant : la prendre d'abord
+  // commissionnerait A pour le participant de B. Inscription sans client : on descend à la session.
   const parLInscription = facture.enrollment?.clientId ?? null;
   if (parLInscription !== null) return { clientId: parLInscription, origine: "enrollment" };
+
+  const parLaSession = facture.session?.clientId ?? null;
+  if (parLaSession !== null) return { clientId: parLaSession, origine: "session" };
 
   const parLeDossier = facture.dossierFinancement?.clientId ?? null;
   if (parLeDossier !== null) return { clientId: parLeDossier, origine: "dossier" };
@@ -391,7 +396,10 @@ function ligneDevis(
   // voici, explicite, plutôt qu'un champ qu'on aurait inventé au schéma.
   const jours = activite === "formation" ? quantite : null;
 
-  const montantHtCents = quantite * prixUnitaireHtCents;
+  // Arrondi ligne à ligne, À L'IDENTIQUE de `createDevisAction` qui a calculé le total stocké :
+  // `quantite` admet des décimales (une demi-journée), et un produit non entier ne serait plus
+  // un nombre de centimes — le contrat le refuserait, et Σ lignes ≠ total (INT-T04).
+  const montantHtCents = Math.round(quantite * prixUnitaireHtCents);
   const commission = resoudreCommission({ activite, jours, montantHtCents });
 
   return {
