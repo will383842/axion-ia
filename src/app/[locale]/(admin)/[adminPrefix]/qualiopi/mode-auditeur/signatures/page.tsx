@@ -231,9 +231,14 @@ function LignePiece({
         ) : null}
       </td>
       <td className="p-[var(--space-admin-3)] text-[length:var(--text-admin-xs)]">
-        {/* Recalculé d'abord : c'est lui qui dit la vérité. */}
+        {/* Recalculé d'abord : c'est lui qui dit la vérité. Une pièce ANNULÉE
+            n'attend plus aucune signature : « En attente » laissait croire à
+            l'auditeur (audit du 2026-09-30) qu'il manquait des signatures sur
+            trois conventions remplacées le jour même. */}
         <span className="font-semibold">
-          {LIBELLE_STATUT[piece.statutRecalcule] ?? piece.statutRecalcule}
+          {piece.annuleeAt !== null && piece.statutRecalcule === "en_attente"
+            ? "Sans objet (pièce annulée)"
+            : (LIBELLE_STATUT[piece.statutRecalcule] ?? piece.statutRecalcule)}
         </span>
         {piece.statutRecalcule !== piece.statutCache ? (
           <span className="block text-[color:var(--color-admin-danger)]">
@@ -308,7 +313,7 @@ function LignePiece({
             })}
           </ul>
         )}
-        {piece.partiesManquantes.length > 0 ? (
+        {piece.partiesManquantes.length > 0 && piece.annuleeAt === null ? (
           <span className="block text-[color:var(--color-admin-fg-muted)]">
             {`Manque : ${piece.partiesManquantes.map((p) => nomPartie(p)).join(", ")}`}
           </span>
@@ -362,7 +367,7 @@ export default async function RegistreSignaturesPage({
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Registre des signatures"
-        description="Pièce par pièce : qui a signé, quand, et si la preuve tient. Lecture seule — aucune anomalie n'est corrigée depuis cet écran."
+        description="Pièce par pièce : qui a signé, quand, et si la preuve tient. Aucune anomalie n'est corrigée depuis cet écran ; seule la révocation motivée et tracée d'une signature y est possible."
       />
 
       {retourRevocation !== undefined ? (

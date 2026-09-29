@@ -35,6 +35,7 @@ import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions
 import { redis } from "@/lib/redis";
 import { getIndicateurs } from "@/server/qualiopi/indicateurs/service";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { REPONSE_AUCUNE_ADAPTATION } from "@/server/qualiopi/adaptation/reponse-organisme";
 import {
   computeTauxSatisfaction,
   computeTauxReussite,
@@ -297,10 +298,15 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
         ],
       },
     }),
-    // Adaptations handicap réalisées sur inscriptions de la période
+    // Adaptations RÉALISÉES sur inscriptions de la période. « Aucune adaptation
+    // nécessaire » est une RÉPONSE de l'organisme à un besoin déclaré, pas une
+    // adaptation : la compter faisait afficher « 1 adaptation handicap
+    // réalisée » en production (audit du 2026-09-30) pour une stagiaire sans
+    // handicap à qui aucune adaptation n'avait été faite.
     prisma.enrollment.count({
       where: {
         adaptationsRealisees: { not: null },
+        NOT: { adaptationsRealisees: REPONSE_AUCUNE_ADAPTATION },
         session: sessionWhere,
       },
     }),
@@ -453,7 +459,10 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
   // ── M12 — Adaptations handicap réalisées ──────────────────────────────────
   const m12: MetriqueValeur = {
     valeur: nbAdaptationsHandicap,
-    libelle: "Adaptations handicap réalisées",
+    // Tout besoin déclaré, handicap ou aménagement pratique (ind. 10) : le
+    // compteur ne sait pas lequel, et ne doit pas qualifier de « handicap » ce
+    // qui n'en est pas un (cf. `besoinAdaptationDeclareAt`, schéma Prisma).
+    libelle: "Adaptations réalisées (ind. 10)",
   };
 
   // ── M13 — Sous-traitances évaluées ────────────────────────────────────────

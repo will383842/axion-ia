@@ -170,8 +170,14 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
   };
 
   // ── Données : pilotage + check-list de cadences ────────────────────────────
-  const [pilotage, revueAnnee, bpfAnneeDeposee, revueTrimestrielleActivee, derniereVeille] =
-    await Promise.all([
+  const [
+    pilotage,
+    revueAnnee,
+    bpfAnneeDeposee,
+    revueTrimestrielleActivee,
+    derniereVeille,
+    anneeDeclarationNda,
+  ] = await Promise.all([
       getPilotage(options),
       getRevue(annee),
       getQualiopiConfig("bpf_annee_deposee").catch(() => 0),
@@ -180,6 +186,7 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
         orderBy: { dateVeille: "desc" },
         select: { dateVeille: true },
       }),
+      getQualiopiConfig("nda_annee_declaration").catch(() => null),
     ]);
 
   // Sélecteur années (5 ans glissants)
@@ -198,6 +205,12 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
   const revueValideeAnnee = revueAnnee !== null && revueAnnee.statut === "validee";
   const revueCreeeAnnee = revueAnnee !== null;
   const bpfDepose = typeof bpfAnneeDeposee === "number" && bpfAnneeDeposee >= annee - 1;
+  // Aucun BPF n'est dû pour une année ANTÉRIEURE à la déclaration d'activité —
+  // même règle que l'alerte `bpf_en_retard` (evaluateur.ts). Sans elle, un
+  // organisme déclaré en 2026 lisait « BPF 2025 : Non déposé » sur son
+  // tableau de pilotage, sous les yeux du certificateur (audit du 2026-09-30).
+  const bpfSansObjet =
+    typeof anneeDeclarationNda === "number" && anneeDeclarationNda > annee - 1;
   const veilleRecente =
     derniereVeille !== null &&
     // Date.now() est OK ici : Server Component re-render à chaque requête HTTP.
@@ -242,10 +255,12 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
     {
       cadence: "Annuel",
       taches: `BPF ${annee - 1} déposé (DREETS, avant le 31 mai ${annee}).`,
-      etat: bpfDepose,
-      etatLabel: bpfDepose
-        ? `Déposé (dernière année : ${String(bpfAnneeDeposee)})`
-        : "Non déposé (marqueur config bpf_annee_deposee)",
+      etat: bpfSansObjet ? null : bpfDepose,
+      etatLabel: bpfSansObjet
+        ? `Sans objet — déclaration d'activité en ${String(anneeDeclarationNda)} : premier BPF (exercice ${String(anneeDeclarationNda)}) à déposer avant le 31 mai ${String(Number(anneeDeclarationNda) + 1)}`
+        : bpfDepose
+          ? `Déposé (dernière année : ${String(bpfAnneeDeposee)})`
+          : "Non déposé (marqueur config bpf_annee_deposee)",
     },
     {
       cadence: "Annuel",
@@ -381,6 +396,9 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
         <AdminStatCard
           label={pilotage.m3_taux_completion.libelle}
           value={afficherValeur(pilotage.m3_taux_completion)}
+          {...(pilotage.m3_taux_completion.detail !== undefined
+            ? { meta: pilotage.m3_taux_completion.detail }
+            : {})}
           tone={(() => {
             const n = toNum(pilotage.m3_taux_completion);
             if (n === null) return "default";
@@ -435,6 +453,9 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
         <AdminStatCard
           label={pilotage.m5_taux_reussite.libelle}
           value={afficherValeur(pilotage.m5_taux_reussite)}
+          {...(pilotage.m5_taux_reussite.detail !== undefined
+            ? { meta: pilotage.m5_taux_reussite.detail }
+            : {})}
           tone={(() => {
             const n = toNum(pilotage.m5_taux_reussite);
             if (n === null) return "default";
@@ -446,6 +467,9 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
         <AdminStatCard
           label={pilotage.m6_satisfaction.libelle}
           value={afficherValeur(pilotage.m6_satisfaction)}
+          {...(pilotage.m6_satisfaction.detail !== undefined
+            ? { meta: pilotage.m6_satisfaction.detail }
+            : {})}
           tone={(() => {
             const n = toNum(pilotage.m6_satisfaction);
             if (n === null) return "default";
