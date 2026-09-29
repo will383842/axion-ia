@@ -32,7 +32,7 @@ import {
 } from "@/server/careers/dossiers-en-sommeil";
 import {
   AGE_MIN_JOURS,
-  critereEligible,
+  critereEligibleActuel,
   estActive as reponseAutoActive,
 } from "@/server/careers/reponse-poste-pourvu";
 import { basculerReponsePostePourvuAction } from "@/features/admin-job-applications/reponse-poste-pourvu-actions";
@@ -125,7 +125,9 @@ export default async function ApplicationsListPage({ params, searchParams }: Pag
   // qu'elle a devant elle, affichés là où on regarde les candidatures.
   const [autoActive, autoEnAttente] = await Promise.all([
     reponseAutoActive(),
-    prisma.jobApplication.count({ where: critereEligible(new Date()) }).catch(() => 0),
+    critereEligibleActuel(new Date())
+      .then((where) => prisma.jobApplication.count({ where }))
+      .catch(() => 0),
   ]);
 
   return (

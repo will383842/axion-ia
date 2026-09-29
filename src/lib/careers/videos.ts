@@ -68,6 +68,6 @@ export function nomAffichable(nom: string): string {
 
 export function tailleLisible(octets: number): string {
   return octets >= 1024 * 1024
-    ? `${(octets / (1024 * 1024)).toFixed(octets >= 10 * 1024 * 1024 ? 0 : 1)} Mo`
+    ? `${(octets / (1024 * 1024)).toFixed(octets >= 10 * 1024 * 1024 ? 0 : 1).replace(".", ",")} Mo`
     : `${Math.max(1, Math.round(octets / 1024))} Ko`;
 }

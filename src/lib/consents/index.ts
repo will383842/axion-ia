@@ -64,6 +64,15 @@ export const CONSENT_FORM_REFS = {
   unifiedContact: "unified-contact-form",
   /** Opposition à la conservation en vivier (un clic, sans login). */
   vivierOpposition: "vivier-opposition",
+  /**
+   * Chantier visio (2026-09-29, ADR 0056) — l'enregistrement d'une visio
+   * annoncé au client (au début de l'appel, et dans le préavis). Référence
+   * posée avant tout écrivain : la preuve détaillée de l'accord vit dans
+   * `enregistrement_consentements` ; cette ligne-ci relie la personne, par son
+   * empreinte, au texte qu'on lui a annoncé. Aucune purge ne la vise encore :
+   * la PR de mise en service l'ajoute (preuves : fin du dossier + 5 ans).
+   */
+  enregistrementVisioAnnonce: "enregistrement-visio-annonce",
 } as const;
 
 export interface RecordConsentEventInput {

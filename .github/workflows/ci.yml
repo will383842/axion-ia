@@ -1252,6 +1252,26 @@ jobs:
             PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
               -v ON_ERROR_STOP=1 -f "$sql"
           done
+      # ── Chantier visio (PR 2) — le SQL brut du dossier client ─────────────
+      #
+      # Prisma n'exprime ni index partiels, ni CHECK, ni clés composées, ni
+      # triggers : ils vivent en SQL brut dans la migration du chantier, et
+      # chacun est déclaré dans `prisma/objets-sql-bruts.ts`. Trois contrôles,
+      # sur CETTE base fraîchement migrée — la seule du dépôt :
+      #   1. dérive : chaque objet déclaré existe, aucun objet non déclaré ;
+      #   2. comportement : chaque objet refuse ce qu'il doit refuser (chaque
+      #      cas dans sa transaction ANNULÉE : la base reste vide pour la
+      #      vérification « zéro ligne » plus bas) ;
+      #   3. comportements par le vrai client Prisma (le drapeau d'effacement
+      #      ne fuit pas hors de sa transaction).
+      - name: Visio — garde de dérive du SQL brut
+        run: pnpm exec tsx scripts/ci/garde-derive-sql-brut.ts
+      - name: Visio — comportement SQL
+        run: |
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -v ON_ERROR_STOP=1 -f tests/sql/dossier-client-comportement.sql
+      - name: Visio — comportements sur base réelle
+        run: pnpm exec tsx scripts/ci/gate-d-visio.ts
       - name: Verify _prisma_migrations table healthy
         run: |
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \

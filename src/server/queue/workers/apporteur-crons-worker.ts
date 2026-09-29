@@ -9,8 +9,9 @@
  *     réponse humaine arrête leurs rappels
  *     (`features/commercial-application/reponses-entrantes-apporteur.ts`).
  *   · `invitation-auto` (toutes les 5 minutes, 2026-09-28) — invite à
- *     l'échange de 15 minutes toute candidature d'apporteur, et toute
- *     candidature à une offre commerciale, 15 minutes après sa réception
+ *     l'échange de 15 minutes tout DOSSIER COMPLET d'apporteur (depuis le
+ *     29/09 : plus le premier contact ni l'écran 1), et toute candidature à
+ *     une offre commerciale, 15 minutes après sa réception
  *     (`features/commercial-application/invitation-auto.ts`).
  *
  * Doctrine de log : on ne journalise que ce qui s'est passé. Un passage qui ne

@@ -9,6 +9,8 @@
 // candidature à une offre d'emploi commerciale, reçoit cette invitation
 // 15 minutes après sa réception — troisième porte, le passage du worker
 // (`invitation-auto.ts`, `adminId: null`). La saisie manuelle reste manuelle.
+// Resserré le 29/09 : côté site, seul le DOSSIER COMPLET est invité
+// automatiquement ; le premier contact et l'écran 1 restent au bouton.
 //
 // ── Ce que l'envoi fait, dans l'ordre ─────────────────────────────────────
 //   1. vérifie le lien (https, calendly.com) — une faute de frappe ne part pas ;
