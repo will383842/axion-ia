@@ -237,11 +237,13 @@ export type AnomalieGrille = {
   readonly message: string;
 };
 
-const MOTIFS: ReadonlySet<string> = new Set<MotifBaremeIndefini>([
+// Une liste littérale, pas un `new Set` : la zone Partners n'exécute rien au chargement
+// (`scripts/gates/inertie.ts`, R1).
+const MOTIFS: ReadonlyArray<string> = [
   "hors_perimetre_w6",
   "bareme_non_publie",
   "palier_sans_bareme",
-]);
+] satisfies ReadonlyArray<MotifBaremeIndefini>;
 
 /** AAAA-MM-JJ ET date réelle (pas de 2026-02-30). */
 function estDateIso(s: string): boolean {
@@ -348,7 +350,7 @@ export function verifierCoherenceGrille(
         b.tierId,
         `BAREMES_INDEFINIS « ${b.tierId} » : date « ${b.depuis} » (attendu AAAA-MM-JJ réel)`,
       );
-    if (!MOTIFS.has(b.motif))
+    if (!MOTIFS.includes(b.motif))
       a(
         "motif_invalide",
         b.tierId,
