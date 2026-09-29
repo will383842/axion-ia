@@ -3,8 +3,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const reglage = vi.fn(async (..._a: unknown[]): Promise<unknown> => null);
 const lister = vi.fn(async (..._a: unknown[]): Promise<unknown[]> => []);
 const compter = vi.fn(async (..._a: unknown[]) => 0);
+const tunnel = vi.fn(async (..._a: unknown[]): Promise<Array<{ id: string | null }>> => []);
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    $queryRaw: (...a: unknown[]) => tunnel(...a),
     setting: { findUnique: (...a: unknown[]) => reglage(...a) },
     jobApplication: {
       findMany: (...a: unknown[]) => lister(...a),
@@ -84,6 +86,18 @@ describe("critereEligible — ce qui protège un dossier", () => {
     expect(texte).toContain("monteur vid");
     expect(texte).toContain("vidéaste");
   });
+
+  it("🔴 exclut les COMMERCIAUX — catégorie `commercial` et intitulés commerciaux (tunnel apporteur)", () => {
+    const w = critereEligible(MAINTENANT);
+    const texte = JSON.stringify(w);
+    expect(texte).toContain('"category":{"not":"commercial"}');
+    for (const t of ["commercial", "business dev", "apporteur"]) expect(texte).toContain(`"${t}"`);
+  });
+
+  it("🔴 exclut toute candidature BASCULÉE dans le tunnel (fiche apporteur née d'elle)", () => {
+    expect(critereEligible(MAINTENANT, ["app-tunnel"]).id).toEqual({ notIn: ["app-tunnel"] });
+    expect(critereEligible(MAINTENANT).id).toBeUndefined();
+  });
 });
 
 describe("le passage horaire", () => {
@@ -99,6 +113,13 @@ describe("le passage horaire", () => {
     reglage.mockResolvedValue({ value: { actif: false } });
     await passerReponsePostePourvu(MAINTENANT);
     expect(repondre).not.toHaveBeenCalled();
+  });
+
+  it("🔴 le passage exclut les candidatures du tunnel lues en base", async () => {
+    tunnel.mockResolvedValueOnce([{ id: "app-tunnel" }, { id: null }]);
+    await passerReponsePostePourvu(MAINTENANT);
+    const where = (lister.mock.calls[0]![0] as { where: { id?: unknown } }).where;
+    expect(where.id).toEqual({ notIn: ["app-tunnel"] });
   });
 
   it("personnalise chaque message et signe « réponse automatique »", async () => {
