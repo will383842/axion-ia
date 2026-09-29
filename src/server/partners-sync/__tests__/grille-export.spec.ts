@@ -313,8 +313,10 @@ describe("DM-03-A · alerte au démarrage (HYP-W6-BIS) — inerte sans PARTNERS_
       source.indexOf("export async function register"),
       source.indexOf('=== "edge"'),
     );
-    expect(register).toContain("await alerterGrillePartnersOnBoot()");
-    expect(source).toMatch(/import\(\s*"@\/server\/partners-sync\/grille\/export"\s*\)/);
+    expect(register).toContain("await alerterGrillePartnersOnBoot(");
+    // L'import vit DANS la branche nodejs : ailleurs, le bundle edge le compile et
+    // refuse `node:crypto` (build rouge de #1181, Gate B et Gate C).
+    expect(register).toMatch(/import\(\s*"@\/server\/partners-sync\/grille\/export"\s*\)/);
     expect(source).toMatch(/alerterBaremesIndefinisAuDemarrage\(\);/);
   });
 

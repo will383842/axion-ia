@@ -6,7 +6,10 @@ export async function register() {
   if (process.env["NEXT_RUNTIME"] === "nodejs") {
     await import("./sentry.server.config");
     await seedQualiopiReferenceDataOnBoot();
-    await alerterGrillePartnersOnBoot();
+    // L'import reste DANS cette branche : `NEXT_RUNTIME` est remplacé au build et le
+    // bundle edge élimine la branche entière. Posé hors de la branche, il était compilé
+    // pour edge, qui refuse `node:crypto` (Gate B et Gate C rouges sur #1181).
+    await alerterGrillePartnersOnBoot(() => import("@/server/partners-sync/grille/export"));
   }
   if (process.env["NEXT_RUNTIME"] === "edge") {
     await import("./sentry.edge.config");
@@ -51,10 +54,11 @@ async function seedQualiopiReferenceDataOnBoot(): Promise<void> {
  * cohérence de la grille. INERTE sans `PARTNERS_SYNC_ENABLED=true` (la fonction appelée
  * sort avant tout calcul). N'écrit rien, n'appelle rien ; fail-soft.
  */
-async function alerterGrillePartnersOnBoot(): Promise<void> {
+async function alerterGrillePartnersOnBoot(
+  charger: () => Promise<{ alerterBaremesIndefinisAuDemarrage: () => unknown }>,
+): Promise<void> {
   try {
-    const { alerterBaremesIndefinisAuDemarrage } =
-      await import("@/server/partners-sync/grille/export");
+    const { alerterBaremesIndefinisAuDemarrage } = await charger();
     alerterBaremesIndefinisAuDemarrage();
   } catch (err) {
     console.error(
