@@ -9,6 +9,25 @@
 // par `envoyerInvitationApporteur`, donc par toutes ses gardes (une seule
 // invitation par personne, fiche effacée, opposition, envoi à valider).
 //
+// ── Resserré le 2026-09-29 (décision de Will) : DOSSIER COMPLET seulement ──
+// Côté site, l'invitation ne part plus que pour le DOSSIER COMPLET (les neuf
+// écrans de `/devenir-commercial-ia/candidature`), 15 minutes après sa
+// réception. Le premier contact du formulaire court (`/apporteur-affaires`)
+// et le contact capturé à l'écran 1 du dossier ne la déclenchent plus : ils
+// gardent leur propre suite — kit + « complète ton dossier » + rappels
+// J+2 / J+7 (`relances-lead-apporteur.ts`), annulés à l'arrivée du dossier.
+//
+// Le critère est POSITIF (`details.source` = chemin du dossier, sans
+// `etape`) : une nouvelle sorte de fiche n'entre pas dans le champ par défaut.
+// 🔑 Le dossier complet est TOUJOURS une nouvelle ligne (`actions.ts` fait un
+// `create`, jamais un `update` du premier contact) : son `submittedAt` est
+// donc l'heure de réception du DOSSIER, et la fenêtre de 72 h se compte à
+// partir de lui — un premier contact vieux d'un mois qui finit son dossier
+// aujourd'hui est invité.
+//
+// Inchangé : la candidature à une offre COMMERCIALE (fiche créée
+// automatiquement, `creationAutomatique`), décision du 28/09.
+//
 // Hors champ, volontairement :
 //   · la SAISIE MANUELLE de la console : elle a sa propre case « Envoyer
 //     l'invitation », c'est Will qui choisit ;
@@ -37,7 +56,8 @@ import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { estLienCalendlyValide } from "@/lib/calendly/lien-valide";
 import { FILTRE_APPORTEUR_PRISMA } from "@/lib/commercial-application/est-apporteur";
-import { ORIGINE_CANDIDATURE_OFFRE, ORIGINE_SAISIE_MANUELLE } from "@/lib/contact/accuse-attendu";
+import { ORIGINE_CANDIDATURE_OFFRE } from "@/lib/contact/accuse-attendu";
+import { DOSSIER_COMPLET_PATH } from "@/lib/commercial-application/lead-apporteur";
 import { envoyerInvitationApporteur } from "./invitation-apporteur";
 import { creerFicheApporteurDepuisCandidature } from "@/features/admin-job-applications/fiche-apporteur-depuis-candidature";
 import { consignerEvenement } from "@/features/admin-job-applications/journal";
@@ -84,9 +104,13 @@ export function ficheEligible(details: unknown): boolean {
       : null;
   if (!d) return false;
   if (d["invitationAuto"] !== undefined) return false;
-  if (d["origine"] === ORIGINE_SAISIE_MANUELLE) return false;
-  if (d["origine"] === ORIGINE_CANDIDATURE_OFFRE && d["creationAutomatique"] !== true) return false;
-  return true;
+  // Candidature à une offre commerciale : seule la fiche créée par le passage
+  // automatique est reprise (« Proposer le réseau » reste un geste de Will).
+  if (d["origine"] === ORIGINE_CANDIDATURE_OFFRE) return d["creationAutomatique"] === true;
+  // Fiche du site : le DOSSIER COMPLET, et lui seul (décision du 29/09). Le
+  // premier contact et l'écran 1 portent `etape` ; la saisie manuelle et les
+  // fiches importées n'ont pas cette source.
+  return d["source"] === DOSSIER_COMPLET_PATH && d["etape"] === undefined;
 }
 
 type Issue = "envoyee" | "en-validation" | string;
@@ -192,10 +216,20 @@ export async function passerInvitationsAuto(
     }
   }
 
-  // ── 2. Fiches apporteurs reçues (formulaires du site, import) → invitation.
+  // ── 2. Dossiers complets reçus (et fiches d'offre à reprendre) → invitation.
+  // Le filtre `source` / `creationAutomatique` est posé EN BASE aussi : sans
+  // lui, les premiers contacts de la fenêtre occuperaient les places du `take`.
   const fiches = await prisma.submission.findMany({
     where: {
-      AND: [...FILTRE_APPORTEUR_PRISMA.AND],
+      AND: [
+        ...FILTRE_APPORTEUR_PRISMA.AND,
+        {
+          OR: [
+            { details: { path: ["source"], equals: DOSSIER_COMPLET_PATH } },
+            { details: { path: ["creationAutomatique"], equals: true } },
+          ],
+        },
+      ],
       submittedAt: { gte: depuis, lte: jusqua },
       deletedAt: null,
       archivedAt: null,

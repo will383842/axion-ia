@@ -3,6 +3,10 @@
 // après sa réception. Ce qui compte ici : la fenêtre (ni avant 15 minutes, ni
 // les anciennes), le périmètre (jamais la saisie manuelle), et qu'une fiche ne
 // soit invitée qu'une fois — sauf échec passager, repris au passage suivant.
+//
+// Resserré le 2026-09-29 (décision Will) : côté site, SEUL le dossier complet
+// est invité. Le premier contact du formulaire court et le contact capturé à
+// l'écran 1 gardent leur kit et leurs rappels, sans invitation automatique.
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -46,6 +50,20 @@ import {
 
 const MAINTENANT = new Date("2026-10-01T10:00:00Z");
 const APPORTEUR = { unifiedType: "recrutement", subType: "candidature-commerciale" };
+// Les trois entrées du site, telles que leurs producteurs les écrivent.
+/** `actions.ts` — le dossier complet (neuf écrans). */
+const DOSSIER_COMPLET = { ...APPORTEUR, source: "/devenir-commercial-ia/candidature" };
+/** `lead-actions.ts` — le formulaire court de /apporteur-affaires. */
+const PREMIER_CONTACT = { ...APPORTEUR, etape: "premier-contact", source: "/apporteur-affaires" };
+/** `capture-actions.ts` — l'écran 1 du dossier, dossier pas terminé. */
+const ECRAN_1 = { ...APPORTEUR, etape: "premier-contact", origine: "ecran-1-du-dossier" };
+/** `fiche-apporteur-depuis-candidature.ts` — passage automatique d'une offre commerciale. */
+const OFFRE_AUTO = {
+  ...APPORTEUR,
+  etape: "premier-contact",
+  origine: "candidature-offre-emploi",
+  creationAutomatique: true,
+};
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -60,8 +78,18 @@ beforeEach(() => {
 });
 
 describe("ficheEligible — le périmètre", () => {
-  it("une candidature du site est invitée", () => {
-    expect(ficheEligible({ ...APPORTEUR, etape: "lead" })).toBe(true);
+  it("le dossier complet est invité", () => {
+    expect(ficheEligible(DOSSIER_COMPLET)).toBe(true);
+  });
+  it("le premier contact du formulaire court n'est PAS invité (29/09)", () => {
+    expect(ficheEligible(PREMIER_CONTACT)).toBe(false);
+  });
+  it("le contact capturé à l'écran 1 n'est PAS invité (29/09)", () => {
+    expect(ficheEligible(ECRAN_1)).toBe(false);
+  });
+  it("une fiche sans source de dossier (import de CV, ancienne forme) n'est pas invitée", () => {
+    expect(ficheEligible(APPORTEUR)).toBe(false);
+    expect(ficheEligible({ ...APPORTEUR, sourceConnaissance: "indeed" })).toBe(false);
   });
   it("jamais la saisie manuelle : Will garde sa case", () => {
     expect(ficheEligible({ ...APPORTEUR, origine: "saisie-manuelle" })).toBe(false);
@@ -75,9 +103,10 @@ describe("ficheEligible — le périmètre", () => {
         creationAutomatique: true,
       }),
     ).toBe(true);
+    expect(ficheEligible(OFFRE_AUTO)).toBe(true);
   });
   it("une fiche déjà traitée par le passage ne l'est jamais deux fois", () => {
-    expect(ficheEligible({ ...APPORTEUR, invitationAuto: { issue: "envoyee" } })).toBe(false);
+    expect(ficheEligible({ ...DOSSIER_COMPLET, invitationAuto: { issue: "envoyee" } })).toBe(false);
   });
 });
 
@@ -96,7 +125,7 @@ describe("passerInvitationsAuto", () => {
   });
 
   it("invite une fiche du site, sans administrateur, et la marque", async () => {
-    d.subFindMany.mockResolvedValue([{ id: "f1", details: APPORTEUR }]);
+    d.subFindMany.mockResolvedValue([{ id: "f1", details: DOSSIER_COMPLET }]);
     const r = await passerInvitationsAuto(MAINTENANT);
     expect(d.envoyer).toHaveBeenCalledWith(
       expect.objectContaining({ submissionId: "f1", adminId: null }),
@@ -104,6 +133,49 @@ describe("passerInvitationsAuto", () => {
     expect(r.envoyees).toBe(1);
     const data = d.subUpdate.mock.calls[0]?.[0]?.data;
     expect(data.details.invitationAuto.issue).toBe("envoyee");
+  });
+
+  it("ne lit en base que les dossiers complets et les fiches d'offre automatiques", async () => {
+    await passerInvitationsAuto(MAINTENANT);
+    const and = d.subFindMany.mock.calls[0]?.[0]?.where.AND;
+    expect(and).toContainEqual({
+      OR: [
+        { details: { path: ["source"], equals: "/devenir-commercial-ia/candidature" } },
+        { details: { path: ["creationAutomatique"], equals: true } },
+      ],
+    });
+  });
+
+  it("premier contact et écran 1 reçus il y a 20 minutes : aucune invitation", async () => {
+    d.subFindMany.mockResolvedValue([
+      { id: "lead", details: PREMIER_CONTACT },
+      { id: "e1", details: ECRAN_1 },
+    ]);
+    const r = await passerInvitationsAuto(MAINTENANT);
+    expect(d.envoyer).not.toHaveBeenCalled();
+    expect(d.subUpdate).not.toHaveBeenCalled();
+    expect(r.envoyees).toBe(0);
+  });
+
+  it("le dossier complet d'une personne venue par le formulaire court est invité, une fois", async () => {
+    // Le dossier est une NOUVELLE ligne : son `submittedAt` est l'heure du
+    // dossier, même si le premier contact date d'un mois (hors fenêtre).
+    d.subFindMany.mockResolvedValue([
+      { id: "lead", details: PREMIER_CONTACT },
+      { id: "dossier", details: DOSSIER_COMPLET },
+    ]);
+    const r = await passerInvitationsAuto(MAINTENANT);
+    expect(d.envoyer).toHaveBeenCalledTimes(1);
+    expect(d.envoyer).toHaveBeenCalledWith(
+      expect.objectContaining({ submissionId: "dossier", adminId: null }),
+    );
+    expect(r.envoyees).toBe(1);
+  });
+
+  it("une fiche d'offre commerciale à reprendre (échec passager) est toujours invitée", async () => {
+    d.subFindMany.mockResolvedValue([{ id: "offre", details: OFFRE_AUTO }]);
+    await passerInvitationsAuto(MAINTENANT);
+    expect(d.envoyer).toHaveBeenCalledWith(expect.objectContaining({ submissionId: "offre" }));
   });
 
   it("une saisie manuelle n'est jamais envoyée", async () => {
@@ -115,7 +187,7 @@ describe("passerInvitationsAuto", () => {
   });
 
   it("un refus définitif (déjà invitée) est marqué : la fiche n'est plus reprise", async () => {
-    d.subFindMany.mockResolvedValue([{ id: "f2", details: APPORTEUR }]);
+    d.subFindMany.mockResolvedValue([{ id: "f2", details: DOSSIER_COMPLET }]);
     d.envoyer.mockResolvedValue({ ok: false, erreur: "deja-invitee", message: "x" });
     const r = await passerInvitationsAuto(MAINTENANT);
     expect(r.ecartees["deja-invitee"]).toBe(1);
@@ -123,7 +195,7 @@ describe("passerInvitationsAuto", () => {
   });
 
   it("un échec PASSAGER n'est pas marqué : le passage suivant réessaie", async () => {
-    d.subFindMany.mockResolvedValue([{ id: "f3", details: APPORTEUR }]);
+    d.subFindMany.mockResolvedValue([{ id: "f3", details: DOSSIER_COMPLET }]);
     d.envoyer.mockResolvedValue({ ok: false, erreur: "file-indisponible", message: "x" });
     const r = await passerInvitationsAuto(MAINTENANT);
     expect(r.aReessayer).toBe(1);
@@ -156,7 +228,7 @@ describe("passerInvitationsAuto", () => {
 
   it("sans lien Calendly configuré, rien ne part", async () => {
     delete process.env["CALENDLY_APPORTEUR_URL"];
-    d.subFindMany.mockResolvedValue([{ id: "f4", details: APPORTEUR }]);
+    d.subFindMany.mockResolvedValue([{ id: "f4", details: DOSSIER_COMPLET }]);
     const r = await passerInvitationsAuto(MAINTENANT);
     expect(r.suspendu).toBe("lien-absent");
     expect(d.envoyer).not.toHaveBeenCalled();
