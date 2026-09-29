@@ -27,6 +27,7 @@ Nous accusons réception de votre demande de rectification de données personnel
 Les données suivantes ont été mises à jour dans nos systèmes :
 
 - [CHAMP] : « [ANCIENNE_VALEUR] » → « [NOUVELLE_VALEUR] »
+- [Dossier client, le cas échéant] : une information tirée d'un rendez-vous ne se réécrit pas (elle cite vos mots) ; elle est marquée « remplacée » par l'information corrigée, qui est désormais la seule utilisée.
 
 Cette modification a été tracée dans notre journal d'activité administrative (audit RGPD) à des fins de preuve. Aucune autre information vous concernant n'a été modifiée.
 
@@ -49,6 +50,7 @@ We acknowledge receipt of your rectification request, in accordance with GDPR ar
 The following data has been updated in our systems:
 
 - [FIELD]: "[OLD_VALUE]" → "[NEW_VALUE]"
+- [Client record, if applicable]: a fact drawn from a meeting is not rewritten (it quotes your words); it is marked "replaced" by the corrected fact, which is now the only one used.
 
 This change has been logged in our administrative activity log (GDPR audit trail) for evidence purposes. No other information about you has been modified.
 

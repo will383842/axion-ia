@@ -488,7 +488,7 @@ const FR: TextesPageGuide = {
     appel: {
       titre: "Parler de votre projet",
       texte:
-        "Un diagnostic de 45 minutes, par téléphone ou en visio, gratuit et sans engagement, sur votre situation, vos priorités ou vos pilotes en cours.",
+        "Un diagnostic de 45 minutes, en visio, gratuit et sans engagement, sur votre situation, vos priorités ou vos pilotes en cours.",
       cta: "Demander un appel",
     },
   },
@@ -700,7 +700,7 @@ const EN: TextesPageGuide = {
     appel: {
       titre: "Talk about your project",
       texte:
-        "A 45-minute diagnosis, by phone or video, free and without commitment, on your situation, your priorities or your current pilots.",
+        "A 45-minute diagnosis, by video call, free and without commitment, on your situation, your priorities or your current pilots.",
       cta: "Request a call",
     },
   },

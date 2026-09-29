@@ -119,6 +119,7 @@ import { EmailLayout, emailStyles } from "./_layout";
 import type { Locale } from "../../../../prisma/generated/client";
 import { canalDuRendezVous, type CanalRendezVous } from "@/server/calendly/canal";
 import { GUIDE_IA_PAGES, urlGuideIa } from "@/content/guide-ia";
+import { phraseConfirmationVisio } from "@/content/visio-annonce";
 
 /**
  * Le moment auquel ce message part.
@@ -749,11 +750,24 @@ function ActionsSecondaires({ p, c, encadre }: { p: Payload; c: Copie; encadre: 
  * indentée différemment d'un client à l'autre, et Outlook y perd l'interlignage.
  * Le point est écrit à la main, en terracotta.
  */
-function CeQuiSePasseMaintenant({ c }: { c: Copie }) {
+function CeQuiSePasseMaintenant({
+  c,
+  locale,
+  format,
+}: {
+  c: Copie;
+  locale: Locale;
+  format: CanalRendezVous;
+}) {
+  // Chantier visio (PR 8, T21) — en visio seulement, une puce d'information
+  // SANS lien (budget de liens de la confirmation, voir l'en-tête). `null` tant
+  // que l'enregistrement n'est pas annoncé (`src/content/visio-annonce.ts`).
+  const enregistrement = format === "visio" ? phraseConfirmationVisio(locale) : null;
+  const puces = enregistrement ? [...c.maintenantPuces, enregistrement] : c.maintenantPuces;
   return (
     <Section style={{ margin: "26px 0 0 0" }}>
       <Text style={titreBloc}>{c.maintenantTitre}</Text>
-      {c.maintenantPuces.map((puce) => (
+      {puces.map((puce) => (
         <Text key={puce} style={puceTexte}>
           <span style={pucePoint}>•</span> {puce}
         </Text>
@@ -827,7 +841,7 @@ export function AppelRappelEmail({
           {c.deroule}
         </Text>
 
-        <CeQuiSePasseMaintenant c={c} />
+        <CeQuiSePasseMaintenant c={c} locale={locale} format={format} />
         <GuideAvantLAppel locale={locale} />
         <ActionsSecondaires p={p} c={c} encadre />
         <Text style={emailStyles.paragraphStyle}>{t.signature}</Text>

@@ -31,12 +31,14 @@
 // Pour le registre interne RGPD art. 30 avec statut signature DPA, voir
 // `axionia/_AUDIT/DPA-REGISTER.md`.
 
+import { donneesMeet, stockageSonCloudflare } from "./visio-annonce";
+
 /**
  * Date de dernière mise à jour de la SSOT sous-processeurs (RGPD art. 13.1.e
  * — bonne pratique transparence). Affichée en haut de `/sous-processeurs`.
  * Update à chaque ajout/modification d'entrée.
  */
-export const SUBPROCESSORS_LAST_UPDATED = "2026-09-20" as const;
+export const SUBPROCESSORS_LAST_UPDATED = "2026-09-29" as const;
 
 export type TransferFramework = "intra_eu" | "scc" | "adequacy_decision" | "self_hosted_eu";
 
@@ -141,9 +143,13 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     purposeEn:
       "CDN, anti-DDoS protection, Bot Fight, DNS, Turnstile (no-cookie anti-bot). Plus R2 object storage: Cloudflare hosts the documents the training provider produces — agreements, invitations, attendance sheets, certificates, quotes, invoices and credit notes, signed counterparts, course materials —, handwritten signature images, and the connection reports of remote sessions. Backups are stored there too, encrypted before upload: databases, cache, audience statistics, signature service, image bank, and the files uploaded through the console — including CVs received with job applications and review media.",
     dataCategoriesFr:
-      "Pour le réseau : adresses IP visiteur, user-agent, requêtes HTTP, sans cookie publicitaire. Pour le stockage : le contenu des pièces, donc l'identité des stagiaires, des formateurs et des clients, leurs coordonnées, les montants facturés, le tracé de leur signature manuscrite et leurs heures de connexion. Aucun objet n'est servi publiquement par l'application : chaque accès passe par un lien signé de durée limitée.",
+      "Pour le réseau : adresses IP visiteur, user-agent, requêtes HTTP, sans cookie publicitaire. Pour le stockage : le contenu des pièces, donc l'identité des stagiaires, des formateurs et des clients, leurs coordonnées, les montants facturés, le tracé de leur signature manuscrite et leurs heures de connexion. Aucun objet n'est servi publiquement par l'application : chaque accès passe par un lien signé de durée limitée." +
+      // Chantier visio (PR 8, T18) — le son des rendez-vous, chiffré, le temps
+      // d'être transcrit. Chaîne vide tant que l'annonce n'est pas active.
+      stockageSonCloudflare("fr"),
     dataCategoriesEn:
-      "For the network: visitor IP addresses, user-agent, HTTP requests, no advertising cookies. For storage: the contents of the documents — the identity of trainees, trainers and clients, their contact details, invoiced amounts, their handwritten signature stroke and their connection times. No object is served publicly by the application: every access goes through a time-limited signed link.",
+      "For the network: visitor IP addresses, user-agent, HTTP requests, no advertising cookies. For storage: the contents of the documents — the identity of trainees, trainers and clients, their contact details, invoiced amounts, their handwritten signature stroke and their connection times. No object is served publicly by the application: every access goes through a time-limited signed link." +
+      stockageSonCloudflare("en"),
     legalBasis: "6.1.f_legitimate_interest",
     // 🟢 2026-09-20 — **LE DPA EST ACCEPTÉ**, confirmé par Will. Cette ligne
     // portait `auto_signable_dashboard`, c'est-à-dire « acceptable en un
@@ -396,6 +402,12 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     // la description de l'event-type et recueillir l'accord.
     //
     // Cette ligne existe pour que la question ne se découvre pas après coup.
+    //
+    // 🔁 2026-09-29 (chantier visio, PR 8) : l'enregistrement des visios se fait
+    // désormais par l'extension interne d'Axion-IA, avec l'accord oral des
+    // participants — voir `src/content/visio-annonce.ts` et la ligne « OpenAI,
+    // LLC (comptes rendus de rendez-vous) ». Le robot Calendly, lui, RESTE
+    // désactivé : cette ligne ne change pas de statut.
     name: "Calendly LLC (Notetaker)",
     location: "Atlanta, États-Unis",
     serversLocation: "États-Unis",
@@ -486,13 +498,15 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     location: "Dublin, Irlande",
     serversLocation: "Union européenne et États-Unis",
     purposeFr:
-      "Tenue des rendez-vous de découverte en visioconférence, lorsque la personne choisit ce format plutôt que le téléphone. Le lien de réunion est créé par Calendly au moment de la réservation ; nous ne créons ni n'hébergeons la réunion nous-mêmes.",
+      "Tenue des rendez-vous de découverte en visioconférence. Le lien de réunion est créé par Calendly au moment de la réservation ; nous ne créons ni n'hébergeons la réunion nous-mêmes.",
     purposeEn:
-      "Holding discovery appointments by video conference, when the person chooses that format rather than a phone call. The meeting link is created by Calendly at booking time; we neither create nor host the meeting ourselves.",
-    dataCategoriesFr:
-      "Flux audio et vidéo de la réunion, nom affiché, adresse email du participant, adresse IP et données de connexion. Aucune de ces données n'est enregistrée ni conservée par Axion-IA.",
-    dataCategoriesEn:
-      "Audio and video streams of the meeting, display name, participant email address, IP address and connection data. None of this data is recorded or retained by Axion-IA.",
+      "Holding discovery appointments by video conference. The meeting link is created by Calendly at booking time; we neither create nor host the meeting ourselves.",
+    // Chantier visio (PR 8, T13) — la phrase bascule avec l'annonce
+    // (`src/content/visio-annonce.ts`) : « rien n'est enregistré » tant que
+    // l'enregistrement n'est pas annoncé, « le son peut être enregistré par
+    // Axion-IA avec l'accord des participants » ensuite.
+    dataCategoriesFr: donneesMeet("fr"),
+    dataCategoriesEn: donneesMeet("en"),
     // Même base que l'agenda et que Calendly, et pour la même raison : tenir un
     // rendez-vous de découverte relève des mesures précontractuelles.
     legalBasis: "6.1.b_contract",

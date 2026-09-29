@@ -69,6 +69,14 @@ import {
   purgerLettreEtGuide,
   purgerOutboxCrm,
 } from "@/server/newsletter/retention";
+import {
+  purgerDossiersVisioEchus,
+  purgerPreuvesAccordEchues,
+  purgerSegmentsAnciens,
+  purgerVersionsComptesRendus,
+  viderFaitsRejetes,
+} from "@/lib/rgpd-erase";
+import { seuilsDuJour } from "@/server/visio/conservation";
 import type { RetentionPurgeJobData } from "../types";
 
 const DEFAULTS = {
@@ -634,8 +642,48 @@ export async function executerPurgeRetention(): Promise<void> {
   );
 }
 
+/**
+ * Conservation codée du dossier client et des enregistrements (B1, ADR 0056).
+ *
+ * Planifiée ICI, exécutée par `src/lib/rgpd-erase.ts` (seul module qui pose le
+ * drapeau d'effacement). Chaque durée vient de `CONSERVATION_VISIO`
+ * (`src/content/visio-annonce.ts`), celles que la notice publique écrit :
+ * garde `src/content/__tests__/une-duree-annoncee-a-sa-purge.spec.ts`.
+ *
+ * Pas de variable `RETENTION_*` pour ces durées, à dessein : elles sont
+ * PROMISES dans la notice, et une variable d'environnement permettrait de les
+ * changer sans changer la notice.
+ *
+ * ⚠️ Le son lui-même (R2) n'est pas purgé ici : il part à la validation du
+ * compte rendu et au plus tard à 30 jours, par le circuit (PR 6).
+ */
+export async function executerPurgeVisio(maintenant: Date): Promise<void> {
+  const seuils = seuilsDuJour(maintenant);
+  const segments = await purgerSegmentsAnciens(seuils.segmentsAvant);
+  const versions = await purgerVersionsComptesRendus(seuils.versionsAvant);
+  const rejetes = await viderFaitsRejetes(seuils.faitsRejetesAvant);
+  const dossiers = await purgerDossiersVisioEchus(maintenant);
+  const preuves = await purgerPreuvesAccordEchues(maintenant);
+  console.log(
+    `[retention-purge][visio] segments=${segments.segments} ` +
+      `(${segments.transcriptions} transcriptions) versions=${versions.comptesRendus} ` +
+      `faitsRejetes=${rejetes.faits} dossiers=${dossiers.fiches} ` +
+      `orphelines=${dossiers.rencontresOrphelines} faits=${dossiers.faits} ` +
+      `comptesRendus=${dossiers.comptesRendus} preuves=${preuves.preuves} ` +
+      `annonces=${preuves.annonces}`,
+  );
+}
+
 export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
-  const worker = new Worker<RetentionPurgeJobData>("retention-purge", executerPurgeRetention, {
+  // Dossier client et enregistrements des visios (chantier visio, PR 8 ; B1) :
+  // APRÈS la purge historique, dans le même passage quotidien. Une erreur ici
+  // ne défait rien de ce qui précède, et une erreur plus haut ne laisse pas
+  // passer la conservation visio en silence : le passage échoue, et se voit.
+  const traiter = async (): Promise<void> => {
+    await executerPurgeRetention();
+    await executerPurgeVisio(new Date());
+  };
+  const worker = new Worker<RetentionPurgeJobData>("retention-purge", traiter, {
     connection: getBullConnectionOrThrow(),
     concurrency: 1,
     lockDuration: 120_000,

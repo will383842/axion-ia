@@ -6,6 +6,7 @@
 
 - Submissions / contact / audit / implementation → `eraseSubmissionAction` (Sprint 24/D1, super_admin only).
 - Newsletter → `eraseSubscriberAction` (Sprint 24/D1, super_admin only).
+- Dossier client et enregistrements des visios → `effacerCibleParAdresses` (`src/lib/rgpd-erase.ts`), appelé par `/api/gdpr-erase` : segments de sa voix, faits dont elle est sujet ou locutrice, comptes rendus vidés pour réécriture ; la preuve d'accord reste (art. 17(3)(e)).
 - Bookings ferme → conservé 10 ans (obligation comptable française) → expliqué dans la réponse.
 
 **Limitations légales à signaler** : factures + bookings = obligation de conservation
@@ -33,6 +34,7 @@ Nous accusons réception de votre demande d'effacement, conformément à l'artic
 
 - [Soumissions formulaires] : supprimées définitivement.
 - [Inscription newsletter] : supprimée définitivement (vous ne recevrez plus aucun email marketing).
+- [Dossier client, le cas échéant] : vos paroles transcrites et les informations tirées de nos échanges sont effacées ; les comptes rendus qui vous citaient sont vidés, puis réécrits sans vous. La preuve de votre accord à l'enregistrement (date, version du texte annoncé) est conservée, sans votre adresse, 5 ans après la fin de conservation du dossier : elle établit que l'enregistrement était licite (art. 17(3)(e)).
 - Audit trail : un journal anonymisé (hash SHA-256 de votre email, sans réidentification possible) est conservé conformément aux obligations RGPD de traçabilité (art. 30).
 
 **Données conservées (obligation légale)** :
@@ -58,6 +60,7 @@ We acknowledge receipt of your erasure request, in accordance with GDPR article 
 
 - [Form submissions]: permanently deleted.
 - [Newsletter subscription]: permanently deleted (you will no longer receive any marketing emails).
+- [Client record, if applicable]: your transcribed words and the facts drawn from our exchanges are erased; the summaries that quoted you are emptied, then rewritten without you. The proof of your consent to the recording (date, version of the text announced) is kept, without your address, for 5 years after the end of the record's retention: it establishes that the recording was lawful (art. 17(3)(e)).
 - Audit trail: an anonymised log (SHA-256 hash of your email, no re-identification possible) is retained per GDPR record-keeping obligations (art. 30).
 
 **Retained data (legal obligation)**:

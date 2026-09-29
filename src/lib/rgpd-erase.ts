@@ -32,6 +32,16 @@ import type {
 } from "../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { CONSENT_FORM_REFS } from "@/lib/consents";
+import { CONSERVATION_VISIO } from "@/content/visio-annonce";
+import {
+  type AncresDossier,
+  echeancesAvecFusions,
+  finConservationDossier,
+  finConservationPreuve,
+  finConservationRencontreOrpheline,
+  plusAns,
+} from "@/server/visio/conservation";
 
 export const ERASED_PLACEHOLDER = "[erased-rgpd-art17]";
 
@@ -1185,3 +1195,440 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "du dossier + 5 ans, puis purgée (ADR 0056). Supprimée avec les données du pilote.",
   },
 ];
+
+// ═════════════════════════════════════════════════════════════════════════════
+// CONSERVATION CODÉE DU DOSSIER CLIENT (chantier visio, PR 8 ; B1, ADR 0056)
+//
+// Planifiée chaque nuit par `retention-purge-worker.ts`, EXÉCUTÉE ici (seul
+// module qui pose le drapeau d'effacement). Les échéances sont calculées par
+// `src/server/visio/conservation.ts` à partir de `CONSERVATION_VISIO`, les
+// durées que la notice publique écrit en toutes lettres.
+//
+// 🔑 AUCUNE PIÈCE LÉGALE N'EST TOUCHÉE : devis, factures, conventions et
+// e-mails émis ne sont LUS que comme ancres de date (garde
+// `src/content/__tests__/une-piece-qualiopi-n-est-jamais-purgee.spec.ts`).
+// ═════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Supprime les SEGMENTS de transcription des enregistrements commencés avant
+ * `avant` (12 mois). Le compte rendu validé et les faits restent : c'est la
+ * transcription intégrale, qui porte le plus de paroles, qui part la première.
+ */
+export async function purgerSegmentsAnciens(
+  avant: Date,
+): Promise<{ readonly segments: number; readonly transcriptions: number }> {
+  return executerSousDrapeauEffacement(prisma, async (tx) => {
+    const transcriptions = await tx.transcription.findMany({
+      where: { segmentsSupprimesLe: null, enregistrement: { debut: { lt: avant } } },
+      select: { id: true },
+    });
+    const ids = transcriptions.map((t) => t.id);
+    if (ids.length === 0) return { segments: 0, transcriptions: 0 };
+    const segments = await tx.transcriptionSegment.findMany({
+      where: { transcriptionId: { in: ids } },
+      select: { transcriptionId: true, ordre: true },
+    });
+    await tx.transcriptionSegment.deleteMany({ where: { transcriptionId: { in: ids } } });
+    await tx.transcription.updateMany({
+      where: { id: { in: ids } },
+      data: { segmentsSupprimesLe: new Date() },
+    });
+    await journaliserEffacements(
+      tx,
+      "transcription_segments",
+      segments.map((s) => `${s.transcriptionId}:${s.ordre}`),
+      "conservation",
+    );
+    return { segments: segments.length, transcriptions: ids.length };
+  });
+}
+
+/**
+ * Supprime les versions REMPLACÉES ou REJETÉES d'un compte rendu créées avant
+ * `avant` (90 jours). La version validée n'est jamais visée. Les faits qui la
+ * citaient perdent le lien (clé `SetNull`), pas leur contenu.
+ */
+export async function purgerVersionsComptesRendus(
+  avant: Date,
+): Promise<{ readonly comptesRendus: number }> {
+  return executerSousDrapeauEffacement(prisma, async (tx) => {
+    const cibles = await tx.compteRendu.findMany({
+      where: { statut: { in: ["remplace", "rejete"] }, createdAt: { lt: avant } },
+      select: { id: true },
+    });
+    const ids = cibles.map((c) => c.id);
+    await tx.compteRendu.deleteMany({ where: { id: { in: ids } } });
+    await journaliserEffacements(tx, "comptes_rendus", ids, "conservation");
+    return { comptesRendus: ids.length };
+  });
+}
+
+export interface PurgeDossiersResultat {
+  /** Fiches dont la conservation est échue. */
+  readonly fiches: number;
+  /** Rencontres jamais rattachées, échues. */
+  readonly rencontresOrphelines: number;
+  readonly faits: number;
+  readonly comptesRendus: number;
+  readonly questions: number;
+  readonly emailsSuivi: number;
+}
+
+const PURGE_DOSSIERS_VIDE: PurgeDossiersResultat = {
+  fiches: 0,
+  rencontresOrphelines: 0,
+  faits: 0,
+  comptesRendus: 0,
+  questions: 0,
+  emailsSuivi: 0,
+};
+
+/** Échéance de conservation de chaque fiche qui a un dossier (lecture seule). */
+export async function lireEcheancesDesFiches(): Promise<Map<string, Date | null>> {
+  const [rencontres, tenues, faits, factures, devis, fusions] = await Promise.all([
+    prisma.rencontre.groupBy({
+      by: ["clientId"],
+      where: { clientId: { not: null } },
+      _max: { debutPrevu: true, debutReel: true, createdAt: true },
+    }),
+    prisma.rencontre.groupBy({
+      by: ["clientId"],
+      where: { clientId: { not: null }, statut: "tenu" },
+      _max: { debutPrevu: true, debutReel: true },
+    }),
+    prisma.fait.groupBy({
+      by: ["clientId"],
+      where: { clientId: { not: null } },
+      _max: { constateLe: true },
+    }),
+    prisma.factureFormation.groupBy({
+      by: ["clientId"],
+      where: { clientId: { not: null }, emiseAt: { not: null } },
+      _max: { emiseAt: true },
+    }),
+    prisma.devis.groupBy({
+      by: ["clientId"],
+      where: { acceptedAt: { not: null } },
+      _max: { acceptedAt: true },
+    }),
+    prisma.clientFusion.findMany({
+      where: { defaiteLe: null },
+      select: { absorbeId: true, absorbantId: true },
+    }),
+  ]);
+  const max = (...d: ReadonlyArray<Date | null | undefined>): Date | null =>
+    d.reduce<Date | null>((m, x) => (x && (!m || x > m) ? x : m), null);
+
+  const vide: AncresDossier = {
+    derniereRencontre: null,
+    derniereRencontreTenue: null,
+    dernierFait: null,
+    derniereFacture: null,
+    dernierDevisAccepte: null,
+  };
+  const ancres = new Map<string, AncresDossier>();
+  const maj = (id: string | null, patch: Partial<AncresDossier>): void => {
+    if (!id) return;
+    ancres.set(id, { ...(ancres.get(id) ?? vide), ...patch });
+  };
+  for (const r of rencontres)
+    maj(r.clientId, {
+      derniereRencontre: max(r._max.debutReel, r._max.debutPrevu, r._max.createdAt),
+    });
+  for (const r of tenues)
+    maj(r.clientId, { derniereRencontreTenue: max(r._max.debutReel, r._max.debutPrevu) });
+  for (const f of faits) maj(f.clientId, { dernierFait: f._max.constateLe });
+  // Facture et devis ne comptent que pour une fiche qui A un dossier (rencontre
+  // ou fait) : une fiche de facturation sans dossier n'a rien à purger ici.
+  for (const f of factures)
+    if (f.clientId && ancres.has(f.clientId)) maj(f.clientId, { derniereFacture: f._max.emiseAt });
+  for (const d of devis)
+    if (ancres.has(d.clientId)) maj(d.clientId, { dernierDevisAccepte: d._max.acceptedAt });
+
+  const propres = new Map<string, Date | null>();
+  for (const [id, a] of ancres) propres.set(id, finConservationDossier(a));
+  const absorbeePar = new Map(fusions.map((f) => [f.absorbeId, f.absorbantId]));
+  return echeancesAvecFusions(propres, absorbeePar);
+}
+
+/** Vide le dossier de fiches et de rencontres données, sous le drapeau. */
+async function viderDossier(
+  tx: Prisma.TransactionClient,
+  clientIds: readonly string[],
+  rencontreIds: readonly string[],
+): Promise<Omit<PurgeDossiersResultat, "fiches" | "rencontresOrphelines">> {
+  // 1. Les faits d'abord (ils retiennent les questions par une clé RESTRICT) :
+  //    contenu vidé, statut `efface` — le journal de chaque fait reste.
+  const faits = await tx.fait.findMany({
+    where: {
+      statut: { not: "efface" },
+      OR: [{ clientId: { in: [...clientIds] } }, { rencontreId: { in: [...rencontreIds] } }],
+    },
+    select: { id: true },
+  });
+  const faitIds = faits.map((f) => f.id);
+  await tx.fait.updateMany({
+    where: { id: { in: faitIds } },
+    data: { ...FAIT_CONTENU_VIDE, statut: "efface" },
+  });
+  await journaliserFaitsEffaces(tx, faitIds, null);
+  await journaliserEffacements(tx, "faits", faitIds, "conservation");
+  await tx.preRemplissage.updateMany({
+    where: { faitId: { in: faitIds } },
+    data: { valeurProposee: "", valeurRetenue: null },
+  });
+
+  // 2. Les questionnaires : texte et réponse vidés (une question peut rester
+  //    citée comme source d'un fait vidé — la ligne demeure).
+  const questionnaires = await tx.questionnaireCadrage.findMany({
+    where: { clientId: { in: [...clientIds] } },
+    select: { id: true },
+  });
+  const questions = await tx.questionnaireQuestion.updateMany({
+    where: { questionnaireId: { in: questionnaires.map((q) => q.id) }, NOT: { texte: "" } },
+    data: { texte: "", reponse: null },
+  });
+
+  // 3. Les e-mails de suivi : corps pré-rempli vidé, lien supprimé (le
+  //    message envoyé vit dans `email_outbox`, sous sa propre conservation).
+  const emails = await tx.emailSuivi.findMany({
+    where: { rencontreId: { in: [...rencontreIds] } },
+    select: { id: true },
+  });
+  const emailIds = emails.map((e) => e.id);
+  await tx.preRemplissage.updateMany({
+    where: { cible: "email_suivi", cibleId: { in: emailIds } },
+    data: { valeurProposee: "", valeurRetenue: null },
+  });
+  await tx.emailSuivi.deleteMany({ where: { id: { in: emailIds } } });
+
+  // 4. Les comptes rendus, toutes versions. Les citations sont dans les faits,
+  //    vidés au 1 : elles partent avec le compte rendu.
+  const comptesRendus = await tx.compteRendu.findMany({
+    where: { rencontreId: { in: [...rencontreIds] } },
+    select: { id: true },
+  });
+  const crIds = comptesRendus.map((c) => c.id);
+  await tx.compteRendu.deleteMany({ where: { id: { in: crIds } } });
+  await journaliserEffacements(tx, "comptes_rendus", crIds, "conservation");
+
+  return {
+    faits: faitIds.length,
+    comptesRendus: crIds.length,
+    questions: questions.count,
+    emailsSuivi: emailIds.length,
+  };
+}
+
+/**
+ * Efface le contenu des dossiers dont la conservation est ÉCHUE à
+ * `maintenant` : prospect 3 ans, client 5 ans, fiche absorbée ancrée sur
+ * l'absorbante, rencontre jamais rattachée à sa date + 3 ans.
+ *
+ * Ce qui reste : la fiche entreprise et les personnes (régies par
+ * l'effacement art. 17 et la relation commerciale), les rencontres
+ * elles-mêmes (dates, participants), les journaux, les preuves d'accord
+ * (purgées 5 ans plus tard par `purgerPreuvesAccordEchues`).
+ */
+export async function purgerDossiersVisioEchus(maintenant: Date): Promise<PurgeDossiersResultat> {
+  const echeances = await lireEcheancesDesFiches();
+  const echus = [...echeances]
+    .filter(([, fin]) => fin !== null && fin.getTime() <= maintenant.getTime())
+    .map(([id]) => id);
+
+  const orphelines = await prisma.rencontre.findMany({
+    where: { clientId: null },
+    select: { id: true, debutPrevu: true, debutReel: true, createdAt: true },
+  });
+  const orphelinesEchues = orphelines
+    .filter(
+      (r) =>
+        finConservationRencontreOrpheline(r.debutReel ?? r.debutPrevu ?? r.createdAt).getTime() <=
+        maintenant.getTime(),
+    )
+    .map((r) => r.id);
+
+  if (echus.length === 0 && orphelinesEchues.length === 0) return PURGE_DOSSIERS_VIDE;
+
+  return executerSousDrapeauEffacement(prisma, async (tx) => {
+    const rencontresDesFiches = await tx.rencontre.findMany({
+      where: { clientId: { in: echus } },
+      select: { id: true },
+    });
+    const r = await viderDossier(tx, echus, [
+      ...rencontresDesFiches.map((x) => x.id),
+      ...orphelinesEchues,
+    ]);
+    return { fiches: echus.length, rencontresOrphelines: orphelinesEchues.length, ...r };
+  });
+}
+
+/**
+ * Supprime les PREUVES D'ACCORD dont la conservation est échue : fin du
+ * dossier + 5 ans (art. 17(3)(e) : elles établissent que l'enregistrement
+ * était licite, et se gardent tant qu'une réclamation peut naître).
+ *
+ * - `enregistrement_consentements` : ancrées sur la fiche de leur rencontre,
+ *   ou sur la rencontre elle-même si elle n'a jamais été rattachée ;
+ * - `consent_events` « enregistrement-visio-annonce » : ces lignes ne portent
+ *   qu'une empreinte d'adresse, sans lien vers une rencontre. On retient la
+ *   durée la PLUS LONGUE possible (client : 5 ans + 5 ans après l'annonce),
+ *   jamais la plus courte : purger trop tôt détruirait une preuve dont on
+ *   peut avoir besoin (angle mort déclaré : un prospect voit sa preuve gardée
+ *   jusqu'à 2 ans de plus que sa durée).
+ */
+export async function purgerPreuvesAccordEchues(
+  maintenant: Date,
+): Promise<{ readonly preuves: number; readonly annonces: number }> {
+  const echeances = await lireEcheancesDesFiches();
+  const preuves = await prisma.enregistrementConsentement.findMany({
+    select: { id: true, rencontreId: true, survenuLe: true },
+  });
+  const rencontres = await prisma.rencontre.findMany({
+    where: { id: { in: [...new Set(preuves.map((p) => p.rencontreId))] } },
+    select: { id: true, clientId: true, debutPrevu: true, debutReel: true, createdAt: true },
+  });
+  const parRencontre = new Map(rencontres.map((r) => [r.id, r]));
+  const aSupprimer = preuves
+    .filter((p) => {
+      const r = parRencontre.get(p.rencontreId);
+      const finDossier = r?.clientId
+        ? (echeances.get(r.clientId) ?? null)
+        : finConservationRencontreOrpheline(
+            r ? (r.debutReel ?? r.debutPrevu ?? r.createdAt) : p.survenuLe,
+          );
+      return (
+        finDossier !== null && finConservationPreuve(finDossier).getTime() <= maintenant.getTime()
+      );
+    })
+    .map((p) => p.id);
+
+  const limiteAnnonces = plusAns(
+    maintenant,
+    -(CONSERVATION_VISIO.clientAns + CONSERVATION_VISIO.preuvesApresDossierAns),
+  );
+
+  return executerSousDrapeauEffacement(prisma, async (tx) => {
+    const p = await tx.enregistrementConsentement.deleteMany({ where: { id: { in: aSupprimer } } });
+    const a = await tx.consentEvent.deleteMany({
+      where: {
+        formRef: CONSENT_FORM_REFS.enregistrementVisioAnnonce,
+        occurredAt: { lt: limiteAnnonces },
+      },
+    });
+    return { preuves: p.count, annonces: a.count };
+  });
+}
+
+export interface RejeuResultat {
+  /** Lignes du journal lues. */
+  readonly lues: number;
+  /** Cibles encore présentes (restaurées) : ré-effacées, ou à ré-effacer à blanc. */
+  readonly reappliquees: number;
+}
+
+/**
+ * REJOUE le journal des effacements après une restauration de la base.
+ *
+ * Une sauvegarde prise avant un effacement ramène la personne ; sans ce rejeu,
+ * elle réapparaîtrait en silence. Chaque ligne est réappliquée comme
+ * l'effacement d'origine l'a faite (vider, pseudonymiser ou supprimer), de
+ * façon IDEMPOTENTE : une cible déjà effacée ne compte pas.
+ *
+ * `appliquer = false` (défaut du script) : compte seulement, n'écrit rien.
+ * Procédure : `docs/runbooks/R33-disaster-recovery-cold-start.md`, étape
+ * « Rejouer les effacements » ; script `scripts/rgpd-rejouer-effacements.ts`.
+ */
+export async function rejouerEffacements(
+  options: { readonly appliquer?: boolean } = {},
+): Promise<RejeuResultat> {
+  const lignes = await prisma.effacementJournal.findMany({
+    orderBy: { le: "asc" },
+    select: { tableCible: true, ligneId: true, motif: true },
+  });
+  const ids = (cible: CibleEffacement): string[] => [
+    ...new Set(lignes.filter((l) => l.tableCible === cible).map((l) => l.ligneId)),
+  ];
+  const pilote = new Set(lignes.filter((l) => l.motif === "pilote").map((l) => l.ligneId));
+  const faits = ids("faits");
+  const citations = ids("faits_citation");
+  const segments = ids("transcription_segments").map((l) => {
+    const [transcriptionId = "", ordre = ""] = l.split(":");
+    return { transcriptionId, ordre: Number(ordre) };
+  });
+  const comptesRendus = ids("comptes_rendus");
+  const contacts = ids("client_contacts");
+  const rencontresPilote = ids("rencontres").filter((id) => pilote.has(id));
+  const projetsPilote = ids("projets").filter((id) => pilote.has(id));
+  const contactsPilote = contacts.filter((id) => pilote.has(id));
+  const contactsEffaces = contacts.filter((id) => !pilote.has(id));
+
+  type Lecteur = Pick<
+    Prisma.TransactionClient,
+    "fait" | "transcriptionSegment" | "compteRendu" | "clientContact" | "rencontre" | "projet"
+  >;
+  const compter = async (db: Lecteur): Promise<number> => {
+    const [f, c, s, cr, pe, re, pr] = await Promise.all([
+      db.fait.count({ where: { id: { in: faits }, statut: { not: "efface" } } }),
+      db.fait.count({
+        where: {
+          id: { in: citations },
+          OR: [{ citation: { not: null } }, { confirmationCitation: { not: null } }],
+        },
+      }),
+      segments.length === 0 ? 0 : db.transcriptionSegment.count({ where: { OR: segments } }),
+      db.compteRendu.count({ where: { id: { in: comptesRendus }, NOT: { contenu: "" } } }),
+      db.clientContact.count({
+        where: {
+          OR: [
+            { id: { in: contactsPilote } },
+            { id: { in: contactsEffaces }, NOT: { nom: PERSONNE_EFFACEE } },
+          ],
+        },
+      }),
+      db.rencontre.count({ where: { id: { in: rencontresPilote } } }),
+      db.projet.count({ where: { id: { in: projetsPilote } } }),
+    ]);
+    return f + c + s + cr + pe + re + pr;
+  };
+
+  if (!options.appliquer) return { lues: lignes.length, reappliquees: await compter(prisma) };
+
+  return executerSousDrapeauEffacement(prisma, async (tx) => {
+    const reappliquees = await compter(tx);
+    await tx.fait.updateMany({
+      where: { id: { in: faits }, statut: { not: "efface" } },
+      data: { ...FAIT_CONTENU_VIDE, statut: "efface" },
+    });
+    await tx.fait.updateMany({
+      where: { id: { in: citations } },
+      data: { citation: null, confirmationCitation: null },
+    });
+    if (segments.length > 0) await tx.transcriptionSegment.deleteMany({ where: { OR: segments } });
+    // Un compte rendu effacé a été vidé (`a_regenerer`) ou supprimé : le rejeu
+    // le VIDE dans les deux cas — aucun contenu ne revient.
+    await tx.compteRendu.updateMany({
+      where: { id: { in: comptesRendus }, NOT: { contenu: "" } },
+      data: { statut: "a_regenerer", contenu: "", verification: null },
+    });
+    // Données du pilote : supprimées, dans l'ordre des clés (faits d'abord).
+    await tx.fait.deleteMany({
+      where: {
+        OR: [{ rencontreId: { in: rencontresPilote } }, { projetId: { in: projetsPilote } }],
+      },
+    });
+    await tx.enregistrementConsentement.deleteMany({
+      where: { rencontreId: { in: rencontresPilote } },
+    });
+    await tx.rencontre.deleteMany({ where: { id: { in: rencontresPilote } } });
+    await tx.projet.deleteMany({ where: { id: { in: projetsPilote } } });
+    await tx.clientContact.deleteMany({ where: { id: { in: contactsPilote } } });
+    // Personnes effacées (art. 17) : pseudonymisées, adresses supprimées.
+    await tx.clientContact.updateMany({
+      where: { id: { in: contactsEffaces } },
+      data: { nom: PERSONNE_EFFACEE, fonction: null, telephone: null },
+    });
+    await tx.clientContactAdresse.deleteMany({ where: { contactId: { in: contactsEffaces } } });
+    return { lues: lignes.length, reappliquees };
+  });
+}

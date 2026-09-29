@@ -152,6 +152,34 @@ docker exec -it <worker> node_modules/.bin/tsx src/scripts/qualiopi/chiffrer-det
 Puis **Q1 = 0** (requête Q1 de `R34-rattrapage-chiffrement-details-adaptation.md`). Le script est
 idempotent : sur un état déjà chiffré, il n'écrit rien.
 
+### Étape 3 ter — Rejouer les effacements RGPD (dossier client, enregistrements des visios)
+
+⚠️ **Vaut pour les trois voies (A, B et C).** Un dump ou un snapshot pris **avant** un effacement
+RGPD (art. 17, retrait d'accord, fin de conservation, purge du pilote) fait **revenir** ce qui avait
+été effacé : paroles, faits, comptes rendus, nom d'une personne dans le dossier client. Le journal
+`effacements_journal` (ajout seul, identifiants seulement) désigne chaque ligne à ré-effacer — mais
+il vit dans la **même base** : le dump restauré ne contient que le journal d'avant le dump.
+
+1. **AVANT de restaurer**, si l'ancienne base répond encore, sauver son journal :
+   `pg_dump --data-only -t effacements_journal "$DATABASE_URL" > /root/effacements_journal.sql`
+2. Restaurer (voie A, B ou C), puis réinjecter ce journal :
+   `psql "$DATABASE_URL" -v ON_ERROR_STOP=0 -f /root/effacements_journal.sql` (les lignes déjà
+   présentes sont refusées par la clé primaire, les autres entrent).
+3. Rejouer, dans le conteneur worker :
+
+```bash
+# s'il n'est pas dans l'image : docker cp scripts/rgpd-rejouer-effacements.ts <worker>:/app/scripts/
+docker exec -it <worker> node_modules/.bin/tsx scripts/rgpd-rejouer-effacements.ts             # à blanc : compte
+docker exec -it <worker> node_modules/.bin/tsx scripts/rgpd-rejouer-effacements.ts --appliquer # ré-efface
+```
+
+4. Relancer **à blanc** : « Cibles revenues » doit valoir **0**. Le script est idempotent et
+   n'affiche que des nombres.
+
+⚠️ Angle mort déclaré : si l'ancienne base est détruite (le 1 impossible), les effacements
+postérieurs au dump ne peuvent pas être rejoués par ce moyen : ils sont à refaire à la main,
+à partir des demandes reçues sur contact@axion-ia.com.
+
 ### Étape 4 — Données annexes (chacune : télécharger → déchiffrer AES → restaurer dans le volume)
 
 - **Fichiers utilisateurs** : `files/daily/*.tar.gz.enc` → détar dans les volumes `cv-storage`,

@@ -26,6 +26,7 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { Sparkles, ShieldCheck, FileText, Users } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
+import { textesPagesIa } from "@/content/visio-annonce";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
@@ -109,9 +110,8 @@ export default async function TransparencePage({ params }: Props) {
     {
       icon: Users,
       title: isFr ? "Sous-processeurs IA" : "AI sub-processors",
-      body: isFr
-        ? "OpenAI, Anthropic, Perplexity sont listés exhaustivement sur la page sous-processeurs, avec leur finalité, la catégorie de données traitées (jamais de PII visiteur — helper `pii-safe` + hard gate code), la localisation des serveurs, le statut du DPA et le cadre de transfert international (Clauses Contractuelles Types + Data Privacy Framework le cas échéant)."
-        : "OpenAI, Anthropic, Perplexity are listed exhaustively on the sub-processors page, with their purpose, the category of data processed (never visitor PII — `pii-safe` helper + code-level hard gate), server location, DPA status and international transfer framework (Standard Contractual Clauses + Data Privacy Framework where applicable).",
+      // Chantier visio (PR 8, T12) — bascule avec l'annonce de l'enregistrement.
+      body: textesPagesIa(isFr ? "fr" : "en").trSousProcesseurs,
       links: [
         {
           href: "/sous-processeurs",
@@ -131,8 +131,8 @@ export default async function TransparencePage({ params }: Props) {
       icon: FileText,
       title: isFr ? "Vos droits RGPD" : "Your GDPR rights",
       body: isFr
-        ? "Vous pouvez vous opposer à tout traitement de vos données par un modèle IA (RGPD art. 21) en écrivant à contact@axion-ia.com. Les prompts envoyés aux modèles ne contiennent aucune donnée personnelle de visiteur. Droits d'accès, rectification, effacement, opposition, portabilité, limitation garantis — autorité de contrôle compétente : CNIL (France)."
-        : "You may object to any processing of your data by an AI model (GDPR art. 21) by writing to contact@axion-ia.com. Prompts sent to models contain no visitor personal data. Rights of access, rectification, erasure, objection, portability, restriction guaranteed — competent supervisory authority: CNIL (France).",
+        ? `Vous pouvez vous opposer à tout traitement de vos données par un modèle IA (RGPD art. 21) en écrivant à contact@axion-ia.com. ${textesPagesIa("fr").trDroitsIa} Droits d'accès, rectification, effacement, opposition, portabilité, limitation garantis — autorité de contrôle compétente : CNIL (France).`
+        : `You may object to any processing of your data by an AI model (GDPR art. 21) by writing to contact@axion-ia.com. ${textesPagesIa("en").trDroitsIa} Rights of access, rectification, erasure, objection, portability, restriction guaranteed — competent supervisory authority: CNIL (France).`,
       links: [
         {
           href: "/politique-confidentialite",
@@ -153,8 +153,7 @@ export default async function TransparencePage({ params }: Props) {
         {
           id: "donnees-llm",
           question: "Mes données vont-elles dans un LLM ?",
-          answer:
-            "Non. Les prompts envoyés aux modèles d'IA ne contiennent aucune donnée personnelle de visiteur — un helper « pii-safe » et un hard gate au niveau du code l'interdisent. Aucune saisie de formulaire n'est utilisée pour entraîner un modèle.",
+          answer: textesPagesIa("fr").trFaqLlm,
         },
         {
           id: "ai-act",
@@ -184,8 +183,7 @@ export default async function TransparencePage({ params }: Props) {
         {
           id: "donnees-llm",
           question: "Does my data go into an LLM?",
-          answer:
-            "No. Prompts sent to AI models contain no visitor personal data — a « pii-safe » helper and a code-level hard gate prevent it. No form submission is used to train a model.",
+          answer: textesPagesIa("en").trFaqLlm,
         },
         {
           id: "ai-act",

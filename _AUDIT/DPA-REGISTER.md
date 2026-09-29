@@ -16,7 +16,7 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | #   | Sous-processeur            | Finalité                             | Localisation            | DPA    | Base légale transfert      | Statut          |
 | --- | -------------------------- | ------------------------------------ | ----------------------- | ------ | -------------------------- | --------------- |
 | 1   | Hetzner Online GmbH        | VPS + Storage Box backups offsite    | Allemagne (Frankfurt)   | papier | UE intra-zone              | 🟡 à signer     |
-| 2   | Cloudflare, Inc.           | CDN + DDoS + Turnstile captcha **+ stockage objet R2 : toutes les pièces de l'organisme, images de signature, relevés de connexion, sauvegardes chiffrées** | États-Unis (endpoint global) | accepté | SCC + EU-US DPF            | ✅ **DPA accepté le 2026-05-09** — et il détient les pièces |
+| 2   | Cloudflare, Inc.           | CDN + DDoS + Turnstile captcha **+ stockage objet R2 : toutes les pièces de l'organisme, images de signature, relevés de connexion, sauvegardes chiffrées ; avec l'accord des participants, son chiffré des visioconférences, 30 jours au plus (ligne 24)** | États-Unis (endpoint global) | accepté | SCC + EU-US DPF            | ✅ **DPA accepté le 2026-05-09** — et il détient les pièces |
 | 3   | Telegram FZ-LLC            | Notifications admin (Bot API)        | Émirats Arabes Unis     | aucun  | Art. 49 + minimisation PII | ✅ ADR 0010     |
 | 4   | Sentry (Functional Software) | Crash reporting + traces           | SaaS région UE (`ingest.de.sentry.io`) | online | SCC + EU-US DPF | 🟡 à signer     |
 | 5   | Plausible (self-hosted)    | Analytics anonymes                   | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
@@ -35,9 +35,10 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | 18  | LinkedIn Ireland Unlimited | Insight Tag — reciblage publicitaire | Irlande (UE) + USA      | online | SCC + EU-US DPF            | ⚪ non activé   |
 | 19  | Google Ireland Limited (Google Agenda) | Agenda de la console — lecture des rendez-vous, écriture des indisponibilités **et des rendez-vous** | Irlande (UE) + USA | ❌ aucun (compte Gmail grand public) | SCC | 🔴 **ACTIF sans DPA** — voir note |
 | 20  | Google Ireland Limited (Google Meet) | Rendez-vous de découverte tenus en **visioconférence** | Irlande (UE) + USA | ❌ aucun (compte Gmail grand public) | SCC | 🔴 **ACTIF sans DPA** — voir note |
-| 21  | Meta Platforms Ireland Limited | Pixel Meta + API Conversions — mesure et reciblage de la campagne Facebook apporteurs (pages `/apporteur-affaires*` uniquement, après consentement) | Irlande (UE) + USA | online | SCC + EU-US DPF | ⚪ non activé (`NEXT_PUBLIC_META_PIXEL_ID` absent) |
-| 21  | Calendly LLC (Notetaker) | **Enregistrement et transcription** automatiques des rendez-vous en visio | États-Unis | accepté (DPA Calendly) | SCC | 🛑 **ÉCARTÉ par décision du 2026-09-01** — aucun enregistrement |
+| 21  | Calendly LLC (Notetaker) | **Enregistrement et transcription** automatiques des rendez-vous en visio | États-Unis | accepté (DPA Calendly) | SCC | 🛑 **ÉCARTÉ par décision du 2026-09-01** — remplacé le 2026-09-29 par l'extension interne d'Axion-IA, voir ligne 24 ; le robot Calendly reste désactivé |
 | 22  | Zoom Communications, Inc. | **Sessions de formation à distance** en visioconférence + rapport des participants (relevé de connexion) | États-Unis (régions paramétrables) | ❌ aucun (pas encore de compte) | SCC | ⚪ non activé — abonnement Pro à souscrire avant la 1re session |
+| 23  | Meta Platforms Ireland Limited | Pixel Meta + API Conversions — mesure et reciblage de la campagne Facebook apporteurs (pages `/apporteur-affaires*` uniquement, après consentement) | Irlande (UE) + USA | online | SCC + EU-US DPF | ⚪ non activé (`NEXT_PUBLIC_META_PIXEL_ID` absent) |
+| 24  | OpenAI, LLC (comptes rendus de rendez-vous) | **Transcription** du son des visioconférences enregistrées **avec l'accord** des participants, puis **compte rendu** et extraction des faits du dossier client | États-Unis | online (même DPA que la ligne 7) | SCC + EU-US DPF | ⚪ **non activé** — ouverture après le préavis de 30 j aux clients actifs, la signature du DPA et la publication de la notice (voir fiche 5 bis) |
 
 > 🆕 **Ligne 17 ajoutée 2026-08-20** (audit Qualiopi E2E, constat `D9-5-10`).
 > ZeptoMail était en production depuis le **2026-08-16** et n'apparaissait NI
@@ -343,6 +344,28 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | **Référence interne**     | _(à compléter — ID compte OpenAI)_                                                                                                                                        |
 | **Risk note**             | Si demain les prompts incluent du contenu client (logs Sentry réinjectés, snippets feedback) → re-évaluer base légale + minimisation. V1 = prompts éditoriaux uniquement. |
 
+> « Aucune PII client » vaut pour **cet usage éditorial seulement** : les comptes
+> rendus de rendez-vous, eux, transmettent de la parole (fiche 5 bis, ligne 24).
+
+---
+
+## 5 bis. OpenAI, LLC (comptes rendus de rendez-vous — ligne 24)
+
+| Champ                     | Valeur |
+| ------------------------- | ------ |
+| **Nom légal**             | OpenAI, LLC |
+| **Finalité**              | Transcription du son des visioconférences enregistrées avec l'accord des participants (`gpt-4o-transcribe-diarize`), puis compte rendu et extraction des faits du dossier client (API Responses, `store: false`). Dictée d'un résumé après un rendez-vous téléphonique (6.1.f). |
+| **Données traitées**      | Son des deux pistes (voix de Williams, voix des autres participants), texte transcrit, catalogue des offres sans prix. Personnes : prospects, clients, personnes mentionnées pendant l'échange (art. 14). |
+| **Base légale**           | Consentement (6.1.a) pour l'enregistrement ; intérêt légitime (6.1.f) pour la dictée. |
+| **Localisation physique** | États-Unis |
+| **Garanties**             | DPA OpenAI + SCC + EU-US Data Privacy Framework |
+| **Conservation chez OpenAI** | `/v1/audio/transcriptions` : **aucune** conservation. `/v1/responses` : journaux de lutte contre les abus **30 jours**, aucun état avec `store: false`. Pas d'entraînement sur les données d'API. Rétention zéro : à demander. |
+| **Conservation chez Axion-IA** | Son chiffré (R2, ligne 2) : effacé à la validation du compte rendu, 30 jours au plus. Segments 12 mois. Comptes rendus et faits : prospect 3 ans après la dernière rencontre, client 5 ans après la dernière activité commune. Versions remplacées ou rejetées 90 jours. Preuves d'accord : fin du dossier + 5 ans. |
+| **Accès**                 | Seuls Will et les administrateurs lisent comptes rendus, transcriptions et citations (A2). |
+| **Statut**                | ⚪ **NON ACTIVÉ.** Conditions, dans l'ordre : préavis de 30 jours aux clients actifs échu (contrôlé par `src/server/visio/ouverture.ts`) ; **DPA signé** et partage pour l'entraînement désactivé (geste de Will, platform.openai.com → Settings → Organization → Data controls) ; notice lue et acceptée par Will, puis publiée (interrupteur `src/content/visio-annonce.ts`). |
+| **Date signature**        | _(à compléter par Will)_ |
+| **Analyse d'impact**      | Hors dépôt (Drive, dossier 00 Juridique — B16). |
+
 ---
 
 ## 6. Anthropic PBC (content-gen — priorité 2 avant cutover RUN)
@@ -530,6 +553,7 @@ Cf. `src/app/[locale]/mes-donnees/page.tsx` (page exposée) +
 | 2026-05-15 | Audit B5 fix P0-2/P0-3/P0-5 : ajout Unsplash / Voyage AI / Stripe / OSM / DocuSeal (5 lignes). SSOT publique unifiée sur `src/content/subprocessors.ts`. |
 | 2026-09-15 | ⏳ **En attente de validation de Will.** Donnée de santé (art. 9) : le détail du besoin d'adaptation des positionnements répondus du 2026-07-26 au 2026-08-20 reste présent **en clair** dans les dumps PostgreSQL **chiffrés** (Hetzner Storage Box, R2) antérieurs à la date du passage du rattrapage (`docs/runbooks/R34-rattrapage-chiffrement-details-adaptation.md`), jusqu'à leur rotation (mensuels : ≤ 12 mois). Aucune purge de sauvegarde proposée. |
 | 2026-09-29 | Entité corrigée le 29/09/2026 : reste de la bascule de juin. Responsable AXION IA SAS, droit français, CNIL compétente.                                   |
+| 2026-09-29 | Chantier visio (PR 8) : ligne 24 et fiche 5 bis « OpenAI, LLC (comptes rendus de rendez-vous) », non activée ; doublon « 21 » renuméroté (Meta → 23) ; Notetaker « remplacé par l'extension interne » ; son chiffré des visios ajouté à la ligne 2 ; note datée du retour sur la décision du 2026-09-01. |
 | _(date)_   | DPA Hetzner signé (Will). Référence : **\*\*\*\***\_**\*\*\*\***                                                                                         |
 | 2026-05-09 | DPA Cloudflare accepté (Will). Couvre TOUS les services du compte, **R2 compris**. Source : `docs/runbooks/R28-dpa-renewal.md`. Date inscrite le 2026-09-20. |
 | _(date)_   | DPA OpenAI signé + ZDR activé (Will). ID compte : **\*\*\*\***\_**\*\*\*\***                                                                             |
@@ -617,6 +641,32 @@ Cf. `src/app/[locale]/mes-donnees/page.tsx` (page exposée) +
 > `pending`, la déclaration est au plus conservateur : entité américaine,
 > clauses contractuelles types. P-19 § 5.3 : l'abonnement Pro est souscrit
 > **avant la première session à distance**, aucune n'étant vendue à ce jour.
+
+> 🔄 **2026-09-28 : Will revient sur la décision du 2026-09-01** (qui avait écarté
+> tout enregistrement, ligne 21). Nouvelle voie, **ligne 24** : une extension
+> interne enregistre la visio depuis le poste de Williams, le son est transcrit
+> et le compte rendu rédigé par **OpenAI** (ordre de Will de la nuit du 28/09 :
+> « le crédit API OpenAI »). En quoi elle répond aux **quatre motifs** du 01/09 :
+>
+> 1. **pas de robot** dans la réunion, rien au niveau du compte Calendly — le
+>    Notetaker reste désactivé ;
+> 2. **accord recueilli** : annonce orale au début, confirmée par un clic de
+>    Williams et gardée comme preuve (`enregistrement_consentements`) ; rien
+>    n'est envoyé avant l'accord ; sans accord sous 3 min, le son local est
+>    détruit ;
+> 3. **durée maîtrisée et codée** : son effacé à la validation du compte rendu,
+>    30 jours au plus ; segments 12 mois ; dossier prospect 3 ans, client 5 ans ;
+>    preuves d'accord fin du dossier + 5 ans (`src/lib/rgpd-erase.ts`, planifié
+>    par `retention-purge-worker.ts`) ;
+> 4. **transfert hors UE assumé** : le texte et le son partent aux États-Unis,
+>    encadrés par les clauses contractuelles types et le DPF ; OpenAI ne conserve
+>    pas le son transmis pour la transcription, garde le texte 30 jours au plus
+>    dans ses journaux d'abus (`store: false`), n'entraîne pas ses modèles.
+>
+> **Ligne 20 (Google Meet)** : l'enregistrement ne passe pas par Google, mais le
+> rendez-vous enregistré s'y tient ; le constat « sans DPA » (compte Gmail grand
+> public) reste. **Analyse d'impact** : tenue **hors du dépôt** (Drive, dossier
+> 00 Juridique, décision B16) — le dépôt est public.
 
 > 🛑 **DÉCISION DE WILL — 2026-09-01 : « supprime tout enregistrement ».**
 >

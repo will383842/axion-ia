@@ -215,6 +215,40 @@ Procédure de purge automatisée : `src/server/queue/workers/retention-purge-wor
 - **Accès / portabilité** : `/api/gdpr-export` rend l'inscription (y compris la référence du texte présenté et les champs d'engagement), les demandes du guide (origine, version, dates), les événements du registre de preuve avec leurs empreintes d'IP et d'agent navigateur, l'empreinte en liste d'opposition et les événements de la file vers le CRM (type, statut, dates). Sont **déclarés** hors export, avec leur raison : les jetons d'accès (confirmation, désinscription, lien du guide) et la charge de la file CRM (copie des données déjà rendues). Une lecture en échec est signalée dans l'export au lieu d'être rendue vide.
 - **Opposition** : lien en un clic, sans connexion.
 
+## 8 ter. Enregistrement des rendez-vous et dictée (chantier visio, 2026-09-29)
+
+> **À relire par le dirigeant avant fusion** (dépôt public). Aucune donnée réelle.
+> Responsable : AXION IA SAS (§1, identité lue dans `src/lib/identite-legale-ssot.ts`).
+> **Non activé** à la date d'écriture : le circuit n'enregistre qu'après le préavis de
+> 30 jours aux clients actifs, le DPA OpenAI signé et la notice publiée
+> (`src/content/visio-annonce.ts`, `src/server/visio/ouverture.ts`). Analyse
+> d'impact : hors du dépôt (Drive, dossier 00 Juridique).
+
+### Traitement D — Enregistrement et compte rendu des rendez-vous (6.1.a)
+
+| Rubrique | Contenu |
+| --- | --- |
+| Finalité | Tirer d'un rendez-vous en visioconférence Google Meet un compte rendu fidèle, relu et validé par Williams, et les faits utiles au projet du client (besoins, contraintes, délais, financement…), rangés par projet dans le dossier client ; préparer les échanges suivants, propositions, devis et questionnaires |
+| Base légale | **Consentement** (art. 6.1.a), recueilli **de vive voix** au début de la réunion, confirmé par un clic de Williams ; retirable à tout moment, sans effet sur ce qui a été fait avant (art. 7.3) |
+| Personnes | Prospects et clients participant au rendez-vous ; personnes **mentionnées** pendant l'échange (information par la notice, art. 14) |
+| Données | Son des deux pistes (tranches chiffrées) ; segments de transcription horodatés ; comptes rendus (chiffrés) ; faits avec la phrase exacte dont ils sont tirés (chiffrée) ; preuves d'accord (`enregistrement_consentements`, `consent_events` « enregistrement-visio-annonce ») |
+| Accès | Will et les administrateurs seulement (A2) |
+| Destinataires | **OpenAI, LLC** (transcription et rédaction) ; **Cloudflare R2** (son chiffré, temporaire) ; **Hetzner** (serveurs, base) |
+| Transferts hors UE | OpenAI (États-Unis) : SCC + DPF ; son non conservé à la transcription, texte 30 jours au plus dans les journaux d'abus, pas d'entraînement. Cloudflare : SCC |
+| Durées (codées, `src/lib/rgpd-erase.ts` planifié par `retention-purge-worker.ts`) | Son : à la validation du compte rendu, **30 jours au plus**. Segments : **12 mois**. Comptes rendus et faits : prospect **3 ans** après la dernière rencontre ; client **5 ans** après la dernière activité commune (rencontre tenue, facture émise, devis accepté) ; fiche fusionnée ancrée sur l'absorbante ; rencontre jamais rattachée : sa date + 3 ans. Versions remplacées ou rejetées : **90 jours**. Contenu d'un fait rejeté : **30 jours**. Preuves d'accord : fin du dossier **+ 5 ans** |
+| Droits | Accès (export du dossier), rectification (fait remplacé), effacement (paroles, faits, comptes rendus ; la preuve d'accord reste, art. 17(3)(e)), opposition au traitement par IA (art. 21), retrait de l'accord après l'appel ; journal des effacements rejoué après une restauration (`scripts/rgpd-rejouer-effacements.ts`) |
+| Pièces légales | Devis, factures, conventions et e-mails émis ne sont **jamais** purgés par ce traitement : ils ne servent que d'ancre de date |
+
+### Traitement E — Dictée après un rendez-vous téléphonique (6.1.f)
+
+| Rubrique | Contenu |
+| --- | --- |
+| Finalité | Après un rendez-vous par téléphone (ceux déjà pris ; « Discutons » se tient désormais en Google Meet seulement), Williams dicte un résumé ; il est transcrit et analysé comme au traitement D. L'appel lui-même n'est **jamais** enregistré |
+| Base légale | **Intérêt légitime** (art. 6.1.f) à tenir un dossier fidèle des échanges ; opposition possible à tout moment |
+| Données | Voix de Williams seule ; faits marqués « rapportés par Williams », sans citation du client |
+| Destinataires, transferts, durées, droits | Comme le traitement D |
+| Mise en service | Codée éteinte ; utilisable seulement quand la notice qui l'annonce est publiée (`DICTEE_ANNONCEE`, dérivé de l'interrupteur de la notice) |
+
 ## 9. Mesures techniques et organisationnelles de sécurité
 
 ### Authentification & accès

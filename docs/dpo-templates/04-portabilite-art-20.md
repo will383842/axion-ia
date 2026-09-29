@@ -31,6 +31,7 @@ Le fichier JSON inclut toutes les données que vous nous avez fournies dans le c
 - soumissions de formulaires (audit, contact, intervention, implémentation)
 - statut newsletter
 - réservations confirmées
+- dossier client (le cas échéant) : vos paroles transcrites et les informations tirées de nos échanges, lorsque vous avez accepté l'enregistrement (art. 20 : données fournies sur la base de votre consentement)
 
 Vous pouvez transmettre ce fichier directement à tout autre responsable de traitement de votre choix.
 
@@ -59,6 +60,7 @@ The JSON file contains all the data you provided to us under contract performanc
 - form submissions (audit, contact, on-site session, implementation)
 - newsletter status
 - confirmed bookings
+- client record (if applicable): your transcribed words and the facts drawn from our exchanges, where you accepted the recording (art. 20: data provided on the basis of your consent)
 
 You can transmit this file directly to any other controller of your choice.
 

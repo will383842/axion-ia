@@ -22,146 +22,173 @@
  * ## 🔴 POURQUOI CE FICHIER A ÉTÉ RÉÉCRIT LE 2026-09-01
  *
  * Sa première version cherchait la PRÉSENCE des mots « visioconf » et
- * « transcri ». Deux défauts, découverts en l'exerçant :
+ * « transcri ». Elle cherchait aussi `"visio"`, qui apparaît dans « proVISIOn »
+ * (verte d'avance), et une garde de PRÉSENCE ne distingue pas une affirmation
+ * de sa négation (« ni enregistrés ni transcrits » contient « transcri »).
+ * D'où la formulation, qui vise le fait redouté et non un vocabulaire : **une
+ * notice qui promet l'absence d'enregistrement pendant qu'on enregistre.**
  *
- * 1. Elle cherchait aussi `"visio"`, qui apparaît **9 fois dans la notice — les
- *    9 dans « proVISIOn »**. Verte d'avance, elle ne mesurait rien.
- * 2. Plus grave : une garde de PRÉSENCE ne distingue pas une affirmation de sa
- *    négation. La notice dit désormais « ces rendez-vous ne sont ni enregistrés
- *    ni transcrits ». Le mot « transcri » y est — au sens contraire. Le jour où
- *    l'enregistrement reviendrait, la garde aurait trouvé son mot et serait
- *    passée au vert sur une notice qui affirme exactement l'inverse.
+ * ## 🔴 RÉÉCRIT LE 2026-09-29 (chantier visio, PR 8) — PAS SUPPRIMÉ
  *
- * D'où la formulation actuelle, qui vise le fait redouté et non un vocabulaire :
- * **une notice qui promet l'absence d'enregistrement pendant qu'on enregistre.**
+ * L'enregistrement revient, par une autre voie que le Notetaker : l'extension
+ * interne et l'entrée « OpenAI, LLC (comptes rendus de rendez-vous) ». La règle
+ * suit désormais CETTE entrée, et vise la SECTION « Rendez-vous de découverte »
+ * (FR) / « Discovery appointments » (EN), plus toute la prose : le règlement
+ * intérieur des stagiaires et la ligne Zoom parlent aussi de visio, et
+ * pouvaient rendre un test de prose entière vert ou rouge pour une autre
+ * raison.
  *
- * ## Ce qu'il ne vérifie pas
+ * - entrée ACTIVE : la section ne contient AUCUNE promesse de
+ *   non-enregistrement, et contient « accord », « retirer », « OpenAI »,
+ *   « États-Unis », « 30 jours » ;
+ * - entrée absente ou non activée : la promesse actuelle reste EXIGÉE.
  *
- * Il ne juge pas la qualité de la rédaction. Il vérifie des présences et des
- * absences de formules. C'est une garde de forme, et elle le dit.
+ * Le texte « après » est vérifié aussi quand il n'est pas publié (il est
+ * construit par `sectionRendezVousDecouverte(locale, true)`) : le jour de la
+ * bascule, il ne sera pas relu pour la première fois.
+ *
+ * ## Contre-témoin et angle mort
+ *
+ * Contre-témoin : l'ANCIENNE notice (« ni enregistrés ni transcrits »), soumise
+ * à la règle de l'entrée active, rougit (dernier test). Angle mort : cette
+ * garde vérifie des présences et des absences de formules, pas la qualité de
+ * la rédaction — celle-ci est lue par Will (point d'arrêt, LOTS-EXECUTION §8).
  */
 
 import { describe, expect, it } from "vitest";
 
 import { LEGAL_PAGES } from "../legal";
 import { SUBPROCESSORS } from "../subprocessors";
+import {
+  ANNONCE_VISIO_ACTIVE,
+  NOM_ENTREE_COMPTES_RENDUS_VISIO,
+  sectionRendezVousDecouverte,
+} from "../visio-annonce";
 
 /** Toute la prose des pages légales, mise à plat et en minuscules. */
 function proseLegale(): string {
   return JSON.stringify(LEGAL_PAGES).toLowerCase();
 }
 
+function sectionPubliee(locale: "fr" | "en"): string | undefined {
+  const page = LEGAL_PAGES.find((p) => p.slug === "politique-confidentialite");
+  const titre = locale === "fr" ? "Rendez-vous de découverte" : "Discovery appointments";
+  return page?.[locale].sections.find((s) => s.title === titre)?.body;
+}
+
 const MEET = SUBPROCESSORS.find((s) => s.name.includes("Google Meet"));
 const NOTETAKER = SUBPROCESSORS.find((s) => s.name.includes("Notetaker"));
+const COMPTES_RENDUS = SUBPROCESSORS.find((s) => s.name === NOM_ENTREE_COMPTES_RENDUS_VISIO);
 
-/**
- * Les formules par lesquelles la notice PROMET qu'il n'y a pas d'enregistrement.
- *
- * Ce sont elles qui deviendraient un mensonge si le Notetaker était réactivé —
- * et c'est le seul fait que ce fichier a vocation à empêcher.
- */
+/** Les formules par lesquelles la notice PROMET qu'il n'y a pas d'enregistrement. */
 const PROMESSES_DE_NON_ENREGISTREMENT = [
   "ni enregistrés",
   "ne sont pas enregistrés",
   "aucun enregistrement",
   "aucune captation",
+  "neither recorded",
+  "are not recorded",
+  "no recording",
+  "no audio or video capture",
 ];
 
+/** Ce qu'une section qui annonce l'enregistrement doit dire. */
+const OBLIGATOIRES = {
+  fr: ["accord", "retirer", "OpenAI", "États-Unis", "30 jours"],
+  en: ["consent", "withdraw", "OpenAI", "United States", "30 days"],
+} as const;
+
+function promessesDans(texte: string): string[] {
+  const t = texte.toLowerCase();
+  return PROMESSES_DE_NON_ENREGISTREMENT.filter((f) => t.includes(f));
+}
+
+function manquantes(texte: string, locale: "fr" | "en"): string[] {
+  return OBLIGATOIRES[locale].filter((f) => !texte.includes(f));
+}
+
 describe("la notice publique suit ce que fait vraiment le rendez-vous", () => {
-  it("🔑 les deux lignes existent — sans elles, tout le fichier serait muet", () => {
-    // Contre-témoin de la garde elle-même : si quelqu'un renommait ou retirait
-    // ces entrées, les tests ci-dessous passeraient en ne mesurant plus rien.
+  it("🔑 les lignes Meet et Notetaker existent, et les deux sections sont publiées", () => {
     expect(MEET, "la ligne Google Meet a disparu de la SSOT sous-traitants").toBeDefined();
     expect(NOTETAKER, "la ligne Notetaker a disparu de la SSOT sous-traitants").toBeDefined();
+    expect(sectionPubliee("fr"), "section « Rendez-vous de découverte » introuvable").toBeTruthy();
+    expect(sectionPubliee("en"), "section « Discovery appointments » introuvable").toBeTruthy();
   });
 
-  it("🔴 si Google Meet est ACTIF, la notice doit parler de visioconférence", () => {
+  it("🔴 l'annonce suit l'état de l'entrée « comptes rendus de rendez-vous »", () => {
+    // Une entrée active pendant que la notice promet encore « ni enregistrés »,
+    // ou l'inverse : les deux documents publics se contrediraient.
+    const active = COMPTES_RENDUS?.activationStatus === "active";
+    expect(
+      ANNONCE_VISIO_ACTIVE,
+      `l'entrée « ${NOM_ENTREE_COMPTES_RENDUS_VISIO} » est ${active ? "active" : "absente ou non activée"} ` +
+        `mais l'interrupteur de la notice dit ${String(ANNONCE_VISIO_ACTIVE)}.`,
+    ).toBe(active);
+  });
+
+  for (const locale of ["fr", "en"] as const) {
+    it(`🔴 ${locale} : la section publiée ne promet PAS l'absence d'enregistrement pendant qu'on enregistre`, () => {
+      const section = sectionPubliee(locale) ?? "";
+      if (COMPTES_RENDUS?.activationStatus === "active") {
+        expect(
+          promessesDans(section),
+          "l'entrée est active et la section promet le contraire",
+        ).toEqual([]);
+        expect(manquantes(section, locale), "formules obligatoires absentes").toEqual([]);
+        return;
+      }
+      // Rien n'est enregistré : la promesse est vraie, et elle doit être écrite
+      // — c'est un engagement public, pas un simple silence.
+      expect(
+        promessesDans(section).length,
+        "aucune formule ne dit au visiteur que le rendez-vous n'est pas enregistré",
+      ).toBeGreaterThan(0);
+    });
+
+    it(`🔴 ${locale} : le texte PRÊT à publier dit tout, et ne promet rien de faux`, () => {
+      const apres = sectionRendezVousDecouverte(locale, true);
+      expect(promessesDans(apres)).toEqual([]);
+      expect(manquantes(apres, locale)).toEqual([]);
+    });
+  }
+
+  it("🔴 si Google Meet est ACTIF, la notice parle de visioconférence", () => {
     const prose = proseLegale();
     if (MEET?.activationStatus !== "active") {
-      // Tant que le lieu n'est pas réservable, la notice est exacte en n'en
-      // parlant pas — et le mot ne doit alors PAS y figurer, sans quoi ce test
-      // serait vert d'avance.
-      expect(
-        prose.includes("visioconf"),
-        "Google Meet est déclaré non activé, mais la notice parle déjà de " +
-          "visioconférence : l'un des deux ment.",
-      ).toBe(false);
+      expect(prose.includes("visioconf")).toBe(false);
       return;
     }
-    expect(
-      prose.includes("visioconf") || prose.includes("google meet"),
-      "Google Meet est actif : un prospect peut réserver une visioconférence, " +
-        "et la politique de confidentialité n'en dit rien.",
-    ).toBe(true);
+    expect(prose.includes("visioconf") || prose.includes("google meet")).toBe(true);
   });
 
-  it("🔴 la notice ne promet PAS l'absence d'enregistrement pendant qu'on enregistre", () => {
-    // 🔑 LE CŒUR DE CE FICHIER. Ne pas annoncer un enregistrement est un
-    // manquement ; promettre qu'il n'y en a pas alors qu'il y en a est un
-    // mensonge publié, et il porte la signature d'Axion-IA.
-    const prose = proseLegale();
-    const promesses = PROMESSES_DE_NON_ENREGISTREMENT.filter((f) => prose.includes(f));
-
-    if (NOTETAKER?.activationStatus === "active") {
-      expect(
-        promesses,
-        "le Notetaker est actif — les rendez-vous en visio sont enregistrés et " +
-          "transcrits — pendant que la notice publique promet le contraire. " +
-          `Formules fautives : ${promesses.join(" / ")}`,
-      ).toEqual([]);
-      expect(
-        prose.includes("enregistr"),
-        "le Notetaker est actif et la notice n'annonce aucun enregistrement.",
-      ).toBe(true);
-      return;
-    }
-
-    // État du 2026-09-01 : décision de Will, « supprime tout enregistrement ».
-    // La promesse est donc vraie, et on vérifie qu'elle est bien écrite —
-    // c'est un engagement public, pas un simple silence.
-    expect(
-      promesses.length,
-      "aucune formule ne dit au visiteur que le rendez-vous n'est pas " +
-        "enregistré, alors que c'est une décision prise et tenable.",
-    ).toBeGreaterThan(0);
-  });
-
-  it("🔑 réactiver l'enregistrement se décide, ne se configure pas", () => {
+  it("🔑 réactiver le Notetaker se décide, ne se configure pas", () => {
     // Tenir un rendez-vous relève des mesures précontractuelles ; l'enregistrer
-    // n'en relève pas — il se tient parfaitement sans. Basculer cette base
-    // légale sur 6.1.b reviendrait à s'accorder soi-même une permission qu'on
-    // n'a pas demandée, et cela ne se verrait nulle part à l'écran.
+    // n'en relève pas. Et le robot Calendly reste désactivé : l'enregistrement
+    // passe par l'extension interne, pas par lui.
     expect(NOTETAKER?.legalBasis).toBe("6.1.a_consent");
-    // Et l'état décidé le 2026-09-01 : désactivé.
     expect(
       NOTETAKER?.activationStatus,
-      "le Notetaker est repassé en actif : ce n'est pas un champ à modifier, " +
-        "c'est la décision du 2026-09-01 à rouvrir — voir _AUDIT/DPA-REGISTER.md.",
+      "le Notetaker est repassé en actif : c'est la décision du 2026-09-01 à rouvrir, pas un champ.",
     ).toBe("pending_activation");
   });
 
   it("🔑 CONTRE-TÉMOIN : la prose légale est bien lisible par ce test", () => {
-    // Si `LEGAL_PAGES` changeait de forme, `proseLegale()` pourrait rendre une
-    // chaîne vide et les tests ci-dessus passeraient sans rien mesurer.
     const prose = proseLegale();
-    expect(prose.length, "la prose légale est vide : la garde ne mesure plus rien").toBeGreaterThan(
-      10_000,
-    );
+    expect(prose.length).toBeGreaterThan(10_000);
     expect(prose, "le sujet des rendez-vous doit y figurer").toContain("calendly");
   });
 
   it("🔑 CONTRE-TÉMOIN : « visio » seul ne sert PAS de motif — c'est un sous-mot", () => {
-    // Mesuré le 2026-08-31 : « visio » apparaît 9 fois dans la notice, les 9
-    // dans « proVISIOn » (« provision of services »…). Un motif aussi court
-    // rendrait la garde verte d'avance. Ce test le rappelle en le mesurant.
     const prose = proseLegale();
     const total = (prose.match(/visio/g) ?? []).length;
     const provisions = (prose.match(/provision/g) ?? []).length;
-    expect(
-      provisions,
-      "« provision » a disparu de la notice : la démonstration ne tient plus, " +
-        "mais la leçon reste — ne pas revenir à un motif « visio » nu.",
-    ).toBeGreaterThan(0);
+    expect(provisions).toBeGreaterThan(0);
     expect(total).toBeGreaterThanOrEqual(provisions);
+  });
+
+  it("🔑 CONTRE-TÉMOIN : l'ancienne notice, sous la règle de l'entrée active, rougirait", () => {
+    const ancienne = sectionRendezVousDecouverte("fr", false);
+    expect(promessesDans(ancienne).length).toBeGreaterThan(0);
+    expect(manquantes(ancienne, "fr").length).toBeGreaterThan(0);
   });
 });
