@@ -104,6 +104,26 @@ describe("REQ-JUR-001 — la mention indicative lève la faute, dans la phrase s
   });
 });
 
+describe("REQ-JUR-019 — un revenu illimité rougit, MÊME dit indicatif (arbitrage -d7)", () => {
+  it.each([
+    "À titre indicatif, 500 € par journée, sans plafond.",
+    "Plus vous en présentez, plus vos commissions progressent — sans aucune limite",
+    "Il n’y a pas de plafond, à titre indicatif.",
+    "As an indication, €500 per day, uncapped.",
+    "As a guide, your commissions grow — with no cap.",
+    "Des revenus illimités, selon votre profil",
+  ])("REQ-JUR-019 — TÉMOIN ROUGE : « %s »", (texte) => {
+    expect(temoin(texte)).toContain<FamilleRemuneration>("revenu_illimite");
+  });
+
+  it("REQ-JUR-019 — CONTRE-TÉMOIN : « sans limite d'âge » n'est pas un revenu illimité", () => {
+    expect(temoin("L'activité est ouverte à tous, sans limite d'âge.")).not.toContain(
+      "revenu_illimite",
+    );
+    expect(temoin("Aucune limite d&apos;âge")).not.toContain("revenu_illimite");
+  });
+});
+
 describe("REQ-JUR-041 — « kit de vente » est banni", () => {
   it("REQ-JUR-041 — TÉMOIN ROUGE : « kit de vente », même avec une mention indicative", () => {
     expect(temoin("Recevez votre kit de vente, à titre indicatif.")).toContain<FamilleRemuneration>(
@@ -140,13 +160,17 @@ describe("REQ-JUR-019 — un montant ou un taux affiché sans mention rougit, ve
     "€500 per paid day",
     "Gagnez 500 € par formation vendue",
     "30 % de commission sur chaque audit",
-    "vos revenus n'ont aucune limite",
-    "Revenus déplafonnés",
     "title: `Référent · ${jour} € par journée payée`",
-    "your income is uncapped",
   ])("REQ-JUR-019 — TÉMOIN ROUGE : « %s »", (texte) => {
     expect(temoin(texte)).toContain<FamilleRemuneration>("remuneration_ferme");
   });
+
+  it.each(["vos revenus n'ont aucune limite", "Revenus déplafonnés", "your income is uncapped"])(
+    "REQ-JUR-019 — TÉMOIN ROUGE, revenu illimité : « %s »",
+    (texte) => {
+      expect(temoin(texte)).toContain<FamilleRemuneration>("revenu_illimite");
+    },
+  );
 
   it("REQ-JUR-019 — TÉMOIN ROUGE : `{montantJournee}` seul sur sa ligne, en JSX", () => {
     const texte = ['<span className="text-fg">', "  {montantJournee}", "</span>"].join("\n");
@@ -169,8 +193,6 @@ describe("REQ-JUR-001 — les mêmes lignes, la mention indicative dans la fenê
     "€500 per paid day, as a guide",
     "Gagnez 500 € par formation vendue, à titre indicatif",
     "À titre indicatif, 30 % de commission sur chaque audit",
-    "Barème indicatif : vos revenus n'ont aucune limite",
-    "Revenus déplafonnés, selon votre profil",
   ])("REQ-JUR-001 — CONTRE-TÉMOIN : « %s »", (texte) => {
     expect(temoin(texte)).toEqual([]);
   });
@@ -195,30 +217,30 @@ describe("REQ-JUR-001 — les mêmes lignes, la mention indicative dans la fenê
 describe("REQ-JUR-019 — les exceptions nommées ne couvrent que LEUR ligne", () => {
   const exception = {
     chemin: "src/content/recrutement/temoin.ts",
-    ligne: "Aucune limite d'âge pour candidater",
-    motif: "témoin : une limite d'âge n'est pas un revenu",
+    ligne: "Aucune limite de places pour candidater",
+    motif: "témoin : une limite de places n'est pas un revenu",
   };
   const juge = (chemin: string, texte: string) =>
     fautesDeRemuneration([{ chemin, texte }], [exception]).map((f) => f.famille);
 
   it("REQ-JUR-019 — l'exception lève SA ligne, dans SON fichier", () => {
-    expect(juge(exception.chemin, "Aucune limite d'âge pour candidater.")).toEqual([]);
+    expect(juge(exception.chemin, "Aucune limite de places pour candidater.")).toEqual([]);
   });
 
   it("REQ-JUR-019 — TÉMOIN ROUGE : la même phrase dans un AUTRE fichier rougit", () => {
     const autre = "src/content/recrutement/autre.ts";
-    expect(juge(autre, "Aucune limite d'âge pour candidater.")).toEqual(["remuneration_ferme"]);
+    expect(juge(autre, "Aucune limite de places pour candidater.")).toEqual(["revenu_illimite"]);
   });
 
   it("REQ-JUR-019 — TÉMOIN ROUGE : une SECONDE occurrence dans le même fichier rougit", () => {
-    const phrase = "Aucune limite d'âge pour candidater.";
+    const phrase = "Aucune limite de places pour candidater.";
     const texte = [phrase, "", "", "", phrase].join("\n");
-    expect(juge(exception.chemin, texte)).toEqual(["remuneration_ferme"]);
+    expect(juge(exception.chemin, texte)).toEqual(["revenu_illimite"]);
   });
 
   it("REQ-JUR-019 — TÉMOIN ROUGE : la promesse de la ligne voisine n'est pas couverte", () => {
-    const texte = ["Aucune limite d'âge pour candidater.", "Vos revenus n'ont aucune limite."];
-    expect(juge(exception.chemin, texte.join("\n"))).toEqual(["remuneration_ferme"]);
+    const texte = ["Aucune limite de places pour candidater.", "Vos revenus n'ont aucune limite."];
+    expect(juge(exception.chemin, texte.join("\n"))).toEqual(["revenu_illimite"]);
   });
 
   it("REQ-JUR-019 — TÉMOIN ROUGE : une exception qui ne trouve plus sa ligne est périmée", () => {

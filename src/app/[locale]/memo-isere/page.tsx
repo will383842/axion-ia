@@ -339,8 +339,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       path: "/memo-isere",
       title,
       description: isFr
-        ? `À titre indicatif, ${commission(1)} par journée de formation IA vendue, sans plafond. L'AI Act l'impose aux PME, ETI et grands groupes : 474 communes au choix.`
-        : `As an indication, €${COMMISSION_PAR_JOURNEE} per AI training day sold, uncapped. The AI Act mandates it for SMEs, mid-caps and large groups: 474 towns to pick from.`,
+        ? `À titre indicatif, ${commission(1)} par journée de formation IA vendue. L'AI Act l'impose aux PME, ETI et grands groupes : 474 communes au choix.`
+        : `As an indication, €${COMMISSION_PAR_JOURNEE} per AI training day sold. The AI Act mandates it for SMEs, mid-caps and large groups: 474 towns to pick from.`,
     })),
     title: { absolute: title },
   };
@@ -626,7 +626,7 @@ export default async function MemoIserePage({ params }: Props) {
     {
       id: "remuneration",
       question: "Combien gagne-t-on exactement ?",
-      answer: `Votre commission se compte en JOURNÉES de formation vendues et encaissées : à titre indicatif, ${commission(1)} par journée, sans plafond. Une formation Essentielle dure 1 journée — ${commission(1)} pour vous. Une Approfondie dure 2 journées consécutives — ${commission(2)}. Un programme sur mesure de 3 journées — ${commission(3)}. Et une grande équipe se forme en plusieurs groupes : 40 salariés, c'est 3 groupes, donc 3 sessions facturées chez un seul client. Les audits et intégrations IA rapportent en plus un pourcentage de la facture. Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.`,
+      answer: `Votre commission se compte en JOURNÉES de formation vendues et encaissées : à titre indicatif, ${commission(1)} par journée. Une formation Essentielle dure 1 journée — ${commission(1)} pour vous. Une Approfondie dure 2 journées consécutives — ${commission(2)}. Un programme sur mesure de 3 journées — ${commission(3)}. Et une grande équipe se forme en plusieurs groupes : 40 salariés, c'est 3 groupes, donc 3 sessions facturées chez un seul client. Les audits et intégrations IA rapportent en plus un pourcentage de la facture. Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.`,
     },
     {
       id: "statut",
@@ -1311,7 +1311,7 @@ export default async function MemoIserePage({ params }: Props) {
               </li>
             </ol>
             <p className="text-fg mt-5 text-center text-[15px] leading-relaxed sm:text-base">
-              {`Et ça se multiplie sans plafond : à titre indicatif, un programme de 3 journées, c’est ${commission(3)}. Une semaine de 5 journées, ${commission(5)}.`}
+              {`Et ça se multiplie : à titre indicatif, un programme de 3 journées, c’est ${commission(3)}. Une semaine de 5 journées, ${commission(5)}.`}
             </p>
           </div>
 
@@ -1393,8 +1393,7 @@ export default async function MemoIserePage({ params }: Props) {
                 exempter — mais le principe reste : un exemple n'est pas une
                 promesse, et ça doit se lire. */}
             Ce sont des exemples de calcul, à titre indicatif, pas une promesse de revenus : vos
-            commissions dépendent de vos ventes. Rien ne vous interdit d’aller au-delà — il n’y a
-            pas de plafond.
+            commissions dépendent de vos ventes.
           </p>
 
           <div className="mx-auto mt-10 grid max-w-3xl gap-4 sm:grid-cols-2">

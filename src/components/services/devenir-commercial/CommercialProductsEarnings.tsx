@@ -70,8 +70,8 @@ export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsP
       titleEm={isFr ? "pouvez-vous gagner ?" : "could it bring you?"}
       description={
         isFr
-          ? "À titre indicatif, le barème de chaque produit que vous faites connaître, commission versée à l'encaissement. Plus vous en présentez, plus vos commissions progressent — sans aucune limite."
-          : "As an indication, the rate for each product you introduce, commission paid on collection. The more you present, the more your commissions grow — with no limit."
+          ? "À titre indicatif, le barème de chaque produit que vous faites connaître, commission versée à l'encaissement. Plus vous en présentez, plus vos commissions progressent."
+          : "As an indication, the rate for each product you introduce, commission paid on collection. The more you present, the more your commissions grow."
       }
     >
       {/* FORMATIONS — commission fixe par vente (cartes phares) */}

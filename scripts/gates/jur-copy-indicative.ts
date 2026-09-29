@@ -42,7 +42,11 @@ export function lireSurfacesPubliques(racine = process.cwd()): { chemin: string;
 }
 
 export type FamilleRemuneration =
-  "remuneration_ferme" | "kit_de_vente" | "jsonld_remuneration" | "exception_perimee";
+  | "remuneration_ferme"
+  | "revenu_illimite"
+  | "kit_de_vente"
+  | "jsonld_remuneration"
+  | "exception_perimee";
 
 export type FauteRemuneration = {
   readonly famille: FamilleRemuneration;
@@ -90,7 +94,6 @@ const FERME = new RegExp(
     String.raw`${TAUX}(?=[^.;!?]{0,60}?${DEBUT}${REMUNERATION})`,
     String.raw`${DEBUT}${REMUNERATION}[^.;!?]{0,60}?${TAUX}`,
     String.raw`\bpar\s+journée(?:\s+[\wÀ-ÿ'’-]+){0,6}?\s+(?:vendue|payée|signée)s?${FIN}`,
-    String.raw`\bsans\s+(?:aucun\s+)?plafond|\bnon\s+plafonn|\bpas\s+de\s+plafond|\baucune\s+limite|\bdéplafonn|\buncapped\b|\bno\s+(?:limit|cap)\b`,
     String.raw`\byou\s+(?:earn|pocket)\b|\byou\s+(?:get|receive|make)\s+(?:(?:your|a|an|the)\s+)?(?:commissions?\b|€|\d|\$?\{)`,
     String.raw`\bper\s+(?:[a-z]+\s+){0,3}days?\b|\bfor\s+you\s+per\b`,
   ].join("|"),
@@ -98,6 +101,14 @@ const FERME = new RegExp(
 );
 const INDICATIF =
   /à\s+partir\s+de|selon\s+(?:votre\s+|ton\s+|son\s+)?profil|à\s+titre\s+indicatif|\bindicati(?:f|ve|fs|ves)\b|\bas\s+a\s+guide\b|\bfrom\s+€|\bdepending\s+on\s+(?:your\s+)?profile\b/i;
+/**
+ * `revenu_illimite` : une FAMILLE À PART, que la mention indicative N'EXCUSE PAS (arbitrage -d7
+ * du 2026-09-29). « À titre indicatif, 500 € par journée, sans plafond » reste une promesse de
+ * revenu illimité : un plafond absent ne se nuance pas. Seules les exceptions nommées (la limite
+ * d'ÂGE) en sortent.
+ */
+const ILLIMITE =
+  /\bsans\s+(?:aucune?\s+)?plafond|\b(?:sans\s+(?:aucune\s+)?|aucune\s+)limite(?!\s+d['’]\s?âge)|\bnon\s+plafonn|\bpas\s+de\s+plafond|\bdéplafonn|\billimit[ée]e?s?\b|\buncapped\b|\bunlimited\b|\bno\s+(?:limit|cap)\b/i;
 const KIT = /\bkit\s+de\s+vente\b/i;
 const JSONLD = /\b(?:incentiveCompensation|baseSalary|MonetaryAmount)\b|"JobPosting"/;
 const COMMENTAIRE = /^\s*(?:\/\/|\*|\/\*)/;
@@ -136,6 +147,13 @@ export const EXCEPTIONS_REMUNERATION: ReadonlyArray<{
     motif: "Titre « Aucune limite d'âge » : une condition d'accès, pas un revenu illimité.",
   },
   {
+    chemin: "src/app/[locale]/apporteur-affaires-independant-formation-ia-entreprise/page.tsx",
+    ligne: "L&apos;activité est ouverte à tout indépendant en capacité de facturer, sans limite",
+    motif:
+      "« sans limite » d'ÂGE, dont « d'âge » ouvre la ligne suivante (JSX coupé) : une condition " +
+      "d'accès, pas un revenu illimité.",
+  },
+  {
     chemin: "src/app/[locale]/memo-isere/page.tsx",
     ligne: `"Oui. L'activité est 100 % à la commission et sans quota horaire`,
     motif: "« 100 % à la commission » dit le MODE de rémunération (aucun fixe), pas un taux.",
@@ -164,6 +182,10 @@ export function fautesDeRemuneration(
         if (!voisines.some((v) => v !== null && INDICATIF.test(v))) {
           fautes.push({ famille: "remuneration_ferme", chemin, ligne: i + 1, extrait: ferme[0] });
         }
+      }
+      const illimite = exemptees.has(i) ? null : ILLIMITE.exec(contenu);
+      if (illimite) {
+        fautes.push({ famille: "revenu_illimite", chemin, ligne: i + 1, extrait: illimite[0] });
       }
       const kit = KIT.exec(contenu);
       if (kit) fautes.push({ famille: "kit_de_vente", chemin, ligne: i + 1, extrait: kit[0] });

@@ -162,9 +162,9 @@ export const COMMERCIAL_STEPS: ReadonlyArray<CommercialStep> = [
     titleFr: "Vos commissions, à l'encaissement",
     titleEn: "Your commissions, on collection",
     textFr:
-      "À titre indicatif : commission fixe sur les formations, pourcentage de la facture sur les audits et les intégrations. Plus vous recommandez d'entreprises, plus vos commissions progressent — sans plafond.",
+      "À titre indicatif : commission fixe sur les formations, pourcentage de la facture sur les audits et les intégrations. Plus vous recommandez d'entreprises, plus vos commissions progressent.",
     textEn:
-      "As an indication: flat commission on trainings, a percentage of the invoice on audits and integrations. The more companies you introduce, the more your commissions grow — with no cap.",
+      "As an indication: flat commission on trainings, a percentage of the invoice on audits and integrations. The more companies you introduce, the more your commissions grow.",
   },
 ];
 
