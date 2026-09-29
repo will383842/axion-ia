@@ -28,6 +28,11 @@ import {
 } from "@/components/admin/visio/CompteRenduVisio";
 import { gardeLectureEchanges } from "@/features/dossier-client/acces";
 import { lireCompteRendu } from "@/features/dossier-client/compte-rendu";
+import {
+  LIBELLE_ETAPE_VISIO,
+  LIBELLE_STATUT_COMPTE_RENDU,
+  LIBELLE_STATUT_ETAPE,
+} from "@/features/dossier-client/libelles";
 import { gesteCompteRenduAction } from "@/features/dossier-client/compte-rendu-actions";
 import { prisma } from "@/lib/prisma";
 
@@ -38,37 +43,6 @@ interface Props {
   readonly message: string | undefined;
   readonly erreur: string | undefined;
 }
-
-const LIBELLE_STATUT_CR: Readonly<Record<string, string>> = {
-  brouillon: "en préparation",
-  a_valider: "à valider",
-  valide: "validé",
-  remplace: "remplacé",
-  rejete: "rejeté",
-  a_regenerer: "à réécrire",
-};
-
-const LIBELLE_ETAPE: Readonly<Record<string, string>> = {
-  transcrire: "Transcription",
-  precontroler: "Contrôles avant rédaction",
-  extraire: "Extraction des faits",
-  verifier_faits: "Vérification des faits",
-  rattacher: "Rattachement aux projets",
-  consolider: "Comparaison avec l'historique",
-  ebaucher: "Ébauche de devis",
-  rediger: "Rédaction",
-  verifier_compte_rendu: "Vérification du compte rendu",
-  purger_audio: "Suppression du son",
-};
-
-const LIBELLE_STATUT_ETAPE: Readonly<Record<string, string>> = {
-  a_faire: "à faire",
-  en_cours: "en cours",
-  reussie: "faite",
-  echec_definitif: "en échec",
-  annule: "annulée",
-  suspendu: "suspendue",
-};
 
 const carte =
   "mb-[var(--space-admin-5)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]";
@@ -134,7 +108,7 @@ export async function VueCompteRendu({ locale, adminPrefix, rencontreId, message
                       : "neutral"
                 }
               >
-                {LIBELLE_STATUT_CR[cr.statut] ?? cr.statut}
+                {LIBELLE_STATUT_COMPTE_RENDU[cr.statut]}
               </AdminBadge>
               <AdminBadge tone="neutral">version {cr.version}</AdminBadge>
             </>
@@ -171,7 +145,7 @@ export async function VueCompteRendu({ locale, adminPrefix, rencontreId, message
           <h2 className={titre}>Compte rendu non rédigé</h2>
           <p className={discret}>
             {enEchec
-              ? `L'étape « ${LIBELLE_ETAPE[enEchec.etape] ?? enEchec.etape} » a échoué (${enEchec.derniereErreur ?? "erreur"}). Vous pouvez relancer, ou écrire une note manuelle depuis « Après l'appel ».`
+              ? `L'étape « ${LIBELLE_ETAPE_VISIO[enEchec.etape]} » a échoué (${enEchec.derniereErreur ?? "erreur"}). Vous pouvez relancer, ou écrire une note manuelle depuis « Après l'appel ».`
               : "Le compte rendu est en préparation : il apparaît ici dès qu'il est prêt."}
           </p>
           {cr || enEchec ? (
@@ -272,7 +246,7 @@ export async function VueCompteRendu({ locale, adminPrefix, rencontreId, message
         <ul className="space-y-[var(--space-admin-1)] text-[length:var(--text-admin-sm)]">
           {vue.etapes.map((e, i) => (
             <li key={`${e.etape}-${i}`}>
-              {LIBELLE_ETAPE[e.etape] ?? e.etape} : {LIBELLE_STATUT_ETAPE[e.statut] ?? e.statut}
+              {LIBELLE_ETAPE_VISIO[e.etape]} : {LIBELLE_STATUT_ETAPE[e.statut]}
               {e.derniereErreur ? <span className={discret}> · {e.derniereErreur}</span> : null}
               {e.prochaineTentativeLe && e.statut === "a_faire" ? (
                 <span className={discret}> · nouvel essai le {dateFr(e.prochaineTentativeLe)}</span>
@@ -306,7 +280,7 @@ export async function VueCompteRendu({ locale, adminPrefix, rencontreId, message
           <ul className="text-[length:var(--text-admin-sm)]">
             {vue.versions.map((v) => (
               <li key={v.version}>
-                Version {v.version} · {LIBELLE_STATUT_CR[v.statut] ?? v.statut} · {dateFr(v.creeLe)}
+                Version {v.version} · {LIBELLE_STATUT_COMPTE_RENDU[v.statut]} · {dateFr(v.creeLe)}
               </li>
             ))}
           </ul>

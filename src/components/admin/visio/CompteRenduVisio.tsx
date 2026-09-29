@@ -8,46 +8,26 @@
 // Composant SERVEUR, sans état : aucun octet de JavaScript pour la console.
 
 import type { DocumentCompteRendu, FaitAffiche } from "@/features/dossier-client/compte-rendu";
+import {
+  euros,
+  LIBELLE_MOTIF_REJET,
+  LIBELLE_RUBRIQUE,
+  LIBELLE_STATUT_COUVERTURE,
+} from "@/features/dossier-client/libelles";
 import type { RubriqueCouverture } from "@/server/visio/schemas/communs";
-import { RUBRIQUES_COUVERTURE } from "@/server/visio/schemas/communs";
+import { RUBRIQUE_PAR_NUMERO, RUBRIQUES_COUVERTURE } from "@/server/visio/schemas/communs";
 
-export const LIBELLE_RUBRIQUE: Readonly<Record<RubriqueCouverture, string>> = {
-  entreprise: "1. L'entreprise",
-  decision: "2. L'interlocuteur et le circuit de décision",
-  problemes: "3. Les problèmes, avec leurs mots",
-  besoins: "4. Besoins",
-  perimetre: "5. Périmètre de la formation ou de la mission",
-  budget_financement: "6. Budget et financement",
-  calendrier: "7. Calendrier",
-  objections_concurrence: "8. Objections et concurrence",
-  engagements: "9. Engagements",
-  offres: "10. Ébauche de devis",
-  questions_ouvertes: "11. Questions restées ouvertes",
-  prochaine_etape: "13. Prochaine étape",
-};
-
-const LIBELLE_STATUT: Readonly<Record<string, string>> = {
-  aborde: "Abordé",
-  evoque_sans_precision: "Évoqué sans précision",
-  non_aborde: "Non abordé",
-};
-
-const MOTIF_REJET: Readonly<Record<string, string>> = {
-  citation_introuvable: "la phrase citée ne se retrouve pas mot pour mot",
-  citation_trop_courte: "citation trop courte pour prouver quoi que ce soit",
-  citation_trop_longue: "citation trop longue",
-  segment_inconnu: "passage inexistant dans l'enregistrement",
-  preuve_historique: "la preuve cite un échange précédent, pas celui du jour",
-  locuteur_non_admis: "dit par Williams sans confirmation du client",
-  valeur_non_prouvee: "un chiffre ou une date absent de la citation",
-  deduction_interdite: "déduction interdite pour ce type d'information",
-  reference_catalogue_inconnue: "offre inconnue du catalogue",
-  relation_hors_projet: "relation avec un autre projet",
-  version_remplacee: "remplacé par une nouvelle version",
-  doublon: "déjà validé",
-  rejete_par_williams: "rejeté par Williams",
-  rectification: "rectifié",
-};
+/**
+ * Le titre d'une rubrique : SON numéro du gabarit (`RUBRIQUE_PAR_NUMERO`) et
+ * SON libellé (`LIBELLE_RUBRIQUE` de `libelles.ts`) — une seule table de
+ * libellés pour tout le dossier client.
+ */
+export function titreRubrique(cle: RubriqueCouverture): string {
+  const numero = Number(
+    Object.entries(RUBRIQUE_PAR_NUMERO).find(([, k]) => k === cle)?.[0] ?? Number.NaN,
+  );
+  return `${numero}. ${LIBELLE_RUBRIQUE[numero] ?? cle}`;
+}
 
 export function horodatageCourt(ms: number | null): string {
   if (ms === null) return "—";
@@ -55,8 +35,8 @@ export function horodatageCourt(ms: number | null): string {
   return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 }
 
-function euros(cents: number | null): string {
-  return cents === null ? "sur devis" : `${(cents / 100).toLocaleString("fr-FR")} € HT`;
+function prixHt(cents: number | null): string {
+  return cents === null ? "sur devis" : `${euros(cents)} HT`;
 }
 
 const carte =
@@ -129,8 +109,8 @@ export function DocumentCompteRenduVue({ document }: { readonly document: Docume
         return (
           <section key={cle} className={carte}>
             <h2 className={titre}>
-              {LIBELLE_RUBRIQUE[cle]}{" "}
-              <span className={discret}>· {LIBELLE_STATUT[rub.statut] ?? rub.statut}</span>
+              {titreRubrique(cle)}{" "}
+              <span className={discret}>· {LIBELLE_STATUT_COUVERTURE[rub.statut]}</span>
             </h2>
             {rub.statut === "non_aborde" ? (
               <p className={discret}>Non abordé.</p>
@@ -162,8 +142,8 @@ export function DocumentCompteRenduVue({ document }: { readonly document: Docume
                           <td className="text-right">
                             {l.quantite} {l.unite}
                           </td>
-                          <td className="text-right">{euros(l.prixUnitaireHtCents)}</td>
-                          <td className="text-right">{euros(l.totalHtCents)}</td>
+                          <td className="text-right">{prixHt(l.prixUnitaireHtCents)}</td>
+                          <td className="text-right">{prixHt(l.totalHtCents)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -174,7 +154,7 @@ export function DocumentCompteRenduVue({ document }: { readonly document: Docume
                           {b.chiffrage.lignesSurDevis > 0 ? "(hors lignes sur devis)" : ""}
                         </td>
                         <td className="text-right font-semibold">
-                          {euros(b.chiffrage.totalHtCents)}
+                          {prixHt(b.chiffrage.totalHtCents)}
                         </td>
                       </tr>
                     </tfoot>
@@ -247,7 +227,11 @@ export function FaitsEtCitations({ faits }: { readonly faits: readonly FaitAffic
             {rejetes.map((f) => (
               <li key={f.id}>
                 {f.enonce} —{" "}
-                <span className={discret}>{MOTIF_REJET[f.motifRejet ?? ""] ?? f.motifRejet}</span>
+                <span className={discret}>
+                  {f.motifRejet !== null
+                    ? LIBELLE_MOTIF_REJET[f.motifRejet]
+                    : "écarté par la vérification"}
+                </span>
               </li>
             ))}
           </ul>

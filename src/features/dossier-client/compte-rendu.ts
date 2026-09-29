@@ -7,7 +7,13 @@
  * aucun Markdown, aucun lien produit par l'IA n'atteint l'écran.
  */
 
-import type { PrismaClient } from "../../../prisma/generated/client";
+import type {
+  CompteRenduStatut,
+  EtapeVisio,
+  MotifRejetFait,
+  PrismaClient,
+  StatutEtape,
+} from "../../../prisma/generated/client";
 import { dechiffrerParole, dechiffrerParoleOuNull } from "@/lib/chiffrer-parole";
 import type { EbaucheChiffree } from "@/server/visio/catalogue-ia";
 import type { CompteRenduV1 } from "@/server/visio/schemas/autres";
@@ -34,7 +40,7 @@ export interface FaitAffiche {
   readonly ref: string | null;
   readonly type: string;
   readonly statut: string;
-  readonly motifRejet: string | null;
+  readonly motifRejet: MotifRejetFait | null;
   readonly enonce: string;
   readonly citation: string | null;
   readonly citationDebutMs: number | null;
@@ -55,7 +61,7 @@ export interface VueCompteRendu {
   readonly courant: {
     readonly id: string;
     readonly version: number;
-    readonly statut: string;
+    readonly statut: CompteRenduStatut;
     readonly mode: string | null;
     readonly modele: string | null;
     readonly promptHash: string | null;
@@ -66,7 +72,7 @@ export interface VueCompteRendu {
   readonly etat: EtatCompteRendu | null;
   readonly versions: ReadonlyArray<{
     readonly version: number;
-    readonly statut: string;
+    readonly statut: CompteRenduStatut;
     readonly mode: string | null;
     readonly creeLe: Date;
   }>;
@@ -81,8 +87,8 @@ export interface VueCompteRendu {
     }>;
   };
   readonly etapes: ReadonlyArray<{
-    readonly etape: string;
-    readonly statut: string;
+    readonly etape: EtapeVisio;
+    readonly statut: StatutEtape;
     readonly classeErreur: string | null;
     readonly derniereErreur: string | null;
     readonly prochaineTentativeLe: Date | null;

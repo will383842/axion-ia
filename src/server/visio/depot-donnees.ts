@@ -24,6 +24,7 @@ import type { Periode, SegmentStocke } from "./dialogue";
 import { ETATS_ENREGISTREMENT_ACTIFS } from "./etats";
 import { lireEtat } from "./etat-compte-rendu";
 import { ajouterAuJournal, lireJournal } from "./journal-enregistrement";
+import { euros } from "@/features/dossier-client/libelles";
 import { ErreurVisio } from "./openai/erreurs";
 import { stockageR2, type LectureAudio } from "./stockage-audio";
 import type {
@@ -56,10 +57,6 @@ function periodes(json: string | null): Periode[] {
   } catch {
     return [];
   }
-}
-
-function euros(cents: number): string {
-  return `${(cents / 100).toLocaleString("fr-FR")} €`;
 }
 
 /** Les valeurs d'un fait mises en texte (pour P2-P5 et G9). */
