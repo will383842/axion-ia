@@ -26,6 +26,13 @@
  * Une entrée de plus dans `REGLES` : le modèle (accesseur Prisma), le champ, la ou les valeurs de
  * l'état, la fonction d'émission, les enveloppes de transaction admises. Rien d'autre à écrire.
  *
+ * Deux champs FACULTATIFS (INT-T05), chacun une règle écrite, jamais une liste d'exceptions :
+ *   · `horsFait` — une écriture dont les données posent, EN LITTÉRAL, un marqueur qui dit
+ *     « ceci n'est pas un fait du contrat » (`estImportee: true` : une facture reprise
+ *     d'historique, émise hors du système). Elle est IMPRIMÉE comme classée, jamais tue.
+ *   · `sansEcrivainMesure` — un fait dont le dépôt n'a, mesuré, AUCUN écrivain aujourd'hui.
+ *     La règle garde l'écrivain de demain ; zéro n'est alors pas une panne de mesure.
+ *
  * Lancement : `pnpm partners:cliquet-ecrivains`. Témoin à deux faces :
  * `tests/unit/ci/cliquet-ecrivains-devis.spec.ts`.
  */
@@ -49,7 +56,26 @@ export type RegleEcrivain = {
   readonly emission: string;
   /** Les appels dont le travail (la fonction passée en argument) est transactionnel. */
   readonly transactions: readonly string[];
+  /** Le marqueur littéral d'une écriture qui n'est pas un fait du contrat, et pourquoi. */
+  readonly horsFait?: {
+    readonly champ: string;
+    readonly valeur: string | boolean;
+    readonly motif: string;
+  };
+  /** Zéro écrivain MESURÉ aujourd'hui : la règle garde l'avenir. Le texte dit la mesure. */
+  readonly sansEcrivainMesure?: string;
 };
+
+const TRANSACTIONS_FACTURATION = ["$transaction", "transactionFaitFacturation"] as const;
+
+/** La facture reprise d'historique : émise HORS du système, elle n'est pas un fait d'axionia. */
+const FACTURE_IMPORTEE = {
+  champ: "estImportee",
+  valeur: true,
+  motif:
+    "facture reprise d'historique (importerFacturesHistoriqueAction) : émise hors du système, " +
+    "classée sans numéro de la série légale — aucun fait d'axionia",
+} as const;
 
 export const REGLES: readonly RegleEcrivain[] = [
   {
@@ -59,6 +85,54 @@ export const REGLES: readonly RegleEcrivain[] = [
     valeurs: ["accepte"],
     emission: "emettreDevisSigne",
     transactions: ["$transaction", "transactionDevisSigne"],
+  },
+  // INT-T05. Une pièce posée `emise` est une facture OU un avoir : c'est la ligne (`avoirDeId`)
+  // qui décide, dans `emettreFaitFacture`. Une seule règle garde donc les deux faits.
+  // Ne SONT PAS des faits, et la règle les laisse passer parce qu'ils ne posent pas `emise` :
+  // le brouillon (`brouillon`), le retard (`en_retard`, cron), l'encaissement partiel ou total
+  // (`partiellement_payee`, `payee` : le fait est l'encaissement, gardé plus bas), le PDF
+  // (`documentId`) et l'échéance réparée (`echeanceAt`).
+  {
+    evenement: "facture.emise|avoir.emis",
+    modele: "factureFormation",
+    champ: "statut",
+    valeurs: ["emise"],
+    emission: "emettreFaitFacture",
+    transactions: TRANSACTIONS_FACTURATION,
+    horsFait: FACTURE_IMPORTEE,
+  },
+  {
+    evenement: "facture.annulee",
+    modele: "factureFormation",
+    champ: "statut",
+    valeurs: ["annulee"],
+    emission: "emettreFactureAnnulee",
+    transactions: TRANSACTIONS_FACTURATION,
+    horsFait: FACTURE_IMPORTEE,
+    sansEcrivainMesure:
+      "2026-09-29 : aucune écriture de src/ ne pose factureFormation.statut = annulee",
+  },
+  // Un `Payment` `succeeded` est un encaissement — ou, de type `refund`, une annulation
+  // d'encaissement : `emettreFaitPaiement` lit la ligne et choisit. `pending`, `failed`,
+  // `cancelled` ne sont pas des faits.
+  {
+    evenement: "paiement.recu",
+    modele: "payment",
+    champ: "status",
+    valeurs: ["succeeded"],
+    emission: "emettreFaitPaiement",
+    transactions: TRANSACTIONS_FACTURATION,
+  },
+  {
+    evenement: "paiement.rembourse",
+    modele: "payment",
+    champ: "status",
+    valeurs: ["refunded"],
+    emission: "emettreFaitPaiement",
+    transactions: TRANSACTIONS_FACTURATION,
+    sansEcrivainMesure:
+      "2026-09-29 : aucune écriture de src/ ne pose payment.status = refunded " +
+      "ni ne crée de Payment de type refund",
   },
 ];
 
@@ -88,6 +162,8 @@ export type Faute = Ecrivain & {
 export type Bilan = {
   readonly ecrivains: Ecrivain[];
   readonly fautes: Faute[];
+  /** Les écritures que le marqueur `horsFait` de leur règle classe hors du contrat. */
+  readonly horsFait: Ecrivain[];
   /** Par événement : le nombre d'écrivains confrontés. */
   readonly parEvenement: Record<string, number>;
 };
@@ -255,6 +331,27 @@ function estTravailDeTransaction(f: FonctionLike, regle: RegleEcrivain): boolean
   return nom !== null && regle.transactions.includes(nom);
 }
 
+/** Vrai si l'argument d'écriture pose, en littéral, le marqueur `horsFait` de la règle. */
+function porteLeMarqueur(arg: ts.ObjectLiteralExpression, regle: RegleEcrivain): boolean {
+  const marqueur = regle.horsFait;
+  if (marqueur === undefined) return false;
+  return arg.properties.some((p) => {
+    if (!ts.isPropertyAssignment(p) || nomDePropriete(p) !== "data") return false;
+    const donnees = nu(p.initializer);
+    if (!ts.isObjectLiteralExpression(donnees)) return false;
+    return donnees.properties.some((q) => {
+      if (!ts.isPropertyAssignment(q) || nomDePropriete(q) !== marqueur.champ) return false;
+      const v = nu(q.initializer);
+      if (typeof marqueur.valeur === "boolean") {
+        return (
+          v.kind === (marqueur.valeur ? ts.SyntaxKind.TrueKeyword : ts.SyntaxKind.FalseKeyword)
+        );
+      }
+      return litteral(v) === marqueur.valeur;
+    });
+  });
+}
+
 /** Confronte les écrivains d'UN fichier à UNE règle. */
 function confronterFichier(
   fichier: string,
@@ -262,6 +359,7 @@ function confronterFichier(
   regle: RegleEcrivain,
   ecrivains: Ecrivain[],
   fautes: Faute[],
+  horsFait: Ecrivain[] = [],
 ): void {
   if (!texte.includes(regle.modele)) return;
   const sf = ts.createSourceFile(fichier, texte, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
@@ -298,6 +396,11 @@ function confronterFichier(
       fonction: fonctionNommee(n),
     };
     const client = surModele.expression.getText();
+
+    if (ts.isObjectLiteralExpression(argNu) && porteLeMarqueur(argNu, regle)) {
+      horsFait.push(ecrivain);
+      return;
+    }
 
     if (verdict === "indecidable") {
       fautes.push({
@@ -348,16 +451,17 @@ export function confronterEcrivains(
 ): Bilan {
   const ecrivains: Ecrivain[] = [];
   const fautes: Faute[] = [];
+  const horsFait: Ecrivain[] = [];
   const parEvenement: Record<string, number> = {};
   for (const regle of regles) {
     const avant = ecrivains.length;
     for (const [fichier, texte] of sources) {
       if (estTest(fichier)) continue;
-      confronterFichier(fichier, texte, regle, ecrivains, fautes);
+      confronterFichier(fichier, texte, regle, ecrivains, fautes, horsFait);
     }
     parEvenement[regle.evenement] = ecrivains.length - avant;
   }
-  return { ecrivains, fautes, parEvenement };
+  return { ecrivains, fautes, horsFait, parEvenement };
 }
 
 export function lireLeDepot(racine: string): Map<string, string> {
@@ -378,7 +482,10 @@ export function lireLeDepot(racine: string): Map<string, string> {
 
 function principal(): void {
   const bilan = confronterEcrivains(lireLeDepot(process.cwd()));
-  const vides = Object.entries(bilan.parEvenement).filter(([, n]) => n === 0);
+  const mesures = REGLES.filter((r) => r.sansEcrivainMesure !== undefined).map((r) => r.evenement);
+  const vides = Object.entries(bilan.parEvenement).filter(
+    ([evenement, n]) => n === 0 && !mesures.includes(evenement),
+  );
   if (bilan.fautes.length > 0 || vides.length > 0) {
     console.error("[partners:cliquet-ecrivains] ROUGE — un écrivain échappe à l'émission unique :");
     for (const f of bilan.fautes) {
@@ -395,6 +502,16 @@ function principal(): void {
   }
   for (const e of bilan.ecrivains) {
     console.warn(`  ✓ [${e.evenement}] ${e.fichier}:${e.ligne} (${e.fonction})`);
+  }
+  for (const e of bilan.horsFait) {
+    console.warn(
+      `  ○ [${e.evenement}] ${e.fichier}:${e.ligne} (${e.fonction}) — classée hors fait`,
+    );
+  }
+  for (const r of REGLES) {
+    if (r.sansEcrivainMesure !== undefined && bilan.parEvenement[r.evenement] === 0) {
+      console.warn(`  ∅ [${r.evenement}] aucun écrivain — mesuré ${r.sansEcrivainMesure}`);
+    }
   }
   const resume = Object.entries(bilan.parEvenement)
     .map(([evenement, n]) => `${n} écrivain(s) de ${evenement}`)

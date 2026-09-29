@@ -45,6 +45,11 @@ import { resolveRibFacture } from "@/lib/legal-identity";
 import { resoudreConditions } from "./conditions-client";
 import { marquerPaiementRecuSiSoldee } from "@/server/qualiopi/financements/dossier-financement";
 import {
+  emettreFaitFacture,
+  emettreFaitPaiement,
+  transactionFaitFacturation,
+} from "@/server/partners-sync/producteurs/facturation";
+import {
   normaliserLignesPourActivite,
   construireLignesAvoir,
   calculerStatutEncaissement,
@@ -196,30 +201,36 @@ export async function genererFactureLibre(
     );
 
     try {
-      const facture = await prisma.factureFormation.create({
-        data: {
-          numero,
-          activite: input.activite,
-          clientId: client.id,
-          ...(input.devisId !== undefined ? { devisId: input.devisId } : {}),
-          ...(input.auditMissionId !== undefined ? { auditMissionId: input.auditMissionId } : {}),
-          ...(input.refClient !== undefined ? { refClient: input.refClient } : {}),
-          destinataire: input.destinataire ?? "entreprise",
-          destinataireNom: client.raisonSociale,
-          ...(client.siret !== null ? { destinataireSiret: client.siret } : {}),
-          ...(client.tvaIntracom !== null ? { destinataireTvaIntracom: client.tvaIntracom } : {}),
-          ...(destinataireAdresse !== undefined ? { destinataireAdresse } : {}),
-          montantHtCents: totaux.totalHtCents,
-          tvaExoneree: totaux.totalTvaCents === 0,
-          regimeTva,
-          montantTvaCents: totaux.totalTvaCents,
-          montantTtcCents: totaux.totalTtcCents,
-          lignes: lignes as never,
-          statut: "emise",
-          emiseAt: now,
-          echeanceAt: echeance,
-        },
-        select: { id: true, numero: true },
+      // INT-T05 : l'émission et `facture.emise` vivent et meurent ensemble. Une collision de
+      // numéro (P2002) annule la transaction entière, et la reprise en ouvre une neuve.
+      const facture = await transactionFaitFacturation(prisma, async (tx) => {
+        const creee = await tx.factureFormation.create({
+          data: {
+            numero,
+            activite: input.activite,
+            clientId: client.id,
+            ...(input.devisId !== undefined ? { devisId: input.devisId } : {}),
+            ...(input.auditMissionId !== undefined ? { auditMissionId: input.auditMissionId } : {}),
+            ...(input.refClient !== undefined ? { refClient: input.refClient } : {}),
+            destinataire: input.destinataire ?? "entreprise",
+            destinataireNom: client.raisonSociale,
+            ...(client.siret !== null ? { destinataireSiret: client.siret } : {}),
+            ...(client.tvaIntracom !== null ? { destinataireTvaIntracom: client.tvaIntracom } : {}),
+            ...(destinataireAdresse !== undefined ? { destinataireAdresse } : {}),
+            montantHtCents: totaux.totalHtCents,
+            tvaExoneree: totaux.totalTvaCents === 0,
+            regimeTva,
+            montantTvaCents: totaux.totalTvaCents,
+            montantTtcCents: totaux.totalTtcCents,
+            lignes: lignes as never,
+            statut: "emise",
+            emiseAt: now,
+            echeanceAt: echeance,
+          },
+          select: { id: true, numero: true },
+        });
+        await emettreFaitFacture(tx, creee.id);
+        return creee;
       });
       factureCreee = facture;
       break;
@@ -406,34 +417,39 @@ export async function genererAvoirFacture(input: GenererAvoirInput): Promise<Gen
     );
 
     try {
-      const avoir = await prisma.factureFormation.create({
-        data: {
-          numero,
-          ...(origine.activite !== null ? { activite: origine.activite } : {}),
-          ...(origine.clientId !== null ? { clientId: origine.clientId } : {}),
-          ...(origine.refClient !== null ? { refClient: origine.refClient } : {}),
-          avoirDeId: origine.id,
-          destinataire: origine.destinataire,
-          destinataireNom: origine.destinataireNom,
-          ...(origine.destinataireSiret !== null
-            ? { destinataireSiret: origine.destinataireSiret }
-            : {}),
-          ...(origine.destinataireTvaIntracom !== null
-            ? { destinataireTvaIntracom: origine.destinataireTvaIntracom }
-            : {}),
-          ...(origine.destinataireAdresse !== null
-            ? { destinataireAdresse: origine.destinataireAdresse }
-            : {}),
-          montantHtCents: totaux.totalHtCents,
-          tvaExoneree: totaux.totalTvaCents === 0,
-          regimeTva,
-          montantTvaCents: totaux.totalTvaCents,
-          montantTtcCents: totaux.totalTtcCents,
-          lignes: lignesAvoir as never,
-          statut: "emise",
-          emiseAt: now,
-        },
-        select: { id: true, numero: true },
+      // INT-T05 : l'avoir et `avoir.emis` vivent et meurent ensemble (même patron que la facture).
+      const avoir = await transactionFaitFacturation(prisma, async (tx) => {
+        const cree = await tx.factureFormation.create({
+          data: {
+            numero,
+            ...(origine.activite !== null ? { activite: origine.activite } : {}),
+            ...(origine.clientId !== null ? { clientId: origine.clientId } : {}),
+            ...(origine.refClient !== null ? { refClient: origine.refClient } : {}),
+            avoirDeId: origine.id,
+            destinataire: origine.destinataire,
+            destinataireNom: origine.destinataireNom,
+            ...(origine.destinataireSiret !== null
+              ? { destinataireSiret: origine.destinataireSiret }
+              : {}),
+            ...(origine.destinataireTvaIntracom !== null
+              ? { destinataireTvaIntracom: origine.destinataireTvaIntracom }
+              : {}),
+            ...(origine.destinataireAdresse !== null
+              ? { destinataireAdresse: origine.destinataireAdresse }
+              : {}),
+            montantHtCents: totaux.totalHtCents,
+            tvaExoneree: totaux.totalTvaCents === 0,
+            regimeTva,
+            montantTvaCents: totaux.totalTvaCents,
+            montantTtcCents: totaux.totalTtcCents,
+            lignes: lignesAvoir as never,
+            statut: "emise",
+            emiseAt: now,
+          },
+          select: { id: true, numero: true },
+        });
+        await emettreFaitFacture(tx, cree.id);
+        return cree;
       });
       avoirCree = avoir;
       break;
@@ -586,6 +602,8 @@ export async function enregistrerPaiementFacture(
       },
       select: { id: true },
     });
+    // INT-T05 : `paiement.recu`, dans la transaction de l'encaissement (REQ-INT-005).
+    await emettreFaitPaiement(tx, payment.id);
 
     const agg = await tx.payment.aggregate({
       where: { factureFormationId: facture.id, status: "succeeded" },
@@ -602,10 +620,12 @@ export async function enregistrerPaiementFacture(
 
     await tx.factureFormation.update({
       where: { id: facture.id },
-      data: {
-        statut,
-        ...(statut === "payee" ? { paidAt: input.paidAt } : {}),
-      },
+      // En littéraux : le cliquet des écrivains (INT-T05) lit l'état posé. Ni l'un ni l'autre
+      // n'est un fait du contrat — l'encaissement l'est, émis ci-dessus.
+      data:
+        statut === "payee"
+          ? { statut: "payee", paidAt: input.paidAt }
+          : { statut: "partiellement_payee" },
     });
 
     return {

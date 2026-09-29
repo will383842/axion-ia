@@ -33,6 +33,10 @@ import type { FactureData } from "@/server/qualiopi/documents/templates/facture"
 import { resolveRibFacture } from "@/lib/legal-identity";
 import { resoudreConditions } from "@/server/qualiopi/financements/conditions-client";
 import { lignesFacture1to1 } from "./facturation-1to1-pur";
+import {
+  emettreFaitFacture,
+  transactionFaitFacturation,
+} from "@/server/partners-sync/producteurs/facturation";
 
 export interface GenererFactureCoachingResult {
   factureId: string;
@@ -115,31 +119,37 @@ export async function genererFactureCoaching(
     );
 
     try {
-      const facture = await prisma.factureFormation.create({
-        data: {
-          numero,
-          activite: "un_a_un",
-          coachingContractId,
-          ...(contrat.clientId != null ? { clientId: contrat.clientId } : {}),
-          destinataire: "entreprise",
-          destinataireNom,
-          ...(destinataireSiret !== undefined ? { destinataireSiret } : {}),
-          ...(contrat.client?.tvaIntracom != null
-            ? { destinataireTvaIntracom: contrat.client.tvaIntracom }
-            : {}),
-          ...(destinataireAdresse !== undefined ? { destinataireAdresse } : {}),
-          montantHtCents: totaux.totalHtCents,
-          tvaExoneree: totaux.totalTvaCents === 0,
-          regimeTva,
-          montantTvaCents: totaux.totalTvaCents,
-          montantTtcCents: totaux.totalTtcCents,
-          lignes: lignes as never,
-          subrogation: false,
-          statut: "emise",
-          emiseAt: now,
-          echeanceAt: echeance,
-        },
-        select: { id: true, numero: true },
+      // INT-T05 : l'émission et `facture.emise` vivent et meurent ensemble ; une collision de
+      // numéro (P2002) annule la transaction entière, la reprise en ouvre une neuve.
+      const facture = await transactionFaitFacturation(prisma, async (tx) => {
+        const creee = await tx.factureFormation.create({
+          data: {
+            numero,
+            activite: "un_a_un",
+            coachingContractId,
+            ...(contrat.clientId != null ? { clientId: contrat.clientId } : {}),
+            destinataire: "entreprise",
+            destinataireNom,
+            ...(destinataireSiret !== undefined ? { destinataireSiret } : {}),
+            ...(contrat.client?.tvaIntracom != null
+              ? { destinataireTvaIntracom: contrat.client.tvaIntracom }
+              : {}),
+            ...(destinataireAdresse !== undefined ? { destinataireAdresse } : {}),
+            montantHtCents: totaux.totalHtCents,
+            tvaExoneree: totaux.totalTvaCents === 0,
+            regimeTva,
+            montantTvaCents: totaux.totalTvaCents,
+            montantTtcCents: totaux.totalTtcCents,
+            lignes: lignes as never,
+            subrogation: false,
+            statut: "emise",
+            emiseAt: now,
+            echeanceAt: echeance,
+          },
+          select: { id: true, numero: true },
+        });
+        await emettreFaitFacture(tx, creee.id);
+        return creee;
       });
       factureCreee = facture;
       break;

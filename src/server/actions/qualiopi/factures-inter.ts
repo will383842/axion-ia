@@ -39,6 +39,10 @@ import {
   checkFactureParInscription,
 } from "@/server/qualiopi/financements/inter-entreprises";
 import { calculerEcheanceFacture } from "@/server/qualiopi/financements/conditions-client";
+import {
+  emettreFaitFacture,
+  transactionFaitFacturation,
+} from "@/server/partners-sync/producteurs/facturation";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -240,30 +244,35 @@ export async function genererFactureParInscriptionAction(
   try {
     created = await withNumberRetry(async () => {
       const numero = await genererNumeroFacture(annee);
-      return prisma.factureFormation.create({
-        data: {
-          numero,
-          sessionId: enrollment.session.id,
-          enrollmentId: enrollment.id,
-          destinataire,
-          destinataireNom,
-          ...(destinataireSiret !== undefined ? { destinataireSiret } : {}),
-          ...(destinataireAdresse !== undefined ? { destinataireAdresse } : {}),
-          montantHtCents: resolved.montantHtCents,
-          tvaExoneree: totaux.totalTvaCents === 0,
-          regimeTva,
-          montantTvaCents: totaux.totalTvaCents,
-          montantTtcCents: totaux.totalTtcCents,
-          lignes: lignes as never,
-          subrogation: resolved.financementType === "opco" && enrollment.session.opcoSubrogation,
-          ...(resolved.numeroDossierOpco !== null
-            ? { numeroDossierOpco: resolved.numeroDossierOpco }
-            : {}),
-          statut: "emise",
-          emiseAt,
-          echeanceAt,
-        },
-        select: { id: true, numero: true },
+      // INT-T05 : l'émission et `facture.emise` vivent et meurent ensemble.
+      return transactionFaitFacturation(prisma, async (tx) => {
+        const creee = await tx.factureFormation.create({
+          data: {
+            numero,
+            sessionId: enrollment.session.id,
+            enrollmentId: enrollment.id,
+            destinataire,
+            destinataireNom,
+            ...(destinataireSiret !== undefined ? { destinataireSiret } : {}),
+            ...(destinataireAdresse !== undefined ? { destinataireAdresse } : {}),
+            montantHtCents: resolved.montantHtCents,
+            tvaExoneree: totaux.totalTvaCents === 0,
+            regimeTva,
+            montantTvaCents: totaux.totalTvaCents,
+            montantTtcCents: totaux.totalTtcCents,
+            lignes: lignes as never,
+            subrogation: resolved.financementType === "opco" && enrollment.session.opcoSubrogation,
+            ...(resolved.numeroDossierOpco !== null
+              ? { numeroDossierOpco: resolved.numeroDossierOpco }
+              : {}),
+            statut: "emise",
+            emiseAt,
+            echeanceAt,
+          },
+          select: { id: true, numero: true },
+        });
+        await emettreFaitFacture(tx, creee.id);
+        return creee;
       });
     });
   } catch {

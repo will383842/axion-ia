@@ -57,6 +57,10 @@ import type { FactureData } from "@/server/qualiopi/documents/templates/facture"
 import { factureVivante } from "@/server/qualiopi/financements/facture-vivante";
 import { avecVerrouFactureSession } from "@/server/qualiopi/financements/verrou-facture-session";
 import type { FactureFormationDestinataire } from "../../../../prisma/generated/client";
+import {
+  emettreFaitFacture,
+  transactionFaitFacturation,
+} from "@/server/partners-sync/producteurs/facturation";
 
 /**
  * `code` distingue les refus que l'automate traite À PART d'une erreur métier :
@@ -550,42 +554,50 @@ async function emettreSansVerrou(
   const annee = new Date().getFullYear();
   const facture = await withNumberRetry(async () => {
     const numero = await genererNumeroFacture(annee);
-    return prisma.factureFormation.create({
-      data: {
-        numero,
-        sessionId,
-        // Classe la facture dans le hub (filtre « Formation ») — laissée nulle,
-        // la ligne échappait à toute ventilation par activité.
-        activite: "formation",
-        // Rattache la facture au client CRM : sans ce lien, le hub et les
-        // relances retombent sur le libellé figé au lieu de la fiche client.
-        ...(trainingSession.clientId != null ? { clientId: trainingSession.clientId } : {}),
-        // 🔴 LE RATTACHEMENT AU DOSSIER, jamais écrit jusqu'ici par aucun
-        // émetteur. Son absence rendait `marquerPaiementRecuSiSoldee` du CODE
-        // MORT — sa condition n'était jamais vraie — donc un dossier
-        // n'atteignait jamais `paiement_recu` autrement qu'à la main, et le
-        // pilotage ne voyait jamais un euro encaissé.
-        ...(dossierId !== null ? { dossierFinancementId: dossierId } : {}),
-        destinataire: destinataireEffectif,
-        destinataireNom: acheteur.nom,
-        destinataireSiret: acheteur.siret,
-        destinataireAdresse: acheteur.adresse,
-        destinataireTvaIntracom: acheteur.tvaIntracom,
-        montantHtCents: totalHtCents,
-        tvaExoneree: totaux.totalTvaCents === 0,
-        regimeTva,
-        montantTvaCents: totaux.totalTvaCents,
-        montantTtcCents: totaux.totalTtcCents,
-        lignes: lignes as never,
-        subrogation: factureAuFinanceurSubroge,
-        numeroDossierOpco: factureAuFinanceurSubroge
-          ? (trainingSession.numeroDossierOpco ?? null)
-          : null,
-        statut: "emise",
-        emiseAt,
-        echeanceAt,
-      },
-      select: { id: true, numero: true, documentId: true },
+    // INT-T05 : l'émission, le rattachement de la créance et `facture.emise` vivent et meurent
+    // ensemble. Le rattachement vient AVANT l'émission : c'est lui qui donne ses `payers[]` à
+    // la charge (REQ-DM-039, K-18).
+    return transactionFaitFacturation(prisma, async (tx) => {
+      const creee = await tx.factureFormation.create({
+        data: {
+          numero,
+          sessionId,
+          // Classe la facture dans le hub (filtre « Formation ») — laissée nulle,
+          // la ligne échappait à toute ventilation par activité.
+          activite: "formation",
+          // Rattache la facture au client CRM : sans ce lien, le hub et les
+          // relances retombent sur le libellé figé au lieu de la fiche client.
+          ...(trainingSession.clientId != null ? { clientId: trainingSession.clientId } : {}),
+          // 🔴 LE RATTACHEMENT AU DOSSIER, jamais écrit jusqu'ici par aucun
+          // émetteur. Son absence rendait `marquerPaiementRecuSiSoldee` du CODE
+          // MORT — sa condition n'était jamais vraie — donc un dossier
+          // n'atteignait jamais `paiement_recu` autrement qu'à la main, et le
+          // pilotage ne voyait jamais un euro encaissé.
+          ...(dossierId !== null ? { dossierFinancementId: dossierId } : {}),
+          destinataire: destinataireEffectif,
+          destinataireNom: acheteur.nom,
+          destinataireSiret: acheteur.siret,
+          destinataireAdresse: acheteur.adresse,
+          destinataireTvaIntracom: acheteur.tvaIntracom,
+          montantHtCents: totalHtCents,
+          tvaExoneree: totaux.totalTvaCents === 0,
+          regimeTva,
+          montantTvaCents: totaux.totalTvaCents,
+          montantTtcCents: totaux.totalTtcCents,
+          lignes: lignes as never,
+          subrogation: factureAuFinanceurSubroge,
+          numeroDossierOpco: factureAuFinanceurSubroge
+            ? (trainingSession.numeroDossierOpco ?? null)
+            : null,
+          statut: "emise",
+          emiseAt,
+          echeanceAt,
+        },
+        select: { id: true, numero: true, documentId: true },
+      });
+      await rattacherCreance(tx, creee.id);
+      await emettreFaitFacture(tx, creee.id);
+      return creee;
     });
   });
 
@@ -601,16 +613,26 @@ async function emettreSansVerrou(
   // Best-effort : la facture est émise et porte un numéro légal. Faire échouer
   // l'action ici laisserait une facture réelle non rattachée, ce qui est PIRE
   // que le rattachement manquant — on journalise et on continue.
-  if (choix.ok) {
+  //
+  // INT-T05 — le rattachement est désormais écrit DANS la transaction de l'émission
+  // (`rattacherCreance`, appelé ci-dessus). Canal Partners fermé, rien ne change : le
+  // travail tourne sur `prisma` sans transaction, et la panne reste journalisée puis
+  // tolérée. Canal ouvert, une panne du rattachement annule l'émission entière — il n'existe
+  // alors ni facture numérotée non rattachée, ni événement sans ses payeurs.
+  async function rattacherCreance(
+    tx: Pick<typeof prisma, "dossierPayeur">,
+    factureId: string,
+  ): Promise<void> {
+    if (!choix.ok) return;
     try {
-      await prisma.dossierPayeur.update({
+      await tx.dossierPayeur.update({
         where: { id: choix.creance.id },
-        data: { factureFormationId: facture.id },
+        data: { factureFormationId: factureId },
       });
     } catch (err) {
       console.error("[financements] rattachement créance → facture impossible", {
         creanceId: choix.creance.id,
-        factureId: facture.id,
+        factureId,
         err: err instanceof Error ? err.message : String(err),
       });
     }
