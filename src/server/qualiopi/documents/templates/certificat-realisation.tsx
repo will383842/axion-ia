@@ -2,7 +2,9 @@
  * Qualiopi — Certificat de réalisation.
  *
  * Mention légale EXACTE : LEGAL_MENTIONS.certificatRealisation
- * Bases juridiques : R.6313-3 + arrêté 21/12/2018.
+ * Bases juridiques : R.6332-26 (contrôle de service fait) + arrêté du
+ * 21/12/2018 relatif aux pièces nécessaires à ce contrôle. Formule et engagement
+ * de conservation repris du modèle publié par le ministère du Travail.
  *
  * ⚠️ DURÉE EN CENTIÈMES OBLIGATOIRE : utiliser formatHeuresCentiemes(dureeHeures).
  *    Ex : 7 → "7,00", 1.5 → "1,50". JAMAIS le format "7h00".
@@ -24,6 +26,18 @@ import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { LEGAL_MENTIONS, formatHeuresCentiemes } from "@/server/qualiopi/legal/legal-mentions";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
 import { heuresMinutesFr } from "@/server/qualiopi/evaluations/heures-suivies";
+import {
+  identificationSignataire,
+  signataireOrganisme,
+} from "@/server/qualiopi/documents/representant-legal";
+
+/**
+ * Engagement de conservation — VERBATIM du modèle de certificat de réalisation
+ * publié par le ministère du Travail. Le modèle le fait porter par le signataire
+ * (« je m'engage ») ; il n'est pas une clause maison.
+ */
+export const ENGAGEMENT_CONSERVATION_CERTIFICAT =
+  "Sans préjudice des délais imposés par les règles fiscales, comptables ou commerciales, je m'engage à conserver l'ensemble des pièces justificatives qui ont permis d'établir le présent certificat pendant une durée de 3 ans à compter de la fin de l'année du dernier paiement. En cas de cofinancement des fonds européens la durée de conservation est étendue conformément aux obligations conventionnelles spécifiques.";
 
 // ============================================================
 // Styles spécifiques
@@ -161,8 +175,24 @@ export function CertificatRealisationPdf({
   data: CertificatRealisationData;
 }): React.ReactElement {
   const { identite } = data;
-  const dirigeantOuRS = data.dirigeant ?? identite.raisonSociale;
+  const signataire = signataireOrganisme(identite, data.dirigeant);
   const prenomNom = `${data.stagiaire.prenom} ${data.stagiaire.nom}`.trim();
+  // 🔴 Audit des pièces réelles 2026-09-30 — la formule du MODÈLE du ministère :
+  // une personne physique, représentant légal du dispensateur, atteste. La pièce
+  // n'imprimait jusqu'ici que des champs, et « Le représentant légal : AXION IA
+  // SAS » en signature. « salarié(e) de l'entreprise » n'est écrit que si
+  // l'entreprise n'est pas l'organisme lui-même (repli du producteur).
+  const dispensateur = `représentant légal du dispensateur de l'action concourant au développement des compétences ${signataire.organisme}`;
+  const sujet =
+    signataire.nom !== null
+      ? `Je soussigné(e) ${signataire.nom}, ${dispensateur},`
+      : `Le ${dispensateur}`;
+  const entrepriseSalarie =
+    data.entreprise.raisonSociale.trim() !== "" &&
+    data.entreprise.raisonSociale.trim() !== signataire.organisme
+      ? `, salarié(e) de l'entreprise ${data.entreprise.raisonSociale.trim()},`
+      : "";
+  const phraseModele = `${sujet} atteste que ${prenomNom}${entrepriseSalarie} a suivi l'action « ${data.intituleAction} », dont la nature, les dates et la durée réalisée figurent ci-dessous.`;
 
   // ⚠️ Format réglementaire en centièmes — JAMAIS "7h00"
   const dureeFormatee = formatHeuresCentiemes(data.dureeHeures);
@@ -182,6 +212,7 @@ export function CertificatRealisationPdf({
       >
         {/* Mention légale */}
         <View style={pdfStyles.section}>
+          <Text style={pdfStyles.paragraph}>{phraseModele}</Text>
           <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.certificatRealisation}</Text>
         </View>
 
@@ -276,6 +307,11 @@ export function CertificatRealisationPdf({
           </DocSection>
         ) : null}
 
+        {/* Engagement de conservation — verbatim du modèle du ministère. */}
+        <View style={pdfStyles.section}>
+          <Text style={pdfStyles.paragraph}>{ENGAGEMENT_CONSERVATION_CERTIFICAT}</Text>
+        </View>
+
         {/* Signature */}
         <DocSection title="Signature et cachet">
           <View style={pdfStyles.signatureZone}>
@@ -283,7 +319,9 @@ export function CertificatRealisationPdf({
               <Text style={pdfStyles.paragraph}>
                 {`Fait à ${identite.rcsVille || identite.adresseSiege || "—"}, le ${data.dateEmission}`}
               </Text>
-              <Text style={pdfStyles.paragraph}>{`Le représentant légal : ${dirigeantOuRS}`}</Text>
+              <Text style={pdfStyles.paragraph}>
+                {`Cachet et signature du responsable du dispensateur de formation : ${identificationSignataire(signataire)}`}
+              </Text>
             </View>
             <View style={pdfStyles.signatureBox}>
               <Text style={pdfStyles.paragraph}>Cachet de l'organisme</Text>

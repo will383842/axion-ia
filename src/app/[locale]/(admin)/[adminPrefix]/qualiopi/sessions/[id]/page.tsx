@@ -498,8 +498,13 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
   );
 
   // Vague 2 — les seules lectures qui ont besoin d'un résultat de la vague 1.
-  const [missionFormateur, lignesSignatures, circuitAdaptation, traineesAvecDetailChiffre] =
-    await Promise.all([
+  const [
+    missionFormateur,
+    lignesSignatures,
+    circuitAdaptation,
+    traineesAvecDetailChiffre,
+    facturesDesPieces,
+  ] = await Promise.all([
       // ── Mission du formateur principal (2026-09-03) ───────────────────────
       trainingSession.formateurPrincipalId !== null
         ? lireMissionCourante(id, trainingSession.formateurPrincipalId)
@@ -548,7 +553,26 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       // la colonne est aussi écrite par la déclaration de handicap et par la
       // console.
       stagiairesAvecPrecision(enrollmentsRaw.map((e) => e.trainee.id)),
+      // 🔴 2026-09-30 — le NUMÉRO DE FACTURE des pièces « facture ». La liste
+      // n'affichait que le numéro de pièce du registre (`AXI-DOC-2026-043`),
+      // alors que la facture est connue du client, de l'OPCO et de la
+      // comptabilité sous `AXI-FACT-2026-001` : l'auditeur ne la retrouvait pas.
+      documentsRaw.some((d) => d.type === "facture")
+        ? prisma.factureFormation.findMany({
+            where: {
+              documentId: {
+                in: documentsRaw.filter((d) => d.type === "facture").map((d) => d.id),
+              },
+            },
+            select: { documentId: true, numero: true },
+          })
+        : [],
     ]);
+  const numeroFactureParPiece = new Map(
+    facturesDesPieces
+      .filter((f): f is { documentId: string; numero: string } => f.documentId !== null)
+      .map((f) => [f.documentId, f.numero]),
+  );
 
   const etatMissionFormateur =
     missionFormateur === null
@@ -664,6 +688,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       remplaceeParNumero: d.remplaceeParNumero,
       rectifieNumero: meta?.rectifie?.numero ?? null,
       rectifieMotif: meta?.rectifie?.motif ?? null,
+      numeroFacture: numeroFactureParPiece.get(d.id) ?? null,
       // `signaturesParPiece` ne contient que les signatures non révoquées : le
       // registre propose l'exemplaire signé dès qu'une preuve existe, au lieu de
       // le cacher dans le seul panneau de signature.

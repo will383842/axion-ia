@@ -52,6 +52,7 @@ import { DELAI_PAIEMENT_DEFAUT_JOURS } from "@/server/qualiopi/financements/cond
 import { choisirCreancePourFacture } from "@/server/qualiopi/financements/facture-par-creance";
 import { resolveRibFacture } from "@/lib/legal-identity";
 import { periodePrestationSession } from "@/server/qualiopi/financements/periode-prestation";
+import { designationFormation } from "@/server/qualiopi/financements/designation-facture";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
 import { factureVivante } from "@/server/qualiopi/financements/facture-vivante";
@@ -240,6 +241,14 @@ async function emettreSansVerrou(
       dateDebut: true,
       dateFin: true,
       clientId: true,
+      // 🔴 2026-09-30 — de quoi DÉSIGNER la prestation sur la facture : durée
+      // catalogue en repli de la durée réelle, et les stagiaires formés (cf.
+      // `designation-facture.ts`). AXI-FACT-2026-001 ne disait que « forfait ».
+      formation: { select: { titre: true, dureeHeures: true } },
+      enrollments: {
+        orderBy: { createdAt: "asc" },
+        select: { trainee: { select: { nom: true, prenom: true } } },
+      },
       // 🔴 Les créances du dossier — c'est elles qui disent QUI doit et COMBIEN.
       // Sans ce `select`, le destinataire était écrasé à « opco » en subrogation
       // et le reste à charge n'était facturable à personne.
@@ -371,6 +380,26 @@ async function emettreSansVerrou(
     lignes = result.lignes;
     totalHtCents = result.totalHtCents;
   }
+
+  // ── 🔴 LA DÉSIGNATION NOMME LA PRESTATION (2026-09-30) ────────────────────
+  //
+  // « Formation professionnelle — forfait » ne dit ni quelle formation, ni
+  // quand, ni pour qui : art. 242 nonies A ann. II CGI (« dénomination précise »)
+  // et rapprochement OPCO. On enrichit AVANT le passage par la créance, qui
+  // suffixe « — part <payeur> » à cette même désignation.
+  // `?? []` / `?? null` : un chemin qui ne sélectionne pas ces relations (doubles
+  // de test anciens) garde la désignation historique au lieu de lever.
+  const contexteDesignation = {
+    intitule: trainingSession.titreSession ?? trainingSession.formation?.titre ?? null,
+    numeroSession: trainingSession.numero ?? null,
+    periode: periodePrestationSession(trainingSession) ?? null,
+    dureeHeures: trainingSession.dureeReelleHeures ?? trainingSession.formation?.dureeHeures ?? null,
+    stagiaires: (trainingSession.enrollments ?? []).map((e) => e.trainee),
+  };
+  lignes = lignes.map((l) => ({
+    ...l,
+    designation: designationFormation(l.designation, contexteDesignation),
+  }));
 
   // ── 🔴 DESTINATAIRE ET MONTANT VIENNENT DE LA CRÉANCE ────────────────────
   //

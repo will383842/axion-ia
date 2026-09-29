@@ -2,7 +2,7 @@
  * Qualiopi — Attestation de fin de formation (complète, ≥ 80 % assiduité).
  *
  * Mention légale EXACTE : LEGAL_MENTIONS.attestation
- * Bases juridiques : L.6353-1 / D.6353-1 du Code du travail.
+ * Base : dernier alinéa de L.6313-7 du Code du travail (cf. `LEGAL_MENTIONS.attestation`).
  *
  * NE PAS "use client" — rendu serveur exclusif (@react-pdf/renderer).
  */
@@ -20,6 +20,12 @@ import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
 import { NATURE_ACTION_LABELS } from "./certificat-realisation";
 import { assiduiteSurMinutes, heuresMinutesFr } from "@/server/qualiopi/evaluations/heures-suivies";
+import { libelleModalite } from "@/server/qualiopi/documents/libelles-enumerations";
+import {
+  identificationSignataire,
+  signataireOrganisme,
+  sujetAttestation,
+} from "@/server/qualiopi/documents/representant-legal";
 
 // ============================================================
 // Styles spécifiques
@@ -115,7 +121,11 @@ export interface AttestationData {
   numero: string;
   dateEmission: string;
   identite: OrganismeIdentite;
-  /** Nom du dirigeant/représentant légal signataire. Fallback sur raisonSociale si absent. */
+  /**
+   * Nom du représentant légal signataire. Prime sur `identite.representantLegalNom`.
+   * Absent des deux → « Le représentant légal de <raison sociale> », jamais la
+   * raison sociale présentée comme une personne (`representant-legal.ts`).
+   */
   dirigeant?: string;
   beneficiaire: BeneficiaireData;
   formation: FormationData;
@@ -143,7 +153,7 @@ const hMin = heuresMinutesFr;
 
 export function AttestationPdf({ data }: { data: AttestationData }): React.ReactElement {
   const { identite } = data;
-  const dirigeantOuRS = data.dirigeant ?? identite.raisonSociale;
+  const signataire = signataireOrganisme(identite, data.dirigeant);
   const prenomNom = `${data.beneficiaire.prenom} ${data.beneficiaire.nom}`.trim();
 
   const verifyUrl =
@@ -168,7 +178,7 @@ export function AttestationPdf({ data }: { data: AttestationData }): React.React
             et renvoie aux résultats, qu'elle imprime tels quels (L.6353-1 al. 2). */}
         <View style={pdfStyles.section}>
           <Text style={styles.certifPhrase}>
-            {`Je soussigné ${dirigeantOuRS} certifie que ${prenomNom} a suivi la formation mentionnée ci-dessous. Les résultats de l'évaluation des acquis figurent ci-après.`}
+            {`${sujetAttestation(signataire)} atteste que ${prenomNom} a suivi la formation mentionnée ci-dessous. Les résultats de l'évaluation des acquis figurent ci-après.`}
           </Text>
           <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.attestation}</Text>
         </View>
@@ -197,7 +207,7 @@ export function AttestationPdf({ data }: { data: AttestationData }): React.React
           <FieldRow label="Durée totale" value={`${hMin(data.formation.dureeHeures)}`} />
           <FieldRow label="Du" value={data.formation.dateDebut} />
           <FieldRow label="Au" value={data.formation.dateFin} />
-          <FieldRow label="Modalité" value={data.formation.modalite} />
+          <FieldRow label="Modalité" value={libelleModalite(data.formation.modalite)} />
           <FieldRow label="Formateur(rice)" value={data.formation.formateur} />
         </DocSection>
 
@@ -255,7 +265,7 @@ export function AttestationPdf({ data }: { data: AttestationData }): React.React
                     BUREAUX - boîte 53, 11 Avenue… » n'est pas un lieu d'acte. */}
                 {`Fait à ${identite.rcsVille || identite.adresseSiege || "—"}, le ${data.dateEmission}`}
               </Text>
-              <Text style={pdfStyles.paragraph}>{`Le représentant légal : ${dirigeantOuRS}`}</Text>
+              <Text style={pdfStyles.paragraph}>{`Le représentant légal : ${identificationSignataire(signataire)}`}</Text>
             </View>
             <View style={pdfStyles.signatureBox}>
               <Text style={pdfStyles.paragraph}>Cachet de l'organisme</Text>

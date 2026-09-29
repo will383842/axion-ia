@@ -45,6 +45,24 @@ export interface OrganismeIdentite {
   /** Contact DPO / RGPD (exercice des droits). Fallback = email général. Optionnel. */
   dpoEmail?: string;
   /**
+   * Représentant légal SIGNATAIRE des pièces de l'organisme (nom et qualité).
+   *
+   * 🔴 Audit des pièces réelles 2026-09-30. L'attestation imprimait « Je
+   * soussigné AXION IA SAS certifie que… » et « Le représentant légal : AXION
+   * IA SAS » : une personne morale ne « soussigne » pas, elle est représentée
+   * par une personne physique. Le nom et la qualité existaient en configuration
+   * (`dirigeant_nom`, `dirigeant_fonction`, lus par la procédure de
+   * sous-traitance et le contrat de travail) : seule la couche document les
+   * laissait tomber. Lus ICI, une fois, ils atteignent tous les gabarits sans
+   * que chaque producteur ait à les recopier.
+   *
+   * Vides si non renseignés : les gabarits retombent alors sur « le
+   * représentant légal de <raison sociale> », jamais sur la raison sociale
+   * présentée comme une personne. Cf. `representant-legal.ts`.
+   */
+  representantLegalNom?: string;
+  representantLegalQualite?: string;
+  /**
    * Identité COMMERCIALE — mentions obligatoires des factures.
    *
    * 🔴 Audit certification 2026-07-26 (F26). La facture ne recevait que
@@ -111,6 +129,8 @@ export async function getOrganismeIdentite(): Promise<OrganismeIdentite> {
     referentHandicapNom,
     referentHandicapTelephone,
     dpoEmail,
+    dirigeantNom,
+    dirigeantFonction,
   ] = await Promise.all([
     getQualiopiConfig("raison_sociale"),
     getQualiopiConfig("nda_numero"),
@@ -126,6 +146,8 @@ export async function getOrganismeIdentite(): Promise<OrganismeIdentite> {
     getQualiopiConfig("referent_handicap_nom"),
     getQualiopiConfig("referent_handicap_telephone"),
     getQualiopiConfig("dpo_contact_email"),
+    getQualiopiConfig("dirigeant_nom"),
+    getQualiopiConfig("dirigeant_fonction"),
   ]);
 
   // F25 — la mention TVA se LIT dans la config, elle ne se décrète pas dans un
@@ -161,6 +183,8 @@ export async function getOrganismeIdentite(): Promise<OrganismeIdentite> {
     referentHandicapTelephone: referentHandicapTelephone || "",
     // DPO non renseigné → on retombe sur le contact général de l'OF (jamais le handicap).
     dpoEmail: dpoEmail || emailOrganisme,
+    representantLegalNom: typeof dirigeantNom === "string" ? dirigeantNom.trim() : "",
+    representantLegalQualite: typeof dirigeantFonction === "string" ? dirigeantFonction.trim() : "",
     mentionTvaRegime,
     formeJuridique: legal?.legalForm ?? null,
     capitalSocial: legal?.capitalSocial ?? null,

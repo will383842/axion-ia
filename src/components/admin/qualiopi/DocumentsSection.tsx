@@ -121,6 +121,12 @@ export interface DocumentGenereInfo {
   rectifieNumero?: string | null;
   rectifieMotif?: string | null;
   /**
+   * Numéro de FACTURE (`AXI-FACT-…`) d'une pièce de type facture. La liste
+   * n'affichait que le numéro de pièce du registre (`AXI-DOC-…`) : le client,
+   * l'OPCO et la comptabilité connaissent la facture sous l'autre (2026-09-30).
+   */
+  numeroFacture?: string | null;
+  /**
    * État de signature de la pièce, tel qu'il est écrit en base
    * (`en_attente | partielle | signee`). Sert UNIQUEMENT à savoir si la remise
    * de l'exemplaire est due — le registre affiche déjà `aSignatures` pour dire
@@ -1850,7 +1856,16 @@ export function DocumentsSection({
                       )}
                     </td>
                     <td className="py-[var(--space-admin-2)] pr-[var(--space-admin-4)] font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                      {doc.numero}
+                      {typeof doc.numeroFacture === "string" && doc.numeroFacture !== "" ? (
+                        <>
+                          <span className="block font-semibold text-[color:var(--color-admin-fg)]">
+                            {doc.numeroFacture}
+                          </span>
+                          <span className="block">Pièce {doc.numero}</span>
+                        </>
+                      ) : (
+                        doc.numero
+                      )}
                     </td>
                     <td className="py-[var(--space-admin-2)] pr-[var(--space-admin-4)] text-[color:var(--color-admin-fg-muted)]">
                       {new Date(doc.createdAt).toLocaleDateString("fr-FR", {

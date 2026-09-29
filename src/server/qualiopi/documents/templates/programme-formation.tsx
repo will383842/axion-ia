@@ -264,8 +264,10 @@ export function ProgrammeFormationPdf({
         </DocSection>
 
         <Text style={pdfStyles.legalNote}>
-          Programme établi conformément à l&apos;article L.6353-1 du Code du travail. Il constitue
-          l&apos;annexe pédagogique de la convention de formation professionnelle.
+          Ce programme constitue l&apos;annexe pédagogique de la convention de formation
+          professionnelle (articles L.6353-1 et
+          D.6353-1 du Code du travail : intitulé, objectif, contenu, moyens, durée et modalités de
+          déroulement, de suivi et de sanction de l&apos;action).
         </Text>
       </QualiopiPage>
     </Document>
