@@ -104,6 +104,27 @@ describe("REQ-JUR-001 — le financement : formules interdites, drapeau ou non",
     expect(temoin(texte)).toContain<FamilleVocabulaire>(famille);
   });
 
+  it.each([
+    "le coût réel pour le client est faible, souvent nul",
+    "donc le coût réel pour le client est faible, voire nul",
+    "L'OPCO paie",
+    "Et l’OPCO paie la formation à ta place.",
+  ])("TÉMOIN — « %s » est refusé, même certifié", (texte) => {
+    expect(
+      temoin(`const c = isQualiopiCertificationObtenue();\n"${texte}"`),
+    ).toContain<FamilleVocabulaire>("financement_inconditionnel");
+  });
+
+  it("TÉMOIN — memo-isere : lire le drapeau une fois n'exempte AUCUNE mention du fichier", () => {
+    const texte = 'isQualiopiCertificationObtenue() ? "a" : "b",\n"Formations finançables OPCO",';
+    const fautes = fautesDeVocabulaire([
+      { chemin: "src/app/[locale]/memo-isere/page.tsx", texte },
+    ]).map((f) => f.famille);
+    expect(fautes).toContain<FamilleVocabulaire>("financement_non_gate");
+    // Contre-témoin : la même ligne, dans une surface ordinaire qui lit le drapeau.
+    expect(temoin(texte)).toEqual([]);
+  });
+
   it("un commentaire de code n'est pas une page : il n'est pas lu", () => {
     expect(temoin("// sans avance de frais : formule interdite, voir JUR-T03")).toEqual([]);
     expect(temoin(" * « prise en charge à 100 % » est refusé")).toEqual([]);

@@ -55,6 +55,13 @@ const MENTION_FINANCEMENT = /finan[cç]|\bfund(?:ed|ing|able|s)?\b|\bOPCO\b|Fran
 const CONSULTE_LA_CERTIFICATION =
   /isQualiopiCertificationObtenue|getPublicFinancing(?:Blurb|Micro)|financementAffichable/;
 
+/**
+ * Les surfaces où la lecture par fichier a été prise en défaut (relecture securite de #1220 :
+ * memo-isere lisait le drapeau UNE fois et servait dix mentions à côté). Elles ne mentionnent
+ * AUCUN financement, drapeau lu ou non : l'exemption par fichier ne s'y applique pas.
+ */
+export const SANS_AUCUN_FINANCEMENT: ReadonlyArray<string> = ["memo-isere/page.tsx"];
+
 export type FauteVocabulaire = {
   readonly famille: FamilleVocabulaire;
   readonly chemin: string;
@@ -67,7 +74,7 @@ const REGLES: ReadonlyArray<{ famille: FamilleVocabulaire; motif: RegExp }> = [
   {
     famille: "financement_inconditionnel",
     motif:
-      /pris(?:e|es)?\s+en\s+charge\s+(?:à|a)\s+100|(?:finan[cç]|pris)[\wÀ-ÿ]*\s+(?:jusqu['’]à\s+|à\s+)?100\s*%|100\s*%\s*(?:finan[cç]|pris)|finan[cç][\wÀ-ÿ]*\s+par\s+qualiopi|sans\s+avance\s+de\s+frais|avancer\s+les\s+fonds|trésorerie\s+à\s+sortir|co[uû]t\s+(?:quasi[\s-]+)?nul|fully\s+(?:funded|covered)|100\s*%\s*(?:funded|covered)|funded\s+products|no\s+upfront\s+cost/i,
+      /pris(?:e|es)?\s+en\s+charge\s+(?:à|a)\s+100|(?:finan[cç]|pris)[\wÀ-ÿ]*\s+(?:jusqu['’]à\s+|à\s+)?100\s*%|100\s*%\s*(?:finan[cç]|pris)|finan[cç][\wÀ-ÿ]*\s+par\s+qualiopi|sans\s+avance\s+de\s+frais|avancer\s+les\s+fonds|trésorerie\s+à\s+sortir|co[uû]t[^.;!?]{0,60}?\b(?:quasi[\s-]+)?nul(?:le)?\b|\bOPCO\s+(?:paie|finance|règle|prend\s+tout)|pa(?:ie|ye)\s+la\s+formation\s+à\s+ta\s+place|fully\s+(?:funded|covered)|100\s*%\s*(?:funded|covered)|funded\s+products|no\s+upfront\s+cost/i,
   },
   { famille: "qualiopi_nu", motif: /(?<!certifi[a-zéèê]{0,3}\s)\bQualiopi\b/ },
   {
@@ -102,7 +109,8 @@ export function fautesDeVocabulaire(
 ): FauteVocabulaire[] {
   const fautes: FauteVocabulaire[] = [];
   for (const { chemin, texte } of fichiers) {
-    const consulte = CONSULTE_LA_CERTIFICATION.test(texte);
+    const strict = SANS_AUCUN_FINANCEMENT.some((s) => chemin.replace(/\\/g, "/").endsWith(s));
+    const consulte = !strict && CONSULTE_LA_CERTIFICATION.test(texte);
     texte.split("\n").forEach((brute, i) => {
       if (COMMENTAIRE.test(brute)) return;
       const contenu = telleQueLue(brute);
