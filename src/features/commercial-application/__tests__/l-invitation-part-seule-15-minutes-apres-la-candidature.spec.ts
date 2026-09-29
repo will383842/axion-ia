@@ -11,6 +11,7 @@ const d = vi.hoisted(() => ({
   subFindMany: vi.fn(),
   subFindUnique: vi.fn(),
   subUpdate: vi.fn(),
+  subUpdateMany: vi.fn(),
   envoyer: vi.fn(),
   creer: vi.fn(),
   consigner: vi.fn(),
@@ -24,6 +25,7 @@ vi.mock("@/lib/prisma", () => ({
       findMany: (...a: unknown[]) => d.subFindMany(...a),
       findUnique: (...a: unknown[]) => d.subFindUnique(...a),
       update: (...a: unknown[]) => d.subUpdate(...a),
+      updateMany: (...a: unknown[]) => d.subUpdateMany(...a),
     },
   },
 }));
@@ -120,6 +122,22 @@ describe("passerInvitationsAuto", () => {
     const r = await passerInvitationsAuto(MAINTENANT);
     expect(r.ecartees["deja-invitee"]).toBe(1);
     expect(d.subUpdate).toHaveBeenCalledTimes(1);
+  });
+
+  it("🔴 une fiche « déjà invitée » (le dossier après la capture) est RANGÉE si encore nouvelle — pas de bruit", async () => {
+    d.subFindMany.mockResolvedValue([{ id: "dossier-1", details: APPORTEUR }]);
+    d.envoyer.mockResolvedValue({ ok: false, erreur: "deja-invitee", message: "x" });
+    await passerInvitationsAuto(MAINTENANT);
+    expect(d.subUpdateMany).toHaveBeenCalledWith({
+      where: { id: "dossier-1", status: "new", archivedAt: null },
+      data: { status: "processed", needsAttention: false },
+    });
+  });
+
+  it("une invitation envoyée ne passe pas par ce rangement (déjà fait par l'envoi)", async () => {
+    d.subFindMany.mockResolvedValue([{ id: "fiche-1", details: APPORTEUR }]);
+    await passerInvitationsAuto(MAINTENANT);
+    expect(d.subUpdateMany).not.toHaveBeenCalled();
   });
 
   it("un échec PASSAGER n'est pas marqué : le passage suivant réessaie", async () => {
