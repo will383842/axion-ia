@@ -32,6 +32,8 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
+import { DISCUTONS_MEET_SEUL } from "@/content/visio-annonce";
+
 const CHEMIN = "src/app/[locale]/appel/page.tsx";
 const source = readFileSync(join(process.cwd(), CHEMIN), "utf8");
 
@@ -80,9 +82,20 @@ describe("la page de réservation n'annonce pas un canal unique", () => {
     }
   });
 
-  it("🔴 les DEUX formats sont nommés", () => {
+  it("🔴 le format annoncé est celui que l'event-type propose", () => {
     const t = code.toLowerCase();
-    expect(t, "le téléphone doit rester annoncé").toContain("téléphone");
+    // 🔁 2026-09-29 (chantier visio, décision B5 de Will) : « Discutons » se
+    // tient en Google Meet SEULEMENT. Le lieu « téléphone » est retiré de
+    // l'event-type par Will après la mise en ligne. La page ne doit donc plus
+    // le proposer — la garde voisine
+    // `src/content/__tests__/aucune-page-ne-promet-le-telephone-si-discutons-est-meet-seul.spec.ts`
+    // le vérifie mot à mot. Tant que la décision tient, on exige Meet ;
+    // si elle était rouverte, on exigerait de nouveau les deux formats.
+    if (DISCUTONS_MEET_SEUL) {
+      expect(t, "la page doit nommer Google Meet").toContain("google meet");
+    } else {
+      expect(t, "le téléphone doit rester annoncé").toContain("téléphone");
+    }
     expect(
       t.includes("visioconférence") || t.includes("visio"),
       "la visioconférence est réservable mais la page n'en parle pas : le " +
