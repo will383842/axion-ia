@@ -68,6 +68,42 @@ export function lire(relatif: string): string {
   return readFileSync(path.join(RACINE, relatif), "utf8");
 }
 
+/**
+ * Comme `sourcesSous`, mais pour un cliquet qui PROMET de balayer ces
+ * dossiers : un dossier introuvable rend le balayage inopérant, donc il lève
+ * au lieu de rendre une liste vide (et un vert qui ne regarde rien).
+ */
+export function sourcesExigeesSous(dossiers: readonly string[]): string[] {
+  for (const d of dossiers) {
+    if (!existsSync(path.join(RACINE, d))) throw new Error(`balayage inopérant : ${d} introuvable`);
+  }
+  // Le client Prisma généré n'est pas du code du dépôt.
+  return sourcesSous(dossiers).filter((f) => !f.startsWith("prisma/generated/"));
+}
+
+/** L'argument d'un appel, parenthèses équilibrées, à partir de la parenthèse ouvrante. */
+export function argumentDAppel(source: string, ouvrante: number): string {
+  let profondeur = 0;
+  for (let i = ouvrante; i < source.length; i += 1) {
+    const c = source[i];
+    if (c === "(") profondeur += 1;
+    else if (c === ")") {
+      profondeur -= 1;
+      if (profondeur === 0) return source.slice(ouvrante, i + 1);
+    }
+  }
+  return source.slice(ouvrante);
+}
+
+/** Vrai si l'un des appels trouvés par `appel` (drapeau `g`) a un argument qui satisfait `motif`. */
+export function unAppelNomme(source: string, appel: RegExp, motif: RegExp): boolean {
+  for (const m of source.matchAll(appel)) {
+    const ouvrante = (m.index ?? 0) + m[0].length - 1;
+    if (motif.test(argumentDAppel(source, ouvrante))) return true;
+  }
+  return false;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Lecture du schéma : les annotations RGPD des modèles
 // ─────────────────────────────────────────────────────────────────────────────

@@ -76,6 +76,81 @@ function memeNom(a: string, b: string): boolean {
   return na !== "" && na === normaliserNom(b);
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Créer ou retrouver une personne de la fiche — le SEUL chemin qui crée un
+// `ClientContact` et sa première adresse (contact de facturation ET « Ajouter
+// cette personne à la fiche »). Une personne sans nom s'affiche donc toujours
+// « Nom à compléter », quel que soit le bouton.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const PERSONNE_CHOISIE = { id: true, nom: true, telephone: true, fonction: true } as const;
+
+export interface PersonneTrouvee {
+  readonly id: string;
+  readonly nom: string;
+  readonly telephone: string | null;
+  readonly fonction: string | null;
+}
+
+export interface PersonneACreer {
+  readonly clientId: string;
+  readonly nom: string | null;
+  /** Adresse NORMALISÉE, ou `null`. */
+  readonly email: string | null;
+  readonly telephone: string | null;
+  readonly fonction: string | null;
+  readonly origine: ContactOrigine;
+  readonly estContactFacturation: boolean;
+  readonly creeParId: string | null;
+}
+
+type TxPersonnes = Pick<Prisma.TransactionClient, "clientContact" | "clientContactAdresse">;
+
+/** La personne de CETTE fiche qui porte déjà cette adresse (empreinte), ou `null`. */
+async function personneParAdresse(
+  tx: TxPersonnes,
+  clientId: string,
+  emailHash: string | null,
+): Promise<PersonneTrouvee | null> {
+  if (emailHash === null) return null;
+  return tx.clientContact.findFirst({
+    where: { clientId, adresses: { some: { emailHash } } },
+    select: PERSONNE_CHOISIE,
+  });
+}
+
+/**
+ * Retrouve la personne de la fiche par son adresse, sinon la crée — avec son
+ * adresse, et `Nom à compléter` si seul l'e-mail est connu. À appeler DANS une
+ * transaction.
+ */
+export async function creerOuRetrouverPersonne(
+  tx: TxPersonnes,
+  p: PersonneACreer,
+): Promise<{ personne: PersonneTrouvee; cree: boolean }> {
+  const emailHash = p.email !== null ? hashEmailForLookup(p.email) : null;
+  const existante = await personneParAdresse(tx, p.clientId, emailHash);
+  if (existante !== null) return { personne: existante, cree: false };
+  const personne = await tx.clientContact.create({
+    data: {
+      clientId: p.clientId,
+      nom: p.nom ?? NOM_A_COMPLETER,
+      fonction: p.fonction,
+      telephone: p.telephone,
+      origine: p.origine,
+      estContactFacturation: p.estContactFacturation,
+      creeParId: p.creeParId,
+    },
+    select: PERSONNE_CHOISIE,
+  });
+  if (p.email !== null && emailHash !== null) {
+    await tx.clientContactAdresse.create({
+      data: { contactId: personne.id, email: p.email, emailHash, nature: natureAdresse(p.email) },
+    });
+  }
+  return { personne, cree: true };
+}
+
 /**
  * Définit (ou met à jour) le contact de facturation d'une fiche, et recopie ses
  * coordonnées dans `Client.contact*`. À appeler DANS une transaction.
@@ -104,17 +179,11 @@ export async function definirContactFacturation(
 
   const actuel = await tx.clientContact.findFirst({
     where: { clientId: entree.clientId, estContactFacturation: true },
-    select: { id: true, nom: true, telephone: true, fonction: true },
+    select: PERSONNE_CHOISIE,
   });
 
   // 1. La personne qui porte déjà cette adresse sur CETTE fiche.
-  const parAdresse =
-    emailHash !== null
-      ? await tx.clientContact.findFirst({
-          where: { clientId: entree.clientId, adresses: { some: { emailHash } } },
-          select: { id: true, nom: true, telephone: true, fonction: true },
-        })
-      : null;
+  const parAdresse = await personneParAdresse(tx, entree.clientId, emailHash);
 
   // 2. Le contact actuel, si c'est la même personne (ou si le nom n'est pas transmis).
   const actuelConvient =
@@ -155,24 +224,22 @@ export async function definirContactFacturation(
 
   let cree = false;
   if (cible === null) {
-    cible = await tx.clientContact.create({
-      data: {
-        clientId: entree.clientId,
-        nom: nomACreer ?? NOM_A_COMPLETER,
-        // Première personne de la fiche : elle hérite des coordonnées déjà
-        // saisies sur la fiche. Une personne qui en REMPLACE une autre n'hérite
-        // de rien (la fonction de l'ancienne DAF n'est pas celle du nouveau).
-        fonction:
-          fonction !== undefined ? fonction : actuel === null ? fiche.contactFonction : null,
-        telephone:
-          telephone !== undefined ? telephone : actuel === null ? fiche.contactTelephone : null,
-        origine: entree.origine ?? "saisie",
-        estContactFacturation: true,
-        creeParId: entree.parAdminId ?? null,
-      },
-      select: { id: true, nom: true, telephone: true, fonction: true },
-    });
-    cree = true;
+    // Personne n'a cette adresse sur la fiche (étape 1) : création, par le
+    // chemin unique — l'adresse est posée avec elle.
+    ({ personne: cible, cree } = await creerOuRetrouverPersonne(tx, {
+      clientId: entree.clientId,
+      nom: nomACreer,
+      email: adresseACreer,
+      // Première personne de la fiche : elle hérite des coordonnées déjà
+      // saisies sur la fiche. Une personne qui en REMPLACE une autre n'hérite
+      // de rien (la fonction de l'ancienne DAF n'est pas celle du nouveau).
+      fonction: fonction !== undefined ? fonction : actuel === null ? fiche.contactFonction : null,
+      telephone:
+        telephone !== undefined ? telephone : actuel === null ? fiche.contactTelephone : null,
+      origine: entree.origine ?? "saisie",
+      estContactFacturation: true,
+      creeParId: entree.parAdminId ?? null,
+    }));
   } else {
     cible = await tx.clientContact.update({
       where: { id: cible.id },

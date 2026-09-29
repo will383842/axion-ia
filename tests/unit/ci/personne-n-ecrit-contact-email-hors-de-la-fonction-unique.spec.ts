@@ -25,11 +25,10 @@
  * pas lu ; la revue le voit, pas ce test.
  */
 
-import { existsSync, readFileSync, readdirSync } from "node:fs";
-import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
 
-const RACINE = process.cwd();
+import { lire, sourcesExigeesSous, unAppelNomme } from "./sources-du-circuit-visio";
+
 const FONCTION_UNIQUE = "src/server/qualiopi/crm/contact-facturation.ts";
 
 const EXCEPTIONS: Readonly<Record<string, string>> = {
@@ -41,52 +40,15 @@ const COLONNES = /\bcontact(Nom|Email|Telephone|Fonction)\b/;
 const APPEL = /\.client\.(create|update|updateMany|upsert)\s*\(/g;
 const SQL = /UPDATE\s+"?clients"?\s+SET[\s\S]{0,400}?\bcontact_(nom|email|telephone|fonction)\b/i;
 
-/** L'argument d'un appel, parenthèses équilibrées, à partir de l'ouvrante. */
-function argument(source: string, ouvrante: number): string {
-  let profondeur = 0;
-  for (let i = ouvrante; i < source.length; i += 1) {
-    const c = source[i];
-    if (c === "(") profondeur += 1;
-    else if (c === ")") {
-      profondeur -= 1;
-      if (profondeur === 0) return source.slice(ouvrante, i + 1);
-    }
-  }
-  return source.slice(ouvrante);
-}
-
 function ecritLeContact(source: string): boolean {
-  if (SQL.test(source)) return true;
-  for (const m of source.matchAll(APPEL)) {
-    const ouvrante = (m.index ?? 0) + m[0].length - 1;
-    if (COLONNES.test(argument(source, ouvrante))) return true;
-  }
-  return false;
+  return SQL.test(source) || unAppelNomme(source, APPEL, COLONNES);
 }
 
+/** Balayage dérivé (outil partagé du chantier : tests exclus, racine exigée). */
 function balayer(): string[] {
-  const trouves: string[] = [];
-  const parcourir = (dossier: string): void => {
-    for (const e of readdirSync(dossier, { withFileTypes: true })) {
-      const complet = join(dossier, e.name);
-      if (e.isDirectory()) {
-        if (["node_modules", "generated", "__tests__", ".next"].includes(e.name)) continue;
-        parcourir(complet);
-        continue;
-      }
-      if (!/\.(ts|tsx|mjs|js)$/.test(e.name)) continue;
-      if (/\.(spec|test)\.(ts|tsx|mjs|js)$/.test(e.name)) continue;
-      if (ecritLeContact(readFileSync(complet, "utf8"))) {
-        trouves.push(relative(RACINE, complet).split("\\").join("/"));
-      }
-    }
-  };
-  for (const racine of ["src", "scripts"]) {
-    const abs = join(RACINE, racine);
-    if (!existsSync(abs)) throw new Error(`balayage inopérant : ${abs} introuvable`);
-    parcourir(abs);
-  }
-  return trouves.sort();
+  return sourcesExigeesSous(["src", "scripts"])
+    .filter((f) => ecritLeContact(lire(f)))
+    .sort();
 }
 
 describe("⛔ personne n'écrit Client.contact* hors de la fonction unique", () => {

@@ -21,13 +21,15 @@ import { z } from "zod";
 
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
+import { checkSiretFormat, resoudreSiren, sirenDuSiret } from "@/lib/siret";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import {
   ajouterPersonneAFiche,
   chargerFichesCandidates,
+  libellerFichesProches,
   preparerCandidat,
   trouverFichesProches,
-  type FicheProche,
+  type FicheProcheLibellee,
 } from "@/server/qualiopi/crm/porte-client";
 import { exigerAccesEchanges } from "@/features/dossier-client/acces";
 import { creerProjet, ErreurCreationProjet } from "@/features/dossier-client/creer-projet";
@@ -50,18 +52,20 @@ const candidatSchema = z.object({
  */
 export async function fichesProchesAction(
   saisie: z.input<typeof candidatSchema>,
-): Promise<FicheProche[]> {
+): Promise<FicheProcheLibellee[]> {
   await requireAdminWrite();
   const v = candidatSchema.safeParse(saisie);
   if (!v.success) return [];
-  const chiffresSiret = (v.data.siret ?? "").replace(/\D/g, "");
-  const chiffresSiren = (v.data.siren ?? "").replace(/\D/g, "");
-  const siren =
-    chiffresSiren.length === 9
-      ? chiffresSiren
-      : chiffresSiret.length === 14
-        ? chiffresSiret.slice(0, 9)
-        : null;
+  // La même dérivation que la création (`src/lib/siret.ts`, source unique) :
+  // un SIRET encore incomplet ou à la clé fausse ne propose rien.
+  const siretSaisi = (v.data.siret ?? "").trim();
+  const siretValide = siretSaisi !== "" && checkSiretFormat(siretSaisi).ok ? siretSaisi : null;
+  const resolu = resoudreSiren(siretValide, v.data.siren);
+  const siren = resolu.ok
+    ? (resolu.siren ?? null)
+    : siretValide !== null
+      ? sirenDuSiret(siretValide)
+      : null;
   const candidat = preparerCandidat({
     ...(v.data.type !== undefined ? { type: v.data.type } : {}),
     raisonSociale: v.data.raisonSociale,
@@ -70,9 +74,8 @@ export async function fichesProchesAction(
     ville: v.data.ville ?? null,
     codePostal: v.data.codePostal ?? null,
   });
-  return trouverFichesProches(candidat, await chargerFichesCandidates(prisma, candidat)).slice(
-    0,
-    5,
+  return libellerFichesProches(
+    trouverFichesProches(candidat, await chargerFichesCandidates(prisma, candidat)).slice(0, 5),
   );
 }
 

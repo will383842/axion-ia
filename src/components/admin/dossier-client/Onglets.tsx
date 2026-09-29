@@ -26,6 +26,7 @@ import {
   LIBELLE_TYPE_FAIT,
   valeurLisible,
 } from "@/features/dossier-client/libelles";
+import { TYPES_DE_FAITS } from "@/server/visio/types-de-faits";
 import type {
   FaitARanger,
   PersonneDuDossier,
@@ -152,14 +153,14 @@ export function Trous({ trous }: { trous: ReadonlyArray<number> }): React.ReactE
 // Onglet Synthèse
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** « Ce que fait la société » : les types de portée entreprise, dans cet ordre. */
-export const TYPES_SOCIETE: ReadonlyArray<FaitType> = [
-  "info_societe",
-  "activite",
-  "effectif",
-  "outil_utilise",
-  "niveau_ia",
-];
+/**
+ * « Ce que fait la société » : les types de la rubrique 1 du compte rendu,
+ * DÉRIVÉS de `TYPES_DE_FAITS` et dans son ordre — un type ajouté à la
+ * rubrique 1 apparaît ici sans rien retoucher.
+ */
+export const TYPES_SOCIETE: ReadonlyArray<FaitType> = (
+  Object.keys(TYPES_DE_FAITS) as FaitType[]
+).filter((t) => TYPES_DE_FAITS[t].rubrique === 1);
 
 /** Le bloc d'un projet dans la synthèse. */
 export const TYPES_BLOC_PROJET: ReadonlyArray<FaitType> = [

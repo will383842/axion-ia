@@ -16,7 +16,12 @@ import { premierMessageZod } from "@/lib/zod-message";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { inferOpco } from "@/server/qualiopi/crm/naf-opco";
 import { definirContactFacturation } from "@/server/qualiopi/crm/contact-facturation";
-import { creerOuRetrouverClient, type SignalProche } from "@/server/qualiopi/crm/porte-client";
+import {
+  creerOuRetrouverClient,
+  ErreurSirenDejaPris,
+  exigerSirenLibre,
+  type SignalProche,
+} from "@/server/qualiopi/crm/porte-client";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -424,52 +429,61 @@ export async function updateClientAction(
     fields.contactTelephone !== undefined ||
     fields.contactFonction !== undefined;
 
-  await prisma.$transaction(async (tx) => {
-    await tx.client.update({
-      where: { id },
-      data: {
-        ...(fields.type !== undefined ? { type: fields.type } : {}),
-        ...(fields.raisonSociale !== undefined ? { raisonSociale: fields.raisonSociale } : {}),
-        ...(fields.siret !== undefined ? { siret: fields.siret } : {}),
-        ...(sirenAEcrire !== undefined ? { siren: sirenAEcrire } : {}),
-        ...(fields.nafCode !== undefined ? { nafCode: fields.nafCode } : {}),
-        ...(fields.conventionCollective !== undefined
-          ? { conventionCollective: fields.conventionCollective }
-          : {}),
-        ...(fields.idcc !== undefined ? { idcc: fields.idcc } : {}),
-        ...(fields.secteur !== undefined ? { secteur: fields.secteur } : {}),
-        ...(fields.taille !== undefined ? { taille: fields.taille } : {}),
-        ...(fields.adresse !== undefined ? { adresse: fields.adresse } : {}),
-        ...(opcoAEcrire !== undefined ? { opcoIdentifie: opcoAEcrire } : {}),
-        ...(fields.opcoNumeroAdherent !== undefined
-          ? { opcoNumeroAdherent: fields.opcoNumeroAdherent }
-          : {}),
-        ...(fields.opcoEnveloppeAnnuelleCents !== undefined
-          ? { opcoEnveloppeAnnuelleCents: fields.opcoEnveloppeAnnuelleCents }
-          : {}),
-        ...(fields.statut !== undefined ? { statut: fields.statut } : {}),
-        ...(fields.source !== undefined ? { source: fields.source } : {}),
-        ...(fields.contexteIa !== undefined ? { contexteIa: fields.contexteIa } : {}),
-        ...(fields.notes !== undefined ? { notes: fields.notes } : {}),
-        ...(fields.besoinsIdentifies !== undefined
-          ? { besoinsIdentifies: fields.besoinsIdentifies as never }
-          : {}),
-        ...(fields.penalitesRetardActives !== undefined
-          ? { penalitesRetardActives: fields.penalitesRetardActives }
-          : {}),
-      },
-    });
-    if (contactTransmis) {
-      await definirContactFacturation(tx, {
-        clientId: id,
-        ...(fields.contactNom !== undefined ? { nom: fields.contactNom } : {}),
-        ...(fields.contactEmail !== undefined ? { email: fields.contactEmail } : {}),
-        ...(fields.contactTelephone !== undefined ? { telephone: fields.contactTelephone } : {}),
-        ...(fields.contactFonction !== undefined ? { fonction: fields.contactFonction } : {}),
-        parAdminId: session.userId,
+  try {
+    await prisma.$transaction(async (tx) => {
+      // B18 : un SIREN écrit sur une fiche EXISTANTE passe par le même verrou et
+      // la même recherche que la création — jamais deux fiches vivantes au même
+      // SIREN (« C'est elle », SIRET saisi dans « Éditer »).
+      if (typeof sirenAEcrire === "string") await exigerSirenLibre(tx, id, sirenAEcrire);
+      await tx.client.update({
+        where: { id },
+        data: {
+          ...(fields.type !== undefined ? { type: fields.type } : {}),
+          ...(fields.raisonSociale !== undefined ? { raisonSociale: fields.raisonSociale } : {}),
+          ...(fields.siret !== undefined ? { siret: fields.siret } : {}),
+          ...(sirenAEcrire !== undefined ? { siren: sirenAEcrire } : {}),
+          ...(fields.nafCode !== undefined ? { nafCode: fields.nafCode } : {}),
+          ...(fields.conventionCollective !== undefined
+            ? { conventionCollective: fields.conventionCollective }
+            : {}),
+          ...(fields.idcc !== undefined ? { idcc: fields.idcc } : {}),
+          ...(fields.secteur !== undefined ? { secteur: fields.secteur } : {}),
+          ...(fields.taille !== undefined ? { taille: fields.taille } : {}),
+          ...(fields.adresse !== undefined ? { adresse: fields.adresse } : {}),
+          ...(opcoAEcrire !== undefined ? { opcoIdentifie: opcoAEcrire } : {}),
+          ...(fields.opcoNumeroAdherent !== undefined
+            ? { opcoNumeroAdherent: fields.opcoNumeroAdherent }
+            : {}),
+          ...(fields.opcoEnveloppeAnnuelleCents !== undefined
+            ? { opcoEnveloppeAnnuelleCents: fields.opcoEnveloppeAnnuelleCents }
+            : {}),
+          ...(fields.statut !== undefined ? { statut: fields.statut } : {}),
+          ...(fields.source !== undefined ? { source: fields.source } : {}),
+          ...(fields.contexteIa !== undefined ? { contexteIa: fields.contexteIa } : {}),
+          ...(fields.notes !== undefined ? { notes: fields.notes } : {}),
+          ...(fields.besoinsIdentifies !== undefined
+            ? { besoinsIdentifies: fields.besoinsIdentifies as never }
+            : {}),
+          ...(fields.penalitesRetardActives !== undefined
+            ? { penalitesRetardActives: fields.penalitesRetardActives }
+            : {}),
+        },
       });
-    }
-  });
+      if (contactTransmis) {
+        await definirContactFacturation(tx, {
+          clientId: id,
+          ...(fields.contactNom !== undefined ? { nom: fields.contactNom } : {}),
+          ...(fields.contactEmail !== undefined ? { email: fields.contactEmail } : {}),
+          ...(fields.contactTelephone !== undefined ? { telephone: fields.contactTelephone } : {}),
+          ...(fields.contactFonction !== undefined ? { fonction: fields.contactFonction } : {}),
+          parAdminId: session.userId,
+        });
+      }
+    });
+  } catch (e) {
+    if (e instanceof ErreurSirenDejaPris) return { error: e.message };
+    throw e;
+  }
 
   await logQualiopiActivity({
     action: "qualiopi.client.update",

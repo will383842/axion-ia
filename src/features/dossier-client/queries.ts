@@ -313,14 +313,21 @@ export async function lireRencontresDuClient(clientId: string): Promise<Rencontr
 // Les trois lectures nommées de « Préparer » (plan §3.13, vérification C15)
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** La dernière suite convenue, sur les rencontres du projet (ou du client s'il n'y a pas de projet). */
+/**
+ * La dernière suite convenue, sur les rencontres du projet choisi — ou, sans
+ * projet choisi, sur les SEULES rencontres de l'entreprise (`projetId: null`) :
+ * plan §3.13 bloc 1, « projet non choisi : portée entreprise seulement ». La
+ * suite d'une rencontre de projet n'apparaît jamais hors de ce projet.
+ * Les rencontres sans date prévue passent en dernier (Postgres met les NULL
+ * en tête d'un tri décroissant).
+ */
 export async function lireDernierSuivi(
   clientId: string,
   projetId: string | null,
 ): Promise<DernierSuivi | null> {
   const ligne = await prisma.rencontreSuivi.findFirst({
     where: {
-      rencontre: { clientId, ...(projetId !== null ? { projetId } : {}) },
+      rencontre: { clientId, projetId },
       valideLe: { not: null },
     },
     select: {
@@ -328,7 +335,7 @@ export async function lireDernierSuivi(
       suiteLe: true,
       rencontre: { select: { titre: true } },
     },
-    orderBy: { rencontre: { debutPrevu: "desc" } },
+    orderBy: { rencontre: { debutPrevu: { sort: "desc", nulls: "last" } } },
   });
   if (ligne === null) return null;
   return {

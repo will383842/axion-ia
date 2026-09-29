@@ -39,6 +39,10 @@
  * fiches non absorbées », tenue par ce verrou et prouvée en Gate D
  * (`scripts/ci/gate-d-visio.ts`, deux créations simultanées).
  *
+ * Elle vaut aussi pour une fiche EXISTANTE à qui l'on donne un SIREN (« C'est
+ * elle », SIRET saisi dans « Éditer ») : `exigerSirenLibre()` prend le MÊME
+ * verrou et fait la MÊME recherche, dans la transaction de `updateClientAction`.
+ *
  * ## C'est aussi la porte qu'attend Axion Partners (INT-T03)
  *
  * Partners exige que « tous les écrivains de `Client` passent par une fonction
@@ -53,10 +57,14 @@
 
 import type { ClientType, CompanySize, Prisma } from "../../../../prisma/generated/client";
 import { natureAdresse } from "@/lib/email/nature-adresse";
+import { checkSirenFormat } from "@/lib/siret";
 import { hashEmailForLookup, normalizeEmail } from "@/lib/security/email-hash";
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
-import { definirContactFacturation } from "@/server/qualiopi/crm/contact-facturation";
+import {
+  creerOuRetrouverPersonne,
+  definirContactFacturation,
+} from "@/server/qualiopi/crm/contact-facturation";
 import { nomsProches, normaliserVille } from "@/server/qualiopi/crm/normaliser-nom";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -91,6 +99,16 @@ export interface FicheProche {
   readonly raisonSociale: string;
   readonly signal: SignalProche;
   readonly force: ForceSignal;
+}
+
+/** Une fiche proche, avec le libellé de son signal pour l'écran (`LIBELLE_DU_SIGNAL`). */
+export interface FicheProcheLibellee extends FicheProche {
+  readonly libelle: string;
+}
+
+/** Ajoute à chaque fiche le libellé de son signal — la SEULE table est `LIBELLE_DU_SIGNAL`. */
+export function libellerFichesProches(fiches: ReadonlyArray<FicheProche>): FicheProcheLibellee[] {
+  return fiches.map((f) => ({ ...f, libelle: LIBELLE_DU_SIGNAL[f.signal] }));
 }
 
 /** Le candidat, préparé pour la comparaison (empreintes, domaines pro, ville). */
@@ -149,7 +167,9 @@ export function preparerCandidat(saisi: CandidatSaisi): CandidatPrepare {
         .map((e) => normalizeEmail(e)),
     ),
   ];
-  const siren = saisi.siren && /^\d{9}$/.test(saisi.siren.trim()) ? saisi.siren.trim() : null;
+  // Même contrôle que la saisie (format ET clé) : `src/lib/siret.ts`, source unique.
+  const controle = saisi.siren ? checkSirenFormat(saisi.siren) : null;
+  const siren = controle?.ok === true ? controle.value : null;
   return {
     type: saisi.type ?? "entreprise",
     raisonSociale: saisi.raisonSociale,
@@ -297,6 +317,15 @@ export async function chargerFichesCandidates(
 // La création
 // ─────────────────────────────────────────────────────────────────────────────
 
+/** Le refus « même SIREN », nommé pour Will — le même à la création et à la modification. */
+function messageSirenDejaPris(f: FicheProche): string {
+  return (
+    `Cette entreprise a déjà la fiche ${f.numero} (${f.raisonSociale}), ` +
+    `avec le même numéro SIREN. Ouvrez-la, ou ajoutez-y cette personne : une ` +
+    `entreprise n'a qu'une fiche.`
+  );
+}
+
 /** Longueur minimale du motif de « créer quand même ». */
 export const LONGUEUR_MIN_MOTIF_CREATION_FORCEE = 10;
 
@@ -362,10 +391,15 @@ type BasePorte = Pick<Prisma.TransactionClient, "client"> & {
   $transaction<T>(fn: (tx: Prisma.TransactionClient) => Promise<T>): Promise<T>;
 };
 
+/** Clé du verrou consultatif d'un SIREN — la même pour la création et la modification. */
+function cleDeVerrouSiren(siren: string): string {
+  return `client-siren:${siren}`;
+}
+
 /** Clés des verrous consultatifs, TRIÉES : deux transactions les prennent dans le même ordre. */
 export function clesDeVerrou(c: CandidatPrepare): string[] {
   return [
-    ...(c.siren !== null ? [`client-siren:${c.siren}`] : []),
+    ...(c.siren !== null ? [cleDeVerrouSiren(c.siren)] : []),
     ...c.emailHashes.map((h) => `client-email:${h}`),
   ].sort();
 }
@@ -407,10 +441,7 @@ export async function creerOuRetrouverClient(
         return {
           statut: "refuse_siren",
           fiche: bloquante,
-          message:
-            `Cette entreprise a déjà la fiche ${bloquante.numero} (${bloquante.raisonSociale}), ` +
-            `avec le même numéro SIREN. Ouvrez-la, ou ajoutez-y cette personne : une ` +
-            `entreprise n'a qu'une fiche.`,
+          message: messageSirenDejaPris(bloquante),
         };
       }
 
@@ -482,6 +513,45 @@ export async function creerOuRetrouverClient(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Donner un SIREN à une fiche EXISTANTE
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Refus « ce SIREN est déjà celui d'une autre fiche » : son message nomme la fiche. */
+export class ErreurSirenDejaPris extends Error {
+  constructor(readonly fiche: FicheProche) {
+    super(messageSirenDejaPris(fiche));
+    this.name = "ErreurSirenDejaPris";
+  }
+}
+
+type TransactionPorte = Pick<Prisma.TransactionClient, "client" | "$executeRaw">;
+
+/**
+ * À appeler DANS la transaction qui écrit `siren` sur une fiche existante,
+ * AVANT l'écriture. Prend le verrou du SIREN (le même que la création), puis
+ * cherche une AUTRE fiche non absorbée qui le porte : si elle existe, lève
+ * `ErreurSirenDejaPris` (la transaction est annulée).
+ *
+ * Une fiche qui porte DÉJÀ ce SIREN n'est pas réexaminée : ré-enregistrer une
+ * fiche sans toucher à son SIREN ne doit jamais échouer.
+ */
+export async function exigerSirenLibre(
+  tx: TransactionPorte,
+  clientId: string,
+  siren: string,
+): Promise<void> {
+  await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${cleDeVerrouSiren(siren)}))`;
+  const actuelle = await tx.client.findUnique({ where: { id: clientId }, select: { siren: true } });
+  if (actuelle?.siren === siren) return;
+  const candidat = preparerCandidat({ raisonSociale: "", siren });
+  if (candidat.siren === null) return;
+  const autre = trouverFichesProches(candidat, await chargerFichesCandidates(tx, candidat)).find(
+    (p) => p.signal === "siren" && p.ficheId !== clientId,
+  );
+  if (autre !== undefined) throw new ErreurSirenDejaPris(autre);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // « Ajouter cette personne à la fiche X »
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -500,31 +570,19 @@ export async function ajouterPersonneAFiche(
   if (nom === "" && email === null) {
     throw new Error("ajouter une personne : un nom ou une adresse est nécessaire");
   }
-  const emailHash = email !== null ? hashEmailForLookup(email) : null;
   return db.$transaction(async (tx) => {
-    if (emailHash !== null) {
-      const existante = await tx.clientContact.findFirst({
-        where: { clientId, adresses: { some: { emailHash } } },
-        select: { id: true },
-      });
-      if (existante !== null) return { contactId: existante.id, cree: false };
-    }
-    const contact = await tx.clientContact.create({
-      data: {
-        clientId,
-        nom: nom !== "" ? nom : (email ?? ""),
-        fonction: personne.fonction?.trim() || null,
-        telephone: personne.telephone?.trim() || null,
-        origine: "saisie",
-        creeParId: parAdminId,
-      },
-      select: { id: true },
+    // Le chemin unique de création d'une personne (le même que le contact de
+    // facturation) : retrouvée par son adresse, sinon créée avec elle.
+    const r = await creerOuRetrouverPersonne(tx, {
+      clientId,
+      nom: nom !== "" ? nom : null,
+      email,
+      telephone: personne.telephone?.trim() || null,
+      fonction: personne.fonction?.trim() || null,
+      origine: "saisie",
+      estContactFacturation: false,
+      creeParId: parAdminId,
     });
-    if (email !== null && emailHash !== null) {
-      await tx.clientContactAdresse.create({
-        data: { contactId: contact.id, email, emailHash, nature: natureAdresse(email) },
-      });
-    }
-    return { contactId: contact.id, cree: true };
+    return { contactId: r.personne.id, cree: r.cree };
   });
 }

@@ -21,14 +21,7 @@ import {
   ajouterPersonneALaFicheAction,
   fichesProchesAction,
 } from "@/features/dossier-client/actions";
-import type { FicheProche } from "@/server/qualiopi/crm/porte-client";
-
-const LIBELLE: Readonly<Record<FicheProche["signal"], string>> = {
-  siren: "même numéro SIREN",
-  email: "même adresse e-mail",
-  domaine: "même fin d'adresse professionnelle",
-  nom_ville: "même nom dans la même ville",
-};
+import type { FicheProche, FicheProcheLibellee } from "@/server/qualiopi/crm/porte-client";
 
 export interface SaisieFiche {
   readonly type: "entreprise" | "particulier";
@@ -69,7 +62,7 @@ export function FichesProches({
   personne,
   onUtiliser,
 }: FichesProchesProps): React.ReactElement | null {
-  const [proches, setProches] = useState<FicheProche[]>([]);
+  const [proches, setProches] = useState<FicheProcheLibellee[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const [enCours, startTransition] = useTransition();
   const cle = JSON.stringify(saisie);
@@ -141,7 +134,7 @@ export function FichesProches({
               {p.numero}
             </Link>
             <span className="font-medium">{p.raisonSociale}</span>
-            <span className="text-[color:var(--color-admin-fg-muted)]">({LIBELLE[p.signal]})</span>
+            <span className="text-[color:var(--color-admin-fg-muted)]">({p.libelle})</span>
             {p.force === "bloquant" ? (
               <span className="text-[color:var(--color-admin-error)]">
                 une entreprise n&apos;a qu&apos;une fiche : la création sera refusée
