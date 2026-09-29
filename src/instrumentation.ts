@@ -6,6 +6,10 @@ export async function register() {
   if (process.env["NEXT_RUNTIME"] === "nodejs") {
     await import("./sentry.server.config");
     await seedQualiopiReferenceDataOnBoot();
+    // L'import reste DANS cette branche : `NEXT_RUNTIME` est remplacé au build et le
+    // bundle edge élimine la branche entière. Posé hors de la branche, il était compilé
+    // pour edge, qui refuse `node:crypto` (Gate B et Gate C rouges sur #1181).
+    await alerterGrillePartnersOnBoot(() => import("@/server/partners-sync/grille/export"));
   }
   if (process.env["NEXT_RUNTIME"] === "edge") {
     await import("./sentry.edge.config");
@@ -39,6 +43,26 @@ async function seedQualiopiReferenceDataOnBoot(): Promise<void> {
     // Fail-soft : on logge et on laisse le serveur démarrer.
     console.error(
       "[qualiopi:auto-seed] échec (best-effort, le serveur démarre quand même) :",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
+/**
+ * Axion Partners (DM-03-A, HYP-W6-BIS) : alerte au démarrage listant les paliers de
+ * `pricing.ts` dont la commission est BLOQUÉE (barème indéfini) et les anomalies de
+ * cohérence de la grille. INERTE sans `PARTNERS_SYNC_ENABLED=true` (la fonction appelée
+ * sort avant tout calcul). N'écrit rien, n'appelle rien ; fail-soft.
+ */
+async function alerterGrillePartnersOnBoot(
+  charger: () => Promise<{ alerterBaremesIndefinisAuDemarrage: () => unknown }>,
+): Promise<void> {
+  try {
+    const { alerterBaremesIndefinisAuDemarrage } = await charger();
+    alerterBaremesIndefinisAuDemarrage();
+  } catch (err) {
+    console.error(
+      "[partners:grille] alerte de démarrage impossible (le serveur démarre quand même) :",
       err instanceof Error ? err.message : String(err),
     );
   }
