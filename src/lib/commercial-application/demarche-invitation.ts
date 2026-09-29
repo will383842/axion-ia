@@ -21,7 +21,9 @@ export function varianteObjet(id: string): number {
 }
 
 export type MarqueDemarche =
-  { offreEmploi: string } | { candidature: true; variante: number } | Record<string, never>;
+  | { offreEmploi: string; postePourvu?: true }
+  | { candidature: true; variante: number }
+  | Record<string, never>;
 
 /**
  *   · fiche née d'une candidature à une OFFRE D'EMPLOI (2026-09-28) → `offre` :
@@ -42,6 +44,12 @@ export function marqueDemarche(details: unknown, id: string): MarqueDemarche {
     const titre = typeof d["offreTitre"] === "string" ? d["offreTitre"].trim() : "";
     // Sans titre (chaîne vide), le gabarit dit « l'une de nos offres
     // d'emploi » plutôt que de retomber sur « candidature apporteur », faux.
+    // 2026-09-29 — réseau proposé AUTOMATIQUEMENT avec « poste pourvu »
+    // (`server/careers/proposer-reseau-auto.ts`) : la personne vient de lire que
+    // le poste est pourvu. Le texte « ta candidature au poste suit son cours »
+    // et « ton profil commercial » (écrits pour des commerciaux) la
+    // contrediraient — vu au test de bout en bout du 29/09.
+    if (d["propositionAuto"] === "poste-pourvu") return { offreEmploi: titre, postePourvu: true };
     return { offreEmploi: titre };
   }
   if (d["origine"] === ORIGINE_SAISIE_MANUELLE) return {};

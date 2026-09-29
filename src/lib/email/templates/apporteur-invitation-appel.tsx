@@ -76,6 +76,8 @@ interface Payload {
    * `candidature` et `provenance`. Vide : « l'une de nos offres d'emploi ».
    */
   offreEmploi?: string;
+  /** Réseau proposé après « poste pourvu » (2026-09-29) : texte qui ne le contredit pas. */
+  postePourvu?: boolean;
   /** Numéro de l'objet parmi `sujetsCandidature`, stable par fiche (2026-09-27). */
   variante?: number;
   /**
@@ -137,6 +139,10 @@ const COPY = {
         : "Merci pour ta candidature à l'une de nos offres d'emploi.",
     bodyOffre:
       "En parallèle de nos recrutements, nous développons un réseau d'apporteurs d'affaires indépendants partout en France, et ton profil commercial nous a donné envie de te le proposer. C'est différent du poste auquel tu as postulé : un statut indépendant, rémunéré à la commission, que tu peux exercer à côté d'une autre activité. Ta candidature au poste, elle, suit son cours normalement.",
+    // 2026-09-29 — réseau proposé automatiquement AVEC « poste pourvu » : la
+    // personne vient de lire que le poste est pourvu (texte à relire par Will).
+    bodyOffrePourvu:
+      "Comme annoncé dans notre message précédent, ce poste est aujourd'hui pourvu. En parallèle de nos recrutements, nous développons un réseau d'apporteurs d'affaires indépendants partout en France, et nous voulions te le proposer : un statut indépendant, rémunéré à la commission, que tu peux exercer à côté d'une autre activité.",
     bodyOffreSuite:
       "On te propose un échange de 15 minutes en visio pour te présenter le fonctionnement et répondre à tes questions. Sans engagement : à l'issue, chacun décide librement de la suite.",
     provenanceOffre: (o: string) =>
@@ -197,6 +203,8 @@ const COPY = {
         : "Thank you for applying to one of our job openings.",
     bodyOffre:
       "Alongside our hiring, we are building a network of independent business introducers across France, and your sales background made us want to offer it to you. It is different from the position you applied for: an independent status, paid on commission, which you can pursue alongside another activity. Your application for the position continues as normal.",
+    bodyOffrePourvu:
+      "As mentioned in our previous message, this position has now been filled. Alongside our hiring, we are building a network of independent business introducers across France, and we wanted to offer it to you: an independent status, paid on commission, which you can pursue alongside another activity.",
     bodyOffreSuite:
       "We suggest a 15-minute video call to explain how it works and answer your questions. No commitment: afterwards, each side freely decides what comes next.",
     provenanceOffre: (o: string) =>
@@ -308,7 +316,9 @@ export function ApporteurInvitationAppelEmail({
       >
         <Text style={emailStyles.paragraphStyle}>{t.intro(prenom)}</Text>
         <Text style={emailStyles.paragraphStyle}>{t.merciOffre(offre)}</Text>
-        <Text style={emailStyles.paragraphStyle}>{t.bodyOffre}</Text>
+        <Text style={emailStyles.paragraphStyle}>
+          {p.postePourvu === true ? t.bodyOffrePourvu : t.bodyOffre}
+        </Text>
         <Text style={emailStyles.paragraphStyle}>{t.bodyOffreSuite}</Text>
         <BlocKitApporteur locale={locale} intro={t.kitCandidature} />
         {/* Information de l'art. 14 RGPD : l'adresse a été donnée pour un

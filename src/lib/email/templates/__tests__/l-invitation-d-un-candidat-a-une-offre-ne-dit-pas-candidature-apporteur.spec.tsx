@@ -71,6 +71,36 @@ describe("invitation — variante « offre »", () => {
     expect(t).toContain("Réserver mon créneau");
   });
 
+  it("🔴 après « poste pourvu » (proposition automatique) : ni « suit son cours », ni « profil commercial »", async () => {
+    const t = texte(
+      (
+        await renderEmailTemplate("apporteur-invitation-appel", "fr", {
+          ...BASE,
+          ...marqueDemarche(
+            {
+              origine: "candidature-offre-emploi",
+              offreTitre: "Data Scientist",
+              propositionAuto: "poste-pourvu",
+            },
+            "x",
+          ),
+        })
+      ).html,
+    );
+    expect(t).toContain("Merci pour ta candidature à notre offre « Data Scientist ».");
+    expect(t).toContain("ce poste est aujourd'hui pourvu");
+    expect(t).toContain("rémunéré à la commission");
+    expect(t).not.toContain("suit son cours normalement");
+    expect(t).not.toContain("profil commercial");
+    expect(t).toContain("Réserver mon créneau");
+  });
+
+  it("proposition faite à la main (commerciaux) : le texte validé est inchangé", () => {
+    expect(
+      marqueDemarche({ origine: "candidature-offre-emploi", offreTitre: "BizDev" }, "x"),
+    ).toEqual({ offreEmploi: "BizDev" });
+  });
+
   it("porte la provenance de l'adresse et l'information de l'art. 14", async () => {
     const t = texte(
       (
