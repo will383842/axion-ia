@@ -281,6 +281,13 @@ RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+# Imprimés INTERNES (2026-09-28) : lus par `src/app/api/admin/imprimes/[id]/[fichier]`
+# via `readFile(process.cwd()/private/imprimes/…)`. Un fichier lu à l'exécution n'est
+# PAS tracé par le standalone : sans cette ligne la route rend 404 en prod.
+# Hors de `public/` exprès — Next ne sert `private/` par aucun chemin, seule la
+# route console (session + rôle + liste blanche) le lit.
+# Verrouillé par src/content/__tests__/imprimes-internes.spec.ts.
+COPY --from=builder --chown=nextjs:nodejs /app/private ./private
 
 # Prisma migration runtime — schema + migrations + prisma CLI binary.
 # Le standalone output exclut prisma/ par défaut, donc on copie explicitement.

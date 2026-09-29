@@ -93,7 +93,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? "Axion-IA est un organisme de formation certifié Qualiopi au titre des actions de formation. Découvrez ce que la certification garantit : qualité, sérieux, conformité au Référentiel National Qualité et formations IA finançables (OPCO, France Travail selon votre situation)."
     : "Axion-IA is a Qualiopi-certified training provider for training actions. Discover what the certification guarantees: quality, seriousness, compliance with the National Quality Framework and AI trainings that can be funded (OPCO, France Travail depending on your situation).";
   return {
-    ...(await buildProductMetadata({ locale, path: PATH, title, description })),
+    ...(await buildProductMetadata({
+      locale,
+      path: PATH,
+      title,
+      description,
+      // Image de partage dédiée (2026-09-27) : ce lien est épinglé dans la
+      // « Sélection » du profil LinkedIn, où la vignette ne fait que ~190 px de
+      // large. La carte générique `/api/og` y devenait illisible ; celle-ci est
+      // calibrée pour rester lisible à cette taille. Dimensions MESURÉES.
+      // Le logo Qualiopi y figure avec sa mention obligatoire, sur fond blanc.
+      ogImage: `${SITE_URL}/og/pages/formations-certifiees-qualiopi.png`,
+      ogImageWidth: 1200,
+      ogImageHeight: 628,
+    })),
     title: { absolute: title },
   };
 }

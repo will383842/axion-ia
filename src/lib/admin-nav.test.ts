@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
+import { IMPRIMES } from "@/content/imprimes";
+import { QR_CATEGORIES } from "@/features/admin-qr-codes/categories";
 import {
+  ADMIN_LIENS_EPINGLES,
+  ID_TRAME_ECHANGE_APPORTEUR,
   buildAdminNav,
   findActiveNavHref,
   ADMIN_NAV_GROUP_LABELS,
@@ -198,7 +202,13 @@ describe("buildAdminNav SSOT", () => {
     // +1 (2026-09-26, « Monteurs & vidéastes », indenté sous Candidatures) :
     // les deux offres vidéo freelance avec les tarifs en colonnes — la seule
     // vue qui compare des prix sans ouvrir chaque fiche. 166 + 1 = 167.
-    expect(items.length).toBe(167);
+    // +1 (2026-09-27, Dossier intervenant) : sous-onglet des Imprimés, dérivé
+    // de IMPRIMES — le dossier de conférencier de Williams, envoyé aux
+    // organisateurs d'événements qui ont répondu. 167 + 1 = 168.
+    // +1 (2026-09-28, Trame de l'échange découverte apporteur) : sous-onglet
+    // des Imprimés, dérivé de IMPRIMES — document INTERNE, téléchargeable par
+    // la seule route console `/api/admin/imprimes/<id>/<fichier>`. 168 + 1 = 169.
+    expect(items.length).toBe(169);
   });
 
   it("prefixes all INTERNAL hrefs with /fr/<adminPrefix>", () => {
@@ -321,25 +331,29 @@ describe("buildAdminNav SSOT", () => {
     expect(ADMIN_NAV_GROUP_ORDER as ReadonlyArray<string>).not.toContain("prospection");
   });
 
-  // Fusion 2026-07-12 (décision Will) : le groupe « Recrutement » est fusionné
-  // dans « Contacts » — tout ce qui entre par formulaire vit au même endroit.
-  // Les candidatures aux offres sont déplacées sous /contacts/candidatures.
-  it("le recrutement est fusionné dans le groupe contacts", () => {
+  // Fusion 2026-07-12 (décision Will) : le groupe « Recrutement » avait été
+  // fusionné dans « Contacts ». 🔴 DÉCISION REMPLACÉE le 2026-09-28 (demande
+  // Will, menu rangé par fréquence d'usage) : les deux pipelines qui vivaient
+  // dans la boîte de réception — apporteurs et candidatures emploi — ont
+  // chacun leur groupe, parce que « Apporteurs » et « Candidatures » côte à
+  // côte se lisaient l'un pour l'autre. Les URLs, elles, n'ont pas bougé.
+  it("apporteurs et candidatures emploi ont chacun leur groupe, sous leurs URLs d'origine", () => {
     const items = buildAdminNav("p");
-    expect(items.some((it) => (it.group as string) === "recrutement")).toBe(false);
-    expect(ADMIN_NAV_GROUP_ORDER as ReadonlyArray<string>).not.toContain("recrutement");
-    const candidatures = items.find((it) => it.label === "Candidatures");
-    expect(candidatures?.group).toBe("contacts");
+    const candidatures = items.find((it) => it.label === "Candidatures emploi");
+    expect(candidatures?.group).toBe("recrutement");
     expect(candidatures?.href).toBe("/fr/p/contacts/candidatures");
-    // Libellé raccourci le 2026-08-14 : « Recrutement » est désormais indenté
-    // sous « Messages », l'indentation dit ce que le préfixe disait.
-    // 🔴 Renommé « Apporteurs » le 2026-09-19 : la liste ne contient plus que
-    //    des apporteurs d'affaires, et « Recrutement » faisait croire qu'on y
-    //    trouverait les candidatures emploi. L'URL, elle, ne bouge pas.
-    const apporteurs = items.find((it) => it.label === "Apporteurs");
-    expect(apporteurs?.group).toBe("contacts");
+    expect(ADMIN_NAV_GROUP_LABELS.recrutement).toBe("Recrutement salariés");
+    const apporteurs = items.find((it) => it.label === "Candidats apporteurs");
+    expect(apporteurs?.group).toBe("apporteurs");
     expect(apporteurs?.href).toBe("/fr/p/contacts/commercial");
-    expect(items.some((it) => it.label === "Recrutement")).toBe(false);
+    expect(ADMIN_NAV_GROUP_LABELS.apporteurs).toBe("Apporteurs d'affaires");
+    // Les libellés nus, ambigus, ne reviennent pas.
+    for (const ambigu of ["Recrutement", "Apporteurs", "Candidatures"]) {
+      expect(
+        items.some((it) => it.label === ambigu),
+        ambigu,
+      ).toBe(false);
+    }
   });
 
   // ── Refonte « Boîte de réception » 2026-07-29 ───────────────────────────
@@ -349,12 +363,17 @@ describe("buildAdminNav SSOT", () => {
   // revient tout seul dès qu'on ajoute un écran sans y penser.
   describe("boîte de réception unifiée", () => {
     const items = buildAdminNav("p");
-    const visible = items.filter((it) => it.group === "contacts" && it.parent == null);
+    // Ce que la barre latérale rend dans le groupe : ni les entrées masquées
+    // (`parent`), ni l'entrée épinglée en tête de barre (`epingle`).
+    const visible = items.filter(
+      (it) => it.group === "contacts" && it.parent == null && it.epingle !== true,
+    );
 
     it("le groupe « rendez-vous » n'existe plus", () => {
       expect(items.some((it) => (it.group as string) === "rendez-vous")).toBe(false);
       expect(ADMIN_NAV_GROUP_ORDER as ReadonlyArray<string>).not.toContain("rendez-vous");
-      expect(ADMIN_NAV_GROUP_LABELS["contacts"]).toBe("Boîte de réception");
+      // « Boîte de réception » → « Contacts & demandes » le 2026-09-28.
+      expect(ADMIN_NAV_GROUP_LABELS["contacts"]).toBe("Contacts & demandes");
     });
 
     // 🔴 Révision Will 2026-08-14 : les catégories de Messages REVIENNENT dans
@@ -371,15 +390,22 @@ describe("buildAdminNav SSOT", () => {
     //   • « Apporteurs » n'est plus indentée sous « Messages ». Un apporteur
     //     n'est pas une catégorie de courrier : c'est un pipeline, comme les
     //     candidatures, à côté desquelles il est désormais rangé.
-    it("expose 6 canaux racine, un par type d'entrée réel", () => {
-      expect(visible.filter((it) => it.navLevel == null).map((it) => it.href)).toEqual([
-        "/fr/p/contacts",
-        "/fr/p/contacts/a-traiter",
-        "/fr/p/contacts/appels",
+    // 🔴 2026-09-28 — refonte du menu par fréquence d'usage (demande Will) :
+    //   • « À traiter » est ÉPINGLÉE en tête de barre (bloc « Aujourd'hui ») ;
+    //     elle garde son entrée ici, marquée `epingle`, hors de la liste ;
+    //   • « Tous les messages » ouvre le groupe, « Tout ce qui arrive » et la
+    //     liste complète des réservations Calendly suivent — les prochains
+    //     appels ont leur poste épinglé (« Rendez-vous ») ;
+    //   • apporteurs et candidatures emploi ont leur propre groupe.
+    it("rend 3 canaux racine, messages en tête ; « À traiter » est épinglée", () => {
+      expect(visible.filter((it) => (it.navLevel ?? 0) === 0).map((it) => it.href)).toEqual([
         "/fr/p/contacts/messages",
-        "/fr/p/contacts/commercial",
-        "/fr/p/contacts/candidatures",
+        "/fr/p/contacts",
+        "/fr/p/contacts/appels",
       ]);
+      const aTraiter = items.find((it) => it.href === "/fr/p/contacts/a-traiter");
+      expect(aTraiter?.group).toBe("contacts");
+      expect(aTraiter?.epingle).toBe(true);
     });
 
     // 🔴 2026-09-04 — cette assertion s'appelait « les 8 catégories de Messages »
@@ -394,32 +420,34 @@ describe("buildAdminNav SSOT", () => {
     // Messages glissée sous Candidatures serait passée au vert alors qu'elle
     // paraîtrait appartenir aux candidatures.
     it("chaque entrée indentée est rendue sous LE canal auquel elle appartient", () => {
-      const enfants = visible.filter((it) => it.navLevel === 2);
-      // 2026-09-23 : les SEPT catégories de Messages sont masquées par `parent`
-      // — mesuré en production, six ne contenaient rien et « Autres » montrait
-      // exactement ce que montre « Messages ». Elles restent dans ⌘K et
-      // joignables par URL (test « URLs historiques » ci-dessous). Ne restent
-      // indentées que les deux entrées de Candidatures.
-      expect(enfants.map((it) => it.label)).toEqual([
-        // Les deux offres vidéo freelance, tarifs en colonnes (2026-09-26).
-        "Monteurs & vidéastes",
-        "Suivi des candidatures emploi",
-        // Les offres qu'on publie sont l'autre moitié des candidatures qu'on
-        // reçoit : rangées sous elles, plus dans « Contenu ».
-        "Offres d'emploi",
-      ]);
+      // 2026-09-23 : les SEPT catégories de Messages avaient été masquées par
+      // `parent` (six vides, « Autres » répétait « Messages »). 2026-09-28 :
+      // « Demandes clients » revient, à la demande de Will ; les six autres
+      // restent masquées (test « URLs historiques » ci-dessous).
+      const enfants = visible.filter((it) => (it.navLevel ?? 0) > 0);
+      expect(enfants.map((it) => it.label)).toEqual(["Demandes clients"]);
 
       // La sidebar est une liste à plat que seule l'indentation hiérarchise :
       // un enfant paraît appartenir au dernier canal racine qui le précède.
       const racines = visible
         .map((it, index) => ({ it, index }))
-        .filter(({ it }) => it.navLevel == null);
+        .filter(({ it }) => (it.navLevel ?? 0) === 0);
       const canalDe = (enfant: (typeof visible)[number]) =>
         racines.filter(({ index }) => index < visible.indexOf(enfant)).at(-1)?.it.href;
 
       for (const enfant of enfants) {
-        expect(canalDe(enfant), enfant.label).toBe("/fr/p/contacts/candidatures");
+        expect(canalDe(enfant), enfant.label).toBe("/fr/p/contacts/messages");
       }
+    });
+
+    it("les vues de Candidatures sont indentées sous « Candidatures emploi »", () => {
+      const recrutement = items.filter((it) => it.group === "recrutement" && it.parent == null);
+      expect(recrutement.map((it) => [it.label, it.navLevel ?? 0])).toEqual([
+        ["Candidatures emploi", 0],
+        ["Monteurs & vidéastes", 1],
+        ["Suivi des candidatures", 1],
+        ["Offres d'emploi", 1],
+      ]);
     });
 
     // Le cœur du problème d'origine : trois entrées pour la même table
@@ -448,8 +476,11 @@ describe("buildAdminNav SSOT", () => {
     //    se construit sur `buildAdminNav`, donc une entrée retirée du menu
     //    disparaîtrait AUSSI de la recherche. Masquer, jamais faire disparaître.
     it("les vues filtrées de Submission gardent leurs URLs historiques", () => {
+      // « Demandes clients » (/contacts/clients) n'est plus dans cette liste :
+      // elle est revenue dans la barre latérale le 2026-09-28, sans `parent`.
+      // Son URL ne bouge pas — c'est le test de l'ensemble des href qui le dit.
+      expect(items.find((it) => it.href === "/fr/p/contacts/clients")?.parent).toBeUndefined();
       for (const href of [
-        "/fr/p/contacts/clients",
         "/fr/p/contacts/presse",
         "/fr/p/contacts/partenariats",
         "/fr/p/contacts/investisseurs",
@@ -468,9 +499,12 @@ describe("buildAdminNav SSOT", () => {
       //    du menu disparaît AUSSI de la recherche, et la route ne serait plus
       //    joignable qu'en tapant l'adresse. Indenter ou désindenter, oui ;
       //    faire disparaître, non.
+      // 2026-09-28 : elle vit désormais en tête du groupe « Apporteurs
+      //    d'affaires », au ras du groupe (niveau 0), jamais sous « Messages ».
       const apporteurs = items.find((it) => it.href === "/fr/p/contacts/commercial");
       expect(apporteurs).toBeDefined();
-      expect(apporteurs?.navLevel).toBeUndefined();
+      expect(apporteurs?.group).toBe("apporteurs");
+      expect(apporteurs?.navLevel ?? 0).toBe(0);
     });
 
     // « Tout » est un préfixe de tous les autres : sans priorité au préfixe le
@@ -562,8 +596,11 @@ describe("menu rangé, sans écrans vides (2026-09-19)", () => {
   });
 
   it("chaque renommage garde son URL", () => {
-    expect(parLibelle("Apporteurs")?.href).toBe(`${base}/contacts/commercial`);
-    expect(parLibelle("Suivi des candidatures emploi")?.href).toBe(
+    // Libellés du 2026-09-28 (« Apporteurs » → « Candidats apporteurs »,
+    // « Suivi des candidatures emploi » → « Suivi des candidatures », rangé
+    // sous « Candidatures emploi » dans « Recrutement salariés »).
+    expect(parLibelle("Candidats apporteurs")?.href).toBe(`${base}/contacts/commercial`);
+    expect(parLibelle("Suivi des candidatures")?.href).toBe(
       `${base}/contacts/candidatures/pilotage`,
     );
     expect(parLibelle("Demandes clients")?.href).toBe(`${base}/contacts/clients`);
@@ -596,8 +633,10 @@ describe("menu rangé, sans écrans vides (2026-09-19)", () => {
 
   it("les offres d'emploi sont rangées sous Candidatures, plus dans Contenu", () => {
     const offres = parLibelle("Offres d'emploi");
-    expect(offres?.group).toBe("contacts");
-    expect(offres?.navLevel).toBe(2);
+    // Groupe « Recrutement salariés » depuis le 2026-09-28, indentée sous
+    // « Candidatures emploi » qui y est au niveau 0.
+    expect(offres?.group).toBe("recrutement");
+    expect(offres?.navLevel).toBe(1);
     expect(offres?.href).toBe(`${base}/offres-emploi`);
   });
 
@@ -748,5 +787,320 @@ describe("phase 2 structure — verrous", () => {
     for (const it of absorbees) {
       expect(it.parent).toBe(`${base}/content-gen/coverage-map`);
     }
+  });
+});
+
+// ─── Menu rangé par fréquence d'usage (2026-09-28) ─────────────────────────
+/*
+ * Menu de la console rangé par fréquence d'usage (2026-09-28).
+ *
+ * Demande de Will : « la console est mal organisée ». Le menu comptait 17
+ * groupes et ~150 entrées visibles ; ce qui servait rarement était en haut
+ * (sept écrans de planification en tête), les e-mails en 15e position, les
+ * imprimés rangés dans « Ops & monitoring », et plusieurs libellés en double
+ * (« Tableau de bord » ×4, « Vue d'ensemble » ×4…).
+ *
+ * La refonte ne touche QUE le menu : aucune page supprimée, aucune URL
+ * changée, aucun écran fusionné. Ces verrous le prouvent.
+ */
+
+const BASE = "/fr/p";
+
+/**
+ * Les `href` du menu AVANT la refonte, relevés sur `origin/main` (94e515211)
+ * par `buildAdminNav("p")`, sans le préfixe `/fr/p`.
+ *
+ * 🔑 Les sous-onglets DÉRIVÉS de `IMPRIMES` et de `QR_CATEGORIES` n'y sont pas
+ *    recopiés : ils sont recalculés depuis leur source ci-dessous. Sans quoi un
+ *    imprimé ajouté ailleurs (la trame de la PR #1193, par exemple) ferait
+ *    rougir ce test sur `main` sans qu'aucune entrée n'ait été perdue.
+ */
+const HREFS_AVANT_REFONTE: ReadonlyArray<string> = [
+  "",
+  "/planning/hub",
+  "/planning",
+  "/planning/timeline",
+  "/planning/charge",
+  "/planning/pipeline",
+  "/planning/previsionnel",
+  "/contacts",
+  "/contacts/a-traiter",
+  "/contacts/appels",
+  "/contacts/messages",
+  "/contacts/clients",
+  "/contacts/presse",
+  "/contacts/partenariats",
+  "/contacts/investisseurs",
+  "/contacts/conferences",
+  "/podcast",
+  "/contacts/autres",
+  "/contacts/commercial",
+  "/contacts/candidatures",
+  "/contacts/candidatures/video",
+  "/contacts/candidatures/pilotage",
+  "/offres-emploi",
+  "/tunnels",
+  "/tunnels/prospects",
+  "/tunnels/vente",
+  "/connaissances",
+  "/content-gen/campaigns/new",
+  "/content-gen/coverage/presets",
+  "/content-gen/orchestrator/adhoc",
+  "/content-gen/news",
+  "/content-gen/onboarding",
+  "/content-gen",
+  "/content-gen/coverage",
+  "/content-gen/jobs",
+  "/content-gen/observatoire",
+  "/content-gen/review-queue",
+  "/content-gen/publications",
+  "/content-gen/publications-status",
+  "/content-gen/hero-images",
+  "/content-gen/citations-backfill",
+  "/content-gen/coverage-map",
+  "/content-gen/cities-order",
+  "/content-gen/city-coverage",
+  "/content-gen/cities-coverage",
+  "/content-gen/city-equity",
+  "/content-gen/geo",
+  "/content-gen/geo/coverage-table",
+  "/content-gen/quality",
+  "/content-gen/costs",
+  "/content-gen/similarity-monitor",
+  "/content-gen/brand-voice-drift",
+  "/content-gen/embeddings",
+  "/content-gen/external-links",
+  "/content-gen/settings",
+  "/content-gen/rss",
+  "/content-gen/templates",
+  "/content-gen/keyword-tracking",
+  "/content-gen/landing-variants",
+  "/content-gen/author/manon",
+  "/blog",
+  "/categories",
+  "/case-studies",
+  "/avis",
+  "/faq",
+  "/help",
+  "/qualiopi/a-traiter",
+  "/qualiopi/dossiers",
+  "/qualiopi/vente/new",
+  "/qualiopi/formations",
+  "/qualiopi/formation-engine",
+  "/qualiopi/formation-engine/validations",
+  "/qualiopi/sessions",
+  "/qualiopi/formateurs",
+  "/salaries",
+  "/coaching/formateurs",
+  "/qualiopi/remuneration",
+  "/qualiopi/audits",
+  "/qualiopi/stagiaires",
+  "/qualiopi/offres",
+  "/qualiopi/clients",
+  "/qualiopi/devis",
+  "/qualiopi/facturation",
+  "/qualiopi/facturation/new",
+  "/qualiopi/facturation/plans",
+  "/qualiopi/facturation/rapprochement",
+  "/qualiopi/financements",
+  "/qualiopi/cockpit-financier",
+  "https://apps.tiime.fr/companies/635824/home",
+  "/qualiopi/baremes-opco",
+  "/qualiopi/indicateurs",
+  "/qualiopi/pilotage",
+  "/qualiopi/appreciations",
+  "/qualiopi/reclamations",
+  "/qualiopi/mode-auditeur",
+  "/qualiopi/veille",
+  "/qualiopi/partenariats",
+  "/qualiopi/sous-traitants",
+  "/qualiopi/moyens",
+  "/qualiopi/incidents",
+  "/qualiopi/revue-direction",
+  "/qualiopi/config",
+  "/qualiopi/rgpd",
+  "/qualiopi/alertes",
+  "/qualiopi/emails",
+  "/documents-interventions/formations",
+  "/documents-interventions/un-a-un",
+  "/documents-interventions/audit",
+  "/documents-interventions/implementations",
+  "/documents-interventions/sites-web",
+  "/documents-interventions/autres",
+  "/documents-interventions/destinataires",
+  "/documents-interventions/import",
+  "/societe",
+  "/societe/identite",
+  "/societe/pieces-legales",
+  "/societe/organisme-formation",
+  "/societe/commercial",
+  "/societe/audit-methode",
+  "/societe/rgpd-securite",
+  "/coaching",
+  "/coaching/seances",
+  "/image-bank",
+  "/image-bank/library",
+  "/image-bank/upload",
+  "/image-bank/quality",
+  "/image-bank/usage-logs",
+  "/presse",
+  "/presse/communiques",
+  "/presse/kit-media",
+  "/presse/couverture",
+  "/chatbot",
+  "/chatbot/escalades",
+  "/chatbot/conversations",
+  "/chatbot/prompt",
+  "/chatbot/reglages",
+  "/analytics",
+  "/web-vitals",
+  "/emails/gabarits",
+  "/emails-envoyes",
+  "/newsletter",
+  "/newsletter/demandes-guide",
+  "/site-explorer",
+  "/site-explorer/apercus",
+  "/infra",
+  "/infra/backups",
+  "/alerts",
+  "/annonces",
+  "/annonces/liens",
+  "/synchro-crm",
+  "/qr-codes",
+  "/imprimes",
+  "/users",
+  "/activity-logs",
+  "/settings",
+  "/2fa/setup",
+];
+
+const absolu = (h: string) => (h.startsWith("https://") ? h : `${BASE}${h}`);
+
+describe("menu rangé par fréquence d'usage (2026-09-28)", () => {
+  const items = buildAdminNav("p");
+
+  it("aucune entrée perdue ni ajoutée : l'ensemble des href est EXACTEMENT celui d'avant", () => {
+    const attendus = new Set([
+      ...HREFS_AVANT_REFONTE.map(absolu),
+      ...IMPRIMES.map((i) => `${BASE}/imprimes/${i.id}`),
+      ...QR_CATEGORIES.map((c) => `${BASE}/qr-codes/${c.route}`),
+    ]);
+    const reels = new Set(items.map((it) => it.href));
+    // Contre-témoin : une liste vide des deux côtés serait « égale ».
+    expect(attendus.size).toBeGreaterThan(150);
+    expect(
+      [...reels].filter((h) => !attendus.has(h)),
+      "entrées apparues",
+    ).toEqual([]);
+    expect(
+      [...attendus].filter((h) => !reels.has(h)),
+      "entrées perdues",
+    ).toEqual([]);
+    // Aucun doublon ne se cache derrière l'égalité des ensembles.
+    expect(items.length).toBe(reels.size);
+  });
+
+  it("les groupes suivent l'ordre d'usage demandé", () => {
+    expect(ADMIN_NAV_GROUP_ORDER.map((g) => ADMIN_NAV_GROUP_LABELS[g])).toEqual([
+      "Contacts & demandes",
+      "Apporteurs d'affaires",
+      "Recrutement salariés",
+      "E-mails",
+      "Formations & prestations",
+      "Coaching 1-to-1",
+      "Finances",
+      "Imprimés & QR",
+      "Contenu du site",
+      "Génération de contenu",
+      "Tunnels",
+      "Planification",
+      "Salle de presse",
+      "Chatbot",
+      "Banque d'images",
+      "Documents",
+      "Société & conformité",
+      "Équipe",
+      "Technique",
+    ]);
+  });
+
+  it("aucun libellé en double, ni dans la barre ni dans la palette ⌘K", () => {
+    // La palette montre TOUTES les entrées, masquées comprises : l'unicité se
+    // vérifie donc sur l'ensemble, pas seulement sur ce que rend la barre.
+    const vus = new Map<string, string>();
+    const doublons: string[] = [];
+    for (const it of items) {
+      const deja = vus.get(it.label);
+      if (deja) doublons.push(`« ${it.label} » : ${deja} et ${it.href}`);
+      else vus.set(it.label, it.href);
+    }
+    expect(doublons).toEqual([]);
+  });
+
+  it("chaque renommage du menu garde son URL", () => {
+    const renommages: ReadonlyArray<[string, string]> = [
+      ["Toutes les réservations (Calendly)", "/contacts/appels"],
+      ["Candidats apporteurs", "/contacts/commercial"],
+      ["Candidatures emploi", "/contacts/candidatures"],
+      ["Pilotage", "/planning/hub"],
+      ["Occupation", "/planning/timeline"],
+      ["Affaires en cours", "/planning/pipeline"],
+      ["Générateur de formations", "/qualiopi/formation-engine"],
+      ["Vitesse du site", "/web-vitals"],
+      ["Tous les messages", "/contacts/messages"],
+      ["Chatbot — accueil", "/chatbot"],
+      ["Presse — vue d'ensemble", "/presse"],
+    ];
+    for (const [label, href] of renommages) {
+      expect(items.find((it) => it.label === label)?.href, label).toBe(`${BASE}${href}`);
+    }
+    for (const ancien of [
+      "Appels réservés",
+      "Hub de pilotage",
+      "Timeline ressources",
+      "Pipeline commercial",
+      "Formation Engine",
+      "Web Vitals",
+    ]) {
+      expect(
+        items.some((it) => it.label === ancien),
+        ancien,
+      ).toBe(false);
+    }
+    expect(Object.values(ADMIN_NAV_GROUP_LABELS)).not.toContain("Ops & monitoring");
+    expect(Object.values(ADMIN_NAV_GROUP_LABELS)).not.toContain("Activité quotidienne");
+  });
+
+  it("une entrée épinglée est déclarée dans ADMIN_LIENS_EPINGLES — la barre la rend là", () => {
+    const epinglees = items.filter((it) => it.epingle === true);
+    // Contre-témoin : sans entrée épinglée, la boucle ne vérifierait rien.
+    expect(epinglees.map((it) => it.href)).toEqual([`${BASE}/contacts/a-traiter`]);
+    const chemins = Object.values(ADMIN_LIENS_EPINGLES).map((c) => `${BASE}${c}`);
+    for (const it of epinglees) {
+      expect(chemins, it.label).toContain(it.href);
+    }
+  });
+
+  it("apporteurs : candidats, provenance, liens de campagne — sortis d'« Ops »", () => {
+    const groupe = items.filter((it) => it.group === "apporteurs" && it.parent == null);
+    const attendus = [`${BASE}/contacts/commercial`, `${BASE}/annonces`, `${BASE}/annonces/liens`];
+    // La trame de l'échange (PR #1193) les rejoint dès qu'elle est dans IMPRIMES.
+    if (IMPRIMES.some((i) => i.id === ID_TRAME_ECHANGE_APPORTEUR)) {
+      attendus.push(`${BASE}/imprimes/${ID_TRAME_ECHANGE_APPORTEUR}`);
+    }
+    expect(groupe.map((it) => it.href)).toEqual(attendus);
+  });
+
+  it("imprimés et QR ont leur groupe ; « Technique » réunit Ops et Système", () => {
+    const groupeDe = (href: string) => items.find((it) => it.href === `${BASE}${href}`)?.group;
+    expect(groupeDe("/imprimes")).toBe("imprimes");
+    expect(groupeDe("/qr-codes")).toBe("imprimes");
+    for (const i of IMPRIMES.filter((x) => x.id !== ID_TRAME_ECHANGE_APPORTEUR)) {
+      expect(groupeDe(`/imprimes/${i.id}`), i.id).toBe("imprimes");
+    }
+    for (const href of ["/web-vitals", "/alerts", "/users", "/settings", "/2fa/setup"]) {
+      expect(groupeDe(href), href).toBe("ops");
+    }
+    expect(ADMIN_NAV_GROUP_ORDER as ReadonlyArray<string>).not.toContain("system");
   });
 });

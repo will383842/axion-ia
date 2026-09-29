@@ -48,6 +48,7 @@ import {
   eraseDocumentRecipientsForEmail,
   eraseCoachingSignaturesForEmail,
   eraseCalendlyEventsForEmail,
+  eraseReponsesEntrantesForEmail,
 } from "@/lib/rgpd-erase";
 import { alertIncident } from "@/lib/telegram";
 import { empreinteSha256 } from "@/server/newsletter/exports";
@@ -129,6 +130,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     destinatairesResult,
     signaturesCoachingResult,
     appelsResult,
+    reponsesEntrantesResult,
   ] = await Promise.all([
     eraseSubmissionsForEmail(email),
     eraseNewsletterForEmail(email),
@@ -207,6 +209,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     eraseDocumentRecipientsForEmail(email),
     eraseCoachingSignaturesForEmail(email),
     eraseCalendlyEventsForEmail(email),
+    // 2026-09-27 — les réponses de la personne à son invitation d'apporteur,
+    // relevées dans la boîte Zoho : objet et extrait de SES messages.
+    eraseReponsesEntrantesForEmail(email),
   ]);
 
   // ART. 17 BI-SYSTÈME (lot L4) — le CRM efface par `person_key` dans les deux
@@ -251,6 +256,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         kbBookmarksDeleted: kbResult.bookmarksDeleted,
         chatConversationsDeleted: chatResult.conversationsDeleted,
         chatEscalationsAnonymized: chatResult.escalationsAnonymized,
+        reponsesEntrantesSupprimees: reponsesEntrantesResult.supprimees,
         // Le compte rendu du volet CRM est TRACÉ : un effacement seulement
         // local doit se voir dans le journal, jamais se supposer.
         crmStatus: crmResult.status,
@@ -337,6 +343,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       chatEscalationsAnonymized: chatResult.escalationsAnonymized,
       emailLogsPseudonymises: emailTracesResult.logsPseudonymises,
       emailOutboxSupprimes: emailTracesResult.outboxSupprimes,
+      emailCopiesSupprimees: emailTracesResult.copiesSupprimees,
+      reponsesEntrantesSupprimees: reponsesEntrantesResult.supprimees,
       crmOutboxSupprimes: crmOutboxResult.supprimees,
       podcastSupprimes: podcastResult.supprimees,
       jetonsSignatureRevoques: signatureTokensResult.revoques,
@@ -374,6 +382,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         // qu'on pratique sans la dire est indiscernable d'un oubli — et c'est
         // précisément sous cette forme que le défaut a vécu.
         "email_logs : l'adresse est PSEUDONYMISÉE, la ligne conservée. C'est la preuve que vous avez été informé (convocation, convention, attestation), exigée par la certification Qualiopi et couverte par l'art. 17(3)(b) et (e) RGPD. Elle ne permet plus de vous identifier.",
+        "email_log_contents : la COPIE des e-mails qui vous ont été envoyés (objet, texte) est SUPPRIMÉE. Seule la ligne pseudonymisée du journal subsiste.",
         "email_outbox : SUPPRIMÉ intégralement — messages non envoyés, charge utile comprise. Aucune base légale ne justifie de les conserver.",
         "podcast_requests : SUPPRIMÉ intégralement (nom, adresse, téléphone, ville, activité). Aucun contrat, aucune obligation comptable : rien ne justifiait de les conserver.",
         "booking_options : SUPPRIMÉ intégralement. Une option de réservation non confirmée ne fonde aucune obligation.",

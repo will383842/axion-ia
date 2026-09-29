@@ -70,6 +70,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: t.meta.title,
     description: t.meta.description,
     alternates: { fr: "/guide-ia", en: "/ai-guide" },
+    // Image de partage dédiée (2026-09-27) : ce lien est épinglé dans la
+    // « Sélection » du profil LinkedIn, où la vignette ne fait que ~190 px de
+    // large. La carte générique `/api/og` y devenait illisible ; celle-ci est
+    // calibrée pour rester lisible à cette taille. Dimensions MESURÉES.
+    ogImage: `${SITE_URL}/og/pages/guide-ia-2026-gratuit.png`,
+    ogImageWidth: 1200,
+    ogImageHeight: 628,
   });
 }
 

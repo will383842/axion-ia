@@ -5,7 +5,7 @@
  * Écrit une fois, utilisé par le hub et par chaque sous-onglet. Recopier ce
  * rendu dans chaque page les ferait diverger en silence.
  */
-import { AlertTriangle, ExternalLink, FileWarning } from "lucide-react";
+import { AlertTriangle, Download, ExternalLink, FileWarning, Lock } from "lucide-react";
 
 import type { Imprime } from "@/content/imprimes";
 
@@ -17,19 +17,129 @@ export interface FichierMesure {
   present: boolean;
 }
 
+/** Un fichier interne, mesuré sous `private/imprimes/`, avec son lien gardé. */
+export interface FichierInterneMesure {
+  fichier: string;
+  nom: string;
+  role: string;
+  href: string;
+  poids: string;
+  present: boolean;
+}
+
 export function FichiersImprime({
   imprime,
   mesures,
+  internes = [],
+  internesAutorises = false,
   adminPrefix,
 }: {
   imprime: Imprime;
   mesures: ReadonlyArray<FichierMesure>;
+  internes?: ReadonlyArray<FichierInterneMesure>;
+  /** Le rôle connecté peut-il télécharger les fichiers internes ? */
+  internesAutorises?: boolean;
   adminPrefix: string;
 }) {
   const manquants = mesures.filter((m) => !m.present);
+  const internesManquants = internes.filter((m) => !m.present);
 
   return (
     <>
+      {imprime.usageInterne ? (
+        <p
+          role="note"
+          className="admin-card"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "var(--space-admin-2)",
+            fontWeight: 600,
+            marginBottom: "var(--space-admin-4)",
+          }}
+        >
+          <Lock size={18} aria-hidden="true" style={{ flex: "none" }} />
+          {imprime.usageInterne}
+        </p>
+      ) : null}
+
+      {internes.length > 0 ? (
+        <section className="admin-card" style={{ marginBottom: "var(--space-admin-4)" }}>
+          <h2 className="admin-section-title">Réservé à l’équipe</h2>
+
+          {internesManquants.length > 0 ? (
+            <p
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "var(--space-admin-2)",
+                fontWeight: 600,
+              }}
+            >
+              <AlertTriangle size={18} aria-hidden="true" />
+              {internesManquants.length} fichier(s) absent(s) de l’image :{" "}
+              {internesManquants.map((m) => m.nom).join(", ")} — le téléchargement renverra 404.
+            </p>
+          ) : null}
+
+          <div className="admin-table-wrapper">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Fichier</th>
+                  <th>À quoi il sert</th>
+                  <th style={{ textAlign: "right" }}>Poids</th>
+                </tr>
+              </thead>
+              <tbody>
+                {internes.map((f) => (
+                  <tr key={f.fichier}>
+                    <td style={{ whiteSpace: "nowrap" }}>
+                      {f.present && internesAutorises ? (
+                        <a
+                          href={f.href}
+                          download={f.fichier}
+                          style={{
+                            fontWeight: 600,
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 6,
+                          }}
+                        >
+                          {f.nom}
+                          <Download size={14} aria-hidden="true" />
+                        </a>
+                      ) : (
+                        <span style={{ fontWeight: 600, opacity: 0.6 }}>
+                          {f.nom} — {f.present ? "réservé aux administrateurs" : "absent"}
+                        </span>
+                      )}
+                      <div style={{ fontSize: "0.8em", opacity: 0.6 }}>{f.fichier}</div>
+                    </td>
+                    <td style={{ fontSize: "0.9em" }}>{f.role}</td>
+                    <td
+                      style={{
+                        textAlign: "right",
+                        fontVariantNumeric: "tabular-nums",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {f.poids}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <p style={{ marginTop: "var(--space-admin-3)", marginBottom: 0, opacity: 0.75 }}>
+            Ces fichiers n’ont aucune adresse publique : ils ne sortent que par la console, pour un
+            compte administrateur. Le lien de téléchargement ne fonctionne pas hors session —
+            inutile de le copier dans un e-mail.
+          </p>
+        </section>
+      ) : null}
+
       {mesures.length > 0 ? (
         <section className="admin-card" style={{ marginBottom: "var(--space-admin-4)" }}>
           <h2 className="admin-section-title">En ligne</h2>

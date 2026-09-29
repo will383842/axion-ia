@@ -144,7 +144,11 @@ describe("verdictAvantEnvoi — désabonnement", () => {
 
   it("🔴 2026-09-19 : l'opposition retient AUSSI les relances et l'invitation du réseau d'apporteurs", async () => {
     oppositionFindUnique.mockResolvedValue({ id: "opp-1" });
-    for (const template of ["lead-apporteur-relance", "apporteur-invitation-appel"]) {
+    for (const template of [
+      "lead-apporteur-relance",
+      "apporteur-invitation-appel",
+      "apporteur-invitation-relance",
+    ]) {
       const v = await verdictAvantEnvoi("oppose@exemple.fr", { template, marketing: false });
       expect(v, template).toEqual({ retenu: true, motif: "oppose", depuis: null });
     }

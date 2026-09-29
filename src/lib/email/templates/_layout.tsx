@@ -638,10 +638,16 @@ export interface EmailLayoutProps {
    * - `"equipe"` : « L'équipe Axion-IA » — accusés de réception, où la
    *   personne qui répondra n'est pas encore désignée.
    *
+   * - `"fondateur-court"` : nom, rôle et LinkedIn SEULEMENT (2026-09-27) —
+   *   pour les candidats apporteurs, qu'on tutoie : la phrase de
+   *   positionnement (vouvoiement, discours client) et « Prendre rendez-vous »
+   *   (l'agenda CLIENT) n'ont rien à faire dans un message qui les invite à
+   *   leur propre échange.
+   *
    * ⛔ Aucun numéro de téléphone dans ce bloc (Will, 2026-09-23 : son numéro
    * ne figure que dans la signature Presse de Zoho).
    */
-  signature?: boolean | "fondateur" | "equipe";
+  signature?: boolean | "fondateur" | "fondateur-court" | "equipe";
   /**
    * Tutoiement — lot 4 (2026-09-02). Le tunnel « devenir commercial » tutoie
    * de bout en bout (page, assistant, erreurs) et son e-mail de confirmation
@@ -819,9 +825,13 @@ export function EmailLayout({
   const bandeau = regime.bandeauConfiance && trust === true;
   const partage = regime.partage && snowball !== undefined;
   const signatureVisible =
-    (signature === true || signature === "fondateur" || signature === "equipe") &&
+    (signature === true ||
+      signature === "fondateur" ||
+      signature === "fondateur-court" ||
+      signature === "equipe") &&
     (famille === "B" || famille === "D");
   const signatureEquipe = signature === "equipe";
+  const signatureCourte = signature === "fondateur-court";
 
   const avgFr = rs.avg.toFixed(1).replace(".", locale === "fr" ? "," : ".");
   const reviewLine = `★★★★★  ${avgFr}/5 — ${rs.count} ${t.reviewsWord}`;
@@ -974,19 +984,23 @@ export function EmailLayout({
                     <br />
                   </>
                 )}
-                <span style={{ color: C.muted, fontStyle: "italic" }}>
-                  {t.signaturePositionnement}
-                </span>
-                <br />
-                <span style={{ color: C.muted, fontSize: "13px" }}>{t.signatureServices}</span>
-                <br />
-                <Link
-                  href={avecUtm(APPEL_URL, famille, "signature", campagne)}
-                  style={{ color: C.orangeDeep, fontWeight: 600 }}
-                >
-                  {t.signatureRdv}
-                </Link>
-                {" · "}
+                {!signatureCourte && (
+                  <>
+                    <span style={{ color: C.muted, fontStyle: "italic" }}>
+                      {t.signaturePositionnement}
+                    </span>
+                    <br />
+                    <span style={{ color: C.muted, fontSize: "13px" }}>{t.signatureServices}</span>
+                    <br />
+                    <Link
+                      href={avecUtm(APPEL_URL, famille, "signature", campagne)}
+                      style={{ color: C.orangeDeep, fontWeight: 600 }}
+                    >
+                      {t.signatureRdv}
+                    </Link>
+                    {" · "}
+                  </>
+                )}
                 <Link
                   href={signatureEquipe ? SOCIALS.linkedinCompany : SOCIALS.linkedinWilliams}
                   style={{ color: C.orangeDeep, fontWeight: 600 }}

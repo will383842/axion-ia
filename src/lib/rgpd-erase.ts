@@ -87,6 +87,33 @@ export async function eraseSubmissionsForEmail(email: string): Promise<EraseSubm
 }
 
 /**
+ * Supprime les RÉPONSES que la personne a envoyées par e-mail à son invitation
+ * d'apporteur, relevées dans la boîte Zoho (`submission_inbound_replies`,
+ * 2026-09-27) : objet et extrait de SES messages.
+ *
+ * Suppression hard : la ligne ne prouve rien (le message lui-même vit dans la
+ * boîte Zoho, hors de ce système), et l'anonymisation in-place de la fiche ne
+ * la toucherait pas — elle survivrait, rattachée à une fiche « effacée ».
+ *
+ * 🔑 Par l'EMPREINTE DE L'EXPÉDITEUR, jamais par la fiche : cette fonction
+ * tourne EN MÊME TEMPS que `eraseSubmissionsForEmail`, qui remet
+ * `contactEmailHash` à NULL — une jointure sur la fiche pourrait ne plus rien
+ * trouver. L'empreinte de l'expéditeur, elle, est posée à l'enregistrement et
+ * ne bouge pas (le relevé n'enregistre qu'un expéditeur dont l'empreinte est
+ * celle de la fiche).
+ */
+export async function eraseReponsesEntrantesForEmail(
+  email: string,
+): Promise<{ readonly supprimees: number }> {
+  const empreinte = hashEmailForLookup(email);
+  if (!empreinte) return { supprimees: 0 };
+  const r = await prisma.submissionInboundReply.deleteMany({
+    where: { fromEmailHash: empreinte },
+  });
+  return { supprimees: r.count };
+}
+
+/**
  * Supprime hard le NewsletterSubscriber ayant `email`. Si consent retiré,
  * aucune raison de conserver la ligne (pas d'audit business).
  */
@@ -169,6 +196,8 @@ export interface EraseEmailTracesResult {
   readonly logsPseudonymises: number;
   /** Lignes de `email_outbox` supprimées (messages non envoyés). */
   readonly outboxSupprimes: number;
+  /** Copies d'e-mails envoyés (`email_log_contents`) supprimées. */
+  readonly copiesSupprimees: number;
 }
 
 /**
@@ -208,6 +237,28 @@ export async function eraseEmailTracesForEmail(email: string): Promise<EraseEmai
   // Une SEULE écriture de ce format dans le module — un format recopié diverge.
   const pseudonyme = `erased:${hashEmail(email)}@erased.local`;
 
+  // 2026-09-27 — LA COPIE DES E-MAILS ENVOYÉS, D'ABORD, et hors du
+  // `Promise.all` : elle se retrouve par l'adresse de sa ligne de journal, que
+  // la pseudonymisation ci-dessous va réécrire. Lancées ensemble, la
+  // suppression pourrait ne plus rien trouver.
+  //
+  // Supprimée, pas pseudonymisée : la PREUVE d'envoi est la ligne du journal
+  // (qui reste) ; la copie porte le CONTENU — nom, formation, dates, montants —
+  // et rien ne justifie de le garder pour une personne qui a demandé l'oubli.
+  //
+  // Deux requêtes plutôt qu'un filtre de relation : les identifiants d'abord,
+  // la suppression ensuite — une personne n'a que quelques envois.
+  const sesEnvois = await prisma.emailLog.findMany({
+    where: { recipient: email },
+    select: { id: true },
+  });
+  const copies =
+    sesEnvois.length > 0
+      ? await prisma.emailLogContent.deleteMany({
+          where: { emailLogId: { in: sesEnvois.map((l) => l.id) } },
+        })
+      : { count: 0 };
+
   const [logs, outbox] = await Promise.all([
     prisma.emailLog.updateMany({
       where: { recipient: email },
@@ -216,7 +267,11 @@ export async function eraseEmailTracesForEmail(email: string): Promise<EraseEmai
     prisma.emailOutbox.deleteMany({ where: { recipient: email } }),
   ]);
 
-  return { logsPseudonymises: logs.count, outboxSupprimes: outbox.count };
+  return {
+    logsPseudonymises: logs.count,
+    outboxSupprimes: outbox.count,
+    copiesSupprimees: copies.count,
+  };
 }
 
 export interface EraseCrmOutboxResult {
@@ -603,6 +658,16 @@ export async function eraseCalendlyEventsForEmail(email: string): Promise<EraseC
    * `inviteeEmail` désigne le TITULAIRE de la réservation, jamais ses invités.
    * Verrou : `src/lib/__tests__/un-invite-ne-voit-pas-la-fiche-du-prospect.spec.ts`.
    */
+
+  // La note du suivi après l'appel (2026-09-27) est une appréciation écrite
+  // SUR la personne : elle part avec le reste. AVANT l'anonymisation
+  // ci-dessous, qui remplace l'adresse par laquelle on retrouve la ligne. Le
+  // constat (a eu lieu / absent) reste, comme le statut du rendez-vous.
+  await prisma.rendezVousSuivi.updateMany({
+    where: { calendlyEvent: { inviteeEmail: email } },
+    // 2026-09-28 — la note /20 d'un échange apporteur part avec sa phrase.
+    data: { note: null, noteSur20: null },
+  });
 
   // UNE SEULE instruction, donc atomique : la ligne perd ses coordonnées ET
   // sort de la fenêtre du cron au même instant. En deux temps, un passage de

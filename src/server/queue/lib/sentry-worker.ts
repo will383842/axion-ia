@@ -115,6 +115,8 @@ export type WorkerName =
   | "vivier-crons"
   // Lot L2 2026-09-24 — rattrapage horaire et sentinelle du guide IA
   | "guide-ia-crons"
+  // 2026-09-27 — rappels J+3 / J+7 de l'invitation à l'échange apporteur
+  | "apporteur-crons"
   // Qualiopi S5 2026-08-26 — production documentaire au jalon (queue horaire
   // `documents-auto`). Nom distinct de `formation-crons` : le rendu react-pdf
   // et l'upload R2 echouent pour d'autres raisons que les crons d'e-mail, et

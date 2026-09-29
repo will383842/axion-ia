@@ -13,8 +13,9 @@ import { auth } from "@/auth";
 import { AdminPageHeader } from "@/components/admin/ui";
 import { IMPRIMES, imprimeParId } from "@/content/imprimes";
 import { FichiersImprime } from "@/features/admin-imprimes/FichiersImprime";
-import { mesurerImprime } from "@/features/admin-imprimes/mesurer";
+import { mesurerFichiersInternes, mesurerImprime } from "@/features/admin-imprimes/mesurer";
 import { RelecturePrixKdp } from "@/features/admin-imprimes/RelecturePrixKdp";
+import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
 
 export const dynamic = "force-dynamic";
 
@@ -40,7 +41,10 @@ export default async function ImprimeDetailPage({ params }: PageProps) {
   const imprime = imprimeParId(id);
   if (!imprime) notFound();
 
-  const mesures = await mesurerImprime(imprime);
+  const [mesures, internes] = await Promise.all([
+    mesurerImprime(imprime),
+    mesurerFichiersInternes(imprime),
+  ]);
 
   return (
     <div>
@@ -50,7 +54,15 @@ export default async function ImprimeDetailPage({ params }: PageProps) {
         <b>Format :</b> {imprime.format}
       </p>
 
-      <FichiersImprime imprime={imprime} mesures={mesures} adminPrefix={adminPrefix} />
+      <FichiersImprime
+        imprime={imprime}
+        mesures={mesures}
+        internes={internes}
+        // Même prédicat que la route de téléchargement : un lien qui répondrait
+        // 403 ne s'affiche pas.
+        internesAutorises={peutOuvrirDossierCandidat((session.user as { role?: string }).role)}
+        adminPrefix={adminPrefix}
+      />
 
       {imprime.id === "livre-kdp" ? <RelecturePrixKdp /> : null}
     </div>

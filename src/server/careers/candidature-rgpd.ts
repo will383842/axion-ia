@@ -34,6 +34,7 @@ import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { deleteCv } from "@/server/careers/cv-storage";
+import { supprimerVideosCandidature } from "@/server/careers/videos-candidat";
 
 /**
  * Nombre maximal de candidatures déchiffrées lors du repli.
@@ -138,6 +139,8 @@ export async function effacerCandidaturesPour(email: string): Promise<{
         // candidature en base, c'est-à-dire l'inverse du droit exercé.
       }
     }
+    // Vidéos déposées (2026-09-28) : le dossier entier, avant la ligne.
+    await supprimerVideosCandidature(c.id);
     await prisma.jobApplication.delete({ where: { id: c.id } });
     supprimees += 1;
   }

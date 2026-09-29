@@ -382,9 +382,37 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   "apporteur-invitation-appel": {
     categorie: "recrutement",
     quand:
-      "Envoyé par un administrateur depuis la fiche du contact (Contacts › Commercial) ou lors d'une saisie manuelle — jamais automatiquement",
+      "Envoyé par un administrateur depuis la fiche du contact (Contacts › Commercial), lors d'une saisie manuelle ou depuis la fiche d'une candidature à une offre d'emploi (« Proposer le réseau d'apporteurs », variante « une autre proposition ») — jamais automatiquement",
     destinataire: "la personne intéressée par le réseau d'apporteurs",
     source: "features/commercial-application/invitation-apporteur.ts",
+  },
+  "apporteur-invitation-relance": {
+    categorie: "recrutement",
+    quand:
+      "J+3 puis J+7 après l'invitation à l'échange, si la personne n'a ni réservé, ni reçu de réponse, ni été archivée — passage quotidien à 10 h (Paris), deux rappels au plus",
+    destinataire: "la personne invitée à l'échange apporteur",
+    source: "features/commercial-application/relances-invitation-apporteur.ts",
+  },
+  "apporteur-issue-absent": {
+    categorie: "recrutement",
+    quand:
+      "Après un échange apporteur manqué : bouton « Absent » de la fiche ou de la carte du rendez-vous, aperçu puis confirmation — une fois par personne, jamais à la deuxième absence",
+    destinataire: "le candidat apporteur absent à son échange",
+    source: "features/admin-rendezvous/issue-apporteur-envoi.ts",
+  },
+  "apporteur-issue-retenu": {
+    categorie: "recrutement",
+    quand:
+      "Après l'échange apporteur : bouton « Retenu », aperçu puis confirmation — une fois par personne",
+    destinataire: "le candidat apporteur retenu",
+    source: "features/admin-rendezvous/issue-apporteur-envoi.ts",
+  },
+  "apporteur-issue-non-retenu": {
+    categorie: "recrutement",
+    quand:
+      "Après l'échange apporteur : bouton « Non retenu », aperçu puis confirmation — une fois par personne ; la fiche est classée sans suite",
+    destinataire: "le candidat apporteur non retenu",
+    source: "features/admin-rendezvous/issue-apporteur-envoi.ts",
   },
   "vivier-information": {
     categorie: "recrutement",
@@ -400,6 +428,14 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   },
 
   // ── RGPD ──────────────────────────────────────────────────────────────────
+  "preavis-sous-traitants": {
+    categorie: "rgpd",
+    quand:
+      "Préavis de 30 jours aux clients actifs avant l'enregistrement des visioconférences — mis en file UNE fois par le script du chantier visio, toujours garé dans « E-mails à valider »",
+    destinataire:
+      "le contact d'un client actif (au moins un devis, une facture, une session, un contrat ou un dossier)",
+    source: "server/visio/preavis-envoi.ts",
+  },
   "rgpd-demande-recue": {
     categorie: "rgpd",
     quand: "Accusé de réception d'une demande RGPD",

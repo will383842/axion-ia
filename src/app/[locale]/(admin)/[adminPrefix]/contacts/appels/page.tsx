@@ -28,7 +28,12 @@
 // La liste reste à `?vue=liste`, le calendrier à `?vue=calendrier`.
 
 import Link from "next/link";
-import { getRdvMonth, listRendezVous } from "@/features/admin-rendezvous/queries";
+import {
+  getRdvMonth,
+  listRendezVous,
+  lirePointsDesRendezVous,
+} from "@/features/admin-rendezvous/queries";
+import { libelleDuPoint, type PointLu } from "@/features/admin-rendezvous/point";
 import {
   RDV_STATUS_LABELS,
   type PublicRdv,
@@ -57,9 +62,11 @@ import type { AdminTableColumn } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardeLectureAppels } from "@/features/admin-calendly/acces";
 import { ManualCalendlyEventButton } from "@/components/admin/contacts/ManualCalendlyEventButton";
+import { RejoindreVisioBouton } from "@/components/admin/contacts/RejoindreVisioBouton";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { adminPath } from "@/lib/admin-path";
 
 export const dynamic = "force-dynamic";
 
@@ -163,19 +170,27 @@ function lien(base: string, params: Record<string, string | number | undefined>)
   return texte ? `${base}?${texte}` : base;
 }
 
-/** Une ligne de rendez-vous, telle que la montrent les vues Jour et Calendrier. */
-function LigneRdv({ r }: { r: UnifiedRdv }) {
+/**
+ * Une ligne de rendez-vous, telle que la montrent les vues Jour et Calendrier.
+ *
+ * Le bouton « Rejoindre la visio » est posé À CÔTÉ du lien vers la fiche, pas
+ * dedans : un lien dans un lien n'est pas du HTML valide, et le doigt doit
+ * pouvoir viser l'un sans déclencher l'autre sur téléphone.
+ */
+//
+// Le bouton suit `momentVisio` (il disparaît 30 min après la fin), PAS le
+// statut affiché : celui-ci passe à « Passé » dès l'heure de fin, et un appel
+// qui déborde perdrait son bouton en pleine visio. Seule l'annulation le retire.
+function LigneRdv({ r, point }: { r: UnifiedRdv; point?: PointLu | undefined }) {
+  const quand = r.timeConfirmed && r.startTime ? timeInParis(r.startTime) : "heure ?";
   return (
-    <li>
+    <li className="flex flex-wrap items-stretch gap-2">
       <Link
         href={r.detailHref}
-        className="flex items-center justify-between gap-2 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-3 hover:bg-[color:var(--color-admin-surface-hover)]"
+        className="flex min-w-0 flex-1 items-center justify-between gap-2 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-3 hover:bg-[color:var(--color-admin-surface-hover)]"
       >
         <span>
-          <span className="font-semibold">
-            {r.timeConfirmed && r.startTime ? timeInParis(r.startTime) : "heure ?"}
-          </span>{" "}
-          — {r.title}
+          <span className="font-semibold">{quand}</span> — {r.title}
           {r.contactName ? (
             <span className="text-[color:var(--color-admin-fg-muted)]"> · {r.contactName}</span>
           ) : null}
@@ -184,12 +199,42 @@ function LigneRdv({ r }: { r: UnifiedRdv }) {
           <PastillePublic titre={r.title} />
           <PastilleFormat format={r.format} />
           <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-            {RDV_STATUS_LABELS[r.status]} ›
+            {libelleStatut(r, point)} ›
           </span>
         </span>
       </Link>
+      {r.lienVisio && r.status !== "canceled" ? (
+        <span className="flex items-center">
+          <RejoindreVisioBouton href={r.lienVisio} debut={r.startTime} fin={r.endTime} />
+        </span>
+      ) : null}
     </li>
   );
+}
+
+/**
+ * Le statut affiché, avec l'issue du point quand il existe (2026-09-28).
+ *
+ * « Passé » dit que l'heure est écoulée, pas que l'échange a eu lieu : dès que
+ * le point est fait, c'est lui qui parle (« A eu lieu · Retenu », « Absent »…).
+ * Une annulation garde son statut : il n'y a pas de point sur un appel annulé.
+ */
+function libelleStatut(r: UnifiedRdv, point: PointLu | undefined): string {
+  return point && r.status !== "canceled" ? libelleDuPoint(point) : RDV_STATUS_LABELS[r.status];
+}
+
+/**
+ * Les points des rendez-vous affichés. Information ACCESSOIRE : si la lecture
+ * échoue, la page retombe sur les statuts d'avant, elle ne tombe pas.
+ */
+async function pointsDe(rows: readonly UnifiedRdv[]): Promise<Map<string, PointLu>> {
+  try {
+    return await lirePointsDesRendezVous(
+      rows.filter((r) => r.source === "calendly").map((r) => r.sourceRecordId),
+    );
+  } catch {
+    return new Map();
+  }
 }
 
 interface PageProps {
@@ -335,6 +380,7 @@ export default async function AppelsPage({
     const prev = month === 1 ? { y: year - 1, m: 12 } : { y: year, m: month - 1 };
     const next = month === 12 ? { y: year + 1, m: 1 } : { y: year, m: month + 1 };
     const dayRdv = selectedDate ? (byDay.get(selectedDate) ?? []) : [];
+    const pointsJourChoisi = await pointsDe(dayRdv);
 
     return (
       <>
@@ -388,7 +434,7 @@ export default async function AppelsPage({
             ) : (
               <ul className="mt-[var(--space-admin-3)] space-y-2">
                 {dayRdv.map((r) => (
-                  <LigneRdv key={r.key} r={r} />
+                  <LigneRdv key={r.key} r={r} point={pointsJourChoisi.get(r.sourceRecordId)} />
                 ))}
               </ul>
             )}
@@ -408,6 +454,7 @@ export default async function AppelsPage({
     const jour = lireJour(sp["date"]) ?? aujourdhui;
     const [anneeJour = 1970, moisJour = 1] = jour.split("-").map(Number);
     const rdvJour = (await getRdvMonth(anneeJour, moisJour, optionsPublic)).get(jour) ?? [];
+    const pointsJour = await pointsDe(rdvJour);
     const veille = decalerJour(jour, -1);
     const lendemain = decalerJour(jour, 1);
 
@@ -415,6 +462,16 @@ export default async function AppelsPage({
       <>
         {header}
         <div className="mb-[var(--space-admin-4)]">{tabs}</div>
+
+        {/* Les prochains rendez-vous, avec leur bouton de visio, ont leur
+            propre onglet (épinglé sous « Agenda »). Cet écran-ci reste celui
+            des réservations, jour par jour. */}
+        <p className="mt-[var(--space-admin-4)]">
+          <Link href={adminPath("fr", "rendez-vous")} className="admin-link">
+            Voir les rendez-vous à venir, avec le lien de visio ›
+          </Link>
+        </p>
+
         {banner}
 
         <div className="mt-[var(--space-admin-4)] mb-[var(--space-admin-4)] flex flex-wrap items-center gap-2">
@@ -448,7 +505,7 @@ export default async function AppelsPage({
         ) : (
           <ul className="mt-[var(--space-admin-3)] space-y-2">
             {rdvJour.map((r) => (
-              <LigneRdv key={r.key} r={r} />
+              <LigneRdv key={r.key} r={r} point={pointsJour.get(r.sourceRecordId)} />
             ))}
           </ul>
         )}
@@ -468,6 +525,7 @@ export default async function AppelsPage({
     ...(sp["to"] ? { to: sp["to"] } : {}),
   });
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const points = await pointsDe(rows);
 
   const columns: ReadonlyArray<AdminTableColumn<UnifiedRdv>> = [
     {
@@ -508,7 +566,23 @@ export default async function AppelsPage({
       header: INTITULE_FORMAT,
       cell: (r) => <PastilleFormat format={r.format} />,
     },
-    { key: "status", header: "Statut", cell: (r) => RDV_STATUS_LABELS[r.status] },
+    {
+      key: "status",
+      header: "Statut",
+      cell: (r) => libelleStatut(r, points.get(r.sourceRecordId)),
+    },
+    {
+      key: "visio",
+      header: "Visio",
+      cell: (r) =>
+        r.lienVisio && r.status !== "canceled" ? (
+          // Au-dessus du lien étiré de la ligne (`z-[1]` dans `AdminTable`) :
+          // sans lui, le clic ouvrirait la fiche au lieu de la visio.
+          <span className="relative z-[2] inline-flex">
+            <RejoindreVisioBouton href={r.lienVisio} debut={r.startTime} fin={r.endTime} compact />
+          </span>
+        ) : null,
+    },
   ];
 
   return (

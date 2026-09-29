@@ -9,7 +9,10 @@
 import { prisma } from "@/lib/prisma";
 import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import { fromCalendly, type CalendlyEventRow } from "./normalize";
-import type { PublicRdv, RdvFilters, UnifiedRdv } from "./types";
+import type { PublicRdv, RdvAVenir, RdvFilters, RdvPasse, UnifiedRdv } from "./types";
+import { etatRendezVous, invitesSupplementaires, momentVisio } from "./visio";
+import type { PointLu } from "./point";
+import { entrepriseEtBesoin, reponsesFormulaire } from "./a-venir";
 
 const CAL_SELECT = {
   id: true,
@@ -164,4 +167,166 @@ export async function getRdvMonth(
   }
   for (const arr of byDay.values()) sortWithinDay(arr);
   return byDay;
+}
+
+/** Le point déjà fait : la carte le montre au lieu de le redemander. */
+const SUIVI_SELECT = {
+  select: {
+    issue: true,
+    suite: true,
+    suiteLe: true,
+    note: true,
+    decision: true,
+    noteSur20: true,
+  },
+} as const;
+
+type SuiviBrut = {
+  issue: NonNullable<RdvAVenir["suivi"]>["issue"];
+  suite: NonNullable<RdvAVenir["suivi"]>["suite"];
+  suiteLe: Date | null;
+  note: string | null;
+  decision: "retenu" | "a_revoir" | "non_retenu" | null;
+  noteSur20: number | null;
+} | null;
+
+type LigneAvecSuivi = CalendlyEventRow & { suivi: SuiviBrut };
+
+function suiviAffiche(s: SuiviBrut): RdvAVenir["suivi"] {
+  return s
+    ? {
+        issue: s.issue,
+        suite: s.suite,
+        suiteLe: s.suiteLe ? s.suiteLe.toISOString().slice(0, 10) : null,
+        note: s.note,
+        decision: s.decision,
+        noteSur20: s.noteSur20,
+      }
+    : null;
+}
+
+/**
+ * Les rendez-vous à venir, du plus proche au plus lointain (2026-09-27).
+ *
+ * Sert l'onglet « Rendez-vous ». Un rendez-vous y reste jusqu'à 30 minutes
+ * après sa fin (`momentVisio`) : c'est pendant l'appel, et juste après, qu'on
+ * a le plus besoin de sa carte.
+ *
+ * Les annulés sont écartés : la carte d'un appel qui n'aura pas lieu est du
+ * bruit dans une liste qui répond à « qui j'appelle ? ».
+ */
+export async function listRendezVousAVenir(
+  options: { public?: PublicRdv; maintenant?: Date; limite?: number } = {},
+): Promise<RdvAVenir[]> {
+  const maintenant = options.maintenant ?? new Date();
+  const events = (await prisma.calendlyEvent.findMany({
+    where: {
+      status: "scheduled",
+      // Borne large côté base ; la fenêtre exacte (fin + 30 min) se décide
+      // ci-dessous, là où l'heure de fin manquante est gérée.
+      startTime: { gte: new Date(maintenant.getTime() - 6 * 3_600_000) },
+    },
+    select: { ...CAL_SELECT, suivi: SUIVI_SELECT },
+    orderBy: [{ startTime: "asc" }],
+    take: 200,
+  })) as LigneAvecSuivi[];
+
+  const rows = events.flatMap((e): RdvAVenir[] => {
+    if (!e.startTime) return [];
+    const moment = momentVisio(e.startTime, e.endTime, maintenant);
+    if (moment === "terminee") return [];
+    const { entreprise, besoin } = entrepriseEtBesoin(reponsesFormulaire(e.rawPayload));
+    const base = fromCalendly(e);
+    return [
+      {
+        ...base,
+        // `fromCalendly` dérive « Passé » dès la fin ; ici l'appel reste
+        // affiché 30 minutes de plus, et il est toujours programmé.
+        status: "scheduled",
+        // Le début est passé : les boutons du point s'ouvrent, et le restent
+        // pendant la grâce. L'AFFICHAGE, lui, lit `etat` (2026-09-28).
+        enCours: e.startTime.getTime() <= maintenant.getTime(),
+        etat: etatRendezVous(e.startTime, e.endTime, maintenant),
+        entreprise,
+        besoin,
+        autresInvites: invitesSupplementaires(e.rawPayload),
+        suivi: suiviAffiche(e.suivi),
+      },
+    ];
+  });
+  return filtrerParPublic(rows, options.public).slice(0, options.limite ?? 50) as RdvAVenir[];
+}
+
+/** Jusqu'où remonte l'onglet « Passés ». */
+export const JOURS_PASSES = 90;
+
+/**
+ * Les rendez-vous terminés des 90 derniers jours, du plus récent au plus
+ * ancien, avec leur point (2026-09-28).
+ *
+ * Demande de Will : « il ne faudrait pas qu'il bascule sur une page rendez-vous
+ * passés ? ». Jusque-là, un rendez-vous dont le point était fait n'était plus
+ * visible que depuis sa fiche — et un rendez-vous SANS point disparaissait en
+ * silence de « À faire le point » au bout de 30 jours. Ici il reste, marqué
+ * « Sans point ».
+ *
+ * · « terminé » = fin ≤ maintenant (`etatRendezVous`), grâce de 30 minutes
+ *   comprise : un rendez-vous qui vient de finir est à la fois sur sa carte
+ *   « À venir » et ici — c'est voulu, il est bien terminé ;
+ * · les annulés sont exclus : il n'y a rien à constater ;
+ * · `no_show` / `completed` posés à la main restent : ce sont des rendez-vous
+ *   passés, et leur point est peut-être encore à faire.
+ */
+export async function listRendezVousPasses(
+  options: { public?: PublicRdv; maintenant?: Date; jours?: number } = {},
+): Promise<RdvPasse[]> {
+  const maintenant = options.maintenant ?? new Date();
+  const jours = options.jours ?? JOURS_PASSES;
+  const events = (await prisma.calendlyEvent.findMany({
+    where: {
+      status: { in: ["scheduled", "no_show", "completed"] },
+      startTime: {
+        gte: new Date(maintenant.getTime() - jours * 86_400_000),
+        lte: maintenant,
+      },
+    },
+    select: { ...CAL_SELECT, suivi: SUIVI_SELECT },
+    orderBy: [{ startTime: "desc" }],
+    take: 500,
+  })) as LigneAvecSuivi[];
+
+  const rows = events.flatMap((e): RdvPasse[] => {
+    if (!e.startTime || e.status === "canceled") return [];
+    if (etatRendezVous(e.startTime, e.endTime, maintenant) !== "termine") return [];
+    return [
+      {
+        ...fromCalendly(e),
+        entreprise: entrepriseEtBesoin(reponsesFormulaire(e.rawPayload)).entreprise,
+        suivi: suiviAffiche(e.suivi),
+      },
+    ];
+  });
+  rows.sort((a, b) => (b.startTime as Date).getTime() - (a.startTime as Date).getTime());
+  return filtrerParPublic(rows, options.public) as RdvPasse[];
+}
+
+/**
+ * Le point de chaque rendez-vous, clé = identifiant Calendly (2026-09-28).
+ *
+ * Sert la colonne « Statut » de « Appels réservés » : « Passé » ne dit pas si
+ * l'échange a eu lieu, le point le dit.
+ */
+export async function lirePointsDesRendezVous(
+  calendlyEventIds: readonly string[],
+): Promise<Map<string, PointLu>> {
+  const resultat = new Map<string, PointLu>();
+  if (calendlyEventIds.length === 0) return resultat;
+  const lignes = await prisma.rendezVousSuivi.findMany({
+    where: { calendlyEventId: { in: [...calendlyEventIds] } },
+    select: { calendlyEventId: true, issue: true, suite: true, decision: true },
+  });
+  for (const s of lignes) {
+    resultat.set(s.calendlyEventId, { issue: s.issue, suite: s.suite, decision: s.decision });
+  }
+  return resultat;
 }

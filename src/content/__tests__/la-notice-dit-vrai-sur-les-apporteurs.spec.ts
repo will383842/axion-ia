@@ -60,6 +60,27 @@ describe("la notice dit vrai sur le réseau d'apporteurs", () => {
     expect(EN()).toContain("30 minutes");
   });
 
+  it("annonce les deux rappels de l'invitation à l'échange (J+3, J+7), comme le passage quotidien", () => {
+    // Source : `lib/commercial-application/relance-invitation.ts` (DELAI_J3_MS,
+    // DELAI_J7_MS, RELANCES_MAX = 2).
+    expect(FR()).toMatch(
+      /deux rappels au plus vous sont adressés trois et sept jours après l'invitation/,
+    );
+    expect(EN()).toMatch(/at most two reminders follow, 3 days and 7 days after the invitation/);
+  });
+
+  it("annonce qu'une réponse par e-mail arrête les rappels, et ce qui en est gardé (relevé Zoho)", () => {
+    // Source : `features/commercial-application/reponses-entrantes-apporteur.ts`
+    // (objet ≤ 500, extrait ≤ 300 chiffré, jamais le corps ni les pièces jointes).
+    expect(FR()).toMatch(
+      /votre réponse, reçue dans notre messagerie Zoho Mail, arrête ces rappels/,
+    );
+    expect(FR()).toMatch(/la date, l'objet et un court extrait/);
+    expect(FR()).toMatch(/jamais le message entier ni ses pièces jointes/);
+    expect(EN()).toMatch(/your reply, received in our Zoho Mail mailbox, stops these reminders/);
+    expect(EN()).toMatch(/never the whole message or its attachments/);
+  });
+
   it("ne promet pas « jamais transmises » : des destinataires existent, ils sont nommés", () => {
     expect(FR()).not.toMatch(/jamais transmises/i);
     expect(FR()).toContain("ZeptoMail");

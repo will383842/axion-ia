@@ -1,4 +1,8 @@
-import "server-only";
+// ⚠️ PAS de `import "server-only"` ici (2026-09-28). Ce module est atteint par
+// la réponse automatique « poste pourvu », qui tourne dans le WORKER BullMQ
+// (`tsx`, hors de Next) : `server-only` n'y résout pas, et le cron échouerait
+// en silence à chaque passage. Gardé par
+// `tests/unit/ci/aucun-module-du-worker-nimporte-server-only.spec.ts`.
 
 /**
  * LE JOURNAL D'UNE CANDIDATURE — la porte d'écriture, et la seule.

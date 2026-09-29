@@ -24,10 +24,13 @@ import { lireAccuseMessage } from "@/features/admin-submissions/accuse-reception
 import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { CandidatureCommercialeDetail } from "./CandidatureCommercialeDetail";
+import { CadreCandidatureSalariee, CvCandidatDetail } from "./CvCandidatDetail";
+import { lireCandidatureSalariee, lireCvCandidat } from "@/lib/commercial-application/cv-candidat";
 import { BlocInvitationApporteur } from "@/components/admin/contacts/BlocInvitationApporteur";
 import { GestesApporteur } from "@/components/admin/contacts/GestesApporteur";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { RendezVousApporteur } from "@/components/admin/contacts/RendezVousApporteur";
+import { ReponsesRecuesApporteur } from "@/components/admin/contacts/ReponsesRecuesApporteur";
 
 interface Props {
   adminPrefix: string;
@@ -127,6 +130,10 @@ export async function SubmissionDetailContent({
   const score = details && typeof details.score === "number" ? details.score : null;
   const scorePriorite =
     details && typeof details.scorePriorite === "string" ? details.scorePriorite : null;
+  // CV + analyse, et candidature à un poste salarié (2026-09-28) — lus
+  // seulement sur un dossier apporteur : ailleurs, ces blocs n'ont pas de sens.
+  const candidatureSalariee = estContactApporteur ? lireCandidatureSalariee(details) : null;
+  const cvCandidat = estContactApporteur ? lireCvCandidat(details) : null;
   // L'accusé de réception automatique (2026-09-18) — lu avec la même règle que
   // la liste. Ce n'est pas une réponse : il s'affiche à côté de l'historique.
   const origine = details && typeof details.origine === "string" ? details.origine : null;
@@ -199,6 +206,7 @@ export async function SubmissionDetailContent({
         }
       />
       <div className="admin-detail-grid">
+        {candidatureSalariee ? <CadreCandidatureSalariee info={candidatureSalariee} /> : null}
         {estContactApporteur ? (
           <BlocInvitationApporteur
             submissionId={submission.id}
@@ -214,6 +222,9 @@ export async function SubmissionDetailContent({
             role={(session.user as { role?: string | null }).role}
           />
         ) : null}
+        {/* Ce que la personne a répondu à l'invitation, par e-mail (2026-09-27).
+            Rien tant qu'aucune réponse n'est arrivée. */}
+        {estContactApporteur ? <ReponsesRecuesApporteur submissionId={submission.id} /> : null}
         {/* Les deux gestes de la fiche. Ils vivent SOUS l'invitation et sous
             l'échange : c'est l'ordre dans lequel les décisions se prennent —
             on invite, la personne réserve, puis on classe ou on enregistre
@@ -226,6 +237,35 @@ export async function SubmissionDetailContent({
               reponduAilleurs={typeof details?.["reponduHorsCircuitAt"] === "string"}
             />
           </div>
+        ) : null}
+        {/* 2026-09-28 — deux raccourcis : ce qui est déjà parti chez la
+            personne (journal filtré sur son adresse, toute période), et la
+            trame à imprimer avant l'échange. */}
+        {estContactApporteur ? (
+          <div className="admin-card">
+            <div className="flex flex-wrap gap-[var(--space-admin-4)]">
+              {submission.contactEmail ? (
+                <a
+                  href={`/fr/${adminPrefix}/emails-envoyes?fenetre=0&destinataire=${encodeURIComponent(submission.contactEmail)}`}
+                  className="admin-link"
+                >
+                  E-mails envoyés à cette personne ›
+                </a>
+              ) : null}
+              <a
+                href={`/fr/${adminPrefix}/imprimes/trame-echange-apporteur`}
+                className="admin-link"
+              >
+                Trame d&apos;échange apporteur (à imprimer) ›
+              </a>
+            </div>
+          </div>
+        ) : null}
+        {cvCandidat ? (
+          <CvCandidatDetail
+            cv={cvCandidat}
+            cvHref={`/fr/${adminPrefix}/contacts/commercial/${submission.id}/cv`}
+          />
         ) : null}
         {candidature ? (
           <CandidatureCommercialeDetail

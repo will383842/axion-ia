@@ -1,0 +1,391 @@
+<!doctype html>
+<!--
+ Axion-IA — Trame de l'échange découverte avec un candidat apporteur d'affaires (15 min).
+ DOCUMENT INTERNE : réservé à l'équipe (console › Imprimés, accès administrateur). Ne jamais
+ le publier sous public/ ni le transmettre à un candidat.
+
+ Méthode : entretien STRUCTURÉ (mêmes questions pour tous, questions sur des faits vécus,
+ grille notée à ancrages définis à l'avance, critères éliminatoires fixés avant l'appel,
+ décision juste après). Source des chiffres : docs/imprimes/devenir-apporteur-d-affaires.html, src/content/pricing.ts
+ et le contrat d’apporteur (axion-apporteurs, docs/contrat) — prorata formation décidé le 2026-09-28
+ et src/content/pricing.ts — toute évolution de la grille de commissions doit être reportée ici.
+
+ Garde-fous (anti-requalification, cf. docs/partners/ANTI-REQUALIFICATION.md) : l'apporteur est
+ un INDÉPENDANT. Face au candidat on dit « échange », jamais « entretien d'embauche », « poste »,
+ « recrutement », « horaires », « objectifs », « quota », « exclusivité ». Il recommande et met en
+ relation : il ne vend pas, ne prospecte pas, ne représente pas Axion-IA.
+
+ Régénérer le PDF (Git Bash, racine du dépôt, connexion Internet pour Google Fonts) :
+ "/c/Program Files/Google/Chrome/Application/chrome.exe" --headless=new --disable-gpu --no-pdf-header-footer --virtual-time-budget=15000 --print-to-pdf="$(pwd -W)/private/imprimes/trame-echange-apporteur.pdf" "file:///$(pwd -W)/docs/imprimes/trame-echange-apporteur.html"
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Axion-IA — Trame de l'échange découverte apporteur (15 min)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+@page { size: A4 portrait; margin: 12mm 12mm 15mm; @bottom-left { content: "Axion-IA · Document interne — ne pas transmettre au candidat"; font-family: 'Inter Tight', sans-serif; font-size: 8pt; color: #6e655b; } @bottom-right { content: counter(page) " / " counter(pages); font-family: 'Inter Tight', sans-serif; font-size: 8pt; color: #6e655b; } }
+html{background:#faf8f3}
+:root{ --ink:#221e1a; --ink2:#453d36; --muted:#6e655b; --terra:#c24a1b; --terra-soft:#f7ebe2; --line:rgba(42,37,32,.14); --ivory:#faf8f3; --green:#3f6b3a; --red:#a3261b; }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#fff}
+body{font-family:'Inter Tight',sans-serif;color:var(--ink);font-size:10.4pt;line-height:1.42;background:var(--ivory);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pg{break-after:page;page-break-after:always}
+.pg:last-child{break-after:auto;page-break-after:auto}
+.top{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1.2pt solid var(--terra);padding-bottom:3mm;margin-bottom:3mm}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:11.5pt;letter-spacing:-.02em;color:var(--terra)}
+.interne{white-space:nowrap;flex-shrink:0;margin-left:4mm;font-size:8.4pt;font-weight:700;color:#fff;background:var(--red);border-radius:20pt;padding:1.5pt 7pt;letter-spacing:.04em;text-transform:uppercase}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22pt;line-height:1.08;letter-spacing:-.035em;margin:1.5mm 0 1mm}
+h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:14pt;letter-spacing:-.02em;margin:0 0 2mm;color:var(--ink)}
+h3{font-size:11pt;font-weight:700;margin:0 0 .8mm;color:var(--terra)}
+.sub{color:var(--muted);font-size:10pt;margin:0}
+p{margin:0 0 1.1mm}
+ul{margin:0 0 1.2mm;padding-left:4.2mm} li{margin:0 0 .6mm}
+.muted{color:var(--muted)}
+.card{background:#fff;border:.75pt solid var(--line);border-radius:9pt;padding:3.2mm 3.8mm;margin-bottom:3mm;break-inside:avoid;page-break-inside:avoid}
+.soft{background:var(--terra-soft);border-color:#ecd9c9}
+.row{display:grid;gap:2.6mm}
+.c2{grid-template-columns:1fr 1fr} .c3{grid-template-columns:1fr 1fr 1fr}
+.step{display:grid;grid-template-columns:20mm 1fr;gap:3mm;margin-bottom:3mm;background:#fff;border:.75pt solid var(--line);border-radius:9pt;padding:3mm 3.6mm;break-inside:avoid;page-break-inside:avoid}
+.t{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;color:var(--terra);font-size:15pt;line-height:1}
+.t small{display:block;font-family:'Inter Tight',sans-serif;font-weight:600;font-size:8.8pt;color:var(--muted);margin-top:1.2mm;letter-spacing:0}
+.say{font-style:italic;color:var(--ink2);border-left:2pt solid var(--terra);padding-left:2.2mm;margin:.8mm 0 1.2mm}
+.q{margin:0 0 .7mm;padding-left:4.6mm;position:relative}
+.q::before{content:"?";position:absolute;left:0;top:0;font-weight:800;color:var(--terra)}
+.q b{font-weight:700}
+.lab{display:inline-block;font-size:8.4pt;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);margin-right:1mm}
+table{width:100%;border-collapse:collapse;font-size:9.6pt}
+th,td{border:.6pt solid var(--line);padding:1.6mm 2mm;vertical-align:top;text-align:left}
+th{background:#f3ede3;font-weight:700;font-size:9.4pt} tr{break-inside:avoid;page-break-inside:avoid}
+.no{color:var(--red);font-weight:700}
+.ok{color:var(--green);font-weight:700}
+.field{border-bottom:.6pt solid #b9ada0;height:8mm}
+.box{display:inline-block;width:3.8mm;height:3.8mm;border:.8pt solid var(--ink2);border-radius:.6mm;vertical-align:-.4mm;margin-right:1mm}
+.notes{border:.6pt solid #b9ada0;border-radius:6pt;background:#fff}
+.foot{display:none}
+.pill{display:inline-block;border:.6pt solid var(--line);border-radius:20pt;padding:.4mm 2mm;margin:0 1mm .8mm 0;background:#fff;font-size:7.4pt}
+</style>
+</head>
+<body>
+
+<!-- ═════════════ PAGE 1 — LE DÉROULÉ ═════════════ -->
+<section class="pg">
+  <div class="top">
+    <div>
+      <div class="brand">Axion-IA · Réseau d'apporteurs d'affaires</div>
+      <h1>Trame de l'échange découverte</h1>
+      <p class="sub">15 minutes en visio · mêmes questions pour chaque candidat · décision juste après l'appel</p>
+    </div>
+    <span class="interne">Document interne</span>
+  </div>
+
+  <div class="card soft">
+    <b>Le but :</b> décider si la personne rejoint le réseau, et lui donner envie de le rejoindre. Quatre critères, notés page 4 :
+    <b>le réseau</b> (ou la capacité à en créer un), <b>l'aisance relationnelle</b>, <b>la compréhension du modèle</b>, <b>l'autonomie</b>.
+    Le candidat parle environ 60 % du temps ; on note les <b>faits</b> qu'il cite. <b>Débutant ou sans expérience du B2B : ni éliminatoire, ni pénalisant.</b>
+  </div>
+
+  <div class="step">
+    <div class="t">0'–1'<small>Accueil</small></div>
+    <div>
+      <p class="say">« Bonjour [prénom], merci pour ce créneau. En 15 minutes : je vous pose quelques questions, je vous explique comment fonctionne le réseau et la rémunération, et je garde du temps pour vos questions. C'est sans engagement, de part et d'autre. »</p>
+      <p class="muted">Son et image vérifiés. Sa candidature ouverte (console › Contacts › Commercial). Cette fiche sous les yeux.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="t">1'–5'<small>Le candidat</small></div>
+    <div>
+      <p class="q"><b>Parcours.</b> « Qu'est-ce que vous faites aujourd'hui, et qu'est-ce qui vous a donné envie de candidater ? »</p>
+      <p class="q"><b>Réseau.</b> « Quelles entreprises connaissez-vous personnellement ? Des dirigeants que vous pourriez appeler demain ? Secteurs, taille, région ? »
+        <span class="muted">— S'il n'a pas de réseau d'entreprises : « Où croisez-vous des chefs d'entreprise ou des indépendants ? Clubs, associations, anciens collègues, famille, sport, commerçants ? »</span></p>
+      <p class="q"><b>Mise en relation vécue.</b> « Racontez-moi une fois où vous avez mis quelqu'un en relation avec une personne qui pouvait l'aider — au travail, dans une association ou autour de vous. »</p>
+      <p class="q"><b>Autres apports d'affaires.</b> « Êtes-vous déjà apporteur d'affaires pour d'autres sociétés ? Dans quels secteurs, pour quels produits ? » <span class="muted">(Aucune exclusivité : on vérifie la complémentarité, et l'absence de concurrence directe sur l'IA.)</span></p>
+      <p class="q"><b>B2B, IA, financement.</b> « Avez-vous déjà travaillé avec des entreprises ? Vous utilisez l'IA ? Connaissez-vous l'AI Act, Qualiopi, les OPCO ? » <span class="muted">(S'il ne connaît pas le mot « B2B » : « vendre ou rendre service à des entreprises plutôt qu'à des particuliers ».)</span></p>
+      <p class="muted"><span class="lab">Relances</span> « Concrètement ? » · « Par exemple ? » · « Qu'avez-vous fait, vous ? » · « Combien, à peu près ? »</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="t">5'–10'<small>Le réseau Axion-IA</small></div>
+    <div>
+      <p><b>1. Le principe.</b> « Vous parlez d'Axion-IA aux entreprises que vous connaissez. Quand l'une a un besoin, vous l'enregistrez à votre nom et notre équipe fait tout le reste : rendez-vous, proposition, dossier de financement, signature, réalisation. Vous ne vendez rien : vous recommandez. »</p>
+      <p><b>2. Ce qu'on fait.</b> Formations IA, accompagnement 1-to-1, audit IA, implémentation, sites &amp; SaaS IA — détail et signaux à repérer <b>page 2</b>. Il reçoit le catalogue et le document de présentation.</p>
+      <p><b>3. Pourquoi c'est facile à recommander.</b> L'<b>AI Act</b> oblige à former les salariés qui utilisent l'IA · formations <b>finançables par l'OPCO ou France Travail</b> selon éligibilité, grâce à <b>Qualiopi</b>, et c'est nous qui montons le dossier · tarifs publics identiques partout.</p>
+      <p><b>4. La commission.</b> <b>500 € par journée de formation</b> au tarif public (réduits au prorata si une remise est accordée) · <b>30 %</b> du HT d'un audit · <b>15 %</b> du HT d'une intégration · 1-to-1 sur barème communiqué avec le contrat. Aucun plafond, aucun palier. Une entreprise enregistrée à son nom <b>le reste 6 mois</b> : toutes les commandes signées dans ce délai sont commissionnées.</p>
+      <p><b>5. Le paiement.</b> La commission est <b>due quand le client a payé</b> — jamais à la signature ni à la facture. Chaque début de mois, un relevé ; <b>nous établissons la facture à sa place</b> (autofacturation) et le virement suit sous 10 jours ouvrés, dès 50 € cumulés (en dessous, le montant est reporté au mois suivant). Financement OPCO : la commission porte sur le total HT, quel que soit le payeur.</p>
+      <p><b>6. Le cadre.</b> Indépendant (micro-entreprise ou société), zéro frais, aucune exclusivité, il garde ses activités. Aucun objectif, aucun quota, aucun horaire. Documentation fournie ; <b>espace personnel d'ici un mois</b> — d'ici là, ses recommandations passent par e-mail et sont tracées à son nom.</p>
+      <p class="q"><b>Vérifier.</b> « Ce fonctionnement 100 % à la commission, payé quand le client a payé, vous convient ? Qu'est-ce qui est le moins clair ? »</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="t">10'–13'<small>Sa façon de faire</small></div>
+    <div>
+      <p class="q"><b>Concrètement.</b> « Comment vous y prendriez-vous pour apporter des affaires ? Où et comment parleriez-vous d'Axion-IA — rendez-vous, déjeuners, événements, clubs, LinkedIn, bouche-à-oreille ? »</p>
+      <p class="q"><b>Sa semaine.</b> « À quoi ressemblerait une semaine où vous parlez d'Axion-IA ? Combien de temps pensez-vous y consacrer, à titre indicatif ? » <span class="muted">(Information, jamais un engagement : on ne la reprend ni dans le contrat ni dans un suivi.)</span></p>
+      <p class="q"><b>Mise en situation.</b> « Vous croisez un dirigeant de PME. Comment lui parlez-vous d'Axion-IA en trente secondes ? »</p>
+      <p class="q"><b>Premiers pas et démarrage.</b> « À quelles deux ou trois entreprises penseriez-vous d'abord ? À partir de quand souhaitez-vous démarrer ? Avez-vous déjà un statut d'indépendant ? » <span class="muted">(Noter les secteurs, pas les noms.)</span></p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="t">13'–15'<small>Ses questions · la suite</small></div>
+    <div>
+      <p class="q">« Quelles questions avez-vous ? Qu'est-ce qui pourrait vous faire hésiter ? » <span class="muted">(Réponses : page 3. Toujours garder ces 2 minutes.)</span></p>
+      <p class="say">« Merci [prénom]. Je vous fais un retour par e-mail sous 48 heures. Si on continue ensemble, vous recevrez le contrat d'apporteur à signer en ligne et la documentation pour démarrer. »</p>
+      <p class="muted">Ne jamais promettre une réponse positive pendant l'appel. Remplir la page 4 dans les 5 minutes qui suivent.</p>
+    </div>
+  </div>
+
+  <div class="foot"><span>Axion-IA · Document interne — ne pas transmettre au candidat</span><span>1 / 4</span></div>
+</section>
+
+<!-- ═════════════ PAGE 2 — CE QU'IL RECOMMANDE ═════════════ -->
+<section class="pg">
+  <div class="top">
+    <div>
+      <div class="brand">Axion-IA · Réseau d'apporteurs d'affaires</div>
+      <h1>Ce que fait Axion-IA, et ce qu'il recommande</h1>
+      <p class="sub">À expliquer simplement · tarifs publics HT, identiques partout en France · sur site ou à distance</p>
+    </div>
+    <span class="interne">Document interne</span>
+  </div>
+
+  <div class="card">
+    <table>
+      <tr><th style="width:17%">Activité</th><th style="width:31%">Ce que c'est</th><th style="width:15%">Pour qui</th><th>Le signal qui doit faire penser à nous</th><th style="width:11%">À partir de</th></tr>
+      <tr><td><b>Formations IA</b></td><td>Formation en groupe (2 à 15 personnes), sur les vrais cas métier de l'entreprise : Essentielle, Approfondie, Gagner du temps, Claude, 4 heures, conférence.</td><td>Toute entreprise dont les salariés utilisent l'IA</td><td>« Mes équipes utilisent ChatGPT chacun dans leur coin » · « On nous parle d'obligation de formation » · « On a un budget OPCO à utiliser ».</td><td>1 200 € · finançable OPCO</td></tr>
+      <tr><td><b>Accompagnement 1-to-1</b></td><td>Une ou deux journées avec un dirigeant ou un collaborateur clé, sur son poste réel ; coaching régulier possible.</td><td>Dirigeants, cadres</td><td>« Je n'ai pas le temps de m'y mettre » · « Je veux comprendre ce que l'IA peut faire pour moi ».</td><td>990 €</td></tr>
+      <tr><td><b>Audit IA</b></td><td>Cartographie des processus, gains chiffrés action par action, feuille de route sur 6 à 12 mois.</td><td>PME, ETI, grands groupes</td><td>« On ne sait pas par où commencer » · « On perd du temps sur des tâches répétitives » · « On veut une stratégie IA ».</td><td>1 190 €</td></tr>
+      <tr><td><b>Implémentation IA</b></td><td>Automatisations sur mesure intégrées aux outils existants : pilote, mission PME ou ETI, grand programme, IA d'entreprise, maintenance.</td><td>Entreprises qui veulent passer à l'action</td><td>« On aimerait automatiser les devis, les e-mails, la saisie » · « On a testé un outil, ça ne tient pas ».</td><td>990 €</td></tr>
+      <tr><td><b>Sites web &amp; SaaS IA</b></td><td>Chatbot, recherche intelligente, agents IA, greffés sur le site ou la plateforme du client ; développement web.</td><td>Entreprises avec un site ou un logiciel</td><td>« Nos clients posent toujours les mêmes questions » · « Notre site est dépassé ».</td><td>990 €</td></tr>
+    </table>
+  </div>
+
+  <div class="row c2">
+    <div class="card soft">
+      <h2>Pourquoi c'est facile à recommander</h2>
+      <ul>
+        <li><b>Une obligation :</b> l'AI Act (article 4) impose de former les personnes qui utilisent l'IA ; les sanctions s'appliquent depuis août 2026.</li>
+        <li><b>Un financement :</b> formations finançables par l'OPCO de l'entreprise ou France Travail, selon éligibilité, grâce à la certification Qualiopi. Nous montons le dossier.</li>
+        <li><b>Un contexte porteur :</b> le plan national « Osez l'IA » pousse les PME et TPE à s'équiper.</li>
+        <li><b>Des prix publics</b>, identiques partout : rien à négocier.</li>
+        <li><b>Une équipe qui prend le relais</b> dès la mise en relation, jusqu'à la réalisation.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Trois questions pour repérer un besoin</h2>
+      <p class="q">« Vos équipes utilisent-elles déjà l'IA ? Comment ? »</p>
+      <p class="q">« Qu'est-ce qui vous prend le plus de temps et que vous aimeriez automatiser ? »</p>
+      <p class="q">« Avez-vous entendu parler de l'obligation de former vos salariés à l'IA ? »</p>
+      <p class="muted">Dès qu'une réponse accroche : proposer la mise en relation et enregistrer l'entreprise à son nom.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Ce que l'apporteur ne fait jamais</h2>
+    <div class="row c2">
+      <ul>
+        <li>Annoncer un prix remisé, un devis ou un délai : c'est notre équipe qui chiffre.</li>
+        <li>Promettre un financement : il est « possible selon éligibilité », jamais garanti.</li>
+        <li>Se présenter comme salarié ou représentant d'Axion-IA.</li>
+      </ul>
+      <ul>
+        <li>Enregistrer une entreprise qu'il n'a pas contactée : l'entreprise confirme toujours la mise en relation.</li>
+        <li>Parler du CPF, démarcher par téléphone des listes, envoyer des e-mails en masse.</li>
+        <li>Recevoir quoi que ce soit de l'entreprise qu'il recommande.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card soft">
+    <h2>Une mise en relation, de bout en bout</h2>
+    <table>
+      <tr><th>1 · Il en parle</th><th>2 · Il enregistre</th><th>3 · Nous appelons</th><th>4 · Nous proposons</th><th>5 · Le client signe et paie</th><th>6 · Il est payé</th></tr>
+      <tr>
+        <td>À une entreprise qu'il connaît, qui est d'accord pour être contactée.</td>
+        <td>Dans son espace (ou par e-mail d'ici un mois), à son nom : le contact est protégé 6 mois.</td>
+        <td>En général sous 2 jours ouvrés. L'entreprise confirme qu'elle a échangé avec lui.</td>
+        <td>Rendez-vous, devis, dossier de financement : c'est notre équipe.</td>
+        <td>Toute commande signée dans les 6 mois est commissionnée.</td>
+        <td>Quand le client a payé : relevé mensuel, facture faite par nous, virement sous 10 jours ouvrés.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="foot"><span>Axion-IA · Document interne — ne pas transmettre au candidat</span><span>2 / 4</span></div>
+</section>
+
+<!-- ═════════════ PAGE 3 — RÉFÉRENCES ═════════════ -->
+<section class="pg">
+  <div class="top">
+    <div>
+      <div class="brand">Axion-IA · Réseau d'apporteurs d'affaires</div>
+      <h1>Repères pour l'échange</h1>
+      <p class="sub">Réponses aux questions fréquentes · les mots · critères éliminatoires · bonnes pratiques</p>
+    </div>
+    <span class="interne">Document interne</span>
+  </div>
+
+  <div class="card">
+    <h2>Les questions qu'on vous posera</h2>
+    <table>
+      <tr><th style="width:31%">Question du candidat</th><th>Réponse</th></tr>
+      <tr><td>« Je n'y connais rien en IA / en entreprise. »</td><td>Pas besoin : on explique les bases sans jargon, et dès la mise en relation c'est notre équipe qui échange avec l'entreprise. Il suffit de connaître des gens et d'en parler.</td></tr>
+      <tr><td>« Je n'ai pas de réseau. »</td><td>On part de ce qu'il a : anciens collègues, clubs, associations, commerçants, indépendants de son entourage. Une seule entreprise bien recommandée suffit pour commencer.</td></tr>
+      <tr><td>« Combien je peux gagner ? »</td><td>Uniquement ce qui est signé et <b>payé</b> par les entreprises recommandées. Exemple : une formation d'un jour au tarif public, payée = 500 €. <b>Jamais de promesse ni de projection de revenu.</b></td></tr>
+      <tr><td>« Quand et comment suis-je payé ? »</td><td>Quand le client a payé. Relevé chaque début de mois, facture établie par nous à votre place, virement sous 10 jours ouvrés dès 50 € cumulés.</td></tr>
+      <tr><td>« Et si l'entreprise a une remise ? »</td><td>Pour les formations, la commission suit le prix facturé : 500 € au tarif public, réduits au prorata en cas de remise. Audit et intégration : un pourcentage du prix facturé.</td></tr>
+      <tr><td>« Et si le client signe tard ? »</td><td>L'entreprise enregistrée à votre nom le reste 6 mois ; toute commande signée dans ce délai est commissionnée.</td></tr>
+      <tr><td>« Je dois vendre, prospecter ? »</td><td>Non. Vous recommandez ; rendez-vous, proposition et signature, c'est nous.</td></tr>
+      <tr><td>« Il faut un statut ? Ça coûte ? »</td><td>Indépendant, micro-entreprise ou société. Aucun frais, aucun kit. Ce n'est pas un emploi salarié.</td></tr>
+      <tr><td>« Je peux garder mes autres activités d'apporteur ? »</td><td>Oui, aucune exclusivité. Seule limite de bon sens : ne pas recommander en même temps un concurrent direct sur les mêmes prestations IA.</td></tr>
+      <tr><td>« Qui paie la formation ? »</td><td>L'entreprise, avec une prise en charge possible par son OPCO ou France Travail selon éligibilité ; nous montons le dossier. Votre commission porte sur le total, quel que soit le payeur.</td></tr>
+      <tr><td>« Quand ai-je mon espace ? »</td><td>D'ici un mois. En attendant, vos recommandations passent par e-mail et sont tracées à votre nom.</td></tr>
+    </table>
+  </div>
+
+  <div class="row c2">
+    <div class="card">
+      <h2>Les mots</h2>
+      <p><span class="ok">On dit</span> : échange · recommander · mettre en relation · indépendant · commission · votre rythme · vos contacts protégés.</p>
+      <p><span class="no">On ne dit jamais</span> : entretien d'embauche · poste · recrutement · salarié · vendre · prospecter · objectif · quota · horaires · exclusivité · agent commercial · mandataire · VRP.</p>
+      <p class="muted">Un indépendant qui ressemble à un salarié peut être requalifié par un juge : chaque mot compte. Sa semaine et son temps sont <b>une information</b>, jamais un engagement.</p>
+    </div>
+    <div class="card">
+      <h2>Ce qu'on ne demande jamais</h2>
+      <p>Âge, situation familiale, grossesse, origine, nationalité, religion, santé, handicap, opinions, appartenance syndicale, apparence.</p>
+      <p class="muted">Critères interdits (art. 225-1 du Code pénal). S'il en parle de lui-même, on ne note rien et on revient au sujet.</p>
+      <p>On ne promet <b>aucun revenu</b>.</p>
+    </div>
+  </div>
+
+  <div class="card soft">
+    <h2>Critères éliminatoires — fixés avant l'appel</h2>
+    <ul>
+      <li><b>Attend un fixe, un salaire ou des horaires</b> : le modèle 100 % commission, indépendant, ne lui convient pas.</li>
+      <li><b>Refuse d'avoir un statut d'indépendant</b> au démarrage.</li>
+      <li><b>Aucun moyen crédible de rencontrer des entreprises</b>, ni réseau ni lieux où en croiser, malgré les relances.</li>
+      <li><b>Veut vendre sous la marque Axion-IA</b>, fixer des prix ou promettre à la place de l'équipe.</li>
+      <li><b>Apporte déjà pour un concurrent direct</b> sur les mêmes prestations IA, sans vouloir y renoncer.</li>
+      <li><b>Propos ou comportement incompatibles</b> avec la relation client.</li>
+    </ul>
+    <p class="muted">Un seul critère coché = « sans suite », quelle que soit la note. <b>Débutant, sans B2B, sans connaissance de l'IA : ce ne sont PAS des critères éliminatoires.</b></p>
+  </div>
+
+  <div class="card">
+    <h2>Bonnes pratiques de ces 15 minutes</h2>
+    <div class="row c2">
+      <ul>
+        <li>Mêmes questions, même ordre, pour chaque candidat : c'est ce qui rend les candidats comparables.</li>
+        <li>Faire raconter des <b>faits vécus</b> plutôt que des intentions ; relancer jusqu'au concret.</li>
+      </ul>
+      <ul>
+        <li>Noter pendant l'appel ; noter la grille juste après, à froid.</li>
+        <li>Tenir le temps, garder 2 minutes pour ses questions ; répondre à chacun sous 48 heures, même en cas de refus.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="foot"><span>Axion-IA · Document interne — ne pas transmettre au candidat</span><span>3 / 4</span></div>
+</section>
+
+<!-- ═════════════ PAGE 4 — FICHE DE NOTES ═════════════ -->
+<section class="pg">
+  <div class="top">
+    <div>
+      <div class="brand">Axion-IA · Réseau d'apporteurs d'affaires</div>
+      <h1>Fiche d'échange</h1>
+      <p class="sub">À remplir pendant et juste après l'appel · à reporter dans la note de la fiche (console › Contacts › Commercial)</p>
+    </div>
+    <span class="interne">Document interne</span>
+  </div>
+
+  <div class="card">
+    <div class="row c3">
+      <div><span class="lab">Candidat</span><div class="field"></div></div>
+      <div><span class="lab">Date · heure</span><div class="field"></div></div>
+      <div><span class="lab">Source</span><div style="margin-top:1.4mm"><span class="box"></span>Site <span class="box"></span>Indeed <span class="box"></span>LinkedIn <span class="box"></span>Autre</div></div>
+    </div>
+    <div class="row c3" style="margin-top:1.6mm">
+      <div><span class="lab">Activité actuelle</span><div class="field"></div></div>
+      <div><span class="lab">Région</span><div class="field"></div></div>
+      <div><span class="lab">Démarrage souhaité</span><div class="field"></div></div>
+    </div>
+  </div>
+
+  <div class="row c2">
+    <div class="card">
+      <h3>Réseau — secteurs, taille, région · lieux où il croise des entreprises</h3>
+      <div class="notes" style="height:14mm"></div>
+      <p style="margin-top:1.2mm"><span class="lab">Dirigeants joignables</span> <span class="box"></span>aucun <span class="box"></span>quelques-uns <span class="box"></span>une dizaine <span class="box"></span>plus</p>
+      <p><span class="lab">Déjà apporteur pour</span> <span class="box"></span>non <span class="box"></span>oui — secteurs / produits :</p>
+      <div class="field" style="height:5mm"></div>
+    </div>
+    <div class="card">
+      <h3>Ce qu'il sait déjà · sa façon de faire</h3>
+      <p><span class="box"></span>B2B &nbsp; <span class="box"></span>Utilise l'IA &nbsp; <span class="box"></span>Qualiopi / OPCO &nbsp; <span class="box"></span>AI Act</p>
+      <p><span class="lab">Statut</span> <span class="box"></span>Micro-entreprise <span class="box"></span>Société <span class="box"></span>À créer</p>
+      <p><span class="lab">Modèle 100 % commission</span> <span class="box"></span>OK <span class="box"></span>Hésite <span class="box"></span>Non</p>
+      <p><span class="lab">Canaux</span> <span class="box"></span>RDV <span class="box"></span>Clubs / réseaux <span class="box"></span>Événements <span class="box"></span>LinkedIn <span class="box"></span>Bouche-à-oreille</p>
+      <p><span class="lab">Temps envisagé (indicatif)</span></p>
+      <div class="field" style="height:5mm"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Grille — noter juste après l'appel, à partir des faits cités</h3>
+    <table>
+      <tr><th style="width:17%">Critère</th><th>1 — insuffisant</th><th>3 — correct</th><th>5 — excellent</th><th style="width:8%">Note</th></tr>
+      <tr><td><b>Réseau</b> <span class="muted">(ou capacité à en créer un)</span></td><td>Ne cite personne ni aucun lieu où croiser des entreprises.</td><td>Quelques contacts ou des lieux concrets (club, association, anciens collègues).</td><td>Cite des dirigeants et des secteurs précis, déjà en relation de confiance.</td><td></td></tr>
+      <tr><td><b>Aisance relationnelle</b></td><td>Réponses courtes, peu à l'écoute.</td><td>Clair, à l'aise, écoute.</td><td>Pitch de 30 s naturel et convaincant, pose de bonnes questions.</td><td></td></tr>
+      <tr><td><b>Compréhension du modèle</b></td><td>Veut vendre, attend un fixe, confond les rôles.</td><td>Comprend : recommander, commission au paiement du client.</td><td>Reformule le modèle, voit tout de suite à qui en parler.</td><td></td></tr>
+      <tr><td><b>Autonomie</b></td><td>Attend d'être guidé en tout, projet flou.</td><td>A une idée de comment s'y prendre.</td><td>Méthode concrète (canaux, premières entreprises), démarrage clair.</td><td></td></tr>
+      <tr><td colspan="4" style="text-align:right"><b>Total / 20</b></td><td></td></tr>
+    </table>
+    <p class="muted" style="margin-top:1.2mm">Repère : <b>16 et plus</b> = on continue · <b>11 à 15</b> = à revoir (second échange court ou question par e-mail) · <b>10 et moins</b> = sans suite. Un critère éliminatoire (page 3) l'emporte sur la note. Un débutant motivé peut atteindre 16.</p>
+  </div>
+
+  <div class="row c2">
+    <div class="card">
+      <h3>Critères éliminatoires</h3>
+      <p><span class="box"></span>Attend un fixe / des horaires</p>
+      <p><span class="box"></span>Refuse le statut d'indépendant</p>
+      <p><span class="box"></span>Aucun moyen de rencontrer des entreprises</p>
+      <p><span class="box"></span>Veut vendre sous la marque</p>
+      <p><span class="box"></span>Apporte pour un concurrent direct</p>
+      <p><span class="box"></span>Comportement incompatible</p>
+    </div>
+    <div class="card">
+      <h3>Décision</h3>
+      <p><span class="box"></span><span class="ok">On continue</span> &nbsp; <span class="box"></span>À revoir &nbsp; <span class="box"></span><span class="no">Sans suite</span></p>
+      <p class="lab">Pourquoi, en une phrase (sur les faits)</p>
+      <div class="notes" style="height:12mm"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Suite à donner — sous 48 heures</h3>
+    <div class="row c2">
+      <div>
+        <p><span class="box"></span>Note reportée sur la fiche (console)</p>
+        <p><span class="box"></span>Retour envoyé au candidat (oui <i>ou</i> non)</p>
+        <p><span class="box"></span>Contrat d'apporteur envoyé à signer</p>
+      </div>
+      <div>
+        <p><span class="box"></span>Documentation et catalogue transmis</p>
+        <p><span class="box"></span>Ouverture de l'espace personnel planifiée</p>
+        <p><span class="box"></span>Sans suite : fiche classée « sans suite »</p>
+      </div>
+    </div>
+    <p class="lab" style="margin-top:1mm">Notes libres</p>
+    <div class="notes" style="height:12mm"></div>
+  </div>
+
+  <div class="foot"><span>Axion-IA · Document interne — ne pas transmettre au candidat</span><span>4 / 4</span></div>
+</section>
+
+</body>
+</html>

@@ -25,6 +25,8 @@ import type {
   VivierCronJobType,
   GuideIaCronJobData,
   GuideIaCronJobType,
+  ApporteurCronJobData,
+  ApporteurCronJobType,
 } from "./types";
 import type { ImageBankEnrichJobData } from "./workers/image-bank-enrich-worker";
 import type { ImageBankImportJobData } from "./workers/image-bank-import-worker";
@@ -187,6 +189,44 @@ export const guideIaCronsQueue: Queue<GuideIaCronJobData, void, GuideIaCronJobTy
         },
       })
     : null;
+
+/**
+ * 2026-09-27 — passages du réseau d'apporteurs : les rappels J+3 / J+7 de
+ * l'invitation à l'échange (`relances-invitation-apporteur.ts`).
+ *
+ * File SÉPARÉE de `emails` pour la même raison que celle du guide : le passage
+ * DÉCIDE, la file d'envoi ENVOIE. `attempts: 1` : un passage raté est repris le
+ * lendemain — l'état vit en base, et un rappel n'est pas à la minute.
+ */
+export const apporteurCronsQueue: Queue<ApporteurCronJobData, void, ApporteurCronJobType> | null =
+  connection
+    ? new Queue<ApporteurCronJobData, void, ApporteurCronJobType>("apporteur-crons", {
+        connection,
+        defaultJobOptions: {
+          ...defaultJobOptions,
+          attempts: 1,
+          removeOnComplete: { age: 7 * 24 * 3600, count: 50 },
+          removeOnFail: { age: 30 * 24 * 3600, count: 100 },
+        },
+      })
+    : null;
+
+/** Cadence des rappels de l'invitation : 08:00 UTC, soit 10 h à Paris l'été, 9 h l'hiver. */
+export const PATTERN_RELANCES_INVITATION = "0 8 * * *";
+
+/**
+ * Cadence du relevé des réponses des candidats dans la boîte Zoho Mail
+ * (2026-09-27) : toutes les 15 minutes. Une réponse arrivée à 7 h 50 est vue
+ * avant le passage des rappels de 8 h — qui ne lui écrit donc pas.
+ */
+export const PATTERN_REPONSES_ENTRANTES = "*/15 * * * *";
+
+/**
+ * Cadence de l'invitation automatique (2026-09-28) : toutes les 5 minutes. Une
+ * candidature est invitée 15 minutes après sa réception, donc entre 15 et
+ * 20 minutes (`features/commercial-application/invitation-auto.ts`).
+ */
+export const PATTERN_INVITATION_AUTO = "*/5 * * * *";
 
 // ============================================================
 // Content Generator V1 — Sprint 4/5 queues (§ 13.1 master prompt v1.7)
@@ -1147,6 +1187,49 @@ export async function bootRepeatableJobs(): Promise<void> {
     );
   }
 
+  // ── 2026-09-27 — rappels J+3 / J+7 de l'invitation à l'échange apporteur ─
+  // Une fois par jour, 08:00 UTC : une heure de bureau pour la personne qui
+  // reçoit le rappel (10 h à Paris l'été, 9 h l'hiver), hors des créneaux de
+  // nuit déjà chargés. Purge EXHAUSTIVE comme pour Calendly : le jour où la
+  // cadence change, l'ancienne entrée ne doit pas continuer à se déclencher —
+  // deux passages le même jour ne doubleraient pas un rappel (jobId
+  // déterministe), mais personne ne saurait plus lequel fait foi.
+  if (apporteurCronsQueue) {
+    const programme = [
+      {
+        type: "relance-invitation" as const,
+        pattern: PATTERN_RELANCES_INVITATION,
+        jobId: "apporteur-relance-invitation-cron",
+      },
+      {
+        type: "reponses-entrantes" as const,
+        pattern: PATTERN_REPONSES_ENTRANTES,
+        jobId: "apporteur-reponses-entrantes-cron",
+      },
+      {
+        type: "invitation-auto" as const,
+        pattern: PATTERN_INVITATION_AUTO,
+        jobId: "apporteur-invitation-auto-cron",
+      },
+    ];
+    const wanted = new Set(programme.map((s) => `${s.type}|${s.pattern}`));
+    for (const existing of await apporteurCronsQueue.getRepeatableJobs()) {
+      if (!wanted.has(`${existing.name}|${existing.pattern}`)) {
+        await apporteurCronsQueue.removeRepeatableByKey(existing.key);
+        console.warn(
+          `[bullmq] apporteur-crons : entrée répétable obsolète retirée (${existing.name} @ ${existing.pattern})`,
+        );
+      }
+    }
+    for (const { type, pattern, jobId } of programme) {
+      await apporteurCronsQueue.add(
+        type,
+        { type, tick: new Date().toISOString() },
+        { repeat: { pattern }, jobId },
+      );
+    }
+  }
+
   // ============================================================
   // Content Generator V1 — crons content-gen (§ 13.2 master prompt v1.7)
   // ============================================================
@@ -1755,6 +1838,22 @@ export async function bootRepeatableJobs(): Promise<void> {
         type: "formation-crons.candidatures-en-sommeil",
         pattern: "20 8 * * *",
         jobId: "formation-crons-candidatures-en-sommeil-cron",
+      },
+      // Liens vidéo des candidats (Will, 2026-09-28) — HEBDOMADAIRE, lundi 05:45
+      // UTC : un lien ne meurt pas d'une heure à l'autre, et la fiche doit être
+      // à jour quand la semaine de recrutement commence.
+      {
+        type: "formation-crons.liens-surveilles",
+        pattern: "45 5 * * 1",
+        jobId: "formation-crons-liens-surveilles-cron",
+      },
+      // Réponse automatique « poste pourvu » (Will, 2026-09-28) — HORAIRE, à :35,
+      // au plus 15 réponses par passage (plafond boîte 40/h partagé). Arrêtée
+      // tant que l'interrupteur de la console n'est pas mis.
+      {
+        type: "formation-crons.reponse-poste-pourvu",
+        pattern: "35 * * * *",
+        jobId: "formation-crons-reponse-poste-pourvu-cron",
       },
       // Surveillance de la chaîne d'envoi (audit 2026-08-16) — HORAIRE, et non
       // quotidienne comme ses voisines. Une panne d'e-mails découverte le

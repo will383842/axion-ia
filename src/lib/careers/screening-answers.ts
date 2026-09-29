@@ -42,6 +42,21 @@ export interface ScreeningQuestion {
    * 11 lignes »). Regroupées, elles tiennent en quatre.
    */
   ligne?: string;
+  /**
+   * Bloc d'affichage de la page « compléter ma candidature » (2026-09-28,
+   * Will : « trop de blabla, mobile first »). Les questions consécutives d'un
+   * même `groupe` s'affichent sous ce titre, en GRILLE pour les prix, chacune
+   * sous son libellé `court`. Sans `groupe`, la question garde son libellé
+   * complet. Le formulaire de candidature l'ignore.
+   */
+  groupe?: string;
+  /**
+   * Ce qui est attendu, en mots courts (« hook dès la 1re seconde », « LUT /
+   * étalonnage »…), affiché en PASTILLES sous le titre du groupe, par la
+   * première question du groupe qui en porte. Un prix se chiffre sur un cahier
+   * des charges : le lister évite un prix qui ne couvre pas la prestation.
+   */
+  attendus?: string[];
 }
 
 /** Longueur maximale d'une réponse stockée. */

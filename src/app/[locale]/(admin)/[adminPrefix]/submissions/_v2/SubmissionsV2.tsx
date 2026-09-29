@@ -4,7 +4,18 @@
 
 import Link from "next/link";
 import * as Sentry from "@sentry/nextjs";
-import { Archive, AlertTriangle, CheckCircle2, XCircle, CircleSlash } from "lucide-react";
+import {
+  Archive,
+  AlertTriangle,
+  CalendarCheck,
+  CalendarX,
+  CheckCircle2,
+  XCircle,
+  CircleSlash,
+  BellRing,
+  MailCheck,
+  Send,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { SubmissionListItem } from "@/features/admin-submissions/actions";
 import { listSubmissionsAction } from "@/features/admin-submissions/actions";
@@ -26,6 +37,13 @@ import { MentionAccuse } from "@/components/admin/accuse/AccuseReceptionAuto";
 import type { PerimetreSubmissions } from "@/features/admin-submissions/query";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { LIBELLE_ETAPE } from "@/lib/commercial-application/etape-apporteur";
+import { lireSuiviInvitationListe } from "@/features/commercial-application/invitation-apporteur";
+import {
+  badgeSuiviInvitation,
+  estBadgeDecision,
+  type BadgeSuivi,
+  type SuiviInvitation,
+} from "@/lib/commercial-application/relance-invitation";
 
 /**
  * Computed reply badge — derives 4 visual states from SubmissionListItem :
@@ -45,7 +63,7 @@ import { LIBELLE_ETAPE } from "@/lib/commercial-application/etape-apporteur";
 // donc en texte nu, sans fond ni couleur : seul « Échec envoi » était teinté,
 // c'est-à-dire que le seul état visuellement distinct était l'exception.
 // Les tons deviennent ceux d'`AdminBadge`, qui les définit pour de bon.
-type TonBadge = "neutral" | "success" | "warning" | "destructive";
+type TonBadge = "neutral" | "info" | "success" | "warning" | "destructive";
 
 function replyBadge(s: SubmissionListItem): { label: string; tone: TonBadge; Icone: LucideIcon } {
   // 🔑 « Sans suite » AVANT « Archivé », et ce n'est pas cosmétique : les deux
@@ -64,6 +82,50 @@ function replyBadge(s: SubmissionListItem): { label: string; tone: TonBadge; Ico
     };
   }
   return { label: "Sans réponse", tone: "destructive", Icone: XCircle };
+}
+
+/**
+ * Le badge du suivi de l'invitation (2026-09-27), qui remplace « Sans réponse ».
+ * L'ordre de priorité est dans `badgeSuiviInvitation` ; ici, seulement le rendu.
+ */
+function badgeInvitation(b: BadgeSuivi): { label: string; tone: TonBadge; Icone: LucideIcon } {
+  switch (b.type) {
+    case "echange-reserve":
+      return { label: "Échange réservé", tone: "success", Icone: CalendarCheck };
+    case "a-repondu":
+      return {
+        label: `A répondu le ${formatDateFrShort(b.le)}`,
+        tone: "success",
+        Icone: MailCheck,
+      };
+    case "echange-annule":
+      return { label: "Échange annulé", tone: "warning", Icone: CalendarX };
+    case "rappel":
+      return {
+        label: `Rappel ${b.numero} le ${formatDateFrShort(b.le)}`,
+        tone: "info",
+        Icone: BellRing,
+      };
+    case "invite":
+      return { label: `Invité le ${formatDateFrShort(b.le)}`, tone: "info", Icone: Send };
+    // 2026-09-28 — l'issue de l'échange, décidée par Will.
+    case "retenu":
+      return {
+        label: `Retenu le ${formatDateFrShort(b.le)}`,
+        tone: "success",
+        Icone: CheckCircle2,
+      };
+    case "non-retenu":
+      return { label: "Non retenu", tone: "neutral", Icone: CircleSlash };
+    case "a-revoir":
+      return { label: "À revoir", tone: "warning", Icone: BellRing };
+    case "absent":
+      return {
+        label: b.le ? `Absent le ${formatDateFrShort(b.le)}` : "Absent",
+        tone: "warning",
+        Icone: CalendarX,
+      };
+  }
 }
 
 interface Props {
@@ -154,6 +216,23 @@ export async function SubmissionsV2({
     Sentry.captureException(err, { tags: { ecran: "messages", etape: "accuses" } });
   }
 
+  // 2026-09-27 (Will) : savoir, DANS LA LISTE, qui a déjà reçu l'invitation à
+  // l'échange — sinon une personne invitée reste « Sans réponse » et risque
+  // d'être invitée une seconde fois — puis ses rappels et son échange réservé.
+  // Seulement pour les apporteurs ; accessoire comme l'accusé : si le journal ne
+  // répond pas, la liste s'affiche sans.
+  let invitations = new Map<string, SuiviInvitation>();
+  const idsApporteurs = result.items
+    .filter((s) => estApporteur({ unifiedType: s.unifiedType, subType: s.subType }))
+    .map((s) => s.id);
+  if (idsApporteurs.length > 0) {
+    try {
+      invitations = await lireSuiviInvitationListe(idsApporteurs);
+    } catch (err) {
+      Sentry.captureException(err, { tags: { ecran: "messages", etape: "invitations" } });
+    }
+  }
+
   // L'export doit porter le MÊME périmètre que l'écran : filtres de l'URL +
   // types forcés de la vue (Clients / Presse / …). Sans `unifiedTypeIn`, le CSV
   // d'un onglet filtré ramènerait toutes les soumissions du site.
@@ -221,7 +300,14 @@ export async function SubmissionsV2({
   // nom / prénom / email / téléphone. Société, statut pipeline et langue
   // restent visibles dans le détail — ils encombraient la liste.
   const rows = result.items.map((s) => {
-    const r = replyBadge(s);
+    // Une vraie réponse (composeur) ou un état terminal prime ; sinon, le suivi
+    // de l'invitation (échange réservé, rappel, invité) remplace « Sans réponse ».
+    const base = replyBadge(s);
+    // 2026-09-28 — une DÉCISION (retenu, non retenu, à revoir, absent) prime sur
+    // tout badge de réponse : « Non retenu » se lit mieux que « Sans suite ».
+    const badge = badgeSuiviInvitation(invitations.get(s.id));
+    const suivi = estBadgeDecision(badge) || base.label === "Sans réponse" ? badge : null;
+    const r = suivi ? badgeInvitation(suivi) : base;
     const accuse = accuses.get(s.id);
     const { prenom, nom } = splitNomPrenom(s.contactName);
     return {

@@ -25,6 +25,7 @@ import { MODELES_REPONSE_IDS, remplirModele } from "@/content/recrutement/modele
 
 import { PLAFOND_EN_MASSE } from "./en-masse";
 import { ecrireEtEnfilerReponse } from "./envoyer-reponse";
+import { lienComplement } from "@/features/job-application/complement";
 import {
   preparerEnvois,
   type EcartPrepare,
@@ -128,17 +129,25 @@ export async function repondreEnMasseAction(
       status: true,
       offerTitleSnap: true,
       firstName: true,
+      offer: { select: { id: true, screeningQuestions: true } },
     },
   });
   if (dossiers.length === 0) return { ok: false, error: "Aucune candidature trouvée." };
 
   // Le prénom est CHIFFRÉ en base. On le déchiffre ici, dans le processus web
   // qui a la clé, et uniquement pour le substituer : il ne repart pas en base.
-  const destinataires: DestinatairePrepare[] = dossiers.map((d) => ({
-    id: d.id,
-    prenom: prenomLisible(d.firstName),
-    poste: d.offerTitleSnap,
-  }));
+  // Le lien n'est signé que s'il est employé : inutile de fabriquer cinquante
+  // jetons pour un message qui n'en contient pas.
+  const avecLien = `${parsed.data.subject}
+${parsed.data.bodyMarkdown}`.includes("{lien_complement}");
+  const destinataires: DestinatairePrepare[] = await Promise.all(
+    dossiers.map(async (d) => ({
+      id: d.id,
+      prenom: prenomLisible(d.firstName),
+      poste: d.offerTitleSnap,
+      lienComplement: avecLien ? await lienComplement(d.id, d.offer) : null,
+    })),
+  );
 
   const { envois, ecartes } = preparerEnvois(
     destinataires,

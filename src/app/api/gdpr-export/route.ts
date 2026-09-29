@@ -26,7 +26,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { exporterCandidaturesPour } from "@/server/careers/candidature-rgpd";
 import { trouverDemandesPodcast } from "@/features/podcast-request/rgpd";
-import { decryptPiiObject } from "@/lib/pii-crypto";
+import { decryptPii, decryptPiiObject } from "@/lib/pii-crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { extractAnswersText } from "@/server/calendly/api";
@@ -118,6 +118,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // peut nommer d'autres personnes, et le corps se reconstitue de toute façon à
   // partir du gabarit. Ce que l'art. 15 doit rendre est « quels messages
   // m'avez-vous adressés, quand, et sont-ils arrivés ».
+  //
+  // 2026-09-27 — depuis que la COPIE de l'e-mail envoyé est conservée
+  // (`email_log_contents`, 12 mois), elle est rendue ici : objet, texte et noms
+  // des pièces jointes du message que CETTE personne a reçu, liens personnels
+  // masqués. Le texte plutôt que le HTML : c'est la version lisible, et elle
+  // porte le même contenu. Une copie conservée et non exportée serait le
+  // défaut `D5-5-02` recommencé.
   const [emailsEnvoyes, emailsEnAttente] = await Promise.all([
     prisma.emailLog.findMany({
       where: { recipient: email },
@@ -130,6 +137,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         bounceType: true,
         bouncedAt: true,
         createdAt: true,
+        contenu: { select: { subject: true, text: true, attachmentNames: true } },
       },
       orderBy: { createdAt: "desc" },
     }),
@@ -400,9 +408,39 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         // ne les porte. Les omettre reviendrait à taire ce que la personne a
         // elle-même écrit.
         rawPayload: true,
+        // Le point fait après l'appel (2026-09-27) : sa note est une
+        // appréciation écrite sur la personne — même raison que `notes`.
+        // 2026-09-28 — `decision` et `noteSur20` : l'issue d'un échange
+        // apporteur et sa note /20, appréciations sur la personne.
+        suivi: {
+          select: {
+            issue: true,
+            suite: true,
+            suiteLe: true,
+            note: true,
+            decision: true,
+            noteSur20: true,
+            renseigneLe: true,
+          },
+        },
       },
     }),
   );
+
+  // 2026-09-27 — les réponses que la personne a envoyées par e-mail à son
+  // invitation d'apporteur, relevées dans la boîte Zoho : ce que NOUS en
+  // gardons (date, objet, extrait). Par l'empreinte de l'expéditeur, posée à
+  // l'enregistrement : c'est la clé que l'effacement utilise aussi.
+  const reponsesRecues = lookupHash
+    ? await ouAvertir(
+        "reponsesRecues",
+        prisma.submissionInboundReply.findMany({
+          where: { fromEmailHash: lookupHash },
+          orderBy: { receivedAt: "desc" },
+          select: { receivedAt: true, subject: true, excerpt: true, auto: true },
+        }),
+      )
+    : [];
 
   return NextResponse.json({
     ok: true,
@@ -424,6 +462,17 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     emailsEnvoyes,
     /** Messages vous concernant en attente d'envoi ou de validation interne. */
     emailsEnAttente,
+    /**
+     * Vos réponses par e-mail à notre invitation (réseau d'apporteurs) : ce que
+     * nous en conservons — la date, l'objet et un court extrait, jamais le
+     * message entier ni ses pièces jointes.
+     */
+    reponsesRecues: reponsesRecues.map((r) => ({
+      recueLe: r.receivedAt,
+      objet: r.subject,
+      extrait: r.excerpt ? decryptPii(r.excerpt) : null,
+      reponseAutomatique: r.auto,
+    })),
     candidatures: candidatures.candidatures,
     /** Demandes de tournage de podcast deposees via le formulaire public. */
     podcast: podcast.demandes,
@@ -472,6 +521,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         (r.rawPayload as { invitee?: { questions_and_answers?: unknown } } | null)?.invitee
           ?.questions_and_answers,
       ),
+      // Le point fait après l'appel (2026-09-27). Lu en base plus haut, et
+      // RENDU ici : un champ sélectionné mais jamais restitué est le défaut que
+      // ce bloc corrigeait déjà le 2026-08-31.
+      pointApresAppel: r.suivi
+        ? {
+            constat: r.suivi.issue,
+            suite: r.suivi.suite,
+            echeance: r.suivi.suiteLe,
+            note: r.suivi.note,
+            decision: r.suivi.decision,
+            noteSur20: r.suivi.noteSur20,
+            noteLe: r.suivi.renseigneLe,
+          }
+        : null,
     })),
     ...(podcast.tronque
       ? {

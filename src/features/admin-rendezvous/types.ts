@@ -1,4 +1,5 @@
 import type { CanalRendezVous } from "@/server/calendly/canal";
+import type { EtatRdv } from "./visio";
 // Module RV téléphonique — view-model unifié des rendez-vous (read-only).
 //
 // V1 = source `CalendlyEvent` (seul canal public actif). La couche est conçue
@@ -40,6 +41,11 @@ export interface UnifiedRdv {
   contactPhone: string | null;
   location: string | null;
   /**
+   * Adresse du bouton « Rejoindre la visio » (route console), ou `null` quand
+   * le lieu n'est pas un lien de visio. Cf. `visio.ts`.
+   */
+  lienVisio: string | null;
+  /**
    * Téléphone ou visio — **dérivé** de `location`, jamais stocké.
    *
    * Deux champs qui doivent dire la même chose finissent par diverger : le
@@ -57,6 +63,46 @@ export interface UnifiedRdv {
   notes: string | null;
   /** Date de tri de repli quand `startTime` est null (capture/création). */
   createdAt: Date;
+}
+
+/** Une carte de l'onglet « Rendez-vous » : le rendez-vous et ce qu'on lit avant l'appel. */
+export interface RdvAVenir extends UnifiedRdv {
+  /**
+   * Le début est passé : l'échange a commencé, OU il est terminé et la carte
+   * vit ses 30 minutes de grâce. C'est ce qui ouvre les boutons du point.
+   *
+   * ⚠️ Ne dit PAS « en cours » : c'était le défaut signalé par Will le
+   * 2026-09-28 (« ça indique toujours en cours »). Pour l'affichage, lire `etat`.
+   */
+  enCours: boolean;
+  /** À venir, en cours (début ≤ maintenant < fin) ou terminé (fin ≤ maintenant). */
+  etat: EtatRdv;
+  /** Réponse à la question « Nom de l'entreprise » du formulaire Calendly. */
+  entreprise: string | null;
+  /** Les autres réponses du formulaire — le besoin exprimé. */
+  besoin: ReadonlyArray<{ question: string; reponse: string }>;
+  /** Personnes ajoutées par l'invité à la réservation. */
+  autresInvites: string[];
+  /** Le point déjà fait après l'appel, ou `null`. `suiteLe` en « AAAA-MM-JJ ». */
+  suivi: {
+    issue: "eu_lieu" | "absent" | "reporte";
+    suite: "devis" | "relance" | "proposition" | "aucune" | null;
+    suiteLe: string | null;
+    note: string | null;
+    /** Échange apporteur tenu : la décision (2026-09-28). Absente : aucune. */
+    decision?: "retenu" | "a_revoir" | "non_retenu" | null;
+    /** Note d'échange /20 d'un échange apporteur. */
+    noteSur20?: number | null;
+  } | null;
+}
+
+/**
+ * Une ligne de l'onglet « Passés » (2026-09-28) : un rendez-vous terminé et ce
+ * que son point a dit — ou rien, et l'écran affiche alors « Sans point ».
+ */
+export interface RdvPasse extends UnifiedRdv {
+  entreprise: string | null;
+  suivi: RdvAVenir["suivi"];
 }
 
 /**

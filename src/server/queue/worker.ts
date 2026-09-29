@@ -18,6 +18,7 @@ import { startCalendlyPollWorker } from "./workers/calendly-poll-worker";
 import { startCrmSyncWorker } from "./workers/crm-sync-worker";
 import { startVivierCronsWorker } from "./workers/vivier-crons-worker";
 import { startGuideIaCronsWorker } from "./workers/guide-ia-crons-worker";
+import { startApporteurCronsWorker } from "./workers/apporteur-crons-worker";
 import { startContentGenWorker } from "./workers/content-gen-worker";
 import { startOrchestratorWorker } from "./workers/content-orchestrator-worker";
 import { startQualityImproverWorker } from "./workers/content-quality-improver-worker";
@@ -109,6 +110,10 @@ async function main() {
     // confirmations restés sans envoi, sentinelle quotidienne. Suspendu tant
     // que le coupe-circuit des rebonds est déclenché.
     startGuideIaCronsWorker(),
+    // Réseau d'apporteurs (2026-09-27) — rappels J+3 / J+7 de l'invitation à
+    // l'échange, passage quotidien 08:00 UTC. Sans `CALENDLY_APPORTEUR_URL`
+    // dans l'environnement du worker, le passage ne pose rien et le dit.
+    startApporteurCronsWorker(),
     // Content Generator V1 — 14 workers (§ 13 master prompt v1.7 + Pass B P0-7
     // + Sprints 9-12.5 V2 + Audit final P0-3 + Sprint S6.3 doc-sync P3-15)
     startContentGenWorker(),

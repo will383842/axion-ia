@@ -130,6 +130,18 @@ import {
   apporteurInvitationAppelSubject,
   ApporteurInvitationAppelEmail,
 } from "./apporteur-invitation-appel";
+import {
+  apporteurInvitationRelanceSubject,
+  ApporteurInvitationRelanceEmail,
+} from "./apporteur-invitation-relance";
+import {
+  apporteurIssueAbsentSubject,
+  ApporteurIssueAbsentEmail,
+  apporteurIssueRetenuSubject,
+  ApporteurIssueRetenuEmail,
+  apporteurIssueNonRetenuSubject,
+  ApporteurIssueNonRetenuEmail,
+} from "./apporteur-issue-echange";
 import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
 import { PieceExemplaireSigneEmail, pieceExemplaireSigneSubject } from "./piece-exemplaire-signe";
@@ -138,6 +150,7 @@ import {
   AutofactureTransmissionEmail,
   autofactureTransmissionSubject,
 } from "./autofacture-transmission";
+import { PreavisSousTraitantsEmail, preavisSousTraitantsSubject } from "./preavis-sous-traitants";
 
 type TemplateMap = {
   [K in EmailJobName]: {
@@ -400,9 +413,33 @@ const TEMPLATES: TemplateMap = {
     subject: apporteurInvitationAppelSubject,
     component: ApporteurInvitationAppelEmail,
   },
+  // Rappels J+3 / J+7 de l'invitation, passage quotidien (2026-09-27)
+  "apporteur-invitation-relance": {
+    subject: apporteurInvitationRelanceSubject,
+    component: ApporteurInvitationRelanceEmail,
+  },
+  // L'issue de l'échange de 15 minutes, après aperçu confirmé (2026-09-28)
+  "apporteur-issue-absent": {
+    subject: apporteurIssueAbsentSubject,
+    component: ApporteurIssueAbsentEmail,
+  },
+  "apporteur-issue-retenu": {
+    subject: apporteurIssueRetenuSubject,
+    component: ApporteurIssueRetenuEmail,
+  },
+  "apporteur-issue-non-retenu": {
+    subject: apporteurIssueNonRetenuSubject,
+    component: ApporteurIssueNonRetenuEmail,
+  },
   "vivier-information": {
     subject: vivierInformationSubject,
     component: VivierInformationEmail,
+  },
+  // Chantier visio (2026-09-29) — préavis de 30 jours aux clients actifs,
+  // toujours garé pour validation (`src/server/visio/preavis-envoi.ts`).
+  "preavis-sous-traitants": {
+    subject: preavisSousTraitantsSubject,
+    component: PreavisSousTraitantsEmail,
   },
 };
 

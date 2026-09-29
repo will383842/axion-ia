@@ -30,6 +30,12 @@ import {
   listerDossiersEnSommeil,
   plusAncienJamaisRepondu,
 } from "@/server/careers/dossiers-en-sommeil";
+import {
+  AGE_MIN_JOURS,
+  critereEligible,
+  estActive as reponseAutoActive,
+} from "@/server/careers/reponse-poste-pourvu";
+import { basculerReponsePostePourvuAction } from "@/features/admin-job-applications/reponse-poste-pourvu-actions";
 import { ApplicationsV2 } from "./_v2/ApplicationsV2";
 
 export const dynamic = "force-dynamic";
@@ -115,8 +121,21 @@ export default async function ApplicationsListPage({ params, searchParams }: Pag
       )
     : null;
 
+  // Réponse automatique « poste pourvu » (Will, 2026-09-28) : son état et ce
+  // qu'elle a devant elle, affichés là où on regarde les candidatures.
+  const [autoActive, autoEnAttente] = await Promise.all([
+    reponseAutoActive(),
+    prisma.jobApplication.count({ where: critereEligible(new Date()) }).catch(() => 0),
+  ]);
+
   return (
     <ApplicationsV2
+      reponseAuto={{
+        active: autoActive,
+        enAttente: autoEnAttente,
+        ageMinJours: AGE_MIN_JOURS,
+        basculer: basculerReponsePostePourvuAction,
+      }}
       adminPrefix={adminPrefix}
       searchParams={sp}
       offres={offres}

@@ -42,6 +42,12 @@ export interface DestinatairePrepare {
   readonly prenom: string | null;
   /** Intitulé de l'offre visée, figé au dépôt. */
   readonly poste: string | null;
+  /**
+   * Lien personnel « compléter ma candidature » (`{lien_complement}`), signé
+   * côté serveur. `null` quand l'offre ne pose aucune question : le
+   * destinataire est alors ÉCARTÉ, jamais servi d'un lien vers une page vide.
+   */
+  readonly lienComplement?: string | null;
 }
 
 /** Un message prêt à partir, personnalisé pour UN destinataire. */
@@ -107,7 +113,7 @@ export type EtatReponseEnMasse =
   | { ok: false; error: string };
 
 /** Les variables qu'un modèle sait résoudre. Toute autre reste à l'écran. */
-export const VARIABLES_CONNUES = ["prenom", "poste"] as const;
+export const VARIABLES_CONNUES = ["prenom", "poste", "lien_complement"] as const;
 
 /** Même motif que `remplirModele` — il n'est pas recopié à la légère : les
  *  deux doivent voir EXACTEMENT les mêmes variables, sans quoi on écarterait
@@ -172,7 +178,11 @@ export function preparerEnvois(
   const ecartes: EcartPrepare[] = [];
 
   for (const d of destinataires) {
-    const valeurs: Record<string, string | null> = { prenom: d.prenom, poste: d.poste };
+    const valeurs: Record<string, string | null> = {
+      prenom: d.prenom,
+      poste: d.poste,
+      lien_complement: d.lienComplement ?? null,
+    };
     // Une valeur vide ou faite d'espaces ne résout rien : `remplirModele`
     // laisserait l'accolade. On applique ICI sa règle exacte, plutôt que de
     // relire le rendu à la recherche d'accolades — un texte peut légitimement

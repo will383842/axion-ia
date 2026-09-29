@@ -25,6 +25,7 @@ import { jetonOpposition } from "@/server/email/opposition-jeton";
 import { prisma } from "@/lib/prisma";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
 import { cloturerJournal, marquerAnnule, noterTentativeEchouee } from "@/server/email/email-log";
+import { enregistrerCopieEnvoi } from "@/server/email/copie-envoi";
 // Base seule : sûr sur le trajet du worker (cf. l'en-tête de `journal.ts`).
 import { marquerGuideEnvoye } from "@/server/guide-ia/journal";
 import { ENTITE_GUIDE } from "@/server/guide-ia/config";
@@ -36,6 +37,10 @@ import {
   estSollicitationSoumiseAOpposition,
   verdictAvantEnvoi,
 } from "@/server/email/verdict-envoi";
+// Base + déchiffrement + règle pure seulement : sûr sur le trajet du worker
+// (même garde de graphe que `verdict-envoi`).
+import { motifRetenueRelanceInvitation } from "@/features/commercial-application/relance-invitation-etat";
+import { GABARIT_RELANCE_INVITATION } from "@/lib/commercial-application/relance-invitation";
 import { EmailLogStatus } from "../../../../prisma/generated/client";
 import type { EmailJobData, EmailJobName } from "../types";
 
@@ -101,6 +106,15 @@ async function motifDeRetenueAuDepart(data: EmailJobData): Promise<string | null
     if ((await ficheEffacee(data.entityId)) === true) {
       return "la fiche a été supprimée ou effacée (RGPD)";
     }
+  }
+  // 2026-09-27 — les rappels de l'invitation à l'échange : une réservation,
+  // une réponse, un classement arrivés depuis le passage qui les a posés les
+  // retiennent ICI. Sans fiche liée, on ne peut rien vérifier : on retient.
+  if (data.template === GABARIT_RELANCE_INVITATION) {
+    if (data.entityType !== "Submission" || !data.entityId) {
+      return "rappel d'invitation sans fiche liée — état invérifiable";
+    }
+    return motifRetenueRelanceInvitation(data.entityId);
   }
   return null;
 }
@@ -271,6 +285,26 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
           ...(entityId ? { entityId } : {}),
           ...(jobId ? { jobId } : {}),
         });
+        // 2026-09-27 — la COPIE de ce qui vient de partir (objet, HTML, texte
+        // rendus ci-dessus, liens personnels masqués), pour « voir l'e-mail »
+        // depuis Emails › Envoyés. Best-effort : `enregistrerCopieEnvoi` ne
+        // lève pas, et le `catch` local le garantit une seconde fois — une
+        // exception ici tomberait dans le `catch` d'envoi, qui ferait rejouer
+        // le job, donc RENVOYER un e-mail déjà parti.
+        try {
+          await enregistrerCopieEnvoi({
+            jobId,
+            subject,
+            html,
+            text,
+            attachmentNames: job.data.attachments?.map((a) => a.filename),
+          });
+        } catch (e) {
+          console.error(
+            "[email-worker] copie de l'envoi non conservée :",
+            e instanceof Error ? e.message : String(e),
+          );
+        }
         // Lot L2 (2026-09-24) — « Votre guide » : la demande n'est « envoyée »
         // qu'ICI, après l'accord du relais. Le rattrapage lit ce champ.
         if (entityType === ENTITE_GUIDE && entityId) {
