@@ -55,7 +55,13 @@ export function classerReponse(type, statut, erreur) {
   return "reessayer"; // 429, 5xx, réseau
 }
 
-/** Détruit tout ce qui appartient à une capture (refus, accord absent, cas A). */
+/**
+ * Détruit tout ce qui appartient à une capture (refus, accord absent, cas A).
+ * @template {{ cleClient: string }} T
+ * @param {T[]} elements
+ * @param {string} cleClient
+ * @returns {T[]}
+ */
 export function purgerCapture(elements, cleClient) {
   return elements.filter((el) => el.cleClient !== cleClient);
 }
