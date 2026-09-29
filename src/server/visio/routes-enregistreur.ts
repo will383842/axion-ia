@@ -29,7 +29,7 @@ import {
   type DependancesGarde,
 } from "./garde-route";
 import { deposerMorceau } from "./morceaux";
-import { listerRencontresDuJour } from "./rencontres-du-jour";
+import { listerRencontresDuJour } from "./liste-enregistreur";
 import {
   battementSession,
   creerOuReprendreSession,

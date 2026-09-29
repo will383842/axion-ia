@@ -242,7 +242,7 @@ export async function balayerEnregistreur(
         endTime: { gte: maintenant },
         status: { not: "canceled" },
       },
-      select: { id: true, eventTypeName: true, startTime: true },
+      select: { id: true, eventTypeName: true, linkedJobApplicationId: true, startTime: true },
     });
     const actifs = appareils.filter((a) => a.revoqueLe === null);
     silencieuse = extensionSilencieuse(

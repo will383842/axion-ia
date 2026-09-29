@@ -24,13 +24,18 @@
  * lecture ; 409 `client_actif_preavis_en_cours`).
  * Garde : `le-drapeau-ne-lit-que-ses-deux-variables.spec.ts`.
  *
- * `effectif` existe pour la PR 8 : elle y branchera `modeEffectif` (la notice
- * publique doit annoncer l'enregistrement avant que `ouvert` s'applique). Ici,
- * `effectif` vaut `demande`. La dictée annoncée (`DICTEE_ANNONCEE`) n'est PAS
- * déclarée ici : sa source unique est `src/server/visio/visio-annonce.ts`.
+ * `effectif` passe par `modeEffectif` (`./ouverture.ts`, PR 8, anti-doublon
+ * D2) : `ouvert` n'est effectif que si la notice publique annonce
+ * l'enregistrement (`ANNONCE_VISIO_ACTIVE`, `visio-annonce.ts`) ; sinon il vaut
+ * `pilote`. Aucune règle d'ouverture n'est recodée ici (garde
+ * `le-drapeau-ouvert-attend-la-notice-publique.spec.ts`). La dictée annoncée
+ * (`DICTEE_ANNONCEE`) n'est PAS déclarée ici : sa source unique est
+ * `src/server/visio/visio-annonce.ts`.
  *
  * Module PUR : lu par les routes, la console et le worker.
  */
+
+import { modeEffectif } from "./ouverture";
 
 export type ModeEnregistrement = "ferme" | "pilote" | "ouvert";
 
@@ -40,7 +45,7 @@ export const VARIABLE_OUVERT = "ENREGISTREMENT_VISIO_OUVERT";
 export interface LectureDrapeau {
   /** Ce que disent les variables. */
   readonly demande: ModeEnregistrement;
-  /** Ce qui s'applique réellement (la PR 8 y branchera la notice publique). */
+  /** Ce qui s'applique réellement : `modeEffectif` (notice publique, `ouverture.ts`). */
   readonly effectif: ModeEnregistrement;
   /** Pourquoi `effectif` diffère de `demande`, en français, ou `null`. */
   readonly motif: string | null;
@@ -56,7 +61,8 @@ export function lireDrapeauEnregistrement(env: Env = process.env): LectureDrapea
       : env[VARIABLE_PILOTE] === "true"
         ? "pilote"
         : "ferme";
-  return { demande, effectif: demande, motif: null };
+  const { mode, motif } = modeEffectif(demande);
+  return { demande, effectif: mode, motif };
 }
 
 /** Raccourci : le mode qui s'applique maintenant. */

@@ -45,7 +45,9 @@ import {
 import { CONSENT_FORM_REFS } from "@/lib/consents";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import type { ModeEnregistrement } from "./drapeau";
-import { estTypeEnregistrable, estTypeEntretien } from "./enregistreur-calendly";
+// Liste blanche UNIQUE, celle du dossier client (PR 4, anti-doublon D1) :
+// type « Discutons… » ET jamais un rendez-vous lié à une candidature.
+import { estRendezVousDuDossier } from "./liste-blanche-types";
 import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import { ETATS_ENREGISTREMENT_ACTIFS } from "./etats";
 import { CONSERVATION_AUDIO_MAX_JOURS } from "./cloture";
@@ -136,7 +138,10 @@ type RencontrePourEligibilite = {
   readonly repriseHistorique: boolean;
   readonly clientId: string | null;
   readonly debutPrevu: Date | null;
-  readonly calendlyEvent: { readonly eventTypeName: string } | null;
+  readonly calendlyEvent: {
+    readonly eventTypeName: string;
+    readonly linkedJobApplicationId: string | null;
+  } | null;
 };
 
 /**
@@ -213,7 +218,9 @@ export async function motifDeRefus(
   if (rencontre.source === "calendly") {
     const nom = rencontre.calendlyEvent?.eventTypeName ?? null;
     if (estAppelApporteur(nom)) return motive("apporteur");
-    if (!estTypeEnregistrable(nom)) return motive("hors_liste_blanche");
+    if (!rencontre.calendlyEvent || !estRendezVousDuDossier(rencontre.calendlyEvent)) {
+      return motive("hors_liste_blanche");
+    }
   } else if (rencontre.source === "saisie_manuelle") {
     if (entree.nature === "visio" && rencontre.type !== "visio") {
       return motive("hors_liste_blanche");
@@ -240,9 +247,11 @@ export async function motifDeRefus(
       },
       status: { not: "canceled" },
     },
-    select: { eventTypeName: true, linkedJobApplicationId: true },
+    select: { linkedJobApplicationId: true },
   });
-  if (autour.some((e) => e.linkedJobApplicationId !== null || estTypeEntretien(e.eventTypeName))) {
+  // Un entretien se reconnaît à son LIEN de candidature (liste blanche du
+  // dossier, D1), jamais au nom de son type.
+  if (autour.some((e) => e.linkedJobApplicationId !== null)) {
     return motive("entretien_candidat");
   }
   return null;
@@ -382,7 +391,7 @@ export async function creerOuReprendreSession(
       clientId: true,
       debutPrevu: true,
       fusionneeDansId: true,
-      calendlyEvent: { select: { eventTypeName: true } },
+      calendlyEvent: { select: { eventTypeName: true, linkedJobApplicationId: true } },
     },
   });
   if (!rencontre || rencontre.fusionneeDansId !== null) return refusSession("rencontre_inconnue");

@@ -8,7 +8,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
 import { estUnNon, reponseEnregistrementCalendly } from "../enregistreur-calendly";
-import { listerRencontresDuJour } from "../rencontres-du-jour";
+import { listerRencontresDuJour } from "../liste-enregistreur";
 import {
   CLE_DE_TEST,
   commePrisma,

@@ -19,8 +19,9 @@
 
 import { describe, expect, it } from "vitest";
 
-import { listerRencontresDuJour } from "../rencontres-du-jour";
+import { listerRencontresDuJour } from "../liste-enregistreur";
 import { creerOuReprendreSession, declarerAccord } from "../sessions";
+import { CODE_REFUS_PREAVIS, refusPourPreavis } from "../visio-annonce";
 import {
   commePrisma,
   corpsSession,
@@ -113,5 +114,41 @@ describe("⛔ un client actif n'est pas enregistré avant la fin du préavis", (
     });
     expect(r.statut).toBe(200);
     expect(r.corps["statut"]).toBe("accord_en_attente");
+  });
+});
+
+// ── La règle pure, telle que `visio-annonce.ts` la déclare (source unique, D2 ;
+//    cas repris de main, #1226) : les routes ci-dessus la branchent.
+const PREAVIS_FIXE = { envoyeLe: "2026-09-30T08:00:00.000Z", finLe: "2026-10-30T08:00:00.000Z" };
+const ACTIF = { valide: true, actif: true };
+
+describe("un client actif n'est pas enregistré avant la fin du préavis (règle pure)", () => {
+  it("🔴 veille de la fin : refus, code 409 et date lisible pour Will", () => {
+    const r = refusPourPreavis(ACTIF, new Date("2026-10-30T07:59:59.000Z"), PREAVIS_FIXE);
+    expect(r).toEqual({
+      refuse: true,
+      code: CODE_REFUS_PREAVIS,
+      message: "Pas d'enregistrement pour ce client avant le 30/10/2026 : notes à la main.",
+    });
+  });
+
+  it("🔴 une date de fin illisible refuse (jamais d'ouverture par défaut)", () => {
+    const r = refusPourPreavis(ACTIF, new Date("2027-01-01"), {
+      ...PREAVIS_FIXE,
+      finLe: "n'importe",
+    });
+    expect(r.refuse).toBe(true);
+  });
+
+  it("🔑 CONTRE-TÉMOIN : préavis échu, le client actif est enregistrable", () => {
+    expect(refusPourPreavis(ACTIF, new Date("2026-10-30T08:00:00.000Z"), PREAVIS_FIXE)).toEqual({
+      refuse: false,
+    });
+  });
+
+  it("🔑 CONTRE-TÉMOIN : un client validé mais inactif n'attend pas le préavis", () => {
+    expect(
+      refusPourPreavis({ valide: true, actif: false }, new Date("2026-10-01"), PREAVIS_FIXE).refuse,
+    ).toBe(false);
   });
 });

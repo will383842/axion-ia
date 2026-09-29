@@ -10,7 +10,7 @@
 
 import { describe, expect, it } from "vitest";
 
-import { listerRencontresDuJour } from "../rencontres-du-jour";
+import { listerRencontresDuJour } from "../liste-enregistreur";
 import {
   CLE_DE_TEST,
   commePrisma,

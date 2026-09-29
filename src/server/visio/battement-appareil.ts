@@ -13,7 +13,7 @@
 
 import type { PrismaClient } from "../../../prisma/generated/client";
 import type { TBattementAppareil } from "@/lib/schemas/enregistreur";
-import { estTypeEnregistrable } from "./enregistreur-calendly";
+import { estRendezVousDuDossier } from "./liste-blanche-types";
 import { ok, type Resultat } from "./resultat";
 import type { Appareil } from "./sessions";
 
@@ -52,7 +52,10 @@ export async function enregistrerBattementAppareil(
  */
 export function extensionSilencieuse(
   entree: {
-    readonly rendezVousEnCours: ReadonlyArray<{ readonly eventTypeName: string }>;
+    readonly rendezVousEnCours: ReadonlyArray<{
+      readonly eventTypeName: string;
+      readonly linkedJobApplicationId: string | null;
+    }>;
     readonly appareils: ReadonlyArray<{
       readonly dernierBattementLe: Date | null;
       readonly revoqueLe: Date | null;
@@ -61,7 +64,7 @@ export function extensionSilencieuse(
   },
   maintenant: Date,
 ): boolean {
-  if (!entree.rendezVousEnCours.some((r) => estTypeEnregistrable(r.eventTypeName))) return false;
+  if (!entree.rendezVousEnCours.some((r) => estRendezVousDuDossier(r))) return false;
   const valides = entree.appareils.filter(
     (a) => a.revoqueLe === null && a.expireLe.getTime() > maintenant.getTime(),
   );

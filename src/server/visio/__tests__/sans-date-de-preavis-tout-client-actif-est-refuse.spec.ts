@@ -18,8 +18,8 @@
 import { describe, expect, it } from "vitest";
 
 import { preavisEnCours } from "../preavis-clients-actifs";
-import { PREAVIS_SOUS_TRAITANTS } from "../visio-annonce";
-import { listerRencontresDuJour } from "../rencontres-du-jour";
+import { CODE_REFUS_PREAVIS, PREAVIS_SOUS_TRAITANTS, refusPourPreavis } from "../visio-annonce";
+import { listerRencontresDuJour } from "../liste-enregistreur";
 import { creerOuReprendreSession } from "../sessions";
 import {
   commePrisma,
@@ -82,5 +82,18 @@ describe("⛔ sans date de préavis, tout client actif est refusé", () => {
     });
     expect(r.statut === 409).toBe(preavisEnCours(T0, PREAVIS_SOUS_TRAITANTS));
     if (PREAVIS_SOUS_TRAITANTS === null) expect(r.statut).toBe(409);
+  });
+});
+
+// ── La règle pure (`visio-annonce.ts`, source unique D2 ; cas repris de main, #1226).
+describe("sans date de préavis, tout client actif est refusé (règle pure)", () => {
+  it("🔴 préavis null : refus, même dans dix ans", () => {
+    const r = refusPourPreavis({ valide: true, actif: true }, new Date("2036-01-01"), null);
+    expect(r).toMatchObject({ refuse: true, code: CODE_REFUS_PREAVIS });
+  });
+
+  it("🔴 la valeur par défaut est celle de la source unique", () => {
+    const r = refusPourPreavis({ valide: true, actif: true }, new Date("2036-01-01"));
+    expect(r.refuse).toBe(PREAVIS_SOUS_TRAITANTS === null);
   });
 });

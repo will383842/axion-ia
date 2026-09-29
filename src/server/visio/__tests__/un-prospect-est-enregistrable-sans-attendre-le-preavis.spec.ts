@@ -29,8 +29,9 @@
 import { describe, expect, it } from "vitest";
 
 import { hashEmailForLookup } from "@/lib/security/email-hash";
-import { listerRencontresDuJour } from "../rencontres-du-jour";
+import { listerRencontresDuJour } from "../liste-enregistreur";
 import { creerOuReprendreSession } from "../sessions";
+import { refusPourPreavis } from "../visio-annonce";
 import {
   commePrisma,
   corpsSession,
@@ -146,5 +147,18 @@ describe("⛔ un prospect est enregistrable sans attendre le préavis", () => {
     const r = await demarrer(db, { id: appareilId, adminUserId }, rencontreId as string);
     expect(r.statut).toBe(409);
     expect(r.corps["erreur"]).toBe("client_actif_preavis_en_cours");
+  });
+});
+
+// ── La règle pure (`visio-annonce.ts`, source unique D2 ; cas repris de main, #1226).
+describe("un prospect est enregistrable sans attendre le préavis (règle pure)", () => {
+  it("🔴 prospect non validé, préavis pas encore parti : enregistrable", () => {
+    expect(refusPourPreavis({ valide: false, actif: false }, new Date(), null)).toEqual({
+      refuse: false,
+    });
+  });
+
+  it("🔴 fiche non validée même si elle ressemble à un client actif : enregistrable", () => {
+    expect(refusPourPreavis({ valide: false, actif: true }, new Date(), null).refuse).toBe(false);
   });
 });

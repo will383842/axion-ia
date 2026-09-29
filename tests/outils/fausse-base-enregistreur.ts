@@ -169,6 +169,16 @@ export class FausseBase {
     });
   }
 
+  /**
+   * `$transaction(fn)` : `fn` reçoit la base elle-même. ⚠️ Pas d'annulation :
+   * une exception n'efface pas les écritures faites avant elle. Suffit pour
+   * rejouer `assurerRencontrePourCalendly` (PR 4) sous la liste du jour ;
+   * l'atomicité de cette fonction est prouvée par les tests du dossier client.
+   */
+  async $transaction<T>(fn: (tx: unknown) => Promise<T>): Promise<T> {
+    return fn(this);
+  }
+
   lignes(table: string): Ligne[] {
     this.tables[table] ??= [];
     return this.tables[table];
