@@ -48,6 +48,7 @@ import {
   matchSubmissionSearch,
   type ListSubmissionsInput,
 } from "./query";
+import { canalPartnersOuvert } from "@/server/partners-sync/config";
 import type {
   SubmissionType,
   SubmissionStatus,
@@ -130,6 +131,11 @@ export interface SubmissionListResult {
   page: number;
   pageSize: number;
   totalPages: number;
+  /**
+   * Le canal Partners est ouvert : « Prêt à signer » n'est proposé qu'à cette condition
+   * (INT-T22). Lu ICI et non dans la page, que la garde d'inertie interdit (R4).
+   */
+  transmissionPartnersOuverte: boolean;
 }
 
 /**
@@ -291,6 +297,7 @@ export async function listSubmissions(
       page: parsed.page,
       pageSize: parsed.pageSize,
       totalPages: Math.max(1, Math.ceil(personnes.length / parsed.pageSize)),
+      transmissionPartnersOuverte: canalPartnersOuvert(),
     };
   }
 
@@ -328,5 +335,6 @@ export async function listSubmissions(
     page: parsed.page,
     pageSize: parsed.pageSize,
     totalPages: Math.max(1, Math.ceil(total / parsed.pageSize)),
+    transmissionPartnersOuverte: canalPartnersOuvert(),
   };
 }

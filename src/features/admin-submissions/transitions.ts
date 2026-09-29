@@ -47,6 +47,7 @@ import {
   motifDeRefusPretASigner,
   type MotifRefusPretASigner,
 } from "@/server/partners-sync/producteurs/candidature";
+import { canalPartnersOuvert } from "@/server/partners-sync/config";
 import type { Prisma } from "../../../prisma/generated/client";
 
 /** Les six gestes qu'un admin pose sur une fiche. */
@@ -301,7 +302,7 @@ export async function appliquerTransition(
 }
 
 export type ErreurPretASigner =
-  MotifRefusPretASigner | "introuvable" | "charge_illisible" | "db" | "interdit";
+  MotifRefusPretASigner | "introuvable" | "charge_illisible" | "db" | "interdit" | "canal_ferme";
 
 export interface ResultatPretASigner {
   readonly ok: boolean;
@@ -343,6 +344,10 @@ export async function marquerPretASigner(
   submissionId: string,
   adminUserId: string,
 ): Promise<ResultatPretASigner> {
+  // 🔴 CANAL FERMÉ, AUCUNE MARQUE. Marquer sans émettre perdrait la fiche : le bouton disparaît une
+  // fois la marque posée, et rien ne la rattraperait à l'ouverture du canal. Et la zone Partners
+  // est inerte tant que le canal est fermé : le geste n'existe pas encore.
+  if (!canalPartnersOuvert()) return { ok: false, erreur: "canal_ferme" };
   let dejaMarquee = false;
   try {
     await prisma.$transaction(async (tx) => {
