@@ -281,9 +281,9 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
             ))}
           </div>
         ) : null}
-        {liens.length === 0 || !montreVideo ? (
+        {!montreVideo ? (
           <p className="admin-alert admin-alert-warning mb-[var(--space-admin-3)]">
-            Aucun lien vers son travail. Demande-lui 2 ou 3 montages.
+            Aucune vidéo ni lien vers son travail. Demande-lui 2 ou 3 montages.
           </p>
         ) : null}
         {liens.length > 0 ? (
