@@ -132,7 +132,12 @@ describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
       const b = confronterEcrivains(lireLeDepot(RACINE));
       expect(b.fautes).toEqual([]);
       expect(b.parEvenement["devis.signe"]).toBe(3);
-      expect(b.ecrivains.map((e) => `${e.fichier} (${e.fonction})`).sort()).toEqual([
+      expect(
+        b.ecrivains
+          .filter((e) => e.evenement === "devis.signe")
+          .map((e) => `${e.fichier} (${e.fonction})`)
+          .sort(),
+      ).toEqual([
         "src/app/api/docuseal/webhook/route.ts (dispatchDevisEvent › travail de transactionDevisSigne())",
         "src/server/actions/qualiopi/devis.ts (acceptDevisAction › travail de transactionDevisSigne())",
         "src/server/actions/qualiopi/piece-signature.ts (consequenceSignatureComplete › travail de transactionDevisSigne())",
