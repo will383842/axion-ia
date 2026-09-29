@@ -16,6 +16,8 @@
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { identifiantEvenement } from "@/server/partners/enveloppe";
+
 import { COMMERCIAL_COMMISSIONS } from "@/content/pricing";
 import {
   GRILLE_VERSION,
@@ -302,6 +304,8 @@ describe("REQ-INT-007 — un seul événement, quel que soit le chemin", () => {
     const second = await emettreDevisSigne(tx, DEVIS_ID);
 
     expect(premier).not.toBeNull();
+    // La clé suit la convention des fixtures (`devis.signe:<id>`) : même event_id qu'en bac d'essai.
+    expect(premier).toBe(identifiantEvenement("devis.signe", `devis.signe:${DEVIS_ID}`));
     expect(second).toBe(premier);
     expect(outbox.size).toBe(1);
     // La première acceptation fait foi : la ligne n'est pas réécrite.

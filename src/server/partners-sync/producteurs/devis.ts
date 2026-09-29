@@ -157,7 +157,8 @@ export async function emettreDevisSigne(
 
   return ecrireEvenementPartners(tx, {
     type: DEVIS_SIGNE,
-    cleDeFait: devis.id,
+    // La convention de clé de TOUS les faits (`scripts/partners/fixtures.ts`) : `<type>:<id>`.
+    cleDeFait: `${DEVIS_SIGNE}:${devis.id}`,
     occurredAt: signeLe,
     sujet: { devis_id: devis.id },
     payload: { ...charge },
