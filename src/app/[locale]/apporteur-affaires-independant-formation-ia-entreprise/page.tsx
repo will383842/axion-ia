@@ -385,7 +385,7 @@ export default async function ApporteurAffairesPage({ params }: Props) {
               Elle reste largement méconnue des dirigeants. Vous n&apos;arrivez donc pas avec un
               produit à pousser, mais avec une information qu&apos;ils n&apos;ont pas.
               {certifie
-                ? " Et la formation peut être financée jusqu'à 100 % par leur OPCO, selon l'OPCO et la branche."
+                ? " Et la formation peut être prise en charge par leur OPCO, selon l'OPCO et la branche."
                 : ""}
             </p>
           </div>

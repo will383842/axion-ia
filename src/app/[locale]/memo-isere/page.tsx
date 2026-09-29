@@ -1447,7 +1447,7 @@ export default async function MemoIserePage({ params }: Props) {
                   Icon: GraduationCap,
                   title: "On te forme à l'offre",
                   description:
-                    "Formations, audits, financements OPCO : tu maîtrises l'offre et les argumentaires avant ton premier rendez-vous.",
+                    "Formations, audits, intégrations : tu maîtrises l'offre et les argumentaires avant ton premier rendez-vous.",
                   stat: { figure: "Offre", label: "maîtrisée avant de vendre" },
                 },
                 {
@@ -1549,7 +1549,7 @@ export default async function MemoIserePage({ params }: Props) {
                 eyebrow: "01",
                 title: "Formation complète à l'offre",
                 description:
-                  "Produits, tarifs, financements OPCO, argumentaires : tu pars sur le terrain en sachant exactement quoi dire, à qui, et comment répondre aux objections.",
+                  "Produits, tarifs, argumentaires : tu pars sur le terrain en sachant exactement quoi dire, à qui, et comment répondre aux objections.",
               },
               {
                 Icon: Handshake,

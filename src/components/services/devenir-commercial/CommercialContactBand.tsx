@@ -36,7 +36,7 @@ export function CommercialContactBand({
             </h2>
             <p className="text-mocha-fg/90 mt-3 text-base leading-relaxed sm:text-lg">
               {isFr
-                ? "Quelques informations suffisent pour postuler. Statut indépendant, produits financés faciles à vendre, revenus déplafonnés — et démarrer ne vous coûte rien."
+                ? "Quelques informations suffisent pour postuler. Statut indépendant, produits simples à présenter, revenus déplafonnés — et démarrer ne vous coûte rien."
                 : "A few details are enough to apply. Self-employed status, easy-to-sell funded products, uncapped income — and getting started costs you nothing."}
             </p>
           </div>

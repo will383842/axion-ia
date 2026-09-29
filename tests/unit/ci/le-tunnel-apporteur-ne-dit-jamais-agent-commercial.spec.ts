@@ -174,7 +174,12 @@ describe("le tunnel apporteurs ne nomme jamais un statut de mandataire", () => {
   it("les mots-clés des pages apporteur ne nomment ni un mandat, ni la vente", () => {
     // `keywords` n'est pas du texte visible, mais les moteurs le lisent : c'est
     // la même déclaration publique que la page, sous une autre forme.
-    const motsCles = buildCommercialKeywords("Grenoble", "Isère", "Auvergne-Rhône-Alpes");
+    const motsCles = buildCommercialKeywords(
+      { financementAffichable: true },
+      "Grenoble",
+      "Isère",
+      "Auvergne-Rhône-Alpes",
+    );
     expect(motsCles.length).toBeGreaterThan(20); // témoin : la liste n'est pas vide
     const fautes = motsCles.filter(
       (k) => TERMES_DE_MANDAT.some((m) => m.test(k)) || /\bvend|\bvente/i.test(k),

@@ -17,6 +17,7 @@ import {
   buildCommercialFaqItems,
 } from "@/components/services/devenir-commercial/CommercialPageBody";
 import { buildCommercialKeywords } from "@/content/recrutement/commercial-offer";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { buildProductMetadata, buildFaqJsonLd, buildWebPageJsonLd } from "@/lib/seo";
 
 export const revalidate = 3600;
@@ -44,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "€500 for you per AI training day signed and paid, uncapped. The AI Act requires small businesses, SMEs, mid-caps and large groups to train their teams." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     })),
     title: { absolute: title },
-    keywords: buildCommercialKeywords(),
+    keywords: buildCommercialKeywords({ financementAffichable: isQualiopiCertificationObtenue() }),
   };
 }
 

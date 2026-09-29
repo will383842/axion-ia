@@ -400,7 +400,7 @@ export async function PartenaireLandingPage({ params, source }: Props) {
               d&apos;assurer un niveau suffisant de maîtrise de l&apos;IA chez leurs équipes.
               Presque aucune ne le sait encore.
               {certifie
-                ? " Et la formation peut être financée jusqu'à 100 % par leur OPCO, selon l'OPCO et la branche : souvent, le dirigeant n'a même pas de trésorerie à sortir."
+                ? " Et la formation peut être prise en charge par leur OPCO, selon l'OPCO et la branche."
                 : ""}
             </p>
             <p className="text-terracotta-soft mt-4 font-medium">
@@ -478,8 +478,8 @@ export async function PartenaireLandingPage({ params, source }: Props) {
               <p className="text-fg-soft text-sm italic">
                 « Il y a maintenant une obligation européenne de former les équipes qui utilisent
                 l&apos;IA
-                {certifie ? ", et c'est finançable jusqu'à 100 %" : ""}. Je travaille avec un
-                organisme qui fait exactement ça. Je vous mets en relation ? »
+                {certifie ? ", et une prise en charge par l'OPCO est possible" : ""}. Je travaille
+                avec un organisme qui fait exactement ça. Je vous mets en relation ? »
               </p>
               <p className="text-fg-muted mt-2 text-sm font-medium">
                 Voilà. C&apos;est tout le métier.

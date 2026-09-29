@@ -410,7 +410,9 @@ export async function FacebookLandingPage({ params }: Props) {
           <p className="mt-3 max-w-2xl leading-relaxed text-[color:var(--color-bg)]/80">
             Règlement européen sur l&apos;IA, en vigueur depuis février 2025. Presque aucune
             entreprise ne le sait.
-            {certifie ? " Et la formation est finançable jusqu'à 100 % par leur OPCO." : ""}
+            {certifie
+              ? " Et la formation peut être prise en charge par leur OPCO, selon leur situation."
+              : ""}
           </p>
         </div>
       </Section>
