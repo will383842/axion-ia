@@ -1,4 +1,4 @@
-// E-mail — rappel « ton dossier t'attend », J+2 puis J+7 après un premier
+// E-mail — rappel « votre dossier vous attend », J+2 puis J+7 après un premier
 // contact Facebook sans dossier complet (2026-09-03).
 //
 // Deux rappels, pas plus, et le second le dit. Ils sont RETIRÉS de la file
@@ -27,13 +27,13 @@ interface Payload {
 
 const COPY = {
   fr: {
-    title: (dernier: boolean) => (dernier ? "Dernier rappel, promis" : "Ton dossier t'attend"),
-    preview: "Trois minutes, sans CV — et on prépare notre échange à partir de tes réponses.",
+    title: (dernier: boolean) => (dernier ? "Dernier rappel, promis" : "Votre dossier vous attend"),
+    preview: "Trois minutes, sans CV — et nous préparons notre échange à partir de vos réponses.",
     intro: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
-    j2: "Il y a deux jours, tu nous as laissé tes coordonnées pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Ton dossier, lui, n'est pas encore arrivé — et c'est lui qui nous permet de préparer notre échange autour de ta situation plutôt que de partir de zéro.",
-    j7: "Une semaine déjà depuis ton premier message. On ne relance pas dix fois : c'est le dernier rappel. Si le moment n'est pas le bon, aucun souci — ton premier contact reste enregistré et tu pourras reprendre quand tu veux.",
+    j2: "Il y a deux jours, vous nous avez laissé vos coordonnées pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Votre dossier, lui, n'est pas encore arrivé — et c'est lui qui nous permet de préparer notre échange autour de votre situation plutôt que de partir de zéro.",
+    j7: "Une semaine déjà depuis votre premier message. Nous ne relançons pas dix fois : c'est le dernier rappel. Si le moment n'est pas le bon, aucun souci — votre premier contact reste enregistré et vous pourrez reprendre quand vous le souhaitez.",
     dossier:
-      "Le dossier prend trois minutes, sans CV et sans lettre de motivation. Tes coordonnées sont déjà remplies.",
+      "Le dossier prend trois minutes, sans CV et sans lettre de motivation. Vos coordonnées sont déjà remplies.",
     cta: "Compléter mon dossier",
     refRow: (id: string) => `Référence : ${id}`,
   },
@@ -73,7 +73,6 @@ export function LeadApporteurRelanceEmail({
       title={t.title(dernier)}
       cta={{ label: t.cta, href: p.dossierUrl }}
       locale={locale}
-      tutoiement
       sansReseauxSociaux
     >
       <Text style={emailStyles.paragraphStyle}>{t.intro(prenom)}</Text>

@@ -32,7 +32,7 @@
 // e-mails du réseau (§5.4 — le budget de liens cède sur la notoriété, jamais
 // sur l'action ni sur une mention exigée par la loi).
 //
-// Tutoiement : c'est la langue de tout le tunnel apporteur.
+// Vouvoiement : comme tout ce que reçoit un candidat (Will, 2026-09-29).
 
 import { Link, Section, Text } from "@react-email/components";
 import type { ReactElement } from "react";
@@ -86,18 +86,19 @@ const COPY = {
   fr: {
     confirmation: {
       title: "C'est noté, on se parle bientôt",
-      preview: "Ton échange est confirmé. Le lien de connexion arrive avec l'invitation d'agenda.",
+      preview:
+        "Votre échange est confirmé. Le lien de connexion arrive avec l'invitation d'agenda.",
       corps: (quand: string | null, duree: string) =>
         quand
-          ? "Ton échange " +
+          ? "Votre échange " +
             duree +
             " est confirmé, " +
             quand +
-            ". On fait connaissance, on t'explique simplement comment ça marche, et tu poses toutes tes questions."
-          : "Ton échange " +
+            ". Nous faisons connaissance, nous vous expliquons simplement comment ça marche, et vous posez toutes vos questions."
+          : "Votre échange " +
             duree +
-            " est confirmé. On fait connaissance, on t'explique simplement comment ça marche, et tu poses toutes tes questions.",
-      apres: "Aucun engagement : tu décides après.",
+            " est confirmé. Nous faisons connaissance, nous vous expliquons simplement comment ça marche, et vous posez toutes vos questions.",
+      apres: "Aucun engagement : vous décidez après.",
     },
     j1: {
       title: "C'est demain",
@@ -122,8 +123,9 @@ const COPY = {
     lienTitre: "Le lien de connexion : ",
     lienAbsent:
       "Le lien de la visioconférence se trouve dans l'invitation d'agenda reçue à la réservation.",
-    replanifier: "Besoin de décaler ? Tu peux replanifier ou annuler depuis l'invitation d'agenda.",
-    question: "Une question d'ici là ? Réponds simplement à cet e-mail.",
+    replanifier:
+      "Besoin de décaler ? Vous pouvez replanifier ou annuler depuis l'invitation d'agenda.",
+    question: "Une question d'ici là ? Répondez simplement à cet e-mail.",
     intro: (n: string | null) => (n ? "Bonjour " + n + "," : "Bonjour,"),
   },
   en: {
@@ -222,7 +224,6 @@ export function ApporteurEchangeEmail({
       famille="B"
       sansReseauxSociaux
       locale={l}
-      tutoiement
       title={bloc.title}
       preview={bloc.preview}
     >

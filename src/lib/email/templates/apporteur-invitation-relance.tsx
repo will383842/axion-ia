@@ -9,7 +9,7 @@
 // vivent dans `features/commercial-application/relances-invitation-apporteur.ts`.
 //
 // Même châssis que l'invitation : famille B (lien d'opposition dans le pied de
-// page), tutoiement, sans rangée sociale (le kit coûte deux liens, cf.
+// page), vouvoiement, sans rangée sociale (le kit coûte deux liens, cf.
 // `_kit-apporteur.tsx`), signature du fondateur (§6.1, sans téléphone). Le
 // bouton porte le lien de réservation Calendly.
 //
@@ -19,7 +19,7 @@
 //
 // ── Variante `offre` (2026-09-28) ─────────────────────────────────────────
 // Une personne qui a postulé à une OFFRE D'EMPLOI salariée et à qui Will a
-// proposé le réseau n'a JAMAIS candidaté au réseau : « ta candidature est
+// proposé le réseau n'a JAMAIS candidaté au réseau : « votre candidature est
 // retenue » serait faux. Ses rappels parlent de la proposition, et le dernier
 // précise que sa candidature à l'offre n'est pas concernée. « offre » désigne
 // l'offre d'emploi à laquelle elle a postulé, jamais l'activité d'apporteur.
@@ -41,34 +41,37 @@ interface Payload {
 
 export const COPY_RELANCE_INVITATION = {
   fr: {
+    // ≤ 45 caractères (§3.4) : « d'affaires » ne tient plus au vouvoiement.
     subject: (dernier: boolean) =>
       dernier
-        ? "Dernier rappel : ta candidature apporteur"
-        : "Ton échange apporteur d'affaires t'attend",
-    title: (dernier: boolean) => (dernier ? "Dernier rappel" : "Ton créneau t'attend"),
+        ? "Dernier rappel : votre candidature apporteur"
+        : "Votre échange apporteur vous attend",
+    title: (dernier: boolean) => (dernier ? "Dernier rappel" : "Votre créneau vous attend"),
     preview: (dernier: boolean) =>
       dernier
         ? "Notre dernier message à ce sujet : l'échange de 15 minutes en visio reste ouvert."
-        : "Ta candidature est retenue : il ne reste qu'à choisir le moment de notre échange de 15 minutes.",
+        : "Votre candidature est retenue : il ne reste qu'à choisir le moment de notre échange de 15 minutes.",
     j3: (n: string) =>
-      `${n ? `Bonjour ${n}, ta` : "Bonjour, ta"} candidature au réseau d'apporteurs d'affaires d'Axion-IA est retenue, et il ne te reste plus qu'à choisir le moment de notre échange de 15 minutes en visio. Les créneaux sont limités : réserve le tien en un clic avec le bouton ci-dessous.`,
+      `${n ? `Bonjour ${n}, votre` : "Bonjour, votre"} candidature au réseau d'apporteurs d'affaires d'Axion-IA est retenue, et il ne vous reste plus qu'à choisir le moment de notre échange de 15 minutes en visio. Les créneaux sont limités : réservez le vôtre en un clic avec le bouton ci-dessous.`,
     j7: (n: string) =>
-      `${n ? `Bonjour ${n}, c'est` : "Bonjour, c'est"} notre dernier message à ce sujet : ta candidature est toujours retenue, et l'échange de 15 minutes en visio reste ouvert si tu veux découvrir le réseau. Si ce n'est pas le bon moment, aucun souci : sans réservation de ta part, on ne te relancera plus.`,
+      `${n ? `Bonjour ${n}, c'est` : "Bonjour, c'est"} notre dernier message à ce sujet : votre candidature est toujours retenue, et l'échange de 15 minutes en visio reste ouvert si vous souhaitez découvrir le réseau. Si ce n'est pas le bon moment, aucun souci : sans réservation de votre part, nous ne vous relancerons plus.`,
     kit: "Pour rappel, les documents pour préparer l'échange :",
     desinscription:
-      "Si tu ne souhaites plus recevoir de message de notre part, un clic suffit : le lien est en bas de ce message.",
+      "Si vous ne souhaitez plus recevoir de message de notre part, un clic suffit : le lien est en bas de ce message.",
     cta: "Réserver mon créneau",
     // Variante `offre` (2026-09-28).
     subjectOffre: (dernier: boolean) =>
-      dernier ? "Dernier rappel : l'échange sur le réseau" : "Ton échange sur le réseau t'attend",
+      dernier
+        ? "Dernier rappel : l'échange sur le réseau"
+        : "Votre échange sur le réseau vous attend",
     previewOffre: (dernier: boolean) =>
       dernier
         ? "Notre dernier message à ce sujet : l'échange de 15 minutes en visio reste ouvert."
         : "Il ne reste qu'à choisir le moment de notre échange de 15 minutes sur le réseau d'apporteurs d'affaires.",
     j3Offre: (n: string, o: string) =>
-      `${n ? `Bonjour ${n}, suite` : "Bonjour, suite"} à ta candidature ${o ? `à notre offre « ${o} »` : "à l'une de nos offres d'emploi"}, nous t'avons proposé de découvrir aussi notre réseau d'apporteurs d'affaires indépendants. Si la proposition t'intéresse, il ne te reste plus qu'à choisir le moment de notre échange de 15 minutes en visio, en un clic avec le bouton ci-dessous.`,
+      `${n ? `Bonjour ${n}, suite` : "Bonjour, suite"} à votre candidature ${o ? `à notre offre « ${o} »` : "à l'une de nos offres d'emploi"}, nous vous avons proposé de découvrir aussi notre réseau d'apporteurs d'affaires indépendants. Si la proposition vous intéresse, il ne vous reste plus qu'à choisir le moment de notre échange de 15 minutes en visio, en un clic avec le bouton ci-dessous.`,
     j7Offre: (n: string, o: string) =>
-      `${n ? `Bonjour ${n}, c'est` : "Bonjour, c'est"} notre dernier message au sujet du réseau d'apporteurs d'affaires : l'échange de 15 minutes en visio reste ouvert si tu veux le découvrir. Si ce n'est pas le bon moment, aucun souci : sans réservation de ta part, on ne te relancera plus. Ta candidature ${o ? `à notre offre « ${o} »` : "à notre offre d'emploi"}, elle, n'est pas concernée par ce message.`,
+      `${n ? `Bonjour ${n}, c'est` : "Bonjour, c'est"} notre dernier message au sujet du réseau d'apporteurs d'affaires : l'échange de 15 minutes en visio reste ouvert si vous souhaitez le découvrir. Si ce n'est pas le bon moment, aucun souci : sans réservation de votre part, nous ne vous relancerons plus. Votre candidature ${o ? `à notre offre « ${o} »` : "à notre offre d'emploi"}, elle, n'est pas concernée par ce message.`,
   },
   en: {
     subject: (dernier: boolean) =>
@@ -146,7 +149,6 @@ export function ApporteurInvitationRelanceEmail({
       title={t.title(dernier)}
       cta={{ label: t.cta, href: p.calendlyUrl }}
       locale={locale}
-      tutoiement
       sansReseauxSociaux
       // 2026-09-27 (Will) : signé du fondateur — bloc §6.1 du châssis, sans
       // téléphone. Il ajoute deux liens (rendez-vous, LinkedIn) : le message en

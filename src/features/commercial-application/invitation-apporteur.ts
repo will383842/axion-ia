@@ -106,7 +106,7 @@ function lireDetails(v: unknown): DetailsContact {
 /** Ce que l'invitation dit à la personne de l'origine de son adresse (art. 14). */
 export interface Provenance {
   mode: "directe" | "indirecte";
-  /** Fragment dans la langue de l'e-mail : « par e-mail », « par une personne qui te recommande »… */
+  /** Fragment dans la langue de l'e-mail : « par e-mail », « par une personne qui vous recommande »… */
   libelle: string;
 }
 

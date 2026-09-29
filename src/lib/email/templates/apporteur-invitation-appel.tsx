@@ -27,7 +27,7 @@
 // ── Variante `offre` (2026-09-28, Will) ──────────────────────────────────
 // La personne a postulé à une OFFRE D'EMPLOI salariée (commercial terrain,
 // directeur commercial…), et Will lui propose AUSSI le réseau. Elle n'a jamais
-// candidaté au réseau : « ta candidature apporteur est retenue » serait faux.
+// candidaté au réseau : « votre candidature apporteur est retenue » serait faux.
 // Le message le dit honnêtement — c'est une autre proposition, différente du
 // poste, et la candidature au poste suit son cours — et porte l'information de
 // l'art. 14 (l'adresse a été donnée pour un recrutement, pas pour le réseau).
@@ -65,7 +65,7 @@ interface Payload {
   /**
    * La personne a CANDIDATÉ (formulaire du site, annonce Indeed importée) —
    * posé par la console pour toute fiche qui n'est pas une saisie manuelle
-   * (2026-09-27). L'objet et l'ouverture disent alors « ta candidature ».
+   * (2026-09-27). L'objet et l'ouverture disent alors « votre candidature ».
    * Absent (saisie manuelle, job ancien) : texte d'origine.
    */
   candidature?: boolean;
@@ -76,6 +76,10 @@ interface Payload {
    * `candidature` et `provenance`. Vide : « l'une de nos offres d'emploi ».
    */
   offreEmploi?: string;
+  /** Réseau proposé après « poste pourvu » (2026-09-29) : texte qui ne le contredit pas. */
+  postePourvu?: boolean;
+  /** Candidature spontanée (2026-09-29) : « votre candidature spontanée », pas « notre offre ». */
+  spontanee?: boolean;
   /** Numéro de l'objet parmi `sujetsCandidature`, stable par fiche (2026-09-27). */
   variante?: number;
   /**
@@ -102,67 +106,80 @@ const ANCRE_POLITIQUE_EN = "business-introducer-network";
 const COPY = {
   fr: {
     title: "Et si on en parlait 15 minutes ?",
-    preview: "Choisis le moment qui t'arrange : 15 minutes en visio pour faire connaissance.",
+    preview: "Choisissez le moment qui vous arrange : 15 minutes en visio pour faire connaissance.",
     // 2026-09-27 (Will) : la personne a POSTULÉ, et c'est nous qui retenons sa
     // candidature — le message ne se place pas en demandeur. Quatre objets en
     // rotation : un envoi groupé aux objets identiques ressemble à une campagne.
     // Vocabulaire tenu : « étape suivante », « échange » — jamais « entretien ».
     sujetsCandidature: [
-      "Ta candidature apporteur d'affaires chez Axion-IA est retenue",
-      "Axion-IA : ta candidature d'apporteur d'affaires passe à l'étape suivante",
-      "Ta candidature apporteur d'affaires Axion-IA : réserve ton échange en visio",
-      "Suite à ta candidature apporteur d'affaires chez Axion-IA : l'étape suivante",
+      "Votre candidature apporteur d'affaires chez Axion-IA est retenue",
+      "Axion-IA : votre candidature d'apporteur d'affaires passe à l'étape suivante",
+      "Votre candidature apporteur d'affaires Axion-IA : réservez votre échange en visio",
+      "Suite à votre candidature apporteur d'affaires chez Axion-IA : l'étape suivante",
     ],
-    titleCandidature: "Ta candidature est retenue",
+    titleCandidature: "Votre candidature est retenue",
     previewCandidature:
-      "Ta candidature au réseau d'apporteurs d'affaires d'Axion-IA est retenue pour l'étape suivante : un échange de 15 minutes en visio.",
+      "Votre candidature au réseau d'apporteurs d'affaires d'Axion-IA est retenue pour l'étape suivante : un échange de 15 minutes en visio.",
     bodyCandidature:
-      "Nous avons étudié ta candidature au réseau d'apporteurs d'affaires d'Axion-IA : elle est retenue pour l'étape suivante, un échange de 15 minutes en visio avec nous.",
+      "Nous avons étudié votre candidature au réseau d'apporteurs d'affaires d'Axion-IA : elle est retenue pour l'étape suivante, un échange de 15 minutes en visio avec nous.",
     bodyCandidatureSuite:
-      "On y fait connaissance, on te présente concrètement le fonctionnement du réseau et on répond à tes questions. Sans engagement : à l'issue, chacun décide librement de la suite.",
+      "Nous y faisons connaissance, nous vous présentons concrètement le fonctionnement du réseau et nous répondons à vos questions. Sans engagement : à l'issue, chacun décide librement de la suite.",
     kitCandidature: "Pour préparer l'échange :",
     dossierCandidature:
-      "Il nous manque encore ton dossier : complète-le avant l'échange — trois minutes, sans CV. Tes coordonnées sont déjà remplies : ",
+      "Il nous manque encore votre dossier : complétez-le avant l'échange — trois minutes, sans CV. Vos coordonnées sont déjà remplies : ",
     creneauCandidature:
-      "Les créneaux sont limités : réserve le tien dès maintenant avec le bouton ci-dessous.",
+      "Les créneaux sont limités : réservez le vôtre dès maintenant avec le bouton ci-dessous.",
     ctaCandidature: "Réserver mon créneau",
-    // 2026-09-28 (Will) — variante `offre` : texte validé par Will.
-    sujetOffre: "Ta candidature Axion-IA : autre proposition",
+    // 2026-09-28 (Will) — variante `offre` : texte validé par Will, passé au
+    // vouvoiement le 2026-09-29 (Will : « on reste sur le vouvoiement »).
+    // ≤ 45 caractères (§3.4) : au vouvoiement, « Axion-IA » (déjà l'expéditeur) cède.
+    sujetOffre: "Votre candidature : une autre proposition",
     titleOffre: "Une autre proposition",
     previewOffre:
-      "En parallèle de ta candidature, une proposition différente : notre réseau d'apporteurs d'affaires indépendants.",
+      "En parallèle de votre candidature, une proposition différente : notre réseau d'apporteurs d'affaires indépendants.",
     merciOffre: (o: string) =>
       o
-        ? `Merci pour ta candidature à notre offre « ${o} ».`
-        : "Merci pour ta candidature à l'une de nos offres d'emploi.",
+        ? `Merci pour votre candidature à notre offre « ${o} ».`
+        : "Merci pour votre candidature à l'une de nos offres d'emploi.",
     bodyOffre:
-      "En parallèle de nos recrutements, nous développons un réseau d'apporteurs d'affaires indépendants partout en France, et ton profil commercial nous a donné envie de te le proposer. C'est différent du poste auquel tu as postulé : un statut indépendant, rémunéré à la commission, que tu peux exercer à côté d'une autre activité. Ta candidature au poste, elle, suit son cours normalement.",
+      "En parallèle de nos recrutements, nous développons un réseau d'apporteurs d'affaires indépendants partout en France, et votre profil commercial nous a donné envie de vous le proposer. C'est différent du poste auquel vous avez postulé : un statut indépendant, rémunéré à la commission, que vous pouvez exercer à côté d'une autre activité. Votre candidature au poste, elle, suit son cours normalement.",
+    // 2026-09-29 — réseau proposé automatiquement AVEC « poste pourvu » : la
+    // personne vient de lire que le poste est pourvu (texte à relire par Will).
+    provenanceSpontanee:
+      "Vous nous avez communiqué votre adresse en nous envoyant une candidature spontanée.",
+    merciSpontanee: (o: string) =>
+      o
+        ? `Merci pour votre candidature spontanée au poste de ${o}.`
+        : "Merci pour votre candidature spontanée.",
+    bodyOffrePourvu:
+      "Comme annoncé dans notre message précédent, ce poste est aujourd'hui pourvu. En parallèle de nos recrutements, nous développons un réseau d'apporteurs d'affaires indépendants partout en France, et nous souhaitions vous le proposer : un statut indépendant, rémunéré à la commission, que vous pouvez exercer à côté d'une autre activité.",
     bodyOffreSuite:
-      "On te propose un échange de 15 minutes en visio pour te présenter le fonctionnement et répondre à tes questions. Sans engagement : à l'issue, chacun décide librement de la suite.",
+      "Nous vous proposons un échange de 15 minutes en visio pour vous présenter le fonctionnement et répondre à vos questions. Sans engagement : à l'issue, chacun décide librement de la suite.",
     provenanceOffre: (o: string) =>
       o
-        ? `Tu nous as donné ton adresse en postulant à notre offre « ${o} ».`
-        : "Tu nous as donné ton adresse en postulant à l'une de nos offres d'emploi.",
+        ? `Vous nous avez communiqué votre adresse en postulant à notre offre « ${o} ».`
+        : "Vous nous avez communiqué votre adresse en postulant à l'une de nos offres d'emploi.",
     creneauOffre:
-      "Si la proposition t'intéresse, choisis le moment qui t'arrange avec le bouton ci-dessous.",
+      "Si la proposition vous intéresse, choisissez le moment qui vous arrange avec le bouton ci-dessous.",
     intro: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
-    body: "Merci pour ton intérêt pour le réseau d'apporteurs d'affaires d'Axion-IA. On te propose un échange de 15 minutes en visio : faire connaissance, t'expliquer simplement comment ça marche et répondre à tes questions. Aucun engagement : tu décides après.",
-    provenanceDirecte: (l: string) => `Tu nous as donné ton adresse ${l}.`,
-    provenanceIndirecte: (l: string) => `Nous avons ton adresse ${l}.`,
+    body: "Merci pour votre intérêt pour le réseau d'apporteurs d'affaires d'Axion-IA. Nous vous proposons un échange de 15 minutes en visio : faire connaissance, vous expliquer simplement comment ça marche et répondre à vos questions. Aucun engagement : vous décidez après.",
+    provenanceDirecte: (l: string) => `Vous nous avez communiqué votre adresse ${l}.`,
+    provenanceIndirecte: (l: string) => `Nous avons votre adresse ${l}.`,
     bodyIndirecte:
-      "On te propose un échange de 15 minutes en visio sur le réseau d'apporteurs d'affaires d'Axion-IA : faire connaissance, t'expliquer simplement comment ça marche et répondre à tes questions. Aucun engagement : tu décides après.",
+      "Nous vous proposons un échange de 15 minutes en visio sur le réseau d'apporteurs d'affaires d'Axion-IA : faire connaissance, vous expliquer simplement comment ça marche et répondre à vos questions. Aucun engagement : vous décidez après.",
     info: (responsable: string, adresse: string) =>
-      `Qui traite ton adresse : ${responsable}, ${adresse}. ` +
-      "Pourquoi : te proposer un échange sur le réseau d'apporteurs d'affaires. " +
-      `Combien de temps : ${CONSERVATION_MOIS} mois après le classement de ton dossier. ` +
-      "Tes droits : accès, rectification, effacement, opposition, et réclamation auprès de la CNIL. " +
+      `Qui traite votre adresse : ${responsable}, ${adresse}. ` +
+      "Pourquoi : vous proposer un échange sur le réseau d'apporteurs d'affaires. " +
+      `Combien de temps : ${CONSERVATION_MOIS} mois après le classement de votre dossier. ` +
+      "Vos droits : accès, rectification, effacement, opposition, et réclamation auprès de la CNIL. " +
       "Tout est détaillé dans notre ",
     infoLien: "politique de confidentialité",
     desinscription:
-      "Si tu ne souhaites plus recevoir de message de notre part, un clic suffit : le lien est en bas de ce message.",
-    creneau: "Choisis toi-même le moment qui t'arrange, en un clic, avec le bouton ci-dessous.",
+      "Si vous ne souhaitez plus recevoir de message de notre part, un clic suffit : le lien est en bas de ce message.",
+    creneau:
+      "Choisissez vous-même le moment qui vous arrange, en un clic, avec le bouton ci-dessous.",
     dossier:
-      "Si tu ne l'as pas encore fait, tu peux aussi compléter ton dossier — trois minutes, sans CV. Tes coordonnées sont déjà remplies : ",
+      "Si vous ne l'avez pas encore fait, vous pouvez aussi compléter votre dossier — trois minutes, sans CV. Vos coordonnées sont déjà remplies : ",
     dossierLien: "compléter mon dossier",
     cta: "Choisir mon créneau",
   },
@@ -197,6 +214,13 @@ const COPY = {
         : "Thank you for applying to one of our job openings.",
     bodyOffre:
       "Alongside our hiring, we are building a network of independent business introducers across France, and your sales background made us want to offer it to you. It is different from the position you applied for: an independent status, paid on commission, which you can pursue alongside another activity. Your application for the position continues as normal.",
+    provenanceSpontanee: "You gave us your address when sending an unsolicited application.",
+    merciSpontanee: (o: string) =>
+      o
+        ? `Thank you for your unsolicited application for ${o}.`
+        : "Thank you for your unsolicited application.",
+    bodyOffrePourvu:
+      "As mentioned in our previous message, this position has now been filled. Alongside our hiring, we are building a network of independent business introducers across France, and we wanted to offer it to you: an independent status, paid on commission, which you can pursue alongside another activity.",
     bodyOffreSuite:
       "We suggest a 15-minute video call to explain how it works and answer your questions. No commitment: afterwards, each side freely decides what comes next.",
     provenanceOffre: (o: string) =>
@@ -302,20 +326,25 @@ export function ApporteurInvitationAppelEmail({
         title={t.titleOffre}
         cta={{ label: t.ctaCandidature, href: p.calendlyUrl }}
         locale={locale}
-        tutoiement
         sansReseauxSociaux
         {...(p.sansSignature !== true ? { signature: "fondateur-court" as const } : {})}
       >
         <Text style={emailStyles.paragraphStyle}>{t.intro(prenom)}</Text>
-        <Text style={emailStyles.paragraphStyle}>{t.merciOffre(offre)}</Text>
-        <Text style={emailStyles.paragraphStyle}>{t.bodyOffre}</Text>
+        <Text style={emailStyles.paragraphStyle}>
+          {p.spontanee === true ? t.merciSpontanee(offre) : t.merciOffre(offre)}
+        </Text>
+        <Text style={emailStyles.paragraphStyle}>
+          {p.postePourvu === true ? t.bodyOffrePourvu : t.bodyOffre}
+        </Text>
         <Text style={emailStyles.paragraphStyle}>{t.bodyOffreSuite}</Text>
         <BlocKitApporteur locale={locale} intro={t.kitCandidature} />
         {/* Information de l'art. 14 RGPD : l'adresse a été donnée pour un
             recrutement, pas pour le réseau — d'où elle vient, qui la traite,
             pourquoi, combien de temps, et les droits. Pas de lien « dossier » :
             la personne n'a pas candidaté au réseau. */}
-        <Text style={emailStyles.paragraphStyle}>{t.provenanceOffre(offre)}</Text>
+        <Text style={emailStyles.paragraphStyle}>
+          {p.spontanee === true ? t.provenanceSpontanee : t.provenanceOffre(offre)}
+        </Text>
         <Text style={emailStyles.paragraphStyle}>
           {t.info(IDENTITE_LEGALE.legalName, adresseSiegeUneLigne())}
           <a href={lienPolitique} style={{ color: emailStyles.COLORS.terracotta }}>
@@ -336,7 +365,6 @@ export function ApporteurInvitationAppelEmail({
       title={candidature ? t.titleCandidature : t.title}
       cta={{ label: candidature ? t.ctaCandidature : t.cta, href: p.calendlyUrl }}
       locale={locale}
-      tutoiement
       sansReseauxSociaux
       // 2026-09-27 (Will) : l'invitation d'un CANDIDAT ouvre un vrai dialogue
       // avec Will, qui mène l'échange — elle porte sa signature (§6.1, sans

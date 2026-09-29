@@ -1,7 +1,8 @@
 // E-mail — PREMIER E-MAIL d'une personne intéressée par le réseau d'apporteurs
 // d'affaires, dès qu'on a son adresse (2026-09-03, kit ajouté le 2026-09-19).
 //
-// Ton : chaleureux, TUTOIEMENT (le tunnel tutoie de bout en bout).
+// Ton : chaleureux, VOUVOIEMENT (Will, 2026-09-29 : tout ce que reçoit un
+// candidat vouvoie, comme les accusés de réception des offres d'emploi).
 //
 // Deux variantes, un seul gabarit — elles ne diffèrent que par l'accroche :
 //   · `premier-contact` (défaut) — le formulaire court de la landing Facebook,
@@ -34,7 +35,7 @@ import { VARIANTE_DOSSIER_COMMENCE } from "@/lib/commercial-application/kit-appo
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
-  /** Prénom (le tutoiement appelle le prénom seul). */
+  /** Prénom (seul le premier mot est dit). */
   contactName?: string;
   submissionId?: string;
   /** Lien du dossier complet — le wizard, pré-rempli par le brouillon local. */
@@ -46,17 +47,18 @@ interface Payload {
 const COPY = {
   fr: {
     title: "C'est noté",
-    preview: "Le document de présentation, le catalogue, et ton dossier à compléter si tu veux.",
-    body: "Tu viens de nous laisser tes coordonnées pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Voici le document de présentation et le catalogue de ce que tu pourras recommander. Si ton profil correspond, on te propose un échange de 15 minutes pour faire connaissance. Aucun engagement : tu décides après.",
-    titleDossier: "Ton dossier t'attend",
+    preview:
+      "Le document de présentation, le catalogue, et votre dossier à compléter si vous le souhaitez.",
+    body: "Vous venez de nous laisser vos coordonnées pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Voici le document de présentation et le catalogue de ce que vous pourrez recommander. Si votre profil correspond, nous vous proposons un échange de 15 minutes pour faire connaissance. Aucun engagement : vous décidez après.",
+    titleDossier: "Votre dossier vous attend",
     previewDossier:
-      "Le document de présentation, le catalogue, et ton dossier à terminer : il reste quelques écrans.",
+      "Le document de présentation, le catalogue, et votre dossier à terminer : il reste quelques écrans.",
     bodyDossier:
-      "Tu as commencé ton dossier pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Merci ! Il n'est pas encore arrivé : il te reste quelques écrans.",
+      "Vous avez commencé votre dossier pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Merci ! Il n'est pas encore arrivé : il vous reste quelques écrans.",
     intro: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
     dossier:
-      "Et pour qu'on prépare notre échange à partir de ta situation, complète ton dossier — trois minutes, sans CV, sans lettre de motivation. Tes coordonnées sont déjà remplies.",
-    spam: "Pense à vérifier tes spams si tu n'as pas de nouvelles : nos e-mails s'y égarent parfois.",
+      "Et pour que nous préparions notre échange à partir de votre situation, complétez votre dossier — trois minutes, sans CV, sans lettre de motivation. Vos coordonnées sont déjà remplies.",
+    spam: "Pensez à vérifier vos spams si vous n'avez pas de nouvelles : nos e-mails s'y égarent parfois.",
     cta: "Compléter mon dossier",
     refRow: (id: string) => `Référence : ${id}`,
   },
@@ -105,7 +107,6 @@ export function LeadApporteurRecuEmail({
       title={dossierCommence ? t.titleDossier : t.title}
       cta={{ label: t.cta, href: p.dossierUrl }}
       locale={locale}
-      tutoiement
       sansReseauxSociaux
     >
       <Text style={emailStyles.paragraphStyle}>{t.intro(prenom)}</Text>
