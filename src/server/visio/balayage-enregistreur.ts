@@ -26,11 +26,12 @@
  * (`envoi-groupe.ts` ne prend que les `critique`), donc `notifiedAt` n'a qu'un
  * seul écrivain pour ces codes.
  *
- * ⚠️ BRANCHEMENT. Le balayage lui-même (`visio-balayage-worker`, cadence
- * 5 min) est livré par la PR 4, pas encore fusionnée quand cette PR a été
- * écrite. `balayerEnregistreur()` est donc exporté ici, prêt à être appelé par
- * ce worker (une ligne, au rebase). En attendant, la clôture et la reprise des
- * purges tournent aussi à chaque requête de l'extension (`garde-route.ts`).
+ * BRANCHEMENT. `balayerEnregistreur()` est appelé à chaque passage du
+ * balayage de la PR 4 (`visio-balayage-worker`, cadence 5 min), après le
+ * dossier client et dans son propre `try`. Garde :
+ * `le-worker-de-balayage-appelle-l-enregistreur.spec.ts`. La clôture et la
+ * reprise des purges tournent aussi à chaque requête de l'extension
+ * (`garde-route.ts`).
  *
  * Alertes : pannes techniques SEULEMENT, jamais de nom de personne, jamais de
  * parole. Module sans `server-only` : il est destiné au worker.

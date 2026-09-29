@@ -11,8 +11,8 @@
  * 10 jours → aucune alerte (2e cas). Remettre l'écriture dans `alerteVisio` →
  * le 2e cas rougit (`alertes_visio` doit rester vide). Contre-témoins : à
  * 30 jours, rien ; un jeton renouvelé ferme l'alerte.
- * Angle mort : sans la PR 4, `balayerEnregistreur` n'est pas encore appelé
- * toutes les 5 minutes ; la console montre le badge J-14 / J-3 dès cette PR.
+ * `balayerEnregistreur` est appelé par le worker de balayage toutes les
+ * 5 minutes (garde `le-worker-de-balayage-appelle-l-enregistreur.spec.ts`).
  */
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
