@@ -24,6 +24,22 @@ import {
 
 const APPEL_TOLERANT = /\b(encryptPii|decryptPii|encryptPiiObject|decryptPiiObject)\b/;
 
+/**
+ * Exemptions NOMINATIVES : modules rangés sous le circuit qui ne touchent
+ * AUCUNE parole, mais lisent une colonne EXISTANTE chiffrée par `encryptPii`
+ * (formulaire, clair possible sur les fiches anciennes). `chiffrer-parole` y
+ * lèverait à tort sur une valeur en clair. Chaque entrée porte son motif ; un
+ * nouveau fichier qui appelle `decryptPii` sous le circuit rougit.
+ */
+const EXEMPTIONS: ReadonlyArray<{ readonly fichier: string; readonly motif: string }> = [
+  {
+    fichier: "src/server/visio/preavis-destinataires.ts",
+    motif:
+      "lit `clients.contact_email` (adresse saisie au formulaire, chiffrée par encryptPii) " +
+      "pour le préavis de la PR 1 ; aucune parole",
+  },
+];
+
 /** Les modules qui lisent le dossier client hors du circuit. */
 const LECTEURS_DU_DOSSIER = ["src/lib/rgpd-dossier-client.ts"] as const;
 
@@ -34,12 +50,21 @@ describe("le circuit ne chiffre qu'avec chiffrer-parole", () => {
   });
 
   it("aucun fichier du circuit n'appelle encryptPii ni decryptPii", () => {
-    const fautifs = [...sourcesSous(DOSSIERS_DU_CIRCUIT), ...LECTEURS_DU_DOSSIER].filter((f) =>
-      APPEL_TOLERANT.test(sansCommentaires(lire(f))),
-    );
+    const exemptes = new Set(EXEMPTIONS.map((e) => e.fichier));
+    const fautifs = [...sourcesSous(DOSSIERS_DU_CIRCUIT), ...LECTEURS_DU_DOSSIER]
+      .filter((f) => !exemptes.has(f))
+      .filter((f) => APPEL_TOLERANT.test(sansCommentaires(lire(f))));
     expect(fautifs, "le circuit chiffre sa parole par src/lib/chiffrer-parole.ts, seul :").toEqual(
       [],
     );
+  });
+
+  it("chaque exemption existe encore et n'importe pas de module de parole", () => {
+    // Une exemption périmée (fichier supprimé ou renommé) se retire de la liste.
+    for (const { fichier } of EXEMPTIONS) {
+      const code = lire(fichier);
+      expect(code, fichier).not.toMatch(/Transcription|transcriptionSegment|citation/);
+    }
   });
 
   it("le lecteur RGPD du dossier est bien lu (sinon la garde serait verte pour rien)", () => {
