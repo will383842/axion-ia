@@ -14,14 +14,15 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
 import { creerAppareil, revoquerAppareil } from "@/server/visio/jeton";
-import { exigerAccesEnregistreur } from "./acces";
+import { exigerAccesEchanges } from "@/features/dossier-client/acces";
+import { motifSansAccesEnregistreur } from "./motif";
 import type { EtatJeton } from "./etat-jeton";
 
 const CHEMIN = "rendez-vous/enregistreur";
 
 export async function creerJetonAction(_prec: EtatJeton, form: FormData): Promise<EtatJeton> {
   try {
-    const { userId } = await exigerAccesEnregistreur();
+    const { userId } = await exigerAccesEchanges(motifSansAccesEnregistreur);
     const nom = String(form.get("nom") ?? "").trim() || "Poste de Williams";
     const cree = await creerAppareil(prisma, { nom, adminUserId: userId, maintenant: new Date() });
     revalidatePath(adminPath("fr", CHEMIN));
@@ -34,7 +35,7 @@ export async function creerJetonAction(_prec: EtatJeton, form: FormData): Promis
 /** Renouveler = révoquer l'ancien jeton et en créer un nouveau, même nom. */
 export async function renouvelerJetonAction(_prec: EtatJeton, form: FormData): Promise<EtatJeton> {
   try {
-    const { userId } = await exigerAccesEnregistreur();
+    const { userId } = await exigerAccesEchanges(motifSansAccesEnregistreur);
     const appareilId = String(form.get("appareilId") ?? "");
     const ancien = await prisma.appareilEnregistrement.findUnique({
       where: { id: appareilId },
@@ -55,7 +56,7 @@ export async function renouvelerJetonAction(_prec: EtatJeton, form: FormData): P
 }
 
 export async function revoquerJetonAction(form: FormData): Promise<void> {
-  await exigerAccesEnregistreur();
+  await exigerAccesEchanges(motifSansAccesEnregistreur);
   const appareilId = String(form.get("appareilId") ?? "");
   if (appareilId) await revoquerAppareil(prisma, appareilId, new Date());
   revalidatePath(adminPath("fr", CHEMIN));

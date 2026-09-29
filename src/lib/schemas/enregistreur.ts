@@ -95,16 +95,26 @@ export const DELAIS_LOCAUX = {
   renvoiMaxMs: 300_000,
 } as const;
 
-/** Délais du SERVEUR (clôture d'office, `src/server/visio/cloture.ts`). */
+/**
+ * Seuils d'alerte avant expiration du jeton d'appareil (console et Telegram).
+ * SEULE déclaration : `src/server/visio/jeton.ts` la ré-exporte.
+ */
+export const SEUILS_ALERTE_JETON_JOURS = [14, 3] as const;
+
+/**
+ * Délais du SERVEUR (clôture d'office, `src/server/visio/cloture.ts`). Les
+ * règles communes à l'extension sont DÉRIVÉES de `DELAIS_LOCAUX`, jamais
+ * retapées.
+ */
 export const DELAIS_SERVEUR = {
-  /** `accord_en_attente` au-delà : `accord_non_confirme`. */
-  accordMaxMs: 180_000,
+  /** `accord_en_attente` au-delà : `accord_non_confirme` (la règle des 3 min de l'extension). */
+  accordMaxMs: DELAIS_LOCAUX.accordMaxMs,
   /** `en_cours` sans battement au-delà : `interrompu`. */
   sansBattementMs: 600_000,
   /** `interrompu` jusqu'à `max(finPrevue, dernier signe) + 2 h` : `depose`, incomplet. */
   interrompuVersDeposeMs: 7_200_000,
   /** Alerte « jeton qui expire » : J-14 puis J-3. */
-  alerteJetonJours: [14, 3],
+  alerteJetonJours: SEUILS_ALERTE_JETON_JOURS,
 } as const;
 
 /** Les constantes du son, recopiées pour l'extension (source : `audio/constantes.ts`). */

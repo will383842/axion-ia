@@ -15,13 +15,14 @@
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 
 import type { PrismaClient } from "../../../prisma/generated/client";
-import { roleAutoriseEnregistreur } from "./roles-enregistreur";
+import { peutVoirLesEchanges } from "@/features/dossier-client/roles-echanges";
+import { SEUILS_ALERTE_JETON_JOURS } from "@/lib/schemas/enregistreur";
 
 /** Durée de vie d'un jeton. */
 export const DUREE_JETON_JOURS = 90;
 
-/** Seuils d'alerte avant expiration (console et Telegram). */
-export const SEUILS_ALERTE_JETON_JOURS = [14, 3] as const;
+/** Seuils d'alerte avant expiration : déclarés UNE fois, dans le contrat. */
+export { SEUILS_ALERTE_JETON_JOURS };
 
 /** Forme exacte d'un jeton. Tout le reste est refusé avant la base. */
 export const FORMAT_JETON = /^[0-9a-f]{64}$/;
@@ -139,7 +140,7 @@ export async function authentifierAppareil(
     where: { id: appareil.adminUserId },
     select: { role: true, status: true },
   });
-  if (!titulaire || titulaire.status !== "active" || !roleAutoriseEnregistreur(titulaire.role)) {
+  if (!titulaire || titulaire.status !== "active" || !peutVoirLesEchanges(titulaire.role)) {
     return {
       ok: false,
       statut: 403,

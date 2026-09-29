@@ -16,7 +16,8 @@ import { AdminBadge, AdminCard, AdminPageHeader } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { EtatEnregistreur } from "@/components/admin/visio/EtatEnregistreur";
 import { JetonAppareilForm } from "@/components/admin/visio/JetonAppareilForm";
-import { gardeLectureEnregistreur } from "@/features/admin-enregistreur/acces";
+import { gardeLectureEchanges } from "@/features/dossier-client/acces";
+import { motifSansAccesEnregistreur } from "@/features/admin-enregistreur/motif";
 import {
   creerJetonAction,
   renouvelerJetonAction,
@@ -41,7 +42,10 @@ function dateCourte(d: Date | null): string {
 
 export default async function PageEnregistreur({ params }: PageProps): Promise<React.ReactElement> {
   const { locale, adminPrefix } = await params;
-  const acces = await gardeLectureEnregistreur(`/${locale}/${adminPrefix}/login`);
+  const acces = await gardeLectureEchanges(
+    `/${locale}/${adminPrefix}/login`,
+    motifSansAccesEnregistreur,
+  );
   const retour = `/${locale}/${adminPrefix}/rendez-vous`;
   if (!acces.autorise) return <AccesRefuse motif={acces.motif} retourHref={retour} />;
 

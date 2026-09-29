@@ -22,7 +22,7 @@ import {
   methodeRefusee,
 } from "@/server/visio/garde-route";
 import { lireDrapeauEnregistrement } from "@/server/visio/drapeau";
-import { roleAutoriseEnregistreur } from "@/server/visio/roles-enregistreur";
+import { peutVoirLesEchanges } from "@/features/dossier-client/roles-echanges";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -40,7 +40,7 @@ export async function GET(req: Request): Promise<Response> {
 
   const session = await auth();
   const role = (session?.user as { role?: string | null } | undefined)?.role ?? null;
-  if (!session?.user || !roleAutoriseEnregistreur(role)) return introuvable();
+  if (!session?.user || !peutVoirLesEchanges(role)) return introuvable();
 
   const rencontre = new URL(req.url).searchParams.get("rencontre");
   // La page de la rencontre est livrée par la PR 4 (`rendez-vous/rencontres/[id]`).
