@@ -24,7 +24,7 @@ import {
   phraseConfirmationVisio,
   sectionRendezVousDecouverte,
   stockageSonCloudflare,
-} from "../visio-annonce";
+} from "../visio-annonce-textes";
 
 const OU_VA_LE_SON = {
   fr: ["nos serveurs", "chiffré", "30 jours", "OpenAI", "effacé"],

@@ -17,7 +17,7 @@
  * ## Comment
  *
  * 1. **Les trois fichiers ne portent plus AUCUNE de ces phrases en dur** : elles
- *    vivent toutes dans `src/content/visio-annonce.ts`, avant et après, et
+ *    vivent toutes dans `src/content/visio-annonce-textes.ts`, avant et après, et
  *    basculent sur un seul interrupteur. Une promesse réécrite en dur dans une
  *    page échapperait à la bascule : c'est ce que le premier test refuse.
  * 2. **Le texte « après » ne contient aucune promesse nue** : une phrase qui
@@ -36,7 +36,8 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { LEGAL_PAGES } from "../legal";
-import { ANNONCE_VISIO_ACTIVE, complementsNotice, textesPagesIa } from "../visio-annonce";
+import { ANNONCE_VISIO_ACTIVE } from "@/server/visio/visio-annonce";
+import { complementsNotice, textesPagesIa } from "../visio-annonce-textes";
 
 const FICHIERS = [
   "src/content/legal.ts",
@@ -74,7 +75,7 @@ describe("aucune page ne promet l'absence d'IA quand la parole part chez OpenAI"
       expect(
         trouvees,
         "une promesse « aucune donnée personnelle… » est écrite en dur : elle ne basculera pas " +
-          "avec l'annonce de l'enregistrement. La déplacer dans src/content/visio-annonce.ts.",
+          "avec l'annonce de l'enregistrement. La déplacer dans src/content/visio-annonce-textes.ts.",
       ).toEqual([]);
     });
   }

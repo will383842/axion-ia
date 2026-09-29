@@ -647,7 +647,7 @@ export async function executerPurgeRetention(): Promise<void> {
  *
  * Planifiée ICI, exécutée par `src/lib/rgpd-erase.ts` (seul module qui pose le
  * drapeau d'effacement). Chaque durée vient de `CONSERVATION_VISIO`
- * (`src/content/visio-annonce.ts`), celles que la notice publique écrit :
+ * (`src/content/visio-annonce-textes.ts`), celles que la notice publique écrit :
  * garde `src/content/__tests__/une-duree-annoncee-a-sa-purge.spec.ts`.
  *
  * Pas de variable `RETENTION_*` pour ces durées, à dessein : elles sont

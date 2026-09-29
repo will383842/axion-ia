@@ -32,7 +32,7 @@ import { join, relative, sep } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { ANNONCE_VISIO_ACTIVE } from "@/content/visio-annonce";
+import { ANNONCE_VISIO_ACTIVE } from "@/server/visio/visio-annonce";
 
 import { modeEffectif } from "../ouverture";
 
@@ -95,7 +95,7 @@ describe("une seule source pour le préavis, la dictée et la règle d'ouverture
 
   it("🔴 DICTEE_ANNONCEE est déclaré une seule fois, dérivé de la notice", () => {
     expect(declarations(/export const DICTEE_ANNONCEE\b/)).toEqual([
-      "src/content/visio-annonce.ts",
+      "src/server/visio/visio-annonce.ts",
     ]);
   });
 

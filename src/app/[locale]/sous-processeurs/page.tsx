@@ -16,7 +16,7 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
-import { textesPagesIa } from "@/content/visio-annonce";
+import { textesPagesIa } from "@/content/visio-annonce-textes";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";

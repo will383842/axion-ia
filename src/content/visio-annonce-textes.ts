@@ -1,6 +1,12 @@
 /**
- * Annonce publique de l'enregistrement des visios — SOURCE UNIQUE (chantier
+ * Annonce publique de l'enregistrement des visios — les TEXTES (chantier
  * visio, PR 8 « mise en service », V-15 ; ADR 0055 et 0056).
+ *
+ * Les interrupteurs (`ETAT_COMPTES_RENDUS_VISIO`, `ANNONCE_VISIO_ACTIVE`,
+ * `DICTEE_ANNONCEE`, `ENREGISTREMENT_ANNONCE_AUX_CLIENTS`, `DISCUTONS_MEET_SEUL`,
+ * règle du préavis) ne vivent PAS ici : leur source unique est
+ * `src/server/visio/visio-annonce.ts` (LOTS-EXECUTION, correction D2). Ce
+ * module-ci n'en importe que `ANNONCE_VISIO_ACTIVE`.
  *
  * ## Ce que ce module décide
  *
@@ -10,7 +16,7 @@
  * `/politique-confidentialite`, `/sous-processeurs` et `/transparence`, les
  * lignes Google Meet et Cloudflare de la liste des sous-traitants, la phrase de
  * la confirmation d'un rendez-vous en visio — bascule sur UN interrupteur :
- * `ETAT_COMPTES_RENDUS_VISIO`.
+ * `ETAT_COMPTES_RENDUS_VISIO` (`src/server/visio/visio-annonce.ts`).
  *
  * Tant qu'il vaut `pending_activation`, le site dit exactement ce qu'il disait
  * avant ce chantier : les rendez-vous ne sont ni enregistrés ni transcrits.
@@ -41,43 +47,17 @@
  *      (comptes rendus de rendez-vous) » porte alors un `dpaStatus` différent
  *      de `pending`, ce que la garde
  *      `aucun-destinataire-de-la-parole-actif-sans-cadre-ecrit.spec.ts` exige ;
- *   3. une PR d'une ligne qui change la constante ci-dessous.
+ *   3. une PR d'une ligne qui change `ETAT_COMPTES_RENDUS_VISIO` dans
+ *      `src/server/visio/visio-annonce.ts`.
  *
  * Ce module est PUR (aucun import d'exécution) : il est lu par les pages
  * publiques, par les gabarits d'e-mail et par le circuit.
  */
 
+import { ANNONCE_VISIO_ACTIVE } from "@/server/visio/visio-annonce";
+
 /** Nom EXACT de l'entrée de `subprocessors.ts` qui reçoit la parole des rendez-vous. */
 export const NOM_ENTREE_COMPTES_RENDUS_VISIO = "OpenAI, LLC (comptes rendus de rendez-vous)";
-
-/**
- * 🔑 L'INTERRUPTEUR. L'entrée `NOM_ENTREE_COMPTES_RENDUS_VISIO` de
- * `subprocessors.ts` doit porter CETTE valeur dans `activationStatus` (garde
- * `le-destinataire-des-comptes-rendus-suit-le-module-openai.spec.ts`).
- */
-// `as` et non une annotation : une annotation laisserait TypeScript réduire le
-// type à la seule valeur écrite, et la comparaison ci-dessous ne compilerait plus.
-export const ETAT_COMPTES_RENDUS_VISIO = "pending_activation" as "active" | "pending_activation";
-
-/** Vrai quand le site annonce l'enregistrement des visios. */
-export const ANNONCE_VISIO_ACTIVE: boolean = ETAT_COMPTES_RENDUS_VISIO === "active";
-
-/**
- * B5 (Will, 28/09, « 1 ET 2 ») : « Discutons de votre projet IA » se tient en
- * Google Meet SEULEMENT. Le site cesse de promettre le téléphone ; le réglage
- * de Calendly est un geste de Will, APRÈS la mise en ligne. Les rendez-vous
- * téléphoniques déjà pris restent servis (branche téléphone de
- * `appel-rappel.tsx` conservée).
- */
-export const DISCUTONS_MEET_SEUL = true;
-
-/**
- * La dictée après un appel téléphonique (B5, B14 : intérêt légitime 6.1.f)
- * n'est annoncée que par le texte « après » de la notice. Elle n'est donc
- * utilisable que si ce texte est publié : DÉRIVÉ, jamais réglé à la main
- * (garde `la-dictee-n-est-active-que-si-la-notice-la-mentionne.spec.ts`).
- */
-export const DICTEE_ANNONCEE: boolean = ANNONCE_VISIO_ACTIVE;
 
 /**
  * Durées de conservation annoncées (B1, ADR 0056). La notice les écrit en

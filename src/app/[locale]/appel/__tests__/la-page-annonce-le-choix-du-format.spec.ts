@@ -32,7 +32,7 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { DISCUTONS_MEET_SEUL } from "@/content/visio-annonce";
+import { DISCUTONS_MEET_SEUL } from "@/server/visio/visio-annonce";
 
 const CHEMIN = "src/app/[locale]/appel/page.tsx";
 const source = readFileSync(join(process.cwd(), CHEMIN), "utf8");

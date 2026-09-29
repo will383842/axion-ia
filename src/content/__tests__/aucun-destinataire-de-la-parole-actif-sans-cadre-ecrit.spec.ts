@@ -23,7 +23,8 @@
 import { describe, expect, it } from "vitest";
 
 import { SUBPROCESSORS, type Subprocessor } from "../subprocessors";
-import { ANNONCE_VISIO_ACTIVE, NOM_ENTREE_COMPTES_RENDUS_VISIO } from "../visio-annonce";
+import { ANNONCE_VISIO_ACTIVE } from "@/server/visio/visio-annonce";
+import { NOM_ENTREE_COMPTES_RENDUS_VISIO } from "../visio-annonce-textes";
 
 /** Les entrées qui reçoivent la parole des rendez-vous. */
 function destinatairesDeLaParole(liste: readonly Subprocessor[]): Subprocessor[] {

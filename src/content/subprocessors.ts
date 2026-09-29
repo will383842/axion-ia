@@ -31,7 +31,7 @@
 // Pour le registre interne RGPD art. 30 avec statut signature DPA, voir
 // `axionia/_AUDIT/DPA-REGISTER.md`.
 
-import { donneesMeet, stockageSonCloudflare } from "./visio-annonce";
+import { donneesMeet, stockageSonCloudflare } from "./visio-annonce-textes";
 
 /**
  * Date de dernière mise à jour de la SSOT sous-processeurs (RGPD art. 13.1.e
@@ -405,7 +405,7 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     //
     // 🔁 2026-09-29 (chantier visio, PR 8) : l'enregistrement des visios se fait
     // désormais par l'extension interne d'Axion-IA, avec l'accord oral des
-    // participants — voir `src/content/visio-annonce.ts` et la ligne « OpenAI,
+    // participants — voir `src/content/visio-annonce-textes.ts` et la ligne « OpenAI,
     // LLC (comptes rendus de rendez-vous) ». Le robot Calendly, lui, RESTE
     // désactivé : cette ligne ne change pas de statut.
     name: "Calendly LLC (Notetaker)",
@@ -502,7 +502,7 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     purposeEn:
       "Holding discovery appointments by video conference. The meeting link is created by Calendly at booking time; we neither create nor host the meeting ourselves.",
     // Chantier visio (PR 8, T13) — la phrase bascule avec l'annonce
-    // (`src/content/visio-annonce.ts`) : « rien n'est enregistré » tant que
+    // (`src/server/visio/visio-annonce.ts`) : « rien n'est enregistré » tant que
     // l'enregistrement n'est pas annoncé, « le son peut être enregistré par
     // Axion-IA avec l'accord des participants » ensuite.
     dataCategoriesFr: donneesMeet("fr"),

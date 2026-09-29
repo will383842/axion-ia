@@ -31,7 +31,7 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { CONSERVATION_VISIO, sectionRendezVousDecouverte } from "../visio-annonce";
+import { CONSERVATION_VISIO, sectionRendezVousDecouverte } from "../visio-annonce-textes";
 
 const WORKER = "src/server/queue/workers/retention-purge-worker.ts";
 const ERASE = "src/lib/rgpd-erase.ts";

@@ -9,7 +9,7 @@
  * variables `ENREGISTREMENT_VISIO_PILOTE` et `ENREGISTREMENT_VISIO_OUVERT`
  * (module `drapeau.ts` de la PR 5). Ce module-ci décide seulement de ce que
  * vaut `ouvert` : il n'est EFFECTIF que si la notice publique annonce
- * l'enregistrement (`ANNONCE_VISIO_ACTIVE`, `src/content/visio-annonce.ts`).
+ * l'enregistrement (`ANNONCE_VISIO_ACTIVE`, `src/server/visio/visio-annonce.ts`).
  * Sinon `ouvert` vaut `pilote` (seule une rencontre du client fictif est
  * enregistrable) et une alerte « notice non publiée » est levée.
  *
@@ -36,7 +36,7 @@
  * Module PUR : aucun import d'exécution (lu par le site, le worker et la CI).
  */
 
-import { ANNONCE_VISIO_ACTIVE } from "@/content/visio-annonce";
+import { ANNONCE_VISIO_ACTIVE } from "./visio-annonce";
 
 export type ModeCircuitVisio = "ferme" | "pilote" | "ouvert";
 

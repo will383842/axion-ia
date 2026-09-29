@@ -33,7 +33,7 @@ import type {
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { CONSENT_FORM_REFS } from "@/lib/consents";
-import { CONSERVATION_VISIO } from "@/content/visio-annonce";
+import { CONSERVATION_VISIO } from "@/content/visio-annonce-textes";
 import {
   type AncresDossier,
   echeancesAvecFusions,

@@ -7,12 +7,12 @@
 // partagée avec les factures). Will renseigne SIREN/SIRET/capital/adresse/TVA
 // une seule fois en console admin → page (ISR) + factures se synchronisent.
 
-import { complementsNotice, sectionRendezVousDecouverte } from "./visio-annonce";
+import { complementsNotice, sectionRendezVousDecouverte } from "./visio-annonce-textes";
 
 // Chantier visio (PR 8) — ce que la politique dit de l'enregistrement des
-// rendez-vous bascule sur UN interrupteur (`src/content/visio-annonce.ts`).
-// Les phrases qui changent vivent là-bas, écrites en entier, relisibles ; ici,
-// elles ne sont qu'appelées.
+// rendez-vous bascule sur UN interrupteur (`src/server/visio/visio-annonce.ts`).
+// Les phrases qui changent vivent dans `./visio-annonce-textes.ts`, écrites en
+// entier, relisibles ; ici, elles ne sont qu'appelées.
 const CN_FR = complementsNotice("fr");
 const CN_EN = complementsNotice("en");
 

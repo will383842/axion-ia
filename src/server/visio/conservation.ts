@@ -4,7 +4,7 @@
  * base est lue et effacée par `src/lib/rgpd-erase.ts` (seul module autorisé à
  * poser le drapeau d'effacement), planifié par `retention-purge-worker.ts`.
  *
- * Les durées viennent de `CONSERVATION_VISIO` (`src/content/visio-annonce.ts`),
+ * Les durées viennent de `CONSERVATION_VISIO` (`src/content/visio-annonce-textes.ts`),
  * celles-là mêmes que la notice écrit en toutes lettres. La garde
  * `src/content/__tests__/une-duree-annoncee-a-sa-purge.spec.ts` relit la
  * notice et compare : une durée annoncée sans purge, ou l'inverse, rougit.
@@ -24,7 +24,7 @@
  * factures et devis ne sont lus que comme ancres de date.
  */
 
-import { CONSERVATION_VISIO } from "@/content/visio-annonce";
+import { CONSERVATION_VISIO } from "@/content/visio-annonce-textes";
 
 const JOUR_MS = 86_400_000;
 

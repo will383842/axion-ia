@@ -26,7 +26,7 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { Sparkles, ShieldCheck, FileText, Users } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
-import { textesPagesIa } from "@/content/visio-annonce";
+import { textesPagesIa } from "@/content/visio-annonce-textes";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";

@@ -29,12 +29,11 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { SUBPROCESSORS } from "../subprocessors";
+import { ANNONCE_VISIO_ACTIVE, ETAT_COMPTES_RENDUS_VISIO } from "@/server/visio/visio-annonce";
 import {
-  ANNONCE_VISIO_ACTIVE,
-  ETAT_COMPTES_RENDUS_VISIO,
   NOM_ENTREE_COMPTES_RENDUS_VISIO,
   sectionRendezVousDecouverte,
-} from "../visio-annonce";
+} from "../visio-annonce-textes";
 
 const MODULE = "src/server/visio/openai/modeles.ts";
 const MODELES_OPENAI = /^(gpt-|whisper-|o\d)/;
@@ -65,7 +64,7 @@ describe("le destinataire des comptes rendus suit le module OpenAI", () => {
     expect(
       horsOpenAI(readFileSync(chemin, "utf8")),
       "le circuit appelle un autre fournisseur qu'OpenAI : changer l'entrée de " +
-        "subprocessors.ts ET la notice (src/content/visio-annonce.ts) dans la même PR",
+        "subprocessors.ts ET la notice (src/server/visio/visio-annonce.ts) dans la même PR",
     ).toEqual([]);
   });
 

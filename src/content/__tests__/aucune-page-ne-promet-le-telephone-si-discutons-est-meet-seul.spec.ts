@@ -26,7 +26,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { LEGAL_PAGES } from "../legal";
-import { DISCUTONS_MEET_SEUL } from "../visio-annonce";
+import { DISCUTONS_MEET_SEUL } from "@/server/visio/visio-annonce";
 
 const PAGES = [
   "src/app/[locale]/appel/page.tsx",

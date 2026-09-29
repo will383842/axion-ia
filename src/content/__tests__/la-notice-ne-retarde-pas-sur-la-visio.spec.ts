@@ -59,11 +59,11 @@ import { describe, expect, it } from "vitest";
 
 import { LEGAL_PAGES } from "../legal";
 import { SUBPROCESSORS } from "../subprocessors";
+import { ANNONCE_VISIO_ACTIVE } from "@/server/visio/visio-annonce";
 import {
-  ANNONCE_VISIO_ACTIVE,
   NOM_ENTREE_COMPTES_RENDUS_VISIO,
   sectionRendezVousDecouverte,
-} from "../visio-annonce";
+} from "../visio-annonce-textes";
 
 /** Toute la prose des pages légales, mise à plat et en minuscules. */
 function proseLegale(): string {

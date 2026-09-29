@@ -33,7 +33,7 @@
 import { Link, Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { IDENTITE_LEGALE } from "@/lib/identite-legale-ssot";
-import { CONSERVATION_VISIO } from "@/content/visio-annonce";
+import { CONSERVATION_VISIO } from "@/content/visio-annonce-textes";
 import type { Locale } from "../../../../prisma/generated/client";
 
 /** Délai du préavis, en jours : la date d'effet est la date d'envoi + ce délai. */

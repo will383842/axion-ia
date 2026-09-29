@@ -72,7 +72,7 @@ import { TeteDeParcours, SortiesDeParcours } from "@/components/booking/parcours
 import { RemonterAuMessage } from "@/components/booking/RemonterAuMessage";
 import { CALENDLY_API_BASE } from "@/server/calendly/api";
 import { canalDuRendezVous } from "@/server/calendly/canal";
-import { phraseConfirmationVisio } from "@/content/visio-annonce";
+import { phraseConfirmationVisio } from "@/content/visio-annonce-textes";
 
 export const dynamic = "force-dynamic";
 

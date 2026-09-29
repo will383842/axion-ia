@@ -5,7 +5,7 @@
  * n'est utilisable que si la notice PUBLIÉE l'annonce (chantier visio, PR 8).
  *
  * `DICTEE_ANNONCEE` est DÉRIVÉE de l'interrupteur de la notice
- * (`src/content/visio-annonce.ts`), jamais réglée à la main : la dictée
+ * (`src/server/visio/visio-annonce.ts`), jamais réglée à la main : la dictée
  * s'allume le jour où la section qui la décrit est publiée, pas avant. La PR 7
  * code la dictée éteinte ; elle doit lire cette constante.
  *
@@ -25,11 +25,8 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { LEGAL_PAGES } from "@/content/legal";
-import {
-  ANNONCE_VISIO_ACTIVE,
-  DICTEE_ANNONCEE,
-  sectionRendezVousDecouverte,
-} from "@/content/visio-annonce";
+import { ANNONCE_VISIO_ACTIVE, DICTEE_ANNONCEE } from "@/server/visio/visio-annonce";
+import { sectionRendezVousDecouverte } from "@/content/visio-annonce-textes";
 
 const MENTIONS_DICTEE = [/dicter/, /6\.1\.f/];
 
@@ -50,7 +47,7 @@ describe("la dictée n'est active que si la notice la mentionne", () => {
 
   it("🔴 la constante est dérivée de l'interrupteur, jamais écrite à la main", () => {
     expect(DICTEE_ANNONCEE).toBe(ANNONCE_VISIO_ACTIVE);
-    const source = readFileSync(join(process.cwd(), "src/content/visio-annonce.ts"), "utf8");
+    const source = readFileSync(join(process.cwd(), "src/server/visio/visio-annonce.ts"), "utf8");
     expect(source).toMatch(/export const DICTEE_ANNONCEE: boolean = ANNONCE_VISIO_ACTIVE;/);
   });
 
