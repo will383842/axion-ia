@@ -513,6 +513,12 @@ export function prochainePublication(
  * version réels ; chaque montant et chaque taux NON NUL devient son rang (1, 2, 3…) dans l'ordre des
  * commissions ; l'empreinte du contenu et celles des lignes sont recalculées ICI, par la même
  * `empreinteGrille` que la vraie.
+ *
+ * 🔴 `grilleVersionEvenement` EST AUSSI UNE VALEUR DE LA GRILLE. C'est une empreinte tronquée de
+ * `id|kind|flatEur|percent` : avec les identifiants en clair, l'espace des montants est assez petit
+ * pour qu'une énumération la retrouve (relevé des lentilles sur #1181). Elle est donc remplacée par
+ * l'empreinte des commissions PSEUDONYMISÉES, tronquée à la même forme : elle ne dérive d'aucune
+ * valeur réelle.
  */
 export function pseudonymiserPublication(pub: PublicationGrille): PublicationGrille {
   let rang = 0;
@@ -525,7 +531,14 @@ export function pseudonymiserPublication(pub: PublicationGrille): PublicationGri
       tauxBps: c.tauxBps === null ? null : rang,
     };
   });
-  const contenu: ContenuGrille = { ...pub.contenu, commissions };
+  const contenu: ContenuGrille = {
+    ...pub.contenu,
+    grilleVersionEvenement: createHash("sha256")
+      .update(canonique(commissions), "utf8")
+      .digest("hex")
+      .slice(0, pub.contenu.grilleVersionEvenement.length),
+    commissions,
+  };
   return {
     ...pub,
     hash: empreinteGrille(contenu),

@@ -300,6 +300,30 @@ describe("DM-03-A · la fixture pseudonymisée de Partners (DM-03-P, RM-03)", ()
     expect(fixture.hash).not.toBe(vraie.hash);
     expect(verifierPublications([fixture])).toEqual([]);
   });
+
+  it("TÉMOIN — aucune empreinte calculée sur les VRAIES valeurs ne traverse la fixture (grilleVersionEvenement compris)", () => {
+    const vraie = lirePublications().at(-1)!;
+    const texte = JSON.stringify(pseudonymiserPublication(vraie));
+    // Toute empreinte dont l'entrée contient un montant ou un taux réel est forçable par
+    // énumération, les identifiants étant en clair : aucune ne doit survivre.
+    const derivees = [
+      vraie.hash,
+      vraie.contenu.grilleVersionEvenement,
+      ...vraie.contenu.commissions
+        .filter((c) => c.montantCents !== null || c.tauxBps !== null)
+        .map((c) => vraie.empreintesLignes.commissions[c.commissionId]!),
+    ];
+    for (const d of derivees) expect(texte, d).not.toContain(d);
+    // Et la version d'événement de la fixture dérive des seules valeurs pseudonymisées.
+    const fixture = pseudonymiserPublication(vraie);
+    expect(fixture.contenu.grilleVersionEvenement).toMatch(/^[0-9a-f]{12}$/);
+    expect(fixture.contenu.grilleVersionEvenement).not.toBe(GRILLE_VERSION);
+  });
+
+  it("aucun libellé de commission n'écrit un montant ou un taux en clair", () => {
+    for (const c of lirePublications().at(-1)!.contenu.commissions)
+      expect(c.libelleFr, c.commissionId).not.toMatch(/\d\s*(?:€|%|eur\b)/i);
+  });
 });
 
 describe("DM-03-A · alerte au démarrage (HYP-W6-BIS) — inerte sans PARTNERS_SYNC_ENABLED", () => {
