@@ -273,10 +273,17 @@ describe("REQ-INT-007 / REQ-INT-032 — six faits, produits par les fonctions d'
     };
     const { tx, outbox } = fauxTx([facture()], [neuf, rejete]);
 
-    const a = await emettreFaitPaiement(tx, String(neuf["id"]), { motif: "remboursement" });
-    const b = await emettreFaitPaiement(tx, String(rejete["id"]), { motif: "rejet_prelevement" });
+    const a = await emettreFaitPaiement(tx, String((neuf as Record<string, unknown>)["id"]), {
+      motif: "remboursement",
+    });
+    const b = await emettreFaitPaiement(tx, String((rejete as Record<string, unknown>)["id"]), {
+      motif: "rejet_prelevement",
+    });
     expect(a).toBe(
-      identifiantEvenement(PAIEMENT_REMBOURSE, `paiement.rembourse:${String(neuf["id"])}`),
+      identifiantEvenement(
+        PAIEMENT_REMBOURSE,
+        `paiement.rembourse:${String((neuf as Record<string, unknown>)["id"])}`,
+      ),
     );
     expect(jugee(outbox, a).payload).toMatchObject({
       forme: "payment_type_refund",
@@ -294,7 +301,9 @@ describe("REQ-INT-007 / REQ-INT-032 — six faits, produits par les fonctions d'
       type: "refund",
     };
     const { tx, outbox } = fauxTx([facture()], [neuf]);
-    await expect(emettreFaitPaiement(tx, String(neuf["id"]))).rejects.toThrow(/motif est exigé/);
+    await expect(
+      emettreFaitPaiement(tx, String((neuf as Record<string, unknown>)["id"])),
+    ).rejects.toThrow(/motif est exigé/);
     expect(outbox.size).toBe(0);
   });
 
@@ -361,7 +370,9 @@ describe("REQ-INT-007 / REQ-INT-032 — six faits, produits par les fonctions d'
     };
     const { tx, outbox } = fauxTx([facture({ statut: "brouillon" })], [attente]);
     expect(await emettreFaitFacture(tx, F_OPCO)).toBeNull();
-    expect(await emettreFaitPaiement(tx, String(attente["id"]))).toBeNull();
+    expect(
+      await emettreFaitPaiement(tx, String((attente as Record<string, unknown>)["id"])),
+    ).toBeNull();
     expect(outbox.size).toBe(0);
   });
 });
