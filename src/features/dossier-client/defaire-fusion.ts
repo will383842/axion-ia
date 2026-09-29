@@ -37,6 +37,8 @@
  * n'est pas contournée en silence.
  */
 
+import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
+
 import type { BaseTransactionnelle } from "./base";
 import { LONGUEUR_MIN_MOTIF_FUSION } from "./fusionner";
 
@@ -185,7 +187,10 @@ export async function defaireFusion(
     });
 
     if (f.sirenReporte) {
+      // Rendre son SIREN à l'absorbée change un champ TRANSMIS : `client.mis_a_jour` (INT-T03).
+      const avant = await chargeClientAvant(tx, f.absorbeId);
       await tx.client.update({ where: { id: f.absorbeId }, data: { siren: f.sirenAbsorbeAvant } });
+      await emettreFaitClient(tx, f.absorbeId, { avant });
     }
 
     const le = new Date();

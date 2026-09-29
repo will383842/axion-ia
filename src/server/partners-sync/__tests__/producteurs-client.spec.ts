@@ -274,9 +274,10 @@ describe("REQ-INT-007 — la fonction d'émission unique de client.cree et clien
 describe("REQ-INT-007 — les écrivains branchés émettent dans LEUR transaction", () => {
   it("REQ-INT-007 : la porte de création (creerOuRetrouverClient) émet client.cree", async () => {
     const r = await creerOuRetrouverClient(
-      { client: fauxTx().client, $transaction: async (t) => t(tx()) } as Parameters<
-        typeof creerOuRetrouverClient
-      >[0],
+      {
+        client: fauxTx().client,
+        $transaction: async (t: (x: Prisma.TransactionClient) => Promise<unknown>) => t(tx()),
+      } as unknown as Parameters<typeof creerOuRetrouverClient>[0],
       { raisonSociale: "Nouvelle Fiche SAS", siret: SIRET, siren: SIREN },
       null,
       { parAdminId: null },
