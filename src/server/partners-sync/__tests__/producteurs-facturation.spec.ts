@@ -85,7 +85,7 @@ function facture(surcharge: Enregistrement = {}): Enregistrement {
     coachingContractId: null,
     dossierFinancementId: DOSSIER,
     destinataire: "opco",
-    destinataireSiret: "99988877700012",
+    destinataireSiret: "73282932000012",
     montantHtCents: 100_000,
     montantTvaCents: 20_000,
     montantTtcCents: 120_000,
@@ -129,12 +129,14 @@ function fauxTx(
   factures: Enregistrement[],
   paiements: Enregistrement[] = [],
   payeurs: Enregistrement[] = [],
+  clientsEnPlus: Enregistrement[] = [],
 ) {
   const outbox = new Map<string, LigneOutbox>();
   const lectures: string[] = [];
   const clients = [
-    client(ENTREPRISE, "123456789", "Entreprise formée"),
-    client(OPCO, "999888777", "OPCO"),
+    client(ENTREPRISE, "123456782", "Entreprise formée"),
+    client(OPCO, "732829320", "OPCO"),
+    ...clientsEnPlus,
   ];
   const tx = {
     // Le verrou de ligne de la facture : consigné, pour prouver qu'il PRÉCÈDE la lecture du cumul.
@@ -437,7 +439,7 @@ describe("REQ-INT-005 — paiement.recu porte ses champs, et le HT encaissé cal
       factureId: F_OPCO,
       clientId: ENTREPRISE,
       origineClient: "session",
-      siren: "123456789",
+      siren: "123456782",
       montantEncaisseTtcCents: 40_000,
       factureMontantHtCents: 100_000,
       factureMontantTtcCents: 120_000,
@@ -503,9 +505,9 @@ describe("REQ-ARG-005 — le BÉNÉFICIAIRE, jamais le destinataire", () => {
     const charge = jugee(outbox, await emettreFaitPaiement(tx, String(p["id"]))).payload;
     expect(charge["clientId"]).toBe(ENTREPRISE);
     expect(charge["clientId"]).not.toBe(OPCO);
-    expect(charge["siren"]).toBe("123456789");
+    expect(charge["siren"]).toBe("123456782");
     // Le SIRET du destinataire ne traverse sous aucune forme.
-    expect(JSON.stringify(charge)).not.toContain("999888777");
+    expect(JSON.stringify(charge)).not.toContain("732829320");
   });
 
   it("REQ-ARG-001 / REQ-ARG-005 : plusieurs payeurs d'une même prestation se proratisent sans cas particulier", async () => {
@@ -546,12 +548,44 @@ describe("REQ-ARG-005 — le BÉNÉFICIAIRE, jamais le destinataire", () => {
     expect(charge).toMatchObject({
       clientId: ENTREPRISE,
       origineClient: "session",
-      siren: "123456789",
+      siren: "123456782",
     });
   });
 });
 
 describe("REQ-ARG-030 — une attribution impossible est ALERTÉE, jamais tue", () => {
+  it.each([
+    ["sans SIREN", null],
+    ["au SIREN illisible (clé fausse)", "123456789"],
+  ])(
+    "REQ-ARG-030 : un bénéficiaire %s part non_resolue et alerté — jamais une devinette (arbitrage -d7)",
+    async (_, siren) => {
+      const SANS = "cccc3333-3333-4333-8333-333333333333";
+      const f = facture({ id: F_ORPHELINE, clientId: SANS });
+      const p = paiement("pa000000-0000-4000-8000-000000000061", F_ORPHELINE, 10_000, "10");
+      const autre = { ...client(SANS, "000000000", "Sans SIREN"), siren };
+      const { tx, outbox } = fauxTx([f], [p], [], [autre]);
+      const alertes: AlerteFacturation[] = [];
+      const id = await emettreFaitPaiement(tx, String(p["id"]), {
+        alerter: (a) => alertes.push(a),
+      });
+      expect(jugee(outbox, id).payload).toMatchObject({
+        clientId: null,
+        origineClient: "non_resolue",
+      });
+      expect(alertes.map((a) => a.motif)).toEqual(["client_non_resolu"]);
+    },
+  );
+
+  it("REQ-ARG-030 : un même paiement n'est JAMAIS attribué deux fois — un seul événement, un seul client", async () => {
+    const p = paiement("pa000000-0000-4000-8000-000000000062", F_OPCO, 10_000, "10");
+    const { tx, outbox } = fauxTx([facture()], [p]);
+    const un = await emettreFaitPaiement(tx, String(p["id"]));
+    const deux = await emettreFaitPaiement(tx, String(p["id"]));
+    expect(deux).toBe(un);
+    expect([...outbox.values()].filter((l) => l.eventType === "paiement.recu")).toHaveLength(1);
+  });
+
   it("REQ-ARG-030 : bénéficiaire introuvable → l'événement PART non résolu, et l'alerte est levée", async () => {
     const orpheline = facture({
       id: F_ORPHELINE,
@@ -633,7 +667,7 @@ describe("REQ-DM-039 — facture.emise porte le destinataire et l'échéance du 
 });
 
 describe("REQ-ARG-005 — témoin à deux faces : le destinataire à la place du bénéficiaire", () => {
-  const attendu = { clientId: ENTREPRISE, siren: "123456789" };
+  const attendu = { clientId: ENTREPRISE, siren: "123456782" };
 
   it("REQ-ARG-005 face verte : la charge conforme passe, inchangée", async () => {
     const p = paiement("pa000000-0000-4000-8000-000000000061", F_OPCO, 120_000, "10");
@@ -663,7 +697,7 @@ describe("REQ-ARG-005 — témoin à deux faces : le destinataire à la place du
 
   it("REQ-ARG-005 face rouge : le SIREN du destinataire est refusé, champ siren nommé", () => {
     try {
-      verifierAttribution("facture.emise", { clientId: ENTREPRISE, siren: "999888777" }, attendu);
+      verifierAttribution("facture.emise", { clientId: ENTREPRISE, siren: "732829320" }, attendu);
       expect.unreachable();
     } catch (e) {
       expect(e).toMatchObject({ name: "ChargeFacturationRefusee", champ: "siren" });

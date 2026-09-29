@@ -231,7 +231,7 @@ export type ResolutionBeneficiaire = {
 };
 
 /**
- * Le client BÉNÉFICIAIRE d'une facture — `facture ?? session ?? enrollment ?? dossier`.
+ * Le client BÉNÉFICIAIRE d'une facture — `facture ?? enrollment ?? session ?? dossier`.
  *
  * 🔴 `destinataireSiret` N'APPARAÎT NULLE PART DANS CETTE FONCTION, et REQ-ARG-005
  * l'exige mot pour mot : « jamais par `destinataireSiret` ». Sur une facture subrogée le
@@ -247,19 +247,16 @@ export type ResolutionBeneficiaire = {
 export function resoudreClientBeneficiaire(facture: FacturePourEvenement): ResolutionBeneficiaire {
   if (facture.clientId !== null) return { clientId: facture.clientId, origine: "facture" };
 
-  const parLaSession = facture.session?.clientId ?? null;
+  // 🔴 L'INSCRIPTION AVANT LA SESSION (REQ-DM-021 amendée : arbitrage -d7 sur délégation de
+  // Williams du 2026-09-29, après le veto securite de #1228). Sur une facture inter-entreprises,
+  // l'inscription porte le client qui paie la place de CE participant — son employeur, celui
+  // qu'un apporteur a pu amener. La session n'est qu'un contenant : la prendre d'abord
+  // commissionnerait A pour le participant de B. Inscription sans client : on descend à la session.
   const parLInscription = facture.enrollment?.clientId ?? null;
-
-  // 🔴 SESSION ET INSCRIPTION EN DÉSACCORD : NI L'UNE NI L'AUTRE EN SILENCE (veto securite de
-  // #1228). Une facture inter-entreprises porte l'inscription d'un participant, dont le client
-  // est SON employeur ; la session peut porter un autre client. Prendre la session d'office
-  // commissionnerait A pour le participant de B. L'ordre entre les deux relève de REQ-DM-021 et
-  // de Williams : d'ici là, le désaccord part `non_resolue`, donc alerté, jamais attribué.
-  if (parLaSession !== null && parLInscription !== null && parLaSession !== parLInscription) {
-    return { clientId: null, origine: "non_resolue" };
-  }
-  if (parLaSession !== null) return { clientId: parLaSession, origine: "session" };
   if (parLInscription !== null) return { clientId: parLInscription, origine: "enrollment" };
+
+  const parLaSession = facture.session?.clientId ?? null;
+  if (parLaSession !== null) return { clientId: parLaSession, origine: "session" };
 
   const parLeDossier = facture.dossierFinancement?.clientId ?? null;
   if (parLeDossier !== null) return { clientId: parLeDossier, origine: "dossier" };

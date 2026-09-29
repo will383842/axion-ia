@@ -58,6 +58,8 @@ import {
   type ResolutionBeneficiaire,
 } from "@/server/partners/payloads";
 
+import { checkSirenFormat } from "@/lib/siret";
+
 import { canalPartnersOuvert } from "../config";
 import { ecrireEvenementPartners } from "../outbox";
 
@@ -241,6 +243,28 @@ async function lireFacture(
           where: { id: beneficiaire.clientId },
           select: SELECTION_CLIENT,
         });
+  // 🔴 RÉSOLU PAR SIREN, OU PAS DU TOUT (garde-fou de l'arbitrage -d7 du 2026-09-29). Partners
+  // attribue par le SIREN bénéficiaire : un client introuvable, sans SIREN ou au SIREN illisible
+  // part `non_resolue`, donc alerté et rattaché à la main — jamais une attribution devinée.
+  const siren = client?.siren ?? null;
+  if (beneficiaire.clientId !== null && (siren === null || !checkSirenFormat(siren).ok)) {
+    // Les sources d'attribution sont EFFACÉES de la facture lue : la charge se construit sur
+    // elle (`resoudreClientBeneficiaire` y est rejoué), et doit y trouver le même `non_resolue`.
+    return {
+      facture: {
+        ...ligne,
+        clientId: null,
+        session: null,
+        enrollment: null,
+        dossierFinancement:
+          ligne.dossierFinancement === null
+            ? null
+            : { ...ligne.dossierFinancement, clientId: null },
+        client: null,
+      },
+      beneficiaire: { clientId: null, origine: "non_resolue" },
+    };
+  }
   return { facture: { ...ligne, client }, beneficiaire };
 }
 

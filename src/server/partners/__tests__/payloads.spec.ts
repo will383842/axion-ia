@@ -93,29 +93,49 @@ describe("REQ-ARG-005 / REQ-DM-021 — la résolution du client BÉNÉFICIAIRE",
     expect(parLeDossier.origine).toBe("dossier");
   });
 
-  it("🔴 TÉMOIN (veto securite #1228) — session A, participant de B : jamais A, la facture part non résolue", () => {
+  describe("REQ-DM-021 amendée (arbitrage -d7 sur délégation de Williams du 2026-09-29) : l'inscription avant la session", () => {
     const A = "aaaa1111-1111-4111-8111-111111111111";
     const B = "bbbb2222-2222-4222-8222-222222222222";
-    const r = resoudreClientBeneficiaire({
-      ...factureBase,
-      clientId: null,
-      session: { clientId: A },
-      enrollment: { clientId: B },
-    });
-    expect(r).toEqual({ clientId: null, origine: "non_resolue" });
-    // Contre-témoin : d'accord, l'inscription et la session désignent le même client.
-    expect(
-      resoudreClientBeneficiaire({
+
+    it("🔴 TÉMOIN (veto securite #1228) — session A, participant de B : B porte l'attribution, JAMAIS A", () => {
+      const r = resoudreClientBeneficiaire({
         ...factureBase,
         clientId: null,
-        session: { clientId: B },
+        session: { clientId: A },
         enrollment: { clientId: B },
-      }),
-    ).toEqual({ clientId: B, origine: "session" });
-    // Sans session, l'inscription (l'employeur du participant) porte l'attribution.
-    expect(
-      resoudreClientBeneficiaire({ ...factureBase, clientId: null, enrollment: { clientId: B } }),
-    ).toEqual({ clientId: B, origine: "enrollment" });
+      });
+      expect(r).toEqual({ clientId: B, origine: "enrollment" });
+      expect(r.clientId).not.toBe(A);
+    });
+
+    it("REQ-DM-021 : inscription sans client → on descend à la session", () => {
+      expect(
+        resoudreClientBeneficiaire({
+          ...factureBase,
+          clientId: null,
+          session: { clientId: A },
+          enrollment: { clientId: null },
+        }),
+      ).toEqual({ clientId: A, origine: "session" });
+    });
+
+    it("REQ-DM-021 : aucun client nulle part → non_resolue, jamais une devinette", () => {
+      expect(
+        resoudreClientBeneficiaire({
+          ...factureBase,
+          clientId: null,
+          session: { clientId: null },
+          enrollment: { clientId: null },
+          dossierFinancement: { clientId: null },
+        }),
+      ).toEqual({ clientId: null, origine: "non_resolue" });
+    });
+
+    it("REQ-DM-021 : le client de la FACTURE prime sur tout, inscription comprise", () => {
+      expect(
+        resoudreClientBeneficiaire({ ...factureBase, enrollment: { clientId: B } }).origine,
+      ).toBe("facture");
+    });
   });
 
   it("🔴 n'utilise JAMAIS `destinataireSiret` — le destinataire n'est pas le bénéficiaire", () => {
