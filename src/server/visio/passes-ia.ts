@@ -56,12 +56,10 @@ function exigerCompteRendu(ctx: ContexteEtape): string {
   return ctx.t.compteRenduId;
 }
 
-async function chargerPasses(
-  ctx: ContexteEtape,
-): Promise<DonneesPasses & { etat: EtatCompteRendu }> {
+async function chargerPasses(ctx: ContexteEtape): Promise<DonneesPourPasses> {
   const d = await ctx.deps.donnees.pourPasses(exigerCompteRendu(ctx));
   if (d === null || d.etat === null) throw new ArretVisio("inconnu");
-  return d as DonneesPasses & { etat: EtatCompteRendu };
+  return d as DonneesPourPasses;
 }
 
 /**
@@ -96,7 +94,7 @@ export function pourPasse(f: FaitDuJour): FaitPourPasse {
 }
 
 /** Les faits connus (validés, antérieurs), avec leur référence `H…` de l'extraction. */
-function faitsConnusPourPasse(d: DonneesPasses & { etat: EtatCompteRendu }): FaitConnuPourPasse[] {
+function faitsConnusPourPasse(d: DonneesPourPasses): FaitConnuPourPasse[] {
   const refParId = new Map(d.etat.correspondances.faits.map(([ref, id]) => [id, ref]));
   return faitsDejaConnus(d.faitsConnus, { id: d.rencontre.id, debut: d.rencontre.debut }).map(
     (f) => ({
@@ -295,11 +293,101 @@ export const verifierFaitsEtape: Gestionnaire = async (ctx) => {
 
 // ── P2 ───────────────────────────────────────────────────────────────────────
 
+/** Ce que les passes P2 à P5 lisent : les données de la base et l'état du compte rendu. */
+export type DonneesPourPasses = DonneesPasses & { etat: EtatCompteRendu };
+
+/**
+ * P2 — l'entrée ENVOYÉE et ce que le filtre accepte en retour. PURE : le
+ * gestionnaire et la campagne d'évaluation (`scripts/visio/evaluer.ts`) la
+ * partagent, pour que l'évaluation mesure les passes du site, pas une copie.
+ */
+export function preparerP2(d: DonneesPourPasses) {
+  const faits = faitsTransmissibles(d.faitsDuJour).map(pourPasse);
+  const refProjet = new Map(d.etat.correspondances.projets.map(([ref, id]) => [id, ref]));
+  const projetsConnus = d.projets
+    .filter((p) => refProjet.has(p.id))
+    .map((p) => ({ ...p, ref: refProjet.get(p.id)! }));
+  return {
+    entree: construireEntreeP2({
+      projetsConnus,
+      faitsConnus: faitsConnusPourPasse(d),
+      projetsEvoques: d.etat.projetsEvoques,
+      faits,
+    }),
+    envoyes: {
+      projetsConnus: new Set(projetsConnus.map((p) => p.ref)),
+      evoques: new Set(d.etat.projetsEvoques.map((j) => j.ref)),
+      faits: new Set(faits.map((f) => f.ref)),
+    },
+  };
+}
+
+/** P3 — une entrée par PÉRIMÈTRE (entreprise, chaque projet), jamais deux projets mêlés. PURE. */
+export function preparerP3(d: DonneesPourPasses) {
+  const faits = faitsTransmissibles(d.faitsDuJour).map(pourPasse);
+  const connus = faitsConnusPourPasse(d);
+  const perimetres =
+    d.rencontre.clientId === null
+      ? []
+      : perimetresAConsolider({
+          rattachement: typeof d.etat.rattachement === "object" ? d.etat.rattachement : null,
+          correspondancesProjets: new Map(d.etat.correspondances.projets),
+          projets: d.projets,
+          faitsConnus: connus,
+        });
+  return perimetres
+    .map((perimetre) => ({ perimetre, e: construireEntreeP3(perimetre, connus, faits) }))
+    .filter((x) => x.e.faitsDuJour.size > 0);
+}
+
+/** P4 — une entrée par projet évoqué qui porte un besoin chiffrable. PURE. */
+export function preparerP4(d: DonneesPourPasses) {
+  const faits = faitsTransmissibles(d.faitsDuJour).map(pourPasse);
+  const connus = faitsConnusPourPasse(d);
+  const rattachement = typeof d.etat.rattachement === "object" ? d.etat.rattachement : null;
+  const projets = new Map(d.etat.correspondances.projets);
+  return projetsAEbaucher(faits, d.etat.projetsEvoques).map((j) => {
+    const decision = rattachement?.decisions.find(
+      (x) => x.projet_evoque_ref === j.ref && x.decision === "projet_existant",
+    );
+    const projetId = decision?.projet_connu_ref
+      ? (projets.get(decision.projet_connu_ref) ?? null)
+      : null;
+    return {
+      j,
+      entree: construireEntreeP4(
+        j,
+        faits,
+        connus.filter((f) => projetId !== null && f.projetId === projetId),
+      ),
+    };
+  });
+}
+
+/** V2 — les faits que le compte rendu a le droit de citer, et les montants calculés par le site. PURE. */
+export function preparerV2(d: DonneesPourPasses) {
+  const faits = faitsTransmissibles(d.faitsDuJour);
+  const couverture =
+    d.etat.couverture ?? couvertureDesFaits(new Map(faits.map((f) => [f.ref, f.type])));
+  const pourRedaction = new Map<string, FaitPourRedaction>(
+    faits.map((f) => [
+      f.ref,
+      { ref: f.ref, enonce: f.enonce, citation: f.citation, valeurs: f.valeurs },
+    ]),
+  );
+  const montants = d.etat.ebauches.flatMap((b) =>
+    b.chiffrage.lignes
+      .flatMap((l) => [l.prixUnitaireHtCents, l.totalHtCents])
+      .filter((x): x is number => x !== null)
+      .map((c) => c / 100),
+  );
+  return { couverture, pourRedaction, montants };
+}
+
 export const rattacher: Gestionnaire = async (ctx) => {
   const { deps } = ctx;
   const d = await chargerPasses(ctx);
   const crId = d.compteRenduId;
-  const faits = faitsTransmissibles(d.faitsDuJour).map(pourPasse);
   if (d.rencontre.clientId === null) {
     // A4 : aucun rattachement automatique. Sans client validé, P2 n'est pas
     // appelée ; « Compléter » la relancera après le rattachement.
@@ -311,29 +399,16 @@ export const rattacher: Gestionnaire = async (ctx) => {
     };
   }
   const catalogue = await deps.catalogue();
-  const refProjet = new Map(d.etat.correspondances.projets.map(([ref, id]) => [id, ref]));
-  const projetsConnus = d.projets
-    .filter((p) => refProjet.has(p.id))
-    .map((p) => ({ ...p, ref: refProjet.get(p.id)! }));
-  const connus = faitsConnusPourPasse(d);
+  const p2 = preparerP2(d);
   const { sortie } = await executerPasse(depsPasse(ctx), {
     passe: "rattacher",
     schema: SCHEMAS_VISIO.rattachement.schema,
     nomSchema: SCHEMAS_VISIO.rattachement.nom,
     instructions: instructionsDe("rattacher", catalogue.texte),
-    entree: construireEntreeP2({
-      projetsConnus,
-      faitsConnus: connus,
-      projetsEvoques: d.etat.projetsEvoques,
-      faits,
-    }),
+    entree: p2.entree,
     jobId: ctx.jobId,
   });
-  const { rattachement, ecartees } = filtrerRattachement(sortie, {
-    projetsConnus: new Set(projetsConnus.map((p) => p.ref)),
-    evoques: new Set(d.etat.projetsEvoques.map((j) => j.ref)),
-    faits: new Set(faits.map((f) => f.ref)),
-  });
+  const { rattachement, ecartees } = filtrerRattachement(sortie, p2.envoyes);
   return {
     ecrire: async (tx) => {
       await deps.donnees.majEtat(tx, crId, {
@@ -352,25 +427,13 @@ export const consolider: Gestionnaire = async (ctx) => {
   const { deps } = ctx;
   const d = await chargerPasses(ctx);
   const crId = d.compteRenduId;
-  const faits = faitsTransmissibles(d.faitsDuJour).map(pourPasse);
-  const connus = faitsConnusPourPasse(d);
-  const perimetres =
-    d.rencontre.clientId === null
-      ? []
-      : perimetresAConsolider({
-          rattachement: typeof d.etat.rattachement === "object" ? d.etat.rattachement : null,
-          correspondancesProjets: new Map(d.etat.correspondances.projets),
-          projets: d.projets,
-          faitsConnus: connus,
-        });
+  const entrees = preparerP3(d);
   const resultats: EtatCompteRendu["consolidation"][number][] = [];
   let horsPerimetre = 0;
-  if (perimetres.length > 0) {
+  if (entrees.length > 0) {
     const catalogue = await deps.catalogue();
-    for (const p of perimetres) {
+    for (const { perimetre: p, e } of entrees) {
       ctx.verifierArret();
-      const e = construireEntreeP3(p, connus, faits);
-      if (e.faitsDuJour.size === 0) continue;
       const { sortie } = await executerPasse(depsPasse(ctx), {
         passe: "consolider",
         schema: SCHEMAS_VISIO.consolidation.schema,
@@ -402,33 +465,19 @@ export const ebaucher: Gestionnaire = async (ctx) => {
   const { deps } = ctx;
   const d = await chargerPasses(ctx);
   const crId = d.compteRenduId;
-  const faits = faitsTransmissibles(d.faitsDuJour).map(pourPasse);
-  const aEbaucher = projetsAEbaucher(faits, d.etat.projetsEvoques);
-  const connus = faitsConnusPourPasse(d);
+  const aEbaucher = preparerP4(d);
   const ebauches: EtatCompteRendu["ebauches"][number][] = [];
   let lignesRetirees = 0;
   if (aEbaucher.length > 0) {
     const catalogue = await deps.catalogue();
-    const rattachement = typeof d.etat.rattachement === "object" ? d.etat.rattachement : null;
-    const projets = new Map(d.etat.correspondances.projets);
-    for (const j of aEbaucher) {
+    for (const { j, entree } of aEbaucher) {
       ctx.verifierArret();
-      const decision = rattachement?.decisions.find(
-        (x) => x.projet_evoque_ref === j.ref && x.decision === "projet_existant",
-      );
-      const projetId = decision?.projet_connu_ref
-        ? (projets.get(decision.projet_connu_ref) ?? null)
-        : null;
       const { sortie } = await executerPasse(depsPasse(ctx), {
         passe: "ebaucher",
         schema: SCHEMAS_VISIO.ebauche.schema,
         nomSchema: SCHEMAS_VISIO.ebauche.nom,
         instructions: instructionsDe("ebaucher", catalogue.texte),
-        entree: construireEntreeP4(
-          j,
-          faits,
-          connus.filter((f) => projetId !== null && f.projetId === projetId),
-        ),
+        entree,
         jobId: `${ctx.jobId}-${j.ref}`,
       });
       const controle = controlerEbauche(sortie, catalogue.refs);
@@ -457,10 +506,8 @@ export const ebaucher: Gestionnaire = async (ctx) => {
 
 // ── P5 ───────────────────────────────────────────────────────────────────────
 
-function entreeP5(
-  d: DonneesPasses & { etat: EtatCompteRendu },
-  faits: readonly FaitPourPasse[],
-): string {
+/** P5 — l'entrée ENVOYÉE à la rédaction (faits vérifiés, jamais la transcription). PURE. */
+export function entreeP5(d: DonneesPourPasses, faits: readonly FaitPourPasse[]): string {
   const e = d.etat;
   const couverture = e.couverture ?? couvertureDesFaits(new Map(faits.map((f) => [f.ref, f.type])));
   const rattachement =
@@ -538,21 +585,7 @@ export const verifierCompteRenduEtape: Gestionnaire = async (ctx) => {
   const { deps, t } = ctx;
   const d = await chargerPasses(ctx);
   if (d.etat.redaction === null) throw new ArretVisio("inconnu");
-  const faits = faitsTransmissibles(d.faitsDuJour);
-  const couverture =
-    d.etat.couverture ?? couvertureDesFaits(new Map(faits.map((f) => [f.ref, f.type])));
-  const pourRedaction = new Map<string, FaitPourRedaction>(
-    faits.map((f) => [
-      f.ref,
-      { ref: f.ref, enonce: f.enonce, citation: f.citation, valeurs: f.valeurs },
-    ]),
-  );
-  const montants = d.etat.ebauches.flatMap((b) =>
-    b.chiffrage.lignes
-      .flatMap((l) => [l.prixUnitaireHtCents, l.totalHtCents])
-      .filter((x): x is number => x !== null)
-      .map((c) => c / 100),
-  );
+  const { couverture, pourRedaction, montants } = preparerV2(d);
   const bilan = verifierCompteRendu(d.etat.redaction, couverture, pourRedaction, montants);
   const essais = d.etat.essaisRedaction + 1;
 

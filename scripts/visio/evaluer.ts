@@ -11,8 +11,10 @@
  *   docker exec <worker> npx tsx scripts/visio/evaluer.ts --executions 3
  *
  * Pour chaque scénario FICTIF × exécution : le CODE DU SITE construit les
- * passes (dialogue entrelacé, contexte, consignes, catalogue), l'API OpenAI
- * répond, le CODE DU SITE vérifie (V1, G10, G14, V2). Coût tracé dans
+ * passes P1 à P5 (dialogue entrelacé, contexte, consignes, catalogue — et
+ * pour P2 à P5 les MÊMES `preparerP2/P3/P4`, `entreeP5`, `preparerV2` que les
+ * étapes), l'API OpenAI répond, le CODE DU SITE vérifie et filtre (V1,
+ * `filtrerRattachement`, `filtrerConsolidation`, G14, V2). Coût tracé dans
  * `cost_ledger` avec un `jobId` `visio-eval-…`, sous le plafond partagé.
  *
  * Sortie : des COMPTEURS seulement (jamais un texte produit) —
@@ -29,10 +31,26 @@
 
 import path from "node:path";
 
-import { chargerCatalogue } from "../../src/server/visio/catalogue-ia";
+import { chargerCatalogue, chiffrerEbauche } from "../../src/server/visio/catalogue-ia";
 import { instructionsDe } from "../../src/server/visio/consignes";
-import { construireEntreeP1, type FaitPourPasse } from "../../src/server/visio/contexte";
-import { construireEntreeP4, controlerEbauche } from "../../src/server/visio/consolider";
+import { construireEntreeP1 } from "../../src/server/visio/contexte";
+import {
+  controlerEbauche,
+  filtrerConsolidation,
+  filtrerRattachement,
+} from "../../src/server/visio/consolider";
+import { valeursEnTexte } from "../../src/server/visio/depot-donnees";
+import { etatInitial } from "../../src/server/visio/etat-compte-rendu";
+import {
+  entreeP5,
+  faitsTransmissibles,
+  pourPasse,
+  preparerP2,
+  preparerP3,
+  preparerP4,
+  preparerV2,
+  type DonneesPourPasses,
+} from "../../src/server/visio/passes-ia";
 import { entrelacer, type SegmentStocke } from "../../src/server/visio/dialogue";
 import { obtenirClientOpenAI } from "../../src/server/visio/openai/client";
 import { portCoutReel } from "../../src/server/visio/openai/cout";
@@ -91,6 +109,8 @@ async function main(): Promise<void> {
     liste.length *
     executions *
     (ESTIMATION_PASSE_USD.extraire +
+      ESTIMATION_PASSE_USD.rattacher +
+      2 * ESTIMATION_PASSE_USD.consolider +
       2 * ESTIMATION_PASSE_USD.ebaucher +
       ESTIMATION_PASSE_USD.rediger);
   if (estimation > PLAFOND_CAMPAGNE_USD) {
@@ -204,24 +224,101 @@ async function main(): Promise<void> {
           (r) => v1.couverture[r as (typeof RUBRIQUES_COUVERTURE)[number]]?.statut === "aborde",
         ).length;
 
-        const pourPasse: FaitPourPasse[] = retenus.map((f) => ({
-          ref: f.ref,
-          type: f.type,
-          portee: f.porteeDeclaree,
-          projetRef: f.projetRef,
-          enonce: f.enonce,
-          valeur: [
-            f.quantite,
-            f.montantMinCents !== null ? f.montantMinCents / 100 : null,
-            f.dateCible,
-          ]
-            .filter((x) => x !== null)
-            .join(", "),
-          locuteur: f.locuteur,
-          confiance: f.confiance,
-        }));
-        const ebauches = [];
-        for (const j of p1.sortie.projets_evoques.slice(0, 2)) {
+        // ── P2 à P5 : les MÊMES préparations que les étapes du site
+        //    (`preparerP2`, `preparerP3`, `preparerP4`, `entreeP5`, `preparerV2`),
+        //    sur un compte rendu reconstruit comme le ferait la base.
+        const idDe = (ref: string): string => `fait-${sc.id}-${ref}`;
+        let d: DonneesPourPasses = {
+          rencontre: {
+            id: sc.id,
+            titre: sc.titre,
+            source: "calendly",
+            clientId: `client-${sc.id}`,
+            debut: date,
+            dureeMs: sc.dureeS * 1000,
+          },
+          compteRenduId: `cr-${sc.id}`,
+          statutCompteRendu: "brouillon",
+          etat: {
+            ...etatInitial(date, catalogue.empreinte),
+            natureEchange: p1.sortie.nature_echange.nature,
+            correspondances: {
+              faits: [...correspondances.faits],
+              contacts: [...correspondances.contacts],
+              projets: [...correspondances.projets],
+            },
+            projetsEvoques: p1.sortie.projets_evoques.map((j) => ({
+              ref: j.ref,
+              intitule: j.intitule,
+              activite: j.activite,
+            })),
+            faits: retenus.map((f) => [f.ref, idDe(f.ref)] as const),
+            couverture: v1.couverture,
+          },
+          faitsDuJour: retenus.map((f) => ({
+            id: idDe(f.ref),
+            ref: f.ref,
+            type: f.type,
+            statut: f.statut,
+            porteeDeclaree: f.porteeDeclaree,
+            projetRef: f.projetRef,
+            enonce: f.enonce,
+            citation: f.citation,
+            valeurs: valeursEnTexte({
+              ...f,
+              dateCible: f.dateCible ? new Date(`${f.dateCible}T00:00:00Z`) : null,
+            }),
+            locuteur: f.locuteur,
+            confiance: f.confiance,
+          })),
+          projets,
+          faitsConnus: connus,
+        };
+
+        // P2 — rattachement, filtré par le code du site.
+        const p2 = preparerP2(d);
+        const r2 = await executerPasse(
+          { client, cout: portCoutReel },
+          {
+            passe: "rattacher",
+            schema: SCHEMAS_VISIO.rattachement.schema,
+            nomSchema: SCHEMAS_VISIO.rattachement.nom,
+            instructions: instructionsDe("rattacher", catalogue.texte),
+            entree: p2.entree,
+            jobId: `${jobId}-p2`,
+          },
+        );
+        const { rattachement } = filtrerRattachement(r2.sortie, p2.envoyes);
+        d = { ...d, etat: { ...d.etat, rattachement } };
+
+        // P3 — consolidation par périmètre : une relation hors périmètre
+        //    (mélange de projets) est COMPTÉE ici — seuil O-2a : 0.
+        const consolidation: DonneesPourPasses["etat"]["consolidation"][number][] = [];
+        for (const { perimetre, e } of preparerP3(d)) {
+          const r3 = await executerPasse(
+            { client, cout: portCoutReel },
+            {
+              passe: "consolider",
+              schema: SCHEMAS_VISIO.consolidation.schema,
+              nomSchema: SCHEMAS_VISIO.consolidation.nom,
+              instructions: instructionsDe("consolider", catalogue.texte),
+              entree: e.entree,
+              jobId: `${jobId}-p3-${perimetre.projetId ?? "entreprise"}`,
+            },
+          );
+          const filtre = filtrerConsolidation(r3.sortie, e);
+          c.relationsHorsPerimetre = (c.relationsHorsPerimetre ?? 0) + filtre.horsPerimetre;
+          consolidation.push({
+            perimetre: perimetre.libelle,
+            projetId: perimetre.projetId,
+            resultat: filtre.consolidation,
+          });
+        }
+        d = { ...d, etat: { ...d.etat, consolidation } };
+
+        // P4 + C4 — ébauches, prix calculés par le site.
+        const ebauches: DonneesPourPasses["etat"]["ebauches"][number][] = [];
+        for (const { j, entree: e4 } of preparerP4(d)) {
           const p4 = await executerPasse(
             { client, cout: portCoutReel },
             {
@@ -229,17 +326,24 @@ async function main(): Promise<void> {
               schema: SCHEMAS_VISIO.ebauche.schema,
               nomSchema: SCHEMAS_VISIO.ebauche.nom,
               instructions: instructionsDe("ebaucher", catalogue.texte),
-              entree: construireEntreeP4(
-                { ref: j.ref, intitule: j.intitule, activite: j.activite },
-                pourPasse,
-                [],
-              ),
+              entree: e4,
               jobId: `${jobId}-p4-${j.ref}`,
             },
           );
-          if (!controlerEbauche(p4.sortie, catalogue.refs).ok) c.echecs = (c.echecs ?? 0) + 1;
-          ebauches.push(p4.sortie);
+          const controle = controlerEbauche(p4.sortie, catalogue.refs);
+          if (!controle.ok) {
+            c.echecs = (c.echecs ?? 0) + 1;
+            continue;
+          }
+          ebauches.push({
+            projetRef: j.ref,
+            ebauche: controle.ebauche,
+            chiffrage: chiffrerEbauche(controle.ebauche.lignes, catalogue),
+          });
         }
+        d = { ...d, etat: { ...d.etat, ebauches } };
+
+        // P5 — rédaction, sur l'entrée du site ; V2 — vérification du site.
         const p5 = await executerPasse(
           { client, cout: portCoutReel },
           {
@@ -247,35 +351,12 @@ async function main(): Promise<void> {
             schema: SCHEMAS_VISIO.compteRendu.schema,
             nomSchema: SCHEMAS_VISIO.compteRendu.nom,
             instructions: instructionsDe("rediger", catalogue.texte),
-            entree: `<couverture>\n${Object.entries(v1.couverture)
-              .map(([r, x]) => `${r} : ${x.statut}`)
-              .join(
-                "\n",
-              )}\n</couverture>\n<faits_verifies>\n${pourPasse.map((f) => `${f.ref} | ${f.type} | ${f.enonce} | ${f.valeur}`).join("\n")}\n</faits_verifies>\nRédige le compte rendu au format imposé.`,
+            entree: entreeP5(d, faitsTransmissibles(d.faitsDuJour).map(pourPasse)),
             jobId: `${jobId}-p5`,
           },
         );
-        const v2 = verifierCompteRendu(
-          p5.sortie,
-          v1.couverture,
-          new Map(
-            retenus.map((f) => [
-              f.ref,
-              {
-                ref: f.ref,
-                enonce: f.enonce,
-                citation: f.citation,
-                valeurs: [
-                  String(f.quantite ?? ""),
-                  String((f.montantMinCents ?? 0) / 100),
-                  f.dateCible ?? "",
-                  f.expressionTemporelle ?? "",
-                  f.texteCourt ?? "",
-                ],
-              },
-            ]),
-          ),
-        );
+        const v2e = preparerV2(d);
+        const v2 = verifierCompteRendu(p5.sortie, v2e.couverture, v2e.pourRedaction, v2e.montants);
         c.paragraphesRetires = v2.retires;
         c.chiffresHorsFaits = v2.motifs.filter((m) => /nombre|date|nom/.test(m)).length;
       } catch (err) {
