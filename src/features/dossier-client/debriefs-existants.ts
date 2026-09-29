@@ -37,8 +37,8 @@ function propre(s: string | null | undefined): string | null {
  * deux faits.
  */
 export function debriefsExistants(sources: {
-  readonly notesCalendly?: string | null;
-  readonly noteDuPoint?: string | null;
+  readonly notesCalendly?: string | null | undefined;
+  readonly noteDuPoint?: string | null | undefined;
 }): DebriefExistant[] {
   const out: DebriefExistant[] = [];
   const notes = propre(sources.notesCalendly);
