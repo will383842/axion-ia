@@ -4,14 +4,15 @@
  * exactes ». Le titulaire d'un jeton d'appareil est REVÉRIFIÉ contre cette
  * liste à chaque appel de l'extension : retirer le rôle coupe l'appareil.
  *
- * ⚠️ INTERFACE LOCALE À LA PR 5. La liste de référence est
- * `ROLES_DOSSIER_ECHANGES` de `src/features/dossier-client/acces.ts`, livrée
- * par la PR 3 (#1212), pas encore fusionnée quand cette PR a été écrite. Les
- * deux listes sont identiques ; au rebase sur une `main` qui contient la PR 3,
- * ce module devient un simple ré-export (`export { ROLES_DOSSIER_ECHANGES as
- * ROLES_ENREGISTREUR }`), pour qu'il n'y ait plus qu'une liste.
+ * ⚠️ La liste de référence est `ROLES_DOSSIER_ECHANGES`
+ * (`src/features/dossier-client/acces.ts`, PR 3). Elle n'est pas ré-exportée
+ * d'ici parce que ce module-là tire `@/auth` et `next/navigation`, et que
+ * celui-ci est lu par des modules destinés au worker (`jeton.ts`,
+ * `balayage-enregistreur.ts`). Les deux listes sont donc écrites deux fois, et
+ * `__tests__/les-roles-de-l-enregistreur-sont-ceux-du-dossier.spec.ts` rougit
+ * dès qu'elles divergent.
  *
- * Module PUR : lu par les routes, la page de la console et le worker.
+ * Module PUR : lu par les routes, la console et le worker.
  */
 
 /** A2 : super-administrateur et administrateurs, personne d'autre. */
