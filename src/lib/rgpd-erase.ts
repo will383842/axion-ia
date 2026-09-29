@@ -766,6 +766,140 @@ const FAIT_CONTENU_VIDE = {
   ambiguite: null,
 } as const;
 
+// Les données d'effacement ci-dessous sont écrites UNE fois et reprises par
+// l'effacement (`effacerCibleParAdresses`) comme par le rejeu après
+// restauration (`rejouerEffacements`) : si l'art. 17 vide un champ de plus, le
+// rejeu le vide aussi. Verrouillé par
+// `src/lib/__tests__/le-rejeu-reprend-les-regles-de-l-effacement.spec.ts`.
+
+/** Participation d'une personne effacée : nom pseudonymisé, voix et adresse oubliées. */
+const PARTICIPANT_PSEUDONYMISE = {
+  nomAffiche: PERSONNE_EFFACEE,
+  emailHash: null,
+  etiquetteVoix: null,
+} as const;
+
+/** Fiche personne effacée : nom pseudonymisé, fonction et téléphone vidés. */
+const CONTACT_PSEUDONYMISE = { nom: PERSONNE_EFFACEE, fonction: null, telephone: null } as const;
+
+/** Compte rendu partagé avec d'autres voix : vidé, une réécriture sans elle est proposée. */
+const COMPTE_RENDU_A_REGENERER = {
+  statut: "a_regenerer",
+  contenu: "",
+  verification: null,
+} as const;
+
+/** Case pré-remplie qui portait ses propos : vidée. */
+const PRE_REMPLISSAGE_VIDE = { valeurProposee: "", valeurRetenue: null } as const;
+
+/** Question qu'on lui a adressée : vidée, jamais supprimée (un fait peut la citer). */
+const QUESTION_VIDEE = { texte: "", reponse: null } as const;
+
+/**
+ * Rencontres où les participations `siens` étaient la SEULE voix côté client :
+ * tous les participants `client` en font partie (et il y en a au moins un).
+ * Le compte rendu de ces rencontres est supprimé, pas vidé.
+ */
+async function rencontresOuSeuleVoixClient(
+  db: Pick<Prisma.TransactionClient, "rencontreParticipant">,
+  rencontreIds: readonly string[],
+  siens: ReadonlySet<string>,
+): Promise<string[]> {
+  const cotesClient = await db.rencontreParticipant.findMany({
+    where: { rencontreId: { in: [...rencontreIds] }, role: "client" },
+    select: { id: true, rencontreId: true },
+  });
+  return rencontreIds.filter((rid) => {
+    const cote = cotesClient.filter((p) => p.rencontreId === rid);
+    return cote.length > 0 && cote.every((p) => siens.has(p.id));
+  });
+}
+
+/**
+ * Ce qui suit une personne effacée sans être journalisé ligne à ligne : les
+ * questions qu'on lui a adressées (vidées), le corps pré-rempli de ses e-mails
+ * de suivi (vidé avant que le lien ne parte), ses e-mails de suivi et ses rôles
+ * dans les projets (supprimés). Rend le nombre de questions vidées.
+ */
+async function effacerCeQuiSuitLesPersonnes(
+  tx: Prisma.TransactionClient,
+  contactIds: readonly string[],
+): Promise<number> {
+  const ids = [...contactIds];
+  const questionnaires = await tx.questionnaireCadrage.findMany({
+    where: { contactDestinataireId: { in: ids } },
+    select: { id: true },
+  });
+  const questions = await tx.questionnaireQuestion.updateMany({
+    where: { questionnaireId: { in: questionnaires.map((q) => q.id) } },
+    data: QUESTION_VIDEE,
+  });
+  const emailsSuivi = await tx.emailSuivi.findMany({
+    where: { contactId: { in: ids } },
+    select: { id: true },
+  });
+  await tx.preRemplissage.updateMany({
+    where: { cible: "email_suivi", cibleId: { in: emailsSuivi.map((e) => e.id) } },
+    data: PRE_REMPLISSAGE_VIDE,
+  });
+  await tx.emailSuivi.deleteMany({ where: { contactId: { in: ids } } });
+  await tx.projetContact.deleteMany({ where: { contactId: { in: ids } } });
+  return questions.count;
+}
+
+/** Nom pseudonymisé dans ses participations et dans sa fiche. Rend le nombre de fiches. */
+async function pseudonymiserPersonnes(
+  tx: Prisma.TransactionClient,
+  participantIds: readonly string[],
+  contactIds: readonly string[],
+): Promise<number> {
+  await tx.rencontreParticipant.updateMany({
+    where: { id: { in: [...participantIds] } },
+    data: PARTICIPANT_PSEUDONYMISE,
+  });
+  const personnes = await tx.clientContact.updateMany({
+    where: { id: { in: [...contactIds] } },
+    data: CONTACT_PSEUDONYMISE,
+  });
+  return personnes.count;
+}
+
+/** Périmètre d'une suppression du pilote. */
+interface PerimetrePilote {
+  /** Fiches inscrites dans `clients_test_interne`. */
+  readonly clientIds: readonly string[];
+  readonly rencontreIds: readonly string[];
+  readonly projetIds: readonly string[];
+  readonly contactIds: readonly string[];
+}
+
+/**
+ * Supprime les données du pilote dans l'ordre imposé par les clés : les faits
+ * d'abord (ils retiennent les questions de questionnaire ; un fait de projet
+ * porte toujours le client du projet, CHECK `faits_projet_exige_client`), puis
+ * les preuves d'accord (sous le drapeau), les questionnaires, les rencontres
+ * (le reste suit en cascade), les projets, les personnes. Reprise telle quelle
+ * par `purgerPilote` et par `rejouerEffacements`.
+ */
+async function supprimerDonneesPilote(
+  tx: Prisma.TransactionClient,
+  p: PerimetrePilote,
+): Promise<{ readonly faits: number; readonly preuvesAccord: number }> {
+  const faits = await tx.fait.deleteMany({
+    where: {
+      OR: [{ clientId: { in: [...p.clientIds] } }, { rencontreId: { in: [...p.rencontreIds] } }],
+    },
+  });
+  const preuves = await tx.enregistrementConsentement.deleteMany({
+    where: { rencontreId: { in: [...p.rencontreIds] } },
+  });
+  await tx.questionnaireCadrage.deleteMany({ where: { clientId: { in: [...p.clientIds] } } });
+  await tx.rencontre.deleteMany({ where: { id: { in: [...p.rencontreIds] } } });
+  await tx.projet.deleteMany({ where: { id: { in: [...p.projetIds] } } });
+  await tx.clientContact.deleteMany({ where: { id: { in: [...p.contactIds] } } });
+  return { faits: faits.count, preuvesAccord: preuves.count };
+}
+
 async function journaliserEffacements(
   tx: Prisma.TransactionClient,
   tableCible: CibleEffacement,
@@ -936,7 +1070,7 @@ export async function effacerCibleParAdresses(
     // Les cases pré-remplies depuis ces faits portent leur valeur : vidées.
     await tx.preRemplissage.updateMany({
       where: { faitId: { in: faitIds } },
-      data: { valeurProposee: "", valeurRetenue: null },
+      data: PRE_REMPLISSAGE_VIDE,
     });
 
     // 3. Les comptes rendus des rencontres où elle a parlé ou été citée.
@@ -946,15 +1080,11 @@ export async function effacerCibleParAdresses(
         ...faits.map((f) => f.rencontreId).filter((id): id is string => id !== null),
       ]),
     ];
-    const cotesClient = await tx.rencontreParticipant.findMany({
-      where: { rencontreId: { in: rencontreIds }, role: "client" },
-      select: { id: true, rencontreId: true },
-    });
-    const siens = new Set(participantIds);
-    const seuleInterlocutrice = rencontreIds.filter((rid) => {
-      const cote = cotesClient.filter((p) => p.rencontreId === rid);
-      return cote.length > 0 && cote.every((p) => siens.has(p.id));
-    });
+    const seuleInterlocutrice = await rencontresOuSeuleVoixClient(
+      tx,
+      rencontreIds,
+      new Set(participantIds),
+    );
     const aReecrire = rencontreIds.filter((rid) => !seuleInterlocutrice.includes(rid));
 
     // 1 bis. Là où elle était la SEULE voix côté client, les segments de la
@@ -1002,7 +1132,7 @@ export async function effacerCibleParAdresses(
     });
     await tx.compteRendu.updateMany({
       where: { id: { in: crVides.map((c) => c.id) } },
-      data: { statut: "a_regenerer", contenu: "", verification: null },
+      data: COMPTE_RENDU_A_REGENERER,
     });
     await journaliserEffacements(
       tx,
@@ -1011,49 +1141,23 @@ export async function effacerCibleParAdresses(
       motif,
     );
 
-    // 4. Les questions qu'on lui a adressées : vidées, jamais supprimées (un
-    //    fait peut les citer comme source — clé RESTRICT).
-    const questionnaires = await tx.questionnaireCadrage.findMany({
-      where: { contactDestinataireId: { in: contactIds } },
-      select: { id: true },
-    });
-    const questions = await tx.questionnaireQuestion.updateMany({
-      where: { questionnaireId: { in: questionnaires.map((q) => q.id) } },
-      data: { texte: "", reponse: null },
-    });
-
-    // 5. Ses liens : e-mails de suivi, rôles dans les projets. Le corps
-    //    pré-rempli d'un e-mail de suivi qui lui était adressé porte son nom
-    //    et ses propos : vidé avant que le lien ne parte.
-    const emailsSuivi = await tx.emailSuivi.findMany({
-      where: { contactId: { in: contactIds } },
-      select: { id: true },
-    });
-    await tx.preRemplissage.updateMany({
-      where: { cible: "email_suivi", cibleId: { in: emailsSuivi.map((e) => e.id) } },
-      data: { valeurProposee: "", valeurRetenue: null },
-    });
-    await tx.emailSuivi.deleteMany({ where: { contactId: { in: contactIds } } });
-    await tx.projetContact.deleteMany({ where: { contactId: { in: contactIds } } });
+    // 4-5. Les questions qu'on lui a adressées (vidées, jamais supprimées : un
+    //    fait peut les citer comme source — clé RESTRICT), ses e-mails de suivi
+    //    (corps pré-rempli vidé avant que le lien ne parte), ses rôles dans les
+    //    projets. Fonction partagée avec le rejeu.
+    const questions = await effacerCeQuiSuitLesPersonnes(tx, contactIds);
 
     // 6. Son nom : pseudonymisé dans ses participations et dans la fiche.
-    await tx.rencontreParticipant.updateMany({
-      where: { id: { in: participantIds } },
-      data: { nomAffiche: PERSONNE_EFFACEE, emailHash: null, etiquetteVoix: null },
-    });
-    const personnes = await tx.clientContact.updateMany({
-      where: { id: { in: contactIds } },
-      data: { nom: PERSONNE_EFFACEE, fonction: null, telephone: null },
-    });
+    const personnes = await pseudonymiserPersonnes(tx, participantIds, contactIds);
     await journaliserEffacements(tx, "client_contacts", contactIds, motif);
 
     return {
-      personnes: personnes.count,
+      personnes,
       segments: segments.length,
       faits: faitIds.length,
       comptesRendusARegenerer: crVides.length,
       comptesRendusSupprimes: crSupprimes.length,
-      questions: questions.count,
+      questions,
     };
   });
 
@@ -1118,10 +1222,8 @@ export interface PurgePiloteResultat {
  * `estTestInterne`. La fiche fictive elle-même reste (Will l'a créée ; elle
  * resservira).
  *
- * Ordre imposé par les clés : les faits d'abord (ils retiennent les questions
- * de questionnaire), puis les preuves d'accord (sous le drapeau), les
- * questionnaires, les rencontres (le reste suit en cascade), les projets, et
- * les personnes.
+ * L'ordre imposé par les clés vit dans `supprimerDonneesPilote`, que le rejeu
+ * après restauration reprend telle quelle.
  */
 export async function purgerPilote(): Promise<PurgePiloteResultat> {
   const fiches = await prisma.clientTestInterne.findMany({ select: { clientId: true } });
@@ -1134,24 +1236,20 @@ export async function purgerPilote(): Promise<PurgePiloteResultat> {
     });
     const rencontreIds = rencontres.map((r) => r.id);
 
-    const faits = await tx.fait.deleteMany({
-      where: { OR: [{ clientId: { in: clientIds } }, { rencontreId: { in: rencontreIds } }] },
-    });
-    const preuves = await tx.enregistrementConsentement.deleteMany({
-      where: { rencontreId: { in: rencontreIds } },
-    });
-    await tx.questionnaireCadrage.deleteMany({ where: { clientId: { in: clientIds } } });
-    await tx.rencontre.deleteMany({ where: { id: { in: rencontreIds } } });
     const projets = await tx.projet.findMany({
       where: { clientId: { in: clientIds } },
       select: { id: true },
     });
-    await tx.projet.deleteMany({ where: { id: { in: projets.map((p) => p.id) } } });
     const personnes = await tx.clientContact.findMany({
       where: { clientId: { in: clientIds } },
       select: { id: true },
     });
-    await tx.clientContact.deleteMany({ where: { id: { in: personnes.map((p) => p.id) } } });
+    const { faits, preuvesAccord } = await supprimerDonneesPilote(tx, {
+      clientIds,
+      rencontreIds,
+      projetIds: projets.map((p) => p.id),
+      contactIds: personnes.map((p) => p.id),
+    });
 
     await journaliserEffacements(tx, "rencontres", rencontreIds, "pilote");
     await journaliserEffacements(
@@ -1169,10 +1267,10 @@ export async function purgerPilote(): Promise<PurgePiloteResultat> {
 
     return {
       rencontres: rencontreIds.length,
-      faits: faits.count,
+      faits,
       projets: projets.length,
       personnes: personnes.length,
-      preuvesAccord: preuves.count,
+      preuvesAccord,
     };
   });
 }
@@ -1375,7 +1473,7 @@ async function viderDossier(
   await journaliserEffacements(tx, "faits", faitIds, "conservation");
   await tx.preRemplissage.updateMany({
     where: { faitId: { in: faitIds } },
-    data: { valeurProposee: "", valeurRetenue: null },
+    data: PRE_REMPLISSAGE_VIDE,
   });
 
   // 2. Les questionnaires : texte et réponse vidés (une question peut rester
@@ -1386,7 +1484,7 @@ async function viderDossier(
   });
   const questions = await tx.questionnaireQuestion.updateMany({
     where: { questionnaireId: { in: questionnaires.map((q) => q.id) }, NOT: { texte: "" } },
-    data: { texte: "", reponse: null },
+    data: QUESTION_VIDEE,
   });
 
   // 3. Les e-mails de suivi : corps pré-rempli vidé, lien supprimé (le
@@ -1398,7 +1496,7 @@ async function viderDossier(
   const emailIds = emails.map((e) => e.id);
   await tx.preRemplissage.updateMany({
     where: { cible: "email_suivi", cibleId: { in: emailIds } },
-    data: { valeurProposee: "", valeurRetenue: null },
+    data: PRE_REMPLISSAGE_VIDE,
   });
   await tx.emailSuivi.deleteMany({ where: { id: { in: emailIds } } });
 
@@ -1545,14 +1643,20 @@ const MOTIFS_SUPPRESSION_COMPTE_RENDU: ReadonlySet<MotifEffacement> = new Set<Mo
  *   · `conservation` (versions à 90 jours, dossier échu) et `pilote` : ils
  *     avaient été SUPPRIMÉS, ils le sont de nouveau ;
  *   · `art17`, `art17_cible`, `retrait` : supprimés si la personne effacée
- *     était la SEULE interlocutrice côté client (tous les participants
- *     `client` de la rencontre sont des personnes journalisées), sinon vidés
- *     et passés `a_regenerer`, exactement comme `effacerCibleParAdresses`.
+ *     était la SEULE interlocutrice côté client, sinon vidés et passés
+ *     `a_regenerer` — même règle (`rencontresOuSeuleVoixClient`) et mêmes
+ *     données (`COMPTE_RENDU_A_REGENERER`) que `effacerCibleParAdresses`.
  *
  * Personnes effacées (art. 17) : on refait aussi ce qui ne se journalise pas
- * ligne à ligne mais se retrouve à partir d'elles — questions qu'on leur a
- * adressées (vidées), e-mails de suivi (corps vidé, lien supprimé), rôles
- * dans les projets, participations (nom pseudonymisé), adresses.
+ * ligne à ligne mais se retrouve à partir d'elles, par les MÊMES fonctions que
+ * l'effacement : `effacerCeQuiSuitLesPersonnes` (questions, e-mails de suivi,
+ * rôles dans les projets) et `pseudonymiserPersonnes` (participations, fiche),
+ * puis leurs adresses.
+ *
+ * Pilote : `supprimerDonneesPilote`, la fonction de `purgerPilote`, sur les
+ * rencontres, projets et personnes journalisés `pilote` et sur les fiches
+ * inscrites dans `clients_test_interne` (faits par fiche ET par rencontre,
+ * questionnaires par fiche, preuves d'accord par rencontre).
  *
  * ANGLES MORTS DÉCLARÉS (repris dans R33) :
  *   · une participation SANS fiche personne (rendez-vous « à classer »,
@@ -1563,7 +1667,10 @@ const MOTIFS_SUPPRESSION_COMPTE_RENDU: ReadonlySet<MotifEffacement> = new Set<Mo
  *   · les questions et e-mails de suivi vidés par la fin de conservation d'un
  *     dossier ne sont pas journalisés : c'est la purge de nuit
  *     (`purgerDossiersVisioEchus`), qui recalcule les mêmes échéances sur les
- *     dates restaurées, qui les ré-efface.
+ *     dates restaurées, qui les ré-efface ;
+ *   · une purge du pilote qui n'a trouvé ni rencontre, ni projet, ni personne
+ *     n'a laissé aucune ligne au journal : ses faits et questionnaires ne sont
+ *     pas rejoués (données de test : relancer `purgerPilote` suffit).
  *
  * `appliquer = false` (défaut du script) : compte seulement, n'écrit rien.
  * Procédure : `docs/runbooks/R33-disaster-recovery-cold-start.md`, étape
@@ -1601,6 +1708,8 @@ export async function rejouerEffacements(
   const projetsPilote = ids("projets").filter((id) => pilote.has(id));
   const contactsPilote = contacts.filter((id) => pilote.has(id));
   const contactsEffaces = contacts.filter((id) => !pilote.has(id));
+  const unePurgePiloteAEuLieu =
+    rencontresPilote.length + projetsPilote.length + contactsPilote.length > 0;
 
   type Lecteur = Pick<
     Prisma.TransactionClient,
@@ -1608,6 +1717,7 @@ export async function rejouerEffacements(
     | "transcriptionSegment"
     | "compteRendu"
     | "clientContact"
+    | "clientTestInterne"
     | "rencontre"
     | "projet"
     | "rencontreParticipant"
@@ -1615,7 +1725,27 @@ export async function rejouerEffacements(
     | "questionnaireQuestion"
     | "emailSuivi"
     | "projetContact"
+    | "enregistrementConsentement"
   >;
+
+  /** Périmètre du pilote : celui de `purgerPilote`, rencontres/projets/personnes lus au journal. */
+  const perimetrePilote = async (db: Lecteur): Promise<PerimetrePilote> => ({
+    clientIds: unePurgePiloteAEuLieu
+      ? (await db.clientTestInterne.findMany({ select: { clientId: true } })).map((f) => f.clientId)
+      : [],
+    rencontreIds: rencontresPilote,
+    projetIds: projetsPilote,
+    contactIds: contactsPilote,
+  });
+
+  /** Participations des personnes effacées (celles qui portent leur fiche). */
+  const participationsEffacees = async (db: Lecteur): Promise<string[]> =>
+    (
+      await db.rencontreParticipant.findMany({
+        where: { contactId: { in: contactsEffaces } },
+        select: { id: true },
+      })
+    ).map((p) => p.id);
 
   /** Comptes rendus art. 17 / retrait : à supprimer (seule voix client) ou à vider. */
   const trierComptesRendus = async (
@@ -1625,35 +1755,28 @@ export async function rejouerEffacements(
       where: { id: { in: crDesPersonnes } },
       select: { id: true, rencontreId: true },
     });
-    const cotesClient = await db.rencontreParticipant.findMany({
-      where: {
-        rencontreId: { in: [...new Set(presents.map((c) => c.rencontreId))] },
-        role: "client",
-      },
-      select: { rencontreId: true, contactId: true },
-    });
-    const effaces = new Set(contactsEffaces);
-    const seuleVoixEffacee = (rid: string): boolean => {
-      const cote = cotesClient.filter((p) => p.rencontreId === rid);
-      return cote.length > 0 && cote.every((p) => p.contactId !== null && effaces.has(p.contactId));
-    };
+    const seule = new Set(
+      await rencontresOuSeuleVoixClient(
+        db,
+        [...new Set(presents.map((c) => c.rencontreId))],
+        new Set(await participationsEffacees(db)),
+      ),
+    );
     return {
-      supprimer: presents.filter((c) => seuleVoixEffacee(c.rencontreId)).map((c) => c.id),
-      vider: presents.filter((c) => !seuleVoixEffacee(c.rencontreId)).map((c) => c.id),
+      supprimer: presents.filter((c) => seule.has(c.rencontreId)).map((c) => c.id),
+      vider: presents.filter((c) => !seule.has(c.rencontreId)).map((c) => c.id),
     };
   };
 
-  const questionnairesDesEffaces = async (db: Lecteur): Promise<string[]> =>
-    (
+  const compter = async (db: Lecteur): Promise<number> => {
+    const cr = await trierComptesRendus(db);
+    const p = await perimetrePilote(db);
+    const questionnaires = (
       await db.questionnaireCadrage.findMany({
         where: { contactDestinataireId: { in: contactsEffaces } },
         select: { id: true },
       })
     ).map((q) => q.id);
-
-  const compter = async (db: Lecteur): Promise<number> => {
-    const cr = await trierComptesRendus(db);
-    const questionnaires = await questionnairesDesEffaces(db);
     const nombres = await Promise.all([
       db.fait.count({ where: { id: { in: faits }, statut: { not: "efface" } } }),
       db.fait.count({
@@ -1665,25 +1788,39 @@ export async function rejouerEffacements(
       segments.length === 0 ? 0 : db.transcriptionSegment.count({ where: { OR: segments } }),
       db.compteRendu.count({ where: { id: { in: crToujoursSupprimes } } }),
       cr.supprimer.length,
-      db.compteRendu.count({ where: { id: { in: cr.vider }, NOT: { contenu: "" } } }),
+      db.compteRendu.count({
+        where: { id: { in: cr.vider }, NOT: { contenu: COMPTE_RENDU_A_REGENERER.contenu } },
+      }),
       db.clientContact.count({
-        where: {
-          OR: [
-            { id: { in: contactsPilote } },
-            { id: { in: contactsEffaces }, NOT: { nom: PERSONNE_EFFACEE } },
-          ],
-        },
+        where: { id: { in: contactsEffaces }, NOT: { nom: CONTACT_PSEUDONYMISE.nom } },
       }),
       db.rencontreParticipant.count({
-        where: { contactId: { in: contactsEffaces }, NOT: { nomAffiche: PERSONNE_EFFACEE } },
+        where: {
+          contactId: { in: contactsEffaces },
+          NOT: { nomAffiche: PARTICIPANT_PSEUDONYMISE.nomAffiche },
+        },
       }),
       db.questionnaireQuestion.count({
-        where: { questionnaireId: { in: questionnaires }, NOT: { texte: "" } },
+        where: { questionnaireId: { in: questionnaires }, NOT: { texte: QUESTION_VIDEE.texte } },
       }),
       db.emailSuivi.count({ where: { contactId: { in: contactsEffaces } } }),
       db.projetContact.count({ where: { contactId: { in: contactsEffaces } } }),
-      db.rencontre.count({ where: { id: { in: rencontresPilote } } }),
-      db.projet.count({ where: { id: { in: projetsPilote } } }),
+      // Pilote : exactement ce que `supprimerDonneesPilote` supprime.
+      db.fait.count({
+        where: {
+          OR: [
+            { clientId: { in: [...p.clientIds] } },
+            { rencontreId: { in: [...p.rencontreIds] } },
+          ],
+        },
+      }),
+      db.enregistrementConsentement.count({
+        where: { rencontreId: { in: [...p.rencontreIds] } },
+      }),
+      db.questionnaireCadrage.count({ where: { clientId: { in: [...p.clientIds] } } }),
+      db.rencontre.count({ where: { id: { in: [...p.rencontreIds] } } }),
+      db.projet.count({ where: { id: { in: [...p.projetIds] } } }),
+      db.clientContact.count({ where: { id: { in: [...p.contactIds] } } }),
     ]);
     return nombres.reduce((a, b) => a + b, 0);
   };
@@ -1693,7 +1830,8 @@ export async function rejouerEffacements(
   return executerSousDrapeauEffacement(prisma, async (tx) => {
     const reappliquees = await compter(tx);
     const cr = await trierComptesRendus(tx);
-    const questionnaires = await questionnairesDesEffaces(tx);
+    const perimetre = await perimetrePilote(tx);
+    const participantIds = await participationsEffacees(tx);
     await tx.fait.updateMany({
       where: { id: { in: faits }, statut: { not: "efface" } },
       data: { ...FAIT_CONTENU_VIDE, statut: "efface" },
@@ -1708,44 +1846,14 @@ export async function rejouerEffacements(
       where: { id: { in: [...crToujoursSupprimes, ...cr.supprimer] } },
     });
     await tx.compteRendu.updateMany({
-      where: { id: { in: cr.vider }, NOT: { contenu: "" } },
-      data: { statut: "a_regenerer", contenu: "", verification: null },
+      where: { id: { in: cr.vider }, NOT: { contenu: COMPTE_RENDU_A_REGENERER.contenu } },
+      data: COMPTE_RENDU_A_REGENERER,
     });
-    // Données du pilote : supprimées, dans l'ordre des clés (faits d'abord).
-    await tx.fait.deleteMany({
-      where: {
-        OR: [{ rencontreId: { in: rencontresPilote } }, { projetId: { in: projetsPilote } }],
-      },
-    });
-    await tx.enregistrementConsentement.deleteMany({
-      where: { rencontreId: { in: rencontresPilote } },
-    });
-    await tx.rencontre.deleteMany({ where: { id: { in: rencontresPilote } } });
-    await tx.projet.deleteMany({ where: { id: { in: projetsPilote } } });
-    await tx.clientContact.deleteMany({ where: { id: { in: contactsPilote } } });
-    // Personnes effacées (art. 17) : ce qui les suit, comme `effacerCibleParAdresses`.
-    await tx.questionnaireQuestion.updateMany({
-      where: { questionnaireId: { in: questionnaires }, NOT: { texte: "" } },
-      data: { texte: "", reponse: null },
-    });
-    const emailsSuivi = await tx.emailSuivi.findMany({
-      where: { contactId: { in: contactsEffaces } },
-      select: { id: true },
-    });
-    await tx.preRemplissage.updateMany({
-      where: { cible: "email_suivi", cibleId: { in: emailsSuivi.map((e) => e.id) } },
-      data: { valeurProposee: "", valeurRetenue: null },
-    });
-    await tx.emailSuivi.deleteMany({ where: { contactId: { in: contactsEffaces } } });
-    await tx.projetContact.deleteMany({ where: { contactId: { in: contactsEffaces } } });
-    await tx.rencontreParticipant.updateMany({
-      where: { contactId: { in: contactsEffaces } },
-      data: { nomAffiche: PERSONNE_EFFACEE, emailHash: null, etiquetteVoix: null },
-    });
-    await tx.clientContact.updateMany({
-      where: { id: { in: contactsEffaces } },
-      data: { nom: PERSONNE_EFFACEE, fonction: null, telephone: null },
-    });
+    // Données du pilote : la fonction de `purgerPilote`, telle quelle.
+    await supprimerDonneesPilote(tx, perimetre);
+    // Personnes effacées (art. 17) : les fonctions de `effacerCibleParAdresses`.
+    await effacerCeQuiSuitLesPersonnes(tx, contactsEffaces);
+    await pseudonymiserPersonnes(tx, participantIds, contactsEffaces);
     await tx.clientContactAdresse.deleteMany({ where: { contactId: { in: contactsEffaces } } });
     return { lues: lignes.length, reappliquees };
   });

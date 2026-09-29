@@ -197,7 +197,10 @@ docker exec -it <worker> node_modules/.bin/tsx scripts/rgpd-rejouer-effacements.
 - une personne effacée **sans fiche personne** (rendez-vous resté « à classer », retrouvée par
   sa seule empreinte d'adresse) n'est pas journalisée comme personne : son **nom affiché** dans la
   participation revient. Ses paroles et ses faits, journalisés, repartent. À refaire à la main
-  depuis la demande d'effacement reçue.
+  depuis la demande d'effacement reçue ;
+- une **purge du pilote** qui n'avait trouvé ni rencontre, ni projet, ni personne n'a laissé
+  aucune ligne au journal : les faits et questionnaires de la fiche de test ne sont pas rejoués.
+  Ce sont des données de test : relancer la purge du pilote suffit.
 
 ### Étape 4 — Données annexes (chacune : télécharger → déchiffrer AES → restaurer dans le volume)
 

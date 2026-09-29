@@ -14,10 +14,14 @@
  *      d'autres voix est vidé et passe `a_regenerer` ;
  *   2. les questions adressées à une personne effacée et ses e-mails de suivi
  *      revenaient : ils ne sont pas journalisés ligne à ligne, mais se
- *      retrouvent à partir de la personne journalisée.
+ *      retrouvent à partir de la personne journalisée ;
+ *   3. le pilote était rejoué autrement que `purgerPilote` (faits par
+ *      rencontre/projet seulement, questionnaires oubliés) : les faits de la
+ *      fiche de test hors rencontre et ses questionnaires revenaient.
  *
  * Mutations qui font rougir : remettre un `updateMany` `a_regenerer` sur tous
- * les comptes rendus du journal ; retirer le bloc « Personnes effacées ».
+ * les comptes rendus du journal ; retirer le bloc « Personnes effacées » ;
+ * rejouer le pilote par `rencontreId`/`projetId` seulement.
  * Contre-témoin : à blanc, rien n'est écrit et le compte est non nul ; après
  * application, un second passage à blanc compte 0 (idempotence).
  */
@@ -74,6 +78,7 @@ vi.mock("@/lib/prisma", () => {
     "compteRendu",
     "clientContact",
     "clientContactAdresse",
+    "clientTestInterne",
     "rencontre",
     "projet",
     "rencontreParticipant",
@@ -112,7 +117,19 @@ function restaurer(): void {
       journal("comptes_rendus", "cr-seule-voix", "art17"),
       journal("comptes_rendus", "cr-partage", "art17"),
       journal("client_contacts", "alice", "art17"),
+      journal("rencontres", "r-pilote", "pilote"),
     ],
+    clientTestInterne: [{ clientId: "c-test" }],
+    rencontre: [
+      { id: "r-pilote", clientId: "c-vrai" },
+      { id: "r-vraie", clientId: "c-vrai" },
+    ],
+    fait: [
+      { id: "f-fiche-test", clientId: "c-test", rencontreId: null, statut: "valide" },
+      { id: "f-rencontre-pilote", clientId: "c-vrai", rencontreId: "r-pilote", statut: "valide" },
+      { id: "f-vrai", clientId: "c-vrai", rencontreId: "r-vraie", statut: "valide" },
+    ],
+    enregistrementConsentement: [{ id: "ec-pilote", rencontreId: "r-pilote" }],
     compteRendu: [
       { id: "cr-version-purgee", rencontreId: "r-autre", contenu: "v1", statut: "remplace" },
       { id: "cr-dossier-echu", rencontreId: "r-echue", contenu: "ancien", statut: "valide" },
@@ -139,6 +156,8 @@ function restaurer(): void {
     questionnaireCadrage: [
       { id: "q-alice", contactDestinataireId: "alice" },
       { id: "q-bob", contactDestinataireId: "bob" },
+      { id: "q-fiche-test", clientId: "c-test", contactDestinataireId: null },
+      { id: "q-vrai", clientId: "c-vrai", contactDestinataireId: null },
     ],
     questionnaireQuestion: [
       { id: "qq1", questionnaireId: "q-alice", texte: "Votre budget ?", reponse: "10 k€" },
@@ -163,7 +182,7 @@ describe("le rejeu des effacements refait l'opération d'origine", () => {
   it("🔑 CONTRE-TÉMOIN : à blanc, rien n'est écrit et les cibles revenues sont comptées", async () => {
     const r = await rejouerEffacements();
     expect(etat.ecritures).toBe(0);
-    expect(r.lues).toBe(5);
+    expect(r.lues).toBe(6);
     expect(r.reappliquees).toBeGreaterThan(0);
   });
 
@@ -203,6 +222,23 @@ describe("le rejeu des effacements refait l'opération d'origine", () => {
       PERSONNE_EFFACEE,
     ]);
     expect(p.find((x) => x["id"] === "p3")).toMatchObject({ nomAffiche: "Bob" });
+  });
+
+  it("🔴 pilote : rejoué comme `purgerPilote` — faits de la fiche de test, questionnaires, preuves", async () => {
+    await rejouerEffacements({ appliquer: true });
+    const ids = (t: string) => (etat.tables[t] ?? []).map((l) => l["id"]);
+    expect(ids("fait")).toEqual(["f-vrai"]);
+    expect(ids("questionnaireCadrage")).toEqual(["q-alice", "q-bob", "q-vrai"]);
+    expect(ids("enregistrementConsentement")).toEqual([]);
+    expect(ids("rencontre")).toEqual(["r-vraie"]);
+  });
+
+  it("🔑 sans ligne `pilote` au journal, la fiche de test n'est pas touchée", async () => {
+    etat.tables["effacementJournal"] = (etat.tables["effacementJournal"] ?? []).filter(
+      (l) => l["motif"] !== "pilote",
+    );
+    await rejouerEffacements({ appliquer: true });
+    expect((etat.tables["fait"] ?? []).map((l) => l["id"])).toContain("f-fiche-test");
   });
 
   it("🔑 idempotent : après application, un passage à blanc compte 0", async () => {
