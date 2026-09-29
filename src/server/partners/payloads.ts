@@ -313,8 +313,7 @@ export function payloadClientMisAJour({ client }: { client: ClientPourEvenement 
 /**
  * REQ-CPL-014 — `client.fusionne {survivorId, absorbedId}`.
  *
- * ⚠️ HORS CONTRAT v1 (`HORS_CONTRAT_V1` de `contrat.ts`) : construit et testé, jamais
- * émis tant que Partners n'a pas republié une `schema_version` qui le porte.
+ * Hors contrat v1, dans le contrat depuis `schema_version` 2 (transcription du 2026-09-29).
  */
 export function payloadClientFusionne({
   survivorId,
@@ -602,7 +601,7 @@ export type PayloadPaiementRecu = {
   paidAt: string;
   provider: string;
   /** REQ-DM-018 — le HT encaissé est FOURNI, pas laissé à déduire. */
-  amountHtCents: number;
+  montantHtCents: number;
   /** Vrai si cet encaissement solde la facture : c'est lui qui absorbe le reliquat. */
   soldeLaFacture: boolean;
 };
@@ -651,7 +650,7 @@ export function payloadPaiementRecu({
     totalEncaisseTtcCents,
     paidAt,
     provider: paiement.provider,
-    amountHtCents,
+    montantHtCents: amountHtCents,
     soldeLaFacture,
   });
 }

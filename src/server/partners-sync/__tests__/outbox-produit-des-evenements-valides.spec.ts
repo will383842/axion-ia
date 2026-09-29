@@ -12,14 +12,14 @@
  * ne font sauter aucune ligne, que `text` rend l'octet exact — est prouvé contre un vrai
  * Postgres par `tests/integration/partners-sync/outbox-transactionnelle.spec.ts` (Gate D).
  *
- * Les faits émis viennent de `src/server/partners/contrat/fixtures.v1.json`, GÉNÉRÉ depuis le
+ * Les faits émis viennent de `src/server/partners/contrat/fixtures.v2.json`, GÉNÉRÉ depuis le
  * producteur réel (RM-03, `Source:` dans le fichier) : aucun payload n'est tapé ici.
  */
 import { createHash, createHmac, randomBytes } from "node:crypto";
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import fixtures from "@/server/partners/contrat/fixtures.v1.json";
+import fixtures from "@/server/partners/contrat/fixtures.v2.json";
 import { CHAMPS_ENVELOPPE, SCHEMA_VERSION } from "@/server/partners/contrat";
 
 import {
@@ -315,7 +315,7 @@ describe("REQ-INT-001 — l'écriture dans la file de sortie", () => {
 
   it("refuse en 422 un type hors du contrat, AVANT toute insertion", async () => {
     const f = fauxClient();
-    const fait = { ...faitDepuisFixture(0), type: "facture.annulee" };
+    const fait = { ...faitDepuisFixture(0), type: "devis.refuse" };
     const erreur = await ecrireEvenementPartners(f.tx, fait).catch((e: unknown) => e);
     expect(erreur).toBeInstanceOf(EvenementHorsContrat);
     expect((erreur as EvenementHorsContrat).statut).toBe(422);

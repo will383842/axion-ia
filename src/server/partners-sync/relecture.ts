@@ -72,7 +72,17 @@ export function signerCibleRelecture(secret: string, horodatage: string, cible: 
   return createHmac("sha256", secret).update(`${horodatage}.${cible}`).digest("hex");
 }
 
-function verifier(requete: Request, cible: string, secret: string, maintenantMs: number): boolean {
+/**
+ * Vrai si la requête porte une signature Partners valide sur `cible`, dans la fenêtre. Partagée
+ * par la relecture et par la route des coordonnées (INT-T27-A) : même authentification, une seule
+ * écriture.
+ */
+export function verifierRequetePartners(
+  requete: Request,
+  cible: string,
+  secret: string,
+  maintenantMs: number,
+): boolean {
   const horodatage = requete.headers.get(ENTETE_HORODATAGE_RELECTURE);
   const signature = requete.headers.get(ENTETE_SIGNATURE_RELECTURE) ?? "";
   if (horodatage === null || !HORODATAGE.test(horodatage)) return false;
@@ -112,7 +122,7 @@ export async function repondreRelecture(
   const url = new URL(requete.url);
   const cible = `${url.pathname}${url.search}`;
   const maintenantMs = dependances.maintenantMs ?? Date.now();
-  if (!verifier(requete, cible, secretLecture, maintenantMs))
+  if (!verifierRequetePartners(requete, cible, secretLecture, maintenantMs))
     return texte(401, "signature_refusee");
 
   const parametres = lireParametres(url);

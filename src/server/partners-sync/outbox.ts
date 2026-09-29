@@ -24,7 +24,7 @@
  * appelant fautif, qui ne casse rien tant que le canal est fermé.
  */
 import { PRODUCTEUR } from "@/server/partners/config";
-import { SCHEMA_VERSION, TYPES_EVENEMENT, estDansLeContratV1 } from "@/server/partners/contrat";
+import { SCHEMA_VERSION, TYPES_EVENEMENT, estDansLeContrat } from "@/server/partners/contrat";
 import { identifiantEvenement } from "@/server/partners/enveloppe";
 
 import { canalPartnersOuvert } from "./config";
@@ -149,7 +149,7 @@ export async function ecrireEvenementPartners(
 ): Promise<string | null> {
   if (!canalPartnersOuvert()) return null;
 
-  if (!estDansLeContratV1(fait.type)) {
+  if (!estDansLeContrat(fait.type)) {
     throw new EvenementHorsContrat(
       `[partners-sync] « ${fait.type} » n'est pas dans le contrat (${TYPES_EVENEMENT.join(", ")}).`,
     );

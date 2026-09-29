@@ -20,9 +20,9 @@
  */
 import { describe, expect, it } from "vitest";
 
-import { HORS_CONTRAT_V1, SCHEMA_VERSION, TYPES_EVENEMENT } from "../contrat";
+import { SCHEMA_VERSION, TYPES_EVENEMENT } from "../contrat";
 import { empreinteContratPublie } from "../contrat/empreinte";
-import fixtures from "../contrat/fixtures.v1.json";
+import fixtures from "../contrat/fixtures.v2.json";
 import {
   EXEMPTIONS_NOMMEES,
   FRONTIERE_INTERDITE,
@@ -31,7 +31,6 @@ import {
 
 type Evenement = Record<string, unknown>;
 const EVENEMENTS = fixtures.evenements as unknown as Evenement[];
-const HORS = fixtures.horsContratV1 as unknown as Evenement[];
 
 describe("RM-03 / REQ-GOV-020 — la fixture DÉCLARE d'où elle vient", () => {
   it("porte un `Source:` qui nomme son producteur et sa méthode", () => {
@@ -53,34 +52,35 @@ describe("RM-03 / REQ-GOV-020 — la fixture DÉCLARE d'où elle vient", () => {
 });
 
 describe("LE CLIQUET — aucun type du contrat ne reste sans producteur", () => {
-  it("chacun des types du contrat v1 a au moins une fixture RÉELLE", () => {
+  it("chacun des types du contrat publié a au moins une fixture RÉELLE", () => {
     const produits = new Set(EVENEMENTS.map((e) => String(e["event_type"])));
     for (const type of TYPES_EVENEMENT) {
       expect(
         produits.has(type),
-        `« ${type} » est au contrat v1 mais AUCUNE fixture ne le produit. Un type publié sans ` +
+        `« ${type} » est au contrat v${SCHEMA_VERSION} mais AUCUNE fixture ne le produit. Un type publié sans ` +
           "producteur est un canal muet que rien ne signale : écrire son constructeur dans " +
           "`payloads.ts` et son fait dans `scripts/partners/fixtures.ts`.",
       ).toBe(true);
     }
   });
 
-  it("chacun des quatre types HORS contrat v1 est produit lui aussi", () => {
-    // Ils sont construits et testés SANS être émis : la bascule vers la `schema_version`
-    // 2 est en lockstep entre les deux dépôts. Les produire dès maintenant est le seul
-    // ordre possible — le jour où Partners republie, il ne reste qu'à les déplacer.
-    const produits = new Set(HORS.map((e) => String(e["event_type"])));
-    for (const type of HORS_CONTRAT_V1) {
-      expect(
-        produits.has(type),
-        `« ${type} » est recensé hors contrat mais rien ne le produit.`,
-      ).toBe(true);
+  it("les quatre types entrés au contrat avec la v2 sont bien au contrat publié", () => {
+    // Recensés hors contrat v1, produits depuis INT-T01b ; la transcription v2 les fait
+    // émettre. Si Partners les retirait, ce témoin le dirait avant la production.
+    for (const type of [
+      "candidature.recue",
+      "facture.annulee",
+      "financement.mis_a_jour",
+      "client.fusionne",
+    ]) {
+      expect(TYPES_EVENEMENT, type).toContain(type);
     }
+    expect(SCHEMA_VERSION).toBe(2);
   });
 
   it("aucune fixture ne porte un type que le contrat ne connaît pas", () => {
-    const connus = new Set<string>([...TYPES_EVENEMENT, ...HORS_CONTRAT_V1]);
-    for (const e of [...EVENEMENTS, ...HORS]) {
+    const connus = new Set<string>(TYPES_EVENEMENT);
+    for (const e of EVENEMENTS) {
       expect(connus.has(String(e["event_type"])), `type inconnu : ${String(e["event_type"])}`).toBe(
         true,
       );
@@ -105,7 +105,7 @@ describe("REQ-INT-005 — le reliquat, vérifié sur les fixtures PRODUITES", ()
     );
     expect(recus.length).toBeGreaterThan(1);
 
-    const total = recus.reduce((a, p) => a + Number(p["amountHtCents"]), 0);
+    const total = recus.reduce((a, p) => a + Number(p["montantHtCents"]), 0);
     expect(total).toBe(Number(recus[0]?.["factureMontantHtCents"]));
     expect(recus.filter((p) => p["soldeLaFacture"] === true)).toHaveLength(1);
   });
@@ -136,7 +136,7 @@ describe("REQ-INT-029 — la frontière tient sur les fixtures, ET elle sait rou
   });
 
   it("aucun champ interdit ne franchit la frontière, sur AUCUNE fixture", () => {
-    for (const e of [...EVENEMENTS, ...HORS]) {
+    for (const e of EVENEMENTS) {
       const type = String(e["event_type"]);
       expect(champsInterditsSelonFrontiere(type, e["payload"]), `${type} / payload`).toEqual([]);
       expect(
@@ -159,7 +159,7 @@ describe("REQ-INT-029 — la frontière tient sur les fixtures, ET elle sait rou
     // Sans lui, on aurait pu couper tous les montants partout et croire la frontière
     // tenue. REQ-INT-005 et REQ-INT-006 EXIGENT que les montants post-signature passent.
     expect(champsInterditsSelonFrontiere("facture.emise", { montantHtCents: 100_000 })).toEqual([]);
-    expect(champsInterditsSelonFrontiere("paiement.recu", { amountHtCents: 33_333 })).toEqual([]);
+    expect(champsInterditsSelonFrontiere("paiement.recu", { montantHtCents: 33_333 })).toEqual([]);
   });
 
   it("un primitif DANS UN TABLEAU est inspecté — la fuite la plus banale", () => {
@@ -216,7 +216,7 @@ describe("L'ARBITRAGE `parrainCodeCapture` — ses trois bornes, chacune éprouv
 
 describe("REQ-DM-041 — aucune donnée personnelle dans la candidature produite", () => {
   it("ni adresse de courriel, ni ville, ni prose libre", () => {
-    const candidature = HORS.find((e) => e["event_type"] === "candidature.recue");
+    const candidature = EVENEMENTS.find((e) => e["event_type"] === "candidature.recue");
     const serialise = JSON.stringify(candidature);
     expect(serialise).not.toMatch(/@/);
     // Le scénario porte « Grenoble », « 38000 » et un pitch : la liste fermée de
