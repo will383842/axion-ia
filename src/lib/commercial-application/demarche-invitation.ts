@@ -21,7 +21,7 @@ export function varianteObjet(id: string): number {
 }
 
 export type MarqueDemarche =
-  | { offreEmploi: string; postePourvu?: true }
+  | { offreEmploi: string; postePourvu?: true; spontanee?: true }
   | { candidature: true; variante: number }
   | Record<string, never>;
 
@@ -50,6 +50,9 @@ export function marqueDemarche(details: unknown, id: string): MarqueDemarche {
     // et « ton profil commercial » (écrits pour des commerciaux) la
     // contrediraient — vu au test de bout en bout du 29/09.
     if (d["propositionAuto"] === "poste-pourvu") return { offreEmploi: titre, postePourvu: true };
+    // Candidature SPONTANÉE : il n'y a pas d'« offre » — ne pas l'écrire.
+    if (d["propositionAuto"] === "spontanee-commerciale")
+      return { offreEmploi: titre, spontanee: true };
     return { offreEmploi: titre };
   }
   if (d["origine"] === ORIGINE_SAISIE_MANUELLE) return {};

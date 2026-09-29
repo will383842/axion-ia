@@ -78,6 +78,8 @@ interface Payload {
   offreEmploi?: string;
   /** Réseau proposé après « poste pourvu » (2026-09-29) : texte qui ne le contredit pas. */
   postePourvu?: boolean;
+  /** Candidature spontanée (2026-09-29) : « ta candidature spontanée », pas « notre offre ». */
+  spontanee?: boolean;
   /** Numéro de l'objet parmi `sujetsCandidature`, stable par fiche (2026-09-27). */
   variante?: number;
   /**
@@ -141,6 +143,11 @@ const COPY = {
       "En parallèle de nos recrutements, nous développons un réseau d'apporteurs d'affaires indépendants partout en France, et ton profil commercial nous a donné envie de te le proposer. C'est différent du poste auquel tu as postulé : un statut indépendant, rémunéré à la commission, que tu peux exercer à côté d'une autre activité. Ta candidature au poste, elle, suit son cours normalement.",
     // 2026-09-29 — réseau proposé automatiquement AVEC « poste pourvu » : la
     // personne vient de lire que le poste est pourvu (texte à relire par Will).
+    provenanceSpontanee: "Tu nous as donné ton adresse en nous envoyant une candidature spontanée.",
+    merciSpontanee: (o: string) =>
+      o
+        ? `Merci pour ta candidature spontanée au poste de ${o}.`
+        : "Merci pour ta candidature spontanée.",
     bodyOffrePourvu:
       "Comme annoncé dans notre message précédent, ce poste est aujourd'hui pourvu. En parallèle de nos recrutements, nous développons un réseau d'apporteurs d'affaires indépendants partout en France, et nous voulions te le proposer : un statut indépendant, rémunéré à la commission, que tu peux exercer à côté d'une autre activité.",
     bodyOffreSuite:
@@ -203,6 +210,11 @@ const COPY = {
         : "Thank you for applying to one of our job openings.",
     bodyOffre:
       "Alongside our hiring, we are building a network of independent business introducers across France, and your sales background made us want to offer it to you. It is different from the position you applied for: an independent status, paid on commission, which you can pursue alongside another activity. Your application for the position continues as normal.",
+    provenanceSpontanee: "You gave us your address when sending an unsolicited application.",
+    merciSpontanee: (o: string) =>
+      o
+        ? `Thank you for your unsolicited application for ${o}.`
+        : "Thank you for your unsolicited application.",
     bodyOffrePourvu:
       "As mentioned in our previous message, this position has now been filled. Alongside our hiring, we are building a network of independent business introducers across France, and we wanted to offer it to you: an independent status, paid on commission, which you can pursue alongside another activity.",
     bodyOffreSuite:
@@ -315,7 +327,9 @@ export function ApporteurInvitationAppelEmail({
         {...(p.sansSignature !== true ? { signature: "fondateur-court" as const } : {})}
       >
         <Text style={emailStyles.paragraphStyle}>{t.intro(prenom)}</Text>
-        <Text style={emailStyles.paragraphStyle}>{t.merciOffre(offre)}</Text>
+        <Text style={emailStyles.paragraphStyle}>
+          {p.spontanee === true ? t.merciSpontanee(offre) : t.merciOffre(offre)}
+        </Text>
         <Text style={emailStyles.paragraphStyle}>
           {p.postePourvu === true ? t.bodyOffrePourvu : t.bodyOffre}
         </Text>
@@ -325,7 +339,9 @@ export function ApporteurInvitationAppelEmail({
             recrutement, pas pour le réseau — d'où elle vient, qui la traite,
             pourquoi, combien de temps, et les droits. Pas de lien « dossier » :
             la personne n'a pas candidaté au réseau. */}
-        <Text style={emailStyles.paragraphStyle}>{t.provenanceOffre(offre)}</Text>
+        <Text style={emailStyles.paragraphStyle}>
+          {p.spontanee === true ? t.provenanceSpontanee : t.provenanceOffre(offre)}
+        </Text>
         <Text style={emailStyles.paragraphStyle}>
           {t.info(IDENTITE_LEGALE.legalName, adresseSiegeUneLigne())}
           <a href={lienPolitique} style={{ color: emailStyles.COLORS.terracotta }}>

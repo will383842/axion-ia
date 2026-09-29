@@ -95,6 +95,26 @@ describe("invitation — variante « offre »", () => {
     expect(t).toContain("Réserver mon créneau");
   });
 
+  it("candidature SPONTANÉE : « ta candidature spontanée au poste de … », jamais « notre offre »", async () => {
+    const t = texte(
+      (
+        await renderEmailTemplate("apporteur-invitation-appel", "fr", {
+          ...BASE,
+          ...marqueDemarche(
+            {
+              origine: "candidature-offre-emploi",
+              offreTitre: "Commercial terrain",
+              propositionAuto: "spontanee-commerciale",
+            },
+            "x",
+          ),
+        })
+      ).html,
+    );
+    expect(t).toContain("Merci pour ta candidature spontanée au poste de Commercial terrain.");
+    expect(t).not.toContain("notre offre");
+  });
+
   it("proposition faite à la main (commerciaux) : le texte validé est inchangé", () => {
     expect(
       marqueDemarche({ origine: "candidature-offre-emploi", offreTitre: "BizDev" }, "x"),
