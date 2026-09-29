@@ -131,7 +131,7 @@ const GESTES: Readonly<
 /**
  * UNE seule action pour toute la page (champ caché `geste`) : chaque action
  * importée par une page ajoute sa référence au JavaScript de la console, et le
- * cliquet de poids de la console n'a pas de marge (mesuré sur #1229 : huit
+ * cliquet de poids de la console n'a pas de marge (mesuré sur la PR 1229 : huit
  * actions séparées le dépassaient de 209 o).
  */
 export async function gesteCompteRenduAction(fd: FormData): Promise<void> {

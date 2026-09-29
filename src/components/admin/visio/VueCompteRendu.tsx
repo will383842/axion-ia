@@ -3,7 +3,7 @@
 //
 // Pourquoi une VUE de l'onglet et pas une page à elle : chaque page de la
 // console ajoute ~1 kB au cliquet des pages de la console, qui n'en avait plus
-// que 0,97 (mesuré sur #1229 : 470,14 kB pour 470). Au rebase sur la PR 4, elle
+// que 0,97 (mesuré sur la PR 1229 : 470,14 kB pour 470). Au rebase sur la PR 4, elle
 // s'affiche sur la page de la rencontre, qui existe alors.
 //
 // Ce que Will fait ici : lire le compte rendu rédigé depuis l'enregistrement,
