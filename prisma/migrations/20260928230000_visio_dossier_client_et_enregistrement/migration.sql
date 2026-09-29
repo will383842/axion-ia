@@ -49,7 +49,7 @@
 -- DROP TYPE IF EXISTS "code_erreur_visio", "classe_erreur", "statut_etape", "etape_visio",
 --   "statut_transcription", "type_consentement", "tranche_statut", "motif_debut_tranche",
 --   "piste_audio", "motif_arret", "enregistrement_statut", "nature_enregistrement",
---   "motif_effacement", "categorie_alerte_visio", "sort_pre_remplissage", "champ_pre_rempli",
+--   "cible_effacement", "motif_effacement", "categorie_alerte_visio", "sort_pre_remplissage", "champ_pre_rempli",
 --   "cible_pre_remplissage", "fait_evenement_action", "relation_fait", "fait_suivi",
 --   "motif_rejet_fait", "fait_statut", "fait_source", "confiance", "fait_certitude",
 --   "unite_fait", "precision_date", "periode_montant", "base_montant", "fait_type",
@@ -175,6 +175,9 @@ CREATE TYPE "sort_pre_remplissage" AS ENUM ('garde', 'modifie', 'retire');
 
 -- CreateEnum
 CREATE TYPE "categorie_alerte_visio" AS ENUM ('configuration', 'circuit', 'audio', 'rgpd', 'cout', 'preavis');
+
+-- CreateEnum
+CREATE TYPE "cible_effacement" AS ENUM ('faits', 'faits_citation', 'transcription_segments', 'comptes_rendus', 'client_contacts', 'rencontres', 'projets');
 
 -- CreateEnum
 CREATE TYPE "motif_effacement" AS ENUM ('art17', 'art17_cible', 'retrait', 'conservation', 'pilote');
@@ -611,7 +614,7 @@ CREATE TABLE "battements_circuit" (
 -- CreateTable
 CREATE TABLE "effacements_journal" (
     "id" UUID NOT NULL,
-    "table_cible" VARCHAR(60) NOT NULL,
+    "table_cible" "cible_effacement" NOT NULL,
     "ligne_id" VARCHAR(64) NOT NULL,
     "motif" "motif_effacement" NOT NULL,
     "le" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1252,16 +1255,18 @@ CREATE CONSTRAINT TRIGGER "faits_client_du_questionnaire"
   DEFERRABLE INITIALLY DEFERRED
   FOR EACH ROW EXECUTE FUNCTION "visio_faits_client_du_questionnaire"();
 
--- Journaux en ajout seul : ni modification ni suppression. Une exception,
--- une seule : sous le drapeau d'effacement RGPD (posé par
--- `src/lib/rgpd-erase.ts` seul, en SET LOCAL), une ligne peut être MODIFIÉE —
--- pour vider un texte libre (le `motif` d'un événement de projet) qui
--- nommerait une personne effacée. Elle ne se supprime jamais.
+-- Journaux en ajout seul : ni modification ni suppression, SANS EXCEPTION —
+-- pas même sous le drapeau d'effacement RGPD. Aucun effacement ne réécrit un
+-- journal (`src/lib/rgpd-erase.ts` n'y fait qu'ajouter), et
+-- `effacements_journal` est la liste rejouée après une restauration : la
+-- rendre réécrivable permettrait d'y changer une cible ou un identifiant, et
+-- la personne effacée réapparaîtrait. Le `motif` libre d'un événement de
+-- projet qui nommerait une personne est un angle mort DÉCLARÉ (il reste tel
+-- quel) ; s'il faut un jour le vider, ce sera par une fonction propre à
+-- `projet_evenements`, qui n'admet que `motif` passé à NULL — pas en ouvrant
+-- les cinq journaux.
 CREATE FUNCTION "visio_journal_ajout_seul"() RETURNS trigger LANGUAGE plpgsql AS $$
 BEGIN
-  IF TG_OP = 'UPDATE' AND current_setting('axion.effacement_rgpd', true) = 'on' THEN
-    RETURN NEW;
-  END IF;
   RAISE EXCEPTION '% : journal en ajout seul (ni modification ni suppression)', TG_TABLE_NAME
     USING ERRCODE = 'AXV02';
 END

@@ -24,7 +24,12 @@
  */
 
 import { createHash } from "node:crypto";
-import type { MotifEffacement, Prisma, PrismaClient } from "../../prisma/generated/client";
+import type {
+  CibleEffacement,
+  MotifEffacement,
+  Prisma,
+  PrismaClient,
+} from "../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 
@@ -753,7 +758,7 @@ const FAIT_CONTENU_VIDE = {
 
 async function journaliserEffacements(
   tx: Prisma.TransactionClient,
-  tableCible: string,
+  tableCible: CibleEffacement,
   ids: readonly string[],
   motif: MotifEffacement,
 ): Promise<void> {
@@ -842,7 +847,10 @@ const EFFACEMENT_VIDE: EffacementCibleResultat = {
  *     s'en servir (à tenir dans la PR du circuit, PR 6) ;
  *   · un texte libre saisi par Will qui NOMMERAIT la personne (titre de
  *     projet, motif d'un journal) n'est pas réécrit : l'effaceur ne peut pas
- *     savoir quel nom y figure. Will le corrige à la main s'il y en a un.
+ *     savoir quel nom y figure. Un titre de projet, Will le corrige à la
+ *     main ; le motif d'un journal, lui, ne se réécrit PAS (trigger
+ *     `visio_journal_ajout_seul`, ajout seul sans exception, même sous le
+ *     drapeau) : il reste tel quel.
  */
 export async function effacerCibleParAdresses(
   emails: readonly string[],
@@ -1064,7 +1072,7 @@ export async function purgerCitations(avant: Date): Promise<{ readonly faits: nu
       where: { id: { in: ids } },
       data: { citation: null, confirmationCitation: null },
     });
-    await journaliserEffacements(tx, "faits.citation", ids, "conservation");
+    await journaliserEffacements(tx, "faits_citation", ids, "conservation");
     return { faits: ids.length };
   });
 }

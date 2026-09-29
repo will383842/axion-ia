@@ -885,7 +885,7 @@ model EmailOutbox {
 
   /// Chantier visio — l'e-mail de suivi d'une rencontre qui a produit ce
   /// message. Champ de RELATION seulement (le lien vit dans `emails_suivi`).
-  emailSuivi          EmailSuivi?
+  emailSuivi EmailSuivi?
 
   @@index([statut])
   @@index([template])
@@ -13934,13 +13934,37 @@ model BattementCircuit {
 /// rgpd: technique — identifiants effacés, jamais de contenu
 model EffacementJournal {
   id         String          @id @default(uuid()) @db.Uuid
-  tableCible String          @map("table_cible") @db.VarChar(60)
+  tableCible CibleEffacement @map("table_cible")
   ligneId    String          @map("ligne_id") @db.VarChar(64)
   motif      MotifEffacement
   le         DateTime        @default(now())
 
   @@index([tableCible, ligneId])
   @@map("effacements_journal")
+}
+
+/// Ce qu'une ligne de `effacements_journal` désigne. Une énumération et non un
+/// texte libre : le journal est REJOUÉ après une restauration, et une cible mal
+/// orthographiée ferait passer le rejeu à côté des lignes, sans erreur — la
+/// personne effacée réapparaîtrait. Une valeur par cible réellement écrite par
+/// `src/lib/rgpd-erase.ts`.
+enum CibleEffacement {
+  /// Contenu d'un fait vidé (`faits.id`).
+  faits
+  /// Citations seules d'un fait vidées, le reste du fait gardé (`faits.id`).
+  faits_citation
+  /// Segment de transcription supprimé (`transcription_id:ordre`).
+  transcription_segments
+  /// Compte rendu supprimé ou vidé pour réécriture (`comptes_rendus.id`).
+  comptes_rendus
+  /// Personne du dossier pseudonymisée ou supprimée (`client_contacts.id`).
+  client_contacts
+  /// Rencontre supprimée (`rencontres.id`).
+  rencontres
+  /// Projet supprimé (`projets.id`).
+  projets
+
+  @@map("cible_effacement")
 }
 
 enum MotifEffacement {
