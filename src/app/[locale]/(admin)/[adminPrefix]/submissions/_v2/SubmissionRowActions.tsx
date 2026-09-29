@@ -27,6 +27,7 @@ import {
   archiveSubmissionAction,
   unarchiveSubmissionAction,
   classerSansSuiteAction,
+  marquerPretASignerAction,
   remettreATraiterAction,
   marquerTraiteAction,
   markNeedsAttentionAction,
@@ -34,6 +35,7 @@ import {
   restoreSubmissionAction,
 } from "@/features/admin-submissions/reply-actions";
 import { eraseSubmissionAction } from "@/features/admin-submissions/actions";
+import type { ErreurPretASigner } from "@/features/admin-submissions/transitions";
 import { MoreHorizontal, Undo2 } from "lucide-react";
 
 interface Props {
@@ -48,7 +50,26 @@ interface Props {
   deleted: boolean;
   /** details.sansSuiteAt != null → la fiche a été écartée, pas seulement rangée. */
   sansSuite: boolean;
+  /**
+   * La ligne est un dossier APPORTEUR (`estApporteur`) : seul lui peut être dit
+   * « prêt à signer ». Le serveur le revérifie — ce booléen ne décide de rien.
+   */
+  apporteur: boolean;
+  /** details.pretASignerAt != null → le candidat a déjà été transmis à Axion Partners. */
+  pretASigner: boolean;
 }
+
+/** Ce que l'écran dit d'un refus de « prêt à signer » — en clair, jamais un code. */
+const MOTIF_PRET_A_SIGNER: Readonly<Record<ErreurPretASigner, string>> = {
+  non_apporteur: "Seul un dossier apporteur peut être transmis pour signature.",
+  sans_suite: "Fiche classée sans suite : la remettre à traiter avant de la transmettre.",
+  effacee: "Fiche à la corbeille : elle ne peut plus être transmise.",
+  introuvable: "Fiche introuvable.",
+  charge_illisible:
+    "Le dossier est incomplet (score ou réponses illisibles) : rien n'a été transmis.",
+  interdit: "Votre rôle ne permet pas ce geste.",
+  db: "La transmission a échoué, rien n'a été enregistré. Réessayer.",
+};
 
 const MENU_ITEM_CLASS =
   "block w-full rounded-[var(--radius-admin-sm)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-left text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)] hover:bg-[color:var(--color-admin-surface-hover)] disabled:opacity-50";
@@ -60,6 +81,8 @@ export function SubmissionRowActions({
   status,
   deleted,
   sansSuite,
+  apporteur,
+  pretASigner,
 }: Props): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -78,6 +101,20 @@ export function SubmissionRowActions({
   // formulaire général écrivait d'autres colonnes au passage.
   function markProcessed() {
     return marquerTraiteAction(id);
+  }
+
+  // « Prêt à signer » : le seul geste de la ligne qui peut être REFUSÉ par le
+  // serveur pour une raison que l'admin doit lire (dossier incomplet…).
+  function transmettrePourSignature() {
+    setError(null);
+    startTransition(async () => {
+      const res = await marquerPretASignerAction(id);
+      if (!res.ok) {
+        setError(MOTIF_PRET_A_SIGNER[res.erreur ?? "db"]);
+        return;
+      }
+      router.refresh();
+    });
   }
 
   function eraseForever() {
@@ -199,6 +236,22 @@ export function SubmissionRowActions({
               Marquer traité
             </button>
           ) : null}
+          {/* « Prêt à signer » : l'autre issue de la décision, à côté de « Sans
+              suite ». Le clic transmet le candidat à Axion Partners (ADR 0051
+              §c) ; il n'est offert ni hors d'un dossier apporteur, ni sur une
+              fiche écartée, ni deux fois. */}
+          {apporteur && !sansSuite && !pretASigner ? (
+            <button
+              type="button"
+              disabled={isPending}
+              onClick={transmettrePourSignature}
+              className={MENU_ITEM_CLASS}
+              role="menuitem"
+              title="Transmet le candidat à Axion Partners, pour la signature du contrat"
+            >
+              Prêt à signer
+            </button>
+          ) : null}
           {/* « Sans suite » et « Remettre à traiter » sont le MEME axe, dans les
               deux sens : on n'offre jamais les deux à la fois. Le premier clot
               (et retire les relances en attente), le second rouvre. */}
@@ -237,6 +290,14 @@ export function SubmissionRowActions({
           </button>
         </div>
       </details>
+      {error ? (
+        <span
+          role="alert"
+          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-danger)]"
+        >
+          {error}
+        </span>
+      ) : null}
     </div>
   );
 }
