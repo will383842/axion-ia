@@ -363,21 +363,60 @@ INSERT INTO traitements_visio (id, rencontre_id, etape, compte_rendu_id) VALUES
   ('00000000-0000-4000-8000-0000000000e9', '00000000-0000-4000-8000-00000000003a', 'rediger', NULL);
 ROLLBACK;
 
-\echo '[visio] 18. sous le drapeau d''effacement, un journal se vide mais ne se supprime pas'
+\echo '[visio] 18. sous le drapeau d''effacement, les cinq journaux restent en ajout seul'
+-- Le drapeau ouvre les faits et les preuves d'accord, JAMAIS un journal : ni
+-- UPDATE ni DELETE, sur aucun des cinq. `effacements_journal` surtout, qui est
+-- rejoué après une restauration (une cible ou un identifiant réécrit, et la
+-- personne effacée réapparaît).
+-- Mutation qui fait rougir : rétablir dans `visio_journal_ajout_seul` un
+-- `IF current_setting('axion.effacement_rgpd', true) = 'on' THEN RETURN NEW`
+-- → l'UPDATE passe → AXT99 → rouge.
 BEGIN;
 SELECT pg_temp.visio_fixture();
+INSERT INTO fait_evenements (id, fait_id, action) VALUES
+  ('00000000-0000-4000-8000-0000000000ea', '00000000-0000-4000-8000-00000000006a', 'propose');
 INSERT INTO projet_evenements (id, projet_id, action, motif) VALUES
-  ('00000000-0000-4000-8000-0000000000ea', '00000000-0000-4000-8000-00000000001a', 'renomme', 'Motif qui nomme une personne fictive');
+  ('00000000-0000-4000-8000-0000000000eb', '00000000-0000-4000-8000-00000000001a', 'renomme', 'Motif qui nomme une personne fictive');
+INSERT INTO rencontre_rattachement_evenements (id, rencontre_id, action) VALUES
+  ('00000000-0000-4000-8000-0000000000ec', '00000000-0000-4000-8000-00000000003a', 'propose');
+INSERT INTO effacements_journal (id, table_cible, ligne_id, motif) VALUES
+  ('00000000-0000-4000-8000-0000000000ed', 'faits', '00000000-0000-4000-8000-00000000006a', 'art17');
+INSERT INTO client_fusions (id, absorbe_id, absorbant_id, par_admin_id, motif) VALUES
+  ('00000000-0000-4000-8000-0000000000ee', '00000000-0000-4000-8000-00000000000b', '00000000-0000-4000-8000-00000000000a', '00000000-0000-4000-8000-0000000000ff', 'Fusion fictive');
+INSERT INTO client_fusion_elements (fusion_id, type, element_id) VALUES
+  ('00000000-0000-4000-8000-0000000000ee', 'projet', '00000000-0000-4000-8000-00000000001b');
 SET LOCAL axion.effacement_rgpd = 'on';
-UPDATE projet_evenements SET motif = NULL WHERE id = '00000000-0000-4000-8000-0000000000ea';
-DO $$ BEGIN
-  DELETE FROM projet_evenements WHERE id = '00000000-0000-4000-8000-0000000000ea';
-  RAISE EXCEPTION 'devait échouer : suppression dans un journal sous le drapeau' USING ERRCODE = 'AXT99';
-EXCEPTION WHEN SQLSTATE 'AXV02' THEN NULL;
+DO $$
+DECLARE
+  -- (table, UPDATE qui ne touche qu'une colonne anodine ou un texte libre)
+  cas CONSTANT text[][] := ARRAY[
+    ['fait_evenements', 'UPDATE fait_evenements SET par_admin_id = NULL'],
+    ['projet_evenements', 'UPDATE projet_evenements SET motif = NULL'],
+    ['rencontre_rattachement_evenements', 'UPDATE rencontre_rattachement_evenements SET par_admin_id = NULL'],
+    ['effacements_journal', 'UPDATE effacements_journal SET ligne_id = ''autre'''],
+    ['client_fusion_elements', 'UPDATE client_fusion_elements SET element_id = element_id']
+  ];
+  i int;
+BEGIN
+  FOR i IN 1 .. array_length(cas, 1) LOOP
+    BEGIN
+      EXECUTE cas[i][2];
+      RAISE EXCEPTION 'devait échouer : modification de % sous le drapeau', cas[i][1] USING ERRCODE = 'AXT99';
+    EXCEPTION WHEN SQLSTATE 'AXV02' THEN NULL;
+    END;
+    BEGIN
+      EXECUTE format('DELETE FROM %I', cas[i][1]);
+      RAISE EXCEPTION 'devait échouer : suppression dans % sous le drapeau', cas[i][1] USING ERRCODE = 'AXT99';
+    EXCEPTION WHEN SQLSTATE 'AXV02' THEN NULL;
+    END;
+  END LOOP;
 END $$;
+-- Contre-témoin : sous le même drapeau, le contenu d'un fait se vide (le
+-- drapeau est bien posé ; ce ne sont pas les journaux qui l'ignorent par panne).
+UPDATE faits SET enonce = '' WHERE id = '00000000-0000-4000-8000-00000000006a';
 DO $$ BEGIN
-  IF (SELECT motif FROM projet_evenements WHERE id = '00000000-0000-4000-8000-0000000000ea') IS NOT NULL THEN
-    RAISE EXCEPTION 'le motif n''a pas été vidé sous le drapeau' USING ERRCODE = 'AXT99';
+  IF (SELECT motif FROM projet_evenements WHERE id = '00000000-0000-4000-8000-0000000000eb') IS NULL THEN
+    RAISE EXCEPTION 'le motif d''un journal a été vidé sous le drapeau' USING ERRCODE = 'AXT99';
   END IF;
 END $$;
 ROLLBACK;
