@@ -30,7 +30,7 @@ interface Props {
 
 // Le gabarit du layout ajoute déjà « · Axion-IA ».
 export const metadata: Metadata = {
-  title: "Tes tarifs",
+  title: "Vos tarifs",
   robots: { index: false, follow: false },
 };
 
@@ -46,13 +46,13 @@ export default async function CompleterCandidaturePage({ params, searchParams }:
     <div className="mx-auto w-full max-w-md px-4 pt-6 pb-12 sm:pt-10">
       {dossier.ok ? (
         <>
-          <h1 className="text-fg font-serif text-3xl font-semibold">Tes tarifs</h1>
+          <h1 className="text-fg font-serif text-3xl font-semibold">Vos tarifs</h1>
           <p className="text-fg-soft mt-1 mb-4 text-sm">
             {dossier.prenom ? `${dossier.prenom} · ` : ""}
             {dossier.poste.split(" — ")[0]}
           </p>
           <p className="border-terracotta/40 bg-terracotta-soft/30 text-fg mb-6 rounded-lg border px-3 py-2 text-sm">
-            On compare toutes les propositions : indique directement ton meilleur prix.
+            Nous comparons toutes les propositions : indiquez directement votre meilleur prix.
           </p>
           <CompleterCandidatureForm
             jeton={jeton ?? ""}
@@ -68,7 +68,7 @@ export default async function CompleterCandidaturePage({ params, searchParams }:
             {dossier.reason === "expired" ? "Ce lien a expiré." : "Ce lien n’est pas valide."}
           </h1>
           <p className="text-fg-soft mt-2 text-sm">
-            Réponds directement à notre e-mail, ou écris à{" "}
+            Répondez directement à notre e-mail, ou écrivez à{" "}
             <a className="text-primary underline" href="mailto:contact@axion-ia.com">
               contact@axion-ia.com
             </a>

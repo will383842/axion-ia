@@ -32,7 +32,7 @@ async function envoyer(_prev: EtatComplement, formData: FormData): Promise<EtatC
   return {
     ok: false,
     error:
-      "L'envoi n'a pas abouti. Vérifie ta connexion et réessaie — tes réponses sont toujours là.",
+      "L'envoi n'a pas abouti. Vérifiez votre connexion et réessayez — vos réponses sont toujours là.",
   };
 }
 
@@ -74,7 +74,7 @@ export function CompleterCandidatureForm({ jeton, questions, reponses }: Props) 
       <div role="status" className="border-sage/40 bg-sage/10 rounded-xl border-2 p-5">
         <p className="text-fg text-lg font-semibold">Merci, c’est enregistré ✅</p>
         <p className="text-fg-soft mt-1 text-sm">
-          On revient vers toi après avoir comparé les propositions. Ce lien reste valable pour
+          Nous revenons vers vous après avoir comparé les propositions. Ce lien reste valable pour
           corriger un prix.
         </p>
       </div>

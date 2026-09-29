@@ -76,12 +76,12 @@ export default async function PostulerPage({
 
         <div className="mx-auto mt-8 max-w-2xl text-center">
           <p className="text-terracotta text-sm font-semibold tracking-wide uppercase">
-            {isFr ? "On a hâte de te lire 👀" : "Can't wait to read you 👀"}
+            {isFr ? "Nous avons hâte de vous lire 👀" : "Can't wait to read you 👀"}
           </p>
           <h1 className="mt-3 font-serif text-4xl font-semibold sm:text-5xl">
             {isFr ? (
               <>
-                Postule en <em className="text-terracotta italic">quelques minutes</em>
+                Postulez en <em className="text-terracotta italic">quelques minutes</em>
               </>
             ) : (
               <>
@@ -90,13 +90,13 @@ export default async function PostulerPage({
             )}
           </h1>
           <p className="text-fg-muted mt-4 text-lg">
-            {isFr ? "Tu postules à " : "You're applying to "}
+            {isFr ? "Vous postulez à " : "You're applying to "}
             <strong className="text-fg">{title}</strong>.
           </p>
           <ul className="text-fg-muted mt-5 flex flex-wrap justify-center gap-2 text-sm">
             {(compact
               ? isFr
-                ? ["⏱️ 2 minutes", "📄 Sans CV", "💶 Tes prix", "🔗 Tes réalisations"]
+                ? ["⏱️ 2 minutes", "📄 Sans CV", "💶 Vos prix", "🔗 Vos réalisations"]
                 : ["⏱️ 2 minutes", "📄 No CV", "💶 Your rates", "🔗 Your work"]
               : isFr
                 ? [
@@ -122,6 +122,7 @@ export default async function PostulerPage({
             screeningQuestions={screeningQuestions}
             freelance={offer.employmentType === "CONTRACTOR"}
             compact={compact}
+            sansPretention={offer.category === "commercial"}
           />
         </div>
       </Container>

@@ -61,8 +61,8 @@ export function OffersEmbedPromo({ locale, tone = "canvas" }: OffersEmbedPromoPr
       id="integrer-offres"
       tone={tone}
       eyebrow={isFr ? "Gratuit · libre d'intégration" : "Free · open to embed"}
-      title={isFr ? "Affiche nos offres" : "Show our job openings"}
-      titleEm={isFr ? "sur ton site" : "on your site"}
+      title={isFr ? "Affichez nos offres" : "Show our job openings"}
+      titleEm={isFr ? "sur votre site" : "on your site"}
       description={
         isFr
           ? "Vous gérez un site et nos métiers peuvent intéresser votre audience ? Récupérez nos offres en cours et affichez-les chez vous gratuitement, aux couleurs de votre site — un copier-coller suffit, elles se mettent à jour toutes seules."

@@ -42,7 +42,7 @@ export async function completerCandidature(formData: FormData): Promise<EtatComp
   const jeton = formData.get("jeton");
   const dossier = await chargerDossierComplement(typeof jeton === "string" ? jeton : null);
   if (!dossier.ok) {
-    return { ok: false, error: "Ce lien n'est plus valide. Écris-nous à contact@axion-ia.com." };
+    return { ok: false, error: "Ce lien n'est plus valide. Écrivez-nous à contact@axion-ia.com." };
   }
 
   const essais = await checkRateLimit(`candidature-complement:${dossier.applicationId}`, {
@@ -50,7 +50,7 @@ export async function completerCandidature(formData: FormData): Promise<EtatComp
     windowSec: 3600,
   });
   if (!essais.allowed) {
-    return { ok: false, error: "Trop d'essais. Réessaie dans une heure." };
+    return { ok: false, error: "Trop d'essais. Réessayez dans une heure." };
   }
 
   const nouvelles = collectAnswers(formData);
@@ -67,7 +67,7 @@ export async function completerCandidature(formData: FormData): Promise<EtatComp
   if (prixFaux) {
     return {
       ok: false,
-      error: `Indique un seul montant en euros, sans fourchette : ${prixFaux.labelFr ?? prixFaux.labelEn ?? prixFaux.id}`,
+      error: `Indiquez un seul montant en euros, sans fourchette : ${prixFaux.labelFr ?? prixFaux.labelEn ?? prixFaux.id}`,
     };
   }
 
@@ -97,7 +97,7 @@ export async function completerCandidature(formData: FormData): Promise<EtatComp
     Sentry.captureException(e, { tags: { action: "completerCandidature" } });
     return {
       ok: false,
-      error: "L'enregistrement a échoué. Réessaie, ou écris-nous à contact@axion-ia.com.",
+      error: "L'enregistrement a échoué. Réessayez, ou écrivez-nous à contact@axion-ia.com.",
     };
   }
   // `updateTag` est réservé aux Server Actions ; ceci est appelé depuis une
