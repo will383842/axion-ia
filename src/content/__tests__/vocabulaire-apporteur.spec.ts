@@ -125,6 +125,41 @@ describe("REQ-JUR-001 — le financement : formules interdites, drapeau ou non",
     expect(temoin(texte)).toEqual([]);
   });
 
+  describe("memo-isere, lue ligne à ligne : la mention revient SEULEMENT sous la certification (Williams, 2026-09-29)", () => {
+    const MEMO = "src/app/[locale]/memo-isere/page.tsx";
+    const juge = (texte: string) =>
+      fautesDeVocabulaire([{ chemin: MEMO, texte }]).map((f) => `${f.famille}:${f.extrait}`);
+    const DECL = [
+      "const X_CERTIFIE: readonly string[] = [",
+      '  "Formations pouvant être prises en charge par l\'OPCO, selon ses critères",',
+      "];",
+    ].join("\n");
+    const LIEE = "const certifie = isQualiopiCertificationObtenue();";
+
+    it("contre-témoin : dans une `…_CERTIFIE`, employée sous `certifie ?`, la mention passe", () => {
+      expect(juge(`${DECL}\n${LIEE}\n[...(certifie ? X_CERTIFIE : [])]`)).toEqual([]);
+    });
+
+    it("TÉMOIN — la même constante employée HORS de la bascule rougit", () => {
+      expect(juge(`${DECL}\n${LIEE}\n[...X_CERTIFIE]`)).toContain(
+        "financement_non_gate:X_CERTIFIE",
+      );
+    });
+
+    it("TÉMOIN — sans `const certifie = isQualiopiCertificationObtenue()`, la déclaration n'exempte rien", () => {
+      expect(juge(`${DECL}\nconst certifie = true;\n[...(certifie ? X_CERTIFIE : [])]`)).toContain(
+        "financement_non_gate:OPCO",
+      );
+    });
+
+    it("TÉMOIN — une formule interdite même certifiée rougit DANS la `…_CERTIFIE`", () => {
+      const interdite = DECL.replace("selon ses critères", "le coût est souvent nul");
+      expect(juge(`${interdite}\n${LIEE}\n[...(certifie ? X_CERTIFIE : [])]`)).toEqual(
+        expect.arrayContaining([expect.stringMatching(/^financement_inconditionnel:/)]),
+      );
+    });
+  });
+
   it("un commentaire de code n'est pas une page : il n'est pas lu", () => {
     expect(temoin("// sans avance de frais : formule interdite, voir JUR-T03")).toEqual([]);
     expect(temoin(" * « prise en charge à 100 % » est refusé")).toEqual([]);

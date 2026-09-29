@@ -56,11 +56,55 @@ const CONSULTE_LA_CERTIFICATION =
   /isQualiopiCertificationObtenue|getPublicFinancing(?:Blurb|Micro)|financementAffichable/;
 
 /**
- * Les surfaces où la lecture par fichier a été prise en défaut (relecture securite de #1220 :
- * memo-isere lisait le drapeau UNE fois et servait dix mentions à côté). Elles ne mentionnent
- * AUCUN financement, drapeau lu ou non : l'exemption par fichier ne s'y applique pas.
+ * Les surfaces jugées LIGNE À LIGNE, où la lecture par fichier a été prise en défaut
+ * (relecture securite de #1220 : memo-isere lisait le drapeau UNE fois et servait dix-sept
+ * mentions à côté). Décision de Williams du 2026-09-29 : la mention de financement y revient,
+ * « seulement après la certification ». Une mention n'y est donc admise que :
+ *   — DANS la déclaration d'une constante `…_CERTIFIE` ;
+ *   — si le fichier lie `const certifie = isQualiopiCertificationObtenue()` ;
+ *   — et si chaque emploi de cette constante hors de sa déclaration est `certifie ? …_CERTIFIE`.
+ * Toute autre mention, et tout emploi d'une `…_CERTIFIE` hors de la bascule, est une faute.
  */
-export const SANS_AUCUN_FINANCEMENT: ReadonlyArray<string> = ["memo-isere/page.tsx"];
+export const LECTURE_PAR_LIGNE: ReadonlyArray<string> = ["memo-isere/page.tsx"];
+
+const LIE_LA_BASCULE = /\bconst\s+certifie\s*=\s*isQualiopiCertificationObtenue\(\s*\)/;
+const DECLARATION_CERTIFIE = /\bconst\s+([A-Z][A-Z0-9_]*_CERTIFIE)\b/;
+
+/** Les lignes (index) de chaque déclaration `…_CERTIFIE`, jusqu'à la ligne qui la termine. */
+function declarationsCertifiees(lignes: ReadonlyArray<string>): Map<string, Set<number>> {
+  const zones = new Map<string, Set<number>>();
+  lignes.forEach((l, i) => {
+    const d = DECLARATION_CERTIFIE.exec(l);
+    if (!d?.[1]) return;
+    const zone = new Set<number>();
+    for (let j = i; j < lignes.length; j++) {
+      zone.add(j);
+      if (/;\s*$/.test(lignes[j] ?? "")) break;
+    }
+    zones.set(d[1], zone);
+  });
+  return zones;
+}
+
+/** Les fautes propres à une surface jugée ligne à ligne. */
+function fautesParLigne(chemin: string, texte: string): FauteVocabulaire[] {
+  const lignes = texte.split("\n");
+  const zones = declarationsCertifiees(lignes);
+  const bascule = LIE_LA_BASCULE.test(texte);
+  const admises = new Set(bascule ? [...zones.values()].flatMap((z) => [...z]) : []);
+  const fautes: FauteVocabulaire[] = [];
+  lignes.forEach((brute, i) => {
+    if (COMMENTAIRE.test(brute)) return;
+    const f = admises.has(i) ? null : MENTION_FINANCEMENT.exec(telleQueLue(brute));
+    if (f) fautes.push({ famille: "financement_non_gate", chemin, ligne: i + 1, extrait: f[0] });
+    for (const [nom, zone] of zones) {
+      if (zone.has(i) || !new RegExp(`\\b${nom}\\b`).test(brute)) continue;
+      if (new RegExp(`\\bcertifie\\s*\\?\\s*${nom}\\b`).test(brute)) continue;
+      fautes.push({ famille: "financement_non_gate", chemin, ligne: i + 1, extrait: nom });
+    }
+  });
+  return fautes;
+}
 
 export type FauteVocabulaire = {
   readonly famille: FamilleVocabulaire;
@@ -109,8 +153,11 @@ export function fautesDeVocabulaire(
 ): FauteVocabulaire[] {
   const fautes: FauteVocabulaire[] = [];
   for (const { chemin, texte } of fichiers) {
-    const strict = SANS_AUCUN_FINANCEMENT.some((s) => chemin.replace(/\\/g, "/").endsWith(s));
-    const consulte = !strict && CONSULTE_LA_CERTIFICATION.test(texte);
+    const parLigne = LECTURE_PAR_LIGNE.some((s) => chemin.replace(/\\/g, "/").endsWith(s));
+    if (parLigne) fautes.push(...fautesParLigne(chemin, texte));
+    // Une surface jugée ligne à ligne n'a pas d'exemption par fichier : `consulte` y vaut
+    // « vrai » pour ne pas compter deux fois ce que `fautesParLigne` a déjà jugé.
+    const consulte = parLigne || CONSULTE_LA_CERTIFICATION.test(texte);
     texte.split("\n").forEach((brute, i) => {
       if (COMMENTAIRE.test(brute)) return;
       const contenu = telleQueLue(brute);

@@ -80,6 +80,17 @@ export const revalidate = 3600;
 
 /** Rythme vertical unique de la page. Mobile d'abord : `py-12` (48 px) au lieu
  *  des `py-24` (96 px) hérités du défaut `Section`. */
+/**
+ * Les mentions de financement de cette page : servies SEULEMENT certification obtenue
+ * (décision de Williams, 2026-09-29), dans le registre que permet la SSOT du financement —
+ * « peut être prise en charge … selon ses critères », jamais un taux ni un coût nul.
+ * La garde `jur:vocab-public` lit cette page LIGNE À LIGNE : une mention n'y est admise que
+ * dans une constante `…_CERTIFIE`, employée sous `certifie ? …`.
+ */
+const REASSURANCE_CERTIFIE: readonly string[] = [
+  "Formations pouvant être prises en charge par l'OPCO, selon ses critères",
+];
+
 const SEC = "py-12 sm:py-16 lg:py-24";
 
 /** Photo pleine largeur sur mobile, cadrée et arrondie dès `sm`.
@@ -569,6 +580,7 @@ export default async function MemoIserePage({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
   if (!isFr) notFound(); // page presse locale FR-only (EN 301 → FR au runtime)
+  const certifie = isQualiopiCertificationObtenue();
 
   // Avis réels — priorité Isère (45 des 77 avis publiés). On fait REMONTER les
   // avis « entreprise » (raison sociale renseignée) : la page vise PME, ETI et
@@ -836,6 +848,7 @@ export default async function MemoIserePage({ params }: Props) {
                 ? "Organisme certifié Qualiopi"
                 : "Démarche qualité alignée sur le référentiel national qualité",
               "Formations au poste de travail, sur mesure",
+              ...(certifie ? REASSURANCE_CERTIFIE : []),
               "Statut libre : micro-entreprise ou société",
               "Cumulable avec ton job actuel",
             ].map((t) => (
