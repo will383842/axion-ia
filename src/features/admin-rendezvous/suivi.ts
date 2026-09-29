@@ -42,52 +42,93 @@ export const LIBELLE_SUITE: Readonly<Record<SuiteRdv, string>> = {
  */
 export const JOURS_A_FAIRE_LE_POINT = 30;
 
-export const suiviSchema = z
-  .object({
-    calendlyEventId: z.string().min(1).max(64),
-    issue: z.enum(ISSUES, { message: "Choisissez ce qui s'est passé." }),
-    suite: z.enum(SUITES).nullable(),
-    /** « AAAA-MM-JJ », tel que le rend un `<input type="date">`. */
-    suiteLe: z
-      .string()
-      .regex(/^\d{4}-\d{2}-\d{2}$/, "Date invalide.")
-      .nullable(),
-    note: z.string().trim().max(5000).nullable(),
-  })
-  .superRefine((v, ctx) => {
-    if (v.issue === "eu_lieu" && !v.suite) {
-      ctx.addIssue({
-        code: "custom",
-        path: ["suite"],
-        message: "Le rendez-vous a eu lieu : choisissez la suite à donner.",
-      });
-    }
-    if (v.issue === "eu_lieu" && v.suite && v.suite !== "aucune" && !v.suiteLe) {
-      ctx.addIssue({
-        code: "custom",
-        path: ["suiteLe"],
-        message: "Indiquez pour quand : une suite sans date ne se fait jamais.",
-      });
-    }
-  });
+/** Les deux messages de la règle — une seule rédaction, lue par les deux écrans. */
+export const MESSAGE_SUITE_EXIGEE = "Le rendez-vous a eu lieu : choisissez la suite à donner.";
+export const MESSAGE_ECHEANCE_EXIGEE =
+  "Indiquez pour quand : une suite sans date ne se fait jamais.";
 
-export type SuiviSaisi = z.infer<typeof suiviSchema>;
+/**
+ * LA règle issue / suite / échéance, en un seul endroit (onglet
+ * « Rendez-vous », « Après l'appel », suivi du dossier client). Rend le
+ * premier manquement, ou `null`. PURE.
+ */
+export function manquementDuSuivi(v: {
+  readonly issue: IssueRdv;
+  readonly suite: SuiteRdv | null;
+  readonly suiteLe: unknown;
+}): { champ: "suite" | "suiteLe"; message: string } | null {
+  if (v.issue === "eu_lieu" && !v.suite) return { champ: "suite", message: MESSAGE_SUITE_EXIGEE };
+  if (v.issue === "eu_lieu" && v.suite && v.suite !== "aucune" && !v.suiteLe) {
+    return { champ: "suiteLe", message: MESSAGE_ECHEANCE_EXIGEE };
+  }
+  return null;
+}
 
 /**
  * Ce qu'on garde vraiment : la suite n'a de sens que si l'appel a eu lieu, et
  * l'échéance que si une suite est prévue. Évite qu'un « Absent » garde la
- * suite d'une saisie précédente.
+ * suite d'une saisie précédente. PURE.
  */
+export function garderSuiteEtEcheance<D>(
+  issue: IssueRdv,
+  suite: SuiteRdv | null,
+  suiteLe: D | null,
+): { suite: SuiteRdv | null; suiteLe: D | null } {
+  const s = issue === "eu_lieu" ? suite : null;
+  return { suite: s, suiteLe: s && s !== "aucune" ? suiteLe : null };
+}
+
+/** « AAAA-MM-JJ » d'un `<input type="date">` → la date, à minuit UTC. */
+export function dateDeLEcheance(jour: string): Date {
+  return new Date(`${jour}T00:00:00Z`);
+}
+
+/** Les champs issue / suite / échéance, tels qu'un formulaire les envoie. */
+const champsDuSuivi = z.object({
+  issue: z.enum(ISSUES, { message: "Choisissez ce qui s'est passé." }),
+  suite: z.enum(SUITES).nullable(),
+  /** « AAAA-MM-JJ », tel que le rend un `<input type="date">`. */
+  suiteLe: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date invalide.")
+    .nullable(),
+});
+
+function appliquerLaRegle(
+  v: { issue: IssueRdv; suite: SuiteRdv | null; suiteLe: string | null },
+  ctx: z.RefinementCtx,
+): void {
+  const m = manquementDuSuivi(v);
+  if (m) ctx.addIssue({ code: "custom", path: [m.champ], message: m.message });
+}
+
+/** Le formulaire de l'onglet « Rendez-vous » (un rendez-vous Calendly, une appréciation). */
+export const suiviSchema = champsDuSuivi
+  .extend({
+    calendlyEventId: z.string().min(1).max(64),
+    note: z.string().trim().max(5000).nullable(),
+  })
+  .superRefine(appliquerLaRegle);
+
+/** Le bloc « Et ensuite ? » de l'écran « Après l'appel » (même règle). */
+export const suiviApresLAppelSchema = champsDuSuivi.superRefine(appliquerLaRegle);
+
+export type SuiviSaisi = z.infer<typeof suiviSchema>;
+
+/** Le suivi saisi, prêt à écrire. */
 export function normaliserSuivi(v: SuiviSaisi): {
   issue: IssueRdv;
   suite: SuiteRdv | null;
   suiteLe: Date | null;
   note: string | null;
 } {
-  const suite = v.issue === "eu_lieu" ? v.suite : null;
-  const suiteLe =
-    suite && suite !== "aucune" && v.suiteLe ? new Date(`${v.suiteLe}T00:00:00Z`) : null;
-  return { issue: v.issue, suite, suiteLe, note: v.note && v.note.length > 0 ? v.note : null };
+  const garde = garderSuiteEtEcheance(v.issue, v.suite, v.suiteLe);
+  return {
+    issue: v.issue,
+    suite: garde.suite,
+    suiteLe: garde.suiteLe ? dateDeLEcheance(garde.suiteLe) : null,
+    note: v.note && v.note.length > 0 ? v.note : null,
+  };
 }
 
 /** Lit un `FormData` de formulaire de suivi, champs vides → `null`. */

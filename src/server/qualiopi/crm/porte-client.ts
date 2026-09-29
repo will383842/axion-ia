@@ -55,7 +55,12 @@
  * par la création de fiche prospect depuis un rendez-vous (PR 4).
  */
 
-import type { ClientType, CompanySize, Prisma } from "../../../../prisma/generated/client";
+import type {
+  ClientType,
+  CompanySize,
+  ContactOrigine,
+  Prisma,
+} from "../../../../prisma/generated/client";
 import { domaineDe, natureAdresse } from "@/lib/email/nature-adresse";
 import { checkSirenFormat } from "@/lib/siret";
 import { hashEmailForLookup, normalizeEmail } from "@/lib/security/email-hash";
@@ -396,6 +401,11 @@ export interface OptionsCreation {
   readonly parAdminId: string | null;
   /** Motif de « créer quand même » (signal `email`). */
   readonly motifCreationForcee?: string | null;
+  /**
+   * Origine de la personne créée avec la fiche. Défaut : `saisie`. « Créer la
+   * fiche prospect » depuis un rendez-vous passe `calendly` (chantier visio, PR 4).
+   */
+  readonly origineContact?: ContactOrigine;
 }
 
 export type ResultatCreation =
@@ -525,7 +535,7 @@ export async function creerOuRetrouverClient(
           ...(personne.email ? { email: personne.email } : {}),
           ...(personne.telephone ? { telephone: personne.telephone } : {}),
           ...(personne.fonction ? { fonction: personne.fonction } : {}),
-          origine: "saisie",
+          origine: options.origineContact ?? "saisie",
           parAdminId: options.parAdminId,
         });
       }

@@ -36,6 +36,7 @@
  * ferait abandonner — et introduirait une occasion de les saisir différemment.
  */
 
+import type { Prisma } from "../../../prisma/generated/client";
 import type { DemandeReservation, FormatDemande } from "./reservation";
 import { reserverCreneau } from "./reservation";
 import { annulerRendezVous } from "./annulation";
@@ -211,6 +212,15 @@ export async function reporterRendezVous(
   source: RendezVousSource,
   eventTypeUri: string,
   nouveauDebut: Date,
+  /**
+   * 2026-09-29 (chantier visio, PR 4) — JOURNAL du report : appelé dès que le
+   * nouveau rendez-vous EXISTE, avant de libérer l'ancien. Un report fait sur
+   * le site est une réservation neuve + une annulation : sans ce journal,
+   * rien ne dirait au dossier client que le nouveau rendez-vous REMPLACE
+   * l'ancien (la rencontre du nouveau hérite alors de la fiche proposée —
+   * motif `report`). Ne bloque jamais le report : une erreur est avalée.
+   */
+  journaliser?: (ancienEventUri: string, nouvelEventUri: string) => Promise<unknown>,
 ): Promise<ResultatReport> {
   const construite = demandeDepuisLaSource(source, eventTypeUri, nouveauDebut);
   if (!construite.ok)
@@ -258,10 +268,35 @@ export async function reporterRendezVous(
   if (!source.eventUri) {
     return { ok: true, nouvelEventUri: nouveau.eventUri, ancienLibere: false };
   }
+  if (journaliser) {
+    try {
+      await journaliser(source.eventUri, nouveau.eventUri);
+    } catch {
+      // Le journal est une aide au rangement : il ne coûte jamais le report.
+    }
+  }
   const ancien = await annulerRendezVous(source.eventUri);
   return { ok: true, nouvelEventUri: nouveau.eventUri, ancienLibere: ancien.ok };
 }
 
 function raisonNonTraitee(r: never): never {
   throw new Error(`Raison de reservation non traitee au report : ${JSON.stringify(r)}`);
+}
+
+/**
+ * Écrit le lien « l'ancien rendez-vous a été reporté sur le nouveau »
+ * (`calendly_reports`, chantier visio, PR 4). Idempotent : rejouer le même
+ * report ne crée rien de plus. Le client de base est INJECTÉ (ce module ne
+ * tire pas Prisma).
+ */
+export async function journaliserReport(
+  db: Pick<Prisma.TransactionClient, "calendlyReport">,
+  ancienEventUri: string,
+  nouvelEventUri: string,
+): Promise<void> {
+  await db.calendlyReport.upsert({
+    where: { ancienEventUri },
+    create: { ancienEventUri, nouvelEventUri },
+    update: { nouvelEventUri },
+  });
 }

@@ -62,6 +62,15 @@ import { motifSansAccesAuxEchanges, peutVoirLesEchanges } from "@/features/dossi
 import { consoliderFaits } from "@/features/dossier-client/consolider-faits";
 import { confirmerSirenFormAction } from "@/features/dossier-client/actions";
 import {
+  lireCaseTestVisible,
+  lireFichesVivantes,
+  lireFusionsDeLaFiche,
+  lirePersonnesCourtes,
+} from "@/features/dossier-client/queries-rencontres";
+import { NouveauRendezVous } from "@/components/admin/dossier-client/NouveauRendezVous";
+import { FusionDeFiches } from "@/components/admin/dossier-client/FusionDeFiches";
+import { toParisLocalInput } from "@/lib/calendar-grid";
+import {
   rechercherSiren,
   type ResultatAnnuaire,
 } from "@/features/dossier-client/recherche-entreprises";
@@ -315,25 +324,50 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
       />
     );
   } else if (voitEchanges && onglet === "echanges") {
-    const [rencontres, projets] = await Promise.all([
+    const [rencontres, projets, personnesCourtes, caseTest] = await Promise.all([
       lireRencontresDuClient(id),
       lireProjetsDuClient(id),
+      lirePersonnesCourtes(id),
+      lireCaseTestVisible(id),
     ]);
     contenuDossier = (
-      <OngletEchanges
-        rencontres={rencontres}
-        projets={projets}
-        rendezVousBase={`/${locale}/${adminPrefix}/rendez-vous`}
-        maintenant={maintenant}
-      />
+      <>
+        {/* Chantier visio (PR 4, B9) : un rendez-vous hors Calendly en 2 clics. */}
+        <NouveauRendezVous
+          clientId={id}
+          projetId={null}
+          personnes={personnesCourtes}
+          caseTestVisible={caseTest}
+          debutParDefaut={
+            toParisLocalInput(new Date(maintenant.getTime() + 24 * 3_600_000)).slice(0, 11) +
+            "10:00"
+          }
+        />
+        <OngletEchanges
+          rencontres={rencontres}
+          projets={projets}
+          rendezVousBase={`/${locale}/${adminPrefix}/rendez-vous`}
+          maintenant={maintenant}
+        />
+      </>
     );
   } else if (voitEchanges && onglet === "personnes") {
-    const [personnes, projets] = await Promise.all([
+    const [personnes, projets, fusions, fichesVivantes] = await Promise.all([
       lirePersonnesDuClient(id),
       lireProjetsDuClient(id),
+      lireFusionsDeLaFiche(id),
+      lireFichesVivantes(),
     ]);
     contenuDossier = (
-      <OngletPersonnes clientId={id} personnes={personnes} projets={projets} erreur={erreur} />
+      <>
+        <OngletPersonnes clientId={id} personnes={personnes} projets={projets} erreur={erreur} />
+        {/* Chantier visio (PR 4, A3) : fusion déclenchée par Will, réversible. */}
+        <FusionDeFiches
+          clientId={id}
+          fusions={fusions}
+          fiches={fichesVivantes.filter((f) => f.id !== id)}
+        />
+      </>
     );
   }
 

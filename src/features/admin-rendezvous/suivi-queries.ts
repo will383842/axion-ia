@@ -10,6 +10,7 @@ import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import { entrepriseEtBesoin, reponsesFormulaire } from "./a-venir";
 import { finEffective, momentVisio } from "./visio";
 import { joursDeRetard } from "./point";
+import { aEuLieu, estDuMoisDuBilan, fenetreDuBilan } from "./rendez-vous-tenu";
 import { JOURS_A_FAIRE_LE_POINT, type IssueRdv, type SuiteRdv } from "./suivi";
 import type { PublicRdv } from "./types";
 import type { DecisionApporteur } from "./issue-apporteur";
@@ -132,23 +133,19 @@ export interface BilanDuMois {
  * point le 2 appartient au mois où il a eu lieu.
  */
 export async function bilanDuMois(maintenant: Date = new Date()): Promise<BilanDuMois> {
-  const mois = dayKeyInParis(maintenant).slice(0, 7);
+  // La règle « tenu ce mois-ci » est celle de `rendez-vous-tenu.ts`, partagée
+  // avec la couverture du circuit (« Visios tenues ») : correction A3.
   const suivis = await prisma.rendezVousSuivi.findMany({
-    where: {
-      calendlyEvent: {
-        startTime: { gte: new Date(maintenant.getTime() - 40 * 86_400_000), lte: maintenant },
-      },
-    },
+    where: { calendlyEvent: { startTime: fenetreDuBilan(maintenant) } },
     select: { issue: true, suite: true, calendlyEvent: { select: { startTime: true } } },
   });
   const bilan: BilanDuMois = { euLieu: 0, absents: 0, reportes: 0, devis: 0 };
   for (const s of suivis) {
-    const debut = s.calendlyEvent.startTime;
-    if (!debut || !dayKeyInParis(debut).startsWith(mois)) continue;
-    if (s.issue === "eu_lieu") bilan.euLieu += 1;
+    if (!estDuMoisDuBilan(s.calendlyEvent.startTime, maintenant)) continue;
+    if (aEuLieu(s.issue)) bilan.euLieu += 1;
     if (s.issue === "absent") bilan.absents += 1;
     if (s.issue === "reporte") bilan.reportes += 1;
-    if (s.issue === "eu_lieu" && s.suite === "devis") bilan.devis += 1;
+    if (aEuLieu(s.issue) && s.suite === "devis") bilan.devis += 1;
   }
   return bilan;
 }

@@ -27,6 +27,10 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     submission: { findMany: (a: unknown) => chercherSubmissions(a) },
     jobApplication: { findMany: (a: unknown) => chercherCandidatures(a) },
+    // 2026-09-29 (chantier visio, PR 4) — les rendez-vous du dossier client
+    // (date et titre) : aucun dans ces scénarios.
+    rencontreParticipant: { findMany: async () => [] },
+    rencontre: { findMany: async () => [] },
   },
 }));
 vi.mock("@/lib/pii-crypto", () => ({

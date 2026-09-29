@@ -32,6 +32,8 @@ vi.mock("@/lib/pii-crypto", () => ({
     !!v && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
 }));
 
+import { hashEmailForLookup } from "@/lib/security/email-hash";
+
 import { listEntreesRecentes, findClientByEmail } from "./entrees";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -152,8 +154,38 @@ describe("listEntreesRecentes — annotation clientExistant", () => {
     expect(sub?.clientExistant).toBeNull();
     // Les clés du `in` sont normalisées lowercase.
     const where = mockClientFindMany.mock.calls[0]?.[0]?.where;
-    expect(where.contactEmail.in).toEqual(expect.arrayContaining(["alice@acme.fr", "bob@acme.fr"]));
-    expect(where.contactEmail.mode).toBe("insensitive");
+    const surLaFiche = where.OR[0];
+    expect(surLaFiche.contactEmail.in).toEqual(
+      expect.arrayContaining(["alice@acme.fr", "bob@acme.fr"]),
+    );
+    expect(surLaFiche.contactEmail.mode).toBe("insensitive");
+    // Comme la porte unique : aussi les adresses des personnes, par empreinte.
+    expect(where.OR[1].contacts.some.adresses.some.emailHash.in).toEqual(
+      expect.arrayContaining([hashEmailForLookup("alice@acme.fr")]),
+    );
+    expect(where.fusionsAbsorbee).toEqual({ none: { defaiteLe: null } });
+  });
+
+  it("⛔ A2 : une personne rangée comme DEUXIÈME contact est « déjà client »", async () => {
+    mockCalendlyFindMany.mockResolvedValue([calRow()]); // Alice@Acme.FR
+    mockClientFindMany.mockResolvedValue([
+      {
+        id: "cli-2",
+        numero: "AXI-CLI-008",
+        raisonSociale: "Acme SAS",
+        contactEmail: "direction@acme.fr", // l'adresse de la fiche est une autre
+        contacts: [
+          { adresses: [{ emailHash: "autre" }] },
+          { adresses: [{ emailHash: hashEmailForLookup("alice@acme.fr") }] },
+        ],
+      },
+    ]);
+    const rows = await listEntreesRecentes();
+    expect(rows.find((r) => r.id === "cal-1")?.clientExistant).toEqual({
+      id: "cli-2",
+      numero: "AXI-CLI-008",
+      raisonSociale: "Acme SAS",
+    });
   });
 
   it("entrée sans email exploitable → clientExistant null, pas de query client", async () => {
@@ -177,25 +209,30 @@ describe("listEntreesRecentes — annotation clientExistant", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("findClientByEmail", () => {
-  it("cherche en equals insensitive et retourne le client", async () => {
-    mockClientFindFirst.mockResolvedValue({
-      id: "cli-9",
-      numero: "AXI-CLI-009",
-      raisonSociale: "Beta SARL",
-    });
-    const r = await findClientByEmail("  Contact@Beta.FR  ".trim());
+  it("délègue à la même règle (fiche OU personnes) et retourne le client", async () => {
+    mockClientFindMany.mockResolvedValue([
+      {
+        id: "cli-9",
+        numero: "AXI-CLI-009",
+        raisonSociale: "Beta SARL",
+        contactEmail: null,
+        contacts: [{ adresses: [{ emailHash: hashEmailForLookup("contact@beta.fr") }] }],
+      },
+    ]);
+    const r = await findClientByEmail("  Contact@Beta.FR  ");
     expect(r?.numero).toBe("AXI-CLI-009");
-    const where = mockClientFindFirst.mock.calls[0]?.[0]?.where;
-    expect(where.contactEmail.mode).toBe("insensitive");
+    const where = mockClientFindMany.mock.calls[0]?.[0]?.where;
+    expect(where.OR[0].contactEmail.mode).toBe("insensitive");
+    expect(mockClientFindFirst).not.toHaveBeenCalled();
   });
 
   it("email vide → null sans query", async () => {
     await expect(findClientByEmail("   ")).resolves.toBeNull();
-    expect(mockClientFindFirst).not.toHaveBeenCalled();
+    expect(mockClientFindMany).not.toHaveBeenCalled();
   });
 
   it("stub/DB down → null", async () => {
-    mockClientFindFirst.mockRejectedValue(new Error("stub.invalid"));
+    mockClientFindMany.mockRejectedValue(new Error("stub.invalid"));
     await expect(findClientByEmail("x@y.fr")).resolves.toBeNull();
   });
 });
