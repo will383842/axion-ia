@@ -28,6 +28,8 @@ import { env } from "@/env";
 import { parseScreeningQuestions, valeurAffichee } from "@/lib/careers/screening-answers";
 import { extraireLiensVideo, montreDuTravail, sourcesDeLiens } from "@/lib/careers/liens-video";
 import { prisma } from "@/lib/prisma";
+import { relancerAnalysesEnAttente } from "@/server/careers/videos-candidat";
+import { tailleLisible } from "@/lib/careers/videos";
 import { isVideoFreelanceOffer } from "@/lib/careers/video-editor-offer";
 
 export const dynamic = "force-dynamic";
@@ -129,7 +131,17 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         .catch(() => [])
     ).map((l) => [l.url, l]),
   );
-  const montreVideo = liens.some(montreDuTravail);
+  // Vidéos DÉPOSÉES (2026-09-28) : lues ici, relancées si l'antivirus a été
+  // interrompu (le worker n'a pas le volume : pas de cron possible).
+  await relancerAnalysesEnAttente(a.id);
+  const videos = await prisma.jobApplicationVideo
+    .findMany({
+      where: { applicationId: a.id, statut: { in: ["analyse", "disponible", "rejetee"] } },
+      orderBy: { createdAt: "asc" },
+      select: { id: true, nomOriginal: true, taille: true, statut: true, motifRejet: true },
+    })
+    .catch(() => []);
+  const montreVideo = liens.some(montreDuTravail) || videos.some((v) => v.statut === "disponible");
 
   return (
     <AdminPageShell>
@@ -242,6 +254,33 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
 
       <AdminCard>
         <h3 className="admin-section-title">Ses vidéos</h3>
+        {videos.length > 0 ? (
+          <div className="mb-[var(--space-admin-4)] space-y-[var(--space-admin-4)]">
+            {videos.map((v) => (
+              <div key={v.id}>
+                <p className="text-sm font-medium">
+                  {v.nomOriginal}{" "}
+                  <span className="admin-meta-small">· {tailleLisible(v.taille)}</span>{" "}
+                  {v.statut === "analyse" ? (
+                    <AdminBadge tone="warning">analyse antivirus en cours</AdminBadge>
+                  ) : v.statut === "rejetee" ? (
+                    <AdminBadge tone="destructive">
+                      refusée — {v.motifRejet ?? "motif inconnu"}
+                    </AdminBadge>
+                  ) : null}
+                </p>
+                {v.statut === "disponible" ? (
+                  <video
+                    controls
+                    preload="metadata"
+                    src={`/fr/${adminPrefix}/contacts/candidatures/${a.id}/video/${v.id}`}
+                    style={{ width: "100%", maxWidth: 360, maxHeight: 480, background: "black" }}
+                  />
+                ) : null}
+              </div>
+            ))}
+          </div>
+        ) : null}
         {liens.length === 0 || !montreVideo ? (
           <p className="admin-alert admin-alert-warning mb-[var(--space-admin-3)]">
             Aucun lien vers son travail. Demande-lui 2 ou 3 montages.

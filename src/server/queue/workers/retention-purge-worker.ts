@@ -61,6 +61,7 @@ import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { deleteCv } from "@/server/careers/cv-storage";
+import { supprimerVideosCandidature } from "@/server/careers/videos-candidat";
 import { lireCvCandidat } from "@/lib/commercial-application/cv-candidat";
 import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
 import {
@@ -437,6 +438,7 @@ export async function executerPurgeRetention(): Promise<void> {
     try {
       await deleteCv(c.cvStoragePath);
       await deleteCv(c.photoStoragePath);
+      await supprimerVideosCandidature(c.id);
       if (c.cvStoragePath) counts.candidaturesFichiers += 1;
       if (c.photoStoragePath) counts.candidaturesFichiers += 1;
     } catch (err) {
