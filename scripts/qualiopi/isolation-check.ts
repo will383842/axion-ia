@@ -412,6 +412,15 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/features/dossier-client/creer-prospect.ts",
   "src/features/dossier-client/rattacher.ts",
   "scripts/visio/pilote.ts",
+  // ── Alertes visio (PR 4, correction anti-doublon A3, 2026-09-29) : AUCUNE
+  //    table ni service d'alerte parallèle. Les alertes du circuit visio
+  //    (codes `visio.*`) passent par le service unique `AlerteSysteme` +
+  //    `creerOuDedup` (`alertes/alertes-service.ts`) et son catalogue. Une
+  //    arête pour le module, une pour son double en mémoire et le test qui
+  //    vérifie le dédoublonnage.
+  "src/server/visio/alertes.ts",
+  "src/server/visio/__tests__/_alertes-en-memoire.ts",
+  "src/server/visio/__tests__/une-panne-du-balayage-ne-part-qu-une-fois-et-repart-si-l-envoi-echoue.spec.ts",
 ]);
 
 /**
