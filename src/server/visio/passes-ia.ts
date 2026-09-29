@@ -64,6 +64,23 @@ async function chargerPasses(
   return d as DonneesPasses & { etat: EtatCompteRendu };
 }
 
+/**
+ * Les SEULS statuts d'un fait du jour qui entrent dans les passes P2 à P5 :
+ * proposé (vérifié par le code) ou validé par Will. Un fait `en_attente`
+ * (G8 : santé, appréciation d'une personne — art. 9 RGPD) est MIS DE CÔTÉ :
+ * il n'entre ni dans le rattachement, ni dans la consolidation, ni dans
+ * l'ébauche, ni dans le compte rendu, tant que Will ne l'a pas validé lui-même.
+ * Rejetés, effacés et remplacés n'y entrent jamais.
+ */
+export const STATUTS_TRANSMIS_AUX_PASSES: ReadonlySet<string> = new Set(["propose", "valide"]);
+
+/** Les faits du jour que P2 à P5 ont le droit de voir. */
+export function faitsTransmissibles<F extends { readonly statut: string }>(
+  faits: readonly F[],
+): F[] {
+  return faits.filter((f) => STATUTS_TRANSMIS_AUX_PASSES.has(f.statut));
+}
+
 /** Un fait du jour, tel que P2 à P5 le voient (sans citation). */
 export function pourPasse(f: FaitDuJour): FaitPourPasse {
   return {
@@ -282,7 +299,7 @@ export const rattacher: Gestionnaire = async (ctx) => {
   const { deps } = ctx;
   const d = await chargerPasses(ctx);
   const crId = d.compteRenduId;
-  const faits = d.faitsDuJour.filter((f) => f.statut !== "rejete").map(pourPasse);
+  const faits = faitsTransmissibles(d.faitsDuJour).map(pourPasse);
   if (d.rencontre.clientId === null) {
     // A4 : aucun rattachement automatique. Sans client validé, P2 n'est pas
     // appelée ; « Compléter » la relancera après le rattachement.
@@ -335,7 +352,7 @@ export const consolider: Gestionnaire = async (ctx) => {
   const { deps } = ctx;
   const d = await chargerPasses(ctx);
   const crId = d.compteRenduId;
-  const faits = d.faitsDuJour.filter((f) => f.statut !== "rejete").map(pourPasse);
+  const faits = faitsTransmissibles(d.faitsDuJour).map(pourPasse);
   const connus = faitsConnusPourPasse(d);
   const perimetres =
     d.rencontre.clientId === null
@@ -385,7 +402,7 @@ export const ebaucher: Gestionnaire = async (ctx) => {
   const { deps } = ctx;
   const d = await chargerPasses(ctx);
   const crId = d.compteRenduId;
-  const faits = d.faitsDuJour.filter((f) => f.statut !== "rejete").map(pourPasse);
+  const faits = faitsTransmissibles(d.faitsDuJour).map(pourPasse);
   const aEbaucher = projetsAEbaucher(faits, d.etat.projetsEvoques);
   const connus = faitsConnusPourPasse(d);
   const ebauches: EtatCompteRendu["ebauches"][number][] = [];
@@ -473,7 +490,7 @@ function entreeP5(
 export const rediger: Gestionnaire = async (ctx) => {
   const { deps, t } = ctx;
   const d = await chargerPasses(ctx);
-  const faitsDuJour = d.faitsDuJour.filter((f) => f.statut !== "rejete" && f.statut !== "efface");
+  const faitsDuJour = faitsTransmissibles(d.faitsDuJour);
   const faits = faitsDuJour.map(pourPasse);
   const catalogue = await deps.catalogue();
   const { sortie, modele } = await executerPasse(depsPasse(ctx), {
@@ -521,7 +538,7 @@ export const verifierCompteRenduEtape: Gestionnaire = async (ctx) => {
   const { deps, t } = ctx;
   const d = await chargerPasses(ctx);
   if (d.etat.redaction === null) throw new ArretVisio("inconnu");
-  const faits = d.faitsDuJour.filter((f) => f.statut !== "rejete" && f.statut !== "efface");
+  const faits = faitsTransmissibles(d.faitsDuJour);
   const couverture =
     d.etat.couverture ?? couvertureDesFaits(new Map(faits.map((f) => [f.ref, f.type])));
   const pourRedaction = new Map<string, FaitPourRedaction>(
