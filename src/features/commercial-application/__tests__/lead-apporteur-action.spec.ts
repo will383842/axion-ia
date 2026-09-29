@@ -119,7 +119,11 @@ describe("submitLeadApporteurAction", () => {
   it("écrit la ligne avec la source facebook, l'étape premier-contact, et les UTM (cookie prioritaire)", async () => {
     cookieUtm = serializeUtmCookie({ utm_source: "facebook", utm_campaign: "apporteurs-sept" });
     const r = await submitLeadApporteurAction({ ok: false, error: "" }, formulaire(valide));
-    expect(r).toEqual({ ok: true, submissionId: "11111111-1111-4111-8111-111111111111" });
+    expect(r).toEqual({
+      ok: true,
+      submissionId: "11111111-1111-4111-8111-111111111111",
+      source: "facebook",
+    });
 
     expect(creer).toHaveBeenCalledTimes(1);
     const args = creer.mock.calls[0]?.[0] as CreateArgs;
@@ -150,6 +154,59 @@ describe("submitLeadApporteurAction", () => {
     // Aucune donnée personnelle en clair dans details.
     expect(JSON.stringify(d)).not.toContain("nadia@");
     expect(JSON.stringify(d)).not.toContain("06 12");
+  });
+
+  it("le canal suit l'utm_source connu : l'annonce LinkedIn (29/09) est attribuée à LinkedIn", async () => {
+    // Le lien réel de l'annonce : le proxy pose le cookie, la requête le répète.
+    cookieUtm = serializeUtmCookie({
+      utm_source: "linkedin",
+      utm_medium: "offre-emploi",
+      utm_campaign: "apporteurs-2026-10",
+    });
+    const r = await submitLeadApporteurAction(
+      { ok: false, error: "" },
+      formulaire({
+        ...valide,
+        contexte: {
+          query: "?utm_source=linkedin&utm_medium=offre-emploi&utm_campaign=apporteurs-2026-10",
+          consentPub: "unknown",
+        },
+      }),
+    );
+    // Rendu au navigateur, qui le pose dans le brouillon du dossier complet.
+    expect(r).toMatchObject({ ok: true, source: "linkedin" });
+    const d = (creer.mock.calls[0]?.[0] as CreateArgs).data.details;
+    expect((d.candidature as Record<string, unknown>).sourceConnaissance).toBe("linkedin");
+    expect(String(d.message)).toContain("LinkedIn");
+    expect(String(d.message)).not.toContain("Facebook");
+  });
+
+  it("un contact LinkedIn n'est PAS envoyé à l'API Conversions Meta, même avec consentement", async () => {
+    cookieUtm = serializeUtmCookie({ utm_source: "linkedin" });
+    await submitLeadApporteurAction(
+      { ok: false, error: "" },
+      formulaire({ ...valide, contexte: { ...valide.contexte, query: "?utm_source=linkedin" } }),
+    );
+    expect(creer).toHaveBeenCalledTimes(1);
+    expect(envoyerMeta).not.toHaveBeenCalled();
+  });
+
+  it("un contact Facebook consenti part bien à l'API Conversions (contre-témoin)", async () => {
+    await submitLeadApporteurAction({ ok: false, error: "" }, formulaire(valide));
+    expect(envoyerMeta).toHaveBeenCalledTimes(1);
+  });
+
+  it("sans utm_source, ou avec une valeur inconnue, le canal reste facebook", async () => {
+    for (const query of ["", "?utm_source=newsletter-x", "?utm_source=autre"]) {
+      creer.mockClear();
+      const r = await submitLeadApporteurAction(
+        { ok: false, error: "" },
+        formulaire({ ...valide, contexte: { query, consentPub: "unknown" } }),
+      );
+      expect(r).toMatchObject({ ok: true, source: "facebook" });
+      const d = (creer.mock.calls[0]?.[0] as CreateArgs).data.details;
+      expect((d.candidature as Record<string, unknown>).sourceConnaissance).toBe("facebook");
+    }
   });
 
   it("notifie, envoie l'e-mail candidat avec le dossier (SANS lien d'appel), le récap interne, et deux relances", async () => {

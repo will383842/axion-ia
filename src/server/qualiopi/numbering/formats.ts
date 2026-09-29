@@ -125,6 +125,50 @@ export function isValidDocumentNumber(value: string): boolean {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Série PROJET — hors des pièces officielles (chantier visio, 2026-09-29)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Préfixe des numéros de projet du dossier client : `AXI-PRJ-AAAA-NNN`.
+ *
+ * 🔴 VOLONTAIREMENT HORS de `NUMBERING_PREFIX` et de `DOCUMENT_NUMBER_REGEX`.
+ * Un projet (« la formation RH d'octobre ») est un classement interne, pas une
+ * pièce : il n'est ni émis, ni opposable, ni conservé comme un devis ou une
+ * facture. S'il entrait dans le validateur officiel, `isValidDocumentNumber`
+ * répondrait « pièce officielle » à un simple dossier de travail, et la série
+ * se mêlerait aux registres que contrôle un auditeur. Verrou :
+ * `numbering/__tests__/un-numero-de-projet-n-est-pas-une-piece-officielle.spec.ts`.
+ *
+ * Millésimée comme les autres séries métier ; la borne haute se calcule avec
+ * `parseSequence(numero, prefixeSerieProjet(annee))`.
+ */
+export const PREFIXE_PROJET = "AXI-PRJ" as const;
+
+/** Numéro de projet bien formé (`AXI-PRJ-2026-001`). */
+export const NUMERO_PROJET_REGEX = /^AXI-PRJ-\d{4}-\d{3,}$/;
+
+/** Préfixe de la série projet pour un millésime : `AXI-PRJ-2026-`. */
+export function prefixeSerieProjet(annee: number): string {
+  if (!Number.isInteger(annee) || annee < 2000 || annee > 9999) {
+    throw new Error(`prefixeSerieProjet: année invalide (${annee})`);
+  }
+  return `${PREFIXE_PROJET}-${annee}-`;
+}
+
+/** Construit un numéro de projet. */
+export function formatNumeroProjet(annee: number, seq: number): string {
+  if (!Number.isInteger(seq) || seq < 1) {
+    throw new Error(`formatNumeroProjet: séquence invalide (${seq})`);
+  }
+  return `${prefixeSerieProjet(annee)}${String(seq).padStart(SEQ_PAD_WIDTH, "0")}`;
+}
+
+/** `true` si la chaîne est un numéro de projet bien formé. */
+export function isNumeroProjet(value: string): boolean {
+  return NUMERO_PROJET_REGEX.test(value);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Registres — deux espaces de noms qui doivent rester DISJOINTS
 // ─────────────────────────────────────────────────────────────────────────────
 

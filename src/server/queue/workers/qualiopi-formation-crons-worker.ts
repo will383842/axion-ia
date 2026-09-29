@@ -2356,7 +2356,19 @@ async function handleCandidaturesEnSommeil(): Promise<void> {
  */
 async function handleReponsePostePourvu(): Promise<void> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
-  const { passerReponsePostePourvu } = await import("@/server/careers/reponse-poste-pourvu");
+  const { passerReponsePostePourvu, idsBasculesAuTunnel } =
+    await import("@/server/careers/reponse-poste-pourvu");
+  // Candidatures SPONTANÉES à un poste commercial (Will, 2026-09-29) : invitation
+  // au tunnel apporteur, jamais « poste pourvu ». Indépendant de l'interrupteur
+  // de la réponse automatique : c'est le tunnel, comme `invitation-auto`.
+  const { proposerAuxSpontaneesCommerciales } =
+    await import("@/server/careers/proposer-reseau-auto");
+  const s = await proposerAuxSpontaneesCommerciales(new Date(), await idsBasculesAuTunnel());
+  if (s.proposees + s.ecartees > 0) {
+    console.log(
+      `[formation-crons] reseau-spontanees-commerciales: ${s.proposees} invitée(s), ${s.ecartees} écartée(s)`,
+    );
+  }
   const b = await passerReponsePostePourvu(new Date());
   if (!b.actif) return; // arrêt voulu : rien à dire à chaque heure
   if (b.envoyees + b.ecartees + b.echouees > 0 || b.restantes > 0) {

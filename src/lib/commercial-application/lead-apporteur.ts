@@ -20,7 +20,7 @@
 // Partagé serveur / client (Zod pur, aucune dépendance Node) — comme `model.ts`.
 
 import { z } from "zod";
-import { STATUT_OPTIONS } from "./model";
+import { SOURCE_OPTIONS, STATUT_OPTIONS } from "./model";
 
 /**
  * Version du texte de consentement du formulaire court. Distincte de celle du
@@ -43,8 +43,39 @@ export const LEAD_APPORTEUR_CONSENT_VERSION = "lead-apporteur-facebook-v2-2026-0
  *  du dossier complet dans la même file console. */
 export const LEAD_APPORTEUR_ETAPE = "premier-contact";
 
-/** Canal posé automatiquement — doit exister dans `SOURCE_OPTIONS`. */
+/** Canal posé automatiquement — doit exister dans `SOURCE_OPTIONS`. Repli
+ *  quand le lien d'arrivée ne dit rien (ou rien de connu). */
 export const LEAD_APPORTEUR_SOURCE = "facebook";
+
+/** Valeurs d'`utm_source` rencontrées dans les liens, ramenées à un canal. */
+const ALIAS_UTM_SOURCE: Readonly<Record<string, string>> = {
+  fb: "facebook",
+  ig: "facebook",
+  instagram: "facebook",
+  meta: "facebook",
+  lnkd: "linkedin",
+  "linkedin.com": "linkedin",
+};
+
+/**
+ * Le canal lu dans l'`utm_source` d'un lien, ou `null` s'il n'est pas CONNU
+ * (2026-09-29 : l'annonce LinkedIn pointe vers `/apporteur-affaires` avec
+ * `utm_source=linkedin`). Seuls les identifiants de `SOURCE_OPTIONS` (ou un
+ * alias ci-dessus) sont repris, `autre` excepté : `utm_source` est posé par
+ * n'importe qui, on ne l'écrit jamais tel quel.
+ */
+export function sourceConnueDepuisUtm(utmSource: string | undefined | null): string | null {
+  const brut = utmSource?.trim().toLowerCase();
+  if (!brut) return null;
+  const id = ALIAS_UTM_SOURCE[brut] ?? brut;
+  if (id === "autre") return null;
+  return SOURCE_OPTIONS.some((o) => o.id === id) ? id : null;
+}
+
+/** Le canal d'un premier contact : l'`utm_source` connu, sinon `facebook`. */
+export function sourceDepuisUtm(utmSource: string | undefined | null): string {
+  return sourceConnueDepuisUtm(utmSource) ?? LEAD_APPORTEUR_SOURCE;
+}
 
 /** Chemin de la landing, tel qu'il apparaît dans `details.source`.
  *
@@ -65,6 +96,35 @@ export const TUNNEL_FACEBOOK_MERCI_PATH = "/apporteur-affaires/merci";
 
 /** Cible du dossier complet — le wizard existant, pré-rempli par le brouillon. */
 export const DOSSIER_COMPLET_PATH = "/devenir-commercial-ia/candidature";
+
+/**
+ * Le premier contact compte-t-il comme conversion Meta ? SEULEMENT s'il vient
+ * de Facebook / Instagram (source enregistrée `facebook`, repli compris) —
+ * 2026-09-29. Un contact venu de l'annonce LinkedIn, compté par Meta, ferait
+ * croire que la campagne Facebook convertit ce qu'elle n'a pas amené.
+ * Lu des DEUX côtés : l'API Conversions (serveur) et le pixel (page merci).
+ */
+export function leadCompteChezMeta(source: string | undefined | null): boolean {
+  return (source ?? LEAD_APPORTEUR_SOURCE) === LEAD_APPORTEUR_SOURCE;
+}
+
+/**
+ * Ce que le navigateur fait après un premier contact enregistré : la page
+ * merci (avec `?c=<id>` — qui déclenche le `Lead` du pixel — seulement si le
+ * contact compte chez Meta), le libellé `landing` de l'événement Plausible, et
+ * la source posée dans le brouillon du dossier.
+ */
+export function suiteDuPremierContact(
+  submissionId: string,
+  sourceRendue: string | undefined,
+): { merci: string; landing: string; source: string } {
+  const source = sourceRendue ?? LEAD_APPORTEUR_SOURCE;
+  const merci =
+    leadCompteChezMeta(source) && submissionId
+      ? `${TUNNEL_FACEBOOK_MERCI_PATH}?c=${encodeURIComponent(submissionId)}`
+      : TUNNEL_FACEBOOK_MERCI_PATH;
+  return { merci, landing: source, source };
+}
 
 const STATUT_IDS = STATUT_OPTIONS.map((o) => o.id) as [string, ...string[]];
 

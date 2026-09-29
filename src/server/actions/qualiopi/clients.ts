@@ -10,6 +10,7 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { resoudreSiren } from "@/lib/siret";
 import { siretField } from "@/lib/siret-schema";
 import { premierMessageZod } from "@/lib/zod-message";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
@@ -53,6 +54,7 @@ const CLIENT_STATUTS = [
  */
 const CHAMPS_ENTREPRISE = [
   "siret",
+  "siren",
   "nafCode",
   "conventionCollective",
   "idcc",
@@ -90,6 +92,12 @@ const createClientSchema = z
     // qui se propage jusqu'au `<ram:ID schemeID="0009">` du Factur-X — donc à une
     // facture non routable par la Plateforme Agréée. Reste FACULTATIF.
     siret: siretField.optional(),
+    /**
+     * SIREN saisi à la main (chantier visio). Facultatif : quand un SIRET est
+     * saisi, le SIREN en est DÉRIVÉ (`resoudreSiren`) ; un SIREN qui le
+     * contredit est refusé avec un message qui dit quoi corriger.
+     */
+    siren: z.string().max(20).optional(),
     nafCode: z.string().max(6).optional(),
     conventionCollective: z.string().max(200).optional(),
     /** Code IDCC de la branche (précise la convention collective). */
@@ -133,6 +141,8 @@ const updateClientSchema = z
     // d'édition pré-rempli avec une valeur invalide (chantier V18) refuserait
     // toute modification de la fiche, y compris des champs sans rapport.
     siret: siretField.nullable().optional(),
+    /** Voir `createClientSchema`. `null` efface — seulement sans SIRET. */
+    siren: z.string().max(20).nullable().optional(),
     nafCode: z.string().max(6).optional(),
     conventionCollective: z.string().max(200).optional(),
     /** Code IDCC de la branche (précise la convention collective). */
@@ -211,6 +221,12 @@ export async function createClientAction(
   if (!parsed.success) return { error: premierMessageZod(parsed.error) };
   const v = parsed.data;
 
+  // SIREN (chantier visio) : dérivé du SIRET quand il y en a un ; un SIREN
+  // saisi qui le contredit est refusé AVANT toute écriture.
+  const sirenResolu = resoudreSiren(v.siret, v.siren);
+  if (!sirenResolu.ok) return { error: sirenResolu.message };
+  const siren = sirenResolu.siren;
+
   // Inférer l'OPCO si non fourni manuellement. L'IDCC prime : c'est la
   // convention collective qui rattache légalement à un OPCO.
   const opcoIdentifie = v.opcoIdentifie ?? inferOpco({ idcc: v.idcc, naf: v.nafCode });
@@ -241,6 +257,7 @@ export async function createClientAction(
         statut: "prospect",
         ...(v.type !== undefined ? { type: v.type } : {}),
         ...(v.siret !== undefined ? { siret: v.siret } : {}),
+        ...(siren !== undefined ? { siren } : {}),
         ...(v.nafCode !== undefined ? { nafCode: v.nafCode } : {}),
         ...(v.conventionCollective !== undefined
           ? { conventionCollective: v.conventionCollective }
@@ -270,7 +287,12 @@ export async function createClientAction(
     action: "qualiopi.client.create",
     targetType: "Client",
     targetId: created.id,
-    changes: { numero: created.numero, raisonSociale: v.raisonSociale, opcoIdentifie },
+    changes: {
+      numero: created.numero,
+      raisonSociale: v.raisonSociale,
+      opcoIdentifie,
+      ...(siren !== undefined ? { siren } : {}),
+    },
     session,
   });
 
@@ -289,6 +311,40 @@ export async function updateClientAction(
   const parsed = updateClientSchema.safeParse(input);
   if (!parsed.success) return { error: premierMessageZod(parsed.error) };
   const { id, ...fields } = parsed.data;
+
+  // ── SIREN (chantier visio) ────────────────────────────────────────────────
+  //  • SIRET transmis        → SIREN dérivé ; un SIREN saisi contraire = refus
+  //  • SIRET effacé (`null`) → le SIREN n'est touché que s'il est transmis
+  //  • SIREN seul            → comparé au SIRET déjà en base
+  let sirenAEcrire: string | null | undefined;
+  if (typeof fields.siret === "string") {
+    const r = resoudreSiren(fields.siret, fields.siren);
+    if (!r.ok) return { error: r.message };
+    sirenAEcrire = r.siren;
+  } else if (fields.siren !== undefined) {
+    const enBase =
+      fields.siret === null
+        ? null
+        : ((
+            await prisma.client.findUnique({
+              where: { id },
+              select: { siret: true },
+            })
+          )?.siret ?? null);
+    if (fields.siren === null || fields.siren.trim() === "") {
+      if (enBase !== null) {
+        return {
+          error:
+            "SIREN : il est tiré du SIRET de la fiche. Pour l'effacer, effacez d'abord le SIRET.",
+        };
+      }
+      sirenAEcrire = null;
+    } else {
+      const r = resoudreSiren(enBase, fields.siren);
+      if (!r.ok) return { error: r.message };
+      sirenAEcrire = r.siren;
+    }
+  }
 
   // ── OPCO : trois entrées possibles, UNE seule sortie (`opcoAEcrire`) ───────
   //  • chaîne  → saisie explicite de l'admin, écrite telle quelle
@@ -336,6 +392,7 @@ export async function updateClientAction(
       ...(fields.type !== undefined ? { type: fields.type } : {}),
       ...(fields.raisonSociale !== undefined ? { raisonSociale: fields.raisonSociale } : {}),
       ...(fields.siret !== undefined ? { siret: fields.siret } : {}),
+      ...(sirenAEcrire !== undefined ? { siren: sirenAEcrire } : {}),
       ...(fields.nafCode !== undefined ? { nafCode: fields.nafCode } : {}),
       ...(fields.conventionCollective !== undefined
         ? { conventionCollective: fields.conventionCollective }
@@ -377,7 +434,11 @@ export async function updateClientAction(
     // L'OPCO effectivement écrit doit apparaître dans l'audit : c'est le log
     // d'audit qui a prouvé, sur AXI-CLI-002, que l'inférence tournait et rendait
     // null. Une écriture non tracée est un angle mort pour l'auditeur.
-    changes: { ...fields, ...(opcoAEcrire !== undefined ? { opcoIdentifie: opcoAEcrire } : {}) },
+    changes: {
+      ...fields,
+      ...(opcoAEcrire !== undefined ? { opcoIdentifie: opcoAEcrire } : {}),
+      ...(sirenAEcrire !== undefined ? { siren: sirenAEcrire } : {}),
+    },
     session,
   });
 

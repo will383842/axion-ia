@@ -136,3 +136,76 @@ export function checkSiretFormat(raw: string): SiretCheck {
   }
   return { ok: true, value: v };
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SIREN — dérivé du SIRET (chantier visio, 2026-09-29, ADR 0053 §8)
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// Le SIREN identifie l'ENTREPRISE ; le SIRET, un de ses établissements. Les 9
+// premiers chiffres du SIRET SONT le SIREN : il n'y a rien à deviner. Jusqu'ici
+// aucun code n'écrivait `Client.siren` ; or c'est la clé de l'anti-doublon à la
+// création et celle par laquelle Axion Partners rattache un apporteur.
+//
+// Règle, appliquée par `createClientAction` et `updateClientAction` :
+//   · un SIRET valide est saisi → le SIREN en est dérivé, toujours ;
+//   · un SIREN saisi à la main qui CONTREDIT le SIRET → refus motivé (jamais
+//     de choix silencieux entre deux identifiants incompatibles) ;
+//   · pas de SIRET → le SIREN saisi à la main est gardé s'il est bien formé.
+
+/** Le SIREN d'un SIRET déjà normalisé et validé (14 chiffres). */
+export function sirenDuSiret(siret: string): string {
+  return normalizeSiret(siret).slice(0, 9);
+}
+
+export type SirenCheck = { ok: true; value: string } | { ok: false; message: string };
+
+/** Contrôle format + clé d'un SIREN NON VIDE saisi à la main. */
+export function checkSirenFormat(raw: string): SirenCheck {
+  const v = normalizeSiret(raw);
+  if (!/^\d{9}$/.test(v)) {
+    return {
+      ok: false,
+      message: `SIREN : 9 chiffres attendus, « ${v} » saisi. Le SIRET (14 chiffres) commence par le SIREN.`,
+    };
+  }
+  if (!luhnValid(v)) {
+    return {
+      ok: false,
+      message:
+        "SIREN : clé de contrôle invalide. Vérifiez la saisie sur annuaire-entreprises.data.gouv.fr.",
+    };
+  }
+  return { ok: true, value: v };
+}
+
+export type ResolutionSiren =
+  { ok: true; siren: string | undefined } | { ok: false; message: string };
+
+/**
+ * Le SIREN à écrire, à partir d'un SIRET (déjà validé) et d'un SIREN saisi.
+ * `undefined` = rien à écrire.
+ */
+export function resoudreSiren(
+  siret: string | null | undefined,
+  sirenSaisi: string | null | undefined,
+): ResolutionSiren {
+  const saisi = sirenSaisi == null ? "" : normalizeSiret(sirenSaisi);
+  if (saisi !== "") {
+    const controle = checkSirenFormat(saisi);
+    if (!controle.ok) return { ok: false, message: controle.message };
+  }
+  if (siret != null && siret !== "") {
+    const derive = sirenDuSiret(siret);
+    if (saisi !== "" && saisi !== derive) {
+      return {
+        ok: false,
+        message:
+          "SIREN : il ne correspond pas au SIRET saisi — les 9 premiers chiffres du SIRET " +
+          "sont le SIREN de l'entreprise. Corrigez l'un des deux, ou laissez le SIREN vide : " +
+          "il sera rempli à partir du SIRET.",
+      };
+    }
+    return { ok: true, siren: derive };
+  }
+  return { ok: true, siren: saisi === "" ? undefined : saisi };
+}

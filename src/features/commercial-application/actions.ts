@@ -52,6 +52,10 @@ import {
   type CommercialApplicationInput,
 } from "@/lib/commercial-application/model";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
+import {
+  DOSSIER_COMPLET_PATH,
+  sourceConnueDepuisUtm,
+} from "@/lib/commercial-application/lead-apporteur";
 import { annulerRelancesLeadApporteur } from "./relances-lead-apporteur";
 
 export type CommercialApplicationState =
@@ -80,6 +84,36 @@ function safeHashIp(ip: string | null | undefined): string | null {
  * La chaîne de replis est conservée à l'identique (sa variable propre d'abord) :
  * une candidature n'a pas à suivre le canal des alertes de conformité.
  */
+/**
+ * Le canal déclaré au PREMIER CONTACT de la même personne (formulaire court,
+ * dont la source suit l'`utm_source` depuis le 29/09), ou `null`. Sert quand le
+ * wizard n'envoie pas de source : dossier ouvert sur un autre appareil que le
+ * premier contact, donc sans le brouillon qui la portait. Best-effort : une
+ * lecture en échec ne coûte que l'attribution, jamais la candidature.
+ */
+async function sourceDuPremierContact(emailKey: string | null): Promise<string | null> {
+  if (!emailKey) return null;
+  try {
+    const ligne = await prisma.submission.findFirst({
+      where: {
+        contactEmailHash: emailKey,
+        deletedAt: null,
+        AND: [{ details: { path: ["subType"], equals: "candidature-commerciale" } }],
+      },
+      select: { details: true },
+      orderBy: { submittedAt: "desc" },
+    });
+    const details = ligne?.details as { candidature?: { sourceConnaissance?: unknown } } | null;
+    const brut = details?.candidature?.sourceConnaissance;
+    return typeof brut === "string" ? sourceConnueDepuisUtm(brut) : null;
+  } catch (err) {
+    Sentry.captureException(err, {
+      tags: { action: "submitCommercialApplicationAction", step: "source-premier-contact" },
+    });
+    return null;
+  }
+}
+
 function internalRecipient(): string {
   return destinataireCandidatures();
 }
@@ -263,6 +297,15 @@ export async function submitCommercialApplicationAction(
 
   const userAgent = (await headers()).get("user-agent") ?? null;
 
+  // 4 bis. Canal non déclaré dans le wizard (la question est facultative) :
+  // celui du premier contact de la même personne, sinon l'`utm_source` CONNU du
+  // cookie d'arrivée (ex. l'annonce LinkedIn du 29/09). Jamais inventé.
+  if (!d.sourceConnaissance) {
+    const heritee =
+      (await sourceDuPremierContact(emailKey)) ?? sourceConnueDepuisUtm(utm.utm_source);
+    if (heritee) d.sourceConnaissance = heritee;
+  }
+
   // Expériences en ordre ANTI-CHRONOLOGIQUE partout en aval (récap + console) :
   // poste actuel d'abord, puis début décroissant.
   const experiences = [...d.experiences].sort((a, b) => {
@@ -318,7 +361,9 @@ export async function submitCommercialApplicationAction(
           // La carte « Message » générique du détail console affiche ce champ :
           // on y met le pitch (la réponse la plus parlante).
           message: d.pitch,
-          source: "/devenir-commercial-ia/candidature",
+          // 🔑 Lu par l'invitation automatique (`invitation-auto.ts`) : c'est ce
+          // qui fait de cette ligne un DOSSIER COMPLET. Ne pas changer sans elle.
+          source: DOSSIER_COMPLET_PATH,
           consentVersion: COMMERCIAL_APPLICATION_CONSENT_VERSION,
           // Plus de `vivierConsentAt` depuis le 19/09 : la case vivier est
           // retirée du formulaire (B2). Un ancien onglet peut encore envoyer
