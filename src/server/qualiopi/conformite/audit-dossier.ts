@@ -16,6 +16,7 @@ import { prisma } from "@/lib/prisma";
 import { whereVeilleExploitee } from "./veille-exploitee";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "@/server/qualiopi/conformite/conformite-service";
+import { libelleCritere } from "@/server/qualiopi/conformite/indicateurs-registre";
 import { renderRegistrePdfBuffer, REGISTRE_TYPES } from "@/server/qualiopi/registres/registres-pdf";
 import { evaluerCouvertureOff32 } from "@/server/qualiopi/revues/plan-actions";
 import { getObjectBufferR2, isR2Configured, documentPdfKey } from "@/lib/r2-storage";
@@ -627,8 +628,20 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
 
     // Fusionner les preuves de conformite-service avec les preuves enrichies du manifeste
     const preuvesSupplémentaires = preuvesSuppMap.get(ind.numero) ?? [];
+    // 🔴 2026-09-30 — le manifeste écrivait DEUX fois le même fait : « NDA
+    // DREETS : 84… » (moteur) puis « NDA DREETS obtenu : 84… » (manifeste) sous
+    // l'indicateur 1, et de même « Référent handicap : … » / « Référent handicap
+    // désigné : … » sous le 26. Le filtre d'égalité stricte ci-dessous ne voit
+    // pas deux formulations du même fait. La ligne du manifeste, plus précise
+    // (elle distingue « nommé sans e-mail »), REMPLACE celle du moteur.
+    const prefixeRemplace = PREFIXE_PREUVE_REMPLACEE_PAR_LE_MANIFESTE[ind.numero];
+    const preuvesMoteur =
+      prefixeRemplace !== undefined &&
+      preuvesSupplémentaires.some((p) => p.startsWith(prefixeRemplace))
+        ? ind.preuves.filter((p) => !p.startsWith(prefixeRemplace))
+        : ind.preuves;
     const toutesPreuves = [
-      ...ind.preuves,
+      ...preuvesMoteur,
       // Ajouter seulement les preuves supplémentaires non déjà présentes
       ...preuvesSupplémentaires.filter((p) => !ind.preuves.includes(p)),
     ];
@@ -1085,6 +1098,15 @@ function suffixeNumeros(d: PreuveDocument): string {
   return ` — ${numeros.join(", ")}`;
 }
 
+/**
+ * Préfixe d'une preuve du moteur de conformité que le manifeste réécrit plus
+ * précisément : la ligne du moteur est alors retirée, jamais doublée.
+ */
+const PREFIXE_PREUVE_REMPLACEE_PAR_LE_MANIFESTE: Readonly<Record<number, string>> = {
+  1: "NDA DREETS",
+  26: "Référent handicap",
+};
+
 function buildMarkdown(payload: ManifesteAuditPayload): string {
   const lignes: string[] = [];
 
@@ -1105,7 +1127,7 @@ function buildMarkdown(payload: ManifesteAuditPayload): string {
     const inds = payload.indicateurs.filter((i) => i.critere === critere);
     if (inds.length === 0) continue;
 
-    lignes.push(`## Critère ${critere}`);
+    lignes.push(`## ${libelleCritere(critere)}`);
     lignes.push("");
 
     for (const ind of inds) {

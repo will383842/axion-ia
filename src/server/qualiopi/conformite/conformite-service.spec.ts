@@ -1491,6 +1491,16 @@ describe("evaluerConformite", () => {
     expect(ind18?.preuves.join(" ")).toMatch(/Aucune preuve écrite de coordination/);
   });
 
+  it("off.18 accorde le participe au compteur : « 1 formateur coordonné », « 2 formateurs coordonnés »", async () => {
+    setupMoyens([{ categorie: "salle", count: 1 }], [{ categorie: "salle", count: 1 }]);
+    mockP.trainer.count.mockResolvedValue(1);
+    const un = (await evaluerConformite()).indicateurs.find((i) => i.numero === 18);
+    expect(un?.preuves).toContain("1 formateur coordonné");
+    mockP.trainer.count.mockResolvedValue(2);
+    const deux = (await evaluerConformite()).indicateurs.find((i) => i.numero === 18);
+    expect(deux?.preuves).toContain("2 formateurs coordonnés");
+  });
+
   it("off.18 couvert par une pièce « inventaire des moyens » / « organisation de l'action » au registre", async () => {
     mockP.trainer.count.mockResolvedValue(1);
     mockP.documentGenere.count.mockImplementation((args?: { where?: Record<string, unknown> }) => {
@@ -1796,6 +1806,26 @@ describe("evaluerConformite", () => {
     mockP.documentGenere.count.mockResolvedValue(0);
     const result = await evaluerConformite();
     expect(result.indicateurs.find((i) => i.numero === 27)?.statut).toBe("a_completer");
+  });
+
+  // 🔴 2026-09-30 — « 0 sous-traitant conforme : NDA + vérif data.gouv + contrat
+  // signé » se lisait comme un manque devant le certificateur, alors qu'Axion ne
+  // sous-traite pas. Le statut ne change pas (décision métier) : seule la
+  // formulation.
+  it("off.27 sans aucun sous-traitant : « Aucun sous-traitant à ce jour », jamais « 0 sous-traitant conforme »", async () => {
+    mockP.sousTraitant.count.mockResolvedValue(0);
+    mockP.trainer.count.mockResolvedValue(0);
+    mockP.documentGenere.count.mockImplementation((args?: { where?: Record<string, unknown> }) =>
+      Promise.resolve(args?.where?.["type"] === "procedure_sous_traitance" ? 1 : 0),
+    );
+    const result = await evaluerConformite();
+    const ind27 = result.indicateurs.find((i) => i.numero === 27);
+    expect(ind27?.statut).toBe("couvert");
+    const texte = ind27?.preuves.join("\n") ?? "";
+    expect(texte).not.toMatch(/\b0 sous-traitant/);
+    expect(
+      ind27?.preuves.filter((p) => p.startsWith("Aucun sous-traitant à ce jour")),
+    ).toHaveLength(1);
   });
 
   it("🔴 une procédure ANNULÉE ne couvre pas off.27", async () => {

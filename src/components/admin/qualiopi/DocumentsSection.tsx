@@ -1404,6 +1404,7 @@ export function DocumentsSection({
                   action={genererOrganisationActionAction}
                   sessionId={sessionId}
                   onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("organisation_action")}
                 />
               ),
             },

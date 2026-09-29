@@ -77,6 +77,34 @@ export interface IndicateurRNQ {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Les 7 critères — intitulés officiels (décret n° 2019-564, art. R.6316-1 ;
+// guide de lecture RNQ V9). SOURCE UNIQUE : l'écran « mode auditeur » et
+// l'export Markdown du manifeste les lisent ici, jamais une copie.
+//
+// 🔴 2026-09-30 — l'écran recopiait ses propres intitulés, et celui du
+// critère 6 était faux (« Inscription et veille des sous-traitants et
+// formateurs occasionnels »), devant le certificateur.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type NumeroCritere = IndicateurRNQ["critere"];
+
+export const CRITERES_RNQ: Readonly<Record<NumeroCritere, string>> = {
+  1: "Les conditions d'information du public sur les prestations proposées, les délais pour y accéder et les résultats obtenus",
+  2: "L'identification précise des objectifs des prestations proposées et l'adaptation de ces prestations aux publics bénéficiaires lors de la conception des prestations",
+  3: "L'adaptation aux publics bénéficiaires des prestations et des modalités d'accueil, d'accompagnement, de suivi et d'évaluation mises en œuvre",
+  4: "L'adéquation des moyens pédagogiques, techniques et d'encadrement aux prestations mises en œuvre",
+  5: "La qualification et le développement des connaissances et compétences des personnels chargés de mettre en œuvre les prestations",
+  6: "L'inscription et l'investissement du prestataire dans son environnement professionnel",
+  7: "Le recueil et la prise en compte des appréciations et des réclamations formulées par les parties prenantes aux prestations délivrées",
+};
+
+/** « Critère N — intitulé officiel » (repli « Critère N » hors 1–7). */
+export function libelleCritere(numero: number): string {
+  const intitule = (CRITERES_RNQ as Record<number, string | undefined>)[numero];
+  return intitule === undefined ? `Critère ${numero}` : `Critère ${numero} — ${intitule}`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Les 32 indicateurs — grille canonique
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -85,7 +113,8 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
   {
     numero: 1,
     critere: 1,
-    libelleOfficiel: "Information accessible, complète et vérifiable sur les prestations",
+    libelleOfficiel:
+      "Information accessible au public, détaillée et vérifiable sur les prestations",
     super: false,
   },
   {
@@ -106,13 +135,14 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
   {
     numero: 4,
     critere: 2,
-    libelleOfficiel: "Analyse du besoin du bénéficiaire",
+    libelleOfficiel:
+      "Analyse du besoin du bénéficiaire en lien avec l'entreprise et/ou le financeur",
     super: true,
   },
   {
     numero: 5,
     critere: 2,
-    libelleOfficiel: "Objectifs de la prestation définis et adaptés",
+    libelleOfficiel: "Objectifs opérationnels et évaluables de la prestation",
     super: true,
   },
   {
@@ -145,7 +175,8 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
   {
     numero: 10,
     critere: 3,
-    libelleOfficiel: "Adaptation de la prestation / accompagnement",
+    libelleOfficiel:
+      "Mise en œuvre et adaptation de la prestation, de l'accompagnement et du suivi aux publics",
     super: true,
   },
   {
@@ -157,34 +188,39 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
   {
     numero: 12,
     critere: 3,
-    libelleOfficiel: "Engagement des bénéficiaires / prévention des ruptures",
+    libelleOfficiel:
+      "Mesures favorisant l'engagement des bénéficiaires et prévenant les ruptures de parcours",
     super: false,
   },
   {
     numero: 13,
     critere: 3,
-    libelleOfficiel: "Coordination des intervenants (apprentissage)",
+    libelleOfficiel:
+      "Alternance : missions anticipées avec l'entreprise et l'apprenant, coordination et progressivité des apprentissages",
     super: false,
     conditionnel: "app",
   },
   {
     numero: 14,
     critere: 3,
-    libelleOfficiel: "Exercice de la citoyenneté (apprenti)",
+    libelleOfficiel:
+      "Accompagnement socio-professionnel, éducatif et relatif à l'exercice de la citoyenneté (CFA)",
     super: true,
     conditionnel: "app",
   },
   {
     numero: 15,
     critere: 3,
-    libelleOfficiel: "Information sur les droits et devoirs de l'apprenti",
+    libelleOfficiel:
+      "Information des apprentis sur leurs droits et devoirs et sur les règles de santé et de sécurité (CFA)",
     super: true,
     conditionnel: "app",
   },
   {
     numero: 16,
     critere: 3,
-    libelleOfficiel: "Présentation à la certification",
+    libelleOfficiel:
+      "Conditions de présentation à la certification conformes aux exigences du certificateur",
     super: true,
     conditionnel: "cert",
   },
@@ -193,19 +229,20 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
   {
     numero: 17,
     critere: 4,
-    libelleOfficiel: "Moyens humains et techniques adaptés",
+    libelleOfficiel: "Moyens humains et techniques adaptés et environnement approprié",
     super: false,
   },
   {
     numero: 18,
     critere: 4,
-    libelleOfficiel: "Coordination des acteurs / intervenants",
+    libelleOfficiel: "Mobilisation et coordination des intervenants internes et/ou externes",
     super: false,
   },
   {
     numero: 19,
     critere: 4,
-    libelleOfficiel: "Ressources pédagogiques mises à disposition",
+    libelleOfficiel:
+      "Ressources pédagogiques mises à disposition et appropriées par le bénéficiaire",
     super: false,
   },
   {
@@ -214,7 +251,8 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
     // Apprentissage/CFA uniquement (personnels dédiés à l'accompagnement des
     // apprentis) → NON applicable en action de formation continue (AFC).
     // Réf. liste officielle Acuria « CERT PPS LIAI QUA 1 V3 » : colonne AFC vide.
-    libelleOfficiel: "Personnels dédiés à l'accompagnement des apprentis",
+    libelleOfficiel:
+      "Personnels dédiés : appui à la mobilité, référent handicap, conseil de perfectionnement (CFA)",
     super: true,
     conditionnel: "app",
   },
@@ -223,13 +261,13 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
   {
     numero: 21,
     critere: 5,
-    libelleOfficiel: "Détermination et mobilisation des compétences des intervenants",
+    libelleOfficiel: "Détermination, mobilisation et évaluation des compétences des intervenants",
     super: true,
   },
   {
     numero: 22,
     critere: 5,
-    libelleOfficiel: "Entretien et développement des compétences (gestion de la compétence)",
+    libelleOfficiel: "Entretien et développement des compétences des salariés",
     super: true,
   },
 
@@ -243,7 +281,7 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
   {
     numero: 24,
     critere: 6,
-    libelleOfficiel: "Veille sur les emplois et métiers",
+    libelleOfficiel: "Veille sur les évolutions des compétences, des métiers et des emplois",
     super: false,
   },
   {
@@ -255,19 +293,21 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
   {
     numero: 26,
     critere: 6,
-    libelleOfficiel: "Situations de handicap (accueil, accompagnement, réseaux)",
+    libelleOfficiel:
+      "Expertise, outils et réseaux mobilisés pour accueillir, accompagner ou orienter les publics en situation de handicap",
     super: true,
   },
   {
     numero: 27,
     critere: 6,
-    libelleOfficiel: "Dispositions en matière de sous-traitance / co-traitance",
+    libelleOfficiel: "Conformité au référentiel en cas de sous-traitance ou de portage salarial",
     super: true,
   },
   {
     numero: 28,
     critere: 6,
-    libelleOfficiel: "Formation en situation de travail (AFEST)",
+    libelleOfficiel:
+      "Formation en situation de travail : mobilisation du réseau de partenaires socio-économiques",
     super: false,
     conditionnel: "afest",
   },
@@ -277,7 +317,7 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
     // Apprentissage/CFA uniquement (insertion professionnelle des apprentis) → NON
     // applicable en action de formation continue (AFC).
     // Réf. liste officielle Acuria « CERT PPS LIAI QUA 1 V3 » : colonne AFC vide.
-    libelleOfficiel: "Insertion professionnelle des apprentis",
+    libelleOfficiel: "Insertion professionnelle ou poursuite d'études des apprentis (CFA)",
     super: true,
     conditionnel: "app",
   },
@@ -298,7 +338,8 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
   {
     numero: 32,
     critere: 7,
-    libelleOfficiel: "Mise en œuvre des mesures d'amélioration continue",
+    libelleOfficiel:
+      "Mesures d'amélioration à partir de l'analyse des appréciations et des réclamations",
     super: true,
   },
 ] as const;

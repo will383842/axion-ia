@@ -4,8 +4,12 @@
  * Module PUR : aucune dépendance I/O. Tests entièrement synchrones.
  */
 
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, it, expect } from "vitest";
 import {
+  CRITERES_RNQ,
+  libelleCritere,
   INDICATEURS_RNQ,
   indicateursApplicables,
   estSuperIndicateur,
@@ -92,7 +96,7 @@ describe("INDICATEURS_RNQ", () => {
   it("libellé off.1 exact", () => {
     const ind = INDICATEURS_RNQ.find((i) => i.numero === 1);
     expect(ind?.libelleOfficiel).toBe(
-      "Information accessible, complète et vérifiable sur les prestations",
+      "Information accessible au public, détaillée et vérifiable sur les prestations",
     );
   });
 
@@ -118,7 +122,70 @@ describe("INDICATEURS_RNQ", () => {
 
   it("libellé off.32 exact", () => {
     const ind = INDICATEURS_RNQ.find((i) => i.numero === 32);
-    expect(ind?.libelleOfficiel).toBe("Mise en œuvre des mesures d'amélioration continue");
+    expect(ind?.libelleOfficiel).toBe(
+      "Mesures d'amélioration à partir de l'analyse des appréciations et des réclamations",
+    );
+  });
+
+  // 🔴 2026-09-30 — libellés qui DÉFORMAIENT le sens officiel (RNQ V9, guide de
+  // lecture) : 18 réduit à une « coordination des acteurs », 20 à
+  // l'« accompagnement des apprentis », 27 élargi à une « co-traitance » que le
+  // référentiel ne cite pas, 28 réduit à l'AFEST.
+  it.each([
+    [13, /alternance/i],
+    [17, /moyens humains et techniques/i],
+    [18, /mobilisation et coordination des intervenants internes et\/ou externes/i],
+    [20, /mobilité.*référent handicap.*conseil de perfectionnement/i],
+    [27, /sous-traitance ou de portage salarial/i],
+    [28, /situation de travail.*partenaires socio-économiques/i],
+  ])("libellé off.%i fidèle au RNQ", (numero, motif) => {
+    expect(INDICATEURS_RNQ.find((i) => i.numero === numero)?.libelleOfficiel).toMatch(motif);
+  });
+
+  it("aucun libellé ne parle de « co-traitance » (absente du RNQ)", () => {
+    expect(INDICATEURS_RNQ.filter((i) => /co-traitance/i.test(i.libelleOfficiel))).toEqual([]);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CRITERES_RNQ — les 7 intitulés officiels (décret 2019-564), figés mot pour mot
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("CRITERES_RNQ", () => {
+  it("porte les 7 intitulés officiels exacts", () => {
+    expect(CRITERES_RNQ).toEqual({
+      1: "Les conditions d'information du public sur les prestations proposées, les délais pour y accéder et les résultats obtenus",
+      2: "L'identification précise des objectifs des prestations proposées et l'adaptation de ces prestations aux publics bénéficiaires lors de la conception des prestations",
+      3: "L'adaptation aux publics bénéficiaires des prestations et des modalités d'accueil, d'accompagnement, de suivi et d'évaluation mises en œuvre",
+      4: "L'adéquation des moyens pédagogiques, techniques et d'encadrement aux prestations mises en œuvre",
+      5: "La qualification et le développement des connaissances et compétences des personnels chargés de mettre en œuvre les prestations",
+      6: "L'inscription et l'investissement du prestataire dans son environnement professionnel",
+      7: "Le recueil et la prise en compte des appréciations et des réclamations formulées par les parties prenantes aux prestations délivrées",
+    });
+  });
+
+  it("chaque critère d'un indicateur a un intitulé", () => {
+    for (const ind of INDICATEURS_RNQ) {
+      expect(CRITERES_RNQ[ind.critere]).toBeTruthy();
+    }
+  });
+
+  it("libelleCritere compose « Critère N — intitulé » et replie hors 1–7", () => {
+    expect(libelleCritere(6)).toBe(
+      "Critère 6 — L'inscription et l'investissement du prestataire dans son environnement professionnel",
+    );
+    expect(libelleCritere(9)).toBe("Critère 9");
+  });
+
+  it("l'écran mode auditeur ne recopie plus ses propres intitulés", () => {
+    const source = readFileSync(
+      join(process.cwd(), "src/components/admin/qualiopi/MatriceIndicateurs.tsx"),
+      "utf8",
+    );
+    expect(source).not.toMatch(/function libelleCritere/);
+    expect(source).toMatch(
+      /import \{ libelleCritere \} from "@\/server\/qualiopi\/conformite\/indicateurs-registre"/,
+    );
   });
 });
 
