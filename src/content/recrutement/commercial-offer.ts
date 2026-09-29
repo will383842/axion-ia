@@ -48,9 +48,9 @@ export const COMMERCIAL_HERO_NODES: ReadonlyArray<ServiceHeroNode & { benefitEn:
     accent: "terracotta",
   },
   {
-    label: "Produits financés",
-    benefit: "Coût quasi nul côté client",
-    benefitEn: "Near-zero client cost",
+    label: "Sur mesure",
+    benefit: "Du diagnostic au déploiement",
+    benefitEn: "From diagnosis to rollout",
     accent: "primary",
   },
   {
@@ -77,18 +77,19 @@ export const COMMERCIAL_HERO = {
   titleEnPrefix: "Become an AI sales rep in",
   titleEm: { fr: "revenus déplafonnés", en: "uncapped income" },
   description: {
-    fr: "L'IA, le marché le plus porteur des prochaines décennies. Des produits simples, souvent finançables, que les entreprises s'arrachent. Apporteur d'affaires indépendant, en micro-entreprise ou en société : revenus sans plafond — démarrer ne vous coûte rien.",
-    en: "AI — the biggest market of the coming decades. Simple, often-fundable products that companies are eager to buy. Independent business introducer, as a sole trader or a company: uncapped income — getting started costs you nothing.",
+    fr: "L'IA, le marché le plus porteur des prochaines décennies. Des produits simples, que les entreprises s'arrachent. Apporteur d'affaires indépendant, en micro-entreprise ou en société : revenus sans plafond — démarrer ne vous coûte rien.",
+    en: "AI — the biggest market of the coming decades. Simple products that companies are eager to buy. Independent business introducer, as a sole trader or a company: uncapped income — getting started costs you nothing.",
   },
   ariaLabel: {
-    fr: "Le métier de commercial IA chez Axion-IA en 8 volets : prospection tous secteurs, vente de formations, audits, accompagnements 1-to-1, intégrations, produits financés à coût quasi nul pour le client, statut indépendant et suivi des commissions.",
-    en: "The Axion-IA AI sales role in 8 facets: all-sector prospecting, selling trainings, audits, 1-on-1 support, integrations, funded near-zero-cost products, self-employed status and commission tracking.",
+    fr: "Le métier de commercial IA chez Axion-IA en 8 volets : prospection tous secteurs, vente de formations, audits, accompagnements 1-to-1, intégrations, accompagnement sur mesure du diagnostic au déploiement, statut indépendant et suivi des commissions.",
+    en: "The Axion-IA AI sales role in 8 facets: all-sector prospecting, selling trainings, audits, 1-on-1 support, integrations, tailored support from diagnosis to rollout, self-employed status and commission tracking.",
   },
   ctaLabel: { fr: "Je veux rejoindre le réseau", en: "I want to join the network" },
 } as const;
 
 // ── L'OPPORTUNITÉ (section + encart noir) ─────────────────────────────────────
-// Marché énorme non desservi + produits financés — SANS nommer Qualiopi.
+// Marché énorme non desservi — AUCUNE mention de financement ici : elle n'est licite qu'une
+// fois la certification obtenue, et passe alors par le drapeau (JUR-T03, REQ-JUR-024).
 
 export const COMMERCIAL_OPPORTUNITY = {
   eyebrow: { fr: "Un marché énorme, encore à prendre", en: "A huge market, still up for grabs" },
@@ -100,11 +101,11 @@ export const COMMERCIAL_OPPORTUNITY = {
   paragraphs: {
     fr: [
       "Chaque dirigeant veut l'IA, peu savent par où commencer. Votre rôle : faire connaître nos solutions aux entreprises de votre secteur — pas de pression de closing.",
-      "Et beaucoup de nos prestations sont éligibles à des financements : la formation peut être financée selon éligibilité, et nous aidons l'entreprise à monter son dossier. Un argument qui ouvre grand les portes.",
+      "Et nous accompagnons l'entreprise de bout en bout, du diagnostic au déploiement : vous ouvrez la porte, nous faisons le reste.",
     ],
     en: [
       "Every executive wants AI, few know where to start. Your role: introduce our solutions to companies in your area — no closing pressure.",
-      "And many of our services are eligible for funding: the training may be funded depending on eligibility, and we help the company build its application. An argument that opens doors wide.",
+      "And we support the company end to end, from diagnosis to rollout: you open the door, we do the rest.",
     ],
   },
   /** Encart sombre à droite — le modèle de paiement (tracé, sans pression de closing). */
@@ -115,8 +116,8 @@ export const COMMERCIAL_OPPORTUNITY = {
       en: '"You introduce. It\'s tracked. You get paid."',
     },
     sub: {
-      fr: "Pas besoin d'être un closeur. Chaque entreprise que vous faites connaître est enregistrée à votre nom par notre équipe. Qu'elle signe avec vous ou qu'elle nous contacte directement, la commission vous revient sur chaque vente.",
-      en: "No need to be a closer. Every company you introduce is logged under your name by our team. Whether it signs with you or contacts us directly, the commission is yours on every sale.",
+      fr: "Pas besoin d'être un closeur. Chaque entreprise que vous faites connaître est enregistrée à votre nom par notre équipe. Qu'elle signe avec vous ou qu'elle nous contacte directement, la commission vous revient, versée à l'encaissement de chaque facture.",
+      en: "No need to be a closer. Every company you introduce is logged under your name by our team. Whether it signs with you or contacts us directly, the commission is yours, paid when each invoice is collected.",
     },
   },
 } as const;
@@ -151,9 +152,9 @@ export const COMMERCIAL_STEPS: ReadonlyArray<CommercialStep> = [
     titleFr: "Vous déclarez vos entreprises",
     titleEn: "You declare your companies",
     textFr:
-      "Vous nous déclarez les entreprises démarchées avec votre nom et prénom — c'est cette déclaration qui sécurise et déclenche vos commissions sur chaque vente signée.",
+      "Vous nous déclarez les entreprises démarchées avec votre nom et prénom — c'est cette déclaration qui sécurise vos commissions, versées à l'encaissement de chaque facture.",
     textEn:
-      "You declare prospected companies to us under your name — that declaration secures and triggers your commissions on every signed sale.",
+      "You declare prospected companies to us under your name — that declaration secures your commissions, paid when each invoice is collected.",
   },
   {
     titleFr: "Vous touchez vos commissions",
@@ -271,8 +272,8 @@ export const COMMERCIAL_FAQ_FIXED: ReadonlyArray<FaqItem> = [
       en: "Why are companies interested in these products?",
     },
     a: {
-      fr: "Parce que la demande IA est immense et que beaucoup de prestations sont éligibles à des financements : la formation peut être financée selon éligibilité. Nous aidons l'entreprise à monter son dossier.",
-      en: "Because AI demand is huge and many services are eligible for funding: the training may be funded depending on eligibility. We help the company build its application.",
+      fr: "Parce que la demande IA est immense, et que nous accompagnons l'entreprise de bout en bout, du diagnostic au déploiement.",
+      en: "Because AI demand is huge, and we support the company end to end, from diagnosis to rollout.",
     },
   },
   {
@@ -291,8 +292,8 @@ export const COMMERCIAL_FAQ_FIXED: ReadonlyArray<FaqItem> = [
       en: "How am I sure to get my commissions?",
     },
     a: {
-      fr: "Chaque entreprise démarchée est enregistrée à votre nom dès que vous nous la déclarez, et cette déclaration fait foi. Toute vente signée sur une de vos entreprises déclenche votre commission.",
-      en: "Every prospected company is logged under your name as soon as you declare it to us, and that declaration is what counts. Any signed sale on one of your companies triggers your commission.",
+      fr: "Chaque entreprise démarchée est enregistrée à votre nom dès que vous nous la déclarez, et cette déclaration fait foi. Toute prestation facturée à l'une de vos entreprises vous ouvre droit à commission, versée à l'encaissement de la facture.",
+      en: "Every prospected company is logged under your name as soon as you declare it to us, and that declaration is what counts. Any service invoiced to one of your companies entitles you to a commission, paid when the invoice is collected.",
     },
   },
 ];
@@ -342,9 +343,6 @@ export const COMMERCIAL_KEYWORDS_BASE: ReadonlyArray<string> = [
   "commerçants",
   "grandes entreprises",
   "dirigeants",
-  "financement formation",
-  "OPCO",
-  "CPF",
   // Intentions de recherche élargies (promotion, revenus, carrière, business)
   "promouvoir l'IA",
   "promoteur IA",
@@ -396,13 +394,25 @@ export const COMMERCIAL_KEYWORDS_BASE: ReadonlyArray<string> = [
   "devenir indépendant",
 ];
 
-/** Construit la liste de mots-clés, enrichie des variantes locales (ville/dpt/région). */
+/**
+ * Mots-clés de financement : émis SEULEMENT si la certification est obtenue (REQ-JUR-024,
+ * JUR-T03). Le CPF n'y figure jamais : il n'est pas mobilisable (`CPF_ELIGIBLE = false`).
+ */
+const COMMERCIAL_KEYWORDS_FINANCEMENT: ReadonlyArray<string> = ["financement formation", "OPCO"];
+
+/**
+ * Construit la liste de mots-clés, enrichie des variantes locales (ville/dpt/région).
+ * `financementAffichable` est OBLIGATOIRE : l'appelant le lit dans
+ * `isQualiopiCertificationObtenue()` — ce module de contenu ne lit aucun drapeau.
+ */
 export function buildCommercialKeywords(
+  options: { readonly financementAffichable: boolean },
   villeName?: string,
   departementLabel?: string,
   region?: string,
 ): string[] {
   const kw = [...COMMERCIAL_KEYWORDS_BASE];
+  if (options.financementAffichable) kw.push(...COMMERCIAL_KEYWORDS_FINANCEMENT);
   if (villeName) {
     kw.push(
       `emploi commercial ${villeName}`,

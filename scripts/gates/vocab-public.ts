@@ -1,0 +1,239 @@
+#!/usr/bin/env tsx
+/**
+ * scripts/gates/vocab-public.ts — ce que les pages de recrutement des apporteurs ont le droit de
+ * dire (JUR-T03, chantier Axion Partners ; REQ-JUR-001, REQ-JUR-002, REQ-JUR-024).
+ *
+ *     pnpm exec tsx scripts/gates/vocab-public.ts    # code 1 et chaque faute nommée, sinon 0
+ *
+ * Cinq familles, et une limite déclarée :
+ *   — `declencheur_hors_encaissement` : une commission se déclenche à l'ENCAISSEMENT (contrat
+ *     d'apporteur). « Vente signée » ou « dès la signature » promettent un droit que le
+ *     contrat ne donne pas ;
+ *   — `financement_inconditionnel` : les formules que la SSOT du financement
+ *     (`src/server/qualiopi/config/financing.ts`, point 4 de son contrat légal) interdit, MÊME
+ *     certification obtenue — elle ne lit donc AUCUN drapeau : « prise en charge à 100 % »,
+ *     « financé par Qualiopi », « sans avance de frais » et leurs périphrases (trésorerie à
+ *     sortir, avancer les fonds, coût nul ou quasi nul) ;
+ *   — `financement_non_gate` : une mention de financement (financ…, OPCO, France Travail) dans
+ *     un fichier qui ne consulte jamais la certification : avant elle, toute mention
+ *     « finançable » est illicite (point 1 du contrat légal de `financing.ts`) ;
+ *   — `qualiopi_nu` : « Qualiopi » employé comme un label de financement, hors de la seule
+ *     affirmation « certifié(e) Qualiopi », que `assertion-flag-surfaces.spec.ts` garde déjà
+ *     derrière le drapeau ;
+ *   — `cpf` : le CPF n'est pas mobilisable (`CPF_ELIGIBLE = false`) : ni « CPF », ni « Mon
+ *     Compte Formation ».
+ *
+ * ELLE LIT COMME LE CANDIDAT. Une ligne est jugée APRÈS décodage des entités que le JSX sert en
+ * clair (`&apos;`, `&rsquo;`, `&nbsp;`, `&quot;`…) : « jusqu&apos;à 100 % » s'affiche « jusqu'à
+ * 100 % ». Et les branches anglaises (`isFr ? … : …`) sont servies : le financement s'y lit aussi
+ * (`fund…`, `fully funded`, `100 % covered`, `funded products`).
+ *
+ * CE QU'ELLE NE LIT PAS. Les commentaires (une ligne qui commence par `//` ou `*`) : ils
+ * expliquent les interdits, ils ne sont pas servis. Et seulement les surfaces que lit ou
+ * reçoit un candidat apporteur (ci-dessous) : les pages de formation ont leur propre garde
+ * (`src/server/editorial/conformite`). Le mot « commercial » n'est PAS interdit : il désigne
+ * ici les apporteurs (décision de Williams du 2026-09-29).
+ */
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import path from "node:path";
+
+export type FamilleVocabulaire =
+  | "declencheur_hors_encaissement"
+  | "financement_inconditionnel"
+  | "financement_non_gate"
+  | "qualiopi_nu"
+  | "cpf";
+
+/**
+ * Une mention de financement n'est admise que dans un fichier qui CONSULTE la certification :
+ * le drapeau lui-même, la SSOT du financement, ou le paramètre `financementAffichable` que
+ * reçoivent les mots-clés. C'est une lecture par FICHIER, pas par branche : elle ne prouve pas
+ * que la phrase est derrière le test, seulement que le fichier sait qu'il y en a un — la
+ * preuve fine reste `assertion-flag-surfaces.spec.ts`.
+ */
+const MENTION_FINANCEMENT = /finan[cç]|\bfund(?:ed|ing|able|s)?\b|\bOPCO\b|France\s+Travail/i;
+const CONSULTE_LA_CERTIFICATION =
+  /isQualiopiCertificationObtenue|getPublicFinancing(?:Blurb|Micro)|financementAffichable/;
+
+/**
+ * Les surfaces jugées LIGNE À LIGNE, où la lecture par fichier a été prise en défaut
+ * (relecture securite de #1220 : memo-isere lisait le drapeau UNE fois et servait dix-sept
+ * mentions à côté). Décision de Williams du 2026-09-29 : la mention de financement y revient,
+ * « seulement après la certification ». Une mention n'y est donc admise que :
+ *   — DANS la déclaration d'une constante `…_CERTIFIE` ;
+ *   — si le fichier lie `const certifie = isQualiopiCertificationObtenue()` ;
+ *   — et si chaque emploi de cette constante hors de sa déclaration est `certifie ? …_CERTIFIE`,
+ *     une seule fois sur la ligne, dans la branche vraie d'un `certifie` non nié.
+ * Toute autre mention, et tout emploi d'une `…_CERTIFIE` hors de la bascule, est une faute.
+ */
+export const LECTURE_PAR_LIGNE: ReadonlyArray<string> = ["memo-isere/page.tsx"];
+
+const LIE_LA_BASCULE = /\bconst\s+certifie\s*=\s*isQualiopiCertificationObtenue\(\s*\)/;
+const DECLARATION_CERTIFIE = /\bconst\s+([A-Z][A-Z0-9_]*_CERTIFIE)\b/;
+
+/** Les lignes (index) de chaque déclaration `…_CERTIFIE`, jusqu'à la ligne qui la termine. */
+function declarationsCertifiees(lignes: ReadonlyArray<string>): Map<string, Set<number>> {
+  const zones = new Map<string, Set<number>>();
+  lignes.forEach((l, i) => {
+    const d = DECLARATION_CERTIFIE.exec(l);
+    if (!d?.[1]) return;
+    const zone = new Set<number>();
+    for (let j = i; j < lignes.length; j++) {
+      zone.add(j);
+      if (/;\s*$/.test(lignes[j] ?? "")) break;
+    }
+    zones.set(d[1], zone);
+  });
+  return zones;
+}
+
+/** Les fautes propres à une surface jugée ligne à ligne. */
+function fautesParLigne(chemin: string, texte: string): FauteVocabulaire[] {
+  const lignes = texte.split("\n");
+  const zones = declarationsCertifiees(lignes);
+  const bascule = LIE_LA_BASCULE.test(texte);
+  const admises = new Set(bascule ? [...zones.values()].flatMap((z) => [...z]) : []);
+  const fautes: FauteVocabulaire[] = [];
+  lignes.forEach((brute, i) => {
+    if (COMMENTAIRE.test(brute)) return;
+    const f = admises.has(i) ? null : MENTION_FINANCEMENT.exec(telleQueLue(brute));
+    if (f) fautes.push({ famille: "financement_non_gate", chemin, ligne: i + 1, extrait: f[0] });
+    for (const [nom, zone] of zones) {
+      const emplois = brute.match(new RegExp(`\\b${nom}\\b`, "g"))?.length ?? 0;
+      if (zone.has(i) || emplois === 0) continue;
+      // La constante n'est admise qu'UNE fois, dans la BRANCHE VRAIE d'un `certifie` NON NIÉ :
+      // `!certifie ? X` servirait le financement hors certification, `certifie ? X : X` toujours
+      // (relecture exactitude de #1220). `(?<![!\w.])` refuse `!certifie` et `a.certifie`.
+      const brancheVraie = new RegExp(
+        `(?<![!\\w.])certifie\\s*\\?\\s*(?:\\[\\s*)?(?:\\.\\.\\.\\s*)?${nom}\\b`,
+      );
+      if (emplois === 1 && brancheVraie.test(brute)) continue;
+      fautes.push({ famille: "financement_non_gate", chemin, ligne: i + 1, extrait: nom });
+    }
+  });
+  return fautes;
+}
+
+export type FauteVocabulaire = {
+  readonly famille: FamilleVocabulaire;
+  readonly chemin: string;
+  readonly ligne: number;
+  readonly extrait: string;
+};
+
+const REGLES: ReadonlyArray<{ famille: FamilleVocabulaire; motif: RegExp }> = [
+  { famille: "declencheur_hors_encaissement", motif: /vente\s+sign[ée]e|d[èe]s\s+la\s+signature/i },
+  {
+    famille: "financement_inconditionnel",
+    motif:
+      /pris(?:e|es)?\s+en\s+charge\s+(?:à|a)\s+100|(?:finan[cç]|pris)[\wÀ-ÿ]*\s+(?:jusqu['’]à\s+|à\s+)?100\s*%|100\s*%\s*(?:finan[cç]|pris)|finan[cç][\wÀ-ÿ]*\s+par\s+qualiopi|sans\s+avance\s+de\s+frais|avancer\s+les\s+fonds|trésorerie\s+à\s+sortir|co[uû]t[^.;!?]{0,60}?\b(?:quasi[\s-]+)?nul(?:le)?\b|\bOPCO\s+(?:paie|finance|règle|prend\s+tout)|pa(?:ie|ye)\s+la\s+formation\s+à\s+ta\s+place|fully\s+(?:funded|covered)|100\s*%\s*(?:funded|covered)|funded\s+products|no\s+upfront\s+cost/i,
+  },
+  { famille: "qualiopi_nu", motif: /(?<!certifi[a-zéèê]{0,3}\s)\bQualiopi\b/ },
+  {
+    famille: "cpf",
+    motif: /\bCPF\b|mon\s+compte\s+formation|compte\s+personnel\s+de\s+formation/i,
+  },
+];
+
+const COMMENTAIRE = /^\s*(?:\/\/|\*|\/\*)/;
+
+/** Les entités que le JSX sert en clair : la ligne est jugée telle que le candidat la LIT. */
+const ENTITES: Readonly<Record<string, string>> = {
+  apos: "'",
+  rsquo: "’",
+  lsquo: "‘",
+  quot: '"',
+  nbsp: " ",
+  amp: "&",
+  laquo: "«",
+  raquo: "»",
+};
+
+export function telleQueLue(ligne: string): string {
+  return ligne
+    .replace(/&([a-z]+);/gi, (e, nom: string) => ENTITES[nom.toLowerCase()] ?? e)
+    .replace(/&#(\d+);/g, (_, n: string) => String.fromCodePoint(Number(n)))
+    .replace(/[  ]/g, " ");
+}
+
+export function fautesDeVocabulaire(
+  fichiers: ReadonlyArray<{ chemin: string; texte: string }>,
+): FauteVocabulaire[] {
+  const fautes: FauteVocabulaire[] = [];
+  for (const { chemin, texte } of fichiers) {
+    const parLigne = LECTURE_PAR_LIGNE.some((s) => chemin.replace(/\\/g, "/").endsWith(s));
+    if (parLigne) fautes.push(...fautesParLigne(chemin, texte));
+    // Une surface jugée ligne à ligne n'a pas d'exemption par fichier : `consulte` y vaut
+    // « vrai » pour ne pas compter deux fois ce que `fautesParLigne` a déjà jugé.
+    const consulte = parLigne || CONSULTE_LA_CERTIFICATION.test(texte);
+    texte.split("\n").forEach((brute, i) => {
+      if (COMMENTAIRE.test(brute)) return;
+      const contenu = telleQueLue(brute);
+      for (const { famille, motif } of REGLES) {
+        const m = motif.exec(contenu);
+        if (m) fautes.push({ famille, chemin, ligne: i + 1, extrait: m[0] });
+      }
+      const f = consulte ? null : MENTION_FINANCEMENT.exec(contenu);
+      if (f) {
+        fautes.push({ famille: "financement_non_gate", chemin, ligne: i + 1, extrait: f[0] });
+      }
+    });
+  }
+  return fautes;
+}
+
+/** Les surfaces LUES ou REÇUES par un candidat apporteur. */
+export const DOSSIERS_APPORTEUR = [
+  "src/content/recrutement",
+  "src/components/recrutement",
+  "src/components/services/devenir-commercial",
+  "src/app/[locale]/devenir-commercial-ia",
+  "src/app/[locale]/apporteur-affaires",
+  "src/app/[locale]/apporteur-affaires-independant-formation-ia-entreprise",
+  "src/app/[locale]/memo-isere",
+];
+const GABARITS = "src/lib/email/templates";
+const GABARIT_APPORTEUR = /apporteur|commercial/;
+const HORS = /(?:__tests__|\.spec\.|\.test\.)/;
+const SOURCE = /\.(?:ts|tsx)$/;
+
+function lister(dossier: string): string[] {
+  if (!existsSync(dossier)) return [];
+  return readdirSync(dossier).flatMap((nom) => {
+    const chemin = path.posix.join(dossier, nom);
+    if (HORS.test(chemin)) return [];
+    if (statSync(chemin).isDirectory()) return lister(chemin);
+    return SOURCE.test(nom) ? [chemin] : [];
+  });
+}
+
+export function lireSurfacesApporteur(racine = process.cwd()): { chemin: string; texte: string }[] {
+  const chemins = [
+    ...DOSSIERS_APPORTEUR.flatMap((d) => lister(d)),
+    ...lister(GABARITS).filter((c) => GABARIT_APPORTEUR.test(path.posix.basename(c))),
+  ];
+  return chemins.map((chemin) => ({
+    chemin,
+    texte: readFileSync(path.join(racine, chemin), "utf8"),
+  }));
+}
+
+if (/vocab-public\.ts$/.test(process.argv[1] ?? "")) {
+  const surfaces = lireSurfacesApporteur();
+  const fautes = fautesDeVocabulaire(surfaces);
+  if (surfaces.length === 0) {
+    console.error(
+      "[jur:vocab-public] ROUGE — aucune surface lue : rien à juger n'est pas un vert.",
+    );
+    process.exit(1);
+  }
+  if (fautes.length > 0) {
+    for (const f of fautes)
+      console.error(`  ✗ [${f.famille}] ${f.chemin}:${f.ligne} — « ${f.extrait} »`);
+    console.error(`[jur:vocab-public] ROUGE — ${fautes.length} faute(s).`);
+    process.exit(1);
+  }
+  console.log(
+    `[jur:vocab-public] VERT — ${surfaces.length} surfaces apporteur lues, aucune faute.`,
+  );
+}

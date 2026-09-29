@@ -80,6 +80,17 @@ export const revalidate = 3600;
 
 /** Rythme vertical unique de la page. Mobile d'abord : `py-12` (48 px) au lieu
  *  des `py-24` (96 px) hérités du défaut `Section`. */
+/**
+ * Les mentions de financement de cette page : servies SEULEMENT certification obtenue
+ * (décision de Williams, 2026-09-29), dans le registre que permet la SSOT du financement —
+ * « peut être prise en charge … selon ses critères », jamais un taux ni un coût nul.
+ * La garde `jur:vocab-public` lit cette page LIGNE À LIGNE : une mention n'y est admise que
+ * dans une constante `…_CERTIFIE`, employée sous `certifie ? …`.
+ */
+const REASSURANCE_CERTIFIE: readonly string[] = [
+  "Formations pouvant être prises en charge par l'OPCO, selon ses critères",
+];
+
 const SEC = "py-12 sm:py-16 lg:py-24";
 
 /** Photo pleine largeur sur mobile, cadrée et arrondie dès `sm`.
@@ -161,7 +172,7 @@ const TAILLES_CIBLES: readonly TailleCible[] = [
       "Hôtel-restaurant, camping, résidence de tourisme",
     ],
     ceQueCaVaut:
-      "Le cœur de cible. Un ou deux services à former, 10 à 15 personnes par groupe, financement OPCO quasi systématique. En général 1 à 3 journées — et l’année suivante, le service d’à côté.",
+      "Le cœur de cible. Un ou deux services à former, 10 à 15 personnes par groupe. En général 1 à 3 journées — et l’année suivante, le service d’à côté.",
     fort: true,
   },
   {
@@ -569,6 +580,7 @@ export default async function MemoIserePage({ params }: Props) {
   const loc = locale as Locale;
   const isFr = loc === "fr";
   if (!isFr) notFound(); // page presse locale FR-only (EN 301 → FR au runtime)
+  const certifie = isQualiopiCertificationObtenue();
 
   // Avis réels — priorité Isère (45 des 77 avis publiés). On fait REMONTER les
   // avis « entreprise » (raison sociale renseignée) : la page vise PME, ETI et
@@ -637,19 +649,19 @@ export default async function MemoIserePage({ params }: Props) {
       id: "debutant",
       question: "Faut-il connaître l'IA ou avoir déjà vendu ?",
       answer:
-        "Non. Nous vous présentons l'offre en détail (formations, audits, financements) et vous fournissons les supports. Ce qui compte : l'aisance relationnelle et des entreprises autour de vous à qui la recommander.",
+        "Non. Nous vous présentons l'offre en détail (formations, audits, accompagnement) et vous fournissons les supports. Ce qui compte : l'aisance relationnelle et des entreprises autour de vous à qui la recommander.",
     },
     {
       id: "quelles-entreprises",
       question: "Quelles entreprises est-ce que je démarche ?",
       answer:
-        "Les trois tailles, sans exception. Les PME de 10 à 249 salariés — mécanique, plasturgie, BTP, transport, laboratoires et cliniques, cabinets comptables, ESN, négoce, agroalimentaire, hôtellerie : c'est le cœur de cible, 1 à 3 journées par service. Les ETI de 250 à 4 999 salariés — groupes industriels multi-sites, groupes de cliniques ou d'EHPAD, coopératives agricoles, enseignes régionales : plusieurs sites et plusieurs vagues, donc des dizaines de journées chez un seul client. Et les grands groupes de 5 000 salariés et plus — chimie et énergie de la vallée du Rhône, microélectronique grenobloise, sièges régionaux de banque ou d'assurance, centres hospitaliers : on y entre par l'établissement local, pas par le siège. Attention, ce ne sont que des exemples : la liste n'est ni limitative ni exclusive. Un magasin, une entreprise du bâtiment, un établissement de santé, un hôtel-restaurant, une exploitation agricole, une collectivité ou un grand groupe sont tout aussi concernés. Quel que soit le secteur et quelle que soit la taille : l'obligation de formation de l'AI Act et le financement OPCO concernent tout le monde.",
+        "Les trois tailles, sans exception. Les PME de 10 à 249 salariés — mécanique, plasturgie, BTP, transport, laboratoires et cliniques, cabinets comptables, ESN, négoce, agroalimentaire, hôtellerie : c'est le cœur de cible, 1 à 3 journées par service. Les ETI de 250 à 4 999 salariés — groupes industriels multi-sites, groupes de cliniques ou d'EHPAD, coopératives agricoles, enseignes régionales : plusieurs sites et plusieurs vagues, donc des dizaines de journées chez un seul client. Et les grands groupes de 5 000 salariés et plus — chimie et énergie de la vallée du Rhône, microélectronique grenobloise, sièges régionaux de banque ou d'assurance, centres hospitaliers : on y entre par l'établissement local, pas par le siège. Attention, ce ne sont que des exemples : la liste n'est ni limitative ni exclusive. Un magasin, une entreprise du bâtiment, un établissement de santé, un hôtel-restaurant, une exploitation agricole, une collectivité ou un grand groupe sont tout aussi concernés. Quel que soit le secteur et quelle que soit la taille : l'obligation de formation de l'AI Act concerne tout le monde.",
     },
     {
       id: "pourquoi-ca-se-vend",
       question: "Pourquoi les entreprises achètent-elles ces formations ?",
       answer:
-        "Trois raisons. L'AI Act européen impose désormais aux entreprises de former leurs équipes qui utilisent l'IA (article 4, en vigueur depuis février 2025). Les formations sont finançables par les OPCO, donc le coût réel pour le client est faible, voire nul. Et la demande explose : toutes les PME et ETI parlent d'IA, très peu ont été démarchées.",
+        "Deux raisons. L'AI Act européen impose désormais aux entreprises de former leurs équipes qui utilisent l'IA (article 4, en vigueur depuis février 2025). Et la demande explose : toutes les PME et ETI parlent d'IA, très peu ont été démarchées.",
     },
     {
       id: "demarrage",
@@ -731,9 +743,9 @@ export default async function MemoIserePage({ params }: Props) {
                   repoussait le CTA hors du premier écran. */}
               <p data-speakable className="text-fg-soft mt-5 max-w-xl text-lg leading-relaxed">
                 Vous recommandez aux <strong>PME, ETI et grands groupes</strong> que vous connaissez
-                des formations IA — l’AI Act les rend incontournables, l’OPCO les finance. Vous
-                touchez <strong>{`${commission(1)} par journée vendue`}</strong>. De Grenoble à
-                Lyon, là où vous avez votre réseau.
+                des formations IA — l’AI Act les rend incontournables. Vous touchez{" "}
+                <strong>{`${commission(1)} par journée vendue`}</strong>. De Grenoble à Lyon, là où
+                vous avez votre réseau.
               </p>
 
               {/* CTA remonté AVANT la photo : sur mobile il était sous une image
@@ -835,7 +847,8 @@ export default async function MemoIserePage({ params }: Props) {
               isQualiopiCertificationObtenue()
                 ? "Organisme certifié Qualiopi"
                 : "Démarche qualité alignée sur le référentiel national qualité",
-              "Formations finançables OPCO",
+              "Formations au poste de travail, sur mesure",
+              ...(certifie ? REASSURANCE_CERTIFIE : []),
               "Statut libre : micro-entreprise ou société",
               "Cumulable avec votre emploi actuel",
             ].map((t) => (
@@ -900,7 +913,7 @@ export default async function MemoIserePage({ params }: Props) {
         eyebrow="L'opportunité"
         title="Pourquoi c'est si"
         titleEm="facile à vendre"
-        description="Vous n'arrivez pas avec un produit à pousser : vous arrivez avec une obligation légale, un financement déjà prévu et une demande qui explose."
+        description="Vous n'arrivez pas avec un produit à pousser : vous arrivez avec une obligation légale, un besoin concret et une demande qui explose."
       >
         <>
           <ol className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
@@ -916,10 +929,10 @@ export default async function MemoIserePage({ params }: Props) {
               {
                 accent: "primary" as const,
                 Icon: BadgeEuro,
-                title: "L'OPCO paie",
+                title: "Un besoin concret",
                 description:
-                  "Les formations sont finançables par les OPCO : le coût réel pour le client est faible, souvent nul. L'objection prix disparaît de la conversation.",
-                stat: { figure: "OPCO", label: "formation financée" },
+                  "Les équipes utilisent déjà l'IA, souvent sans cadre : erreurs, données exposées, temps perdu. La formation répond à un problème qu'elles vivent chaque jour.",
+                stat: { figure: "Terrain", label: "besoin immédiat" },
               },
               {
                 accent: "sage" as const,
@@ -1076,7 +1089,7 @@ export default async function MemoIserePage({ params }: Props) {
         title="Votre prochain client ? Le site industriel"
         titleEm="d'à côté"
         titleTail=" — ou le cabinet d'avocats d'en face"
-        description="De la PME au grand groupe : l'AI Act ne fait pas de tri entre les tailles ni entre les secteurs, l'OPCO non plus. Les PME signent vite, les grandes rapportent gros — les quatre sont concernées, et voici à quoi elles ressemblent autour de vous."
+        description="De la PME au grand groupe : l'AI Act ne fait pas de tri entre les tailles ni entre les secteurs. Les PME signent vite, les grandes rapportent gros — les quatre sont concernées, et voici à quoi elles ressemblent autour de vous."
       >
         <>
           {/* Triptyque : trois tuiles VERTICALES sur mobile (une bande d'un seul
@@ -1260,7 +1273,7 @@ export default async function MemoIserePage({ params }: Props) {
         eyebrow="Rémunération"
         title="Vous ne vendez pas des contrats."
         titleEm="Vous vendez des journées."
-        description="Votre commission ne dépend ni du prix payé par le client, ni de la taille de l’équipe formée : elle se compte en journées de formation. Une journée vendue, une commission. Deux journées, deux commissions. Et l’OPCO paie la formation à la place du client."
+        description="Votre commission ne dépend ni du prix payé par le client, ni de la taille de l’équipe formée : elle se compte en journées de formation. Une journée vendue, une commission. Deux journées, deux commissions."
       >
         <>
           {/* ── L'équation, en trois temps ───────────────────────────────── */}
@@ -1381,9 +1394,9 @@ export default async function MemoIserePage({ params }: Props) {
                 {`${commission(1)} par journée vendue`}
               </p>
               <p className="text-fg-soft mt-2 text-sm leading-relaxed">
-                Formations au poste de travail, finançables OPCO, rendues incontournables par l’AI
-                Act. Une grande équipe se forme en plusieurs groupes : autant de journées, autant de
-                commissions — chez un seul client.
+                Formations au poste de travail, rendues incontournables par l’AI Act. Une grande
+                équipe se forme en plusieurs groupes : autant de journées, autant de commissions —
+                chez un seul client.
               </p>
             </div>
             <div className="border-border bg-paper shadow-subtle rounded-2xl border p-5 sm:p-6">
@@ -1447,7 +1460,7 @@ export default async function MemoIserePage({ params }: Props) {
                   Icon: GraduationCap,
                   title: "Nous vous présentons l'offre",
                   description:
-                    "Formations, audits, financements OPCO : vous disposez des informations et des supports utiles, à consulter librement.",
+                    "Formations, audits, intégrations : vous disposez des informations et des supports utiles, à consulter librement.",
                   stat: { figure: "Offre", label: "présentée dès le départ" },
                 },
                 {
@@ -1552,7 +1565,7 @@ export default async function MemoIserePage({ params }: Props) {
                 eyebrow: "01",
                 title: "Présentation complète de l'offre",
                 description:
-                  "Produits, tarifs, financements OPCO : vous savez précisément ce que propose Axion-IA et comment répondre aux questions des entreprises.",
+                  "Produits, tarifs, argumentaires : vous savez précisément ce que propose Axion-IA et comment répondre aux questions des entreprises.",
               },
               {
                 Icon: Handshake,

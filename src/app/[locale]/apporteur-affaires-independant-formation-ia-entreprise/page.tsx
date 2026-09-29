@@ -385,7 +385,7 @@ export default async function ApporteurAffairesPage({ params }: Props) {
               Elle reste largement méconnue des dirigeants. Vous n&apos;arrivez donc pas avec un
               produit à pousser, mais avec une information qu&apos;ils n&apos;ont pas.
               {certifie
-                ? " Et la formation peut être financée jusqu'à 100 % par leur OPCO, selon l'OPCO et la branche."
+                ? " Et la formation peut être prise en charge par leur OPCO, selon l'OPCO et la branche."
                 : ""}
             </p>
           </div>
@@ -409,7 +409,9 @@ export default async function ApporteurAffairesPage({ params }: Props) {
             <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
               <li>Deux journées : {commission(2)}</li>
               <li>Trois journées : {commission(3)}</li>
-              {certifie ? <li>Finançable jusqu&apos;à 100 % par l&apos;OPCO</li> : null}
+              {certifie ? (
+                <li>Peut être prise en charge par l&apos;OPCO, selon ses critères</li>
+              ) : null}
             </ul>
           </article>
 

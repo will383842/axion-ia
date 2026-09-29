@@ -410,7 +410,9 @@ export async function FacebookLandingPage({ params }: Props) {
           <p className="mt-3 max-w-2xl leading-relaxed text-[color:var(--color-bg)]/80">
             Règlement européen sur l&apos;IA, en vigueur depuis février 2025. Presque aucune
             entreprise ne le sait.
-            {certifie ? " Et la formation est finançable jusqu'à 100 % par leur OPCO." : ""}
+            {certifie
+              ? " Et la formation peut être prise en charge par leur OPCO, selon leur situation."
+              : ""}
           </p>
         </div>
       </Section>
@@ -434,7 +436,9 @@ export async function FacebookLandingPage({ params }: Props) {
               <li>Une formation de 2 journées : jusqu&apos;à {commission(2)}</li>
               <li>De 3 journées : jusqu&apos;à {commission(3)}</li>
               {certifie ? (
-                <li>Finançable jusqu&apos;à 100 % par l&apos;OPCO de l&apos;entreprise</li>
+                <li>
+                  Peut être prise en charge par l&apos;OPCO de l&apos;entreprise, selon ses critères
+                </li>
               ) : null}
             </ul>
           </article>

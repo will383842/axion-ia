@@ -177,6 +177,12 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // même, à côté de l'appel au drapeau. Les y écrire sans lire le drapeau
   // serait illégal avant l'obtention du certificat.
   "src/components/recrutement/FacebookLandingPage.tsx",
+  // Pages de recrutement des apporteurs (JUR-T03, 2026-09-29) : les mots-clés
+  // « OPCO » et « financement formation » ne sont émis que si la certification
+  // est obtenue (REQ-JUR-024). La page lit le drapeau et le passe au module de
+  // contenu, qui n'en lit aucun.
+  "src/app/[locale]/devenir-commercial-ia/candidature/page.tsx",
+  "src/app/[locale]/devenir-commercial-ia/page.tsx",
   "src/server/content-gen/generators/blog-article.ts",
   // ── Boîte de réception (2026-08-27) : annote chaque demande entrante du
   //    client CRM au même e-mail, pour qu'on ne convertisse pas deux fois la

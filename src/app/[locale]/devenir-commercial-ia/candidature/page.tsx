@@ -38,6 +38,7 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { CommercialApplicationWizard } from "@/components/forms/commercial-application/CommercialApplicationWizard";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { buildCommercialKeywords } from "@/content/recrutement/commercial-offer";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { memoPhoto } from "@/content/recrutement/memo-isere-photos";
 import { MEMO_ZONE_CLUSTERS, MEMO_ZONE_TOTAL } from "@/content/recrutement/memo-isere-zone";
 import { buildProductMetadata } from "@/lib/seo";
@@ -81,7 +82,7 @@ const APRES = [
   {
     Icon: Rocket,
     title: "Vous recommandez, à votre rythme",
-    text: "Nous vous présentons l'offre (produits, financements OPCO) et vous recommandez Axion-IA auprès des entreprises que vous connaissez, en toute indépendance.",
+    text: "Nous vous présentons l'offre (produits, argumentaires) et vous recommandez Axion-IA auprès des entreprises que vous connaissez, en toute indépendance.",
   },
 ] as const;
 
@@ -106,7 +107,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Apply in 3 minutes, no resume: €500 for you per AI training day sold. The AI Act mandates it for small businesses, SMEs, mid-caps and large groups." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     })),
     title: { absolute: title },
-    keywords: buildCommercialKeywords(),
+    keywords: buildCommercialKeywords({ financementAffichable: isQualiopiCertificationObtenue() }),
   };
 }
 
