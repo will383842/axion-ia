@@ -931,6 +931,70 @@ async function journaliserFaitsEffaces(
   });
 }
 
+/**
+ * VIDE des faits — l'aide UNIQUE de l'effacement ciblé (art. 17) et du retrait
+ * de l'accord (B2) : contenu vidé et statut `efface`, journal du fait et
+ * journal d'effacement, cases pré-remplies depuis eux vidées, et LIENS des
+ * autres faits vers eux retirés (relation, résolution, remplacement,
+ * doublon) — sinon un fait restant continuerait de désigner un fait effacé.
+ */
+async function viderFaits(
+  tx: Prisma.TransactionClient,
+  faitIds: readonly string[],
+  parAdminId: string | null,
+  motif: MotifEffacement,
+): Promise<void> {
+  if (faitIds.length === 0) return;
+  const ids = [...faitIds];
+  await tx.fait.updateMany({
+    where: { id: { in: ids } },
+    data: { ...FAIT_CONTENU_VIDE, statut: "efface" },
+  });
+  await journaliserFaitsEffaces(tx, ids, parAdminId);
+  await journaliserEffacements(tx, "faits", ids, motif);
+  await tx.preRemplissage.updateMany({
+    where: { faitId: { in: ids } },
+    data: PRE_REMPLISSAGE_VIDE,
+  });
+  await tx.fait.updateMany({
+    where: { relationAvecFaitId: { in: ids } },
+    data: { relationAvecFaitId: null, relation: null },
+  });
+  await tx.fait.updateMany({
+    where: { resoluParFaitId: { in: ids } },
+    data: { resoluParFaitId: null },
+  });
+  await tx.fait.updateMany({
+    where: { remplaceParId: { in: ids } },
+    data: { remplaceParId: null },
+  });
+  await tx.fait.updateMany({
+    where: { doublonDeFaitId: { in: ids } },
+    data: { doublonDeFaitId: null },
+  });
+}
+
+/**
+ * Passe des comptes rendus à `a_regenerer` (contenu et vérification vidés : le
+ * bloc chiffré contient les phrases effacées), les journalise, et PROGRAMME
+ * leur réécriture (P5 relit les faits restants, jamais la transcription).
+ * L'aide UNIQUE de l'effacement ciblé et du retrait de l'accord.
+ */
+async function mettreARegenerer(
+  tx: Prisma.TransactionClient,
+  comptesRendus: ReadonlyArray<{ readonly id: string; readonly rencontreId: string }>,
+  motif: MotifEffacement,
+): Promise<void> {
+  if (comptesRendus.length === 0) return;
+  const ids = comptesRendus.map((c) => c.id);
+  await tx.compteRendu.updateMany({
+    where: { id: { in: ids } },
+    data: COMPTE_RENDU_A_REGENERER,
+  });
+  await journaliserEffacements(tx, "comptes_rendus", ids, motif);
+  await programmerReecritures(tx, comptesRendus);
+}
+
 // Un `type` et non une `interface` : le résultat est versé tel quel dans le
 // journal d'activité (colonne JSON), qui exige un type sans signature fermée.
 export type EffacementCibleResultat = {
@@ -1069,17 +1133,8 @@ export async function effacerCibleParAdresses(
       select: { id: true, rencontreId: true },
     });
     const faitIds = faits.map((f) => f.id);
-    await tx.fait.updateMany({
-      where: { id: { in: faitIds } },
-      data: { ...FAIT_CONTENU_VIDE, statut: "efface" },
-    });
-    await journaliserFaitsEffaces(tx, faitIds, parAdminId);
-    await journaliserEffacements(tx, "faits", faitIds, motif);
-    // Les cases pré-remplies depuis ces faits portent leur valeur : vidées.
-    await tx.preRemplissage.updateMany({
-      where: { faitId: { in: faitIds } },
-      data: PRE_REMPLISSAGE_VIDE,
-    });
+    // Contenu, journaux, cases pré-remplies et liens : l'aide partagée.
+    await viderFaits(tx, faitIds, parAdminId, motif);
 
     // 3. Les comptes rendus des rencontres où elle a parlé ou été citée.
     const rencontreIds = [
@@ -1138,19 +1193,10 @@ export async function effacerCibleParAdresses(
       where: { rencontreId: { in: aReecrire }, statut: { not: "a_regenerer" } },
       select: { id: true, rencontreId: true },
     });
-    await tx.compteRendu.updateMany({
-      where: { id: { in: crVides.map((c) => c.id) } },
-      data: COMPTE_RENDU_A_REGENERER,
-    });
-    await journaliserEffacements(
-      tx,
-      "comptes_rendus",
-      crVides.map((c) => c.id),
-      motif,
-    );
-    // ⛔ Une réécriture SANS la personne est programmée (PR 6) : P5 relit les
-    // faits restants, jamais la transcription — ses faits sont vidés ci-dessus.
-    await programmerReecritures(tx, crVides);
+    // ⛔ Vidés, et une réécriture SANS la personne est programmée (PR 6) : P5
+    // relit les faits restants, jamais la transcription — ses faits sont vidés
+    // ci-dessus.
+    await mettreARegenerer(tx, crVides, motif);
 
     // 4-5. Les questions qu'on lui a adressées (vidées, jamais supprimées : un
     //    fait peut les citer comme source — clé RESTRICT), ses e-mails de suivi
@@ -1276,33 +1322,7 @@ export async function retirerAccordRencontre(
       select: { id: true },
     });
     const faitIds = faits.map((f) => f.id);
-    await tx.fait.updateMany({
-      where: { id: { in: faitIds } },
-      data: { ...FAIT_CONTENU_VIDE, statut: "efface" },
-    });
-    await journaliserFaitsEffaces(tx, faitIds, parAdminId);
-    await journaliserEffacements(tx, "faits", faitIds, "retrait");
-    await tx.preRemplissage.updateMany({
-      where: { faitId: { in: faitIds } },
-      data: { valeurProposee: "", valeurRetenue: null },
-    });
-    // Les liens des AUTRES faits vers eux sont retirés.
-    await tx.fait.updateMany({
-      where: { relationAvecFaitId: { in: faitIds } },
-      data: { relationAvecFaitId: null, relation: null },
-    });
-    await tx.fait.updateMany({
-      where: { resoluParFaitId: { in: faitIds } },
-      data: { resoluParFaitId: null },
-    });
-    await tx.fait.updateMany({
-      where: { remplaceParId: { in: faitIds } },
-      data: { remplaceParId: null },
-    });
-    await tx.fait.updateMany({
-      where: { doublonDeFaitId: { in: faitIds } },
-      data: { doublonDeFaitId: null },
-    });
+    await viderFaits(tx, faitIds, parAdminId, "retrait");
 
     // 3. Toutes les versions du compte rendu.
     const crs = await tx.compteRendu.findMany({ where: { rencontreId }, select: { id: true } });
@@ -1330,17 +1350,7 @@ export async function retirerAccordRencontre(
             },
             select: { id: true, rencontreId: true },
           });
-    await tx.compteRendu.updateMany({
-      where: { id: { in: suivants.map((c) => c.id) } },
-      data: { statut: "a_regenerer", contenu: "", verification: null },
-    });
-    await journaliserEffacements(
-      tx,
-      "comptes_rendus",
-      suivants.map((c) => c.id),
-      "retrait",
-    );
-    await programmerReecritures(tx, suivants);
+    await mettreARegenerer(tx, suivants, "retrait");
 
     // 5. Les étapes de la rencontre : annulées ; le son part par `purger_audio`.
     const annulees = await tx.traitementVisio.updateMany({
