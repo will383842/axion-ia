@@ -22,11 +22,13 @@
  * (`ENTETE_CONTRAT` = "2"), et le site sert les deux versions tant qu'une
  * extension en version 1 bat encore.
  *
- * `zod/v4` (livré par zod 3.25) plutôt que `zod` : il sait produire le JSON
- * Schema (`z.toJSONSchema`) sans dépendance nouvelle.
+ * Le JSON Schema est produit par `versJsonSchema` (ci-dessous), qui couvre le
+ * sous-ensemble de Zod employé ici. Pas de `zod/v4` : ses types, chargés en plus
+ * de ceux de Zod 3 par `tsc`, ont fait déborder le tas de 4 Go du typecheck
+ * de la CI (run 36574… , code 134).
  */
 
-import { z } from "zod/v4";
+import { z } from "zod";
 
 import {
   DEBIT_AUDIO_BPS,
@@ -148,8 +150,8 @@ export const MOTIFS_REFUS_SESSION = [
   "refus_anterieur_definitif",
 ] as const;
 
-const horodatage = z.iso.datetime({ offset: true });
-const uuid = z.uuid();
+const horodatage = z.string().datetime({ offset: true });
+const uuid = z.string().uuid();
 const empreinteSha256 = z.string().regex(/^[0-9a-f]{64}$/);
 const version = z.string().min(1).max(20);
 const periode = z.object({
@@ -300,6 +302,82 @@ export type TBattementAppareil = z.infer<typeof BattementAppareil>;
 export type TRencontreDuJour = z.infer<typeof RencontreDuJour>;
 export type MotifRefusSession = (typeof MOTIFS_REFUS_SESSION)[number];
 
+type Def = Readonly<Record<string, unknown>>;
+type Verif = { readonly kind: string; readonly value?: unknown; readonly regex?: RegExp };
+
+function defDe(schema: z.ZodTypeAny): Def {
+  return schema._def as Def;
+}
+
+/**
+ * JSON Schema (draft 2020-12) d'un schéma Zod 3, pour le sous-ensemble employé
+ * par ce contrat : objet, chaîne (min, max, motif, uuid, date-heure), nombre
+ * (entier, bornes), booléen, énumération, tableau (bornes), nullable. Un type
+ * non couvert LÈVE : un contrat faux ne doit jamais être publié en silence.
+ */
+export function versJsonSchema(schema: z.ZodTypeAny): Record<string, unknown> {
+  const def = defDe(schema);
+  const type = def["typeName"];
+  if (type === "ZodObject") {
+    const forme = (schema as z.AnyZodObject).shape as Record<string, z.ZodTypeAny>;
+    const proprietes: Record<string, unknown> = {};
+    const requis: string[] = [];
+    for (const [cle, champ] of Object.entries(forme)) {
+      if (defDe(champ)["typeName"] === "ZodOptional") {
+        proprietes[cle] = versJsonSchema(defDe(champ)["innerType"] as z.ZodTypeAny);
+      } else {
+        proprietes[cle] = versJsonSchema(champ);
+        requis.push(cle);
+      }
+    }
+    return {
+      type: "object",
+      properties: proprietes,
+      required: requis,
+      additionalProperties: false,
+    };
+  }
+  if (type === "ZodNullable") {
+    return { anyOf: [versJsonSchema(def["innerType"] as z.ZodTypeAny), { type: "null" }] };
+  }
+  if (type === "ZodString") {
+    const sortie: Record<string, unknown> = { type: "string" };
+    for (const v of (def["checks"] ?? []) as Verif[]) {
+      if (v.kind === "min") sortie["minLength"] = v.value;
+      else if (v.kind === "max") sortie["maxLength"] = v.value;
+      else if (v.kind === "regex" && v.regex) sortie["pattern"] = v.regex.source;
+      else if (v.kind === "uuid") sortie["format"] = "uuid";
+      else if (v.kind === "datetime") sortie["format"] = "date-time";
+      else throw new Error(`versJsonSchema : vérification de chaîne non couverte (${v.kind}).`);
+    }
+    return sortie;
+  }
+  if (type === "ZodNumber") {
+    const sortie: Record<string, unknown> = { type: "number" };
+    for (const v of (def["checks"] ?? []) as Verif[]) {
+      if (v.kind === "int") sortie["type"] = "integer";
+      else if (v.kind === "min") sortie["minimum"] = v.value;
+      else if (v.kind === "max") sortie["maximum"] = v.value;
+      else throw new Error(`versJsonSchema : vérification de nombre non couverte (${v.kind}).`);
+    }
+    return sortie;
+  }
+  if (type === "ZodBoolean") return { type: "boolean" };
+  if (type === "ZodEnum") return { type: "string", enum: [...(def["values"] as string[])] };
+  if (type === "ZodArray") {
+    const sortie: Record<string, unknown> = {
+      type: "array",
+      items: versJsonSchema(def["type"] as z.ZodTypeAny),
+    };
+    const min = def["minLength"] as { value: number } | null;
+    const max = def["maxLength"] as { value: number } | null;
+    if (min) sortie["minItems"] = min.value;
+    if (max) sortie["maxItems"] = max.value;
+    return sortie;
+  }
+  throw new Error(`versJsonSchema : type Zod non couvert (${String(type)}).`);
+}
+
 /**
  * Le contrat publié : ce que `pnpm enregistreur:contrat` écrit, et ce que le
  * test compare. Fonction PURE (aucune date, aucun hasard) : deux appels rendent
@@ -308,7 +386,7 @@ export type MotifRefusSession = (typeof MOTIFS_REFUS_SESSION)[number];
 export function construireContrat(): Record<string, unknown> {
   const schemas: Record<string, unknown> = {};
   for (const [nom, schema] of Object.entries(SCHEMAS_DU_CONTRAT)) {
-    schemas[nom] = z.toJSONSchema(schema);
+    schemas[nom] = versJsonSchema(schema);
   }
   return {
     version: VERSION_CONTRAT_ENREGISTREUR,

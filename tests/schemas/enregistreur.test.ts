@@ -7,6 +7,7 @@
  */
 
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 
 import {
   BattementAppareil,
@@ -17,6 +18,7 @@ import {
   construireContrat,
   texteDuContrat,
   VERSION_CONTRAT_ENREGISTREUR,
+  versJsonSchema,
 } from "@/lib/schemas/enregistreur";
 
 const UUID = "3f1c2a4e-8b7d-4c1e-9a2b-1c2d3e4f5a6b";
@@ -96,5 +98,26 @@ describe("contrat de l'enregistreur (v1)", () => {
     const c = construireContrat();
     expect(c["version"]).toBe(VERSION_CONTRAT_ENREGISTREUR);
     expect(Object.keys(c["schemas"] as object)).toContain("CreerSession");
+  });
+
+  it("le JSON Schema publié traduit fidèlement le Zod, et refuse ce qu'il ne sait pas traduire", () => {
+    const js = versJsonSchema(CreerSession) as {
+      required: string[];
+      additionalProperties: boolean;
+      properties: Record<string, Record<string, unknown>>;
+    };
+    expect(js.additionalProperties).toBe(false);
+    expect(js.required).toContain("cleClient");
+    expect(js.properties["cleClient"]).toEqual({ type: "string", format: "uuid" });
+    expect(js.properties["accordLocalLe"]).toEqual({
+      anyOf: [{ type: "string", format: "date-time" }, { type: "null" }],
+    });
+    expect(js.properties["nature"]).toEqual({ type: "string", enum: ["visio", "dictee"] });
+    expect(js.properties["nbParticipants"]).toEqual({
+      anyOf: [{ type: "integer", minimum: 1, maximum: 50 }, { type: "null" }],
+    });
+    expect(versJsonSchema(z.object({ a: z.string().optional() }))).toMatchObject({ required: [] });
+    expect(() => versJsonSchema(z.date())).toThrow(/non couvert/);
+    expect(() => versJsonSchema(z.string().email())).toThrow(/non couverte/);
   });
 });
