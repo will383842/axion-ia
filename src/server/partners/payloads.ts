@@ -391,7 +391,10 @@ function ligneDevis(
   // voici, explicite, plutôt qu'un champ qu'on aurait inventé au schéma.
   const jours = activite === "formation" ? quantite : null;
 
-  const montantHtCents = quantite * prixUnitaireHtCents;
+  // Arrondi ligne à ligne, À L'IDENTIQUE de `createDevisAction` qui a calculé le total stocké :
+  // `quantite` admet des décimales (une demi-journée), et un produit non entier ne serait plus
+  // un nombre de centimes — le contrat le refuserait, et Σ lignes ≠ total (INT-T04).
+  const montantHtCents = Math.round(quantite * prixUnitaireHtCents);
   const commission = resoudreCommission({ activite, jours, montantHtCents });
 
   return {

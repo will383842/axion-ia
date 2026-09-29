@@ -31,6 +31,10 @@ import {
 } from "@/lib/docuseal";
 import { prisma } from "@/lib/prisma";
 import { sendTelegram } from "@/lib/telegram";
+import { emettreDevisSigne, transactionDevisSigne } from "@/server/partners-sync/producteurs/devis";
+
+// Le canal Partners est importé (INT-T04) : jamais évaluée au build (garde d'inertie R4).
+export const dynamic = "force-dynamic";
 
 // Prisma error codes (string literals — pas d'import Prisma runtime ici car edge-friendly).
 const PRISMA_UNIQUE_CONSTRAINT = "P2002";
@@ -186,9 +190,13 @@ async function dispatchDevisEvent(
   }
 
   if (isCompleted) {
-    await prisma.devis.update({
-      where: { id: devis.id },
-      data: { statut: "accepte", acceptedAt: new Date() },
+    // INT-T04 (REQ-INT-007) : l'acceptation et l'événement `devis.signe` dans UNE transaction.
+    await transactionDevisSigne(prisma, async (tx) => {
+      await tx.devis.update({
+        where: { id: devis.id },
+        data: { statut: "accepte", acceptedAt: new Date() },
+      });
+      await emettreDevisSigne(tx, devis.id);
     });
     sendTelegram({
       tag: "OPTION CONFIRMÉE",
