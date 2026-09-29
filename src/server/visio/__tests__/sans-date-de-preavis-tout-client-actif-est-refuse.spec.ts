@@ -17,7 +17,8 @@
 
 import { describe, expect, it } from "vitest";
 
-import { PREAVIS_SOUS_TRAITANTS, preavisEnCours } from "../preavis-clients-actifs";
+import { preavisEnCours } from "../preavis-clients-actifs";
+import { PREAVIS_SOUS_TRAITANTS } from "../visio-annonce";
 import { listerRencontresDuJour } from "../rencontres-du-jour";
 import { creerOuReprendreSession } from "../sessions";
 import {
@@ -61,7 +62,7 @@ describe("⛔ sans date de préavis, tout client actif est refusé", () => {
       });
       expect(r.statut).toBe(409);
       expect(r.corps["erreur"]).toBe("client_actif_preavis_en_cours");
-      expect(String(r.corps["message"])).toMatch(/pas encore envoyé/);
+      expect(String(r.corps["message"])).toMatch(/pas encore parti/);
       const liste = await listerRencontresDuJour(commePrisma(db), {
         maintenant: T0,
         mode: "ouvert",

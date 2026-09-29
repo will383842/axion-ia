@@ -4,7 +4,7 @@
  *
  * Un client actif sous préavis : la liste du jour porte `preavis`. Le panneau
  * affiche « Pas d'enregistrement pour ce client avant le <date> : notes à la
- * main » (ou « pas encore envoyé » sans date) et désactive « Démarrer ». Si le
+ * main » (ou « pas encore parti » sans date) et désactive « Démarrer ». Si le
  * site refuse quand même un accord (rencontre rangée entre-temps), la capture
  * est détruite.
  *
@@ -17,6 +17,7 @@ import { describe, expect, it } from "vitest";
 
 import { bandeauPreavis } from "../../../extensions/enregistreur-meet/lib/bandeau-preavis.js";
 import { classerReponse } from "../../../extensions/enregistreur-meet/lib/file-envoi.js";
+import { refusPourPreavis } from "../../../src/server/visio/visio-annonce";
 
 describe("⛔ le bandeau du préavis arrête avant le démarrage", () => {
   it("date connue : « avant le 30/10/2026 : notes à la main »", () => {
@@ -25,8 +26,11 @@ describe("⛔ le bandeau du préavis arrête avant le démarrage", () => {
     );
   });
 
-  it("préavis pas encore envoyé : le bandeau le dit, sans date", () => {
-    expect(bandeauPreavis({ preavis: { finLe: null } })).toMatch(/pas encore envoyé/);
+  it("préavis pas encore parti : le bandeau le dit, sans date, comme le serveur", () => {
+    const texte = bandeauPreavis({ preavis: { finLe: null } });
+    const serveur = refusPourPreavis({ valide: true, actif: true }, new Date(), null);
+    expect(serveur.refuse && serveur.message).toBe(texte);
+    expect(texte).toMatch(/pas encore parti/);
   });
 
   it("un accord refusé pour préavis détruit la capture", () => {

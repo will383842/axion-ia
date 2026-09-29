@@ -25,7 +25,8 @@ import {
   estUnNon,
   reponseEnregistrementCalendly,
 } from "./enregistreur-calendly";
-import { blocagePreavis, PREAVIS_SOUS_TRAITANTS, type Preavis } from "./preavis-clients-actifs";
+import { blocagePreavis } from "./preavis-clients-actifs";
+import { PREAVIS_SOUS_TRAITANTS, type Preavis } from "./visio-annonce";
 import type { ModeEnregistrement } from "./drapeau";
 import { ETATS_ENREGISTREMENT_ACTIFS } from "./etats";
 
@@ -37,7 +38,14 @@ export const VERSION_INDICE_CALENDLY = "reponse-calendly-v1";
 
 type Db = Pick<
   PrismaClient,
-  "calendlyEvent" | "rencontre" | "client" | "enregistrementConsentement" | "enregistrement"
+  | "calendlyEvent"
+  | "rencontre"
+  | "rencontreParticipant"
+  | "client"
+  | "clientContact"
+  | "clientContactAdresse"
+  | "enregistrementConsentement"
+  | "enregistrement"
 >;
 
 /** L'entreprise déclarée, par le lecteur UNIQUE de la console (anti-doublon A1). */
@@ -204,8 +212,9 @@ export async function listerRencontresDuJour(
       : null;
     if (reponse !== null) await consignerIndiceCalendly(db, r.id, reponse, entree.maintenant);
     const idClient = r.clientId ?? r.clientProposeId;
-    // Client VALIDÉ et actif sous préavis : bandeau, et `POST sessions` refusera.
-    const blocage = await blocagePreavis(db, r.clientId, entree.maintenant, preavis);
+    // Client actif (validé, proposé ou reconnu par son adresse) sous préavis :
+    // bandeau, et `POST sessions` refusera.
+    const blocage = await blocagePreavis(db, r.id, entree.maintenant, preavis);
     sortie.push({
       rencontreId: r.id,
       source: r.source === "calendly" ? "calendly" : "saisie_manuelle",
@@ -262,8 +271,10 @@ async function consignerIndiceCalendly(
 }
 
 /**
- * Un refus ou un retrait déjà exprimé : sur une autre rencontre du même client,
- * ou par la même adresse Calendly. Bandeau rouge dans le panneau (V5-C6).
+ * Un refus ou un retrait déjà exprimé : sur CETTE rencontre (alors `POST
+ * sessions` répond aussi 409 `refus_anterieur_definitif`), sur une autre
+ * rencontre du même client, ou par la même adresse Calendly. Bandeau rouge
+ * dans le panneau (V5-C6).
  */
 export async function aUnRefusAnterieur(
   db: Pick<PrismaClient, "rencontre" | "enregistrementConsentement" | "enregistrement">,
@@ -273,17 +284,15 @@ export async function aUnRefusAnterieur(
     readonly emailInvite: string | null;
   },
 ): Promise<boolean> {
-  const ou: Prisma.RencontreWhereInput[] = [];
+  const ou: Prisma.RencontreWhereInput[] = [{ id: cible.rencontreId }];
   if (cible.clientId) ou.push({ clientId: cible.clientId });
   if (cible.emailInvite) ou.push({ calendlyEvent: { inviteeEmail: cible.emailInvite } });
-  if (ou.length === 0) return false;
-  const autres = await db.rencontre.findMany({
-    where: { id: { not: cible.rencontreId }, OR: ou },
+  const liees = await db.rencontre.findMany({
+    where: { OR: ou },
     select: { id: true },
     take: 50,
   });
-  if (autres.length === 0) return false;
-  const ids = autres.map((a) => a.id);
+  const ids = [...new Set([cible.rencontreId, ...liees.map((a) => a.id)])];
   const retraits = await db.enregistrementConsentement.count({
     where: { rencontreId: { in: ids }, type: "retrait" },
   });

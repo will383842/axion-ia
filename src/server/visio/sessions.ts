@@ -27,7 +27,9 @@
  * opposition à l'IA d'une personne de la fiche (art. 21), client ACTIF dont le
  * préavis court encore (décision de Will du 29/09, `preavis-clients-actifs.ts`)
  * — pour la visio comme pour la dictée. Le préavis est revérifié à l'accord :
- * une rencontre rangée chez un client actif entre-temps est refusée aussi.
+ * une rencontre rattachée à un client actif entre-temps est refusée aussi.
+ * Un refus ou un retrait déjà déclaré sur CETTE rencontre est définitif :
+ * un nouveau « Démarrer » répond 409 `refus_anterieur_definitif`.
  */
 
 import type { EnregistrementStatut, PrismaClient } from "../../../prisma/generated/client";
@@ -48,12 +50,13 @@ import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import { ETATS_ENREGISTREMENT_ACTIFS } from "./etats";
 import { CONSERVATION_AUDIO_MAX_JOURS } from "./cloture";
 import { ajouterAuJournal } from "./journal-enregistrement";
+import { blocagePreavis } from "./preavis-clients-actifs";
 import {
-  blocagePreavis,
-  messagePreavis,
+  CODE_REFUS_PREAVIS,
+  DICTEE_ANNONCEE,
   PREAVIS_SOUS_TRAITANTS,
   type Preavis,
-} from "./preavis-clients-actifs";
+} from "./visio-annonce";
 import { echec, ok, type Resultat } from "./resultat";
 import type { StockageAudio } from "./stockage-audio";
 
@@ -76,7 +79,10 @@ export interface Appareil {
   readonly adminUserId: string;
 }
 
-const MESSAGES_REFUS: Readonly<Record<MotifRefusSession, string>> = {
+/** Les motifs à texte fixe. Le préavis a le sien, daté, dans `visio-annonce.ts`. */
+type MotifATexteFixe = Exclude<MotifRefusSession, typeof CODE_REFUS_PREAVIS>;
+
+const MESSAGES_REFUS: Readonly<Record<MotifATexteFixe, string>> = {
   rencontre_inconnue:
     "Ce rendez-vous n'existe pas (ou plus) dans la console : actualisez la liste.",
   hors_liste_blanche:
@@ -90,18 +96,25 @@ const MESSAGES_REFUS: Readonly<Record<MotifRefusSession, string>> = {
     "Une personne de ce client s'est opposée au traitement par IA : ni enregistrement, ni dictée.",
   refus_anterieur_definitif:
     "Ce rendez-vous a déjà fait l'objet d'un refus : rien ne s'enregistre.",
-  // Texte générique : le message réel porte la date (`messagePreavis`).
-  client_actif_preavis_en_cours:
-    "Pas d'enregistrement pour ce client tant que son préavis court : notes à la main.",
 };
 
-function refusSession(motif: MotifRefusSession, message?: string): Resultat {
-  return echec(409, motif, message ?? MESSAGES_REFUS[motif]);
+/** Un refus motivé : le code du contrat et le texte montré à Will. */
+export interface RefusMotive {
+  readonly motif: MotifRefusSession;
+  readonly message: string;
 }
 
-/** Le refus « client actif sous préavis », avec sa date. */
-function refusPreavis(finLe: string | null): Resultat {
-  return refusSession("client_actif_preavis_en_cours", messagePreavis({ finLe }));
+function motive(motif: MotifATexteFixe): RefusMotive {
+  return { motif, message: MESSAGES_REFUS[motif] };
+}
+
+function refusSession(motif: MotifATexteFixe): Resultat {
+  return echec(409, motif, MESSAGES_REFUS[motif]);
+}
+
+/** Le refus « client actif sous préavis » : code et texte de `refusPourPreavis`. */
+function refusPreavis(message: string): Resultat {
+  return echec(409, CODE_REFUS_PREAVIS, message);
 }
 
 function estConflitUnique(err: unknown): boolean {
@@ -127,12 +140,22 @@ type RencontrePourEligibilite = {
 };
 
 /**
- * Peut-on enregistrer cette rencontre, maintenant, dans ce mode ? Rend le motif
- * du refus, ou `null`. L'opposition à l'IA passe AVANT la nature : elle bloque
- * la dictée comme la visio.
+ * Peut-on enregistrer cette rencontre, maintenant, dans ce mode ? Rend le refus
+ * motivé, ou `null`. L'opposition à l'IA, le refus déjà déclaré et le préavis
+ * passent AVANT la nature : ils bloquent la dictée comme la visio.
  */
 export async function motifDeRefus(
-  db: Pick<Db, "clientContact" | "rencontreParticipant" | "calendlyEvent" | "client">,
+  db: Pick<
+    Db,
+    | "clientContact"
+    | "clientContactAdresse"
+    | "rencontre"
+    | "rencontreParticipant"
+    | "calendlyEvent"
+    | "client"
+    | "enregistrement"
+    | "enregistrementConsentement"
+  >,
   rencontre: RencontrePourEligibilite,
   entree: {
     readonly nature: "visio" | "dictee";
@@ -141,14 +164,14 @@ export async function motifDeRefus(
     /** Injecté par les tests ; la déclaration unique sinon. */
     readonly preavis?: Preavis | null;
   },
-): Promise<MotifRefusSession | null> {
+): Promise<RefusMotive | null> {
   // 1. Opposition à l'IA d'une personne de la fiche ou d'un participant (art. 21).
   const opposantsFiche = rencontre.clientId
     ? await db.clientContact.count({
         where: { clientId: rencontre.clientId, oppositionIaLe: { not: null } },
       })
     : 0;
-  if (opposantsFiche > 0) return "opposition_ia";
+  if (opposantsFiche > 0) return motive("opposition_ia");
   const participantsOpposes = await db.rencontreParticipant.findMany({
     where: { rencontreId: rencontre.id, contactId: { not: null } },
     select: { contactId: true },
@@ -160,38 +183,52 @@ export async function motifDeRefus(
     const opposes = await db.clientContact.count({
       where: { id: { in: idsContacts }, oppositionIaLe: { not: null } },
     });
-    if (opposes > 0) return "opposition_ia";
+    if (opposes > 0) return motive("opposition_ia");
   }
+
+  // 1 bis. Un refus (ou un retrait) déjà déclaré sur CETTE rencontre est
+  //    définitif : pas de nouvel enregistrement dans le même rendez-vous.
+  //    Les AUTRES rencontres du client allument le bandeau (V5-C6).
+  const refusIci = await db.enregistrement.count({
+    where: { rencontreId: rencontre.id, statut: "refuse" },
+  });
+  const retraitIci = await db.enregistrementConsentement.count({
+    where: { rencontreId: rencontre.id, type: "retrait" },
+  });
+  if (refusIci + retraitIci > 0) return motive("refus_anterieur_definitif");
 
   // 2. Client ACTIF dont le préavis court (décision de Will du 29/09) : ni
-  //    visio ni dictée. Seul un client VALIDÉ compte (`clientId`), jamais un
-  //    client seulement proposé.
+  //    visio ni dictée. Client validé, proposé, ou reconnu par une adresse
+  //    (`preavis-clients-actifs.ts`) : un vrai prospect n'est pas concerné.
   const preavis = entree.preavis === undefined ? PREAVIS_SOUS_TRAITANTS : entree.preavis;
-  if (await blocagePreavis(db, rencontre.clientId, entree.maintenant, preavis)) {
-    return "client_actif_preavis_en_cours";
-  }
+  const blocage = await blocagePreavis(db, rencontre.id, entree.maintenant, preavis);
+  if (blocage) return { motif: CODE_REFUS_PREAVIS, message: blocage.message };
 
-  // 3. Nature : la dictée n'est pas encore annoncée aux clients. Sa source
-  //    unique, `DICTEE_ANNONCEE`, naît avec la notice (`visio-annonce.ts`,
-  //    PR 8) ; d'ici là, aucune dictée ne s'enregistre.
-  if (entree.nature === "dictee") return "hors_liste_blanche";
+  // 3. Nature : la dictée n'est enregistrée que si la notice l'annonce
+  //    (`DICTEE_ANNONCEE`, source unique `visio-annonce.ts`, dérivée de
+  //    l'annonce publique : faux tant que la PR 8 n'a rien annoncé).
+  if (entree.nature === "dictee" && !DICTEE_ANNONCEE) return motive("hors_liste_blanche");
 
   // 4. Type de rencontre.
   if (rencontre.source === "calendly") {
     const nom = rencontre.calendlyEvent?.eventTypeName ?? null;
-    if (estAppelApporteur(nom)) return "apporteur";
-    if (!estTypeEnregistrable(nom)) return "hors_liste_blanche";
+    if (estAppelApporteur(nom)) return motive("apporteur");
+    if (!estTypeEnregistrable(nom)) return motive("hors_liste_blanche");
   } else if (rencontre.source === "saisie_manuelle") {
-    if (entree.nature === "visio" && rencontre.type !== "visio") return "hors_liste_blanche";
+    if (entree.nature === "visio" && rencontre.type !== "visio") {
+      return motive("hors_liste_blanche");
+    }
   } else {
-    return "hors_liste_blanche";
+    return motive("hors_liste_blanche");
   }
 
   // 5. Reprise d'historique : jamais d'enregistrement.
-  if (rencontre.repriseHistorique) return "reprise_historique";
+  if (rencontre.repriseHistorique) return motive("reprise_historique");
 
   // 6. Mode pilote : le client fictif seulement.
-  if (entree.mode === "pilote" && !rencontre.estTestInterne) return "pilote_rencontre_non_test";
+  if (entree.mode === "pilote" && !rencontre.estTestInterne) {
+    return motive("pilote_rencontre_non_test");
+  }
 
   // 7. Un entretien de candidat à ±30 min de l'heure du rendez-vous (ou de maintenant).
   const centre = (rencontre.debutPrevu ?? entree.maintenant).getTime();
@@ -206,7 +243,7 @@ export async function motifDeRefus(
     select: { eventTypeName: true, linkedJobApplicationId: true },
   });
   if (autour.some((e) => e.linkedJobApplicationId !== null || estTypeEntretien(e.eventTypeName))) {
-    return "entretien_candidat";
+    return motive("entretien_candidat");
   }
   return null;
 }
@@ -320,7 +357,7 @@ export async function creerOuReprendreSession(
       });
       // Le préavis refuse l'accord rejoué : le refus remonte tel quel, et
       // l'extension détruit son son au lieu de le garder pour rien.
-      if (r.statut === 409 && r.corps["erreur"] === "client_actif_preavis_en_cours") return r;
+      if (r.statut === 409 && r.corps["erreur"] === CODE_REFUS_PREAVIS) return r;
       if (r.statut === 200 && typeof r.corps["statut"] === "string") {
         statut = r.corps["statut"] as EnregistrementStatut;
       }
@@ -351,14 +388,13 @@ export async function creerOuReprendreSession(
   if (!rencontre || rencontre.fusionneeDansId !== null) return refusSession("rencontre_inconnue");
 
   // 2. Peut-on l'enregistrer ?
-  const motif = await motifDeRefus(db, rencontre, {
+  const refus = await motifDeRefus(db, rencontre, {
     nature: corps.nature,
     mode: entree.mode,
     maintenant: entree.maintenant,
     preavis,
   });
-  if (motif === "client_actif_preavis_en_cours") return refusPreavis(preavis?.finLe ?? null);
-  if (motif) return refusSession(motif);
+  if (refus) return echec(409, refus.motif, refus.message);
 
   // 3. Un seul enregistrement actif par rencontre : on renvoie celui qui vit,
   //    l'extension s'y rattache (reprise après un plantage).
@@ -483,21 +519,17 @@ export async function declarerAccord(
     );
   }
 
-  // Le préavis, revérifié ici : la rencontre a pu être rangée chez un client
+  // Le préavis, revérifié ici : la rencontre a pu être rattachée à un client
   // actif depuis le démarrage. Aucun accord n'est consigné, aucun son ne sera
   // reçu (la route des morceaux reste à 409 `accord_en_attente`), et la
   // clôture d'office passera l'enregistrement `accord_non_confirme`.
-  const rencontre = await db.rencontre.findUnique({
-    where: { id: enr.rencontreId },
-    select: { clientId: true },
-  });
   const blocage = await blocagePreavis(
     db,
-    rencontre?.clientId ?? null,
+    enr.rencontreId,
     entree.maintenant ?? new Date(),
     preavis,
   );
-  if (blocage) return refusPreavis(blocage.finLe);
+  if (blocage) return refusPreavis(blocage.message);
 
   // Une personne arrivée en cours d'appel : preuve de plus, rien d'autre ne change.
   if (entree.corps.nouvellePersonne) {

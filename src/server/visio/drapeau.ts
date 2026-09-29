@@ -20,13 +20,14 @@
  * L'ouverture n'attend plus le préavis aux clients actifs : `ouvert` est
  * `ouvert`, sans date. Le préavis protège les seuls clients ACTIFS (règle B3),
  * rencontre par rencontre, dans les routes `sessions` et `accord`
- * (`preavis-clients-actifs.ts`, 409 `client_actif_preavis_en_cours`).
+ * (`visio-annonce.ts` pour la règle, `preavis-clients-actifs.ts` pour la
+ * lecture ; 409 `client_actif_preavis_en_cours`).
  * Garde : `le-drapeau-ne-lit-que-ses-deux-variables.spec.ts`.
  *
  * `effectif` existe pour la PR 8 : elle y branchera `modeEffectif` (la notice
  * publique doit annoncer l'enregistrement avant que `ouvert` s'applique). Ici,
  * `effectif` vaut `demande`. La dictée annoncée (`DICTEE_ANNONCEE`) n'est PAS
- * déclarée ici : sa source unique est `src/content/visio-annonce.ts` (PR 8).
+ * déclarée ici : sa source unique est `src/server/visio/visio-annonce.ts`.
  *
  * Module PUR : lu par les routes, la console et le worker.
  */

@@ -13,7 +13,8 @@ export function bandeauPreavis(rencontre) {
   const p = rencontre?.preavis;
   if (!p) return null;
   if (!p.finLe) {
-    return "Pas d'enregistrement pour ce client : le préavis aux clients actifs n'est pas encore envoyé. Notes à la main.";
+    // Même texte que `refusPourPreavis` (`src/server/visio/visio-annonce.ts`).
+    return "Pas d'enregistrement pour ce client : le préavis n'est pas encore parti. Notes à la main.";
   }
   const date = new Date(p.finLe).toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" });
   return `Pas d'enregistrement pour ce client avant le ${date} : notes à la main.`;
