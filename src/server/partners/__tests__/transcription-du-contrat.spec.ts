@@ -49,7 +49,7 @@ describe("REQ-QA-007 — transcription du contrat d'événements", () => {
     const ligne = readFileSync(path.join(RACINE, "contracts.sha256"), "utf8").trim();
 
     // Format `sha256sum` : « <hash>  <nom de fichier> ».
-    expect(ligne).toMatch(/^[0-9a-f]{64} {2}contracts\.v1\.json$/);
+    expect(ligne).toMatch(/^[0-9a-f]{64} {2}contracts\.v2\.json$/);
     expect(ligne.slice(0, 64)).toBe(empreinteContratPublie());
   });
 
@@ -64,13 +64,11 @@ describe("REQ-QA-007 — transcription du contrat d'événements", () => {
     expect([...CHAMPS_ENVELOPPE]).toEqual(publie.required);
   });
 
-  it("REQ-INT-004 — la liste est FERMÉE sur les sept types que le registre énumère", () => {
-    // Le nombre est écrit ici À DESSEIN. `partners/ADR-0008` a tranché « sept, pas
-    // onze » : quatre autres noms circulent au registre des exigences sans être
-    // portés par la liste fermée de REQ-INT-004. Le jour où Partners republie à
-    // onze, CETTE assertion rougit — et c'est le seul endroit du dépôt où la
-    // décision de l'ADR redevient une question, ce qui est exactement où il faut
-    // qu'elle soit posée.
-    expect(TYPES_EVENEMENT).toHaveLength(7);
+  it("REQ-INT-004 — la liste est FERMÉE sur les onze types du contrat v2", () => {
+    // Le nombre est écrit ici À DESSEIN. Sept en v1 (`partners/ADR-0008`), onze depuis la
+    // `schema_version` 2 publiée par INT-T01c : les quatre noms recensés hors contrat y
+    // sont entrés. Un douzième type publié par Partners fait rougir CETTE assertion, et
+    // c'est ici que la question doit se poser.
+    expect(TYPES_EVENEMENT).toHaveLength(11);
   });
 });

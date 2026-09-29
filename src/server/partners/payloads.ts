@@ -313,8 +313,7 @@ export function payloadClientMisAJour({ client }: { client: ClientPourEvenement 
 /**
  * REQ-CPL-014 — `client.fusionne {survivorId, absorbedId}`.
  *
- * ⚠️ HORS CONTRAT v1 (`HORS_CONTRAT_V1` de `contrat.ts`) : construit et testé, jamais
- * émis tant que Partners n'a pas republié une `schema_version` qui le porte.
+ * Hors contrat v1, dans le contrat depuis `schema_version` 2 (transcription du 2026-09-29).
  */
 export function payloadClientFusionne({
   survivorId,

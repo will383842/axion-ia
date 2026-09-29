@@ -1,11 +1,11 @@
 {
-  "Source": "GÉNÉRÉE — ne pas éditer à la main. Producteur : axionia, scripts/partners/fixtures.ts (INT-T01b). Méthode : scénario écrit puis RELU dans la base de développement (localhost:5434) via les modèles Prisma réels, payloads construits par src/server/partners/payloads.ts, transaction ANNULÉE, sortie pseudonymisée. Aucune valeur n'est complétée : un champ absent fait échouer la génération (RM-03, REQ-QA-007). Contrat : contracts.v1.json, empreinte 8b0b09a04727d24c8291874c315b89db80207f948dabf9276f528c46f827e901, schema_version 1. Régénérer : pnpm partners:fixtures — vérifier : pnpm partners:fixtures --verifier",
-  "schemaVersion": 1,
+  "Source": "GÉNÉRÉE — ne pas éditer à la main. Producteur : axionia, scripts/partners/fixtures.ts (INT-T01b). Méthode : scénario écrit puis RELU dans la base de développement (localhost:5434) via les modèles Prisma réels, payloads construits par src/server/partners/payloads.ts, transaction ANNULÉE, sortie pseudonymisée. Aucune valeur n'est complétée : un champ absent fait échouer la génération (RM-03, REQ-QA-007). Contrat : contracts.v2.json, empreinte e8ce08f5216f988dc74963f749ab4a76d140ad4fcb1d4524f46bc05c5d792226, schema_version 2. Régénérer : pnpm partners:fixtures — vérifier : pnpm partners:fixtures --verifier",
+  "schemaVersion": 2,
   "evenements": [
     {
       "event_id": "c44906eb-233f-4e86-acac-6a16e4dd7599",
       "event_type": "client.cree",
-      "schema_version": 1,
+      "schema_version": 2,
       "occurred_at": "2026-01-02T10:00:00.000Z",
       "producer": "axionia",
       "subject_ref": {
@@ -28,7 +28,7 @@
     {
       "event_id": "2a06418b-f3ad-476a-8988-0a52c8196ef5",
       "event_type": "client.mis_a_jour",
-      "schema_version": 1,
+      "schema_version": 2,
       "occurred_at": "2026-01-02T10:00:00.000Z",
       "producer": "axionia",
       "subject_ref": {
@@ -51,7 +51,7 @@
     {
       "event_id": "fc6b72bf-5f9e-42bb-a648-ab7a7ebd3068",
       "event_type": "devis.signe",
-      "schema_version": 1,
+      "schema_version": 2,
       "occurred_at": "2026-02-14T15:00:00.000Z",
       "producer": "axionia",
       "subject_ref": {
@@ -88,7 +88,7 @@
     {
       "event_id": "9143addc-a8e8-4804-94ca-7ff8da62826f",
       "event_type": "facture.emise",
-      "schema_version": 1,
+      "schema_version": 2,
       "occurred_at": "2026-03-01T09:00:00.000Z",
       "producer": "axionia",
       "subject_ref": {
@@ -126,7 +126,7 @@
     {
       "event_id": "fc34f7ff-69ed-4adf-9045-b0bbbd5b772c",
       "event_type": "avoir.emis",
-      "schema_version": 1,
+      "schema_version": 2,
       "occurred_at": "2026-06-01T09:00:00.000Z",
       "producer": "axionia",
       "subject_ref": {
@@ -149,7 +149,7 @@
     {
       "event_id": "4468bb62-4d85-46f3-bff8-95b795658a19",
       "event_type": "paiement.recu",
-      "schema_version": 1,
+      "schema_version": 2,
       "occurred_at": "2026-03-10T12:00:00.000Z",
       "producer": "axionia",
       "subject_ref": {
@@ -176,7 +176,7 @@
     {
       "event_id": "175893f1-11fc-4659-b6c0-73d81a37b0bf",
       "event_type": "paiement.recu",
-      "schema_version": 1,
+      "schema_version": 2,
       "occurred_at": "2026-04-10T12:00:00.000Z",
       "producer": "axionia",
       "subject_ref": {
@@ -203,7 +203,7 @@
     {
       "event_id": "5ff33531-1e2d-44a5-a88d-f2b4fc4a37f8",
       "event_type": "paiement.recu",
-      "schema_version": 1,
+      "schema_version": 2,
       "occurred_at": "2026-05-10T12:00:00.000Z",
       "producer": "axionia",
       "subject_ref": {
@@ -230,7 +230,7 @@
     {
       "event_id": "1e06cf70-aae8-45b9-a969-ec77e3229104",
       "event_type": "paiement.rembourse",
-      "schema_version": 1,
+      "schema_version": 2,
       "occurred_at": "2026-06-02T09:00:00.000Z",
       "producer": "axionia",
       "subject_ref": {
@@ -253,7 +253,7 @@
     {
       "event_id": "d69574ab-a23e-490b-b3d7-4496b5160110",
       "event_type": "paiement.rembourse",
-      "schema_version": 1,
+      "schema_version": 2,
       "occurred_at": "2026-06-03T09:00:00.000Z",
       "producer": "axionia",
       "subject_ref": {
@@ -272,15 +272,17 @@
         "rembourseLe": "2026-06-03T09:00:00.000Z",
         "provider": "manual_wire"
       }
-    }
-  ],
-  "horsContratV1": [
+    },
     {
+      "event_id": "3abe3e0b-c0d4-41d1-8788-c4c52149c578",
       "event_type": "facture.annulee",
+      "schema_version": 2,
       "occurred_at": "2026-03-01T09:00:00.000Z",
+      "producer": "axionia",
       "subject_ref": {
         "facture_id": "0a1b2c3d-0004-4000-8000-000000000004"
       },
+      "sequence": 11,
       "payload": {
         "factureId": "25612487-ca1e-437e-8929-650da2821d08",
         "motif": "doublon",
@@ -288,11 +290,15 @@
       }
     },
     {
+      "event_id": "0f75fb7e-f0a6-4866-9b43-8497b9b7ac5d",
       "event_type": "financement.mis_a_jour",
+      "schema_version": 2,
       "occurred_at": "2026-02-20T09:00:00.000Z",
+      "producer": "axionia",
       "subject_ref": {
         "facture_id": "0a1b2c3d-0004-4000-8000-000000000004"
       },
+      "sequence": 12,
       "payload": {
         "factureId": "25612487-ca1e-437e-8929-650da2821d08",
         "payers": [
@@ -309,18 +315,20 @@
       }
     },
     {
+      "event_id": "066908d0-4e54-4a19-86c1-eb19634af7e8",
       "event_type": "candidature.recue",
+      "schema_version": 2,
       "occurred_at": "2026-08-20T08:30:00.000Z",
+      "producer": "axionia",
       "subject_ref": {
         "submission_id": "0a1b2c3d-0006-4000-8000-000000000006"
       },
+      "sequence": 13,
       "payload": {
         "candidatureId": "270022c1-2cc8-4a05-ba5a-4e7584250470",
         "reponsesJson": {
           "ia": {
-            "outils": [
-              "chatgpt"
-            ],
+            "outils": ["chatgpt"],
             "utilise": true
           },
           "b2b": {
@@ -328,17 +336,13 @@
             "dejaVendu": true
           },
           "zone": {
-            "zones": [
-              "auvergne-rhone-alpes"
-            ],
+            "zones": ["auvergne-rhone-alpes"],
             "mobile": true
           },
           "statut": "auto_entrepreneur",
           "version": 1,
           "informatique": {
-            "usages": [
-              "crm"
-            ],
+            "usages": ["crm"],
             "utilise": true
           },
           "disponibilite": "immediate",
@@ -366,11 +370,15 @@
       }
     },
     {
+      "event_id": "e5b23d8a-67fd-481c-9d18-356699832849",
       "event_type": "client.fusionne",
+      "schema_version": 2,
       "occurred_at": "2026-01-02T10:00:00.000Z",
+      "producer": "axionia",
       "subject_ref": {
         "client_id": "0a1b2c3d-0001-4000-8000-000000000001"
       },
+      "sequence": 14,
       "payload": {
         "survivorId": "b419dc54-9e89-4838-a4dc-22db1fe3c40f",
         "absorbedId": "0a3b2f4f-a997-4222-b838-65b2c52cef93"

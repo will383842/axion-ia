@@ -10,7 +10,7 @@
 import { createHash, createHmac } from "node:crypto";
 
 import { PRODUCTEUR } from "./config";
-import { SCHEMA_VERSION, TYPES_EVENEMENT, estDansLeContratV1, type TypeEvenement } from "./contrat";
+import { SCHEMA_VERSION, TYPES_EVENEMENT, estDansLeContrat, type TypeEvenement } from "./contrat";
 
 export type Fait = {
   readonly type: TypeEvenement;
@@ -76,17 +76,17 @@ export function identifiantEvenement(type: string, cleDeFait: string): string {
 /**
  * L'enveloppe d'un fait.
  *
- * REFUSE un type hors du contrat v1 plutôt que de l'émettre : `additionalProperties:
+ * REFUSE un type hors du contrat publié plutôt que de l'émettre : `additionalProperties:
  * false` et l'énumération fermée font qu'un type inconnu vaut 422 chez le récepteur,
  * et REQ-INT-003 passe alors la ligne en `gave_up`. Lever ici coûte un incident visible
  * en développement ; émettre coûte une ligne perdue en production.
  */
 export function enveloppe(fait: Fait): EnveloppeEvenement {
-  if (!estDansLeContratV1(fait.type)) {
+  if (!estDansLeContrat(fait.type)) {
     throw new Error(
-      `[partners] « ${fait.type} » n'est pas dans le contrat v1 (${TYPES_EVENEMENT.join(", ")}). ` +
-        "Voir `HORS_CONTRAT_V1` : ce type est construit et testé, mais son émission attend " +
-        "que Partners republie une schema_version qui le porte (lockstep, partners/ADR-0008).",
+      `[partners] « ${fait.type} » n'est pas dans le contrat v${SCHEMA_VERSION} (${TYPES_EVENEMENT.join(", ")}). ` +
+        "Son émission attend que Partners republie une schema_version qui le porte " +
+        "(lockstep, partners/ADR-0008).",
     );
   }
 
