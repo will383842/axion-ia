@@ -16,8 +16,10 @@
 // ── Ce qui diffère du dossier complet, et pourquoi ──────────────────────────
 //   - AUCUN score : un premier contact n'a rien à noter. La console l'affiche
 //     « à qualifier », c'est l'appel qui qualifie.
-//   - Source posée AUTOMATIQUEMENT (`sourceConnaissance: "facebook"`) : le
-//     visiteur ne se voit pas poser la question, la page le sait.
+//   - Source posée AUTOMATIQUEMENT : le visiteur ne se voit pas poser la
+//     question, le lien d'arrivée le sait. `utm_source` connu (ex. `linkedin`,
+//     annonce du 29/09) sinon `facebook` (`sourceDepuisUtm`). Elle est RENDUE
+//     au navigateur, qui la pose dans le brouillon du dossier complet.
 //   - Aucun envoi au CRM, ni au premier contact ni au dossier complet (B2,
 //     19/09) : ordre de Will du 04/09, les candidats apporteurs vivent dans la
 //     console jusqu'à l'échange, Axion Partners prend le relais au contrat
@@ -48,6 +50,7 @@ import { adminPath } from "@/lib/admin-path";
 import { SITE_URL } from "@/lib/site-url";
 import {
   CANDIDATURE_COMMERCIALE_SUBTYPE,
+  SOURCE_OPTIONS,
   STATUT_OPTIONS,
   optionLabel,
 } from "@/lib/commercial-application/model";
@@ -55,16 +58,17 @@ import {
   DOSSIER_COMPLET_PATH,
   LEAD_APPORTEUR_CONSENT_VERSION,
   LEAD_APPORTEUR_ETAPE,
-  LEAD_APPORTEUR_SOURCE,
   TUNNEL_FACEBOOK_PATH,
   extraireFbclid,
   leadApporteurSchema,
+  sourceDepuisUtm,
 } from "@/lib/commercial-application/lead-apporteur";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
 import { envoyerLeadMeta } from "@/server/meta/conversions-api";
 import { planifierRelancesLeadApporteur } from "./relances-lead-apporteur";
 
-export type LeadApporteurState = { ok: true; submissionId: string } | { ok: false; error: string };
+export type LeadApporteurState =
+  { ok: true; submissionId: string; source?: string } | { ok: false; error: string };
 
 function safeHashIp(ip: string | null | undefined): string | null {
   try {
@@ -148,6 +152,9 @@ export async function submitLeadApporteurAction(
   if (fbclid) funnel.fbclid = true;
   const referrer = d.contexte?.referrer?.trim();
   if (referrer) funnel.referrer = referrer.slice(0, 300);
+  // Le canal suit le lien : cookie d'abord, requête en repli (même fusion).
+  const source = sourceDepuisUtm(utm.utm_source);
+  const libelleSource = optionLabel(SOURCE_OPTIONS, source);
 
   const userAgent = (await headers()).get("user-agent") ?? null;
 
@@ -188,8 +195,7 @@ export async function submitLeadApporteurAction(
           // Distingue le premier contact du dossier complet dans la même file.
           etape: LEAD_APPORTEUR_ETAPE,
           ville: d.ville ?? "",
-          message:
-            "Premier contact depuis la landing Facebook — à rappeler. Le dossier complet arrive par le lien de l'e-mail.",
+          message: `Premier contact depuis la landing ${TUNNEL_FACEBOOK_PATH} (source : ${libelleSource}) — à rappeler. Le dossier complet arrive par le lien de l'e-mail.`,
           source: TUNNEL_FACEBOOK_PATH,
           consentVersion: LEAD_APPORTEUR_CONSENT_VERSION,
           ...(Object.keys(funnel).length > 0 ? { funnel: funnel as unknown as object } : {}),
@@ -202,7 +208,7 @@ export async function submitLeadApporteurAction(
             ville: d.ville ?? "",
             experiences: [],
             ...(d.statut ? { statut: d.statut } : {}),
-            sourceConnaissance: LEAD_APPORTEUR_SOURCE,
+            sourceConnaissance: source,
           },
         } as object,
         ipAddress: ip,
@@ -235,7 +241,7 @@ export async function submitLeadApporteurAction(
           contactPhone: d.telephone,
           ville: d.ville ?? "",
           zone: "—",
-          b2bYears: "à qualifier (premier contact Facebook)",
+          b2bYears: `à qualifier (premier contact ${libelleSource})`,
           availability: d.statut ? optionLabel(STATUT_OPTIONS, d.statut) : "—",
           usesAi: false,
           locale,
@@ -279,7 +285,10 @@ export async function submitLeadApporteurAction(
         nom: "",
         ville: d.ville ?? "",
         rows: [
-          { label: "Étape", value: "Premier contact — landing Facebook (dossier complet à venir)" },
+          {
+            label: "Étape",
+            value: `Premier contact — landing ${libelleSource} (dossier complet à venir)`,
+          },
           { label: "Prénom", value: d.prenom },
           { label: "Email", value: d.email },
           { label: "Téléphone", value: d.telephone },
@@ -349,7 +358,7 @@ export async function submitLeadApporteurAction(
       { consentPub: d.contexte?.consentPub },
     );
 
-    return { ok: true, submissionId: submission.id };
+    return { ok: true, submissionId: submission.id, source };
   } catch (err) {
     console.error("[lead-apporteur] échec persistance Submission:", err);
     Sentry.captureException(err, {

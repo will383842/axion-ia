@@ -13,9 +13,10 @@
 //
 // ── Ce qu'il fait au succès, dans l'ordre ───────────────────────────────────
 //  1. pose le BROUILLON du wizard (`saveDraft`) avec prénom, e-mail, téléphone,
-//     ville, statut et la source « facebook » : quand la personne ouvrira le
-//     dossier complet depuis l'e-mail, ses coordonnées seront déjà là — et la
-//     candidature complète sera attribuée à Facebook sans qu'on le lui demande.
+//     ville, statut et la SOURCE décidée par le serveur (`utm_source` connu,
+//     sinon « facebook ») : quand la personne ouvrira le dossier complet depuis
+//     l'e-mail, ses coordonnées seront déjà là — et la candidature complète
+//     sera attribuée au bon canal sans qu'on le lui demande.
 //     Aucune donnée personnelle ne transite dans une URL.
 //  2. envoie l'événement Plausible « Lead Apporteur Submitted » (sans cookie,
 //     sans consentement) ;
@@ -178,7 +179,7 @@ export function LeadApporteurForm() {
         prenom: payload.prenom,
         email: payload.email,
         telephone: payload.telephone,
-        sourceConnaissance: LEAD_APPORTEUR_SOURCE,
+        sourceConnaissance: result.source ?? LEAD_APPORTEUR_SOURCE,
       });
       trackFunnel("Lead Apporteur Submitted", { landing: "facebook" });
       router.push(

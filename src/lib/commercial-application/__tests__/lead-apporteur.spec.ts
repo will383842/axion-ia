@@ -6,7 +6,13 @@
  * pourtant créée — le pire des deux mondes.
  */
 import { describe, it, expect } from "vitest";
-import { extraireFbclid, leadApporteurSchema, LEAD_APPORTEUR_SOURCE } from "../lead-apporteur";
+import {
+  extraireFbclid,
+  leadApporteurSchema,
+  LEAD_APPORTEUR_SOURCE,
+  sourceConnueDepuisUtm,
+  sourceDepuisUtm,
+} from "../lead-apporteur";
 import { SOURCE_OPTIONS } from "../model";
 
 const valide = {
@@ -73,5 +79,30 @@ describe("extraireFbclid", () => {
     expect(extraireFbclid("?utm_source=facebook")).toBeNull();
     expect(extraireFbclid("?fbclid=<script>")).toBeNull();
     expect(extraireFbclid(undefined)).toBeNull();
+  });
+});
+
+describe("sourceDepuisUtm — le canal suit le lien d'arrivée (29/09)", () => {
+  it("reprend un canal connu de SOURCE_OPTIONS, quelle que soit la casse", () => {
+    expect(sourceDepuisUtm("linkedin")).toBe("linkedin");
+    expect(sourceDepuisUtm(" LinkedIn ")).toBe("linkedin");
+    expect(sourceDepuisUtm("indeed")).toBe("indeed");
+  });
+  it("ramène les alias usuels à leur canal", () => {
+    expect(sourceDepuisUtm("instagram")).toBe("facebook");
+    expect(sourceDepuisUtm("lnkd")).toBe("linkedin");
+  });
+  it("retombe sur facebook quand l'utm_source est absent, inconnu ou « autre »", () => {
+    expect(sourceDepuisUtm(undefined)).toBe(LEAD_APPORTEUR_SOURCE);
+    expect(sourceDepuisUtm("")).toBe(LEAD_APPORTEUR_SOURCE);
+    expect(sourceDepuisUtm("<script>")).toBe(LEAD_APPORTEUR_SOURCE);
+    expect(sourceDepuisUtm("autre")).toBe(LEAD_APPORTEUR_SOURCE);
+  });
+  it("tout canal rendu existe dans SOURCE_OPTIONS", () => {
+    for (const v of ["linkedin", "fb", "ig", "meta", "linkedin.com", "leboncoin"]) {
+      const id = sourceConnueDepuisUtm(v);
+      expect(id && SOURCE_OPTIONS.some((o) => o.id === id)).toBe(true);
+    }
+    expect(sourceConnueDepuisUtm("inconnu")).toBeNull();
   });
 });
