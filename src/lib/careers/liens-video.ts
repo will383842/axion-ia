@@ -148,8 +148,33 @@ export type EtatLien = "vivant" | "mort" | "inverifiable";
 /** Plateformes derrière une connexion : on ne peut PAS savoir, on ne dit pas « mort ». */
 const DERRIERE_CONNEXION = new Set(["Instagram", "Facebook", "LinkedIn"]);
 
+/**
+ * Une page de CHAÎNE ou de PROFIL (`youtube.com/@nom`, `/channel/…`,
+ * `tiktok.com/@nom`, `vimeo.com/nom`) — pas une vidéo.
+ *
+ * 🔴 Mesuré en production le 2026-09-29 au premier passage : les 8 liens
+ * déclarés « morts » étaient TOUS des pages de chaîne. L'oEmbed ne connaît que
+ * les vidéos et répond 404/400 pour une chaîne qui existe très bien. Une chaîne
+ * se vérifie donc en appelant sa page, qui, elle, répond 404 si la chaîne a
+ * disparu.
+ */
+export function estPageDeProfil(url: string): boolean {
+  let chemin: string;
+  try {
+    chemin = new URL(url).pathname;
+  } catch {
+    return false;
+  }
+  const p = plateformeDe(url);
+  if (p === "YouTube") return /^\/(@|channel\/|c\/|user\/)/i.test(chemin);
+  if (p === "TikTok") return !/\/video\//i.test(chemin);
+  if (p === "Vimeo") return !/^\/(\d+|video\/\d+|channels\/[^/]+\/\d+)/i.test(chemin);
+  return false;
+}
+
 /** Service oEmbed officiel : il dit si la VIDÉO existe (une page YouTube répond 200 même vidéo retirée). */
 export function urlOembed(url: string): string | null {
+  if (estPageDeProfil(url)) return null;
   const p = plateformeDe(url);
   const u = encodeURIComponent(url);
   if (p === "YouTube") return `https://www.youtube.com/oembed?format=json&url=${u}`;
