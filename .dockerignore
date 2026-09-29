@@ -33,6 +33,10 @@ lhci
 !.env.dev.example
 !.env.production.example
 
+# Extension Chrome de l'enregistreur Meet (PR 5) : chargée sur le poste de
+# Will, jamais servie par le site.
+extensions
+
 # Docs / audits (pas needed runtime)
 docs
 _AUDIT

@@ -113,6 +113,43 @@ const eslintConfig = defineConfig([
       "react/no-unescaped-entities": "off",
     },
   },
+  {
+    // Extension Chrome de l'enregistreur Meet (chantier visio, PR 5) : modules
+    // ES exécutés par Chrome, sans construction. Globales du navigateur et de
+    // l'API `chrome` ; aucune dépendance (le paquet `globals` n'est pas une
+    // dépendance du dépôt, d'où la liste écrite).
+    files: ["extensions/enregistreur-meet/**/*.js"],
+    languageOptions: {
+      sourceType: "module",
+      globals: {
+        chrome: "readonly",
+        self: "readonly",
+        window: "readonly",
+        document: "readonly",
+        navigator: "readonly",
+        fetch: "readonly",
+        crypto: "readonly",
+        indexedDB: "readonly",
+        IDBKeyRange: "readonly",
+        MediaRecorder: "readonly",
+        MediaStream: "readonly",
+        AudioContext: "readonly",
+        Blob: "readonly",
+        TextEncoder: "readonly",
+        URL: "readonly",
+        Headers: "readonly",
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+        setInterval: "readonly",
+        clearInterval: "readonly",
+        console: "readonly",
+        structuredClone: "readonly",
+      },
+    },
+    rules: {
+      "no-console": ["warn", { allow: ["warn", "error"] }],
+    },
+  },
   globalIgnores([
     // Claude Code agent worktrees (locaux, jamais commités). Sans ce
     // pattern, ESLint scanne les copies complètes du repo dans chaque

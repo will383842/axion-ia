@@ -1,0 +1,249 @@
+/**
+ * Le DÉPÔT D'UN MORCEAU de son (`PUT /api/enregistreur/sessions/[id]/morceaux`)
+ * — la SEULE entrée d'audio du site (chantier visio, ADR 0054 ; PR 5).
+ *
+ *   1. l'empreinte annoncée (`x-empreinte`) est RECALCULÉE sur les octets reçus ;
+ *   2. rien n'est accepté avant l'accord (409 en `accord_en_attente`), ni après
+ *      un refus, un retrait ou une clôture ;
+ *   3. la clé R2 est CALCULÉE ICI (`cleR2Morceau`), jamais fournie par
+ *      l'extension ;
+ *   4. le son est CHIFFRÉ avant d'atteindre R2 (`chiffrerOctets`, AES-256-GCM,
+ *      clé `PII_ENCRYPTION_KEY`) ;
+ *   5. idempotent : même (tranche, seq) et même empreinte = 200 sans rien
+ *      réécrire ; empreinte différente = 409.
+ *
+ * Une écriture R2 qui échoue rend 503 : l'extension garde le morceau dans son
+ * IndexedDB et réessaie.
+ */
+
+import { createHash } from "node:crypto";
+
+import type { PrismaClient } from "../../../prisma/generated/client";
+import { chiffrerOctets } from "@/lib/chiffrer-parole";
+import { PISTES, TAILLE_MAX_MORCEAU_OCTETS } from "@/lib/schemas/enregistreur";
+import { TAILLE_MAX_TRANCHE_OCTETS } from "./audio/constantes";
+import { echec, ok, type Resultat } from "./resultat";
+import { cleR2Morceau, type StockageAudio } from "./stockage-audio";
+import type { Appareil } from "./sessions";
+
+/** États où un morceau est accepté (le son d'avant une `fin` peut arriver après elle). */
+export const ETATS_ACCEPTANT_DU_SON = ["en_cours", "interrompu", "depose"] as const;
+
+export interface EntetesMorceau {
+  readonly piste: string | null;
+  readonly tranche: string | null;
+  readonly seq: string | null;
+  readonly debutCaptureMs: string | null;
+  readonly empreinte: string | null;
+}
+
+interface EntetesLues {
+  readonly piste: "client" | "axion";
+  readonly tranche: number;
+  readonly seq: number;
+  readonly debutCaptureMs: number | null;
+  readonly empreinte: string;
+}
+
+function entier(v: string | null, max: number): number | null {
+  if (v === null || !/^\d{1,15}$/.test(v)) return null;
+  const n = Number(v);
+  return Number.isSafeInteger(n) && n <= max ? n : null;
+}
+
+/** Valide les en-têtes du dépôt, ou rend `null`. */
+export function lireEntetesMorceau(e: EntetesMorceau): EntetesLues | null {
+  const piste = (PISTES as ReadonlyArray<string>).includes(e.piste ?? "")
+    ? (e.piste as "client" | "axion")
+    : null;
+  const tranche = entier(e.tranche, 9999);
+  const seq = entier(e.seq, 99_999);
+  const empreinte = e.empreinte && /^[0-9a-f]{64}$/.test(e.empreinte) ? e.empreinte : null;
+  const debutCaptureMs =
+    e.debutCaptureMs === null ? null : entier(e.debutCaptureMs, Number.MAX_SAFE_INTEGER);
+  if (piste === null || tranche === null || seq === null || empreinte === null) return null;
+  if (e.debutCaptureMs !== null && debutCaptureMs === null) return null;
+  return { piste, tranche, seq, empreinte, debutCaptureMs };
+}
+
+export function empreinteSha256(octets: Buffer): string {
+  return createHash("sha256").update(octets).digest("hex");
+}
+
+function estConflitUnique(err: unknown): boolean {
+  return typeof err === "object" && err !== null && (err as { code?: string }).code === "P2002";
+}
+
+type Db = Pick<PrismaClient, "enregistrement" | "enregistrementTranche" | "enregistrementMorceau">;
+
+/** Dépose un morceau chiffré. */
+export async function deposerMorceau(
+  db: Db,
+  stockage: StockageAudio,
+  entree: {
+    readonly appareil: Appareil;
+    readonly enregistrementId: string;
+    readonly entetes: EntetesMorceau;
+    readonly octets: Buffer;
+    readonly maintenant: Date;
+  },
+): Promise<Resultat> {
+  const e = lireEntetesMorceau(entree.entetes);
+  if (!e) return echec(400, "entetes_invalides", "En-têtes du morceau absents ou invalides.");
+  if (entree.octets.byteLength === 0) return echec(400, "morceau_vide", "Morceau vide.");
+  if (entree.octets.byteLength > TAILLE_MAX_MORCEAU_OCTETS) {
+    return echec(413, "morceau_trop_gros", "Morceau trop gros.");
+  }
+  if (empreinteSha256(entree.octets) !== e.empreinte) {
+    return echec(
+      400,
+      "empreinte_fausse",
+      "L'empreinte annoncée ne correspond pas au morceau reçu.",
+    );
+  }
+
+  const enr = await db.enregistrement.findUnique({
+    where: { id: entree.enregistrementId },
+    select: { id: true, appareilId: true, statut: true },
+  });
+  if (!enr || enr.appareilId !== entree.appareil.id) {
+    return echec(404, "enregistrement_inconnu", "Enregistrement introuvable.");
+  }
+  if (enr.statut === "accord_en_attente") {
+    return echec(
+      409,
+      "accord_en_attente",
+      "Rien n'est reçu avant l'accord : gardez le son localement.",
+    );
+  }
+  if (!(ETATS_ACCEPTANT_DU_SON as ReadonlyArray<string>).includes(enr.statut)) {
+    return echec(409, "enregistrement_clos", "Cet enregistrement n'accepte plus de son.", {
+      statut: enr.statut,
+    });
+  }
+
+  // La tranche : créée au premier morceau reçu (l'annonce de fin peut suivre).
+  let tranche = await db.enregistrementTranche.findUnique({
+    where: {
+      enregistrementId_piste_numero: {
+        enregistrementId: enr.id,
+        piste: e.piste,
+        numero: e.tranche,
+      },
+    },
+    select: { id: true, tailleOctets: true, nbMorceauxAnnonces: true, statut: true },
+  });
+  if (!tranche) {
+    if (e.debutCaptureMs === null) {
+      return echec(
+        400,
+        "entetes_invalides",
+        "Premier morceau d'une tranche sans heure de début de capture.",
+      );
+    }
+    try {
+      tranche = await db.enregistrementTranche.create({
+        data: {
+          enregistrementId: enr.id,
+          piste: e.piste,
+          numero: e.tranche,
+          debutCaptureEpochMs: BigInt(e.debutCaptureMs),
+          motifDebut: e.tranche === 0 ? "demarrage" : "nouvelle_tranche",
+          statut: "en_reception",
+        },
+        select: { id: true, tailleOctets: true, nbMorceauxAnnonces: true, statut: true },
+      });
+    } catch (err) {
+      if (!estConflitUnique(err)) throw err;
+      tranche = await db.enregistrementTranche.findUnique({
+        where: {
+          enregistrementId_piste_numero: {
+            enregistrementId: enr.id,
+            piste: e.piste,
+            numero: e.tranche,
+          },
+        },
+        select: { id: true, tailleOctets: true, nbMorceauxAnnonces: true, statut: true },
+      });
+      if (!tranche) throw err;
+    }
+  }
+
+  // Idempotence.
+  const existant = await db.enregistrementMorceau.findUnique({
+    where: { trancheId_seq: { trancheId: tranche.id, seq: e.seq } },
+    select: { empreinte: true },
+  });
+  if (existant) {
+    return existant.empreinte === e.empreinte
+      ? ok({ deja: true })
+      : echec(409, "morceau_divergent", "Un autre morceau a déjà été reçu à cette place.");
+  }
+  if (tranche.tailleOctets + entree.octets.byteLength > TAILLE_MAX_TRANCHE_OCTETS) {
+    return echec(413, "tranche_trop_grosse", "La tranche dépasse la taille maximale.");
+  }
+
+  // Chiffrer, PUIS déposer. La clé est calculée ici.
+  const cle = cleR2Morceau(enr.id, e.piste, e.tranche, e.seq);
+  let chiffre: Buffer;
+  try {
+    chiffre = chiffrerOctets(entree.octets);
+  } catch {
+    return echec(
+      503,
+      "cle_chiffrement_absente",
+      "Le chiffrement est indisponible : nouvel essai plus tard.",
+    );
+  }
+  try {
+    await stockage.deposer(cle, chiffre);
+  } catch {
+    return echec(
+      503,
+      "stockage_indisponible",
+      "Le stockage est indisponible : nouvel essai automatique.",
+    );
+  }
+
+  try {
+    await db.enregistrementMorceau.create({
+      data: {
+        trancheId: tranche.id,
+        seq: e.seq,
+        cleR2: cle,
+        tailleOctets: entree.octets.byteLength,
+        empreinte: e.empreinte,
+      },
+    });
+  } catch (err) {
+    if (!estConflitUnique(err)) throw err;
+    // Deux envois simultanés du même morceau : le second relit le premier.
+    const gagnant = await db.enregistrementMorceau.findUnique({
+      where: { trancheId_seq: { trancheId: tranche.id, seq: e.seq } },
+      select: { empreinte: true },
+    });
+    return gagnant?.empreinte === e.empreinte
+      ? ok({ deja: true })
+      : echec(409, "morceau_divergent", "Un autre morceau a déjà été reçu à cette place.");
+  }
+
+  const recus = await db.enregistrementMorceau.count({ where: { trancheId: tranche.id } });
+  await db.enregistrementTranche.update({
+    where: { id: tranche.id },
+    data: {
+      tailleOctets: { increment: entree.octets.byteLength },
+      ...(tranche.nbMorceauxAnnonces !== null && recus >= tranche.nbMorceauxAnnonces
+        ? { statut: "complete" as const }
+        : {}),
+    },
+  });
+  // Un morceau est un signe de vie : il rouvre un `interrompu`.
+  await db.enregistrement.update({
+    where: { id: enr.id },
+    data: {
+      updatedAt: entree.maintenant,
+      ...(enr.statut === "interrompu" ? { statut: "en_cours" as const } : {}),
+    },
+  });
+  return ok({ recu: true });
+}

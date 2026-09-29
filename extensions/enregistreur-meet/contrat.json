@@ -1,0 +1,796 @@
+{
+  "version": 1,
+  "entete": "x-enregistreur-contrat",
+  "cheminApi": "/api/enregistreur/",
+  "constantes": {
+    "tailleMaxMorceauOctets": 262144,
+    "tailleMaxJsonOctets": 65536,
+    "entetesMorceau": {
+      "piste": "x-piste",
+      "tranche": "x-tranche",
+      "seq": "x-seq",
+      "debutCaptureMs": "x-debut-capture-ms",
+      "empreinte": "x-empreinte"
+    },
+    "delaisLocaux": {
+      "accordMaxMs": 180000,
+      "rappelAccordMs": 120000,
+      "destructionSansRencontreMs": 86400000,
+      "badgePisteClientMuetteMs": 60000,
+      "badgeSilenceMs": 180000,
+      "notificationSilenceMs": 300000,
+      "arretSilenceMs": 1800000,
+      "arretSalleQuitteeMs": 120000,
+      "dureeMaxMs": 10500000,
+      "coupureNouvellePersonneMs": 120000,
+      "battementSessionMs": 60000,
+      "battementAppareilMs": 300000,
+      "renvoiInitialMs": 2000,
+      "renvoiMaxMs": 300000
+    },
+    "delaisServeur": {
+      "accordMaxMs": 180000,
+      "sansBattementMs": 600000,
+      "interrompuVersDeposeMs": 7200000,
+      "alerteJetonJours": [
+        14,
+        3
+      ]
+    },
+    "audio": {
+      "dureeTrancheS": 180,
+      "dureeMorceauS": 10,
+      "debitAudioBps": 32000,
+      "tailleMaxTrancheOctets": 25165824,
+      "typeMime": "audio/webm;codecs=opus"
+    },
+    "pistes": [
+      "client",
+      "axion"
+    ],
+    "motifsArret": [
+      "manuel",
+      "onglet_ferme",
+      "salle_quittee",
+      "duree_max",
+      "plantage",
+      "refus_participant",
+      "accord_non_confirme",
+      "cloture_serveur",
+      "inconnu"
+    ],
+    "motifsDebutTranche": [
+      "demarrage",
+      "nouvelle_tranche",
+      "reprise_apres_plantage",
+      "micro_reconnecte"
+    ],
+    "motifsRefusSession": [
+      "rencontre_inconnue",
+      "hors_liste_blanche",
+      "apporteur",
+      "entretien_candidat",
+      "pilote_rencontre_non_test",
+      "reprise_historique",
+      "opposition_ia",
+      "refus_anterieur_definitif"
+    ]
+  },
+  "schemas": {
+    "RencontreDuJour": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "rencontreId": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "calendly",
+            "saisie_manuelle"
+          ]
+        },
+        "titre": {
+          "type": "string"
+        },
+        "debutPrevu": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-]\\d{2}:\\d{2})))$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "finPrevue": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-]\\d{2}:\\d{2})))$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "personne": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "entrepriseDeclaree": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "clientPropose": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+                },
+                "nom": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "nom"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "motifProposition": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reponseCalendly": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "nonSurCalendly": {
+          "type": "boolean"
+        },
+        "refusAnterieur": {
+          "type": "boolean"
+        },
+        "estTestInterne": {
+          "type": "boolean"
+        },
+        "enregistrementActifId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "rencontreId",
+        "source",
+        "titre",
+        "debutPrevu",
+        "finPrevue",
+        "personne",
+        "entrepriseDeclaree",
+        "clientPropose",
+        "motifProposition",
+        "reponseCalendly",
+        "nonSurCalendly",
+        "refusAnterieur",
+        "estTestInterne",
+        "enregistrementActifId"
+      ],
+      "additionalProperties": false
+    },
+    "ReponseRencontresDuJour": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "pilote",
+            "ouvert"
+          ]
+        },
+        "serveurLe": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-]\\d{2}:\\d{2})))$"
+        },
+        "jetonExpireLe": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-]\\d{2}:\\d{2})))$"
+        },
+        "rencontres": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "rencontreId": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+              },
+              "source": {
+                "type": "string",
+                "enum": [
+                  "calendly",
+                  "saisie_manuelle"
+                ]
+              },
+              "titre": {
+                "type": "string"
+              },
+              "debutPrevu": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-]\\d{2}:\\d{2})))$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "finPrevue": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-]\\d{2}:\\d{2})))$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "personne": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "entrepriseDeclaree": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "clientPropose": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+                      },
+                      "nom": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "nom"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "motifProposition": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "reponseCalendly": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "nonSurCalendly": {
+                "type": "boolean"
+              },
+              "refusAnterieur": {
+                "type": "boolean"
+              },
+              "estTestInterne": {
+                "type": "boolean"
+              },
+              "enregistrementActifId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "rencontreId",
+              "source",
+              "titre",
+              "debutPrevu",
+              "finPrevue",
+              "personne",
+              "entrepriseDeclaree",
+              "clientPropose",
+              "motifProposition",
+              "reponseCalendly",
+              "nonSurCalendly",
+              "refusAnterieur",
+              "estTestInterne",
+              "enregistrementActifId"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "mode",
+        "serveurLe",
+        "jetonExpireLe",
+        "rencontres"
+      ],
+      "additionalProperties": false
+    },
+    "CreerSession": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "cleClient": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+        },
+        "rencontreId": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+        },
+        "nature": {
+          "type": "string",
+          "enum": [
+            "visio",
+            "dictee"
+          ]
+        },
+        "versionExtension": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20
+        },
+        "debutLe": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-]\\d{2}:\\d{2})))$"
+        },
+        "accordLocalLe": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-]\\d{2}:\\d{2})))$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "nbParticipants": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "cleClient",
+        "rencontreId",
+        "nature",
+        "versionExtension",
+        "debutLe",
+        "accordLocalLe",
+        "nbParticipants"
+      ],
+      "additionalProperties": false
+    },
+    "ReponseSession": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "enregistrementId": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+        },
+        "rencontreId": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+        },
+        "statut": {
+          "type": "string"
+        },
+        "repris": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "enregistrementId",
+        "rencontreId",
+        "statut",
+        "repris"
+      ],
+      "additionalProperties": false
+    },
+    "DeclarerAccord": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "accordLe": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-]\\d{2}:\\d{2})))$"
+        },
+        "nbParticipants": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50
+        },
+        "versionTexte": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "nouvellePersonne": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "accordLe",
+        "nbParticipants",
+        "versionTexte",
+        "nouvellePersonne"
+      ],
+      "additionalProperties": false
+    },
+    "DeclarerRefus": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "refusLe": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-]\\d{2}:\\d{2})))$"
+        }
+      },
+      "required": [
+        "refusLe"
+      ],
+      "additionalProperties": false
+    },
+    "BattementSession": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "le": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-]\\d{2}:\\d{2})))$"
+        },
+        "enPause": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "le",
+        "enPause"
+      ],
+      "additionalProperties": false
+    },
+    "FinTranche": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "piste": {
+          "type": "string",
+          "enum": [
+            "client",
+            "axion"
+          ]
+        },
+        "numero": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9999
+        },
+        "motifDebut": {
+          "type": "string",
+          "enum": [
+            "demarrage",
+            "nouvelle_tranche",
+            "reprise_apres_plantage",
+            "micro_reconnecte"
+          ]
+        },
+        "debutCaptureEpochMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "nbMorceaux": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 99999
+        },
+        "empreinte": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "dureeMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "finMuette": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "piste",
+        "numero",
+        "motifDebut",
+        "debutCaptureEpochMs",
+        "nbMorceaux",
+        "empreinte",
+        "dureeMs",
+        "finMuette"
+      ],
+      "additionalProperties": false
+    },
+    "FinSession": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "finLe": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-]\\d{2}:\\d{2})))$"
+        },
+        "motif": {
+          "type": "string",
+          "enum": [
+            "manuel",
+            "onglet_ferme",
+            "salle_quittee",
+            "duree_max",
+            "plantage",
+            "refus_participant",
+            "accord_non_confirme",
+            "cloture_serveur",
+            "inconnu"
+          ]
+        },
+        "perdus": {
+          "maxItems": 500,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "debutMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "finMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "debutMs",
+              "finMs"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "fenetresHorsAccord": {
+          "maxItems": 500,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "debutMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "finMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "debutMs",
+              "finMs"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "evenements": {
+          "maxItems": 2000,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "le": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-]\\d{2}:\\d{2})))$"
+              },
+              "type": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40
+              }
+            },
+            "required": [
+              "le",
+              "type"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "finLe",
+        "motif",
+        "perdus",
+        "fenetresHorsAccord",
+        "evenements"
+      ],
+      "additionalProperties": false
+    },
+    "BattementAppareil": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "versionExtension": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20
+        },
+        "versionContrat": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "fileEnAttente": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "agePlusVieuxMs": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sessionActive": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "versionExtension",
+        "versionContrat",
+        "fileEnAttente",
+        "agePlusVieuxMs",
+        "sessionActive"
+      ],
+      "additionalProperties": false
+    },
+    "ReponseErreur": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "erreur": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "erreur",
+        "message"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

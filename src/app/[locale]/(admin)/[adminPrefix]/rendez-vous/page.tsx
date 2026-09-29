@@ -468,6 +468,9 @@ export default async function RendezVousPage({
       <AdminPageHeader
         title="Rendez-vous"
         description={`Vos prochains appels : avec qui, à quelle heure, et le bouton pour lancer la visio. Un rendez-vous quitte cette liste ${MINUTES_APRES_FIN} minutes après sa fin, puis se retrouve dans « Passés ».`}
+        actions={
+          <Link href={`/${locale}/${adminPrefix}/rendez-vous/enregistreur`}>Enregistreur</Link>
+        }
       />
 
       {/* Demande de Will (2026-09-28) : « une fois la visio terminée, je ne
