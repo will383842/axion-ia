@@ -40,9 +40,9 @@
  * ## Le rattachement tardif relance le circuit (PR 6)
  *
  * `relancerApresRattachement` est le POINT D'ENFILAGE de l'étape `rattacher`
- * du circuit : un rendez-vous rangé après coup doit voir son compte rendu
- * complété (P2 à P5). Le circuit n'existe pas encore : le point est INERTE
- * dans cette PR, et la PR 6 le câble.
+ * du circuit : un rendez-vous rangé après coup voit son compte rendu complété
+ * (P2 à P5), sans refaire l'extraction. Câblé par la PR 6 sur
+ * `completerApresRattachement` (`src/server/visio/gestes-compte-rendu.ts`).
  *
  * Module neutre (sans `server-only`) : le balayage du worker l'appelle.
  */
@@ -52,6 +52,7 @@ import { domaineDe, natureAdresse } from "@/lib/email/nature-adresse";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { checkSirenFormat, normalizeSiret, sirenDuSiret } from "@/lib/siret";
 import { normaliserNom } from "@/server/qualiopi/crm/normaliser-nom";
+import { completerApresRattachement } from "@/server/visio/gestes-compte-rendu";
 import type { Tx } from "./base";
 
 /** Ce que la machine sait d'un rendez-vous pour proposer une fiche. */
@@ -432,11 +433,14 @@ export async function relierParticipantsAuxPersonnes(
 
 /**
  * POINT D'ENFILAGE — « Compléter après rattachement » (étape `rattacher` du
- * circuit). INERTE jusqu'à la PR 6, qui le câble sur la file `visio` : un
- * rendez-vous rangé après coup doit voir son compte rendu complété sans
- * refaire l'extraction. Rend `false` tant que rien n'est enfilé, pour qu'aucun
- * appelant ne croie le travail lancé.
+ * circuit, PR 6) : un rendez-vous rangé après coup voit son compte rendu
+ * complété sans refaire l'extraction. Rend `true` si une nouvelle version est
+ * programmée, `false` s'il n'y a pas de compte rendu (rendez-vous non
+ * enregistré) : aucun appelant ne croit le travail lancé à tort.
  */
-export async function relancerApresRattachement(_rencontreId: string): Promise<boolean> {
-  return false;
+export async function relancerApresRattachement(
+  db: Parameters<typeof completerApresRattachement>[0],
+  rencontreId: string,
+): Promise<boolean> {
+  return (await completerApresRattachement(db, rencontreId)) !== null;
 }

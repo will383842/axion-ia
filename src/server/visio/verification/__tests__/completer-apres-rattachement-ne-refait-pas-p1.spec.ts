@@ -11,7 +11,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 
 import { chiffrerParole, dechiffrerParole } from "@/lib/chiffrer-parole";
 import { etatInitial } from "../../etat-compte-rendu";
-import { relancerApresRattachement } from "../../gestes-compte-rendu";
+import { completerApresRattachement } from "../../gestes-compte-rendu";
 import { baseEspion } from "../../../../../tests/outils/base-espion";
 import { CLE_DE_TEST } from "../../../../../tests/outils/fixtures-enregistreur";
 import { extraction } from "../../../../../tests/fixtures/visio/scenario-menuiserie";
@@ -37,7 +37,7 @@ describe("compléter après rattachement ne refait pas P1", () => {
       }),
       "compteRendu.create": () => ({ id: "cr4" }),
     });
-    await relancerApresRattachement(e.base, "r1");
+    await completerApresRattachement(e.base, "r1");
     expect(e.sqls.some((s) => s.valeurs.includes("extraire"))).toBe(false);
     const cree = e.de("compteRendu", "create")[0]!.args as { data: { verification: string } };
     const repris = JSON.parse(dechiffrerParole(cree.data.verification)) as typeof etat;

@@ -3,11 +3,11 @@
  *
  * Un rendez-vous traité alors qu'il était « à classer » a sauté P2 (aucun
  * rattachement automatique). Quand Will le range chez un client,
- * `relancerApresRattachement` crée une nouvelle version (mode
+ * `completerApresRattachement` crée une nouvelle version (mode
  * `completer_apres_rattachement`) qui REPART DE `rattacher` — l'ancienne est
  * remplacée.
  *
- * Mutation qui rougit : ne rien programmer dans `relancerApresRattachement`
+ * Mutation qui rougit : ne rien programmer dans `completerApresRattachement`
  * → aucune étape `rattacher` n'est posée. Contre-témoin : sans état (aucun
  * compte rendu), rien n'est relancé. Angle mort : l'appel depuis l'écran de
  * rattachement vit dans la PR 4 (une ligne, au rebase).
@@ -17,7 +17,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 
 import { chiffrerParole } from "@/lib/chiffrer-parole";
 import { etatInitial } from "../../etat-compte-rendu";
-import { relancerApresRattachement } from "../../gestes-compte-rendu";
+import { completerApresRattachement } from "../../gestes-compte-rendu";
 import { baseEspion } from "../../../../../tests/outils/base-espion";
 import { CLE_DE_TEST } from "../../../../../tests/outils/fixtures-enregistreur";
 
@@ -48,7 +48,7 @@ function base(avecCompteRendu: boolean) {
 describe("un rattachement tardif relance le pipeline", () => {
   it("nouvelle version, ancienne remplacée, `rattacher` programmée pour la nouvelle", async () => {
     const e = base(true);
-    expect(await relancerApresRattachement(e.base, "r1")).toBe("cr2");
+    expect(await completerApresRattachement(e.base, "r1")).toBe("cr2");
     expect(e.de("compteRendu", "update")[0]!.args).toMatchObject({
       where: { id: "cr1" },
       data: { statut: "remplace" },
@@ -63,7 +63,7 @@ describe("un rattachement tardif relance le pipeline", () => {
 
   it("contre-témoin : sans compte rendu, rien n'est relancé", async () => {
     const e = base(false);
-    expect(await relancerApresRattachement(e.base, "r1")).toBeNull();
+    expect(await completerApresRattachement(e.base, "r1")).toBeNull();
     expect(e.sqls).toEqual([]);
   });
 });

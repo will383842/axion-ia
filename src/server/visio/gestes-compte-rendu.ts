@@ -53,8 +53,11 @@ export function voixNonAttribuees(
   return voixClient.filter((v) => !attribuees.has(v));
 }
 
+/** Ce que la lecture des voix demande à la base (client ou transaction). */
+type LecteurVoix = Pick<PrismaClient, "transcriptionSegment" | "rencontreParticipant">;
+
 /** Les voix de la piste client de la transcription retenue d'une rencontre. */
-export async function voixDeLaRencontre(db: Db, rencontreId: string): Promise<string[]> {
+export async function voixDeLaRencontre(db: LecteurVoix, rencontreId: string): Promise<string[]> {
   const lignes = await db.transcriptionSegment.findMany({
     where: {
       piste: "client",
@@ -72,9 +75,10 @@ export async function voixDeLaRencontre(db: Db, rencontreId: string): Promise<st
 /**
  * ⛔ « Valider tous » (et la validation du compte rendu) sont REFUSÉS tant que
  * la correspondance des voix n'est pas faite quand la piste client en porte
- * plusieurs. À appeler en tête de toute validation en lot (PR 4 : une ligne).
+ * plusieurs. Appelée par `validerCompteRendu` et, dans sa transaction, par
+ * `validerApresLAppel` (`src/features/dossier-client/valider.ts`).
  */
-export async function exigerVoixAttribuees(db: Db, rencontreId: string): Promise<void> {
+export async function exigerVoixAttribuees(db: LecteurVoix, rencontreId: string): Promise<void> {
   const [voix, participants] = await Promise.all([
     voixDeLaRencontre(db, rencontreId),
     db.rencontreParticipant.findMany({
@@ -203,11 +207,15 @@ export async function reextraireCompteRendu(db: Db, rencontreId: string): Promis
 }
 
 /**
- * ⛔ Un rattachement tardif RELANCE le circuit à partir de P2 — jamais P1.
+ * ⛔ « Compléter après rattachement » : le circuit repart de P2 — jamais P1.
  * Une nouvelle version reprend l'état (faits déjà vérifiés, couverture) et
- * repart de `rattacher`. À appeler par le rattachement de la PR 4 (une ligne).
+ * repart de `rattacher`. Appelée par le bouton « Compléter » et par le point
+ * d'enfilage du rattachement (`relancerApresRattachement`,
+ * `src/features/dossier-client/rattacher.ts`) — une seule implémentation.
+ * Rend l'identifiant de la nouvelle version, ou `null` s'il n'y a pas de
+ * compte rendu à compléter.
  */
-export async function relancerApresRattachement(
+export async function completerApresRattachement(
   db: Db,
   rencontreId: string,
 ): Promise<string | null> {

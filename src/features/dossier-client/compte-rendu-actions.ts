@@ -24,7 +24,7 @@ import {
   GesteRefuse,
   reecrireCompteRendu,
   reextraireCompteRendu,
-  relancerApresRattachement,
+  completerApresRattachement,
   reprendreEtapesSuspendues,
   validerCompteRendu,
 } from "@/server/visio/gestes-compte-rendu";
@@ -93,7 +93,7 @@ const GESTES: Readonly<
     return "L'extraction est relancée depuis la transcription.";
   },
   completer: async (_fd, rencontreId) => {
-    const id = await relancerApresRattachement(prisma, rencontreId);
+    const id = await completerApresRattachement(prisma, rencontreId);
     return id === null
       ? "Rien à compléter pour ce rendez-vous."
       : "Le compte rendu est complété avec la fiche client (sans refaire l'extraction).";
