@@ -23,6 +23,14 @@
  *  · Les offres VIDÉO (monteur, vidéaste) sont exclues : recrutement en cours,
  *    Will compare les prix.
  *  · Une opposition au vivier exclut aussi : le texte promet de garder le dossier.
+ *  · 🔴 LES COMMERCIAUX SONT EXCLUS (Will, 2026-09-29). Une candidature à une
+ *    offre de catégorie `commercial` entre dans le TUNNEL APPORTEUR : elle
+ *    reçoit une invitation à réserver un échange (`invitation-auto.ts`). Lui
+ *    écrire aussi « poste pourvu » se contredit — c'est arrivé le 28/09 : cinq
+ *    personnes ont reçu l'invitation PUIS « poste pourvu ». Sont donc exclues :
+ *    l'offre `commercial`, toute candidature dont une fiche apporteur est née
+ *    (`details.jobApplicationId`, « Proposer le réseau » compris), et les
+ *    spontanées à l'intitulé commercial.
  *  · L'interrupteur `CLE_ACTIVATION` (table `settings`) : ABSENT = ARRÊTÉ.
  *    Il se bascule depuis la console (Candidatures), sans redéploiement.
  *
@@ -89,19 +97,62 @@ export function posteCourt(titre: string | null | undefined): string | null {
   return v || null;
 }
 
-/** Le filtre d'éligibilité — une seule définition, lue par le passage ET l'écran. */
-export function critereEligible(maintenant: Date): Prisma.JobApplicationWhereInput {
+/** Catégorie d'offre dont les candidats basculent dans le tunnel apporteur. */
+export const CATEGORIE_TUNNEL = "commercial" as const;
+
+/** Intitulés exclus : vidéo (recrutement en cours) et commercial (tunnel apporteur). */
+const INTITULES_EXCLUS = ["monteur vid", "vidéaste", "commercial", "business dev", "apporteur"];
+
+/**
+ * Le filtre d'éligibilité — une seule définition, lue par le passage ET l'écran.
+ * `idsTunnel` : les candidatures dont une fiche apporteur est née (lu par
+ * `idsBasculesAuTunnel`, qui a besoin de la base — ce filtre reste pur).
+ */
+export function critereEligible(
+  maintenant: Date,
+  idsTunnel: readonly string[] = [],
+): Prisma.JobApplicationWhereInput {
   return {
     status: "new",
     replies: { none: {} },
     vivierOpposedAt: null,
     submittedAt: { lte: new Date(maintenant.getTime() - AGE_MIN_JOURS * 86_400_000) },
+    ...(idsTunnel.length > 0 ? { id: { notIn: [...idsTunnel] } } : {}),
     AND: [
-      { OR: [{ offer: null }, { offer: { slug: { notIn: SLUGS_EXCLUS } } }] },
-      { offerTitleSnap: { not: { contains: "monteur vid" }, mode: "insensitive" } },
-      { offerTitleSnap: { not: { contains: "vidéaste" }, mode: "insensitive" } },
+      {
+        OR: [
+          { offer: null },
+          { offer: { slug: { notIn: SLUGS_EXCLUS }, category: { not: CATEGORIE_TUNNEL } } },
+        ],
+      },
+      ...INTITULES_EXCLUS.map((t) => ({
+        offerTitleSnap: { not: { contains: t }, mode: "insensitive" as const },
+      })),
     ],
   };
+}
+
+/**
+ * Candidatures BASCULÉES dans le tunnel apporteur : une fiche est née d'elles
+ * (`details.jobApplicationId`), qu'elle vienne de l'invitation automatique ou
+ * du bouton « Proposer le réseau d'apporteurs ». Une fiche effacée compte
+ * aussi : la personne a pu recevoir l'invitation avant l'effacement.
+ */
+export async function idsBasculesAuTunnel(): Promise<string[]> {
+  const lignes = await prisma.$queryRaw<Array<{ id: string | null }>>`
+    SELECT DISTINCT details->>'jobApplicationId' AS id
+    FROM submissions
+    WHERE details ? 'jobApplicationId'`;
+  return lignes
+    .map((l) => l.id)
+    .filter((id): id is string => typeof id === "string" && id.length > 0);
+}
+
+/** Le critère complet, tunnel compris — celui qu'utilisent le passage et l'écran. */
+export async function critereEligibleActuel(
+  maintenant: Date,
+): Promise<Prisma.JobApplicationWhereInput> {
+  return critereEligible(maintenant, await idsBasculesAuTunnel());
 }
 
 /** Interrupteur : ABSENT ou illisible = ARRÊTÉ. */
@@ -131,7 +182,7 @@ export async function passerReponsePostePourvu(
   if (!(await estActive())) {
     return { actif: false, envoyees: 0, ecartees: 0, echouees: 0, restantes: 0 };
   }
-  const where = critereEligible(maintenant);
+  const where = await critereEligibleActuel(maintenant);
   const lot = await prisma.jobApplication.findMany({
     where,
     orderBy: { submittedAt: "asc" },
