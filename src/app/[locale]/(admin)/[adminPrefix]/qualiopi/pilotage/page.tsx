@@ -178,16 +178,16 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
     derniereVeille,
     anneeDeclarationNda,
   ] = await Promise.all([
-      getPilotage(options),
-      getRevue(annee),
-      getQualiopiConfig("bpf_annee_deposee").catch(() => 0),
-      getQualiopiConfig("revue_trimestrielle_activee").catch(() => true),
-      prisma.veille.findFirst({
-        orderBy: { dateVeille: "desc" },
-        select: { dateVeille: true },
-      }),
-      getQualiopiConfig("nda_annee_declaration").catch(() => null),
-    ]);
+    getPilotage(options),
+    getRevue(annee),
+    getQualiopiConfig("bpf_annee_deposee").catch(() => 0),
+    getQualiopiConfig("revue_trimestrielle_activee").catch(() => true),
+    prisma.veille.findFirst({
+      orderBy: { dateVeille: "desc" },
+      select: { dateVeille: true },
+    }),
+    getQualiopiConfig("nda_annee_declaration").catch(() => null),
+  ]);
 
   // Sélecteur années (5 ans glissants)
   const anneesDisponibles: number[] = [];
@@ -209,8 +209,7 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
   // même règle que l'alerte `bpf_en_retard` (evaluateur.ts). Sans elle, un
   // organisme déclaré en 2026 lisait « BPF 2025 : Non déposé » sur son
   // tableau de pilotage, sous les yeux du certificateur (audit du 2026-09-30).
-  const bpfSansObjet =
-    typeof anneeDeclarationNda === "number" && anneeDeclarationNda > annee - 1;
+  const bpfSansObjet = typeof anneeDeclarationNda === "number" && anneeDeclarationNda > annee - 1;
   const veilleRecente =
     derniereVeille !== null &&
     // Date.now() est OK ici : Server Component re-render à chaque requête HTTP.

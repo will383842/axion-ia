@@ -42,7 +42,12 @@ function libelle(table: Readonly<Record<string, string>>, cle: string): string {
 }
 
 const jour = (d: Date): string =>
-  d.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris", day: "2-digit", month: "2-digit", year: "numeric" });
+  d.toLocaleDateString("fr-FR", {
+    timeZone: "Europe/Paris",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
 
 const cellCls =
   "px-[var(--space-admin-3)] py-[var(--space-admin-2)] align-top text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]";
@@ -93,7 +98,10 @@ export function ParcoursStagiaireSection({
             </thead>
             <tbody>
               {parcours.inscriptions.map((i) => (
-                <tr key={i.enrollmentId} className="border-t border-[color:var(--color-admin-border)]">
+                <tr
+                  key={i.enrollmentId}
+                  className="border-t border-[color:var(--color-admin-border)]"
+                >
                   <td className={cellCls}>
                     <Link
                       href={`${sessionsHref}/${i.sessionId}`}
@@ -108,7 +116,9 @@ export function ParcoursStagiaireSection({
                   </td>
                   <td className={cellCls}>{libelle(STATUT_INSCRIPTION, i.statutInscription)}</td>
                   <td className={cellCls}>
-                    {i.convocationEnvoyeeAt ? `Envoyée le ${jour(i.convocationEnvoyeeAt)}` : "Non envoyée"}
+                    {i.convocationEnvoyeeAt
+                      ? `Envoyée le ${jour(i.convocationEnvoyeeAt)}`
+                      : "Non envoyée"}
                   </td>
                   <td className={cellCls}>
                     {i.tauxPresencePct !== null ? `${i.tauxPresencePct} %` : "—"}

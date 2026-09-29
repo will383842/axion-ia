@@ -236,7 +236,7 @@ function LignePiece({
             l'auditeur (audit du 2026-09-30) qu'il manquait des signatures sur
             trois conventions remplacées le jour même. */}
         <span className="font-semibold">
-          {piece.annuleeAt !== null && piece.statutRecalcule === "en_attente"
+          {piece.annuleeAt !== null && piece.statutRecalcule !== "signee"
             ? "Sans objet (pièce annulée)"
             : (LIBELLE_STATUT[piece.statutRecalcule] ?? piece.statutRecalcule)}
         </span>

@@ -107,7 +107,7 @@ export interface PilotageResult {
   m10_maj_documentaire: MetriqueValeur;
   /** M11 — Formateurs à jour de leurs preuves de compétences */
   m11_formateurs_a_jour: MetriqueValeur;
-  /** M12 — Adaptations handicap réalisées */
+  /** M12 — Adaptations réalisées (ind. 10 ; tout besoin déclaré, pas seulement le handicap) */
   m12_adaptations_handicap: MetriqueValeur;
   /** M13 — Sous-traitances évaluées (contrat signé) */
   m13_sous_traitances_evaluees: MetriqueValeur;

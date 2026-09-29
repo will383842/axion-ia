@@ -90,7 +90,14 @@ export async function getParcoursStagiaire(traineeId: string): Promise<ParcoursS
     prisma.documentGenere.findMany({
       where: { traineeId },
       orderBy: { createdAt: "desc" },
-      select: { id: true, type: true, numero: true, createdAt: true, annuleeAt: true, sessionId: true },
+      select: {
+        id: true,
+        type: true,
+        numero: true,
+        createdAt: true,
+        annuleeAt: true,
+        sessionId: true,
+      },
     }),
   ]);
 

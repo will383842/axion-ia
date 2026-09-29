@@ -41,7 +41,12 @@ describe("getParcoursStagiaire", () => {
         attestationResultat: "complete",
         attestationDocument: { id: "doc-att", numero: "AXI-ATT-2026-001" },
         questionnaires: [
-          { type: "positionnement", envoyeAt: d("2026-09-04T10:00:00Z"), reponduAt: d("2026-09-05T07:00:00Z"), noteGlobale: null },
+          {
+            type: "positionnement",
+            envoyeAt: d("2026-09-04T10:00:00Z"),
+            reponduAt: d("2026-09-05T07:00:00Z"),
+            noteGlobale: null,
+          },
         ],
         evaluations: [{ dateEvaluation: d("2026-09-05T16:00:00Z") }],
         session: {
@@ -72,7 +77,9 @@ describe("getParcoursStagiaire", () => {
 
     const requete = JSON.stringify(mockP.enrollment.findMany.mock.calls[0]?.[0]);
     expect(requete).not.toMatch(/handicap|adaptation|besoin/i);
-    expect(JSON.stringify(mockP.documentGenere.findMany.mock.calls[0]?.[0])).toContain('"traineeId":"t1"');
+    expect(JSON.stringify(mockP.documentGenere.findMany.mock.calls[0]?.[0])).toContain(
+      '"traineeId":"t1"',
+    );
   });
 
   it("sans attestation ni évaluation, les champs valent null — pas undefined", async () => {
