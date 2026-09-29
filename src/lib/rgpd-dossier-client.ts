@@ -13,7 +13,11 @@
  *     correspondance de voix (sinon on ne sait pas qui parle) ;
  *   · les faits dont elle est le SUJET : l'énoncé SEUL, jamais la citation —
  *     la citation est la phrase d'un tiers (« c'est la DAF qui décide ») ;
- *   · les faits qu'ELLE a dits : énoncé et citation (ses propres mots) ;
+ *   · les faits qu'ELLE a dits : énoncé et citation (ses propres mots) —
+ *     seulement quand le LOCUTEUR est validé (participation dont Will a
+ *     validé la voix, ou `contactLocuteurId` posé) et que le fait n'est ni
+ *     rejeté ni remplacé : un fait rejeté pour `rectification` est souvent
+ *     un fait mal attribué, et sa citation serait la phrase d'un tiers ;
  *   · les preuves d'accord des rencontres auxquelles elle a participé
  *     (type, date, version du texte annoncé) ;
  *   · les questions qu'on lui a adressées et ses réponses ;
@@ -49,8 +53,9 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
   {
     modele: "PreRemplissage",
     motif:
-      "trace interne des cases de devis pré-remplies ; les valeurs viennent des faits déjà " +
-      "rendus ci-dessus.",
+      "trace interne des cases pré-remplies ; les valeurs viennent des faits déjà " +
+      "rendus ci-dessus, sauf le corps d'un e-mail de suivi, qui vous est rendu tel qu'il a " +
+      "été envoyé avec vos e-mails.",
   },
 ];
 
@@ -250,6 +255,7 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
         contactSujetId: true,
         contactLocuteurId: true,
         participantLocuteurId: true,
+        statut: true,
       },
       orderBy: { constateLe: "asc" },
     });
@@ -289,9 +295,19 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
           });
 
     const siens = new Set(contactIds);
+    // « Elle l'a dit » exige un locuteur VALIDÉ (plan §3.15 : « ses citations
+    // (locuteur validé) ») : `contactLocuteurId` n'est posé qu'après la
+    // validation de Will (ou pour la titulaire d'une réservation Calendly), et
+    // une participation ne compte que si sa voix a été validée. Sans cela,
+    // l'extraction qui prête à Alice une phrase de Bruno rendrait à Alice les
+    // mots de Bruno.
     const aDit = (f: (typeof faits)[number]): boolean =>
       (f.contactLocuteurId !== null && siens.has(f.contactLocuteurId)) ||
-      (f.participantLocuteurId !== null && sesParticipants.has(f.participantLocuteurId));
+      (f.participantLocuteurId !== null && sesVoixValidees.has(f.participantLocuteurId));
+    // Un fait rejeté ou remplacé n'est plus « ce qu'elle a dit » : il peut
+    // être rejeté justement parce qu'il est mal attribué (`rectification`).
+    const ecarteDesPropos = (f: (typeof faits)[number]): boolean =>
+      f.statut === "rejete" || f.statut === "remplace";
 
     return {
       personnes: contacts.map((c) => ({
@@ -331,7 +347,7 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
       }),
       // Ce qu'elle a dit : ses propres mots, citation comprise.
       vosPropos: faits.flatMap((f) => {
-        if (!aDit(f)) return [];
+        if (!aDit(f) || ecarteDesPropos(f)) return [];
         const enonce = lisible(f.enonce, avertir, "vosPropos");
         if (enonce === null) return [];
         let citation: string | null = null;

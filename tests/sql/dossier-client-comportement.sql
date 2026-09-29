@@ -316,13 +316,81 @@ EXCEPTION WHEN SQLSTATE 'AXV04' THEN NULL;
 END $$;
 ROLLBACK;
 
-\echo '[visio] 16. rien n''est resté en base'
+\echo '[visio] 16. fusion (A3) : projet puis personne déplacés, clés composées différées'
+BEGIN;
+SELECT pg_temp.visio_fixture();
+-- Le cas ordinaire : un fait porte À LA FOIS un projet et une personne-sujet.
+INSERT INTO faits (id, client_id, portee, projet_id, contact_sujet_id, type, cle, enonce, certitude, confiance, source, constate_le) VALUES
+  ('00000000-0000-4000-8000-0000000000fd', '00000000-0000-4000-8000-00000000000a', 'projet', '00000000-0000-4000-8000-00000000001a', '00000000-0000-4000-8000-00000000002a', 'besoin', 'global', 'enc:v1:x', 'dit_explicitement', 'haute', 'saisie_manuelle', now());
+-- Témoin : clés contrôlées à l'instant (le défaut) → déplacer le projet
+-- recopie client_id sur le fait, dont la personne est encore sur l'ancienne
+-- fiche : refusé à mi-chemin.
+DO $$ BEGIN
+  UPDATE projets SET client_id = '00000000-0000-4000-8000-00000000000b' WHERE id = '00000000-0000-4000-8000-00000000001a';
+  RAISE EXCEPTION 'devait échouer : clé composée immédiate contournée' USING ERRCODE = 'AXT99';
+EXCEPTION WHEN foreign_key_violation THEN NULL;
+END $$;
+-- La fusion diffère les clés, déplace le projet PUIS la personne, et tout est
+-- contrôlé d'un coup (SET CONSTRAINTS ALL IMMEDIATE = ce que ferait le COMMIT).
+SET CONSTRAINTS ALL DEFERRED;
+UPDATE projets SET client_id = '00000000-0000-4000-8000-00000000000b' WHERE id = '00000000-0000-4000-8000-00000000001a';
+UPDATE client_contacts SET client_id = '00000000-0000-4000-8000-00000000000b' WHERE id = '00000000-0000-4000-8000-00000000002a';
+SET CONSTRAINTS ALL IMMEDIATE;
+DO $$ BEGIN
+  IF (SELECT client_id FROM faits WHERE id = '00000000-0000-4000-8000-0000000000fd') <> '00000000-0000-4000-8000-00000000000b'
+     OR (SELECT client_id FROM questionnaires_cadrage WHERE id = '00000000-0000-4000-8000-00000000004a') <> '00000000-0000-4000-8000-00000000000b' THEN
+    RAISE EXCEPTION 'la fusion n''a pas fait suivre le fait et le questionnaire' USING ERRCODE = 'AXT99';
+  END IF;
+END $$;
+ROLLBACK;
+
+\echo '[visio] 17. une étape sans compte rendu n''existe qu''une fois par rencontre'
+BEGIN;
+SELECT pg_temp.visio_fixture();
+INSERT INTO traitements_visio (id, rencontre_id, etape) VALUES
+  ('00000000-0000-4000-8000-0000000000e5', '00000000-0000-4000-8000-00000000003a', 'transcrire');
+DO $$ BEGIN
+  INSERT INTO traitements_visio (id, rencontre_id, etape) VALUES
+    ('00000000-0000-4000-8000-0000000000e6', '00000000-0000-4000-8000-00000000003a', 'transcrire');
+  RAISE EXCEPTION 'devait échouer : étape sans compte rendu lancée deux fois' USING ERRCODE = 'AXT99';
+EXCEPTION WHEN unique_violation THEN NULL;
+END $$;
+-- Contre-témoin : la même étape pour deux comptes rendus distincts, et une
+-- fois sans compte rendu, coexistent.
+INSERT INTO traitements_visio (id, rencontre_id, etape, compte_rendu_id) VALUES
+  ('00000000-0000-4000-8000-0000000000e7', '00000000-0000-4000-8000-00000000003a', 'rediger', '00000000-0000-4000-8000-0000000000c7'),
+  ('00000000-0000-4000-8000-0000000000e8', '00000000-0000-4000-8000-00000000003a', 'rediger', '00000000-0000-4000-8000-0000000000c8'),
+  ('00000000-0000-4000-8000-0000000000e9', '00000000-0000-4000-8000-00000000003a', 'rediger', NULL);
+ROLLBACK;
+
+\echo '[visio] 18. sous le drapeau d''effacement, un journal se vide mais ne se supprime pas'
+BEGIN;
+SELECT pg_temp.visio_fixture();
+INSERT INTO projet_evenements (id, projet_id, action, motif) VALUES
+  ('00000000-0000-4000-8000-0000000000ea', '00000000-0000-4000-8000-00000000001a', 'renomme', 'Motif qui nomme une personne fictive');
+SET LOCAL axion.effacement_rgpd = 'on';
+UPDATE projet_evenements SET motif = NULL WHERE id = '00000000-0000-4000-8000-0000000000ea';
+DO $$ BEGIN
+  DELETE FROM projet_evenements WHERE id = '00000000-0000-4000-8000-0000000000ea';
+  RAISE EXCEPTION 'devait échouer : suppression dans un journal sous le drapeau' USING ERRCODE = 'AXT99';
+EXCEPTION WHEN SQLSTATE 'AXV02' THEN NULL;
+END $$;
+DO $$ BEGIN
+  IF (SELECT motif FROM projet_evenements WHERE id = '00000000-0000-4000-8000-0000000000ea') IS NOT NULL THEN
+    RAISE EXCEPTION 'le motif n''a pas été vidé sous le drapeau' USING ERRCODE = 'AXT99';
+  END IF;
+END $$;
+ROLLBACK;
+
+\echo '[visio] 19. rien n''est resté en base'
 DO $$ BEGIN
   IF EXISTS (SELECT 1 FROM clients WHERE numero LIKE 'AXI-CLI-VISIO-%')
      OR EXISTS (SELECT 1 FROM faits)
-     OR EXISTS (SELECT 1 FROM rencontres) THEN
+     OR EXISTS (SELECT 1 FROM rencontres)
+     OR EXISTS (SELECT 1 FROM traitements_visio)
+     OR EXISTS (SELECT 1 FROM projet_evenements) THEN
     RAISE EXCEPTION 'une ligne de test a survécu à son ROLLBACK' USING ERRCODE = 'AXT99';
   END IF;
 END $$;
 
-\echo '[visio] comportement SQL : 16 cas passés'
+\echo '[visio] comportement SQL : 19 cas passés'

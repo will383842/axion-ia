@@ -10,6 +10,12 @@
  *     décide ») est rendu en ÉNONCÉ SEUL : la citation est la phrase de Bruno ;
  *   · un fait qu'Alice a dit est rendu avec sa citation (ses propres mots) ;
  *   · un fait de Bruno sur quelqu'un d'autre n'apparaît pas ;
+ *   · une citation n'est rendue que si le LOCUTEUR est validé : participation
+ *     dont Will a validé la voix, ou `contactLocuteurId` posé (plan §3.15,
+ *     « ses citations (locuteur validé) ») ;
+ *   · un fait REJETÉ (par exemple pour `rectification` : mal attribué) ou
+ *     REMPLACÉ ne rend jamais sa citation : ce sont peut-être les mots d'un
+ *     autre ;
  *   · rien n'est rendu chiffré.
  */
 
@@ -21,6 +27,7 @@ process.env["PII_ENCRYPTION_KEY"] = "c".repeat(64);
 const donnees = vi.hoisted(() => ({
   segments: [] as unknown[],
   faits: [] as unknown[],
+  participations: [] as unknown[],
 }));
 
 vi.mock("@/lib/security/email-hash", () => ({
@@ -45,11 +52,7 @@ vi.mock("@/lib/prisma", () => ({
         },
       ],
     },
-    rencontreParticipant: {
-      findMany: async () => [
-        { id: "p-alice", role: "client", voixValideeLe: new Date("2026-10-01"), rencontreId: "r1" },
-      ],
-    },
+    rencontreParticipant: { findMany: async () => donnees.participations },
     rencontre: {
       findMany: async () => [
         {
@@ -89,6 +92,9 @@ afterAll(() => {
 });
 
 beforeEach(() => {
+  donnees.participations = [
+    { id: "p-alice", role: "client", voixValideeLe: new Date("2026-10-01"), rencontreId: "r1" },
+  ];
   donnees.segments = [
     {
       participantId: "p-alice",
@@ -112,6 +118,7 @@ beforeEach(() => {
       contactSujetId: "contact-alice",
       contactLocuteurId: null,
       participantLocuteurId: "p-bruno",
+      statut: "propose",
     },
     {
       type: "nb_participants",
@@ -121,6 +128,7 @@ beforeEach(() => {
       contactSujetId: null,
       contactLocuteurId: null,
       participantLocuteurId: "p-alice",
+      statut: "valide",
     },
     {
       type: "budget",
@@ -130,6 +138,7 @@ beforeEach(() => {
       contactSujetId: "contact-bruno",
       contactLocuteurId: null,
       participantLocuteurId: "p-bruno",
+      statut: "propose",
     },
   ];
 });
@@ -182,4 +191,97 @@ describe("l'export ne contient que les paroles du demandeur", () => {
     expect(ex.paroles).toEqual([]);
     expect(ex.avertissements.join(" ")).toContain("paroles");
   });
+
+  it("voix NON validée : ni la citation ni l'énoncé ne sont rendus comme ses propos", async () => {
+    // Une seconde rencontre où Will n'a pas encore validé « CLIENT_1 = Alice » :
+    // la participation est à elle (même adresse), mais rien ne dit que la voix
+    // attribuée par l'extraction est la sienne.
+    donnees.participations = [
+      ...donnees.participations,
+      { id: "p-alice-r2", role: "client", voixValideeLe: null, rencontreId: "r1" },
+    ];
+    donnees.faits = [
+      ...donnees.faits,
+      {
+        type: "delai",
+        enonce: chiffrerParole("ENONCE-VOIX-NON-VALIDEE"),
+        citation: chiffrerParole("CITATION-VOIX-NON-VALIDEE"),
+        constateLe: new Date("2026-10-02"),
+        contactSujetId: null,
+        contactLocuteurId: null,
+        participantLocuteurId: "p-alice-r2",
+        statut: "propose",
+      },
+    ];
+    const ex = await exporterDossierClientPour("alice@exemple.fr");
+    expect(JSON.stringify(ex)).not.toContain("CITATION-VOIX-NON-VALIDEE");
+    expect(JSON.stringify(ex)).not.toContain("ENONCE-VOIX-NON-VALIDEE");
+    expect(ex.vosPropos.map((f) => f.type)).toEqual(["nb_participants"]);
+  });
+
+  it("voix non validée mais Alice est le SUJET : énoncé seul, sans citation", async () => {
+    donnees.participations = [
+      ...donnees.participations,
+      { id: "p-alice-r2", role: "client", voixValideeLe: null, rencontreId: "r1" },
+    ];
+    donnees.faits = [
+      {
+        type: "decideur",
+        enonce: chiffrerParole("Alice signe les bons de commande."),
+        citation: chiffrerParole("CITATION-SUJET-VOIX-NON-VALIDEE"),
+        constateLe: new Date("2026-10-02"),
+        contactSujetId: "contact-alice",
+        contactLocuteurId: null,
+        participantLocuteurId: "p-alice-r2",
+        statut: "propose",
+      },
+    ];
+    const ex = await exporterDossierClientPour("alice@exemple.fr");
+    expect(ex.vosPropos).toEqual([]);
+    expect(ex.faitsVousConcernant.map((f) => f.enonce)).toEqual([
+      "Alice signe les bons de commande.",
+    ]);
+    expect(JSON.stringify(ex)).not.toContain("CITATION-SUJET-VOIX-NON-VALIDEE");
+  });
+
+  it("contactLocuteurId posé (locuteur validé) : la citation est rendue", async () => {
+    donnees.faits = [
+      {
+        type: "besoin",
+        enonce: chiffrerParole("Former l'équipe commerciale."),
+        citation: chiffrerParole("former notre équipe commerciale"),
+        constateLe: new Date("2026-10-02"),
+        contactSujetId: null,
+        contactLocuteurId: "contact-alice",
+        participantLocuteurId: null,
+        statut: "propose",
+      },
+    ];
+    const ex = await exporterDossierClientPour("alice@exemple.fr");
+    expect(ex.vosPropos[0]?.citation).toBe("former notre équipe commerciale");
+  });
+
+  it.each(["rejete", "remplace"])(
+    "un fait %s (peut-être les mots d'un autre) ne rend jamais sa citation",
+    async (statut) => {
+      donnees.faits = [
+        ...donnees.faits,
+        {
+          type: "budget",
+          enonce: chiffrerParole(`ENONCE-FAIT-${statut}`),
+          citation: chiffrerParole(`CITATION-FAIT-${statut}`),
+          constateLe: new Date("2026-10-02"),
+          contactSujetId: null,
+          contactLocuteurId: null,
+          participantLocuteurId: "p-alice",
+          statut,
+          motifRejet: statut === "rejete" ? "rectification" : null,
+        },
+      ];
+      const ex = await exporterDossierClientPour("alice@exemple.fr");
+      expect(JSON.stringify(ex)).not.toContain(`CITATION-FAIT-${statut}`);
+      expect(JSON.stringify(ex)).not.toContain(`ENONCE-FAIT-${statut}`);
+      expect(ex.vosPropos.map((f) => f.type)).toEqual(["nb_participants"]);
+    },
+  );
 });

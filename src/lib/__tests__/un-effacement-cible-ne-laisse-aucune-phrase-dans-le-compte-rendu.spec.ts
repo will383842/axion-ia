@@ -10,7 +10,13 @@
  *   · rencontre où elle était la SEULE interlocutrice côté client → comptes
  *     rendus SUPPRIMÉS ;
  *   · ses segments supprimés, ses faits vidés (`efface`, journal gardé) ;
- *   · tout cela sous le drapeau d'effacement, posé AVANT la première écriture.
+ *   · tout cela sous le drapeau d'effacement, posé AVANT la première écriture ;
+ *   · une personne SANS fiche personne (rendez-vous encore « à classer » :
+ *     sa participation porte son empreinte d'adresse, `contactId` NULL) est
+ *     retrouvée par ses participations et effacée de la même façon — l'export
+ *     la retrouve ainsi, l'effacement doit la retrouver pareil ;
+ *   · rencontre où elle était la seule voix côté client : les segments de la
+ *     piste client encore NON attribués (`participantId` NULL) partent aussi.
  *
  * Mutation qui fait rougir : retirer le bloc « 3. Les comptes rendus » de
  * `effacerCibleParAdresses`.
@@ -77,6 +83,8 @@ vi.mock("@/lib/prisma", () => {
     clientContact: modele("clientContact"),
     rencontreParticipant: modele("rencontreParticipant"),
     transcriptionSegment: modele("transcriptionSegment"),
+    enregistrement: modele("enregistrement"),
+    transcription: modele("transcription"),
     fait: modele("fait"),
     faitEvenement: modele("faitEvenement"),
     preRemplissage: modele("preRemplissage"),
@@ -138,10 +146,25 @@ beforeEach(() => {
       },
       { id: "p-will-2", rencontreId: "r2", role: "axion", emailHash: null, contactId: null },
     ],
+    enregistrement: [
+      { id: "e1", rencontreId: "r1" },
+      { id: "e2", rencontreId: "r2" },
+    ],
+    transcription: [
+      { id: "t1", enregistrementId: "e1" },
+      { id: "t2", enregistrementId: "e2" },
+    ],
     transcriptionSegment: [
-      { transcriptionId: "t1", ordre: 1, participantId: "p-alice-1", texte: "enc:v1:alice" },
-      { transcriptionId: "t1", ordre: 2, participantId: "p-bruno-1", texte: "enc:v1:bruno" },
-      { transcriptionId: "t2", ordre: 1, participantId: "p-alice-2", texte: "enc:v1:alice2" },
+      { transcriptionId: "t1", ordre: 1, participantId: "p-alice-1", piste: "client" },
+      { transcriptionId: "t1", ordre: 2, participantId: "p-bruno-1", piste: "client" },
+      // r1 partagée : une voix client pas encore attribuée — on ne sait pas
+      // si c'est Alice ou Bruno, elle reste (angle mort déclaré).
+      { transcriptionId: "t1", ordre: 3, participantId: null, piste: "client" },
+      { transcriptionId: "t2", ordre: 1, participantId: "p-alice-2", piste: "client" },
+      // r2 : Alice seule côté client — une voix client non attribuée est la sienne.
+      { transcriptionId: "t2", ordre: 2, participantId: null, piste: "client" },
+      // r2 : la piste d'Axion n'est pas la sienne.
+      { transcriptionId: "t2", ordre: 3, participantId: null, piste: "axion" },
     ],
     fait: [
       {
@@ -192,10 +215,84 @@ describe("un effacement ciblé ne laisse aucune phrase dans le compte rendu", ()
     expect(r.comptesRendusARegenerer).toBe(1);
   });
 
-  it("ses segments partent, pas ceux de Bruno", async () => {
-    await effacerCibleParAdresses(["alice@exemple.fr"]);
-    const restent = (etat.tables["transcriptionSegment"] ?? []).map((s) => s["participantId"]);
-    expect(restent).toEqual(["p-bruno-1"]);
+  it("ses segments partent, pas ceux de Bruno ni ceux d'Axion", async () => {
+    const r = await effacerCibleParAdresses(["alice@exemple.fr"]);
+    const restent = (etat.tables["transcriptionSegment"] ?? []).map(
+      (s) => `${String(s["transcriptionId"])}:${String(s["ordre"])}`,
+    );
+    // t1:3 (voix client non attribuée d'une rencontre PARTAGÉE) reste ;
+    // t2:2 (voix client non attribuée là où elle était seule) part.
+    expect(restent).toEqual(["t1:2", "t1:3", "t2:3"]);
+    expect(r.segments).toBe(3);
+  });
+
+  it("personne SANS fiche personne (rendez-vous à classer) : effacée par ses participations", async () => {
+    charger({
+      clientContactAdresse: [],
+      clientContact: [],
+      rencontreParticipant: [
+        {
+          id: "p-carole",
+          rencontreId: "r3",
+          role: "client",
+          emailHash: "h:carole@exemple.fr",
+          contactId: null,
+          nomAffiche: "Carole Dupuis",
+          etiquetteVoix: "CLIENT_1",
+        },
+        {
+          id: "p-denis",
+          rencontreId: "r3",
+          role: "client",
+          emailHash: "h:denis@exemple.fr",
+          contactId: null,
+          nomAffiche: "Denis Roux",
+        },
+      ],
+      enregistrement: [{ id: "e3", rencontreId: "r3" }],
+      transcription: [{ id: "t3", enregistrementId: "e3" }],
+      transcriptionSegment: [
+        { transcriptionId: "t3", ordre: 1, participantId: "p-carole", piste: "client" },
+        { transcriptionId: "t3", ordre: 2, participantId: "p-denis", piste: "client" },
+      ],
+      fait: [
+        {
+          id: "f-carole",
+          rencontreId: "r3",
+          statut: "propose",
+          participantLocuteurId: "p-carole",
+          contactSujetId: null,
+          contactLocuteurId: null,
+          enonce: "enc:v1:c",
+          citation: "enc:v1:c2",
+        },
+      ],
+      compteRendu: [{ id: "cr-r3", rencontreId: "r3", statut: "a_valider", contenu: "enc:v1:b" }],
+      preRemplissage: [],
+      questionnaireCadrage: [],
+      questionnaireQuestion: [],
+      emailSuivi: [],
+      projetContact: [],
+    });
+    const r = await effacerCibleParAdresses(["Carole@Exemple.fr"]);
+    expect(r).toMatchObject({ personnes: 0, segments: 1, faits: 1, comptesRendusARegenerer: 1 });
+    expect((etat.tables["transcriptionSegment"] ?? []).map((s) => s["participantId"])).toEqual([
+      "p-denis",
+    ]);
+    expect(etat.tables["fait"]?.[0]).toMatchObject({
+      statut: "efface",
+      enonce: "",
+      citation: null,
+    });
+    const carole = etat.tables["rencontreParticipant"]?.find((p) => p["id"] === "p-carole");
+    expect(carole).toMatchObject({
+      nomAffiche: "Personne effacée",
+      emailHash: null,
+      etiquetteVoix: null,
+    });
+    const denis = etat.tables["rencontreParticipant"]?.find((p) => p["id"] === "p-denis");
+    expect(denis).toMatchObject({ nomAffiche: "Denis Roux", emailHash: "h:denis@exemple.fr" });
+    expect(etat.tables["compteRendu"]?.[0]).toMatchObject({ statut: "a_regenerer", contenu: "" });
   });
 
   it("ses faits sont vidés et marqués effacés ; celui de Bruno reste", async () => {
@@ -223,6 +320,26 @@ describe("un effacement ciblé ne laisse aucune phrase dans le compte rendu", ()
     expect(etat.tables["clientContactAdresse"]).toEqual([]);
     const derniere = etat.appels.filter((a) => a.op !== "findMany").at(-1);
     expect(derniere?.table).toBe("clientContactAdresse");
+  });
+
+  it("le corps pré-rempli d'un e-mail de suivi qui lui était adressé est vidé", async () => {
+    etat.tables["emailSuivi"] = [{ id: "es-1", contactId: "contact-alice" }];
+    etat.tables["preRemplissage"] = [
+      {
+        id: "pr-1",
+        cible: "email_suivi",
+        cibleId: "es-1",
+        faitId: null,
+        valeurProposee: "enc:v1:corps",
+        valeurRetenue: "enc:v1:envoye",
+      },
+    ];
+    await effacerCibleParAdresses(["alice@exemple.fr"]);
+    expect(etat.tables["preRemplissage"]?.[0]).toMatchObject({
+      valeurProposee: "",
+      valeurRetenue: null,
+    });
+    expect(etat.tables["emailSuivi"]).toEqual([]);
   });
 
   it("une adresse inconnue n'écrit rien", async () => {

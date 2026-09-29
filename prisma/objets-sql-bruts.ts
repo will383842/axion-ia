@@ -25,6 +25,12 @@
  * ⚠️ Nommage : les clés étrangères composées se terminent par `_meme_client`,
  * jamais par `_fkey` (réservé aux clés que Prisma génère). C'est ce qui permet
  * à la garde de dérive de voir une clé composée NON déclarée.
+ *
+ * ⚠️ Toute clé composée `_meme_client` est `DEFERRABLE INITIALLY IMMEDIATE` :
+ * contrôlée à l'instant en temps normal, différable par la transaction de
+ * fusion (A3), qui déplace un projet ET une personne liés à la même ligne.
+ * Vérifié dans le texte (`tout-objet-sql-brut-est-dans-une-migration.spec.ts`)
+ * et en base (`garde-derive-sql-brut.ts`, `pg_constraint.condeferrable`).
  */
 
 import { ETATS_ENREGISTREMENT_ACTIFS } from "../src/server/visio/etats";
@@ -128,6 +134,14 @@ export const OBJETS_SQL_BRUTS: readonly ObjetSqlBrut[] = [
     type: "index",
     table: "enregistrements",
     role: "un seul enregistrement actif par rencontre (ETATS_ENREGISTREMENT_ACTIFS)",
+  },
+  {
+    nom: "traitements_visio_une_par_etape_sans_compte_rendu",
+    type: "index",
+    table: "traitements_visio",
+    role:
+      "une étape sans compte rendu n'existe qu'une fois par rencontre (la clé unique Prisma " +
+      "tient deux NULL pour distincts : l'étape serait lancée et payée deux fois)",
   },
 
   // ── CHECK ──────────────────────────────────────────────────────────────────

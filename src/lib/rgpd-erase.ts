@@ -817,10 +817,32 @@ const EFFACEMENT_VIDE: EffacementCibleResultat = {
  * sauf si elle y était la SEULE interlocutrice côté client : ils sont alors
  * supprimés.
  *
+ * La personne est retrouvée par ses fiches personne (`client_contact_adresses`)
+ * ET par ses participations (`rencontre_participants.email_hash`), même sans
+ * fiche personne : un rendez-vous resté « à classer » (A4, aucun rattachement
+ * automatique) porte son empreinte d'adresse mais `contact_id` NULL. L'export
+ * la retrouve ainsi (`rgpd-dossier-client.ts`) ; l'effacement doit la
+ * retrouver pareil, sinon il confirmerait un effacement qui n'a rien effacé.
+ *
+ * Ses segments de voix : ceux qui lui sont attribués (`participantId`) ; et,
+ * dans une rencontre où elle était la SEULE voix côté client, aussi les
+ * segments de la piste client pas encore attribués (ils ne peuvent être que
+ * les siens).
+ *
  * Ce qui RESTE, et pourquoi : les preuves d'accord
  * (`enregistrement_consentements`) — art. 17(3)(e), elles établissent que
  * l'enregistrement était licite ; les journaux (sans donnée personnelle) ;
  * la fiche de l'entreprise.
+ *
+ * ANGLES MORTS DÉCLARÉS (aucune garde ne les couvre) :
+ *   · dans une rencontre PARTAGÉE avec d'autres voix côté client, un segment
+ *     de la piste client pas encore attribué (voix non validée) reste : on ne
+ *     sait pas qui parle. Il reste chiffré et part avec la purge des segments
+ *     (ADR 0056) ; la réécriture d'un compte rendu `a_regenerer` ne doit pas
+ *     s'en servir (à tenir dans la PR du circuit, PR 6) ;
+ *   · un texte libre saisi par Will qui NOMMERAIT la personne (titre de
+ *     projet, motif d'un journal) n'est pas réécrit : l'effaceur ne peut pas
+ *     savoir quel nom y figure. Will le corrige à la main s'il y en a un.
  */
 export async function effacerCibleParAdresses(
   emails: readonly string[],
@@ -839,12 +861,24 @@ export async function effacerCibleParAdresses(
     select: { contactId: true },
   });
   const contactIds = [...new Set(trouvees.map((a) => a.contactId))];
-  if (contactIds.length === 0) return EFFACEMENT_VIDE;
-  const toutes = await prisma.clientContactAdresse.findMany({
-    where: { contactId: { in: contactIds } },
-    select: { emailHash: true },
-  });
+  const toutes =
+    contactIds.length === 0
+      ? []
+      : await prisma.clientContactAdresse.findMany({
+          where: { contactId: { in: contactIds } },
+          select: { emailHash: true },
+        });
   const toutesEmpreintes = [...new Set([...empreintes, ...toutes.map((a) => a.emailHash)])];
+  // Sans fiche personne, elle peut encore exister par ses seules
+  // participations (rendez-vous « à classer ») : on ne sort à vide que si
+  // AUCUNE des deux voies ne la trouve.
+  if (contactIds.length === 0) {
+    const participationsSansFiche = await prisma.rencontreParticipant.findMany({
+      where: { emailHash: { in: toutesEmpreintes } },
+      select: { id: true },
+    });
+    if (participationsSansFiche.length === 0) return EFFACEMENT_VIDE;
+  }
 
   const resultat = await executerSousDrapeauEffacement(prisma, async (tx) => {
     const participants = await tx.rencontreParticipant.findMany({
@@ -855,18 +889,12 @@ export async function effacerCibleParAdresses(
     });
     const participantIds = participants.map((p) => p.id);
 
-    // 1. Sa voix.
-    const segments = await tx.transcriptionSegment.findMany({
+    // 1. Sa voix : les segments qui lui sont attribués.
+    const segmentsAttribues = await tx.transcriptionSegment.findMany({
       where: { participantId: { in: participantIds } },
       select: { transcriptionId: true, ordre: true },
     });
     await tx.transcriptionSegment.deleteMany({ where: { participantId: { in: participantIds } } });
-    await journaliserEffacements(
-      tx,
-      "transcription_segments",
-      segments.map((s) => `${s.transcriptionId}:${s.ordre}`),
-      motif,
-    );
 
     // 2. Les faits dont elle est sujet ou locutrice.
     const faits = await tx.fait.findMany({
@@ -911,6 +939,34 @@ export async function effacerCibleParAdresses(
     });
     const aReecrire = rencontreIds.filter((rid) => !seuleInterlocutrice.includes(rid));
 
+    // 1 bis. Là où elle était la SEULE voix côté client, les segments de la
+    //    piste client encore non attribués sont forcément les siens.
+    const enregistrementsSeule = await tx.enregistrement.findMany({
+      where: { rencontreId: { in: seuleInterlocutrice } },
+      select: { id: true },
+    });
+    const transcriptionsSeule = await tx.transcription.findMany({
+      where: { enregistrementId: { in: enregistrementsSeule.map((e) => e.id) } },
+      select: { id: true },
+    });
+    const ouNonAttribues = {
+      transcriptionId: { in: transcriptionsSeule.map((t) => t.id) },
+      piste: "client" as const,
+      participantId: null,
+    };
+    const segmentsNonAttribues = await tx.transcriptionSegment.findMany({
+      where: ouNonAttribues,
+      select: { transcriptionId: true, ordre: true },
+    });
+    await tx.transcriptionSegment.deleteMany({ where: ouNonAttribues });
+    const segments = [...segmentsAttribues, ...segmentsNonAttribues];
+    await journaliserEffacements(
+      tx,
+      "transcription_segments",
+      segments.map((s) => `${s.transcriptionId}:${s.ordre}`),
+      motif,
+    );
+
     const crSupprimes = await tx.compteRendu.findMany({
       where: { rencontreId: { in: seuleInterlocutrice } },
       select: { id: true },
@@ -948,7 +1004,17 @@ export async function effacerCibleParAdresses(
       data: { texte: "", reponse: null },
     });
 
-    // 5. Ses liens : e-mails de suivi, rôles dans les projets.
+    // 5. Ses liens : e-mails de suivi, rôles dans les projets. Le corps
+    //    pré-rempli d'un e-mail de suivi qui lui était adressé porte son nom
+    //    et ses propos : vidé avant que le lien ne parte.
+    const emailsSuivi = await tx.emailSuivi.findMany({
+      where: { contactId: { in: contactIds } },
+      select: { id: true },
+    });
+    await tx.preRemplissage.updateMany({
+      where: { cible: "email_suivi", cibleId: { in: emailsSuivi.map((e) => e.id) } },
+      data: { valeurProposee: "", valeurRetenue: null },
+    });
     await tx.emailSuivi.deleteMany({ where: { contactId: { in: contactIds } } });
     await tx.projetContact.deleteMany({ where: { contactId: { in: contactIds } } });
 

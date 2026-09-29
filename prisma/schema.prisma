@@ -12796,7 +12796,10 @@ model Projet {
   numero                String               @unique @db.VarChar(40)
   clientId              String               @map("client_id") @db.Uuid
   client                Client               @relation(fields: [clientId], references: [id], onDelete: Restrict)
-  /// Le titre peut nommer une personne : exporté et effacé avec le dossier.
+  /// Le titre peut nommer une personne. Il est rendu dans l'export de chaque
+  /// personne du projet ; l'effacement ciblé ne le réécrit PAS (il ne peut pas
+  /// savoir quel nom y figure) : Will le corrige à la main (angle mort déclaré
+  /// dans `effacerCibleParAdresses`).
   titre                 String               @db.VarChar(200)
   activite              ActiviteFacturation?
   statut                ProjetStatut         @default(ouvert)
@@ -13915,6 +13918,11 @@ model BattementCircuit {
   /// Écrit une fois : borne du balayage.
   premierLe          DateTime  @default(now()) @map("premier_le")
   dernierLe          DateTime  @map("dernier_le")
+  /// Valeur BRUTE de la variable d'environnement du drapeau, telle que le
+  /// worker l'a lue. Texte libre à dessein, pas une énumération : une valeur
+  /// mal saisie dans Coolify doit être VUE sur l'écran de santé, pas refusée
+  /// à l'écriture (le battement disparaîtrait avec l'erreur). L'écrivain la
+  /// tronque à 10 caractères.
   drapeauVuParWorker String    @map("drapeau_vu_par_worker") @db.VarChar(10)
   temoinCleOkLe      DateTime? @map("temoin_cle_ok_le")
   version            String    @db.VarChar(40)
@@ -14296,6 +14304,11 @@ model TraitementVisio {
   termineLe            DateTime?        @map("termine_le")
   compteRenduId        String?          @map("compte_rendu_id") @db.Uuid
 
+  // Ne protège PAS les étapes sans compte rendu (deux NULL sont distincts
+  // pour PostgreSQL) : l'index partiel `traitements_visio_une_par_etape_sans_compte_rendu`
+  // (SQL brut, prisma/objets-sql-bruts.ts) les rend uniques par rencontre.
+  // Pour elles, pas d'`upsert` Prisma sur cette clé : créer, et traiter
+  // l'unique_violation (P2002) comme « déjà là ».
   @@unique([rencontreId, etape, compteRenduId])
   @@index([statut, prochaineTentativeLe])
   @@map("traitements_visio")

@@ -1072,6 +1072,13 @@ CREATE UNIQUE INDEX "comptes_rendus_un_en_cours" ON "comptes_rendus"("rencontre_
 
 CREATE UNIQUE INDEX "transcriptions_une_retenue" ON "transcriptions"("enregistrement_id") WHERE "statut" = 'retenue';
 
+-- Une étape SANS compte rendu (transcrire, précontrôler, extraire, purger
+-- l'audio…) n'existe qu'une fois par rencontre. La clé unique Prisma
+-- (rencontre_id, etape, compte_rendu_id) ne la protège pas : PostgreSQL tient
+-- deux NULL pour distincts, et deux lignes (R, 'transcrire', NULL) passeraient
+-- — l'étape serait lancée, et payée chez OpenAI, deux fois.
+CREATE UNIQUE INDEX "traitements_visio_une_par_etape_sans_compte_rendu" ON "traitements_visio"("rencontre_id", "etape") WHERE "compte_rendu_id" IS NULL;
+
 -- Produit par sqlIndexEnregistrementsActifs() depuis ETATS_ENREGISTREMENT_ACTIFS.
 CREATE UNIQUE INDEX "enregistrements_un_actif" ON "enregistrements"("rencontre_id") WHERE "statut" IN ('accord_en_attente', 'en_cours', 'interrompu');
 
@@ -1109,30 +1116,40 @@ ALTER TABLE "faits" ADD CONSTRAINT "faits_reponse_a_sa_question" CHECK (("source
 -- ON UPDATE CASCADE : quand une fusion déplace un projet ou une personne vers
 -- une autre fiche, les liens suivent. ON DELETE : les tables de liens partent
 -- avec ce qu'elles lient ; ailleurs, la suppression est refusée.
+--
+-- DEFERRABLE INITIALLY IMMEDIATE : contrôlées tout de suite en temps normal
+-- (un fait rangé dans le projet d'un autre client est refusé à l'instant),
+-- mais DIFFÉRABLES par la transaction de fusion (A3). Sans cela, la fusion est
+-- impossible dès qu'une ligne porte deux liens (un fait avec un projet ET une
+-- personne, un questionnaire avec un projet ET une destinataire) : déplacer le
+-- projet recopie `client_id` en cascade, et la clé vers la personne, encore
+-- sur l'ancienne fiche, refuse aussitôt ; commencer par la personne échoue
+-- dans l'autre sens. La fusion pose donc `SET CONSTRAINTS ... DEFERRED`,
+-- déplace projets et personnes, et tout est contrôlé au COMMIT (Gate D, cas 16).
 
-ALTER TABLE "projet_contacts" ADD CONSTRAINT "projet_contacts_projet_meme_client" FOREIGN KEY ("projet_id", "client_id") REFERENCES "projets"("id", "client_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "projet_contacts" ADD CONSTRAINT "projet_contacts_projet_meme_client" FOREIGN KEY ("projet_id", "client_id") REFERENCES "projets"("id", "client_id") ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "projet_contacts" ADD CONSTRAINT "projet_contacts_contact_meme_client" FOREIGN KEY ("contact_id", "client_id") REFERENCES "client_contacts"("id", "client_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "projet_contacts" ADD CONSTRAINT "projet_contacts_contact_meme_client" FOREIGN KEY ("contact_id", "client_id") REFERENCES "client_contacts"("id", "client_id") ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "projet_devis" ADD CONSTRAINT "projet_devis_projet_meme_client" FOREIGN KEY ("projet_id", "client_id") REFERENCES "projets"("id", "client_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "projet_devis" ADD CONSTRAINT "projet_devis_projet_meme_client" FOREIGN KEY ("projet_id", "client_id") REFERENCES "projets"("id", "client_id") ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "projet_devis" ADD CONSTRAINT "projet_devis_devis_meme_client" FOREIGN KEY ("devis_id", "client_id") REFERENCES "devis"("id", "client_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "projet_devis" ADD CONSTRAINT "projet_devis_devis_meme_client" FOREIGN KEY ("devis_id", "client_id") REFERENCES "devis"("id", "client_id") ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "rencontres" ADD CONSTRAINT "rencontres_projet_meme_client" FOREIGN KEY ("projet_id", "client_id") REFERENCES "projets"("id", "client_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "rencontres" ADD CONSTRAINT "rencontres_projet_meme_client" FOREIGN KEY ("projet_id", "client_id") REFERENCES "projets"("id", "client_id") ON DELETE RESTRICT ON UPDATE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "rencontre_participants" ADD CONSTRAINT "rencontre_participants_contact_meme_client" FOREIGN KEY ("contact_id", "client_id") REFERENCES "client_contacts"("id", "client_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "rencontre_participants" ADD CONSTRAINT "rencontre_participants_contact_meme_client" FOREIGN KEY ("contact_id", "client_id") REFERENCES "client_contacts"("id", "client_id") ON DELETE RESTRICT ON UPDATE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "questionnaires_cadrage" ADD CONSTRAINT "questionnaires_cadrage_projet_meme_client" FOREIGN KEY ("projet_id", "client_id") REFERENCES "projets"("id", "client_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "questionnaires_cadrage" ADD CONSTRAINT "questionnaires_cadrage_projet_meme_client" FOREIGN KEY ("projet_id", "client_id") REFERENCES "projets"("id", "client_id") ON DELETE RESTRICT ON UPDATE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "questionnaires_cadrage" ADD CONSTRAINT "questionnaires_cadrage_destinataire_meme_client" FOREIGN KEY ("contact_destinataire_id", "client_id") REFERENCES "client_contacts"("id", "client_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "questionnaires_cadrage" ADD CONSTRAINT "questionnaires_cadrage_destinataire_meme_client" FOREIGN KEY ("contact_destinataire_id", "client_id") REFERENCES "client_contacts"("id", "client_id") ON DELETE RESTRICT ON UPDATE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "emails_suivi" ADD CONSTRAINT "emails_suivi_contact_meme_client" FOREIGN KEY ("contact_id", "client_id") REFERENCES "client_contacts"("id", "client_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "emails_suivi" ADD CONSTRAINT "emails_suivi_contact_meme_client" FOREIGN KEY ("contact_id", "client_id") REFERENCES "client_contacts"("id", "client_id") ON DELETE RESTRICT ON UPDATE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "faits" ADD CONSTRAINT "faits_projet_meme_client" FOREIGN KEY ("projet_id", "client_id") REFERENCES "projets"("id", "client_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "faits" ADD CONSTRAINT "faits_projet_meme_client" FOREIGN KEY ("projet_id", "client_id") REFERENCES "projets"("id", "client_id") ON DELETE RESTRICT ON UPDATE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "faits" ADD CONSTRAINT "faits_contact_sujet_meme_client" FOREIGN KEY ("contact_sujet_id", "client_id") REFERENCES "client_contacts"("id", "client_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "faits" ADD CONSTRAINT "faits_contact_sujet_meme_client" FOREIGN KEY ("contact_sujet_id", "client_id") REFERENCES "client_contacts"("id", "client_id") ON DELETE RESTRICT ON UPDATE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "faits" ADD CONSTRAINT "faits_contact_locuteur_meme_client" FOREIGN KEY ("contact_locuteur_id", "client_id") REFERENCES "client_contacts"("id", "client_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "faits" ADD CONSTRAINT "faits_contact_locuteur_meme_client" FOREIGN KEY ("contact_locuteur_id", "client_id") REFERENCES "client_contacts"("id", "client_id") ON DELETE RESTRICT ON UPDATE CASCADE DEFERRABLE INITIALLY IMMEDIATE;
 
 -- ── Triggers ─────────────────────────────────────────────────────────────────
 
@@ -1235,9 +1252,16 @@ CREATE CONSTRAINT TRIGGER "faits_client_du_questionnaire"
   DEFERRABLE INITIALLY DEFERRED
   FOR EACH ROW EXECUTE FUNCTION "visio_faits_client_du_questionnaire"();
 
--- Journaux en ajout seul : ni modification ni suppression, pour personne.
+-- Journaux en ajout seul : ni modification ni suppression. Une exception,
+-- une seule : sous le drapeau d'effacement RGPD (posé par
+-- `src/lib/rgpd-erase.ts` seul, en SET LOCAL), une ligne peut être MODIFIÉE —
+-- pour vider un texte libre (le `motif` d'un événement de projet) qui
+-- nommerait une personne effacée. Elle ne se supprime jamais.
 CREATE FUNCTION "visio_journal_ajout_seul"() RETURNS trigger LANGUAGE plpgsql AS $$
 BEGIN
+  IF TG_OP = 'UPDATE' AND current_setting('axion.effacement_rgpd', true) = 'on' THEN
+    RETURN NEW;
+  END IF;
   RAISE EXCEPTION '% : journal en ajout seul (ni modification ni suppression)', TG_TABLE_NAME
     USING ERRCODE = 'AXV02';
 END

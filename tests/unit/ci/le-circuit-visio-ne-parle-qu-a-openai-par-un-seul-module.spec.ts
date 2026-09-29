@@ -57,6 +57,21 @@ const IMPORT_OPENAI = importDe(String.raw`openai(?:\/[^"'\x60]*)?`);
 
 type Fichier = { chemin: string; code: string };
 
+/**
+ * L'extension se déclare aussi en JSON : `manifest.json` (où vivent les
+ * `host_permissions`) et `contrat.json`. Une adresse d'OpenAI écrite là
+ * échapperait à une garde qui ne lirait que le code.
+ */
+const JSON_DE_L_EXTENSION = /\.json$/;
+
+function fichiersDuCircuit(): Fichier[] {
+  const chemins = [
+    ...sourcesSous(DOSSIERS_DU_CIRCUIT_ELARGI),
+    ...sourcesSous(["extensions/enregistreur-meet"], JSON_DE_L_EXTENSION),
+  ];
+  return [...new Set(chemins)].map((chemin) => ({ chemin, code: lire(chemin) }));
+}
+
 function fautes(fichiers: readonly Fichier[]): string[] {
   const out: string[] = [];
   for (const { chemin, code } of fichiers) {
@@ -94,8 +109,17 @@ describe("le circuit visio ne parle qu'à OpenAI, par un seul module", () => {
         chemin: "extensions/enregistreur-meet/h.js",
         code: `fetch("https://api.openai.com/v1/audio")`,
       },
+      {
+        chemin: "extensions/enregistreur-meet/manifest.json",
+        code: `{ "host_permissions": ["https://api.openai.com/*"] }`,
+      },
     ];
-    expect(fautes(fictifs)).toHaveLength(8);
+    expect(fautes(fictifs)).toHaveLength(9);
+  });
+
+  it("contre-témoin : le manifeste et le contrat de l'extension sont bien lus", () => {
+    expect(JSON_DE_L_EXTENSION.test("manifest.json")).toBe(true);
+    expect(JSON_DE_L_EXTENSION.test("contrat.json")).toBe(true);
   });
 
   it("contre-témoin : le module unique a le droit d'importer openai, et un commentaire ne compte pas", () => {
@@ -108,10 +132,7 @@ describe("le circuit visio ne parle qu'à OpenAI, par un seul module", () => {
   });
 
   it("aucun fichier du circuit n'enfreint la règle", () => {
-    const fichiers = sourcesSous(DOSSIERS_DU_CIRCUIT_ELARGI).map((chemin) => ({
-      chemin,
-      code: lire(chemin),
-    }));
+    const fichiers = fichiersDuCircuit();
     expect(
       fautes(fichiers),
       "le circuit visio n'utilise que le crédit API OpenAI, par un seul module (ADR 0055) :",

@@ -7,7 +7,12 @@
  *   · que chaque objet déclaré est CRÉÉ par la migration du chantier, sur la
  *     bonne table ;
  *   · que chaque objet créé en SQL brut par cette migration est DÉCLARÉ (un
- *     objet non déclaré échapperait à la garde de dérive de Gate D).
+ *     objet non déclaré échapperait à la garde de dérive de Gate D) ;
+ *   · que chaque clé composée « du même client » est `DEFERRABLE INITIALLY
+ *     IMMEDIATE` (sinon la fusion réversible A3 est impossible dès qu'une
+ *     ligne porte un projet ET une personne) ;
+ *   · que l'étape sans compte rendu est unique par rencontre (index partiel :
+ *     la clé Prisma tient deux NULL pour distincts).
  *
  * La vérification sur une vraie base (l'objet EXISTE après `migrate deploy`)
  * est `scripts/ci/garde-derive-sql-brut.ts`, en Gate D.
@@ -62,6 +67,17 @@ function objetsCrees(sql: string): ObjetSqlBrut[] {
   return out;
 }
 
+/** Les clés composées dont l'instruction ne porte pas DEFERRABLE INITIALLY IMMEDIATE. */
+function clesNonDifferables(sql: string): string[] {
+  const brut = partieBrute(sql);
+  const out: string[] = [];
+  for (const m of brut.matchAll(/ADD CONSTRAINT "([^"]+)" FOREIGN KEY ([^;]*);/g)) {
+    if (!/\bDEFERRABLE INITIALLY IMMEDIATE$/.test((m[2] as string).trim()))
+      out.push(m[1] as string);
+  }
+  return out;
+}
+
 const cle = (o: Pick<ObjetSqlBrut, "nom" | "type" | "table">): string =>
   `${o.type}:${o.table}.${o.nom}`;
 
@@ -99,6 +115,27 @@ describe("tout objet SQL brut est dans une migration", () => {
   it("les clés composées ne se terminent jamais par _fkey (réservé à Prisma)", () => {
     const mal = OBJETS_SQL_BRUTS.filter((o) => o.type === "fk" && o.nom.endsWith("_fkey"));
     expect(mal).toEqual([]);
+  });
+
+  it("chaque clé composée est DEFERRABLE INITIALLY IMMEDIATE (fusion A3)", () => {
+    const nonDifferables = clesNonDifferables(SQL);
+    expect(crees.filter((o) => o.type === "fk").length).toBe(12);
+    expect(nonDifferables, "clés composées contrôlées sans pouvoir être différées :").toEqual([]);
+  });
+
+  it("contre-témoin : une clé composée redevenue immédiate est vue", () => {
+    const coupe = SQL.replace(
+      /("faits_contact_sujet_meme_client" FOREIGN KEY [^;]*?) DEFERRABLE INITIALLY IMMEDIATE;/,
+      "$1;",
+    );
+    expect(coupe).not.toBe(SQL);
+    expect(clesNonDifferables(coupe)).toEqual(["faits_contact_sujet_meme_client"]);
+  });
+
+  it("une étape sans compte rendu est unique par rencontre (index partiel)", () => {
+    expect(partieBrute(SQL)).toMatch(
+      /CREATE UNIQUE INDEX "traitements_visio_une_par_etape_sans_compte_rendu" ON "traitements_visio"\("rencontre_id", "etape"\) WHERE "compte_rendu_id" IS NULL;/,
+    );
   });
 
   it("contre-témoin : un index retiré du texte est vu manquant", () => {

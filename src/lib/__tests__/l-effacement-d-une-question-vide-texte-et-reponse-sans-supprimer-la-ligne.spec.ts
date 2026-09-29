@@ -43,6 +43,8 @@ vi.mock("@/lib/prisma", () => {
     clientContact: modele("clientContact"),
     rencontreParticipant: modele("rencontreParticipant"),
     transcriptionSegment: modele("transcriptionSegment"),
+    enregistrement: modele("enregistrement"),
+    transcription: modele("transcription"),
     fait: modele("fait"),
     faitEvenement: modele("faitEvenement"),
     preRemplissage: modele("preRemplissage"),

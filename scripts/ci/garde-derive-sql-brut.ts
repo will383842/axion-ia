@@ -10,7 +10,10 @@
  *   2. sur les tables du chantier, aucun objet NON déclaré n'existe (hors
  *      ceux que Prisma génère : `_pkey`, `_key`, `_idx`, `_fkey`) ;
  *   3. l'index `enregistrements_un_actif` nomme exactement les états de
- *      `ETATS_ENREGISTREMENT_ACTIFS`.
+ *      `ETATS_ENREGISTREMENT_ACTIFS` ;
+ *   4. chaque clé composée déclarée est DIFFÉRABLE et contrôlée tout de suite
+ *      par défaut (`condeferrable` vrai, `condeferred` faux) : la fusion
+ *      réversible (A3) les diffère le temps de déplacer projets et personnes.
  *
  * Pourquoi en base et pas seulement dans le texte de la migration : un objet
  * peut être écrit et ne jamais être créé (faute de syntaxe avalée, bloc
@@ -34,17 +37,26 @@ type Present = { table: string; nom: string; type: ObjetSqlBrut["type"] };
 
 const GENERE_PAR_PRISMA = /_(pkey|key|idx|fkey)$/;
 
-async function lirePresents(
-  db: PrismaClient,
-): Promise<{ presents: Present[]; defs: Map<string, string> }> {
+async function lirePresents(db: PrismaClient): Promise<{
+  presents: Present[];
+  defs: Map<string, string>;
+  differables: Map<string, { condeferrable: boolean; condeferred: boolean }>;
+}> {
   const index = await db.$queryRaw<
     Array<{ tablename: string; indexname: string; indexdef: string }>
   >`
     SELECT tablename, indexname, indexdef FROM pg_indexes WHERE schemaname = 'public'`;
   const contraintes = await db.$queryRaw<
-    Array<{ tablename: string; conname: string; contype: string }>
+    Array<{
+      tablename: string;
+      conname: string;
+      contype: string;
+      condeferrable: boolean;
+      condeferred: boolean;
+    }>
   >`
-    SELECT c.relname AS tablename, k.conname, k.contype::text AS contype
+    SELECT c.relname AS tablename, k.conname, k.contype::text AS contype,
+           k.condeferrable, k.condeferred
     FROM pg_constraint k JOIN pg_class c ON c.oid = k.conrelid
     JOIN pg_namespace n ON n.oid = c.relnamespace
     WHERE n.nspname = 'public' AND k.contype IN ('c', 'f')`;
@@ -64,13 +76,18 @@ async function lirePresents(
     ...triggers.map((t) => ({ table: t.tablename, nom: t.tgname, type: "trigger" as const })),
   ];
   const defs = new Map(index.map((i) => [i.indexname, i.indexdef]));
-  return { presents, defs };
+  const differables = new Map(
+    contraintes
+      .filter((k) => k.contype === "f")
+      .map((k) => [k.conname, { condeferrable: k.condeferrable, condeferred: k.condeferred }]),
+  );
+  return { presents, defs, differables };
 }
 
 async function main(): Promise<void> {
   const db = new PrismaClient();
   try {
-    const { presents, defs } = await lirePresents(db);
+    const { presents, defs, differables } = await lirePresents(db);
     const cle = (o: { table: string; nom: string; type: string }): string =>
       `${o.type}:${o.table}.${o.nom}`;
     const ensemblePresents = new Set(presents.map(cle));
@@ -103,6 +120,18 @@ async function main(): Promise<void> {
       fautes.push(
         `enregistrements_un_actif nomme ${nbDansIndex} états, la constante ${ETATS_ENREGISTREMENT_ACTIFS.length} : ${def}`,
       );
+    }
+
+    // 4. Les clés composées sont différables, immédiates par défaut.
+    for (const o of OBJETS_SQL_BRUTS.filter((x) => x.type === "fk")) {
+      const d = differables.get(o.nom);
+      if (d === undefined) continue; // déjà signalée « déclarée mais absente »
+      if (!d.condeferrable || d.condeferred) {
+        fautes.push(
+          `${o.nom} doit être DEFERRABLE INITIALLY IMMEDIATE (lu : deferrable=${d.condeferrable}, ` +
+            `initially deferred=${d.condeferred}) — sinon la fusion A3 est impossible`,
+        );
+      }
     }
 
     console.log(
