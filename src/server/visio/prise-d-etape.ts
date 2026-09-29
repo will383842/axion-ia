@@ -43,6 +43,13 @@ export interface EtapeTenue {
   readonly compteRenduId: string | null;
   /** Le jeton de propriété. */
   readonly execution: number;
+  /**
+   * Les prises NON IMPUTÉES au plafond de 10 exécutions : arrêt du worker
+   * (SIGTERM), report (base pas encore migrée, enregistrement encore actif),
+   * suspension. Une prise perdue par un verrou expiré (worker tué, mémoire),
+   * elle, est imputée : c'est ce qui borne une boucle de plantages.
+   */
+  readonly interruptions: number;
   readonly echecs: number;
   readonly premierEchecLe: Date | null;
 }
@@ -113,6 +120,7 @@ interface LigneTenue {
   etape: EtapeVisio;
   compte_rendu_id: string | null;
   execution: number;
+  interruptions: number;
   echecs: number;
   premier_echec_le: Date | null;
 }
@@ -124,6 +132,7 @@ function tenue(l: LigneTenue): EtapeTenue {
     etape: l.etape,
     compteRenduId: l.compte_rendu_id,
     execution: Number(l.execution),
+    interruptions: Number(l.interruptions),
     echecs: Number(l.echecs),
     premierEchecLe: l.premier_echec_le,
   };
@@ -175,6 +184,20 @@ async function exigerAucunRetrait(tx: Tx, rencontreId: string): Promise<void> {
   if (retrait.length > 0) throw new RetraitConstate();
 }
 
+/**
+ * Une prise qui finit SANS COMPTER et sans échec définitif (report, suspension)
+ * n'est pas imputée au plafond de 10 exécutions : une base non migrée pendant
+ * 2 h 30 ou un second enregistrement actif pendant 50 min ne tuent pas l'étape.
+ */
+export function priseNonImputee(d: DecisionEchec): boolean {
+  return !d.compter && d.statut !== "echec_definitif";
+}
+
+/** Exécutions imputées au plafond : les prises, moins celles qui ont été reportées ou relâchées. */
+export function executionsImputees(t: Pick<EtapeTenue, "execution" | "interruptions">): number {
+  return t.execution - t.interruptions;
+}
+
 export function depotEtapesPrisma(db: Client): DepotEtapes {
   return {
     prendre: async (id) => {
@@ -184,7 +207,7 @@ export function depotEtapesPrisma(db: Client): DepotEtapes {
                "verrou_jusqua" = (now() AT TIME ZONE 'UTC') + interval '5 minutes'
          WHERE "id" = ${id}::uuid AND "statut" = 'a_faire'
            AND ("verrou_jusqua" IS NULL OR "verrou_jusqua" < (now() AT TIME ZONE 'UTC'))
-         RETURNING "id", "rencontre_id", "etape", "compte_rendu_id", "execution", "echecs", "premier_echec_le"`;
+         RETURNING "id", "rencontre_id", "etape", "compte_rendu_id", "execution", "interruptions", "echecs", "premier_echec_le"`;
       return lignes[0] ? tenue(lignes[0]) : null;
     },
     prolonger: async (t) => {
@@ -227,6 +250,7 @@ export function depotEtapesPrisma(db: Client): DepotEtapes {
         UPDATE "traitements_visio"
            SET "statut" = ${d.statut}::"statut_etape",
                "echecs" = "echecs" + ${d.compter ? 1 : 0},
+               "interruptions" = "interruptions" + ${priseNonImputee(d) ? 1 : 0},
                "classe_erreur" = ${d.classe}::"classe_erreur",
                "derniere_erreur" = ${d.code}::"code_erreur_visio",
                "prochaine_tentative_le" = ${d.prochaineTentativeLe},

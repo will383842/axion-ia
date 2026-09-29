@@ -13,6 +13,7 @@ import type { EtapeVisio } from "../../prisma/generated/client";
 import type { AlerteCircuit, DepsCircuit, Gestionnaire } from "@/server/visio/etapes";
 import type { PortDonnees } from "@/server/visio/port-donnees";
 import {
+  priseNonImputee,
   ResultatOrphelin,
   RetraitConstate,
   type DecisionEchec,
@@ -88,6 +89,7 @@ export class FauxDepot implements DepotEtapes {
       etape: l.etape,
       compteRenduId: l.compteRenduId,
       execution: l.execution,
+      interruptions: l.interruptions,
       echecs: l.echecs,
       premierEchecLe: l.premierEchecLe,
     };
@@ -134,6 +136,7 @@ export class FauxDepot implements DepotEtapes {
     if (l.statut !== "en_cours" || l.execution !== t.execution) return;
     l.statut = d.statut;
     if (d.compter) l.echecs += 1;
+    if (priseNonImputee(d)) l.interruptions += 1;
     l.classeErreur = d.classe;
     l.derniereErreur = d.code;
     l.prochaineTentativeLe = d.prochaineTentativeLe;

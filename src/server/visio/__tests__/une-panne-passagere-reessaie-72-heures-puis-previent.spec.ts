@@ -33,6 +33,7 @@ function tenue(echecs: number): EtapeTenue {
     etape: "transcrire",
     compteRenduId: null,
     execution: echecs + 1,
+    interruptions: 0,
     echecs,
     premierEchecLe: echecs === 0 ? null : PREMIER,
   };

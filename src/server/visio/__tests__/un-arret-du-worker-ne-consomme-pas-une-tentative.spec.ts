@@ -9,7 +9,8 @@
  * Mutation qui rougit : dans `traiterErreur`, traiter `InterruptionArret`
  * comme une erreur passagère → `echecs` passe à 1. Contre-témoin : une vraie
  * panne, elle, compte. Angle mort : un arrêt BRUTAL (SIGKILL, mémoire)
- * laisse le verrou expirer : le balayage le rend sans compter non plus.
+ * laisse le verrou expirer : le balayage le rend sans compter d'échec, mais
+ * cette prise-là reste imputée au plafond de 10 exécutions (boucle de plantages).
  */
 
 import { describe, expect, it } from "vitest";

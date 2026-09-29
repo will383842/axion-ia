@@ -7,7 +7,9 @@
  *      repris ici : la PR 5 le purge elle-même (`reprendrePurgesDesRefus`) —
  *      une seule responsabilité par cas ;
  *   2. VERROUS EXPIRÉS (worker tué, mémoire) : l'étape repasse `a_faire`, sans
- *      compter d'échec (le plafond de 10 exécutions borne la boucle) ;
+ *      compter d'échec, mais la prise RESTE imputée au plafond de 10
+ *      exécutions (pas d'`interruptions` + 1) : c'est lui qui borne une boucle
+ *      de plantages ;
  *   3. AUDIO : purge programmée à l'échéance (`audioAPurgerAvant`, 30 jours
  *      au plus) ; ALERTE si un son la dépasse d'une heure ;
  *   4. PLAFOND : une suspension `plafond` reprend dès que le plafond le
@@ -127,7 +129,7 @@ export async function balayerCircuit(
   // 2. Verrous expirés.
   const verrousLiberes = await db.$executeRaw`
     UPDATE "traitements_visio"
-       SET "statut" = 'a_faire', "verrou_jusqua" = NULL, "interruptions" = "interruptions" + 1
+       SET "statut" = 'a_faire', "verrou_jusqua" = NULL
      WHERE "statut" = 'en_cours' AND "verrou_jusqua" < (now() AT TIME ZONE 'UTC')`;
 
   // 5. Étapes dues.

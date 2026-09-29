@@ -25,7 +25,9 @@
  *                    atterrit ~50 min avant l'app), alerte au-delà de 2 h ;
  *   arrêt du worker  l'étape repasse `a_faire` SANS compter.
  *
- * Plafond total : 10 exécutions par étape. Aucune étape ne tourne tant qu'un
+ * Plafond total : 10 exécutions IMPUTÉES par étape — une prise reportée,
+ * suspendue ou relâchée au SIGTERM n'est pas imputée (`executionsImputees`) ;
+ * une prise perdue par un verrou expiré l'est (boucle de plantages). Aucune étape ne tourne tant qu'un
  * enregistrement de la rencontre est actif.
  */
 
@@ -35,6 +37,7 @@ import type { ClientOpenAIVisio } from "./openai/client";
 import { idTacheVisio, type PortCout } from "./openai/cout";
 import { classerErreurOpenAI, ErreurVisio } from "./openai/erreurs";
 import {
+  executionsImputees,
   ResultatOrphelin,
   RetraitConstate,
   type DecisionEchec,
@@ -237,7 +240,7 @@ export async function executerEtape(
   if (t === null) return "deja_prise";
   const maintenant = deps.maintenant();
 
-  if (t.execution > PLAFOND_EXECUTIONS) {
+  if (executionsImputees(t) > PLAFOND_EXECUTIONS) {
     await deps.depot.echouer(t, {
       statut: "echec_definitif",
       classe: null,
