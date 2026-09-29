@@ -67,6 +67,13 @@ export async function creerFicheApporteurDepuisCandidature(input: {
   message: string;
   /** Passage automatique : la fiche est datée de la candidature, et marquée. */
   automatique?: boolean;
+  /**
+   * Proposition AUTOMATIQUE du réseau (2026-09-29, `server/careers/reponse-poste-pourvu.ts`) :
+   * la fiche est datée d'aujourd'hui (l'invitation part tout de suite, par l'appelant),
+   * sans `creationAutomatique` (le balayage `invitation-auto` ne la reprend donc pas),
+   * et son origine est dite telle quelle — personne n'a cliqué.
+   */
+  proposition?: "poste-pourvu" | "spontanee-commerciale";
 }): Promise<IssueCreationFiche> {
   const candidature = await prisma.jobApplication.findUnique({
     where: { id: input.applicationId },
@@ -146,10 +153,16 @@ export async function creerFicheApporteurDepuisCandidature(input: {
           ...(ville ? { ville } : {}),
           // 🔴 Le FAIT : la personne a consenti à l'étude de sa candidature à
           // un poste, pas au réseau. Aucun `optin` fabriqué.
-          consentement: input.automatique
-            ? "aucun pour le réseau — fiche créée automatiquement depuis une candidature à une offre d'emploi commerciale"
-            : "aucun pour le réseau — fiche créée par un administrateur depuis une candidature à une offre d'emploi",
+          consentement:
+            input.proposition === "poste-pourvu"
+              ? "aucun pour le réseau — réseau proposé automatiquement avec la réponse « poste pourvu » à une candidature à un poste salarié"
+              : input.proposition === "spontanee-commerciale"
+                ? "aucun pour le réseau — fiche créée automatiquement depuis une candidature spontanée à un poste commercial"
+                : input.automatique
+                  ? "aucun pour le réseau — fiche créée automatiquement depuis une candidature à une offre d'emploi commerciale"
+                  : "aucun pour le réseau — fiche créée par un administrateur depuis une candidature à une offre d'emploi",
           saisiPar: input.acteurId ?? "automatique",
+          ...(input.proposition ? { propositionAuto: input.proposition } : {}),
           ...(input.automatique ? { creationAutomatique: true } : {}),
           message: input.message,
         } as object,

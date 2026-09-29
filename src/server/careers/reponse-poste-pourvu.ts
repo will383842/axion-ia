@@ -54,6 +54,11 @@ import { decryptPii } from "@/lib/pii-crypto";
 import { remplirModele } from "@/content/recrutement/modeles-reponse";
 import { ecrireEtEnfilerReponse } from "@/features/admin-job-applications/envoyer-reponse";
 import { VIDEO_FREELANCE_OFFER_SLUGS } from "@/lib/careers/video-editor-offer";
+import {
+  DEBUT_PROPOSITION_RESEAU,
+  envoyerProposition,
+  preparerProposition,
+} from "@/server/careers/proposer-reseau-auto";
 import type { Prisma } from "../../../prisma/generated/client";
 
 export const CLE_ACTIVATION = "recrutement.reponse-poste-pourvu-auto";
@@ -82,6 +87,21 @@ export const CORPS = [
   "",
   "Belle suite à vous, et à bientôt peut-être.",
 ].join("\n");
+
+/**
+ * Paragraphe ajouté pour les candidatures reçues depuis le 29/09 (Will) : le
+ * réseau d'apporteurs d'affaires indépendants est proposé, et l'invitation
+ * (Calendly, 15 minutes) part juste après. N'apparaît QUE si la fiche apporteur
+ * a pu être préparée — on n'annonce jamais une invitation qui ne partira pas.
+ */
+export const PARAGRAPHE_RESEAU =
+  "Par ailleurs, nous développons un réseau d'apporteurs d'affaires indépendants. Si cela vous intéresse, vous allez recevoir dans quelques minutes une invitation à en parler 15 minutes en visio, sans engagement.";
+
+/** Le corps, avec la proposition du réseau placée avant la phrase sur la suppression du dossier. */
+export function corpsAvecReseau(): string {
+  const reperes = "\n\nSi vous préférez que nous supprimions";
+  return CORPS.replace(reperes, `\n\n${PARAGRAPHE_RESEAU}${reperes}`);
+}
 
 /**
  * L'intitulé tel qu'on l'écrit dans une phrase : « Développeur web — produits
@@ -198,6 +218,7 @@ export async function passerReponsePostePourvu(
       status: true,
       offerTitleSnap: true,
       firstName: true,
+      submittedAt: true,
     },
   });
 
@@ -214,15 +235,27 @@ export async function passerReponsePostePourvu(
       continue;
     }
     const valeurs = { prenom, poste };
+    // Candidature reçue depuis le 29/09 : on propose le réseau d'apporteurs. La
+    // fiche est préparée AVANT le message, qui n'annonce l'invitation que si
+    // elle va partir (personne déjà apporteur, lien absent → pas d'annonce).
+    const proposition =
+      c.submittedAt >= DEBUT_PROPOSITION_RESEAU
+        ? await preparerProposition(c.id, "poste-pourvu")
+        : null;
+    const avecReseau = proposition?.fiche === "creee";
     const issue = await ecrireEtEnfilerReponse(
       c,
       { userId: null, nom: AUTEUR },
       {
         subject: remplirModele(OBJET, valeurs),
-        bodyMarkdown: remplirModele(CORPS, valeurs),
+        bodyMarkdown: remplirModele(avecReseau ? corpsAvecReseau() : CORPS, valeurs),
         modele: "libre",
       },
     );
+    // L'invitation part même si la réponse n'a pas été écrite : la fiche existe
+    // déjà (elle retire la candidature de ce passage), la personne doit au moins
+    // recevoir la proposition annoncée.
+    if (proposition?.fiche === "creee") await envoyerProposition(c.id, proposition.submissionId);
     if (issue.ecrit && issue.enfile) envoyees += 1;
     else if (issue.ecrit) echouees += 1;
     else ecartees += 1;
