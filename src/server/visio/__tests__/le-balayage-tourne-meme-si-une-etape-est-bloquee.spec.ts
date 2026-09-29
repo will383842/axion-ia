@@ -41,13 +41,15 @@ describe("le balayage tourne même si une étape est bloquée", () => {
   it("une étape en panne n'arrête pas les autres, et le battement est écrit", async () => {
     const base = dossierEnMemoire();
     const notify = vi.fn(async () => ({ ok: true, channels: { telegram: "sent" as const } }));
-    const r = await passerBalayage(avecPanne(base, "calendlyEvent") as never, {
+    // `rencontreSuivi` n'est lu que par l'étape « suites » : les rendez-vous
+    // Calendly, eux, servent à deux étapes (« rencontres » et « couverture »).
+    const r = await passerBalayage(avecPanne(base, "rencontreSuivi") as never, {
       maintenant: MAINTENANT,
       notifier: notify,
       creerAlerte: creerEnMemoire(base),
       drapeauBrut: "true",
     });
-    expect(r.etapesEnEchec).toEqual(["rencontres"]);
+    expect(r.etapesEnEchec).toEqual(["suites"]);
     expect(base.tables["alerteSysteme"]?.map((a) => a["code"])).toEqual([VISIO_BALAYAGE_EN_PANNE]);
     expect(r.couverture).not.toBeNull();
     expect(base.tables["battementCircuit"]?.[0]?.["dernierLe"]).toEqual(MAINTENANT);

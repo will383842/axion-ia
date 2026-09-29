@@ -20,15 +20,25 @@ import { describe, expect, it, vi } from "vitest";
 
 import { couvertureDuMois, compterVeille, passerBalayage } from "@/server/visio/balayage";
 import { HORS_RENCONTRES_DE_TEST } from "../client-test";
-import { dossierEnMemoire, fiche, id } from "./_dossier-en-memoire";
+import { dossierEnMemoire, fiche, id, rendezVousCalendly } from "./_dossier-en-memoire";
 
 const BORNE = new Date("2026-10-01T00:00:00Z");
 const MAINTENANT = new Date("2026-10-08T14:00:00Z");
 
 function scene(estTestInterne: boolean) {
   const f = fiche({ raisonSociale: "Atelier Test Fictif" });
-  const rdv = (debut: Date) => ({
+  // La couverture ne compte que les visios TENUES selon le bilan (point
+  // « A eu lieu » sur le rendez-vous Calendly, `rendez-vous-tenu.ts`) : la
+  // visio passée porte donc un rendez-vous et son point. Rendez-vous lié à une
+  // candidature : le balayage ne cherche pas à lui assurer une rencontre.
+  const passe = rendezVousCalendly({
+    startTime: new Date("2026-10-06T08:00:00Z"),
+    endTime: new Date("2026-10-06T08:45:00Z"),
+    linkedJobApplicationId: "candidature-hors-dossier",
+  });
+  const rdv = (debut: Date, calendlyEventId: string | null) => ({
     id: id(5),
+    calendlyEventId,
     source: "saisie_manuelle",
     type: "visio",
     titre: "Rendez-vous",
@@ -51,7 +61,14 @@ function scene(estTestInterne: boolean) {
         version: "x",
       },
     ],
-    rencontre: [rdv(new Date("2026-10-06T08:00:00Z")), rdv(new Date("2026-10-09T08:00:00Z"))],
+    calendlyEvent: [passe],
+    rendezVousSuivi: [
+      { id: id(6), calendlyEventId: passe["id"], issue: "eu_lieu", suite: "aucune", suiteLe: null },
+    ],
+    rencontre: [
+      rdv(new Date("2026-10-06T08:00:00Z"), passe["id"] as string),
+      rdv(new Date("2026-10-09T08:00:00Z"), null),
+    ],
   });
 }
 

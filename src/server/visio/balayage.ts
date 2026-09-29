@@ -46,6 +46,11 @@
 import type { Tx, BaseTransactionnelle } from "@/features/dossier-client/base";
 import { HORS_RENCONTRES_DE_TEST } from "@/features/dossier-client/client-test";
 import { assurerRencontrePourCalendly } from "@/features/dossier-client/rencontre-calendly";
+import {
+  aEuLieu,
+  estDuMoisDuBilan,
+  fenetreDuBilan,
+} from "@/features/admin-rendezvous/rendez-vous-tenu";
 import { dayKeyInParis } from "@/lib/calendar-grid";
 import {
   CODES_ALERTE_VISIO,
@@ -100,14 +105,6 @@ export interface DependancesBalayage {
   readonly drapeauBrut?: string | undefined;
 }
 
-/** Le premier jour du mois de Paris qui contient `d`, à 00:00 UTC (borne large). */
-function debutDuMoisParis(d: Date): Date {
-  const [a, m] = dayKeyInParis(d).split("-").map(Number);
-  // Minuit de Paris vaut 22 h ou 23 h UTC la veille : on prend la veille à 22 h,
-  // puis on filtre par jour de Paris.
-  return new Date(Date.UTC(a ?? 1970, (m ?? 1) - 1, 1) - 2 * 60 * 60 * 1000);
-}
-
 // ── Les lectures (partagées par le passage et le panneau de la console) ──────
 
 /** Comptes rendus à valider depuis plus de 3 jours. */
@@ -148,27 +145,50 @@ export async function compterVeille(db: Tx, maintenant: Date): Promise<number> {
     .length;
 }
 
-/** Visios client du mois (Paris) : avec compte rendu, avec note, sans rien. */
+/**
+ * Visios client TENUES du mois (Paris) : avec compte rendu, avec note, sans rien.
+ *
+ * « Tenue » et « du mois » suivent la règle UNIQUE de `rendez-vous-tenu.ts`,
+ * celle du bilan (`bilanDuMois`) : le point fait après l'appel dit « A eu
+ * lieu », et le rendez-vous Calendly commence ce mois-ci. « Visios tenues »
+ * est donc toujours une partie de « ont eu lieu » (correction A3) : jamais
+ * une visio passée sans point, jamais une visio saisie à la main que le bilan
+ * ne connaît pas.
+ * Trois lectures à plat, dans l'ordre du bilan : rendez-vous du mois → points
+ * « A eu lieu » → rencontres visio du dossier.
+ */
 export async function couvertureDuMois(db: Tx, maintenant: Date): Promise<CouvertureDuMois> {
-  const mois = dayKeyInParis(maintenant).slice(0, 7);
-  const visios = (
-    await db.rencontre.findMany({
-      where: {
-        type: "visio",
-        ...HORS_RENCONTRES_DE_TEST,
-        repriseHistorique: false,
-        debutPrevu: { gte: debutDuMoisParis(maintenant), lt: maintenant },
-      },
-      select: { id: true, debutPrevu: true, statut: true },
+  const duMois = (
+    await db.calendlyEvent.findMany({
+      where: { startTime: fenetreDuBilan(maintenant) },
+      select: { id: true, startTime: true },
     })
-  ).filter(
-    (r) =>
-      r.debutPrevu !== null &&
-      dayKeyInParis(r.debutPrevu).slice(0, 7) === mois &&
-      r.statut !== "annule" &&
-      r.statut !== "absent" &&
-      r.statut !== "reporte",
-  );
+  )
+    .filter((e) => estDuMoisDuBilan(e.startTime, maintenant))
+    .map((e) => e.id);
+  const tenus =
+    duMois.length > 0
+      ? (
+          await db.rendezVousSuivi.findMany({
+            where: { calendlyEventId: { in: duMois } },
+            select: { calendlyEventId: true, issue: true },
+          })
+        )
+          .filter((s) => aEuLieu(s.issue))
+          .map((s) => s.calendlyEventId)
+      : [];
+  const visios =
+    tenus.length > 0
+      ? await db.rencontre.findMany({
+          where: {
+            type: "visio",
+            ...HORS_RENCONTRES_DE_TEST,
+            repriseHistorique: false,
+            calendlyEventId: { in: tenus },
+          },
+          select: { id: true },
+        })
+      : [];
   const ids = visios.map((v) => v.id);
   const crs =
     ids.length > 0
