@@ -151,6 +151,7 @@ import {
   autofactureTransmissionSubject,
 } from "./autofacture-transmission";
 import { PreavisSousTraitantsEmail, preavisSousTraitantsSubject } from "./preavis-sous-traitants";
+import { RencontreInvitationEmail, rencontreInvitationSubject } from "./rencontre-invitation";
 
 type TemplateMap = {
   [K in EmailJobName]: {
@@ -440,6 +441,12 @@ const TEMPLATES: TemplateMap = {
   "preavis-sous-traitants": {
     subject: preavisSousTraitantsSubject,
     component: PreavisSousTraitantsEmail,
+  },
+  // Chantier visio (PR 4) — invitation à un rendez-vous créé dans la console,
+  // toujours garée pour validation (`features/dossier-client/actions-rencontres.ts`).
+  "rencontre-invitation": {
+    subject: rencontreInvitationSubject,
+    component: RencontreInvitationEmail,
   },
 };
 

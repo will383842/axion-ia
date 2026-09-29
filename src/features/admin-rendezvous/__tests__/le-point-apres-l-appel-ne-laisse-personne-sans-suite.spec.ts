@@ -9,8 +9,8 @@ vi.mock("@/auth", () => ({ auth: () => authMock() }));
 const findUnique = vi.fn();
 const findMany = vi.fn();
 const upsert = vi.fn();
-vi.mock("@/lib/prisma", () => ({
-  prisma: {
+vi.mock("@/lib/prisma", () => {
+  const prisma = {
     // 🔑 LECTURE SEULE, volontairement : aucune méthode d'écriture sur
     // `calendlyEvent`. Si l'action tentait d'y écrire (`update`,
     // `updateMany`…), l'appel lèverait, l'action rendrait « erreur » et le
@@ -21,8 +21,15 @@ vi.mock("@/lib/prisma", () => ({
       findMany: (...a: unknown[]) => findMany(...a),
     },
     rendezVousSuivi: { upsert: (...a: unknown[]) => upsert(...a) },
-  },
-}));
+    // 2026-09-29 (chantier visio, PR 4) — l'écriture passe par
+    // `enregistrerSuivi()`, qui ouvre une transaction. Le rendez-vous de ce
+    // test n'a pas de type de la liste blanche du dossier client : aucune
+    // rencontre n'est créée, seule la recopie de l'onglet est écrite — et
+    // toute écriture sur une autre table lèverait (méthode absente).
+    $transaction: (fn: (tx: unknown) => unknown) => fn(prisma),
+  };
+  return { prisma };
+});
 const updateTag = vi.fn();
 vi.mock("next/cache", () => ({
   revalidatePath: vi.fn(),

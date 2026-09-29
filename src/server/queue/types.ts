@@ -159,7 +159,11 @@ export type EmailJobName =
   // Chantier visio (2026-09-29) — PRÉAVIS de 30 jours aux clients actifs avant
   // tout enregistrement de visioconférence (règle B3, ADR 0056). Toujours garé
   // en « E-mails à valider » : Will le relit avant qu'il parte.
-  | "preavis-sous-traitants";
+  | "preavis-sous-traitants"
+  // Chantier visio (PR 4, 2026-09-29) — INVITATION à un rendez-vous de visio
+  // créé dans la console (deuxième rendez-vous, hors Calendly). Toujours garée
+  // en « E-mails à valider » : Will la relit, l'envoie ou l'écarte.
+  | "rencontre-invitation";
 
 /**
  * Lot L4 — passage quotidien du vivier candidats.
@@ -206,6 +210,14 @@ export type ApporteurCronJobType =
 
 export interface ApporteurCronJobData {
   readonly type?: ApporteurCronJobType;
+  readonly tick?: string;
+}
+
+/**
+ * 2026-09-29 (chantier visio, PR 4) — le balayage du dossier client, toutes
+ * les 5 minutes. La charge ne porte RIEN du dossier (PA-12) : un horodatage.
+ */
+export interface VisioBalayageJobData {
   readonly tick?: string;
 }
 

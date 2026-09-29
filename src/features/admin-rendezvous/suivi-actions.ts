@@ -1,8 +1,15 @@
 // Enregistrer le point fait après un rendez-vous (2026-09-27).
 //
-// Garde : celle de l'écriture des appels (`peutVoirLesAppels`). N'écrit QUE
-// `rendez_vous_suivis` : `calendly_events.status` n'est pas touché, donc la
-// synchro CRM (qui part sur `completed` / `no_show`) ne se déclenche pas.
+// Garde : celle de l'écriture des appels (`peutVoirLesAppels`).
+// `calendly_events.status` n'est pas touché, donc la synchro CRM (qui part sur
+// `completed` / `no_show`) ne se déclenche pas.
+//
+// 2026-09-29 (chantier visio, PR 4) — l'écriture passe par la fonction UNIQUE
+// `enregistrerSuivi()` (`features/dossier-client/suivi.ts`) : pour un
+// rendez-vous CLIENT (liste blanche), elle écrit dans la même transaction le
+// suivi de la rencontre du dossier (`rencontre_suivis`, l'autorité) ET la
+// recopie lue par l'onglet (`rendez_vous_suivis`) ; pour un autre type, la
+// recopie seule, comme avant.
 
 "use server";
 
@@ -13,6 +20,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
 import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
+import { enregistrerSuivi } from "@/features/dossier-client/suivi";
 import { lireFormulaireSuivi, normaliserSuivi, suiviSchema } from "./suivi";
 
 export type EtatSuivi =
@@ -44,10 +52,14 @@ export async function enregistrerSuiviAction(
     });
     if (!existe) return { etat: "erreur", message: "Rendez-vous introuvable." };
 
-    await prisma.rendezVousSuivi.upsert({
-      where: { calendlyEventId },
-      create: { calendlyEventId, ...donnees, renseignePar },
-      update: { ...donnees, renseignePar },
+    await enregistrerSuivi(prisma, {
+      calendlyEventId,
+      issue: donnees.issue,
+      suite: donnees.suite,
+      suiteLe: donnees.suiteLe,
+      note: donnees.note,
+      auteurId: session.user.id,
+      renseignePar,
     });
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "rendez-vous-suivi" } });

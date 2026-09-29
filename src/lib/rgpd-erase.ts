@@ -674,6 +674,13 @@ export async function eraseCalendlyEventsForEmail(email: string): Promise<EraseC
     // 2026-09-28 — la note /20 d'un échange apporteur part avec sa phrase.
     data: { note: null, noteSur20: null },
   });
+  // 2026-09-29 (chantier visio, PR 4) — l'ÉQUIVALENT pour `rencontre_suivis`,
+  // le suivi de la rencontre du dossier client (autorité, écrit par la même
+  // fonction `enregistrerSuivi()`) : il n'y a RIEN à y vider. Cette table n'a
+  // pas de note libre, à dessein — une appréciation sur la personne y devient
+  // un FAIT `saisie_manuelle`, effacé par `effacerCibleParAdresses` avec les
+  // autres faits dont elle est sujet. Elle ne porte que l'issue, la suite et
+  // leur date (annotation `rgpd: technique`), et part avec sa rencontre.
 
   // UNE SEULE instruction, donc atomique : la ligne perd ses coordonnées ET
   // sort de la fenêtre du cron au même instant. En deux temps, un passage de

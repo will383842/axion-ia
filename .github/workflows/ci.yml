@@ -149,6 +149,15 @@ jobs:
         run: pnpm prisma:generate
       - name: TypeScript strict
         run: pnpm typecheck
+        # 2026-09-29 (chantier visio, PR 4, #1225) — `tsc --noEmit` a dépassé le
+        # tas par défaut de Node (~4 Go) : « Ineffective mark-compacts near heap
+        # limit », 4 080 Mo après 93 s, code 134 (run 36572222973). La base (#1212)
+        # passait juste en dessous : le dépôt a atteint la limite, et toute PR qui
+        # ajoute du code la franchit. Même valeur que le build (plus bas) ; le
+        # runner a 16 Go. Ce n'est PAS une erreur de type masquée : un tas trop
+        # petit fait planter tsc AVANT tout diagnostic.
+        env:
+          NODE_OPTIONS: --max-old-space-size=8192
       - name: ESLint
         run: pnpm lint
       - name: Prettier

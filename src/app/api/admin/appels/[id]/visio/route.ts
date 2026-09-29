@@ -10,7 +10,6 @@
 // rôle qui n'a pas le droit de lire la fiche.
 
 import { NextResponse, type NextRequest } from "next/server";
-import * as Sentry from "@sentry/nextjs";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
@@ -21,11 +20,11 @@ import {
   estLienVisio,
   estRedirectionCalendly,
 } from "@/features/admin-rendezvous/visio";
+// La résolution (et sa liste blanche d'hôtes) vit côté serveur, réutilisable
+// (chantier visio, PR 4).
+import { resoudreConference } from "@/features/admin-rendezvous/visio-serveur";
 
 export const dynamic = "force-dynamic";
-
-/** Au-delà, on renvoie sur le lien Calendly tel quel : il mène quand même à la salle. */
-const DELAI_RESOLUTION_MS = 5_000;
 
 function rediriger(location: string): NextResponse {
   // Location RELATIVE ou absolue, posée à la main : `NextResponse.redirect`
@@ -42,28 +41,6 @@ function page(status: number, texte: string): NextResponse {
     status,
     headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store" },
   });
-}
-
-/**
- * Suit la redirection Calendly jusqu'à la conférence. `null` si Calendly ne
- * répond pas une redirection `https` exploitable.
- */
-async function resoudreConference(url: string): Promise<string | null> {
-  try {
-    const res = await fetch(url, {
-      method: "GET",
-      redirect: "manual",
-      signal: AbortSignal.timeout(DELAI_RESOLUTION_MS),
-      cache: "no-store",
-    });
-    await res.body?.cancel();
-    const cible = res.headers.get("location");
-    if (res.status < 300 || res.status >= 400 || !cible) return null;
-    return estLienVisio(cible) ? new URL(cible, url).toString() : null;
-  } catch (err) {
-    Sentry.captureException(err, { tags: { route: "appels-visio", etape: "resolution" } });
-    return null;
-  }
 }
 
 export async function GET(

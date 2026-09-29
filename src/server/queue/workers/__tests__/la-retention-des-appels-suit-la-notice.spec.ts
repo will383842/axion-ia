@@ -70,7 +70,9 @@ describe("la rétention des réservations d'appel suit la notice publiée", () =
     expect(
       src,
       "aucune purge sur calendlyEvent : la notice annoncerait une durée que rien n'applique",
-    ).toMatch(/prisma\.calendlyEvent\.deleteMany/);
+      // 2026-09-29 (chantier visio, PR 4) — la suppression se fait dans une
+      // transaction (`tx.`) qui fige d'abord les rencontres du dossier client.
+    ).toMatch(/\b(?:prisma|tx)\.calendlyEvent\.deleteMany/);
   });
 
   it("🔴 la durée du worker est EXACTEMENT celle de la notice", () => {
