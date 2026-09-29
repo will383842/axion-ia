@@ -155,7 +155,7 @@ describe("REQ-INT-005 + REQ-DM-018 — `paiement.recu`", () => {
       facture: { ...factureBase, client: clientEntreprise },
       totalEncaisseTtcCents: 40_000,
     });
-    expect(p.amountHtCents).toBe(33_333);
+    expect(p.montantHtCents).toBe(33_333);
   });
 
   it("le `clientId` est le BÉNÉFICIAIRE, jamais le destinataire de la facture", () => {

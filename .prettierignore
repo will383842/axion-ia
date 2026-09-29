@@ -31,6 +31,6 @@ docs/kits
 # `--verifier`. Un formateur qui la réécrit met la garde en rouge permanent.
 #
 # Règle générale : un fichier dont le CONTENU EXACT est la preuve ne se formate pas.
-src/server/partners/contrat/contracts.v1.json
+src/server/partners/contrat/contracts.v2.json
 src/server/partners/contrat/contracts.sha256
-src/server/partners/contrat/fixtures.v1.json
+src/server/partners/contrat/fixtures.v2.json

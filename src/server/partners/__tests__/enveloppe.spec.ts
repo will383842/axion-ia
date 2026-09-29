@@ -102,10 +102,11 @@ describe("REQ-INT-003 — l'enveloppe est celle du schéma publié", () => {
     expect(enveloppe(FAIT).schema_version).toBe(PUBLIE.properties.schema_version?.const);
   });
 
-  it("REFUSE un type hors du contrat v1 — `candidature.recue` ne s'émet pas en v1", () => {
-    // Le consommateur v1 rend 422 sur tout `event_type` hors énumération. Émettre
-    // serait fabriquer un `gave_up` : autant s'arrêter ici, bruyamment.
-    expect(() => enveloppe({ ...FAIT, type: "candidature.recue" as never })).toThrow(/contrat v1/i);
+  it("REFUSE un type hors du contrat publié — un nom inconnu ne s'émet pas", () => {
+    // Le consommateur rend 422 sur tout `event_type` hors énumération. Émettre
+    // serait fabriquer un `gave_up` : autant s'arrêter ici, bruyamment. (`candidature.recue`
+    // servait de témoin en v1 ; il est au contrat depuis la v2, d'où un nom inventé.)
+    expect(() => enveloppe({ ...FAIT, type: "devis.refuse" as never })).toThrow(/contrat v2/i);
   });
 });
 

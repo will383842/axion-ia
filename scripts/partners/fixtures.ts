@@ -47,9 +47,7 @@ import { PrismaClient } from "../../prisma/generated/client";
 import {
   SCHEMA_VERSION,
   TYPES_EVENEMENT,
-  HORS_CONTRAT_V1,
   type TypeEvenement,
-  type TypeHorsContrat,
 } from "../../src/server/partners/contrat";
 import { empreinteContratPublie } from "../../src/server/partners/contrat/empreinte";
 import { enveloppe, type Fait } from "../../src/server/partners/enveloppe";
@@ -75,7 +73,7 @@ import {
 // Garde-fous
 // ─────────────────────────────────────────────────────────────────────────────
 
-const SORTIE_PAR_DEFAUT = path.join("src", "server", "partners", "contrat", "fixtures.v1.json");
+const SORTIE_PAR_DEFAUT = path.join("src", "server", "partners", "contrat", "fixtures.v2.json");
 
 /**
  * ⛔ La cible. Refuse tout ce qui n'est pas une base locale.
@@ -201,15 +199,10 @@ function pseudonymiser(valeur: unknown, cle = ""): unknown {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Un fait de CE script porte aussi les quatre types HORS contrat v1.
- *
- * `Fait.type` est volontairement resserré sur `TypeEvenement` dans `enveloppe.ts` : c'est
- * ce qui empêche d'emballer par distraction un type que le récepteur refuserait en 422.
- * Ce script, lui, doit PRODUIRE les quatre autres sans les emballer — il élargit donc le
- * type ici, en un seul endroit nommé, plutôt qu'en semant des `as never` sur chaque fait.
- * Le resserrement se fait à l'appel d'`enveloppe()`, qui vérifie de son côté.
+ * Un fait de CE script. Depuis `schema_version` 2, les onze types sont au contrat et tous
+ * sont emballés ; `enveloppe()` vérifie encore de son côté.
  */
-type FaitTous = Omit<Fait, "type"> & { readonly type: TypeEvenement | TypeHorsContrat };
+type FaitTous = Omit<Fait, "type"> & { readonly type: TypeEvenement };
 
 /** Erreur sentinelle : elle force le rollback et n'est pas une panne. */
 class RollbackVoulu extends Error {
@@ -607,10 +600,7 @@ async function construireLesFaits(tx: Prisma): Promise<FaitTous[]> {
       },
       sequence: 10,
     },
-    // ── Les quatre types HORS CONTRAT v1. Ils sont construits et vérifiés ici, mais
-    // `enveloppe()` refuse de les emballer tant que Partners n'a pas republié : ils
-    // sortent donc dans une section à part du fichier. Les produire sans les émettre
-    // n'est pas une contradiction, c'est le seul ordre possible d'un lockstep.
+    // ── Les quatre types entrés au contrat avec `schema_version` 2 (hors contrat v1).
     {
       type: "facture.annulee",
       cleDeFait: `facture.annulee:${factureRelue.id}`,
@@ -680,7 +670,7 @@ function entete(): string {
     "modèles Prisma réels, payloads construits par src/server/partners/payloads.ts, transaction",
     "ANNULÉE, sortie pseudonymisée. Aucune valeur n'est complétée : un champ absent fait échouer",
     "la génération (RM-03, REQ-QA-007).",
-    `Contrat : contracts.v1.json, empreinte ${empreinteContratPublie()}, schema_version ${SCHEMA_VERSION}.`,
+    `Contrat : contracts.v2.json, empreinte ${empreinteContratPublie()}, schema_version ${SCHEMA_VERSION}.`,
     "Régénérer : pnpm partners:fixtures — vérifier : pnpm partners:fixtures --verifier",
   ].join(" ");
 }
@@ -689,12 +679,10 @@ function rendu(faits: FaitTous[]): string {
   const dansLeContrat = faits.filter((f) =>
     (TYPES_EVENEMENT as readonly string[]).includes(f.type),
   );
-  const horsContrat = faits.filter((f) => (HORS_CONTRAT_V1 as readonly string[]).includes(f.type));
-
-  const inconnus = faits.filter((f) => !dansLeContrat.includes(f) && !horsContrat.includes(f));
+  const inconnus = faits.filter((f) => !dansLeContrat.includes(f));
   if (inconnus.length > 0) {
     throw new Error(
-      `[partners:fixtures] type(s) ni au contrat v1 ni recensé(s) hors contrat : ` +
+      `[partners:fixtures] type(s) hors du contrat v${SCHEMA_VERSION} : ` +
         `${inconnus.map((f) => f.type).join(", ")}.`,
     );
   }
@@ -706,14 +694,6 @@ function rendu(faits: FaitTous[]): string {
   const manquants = TYPES_EVENEMENT.filter((t) => !couverts.has(t));
   if (manquants.length > 0) {
     throw new Error(`[partners:fixtures] aucun exemple pour : ${manquants.join(", ")}.`);
-  }
-  const manquantsHors = HORS_CONTRAT_V1.filter(
-    (t) => !horsContrat.some((f) => (f.type as string) === t),
-  );
-  if (manquantsHors.length > 0) {
-    throw new Error(
-      `[partners:fixtures] aucun exemple hors contrat pour : ${manquantsHors.join(", ")}.`,
-    );
   }
 
   // ⚠️ `emitted_at` est retiré des fixtures : c'est le seul champ de l'enveloppe qui
@@ -742,21 +722,10 @@ function rendu(faits: FaitTous[]): string {
     }
   }
 
-  const horsEnveloppe = horsContrat.map((f) => ({
-    event_type: f.type,
-    occurred_at: f.occurredAt.toISOString(),
-    subject_ref: pseudonymiser(f.sujet),
-    payload: pseudonymiser(f.payload),
-  }));
-
   const document = {
     Source: entete(),
     schemaVersion: SCHEMA_VERSION,
     evenements: enveloppes,
-    // Séparé, et NOMMÉ : ces quatre types ne sont pas émissibles en v1. Les mélanger aux
-    // autres ferait échouer la validation JSON Schema d'un consommateur qui prendrait le
-    // tableau entier — et l'échec aurait l'air d'un défaut de contrat.
-    horsContratV1: horsEnveloppe,
   };
 
   return `${JSON.stringify(document, null, 2)}\n`;
