@@ -62,7 +62,8 @@ const CONSULTE_LA_CERTIFICATION =
  * « seulement après la certification ». Une mention n'y est donc admise que :
  *   — DANS la déclaration d'une constante `…_CERTIFIE` ;
  *   — si le fichier lie `const certifie = isQualiopiCertificationObtenue()` ;
- *   — et si chaque emploi de cette constante hors de sa déclaration est `certifie ? …_CERTIFIE`.
+ *   — et si chaque emploi de cette constante hors de sa déclaration est `certifie ? …_CERTIFIE`,
+ *     une seule fois sur la ligne, dans la branche vraie d'un `certifie` non nié.
  * Toute autre mention, et tout emploi d'une `…_CERTIFIE` hors de la bascule, est une faute.
  */
 export const LECTURE_PAR_LIGNE: ReadonlyArray<string> = ["memo-isere/page.tsx"];
@@ -98,8 +99,15 @@ function fautesParLigne(chemin: string, texte: string): FauteVocabulaire[] {
     const f = admises.has(i) ? null : MENTION_FINANCEMENT.exec(telleQueLue(brute));
     if (f) fautes.push({ famille: "financement_non_gate", chemin, ligne: i + 1, extrait: f[0] });
     for (const [nom, zone] of zones) {
-      if (zone.has(i) || !new RegExp(`\\b${nom}\\b`).test(brute)) continue;
-      if (new RegExp(`\\bcertifie\\s*\\?\\s*${nom}\\b`).test(brute)) continue;
+      const emplois = brute.match(new RegExp(`\\b${nom}\\b`, "g"))?.length ?? 0;
+      if (zone.has(i) || emplois === 0) continue;
+      // La constante n'est admise qu'UNE fois, dans la BRANCHE VRAIE d'un `certifie` NON NIÉ :
+      // `!certifie ? X` servirait le financement hors certification, `certifie ? X : X` toujours
+      // (relecture exactitude de #1220). `(?<![!\w.])` refuse `!certifie` et `a.certifie`.
+      const brancheVraie = new RegExp(
+        `(?<![!\\w.])certifie\\s*\\?\\s*(?:\\[\\s*)?(?:\\.\\.\\.\\s*)?${nom}\\b`,
+      );
+      if (emplois === 1 && brancheVraie.test(brute)) continue;
       fautes.push({ famille: "financement_non_gate", chemin, ligne: i + 1, extrait: nom });
     }
   });
