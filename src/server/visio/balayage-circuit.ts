@@ -1,8 +1,9 @@
 /**
  * Le BALAYAGE du circuit de compte rendu (toutes les 5 minutes, file `visio`).
  *
- *   1. ENTRÉE dans le circuit : un enregistrement `depose` sans étape
- *      `transcrire` la reçoit ; un enregistrement non confirmé, abandonné ou
+ *   1. ENTRÉE dans le circuit : un enregistrement `depose` dont la rencontre
+ *      n'a pas d'étape `transcrire` la reçoit, ou la retrouve si elle était
+ *      terminée (une relance après « Arrêter ») ; un enregistrement non confirmé, abandonné ou
  *      validé qui garde du son reçoit `purger_audio`. Un REFUS n'est pas
  *      repris ici : la PR 5 le purge elle-même (`reprendrePurgesDesRefus`) —
  *      une seule responsabilité par cas ;
@@ -66,11 +67,17 @@ export async function balayerCircuit(
 
   if (filtreRencontre === null) {
     // 1. Entrées.
+    // Un enregistrement DÉPOSÉ entre dans le circuit : sa rencontre reçoit
+    // l'étape `transcrire`, ou la RETROUVE si elle était déjà terminée — après
+    // « Arrêter » puis une relance, la seconde partie de l'appel est
+    // transcrite à son tour (`transcrire` lit tous les enregistrements). Une
+    // étape suspendue (attente de Will) ou en cours n'est pas touchée.
     const deposes = await db.$queryRaw<Array<{ rencontre_id: string }>>`
       SELECT DISTINCT e."rencontre_id" FROM "enregistrements" e
        WHERE e."statut" = 'depose'
          AND NOT EXISTS (SELECT 1 FROM "traitements_visio" t
-                          WHERE t."rencontre_id" = e."rencontre_id" AND t."etape" = 'transcrire')`;
+                          WHERE t."rencontre_id" = e."rencontre_id" AND t."etape" = 'transcrire'
+                            AND t."statut" <> 'reussie')`;
     const aPurger = await db.$queryRaw<Array<{ rencontre_id: string }>>`
       SELECT DISTINCT e."rencontre_id" FROM "enregistrements" e
        WHERE e."audio_supprime_le" IS NULL
@@ -79,7 +86,11 @@ export async function balayerCircuit(
          AND EXISTS (SELECT 1 FROM "enregistrement_tranches" tr WHERE tr."enregistrement_id" = e."id")`;
     await db.$transaction(async (tx) => {
       for (const r of deposes) {
-        await planifierDans(tx, r.rencontre_id, { etape: "transcrire", compteRenduId: null });
+        await planifierDans(tx, r.rencontre_id, {
+          etape: "transcrire",
+          compteRenduId: null,
+          reinitialiser: true,
+        });
         entrees += 1;
       }
       for (const r of aPurger) {

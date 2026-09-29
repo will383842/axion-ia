@@ -34,7 +34,7 @@ describe("une dictée n'a pas d'étape consentement", () => {
       depot,
       gestionnaires: { precontroler },
       donnees: {
-        pourPrecontrole: async () => precontrole({ nature: "dictee", segments: DICTEE }),
+        pourPrecontrole: async () => [precontrole({ nature: "dictee", segments: DICTEE })],
         ecrirePreuvesAccord: async () => {
           preuves += 1;
         },

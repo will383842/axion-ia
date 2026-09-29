@@ -25,7 +25,13 @@ import { ETATS_ENREGISTREMENT_ACTIFS } from "./etats";
 import { lireEtat } from "./etat-compte-rendu";
 import { ajouterAuJournal, lireJournal } from "./journal-enregistrement";
 import { ErreurVisio } from "./openai/erreurs";
-import type { DonneesPasses, FaitDuJour, PortDonnees, TrancheATraiter } from "./port-donnees";
+import type {
+  DonneesPasses,
+  DonneesPrecontrole,
+  FaitDuJour,
+  PortDonnees,
+  TrancheATraiter,
+} from "./port-donnees";
 
 /** Le stockage des objets audio (R2 ; en mémoire pour Gate D). */
 export interface StockageLecture {
@@ -118,47 +124,78 @@ export function valeursEnTexte(f: {
   return v;
 }
 
+/** Rang d'un enregistrement dans la vue fusionnée : `ordre` reste unique d'une transcription à l'autre. */
+const RANG_ENREGISTREMENT = 100_000_000;
+
+interface TranscriptionRetenue {
+  readonly transcriptionId: string;
+  readonly enregistrementId: string;
+  readonly segments: SegmentStocke[];
+}
+
+/**
+ * Les transcriptions RETENUES de la rencontre — une par enregistrement, du plus
+ * ancien au plus récent — et leurs segments FUSIONNÉS (même origine des
+ * horodatages ; `ordre` décalé par rang pour rester unique). Après
+ * « Arrêter » puis une relance, les deux parties de l'appel sont lues.
+ */
 async function segmentsRetenus(
   db: Db,
   rencontreId: string,
 ): Promise<{
   transcriptionId: string;
   enregistrementId: string;
+  parEnregistrement: TranscriptionRetenue[];
   segments: SegmentStocke[];
 } | null> {
-  const t = await db.transcription.findFirst({
+  const ts = await db.transcription.findMany({
     where: { statut: "retenue", enregistrement: { rencontreId } },
-    orderBy: { createdAt: "desc" },
+    orderBy: [{ enregistrement: { debut: "asc" } }, { createdAt: "desc" }],
     select: { id: true, enregistrementId: true },
   });
-  if (!t) return null;
-  const lignes = await db.transcriptionSegment.findMany({
-    where: { transcriptionId: t.id },
-    orderBy: { ordre: "asc" },
-    select: {
-      ordre: true,
-      piste: true,
-      debutMs: true,
-      finMs: true,
-      locuteurBrut: true,
-      texte: true,
-      horsAccord: true,
-      apresRefus: true,
-    },
-  });
+  const vus = new Set<string>();
+  const parEnregistrement: TranscriptionRetenue[] = [];
+  for (const t of ts) {
+    if (vus.has(t.enregistrementId)) continue;
+    vus.add(t.enregistrementId);
+    const lignes = await db.transcriptionSegment.findMany({
+      where: { transcriptionId: t.id },
+      orderBy: { ordre: "asc" },
+      select: {
+        ordre: true,
+        piste: true,
+        debutMs: true,
+        finMs: true,
+        locuteurBrut: true,
+        texte: true,
+        horsAccord: true,
+        apresRefus: true,
+      },
+    });
+    parEnregistrement.push({
+      transcriptionId: t.id,
+      enregistrementId: t.enregistrementId,
+      segments: lignes.map((s) => ({
+        ordre: s.ordre,
+        piste: s.piste,
+        debutMs: s.debutMs,
+        finMs: s.finMs,
+        locuteurBrut: s.locuteurBrut,
+        texte: dechiffrerParole(s.texte),
+        horsAccord: s.horsAccord,
+        apresRefus: s.apresRefus,
+      })),
+    });
+  }
+  const premiere = parEnregistrement[0];
+  if (!premiere) return null;
   return {
-    transcriptionId: t.id,
-    enregistrementId: t.enregistrementId,
-    segments: lignes.map((s) => ({
-      ordre: s.ordre,
-      piste: s.piste,
-      debutMs: s.debutMs,
-      finMs: s.finMs,
-      locuteurBrut: s.locuteurBrut,
-      texte: dechiffrerParole(s.texte),
-      horsAccord: s.horsAccord,
-      apresRefus: s.apresRefus,
-    })),
+    transcriptionId: premiere.transcriptionId,
+    enregistrementId: premiere.enregistrementId,
+    parEnregistrement,
+    segments: parEnregistrement.flatMap((p, rang) =>
+      p.segments.map((s) => ({ ...s, ordre: rang * RANG_ENREGISTREMENT + s.ordre })),
+    ),
   };
 }
 
@@ -174,13 +211,15 @@ async function rencontreDe(db: Db, rencontreId: string) {
       debutReel: true,
       finReelle: true,
       calendlyEvent: { select: { rawPayload: true } },
-      enregistrements: { orderBy: { debut: "desc" }, take: 1, select: { debut: true, fin: true } },
+      enregistrements: { orderBy: { debut: "asc" }, select: { debut: true, fin: true } },
     },
   });
   if (!r) return null;
-  const e = r.enregistrements[0];
-  const debut = r.debutReel ?? e?.debut ?? r.debutPrevu ?? new Date(0);
-  const fin = r.finReelle ?? e?.fin ?? debut;
+  // Du début du PREMIER enregistrement à la fin du DERNIER (relance comprise).
+  const premier = r.enregistrements[0];
+  const dernier = r.enregistrements[r.enregistrements.length - 1];
+  const debut = r.debutReel ?? premier?.debut ?? r.debutPrevu ?? new Date(0);
+  const fin = r.finReelle ?? dernier?.fin ?? debut;
   return {
     ligne: r,
     donnees: {
@@ -246,9 +285,9 @@ export function depotDonneesPrisma(
 
     // ── transcrire ──
     aTranscrire: async (rencontreId) => {
-      const e = await db.enregistrement.findFirst({
+      const liste = await db.enregistrement.findMany({
         where: { rencontreId, statut: { notIn: [...ETATS_ENREGISTREMENT_ACTIFS] } },
-        orderBy: { debut: "desc" },
+        orderBy: { debut: "asc" },
         include: {
           rencontre: { select: { debutReel: true } },
           tranches: {
@@ -266,8 +305,12 @@ export function depotDonneesPrisma(
           },
         },
       });
-      if (!e) return null;
-      return {
+      const premier = liste[0];
+      if (!premier) return [];
+      // UNE origine pour toute la rencontre : les segments d'une relance se
+      // placent après ceux de la première partie.
+      const origineMs = (premier.rencontre.debutReel ?? premier.debut).getTime();
+      return liste.map((e) => ({
         id: e.id,
         rencontreId: e.rencontreId,
         nature: e.nature,
@@ -276,13 +319,13 @@ export function depotDonneesPrisma(
         fin: e.fin,
         motifArret: e.motifArret,
         fenetresHorsAccord: periodes(e.fenetresHorsAccord),
-        origineMs: (e.rencontre.debutReel ?? e.debut).getTime(),
+        origineMs,
         courtConfirme: journalDit(e.evenements, "court_confirme"),
         tranches: e.tranches.map((t): TrancheATraiter => ({
           ...t,
           debutCaptureEpochMs: Number(t.debutCaptureEpochMs),
         })),
-      };
+      }));
     },
     lireSonTranche: async (trancheId) => {
       const t = await db.enregistrementTranche.findUnique({
@@ -392,31 +435,36 @@ export function depotDonneesPrisma(
     // ── précontrôler ──
     pourPrecontrole: async (rencontreId) => {
       const s = await segmentsRetenus(db, rencontreId);
-      if (!s) return null;
-      const e = await db.enregistrement.findUnique({
-        where: { id: s.enregistrementId },
-        select: {
-          nature: true,
-          debut: true,
-          fin: true,
-          accordConfirmeLe: true,
-          rencontre: { select: { debutReel: true } },
-        },
+      if (!s) return [];
+      const premier = await db.enregistrement.findFirst({
+        where: { rencontreId },
+        orderBy: { debut: "asc" },
+        select: { debut: true, rencontre: { select: { debutReel: true } } },
       });
-      if (!e) return null;
-      const origine = (e.rencontre.debutReel ?? e.debut).getTime();
-      const preuves = await db.enregistrementConsentement.count({
-        where: { enregistrementId: s.enregistrementId, type: "phrase_retrouvee_verifiee" },
-      });
-      return {
-        enregistrementId: s.enregistrementId,
-        transcriptionId: s.transcriptionId,
-        nature: e.nature,
-        dureeMs: Math.max(0, (e.fin ?? e.debut).getTime() - e.debut.getTime()),
-        accordDeclareMs: e.accordConfirmeLe ? e.accordConfirmeLe.getTime() - origine : null,
-        segments: s.segments,
-        preuvesDejaEcrites: preuves,
-      };
+      if (!premier) return [];
+      // Même origine que la transcription (`aTranscrire`).
+      const origine = (premier.rencontre.debutReel ?? premier.debut).getTime();
+      const out: DonneesPrecontrole[] = [];
+      for (const p of s.parEnregistrement) {
+        const e = await db.enregistrement.findUnique({
+          where: { id: p.enregistrementId },
+          select: { nature: true, debut: true, fin: true, accordConfirmeLe: true },
+        });
+        if (!e) continue;
+        const preuves = await db.enregistrementConsentement.count({
+          where: { enregistrementId: p.enregistrementId, type: "phrase_retrouvee_verifiee" },
+        });
+        out.push({
+          enregistrementId: p.enregistrementId,
+          transcriptionId: p.transcriptionId,
+          nature: e.nature,
+          dureeMs: Math.max(0, (e.fin ?? e.debut).getTime() - e.debut.getTime()),
+          accordDeclareMs: e.accordConfirmeLe ? e.accordConfirmeLe.getTime() - origine : null,
+          segments: p.segments,
+          preuvesDejaEcrites: preuves,
+        });
+      }
+      return out;
     },
     marquerApresRefus: async (tx, transcriptionId, ordres) => {
       await tx.transcriptionSegment.updateMany({
@@ -529,8 +577,15 @@ export function depotDonneesPrisma(
         select: { id: true },
       });
       if (a.transcriptionId !== null) {
-        await tx.compteRenduSource.create({
-          data: { compteRenduId: cr.id, transcriptionId: a.transcriptionId },
+        // Toutes les transcriptions retenues de la rencontre (relance comprise).
+        const retenues = await tx.transcription.findMany({
+          where: { statut: "retenue", enregistrement: { rencontreId: a.rencontreId } },
+          select: { id: true },
+        });
+        const ids = new Set([a.transcriptionId, ...retenues.map((t) => t.id)]);
+        await tx.compteRenduSource.createMany({
+          data: [...ids].map((transcriptionId) => ({ compteRenduId: cr.id, transcriptionId })),
+          skipDuplicates: true,
         });
       }
       return cr.id;

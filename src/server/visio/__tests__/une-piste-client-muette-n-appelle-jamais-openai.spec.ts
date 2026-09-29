@@ -37,7 +37,7 @@ describe("une piste client muette n'appelle jamais OpenAI", () => {
       depot,
       client,
       gestionnaires: { precontroler, extraire },
-      donnees: { pourPrecontrole: async () => precontrole({ segments: MUETTE }) },
+      donnees: { pourPrecontrole: async () => [precontrole({ segments: MUETTE })] },
     });
     expect(await executerEtape(deps, t.id)).toBe("echec_definitif");
     expect(depot.ligne(t.id)).toMatchObject({

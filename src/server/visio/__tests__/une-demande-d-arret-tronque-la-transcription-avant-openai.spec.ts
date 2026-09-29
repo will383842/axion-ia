@@ -46,7 +46,7 @@ describe("une demande d'arrêt tronque la transcription avant OpenAI", () => {
       depot,
       gestionnaires: { precontroler },
       donnees: {
-        pourPrecontrole: async () => precontrole({ segments: AVEC_REFUS }),
+        pourPrecontrole: async () => [precontrole({ segments: AVEC_REFUS })],
         marquerApresRefus: async (_tx, _id, ordres) => {
           marques.push(...ordres);
         },

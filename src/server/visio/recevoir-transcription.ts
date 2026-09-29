@@ -13,7 +13,11 @@
  *   5. un segment qui tombe dans une FENÊTRE HORS ACCORD (une personne arrivée
  *      sans accord, son coupé) est marqué `horsAccord` et sa parole n'est PAS
  *      gardée — elle ne sera jamais transmise plus loin ;
- *   6. la transcription est RETENUE, puis `precontroler`.
+ *   6. la transcription est RETENUE, puis `precontroler` ;
+ *   7. TOUS les enregistrements déposés de la rencontre sont transcrits (après
+ *      « Arrêter » puis une relance, aucune partie de l'appel n'est perdue) ;
+ *      un enregistrement déjà transcrit n'est pas refait, et un refus dans la
+ *      rencontre arrête tout.
  */
 
 import { createHash } from "node:crypto";
@@ -23,7 +27,7 @@ import { estHorsAccord } from "./dialogue";
 import { AttenteWill, type Gestionnaire } from "./etapes";
 import { LANGUE_TRANSCRIPTION, MODELE_TRANSCRIPTION } from "./openai/modeles";
 import { transcrireTranche } from "./openai/transcrire-tranche";
-import type { SegmentAEcrire, TrancheATraiter } from "./port-donnees";
+import type { EnregistrementATraiter, SegmentAEcrire, TrancheATraiter } from "./port-donnees";
 import { enregistrementTropCourt } from "./verification/g00-precontroles";
 
 /** États d'enregistrement dont le son n'est jamais transcrit. */
@@ -43,23 +47,72 @@ export function tranchesATranscrire(tranches: readonly TrancheATraiter[]): Tranc
     .sort((a, b) => RANG_PISTE[a.piste] - RANG_PISTE[b.piste] || a.numero - b.numero);
 }
 
+/** États d'un enregistrement dont le son reste à transcrire (déposé, ou repris après une panne). */
+export const ETATS_A_TRANSCRIRE = new Set(["depose", "en_traitement"]);
+
+/** Un enregistrement dont le son a déjà été transcrit (une version antérieure est retenue). */
+const ETATS_DEJA_TRANSCRITS = new Set(["transcrit", "compte_rendu_pret", "valide"]);
+
+interface Transcrit {
+  readonly e: EnregistrementATraiter;
+  readonly transcriptionId: string;
+  readonly dureeAudioMs: number;
+}
+
 export const transcrire: Gestionnaire = async (ctx) => {
   const { deps, t } = ctx;
-  const e = await deps.donnees.aTranscrire(t.rencontreId);
-  if (e === null || ETATS_JAMAIS_TRANSCRITS.has(e.statut) || e.motifArret === "refus_participant") {
-    // Rien à transcrire. Un REFUS est purgé par la PR 5 (`purgerLeSonDUnRefus`) ;
-    // pour les autres cas, le son (s'il en reste) est purgé tout de suite.
-    const refus = e?.statut === "refuse";
+  // TOUS les enregistrements de la rencontre : après « Arrêter » puis une
+  // relance, chaque partie de l'appel est transcrite.
+  const liste = await deps.donnees.aTranscrire(t.rencontreId);
+  // Un refus dans la rencontre : rien n'est transcrit. Un REFUS enregistré
+  // est purgé par la PR 5 (`purgerLeSonDUnRefus`) ; un arrêt pour refus
+  // déclaré, ou rien de transcriptible, fait purger le son tout de suite.
+  if (liste.some((e) => e.statut === "refuse")) return { ecrire: async () => [] };
+  const refusDeclare = liste.some((e) => e.motifArret === "refus_participant");
+  const aFaire = refusDeclare ? [] : liste.filter((e) => ETATS_A_TRANSCRIRE.has(e.statut));
+  if (refusDeclare) {
     return {
-      ecrire: async () =>
-        refus ? [] : [{ etape: "purger_audio", compteRenduId: null, reinitialiser: true }],
+      ecrire: async () => [{ etape: "purger_audio", compteRenduId: null, reinitialiser: true }],
     };
   }
-  const dureeMs = (e.fin ?? deps.maintenant()).getTime() - e.debut.getTime();
-  if (!e.courtConfirme && enregistrementTropCourt(dureeMs, e.motifArret)) {
-    throw new AttenteWill("enregistrement de moins de 90 secondes : le client a-t-il refusé ?");
+  if (aFaire.length === 0) {
+    // Déjà transcrit (une relance du balayage sans rien de neuf) : rien à faire.
+    // Jamais transcrit (non confirmé, abandonné) : le son est purgé tout de suite.
+    const dejaFait = liste.some((e) => ETATS_DEJA_TRANSCRITS.has(e.statut));
+    return {
+      ecrire: async () =>
+        dejaFait ? [] : [{ etape: "purger_audio", compteRenduId: null, reinitialiser: true }],
+    };
+  }
+  for (const e of aFaire) {
+    const dureeMs = (e.fin ?? deps.maintenant()).getTime() - e.debut.getTime();
+    if (!e.courtConfirme && enregistrementTropCourt(dureeMs, e.motifArret)) {
+      throw new AttenteWill("enregistrement de moins de 90 secondes : le client a-t-il refusé ?");
+    }
   }
 
+  const faits: Transcrit[] = [];
+  for (const e of aFaire) faits.push(await transcrireUn(ctx, e));
+
+  return {
+    ecrire: async (tx) => {
+      for (const x of faits) {
+        await deps.donnees.retenirTranscription(tx, {
+          enregistrementId: x.e.id,
+          transcriptionId: x.transcriptionId,
+          dureeAudioSecondes: Math.round(x.dureeAudioMs / 1000),
+        });
+      }
+      return [{ etape: "precontroler", compteRenduId: null, reinitialiser: true }];
+    },
+  };
+};
+
+async function transcrireUn(
+  ctx: Parameters<Gestionnaire>[0],
+  e: EnregistrementATraiter,
+): Promise<Transcrit> {
+  const { deps } = ctx;
   const toutes = [...e.tranches].sort((a, b) => a.numero - b.numero);
   const empreinteEntree = createHash("sha256")
     .update(toutes.map((x) => `${x.piste}:${x.numero}:${x.empreinteAnnoncee ?? "-"}`).join("|"))
@@ -88,7 +141,7 @@ export const transcrire: Gestionnaire = async (ctx) => {
         dureeMs: dureeTranche,
         niveauFinMuet: tranche.niveauFinMuet,
         decalageMs: tranche.debutCaptureEpochMs - e.origineMs,
-        jobId: `${ctx.jobId}-${tranche.piste}-${tranche.numero}`,
+        jobId: `${ctx.jobId}-${e.id.slice(0, 8)}-${tranche.piste}-${tranche.numero}`,
       },
     );
     const aEcrire: SegmentAEcrire[] = segments.map((s, i) => {
@@ -114,15 +167,5 @@ export const transcrire: Gestionnaire = async (ctx) => {
     );
     dureeAudioMs += dureeTranche;
   }
-
-  return {
-    ecrire: async (tx) => {
-      await deps.donnees.retenirTranscription(tx, {
-        enregistrementId: e.id,
-        transcriptionId,
-        dureeAudioSecondes: Math.round(dureeAudioMs / 1000),
-      });
-      return [{ etape: "precontroler", compteRenduId: null, reinitialiser: true }];
-    },
-  };
-};
+  return { e, transcriptionId, dureeAudioMs };
+}

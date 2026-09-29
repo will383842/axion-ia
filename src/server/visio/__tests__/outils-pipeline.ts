@@ -98,11 +98,15 @@ export function enregistrement(p: Partial<EnregistrementATraiter> = {}): Enregis
 }
 
 /** Un port de transcription en mémoire : ce qui est écrit, et dans quel ordre. */
-export function portTranscription(e: EnregistrementATraiter | null) {
+export function portTranscription(
+  e: EnregistrementATraiter | readonly EnregistrementATraiter[] | null,
+) {
+  const liste: readonly EnregistrementATraiter[] =
+    e === null ? [] : Array.isArray(e) ? e : [e as EnregistrementATraiter];
   const ecrits: Array<{ trancheId: string; segments: readonly SegmentAEcrire[] }> = [];
   const journal: string[] = [];
   const port: Partial<PortDonnees> = {
-    aTranscrire: async () => e,
+    aTranscrire: async () => liste,
     lireSonTranche: async (id) => {
       journal.push(`lire:${id}`);
       return Buffer.from(id);
@@ -114,8 +118,8 @@ export function portTranscription(e: EnregistrementATraiter | null) {
     ecrireSegmentsTranche: async (_tx, a) => {
       ecrits.push({ trancheId: a.trancheId, segments: a.segments });
     },
-    retenirTranscription: async () => {
-      journal.push("retenue");
+    retenirTranscription: async (_tx, a) => {
+      journal.push(liste.length > 1 ? `retenue:${a.enregistrementId}` : "retenue");
     },
   };
   return { port, ecrits, journal };

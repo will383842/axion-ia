@@ -39,7 +39,7 @@ describe("l'accord retrouvé est vérifié comme une citation", () => {
       depot,
       gestionnaires: { precontroler },
       donnees: {
-        pourPrecontrole: async () => precontrole({ segments: AVEC_ACCORD }),
+        pourPrecontrole: async () => [precontrole({ segments: AVEC_ACCORD })],
         ecrirePreuvesAccord: async (_tx, a) => {
           preuves.push(...a.accords.map((x) => `${x.reponseMs}:${x.texte}`));
         },

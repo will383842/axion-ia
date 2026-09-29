@@ -144,7 +144,13 @@ export interface PortDonnees {
   readonly enregistrementActif: (rencontreId: string) => Promise<boolean>;
 
   // ── transcrire ──
-  readonly aTranscrire: (rencontreId: string) => Promise<EnregistrementATraiter | null>;
+  /**
+   * TOUS les enregistrements non actifs de la rencontre, du plus ancien au plus
+   * récent : après « Arrêter » puis une relance, les deux parties de l'appel
+   * sont transcrites (jamais seulement la dernière). Leurs horodatages partent
+   * de la MÊME origine (début réel, sinon début du premier enregistrement).
+   */
+  readonly aTranscrire: (rencontreId: string) => Promise<readonly EnregistrementATraiter[]>;
   /** Octets CLAIRS d'une tranche (morceaux lus dans R2, déchiffrés, empreinte vérifiée). */
   readonly lireSonTranche: (trancheId: string) => Promise<Buffer>;
   readonly ouvrirTranscription: (
@@ -179,7 +185,8 @@ export interface PortDonnees {
   ) => Promise<void>;
 
   // ── précontrôler ──
-  readonly pourPrecontrole: (rencontreId: string) => Promise<DonneesPrecontrole | null>;
+  /** Une entrée par enregistrement transcrit de la rencontre, du plus ancien au plus récent. */
+  readonly pourPrecontrole: (rencontreId: string) => Promise<readonly DonneesPrecontrole[]>;
   readonly marquerApresRefus: (
     tx: Tx,
     transcriptionId: string,
