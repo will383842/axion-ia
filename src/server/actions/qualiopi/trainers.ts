@@ -804,7 +804,7 @@ export async function assignTrainerToSessionAction(
   const parsed = assignTrainerSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, trainerId } = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(sessionId);
   if (!verrou.ok) return verrou;
 

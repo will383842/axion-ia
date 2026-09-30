@@ -95,7 +95,7 @@ export async function saveSessionJoursAction(input: {
     return { error: parsed.error.issues[0]?.message ?? "Données invalides" };
   }
   const v = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(v.sessionId);
   if (!verrou.ok) return verrou;
 

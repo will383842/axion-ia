@@ -186,7 +186,7 @@ export async function declarerAbsenceFormateurAction(
   const parsed = absenceSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(v.sessionId);
   if (!verrou.ok) return verrou;
 
@@ -270,7 +270,7 @@ export async function consignerAccordHorsOutilAction(
     };
   }
   const v = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(v.sessionId);
   if (!verrou.ok) return verrou;
 

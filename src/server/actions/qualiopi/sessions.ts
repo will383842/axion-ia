@@ -613,7 +613,7 @@ export async function setSessionLieuAction(
   }
   const { id, modalite, ...lieuBrut } = parsed.data;
   const lieu = normaliserLieu(lieuBrut);
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(id);
   if (!verrou.ok) return verrou;
 
@@ -688,7 +688,7 @@ export async function setSessionMontantAction(
     return { error: premier?.message ?? "Données invalides" };
   }
   const { id, montantHtCents, motif } = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(id);
   if (!verrou.ok) return verrou;
 
@@ -799,7 +799,7 @@ export async function setSessionDatesAction(input: {
     return { error: parsed.error.issues[0]?.message ?? "Données invalides" };
   }
   const v = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(v.id);
   if (!verrou.ok) return verrou;
 

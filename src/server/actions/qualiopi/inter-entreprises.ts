@@ -31,7 +31,7 @@ export async function setSessionInterEntreprisesAction(
   const parsed = setInterSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, interEntreprises } = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(sessionId);
   if (!verrou.ok) return verrou;
 
@@ -71,7 +71,7 @@ export async function setEnrollmentFinancementAction(
   const parsed = setEnrollmentFinancementSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert({ enrollmentId: v.enrollmentId });
   if (!verrou.ok) return verrou;
 

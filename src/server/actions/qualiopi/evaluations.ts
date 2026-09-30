@@ -104,7 +104,7 @@ export async function createEvaluationAcquisAction(input: {
   const parsed = createEvaluationAcquisSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert({ enrollmentId: v.enrollmentId });
   if (!verrou.ok) return verrou;
 

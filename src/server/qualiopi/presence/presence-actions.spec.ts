@@ -438,10 +438,15 @@ describe("saveEmargementAction", () => {
     vi.clearAllMocks();
     mockRequireAdminWrite.mockResolvedValue({ userId: "admin-test-id" });
     mockLogActivity.mockResolvedValue(undefined);
-    mockPrisma.trainingSession.findUnique.mockResolvedValue({
-      id: "session-test-id",
-      dateDebut: new Date("2026-06-10T08:00:00Z"),
-    });
+    // ADR 0060 — la requête réelle recoupe que chaque inscription de la grille
+    // appartient à la session : le double rend les inscriptions demandées.
+    mockPrisma.trainingSession.findUnique.mockImplementation(
+      async (args: { select?: { enrollments?: { where: { id: { in: string[] } } } } }) => ({
+        id: "session-test-id",
+        dateDebut: new Date("2026-06-10T08:00:00Z"),
+        enrollments: (args.select?.enrollments?.where.id.in ?? []).map((id) => ({ id })),
+      }),
+    );
     mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
       id: "c1",
       dureePrevueMinutes: 210,
