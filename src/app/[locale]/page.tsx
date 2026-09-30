@@ -681,7 +681,7 @@ export default async function Home({ params }: HomeProps) {
 
             {/* Stats bar — mobile-first (Will 2026-08-10) : 1 colonne empilée avec
                 dividers HORIZONTAUX sous 640 px (avant : grid-cols-3 en dur, les
-                3 stats se compressaient dès 320 px et « PME → CAC40 » cassait),
+                3 stats se compressaient dès 320 px et le libellé le plus long cassait),
                 puis 3 colonnes + dividers verticaux à partir de sm. */}
             <div
               className="border-border-strong mt-16 grid grid-cols-1 divide-y border-t pt-10 sm:grid-cols-3 sm:divide-x sm:divide-y-0"

@@ -1056,7 +1056,7 @@ export const PARIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Paris ?",
-      a: "Quatre paliers tarifaires publics couvrent toutes les configurations parisiennes — Sur place pour les PME indépendantes du 9e ou du Sentier, Ciblé pour les PME du 8e/16e, Stratégique PME pour les cabinets de conseil et finance, Stratégique ETI pour La Défense et les groupes du CAC 40. Tarifs identiques en intra-muros et en première couronne — aucune majoration spécifique à l'Île-de-France.",
+      a: "Quatre paliers tarifaires publics couvrent toutes les configurations parisiennes — Sur place pour les PME indépendantes du 9e ou du Sentier, Ciblé pour les PME du 8e/16e, Stratégique PME pour les cabinets de conseil et finance, Stratégique ETI pour les ETI de La Défense. Tarifs identiques en intra-muros et en première couronne — aucune majoration spécifique à l'Île-de-France.",
     },
     {
       q: "Avez-vous des cas clients à Paris ?",

@@ -33,12 +33,12 @@ export function ImplementationFounderBand({ isFr }: ImplementationFounderBandPro
           number: "Formateur & consultant",
           label: "En IA générative, pour les équipes en entreprise",
         },
-        { number: "PME → grands groupes", label: "Tous types de projets, toutes tailles" },
+        { number: "PME et ETI", label: "Tous secteurs d'activité" },
       ]
     : [
         { number: "0 middlemen", label: "You talk directly to the expert who builds" },
         { number: "Trainer & consultant", label: "In generative AI, for in-house teams" },
-        { number: "SMB → key accounts", label: "All project types, all sizes" },
+        { number: "SMEs and mid-caps", label: "All industries" },
       ];
 
   return (
