@@ -4389,6 +4389,10 @@ model CalendlyEvent {
   /// Marqueur d'idempotence du rappel J-1. Distinct de `rappelEnvoyeAt` (H-1) :
   /// un seul marqueur pour deux moments ferait taire le second.
   rappelJ1EnvoyeAt      DateTime?           @map("rappel_j1_envoye_at")
+  /// Marqueur d'idempotence du rappel J-2 (2026-09-29). Utilisé SEULEMENT par
+  /// les rendez-vous au salon (`rdv-salon.ts`) : venir sur un salon se prévoit,
+  /// le rappel de l'avant-veille laisse le temps de s'inscrire comme visiteur.
+  rappelJ2EnvoyeAt      DateTime?           @map("rappel_j2_envoye_at")
   /// Payload complet du postMessage event (debug + future re-process).
   rawPayload            Json                @map("raw_payload")
   /// URL où l'event a été capté (ex "https://axion-ia.com/fr/appel").

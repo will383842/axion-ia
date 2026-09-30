@@ -122,7 +122,10 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // 🔴 2026-09-29 — RELEVÉ À 61 : `rencontre-invitation`, l'invitation à un
     // rendez-vous de visio créé dans la console (chantier visio, PR 4). Ses
     // champs sont tous facultatifs.
-    expect(tous.length).toBe(61);
+    // 🔴 2026-09-29 — RELEVÉ À 62 : `rdv-salon`, la confirmation et les rappels
+    // J-2 / J-1 d'un rendez-vous pris pour un salon (GOFAB). UN fichier pour
+    // TROIS noms de job. Ses champs sont tous facultatifs.
+    expect(tous.length).toBe(62);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

@@ -61,16 +61,16 @@ describe("estAppelApporteur — la règle de reconnaissance", () => {
 });
 
 describe("les rappels « appel de découverte » excluent les échanges apporteur", () => {
-  it.each(PASSAGES.map((p) => p.moment))(
+  it.each(PASSAGES.filter((p) => p.destinataire !== "apporteur").map((p) => p.job))(
     "passage « %s » : la requête porte l'exclusion",
-    async (moment) => {
-      const p = PASSAGES.find((x) => x.moment === moment);
-      if (!p) throw new Error(`passage ${moment} introuvable`);
+    async (job) => {
+      const p = PASSAGES.find((x) => x.job === job);
+      if (!p) throw new Error(`passage ${job} introuvable`);
       await executerPassage(p, Date.UTC(2026, 8, 19, 10, 0, 0));
       const where = (findMany.mock.calls[0]?.[0] as { where: Record<string, unknown> }).where;
       // L'exclusion vit DANS la requête : filtrer après coup laisserait le
       // plafond par passage se remplir de lignes qu'on n'enverra jamais.
-      expect(where["AND"]).toEqual([HORS_APPELS_APPORTEUR]);
+      expect(where["AND"]).toContainEqual(HORS_APPELS_APPORTEUR);
       // …sans avoir écrasé la garde d'effacement RGPD qui partage la clé NOT.
       expect(where["NOT"]).toBeDefined();
     },

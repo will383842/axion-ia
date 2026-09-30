@@ -33,6 +33,7 @@ import { PodcastDemandeRecueEmail, podcastDemandeRecueSubject } from "./podcast-
 import { RappelConfirmeEmail, rappelConfirmeSubject } from "./rappel-confirme";
 import { AppelRappelEmail, appelRappelSubject } from "./appel-rappel";
 import { ApporteurEchangeEmail, apporteurEchangeSubject } from "./apporteur-echange";
+import { RdvSalonEmail, rdvSalonSubject } from "./rdv-salon";
 import {
   ChatbotDemandeTransmiseEmail,
   chatbotDemandeTransmiseSubject,
@@ -236,6 +237,20 @@ const TEMPLATES: TemplateMap = {
   "apporteur-echange-rappel": {
     subject: apporteurEchangeSubject,
     component: ApporteurEchangeEmail,
+  },
+  // Les trois moments d'un rendez-vous pris POUR UN SALON (GOFAB, 2026-09-29) :
+  // un gabarit, qui lit `payload.moment` — il dit OU venir, pas comment se connecter.
+  "rdv-salon-confirme": {
+    subject: rdvSalonSubject,
+    component: RdvSalonEmail,
+  },
+  "rdv-salon-rappel-j2": {
+    subject: rdvSalonSubject,
+    component: RdvSalonEmail,
+  },
+  "rdv-salon-rappel-j1": {
+    subject: rdvSalonSubject,
+    component: RdvSalonEmail,
   },
   "chatbot-demande-transmise": {
     subject: chatbotDemandeTransmiseSubject,
