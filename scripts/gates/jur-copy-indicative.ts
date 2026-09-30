@@ -127,9 +127,16 @@ const ILLIMITE = new RegExp(
  *     groupes en bloc. On écrit : l'AI Act crée des obligations pour les entreprises qui utilisent l'IA.
  */
 const SANS_RISQUE =
-  /\bz[ée]ro\s+risque|\brisque\s+z[ée]ro|\bsans\s+(?:aucun\s+)?risque|\bzero\s+risk|\brisk[-\s]free\b|\bno\s+risk\b/i;
-const AI_ACT_LARGE =
-  /\bAI\s+Act\b[^.;!?]{0,20}\b(?:l['’]\s?)?(?:impose|oblige|mandates|requires|forces)\b[^.;!?]{0,60}\b(?:PME|ETI|grands\s+groupes|TPE|SMEs|mid-caps|large\s+groups)\b/i;
+  /\bz[ée]ro\s+risque|\brisque\s+z[ée]ro|\bsans\s+(?:aucun\s+)?risque|\baucun\s+risque\b|\bzero\s+risk|\brisk[-\s]free\b|\bno\s+(?:financial\s+)?risk\b|\bwithout\s+(?:any\s+)?risk\b/i;
+/** L'AI Act rapporté aux tailles d'entreprise en bloc : à l'actif (« impose ») comme au passif. */
+const TAILLES = String.raw`(?:PME|ETI|grands\s+groupes|TPE|SMEs|mid-caps|large\s+groups)`;
+const AI_ACT_LARGE = new RegExp(
+  [
+    String.raw`\bAI\s+Act\b[^.;!?]{0,20}\b(?:l['’]\s?)?(?:impose|oblige|mandates|requires|forces)\b[^.;!?]{0,60}\b${TAILLES}\b`,
+    String.raw`\b${TAILLES}\b[^.;!?]{0,40}\b(?:doivent\s+se\s+conformer|sont\s+(?:tenue?s?|soumise?s?|obligée?s?)|must\s+comply|are\s+(?:required|subject))\b[^.;!?]{0,40}\bAI\s+Act\b`,
+  ].join("|"),
+  "i",
+);
 const KIT = /\bkit\s+de\s+vente\b/i;
 const JSONLD = /\b(?:incentiveCompensation|baseSalary|MonetaryAmount)\b|"JobPosting"/;
 const COMMENTAIRE = /^\s*(?:\/\/|\*|\/\*)/;

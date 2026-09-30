@@ -136,6 +136,8 @@ describe("REQ-JUR-001 — ni promesse sans risque, ni AI Act trop large", () => 
     "Zero risk, support, fast monthly commissions",
     "Une activité sans risque pour vous",
     "Risk-free, from day one",
+    "Aucun risque financier pour vous",
+    "No financial risk for you",
   ])("REQ-JUR-001 — TÉMOIN ROUGE, promesse sans risque : « %s »", (texte) => {
     expect(temoin(texte)).toContain<FamilleRemuneration>("promesse_sans_risque");
   });
@@ -145,6 +147,9 @@ describe("REQ-JUR-001 — ni promesse sans risque, ni AI Act trop large", () => 
     "L'AI Act oblige PME, ETI et grands groupes à former leurs équipes à l'IA.",
     "The AI Act mandates it for SMEs, mid-caps and large groups.",
     "The AI Act requires small businesses, SMEs, mid-caps and large groups to train their teams.",
+    "Les PME doivent se conformer à l'AI Act.",
+    "PME, ETI et grands groupes sont tenus de respecter l'AI Act",
+    "SMEs must comply with the AI Act.",
   ])("REQ-JUR-001 — TÉMOIN ROUGE, AI Act trop large : « %s »", (texte) => {
     expect(temoin(texte)).toContain<FamilleRemuneration>("ai_act_trop_large");
   });
