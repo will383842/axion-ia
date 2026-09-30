@@ -167,7 +167,11 @@ export const OBJETS_SQL_BRUTS: readonly ObjetSqlBrut[] = [
     nom: "rencontres_test_interne_saisie",
     type: "check",
     table: "rencontres",
-    role: "une rencontre du pilote est toujours saisie dans la console",
+    // Redéfini (élargi à Calendly) par 20260930170000_visio_rencontre_de_test_calendly
+    // (ADR 0061) ; garde `un-objet-sql-brut-redefini-l-est-dans-la-meme-migration`.
+    role:
+      "une rencontre du pilote est saisie dans la console ou née d'un « Discutons » " +
+      "réservé par une adresse de test (jamais une dictée ni un événement d'agenda)",
   },
   {
     nom: "rencontre_participants_contact_exige_client",

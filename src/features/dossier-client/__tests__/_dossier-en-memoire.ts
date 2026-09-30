@@ -9,7 +9,8 @@
  *   · `faits_portee_projet`           — portée « projet » ⇔ projet renseigné ;
  *   · `faits_client_de_la_rencontre`  — un fait appartient au client de sa rencontre ;
  *   · `rencontres_statut_fige_calendly`, `rencontres_saisie_sur_fiche_validee`,
- *     `rencontres_test_interne_saisie` ;
+ *     `rencontres_test_interne_saisie` (assoupli par la migration
+ *     `20260930170000_visio_rencontre_de_test_calendly` : saisie OU Calendly) ;
  *   · `rencontre_suivis_suite_datee` ;
  *   · `comptes_rendus_un_valide` ;
  *   · `client_fusions_une_vivante_par_absorbee`.
@@ -48,7 +49,7 @@ function controler(t: Tables): void {
     ) {
       throw new ErreurControle("rencontres_saisie_sur_fiche_validee");
     }
-    if (r["estTestInterne"] && r["source"] !== "saisie_manuelle") {
+    if (r["estTestInterne"] && r["source"] !== "saisie_manuelle" && r["source"] !== "calendly") {
       throw new ErreurControle("rencontres_test_interne_saisie");
     }
   }
