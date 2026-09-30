@@ -105,8 +105,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       path: "/devenir-commercial-ia/candidature",
       title,
       description: isFr
-        ? `Candidatez en 3 minutes, sans CV : à titre indicatif, ${COMMISSION_FORMATION_PAR_JOURNEE_EUR} € pour vous par journée de formation IA vendue. L'AI Act l'impose aux PME, ETI et grands groupes.`
-        : `Apply in 3 minutes, no resume: as a guide, €${COMMISSION_FORMATION_PAR_JOURNEE_EUR} for you per AI training day sold. The AI Act mandates it for SMEs, mid-caps and large groups.`,
+        ? `Candidatez en 3 minutes, sans CV : à titre indicatif, ${COMMISSION_FORMATION_PAR_JOURNEE_EUR} € pour vous par journée de formation IA vendue. L'AI Act crée des obligations pour les entreprises qui utilisent l'IA.`
+        : `Apply in 3 minutes, no resume: as a guide, €${COMMISSION_FORMATION_PAR_JOURNEE_EUR} for you per AI training day sold. The AI Act sets obligations for companies that use AI.`,
     })),
     title: { absolute: title },
     keywords: buildCommercialKeywords({ financementAffichable: isQualiopiCertificationObtenue() }),

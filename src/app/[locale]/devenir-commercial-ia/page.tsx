@@ -45,8 +45,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       path: "/devenir-commercial-ia",
       title,
       description: isFr
-        ? `À titre indicatif, ${jour} € pour vous par journée de formation IA payée. L'AI Act oblige PME, ETI et grands groupes à former leurs équipes à l'IA.`
-        : `As a guide, €${jour} for you per paid AI training day. The AI Act requires small businesses, SMEs, mid-caps and large groups to train their teams.`,
+        ? `À titre indicatif, ${jour} € pour vous par journée de formation IA payée. L'AI Act crée des obligations pour les entreprises qui utilisent l'IA.`
+        : `As a guide, €${jour} for you per paid AI training day. The AI Act sets obligations for companies that use AI.`,
     })),
     title: { absolute: title },
     keywords: buildCommercialKeywords({ financementAffichable: isQualiopiCertificationObtenue() }),

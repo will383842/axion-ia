@@ -339,8 +339,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       path: "/memo-isere",
       title,
       description: isFr
-        ? `À titre indicatif, ${commission(1)} par journée de formation IA vendue. L'AI Act l'impose aux PME, ETI et grands groupes : 474 communes au choix.`
-        : `As an indication, €${COMMISSION_PAR_JOURNEE} per AI training day sold. The AI Act mandates it for SMEs, mid-caps and large groups: 474 towns to pick from.`,
+        ? `À titre indicatif, ${commission(1)} par journée de formation IA vendue. L'AI Act crée des obligations pour les entreprises qui utilisent l'IA : 474 communes au choix.`
+        : `As an indication, €${COMMISSION_PAR_JOURNEE} per AI training day sold. The AI Act sets obligations for companies that use AI: 474 towns to pick from.`,
     })),
     title: { absolute: title },
   };

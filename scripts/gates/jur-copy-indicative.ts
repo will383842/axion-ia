@@ -44,6 +44,8 @@ export function lireSurfacesPubliques(racine = process.cwd()): { chemin: string;
 export type FamilleRemuneration =
   | "remuneration_ferme"
   | "revenu_illimite"
+  | "promesse_sans_risque"
+  | "ai_act_trop_large"
   | "kit_de_vente"
   | "jsonld_remuneration"
   | "exception_perimee";
@@ -109,6 +111,18 @@ const INDICATIF =
  */
 const ILLIMITE =
   /\bsans\s+(?:aucune?\s+)?plafond|\b(?:sans\s+(?:aucune\s+)?|aucune\s+)limite(?!\s+d['’]\s?âge)|\bnon\s+plafonn|\bpas\s+de\s+plafond|\bdéplafonn|\billimit[ée]e?s?\b|\buncapped\b|\bunlimited\b|\bno\s+(?:limit|cap)\b/i;
+/**
+ * Deux formules que la juriste A07 juge bloquantes (arbitrage -d7 du 2026-09-30) :
+ *   — `promesse_sans_risque` : promettre à un indépendant l'absence de risque (« zéro risque »,
+ *     « sans risque », « risk-free »). On dit ce qui est vrai : aucun frais d'entrée, aucun
+ *     engagement de volume ;
+ *   — `ai_act_trop_large` : « l'AI Act impose / oblige » rapporté aux PME, ETI ou grands groupes
+ *     en bloc. Le règlement vise des usages et des systèmes d'IA, pas des tailles d'entreprise.
+ */
+const SANS_RISQUE =
+  /\bz[ée]ro\s+risque|\brisque\s+z[ée]ro|\bsans\s+(?:aucun\s+)?risque|\bzero\s+risk|\brisk[-\s]free\b|\bno\s+risk\b/i;
+const AI_ACT_LARGE =
+  /\bAI\s+Act\b[^.;!?]{0,20}\b(?:l['’]\s?)?(?:impose|oblige|mandates|requires|forces)\b[^.;!?]{0,60}\b(?:PME|ETI|grands\s+groupes|TPE|SMEs|mid-caps|large\s+groups)\b/i;
 const KIT = /\bkit\s+de\s+vente\b/i;
 const JSONLD = /\b(?:incentiveCompensation|baseSalary|MonetaryAmount)\b|"JobPosting"/;
 const COMMENTAIRE = /^\s*(?:\/\/|\*|\/\*)/;
@@ -186,6 +200,14 @@ export function fautesDeRemuneration(
       const illimite = exemptees.has(i) ? null : ILLIMITE.exec(contenu);
       if (illimite) {
         fautes.push({ famille: "revenu_illimite", chemin, ligne: i + 1, extrait: illimite[0] });
+      }
+      const risque = SANS_RISQUE.exec(contenu);
+      if (risque) {
+        fautes.push({ famille: "promesse_sans_risque", chemin, ligne: i + 1, extrait: risque[0] });
+      }
+      const aiAct = AI_ACT_LARGE.exec(contenu);
+      if (aiAct) {
+        fautes.push({ famille: "ai_act_trop_large", chemin, ligne: i + 1, extrait: aiAct[0] });
       }
       const kit = KIT.exec(contenu);
       if (kit) fautes.push({ famille: "kit_de_vente", chemin, ligne: i + 1, extrait: kit[0] });

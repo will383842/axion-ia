@@ -124,6 +124,34 @@ describe("REQ-JUR-019 — un revenu illimité rougit, MÊME dit indicatif (arbit
   });
 });
 
+describe("REQ-JUR-001 — ni promesse sans risque, ni AI Act trop large (A07, arbitrage -d7)", () => {
+  it.each([
+    "Zéro risque, accompagnement, commissions rapides et mensuelles",
+    "Zero risk, support, fast monthly commissions",
+    "Une activité sans risque pour vous",
+    "Risk-free, from day one",
+  ])("REQ-JUR-001 — TÉMOIN ROUGE, promesse sans risque : « %s »", (texte) => {
+    expect(temoin(texte)).toContain<FamilleRemuneration>("promesse_sans_risque");
+  });
+
+  it.each([
+    "L'AI Act l'impose aux PME, ETI et grands groupes : 474 communes au choix.",
+    "L'AI Act oblige PME, ETI et grands groupes à former leurs équipes à l'IA.",
+    "The AI Act mandates it for SMEs, mid-caps and large groups.",
+    "The AI Act requires small businesses, SMEs, mid-caps and large groups to train their teams.",
+  ])("REQ-JUR-001 — TÉMOIN ROUGE, AI Act trop large : « %s »", (texte) => {
+    expect(temoin(texte)).toContain<FamilleRemuneration>("ai_act_trop_large");
+  });
+
+  it.each([
+    "Aucun frais d'entrée ni engagement de volume, accompagnement",
+    "L'AI Act crée des obligations pour les entreprises qui utilisent l'IA.",
+    "The AI Act sets obligations for companies that use AI.",
+  ])("REQ-JUR-001 — CONTRE-TÉMOIN : « %s »", (texte) => {
+    expect(temoin(texte)).toEqual([]);
+  });
+});
+
 describe("REQ-JUR-041 — « kit de vente » est banni", () => {
   it("REQ-JUR-041 — TÉMOIN ROUGE : « kit de vente », même avec une mention indicative", () => {
     expect(temoin("Recevez votre kit de vente, à titre indicatif.")).toContain<FamilleRemuneration>(
