@@ -314,7 +314,11 @@ describe("REQ-INT-007 — les écrivains branchés émettent dans LEUR transacti
     const EMAIL = "contact.efface@exemple.test";
     etat.clients.push(
       fiche({ type: "particulier", raisonSociale: "Camille Témoin", contactEmail: EMAIL }),
-      fiche({ id: "c0000000-0000-4000-8000-000000000004", numero: "AXI-CLI-904", contactEmail: EMAIL }),
+      fiche({
+        id: "c0000000-0000-4000-8000-000000000004",
+        numero: "AXI-CLI-904",
+        contactEmail: EMAIL,
+      }),
     );
 
     expect(await eraseClientsForEmail(EMAIL)).toEqual({

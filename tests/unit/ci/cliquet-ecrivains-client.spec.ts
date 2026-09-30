@@ -91,7 +91,7 @@ describe("REQ-INT-007 — face ROUGE : un écrivain de Client qui n'émet pas", 
       "async function f(id: string) {",
       "  await prisma.$transaction(async (tx) => {",
       '    await prisma.client.update({ where: { id }, data: { taille: "PME" } });',
-      '    await emettreFaitClient(tx, id, { avant });',
+      "    await emettreFaitClient(tx, id, { avant });",
       "  });",
       "}",
     ]);
