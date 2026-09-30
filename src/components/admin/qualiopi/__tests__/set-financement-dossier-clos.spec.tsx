@@ -96,11 +96,18 @@ describe("🔴 dossier CLOS — le suivi OPCO s'enregistre sans toucher au contr
     for (const c of CHAMPS_CONTRACTUELS) expect(envoi).not.toHaveProperty(c);
   });
 
-  it("CPF (historique) : le payeur du reste à charge figé ne part pas", async () => {
-    rendre({ financementType: "cpf", cpfPayeurResteCharge: "stagiaire" }, true);
-    const envoi = await enregistrer();
-    for (const c of CHAMPS_CONTRACTUELS) expect(envoi).not.toHaveProperty(c);
-  });
+  it.each([
+    ["CPF (historique)", { financementType: "cpf", cpfPayeurResteCharge: "stagiaire" }],
+    ["France Travail hors POEI", { financementType: "france_travail", ftDispositif: "aif" }],
+  ] as const)(
+    "%s : plus rien de modifiable → pas de bouton « Enregistrer » qui ne mènerait à rien",
+    (_nom, props) => {
+      rendre(props as Partial<Base>, true);
+      expect(screen.queryByRole("button", { name: /^Enregistrer le financement$/ })).toBeNull();
+      expect(screen.getByText(/Dossier clos : ce financement ne comporte plus rien/)).toBeTruthy();
+      expect(a.setFinancementSessionAction).not.toHaveBeenCalled();
+    },
+  );
 });
 
 describe("TÉMOIN — dossier ouvert : les champs contractuels partent bien", () => {
