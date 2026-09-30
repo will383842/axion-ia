@@ -1,0 +1,61 @@
+{
+  "type": "object",
+  "properties": {
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fait_du_jour_ref": {
+            "type": "string"
+          },
+          "relation": {
+            "type": "string",
+            "enum": ["nouveau", "confirme", "precise", "change", "contredit", "remet_en_cause"]
+          },
+          "fait_existant_ref": {
+            "type": "string",
+            "nullable": true
+          },
+          "plus_recent_ref": {
+            "type": "string",
+            "nullable": true
+          },
+          "explication": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "fait_du_jour_ref",
+          "relation",
+          "fait_existant_ref",
+          "plus_recent_ref",
+          "explication"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ce_qui_a_change": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "texte": {
+            "type": "string"
+          },
+          "faits_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["texte", "faits_refs"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["relations", "ce_qui_a_change"],
+  "additionalProperties": false,
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

@@ -28,6 +28,8 @@ import type {
   ApporteurCronJobData,
   ApporteurCronJobType,
   VisioBalayageJobData,
+  VisioJobData,
+  VisioJobName,
 } from "./types";
 import type { ImageBankEnrichJobData } from "./workers/image-bank-enrich-worker";
 import type { ImageBankImportJobData } from "./workers/image-bank-import-worker";
@@ -250,6 +252,28 @@ export const visioBalayageQueue: Queue<VisioBalayageJobData> | null = connection
 
 /** Cadence du balayage du dossier client : toutes les 5 minutes. */
 export const PATTERN_BALAYAGE_VISIO = "*/5 * * * *";
+
+/**
+ * 2026-09-29 (chantier visio, PR 6) — la file `visio` du CIRCUIT du compte
+ * rendu (transcription, extraction, vérification, rédaction, purge du son),
+ * consommée par `workers/visio-worker.ts` en concurrence 1.
+ *
+ * `attempts: 1` : la reprise vit en base (`traitement_visio`), jamais dans
+ * Redis. `removeOnFail: true` : l'identifiant d'une étape est déterministe
+ * (`visio-<rencontre>-<étape>`, dédoublonnage) ; un job ÉCHOUÉ conservé
+ * ferait ignorer par BullMQ toute remise en file de la même étape — elle
+ * resterait « à faire » en base sans plus jamais s'exécuter.
+ */
+export const VISIO_QUEUE_NAME = "visio";
+export const visioQueue: Queue<VisioJobData, void, VisioJobName> | null = connection
+  ? new Queue<VisioJobData, void, VisioJobName>(VISIO_QUEUE_NAME, {
+      connection,
+      defaultJobOptions: { attempts: 1, removeOnComplete: true, removeOnFail: true },
+    })
+  : null;
+
+/** Cadence du balayage du CIRCUIT visio (file `visio`) : toutes les 5 minutes. */
+export const PATTERN_BALAYAGE_CIRCUIT_VISIO = "*/5 * * * *";
 
 // ============================================================
 // Content Generator V1 — Sprint 4/5 queues (§ 13.1 master prompt v1.7)
@@ -1268,6 +1292,20 @@ export async function bootRepeatableJobs(): Promise<void> {
         { repeat: { pattern: PATTERN_BALAYAGE_VISIO }, jobId: "visio-balayage-cron" },
       );
     }
+  }
+
+  // ── 2026-09-29 — balayage du CIRCUIT visio (chantier visio, PR 6) ──────
+  // Toujours posé : inerte tant qu'aucun enregistrement n'est déposé (aucun
+  // appel à OpenAI). Purge exhaustive d'abord (un seul répétable, cadence à jour).
+  if (visioQueue) {
+    for (const existing of await visioQueue.getRepeatableJobs()) {
+      await visioQueue.removeRepeatableByKey(existing.key);
+    }
+    await visioQueue.add(
+      "balayage",
+      { v: 1 },
+      { repeat: { pattern: PATTERN_BALAYAGE_CIRCUIT_VISIO }, jobId: "visio-circuit-balayage-cron" },
+    );
   }
 
   // ============================================================

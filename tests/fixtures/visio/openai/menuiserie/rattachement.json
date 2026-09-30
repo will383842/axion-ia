@@ -1,0 +1,16 @@
+{
+  "decisions": [
+    {
+      "projet_evoque_ref": "J1",
+      "decision": "nouveau_projet",
+      "projet_connu_ref": null,
+      "titre_propose": "Former les commerciaux à l'IA",
+      "activite_proposee": "formation",
+      "faits_refs": ["F01", "F02", "F03"],
+      "confiance": "haute",
+      "explication": "Premier échange sur ce sujet."
+    }
+  ],
+  "projet_principal_ref": "J1",
+  "portees_a_corriger": []
+}

@@ -13,7 +13,7 @@
  * Ce fichier va donc lire le DISQUE.
  */
 
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
@@ -33,7 +33,7 @@ describe("🔴 chaque route citée EXISTE sur le disque", () => {
     it(`${cible} mène à un écran de détail qui existe`, () => {
       const segment = segmentCible(cible);
       expect(segment).not.toBeNull();
-      const chemin = join(
+      const liste = join(
         process.cwd(),
         "src",
         "app",
@@ -41,8 +41,13 @@ describe("🔴 chaque route citée EXISTE sur le disque", () => {
         "(admin)",
         "[adminPrefix]",
         ...(segment as string).split("/"),
-        "[id]",
       );
+      // L'écran de détail : un répertoire DYNAMIQUE (`[id]`, `[rencontreId]`…)
+      // qui porte une page — jamais un attrape-tout `[...x]`.
+      const dynamique = existsSync(liste)
+        ? readdirSync(liste).find((d) => /^\[[A-Za-z]+\]$/.test(d))
+        : undefined;
+      const chemin = dynamique ? join(liste, dynamique, "page.tsx") : join(liste, "[id]");
       expect(
         existsSync(chemin),
         `« ${cible} » pointe vers « ${segment}/[id] », qui n'existe pas. L'alerte ` +

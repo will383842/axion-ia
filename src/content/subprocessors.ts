@@ -66,7 +66,13 @@ export interface Subprocessor {
    * publique pour distinguer infrastructure CORE vs services applicatifs vs
    * content-gen IA.
    */
-  category: "core_infra" | "payments" | "communications" | "analytics_obs" | "content_gen_ai";
+  category:
+    | "core_infra"
+    | "payments"
+    | "communications"
+    | "analytics_obs"
+    | "content_gen_ai"
+    | "meeting_ai";
   /**
    * Statut d'activation effectif en prod. `active` = le code envoie
    * effectivement des données au provider aujourd'hui. `pending_activation` =
@@ -741,6 +747,31 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     dpaStatus: "pending",
     transferFramework: "scc",
     category: "content_gen_ai",
+    activationStatus: "pending_activation",
+    documentationUrl: "https://openai.com/policies/data-processing-addendum",
+  },
+  // ───────────────────────────── IA des comptes rendus de rendez-vous (chantier visio, PR 6)
+  // Entrée DISTINCTE de l'entrée éditoriale ci-dessus : autre finalité, autres
+  // données (le son et la parole des rendez-vous), autre base légale.
+  // `pending_activation` tant que l'enregistrement n'est pas ouvert (drapeau
+  // `ENREGISTREMENT_VISIO_OUVERT`) : la notice publique ne change qu'avec la
+  // PR 8 (garde `la-notice-ne-retarde-pas-sur-la-visio.spec.ts`).
+  {
+    name: "OpenAI, LLC (comptes rendus de rendez-vous)",
+    location: "San Francisco, USA",
+    serversLocation: "USA",
+    purposeFr:
+      "Transcription du son des rendez-vous en visioconférence enregistrés avec l'accord oral des participants, puis aide à la rédaction du compte rendu interne relu et validé par Williams. Aucune donnée n'est utilisée pour entraîner les modèles. Le son envoyé pour la transcription n'est pas conservé par OpenAI ; le texte analysé pour la rédaction est gardé au plus 30 jours dans les journaux de surveillance des abus d'OpenAI, puis supprimé (aucune autre conservation : option « store: false »).",
+    purposeEn:
+      "Transcription of the audio of video-conference meetings recorded with the participants' oral consent, then help drafting the internal meeting summary reviewed and approved by Williams. No data is used to train models. Audio sent for transcription is not retained by OpenAI; the text analysed for drafting is kept for at most 30 days in OpenAI's abuse-monitoring logs, then deleted (no other retention: \u201cstore: false\u201d).",
+    dataCategoriesFr:
+      "Son des visioconférences (piste du client et piste d'Axion-IA), texte transcrit, informations professionnelles dites pendant le rendez-vous (besoins, projet, budget, calendrier).",
+    dataCategoriesEn:
+      "Video-conference audio (client and Axion-IA tracks), transcribed text, business information said during the meeting (needs, project, budget, schedule).",
+    legalBasis: "6.1.a_consent",
+    dpaStatus: "pending",
+    transferFramework: "scc",
+    category: "meeting_ai",
     activationStatus: "pending_activation",
     documentationUrl: "https://openai.com/policies/data-processing-addendum",
   },

@@ -104,6 +104,7 @@ const LABELS_CATEGORY_FR: Record<Subprocessor["category"], string> = {
   communications: "Communications & géolocalisation",
   analytics_obs: "Analytics & observabilité",
   content_gen_ai: "Génération de contenu par IA",
+  meeting_ai: "Comptes rendus de rendez-vous par IA",
 };
 const LABELS_CATEGORY_EN: Record<Subprocessor["category"], string> = {
   core_infra: "Core infrastructure",
@@ -111,6 +112,7 @@ const LABELS_CATEGORY_EN: Record<Subprocessor["category"], string> = {
   communications: "Communications & geolocation",
   analytics_obs: "Analytics & observability",
   content_gen_ai: "AI content generation",
+  meeting_ai: "AI meeting summaries",
 };
 
 const CATEGORY_INTRO_FR: Record<Subprocessor["category"], string> = {
@@ -122,6 +124,8 @@ const CATEGORY_INTRO_FR: Record<Subprocessor["category"], string> = {
   analytics_obs: "Mesure d'audience sans cookie, supervision des erreurs et analyse UX.",
   content_gen_ai:
     "Modèles d'IA mobilisés pour la génération éditoriale — prompts uniquement, jamais de données client.",
+  meeting_ai:
+    "IA utilisée pour transcrire les rendez-vous enregistrés (avec accord) et aider à rédiger le compte rendu interne, relu par une personne.",
 };
 const CATEGORY_INTRO_EN: Record<Subprocessor["category"], string> = {
   core_infra: "Hosting, CDN and network security — the technical backbone running the application.",
@@ -130,6 +134,8 @@ const CATEGORY_INTRO_EN: Record<Subprocessor["category"], string> = {
     "Operational notifications to the manager, online appointment booking and geocoding of submitted cities.",
   analytics_obs: "Cookie-less audience measurement, error monitoring and UX analysis.",
   content_gen_ai: "AI models used for editorial generation — prompts only, never any client data.",
+  meeting_ai:
+    "AI used to transcribe recorded meetings (with consent) and help draft the internal summary, reviewed by a person.",
 };
 
 const CATEGORY_ORDER: ReadonlyArray<Subprocessor["category"]> = [
@@ -138,6 +144,7 @@ const CATEGORY_ORDER: ReadonlyArray<Subprocessor["category"]> = [
   "communications",
   "analytics_obs",
   "content_gen_ai",
+  "meeting_ai",
 ];
 
 // Accent par catégorie (tokens existants uniquement) — barre verticale.
@@ -147,6 +154,7 @@ const CATEGORY_ACCENT: Record<Subprocessor["category"], string> = {
   communications: "bg-sage",
   analytics_obs: "bg-primary-400",
   content_gen_ai: "bg-terracotta-deep",
+  meeting_ai: "bg-sage",
 };
 
 // ─────────────────────────────────────────── badges color-codés

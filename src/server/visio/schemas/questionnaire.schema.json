@@ -1,0 +1,91 @@
+{
+  "type": "object",
+  "properties": {
+    "introduction": {
+      "type": "string"
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "texte": {
+            "type": "string"
+          },
+          "type_reponse": {
+            "type": "string",
+            "enum": [
+              "oui_non",
+              "choix_unique",
+              "choix_multiple",
+              "nombre",
+              "date",
+              "texte_court",
+              "texte_long"
+            ]
+          },
+          "choix": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "aide": {
+            "type": "string",
+            "nullable": true
+          },
+          "facultative": {
+            "type": "boolean"
+          },
+          "rubrique": {
+            "type": "string",
+            "enum": [
+              "entreprise",
+              "decision",
+              "problemes",
+              "besoins",
+              "perimetre",
+              "budget_financement",
+              "calendrier",
+              "objections_concurrence",
+              "engagements",
+              "offres",
+              "questions_ouvertes",
+              "prochaine_etape"
+            ]
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "utilite_pour_williams": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "texte",
+          "type_reponse",
+          "choix",
+          "aide",
+          "facultative",
+          "rubrique",
+          "sources",
+          "utilite_pour_williams"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "conclusion": {
+      "type": "string"
+    }
+  },
+  "required": ["introduction", "questions", "conclusion"],
+  "additionalProperties": false,
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

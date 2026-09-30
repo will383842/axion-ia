@@ -49,6 +49,10 @@ const SEGMENT_PAR_CIBLE: Readonly<Record<string, string>> = {
   Devis: "qualiopi/devis",
   FactureFormation: "qualiopi/facturation",
   Formation: "qualiopi/formations",
+  // Chantier visio (PR 6) : les alertes du circuit du compte rendu mènent à
+  // la page du rendez-vous, qui ouvre le compte rendu (lecture, validation,
+  // retrait de l'accord).
+  Rencontre: "rendez-vous/rencontres",
 };
 
 /** Les types que ce module sait atteindre. Exporté pour la garde. */

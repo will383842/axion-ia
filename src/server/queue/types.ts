@@ -227,6 +227,20 @@ export interface VisioBalayageJobData {
   readonly tick?: string;
 }
 
+/**
+ * Chantier visio (PR 6) — la file `visio` du circuit du compte rendu. La
+ * charge ne porte QUE des identifiants : jamais une parole, un nom, un texte
+ * (Redis, Sentry, journaux). L'état de chaque étape fait foi en base.
+ */
+export interface VisioJobData {
+  readonly v: 1;
+  readonly rencontreId?: string;
+  readonly etape?: string;
+}
+
+/** `etape` : une étape due d'une rencontre ; `balayage` : le passage des 5 minutes. */
+export type VisioJobName = "etape" | "balayage";
+
 export interface EmailJobData {
   template: EmailJobName;
   to: string;

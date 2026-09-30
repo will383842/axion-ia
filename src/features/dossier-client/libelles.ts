@@ -7,14 +7,20 @@
  */
 
 import type {
+  CompteRenduStatut,
+  EtapeVisio,
   FaitType,
   MotifProposition,
+  MotifRejetFait,
   ProjetStatut,
   RencontreStatut,
   RendezVousIssue,
   RendezVousSuite,
   RoleDansProjet,
+  StatutEtape,
+  TypeConsentement,
 } from "../../../prisma/generated/client";
+import type { StatutRubrique } from "@/server/visio/verification/g06-couverture";
 import {
   LIBELLE_ISSUE as LIBELLE_ISSUE_RDV,
   LIBELLE_SUITE as LIBELLE_SUITE_RDV,
@@ -116,6 +122,66 @@ export const LIBELLE_MOTIF = {
   contenu_compte_rendu: "déduite du compte rendu",
 } as const satisfies Record<MotifProposition, string>;
 
+// ── Compte rendu d'un rendez-vous enregistré (chantier visio, PR 6) ──────────
+
+export const LIBELLE_STATUT_COMPTE_RENDU = {
+  brouillon: "en préparation",
+  a_valider: "à valider",
+  valide: "validé",
+  remplace: "remplacé",
+  rejete: "rejeté",
+  a_regenerer: "à réécrire",
+} as const satisfies Record<CompteRenduStatut, string>;
+
+export const LIBELLE_ETAPE_VISIO = {
+  transcrire: "Transcription",
+  precontroler: "Contrôles avant rédaction",
+  extraire: "Extraction des faits",
+  verifier_faits: "Vérification des faits",
+  rattacher: "Rattachement aux projets",
+  consolider: "Comparaison avec l'historique",
+  ebaucher: "Ébauche de devis",
+  rediger: "Rédaction",
+  verifier_compte_rendu: "Vérification du compte rendu",
+  purger_audio: "Suppression du son",
+  questionnaire: "Questionnaire de cadrage",
+  lire_reponses: "Lecture des réponses au questionnaire",
+  email_suivi: "E-mail de suivi",
+} as const satisfies Record<EtapeVisio, string>;
+
+export const LIBELLE_STATUT_ETAPE = {
+  a_faire: "à faire",
+  en_cours: "en cours",
+  reussie: "faite",
+  echec_definitif: "en échec",
+  annule: "annulée",
+  suspendu: "suspendue",
+} as const satisfies Record<StatutEtape, string>;
+
+export const LIBELLE_STATUT_COUVERTURE = {
+  aborde: "Abordé",
+  evoque_sans_precision: "Évoqué sans précision",
+  non_aborde: "Non abordé",
+} as const satisfies Record<StatutRubrique, string>;
+
+/** Pourquoi la vérification a écarté un fait — jamais un nom d'énumération à l'écran. */
+export const LIBELLE_MOTIF_REJET = {
+  citation_introuvable: "la phrase citée ne se retrouve pas mot pour mot",
+  citation_trop_courte: "citation trop courte pour prouver quoi que ce soit",
+  citation_trop_longue: "citation trop longue",
+  segment_inconnu: "passage inexistant dans l'enregistrement",
+  preuve_historique: "la preuve cite un échange précédent, pas celui du jour",
+  locuteur_non_admis: "dit par Williams sans confirmation du client",
+  valeur_non_prouvee: "un chiffre ou une date absent de la citation",
+  deduction_interdite: "déduction interdite pour ce type d'information",
+  reference_catalogue_inconnue: "offre inconnue du catalogue",
+  relation_hors_projet: "relation avec un autre projet",
+  version_remplacee: "remplacé par une nouvelle version",
+  doublon: "déjà validé",
+  rejete_par_williams: "rejeté par Williams",
+  rectification: "rectifié",
+} as const satisfies Record<MotifRejetFait, string>;
+
 /** Montant en euros, sans centimes inutiles. */
 export function euros(cents: number): string {
   return new Intl.NumberFormat("fr-FR", {
@@ -151,3 +217,12 @@ export function valeurLisible(f: {
   if (f.quantite !== null) return String(f.quantite);
   return (f.texteCourt ?? f.enonce).trim() || "—";
 }
+
+/** Les preuves d'accord d'un rendez-vous enregistré, pour l'écran du compte rendu. */
+export const LIBELLE_TYPE_CONSENTEMENT = {
+  declaration_axion: "Accord déclaré par vous (« Accord obtenu »)",
+  phrase_retrouvee_verifiee: "Réponse d'accord retrouvée dans l'enregistrement",
+  reponse_calendly: "Réponse à la question de la réservation (indice)",
+  nouveau_participant_signale: "Arrivée d'une personne signalée en cours d'appel",
+  retrait: "Accord retiré",
+} as const satisfies Record<TypeConsentement, string>;

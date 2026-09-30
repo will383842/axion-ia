@@ -34,6 +34,7 @@ import { fusionnerFiches } from "./fusionner";
 import { defaireFusion } from "./defaire-fusion";
 import { validerApresLAppel, type ChoixProjet } from "./valider";
 import { CHAMPS_DE_LA_NOTE, type SaisieNote } from "./note-manuelle";
+import { executerGesteCompteRendu } from "./compte-rendu-gestes";
 
 const uuid = z.string().uuid();
 
@@ -107,7 +108,7 @@ export async function rangerRencontreAction(fd: FormData): Promise<void> {
     await prisma.$transaction((tx) =>
       validerRattachement(tx, { rencontreId, clientId: clientId.data, parAdminId: userId }),
     );
-    await relancerApresRattachement(rencontreId);
+    await relancerApresRattachement(prisma, rencontreId);
   } catch (e) {
     if (estRedirection(e)) throw e;
     erreurVers(retour, e);
@@ -137,6 +138,8 @@ export async function creerProspectAction(fd: FormData): Promise<void> {
     { sirenPropose: texte(fd, "sirenPropose") || null },
   ).catch((e: unknown) => erreurVers(retour, e));
   if (r.statut !== "cree") erreurVers(retour, new Error(r.message));
+  // La fiche créée RANGE le rendez-vous : son compte rendu est complété (P2 à P5).
+  await relancerApresRattachement(prisma, rencontreId).catch((e: unknown) => erreurVers(retour, e));
   revalidatePath(base("rendez-vous"));
   redirect(base(retour));
 }
@@ -295,4 +298,15 @@ export async function defaireFusionAction(fd: FormData): Promise<void> {
   );
   revalidatePath(base("qualiopi/clients"));
   redirect(base(retour));
+}
+
+/**
+ * « Compte rendu de l'enregistrement » (chantier visio, PR 6) : UNE action pour
+ * tous les gestes de la carte (champ caché `geste`). La session et le rôle
+ * sont vérifiés par `executerGesteCompteRendu` AVANT tout geste. Elle vit ici,
+ * dans le module d'actions que la page du rendez-vous charge déjà, pour ne pas
+ * ajouter un module d'actions à la console (cliquet de poids).
+ */
+export async function gesteCompteRenduAction(fd: FormData): Promise<void> {
+  await executerGesteCompteRendu(fd);
 }

@@ -38,6 +38,7 @@ import type {
   RendezVousIssue,
   RendezVousSuite,
 } from "../../../prisma/generated/client";
+import { exigerValidationPossible } from "@/server/visio/gestes-compte-rendu";
 import { TYPES_VALIDES_UN_PAR_UN } from "@/server/visio/types-de-faits";
 import { dansLaTransaction, type BaseTransactionnelle, type Tx } from "./base";
 import { creerProjet } from "./creer-projet";
@@ -154,6 +155,12 @@ export async function validerApresLAppel(
     }
     const clientId = r.clientId;
     const coches = [...new Set(e.faitsCoches)];
+    // ⛔ Plusieurs voix côté client : « Valider tous » attend que Will ait dit
+    // qui est qui (fiche PR 6) — sinon un fait serait attribué à la mauvaise
+    // personne. Sans enregistrement, ou avec une seule voix, rien n'est exigé.
+    // ⛔ G16 : et si l'accord d'une personne n'a pas été retrouvé, Will doit
+    // l'avoir confirmé à la main avant que rien de ce rendez-vous ne soit validé.
+    if (coches.length > 0) await exigerValidationPossible(tx, e.rencontreId);
 
     // 1. Le projet.
     let projetId: string | null = r.projetId;

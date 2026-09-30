@@ -1,0 +1,53 @@
+{
+  "type": "object",
+  "properties": {
+    "reponses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question_id": {
+            "type": "string"
+          },
+          "reponse_citee": {
+            "type": "string"
+          },
+          "valeur_texte": {
+            "type": "string",
+            "nullable": true
+          },
+          "valeur_nombre": {
+            "type": "number",
+            "nullable": true
+          },
+          "valeur_date": {
+            "type": "string",
+            "nullable": true
+          },
+          "confiance": {
+            "type": "string",
+            "enum": ["haute", "moyenne", "faible"]
+          }
+        },
+        "required": [
+          "question_id",
+          "reponse_citee",
+          "valeur_texte",
+          "valeur_nombre",
+          "valeur_date",
+          "confiance"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "questions_sans_reponse": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["reponses", "questions_sans_reponse"],
+  "additionalProperties": false,
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

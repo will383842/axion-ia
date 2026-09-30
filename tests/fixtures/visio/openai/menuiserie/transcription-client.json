@@ -1,0 +1,58 @@
+{
+  "text": "Oui, pas de souci, vous pouvez enregistrer. On serait douze commerciaux à former sur l'IA générative. On avait prévu autour de trois mille euros hors taxes pour tout ça. Oui c'est bien ça, douze personnes au total. Il faudrait que ce soit fait avant le 15 décembre si possible. Aujourd'hui tout est sur Excel et on perd des heures sur les relances clients.",
+  "segments": [
+    {
+      "type": "transcript.text.segment",
+      "id": "seg_0",
+      "start": 11,
+      "end": 15,
+      "speaker": "A",
+      "text": "Oui, pas de souci, vous pouvez enregistrer."
+    },
+    {
+      "type": "transcript.text.segment",
+      "id": "seg_1",
+      "start": 25,
+      "end": 29,
+      "speaker": "A",
+      "text": "On serait douze commerciaux à former sur l'IA générative."
+    },
+    {
+      "type": "transcript.text.segment",
+      "id": "seg_2",
+      "start": 45,
+      "end": 49,
+      "speaker": "A",
+      "text": "On avait prévu autour de trois mille euros hors taxes pour tout ça."
+    },
+    {
+      "type": "transcript.text.segment",
+      "id": "seg_3",
+      "start": 65,
+      "end": 69,
+      "speaker": "A",
+      "text": "Oui c'est bien ça, douze personnes au total."
+    },
+    {
+      "type": "transcript.text.segment",
+      "id": "seg_4",
+      "start": 80,
+      "end": 84,
+      "speaker": "A",
+      "text": "Il faudrait que ce soit fait avant le 15 décembre si possible."
+    },
+    {
+      "type": "transcript.text.segment",
+      "id": "seg_5",
+      "start": 120,
+      "end": 124,
+      "speaker": "A",
+      "text": "Aujourd'hui tout est sur Excel et on perd des heures sur les relances clients."
+    }
+  ],
+  "usage": {
+    "type": "tokens",
+    "input_tokens": 6800,
+    "output_tokens": 240
+  }
+}

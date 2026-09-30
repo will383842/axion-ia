@@ -79,6 +79,11 @@ vi.mock("@/lib/prisma", () => {
       etat.appels.push({ table: "$", op: "executeRawUnsafe", args: sql });
       return 0;
     },
+    // PR 6 : la réécriture programmée des comptes rendus vidés (`planifierDans`).
+    $executeRaw: async (sql: TemplateStringsArray, ...valeurs: unknown[]) => {
+      etat.appels.push({ table: "$", op: "executeRaw", args: { sql: sql.join("?"), valeurs } });
+      return 1;
+    },
     clientContactAdresse: modele("clientContactAdresse"),
     clientContact: modele("clientContact"),
     rencontreParticipant: modele("rencontreParticipant"),

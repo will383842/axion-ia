@@ -7,14 +7,35 @@
  * ce qui l'atteint réellement.
  */
 
-import { deleteFromR2, isR2Configured, uploadToR2 } from "@/lib/r2-storage";
+import {
+  deleteFromR2,
+  existsInR2,
+  getObjectBufferR2,
+  isR2Configured,
+  uploadToR2,
+} from "@/lib/r2-storage";
 
 export const PREFIXE_AUDIO = "visio-audio/";
 
+/**
+ * LE port du son (un seul) : l'enregistreur y DÉPOSE (PR 5), le circuit y LIT
+ * et y PURGE (PR 6). Chaque accès exige le préfixe `visio-audio/` : aucune
+ * purge du circuit ne peut supprimer une clé hors du dépôt audio.
+ */
 export interface StockageAudio {
   readonly disponible: () => boolean;
   readonly deposer: (cle: string, octets: Buffer) => Promise<void>;
   readonly supprimer: (cle: string) => Promise<void>;
+  /** Octets (chiffrés) d'un objet ; `null` = PANNE, jamais un fichier vide. */
+  readonly lire: (cle: string) => Promise<Buffer | null>;
+  readonly existe: (cle: string) => Promise<boolean>;
+}
+
+/** Ce que le circuit du compte rendu utilise du port (lecture, purge, preuve). */
+export type LectureAudio = Pick<StockageAudio, "lire" | "supprimer" | "existe">;
+
+function exigerPrefixe(cle: string): void {
+  if (!cle.startsWith(PREFIXE_AUDIO)) throw new Error("stockage audio : préfixe inattendu.");
 }
 
 /** `visio-audio/<enregistrementId>/<piste>/<tranche 4 chiffres>/<seq 5 chiffres>.bin` */
@@ -40,11 +61,19 @@ export function cleR2Morceau(
 export const stockageR2: StockageAudio = {
   disponible: () => isR2Configured(),
   deposer: async (cle, octets) => {
-    if (!cle.startsWith(PREFIXE_AUDIO)) throw new Error("stockage audio : préfixe inattendu.");
+    exigerPrefixe(cle);
     await uploadToR2(cle, octets, "application/octet-stream");
   },
   supprimer: async (cle) => {
-    if (!cle.startsWith(PREFIXE_AUDIO)) throw new Error("stockage audio : préfixe inattendu.");
+    exigerPrefixe(cle);
     await deleteFromR2(cle);
+  },
+  lire: async (cle) => {
+    exigerPrefixe(cle);
+    return getObjectBufferR2(cle);
+  },
+  existe: async (cle) => {
+    exigerPrefixe(cle);
+    return existsInR2(cle);
   },
 };

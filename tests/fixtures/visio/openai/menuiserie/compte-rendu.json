@@ -1,0 +1,95 @@
+{
+  "en_bref": [
+    {
+      "texte": "La gérante veut former 12 commerciaux avant le 15 décembre.",
+      "faits_refs": ["F01", "F03"]
+    }
+  ],
+  "ce_qui_a_change": [],
+  "rubriques": {
+    "entreprise": {
+      "statut": "non_aborde",
+      "paragraphes": []
+    },
+    "decision": {
+      "statut": "non_aborde",
+      "paragraphes": []
+    },
+    "problemes": {
+      "statut": "aborde",
+      "paragraphes": [
+        {
+          "texte": "L'équipe perd des heures sur les relances clients, tout est sur Excel.",
+          "faits_refs": ["F05"]
+        }
+      ]
+    },
+    "besoins": {
+      "statut": "non_aborde",
+      "paragraphes": []
+    },
+    "perimetre": {
+      "statut": "aborde",
+      "paragraphes": [
+        {
+          "texte": "Il y a 12 commerciaux à former.",
+          "faits_refs": ["F01"]
+        }
+      ]
+    },
+    "budget_financement": {
+      "statut": "aborde",
+      "paragraphes": [
+        {
+          "texte": "Budget annoncé : 3 000 € HT.",
+          "faits_refs": ["F02"]
+        }
+      ]
+    },
+    "calendrier": {
+      "statut": "aborde",
+      "paragraphes": [
+        {
+          "texte": "Échéance : avant le 15 décembre.",
+          "faits_refs": ["F03"]
+        }
+      ]
+    },
+    "objections_concurrence": {
+      "statut": "non_aborde",
+      "paragraphes": []
+    },
+    "engagements": {
+      "statut": "aborde",
+      "paragraphes": [
+        {
+          "texte": "Williams envoie le programme de la formation vendredi.",
+          "faits_refs": ["F04"]
+        }
+      ]
+    },
+    "offres": {
+      "statut": "non_aborde",
+      "paragraphes": []
+    },
+    "questions_ouvertes": {
+      "statut": "non_aborde",
+      "paragraphes": []
+    },
+    "prochaine_etape": {
+      "statut": "non_aborde",
+      "paragraphes": []
+    }
+  },
+  "besoins_detectes": [
+    {
+      "hypothese": "Hypothèse : automatiser les relances clients.",
+      "question": "Voulez-vous que l'équipe apprenne à automatiser les relances ?",
+      "faits_refs": ["F05"]
+    }
+  ],
+  "prochaine_etape_texte": {
+    "texte": "Envoi du programme vendredi.",
+    "faits_refs": ["F04"]
+  }
+}

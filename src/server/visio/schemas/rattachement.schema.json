@@ -1,0 +1,94 @@
+{
+  "type": "object",
+  "properties": {
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "projet_evoque_ref": {
+            "type": "string"
+          },
+          "decision": {
+            "type": "string",
+            "enum": ["projet_existant", "nouveau_projet", "pas_un_projet", "incertain"]
+          },
+          "projet_connu_ref": {
+            "type": "string",
+            "nullable": true
+          },
+          "titre_propose": {
+            "type": "string",
+            "nullable": true
+          },
+          "activite_proposee": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": ["formation", "un_a_un", "audit", "implementation", "site_web"]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "faits_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "confiance": {
+            "type": "string",
+            "enum": ["haute", "moyenne", "faible"]
+          },
+          "explication": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "projet_evoque_ref",
+          "decision",
+          "projet_connu_ref",
+          "titre_propose",
+          "activite_proposee",
+          "faits_refs",
+          "confiance",
+          "explication"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "projet_principal_ref": {
+      "type": "string",
+      "nullable": true
+    },
+    "portees_a_corriger": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fait_ref": {
+            "type": "string"
+          },
+          "portee_proposee": {
+            "type": "string",
+            "enum": ["entreprise", "projet"]
+          },
+          "projet_evoque_ref": {
+            "type": "string",
+            "nullable": true
+          },
+          "explication": {
+            "type": "string"
+          }
+        },
+        "required": ["fait_ref", "portee_proposee", "projet_evoque_ref", "explication"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["decisions", "projet_principal_ref", "portees_a_corriger"],
+  "additionalProperties": false,
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

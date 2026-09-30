@@ -629,6 +629,23 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^prisma\/seeds\/editorial\/index\.ts$/,
   /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/console-editoriale\/page\.tsx$/,
   /^src\/server\/editorial\/referentiels\/comptes\.ts$/,
+  // Circuit visio (PR 6, 2026-09-29 ; ADR 0055 §1.4) — le circuit du compte
+  // rendu CONSOMME deux briques partagées de content-gen, par décision :
+  //   · le PLAFOND DE DÉPENSE OpenAI (`lib/cost-tracker` : assertCostCapAvailable
+  //     + trackCost) — un second plafond laisserait les deux usages dépenser
+  //     chacun 200 $ sur le même compte ;
+  //   · la CLASSIFICATION des erreurs OpenAI (`providers/openai` : mapOpenAiError,
+  //     `providers/IProvider` : ProviderError) — celle qui distingue le 429
+  //     « limite de débit » du 429 « crédit épuisé » (audits du 21/07 et du
+  //     01/09) ; une copie divergerait au prochain format de 429.
+  // Le marqueur vient de ces chemins d'import et des commentaires qui les
+  // expliquent ; aucun code du pipeline éditorial n'est exécuté ni modifié
+  // (le kill switch de content-gen n'est jamais touché, garde dédiée).
+  // Nominatif : un nouveau fichier du circuit qui importerait content-gen
+  // rougirait ici.
+  /^src\/server\/visio\/openai\/(client|cout|erreurs|tarifs)\.ts$/,
+  /^src\/server\/visio\/openai\/__tests__\/(chaque-modele-a-son-tarif|tout-appel-openai-passe-par-le-plafond-et-le-registre-des-couts|un-plafond-atteint-suspend-le-circuit-sans-toucher-au-kill-switch-de-content-gen|un-quota-epuise-suspend-toutes-les-etapes)\.spec\.ts$/,
+  /^tests\/outils\/faux-openai-visio\.ts$/,
 ];
 
 /**

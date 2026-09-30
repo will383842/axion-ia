@@ -1,0 +1,317 @@
+{
+  "type": "object",
+  "properties": {
+    "en_bref": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "texte": {
+            "type": "string"
+          },
+          "faits_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["texte", "faits_refs"],
+        "additionalProperties": false
+      }
+    },
+    "ce_qui_a_change": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/compte_rendu_v1_properties_en_bref_items"
+      }
+    },
+    "rubriques": {
+      "type": "object",
+      "properties": {
+        "entreprise": {
+          "type": "object",
+          "properties": {
+            "statut": {
+              "type": "string",
+              "enum": ["aborde", "evoque_sans_precision", "non_aborde"]
+            },
+            "paragraphes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/compte_rendu_v1_properties_en_bref_items"
+              }
+            }
+          },
+          "required": ["statut", "paragraphes"],
+          "additionalProperties": false
+        },
+        "decision": {
+          "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+        },
+        "problemes": {
+          "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+        },
+        "besoins": {
+          "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+        },
+        "perimetre": {
+          "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+        },
+        "budget_financement": {
+          "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+        },
+        "calendrier": {
+          "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+        },
+        "objections_concurrence": {
+          "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+        },
+        "engagements": {
+          "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+        },
+        "offres": {
+          "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+        },
+        "questions_ouvertes": {
+          "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+        },
+        "prochaine_etape": {
+          "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+        }
+      },
+      "required": [
+        "entreprise",
+        "decision",
+        "problemes",
+        "besoins",
+        "perimetre",
+        "budget_financement",
+        "calendrier",
+        "objections_concurrence",
+        "engagements",
+        "offres",
+        "questions_ouvertes",
+        "prochaine_etape"
+      ],
+      "additionalProperties": false
+    },
+    "besoins_detectes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hypothese": {
+            "type": "string"
+          },
+          "question": {
+            "type": "string"
+          },
+          "faits_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["hypothese", "question", "faits_refs"],
+        "additionalProperties": false
+      }
+    },
+    "prochaine_etape_texte": {
+      "$ref": "#/definitions/compte_rendu_v1_properties_en_bref_items"
+    }
+  },
+  "required": [
+    "en_bref",
+    "ce_qui_a_change",
+    "rubriques",
+    "besoins_detectes",
+    "prochaine_etape_texte"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "compte_rendu_v1_properties_en_bref_items": {
+      "type": "object",
+      "properties": {
+        "texte": {
+          "$ref": "#/definitions/compte_rendu_v1_properties_en_bref_items_properties_texte"
+        },
+        "faits_refs": {
+          "$ref": "#/definitions/compte_rendu_v1_properties_en_bref_items_properties_faits_refs"
+        }
+      },
+      "required": ["texte", "faits_refs"],
+      "additionalProperties": false
+    },
+    "compte_rendu_v1_properties_rubriques_properties_entreprise": {
+      "type": "object",
+      "properties": {
+        "statut": {
+          "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise_properties_statut"
+        },
+        "paragraphes": {
+          "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise_properties_paragraphes"
+        }
+      },
+      "required": ["statut", "paragraphes"],
+      "additionalProperties": false
+    },
+    "compte_rendu_v1_properties_en_bref_items_properties_texte": {
+      "type": "string"
+    },
+    "compte_rendu_v1_properties_en_bref_items_properties_faits_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/compte_rendu_v1_properties_en_bref_items_properties_faits_refs_items"
+      }
+    },
+    "compte_rendu_v1_properties_rubriques_properties_entreprise_properties_statut": {
+      "type": "string",
+      "enum": ["aborde", "evoque_sans_precision", "non_aborde"]
+    },
+    "compte_rendu_v1_properties_rubriques_properties_entreprise_properties_paragraphes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/compte_rendu_v1_properties_en_bref_items"
+      }
+    },
+    "compte_rendu_v1_properties_en_bref_items_properties_faits_refs_items": {
+      "type": "string"
+    },
+    "compte_rendu_v1": {
+      "type": "object",
+      "properties": {
+        "en_bref": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "texte": {
+                "type": "string"
+              },
+              "faits_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": ["texte", "faits_refs"],
+            "additionalProperties": false
+          }
+        },
+        "ce_qui_a_change": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/compte_rendu_v1_properties_en_bref_items"
+          }
+        },
+        "rubriques": {
+          "type": "object",
+          "properties": {
+            "entreprise": {
+              "type": "object",
+              "properties": {
+                "statut": {
+                  "type": "string",
+                  "enum": ["aborde", "evoque_sans_precision", "non_aborde"]
+                },
+                "paragraphes": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/compte_rendu_v1_properties_en_bref_items"
+                  }
+                }
+              },
+              "required": ["statut", "paragraphes"],
+              "additionalProperties": false
+            },
+            "decision": {
+              "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+            },
+            "problemes": {
+              "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+            },
+            "besoins": {
+              "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+            },
+            "perimetre": {
+              "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+            },
+            "budget_financement": {
+              "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+            },
+            "calendrier": {
+              "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+            },
+            "objections_concurrence": {
+              "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+            },
+            "engagements": {
+              "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+            },
+            "offres": {
+              "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+            },
+            "questions_ouvertes": {
+              "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+            },
+            "prochaine_etape": {
+              "$ref": "#/definitions/compte_rendu_v1_properties_rubriques_properties_entreprise"
+            }
+          },
+          "required": [
+            "entreprise",
+            "decision",
+            "problemes",
+            "besoins",
+            "perimetre",
+            "budget_financement",
+            "calendrier",
+            "objections_concurrence",
+            "engagements",
+            "offres",
+            "questions_ouvertes",
+            "prochaine_etape"
+          ],
+          "additionalProperties": false
+        },
+        "besoins_detectes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "hypothese": {
+                "type": "string"
+              },
+              "question": {
+                "type": "string"
+              },
+              "faits_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": ["hypothese", "question", "faits_refs"],
+            "additionalProperties": false
+          }
+        },
+        "prochaine_etape_texte": {
+          "$ref": "#/definitions/compte_rendu_v1_properties_en_bref_items"
+        }
+      },
+      "required": [
+        "en_bref",
+        "ce_qui_a_change",
+        "rubriques",
+        "besoins_detectes",
+        "prochaine_etape_texte"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

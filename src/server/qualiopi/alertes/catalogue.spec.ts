@@ -247,6 +247,14 @@ const CODES_ATTENDUS: string[] = [
   "visio.jeton_expire_j14",
   "visio.jeton_expire_j3",
   "visio.extension_silencieuse",
+  // Chantier visio, PR 6 : le circuit du compte rendu.
+  "visio.circuit_suspendu",
+  "visio.etape_en_echec",
+  "visio.schema_en_retard",
+  "visio.demande_d_arret",
+  "visio.compte_rendu_a_valider",
+  "visio.audio_non_purge",
+  "visio.reponse_attendue",
 ];
 
 const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];

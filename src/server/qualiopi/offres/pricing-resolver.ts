@@ -141,6 +141,28 @@ export function resolveOffrePriceEur(offre: {
 }
 
 /**
+ * L'EFFECTIF couvert par une offre, dérivé de sa SOURCE : la tranche de la
+ * matrice formation (catégorie × durée), sinon le `groupSizeFr` du palier.
+ * `null` si aucune source ne le dit. Lu par le rappel du devis ci-dessous et
+ * par le catalogue du circuit visio — jamais tiré d'une phrase d'affichage.
+ */
+export function resolveOffreEffectifFr(offre: {
+  tierId: string | null;
+  gamme: string | null;
+  dureeCode: string | null;
+}): string | null {
+  if (offre.gamme && offre.dureeCode) {
+    const bracket = getFormationBrackets(
+      offre.gamme as FormationCategorie,
+      offre.dureeCode as FormationDuree,
+    )[0];
+    return bracket !== undefined ? `${bracket.replace("-", " à ")} participants` : null;
+  }
+  const tier = offre.tierId !== null ? findPricingTier(offre.tierId) : null;
+  return tier?.groupSizeFr ?? null;
+}
+
+/**
  * Rappel à afficher sous le PU HT d'un devis, dérivé de l'offre — jamais figé.
  *
  * Deux faits changent d'une offre à l'autre et se paient cher s'ils sont écrits
@@ -164,23 +186,25 @@ export function resolveOffreDevisNoteFr(offre: {
   if (resolveOffrePriceEur(offre) === null) {
     return "Aucun prix ferme dérivable (offre sur devis, fourchette, prix « à partir de » ou paliers d'effectif) — saisissez le PU HT à la main.";
   }
+  const effectif = resolveOffreEffectifFr(offre) ?? "Effectif à préciser";
   if (offre.gamme && offre.dureeCode) {
-    const bracket = getFormationBrackets(
-      offre.gamme as FormationCategorie,
-      offre.dureeCode as FormationDuree,
-    )[0];
-    const effectif =
-      bracket !== undefined ? `${bracket.replace("-", " à ")} participants` : "Effectif à préciser";
     return `${effectif} — prix par GROUPE, laisser Qté = 1. Intra-entreprise HT, hors frais de déplacement (ajouter une ligne si applicable).`;
   }
-  const tier = offre.tierId !== null ? findPricingTier(offre.tierId) : null;
-  const effectif = tier?.groupSizeFr ?? "Effectif à préciser";
   return `${effectif} — prix HT pour cet effectif. Frais de déplacement, hébergement et repas EN SUS (ajouter une ligne).`;
 }
 
-/** Dérive le type d'affichage tarifaire à partir d'un tier pricing.ts. */
+/**
+ * Dérive le type d'affichage tarifaire à partir d'un tier pricing.ts — LA
+ * règle unique (aussi lue par le catalogue du circuit visio,
+ * `src/server/visio/catalogue-ia.ts`).
+ *
+ * Un `priceFlat` marqué `isFromPrice` est un PLANCHER : le site l'affiche
+ * « À partir de X € HT » (`formatTierPrice`, Will 2026-07-17) — il n'est donc
+ * pas « fixe ».
+ */
 export function deriveTarifType(tier: PricingTier): OffreTarifType {
   if (tier.onQuote && tier.priceFlat == null && tier.priceMin == null) return "sur_devis";
+  if (tier.isFromPrice === true) return "a_partir_de";
   if (tier.subTiers && tier.subTiers.length > 0) return "a_partir_de";
   if (tier.priceMin != null && tier.priceMax != null) return "a_partir_de";
   if (tier.priceFlat != null) return "fixe";
