@@ -17,6 +17,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { formateursDeLaSession } from "@/server/qualiopi/appreciations/formateurs-de-la-session";
 
 const PLAFOND = 500;
 
@@ -32,9 +33,20 @@ export interface OptionRattachement {
   libelle: string;
 }
 
+/**
+ * Une inscription porte la session qu'elle désigne ET qui l'a animée : c'est ce
+ * qui permet, en qualité « Formateur », de ne proposer que les formateurs de
+ * cette session (audit du 2026-09-30).
+ */
+export interface OptionInscription extends OptionRattachement {
+  sessionId: string;
+  sessionLibelle: string;
+  formateurIds: string[];
+}
+
 export interface OptionsAppreciation {
   stagiaires: OptionRattachement[];
-  inscriptions: OptionRattachement[];
+  inscriptions: OptionInscription[];
   clients: OptionRattachement[];
   /**
    * 🔴 La quatrième liste, absente jusqu'au 2026-09-04. Le formulaire proposait
@@ -73,7 +85,16 @@ export async function listerOptionsAppreciation(): Promise<OptionsAppreciation> 
         select: {
           id: true,
           trainee: { select: { nom: true, prenom: true } },
-          session: { select: { numero: true, titreSession: true } },
+          session: {
+            select: {
+              id: true,
+              numero: true,
+              titreSession: true,
+              formateurPrincipalId: true,
+              sessionFormateurs: { select: { trainerId: true } },
+              jours: { select: { trainerId: true } },
+            },
+          },
         },
         orderBy: { createdAt: "desc" },
         take: PLAFOND,
@@ -86,13 +107,13 @@ export async function listerOptionsAppreciation(): Promise<OptionsAppreciation> 
         take: PLAFOND,
       })
       .catch(() => []),
-    // Seulement les formateurs ACTIFS : une appréciation se recueille auprès de
-    // quelqu'un qui intervient, et proposer d'anciens intervenants allongerait
-    // la liste de noms qu'on ne choisira jamais.
+    // Tous les formateurs, actifs ou non : la liste n'est plus jamais montrée
+    // telle quelle — le formulaire la FILTRE sur les formateurs de la session
+    // choisie. Un formateur désactivé depuis doit pouvoir donner son avis sur
+    // une session qu'il a animée (relecture de #1243).
     prisma.trainer
       .findMany({
-        where: { actif: true },
-        select: { id: true, nom: true, prenom: true, statut: true },
+        select: { id: true, nom: true, prenom: true, statut: true, actif: true },
         orderBy: [{ nom: "asc" }, { prenom: "asc" }],
         take: PLAFOND,
       })
@@ -109,6 +130,9 @@ export async function listerOptionsAppreciation(): Promise<OptionsAppreciation> 
     inscriptions: inscriptions.map((e) => ({
       id: e.id,
       libelle: `${e.trainee.prenom} ${e.trainee.nom} — ${e.session.titreSession} (${e.session.numero})`,
+      sessionId: e.session.id,
+      sessionLibelle: `${e.session.titreSession} (${e.session.numero})`,
+      formateurIds: formateursDeLaSession(e.session),
     })),
     clients: clients.map((c) => ({
       id: c.id,
@@ -119,7 +143,7 @@ export async function listerOptionsAppreciation(): Promise<OptionsAppreciation> 
     // moment de choisir — pas après.
     formateurs: formateurs.map((t) => ({
       id: t.id,
-      libelle: `${t.prenom} ${t.nom} (${LIBELLE_STATUT_FORMATEUR[t.statut] ?? t.statut})`,
+      libelle: `${t.prenom} ${t.nom} (${LIBELLE_STATUT_FORMATEUR[t.statut] ?? t.statut}${t.actif ? "" : ", inactif"})`,
     })),
   };
 }
