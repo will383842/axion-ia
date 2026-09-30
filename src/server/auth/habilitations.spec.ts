@@ -90,10 +90,11 @@ describe("matrice d'habilitation — invariants de structure", () => {
     expect(Object.keys(MOTIF_REFUS).sort()).toEqual(Object.keys(HABILITATIONS).sort());
   });
 
-  it("les huit actes engageants attendus sont présents — un retrait doit rougir", () => {
+  it("les neuf actes engageants attendus sont présents — un retrait doit rougir", () => {
     // ⚠️ Le titre disait « huit » alors que la liste en portait sept, depuis
     // l'ajout de `revoquer_signature`. Il en porte huit pour de bon depuis
-    // l'ajout de `remunerer_formateur` (`D3`, 2026-09-05).
+    // l'ajout de `remunerer_formateur` (`D3`, 2026-09-05), neuf depuis
+    // `rouvrir_dossier` (ADR 0060, 2026-09-30).
     // Verrou d'exhaustivité : retirer un acte de la matrice retire une garde du
     // serveur. Ce test rend ce retrait visible en revue, au lieu de le laisser
     // passer dans un diff de 40 fichiers.
@@ -110,6 +111,7 @@ describe("matrice d'habilitation — invariants de structure", () => {
       "habiliter_formateur",
       "remunerer_formateur",
       "revoquer_signature",
+      "rouvrir_dossier",
     ];
     expect([...ACTES_ENGAGEANTS].sort()).toEqual(attendus.sort());
   });
@@ -160,6 +162,22 @@ describe("matrice d'habilitation — invariants de structure", () => {
     }
     expect(peutEngager("super_admin", "revoquer_signature")).toBe(true);
     expect(peutEngager("admin", "revoquer_signature")).toBe(true);
+  });
+
+  it("🔴 rouvrir un dossier de session clos est réservé à la DIRECTION seule (ADR 0060)", () => {
+    // Même raisonnement que `revoquer_signature` : rouvrir rend modifiable une
+    // preuve déjà constituée. Écrit en NÉGATIF sur les rôles exclus.
+    for (const role of ["responsable_qualite", "secretaire", "editor", "reader"] as const) {
+      expect(
+        peutEngager(role, "rouvrir_dossier"),
+        `« ${role} » ne doit pas pouvoir rouvrir un dossier clos`,
+      ).toBe(false);
+    }
+    expect(peutEngager("super_admin", "rouvrir_dossier")).toBe(true);
+    expect(peutEngager("admin", "rouvrir_dossier")).toBe(true);
+    expect([...HABILITATIONS.rouvrir_dossier].sort()).toEqual(
+      [...HABILITATIONS.revoquer_signature].sort(),
+    );
   });
 });
 

@@ -34,6 +34,13 @@ export interface CreerQuestionnaireInput {
 
 export interface SoumettreReponsesInput {
   /**
+   * 🔴 ADR 0060 (D3, indicateur 30) — QUI répond : le répondant lui-même
+   * (portail, lien) ou l'organisme à sa place (saisie console). Écrit dans
+   * `questionnaires.origine_reponse`. Absent → la colonne n'est pas touchée
+   * (NULL = « origine non tracée ») : jamais « stagiaire » par défaut.
+   */
+  origine?: "stagiaire" | "organisme";
+  /**
    * Jeton du lien reçu par le répondant — chemin PUBLIC, non authentifié.
    *
    * ⚠️ Il n'est plus stocké en clair : la base n'en détient que l'empreinte, et
@@ -137,6 +144,10 @@ export async function emettreLienQuestionnaire(questionnaireId: string): Promise
   await prisma.questionnaire.update({
     where: { id: questionnaireId },
     data: { tokenHash: hacherToken(token) },
+    // ADR 0060 — `select` explicite : sans lui, Prisma relit TOUTES les colonnes,
+    // dont `origine_reponse`, que le worker (bâti ~50 min avant la migration de
+    // l'app) ne trouverait pas encore en base.
+    select: { id: true },
   });
   return token;
 }
@@ -235,6 +246,7 @@ export async function soumettreReponses(
       reponses: reponsesEcrites as never,
       reponduAt: dateReponse,
       ...(input.noteGlobale !== undefined ? { noteGlobale: input.noteGlobale } : {}),
+      ...(input.origine !== undefined ? { origineReponse: input.origine } : {}),
     },
     select: { id: true },
   });

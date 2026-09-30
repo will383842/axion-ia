@@ -5863,6 +5863,8 @@ model TrainingSession {
   /// Requête calendrier : sessions chevauchant une plage (`dateDebut <= to AND
   /// dateFin >= from`). `dateFin` n'avait AUCUN index.
   kitSorties                 SessionKitSorties?
+  /// Réouvertures et reverrouillages du dossier (ADR 0060). Append-only.
+  evenementsDossier          SessionDossierEvenement[]
 
   @@index([formationId])
   @@index([clientId])
@@ -6747,6 +6749,53 @@ model FormationTransition {
   @@map("formation_transitions")
 }
 
+/// Qui a répondu à un questionnaire (ADR 0060, indicateur 30).
+enum OrigineReponseQuestionnaire {
+  stagiaire
+  organisme
+}
+
+/// Nature d'un événement du dossier de session (ADR 0060).
+enum TypeEvenementDossierSession {
+  /// Le dossier clos redevient modifiable. Motif ≥ 10 caractères (CHECK en base).
+  reouverture
+  /// Le dossier rouvert est clos à nouveau, à la main.
+  reverrouillage
+}
+
+/// 🔴 ADR 0060 — journal APPEND-ONLY du verrou du dossier de session.
+///
+/// Le verrou lui-même est DÉRIVÉ (`etatVerrouDossier`, verrou-dossier.ts) ; cette
+/// table ne porte que les gestes humains qui le contredisent ou le rétablissent.
+/// Le dernier événement prime : une `reouverture` rend le dossier modifiable
+/// quelles que soient les pièces.
+///
+/// Pourquoi une table dédiée, et pas `activity_logs` ni `formation_transitions` :
+/// le journal d'activité est best-effort et sans trigger ; la contrainte
+/// d'unicité des transitions avalerait une deuxième réouverture (P2002).
+///
+/// SQL brut (invisible à `migrate diff`, déclaré dans `prisma/objets-sql-bruts.ts`) :
+///   - CHECK `session_dossier_evenements_motif_reouverture` (btrim ≥ 10) ;
+///   - trigger `session_dossier_evenements_ajout_seul` : UPDATE et DELETE refusés.
+///
+/// ⚠️ `auteurId` SANS clé étrangère : une mise à NULL en cascade serait un
+/// UPDATE, refusé par le trigger. Le nom est figé dans `auteurNom`.
+///
+/// rgpd: technique — journal de preuve de l'organisme : l'auteur est un administrateur, aucune donnée du stagiaire ni du client
+model SessionDossierEvenement {
+  id        String                      @id @default(uuid()) @db.Uuid
+  sessionId String                      @map("session_id") @db.Uuid
+  session   TrainingSession             @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  type      TypeEvenementDossierSession
+  motif     String?                     @db.Text
+  auteurId  String?                     @map("auteur_id") @db.Uuid
+  auteurNom String                      @map("auteur_nom") @db.Text
+  createdAt DateTime                    @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([sessionId, createdAt])
+  @@map("session_dossier_evenements")
+}
+
 // ============================================================
 // QUALIOPI — T4 : Formation Engine (pipeline génération IA)
 // Réutilise provider Anthropic + cost-tracker + retry de content-gen.
@@ -7400,9 +7449,9 @@ enum QuestionnaireType {
 /// Questionnaire d'un stagiaire (1 par inscription × type). Rempli via portail
 /// (token) ou saisie admin. `noteGlobale` (1-5) alimente le taux de satisfaction.
 model Questionnaire {
-  id                String            @id @default(uuid()) @db.Uuid
-  enrollmentId      String            @map("enrollment_id") @db.Uuid
-  enrollment        Enrollment        @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  id                String                       @id @default(uuid()) @db.Uuid
+  enrollmentId      String                       @map("enrollment_id") @db.Uuid
+  enrollment        Enrollment                   @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
   type              QuestionnaireType
   /// SHA-256 hex du jeton d'accès. Le clair ne vit que dans l'URL envoyée.
   ///
@@ -7417,20 +7466,25 @@ model Questionnaire {
   /// précaution : elle dispense d'aller regarder. C'est le mot pour mot ce que
   /// `portail_acces` a corrigé la veille (`D4-4-A`) — le correctif avait traité
   /// une table et laissé sa voisine.
-  tokenHash         String            @unique @map("token_hash") @db.VarChar(64)
+  tokenHash         String                       @unique @map("token_hash") @db.VarChar(64)
   /// Réponses structurées : { questionId: valeur }.
-  reponses          Json              @default("{}")
+  reponses          Json                         @default("{}")
   /// Note globale /5 (satisfaction). Null tant que non répondu.
-  noteGlobale       Int?              @map("note_globale")
-  envoyeAt          DateTime?         @map("envoye_at")
-  reponduAt         DateTime?         @map("repondu_at")
+  noteGlobale       Int?                         @map("note_globale")
+  envoyeAt          DateTime?                    @map("envoye_at")
+  reponduAt         DateTime?                    @map("repondu_at")
   /// 🔴 TRACE des relances — c'est la PREUVE, pas un confort. Devant l'auditeur,
   /// une non-réponse d'un tiers n'est pas une faute de l'organisme ; l'absence
   /// de tentative tracée, si. Plafonné à 2 par le cron (J+3 puis J+10).
-  relanceCount      Int               @default(0) @map("relance_count")
-  derniereRelanceAt DateTime?         @map("derniere_relance_at")
-  createdAt         DateTime          @default(now()) @map("created_at")
-  updatedAt         DateTime          @updatedAt @map("updated_at")
+  relanceCount      Int                          @default(0) @map("relance_count")
+  derniereRelanceAt DateTime?                    @map("derniere_relance_at")
+  /// QUI a répondu (indicateur 30, ADR 0060) : le stagiaire lui-même (portail,
+  /// lien) ou l'organisme à sa place (saisie console). NULL = origine non
+  /// tracée : réponse antérieure au 30/09/2026, ou écrite par l'application
+  /// N-1 pendant la fenêtre de déploiement. Jamais « stagiaire » par défaut.
+  origineReponse    OrigineReponseQuestionnaire? @map("origine_reponse")
+  createdAt         DateTime                     @default(now()) @map("created_at")
+  updatedAt         DateTime                     @updatedAt @map("updated_at")
 
   @@unique([enrollmentId, type], map: "questionnaire_unique_per_type")
   @@index([enrollmentId])

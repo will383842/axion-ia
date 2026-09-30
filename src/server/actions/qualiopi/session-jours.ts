@@ -28,6 +28,7 @@ import {
   messageRefus,
   verdictRequalification,
 } from "@/server/qualiopi/presence/requalification-jours";
+import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -94,6 +95,9 @@ export async function saveSessionJoursAction(input: {
     return { error: parsed.error.issues[0]?.message ?? "Données invalides" };
   }
   const v = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert(v.sessionId);
+  if (!verrou.ok) return verrou;
 
   // Doublons : `session_jour_unique` les rejetterait avec une erreur Prisma
   // brute, illisible pour l'admin qui a saisi deux fois le même jour.

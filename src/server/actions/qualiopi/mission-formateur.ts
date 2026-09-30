@@ -31,6 +31,7 @@ import {
 } from "@/server/qualiopi/trainers/mission-formateur";
 import { ecrireApresDelai } from "@/server/qualiopi/trainers/message-apres-delai";
 import type { MissionFormateurStatut } from "../../../../prisma/generated/client";
+import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 // Même forme que les autres actions Qualiopi (`trainers.ts`, `sessions.ts`).
 type ActionResult<T> = { data: T } | { error: string };
@@ -185,6 +186,9 @@ export async function declarerAbsenceFormateurAction(
   const parsed = absenceSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert(v.sessionId);
+  if (!verrou.ok) return verrou;
 
   let contexte: { numero: string; trainer: { prenom: string; nom: string } | null } | null;
   try {
@@ -266,6 +270,9 @@ export async function consignerAccordHorsOutilAction(
     };
   }
   const v = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert(v.sessionId);
+  if (!verrou.ok) return verrou;
 
   const r = await consignerAccordHorsOutil({
     sessionId: v.sessionId,

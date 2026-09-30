@@ -35,6 +35,7 @@ import {
   envoyerLiensPourSession,
   type EchecEnvoiLien,
 } from "@/server/qualiopi/emargement/envoi-liens";
+import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 export type { EchecEnvoiLien };
 
@@ -79,6 +80,9 @@ export async function emettreLiensSessionAction(input: {
 
   const parse = sessionIdSchema.safeParse(input);
   if (!parse.success) return { error: "Données invalides" };
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert(parse.data.sessionId);
+  if (!verrou.ok) return verrou;
 
   const formation = await prisma.trainingSession.findUnique({
     where: { id: input.sessionId },
@@ -210,6 +214,9 @@ export async function envoyerLiensEmargementAction(input: {
 
   const parse = envoiSchema.safeParse(input);
   if (!parse.success) return { error: "Données invalides" };
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert(parse.data.sessionId);
+  if (!verrou.ok) return verrou;
 
   const r = await envoyerLiensPourSession({
     sessionId: parse.data.sessionId,

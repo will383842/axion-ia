@@ -34,6 +34,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { revoquerSignature, MOTIF_MIN } from "@/server/qualiopi/emargement/revocation-service";
 import { retourValide } from "./_retour-formulaire";
+import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 const schema = z.object({
   signatureId: z.string().uuid(),
@@ -49,7 +50,13 @@ export type RevocationResultat =
   { ok: true; emargementRetombe: boolean } | { ok: false; raison: RaisonRefus; message: string };
 
 export type RaisonRefus =
-  "introuvable" | "deja_revoquee" | "motif_insuffisant" | "maillon_interne" | "demande_invalide";
+  | "introuvable"
+  | "deja_revoquee"
+  | "motif_insuffisant"
+  | "maillon_interne"
+  | "demande_invalide"
+  /** ADR 0060 — le dossier de la session est clos : le rouvrir d'abord. */
+  | "dossier_clos";
 
 export async function revoquerSignatureEmargementAction(input: {
   signatureId: string;
@@ -70,6 +77,11 @@ export async function revoquerSignatureEmargementAction(input: {
         }
       : { ok: false, raison: "demande_invalide", message: "Données invalides." };
   }
+
+  // ADR 0060 — révoquer une signature d'un dossier CLOS modifie une preuve
+  // figée : il faut d'abord rouvrir le dossier (motif tracé).
+  const verrou = await assertDossierOuvert({ signatureEmargementId: parsed.data.signatureId });
+  if (!verrou.ok) return { ok: false, raison: "dossier_clos", message: verrou.message };
 
   const res = await revoquerSignature(parsed.data.signatureId, parsed.data.motif, session.userId);
   if (!res.ok) return { ok: false, raison: res.raison, message: res.message };
