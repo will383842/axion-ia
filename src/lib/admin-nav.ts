@@ -2025,3 +2025,34 @@ export function findActiveNavHref(
   }
   return best;
 }
+
+// 🔴 2026-09-30 — lot L4, correction de revue. `parent` ne fait que FILTRER le
+// rendu de la barre latérale : un écran rattaché n'est atteignable en cliquant
+// que si la page parente le liste. La PR avait rattaché huit écrans à
+// Catalogue, Formateurs et Affaires sans qu'aucune de ces pages n'y mène
+// (restait ⌘K, à condition de connaître le libellé exact). Les pages parentes
+// rendent désormais `<EcransRattaches>`, qui lit CETTE fonction : la liste est
+// dérivée du menu, jamais recopiée — verrouillé par `ecrans-rattaches-l4.spec`.
+
+/**
+ * Écrans qu'une page doit AUSSI lister, alors que leur `parent` est ailleurs.
+ * Un seul cas : Sous-traitants (indicateur 27) est un écran de la gestion des
+ * formateurs, mais aussi un registre que l'auditeur demande — il doit figurer
+ * dans « Registres et suivi » du Mode auditeur.
+ */
+const RATTACHEMENTS_SECONDAIRES: Readonly<Record<string, ReadonlyArray<string>>> = {
+  "qualiopi/mode-auditeur": ["qualiopi/sous-traitants"],
+};
+
+/**
+ * Les écrans masqués de la barre latérale qu'une page parente doit lister.
+ *
+ * @param parent chemin de la page parente SANS préfixe (`qualiopi/formations`).
+ */
+export function ecransRattaches(adminPrefix: string, parent: string): ReadonlyArray<AdminNavItem> {
+  const base = `/fr/${adminPrefix}/`;
+  const secondaires = new Set((RATTACHEMENTS_SECONDAIRES[parent] ?? []).map((p) => base + p));
+  return buildAdminNav(adminPrefix).filter(
+    (it) => it.parent === base + parent || secondaires.has(it.href),
+  );
+}

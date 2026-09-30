@@ -27,7 +27,7 @@ import { genererManifesteAudit } from "@/server/qualiopi/conformite/audit-dossie
 import { Gauge, CheckCircle2, Hourglass } from "lucide-react";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
-import { buildAdminNav } from "@/lib/admin-nav";
+import { EcransRattaches } from "@/components/admin/qualiopi/EcransRattaches";
 import { lignesEcranReouvertures } from "@/server/qualiopi/sessions/dossiers-rouverts";
 
 export const dynamic = "force-dynamic";
@@ -67,13 +67,6 @@ export default async function QualiopiModeAuditeurPage({ params, searchParams }:
     ? manifeste.json.reouverturesSessions
     : null;
   const encartReouvertures = lignesEcranReouvertures(reouvertures);
-
-  // Lot L4 — les registres retirés de la barre latérale (menu allégé) portent
-  // cet écran pour `parent` : on les liste ici, sinon ils ne seraient plus
-  // trouvables que par ⌘K. Dérivé du SSOT du menu, jamais recopié.
-  const registresRattaches = buildAdminNav(adminPrefix).filter(
-    (it) => it.parent === `/fr/${adminPrefix}/qualiopi/mode-auditeur`,
-  );
 
   const ongletBase =
     "rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-4)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]";
@@ -137,7 +130,9 @@ export default async function QualiopiModeAuditeurPage({ params, searchParams }:
           id="encart-reouvertures"
           className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]"
         >
-          Sessions rouvertes sur la période
+          {/* Le titre même du manifeste : l'écran n'a pas de sélecteur de
+              période et couvre tout le registre, comme le ZIP. */}
+          {encartReouvertures.titre}
         </h2>
         <p
           className={
@@ -166,25 +161,15 @@ export default async function QualiopiModeAuditeurPage({ params, searchParams }:
         ) : null}
       </section>
 
-      {registresRattaches.length > 0 ? (
-        <nav
-          aria-label="Registres et suivi Qualiopi"
-          className="mb-[var(--space-admin-6)] text-[length:var(--text-admin-sm)]"
-        >
-          <p className="mb-[var(--space-admin-2)] font-medium text-[color:var(--color-admin-fg)]">
-            Registres et suivi
-          </p>
-          <ul className="flex flex-wrap gap-x-[var(--space-admin-4)] gap-y-[var(--space-admin-2)]">
-            {registresRattaches.map((it) => (
-              <li key={it.href}>
-                <Link href={it.href} className="underline">
-                  {it.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      ) : null}
+      {/* Lot L4 — les registres retirés de la barre latérale (menu allégé)
+          portent cet écran pour `parent` : on les liste ici, sinon ils ne
+          seraient plus trouvables que par ⌘K. Sous-traitants (indicateur 27)
+          y figure aussi, bien que rattaché à Formateurs. */}
+      <EcransRattaches
+        adminPrefix={adminPrefix}
+        parent="qualiopi/mode-auditeur"
+        titre="Registres et suivi"
+      />
 
       {/* ── Score global (repris de l'ancienne page Conformité) ────────────
           🔴 Cette tuile s'appelait « Score de conformité » et affichait « 100 % »

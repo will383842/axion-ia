@@ -37,6 +37,7 @@ import { Archive, ArrowLeft, ArrowRight } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { EcransRattaches } from "@/components/admin/qualiopi/EcransRattaches";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import {
   lireDossiersPipeline,
@@ -201,6 +202,15 @@ export default async function DossiersPage({ params, searchParams }: PageProps) 
       <AdminPageHeader
         title="Dossiers"
         description="Où en est chaque affaire ? Une ligne par dossier client, groupée par étape du pipeline — du devis envoyé au solde encaissé. Le statut est dérivé des données existantes : rien à tenir à jour."
+      />
+
+      {/* Lot L4 — les écrans retirés de la barre latérale (menu allégé) dont
+          cette page est le `parent` : sans ce bloc, ils ne restaient
+          trouvables que par ⌘K. */}
+      <EcransRattaches
+        adminPrefix={adminPrefix}
+        parent="qualiopi/dossiers"
+        titre="Autour des affaires"
       />
 
       {/*
