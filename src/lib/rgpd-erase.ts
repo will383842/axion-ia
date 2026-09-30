@@ -31,6 +31,7 @@ import type {
   PrismaClient,
 } from "../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
+import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { CONSENT_FORM_REFS } from "@/lib/consents";
 import { CONSERVATION_VISIO } from "@/content/visio-annonce-textes";
@@ -470,20 +471,27 @@ export async function eraseClientsForEmail(email: string): Promise<EraseClientsR
 
   let anonymises = 0;
   for (const fiche of effacables) {
-    await prisma.client.update({
-      where: { id: fiche.id },
-      data: {
-        contactEmail: hashedEmail,
-        contactNom: null,
-        contactTelephone: null,
-        contactFonction: null,
-        // Champs de saisie libre : ils portent régulièrement le nom et le
-        // contexte de la personne. On ne peut pas les trier, donc on les vide.
-        notes: null,
-        contexteIa: null,
-        // Le nom de la personne physique se cache dans la « raison sociale ».
-        ...(fiche.type === "particulier" ? { raisonSociale: "Personne effacée" } : {}),
-      },
+    // INT-T03 (émission unique) : l'effacement touche un champ TRANSMIS (la raison sociale d'un
+    // particulier), donc il passe par `emettreFaitClient`, dans la même transaction. La charge
+    // d'un particulier ne porte pas sa raison sociale : l'émission ne part que si elle change.
+    await prisma.$transaction(async (tx) => {
+      const avant = await chargeClientAvant(tx, fiche.id);
+      await tx.client.update({
+        where: { id: fiche.id },
+        data: {
+          contactEmail: hashedEmail,
+          contactNom: null,
+          contactTelephone: null,
+          contactFonction: null,
+          // Champs de saisie libre : ils portent régulièrement le nom et le
+          // contexte de la personne. On ne peut pas les trier, donc on les vide.
+          notes: null,
+          contexteIa: null,
+          // Le nom de la personne physique se cache dans la « raison sociale ».
+          ...(fiche.type === "particulier" ? { raisonSociale: "Personne effacée" } : {}),
+        },
+      });
+      await emettreFaitClient(tx, fiche.id, { avant });
     });
     anonymises += 1;
   }
