@@ -36,6 +36,8 @@ import { listTrainers, isTrainerHabilite } from "@/server/qualiopi/trainers/trai
 import { listClients } from "@/server/qualiopi/crm/clients";
 import { countTrainees, listTrainees } from "@/server/qualiopi/trainees/trainees";
 import { DocumentsSection } from "@/components/admin/qualiopi/DocumentsSection";
+import { ContactEtConflitSession } from "@/components/admin/qualiopi/ContactEtConflitSession";
+import { conflitsFormateurSession } from "@/server/qualiopi/sessions/conflit-formateur";
 import { DossierSessionButton } from "@/components/admin/qualiopi/DossierSessionButton";
 import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
 import { viserReleveResponsablePedagogiqueAction } from "@/server/actions/qualiopi/releve-signature";
@@ -203,6 +205,12 @@ function chargerSession(id: string) {
           // l'ergonomie : un particulier signe un CONTRAT L.6353-3, pas une
           // convention L.6353-1. Sans ce champ, l'écran proposait les deux.
           type: true,
+          // Lot L4 — repris de la fiche 360° du planning (308 vers ici) : le
+          // contact joignable, affiché en tête de fiche.
+          contactNom: true,
+          contactFonction: true,
+          contactTelephone: true,
+          contactEmail: true,
         },
       },
       _count: {
@@ -479,6 +487,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     circuitAdaptation,
     traineesAvecDetailChiffre,
     facturesDesPieces,
+    conflitsFormateur,
   ] = await Promise.all([
     // ── Mission du formateur principal (2026-09-03) ───────────────────────
     trainingSession.formateurPrincipalId !== null
@@ -542,6 +551,15 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
           select: { documentId: true, numero: true },
         })
       : [],
+    // Lot L4 — le conflit de formateur, que seule la fiche 360° du planning
+    // montrait avant sa 308 vers cette fiche. Même règle, fail-soft DIT.
+    conflitsFormateurSession({
+      id,
+      dateDebut: trainingSession.dateDebut,
+      dateFin: trainingSession.dateFin,
+      statut: trainingSession.statut,
+      formateurPrincipalId: trainingSession.formateurPrincipalId,
+    }),
   ]);
   const numeroFactureParPiece = new Map(
     facturesDesPieces
@@ -885,6 +903,25 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             </div>
           )}
         </div>
+        <ContactEtConflitSession
+          adminPrefix={adminPrefix}
+          contact={
+            trainingSession.client !== null
+              ? {
+                  nom: trainingSession.client.contactNom,
+                  fonction: trainingSession.client.contactFonction,
+                  telephone: trainingSession.client.contactTelephone,
+                  email: trainingSession.client.contactEmail,
+                }
+              : null
+          }
+          formateurNom={
+            allTrainers
+              .filter((t) => t.id === trainingSession.formateurPrincipalId)
+              .map((t) => `${t.prenom} ${t.nom}`.trim())[0] ?? null
+          }
+          conflits={conflitsFormateur}
+        />
       </section>
 
       {/* ── Cycle de vie ─────────────────────────────────────────────────── */}

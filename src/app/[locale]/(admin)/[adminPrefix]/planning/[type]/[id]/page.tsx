@@ -101,9 +101,9 @@ export default async function PlanningDetailPage({
   // marque-pages et les liens déjà envoyés restent bons. Posée APRÈS la garde :
   // sans session, on part à la connexion sans apprendre la cible.
   //
-  // ⚠️ Ce que cette fiche montrait en plus — conflit de formateur, téléphone et
-  // e-mail du contact — n'est pas encore repris dans l'en-tête de la fiche
-  // session (propriété des lots L2/L3) : reste signalé dans la PR du lot L4.
+  // Ce que cette fiche montrait en plus — conflit de formateur, téléphone et
+  // e-mail du contact — est repris en tête de la fiche session
+  // (`ContactEtConflitSession`, même règle `getTrainerConflicts`).
   if (type === "formation") {
     permanentRedirect(`/fr/${adminPrefix}/qualiopi/sessions/${encodeURIComponent(id)}`);
   }

@@ -4,7 +4,7 @@
  * Constat de l'audit UX en production : on ne suivait pas une session de bout en
  * bout, la liste mélangeait les dossiers à préparer, ceux du jour, ceux qui
  * attendent encore une pièce et ceux qui sont clos. Les onglets « Préparer /
- * Le jour J / Après / Clôturées / Annulées » disent où en est chaque dossier.
+ * Le jour J / Après / Clôturées / Annulées ou reportées » disent où en est chaque dossier.
  *
  * ## Une seule règle : `phaseDossier` (ADR 0060)
  *
@@ -34,14 +34,16 @@ import {
 } from "./verrou-dossier";
 
 /** Les onglets de la liste, dans l'ordre de la vie d'un dossier. */
-export const ONGLETS_PHASE: ReadonlyArray<{ readonly phase: PhaseDossier; readonly libelle: string }> =
-  [
-    { phase: "preparer", libelle: "Préparer" },
-    { phase: "jour_j", libelle: "Le jour J" },
-    { phase: "apres", libelle: "Après" },
-    { phase: "cloturee", libelle: "Clôturées" },
-    { phase: "hors_parcours", libelle: "Annulées" },
-  ];
+export const ONGLETS_PHASE: ReadonlyArray<{
+  readonly phase: PhaseDossier;
+  readonly libelle: string;
+}> = [
+  { phase: "preparer", libelle: "Préparer" },
+  { phase: "jour_j", libelle: "Le jour J" },
+  { phase: "apres", libelle: "Après" },
+  { phase: "cloturee", libelle: "Clôturées" },
+  { phase: "hors_parcours", libelle: "Annulées ou reportées" },
+];
 
 /** Libellé court de la phase d'UNE ligne (colonne « Dossier » de la liste). */
 export const LIBELLE_PHASE: Readonly<Record<PhaseDossier, string>> = {

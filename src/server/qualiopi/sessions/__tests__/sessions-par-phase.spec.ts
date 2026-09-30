@@ -24,6 +24,8 @@ const { prismaMock } = vi.hoisted(() => ({
 vi.mock("@/lib/prisma", () => ({ prisma: prismaMock }));
 
 import {
+  LIBELLE_PHASE,
+  ONGLETS_PHASE,
   parsePhaseParam,
   phasesDesLignes,
   restrictionDeLaPhase,
@@ -111,6 +113,15 @@ describe("parsePhaseParam / statutsDeLaPhase", () => {
     expect(statutsDeLaPhase("apres")).toEqual(["realisee"]);
     expect(statutsDeLaPhase("cloturee")).toEqual(["realisee"]);
     expect(statutsDeLaPhase("hors_parcours")).toEqual(["annulee", "reportee"]);
+  });
+});
+
+describe("libellé de l'onglet hors parcours (revue L4)", () => {
+  it("l'onglet dit « Annulées ou reportées », comme la ligne : il liste les deux statuts", () => {
+    const onglet = ONGLETS_PHASE.find((o) => o.phase === "hors_parcours");
+    expect(onglet?.libelle).toBe("Annulées ou reportées");
+    expect(statutsDeLaPhase("hors_parcours")).toContain("reportee");
+    expect(LIBELLE_PHASE.hors_parcours).toBe("Annulée ou reportée");
   });
 });
 

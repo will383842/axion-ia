@@ -5,7 +5,7 @@
  * modalité, statut, nb inscrits, taux de présence moyen.
  * UN seul lien par ligne : « Ouvrir » la fiche session (lot L4, 2026-09-30).
  * Onglets par phase (`?phase=`) : Préparer / Le jour J / Après / Clôturées /
- * Annulées, calculés par `phaseDossier` (ADR 0060) en UN appel groupé.
+ * Annulées ou reportées, calculés par `phaseDossier` (ADR 0060) en UN appel groupé.
  *
  * 🔴 Fenêtre par défaut : 12 mois glissants (cf. `FENETRE_SESSIONS_MOIS`), et
  * 25 lignes par page. L'écran chargeait auparavant TOUTES les sessions avec
