@@ -85,10 +85,6 @@ const SANS_AUCUN_APPELANT: ReadonlyArray<string> = [
   "server/actions/knowledge/rollback-version.ts::rollbackVersionAction",
   "server/actions/knowledge/upload-asset.ts::uploadAssetAction",
   "server/actions/qualiopi/devis.ts::reviseDevisAction",
-  // ADR 0060 — lot L1 (serveur seul) : l'écran « Rouvrir le dossier » /
-  // « Clore à nouveau » arrive au lot L2, qui retirera ces deux lignes.
-  "server/actions/qualiopi/dossier-verrou.ts::reverrouillerDossierSessionAction",
-  "server/actions/qualiopi/dossier-verrou.ts::rouvrirDossierSessionAction",
   "server/actions/qualiopi/engine.ts::getGenerationStatusAction",
   "server/actions/qualiopi/enrollments.ts::updateEnrollmentPresenceAction",
   "server/actions/qualiopi/financements.ts::verifierSousTraitantAction",

@@ -11,6 +11,10 @@
  */
 
 import { Fragment, useState, useTransition } from "react";
+import {
+  useDossierFige,
+  useSaisieOrganismeFermee,
+} from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
 import { useRouter } from "next/navigation";
 import {
   chronologieReponse,
@@ -446,6 +450,11 @@ export function QuestionnairesSection({
   saisirReponsesAction,
   envoyerAction,
 }: QuestionnairesSectionProps): React.ReactElement {
+  // ADR 0060 — dossier clos : plus de génération ; et dès que la session est
+  // réalisée (dossier clos ou à recueillir), seul le stagiaire répond — la
+  // saisie par l'organisme est refusée (D3). Envoyer et Renvoyer restent.
+  const fige = useDossierFige();
+  const saisieFermee = useSaisieOrganismeFermee();
   const router = useRouter();
   const [isPendingGenerer, startGenererTransition] = useTransition();
   const [genererError, setGenererError] = useState<string | null>(null);
@@ -529,14 +538,16 @@ export function QuestionnairesSection({
           Questionnaires
         </h2>
 
-        <button
-          type="button"
-          onClick={handleGenerer}
-          disabled={isPendingGenerer}
-          className="admin-button"
-        >
-          {isPendingGenerer ? "Génération…" : "Générer les questionnaires de la session"}
-        </button>
+        {fige ? null : (
+          <button
+            type="button"
+            onClick={handleGenerer}
+            disabled={isPendingGenerer}
+            className="admin-button"
+          >
+            {isPendingGenerer ? "Génération…" : "Générer les questionnaires de la session"}
+          </button>
+        )}
       </div>
 
       {/* Feedback génération */}
@@ -658,13 +669,15 @@ export function QuestionnairesSection({
                                   ? "Renvoyer le lien"
                                   : "Envoyer au stagiaire"}
                             </button>
-                            <button
-                              type="button"
-                              onClick={() => setSaisieOuverteId(q.id)}
-                              className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] underline-offset-2 hover:underline"
-                            >
-                              Saisir les réponses
-                            </button>
+                            {saisieFermee ? null : (
+                              <button
+                                type="button"
+                                onClick={() => setSaisieOuverteId(q.id)}
+                                className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] underline-offset-2 hover:underline"
+                              >
+                                Saisir les réponses
+                              </button>
+                            )}
                             {envoiMessage[q.id] !== undefined &&
                               envoiMessage[q.id]!.texte !== "" && (
                                 <span
@@ -726,6 +739,7 @@ export function QuestionnairesSection({
 
       {/* Formulaire de saisie inline (affiché sous le tableau) */}
       {saisieOuverteId !== null &&
+        !saisieFermee &&
         (() => {
           const q = questionnaires.find((x) => x.id === saisieOuverteId);
           if (q === undefined) return null;

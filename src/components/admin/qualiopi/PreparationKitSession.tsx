@@ -16,6 +16,10 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import {
+  MentionDossierClos,
+  useDossierFige,
+} from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
 
 export type EtapeKit = "kit_absent" | "a_generer" | "a_valider" | "pret";
 
@@ -49,6 +53,7 @@ export function PreparationKitSession({
   genererAction,
   validerAction,
 }: PreparationKitSessionProps): React.ReactElement {
+  const fige = useDossierFige();
   const router = useRouter();
   const [enCours, startTransition] = useTransition();
   const [erreur, setErreur] = useState<string | null>(null);
@@ -101,7 +106,12 @@ export function PreparationKitSession({
         </p>
       ) : null}
 
-      {etape === "a_generer" ? (
+      {/* ADR 0060 — dossier clos : produire ou valider les sorties est une écriture VERROU. */}
+      {fige && (etape === "a_generer" || etape === "a_valider") ? (
+        <MentionDossierClos className="mt-[var(--space-admin-3)]" />
+      ) : null}
+
+      {etape === "a_generer" && !fige ? (
         <div className="mt-[var(--space-admin-3)]">
           <button
             type="button"
@@ -125,22 +135,26 @@ export function PreparationKitSession({
           >
             Relire les {nbSorties} sorties
           </a>
-          <button
-            type="button"
-            onClick={() => lancer("valider")}
-            disabled={enCours}
-            className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline disabled:opacity-60"
-          >
-            Je les ai lues — valider
-          </button>
-          <button
-            type="button"
-            onClick={() => lancer("generer")}
-            disabled={enCours}
-            className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)] underline disabled:opacity-60"
-          >
-            Reproduire
-          </button>
+          {fige ? null : (
+            <>
+              <button
+                type="button"
+                onClick={() => lancer("valider")}
+                disabled={enCours}
+                className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline disabled:opacity-60"
+              >
+                Je les ai lues — valider
+              </button>
+              <button
+                type="button"
+                onClick={() => lancer("generer")}
+                disabled={enCours}
+                className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)] underline disabled:opacity-60"
+              >
+                Reproduire
+              </button>
+            </>
+          )}
         </div>
       ) : null}
 

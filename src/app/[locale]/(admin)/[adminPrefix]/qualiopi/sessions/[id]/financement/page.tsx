@@ -17,8 +17,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { AcompteFormationPanel } from "@/components/admin/qualiopi/AcompteFormationPanel";
-import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
-import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { SessionMontantForm } from "@/components/admin/qualiopi/SessionMontantForm";
 import { SetFinancementForm } from "@/components/admin/qualiopi/SetFinancementForm";
 import { PriseEnChargeForm } from "@/components/admin/qualiopi/PriseEnChargeForm";
@@ -219,38 +217,24 @@ export default async function FinancementSessionPage({ params }: PageProps) {
   });
 
   return (
-    <AdminPageShell width="wide">
-      {/* 🔴 2026-09-05 — le retour vers la FICHE PARENTE manquait. Cette
-          sous-page ne ramenait qu'à la LISTE des sessions : on arrivait depuis
-          une session précise, et on en ressortait à la racine, à charge de la
-          retrouver. L'audit de navigation a relevé 4 sous-pages sur 8 dans ce
-          cas. Le retour au parent vient EN PREMIER : c'est le geste le plus
-          probable après avoir corrigé un financement. */}
-      <div className="mb-[var(--space-admin-4)] flex items-center gap-[var(--space-admin-3)]">
-        <Link
-          href={`/${locale}/${adminPrefix}/qualiopi/sessions/${id}`}
-          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-        >
-          ← Retour à la session
-        </Link>
-        <Link
-          href={`/${locale}/${adminPrefix}/qualiopi/sessions`}
-          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-        >
-          ← Sessions
-        </Link>
+    <>
+      {/* L2 — fil d'Ariane, retour à la fiche et en-tête : `sessions/[id]/layout.tsx`. */}
+      <div className="mb-[var(--space-admin-5)] flex flex-wrap items-baseline justify-between gap-[var(--space-admin-3)]">
+        <div>
+          <h2 className="mb-[var(--space-admin-1)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+            Financement
+          </h2>
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            {`${dateDebut} → ${dateFin}`}
+          </p>
+        </div>
         <Link
           href={`/${locale}/${adminPrefix}/qualiopi/financements`}
           className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
         >
-          Financements
+          Tous les financements
         </Link>
       </div>
-
-      <AdminPageHeader
-        title={`Financement — ${trainingSession.titreSession ?? trainingSession.numero}`}
-        description={`Session ${trainingSession.numero} · ${dateDebut} → ${dateFin}`}
-      />
 
       {/* ── Alertes bloquantes ───────────────────────────────────────────── */}
       {alertes.length > 0 && (
@@ -561,6 +545,6 @@ export default async function FinancementSessionPage({ params }: PageProps) {
           moyen={trainingSession.acompteMoyen ?? ""}
         />
       </div>
-    </AdminPageShell>
+    </>
   );
 }

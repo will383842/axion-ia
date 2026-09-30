@@ -28,6 +28,10 @@
  */
 
 import { useEffect, useState, useTransition } from "react";
+import {
+  MentionDossierClos,
+  useDossierFige,
+} from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
 import { useRouter } from "next/navigation";
 import {
   clefMemoireLiens,
@@ -91,6 +95,9 @@ export function LiensEmargement({
   revoquerAction,
   envoyerAction,
 }: LiensEmargementProps): React.ReactElement {
+  // ADR 0060 — dossier clos : émettre ou envoyer des liens est une écriture
+  // VERROU ; révoquer reste ouvert (on peut toujours COUPER un accès).
+  const fige = useDossierFige();
   const router = useRouter();
   // 🔴 F9 — les liens survivent à une navigation DANS la console.
   //
@@ -303,7 +310,11 @@ export function LiensEmargement({
         remplace jamais un lien envoyé, ouvert, ou fabriqué le jour même. Seul
         un lien fabriqué un AUTRE jour et jamais ouvert est remplacé.
       */}
-      <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+      {fige ? <MentionDossierClos className="mb-[var(--space-admin-4)]" /> : null}
+      <p
+        hidden={fige}
+        className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+      >
         <strong>« Émettre » n&apos;envoie rien</strong> : le bouton fabrique les liens et affiche
         les QR, c&apos;est tout. Les liens partent seuls : joints au rappel J-7 ou au rappel de la
         veille, sinon le jour même, à chaque stagiaire qui n&apos;a pas encore le sien. L&apos;envoi
@@ -313,17 +324,21 @@ export function LiensEmargement({
       </p>
 
       <div className="flex flex-wrap gap-[var(--space-admin-3)]">
-        <button type="button" onClick={emettre} disabled={isPending} className="admin-button">
-          {isPending ? "Émission…" : liens === null ? "Émettre les liens" : "Réémettre"}
-        </button>
-        <button
-          type="button"
-          onClick={() => envoyer()}
-          disabled={isPending}
-          className="admin-button"
-        >
-          {isPending ? "Envoi…" : "Envoyer les liens par e-mail"}
-        </button>
+        {fige ? null : (
+          <>
+            <button type="button" onClick={emettre} disabled={isPending} className="admin-button">
+              {isPending ? "Émission…" : liens === null ? "Émettre les liens" : "Réémettre"}
+            </button>
+            <button
+              type="button"
+              onClick={() => envoyer()}
+              disabled={isPending}
+              className="admin-button"
+            >
+              {isPending ? "Envoi…" : "Envoyer les liens par e-mail"}
+            </button>
+          </>
+        )}
         <button
           type="button"
           onClick={revoquer}
@@ -333,7 +348,10 @@ export function LiensEmargement({
           Révoquer tous les liens
         </button>
       </div>
-      <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+      <p
+        hidden={fige}
+        className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+      >
         Envoyer produit un lien neuf pour chaque destinataire et{" "}
         <strong>invalide le lien précédent</strong> de cette personne. Un stagiaire qui avait déjà
         reçu le sien devra utiliser le nouveau.

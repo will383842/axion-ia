@@ -59,6 +59,24 @@ import {
 } from "@/server/qualiopi/evaluations/refus-attestation";
 import { ACOMPTE_DEFAUT_PERCENT } from "@/server/qualiopi/documents/acompte-defaut";
 import {
+  MentionDossierClos,
+  useDossierFige,
+} from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
+
+/**
+ * 🔴 ADR 0060 — pièces dont la PREMIÈRE émission reste ouverte sur un dossier
+ * clos (`assertDossierOuvertSiRegeneration`) : un financeur peut réclamer le
+ * certificat ou son kit des mois après la clôture. Sur un dossier clos, leur
+ * bouton n'est proposé que tant qu'aucune pièce vivante du type n'existe — la
+ * régénération, elle, est refusée par le serveur et donc jamais affichée.
+ */
+const PREMIERE_EMISSION_OUVERTE: ReadonlySet<string> = new Set([
+  "kit_opco",
+  "certificat_realisation",
+  "kit_cpf",
+  "kit_france_travail",
+]);
+import {
   motifRepli,
   pieceMiseEnAvant,
   type ContexteSession,
@@ -1242,6 +1260,7 @@ export function DocumentsSection({
   documentsExistants,
   contexte,
 }: DocumentsSectionProps): React.ReactElement {
+  const fige = useDossierFige();
   const [selectedEnrollmentId, setSelectedEnrollmentId] = useState<string>(
     enrollments[0]?.id ?? "",
   );
@@ -1344,7 +1363,10 @@ export function DocumentsSection({
             datée du jour — puis on la joignait à un dossier officiel en croyant
             tenir l'original. L'avertissement n'apparaît que s'il y a déjà des
             pièces : sur une session vierge, il n'y a rien à confondre. */}
-        {documentsExistants.length > 0 && (
+        {/* ADR 0060 — dossier clos : plus aucune génération ni régénération de
+            pièce de session, sauf la première émission d'un kit financeur. */}
+        {fige ? <MentionDossierClos className="mb-[var(--space-admin-4)]" /> : null}
+        {documentsExistants.length > 0 && !fige && (
           <p className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
             Ces boutons créent une <strong>nouvelle</strong> pièce : regénérer un type déjà présent
             produit une COPIE filigranée, jamais l&apos;original. Pour retrouver une pièce déjà
@@ -1518,8 +1540,16 @@ export function DocumentsSection({
             },
           ];
 
-          const attendues = boutons.filter((b) => pieceMiseEnAvant(b.type, contexte));
-          const autres = boutons.filter((b) => !pieceMiseEnAvant(b.type, contexte));
+          const proposables = fige
+            ? boutons.filter(
+                (b) =>
+                  PREMIERE_EMISSION_OUVERTE.has(b.type) &&
+                  dernierSessionParType.get(b.type as DocumentType) === undefined &&
+                  pieceMiseEnAvant(b.type, contexte),
+              )
+            : boutons;
+          const attendues = proposables.filter((b) => pieceMiseEnAvant(b.type, contexte));
+          const autres = proposables.filter((b) => !pieceMiseEnAvant(b.type, contexte));
 
           return (
             <>
@@ -1706,10 +1736,18 @@ export function DocumentsSection({
                     ),
                   },
                 ];
-                const attenduesStagiaire = boutonsStagiaire.filter((b) =>
+                const proposablesStagiaire = fige
+                  ? boutonsStagiaire.filter(
+                      (b) =>
+                        PREMIERE_EMISSION_OUVERTE.has(b.type) &&
+                        genereStagiaireLe(b.type) === undefined &&
+                        pieceMiseEnAvant(b.type, contexte),
+                    )
+                  : boutonsStagiaire;
+                const attenduesStagiaire = proposablesStagiaire.filter((b) =>
                   pieceMiseEnAvant(b.type, contexte),
                 );
-                const autresStagiaire = boutonsStagiaire.filter(
+                const autresStagiaire = proposablesStagiaire.filter(
                   (b) => !pieceMiseEnAvant(b.type, contexte),
                 );
                 return (
@@ -1956,7 +1994,9 @@ export function DocumentsSection({
                             libelle={DOC_LABELS[doc.type] ?? doc.type}
                           />
                         ))}
-                      {doc.annuleeAt == null && (
+                      {/* ADR 0060 — annuler une pièce d'un dossier clos est une
+                          écriture VERROU : rouvrir d'abord, avec un motif. */}
+                      {doc.annuleeAt == null && !fige && (
                         <AnnulerDocumentButton
                           documentId={doc.id}
                           numero={doc.numero}

@@ -80,11 +80,6 @@ const SANS_SURFACE_CONNUS: ReadonlyArray<string> = [
   "server/actions/knowledge/assign-reviewer.ts",
   "server/actions/knowledge/rollback-version.ts",
   "server/actions/knowledge/upload-asset.ts",
-  // ADR 0060 — lot L1 (serveur seul) : « Rouvrir le dossier » et « Clore à
-  // nouveau » reçoivent leur écran au lot L2 (bandeau de verrou de la fiche
-  // session). La ligne se retire alors d'elle-même : le test des lignes soldées
-  // rougit tant qu'elle reste.
-  "server/actions/qualiopi/dossier-verrou.ts",
 ];
 
 describe("`D3-3-05` — toute Server Action finit par atteindre un écran", () => {

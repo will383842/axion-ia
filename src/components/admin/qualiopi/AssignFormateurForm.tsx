@@ -12,6 +12,10 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { assignTrainerToSessionAction } from "@/server/actions/qualiopi/trainers";
+import {
+  ResumeLecture,
+  useDossierFige,
+} from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
 
 export interface AssignFormateurFormProps {
   sessionId: string;
@@ -25,6 +29,7 @@ export function AssignFormateurForm({
   currentTrainerId,
   trainers,
 }: AssignFormateurFormProps): React.ReactElement {
+  const fige = useDossierFige();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [selected, setSelected] = useState<string>(currentTrainerId ?? "");
@@ -49,6 +54,23 @@ export function AssignFormateurForm({
         router.refresh();
       }
     });
+  }
+
+  // ADR 0060 — dossier clos : ni assigner ni retirer ; on lit qui a animé.
+  if (fige) {
+    return (
+      <ResumeLecture
+        lignes={[
+          {
+            libelle: "Formateur principal",
+            valeur:
+              currentTrainerId === null
+                ? "Aucun"
+                : (trainers.find((t) => t.id === currentTrainerId)?.label ?? "Formateur inactif"),
+          },
+        ]}
+      />
+    );
   }
 
   const selectCls =

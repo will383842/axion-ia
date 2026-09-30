@@ -84,6 +84,13 @@ export interface EmargementGroupeProps {
   }) => Promise<
     { ok: true; contresignatureId: string } | { ok: false; raison: string; message: string }
   >;
+  /**
+   * 🔴 ADR 0060 — renseigné quand le dossier de la session est CLOS : faire
+   * signer un stagiaire par le formateur est alors une écriture VERROU. Le
+   * message remplace le bouton « Faire signer » ; la CONTRESIGNATURE du
+   * formateur, elle, reste ouverte (recueil entrant).
+   */
+  signaturePourStagiaireFermee?: string | null;
 }
 
 export function EmargementGroupe({
@@ -91,6 +98,7 @@ export function EmargementGroupe({
   demiJournees,
   signerAction,
   contresignerAction,
+  signaturePourStagiaireFermee = null,
 }: EmargementGroupeProps): React.ReactElement {
   const router = useRouter();
   // La première demi-journée commencée et incomplète : c'est celle sur laquelle
@@ -181,6 +189,14 @@ export function EmargementGroupe({
 
   return (
     <div className="flex flex-col gap-4">
+      {signaturePourStagiaireFermee !== null && (
+        <p
+          role="status"
+          className="rounded-md border border-neutral-300 bg-neutral-50 p-3 text-sm text-neutral-700"
+        >
+          {signaturePourStagiaireFermee}
+        </p>
+      )}
       {demiJournees.map((d) => {
         const restants = d.lignes.filter((l) => l.etat === "signable").length;
         const signes = d.lignes.filter((l) => l.etat === "deja_signe").length;
@@ -233,7 +249,11 @@ export function EmargementGroupe({
                     {l.etat === "pas_encore_commence" && (
                       <span className="text-sm text-neutral-500">Pas encore commencé</span>
                     )}
+                    {l.etat === "signable" && signaturePourStagiaireFermee !== null && (
+                      <span className="text-sm text-neutral-500">Non signé</span>
+                    )}
                     {l.etat === "signable" &&
+                      signaturePourStagiaireFermee === null &&
                       (signataire?.creneauId === l.creneauId ? (
                         <span className="text-sm text-neutral-500">Signature en cours…</span>
                       ) : (
@@ -274,7 +294,7 @@ export function EmargementGroupe({
         );
       })}
 
-      {signataire !== null && (
+      {signataire !== null && signaturePourStagiaireFermee === null && (
         <div
           role="dialog"
           aria-label={`Signature de ${signataire.stagiaireNom}`}

@@ -13,6 +13,10 @@
 import { useState, useTransition } from "react";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
+import {
+  MentionDossierClos,
+  useDossierFige,
+} from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types props
@@ -80,6 +84,7 @@ export function EvaluationForm({
   objectifsPedagogiques,
   createAction,
 }: EvaluationFormProps): React.ReactElement {
+  const fige = useDossierFige();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -192,6 +197,10 @@ export function EvaluationForm({
   const thCls =
     "px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-left text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]";
   const tdCls = "px-[var(--space-admin-3)] py-[var(--space-admin-2)] align-top";
+
+  // ADR 0060 — dossier clos : ajouter une évaluation est une écriture VERROU.
+  // Les évaluations déjà enregistrées restent lisibles sur cette page.
+  if (fige) return <MentionDossierClos />;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-[var(--space-admin-5)]">

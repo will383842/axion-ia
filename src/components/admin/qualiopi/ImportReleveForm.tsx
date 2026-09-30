@@ -14,6 +14,10 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import {
+  MentionDossierClos,
+  useDossierFige,
+} from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
 import type { PlateformeLabel } from "@/server/qualiopi/presence/types";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -78,6 +82,7 @@ export function ImportReleveForm({
   importAction,
   genererReleveAction,
 }: ImportReleveFormProps): React.ReactElement {
+  const fige = useDossierFige();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   // ⚠️ Transition SÉPARÉE de celle de l'import : sans elle, générer le relevé
@@ -143,6 +148,19 @@ export function ImportReleveForm({
     "mt-1 block w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)] focus:outline-none focus:ring-1 focus:ring-[color:var(--color-admin-accent)]";
   const fileCls =
     "mt-1 block w-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)] file:mr-4 file:rounded file:border-0 file:bg-[color:var(--color-admin-surface)] file:px-[var(--space-admin-3)] file:py-[var(--space-admin-2)] file:text-[length:var(--text-admin-sm)] file:font-medium file:text-[color:var(--color-admin-fg)]";
+
+  // ADR 0060 — dossier clos : importer un relevé ou en produire la pièce est
+  // une écriture VERROU (le relevé déjà produit reste au registre des pièces).
+  if (fige) {
+    return (
+      <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
+        <h3 className="text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
+          Importer un relevé de connexion
+        </h3>
+        <MentionDossierClos className="mt-[var(--space-admin-2)]" />
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">

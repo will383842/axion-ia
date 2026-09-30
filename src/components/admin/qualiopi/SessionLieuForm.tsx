@@ -30,6 +30,16 @@ import { setSessionLieuAction } from "@/server/actions/qualiopi/sessions";
 import { LieuFieldset } from "@/components/admin/qualiopi/LieuFieldset";
 import { lieuPayload, type LieuValues } from "@/components/admin/qualiopi/lieu-values";
 import { incoherenceModaliteLieu, type ModaliteValue } from "@/server/qualiopi/lieu/libelles-acces";
+import {
+  ResumeLecture,
+  useDossierFige,
+} from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
+
+const LIEU_TYPE_LIBELLE: Record<string, string> = {
+  sur_site: "Sur le site du client",
+  nos_locaux: "Dans nos locaux",
+  distanciel: "Distanciel",
+};
 
 export interface SessionLieuFormProps {
   sessionId: string;
@@ -65,6 +75,7 @@ export function SessionLieuForm({
   initial,
   modalite: modaliteInitiale,
 }: SessionLieuFormProps): React.ReactElement {
+  const fige = useDossierFige();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [lieu, setLieu] = useState<LieuValues>(initial);
@@ -77,6 +88,35 @@ export function SessionLieuForm({
   // voit pendant qu'on la fabrique, quand elle se corrige encore d'un clic.
   const contradiction = incoherenceModaliteLieu(lieu.lieuType, modaliteEffective);
   const aideModalite = MODALITE_OPTIONS.find((o) => o.value === modalite)?.aide ?? null;
+
+  // ADR 0060 — dossier clos : ce que la convention a imprimé, en lecture.
+  if (fige) {
+    const adresse = [initial.lieuAdresse, `${initial.lieuCodePostal} ${initial.lieuVille}`.trim()]
+      .filter((x) => x.trim() !== "")
+      .join(", ");
+    return (
+      <ResumeLecture
+        lignes={[
+          {
+            libelle: "Modalité",
+            valeur: MODALITE_OPTIONS.find((o) => o.value === modaliteInitiale)?.label ?? null,
+          },
+          { libelle: "Lieu", valeur: LIEU_TYPE_LIBELLE[initial.lieuType] ?? null },
+          { libelle: "Intitulé", valeur: initial.lieuIntitule },
+          { libelle: "Adresse", valeur: adresse },
+          { libelle: "Salle", valeur: initial.lieuSalle },
+          { libelle: "Lien de connexion", valeur: initial.lieuVisioUrl },
+          {
+            libelle: "Contact sur place",
+            valeur: [initial.contactSurPlaceNom, initial.contactSurPlaceTelephone]
+              .filter((x) => x.trim() !== "")
+              .join(" — "),
+          },
+          { libelle: "Consignes d'accès", valeur: initial.consignesAcces },
+        ]}
+      />
+    );
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
