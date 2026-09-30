@@ -2,8 +2,8 @@
 /**
  * ⛔ LA VUE DU COMPTE RENDU EST ATTEIGNABLE DÈS L'ENREGISTREMENT.
  *
- * Le seul lien vers `rendez-vous?compteRendu=` n'apparaissait qu'une fois un
- * compte rendu IA rédigé. Or cette vue porte « Le client retire son accord »
+ * Le compte rendu de l'enregistrement (sur la page du rendez-vous) n'apparaissait
+ * qu'une fois un compte rendu IA rédigé. Or cette vue porte « Le client retire son accord »
  * (B2, où renvoie le refus 409 de l'enregistreur) et la réponse aux
  * enregistrements de moins de 90 s (G0b) : pendant le traitement, après un
  * échec, ou quand Will était attendu, elle était inatteignable.

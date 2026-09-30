@@ -12,7 +12,8 @@
  *                        n'a pas de client validé ;
  *   P3 consolider        un appel PAR PÉRIMÈTRE, entrée construite par le
  *                        code (G10) ;
- *   P4 ebaucher          par projet évoqué, SANS prix (G14) ; C4 chiffre ;
+ *   P4 ebaucher          par projet évoqué, SANS prix (G14) ; aucun chiffrage
+ *                        (décision de Will du 29/09 : Williams compose le devis) ;
  *   P5 rediger           ne voit QUE des faits vérifiés, jamais la
  *                        transcription ;
  *   V2 verifier_compte_rendu  G6 + G9, puis « à valider ».
@@ -22,7 +23,7 @@
  */
 
 import { CODES_ALERTES_CIRCUIT } from "./alertes-circuit";
-import { chiffrerEbauche } from "./catalogue-ia";
+import { referencerEbauche } from "./catalogue-ia";
 import { construireEntreeP1, faitsDejaConnus, type FaitPourPasse } from "./contexte";
 import {
   construireEntreeP2,
@@ -364,7 +365,7 @@ export function preparerP4(d: DonneesPourPasses) {
   });
 }
 
-/** V2 — les faits que le compte rendu a le droit de citer, et les montants calculés par le site. PURE. */
+/** V2 — les faits que le compte rendu a le droit de citer (aucun montant calculé : décision du 29/09). PURE. */
 export function preparerV2(d: DonneesPourPasses) {
   const faits = faitsTransmissibles(d.faitsDuJour);
   const couverture =
@@ -375,13 +376,7 @@ export function preparerV2(d: DonneesPourPasses) {
       { ref: f.ref, enonce: f.enonce, citation: f.citation, valeurs: f.valeurs },
     ]),
   );
-  const montants = d.etat.ebauches.flatMap((b) =>
-    b.chiffrage.lignes
-      .flatMap((l) => [l.prixUnitaireHtCents, l.totalHtCents])
-      .filter((x): x is number => x !== null)
-      .map((c) => c / 100),
-  );
-  return { couverture, pourRedaction, montants };
+  return { couverture, pourRedaction };
 }
 
 export const rattacher: Gestionnaire = async (ctx) => {
@@ -459,7 +454,7 @@ export const consolider: Gestionnaire = async (ctx) => {
   };
 };
 
-// ── P4 + C4 ──────────────────────────────────────────────────────────────────
+// ── P4 (sans prix) ───────────────────────────────────────────────────────────────
 
 export const ebaucher: Gestionnaire = async (ctx) => {
   const { deps } = ctx;
@@ -488,7 +483,7 @@ export const ebaucher: Gestionnaire = async (ctx) => {
       ebauches.push({
         projetRef: j.ref,
         ebauche: controle.ebauche,
-        chiffrage: chiffrerEbauche(controle.ebauche.lignes, catalogue),
+        lignes: referencerEbauche(controle.ebauche.lignes, catalogue),
       });
     }
   }
@@ -528,7 +523,7 @@ export function entreeP5(d: DonneesPourPasses, faits: readonly FaitPourPasse[]):
     `<faits_verifies>\n${faits.map((f) => [f.ref, f.type, f.portee, f.projetRef ?? "—", f.enonce, f.valeur || "—", `dit par ${f.locuteur ?? "?"}`, `confiance ${f.confiance}`].join(" | ")).join("\n") || "aucun"}\n</faits_verifies>`,
     `<suivi_du_connu>${e.suivis.map((s) => `${s.connuRef} → ${s.statut}`).join(" · ") || "aucun"}</suivi_du_connu>`,
     `<consolidation>\n${e.consolidation.map((c) => `${c.perimetre} : ${c.resultat.relations.map((r) => `${r.fait_du_jour_ref} ${r.relation}${r.fait_existant_ref ? ` ${r.fait_existant_ref}` : ""}`).join(", ")}`).join("\n") || "aucune"}\n</consolidation>`,
-    `<ebauche_chiffree>\n${e.ebauches.map((b) => `${b.projetRef} : ${b.chiffrage.lignes.map((l) => `${l.ref} × ${l.quantite} ${l.unite} (prix calculé par le site)`).join(" ; ")} · hypothèses : ${b.ebauche.hypotheses.join(" ; ") || "aucune"} · manquant : ${b.ebauche.manquant_pour_chiffrer.join(" ; ") || "rien"}`).join("\n") || "aucune"}\n</ebauche_chiffree>`,
+    `<ebauche_sans_prix>\n${e.ebauches.map((b) => `${b.projetRef} : ${b.lignes.map((l) => `${l.ref} × ${l.quantite} ${l.unite}`).join(" ; ")} · hypothèses : ${b.ebauche.hypotheses.join(" ; ") || "aucune"} · manquant : ${b.ebauche.manquant_pour_chiffrer.join(" ; ") || "rien"}`).join("\n") || "aucune"}\n</ebauche_sans_prix>`,
     `<signaux_calcules>${e.signaux.join(" · ") || "aucun"}</signaux_calcules>`,
     "Rédige le compte rendu au format imposé.",
   ].join("\n");
@@ -585,8 +580,8 @@ export const verifierCompteRenduEtape: Gestionnaire = async (ctx) => {
   const { deps, t } = ctx;
   const d = await chargerPasses(ctx);
   if (d.etat.redaction === null) throw new ArretVisio("inconnu");
-  const { couverture, pourRedaction, montants } = preparerV2(d);
-  const bilan = verifierCompteRendu(d.etat.redaction, couverture, pourRedaction, montants);
+  const { couverture, pourRedaction } = preparerV2(d);
+  const bilan = verifierCompteRendu(d.etat.redaction, couverture, pourRedaction);
   const essais = d.etat.essaisRedaction + 1;
 
   if (bilan.rejete) {
@@ -619,7 +614,7 @@ export const verifierCompteRenduEtape: Gestionnaire = async (ctx) => {
     couverture,
     ebauches: d.etat.ebauches.map((b) => ({
       projetRef: b.projetRef,
-      chiffrage: b.chiffrage,
+      lignes: b.lignes,
       hypotheses: b.ebauche.hypotheses,
       manquant: b.ebauche.manquant_pour_chiffrer,
       sansReference: b.ebauche.sans_reference,

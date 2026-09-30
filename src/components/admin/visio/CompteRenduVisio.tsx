@@ -9,7 +9,6 @@
 
 import type { DocumentCompteRendu, FaitAffiche } from "@/features/dossier-client/compte-rendu";
 import {
-  euros,
   LIBELLE_MOTIF_REJET,
   LIBELLE_RUBRIQUE,
   LIBELLE_STATUT_COUVERTURE,
@@ -33,10 +32,6 @@ export function horodatageCourt(ms: number | null): string {
   if (ms === null) return "—";
   const s = Math.max(0, Math.floor(ms / 1000));
   return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
-}
-
-function prixHt(cents: number | null): string {
-  return cents === null ? "sur devis" : `${euros(cents)} HT`;
 }
 
 const carte =
@@ -120,45 +115,25 @@ export function DocumentCompteRenduVue({ document }: { readonly document: Docume
             {cle === "offres" && document.ebauches.length > 0 ? (
               <div className="mt-[var(--space-admin-3)] space-y-[var(--space-admin-3)]">
                 {document.ebauches.map((b) => (
-                  <table key={b.projetRef} className="w-full text-[length:var(--text-admin-sm)]">
-                    <caption className={`text-left ${discret}`}>
-                      Projet {b.projetRef} — prix calculés par le site (catalogue), jamais par
-                      l&apos;IA ; la TVA est fixée par le devis.
-                    </caption>
-                    <thead>
-                      <tr>
-                        <th className="text-left">Référence</th>
-                        <th className="text-left">Désignation</th>
-                        <th className="text-right">Quantité</th>
-                        <th className="text-right">Prix unitaire</th>
-                        <th className="text-right">Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {b.chiffrage.lignes.map((l) => (
-                        <tr key={l.ref}>
-                          <td>{l.ref}</td>
-                          <td>{l.intitule}</td>
-                          <td className="text-right">
-                            {l.quantite} {l.unite}
-                          </td>
-                          <td className="text-right">{prixHt(l.prixUnitaireHtCents)}</td>
-                          <td className="text-right">{prixHt(l.totalHtCents)}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <td colSpan={4} className="text-right font-semibold">
-                          Total HT estimé{" "}
-                          {b.chiffrage.lignesSurDevis > 0 ? "(hors lignes sur devis)" : ""}
-                        </td>
-                        <td className="text-right font-semibold">
-                          {prixHt(b.chiffrage.totalHtCents)}
-                        </td>
-                      </tr>
-                    </tfoot>
-                  </table>
+                  <div key={b.projetRef} className="text-[length:var(--text-admin-sm)]">
+                    <p className={discret}>
+                      Projet {b.projetRef} — offres du catalogue évoquées, SANS PRIX : le devis
+                      s&apos;ouvre vide et vous le composez vous-même.
+                    </p>
+                    {b.lignes.length > 0 ? (
+                      <ul className="list-disc pl-5">
+                        {b.lignes.map((l) => (
+                          <li key={l.ref}>
+                            {l.intitule} <span className={discret}>({l.ref})</span> — {l.quantite}{" "}
+                            {l.unite}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                    {b.manquant.length > 0 ? (
+                      <p className={discret}>Encore à demander : {b.manquant.join(" ; ")}</p>
+                    ) : null}
+                  </div>
                 ))}
               </div>
             ) : null}

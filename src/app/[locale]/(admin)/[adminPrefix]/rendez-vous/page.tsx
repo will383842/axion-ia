@@ -25,7 +25,6 @@ import {
   AdminBadge,
 } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
-import { VueCompteRendu } from "@/components/admin/visio/VueCompteRendu";
 import { RejoindreVisioBouton } from "@/components/admin/contacts/RejoindreVisioBouton";
 import { SuiviRendezVousForm } from "@/components/admin/contacts/SuiviRendezVousForm";
 import { IssueEchangeApporteurForm } from "@/components/admin/contacts/IssueEchangeApporteurForm";
@@ -415,21 +414,6 @@ export default async function RendezVousPage({
   searchParams,
 }: PageProps): Promise<React.ReactElement> {
   const { locale, adminPrefix } = await params;
-  // Chantier visio (PR 6) — le compte rendu d'un rendez-vous enregistré. Sa
-  // propre garde (décision A2 : Will et les administrateurs) est la PREMIÈRE
-  // instruction de la vue, avant toute lecture.
-  const demande = await searchParams;
-  if (demande["compteRendu"]) {
-    return (
-      <VueCompteRendu
-        locale={locale}
-        adminPrefix={adminPrefix}
-        rencontreId={demande["compteRendu"]}
-        message={demande["message"]}
-        erreur={demande["erreur"]}
-      />
-    );
-  }
   // Même garde que « Appels réservés » : ces cartes portent les coordonnées
   // des prospects et le lien de leur réunion. La garde avant la base.
   const acces = await gardeLectureAppels(`/${locale}/${adminPrefix}/login`);

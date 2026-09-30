@@ -8,7 +8,7 @@
  *
  *   dépôt des morceaux (code de la PR 5) → clôture des tranches et de la
  *   session → balayage → transcription → précontrôles (accord retrouvé) →
- *   P1 → V1 → P2 → P3 → P4 + C4 → P5 → V2 → « à valider » → validation →
+ *   P1 → V1 → P2 → P3 → P4 (sans prix) → P5 → V2 → « à valider » → validation →
  *   purge du son → 2ᵉ rendez-vous : les faits validés reviennent en « déjà
  *   connu » → retrait de l'accord (tout effacé sauf la preuve).
  *

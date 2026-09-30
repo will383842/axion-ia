@@ -1,16 +1,18 @@
 /**
- * Le CATALOGUE montré à l'IA, SANS AUCUN PRIX, et le CHIFFRAGE par le code
- * (C4) de l'ébauche de devis (`compte-rendu-et-extraction.md` §3.4, §5.5).
+ * Le CATALOGUE montré à l'IA, SANS AUCUN PRIX, et les RÉFÉRENCES de l'ébauche
+ * de devis (`compte-rendu-et-extraction.md` §3.4, §5.5).
+ *
+ * ⛔ Décision de Will du 29/09 (DEVIS = OPTION A) : aucun chiffrage. Le circuit
+ * ne calcule AUCUN prix, AUCUN total : Williams compose le devis lui-même, le
+ * formulaire s'ouvre vide. L'ancien C4 (chiffrage par le code) est retiré ; garde
+ * `l-ebauche-de-devis-ne-contient-aucun-prix.spec.ts`.
  *
  * Deux références seulement :
  *   · `OFF:<code>` — toute offre du site active (`offres_site`) ;
  *   · `TIER:<id>` — tout palier de `src/content/pricing.ts` sans offre active.
  *
  * Une ligne par référence : référence | intitulé | activité | durée | effectif
- * | type de tarif (fixe, à partir de, sur devis). Jamais un montant : c'est le
- * site qui chiffre, et seulement quand le prix est FERME
- * (`resolveOffrePriceEur`) — une offre « à partir de » ou « sur devis » ne
- * reçoit aucun montant (jamais un plancher inscrit comme prix).
+ * | type de tarif (fixe, à partir de, sur devis). Jamais un montant.
  *
  * L'empreinte SHA-256 de la liste envoyée est gardée dans la vérification
  * (G7 : une référence hors de CETTE liste est rejetée).
@@ -33,8 +35,6 @@ export interface EntreeCatalogue {
   readonly duree: string;
   readonly effectif: string;
   readonly typeTarif: TypeTarif;
-  /** Prix HT FERME en euros, pour le chiffrage par le code — JAMAIS envoyé à l'IA. */
-  readonly prixHtEur: number | null;
 }
 
 export interface CatalogueIA {
@@ -92,11 +92,10 @@ const ACTIVITE_PAR_CATEGORIE = {
 
 /** Lit les offres actives et les paliers ; rend le catalogue. */
 export async function chargerCatalogue(): Promise<CatalogueIA> {
-  const [{ listOffres }, { deriveTarifType, resolveOffreEffectifFr, resolveOffrePriceEur }] =
-    await Promise.all([
-      import("@/server/qualiopi/offres/offres"),
-      import("@/server/qualiopi/offres/pricing-resolver"),
-    ]);
+  const [{ listOffres }, { deriveTarifType, resolveOffreEffectifFr }] = await Promise.all([
+    import("@/server/qualiopi/offres/offres"),
+    import("@/server/qualiopi/offres/pricing-resolver"),
+  ]);
   const offres = await listOffres({ actifOnly: true });
   const tiersAvecOffre = new Set(offres.map((o) => o.offre.tierId).filter((x): x is string => !!x));
   const entrees: EntreeCatalogue[] = offres.map((o) => ({
@@ -112,7 +111,6 @@ export async function chargerCatalogue(): Promise<CatalogueIA> {
     // sans prix ferme dérivable est seulement ramenée à « à partir de ».
     typeTarif:
       o.offre.tarifType === "fixe" && o.prixHtEur === null ? "a_partir_de" : o.offre.tarifType,
-    prixHtEur: o.prixHtEur,
   }));
   for (const categorie of Object.keys(PRICING_CATEGORIES) as Array<
     keyof typeof PRICING_CATEGORIES
@@ -127,63 +125,41 @@ export async function chargerCatalogue(): Promise<CatalogueIA> {
         effectif: t.groupSizeFr ?? "",
         // LA règle du site (une seule) : `deriveTarifType`.
         typeTarif: deriveTarifType(t),
-        prixHtEur: resolveOffrePriceEur({ tierId: t.id, gamme: null, dureeCode: null }),
       });
     }
   }
   return construireCatalogue(entrees);
 }
 
-// ── C4 — chiffrage par le code ───────────────────────────────────────────────
+// ── Références de l'ébauche (SANS PRIX) ───────────────────────────────────────
 
-export interface LigneChiffree {
+/** Une ligne de l'ébauche, rapportée au catalogue : référence et intitulé, jamais un montant. */
+export interface LigneReferencee {
   readonly ref: string;
   readonly intitule: string;
   readonly quantite: number;
   readonly unite: string;
-  readonly typeTarif: TypeTarif;
-  /** Prix unitaire HT en centimes — seulement si FERME. */
-  readonly prixUnitaireHtCents: number | null;
-  readonly totalHtCents: number | null;
 }
 
-export interface EbaucheChiffree {
-  readonly lignes: readonly LigneChiffree[];
-  /** Total HT des seules lignes chiffrées ; `null` si aucune ne l'est. */
-  readonly totalHtCents: number | null;
-  readonly lignesSurDevis: number;
-}
-
-export function chiffrerEbauche(
+/**
+ * Les lignes de l'ébauche rapportées au catalogue (intitulé du site). Une
+ * référence inconnue est ignorée (G7 l'a déjà rejetée). AUCUN prix, AUCUN
+ * total (décision de Will du 29/09). Fonction PURE.
+ */
+export function referencerEbauche(
   lignes: ReadonlyArray<{
     readonly ref_catalogue: string;
     readonly quantite: number;
     readonly unite: string;
   }>,
   catalogue: CatalogueIA,
-): EbaucheChiffree {
+): LigneReferencee[] {
   const parRef = new Map(catalogue.entrees.map((e) => [e.ref, e]));
-  const chiffrees: LigneChiffree[] = [];
+  const sortie: LigneReferencee[] = [];
   for (const l of lignes) {
     const e = parRef.get(l.ref_catalogue);
-    if (!e) continue; // G7 : une référence inconnue ne se chiffre pas (déjà rejetée).
-    const pu =
-      e.typeTarif === "fixe" && e.prixHtEur !== null ? Math.round(e.prixHtEur * 100) : null;
-    chiffrees.push({
-      ref: e.ref,
-      intitule: e.intitule,
-      quantite: l.quantite,
-      unite: l.unite,
-      typeTarif: e.typeTarif,
-      prixUnitaireHtCents: pu,
-      totalHtCents: pu === null ? null : pu * Math.max(0, l.quantite),
-    });
+    if (!e) continue;
+    sortie.push({ ref: e.ref, intitule: e.intitule, quantite: l.quantite, unite: l.unite });
   }
-  const fermes = chiffrees.filter((c) => c.totalHtCents !== null);
-  return {
-    lignes: chiffrees,
-    totalHtCents:
-      fermes.length === 0 ? null : fermes.reduce((s, c) => s + (c.totalHtCents ?? 0), 0),
-    lignesSurDevis: chiffrees.length - fermes.length,
-  };
+  return sortie;
 }

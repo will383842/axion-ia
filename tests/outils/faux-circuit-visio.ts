@@ -194,7 +194,6 @@ export function catalogueDeTest(): CatalogueIA {
       duree: "7 h",
       effectif: "2 à 15 participants",
       typeTarif: "fixe",
-      prixHtEur: 1900,
     },
     {
       ref: "TIER:audit-cible-standard",
@@ -203,7 +202,6 @@ export function catalogueDeTest(): CatalogueIA {
       duree: "",
       effectif: "",
       typeTarif: "a_partir_de",
-      prixHtEur: null,
     },
   ]);
 }

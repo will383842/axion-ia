@@ -8,8 +8,10 @@
  *   · G0  — piste client muette : AUCUNE passe n'est appelée ; une note
  *     manuelle est proposée (échec définitif `piste_muette`) ;
  *   · G16 — l'accord du client est RETROUVÉ dans la transcription et vérifié
- *     comme une citation ; DEUX VOIX CLIENT = DEUX ACCORDS (une voix sans
- *     accord retrouvé est un signal montré à Will) ;
+ *     comme une citation ; DEUX VOIX CLIENT = DEUX ACCORDS : une voix sans
+ *     accord retrouvé (ou aucun accord retrouvé) POSE le signal « accord d'une
+ *     personne non retrouvé » (`accord-a-confirmer.ts`), montré sur le compte
+ *     rendu ; toute validation attend alors la confirmation à la main de Will ;
  *   · APRÈS « Arrêter » puis une relance, chaque enregistrement a son plan ;
  *     une demande d'arrêt dans l'un coupe tout ce qui suit ;
  *   · une DICTÉE (Williams seul, après l'appel) n'a PAS d'étape de
@@ -20,6 +22,11 @@
  * fait que lire et écrire.
  */
 
+import {
+  EVT_ACCORD_A_CONFIRMER,
+  EVT_ACCORD_RETROUVE,
+  signalAccordAPoser,
+} from "./accord-a-confirmer";
 import { CODES_ALERTES_CIRCUIT } from "./alertes-circuit";
 import type { SegmentStocke } from "./dialogue";
 import { ArretVisio, type Gestionnaire } from "./etapes";
@@ -139,6 +146,13 @@ export const precontroler: Gestionnaire = async (ctx) => {
           accordsRetrouves: plan.accords.length,
           apresRefus: plan.ordresApresRefus.length,
         });
+        // G16 : le signal est un événement À SOI (type exact, jamais tronqué),
+        // lu par la vue du compte rendu et exigé par toute validation.
+        if (plan.controleAccord && !plan.muette) {
+          await deps.donnees.noterAuJournal(tx, d.enregistrementId, {
+            type: signalAccordAPoser(plan) ? EVT_ACCORD_A_CONFIRMER : EVT_ACCORD_RETROUVE,
+          });
+        }
       }
       return [{ etape: "extraire", compteRenduId: null, reinitialiser: true }];
     },

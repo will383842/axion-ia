@@ -381,7 +381,7 @@ async function traiterErreur(
       niveau: "important",
       titre: "Circuit visio : un compte rendu attend votre réponse",
       message:
-        "L'enregistrement dure moins de 90 secondes : le client a-t-il refusé ? Répondez sur la page du rendez-vous, « Ouvrir le compte rendu ».",
+        "L'enregistrement dure moins de 90 secondes : le client a-t-il refusé ? Répondez sur la page du rendez-vous, « Compte rendu de l'enregistrement ».",
       rencontreId: t.rencontreId,
     });
     return "attente_will";

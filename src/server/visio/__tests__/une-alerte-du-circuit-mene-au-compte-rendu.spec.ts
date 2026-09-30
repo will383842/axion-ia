@@ -2,19 +2,20 @@
 /**
  * ⛔ UNE ALERTE DU CIRCUIT MÈNE AU COMPTE RENDU (sans taper d'URL).
  *
- * La vue du compte rendu (`rendez-vous?compteRendu=<rencontreId>`) porte la
- * lecture, la validation et le retrait de l'accord (B2). Avant ce correctif,
- * rien n'y menait : les alertes posaient `cibleType: "Rencontre"`, absent de
- * la table des liens (`lien-cible.ts`), donc SANS lien ; et la page du
- * rendez-vous annonçait un compte rendu « à venir ». Le chemin est désormais :
- * alerte → page du rendez-vous → « Ouvrir le compte rendu ».
+ * Le compte rendu de l'enregistrement (`VueCompteRendu`) porte la lecture,
+ * la validation et le retrait de l'accord (B2). Avant ce correctif, rien n'y
+ * menait : les alertes posaient `cibleType: "Rencontre"`, absent de la table
+ * des liens (`lien-cible.ts`), donc SANS lien. Le chemin est désormais :
+ * alerte → page du rendez-vous, qui AFFICHE le compte rendu (un seul écran :
+ * l'ancien aiguillage `rendez-vous?compteRendu=` est retiré).
  *
  * Mutations qui rougissent : retirer `Rencontre` de `SEGMENT_PAR_CIBLE` ;
- * changer le `cibleType` posé par `alerterParLaConsole` ; retirer le lien
- * `?compteRendu=` de la page du rendez-vous, ou le reconditionner à
- * l'existence d'un compte rendu IA. Contre-témoin : une alerte sans
- * rendez-vous (suspension du circuit) ne porte aucune cible. Angle mort :
- * l'existence de la page est lue sur le disque par `lien-cible.spec.ts`.
+ * changer le `cibleType` posé par `alerterParLaConsole` ; ne plus rendre
+ * `VueCompteRendu` sur la page du rendez-vous, ou le reconditionner à
+ * l'existence d'un compte rendu IA ; rétablir l'aiguillage sur la liste.
+ * Contre-témoin : une alerte sans rendez-vous (suspension du circuit) ne
+ * porte aucune cible. Angle mort : l'existence de la page est lue sur le
+ * disque par `lien-cible.spec.ts`.
  */
 
 import { readFileSync } from "node:fs";
@@ -62,7 +63,7 @@ describe("une alerte du circuit mène au compte rendu", () => {
     expect(creees[0]!["cibleType"]).toBeUndefined();
   });
 
-  it("la page du rendez-vous ouvre la vue du compte rendu", () => {
+  it("la page du rendez-vous affiche le compte rendu de l'enregistrement", () => {
     const page = readFileSync(
       path.resolve(
         process.cwd(),
@@ -70,15 +71,17 @@ describe("une alerte du circuit mène au compte rendu", () => {
       ),
       "utf8",
     );
-    expect(page).toContain("?compteRendu=${r.id}");
-    // Le lien existe dès qu'un ENREGISTREMENT ou une étape existe, pas
-    // seulement quand un compte rendu est rédigé (retrait B2, réponse G0b).
+    expect(page).toMatch(/<VueCompteRendu\s/);
+    // Affiché dès qu'un ENREGISTREMENT ou une étape existe, pas seulement
+    // quand un compte rendu est rédigé (retrait B2, réponse G0b).
     expect(page).toContain("lireCircuitDeLaRencontre(prisma, r.id)");
-    expect(page).toMatch(/\{circuit\.aOuvrir \|\|/);
+    expect(page).toMatch(/= circuit\.aOuvrir \|\|/);
+    expect(page).toContain("lireCompteRendu(prisma, r.id)");
+    // Un seul écran : la liste des rendez-vous n'aiguille plus vers une vue.
     const onglet = readFileSync(
       path.resolve(process.cwd(), "src/app/[locale]/(admin)/[adminPrefix]/rendez-vous/page.tsx"),
       "utf8",
     );
-    expect(onglet).toMatch(/demande\["compteRendu"\]/);
+    expect(onglet).not.toMatch(/\["compteRendu"\]|\?compteRendu=|VueCompteRendu/);
   });
 });

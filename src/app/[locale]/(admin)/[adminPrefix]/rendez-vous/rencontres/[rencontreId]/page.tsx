@@ -2,11 +2,11 @@
  * Admin — la page d'un RENDEZ-VOUS et de son compte rendu (chantier visio,
  * PR 4 ; plan §3.13, vérifications V1-C1 et V5-C1).
  *
- * La note manuelle validée, les faits du rendez-vous, le suivi, et le LIEN
- * vers le compte rendu rédigé depuis l'enregistrement (PR 6 : la vue
- * `rendez-vous?compteRendu=<rencontreId>`, où Will le lit, le valide ou
- * retire l'accord ; les alertes du circuit mènent ici). Plus « Après
- * l'appel », « Préparer » et « Déplacer ».
+ * La note manuelle validée, les faits du rendez-vous, le suivi, et le
+ * COMPTE RENDU DE L'ENREGISTREMENT (PR 6, `VueCompteRendu`) : Will le lit, dit
+ * qui a parlé, confirme un accord non retrouvé, le valide ou retire l'accord —
+ * sur CETTE page, la même que celle où mènent les alertes du circuit. Plus
+ * « Après l'appel », « Préparer » et « Déplacer ».
  *
  * Texte BRUT partout : aucun HTML venant d'une donnée n'est interprété.
  * Régime REFUS (décision A2) : `gardeLectureEchanges` est la PREMIÈRE
@@ -35,7 +35,8 @@ import {
   lireFichesVivantes,
   lireRencontreDetaillee,
 } from "@/features/dossier-client/queries-rencontres";
-import { lireCircuitDeLaRencontre } from "@/features/dossier-client/compte-rendu";
+import { VueCompteRendu } from "@/components/admin/visio/VueCompteRendu";
+import { lireCircuitDeLaRencontre, lireCompteRendu } from "@/features/dossier-client/compte-rendu";
 import { prisma } from "@/lib/prisma";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { timeInParis } from "@/lib/calendar-grid";
@@ -85,6 +86,8 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
   }
   const sp = await searchParams;
   const erreur = typeof sp.erreur === "string" && sp.erreur !== "" ? sp.erreur.slice(0, 300) : null;
+  const message =
+    typeof sp.message === "string" && sp.message !== "" ? sp.message.slice(0, 300) : null;
 
   const r = await lireRencontreDetaillee(rencontreId);
   if (r === null) notFound();
@@ -96,10 +99,12 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
   const fiches = r.client ? (await lireFichesVivantes()).filter((f) => f.id !== r.client?.id) : [];
   const ficheHref = r.client ? `/${locale}/${adminPrefix}/qualiopi/clients/${r.client.id}` : null;
   const valide = r.comptesRendus.find((c) => c.statut === "valide") ?? null;
-  // La vue du compte rendu est ouverte dès qu'un ENREGISTREMENT existe (pendant
-  // le traitement, après un échec, quand Will est attendu) : c'est là que se
-  // trouvent « Le client retire son accord » et la réponse aux enregistrements courts.
+  // Le compte rendu de l'enregistrement s'affiche dès qu'un ENREGISTREMENT existe
+  // (pendant le traitement, après un échec, quand Will est attendu) : c'est là que
+  // se trouvent « Le client retire son accord » et la réponse aux enregistrements courts.
   const circuit = await lireCircuitDeLaRencontre(prisma, r.id);
+  const avecEnregistrement = circuit.aOuvrir || r.comptesRendus.some((c) => c.origine === "ia");
+  const vueEnregistrement = avecEnregistrement ? await lireCompteRendu(prisma, r.id) : null;
   const faitsValides = r.faits.filter((f) => f.statut === "valide");
 
   return (
@@ -153,6 +158,14 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
           {erreur}
         </p>
       ) : null}
+      {message !== null ? (
+        <p
+          role="status"
+          className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success-fg)]"
+        >
+          {message}
+        </p>
+      ) : null}
 
       <section className={carteCls}>
         <h2 className={titreCls}>Compte rendu</h2>
@@ -190,19 +203,13 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
             refusé.
           </p>
         ) : null}
-        {circuit.aOuvrir || r.comptesRendus.some((c) => c.origine === "ia") ? (
-          <p className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
-            <Link href={`${rdvBase}?compteRendu=${r.id}`} className={lienCls}>
-              Ouvrir le compte rendu de l&apos;enregistrement
-            </Link>{" "}
-            <span className={mutedCls}>
-              — suivre son traitement, le lire, le valider, le faire réécrire, ou retirer
-              l&apos;accord du client.
-            </span>
+        {vueEnregistrement === null ? (
+          <p className={`mt-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] ${mutedCls}`}>
+            Aucun enregistrement de ce rendez-vous n&apos;a encore donné de compte rendu.
           </p>
         ) : (
           <p className={`mt-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] ${mutedCls}`}>
-            Aucun enregistrement de ce rendez-vous n&apos;a encore donné de compte rendu.
+            Le compte rendu de l&apos;enregistrement est plus bas sur cette page.
           </p>
         )}
         {r.comptesRendus.length > 1 ? (
@@ -219,6 +226,14 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
           </details>
         ) : null}
       </section>
+
+      {vueEnregistrement !== null ? (
+        <VueCompteRendu
+          vue={vueEnregistrement}
+          rencontreId={r.id}
+          retour={`${rdvBase}/rencontres/${r.id}`}
+        />
+      ) : null}
 
       <section className={carteCls}>
         <h2 className={titreCls}>Ce qui a été retenu</h2>

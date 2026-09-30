@@ -31,7 +31,7 @@
 
 import path from "node:path";
 
-import { chargerCatalogue, chiffrerEbauche } from "../../src/server/visio/catalogue-ia";
+import { chargerCatalogue, referencerEbauche } from "../../src/server/visio/catalogue-ia";
 import { instructionsDe } from "../../src/server/visio/consignes";
 import { construireEntreeP1 } from "../../src/server/visio/contexte";
 import {
@@ -316,7 +316,7 @@ async function main(): Promise<void> {
         }
         d = { ...d, etat: { ...d.etat, consolidation } };
 
-        // P4 + C4 — ébauches, prix calculés par le site.
+        // P4 — ébauches SANS PRIX (décision de Will du 29/09 : aucun chiffrage).
         const ebauches: DonneesPourPasses["etat"]["ebauches"][number][] = [];
         for (const { j, entree: e4 } of preparerP4(d)) {
           const p4 = await executerPasse(
@@ -338,7 +338,7 @@ async function main(): Promise<void> {
           ebauches.push({
             projetRef: j.ref,
             ebauche: controle.ebauche,
-            chiffrage: chiffrerEbauche(controle.ebauche.lignes, catalogue),
+            lignes: referencerEbauche(controle.ebauche.lignes, catalogue),
           });
         }
         d = { ...d, etat: { ...d.etat, ebauches } };
@@ -356,7 +356,7 @@ async function main(): Promise<void> {
           },
         );
         const v2e = preparerV2(d);
-        const v2 = verifierCompteRendu(p5.sortie, v2e.couverture, v2e.pourRedaction, v2e.montants);
+        const v2 = verifierCompteRendu(p5.sortie, v2e.couverture, v2e.pourRedaction);
         c.paragraphesRetires = v2.retires;
         c.chiffresHorsFaits = v2.motifs.filter((m) => /nombre|date|nom/.test(m)).length;
       } catch (err) {

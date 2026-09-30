@@ -18,6 +18,7 @@ import type {
   RendezVousSuite,
   RoleDansProjet,
   StatutEtape,
+  TypeConsentement,
 } from "../../../prisma/generated/client";
 import type { StatutRubrique } from "@/server/visio/verification/g06-couverture";
 import {
@@ -216,3 +217,12 @@ export function valeurLisible(f: {
   if (f.quantite !== null) return String(f.quantite);
   return (f.texteCourt ?? f.enonce).trim() || "—";
 }
+
+/** Les preuves d'accord d'un rendez-vous enregistré, pour l'écran du compte rendu. */
+export const LIBELLE_TYPE_CONSENTEMENT = {
+  declaration_axion: "Accord déclaré par vous (« Accord obtenu »)",
+  phrase_retrouvee_verifiee: "Réponse d'accord retrouvée dans l'enregistrement",
+  reponse_calendly: "Réponse à la question de la réservation (indice)",
+  nouveau_participant_signale: "Arrivée d'une personne signalée en cours d'appel",
+  retrait: "Accord retiré",
+} as const satisfies Record<TypeConsentement, string>;

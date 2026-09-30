@@ -14,7 +14,8 @@
  * `deriveTarifType` ; revenir à `noteDevisFr.split` dans le catalogue.
  * Même règle pour les offres `OFF:` : le type vient de la COLONNE
  * `tarifType` (la valeur enregistrée), jamais redérivé du prix — une offre de
- * matrice enregistrée « à partir de » n'est jamais chiffrée par C4.
+ * matrice enregistrée « à partir de » le reste (aucun prix n'est calculé :
+ * décision de Will du 29/09).
  * Mutation qui rougit : redériver le type depuis `prixHtEur`.
  * Contre-témoin : un palier à prix ferme reste « fixe ».
  */
@@ -53,7 +54,7 @@ import {
   findPricingTier,
   resolveOffreEffectifFr,
 } from "@/server/qualiopi/offres/pricing-resolver";
-import { chargerCatalogue, chiffrerEbauche } from "../catalogue-ia";
+import { chargerCatalogue } from "../catalogue-ia";
 
 describe("le catalogue du circuit lit les règles du site", () => {
   it("un prix plancher (`isFromPrice`) est « à partir de », jamais « fixe »", () => {
@@ -88,7 +89,7 @@ describe("le catalogue du circuit lit les règles du site", () => {
       expect(tier?.isFromPrice ?? false, e.ref).toBe(false);
     }
   });
-  it("une offre enregistrée « à partir de » le reste, même avec un prix : C4 ne la chiffre pas", async () => {
+  it("une offre enregistrée « à partir de » le reste, même avec un prix ; aucun prix gardé", async () => {
     offres.liste = [
       offre("MATRICE", "a_partir_de", 1200),
       offre("FERME", "fixe", 900),
@@ -102,14 +103,8 @@ describe("le catalogue du circuit lit les règles du site", () => {
       expect(type("OFF:FERME")).toBe("fixe");
       expect(type("OFF:SANSPRIX")).toBe("a_partir_de");
       expect(type("OFF:DEVIS")).toBe("sur_devis");
-      const c = chiffrerEbauche(
-        [
-          { ref_catalogue: "OFF:MATRICE", quantite: 1, unite: "session" },
-          { ref_catalogue: "OFF:FERME", quantite: 2, unite: "session" },
-        ],
-        catalogue,
-      );
-      expect(c.lignes.map((l) => l.totalHtCents)).toEqual([null, 180_000]);
+      // Le catalogue du circuit ne garde AUCUN prix, même pour une offre ferme.
+      for (const e of catalogue.entrees) expect(Object.keys(e), e.ref).not.toContain("prixHtEur");
     } finally {
       offres.liste = [];
     }

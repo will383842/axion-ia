@@ -7,17 +7,26 @@
  *
  *   · Valider le compte rendu (⇒ purge du son, décision B1) — REFUSÉ tant
  *     que les voix de la piste client ne sont pas attribuées quand il y en a
- *     plusieurs ;
+ *     plusieurs, et tant que le signal G16 « accord d'une personne non
+ *     retrouvé » n'est pas levé par Will ;
  *   · Réécrire (P5 sur les mêmes faits), Réextraire (P1 depuis la
  *     transcription), Compléter après rattachement (P2 et suivantes, SANS
  *     refaire P1) ;
- *   · Attribuer une voix (« CLIENT_1 = … ») ;
+ *   · Attribuer une voix (« CLIENT_1 = … »), ajouter la personne comme contact,
+ *     ou dire que c'est la voix de Williams (écho) ;
+ *   · Confirmer à la main l'accord de chaque personne (G16) ;
  *   · Confirmer qu'un enregistrement de moins de 90 s doit être traité ;
  *   · Reprendre les étapes suspendues (crédit rechargé, configuration corrigée).
  */
 
 import type { PrismaClient } from "../../../prisma/generated/client";
+import { NOM_WILLIAMS } from "@/features/dossier-client/rencontre-calendly";
 import { chiffrerParole, dechiffrerParole } from "@/lib/chiffrer-parole";
+import {
+  accordAConfirmer,
+  EVT_ACCORD_CONFIRME_PAR_WILL,
+  rencontreAccordAConfirmer,
+} from "./accord-a-confirmer";
 import { etatSansTexteBrut, lireEtat } from "./etat-compte-rendu";
 import { ajouterAuJournal } from "./journal-enregistrement";
 import { planifierDans } from "./prise-d-etape";
@@ -33,31 +42,40 @@ export class GesteRefuse extends Error {
 
 // ── Voix ─────────────────────────────────────────────────────────────────────
 
+/** À qui les passages d'une voix de la piste client sont attribués (`null` : à personne). */
+export interface AttributionVoix {
+  readonly voix: string;
+  readonly participantId: string | null;
+}
+
 /**
  * Les voix de la piste client sans personne attribuée, QUAND il y en a
- * plusieurs. Une seule voix n'exige rien (c'est l'interlocuteur). Fonction PURE.
+ * plusieurs. Une seule voix n'exige rien (c'est l'interlocuteur).
+ *
+ * L'attribution se lit sur les PASSAGES (`transcription_segments.participant_id`),
+ * pas sur la personne : une même personne peut porter DEUX voix (la
+ * diarisation coupe parfois une personne en deux), et en attribuer une seconde
+ * n'efface pas la première. Fonction PURE.
  */
 export function voixNonAttribuees(
   voixClient: readonly string[],
-  participants: ReadonlyArray<{
-    readonly etiquetteVoix: string | null;
-    readonly voixValideeLe: Date | null;
-  }>,
+  attributions: readonly AttributionVoix[],
 ): string[] {
   if (voixClient.length <= 1) return [];
-  const attribuees = new Set(
-    participants
-      .filter((p) => p.etiquetteVoix !== null && p.voixValideeLe !== null)
-      .map((p) => p.etiquetteVoix!),
+  return voixClient.filter(
+    (v) =>
+      !attributions.some((a) => a.voix === v) ||
+      attributions.some((a) => a.voix === v && a.participantId === null),
   );
-  return voixClient.filter((v) => !attribuees.has(v));
 }
 
-/** Ce que la lecture des voix demande à la base (client ou transaction). */
-type LecteurVoix = Pick<PrismaClient, "transcriptionSegment" | "rencontreParticipant">;
+type LecteurSegments = Pick<PrismaClient, "transcriptionSegment">;
 
-/** Les voix de la piste client de la transcription retenue d'une rencontre. */
-export async function voixDeLaRencontre(db: LecteurVoix, rencontreId: string): Promise<string[]> {
+/** Les voix de la piste client de la transcription retenue, et à qui chacune est attribuée. */
+export async function lireVoix(
+  db: LecteurSegments,
+  rencontreId: string,
+): Promise<{ readonly voixClient: string[]; readonly attributions: AttributionVoix[] }> {
   const lignes = await db.transcriptionSegment.findMany({
     where: {
       piste: "client",
@@ -65,38 +83,145 @@ export async function voixDeLaRencontre(db: LecteurVoix, rencontreId: string): P
       apresRefus: false,
       transcription: { statut: "retenue", enregistrement: { rencontreId } },
     },
-    distinct: ["locuteurBrut"],
+    distinct: ["locuteurBrut", "participantId"],
     orderBy: { debutMs: "asc" },
-    select: { locuteurBrut: true },
+    select: { locuteurBrut: true, participantId: true },
   });
-  return lignes.map((l) => l.locuteurBrut ?? "A");
+  const attributions = lignes.map((l) => ({
+    voix: l.locuteurBrut ?? "A",
+    participantId: l.participantId ?? null,
+  }));
+  return { voixClient: [...new Set(attributions.map((a) => a.voix))], attributions };
+}
+
+/** Les voix de la piste client de la transcription retenue d'une rencontre. */
+export async function voixDeLaRencontre(
+  db: LecteurSegments,
+  rencontreId: string,
+): Promise<string[]> {
+  return (await lireVoix(db, rencontreId)).voixClient;
 }
 
 /**
  * ⛔ « Valider tous » (et la validation du compte rendu) sont REFUSÉS tant que
  * la correspondance des voix n'est pas faite quand la piste client en porte
- * plusieurs. Appelée par `validerCompteRendu` et, dans sa transaction, par
- * `validerApresLAppel` (`src/features/dossier-client/valider.ts`).
+ * plusieurs. Appelée (par `exigerValidationPossible`) par `validerCompteRendu`
+ * et, dans sa transaction, par `validerApresLAppel`
+ * (`src/features/dossier-client/valider.ts`).
  */
-export async function exigerVoixAttribuees(db: LecteurVoix, rencontreId: string): Promise<void> {
-  const [voix, participants] = await Promise.all([
-    voixDeLaRencontre(db, rencontreId),
-    db.rencontreParticipant.findMany({
-      where: { rencontreId, role: "client" },
-      select: { etiquetteVoix: true, voixValideeLe: true },
-    }),
-  ]);
-  const manquantes = voixNonAttribuees(voix, participants);
+export async function exigerVoixAttribuees(
+  db: LecteurSegments,
+  rencontreId: string,
+): Promise<void> {
+  const { voixClient, attributions } = await lireVoix(db, rencontreId);
+  const manquantes = voixNonAttribuees(voixClient, attributions);
   if (manquantes.length > 0) {
     throw new GesteRefuse(
       `Plusieurs personnes ont parlé côté client : dites d'abord qui est qui (voix ${manquantes
-        .map((v) => `CLIENT_${voix.indexOf(v) + 1}`)
+        .map((v) => `CLIENT_${voixClient.indexOf(v) + 1}`)
         .join(", ")}).`,
     );
   }
 }
 
-/** « CLIENT_1 = … » : attribue une voix à une personne présente. */
+/**
+ * ⛔ G16 — « Valider tous » (et la validation du compte rendu) sont REFUSÉS
+ * tant que le signal « accord d'une personne non retrouvé » n'a pas été levé
+ * par la confirmation à la main de Will (`confirmerAccordALaMain`).
+ */
+export async function exigerAccordConfirme(
+  db: Pick<PrismaClient, "enregistrement">,
+  rencontreId: string,
+): Promise<void> {
+  const enregistrements = await db.enregistrement.findMany({
+    where: { rencontreId },
+    select: { evenements: true },
+  });
+  if (rencontreAccordAConfirmer(enregistrements)) {
+    throw new GesteRefuse(
+      "L'accord d'une personne qui a parlé côté client n'a pas été retrouvé dans l'enregistrement : " +
+        "confirmez d'abord que chacune a donné son accord (ou retirez l'accord du client).",
+    );
+  }
+}
+
+/** Ce que les exigences de validation lisent (client ou transaction). */
+type LecteurValidation = Pick<PrismaClient, "transcriptionSegment" | "enregistrement">;
+
+/**
+ * ⛔ Les DEUX exigences de toute validation d'un rendez-vous enregistré :
+ * l'accord de chaque personne (G16), puis la correspondance des voix.
+ */
+export async function exigerValidationPossible(
+  db: LecteurValidation,
+  rencontreId: string,
+): Promise<void> {
+  await exigerAccordConfirme(db, rencontreId);
+  await exigerVoixAttribuees(db, rencontreId);
+}
+
+/** G16 : Will confirme à la main que chaque personne qui a parlé a donné son accord. */
+export async function confirmerAccordALaMain(
+  db: Db,
+  a: { readonly rencontreId: string; readonly maintenant: Date },
+): Promise<void> {
+  const enregistrements = await db.enregistrement.findMany({
+    where: { rencontreId: a.rencontreId },
+    select: { id: true, evenements: true },
+  });
+  const aConfirmer = enregistrements.filter((e) => accordAConfirmer(e.evenements));
+  if (aConfirmer.length === 0) throw new GesteRefuse("Aucun accord n'attend votre confirmation.");
+  await db.$transaction(async (tx) => {
+    for (const e of aConfirmer) {
+      await tx.enregistrement.update({
+        where: { id: e.id },
+        data: {
+          evenements: ajouterAuJournal(e.evenements, {
+            le: a.maintenant,
+            type: EVT_ACCORD_CONFIRME_PAR_WILL,
+          }),
+        },
+      });
+    }
+  });
+}
+
+type Tx = Parameters<Parameters<Db["$transaction"]>[0]>[0];
+
+/** Attribue les passages d'une voix à une personne (dans une transaction). */
+async function attribuerDans(
+  tx: Tx,
+  a: {
+    readonly rencontreId: string;
+    readonly voix: string;
+    readonly participantId: string;
+    readonly maintenant: Date;
+  },
+): Promise<void> {
+  // L'étiquette de la personne ne sert qu'à l'affichage : l'attribution qui
+  // compte est celle des PASSAGES, qu'une seconde voix n'efface pas.
+  await tx.rencontreParticipant.updateMany({
+    where: { rencontreId: a.rencontreId, etiquetteVoix: a.voix, NOT: { id: a.participantId } },
+    data: { etiquetteVoix: null, voixValideeLe: null },
+  });
+  await tx.rencontreParticipant.update({
+    where: { id: a.participantId },
+    data: { etiquetteVoix: a.voix, voixValideeLe: a.maintenant },
+  });
+  await tx.transcriptionSegment.updateMany({
+    where: {
+      piste: "client",
+      locuteurBrut: a.voix,
+      transcription: { statut: "retenue", enregistrement: { rencontreId: a.rencontreId } },
+    },
+    data: { participantId: a.participantId, etiquetteVoix: a.voix },
+  });
+}
+
+/**
+ * « CLIENT_1 = … » : attribue une voix à une personne présente — une personne
+ * du client, ou Williams lui-même (écho de sa voix sur la piste client).
+ */
 export async function attribuerVoix(
   db: Db,
   a: {
@@ -108,26 +233,89 @@ export async function attribuerVoix(
 ): Promise<void> {
   await db.$transaction(async (tx) => {
     const p = await tx.rencontreParticipant.findFirst({
-      where: { id: a.participantId, rencontreId: a.rencontreId, role: "client" },
+      where: {
+        id: a.participantId,
+        rencontreId: a.rencontreId,
+        role: { in: ["client", "axion"] },
+      },
       select: { id: true },
     });
     if (!p) throw new GesteRefuse("Cette personne ne fait pas partie de ce rendez-vous.");
-    await tx.rencontreParticipant.updateMany({
-      where: { rencontreId: a.rencontreId, etiquetteVoix: a.voix, NOT: { id: p.id } },
-      data: { etiquetteVoix: null, voixValideeLe: null },
+    await attribuerDans(tx, { ...a, participantId: p.id });
+  });
+}
+
+/**
+ * « Ajouter comme contact » : une personne a parlé sans être prévue (un
+ * collègue absent de la réservation). Elle devient un participant du
+ * rendez-vous — et une personne de la fiche client (`origine = saisie`) quand
+ * le rendez-vous est rangé chez un client —, puis la voix lui est attribuée.
+ * La correspondance des voix peut ainsi TOUJOURS être complétée.
+ */
+export async function ajouterPersonnePourVoix(
+  db: Db,
+  a: {
+    readonly rencontreId: string;
+    readonly voix: string;
+    readonly nom: string;
+    readonly fonction: string | null;
+    readonly parAdminId: string;
+    readonly maintenant: Date;
+  },
+): Promise<void> {
+  const nom = a.nom.trim().replace(/\s+/g, " ");
+  if (nom.length < 2 || nom.length > 200) throw new GesteRefuse("Écrivez le nom de la personne.");
+  const fonction = a.fonction?.trim().slice(0, 150) || null;
+  await db.$transaction(async (tx) => {
+    const r = await tx.rencontre.findUnique({
+      where: { id: a.rencontreId },
+      select: { id: true, clientId: true },
     });
-    await tx.rencontreParticipant.update({
-      where: { id: p.id },
-      data: { etiquetteVoix: a.voix, voixValideeLe: a.maintenant },
-    });
-    await tx.transcriptionSegment.updateMany({
-      where: {
-        piste: "client",
-        locuteurBrut: a.voix,
-        transcription: { statut: "retenue", enregistrement: { rencontreId: a.rencontreId } },
+    if (!r) throw new GesteRefuse("Rendez-vous introuvable.");
+    const contact =
+      r.clientId === null
+        ? null
+        : await tx.clientContact.create({
+            data: {
+              clientId: r.clientId,
+              nom,
+              fonction,
+              origine: "saisie",
+              creeParId: a.parAdminId,
+            },
+            select: { id: true },
+          });
+    const p = await tx.rencontreParticipant.create({
+      data: {
+        rencontreId: r.id,
+        clientId: r.clientId,
+        contactId: contact?.id ?? null,
+        nomAffiche: nom,
+        role: "client",
       },
-      data: { participantId: p.id, etiquetteVoix: a.voix },
+      select: { id: true },
     });
+    await attribuerDans(tx, { ...a, participantId: p.id });
+  });
+}
+
+/** « C'est ma voix (écho) » : la voix est celle de Williams, entendue sur la piste client. */
+export async function marquerVoixDeWilliams(
+  db: Db,
+  a: { readonly rencontreId: string; readonly voix: string; readonly maintenant: Date },
+): Promise<void> {
+  await db.$transaction(async (tx) => {
+    const existant = await tx.rencontreParticipant.findFirst({
+      where: { rencontreId: a.rencontreId, role: "axion" },
+      select: { id: true },
+    });
+    const p =
+      existant ??
+      (await tx.rencontreParticipant.create({
+        data: { rencontreId: a.rencontreId, nomAffiche: NOM_WILLIAMS, role: "axion" },
+        select: { id: true },
+      }));
+    await attribuerDans(tx, { ...a, participantId: p.id });
   });
 }
 
@@ -144,7 +332,7 @@ export async function validerCompteRendu(
   });
   if (!cr || cr.statut !== "a_valider")
     throw new GesteRefuse("Ce compte rendu n'est pas à valider.");
-  await exigerVoixAttribuees(db, cr.rencontreId);
+  await exigerValidationPossible(db, cr.rencontreId);
   await db.$transaction(async (tx) => {
     await tx.compteRendu.updateMany({
       where: { rencontreId: cr.rencontreId, statut: "valide" },

@@ -19,12 +19,15 @@ import { prisma } from "@/lib/prisma";
 import { retirerAccordRencontre } from "@/lib/rgpd-erase";
 import { exigerAccesEchanges } from "@/features/dossier-client/acces";
 import {
+  ajouterPersonnePourVoix,
   attribuerVoix,
+  confirmerAccordALaMain,
   confirmerEnregistrementCourt,
   GesteRefuse,
   reecrireCompteRendu,
   reextraireCompteRendu,
   completerApresRattachement,
+  marquerVoixDeWilliams,
   reprendreEtapesSuspendues,
   validerCompteRendu,
 } from "@/server/visio/gestes-compte-rendu";
@@ -35,11 +38,13 @@ function lireRencontre(fd: FormData): string {
   return uuid.parse(fd.get("rencontreId"));
 }
 
-/** L'adresse de retour : la vue du compte rendu (jamais une URL extérieure). */
+/** L'adresse de retour : la page du rendez-vous (jamais une URL extérieure). */
 function lireRetour(fd: FormData): string {
   const r = String(fd.get("retour") ?? "");
-  return /^\/[a-z]{2}\/[\w-]+\/rendez-vous\?compteRendu=[0-9a-f-]{36}$/.test(r) ? r : "/";
+  return /^\/[a-z]{2}\/[\w-]+\/rendez-vous\/rencontres\/[0-9a-f-]{36}$/.test(r) ? r : "/";
 }
+
+const voixLue = z.string().min(1).max(8);
 
 /**
  * Exécute un geste et revient sur la page avec un message (formulaire sans
@@ -101,11 +106,38 @@ const GESTES: Readonly<
   voix: async (fd, rencontreId) => {
     await attribuerVoix(prisma, {
       rencontreId,
-      voix: z.string().min(1).max(8).parse(fd.get("voix")),
+      voix: voixLue.parse(fd.get("voix")),
       participantId: uuid.parse(fd.get("participantId")),
       maintenant: new Date(),
     });
     return "Voix attribuée.";
+  },
+  voix_nouvelle_personne: async (fd, rencontreId, adminId) => {
+    const fonction = String(fd.get("fonction") ?? "");
+    await ajouterPersonnePourVoix(prisma, {
+      rencontreId,
+      voix: voixLue.parse(fd.get("voix")),
+      nom: String(fd.get("nom") ?? ""),
+      fonction: fonction === "" ? null : fonction,
+      parAdminId: adminId,
+      maintenant: new Date(),
+    });
+    return "Personne ajoutée au rendez-vous (et à la fiche client), voix attribuée.";
+  },
+  voix_williams: async (fd, rencontreId) => {
+    await marquerVoixDeWilliams(prisma, {
+      rencontreId,
+      voix: voixLue.parse(fd.get("voix")),
+      maintenant: new Date(),
+    });
+    return "Voix attribuée : c'est la vôtre (écho).";
+  },
+  confirmer_accord: async (fd, rencontreId) => {
+    if (fd.get("confirmation") !== "oui") {
+      throw new GesteRefuse("Cochez la case pour confirmer l'accord de chaque personne.");
+    }
+    await confirmerAccordALaMain(prisma, { rencontreId, maintenant: new Date() });
+    return "Accord confirmé : le compte rendu peut être validé.";
   },
   court: async (_fd, rencontreId) => {
     await confirmerEnregistrementCourt(prisma, rencontreId, new Date());

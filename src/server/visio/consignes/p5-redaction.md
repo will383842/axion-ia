@@ -22,7 +22,7 @@ de type « probleme », commence par « Hypothèse : » et se termine par la que
 de la vérifier. Ces questions sont reprises dans les questions ouvertes.
 
 Rubrique « offres » : commente les lignes proposées (pourquoi elles, ce qui est supposé) sans
-écrire de montant : le tableau chiffré est inséré par le site.
+écrire de montant : la liste des références, sans prix, est affichée par le site.
 
 « En bref » : 5 lignes au plus — ce que veut le client, pour quand, avec quel budget, qui
 décide, la prochaine étape.

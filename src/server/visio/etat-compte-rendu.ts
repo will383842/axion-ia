@@ -19,7 +19,7 @@
 import type { CompteRenduV1, ConsolidationV1, EbaucheV1, RattachementV1 } from "./schemas/autres";
 import type { ExtractionV1 } from "./schemas/extraction";
 import type { Couverture } from "./verification/g06-couverture";
-import type { EbaucheChiffree } from "./catalogue-ia";
+import type { LigneReferencee } from "./catalogue-ia";
 import type { ProjetEvoque } from "./consolider";
 
 export interface EtatCompteRendu {
@@ -52,7 +52,8 @@ export interface EtatCompteRendu {
   readonly ebauches: ReadonlyArray<{
     readonly projetRef: string;
     readonly ebauche: EbaucheV1;
-    readonly chiffrage: EbaucheChiffree;
+    /** Références du catalogue, SANS PRIX (décision de Will du 29/09). */
+    readonly lignes: readonly LigneReferencee[];
   }>;
   /** Brouillon de P5, jusqu'à `verifier_compte_rendu`. */
   readonly redaction: CompteRenduV1 | null;

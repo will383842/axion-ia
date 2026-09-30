@@ -3,8 +3,9 @@
  *
  *   G9 — RÉDACTION SANS AJOUT : chaque paragraphe cite au moins un fait
  *        VÉRIFIÉ ; chaque nombre, montant, date et nom propre du paragraphe
- *        figure dans l'énoncé, la valeur ou la citation de l'un de SES faits
- *        (ou, pour les offres, dans les montants calculés par le site) ; aucun
+ *        figure dans l'énoncé, la valeur ou la citation de l'un de SES faits —
+ *        y compris dans la rubrique « offres » : aucun prix du catalogue n'est
+ *        admis (décision de Will du 29/09, aucun chiffrage) ; aucun
  *        « € » hors des rubriques budget, engagements et offres. Un paragraphe
  *        fautif est RETIRÉ (signal) ; si plus de 20 % des paragraphes sont
  *        retirés, le compte rendu est rejeté et réécrit une fois.
@@ -114,15 +115,11 @@ export function paragrapheFautif(
     | "prochaine_etape_texte"
     | "besoins_detectes",
   faits: ReadonlyMap<string, FaitPourRedaction>,
-  montantsCalcules: readonly number[],
 ): string | null {
   const siens = p.faits_refs.map((r) => faits.get(r)).filter((f) => f !== undefined);
   if (siens.length === 0) return "aucun fait vérifié cité";
   const matiere = siens.flatMap((f) => [f.enonce, f.citation ?? "", ...f.valeurs]).join(" \n ");
-  const nombresPermis = new Set([
-    ...nombresDuTexte(matiere),
-    ...(rubrique === "offres" ? montantsCalcules : []),
-  ]);
+  const nombresPermis = new Set(nombresDuTexte(matiere));
   for (const n of nombresDuTexte(p.texte)) {
     if (!nombresPermis.has(n)) return `nombre absent des faits (${n})`;
   }
@@ -154,7 +151,6 @@ export function verifierCompteRendu(
   cr: CompteRenduV1,
   couverture: Couverture,
   faits: ReadonlyMap<string, FaitPourRedaction>,
-  montantsCalcules: readonly number[] = [],
 ): BilanV2 {
   let paragraphes = 0;
   let retires = 0;
@@ -165,7 +161,7 @@ export function verifierCompteRendu(
   ): Paragraphe[] =>
     liste.filter((p) => {
       paragraphes += 1;
-      const m = paragrapheFautif(p, rubrique, faits, montantsCalcules);
+      const m = paragrapheFautif(p, rubrique, faits);
       if (m !== null) {
         retires += 1;
         motifs.push(`${rubrique} : ${m}`);
@@ -191,7 +187,6 @@ export function verifierCompteRendu(
       { texte: `${b.hypothese} ${b.question}`, faits_refs: b.faits_refs },
       "besoins_detectes",
       faits,
-      montantsCalcules,
     );
     if (m !== null) {
       retires += 1;

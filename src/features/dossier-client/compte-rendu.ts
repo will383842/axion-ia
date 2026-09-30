@@ -13,13 +13,15 @@ import type {
   MotifRejetFait,
   PrismaClient,
   StatutEtape,
+  TypeConsentement,
 } from "../../../prisma/generated/client";
 import { dechiffrerParole, dechiffrerParoleOuNull } from "@/lib/chiffrer-parole";
-import type { EbaucheChiffree } from "@/server/visio/catalogue-ia";
+import type { LigneReferencee } from "@/server/visio/catalogue-ia";
 import type { CompteRenduV1 } from "@/server/visio/schemas/autres";
 import type { Couverture } from "@/server/visio/verification/g06-couverture";
 import { lireEtat, type EtatCompteRendu } from "@/server/visio/etat-compte-rendu";
-import { voixDeLaRencontre, voixNonAttribuees } from "@/server/visio/gestes-compte-rendu";
+import { rencontreAccordAConfirmer } from "@/server/visio/accord-a-confirmer";
+import { lireVoix, voixNonAttribuees } from "@/server/visio/gestes-compte-rendu";
 
 export interface DocumentCompteRendu {
   readonly v: 1;
@@ -27,7 +29,8 @@ export interface DocumentCompteRendu {
   readonly couverture: Couverture;
   readonly ebauches: ReadonlyArray<{
     readonly projetRef: string;
-    readonly chiffrage: EbaucheChiffree;
+    /** Pistes d'offre évoquées, SANS PRIX : le devis se compose à la main. */
+    readonly lignes: readonly LigneReferencee[];
     readonly hypotheses: readonly string[];
     readonly manquant: readonly string[];
     readonly sansReference: readonly string[];
@@ -80,12 +83,21 @@ export interface VueCompteRendu {
   readonly voix: {
     readonly voixClient: readonly string[];
     readonly nonAttribuees: readonly string[];
+    /** Pour chaque voix, la personne à qui ses passages sont attribués (sinon `null`). */
+    readonly attribueeA: Readonly<Record<string, string | null>>;
+    /** Les personnes à qui une voix peut être attribuée : le client, et Williams (écho). */
     readonly participants: ReadonlyArray<{
       readonly id: string;
       readonly nom: string;
-      readonly etiquetteVoix: string | null;
+      readonly estWilliams: boolean;
     }>;
   };
+  /**
+   * ⛔ G16 : l'accord d'une personne qui a parlé côté client n'a pas été
+   * retrouvé (ou aucun accord ne l'a été), et Will ne l'a pas encore confirmé
+   * à la main. Toute validation est refusée tant que c'est vrai.
+   */
+  readonly accordAConfirmer: boolean;
   readonly etapes: ReadonlyArray<{
     readonly etape: EtapeVisio;
     readonly statut: StatutEtape;
@@ -99,7 +111,7 @@ export interface VueCompteRendu {
     readonly audioAPurgerAvant: Date | null;
     readonly audioSupprimeLe: Date | null;
   }>;
-  readonly accords: ReadonlyArray<{ readonly type: string; readonly survenuLe: Date }>;
+  readonly accords: ReadonlyArray<{ readonly type: TypeConsentement; readonly survenuLe: Date }>;
 }
 
 const ORDRE_COURANT = ["a_valider", "brouillon", "valide", "a_regenerer", "rejete"];
@@ -165,69 +177,76 @@ export async function lireCompteRendu(
     },
   });
   if (!r) return null;
-  const [crs, faits, participants, etapes, enregistrements, accords, voixClient] =
-    await Promise.all([
-      db.compteRendu.findMany({
-        where: { rencontreId },
-        orderBy: { version: "desc" },
-        select: {
-          id: true,
-          version: true,
-          statut: true,
-          mode: true,
-          modele: true,
-          promptHash: true,
-          createdAt: true,
-          valideLe: true,
-          contenu: true,
-          verification: true,
-        },
-      }),
-      db.fait.findMany({
-        where: { rencontreId, statut: { not: "efface" }, source: "transcription" },
-        orderBy: [{ citationDebutMs: "asc" }, { createdAt: "asc" }],
-        select: {
-          id: true,
-          refExtraction: true,
-          type: true,
-          statut: true,
-          motifRejet: true,
-          enonce: true,
-          citation: true,
-          citationDebutMs: true,
-          citationVerifiee: true,
-          certitude: true,
-          confiance: true,
-          locuteur: true,
-        },
-      }),
-      db.rencontreParticipant.findMany({
-        where: { rencontreId, role: "client" },
-        select: { id: true, nomAffiche: true, etiquetteVoix: true, voixValideeLe: true },
-      }),
-      db.traitementVisio.findMany({
-        where: { rencontreId },
-        orderBy: { id: "asc" },
-        select: {
-          etape: true,
-          statut: true,
-          classeErreur: true,
-          derniereErreur: true,
-          prochaineTentativeLe: true,
-        },
-      }),
-      db.enregistrement.findMany({
-        where: { rencontreId },
-        orderBy: { debut: "desc" },
-        select: { statut: true, incomplet: true, audioAPurgerAvant: true, audioSupprimeLe: true },
-      }),
-      db.enregistrementConsentement.findMany({
-        where: { rencontreId },
-        orderBy: { survenuLe: "asc" },
-        select: { type: true, survenuLe: true },
-      }),
-      voixDeLaRencontre(db, rencontreId),
-    ]);
+  const [crs, faits, participants, etapes, enregistrements, accords, voixLues] = await Promise.all([
+    db.compteRendu.findMany({
+      where: { rencontreId },
+      orderBy: { version: "desc" },
+      select: {
+        id: true,
+        version: true,
+        statut: true,
+        mode: true,
+        modele: true,
+        promptHash: true,
+        createdAt: true,
+        valideLe: true,
+        contenu: true,
+        verification: true,
+      },
+    }),
+    db.fait.findMany({
+      where: { rencontreId, statut: { not: "efface" }, source: "transcription" },
+      orderBy: [{ citationDebutMs: "asc" }, { createdAt: "asc" }],
+      select: {
+        id: true,
+        refExtraction: true,
+        type: true,
+        statut: true,
+        motifRejet: true,
+        enonce: true,
+        citation: true,
+        citationDebutMs: true,
+        citationVerifiee: true,
+        certitude: true,
+        confiance: true,
+        locuteur: true,
+      },
+    }),
+    db.rencontreParticipant.findMany({
+      where: { rencontreId, role: { in: ["client", "axion"] } },
+      orderBy: { role: "desc" },
+      select: { id: true, nomAffiche: true, role: true },
+    }),
+    db.traitementVisio.findMany({
+      where: { rencontreId },
+      orderBy: { id: "asc" },
+      select: {
+        etape: true,
+        statut: true,
+        classeErreur: true,
+        derniereErreur: true,
+        prochaineTentativeLe: true,
+      },
+    }),
+    db.enregistrement.findMany({
+      where: { rencontreId },
+      orderBy: { debut: "desc" },
+      select: {
+        statut: true,
+        incomplet: true,
+        audioAPurgerAvant: true,
+        audioSupprimeLe: true,
+        evenements: true,
+      },
+    }),
+    db.enregistrementConsentement.findMany({
+      where: { rencontreId },
+      orderBy: { survenuLe: "asc" },
+      select: { type: true, survenuLe: true },
+    }),
+    lireVoix(db, rencontreId),
+  ]);
+  const { voixClient, attributions } = voixLues;
   const courant =
     [...crs]
       .sort(
@@ -287,15 +306,27 @@ export async function lireCompteRendu(
     })),
     voix: {
       voixClient,
-      nonAttribuees: voixNonAttribuees(voixClient, participants),
+      nonAttribuees: voixNonAttribuees(voixClient, attributions),
+      attribueeA: Object.fromEntries(
+        voixClient.map((v) => {
+          const ids = attributions.filter((a) => a.voix === v).map((a) => a.participantId);
+          return [v, ids.length === 1 ? (ids[0] ?? null) : null];
+        }),
+      ),
       participants: participants.map((p) => ({
         id: p.id,
         nom: p.nomAffiche,
-        etiquetteVoix: p.etiquetteVoix,
+        estWilliams: p.role === "axion",
       })),
     },
+    accordAConfirmer: rencontreAccordAConfirmer(enregistrements),
     etapes,
-    enregistrements,
+    enregistrements: enregistrements.map((e) => ({
+      statut: e.statut,
+      incomplet: e.incomplet,
+      audioAPurgerAvant: e.audioAPurgerAvant,
+      audioSupprimeLe: e.audioSupprimeLe,
+    })),
     accords,
   };
 }
