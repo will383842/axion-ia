@@ -22,7 +22,7 @@ Trois objets, et rien d'autre.
                                           ┌───────────────┐
                                           │  ATTRIBUTION  │
                                           │  SIREN 123…   │  ◄── clé unique
-                                          │  Sophie · 12 mois
+                                          │  Sophie ·  6 mois
                                           └───────┬───────┘
                                                   │
                                                   │ Axion-IA vend et facture
@@ -45,7 +45,7 @@ Trois objets, et rien d'autre.
 **Les trois règles qui résument tout :**
 
 1. **Sophie présente. Axion-IA vend et signe. Sophie est payée.** L'apporteur n'a aucun mandat.
-2. **Une entreprise appartient à un seul apporteur, identifiée par son SIREN, pendant 12 mois.**
+2. **Une entreprise appartient à un seul apporteur, identifiée par son SIREN, pendant 6 mois.**
 3. **Rien n'est payé tant que la facture n'est pas encaissée.**
 
 ---
@@ -190,8 +190,8 @@ Facture encaissée
    → Client
    → son SIREN
    → une attribution active existe-t-elle sur ce SIREN ?
-       → OUI, et la commande a été signée dans les 12 mois → commission à Sophie
-       → OUI, mais signée après 12 mois              → aucune commission
+       → OUI, et la commande a été signée dans les 6 mois  → commission à Sophie
+       → OUI, mais signée après 6 mois               → aucune commission
        → NON                                          → aucune commission
    → Sophie a-t-elle un parrain, signé il y a moins de 12 mois ?
        → OUI → 10 % de la commission de Sophie à Paul, EN PLUS (sur votre marge)
@@ -206,7 +206,7 @@ Payer à la signature, c'est verser des commissions sur des factures jamais rég
 ### 5.4 Ce que couvre l'attribution
 
 - **Toutes les prestations** de la grille (formations, audits 30 %, intégrations 15 %, 1-to-1). Pas seulement les formations.
-- **Toutes les commandes signées dans les 12 mois** suivant le dépôt. Pas seulement la première.
+- **Toutes les commandes signées dans les 6 mois** suivant le dépôt. Pas seulement la première.
 
 _Pourquoi pas « la première commande » : Sophie amène Durand, qui achète un audit à 490 € (commission ~147 €), puis trois semaines plus tard une intégration à 28 000 € (~4 200 €). Avec la règle « première commande », elle toucherait 147 € et partirait. Et elle raconterait pourquoi._
 
@@ -338,7 +338,7 @@ Moins de 2 % du volume. Automatiser coûterait plusieurs jours et produirait des
    │ ACTIVE  │ ──────────────────► │ PÉRIMÉE  │ → retour au pot commun
    └────┬────┘                     └──────────┘
         │
-        ├── vente signée dans les 12 mois ──► ┌────────────┐
+        ├── vente signée dans les 6 mois ───► ┌────────────┐
         │                                     │ CONVERTIE  │
         │                                     └─────┬──────┘
         │                                           │ facture encaissée
@@ -348,7 +348,7 @@ Moins de 2 % du volume. Automatiser coûterait plusieurs jours et produirait des
         │                                     │   PAYABLE  │
         │                                     └────────────┘
         │
-        └── 12 mois écoulés sans vente ─────► ┌──────────┐
+        └── 6 mois écoulés sans vente ──────► ┌──────────┐
                                               │ EXPIRÉE  │
                                               └──────────┘
 ```
@@ -384,7 +384,7 @@ Moins de 2 % du volume. Automatiser coûterait plusieurs jours et produirait des
 | #   | Règle                                                                                                                                                    |
 | --- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | R1  | Clé d'attribution = **SIREN** (9 chiffres). Le SIRET est stocké comme contexte.                                                                          |
-| R2  | Attribution valable **12 mois**, toutes prestations de la grille.                                                                                        |
+| R2  | Attribution valable **6 mois**, toutes prestations de la grille.                                                                                         |
 | R3  | Collision = **premier arrivé, horodatage serveur, aucun arbitrage**.                                                                                     |
 | R4  | **Péremption à 90 jours** sans suite documentée. Alerte à J-75.                                                                                          |
 | R5  | **Quota 15 dépôts / apporteur / semaine.**                                                                                                               |

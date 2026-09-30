@@ -146,12 +146,15 @@ function relancerSiBesoin(piste) {
   demarrerTranche(piste, "nouvelle_tranche");
 }
 
-async function demarrer({ streamId, cleClient, micId }) {
+async function demarrer({ streamId, cleClient, micId, micSeul }) {
   contexte = new AudioContext();
-  const fluxOnglet = await navigator.mediaDevices.getUserMedia({
-    audio: { mandatory: { chromeMediaSource: "tab", chromeMediaSourceId: streamId } },
-    video: false,
-  });
+  // Dictée (PR 7) : le micro SEUL, aucune capture d'onglet (piste « axion »).
+  const fluxOnglet = micSeul
+    ? null
+    : await navigator.mediaDevices.getUserMedia({
+        audio: { mandatory: { chromeMediaSource: "tab", chromeMediaSourceId: streamId } },
+        video: false,
+      });
   const fluxMicro = await navigator.mediaDevices.getUserMedia({
     audio: micId ? { deviceId: { exact: micId } } : true,
     video: false,
@@ -159,20 +162,19 @@ async function demarrer({ streamId, cleClient, micId }) {
   session = {
     cleClient,
     pistes: {
-      client: creerPiste("client", fluxOnglet, true),
+      ...(fluxOnglet ? { client: creerPiste("client", fluxOnglet, true) } : {}),
       axion: creerPiste("axion", fluxMicro, false),
     },
   };
-  demarrerTranche(session.pistes.client, "demarrage");
-  demarrerTranche(session.pistes.axion, "demarrage");
+  for (const p of Object.values(session.pistes)) demarrerTranche(p, "demarrage");
   session.minuteur = setInterval(() => {
     if (!session) return;
-    relancerSiBesoin(session.pistes.client);
-    relancerSiBesoin(session.pistes.axion);
+    for (const p of Object.values(session.pistes)) relancerSiBesoin(p);
+    const client = session.pistes.client;
     chrome.runtime.sendMessage({
       type: "niveaux",
       cleClient,
-      niveauClient: niveau(session.pistes.client.analyseur, session.pistes.client.tampon),
+      niveauClient: client ? niveau(client.analyseur, client.tampon) : 0,
       niveauAxion: niveau(session.pistes.axion.analyseur, session.pistes.axion.tampon),
     });
   }, 1000);

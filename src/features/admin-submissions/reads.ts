@@ -48,6 +48,7 @@ import {
   matchSubmissionSearch,
   type ListSubmissionsInput,
 } from "./query";
+import { canalPartnersOuvert } from "@/server/partners-sync/config";
 import type {
   SubmissionType,
   SubmissionStatus,
@@ -103,6 +104,16 @@ export interface SubmissionListItem {
    */
   sansSuiteAt: string | null;
   /**
+   * details.pretASignerAt — horodatage du clic « prêt à signer » (INT-T22), qui a
+   * transmis le candidat à Axion Partners.
+   *
+   * ⚠️ Exposé sous un AUTRE NOM que la clé, et c'est voulu : le cliquet des
+   * écrivains (`pnpm partners:cliquet-ecrivains`) tient toute construction de la
+   * clé `pretASignerAt` pour une écriture de la marque, qui doit émettre
+   * `candidature.recue`. Un lecteur la lit, il ne la reconstruit pas.
+   */
+  pretASignerLe: string | null;
+  /**
    * Combien de lignes la MÊME personne occupe dans ce périmètre (≥ 1).
    *
    * 🔑 `1` pour toute liste non regroupée : le champ dit toujours la vérité,
@@ -120,6 +131,11 @@ export interface SubmissionListResult {
   page: number;
   pageSize: number;
   totalPages: number;
+  /**
+   * Le canal Partners est ouvert : « Prêt à signer » n'est proposé qu'à cette condition
+   * (INT-T22). Lu ICI et non dans la page, que la garde d'inertie interdit (R4).
+   */
+  transmissionPartnersOuverte: boolean;
 }
 
 /**
@@ -191,6 +207,8 @@ export async function listSubmissions(
     const origine = details && typeof details.origine === "string" ? details.origine : null;
     const sansSuiteAt =
       details && typeof details.sansSuiteAt === "string" ? details.sansSuiteAt : null;
+    const pretASignerLe =
+      details && typeof details.pretASignerAt === "string" ? details.pretASignerAt : null;
     const rawMessage = details && typeof details.message === "string" ? details.message.trim() : "";
     return {
       id: s.id,
@@ -219,6 +237,7 @@ export async function listSubmissions(
       subType,
       origine,
       sansSuiteAt,
+      pretASignerLe,
       lignesDeLaPersonne: 1,
       etape: null,
     };
@@ -278,6 +297,7 @@ export async function listSubmissions(
       page: parsed.page,
       pageSize: parsed.pageSize,
       totalPages: Math.max(1, Math.ceil(personnes.length / parsed.pageSize)),
+      transmissionPartnersOuverte: canalPartnersOuvert(),
     };
   }
 
@@ -315,5 +335,6 @@ export async function listSubmissions(
     page: parsed.page,
     pageSize: parsed.pageSize,
     totalPages: Math.max(1, Math.ceil(total / parsed.pageSize)),
+    transmissionPartnersOuverte: canalPartnersOuvert(),
   };
 }

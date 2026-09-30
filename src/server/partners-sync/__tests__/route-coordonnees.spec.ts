@@ -27,6 +27,7 @@ import {
   type DependancesCoordonnees,
   type LigneJournalCoordonnees,
 } from "@/server/partners-sync/coordonnees";
+import { CANDIDATURE_COMMERCIALE_SUBTYPE } from "@/lib/commercial-application/model";
 import { signerCibleRelecture } from "@/server/partners-sync/relecture";
 
 import { fautes, resoudre } from "../../partners/__tests__/contrat-schema";
@@ -41,29 +42,61 @@ const EMISE = "0a1b2c3d-0001-4000-8000-000000000001";
 const AUTRE_EMISE = "0a1b2c3d-0002-4000-8000-000000000002";
 const NON_EMISE = "0a1b2c3d-0003-4000-8000-000000000003";
 const INEXISTANTE = "0a1b2c3d-0004-4000-8000-000000000004";
+/** Émises vers Partners, PUIS mises à la corbeille ou classées sans suite. */
+const EMISE_PUIS_CORBEILLE = "0a1b2c3d-0005-4000-8000-000000000005";
+const EMISE_PUIS_SANS_SUITE = "0a1b2c3d-0006-4000-8000-000000000006";
+
+/** Un dossier apporteur, tel que `estApporteur` le reconnaît. */
+const APPORTEUR = { unifiedType: "recrutement", subType: CANDIDATURE_COMMERCIALE_SUBTYPE };
 
 /** Les coordonnées stockées CHIFFRÉES — le faux déchiffreur retire le préfixe. */
 const SUBMISSIONS: Record<
   string,
-  { contactName: string; contactEmail: string; contactPhone: string | null }
+  {
+    contactName: string;
+    contactEmail: string;
+    contactPhone: string | null;
+    details: unknown;
+    deletedAt: Date | null;
+  }
 > = {
   [EMISE]: {
     contactName: "enc:Camille Durand",
     contactEmail: "enc:camille@example.test",
     contactPhone: "enc:0600000000",
+    details: APPORTEUR,
+    deletedAt: null,
   },
   [AUTRE_EMISE]: {
     contactName: "enc:Alex Martin",
     contactEmail: "enc:alex@example.test",
     contactPhone: null,
+    details: APPORTEUR,
+    deletedAt: null,
   },
   [NON_EMISE]: {
     contactName: "enc:Sam Petit",
     contactEmail: "enc:sam@example.test",
     contactPhone: "enc:0611111111",
+    details: APPORTEUR,
+    deletedAt: null,
+  },
+  [EMISE_PUIS_CORBEILLE]: {
+    contactName: "enc:Lou Bernard",
+    contactEmail: "enc:lou@example.test",
+    contactPhone: "enc:0622222222",
+    details: APPORTEUR,
+    deletedAt: new Date(MAINTENANT_MS - 3600_000),
+  },
+  [EMISE_PUIS_SANS_SUITE]: {
+    contactName: "enc:Noa Richard",
+    contactEmail: "enc:noa@example.test",
+    contactPhone: "enc:0633333333",
+    details: { ...APPORTEUR, sansSuiteAt: "2026-09-29T10:00:00.000Z" },
+    deletedAt: null,
   },
 };
-const EMISES = new Set([EMISE, AUTRE_EMISE]);
+const EMISES = new Set([EMISE, AUTRE_EMISE, EMISE_PUIS_CORBEILLE, EMISE_PUIS_SANS_SUITE]);
 
 type Monde = {
   lectures: string[];
@@ -202,6 +235,43 @@ describe("REQ-INT-029 — (2) non émise = inexistante, octet pour octet", () =>
     const m = monde();
     await repondreCoordonnees(requete(NON_EMISE), NON_EMISE, dependances(m));
     expect(m.lectures).toEqual([`outbox:submission:${NON_EMISE}`]);
+  });
+});
+
+describe("REQ-QA-035 — (8) une candidature émise puis retirée ne rend plus rien", () => {
+  it.each([
+    ["mise à la corbeille", EMISE_PUIS_CORBEILLE, /lou|bernard|0622/i],
+    ["classée sans suite", EMISE_PUIS_SANS_SUITE, /noa|richard|0633/i],
+  ] as const)(
+    "TÉMOIN — %s après l'émission : la réponse d'un identifiant inexistant, sans coordonnée ni lecture comptée",
+    async (_nom, id, coordonnees) => {
+      const inexistante = await lue(
+        await repondreCoordonnees(requete(INEXISTANTE), INEXISTANTE, dependances(monde())),
+      );
+      const m = monde();
+      const r = await lue(await repondreCoordonnees(requete(id), id, dependances(m)));
+      expect(r).toEqual(inexistante);
+      expect(r.corps).not.toMatch(coordonnees);
+      expect(m.journal.map((l) => l.resultat)).toEqual(["non_transmissible"]);
+      // Rien n'a été rendu : le plafond de lectures n'est pas entamé.
+      expect(m.compteurs.size).toBe(0);
+    },
+  );
+
+  it("contre-témoin — la même fiche, sans le retrait, rend ses coordonnées", async () => {
+    const m = monde();
+    const d = dependances(m);
+    SUBMISSIONS[EMISE_PUIS_SANS_SUITE]!.details = APPORTEUR;
+    try {
+      const r = await repondreCoordonnees(requete(EMISE_PUIS_SANS_SUITE), EMISE_PUIS_SANS_SUITE, d);
+      expect(r.status).toBe(200);
+      expect(JSON.parse(await r.text())).toMatchObject({ nom: "Noa Richard" });
+    } finally {
+      SUBMISSIONS[EMISE_PUIS_SANS_SUITE]!.details = {
+        ...APPORTEUR,
+        sansSuiteAt: "2026-09-29T10:00:00.000Z",
+      };
+    }
   });
 });
 

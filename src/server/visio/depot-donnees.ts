@@ -23,6 +23,8 @@ import type { ContactDeLaBase, FaitDeLaBase, ProjetDeLaBase } from "./contexte";
 import type { Periode, SegmentStocke } from "./dialogue";
 import { EVT_COURT_CONFIRME, EVT_FENETRES_VERIFIEES } from "./attentes-will";
 import { ETATS_ENREGISTREMENT_ACTIFS } from "./etats";
+import { enregistrerSuiviDansLaTransaction } from "@/features/dossier-client/suivi";
+import { suiteProposeeApresDictee } from "./dictee";
 import { lireEtat } from "./etat-compte-rendu";
 import { ajouterAuJournal, lireJournal } from "./journal-enregistrement";
 import { euros } from "@/features/dossier-client/libelles";
@@ -192,7 +194,10 @@ async function rencontreDe(db: Db, rencontreId: string) {
       debutReel: true,
       finReelle: true,
       calendlyEvent: { select: { rawPayload: true } },
-      enregistrements: { orderBy: { debut: "asc" }, select: { debut: true, fin: true } },
+      enregistrements: {
+        orderBy: { debut: "asc" },
+        select: { debut: true, fin: true, nature: true },
+      },
     },
   });
   if (!r) return null;
@@ -210,6 +215,8 @@ async function rencontreDe(db: Db, rencontreId: string) {
       clientId: r.clientId,
       debut,
       dureeMs: Math.max(0, fin.getTime() - debut.getTime()),
+      // PR 7 — la nature du DERNIER enregistrement (une dictée après l'appel).
+      nature: dernier?.nature === "dictee" ? ("dictee" as const) : ("visio" as const),
     },
   };
 }
@@ -521,7 +528,9 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
       const s = await segmentsRetenus(db, rencontreId);
       if (!r || !s) return null;
       const utiles = s.segments.filter((x) => !x.horsAccord && !x.apresRefus && x.texte !== "");
-      const deja = await db.compteRendu.count({ where: { rencontreId, origine: "ia" } });
+      const deja = await db.compteRendu.count({
+        where: { rencontreId, origine: { in: ["ia", "dictee"] } },
+      });
       return {
         rencontre: r.donnees,
         transcriptionId: s.transcriptionId,
@@ -580,7 +589,7 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
         data: {
           rencontreId: a.rencontreId,
           version: (derniere?.version ?? 0) + 1,
-          origine: "ia",
+          origine: a.nature === "dictee" ? "dictee" : "ia",
           mode: a.mode,
           statut: "brouillon",
           modele: a.modele,
@@ -679,7 +688,7 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
             texteCourt: f.texteCourt ? chiffrerParole(f.texteCourt) : null,
             certitude: f.certitude,
             confiance: f.confiance,
-            source: "transcription",
+            source: a.nature === "dictee" ? "dictee" : "transcription",
             rencontreId: a.rencontreId,
             compteRenduId: a.compteRenduId,
             refExtraction: f.ref.slice(0, 8),
@@ -795,6 +804,38 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
         where: { rencontreId: a.rencontreId, statut: { in: ["transcrit", "en_traitement"] } },
         data: { statut: "compte_rendu_pret" },
       });
+      // PR 7 — une DICTÉE alimente le suivi du rendez-vous : issue, suite et
+      // relance PROPOSÉES (auteur nul), jamais par-dessus un suivi existant.
+      const cr = await tx.compteRendu.findUnique({
+        where: { id: a.compteRenduId },
+        select: { origine: true, rencontre: { select: { debutReel: true, debutPrevu: true } } },
+      });
+      if (cr?.origine === "dictee") {
+        const existe = await tx.rencontreSuivi.findUnique({
+          where: { rencontreId: a.rencontreId },
+          select: { rencontreId: true },
+        });
+        if (!existe) {
+          const faits = await tx.fait.findMany({
+            where: { compteRenduId: a.compteRenduId, statut: { in: ["propose", "en_attente"] } },
+            select: { type: true, dateCible: true },
+          });
+          const s = suiteProposeeApresDictee({
+            faits,
+            dateRencontre: cr.rencontre.debutReel ?? cr.rencontre.debutPrevu ?? new Date(),
+          });
+          // Par la fonction UNIQUE d'écriture du suivi (garde
+          // `aucune-ecriture-de-rendez-vous-suivi-hors-de-la-fonction-unique`),
+          // auteur nul = proposé par la machine, Will valide.
+          await enregistrerSuiviDansLaTransaction(tx, {
+            rencontreId: a.rencontreId,
+            issue: s.issue,
+            suite: s.suite,
+            suiteLe: s.suiteLe,
+            auteurId: null,
+          });
+        }
+      }
     },
     rejeterCompteRendu: async (tx, compteRenduId) => {
       await tx.compteRendu.update({ where: { id: compteRenduId }, data: { statut: "rejete" } });

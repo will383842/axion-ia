@@ -58,9 +58,8 @@ import {
   type ResolutionBeneficiaire,
 } from "@/server/partners/payloads";
 
-import { checkSirenFormat } from "@/lib/siret";
-
 import { canalPartnersOuvert } from "../config";
+import { sirenTransmis } from "./client";
 import { ecrireEvenementPartners } from "../outbox";
 
 /** Les types d'événement, tels que le contrat les nomme. */
@@ -185,6 +184,8 @@ const SELECTION_CLIENT = {
   type: true,
   raisonSociale: true,
   siren: true,
+  // Lu pour DÉRIVER le SIREN quand la fiche n'en porte pas (REQ-INT-015) : jamais transmis.
+  siret: true,
   nafCode: true,
   secteur: true,
   taille: true,
@@ -236,7 +237,7 @@ async function lireFacture(
   });
   if (ligne === null) return null;
   const beneficiaire = resoudreClientBeneficiaire(ligne);
-  const client: ClientPourEvenement | null =
+  const client: (ClientPourEvenement & { readonly siret: string | null }) | null =
     beneficiaire.clientId === null
       ? null
       : await tx.client.findUnique({
@@ -246,8 +247,11 @@ async function lireFacture(
   // 🔴 RÉSOLU PAR SIREN, OU PAS DU TOUT (garde-fou de l'arbitrage -d7 du 2026-09-29). Partners
   // attribue par le SIREN bénéficiaire : un client introuvable, sans SIREN ou au SIREN illisible
   // part `non_resolue`, donc alerté et rattaché à la main — jamais une attribution devinée.
-  const siren = client?.siren ?? null;
-  if (beneficiaire.clientId !== null && (siren === null || !checkSirenFormat(siren).ok)) {
+  // La MÊME règle que `client.*` (INT-T03, `sirenTransmis`) : normalisé à 9 chiffres, clé
+  // contrôlée, dérivé du SIRET quand la fiche n'en porte pas. Partners attribue par ce SIREN : un
+  // SIREN saisi « 123 456 782 » ne doit pas partir avec ses espaces.
+  const siren = client === null ? null : sirenTransmis(client).siren;
+  if (beneficiaire.clientId !== null && siren === null) {
     // Les sources d'attribution sont EFFACÉES de la facture lue : la charge se construit sur
     // elle (`resoudreClientBeneficiaire` y est rejoué), et doit y trouver le même `non_resolue`.
     return {
@@ -265,7 +269,10 @@ async function lireFacture(
       beneficiaire: { clientId: null, origine: "non_resolue" },
     };
   }
-  return { facture: { ...ligne, client }, beneficiaire };
+  return {
+    facture: { ...ligne, client: client === null ? null : { ...client, siren } },
+    beneficiaire,
+  };
 }
 
 function attenduDe(l: Lecture): { clientId: string | null; siren: string | null } {

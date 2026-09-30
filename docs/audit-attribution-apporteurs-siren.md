@@ -3,6 +3,8 @@
 > **Créé le** 2026-08-23 · Complète `docs/plan-recrutement-apporteurs-daffaires.md` (§4.3 et §5)
 > **Question posée** : « c'est nous qui signons avec l'entreprise, pas l'apporteur. Comment attribuer chaque entreprise à son apporteur ? Par le SIRET ? Pour la première commande et uniquement pour les formations ? Est-ce tenable avec des centaines d'apporteurs, partout en France ? »
 > **Verdict global** : **l'intuition est juste, la clé est fausse, la portée est mal bornée, et le vrai risque n'est pas technique.**
+>
+> ⚠️ **Durée d'attribution : 6 mois, pas 12.** Décision de Williams du 2026-09-22, reconfirmée le 2026-09-30. Cet audit est daté : sa « fenêtre de 12 mois » est conservée comme trace du raisonnement. La règle en vigueur est de **6 mois** (`FENETRE_ATTRIBUTION_APPORTEUR_MOIS`, `src/lib/commercial-application/kit-apporteur.ts`, et §1.4 de `docs/contrat-apporteur-clauses.md`). Le parrainage (10 %, 12 mois) est une autre règle et ne change pas.
 
 ---
 

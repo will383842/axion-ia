@@ -57,7 +57,7 @@ refus n'ouvre droit à contestation ni à indemnité.
 
 ### 1.4 — Durée de l'attribution
 
-L'attribution est consentie pour une durée de **douze (12) mois** à compter de son
+L'attribution est consentie pour une durée de **six (6) mois** à compter de son
 enregistrement.
 
 Elle **expire par anticipation** si aucune suite documentée n'est intervenue dans un

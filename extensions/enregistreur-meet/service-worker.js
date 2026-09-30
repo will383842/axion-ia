@@ -118,10 +118,14 @@ async function executer(actions) {
         break;
       case "demarrer_capture": {
         await assurerOffscreen();
-        const streamId = await chrome.tabCapture.getMediaStreamId({ targetTabId: etat.ongletMeet });
+        // Dictée (PR 7) : micro seul, aucun onglet capturé.
+        const streamId = a.micSeul
+          ? null
+          : await chrome.tabCapture.getMediaStreamId({ targetTabId: etat.ongletMeet });
         const r = await versOffscreen({
           type: "demarrer",
           streamId,
+          micSeul: a.micSeul === true,
           cleClient: c.cleClient,
           micId: etat.micId,
         });
@@ -137,6 +141,7 @@ async function executer(actions) {
       case "creer_session":
         await ecrireCapture({
           cleClient: c.cleClient,
+          nature: a.nature === "dictee" ? "dictee" : "visio",
           rencontreId: c.rencontreId,
           enregistrementId: null,
           accordLe: null,
@@ -277,7 +282,7 @@ async function envoyer(el, k) {
         json: {
           cleClient: el.cleClient,
           rencontreId: k.rencontreId,
-          nature: "visio",
+          nature: k.nature === "dictee" ? "dictee" : "visio",
           versionExtension: VERSION_EXTENSION,
           debutLe: new Date(k.debutMs).toISOString(),
           accordLocalLe: k.accordLe ? new Date(k.accordLe).toISOString() : null,
@@ -312,7 +317,12 @@ async function viderFile() {
     const vue = Object.fromEntries(
       Object.entries(captures).map(([cle, k]) => [
         cle,
-        { accord: !!k.accordLe, enregistrementId: k.enregistrementId, detruit: k.detruit },
+        {
+          // Une dictée (PR 7) n'a pas d'accord à attendre : son son part avec sa session.
+          accord: !!k.accordLe || k.nature === "dictee",
+          enregistrementId: k.enregistrementId,
+          detruit: k.detruit,
+        },
       ]),
     );
     const file = envoyablesMaintenant(await lireLaFile(), vue, maintenant);
@@ -539,6 +549,22 @@ async function surGeste(msg) {
             cleClient: crypto.randomUUID(),
             rencontreId: etat.rencontreChoisie,
             nbParticipants: 2,
+          },
+          maintenant,
+        ),
+      );
+      return;
+    }
+    case "demarrer_dictee": {
+      await chargerReglages();
+      await appliquer(
+        capture.demarrerDictee(
+          etat.capture,
+          {
+            jeton: etat.jeton,
+            jetonExpireLe: etat.jetonExpireLe,
+            cleClient: crypto.randomUUID(),
+            rencontreId: etat.rencontreChoisie,
           },
           maintenant,
         ),

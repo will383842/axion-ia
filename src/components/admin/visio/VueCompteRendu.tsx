@@ -97,6 +97,18 @@ export function VueCompteRendu({ vue, rencontreId, retour }: Props) {
         Outil de travail interne : rien n&apos;est envoyé au client.
       </p>
 
+      {/* PR 7 — pour un appel téléphonique, la dictée depuis l'extension. Le lien
+          « E-mail de suivi au client » est en tête de la page du rendez-vous. */}
+      <section className={carte}>
+        <h3 className={titre}>Après le rendez-vous</h3>
+        <p className={discret}>
+          Appel par téléphone ? Dictez un résumé de 2 à 5 minutes : ouvrez le panneau de
+          l&apos;extension « Enregistreur Axion-IA », choisissez ce rendez-vous, puis « Dicter une
+          note ». La dictée n&apos;est ouverte qu&apos;une fois annoncée dans la politique de
+          confidentialité.
+        </p>
+      </section>
+
       {transcrireEnAttente
         ? vue.questionsAWill.map(({ enregistrementId, question }) => (
             <section key={`${enregistrementId}-${question}`} className={carte}>

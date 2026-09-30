@@ -26,7 +26,7 @@ import { adminPath } from "@/lib/admin-path";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { enqueueEmail } from "@/server/queue/queues";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
-import { appliquerTransition } from "./transitions";
+import { appliquerTransition, marquerPretASigner, type ResultatPretASigner } from "./transitions";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { enregistrerOppositionPourAdresse } from "@/server/email/opposition";
 import { annulerRelancesLeadApporteur } from "@/features/commercial-application/relances-lead-apporteur";
@@ -302,6 +302,34 @@ export async function unarchiveSubmissionAction(id: string): Promise<ResultatGes
  */
 export async function classerSansSuiteAction(id: string): Promise<ResultatGeste> {
   return geste(id, "sans-suite");
+}
+
+/**
+ * « Prêt à signer » — envoie le candidat apporteur vers Axion Partners, l'outil
+ * du contrat (INT-T22, ADR 0051 §c). C'est ce clic, et lui seul, qui émet
+ * `candidature.recue` : jamais la réception du dossier.
+ *
+ * 🔑 LA MÊME GARDE QUE « Sans suite », délibérément. Ce sont les deux issues de
+ * la même décision sur la même fiche (ADR 0051 §f) : les garder différemment
+ * ferait qu'un rôle puisse écarter un candidat sans pouvoir le transmettre, ou
+ * l'inverse — la divergence que `aucune-liste-de-roles-recopiee.spec.ts`
+ * décrit. Le geste n'engage pas l'organisme (le contrat se signe dans Partners,
+ * sous ses propres gardes) et la charge ne porte aucune coordonnée : Partners
+ * les tire par une route authentifiée, plafonnée et journalisée.
+ *
+ * Le bouton n'apparaît que pour un apporteur, mais la décision est au serveur :
+ * `marquerPretASigner` refuse une fiche qui n'en est pas une, ou sans suite.
+ */
+export async function marquerPretASignerAction(id: string): Promise<ResultatPretASigner> {
+  let session: { userId: string };
+  try {
+    session = await requireAdminWriteSession();
+  } catch {
+    return { ok: false, erreur: "interdit" };
+  }
+  const parsed = singleIdSchema.safeParse({ id });
+  if (!parsed.success) return { ok: false, erreur: "introuvable" };
+  return marquerPretASigner(parsed.data.id, session.userId);
 }
 
 /** Remettre à traiter : la fiche redevient visible dans « à traiter ». */

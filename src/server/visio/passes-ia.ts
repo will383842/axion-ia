@@ -38,6 +38,7 @@ import {
 } from "./consolider";
 import { empreinteDesConsignes, instructionsDe } from "./consignes";
 import { entrelacer } from "./dialogue";
+import { PREAMBULE_DICTEE } from "./dictee";
 import { etatInitial, etatSansTexteBrut, type EtatCompteRendu } from "./etat-compte-rendu";
 import { ArretVisio, type ContexteEtape, type Gestionnaire } from "./etapes";
 import { ErreurVisio } from "./openai/erreurs";
@@ -123,7 +124,7 @@ export const extraire: Gestionnaire = async (ctx) => {
   const catalogue = await deps.catalogue();
   const dialogue = entrelacer(d.segments);
   if (dialogue.segments.length === 0) throw new ArretVisio("piste_muette");
-  const { entree, correspondances } = construireEntreeP1({
+  const { entree: entreeBrute, correspondances } = construireEntreeP1({
     rencontre: d.rencontre,
     pistes: d.pistes,
     formulaire: d.formulaire,
@@ -132,6 +133,9 @@ export const extraire: Gestionnaire = async (ctx) => {
     dejaConnus: faitsDejaConnus(d.faitsClient, { id: d.rencontre.id, debut: d.rencontre.debut }),
     dialogue,
   });
+  // PR 7 — une dictée le dit à P1 : tout est rapporté par Williams.
+  const entree =
+    d.rencontre.nature === "dictee" ? `${PREAMBULE_DICTEE}\n${entreeBrute}` : entreeBrute;
   const { sortie, modele } = await executerPasse(depsPasse(ctx), {
     passe: "extraire",
     schema: SCHEMAS_VISIO.extraction.schema,
@@ -175,6 +179,7 @@ export const extraire: Gestionnaire = async (ctx) => {
         promptHash: empreinteDesConsignes(),
         schemaVersion: VERSION_SCHEMAS_COMPTE_RENDU,
         etat,
+        ...(d.rencontre.nature !== undefined ? { nature: d.rencontre.nature } : {}),
       });
       return [{ etape: "verifier_faits", compteRenduId: crId }];
     },
@@ -235,6 +240,7 @@ export const verifierFaitsEtape: Gestionnaire = async (ctx) => {
     catalogue: catalogue.refs,
     connus: new Set(d.etat.correspondances.faits.map(([ref]) => ref)),
     dateEchange: new Date(d.etat.dateEchange),
+    ...(d.rencontre.nature !== undefined ? { nature: d.rencontre.nature } : {}),
   });
   const aEcrire = dedoublonner(bilan.faits, d.faitsValidesDeLaRencontre);
   const signaux = [
@@ -263,6 +269,7 @@ export const verifierFaitsEtape: Gestionnaire = async (ctx) => {
         clientId: d.rencontre.clientId,
         constateLe: d.rencontre.debut,
         faits: aEcrire,
+        ...(d.rencontre.nature !== undefined ? { nature: d.rencontre.nature } : {}),
       });
       if (bilan.consentement !== null && d.enregistrementId !== null) {
         await deps.donnees.ecrirePreuvesAccord(tx, {

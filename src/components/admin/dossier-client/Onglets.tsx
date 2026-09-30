@@ -24,6 +24,7 @@ import {
   LIBELLE_STATUT_PROJET,
   LIBELLE_STATUT_RENCONTRE,
   LIBELLE_TYPE_FAIT,
+  MENTION_ETAT,
   valeurLisible,
 } from "@/features/dossier-client/libelles";
 import { TYPES_DE_FAITS } from "@/server/visio/types-de-faits";
@@ -38,8 +39,9 @@ import {
   basculerOppositionIaFormAction,
   creerProjetFormAction,
 } from "@/features/dossier-client/actions";
+import { LIBELLE_ETAT_EMAIL_SUIVI } from "@/features/dossier-client/etat-email-suivi";
 import { formatDateFrShort } from "@/lib/format-date-fr";
-import type { EmailOutboxStatus, FaitType } from "../../../../prisma/generated/client";
+import type { FaitType } from "../../../../prisma/generated/client";
 
 const titreCls =
   "mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]";
@@ -65,14 +67,6 @@ const TON_STATUT_PROJET: Readonly<Record<string, Tone>> = {
 // ─────────────────────────────────────────────────────────────────────────────
 // Briques partagées (fiche, page projet, « Préparer »)
 // ─────────────────────────────────────────────────────────────────────────────
-
-const MENTION_ETAT: Readonly<Record<ValeurConsolidee["etat"], string | null>> = {
-  courante: null,
-  a_trancher: "à trancher : plusieurs valeurs ont été dites",
-  a_reconfirmer: "à reconfirmer : remise en cause",
-  avant_reouverture: "dite avant la réouverture du projet : à reconfirmer",
-  effacee: "valeur effacée",
-};
 
 /** Une valeur consolidée : la valeur retenue, ou la mention qui explique la case vide. */
 export function LigneValeur({ v }: { v: ValeurConsolidee }): React.ReactElement {
@@ -358,13 +352,6 @@ export function OngletProjets({
 // Onglet Échanges
 // ─────────────────────────────────────────────────────────────────────────────
 
-const LIBELLE_ENVOI = {
-  a_valider: "à valider dans la file des e-mails",
-  approuve: "validé, en cours d'envoi",
-  envoye: "envoyé",
-  refuse: "écarté",
-} as const satisfies Record<EmailOutboxStatus, string>;
-
 export function OngletEchanges({
   rencontres,
   projets,
@@ -433,7 +420,7 @@ export function OngletEchanges({
               {r.emailsSuivi.map((e, i) => (
                 <p key={i} className={`mt-[var(--space-admin-1)] ${mutedCls}`}>
                   E-mail de suivi du {formatDateFrShort(e.creeLe)} :{" "}
-                  {e.statut !== null ? LIBELLE_ENVOI[e.statut] : "retiré de la file"}
+                  {LIBELLE_ETAT_EMAIL_SUIVI[e.etat]}
                 </p>
               ))}
             </li>

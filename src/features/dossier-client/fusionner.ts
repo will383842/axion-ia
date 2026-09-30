@@ -55,6 +55,7 @@ import {
   ecrireEvenementPartners,
   type EcrivainOutboxPartners,
 } from "@/server/partners-sync/outbox";
+import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 import { TYPES_EVENEMENT } from "@/server/partners/contrat";
 import { payloadClientFusionne } from "@/server/partners/payloads";
 
@@ -270,7 +271,11 @@ export async function fusionnerFiches(
     }
 
     if (decision.reporterSiren && absorbante.siren !== null) {
+      // Le SIREN est un champ TRANSMIS : le reporter est un `client.mis_a_jour` de l'absorbée, en
+      // plus du `client.fusionne` ci-dessous (INT-T03, émission unique, même transaction).
+      const avant = await chargeClientAvant(tx, e.absorbeeId);
       await tx.client.update({ where: { id: e.absorbeeId }, data: { siren: absorbante.siren } });
+      await emettreFaitClient(tx, e.absorbeeId, { avant });
     }
 
     // Axion Partners : même transaction, file existante (D3). Voir l'en-tête.

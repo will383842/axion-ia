@@ -117,12 +117,13 @@ export function semerEnregistrement(
     fin?: Date | null;
     motifArret?: string | null;
     accordConfirmeLe?: Date | null;
+    nature?: "visio" | "dictee";
   },
 ): string {
   const e = db.semer("enregistrement", {
     rencontreId: o.rencontreId,
     appareilId: o.appareilId,
-    nature: "visio",
+    nature: o.nature ?? "visio",
     cleClient: randomUUID(),
     statut: o.statut,
     debut: o.debut ?? T0,
