@@ -1,0 +1,81 @@
+# ⚠️ TEMPORAIRE — mesure manuelle du First Load JS demandée par la revue de la
+# PR #1249. Vit sur la branche jetable `mesure/first-load-1249`, supprimée
+# après lecture. Ne touche ni la prod ni la base : build `compile` sur stubs.
+name: Mesure First Load JS (PR 1249, temporaire)
+
+on:
+  push:
+    branches: [mesure/first-load-1249]
+
+permissions:
+  contents: read
+
+jobs:
+  mesure:
+    name: First Load · ${{ matrix.nom }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - nom: main
+            ref: 0d92bc238a5e3ad91abc93523d6812c49d99f349
+          - nom: avant-L2
+            ref: 912dabf5c510da4bb06d8013bece3bccea615367
+          - nom: apres-L2-sans-correctif
+            ref: 4d4a1885a7342d35c922665a42805b950ee059c2
+    env:
+      SKIP_ENV_VALIDATION: "true"
+      BULLMQ_DISABLED: "true"
+      DATABASE_URL: "postgresql://stub:stub@stub.invalid:5432/stub"
+      REDIS_URL: "redis://stub.invalid:6379"
+      AUTH_SECRET: "ci-dummy-auth-secret-not-used-in-build-32chars-min"
+      AUTH_TRUST_HOST: "true"
+      ADMIN_URL_PREFIX: "admin-ci-build"
+      STRIPE_SECRET_KEY: "sk_test_ci_dummy_not_used_in_build"
+      STRIPE_PUBLISHABLE_KEY: "pk_test_ci_dummy_not_used_in_build"
+      STRIPE_WEBHOOK_SECRET: "whsec_ci_dummy_not_used_in_build"
+      BACKUP_ENCRYPTION_PASSPHRASE: "ci-dummy-backup-pass-not-used-in-build"
+      IP_HASH_SALT: "ci-dummy-ip-hash-salt-not-used-in-build-32chars"
+      PII_ENCRYPTION_KEY: "ci-dummy-pii-encryption-key-not-used-in-build-32"
+      NEXT_PUBLIC_SITE_URL: "https://axion-ia.com"
+      NEXT_PUBLIC_APP_ENV: "production"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: outil
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ matrix.ref }}
+          path: app
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /usr/local/share/boost /usr/lib/jvm || true
+          df -h /
+      - uses: pnpm/action-setup@v5
+        with:
+          version: 10.33.4
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: pnpm
+          cache-dependency-path: app/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+        working-directory: app
+      - run: pnpm prisma:generate
+        working-directory: app
+      - name: Build (compile seulement, sans prérendu)
+        working-directory: app
+        env:
+          NODE_OPTIONS: --max-old-space-size=12288
+          NEXT_PRIVATE_WORKER_THREADS: "1"
+        run: pnpm exec next build --webpack --experimental-build-mode compile
+      - name: Mesure
+        run: node outil/.github/mesure-1249/first-load.mjs app/.next ${{ matrix.nom }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: first-load-${{ matrix.nom }}
+          path: first-load-*.json
+          retention-days: 3
