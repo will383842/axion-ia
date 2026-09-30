@@ -204,7 +204,8 @@ export function VueCompteRendu({ vue, rencontreId, retour }: Props) {
             return (
               <div key={v} className="mb-[var(--space-admin-3)]">
                 <p className="font-medium">
-                  CLIENT_{i + 1} : {actuel ?? <AdminBadge tone="warning">à attribuer</AdminBadge>}
+                  Voix {i + 1} côté client :{" "}
+                  {actuel ?? <AdminBadge tone="warning">à attribuer</AdminBadge>}
                 </p>
                 {vue.voix.participants.length > 0 ? (
                   <form action={gesteCompteRenduAction} className={ligne}>
@@ -282,14 +283,14 @@ export function VueCompteRendu({ vue, rencontreId, retour }: Props) {
               {cache}
               <input type="hidden" name="geste" value="reecrire" />
               <button type="submit" className={bouton}>
-                Réécrire
+                Rédiger à nouveau le texte
               </button>
             </form>
             <form action={gesteCompteRenduAction}>
               {cache}
               <input type="hidden" name="geste" value="reextraire" />
               <button type="submit" className={bouton}>
-                Réextraire
+                Relire l&apos;enregistrement depuis le début
               </button>
             </form>
             {attenteRattachement ? (
@@ -301,9 +302,16 @@ export function VueCompteRendu({ vue, rencontreId, retour }: Props) {
                 </button>
               </form>
             ) : null}
+            <p className={`w-full ${discret}`}>
+              « Rédiger à nouveau » réécrit le texte à partir des mêmes informations ; « Relire
+              l&apos;enregistrement » repart de la transcription et retrouve les informations.
+            </p>
           </section>
 
-          <DocumentCompteRenduVue document={vue.document} />
+          <DocumentCompteRenduVue
+            document={vue.document}
+            intitules={new Map((vue.etat?.projetsEvoques ?? []).map((j) => [j.ref, j.intitule]))}
+          />
           <FaitsEtCitations faits={vue.faits} />
         </>
       ) : null}

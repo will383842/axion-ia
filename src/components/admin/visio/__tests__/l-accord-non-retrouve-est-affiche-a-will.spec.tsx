@@ -83,7 +83,7 @@ describe("l'accord non retrouvé est affiché à Will", () => {
       }),
     );
     expect(html).toContain("Qui a parlé côté client ?");
-    expect(html).toContain("CLIENT_1 : Gérante Exemple");
+    expect(html).toContain("Voix 1 côté client : Gérante Exemple");
     expect(html).toContain('value="voix_nouvelle_personne"');
     expect(html).toContain("Ajouter comme contact");
     expect(html).toContain('value="voix_williams"');
