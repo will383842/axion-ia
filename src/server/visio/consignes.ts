@@ -36,6 +36,10 @@ export const FICHIERS_CONSIGNES = {
   consolider: "p3-consolidation.md",
   ebaucher: "p4-ebauche.md",
   rediger: "p5-redaction.md",
+  // PR 7 — passes à la demande, par le même module OpenAI.
+  questionnaire: "p6-questionnaire.md",
+  lire_reponses: "lire-reponses.md",
+  email_suivi: "email-suivi.md",
 } as const;
 
 export type PasseAvecConsigne = Exclude<keyof typeof FICHIERS_CONSIGNES, "commun">;

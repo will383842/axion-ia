@@ -59,6 +59,7 @@ import {
   PREAVIS_SOUS_TRAITANTS,
   type Preavis,
 } from "./visio-annonce";
+import { refusPisteClientEnDictee } from "./morceaux";
 import { echec, ok, type Resultat } from "./resultat";
 import type { StockageAudio } from "./stockage-audio";
 
@@ -104,6 +105,83 @@ const MESSAGES_REFUS: Readonly<Record<MotifATexteFixe, string>> = {
 export interface RefusMotive {
   readonly motif: MotifRefusSession;
   readonly message: string;
+  /**
+   * PR 7 — la dictée n'est pas encore annoncée par la notice : ce n'est pas un
+   * refus de CE rendez-vous mais un service éteint → 503 `dictee_non_annoncee`.
+   */
+  readonly eteint?: true;
+}
+
+/** PR 7 — le code et le texte du 503 de la dictée éteinte (`DICTEE_ANNONCEE = false`). */
+export const CODE_DICTEE_ETEINTE = "dictee_non_annoncee" as const;
+export const MESSAGE_DICTEE_ETEINTE =
+  "La dictée après un appel n'est pas encore ouverte : la notice de confidentialité ne l'annonce pas encore. Prenez vos notes à la main.";
+
+/**
+ * PR 7 — une DICTÉE se fait APRÈS l'appel, Williams seul (B14, art. 6.1.f :
+ * l'appel lui-même n'est pas enregistré). Refusée (409, le son local est
+ * détruit par l'extension) tant que la fin prévue du rendez-vous n'est pas
+ * passée, ou si un enregistrement VISIO de la rencontre est actif : sinon, haut-
+ * parleur ouvert, elle capterait la voix du client sans accord ni preuve.
+ */
+export const CODE_DICTEE_AVANT_LA_FIN = "dictee_avant_la_fin_du_rendez_vous" as const;
+export const MESSAGE_DICTEE_AVANT_LA_FIN =
+  "La dictée se fait après le rendez-vous, une fois l'appel raccroché : ce rendez-vous n'est pas encore terminé.";
+export const CODE_DICTEE_PENDANT_LA_VISIO = "dictee_pendant_l_enregistrement_visio" as const;
+export const MESSAGE_DICTEE_PENDANT_LA_VISIO =
+  "L'enregistrement de la visio de ce rendez-vous est en cours : arrêtez-le avant de dicter.";
+/**
+ * Le sens inverse : une capture VISIO ne se rattache jamais à une DICTÉE active
+ * (ou `interrompu`) de la même rencontre. Le 409 `enregistrement_actif` vaut
+ * reprise pour l'extension : rattachée, la voix du client partirait sous la
+ * base « Williams seul », sans accord ni preuve d'accord.
+ */
+export const CODE_VISIO_PENDANT_LA_DICTEE = "visio_pendant_une_dictee" as const;
+export const MESSAGE_VISIO_PENDANT_LA_DICTEE =
+  "Une dictée est en cours pour ce rendez-vous : terminez-la avant d'enregistrer la visio.";
+
+/** Le 409 d'un enregistrement actif : reprise s'il est de la même nature, refus sinon. */
+function repriseOuRefus(
+  actif: { readonly id: string; readonly statut: EnregistrementStatut; readonly nature: string },
+  nature: string,
+): Resultat {
+  if (actif.nature !== nature) {
+    return nature === "dictee"
+      ? echec(409, CODE_DICTEE_PENDANT_LA_VISIO, MESSAGE_DICTEE_PENDANT_LA_VISIO)
+      : echec(409, CODE_VISIO_PENDANT_LA_DICTEE, MESSAGE_VISIO_PENDANT_LA_DICTEE);
+  }
+  return echec(
+    409,
+    "enregistrement_actif",
+    "Un enregistrement est déjà en cours pour ce rendez-vous : reprise.",
+    { enregistrementId: actif.id, statut: actif.statut },
+  );
+}
+
+/** Refus propres à la dictée, ou `null`. Le repère est la fin prévue, sinon le début prévu. */
+export async function refusDictee(
+  db: Pick<Db, "enregistrement">,
+  rencontre: {
+    readonly id: string;
+    readonly debutPrevu: Date | null;
+    readonly finPrevue: Date | null;
+  },
+  maintenant: Date,
+): Promise<Resultat | null> {
+  const repere = rencontre.finPrevue ?? rencontre.debutPrevu;
+  if (repere !== null && maintenant.getTime() < repere.getTime()) {
+    return echec(409, CODE_DICTEE_AVANT_LA_FIN, MESSAGE_DICTEE_AVANT_LA_FIN);
+  }
+  const visio = await db.enregistrement.findFirst({
+    where: {
+      rencontreId: rencontre.id,
+      nature: "visio",
+      statut: { in: [...ETATS_ENREGISTREMENT_ACTIFS] },
+    },
+    select: { id: true },
+  });
+  if (visio) return echec(409, CODE_DICTEE_PENDANT_LA_VISIO, MESSAGE_DICTEE_PENDANT_LA_VISIO);
+  return null;
 }
 
 function motive(motif: MotifATexteFixe): RefusMotive {
@@ -168,6 +246,8 @@ export async function motifDeRefus(
     readonly maintenant: Date;
     /** Injecté par les tests ; la déclaration unique sinon. */
     readonly preavis?: Preavis | null;
+    /** Injecté par les tests ; `DICTEE_ANNONCEE` (source unique `visio-annonce.ts`) sinon. */
+    readonly dicteeAnnoncee?: boolean;
   },
 ): Promise<RefusMotive | null> {
   // 1. Opposition à l'IA d'une personne de la fiche ou d'un participant (art. 21).
@@ -212,7 +292,10 @@ export async function motifDeRefus(
   // 3. Nature : la dictée n'est enregistrée que si la notice l'annonce
   //    (`DICTEE_ANNONCEE`, source unique `visio-annonce.ts`, dérivée de
   //    l'annonce publique : faux tant que la PR 8 n'a rien annoncé).
-  if (entree.nature === "dictee" && !DICTEE_ANNONCEE) return motive("hors_liste_blanche");
+  //    PR 7 : c'est un service ÉTEINT (503), pas un refus de ce rendez-vous.
+  if (entree.nature === "dictee" && !(entree.dicteeAnnoncee ?? DICTEE_ANNONCEE)) {
+    return { motif: "hors_liste_blanche", message: MESSAGE_DICTEE_ETEINTE, eteint: true };
+  }
 
   // 4. Type de rencontre.
   if (rencontre.source === "calendly") {
@@ -330,6 +413,8 @@ export async function creerOuReprendreSession(
     readonly maintenant: Date;
     /** Injecté par les tests ; la déclaration unique sinon. */
     readonly preavis?: Preavis | null;
+    /** Injecté par les tests ; `DICTEE_ANNONCEE` sinon. */
+    readonly dicteeAnnoncee?: boolean;
   },
 ): Promise<Resultat> {
   const { corps, appareil } = entree;
@@ -340,10 +425,14 @@ export async function creerOuReprendreSession(
   // 0. Rejeu de la même création (réseau coupé après l'écriture).
   const parCle = await db.enregistrement.findUnique({
     where: { cleClient: corps.cleClient },
-    select: { id: true, rencontreId: true, statut: true, appareilId: true },
+    select: { id: true, rencontreId: true, statut: true, appareilId: true, nature: true },
   });
   if (parCle) {
-    if (parCle.appareilId !== appareil.id || parCle.rencontreId !== corps.rencontreId) {
+    if (
+      parCle.appareilId !== appareil.id ||
+      parCle.rencontreId !== corps.rencontreId ||
+      parCle.nature !== corps.nature
+    ) {
       return echec(
         409,
         "cle_client_deja_prise",
@@ -390,6 +479,7 @@ export async function creerOuReprendreSession(
       repriseHistorique: true,
       clientId: true,
       debutPrevu: true,
+      finPrevue: true,
       fusionneeDansId: true,
       calendlyEvent: { select: { eventTypeName: true, linkedJobApplicationId: true } },
     },
@@ -402,29 +492,33 @@ export async function creerOuReprendreSession(
     mode: entree.mode,
     maintenant: entree.maintenant,
     preavis,
+    ...(entree.dicteeAnnoncee !== undefined ? { dicteeAnnoncee: entree.dicteeAnnoncee } : {}),
   });
-  if (refus) return echec(409, refus.motif, refus.message);
+  if (refus) {
+    return refus.eteint
+      ? echec(503, CODE_DICTEE_ETEINTE, refus.message)
+      : echec(409, refus.motif, refus.message);
+  }
+
+  // 2 bis. PR 7 — la dictée : après la fin prévue, jamais pendant une visio.
+  if (corps.nature === "dictee") {
+    const refus2 = await refusDictee(db, rencontre, entree.maintenant);
+    if (refus2) return refus2;
+  }
 
   // 3. Un seul enregistrement actif par rencontre : on renvoie celui qui vit,
   //    l'extension s'y rattache (reprise après un plantage).
   const actif = await db.enregistrement.findFirst({
     where: { rencontreId: rencontre.id, statut: { in: [...ETATS_ENREGISTREMENT_ACTIFS] } },
-    select: { id: true, statut: true },
+    select: { id: true, statut: true, nature: true },
   });
-  if (actif) {
-    return echec(
-      409,
-      "enregistrement_actif",
-      "Un enregistrement est déjà en cours pour ce rendez-vous : reprise.",
-      {
-        enregistrementId: actif.id,
-        statut: actif.statut,
-      },
-    );
-  }
+  if (actif) return repriseOuRefus(actif, corps.nature);
 
   // 4. Création. Un accord rejoué dans le délai démarre directement `en_cours`.
-  const accordValide = accordLocalLe !== null && accordDansLeDelai(debut, accordLocalLe);
+  //    PR 7 — une DICTÉE (Williams seul, après un appel) n'a pas d'étape de
+  //    consentement : elle démarre `en_cours`, sans accord ni preuve d'accord.
+  const dictee = corps.nature === "dictee";
+  const accordValide = !dictee && accordLocalLe !== null && accordDansLeDelai(debut, accordLocalLe);
   let cree: { id: string; statut: EnregistrementStatut };
   try {
     cree = await db.enregistrement.create({
@@ -433,7 +527,7 @@ export async function creerOuReprendreSession(
         nature: corps.nature,
         cleClient: corps.cleClient,
         appareilId: appareil.id,
-        statut: accordValide ? "en_cours" : "accord_en_attente",
+        statut: accordValide || dictee ? "en_cours" : "accord_en_attente",
         debut,
         accordConfirmeLe: accordValide ? accordLocalLe : null,
         evenements: ajouterAuJournal(null, { le: entree.maintenant, type: "session_creee" }),
@@ -447,18 +541,10 @@ export async function creerOuReprendreSession(
     // Course : un autre appel a créé l'actif entre-temps (index partiel unique).
     const gagnant = await db.enregistrement.findFirst({
       where: { rencontreId: rencontre.id, statut: { in: [...ETATS_ENREGISTREMENT_ACTIFS] } },
-      select: { id: true, statut: true },
+      select: { id: true, statut: true, nature: true },
     });
     if (!gagnant) throw err;
-    return echec(
-      409,
-      "enregistrement_actif",
-      "Un enregistrement est déjà en cours pour ce rendez-vous : reprise.",
-      {
-        enregistrementId: gagnant.id,
-        statut: gagnant.statut,
-      },
-    );
+    return repriseOuRefus(gagnant, corps.nature);
   }
 
   if (accordValide && accordLocalLe) {
@@ -495,6 +581,7 @@ async function chargerDeLAppareil(db: Pick<Db, "enregistrement">, id: string, ap
       evenements: true,
       accordConfirmeLe: true,
       updatedAt: true,
+      nature: true,
     },
   });
   if (!enr || enr.appareilId !== appareilId) return null;
@@ -738,6 +825,8 @@ export async function terminerTranche(
     });
   }
   const c = entree.corps;
+  const pisteRefusee = refusPisteClientEnDictee(enr.nature, c.piste);
+  if (pisteRefusee) return pisteRefusee;
   const tranche = await db.enregistrementTranche.upsert({
     where: {
       enregistrementId_piste_numero: { enregistrementId: enr.id, piste: c.piste, numero: c.numero },

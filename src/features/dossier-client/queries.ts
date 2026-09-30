@@ -30,6 +30,12 @@ import type {
 } from "../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import { dechiffrerParole } from "@/lib/chiffrer-parole";
+import { lireFaitsDUnClient, TEXTE_ILLISIBLE } from "@/features/dossier-client/lire-faits";
+import { preparationEchouee } from "@/features/dossier-client/questionnaire-etat";
+import {
+  etatsDesEmailsSuivi,
+  type EtatEmailSuivi,
+} from "@/features/dossier-client/etat-email-suivi";
 import type { FaitAConsolider } from "@/features/dossier-client/consolider-faits";
 import type {
   CompteRenduNonValide,
@@ -39,7 +45,7 @@ import type {
   QuestionSansReponse,
 } from "@/features/dossier-client/preparer";
 
-export const TEXTE_ILLISIBLE = "(illisible : clé de chiffrement absente)";
+export { TEXTE_ILLISIBLE };
 
 /** Déchiffre sans faire tomber la page. */
 function lire(valeur: string | null): string | null {
@@ -58,41 +64,12 @@ export interface FaitDuDossier extends FaitAConsolider {
   readonly citationVerifiee: boolean;
 }
 
-/** Les faits d'un client (tous les statuts utiles), énoncés déchiffrés. */
+/**
+ * Les faits d'un client (tous les statuts utiles), énoncés déchiffrés — par
+ * LA lecture partagée avec le worker (`lire-faits.ts`).
+ */
 export async function lireFaitsDuClient(clientId: string): Promise<FaitDuDossier[]> {
-  const lignes = await prisma.fait.findMany({
-    where: { clientId, statut: { in: STATUTS_LUS } },
-    select: {
-      id: true,
-      type: true,
-      cle: true,
-      portee: true,
-      projetId: true,
-      statut: true,
-      suivi: true,
-      enonce: true,
-      texteCourt: true,
-      montantMinCents: true,
-      montantMaxCents: true,
-      dateCible: true,
-      quantite: true,
-      refCatalogue: true,
-      constateLe: true,
-      citationDebutMs: true,
-      rencontreId: true,
-      contactSujetId: true,
-      relation: true,
-      relationAvecFaitId: true,
-      remplaceParId: true,
-      citationVerifiee: true,
-    },
-    orderBy: { constateLe: "desc" },
-  });
-  return lignes.map((l) => ({
-    ...l,
-    enonce: l.statut === "efface" ? "" : (lire(l.enonce) ?? ""),
-    texteCourt: l.statut === "efface" ? null : lire(l.texteCourt),
-  }));
+  return lireFaitsDUnClient(prisma, clientId, { statuts: STATUTS_LUS, illisible: TEXTE_ILLISIBLE });
 }
 
 export interface FaitARanger {
@@ -257,7 +234,8 @@ export interface RencontreDuDossier {
   readonly compteRenduEnCours: boolean;
   readonly emailsSuivi: ReadonlyArray<{
     readonly creeLe: Date;
-    readonly statut: EmailOutboxStatus | null;
+    /** Lu dans `email_outbox`, ou — sans e-mail — dans l'étape `email_suivi`. */
+    readonly etat: EtatEmailSuivi;
   }>;
 }
 
@@ -282,6 +260,7 @@ export async function lireRencontresDuClient(clientId: string): Promise<Rencontr
         select: { creeLe: true, emailOutbox: { select: { statut: true } } },
         orderBy: { creeLe: "desc" },
       },
+      traitements: { where: { etape: "email_suivi" }, select: { statut: true }, take: 1 },
     },
     orderBy: [{ debutPrevu: { sort: "desc", nulls: "last" } }, { createdAt: "desc" }],
   });
@@ -301,10 +280,14 @@ export async function lireRencontresDuClient(clientId: string): Promise<Rencontr
           ? { valideLe: valide.valideLe, enBref: enBrefDuContenu(lire(valide.contenu)) }
           : null,
       compteRenduEnCours: r.comptesRendus.some((c) => c.statut !== "valide"),
-      emailsSuivi: r.emailsSuivi.map((e) => ({
-        creeLe: e.creeLe,
-        statut: e.emailOutbox?.statut ?? null,
-      })),
+      emailsSuivi: (() => {
+        const lignes = r.emailsSuivi.map((e) => ({
+          creeLe: e.creeLe,
+          statut: e.emailOutbox?.statut ?? null,
+        }));
+        const etats = etatsDesEmailsSuivi(lignes, r.traitements[0]?.statut ?? null);
+        return lignes.map((l, i) => ({ creeLe: l.creeLe, etat: etats[i]! }));
+      })(),
     };
   });
 }
@@ -397,4 +380,174 @@ export async function lireHistoriqueProjet(projetId: string): Promise<EvenementD
     select: { action: true, ancienStatut: true, nouveauStatut: true, survenuLe: true },
     orderBy: { survenuLe: "desc" },
   });
+}
+
+/**
+ * Les phrases exactes (citations VÉRIFIÉES) de faits validés, déchiffrées —
+ * pour l'aide au devis (PR 7). ⚠️ Appelée seulement pour un rôle de
+ * `ROLES_DOSSIER_ECHANGES` : pour tout autre rôle, la page ne l'appelle pas et
+ * l'aide rend `citations: null`.
+ */
+export async function lireCitationsDesFaits(
+  ids: ReadonlyArray<string>,
+): Promise<Map<string, string>> {
+  if (ids.length === 0) return new Map();
+  const lignes = await prisma.fait.findMany({
+    where: { id: { in: [...ids] }, statut: "valide", citationVerifiee: true },
+    select: { id: true, citation: true },
+  });
+  const sortie = new Map<string, string>();
+  for (const l of lignes) {
+    const c = lire(l.citation);
+    if (c !== null && c !== "") sortie.set(l.id, c);
+  }
+  return sortie;
+}
+
+export interface QuestionDuQuestionnaire {
+  readonly id: string;
+  readonly ordre: number;
+  readonly texte: string;
+  readonly poseeDeViveVoix: boolean;
+  readonly reponse: string | null;
+  /** Faits tirés de la réponse (proposés, en attente ou validés). */
+  readonly faits: ReadonlyArray<{
+    readonly id: string;
+    readonly statut: FaitStatut;
+    readonly enonce: string;
+    readonly citation: string | null;
+  }>;
+}
+
+export interface QuestionnaireDuProjet {
+  readonly id: string;
+  readonly version: number;
+  readonly statut: "brouillon" | "copie" | "reponse_recue" | "clos";
+  /** Vrai tant que le worker n'a pas rempli les questions. */
+  readonly enPreparation: boolean;
+  /** En préparation, mais l'étape ne tourne plus (échec, suspension) : à relancer. */
+  readonly preparationEchouee: boolean;
+  readonly genereLe: Date;
+  readonly questions: ReadonlyArray<QuestionDuQuestionnaire>;
+}
+
+/** Le dernier questionnaire de cadrage d'un projet (PR 7), paroles déchiffrées. */
+export async function lireQuestionnaireDuProjet(
+  projetId: string,
+): Promise<QuestionnaireDuProjet | null> {
+  const q = await prisma.questionnaireCadrage.findFirst({
+    where: { projetId },
+    orderBy: { version: "desc" },
+    select: {
+      id: true,
+      version: true,
+      statut: true,
+      modele: true,
+      genereLe: true,
+      questions: {
+        orderBy: { ordre: "asc" },
+        select: {
+          id: true,
+          ordre: true,
+          texte: true,
+          poseeDeViveVoix: true,
+          reponse: true,
+          faitsProduits: {
+            where: { statut: { in: ["propose", "en_attente", "valide"] } },
+            select: { id: true, statut: true, enonce: true, citation: true },
+          },
+        },
+      },
+    },
+  });
+  if (!q) return null;
+  const enPreparation = q.statut === "brouillon" && q.modele === null && q.questions.length === 0;
+  // L'étape `questionnaire` s'attache à une rencontre du projet (l'ancrage) :
+  // si aucune n'est en vol, la préparation a échoué et se relance.
+  const etapes = enPreparation
+    ? await prisma.traitementVisio.findMany({
+        where: { etape: "questionnaire", rencontre: { projetId } },
+        select: { statut: true },
+      })
+    : [];
+  return {
+    id: q.id,
+    version: q.version,
+    statut: q.statut,
+    enPreparation,
+    preparationEchouee: preparationEchouee(
+      enPreparation,
+      etapes.map((e) => e.statut),
+    ),
+    genereLe: q.genereLe,
+    questions: q.questions.map((x) => ({
+      id: x.id,
+      ordre: x.ordre,
+      texte: lire(x.texte) ?? "",
+      poseeDeViveVoix: x.poseeDeViveVoix,
+      reponse: lire(x.reponse),
+      faits: x.faitsProduits.map((f) => ({
+        id: f.id,
+        statut: f.statut,
+        enonce: lire(f.enonce) ?? "",
+        citation: lire(f.citation),
+      })),
+    })),
+  };
+}
+
+export interface EmailSuiviDuDossier {
+  readonly id: string;
+  readonly rencontreId: string;
+  readonly contactNom: string;
+  readonly creeLe: Date;
+  /** `null` : pas (ou plus) dans « E-mails à valider » — voir `etat`. */
+  readonly statut: EmailOutboxStatus | null;
+  /** Ce que Will lit (`etat-email-suivi.ts`) : jamais « en préparation » pour un échec. */
+  readonly etat: EtatEmailSuivi;
+  readonly sujet: string | null;
+  readonly envoyeLe: Date | null;
+}
+
+/**
+ * Les e-mails de suivi d'UNE rencontre, avec le destinataire et l'objet, leur
+ * état LU dans `email_outbox` — vue « E-mail de suivi » (PR 7). L'onglet
+ * Échanges, lui, lit l'état par `lireRencontresDuClient`.
+ */
+export async function lireEmailsDeSuivi(rencontreId: string): Promise<EmailSuiviDuDossier[]> {
+  const lignes = await prisma.emailSuivi.findMany({
+    where: { rencontreId },
+    orderBy: { creeLe: "desc" },
+    take: 50,
+    select: {
+      id: true,
+      rencontreId: true,
+      contactId: true,
+      creeLe: true,
+      emailOutbox: { select: { statut: true, sujet: true, envoyeAt: true } },
+    },
+  });
+  const contacts = await prisma.clientContact.findMany({
+    where: { id: { in: [...new Set(lignes.map((l) => l.contactId))] } },
+    select: { id: true, nom: true },
+  });
+  const nomDe = new Map(contacts.map((c) => [c.id, c.nom]));
+  const etape = await prisma.traitementVisio.findFirst({
+    where: { rencontreId, etape: "email_suivi" },
+    select: { statut: true },
+  });
+  const etats = etatsDesEmailsSuivi(
+    lignes.map((l) => ({ creeLe: l.creeLe, statut: l.emailOutbox?.statut ?? null })),
+    etape?.statut ?? null,
+  );
+  return lignes.map((l, i) => ({
+    id: l.id,
+    etat: etats[i]!,
+    rencontreId: l.rencontreId,
+    contactNom: nomDe.get(l.contactId) ?? "—",
+    creeLe: l.creeLe,
+    statut: l.emailOutbox?.statut ?? null,
+    sujet: l.emailOutbox?.sujet ?? null,
+    envoyeLe: l.emailOutbox?.envoyeAt ?? null,
+  }));
 }

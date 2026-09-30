@@ -169,7 +169,10 @@ export type EmailJobName =
   // Chantier visio (PR 4, 2026-09-29) — INVITATION à un rendez-vous de visio
   // créé dans la console (deuxième rendez-vous, hors Calendly). Toujours garée
   // en « E-mails à valider » : Will la relit, l'envoie ou l'écarte.
-  | "rencontre-invitation";
+  | "rencontre-invitation"
+  // Chantier visio (PR 7) — e-mail de suivi d'un rendez-vous client, construit
+  // sur les faits VALIDÉS. Toujours garé en « E-mails à valider ».
+  | "visio-email-suivi";
 
 /**
  * Lot L4 — passage quotidien du vivier candidats.

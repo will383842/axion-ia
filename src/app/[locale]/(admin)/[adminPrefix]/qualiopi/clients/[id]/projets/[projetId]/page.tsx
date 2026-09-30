@@ -37,8 +37,10 @@ import {
   lireHistoriqueProjet,
   lirePersonnesDuClient,
   lireProjetsDuClient,
+  lireQuestionnaireDuProjet,
   lireRencontresDuClient,
 } from "@/features/dossier-client/queries";
+import { VueQuestionnaire } from "@/components/admin/visio/VueQuestionnaire";
 import { getClient } from "@/server/qualiopi/crm/clients";
 import {
   lireCaseTestVisible,
@@ -56,6 +58,11 @@ export const metadata: Metadata = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string; projetId: string }>;
+  /**
+   * PR 7 — `vue=questionnaire` : le questionnaire de cadrage du projet (une vue
+   * de cette page, pas une page de plus : cliquet des pages de la console).
+   */
+  searchParams: Promise<{ vue?: string; message?: string; erreur?: string }>;
 }
 
 const carteCls =
@@ -75,8 +82,9 @@ const LIBELLE_EVENEMENT: Readonly<Record<string, string>> = {
   renomme: "Renommé",
 };
 
-export default async function ProjetPage({ params }: PageProps) {
+export default async function ProjetPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix, id, projetId } = await params;
+  const demande = await searchParams;
   // 🔴 Première instruction : la garde, AVANT toute lecture.
   const acces = await gardeLectureEchanges(`/${locale}/${adminPrefix}/login`);
   const ficheHref = `/${locale}/${adminPrefix}/qualiopi/clients/${id}`;
@@ -106,6 +114,9 @@ export default async function ProjetPage({ params }: PageProps) {
   const portee = conso.projets[projet.id];
   const personnesDuProjet = personnes.filter((p) => p.roles.some((r) => r.projetId === projet.id));
   const rencontresDuProjet = rencontres.filter((r) => r.projetId === projet.id);
+  const vueQuestionnaire = demande.vue === "questionnaire";
+  const questionnaire = vueQuestionnaire ? await lireQuestionnaireDuProjet(projet.id) : null;
+  const retourQuestionnaire = `${ficheHref}/projets/${projet.id}?vue=questionnaire`;
 
   return (
     <AdminPageShell width="wide">
@@ -131,6 +142,17 @@ export default async function ProjetPage({ params }: PageProps) {
           </AdminButton>
         }
       />
+
+      {vueQuestionnaire ? (
+        <VueQuestionnaire
+          clientId={id}
+          projetId={projet.id}
+          retour={retourQuestionnaire}
+          questionnaire={questionnaire}
+          message={demande.message}
+          erreur={demande.erreur}
+        />
+      ) : null}
 
       <section className={carteCls}>
         <h2 className={titreCls}>Ce que l&apos;on sait de ce projet</h2>
@@ -183,6 +205,25 @@ export default async function ProjetPage({ params }: PageProps) {
 
       <section className={carteCls}>
         <h2 className={titreCls}>Devis liés</h2>
+        {/* Chantier visio (PR 7) : le devis s'ouvre VIDE, l'aide « Ce que le
+            client a dit » s'affiche à côté (décision de Will du 29/09). */}
+        <div className="mb-[var(--space-admin-3)] flex flex-wrap gap-[var(--space-admin-2)]">
+          <AdminButton
+            href={`/${locale}/${adminPrefix}/qualiopi/devis/new?clientId=${id}&projetId=${projet.id}`}
+            variant="secondary"
+          >
+            Créer un devis pour ce projet
+          </AdminButton>
+          <AdminButton
+            href={`/${locale}/${adminPrefix}/qualiopi/vente/new?clientId=${id}&projetId=${projet.id}`}
+            variant="secondary"
+          >
+            Vente guidée pour ce projet
+          </AdminButton>
+          <AdminButton href={retourQuestionnaire} variant="secondary">
+            Questionnaire de cadrage
+          </AdminButton>
+        </div>
         {projet.devis.length === 0 ? (
           <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>Aucun devis lié.</p>
         ) : (

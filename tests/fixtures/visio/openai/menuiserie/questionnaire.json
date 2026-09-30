@@ -1,0 +1,61 @@
+{
+  "introduction": "Quelques questions pour préparer notre proposition.",
+  "conclusion": "Merci.",
+  "questions": [
+    {
+      "id": "Q1",
+      "texte": "Qui prendra la décision finale pour cette formation ?",
+      "type_reponse": "texte_court",
+      "choix": [],
+      "aide": null,
+      "facultative": false,
+      "rubrique": "decision",
+      "sources": ["T02"],
+      "utilite_pour_williams": "savoir à qui adresser le devis"
+    },
+    {
+      "id": "Q2",
+      "texte": "Quels sont les usages de l'IA que vos commerciaux veulent apprendre en priorité ?",
+      "type_reponse": "texte_long",
+      "choix": [],
+      "aide": null,
+      "facultative": false,
+      "rubrique": "besoins",
+      "sources": ["T04"],
+      "utilite_pour_williams": "adapter le programme"
+    },
+    {
+      "id": "Q3",
+      "texte": "Combien de commerciaux seront formés ?",
+      "type_reponse": "nombre",
+      "choix": [],
+      "aide": null,
+      "facultative": false,
+      "rubrique": "perimetre",
+      "sources": ["C001"],
+      "utilite_pour_williams": "déjà connu : doit être retirée"
+    },
+    {
+      "id": "Q4",
+      "texte": "Quel budget pouvez-vous y consacrer ?",
+      "type_reponse": "nombre",
+      "choix": [],
+      "aide": null,
+      "facultative": false,
+      "rubrique": "budget_financement",
+      "sources": ["T02"],
+      "utilite_pour_williams": "prix : doit être retirée"
+    },
+    {
+      "id": "Q5",
+      "texte": "Préférez-vous une journée entière ou deux demi-journées ?",
+      "type_reponse": "choix_unique",
+      "choix": ["Une journée", "Deux demi-journées"],
+      "aide": null,
+      "facultative": true,
+      "rubrique": "offres",
+      "sources": ["T10"],
+      "utilite_pour_williams": "choisir le format"
+    }
+  ]
+}

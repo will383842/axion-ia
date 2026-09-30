@@ -54,7 +54,12 @@ export interface FaitVerifie {
   readonly enonce: string;
   readonly statut: "propose" | "en_attente" | "rejete";
   readonly motif: MotifRejetFait | null;
-  readonly certitude: "dit_explicitement" | "confirme_sur_reformulation" | "deduit";
+  readonly certitude:
+    | "dit_explicitement"
+    | "confirme_sur_reformulation"
+    | "deduit"
+    // PR 7 — dictée : tout est rapporté par Williams.
+    | "rapporte_par_williams";
   readonly confiance: "haute" | "moyenne" | "faible";
   readonly locuteur: "client" | "axion" | null;
   readonly etiquette: string | null;
@@ -111,6 +116,12 @@ export interface EntreeV1 {
   /** Références `H…` des faits déjà connus envoyés dans `deja_connu`. */
   readonly connus: ReadonlySet<string>;
   readonly dateEchange: Date;
+  /**
+   * PR 7 — une DICTÉE n'a qu'une piste, celle de Williams : G3 est remplacé
+   * par « la preuve est sur la piste de Williams », chaque fait est
+   * `rapporte_par_williams`, et AUCUNE citation n'est une phrase du client.
+   */
+  readonly nature?: "visio" | "dictee";
 }
 
 function rejete(f: FaitExtrait, motif: MotifRejetFait): FaitVerifie {
@@ -167,15 +178,22 @@ function verifierUnFait(
   const echec = verdicts.find((v): v is Extract<VerdictPreuve, { ok: false }> => !v.ok);
   if (echec) return { fait: rejete(f, echec.motif), echo: false };
   const premiere = verdicts[0] as Extract<VerdictPreuve, { ok: true }>;
-  // G3
+  // G3 (dictée : la preuve est sur la piste de Williams, rien d'autre n'est admis)
+  const dictee = e.nature === "dictee";
   const confirmation =
-    f.confirmation_client === null ? null : verifierPreuve(f.confirmation_client, parId, rangs);
-  const loc = verifierLocuteur({
-    type: f.type,
-    locuteurDeclare: f.locuteur_declare,
-    preuve: premiere,
-    confirmation,
-  });
+    dictee || f.confirmation_client === null
+      ? null
+      : verifierPreuve(f.confirmation_client, parId, rangs);
+  const loc: ReturnType<typeof verifierLocuteur> = dictee
+    ? premiere.piste === "axion" && f.locuteur_declare === "axion"
+      ? { ok: true, certitude: "dit_explicitement" }
+      : { ok: false }
+    : verifierLocuteur({
+        type: f.type,
+        locuteurDeclare: f.locuteur_declare,
+        preuve: premiere,
+        confirmation,
+      });
   if (!loc.ok) return { fait: rejete(f, "locuteur_non_admis"), echo: false };
   // G4
   const citations = [
@@ -199,7 +217,11 @@ function verifierUnFait(
   // G8
   const sensible = estSensible(f.enonce, f.valeur.texte_court);
   const confirmationOk = confirmation !== null && confirmation.ok ? confirmation : null;
-  const certitude = f.certitude === "deduit" ? "deduit" : loc.certitude;
+  const certitude = dictee
+    ? "rapporte_par_williams"
+    : f.certitude === "deduit"
+      ? "deduit"
+      : loc.certitude;
   return {
     echo,
     fait: {

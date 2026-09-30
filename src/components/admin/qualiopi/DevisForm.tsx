@@ -54,6 +54,12 @@ export interface DevisFormProps {
   basePath: string;
   /** Client pré-sélectionné (searchParam `clientId` — lien depuis /qualiopi/entrees). */
   defaultClientId?: string;
+  /**
+   * Chantier visio (PR 7) : devis ouvert depuis un PROJET. Seul le lien
+   * `projet_devis` en découle ; aucun champ n'est pré-rempli (décision de Will
+   * du 29/09) — l'aide « Ce que le client a dit » s'affiche À CÔTÉ, en lecture.
+   */
+  projetId?: string;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -161,6 +167,7 @@ export function DevisForm({
   offres,
   basePath,
   defaultClientId,
+  projetId,
 }: DevisFormProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -294,6 +301,7 @@ export function DevisForm({
       const result = await createDevisAction({
         clientId,
         lignes: parsedLignes,
+        ...(projetId !== undefined ? { projetId } : {}),
         ...(activite !== "" ? { activite } : {}),
         ...(financementSuggere !== "" ? { financementSuggere } : {}),
         ...(showOpco && nbParticipants !== ""

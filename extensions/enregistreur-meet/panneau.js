@@ -83,6 +83,7 @@ function rendre(e) {
   rendreRencontres(e);
   const phase = e.capture.phase;
   afficher("repos", phase === "repos" || phase === "termine" || phase === "detruit");
+  afficher("dictee", phase === "repos" || phase === "termine" || phase === "detruit");
   afficher("attente", phase === "accord_en_attente");
   afficher("encours", phase === "en_cours");
   const choisie = e.rencontres.find((x) => x.rencontreId === $("rencontre").value);
@@ -133,6 +134,7 @@ $("demarrer").addEventListener("click", () => {
   }
   geste("demarrer");
 });
+$("dicter").addEventListener("click", () => geste("demarrer_dictee"));
 $("accord").addEventListener("click", () => geste("accord"));
 $("refus").addEventListener("click", () => geste("refus"));
 $("refus2").addEventListener("click", () => geste("refus"));

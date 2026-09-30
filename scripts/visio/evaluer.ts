@@ -52,6 +52,7 @@ import {
   type DonneesPourPasses,
 } from "../../src/server/visio/passes-ia";
 import { entrelacer, type SegmentStocke } from "../../src/server/visio/dialogue";
+import { PREAMBULE_DICTEE } from "../../src/server/visio/dictee";
 import { obtenirClientOpenAI } from "../../src/server/visio/openai/client";
 import { portCoutReel } from "../../src/server/visio/openai/cout";
 import { ESTIMATION_PASSE_USD } from "../../src/server/visio/openai/modeles";
@@ -104,7 +105,8 @@ async function main(): Promise<void> {
   const mod = (await import(
     path.resolve(process.cwd(), scenarios)
   )) as typeof import("../../tests/fixtures/visio/scenarios/scenarios");
-  const liste = mod.SCENARIOS;
+  // PR 7 — les 10 scénarios et la dictée (scénario 11).
+  const liste = mod.TOUS_LES_SCENARIOS();
   const estimation =
     liste.length *
     executions *
@@ -179,7 +181,7 @@ async function main(): Promise<void> {
             dureeMs: sc.dureeS * 1000,
             source: "calendly",
           },
-          pistes: { client: "OK", axion: "OK" },
+          pistes: { client: sc.nature === "dictee" ? "MUETTE" : "OK", axion: "OK" },
           formulaire:
             sc.id === "10-formulaire-piege"
               ? [{ question: "Votre besoin", reponse: mod.FORMULAIRE_PIEGE }]
@@ -194,6 +196,8 @@ async function main(): Promise<void> {
           dejaConnus: connus,
           dialogue,
         });
+        // PR 7 — scénario de dictée : même préambule que le worker.
+        const entreeP1 = sc.nature === "dictee" ? `${PREAMBULE_DICTEE}\n${entree}` : entree;
         const p1 = await executerPasse(
           { client, cout: portCoutReel },
           {
@@ -201,7 +205,7 @@ async function main(): Promise<void> {
             schema: SCHEMAS_VISIO.extraction.schema,
             nomSchema: SCHEMAS_VISIO.extraction.nom,
             instructions: instructionsDe("extraire", catalogue.texte),
-            entree,
+            entree: entreeP1,
             jobId: `${jobId}-p1`,
           },
         );
@@ -211,6 +215,7 @@ async function main(): Promise<void> {
           catalogue: catalogue.refs,
           connus: new Set(correspondances.faits.keys()),
           dateEchange: date,
+          ...(sc.nature === "dictee" ? { nature: "dictee" as const } : {}),
         });
         const retenus = v1.faits.filter((f) => f.statut !== "rejete");
         c.faitsSansCitationVerifiee = retenus.filter(

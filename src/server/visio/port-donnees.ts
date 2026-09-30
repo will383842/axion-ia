@@ -74,6 +74,8 @@ export interface DonneesRencontre {
   readonly clientId: string | null;
   readonly debut: Date;
   readonly dureeMs: number;
+  /** PR 7 — nature du dernier enregistrement (absent : visio). */
+  readonly nature?: "visio" | "dictee";
 }
 
 export interface DonneesExtraction {
@@ -236,6 +238,8 @@ export interface PortDonnees {
       readonly promptHash: string;
       readonly schemaVersion: number;
       readonly etat: EtatCompteRendu;
+      /** PR 7 — une dictée donne `origine = dictee` (absent : `ia`). */
+      readonly nature?: "visio" | "dictee";
     },
   ) => Promise<string>;
   /** Pas un rendez-vous client (entretien, échange personnel) : tout est effacé, sans compte rendu. */
@@ -253,6 +257,8 @@ export interface PortDonnees {
       readonly clientId: string | null;
       readonly constateLe: Date;
       readonly faits: readonly FaitAEcrire[];
+      /** PR 7 — une dictée donne `source = dictee` (absent : `transcription`). */
+      readonly nature?: "visio" | "dictee";
     },
   ) => Promise<ReadonlyArray<readonly [string, string]>>;
 

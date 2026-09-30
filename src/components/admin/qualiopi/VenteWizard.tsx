@@ -115,6 +115,19 @@ export interface VenteWizardProps {
   formations: VenteFormationOption[];
   /** Pré-sélection client (`?clientId=`, boutons CRM) — le brouillon prime. */
   clientInitialId?: string;
+  /**
+   * Chantier visio (PR 7) : vente ouverte depuis un PROJET. Le devis créé est
+   * lié au projet (`projet_devis`) ; rien n'est pré-rempli.
+   */
+  projetId?: string;
+  /**
+   * Panneau SERVEUR « Ce que le client a dit » (lecture seule), rendu sous
+   * l'en-tête quand la vente est ouverte depuis un projet. Rien n'en est
+   * recopié dans le devis (décision de Will du 29/09). La page le passe déjà
+   * habillé (marge comprise) : le composant client n'en porte aucun octet de
+   * plus (cliquet du poids de la console).
+   */
+  aside?: React.ReactNode;
   /** Ventes déjà commencées par cet admin (rappel de reprise, sous l'en-tête). */
   brouillonsEnCours?: ReadonlyArray<{
     id: string;
@@ -175,6 +188,8 @@ export function VenteWizard({
   offres,
   formations,
   clientInitialId,
+  projetId,
+  aside,
   brouillonsEnCours,
   brouillon,
   devisInitial,
@@ -392,6 +407,9 @@ export function VenteWizard({
     startTransition(async () => {
       const r = await createDevisAction({
         clientId,
+        // Lien au projet seulement si le client choisi est bien celui du projet
+        // (l'action le revérifie et refuse un projet d'une autre fiche).
+        ...(projetId !== undefined && clientId === clientInitialId ? { projetId } : {}),
         activite: "formation",
         lignes: [
           {
@@ -557,6 +575,8 @@ export function VenteWizard({
         description={`Parcours guidé client → formation → devis → session — étape ${etape} sur 4.`}
       />
       <AdminFormDirtyGuard dirty={sale && etape < 4} />
+
+      {aside}
 
       {/* Reprise : le seul chemin quand un devis envoyé attend sa signature. */}
       {brouillonsEnCours !== undefined && brouillonsEnCours.length > 0 ? (

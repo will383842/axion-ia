@@ -1,0 +1,13 @@
+{
+  "reponses": [
+    {
+      "question_id": "Q1",
+      "reponse_citee": "notre directrice commerciale qui valide",
+      "valeur_texte": "la directrice commerciale",
+      "valeur_nombre": null,
+      "valeur_date": null,
+      "confiance": "haute"
+    }
+  ],
+  "questions_sans_reponse": ["Q2", "Q3"]
+}

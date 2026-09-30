@@ -21,6 +21,7 @@ import type {
   TypeConsentement,
 } from "../../../prisma/generated/client";
 import type { StatutRubrique } from "@/server/visio/verification/g06-couverture";
+import type { EtatValeur } from "@/features/dossier-client/consolider-faits";
 import {
   LIBELLE_ISSUE as LIBELLE_ISSUE_RDV,
   LIBELLE_SUITE as LIBELLE_SUITE_RDV,
@@ -74,6 +75,19 @@ export const LIBELLE_RUBRIQUE: Readonly<Record<number, string>> = {
   12: "Signaux d'alerte",
   13: "Prochaine étape",
 };
+
+/**
+ * Mention d'état d'une valeur consolidée — table UNIQUE, lue par la fiche
+ * (`LigneValeur`) comme par l'aide au devis : Will lit la même phrase partout.
+ * `null` : valeur courante, sans réserve.
+ */
+export const MENTION_ETAT = {
+  courante: null,
+  a_trancher: "à trancher : plusieurs valeurs ont été dites",
+  a_reconfirmer: "à reconfirmer : remise en cause",
+  avant_reouverture: "dite avant la réouverture du projet : à reconfirmer",
+  effacee: "valeur effacée",
+} as const satisfies Record<EtatValeur, string | null>;
 
 export const LIBELLE_STATUT_PROJET = {
   ouvert: "En cours",

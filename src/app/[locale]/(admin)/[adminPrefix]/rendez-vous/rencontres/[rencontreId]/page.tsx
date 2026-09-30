@@ -103,7 +103,9 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
   // (pendant le traitement, après un échec, quand Will est attendu) : c'est là que
   // se trouvent « Le client retire son accord » et la réponse aux enregistrements courts.
   const circuit = await lireCircuitDeLaRencontre(prisma, r.id);
-  const avecEnregistrement = circuit.aOuvrir || r.comptesRendus.some((c) => c.origine === "ia");
+  // PR 7 — une dictée donne aussi un compte rendu (origine `dictee`).
+  const redige = r.comptesRendus.some((c) => c.origine === "ia" || c.origine === "dictee");
+  const avecEnregistrement = circuit.aOuvrir || redige;
   const vueEnregistrement = avecEnregistrement ? await lireCompteRendu(prisma, r.id) : null;
   const faitsValides = r.faits.filter((f) => f.statut === "valide");
 
@@ -212,6 +214,14 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
             Le compte rendu de l&apos;enregistrement est plus bas sur cette page.
           </p>
         )}
+        <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
+          <Link href={`${rdvBase}?emailSuivi=${r.id}`} className={lienCls}>
+            E-mail de suivi au client
+          </Link>{" "}
+          <span className={mutedCls}>
+            — préparé depuis les faits validés, il attend votre validation avant de partir.
+          </span>
+        </p>
         {r.comptesRendus.length > 1 ? (
           <details className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
             <summary className="cursor-pointer">Versions ({r.comptesRendus.length})</summary>
