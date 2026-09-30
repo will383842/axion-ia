@@ -10,6 +10,18 @@
  *   - partenariats   : registre des partenariats (ind. 26)
  *   - sous_traitants : registre des sous-traitants (ind. 27)
  *   - incidents      : registre des incidents + actions correctives (LOT 4)
+ *   - appreciations  : registre des appréciations des parties prenantes (ind. 30)
+ *   - moyens         : inventaire des moyens pédagogiques et techniques (ind. 17/19)
+ *
+ * 🔴 Constat du dossier ZIP du 2026-09-30 : l'indicateur 30 n'avait AUCUNE
+ * preuve de recueil des appréciations dans le dossier remis, et l'inventaire
+ * des moyens (17/19) n'y figurait que s'il avait été tiré à la main comme pièce
+ * numérotée. Les deux sont désormais des exports d'état, joints au ZIP avec
+ * les autres registres.
+ *
+ * 🕐 Toutes les dates (nom de fichier, date d'édition, cellules) sont lues en
+ * heure de PARIS. Le conteneur tourne en UTC : un dossier tiré le 30/09 à
+ * 00 h 53 à Paris nommait ses registres « 2026-09-29 ».
  *
  * `renderRegistrePdfBuffer(type)` : sélectionne les données réelles (Prisma),
  * construit les lignes et rend le PDF (Buffer + filename). Consommé par la
@@ -24,6 +36,7 @@ import { prisma } from "@/lib/prisma";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { RegistrePdf, type RegistreData } from "@/server/qualiopi/documents/templates/registre";
+import { parisDateISO } from "@/server/qualiopi/presence/time";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types exportés
@@ -36,6 +49,8 @@ export const REGISTRE_TYPES = [
   "partenariats",
   "sous_traitants",
   "incidents",
+  "appreciations",
+  "moyens",
 ] as const;
 
 export type RegistreType = (typeof REGISTRE_TYPES)[number];
@@ -53,8 +68,9 @@ const EXPORT_TAKE = 1000;
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
+/** JJ/MM/AAAA du jour de PARIS — jamais le fuseau du conteneur (UTC). */
 function formatDateFr(d: Date | null | undefined): string {
-  return d ? d.toLocaleDateString("fr-FR") : "";
+  return d ? d.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" }) : "";
 }
 
 /** Résumé compact d'un champ Json tableau (participants, décisions, actions). */
@@ -330,6 +346,96 @@ async function buildIncidents(): Promise<Omit<RegistreData, "dateEdition">> {
   };
 }
 
+const APPRECIATION_SOURCE_LABELS: Record<string, string> = {
+  stagiaire: "Stagiaire",
+  entreprise: "Entreprise",
+  financeur: "Financeur",
+  formateur: "Formateur",
+};
+
+function nomPersonne(p: { nom: string | null; prenom: string | null } | null): string {
+  if (p === null) return "";
+  return `${p.prenom ?? ""} ${p.nom ?? ""}`.trim();
+}
+
+/**
+ * Registre des appréciations (ind. 30) — la preuve que les appréciations des
+ * parties prenantes sont RECUEILLIES : stagiaires (questionnaires à chaud / à
+ * froid), entreprises, financeurs, formateurs.
+ *
+ * L'auteur est lu sur la fiche liée, telle qu'elle est en base : une fiche
+ * stagiaire effacée (droit à l'effacement) est déjà anonymisée, et c'est ce que
+ * la ligne porte — exactement comme les positionnements du même dossier.
+ */
+async function buildAppreciations(): Promise<Omit<RegistreData, "dateEdition">> {
+  const rows = await prisma.appreciation.findMany({
+    select: {
+      dateAppreciation: true,
+      source: true,
+      note: true,
+      commentaire: true,
+      trainee: { select: { nom: true, prenom: true } },
+      trainer: { select: { nom: true, prenom: true } },
+    },
+    orderBy: { dateAppreciation: "desc" },
+    take: EXPORT_TAKE,
+  });
+  return {
+    titre: "Registre des appréciations",
+    sousTitre:
+      "Recueil des appréciations des parties prenantes : stagiaires, entreprises, financeurs, formateurs (indicateur 30 du référentiel national qualité).",
+    colonnes: ["Date", "Qualité", "Auteur", "Note", "Appréciation"],
+    lignes: rows.map((a) => [
+      formatDateFr(a.dateAppreciation),
+      APPRECIATION_SOURCE_LABELS[a.source] ?? a.source,
+      nomPersonne(a.trainee) || nomPersonne(a.trainer),
+      a.note !== null ? `${a.note}/5` : "",
+      a.commentaire ?? "",
+    ]),
+    mentionBasDePage: MENTION_EXPORT,
+  };
+}
+
+const MOYEN_CATEGORIE_LABELS: Record<string, string> = {
+  salle: "Salles et locaux de formation",
+  materiel: "Matériel pédagogique et technique",
+  plateforme: "Plateformes et outils numériques",
+  humain: "Moyens humains",
+};
+
+/**
+ * Inventaire des moyens pédagogiques et techniques (ind. 17 / 19), actifs ET
+ * retirés — la traçabilité d'un moyen retiré est une valeur d'audit, comme dans
+ * la pièce numérotée `inventaire_moyens`.
+ */
+async function buildMoyens(): Promise<Omit<RegistreData, "dateEdition">> {
+  const rows = await prisma.moyenPedagogique.findMany({
+    select: {
+      categorie: true,
+      libelle: true,
+      localisation: true,
+      actif: true,
+      dateVerification: true,
+    },
+    orderBy: [{ categorie: "asc" }, { libelle: "asc" }],
+    take: EXPORT_TAKE,
+  });
+  return {
+    titre: "Inventaire des moyens pédagogiques et techniques",
+    sousTitre:
+      "Moyens humains, techniques et ressources pédagogiques, avec leur date de dernière vérification (indicateurs 17 et 19 du référentiel national qualité).",
+    colonnes: ["Catégorie", "Moyen", "Localisation", "Statut", "Dernière vérification"],
+    lignes: rows.map((m) => [
+      MOYEN_CATEGORIE_LABELS[m.categorie] ?? m.categorie,
+      m.libelle,
+      m.localisation,
+      m.actif ? "Actif" : "Retiré",
+      m.dateVerification ? formatDateFr(m.dateVerification) : "Jamais vérifié",
+    ]),
+    mentionBasDePage: MENTION_EXPORT,
+  };
+}
+
 const BUILDERS: Record<RegistreType, () => Promise<Omit<RegistreData, "dateEdition">>> = {
   reclamations: buildReclamations,
   veille: buildVeille,
@@ -337,6 +443,8 @@ const BUILDERS: Record<RegistreType, () => Promise<Omit<RegistreData, "dateEditi
   partenariats: buildPartenariats,
   sous_traitants: buildSousTraitants,
   incidents: buildIncidents,
+  appreciations: buildAppreciations,
+  moyens: buildMoyens,
 };
 
 const FILENAMES: Record<RegistreType, string> = {
@@ -346,7 +454,14 @@ const FILENAMES: Record<RegistreType, string> = {
   partenariats: "registre-partenariats",
   sous_traitants: "registre-sous-traitants",
   incidents: "registre-incidents",
+  appreciations: "registre-appreciations",
+  moyens: "inventaire-moyens",
 };
+
+/** Contenu d'un registre (titre, colonnes, lignes), sans rendu PDF. */
+export function construireRegistre(type: RegistreType): Promise<Omit<RegistreData, "dateEdition">> {
+  return BUILDERS[type]();
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // renderRegistrePdfBuffer
@@ -366,9 +481,10 @@ export async function renderRegistrePdfBuffer(
   const now = new Date();
   const [registre, identite] = await Promise.all([BUILDERS[type](), getOrganismeIdentite()]);
 
-  const data: RegistreData = { ...registre, dateEdition: now.toLocaleDateString("fr-FR") };
+  const data: RegistreData = { ...registre, dateEdition: formatDateFr(now) };
   const { buffer } = await renderPdfToBuffer(React.createElement(RegistrePdf, { data, identite }));
 
-  const horodatage = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  // Jour de PARIS : le conteneur est en UTC (constat du ZIP du 2026-09-30).
+  const horodatage = parisDateISO(now);
   return { buffer, filename: `${FILENAMES[type]}-${horodatage}.pdf` };
 }
