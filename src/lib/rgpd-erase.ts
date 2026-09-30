@@ -1749,9 +1749,9 @@ async function viderDossier(
  * l'absorbante, rencontre jamais rattachée à sa date + 3 ans.
  *
  * Ce qui reste : la fiche entreprise et les personnes (régies par
- * l'effacement art. 17 et la relation commerciale), les rencontres
- * elles-mêmes (dates, participants), les journaux, les preuves d'accord
- * (purgées 5 ans plus tard par `purgerPreuvesAccordEchues`).
+ * l'effacement art. 17 et la relation commerciale), les journaux, les
+ * rencontres elles-mêmes (dates, participants) et les preuves d'accord —
+ * supprimées ensemble 5 ans plus tard par `purgerPreuvesAccordEchues`.
  */
 export async function purgerDossiersVisioEchus(maintenant: Date): Promise<PurgeDossiersResultat> {
   const echeances = await lireEcheancesDesFiches();
@@ -1798,33 +1798,45 @@ export async function purgerDossiersVisioEchus(maintenant: Date): Promise<PurgeD
  *   durée la PLUS LONGUE possible (client : 5 ans + 5 ans après l'annonce),
  *   jamais la plus courte : purger trop tôt détruirait une preuve dont on
  *   peut avoir besoin (angle mort déclaré : un prospect voit sa preuve gardée
- *   jusqu'à 2 ans de plus que sa durée).
+ *   jusqu'à 2 ans de plus que sa durée) ;
+ * - RGPD-02 (vérification finale du 30/09) : la RENCONTRE elle-même, à la même
+ *   échéance, avec ou sans preuve. Son titre et ses participants (nom affiché,
+ *   empreinte d'adresse) restaient sans limite ; ses participants, son suivi
+ *   et ses enregistrements partent en cascade (clés `ON DELETE CASCADE`), ses
+ *   faits déjà vidés perdent le lien (`SET NULL`). Journalisée (`rencontres`,
+ *   `conservation`) pour le rejeu après restauration. Test
+ *   `la-fin-de-conservation-efface-la-rencontre-et-ses-participants`.
  */
-export async function purgerPreuvesAccordEchues(
-  maintenant: Date,
-): Promise<{ readonly preuves: number; readonly annonces: number }> {
+export async function purgerPreuvesAccordEchues(maintenant: Date): Promise<{
+  readonly preuves: number;
+  readonly annonces: number;
+  readonly rencontres: number;
+}> {
   const echeances = await lireEcheancesDesFiches();
   const preuves = await prisma.enregistrementConsentement.findMany({
     select: { id: true, rencontreId: true, survenuLe: true },
   });
   const rencontres = await prisma.rencontre.findMany({
-    where: { id: { in: [...new Set(preuves.map((p) => p.rencontreId))] } },
     select: { id: true, clientId: true, debutPrevu: true, debutReel: true, createdAt: true },
   });
   const parRencontre = new Map(rencontres.map((r) => [r.id, r]));
+
+  /** Échéance des preuves d'une rencontre : fin de son dossier + 5 ans (`null` : aucune). */
+  const finDesPreuves = (r: (typeof rencontres)[number] | undefined, repli: Date): Date | null => {
+    const finDossier = r?.clientId
+      ? (echeances.get(r.clientId) ?? null)
+      : finConservationRencontreOrpheline(r ? (r.debutReel ?? r.debutPrevu ?? r.createdAt) : repli);
+    return finDossier === null ? null : finConservationPreuve(finDossier);
+  };
+  const echue = (fin: Date | null): boolean =>
+    fin !== null && fin.getTime() <= maintenant.getTime();
+
   const aSupprimer = preuves
-    .filter((p) => {
-      const r = parRencontre.get(p.rencontreId);
-      const finDossier = r?.clientId
-        ? (echeances.get(r.clientId) ?? null)
-        : finConservationRencontreOrpheline(
-            r ? (r.debutReel ?? r.debutPrevu ?? r.createdAt) : p.survenuLe,
-          );
-      return (
-        finDossier !== null && finConservationPreuve(finDossier).getTime() <= maintenant.getTime()
-      );
-    })
+    .filter((p) => echue(finDesPreuves(parRencontre.get(p.rencontreId), p.survenuLe)))
     .map((p) => p.id);
+  const rencontresEchues = rencontres
+    .filter((r) => echue(finDesPreuves(r, r.createdAt)))
+    .map((r) => r.id);
 
   const limiteAnnonces = plusAns(
     maintenant,
@@ -1839,7 +1851,9 @@ export async function purgerPreuvesAccordEchues(
         occurredAt: { lt: limiteAnnonces },
       },
     });
-    return { preuves: p.count, annonces: a.count };
+    const r = await tx.rencontre.deleteMany({ where: { id: { in: rencontresEchues } } });
+    await journaliserEffacements(tx, "rencontres", rencontresEchues, "conservation");
+    return { preuves: p.count, annonces: a.count, rencontres: r.count };
   });
 }
 
@@ -1877,6 +1891,9 @@ const MOTIFS_SUPPRESSION_COMPTE_RENDU: ReadonlySet<MotifEffacement> = new Set<Mo
  * l'effacement : `effacerCeQuiSuitLesPersonnes` (questions, e-mails de suivi,
  * rôles dans les projets) et `pseudonymiserPersonnes` (participations, fiche),
  * puis leurs adresses.
+ *
+ * Rencontres journalisées `conservation` (fin des preuves, RGPD-02) :
+ * supprimées de nouveau, leurs participants et enregistrements en cascade.
  *
  * Pilote : `supprimerDonneesPilote`, la fonction de `purgerPilote`, sur les
  * rencontres, projets et personnes journalisés `pilote` et sur les fiches
@@ -1930,6 +1947,8 @@ export async function rejouerEffacements(
   const crDesPersonnes = comptesRendus.filter((id) => !crSupprimesALOrigine.has(id));
   const contacts = ids("client_contacts");
   const rencontresPilote = ids("rencontres").filter((id) => pilote.has(id));
+  // RGPD-02 : rencontres supprimées à la fin de conservation de leurs preuves.
+  const rencontresEchues = ids("rencontres").filter((id) => !pilote.has(id));
   const projetsPilote = ids("projets").filter((id) => pilote.has(id));
   const contactsPilote = contacts.filter((id) => pilote.has(id));
   const contactsEffaces = contacts.filter((id) => !pilote.has(id));
@@ -2046,6 +2065,7 @@ export async function rejouerEffacements(
       db.rencontre.count({ where: { id: { in: [...p.rencontreIds] } } }),
       db.projet.count({ where: { id: { in: [...p.projetIds] } } }),
       db.clientContact.count({ where: { id: { in: [...p.contactIds] } } }),
+      db.rencontre.count({ where: { id: { in: rencontresEchues } } }),
     ]);
     return nombres.reduce((a, b) => a + b, 0);
   };
@@ -2076,6 +2096,8 @@ export async function rejouerEffacements(
     });
     // Données du pilote : la fonction de `purgerPilote`, telle quelle.
     await supprimerDonneesPilote(tx, perimetre);
+    // Fin de conservation (RGPD-02) : la rencontre part, le reste en cascade.
+    await tx.rencontre.deleteMany({ where: { id: { in: rencontresEchues } } });
     // Personnes effacées (art. 17) : les fonctions de `effacerCibleParAdresses`.
     await effacerCeQuiSuitLesPersonnes(tx, contactsEffaces);
     await pseudonymiserPersonnes(tx, participantIds, contactsEffaces);

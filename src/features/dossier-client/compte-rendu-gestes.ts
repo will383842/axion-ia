@@ -22,6 +22,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { retirerAccordRencontre } from "@/lib/rgpd-erase";
 import { exigerAccesEchanges } from "@/features/dossier-client/acces";
+import { messageAffichable } from "@/features/dossier-client/message-affichable";
 import {
   ajouterPersonnePourVoix,
   attribuerVoix,
@@ -67,15 +68,9 @@ async function executer(
     message = await geste(rencontreId, userId);
     revalidatePath(retour.split("?")[0] ?? "/");
   } catch (err) {
+    // S4 : seuls les messages métier vont dans l'URL, jamais une erreur Prisma.
     cle = "erreur";
-    message =
-      err instanceof GesteRefuse
-        ? err.message
-        : err instanceof z.ZodError
-          ? "Demande incomplète."
-          : err instanceof Error
-            ? err.message
-            : "Erreur inattendue.";
+    message = messageAffichable(err);
   }
   const joint = retour.includes("?") ? "&" : "?";
   redirect(`${retour}${joint}${cle}=${encodeURIComponent(message)}`);

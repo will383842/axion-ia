@@ -250,7 +250,43 @@ export async function garderEnregistreur(
 }
 
 /**
- * Lit un corps JSON borné et le valide. Rend la valeur, ou la réponse 400/413.
+ * Lit le corps EN FLUX, avec un compteur d'octets, et s'arrête dès que la
+ * borne est franchie (S2, vérification finale du 30/09). `content-length` est
+ * déclaré par l'appelant : absent (`Transfer-Encoding: chunked`) ou menteur,
+ * il ne borne rien, et `req.arrayBuffer()` / `req.text()` liraient tout en
+ * mémoire avant de mesurer. Test `un-corps-chunked-trop-gros-est-coupe`.
+ */
+async function lireBorne(
+  req: Request,
+  max: number,
+): Promise<
+  | { readonly ok: true; readonly octets: Buffer }
+  | { readonly ok: false; readonly raison: "trop_gros" | "illisible" }
+> {
+  if (req.body === null) return { ok: true, octets: Buffer.alloc(0) };
+  const lecteur = req.body.getReader();
+  const morceaux: Uint8Array[] = [];
+  let total = 0;
+  try {
+    for (;;) {
+      const { done, value } = await lecteur.read();
+      if (done) break;
+      total += value.byteLength;
+      if (total > max) {
+        await lecteur.cancel().catch(() => undefined);
+        return { ok: false, raison: "trop_gros" };
+      }
+      morceaux.push(value);
+    }
+  } catch {
+    return { ok: false, raison: "illisible" };
+  }
+  return { ok: true, octets: Buffer.concat(morceaux, total) };
+}
+
+/**
+ * Lit un corps JSON borné EN OCTETS et le valide. Rend la valeur, ou la
+ * réponse 400/413.
  */
 export async function lireCorpsJson<T>(
   req: Request,
@@ -258,18 +294,19 @@ export async function lireCorpsJson<T>(
 ): Promise<
   { readonly ok: true; readonly valeur: T } | { readonly ok: false; readonly reponse: Response }
 > {
-  let texte: string;
-  try {
-    texte = await req.text();
-  } catch {
-    return { ok: false, reponse: erreur(400, "corps_illisible", "Corps illisible.") };
-  }
-  if (texte.length > TAILLE_MAX_JSON_OCTETS) {
-    return { ok: false, reponse: erreur(413, "corps_trop_gros", "Corps trop gros.") };
+  const lu = await lireBorne(req, TAILLE_MAX_JSON_OCTETS);
+  if (!lu.ok) {
+    return {
+      ok: false,
+      reponse:
+        lu.raison === "trop_gros"
+          ? erreur(413, "corps_trop_gros", "Corps trop gros.")
+          : erreur(400, "corps_illisible", "Corps illisible."),
+    };
   }
   let brut: unknown;
   try {
-    brut = JSON.parse(texte);
+    brut = JSON.parse(lu.octets.toString("utf8"));
   } catch {
     return { ok: false, reponse: erreur(400, "json_invalide", "Corps JSON invalide.") };
   }
@@ -283,18 +320,24 @@ export async function lireCorpsJson<T>(
   return { ok: true, valeur: r.data };
 }
 
-/** Lit un morceau de son borné (la taille annoncée peut mentir : on remesure). */
+/** Lit un morceau de son borné (la taille annoncée peut mentir, ou manquer : on compte en lisant). */
 export async function lireOctets(
   req: Request,
 ): Promise<
   | { readonly ok: true; readonly octets: Buffer }
   | { readonly ok: false; readonly reponse: Response }
 > {
-  const tampon = Buffer.from(await req.arrayBuffer());
-  if (tampon.byteLength > TAILLE_MAX_MORCEAU_OCTETS) {
-    return { ok: false, reponse: erreur(413, "morceau_trop_gros", "Morceau trop gros.") };
+  const lu = await lireBorne(req, TAILLE_MAX_MORCEAU_OCTETS);
+  if (!lu.ok) {
+    return {
+      ok: false,
+      reponse:
+        lu.raison === "trop_gros"
+          ? erreur(413, "morceau_trop_gros", "Morceau trop gros.")
+          : erreur(400, "corps_illisible", "Corps illisible."),
+    };
   }
-  return { ok: true, octets: tampon };
+  return { ok: true, octets: lu.octets };
 }
 
 /** Un identifiant d'enregistrement dans le chemin : un UUID, sinon 404. */

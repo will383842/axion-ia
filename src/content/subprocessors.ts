@@ -38,7 +38,7 @@ import { donneesMeet, stockageSonCloudflare } from "./visio-annonce-textes";
  * — bonne pratique transparence). Affichée en haut de `/sous-processeurs`.
  * Update à chaque ajout/modification d'entrée.
  */
-export const SUBPROCESSORS_LAST_UPDATED = "2026-09-29" as const;
+export const SUBPROCESSORS_LAST_UPDATED = "2026-09-30" as const;
 
 export type TransferFramework = "intra_eu" | "scc" | "adequacy_decision" | "self_hosted_eu";
 
@@ -761,13 +761,13 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     location: "San Francisco, USA",
     serversLocation: "USA",
     purposeFr:
-      "Transcription du son des rendez-vous en visioconférence enregistrés avec l'accord oral des participants, puis aide à la rédaction du compte rendu interne relu et validé par Williams. Aucune donnée n'est utilisée pour entraîner les modèles. Le son envoyé pour la transcription n'est pas conservé par OpenAI ; le texte analysé pour la rédaction est gardé au plus 30 jours dans les journaux de surveillance des abus d'OpenAI, puis supprimé (aucune autre conservation : option « store: false »).",
+      "Transcription du son des rendez-vous en visioconférence enregistrés avec l'accord oral des participants (consentement, art. 6.1.a), puis aide à la rédaction du compte rendu interne relu et validé par Williams. Également : transcription et analyse du résumé que Williams dicte seul après un rendez-vous téléphonique (l'appel lui-même n'est jamais enregistré), sur l'intérêt légitime d'Axion-IA à tenir un dossier fidèle de ses échanges (art. 6.1.f), avec droit d'opposition. Aucune donnée n'est utilisée pour entraîner les modèles. Le son envoyé pour la transcription n'est pas conservé par OpenAI ; le texte analysé pour la rédaction est gardé au plus 30 jours dans les journaux de surveillance des abus d'OpenAI, puis supprimé (aucune autre conservation : option « store: false »).",
     purposeEn:
-      "Transcription of the audio of video-conference meetings recorded with the participants' oral consent, then help drafting the internal meeting summary reviewed and approved by Williams. No data is used to train models. Audio sent for transcription is not retained by OpenAI; the text analysed for drafting is kept for at most 30 days in OpenAI's abuse-monitoring logs, then deleted (no other retention: \u201cstore: false\u201d).",
+      "Transcription of the audio of video-conference meetings recorded with the participants' oral consent (consent, art. 6.1.a), then help drafting the internal meeting summary reviewed and approved by Williams. Also: transcription and analysis of the summary Williams dictates alone after a phone appointment (the call itself is never recorded), on Axion-IA's legitimate interest in keeping an accurate record of its exchanges (art. 6.1.f), with a right to object. No data is used to train models. Audio sent for transcription is not retained by OpenAI; the text analysed for drafting is kept for at most 30 days in OpenAI's abuse-monitoring logs, then deleted (no other retention: \u201cstore: false\u201d).",
     dataCategoriesFr:
-      "Son des visioconférences (piste du client et piste d'Axion-IA), texte transcrit, informations professionnelles dites pendant le rendez-vous (besoins, projet, budget, calendrier).",
+      "Son des visioconférences (piste du client et piste d'Axion-IA), son de la dictée de Williams, texte transcrit, informations professionnelles dites pendant le rendez-vous (besoins, projet, budget, calendrier).",
     dataCategoriesEn:
-      "Video-conference audio (client and Axion-IA tracks), transcribed text, business information said during the meeting (needs, project, budget, schedule).",
+      "Video-conference audio (client and Axion-IA tracks), audio of Williams's dictation, transcribed text, business information said during the meeting (needs, project, budget, schedule).",
     legalBasis: "6.1.a_consent",
     dpaStatus: "pending",
     transferFramework: "scc",

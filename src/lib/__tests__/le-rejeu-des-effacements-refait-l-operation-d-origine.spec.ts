@@ -118,11 +118,13 @@ function restaurer(): void {
       journal("comptes_rendus", "cr-partage", "art17"),
       journal("client_contacts", "alice", "art17"),
       journal("rencontres", "r-pilote", "pilote"),
+      journal("rencontres", "r-conservation", "conservation"),
     ],
     clientTestInterne: [{ clientId: "c-test" }],
     rencontre: [
       { id: "r-pilote", clientId: "c-vrai" },
       { id: "r-vraie", clientId: "c-vrai" },
+      { id: "r-conservation", clientId: null },
     ],
     fait: [
       { id: "f-fiche-test", clientId: "c-test", rencontreId: null, statut: "valide" },
@@ -182,7 +184,7 @@ describe("le rejeu des effacements refait l'opération d'origine", () => {
   it("🔑 CONTRE-TÉMOIN : à blanc, rien n'est écrit et les cibles revenues sont comptées", async () => {
     const r = await rejouerEffacements();
     expect(etat.ecritures).toBe(0);
-    expect(r.lues).toBe(6);
+    expect(r.lues).toBe(7);
     expect(r.reappliquees).toBeGreaterThan(0);
   });
 
@@ -231,6 +233,11 @@ describe("le rejeu des effacements refait l'opération d'origine", () => {
     expect(ids("questionnaireCadrage")).toEqual(["q-alice", "q-bob", "q-vrai"]);
     expect(ids("enregistrementConsentement")).toEqual([]);
     expect(ids("rencontre")).toEqual(["r-vraie"]);
+  });
+
+  it("🔴 une rencontre supprimée à la fin de conservation (RGPD-02) l'est de nouveau", async () => {
+    await rejouerEffacements({ appliquer: true });
+    expect((etat.tables["rencontre"] ?? []).map((l) => l["id"])).not.toContain("r-conservation");
   });
 
   it("🔑 sans ligne `pilote` au journal, la fiche de test n'est pas touchée", async () => {

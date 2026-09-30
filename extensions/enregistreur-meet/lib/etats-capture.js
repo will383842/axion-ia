@@ -13,11 +13,19 @@
 //   · piste client muette 60 s → badge ; silence des deux pistes : badge 3 min,
 //     notification 5 min, arrêt 30 min (jamais avant) ;
 //   · salle quittée depuis 2 min, ou 2 h 55 → arrêt ;
-//   · une personne en plus sans « Nouvelle personne : accord obtenu » → son
-//     coupé au bout de 2 min, fenêtre journalisée hors accord ;
+//   · une personne en plus : la fenêtre « hors accord » s'ouvre dès son
+//     ARRIVÉE (une période de mesure plus tôt) et se ferme au clic « Nouvelle
+//     personne : accord obtenu » ou à son départ ; tout ce qui y tombe est
+//     exclu de la transcription (RGPD-01). Sans clic, le son est en plus coupé
+//     au bout de 2 min (second filet) ;
 //   · 3 participants ou plus → « à trois, Meet coupe à 1 h ».
 
-import { DELAIS_LOCAUX, PARTICIPANTS_LIMITE_MEET, SEUIL_SILENCE } from "./constantes.js";
+import {
+  DELAIS_LOCAUX,
+  PARTICIPANTS_LIMITE_MEET,
+  PERIODE_MESURE_SALLE_MS,
+  SEUIL_SILENCE,
+} from "./constantes.js";
 import { etatJeton } from "./jeton.js";
 
 /**
@@ -145,12 +153,13 @@ function fermerFenetre(etat, maintenantMs) {
 }
 
 /**
- * « Nouvelle personne : accord obtenu » : le son revient, la fenêtre se ferme.
+ * « Nouvelle personne : accord obtenu » : la fenêtre ouverte à l'arrivée se
+ * ferme à l'heure du clic, le son revient s'il avait été coupé.
  * @returns {Resultat}
  */
 export function nouvellePersonneAccord(etat, maintenantMs) {
   if (etat.phase !== "en_cours") return { etat, actions: [] };
-  const fenetres = etat.sonCoupe ? fermerFenetre(etat, maintenantMs) : etat.fenetresHorsAccord;
+  const fenetres = fermerFenetre(etat, maintenantMs);
   return {
     etat: {
       ...etat,
@@ -215,30 +224,44 @@ export function tic(etat, mesure, maintenantMs) {
   e.nbParticipants = mesure.nbParticipants;
   if (e.phase === "en_cours" && mesure.nbParticipants > e.participantsAccordes) {
     if (e.nouvellePersonneDepuisMs === null) {
+      // RGPD-01 : la fenêtre hors accord s'ouvre à l'ARRIVÉE, pas à la coupure.
+      // Le compte n'est relu que toutes les 15 s : on remonte d'une période.
       e.nouvellePersonneDepuisMs = maintenantMs;
-      actions.push({
-        type: "notifier",
-        message:
-          "Une personne de plus : obtenez son accord (« Nouvelle personne : accord obtenu »).",
-      });
+      e.fenetresHorsAccord = [
+        ...e.fenetresHorsAccord,
+        {
+          debutMs: Math.max(0, maintenantMs - e.debutMs - PERIODE_MESURE_SALLE_MS),
+          finMs: null,
+        },
+      ];
+      actions.push(
+        {
+          type: "notifier",
+          message:
+            "Une personne de plus : obtenez son accord (« Nouvelle personne : accord obtenu »).",
+        },
+        { type: "journal", evenement: "personne_sans_accord_arrivee" },
+      );
     } else if (
       !e.sonCoupe &&
       maintenantMs - e.nouvellePersonneDepuisMs >= DELAIS_LOCAUX.coupureNouvellePersonneMs
     ) {
+      // Second filet : le son lui-même cesse d'être enregistré.
       e.sonCoupe = true;
-      e.fenetresHorsAccord = [
-        ...e.fenetresHorsAccord,
-        { debutMs: maintenantMs - e.debutMs, finMs: null },
-      ];
       actions.push(
         { type: "gain", valeur: 0 },
         { type: "journal", evenement: "son_coupe_personne_sans_accord" },
       );
     }
   } else if (mesure.nbParticipants <= e.participantsAccordes) {
+    // Départ : la fenêtre se ferme ; et l'accord ne couvre plus que ceux qui
+    // restent — un inconnu qui prend la place d'un accordé rouvre une fenêtre.
+    if (e.phase === "en_cours") e.participantsAccordes = mesure.nbParticipants;
+    if (e.nouvellePersonneDepuisMs !== null || e.sonCoupe) {
+      e.fenetresHorsAccord = fermerFenetre(e, maintenantMs);
+    }
     e.nouvellePersonneDepuisMs = null;
     if (e.sonCoupe) {
-      e.fenetresHorsAccord = fermerFenetre(e, maintenantMs);
       e.sonCoupe = false;
       if (!e.enPause) actions.push({ type: "gain", valeur: 1 });
     }
