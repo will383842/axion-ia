@@ -341,7 +341,7 @@ _On commence par là parce que c'est le plus rapide, que ça ne dépend de rien,
 
 ### Étape 3 — C4 · Dépôt de contact + registre d'attribution SIREN · ~6 j
 
-> 📄 **Spécification complète : `docs/audit-attribution-apporteurs-siren.md`** — clé SIREN (et non SIRET), fenêtre de 12 mois, anti-squattage, charge révisée.
+> 📄 **Spécification complète : `docs/audit-attribution-apporteurs-siren.md`** — clé SIREN (et non SIRET), fenêtre d'attribution de 6 mois (décision du 2026-09-22 ; l'audit disait 12), anti-squattage, charge révisée.
 
 - [ ] Modèle `AttributionApporteur` (SIREN unique) + migration
 - [ ] Autocomplétion entreprise par API publique — l'apporteur ne tape **jamais** un numéro (+ repli manuel)
