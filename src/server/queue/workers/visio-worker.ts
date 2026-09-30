@@ -20,42 +20,23 @@
  * (`aucun-module-du-worker-nimporte-server-only.spec.ts`).
  */
 
-import { Queue, Worker, type Job } from "bullmq";
+import { Worker, type Job } from "bullmq";
 
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
+import { VISIO_QUEUE_NAME, visioQueue } from "@/server/queue/queues";
+import type { VisioJobData } from "@/server/queue/types";
 
-export const VISIO_QUEUE_NAME = "visio";
-export const PATTERN_BALAYAGE_VISIO = "*/5 * * * *";
-
-export interface VisioJobData {
-  readonly v: 1;
-  readonly rencontreId?: string;
-  readonly etape?: string;
-}
-
-let file: Queue<VisioJobData> | null = null;
-
-/** La file, créée au premier usage (jamais à l'import). `null` si BullMQ est coupé. */
-export async function obtenirFileVisio(): Promise<Queue<VisioJobData> | null> {
-  if (file) return file;
-  const { getBullConnection } = await import("@/server/queue/connection");
-  const connection = getBullConnection();
-  if (!connection) return null;
-  file = new Queue<VisioJobData>(VISIO_QUEUE_NAME, {
-    connection,
-    defaultJobOptions: { attempts: 1, removeOnComplete: true, removeOnFail: { count: 200 } },
-  });
-  return file;
-}
-
-/** Met en file les étapes dues (dédupliquées par rencontre et étape). */
+/**
+ * Met en file les étapes dues (dédupliquées par rencontre et étape). La file,
+ * sa charge et son balayage répété sont déclarés dans le registre
+ * (`queues.ts`, `types.ts`, `bootRepeatableJobs`), comme toutes les files.
+ */
 export async function mettreEnFile(
   dues: ReadonlyArray<{ readonly rencontreId: string; readonly etape: string }>,
 ): Promise<number> {
-  const q = await obtenirFileVisio();
-  if (!q || dues.length === 0) return 0;
+  if (!visioQueue || dues.length === 0) return 0;
   for (const d of dues) {
-    await q.add(
+    await visioQueue.add(
       "etape",
       { v: 1, rencontreId: d.rencontreId, etape: d.etape },
       { jobId: `visio-${d.rencontreId}-${d.etape}` },
@@ -100,13 +81,34 @@ async function traiter(job: Job<VisioJobData>): Promise<void> {
   }
 }
 
+/**
+ * Le traitement d'un job, qui ne finit JAMAIS en échec. Une erreur hors de
+ * `executerEtape` (base indisponible à la prise, au balayage…) est remontée
+ * à Sentry puis avalée : l'état fait foi en base, et le balayage suivant
+ * remet l'étape en file. Un job en échec, lui, garderait son identifiant
+ * déterministe et ferait ignorer toute remise en file de la même étape.
+ */
+export async function traiterJobVisio(
+  job: Job<VisioJobData>,
+  faire: (job: Job<VisioJobData>) => Promise<void> = traiter,
+): Promise<void> {
+  try {
+    await faire(job);
+  } catch (err) {
+    const e = err instanceof Error ? err : new Error("erreur inconnue");
+    // Le NOM de l'erreur seulement : jamais un message qui pourrait porter une parole.
+    console.error(`[visio-worker] job ${job.id} : ${e.name} (reprise au prochain balayage)`);
+    captureWorkerError("visio", VISIO_QUEUE_NAME, job, e);
+  }
+}
+
 let instance: Worker<VisioJobData> | null = null;
 
 export function startVisioWorker(): Worker<VisioJobData> {
   if (instance) return instance;
   const redisUrl = process.env["REDIS_URL"];
   if (!redisUrl) throw new Error("REDIS_URL not set — visio-worker cannot start");
-  instance = new Worker<VisioJobData>(VISIO_QUEUE_NAME, traiter, {
+  instance = new Worker<VisioJobData>(VISIO_QUEUE_NAME, (job) => traiterJobVisio(job), {
     connection: { url: redisUrl },
     concurrency: 1,
     lockDuration: 120_000,
@@ -118,22 +120,5 @@ export function startVisioWorker(): Worker<VisioJobData> {
   process.once("SIGTERM", () => {
     void import("@/server/visio/circuit").then((m) => m.demanderArretDuCircuit());
   });
-  void programmerBalayageVisio();
   return instance;
-}
-
-/** Le balayage répété (5 min), posé au démarrage du worker. */
-export async function programmerBalayageVisio(): Promise<void> {
-  const q = await obtenirFileVisio();
-  if (!q) return;
-  for (const existant of await q.getRepeatableJobs()) {
-    if (existant.name === "balayage" && existant.pattern !== PATTERN_BALAYAGE_VISIO) {
-      await q.removeRepeatableByKey(existant.key);
-    }
-  }
-  await q.add(
-    "balayage",
-    { v: 1 },
-    { repeat: { pattern: PATTERN_BALAYAGE_VISIO }, jobId: "visio-balayage-cron" },
-  );
 }

@@ -98,7 +98,9 @@ describe("l'entrée d'une passe n'est jamais stockée ni journalisée", () => {
       "utf8",
     );
     expect(code).toMatch(/\{ v: 1, rencontreId: d\.rencontreId, etape: d\.etape \}/);
-    expect(code).toMatch(
+    // La charge est déclarée au registre des files, comme toutes les autres.
+    const types = readFileSync(path.resolve(__dirname, "../../queue/types.ts"), "utf8");
+    expect(types).toMatch(
       /readonly v: 1;\s*readonly rencontreId\?: string;\s*readonly etape\?: string;\s*\}/,
     );
   });
