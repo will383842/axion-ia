@@ -20,9 +20,12 @@ vi.mock("next/navigation", () => ({
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn(), updateTag: vi.fn() }));
 vi.mock("@/lib/prisma", () => ({ prisma: {} }));
 vi.mock("../acces", () => ({
+  // `message-affichable` range `AccesRefuse` parmi les erreurs métier.
+  AccesRefuse: class AccesRefuse extends Error {},
   exigerAccesEchanges: vi.fn(async () => ({ userId: "admin-1", role: "admin" })),
 }));
 vi.mock("../creer-prospect", () => ({
+  ErreurCreerProspect: class ErreurCreerProspect extends Error {},
   creerProspectDepuisRencontre: vi.fn(async () => ({
     statut: "cree",
     clientId: "c-1",
@@ -30,6 +33,7 @@ vi.mock("../creer-prospect", () => ({
   })),
 }));
 vi.mock("../rattacher", () => ({
+  ErreurRattachement: class ErreurRattachement extends Error {},
   relancerApresRattachement: (...a: unknown[]) => relancer(...a),
   validerRattachement: vi.fn(),
 }));

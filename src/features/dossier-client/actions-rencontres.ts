@@ -149,7 +149,7 @@ export async function creerProspectAction(fd: FormData): Promise<void> {
   await relancerApresRattachement(prisma, rencontreId).catch(() =>
     erreurVers(
       retour,
-      new Error(
+      new MessagePourWill(
         "La fiche est créée et le rendez-vous rangé, mais le compte rendu n'a pas pu être " +
           "complété : ouvrez-le et cliquez « Compléter avec la fiche client ».",
       ),
