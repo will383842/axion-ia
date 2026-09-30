@@ -110,6 +110,22 @@ describe("repli propre tant que le registre n'existe pas", () => {
     expect(avert).toHaveBeenCalledTimes(1);
   });
 
+  it("client Prisma sans le modèle (double de test, générateur en retard) → repli en avertissement", async () => {
+    const avert = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const err = vi.spyOn(console, "error").mockImplementation(() => {});
+    const { prisma } = await import("@/lib/prisma");
+    const sauve = prisma.numeroEmis;
+    (prisma as { numeroEmis?: unknown }).numeroEmis = undefined;
+    try {
+      const numero = await nextNumero("facture", 2026, lecteur([{ numero: "AXI-FACT-2026-002" }]));
+      expect(numero).toBe("AXI-FACT-2026-003");
+      expect(avert).toHaveBeenCalledTimes(1);
+      expect(err).not.toHaveBeenCalled();
+    } finally {
+      (prisma as { numeroEmis?: unknown }).numeroEmis = sauve;
+    }
+  });
+
   it("toute autre erreur du registre → repli aussi, mais signalée en erreur", async () => {
     const err = vi.spyOn(console, "error").mockImplementation(() => {});
     registre.findMany.mockRejectedValue(new Error("connexion perdue"));

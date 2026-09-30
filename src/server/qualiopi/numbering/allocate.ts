@@ -113,8 +113,10 @@
  * Le worker exécute le code neuf ~50 min avant que l'app ne migre, et
  * l'entrypoint migre en best-effort. Tant que `numeros_emis` n'existe pas, la
  * lecture échoue en P2021 : `nextNumero` retombe sur la seule table métier
- * (comportement antérieur) et le signale UNE fois par processus. Toute autre
- * erreur du registre produit le même repli, signalé en erreur à chaque fois.
+ * (comportement antérieur) et le signale UNE fois par processus, en
+ * avertissement — de même si la base est injoignable au démarrage ou si le
+ * client Prisma ne porte pas le modèle. Toute autre erreur du registre produit
+ * le même repli, signalé en erreur à chaque fois.
  * Une facturation ne se bloque JAMAIS sur le registre. Une erreur de la table
  * métier, elle, remonte comme avant.
  *
@@ -206,8 +208,20 @@ export function __reinitialiserAvertissementRegistre(): void {
   registreAbsentSignale = false;
 }
 
-function estTableAbsente(err: unknown): boolean {
-  return typeof err === "object" && err !== null && (err as { code?: unknown }).code === "P2021";
+/**
+ * Le registre est ABSENT, pas en panne : table pas encore migrée (P2021),
+ * base injoignable au démarrage (la table métier échouera de son côté et
+ * portera l'erreur), ou client Prisma sans le modèle (générateur en retard,
+ * double de test). Signalé une fois par processus, en avertissement.
+ */
+function registreAbsent(err: unknown): boolean {
+  if (typeof err !== "object" || err === null) return false;
+  const e = err as { code?: unknown; name?: unknown };
+  return (
+    e.code === "P2021" ||
+    e.name === "PrismaClientInitializationError" ||
+    e.name === "RegistreSansModele"
+  );
 }
 
 /**
@@ -219,17 +233,24 @@ function estTableAbsente(err: unknown): boolean {
  */
 async function lireRegistre(prefixe: string): Promise<ReadonlyArray<{ numero: string }>> {
   try {
-    return await prisma.numeroEmis.findMany({
+    const delegue = (prisma as { numeroEmis?: typeof prisma.numeroEmis }).numeroEmis;
+    if (typeof delegue?.findMany !== "function") {
+      throw Object.assign(new Error("client Prisma sans le modèle NumeroEmis"), {
+        name: "RegistreSansModele",
+      });
+    }
+    return await delegue.findMany({
       where: { numero: { startsWith: prefixe } },
       select: { numero: true },
     });
   } catch (err) {
-    if (estTableAbsente(err)) {
+    if (registreAbsent(err)) {
       if (!registreAbsentSignale) {
         registreAbsentSignale = true;
         console.warn(
-          "[numbering] table numeros_emis absente (migration pas encore passée ?) — " +
+          "[numbering] registre numeros_emis indisponible (migration pas encore passée ?) — " +
             "borne calculée sur la seule table métier, comme avant le registre.",
+          err instanceof Error ? err.message : err,
         );
       }
     } else {
