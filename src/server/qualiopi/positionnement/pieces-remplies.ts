@@ -90,7 +90,8 @@ export async function compterPositionnementsRemplis(): Promise<ComptePositionnem
   return { parStagiaires: total - parOrganisme, parOrganisme };
 }
 
-function slug(texte: string): string {
+/** Segment de nom de fichier (partagé avec les pièces satisfaction / évaluation). */
+export function slug(texte: string): string {
   return texte
     .normalize("NFD")
     .replace(/\p{M}/gu, "")
@@ -100,7 +101,7 @@ function slug(texte: string): string {
 }
 
 /** AAAA-MM-JJ du jour de Paris — le jour de session tel qu'on le lit. */
-function jourParis(instant: Date): string {
+export function jourParis(instant: Date): string {
   return new Intl.DateTimeFormat("en-CA", {
     year: "numeric",
     month: "2-digit",

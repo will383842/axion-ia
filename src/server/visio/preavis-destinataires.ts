@@ -127,3 +127,34 @@ export async function clientsActifsPourPreavis(prisma: LecteurClients): Promise<
 
   return { actifs, destinataires, sansAdresse, adressesEnDouble };
 }
+
+/** Ce que `estClientActifParId` lit de Prisma. */
+export interface LecteurUnClient {
+  client: {
+    findUnique(args: {
+      where: { id: string };
+      select: { _count: { select: Record<RelationB3, true> } };
+    }): Promise<{ _count: Partial<Record<RelationB3, number>> } | null>;
+  };
+}
+
+/**
+ * La même règle B3, pour UNE fiche : sert au refus d'enregistrement d'un
+ * client actif tant que le préavis court (`preavis-clients-actifs.ts`). Mêmes
+ * relations, même fonction pure que `clientsActifsPourPreavis` : un client
+ * prévenu et un client protégé sont, par construction, les mêmes.
+ */
+export async function estClientActifParId(
+  prisma: LecteurUnClient,
+  clientId: string,
+): Promise<boolean> {
+  const f = await prisma.client.findUnique({
+    where: { id: clientId },
+    select: { _count: { select: SELECT_COMPTES } },
+  });
+  if (!f) return false;
+  const comptes = Object.fromEntries(
+    (Object.keys(RELATIONS_B3) as RelationB3[]).map((r) => [r, f._count[r] ?? 0]),
+  ) as ComptesB3;
+  return estClientActif(comptes);
+}

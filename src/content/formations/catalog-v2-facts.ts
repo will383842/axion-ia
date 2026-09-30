@@ -257,7 +257,7 @@ export function getFormationMethodes(f: FormationV2): string {
 // le référentiel demande d'évaluer l'atteinte des objectifs, il n'impose
 // aucune forme.
 export const FORMATION_EVALUATION_DEFAUT =
-  "L'acquisition des compétences est évaluée tout au long de la formation par des exercices pratiques sur les tâches réelles apportées par les participants, puis en fin de parcours par une grille d'évaluation individuelle, renseignée et commentée en salle. Une attestation individuelle mentionnant les compétences acquises et un certificat de réalisation sont délivrés à l'issue du parcours, conformément aux articles L.6353-1 et D.6353-1 du Code du travail.";
+  "L'acquisition des compétences est évaluée tout au long de la formation par des exercices pratiques sur les tâches réelles apportées par les participants, puis en fin de parcours par une grille d'évaluation individuelle, renseignée et commentée en salle. Une attestation individuelle mentionnant les compétences acquises et un certificat de réalisation sont délivrés à l'issue du parcours (articles L.6313-7 et R.6332-26 du Code du travail).";
 
 export function getFormationEvaluation(f: FormationV2): string {
   return f.modalitesEvaluationFr ?? FORMATION_EVALUATION_DEFAUT;

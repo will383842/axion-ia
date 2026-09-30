@@ -391,7 +391,7 @@ describe("cliquet dérivé du schéma — toute preuve session-scopée contraint
   // indexée sur un numéro de ligne rougit à chaque édition située au-dessus
   // d'elle — le rouge est alors juste, mais il ne désigne pas ce qu'on croit.
   // 🔑 Lire l'EXTRAIT rapporté avant de conclure à une régression.
-  const DETTE_DECLAREE: ReadonlyArray<string> = ["conformite/pilotage-service.ts:271"];
+  const DETTE_DECLAREE: ReadonlyArray<string> = ["conformite/pilotage-service.ts:272"];
 
   it("CONTRE-TÉMOIN : la classe est bien dérivée du schéma, et elle n'est pas vide", () => {
     const modeles = modelesSessionScopes();

@@ -87,6 +87,12 @@ export interface SessionParcoursInput {
   }>;
   /** Nombre de jetons d'émargement encore vivants pour la session. */
   readonly liensEmargementActifs: number;
+  /**
+   * Fabrication du premier lien NON RÉVOQUÉ, même expiré. C'est lui qui dit
+   * que l'étape a eu lieu : les jetons vivants disparaissent 48 h après la
+   * session. Facultatif pour les appelants qui ne le chargent pas.
+   */
+  readonly premierLienEmargementLe?: Date | null;
   /** Nombre de journées de présence confirmées. */
   readonly creneauxEmargement: number;
   /**
@@ -527,8 +533,8 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       // C'est la même famille que le défaut documenté en tête de
       // `transmission-exemplaire.ts`.
       libelle: "Liens d'émargement fabriqués",
-      fait: input.liensEmargementActifs > 0,
-      faitLe: null,
+      fait: input.liensEmargementActifs > 0 || (input.premierLienEmargementLe ?? null) !== null,
+      faitLe: input.premierLienEmargementLe ?? null,
       echeance: avant(debut, 1),
       // Les jetons expirent 48 h après la fin : au-delà, plus rien à émettre.
       borne: apres(fin, 2),

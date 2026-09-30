@@ -58,6 +58,9 @@ on:
       - ".github/workflows/coolify-diagnose.yml"
       - ".github/workflows/coolify-zombie-cleanup.yml"
       - ".claude/**"
+      # Extension Meet (chantier visio, PR 5) : chargée à la main sur le poste
+      # de Will, jamais servie par le site. Elle ne justifie aucune mise en ligne.
+      - "extensions/**"
   workflow_dispatch:
     inputs:
       skip_deploy:

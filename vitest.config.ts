@@ -36,6 +36,9 @@ export default defineConfig({
       "src/**/*.{test,spec}.{ts,tsx}",
       "tests/unit/**/*.{test,spec}.{ts,tsx}",
       "tests/schemas/**/*.{test,spec}.{ts,tsx}",
+      // Extension de l'enregistreur Meet (PR 5). Déjà couverte par `tests/unit/**` :
+      // écrite ici pour qu'un resserrement de cette ligne ne rende pas ces tests morts.
+      "tests/unit/extension-enregistreur/**/*.{test,spec}.{ts,tsx}",
       // Contrat site ↔ Axion CRM Pro (lot L2). Tests de CONSTANTES, sans
       // aucune pile locale : ils doivent tourner dans la suite normale, sinon
       // la divergence entre les deux dépôts n'est vue par personne.

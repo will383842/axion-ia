@@ -14,12 +14,16 @@ describe("LEGAL_MENTIONS — bases juridiques exactes", () => {
     expect(LEGAL_MENTIONS.convention).toContain("L.6353-1");
     expect(LEGAL_MENTIONS.convention).toContain("L.6353-2");
   });
-  it("attestation cite L.6353-1 et D.6353-1", () => {
-    expect(LEGAL_MENTIONS.attestation).toContain("L.6353-1");
-    expect(LEGAL_MENTIONS.attestation).toContain("D.6353-1");
+  // 🔴 2026-09-30 — vérifié au Code du travail en vigueur : L.6353-1 ne porte
+  // plus que la convention (loi 2018-771), D.6353-1 le contenu de la
+  // convention. L'attestation relève du dernier alinéa de L.6313-7.
+  it("attestation cite L.6313-7 — ni L.6353-1 (la convention) ni D.6353-1 (son contenu)", () => {
+    expect(LEGAL_MENTIONS.attestation).toContain("L.6313-7");
+    expect(LEGAL_MENTIONS.attestation).not.toContain("L.6353-1");
+    expect(LEGAL_MENTIONS.attestation).not.toContain("D.6353-1");
   });
-  it("certificat de réalisation cite R.6313-3 + arrêté du 21 décembre 2018", () => {
-    expect(LEGAL_MENTIONS.certificatRealisation).toContain("R.6313-3");
+  it("certificat de réalisation cite R.6332-26 (contrôle de service fait) + arrêté du 21 décembre 2018", () => {
+    expect(LEGAL_MENTIONS.certificatRealisation).toContain("R.6332-26");
     expect(LEGAL_MENTIONS.certificatRealisation).toContain("21 décembre 2018");
   });
   it("facture cite l'exonération TVA 261-4-4° CGI + formation professionnelle continue", () => {

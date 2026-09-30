@@ -140,7 +140,8 @@ export function ReglementInterieurPdf({
           <Text style={local.articleBody}>
             Les amendes et autres sanctions pécuniaires sont interdites (art. R6352-3). L&apos;issue
             financière d&apos;une exclusion relève des seules conditions contractuelles convenues
-            avec le financeur ou l&apos;entreprise, et non d&apos;une sanction disciplinaire.
+            avec le financeur ou l&apos;entreprise — seules les prestations effectivement réalisées
+            sont dues, au prorata — et non d&apos;une sanction disciplinaire.
           </Text>
         </DocSection>
 
@@ -165,10 +166,13 @@ export function ReglementInterieurPdf({
           </Text>
           <BulletList
             items={[
-              "Le stagiaire est convoqué à un entretien par lettre remise en main propre ou adressée en recommandé, indiquant l'objet de la convocation.",
-              "Lors de l'entretien, le stagiaire expose ses explications et peut se faire assister par la personne de son choix, stagiaire ou salarié de l'organisme.",
+              // 🔴 2026-09-30 — R.6352-5 : la convocation précise la date, l'heure et le
+              // lieu, et fait état de la faculté de se faire assister ; l'assistant est
+              // « la personne de son choix » (le texte ne le restreint pas).
+              "Le directeur de l'organisme ou son représentant convoque le stagiaire par écrit, par lettre recommandée ou remise contre décharge. La convocation indique son objet, précise la date, l'heure et le lieu de l'entretien, et fait état de la faculté de se faire assister (art. R6352-5).",
+              "Au cours de l'entretien, le directeur ou son représentant indique le motif de la sanction envisagée et recueille les explications du stagiaire, qui peut se faire assister par la personne de son choix.",
               "La sanction ne peut intervenir moins d'un jour franc ni plus de quinze jours après l'entretien (art. R6352-6).",
-              "Elle est notifiée par écrit et motivée.",
+              "Elle fait l'objet d'une décision écrite et motivée, notifiée au stagiaire par lettre recommandée ou remise contre récépissé (art. R6352-6).",
             ]}
           />
           <Text style={local.articleBody}>
@@ -269,12 +273,41 @@ export function ReglementInterieurPdf({
           </Text>
         </DocSection>
 
-        {/* Article 6 — Sécurité */}
-        <DocSection title="Article 6 — Sécurité">
+        {/* Article 6 — Santé, hygiène et sécurité
+            🔴 2026-09-30 — l'article était mince au regard de L.6352-3 et R.6352-1
+            (« principales mesures applicables en matière de santé, de sécurité ») :
+            ni hygiène, ni tabac/vapotage, ni consignes d'incendie, ni la règle de
+            R.6352-1 pour une formation dans une entreprise dotée d'un règlement.
+            Même texte sur la page publique (`src/content/legal.ts`) et, en
+            substance, au livret ; cliquet :
+            `reglement-interieur-sante-securite-et-procedure.spec.ts`. */}
+        <DocSection title="Article 6 — Santé, hygiène et sécurité">
           <Text style={local.articleBody}>
-            En présentiel, le stagiaire doit respecter les consignes de sécurité affichées dans les
-            locaux (sorties de secours, points de rassemblement). En cas d'accident, il doit en
-            informer immédiatement le formateur ou le responsable des locaux.
+            Chaque stagiaire veille à sa sécurité et à celle des autres en respectant les consignes
+            générales et particulières de santé, d&apos;hygiène et de sécurité en vigueur sur le
+            lieu de formation. Il respecte la propreté des salles, des sanitaires et du matériel mis
+            à sa disposition, et signale au formateur toute situation présentant un risque pour la
+            santé ou la sécurité.
+          </Text>
+          <Text style={local.articleBody}>
+            Il est interdit de fumer et de vapoter dans les locaux de formation, conformément au
+            Code de la santé publique.
+          </Text>
+          <Text style={local.articleBody}>
+            Les consignes d&apos;incendie et d&apos;évacuation, notamment le plan de localisation
+            des extincteurs et des issues de secours et le point de rassemblement, sont affichées
+            dans les locaux. Le stagiaire en prend connaissance et, en cas d&apos;alerte, suit sans
+            délai les instructions du formateur ou du responsable des locaux.
+          </Text>
+          <Text style={local.articleBody}>
+            Tout accident ou incident survenu pendant la formation est signalé immédiatement au
+            formateur ou au responsable des locaux.
+          </Text>
+          <Text style={local.articleBody}>
+            Lorsque la formation se déroule dans une entreprise ou un établissement déjà doté
+            d&apos;un règlement intérieur, notamment dans les locaux du client, les mesures de santé
+            et de sécurité applicables aux stagiaires sont celles de ce dernier règlement (art.
+            R6352-1 du code du travail).
           </Text>
           <Text style={local.articleBody}>
             En distanciel, le stagiaire est responsable de la sécurité de son environnement de
@@ -350,6 +383,17 @@ export function ReglementInterieurPdf({
             et de portabilité de ses données, ainsi que du droit de s'opposer à leur traitement. Ces
             droits s'exercent auprès de l'organisme à l'adresse :{" "}
             {identite.dpoEmail || identite.email || "—"}.
+          </Text>
+        </DocSection>
+
+        {/* Article 10 — Représentation des stagiaires (R.6352-9 et suivants) */}
+        <DocSection title="Article 10 — Représentation des stagiaires">
+          <Text style={local.articleBody}>
+            Pour les actions de formation organisées en sessions d&apos;une durée totale supérieure
+            à cinq cents heures, un délégué titulaire et un délégué suppléant sont élus par les
+            stagiaires (art. R6352-9 et suivants du code du travail). Aucune action de formation
+            dispensée par l&apos;organisme n&apos;atteignant cette durée, aucune élection n&apos;est
+            organisée.
           </Text>
         </DocSection>
 

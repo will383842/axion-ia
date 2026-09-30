@@ -630,6 +630,42 @@ describe("genererFactureFormationAction", () => {
     expect(createCall.data["montantHtCents"]).toBe(150000);
   });
 
+  // 🔴 2026-09-30 — AXI-FACT-2026-001 ne désignait sa prestation que par
+  // « Formation professionnelle — forfait ». L'OPCO rapproche la facture de son
+  // accord par l'intitulé, la session, les dates, la durée et les stagiaires.
+  it("ventilation forfait : la désignation nomme la formation, la session, les dates, la durée et les stagiaires", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(
+      makeSession({
+        dateDebut: new Date("2026-09-15T00:00:00.000Z"),
+        dateFin: new Date("2026-09-16T00:00:00.000Z"),
+        dureeReelleHeures: 14,
+        enrollments: [
+          { trainee: { nom: "Martin", prenom: "Jean" } },
+          { trainee: { nom: "Blanc", prenom: "Simone" } },
+        ],
+      }),
+    );
+
+    await genererFactureFormationAction({
+      sessionId: SESSION_UUID,
+      destinataire: "entreprise",
+      ventilation: "forfait",
+    });
+
+    const createCall = mockCall<{ data: Record<string, unknown> }>(
+      mockPrisma.factureFormation.create,
+    );
+    const lignes = createCall.data["lignes"] as Array<{ designation: string }>;
+    const designation = lignes[0]?.designation ?? "";
+    expect(designation).toContain("« IA pour les équipes commerciales »");
+    expect(designation).toContain("session AXI-SESS-2026-001");
+    expect(designation).toContain("réalisée du 15/09/2026 au 16/09/2026");
+    expect(designation).toContain("durée 14 h");
+    expect(designation).toContain("stagiaires : MARTIN Jean, BLANC Simone");
+    // Le mode de calcul reste lisible.
+    expect(designation).toContain("forfait");
+  });
+
   it("ventilation horaire : refuse si dureeReelleHeures=0", async () => {
     mockPrisma.trainingSession.findUnique.mockResolvedValue(makeSession({ dureeReelleHeures: 0 }));
 

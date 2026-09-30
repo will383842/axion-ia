@@ -28,6 +28,8 @@ import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { enqueueEmail } from "@/server/queue/queues";
 import { creerTokenInscription } from "@/server/qualiopi/emargement/token-service";
 import { formatLieu, lienVisioRemis } from "@/server/qualiopi/lieu/format-lieu";
+// « — présentiel — » dans la phrase, jamais l'énumération brute « presentiel ».
+import { libelleModaliteMinuscule } from "@/server/qualiopi/documents/libelles-enumerations";
 import { creerAcces } from "@/server/qualiopi/portail/portail-service";
 import {
   creerQuestionnaire,
@@ -278,7 +280,7 @@ export async function envoyerConvocation(enrollmentId: string): Promise<boolean>
       dateDebut: fmtDate(session.dateDebut),
       dateFin: fmtDate(session.dateFin),
       lieu: formatLieu(session) ?? "Voir convocation",
-      modalite: session.modalite,
+      modalite: libelleModaliteMinuscule(session.modalite),
       numeroSession: session.numero,
       lienPortail,
     },
@@ -446,7 +448,7 @@ export async function envoyerRappelJ7(sessionId: string): Promise<boolean> {
           dateDebut: fmtDate(session.dateDebut),
           dateFin: fmtDate(session.dateFin),
           lieu: formatLieu(session) ?? "Voir convocation",
-          modalite: session.modalite,
+          modalite: libelleModaliteMinuscule(session.modalite),
           numeroSession: session.numero,
           lienPortail,
           ...(lienEmargement !== null ? { lienEmargement: lienEmargement.url } : {}),
@@ -660,7 +662,7 @@ export async function envoyerRappelJ1(sessionId: string): Promise<boolean> {
           dateDebut: fmtDate(session.dateDebut),
           dateFin: fmtDate(session.dateFin),
           lieu: formatLieu(session) ?? "Voir convocation",
-          modalite: session.modalite,
+          modalite: libelleModaliteMinuscule(session.modalite),
           numeroSession: session.numero,
           lienPortail,
           // Les deux liens ne sont posés QUE s'ils existent : le gabarit

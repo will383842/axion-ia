@@ -30,11 +30,33 @@ export const LEGAL_MENTIONS = {
   convention: "Établie conformément aux articles L.6353-1 et L.6353-2 du Code du travail.",
   /** Contrat de formation professionnelle (particuliers — rétractation). */
   contratParticulier: "Établi conformément aux articles L.6353-3 à L.6353-7 du Code du travail.",
-  /** Attestation de fin de formation. */
-  attestation: "Délivrée conformément aux articles L.6353-1 et D.6353-1 du Code du travail.",
-  /** Certificat de réalisation (durées EN CENTIÈMES obligatoires). */
+  /**
+   * Attestation de fin de formation.
+   *
+   * 🔴 Audit des pièces réelles 2026-09-30 — vérifié sur Légifrance / Code du
+   * travail numérique. Cette mention citait « L.6353-1 et D.6353-1 ». Or :
+   *   - L.6353-1 (version en vigueur depuis le 01/01/2019, loi 2018-771 art. 24)
+   *     ne dit plus qu'une chose : « une convention est conclue entre l'acheteur
+   *     et l'organisme » — l'alinéa sur l'attestation n'a pas été repris ;
+   *   - D.6353-1 fixe le CONTENU DE LA CONVENTION (intitulé, objectif, durée,
+   *     prix…), pas l'attestation.
+   * Le fondement exact d'une attestation de formation non certifiante est le
+   * dernier alinéa de L.6313-7 : « Les autres formations peuvent faire l'objet
+   * d'une attestation dont le titulaire peut se prévaloir. »
+   */
+  attestation:
+    "Attestation délivrée au titre du dernier alinéa de l'article L.6313-7 du Code du travail.",
+  /**
+   * Certificat de réalisation (durées EN CENTIÈMES obligatoires).
+   *
+   * 🔴 2026-09-30 — citait « R.6313-3 », qui dit seulement que la réalisation
+   * d'une action composant un parcours se justifie « par tout élément probant ».
+   * Le certificat est la pièce du CONTRÔLE DE SERVICE FAIT de l'opérateur de
+   * compétences : article R.6332-26, dont l'arrêté du 21 décembre 2018 fixe les
+   * pièces — « un certificat de réalisation établi par le dispensateur ».
+   */
   certificatRealisation:
-    "Établi conformément à l'article R.6313-3 du Code du travail et à l'arrêté du 21 décembre 2018.",
+    "Établi selon le modèle du ministère du Travail, au titre du contrôle de service fait (article R.6332-26 du Code du travail et arrêté du 21 décembre 2018 relatif aux pièces nécessaires à ce contrôle).",
   /** Facture — exonération TVA formation professionnelle continue (attestation DREETS requise). */
   factureExonerationTva:
     "Exonéré de TVA en application de l'article 261-4-4° du Code Général des Impôts — Prestations de formation professionnelle continue.",
@@ -81,12 +103,13 @@ export const LEGAL_MENTIONS = {
   /**
    * Désignation du référent handicap.
    *
-   * 🔴 2026-09-30 (audit site public) — citait « conformément à l'article
-   * L.6352-3 du Code du travail », qui porte sur le RÈGLEMENT INTÉRIEUR, pas
-   * sur le référent handicap. La désignation relève de l'indicateur 26 du
-   * Référentiel national qualité (décret n° 2019-564).
+   * 🔴 2026-09-30 — citait L.6352-3, qui impose le RÈGLEMENT INTÉRIEUR (santé,
+   * sécurité, discipline, représentation) et ne dit rien d'un référent
+   * handicap. L'exigence vient de l'indicateur 26 du Référentiel national
+   * qualité, lui-même institué par L.6316-3.
    */
-  referentHandicap: "Référent handicap désigné (indicateur 26 du Référentiel national qualité).",
+  referentHandicap:
+    "Référent handicap désigné au titre de l'indicateur 26 du Référentiel national qualité (article L.6316-3 du Code du travail).",
   /** CGV — objet des prestations. */
   cgvObjet:
     "Prestations de formation professionnelle au sens des articles L.6313-1 et suivants du Code du travail.",
@@ -229,8 +252,6 @@ export const HANDICAP_PARTENAIRES: readonly HandicapPartenaire[] = [
   {
     nom: "Ressource Handicap Formation (RHF)",
     role: "Appui aux organismes de formation pour l'accueil et l'adaptation des parcours.",
-    // 2026-09-30 : l'ancienne URL (`/aides-handicap/ressource-handicap-formation-rhf`)
-    // répondait 404. Celle-ci répond 200 (vérifiée au curl le 2026-09-30).
     url: "https://www.agefiph.fr/services/ressource-handicap-formation",
   },
   {
@@ -258,9 +279,17 @@ export function formatHeuresCentiemes(heures: number): string {
 /**
  * Durée de conservation des pièces de formation, en ANNÉES.
  *
- * Art. L.6353-9 du Code du travail et conditions particulières applicables aux
- * organismes de formation. Imprimée telle quelle sur les émargements, les
- * relevés de connexion et le livret d'accueil.
+ * Choix de l'organisme (décision de conservation, pas une durée légale citée) :
+ * imprimée telle quelle sur les émargements, les relevés de connexion et le
+ * livret d'accueil.
+ *
+ * 🔴 2026-09-30 — cette ligne se réclamait de « l'art. L.6353-9 du Code du
+ * travail », et les pièces l'imprimaient. L.6353-9 porte sur les INFORMATIONS
+ * DEMANDÉES AU CANDIDAT (elles ne peuvent servir qu'à apprécier son aptitude),
+ * pas sur la conservation. Aucun article du Code du travail ne fixe une durée
+ * de 5 ans pour l'émargement : les pièces disent donc « à conserver 5 ans »
+ * sans citer d'article. (Le modèle de certificat de réalisation engage, lui, à
+ * 3 ans après le dernier paiement : 5 ans le couvre.)
  *
  * 🔴 Le commentaire qui coiffait cette ligne jusqu'au 2026-08-20 annonçait des
  * « préfixes de numérotation séquentielle » — l'en-tête orphelin d'une

@@ -18,23 +18,11 @@ import Link from "next/link";
 import type { IndicateurManifeste } from "@/server/qualiopi/conformite/audit-dossier";
 import { libelleTypeDocument } from "@/server/qualiopi/documents/libelles-type-document";
 import { registresDeIndicateur } from "@/server/qualiopi/conformite/registres-par-indicateur";
+// Intitulés officiels des 7 critères : source unique, le registre RNQ.
+import { libelleCritere } from "@/server/qualiopi/conformite/indicateurs-registre";
 import { Star } from "lucide-react";
 
 export type MatriceVue = "tableau" | "manifeste";
-
-/** Libellé long du critère Qualiopi RNQ V9. */
-function libelleCritere(c: number): string {
-  const labels: Record<number, string> = {
-    1: "C1 — Conditions d'information du public",
-    2: "C2 — Identification et analyse des besoins des bénéficiaires",
-    3: "C3 — Adaptation aux bénéficiaires",
-    4: "C4 — Adéquation des moyens pédagogiques, techniques et d'encadrement",
-    5: "C5 — Qualification et développement des compétences du personnel",
-    6: "C6 — Inscription et veille des sous-traitants et formateurs occasionnels",
-    7: "C7 — Recueil des appréciations et mise en œuvre de l'amélioration continue",
-  };
-  return labels[c] ?? `Critère ${c}`;
-}
 
 /** Badge de statut coloré selon l'état de couverture de l'indicateur. */
 function StatutBadge({ statut }: { statut: IndicateurManifeste["statut"] }): React.ReactElement {

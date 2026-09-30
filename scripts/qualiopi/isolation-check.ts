@@ -348,6 +348,17 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    tout ce qui enfile un e-mail. Même plomberie d'alerte que `health.ts` ;
   //    au troisième emprunteur, sortir `creerOuDedup` vers une zone neutre.
   "src/server/email/suppression.ts",
+  // ── Enregistreur des visios (chantier visio, PR 5 ; anti-doublon A3 de
+  //    l'audit du 29/09) : les pannes techniques du circuit (témoin de clé,
+  //    jeton qui expire, extension silencieuse) sont des alertes `visio.*` du
+  //    catalogue, créées par `creerOuDedup` — l'audit INTERDIT une table ou un
+  //    service d'alerte parallèle. Import de TYPE + import DYNAMIQUE au point
+  //    d'usage, comme `suppression.ts`. ⚠️ C'est un emprunteur de plus de la
+  //    même plomberie : le déplacement de `creerOuDedup` vers une zone neutre,
+  //    annoncé ci-dessus, est désormais dû (hors de cette PR, signalé dans #1224).
+  "src/server/visio/balayage-enregistreur.ts",
+  // Sa garde : vérifie que chaque code `visio.*` levé est au catalogue.
+  "tests/unit/ci/la-table-alertes-visio-reste-vide.spec.ts",
   "src/server/queue/workers/retention-purge-worker.ts",
   // ── Recherche admin : partage le garde d'habilitation `actions/qualiopi/_guards`.
   "src/server/actions/admin-recherche.ts",

@@ -498,57 +498,81 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
   );
 
   // Vague 2 — les seules lectures qui ont besoin d'un résultat de la vague 1.
-  const [missionFormateur, lignesSignatures, circuitAdaptation, traineesAvecDetailChiffre] =
-    await Promise.all([
-      // ── Mission du formateur principal (2026-09-03) ───────────────────────
-      trainingSession.formateurPrincipalId !== null
-        ? lireMissionCourante(id, trainingSession.formateurPrincipalId)
-        : null,
-      piecesSignables.length > 0
-        ? prisma.documentSignature.findMany({
-            where: {
-              documentGenereId: { in: piecesSignables.map((d) => d.id) },
-              revokedAt: null,
+  const [
+    missionFormateur,
+    lignesSignatures,
+    circuitAdaptation,
+    traineesAvecDetailChiffre,
+    facturesDesPieces,
+  ] = await Promise.all([
+    // ── Mission du formateur principal (2026-09-03) ───────────────────────
+    trainingSession.formateurPrincipalId !== null
+      ? lireMissionCourante(id, trainingSession.formateurPrincipalId)
+      : null,
+    piecesSignables.length > 0
+      ? prisma.documentSignature.findMany({
+          where: {
+            documentGenereId: { in: piecesSignables.map((d) => d.id) },
+            revokedAt: null,
+          },
+          select: {
+            id: true,
+            documentGenereId: true,
+            partie: true,
+            signataireNom: true,
+            signataireQualite: true,
+            signeAt: true,
+            selfHash: true,
+            methode: true,
+          },
+          // ⚠️ Même tri que la chaîne (`createdAt`, puis `id`) : trier sur
+          // `signeAt` afficherait un ordre pouvant différer de celui du
+          // chaînage.
+          orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+        })
+      : [],
+    // 🔴 Ind. 10 — la RÉPONSE de l'organisme à un besoin déclaré, et ses
+    // dates. Le besoin se lit au MÊME prédicat que l'alerte balayée et le
+    // moteur de conformité ; les dates viennent du journal (réponse,
+    // déclaration) et du positionnement. Une réponse antérieure à une nouvelle
+    // déclaration ne la couvre pas : c'est ce que ces dates permettent de dire.
+    lireCircuitAdaptation(
+      enrollmentsRaw.map((e) => ({
+        id: e.id,
+        traineeId: e.trainee.id,
+        finSession: trainingSession.dateFin,
+        positionnements: e.questionnaires
+          .filter((q) => q.type === "positionnement" && q.reponduAt !== null)
+          .map((q) => ({ reponses: q.reponses, reponduAt: q.reponduAt })),
+      })),
+    ),
+    // C2-03 / I10-02 — PRÉSENCE d'une précision d'adaptation chiffrée sur la
+    // FICHE stagiaire, jamais son contenu (donnée de santé, lecture réservée
+    // au super-administrateur). Bornée aux inscrits de la session ; la
+    // colonne chiffrée n'est pas chargée. Elle ne dit rien du questionnaire :
+    // la colonne est aussi écrite par la déclaration de handicap et par la
+    // console.
+    stagiairesAvecPrecision(enrollmentsRaw.map((e) => e.trainee.id)),
+    // 🔴 2026-09-30 — le NUMÉRO DE FACTURE des pièces « facture ». La liste
+    // n'affichait que le numéro de pièce du registre (`AXI-DOC-2026-043`),
+    // alors que la facture est connue du client, de l'OPCO et de la
+    // comptabilité sous `AXI-FACT-2026-001` : l'auditeur ne la retrouvait pas.
+    documentsRaw.some((d) => d.type === "facture")
+      ? prisma.factureFormation.findMany({
+          where: {
+            documentId: {
+              in: documentsRaw.filter((d) => d.type === "facture").map((d) => d.id),
             },
-            select: {
-              id: true,
-              documentGenereId: true,
-              partie: true,
-              signataireNom: true,
-              signataireQualite: true,
-              signeAt: true,
-              selfHash: true,
-              methode: true,
-            },
-            // ⚠️ Même tri que la chaîne (`createdAt`, puis `id`) : trier sur
-            // `signeAt` afficherait un ordre pouvant différer de celui du
-            // chaînage.
-            orderBy: [{ createdAt: "asc" }, { id: "asc" }],
-          })
-        : [],
-      // 🔴 Ind. 10 — la RÉPONSE de l'organisme à un besoin déclaré, et ses
-      // dates. Le besoin se lit au MÊME prédicat que l'alerte balayée et le
-      // moteur de conformité ; les dates viennent du journal (réponse,
-      // déclaration) et du positionnement. Une réponse antérieure à une nouvelle
-      // déclaration ne la couvre pas : c'est ce que ces dates permettent de dire.
-      lireCircuitAdaptation(
-        enrollmentsRaw.map((e) => ({
-          id: e.id,
-          traineeId: e.trainee.id,
-          finSession: trainingSession.dateFin,
-          positionnements: e.questionnaires
-            .filter((q) => q.type === "positionnement" && q.reponduAt !== null)
-            .map((q) => ({ reponses: q.reponses, reponduAt: q.reponduAt })),
-        })),
-      ),
-      // C2-03 / I10-02 — PRÉSENCE d'une précision d'adaptation chiffrée sur la
-      // FICHE stagiaire, jamais son contenu (donnée de santé, lecture réservée
-      // au super-administrateur). Bornée aux inscrits de la session ; la
-      // colonne chiffrée n'est pas chargée. Elle ne dit rien du questionnaire :
-      // la colonne est aussi écrite par la déclaration de handicap et par la
-      // console.
-      stagiairesAvecPrecision(enrollmentsRaw.map((e) => e.trainee.id)),
-    ]);
+          },
+          select: { documentId: true, numero: true },
+        })
+      : [],
+  ]);
+  const numeroFactureParPiece = new Map(
+    facturesDesPieces
+      .filter((f): f is { documentId: string; numero: string } => f.documentId !== null)
+      .map((f) => [f.documentId, f.numero]),
+  );
 
   const etatMissionFormateur =
     missionFormateur === null
@@ -664,6 +688,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       remplaceeParNumero: d.remplaceeParNumero,
       rectifieNumero: meta?.rectifie?.numero ?? null,
       rectifieMotif: meta?.rectifie?.motif ?? null,
+      numeroFacture: numeroFactureParPiece.get(d.id) ?? null,
       // `signaturesParPiece` ne contient que les signatures non révoquées : le
       // registre propose l'exemplaire signé dès qu'une preuve existe, au lieu de
       // le cacher dans le seul panneau de signature.

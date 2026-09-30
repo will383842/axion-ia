@@ -60,6 +60,10 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
   const anneesCouvertes = revues.map((r) => r.annee);
   const currentYear = new Date().getFullYear();
   const revueAnneeEnCours = anneesCouvertes.includes(currentYear);
+  // La carte portait « Créée » au-dessus d'une ligne « Validée » : c'est le
+  // STATUT de la revue de l'année qui intéresse l'auditeur, pas son existence.
+  const revueDeLAnnee = revues.find((r) => r.annee === currentYear);
+  const revueAnneeValidee = revueDeLAnnee?.statut === STATUT_REVUE_COUVRANTE;
 
   const cellCls =
     "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]";
@@ -91,8 +95,8 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
         />
         <AdminStatCard
           label={`Revue ${currentYear}`}
-          value={revueAnneeEnCours ? "Créée" : "Manquante"}
-          tone={revueAnneeEnCours ? "success" : "warning"}
+          value={revueDeLAnnee ? libelleStatutRevue(revueDeLAnnee.statut) : "Manquante"}
+          tone={revueAnneeValidee ? "success" : "warning"}
           icon={CalendarDays}
         />
       </div>

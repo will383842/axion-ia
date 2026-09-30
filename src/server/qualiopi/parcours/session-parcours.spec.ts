@@ -455,6 +455,36 @@ describe("🔴 un statut terminal REPLIE la checklist", () => {
   });
 });
 
+describe("🔴 liens d'émargement d'une session PASSÉE (audit du 2026-09-30)", () => {
+  // AXI-SESS-2026-001 : lien fabriqué le lendemain, jetons expirés 48 h après
+  // la fin. L'étape se jugeait sur les jetons VIVANTS et rebasculait en
+  // « Hors délai : +25 j », retard qui grossissait chaque jour.
+  it("des liens fabriqués puis expirés font une étape FAITE, datée de la fabrication", () => {
+    const p = construireParcours(
+      dossier({
+        session: { ...dossier().session, statut: "realisee" },
+        liensEmargementActifs: 0,
+        premierLienEmargementLe: d("2026-09-12T16:47:00.000Z"),
+        maintenant: d("2026-09-30T09:00:00.000Z"),
+      }),
+    );
+    const e = etapeDe(p, "liens_signature_emis");
+    expect(e.etat).toBe("fait");
+    expect(e.mention).toContain("12/09/2026");
+  });
+
+  it("sans aucun lien jamais fabriqué, l'étape reste hors délai", () => {
+    const p = construireParcours(
+      dossier({
+        session: { ...dossier().session, statut: "realisee" },
+        premierLienEmargementLe: null,
+        maintenant: d("2026-09-30T09:00:00.000Z"),
+      }),
+    );
+    expect(etapeDe(p, "liens_signature_emis").etat).toBe("hors_delai");
+  });
+});
+
 describe("🔴 les avertissements qui coûtent cher à oublier", () => {
   it("réémettre les liens tue le QR déjà imprimé — c'est écrit", () => {
     const p = construireParcours(dossier({ liensEmargementActifs: 3 }));
