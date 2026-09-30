@@ -112,6 +112,12 @@ describe("REQ-JUR-019 — un revenu illimité rougit, MÊME dit indicatif", () =
     "As an indication, €500 per day, uncapped.",
     "As a guide, your commissions grow — with no cap.",
     "Des revenus illimités, selon votre profil",
+    "Un revenu illimité",
+    "Un revenu illimité.",
+    "Potentiel illimité, à titre indicatif",
+    "Pas de limite à vos commissions",
+    "Limitless earnings, as a guide",
+    "Commissions without limit",
   ])("REQ-JUR-019 — TÉMOIN ROUGE : « %s »", (texte) => {
     expect(temoin(texte)).toContain<FamilleRemuneration>("revenu_illimite");
   });

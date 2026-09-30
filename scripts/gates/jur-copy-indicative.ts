@@ -108,8 +108,17 @@ const INDICATIF =
  * aucun plafond absent n'est annoncé, même « à titre indicatif ». Seules les exceptions nommées
  * (la limite d'ÂGE) en sortent.
  */
-const ILLIMITE =
-  /\bsans\s+(?:aucune?\s+)?plafond|\b(?:sans\s+(?:aucune\s+)?|aucune\s+)limite(?!\s+d['’]\s?âge)|\bnon\s+plafonn|\bpas\s+de\s+plafond|\bdéplafonn|\billimit[ée]e?s?\b|\buncapped\b|\bunlimited\b|\bno\s+(?:limit|cap)\b/i;
+const ILLIMITE = new RegExp(
+  [
+    String.raw`\bsans\s+(?:aucune?\s+)?plafond`,
+    String.raw`\b(?:sans\s+(?:aucune\s+)?|aucune\s+|pas\s+de\s+)limite(?!\s+d['’]\s?âge)`,
+    String.raw`\bnon\s+plafonn|\bpas\s+de\s+plafond|\bdéplafonn`,
+    // `${FIN}` et non `\b` : le masculin singulier « illimité » finit par un é, hors de \w.
+    String.raw`\billimit[ée]e?s?${FIN}`,
+    String.raw`\buncapped\b|\bunlimited\b|\blimitless\b|\bno\s+(?:limit|cap)\b|\bwithout\s+(?:a\s+)?limit\b`,
+  ].join("|"),
+  "i",
+);
 /**
  * Deux familles, deux règles :
  *   — `promesse_sans_risque` : jamais « zéro risque », « sans risque », « risk-free ». On écrit
