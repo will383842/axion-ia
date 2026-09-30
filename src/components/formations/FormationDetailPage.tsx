@@ -50,6 +50,7 @@ import {
   formatDureeFr,
   formatModalitesFr,
   getFormationAccessibilite,
+  type ReferentHandicapContact,
   getFormationCasUsage,
   getFormationCourseModes,
   getFormationDelaiAcces,
@@ -125,9 +126,11 @@ function bracketLabel(b: FormationBracket): string {
 interface Props {
   formation: FormationV2;
   locale: Locale;
+  /** Contact du référent handicap (ind. 26) — lu en configuration par la page serveur. */
+  referentHandicap: ReferentHandicapContact;
 }
 
-export function FormationDetailPage({ formation: f, locale }: Props): ReactNode {
+export function FormationDetailPage({ formation: f, locale, referentHandicap }: Props): ReactNode {
   const isFr = locale === "fr";
   // Refonte 2026-07-19 : l'axe de rattachement est la CATÉGORIE (générale /
   // métier / secteur) — le séminaire n'en a pas (rubrique à part).
@@ -159,7 +162,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
   const delaiAcces = getFormationDelaiAcces(f);
   const methodes = getFormationMethodes(f);
   const evaluation = getFormationEvaluation(f);
-  const accessibilite = getFormationAccessibilite(f);
+  const accessibilite = getFormationAccessibilite(f, referentHandicap);
   // « reste à charge » = mention financement (OPCO), pas un tarif produit.
   const financeMention = "Finançable OPCO — jusqu’à 0 € de reste à charge selon votre situation."; // price-exempt
 

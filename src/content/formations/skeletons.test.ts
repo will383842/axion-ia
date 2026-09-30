@@ -87,7 +87,8 @@ describe("squelette — garde-fous ISO figés (décision 2026-06-11 : 1 jour = P
   it("gagner-du-temps = PT7H", () => expect(formationDurationIso("gagner-du-temps")).toBe("PT7H"));
   it("intervention-claude = PT7H", () =>
     expect(formationDurationIso("intervention-claude")).toBe("PT7H"));
-  it("approfondie = P2D", () => expect(formationDurationIso("approfondie")).toBe("P2D"));
+  // 2 jours = 14 h de formation (charge de travail), pas « P2D » = 48 h.
+  it("approfondie = PT14H", () => expect(formationDurationIso("approfondie")).toBe("PT14H"));
   it("demarrage-ia-express = PT4H", () =>
     expect(formationDurationIso("demarrage-ia-express")).toBe("PT4H"));
   it("days cohérents", () => {

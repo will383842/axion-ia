@@ -50,7 +50,7 @@ export const FORMATION_GEO_LABEL: Record<FormationDetailSlug, { fr: string; en: 
 /**
  * Durée ISO 8601 par format collectif — alimente le Course JSON-LD des pages
  * détail (CourseInstance.courseWorkload). DÉRIVÉE du SSOT squelette
- * (`formationDurationIso`) : 1 jour = `PT7H`, 2 jours = `P2D`. Plus de littéral
+ * (`formationDurationIso`) : 1 jour = `PT7H`, 2 jours = `PT14H`. Plus de littéral
  * (fin de la dérive historique `PT7H`/`PT8H`).
  */
 export const FORMATION_DURATION_ISO: Record<FormationDetailSlug, string> = Object.fromEntries(

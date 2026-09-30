@@ -10,6 +10,12 @@ import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildProductMetadata, buildWebPageJsonLd, SITE_URL, SITE_EDITORIAL_DATE } from "@/lib/seo";
 import { HANDICAP_PARTENAIRES } from "@/server/qualiopi/legal/legal-mentions";
+import { getReferentHandicapPublic } from "@/server/qualiopi/config/referent-handicap-public";
+
+// ISR : le contact du référent handicap (ind. 26) est lu en configuration. Au
+// build (`stub.invalid`, ADR 0026) il vaut le repli générique ; la page se
+// repeuple avec la vraie configuration au runtime, sans appel DB par requête.
+export const revalidate = 3600;
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -39,6 +45,7 @@ export default async function AccessibilityPage({ params }: Props) {
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
+  const referentHandicap = await getReferentHandicapPublic();
 
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
@@ -61,7 +68,7 @@ export default async function AccessibilityPage({ params }: Props) {
         },
         {
           h: "Contenus non accessibles connus",
-          p: "Les pages programmatiques en cours d'enrichissement (catégories blog, articles d'aide) disposent de fixtures minimales. Le walkthrough utilisateur final reste à valider en runtime — Sprint 21.",
+          p: "Faute d'audit complet, la liste des contenus non conformes n'est pas encore établie. Certaines pages récentes (catégories du blog, articles d'aide) sont encore en cours de rédaction et peuvent présenter des défauts d'accessibilité. Si un contenu vous pose difficulté, signalez-le-nous : nous vous le transmettrons sous une forme accessible.",
         },
         {
           h: "Voies de recours",
@@ -73,7 +80,7 @@ export default async function AccessibilityPage({ params }: Props) {
         },
         {
           h: "Date de mise à jour",
-          p: "Cette déclaration a été établie le 6 mai 2026 et sera mise à jour après chaque audit Sprint 21 et après chaque évolution majeure du site.",
+          p: "Cette déclaration a été établie le 6 mai 2026. Elle sera mise à jour après l'audit de conformité et après chaque évolution majeure du site.",
         },
       ]
     : [
@@ -87,7 +94,7 @@ export default async function AccessibilityPage({ params }: Props) {
         },
         {
           h: "Known non-accessible content",
-          p: "Programmatic pages currently being enriched (blog categories, help articles) have minimal fixtures. Final user walkthrough is to be validated at runtime — Sprint 21.",
+          p: "Pending a full audit, the list of non-conformant content has not yet been established. Some recent pages (blog categories, help articles) are still being written and may have accessibility issues. If any content is difficult for you to use, let us know and we will send it to you in an accessible form.",
         },
         {
           h: "Redress mechanisms",
@@ -99,7 +106,7 @@ export default async function AccessibilityPage({ params }: Props) {
         },
         {
           h: "Last updated",
-          p: "This statement was last updated on May 6, 2026 and will be updated after each Sprint 21 audit and each major site evolution.",
+          p: "This statement was drawn up on May 6, 2026. It will be updated after the conformance audit and after each major change to the site.",
         },
       ];
 
@@ -163,8 +170,26 @@ export default async function AccessibilityPage({ params }: Props) {
               </h2>
               <p className="text-fg-soft text-base leading-relaxed">
                 {isFr
-                  ? "Nous nous engageons à rendre nos formations accessibles à toutes et tous. Si vous êtes en situation de handicap ou avez des besoins spécifiques, notre référent handicap étudie avec vous les aménagements possibles — contactez-nous avant le début de la formation. Nous pouvons aussi vous orienter vers les relais spécialisés suivants :"
-                  : "We are committed to making our training accessible to everyone. If you have a disability or specific needs, our disability officer will assess possible accommodations with you — please contact us before the training starts. We can also refer you to the following specialised bodies:"}
+                  ? "Nous nous engageons à rendre nos formations accessibles à toutes et tous. Si vous êtes en situation de handicap ou avez des besoins spécifiques, notre référent handicap (indicateur 26 du Référentiel national qualité) étudie avec vous les aménagements possibles — écrivez-lui avant le début de la formation."
+                  : "We are committed to making our training accessible to everyone. If you have a disability or specific needs, our disability officer will assess possible accommodations with you — please write to them before the training starts."}
+              </p>
+              <p className="text-fg-soft text-base leading-relaxed">
+                {isFr ? "Référent handicap : " : "Disability officer: "}
+                {referentHandicap.nom ? (
+                  <strong className="text-fg font-semibold">{referentHandicap.nom}</strong>
+                ) : null}
+                {referentHandicap.nom ? " — " : null}
+                <a
+                  href={`mailto:${referentHandicap.email}`}
+                  className="text-terracotta hover:text-terracotta-deep font-medium underline-offset-4 hover:underline"
+                >
+                  {referentHandicap.email}
+                </a>
+              </p>
+              <p className="text-fg-soft text-base leading-relaxed">
+                {isFr
+                  ? "Nous pouvons aussi vous orienter vers les relais spécialisés suivants :"
+                  : "We can also refer you to the following specialised bodies:"}
               </p>
               <ul className="text-fg-soft space-y-2 text-base leading-relaxed">
                 {HANDICAP_PARTENAIRES.map((p) => (

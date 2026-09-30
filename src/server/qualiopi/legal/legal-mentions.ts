@@ -78,9 +78,15 @@ export const LEGAL_MENTIONS = {
   factureEscompte: "Aucun escompte n'est accordé en cas de paiement anticipé.",
   /** Règlement intérieur des stagiaires. */
   reglementInterieur: "Établi conformément aux articles L.6352-3 et suivants du Code du travail.",
-  /** Désignation du référent handicap. */
-  referentHandicap:
-    "Référent handicap désigné conformément à l'article L.6352-3 du Code du travail (indicateur Qualiopi n°26).",
+  /**
+   * Désignation du référent handicap.
+   *
+   * 🔴 2026-09-30 (audit site public) — citait « conformément à l'article
+   * L.6352-3 du Code du travail », qui porte sur le RÈGLEMENT INTÉRIEUR, pas
+   * sur le référent handicap. La désignation relève de l'indicateur 26 du
+   * Référentiel national qualité (décret n° 2019-564).
+   */
+  referentHandicap: "Référent handicap désigné (indicateur 26 du Référentiel national qualité).",
   /** CGV — objet des prestations. */
   cgvObjet:
     "Prestations de formation professionnelle au sens des articles L.6313-1 et suivants du Code du travail.",
@@ -223,7 +229,9 @@ export const HANDICAP_PARTENAIRES: readonly HandicapPartenaire[] = [
   {
     nom: "Ressource Handicap Formation (RHF)",
     role: "Appui aux organismes de formation pour l'accueil et l'adaptation des parcours.",
-    url: "https://www.agefiph.fr/aides-handicap/ressource-handicap-formation-rhf",
+    // 2026-09-30 : l'ancienne URL (`/aides-handicap/ressource-handicap-formation-rhf`)
+    // répondait 404. Celle-ci répond 200 (vérifiée au curl le 2026-09-30).
+    url: "https://www.agefiph.fr/services/ressource-handicap-formation",
   },
   {
     nom: "FIPHFP",

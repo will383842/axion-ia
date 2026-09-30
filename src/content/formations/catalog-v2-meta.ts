@@ -10,13 +10,18 @@ import type { FormationCategorie, FormationDuree, FormationGamme } from "../pric
 
 /**
  * Durée ISO 8601 par durée catalogue — pour `Course.hasCourseInstance.courseWorkload`.
- * 1 jour = PT7H (≈ 7 h face-à-face, décision 2026-06-11). 2j = P2D, 3j = P3D.
+ * 1 jour = PT7H (≈ 7 h face-à-face, décision 2026-06-11).
+ *
+ * 🔴 2026-09-30 (audit ind. 1) — `courseWorkload` est une CHARGE de travail en
+ * heures, pas une étendue de calendrier : « P2D » se lisait 48 h pour une
+ * formation de 14 h. Toutes les durées sont donc exprimées en heures de
+ * formation (7 h par jour) : 2j = PT14H, 3j = PT21H.
  */
 export const FORMATION_DUREE_ISO: Record<FormationDuree, string> = {
   "4h": "PT4H",
   "1j": "PT7H",
-  "2j": "P2D",
-  "3j": "P3D",
+  "2j": "PT14H",
+  "3j": "PT21H",
 };
 
 export function formationDureeIso(duree: FormationDuree): string {

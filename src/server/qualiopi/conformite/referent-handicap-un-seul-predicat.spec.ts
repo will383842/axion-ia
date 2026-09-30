@@ -78,6 +78,12 @@ const LECTURES = [
     role: "export PDF de la fiche d'adaptation handicap",
     chemin: "src/server/actions/qualiopi/exports-pdf.ts",
   },
+  // 2026-09-30 — contact PUBLIC du référent (fiches formation, /accessibilite).
+  // Il n'affiche le nom que si l'e-mail est saisi : même prédicat.
+  {
+    role: "contact public du référent (fiches formation, page accessibilité)",
+    chemin: "src/server/qualiopi/config/referent-handicap-public.ts",
+  },
 ] as const;
 
 /**

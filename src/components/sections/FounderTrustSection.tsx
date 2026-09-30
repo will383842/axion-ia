@@ -1,4 +1,4 @@
-// Server component — section fondateur Williams (crédibilité + Top 1 %).
+// Server component — section fondateur Williams (crédibilité).
 // Réutilisable home / régions / villes. Lit le namespace i18n "home" via
 // `getTranslations("home")` pour rester en synchro avec la home (clés
 // founderEyebrow, founderTitleLine1, founderTitleLine2, founderTagline,

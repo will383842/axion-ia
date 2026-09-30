@@ -376,7 +376,7 @@ function CallbackAsk({ submissionId }: { submissionId: string }) {
           inputMode="tel"
           autoComplete="tel"
           aria-label="Votre numéro de téléphone"
-          placeholder="06 12 34 56 78"
+          placeholder="06 39 98 12 34"
           value={telephone}
           onChange={(e) => setTelephone(e.target.value)}
           className="focus-visible:ring-terracotta min-h-[52px] w-full rounded-xl border-2 border-[var(--sim-border-strong)] bg-[var(--sim-bg)] px-4 text-[16px] text-[var(--sim-fg)] focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none"

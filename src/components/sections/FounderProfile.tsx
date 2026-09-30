@@ -72,7 +72,8 @@ interface FounderProfileProps {
 const PILLS: ReadonlyArray<{ icon: LucideIcon; label: string }> = [
   { icon: MapPin, label: "Toute la France · siège à Grenoble" },
   { icon: Users, label: "De la PME au grand groupe" },
-  { icon: Sparkles, label: "Top 1 % des experts IA en France" },
+  // 2026-09-30 — « Top 1 % » retiré (ordre permanent du dirigeant : non étayé).
+  { icon: Sparkles, label: "Formateur et consultant en IA générative" },
   { icon: ShieldCheck, label: "Hébergement des données en UE" },
 ];
 

@@ -1588,7 +1588,9 @@ const IA_POUR_LES_RH: FormationV2 = {
     {
       question: "Comment sont protégées les données des candidats et des salariés ?",
       reponse:
-        "Un module entier est consacré aux règles RGPD appliquées aux données RH : ce qu'on ne soumet jamais à une IA, comment anonymiser, et comment travailler efficacement malgré ces contraintes.",
+        // 2026-09-30 (audit) : « comment anonymiser » contredisait le programme,
+        // qui enseigne précisément que retirer le nom ne suffit pas.
+        "Le sujet est posé dès le début de la journée : les trois régimes d'usage des données RH, ce qu'on ne soumet jamais à une IA, et pourquoi retirer le nom d'un document ne suffit pas à l'anonymiser — pseudonymiser n'est pas anonymiser, ré-identification montrée en direct sur un CV du jeu fourni.",
     },
     {
       question: "Faut-il déjà utiliser l'IA pour participer ?",

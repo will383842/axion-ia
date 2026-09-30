@@ -56,7 +56,11 @@ import {
 import { FormationsLesPlus } from "@/components/formations/FormationsLesPlus";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesCoreIndexableNow } from "@/content/villes/core";
-import { FORMATIONS_V2, getFormationV2EntryPrice } from "@/content/formations/catalog-v2";
+import {
+  FORMATIONS_V2,
+  getFormationsV2,
+  getFormationV2EntryPrice,
+} from "@/content/formations/catalog-v2";
 import {
   FORMATION_DUREE_FACTS,
   getFormationImage,
@@ -95,7 +99,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // formatAmount renvoie déjà « … € HT » — ne jamais ré-ajouter « HT ».
   // Compteur dérivé du SSOT : ajouter/retirer une formation dans FORMATIONS_V2
   // met à jour tous les libellés (titre, meta, JSON-LD, chips…) automatiquement.
-  const total = FORMATIONS_V2.length;
+  // 2026-09-30 (audit) : compte les FORMATIONS, séminaire exclu — il est sur
+  // devis et jusqu'à 50 personnes, alors que ces libellés annoncent des prix
+  // publics par groupe de 2 à 15. Même compteur que /tarifs (« 21 », pas « 22 »).
+  const total = getFormationsV2().length;
   const ofPublic = isQualiopiCertificationObtenue();
   const finBit = ofPublic
     ? isFr
@@ -123,7 +130,10 @@ export default async function FormationsEntreprise({ params }: Props) {
   const ofPublic = isQualiopiCertificationObtenue();
 
   // Compteur dérivé du SSOT (auto-maj si on ajoute/retire une formation).
-  const total = FORMATIONS_V2.length;
+  // Séminaire exclu (sur devis) — cf. generateMetadata. Le JSON-LD ItemList,
+  // lui, liste toutes les fiches (séminaire compris) : `numberOfItems` y reste
+  // aligné sur `itemListElement`.
+  const total = getFormationsV2().length;
   const images = getPageImages(PATH);
   const heroImage = images.find((i) => i.slot === "hero");
   const reserveImage = images.find((i) => i.slot === "inline");
@@ -370,7 +380,12 @@ export default async function FormationsEntreprise({ params }: Props) {
   const stats: ReadonlyArray<{ value: string; label: string }> = [
     { value: String(total), label: isFr ? "formations au catalogue" : "trainings in catalogue" },
     { value: isFr ? "Tous" : "All", label: isFr ? "secteurs couverts" : "sectors covered" },
-    { value: "30 min à 2 h", label: isFr ? "gagnées par jour" : "saved per day" },
+    // 2026-09-30 (audit ind. 2) : « 30 min à 2 h gagnées par jour » était un
+    // résultat publié sans méthode, période ni effectif → fait vérifiable.
+    {
+      value: isFr ? "4 h à 2 jours" : "4 h to 2 days",
+      label: isFr ? "par formation" : "per training",
+    },
     {
       value: isFr ? "Prix publics" : "Public prices",
       label: isFr ? "par groupe de 2 à 15" : "per group of 2-15",
@@ -636,7 +651,11 @@ export default async function FormationsEntreprise({ params }: Props) {
         id="catalogue"
         className="pt-10 sm:pt-12 lg:pt-16"
         eyebrow={isFr ? "Le catalogue" : "The catalogue"}
-        title={isFr ? `Nos ${total} formations IA` : `Our ${total} AI trainings`}
+        title={
+          isFr
+            ? `Nos ${total} formations IA et le séminaire`
+            : `Our ${total} AI trainings and the seminar`
+        }
         titleEm={isFr ? "en entreprise" : "for companies"}
         description={
           isFr

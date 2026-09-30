@@ -180,7 +180,7 @@ export function ProgrammeFormationPdf({
             value={
               data.accessibleHandicap
                 ? // Le référent se NOMME : « Contact référent : contact@axion-ia.com »
-                  // n'identifiait personne (ind. 26, art. L.6352-3).
+                  // n'identifiait personne (ind. 26 du Référentiel national qualité).
                   `Action accessible aux personnes en situation de handicap. Référent handicap : ${
                     identite.referentHandicapNom ? `${identite.referentHandicapNom} — ` : ""
                   }${data.referentHandicapEmail || identite.email || "—"}`

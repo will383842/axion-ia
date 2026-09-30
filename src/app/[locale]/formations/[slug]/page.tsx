@@ -26,6 +26,7 @@ import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { getPublicFormationBySlug } from "@/server/qualiopi/formations/formations";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { getReferentHandicapPublic } from "@/server/qualiopi/config/referent-handicap-public";
 import { isRegimeTva, mentionTva, REGIME_TVA_DEFAUT } from "@/server/qualiopi/legal/tva";
 import { resolveOffrePriceLabel } from "@/server/qualiopi/offres/pricing-resolver";
 import { FORMATIONS_V2, getFormationV2 } from "@/content/formations/catalog-v2";
@@ -180,7 +181,17 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
   const cat = getFormationV2(slug);
   if (cat) {
     if (cat.slugFr !== slug) permanentRedirect(`/${locale}/formations/${cat.slugFr}`);
-    return <FormationDetailPage formation={cat} locale={locale as Locale} />;
+    // Référent handicap NOMMÉ et JOIGNABLE (ind. 26) — seule lecture de config
+    // de cette branche, et elle ne peut pas échouer : sous stub.invalid (build)
+    // ou DB indisponible, repli générique, repeuplé par l'ISR.
+    const referentHandicap = await getReferentHandicapPublic();
+    return (
+      <FormationDetailPage
+        formation={cat}
+        locale={locale as Locale}
+        referentHandicap={referentHandicap}
+      />
+    );
   }
 
   // Sinon : fiche Qualiopi DB legacy — gatée phase A (divulgation Qualiopi).
@@ -193,6 +204,7 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
   }
   const f = await getPublicFormationBySlug(slug);
   if (!f) notFound();
+  const referentHandicap = await getReferentHandicapPublic();
 
   const prixLabel = resolveOffrePriceLabel(f.offreSite.tierId, locale === "en" ? "en" : "fr");
 
@@ -458,6 +470,15 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
                   <strong className="text-fg font-semibold">référent handicap</strong> est désigné
                   au sein de l&apos;organisme pour étudier toute demande d&apos;adaptation
                   pédagogique ou technique. {LEGAL_MENTIONS.referentHandicap}
+                </p>
+                <p className="text-fg-soft mt-3 text-[15px] leading-relaxed">
+                  Référent handicap : {referentHandicap.nom ? `${referentHandicap.nom} — ` : null}
+                  <a
+                    href={`mailto:${referentHandicap.email}`}
+                    className="text-terracotta font-medium underline-offset-4 hover:underline"
+                  >
+                    {referentHandicap.email}
+                  </a>
                 </p>
                 <p className="text-fg-soft mt-3 text-[15px] leading-relaxed">
                   Pour toute demande d&apos;adaptation, contactez-nous avant l&apos;inscription afin

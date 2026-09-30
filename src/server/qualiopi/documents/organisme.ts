@@ -35,7 +35,7 @@ export interface OrganismeIdentite {
    * une adresse générique, qui n'identifie personne.
    *
    * L'indicateur 26 demande un référent **identifié et joignable**, et
-   * l'article L.6352-3 impose sa désignation. Le nom et le téléphone étaient
+   * l'indicateur 26 du Référentiel national qualité impose sa désignation. Le nom et le téléphone étaient
    * pourtant en configuration (`referent_handicap_nom`,
    * `referent_handicap_telephone`) et déjà lus par `conformite-service.ts` —
    * seule la couche document les laissait tomber.

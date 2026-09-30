@@ -591,7 +591,7 @@ export default async function Home({ params }: HomeProps) {
         />
       </section>
 
-      {/* ───────────── SECTION FONDATEUR (crédibilité + "Top 1 %") ─────────────
+      {/* ───────────── SECTION FONDATEUR (crédibilité) ─────────────
           Insérée après le bandeau équipe. Adapte le design "Fondateur &
           CEO" de l'exemple : eyebrow + headline 2 lignes + description +
           tagline italic / photo dirigeant + stats bar 3 colonnes.

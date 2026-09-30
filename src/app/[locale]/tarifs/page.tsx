@@ -375,8 +375,8 @@ export default async function PricingPage({ params }: Props) {
         schemaCenterLabel={isFr ? "Tarifs publics" : "Public pricing"}
         schemaAriaLabel={
           isFr
-            ? `Schéma : tarifs publics au centre, entourés des prestations Axion-IA (formations sur devis) Axion-IA (Audit sur place ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}, Audit Ciblé ${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr", { compact: true })}, Formations sur devis, 1-to-1 ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "fr", { compact: true })}, Pilote IA ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr", { compact: true })}, Maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "fr", { compact: true })}${getTierById(MAINTENANCE_TIERS, "maintenance-standard").recurrenceFr}).`
-            : `Diagram: public pricing at the center, surrounded by Axion-IA services (trainings on quote) (on-site audit ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}, Targeted audit ${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "en", { compact: true })}, trainings on quote, 1-to-1 ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "en", { compact: true })}, AI Pilot ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en", { compact: true })}, Maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "en", { compact: true })}${getTierById(MAINTENANCE_TIERS, "maintenance-standard").recurrenceEn}).`
+            ? `Schéma : tarifs publics au centre, entourés des prestations Axion-IA (Audit sur place ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}, Audit Ciblé ${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr", { compact: true })}, Formations de ${formatAmount(formationsRange.minEur, "fr", { compact: true })} à ${formatAmount(formationsRange.maxEur, "fr", { compact: true })} par groupe, 1-to-1 ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "fr", { compact: true })}, Pilote IA ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr", { compact: true })}, Maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "fr", { compact: true })}${getTierById(MAINTENANCE_TIERS, "maintenance-standard").recurrenceFr}).`
+            : `Diagram: public pricing at the center, surrounded by Axion-IA services (on-site audit ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}, Targeted audit ${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "en", { compact: true })}, trainings ${formatAmount(formationsRange.minEur, "en", { compact: true })} to ${formatAmount(formationsRange.maxEur, "en", { compact: true })} per group, 1-to-1 ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "en", { compact: true })}, AI Pilot ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en", { compact: true })}, Maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "en", { compact: true })}${getTierById(MAINTENANCE_TIERS, "maintenance-standard").recurrenceEn}).`
         }
         schemaNodes={[
           {
@@ -393,7 +393,12 @@ export default async function PricingPage({ params }: Props) {
           },
           {
             label: "Formations",
-            benefit: isFr ? "Sur devis" : "On quote",
+            // 🔴 2026-09-30 (audit) : affichait « Sur devis » alors que la même
+            // page publie la fourchette des prix fixes — seul le séminaire est
+            // sur devis. Dérivé de la même source que le module formations.
+            benefit: isFr
+              ? `De ${formatAmount(formationsRange.minEur, "fr", { compact: true })} à ${formatAmount(formationsRange.maxEur, "fr")}`
+              : `${formatAmount(formationsRange.minEur, "en", { compact: true })} to ${formatAmount(formationsRange.maxEur, "en")}`,
             accent: "sage",
           },
           {

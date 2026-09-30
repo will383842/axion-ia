@@ -35,7 +35,7 @@ export interface FormationDurationCanonical {
   /** Jours « réservation » pour bloquer N jours consécutifs au calendrier. */
   days: 0.5 | 1 | 2 | 3;
   /**
-   * Durée ISO 8601 Schema.org (`PT4H`, `PT7H`, `P2D`). `null` pour les paliers
+   * Durée ISO 8601 Schema.org (`PT4H`, `PT7H`, `PT14H`). `null` pour les paliers
    * « sur devis » à durée variable (3 jours et +).
    * Décision 2026-06-11 : 1 jour canonique = `PT7H` (≈ 7 h face-à-face, aligné
    * sur les heures Qualiopi 6-8 h). Supprime la dérive historique `PT7H`/`PT8H`.

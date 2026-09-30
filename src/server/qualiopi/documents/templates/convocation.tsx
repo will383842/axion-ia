@@ -250,7 +250,7 @@ export function ConvocationPdf({
             l'email — et c'est le contact GÉNÉRAL de l'OF : le stagiaire lisait
             « Référent handicap : contact@axion-ia.com », une adresse générique
             qui n'identifie personne. L'indicateur 26 demande un référent
-            IDENTIFIÉ et joignable ; L.6352-3 impose sa désignation.
+            IDENTIFIÉ et joignable.
             Le nom et le téléphone étaient en configuration depuis toujours.
           */}
           {identite.referentHandicapNom ? (

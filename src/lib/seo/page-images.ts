@@ -1380,9 +1380,9 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
         nameFr: "Williams — Fondateur & CEO Axion-IA",
         nameEn: "Williams — Founder & CEO Axion-IA",
         altFr:
-          "Portrait de Williams, fondateur et CEO d'Axion-IA. Top 1% expertise IA opérationnelle France, accompagne dirigeants PME, ETI et grandes entreprises sur ChatGPT, Claude, Mistral, agents IA et automatisations métier.",
+          "Portrait de Williams, fondateur et CEO d'Axion-IA, formateur et consultant en IA générative. Accompagne dirigeants PME, ETI et grandes entreprises sur ChatGPT, Claude, Mistral, agents IA et automatisations métier.",
         altEn:
-          "Portrait of Williams, founder and CEO of Axion-IA. Top 1% France operational AI expertise, advises executives of SMEs, mid-caps and large enterprises on ChatGPT, Claude, Mistral, AI agents and business automations.",
+          "Portrait of Williams, founder and CEO of Axion-IA, generative AI trainer and consultant. Advises executives of SMEs, mid-caps and large enterprises on ChatGPT, Claude, Mistral, AI agents and business automations.",
         width: 800,
         height: 1000,
       },

@@ -223,7 +223,7 @@ export const SARCELLES_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à Sarcelles ?",
-      a: "Pour les PME et ETI de Sarcelles, l'Audit sur place est planifié sous 5 jours ouvrés. Les formations collectives sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
+      a: "Pour les PME et ETI de Sarcelles, l'Audit sur place est planifié sous 5 jours ouvrés. Une formation collective démarre au plus tôt 11 jours ouvrés après la confirmation d'inscription (délai d'accès minimum), à une date convenue avec vous.",
     },
     {
       q: "Couvrez-vous Garges-lès-Gonesse, Villiers-le-Bel et Saint-Brice-sous-Forêt depuis Sarcelles ?",
