@@ -114,7 +114,17 @@ export interface LigneSessionParcours {
     readonly convocationEnvoyeeAt: Date | null;
     readonly questionnaires: SessionParcoursInput["inscriptions"][number]["questionnaires"];
     readonly evaluations: ReadonlyArray<{ readonly dateEvaluation: Date }>;
-    readonly emargementTokens: ReadonlyArray<{ readonly id: string }>;
+    /**
+     * Liens NON RÉVOQUÉS, vivants ou expirés. 🔴 Audit du 2026-09-30 : la
+     * requête ne lisait que les jetons encore vivants ; ils expirent 48 h après
+     * la session, et l'étape « liens fabriqués » de toute session passée
+     * rebasculait alors en « hors délai : +N j », N grossissant chaque jour.
+     */
+    readonly emargementTokens: ReadonlyArray<{
+      readonly id: string;
+      readonly expiresAt: Date;
+      readonly createdAt: Date;
+    }>;
     readonly presences: ReadonlyArray<{
       readonly id: string;
       readonly date: Date;
@@ -162,7 +172,13 @@ export function entreeParcours(
       evaluationFinaleAt: e.evaluations[0]?.dateEvaluation ?? null,
       aUnAccesPortail: e.trainee.portailAcces.length > 0,
     })),
-    liensEmargementActifs: s.enrollments.reduce((n, e) => n + e.emargementTokens.length, 0),
+    liensEmargementActifs: s.enrollments.reduce(
+      (n, e) => n + e.emargementTokens.filter((t) => t.expiresAt > maintenant).length,
+      0,
+    ),
+    premierLienEmargementLe: s.enrollments
+      .flatMap((e) => e.emargementTokens.map((t) => t.createdAt))
+      .reduce<Date | null>((min, d) => (min === null || d < min ? d : min), null),
     creneauxEmargement: s.enrollments.reduce((n, e) => n + e.presences.length, 0),
     // 🔴 La MÊME mesure que la demande envoyée au formateur
     // (`demande-contresignature.ts`) : une fiche qui compterait autrement que
@@ -361,8 +377,8 @@ export async function prochainesEcheances(options?: {
             select: { dateEvaluation: true },
           },
           emargementTokens: {
-            where: { revokedAt: null, expiresAt: { gt: maintenant } },
-            select: { id: true },
+            where: { revokedAt: null },
+            select: { id: true, expiresAt: true, createdAt: true },
           },
           // 🔴 Les créneaux sont portés par l'INSCRIPTION, pas par la session :
           // `PresenceCreneau.enrollmentId`. Les chercher sur la session ne

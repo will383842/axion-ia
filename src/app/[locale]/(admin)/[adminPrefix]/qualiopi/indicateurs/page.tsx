@@ -361,7 +361,7 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
       </h3>
       <div className="mb-[var(--space-admin-8)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-2">
         <AdminStatCard
-          label="Formateurs internes (salariés)"
+          label="Formateurs internes (salariés et dirigeant)"
           value={bpf.nbFormateursInternes}
           tone="default"
           icon={Users}

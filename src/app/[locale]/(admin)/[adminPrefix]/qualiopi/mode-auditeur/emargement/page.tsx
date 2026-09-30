@@ -40,9 +40,19 @@ import {
 } from "@/server/qualiopi/emargement/registre-emargement";
 import { revoquerSignatureEmargementFormAction } from "@/server/actions/qualiopi/emargement-revocation";
 import { libelleAnomalieChaine } from "@/server/qualiopi/emargement/chaine-labels";
+import { LIBELLE_DEMI } from "@/server/qualiopi/emargement/feuille-pdf";
 import { MOTIF_MIN } from "@/server/qualiopi/emargement/revocation-service";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
+
+/**
+ * « apres_midi » s'affichait tel quel sous les yeux de l'auditeur (audit du
+ * 2026-09-30) : la valeur de l'énumération, pas un mot. Une valeur inconnue
+ * reste visible, entre guillemets, plutôt que de disparaître.
+ */
+function libelleDemiJournee(dj: string): string {
+  return (LIBELLE_DEMI as Record<string, string>)[dj] ?? `« ${dj} »`;
+}
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -134,7 +144,7 @@ function Inscription({
             <li key={s.signatureId} className="text-[length:var(--text-admin-xs)]">
               <span className="font-medium">{s.signataireNom}</span>
               <span className="block text-[color:var(--color-admin-fg-muted)]">
-                {`${jourParis.format(s.date)} ${s.demiJournee} · ${s.heureDebut}–${s.heureFin} · signée le ${horodatageParis.format(s.signeAt)}`}
+                {`${jourParis.format(s.date)} · ${libelleDemiJournee(s.demiJournee)} (créneau ${s.heureDebut}–${s.heureFin}) · signée le ${horodatageParis.format(s.signeAt)}`}
               </span>
               {s.recueilliParFormateur ? (
                 <span className="block text-[color:var(--color-admin-fg-muted)]">

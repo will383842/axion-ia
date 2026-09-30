@@ -16,6 +16,15 @@ import { describe, expect, it } from "vitest";
 import { entreeParcours, type LigneSessionParcours } from "./echeances-service";
 
 const MAINTENANT = new Date("2026-08-17T10:00:00Z");
+const VIVANT = new Date("2026-08-20T10:00:00Z");
+const EXPIRE = new Date("2026-08-15T10:00:00Z");
+let rangJeton = 0;
+/** Jeton non révoqué ; fabriqué un jour plus tard que le précédent. */
+const jeton = (id: string, expiresAt: Date = VIVANT) => ({
+  id,
+  expiresAt,
+  createdAt: new Date(Date.UTC(2026, 7, 10 + rangJeton++, 8)),
+});
 
 const ligne = (patch: Partial<LigneSessionParcours> = {}): LigneSessionParcours => ({
   statut: "planifiee",
@@ -103,10 +112,10 @@ describe("entreeParcours — la traduction", () => {
     const e = entreeParcours(
       ligne({
         enrollments: [
-          inscription({ id: "a", emargementTokens: [{ id: "t1" }], presences: [creneau("p1")] }),
+          inscription({ id: "a", emargementTokens: [jeton("t1")], presences: [creneau("p1")] }),
           inscription({
             id: "b",
-            emargementTokens: [{ id: "t2" }, { id: "t3" }],
+            emargementTokens: [jeton("t2"), jeton("t3", EXPIRE)],
             presences: [creneau("p2"), creneau("p3")],
           }),
         ],
@@ -114,13 +123,17 @@ describe("entreeParcours — la traduction", () => {
       new Map(),
       MAINTENANT,
     );
-    expect(e.liensEmargementActifs).toBe(3); // 1 + 2
+    // t3 a expiré : il ne compte plus parmi les liens VIVANTS…
+    expect(e.liensEmargementActifs).toBe(2);
     expect(e.creneauxEmargement).toBe(3); // 1 + 2
+    // …mais la fabrication reste datée : c'est elle que l'étape juge.
+    expect(e.premierLienEmargementLe).toEqual(new Date("2026-08-10T08:00:00Z"));
   });
 
   it("sans inscription, les sommes valent zéro — pas undefined", () => {
     const e = entreeParcours(ligne(), new Map(), MAINTENANT);
     expect(e.liensEmargementActifs).toBe(0);
+    expect(e.premierLienEmargementLe).toBeNull();
     expect(e.creneauxEmargement).toBe(0);
     expect(e.inscriptions).toEqual([]);
   });

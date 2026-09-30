@@ -61,6 +61,7 @@ import { prisma } from "@/lib/prisma";
 import { redis } from "@/lib/redis";
 import { getIndicateurs } from "@/server/qualiopi/indicateurs/service";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { REPONSE_AUCUNE_ADAPTATION } from "@/server/qualiopi/adaptation/reponse-organisme";
 import {
   getPilotage,
   derivePlage,
@@ -119,6 +120,22 @@ describe("getPilotage", () => {
     mockRedis.set.mockResolvedValue("OK");
     mockGetConfig.mockResolvedValue(80);
     setupCounts();
+  });
+
+  it("M12 ne compte pas « aucune adaptation nécessaire » comme une adaptation réalisée", async () => {
+    // 🔴 Audit du 2026-09-30 : la production affichait « Adaptations handicap
+    // réalisées : 1 » pour une stagiaire sans handicap dont la seule trace
+    // était la réponse « aucune adaptation nécessaire ».
+    await getPilotage(2026);
+
+    const appelM12 = mockP.enrollment.count.mock.calls.find(
+      ([args]) =>
+        (args as { where?: { adaptationsRealisees?: unknown } }).where?.adaptationsRealisees !==
+        undefined,
+    );
+    expect(appelM12).toBeDefined();
+    const where = (appelM12![0] as { where: Record<string, unknown> }).where;
+    expect(where["NOT"]).toEqual({ adaptationsRealisees: REPONSE_AUCUNE_ADAPTATION });
   });
 
   it("retourne un PilotageResult avec les 14 métriques", async () => {
