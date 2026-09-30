@@ -164,12 +164,16 @@ export default async function EmargementPage({ params }: PageProps) {
       {/* L2 — le retour à la fiche, le fil d'Ariane et l'en-tête de la session
           sont portés par `sessions/[id]/layout.tsx` : une seule façon de revenir,
           la même sur les quatre sous-pages. */}
-      <h2 className="mb-[var(--space-admin-1)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
-        Émargement
-      </h2>
-      <p className="mb-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-        {`${MODALITE_LABELS[session.modalite] ?? session.modalite} · ${formatDateFR(session.dateDebut)} → ${formatDateFR(session.dateFin)}`}
-      </p>
+      {/* `admin-page-header` : repère sans style, lu par les parcours E2E
+          (tests/e2e/qualiopi/parcours) qui y vérifient la modalité RÉELLE. */}
+      <header className="admin-page-header mb-[var(--space-admin-5)]">
+        <h2 className="mb-[var(--space-admin-1)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+          Émargement
+        </h2>
+        <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          {`Session ${session.numero} · ${MODALITE_LABELS[session.modalite] ?? session.modalite} · ${formatDateFR(session.dateDebut)} → ${formatDateFR(session.dateFin)}`}
+        </p>
+      </header>
 
       {/* Informations session */}
       <div className="mb-[var(--space-admin-6)] grid grid-cols-2 gap-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)] sm:grid-cols-4">
