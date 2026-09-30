@@ -20,9 +20,11 @@
 
 import { createHash } from "node:crypto";
 
+import type { OffreTarifType } from "../../../prisma/generated/client";
 import { PRICING_CATEGORIES, type PricingTier } from "@/content/pricing";
 
-export type TypeTarif = "fixe" | "a_partir_de" | "sur_devis";
+/** Le type de tarif : l'énumération du site (`OffreTarifType`), jamais une copie. */
+export type TypeTarif = OffreTarifType;
 
 export interface EntreeCatalogue {
   readonly ref: string;
@@ -106,12 +108,10 @@ export async function chargerCatalogue(): Promise<CatalogueIA> {
         ? `${o.offre.dureeHeuresMin} h`
         : `${o.offre.dureeHeuresMin} à ${o.offre.dureeHeuresMax} h`,
     effectif: resolveOffreEffectifFr(o.offre) ?? "",
+    // La SOURCE est la colonne `tarifType` de l'offre ; une offre « fixe »
+    // sans prix ferme dérivable est seulement ramenée à « à partir de ».
     typeTarif:
-      o.offre.tarifType === "sur_devis"
-        ? "sur_devis"
-        : o.prixHtEur === null
-          ? "a_partir_de"
-          : "fixe",
+      o.offre.tarifType === "fixe" && o.prixHtEur === null ? "a_partir_de" : o.offre.tarifType,
     prixHtEur: o.prixHtEur,
   }));
   for (const categorie of Object.keys(PRICING_CATEGORIES) as Array<

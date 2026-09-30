@@ -22,6 +22,7 @@
 
 import type { EnregistrementStatut, PrismaClient } from "../../../prisma/generated/client";
 import { DELAIS_SERVEUR } from "@/lib/schemas/enregistreur";
+import { ETATS_ENREGISTREMENT_ACTIFS } from "./etats";
 import { ajouterAuJournal } from "./journal-enregistrement";
 
 /** Le son est effacé au plus tard 30 jours après la fin (B1, ADR 0056 ; purge en PR 6). */
@@ -74,7 +75,7 @@ export interface BilanCloture {
 /** Applique les décisions de clôture à tous les enregistrements actifs. */
 export async function cloturerEnregistrements(db: Db, maintenant: Date): Promise<BilanCloture> {
   const actifs = await db.enregistrement.findMany({
-    where: { statut: { in: ["accord_en_attente", "en_cours", "interrompu"] } },
+    where: { statut: { in: [...ETATS_ENREGISTREMENT_ACTIFS] } },
     select: {
       id: true,
       statut: true,

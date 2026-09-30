@@ -42,6 +42,7 @@ import {
   finConservationRencontreOrpheline,
   plusAns,
 } from "@/server/visio/conservation";
+import { ETATS_ENREGISTREMENT_ACTIFS } from "@/server/visio/etats";
 import { planifierDans } from "@/server/visio/prise-d-etape";
 
 export const ERASED_PLACEHOLDER = "[erased-rgpd-art17]";
@@ -1365,7 +1366,7 @@ export async function retirerAccordRencontre(
     await tx.enregistrement.updateMany({
       where: {
         rencontreId,
-        statut: { notIn: ["accord_en_attente", "en_cours", "interrompu"] },
+        statut: { notIn: [...ETATS_ENREGISTREMENT_ACTIFS] },
       },
       data: { statut: "abandonne" },
     });
