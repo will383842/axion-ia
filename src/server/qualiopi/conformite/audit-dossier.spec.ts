@@ -413,6 +413,49 @@ describe("genererManifesteAudit", () => {
     expect(preuvesText).toMatch(/NDA DREETS obtenu/i);
   });
 
+  // 🔴 2026-09-30 — le manifeste en production écrivait « NDA DREETS :
+  // 84381100438 » (moteur) PUIS « NDA DREETS obtenu : 84381100438 » (manifeste),
+  // et de même deux lignes « Référent handicap » sous l'indicateur 26.
+  it("off.1 et off.26 : UNE seule ligne NDA, UNE seule ligne référent handicap", async () => {
+    const base = makeConformiteResult();
+    mockEvaluerConformite.mockResolvedValue({
+      ...base,
+      indicateurs: base.indicateurs.map((i) =>
+        i.numero === 1
+          ? { ...i, preuves: ["2 formations créées", "NDA DREETS : 84381100438"] }
+          : i.numero === 26
+            ? { ...i, preuves: ["Référent handicap : Jeanne Martin (jm@exemple.invalid)"] }
+            : i,
+      ),
+    });
+    mockGetConfig.mockImplementation((cle: string) =>
+      Promise.resolve(
+        cle === "nda_numero"
+          ? "84381100438"
+          : cle === "referent_handicap_nom"
+            ? "Jeanne Martin"
+            : cle === "referent_handicap_email"
+              ? "jm@exemple.invalid"
+              : "",
+      ),
+    );
+    const result = await genererManifesteAudit();
+    const preuves = (n: number) =>
+      result.json.indicateurs.find((i) => i.numero === n)?.preuves ?? [];
+    expect(preuves(1).filter((p) => p.startsWith("NDA DREETS"))).toHaveLength(1);
+    expect(preuves(1)).toContain("2 formations créées");
+    expect(preuves(26).filter((p) => p.startsWith("Référent handicap"))).toHaveLength(1);
+    expect(preuves(26).join(" ")).toContain("Jeanne Martin");
+  });
+
+  it("markdown : chaque critère porte son intitulé officiel RNQ (dont le critère 6)", async () => {
+    const result = await genererManifesteAudit();
+    expect(result.markdown).toContain(
+      "## Critère 6 — L'inscription et l'investissement du prestataire dans son environnement professionnel",
+    );
+    expect(result.markdown).not.toMatch(/sous-traitants et formateurs occasionnels/);
+  });
+
   it("off.1 : manifeste signale NDA manquant si config vide", async () => {
     // Les deux appels retournent ""
     mockGetConfig.mockResolvedValue("");

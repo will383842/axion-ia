@@ -1465,7 +1465,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(
     18,
     [
-      `${nbTrainers} formateur${nbTrainers > 1 ? "s" : ""} coordonnés`,
+      `${nbTrainers} formateur${nbTrainers > 1 ? "s" : ""} coordonné${nbTrainers > 1 ? "s" : ""}`,
       categoriesUtilisees.length > 0
         ? `${categoriesUtilisees.length} catégorie${categoriesUtilisees.length > 1 ? "s" : ""} de moyens utilisée${categoriesUtilisees.length > 1 ? "s" : ""} (${categoriesUtilisees.join(", ")})`
         : "Aucun moyen pédagogique actif dans l'inventaire",
@@ -1652,13 +1652,25 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     totalSousTraitants === 0
       ? nbProceduresSousTraitance > 0
       : totalSousTraitantsConformes === totalSousTraitants;
+  // 🔴 2026-09-30 — sans aucun sous-traitant, la ligne s'écrivait « 0
+  // sous-traitant conforme : NDA + vérif data.gouv + contrat signé » : sous les
+  // yeux du certificateur, elle se lit comme un MANQUE, alors qu'elle constate
+  // une absence de sous-traitance. Elle n'est donc écrite que s'il y a des
+  // intervenants ; sinon la ligne suivante dit « Aucun sous-traitant à ce
+  // jour », une seule fois. (Le guide de lecture RNQ tient même
+  // l'indicateur pour non applicable dans ce cas ; le statut, lui, reste une
+  // décision métier et n'est pas modifié ici.)
   const off27Preuves: string[] = [
-    `${totalSousTraitantsConformes} sous-traitant${totalSousTraitantsConformes > 1 ? "s" : ""} conforme${totalSousTraitantsConformes > 1 ? "s" : ""} : NDA + vérif data.gouv + contrat signé`,
+    ...(totalSousTraitants > 0
+      ? [
+          `${totalSousTraitantsConformes} sous-traitant${totalSousTraitantsConformes > 1 ? "s" : ""} conforme${totalSousTraitantsConformes > 1 ? "s" : ""} : NDA + vérif data.gouv + contrat signé`,
+        ]
+      : []),
     totalSousTraitants > 0
       ? `${totalSousTraitants} référencé${totalSousTraitants > 1 ? "s" : ""} au total — ${nbSousTraitants} organisme${nbSousTraitants > 1 ? "s" : ""} actif${nbSousTraitants > 1 ? "s" : ""}, ${nbFormateursSousTraitants} formateur${nbFormateursSousTraitants > 1 ? "s" : ""} indépendant${nbFormateursSousTraitants > 1 ? "s" : ""}`
       : nbProceduresSousTraitance > 0
-        ? "Aucun sous-traitant référencé — dispositions prouvées par la procédure écrite versée au registre"
-        : "Aucun sous-traitant référencé — off.27 exige alors une procédure « dispositions sous-traitance »",
+        ? "Aucun sous-traitant à ce jour — dispositions prouvées par la procédure écrite versée au registre"
+        : "Aucun sous-traitant à ce jour — off.27 exige alors une procédure « dispositions sous-traitance »",
     nbProceduresSousTraitance > 0
       ? `${nbProceduresSousTraitance} procédure${nbProceduresSousTraitance > 1 ? "s" : ""} « dispositions sous-traitance » au registre`
       : "Aucune procédure « dispositions sous-traitance » générée",
