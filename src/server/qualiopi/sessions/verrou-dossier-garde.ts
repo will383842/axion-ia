@@ -80,11 +80,14 @@ async function signalerEcritureVerrouCoupe(sessionId: string): Promise<void> {
   try {
     const lu = await chargerEtatVerrou(sessionId);
     if (lu === null || lu.etat.etat !== "clos") return;
-    Sentry.captureMessage("qualiopi : écriture sur un dossier CLOS, verrou coupé par l'interrupteur", {
-      level: "warning",
-      tags: { etape: "verrou_dossier_coupe" },
-      extra: { sessionId },
-    });
+    Sentry.captureMessage(
+      "qualiopi : écriture sur un dossier CLOS, verrou coupé par l'interrupteur",
+      {
+        level: "warning",
+        tags: { etape: "verrou_dossier_coupe" },
+        extra: { sessionId },
+      },
+    );
   } catch {
     // Le signalement ne doit jamais faire échouer l'écriture autorisée.
   }
