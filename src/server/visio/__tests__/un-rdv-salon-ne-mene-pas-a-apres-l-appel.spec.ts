@@ -22,7 +22,7 @@ describe("un rendez-vous salon ne mène pas à « Après l'appel »", () => {
       "utf8",
     );
     expect(page).toMatch(
-      /dossierVisible && estTypeDuDossier\(r\.titre\) \? \(\s*<LiensApresLAppel/,
+      /dossierVisible && estTypeDuDossier\(r\.titre\) \? \(\s*(<>\s*)?<LiensApresLAppel/,
     );
     expect(page).not.toMatch(/\{dossierVisible \? <LiensApresLAppel/);
   });
