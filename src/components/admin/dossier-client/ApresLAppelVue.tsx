@@ -94,13 +94,22 @@ export async function ApresLAppelVue({
 
   return (
     <AdminPageShell width="wide">
-      <div className="mb-[var(--space-admin-4)]">
+      <div className="mb-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-4)]">
         <Link
           href={`${rdvBase}?vue=point`}
           className={`text-[length:var(--text-admin-xs)] ${lienCls}`}
         >
           ← Rendez-vous
         </Link>
+        {/* UX-01 : le compte rendu à valider, à un clic. */}
+        {r.comptesRendus.length > 0 ? (
+          <Link
+            href={`${rdvBase}/rencontres/${r.id}`}
+            className={`text-[length:var(--text-admin-xs)] ${lienCls}`}
+          >
+            Voir le compte rendu
+          </Link>
+        ) : null}
       </div>
 
       <AdminPageHeader
