@@ -143,7 +143,17 @@ export async function creerProspectAction(fd: FormData): Promise<void> {
   ).catch((e: unknown) => erreurVers(retour, e));
   if (r.statut !== "cree") erreurVers(retour, new MessagePourWill(r.message));
   // La fiche créée RANGE le rendez-vous : son compte rendu est complété (P2 à P5).
-  await relancerApresRattachement(prisma, rencontreId).catch((e: unknown) => erreurVers(retour, e));
+  // P-6 : si la relance échoue, la fiche EXISTE déjà — le message le dit, et
+  // nomme le geste qui reprend le compte rendu.
+  await relancerApresRattachement(prisma, rencontreId).catch(() =>
+    erreurVers(
+      retour,
+      new Error(
+        "La fiche est créée et le rendez-vous rangé, mais le compte rendu n'a pas pu être " +
+          "complété : ouvrez-le et cliquez « Compléter avec la fiche client ».",
+      ),
+    ),
+  );
   revalidatePath(base("rendez-vous"));
   redirect(base(retour));
 }
