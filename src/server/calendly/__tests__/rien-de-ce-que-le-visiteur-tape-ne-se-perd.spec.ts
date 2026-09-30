@@ -257,7 +257,8 @@ describe("🔴 le numéro est obligatoire dans les DEUX formats", () => {
     const r = valider(saisie({ [CHAMPS.telephone]: "appelez le standard" }));
     expect(r.ok).toBe(false);
     if (r.ok) return;
-    expect(r.erreurs[CHAMPS.telephone]).toContain("06 12 34 56 78");
+    // Exemple fictif (plage ARCEP 06 39 98 xx xx), pas un numéro attribuable.
+    expect(r.erreurs[CHAMPS.telephone]).toContain("06 39 98 12 34");
     expect(r.erreurs[CHAMPS.telephone]).toContain("+212");
   });
 

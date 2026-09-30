@@ -224,7 +224,7 @@ export const PUTEAUX_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à Puteaux ?",
-      a: "Pour une PME ou ETI implantée à Puteaux, l'Audit sur place est planifiable sous 5 jours ouvrés. Une formation collective démarre sous 10 à 15 jours selon périmètre.",
+      a: "Pour une PME ou ETI implantée à Puteaux, l'Audit sur place est planifiable sous 5 jours ouvrés. Une formation collective démarre au plus tôt 11 jours ouvrés après la confirmation d'inscription (délai d'accès minimum), à une date convenue avec vous.",
     },
     {
       q: "Couvrez-vous les communes proches de Puteaux ?",

@@ -86,7 +86,7 @@ export interface DurationDef {
   contactObject?: string;
   /**
    * City Domination 2026-05-18 P1-2 — Durée ISO 8601 pour `Course.hasCourseInstance.courseWorkload`.
-   * Format Schema.org : `PT4H` (4 h), `PT7H` (1 jour ≈ 7 h sur site), `P2D` (2 jours).
+   * Format Schema.org : `PT4H` (4 h), `PT7H` (1 jour ≈ 7 h sur site), `PT14H` (2 jours = 14 h de formation).
    * Absent sur isQuoteOnly (durée variable sur devis).
    */
   iso8601Duration?: string;

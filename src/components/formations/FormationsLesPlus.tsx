@@ -36,8 +36,8 @@ export function FormationsLesPlus({
       accent: "bg-terracotta-soft text-terracotta-deep",
       title: isFr ? "Des résultats concrets dès le lendemain" : "Concrete results from day one",
       body: isFr
-        ? "Vos équipes s'entraînent sur leurs vrais dossiers et repartent avec un livrable — de 30 min à 2 h gagnées par jour."
-        : "Your teams practise on their real files and leave with a deliverable — 30 min to 2 h saved per day.",
+        ? "Vos équipes s'entraînent sur leurs vrais dossiers et repartent avec un livrable terminé, réutilisable dès le lendemain."
+        : "Your teams practise on their real files and leave with a finished deliverable, reusable the very next day.",
       on: true,
     },
     {

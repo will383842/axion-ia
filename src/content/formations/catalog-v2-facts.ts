@@ -263,9 +263,35 @@ export function getFormationEvaluation(f: FormationV2): string {
   return f.modalitesEvaluationFr ?? FORMATION_EVALUATION_DEFAUT;
 }
 
-export const FORMATION_ACCESSIBILITE_DEFAUT =
-  "Axion-IA s'engage à rendre ses formations accessibles aux personnes en situation de handicap. Un référent handicap est désigné au sein de l'organisme, conformément à l'article L.6352-3 du Code du travail, pour étudier toute demande d'adaptation pédagogique ou technique. Pour toute demande d'adaptation, contactez-nous avant l'inscription afin d'étudier ensemble les aménagements possibles.";
+/**
+ * Contact public du référent handicap. Fourni par l'appelant serveur via
+ * `getReferentHandicapPublic()` (`src/server/qualiopi/config/referent-handicap-public.ts`),
+ * SEULE source : la configuration Qualiopi. `nom` vide = désignation non
+ * prouvée → on dit « le référent handicap » sans inventer de nom.
+ */
+export interface ReferentHandicapContact {
+  readonly nom: string;
+  readonly email: string;
+}
 
-export function getFormationAccessibilite(f: FormationV2): string {
-  return f.accessibiliteHandicapFr ?? FORMATION_ACCESSIBILITE_DEFAUT;
+// 🔴 Audit site public 2026-09-30 (indicateur 26). Ce texte disait « un
+// référent handicap est désigné […] conformément à l'article L.6352-3 » :
+// (1) sans le nommer ni dire comment le joindre, alors que l'indicateur exige
+// un référent identifié et joignable ; (2) en citant L.6352-3, qui porte sur le
+// règlement intérieur. Le référent est désormais nommé, son e-mail donné, et la
+// référence est celle du Référentiel national qualité.
+export function formationAccessibiliteDefaut(ref: ReferentHandicapContact): string {
+  const qui = ref.nom
+    ? `Notre référent handicap, ${ref.nom} (indicateur 26 du Référentiel national qualité),`
+    : "Notre référent handicap (indicateur 26 du Référentiel national qualité)";
+  return `Axion-IA s'engage à rendre ses formations accessibles aux personnes en situation de handicap. ${qui} étudie avec vous toute demande d'adaptation pédagogique ou technique. Écrivez-lui à ${ref.email} avant l'inscription afin d'étudier ensemble les aménagements possibles.`;
+}
+
+export function getFormationAccessibilite(f: FormationV2, ref: ReferentHandicapContact): string {
+  const surcharge = f.accessibiliteHandicapFr;
+  if (surcharge === undefined) return formationAccessibiliteDefaut(ref);
+  // Une surcharge par fiche ne doit pas faire disparaître le contact.
+  if (surcharge.includes(ref.email)) return surcharge;
+  const qui = ref.nom ? `${ref.nom}, ` : "";
+  return `${surcharge} Référent handicap : ${qui}${ref.email}.`;
 }

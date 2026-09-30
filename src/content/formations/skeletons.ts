@@ -54,7 +54,8 @@ export const FORMATION_DURATIONS: Record<FormationDurationId, FormationDurationC
   "2-jours": {
     id: "2-jours",
     days: 2,
-    iso: "P2D",
+    // 14 h de formation (courseWorkload = charge en heures ; « P2D » = 48 h).
+    iso: "PT14H",
     labelFr: "2 jours",
     labelEn: "2 days",
     shortFr: "2 j",

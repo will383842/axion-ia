@@ -28,13 +28,17 @@ export function ImplementationFounderBand({ isFr }: ImplementationFounderBandPro
           number: "0 intermédiaire",
           label: "Vous échangez directement avec l'équipe Axion-IA",
         },
-        { number: "Top 1 %", label: "Ingénieurs & experts IA sélectionnés" },
-        { number: "PME → grands groupes", label: "Tous types de projets, toutes tailles" },
+        // 2026-09-30 — « Top 1 % » retiré (ordre permanent du dirigeant : non étayé).
+        {
+          number: "Formateur & consultant",
+          label: "En IA générative, pour les équipes en entreprise",
+        },
+        { number: "PME et ETI", label: "Tous secteurs d'activité" },
       ]
     : [
         { number: "0 middlemen", label: "You talk directly to the expert who builds" },
-        { number: "Top 1%", label: "Selected AI experts" },
-        { number: "SMB → key accounts", label: "All project types, all sizes" },
+        { number: "Trainer & consultant", label: "In generative AI, for in-house teams" },
+        { number: "SMEs and mid-caps", label: "All industries" },
       ];
 
   return (

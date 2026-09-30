@@ -223,7 +223,7 @@ export const ATHIS_MONS_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à Athis-Mons ?",
-      a: "Pour les PME et ETI d'Athis-Mons, nous planifions l'Audit sur place sous 5 jours ouvrés après validation. Les formations collectives sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
+      a: "Pour les PME et ETI d'Athis-Mons, nous planifions l'Audit sur place sous 5 jours ouvrés après validation. Une formation collective démarre au plus tôt 11 jours ouvrés après la confirmation d'inscription (délai d'accès minimum), à une date convenue avec vous.",
     },
     {
       q: "Couvrez-vous aussi Juvisy-sur-Orge, Paray-Vieille-Poste et Ablon-sur-Seine depuis Athis-Mons ?",

@@ -33,11 +33,20 @@ describe("meta — couverture complète des durées/gammes du catalogue", () => 
     }
   });
 
-  it("ISO figés : 4h=PT4H, 1j=PT7H, 2j=P2D, 3j=P3D", () => {
+  // 🔴 2026-09-30 (audit ind. 1) — `courseWorkload` est une CHARGE de travail,
+  // pas un calendrier : « P2D » se lit 48 h, alors qu'une formation de 2 jours
+  // dure 14 h. Chaque durée s'exprime donc en HEURES de formation (7 h / jour).
+  it("ISO = heures de formation : 4h=PT4H, 1j=PT7H, 2j=PT14H, 3j=PT21H", () => {
     expect(formationDureeIso("4h")).toBe("PT4H");
     expect(formationDureeIso("1j")).toBe("PT7H");
-    expect(formationDureeIso("2j")).toBe("P2D");
-    expect(formationDureeIso("3j")).toBe("P3D");
+    expect(formationDureeIso("2j")).toBe("PT14H");
+    expect(formationDureeIso("3j")).toBe("PT21H");
+  });
+
+  it("aucune durée n'est exprimée en jours calendaires (P…D)", () => {
+    for (const d of ["4h", "1j", "2j", "3j"] as const) {
+      expect(formationDureeIso(d), d).toMatch(/^PT\d+H$/);
+    }
   });
 
   it("slugs durées et gammes uniques + résolubles", () => {

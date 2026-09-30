@@ -36,9 +36,16 @@
  *    toujours par diverger, et l'écart ne se voit sur aucun écran.
  */
 
-/** Ce qu'on accepte, dit en français, pour l'aide ET pour le refus. */
+/**
+ * Ce qu'on accepte, dit en français, pour l'aide ET pour le refus.
+ *
+ * 2026-09-30 : l'exemple français est pris dans la plage ARCEP réservée à la
+ * fiction (06 39 98 xx xx) — « 06 12 34 56 78 » et « +212 6 61 23 45 67 » sont
+ * des numéros attribuables, affichés à tous les visiteurs. L'exemple
+ * international ne montre plus que l'indicatif.
+ */
 export const FORMES_ACCEPTEES =
-  "Numéro français (06 12 34 56 78) ou international avec son indicatif (+212 6 61 23 45 67).";
+  "Numéro français (06 39 98 12 34) ou international précédé de l'indicatif du pays (ex. +212…).";
 
 export type LectureTelephone =
   { readonly ok: true; readonly e164: string } | { readonly ok: false; readonly motif: string };

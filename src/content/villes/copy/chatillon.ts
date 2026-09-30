@@ -224,7 +224,7 @@ export const CHATILLON_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Châtillon ?",
-      a: "Pour une PME ou ETI implantée à Châtillon, l'Audit sur place est planifiable sous 5 jours ouvrés après validation. Une formation collective démarre généralement sous 10 à 15 jours selon le périmètre.",
+      a: "Pour une PME ou ETI implantée à Châtillon, l'Audit sur place est planifiable sous 5 jours ouvrés après validation. Une formation collective démarre au plus tôt 11 jours ouvrés après la confirmation d'inscription (délai d'accès minimum), à une date convenue avec vous.",
     },
     {
       q: "Couvrez-vous les communes proches de Châtillon ?",

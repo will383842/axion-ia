@@ -96,7 +96,10 @@ describe("ce qui reste refusé, et comment on le dit", () => {
     const lu = lireTelephone("nawak");
     expect(lu.ok).toBe(false);
     expect(lu.ok === false && lu.motif).toBe(FORMES_ACCEPTEES);
-    expect(FORMES_ACCEPTEES).toContain("06 12 34 56 78");
+    // Exemple pris dans la plage ARCEP réservée à la fiction (06 39 98 xx xx) :
+    // « 06 12 34 56 78 » est un numéro attribuable, affiché à tous les visiteurs.
+    expect(FORMES_ACCEPTEES).toContain("06 39 98 12 34");
+    expect(FORMES_ACCEPTEES).not.toContain("06 12 34 56 78");
     expect(FORMES_ACCEPTEES).toContain("+212");
   });
 

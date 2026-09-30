@@ -91,9 +91,14 @@ export const WILLIAMS_IDENTITE: ReadonlyArray<{ terme: string; valeur: string }>
  * Recopiés ici avec leur source pour qu'une future divergence se voie.
  */
 export const WILLIAMS_PREUVES: ReadonlyArray<{ chiffre: string; libelle: string }> = [
-  { chiffre: "Top 1 %", libelle: "Ingénieurs et experts IA sélectionnés en France" },
+  // 2026-09-30 — « Top 1 % » retiré (ordre permanent du dirigeant : non étayé).
+  {
+    chiffre: "Formateur & consultant",
+    libelle: "En IA générative, pour les équipes en entreprise",
+  },
   { chiffre: "0 intermédiaire", libelle: "Vous échangez directement avec l'équipe Axion-IA" },
-  { chiffre: "PME → CAC 40", libelle: "Tous types de structures, tous secteurs" },
+  // 2026-09-30 — « PME → CAC 40 » retiré (formulation interdite par le dirigeant).
+  { chiffre: "PME et ETI", libelle: "Tous secteurs d'activité" },
   { chiffre: "France entière", libelle: "Sur site partout, siège à Grenoble" },
 ];
 

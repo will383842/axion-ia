@@ -234,9 +234,8 @@ export function LivretAccueilPdf({
             « Référent handicap : AXION IA SAS — contact@axion-ia.com » : une
             société et une adresse générique, qui n'identifient personne.
 
-            L'indicateur 26 demande un référent IDENTIFIÉ et joignable, et
-            l'article L.6352-3 impose sa désignation — une désignation nomme une
-            personne. Le nom et le téléphone sont en configuration depuis toujours
+            L'indicateur 26 demande un référent IDENTIFIÉ et joignable — une
+            désignation nomme une personne. Le nom et le téléphone sont en configuration depuis toujours
             (`referent_handicap_nom`, `referent_handicap_telephone`).
 
             `fiche-adaptation.tsx` faisait déjà correctement les trois lignes ;
@@ -255,7 +254,7 @@ export function LivretAccueilPdf({
             réservé au numéro Qualiopi (F29, plus haut) — un organisme peut
             légitimement ne pas encore être certifié, alors que TOUT organisme de
             formation doit avoir désigné une personne physique comme référent
-            handicap (art. L.6352-3, indicateur 26). Ici l'absence n'est pas un
+            handicap (indicateur 26 du Référentiel national qualité). Ici l'absence n'est pas un
             état normal : c'est une non-conformité, et elle doit sauter aux yeux
             de celui qui relit la pièce avant remise.
           */}

@@ -311,10 +311,14 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-031",
-    text: "Le délai moyen entre la demande de formation et la première session Axion-IA est de 10 à 15 jours ouvrés — incluant l'appel de cadrage des besoins (gratuit, réservable en ligne) et la personnalisation du programme.",
-    source: "Axion-IA — Processus commercial 2026",
+    // 🔴 2026-09-30 (audit ind. 2) : « délai MOYEN de 10 à 15 jours ouvrés »
+    // présentait comme une moyenne un chiffre que rien ne mesure, et contredisait
+    // les fiches (« sous 11 jours ouvrés minimum »). Aligné sur la règle réelle,
+    // `FORMATION_DELAI_ACCES_DEFAUT` (src/content/formations/catalog-v2-facts.ts).
+    text: "Le délai d'accès à une formation Axion-IA est d'au moins 11 jours ouvrés entre la confirmation d'inscription (avec réception du règlement ou de l'accord de prise en charge du financeur) et la première session. La date est convenue avec l'entreprise lors de l'appel de cadrage des besoins, gratuit et sans engagement.",
+    source: "Axion-IA — Délai d'accès publié sur les fiches formation",
     sourceUrl: "https://axion-ia.com/interventions-formations",
-    verifiedAt: "2026-08-11",
+    verifiedAt: "2026-09-30",
     verticales: ["interventions_formations"],
     confidence: 0.9,
   },

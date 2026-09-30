@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { getLegal } from "@/content/legal";
 import {
   LEGAL_MENTIONS,
+  HANDICAP_PARTENAIRES,
   formatHeuresCentiemes,
   formatMentionMarqueQualiopi,
   DOCUMENT_RETENTION_YEARS,
@@ -34,6 +35,21 @@ describe("LEGAL_MENTIONS — bases juridiques exactes", () => {
   });
   it("règlement intérieur cite L.6352-3", () => {
     expect(LEGAL_MENTIONS.reglementInterieur).toContain("L.6352-3");
+  });
+  // 2026-09-30 (audit site public) : L.6352-3 porte sur le règlement intérieur ;
+  // le référent handicap relève de l'indicateur 26 du Référentiel national qualité.
+  it("référent handicap : indicateur 26 du RNQ, jamais l'article L.6352-3", () => {
+    expect(LEGAL_MENTIONS.referentHandicap).toContain(
+      "indicateur 26 du Référentiel national qualité",
+    );
+    expect(LEGAL_MENTIONS.referentHandicap).not.toContain("L.6352-3");
+  });
+  // L'ancienne URL RHF (`/aides-handicap/ressource-handicap-formation-rhf`)
+  // répondait 404 — lien mort sur la page publique d'accessibilité.
+  it("relais handicap : plus aucun lien vers l'ancienne URL RHF morte", () => {
+    for (const p of HANDICAP_PARTENAIRES) {
+      expect(p.url, p.nom).not.toContain("ressource-handicap-formation-rhf");
+    }
   });
   it("conservation légale = 5 ans", () => {
     expect(DOCUMENT_RETENTION_YEARS).toBe(5);

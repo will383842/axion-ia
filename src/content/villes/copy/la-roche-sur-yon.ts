@@ -224,7 +224,7 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à La Roche-sur-Yon ?",
-      a: "Pour une PME ou ETI yonnaise, l'Audit sur place est planifiable sous 5 à 7 jours ouvrés. Une formation collective démarre sous 10 à 15 jours selon le périmètre et la disponibilité.",
+      a: "Pour une PME ou ETI yonnaise, l'Audit sur place est planifiable sous 5 à 7 jours ouvrés. Une formation collective démarre au plus tôt 11 jours ouvrés après la confirmation d'inscription (délai d'accès minimum), à une date convenue avec vous.",
     },
     {
       q: "Couvrez-vous les communes proches de La Roche-sur-Yon ?",

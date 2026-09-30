@@ -252,7 +252,7 @@ export const HANDICAP_PARTENAIRES: readonly HandicapPartenaire[] = [
   {
     nom: "Ressource Handicap Formation (RHF)",
     role: "Appui aux organismes de formation pour l'accueil et l'adaptation des parcours.",
-    url: "https://www.agefiph.fr/aides-handicap/ressource-handicap-formation-rhf",
+    url: "https://www.agefiph.fr/services/ressource-handicap-formation",
   },
   {
     nom: "FIPHFP",

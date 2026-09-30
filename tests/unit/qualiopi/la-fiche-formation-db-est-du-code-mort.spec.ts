@@ -70,8 +70,10 @@ describe("la fiche formation « base de données » est du code mort — et le d
     expect(debut, "FormationSlugPage introuvable : la garde ne lit plus rien").toBeGreaterThan(-1);
     const corps = PAGE.slice(debut);
 
+    // 2026-09-30 : le `return` porte désormais des parenthèses (la fiche reçoit
+    // le contact du référent handicap, prop de plus → JSX sur plusieurs lignes).
     const courtCircuit =
-      /const cat = getFormationV2\(slug\);\s*if \(cat\) \{[\s\S]*?return <FormationDetailPage/.exec(
+      /const cat = getFormationV2\(slug\);\s*if \(cat\) \{[\s\S]*?return \(?\s*<FormationDetailPage/.exec(
         corps,
       );
     expect(courtCircuit, "le court-circuit par le catalogue a disparu du corps").not.toBeNull();

@@ -223,7 +223,7 @@ export const EYSINES_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à Eysines ?",
-      a: "Pour les PME et ETI d'Eysines, l'Audit sur place est planifié sous 5 jours ouvrés. Les formations collectives sont livrées sous 10 à 15 jours ouvrés selon le périmètre.",
+      a: "Pour les PME et ETI d'Eysines, l'Audit sur place est planifié sous 5 jours ouvrés. Une formation collective démarre au plus tôt 11 jours ouvrés après la confirmation d'inscription (délai d'accès minimum), à une date convenue avec vous.",
     },
     {
       q: "Couvrez-vous Bordeaux, Le Bouscat et Mérignac depuis Eysines ?",

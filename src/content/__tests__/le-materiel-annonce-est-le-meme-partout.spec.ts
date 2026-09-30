@@ -168,10 +168,25 @@ const EXCLUS: Record<string, string> = {
   FORMATION_GAMME_IMAGE: "textes alternatifs de photos",
 };
 
-type Fonction = (x: unknown) => unknown;
+/**
+ * Textes qui prennent le contact du référent handicap (2026-09-30, ind. 26) :
+ * la page le lit en configuration et le passe. Ils restent AFFICHÉS, donc
+ * contrôlés — appelés ici avec un contact fictif.
+ */
+const REFERENT_FICTIF = { nom: "Camille Exemple", email: "referent@example.com" } as const;
+const AVEC_REFERENT: Record<string, "fiche+referent" | "referent"> = {
+  getFormationAccessibilite: "fiche+referent",
+  formationAccessibiliteDefaut: "referent",
+};
 
-function classer(nom: string, valeur: unknown): "fiche" | "sortie" | "constante" | "exclu" | null {
+type Fonction = (x: unknown, y?: unknown) => unknown;
+
+function classer(
+  nom: string,
+  valeur: unknown,
+): "fiche" | "sortie" | "constante" | "exclu" | "referent" | null {
   if (nom in EXCLUS) return "exclu";
+  if (nom in AVEC_REFERENT) return "referent";
   if (nom in FORMATEURS_SUR_SORTIE) return "sortie";
   if (typeof valeur === "function") return (valeur as Fonction).length === 1 ? "fiche" : null;
   return "constante";
@@ -190,7 +205,13 @@ function morceauxAffiches(f: (typeof FORMATIONS_V2)[number]): unknown[] {
   for (const [nom, valeur] of Object.entries(FAITS)) {
     const classe = classer(nom, valeur);
     if (classe === "exclu" || classe === null) continue;
-    if (classe === "constante") {
+    if (classe === "referent") {
+      morceaux.push(
+        AVEC_REFERENT[nom] === "referent"
+          ? (valeur as Fonction)(REFERENT_FICTIF)
+          : (valeur as Fonction)(f, REFERENT_FICTIF),
+      );
+    } else if (classe === "constante") {
       // Les constantes de matériel sont lues via la fiche : pour une exception,
       // son texte propre remplace le défaut, qui n'est alors pas affiché.
       morceaux.push(valeur);
@@ -386,6 +407,9 @@ describe("le matériel annoncé est le même partout", () => {
       expect(typeof (FAITS as Record<string, unknown>)[source], source).toBe("function");
     }
     for (const nom of Object.keys(EXCLUS)) expect(nom in FAITS, nom).toBe(true);
+    for (const nom of Object.keys(AVEC_REFERENT)) {
+      expect(typeof (FAITS as Record<string, unknown>)[nom], nom).toBe("function");
+    }
   });
 
   it.each(FORMATIONS_V2.map((f) => [f.id, f] as const))(

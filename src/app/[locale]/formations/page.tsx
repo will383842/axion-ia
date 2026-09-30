@@ -32,6 +32,7 @@ import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
+  getFormationsV2,
   getFormationsV2ByCategorie,
   getFormationV2EntryPrice,
   getSeminairesV2,
@@ -125,6 +126,10 @@ export default async function FormationsHub({ params }: Props) {
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
+  // Compteurs DÉRIVÉS du catalogue (SSOT) — jamais en dur : le séminaire, sur
+  // devis, est compté à part des formations à prix public.
+  const nbFormationsCatalogue = getFormationsV2().length;
+  const nbSeminairesCatalogue = getSeminairesV2().length;
 
   const breadcrumbItems = [
     {
@@ -1196,7 +1201,12 @@ export default async function FormationsHub({ params }: Props) {
           </div>
 
           {/* Stats bar — 3 colonnes adaptées formation (sans mention années
-              d'expérience selon retour Will 2026-05-28). */}
+              d'expérience selon retour Will 2026-05-28).
+              🔴 2026-09-30 (audit ind. 2) : « 12h/sem — gain de temps moyen
+              post-formation » et « Dès le 1ᵉʳ jour — des automatisations
+              concrètes » étaient des résultats publiés sans méthode, période ni
+              effectif. Remplacés par des FAITS vérifiables du catalogue (durée,
+              format), sans aucune statistique. */}
           <div className="border-border-strong mt-16 grid grid-cols-3 divide-x border-t pt-10">
             {(
               [
@@ -1206,14 +1216,14 @@ export default async function FormationsHub({ params }: Props) {
                   labelEn: "metropolitan + French-speaking abroad (1 week min.)",
                 },
                 {
-                  number: isFr ? "Dès le 1ᵉʳ jour" : "From day 1",
-                  labelFr: "des automatisations concrètes, applicables tout de suite",
-                  labelEn: "concrete automations, usable right away",
+                  number: isFr ? "4 h à 2 jours" : "4 h to 2 days",
+                  labelFr: "par formation : demi-journée, journée ou deux jours",
+                  labelEn: "per training: half-day, full day or two days",
                 },
                 {
-                  number: isFr ? "12h/sem" : "12h/week",
-                  labelFr: "gain de temps moyen post-formation",
-                  labelEn: "average time saved post-training",
+                  number: isFr ? "2 à 15" : "2 to 15",
+                  labelFr: "participants par groupe, intra-entreprise (séminaire : jusqu'à 50)",
+                  labelEn: "participants per group, in-house (seminar: up to 50)",
                 },
               ] as const
             ).map((stat, idx) => (
@@ -1252,8 +1262,8 @@ export default async function FormationsHub({ params }: Props) {
                 </h2>
                 <p className="text-fg-soft mt-2 text-sm leading-relaxed">
                   {isFr
-                    ? "24 pages : 21 formations + 1 séminaire, prix publics par groupe, financement OPCO et méthode AXION."
-                    : "24 pages: 21 trainings + 1 seminar, public prices per group, OPCO funding and the AXION method."}
+                    ? `${nbFormationsCatalogue} formations et ${nbSeminairesCatalogue} séminaire, prix publics par groupe, financement OPCO et méthode AXION.`
+                    : `${nbFormationsCatalogue} trainings and ${nbSeminairesCatalogue} seminar, public prices per group, OPCO funding and the AXION method.`}
                 </p>
               </div>
               <a

@@ -574,7 +574,7 @@ export function FormulaireReservation({
               inputMode="tel"
               defaultValue={v(CHAMPS.telephone)}
               autoComplete="tel"
-              placeholder="+33 6 12 34 56 78"
+              placeholder="+33 6 39 98 12 34"
               // 🔑 33, PAS 30. La regex du serveur accepte 2 + 3 + 28 = 33
               // caractères ; couper à 30 dans le navigateur amputait en SILENCE un
               // numéro international formaté collé depuis un carnet d'adresses. Le
