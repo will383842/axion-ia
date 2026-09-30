@@ -81,6 +81,15 @@ export interface EntreeValiderApresLAppel {
   readonly rencontreId: string;
   readonly parAdminId: string;
   readonly projet: ChoixProjet;
+  /**
+   * V1-03 : les AUTRES projets évoqués du rendez-vous, chacun avec son choix
+   * (« principal » : le projet ci-dessus). Leurs faits « à ranger » cochés vont
+   * dans le projet du groupe, jamais dans celui du rendez-vous.
+   */
+  readonly groupes?: ReadonlyArray<{
+    readonly projet: ChoixProjet | { readonly mode: "principal" };
+    readonly faitIds: readonly string[];
+  }>;
   /** Faits cochés (à valider). Les « à ranger » cochés vont au projet. */
   readonly faitsCoches: readonly string[];
   readonly note: SaisieNote | null;
@@ -129,6 +138,13 @@ async function rangerDansLeProjet(
   }
 }
 
+async function exigerProjetDuClient(tx: Tx, projetId: string, clientId: string): Promise<void> {
+  const p = await tx.projet.findUnique({ where: { id: projetId }, select: { clientId: true } });
+  if (p === null || p.clientId !== clientId) {
+    throw new ErreurValidation("Ce projet n'appartient pas à ce client.");
+  }
+}
+
 /** Le bouton unique. Voir l'en-tête. */
 export async function validerApresLAppel(
   db: BaseTransactionnelle,
@@ -162,12 +178,41 @@ export async function validerApresLAppel(
     // l'avoir confirmé à la main avant que rien de ce rendez-vous ne soit validé.
     if (coches.length > 0) await exigerValidationPossible(tx, e.rencontreId);
 
+    // 0. Les autres projets évoqués (V1-03) : chaque groupe dans SON projet,
+    // avant le projet du rendez-vous, qui ne reçoit que le reste.
+    const dejaRanges = new Set<string>();
+    for (const g of e.groupes ?? []) {
+      if (g.projet.mode === "principal") continue;
+      const siens = coches.filter((id) => g.faitIds.includes(id) && !dejaRanges.has(id));
+      for (const id of siens) dejaRanges.add(id);
+      if (g.projet.mode === "aucun" || siens.length === 0) continue;
+      if (g.projet.mode === "nouveau") {
+        const aRanger = (
+          await tx.fait.findMany({
+            where: { id: { in: siens }, clientId, portee: "a_ranger" },
+            select: { id: true },
+          })
+        ).map((f) => f.id);
+        await creerProjet(dansLaTransaction(tx), {
+          clientId,
+          titre: g.projet.titre,
+          faitsARangerIds: aRanger,
+          parAdminId: e.parAdminId,
+          maintenant,
+        });
+      } else {
+        await exigerProjetDuClient(tx, g.projet.projetId, clientId);
+        await rangerDansLeProjet(tx, siens, clientId, g.projet.projetId, e.parAdminId);
+      }
+    }
+    const pourLeRendezVous = coches.filter((id) => !dejaRanges.has(id));
+
     // 1. Le projet.
     let projetId: string | null = r.projetId;
     if (e.projet.mode === "nouveau") {
       const aRanger = (
         await tx.fait.findMany({
-          where: { id: { in: coches }, clientId, portee: "a_ranger" },
+          where: { id: { in: pourLeRendezVous }, clientId, portee: "a_ranger" },
           select: { id: true },
         })
       ).map((f) => f.id);
@@ -180,15 +225,9 @@ export async function validerApresLAppel(
       });
       projetId = cree.id;
     } else if (e.projet.mode === "existant") {
-      const p = await tx.projet.findUnique({
-        where: { id: e.projet.projetId },
-        select: { clientId: true },
-      });
-      if (p === null || p.clientId !== clientId) {
-        throw new ErreurValidation("Ce projet n'appartient pas à ce client.");
-      }
+      await exigerProjetDuClient(tx, e.projet.projetId, clientId);
       projetId = e.projet.projetId;
-      await rangerDansLeProjet(tx, coches, clientId, projetId, e.parAdminId);
+      await rangerDansLeProjet(tx, pourLeRendezVous, clientId, projetId, e.parAdminId);
     }
     if (projetId !== null && r.projetId === null) {
       await tx.rencontre.update({ where: { id: r.id }, data: { projetId } });

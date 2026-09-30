@@ -71,6 +71,13 @@ export async function deplacerRencontre(
       where: { rencontreId: e.rencontreId },
       select: { id: true, portee: true, projetId: true },
     });
+    // V1-03 : un seul projet d'arrivée ne peut pas recevoir des faits venus de
+    // deux projets (le budget de l'audit rejoindrait celui de la formation).
+    if (new Set(faits.filter((f) => f.portee === "projet").map((f) => f.projetId)).size > 1) {
+      throw new ErreurDeplacement(
+        "Les faits de ce rendez-vous sont rangés dans plusieurs projets : un déplacement les réunirait dans un seul. Rangez-les d'abord dans un même projet.",
+      );
+    }
     if (versProjetId === null && faits.some((f) => f.portee === "projet")) {
       throw new ErreurDeplacement(
         "Des faits de ce rendez-vous sont rangés dans un projet : choisissez le projet d'arrivée.",

@@ -186,10 +186,28 @@ export async function validerApresLAppelAction(fd: FormData): Promise<void> {
         ? { mode: "existant", projetId: modeProjet }
         : { mode: "aucun" };
 
+  // V1-03 : un choix de projet par AUTRE projet évoqué (références « J… »).
+  const groupes = fd
+    .getAll("groupe")
+    .filter((g): g is string => typeof g === "string" && /^[\w-]{1,16}$/.test(g))
+    .map((g) => {
+      const choix = texte(fd, `projet_${g}`);
+      return {
+        projet:
+          choix === "nouveau"
+            ? { mode: "nouveau" as const, titre: texte(fd, `projetTitre_${g}`) }
+            : uuid.safeParse(choix).success
+              ? { mode: "existant" as const, projetId: choix }
+              : { mode: "principal" as const },
+        faitIds: fd.getAll(`groupeFait_${g}`).filter((x): x is string => typeof x === "string"),
+      };
+    });
+
   const r = await validerApresLAppel(prisma, {
     rencontreId,
     parAdminId: userId,
     projet,
+    groupes,
     faitsCoches: fd.getAll("fait").filter((x): x is string => typeof x === "string"),
     note: lireNote(fd),
     suivi: {
