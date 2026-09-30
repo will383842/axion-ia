@@ -41,6 +41,8 @@ interface LigneSuivi {
 function base() {
   const outbox = new Map<string, { statut: "a_valider" | "refuse" | "envoye" }>();
   const suivis: LigneSuivi[] = [];
+  /** E-mails garés par l'étape `email_suivi` mais jamais reliés (V1-01). */
+  const orphelins: { rencontreId: string; to: string; outboxId: string }[] = [];
   const db = {
     rencontre: {
       findUnique: vi.fn().mockResolvedValue({
@@ -76,16 +78,28 @@ function base() {
         async (a: {
           where: {
             statut: string;
-            emailSuivi: { is: { rencontreId: string; contactId: string } };
+            OR: [
+              { emailSuivi: { is: { rencontreId: string; contactId: string } } },
+              { entityId: string; recipient: string; emailSuivi: { is: null } },
+            ];
           };
-        }) =>
-          suivis.filter(
+        }) => {
+          const [relie, gare] = a.where.OR;
+          const relies = suivis.filter(
             (s) =>
-              s.rencontreId === a.where.emailSuivi.is.rencontreId &&
-              s.contactId === a.where.emailSuivi.is.contactId &&
+              s.rencontreId === relie.emailSuivi.is.rencontreId &&
+              s.contactId === relie.emailSuivi.is.contactId &&
               s.emailOutboxId !== null &&
               outbox.get(s.emailOutboxId)?.statut === a.where.statut,
-          ).length,
+          ).length;
+          const nonRelies = orphelins.filter(
+            (o) =>
+              o.rencontreId === gare.entityId &&
+              o.to === gare.recipient &&
+              outbox.get(o.outboxId)?.statut === a.where.statut,
+          ).length;
+          return relies + nonRelies;
+        },
       ),
     },
     emailSuivi: {
@@ -104,7 +118,7 @@ function base() {
     outbox.set(id, { statut: "a_valider" });
     return id;
   });
-  return { db: db as unknown as Db, outbox, mettreEnValidation };
+  return { db: db as unknown as Db, outbox, orphelins, mettreEnValidation };
 }
 
 const GESTE = { rencontreId: "r", contactId: "c", parAdminId: "a" } as const;
@@ -125,5 +139,14 @@ describe("⛔ deux clics sur le modèle fixe ne garent qu'un e-mail", () => {
     outbox.set("ob-1", { statut: "refuse" });
     await emailSuiviGabaritFixe(db, { mettreEnValidation }, GESTE);
     expect(mettreEnValidation).toHaveBeenCalledTimes(2);
+  });
+
+  it("un e-mail garé mais jamais relié (étape interrompue) compte comme déjà préparé", async () => {
+    const { db, outbox, orphelins, mettreEnValidation } = base();
+    outbox.set("ob-orphelin", { statut: "a_valider" });
+    orphelins.push({ rencontreId: "r", to: "c@exemple.invalid", outboxId: "ob-orphelin" });
+    const r = await emailSuiviGabaritFixe(db, { mettreEnValidation }, GESTE);
+    expect(r).toContain("déjà préparé");
+    expect(mettreEnValidation).not.toHaveBeenCalled();
   });
 });
