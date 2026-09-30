@@ -421,7 +421,52 @@ DO $$ BEGIN
 END $$;
 ROLLBACK;
 
-\echo '[visio] 19. rien n''est resté en base'
+\echo '[visio] 19. une rencontre de test : saisie sur une fiche validée, ou Calendly sans fiche (P-2, ADR 0061)'
+BEGIN;
+SELECT pg_temp.visio_fixture();
+INSERT INTO calendly_events (id, event_type_name, event_type_slug, raw_payload, updated_at) VALUES
+  ('visio-gate-d-calendly-test', 'Rendez-vous fictif', 'fictif', '{}', now());
+-- Acceptée : un « Discutons » de test, né de Calendly, sans fiche.
+INSERT INTO rencontres (id, source, type, titre, calendly_event_id, est_test_interne, updated_at) VALUES
+  ('00000000-0000-4000-8000-0000000000e1', 'calendly', 'visio', 'Test Calendly fictif', 'visio-gate-d-calendly-test', true, now());
+-- Acceptée : une rencontre de test saisie sur une fiche validée (le pilote d'avant).
+INSERT INTO rencontres (id, source, type, titre, client_id, rattachement_statut, est_test_interne, updated_at) VALUES
+  ('00000000-0000-4000-8000-0000000000e2', 'saisie_manuelle', 'visio', 'Test saisi fictif', '00000000-0000-4000-8000-00000000000a', 'valide', true, now());
+-- Refusées PAR LE BON CHECK : une dictée ou un événement d'agenda de test.
+DO $$ DECLARE c text; BEGIN
+  INSERT INTO rencontres (id, source, type, titre, est_test_interne, updated_at) VALUES
+    ('00000000-0000-4000-8000-0000000000e3', 'dictee', 'visio', 'Dictée de test', true, now());
+  RAISE EXCEPTION 'devait échouer : dictée de test' USING ERRCODE = 'AXT99';
+EXCEPTION WHEN check_violation THEN
+  GET STACKED DIAGNOSTICS c = CONSTRAINT_NAME;
+  IF c <> 'rencontres_test_interne_saisie' THEN
+    RAISE EXCEPTION 'dictée de test refusée par % au lieu de rencontres_test_interne_saisie', c USING ERRCODE = 'AXT99';
+  END IF;
+END $$;
+DO $$ DECLARE c text; BEGIN
+  INSERT INTO rencontres (id, source, type, titre, est_test_interne, updated_at) VALUES
+    ('00000000-0000-4000-8000-0000000000e4', 'agenda', 'visio', 'Agenda de test', true, now());
+  RAISE EXCEPTION 'devait échouer : agenda de test' USING ERRCODE = 'AXT99';
+EXCEPTION WHEN check_violation THEN
+  GET STACKED DIAGNOSTICS c = CONSTRAINT_NAME;
+  IF c <> 'rencontres_test_interne_saisie' THEN
+    RAISE EXCEPTION 'agenda de test refusé par % au lieu de rencontres_test_interne_saisie', c USING ERRCODE = 'AXT99';
+  END IF;
+END $$;
+-- Refusée : une rencontre SAISIE de test reste sur une fiche validée (non assoupli).
+DO $$ DECLARE c text; BEGIN
+  INSERT INTO rencontres (id, source, type, titre, est_test_interne, updated_at) VALUES
+    ('00000000-0000-4000-8000-0000000000e5', 'saisie_manuelle', 'visio', 'Saisie de test sans fiche', true, now());
+  RAISE EXCEPTION 'devait échouer : saisie de test sans fiche' USING ERRCODE = 'AXT99';
+EXCEPTION WHEN check_violation THEN
+  GET STACKED DIAGNOSTICS c = CONSTRAINT_NAME;
+  IF c <> 'rencontres_saisie_sur_fiche_validee' THEN
+    RAISE EXCEPTION 'saisie de test sans fiche refusée par % au lieu de rencontres_saisie_sur_fiche_validee', c USING ERRCODE = 'AXT99';
+  END IF;
+END $$;
+ROLLBACK;
+
+\echo '[visio] 20. rien n''est resté en base'
 DO $$ BEGIN
   IF EXISTS (SELECT 1 FROM clients WHERE numero LIKE 'AXI-CLI-VISIO-%')
      OR EXISTS (SELECT 1 FROM faits)
@@ -432,4 +477,4 @@ DO $$ BEGIN
   END IF;
 END $$;
 
-\echo '[visio] comportement SQL : 19 cas passés'
+\echo '[visio] comportement SQL : 20 cas passés'

@@ -26,7 +26,12 @@
  *   · une PROPOSITION de fiche (`rattacher.ts`, A4 : jamais un rattachement) ;
  *   · `repriseHistorique = true` si le rendez-vous commence AVANT la limite de
  *     l'historique : il n'appelle alors ni rappel ni alerte (V-07b). Un
- *     rendez-vous À VENIR ne l'est JAMAIS.
+ *     rendez-vous À VENIR ne l'est JAMAIS ;
+ *   · `estTestInterne = true` si le titulaire réserve avec une ADRESSE DE TEST
+ *     (`server/visio/adresses-de-test`, correctif P-2, ADR 0061) : rencontre
+ *     du pilote, sans fiche. Posé à la CRÉATION seulement — une rencontre
+ *     existante n'est jamais marquée après coup (la purge du pilote
+ *     supprimerait une rencontre peut-être déjà rangée chez un vrai client).
  *
  * ## La borne
  *
@@ -47,6 +52,7 @@ import { entrepriseDeclaree } from "@/features/admin-rendezvous/a-venir";
 import { compteOrganisateur, invitesSupplementaires } from "@/features/admin-rendezvous/visio";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { canalDuRendezVous } from "@/server/calendly/canal";
+import { estAdresseDeTest } from "@/server/visio/adresses-de-test";
 import { estRendezVousDuDossier } from "@/server/visio/liste-blanche-types";
 import { lireBorneDuBalayage } from "@/server/visio/battement";
 import type { BaseTransactionnelle, Tx } from "./base";
@@ -107,6 +113,8 @@ export interface OptionsAssurer {
   readonly borne?: Date;
   /** Reprise de l'historique : la rencontre est marquée `repriseHistorique`. */
   readonly repriseHistorique?: boolean;
+  /** Variables lues pour les adresses de test (tests). Défaut : `process.env`. */
+  readonly env?: Readonly<Record<string, string | undefined>>;
 }
 
 // ── Lecture de la charge Calendly (pure) ─────────────────────────────────────
@@ -238,6 +246,7 @@ export async function assurerRencontrePourCalendly(
         ...copie,
         rattachementStatut: "a_classer",
         repriseHistorique: reprise,
+        estTestInterne: estAdresseDeTest(ev.inviteeEmail, options.env),
       },
       select: { id: true },
     });

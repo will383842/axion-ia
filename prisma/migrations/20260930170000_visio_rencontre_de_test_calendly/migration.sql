@@ -1,0 +1,56 @@
+-- Rencontre de TEST née de Calendly (chantier visio, correctif P-2, ADR 0061)
+-- — ASSOUPLISSEMENT d'un CHECK, aucune table, aucune colonne, aucune donnée.
+--
+-- ## Le défaut
+--
+-- En mode `pilote`, seules les rencontres `est_test_interne` s'enregistrent.
+-- Le CHECK `rencontres_test_interne_saisie` (migration
+-- 20260928230000_visio_dossier_client_et_enregistrement) les réservait aux
+-- rencontres SAISIES dans la console, donc sur une fiche existante : le chemin
+-- d'un NOUVEAU prospect (réservation Calendly, rencontre à classer, « Créer la
+-- fiche prospect ») ne pouvait tourner en réel qu'avec le premier vrai
+-- prospect, après l'ouverture publique.
+--
+-- ## Ce que fait cette migration
+--
+-- Elle remplace ce CHECK par le même, élargi à la source `calendly` :
+--   avant : NOT est_test_interne OR source = 'saisie_manuelle'
+--   après : NOT est_test_interne OR source IN ('saisie_manuelle', 'calendly')
+-- Même nom (`prisma/objets-sql-bruts.ts` inchangé, la garde de dérive de
+-- Gate D le retrouve), dans la transaction de la migration : il n'existe aucun
+-- instant sans contrôle.
+--
+-- `rencontres_saisie_sur_fiche_validee` n'est PAS touché : une rencontre
+-- saisie, même de test, naît toujours sur une fiche validée (aucun écrivain ne
+-- demande le contraire ; Gate D le vérifie, cas 19).
+--
+-- Partie Prisma : VIDE. `schema.prisma` ne change pas (les CHECK ne s'y
+-- expriment pas) ; `prisma migrate diff` de origin/main vers cette branche
+-- rend un script vide.
+--
+-- ## Aucune perte, aucune reprise
+--
+-- Un CHECK élargi accepte toutes les lignes que l'ancien acceptait : la
+-- validation de l'ajout ne peut pas échouer sur la production. Aucune ligne
+-- n'est lue, écrite ni supprimée.
+--
+-- ## Fenêtre app/worker
+--
+-- Image N-1 (ancien code) sur la base migrée : elle n'écrit `est_test_interne`
+-- que pour une saisie — un sous-ensemble du nouveau domaine. Rien à faire.
+-- Image N (nouveau code) sur la base NON migrée (worker bâti avant que l'app
+-- ne joue la migration) : elle ne marque une rencontre Calendly de test que si
+-- `VISIO_ADRESSES_DE_TEST` est posée, et cette variable n'est posée qu'APRÈS la
+-- vérification de cette migration en production. Sans elle, le code neuf
+-- écrit exactement ce qu'écrivait l'ancien.
+--
+-- ## Réversion (commentée, ne pas exécuter sans décision)
+--
+-- L'ancien CHECK refuserait les rencontres Calendly de test : les purger
+-- d'abord (`pnpm exec tsx scripts/visio/pilote.ts --purger --appliquer`), puis :
+--   ALTER TABLE "rencontres" DROP CONSTRAINT "rencontres_test_interne_saisie";
+--   ALTER TABLE "rencontres" ADD CONSTRAINT "rencontres_test_interne_saisie" CHECK (NOT "est_test_interne" OR "source" = 'saisie_manuelle');
+
+ALTER TABLE "rencontres" DROP CONSTRAINT "rencontres_test_interne_saisie";
+
+ALTER TABLE "rencontres" ADD CONSTRAINT "rencontres_test_interne_saisie" CHECK (NOT "est_test_interne" OR "source" IN ('saisie_manuelle', 'calendly'));

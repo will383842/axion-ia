@@ -11,7 +11,11 @@
  *   · le rangement de la rencontre chez elle (`validerRattachement`), qui
  *     relie le participant à sa personne ;
  *   · la trace de ce qui a été proposé et retenu (`PreRemplissage`, cible
- *     `client`) : raison sociale, ville, SIREN.
+ *     `client`) : raison sociale, ville, SIREN ;
+ *   · si la rencontre est un TEST du pilote (réservée par une adresse de test,
+ *     ADR 0061) : l'inscription de la fiche créée dans `clients_test_interne`.
+ *     Elle devient une fiche fictive : la purge du pilote efface ses
+ *     rencontres, projets et personnes, comme ceux de « Atelier Test Fictif ».
  * Une erreur n'importe où : rien n'est créé.
  *
  * Le SIREN n'est jamais posé en silence : il est PROPOSÉ par l'annuaire public
@@ -107,7 +111,13 @@ export async function creerProspectDepuisRencontre(
   return db.$transaction(async (tx): Promise<ResultatCreerProspect> => {
     const r = await tx.rencontre.findUnique({
       where: { id: e.rencontreId },
-      select: { id: true, clientId: true, rattachementStatut: true, calendlyEventId: true },
+      select: {
+        id: true,
+        clientId: true,
+        rattachementStatut: true,
+        calendlyEventId: true,
+        estTestInterne: true,
+      },
     });
     if (r === null) throw new ErreurCreerProspect("Rendez-vous introuvable.");
     if (r.clientId !== null) {
@@ -138,6 +148,9 @@ export async function creerProspectDepuisRencontre(
       },
     );
     if (cree.statut !== "cree") return cree;
+    if (r.estTestInterne) {
+      await tx.clientTestInterne.create({ data: { clientId: cree.id } });
+    }
 
     const declare = ev ? entrepriseDeclaree(ev.rawPayload) : { nom: null, ville: null };
     await tracerProposition(

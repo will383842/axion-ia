@@ -12,6 +12,13 @@
  * La case « test interne » n'est même pas RENDUE ailleurs. Garde :
  * `la-case-test-interne-n-existe-qu-en-pilote-et-sur-le-client-fictif.spec.ts`.
  *
+ * Seconde source, sans case ni fiche (correctif P-2, ADR 0061) : un
+ * « Discutons » réservé sur Calendly par une ADRESSE DE TEST
+ * (`server/visio/adresses-de-test`) naît `estTestInterne`, à classer. La fiche
+ * créée depuis lui (« Créer la fiche prospect ») est inscrite ici à son tour :
+ * elle devient une fiche fictive, purgée avec le pilote. Garde :
+ * `un-discutons-de-test-sans-fiche-s-enregistre-en-pilote.spec.ts`.
+ *
  * Une rencontre de test n'apparaît dans AUCUNE synthèse d'un autre client ni
  * dans aucun compteur : `HORS_RENCONTRES_DE_TEST` est le filtre à poser, par
  * étalement (`where: { ...HORS_RENCONTRES_DE_TEST, … }`) — jamais le littéral

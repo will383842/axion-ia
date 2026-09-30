@@ -80,6 +80,12 @@ export const env = createEnv({
     // Lu par le WORKER seulement. Absent ou "false" : ni worker ni entrée
     // répétable. Passé à "true" après la reprise réelle de l'historique Calendly.
     DOSSIER_BALAYAGE_ENABLED: z.enum(["true", "false"]).optional(),
+    // ── Chantier visio (correctif P-2, ADR 0061) — adresses de test du pilote ─
+    // Lu par le site ET le worker (`src/server/visio/adresses-de-test.ts`, à
+    // l'exécution). Adresses (ou empreintes) séparées par des virgules : un
+    // « Discutons » réservé par l'une d'elles naît rencontre de TEST, sans fiche.
+    // Absente : aucune adresse n'est de test. Jamais dans le dépôt (public).
+    VISIO_ADRESSES_DE_TEST: z.string().optional(),
     // Second verrou, propre aux flux CANDIDATS. Ne s'ouvre qu'après que les
     // textes de consentement v2 sont servis en production (le CRM rejette de
     // toute façon toute fiche candidat sans consentement v2).
@@ -669,6 +675,7 @@ export const env = createEnv({
     MAILWIZZ_API_KEY: process.env.MAILWIZZ_API_KEY,
     CRM_SYNC_ENABLED: process.env.CRM_SYNC_ENABLED,
     DOSSIER_BALAYAGE_ENABLED: process.env.DOSSIER_BALAYAGE_ENABLED,
+    VISIO_ADRESSES_DE_TEST: process.env.VISIO_ADRESSES_DE_TEST,
     CRM_SYNC_CANDIDATES_ENABLED: process.env.CRM_SYNC_CANDIDATES_ENABLED,
     CRM_SYNC_GUIDE_ENABLED: process.env.CRM_SYNC_GUIDE_ENABLED,
     CRM_SYNC_EXCLUSIONS_SHA256: process.env.CRM_SYNC_EXCLUSIONS_SHA256,
