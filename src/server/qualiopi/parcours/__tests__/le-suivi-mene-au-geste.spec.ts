@@ -29,6 +29,12 @@
  *
  * Le point 2 est le seul qui rougisse si quelqu'un renomme un `id` de section
  * — c'est-à-dire exactement le glissement qui a produit le défaut d'origine.
+ *
+ * 4. (relecture L3) Un `id` présent dans le SOURCE n'est pas un `id` RENDU :
+ *    `#signature-pieces` n'existe à l'écran que s'il y a une pièce signable.
+ *    Les deux étapes de signature le visaient même sans convention — lien
+ *    mort, que le point 2 ne pouvait pas voir. Le bloc dédié ci-dessous garde
+ *    la CONDITION : le parcours ne vise ce bloc que quand la fiche le rend.
  */
 
 import { describe, it, expect } from "vitest";
@@ -36,8 +42,10 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 import { ANCRES_SOUS_PAGES } from "@/features/admin-qualiopi/session-hub/ancres";
+import { circuitPour } from "../../documents/signature/parties-requises";
 import {
   construireParcours,
+  TYPES_CONVENTION,
   type SessionParcoursInput,
   type SousPageSession,
 } from "../session-parcours";
@@ -213,5 +221,46 @@ describe("le suivi de dossier mène au geste", () => {
     expect(rendu).toContain('e.etat !== "sans_objet"');
     expect(rendu).toContain("hrefEtape(");
     expect(rendu).not.toMatch(/href=\{`#\$\{/);
+  });
+});
+
+describe("🔴 #signature-pieces n'est visé que lorsque la fiche le rend", () => {
+  const ETAPES_SIGNATURE = ["convention_signee", "convention_contresignee"] as const;
+  const convention = (annuleeAt: Date | null) => ({
+    id: "conv",
+    type: "convention",
+    numero: "AXI-DOC-2026-003",
+    createdAt: new Date("2026-09-01T00:00:00.000Z"),
+    annuleeAt,
+  });
+  const fragments = (documents: SessionParcoursInput["documents"]) =>
+    construireParcours({ ...dossier(), documents })
+      .etapes.filter((e) => (ETAPES_SIGNATURE as readonly string[]).includes(e.cle))
+      .map((e) => e.cible.fragment);
+
+  it("la fiche rend le bloc SEULEMENT s'il existe une pièce signable vivante", () => {
+    // La condition que le parcours suppose. Si elle change (bloc rendu
+    // toujours, ou sur un autre critère), ce test oblige à revoir la cible.
+    const page = lire(`${FICHE}/page.tsx`);
+    expect(page).toMatch(
+      /const piecesSignables = documentsRaw\.filter\(\s*\(d\) => circuitPour\(d\.type\) !== null && d\.annuleeAt === null,?\s*\)/,
+    );
+    expect(page).toMatch(/\{piecesSignables\.length > 0 && \(\s*<div\s+id="signature-pieces"/);
+  });
+
+  it("chaque forme de convention a un circuit : une convention vivante EST une pièce signable", () => {
+    for (const t of TYPES_CONVENTION) expect(circuitPour(t), t).not.toBeNull();
+  });
+
+  it.each([
+    ["aucune convention générée", [] as SessionParcoursInput["documents"]],
+    ["la seule convention est annulée", [convention(new Date("2026-09-02T00:00:00.000Z"))]],
+  ])("%s : les deux étapes mènent au bloc Documents, toujours rendu", (_cas, documents) => {
+    expect(fragments(documents)).toEqual(["documents", "documents"]);
+    expect(existe("fiche", "documents")).toBe(true);
+  });
+
+  it("TÉMOIN — convention vivante : les deux étapes mènent au bloc des signatures", () => {
+    expect(fragments([convention(null)])).toEqual(["signature-pieces", "signature-pieces"]);
   });
 });

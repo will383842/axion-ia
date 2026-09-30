@@ -15,6 +15,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   ANCRES_HUB_SESSION,
+  ancresDeLOnglet,
   ancresVisibles,
   CLASSE_ANCRE_SECTION,
   lirePhaseFiche,
@@ -23,6 +24,8 @@ import {
   repartirBlocs,
   type BlocFiche,
 } from "./ancres";
+
+const TOUS_LES_BLOCS = ANCRES_HUB_SESSION.map((a) => a.id as BlocFiche);
 
 const PAGE = join(
   process.cwd(),
@@ -133,14 +136,26 @@ describe("ancresVisibles", () => {
 });
 
 describe("la barre est bien rendue par la page", () => {
-  it("le composant est appelé, et nourri par ancresVisibles", () => {
+  it("le composant est appelé, et nourri par les blocs AFFICHÉS de l'onglet", () => {
     // Poser les `id` sans afficher la barre laisserait les sections
     // atteignables par URL et introuvables à l'écran — le défaut intact.
     // ⚠️ Frontière de mot obligatoire. `toContain("<AncresHubSession")` reste
     // vrai pour `<AncresHubSessionAutreChose` : constaté en désarmant cette
     // garde même — elle est restée VERTE alors que la barre ne se rendait plus.
     expect(code).toMatch(/<AncresHubSession\b/);
-    expect(code).toContain("ancresVisibles(");
+    // 🔴 Relecture L3 — nourrie par TOUT le catalogue, la barre menait aussi
+    // aux blocs repliés, c'est-à-dire dans un <details> fermé.
+    expect(code).toContain("ancresDeLOnglet(blocsAffiches)");
+  });
+});
+
+describe("🔴 ancresDeLOnglet — aucune pastille vers un bloc replié", () => {
+  it.each(PHASES_FICHE.map((p) => [p.id] as const))("onglet %s", (phase) => {
+    const { affiches, replies } = repartirBlocs(phase, TOUS_LES_BLOCS);
+    const ids = ancresDeLOnglet(affiches).map((a) => a.id);
+    expect(ids).toEqual(affiches);
+    expect(replies.length, "témoin : l'onglet replie bien quelque chose").toBeGreaterThan(0);
+    for (const r of replies) expect(ids, r).not.toContain(r);
   });
 });
 
@@ -214,7 +229,8 @@ describe("🔴 aucun contenu perdu : les blocs hors phase sont repliés, jamais 
     expect(code).toMatch(/blocsAffiches\.map\(/);
     expect(code).toMatch(/blocsReplies\.map\(/);
     expect(code).toMatch(/<details[\s>]/);
-    expect(code).toContain("Toutes les actions");
+    expect(code).toContain("Autres blocs de la fiche");
+    expect(code).not.toContain("Toutes les actions");
   });
 });
 

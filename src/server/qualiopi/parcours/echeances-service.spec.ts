@@ -323,7 +323,7 @@ describe("🔴 D2-5-01 — la filiation d'un report", () => {
     const { parSession } = await prochainesEcheances(CIBLE);
     const motif = parSession.get("s1")?.repliee?.motif;
     expect(motif, "le repli doit exister — c'est son CONTENU qui ne doit rien inventer").toBe(
-      "Session reportee",
+      "Session reportée",
     );
   });
 

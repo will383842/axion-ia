@@ -33,8 +33,22 @@ export function hrefEtape(
   etape: { readonly phase: PhaseEtape; readonly cible: CibleEtape },
   prefixeSessions: string,
 ): string {
-  const fiche = `${prefixeSessions}/${sessionId}`;
   const { sousPage, fragment } = etape.cible;
-  if (sousPage !== undefined) return `${fiche}/${sousPage}#${fragment}`;
-  return `${fiche}?phase=${etape.phase}#${fragment}`;
+  if (sousPage !== undefined) return `${prefixeSessions}/${sessionId}/${sousPage}#${fragment}`;
+  return hrefFiche(sessionId, etape.phase, fragment, prefixeSessions);
+}
+
+/**
+ * Le lien vers une section de la FICHE, à l'onglet d'une phase — la seule
+ * forme de lien vers la fiche qui garantisse que la section est déployée à
+ * l'arrivée. `cloturee` : l'onglet d'un dossier clos (bandeau « Encore
+ * possible »), qu'aucune étape du parcours ne porte.
+ */
+export function hrefFiche(
+  sessionId: string,
+  phase: PhaseEtape | "cloturee",
+  fragment: string,
+  prefixeSessions: string,
+): string {
+  return `${prefixeSessions}/${sessionId}?phase=${phase}#${fragment}`;
 }

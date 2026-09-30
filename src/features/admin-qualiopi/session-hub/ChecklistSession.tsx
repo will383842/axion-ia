@@ -28,7 +28,7 @@
  * l'applique déjà.
  */
 
-import type { EtapeParcours } from "@/server/qualiopi/parcours/session-parcours";
+import type { EtapeParcours, RepliParcours } from "@/server/qualiopi/parcours/session-parcours";
 import type { EtatEtape } from "@/server/qualiopi/parcours/etat-echeance";
 import { hrefEtape } from "@/server/qualiopi/parcours/cible-etape";
 import {
@@ -89,11 +89,13 @@ export function ChecklistSession({
   /** Préfixe de la liste des sessions, p. ex. `/fr/admin/qualiopi/sessions`. */
   readonly prefixeSessions: string;
   /**
-   * Session annulée ou reportée : le parcours est REPLIÉ, avec sa filiation
-   * (« Session reportée vers AXI-SESS-… »). 🔴 Audit du 30/09/2026 — ce motif
-   * n'était rendu nulle part sur la fiche : la section restait vide.
+   * Session annulée ou reportée : le parcours est REPLIÉ. 🔴 Audit du
+   * 30/09/2026 — la filiation n'était rendue nulle part sur la fiche.
+   * Relecture L3 : le bandeau du dossier dit déjà « Session annulée / reportée :
+   * hors du parcours » ; la checklist n'ajoute que ce qu'il ne dit pas — la
+   * session de remplacement —, et ne rend rien sinon.
    */
-  readonly repliee?: { readonly motif: string } | null;
+  readonly repliee?: RepliParcours | null;
   /**
    * ADR 0060 — `dossierFige(etat)` : dossier CLOS et verrou actif. Une étape
    * restée due dont le geste est verrouillé n'est alors plus PROPOSÉE (ni
@@ -103,12 +105,13 @@ export function ChecklistSession({
   readonly fige?: boolean;
 }) {
   if (repliee !== null) {
+    if (repliee.remplacement === null) return null;
     return (
       <p
         role="status"
         className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
       >
-        {repliee.motif} — plus aucune étape du parcours n&apos;est due sur cette session.
+        Remplacée par la session {repliee.remplacement} : le parcours se suit sur sa fiche.
       </p>
     );
   }

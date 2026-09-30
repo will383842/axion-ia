@@ -164,7 +164,15 @@ describe("🔴 aucun écran ne refait la traduction dans son coin", () => {
   });
 
   it("le hub APPELLE le service partagé", () => {
-    expect(hub).toMatch(/prochainesEcheances\s*\(/);
+    // Par la lecture mémoïsée de la fiche (`cache`, partagée avec le bandeau
+    // du layout), qui appelle elle-même le service — et rien d'autre.
+    expect(hub).toMatch(/lireParcoursFiche\s*\(/);
+    const lecture = readFileSync(
+      join(process.cwd(), "src/server/qualiopi/sessions/lectures-fiche.ts"),
+      "utf8",
+    );
+    expect(lecture).toMatch(/prochainesEcheances\s*\(/);
+    expect(lecture).not.toContain("construireParcours");
   });
 
   it("le hub ne construit PAS son propre SessionParcoursInput", () => {

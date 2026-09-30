@@ -164,8 +164,13 @@ function installer() {
   m.echeances = lecture("echeances", () => ({ parSession: new Map() }));
   m.conflits = lecture("conflits", () => ({ conflits: [], erreur: false }));
   // ADR 0060 — l'état du verrou décide de l'onglet ouvert par défaut. Lecture
-  // INDÉPENDANTE : elle part dans la première vague.
-  m.verrou = lecture("verrou", () => null);
+  // INDÉPENDANTE : elle part dans la première vague. Nul = session inconnue du
+  // verrou : la page rend « introuvable », comme le layout.
+  m.verrou = lecture("verrou", () =>
+    sessionTrouvee
+      ? { statut: "planifiee", etat: { etat: "en_preparation" }, entree: { evenements: [] } }
+      : null,
+  );
   m.garde = vi.fn(async () => {
     ordreGarde = journal.length;
     return { autorise: true, role: "super_admin", peutEcrire: true };

@@ -909,7 +909,8 @@ describe("cadre commun : un seul en-tête, un seul fil d'Ariane", () => {
     const layout = sansCommentaires(lire("layout.tsx"));
     expect(layout).toContain("<BandeauVerrouDossier");
     expect(layout).toContain("<DossierVerrouProvider");
-    expect(layout).toContain("chargerEtatVerrou(id)");
+    // Lecture mémoïsée (`cache`) : la fiche la relit sans seconde requête.
+    expect(layout).toContain("lireEtatVerrouFiche(id)");
     expect(layout).toContain("href={`${base}/clients/${session.client.id}`}");
   });
 

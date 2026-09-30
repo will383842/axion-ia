@@ -173,11 +173,31 @@ describe("la fiche et « À traiter » branchent la règle", () => {
   const lire = (rel: string) => readFileSync(resolve(racine, rel), "utf8");
   const admin = "src/app/[locale]/(admin)/[adminPrefix]/qualiopi";
 
-  it("la fiche passe `fige` (dossierFige) à la checklist et filtre « Encore possible »", () => {
+  it("la fiche passe `fige` (dossierFige) à la checklist", () => {
     const src = lire(`${admin}/sessions/[id]/page.tsx`);
-    expect(src).toMatch(/const fige = verrou !== null && dossierFige\(verrou\.etat\)/);
+    expect(src).toMatch(/const fige = dossierFige\(verrou\.etat\)/);
     expect(src).toContain("fige={fige}");
-    expect(src).toMatch(/!etapeBloqueeParLeVerrou\(e, fige\)/);
+  });
+
+  it("« Encore possible » filtre les étapes verrouillées, et c'est le layout qui la rend", () => {
+    const pur = lire("src/server/qualiopi/parcours/encore-possible.ts");
+    expect(pur).toMatch(/!etapeBloqueeParLeVerrou\(e, true\)/);
+    const layout = lire(`${admin}/sessions/[id]/layout.tsx`);
+    expect(layout).toContain("gestesEncorePossibles(");
+    expect(layout).toContain("encorePossible={encorePossible}");
+  });
+
+  it("🔴 relecture L3 — la fiche ne double rien de ce que porte le bandeau", () => {
+    // Deux listes « Encore possible », deux fois le texte du verrou, deux fois
+    // le ZIP et le registre : trois doublons, dont deux pouvaient se
+    // contredire. Un seul exemplaire de chaque.
+    const src = lire(`${admin}/sessions/[id]/page.tsx`)
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/^[ \t]*\/\/.*$/gm, "");
+    expect(src).not.toContain("Encore possible");
+    expect(src).not.toContain("texteEtatVerrou(");
+    expect(src.match(/<DossierSessionButton\b/g) ?? []).toHaveLength(1);
+    expect(src.match(/mode-auditeur\/signatures\?session=/g) ?? []).toHaveLength(1);
   });
 
   it("« À traiter » ne décrit pas le geste d'une étape bloquée", () => {

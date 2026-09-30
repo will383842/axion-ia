@@ -116,8 +116,35 @@ describe("hrefEtape — un seul clic jusqu'au geste", () => {
 
   it("une étape de la fiche porte sa PHASE et sa section", () => {
     expect(lien("formateur_assigne")).toBe(`${PREFIXE}/S1?phase=preparer#formateur`);
-    expect(lien("convention_contresignee")).toBe(`${PREFIXE}/S1?phase=preparer#signature-pieces`);
+    // Aucune convention : le bloc des signatures n'est pas rendu, on mène au
+    // bloc Documents (cf. « le-suivi-mene-au-geste.spec.ts »).
+    expect(lien("convention_contresignee")).toBe(`${PREFIXE}/S1?phase=preparer#documents`);
     expect(lien("satisfaction_chaud")).toBe(`${PREFIXE}/S1?phase=jour_j#questionnaires`);
+  });
+
+  it("avec une convention vivante, les signatures mènent au bloc des signatures", () => {
+    const avecConvention = construireParcours(
+      dossier({
+        documents: [
+          {
+            id: "conv",
+            type: "convention",
+            numero: "AXI-DOC-2026-020",
+            createdAt: d("2026-09-01T00:00:00.000Z"),
+            annuleeAt: null,
+          },
+        ],
+      }),
+    ).etapes;
+    for (const cle of ["convention_signee", "convention_contresignee"] as const) {
+      expect(
+        hrefEtape(
+          "S1",
+          avecConvention.find((e) => e.cle === cle)!,
+          PREFIXE,
+        ),
+      ).toBe(`${PREFIXE}/S1?phase=preparer#signature-pieces`);
+    }
   });
 
   it("aucun lien ne passe par le bloc « Sous-pages »", () => {

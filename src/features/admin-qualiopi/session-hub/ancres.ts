@@ -92,6 +92,20 @@ export function ancresVisibles(presentes: Iterable<string> = []): readonly Ancre
 }
 
 /**
+ * La barre d'ancres d'UN onglet : les seuls blocs AFFICHÉS de l'onglet courant.
+ *
+ * 🔴 Relecture L3 — la barre listait jusqu'à treize sections, y compris
+ * celles repliées sous « Autres blocs de la fiche » : une pastille menait
+ * alors dans un `<details>` fermé, où le navigateur ne déroule rien. Un lien
+ * qui ne montre rien est un lien mort. Les blocs repliés restent atteignables
+ * en ouvrant le repli, ou par l'onglet de leur phase.
+ */
+export function ancresDeLOnglet(affiches: readonly BlocFiche[]): readonly AncreHub[] {
+  const montres = new Set<string>(affiches);
+  return ANCRES_HUB_SESSION.filter((a) => montres.has(a.id));
+}
+
+/**
  * Décalage de défilement, en unités CSS.
  *
  * 🔴 La topbar de la console est **collante** (`sticky`). Sans marge de
@@ -122,7 +136,7 @@ export const CLASSE_ANCRE_SECTION = "scroll-mt-[calc(var(--admin-topbar-h)+var(-
 export const ANCRES_SOUS_PAGES = {
   emargement: ["contresignature", "journees", "liens", "feuille"],
   evaluations: ["evaluations-stagiaires", "insc-"],
-  financement: [],
+  financement: ["facturation"],
   kit: [],
 } as const satisfies Record<string, readonly string[]>;
 
@@ -137,7 +151,7 @@ export const ANCRES_SOUS_PAGES = {
  *
  * La fiche s'ouvre désormais sur l'onglet de la phase COURANTE du dossier
  * (`phaseDossier`, ADR 0060) ; les blocs des autres phases ne disparaissent
- * pas, ils sont repliés sous « Toutes les actions ». Aucun contenu n'est perdu.
+ * pas, ils sont repliés sous « Autres blocs de la fiche ». Aucun contenu n'est perdu.
  */
 export type PhaseFiche = "preparer" | "jour_j" | "apres" | "cloturee";
 
@@ -210,7 +224,7 @@ export function lirePhaseFiche(valeur: string | string[] | undefined): PhaseFich
 }
 
 /**
- * Répartit les blocs RENDUS entre l'onglet affiché et « Toutes les actions ».
+ * Répartit les blocs RENDUS entre l'onglet affiché et « Autres blocs de la fiche ».
  *
  * - l'ordre du catalogue (celui du DOM) est conservé des deux côtés ;
  * - la réunion des deux listes est EXACTEMENT `presents` : aucun bloc perdu,

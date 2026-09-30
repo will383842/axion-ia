@@ -270,7 +270,19 @@ export interface Parcours {
    * filiation. Dérouler seize étapes sur une session annulée demanderait des
    * gestes que plus personne ne doit poser.
    */
-  readonly repliee: { readonly motif: string } | null;
+  readonly repliee: RepliParcours | null;
+}
+
+/** Le repli d'un statut terminal. */
+export interface RepliParcours {
+  /** « Session annulée », « Session reportée vers AXI-SESS-… » — accentué, rendu tel quel. */
+  readonly motif: string;
+  /**
+   * Numéro de la session de remplacement d'une session REPORTÉE, `null` sinon.
+   * Le bandeau d'état du dossier dit déjà « annulée » / « reportée » ; la
+   * fiche n'ajoute que CE qu'il ne dit pas : vers quelle session.
+   */
+  readonly remplacement: string | null;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -278,6 +290,9 @@ export interface Parcours {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const MS_JOUR = 24 * 60 * 60 * 1000;
+
+/** Les pièces qui font « la convention » d'une session, quelle qu'en soit la forme. */
+export const TYPES_CONVENTION = ["convention", "convention_tripartite", "contrat"] as const;
 
 const avant = (d: Date, jours: number): Date => new Date(d.getTime() - jours * MS_JOUR);
 const apres = (d: Date, jours: number): Date => new Date(d.getTime() + jours * MS_JOUR);
@@ -363,15 +378,21 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
 
   // Statut terminal : on replie, on ne déroule pas.
   if (session.statut === "annulee" || session.statut === "reportee") {
-    const filiation =
+    const remplacement =
       session.statut === "reportee" && session.sessionReporteeNumero
-        ? ` vers ${session.sessionReporteeNumero}`
-        : "";
+        ? session.sessionReporteeNumero
+        : null;
+    // 🔴 Relecture L3 — le motif écrivait le code du statut (« Session
+    // annulee »), sans accent, à l'écran.
+    const statut = session.statut === "annulee" ? "annulée" : "reportée";
     return {
       etapes: [],
       pire: "sans_objet",
       avancement: { fait: 0, total: 0 },
-      repliee: { motif: `Session ${session.statut}${filiation}` },
+      repliee: {
+        motif: `Session ${statut}${remplacement !== null ? ` vers ${remplacement}` : ""}`,
+        remplacement,
+      },
     };
   }
 
@@ -394,19 +415,18 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       echeance: avant(debut, 5),
       borne: debut,
       maintenant,
-      geste:
-        "Manuel — bloc Formateur principal : choisir le formateur, puis « Assigner » (ind. 17).",
+      geste: "Vous choisissez le formateur, puis « Assigner » (ind. 17).",
     }),
   );
 
   // ── 2. Convention générée ─────────────────────────────────────────────────
-  const conventions = piecesVivantes(documents, "convention", "convention_tripartite", "contrat");
+  const conventions = piecesVivantes(documents, ...TYPES_CONVENTION);
   const doublonActif = conventions.length > 1;
   etapes.push(
     etape({
       cle: "convention_generee",
       phase: "preparer",
-      cible: { fragment: "documents", libelle: "bloc Documents → Session" },
+      cible: CIBLE_DOCUMENTS,
       libelle: "Convention générée",
       fait: conventions.length > 0,
       faitLe: conventions[0]?.createdAt ?? null,
@@ -414,8 +434,8 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       borne: debut,
       maintenant,
       geste:
-        "Manuel — bloc Documents, bouton « Générer : Convention de formation » (contrat pour un " +
-        "particulier, tripartite si l'OPCO signe). Produire n'engage rien.",
+        "Vous : « Générer : Convention de formation » (contrat pour un particulier, tripartite " +
+        "si l'OPCO signe). Produire n'engage rien.",
       // 🔴 Deux conventions actives = deux pièces opposables sur le même
       // dossier. L'écran ne peut pas choisir laquelle fait foi ; l'humain doit
       // annuler l'ancienne AU REGISTRE, pas la supprimer.
@@ -454,11 +474,17 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   const conventionContresignee = conventions.some((c) =>
     contresigneeParOrganisme(c, signaturesParPiece),
   );
+  // 🔴 Relecture L3 — le bloc « Signature des pièces contractuelles » n'est
+  // rendu QUE s'il existe une pièce contractuelle vivante (`piecesSignables`
+  // de la fiche). Sans convention — jamais générée, ou annulée —, viser
+  // `#signature-pieces` faisait un lien mort : on mène alors au bloc
+  // Documents, toujours rendu, où la convention se génère.
+  const cibleSignature = conventions.length > 0 ? CIBLE_SIGNATURE_PIECES : CIBLE_DOCUMENTS;
   etapes.push(
     etape({
       cle: "convention_signee",
       phase: "preparer",
-      cible: CIBLE_SIGNATURE_PIECES,
+      cible: cibleSignature,
       libelle: "Convention signée par le client",
       fait: conventionSigneeClient,
       faitLe: null,
@@ -474,7 +500,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
     etape({
       cle: "convention_contresignee",
       phase: "preparer",
-      cible: CIBLE_SIGNATURE_PIECES,
+      cible: cibleSignature,
       libelle: "Convention contresignée par l'organisme",
       // ⚠️ On ne coche PAS sur `conventionComplete` : une convention où seul
       // l'organisme aurait signé passerait alors pour contresignée à bon
@@ -487,8 +513,8 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       borne: debut,
       maintenant,
       geste:
-        "Acte HABILITÉ, jamais automatique : bloc « Signature des pièces contractuelles », " +
-        "bouton « Signer pour l'organisme ». Rien d'extérieur ne le retient.",
+        "Vous signez pour l'organisme (« Signer pour l'organisme ») : acte HABILITÉ, jamais " +
+        "automatique. Rien d'extérieur ne le retient.",
       ...(conventionSigneeClient && !conventionContresignee
         ? {
             avertissement:
@@ -524,8 +550,8 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       maintenant,
       avancement: { fait: posEnvoyes, total: n },
       geste:
-        "Manuel — bloc Questionnaires : « Générer les questionnaires de la session », puis " +
-        "« Envoyer au stagiaire » (ind. 8).",
+        "Vous : « Générer les questionnaires de la session », puis « Envoyer au stagiaire » " +
+        "(ind. 8).",
       sansObjetSi: n === 0,
       motifSansObjet: "Aucune inscription active",
     }),
@@ -599,7 +625,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       borne: debut,
       maintenant,
       geste:
-        "Manuel — sous-page Émargement, « Confirmer ces journées ». Sans elles, aucun lien n'est émissible.",
+        "Vous : « Confirmer ces journées ». Sans elles, aucun lien d'émargement n'est émissible.",
     }),
   );
 
@@ -829,9 +855,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       },
       maintenant,
       avancement: { fait: attestees.length, total: n },
-      geste:
-        "Acte HABILITÉ — attester engage l'organisme. Jamais automatique : sous-page Évaluations, " +
-        "cadre du stagiaire.",
+      geste: "Vous attestez pour l'organisme : acte HABILITÉ, jamais automatique.",
       sansObjetSi: n === 0,
       motifSansObjet: "Aucune inscription active",
       ...(attestationAvantEvaluation
@@ -938,10 +962,20 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
 // Cibles et gestes directs
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Le bloc qui porte les signatures des pièces — ses deux étapes y mènent. */
+/**
+ * Le bloc qui porte les signatures des pièces — ses deux étapes y mènent
+ * QUAND une pièce contractuelle vivante existe (le bloc n'est rendu qu'à cette
+ * condition ; sinon elles mènent à `CIBLE_DOCUMENTS`).
+ */
 export const CIBLE_SIGNATURE_PIECES: CibleEtape = {
   fragment: "signature-pieces",
   libelle: "bloc Signature des pièces contractuelles",
+};
+
+/** Le bloc Documents de la fiche — toujours rendu. */
+export const CIBLE_DOCUMENTS: CibleEtape = {
+  fragment: "documents",
+  libelle: "bloc Documents → Session",
 };
 
 const CIBLE_QUESTIONNAIRES: CibleEtape = {

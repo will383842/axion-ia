@@ -5,7 +5,7 @@
  *
  * Sur un dossier CLOS, la fiche masque chaque écriture classée `verrou` (lot
  * L2). Mais la checklist « Où en est ce dossier », « Encore possible » du bloc
- * Clôture et « À traiter » continuaient de dire, pour une étape restée due —
+ * Clôture (aujourd'hui dans le bandeau du dossier) et « À traiter » continuaient de dire, pour une étape restée due —
  * évaluation finale, convocation, liens d'émargement… — « Aller à : … » et
  * « Manuel — bouton « Générer … » » : un geste que le serveur refuse et que
  * l'écran d'arrivée ne montre plus. On envoyait l'utilisateur chercher un
@@ -104,4 +104,4 @@ export function etapeBloqueeParLeVerrou(
 
 /** Ce que l'écran dit À LA PLACE du geste d'une étape bloquée. */
 export const MENTION_GESTE_VERROUILLE =
-  "Dossier clos : ce geste n'est plus possible sans rouvrir le dossier (bandeau en tête de fiche).";
+  "Dossier clos : ce geste n'est plus possible sans rouvrir le dossier.";

@@ -13,8 +13,9 @@
  *
  *  - `clos` : « Dossier clôturé le … — lecture seule », le texte, l'encart
  *    « Encore possible » (les gestes ouverts RÉELLEMENT dus, jamais la liste
- *    théorique), et « Rouvrir le dossier » — ou, sans l'habilitation, à qui
- *    s'adresser ;
+ *    théorique — la SEULE liste de ce nom sur la fiche, construite par
+ *    `gestesEncorePossibles`), et « Rouvrir le dossier » — ou, sans
+ *    l'habilitation, à qui s'adresser ;
  *  - `rouvert` : bandeau orange, le texte (date, auteur, motif), et « Clore à
  *    nouveau » ;
  *  - `a_recueillir`, `hors_parcours` : le texte seul, pour information ;
@@ -32,11 +33,9 @@ import {
 } from "@/server/qualiopi/sessions/verrou-dossier";
 import { RouvrirDossierForm, type RouvrirDossierFormProps } from "./RouvrirDossierForm";
 
-/** Un geste encore ouvert ET dû sur un dossier clos, avec l'endroit où le faire. */
-export interface GesteEncorePossible {
-  readonly libelle: string;
-  readonly href: string;
-}
+import type { GesteEncorePossible } from "@/server/qualiopi/parcours/encore-possible";
+
+export type { GesteEncorePossible };
 
 export interface BandeauVerrouDossierProps {
   sessionId: string;

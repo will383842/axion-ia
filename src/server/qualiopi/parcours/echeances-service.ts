@@ -36,6 +36,7 @@ import { appelleUneAction, type EtatEtape } from "./etat-echeance";
 import {
   construireParcours,
   type EtapeParcours,
+  type RepliParcours,
   type SessionParcoursInput,
 } from "./session-parcours";
 
@@ -273,7 +274,7 @@ export interface ResultatEcheances {
        * La chaîne était morte des DEUX bouts : `sessionReporteeNumero` n'avait
        * aucun écrivain, et `repliee` aucun lecteur hors de son propre spec.
        */
-      readonly repliee: { readonly motif: string } | null;
+      readonly repliee: RepliParcours | null;
     }
   >;
   /**
@@ -465,7 +466,7 @@ export async function prochainesEcheances(options?: {
       fait: number;
       total: number;
       etapes: ReadonlyArray<EtapeParcours>;
-      repliee: { readonly motif: string } | null;
+      repliee: RepliParcours | null;
     }
   >();
 

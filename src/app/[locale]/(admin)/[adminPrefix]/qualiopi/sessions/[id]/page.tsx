@@ -1,12 +1,17 @@
 /**
- * Admin — Qualiopi · Hub d&apos;une session de formation (T19 Cluster L2).
+ * Admin — Qualiopi · Fiche d'une session de formation.
  *
- * Affiche l&apos;en-tête de la session (formation, dates, statut, client, financement)
- * + liens vers les sous-pages existantes (émargement / évaluations / financement)
- * + SessionLifecycleButtons pour piloter le cycle de vie.
+ * L'en-tête (n°, statut, phase, client, formateur), le fil d'Ariane et le
+ * bandeau d'état du dossier — avec « Encore possible » sur un dossier clos —
+ * sont portés par `layout.tsx`, communs à la fiche et à ses quatre sous-pages.
  *
- * Sections de Vague 2 (E1 stagiaires, E2 documents, E3 questionnaires)
- * sont pré-câblées avec des ancres commentées — NON implémentées ici.
+ * La fiche elle-même (lot L3, ADR 0060) :
+ *  - « Où en est ce dossier » : le parcours, chaque étape menant en un clic à
+ *    la section qui porte son geste (`hrefEtape`) ;
+ *  - des onglets par phase (Préparer · Le jour J · Après · Clôturée), ouverts
+ *    sur la phase COURANTE du dossier ; les blocs des autres phases sont
+ *    repliés sous « Autres blocs de la fiche », jamais supprimés ;
+ *  - une barre d'ancres limitée aux blocs AFFICHÉS de l'onglet.
  *
  * Server Component. Force-dynamic. Robots noindex.
  */
@@ -88,7 +93,7 @@ import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import type { TrainingSessionStatut } from "../../../../../../../../prisma/generated/client";
 import { AncresHubSession } from "@/features/admin-qualiopi/session-hub/AncresHubSession";
 import {
-  ancresVisibles,
+  ancresDeLOnglet,
   CLASSE_ANCRE_SECTION,
   lirePhaseFiche,
   repartirBlocs,
@@ -96,18 +101,13 @@ import {
   type PhaseFiche,
 } from "@/features/admin-qualiopi/session-hub/ancres";
 import { OngletsPhase } from "@/features/admin-qualiopi/session-hub/OngletsPhase";
-import { hrefEtape } from "@/server/qualiopi/parcours/cible-etape";
-import { etapeBloqueeParLeVerrou } from "@/server/qualiopi/parcours/etape-dossier-clos";
-import { chargerEtatVerrou } from "@/server/qualiopi/sessions/verrou-dossier";
+import { lireEtatVerrouFiche, lireParcoursFiche } from "@/server/qualiopi/sessions/lectures-fiche";
 import {
   dateHeureParis,
   dossierFige,
   phaseDossier,
-  texteEtatVerrou,
-  type StatutSessionVerrou,
 } from "@/server/qualiopi/sessions/verrou-dossier-pur";
 import { ChecklistSession } from "@/features/admin-qualiopi/session-hub/ChecklistSession";
-import { prochainesEcheances } from "@/server/qualiopi/parcours/echeances-service";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 
@@ -405,7 +405,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     traineesRaw,
     totalStagiairesRegistre,
     preparationKit,
-    echeances,
+    parcours,
     verrou,
   ] = await Promise.all([
     // État de signature du relevé de connexion, lu APRÈS la garde de rôle.
@@ -457,19 +457,19 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     // étapes fabriquerait deux vérités, et le jour où une dix-septième étape arrive
     // l'un des deux écrans compterait encore sur seize.
     //
-    // ⚠️ `catch` : la checklist est un CONFORT de lecture. Une lecture en échec
-    // ne doit pas faire tomber le dossier entier — on perd la checklist, pas la
-    // page.
+    // ⚠️ Une lecture en échec rend `null` (`lireParcoursFiche`) : la checklist
+    // est un CONFORT de lecture, on la perd sans perdre la page. Mémoïsée pour
+    // le rendu : le bandeau du layout la lit aussi (« Encore possible »).
     lirePreparation(id),
-    prochainesEcheances({ sessionIds: [id] }).catch(() => null),
+    lireParcoursFiche(id),
     // ADR 0060 — l'état du verrou du dossier : il décide de l'onglet ouvert par
     // défaut (`phaseDossier`) et nourrit le bloc « Clôture du dossier ».
-    // ⚠️ `catch` : même règle que la checklist — une lecture en échec retombe
-    // sur la phase déduite du statut, elle ne fait pas tomber la fiche.
-    chargerEtatVerrou(id).catch(() => null),
+    // Mémoïsé pour le rendu : le layout l'a déjà lu pour son bandeau, et il
+    // rend « introuvable » s'il est nul — la page fait de même, sans repli.
+    lireEtatVerrouFiche(id),
   ]);
 
-  if (!trainingSession) notFound();
+  if (!trainingSession || verrou === null) notFound();
 
   const mentionTvaSession = mentionTva(regimeTva);
 
@@ -760,7 +760,6 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
 
   const base = `/${locale}/${adminPrefix}/qualiopi/sessions`;
   const sessionBase = `${base}/${id}`;
-  const parcours = echeances?.parSession.get(id) ?? null;
   const dateValidation = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" });
 
   const sectionHeadCls =
@@ -778,29 +777,19 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
   // temps. La fiche s'ouvre désormais sur la phase COURANTE du dossier — la
   // même fonction que la liste des sessions et que le verrou (ADR 0060) ; un
   // `?phase=` explicite (lien de « À traiter », clic sur un onglet) l'emporte.
-  //
-  // Sans état de verrou (lecture en échec), la phase se déduit du statut seul,
-  // par la MÊME fonction : on ne recopie pas la règle.
-  const phaseDuDossier =
-    verrou !== null
-      ? phaseDossier(verrou.statut, verrou.etat)
-      : phaseDossier(trainingSession.statut as StatutSessionVerrou, { etat: "en_cours" });
+  const phaseDuDossier = phaseDossier(verrou.statut, verrou.etat);
   const phaseCourante: PhaseFiche | null =
     phaseDuDossier === "hors_parcours" ? null : phaseDuDossier;
   // `null` (session annulée ou reportée, sans `?phase=`) : tout est affiché.
   const phaseAffichee: PhaseFiche | null = lirePhaseFiche(parametres.phase) ?? phaseCourante;
-  // Ce qui reste dû au parcours — ce que l'onglet « Clôturée » appelle « encore
-  // possible » : sur un dossier clos, ce sont les recueils ENTRANTS (à froid,
-  // contreseings) qui arrivent après l'attestation.
-  //
-  // 🔴 ADR 0060 — sur un dossier CLOS (verrou actif), une étape dont le geste
-  // est verrouillé n'est PAS « encore possible » : la proposer enverrait
-  // chercher un bouton que la fiche masque et que le serveur refuse.
-  const fige = verrou !== null && dossierFige(verrou.etat);
-  const gestesOuverts =
-    parcours?.etapes.filter(
-      (e) => e.etat !== "fait" && e.etat !== "sans_objet" && !etapeBloqueeParLeVerrou(e, fige),
-    ) ?? [];
+  // 🔴 ADR 0060 — sur un dossier CLOS (verrou actif), la checklist ne propose
+  // plus une étape dont le geste est verrouillé. « Encore possible » n'est plus
+  // tenu ici : le bandeau du layout en porte la SEULE liste (relecture L3).
+  const fige = dossierFige(verrou.etat);
+  // Session annulée : le bandeau dit déjà « hors du parcours » — la checklist
+  // ne le répète pas. Session reportée : elle ne dit QUE vers quelle session.
+  const checklistRendue =
+    parcours !== null && (parcours.repliee === null || parcours.repliee.remplacement !== null);
 
   const blocs: Record<BlocFiche, ReactNode> = {
     infos: (
@@ -963,7 +952,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
         {/* 🔴 La checklist, juste après l'identité de la session : c'est la
               question qu'on se pose en ouvrant un dossier — « où en est-il ? » —
               et le serveur la calculait déjà sans jamais la rendre ici. */}
-        {parcours !== null ? (
+        {checklistRendue ? (
           <section id="checklist" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
             <h2 className={sectionHeadCls}>Où en est ce dossier</h2>
             <ChecklistSession
@@ -1145,16 +1134,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     ),
     stagiaires: (
       <>
-        {/* SECTION: stagiaires */}
-        {/*
-         * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         * VAGUE 2 — Cluster E1 : Inscriptions + accès portail stagiaires
-         * Implémenter : EnrollmentsSection (lister / inscrire / changer statut)
-         * + GenererPortailAccesButton (+ revoquer) par stagiaire.
-         * Câble : enrollTraineeAction, setEnrollmentStatutAction,
-         *         genererPortailAccesAction, revoquerPortailAccesAction.
-         * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         */}
+        {/* ── Stagiaires : inscrire, statut, adaptations, accès portail ──── */}
         <section id="stagiaires" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
           <h2 className={sectionHeadCls}>Stagiaires</h2>
           <EnrollmentsSection
@@ -1181,16 +1161,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     ),
     documents: (
       <>
-        {/* SECTION: documents */}
-        {/*
-         * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         * VAGUE 2 — Cluster E2 : Documents (14 types)
-         * Implémenter : DocumentsSection — boutons appelant generer<X>Action
-         * (convention, convocation, emargement, certificat_realisation, etc.)
-         * regroupés par catégorie (session / pédagogie / financeurs).
-         * Affiche les DocumentGenere existants + lien de téléchargement PDF.
-         * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         */}
+        {/* ── Documents : dossier d'audit, génération, registre, signatures ─ */}
         <section id="documents" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
           <h2 className={sectionHeadCls}>Documents</h2>
 
@@ -1264,7 +1235,11 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
                 Sans ce bloc, `emettreLienSignatureAction` et `contresignerPieceAction`
                 n'étaient appelables par personne : les cinq circuits seraient restés
                 du code de signature écrit, testé et inatteignable — le défaut que ce
-                chantier a déjà trouvé trois fois. */}
+                chantier a déjà trouvé trois fois.
+
+                ⚠️ Rendu SEULEMENT s'il existe une pièce signable : le parcours ne
+                vise `#signature-pieces` que si une convention vivante existe, et
+                mène sinon à `#documents` (garde : `le-suivi-mene-au-geste.spec.ts`). */}
           {piecesSignables.length > 0 && (
             <div
               id="signature-pieces"
@@ -1369,15 +1344,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     ),
     questionnaires: (
       <>
-        {/* SECTION: questionnaires */}
-        {/*
-         * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         * VAGUE 2 — Cluster E3 : Questionnaires de satisfaction
-         * Implémenter : QuestionnairesSection — générer les questionnaires
-         * (genererQuestionnairesSessionAction) + saisir les réponses
-         * (saisirReponsesQuestionnaireAction) par stagiaire.
-         * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         */}
+        {/* ── Questionnaires : générer, envoyer, relancer, saisir ──────────── */}
         <section
           id="questionnaires"
           className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
@@ -1395,87 +1362,40 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       </>
     ),
     // ── Clôture du dossier (onglet « Clôturée ») ─────────────────────────
-    // L'état du verrou, dit avec le texte UNIQUE que reprend le dossier
-    // d'audit (`texteEtatVerrou`) ; l'historique des réouvertures ; ce qui
-    // reste possible ; le ZIP et le registre.
-    cloture:
-      verrou !== null ? (
-        <section id="cloture" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-          <h2 className={sectionHeadCls}>Clôture du dossier</h2>
-          <div className="space-y-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
-            <p
-              role="status"
-              className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]"
-            >
-              {texteEtatVerrou(verrou.etat)}
+    // L'historique des réouvertures, seul. Relecture L3 : l'état du verrou
+    // (`texteEtatVerrou`) et « Encore possible » vivent dans le bandeau du
+    // layout, le ZIP et le registre dans le bloc Documents — un seul
+    // exemplaire de chaque, jamais deux.
+    cloture: (
+      <section id="cloture" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+        <h2 className={sectionHeadCls}>Clôture du dossier</h2>
+        <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
+          <h3 className="text-[length:var(--text-admin-sm)] font-semibold">Historique du verrou</h3>
+          {verrou.entree.evenements.length === 0 ? (
+            <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+              Aucune réouverture : le dossier n&apos;a jamais été rouvert.
             </p>
-
-            <div>
-              <h3 className="text-[length:var(--text-admin-sm)] font-semibold">
-                Historique du verrou
-              </h3>
-              {verrou.entree.evenements.length === 0 ? (
-                <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-                  Aucune réouverture : le dossier n&apos;a jamais été rouvert.
-                </p>
-              ) : (
-                <ol className="list-decimal space-y-[var(--space-admin-1)] pl-[var(--space-admin-5)] text-[length:var(--text-admin-sm)]">
-                  {verrou.entree.evenements.map((ev) => (
-                    <li key={`${ev.type}-${ev.createdAt.toISOString()}`}>
-                      {ev.type === "reouverture" ? "Réouverture" : "Nouvelle clôture"} le{" "}
-                      {dateHeureParis(ev.createdAt)} par {ev.auteurNom}
-                      {ev.motif !== null && ev.motif !== "" ? ` — motif : « ${ev.motif} »` : ""}
-                    </li>
-                  ))}
-                </ol>
-              )}
-            </div>
-
-            <div>
-              <h3 className="text-[length:var(--text-admin-sm)] font-semibold">Encore possible</h3>
-              {gestesOuverts.length === 0 ? (
-                <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-                  Aucune étape du parcours ne reste due.
-                </p>
-              ) : (
-                <ul className="list-disc space-y-[var(--space-admin-1)] pl-[var(--space-admin-5)] text-[length:var(--text-admin-sm)]">
-                  {gestesOuverts.map((e) => (
-                    <li key={e.cle}>
-                      <a
-                        href={hrefEtape(id, e, base)}
-                        className="text-[color:var(--color-admin-accent)] underline"
-                      >
-                        {e.libelle}
-                      </a>{" "}
-                      <span className="text-[color:var(--color-admin-fg-muted)]">
-                        — {e.mention}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-
-            <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
-              <DossierSessionButton sessionId={id} />
-              <Link
-                href={`/${locale}/${adminPrefix}/qualiopi/mode-auditeur/signatures?session=${id}`}
-                className="admin-button-ghost"
-              >
-                Registre des signatures de cette session
-              </Link>
-            </div>
-          </div>
-        </section>
-      ) : null,
+          ) : (
+            <ol className="list-decimal space-y-[var(--space-admin-1)] pl-[var(--space-admin-5)] text-[length:var(--text-admin-sm)]">
+              {verrou.entree.evenements.map((ev) => (
+                <li key={`${ev.type}-${ev.createdAt.toISOString()}`}>
+                  {ev.type === "reouverture" ? "Réouverture" : "Nouvelle clôture"} le{" "}
+                  {dateHeureParis(ev.createdAt)} par {ev.auteurNom}
+                  {ev.motif !== null && ev.motif !== "" ? ` — motif : « ${ev.motif} »` : ""}
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
+      </section>
+    ),
   };
   // Les blocs CONDITIONNELS ne sont présents que s'ils ont un contenu : un
   // onglet qui annoncerait un bloc vide mentirait autant qu'un lien mort.
   const presents = (Object.keys(blocs) as BlocFiche[]).filter(
     (b) =>
-      (b !== "checklist" || parcours !== null) &&
-      (b !== "preparation-kit" || (preparationKit !== null && preparationKit.aPreparer)) &&
-      (b !== "cloture" || verrou !== null),
+      (b !== "checklist" || checklistRendue) &&
+      (b !== "preparation-kit" || (preparationKit !== null && preparationKit.aPreparer)),
   );
   const { affiches: blocsAffiches, replies: blocsReplies } = repartirBlocs(phaseAffichee, presents);
 
@@ -1502,21 +1422,14 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
         </div>
       )}
 
-      {/* Sommaire interne : dix sections, aucun moyen d'en atteindre une sans
-          tout dérouler. Les ancres conditionnelles ne sont listées que si leur
-          section est réellement rendue — un lien mort apprend à ne plus faire
-          confiance à la barre. */}
-      <AncresHubSession
-        ancres={ancresVisibles([
-          ...(parcours !== null ? ["checklist"] : []),
-          ...(preparationKit !== null && preparationKit.aPreparer ? ["preparation-kit"] : []),
-          ...(verrou !== null ? ["cloture"] : []),
-        ])}
-      />
+      {/* Sommaire interne de l'ONGLET : seulement les blocs affichés. Une
+          pastille vers un bloc replié mènerait dans un <details> fermé — un
+          lien qui ne montre rien apprend à ne plus faire confiance à la barre. */}
+      <AncresHubSession ancres={ancresDeLOnglet(blocsAffiches)} />
 
       {/* Onglets de phase — la fiche s'ouvre sur la phase COURANTE du
           dossier ; les autres phases sont un clic plus loin, et leurs blocs
-          restent sous « Toutes les actions » plus bas. */}
+          restent sous « Autres blocs de la fiche » plus bas. */}
       {phaseAffichee !== null ? (
         <OngletsPhase hrefFiche={sessionBase} affichee={phaseAffichee} courante={phaseCourante} />
       ) : null}
@@ -1532,8 +1445,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       {blocsReplies.length > 0 ? (
         <details className="mb-[var(--space-admin-8)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
           <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
-            Toutes les actions — {blocsReplies.length} bloc{blocsReplies.length > 1 ? "s" : ""} des
-            autres phases
+            Autres blocs de la fiche ({blocsReplies.length})
           </summary>
           <div className="mt-[var(--space-admin-4)]">
             {blocsReplies.map((b) => (
