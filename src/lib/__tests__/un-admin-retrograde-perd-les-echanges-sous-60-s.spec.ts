@@ -48,6 +48,9 @@ import { oublierCacheAdmin, rafraichirJetonAdmin } from "../auth-jeton-admin";
 
 const T0 = 1_800_000_000_000;
 
+/** Un jeton vide TYPÉ : `{}` littéral ferait inférer `T = {}` et interdirait `jeton["role"]`. */
+const jetonVide = (): Record<string, unknown> => ({});
+
 beforeEach(() => {
   base.lignes.clear();
   base.lectures = 0;
@@ -57,7 +60,10 @@ beforeEach(() => {
 describe("⛔ un admin rétrogradé perd les échanges sous 60 s", () => {
   it("🔴 rôle changé en base : le jeton le suit au premier rafraîchissement après 60 s", async () => {
     base.lignes.set("u1", { status: "active", role: "admin" });
-    let jeton = await rafraichirJetonAdmin({ token: {}, user: { id: "u1", role: "admin" } }, T0);
+    let jeton = await rafraichirJetonAdmin(
+      { token: jetonVide(), user: { id: "u1", role: "admin" } },
+      T0,
+    );
     expect(jeton?.["role"]).toBe("admin");
     expect(peutVoirLesEchanges(jeton?.["role"] as string)).toBe(true);
 
@@ -69,13 +75,19 @@ describe("⛔ un admin rétrogradé perd les échanges sous 60 s", () => {
 
   it("🔴 un rôle forgé dans la connexion est remplacé par celui de la base", async () => {
     base.lignes.set("u2", { status: "active", role: "reader" });
-    const jeton = await rafraichirJetonAdmin({ token: {}, user: { id: "u2", role: "admin" } }, T0);
+    const jeton = await rafraichirJetonAdmin(
+      { token: jetonVide(), user: { id: "u2", role: "admin" } },
+      T0,
+    );
     expect(jeton?.["role"]).toBe("reader");
   });
 
   it("contre-témoin : dans les 60 s, une seule lecture de la base", async () => {
     base.lignes.set("u3", { status: "active", role: "admin" });
-    const j = await rafraichirJetonAdmin({ token: {}, user: { id: "u3", role: "admin" } }, T0);
+    const j = await rafraichirJetonAdmin(
+      { token: jetonVide(), user: { id: "u3", role: "admin" } },
+      T0,
+    );
     await rafraichirJetonAdmin({ token: j ?? {} }, T0 + 10_000);
     await rafraichirJetonAdmin({ token: j ?? {} }, T0 + 59_000);
     expect(base.lectures).toBe(1);

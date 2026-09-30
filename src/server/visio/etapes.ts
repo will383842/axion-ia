@@ -140,12 +140,21 @@ export class ArretVisio extends Error {
   }
 }
 
-/** L'étape attend une réponse de Will (enregistrement de moins de 90 s). */
+/**
+ * L'étape attend une réponse de Will : enregistrement de moins de 90 s, ou
+ * session close par le serveur sans la liste des fenêtres hors accord.
+ */
 export class AttenteWill extends Error {
   constructor(readonly motif: string) {
     super(`en attente de Will : ${motif}`);
     this.name = "AttenteWill";
   }
+}
+
+/** « motif » → « Motif. » (majuscule, ponctuation finale gardée ou ajoutée). */
+function phraseDuMotif(motif: string): string {
+  const m = `${motif.charAt(0).toUpperCase()}${motif.slice(1)}`;
+  return /[?.!]$/.test(m) ? m : `${m}.`;
 }
 
 function plusMinutes(d: Date, min: number): Date {
@@ -426,8 +435,9 @@ async function traiterErreur(
       code: CODES_ALERTES_CIRCUIT.reponseAttendue,
       niveau: "important",
       titre: "Circuit visio : un compte rendu attend votre réponse",
-      message:
-        "L'enregistrement dure moins de 90 secondes : le client a-t-il refusé ? Répondez sur la page du rendez-vous, « Compte rendu de l'enregistrement ».",
+      // Le motif de l'attente (enregistrement court, ou session close par le
+      // serveur sans la liste des personnes sans accord) : Will sait quoi vérifier.
+      message: `${phraseDuMotif(err.motif)} Répondez sur la page du rendez-vous, « Compte rendu de l'enregistrement ».`,
       rencontreId: t.rencontreId,
     });
     return "attente_will";

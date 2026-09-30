@@ -1948,7 +1948,14 @@ export async function rejouerEffacements(
   const contacts = ids("client_contacts");
   const rencontresPilote = ids("rencontres").filter((id) => pilote.has(id));
   // RGPD-02 : rencontres supprimées à la fin de conservation de leurs preuves.
-  const rencontresEchues = ids("rencontres").filter((id) => !pilote.has(id));
+  // Filtrées sur LEUR motif, pas sur « pas pilote » : un motif ajouté demain
+  // pour la table `rencontres` ne serait pas rejoué comme une échéance.
+  const conservation = new Set(
+    lignes
+      .filter((l) => l.tableCible === "rencontres" && l.motif === "conservation")
+      .map((l) => l.ligneId),
+  );
+  const rencontresEchues = ids("rencontres").filter((id) => conservation.has(id));
   const projetsPilote = ids("projets").filter((id) => pilote.has(id));
   const contactsPilote = contacts.filter((id) => pilote.has(id));
   const contactsEffaces = contacts.filter((id) => !pilote.has(id));

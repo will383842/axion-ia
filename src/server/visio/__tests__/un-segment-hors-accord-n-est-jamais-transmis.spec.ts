@@ -31,13 +31,17 @@ describe("un segment hors accord n'est jamais transmis", () => {
       rencontreId: "00000000-0000-4000-8000-0000000000f1",
       etape: "transcrire",
     });
-    const e = enregistrement({ fenetresHorsAccord: [{ debutMs: 60_000, finMs: 90_000 }] });
+    // La fenêtre commence juste APRÈS la tranche (0-180 s) : la tranche part,
+    // c'est le SECOND FILET (par segment) qui est éprouvé ici. Une tranche
+    // qui chevauche la fenêtre ne part pas du tout : voir
+    // `une-tranche-dans-une-fenetre-hors-accord-ne-part-jamais-chez-openai`.
+    const e = enregistrement({ fenetresHorsAccord: [{ debutMs: 181_000, finMs: 200_000 }] });
     const { port, ecrits } = portTranscription(e);
     const client = {
       text: "",
       segments: [
         { start: 10, end: 20, speaker: "A", text: "Avant l'arrivée de mon associé." },
-        { start: 65, end: 80, speaker: "B", text: "Parole de la personne sans accord." },
+        { start: 182, end: 190, speaker: "B", text: "Parole de la personne sans accord." },
       ],
     };
     const f = fauxClient(undefined, { transcriptions: [client, { text: "", segments: [] }] });

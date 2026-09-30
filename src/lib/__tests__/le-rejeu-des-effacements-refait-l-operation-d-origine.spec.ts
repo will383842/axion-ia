@@ -240,6 +240,13 @@ describe("le rejeu des effacements refait l'opération d'origine", () => {
     expect((etat.tables["rencontre"] ?? []).map((l) => l["id"])).not.toContain("r-conservation");
   });
 
+  it("🔑 une rencontre journalisée sous un AUTRE motif n'est pas rejouée comme une échéance", async () => {
+    etat.tables["effacementJournal"]?.push(journal("rencontres", "r-autre-motif", "autre"));
+    etat.tables["rencontre"]?.push({ id: "r-autre-motif", clientId: "c-vrai" });
+    await rejouerEffacements({ appliquer: true });
+    expect((etat.tables["rencontre"] ?? []).map((l) => l["id"])).toContain("r-autre-motif");
+  });
+
   it("🔑 sans ligne `pilote` au journal, la fiche de test n'est pas touchée", async () => {
     etat.tables["effacementJournal"] = (etat.tables["effacementJournal"] ?? []).filter(
       (l) => l["motif"] !== "pilote",
