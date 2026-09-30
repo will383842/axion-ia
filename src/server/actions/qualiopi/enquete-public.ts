@@ -81,6 +81,10 @@ export async function soumettreEnqueteEntrepriseAction(input: {
 
   const result = await soumettreReponses({
     token: v.token,
+    // ADR 0060 (D3) — le répondant répond lui-même, par son lien : ce n'est pas
+    // une saisie de l'organisme. (Pour l'enquête entreprise, « stagiaire » se
+    // lit « le répondant externe lui-même » ; le dossier d'audit le nomme ainsi.)
+    origine: "stagiaire",
     reponses: {
       ...(v.commentaire !== undefined && v.commentaire !== ""
         ? { commentaire: v.commentaire }

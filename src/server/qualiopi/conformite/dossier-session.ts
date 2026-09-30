@@ -70,6 +70,19 @@ import {
 import { colonneDeclarationDisponible } from "@/server/qualiopi/adaptation/colonne-declaration";
 import { lireCircuitAdaptation } from "@/server/qualiopi/adaptation/journal-consignation";
 import { sectionIndicateur10 } from "@/server/qualiopi/adaptation/dossier-adaptation";
+// ADR 0060 (D8) — le verrou, ses réouvertures, les signatures révoquées et
+// l'origine des réponses : ce que le certificateur doit voir, écrit par les
+// MÊMES fonctions que l'écran (`texteEtatVerrou`).
+import { chargerEtatVerrou, texteEtatVerrou } from "@/server/qualiopi/sessions/verrou-dossier";
+import {
+  avertissementReouvertures,
+  lireEvenementsDossier,
+  lireJournalSession,
+  sectionHistoriqueDossier,
+  sectionOrigineReponses,
+  sectionSignaturesRevoquees,
+  type SignatureRevoquee,
+} from "@/server/qualiopi/sessions/historique-dossier";
 
 export interface DossierSessionResult {
   base64: string;
@@ -724,7 +737,7 @@ export async function genererDossierSessionZip(
   // téléchargement — sont les seuls marquages disponibles.
   const annulees = await prisma.documentGenere.findMany({
     where: { sessionId, annuleeAt: { not: null } },
-    select: { numero: true, type: true, annuleeAt: true, annuleeMotif: true },
+    select: { id: true, numero: true, type: true, annuleeAt: true, annuleeMotif: true },
     orderBy: { annuleeAt: "asc" },
   });
   if (annulees.length > 0) {
@@ -735,6 +748,166 @@ export async function genererDossierSessionZip(
         `  ${a.numero} (${a.type}) — ${a.annuleeMotif ?? "motif non renseigné"} — ${quand}`,
       );
     }
+  }
+
+  // ── 3 quater. ADR 0060 (D8) — « rien d'invisible » ──────────────────────
+  //
+  // 🔴 Un dossier clos qu'on a rouvert, corrigé puis refermé ne doit pas
+  // ressembler à un dossier jamais touché. L'historique du verrou dit QUI a
+  // rouvert, QUAND, POURQUOI, et ce qui a été fait pendant l'ouverture ; les
+  // signatures révoquées sont NOMMÉES (elles étaient retirées de la chaîne sans
+  // un mot) ; et l'origine de chaque réponse aux questionnaires est dite.
+  //
+  // ⚠️ Fail-soft, mais jamais muet : une section illisible lève un
+  // avertissement qui dit que ce n'est PAS un constat d'absence.
+  try {
+    const [lu, evenements] = await Promise.all([
+      chargerEtatVerrou(sessionId),
+      lireEvenementsDossier(sessionId),
+    ]);
+    if (evenements === null) {
+      avertissements.push(
+        "⚠️ Le registre des réouvertures du dossier n'a pas pu être lu : ce n'est PAS un constat d'absence de réouverture.",
+      );
+    } else {
+      const maintenant = new Date();
+      const premiere = evenements.find((e) => e.type === "reouverture");
+      const journal =
+        premiere === undefined
+          ? []
+          : await lireJournalSession({
+              cibles: [
+                sessionId,
+                ...session.enrollments.map((e) => e.id),
+                ...session.documents.map((d) => d.id),
+                ...annulees.map((a) => a.id),
+              ],
+              depuis: premiere.createdAt,
+              jusqua: maintenant,
+            });
+      const historique = sectionHistoriqueDossier({
+        texteEtat: lu === null ? null : texteEtatVerrou(lu.etat),
+        evenements,
+        journal,
+        maintenant,
+      });
+      index.push("", ...historique.lignes);
+      const avertissement = avertissementReouvertures(historique.nbReouvertures);
+      if (avertissement !== null) avertissements.push(avertissement);
+    }
+  } catch {
+    avertissements.push(
+      "⚠️ L'historique du verrou du dossier n'a pas pu être lu : ce n'est PAS un constat d'absence de réouverture.",
+    );
+  }
+
+  try {
+    const [emargements, contreseings, pieces] = await Promise.all([
+      prisma.emargementSignature.findMany({
+        where: { enrollment: { sessionId }, revokedAt: { not: null } },
+        select: {
+          signataireNom: true,
+          signeAt: true,
+          revokedAt: true,
+          revokedMotif: true,
+          revokedById: true,
+        },
+      }),
+      prisma.emargementContresignature.findMany({
+        where: { sessionId, revokedAt: { not: null } },
+        select: {
+          formateurNom: true,
+          date: true,
+          revokedAt: true,
+          revokedMotif: true,
+          revokedById: true,
+        },
+      }),
+      prisma.documentSignature.findMany({
+        where: { documentGenere: { sessionId }, revokedAt: { not: null } },
+        select: {
+          signataireNom: true,
+          revokedAt: true,
+          revokedMotif: true,
+          revokedBy: { select: { name: true } },
+          documentGenere: { select: { numero: true } },
+        },
+      }),
+    ]);
+    const idsAuteurs = [
+      ...new Set(
+        [...emargements, ...contreseings]
+          .map((r) => r.revokedById)
+          .filter((id): id is string => id !== null),
+      ),
+    ];
+    const auteurs = new Map(
+      (idsAuteurs.length === 0
+        ? []
+        : await prisma.adminUser.findMany({
+            where: { id: { in: idsAuteurs } },
+            select: { id: true, name: true },
+          })
+      ).map((a) => [a.id, a.name]),
+    );
+    const revoquees: SignatureRevoquee[] = [
+      ...emargements.map((r) => ({
+        famille: "émargement" as const,
+        objet: `${r.signataireNom} — signée le ${parisDateISO(r.signeAt)}`,
+        revokedAt: r.revokedAt as Date,
+        motif: r.revokedMotif,
+        auteur: r.revokedById === null ? null : (auteurs.get(r.revokedById) ?? null),
+      })),
+      ...contreseings.map((r) => ({
+        famille: "contreseing formateur" as const,
+        objet: `${r.formateurNom} — journée du ${parisDateISO(r.date)}`,
+        revokedAt: r.revokedAt as Date,
+        motif: r.revokedMotif,
+        auteur: r.revokedById === null ? null : (auteurs.get(r.revokedById) ?? null),
+      })),
+      ...pieces.map((r) => ({
+        famille: "pièce" as const,
+        objet: `${r.documentGenere.numero} — ${r.signataireNom}`,
+        revokedAt: r.revokedAt as Date,
+        motif: r.revokedMotif,
+        auteur: r.revokedBy?.name ?? null,
+      })),
+    ];
+    index.push("", ...sectionSignaturesRevoquees(revoquees));
+  } catch {
+    avertissements.push(
+      "⚠️ Les signatures révoquées n'ont pas pu être lues : ce n'est PAS un constat d'absence de révocation.",
+    );
+  }
+
+  try {
+    const repondus = await prisma.questionnaire.findMany({
+      where: { enrollment: { sessionId }, reponduAt: { not: null } },
+      select: { type: true, origineReponse: true },
+    });
+    index.push(
+      "",
+      ...sectionOrigineReponses(repondus.map((q) => ({ type: q.type, origine: q.origineReponse }))),
+    );
+  } catch {
+    // Pendant l'heure qui suit la fusion, la colonne peut ne pas exister encore.
+    avertissements.push(
+      "⚠️ L'origine des réponses aux questionnaires n'a pas pu être lue : ce n'est PAS un constat de réponses du stagiaire.",
+    );
+  }
+
+  // RGPD — le verrou ne bloque JAMAIS un effacement. Le marqueur d'effacement
+  // (`Trainee.deletedAt`) est daté : le dossier le dit, inscription par
+  // inscription, à côté des preuves conservées.
+  const effaces = session.enrollments.filter((e) => e.trainee.deletedAt !== null);
+  if (effaces.length > 0) {
+    index.push(
+      "",
+      ...effaces.map(
+        (e) =>
+          `Stagiaire anonymisé le ${parisDateISO(e.trainee.deletedAt as Date)} (art. 17 §3 b), preuves conservées.`,
+      ),
+    );
   }
 
   const incomplet = avertissements.length > 0;

@@ -49,6 +49,7 @@ import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
 import type { DemiJourneeLabel, PlateformeLabel } from "@/server/qualiopi/presence/types";
 import { invalidateIndicateursCache } from "@/server/qualiopi/indicateurs/service";
+import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -159,6 +160,9 @@ export async function generateSessionCreneauxAction(input: {
   const parsed = generateSessionCreneauxSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert(v.sessionId);
+  if (!verrou.ok) return verrou;
 
   // Lecture de la session.
   const trainingSession = await prisma.trainingSession.findUnique({
@@ -390,6 +394,9 @@ export async function saveEmargementAction(input: {
   const parsed = saveEmargementSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert(v.sessionId);
+  if (!verrou.ok) return verrou;
 
   // Vérification session. `dateDebut` sert à invalider le cache des indicateurs
   // de la BONNE année (une session de décembre émargée en janvier invaliderait
@@ -648,6 +655,9 @@ export async function importReleveConnexionAction(input: {
   const parsed = importReleveConnexionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert(v.sessionId);
+  if (!verrou.ok) return verrou;
 
   // Lecture de la session + enrollments (avec email/nom/prenom du stagiaire).
   const trainingSession = await prisma.trainingSession.findUnique({
@@ -1061,6 +1071,9 @@ export async function setPresenceCreneauManualAction(input: {
   const parsed = setPresenceCreneauManualSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert({ creneauId: v.creneauId });
+  if (!verrou.ok) return verrou;
 
   // Lecture du créneau pour récupérer l'enrollmentId.
   const creneau = await prisma.presenceCreneau.findUnique({
@@ -1181,6 +1194,9 @@ export async function genererReleveConnexionDocumentAction(input: {
   const parsed = z.object({ importId: z.string().uuid() }).safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { importId } = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert({ importReleveId: importId });
+  if (!verrou.ok) return verrou;
 
   const releveImport = await prisma.releveConnexionImport.findUnique({
     where: { id: importId },

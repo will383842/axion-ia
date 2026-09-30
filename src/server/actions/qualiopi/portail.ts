@@ -283,6 +283,8 @@ export async function soumettreSatisfactionPortailAction(input: {
   const result = await soumettreReponses({
     questionnaireId: v.questionnaireId,
     reponses: reponsesSansDetail,
+    // ADR 0060 (D3) — le stagiaire répond lui-même, depuis son portail.
+    origine: "stagiaire",
     ...(v.noteGlobale !== undefined ? { noteGlobale: v.noteGlobale } : {}),
   });
 

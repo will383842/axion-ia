@@ -100,6 +100,9 @@ const DETAIL_REFUS: Readonly<Record<string, string>> = {
   maillon_interne:
     "Cette signature n'est pas la dernière apposée pour cette inscription : la révoquer romprait le chaînage et ferait apparaître la feuille comme falsifiée au contrôle. Révoquez d'abord les signatures postérieures, puis re-signez dans l'ordre.",
   demande_invalide: "Demande invalide.",
+  // ADR 0060 — la signature appartient à un dossier de session CLOS.
+  dossier_clos:
+    "Le dossier de cette session est clos : ses preuves sont figées. Rouvrez d'abord le dossier depuis la fiche session (motif obligatoire, visible par l'auditeur).",
 };
 
 function Inscription({

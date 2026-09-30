@@ -16,7 +16,16 @@
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-vi.mock("./_guards", () => ({ requireAdminWrite: vi.fn(), logQualiopiActivity: vi.fn() }));
+// ADR 0060 — le verrou du dossier de session a sa propre suite
+// (`src/server/qualiopi/sessions/__tests__/`) ; ici, le dossier est ouvert.
+vi.mock("@/server/qualiopi/sessions/verrou-dossier-garde", () => ({
+  assertDossierOuvert: async () => ({ ok: true, sessionId: null }),
+  assertDossierOuvertSiRegeneration: async () => ({ ok: true, sessionId: null }),
+}));
+
+// ADR 0060 (D7) — l'action lit la session par `requireAdminRead` : la porte
+// est l'habilitation `revoquer_signature`, plus `requireAdminWrite`.
+vi.mock("./_guards", () => ({ requireAdminRead: vi.fn(), logQualiopiActivity: vi.fn() }));
 vi.mock("@/server/qualiopi/documents/signature/document-signature-service", () => ({
   revoquerSignatureDocument: vi.fn(),
 }));
@@ -33,12 +42,12 @@ vi.mock("@sentry/nextjs", () => ({ captureMessage: vi.fn(), captureException: vi
 // (`revoquerSignatureSeanceAfestAction`) sont partis avec le module 1-to-1 —
 // la révocation COLLECTIVE/document ci-dessous est intacte.
 
-import { requireAdminWrite, logQualiopiActivity } from "./_guards";
+import { requireAdminRead, logQualiopiActivity } from "./_guards";
 import { revoquerSignatureDocument } from "@/server/qualiopi/documents/signature/document-signature-service";
 import { revoquerSignatureAction } from "./signature-revocation";
 
 type Mock = ReturnType<typeof vi.fn>;
-const mockAdmin = requireAdminWrite as unknown as Mock;
+const mockAdmin = requireAdminRead as unknown as Mock;
 const mockRevoquer = revoquerSignatureDocument as unknown as Mock;
 const mockLog = logQualiopiActivity as unknown as Mock;
 

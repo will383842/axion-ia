@@ -90,6 +90,19 @@ export async function requireHabilitation(acte: ActeEngageant): Promise<AdminSes
   return session;
 }
 
+/**
+ * 🔴 ADR 0060 — garde des écritures classées VERROU. Ré-exportée ici pour
+ * qu'on la trouve à côté des autres gardes ; son CODE vit dans
+ * `@/server/qualiopi/sessions/verrou-dossier-garde`, et les actions l'importent
+ * de là. Raison : 75 specs remplacent ce module `_guards` tout entier par un
+ * mock ; une garde qui vivrait ici y deviendrait `undefined`, et l'action
+ * lèverait au lieu de refuser. Un module dédié se mocke (ou non) en une ligne.
+ */
+export {
+  assertDossierOuvert,
+  type RefusDossierClos,
+} from "@/server/qualiopi/sessions/verrou-dossier-garde";
+
 export interface QualiopiActivityInput {
   /** Action canonique ex. "qualiopi.config.set", "qualiopi.formation.publish". */
   readonly action: string;

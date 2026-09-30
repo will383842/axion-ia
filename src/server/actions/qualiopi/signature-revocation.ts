@@ -30,7 +30,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
-import { requireAdminWrite, logQualiopiActivity } from "./_guards";
+import { requireAdminRead, logQualiopiActivity } from "./_guards";
+import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 import { peutEngager } from "@/server/auth/habilitations";
 import { retourValide } from "./_retour-formulaire";
 import { revoquerSignatureDocument } from "@/server/qualiopi/documents/signature/document-signature-service";
@@ -51,7 +52,13 @@ const schema = z.object({
  * et réaffiché est une injection en puissance, et une URL n'est pas un canal de
  * confiance. La page traduit le code en phrase.
  */
-export type CodeRevocation = "ok" | "role_insuffisant" | "demande_invalide" | "refus_service";
+export type CodeRevocation =
+  | "ok"
+  | "role_insuffisant"
+  | "demande_invalide"
+  | "refus_service"
+  /** ADR 0060 — la pièce relève d'un dossier de session clos : le rouvrir d'abord. */
+  | "dossier_clos";
 
 /**
  * Révoque une signature depuis le registre auditeur.
@@ -61,7 +68,11 @@ export type CodeRevocation = "ok" | "role_insuffisant" | "demande_invalide" | "r
  * consulté trois fois par an ne justifie pas un bundle.
  */
 export async function revoquerSignatureAction(donneesFormulaire: FormData): Promise<void> {
-  const session = await requireAdminWrite();
+  // 🔴 ADR 0060 (D7) — la porte est l'HABILITATION `revoquer_signature`, pas
+  // `requireAdminWrite` : l'écriture « ordinaire » n'a rien à dire sur un geste
+  // qui retire sa valeur à une preuve. La session est lue, puis la matrice seule
+  // tranche (ci-dessous).
+  const session = await requireAdminRead();
   // Retirer une preuve du dossier engage l'organisme autant que l'y verser :
   // même exigence de rôle que la signature elle-même. Le service revérifie.
   // 🔴 2026-08-21 — la validation vivait ici, en trois conditions recopiables.
@@ -88,6 +99,10 @@ export async function revoquerSignatureAction(donneesFormulaire: FormData): Prom
   if (!parse.success) {
     redirect(`${retour}?revocation=demande_invalide`);
   }
+
+  // ADR 0060 — une pièce d'un dossier CLOS est une preuve figée.
+  const verrou = await assertDossierOuvert({ signatureDocumentId: parse.data.signatureId });
+  if (!verrou.ok) redirect(`${retour}?revocation=dossier_clos`);
 
   const res = await revoquerSignatureDocument({
     signatureId: parse.data.signatureId,

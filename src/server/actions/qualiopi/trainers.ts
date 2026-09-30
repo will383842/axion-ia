@@ -40,6 +40,7 @@ import {
 import { getTrainerConflicts } from "@/features/admin-planning/queries";
 import type { PlanningStatut } from "@/features/admin-planning/types";
 import { getAllRegionSlugs } from "@/content/regions";
+import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -803,6 +804,9 @@ export async function assignTrainerToSessionAction(
   const parsed = assignTrainerSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, trainerId } = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert(sessionId);
+  if (!verrou.ok) return verrou;
 
   let trainingSession: {
     formationId: string;

@@ -11,6 +11,13 @@
 
 import { describe, it, expect, vi, beforeEach, assert } from "vitest";
 
+// ADR 0060 — le verrou du dossier de session a sa propre suite
+// (`src/server/qualiopi/sessions/__tests__/`) ; ici, le dossier est ouvert.
+vi.mock("@/server/qualiopi/sessions/verrou-dossier-garde", () => ({
+  assertDossierOuvert: async () => ({ ok: true, sessionId: null }),
+  assertDossierOuvertSiRegeneration: async () => ({ ok: true, sessionId: null }),
+}));
+
 /** Accès sûr à un appel de mock (lève si absent). */
 function mockCall<T>(fn: ReturnType<typeof vi.fn>, callIndex = 0): T {
   const call = fn.mock.calls[callIndex];

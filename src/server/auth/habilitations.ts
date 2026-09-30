@@ -97,7 +97,17 @@ export type ActeEngageant =
    * valeur à une preuve déjà recueillie n'est pas le même geste, et ne relève
    * pas de la même responsabilité.
    */
-  | "revoquer_signature";
+  | "revoquer_signature"
+  /**
+   * Rouvrir un dossier de session CLOS — ou le clore à nouveau à la main.
+   *
+   * 🔴 ADR 0060 (2026-09-30). Un dossier clos est une preuve : la rouvrir ouvre
+   * la porte à la modification d'une pièce, d'un émargement ou d'une
+   * attestation déjà remis. Même raisonnement que `revoquer_signature` :
+   * réservé à la DIRECTION seule. Le responsable qualité ajoute de la preuve ;
+   * décider qu'une preuve close redevient modifiable n'est pas le même geste.
+   */
+  | "rouvrir_dossier";
 
 /**
  * Les rôles du produit, du plus au moins étendu.
@@ -269,6 +279,7 @@ export const HABILITATIONS: Readonly<Record<ActeEngageant, ReadonlyArray<RoleAdm
   habiliter_formateur: ["super_admin", "admin", "responsable_qualite"],
   deposer_demande_financeur: ["super_admin", "admin"],
   revoquer_signature: ["super_admin", "admin"],
+  rouvrir_dossier: ["super_admin", "admin"],
 };
 
 /**
@@ -299,6 +310,9 @@ export const MOTIF_REFUS: Readonly<Record<ActeEngageant, string>> = {
   // chercher au mauvais endroit.
   revoquer_signature:
     "Priver d'effet une signature — d'émargement ou de pièce — retire sa valeur à une preuve légale : acte réservé à la direction.",
+  rouvrir_dossier:
+    "Rouvrir un dossier de session clos rend modifiable une preuve déjà constituée : acte réservé à la direction. " +
+    "Adressez-vous au dirigeant ou à un administrateur, avec le motif de la correction.",
 };
 
 /**

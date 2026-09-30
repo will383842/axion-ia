@@ -172,6 +172,9 @@ const MESSAGE_REVOCATION: Readonly<Record<string, string>> = {
   demande_invalide:
     "Le motif de révocation est obligatoire : sans lui, le registre ne dit rien à l'auditeur.",
   refus_service: "Révocation refusée.",
+  // ADR 0060 — la pièce appartient à un dossier de session CLOS.
+  dossier_clos:
+    "Le dossier de cette session est clos : ses pièces sont figées. Rouvrez d'abord le dossier depuis la fiche session (motif obligatoire, visible par l'auditeur).",
 };
 
 const DETAIL_REFUS: Readonly<Record<string, string>> = {

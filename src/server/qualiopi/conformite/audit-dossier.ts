@@ -54,6 +54,11 @@ import {
 import { rendreTirageEmargementAJour } from "@/server/qualiopi/documents/emargement-tirage";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
 import { joindrePiecesNominativesComplementaires } from "@/server/qualiopi/conformite/pieces-nominatives-zip";
+import {
+  lignesManifesteReouvertures,
+  lireReouverturesSessions,
+  type ReouvertureSessionManifeste,
+} from "@/server/qualiopi/sessions/historique-dossier";
 
 export { pieceAdmissibleAuDossier };
 
@@ -185,6 +190,14 @@ export interface ManifesteAuditPayload {
     readonly scorePct: number;
   };
   readonly indicateurs: IndicateurManifeste[];
+  /**
+   * 🔴 ADR 0060 (D8) — les sessions dont le dossier CLOS a été rouvert, avec
+   * chaque réouverture (date, auteur, motif, reverrouillage). Une rectification
+   * après clôture ne doit jamais être invisible au certificateur.
+   */
+  readonly reouverturesSessions: ReadonlyArray<ReouvertureSessionManifeste>;
+  /** Faux si le registre des réouvertures n'a pas pu être lu (jamais « aucune » par défaut). */
+  readonly reouverturesRegistreLu: boolean;
 }
 
 export interface ManifesteAuditResult {
@@ -658,6 +671,15 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
     };
   });
 
+  // ADR 0060 (D8) — les réouvertures de dossiers clos. Fail-soft mais jamais
+  // muet : un registre illisible est DIT, pas rendu comme « aucune ».
+  let reouvertures: ReouvertureSessionManifeste[] | null;
+  try {
+    reouvertures = await lireReouverturesSessions();
+  } catch {
+    reouvertures = null;
+  }
+
   const json: ManifesteAuditPayload = {
     meta: {
       genereAt: new Date().toISOString(),
@@ -668,6 +690,8 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
       scorePct: conformite.scorePct,
     },
     indicateurs,
+    reouverturesSessions: reouvertures ?? [],
+    reouverturesRegistreLu: reouvertures !== null,
   };
 
   const markdown = buildMarkdown(json);
@@ -1134,6 +1158,15 @@ function buildMarkdown(payload: ManifesteAuditPayload): string {
   lignes.push("");
   lignes.push("---");
   lignes.push("");
+  // ADR 0060 (D8) — en tête, avant les indicateurs : c'est une information sur
+  // la fiabilité de tout ce qui suit.
+  lignes.push(
+    ...lignesManifesteReouvertures(
+      payload.reouverturesRegistreLu ? payload.reouverturesSessions : null,
+    ),
+  );
+  lignes.push("---");
+  lignes.push("");
 
   const criteres = [1, 2, 3, 4, 5, 6, 7] as const;
 
@@ -1218,6 +1251,8 @@ function buildEmptyManifeste(): ManifesteAuditResult {
       scorePct: 0,
     },
     indicateurs: [],
+    reouverturesSessions: [],
+    reouverturesRegistreLu: false,
   };
   return {
     json,

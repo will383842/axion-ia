@@ -118,6 +118,11 @@ import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 // Annulation d'une pièce : les liens de signature en circulation meurent avec
 // la valeur de la pièce (§ 24).
 import { revoquerTokensDocument } from "@/server/qualiopi/documents/signature/token-document";
+import { peutEngager, MOTIF_REFUS } from "@/server/auth/habilitations";
+import {
+  assertDossierOuvert,
+  assertDossierOuvertSiRegeneration,
+} from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -204,6 +209,9 @@ export async function genererConventionAction(input: {
   const parsed = genererConventionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, acomptePercent, rectificationMotif } = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert(sessionId);
+  if (!verrou.ok) return verrou;
 
   // La construction vit dans `production/producteurs.ts` (partagée avec le
   // worker S5) — ici : garde, validation, journal.
@@ -248,6 +256,9 @@ export async function genererConventionTripartiteAction(input: {
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert(sessionId);
+  if (!verrou.ok) return verrou;
 
   // La construction vit dans `production/producteurs.ts` (partagée avec le
   // worker S5) — ici : garde, validation, journal.
@@ -339,6 +350,9 @@ export async function genererContratFormationAction(input: {
   const parsed = enrollmentIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { enrollmentId, rectificationMotif } = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert({ enrollmentId });
+  if (!verrou.ok) return verrou;
 
   // La construction (acompte calculé sur le reste à charge, échéancier daté,
   // clause de médiation conditionnelle) vit dans `production/producteurs.ts`,
@@ -391,6 +405,9 @@ export async function genererConvocationAction(input: {
   const parsed = enrollmentIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { enrollmentId, rectificationMotif } = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert({ enrollmentId });
+  if (!verrou.ok) return verrou;
 
   // La construction (horaires réels des journées, lieu, financement) vit dans
   // `production/producteurs.ts`, partagée avec le worker S5.
@@ -432,6 +449,9 @@ export async function genererEmargementAction(input: {
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert(sessionId);
+  if (!verrou.ok) return verrou;
 
   // ⚠️ Pas de `resolveFormateurNom` ici : le formateur est porté JOURNÉE PAR
   // JOURNÉE par la feuille (désistement, co-animation). La construction —
@@ -475,6 +495,9 @@ export async function genererPositionnementAction(input: {
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert(sessionId);
+  if (!verrou.ok) return verrou;
 
   const resultat = await produirePositionnement(sessionId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
@@ -510,6 +533,9 @@ export async function genererGrilleEvaluationAction(input: {
   const parsed = enrollmentIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { enrollmentId, rectificationMotif } = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert({ enrollmentId });
+  if (!verrou.ok) return verrou;
 
   // La construction (grille vierge OU évaluation enregistrée — audit
   // 2026-08-03) vit dans `production/producteurs.ts`, partagée avec le worker S5.
@@ -546,6 +572,9 @@ export async function genererSatisfactionAction(input: {
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert(sessionId);
+  if (!verrou.ok) return verrou;
 
   const resultat = await produireSatisfaction(sessionId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
@@ -585,6 +614,13 @@ export async function genererCertificatRealisationAction(input: {
   const parsed = enrollmentIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { enrollmentId, rectificationMotif } = parsed.data;
+  // ADR 0060 — la PREMIÈRE émission reste ouverte ; la régénération d'une pièce
+  // vivante est une écriture VERROU.
+  const verrou = await assertDossierOuvertSiRegeneration(
+    { enrollmentId },
+    "certificat_realisation",
+  );
+  if (!verrou.ok) return verrou;
 
   const enrollment = await prisma.enrollment.findUnique({
     where: { id: enrollmentId },
@@ -870,6 +906,10 @@ export async function genererKitOpcoAction(input: {
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
+  // ADR 0060 — la PREMIÈRE émission reste ouverte ; la régénération d'une pièce
+  // vivante est une écriture VERROU.
+  const verrou = await assertDossierOuvertSiRegeneration({ sessionId }, "kit_opco");
+  if (!verrou.ok) return verrou;
 
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
@@ -985,6 +1025,10 @@ export async function genererKitCpfAction(input: {
   const parsed = enrollmentIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { enrollmentId, rectificationMotif } = parsed.data;
+  // ADR 0060 — la PREMIÈRE émission reste ouverte ; la régénération d'une pièce
+  // vivante est une écriture VERROU.
+  const verrou = await assertDossierOuvertSiRegeneration({ enrollmentId }, "kit_cpf");
+  if (!verrou.ok) return verrou;
 
   const enrollment = await prisma.enrollment.findUnique({
     where: { id: enrollmentId },
@@ -1080,6 +1124,10 @@ export async function genererKitFranceTravailAction(input: {
   const parsed = enrollmentIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { enrollmentId, rectificationMotif } = parsed.data;
+  // ADR 0060 — la PREMIÈRE émission reste ouverte ; la régénération d'une pièce
+  // vivante est une écriture VERROU.
+  const verrou = await assertDossierOuvertSiRegeneration({ enrollmentId }, "kit_france_travail");
+  if (!verrou.ok) return verrou;
 
   const enrollment = await prisma.enrollment.findUnique({
     where: { id: enrollmentId },
@@ -1184,6 +1232,9 @@ export async function genererLettreMissionAction(input: {
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert(sessionId);
+  if (!verrou.ok) return verrou;
 
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
@@ -1893,6 +1944,9 @@ export async function genererReglementInterieurAction(input: {
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert(sessionId);
+  if (!verrou.ok) return verrou;
 
   const resultat = await produireReglementInterieur(sessionId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
@@ -1940,6 +1994,9 @@ export async function genererProgrammeAction(input: {
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert(sessionId);
+  if (!verrou.ok) return verrou;
 
   // La construction (snapshot légal WS5, modules, sanction) vit dans
   // `production/producteurs.ts`, partagée avec le worker S5.
@@ -1984,6 +2041,9 @@ export async function genererOrganisationActionAction(input: {
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert(sessionId);
+  if (!verrou.ok) return verrou;
 
   // La construction (calendrier `session_jours`, rythme calculé) vit dans
   // `production/producteurs.ts`, partagée avec le worker S5.
@@ -2026,6 +2086,9 @@ export async function genererLivretAccueilAction(input: {
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert(sessionId);
+  if (!verrou.ok) return verrou;
 
   const resultat = await produireLivretAccueil(sessionId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
@@ -2137,6 +2200,9 @@ export async function genererAutorisationCaptationAction(input: {
     .safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { enrollmentId, finalites, supports, dureeAnnees } = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert({ enrollmentId });
+  if (!verrou.ok) return verrou;
 
   const enrollment = await prisma.enrollment.findUnique({
     where: { id: enrollmentId },
@@ -2817,6 +2883,23 @@ export async function annulerDocumentAction(input: {
     };
   }
   const { documentId, motif } = parsed.data;
+  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  const verrou = await assertDossierOuvert({ documentId });
+  if (!verrou.ok) return verrou;
+
+  // 🔴 ADR 0060 (D7) — annuler une pièce qui porte une signature retire sa
+  // valeur à un engagement SIGNÉ : même exigence que la révocation d'une
+  // signature (direction seule), même hors verrou.
+  const signaturesVivantes = await prisma.documentSignature.count({
+    where: { documentGenereId: documentId, revokedAt: null },
+  });
+  if (signaturesVivantes > 0 && !peutEngager(adminSession.role, "revoquer_signature")) {
+    return {
+      error:
+        `Cette pièce porte ${signaturesVivantes} signature${signaturesVivantes > 1 ? "s" : ""} : ` +
+        MOTIF_REFUS.revoquer_signature,
+    };
+  }
 
   const doc = await prisma.documentGenere.findUnique({
     where: { id: documentId },

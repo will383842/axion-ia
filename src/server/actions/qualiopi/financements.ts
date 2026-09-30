@@ -55,6 +55,7 @@ import type {
   FactureFormationDestinataire,
   PriseEnChargeUnite,
 } from "../../../../prisma/generated/client";
+import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -174,6 +175,17 @@ export async function setFinancementSessionAction(input: {
   const parsed = setFinancementSessionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, ...fields } = parsed.data;
+  // ADR 0060 — le TYPE, le DISPOSITIF et le PAYEUR sont contractuels : figés sur
+  // un dossier clos. Le statut OPCO, le n° de dossier et la subrogation relèvent
+  // du suivi financier et restent ouverts.
+  if (
+    fields.financementType !== undefined ||
+    fields.ftDispositif !== undefined ||
+    fields.cpfPayeurResteCharge !== undefined
+  ) {
+    const verrou = await assertDossierOuvert(sessionId);
+    if (!verrou.ok) return verrou;
+  }
 
   const updateData: Record<string, unknown> = {};
   if (fields.financementType !== undefined) updateData.financementType = fields.financementType;

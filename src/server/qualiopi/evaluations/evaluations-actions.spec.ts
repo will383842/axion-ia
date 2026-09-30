@@ -12,6 +12,13 @@
 
 import { describe, it, expect, vi, beforeEach, assert } from "vitest";
 
+// ADR 0060 — le verrou du dossier de session a sa propre suite
+// (`src/server/qualiopi/sessions/__tests__/`) ; ici, le dossier est ouvert.
+vi.mock("@/server/qualiopi/sessions/verrou-dossier-garde", () => ({
+  assertDossierOuvert: async () => ({ ok: true, sessionId: null }),
+  assertDossierOuvertSiRegeneration: async () => ({ ok: true, sessionId: null }),
+}));
+
 /** Accès sûr à un appel de mock (lève si absent). */
 function mockCall<T>(fn: ReturnType<typeof vi.fn>, callIndex = 0): T {
   const call = fn.mock.calls[callIndex];
@@ -303,15 +310,24 @@ describe("genererAttestationAction", () => {
   });
 
   it("transmet force=true à genererAttestationPourEnrollment", async () => {
+    // ADR 0060 (D7) — une régénération forcée est une rectification : elle
+    // porte son motif (sans lui, refus — test suivant).
     await genererAttestationAction({
       enrollmentId: ENROLLMENT_UUID,
       force: true,
+      rectificationMotif: "Nom de la stagiaire mal orthographié",
     });
 
     expect(mockGenererAttestation).toHaveBeenCalledOnce();
     // force passé comme opts (2e argument)
     const optsArg = mockGenererAttestation.mock.calls[0]?.[1] as { force?: boolean } | undefined;
     expect(optsArg?.force).toBe(true);
+  });
+
+  it("🔴 ADR 0060 (D7) — refuse force=true SANS motif de rectification, sans rien générer", async () => {
+    const r = await genererAttestationAction({ enrollmentId: ENROLLMENT_UUID, force: true });
+    expect(r).toHaveProperty("error");
+    expect(mockGenererAttestation).not.toHaveBeenCalled();
   });
 
   it("ne passe pas force si absent (exactOptionalPropertyTypes)", async () => {

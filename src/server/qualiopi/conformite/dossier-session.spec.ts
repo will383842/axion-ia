@@ -36,7 +36,22 @@ vi.mock("@/lib/prisma", () => ({
     // fail-soft l'attraperait et un dossier sain repartirait avec un
     // avertissement.
     activityLog: { findMany: vi.fn(async () => []) },
+    // 🔴 ADR 0060 (D8) — même leçon une troisième fois : le dossier lit le
+    // registre des réouvertures, les signatures révoquées et l'origine des
+    // réponses. Un dossier sain ne doit repartir avec aucun avertissement.
+    sessionDossierEvenement: { findMany: vi.fn(async () => []) },
+    emargementSignature: { findMany: vi.fn(async () => []) },
+    emargementContresignature: { findMany: vi.fn(async () => []) },
+    documentSignature: { findMany: vi.fn(async () => []) },
+    questionnaire: { findMany: vi.fn(async () => []) },
+    adminUser: { findMany: vi.fn(async () => []) },
   },
+}));
+
+// ADR 0060 — l'état du verrou a sa propre suite ; ici, il est simplement lu.
+vi.mock("@/server/qualiopi/sessions/verrou-dossier", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/server/qualiopi/sessions/verrou-dossier")>()),
+  chargerEtatVerrou: vi.fn(async () => null),
 }));
 
 // `documentPdfKey` reste RÉEL — cf. audit-dossier.spec.ts : la clé est ce que

@@ -85,6 +85,10 @@ const SANS_AUCUN_APPELANT: ReadonlyArray<string> = [
   "server/actions/knowledge/rollback-version.ts::rollbackVersionAction",
   "server/actions/knowledge/upload-asset.ts::uploadAssetAction",
   "server/actions/qualiopi/devis.ts::reviseDevisAction",
+  // ADR 0060 — lot L1 (serveur seul) : l'écran « Rouvrir le dossier » /
+  // « Clore à nouveau » arrive au lot L2, qui retirera ces deux lignes.
+  "server/actions/qualiopi/dossier-verrou.ts::reverrouillerDossierSessionAction",
+  "server/actions/qualiopi/dossier-verrou.ts::rouvrirDossierSessionAction",
   "server/actions/qualiopi/engine.ts::getGenerationStatusAction",
   "server/actions/qualiopi/enrollments.ts::updateEnrollmentPresenceAction",
   "server/actions/qualiopi/financements.ts::verifierSousTraitantAction",
@@ -92,6 +96,21 @@ const SANS_AUCUN_APPELANT: ReadonlyArray<string> = [
   "server/actions/qualiopi/presence.ts::setPresenceCreneauManualAction",
   "server/actions/qualiopi/vente-brouillon.ts::getVenteBrouillonAction",
   "server/actions/qualiopi/vente-brouillon.ts::listMesBrouillonsAction",
+];
+
+/**
+ * Fichiers qui NOMMENT des actions sans les appeler, et qu'il faut donc écarter
+ * du corpus des appelants.
+ *
+ * 🔴 ADR 0060 — le registre du verrou (`ECRITURES_SESSION`) cite chaque action
+ * qui écrit sur un dossier de session, EN CHAÎNE DE CARACTÈRES : c'est ce qui
+ * permet à ses tests de les parcourir. Sans cette exclusion, deux actions sans
+ * aucun appelant réel (`updateEnrollmentPresenceAction`,
+ * `setPresenceCreneauManualAction`) passaient pour « appelées » du seul fait
+ * d'être classées — exactement le vert trompeur que ce test existe pour éviter.
+ */
+const NOMMENT_SANS_APPELER: ReadonlyArray<string> = [
+  "server/qualiopi/sessions/verrou-dossier-registre.ts",
 ];
 
 function estTest(chemin: string): boolean {
@@ -108,7 +127,11 @@ function fichiersSource(): string[] {
       const p = join(dir, e.name);
       if (e.isDirectory()) {
         if (e.name !== "node_modules" && e.name !== "__tests__") pile.push(p);
-      } else if (/\.tsx?$/.test(e.name) && !estTest(p)) {
+      } else if (
+        /\.tsx?$/.test(e.name) &&
+        !estTest(p) &&
+        !NOMMENT_SANS_APPELER.includes(p.slice(SRC.length + 1).replace(/\\/g, "/"))
+      ) {
         out.push(p);
       }
     }

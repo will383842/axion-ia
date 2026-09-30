@@ -27,6 +27,20 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
+// ADR 0060 — l'état du verrou est piloté par le test : par défaut aucun
+// dossier n'est clos (une Map vide), comme avant l'arrivée du verrou.
+const verrou = vi.hoisted(() => ({ clos: new Set<string>() }));
+vi.mock("@/server/qualiopi/sessions/verrou-dossier", () => ({
+  chargerEtatsVerrou: vi.fn(
+    async (ids: string[]) =>
+      new Map(
+        ids
+          .filter((id) => verrou.clos.has(id))
+          .map((id) => [id, { statut: "realisee", etat: { etat: "clos", depuis: new Date() } }]),
+      ),
+  ),
+}));
+
 vi.mock("@/server/qualiopi/documents/production/producteurs", () => {
   // ⚠️ Le mock recopie le CONTRAT réel (`{ ok: true, … }`) : un `vi.fn()` nu
   // rendrait `undefined`, que le worker compterait en échec — les tests
@@ -506,6 +520,20 @@ describe("documentsAutoHandler — le worker n'écrit jamais deux fois la même 
     } finally {
       delete process.env["DATABASE_URL"];
     }
+  });
+
+  it("🔴 ADR 0060 — ne produit AUCUNE pièce sur une session au dossier clos", async () => {
+    mockPrisma.trainingSession.findMany.mockResolvedValue([sessionNominale()]);
+    verrou.clos.add("sess-1");
+    try {
+      await documentsAutoHandler({ type: "documents-auto.production", tick: "t" });
+    } finally {
+      verrou.clos.clear();
+    }
+    for (const fn of Object.values(producteurs)) {
+      expect(fn as unknown as ReturnType<typeof vi.fn>).not.toHaveBeenCalled();
+    }
+    expect(mockPrisma.documentGenere.findFirst).not.toHaveBeenCalled();
   });
 
   it("produit les pièces décidées par le module (programme ET convocation du porteur)", async () => {
