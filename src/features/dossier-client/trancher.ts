@@ -33,7 +33,28 @@ export interface ResultatTrancher {
   readonly remplaces: number;
 }
 
+/** Deux clics croisés : Postgres lève un interblocage (40P01) ou un conflit (40001). */
+function estConflitConcurrent(x: unknown): boolean {
+  if (typeof x !== "object" || x === null) return false;
+  const c = x as { code?: unknown; meta?: { code?: unknown }; message?: unknown };
+  if (c.code === "P2034" || c.code === "40P01" || c.code === "40001") return true;
+  if (c.meta?.code === "40P01" || c.meta?.code === "40001") return true;
+  return typeof c.message === "string" && /deadlock|40P01/i.test(c.message);
+}
+
 export async function garderCetteValeur(
+  db: BaseTransactionnelle,
+  e: EntreeTrancher,
+): Promise<ResultatTrancher> {
+  try {
+    return await garderDansUneTransaction(db, e);
+  } catch (x) {
+    if (x instanceof ErreurTrancher || !estConflitConcurrent(x)) throw x;
+    throw new ErreurTrancher("La fiche a changé entre-temps : rechargez la page.");
+  }
+}
+
+async function garderDansUneTransaction(
   db: BaseTransactionnelle,
   e: EntreeTrancher,
 ): Promise<ResultatTrancher> {

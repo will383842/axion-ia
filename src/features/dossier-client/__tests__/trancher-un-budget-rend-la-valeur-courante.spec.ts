@@ -93,4 +93,18 @@ describe("⛔ trancher un budget rend la valeur courante", () => {
     expect(v?.etat).toBe("courante");
     expect(db.tables["faitEvenement"]).toHaveLength(1);
   });
+
+  it("deux clics croisés (interblocage) : un refus lisible, pas une erreur générique", async () => {
+    for (const panne of [
+      Object.assign(new Error("Transaction failed due to a write conflict or a deadlock"), {
+        code: "P2034",
+      }),
+      Object.assign(new Error("raw query failed"), { code: "P2010", meta: { code: "40P01" } }),
+    ]) {
+      const db = { $transaction: async () => Promise.reject(panne) };
+      await expect(
+        garderCetteValeur(db as never, { faitId: "f", parAdminId: "a" }),
+      ).rejects.toThrow(new ErreurTrancher("La fiche a changé entre-temps : rechargez la page."));
+    }
+  });
 });
