@@ -31,11 +31,14 @@ import {
   texteEtatVerrou,
 } from "@/server/qualiopi/sessions/verrou-dossier";
 import { verifierMotDePasseReouverture } from "@/server/qualiopi/sessions/mot-de-passe-reouverture";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 type ActionResult<T> = { data: T } | { error: string };
 
 /** Même seuil que le CHECK en base et que `annulee_motif`. */
 const MOTIF_REOUVERTURE_MIN = 10;
+/** Tentatives de réouverture (mot de passe) par compte et par heure. */
+const ESSAIS_REOUVERTURE_PAR_HEURE = 5;
 
 const rouvrirSchema = z.object({
   sessionId: z.string().uuid(),
@@ -91,6 +94,27 @@ export async function rouvrirDossierSessionAction(input: {
     return { error: parsed.error.issues[0]?.message ?? "Données invalides" };
   }
   const { sessionId, motif, motDePasse } = parsed.data;
+
+  // Anti-essais (revue sécurité #1245) : 5 tentatives par heure et par compte,
+  // AVANT le calcul scrypt (synchrone, coûteux). Compteur indisponible : on
+  // laisse passer, le mot de passe reste exigé.
+  const essais = await checkRateLimit(`qualiopi:reouverture:${session.userId}`, {
+    limit: ESSAIS_REOUVERTURE_PAR_HEURE,
+    windowSec: 3600,
+  });
+  if (!essais.allowed) {
+    await logQualiopiActivity({
+      action: "qualiopi.session.dossier.reouverture_refusee",
+      targetType: "TrainingSession",
+      targetId: sessionId,
+      changes: { raison: "trop_d_essais" },
+      session,
+    });
+    return {
+      error:
+        "Trop de tentatives de réouverture en une heure. Réessayez plus tard ; le dossier reste clos.",
+    };
+  }
 
   // Second facteur voulu par le dirigeant (2026-09-30) : même habilité, on ne
   // rouvre pas une preuve sans le mot de passe de sécurité. Le refus est TRACÉ

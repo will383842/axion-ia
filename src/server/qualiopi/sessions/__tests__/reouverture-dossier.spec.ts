@@ -19,6 +19,11 @@ const h = vi.hoisted(() => ({
   entree: null as unknown,
   crees: [] as Array<Record<string, unknown>>,
   journal: [] as Array<Record<string, unknown>>,
+  essaisPermis: true,
+}));
+
+vi.mock("@/lib/rate-limit", () => ({
+  checkRateLimit: async () => ({ allowed: h.essaisPermis, count: 1, remaining: 4, resetAt: 0 }),
 }));
 
 vi.mock("next/headers", () => ({ headers: async () => new Map<string, string>() }));
@@ -120,6 +125,7 @@ beforeEach(() => {
   h.entree = entree(true);
   h.crees.length = 0;
   h.journal.length = 0;
+  h.essaisPermis = true;
 });
 
 describe("rouvrirDossierSessionAction", () => {
@@ -208,6 +214,18 @@ describe("rouvrirDossierSessionAction — mot de passe de sécurité (2026-09-30
     });
     expect(JSON.stringify(r)).toMatch(/pas configuré/);
     expect(h.crees).toEqual([]);
+  });
+
+  it("trop d'essais dans l'heure → refus AVANT toute vérification, même avec le bon mot de passe", async () => {
+    h.essaisPermis = false;
+    const r = await rouvrirDossierSessionAction({
+      sessionId: SESSION,
+      motif: "Correction de l'attestation de Paul",
+      motDePasse: MDP,
+    });
+    expect(JSON.stringify(r)).toMatch(/Trop de tentatives/);
+    expect(h.crees).toEqual([]);
+    expect(h.journal.map((j) => j["changes"])).toEqual([{ raison: "trop_d_essais" }]);
   });
 
   it("le mot de passe n'est jamais écrit dans l'événement ni au journal", async () => {

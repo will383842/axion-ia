@@ -9,6 +9,7 @@
  * Module sans `"use server"` : ce n'est pas un point d'entrée HTTP.
  */
 
+import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import type { DocumentType } from "../../../../prisma/generated/client";
 import {
@@ -53,8 +54,13 @@ export async function assertDossierOuvert(
 ): Promise<{ readonly ok: true; readonly sessionId: string | null } | RefusDossierClos> {
   if (ref == null) return { ok: true, sessionId: null };
   const sessionId = typeof ref === "string" ? ref : await resoudreSessionId(ref);
-  // Interrupteur de secours : le verrou est coupé, on laisse passer.
-  if (!verrouDossierActif()) return { ok: true, sessionId };
+  // Interrupteur de secours : le verrou est coupé, on laisse passer — mais une
+  // écriture sur un dossier CLOS ne passe jamais en silence (revue sécurité
+  // #1245) : elle est signalée, puisque le journal du dossier, lui, dit « clos ».
+  if (!verrouDossierActif()) {
+    if (sessionId !== null) await signalerEcritureVerrouCoupe(sessionId);
+    return { ok: true, sessionId };
+  }
   if (sessionId === null) return { ok: true, sessionId: null };
   const lu = await chargerEtatVerrou(sessionId);
   if (lu !== null && lu.etat.etat === "clos") {
@@ -62,6 +68,26 @@ export async function assertDossierOuvert(
     return { ok: false, code: "DOSSIER_CLOS", message, error: message };
   }
   return { ok: true, sessionId };
+}
+
+/**
+ * Signale (Sentry, niveau warning) une écriture laissée passer sur un dossier
+ * CLOS parce que l'interrupteur `QUALIOPI_VERROU_DOSSIER=off` est posé. Ne
+ * bloque jamais : une panne de lecture ou de signalement laisse l'écriture
+ * passer, puisque c'est précisément ce que l'interrupteur demande.
+ */
+async function signalerEcritureVerrouCoupe(sessionId: string): Promise<void> {
+  try {
+    const lu = await chargerEtatVerrou(sessionId);
+    if (lu === null || lu.etat.etat !== "clos") return;
+    Sentry.captureMessage("qualiopi : écriture sur un dossier CLOS, verrou coupé par l'interrupteur", {
+      level: "warning",
+      tags: { etape: "verrou_dossier_coupe" },
+      extra: { sessionId },
+    });
+  } catch {
+    // Le signalement ne doit jamais faire échouer l'écriture autorisée.
+  }
 }
 
 /**
