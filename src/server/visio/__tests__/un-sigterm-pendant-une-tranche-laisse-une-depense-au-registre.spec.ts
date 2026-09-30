@@ -5,7 +5,7 @@
  * Au SIGTERM, le worker attend 25 s puis `process.exit(0)` ; un appel OpenAI
  * peut durer 120 s. L'appel en vol était TUÉ avec le processus : OpenAI l'a
  * facturé, mais aucune ligne `cost_ledger` ne l'inscrivait (le plafond
- * mensuel, partagé avec content-gen, était sous-estimé), et la prise perdue
+ * mensuel, partagé avec la génération de contenus, était sous-estimé), et la prise perdue
  * était imputée au plafond de 10 exécutions.
  *
  * Désormais `demanderArretDuCircuit` ANNULE l'appel en vol (AbortController) :
