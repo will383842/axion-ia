@@ -33,7 +33,9 @@
  *
  * La ligne `ClientFusion` reste : « Défaire » remplit `defaiteLe`, qui,
  * quand, pourquoi — et écrit `RencontreRattachementEvenement(annule)` pour
- * chaque rendez-vous rendu. Si la fusion avait reporté un SIREN, l'ancien
+ * chaque rendez-vous rendu. Une proposition « à classer » que la fusion avait
+ * redirigée vers la fiche restée est de nouveau proposée à la fiche absorbée
+ * (V1-05). Si la fusion avait reporté un SIREN, l'ancien
  * (`sirenAbsorbeAvant`) est rétabli. Une fusion défaite n'émet rien vers
  * Partners : seule une fusion écrit dans la file, au moment où elle se fait.
  *
@@ -114,6 +116,7 @@ async function defaireDansUneTransaction(
         absorbantId: true,
         sirenReporte: true,
         sirenAbsorbeAvant: true,
+        le: true,
         defaiteLe: true,
         emiseVersPartnersLe: true,
       },
@@ -285,6 +288,30 @@ async function defaireDansUneTransaction(
       await emettreFaitClient(tx, f.absorbeId, { avant });
     }
 
+    // V1-05 : les propositions que la fusion a redirigées (journal « propose »
+    // absorbée → restée, daté de la fusion) reviennent à la fiche absorbée —
+    // seulement si elles attendent encore, chez la fiche restée.
+    const redirigees = await tx.rencontreRattachementEvenement.findMany({
+      where: {
+        action: "propose",
+        ancienClientId: f.absorbeId,
+        nouveauClientId: f.absorbantId,
+        survenuLe: { gte: f.le },
+      },
+      select: { rencontreId: true },
+    });
+    const aRendre = await tx.rencontre.findMany({
+      where: {
+        id: { in: [...new Set(redirigees.map((x) => x.rencontreId))] },
+        clientId: null,
+        clientProposeId: f.absorbantId,
+      },
+      select: { id: true, motifProposition: true },
+    });
+    for (const r of aRendre) {
+      await tx.rencontre.update({ where: { id: r.id }, data: { clientProposeId: f.absorbeId } });
+    }
+
     const le = new Date();
     await tx.clientFusion.update({
       where: { id: f.id },
@@ -297,6 +324,18 @@ async function defaireDansUneTransaction(
           action: "annule" as const,
           ancienClientId: f.absorbantId,
           nouveauClientId: f.absorbeId,
+          parAdminId: e.parAdminId,
+        })),
+      });
+    }
+    if (aRendre.length > 0) {
+      await tx.rencontreRattachementEvenement.createMany({
+        data: aRendre.map((r) => ({
+          rencontreId: r.id,
+          action: "propose" as const,
+          ancienClientId: f.absorbantId,
+          nouveauClientId: f.absorbeId,
+          motif: r.motifProposition,
           parAdminId: e.parAdminId,
         })),
       });

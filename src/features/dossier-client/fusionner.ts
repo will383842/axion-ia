@@ -252,10 +252,29 @@ export async function fusionnerFiches(
       });
     }
     // Les propositions pendantes suivent aussi (A4 : elles restent des propositions).
+    // V1-05 : chacune est consignée au journal de rattachement, daté de la
+    // fusion, pour que « Défaire » la rende à la fiche absorbée.
+    const proposees = await tx.rencontre.findMany({
+      where: { clientProposeId: e.absorbeeId },
+      select: { id: true, motifProposition: true },
+    });
     await tx.rencontre.updateMany({
       where: { clientProposeId: e.absorbeeId },
       data: { clientProposeId: e.absorbanteId },
     });
+    if (proposees.length > 0) {
+      await tx.rencontreRattachementEvenement.createMany({
+        data: proposees.map((r) => ({
+          rencontreId: r.id,
+          action: "propose" as const,
+          ancienClientId: e.absorbeeId,
+          nouveauClientId: e.absorbanteId,
+          motif: r.motifProposition,
+          parAdminId: e.parAdminId,
+          survenuLe: fusion.le,
+        })),
+      });
+    }
 
     if (projetIds.length > 0) {
       await tx.projetEvenement.createMany({
