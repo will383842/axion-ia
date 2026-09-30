@@ -12,6 +12,10 @@
  */
 
 import { useState, useTransition, useMemo } from "react";
+import {
+  MentionDossierClos,
+  useDossierFige,
+} from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
 import { useRouter } from "next/navigation";
 import type { DemiJourneeLabel } from "@/server/qualiopi/presence/types";
 import { SEUIL_PARTIELLE_PCT } from "@/server/qualiopi/presence/taux";
@@ -117,6 +121,8 @@ export function EmargementGrid({
   hasJours,
   saveAction,
 }: EmargementGridProps): React.ReactElement {
+  // ADR 0060 — dossier clos : la grille est une preuve, elle se LIT.
+  const fige = useDossierFige();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -365,6 +371,15 @@ export function EmargementGrid({
                       </td>
                     );
                   }
+                  if (fige) {
+                    return (
+                      <td key={k} className={tdCls}>
+                        <span className="text-[length:var(--text-admin-xs)]">
+                          {cell.present ? `Présent · ${cell.dureeMinutes} min` : "Absent"}
+                        </span>
+                      </td>
+                    );
+                  }
                   return (
                     <td key={k} className={tdCls}>
                       <div className="flex flex-col items-center gap-1">
@@ -424,9 +439,13 @@ export function EmargementGrid({
         </p>
       )}
 
-      <button type="submit" disabled={isPending} className="admin-button">
-        {isPending ? "Enregistrement…" : "Enregistrer l'émargement"}
-      </button>
+      {fige ? (
+        <MentionDossierClos />
+      ) : (
+        <button type="submit" disabled={isPending} className="admin-button">
+          {isPending ? "Enregistrement…" : "Enregistrer l'émargement"}
+        </button>
+      )}
     </form>
   );
 }

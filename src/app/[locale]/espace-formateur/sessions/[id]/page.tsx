@@ -20,6 +20,7 @@ import { CoquilleFormateur } from "../../_coquille";
 import { requireFormateur } from "@/server/formateur/guard";
 import { lireFeuilleGroupe } from "@/server/qualiopi/emargement/feuille-groupe";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { chargerEtatVerrou } from "@/server/qualiopi/sessions/verrou-dossier";
 import {
   signerPourStagiaireAction,
   contresignerDemiJourneeAction,
@@ -92,6 +93,14 @@ export default async function Page({
   // La sollicitation en cours pour CE formateur sur CETTE session — lue après
   // la garde de propriété, avec le seul `trainerId` de la session connectée.
   const mission = await lireMissionCourante(id, trainerId);
+  // 🔴 ADR 0060 — dossier clos : le formateur ne fait plus signer À LA PLACE
+  // d'un stagiaire (écriture VERROU, refusée par le serveur). Lu APRÈS la garde
+  // de propriété. Sa contresignature reste ouverte.
+  const verrou = await chargerEtatVerrou(id);
+  const signaturePourStagiaireFermee =
+    verrou !== null && verrou.etat.etat === "clos"
+      ? "Le dossier de cette session est clos : vous ne pouvez plus faire signer un stagiaire à sa place. Si une signature manque réellement, prévenez l'organisme, qui peut rouvrir le dossier. Votre contresignature, elle, reste possible."
+      : null;
 
   // 2026-09-03 — le formateur ne voyait que ville et code postal. Il a besoin
   // de TOUT ce qu'il faut pour arriver et entrer : adresse, salle, lien visio,
@@ -395,6 +404,7 @@ export default async function Page({
               demiJournees={demiJournees}
               signerAction={signerPourStagiaireAction}
               contresignerAction={contresignerDemiJourneeAction}
+              signaturePourStagiaireFermee={signaturePourStagiaireFermee}
             />
           )}
         </section>

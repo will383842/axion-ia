@@ -15,8 +15,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
-import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { PreparationKitSession } from "@/components/admin/qualiopi/PreparationKitSession";
 import { lirePreparation } from "@/server/qualiopi/kit-session/preparation";
 import { genererSortiesAction, validerSortiesAction } from "@/server/actions/qualiopi/kit-session";
@@ -102,14 +100,6 @@ export const metadata: Metadata = {
 // Libellés
 // ─────────────────────────────────────────────────────────────────────────────
 
-const STATUT_LABELS: Record<TrainingSessionStatut, string> = {
-  planifiee: "Planifiée",
-  en_cours: "En cours",
-  realisee: "Réalisée",
-  annulee: "Annulée",
-  reportee: "Reportée",
-};
-
 const MODALITE_LABELS: Record<string, string> = {
   presentiel: "Présentiel",
   distanciel: "Distanciel",
@@ -128,14 +118,6 @@ const FINANCEMENT_LABELS: Record<string, string> = {
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
-function formatDateFR(d: Date): string {
-  return d.toLocaleDateString("fr-FR", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
-}
-
 /**
  * Valeur pour `<input type="datetime-local">`, ancrée sur Europe/Paris.
  *
@@ -149,13 +131,6 @@ function pourInputDateTimeLocal(d: Date): string {
   const hh = String(Math.floor(minutes / 60)).padStart(2, "0");
   const mm = String(minutes % 60).padStart(2, "0");
   return `${parisDateISO(d)}T${hh}:${mm}`;
-}
-
-function statutColor(s: TrainingSessionStatut): string {
-  if (s === "realisee") return "text-[color:var(--color-admin-success)]";
-  if (s === "annulee" || s === "reportee") return "text-[color:var(--color-admin-error)]";
-  if (s === "en_cours") return "text-[color:var(--color-admin-warning)]";
-  return "text-[color:var(--color-admin-fg-muted)]";
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -747,28 +722,10 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     "flex items-center gap-[var(--space-admin-2)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-accent)] transition-colors hover:bg-[color:var(--color-admin-surface)]";
 
   return (
-    <AdminPageShell width="wide">
-      {/* ── Fil d&apos;Ariane ─────────────────────────────────────────────── */}
-      <div className="mb-[var(--space-admin-4)] flex items-center gap-[var(--space-admin-3)]">
-        <Link
-          href={base}
-          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-        >
-          ← Sessions
-        </Link>
-        {trainingSession.formation && (
-          <>
-            <span className="text-[color:var(--color-admin-fg-muted)]">/</span>
-            <Link
-              href={`/${locale}/${adminPrefix}/qualiopi/formations/${trainingSession.formation.id}`}
-              className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-            >
-              Formation {trainingSession.formation.numero}
-            </Link>
-          </>
-        )}
-      </div>
-
+    <>
+      {/* Fil d'Ariane, en-tête (n°, statut, phase, client, formateur) et bandeau
+          d'état du dossier : portés UNE fois par `layout.tsx`, communs à la
+          fiche et à ses quatre sous-pages. */}
       {champsManquantsConvention.length > 0 && (
         <div
           role="status"
@@ -786,19 +743,6 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
           </p>
         </div>
       )}
-
-      <AdminPageHeader
-        title={trainingSession.titreSession ?? trainingSession.formation.titre}
-        description={`Session ${trainingSession.numero} · ${formatDateFR(trainingSession.dateDebut)} → ${formatDateFR(trainingSession.dateFin)}`}
-        meta={
-          <span
-            className={`text-[length:var(--text-admin-sm)] font-semibold ${statutColor(trainingSession.statut as TrainingSessionStatut)}`}
-          >
-            {STATUT_LABELS[trainingSession.statut as TrainingSessionStatut] ??
-              trainingSession.statut}
-          </span>
-        }
-      />
 
       {/* Sommaire interne : dix sections, aucun moyen d'en atteindre une sans
           tout dérouler. Les ancres conditionnelles ne sont listées que si leur
@@ -878,8 +822,9 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             <div>
               <p className={infoLabelCls}>Client</p>
               <p className={infoValueCls}>
+                {/* 🔴 L2 — menait à la LISTE des clients : on y cherchait le sien. */}
                 <Link
-                  href={`/${locale}/${adminPrefix}/qualiopi/clients`}
+                  href={`/${locale}/${adminPrefix}/qualiopi/clients/${trainingSession.client.id}`}
                   className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
                 >
                   {trainingSession.client.numero}
@@ -1331,6 +1276,6 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
           envoyerAction={envoyerQuestionnaireAction}
         />
       </section>
-    </AdminPageShell>
+    </>
   );
 }

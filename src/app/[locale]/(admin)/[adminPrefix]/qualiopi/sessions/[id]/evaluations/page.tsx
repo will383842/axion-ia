@@ -15,8 +15,6 @@ import { notFound } from "next/navigation";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import Link from "next/link";
 
-import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
-import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { prisma } from "@/lib/prisma";
 import { EvaluationForm } from "@/components/admin/qualiopi/EvaluationForm";
 import { GenererAttestationButton } from "@/components/admin/qualiopi/GenererAttestationButton";
@@ -129,30 +127,14 @@ export default async function EvaluationsPage({ params }: PageProps) {
   const cellCls = "px-[var(--space-admin-3)] py-[var(--space-admin-2)] align-top";
 
   return (
-    <AdminPageShell width="wide">
-      <AdminPageHeader
-        title={`Évaluations des acquis — ${session.titreSession ?? session.numero}`}
-        description={`Session ${session.numero} · Formation : ${session.formation?.titre ?? "—"} · ${session.enrollments.length} stagiaire${session.enrollments.length > 1 ? "s" : ""}`}
-      />
-
-      {/* Lien retour vers l'émargement */}
-      <div className="mb-[var(--space-admin-5)]">
-        {/* 🔴 2026-09-05 — cette page ne ramenait qu'a sa page SOEUR
-          (emargement), jamais a la fiche parente. Naviguer de soeur en
-          soeur sans jamais remonter est un labyrinthe poli. */}
-        <Link
-          href={`/${locale}/${adminPrefix}/qualiopi/sessions/${id}`}
-          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-        >
-          ← Retour à la session
-        </Link>
-        <Link
-          href={`/${locale}/${adminPrefix}/qualiopi/sessions/${id}/emargement`}
-          className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-        >
-          ← Retour à l&apos;émargement
-        </Link>
-      </div>
+    <>
+      {/* L2 — fil d'Ariane, retour à la fiche et en-tête : `sessions/[id]/layout.tsx`. */}
+      <h2 className="mb-[var(--space-admin-1)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+        Évaluations des acquis
+      </h2>
+      <p className="mb-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+        {`Formation : ${session.formation?.titre ?? "—"} · ${session.enrollments.length} stagiaire${session.enrollments.length > 1 ? "s" : ""}`}
+      </p>
 
       {session.enrollments.length === 0 ? (
         <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
@@ -327,6 +309,6 @@ export default async function EvaluationsPage({ params }: PageProps) {
           })}
         </div>
       )}
-    </AdminPageShell>
+    </>
   );
 }

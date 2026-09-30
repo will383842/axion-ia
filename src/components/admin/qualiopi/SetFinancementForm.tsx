@@ -14,6 +14,10 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
+  MENTION_DOSSIER_CLOS,
+  useDossierFige,
+} from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
+import {
   setFinancementSessionAction,
   validerAccordOpcoAction,
 } from "@/server/actions/qualiopi/financements";
@@ -100,6 +104,10 @@ export function SetFinancementForm({
   ftPoeiAccordFinancementAt,
   ftPoeiEngagementSigneAt,
 }: SetFinancementFormProps): React.ReactElement {
+  // ADR 0060 — dossier clos : le TYPE, le dispositif et le payeur sont figés
+  // (écriture VERROU) ; le statut OPCO, le n° de dossier et la subrogation
+  // restent modifiables (suivi financier).
+  const fige = useDossierFige();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -205,7 +213,8 @@ export function SetFinancementForm({
             id="financement-type"
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value as FinancementType | "")}
-            disabled={isPending}
+            disabled={isPending || fige}
+            title={fige ? MENTION_DOSSIER_CLOS : undefined}
             className={selectCls}
           >
             {FINANCEMENT_OPTIONS.map((opt) => (
@@ -214,6 +223,11 @@ export function SetFinancementForm({
               </option>
             ))}
           </select>
+          {fige ? (
+            <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Figé : dossier clos.
+            </span>
+          ) : null}
         </div>
 
         {/* OPCO — statut */}
@@ -312,7 +326,7 @@ export function SetFinancementForm({
               onChange={(e) =>
                 setSelectedFtDispositif(e.target.value as FranceTravailDispositif | "")
               }
-              disabled={isPending}
+              disabled={isPending || fige}
               className={selectCls}
             >
               {FT_DISPOSITIF_OPTIONS.map((opt) => (
@@ -389,7 +403,7 @@ export function SetFinancementForm({
               id="cpf-payeur"
               value={cpfPayeur}
               onChange={(e) => setCpfPayeur(e.target.value)}
-              disabled={isPending}
+              disabled={isPending || fige}
               className={selectCls}
             >
               {CPF_PAYEUR_OPTIONS.map((opt) => (

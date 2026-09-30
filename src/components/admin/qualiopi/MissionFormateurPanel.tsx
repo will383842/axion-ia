@@ -18,6 +18,10 @@ import {
   renvoyerPropositionMissionAction,
   declarerAbsenceFormateurAction,
 } from "@/server/actions/qualiopi/mission-formateur";
+import {
+  MentionDossierClos,
+  useDossierFige,
+} from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
 
 export interface MissionFormateurPanelProps {
   sessionId: string;
@@ -60,6 +64,7 @@ export function MissionFormateurPanel({
   absencePossible,
   accordConsignable,
 }: MissionFormateurPanelProps): React.ReactElement {
+  const fige = useDossierFige();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [msg, setMsg] = useState<string | null>(null);
@@ -144,13 +149,16 @@ export function MissionFormateurPanel({
         <strong>{trainerNom}</strong> — {etat}
       </p>
 
+      {/* ADR 0060 — dossier clos : l'absence et l'accord hors outil sont des
+          écritures VERROU ; la réponse du formateur reste lisible. */}
+      {fige ? <MentionDossierClos className="mt-[var(--space-admin-3)]" /> : null}
       <div className="mt-[var(--space-admin-3)] flex flex-wrap gap-[var(--space-admin-3)]">
-        {sessionAVenir && (
+        {sessionAVenir && !fige && (
           <button type="button" className="admin-button" disabled={isPending} onClick={renvoyer}>
             {isPending ? "…" : enAttente ? "Renvoyer la proposition" : "Proposer à nouveau"}
           </button>
         )}
-        {accordConsignable && !accordOuvert && (
+        {accordConsignable && !accordOuvert && !fige && (
           <button
             type="button"
             className="admin-button"
@@ -160,7 +168,7 @@ export function MissionFormateurPanel({
             Consigner l’accord (donné hors outil)
           </button>
         )}
-        {absencePossible && !absenceOuverte && (
+        {absencePossible && !absenceOuverte && !fige && (
           <button
             type="button"
             className="admin-button"
@@ -172,7 +180,7 @@ export function MissionFormateurPanel({
         )}
       </div>
 
-      {accordOuvert && (
+      {accordOuvert && !fige && (
         <div className="mt-[var(--space-admin-4)] space-y-[var(--space-admin-3)]">
           <label
             className="mb-[var(--space-admin-1)] block text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase"
@@ -214,7 +222,7 @@ export function MissionFormateurPanel({
         </div>
       )}
 
-      {absenceOuverte && (
+      {absenceOuverte && !fige && (
         <div className="mt-[var(--space-admin-4)] space-y-[var(--space-admin-3)]">
           <div>
             <label

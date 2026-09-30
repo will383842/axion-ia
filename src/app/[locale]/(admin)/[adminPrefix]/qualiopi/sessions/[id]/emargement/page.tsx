@@ -13,9 +13,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import Link from "next/link";
-import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
-import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { getSessionEmargement } from "@/server/qualiopi/presence/queries";
 import { classifierPresence } from "@/server/qualiopi/presence/taux";
 import {
@@ -163,31 +160,16 @@ export default async function EmargementPage({ params }: PageProps) {
   };
 
   return (
-    <AdminPageShell width="wide">
-      {/* 🔴 2026-09-05 — cette page ne ramenait NULLE PART. Aucun lien de retour,
-          ni vers la fiche parente ni vers la liste : une fois dedans, la seule
-          sortie était le bouton « précédent » du navigateur. C'est le pire cas
-          relevé par l'audit de navigation, et c'est l'écran où l'on passe le
-          plus de temps sur une session en cours. */}
-      <div className="mb-[var(--space-admin-4)] flex items-center gap-[var(--space-admin-3)]">
-        <Link
-          href={`/${locale}/${adminPrefix}/qualiopi/sessions/${id}`}
-          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-        >
-          ← Retour à la session
-        </Link>
-        <Link
-          href={`/${locale}/${adminPrefix}/qualiopi/sessions`}
-          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-        >
-          Sessions
-        </Link>
-      </div>
-
-      <AdminPageHeader
-        title={`Émargement — ${session.titreSession ?? session.numero}`}
-        description={`Session ${session.numero} · ${MODALITE_LABELS[session.modalite] ?? session.modalite} · ${formatDateFR(session.dateDebut)} → ${formatDateFR(session.dateFin)}`}
-      />
+    <>
+      {/* L2 — le retour à la fiche, le fil d'Ariane et l'en-tête de la session
+          sont portés par `sessions/[id]/layout.tsx` : une seule façon de revenir,
+          la même sur les quatre sous-pages. */}
+      <h2 className="mb-[var(--space-admin-1)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+        Émargement
+      </h2>
+      <p className="mb-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+        {`${MODALITE_LABELS[session.modalite] ?? session.modalite} · ${formatDateFR(session.dateDebut)} → ${formatDateFR(session.dateFin)}`}
+      </p>
 
       {/* Informations session */}
       <div className="mb-[var(--space-admin-6)] grid grid-cols-2 gap-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)] sm:grid-cols-4">
@@ -407,6 +389,6 @@ export default async function EmargementPage({ params }: PageProps) {
           </div>
         </section>
       )}
-    </AdminPageShell>
+    </>
   );
 }

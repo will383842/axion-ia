@@ -17,6 +17,10 @@
 
 import { useState, useTransition, useId } from "react";
 import { useRouter } from "next/navigation";
+import {
+  MentionDossierClos,
+  useDossierFige,
+} from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
 
 export interface JourSaisi {
   date: string;
@@ -118,6 +122,7 @@ export function SessionJoursEditor({
   hasCreneaux,
   saveAction,
 }: SessionJoursEditorProps): React.ReactElement {
+  const fige = useDossierFige();
   const router = useRouter();
   const [jours, setJours] = useState<JourSaisi[]>(() =>
     joursInitiaux.map((j) => ({ date: j.date, heureDebut: j.heureDebut, heureFin: j.heureFin })),
@@ -184,6 +189,32 @@ export function SessionJoursEditor({
       setSucces(messageJoursEnregistrees({ nbJours: r.data.nbJours, hasCreneaux }));
       router.refresh();
     });
+  }
+
+  // ADR 0060 — dossier clos : les journées animées sont une preuve, on les lit.
+  if (fige) {
+    return (
+      <section className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
+        <h2 className="text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+          Journées réellement animées
+        </h2>
+        {joursInitiaux.length === 0 ? (
+          <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            Aucune journée déclarée.
+          </p>
+        ) : (
+          <ul className="mt-[var(--space-admin-2)] list-disc pl-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+            {joursInitiaux.map((j) => (
+              <li key={`${j.date}-${j.heureDebut}`}>
+                {j.date.split("-").reverse().join("/")} — {j.heureDebut} à {j.heureFin}
+                {j.horairesConfirmes ? "" : " (horaires proposés, jamais confirmés)"}
+              </li>
+            ))}
+          </ul>
+        )}
+        <MentionDossierClos className="mt-[var(--space-admin-3)]" />
+      </section>
+    );
   }
 
   const labelCls =
