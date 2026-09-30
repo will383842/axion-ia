@@ -306,6 +306,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
         consolidation={consoliderFaits(faits, projets, maintenant)}
         projets={projets}
         ficheHref={ficheHref}
+        erreur={erreur}
       />
     );
   } else if (voitEchanges && onglet === "projets") {

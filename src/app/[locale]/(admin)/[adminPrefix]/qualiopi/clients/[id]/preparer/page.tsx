@@ -50,7 +50,7 @@ export const metadata: Metadata = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
-  searchParams?: Promise<{ projet?: string }>;
+  searchParams?: Promise<{ projet?: string; erreur?: string }>;
 }
 
 const carteCls =
@@ -160,6 +160,11 @@ export default async function PreparerPage({ params, searchParams }: PageProps) 
         title="Préparer le prochain échange"
         meta={<AdminBadge tone="neutral">{client.numero}</AdminBadge>}
       />
+      {typeof sp.erreur === "string" && sp.erreur !== "" ? (
+        <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]">
+          {sp.erreur.slice(0, 300)}
+        </p>
+      ) : null}
 
       {/* 1 — le client, le projet, la dernière suite convenue */}
       <Bloc
@@ -259,7 +264,11 @@ export default async function PreparerPage({ params, searchParams }: PageProps) 
         ) : (
           <ul className={listeCls}>
             {p.aTrancherOuReconfirmer.map((v) => (
-              <LigneValeur key={`${v.type}:${v.cle}`} v={v} />
+              <LigneValeur
+                key={`${v.type}:${v.cle}`}
+                v={v}
+                retour={`${ficheHref}/preparer${projetId ? `?projet=${projetId}` : ""}`}
+              />
             ))}
           </ul>
         )}

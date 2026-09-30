@@ -33,6 +33,7 @@ import {
 } from "@/server/qualiopi/crm/porte-client";
 import { exigerAccesEchanges } from "@/features/dossier-client/acces";
 import { creerProjet, ErreurCreationProjet } from "@/features/dossier-client/creer-projet";
+import { ErreurTrancher, garderCetteValeur } from "@/features/dossier-client/trancher";
 import { updateClientAction } from "@/server/actions/qualiopi/clients";
 
 const candidatSchema = z.object({
@@ -218,4 +219,35 @@ export async function creerProjetFormAction(formData: FormData): Promise<void> {
   }
   revalidatePath(base);
   redirect(`${base}/projets/${cree.id}`);
+}
+
+/** Pages d'où « Garder cette valeur » peut être cliqué : la fiche (Synthèse) et « Préparer ». */
+const RETOUR_TRANCHER =
+  /^\/[a-z]{2}\/[\w-]+\/qualiopi\/clients\/[0-9a-f-]{36}(\/preparer(\?projet=[0-9a-f-]{36})?)?$/;
+
+/**
+ * « Garder cette valeur » (V1-02) : une information « à trancher » prend la
+ * valeur choisie ; les autres sont marquées remplacées et journalisées.
+ */
+export async function garderCetteValeurFormAction(formData: FormData): Promise<void> {
+  const { userId } = await exigerAccesEchanges();
+  const retourLu = String(formData.get("retour") ?? "");
+  const retour = RETOUR_TRANCHER.test(retourLu) ? retourLu : adminPath("fr", "qualiopi/clients");
+  let erreur: string | null = null;
+  try {
+    await garderCetteValeur(prisma, {
+      faitId: z
+        .string()
+        .uuid()
+        .parse(String(formData.get("faitId") ?? "")),
+      parAdminId: userId,
+    });
+  } catch (e) {
+    erreur = e instanceof ErreurTrancher ? e.message : "La valeur n'a pas pu être gardée.";
+  }
+  revalidatePath(retour.split("?")[0] ?? retour);
+  if (erreur !== null) {
+    redirect(`${retour}${retour.includes("?") ? "&" : "?"}erreur=${encodeURIComponent(erreur)}`);
+  }
+  redirect(retour);
 }

@@ -20,6 +20,7 @@ vi.mock("@/features/dossier-client/actions", () => ({
   ajouterPersonneFormAction: vi.fn(),
   basculerOppositionIaFormAction: vi.fn(),
   creerProjetFormAction: vi.fn(),
+  garderCetteValeurFormAction: vi.fn(),
 }));
 
 import { OngletSynthese } from "@/components/admin/dossier-client/Onglets";

@@ -60,6 +60,7 @@ vi.mock("@/features/dossier-client/actions", () => ({
   ajouterPersonneFormAction: vi.fn(),
   basculerOppositionIaFormAction: vi.fn(),
   creerProjetFormAction: vi.fn(),
+  garderCetteValeurFormAction: vi.fn(),
   confirmerSirenFormAction: vi.fn(),
 }));
 vi.mock("@/server/actions/qualiopi/clients", () => ({ updateClientAction: vi.fn() }));

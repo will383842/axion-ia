@@ -19,6 +19,7 @@ vi.mock("@/features/dossier-client/actions", () => ({
   ajouterPersonneFormAction: vi.fn(),
   basculerOppositionIaFormAction: vi.fn(),
   creerProjetFormAction: vi.fn(),
+  garderCetteValeurFormAction: vi.fn(),
 }));
 vi.mock("next/link", () => ({
   default: ({ children, href }: { children: React.ReactNode; href: string }) => (

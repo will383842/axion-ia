@@ -19,6 +19,7 @@ vi.mock("@/features/dossier-client/actions", () => ({
   ajouterPersonneFormAction: vi.fn(),
   basculerOppositionIaFormAction: vi.fn(),
   creerProjetFormAction: vi.fn(),
+  garderCetteValeurFormAction: vi.fn(),
 }));
 
 import { OngletSynthese } from "@/components/admin/dossier-client/Onglets";
@@ -57,5 +58,22 @@ describe("⛔ la synthèse montre ce que fait la société", () => {
       />,
     );
     expect(html).toContain("Rien de validé pour l&#x27;instant sur l&#x27;entreprise.");
+  });
+
+  it("un effectif à trancher porte un bouton « Garder » par valeur (V1-02)", () => {
+    const faits = [
+      fait({ type: "effectif", quantite: 42, constateLe: new Date("2026-09-01") }),
+      fait({ type: "effectif", quantite: 50 }),
+    ];
+    const html = renderToStaticMarkup(
+      <OngletSynthese
+        consolidation={consoliderFaits(faits, [], MAINTENANT)}
+        projets={[]}
+        ficheHref="/fr/p/qualiopi/clients/x"
+      />,
+    );
+    expect(html.match(/name="faitId"/g)).toHaveLength(2);
+    expect(html).toContain("Garder 42");
+    expect(html).toContain("Garder 50");
   });
 });
