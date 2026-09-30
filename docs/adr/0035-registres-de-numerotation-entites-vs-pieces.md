@@ -115,3 +115,5 @@ Ne pas trancher à sa place : un registre de pièces **réellement émises** est
 ## Ce qui reste ouvert
 
 Une table `numero_registre(numero UNIQUE, serie, entite_id)`, alimentée dans la même transaction par **tous** les allocateurs. C'est la seule construction qui fermerait à la fois la course concurrente et l'unicité inter-tables. Le présent ADR supprime la cause de la collision ; ce registre la rendrait **impossible**.
+
+**Mise à jour du 2026-09-30 — ADR 0059.** Le registre `numeros_emis` existe : append-only, alimenté par déclencheur sur les 9 tables porteuses, lu par `nextNumero` en plus de la table métier. Il ferme la **réattribution** d'un numéro dont la ligne a disparu (incident `AXI-FACT-2026-001`, 15/09) et l'unicité inter-tables des numéros émis après sa migration. La course concurrente reste confiée à l'index unique + reprise P2002 : le registre n'est pas réservé avant l'insertion.

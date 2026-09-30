@@ -61,13 +61,75 @@
  * cron des plans récurrents. La sérialisation reste donc assurée par l'index
  * unique + la reprise P2002 de l'appelant, qui converge désormais.
  *
- * La garantie forte — un registre `numero_registre(numero UNIQUE, serie,
- * entite_id)` alimenté dans la MÊME transaction par TOUS les allocateurs — est
- * la seule construction qui fermerait à la fois la course concurrente et
- * l'unicité inter-tables (que Postgres ne peut pas exprimer avec des `@unique`
- * déclarés table par table). Chantier distinct, à ne pas simuler ici.
+ * ## Le registre des numéros émis — `numeros_emis` (2026-09-30)
+ *
+ * Le maximum des lignes PRÉSENTES ne suffisait pas : il recule dès que la
+ * ligne qui le porte disparaît. C'est arrivé. Le 19/08/2026, les données de
+ * deux actions ont été supprimées directement en base ; la série des factures
+ * est repartie à 001 et `AXI-FACT-2026-001` a été émis une SECONDE fois le
+ * 15/09. Aucun `@unique` ne pouvait le voir : la première ligne n'existait
+ * plus.
+ *
+ * `nextNumero` lit donc DEUX sources et prend le maximum des deux :
+ *
+ *   - la table métier, par le lecteur fourni (inchangé) ;
+ *   - le registre append-only `numeros_emis`, sur le même préfixe.
+ *
+ * Le registre n'est écrit par AUCUN code applicatif — les 18 sites d'appel
+ * n'ont pas bougé. Il est alimenté par un DÉCLENCHEUR `AFTER INSERT OR UPDATE
+ * OF numero` posé sur chaque table porteuse (migration
+ * `20260930120000_numeros_emis_registre`), donc dans la MÊME transaction que
+ * la ligne métier, quel que soit l'écrivain : app, worker, script, psql. La
+ * base y refuse UPDATE, DELETE et TRUNCATE. Supprimer une facture ne libère
+ * plus son numéro.
+ *
+ * La liste des tables porteuses est DÉRIVÉE des sites d'appel par
+ * `tests/unit/ci/tout-allocateur-alimente-le-registre-des-numeros.spec.ts` :
+ * un nouvel allocateur sur une nouvelle table rougit tant qu'une migration ne
+ * lui a pas posé son déclencheur.
+ *
+ * ### Le registre est lu par PRÉFIXE, sans filtre de table
+ *
+ * Un numéro émis par une table ne se réemploie dans AUCUNE autre : c'est
+ * l'unicité inter-tables que les `@unique` déclarés table par table ne savent
+ * pas exprimer — pour tout numéro émis à partir de la migration. Les 7
+ * collisions héritées (ADR 0035 §4) restent en base, le registre ne les
+ * efface pas ; leur préfixe est déjà lu en croisé par les allocateurs
+ * concernés (`formations/numbering.ts`), et d'après le relevé de l'ADR 0035
+ * (formations à -057 contre -003 côté documents, devis ≥ -002 contre -002)
+ * aucun numéro hérité n'y dépasse la borne de sa série : le registre ne
+ * devrait pas créer de saut. À revérifier en base si le relevé a vieilli.
+ *
+ * ### Pourquoi par le client global, hors transaction
+ *
+ * Plusieurs appelants lisent leur série dans une transaction interactive
+ * (`audit-missions`, `porte-client`, `formations/numbering` avec `tx`). Le
+ * registre, lui, est lu par `prisma` global, jamais par ce `tx` : une erreur
+ * Postgres (table absente) ANNULERAIT la transaction de l'appelant — on
+ * perdrait la création au lieu de retomber sur l'ancien calcul.
+ *
+ * ### Repli : la fenêtre où la table n'existe pas encore
+ *
+ * Le worker exécute le code neuf ~50 min avant que l'app ne migre, et
+ * l'entrypoint migre en best-effort. Tant que `numeros_emis` n'existe pas, la
+ * lecture échoue en P2021 : `nextNumero` retombe sur la seule table métier
+ * (comportement antérieur) et le signale UNE fois par processus, en
+ * avertissement — de même si la base est injoignable au démarrage ou si le
+ * client Prisma ne porte pas le modèle. Toute autre erreur du registre produit
+ * le même repli, signalé en erreur à chaque fois.
+ * Une facturation ne se bloque JAMAIS sur le registre. Une erreur de la table
+ * métier, elle, remonte comme avant.
+ *
+ * ### Ce qui reste hors de portée
+ *
+ * La course concurrente reste fermée par l'index unique de chaque table et la
+ * reprise P2002 de l'appelant, pas par le registre (il n'est pas réservé
+ * AVANT l'insertion : ce serait écrire depuis les 18 sites). Et le doublon
+ * `AXI-FACT-2026-001` déjà émis n'est pas « réparé » ici : c'est une
+ * régularisation comptable qui appartient au dirigeant.
  */
 
+import { prisma } from "@/lib/prisma";
 import {
   formatSeriesNumber,
   parseSequence,
@@ -108,7 +170,13 @@ export async function nextNumero(
   recurrence?: number,
 ): Promise<string> {
   const prefixe = seriesPrefix(type, year);
-  const lignes = await lireSerie(prefixe);
+  // Les deux lectures partent ensemble ; seule celle de la table métier peut
+  // faire échouer l'allocation (`lireRegistre` ne rejette jamais).
+  const [lignesMetier, lignesRegistre] = await Promise.all([
+    lireSerie(prefixe),
+    lireRegistre(prefixe),
+  ]);
+  const lignes = [...lignesMetier, ...lignesRegistre];
 
   // ⚠️ La borne est calculée NUMÉRIQUEMENT. Un MAX lexicographique serait faux
   // dès le millième document : « AXI-FACT-2026-999 » > « AXI-FACT-2026-1000 »
@@ -127,4 +195,71 @@ export async function nextNumero(
   }
 
   return formatSeriesNumber(type, year, borne + 1, recurrence);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Registre des numéros émis
+// ─────────────────────────────────────────────────────────────────────────────
+
+let registreAbsentSignale = false;
+
+/** Pour les specs : le signalement « une fois par processus » repart de zéro. */
+export function __reinitialiserAvertissementRegistre(): void {
+  registreAbsentSignale = false;
+}
+
+/**
+ * Le registre est ABSENT, pas en panne : table pas encore migrée (P2021),
+ * base injoignable au démarrage (la table métier échouera de son côté et
+ * portera l'erreur), ou client Prisma sans le modèle (générateur en retard,
+ * double de test). Signalé une fois par processus, en avertissement.
+ */
+function registreAbsent(err: unknown): boolean {
+  if (typeof err !== "object" || err === null) return false;
+  const e = err as { code?: unknown; name?: unknown };
+  return (
+    e.code === "P2021" ||
+    e.name === "PrismaClientInitializationError" ||
+    e.name === "RegistreSansModele"
+  );
+}
+
+/**
+ * Numéros du registre `numeros_emis` pour le préfixe donné — ou `[]`, sans
+ * jamais rejeter, si le registre est illisible (cf. « Repli » en tête).
+ *
+ * Le Proxy de build (`src/lib/prisma.ts`, `stub.invalid`) rend `[]` pour tout
+ * `findMany` : aucun appel réseau au build GitHub Actions.
+ */
+async function lireRegistre(prefixe: string): Promise<ReadonlyArray<{ numero: string }>> {
+  try {
+    const delegue = (prisma as { numeroEmis?: typeof prisma.numeroEmis }).numeroEmis;
+    if (typeof delegue?.findMany !== "function") {
+      throw Object.assign(new Error("client Prisma sans le modèle NumeroEmis"), {
+        name: "RegistreSansModele",
+      });
+    }
+    return await delegue.findMany({
+      where: { numero: { startsWith: prefixe } },
+      select: { numero: true },
+    });
+  } catch (err) {
+    if (registreAbsent(err)) {
+      if (!registreAbsentSignale) {
+        registreAbsentSignale = true;
+        console.warn(
+          "[numbering] registre numeros_emis indisponible (migration pas encore passée ?) — " +
+            "borne calculée sur la seule table métier, comme avant le registre.",
+          err instanceof Error ? err.message : err,
+        );
+      }
+    } else {
+      console.error(
+        "[numbering] lecture du registre numeros_emis impossible — " +
+          "borne calculée sur la seule table métier.",
+        err,
+      );
+    }
+    return [];
+  }
 }

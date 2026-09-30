@@ -1279,6 +1279,13 @@ jobs:
         run: |
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
             -v ON_ERROR_STOP=1 -f tests/sql/dossier-client-comportement.sql
+      # Registre append-only des numéros émis (2026-09-30) : un numéro écrit
+      # entre au registre et y reste quand sa ligne métier disparaît ; UPDATE,
+      # DELETE et TRUNCATE y sont refusés. Chaque cas est ANNULÉ (ROLLBACK).
+      - name: Numéros émis — comportement SQL
+        run: |
+          PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
+            -v ON_ERROR_STOP=1 -f tests/sql/numeros-emis-comportement.sql
       - name: Visio — comportements sur base réelle
         run: pnpm exec tsx scripts/ci/gate-d-visio.ts
       - name: Verify _prisma_migrations table healthy
