@@ -1,9 +1,23 @@
 /**
+ * ⛔ GABARIT ARCHIVÉ — `convention_tripartite` version 2. NE JAMAIS MODIFIER.
+ *
+ * Copie conforme de `templates/convention-tripartite.tsx` tel qu'il était sur `origin/main`
+ * (9941a9673) le 2026-09-30, avant la correction des citations juridiques.
+ * Seule différence : les mentions légales sont lues dans `./mentions-figees`,
+ * et non plus dans le module vivant `legal-mentions.ts`.
+ *
+ * Il ne sert qu'à RE-RENDRE l'exemplaire signé des pièces signées sous cette
+ * version (`exemplaire-signe.ts`, via `./index.ts`). Toute nouvelle pièce est
+ * produite par le gabarit courant. Son texte est verrouillé par
+ * `gabarit-empreinte.spec.ts` et ses octets par
+ * `__tests__/pieces-signees-restent-reproductibles.spec.tsx`.
+ */
+
+/**
  * Qualiopi — Convention de formation tripartite (OF + Client + OPCO).
  *
  * Extension de la convention bipartite avec subrogation de paiement OPCO.
- * Conforme aux articles L.6353-1 et D.6353-1 du Code du travail (L.6353-2, abrogé
- * depuis le 01/01/2019, était cité jusqu'à la v2 — archivée dans `archives/`).
+ * Conforme L.6353-1 et L.6353-2 du Code du travail.
  * Rendu serveur exclusif — NE PAS "use client".
  *
  * ## 🔴 Sous-lot 8B — la pièce que lit l'OPCO était la MOINS complète des deux
@@ -42,7 +56,7 @@ import {
   assainirEspacesPdf,
   type PreuvesParPartie,
 } from "@/server/qualiopi/documents/base-layout";
-import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
+import { LEGAL_MENTIONS } from "./mentions-figees";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 // ============================================================
@@ -80,7 +94,7 @@ export interface ConventionTripartiteData {
   lieu: string;
   effectif: number;
   /**
-   * Les trois mentions du contenu de la convention (D.6353-1) — sous-lot 8B.
+   * Les trois mentions de l'article L.6353-1 — sous-lot 8B.
    *
    * Optionnelles, avec les mêmes replis que la bipartite : ces replis décrivent
    * le dispositif RÉEL de la plateforme (émargement par demi-journée,
@@ -281,7 +295,7 @@ export function ConventionTripartitePdf({
           />
 
           {/*
-            🔴 Sous-lot 8B — les TROIS mentions du contenu (D.6353-1). Elles
+            🔴 Sous-lot 8B — les TROIS mentions de l'article L.6353-1. Elles
             manquaient à cette pièce alors qu'elle invoque le texte en tête, et
             alors que la bipartite les porte depuis le 02/08. Mêmes libellés,
             mêmes replis : deux formulations divergentes de la même obligation
@@ -304,10 +318,7 @@ export function ConventionTripartitePdf({
           />
           <FieldRow
             label="Sanction de la formation"
-            value={
-              data.sanction ||
-              "Attestation de fin de formation (dernier alinéa de l'article L.6313-7 du Code du travail)."
-            }
+            value={data.sanction || "Attestation de fin de formation (article L.6353-1)."}
           />
         </DocSection>
 

@@ -76,7 +76,18 @@ export type TypeGabaritSignable =
  * | `convention` | 2 | 16/08 — clause de défaillance du financeur ajoutée en section 5 (refus, réduction, caducité ou non-paiement du financeur : les sommes demeurent dues par le client) |
  * | `convention_tripartite` | 2 | 16/08 — trois mentions L.6353-1 + cinq sections de fond (obligations, RGPD, propriété intellectuelle, responsabilité, droit applicable) ; annexes 5 → 10, signatures 6 → 11 |
  * | `contrat_sous_traitance` | 2 | 09/09 — clause 4 enrichie (délai de paiement 30 j, pénalités BCE + 10 pts, indemnité de 40 €, absence d'escompte ; fait générateur de la facturation) et article **4 bis** ajouté (mandat de facturation / autofacturation) |
+ * | `convention` | 3 | 30/09 — citations corrigées : tête « articles L.6353-1 et D.6353-1 » (L.6353-2 est abrogé depuis le 01/01/2019) ; sanction par défaut « dernier alinéa de l'article L.6313-7 » (et non L.6353-1). **v2 archivée** |
+ * | `convention_tripartite` | 3 | 30/09 — mêmes corrections que la bipartite. **v2 archivée** |
+ * | `contrat_formation` | 2 | 30/09 — rétractation : « aucune somme… » relève de L.6353-6 (et non L.6353-5) ; sanction par défaut « dernier alinéa de l'article L.6313-7 ». **v1 archivée** |
+ * | `releve_connexion` | 2 | 30/09 — pied « Document à conserver 5 ans. » sans la citation de L.6353-9 (qui porte sur les informations demandées aux candidats). **v1 archivée** |
  * | les autres | 1 | texte inchangé depuis l'origine |
+ *
+ * 🔑 DEPUIS LE 30/09, UNE VERSION REMPLACÉE S'ARCHIVE (`./archives/`). Avant,
+ * incrémenter rendait les pièces signées sous l'ancienne version impossibles à
+ * reproduire (`gabarit_modifie`) ; c'est ce qui aurait frappé la convention
+ * signée `AXI-DOC-2026-039` (v2). Copier le fichier courant dans `archives/`
+ * AVANT de le retoucher, l'inscrire dans `archives/index.ts`, puis
+ * incrémenter ici.
  *
  * 🔴 L'INCRÉMENT DU `contrat_sous_traitance` EST ARRIVÉ AVEC UN JOUR DE RETARD,
  * et le raconter vaut mieux que le masquer. Le 09/09, trois clauses de fond ont
@@ -103,9 +114,9 @@ export type TypeGabaritSignable =
  */
 export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
   devis: 1,
-  convention: 2,
-  convention_tripartite: 2,
-  contrat_formation: 1,
+  convention: 3,
+  convention_tripartite: 3,
+  contrat_formation: 2,
   contrat_sous_traitance: 2,
   /*
     v1 — 12/09/2026, premier texte.
@@ -125,7 +136,7 @@ export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
     décrit un mécanisme d'imputation, et un mécanisme se précise.
   */
   contrat_travail: 2,
-  releve_connexion: 1,
+  releve_connexion: 2,
   lettre_mission: 1,
 };
 
@@ -134,7 +145,28 @@ export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
  * signable — auquel cas la question ne se pose pas.
  */
 export function versionGabaritCourante(type: string): number | null {
-  return GABARIT_VERSIONS[type as TypeGabaritSignable] ?? null;
+  const gabarit = typeGabarit(type);
+  return gabarit === null ? null : GABARIT_VERSIONS[gabarit];
+}
+
+/**
+ * Type de PIÈCE (valeur de l'énumération `DocumentType`) → type de GABARIT.
+ *
+ * 🔴 2026-09-30 — le contrat de formation est `contrat` dans l'énumération et
+ * `contrat_formation` dans cette table. `versionGabaritCourante("contrat")`
+ * rendait donc `null` : `documents-service.ts` n'écrivait aucune version dans
+ * l'instantané, et `exemplaire-signe.ts` ne vérifiait rien. Toute retouche du
+ * contrat réécrivait en silence les exemplaires déjà signés. Les instantanés
+ * existants, sans version, se lisent v1 — le texte qu'ils portent réellement.
+ */
+const ALIAS_TYPE_PIECE: Readonly<Record<string, TypeGabaritSignable>> = {
+  contrat: "contrat_formation",
+};
+
+/** Type de gabarit d'un type de pièce, ou `null` si la pièce n'est pas signable. */
+export function typeGabarit(type: string): TypeGabaritSignable | null {
+  if (Object.hasOwn(ALIAS_TYPE_PIECE, type)) return ALIAS_TYPE_PIECE[type] ?? null;
+  return Object.hasOwn(GABARIT_VERSIONS, type) ? (type as TypeGabaritSignable) : null;
 }
 
 /**

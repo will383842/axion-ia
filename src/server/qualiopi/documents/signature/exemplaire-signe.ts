@@ -59,9 +59,14 @@ import { ReleveConnexionPdf } from "@/server/qualiopi/documents/templates/releve
 import { LettreMissionPdf } from "@/server/qualiopi/documents/templates/lettre-mission";
 import { nomFichierDocument } from "@/server/qualiopi/documents/nom-fichier";
 import {
+  typeGabarit,
   versionGabaritCourante,
   versionGabaritInstantane,
 } from "@/server/qualiopi/documents/templates/gabarit-versions";
+import {
+  gabaritArchive,
+  type ComposantPiece,
+} from "@/server/qualiopi/documents/templates/archives";
 
 /**
  * Type de pièce → composant de rendu.
@@ -74,8 +79,6 @@ import {
  * IDENTIQUE à l'original — ce qui se lirait « pas signé ». Le test
  * `preuves-rendues.spec.tsx` vérifie que la sortie diffère réellement.
  */
-type ComposantPiece = React.ComponentType<{ data: never; identite?: never }>;
-
 const COMPOSANTS: Readonly<Record<string, ComposantPiece>> = {
   devis: DevisPdf as unknown as ComposantPiece,
   convention: ConventionPdf as unknown as ComposantPiece,
@@ -89,6 +92,28 @@ const COMPOSANTS: Readonly<Record<string, ComposantPiece>> = {
   releve_connexion: ReleveConnexionPdf as unknown as ComposantPiece,
   lettre_mission: LettreMissionPdf as unknown as ComposantPiece,
 };
+
+/**
+ * Composant qui rend une pièce de ce type SOUS CETTE VERSION de gabarit, ou
+ * `null` si ce texte n'existe plus.
+ *
+ * 🔴 2026-09-30 — avant, seule la version COURANTE se rendait ; une pièce
+ * signée sous une version antérieure était refusée (`gabarit_modifie`). Corriger
+ * une citation fausse rendait donc irreproductible l'exemplaire de toutes les
+ * pièces déjà signées. Les versions remplacées sont désormais archivées
+ * (`templates/archives/`) et rendues telles qu'elles ont été signées.
+ *
+ * Un type non versionné (hors `GABARIT_VERSIONS`) se rend avec le composant
+ * courant : la question de la version ne se pose pas pour lui.
+ */
+export function composantGabarit(type: string, version: number): ComposantPiece | null {
+  const courant = COMPOSANTS[type];
+  if (courant === undefined) return null;
+  const gabarit = typeGabarit(type);
+  const versionCourante = versionGabaritCourante(type);
+  if (gabarit === null || versionCourante === null || version === versionCourante) return courant;
+  return gabaritArchive(gabarit, version);
+}
 
 export type RefusExemplaire =
   | "introuvable"
@@ -250,8 +275,7 @@ export async function rendreExemplaireSigne(documentGenereId: string): Promise<R
     return { ok: false, raison: "introuvable", message: MESSAGES.introuvable };
   }
 
-  const Composant = COMPOSANTS[piece.type];
-  if (Composant === undefined) {
+  if (COMPOSANTS[piece.type] === undefined) {
     return { ok: false, raison: "type_non_rendu", message: MESSAGES.type_non_rendu };
   }
 
@@ -271,8 +295,11 @@ export async function rendreExemplaireSigne(documentGenereId: string): Promise<R
   //
   // La règle de l'en-tête vaut pour les deux axes : « le dire vaut mieux qu'un
   // PDF reconstruit dont personne ne pourrait garantir la fidélité ».
-  const versionCourante = versionGabaritCourante(piece.type);
-  if (versionCourante !== null && versionGabaritInstantane(snap) !== versionCourante) {
+  //
+  // 🔑 2026-09-30 — le gabarit de la version SIGNÉE est rendu s'il a été
+  // archivé (`templates/archives/`) ; seul un texte non conservé est refusé.
+  const Composant = composantGabarit(piece.type, versionGabaritInstantane(snap));
+  if (Composant === null) {
     return { ok: false, raison: "gabarit_modifie", message: MESSAGES.gabarit_modifie };
   }
 

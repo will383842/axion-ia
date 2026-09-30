@@ -10,9 +10,13 @@ import {
 } from "./legal-mentions";
 
 describe("LEGAL_MENTIONS — bases juridiques exactes", () => {
-  it("convention cite L.6353-1 et L.6353-2", () => {
+  // 🔴 2026-09-30 — L.6353-2 est abrogé depuis le 01/01/2019 : la convention
+  // cite L.6353-1 (obligation) et D.6353-1 (contenu). Les conventions déjà
+  // signées gardent l'ancien texte, figé dans `templates/archives/`.
+  it("convention cite L.6353-1 et D.6353-1 — plus L.6353-2, abrogé", () => {
     expect(LEGAL_MENTIONS.convention).toContain("L.6353-1");
-    expect(LEGAL_MENTIONS.convention).toContain("L.6353-2");
+    expect(LEGAL_MENTIONS.convention).toContain("D.6353-1");
+    expect(LEGAL_MENTIONS.convention).not.toContain("L.6353-2");
   });
   // 🔴 2026-09-30 — vérifié au Code du travail en vigueur : L.6353-1 ne porte
   // plus que la convention (loi 2018-771), D.6353-1 le contenu de la

@@ -26,8 +26,15 @@ export const TAUX_PENALITES_RETARD_FR =
 
 /** Mentions légales fixes par type de document officiel (verbatim). */
 export const LEGAL_MENTIONS = {
-  /** Convention de formation professionnelle (personnes morales). */
-  convention: "Établie conformément aux articles L.6353-1 et L.6353-2 du Code du travail.",
+  /**
+   * Convention de formation professionnelle (personnes morales).
+   *
+   * 🔴 2026-09-30 — citait « L.6353-1 et L.6353-2 ». L.6353-2 est ABROGÉ depuis
+   * le 01/01/2019 (loi 2018-771) ; L.6353-1 pose désormais seul l'obligation de
+   * convention, et D.6353-1 en fixe le contenu. ⚠️ Les conventions déjà signées
+   * gardent l'ancien texte : il est figé dans `templates/archives/`.
+   */
+  convention: "Établie conformément aux articles L.6353-1 et D.6353-1 du Code du travail.",
   /** Contrat de formation professionnelle (particuliers — rétractation). */
   contratParticulier: "Établi conformément aux articles L.6353-3 à L.6353-7 du Code du travail.",
   /**

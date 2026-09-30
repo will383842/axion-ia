@@ -54,6 +54,7 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
+import { GABARITS_ARCHIVES } from "./archives";
 import { GABARIT_VERSIONS, type TypeGabaritSignable } from "./gabarit-versions";
 
 /** Fichier source de chaque pièce signable. Miroir de `COMPOSANTS`. */
@@ -93,16 +94,19 @@ const EMPREINTES: Readonly<
 > = {
   devis: { sha: "bfd05ad0ef5d538342d23a8deeff1b69f10c8fb9acdad6f5dd88a1cb79fc1f90", version: 1 },
   convention: {
-    sha: "3a0ab051cc6bbe5586f04877a0a5ec6ff512e4701877b9080e91fdd99f72fb08",
-    version: 2,
+    // v3 — 30/09/2026 : citations juridiques corrigées ; v2 archivée.
+    sha: "3491d7db4e549d23e379c43f9ac7a77b867864388810da38b8351608b8a07609",
+    version: 3,
   },
   convention_tripartite: {
-    sha: "b9955eee0a645ae94d81711a32891dd2108c2008d00423dc9b5c01a40cdfa247",
-    version: 2,
+    // v3 — 30/09/2026 : citations juridiques corrigées ; v2 archivée.
+    sha: "3878ea4839595a27447f7564ce21fe99a021e1a5a47e0ecd00946ca88b304168",
+    version: 3,
   },
   contrat_formation: {
-    sha: "5e1340495af53425ad863a3099b6333f8c1d6c6d7f70b5d152211810dbc28923",
-    version: 1,
+    // v2 — 30/09/2026 : citations juridiques corrigées ; v1 archivée.
+    sha: "0c138db997a2aadff39ef3843d625d846f7f3ce813f7a39e4287d46a0fddaafa",
+    version: 2,
   },
   contrat_sous_traitance: {
     sha: "826c87dd9c49c4d2424bfb8a9457e22bd6b99cbb8c14752e6588fb05a01136eb",
@@ -114,8 +118,9 @@ const EMPREINTES: Readonly<
     version: 2,
   },
   releve_connexion: {
-    sha: "afa986aaf0b72cb79ffa17b1693062898d85bbf9476de4ae191009a840cd7055",
-    version: 1,
+    // v2 — 30/09/2026 : citations juridiques corrigées ; v1 archivée.
+    sha: "d362a55795b87f700e935ff54e64db32047e708ee3f34aa173f2617b2502a85d",
+    version: 2,
   },
   lettre_mission: {
     sha: "5ecd3292d85abac664088d4ef4648748c63de2a3a6330f86f11cc6a09a96fd9c",
@@ -251,5 +256,101 @@ describe("le texte d'un gabarit signable ne change pas sans qu'on tranche", () =
     );
     const avecCommentaire = `// note ajoutée par le test\n${source}`;
     expect(texteMesurable(avecCommentaire)).toBe(texteMesurable(source));
+  });
+});
+
+/**
+ * Empreintes des gabarits ARCHIVÉS — une version déjà signée ne change JAMAIS.
+ *
+ * 🔴 2026-09-30. Ces fichiers rendent l'exemplaire signé de pièces DÉJÀ
+ * signées (dont la convention `AXI-DOC-2026-039`, v2). Contrairement à la table
+ * `EMPREINTES` ci-dessus, il n'y a ici qu'une seule réponse possible quand le
+ * test rougit : **annuler la modification**. Il n'existe pas de retouche
+ * « cosmétique » d'un texte déjà signé qu'on puisse accepter sans preuve — le
+ * témoin octet pour octet est
+ * `__tests__/pieces-signees-restent-reproductibles.spec.tsx`.
+ *
+ * ⛔ Ne jamais mettre à jour une empreinte de cette table, ni retirer une
+ * entrée pour faire passer le test.
+ */
+const EMPREINTES_ARCHIVES: Readonly<Record<string, string>> = {
+  "convention.v2.tsx": "3455697cb2369aa22b07547038910e3987533520891f184b68b170f2067c48cd",
+  "convention-tripartite.v2.tsx":
+    "7d742470ca75e388c089185b43ec39852744ac22bd36b411ebf6a1b33544982c",
+  "contrat-formation.v1.tsx": "4afe9d19dac33437e8970ecbad091af861e8a5bce4f01b35ac4fceaed264e4cd",
+  "releve-connexion.v1.tsx": "958909a208a6f56c286c67f68694982e9668b48232872553c683ac68aee44ae7",
+  "mentions-figees.ts": "6f570713a14786affb5a2a2bc2dd73f61e0ff1546dcf9ab896917ff03eb6f199",
+};
+
+describe("⛔ le texte d'une version ARCHIVÉE ne change jamais", () => {
+  const archive = (fichier: string): string =>
+    createHash("sha256")
+      .update(
+        texteMesurable(
+          readFileSync(
+            join(
+              process.cwd(),
+              "src",
+              "server",
+              "qualiopi",
+              "documents",
+              "templates",
+              "archives",
+              fichier,
+            ),
+            "utf8",
+          ),
+        ),
+        "utf8",
+      )
+      .digest("hex");
+
+  it("🔑 chaque version inscrite au registre a son empreinte figée, et réciproquement", () => {
+    const inscrits = Object.values(GABARITS_ARCHIVES).flatMap((parVersion) =>
+      Object.values(parVersion ?? {}).map((a) => a.fichier),
+    );
+    expect([...inscrits, "mentions-figees.ts"].sort()).toEqual(
+      Object.keys(EMPREINTES_ARCHIVES).sort(),
+    );
+  });
+
+  it("🔴 aucun fichier archivé n'a changé", () => {
+    const modifies = Object.entries(EMPREINTES_ARCHIVES)
+      .filter(([fichier, sha]) => archive(fichier) !== sha)
+      .map(([fichier]) => `${fichier} → ${archive(fichier)}`);
+    expect(
+      modifies,
+      "Un gabarit ARCHIVÉ a changé. Il rend l'exemplaire de pièces DÉJÀ SIGNÉES : " +
+        "annulez la modification. Pour faire évoluer le texte, retouchez le gabarit " +
+        "COURANT et incrémentez sa version (cf. `gabarit-versions.ts`).",
+    ).toEqual([]);
+  });
+
+  it("🔑 on n'archive que des versions ANTÉRIEURES à la version courante", () => {
+    for (const [type, parVersion] of Object.entries(GABARITS_ARCHIVES)) {
+      for (const v of Object.keys(parVersion ?? {}).map(Number)) {
+        expect(v, `${type} v${v}`).toBeLessThan(GABARIT_VERSIONS[type as TypeGabaritSignable]);
+        expect(Number.isInteger(v) && v >= 1, `${type} v${v}`).toBe(true);
+      }
+    }
+  });
+
+  it("🔑 CONTRE-TÉMOIN : l'empreinte d'une archive voit un mot changé", () => {
+    const source = readFileSync(
+      join(
+        process.cwd(),
+        "src",
+        "server",
+        "qualiopi",
+        "documents",
+        "templates",
+        "archives",
+        "mentions-figees.ts",
+      ),
+      "utf8",
+    );
+    expect(texteMesurable(source.replaceAll("L.6353-2", "D.6353-1"))).not.toBe(
+      texteMesurable(source),
+    );
   });
 });
