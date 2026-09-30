@@ -39,7 +39,25 @@ export interface ActionJournal {
   readonly targetType: string | null;
   readonly targetId: string | null;
   readonly changes: unknown;
+  /**
+   * Vrai quand l'action porte sur un stagiaire ANONYMISÉ (RGPD art. 17) : le
+   * fait reste au dossier, le détail (`changes`, qui peut porter un motif libre
+   * comme « Maladie ») n'y est pas recopié.
+   */
+  readonly detailMasque?: boolean;
 }
+
+/**
+ * 🔴 ADR 0060 — la garde `assertDossierOuvert` est un contrôle HORS
+ * transaction : une écriture autorisée pendant l'ouverture peut atterrir
+ * quelques instants APRÈS un reverrouillage concurrent. Elle n'échappe pas
+ * pour autant au dossier : les actions inscrites dans ce délai après un
+ * reverrouillage sont listées avec l'ouverture, et signalées comme telles.
+ */
+export const DELAI_GRACE_REVERROUILLAGE_MS = 5 * 60 * 1000;
+
+export const MENTION_DETAIL_MASQUE =
+  "détail masqué : stagiaire anonymisé (RGPD art. 17), l'action reste au dossier";
 
 /** Ligne unique qui dit la limite du journal d'activité, sans la taire. */
 export const MENTION_JOURNAL_BEST_EFFORT =
@@ -71,6 +89,8 @@ export function sectionHistoriqueDossier(input: {
   readonly evenements: ReadonlyArray<EvenementHistorique>;
   readonly journal: ReadonlyArray<ActionJournal>;
   readonly maintenant: Date;
+  /** Vrai quand le chargement a atteint son plafond : la liste n'est pas complète, et c'est dit. */
+  readonly journalTronque?: boolean;
 }): { lignes: string[]; nbReouvertures: number } {
   const lignes: string[] = [TITRE_HISTORIQUE];
   if (input.texteEtat !== null) lignes.push(`  État à la date de ce dossier : ${input.texteEtat}`);
@@ -95,12 +115,24 @@ export function sectionHistoriqueDossier(input: {
     lignes.push(`  Réouverture n°${n} — le ${dateHeureParis(e.createdAt)}, par ${e.auteurNom}`);
     lignes.push(`    Motif : « ${e.motif ?? ""} »`);
     const suivant = evs.slice(i + 1).find((x) => x.type === "reverrouillage");
+    const reouvertureSuivante = evs.slice(i + 1).find((x) => x.type === "reouverture");
     const fin = suivant?.createdAt ?? input.maintenant;
+    // Délai de grâce après le reverrouillage (écritures engagées avant lui),
+    // borné par la réouverture suivante pour ne rien lister deux fois.
+    const finGrace =
+      suivant === undefined
+        ? fin.getTime()
+        : Math.min(
+            fin.getTime() + DELAI_GRACE_REVERROUILLAGE_MS,
+            reouvertureSuivante !== undefined
+              ? reouvertureSuivante.createdAt.getTime() - 1
+              : Number.POSITIVE_INFINITY,
+          );
     const pendant = input.journal
       .filter(
         (a) =>
           a.createdAt.getTime() >= e.createdAt.getTime() &&
-          a.createdAt.getTime() <= fin.getTime() &&
+          a.createdAt.getTime() <= finGrace &&
           a.action !== "qualiopi.session.dossier.rouvert" &&
           a.action !== "qualiopi.session.dossier.reverrouille",
       )
@@ -112,15 +144,24 @@ export function sectionHistoriqueDossier(input: {
         `    Actions menées pendant l'ouverture (${pendant.length}, journal d'activité) :`,
       );
       for (const a of pendant) {
+        const apresReverrouillage = a.createdAt.getTime() > fin.getTime();
         lignes.push(
           `      - ${dateHeureParis(a.createdAt)} — ${a.action}` +
             (a.auteur !== null ? ` — par ${a.auteur}` : "") +
             (a.targetType !== null
               ? ` — ${a.targetType}${a.targetId !== null ? ` ${a.targetId.slice(0, 8)}` : ""}`
               : "") +
-            resumeChanges(a.changes),
+            (a.detailMasque === true ? ` — ${MENTION_DETAIL_MASQUE}` : resumeChanges(a.changes)) +
+            (apresReverrouillage
+              ? " — ⚠️ inscrite APRÈS le reverrouillage (écriture engagée pendant l'ouverture)"
+              : ""),
         );
       }
+    }
+    if (input.journalTronque === true) {
+      lignes.push(
+        `    ⚠️ Liste tronquée : le journal compte plus de ${PLAFOND_JOURNAL} actions depuis la première réouverture ; les suivantes sont au journal d'activité de la console.`,
+      );
     }
     if (suivant === undefined) {
       lignes.push("    Toujours rouvert à la date de ce dossier : aucun reverrouillage.");
@@ -130,7 +171,12 @@ export function sectionHistoriqueDossier(input: {
   return { lignes, nbReouvertures: reouvertures.length };
 }
 
-/** L'avertissement porté à l'index dès qu'il y a eu au moins une réouverture. */
+/**
+ * Le signalement porté EN TÊTE de l'index dès qu'il y a eu au moins une
+ * réouverture. ⚠️ Ce n'est PAS un « avertissement » au sens du dossier : une
+ * réouverture tracée, puis close à nouveau, ne rend pas le dossier incomplet
+ * (l'appelant ne le verse donc pas dans `avertissements`).
+ */
 export function avertissementReouvertures(nb: number): string | null {
   if (nb === 0) return null;
   return (
@@ -224,20 +270,169 @@ export async function lireEvenementsDossier(
   }
 }
 
+/** Plafond du chargement ; au-delà, la section le DIT (jamais une liste coupée en silence). */
+export const PLAFOND_JOURNAL = 1000;
+
 /**
- * Les actions du journal d'activité portant sur la session et ses éléments,
- * entre deux dates. Best-effort : le journal l'est aussi, et la section le dit.
+ * Clé que portent, dans `changes`, les actions dont la cible ne se retrouve
+ * plus par son identifiant (une cible SUPPRIMÉE, comme un incident).
+ */
+export const CLE_DOSSIER_SESSION = "dossierSessionId";
+
+interface CibleJournal {
+  readonly id: string;
+  /** Vrai si la cible porte sur un stagiaire anonymisé. */
+  readonly anonyme: boolean;
+}
+
+const estAnonyme = (t: { deletedAt: Date | null } | null | undefined): boolean =>
+  t != null && t.deletedAt !== null;
+
+/**
+ * 🔴 ADR 0060 (D8) — TOUS les objets d'un dossier sous lesquels une action
+ * VERROU se journalise, par `targetType`. La première version ne cherchait que
+ * la session, les inscriptions et les pièces : une présence corrigée à la main
+ * (`PresenceCreneau`), un émargement révoqué (`EmargementSignature`), une
+ * évaluation, un questionnaire saisi, un relevé importé ou un incident
+ * disparaissaient de l'historique, qui écrivait alors « aucune au journal » —
+ * une affirmation d'absence fausse remise au certificateur.
+ *
+ * Le test `journal-couvre-ecritures-verrou.spec.ts` lit chaque action VERROU
+ * du registre et rougit si elle journalise sous un `targetType` absent d'ici.
+ */
+const CHARGEURS_CIBLES: Readonly<Record<string, (sessionId: string) => Promise<CibleJournal[]>>> = {
+  TrainingSession: async (sessionId) => [{ id: sessionId, anonyme: false }],
+  Enrollment: async (sessionId) =>
+    (
+      await prisma.enrollment.findMany({
+        where: { sessionId },
+        select: { id: true, trainee: { select: { deletedAt: true } } },
+      })
+    ).map((e) => ({ id: e.id, anonyme: estAnonyme(e.trainee) })),
+  DocumentGenere: async (sessionId) =>
+    (
+      await prisma.documentGenere.findMany({
+        where: { sessionId },
+        select: { id: true, trainee: { select: { deletedAt: true } } },
+      })
+    ).map((d) => ({ id: d.id, anonyme: estAnonyme(d.trainee) })),
+  PresenceCreneau: async (sessionId) =>
+    (
+      await prisma.presenceCreneau.findMany({
+        where: { enrollment: { sessionId } },
+        select: {
+          id: true,
+          enrollment: { select: { trainee: { select: { deletedAt: true } } } },
+        },
+      })
+    ).map((c) => ({ id: c.id, anonyme: estAnonyme(c.enrollment.trainee) })),
+  EmargementSignature: async (sessionId) =>
+    (
+      await prisma.emargementSignature.findMany({
+        where: { enrollment: { sessionId } },
+        select: {
+          id: true,
+          enrollment: { select: { trainee: { select: { deletedAt: true } } } },
+        },
+      })
+    ).map((x) => ({ id: x.id, anonyme: estAnonyme(x.enrollment?.trainee) })),
+  EmargementContresignature: async (sessionId) =>
+    (
+      await prisma.emargementContresignature.findMany({
+        where: { sessionId },
+        select: { id: true },
+      })
+    ).map((x) => ({ id: x.id, anonyme: false })),
+  DocumentSignature: async (sessionId) =>
+    (
+      await prisma.documentSignature.findMany({
+        where: { documentGenere: { sessionId } },
+        select: {
+          id: true,
+          documentGenere: { select: { trainee: { select: { deletedAt: true } } } },
+        },
+      })
+    ).map((x) => ({ id: x.id, anonyme: estAnonyme(x.documentGenere.trainee) })),
+  EvaluationAcquis: async (sessionId) =>
+    (
+      await prisma.evaluationAcquis.findMany({
+        where: { enrollment: { sessionId } },
+        select: {
+          id: true,
+          enrollment: { select: { trainee: { select: { deletedAt: true } } } },
+        },
+      })
+    ).map((x) => ({ id: x.id, anonyme: estAnonyme(x.enrollment?.trainee) })),
+  Questionnaire: async (sessionId) =>
+    (
+      await prisma.questionnaire.findMany({
+        where: { enrollment: { sessionId } },
+        select: {
+          id: true,
+          enrollment: { select: { trainee: { select: { deletedAt: true } } } },
+        },
+      })
+    ).map((x) => ({ id: x.id, anonyme: estAnonyme(x.enrollment.trainee) })),
+  ReleveConnexionImport: async (sessionId) =>
+    (
+      await prisma.releveConnexionImport.findMany({ where: { sessionId }, select: { id: true } })
+    ).map((x) => ({ id: x.id, anonyme: false })),
+  Incident: async (sessionId) =>
+    (await prisma.incident.findMany({ where: { sessionId }, select: { id: true } })).map((x) => ({
+      id: x.id,
+      anonyme: false,
+    })),
+  DossierFinancement: async (sessionId) =>
+    (
+      await prisma.dossierFinancement.findMany({
+        where: { trainingSessionId: sessionId },
+        select: { id: true },
+      })
+    ).map((x) => ({ id: x.id, anonyme: false })),
+  MissionFormateur: async (sessionId) =>
+    (await prisma.missionFormateur.findMany({ where: { sessionId }, select: { id: true } })).map(
+      (x) => ({ id: x.id, anonyme: false }),
+    ),
+};
+
+/** Les `targetType` dont les identifiants sont recherchés dans le journal d'un dossier. */
+export const TYPES_CIBLES_JOURNAL_SESSION: ReadonlyArray<string> = Object.keys(CHARGEURS_CIBLES);
+
+/** Tous les identifiants d'objets du dossier, et ceux qui portent sur un stagiaire anonymisé. */
+export async function ciblesJournalSession(
+  sessionId: string,
+): Promise<{ ids: string[]; anonymes: Set<string> }> {
+  const lots = await Promise.all(Object.values(CHARGEURS_CIBLES).map((c) => c(sessionId)));
+  const ids = new Set<string>();
+  const anonymes = new Set<string>();
+  for (const lot of lots) {
+    for (const c of lot) {
+      ids.add(c.id);
+      if (c.anonyme) anonymes.add(c.id);
+    }
+  }
+  return { ids: [...ids], anonymes };
+}
+
+/**
+ * Les actions du journal d'activité portant sur la session et TOUS ses
+ * éléments, entre deux dates : par identifiant de cible, OU par le marqueur
+ * `changes.dossierSessionId` (cibles supprimées). Best-effort : le journal
+ * l'est aussi, et la section le dit.
  */
 export async function lireJournalSession(input: {
-  readonly cibles: ReadonlyArray<string>;
+  readonly sessionId: string;
   readonly depuis: Date;
   readonly jusqua: Date;
-}): Promise<ActionJournal[]> {
-  if (input.cibles.length === 0) return [];
+}): Promise<{ actions: ActionJournal[]; tronque: boolean }> {
+  const { ids, anonymes } = await ciblesJournalSession(input.sessionId);
   const lignes = await prisma.activityLog.findMany({
     where: {
-      targetId: { in: [...new Set(input.cibles)] },
       createdAt: { gte: input.depuis, lte: input.jusqua },
+      OR: [
+        { targetId: { in: ids } },
+        { changes: { path: [CLE_DOSSIER_SESSION], equals: input.sessionId } },
+      ],
     },
     select: {
       createdAt: true,
@@ -248,16 +443,33 @@ export async function lireJournalSession(input: {
       adminUser: { select: { name: true } },
     },
     orderBy: { createdAt: "asc" },
-    take: 500,
+    take: PLAFOND_JOURNAL + 1,
   });
-  return lignes.map((l) => ({
-    createdAt: l.createdAt,
-    action: l.action,
-    auteur: l.adminUser?.name ?? null,
-    targetType: l.targetType,
-    targetId: l.targetId,
-    changes: l.changes,
-  }));
+  const tronque = lignes.length > PLAFOND_JOURNAL;
+  const anonymesListe = [...anonymes];
+  return {
+    tronque,
+    actions: lignes.slice(0, PLAFOND_JOURNAL).map((l) => {
+      let texte = "";
+      try {
+        texte = JSON.stringify(l.changes ?? null);
+      } catch {
+        texte = "";
+      }
+      const detailMasque =
+        (l.targetId !== null && anonymes.has(l.targetId)) ||
+        anonymesListe.some((id) => texte.includes(id));
+      return {
+        createdAt: l.createdAt,
+        action: l.action,
+        auteur: l.adminUser?.name ?? null,
+        targetType: l.targetType,
+        targetId: l.targetId,
+        changes: l.changes,
+        detailMasque,
+      };
+    }),
+  };
 }
 
 export interface ReouvertureSessionManifeste {

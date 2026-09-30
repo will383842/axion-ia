@@ -772,28 +772,33 @@ export async function genererDossierSessionZip(
     } else {
       const maintenant = new Date();
       const premiere = evenements.find((e) => e.type === "reouverture");
+      // Le journal est cherché sur TOUS les objets du dossier (créneaux,
+      // signatures, évaluations, questionnaires, relevés, incidents…) et sur le
+      // marqueur des cibles supprimées — pas seulement session, inscriptions
+      // et pièces : sinon une présence corrigée pendant l'ouverture passait
+      // pour « aucune action ».
       const journal =
         premiere === undefined
-          ? []
+          ? { actions: [], tronque: false }
           : await lireJournalSession({
-              cibles: [
-                sessionId,
-                ...session.enrollments.map((e) => e.id),
-                ...session.documents.map((d) => d.id),
-                ...annulees.map((a) => a.id),
-              ],
+              sessionId,
               depuis: premiere.createdAt,
               jusqua: maintenant,
             });
       const historique = sectionHistoriqueDossier({
         texteEtat: lu === null ? null : texteEtatVerrou(lu.etat),
         evenements,
-        journal,
+        journal: journal.actions,
+        journalTronque: journal.tronque,
         maintenant,
       });
       index.push("", ...historique.lignes);
-      const avertissement = avertissementReouvertures(historique.nbReouvertures);
-      if (avertissement !== null) avertissements.push(avertissement);
+      // 🔑 Un SIGNALEMENT, en tête de l'index — pas un avertissement : une
+      // réouverture tracée ne rend pas le dossier incomplet. Versé dans
+      // `avertissements`, il faisait afficher « Dossier INCOMPLET » à un
+      // dossier rouvert, reclos et complet.
+      const signalement = avertissementReouvertures(historique.nbReouvertures);
+      if (signalement !== null) index.splice(3, 0, signalement, "");
     }
   } catch {
     avertissements.push(
