@@ -91,7 +91,16 @@ export interface GroupeDeFaits<F> {
 export function grouperParProjetEvoque<F extends { readonly id: string; readonly portee: string }>(
   faits: readonly F[],
   ev: Evocations | null,
+  /**
+   * Les projets que l'écran propose. P2 voit aussi les projets gagnés ou clos :
+   * une proposition vers un projet ABSENT de cette liste redevient `null`
+   * (« Nouveau projet » coché d'avance), jamais une case que rien ne coche.
+   */
+  projetsAffiches?: ReadonlyArray<{ readonly id: string }>,
 ): { readonly principal: GroupeDeFaits<F>; readonly autres: ReadonlyArray<GroupeDeFaits<F>> } {
+  const affiches = projetsAffiches ? new Set(projetsAffiches.map((p) => p.id)) : null;
+  const affichable = (p: PropositionProjet | null): PropositionProjet | null =>
+    p?.mode === "existant" && affiches !== null && !affiches.has(p.projetId) ? null : p;
   const refDe = (f: F): string | null =>
     ev !== null && f.portee === "a_ranger" ? (ev.projetDuFait[f.id] ?? null) : null;
   const evoques = [...new Set(faits.map(refDe).filter((r): r is string => r !== null))];
@@ -101,7 +110,7 @@ export function grouperParProjetEvoque<F extends { readonly id: string; readonly
       : (evoques[0] ?? null);
   const decrire = (ref: string | null) => {
     const p = ref === null ? undefined : ev?.projets.find((x) => x.ref === ref);
-    return { ref, intitule: p?.intitule ?? null, proposition: p?.proposition ?? null };
+    return { ref, intitule: p?.intitule ?? null, proposition: affichable(p?.proposition ?? null) };
   };
   const principal: GroupeDeFaits<F> = { ...decrire(principalRef), faits: [] };
   const autres = new Map<string, GroupeDeFaits<F>>();
@@ -119,4 +128,46 @@ export function grouperParProjetEvoque<F extends { readonly id: string; readonly
     g.faits.push(f);
   }
   return { principal, autres: [...autres.values()] };
+}
+
+export class ErreurChoixDeGroupe extends Error {}
+
+export type ChoixDeGroupe =
+  | { readonly mode: "existant"; readonly projetId: string }
+  | { readonly mode: "nouveau"; readonly titre: string }
+  | { readonly mode: "principal" };
+
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * Les choix de projet des AUTRES projets évoqués, lus dans le formulaire de
+ * « Après l'appel ». Un groupe sans choix est REFUSÉ : « le même projet que
+ * ci-dessus » ne se déduit jamais d'une case vide.
+ */
+export function lireChoixDesGroupes(
+  fd: FormData,
+): Array<{ projet: ChoixDeGroupe; faitIds: string[] }> {
+  const txt = (k: string): string => {
+    const v = fd.get(k);
+    return typeof v === "string" ? v.trim() : "";
+  };
+  return fd
+    .getAll("groupe")
+    .filter((g): g is string => typeof g === "string" && /^[\w-]{1,16}$/.test(g))
+    .map((g) => {
+      const choix = txt(`projet_${g}`);
+      let projet: ChoixDeGroupe;
+      if (choix === "nouveau") projet = { mode: "nouveau", titre: txt(`projetTitre_${g}`) };
+      else if (choix === "principal") projet = { mode: "principal" };
+      else if (UUID.test(choix)) projet = { mode: "existant", projetId: choix };
+      else {
+        throw new ErreurChoixDeGroupe(
+          `Choisissez un projet pour « ${txt(`groupeIntitule_${g}`) || "l'autre projet évoqué"} ».`,
+        );
+      }
+      return {
+        projet,
+        faitIds: fd.getAll(`groupeFait_${g}`).filter((x): x is string => typeof x === "string"),
+      };
+    });
 }

@@ -88,6 +88,7 @@ export async function ApresLAppelVue({
   const groupes = grouperParProjetEvoque(
     r.faits.filter((f) => f.statut !== "valide"),
     r.evocations,
+    projets,
   );
   const proposePrincipal = groupes.principal.proposition;
 
@@ -378,6 +379,11 @@ export async function ApresLAppelVue({
                   Autre projet évoqué : « {g.intitule ?? g.ref} »
                 </legend>
                 <input type="hidden" name="groupe" value={g.ref ?? ""} />
+                <input
+                  type="hidden"
+                  name={`groupeIntitule_${g.ref}`}
+                  value={g.intitule ?? "l'autre projet évoqué"}
+                />
                 {g.faits.map((f) => (
                   <input key={f.id} type="hidden" name={`groupeFait_${g.ref}`} value={f.id} />
                 ))}

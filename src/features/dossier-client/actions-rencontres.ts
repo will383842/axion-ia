@@ -33,6 +33,7 @@ import { deplacerRencontre } from "./deplacer";
 import { fusionnerFiches } from "./fusionner";
 import { defaireFusion } from "./defaire-fusion";
 import { validerApresLAppel, type ChoixProjet } from "./valider";
+import { lireChoixDesGroupes } from "./projets-evoques";
 import { CHAMPS_DE_LA_NOTE, type SaisieNote } from "./note-manuelle";
 import { executerGesteCompteRendu } from "./compte-rendu-gestes";
 import { MessagePourWill, messageAffichable } from "./message-affichable";
@@ -196,22 +197,13 @@ export async function validerApresLAppelAction(fd: FormData): Promise<void> {
         ? { mode: "existant", projetId: modeProjet }
         : { mode: "aucun" };
 
-  // V1-03 : un choix de projet par AUTRE projet évoqué (références « J… »).
-  const groupes = fd
-    .getAll("groupe")
-    .filter((g): g is string => typeof g === "string" && /^[\w-]{1,16}$/.test(g))
-    .map((g) => {
-      const choix = texte(fd, `projet_${g}`);
-      return {
-        projet:
-          choix === "nouveau"
-            ? { mode: "nouveau" as const, titre: texte(fd, `projetTitre_${g}`) }
-            : uuid.safeParse(choix).success
-              ? { mode: "existant" as const, projetId: choix }
-              : { mode: "principal" as const },
-        faitIds: fd.getAll(`groupeFait_${g}`).filter((x): x is string => typeof x === "string"),
-      };
-    });
+  // V1-03 : un choix de projet par AUTRE projet évoqué ; un groupe sans choix est refusé.
+  let groupes: ReturnType<typeof lireChoixDesGroupes> = [];
+  try {
+    groupes = lireChoixDesGroupes(fd);
+  } catch (e) {
+    erreurVers(retour, e);
+  }
 
   const r = await validerApresLAppel(prisma, {
     rencontreId,
