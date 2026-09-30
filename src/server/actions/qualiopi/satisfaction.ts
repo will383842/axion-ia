@@ -27,7 +27,7 @@ import {
 } from "@/server/qualiopi/indicateurs/service";
 import { computeBpf, bpfToCsv } from "@/server/qualiopi/bpf/service";
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
-import { chargerEtatVerrou } from "@/server/qualiopi/sessions/verrou-dossier";
+import { chargerEtatVerrou, verrouDossierActif } from "@/server/qualiopi/sessions/verrou-dossier";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -156,7 +156,7 @@ export async function saisirReponsesQuestionnaireAction(input: {
   if (!verrou.ok) return verrou;
   if (verrou.sessionId !== null) {
     const lu = await chargerEtatVerrou(verrou.sessionId);
-    if (lu !== null && lu.etat.etat === "a_recueillir") {
+    if (verrouDossierActif() && lu !== null && lu.etat.etat === "a_recueillir") {
       return {
         error:
           "Session réalisée : les réponses aux questionnaires ne se saisissent plus à la place du stagiaire. " +

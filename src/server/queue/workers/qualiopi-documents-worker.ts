@@ -38,7 +38,7 @@ import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
-import { chargerEtatsVerrou } from "@/server/qualiopi/sessions/verrou-dossier";
+import { chargerEtatsVerrou, dossierFige } from "@/server/qualiopi/sessions/verrou-dossier";
 import {
   bilanProductionsAuJalon,
   type InstantaneProduction,
@@ -183,7 +183,8 @@ async function handleProductionAuJalon(): Promise<void> {
   let sansProducteur = 0;
 
   for (const session of sessions) {
-    if (etats.get(session.id)?.etat.etat === "clos") {
+    const etatDossier = etats.get(session.id)?.etat;
+    if (etatDossier !== undefined && dossierFige(etatDossier)) {
       ecarteesDossierClos++;
       continue;
     }

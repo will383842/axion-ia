@@ -213,9 +213,21 @@ export function etatVerrouDossier(entree: EntreeVerrouDossier): EtatVerrouDossie
   return { etat: "clos", depuis };
 }
 
+/**
+ * 🔴 INTERRUPTEUR DE SECOURS (demande du dirigeant, 2026-09-30 : « ne rien
+ * casser »). `QUALIOPI_VERROU_DOSSIER=off` sur l'app ET le worker, puis
+ * redémarrage : plus aucune écriture n'est refusée pour cause de dossier clos,
+ * sans redéploiement. L'ÉTAT, lui, continue d'être calculé et affiché tel quel
+ * (dossier d'audit, fiche) : l'interrupteur coupe le blocage, jamais la vérité.
+ * Toute autre valeur, ou l'absence de la variable, laisse le verrou actif.
+ */
+export function verrouDossierActif(): boolean {
+  return (process.env["QUALIOPI_VERROU_DOSSIER"] ?? "").trim().toLowerCase() !== "off";
+}
+
 /** Vrai quand les écritures classées VERROU doivent être refusées. */
 export function dossierFige(etat: EtatVerrouDossier): boolean {
-  return etat.etat === "clos";
+  return verrouDossierActif() && etat.etat === "clos";
 }
 
 /**

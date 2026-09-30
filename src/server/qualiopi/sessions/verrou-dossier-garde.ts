@@ -15,6 +15,7 @@ import {
   chargerEtatVerrou,
   messageDossierClos,
   resoudreSessionId,
+  verrouDossierActif,
   type RefSession,
 } from "./verrou-dossier";
 
@@ -52,6 +53,8 @@ export async function assertDossierOuvert(
 ): Promise<{ readonly ok: true; readonly sessionId: string | null } | RefusDossierClos> {
   if (ref == null) return { ok: true, sessionId: null };
   const sessionId = typeof ref === "string" ? ref : await resoudreSessionId(ref);
+  // Interrupteur de secours : le verrou est coupé, on laisse passer.
+  if (!verrouDossierActif()) return { ok: true, sessionId };
   if (sessionId === null) return { ok: true, sessionId: null };
   const lu = await chargerEtatVerrou(sessionId);
   if (lu !== null && lu.etat.etat === "clos") {

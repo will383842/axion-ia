@@ -11,6 +11,7 @@
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { EntreeVerrouDossier, EtatVerrouDossier } from "../verrou-dossier";
+import { empreinteMotDePasse } from "../mot-de-passe-reouverture";
 
 const h = vi.hoisted(() => ({
   role: "super_admin",
@@ -108,7 +109,12 @@ const ROUVERT: EtatVerrouDossier = {
   motif: "Correction de l'attestation",
 };
 
+// Mot de passe de TEST (jamais le vrai) et son empreinte, posée comme en prod.
+const MDP = "mot-de-passe-de-test";
+const EMPREINTE = empreinteMotDePasse(MDP, "00112233445566778899aabbccddeeff");
+
 beforeEach(() => {
+  vi.stubEnv("QUALIOPI_REOUVERTURE_MDP", EMPREINTE);
   h.role = "super_admin";
   h.etat = CLOS;
   h.entree = entree(true);
@@ -123,7 +129,11 @@ describe("rouvrirDossierSessionAction", () => {
     ["de 9 caractères", "123456789"],
     ["fait d'espaces", "          "],
   ])("motif %s → refus, aucune écriture", async (_t, motif) => {
-    const r = await rouvrirDossierSessionAction({ sessionId: SESSION, motif: motif as string });
+    const r = await rouvrirDossierSessionAction({
+      sessionId: SESSION,
+      motif: motif as string,
+      motDePasse: MDP,
+    });
     expect(r).toHaveProperty("error");
     expect(JSON.stringify(r)).toMatch(/10 caractères|Motif obligatoire|Required|Données invalides/);
     expect(h.crees).toEqual([]);
@@ -136,6 +146,7 @@ describe("rouvrirDossierSessionAction", () => {
       const r = await rouvrirDossierSessionAction({
         sessionId: SESSION,
         motif: "Correction de l'attestation de Paul",
+        motDePasse: MDP,
       });
       expect(r).toEqual({ error: MOTIF_REFUS.rouvrir_dossier });
       expect(h.crees).toEqual([]);
@@ -146,6 +157,7 @@ describe("rouvrirDossierSessionAction", () => {
     const r = await rouvrirDossierSessionAction({
       sessionId: SESSION,
       motif: "  Correction de l'attestation de Paul  ",
+      motDePasse: MDP,
     });
     expect(r).toEqual({ data: { sessionId: SESSION, depuis: "2026-09-30T12:05:00.000Z" } });
     expect(h.crees).toEqual([
@@ -165,9 +177,46 @@ describe("rouvrirDossierSessionAction", () => {
     const r = await rouvrirDossierSessionAction({
       sessionId: SESSION,
       motif: "Correction de l'attestation de Paul",
+      motDePasse: MDP,
     });
     expect(JSON.stringify(r)).toMatch(/pas clos/);
     expect(h.crees).toEqual([]);
+  });
+});
+
+describe("rouvrirDossierSessionAction — mot de passe de sécurité (2026-09-30)", () => {
+  it("mot de passe incorrect → refus, rien d'écrit, tentative tracée SANS le mot de passe", async () => {
+    const r = await rouvrirDossierSessionAction({
+      sessionId: SESSION,
+      motif: "Correction de l'attestation de Paul",
+      motDePasse: "mauvais",
+    });
+    expect(JSON.stringify(r)).toMatch(/incorrect/);
+    expect(h.crees).toEqual([]);
+    expect(h.journal.map((j) => j["action"])).toEqual([
+      "qualiopi.session.dossier.reouverture_refusee",
+    ]);
+    expect(JSON.stringify(h.journal)).not.toContain("mauvais");
+  });
+
+  it("variable absente → réouverture impossible (fermé par défaut)", async () => {
+    vi.stubEnv("QUALIOPI_REOUVERTURE_MDP", "");
+    const r = await rouvrirDossierSessionAction({
+      sessionId: SESSION,
+      motif: "Correction de l'attestation de Paul",
+      motDePasse: MDP,
+    });
+    expect(JSON.stringify(r)).toMatch(/pas configuré/);
+    expect(h.crees).toEqual([]);
+  });
+
+  it("le mot de passe n'est jamais écrit dans l'événement ni au journal", async () => {
+    await rouvrirDossierSessionAction({
+      sessionId: SESSION,
+      motif: "Correction de l'attestation de Paul",
+      motDePasse: MDP,
+    });
+    expect(JSON.stringify([h.crees, h.journal])).not.toContain(MDP);
   });
 });
 
