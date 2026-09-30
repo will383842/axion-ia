@@ -107,6 +107,12 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     client: {
       findUnique: async () => ({ siret: null, nafCode: null, idcc: null, opcoIdentifie: "X" }),
+      // La recherche de l'effacement RGPD (`eraseClientsForEmail`) : les fiches du contact, aucune
+      // facture émise, donc toutes effaçables.
+      findMany: async ({ where }: { where: { contactEmail: string } }) =>
+        etat.clients
+          .filter((c) => c["contactEmail"] === where.contactEmail)
+          .map((c) => ({ id: c["id"], type: c["type"], _count: { facturesFormation: 0 } })),
     },
     $transaction: async (travail: (tx: unknown) => Promise<unknown>) => travail(fauxTx()),
   },
@@ -117,6 +123,7 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
   logQualiopiActivity: async () => undefined,
 }));
 
+import { eraseClientsForEmail } from "@/lib/rgpd-erase";
 import { updateClientAction } from "@/server/actions/qualiopi/clients";
 import { creerOuRetrouverClient } from "@/server/qualiopi/crm/porte-client";
 
@@ -301,6 +308,30 @@ describe("REQ-INT-007 — les écrivains branchés émettent dans LEUR transacti
       data: { id: ID },
     });
     expect(lignes()).toHaveLength(1);
+  });
+
+  it("REQ-INT-007 : l'effacement RGPD passe par l'émission, qui constate qu'aucun champ transmis ne change", async () => {
+    const EMAIL = "contact.efface@exemple.test";
+    etat.clients.push(
+      fiche({ type: "particulier", raisonSociale: "Camille Témoin", contactEmail: EMAIL }),
+      fiche({ id: "c0000000-0000-4000-8000-000000000004", numero: "AXI-CLI-904", contactEmail: EMAIL }),
+    );
+
+    expect(await eraseClientsForEmail(EMAIL)).toEqual({
+      anonymises: 2,
+      retenusObligationComptable: 0,
+    });
+    // Canal ouvert, et pourtant AUCUN fait : la raison sociale d'un particulier ne traverse pas
+    // (la charge porte null avant comme après), et une entreprise ne perd que des contacts.
+    expect(etat.clients[0]?.["raisonSociale"]).toBe("Personne effacée");
+    expect(lignes()).toEqual([]);
+
+    // Face rouge : la même fiche, émise SANS la charge d'avant, écrit bien son fait. Le vide
+    // ci-dessus vient donc de la comparaison des charges, pas d'une émission qui n'écrit jamais.
+    await emettreFaitClient(tx(), ID, { avant: null });
+    expect(lignes().map((l) => [l.eventType, l.subjectRef])).toEqual([
+      [CLIENT_MIS_A_JOUR, `client:${ID}`],
+    ]);
   });
 });
 

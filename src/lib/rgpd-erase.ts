@@ -473,9 +473,11 @@ export async function eraseClientsForEmail(email: string): Promise<EraseClientsR
 
   let anonymises = 0;
   for (const fiche of effacables) {
-    // INT-T03 (émission unique) : l'effacement touche un champ TRANSMIS (la raison sociale d'un
-    // particulier), donc il passe par `emettreFaitClient`, dans la même transaction. La charge
-    // d'un particulier ne porte pas sa raison sociale : l'émission ne part que si elle change.
+    // INT-T03 (émission unique) : l'effacement écrit `raisonSociale`, une colonne que surveille
+    // le cliquet des écrivains, donc il passe par `emettreFaitClient`, dans la même transaction.
+    // Aucun champ effacé n'est transmis : la charge d'un particulier porte déjà une raison
+    // sociale nulle, et les contacts n'y sont pas. L'émission le CONSTATE (charges égales) et
+    // n'écrit aucun fait.
     await prisma.$transaction(async (tx) => {
       const avant = await chargeClientAvant(tx, fiche.id);
       await tx.client.update({

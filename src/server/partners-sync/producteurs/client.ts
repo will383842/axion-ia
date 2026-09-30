@@ -33,8 +33,10 @@
  * donc jamais un SIREN que le contrôle de clé refuse.
  *
  * ── Inertie ───────────────────────────────────────────────────────────────────────────────────
- * Canal fermé : `chargeClientAvant` et `emettreFaitClient` rendent `null` sans rien lire. Les deux
- * écrivains branchés écrivaient déjà dans une `$transaction` : rien d'autre ne change pour eux.
+ * Canal fermé : `chargeClientAvant` et `emettreFaitClient` rendent `null` sans rien lire. Les
+ * cinq écrivains branchés (création, `updateClientAction`, les deux fusions de fiches,
+ * l'effacement RGPD) émettent dans leur `$transaction` ; l'effacement, qui écrivait hors de
+ * toute transaction, y est placé par INT-T03.
  */
 import type { Client, Prisma } from "../../../../prisma/generated/client";
 import { checkSirenFormat, checkSiretFormat, normalizeSiret, sirenDuSiret } from "@/lib/siret";
