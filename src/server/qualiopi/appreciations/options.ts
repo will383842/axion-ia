@@ -107,13 +107,13 @@ export async function listerOptionsAppreciation(): Promise<OptionsAppreciation> 
         take: PLAFOND,
       })
       .catch(() => []),
-    // Seulement les formateurs ACTIFS : une appréciation se recueille auprès de
-    // quelqu'un qui intervient, et proposer d'anciens intervenants allongerait
-    // la liste de noms qu'on ne choisira jamais.
+    // Tous les formateurs, actifs ou non : la liste n'est plus jamais montrée
+    // telle quelle — le formulaire la FILTRE sur les formateurs de la session
+    // choisie. Un formateur désactivé depuis doit pouvoir donner son avis sur
+    // une session qu'il a animée (relecture de #1243).
     prisma.trainer
       .findMany({
-        where: { actif: true },
-        select: { id: true, nom: true, prenom: true, statut: true },
+        select: { id: true, nom: true, prenom: true, statut: true, actif: true },
         orderBy: [{ nom: "asc" }, { prenom: "asc" }],
         take: PLAFOND,
       })
@@ -143,7 +143,7 @@ export async function listerOptionsAppreciation(): Promise<OptionsAppreciation> 
     // moment de choisir — pas après.
     formateurs: formateurs.map((t) => ({
       id: t.id,
-      libelle: `${t.prenom} ${t.nom} (${LIBELLE_STATUT_FORMATEUR[t.statut] ?? t.statut})`,
+      libelle: `${t.prenom} ${t.nom} (${LIBELLE_STATUT_FORMATEUR[t.statut] ?? t.statut}${t.actif ? "" : ", inactif"})`,
     })),
   };
 }
