@@ -3,7 +3,8 @@
  * Chantier Axion Partners — INT-T41 : axion-ia émet l'identifiant de sa clé de signature.
  *
  * Partners vérifie la signature d'un webhook avec l'un de ses secrets ; pendant une rotation, il
- * en garde DEUX (QA-T52). L'en-tête `X-Axionia-Kid` lui dit lequel essayer d'abord. Le kid est
+ * en garde DEUX (QA-T52). L'en-tête `X-Axionia-Kid` CHOISIT la clé : absent ou inconnu, c'est
+ * un refus, aucun autre secret n'est essayé (REQ-QA-030). Le kid est
  * DÉRIVÉ de la valeur du secret, par la même fonction que `kidDe` de Partners
  * (partners/ADR-0013 d.8) : il change donc AVEC la clé, et jamais sans elle.
  */

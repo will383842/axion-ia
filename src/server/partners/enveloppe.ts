@@ -147,7 +147,8 @@ export function signerCorps(secret: string, horodatage: string, corps: string): 
 
 /**
  * L'en-tête qui porte l'identifiant de la clé de signature (INT-T41, partners/ADR-0013 d.8),
- * pour que Partners choisisse le bon secret pendant une rotation à deux clés (QA-T52).
+ * par lequel Partners CHOISIT la clé de vérification pendant une rotation à deux clés : absent
+ * ou inconnu, l'envoi est refusé, aucun autre secret n'est essayé (REQ-QA-030, QA-T52).
  */
 export const ENTETE_KID = "X-Axionia-Kid";
 
