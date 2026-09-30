@@ -209,7 +209,7 @@ export async function genererConventionAction(input: {
   const parsed = genererConventionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, acomptePercent, rectificationMotif } = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(sessionId);
   if (!verrou.ok) return verrou;
 
@@ -256,7 +256,7 @@ export async function genererConventionTripartiteAction(input: {
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(sessionId);
   if (!verrou.ok) return verrou;
 
@@ -350,7 +350,7 @@ export async function genererContratFormationAction(input: {
   const parsed = enrollmentIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { enrollmentId, rectificationMotif } = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert({ enrollmentId });
   if (!verrou.ok) return verrou;
 
@@ -405,7 +405,7 @@ export async function genererConvocationAction(input: {
   const parsed = enrollmentIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { enrollmentId, rectificationMotif } = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert({ enrollmentId });
   if (!verrou.ok) return verrou;
 
@@ -449,7 +449,7 @@ export async function genererEmargementAction(input: {
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(sessionId);
   if (!verrou.ok) return verrou;
 
@@ -495,7 +495,7 @@ export async function genererPositionnementAction(input: {
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(sessionId);
   if (!verrou.ok) return verrou;
 
@@ -533,7 +533,7 @@ export async function genererGrilleEvaluationAction(input: {
   const parsed = enrollmentIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { enrollmentId, rectificationMotif } = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert({ enrollmentId });
   if (!verrou.ok) return verrou;
 
@@ -572,7 +572,7 @@ export async function genererSatisfactionAction(input: {
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(sessionId);
   if (!verrou.ok) return verrou;
 
@@ -1232,7 +1232,7 @@ export async function genererLettreMissionAction(input: {
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(sessionId);
   if (!verrou.ok) return verrou;
 
@@ -1944,7 +1944,7 @@ export async function genererReglementInterieurAction(input: {
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(sessionId);
   if (!verrou.ok) return verrou;
 
@@ -1994,7 +1994,7 @@ export async function genererProgrammeAction(input: {
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(sessionId);
   if (!verrou.ok) return verrou;
 
@@ -2041,7 +2041,7 @@ export async function genererOrganisationActionAction(input: {
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(sessionId);
   if (!verrou.ok) return verrou;
 
@@ -2086,7 +2086,7 @@ export async function genererLivretAccueilAction(input: {
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, rectificationMotif } = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert(sessionId);
   if (!verrou.ok) return verrou;
 
@@ -2200,7 +2200,7 @@ export async function genererAutorisationCaptationAction(input: {
     .safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { enrollmentId, finalites, supports, dureeAnnees } = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert({ enrollmentId });
   if (!verrou.ok) return verrou;
 
@@ -2883,7 +2883,7 @@ export async function annulerDocumentAction(input: {
     };
   }
   const { documentId, motif } = parsed.data;
-  // ADR 0060 â€” Ã©criture VERROU : refusÃ©e sur un dossier clos.
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
   const verrou = await assertDossierOuvert({ documentId });
   if (!verrou.ok) return verrou;
 

@@ -21,6 +21,8 @@ import { join } from "node:path";
 const h = vi.hoisted(() => {
   process.env["DATABASE_URL"] = "postgresql://test:test@localhost:5432/test";
   const ecritures: string[] = [];
+  /** Écritures qui doivent ÉCHOUER (la base refuse) — pour prouver l'atomicité. */
+  const echecs = new Set<string>();
   const lectures = new Map<string, unknown>();
   const etat: { courant: "clos" | "rouvert" | "a_recueillir" } = { courant: "clos" };
   const ECRIT = /^(create|createMany|update|updateMany|upsert|delete|deleteMany)$/;
@@ -34,6 +36,7 @@ const h = vi.hoisted(() => {
           return async (...args: unknown[]) => {
             const cle = `${nom}.${methode}`;
             if (ECRIT.test(methode)) {
+              if (echecs.has(cle)) throw new Error(`échec simulé : ${cle}`);
               ecritures.push(cle);
               ecrituresDetail.push({ cle, args });
               return { id: "00000000-0000-4000-8000-0000000000ff" };
@@ -74,7 +77,7 @@ const h = vi.hoisted(() => {
     },
   );
   const connecte = { role: "super_admin" };
-  return { ecritures, ecrituresDetail, lectures, etat, prisma, connecte };
+  return { ecritures, ecrituresDetail, echecs, lectures, etat, prisma, connecte };
 });
 
 const SESSION = "00000000-0000-4000-8000-000000000001";
@@ -571,6 +574,7 @@ beforeEach(() => {
   h.connecte.role = "super_admin";
   h.ecritures.length = 0;
   h.ecrituresDetail.length = 0;
+  h.echecs.clear();
   h.lectures.clear();
   vi.mocked(chargerEtatVerrou).mockClear();
 });
@@ -851,5 +855,85 @@ describe("ADR 0060 (D7) — corrections d'intégrité", () => {
       "utf-8",
     );
     expect(source).not.toMatch(/await requireAdminWrite\(\)/);
+  });
+});
+
+describe("ADR 0060 — revue de la PR #1245 : contournements et traces", () => {
+  const SESSION_OUVERTE = "00000000-0000-4000-8000-0000000000b2";
+
+  it("🔴 saveEmargementAction : une inscription d'une AUTRE session (close) ne passe pas sous la garde d'une session ouverte", async () => {
+    // S2 est ouverte (la garde laisse passer) ; l'inscription appartient à S1,
+    // close : la base ne la rend donc pas parmi les inscriptions de S2.
+    h.etat.courant = "rouvert";
+    h.lectures.set("trainingSession.findUnique", {
+      id: SESSION_OUVERTE,
+      dateDebut: new Date("2026-09-10T07:00:00Z"),
+      enrollments: [],
+    });
+    const { saveEmargementAction } = await import("@/server/actions/qualiopi/presence");
+    const r = await saveEmargementAction({
+      sessionId: SESSION_OUVERTE,
+      entries: [
+        { enrollmentId: ENROLLMENT, date: "2026-09-10", demiJournee: "matin", present: false },
+      ],
+    });
+    expect(JSON.stringify(r)).toMatch(/n'appartient pas à cette session/);
+    expect(h.ecritures, "aucun créneau, aucun taux, aucun journal").toEqual([]);
+  });
+
+  it("saveEmargementAction : les inscriptions de la session gardée s'enregistrent (témoin)", async () => {
+    h.etat.courant = "rouvert";
+    h.lectures.set("trainingSession.findUnique", {
+      id: SESSION,
+      dateDebut: new Date("2026-09-10T07:00:00Z"),
+      enrollments: [{ id: ENROLLMENT }],
+    });
+    const { saveEmargementAction } = await import("@/server/actions/qualiopi/presence");
+    const r = await saveEmargementAction({
+      sessionId: SESSION,
+      entries: [
+        { enrollmentId: ENROLLMENT, date: "2026-09-10", demiJournee: "matin", present: true },
+      ],
+    });
+    expect(JSON.stringify(r)).not.toMatch(/n'appartient pas/);
+    expect(h.ecritures).toContain("presenceCreneau.upsert");
+  });
+
+  it("🔴 retour sortie → actif : si la trace de l'ancienne sortie ne s'écrit pas, la sortie n'est PAS effacée", async () => {
+    h.etat.courant = "rouvert";
+    h.lectures.set("enrollment.findUnique", {
+      statut: "abandon",
+      sortieAt: new Date("2026-09-10"),
+      sortieMotif: "Maladie",
+    });
+    h.echecs.add("activityLog.create");
+    const { setEnrollmentStatutAction } = await import("@/server/actions/qualiopi/enrollments");
+    const r = await setEnrollmentStatutAction({
+      id: ENROLLMENT,
+      statut: "presente",
+      motif: "Erreur de saisie : la stagiaire était présente",
+    });
+    expect(JSON.stringify(r)).toMatch(/error/);
+    expect(h.ecritures, "la sortie ne s'efface pas sans sa trace").not.toContain(
+      "enrollment.update",
+    );
+  });
+
+  it("retour sortie → actif : trace et effacement dans la MÊME transaction", async () => {
+    h.etat.courant = "rouvert";
+    h.lectures.set("enrollment.findUnique", {
+      statut: "abandon",
+      sortieAt: new Date("2026-09-10"),
+      sortieMotif: "Maladie",
+    });
+    const { setEnrollmentStatutAction } = await import("@/server/actions/qualiopi/enrollments");
+    await setEnrollmentStatutAction({
+      id: ENROLLMENT,
+      statut: "presente",
+      motif: "Erreur de saisie : la stagiaire était présente",
+    });
+    const i = h.ecritures.indexOf("$transaction");
+    expect(i).toBeGreaterThanOrEqual(0);
+    expect(h.ecritures.slice(i + 1, i + 3)).toEqual(["activityLog.create", "enrollment.update"]);
   });
 });
