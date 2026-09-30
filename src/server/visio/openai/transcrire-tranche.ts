@@ -23,8 +23,8 @@ import { z } from "zod";
 
 import { LANGUE_TRANSCRIPTION, MODELE_TRANSCRIPTION, ESTIMATION_TRANCHE_USD } from "./modeles";
 import type { ClientOpenAIVisio } from "./client";
-import { apresAppel, avantAppel, type PortCout } from "./cout";
-import { classerErreurOpenAI, ErreurVisio } from "./erreurs";
+import { apresAppel, appelAnnuleEnVol, avantAppel, type PortCout } from "./cout";
+import { AppelInterrompu, classerErreurOpenAI, ErreurVisio } from "./erreurs";
 import type { UsageAppel } from "./tarifs";
 
 /** Écart toléré entre la fin du dernier segment et la fin de la tranche. */
@@ -123,6 +123,16 @@ export async function transcrireTranche(
       langue: LANGUE_TRANSCRIPTION,
     });
   } catch (err) {
+    if (err instanceof AppelInterrompu) {
+      if (err.envoye) {
+        await appelAnnuleEnVol(deps.cout, {
+          jobId: t.jobId,
+          modele: MODELE_TRANSCRIPTION,
+          estimationUsd: ESTIMATION_TRANCHE_USD,
+        });
+      }
+      throw err;
+    }
     throw classerErreurOpenAI(err);
   }
   await apresAppel(deps.cout, {

@@ -10,8 +10,8 @@
  * Mutation qui rougit : retirer `await passerEnregistreur(...)` de
  * `processJob` → 1er cas. Faire lever `passerBalayage` avant l'appel sans
  * `try` propre → 2e cas (une panne de l'enregistreur n'arrête pas le job).
- * Contre-témoin : balayage éteint (`DOSSIER_BALAYAGE_ENABLED` absent), rien
- * n'est appelé.
+ * Contre-témoin : balayage éteint (`DOSSIER_BALAYAGE_ENABLED` absent), le
+ * dossier client ne tourne pas — mais l'enregistreur, si (V1, F1).
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -93,9 +93,9 @@ describe("le worker de balayage appelle l'enregistreur", () => {
     expect(espions.capture).toHaveBeenCalledTimes(1);
   });
 
-  it("contre-témoin : balayage éteint, rien n'est appelé", async () => {
+  it("contre-témoin : balayage éteint, le dossier client ne tourne pas, l'enregistreur si", async () => {
     await unPassage();
     expect(espions.passerBalayage).not.toHaveBeenCalled();
-    expect(espions.balayerEnregistreur).not.toHaveBeenCalled();
+    expect(espions.balayerEnregistreur).toHaveBeenCalledTimes(1);
   });
 });

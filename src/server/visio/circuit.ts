@@ -12,6 +12,7 @@ import { depotDonneesPrisma } from "./depot-donnees";
 import { stockageR2, type LectureAudio } from "./stockage-audio";
 import type { AlerteCircuit, DepsCircuit, Gestionnaire } from "./etapes";
 import { obtenirClientOpenAI, type ClientOpenAIVisio } from "./openai/client";
+import { AppelInterrompu } from "./openai/erreurs";
 import { portCoutReel, type PortCout } from "./openai/cout";
 import {
   consolider,
@@ -53,9 +54,45 @@ export async function alerterParLaConsole(a: AlerteCircuit): Promise<void> {
 }
 
 let arret = false;
-/** Appelé au SIGTERM : les étapes en cours repassent `a_faire` sans compter. */
+let controleurArret: AbortController | null = null;
+
+/** Le signal qui annule les appels OpenAI en vol au SIGTERM (créé au premier usage). */
+function signalArret(): AbortSignal {
+  controleurArret ??= new AbortController();
+  if (arret) controleurArret.abort();
+  return controleurArret.signal;
+}
+
+/**
+ * Appelé au SIGTERM : les étapes en cours repassent `a_faire` sans compter.
+ * V1 F3 : l'appel OpenAI EN VOL est annulé tout de suite (il pouvait durer
+ * 120 s, la vidange n'en laisse que 25) ; il est inscrit au registre pour son
+ * estimation, puis l'étape est relâchée.
+ */
 export function demanderArretDuCircuit(): void {
   arret = true;
+  controleurArret?.abort();
+}
+
+/**
+ * Le client OpenAI relié à l'arrêt du worker : chaque requête porte le
+ * signal ; une requête annulée (ou demandée après l'arrêt) lève
+ * `AppelInterrompu`, qui dit si elle était partie.
+ */
+function clientInterruptible(client: ClientOpenAIVisio, signal: AbortSignal): ClientOpenAIVisio {
+  async function garder<R>(appel: () => Promise<R>): Promise<R> {
+    if (signal.aborted) throw new AppelInterrompu(false);
+    try {
+      return await appel();
+    } catch (err) {
+      if (signal.aborted) throw new AppelInterrompu(true);
+      throw err;
+    }
+  }
+  return {
+    transcrire: (d) => garder(() => client.transcrire({ ...d, signal })),
+    repondre: (d) => garder(() => client.repondre({ ...d, signal })),
+  };
 }
 
 export interface OptionsCircuit {
@@ -71,7 +108,7 @@ export function construireCircuit(o: OptionsCircuit): DepsCircuit {
   return {
     depot: depotEtapesPrisma(o.db),
     donnees: depotDonneesPrisma(o.db, o.stockage ?? stockageR2),
-    openai: o.openai ?? obtenirClientOpenAI,
+    openai: () => clientInterruptible((o.openai ?? obtenirClientOpenAI)(), signalArret()),
     cout: o.cout ?? portCoutReel,
     catalogue: chargerCatalogue,
     alerter: o.alerter ?? alerterParLaConsole,

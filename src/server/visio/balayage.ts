@@ -53,9 +53,9 @@ import {
 } from "@/features/admin-rendezvous/rendez-vous-tenu";
 import { dayKeyInParis } from "@/lib/calendar-grid";
 import {
-  CODES_ALERTE_VISIO,
   leverPanneDuBalayage,
   signalerPanneDuBalayage,
+  VISIO_BALAYAGE_EN_PANNE,
   type CreerAlerte,
   type Notifier,
 } from "./alertes";
@@ -240,7 +240,7 @@ export async function lireEtatDuCircuit(db: Tx, maintenant: Date): Promise<EtatD
   const veille = await compterVeille(db, maintenant);
   const couverture = await couvertureDuMois(db, maintenant);
   const alertesTechniques = await db.alerteSysteme.findMany({
-    where: { code: { in: [...CODES_ALERTE_VISIO] }, resolue: false },
+    where: { code: VISIO_BALAYAGE_EN_PANNE, resolue: false },
     select: { id: true, code: true, titre: true, createdAt: true },
     orderBy: { createdAt: "desc" },
     take: 50,

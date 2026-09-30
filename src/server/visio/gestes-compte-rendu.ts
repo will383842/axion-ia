@@ -29,7 +29,7 @@ import {
 } from "./accord-a-confirmer";
 import { etatSansTexteBrut, lireEtat } from "./etat-compte-rendu";
 import { ajouterAuJournal } from "./journal-enregistrement";
-import { planifierDans } from "./prise-d-etape";
+import { annulerEtapesDesVersions, planifierDans } from "./prise-d-etape";
 
 type Db = PrismaClient;
 
@@ -413,6 +413,10 @@ export async function completerApresRattachement(
   return db.$transaction(async (tx) => {
     if (cr.statut === "brouillon" || cr.statut === "a_valider") {
       await tx.compteRendu.update({ where: { id: cr.id }, data: { statut: "remplace" } });
+      // V1 P-1 : la version remplacée s'ARRÊTE. Sans cette annulation, ses
+      // étapes déjà programmées (P3, P4, P5) repartaient chez OpenAI et la
+      // ramenaient « à valider » à côté de la nouvelle.
+      await annulerEtapesDesVersions(tx, [cr.id]);
     }
     const nouveau = await tx.compteRendu.create({
       data: {

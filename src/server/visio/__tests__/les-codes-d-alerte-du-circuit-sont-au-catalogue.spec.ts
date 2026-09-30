@@ -7,7 +7,10 @@
  * `CODES_ALERTES_CIRCUIT`.
  *
  * Mutation qui rougit : écrire `code: "visio.nouvelle"` dans `etapes.ts` →
- * 2ᵉ cas. Contre-témoin : chaque code déclaré est bien au catalogue, avec le
+ * 2ᵉ cas. V1 C3 : recréer un objet de codes `visio.*` hors de `alertes.ts`
+ * (comme l'était `CODES_ALERTES_VISIO` de `balayage-enregistreur.ts`), ou
+ * marquer « envoyée » ailleurs que par `signalerUneFois` (`notifiedAt:`,
+ * `telegramLe`) → 3ᵉ cas. Contre-témoin : chaque code déclaré est bien au catalogue, avec le
  * guichet de la direction. Angle mort : un code construit par concaténation.
  */
 
@@ -16,6 +19,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { ALERTE_CATALOGUE } from "@/server/qualiopi/alertes/catalogue";
+import { CODES_ALERTES_VISIO } from "../alertes";
 import { CODES_ALERTES_CIRCUIT } from "../alertes-circuit";
 
 describe("les codes d'alerte du circuit sont au catalogue", () => {
@@ -39,5 +43,14 @@ describe("les codes d'alerte du circuit sont au catalogue", () => {
       )
       .filter((f) => /code:\s*["'`]visio\./.test(readFileSync(path.join(dossier, f), "utf8")));
     expect(fautifs).toEqual([]);
+  });
+
+  it("un seul objet de codes visio.*, une seule règle « envoyée une fois » (V1 C3)", () => {
+    expect(CODES_ALERTES_CIRCUIT).toBe(CODES_ALERTES_VISIO);
+    const dossier = path.resolve(__dirname, "..");
+    const modules = readdirSync(dossier).filter((f) => f.endsWith(".ts") && f !== "alertes.ts");
+    const lire = (f: string) => readFileSync(path.join(dossier, f), "utf8");
+    expect(modules.filter((f) => /["']visio\.[a-z_]+["']/.test(lire(f)))).toEqual([]);
+    expect(modules.filter((f) => /notifiedAt\s*:|telegramLe/.test(lire(f)))).toEqual([]);
   });
 });

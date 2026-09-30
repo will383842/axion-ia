@@ -21,7 +21,9 @@
  *
  * Une alerte ouverte part UNE fois sur Telegram (`notify`, catégorie
  * `MONITORING_ALERT`) ; elle n'est marquée envoyée (`notifiedAt`) que si un
- * canal répond `sent` : un envoi raté est retenté au passage suivant. Le
+ * canal répond `sent` : un envoi raté est retenté au passage suivant. C'est la
+ * règle commune `signalerUneFois` (`alertes.ts`, V1 C3), et les codes viennent
+ * de l'objet unique `CODES_ALERTES_VISIO`. Le
  * niveau `important` la tient hors de l'envoi groupé par e-mail
  * (`envoi-groupe.ts` ne prend que les `critique`), donc `notifiedAt` n'a qu'un
  * seul écrivain pour ces codes.
@@ -39,6 +41,7 @@
 
 import type { PrismaClient } from "../../../prisma/generated/client";
 import type { AlerteInput } from "@/server/qualiopi/alertes/alertes-service";
+import { CODES_ALERTES_VISIO, signalerUneFois } from "./alertes";
 import { cloturerEnregistrements, type BilanCloture } from "./cloture";
 import { extensionSilencieuse } from "./battement-appareil";
 import { lireDrapeauEnregistrement } from "./drapeau";
@@ -46,14 +49,6 @@ import { joursAvantExpiration, seuilAlerteJeton } from "./jeton";
 import { reprendrePurgesDesRefus, type BilanReprisePurges } from "./sessions";
 import { stockageR2, type StockageAudio } from "./stockage-audio";
 import { verifierTemoinCleWorker } from "./temoin-cle";
-
-/** Les codes du catalogue (`ALERTE_CATALOGUE`) levés par ce balayage. */
-export const CODES_ALERTES_VISIO = {
-  temoinCle: "visio.temoin_cle",
-  jetonJ14: "visio.jeton_expire_j14",
-  jetonJ3: "visio.jeton_expire_j3",
-  extensionSilencieuse: "visio.extension_silencieuse",
-} as const;
 
 export interface Notifieur {
   (alerte: {
@@ -88,12 +83,12 @@ interface AlerteVisio {
   readonly cibleId: string | null;
   readonly titre: string;
   readonly message: string;
-  readonly metadata?: Record<string, unknown>;
+  readonly metadata?: Record<string, string | number | null | string[]>;
 }
 
 /**
- * Crée l'alerte (dé-dupliquée par `creerOuDedup`), puis l'envoie sur Telegram
- * si elle ne l'a pas encore été. Rend vrai si elle est partie à CE passage.
+ * Crée l'alerte et l'envoie sur Telegram si elle ne l'a pas encore été, par
+ * la règle commune `signalerUneFois`. Rend vrai si elle est partie à CE passage.
  */
 async function signaler(
   db: Pick<PrismaClient, "alerteSysteme">,
@@ -102,36 +97,29 @@ async function signaler(
   alerte: AlerteVisio,
   maintenant: Date,
 ): Promise<boolean> {
-  await creer({
-    code: alerte.code,
-    niveau: "important",
-    titre: alerte.titre,
-    message: alerte.message,
-    ...(alerte.cibleId !== null
-      ? { cibleType: "appareil_enregistrement", cibleId: alerte.cibleId }
-      : {}),
-    ...(alerte.metadata ? { metadata: alerte.metadata } : {}),
-  });
-  const ouverte = await db.alerteSysteme.findFirst({
-    where: { code: alerte.code, resolue: false, cibleId: alerte.cibleId },
-    select: { id: true, notifiedAt: true },
-  });
-  // Fermée à la main avec le même message : rien à envoyer (choix de Will).
-  if (!ouverte || ouverte.notifiedAt) return false;
-  let envoyee = false;
-  try {
-    envoyee = await notifier({
-      cle: `${alerte.code}:${alerte.cibleId ?? "-"}`,
+  const r = await signalerUneFois(
+    db,
+    {
+      code: alerte.code,
+      niveau: "important",
       titre: alerte.titre,
-      detail: alerte.message,
-    });
-  } catch {
-    envoyee = false;
-  }
-  if (envoyee) {
-    await db.alerteSysteme.update({ where: { id: ouverte.id }, data: { notifiedAt: maintenant } });
-  }
-  return envoyee;
+      message: alerte.message,
+      cibleId: alerte.cibleId,
+      cibleType: "appareil_enregistrement",
+      ...(alerte.metadata ? { metadata: alerte.metadata } : {}),
+    },
+    {
+      creer,
+      maintenant,
+      envoyer: () =>
+        notifier({
+          cle: `${alerte.code}:${alerte.cibleId ?? "-"}`,
+          titre: alerte.titre,
+          detail: alerte.message,
+        }),
+    },
+  );
+  return r === "envoyee";
 }
 
 /** La cause a disparu : l'alerte ouverte se ferme (elle repartira si elle revient). */

@@ -72,7 +72,7 @@ import { startFormationCronsWorker } from "./workers/qualiopi-formation-crons-wo
 import { startQualiopiDocumentsWorker } from "./workers/qualiopi-documents-worker";
 // Chatbot (T-05) — env-gated CHATBOT_ENABLED (réversible sans redeploy).
 import { startChatbotIngestWorker } from "./workers/chatbot-ingest-worker";
-// Chantier visio (PR 4) — balayage du dossier client, env-gated DOSSIER_BALAYAGE_ENABLED.
+// Chantier visio (PR 4) — balayage du dossier client (sous DOSSIER_BALAYAGE_ENABLED) et de l'enregistreur (toujours).
 import { startVisioBalayageWorker } from "./workers/visio-balayage-worker";
 // Chantier visio (PR 6) — transcription et compte rendu par l'API OpenAI, file `visio`.
 import { startVisioWorker } from "./workers/visio-worker";
@@ -188,10 +188,12 @@ async function main() {
     startQualiopiDocumentsWorker(),
     // Chatbot ingest — démarre uniquement si le flag est explicitement activé.
     ...(process.env.CHATBOT_ENABLED === "true" ? [startChatbotIngestWorker()] : []),
-    // Chantier visio (PR 4) — balayage du dossier client, toutes les 5 minutes.
-    // Allumé APRÈS la reprise réelle de l'historique Calendly (sinon l'historique
-    // arriverait en rafale « à classer »). Éteint : ni worker ni entrée répétable.
-    ...(process.env.DOSSIER_BALAYAGE_ENABLED === "true" ? [startVisioBalayageWorker()] : []),
+    // Chantier visio (PR 4) — balayage toutes les 5 minutes, TOUJOURS démarré
+    // (V1, F1) : il porte la clôture d'office, les purges et les alertes de
+    // l'enregistreur. Seul le balayage du DOSSIER CLIENT reste sous
+    // `DOSSIER_BALAYAGE_ENABLED` (allumé après la reprise de l'historique
+    // Calendly) : le test est dans le worker, pas ici.
+    startVisioBalayageWorker(),
     // Chantier visio (PR 6) — le circuit du compte rendu (concurrence 1). Inerte
     // tant qu'aucun enregistrement n'est déposé : le balayage ne trouve rien et
     // aucun appel à OpenAI n'est émis. Charges de job : identifiants seulement.

@@ -13,7 +13,7 @@ import { revalidatePath } from "next/cache";
 
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
-import { creerAppareil, revoquerAppareil } from "@/server/visio/jeton";
+import { creerAppareil, renouvelerAppareil, revoquerAppareil } from "@/server/visio/jeton";
 import { exigerAccesEchanges } from "@/features/dossier-client/acces";
 import { motifSansAccesEnregistreur } from "./motif";
 import { etatJetonCree, type EtatJeton } from "./etat-jeton";
@@ -32,21 +32,22 @@ export async function creerJetonAction(_prec: EtatJeton, form: FormData): Promis
   }
 }
 
-/** Renouveler = révoquer l'ancien jeton et en créer un nouveau, même nom. */
+/**
+ * Renouveler = révoquer l'ancien jeton PUIS en créer un nouveau, même nom,
+ * dans une seule transaction ; refusé pour un appareil déjà révoqué (V1, S5).
+ */
 export async function renouvelerJetonAction(_prec: EtatJeton, form: FormData): Promise<EtatJeton> {
   try {
     const { userId } = await exigerAccesEchanges(motifSansAccesEnregistreur);
     const appareilId = String(form.get("appareilId") ?? "");
-    const ancien = await prisma.appareilEnregistrement.findUnique({
-      where: { id: appareilId },
-      select: { id: true, nom: true },
+    const r = await renouvelerAppareil(prisma, {
+      appareilId,
+      adminUserId: userId,
+      maintenant: new Date(),
     });
-    if (!ancien) return { etat: "erreur", message: "Appareil introuvable." };
-    const maintenant = new Date();
-    const cree = await creerAppareil(prisma, { nom: ancien.nom, adminUserId: userId, maintenant });
-    await revoquerAppareil(prisma, ancien.id, maintenant);
+    if (!r.ok) return { etat: "erreur", message: r.message };
     revalidatePath(adminPath("fr", CHEMIN));
-    return etatJetonCree(cree.jeton, cree.expireLe);
+    return etatJetonCree(r.jeton, r.expireLe);
   } catch (err) {
     return {
       etat: "erreur",

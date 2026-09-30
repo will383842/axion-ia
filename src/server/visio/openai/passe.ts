@@ -27,8 +27,8 @@ import {
   type PasseIA,
 } from "./modeles";
 import { formatDeSortie, type ClientOpenAIVisio } from "./client";
-import { apresAppel, avantAppel, type PortCout } from "./cout";
-import { classerErreurOpenAI, ErreurVisio } from "./erreurs";
+import { apresAppel, appelAnnuleEnVol, avantAppel, type PortCout } from "./cout";
+import { AppelInterrompu, classerErreurOpenAI, ErreurVisio } from "./erreurs";
 
 export interface DepsPasse {
   readonly client: ClientOpenAIVisio;
@@ -68,6 +68,16 @@ export async function executerPasse<T>(
       maxSortie: MAX_SORTIE_PAR_PASSE[d.passe],
     });
   } catch (err) {
+    if (err instanceof AppelInterrompu) {
+      if (err.envoye) {
+        await appelAnnuleEnVol(deps.cout, {
+          jobId: d.jobId,
+          modele: MODELE_REDACTION,
+          estimationUsd: ESTIMATION_PASSE_USD[d.passe],
+        });
+      }
+      throw err;
+    }
     throw classerErreurOpenAI(err);
   }
   await apresAppel(deps.cout, {

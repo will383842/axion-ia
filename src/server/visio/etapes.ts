@@ -36,7 +36,7 @@ import type { CatalogueIA } from "./catalogue-ia";
 import type { ClientOpenAIVisio } from "./openai/client";
 import { idTacheVisio } from "./id-tache";
 import type { PortCout } from "./openai/cout";
-import { classerErreurOpenAI, ErreurVisio } from "./openai/erreurs";
+import { AppelInterrompu, classerErreurOpenAI, ErreurVisio } from "./openai/erreurs";
 import {
   executionsImputees,
   ResultatOrphelin,
@@ -150,11 +150,22 @@ export function decisionApresErreur(
   err: ErreurVisio,
   maintenant: Date,
 ): DecisionEchec {
-  const base = { classe: err.classe, code: err.code } as const;
+  // V1 F5 : un échec d'une AUTRE classe que le précédent ouvre une nouvelle
+  // série — une limite de débit ne consomme pas l'essai d'une sortie invalide,
+  // et une base non migrée se date de SON premier échec. Classe précédente
+  // inconnue (report sans classe, ligne ancienne) : la série continue.
+  const memeSerie = t.classeErreur == null || t.classeErreur === err.classe;
+  const echecs = memeSerie ? t.echecs : 0;
+  const premierConnu = memeSerie ? t.premierEchecLe : null;
+  const base = {
+    classe: err.classe,
+    code: err.code,
+    ...(memeSerie ? {} : { nouvelleSerie: true }),
+  } as const;
   switch (err.classe) {
     case "passagere": {
-      const premier = t.premierEchecLe ?? maintenant;
-      const delai = REPRISES_PASSAGERES_MIN[t.echecs];
+      const premier = premierConnu ?? maintenant;
+      const delai = REPRISES_PASSAGERES_MIN[echecs];
       if (delai === undefined) {
         return {
           ...base,
@@ -174,13 +185,13 @@ export function decisionApresErreur(
       };
     }
     case "contenu":
-      return t.echecs >= 1
+      return echecs >= 1
         ? {
             ...base,
             statut: "echec_definitif",
             compter: true,
             prochaineTentativeLe: null,
-            premierEchecLe: t.premierEchecLe ?? maintenant,
+            premierEchecLe: premierConnu ?? maintenant,
           }
         : {
             ...base,
@@ -195,7 +206,7 @@ export function decisionApresErreur(
         statut: "a_faire",
         compter: false,
         prochaineTentativeLe: plusMinutes(maintenant, REPORT_SCHEMA_MIN),
-        premierEchecLe: t.premierEchecLe ?? maintenant,
+        premierEchecLe: premierConnu ?? maintenant,
       };
     case "configuration":
     case "quota":
@@ -205,7 +216,7 @@ export function decisionApresErreur(
         statut: "suspendu",
         compter: false,
         prochaineTentativeLe: null,
-        premierEchecLe: t.premierEchecLe ?? maintenant,
+        premierEchecLe: premierConnu ?? maintenant,
       };
   }
 }
@@ -288,6 +299,16 @@ export async function executerEtape(
       prochaineTentativeLe: null,
       premierEchecLe: t.premierEchecLe,
     });
+    // V1 F4 : jamais EN SILENCE. Fenêtre app/worker : l'app a programmé une
+    // étape que ce worker ne sait pas encore exécuter ; sans alerte, la
+    // console annonçait « d'ici quelques minutes » et rien ne venait.
+    await deps.alerter({
+      code: CODES_ALERTES_CIRCUIT.circuitSuspendu,
+      niveau: "critique",
+      titre: "Circuit visio suspendu : une étape n'a pas de gestionnaire sur le worker",
+      message: `Étape « ${t.etape} » : le worker en place ne sait pas l'exécuter (worker plus ancien que l'app ?). Vérifiez le déploiement du worker, puis cliquez « Reprendre » sur l'état du circuit.`,
+      rencontreId: null,
+    });
     return "suspendue";
   }
 
@@ -362,7 +383,9 @@ async function traiterErreur(
   const maintenant = deps.maintenant();
   if (err instanceof ResultatOrphelin) return "orphelin";
   if (err instanceof RetraitConstate) return "retrait";
-  if (err instanceof InterruptionArret) {
+  // Arrêt du worker, entre deux appels ou PENDANT un appel annulé (V1 F3) :
+  // l'étape repart `a_faire` sans compter d'essai.
+  if (err instanceof InterruptionArret || err instanceof AppelInterrompu) {
     await deps.depot.relacher(t);
     return "relachee";
   }
