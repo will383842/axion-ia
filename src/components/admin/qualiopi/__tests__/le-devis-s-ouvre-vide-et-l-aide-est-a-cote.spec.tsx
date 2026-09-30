@@ -42,6 +42,7 @@ function monter(projetId?: string) {
     <DevisForm
       clients={CLIENTS}
       offres={[]}
+      activites={[{ value: "formation", label: "Formation" }]}
       basePath="/fr/adm/qualiopi/devis"
       defaultClientId={CLIENT_ID}
       {...(projetId ? { projetId } : {})}

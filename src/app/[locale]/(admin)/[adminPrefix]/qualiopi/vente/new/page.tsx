@@ -22,6 +22,7 @@ import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 import { chargerAideDuProjet } from "@/features/dossier-client/aide-du-projet";
 import { CeQueLeClientADit } from "@/features/dossier-client/ce-que-le-client-a-dit";
+import { VentesEnCours } from "@/components/admin/qualiopi/VentesEnCours";
 
 export const dynamic = "force-dynamic";
 
@@ -290,18 +291,18 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
       clients={clients}
       offres={offres}
       formations={formations}
-      brouillonsEnCours={brouillonsEnCours}
       {...(clientInitialId !== undefined ? { clientInitialId } : {})}
       {...(projetId !== null ? { projetId } : {})}
-      {...(aide !== null
-        ? {
-            aside: (
-              <div className="mb-[var(--space-admin-5,12px)]">
-                <CeQueLeClientADit aide={aide.aide} projetTitre={aide.titre} />
-              </div>
-            ),
-          }
-        : {})}
+      aside={
+        <>
+          {aide !== null ? (
+            <div className="mb-[var(--space-admin-5,12px)]">
+              <CeQueLeClientADit aide={aide.aide} projetTitre={aide.titre} />
+            </div>
+          ) : null}
+          <VentesEnCours adminPrefix={adminPrefix} brouillons={brouillonsEnCours} />
+        </>
+      }
       {...(brouillon !== undefined ? { brouillon } : {})}
       {...(devisInitial !== undefined ? { devisInitial } : {})}
       {...(sessionInitiale !== undefined ? { sessionInitiale } : {})}

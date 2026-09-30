@@ -18,7 +18,6 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createDevisAction } from "@/server/actions/qualiopi/devis";
-import { ACTIVITE_LABELS } from "@/server/qualiopi/financements/facture-libre-pur";
 import type { ActiviteFacturation } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -52,6 +51,13 @@ export interface DevisFormProps {
   offres: OffreOption[];
   /** Chemin base admin pour la redirection : /fr/admin-xxx/qualiopi/devis */
   basePath: string;
+  /**
+   * Activités proposées, libellés compris — construites par la page serveur
+   * depuis `ACTIVITE_LABELS`. Passées en props plutôt qu'importées : le module
+   * `facture-libre-pur` (et le périmètre Qualiopi qu'il évalue au chargement)
+   * n'entre pas dans le JavaScript client (cliquet du poids de la console).
+   */
+  activites: ReadonlyArray<{ value: ActiviteFacturation; label: string }>;
   /** Client pré-sélectionné (searchParam `clientId` — lien depuis /qualiopi/entrees). */
   defaultClientId?: string;
   /**
@@ -165,6 +171,7 @@ function totalHtCents(lignes: Ligne[]): number {
 export function DevisForm({
   clients,
   offres,
+  activites,
   basePath,
   defaultClientId,
   projetId,
@@ -517,9 +524,9 @@ export function DevisForm({
               className={selectCls}
             >
               <option value="">— Sélectionner une activité —</option>
-              {(Object.keys(ACTIVITE_LABELS) as ActiviteFacturation[]).map((cle) => (
-                <option key={cle} value={cle}>
-                  {ACTIVITE_LABELS[cle]}
+              {activites.map((a) => (
+                <option key={a.value} value={a.value}>
+                  {a.label}
                 </option>
               ))}
             </select>

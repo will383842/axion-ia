@@ -18,6 +18,8 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { DevisForm } from "@/components/admin/qualiopi/DevisForm";
 import { listClients } from "@/server/qualiopi/crm/clients";
 import { listOffres } from "@/server/qualiopi/offres/offres";
+import { ACTIVITE_LABELS } from "@/server/qualiopi/financements/facture-libre-pur";
+import type { ActiviteFacturation } from "../../../../../../../../prisma/generated/client";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 import { chargerAideDuProjet } from "@/features/dossier-client/aide-du-projet";
@@ -91,6 +93,10 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
     <DevisForm
       clients={clientOptions}
       offres={offreOptions}
+      activites={(Object.keys(ACTIVITE_LABELS) as ActiviteFacturation[]).map((value) => ({
+        value,
+        label: ACTIVITE_LABELS[value],
+      }))}
       basePath={basePath}
       {...(defaultClientId !== undefined ? { defaultClientId } : {})}
       {...(projetId !== null ? { projetId } : {})}

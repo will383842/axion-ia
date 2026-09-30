@@ -121,21 +121,14 @@ export interface VenteWizardProps {
    */
   projetId?: string;
   /**
-   * Panneau SERVEUR « Ce que le client a dit » (lecture seule), rendu sous
-   * l'en-tête quand la vente est ouverte depuis un projet. Rien n'en est
-   * recopié dans le devis (décision de Will du 29/09). La page le passe déjà
-   * habillé (marge comprise) : le composant client n'en porte aucun octet de
-   * plus (cliquet du poids de la console).
+   * Emplacement rendu CÔTÉ SERVEUR sous l'en-tête, tel quel : le panneau « Ce
+   * que le client a dit » (lecture seule, vente ouverte depuis un projet ; rien
+   * n'en est recopié dans le devis, décision de Will du 29/09) puis le rappel
+   * « Ventes en cours » (`VentesEnCours`). La page les passe déjà habillés
+   * (marges comprises) : le composant client n'en porte aucun octet (cliquet
+   * du poids de la console).
    */
   aside?: React.ReactNode;
-  /** Ventes déjà commencées par cet admin (rappel de reprise, sous l'en-tête). */
-  brouillonsEnCours?: ReadonlyArray<{
-    id: string;
-    etape: number;
-    clientRaisonSociale: string | null;
-    /** Date déjà formatée fr-FR côté serveur. */
-    modifieLe: string;
-  }>;
   brouillon?: VenteBrouillonInitial;
   devisInitial?: VenteDevisEtat;
   sessionInitiale?: VenteSessionEtat;
@@ -190,7 +183,6 @@ export function VenteWizard({
   clientInitialId,
   projetId,
   aside,
-  brouillonsEnCours,
   brouillon,
   devisInitial,
   sessionInitiale,
@@ -577,30 +569,6 @@ export function VenteWizard({
       <AdminFormDirtyGuard dirty={sale && etape < 4} />
 
       {aside}
-
-      {/* Reprise : le seul chemin quand un devis envoyé attend sa signature. */}
-      {brouillonsEnCours !== undefined && brouillonsEnCours.length > 0 ? (
-        <div className="mb-[var(--space-admin-5,12px)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
-          <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-semibold">
-            Ventes en cours ({brouillonsEnCours.length})
-          </p>
-          <ul className="flex flex-col gap-[var(--space-admin-2)]">
-            {brouillonsEnCours.map((b) => (
-              <li key={b.id} className="text-[length:var(--text-admin-sm)]">
-                <Link
-                  href={`${base}/qualiopi/vente/new?brouillon=${b.id}`}
-                  className="text-[color:var(--color-admin-accent)] underline hover:no-underline"
-                >
-                  {b.clientRaisonSociale ?? "Client non choisi"} — étape {b.etape}/4
-                </Link>{" "}
-                <span className="text-[color:var(--color-admin-fg-soft)]">
-                  (modifié le {b.modifieLe})
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
 
       {/* Stepper (pattern CampaignWizardV2 : pastilles + libellés masqués sous sm:) */}
       <div className="mb-[var(--space-admin-6,16px)] flex items-center gap-[var(--space-admin-3,6px)]">
