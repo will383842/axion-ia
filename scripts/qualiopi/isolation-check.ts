@@ -454,6 +454,13 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/server/visio/alertes.ts",
   "src/server/visio/__tests__/_alertes-en-memoire.ts",
   "src/server/visio/__tests__/une-panne-du-balayage-ne-part-qu-une-fois-et-repart-si-l-envoi-echoue.spec.ts",
+  // ── Faits Client vers Axion Partners (INT-T03, REQ-INT-007) : la spec du
+  //    producteur APPELLE les vrais écrivains de Client du domaine
+  //    (`updateClientAction`, la porte de création) pour prouver qu'ils émettent
+  //    dans LEUR transaction. Un double de l'écrivain ne prouverait rien : c'est
+  //    l'écrivain réel que le cliquet confronte. Le code de production ne
+  //    dépend pas du domaine ; seule sa preuve l'importe.
+  "src/server/partners-sync/__tests__/producteurs-client.spec.ts",
 ]);
 
 /**

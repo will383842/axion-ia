@@ -438,11 +438,15 @@ describe("aucune table portant une adresse n'échappe au RGPD en silence", () =>
       .join("\n");
 
     const traites = INVENTAIRE.filter((e) => e.statut === "traite").map((e) => e.modele);
+    // Une mutation compte qu'elle passe par le client global (`prisma.`) ou par
+    // celui d'une transaction (`tx.`). INT-T03 a placé l'effacement d'une fiche
+    // client dans une `$transaction`, pour y émettre son fait vers Partners : la
+    // table est toujours mutée, et exiger `prisma.` refuserait un `traite` EXACT.
     const nonMutes = traites.filter((modele) => {
       const accesseur = modele.charAt(0).toLowerCase() + modele.slice(1);
-      return !new RegExp(`prisma\\.${accesseur}\\.(updateMany|deleteMany|update|delete)\\b`).test(
-        chaine,
-      );
+      return !new RegExp(
+        `\\b(prisma|tx)\\.${accesseur}\\.(updateMany|deleteMany|update|delete)\\b`,
+      ).test(chaine);
     });
     expect(
       nonMutes,
