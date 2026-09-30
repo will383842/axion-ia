@@ -159,10 +159,10 @@ export function KitOpcoPdf({ data }: { data: KitOpcoData }): React.ReactElement 
         {/* Pièces à joindre */}
         <DocSection title="Pièces constitutives du dossier">
           {[
-            { label: "Convention de formation / accord tripartite", note: "L.6353-1 / L.6353-2" },
+            { label: "Convention de formation / accord tripartite", note: "L.6353-1 / D.6353-1" },
             {
               label: "Certificat de réalisation (durées en centièmes)",
-              note: "R.6313-3 + arrêté 21/12/2018",
+              note: "R.6332-26 + arrêté 21/12/2018",
             },
             { label: "Feuilles d'émargement signées (présentiel)", note: "Par demi-journée" },
             {

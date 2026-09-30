@@ -177,6 +177,11 @@ export function LivretAccueilPdf({
               "Merci de vous munir d'une pièce d'identité lors de votre première journée.",
               "Des pauses sont prévues selon le programme communiqué.",
               "L'émargement est obligatoire à chaque demi-journée.",
+              // 🔴 2026-09-30 — santé et sécurité, alignées sur l'article 6 du
+              // règlement intérieur (PDF et page publique).
+              "Il est interdit de fumer et de vapoter dans les locaux de formation (Code de la santé publique).",
+              "Les consignes d'incendie et d'évacuation sont affichées dans les locaux : prenez-en connaissance à votre arrivée et suivez les instructions du formateur en cas d'alerte.",
+              "Si la formation se déroule dans une entreprise dotée d'un règlement intérieur, notamment la vôtre, les mesures de santé et de sécurité applicables aux stagiaires sont celles de ce règlement.",
             ]}
           />
 

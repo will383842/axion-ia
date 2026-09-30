@@ -157,6 +157,7 @@ function installer() {
   m.stagiaires = lecture("stagiaires", () => []);
   m.compteStagiaires = lecture("compteStagiaires", () => 0);
   m.signatures = lecture("signatures", () => []);
+  m.factures = lecture("factures", () => []);
   m.circuit = lecture("circuit", () => new Map());
   m.precisions = lecture("precisions", () => new Set());
   m.preparation = lecture("preparation", () => null);
@@ -184,6 +185,7 @@ vi.mock("@/lib/prisma", () => ({
     enrollment: { findMany: (...a: unknown[]) => m.inscriptions!(...a) },
     documentGenere: { findMany: (...a: unknown[]) => m.pieces!(...a) },
     documentSignature: { findMany: (...a: unknown[]) => m.signatures!(...a) },
+    factureFormation: { findMany: (...a: unknown[]) => m.factures!(...a) },
   },
 }));
 vi.mock("@/server/qualiopi/documents/signature/releve-queries", () => ({
@@ -385,5 +387,67 @@ describe("🔴 la fiche session charge ses données en vagues", () => {
   it("une session introuvable rend toujours « introuvable »", async () => {
     sessionTrouvee = false;
     await expect(rendre()).rejects.toThrow("NEXT_NOT_FOUND");
+  });
+});
+
+// 🔴 2026-09-30 — la liste « Documents générés » affichait la facture sous son
+// numéro de PIÈCE (`AXI-DOC-2026-043`) ; le client, l'OPCO et le comptable la
+// connaissent sous son numéro de FACTURE (`AXI-FACT-2026-001`).
+describe("documents générés — une facture porte son numéro de facture", () => {
+  /** Cherche dans l'arbre rendu les props du premier élément qui porte `cle`. */
+  function propsPortant(noeud: unknown, cle: string): Record<string, unknown> | null {
+    if (noeud === null || typeof noeud !== "object") return null;
+    if (Array.isArray(noeud)) {
+      for (const n of noeud) {
+        const r = propsPortant(n, cle);
+        if (r !== null) return r;
+      }
+      return null;
+    }
+    const props = (noeud as { props?: Record<string, unknown> }).props;
+    if (props === undefined) return null;
+    if (cle in props) return props;
+    for (const v of Object.values(props)) {
+      const r = propsPortant(v, cle);
+      if (r !== null) return r;
+    }
+    return null;
+  }
+
+  it("la pièce « facture » reçoit le numéro AXI-FACT lu par son documentId", async () => {
+    m.pieces = lecture("pieces", () => [
+      {
+        id: "d-fact",
+        type: "facture",
+        numero: "AXI-DOC-2026-043",
+        pdfUrl: "r2://x",
+        createdAt: new Date(),
+        traineeId: null,
+        metadata: null,
+        annuleeAt: null,
+        annuleeMotif: null,
+        annuleePar: null,
+        remplaceeParNumero: null,
+        statutSignature: null,
+        exemplaireSigneEnvoyeAt: null,
+      },
+    ]);
+    m.factures = lecture("factures", () => [{ documentId: "d-fact", numero: "AXI-FACT-2026-001" }]);
+
+    const arbre = await rendre();
+    const props = propsPortant(arbre, "documentsExistants");
+    expect(props, "DocumentsSection introuvable dans l'arbre rendu").not.toBeNull();
+    const docs = props!["documentsExistants"] as Array<{
+      numero: string;
+      numeroFacture?: string | null;
+    }>;
+    expect(docs).toEqual([
+      expect.objectContaining({ numero: "AXI-DOC-2026-043", numeroFacture: "AXI-FACT-2026-001" }),
+    ]);
+  });
+
+  it("sans facture parmi les pièces, aucune lecture des factures n'est lancée", async () => {
+    await rendre();
+    expect(journal.filter((j) => j.nom === "factures")).toHaveLength(0);
   });
 });

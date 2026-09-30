@@ -21,6 +21,7 @@ import {
   BulletList,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { libelleFinancement } from "@/server/qualiopi/documents/libelles-enumerations";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import {
   ASSISTANCE_COUPURE,
@@ -158,7 +159,11 @@ export function ConvocationPdf({
           {data.entreprise ? (
             <FieldRow label="Entreprise / Structure" value={data.entreprise} />
           ) : null}
-          {data.financement ? <FieldRow label="Financement" value={data.financement} /> : null}
+          {/* Libellé, jamais l'énumération brute (« france_travail ») — cf.
+              `libelles-enumerations.ts` (audit des pièces réelles 2026-09-30). */}
+          {data.financement ? (
+            <FieldRow label="Financement" value={libelleFinancement(data.financement)} />
+          ) : null}
           {data.numeroOrdrePriseEnCharge ? (
             <FieldRow label="N° prise en charge OPCO" value={data.numeroOrdrePriseEnCharge} />
           ) : null}

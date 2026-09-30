@@ -85,7 +85,7 @@ const CERTIFICAT: CertificatRealisationData = {
 
 describe("AttestationPdf — contenu", () => {
   const text = collectPdfTextNormalized(React.createElement(AttestationPdf, { data: ATTESTATION }));
-  it("porte la mention L.6353-1 / D.6353-1", () => {
+  it("porte la mention légale de l'attestation (L.6313-7)", () => {
     expect(text).toContain(LEGAL_MENTIONS.attestation);
   });
   it("affiche le bénéficiaire et l'identité OF (header/footer)", () => {
@@ -296,7 +296,7 @@ describe("CertificatRealisationPdf — contenu", () => {
   const text = collectPdfTextNormalized(
     React.createElement(CertificatRealisationPdf, { data: CERTIFICAT }),
   );
-  it("porte la mention R.6313-3 / arrêté 21/12/2018", () => {
+  it("porte la mention R.6332-26 / arrêté 21/12/2018", () => {
     expect(text).toContain(LEGAL_MENTIONS.certificatRealisation);
   });
   it("affiche la durée AU FORMAT CENTIÈMES (7,00), jamais 7h00", () => {

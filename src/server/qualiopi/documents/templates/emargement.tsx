@@ -275,9 +275,12 @@ export function EmargementPdf({
           ]}
         />
 
-        {/* Mention conservation */}
+        {/* Mention conservation.
+            🔴 2026-09-30 — elle se réclamait de « l'article L.6353-9 », qui porte
+            sur les informations demandées aux candidats, pas sur la conservation.
+            Aucun article ne fixe cette durée : on la dit, sans citation. */}
         <Text style={pdfStyles.legalNote}>
-          Document à conserver {DOCUMENT_RETENTION_YEARS} ans — Article L.6353-9 du Code du travail.
+          Document à conserver {DOCUMENT_RETENTION_YEARS} ans.
         </Text>
       </QualiopiPage>
     </Document>

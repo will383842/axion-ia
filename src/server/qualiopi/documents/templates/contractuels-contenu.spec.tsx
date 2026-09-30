@@ -361,7 +361,9 @@ describe("ReglementInterieurPdf — contenu légal", () => {
     expect(text).toContain("informé au préalable des griefs");
     expect(text).toContain("se faire assister");
     expect(text).toContain("quinze jours après l'entretien");
-    expect(text).toContain("notifiée par écrit et motivée");
+    // R.6352-6 : « décision écrite et motivée, notifiée … par lettre recommandée
+    // ou remise contre récépissé » (formulation alignée le 2026-09-30).
+    expect(text).toContain("décision écrite et motivée");
   });
 
   it("F31 : prévoit l'information de l'employeur et du financeur", () => {
@@ -369,7 +371,8 @@ describe("ReglementInterieurPdf — contenu légal", () => {
   });
 
   it("conserve les mesures d'hygiène et de sécurité (art. L6352-3)", () => {
-    expect(text).toContain("consignes de sécurité");
+    expect(text).toContain("consignes générales et particulières de santé");
+    expect(text).toContain("interdit de fumer et de vapoter");
   });
 });
 

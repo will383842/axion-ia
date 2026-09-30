@@ -9,7 +9,7 @@
  *    imprimés tels quels, jamais présentés comme « partiellement validés »
  *
  * Mention légale EXACTE : LEGAL_MENTIONS.attestation
- * Bases juridiques : L.6353-1 / D.6353-1 du Code du travail.
+ * Base : dernier alinéa de L.6313-7 du Code du travail (cf. `LEGAL_MENTIONS.attestation`).
  *
  * NE PAS "use client" — rendu serveur exclusif (@react-pdf/renderer).
  */
@@ -28,6 +28,12 @@ import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
 import { NATURE_ACTION_LABELS } from "./certificat-realisation";
 import { assiduiteSurMinutes, heuresMinutesFr } from "@/server/qualiopi/evaluations/heures-suivies";
+import { libelleModalite } from "@/server/qualiopi/documents/libelles-enumerations";
+import {
+  identificationSignataire,
+  signataireOrganisme,
+  sujetAttestation,
+} from "@/server/qualiopi/documents/representant-legal";
 
 // ============================================================
 // Styles spécifiques
@@ -117,7 +123,10 @@ export interface AttestationPartielleData {
   numero: string;
   dateEmission: string;
   identite: OrganismeIdentite;
-  /** Nom du dirigeant/représentant légal signataire. Fallback sur raisonSociale si absent. */
+  /**
+   * Nom du représentant légal signataire. Prime sur `identite.representantLegalNom`.
+   * Absent des deux → « Le représentant légal de <raison sociale> » (`representant-legal.ts`).
+   */
   dirigeant?: string;
   beneficiaire: BeneficiaireDataP;
   formation: FormationDataP;
@@ -149,7 +158,7 @@ export function AttestationPartiellePdf({
   data: AttestationPartielleData;
 }): React.ReactElement {
   const { identite } = data;
-  const dirigeantOuRS = data.dirigeant ?? identite.raisonSociale;
+  const signataire = signataireOrganisme(identite, data.dirigeant);
   const prenomNom = `${data.beneficiaire.prenom} ${data.beneficiaire.nom}`.trim();
   const aucuneHeure = Math.round(data.resultats.heuresSuivies * 60) === 0;
 
@@ -194,8 +203,8 @@ export function AttestationPartiellePdf({
         <View style={pdfStyles.section}>
           <Text style={styles.certifPhrase}>
             {aucuneHeure
-              ? `Je soussigné ${dirigeantOuRS} atteste que ${prenomNom}, inscrit(e) à la formation mentionnée ci-dessous, n'a suivi aucune heure de la formation.`
-              : `Je soussigné ${dirigeantOuRS} certifie que ${prenomNom} a partiellement suivi la formation mentionnée ci-dessous.`}
+              ? `${sujetAttestation(signataire)} atteste que ${prenomNom}, inscrit(e) à la formation mentionnée ci-dessous, n'a suivi aucune heure de la formation.`
+              : `${sujetAttestation(signataire)} atteste que ${prenomNom} a partiellement suivi la formation mentionnée ci-dessous.`}
           </Text>
           <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.attestation}</Text>
         </View>
@@ -224,7 +233,7 @@ export function AttestationPartiellePdf({
           <FieldRow label="Durée totale prévue" value={`${hMin(data.formation.dureeHeures)}`} />
           <FieldRow label="Du" value={data.formation.dateDebut} />
           <FieldRow label="Au" value={data.formation.dateFin} />
-          <FieldRow label="Modalité" value={data.formation.modalite} />
+          <FieldRow label="Modalité" value={libelleModalite(data.formation.modalite)} />
           <FieldRow label="Formateur(rice)" value={data.formation.formateur} />
         </DocSection>
 
@@ -285,7 +294,9 @@ export function AttestationPartiellePdf({
               <Text style={pdfStyles.paragraph}>
                 {`Fait à ${identite.rcsVille || identite.adresseSiege || "—"}, le ${data.dateEmission}`}
               </Text>
-              <Text style={pdfStyles.paragraph}>{`Le représentant légal : ${dirigeantOuRS}`}</Text>
+              <Text
+                style={pdfStyles.paragraph}
+              >{`Le représentant légal : ${identificationSignataire(signataire)}`}</Text>
             </View>
             <View style={pdfStyles.signatureBox}>
               <Text style={pdfStyles.paragraph}>Cachet de l'organisme</Text>

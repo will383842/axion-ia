@@ -55,6 +55,7 @@ import { objectifsPedagogiquesEnTexte } from "@/server/qualiopi/formations/objec
 import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
 import { getFinaleResultats, evaluationSansAucuneNote } from "./evaluations-service";
 import { AttestationPdf } from "@/server/qualiopi/documents/templates/attestation";
+import { libelleModalite } from "@/server/qualiopi/documents/libelles-enumerations";
 import { AttestationPartiellePdf } from "@/server/qualiopi/documents/templates/attestation-partielle";
 import { envoyerAttestationDisponible } from "@/server/qualiopi/notifications/notifications-service";
 
@@ -683,7 +684,10 @@ export async function genererAttestationPourEnrollment(
     dureeHeures,
     dateDebut: session.dateDebut ? formatDate(new Date(session.dateDebut)) : "",
     dateFin: session.dateFin ? formatDate(new Date(session.dateFin)) : "",
-    modalite: session.modalite,
+    // Libellé (« Présentiel »), jamais l'énumération brute : la pièce réelle de
+    // AXI-SESS-2026-001 imprimait « Modalité presentiel ». Le gabarit libelle
+    // aussi, pour les instantanés écrits avant ce correctif.
+    modalite: libelleModalite(session.modalite),
     formateur: formateurNom,
   };
 
