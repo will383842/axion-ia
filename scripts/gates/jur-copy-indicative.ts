@@ -115,7 +115,8 @@ const ILLIMITE = new RegExp(
     String.raw`\bnon\s+plafonn|\bpas\s+de\s+plafond|\bdéplafonn`,
     // `${FIN}` et non `\b` : le masculin singulier « illimité » finit par un é, hors de \w.
     String.raw`\billimit[ée]e?s?${FIN}`,
-    String.raw`\buncapped\b|\bunlimited\b|\blimitless\b|\bno\s+(?:limit|cap)\b|\bwithout\s+(?:a\s+)?limit\b`,
+    String.raw`\bsans\s+maximum\b`,
+    String.raw`\buncapped\b|\bunlimited\b|\blimitless\b|\bno\s+(?:limit|cap|ceiling)\b|\bwithout\s+(?:a\s+)?limit\b`,
   ].join("|"),
   "i",
 );
@@ -127,13 +128,16 @@ const ILLIMITE = new RegExp(
  *     groupes en bloc. On écrit : l'AI Act crée des obligations pour les entreprises qui utilisent l'IA.
  */
 const SANS_RISQUE =
-  /\bz[ée]ro\s+risque|\brisque\s+z[ée]ro|\bsans\s+(?:aucun\s+)?risque|\baucun\s+risque\b|\bzero\s+risk|\brisk[-\s]free\b|\bno\s+(?:financial\s+)?risk\b|\bwithout\s+(?:any\s+)?risk\b/i;
+  /\bz[ée]ro\s+risque|\brisque\s+(?:z[ée]ro|nul)\b|\bsans\s+(?:aucun\s+)?risque|\baucun\s+risque\b|\bzero[-\s]risk|\brisk[-\s]free\b|\bno[-\s](?:financial\s+)?risk\b|\bwithout\s+(?:any\s+)?risk\b/i;
 /** L'AI Act rapporté aux tailles d'entreprise en bloc : à l'actif (« impose ») comme au passif. */
 const TAILLES = String.raw`(?:PME|ETI|grands\s+groupes|TPE|SMEs|mid-caps|large\s+groups)`;
 const AI_ACT_LARGE = new RegExp(
   [
     String.raw`\bAI\s+Act\b[^.;!?]{0,20}\b(?:l['’]\s?)?(?:impose|oblige|mandates|requires|forces)\b[^.;!?]{0,60}\b${TAILLES}\b`,
     String.raw`\b${TAILLES}\b[^.;!?]{0,40}\b(?:doivent\s+se\s+conformer|sont\s+(?:tenue?s?|soumise?s?|obligée?s?)|must\s+comply|are\s+(?:required|subject))\b[^.;!?]{0,40}\bAI\s+Act\b`,
+    // L'AI Act « pour tout le monde » : toutes les entreprises, sans tri de taille ni de secteur.
+    String.raw`\bAI\s+Act\b[^.;!?]{0,60}\b(?:concerne\s+tout\s+le\s+monde|(?:concerne|vise|s['’]applique\s+à)\s+toutes\s+les\s+entreprises|ne\s+fait\s+pas\s+de\s+tri|applies\s+to\s+(?:all|every)|all\s+companies|every\s+business)`,
+    String.raw`\b(?:concerne\s+tout\s+le\s+monde|toutes\s+les\s+entreprises|all\s+companies|every\s+business)\b[^.;!?]{0,60}\bAI\s+Act\b`,
   ].join("|"),
   "i",
 );

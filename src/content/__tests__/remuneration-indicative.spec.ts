@@ -118,6 +118,8 @@ describe("REQ-JUR-019 — un revenu illimité rougit, MÊME dit indicatif", () =
     "Pas de limite à vos commissions",
     "Limitless earnings, as a guide",
     "Commissions without limit",
+    "Commissions with no ceiling",
+    "Des commissions sans maximum",
   ])("REQ-JUR-019 — TÉMOIN ROUGE : « %s »", (texte) => {
     expect(temoin(texte)).toContain<FamilleRemuneration>("revenu_illimite");
   });
@@ -137,6 +139,10 @@ describe("REQ-JUR-001 — ni promesse sans risque, ni AI Act trop large", () => 
     "Une activité sans risque pour vous",
     "Risk-free, from day one",
     "Aucun risque financier pour vous",
+    "Un risque nul pour l'apporteur",
+    "A no-risk opportunity",
+    "A zero-risk opportunity",
+    "Earn without risk",
     "No financial risk for you",
   ])("REQ-JUR-001 — TÉMOIN ROUGE, promesse sans risque : « %s »", (texte) => {
     expect(temoin(texte)).toContain<FamilleRemuneration>("promesse_sans_risque");
@@ -150,6 +156,10 @@ describe("REQ-JUR-001 — ni promesse sans risque, ni AI Act trop large", () => 
     "Les PME doivent se conformer à l'AI Act.",
     "PME, ETI et grands groupes sont tenus de respecter l'AI Act",
     "SMEs must comply with the AI Act.",
+    "Quel que soit le secteur et quelle que soit la taille : l'obligation de formation de l'AI Act concerne tout le monde.",
+    "De la PME au grand groupe : l'AI Act ne fait pas de tri entre les tailles ni entre les secteurs.",
+    "The AI Act applies to all companies.",
+    "Every business is covered by the AI Act.",
   ])("REQ-JUR-001 — TÉMOIN ROUGE, AI Act trop large : « %s »", (texte) => {
     expect(temoin(texte)).toContain<FamilleRemuneration>("ai_act_trop_large");
   });
@@ -158,6 +168,8 @@ describe("REQ-JUR-001 — ni promesse sans risque, ni AI Act trop large", () => 
     "Aucun frais d'entrée ni engagement de volume, accompagnement",
     "L'AI Act crée des obligations pour les entreprises qui utilisent l'IA.",
     "The AI Act sets obligations for companies that use AI.",
+    "Quel que soit le secteur et quelle que soit la taille, une entreprise qui utilise l'IA a des obligations au titre de l'AI Act.",
+    "De la PME au grand groupe, chaque taille a ses clients.",
   ])("REQ-JUR-001 — CONTRE-TÉMOIN : « %s »", (texte) => {
     expect(temoin(texte)).toEqual([]);
   });
