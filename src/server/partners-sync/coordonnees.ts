@@ -32,7 +32,7 @@ import { hashIp } from "@/lib/security/ip-hash";
 
 import { dansLaPlage, ipVisiteurOuNull } from "@/lib/client-ip-core";
 import type { RateLimitConfig } from "@/lib/rate-limit";
-import { horodatageSignature, signerCorps } from "@/server/partners/enveloppe";
+import { ENTETE_KID, horodatageSignature, kidDe, signerCorps } from "@/server/partners/enveloppe";
 
 import { canalPartnersOuvert, secretPartners, secretRelecture } from "./config";
 import { verifierRequetePartners } from "./relecture";
@@ -280,6 +280,7 @@ export async function repondreCoordonnees(
       "Cache-Control": "no-store",
       "X-Axionia-Timestamp": horodatage,
       "X-Axionia-Signature": signerCorps(secretEmission, horodatage, corps),
+      [ENTETE_KID]: kidDe(secretEmission),
     },
   });
 }
