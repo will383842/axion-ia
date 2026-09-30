@@ -6,8 +6,8 @@
  *     `cost_cap_reached` si le plafond mensuel est atteint, `auth_failed` si
  *     OpenAI est désactivé dans l'admin content-gen ;
  *   · APRÈS l'appel : `trackCost` — une ligne `cost_ledger` dont le `jobId`
- *     (`visio-<etape>-<rencontreId>-<n>`) rend le coût attribuable à un
- *     rendez-vous.
+ *     (`idTacheVisio`, `../id-tache.ts`, seule fabrique) rend le coût
+ *     attribuable à un rendez-vous.
  *
  * ⚠️ PLAFOND PARTAGÉ, conséquence assumée : la ligne `provider_config`
  * `openai` sert aussi content-gen. Atteindre le plafond ici bloque aussi
@@ -49,11 +49,6 @@ export const portCoutReel: PortCout = {
     await trackCost(e);
   },
 };
-
-/** Identifiant de tâche porté par `cost_ledger.jobId` (texte libre, sans clé étrangère). */
-export function idTacheVisio(etape: string, rencontreId: string, execution: number): string {
-  return `visio-${etape}-${rencontreId}-${execution}`;
-}
 
 /** Avant chaque appel. */
 export async function avantAppel(port: PortCout, estimationUsd: number): Promise<void> {

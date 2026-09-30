@@ -45,7 +45,7 @@ describe("⛔ une opposition à l'IA arrête le circuit avant OpenAI", () => {
   for (const etape of ["transcrire", "extraire", "rediger"] as const) {
     it(`${etape} : aucun appel, échec définitif, son purgé, Will prévenu`, async () => {
       const depot = new FauxDepot();
-      const t = depot.ajouter({ rencontreId: "r1", etape });
+      const t = depot.ajouter({ rencontreId: "00000000-0000-4000-8000-0000000000f1", etape });
       const { g, appels } = gestionnaireEspion();
       const abandons: string[] = [];
       const deps = depsDeTest({
@@ -61,7 +61,7 @@ describe("⛔ une opposition à l'IA arrête le circuit avant OpenAI", () => {
       expect(await executerEtape(deps, t.id)).toBe("echec_definitif");
       expect(appels).toEqual([]);
       expect(depot.ligne(t.id).statut).toBe("echec_definitif");
-      expect(abandons).toEqual(["r1"]);
+      expect(abandons).toEqual(["00000000-0000-4000-8000-0000000000f1"]);
       expect(depot.lignes.some((l) => l.etape === "purger_audio" && l.statut === "a_faire")).toBe(
         true,
       );
@@ -71,7 +71,10 @@ describe("⛔ une opposition à l'IA arrête le circuit avant OpenAI", () => {
 
   it("contre-témoin : la purge du son passe malgré l'opposition", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "purger_audio" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "purger_audio",
+    });
     const { g, appels } = gestionnaireEspion();
     const deps = depsDeTest({
       depot,
@@ -84,7 +87,10 @@ describe("⛔ une opposition à l'IA arrête le circuit avant OpenAI", () => {
 
   it("contre-témoin : sans opposition, l'étape s'exécute", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "extraire" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "extraire",
+    });
     const { g, appels } = gestionnaireEspion();
     const deps = depsDeTest({ depot, gestionnaires: { extraire: g } });
     expect(await executerEtape(deps, t.id)).toBe("reussie");

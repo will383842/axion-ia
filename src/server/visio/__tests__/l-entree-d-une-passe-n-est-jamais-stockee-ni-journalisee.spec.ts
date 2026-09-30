@@ -43,7 +43,10 @@ describe("l'entrée d'une passe n'est jamais stockée ni journalisée", () => {
       });
     }
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "extraire" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "extraire",
+    });
     let etatEcrit: EtatCompteRendu | null = null;
     // Une sortie valide (sans fait) : l'état du compte rendu est écrit, et contrôlé.
     const f = fauxClient(undefined, { reponses: [reponseReussie(extraction([]))] });
@@ -54,7 +57,7 @@ describe("l'entrée d'une passe n'est jamais stockée ni journalisée", () => {
       donnees: {
         pourExtraction: async () => ({
           rencontre: {
-            id: "r1",
+            id: "00000000-0000-4000-8000-0000000000f1",
             titre: "Diagnostic",
             source: "calendly",
             clientId: null,

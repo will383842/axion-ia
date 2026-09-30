@@ -18,12 +18,15 @@ import { DATE_ECHANGE, SEGMENTS } from "./outils";
 describe("une sortie tronquée n'écrit aucun fait", () => {
   it("P1 incomplète : rien d'écrit, un essai de plus programmé, puis échec définitif", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "extraire" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "extraire",
+    });
     let comptesRendus = 0;
     const donnees: Partial<PortDonnees> = {
       pourExtraction: async () => ({
         rencontre: {
-          id: "r1",
+          id: "00000000-0000-4000-8000-0000000000f1",
           titre: "Diagnostic",
           source: "calendly",
           clientId: null,

@@ -33,7 +33,10 @@ const AVEC_ACCORD = [
 describe("l'accord retrouvé est vérifié comme une citation", () => {
   it("la phrase exacte du client est écrite comme preuve", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "precontroler" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "precontroler",
+    });
     const preuves: string[] = [];
     const deps = depsDeTest({
       depot,

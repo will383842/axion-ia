@@ -50,7 +50,10 @@ describe("l'audio est purgé à la validation et au plus tard à 30 jours", () =
 
   it("chaque objet supprimé puis vérifié absent ; alors seulement `audioSupprimeLe`", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "purger_audio" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "purger_audio",
+    });
     const r2 = new Set([
       "visio-audio/e1/client/0000/00000.bin",
       "visio-audio/e1/axion/0000/00000.bin",
@@ -79,7 +82,10 @@ describe("l'audio est purgé à la validation et au plus tard à 30 jours", () =
 
   it("contre-témoin : un objet qui résiste → rien n'est marqué, l'étape repart", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "purger_audio" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "purger_audio",
+    });
     const marques: string[] = [];
     const deps = depsDeTest({
       depot,
@@ -109,7 +115,10 @@ describe("l'audio est purgé à la validation et au plus tard à 30 jours", () =
   });
   it("⛔ une rencontre à deux enregistrements : seul le son DÛ part, la relance « déposée » reste", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "purger_audio" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "purger_audio",
+    });
     const r2 = new Set([
       "visio-audio/e1/client/0000/00000.bin",
       "visio-audio/e2/client/0000/00000.bin",

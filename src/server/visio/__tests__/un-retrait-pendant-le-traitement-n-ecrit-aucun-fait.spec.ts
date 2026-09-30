@@ -20,11 +20,15 @@ import { depsDeTest, FauxDepot } from "../../../../tests/outils/faux-circuit-vis
 
 function lancer(retrait: boolean) {
   const depot = new FauxDepot();
-  const t = depot.ajouter({ rencontreId: "r1", etape: "verifier_faits", compteRenduId: "cr1" });
+  const t = depot.ajouter({
+    rencontreId: "00000000-0000-4000-8000-0000000000f1",
+    etape: "verifier_faits",
+    compteRenduId: "cr1",
+  });
   let faitsEcrits = 0;
   const g: Gestionnaire = async () => {
     // … l'appel est en vol quand Will retire l'accord.
-    if (retrait) depot.retraits.add("r1");
+    if (retrait) depot.retraits.add("00000000-0000-4000-8000-0000000000f1");
     return {
       ecrire: async () => {
         faitsEcrits += 5;

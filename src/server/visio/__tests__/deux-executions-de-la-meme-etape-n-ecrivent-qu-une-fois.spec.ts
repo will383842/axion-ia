@@ -21,7 +21,11 @@ import { depsDeTest, FauxDepot } from "../../../../tests/outils/faux-circuit-vis
 describe("deux exécutions de la même étape n'écrivent qu'une fois", () => {
   it("deux jobs simultanés : un seul exécute et écrit", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "rediger", compteRenduId: "cr1" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "rediger",
+      compteRenduId: "cr1",
+    });
     let executions = 0;
     const g: Gestionnaire = async () => {
       executions += 1;
@@ -37,7 +41,11 @@ describe("deux exécutions de la même étape n'écrivent qu'une fois", () => {
 
   it("verrou expiré, reprise par une seconde exécution : la première est orpheline", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "rediger", compteRenduId: "cr1" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "rediger",
+      compteRenduId: "cr1",
+    });
     let liberer: () => void = () => undefined;
     const lent: Gestionnaire = async () => {
       await new Promise<void>((r) => {

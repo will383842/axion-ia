@@ -27,10 +27,13 @@ function erreur429(type: string, code: string): Error {
 describe("un quota épuisé suspend toutes les étapes", () => {
   it("quota : l'étape et tout ce qui attend sont suspendus, sans reprise programmée", async () => {
     const depot = new FauxDepot();
-    const cible = depot.ajouter({ rencontreId: "r1", etape: "transcrire" });
+    const cible = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "transcrire",
+    });
     const autres = [
-      depot.ajouter({ rencontreId: "r2", etape: "transcrire" }),
-      depot.ajouter({ rencontreId: "r3", etape: "extraire" }),
+      depot.ajouter({ rencontreId: "00000000-0000-4000-8000-0000000000f2", etape: "transcrire" }),
+      depot.ajouter({ rencontreId: "00000000-0000-4000-8000-0000000000f3", etape: "extraire" }),
     ];
     const g: Gestionnaire = async () => {
       throw classerErreurOpenAI(erreur429("insufficient_quota", "insufficient_quota"));

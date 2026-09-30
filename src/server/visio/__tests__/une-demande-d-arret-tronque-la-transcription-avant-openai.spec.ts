@@ -40,7 +40,10 @@ const AVEC_REFUS = [
 describe("une demande d'arrêt tronque la transcription avant OpenAI", () => {
   it("les segments à partir du refus sont marqués et effacés, une alerte part", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "precontroler" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "precontroler",
+    });
     const marques: number[] = [];
     const deps = depsDeTest({
       depot,

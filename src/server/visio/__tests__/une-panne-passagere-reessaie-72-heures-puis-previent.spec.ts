@@ -29,7 +29,7 @@ const PANNE = new ErreurVisio("passagere", "fournisseur_indisponible", "503");
 function tenue(echecs: number): EtapeTenue {
   return {
     id: "t",
-    rencontreId: "r",
+    rencontreId: "00000000-0000-4000-8000-0000000000f0",
     etape: "transcrire",
     compteRenduId: null,
     execution: echecs + 1,
@@ -52,7 +52,7 @@ describe("une panne passagère réessaie 72 heures puis prévient", () => {
   it("au 8ᵉ échec : échec définitif et alerte", async () => {
     const depot = new FauxDepot();
     const t = depot.ajouter({
-      rencontreId: "r1",
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
       etape: "transcrire",
       echecs: 7,
       premierEchecLe: PREMIER,
@@ -67,7 +67,10 @@ describe("une panne passagère réessaie 72 heures puis prévient", () => {
     });
     expect(await executerEtape(deps, t.id)).toBe("echec_definitif");
     expect(depot.ligne(t.id).statut).toBe("echec_definitif");
-    expect(deps.alertes[0]).toMatchObject({ code: "visio.etape_en_echec", rencontreId: "r1" });
+    expect(deps.alertes[0]).toMatchObject({
+      code: "visio.etape_en_echec",
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+    });
     expect(deps.alertes[0]!.message).toMatch(/note manuelle/);
   });
 

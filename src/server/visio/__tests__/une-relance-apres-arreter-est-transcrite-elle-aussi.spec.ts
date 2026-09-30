@@ -61,7 +61,10 @@ function relance() {
 describe("une relance après « Arrêter » est transcrite elle aussi", () => {
   it("les deux enregistrements sont transcrits et retenus", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "transcrire" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "transcrire",
+    });
     const { e1, e2 } = relance();
     const { port, journal } = portTranscription([e1, e2]);
     const f = fauxClient(undefined, { transcriptions: [vide, vide, vide, vide] });
@@ -83,7 +86,10 @@ describe("une relance après « Arrêter » est transcrite elle aussi", () => {
 
   it("un enregistrement déjà transcrit n'est pas refait", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "transcrire" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "transcrire",
+    });
     const { e1, e2 } = relance();
     const { port, journal } = portTranscription([{ ...e1, statut: "compte_rendu_pret" }, e2]);
     const f = fauxClient(undefined, { transcriptions: [vide, vide] });
@@ -102,7 +108,7 @@ describe("une relance après « Arrêter » est transcrite elle aussi", () => {
           { id: "e2", debut: new Date(T0.getTime() + QUINZE_MIN) },
         ].map((e) => ({
           ...e,
-          rencontreId: "r1",
+          rencontreId: "00000000-0000-4000-8000-0000000000f1",
           nature: "visio",
           statut: "depose",
           fin: null,
@@ -113,7 +119,9 @@ describe("une relance après « Arrêter » est transcrite elle aussi", () => {
           tranches: [],
         })),
     });
-    const liste = await depotDonneesPrisma(base.base).aTranscrire("r1");
+    const liste = await depotDonneesPrisma(base.base).aTranscrire(
+      "00000000-0000-4000-8000-0000000000f1",
+    );
     expect(liste.map((e) => e.id)).toEqual(["e1", "e2"]);
     expect(liste.map((e) => e.origineMs)).toEqual([T0.getTime(), T0.getTime()]);
     const args = base.de("enregistrement", "findMany")[0]!.args as {

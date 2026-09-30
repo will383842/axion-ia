@@ -27,7 +27,10 @@ import { enregistrement, portTranscription, seg } from "./outils-pipeline";
 describe("un segment hors accord n'est jamais transmis", () => {
   it("le segment dans la fenêtre est écrit sans parole, l'autre est gardé", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "transcrire" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "transcrire",
+    });
     const e = enregistrement({ fenetresHorsAccord: [{ debutMs: 60_000, finMs: 90_000 }] });
     const { port, ecrits } = portTranscription(e);
     const client = {

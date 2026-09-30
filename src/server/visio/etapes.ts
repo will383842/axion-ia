@@ -34,7 +34,8 @@
 import type { EtapeVisio } from "../../../prisma/generated/client";
 import type { CatalogueIA } from "./catalogue-ia";
 import type { ClientOpenAIVisio } from "./openai/client";
-import { idTacheVisio, type PortCout } from "./openai/cout";
+import { idTacheVisio } from "./id-tache";
+import type { PortCout } from "./openai/cout";
 import { classerErreurOpenAI, ErreurVisio } from "./openai/erreurs";
 import {
   executionsImputees,

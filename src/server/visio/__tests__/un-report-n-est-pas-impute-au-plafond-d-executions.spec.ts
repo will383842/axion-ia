@@ -29,7 +29,10 @@ function colonneAbsente(): Error {
 describe("un report n'est pas imputé au plafond d'exécutions", () => {
   it("onze reports « base non migrée » : toujours à faire, jamais d'échec définitif", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "extraire" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "extraire",
+    });
     const g: Gestionnaire = async () => {
       throw colonneAbsente();
     };
@@ -48,7 +51,10 @@ describe("un report n'est pas imputé au plafond d'exécutions", () => {
 
   it("onze reports « enregistrement encore actif » : toujours à faire", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "transcrire" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "transcrire",
+    });
     let actif = true;
     const deps = depsDeTest({
       depot,
@@ -66,7 +72,10 @@ describe("un report n'est pas imputé au plafond d'exécutions", () => {
 
   it("onze arrêts du worker (SIGTERM) : toujours à faire", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "transcrire" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "transcrire",
+    });
     const g: Gestionnaire = async (ctx) => {
       ctx.verifierArret();
       return { ecrire: async () => [] };
@@ -80,7 +89,10 @@ describe("un report n'est pas imputé au plafond d'exécutions", () => {
 
   it("contre-témoin : onze prises perdues par un verrou expiré arrêtent l'étape", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "transcrire" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "transcrire",
+    });
     const deps = depsDeTest({
       depot,
       gestionnaires: { transcrire: async () => ({ ecrire: async () => [] }) },

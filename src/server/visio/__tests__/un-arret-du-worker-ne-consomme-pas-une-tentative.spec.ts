@@ -22,7 +22,10 @@ import { depsDeTest, FauxDepot } from "../../../../tests/outils/faux-circuit-vis
 describe("un arrêt du worker ne consomme pas une tentative", () => {
   it("SIGTERM entre deux tranches : a_faire, 0 échec, une interruption", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "transcrire" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "transcrire",
+    });
     let arret = false;
     const g: Gestionnaire = async (ctx) => {
       ctx.verifierArret(); // tranche 1
@@ -37,7 +40,10 @@ describe("un arrêt du worker ne consomme pas une tentative", () => {
 
   it("contre-témoin : une panne passagère, elle, compte", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "transcrire" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "transcrire",
+    });
     const g: Gestionnaire = async () => {
       throw new ErreurVisio("passagere", "fournisseur_indisponible", "x");
     };

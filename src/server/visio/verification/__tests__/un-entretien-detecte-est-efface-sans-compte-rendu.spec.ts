@@ -23,12 +23,15 @@ import { DATE_ECHANGE, extraction, SEGMENTS } from "./outils";
 
 function lancer(nature: "pas_un_rendez_vous_client" | "echange_complet") {
   const depot = new FauxDepot();
-  const t = depot.ajouter({ rencontreId: "r1", etape: "extraire" });
+  const t = depot.ajouter({
+    rencontreId: "00000000-0000-4000-8000-0000000000f1",
+    etape: "extraire",
+  });
   const journal: string[] = [];
   const donnees: Partial<PortDonnees> = {
     pourExtraction: async () => ({
       rencontre: {
-        id: "r1",
+        id: "00000000-0000-4000-8000-0000000000f1",
         titre: "Entretien",
         source: "calendly",
         clientId: null,

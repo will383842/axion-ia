@@ -27,7 +27,10 @@ describe("une colonne absente reporte l'étape sans la compter", () => {
   for (const code of ["P2022", "P2021", "42703", "42P01"]) {
     it(`${code} : +15 min, 0 échec, pas d'alerte`, async () => {
       const depot = new FauxDepot();
-      const t = depot.ajouter({ rencontreId: "r1", etape: "extraire" });
+      const t = depot.ajouter({
+        rencontreId: "00000000-0000-4000-8000-0000000000f1",
+        etape: "extraire",
+      });
       const g: Gestionnaire = async () => {
         throw colonneAbsente(code);
       };
@@ -48,7 +51,7 @@ describe("une colonne absente reporte l'étape sans la compter", () => {
   it("contre-témoin : toujours absente après 2 h → alerte", async () => {
     const depot = new FauxDepot();
     const t = depot.ajouter({
-      rencontreId: "r1",
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
       etape: "extraire",
       premierEchecLe: new Date("2026-10-06T07:30:00Z"),
     });

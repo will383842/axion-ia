@@ -56,7 +56,7 @@ function fait(ref: string, statut: string, enonce: string): FaitDuJour {
 function donnees(): DonneesPasses {
   return {
     rencontre: {
-      id: "r1",
+      id: "00000000-0000-4000-8000-0000000000f1",
       titre: "Diagnostic fictif",
       source: "saisie_manuelle",
       clientId: "c1",
@@ -82,7 +82,11 @@ function donnees(): DonneesPasses {
 async function entreesEnvoyees(etape: "rattacher" | "consolider" | "ebaucher" | "rediger") {
   const g: Record<typeof etape, Gestionnaire> = { rattacher, consolider, ebaucher, rediger };
   const depot = new FauxDepot();
-  const t = depot.ajouter({ rencontreId: "r1", etape, compteRenduId: "cr1" });
+  const t = depot.ajouter({
+    rencontreId: "00000000-0000-4000-8000-0000000000f1",
+    etape,
+    compteRenduId: "cr1",
+  });
   const f = fauxClient();
   await executerEtape(
     depsDeTest({

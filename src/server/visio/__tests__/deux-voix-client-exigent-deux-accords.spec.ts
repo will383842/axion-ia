@@ -73,7 +73,10 @@ const OUI_B = seg({
 /** Exécute `precontroler` et rend les types posés au journal de l'enregistrement. */
 async function journalDuPrecontrole(segments: ReturnType<typeof seg>[]): Promise<string[]> {
   const depot = new FauxDepot();
-  const t = depot.ajouter({ rencontreId: "r1", etape: "precontroler" });
+  const t = depot.ajouter({
+    rencontreId: "00000000-0000-4000-8000-0000000000f1",
+    etape: "precontroler",
+  });
   const types: string[] = [];
   const deps = depsDeTest({
     depot,

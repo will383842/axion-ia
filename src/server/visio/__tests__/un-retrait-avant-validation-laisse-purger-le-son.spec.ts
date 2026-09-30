@@ -48,8 +48,11 @@ function baseAvecRetrait() {
 describe("un retrait avant la validation laisse purger le son", () => {
   it("purger_audio aboutit : audioSupprimeLe est posé malgré le retrait", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "purger_audio" });
-    depot.retraits.add("r1");
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "purger_audio",
+    });
+    depot.retraits.add("00000000-0000-4000-8000-0000000000f1");
     const marques: string[] = [];
     const deps = depsDeTest({
       depot,
@@ -90,8 +93,11 @@ describe("un retrait avant la validation laisse purger le son", () => {
       depotEtapesPrisma(e.base).terminer(tenue("extraire"), async () => []),
     ).rejects.toBeInstanceOf(RetraitConstate);
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "extraire" });
-    depot.retraits.add("r1");
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "extraire",
+    });
+    depot.retraits.add("00000000-0000-4000-8000-0000000000f1");
     const g: Gestionnaire = async () => ({ ecrire: async () => [] });
     expect(await executerEtape(depsDeTest({ depot, gestionnaires: { extraire: g } }), t.id)).toBe(
       "retrait",

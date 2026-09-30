@@ -16,7 +16,7 @@
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
 
-import { idTacheVisio } from "../cout";
+import { idTacheVisio } from "../../id-tache";
 import { executerPasse } from "../passe";
 import { transcrireTranche } from "../transcrire-tranche";
 import {
@@ -24,6 +24,8 @@ import {
   fauxCout,
   reponseReussie,
 } from "../../../../../tests/outils/faux-openai-visio";
+
+const RENCONTRE = "00000000-0000-4000-8000-000000000006";
 
 const TRANSCRIPTION = {
   text: "bonjour",
@@ -70,13 +72,13 @@ describe("tout appel OpenAI passe par le plafond et le registre des coûts", () 
           nomSchema: "t",
           instructions: "i",
           entree: "e",
-          jobId: idTacheVisio("extraire", "r", 1),
+          jobId: idTacheVisio("extraire", RENCONTRE, 1),
         },
       ),
     ).rejects.toMatchObject({ code: "sortie_invalide" });
     expect(journal.evenements).toEqual(["plafond", "appel", "registre"]);
     expect(cout.verifications).toEqual([0.5]);
-    expect(cout.ecritures[0]!.jobId).toBe("visio-extraire-r-1");
+    expect(cout.ecritures[0]!.jobId).toBe(`visio-extraire-${RENCONTRE}-1`);
   });
 
   it("contre-témoin : plafond atteint, AUCUN appel n'est émis", async () => {

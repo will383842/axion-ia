@@ -41,8 +41,15 @@ function fichiers(dir: string): string[] {
 describe("un plafond atteint suspend le circuit sans toucher au kill switch de content-gen", () => {
   it("l'étape est suspendue (plafond), tout ce qui attend aussi, une alerte part", async () => {
     const depot = new FauxDepot();
-    const cible = depot.ajouter({ rencontreId: "r1", etape: "extraire" });
-    const autre = depot.ajouter({ rencontreId: "r2", etape: "rediger", compteRenduId: "cr2" });
+    const cible = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "extraire",
+    });
+    const autre = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f2",
+      etape: "rediger",
+      compteRenduId: "cr2",
+    });
     const cout = fauxCout(undefined, { plafondAtteint: true });
     const passe: Gestionnaire = async (ctx) => {
       await executerPasse(

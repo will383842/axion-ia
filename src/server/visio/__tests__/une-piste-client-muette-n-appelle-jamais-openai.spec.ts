@@ -31,7 +31,10 @@ const MUETTE = [
 describe("une piste client muette n'appelle jamais OpenAI", () => {
   it("précontrôle : arrêt piste_muette, aucune extraction programmée, aucun appel", async () => {
     const depot = new FauxDepot();
-    const t = depot.ajouter({ rencontreId: "r1", etape: "precontroler" });
+    const t = depot.ajouter({
+      rencontreId: "00000000-0000-4000-8000-0000000000f1",
+      etape: "precontroler",
+    });
     const client = clientInterdit();
     const deps = depsDeTest({
       depot,
