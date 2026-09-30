@@ -23,8 +23,8 @@ jobs:
             ref: 0d92bc238a5e3ad91abc93523d6812c49d99f349
           - nom: avant-L2
             ref: 912dabf5c510da4bb06d8013bece3bccea615367
-          - nom: apres-L2-sans-correctif
-            ref: 4d4a1885a7342d35c922665a42805b950ee059c2
+          - nom: apres-L2
+            ref: a024661d48e555f4518ea35047a0e293c8d4b5ac
     env:
       SKIP_ENV_VALIDATION: "true"
       BULLMQ_DISABLED: "true"
