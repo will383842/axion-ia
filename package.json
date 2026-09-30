@@ -108,6 +108,7 @@
     "partners:fixtures": "tsx scripts/partners/fixtures.ts",
     "partners:cliquet-ecrivains": "tsx scripts/gates/cliquet-ecrivains.ts",
     "partners:inertie": "tsx scripts/gates/inertie.ts",
+    "jur:remuneration-indicative": "tsx scripts/gates/jur-copy-indicative.ts",
     "mcp:verifier-la-porte": "tsx scripts/mcp/verifier-la-porte.ts",
     "bundle:analyze": "ANALYZE=true next build",
     "linkcheck": "linkinator http://localhost:3000 --recurse --silent",

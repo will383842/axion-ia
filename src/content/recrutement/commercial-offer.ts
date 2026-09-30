@@ -75,10 +75,12 @@ export const COMMERCIAL_HERO = {
   /** {ville} résolu dans le composant. */
   titleFr: "Devenez commercial IA à",
   titleEnPrefix: "Become an AI sales rep in",
-  titleEm: { fr: "revenus déplafonnés", en: "uncapped income" },
+  // JUR-T29 (2026-09-29) : plus de « revenus déplafonnés » ni « uncapped » : une promesse de
+  // revenu illimité n'a rien d'indicatif. La commission se dit, sans montant ni plafond promis.
+  titleEm: { fr: "en toute indépendance", en: "fully independent" },
   description: {
-    fr: "L'IA, le marché le plus porteur des prochaines décennies. Des produits simples, que les entreprises s'arrachent. Apporteur d'affaires indépendant, en micro-entreprise ou en société : revenus sans plafond — démarrer ne vous coûte rien.",
-    en: "AI — the biggest market of the coming decades. Simple products that companies are eager to buy. Independent business introducer, as a sole trader or a company: uncapped income — getting started costs you nothing.",
+    fr: "L'IA, le marché le plus porteur des prochaines décennies. Des produits simples, que les entreprises s'arrachent. Apporteur d'affaires indépendant, en micro-entreprise ou en société : une commission sur chaque formation payée — démarrer ne vous coûte rien.",
+    en: "AI — the biggest market of the coming decades. Simple products that companies are eager to buy. Independent business introducer, as a sole trader or a company: a commission on every paid training — getting started costs you nothing.",
   },
   ariaLabel: {
     fr: "Le métier de commercial IA chez Axion-IA en 8 volets : prospection tous secteurs, vente de formations, audits, accompagnements 1-to-1, intégrations, accompagnement sur mesure du diagnostic au déploiement, statut indépendant et suivi des commissions.",
@@ -112,8 +114,8 @@ export const COMMERCIAL_OPPORTUNITY = {
   darkCard: {
     label: { fr: "Comment vous êtes payé", en: "How you get paid" },
     headline: {
-      fr: "« Vous présentez. C'est tracé. Vous touchez. »",
-      en: '"You introduce. It\'s tracked. You get paid."',
+      fr: "« Vous présentez. C'est tracé. Vous touchez votre commission, selon un barème indicatif. »",
+      en: '"You introduce. It\'s tracked. You get your commission, on an indicative scale."',
     },
     sub: {
       fr: "Pas besoin d'être un closeur. Chaque entreprise que vous faites connaître est enregistrée à votre nom par notre équipe. Qu'elle signe avec vous ou qu'elle nous contacte directement, la commission vous revient, versée à l'encaissement de chaque facture.",
@@ -157,12 +159,12 @@ export const COMMERCIAL_STEPS: ReadonlyArray<CommercialStep> = [
       "You declare prospected companies to us under your name — that declaration secures your commissions, paid when each invoice is collected.",
   },
   {
-    titleFr: "Vous touchez vos commissions",
-    titleEn: "You earn your commissions",
+    titleFr: "Vos commissions, à l'encaissement",
+    titleEn: "Your commissions, on collection",
     textFr:
-      "Commission fixe sur les formations, pourcentage de la facture sur les audits et les intégrations. Plus vous vendez, plus vous gagnez — sans plafond.",
+      "À titre indicatif : commission fixe sur les formations, pourcentage de la facture sur les audits et les intégrations. Plus vous recommandez d'entreprises, plus vos commissions progressent — sans plafond.",
     textEn:
-      "Flat commission on trainings, a percentage of the invoice on audits and integrations. The more you sell, the more you earn — with no cap.",
+      "As an indication: flat commission on trainings, a percentage of the invoice on audits and integrations. The more companies you introduce, the more your commissions grow — with no cap.",
   },
 ];
 
@@ -226,8 +228,9 @@ export const COMMERCIAL_PROFILES = {
     {
       titleFr: "Commerciaux en reconversion",
       titleEn: "Sales reps in transition",
-      descFr: "Un secteur d'avenir, des produits faciles à défendre, des revenus déplafonnés.",
-      descEn: "A future-proof sector, easy-to-pitch products, uncapped income.",
+      descFr:
+        "Un secteur d'avenir, des produits faciles à défendre, une commission sur chaque formation payée.",
+      descEn: "A future-proof sector, easy-to-pitch products, a commission on every paid training.",
     },
     {
       titleFr: "Apporteurs d'affaires & réseaux",
@@ -262,8 +265,8 @@ export const COMMERCIAL_FAQ_FIXED: ReadonlyArray<FaqItem> = [
   {
     q: { fr: "Quel statut et quelle rémunération ?", en: "What status and pay?" },
     a: {
-      fr: "Statut indépendant. Vous êtes payé à la commission : montant fixe par formation vendue, pourcentage de la facture sur les audits et les intégrations. Revenus déplafonnés.",
-      en: "Self-employed. You're paid on commission: a flat amount per training sold, a percentage of the invoice on audits and integrations. Uncapped income.",
+      fr: "Statut indépendant. Vous êtes payé à la commission : montant fixe par formation vendue, pourcentage de la facture sur les audits et les intégrations. Le barème publié est indicatif : votre contrat d'apporteur fait foi.",
+      en: "Self-employed. You're paid on commission: a flat amount per training sold, a percentage of the invoice on audits and integrations. The published rates are indicative: your referral agreement prevails.",
     },
   },
   {
@@ -324,7 +327,6 @@ export const COMMERCIAL_KEYWORDS_BASE: ReadonlyArray<string> = [
   "commercial freelance",
   "réseau commercial",
   "rémunération à la commission",
-  "revenus déplafonnés",
   "revenus complémentaires",
   "gagner de l'argent",
   "compléter ses revenus",

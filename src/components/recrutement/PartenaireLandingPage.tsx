@@ -262,7 +262,7 @@ export async function PartenaireLandingPage({ params, source }: Props) {
     {
       id: "gains",
       question: "Combien je gagne, concrètement ?",
-      answer: `${commission(1)} par journée de formation vendue : une formation de 2 journées, c'est ${commission(2)} ; de 3 journées, ${commission(3)}. Sur un audit, ${pctAudit} % de la facture — le plus petit audit démarre à ${euros(auditTpe)} HT, soit au moins ${euros(commissionAuditTpe)} pour vous. Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.`,
+      answer: `À titre indicatif, ${commission(1)} par journée de formation vendue et encaissée : une formation de 2 journées, c'est ${commission(2)} ; de 3 journées, ${commission(3)}. Sur un audit, ${pctAudit} % de la facture — le plus petit audit démarre à ${euros(auditTpe)} HT, soit au moins ${euros(commissionAuditTpe)} pour vous. Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.`,
     },
     {
       id: "connaissances-ia",
@@ -424,10 +424,12 @@ export async function PartenaireLandingPage({ params, source }: Props) {
             <h3 className="text-fg font-serif text-xl font-semibold">Une formation IA</h3>
             <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">
               {commission(1)}
+              <span className="text-fg-muted block font-sans text-sm font-medium">
+                pour vous, à titre indicatif, par journée vendue
+              </span>
             </p>
-            <p className="text-fg-muted text-sm font-medium">pour vous, par journée vendue</p>
             <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
-              <li>Une formation de 2 journées : {commission(2)}</li>
+              <li>À titre indicatif, 2 journées : {commission(2)}</li>
               <li>De 3 journées : {commission(3)}</li>
               {certifie ? (
                 <li>

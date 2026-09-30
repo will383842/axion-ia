@@ -58,11 +58,11 @@ export const PARTENAIRE_LANDINGS: Readonly<Record<PartenaireSource, PartenaireLa
     canal: "Vu sur Le Bon Coin",
     metaTitle: "Apporteur d'affaires IA — partout en France",
     metaDescription:
-      "Vous connaissez des dirigeants ? Nous formons leurs équipes à l'IA. Vous recommandez, nous faisons le reste, vous touchez votre commission.",
+      "Vous connaissez des dirigeants ? Nous formons leurs équipes à l'IA. Vous recommandez, nous faisons le reste, vous touchez une commission indicative.",
     h1: "Vous connaissez des dirigeants.",
     h1Em: "Nous formons leurs équipes.",
     chapo:
-      "Vous présentez, nous nous occupons du reste, vous touchez votre commission. Deux produits à retenir, pas un catalogue. Et vous ne concluez jamais la vente.",
+      "Vous présentez, nous nous occupons du reste, vous touchez votre commission, à titre indicatif selon le barème en vigueur. Deux produits à retenir, pas un catalogue. Et vous ne concluez jamais la vente.",
   },
 
   /**
@@ -81,11 +81,11 @@ export const PARTENAIRE_LANDINGS: Readonly<Record<PartenaireSource, PartenaireLa
     canal: "Vu sur Indeed",
     metaTitle: "Apporteur d'affaires IA — indépendant, partout en France",
     metaDescription:
-      "Apporteur d'affaires indépendant, formations et audits IA. Commission par journée signée et payée, aucune connaissance en IA. Candidature en 3 min, sans CV.",
+      "Apporteur d'affaires indépendant, formations et audits IA. Commission indicative par journée payée, aucune connaissance en IA. Candidature en 3 min, sans CV.",
     h1: "Apporteur d'affaires IA,",
     h1Em: "indépendant et sans plafond",
     chapo:
-      "Candidature en 3 minutes, sans CV et sans lettre de motivation. Vous recommandez des entreprises, nous nous occupons du reste, vous touchez votre commission. Deux produits à retenir, et vous ne concluez jamais la vente.",
+      "Candidature en 3 minutes, sans CV et sans lettre de motivation. Vous recommandez des entreprises, nous nous occupons du reste, vous touchez votre commission, à titre indicatif selon le barème en vigueur. Deux produits à retenir, et vous ne concluez jamais la vente.",
   },
 };
 
@@ -144,7 +144,7 @@ export const PARTENAIRE_ETAPES: readonly { readonly titre: string; readonly text
   {
     titre: "Vous touchez votre commission",
     texte:
-      "Quand l'entreprise nous a payés, nous vous payons. C'est la règle de l'apport d'affaires : la commission est due à l'encaissement.",
+      "Quand l'entreprise nous a payés, nous vous payons, selon le barème indicatif en vigueur. C'est la règle de l'apport d'affaires : la commission est due à l'encaissement.",
   },
 ];
 

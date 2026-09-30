@@ -97,7 +97,9 @@ export const COPY_ISSUE_ECHANGE = {
       fonctionnement: [
         "Vous nous mettez en relation avec une entreprise qui a un besoin : formation à l'IA, audit ou intégration.",
         "Nous gérons tout le reste : rendez-vous, devis et réalisation.",
-        "Vous touchez une commission.",
+        // JUR-T29 (arbitrage -d7, 2026-09-29) : envoyé AVANT la signature du contrat, le
+        // barème de cet e-mail est indicatif ; le contrat d'apporteur fait foi.
+        "Vous touchez une commission. Le barème ci-dessous est donné à titre indicatif : votre contrat d'apporteur fait foi.",
       ],
       commissionTitre: "Votre commission",
       formation: (eur: number) =>
@@ -158,7 +160,7 @@ export const COPY_ISSUE_ECHANGE = {
       fonctionnement: [
         "You put us in touch with a company that has a need: AI training, audit or integration.",
         "We handle everything else: meetings, quote and delivery.",
-        "You earn a commission.",
+        "You earn a commission. The rates below are given as a guide: your introducer agreement prevails.",
       ],
       commissionTitre: "Your commission",
       formation: (eur: number) =>

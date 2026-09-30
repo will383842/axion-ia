@@ -24,18 +24,16 @@
 //     montants publics sont des PLAFONDS — « jusqu'à », « exemple de calcul »,
 //     jamais un chiffre nu.
 //
-//     ⚠️ EXCEPTION ASSUMÉE AU HÉRO (décision Will 2026-09-04, prise après que
-//     le risque lui a été présenté explicitement) : le héro affiche « 500 € »
-//     NU, sans « jusqu'à ». Motif invoqué : un visiteur venu d'un post Facebook
-//     s'arrête deux secondes, et « jusqu'à » tue l'accroche.
-//     Ce que ça coûte, pour que personne ne le redécouvre en urgence :
-//       — un contrat dont la grille descend sous 500 €/journée contredit une
-//         page publique. La défense « montant indicatif » ne tient plus au héro ;
-//       — Meta vérifie la page d'arrivée : un montant nu est lisible comme une
-//         promesse de revenus, motif de refus de la publicité.
-//     Le RESTE de la page garde « jusqu'à » (FAQ notamment) : l'exception est
-//     bornée au héro, elle ne s'étend pas.
-//     🛑 NE PAS « corriger » ce chiffre nu en « jusqu'à » sans repasser par Will.
+//     ⚠️ EXCEPTION DU HÉRO — LEVÉE. Le 2026-09-04, Will avait assumé un montant
+//     NU au héro, sans « jusqu'à » (motif : un visiteur venu d'un post Facebook
+//     s'arrête deux secondes, et « jusqu'à » tue l'accroche). Ce que ça coûtait :
+//     un contrat dont la grille descend sous la grille publiée contredisait une
+//     page publique, et Meta lit un montant nu comme une promesse de revenus.
+//     Exception levée le 2026-09-29 par arbitrage -d7 (délégation de Williams),
+//     qui pourra la rétablir : face à JUR-T29, le héro passe au registre
+//     indicatif. Le chiffre reste en grand (le design de l'accroche) et
+//     « À titre indicatif » est écrit à côté, à deux lignes au plus, en tokens.
+//     La garde `jur:remuneration-indicative` ne nomme AUCUNE exception pour lui.
 //
 // 🔴 AUCUN MONTANT EN DUR ICI : ils viennent de `pricing.ts` (SSOT) et sont
 // calculés dans la page. Deux barèmes publics ont déjà divergé de 150 € pour
@@ -60,7 +58,7 @@
 export const TUNNEL_FACEBOOK_META = {
   title: "Apporteur d'affaires IA : recommandez, sans vendre",
   description:
-    "Vous connaissez des dirigeants ? Présentez-leur Axion-IA, nous faisons le reste, vous touchez une commission sur chaque formation payée. 4 champs, zéro CV.",
+    "Vous connaissez des dirigeants ? Présentez-leur Axion-IA, nous faisons le reste : une commission indicative par formation payée. 4 champs, zéro CV.",
 } as const;
 
 export const HERO = {
@@ -71,10 +69,13 @@ export const HERO = {
    *  Le chiffre lui-même n'est PAS ici : il est dérivé de
    *  `COMMISSION_FORMATION_PAR_JOURNEE_EUR` (`pricing.ts`, SSOT) par la page.
    *  Deux barèmes publics ont déjà divergé de 150 € pour un montant recopié. */
-  montantLegende: "par journée de formation vendue",
+  // La légende porte « à titre indicatif » ELLE-MÊME : lue seule (garde jur:remuneration-indicative),
+  // elle ne promet rien. « Selon votre profil » a été retiré : la grille publiée ne dépend pas de
+  // l'apporteur, ce serait une affirmation fausse.
+  montantLegende: "par journée de formation vendue, à titre indicatif",
   montantSous: "Versé dès que l'entreprise nous a payés.",
   chapo:
-    "La loi européenne oblige désormais les entreprises à former leurs équipes à l'IA. Vous présentez Axion-IA aux dirigeants que vous connaissez, nous faisons tout le reste, vous touchez une commission sur chaque formation payée.",
+    "La loi européenne oblige désormais les entreprises à former leurs équipes à l'IA. Vous présentez Axion-IA aux dirigeants que vous connaissez, nous faisons tout le reste, vous touchez une commission sur chaque formation payée, selon un barème indicatif.",
   cta: "Recevoir le kit",
   micro: "30 secondes · 4 champs · zéro CV",
   /** Couverture nationale, dite en clair sous le formulaire ET dans le héro :

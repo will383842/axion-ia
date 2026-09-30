@@ -16,6 +16,7 @@ import {
   CommercialPageBody,
   buildCommercialFaqItems,
 } from "@/components/services/devenir-commercial/CommercialPageBody";
+import { COMMISSION_FORMATION_PAR_JOURNEE_EUR } from "@/content/pricing";
 import { buildCommercialKeywords } from "@/content/recrutement/commercial-offer";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { buildProductMetadata, buildFaqJsonLd, buildWebPageJsonLd } from "@/lib/seo";
@@ -32,17 +33,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const isFr = locale === "fr";
   // 2026-09-19 (P4) — « vendue » devient « payée » : un apporteur recommande,
   // il ne vend pas, et sa commission est due à l'encaissement, pas à la vente.
+  // 2026-09-29 (JUR-T29) — le montant vient de `pricing.ts` et se dit indicatif,
+  // dans le titre comme dans la description ; « signée » et « sans plafond » sortent.
+  const jour = COMMISSION_FORMATION_PAR_JOURNEE_EUR;
   const title = isFr
-    ? "Apporteur d'affaires IA indépendant · 500 € par journée payée" /* price-exempt: commission commerciale de recrutement, pas un tarif client */
-    : "Independent AI business referrer · €500 per paid day"; /* price-exempt: commission commerciale de recrutement, pas un tarif client */
+    ? `Apporteur d'affaires IA indépendant · ${jour} € indicatifs par journée payée`
+    : `Independent AI business referrer · €${jour} per paid day, as a guide`;
   return {
     ...(await buildProductMetadata({
       locale,
       path: "/devenir-commercial-ia",
       title,
       description: isFr
-        ? "500 € pour vous par journée de formation IA signée et payée, sans plafond. L'AI Act oblige PME, ETI et grands groupes à former leurs équipes à l'IA." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
-        : "€500 for you per AI training day signed and paid, uncapped. The AI Act requires small businesses, SMEs, mid-caps and large groups to train their teams." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+        ? `À titre indicatif, ${jour} € pour vous par journée de formation IA payée. L'AI Act oblige PME, ETI et grands groupes à former leurs équipes à l'IA.`
+        : `As a guide, €${jour} for you per paid AI training day. The AI Act requires small businesses, SMEs, mid-caps and large groups to train their teams.`,
     })),
     title: { absolute: title },
     keywords: buildCommercialKeywords({ financementAffichable: isQualiopiCertificationObtenue() }),

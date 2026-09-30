@@ -112,7 +112,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       path: PATH,
       title,
       description: isFr
-        ? `Devenez apporteur d'affaires indépendant pour des formations et audits IA en entreprise, partout en France. ${commission(1)} par journée de formation vendue. Vous présentez, nous vendons — aucune connaissance en IA requise.` /* price-exempt: commission d'apport d'affaires, pas un tarif client */
+        ? `Apporteur d'affaires indépendant, formations et audits IA en entreprise, partout en France. À titre indicatif, ${commission(1)} par journée de formation encaissée.` /* price-exempt: commission d'apport d'affaires, pas un tarif client */
         : `Become an independent business introducer for AI training and audits, anywhere in France. You introduce, we sell — no AI knowledge required.`,
     })),
     title: { absolute: title },
@@ -212,7 +212,7 @@ export default async function ApporteurAffairesPage({ params }: Props) {
     {
       id: "remuneration",
       question: "Combien rapporte l'apport d'affaires sur une formation IA ?",
-      answer: `Chez Axion-IA, la commission est de ${commission(1)} par journée de formation vendue : une formation de deux journées rapporte ${commission(2)}, de trois journées ${commission(3)}. Sur un audit, la commission est de ${pctAudit} % de la facture — le plus petit audit démarre à ${euros(auditTpe)} HT, soit au moins ${euros(commAuditTpe)}. Ce sont des exemples de calcul et non une promesse de revenu : la rémunération dépend des ventes conclues.`,
+      answer: `Chez Axion-IA, à titre indicatif, la commission est de ${commission(1)} par journée de formation vendue et encaissée : une formation de deux journées rapporte ${commission(2)}, de trois journées ${commission(3)}. Sur un audit, la commission est de ${pctAudit} % de la facture — le plus petit audit démarre à ${euros(auditTpe)} HT, soit au moins ${euros(commAuditTpe)}. Ce sont des exemples de calcul et non une promesse de revenu : la rémunération dépend des affaires réellement encaissées.`,
     },
     {
       id: "statut",
@@ -252,14 +252,19 @@ export default async function ApporteurAffairesPage({ params }: Props) {
     },
   ];
 
+  // JUR-T29 : aucun bloc JSON-LD ne porte de valeur de commission. La réponse
+  // « remuneration » reste servie dans la page, avec sa mention indicative, mais n'est pas
+  // balisée : un extrait de moteur la citerait sans son contexte.
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: faq.map((f) => ({
-      "@type": "Question",
-      name: f.question,
-      acceptedAnswer: { "@type": "Answer", text: f.answer },
-    })),
+    mainEntity: faq
+      .filter((f) => f.id !== "remuneration")
+      .map((f) => ({
+        "@type": "Question",
+        name: f.question,
+        acceptedAnswer: { "@type": "Answer", text: f.answer },
+      })),
   } as const;
 
   const webpageJsonLd = buildWebPageJsonLd({
@@ -297,9 +302,9 @@ export default async function ApporteurAffairesPage({ params }: Props) {
 
             <p data-speakable className="text-fg-soft mt-5 max-w-xl text-lg leading-relaxed">
               Vous mettez en relation une entreprise avec notre organisme, et vous touchez une
-              commission quand l&apos;affaire se conclut. {commission(1)} par journée de formation
-              vendue, {pctAudit}&nbsp;% sur un audit. Vous ne négociez pas et vous ne signez rien :
-              nous nous en chargeons.
+              commission une fois l&apos;affaire encaissée. À titre indicatif : {commission(1)} par
+              journée de formation vendue, {pctAudit}&nbsp;% sur un audit. Vous ne négociez pas et
+              vous ne signez rien : nous nous en chargeons.
             </p>
 
             <div className="mt-7 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
@@ -404,10 +409,12 @@ export default async function ApporteurAffairesPage({ params }: Props) {
             <h3 className="text-fg font-serif text-xl font-semibold">Une formation IA</h3>
             <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">
               {commission(1)}
+              <span className="text-fg-muted block font-sans text-sm font-medium">
+                par journée vendue, à titre indicatif
+              </span>
             </p>
-            <p className="text-fg-muted text-sm font-medium">par journée vendue</p>
             <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
-              <li>Deux journées : {commission(2)}</li>
+              <li>À titre indicatif, deux journées : {commission(2)}</li>
               <li>Trois journées : {commission(3)}</li>
               {certifie ? (
                 <li>Peut être prise en charge par l&apos;OPCO, selon ses critères</li>

@@ -37,6 +37,7 @@ import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { CommercialApplicationWizard } from "@/components/forms/commercial-application/CommercialApplicationWizard";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
+import { COMMISSION_FORMATION_PAR_JOURNEE_EUR } from "@/content/pricing";
 import { buildCommercialKeywords } from "@/content/recrutement/commercial-offer";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { memoPhoto } from "@/content/recrutement/memo-isere-photos";
@@ -45,9 +46,10 @@ import { buildProductMetadata } from "@/lib/seo";
 
 export const revalidate = 3600;
 
-/** Promesse de rémunération — commission commerciale de recrutement, pas un
- *  tarif client. */
-const PROMESSE = "500 € par journée de formation vendue"; // price-exempt: commission recrutement
+/** Rémunération d'un apporteur — commission de recrutement, pas un tarif client.
+ *  Le montant vient de `pricing.ts` et se dit indicatif (JUR-T29, 2026-09-29) :
+ *  la grille d'un contrat peut descendre sous la grille publiée. */
+const PROMESSE = `${COMMISSION_FORMATION_PAR_JOURNEE_EUR} € par journée de formation vendue, à titre indicatif`;
 
 /** Ce que le candidat n'aura PAS à faire — l'argument n°1 du tunnel sans CV. */
 const ATOUTS = [
@@ -103,8 +105,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       path: "/devenir-commercial-ia/candidature",
       title,
       description: isFr
-        ? "Candidatez en 3 minutes, sans CV : 500 € pour vous par journée de formation IA vendue. L'AI Act l'impose aux PME, ETI et grands groupes." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
-        : "Apply in 3 minutes, no resume: €500 for you per AI training day sold. The AI Act mandates it for small businesses, SMEs, mid-caps and large groups." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+        ? `Candidatez en 3 minutes, sans CV : à titre indicatif, ${COMMISSION_FORMATION_PAR_JOURNEE_EUR} € pour vous par journée de formation IA vendue. L'AI Act l'impose aux PME, ETI et grands groupes.`
+        : `Apply in 3 minutes, no resume: as a guide, €${COMMISSION_FORMATION_PAR_JOURNEE_EUR} for you per AI training day sold. The AI Act mandates it for SMEs, mid-caps and large groups.`,
     })),
     title: { absolute: title },
     keywords: buildCommercialKeywords({ financementAffichable: isQualiopiCertificationObtenue() }),
@@ -208,7 +210,7 @@ export default async function CommercialApplicationPage({ params }: Props) {
                   {PROMESSE}
                 </p>
                 <p className="text-fg-soft mt-1 text-sm leading-relaxed">
-                  Revenus non plafonnés, statut indépendant, en toute liberté.
+                  Commission à l&apos;encaissement, statut indépendant, en toute liberté.
                 </p>
               </div>
 

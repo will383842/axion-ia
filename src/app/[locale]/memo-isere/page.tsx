@@ -72,7 +72,7 @@ import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { cn } from "@/lib/utils";
 import { memoPhoto, type MemoIserePhotoSlot } from "@/content/recrutement/memo-isere-photos";
 import { COMMISSION_FORMATION_PAR_JOURNEE_EUR } from "@/content/pricing";
-import { buildProductMetadata, buildWebPageJsonLd } from "@/lib/seo";
+import { buildFaqJsonLd, buildProductMetadata, buildWebPageJsonLd } from "@/lib/seo";
 import { getPublishedReviews, type PublicReview } from "@/server/reviews/queries";
 import { MEMO_ZONE_CLUSTERS, MEMO_ZONE_TOTAL } from "@/content/recrutement/memo-isere-zone";
 
@@ -331,16 +331,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!hasLocale(routing.locales, locale)) return {};
   const isFr = locale === "fr";
   const title = isFr
-    ? "500 € par journée vendue · commercial IA indépendant Grenoble-Lyon" /* price-exempt: commission commerciale de recrutement, pas un tarif client */
-    : "€500 per day sold · independent AI sales rep, Grenoble-Lyon"; /* price-exempt: commission commerciale de recrutement, pas un tarif client */
+    ? `${commission(1)} par journée, à titre indicatif · commercial IA Grenoble-Lyon`
+    : `€${COMMISSION_PAR_JOURNEE} per day, as an indication · AI sales rep, Grenoble-Lyon`;
   return {
     ...(await buildProductMetadata({
       locale,
       path: "/memo-isere",
       title,
       description: isFr
-        ? "500 € pour vous par journée de formation IA vendue, sans plafond. L'AI Act l'impose aux PME, ETI et grands groupes : 474 communes au choix." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
-        : "€500 for you per AI training day sold, uncapped. The AI Act mandates it for small businesses, SMEs, mid-caps and large groups: 474 towns to pick from." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+        ? `À titre indicatif, ${commission(1)} par journée de formation IA vendue, sans plafond. L'AI Act l'impose aux PME, ETI et grands groupes : 474 communes au choix.`
+        : `As an indication, €${COMMISSION_PAR_JOURNEE} per AI training day sold, uncapped. The AI Act mandates it for SMEs, mid-caps and large groups: 474 towns to pick from.`,
     })),
     title: { absolute: title },
   };
@@ -626,7 +626,7 @@ export default async function MemoIserePage({ params }: Props) {
     {
       id: "remuneration",
       question: "Combien gagne-t-on exactement ?",
-      answer: `Votre commission se compte en JOURNÉES de formation vendues : ${commission(1)} par journée, sans plafond. Une formation Essentielle dure 1 journée — ${commission(1)} pour vous. Une Approfondie dure 2 journées consécutives — ${commission(2)}. Un programme sur mesure de 3 journées — ${commission(3)}. Et une grande équipe se forme en plusieurs groupes : 40 salariés, c'est 3 groupes, donc 3 sessions facturées chez un seul client. Les audits et intégrations IA rapportent en plus un pourcentage de la facture. Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.`,
+      answer: `Votre commission se compte en JOURNÉES de formation vendues et encaissées : à titre indicatif, ${commission(1)} par journée, sans plafond. Une formation Essentielle dure 1 journée — ${commission(1)} pour vous. Une Approfondie dure 2 journées consécutives — ${commission(2)}. Un programme sur mesure de 3 journées — ${commission(3)}. Et une grande équipe se forme en plusieurs groupes : 40 salariés, c'est 3 groupes, donc 3 sessions facturées chez un seul client. Les audits et intégrations IA rapportent en plus un pourcentage de la facture. Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.`,
     },
     {
       id: "statut",
@@ -672,7 +672,7 @@ export default async function MemoIserePage({ params }: Props) {
     {
       id: "paiement",
       question: "Comment et quand suis-je payé ?",
-      answer: `En tant qu'indépendant, vous facturez votre commission à Axion-IA une fois que le client a réglé sa facture — pas à la signature. C'est la règle du jeu de l'apport d'affaires : la commission est due quand l'argent est encaissé. ${commission(1)} par journée de formation vendue, pourcentage sur les audits et intégrations. Chaque entreprise que vous nous déclarez est enregistrée à votre nom par notre équipe : c'est cette déclaration qui fait foi.`,
+      answer: `En tant qu'indépendant, vous facturez votre commission à Axion-IA une fois que le client a réglé sa facture — pas à la signature. C'est la règle du jeu de l'apport d'affaires : la commission est due quand l'argent est encaissé. À titre indicatif : ${commission(1)} par journée de formation vendue, pourcentage sur les audits et intégrations. Chaque entreprise que vous nous déclarez est enregistrée à votre nom par notre équipe : c'est cette déclaration qui fait foi.`,
     },
     {
       id: "engagement",
@@ -695,6 +695,13 @@ export default async function MemoIserePage({ params }: Props) {
   // d'un indépendant sans lien de subordination existe pour écarter. La page
   // reste indexée par son WebPage ci-dessous ; le cron de fraîcheur ne la
   // surveille plus (`content/recrutement/dates.ts`, liste vide).
+  // JUR-T29 : aucun bloc JSON-LD ne porte de valeur de commission. Les deux réponses qui en
+  // chiffrent une restent servies dans la page, avec leur mention indicative, mais ne sont pas
+  // balisées : un extrait de moteur les citerait sans leur contexte.
+  const faqJsonLd = buildFaqJsonLd({
+    items: faqItems.filter((f) => f.id !== "remuneration" && f.id !== "paiement"),
+  });
+
   const webpageJsonLd = buildWebPageJsonLd({
     locale: loc,
     path: "/memo-isere",
@@ -707,6 +714,7 @@ export default async function MemoIserePage({ params }: Props) {
   return (
     <>
       <JsonLd data={webpageJsonLd} scriptId="jsonld-memo-webpage" />
+      <JsonLd data={faqJsonLd} scriptId="jsonld-memo-faq" />
 
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={[{ href: "/memo-isere", label: "Recrutement Sud-Grésivaudan" }]} />
@@ -743,9 +751,9 @@ export default async function MemoIserePage({ params }: Props) {
                   repoussait le CTA hors du premier écran. */}
               <p data-speakable className="text-fg-soft mt-5 max-w-xl text-lg leading-relaxed">
                 Vous recommandez aux <strong>PME, ETI et grands groupes</strong> que vous connaissez
-                des formations IA — l’AI Act les rend incontournables. Vous touchez{" "}
-                <strong>{`${commission(1)} par journée vendue`}</strong>. De Grenoble à Lyon, là où
-                vous avez votre réseau.
+                des formations IA — l’AI Act les rend incontournables. Vous touchez, à titre
+                indicatif, <strong>{`${commission(1)} par journée vendue`}</strong>. De Grenoble à
+                Lyon, là où vous avez votre réseau.
               </p>
 
               {/* CTA remonté AVANT la photo : sur mobile il était sous une image
@@ -781,9 +789,9 @@ export default async function MemoIserePage({ params }: Props) {
                 <div className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5">
                   <p className="font-serif text-3xl leading-none font-semibold text-white drop-shadow sm:text-4xl">
                     {commission(1)}
-                  </p>
-                  <p className="mt-1 text-[11px] font-bold tracking-[0.14em] text-white/85 uppercase">
-                    par journée de formation vendue
+                    <span className="mt-1 block font-sans text-[11px] leading-normal font-bold tracking-[0.14em] text-white/85 uppercase">
+                      par journée de formation vendue, à titre indicatif
+                    </span>
                   </p>
                 </div>
               </Photo>
@@ -798,8 +806,8 @@ export default async function MemoIserePage({ params }: Props) {
                 dans le panneau sombre. */}
             <ul className="grid grid-cols-3 gap-2 sm:gap-3 lg:col-span-2" role="list">
               {[
-                { label: "1 journée vendue", value: commission(1) },
-                { label: "Un programme de 3 journées", value: commission(3) },
+                { label: "1 journée vendue, à titre indicatif", value: commission(1) },
+                { label: "Un programme de 3 journées, à titre indicatif", value: commission(3) },
                 { label: "Plafond de revenus", value: "Aucun" },
               ].map((f) => (
                 <li
@@ -886,7 +894,7 @@ export default async function MemoIserePage({ params }: Props) {
               </h2>
               <dl className="grid grid-cols-3 gap-3 sm:gap-4">
                 {[
-                  { v: commission(1), l: "par journée vendue" },
+                  { v: commission(1), l: "par journée vendue, à titre indicatif" },
                   { v: String(MEMO_ZONE_CLUSTERS.length), l: "territoires couverts" },
                   { v: totalAll > 0 ? `${totalAll} avis` : "4,9/5", l: "clients conquis" },
                 ].map((s) => (
@@ -1296,20 +1304,20 @@ export default async function MemoIserePage({ params }: Props) {
               <li>
                 <p className="text-terracotta-deep font-serif text-3xl leading-none font-semibold sm:text-5xl">
                   {commission(1)}
-                </p>
-                <p className="text-fg-soft mt-2 text-[11px] leading-tight font-bold tracking-[0.12em] uppercase sm:text-xs">
-                  pour vous
+                  <span className="text-fg-soft mt-2 block font-sans text-[11px] leading-tight font-bold tracking-[0.12em] uppercase sm:text-xs">
+                    pour vous, à titre indicatif
+                  </span>
                 </p>
               </li>
             </ol>
             <p className="text-fg mt-5 text-center text-[15px] leading-relaxed sm:text-base">
-              {`Et ça se multiplie sans plafond : un programme de 3 journées, c’est ${commission(3)}. Une semaine de 5 journées, ${commission(5)}.`}
+              {`Et ça se multiplie sans plafond : à titre indicatif, un programme de 3 journées, c’est ${commission(3)}. Une semaine de 5 journées, ${commission(5)}.`}
             </p>
           </div>
 
           {/* ── Le catalogue réel, avec la commission en face ─────────────── */}
           <h3 className="text-fg mt-10 text-center font-serif text-xl font-semibold sm:mt-14 sm:text-2xl">
-            Ce que vous vendez · ce que vous touchez
+            Ce que vous vendez · votre commission indicative
           </h3>
           <p className="text-fg-muted mx-auto mt-2 max-w-2xl text-center text-sm">
             Le catalogue Axion-IA, tel qu’il est vendu aujourd’hui.
@@ -1335,6 +1343,9 @@ export default async function MemoIserePage({ params }: Props) {
                 </span>
                 <span className="shrink-0 text-right">
                   <span className="text-terracotta-deep block font-serif text-2xl leading-none font-semibold whitespace-nowrap sm:text-3xl">
+                    <span className="text-fg-muted mb-1 block font-sans text-[11px] font-semibold tracking-wide uppercase">
+                      à titre indicatif
+                    </span>
                     {commission(f.jours)}
                     {f.etPlus ? <span className="text-lg sm:text-xl">+</span> : null}
                   </span>
@@ -1366,9 +1377,9 @@ export default async function MemoIserePage({ params }: Props) {
                 </p>
                 <p className="text-terracotta-deep mt-2 font-serif text-3xl leading-none font-semibold sm:text-4xl">
                   {commission(s.jours)}
-                </p>
-                <p className="text-fg-muted mt-1 text-xs font-semibold tracking-wide uppercase">
-                  {`${s.jours} journées vendues`}
+                  <span className="text-fg-muted mt-1 block font-sans text-xs leading-normal font-semibold tracking-wide uppercase">
+                    {`${s.jours} journées vendues, à titre indicatif`}
+                  </span>
                 </p>
                 <p className="text-fg-soft mt-3 text-sm leading-relaxed">{s.detail}</p>
               </li>
@@ -1381,8 +1392,9 @@ export default async function MemoIserePage({ params }: Props) {
                 Ici les montants sont CALCULÉS, donc plus aucun littéral à
                 exempter — mais le principe reste : un exemple n'est pas une
                 promesse, et ça doit se lire. */}
-            Ce sont des exemples de calcul, pas une promesse de revenus : vos commissions dépendent
-            de vos ventes. Rien ne vous interdit d’aller au-delà — il n’y a pas de plafond.
+            Ce sont des exemples de calcul, à titre indicatif, pas une promesse de revenus : vos
+            commissions dépendent de vos ventes. Rien ne vous interdit d’aller au-delà — il n’y a
+            pas de plafond.
           </p>
 
           <div className="mx-auto mt-10 grid max-w-3xl gap-4 sm:grid-cols-2">
@@ -1391,7 +1403,7 @@ export default async function MemoIserePage({ params }: Props) {
                 Produit n°1 — Formations IA
               </p>
               <p className="mt-2 font-serif text-xl font-semibold">
-                {`${commission(1)} par journée vendue`}
+                {`${commission(1)} par journée vendue, à titre indicatif`}
               </p>
               <p className="text-fg-soft mt-2 text-sm leading-relaxed">
                 Formations au poste de travail, rendues incontournables par l’AI Act. Une grande
@@ -1478,8 +1490,8 @@ export default async function MemoIserePage({ params }: Props) {
                   accent: "plum" as const,
                   Icon: LineChart,
                   title: "Vous touchez à chaque vente",
-                  description: `${commission(1)} par journée de formation vendue — donc ${commission(2)} pour une Approfondie de 2 journées, ${commission(3)} pour un programme de 3. Commission en plus sur les audits IA.`,
-                  stat: { figure: commission(1), label: "par journée vendue" },
+                  description: `À titre indicatif, ${commission(1)} par journée de formation vendue — donc ${commission(2)} pour une Approfondie de 2 journées, ${commission(3)} pour un programme de 3. Commission en plus sur les audits IA.`,
+                  stat: { figure: commission(1), label: "par journée vendue, à titre indicatif" },
                 },
               ].map((c, i) => (
                 <li key={c.title} className="h-full">
@@ -1744,6 +1756,7 @@ export default async function MemoIserePage({ params }: Props) {
         titleEm="fréquentes"
         description="Rémunération, statut, zone, démarrage — les réponses avant de candidater."
         items={faqItems}
+        emitJsonLd={false}
       />
 
       {/* 15 ── CTA final (id="postuler" conservé pour les liens externes déjà
