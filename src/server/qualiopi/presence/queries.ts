@@ -308,9 +308,7 @@ export async function listSessionsForAdmin(
   const r = options.restriction;
   const whereListe: Prisma.TrainingSessionWhereInput = {
     ...where,
-    ...(r?.statuts !== undefined
-      ? { statut: { in: [...r.statuts] } }
-      : {}),
+    ...(r?.statuts !== undefined ? { statut: { in: [...r.statuts] } } : {}),
     ...(r?.ids != null ? { id: { in: [...r.ids] } } : {}),
   };
 

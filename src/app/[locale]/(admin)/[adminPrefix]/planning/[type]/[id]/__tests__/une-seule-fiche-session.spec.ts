@@ -19,7 +19,9 @@ const { gardePage, getPlanningEventDetail } = vi.hoisted(() => ({
 
 vi.mock("@/server/auth/garde-page", () => ({ gardePage }));
 vi.mock("@/features/admin-planning/detail", () => ({ getPlanningEventDetail }));
-vi.mock("@/features/admin-planning/queries", () => ({ getTrainerConflicts: vi.fn(async () => []) }));
+vi.mock("@/features/admin-planning/queries", () => ({
+  getTrainerConflicts: vi.fn(async () => []),
+}));
 
 import PlanningDetailPage from "../page";
 

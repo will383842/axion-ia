@@ -205,8 +205,8 @@ export default async function ATraiterPage({ params }: PageProps) {
       {rouverts === null ? (
         <div className={carte}>
           <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-danger)]">
-            Le registre des réouvertures n&apos;a pas pu être lu : l&apos;absence de dossier
-            rouvert ci-dessous n&apos;est PAS un constat.
+            Le registre des réouvertures n&apos;a pas pu être lu : l&apos;absence de dossier rouvert
+            ci-dessous n&apos;est PAS un constat.
           </p>
         </div>
       ) : rouverts.length > 0 ? (
@@ -217,8 +217,8 @@ export default async function ATraiterPage({ params }: PageProps) {
             <span className={pastille}>{rouverts.length}</span>
           </h2>
           <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-            Un dossier rouvert ne se referme pas tout seul. Une fois la correction faite,
-            « Clore à nouveau » depuis la fiche session.
+            Un dossier rouvert ne se referme pas tout seul. Une fois la correction faite, « Clore à
+            nouveau » depuis la fiche session.
           </p>
           <ul>
             {rouverts.map((d) => (
@@ -289,8 +289,7 @@ export default async function ATraiterPage({ params }: PageProps) {
                       )}
                     </p>
                     <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                      {r.sessionTitre} ·{" "}
-                      {/* Lot L4 — la ligne mène à LA fiche session. */}
+                      {r.sessionTitre} · {/* Lot L4 — la ligne mène à LA fiche session. */}
                       <Link
                         href={`${base}/qualiopi/sessions/${r.sessionId}`}
                         className="text-[color:var(--color-admin-accent)] underline underline-offset-2"

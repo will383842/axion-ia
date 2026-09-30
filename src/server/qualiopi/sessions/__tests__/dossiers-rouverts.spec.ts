@@ -69,7 +69,10 @@ describe("candidatsRouvertsAnciens (pur)", () => {
 
 describe("listerDossiersRouvertsAnciens — la tâche de « À traiter »", () => {
   it("rend le motif, l'auteur et l'ancienneté, confirmés par le verrou (ADR 0060)", async () => {
-    const evenements = [evt("001", "reouverture", IL_Y_A(10)), evt("002", "reouverture", IL_Y_A(3))];
+    const evenements = [
+      evt("001", "reouverture", IL_Y_A(10)),
+      evt("002", "reouverture", IL_Y_A(3)),
+    ];
     prismaMock.sessionDossierEvenement.findMany.mockImplementation(
       async (args: { where?: { sessionId?: { in: string[] } } }) => {
         const ids = args.where?.sessionId?.in;

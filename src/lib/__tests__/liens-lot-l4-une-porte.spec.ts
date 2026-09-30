@@ -125,15 +125,15 @@ describe("lot L4 — une seule porte vers la fiche session", () => {
   });
 
   it("le Calendrier prévisionnel n'écrit plus aucune cible /planning/ en dur", () => {
-    const src = sansCommentaires(readFileSync(A("_v2/pilotage/CalendrierPrevisionnel.tsx"), "utf8"));
+    const src = sansCommentaires(
+      readFileSync(A("_v2/pilotage/CalendrierPrevisionnel.tsx"), "utf8"),
+    );
     expect(src).not.toMatch(/\/planning\/(formation|\$\{)/);
   });
 
   it("les registres de l'auditeur renvoient à la fiche session", () => {
     for (const f of ["signatures", "emargement"]) {
-      const src = sansCommentaires(
-        readFileSync(A(`qualiopi/mode-auditeur/${f}/page.tsx`), "utf8"),
-      );
+      const src = sansCommentaires(readFileSync(A(`qualiopi/mode-auditeur/${f}/page.tsx`), "utf8"));
       expect(src, f).toMatch(/\$\{sessionsHref\}\/\$\{[^}]*sessionId\}/);
     }
   });
