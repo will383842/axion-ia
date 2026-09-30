@@ -46,6 +46,7 @@ export type FamilleRemuneration =
   | "revenu_illimite"
   | "promesse_sans_risque"
   | "ai_act_trop_large"
+  | "projection_mensuelle"
   | "kit_de_vente"
   | "jsonld_remuneration"
   | "exception_perimee";
@@ -127,6 +128,13 @@ const ILLIMITE = new RegExp(
  *   — `ai_act_trop_large` : jamais « l'AI Act impose / oblige » rapporté aux PME, ETI ou grands
  *     groupes en bloc. On écrit : l'AI Act crée des obligations pour les entreprises qui utilisent l'IA.
  */
+/**
+ * `projection_mensuelle` : un calcul À L'UNITÉ (« 1 journée vendue et encaissée = X € »), jamais
+ * un rythme (« 10 formations vendues dans le mois », « 5 formations 1 j / mois »). Comme le revenu
+ * illimité, l'indicatif ne l'excuse pas.
+ */
+const PROJECTION_MENSUELLE =
+  /(?:\d+|\})\s+(?:[\wÀ-ÿ'’-]+\s+){0,2}?(?:formations?|journées?|ventes?|missions?|trainings?|days?|sales?)\b[^.;!?]{0,40}?(?:\bpar\s+mois\b|\bdans\s+le\s+mois\b|\/\s*mois\b|\bper\s+month\b|\bin\s+a\s+month\b|\/\s*month\b)/i;
 const SANS_RISQUE =
   /\bz[ée]ro\s+risque|\brisque\s+(?:z[ée]ro|nul)\b|\bsans\s+(?:aucun\s+)?risque|\baucun\s+risque\b|\bzero[-\s]risk|\brisk[-\s]free\b|\bno[-\s](?:financial\s+)?risk\b|\bwithout\s+(?:any\s+)?risk\b/i;
 /** L'AI Act rapporté aux tailles d'entreprise en bloc : à l'actif (« impose ») comme au passif. */
@@ -218,6 +226,15 @@ export function fautesDeRemuneration(
       const illimite = exemptees.has(i) ? null : ILLIMITE.exec(contenu);
       if (illimite) {
         fautes.push({ famille: "revenu_illimite", chemin, ligne: i + 1, extrait: illimite[0] });
+      }
+      const projection = exemptees.has(i) ? null : PROJECTION_MENSUELLE.exec(contenu);
+      if (projection) {
+        fautes.push({
+          famille: "projection_mensuelle",
+          chemin,
+          ligne: i + 1,
+          extrait: projection[0],
+        });
       }
       const risque = SANS_RISQUE.exec(contenu);
       if (risque) {
