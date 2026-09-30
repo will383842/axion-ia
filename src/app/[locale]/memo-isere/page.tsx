@@ -339,8 +339,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       path: "/memo-isere",
       title,
       description: isFr
-        ? `À titre indicatif, ${commission(1)} par journée de formation IA vendue, sans plafond. L'AI Act l'impose aux PME, ETI et grands groupes : 474 communes au choix.`
-        : `As an indication, €${COMMISSION_PAR_JOURNEE} per AI training day sold, uncapped. The AI Act mandates it for SMEs, mid-caps and large groups: 474 towns to pick from.`,
+        ? `À titre indicatif, ${commission(1)} par journée de formation IA vendue. L'AI Act crée des obligations pour les entreprises qui utilisent l'IA : 474 communes au choix.`
+        : `As an indication, €${COMMISSION_PAR_JOURNEE} per AI training day sold. The AI Act sets obligations for companies that use AI: 474 towns to pick from.`,
     })),
     title: { absolute: title },
   };
@@ -626,7 +626,7 @@ export default async function MemoIserePage({ params }: Props) {
     {
       id: "remuneration",
       question: "Combien gagne-t-on exactement ?",
-      answer: `Votre commission se compte en JOURNÉES de formation vendues et encaissées : à titre indicatif, ${commission(1)} par journée, sans plafond. Une formation Essentielle dure 1 journée — ${commission(1)} pour vous. Une Approfondie dure 2 journées consécutives — ${commission(2)}. Un programme sur mesure de 3 journées — ${commission(3)}. Et une grande équipe se forme en plusieurs groupes : 40 salariés, c'est 3 groupes, donc 3 sessions facturées chez un seul client. Les audits et intégrations IA rapportent en plus un pourcentage de la facture. Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.`,
+      answer: `Votre commission se compte en JOURNÉES de formation vendues et encaissées : à titre indicatif, ${commission(1)} par journée. Une formation Essentielle dure 1 journée — ${commission(1)} pour vous. Une Approfondie dure 2 journées consécutives — ${commission(2)}. Un programme sur mesure de 3 journées — ${commission(3)}. Et une grande équipe se forme en plusieurs groupes : 40 salariés, c'est 3 groupes, donc 3 sessions facturées chez un seul client. Les audits et intégrations IA rapportent en plus un pourcentage de la facture. Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.`,
     },
     {
       id: "statut",
@@ -655,7 +655,7 @@ export default async function MemoIserePage({ params }: Props) {
       id: "quelles-entreprises",
       question: "Quelles entreprises est-ce que je démarche ?",
       answer:
-        "Les trois tailles, sans exception. Les PME de 10 à 249 salariés — mécanique, plasturgie, BTP, transport, laboratoires et cliniques, cabinets comptables, ESN, négoce, agroalimentaire, hôtellerie : c'est le cœur de cible, 1 à 3 journées par service. Les ETI de 250 à 4 999 salariés — groupes industriels multi-sites, groupes de cliniques ou d'EHPAD, coopératives agricoles, enseignes régionales : plusieurs sites et plusieurs vagues, donc des dizaines de journées chez un seul client. Et les grands groupes de 5 000 salariés et plus — chimie et énergie de la vallée du Rhône, microélectronique grenobloise, sièges régionaux de banque ou d'assurance, centres hospitaliers : on y entre par l'établissement local, pas par le siège. Attention, ce ne sont que des exemples : la liste n'est ni limitative ni exclusive. Un magasin, une entreprise du bâtiment, un établissement de santé, un hôtel-restaurant, une exploitation agricole, une collectivité ou un grand groupe sont tout aussi concernés. Quel que soit le secteur et quelle que soit la taille : l'obligation de formation de l'AI Act concerne tout le monde.",
+        "Les trois tailles, sans exception. Les PME de 10 à 249 salariés — mécanique, plasturgie, BTP, transport, laboratoires et cliniques, cabinets comptables, ESN, négoce, agroalimentaire, hôtellerie : c'est le cœur de cible, 1 à 3 journées par service. Les ETI de 250 à 4 999 salariés — groupes industriels multi-sites, groupes de cliniques ou d'EHPAD, coopératives agricoles, enseignes régionales : plusieurs sites et plusieurs vagues, donc des dizaines de journées chez un seul client. Et les grands groupes de 5 000 salariés et plus — chimie et énergie de la vallée du Rhône, microélectronique grenobloise, sièges régionaux de banque ou d'assurance, centres hospitaliers : on y entre par l'établissement local, pas par le siège. Attention, ce ne sont que des exemples : la liste n'est ni limitative ni exclusive. Un magasin, une entreprise du bâtiment, un établissement de santé, un hôtel-restaurant, une exploitation agricole, une collectivité ou un grand groupe sont tout aussi concernés. Quel que soit le secteur et quelle que soit la taille, une entreprise qui utilise l'IA a des obligations au titre de l'AI Act.",
     },
     {
       id: "pourquoi-ca-se-vend",
@@ -1097,7 +1097,7 @@ export default async function MemoIserePage({ params }: Props) {
         title="Votre prochain client ? Le site industriel"
         titleEm="d'à côté"
         titleTail=" — ou le cabinet d'avocats d'en face"
-        description="De la PME au grand groupe : l'AI Act ne fait pas de tri entre les tailles ni entre les secteurs. Les PME signent vite, les grandes rapportent gros — les quatre sont concernées, et voici à quoi elles ressemblent autour de vous."
+        description="De la PME au grand groupe, chaque taille a ses clients. Les PME signent vite, les grandes rapportent gros — les quatre sont concernées, et voici à quoi elles ressemblent autour de vous."
       >
         <>
           {/* Triptyque : trois tuiles VERTICALES sur mobile (une bande d'un seul
@@ -1311,7 +1311,7 @@ export default async function MemoIserePage({ params }: Props) {
               </li>
             </ol>
             <p className="text-fg mt-5 text-center text-[15px] leading-relaxed sm:text-base">
-              {`Et ça se multiplie sans plafond : à titre indicatif, un programme de 3 journées, c’est ${commission(3)}. Une semaine de 5 journées, ${commission(5)}.`}
+              {`Et ça se multiplie : à titre indicatif, un programme de 3 journées, c’est ${commission(3)}. Une semaine de 5 journées, ${commission(5)}.`}
             </p>
           </div>
 
@@ -1393,8 +1393,7 @@ export default async function MemoIserePage({ params }: Props) {
                 exempter — mais le principe reste : un exemple n'est pas une
                 promesse, et ça doit se lire. */}
             Ce sont des exemples de calcul, à titre indicatif, pas une promesse de revenus : vos
-            commissions dépendent de vos ventes. Rien ne vous interdit d’aller au-delà — il n’y a
-            pas de plafond.
+            commissions dépendent de vos ventes.
           </p>
 
           <div className="mx-auto mt-10 grid max-w-3xl gap-4 sm:grid-cols-2">

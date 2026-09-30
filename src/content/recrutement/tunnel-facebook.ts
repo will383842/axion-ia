@@ -24,15 +24,8 @@
 //     montants publics sont des PLAFONDS — « jusqu'à », « exemple de calcul »,
 //     jamais un chiffre nu.
 //
-//     ⚠️ EXCEPTION DU HÉRO — LEVÉE. Le 2026-09-04, Will avait assumé un montant
-//     NU au héro, sans « jusqu'à » (motif : un visiteur venu d'un post Facebook
-//     s'arrête deux secondes, et « jusqu'à » tue l'accroche). Ce que ça coûtait :
-//     un contrat dont la grille descend sous la grille publiée contredisait une
-//     page publique, et Meta lit un montant nu comme une promesse de revenus.
-//     Exception levée le 2026-09-29 par arbitrage -d7 (délégation de Williams),
-//     qui pourra la rétablir : face à JUR-T29, le héro passe au registre
-//     indicatif. Le chiffre reste en grand (le design de l'accroche) et
-//     « À titre indicatif » est écrit à côté, à deux lignes au plus, en tokens.
+//     ⚠️ HÉRO : le chiffre reste en grand, « À titre indicatif » est écrit à côté,
+//     à deux lignes au plus, en tokens (JUR-T29).
 //     La garde `jur:remuneration-indicative` ne nomme AUCUNE exception pour lui.
 //
 // 🔴 AUCUN MONTANT EN DUR ICI : ils viennent de `pricing.ts` (SSOT) et sont

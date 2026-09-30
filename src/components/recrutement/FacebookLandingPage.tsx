@@ -29,11 +29,9 @@
 // `assertion-flag-surfaces.spec.ts`.
 //
 // 🔴 Aucun montant en dur : tout vient de `pricing.ts`. Le reste de la page
-// l'écrit « jusqu'à » (W12 : la grille publiée est un plafond). Le bloc du héro
-// affichait le montant NU depuis le 2026-09-04 (exception de Will) : exception
-// levée le 2026-09-29 par arbitrage -d7 (délégation de Williams), qui pourra la
-// rétablir. Le chiffre reste en grand, « À titre indicatif » est écrit à côté
-// (JUR-T29, garde `jur:remuneration-indicative`). Voir `tunnel-facebook.ts`.
+// l'écrit « jusqu'à » (W12 : la grille publiée est un plafond). Au héro, le chiffre
+// reste en grand, « À titre indicatif » est écrit à côté (JUR-T29, garde
+// `jur:remuneration-indicative`). Voir `tunnel-facebook.ts`.
 //
 // Vocabulaire : « apporteur d'affaires », jamais « commercial » / « poste » /
 // « recrute ». Décision Will 2026-09-03.
@@ -203,9 +201,7 @@ export async function FacebookLandingPage({ params }: Props) {
   // Montant du héro. Même dérivation que la FAQ (`commission(1)`), donc les
   // deux ne peuvent pas diverger — c'est précisément l'écart de 150 € qui avait
   // fait passer les barèmes en SSOT. Seule la FORMULATION diffère : le héro
-  // l'affiche en grand, « À titre indicatif » à côté (l'exception du montant nu
-  // du 2026-09-04 est levée le 2026-09-29 par arbitrage -d7, délégation de
-  // Williams, qui pourra la rétablir), la FAQ garde « Jusqu'à ».
+  // l'affiche en grand, « À titre indicatif » à côté, la FAQ garde « Jusqu'à ».
   const montantJournee = commission(1);
 
   const faq = [
@@ -294,10 +290,8 @@ export async function FacebookLandingPage({ params }: Props) {
                 ⚠️ Aucune opacité sur le texte : le vérificateur ne sait pas
                 calculer une opacité (cf. globals.css). Jetons pleins seulement.
                 Le chiffre vient de `pricing.ts`, jamais écrit à la main.
-                « À titre indicatif » À CÔTÉ du chiffre, à deux lignes au plus :
-                l'exception du montant nu (Will, 2026-09-04) est levée le
-                2026-09-29 par arbitrage -d7 (délégation de Williams), qui pourra
-                la rétablir. Voir l'en-tête de `tunnel-facebook.ts`. */}
+                « À titre indicatif » À CÔTÉ du chiffre, à deux lignes au plus.
+                Voir l'en-tête de `tunnel-facebook.ts`. */}
             <div className="bg-ink mt-6 rounded-2xl px-5 py-5 sm:px-7 sm:py-6">
               <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                 <span className="text-mocha-fg-muted basis-full text-sm">À titre indicatif</span>

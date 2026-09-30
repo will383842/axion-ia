@@ -42,7 +42,13 @@ export function lireSurfacesPubliques(racine = process.cwd()): { chemin: string;
 }
 
 export type FamilleRemuneration =
-  "remuneration_ferme" | "kit_de_vente" | "jsonld_remuneration" | "exception_perimee";
+  | "remuneration_ferme"
+  | "revenu_illimite"
+  | "promesse_sans_risque"
+  | "ai_act_trop_large"
+  | "kit_de_vente"
+  | "jsonld_remuneration"
+  | "exception_perimee";
 
 export type FauteRemuneration = {
   readonly famille: FamilleRemuneration;
@@ -90,7 +96,6 @@ const FERME = new RegExp(
     String.raw`${TAUX}(?=[^.;!?]{0,60}?${DEBUT}${REMUNERATION})`,
     String.raw`${DEBUT}${REMUNERATION}[^.;!?]{0,60}?${TAUX}`,
     String.raw`\bpar\s+journée(?:\s+[\wÀ-ÿ'’-]+){0,6}?\s+(?:vendue|payée|signée)s?${FIN}`,
-    String.raw`\bsans\s+(?:aucun\s+)?plafond|\bnon\s+plafonn|\bpas\s+de\s+plafond|\baucune\s+limite|\bdéplafonn|\buncapped\b|\bno\s+(?:limit|cap)\b`,
     String.raw`\byou\s+(?:earn|pocket)\b|\byou\s+(?:get|receive|make)\s+(?:(?:your|a|an|the)\s+)?(?:commissions?\b|€|\d|\$?\{)`,
     String.raw`\bper\s+(?:[a-z]+\s+){0,3}days?\b|\bfor\s+you\s+per\b`,
   ].join("|"),
@@ -98,6 +103,44 @@ const FERME = new RegExp(
 );
 const INDICATIF =
   /à\s+partir\s+de|selon\s+(?:votre\s+|ton\s+|son\s+)?profil|à\s+titre\s+indicatif|\bindicati(?:f|ve|fs|ves)\b|\bas\s+a\s+guide\b|\bfrom\s+€|\bdepending\s+on\s+(?:your\s+)?profile\b/i;
+/**
+ * `revenu_illimite` : une FAMILLE À PART, que la mention indicative N'EXCUSE PAS. La règle :
+ * aucun plafond absent n'est annoncé, même « à titre indicatif ». Seules les exceptions nommées
+ * (la limite d'ÂGE) en sortent.
+ */
+const ILLIMITE = new RegExp(
+  [
+    String.raw`\bsans\s+(?:aucune?\s+)?plafond`,
+    String.raw`\b(?:sans\s+(?:aucune\s+)?|aucune\s+|pas\s+de\s+)limite(?!\s+d['’]\s?âge)`,
+    String.raw`\bnon\s+plafonn|\bpas\s+de\s+plafond|\bdéplafonn`,
+    // `${FIN}` et non `\b` : le masculin singulier « illimité » finit par un é, hors de \w.
+    String.raw`\billimit[ée]e?s?${FIN}`,
+    String.raw`\bsans\s+maximum\b`,
+    String.raw`\buncapped\b|\bunlimited\b|\blimitless\b|\bno\s+(?:limit|cap|ceiling)\b|\bwithout\s+(?:a\s+)?limit\b`,
+  ].join("|"),
+  "i",
+);
+/**
+ * Deux familles, deux règles :
+ *   — `promesse_sans_risque` : jamais « zéro risque », « sans risque », « risk-free ». On écrit
+ *     les faits : aucun frais d'entrée, aucun engagement de volume ;
+ *   — `ai_act_trop_large` : jamais « l'AI Act impose / oblige » rapporté aux PME, ETI ou grands
+ *     groupes en bloc. On écrit : l'AI Act crée des obligations pour les entreprises qui utilisent l'IA.
+ */
+const SANS_RISQUE =
+  /\bz[ée]ro\s+risque|\brisque\s+(?:z[ée]ro|nul)\b|\bsans\s+(?:aucun\s+)?risque|\baucun\s+risque\b|\bzero[-\s]risk|\brisk[-\s]free\b|\bno[-\s](?:financial\s+)?risk\b|\bwithout\s+(?:any\s+)?risk\b/i;
+/** L'AI Act rapporté aux tailles d'entreprise en bloc : à l'actif (« impose ») comme au passif. */
+const TAILLES = String.raw`(?:PME|ETI|grands\s+groupes|TPE|SMEs|mid-caps|large\s+groups)`;
+const AI_ACT_LARGE = new RegExp(
+  [
+    String.raw`\bAI\s+Act\b[^.;!?]{0,20}\b(?:l['’]\s?)?(?:impose|oblige|mandates|requires|forces)\b[^.;!?]{0,60}\b${TAILLES}\b`,
+    String.raw`\b${TAILLES}\b[^.;!?]{0,40}\b(?:doivent\s+se\s+conformer|sont\s+(?:tenue?s?|soumise?s?|obligée?s?)|must\s+comply|are\s+(?:required|subject))\b[^.;!?]{0,40}\bAI\s+Act\b`,
+    // L'AI Act « pour tout le monde » : toutes les entreprises, sans tri de taille ni de secteur.
+    String.raw`\bAI\s+Act\b[^.;!?]{0,60}\b(?:concerne\s+tout\s+le\s+monde|(?:concerne|vise|s['’]applique\s+à)\s+toutes\s+les\s+entreprises|ne\s+fait\s+pas\s+de\s+tri|applies\s+to\s+(?:all|every)|all\s+companies|every\s+business)`,
+    String.raw`\b(?:concerne\s+tout\s+le\s+monde|toutes\s+les\s+entreprises|all\s+companies|every\s+business)\b[^.;!?]{0,60}\bAI\s+Act\b`,
+  ].join("|"),
+  "i",
+);
 const KIT = /\bkit\s+de\s+vente\b/i;
 const JSONLD = /\b(?:incentiveCompensation|baseSalary|MonetaryAmount)\b|"JobPosting"/;
 const COMMENTAIRE = /^\s*(?:\/\/|\*|\/\*)/;
@@ -136,6 +179,13 @@ export const EXCEPTIONS_REMUNERATION: ReadonlyArray<{
     motif: "Titre « Aucune limite d'âge » : une condition d'accès, pas un revenu illimité.",
   },
   {
+    chemin: "src/app/[locale]/apporteur-affaires-independant-formation-ia-entreprise/page.tsx",
+    ligne: "L&apos;activité est ouverte à tout indépendant en capacité de facturer, sans limite",
+    motif:
+      "« sans limite » d'ÂGE, dont « d'âge » ouvre la ligne suivante (JSX coupé) : une condition " +
+      "d'accès, pas un revenu illimité.",
+  },
+  {
     chemin: "src/app/[locale]/memo-isere/page.tsx",
     ligne: `"Oui. L'activité est 100 % à la commission et sans quota horaire`,
     motif: "« 100 % à la commission » dit le MODE de rémunération (aucun fixe), pas un taux.",
@@ -164,6 +214,18 @@ export function fautesDeRemuneration(
         if (!voisines.some((v) => v !== null && INDICATIF.test(v))) {
           fautes.push({ famille: "remuneration_ferme", chemin, ligne: i + 1, extrait: ferme[0] });
         }
+      }
+      const illimite = exemptees.has(i) ? null : ILLIMITE.exec(contenu);
+      if (illimite) {
+        fautes.push({ famille: "revenu_illimite", chemin, ligne: i + 1, extrait: illimite[0] });
+      }
+      const risque = SANS_RISQUE.exec(contenu);
+      if (risque) {
+        fautes.push({ famille: "promesse_sans_risque", chemin, ligne: i + 1, extrait: risque[0] });
+      }
+      const aiAct = AI_ACT_LARGE.exec(contenu);
+      if (aiAct) {
+        fautes.push({ famille: "ai_act_trop_large", chemin, ligne: i + 1, extrait: aiAct[0] });
       }
       const kit = KIT.exec(contenu);
       if (kit) fautes.push({ famille: "kit_de_vente", chemin, ligne: i + 1, extrait: kit[0] });

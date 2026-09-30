@@ -83,7 +83,7 @@ export const PARTENAIRE_LANDINGS: Readonly<Record<PartenaireSource, PartenaireLa
     metaDescription:
       "Apporteur d'affaires indépendant, formations et audits IA. Commission indicative par journée payée, aucune connaissance en IA. Candidature en 3 min, sans CV.",
     h1: "Apporteur d'affaires IA,",
-    h1Em: "indépendant et sans plafond",
+    h1Em: "indépendant, à votre rythme",
     chapo:
       "Candidature en 3 minutes, sans CV et sans lettre de motivation. Vous recommandez des entreprises, nous nous occupons du reste, vous touchez votre commission, à titre indicatif selon le barème en vigueur. Deux produits à retenir, et vous ne concluez jamais la vente.",
   },
