@@ -132,6 +132,9 @@ export function SetFinancementForm({
   const showFT = selectedType === "france_travail";
   const showCPF = selectedType === "cpf";
   const showPoei = showFT && selectedFtDispositif === "poei";
+  // Dossier clos : seuls le suivi OPCO et les pièces POEI restent modifiables.
+  // Sans eux, il n'y a rien à envoyer — pas de bouton qui ne mène à rien.
+  const rienAEnregistrer = fige && !showOpco && !showPoei;
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -442,9 +445,15 @@ export function SetFinancementForm({
 
       {/* Boutons */}
       <div className="mt-[var(--space-admin-5)] flex flex-wrap gap-[var(--space-admin-3)]">
-        <button type="submit" disabled={isPending} className="admin-button">
-          {isPending ? "Enregistrement…" : "Enregistrer le financement"}
-        </button>
+        {rienAEnregistrer ? (
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            Dossier clos : ce financement ne comporte plus rien de modifiable ici.
+          </p>
+        ) : (
+          <button type="submit" disabled={isPending} className="admin-button">
+            {isPending ? "Enregistrement…" : "Enregistrer le financement"}
+          </button>
+        )}
 
         {showOpco && selectedOpcoStatut !== "accord_recu" && (
           <button

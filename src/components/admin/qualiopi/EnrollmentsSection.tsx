@@ -449,10 +449,16 @@ function EnrollmentRow({
                 )}). Cette réponse est conservée, mais elle ne couvre pas la nouvelle déclaration : reconsignez-la, modifiée ou confirmée.`}
               </p>
             )}
-            <p className="mt-0.5 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)]">
-              Échangez avec la personne, puis consignez l&apos;adaptation prévue ci-dessous — ou, si
-              rien n&apos;est nécessaire :
-            </p>
+            {fige ? (
+              <p className="mt-0.5 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)]">
+                Dossier clos : pour consigner la réponse, rouvrez le dossier (motif tracé).
+              </p>
+            ) : (
+              <p className="mt-0.5 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)]">
+                Échangez avec la personne, puis consignez l&apos;adaptation prévue ci-dessous — ou,
+                si rien n&apos;est nécessaire :
+              </p>
+            )}
             {texteEstAucuneAdaptation && !fige && (
               <button
                 type="button"
