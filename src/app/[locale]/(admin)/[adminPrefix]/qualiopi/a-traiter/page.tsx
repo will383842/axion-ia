@@ -56,8 +56,16 @@ import {
   DELAI_ALERTE_ROUVERT_JOURS,
   listerDossiersRouvertsAnciens,
 } from "@/server/qualiopi/sessions/dossiers-rouverts";
-import { dateHeureParis } from "@/server/qualiopi/sessions/verrou-dossier";
+import {
+  chargerEtatsVerrou,
+  dateHeureParis,
+  dossierFige,
+} from "@/server/qualiopi/sessions/verrou-dossier";
 import { hrefEtape } from "@/server/qualiopi/parcours/cible-etape";
+import {
+  etapeBloqueeParLeVerrou,
+  MENTION_GESTE_VERROUILLE,
+} from "@/server/qualiopi/parcours/etape-dossier-clos";
 import { CIBLE_SIGNATURE_PIECES } from "@/server/qualiopi/parcours/session-parcours";
 
 export const dynamic = "force-dynamic";
@@ -135,6 +143,17 @@ export default async function ATraiterPage({ params }: PageProps) {
   const echeancesUrgentes = parcours.echeances.filter(
     (e) => e.etape.etat === "hors_delai" || e.etape.etat === "rattrapable",
   );
+  // 🔴 ADR 0060 — une étape due sur un dossier CLOS dont le geste est
+  // verrouillé ne se « traite » plus sans rouvrir le dossier : on ne décrit pas
+  // un bouton que la fiche masque. Deux requêtes pour les lignes affichées ;
+  // en échec, rien n'est marqué (l'écran d'avant, jamais une page tombée).
+  const etatsVerrou = await chargerEtatsVerrou(
+    echeancesUrgentes.slice(0, 20).map((e) => e.sessionId),
+  ).catch(() => new Map<string, never>());
+  const figeSession = (sessionId: string): boolean => {
+    const lu = etatsVerrou.get(sessionId);
+    return lu !== undefined && dossierFige(lu.etat);
+  };
 
   // Les pièces déjà remplacées par une version signée ne sont pas des tâches :
   // le filtre est appliqué DANS `listerPiecesEnAttente`, avec le compteur de la
@@ -437,7 +456,10 @@ export default async function ATraiterPage({ params }: PageProps) {
                       (WCAG 1.4.1) : « rattrapable avant le … » et « hors délai :
                       +N j » ne se confondent pas, même en noir et blanc. */}
                   <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                    {e.etape.mention} · {e.etape.geste}
+                    {e.etape.mention} ·{" "}
+                    {etapeBloqueeParLeVerrou(e.etape, figeSession(e.sessionId))
+                      ? MENTION_GESTE_VERROUILLE
+                      : e.etape.geste}
                   </span>
                 </span>
                 {/* 🔴 L3 (30/09/2026) — « Ouvrir le dossier » menait en haut de

@@ -31,6 +31,11 @@
 import type { EtapeParcours } from "@/server/qualiopi/parcours/session-parcours";
 import type { EtatEtape } from "@/server/qualiopi/parcours/etat-echeance";
 import { hrefEtape } from "@/server/qualiopi/parcours/cible-etape";
+import {
+  etapeBloqueeParLeVerrou,
+  gesteDirectPossibleSurDossierClos,
+  MENTION_GESTE_VERROUILLE,
+} from "@/server/qualiopi/parcours/etape-dossier-clos";
 import { GesteEtape } from "./GesteEtape";
 
 /**
@@ -74,6 +79,7 @@ export function ChecklistSession({
   sessionId,
   prefixeSessions,
   repliee = null,
+  fige = false,
 }: {
   readonly etapes: ReadonlyArray<EtapeParcours>;
   readonly fait: number;
@@ -88,6 +94,13 @@ export function ChecklistSession({
    * n'était rendu nulle part sur la fiche : la section restait vide.
    */
   readonly repliee?: { readonly motif: string } | null;
+  /**
+   * ADR 0060 — `dossierFige(etat)` : dossier CLOS et verrou actif. Une étape
+   * restée due dont le geste est verrouillé n'est alors plus PROPOSÉE (ni
+   * « Aller à », ni description du geste) : l'écran d'arrivée ne montre plus
+   * ce bouton, et le serveur le refuserait (`etape-dossier-clos.ts`).
+   */
+  readonly fige?: boolean;
 }) {
   if (repliee !== null) {
     return (
@@ -113,33 +126,35 @@ export function ChecklistSession({
       {/* Une liste ORDONNÉE : le parcours est une chronologie, pas un sac. Le
           lecteur d'écran annonce « 3 sur 14 ». */}
       <ol className="list-none space-y-[var(--space-admin-2)] p-0">
-        {etapes.map((e) => (
-          <li
-            key={e.cle}
-            className="flex gap-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-3)]"
-          >
-            <span aria-hidden="true" className={`shrink-0 font-semibold ${COULEUR[e.etat]}`}>
-              {MARQUEUR[e.etat]}
-            </span>
-            <span className="min-w-0">
-              <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-                {/* 🔴 L'intitulé de l'état est DIT, pas seulement coloré : le
+        {etapes.map((e) => {
+          const bloquee = etapeBloqueeParLeVerrou(e, fige);
+          return (
+            <li
+              key={e.cle}
+              className="flex gap-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-3)]"
+            >
+              <span aria-hidden="true" className={`shrink-0 font-semibold ${COULEUR[e.etat]}`}>
+                {MARQUEUR[e.etat]}
+              </span>
+              <span className="min-w-0">
+                <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+                  {/* 🔴 L'intitulé de l'état est DIT, pas seulement coloré : le
                     marqueur est masqué aux lecteurs d'écran, cette mention le
                     remplace. */}
-                <span className="sr-only">{LIBELLE_ETAT[e.etat]} — </span>
-                <strong>{e.libelle}</strong>
-                {e.avancement ? (
-                  <span className="text-[color:var(--color-admin-fg-muted)]">
-                    {" "}
-                    ({e.avancement.fait}/{e.avancement.total})
-                  </span>
-                ) : null}
-              </span>
-              <br />
-              <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                {e.mention} · {e.geste}
-              </span>
-              {/*
+                  <span className="sr-only">{LIBELLE_ETAT[e.etat]} — </span>
+                  <strong>{e.libelle}</strong>
+                  {e.avancement ? (
+                    <span className="text-[color:var(--color-admin-fg-muted)]">
+                      {" "}
+                      ({e.avancement.fait}/{e.avancement.total})
+                    </span>
+                  ) : null}
+                </span>
+                <br />
+                <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                  {e.mention} · {bloquee ? MENTION_GESTE_VERROUILLE : e.geste}
+                </span>
+                {/*
                 🔴 LE LIEN QUI MANQUAIT — défaut vécu par Will le 2026-09-04 :
                 « je n'ai pas trouvé le bouton pour contresigner ». Puis audit
                 UX du 30/09/2026 : le lien menait au bloc « Sous-pages », d'où
@@ -153,44 +168,61 @@ export function ChecklistSession({
                 - étape faite : « Voir » — relire la preuve, sans rien refaire ;
                 - sans objet : rien, il n'y a rien à voir.
               */}
-              {e.etat !== "fait" && e.etat !== "sans_objet" ? (
-                <>
-                  {" "}
-                  <a
-                    href={hrefEtape(sessionId, e, prefixeSessions)}
-                    className="text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-accent)] underline"
-                  >
-                    Aller à : {e.cible.libelle} →
-                  </a>
-                </>
-              ) : e.etat === "fait" ? (
-                <>
-                  {" "}
-                  <a
-                    href={hrefEtape(sessionId, e, prefixeSessions)}
-                    className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] underline"
-                    aria-label={`Voir : ${e.libelle} (${e.cible.libelle})`}
-                  >
-                    Voir
-                  </a>
-                </>
-              ) : null}
-              {/* Le geste SIMPLE, posé d'ici : relancer, générer un accès.
+                {bloquee ? (
+                  <>
+                    {" "}
+                    {/* Dossier clos : on peut LIRE la section, plus y agir. */}
+                    <a
+                      href={hrefEtape(sessionId, e, prefixeSessions)}
+                      className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] underline"
+                      aria-label={`Voir : ${e.libelle} (${e.cible.libelle})`}
+                    >
+                      Voir
+                    </a>
+                  </>
+                ) : e.etat !== "fait" && e.etat !== "sans_objet" ? (
+                  <>
+                    {" "}
+                    <a
+                      href={hrefEtape(sessionId, e, prefixeSessions)}
+                      className="text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-accent)] underline"
+                    >
+                      Aller à : {e.cible.libelle} →
+                    </a>
+                  </>
+                ) : e.etat === "fait" ? (
+                  <>
+                    {" "}
+                    <a
+                      href={hrefEtape(sessionId, e, prefixeSessions)}
+                      className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] underline"
+                      aria-label={`Voir : ${e.libelle} (${e.cible.libelle})`}
+                    >
+                      Voir
+                    </a>
+                  </>
+                ) : null}
+                {/* Le geste SIMPLE, posé d'ici : relancer, générer un accès.
                   Jamais un acte habilité — ceux-là n'ont pas de `gesteDirect`. */}
-              {e.gesteDirect !== undefined && e.etat !== "fait" && e.etat !== "sans_objet" ? (
-                <GesteEtape geste={e.gesteDirect} />
-              ) : null}
-              {e.avertissement ? (
-                <>
-                  <br />
-                  <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
-                    {e.avertissement}
-                  </span>
-                </>
-              ) : null}
-            </span>
-          </li>
-        ))}
+                {e.gesteDirect !== undefined &&
+                !bloquee &&
+                (!fige || gesteDirectPossibleSurDossierClos(e.gesteDirect)) &&
+                e.etat !== "fait" &&
+                e.etat !== "sans_objet" ? (
+                  <GesteEtape geste={e.gesteDirect} />
+                ) : null}
+                {e.avertissement ? (
+                  <>
+                    <br />
+                    <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
+                      {e.avertissement}
+                    </span>
+                  </>
+                ) : null}
+              </span>
+            </li>
+          );
+        })}
       </ol>
     </>
   );

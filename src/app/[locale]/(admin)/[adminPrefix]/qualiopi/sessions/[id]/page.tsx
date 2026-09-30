@@ -97,9 +97,11 @@ import {
 } from "@/features/admin-qualiopi/session-hub/ancres";
 import { OngletsPhase } from "@/features/admin-qualiopi/session-hub/OngletsPhase";
 import { hrefEtape } from "@/server/qualiopi/parcours/cible-etape";
+import { etapeBloqueeParLeVerrou } from "@/server/qualiopi/parcours/etape-dossier-clos";
 import { chargerEtatVerrou } from "@/server/qualiopi/sessions/verrou-dossier";
 import {
   dateHeureParis,
+  dossierFige,
   phaseDossier,
   texteEtatVerrou,
   type StatutSessionVerrou,
@@ -790,8 +792,15 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
   // Ce qui reste dû au parcours — ce que l'onglet « Clôturée » appelle « encore
   // possible » : sur un dossier clos, ce sont les recueils ENTRANTS (à froid,
   // contreseings) qui arrivent après l'attestation.
+  //
+  // 🔴 ADR 0060 — sur un dossier CLOS (verrou actif), une étape dont le geste
+  // est verrouillé n'est PAS « encore possible » : la proposer enverrait
+  // chercher un bouton que la fiche masque et que le serveur refuse.
+  const fige = verrou !== null && dossierFige(verrou.etat);
   const gestesOuverts =
-    parcours?.etapes.filter((e) => e.etat !== "fait" && e.etat !== "sans_objet") ?? [];
+    parcours?.etapes.filter(
+      (e) => e.etat !== "fait" && e.etat !== "sans_objet" && !etapeBloqueeParLeVerrou(e, fige),
+    ) ?? [];
 
   const blocs: Record<BlocFiche, ReactNode> = {
     infos: (
@@ -964,6 +973,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
               sessionId={id}
               prefixeSessions={base}
               repliee={parcours.repliee}
+              fige={fige}
             />
           </section>
         ) : null}
