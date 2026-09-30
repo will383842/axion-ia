@@ -93,7 +93,7 @@ export class FauxDepot implements DepotEtapes {
       interruptions: l.interruptions,
       echecs: l.echecs,
       premierEchecLe: l.premierEchecLe,
-      classeErreur: l.classeErreur as EtapeTenue["classeErreur"],
+      classeErreur: l.classeErreur as NonNullable<EtapeTenue["classeErreur"]> | null,
     };
   };
 
