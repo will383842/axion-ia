@@ -385,7 +385,9 @@ export async function ApresLAppelVue({
                 className="mt-[var(--space-admin-4)] space-y-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
               >
                 <legend className="font-medium">
-                  Autre projet évoqué : « {g.intitule ?? g.ref} »
+                  {g.intitule !== null
+                    ? `Autre projet évoqué : « ${g.intitule} »`
+                    : "Autre projet évoqué"}
                 </legend>
                 <input type="hidden" name="groupe" value={g.ref ?? ""} />
                 <input

@@ -84,4 +84,29 @@ describe("« Après l'appel » mène au compte rendu", () => {
   it("contre-témoin : sans compte rendu, pas de lien", async () => {
     expect(await rendu(rencontre([]))).not.toContain("Voir le compte rendu");
   });
+
+  it("un projet évoqué sans intitulé s'annonce en clair, jamais par sa référence", async () => {
+    const fait = (id: string) => ({
+      id,
+      type: "besoin" as const,
+      portee: "a_ranger" as const,
+      projetId: null,
+      statut: "propose" as const,
+      confiance: "haute" as const,
+      certitude: "dit_explicitement" as const,
+      enonce: "Former l'équipe",
+      question: null,
+    });
+    const html = await rendu({
+      ...rencontre([]),
+      faits: [fait("f1"), fait("f3")],
+      evocations: {
+        projets: [{ ref: "J1", intitule: "Formation", proposition: null }],
+        projetDuFait: { f1: "J1", f3: "J3" },
+        principal: "J1",
+      },
+    });
+    expect(html).toContain("Autre projet évoqué");
+    expect(html).not.toContain("« J3 »");
+  });
 });
