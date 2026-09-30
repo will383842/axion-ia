@@ -8,8 +8,11 @@
  * Rouvrir ouvre la porte à la modification d'une PREUVE : le motif est exigé
  * (10 caractères au moins, même seuil que le CHECK en base), tracé dans le
  * journal append-only `session_dossier_evenements` et lu par l'auditeur dans le
- * dossier d'audit. Le bouton de validation reste désactivé tant que le motif
- * est trop court ; le serveur refuse de toute façon.
+ * dossier d'audit. S'y ajoute le mot de passe de sécurité (décision du
+ * dirigeant, 2026-09-30), vérifié côté serveur contre l'empreinte de
+ * `QUALIOPI_REOUVERTURE_MDP` ; il n'est jamais conservé dans l'état après
+ * l'envoi. Le bouton de validation reste désactivé tant que le motif est trop
+ * court ou le mot de passe vide ; le serveur refuse de toute façon.
  *
  * « Clore à nouveau » n'a pas de motif obligatoire. Le serveur le refuse tant
  * que les conditions du verrou ne sont pas réunies, et son refus NOMME ce qui
@@ -31,7 +34,11 @@ export interface RouvrirDossierFormProps {
   sessionId: string;
   /** `rouvrir` sur un dossier clos, `clore` sur un dossier rouvert. */
   mode: "rouvrir" | "clore";
-  rouvrirAction: (input: { sessionId: string; motif: string }) => Promise<Resultat>;
+  rouvrirAction: (input: {
+    sessionId: string;
+    motif: string;
+    motDePasse: string;
+  }) => Promise<Resultat>;
   reverrouillerAction: (input: { sessionId: string; motif?: string }) => Promise<Resultat>;
 }
 
@@ -45,15 +52,19 @@ export function RouvrirDossierForm({
   const [isPending, startTransition] = useTransition();
   const [ouvert, setOuvert] = useState(false);
   const [motif, setMotif] = useState("");
+  const [motDePasse, setMotDePasse] = useState("");
   const [erreur, setErreur] = useState<string | null>(null);
 
   const longueur = motif.trim().length;
   const motifValide = longueur >= MOTIF_REOUVERTURE_MIN;
+  const motDePasseSaisi = motDePasse !== "";
 
   function rouvrir() {
     setErreur(null);
     startTransition(async () => {
-      const r = await rouvrirAction({ sessionId, motif: motif.trim() });
+      const r = await rouvrirAction({ sessionId, motif: motif.trim(), motDePasse });
+      // Le mot de passe ne survit pas à l'envoi, qu'il soit accepté ou refusé.
+      setMotDePasse("");
       if ("error" in r) {
         setErreur(r.error);
         return;
@@ -166,11 +177,28 @@ export function RouvrirDossierForm({
       >
         {longueur} / {MOTIF_REOUVERTURE_MIN} caractères au minimum
       </p>
+      <label
+        htmlFor={`mdp-reouverture-${sessionId}`}
+        className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]"
+      >
+        Mot de passe de sécurité (obligatoire)
+      </label>
+      <input
+        id={`mdp-reouverture-${sessionId}`}
+        type="password"
+        value={motDePasse}
+        onChange={(e) => setMotDePasse(e.target.value)}
+        required
+        maxLength={200}
+        autoComplete="off"
+        disabled={isPending}
+        className="admin-input"
+      />
       <div className="flex flex-wrap gap-[var(--space-admin-2)]">
         <button
           type="button"
           onClick={rouvrir}
-          disabled={isPending || !motifValide}
+          disabled={isPending || !motifValide || !motDePasseSaisi}
           className="admin-button"
         >
           {isPending ? "Réouverture…" : "Rouvrir avec ce motif"}
@@ -180,6 +208,7 @@ export function RouvrirDossierForm({
           onClick={() => {
             setOuvert(false);
             setMotif("");
+            setMotDePasse("");
             setErreur(null);
           }}
           disabled={isPending}

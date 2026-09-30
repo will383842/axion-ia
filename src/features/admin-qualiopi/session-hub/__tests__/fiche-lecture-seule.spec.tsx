@@ -677,7 +677,7 @@ describe("Rouvrir le dossier", () => {
     expect(screen.getByText(/Adressez-vous à la direction/)).toBeTruthy();
   });
 
-  it("le bouton de validation reste désactivé tant que le motif fait moins de 10 caractères", async () => {
+  it("le bouton de validation reste désactivé tant que le motif fait moins de 10 caractères ou que le mot de passe est vide", async () => {
     const rouvrir = vi.fn(async () => ({
       data: { sessionId: SESSION, depuis: "2026-09-30T12:05:00.000Z" },
     }));
@@ -702,10 +702,45 @@ describe("Rouvrir le dossier", () => {
     expect((valider as HTMLButtonElement).disabled).toBe(true);
 
     fireEvent.change(champ, { target: { value: "Relevé tardif" } });
+    // Motif valide, mot de passe vide : toujours désactivé.
+    expect((valider as HTMLButtonElement).disabled).toBe(true);
+    const mdp = screen.getByLabelText("Mot de passe de sécurité (obligatoire)") as HTMLInputElement;
+    expect(mdp.type).toBe("password");
+    fireEvent.change(mdp, { target: { value: "secret-de-test" } });
     expect((valider as HTMLButtonElement).disabled).toBe(false);
     fireEvent.click(valider);
     await waitFor(() => expect(refresh).toHaveBeenCalled());
-    expect(rouvrir).toHaveBeenCalledWith({ sessionId: SESSION, motif: "Relevé tardif" });
+    expect(rouvrir).toHaveBeenCalledWith({
+      sessionId: SESSION,
+      motif: "Relevé tardif",
+      motDePasse: "secret-de-test",
+    });
+  });
+
+  it("mot de passe refusé : le refus du serveur s'affiche, le champ se vide, le dossier reste clos", async () => {
+    const refus = "Mot de passe de sécurité incorrect. Le dossier reste clos.";
+    const rouvrir = vi.fn(async () => ({ error: refus }));
+    render(
+      <BandeauVerrouDossier
+        sessionId={SESSION}
+        etat={CLOS}
+        peutRouvrir
+        motifSansHabilitation=""
+        encorePossible={[]}
+        rouvrirAction={rouvrir}
+        reverrouillerAction={nop as never}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Rouvrir le dossier" }));
+    fireEvent.change(screen.getByLabelText("Motif de la réouverture (obligatoire)"), {
+      target: { value: "Relevé tardif" },
+    });
+    const mdp = screen.getByLabelText("Mot de passe de sécurité (obligatoire)") as HTMLInputElement;
+    fireEvent.change(mdp, { target: { value: "mauvais" } });
+    fireEvent.click(screen.getByRole("button", { name: "Rouvrir avec ce motif" }));
+    await waitFor(() => expect(screen.getByRole("alert").textContent).toBe(refus));
+    expect(mdp.value).toBe("");
+    expect(refresh).not.toHaveBeenCalled();
   });
 
   it("rouvert : bandeau « Rouvert le … par … : motif » et « Clore à nouveau » qui dit ce qui manque", async () => {
