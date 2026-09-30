@@ -74,7 +74,8 @@ export function donneesDeLaFicheProspect(e: EntreeCreerProspect): DonneesFiche {
     type: e.type ?? "entreprise",
     raisonSociale,
     ...(ville !== "" ? { adresseVille: ville.slice(0, 120) } : {}),
-    ...(siren !== "" ? { siren } : {}),
+    // P-5 : un particulier n'a pas de SIREN, même si une case de l'annuaire est restée cochée.
+    ...(siren !== "" && e.type !== "particulier" ? { siren } : {}),
     source: "rendez-vous",
   };
 }

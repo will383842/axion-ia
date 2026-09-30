@@ -235,8 +235,20 @@ export async function ApresLAppelVue({
               <p className="font-medium sm:col-span-2">
                 Créer la fiche prospect depuis ce rendez-vous
               </p>
+              {/* P-5 : un indépendant sans entreprise est un particulier (pas de SIREN). */}
+              <fieldset className="flex flex-wrap gap-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] sm:col-span-2">
+                <legend className="font-medium">Type de client</legend>
+                <label className="flex items-center gap-[var(--space-admin-2)]">
+                  <input type="radio" name="type" value="entreprise" defaultChecked />
+                  Entreprise (B2B)
+                </label>
+                <label className="flex items-center gap-[var(--space-admin-2)]">
+                  <input type="radio" name="type" value="particulier" />
+                  Particulier (B2C — CPF perso)
+                </label>
+              </fieldset>
               <label className={labelCls}>
-                Nom de l&apos;entreprise
+                Nom de l&apos;entreprise (ou, pour un particulier, prénom et nom)
                 <input
                   name="raisonSociale"
                   required
