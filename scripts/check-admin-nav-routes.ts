@@ -129,6 +129,21 @@ for (const item of internes) {
   }
 }
 
+// 🔴 2026-09-30 (lot L4, menu allégé) — `parent` EST UNE DESTINATION AUSSI.
+//
+// Vingt entrées de « Formations & prestations » ne sont plus rendues dans la
+// barre latérale : `parent` les en retire, et c'est par lui que le fil d'Ariane
+// les rattache à l'écran qui les regroupe. Un `parent` qui ne désigne aucune
+// route, ou aucune entrée de menu, laisserait ces écrans sans chemin de retour
+// visible — sans que rien ne rougisse, puisque leur propre `href`, lui, existe.
+const hrefsMenu = new Set(items.map((it) => it.href));
+for (const item of internes) {
+  if (item.parent == null) continue;
+  if (!hrefsMenu.has(item.parent) || !routeExists(ADMIN_ROOT, navSegments(item.parent))) {
+    missing.push(`${item.label} → parent ${item.parent} (ni entrée de menu, ni route)`);
+  }
+}
+
 for (const item of externes) {
   if (!item.href.startsWith("https://")) {
     externesInvalides.push(`${item.label} → ${item.href} (doit être une URL absolue https)`);

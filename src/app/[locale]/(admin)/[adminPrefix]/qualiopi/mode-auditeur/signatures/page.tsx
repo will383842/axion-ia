@@ -189,9 +189,12 @@ const DETAIL_REFUS: Readonly<Record<string, string>> = {
 function LignePiece({
   piece,
   cheminRetour,
+  sessionsHref,
 }: {
   piece: RapportPieceSignature;
   cheminRetour: string;
+  /** `/…/qualiopi/sessions` — lot L4 : le registre renvoie à LA fiche session. */
+  sessionsHref: string;
 }): React.ReactElement {
   const anomaliesChaine = piece.chaine.anomalies;
   return (
@@ -215,6 +218,16 @@ function LignePiece({
         <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
           {LIBELLE_TYPE_PIECE[piece.type] ?? piece.type}
         </span>
+        {/* Lot L4 (2026-09-30) — de la pièce au dossier en un clic. Une pièce
+            hors session (lettre de mission-cadre, devis) n'a pas ce lien. */}
+        {piece.sessionId != null ? (
+          <Link
+            href={`${sessionsHref}/${piece.sessionId}`}
+            className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline underline-offset-2"
+          >
+            Ouvrir la session
+          </Link>
+        ) : null}
         {/* 🔴 Une pièce annulée RESTE au registre : la signature a eu lieu, et
             l'effacer masquerait qu'on a signé puis annulé — exactement ce qu'un
             auditeur veut voir. Mais elle doit le DIRE : sans ce marquage, elle
@@ -449,7 +462,12 @@ export default async function RegistreSignaturesPage({
             </thead>
             <tbody>
               {registre.pieces.map((p) => (
-                <LignePiece key={p.documentGenereId} piece={p} cheminRetour={cheminRetour} />
+                <LignePiece
+                  key={p.documentGenereId}
+                  piece={p}
+                  cheminRetour={cheminRetour}
+                  sessionsHref={`/${locale}/${adminPrefix}/qualiopi/sessions`}
+                />
               ))}
             </tbody>
           </table>

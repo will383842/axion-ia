@@ -25,6 +25,8 @@ export interface RetourEnAttente {
   destinataire: string;
   /** « Enquête entreprise » est adressée au client, pas au stagiaire. */
   estEntreprise: boolean;
+  /** Lot L4 (2026-09-30) — la ligne mène à LA fiche session. */
+  sessionId: string;
   sessionNumero: string;
   sessionTitre: string;
   envoyeAt: Date;
@@ -61,6 +63,7 @@ export async function listerRetoursEnAttente(): Promise<RetourEnAttente[]> {
             trainee: { select: { nom: true, prenom: true } },
             session: {
               select: {
+                id: true,
                 numero: true,
                 titreSession: true,
                 client: { select: { contactNom: true, raisonSociale: true } },
@@ -86,6 +89,7 @@ export async function listerRetoursEnAttente(): Promise<RetourEnAttente[]> {
         ? (client?.contactNom ?? client?.raisonSociale ?? "Contact client")
         : `${q.enrollment.trainee.prenom} ${q.enrollment.trainee.nom}`,
       estEntreprise,
+      sessionId: q.enrollment.session.id,
       sessionNumero: q.enrollment.session.numero,
       sessionTitre: q.enrollment.session.titreSession,
       // `envoyeAt` non nul par sélection — le `??` n'est qu'un garde de type.

@@ -1125,13 +1125,43 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "qualiopi",
       subGroup: "a_traiter",
     },
+    // 🔴 2026-09-30 — RUBRIQUE RAMENÉE DE 31 À 11 ENTRÉES (refonte « session de
+    //    bout en bout », lot L4). Constat de l'audit UX en production : on ne
+    //    suivait pas une session de bout en bout, parce que cinq portes y
+    //    menaient (Sessions, Dossiers, À traiter, Pilotage, Mode auditeur) et
+    //    que ce menu seul offrait 31 lignes.
+    //
+    //    Restent visibles, dans l'ordre de la journée : À traiter, Sessions,
+    //    Affaires, Stagiaires, Clients, Devis, Nouvelle vente, Catalogue,
+    //    Formateurs, Conformité & auditeur, Réglages formations.
+    //
+    //    Les vingt autres portent `parent` (et `tier: "advanced"`, qui le
+    //    documente) : `parent` les retire du RENDU de la barre latérale
+    //    (filtre `it.parent == null` dans `AdminSidebarNav`) mais les garde
+    //    dans `buildAdminNav` — palette ⌘K, fil d'Ariane, favoris et URL
+    //    restent valides. AUCUNE page n'est supprimée. Leur parent est l'écran
+    //    qui les regroupe métier : les registres Qualiopi sous « Conformité &
+    //    auditeur », les files du matin (alertes, e-mails) sous « À traiter »
+    //    qui les agrège déjà, les outils du catalogue sous « Catalogue », les
+    //    écrans formateurs sous « Formateurs ». Réversible : retirer `parent`.
+    //
+    //    Verrouillé par admin-nav.test.ts (« 11 entrées au plus »).
+    //
+    // ▸ Sessions EN TÊTE du pôle : c'est l'unique porte vers la fiche session.
+    {
+      href: `${base}/qualiopi/sessions`,
+      label: "Sessions",
+      icon: "CalendarRange",
+      group: "qualiopi",
+      subGroup: "dossiers",
+    },
     // ▸ 📁 DOSSIERS & CLIENTS (les affaires en cours)
     // Vue pipeline (refonte phase 2) : une ligne par affaire, statut DÉRIVÉ
     // (cf. src/server/admin/dossiers-pipeline.ts) — répond à « où en est
     // chaque affaire ? » sans ouvrir six onglets.
     {
       href: `${base}/qualiopi/dossiers`,
-      label: "Dossiers (pipeline)",
+      label: "Affaires",
       icon: "Folders",
       group: "qualiopi",
       subGroup: "dossiers",
@@ -1152,7 +1182,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     {
       href: `${base}/qualiopi/formations`,
-      label: "Formations",
+      label: "Catalogue",
       icon: "BookOpen",
       group: "qualiopi",
       subGroup: "catalogue",
@@ -1163,6 +1193,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Cpu",
       group: "qualiopi",
       subGroup: "catalogue",
+      tier: "advanced",
+      parent: `${base}/qualiopi/formations`,
     },
     {
       href: `${base}/qualiopi/formation-engine/validations`,
@@ -1170,13 +1202,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "BadgeCheck",
       group: "qualiopi",
       subGroup: "catalogue",
-    },
-    {
-      href: `${base}/qualiopi/sessions`,
-      label: "Sessions",
-      icon: "CalendarRange",
-      group: "qualiopi",
-      subGroup: "dossiers",
+      tier: "advanced",
+      parent: `${base}/qualiopi/formations`,
     },
     {
       href: `${base}/qualiopi/formateurs`,
@@ -1217,6 +1244,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "LogIn",
       group: "qualiopi",
       subGroup: "intervenants",
+      tier: "advanced",
+      parent: `${base}/qualiopi/formateurs`,
     },
     {
       href: `${base}/qualiopi/remuneration`,
@@ -1224,6 +1253,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Banknote",
       group: "qualiopi",
       subGroup: "intervenants",
+      tier: "advanced",
+      parent: `${base}/qualiopi/formateurs`,
     },
     // 🔴 2026-09-23 — « Cockpit financier » a QUITTÉ cette position : son bloc
     // vit désormais en fin du groupe Finances, juste après « Alertes
@@ -1238,6 +1269,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "FileSearch",
       group: "qualiopi",
       subGroup: "dossiers",
+      tier: "advanced",
+      parent: `${base}/qualiopi/dossiers`,
     },
     {
       href: `${base}/qualiopi/stagiaires`,
@@ -1254,6 +1287,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "BadgePercent",
       group: "qualiopi",
       subGroup: "catalogue",
+      tier: "advanced",
+      parent: `${base}/qualiopi/formations`,
     },
     // 🔴 « Entrées récentes » RETIRÉE le 2026-08-27 — quatrième porte pour un
     // seul geste. Elle refaisait l'union « appels + messages » que la Boîte de
@@ -1417,6 +1452,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Calculator",
       group: "qualiopi",
       subGroup: "catalogue",
+      tier: "advanced",
+      parent: `${base}/qualiopi/formations`,
     },
     // « Conformité » (/qualiopi/conformite) fusionnée le 2026-08-01 (phase 2)
     // dans « Conformité & mode auditeur » ci-dessous — même matrice de 32
@@ -1427,6 +1464,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "BarChart3",
       group: "qualiopi",
       subGroup: "conformite",
+      tier: "advanced",
+      parent: `${base}/qualiopi/mode-auditeur`,
     },
     {
       href: `${base}/qualiopi/pilotage`,
@@ -1434,6 +1473,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Compass",
       group: "qualiopi",
       subGroup: "conformite",
+      tier: "advanced",
+      parent: `${base}/qualiopi/mode-auditeur`,
     },
     {
       href: `${base}/qualiopi/appreciations`,
@@ -1441,6 +1482,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Star",
       group: "qualiopi",
       subGroup: "conformite",
+      tier: "advanced",
+      parent: `${base}/qualiopi/mode-auditeur`,
     },
     {
       href: `${base}/qualiopi/reclamations`,
@@ -1448,12 +1491,14 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "MailWarning",
       group: "qualiopi",
       subGroup: "conformite",
+      tier: "advanced",
+      parent: `${base}/qualiopi/mode-auditeur`,
     },
     {
       // Fusion phase 2 (2026-08-01) : porte aussi l'ancienne « Conformité »
       // (vue tableau par défaut) — d'où le label composite.
       href: `${base}/qualiopi/mode-auditeur`,
-      label: "Conformité & mode auditeur",
+      label: "Conformité & auditeur",
       icon: "ShieldCheck",
       group: "qualiopi",
       subGroup: "conformite",
@@ -1465,6 +1510,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Eye",
       group: "qualiopi",
       subGroup: "conformite",
+      tier: "advanced",
+      parent: `${base}/qualiopi/mode-auditeur`,
     },
     // « Réseau de partenaires » (2026-09-19) : « Partenariats » était aussi le
     // nom d'une catégorie de Messages, avec la même poignée de main — deux
@@ -1476,6 +1523,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Waypoints",
       group: "qualiopi",
       subGroup: "conformite",
+      tier: "advanced",
+      parent: `${base}/qualiopi/mode-auditeur`,
     },
     {
       href: `${base}/qualiopi/sous-traitants`,
@@ -1483,6 +1532,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Factory",
       group: "qualiopi",
       subGroup: "intervenants",
+      tier: "advanced",
+      parent: `${base}/qualiopi/formateurs`,
     },
     {
       href: `${base}/qualiopi/moyens`,
@@ -1490,6 +1541,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Projector",
       group: "qualiopi",
       subGroup: "conformite",
+      tier: "advanced",
+      parent: `${base}/qualiopi/mode-auditeur`,
     },
     {
       href: `${base}/qualiopi/incidents`,
@@ -1497,6 +1550,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "AlertTriangle",
       group: "qualiopi",
       subGroup: "conformite",
+      tier: "advanced",
+      parent: `${base}/qualiopi/mode-auditeur`,
     },
     {
       href: `${base}/qualiopi/revue-direction`,
@@ -1504,11 +1559,13 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "ClipboardCheck",
       group: "qualiopi",
       subGroup: "conformite",
+      tier: "advanced",
+      parent: `${base}/qualiopi/mode-auditeur`,
     },
     // ▸ ADMINISTRATION (setup / RGPD — rare)
     {
       href: `${base}/qualiopi/config`,
-      label: "Configuration",
+      label: "Réglages formations",
       icon: "Settings",
       group: "qualiopi",
       subGroup: "reglages_suivi",
@@ -1519,6 +1576,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Lock",
       group: "qualiopi",
       subGroup: "reglages_suivi",
+      tier: "advanced",
+      parent: `${base}/qualiopi/mode-auditeur`,
     },
     {
       href: `${base}/qualiopi/alertes`,
@@ -1526,6 +1585,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Bell",
       group: "qualiopi",
       subGroup: "reglages_suivi",
+      tier: "advanced",
+      parent: `${base}/qualiopi/a-traiter`,
     },
     // F60 — corbeille de validation : les emails commerciaux attendent une
     // relecture avant de partir. Placée près des Alertes : ce sont les deux
@@ -1536,6 +1597,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "MailCheck",
       group: "qualiopi",
       subGroup: "reglages_suivi",
+      tier: "advanced",
+      parent: `${base}/qualiopi/a-traiter`,
     },
     // ── Documents (hub à 2 niveaux : Activités + Autres) ─────────────────
     //   Activités : Formations / 1-to-1 / Audit (kits pédagogiques Qualiopi,

@@ -11,6 +11,9 @@
  *   ✉️  E-mails — la corbeille de validation F60.
  *   🚨  Alertes & relances — les alertes actives de l'évaluateur quotidien
  *       (OPCO sans réponse, impayés, devis dormants, vigilance URSSAF, NDA…).
+ *   🔓  Dossiers rouverts depuis plus de 7 jours (lot L4, ADR 0060 D5) : un
+ *       dossier rouvert ne se reverrouille pas seul ; au-delà d'une semaine,
+ *       c'est une tâche — clore à nouveau, ou savoir pourquoi.
  *
  * 🔴 Zéro logique propre : les chiffres viennent de `compterQualiopiNav()`
  * (le MÊME module que les pastilles de la sidebar) et les listes des services
@@ -22,6 +25,7 @@
 
 import { peutLireLesAlertes } from "@/server/qualiopi/alertes/routage";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
   ArrowRight,
@@ -29,6 +33,7 @@ import {
   CheckCheck,
   CircleAlert,
   Euro,
+  LockOpen,
   Mail,
   MessageSquareReply,
   Signature,
@@ -47,6 +52,11 @@ import { partieARelancer } from "@/server/qualiopi/documents/signature/relance-p
 import { listerPiecesEnAttente } from "@/server/qualiopi/documents/signature/pieces-en-attente";
 import { listerRetoursEnAttente } from "@/server/qualiopi/satisfaction/retours-en-attente";
 import { prochainesEcheances } from "@/server/qualiopi/parcours/echeances-service";
+import {
+  DELAI_ALERTE_ROUVERT_JOURS,
+  listerDossiersRouvertsAnciens,
+} from "@/server/qualiopi/sessions/dossiers-rouverts";
+import { dateHeureParis } from "@/server/qualiopi/sessions/verrou-dossier";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -98,7 +108,7 @@ export default async function ATraiterPage({ params }: PageProps) {
 
   const base = `/${locale}/${adminPrefix}`;
 
-  const [compteurs, signatures, alertesBrutes, retours, parcours] = await Promise.all([
+  const [compteurs, signatures, alertesBrutes, retours, parcours, rouverts] = await Promise.all([
     compterQualiopiNav(),
     listerPiecesEnAttente(),
     listAlertes({ resolue: false, limit: 50 }).catch(() => []),
@@ -112,6 +122,8 @@ export default async function ATraiterPage({ params }: PageProps) {
       parSession: new Map(),
       troncature: null,
     })),
+    // Lot L4 — `null` = registre illisible : dit à l'écran, jamais tu.
+    listerDossiersRouvertsAnciens().catch(() => null),
   ]);
 
   // On ne montre ici que ce qui PRESSE : echeance depassee, encore rattrapable
@@ -146,6 +158,8 @@ export default async function ATraiterPage({ params }: PageProps) {
   // écran vide, sans le message rassurant. `rienAFaire` doit refléter
   // exactement ce qui est rendu à l'écran, pas le total de la pastille.
   const rienAFaire =
+    rouverts !== null &&
+    rouverts.length === 0 &&
     retours.length === 0 &&
     signatures.length === 0 &&
     compteurs.emails === 0 &&
@@ -183,6 +197,53 @@ export default async function ATraiterPage({ params }: PageProps) {
           </p>
         </div>
       )}
+
+      {/* Dossiers rouverts depuis plus de 7 jours (lot L4, ADR 0060 D5).
+          En tête : c'est une PREUVE modifiable que personne ne regarde. Le motif
+          et l'auteur sont écrits en entier — ce sont eux que l'auditeur lira
+          dans le dossier d'audit. */}
+      {rouverts === null ? (
+        <div className={carte}>
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-danger)]">
+            Le registre des réouvertures n&apos;a pas pu être lu : l&apos;absence de dossier
+            rouvert ci-dessous n&apos;est PAS un constat.
+          </p>
+        </div>
+      ) : rouverts.length > 0 ? (
+        <div className={carte}>
+          <h2 className={titreCarte}>
+            <LockOpen size={18} aria-hidden="true" className="shrink-0" />
+            Dossiers rouverts depuis plus de {DELAI_ALERTE_ROUVERT_JOURS} jours{" "}
+            <span className={pastille}>{rouverts.length}</span>
+          </h2>
+          <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            Un dossier rouvert ne se referme pas tout seul. Une fois la correction faite,
+            « Clore à nouveau » depuis la fiche session.
+          </p>
+          <ul>
+            {rouverts.map((d) => (
+              <li key={d.sessionId} className={ligne}>
+                <span className="min-w-0 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+                  <strong>
+                    {d.numero} · {d.titre}
+                  </strong>
+                  <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                    {`Rouvert le ${dateHeureParis(d.depuis)} par ${d.par} (il y a ${d.jours} jour${d.jours > 1 ? "s" : ""}) — motif : « ${d.motif} »`}
+                  </span>
+                </span>
+                <AdminButton
+                  href={`${base}/qualiopi/sessions/${d.sessionId}`}
+                  variant="secondary"
+                  size="sm"
+                  iconAfter={ArrowRight}
+                >
+                  Ouvrir le dossier
+                </AdminButton>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
 
       {/* Retours en attente — questionnaires envoyés restés sans réponse.
           🔴 Constaté sur le premier dossier réel : les questionnaires partaient
@@ -228,7 +289,15 @@ export default async function ATraiterPage({ params }: PageProps) {
                       )}
                     </p>
                     <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                      {r.sessionTitre} · {r.sessionNumero} — envoyé il y a {jours} jour
+                      {r.sessionTitre} ·{" "}
+                      {/* Lot L4 — la ligne mène à LA fiche session. */}
+                      <Link
+                        href={`${base}/qualiopi/sessions/${r.sessionId}`}
+                        className="text-[color:var(--color-admin-accent)] underline underline-offset-2"
+                      >
+                        {r.sessionNumero}
+                      </Link>{" "}
+                      — envoyé il y a {jours} jour
                       {jours > 1 ? "s" : ""} · {relances}
                       {r.relancesEpuisees && (
                         <span className="ml-[var(--space-admin-1)] font-semibold text-[color:var(--color-admin-warning)]">

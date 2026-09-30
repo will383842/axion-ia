@@ -62,6 +62,8 @@ import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { VerserFicheFormateurButton } from "@/components/admin/qualiopi/VerserFicheFormateurButton";
 import { Ban, TriangleAlert } from "lucide-react";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { SessionsLieesSection } from "@/components/admin/qualiopi/SessionsLiees";
+import { listerSessionsLiees } from "@/server/qualiopi/sessions/sessions-liees";
 import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
@@ -153,6 +155,8 @@ export default async function FicheFormateurPage({ params }: PageProps) {
   // sinon deux compteurs voisins peuvent se contredire d'une milliseconde.
   const now = new Date();
   const { sessionsAnimees, sessionsAVenir } = await getTrainerActivityCounts(trainer.id, now);
+  // Lot L4 — lien RETOUR vers les sessions du formateur (principal OU co-animateur).
+  const sessionsLiees = await listerSessionsLiees({ trainerId: trainer.id });
 
   // Domaines de compétences au format d'ÉDITION (input date = `YYYY-MM-DD`).
   // Le stockage historique accepte aussi des chaînes nues (« IA générative »)
@@ -380,6 +384,13 @@ export default async function FicheFormateurPage({ params }: PageProps) {
           .
         </p>
       </div>
+
+      {/* Lot L4 — chaque session mène à LA fiche session. */}
+      <SessionsLieesSection
+        sessions={sessionsLiees}
+        sessionsHref={`/${locale}/${adminPrefix}/qualiopi/sessions`}
+        vide="Ce formateur n'est affecté à aucune session, ni comme principal ni en co-animation."
+      />
 
       {conformite !== null && (
         <div className="admin-card mb-[var(--space-admin-5)]">

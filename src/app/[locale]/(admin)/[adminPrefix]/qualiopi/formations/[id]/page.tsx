@@ -22,6 +22,8 @@ import { getFormationById } from "@/server/qualiopi/formations/formations";
 import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
+import { SessionsLieesSection } from "@/components/admin/qualiopi/SessionsLiees";
+import { listerSessionsLiees } from "@/server/qualiopi/sessions/sessions-liees";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -77,6 +79,8 @@ export default async function QualiopiFormationDetailPage({ params }: PageProps)
 
   const formationsBase = `/${locale}/${adminPrefix}/qualiopi/formations`;
   const formationBase = `${formationsBase}/${id}`;
+  // Lot L4 — lien RETOUR vers les sessions de cette formation.
+  const sessionsLiees = await listerSessionsLiees({ formationId: formation.id });
 
   const infoLabelCls =
     "text-[length:var(--text-admin-xs)] tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase";
@@ -219,6 +223,13 @@ export default async function QualiopiFormationDetailPage({ params }: PageProps)
           </div>
         </div>
       </section>
+
+      {/* ── Sessions (lot L4) : chacune mène à LA fiche session. ──────────── */}
+      <SessionsLieesSection
+        sessions={sessionsLiees}
+        sessionsHref={`/${locale}/${adminPrefix}/qualiopi/sessions`}
+        vide="Aucune session n'a encore été ouverte pour cette formation."
+      />
 
       {/* ── Cycle de vie ─────────────────────────────────────────────────── */}
       <section className="mb-[var(--space-admin-8)]">

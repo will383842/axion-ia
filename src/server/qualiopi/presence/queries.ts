@@ -12,6 +12,7 @@ import type {
   EnrollmentStatut,
   PresenceCreneau,
   Prisma,
+  TrainingSessionStatut,
 } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -215,13 +216,25 @@ export interface OptionsListeSessions {
    * l'horloge de la CI.
    */
   maintenant?: Date;
+  /**
+   * 🔴 Lot L4 (2026-09-30) — onglet de phase. Restreint les LIGNES (et donc
+   * `total` et la pagination) sans toucher aux compteurs de la fenêtre, qui
+   * restent ceux de toutes les sessions. `ids` vient de `restrictionDeLaPhase`
+   * (états du verrou lus en un appel groupé) ; `null` = pas de restriction.
+   */
+  restriction?: {
+    statuts?: ReadonlyArray<TrainingSessionStatut>;
+    ids?: ReadonlyArray<string> | null;
+  };
 }
 
 /** Une page de la liste des sessions, avec de quoi la rendre honnêtement. */
 export interface ListeSessionsAdmin {
   rows: SessionListRow[];
-  /** Sessions de la fenêtre courante, TOUTES pages confondues. */
+  /** Sessions de la fenêtre courante, TOUTES pages confondues (onglet de phase compris). */
   total: number;
+  /** Sessions de la fenêtre, TOUTES phases confondues — la carte « Sessions ». */
+  totalFenetre: number;
   page: number;
   totalPages: number;
   /**
@@ -247,6 +260,7 @@ function listeVide(options: {
   return {
     rows: [],
     total: 0,
+    totalFenetre: 0,
     page: options.page,
     totalPages: 1,
     compteurs: { enCours: 0, planifiees: 0, realisees: 0 },
@@ -291,9 +305,18 @@ export async function listSessionsForAdmin(
     ? {}
     : { dateDebut: { gte: debutFenetre } };
 
+  const r = options.restriction;
+  const whereListe: Prisma.TrainingSessionWhereInput = {
+    ...where,
+    ...(r?.statuts !== undefined
+      ? { statut: { in: [...r.statuts] } }
+      : {}),
+    ...(r?.ids != null ? { id: { in: [...r.ids] } } : {}),
+  };
+
   try {
     const [total, nbArchives, parStatut] = await Promise.all([
-      prisma.trainingSession.count({ where }),
+      prisma.trainingSession.count({ where: whereListe }),
       avecArchives
         ? Promise.resolve(0)
         : prisma.trainingSession.count({ where: { dateDebut: { lt: debutFenetre } } }),
@@ -310,7 +333,7 @@ export async function listSessionsForAdmin(
     const { page, skip, take, totalPages } = bornesPagination(pageDemandee, total);
 
     const sessions = await prisma.trainingSession.findMany({
-      where,
+      where: whereListe,
       orderBy: [{ dateDebut: "desc" }, { id: "desc" }],
       skip,
       take,
@@ -366,6 +389,7 @@ export async function listSessionsForAdmin(
         tauxPresenceMoyen: arrondirTauxMoyen(moyenneParSession.get(s.id)),
       })),
       total,
+      totalFenetre: parStatut.reduce((n, g) => n + (g._count?._all ?? 0), 0),
       page,
       totalPages,
       compteurs: {

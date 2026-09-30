@@ -212,6 +212,13 @@ export interface RapportPieceSignature {
    */
   annuleeAt: string | null;
   annuleeMotif: string | null;
+  /**
+   * Session à laquelle la pièce est rattachée — `null` hors session (lettre de
+   * mission-cadre, devis). Lot L4 (2026-09-30) : le registre renvoie à LA fiche
+   * session. Optionnel : le vérificateur pur ne le connaît pas, `reposerSort`
+   * le pose depuis la ligne Prisma.
+   */
+  sessionId?: string | null;
 }
 
 /* ─────────────────────── Types signables réellement en base ────────────────── */
@@ -481,6 +488,8 @@ const SELECTION_PIECE = {
   // à l'appui, alors qu'on l'a précisément déclarée sans valeur.
   annuleeAt: true,
   annuleeMotif: true,
+  // Lot L4 — de quoi renvoyer le registre vers la fiche session.
+  sessionId: true,
   signatures: {
     // La chaîne ne voit que les maillons VIVANTS : une signature révoquée est
     // retirée du chaînage par le service, qui rechaîne la suite. L'inclure ici
@@ -522,6 +531,7 @@ interface PiecePrisma {
   createdAt: Date;
   annuleeAt: Date | null;
   annuleeMotif: string | null;
+  sessionId: string | null;
   signatures: LignePrismaSignature[];
 }
 
@@ -564,6 +574,7 @@ function reposerSort(rapport: RapportPieceSignature, piece: PiecePrisma): Rappor
     ...rapport,
     annuleeAt: piece.annuleeAt === null ? null : piece.annuleeAt.toISOString(),
     annuleeMotif: piece.annuleeMotif,
+    sessionId: piece.sessionId ?? null,
   };
 }
 
