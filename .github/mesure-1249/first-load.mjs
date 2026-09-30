@@ -65,7 +65,7 @@ for (const route of ROUTES) {
   let nbModules = 0;
   for (const mod of Object.values(man.clientModules ?? {})) {
     nbModules++;
-    for (const c of mod.chunks ?? []) if (typeof c === "string" && c.endsWith(".js")) fichiers.add(c);
+    for (const c of mod.chunks ?? []) if (typeof c === "string" && c.endsWith(".js")) fichiers.add(decodeURIComponent(c));
   }
   // Chunks d'ENTRÉE webpack des segments (layout-*.js / page-*.js) de la route.
   const rel = norm(path.relative(path.join(nextDir, "server", "app"), path.dirname(m)));
