@@ -57,8 +57,35 @@ for (const route of ROUTES) {
   const cles = Object.keys(ctx.__RSC_MANIFEST ?? {});
   const man = ctx.__RSC_MANIFEST[cles[0]];
   const entrees = man.entryJSFiles ?? {};
-  const fichiers = new Set([...polyfills, ...racine]);
+  // Les polyfills sont servis en `nomodule` : Next les exclut du First Load.
+  const fichiers = new Set([...racine]);
   for (const liste of Object.values(entrees)) for (const f of liste) if (f.endsWith(".js")) fichiers.add(f);
+  // Webpack : pas d'entryJSFiles ; les chunks de chaque composant client du
+  // manifeste de la route (layouts + page) sont chargés à l'hydratation.
+  let nbModules = 0;
+  for (const mod of Object.values(man.clientModules ?? {})) {
+    nbModules++;
+    for (const c of mod.chunks ?? []) if (typeof c === "string" && c.endsWith(".js")) fichiers.add(c);
+  }
+  // Chunks d'ENTRÉE webpack des segments (layout-*.js / page-*.js) de la route.
+  const rel = norm(path.relative(path.join(nextDir, "server", "app"), path.dirname(m)));
+  const parts = rel.split("/");
+  for (let i = 0; i <= parts.length; i++) {
+    const d = path.join(nextDir, "static", "chunks", "app", ...parts.slice(0, i));
+    if (!fs.existsSync(d)) continue;
+    for (const f of fs.readdirSync(d)) {
+      const estPage = i === parts.length && /^page-.*\.js$/.test(f);
+      if (/^layout-.*\.js$/.test(f) || estPage)
+        fichiers.add(norm(path.join("static", "chunks", "app", ...parts.slice(0, i), f)));
+    }
+  }
+  if (route === ROUTES[0]) {
+    console.log("DIAG cles manifeste:", Object.keys(man).join(","), "| modules clients:", nbModules, "| entryJSFiles:", Object.keys(entrees).length);
+    console.log("DIAG app-build-manifest:", fs.existsSync(path.join(nextDir, "app-build-manifest.json")));
+    console.log("DIAG dossier:", fs.readdirSync(path.dirname(m)).join(","));
+    const ex = Object.entries(man.clientModules ?? {}).slice(0, 2);
+    console.log("DIAG exemple:", JSON.stringify(ex).slice(0, 600));
+  }
   let totalGz = 0;
   let totalBrut = 0;
   for (const f of fichiers) {
@@ -68,8 +95,8 @@ for (const route of ROUTES) {
   }
   // Part propre à la route : hors racine/polyfills partagés.
   let propreGz = 0;
-  for (const f of fichiers) if (!racine.includes(f) && !polyfills.includes(f)) propreGz += poids(f).gz;
-  details[route] = { segments: Object.keys(entrees).map((k) => k.replace(/.*\/src\/app/, "src/app")), fichiers: [...fichiers].map((f) => ({ f, ...poids(f) })) };
+  for (const f of fichiers) if (!racine.includes(f)) propreGz += poids(f).gz;
+  details[route] = { modulesClients: nbModules, segments: Object.keys(entrees).map((k) => k.replace(/.*\/src\/app/, "src/app")), fichiers: [...fichiers].map((f) => ({ f, ...poids(f) })) };
   lignes.push(
     `| ${route} | ${(totalGz / 1024).toFixed(1)} KB | ${(propreGz / 1024).toFixed(1)} KB | ${(totalBrut / 1024).toFixed(1)} KB |`,
   );
@@ -82,7 +109,7 @@ const md = [
   "|---|---|---|---|",
   ...lignes,
   "",
-  `Racine partagée (rootMainFiles + polyfills) : ${((racine.concat(polyfills).reduce((s, f) => s + poids(f).gz, 0)) / 1024).toFixed(1)} KB gz`,
+  `Racine partagée (rootMainFiles, polyfills nomodule exclus) : ${((racine.reduce((s, f) => s + poids(f).gz, 0)) / 1024).toFixed(1)} KB gz`,
 ].join("\n");
 console.log(md);
 if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md + "\n\n");
