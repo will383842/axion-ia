@@ -112,3 +112,25 @@ export function gestesEncorePossibles(entree: EntreeEncorePossible): GesteEncore
   }
   return out;
 }
+
+/**
+ * 🔴 QUAL-FIL-01 — les MANQUES FIGÉS d'un dossier clos : les étapes encore
+ * dues dont le geste est verrouillé (évaluation finale, satisfaction à chaud…).
+ *
+ * Sans cette liste, le bandeau d'un dossier clos disait « Encore possible :
+ * rien n'est en attente » et laissait croire le dossier complet, alors que la
+ * checklist, plus bas, montrait des étapes dues mais bloquées. La source est
+ * la même que la checklist (`etapeBloqueeParLeVerrou`), et le filtre est
+ * l'EXACT complément de celui de `gestesEncorePossibles` : une étape due
+ * figure dans l'une OU l'autre liste, jamais dans les deux.
+ *
+ * À n'appeler que sur un dossier clos, verrou actif.
+ */
+export function manquesFigesALaCloture(etapes: ReadonlyArray<EtapeParcours> | null): string[] {
+  return (etapes ?? [])
+    .filter((e) => etapeBloqueeParLeVerrou(e, true))
+    .map((e) => {
+      const avancement = e.avancement ? ` (${e.avancement.fait}/${e.avancement.total})` : "";
+      return `${e.libelle}${avancement}`;
+    });
+}

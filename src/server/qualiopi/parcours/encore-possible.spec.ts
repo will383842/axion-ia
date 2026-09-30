@@ -5,7 +5,11 @@
 
 import { describe, expect, it } from "vitest";
 
-import { gestesEncorePossibles, type EntreeEncorePossible } from "./encore-possible";
+import {
+  gestesEncorePossibles,
+  manquesFigesALaCloture,
+  type EntreeEncorePossible,
+} from "./encore-possible";
 import type { EtapeParcours } from "./session-parcours";
 
 const P = "/fr/admin/qualiopi/sessions";
@@ -109,5 +113,32 @@ describe("gestesEncorePossibles", () => {
     expect(gestesEncorePossibles(entree({ factures: 1 })).map((g) => g.libelle)).not.toContain(
       "Aucune facture émise",
     );
+  });
+});
+
+describe("🔴 manquesFigesALaCloture — le bandeau ne laisse pas croire le dossier complet", () => {
+  const CHAUD = etape({ cle: "satisfaction_chaud", avancement: { fait: 2, total: 3 } });
+
+  it("liste les étapes dues bloquées par le verrou (évaluation finale…), jamais une faite", () => {
+    expect(manquesFigesALaCloture([EVALUATION, FROID, FAITE])).toEqual([
+      "Libellé evaluation_finale",
+    ]);
+  });
+
+  it("aucune étape n'apparaît à la fois dans « Encore possible » et dans les manques figés", () => {
+    const etapes = [EVALUATION, FROID, SIGNATURE, CHAUD, FAITE];
+    const figes = manquesFigesALaCloture(etapes);
+    const possibles = gestesEncorePossibles(entree({ etapes })).map((g) => g.libelle);
+    for (const e of etapes.filter((x) => x.etat !== "fait" && x.etat !== "sans_objet")) {
+      const dansFiges = figes.some((l) => l.startsWith(e.libelle));
+      const dansPossibles = possibles.some((l) => l.startsWith(e.libelle));
+      // Chaque étape due est dans EXACTEMENT une des deux listes.
+      expect(dansFiges !== dansPossibles, e.cle).toBe(true);
+    }
+  });
+
+  it("parcours illisible ou complet : aucun manque figé", () => {
+    expect(manquesFigesALaCloture(null)).toEqual([]);
+    expect(manquesFigesALaCloture([FAITE])).toEqual([]);
   });
 });

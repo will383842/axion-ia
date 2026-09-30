@@ -26,6 +26,13 @@
  * L3 : le bloc « Clôture du dossier » en tenait une seconde, qui pouvait
  * contredire celle-ci.
  *
+ * « Manques figés au moment de la clôture » (QUAL-FIL-01) : les étapes dues
+ * dont le geste est verrouillé, lues dans le MÊME parcours
+ * (`manquesFigesALaCloture`) — complément exact de « Encore possible ».
+ *
+ * Interrupteur de secours (QUAL-VERROU-07) : `verrouDossierActif()` est lu ICI,
+ * côté serveur, et passé au bandeau, qui dit alors que le verrou est coupé.
+ *
  * ⚠️ Budget console : ce layout n'ajoute aucune dépendance cliente — un
  * Provider de contexte et le petit formulaire de réouverture, rien d'autre.
  */
@@ -42,11 +49,13 @@ import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions
 import {
   dossierFige,
   phaseDossier,
+  verrouDossierActif,
   type PhaseDossier,
 } from "@/server/qualiopi/sessions/verrou-dossier";
 import { lireEtatVerrouFiche, lireParcoursFiche } from "@/server/qualiopi/sessions/lectures-fiche";
 import {
   gestesEncorePossibles,
+  manquesFigesALaCloture,
   type GesteEncorePossible,
 } from "@/server/qualiopi/parcours/encore-possible";
 import {
@@ -80,7 +89,7 @@ const LIBELLES_PHASE: Record<PhaseDossier, string> = {
 async function lireEncorePossible(
   sessionId: string,
   prefixeSessions: string,
-): Promise<GesteEncorePossible[]> {
+): Promise<{ encorePossible: GesteEncorePossible[]; manquesFiges: string[] }> {
   const [parcours, piecesASigner, exemplairesARemettre, froidSansReponse, factures] =
     await Promise.all([
       lireParcoursFiche(sessionId),
@@ -109,15 +118,19 @@ async function lireEncorePossible(
       }),
       prisma.factureFormation.count({ where: { sessionId } }),
     ]);
-  return gestesEncorePossibles({
-    sessionId,
-    prefixeSessions,
-    etapes: parcours?.etapes ?? null,
-    piecesASigner,
-    exemplairesARemettre,
-    froidSansReponse,
-    factures,
-  });
+  const etapes = parcours?.etapes ?? null;
+  return {
+    encorePossible: gestesEncorePossibles({
+      sessionId,
+      prefixeSessions,
+      etapes,
+      piecesASigner,
+      exemplairesARemettre,
+      froidSansReponse,
+      factures,
+    }),
+    manquesFiges: manquesFigesALaCloture(etapes),
+  };
 }
 
 export default async function SessionFicheLayout({
@@ -156,7 +169,9 @@ export default async function SessionFicheLayout({
   const sessionBase = `/${locale}/${adminPrefix}/qualiopi/sessions/${id}`;
   const fige = dossierFige(verrou.etat);
   const phase = phaseDossier(verrou.statut, verrou.etat);
-  const encorePossible = fige ? await lireEncorePossible(id, `${base}/sessions`) : [];
+  const { encorePossible, manquesFiges } = fige
+    ? await lireEncorePossible(id, `${base}/sessions`)
+    : { encorePossible: [], manquesFiges: [] };
 
   const libelleCls =
     "text-[length:var(--text-admin-xs)] tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase";
@@ -231,6 +246,8 @@ export default async function SessionFicheLayout({
         peutRouvrir={peutEngager(acces.role, "rouvrir_dossier")}
         motifSansHabilitation={MOTIF_REFUS.rouvrir_dossier}
         encorePossible={encorePossible}
+        manquesFiges={manquesFiges}
+        verrouActif={verrouDossierActif()}
         rouvrirAction={rouvrirDossierSessionAction}
         reverrouillerAction={reverrouillerDossierSessionAction}
       />

@@ -14,8 +14,15 @@
  *  - `clos` : « Dossier clôturé le … — lecture seule », le texte, l'encart
  *    « Encore possible » (les gestes ouverts RÉELLEMENT dus, jamais la liste
  *    théorique — la SEULE liste de ce nom sur la fiche, construite par
- *    `gestesEncorePossibles`), et « Rouvrir le dossier » — ou, sans
+ *    `gestesEncorePossibles`), les « Manques figés au moment de la clôture »
+ *    (QUAL-FIL-01 : les étapes dues dont le geste est verrouillé, complément
+ *    exact de la liste précédente — sans elles, un dossier incomplet se lisait
+ *    « rien n'est en attente »), et « Rouvrir le dossier » — ou, sans
  *    l'habilitation, à qui s'adresser ;
+ *  - `clos` avec l'interrupteur de secours posé (QUAL-VERROU-07) : l'état reste
+ *    « clos » — l'interrupteur coupe le blocage, jamais la vérité — mais le
+ *    bandeau ne dit plus « lecture seule » : il dit que le verrou est coupé et
+ *    que les modifications ne sont pas inscrites au dossier ;
  *  - `rouvert` : bandeau orange, le texte (date, auteur, motif), et « Clore à
  *    nouveau » ;
  *  - `a_recueillir`, `hors_parcours` : le texte seul, pour information ;
@@ -29,6 +36,7 @@
 import {
   dateParis,
   texteEtatVerrou,
+  verrouDossierActif,
   type EtatVerrouDossier,
 } from "@/server/qualiopi/sessions/verrou-dossier";
 import { RouvrirDossierForm, type RouvrirDossierFormProps } from "./RouvrirDossierForm";
@@ -46,9 +54,28 @@ export interface BandeauVerrouDossierProps {
   motifSansHabilitation: string;
   /** Gestes ouverts réellement dus (dossier clos seulement). */
   encorePossible: ReadonlyArray<GesteEncorePossible>;
+  /**
+   * Étapes dues bloquées par le verrou (`manquesFigesALaCloture`) — dossier
+   * clos, verrou actif. Vide par défaut.
+   */
+  manquesFiges?: ReadonlyArray<string>;
+  /**
+   * `verrouDossierActif()`, lu CÔTÉ SERVEUR par le layout. Par défaut, le
+   * composant (serveur) le lit lui-même : l'omettre ne peut jamais afficher
+   * « lecture seule » sur un dossier dont le verrou est coupé.
+   */
+  verrouActif?: boolean;
   rouvrirAction: RouvrirDossierFormProps["rouvrirAction"];
   reverrouillerAction: RouvrirDossierFormProps["reverrouillerAction"];
 }
+
+/** QUAL-VERROU-07 — ce que dit le bandeau d'un dossier clos quand l'interrupteur est posé. */
+export const MENTION_VERROU_COUPE =
+  "Verrou coupé par l'interrupteur de secours : les modifications sont possibles et ne sont pas inscrites au dossier.";
+
+/** QUAL-FIL-01 — titre de la liste des étapes dues bloquées par le verrou. */
+export const TITRE_MANQUES_FIGES =
+  "Manques figés au moment de la clôture — rouvrir le dossier pour les corriger";
 
 const cadre =
   "mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border p-[var(--space-admin-4)]";
@@ -59,6 +86,8 @@ export function BandeauVerrouDossier({
   peutRouvrir,
   motifSansHabilitation,
   encorePossible,
+  manquesFiges = [],
+  verrouActif = verrouDossierActif(),
   rouvrirAction,
   reverrouillerAction,
 }: BandeauVerrouDossierProps): React.ReactElement | null {
@@ -82,34 +111,62 @@ export function BandeauVerrouDossier({
         className={`${cadre} border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)]`}
       >
         <p className="text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-          Dossier clôturé le {dateParis(etat.depuis)} — lecture seule
+          Dossier clôturé le {dateParis(etat.depuis)}
+          {verrouActif ? " — lecture seule" : ""}
         </p>
         {paragraphe}
 
-        <div className="mt-[var(--space-admin-3)]">
-          <p className="text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
-            Encore possible
+        {!verrouActif && (
+          <p
+            role="status"
+            data-verrou-coupe=""
+            className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-warning)]"
+          >
+            {MENTION_VERROU_COUPE}
           </p>
-          {encorePossible.length === 0 ? (
-            <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-              Rien n&apos;est en attente. Lecture, téléchargements et dossier d&apos;audit restent
-              disponibles.
+        )}
+
+        {verrouActif && manquesFiges.length > 0 && (
+          <div className="mt-[var(--space-admin-3)]" data-manques-figes="">
+            <p className="text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
+              {TITRE_MANQUES_FIGES}
             </p>
-          ) : (
-            <ul className="mt-[var(--space-admin-1)] list-disc pl-[var(--space-admin-5)] text-[length:var(--text-admin-sm)]">
-              {encorePossible.map((g) => (
-                <li key={g.libelle}>
-                  <a
-                    href={g.href}
-                    className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                  >
-                    {g.libelle}
-                  </a>
-                </li>
+            <ul className="mt-[var(--space-admin-1)] list-disc pl-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+              {manquesFiges.map((m) => (
+                <li key={m}>{m}</li>
               ))}
             </ul>
-          )}
-        </div>
+          </div>
+        )}
+
+        {verrouActif && (
+          <div className="mt-[var(--space-admin-3)]">
+            <p className="text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
+              Encore possible
+            </p>
+            {encorePossible.length === 0 ? (
+              <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                {manquesFiges.length > 0
+                  ? "Aucun autre geste sans rouvrir le dossier. "
+                  : "Rien n'est en attente. "}
+                Lecture, téléchargements et dossier d&apos;audit restent disponibles.
+              </p>
+            ) : (
+              <ul className="mt-[var(--space-admin-1)] list-disc pl-[var(--space-admin-5)] text-[length:var(--text-admin-sm)]">
+                {encorePossible.map((g) => (
+                  <li key={g.libelle}>
+                    <a
+                      href={g.href}
+                      className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                    >
+                      {g.libelle}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
 
         {peutRouvrir ? (
           <RouvrirDossierForm
