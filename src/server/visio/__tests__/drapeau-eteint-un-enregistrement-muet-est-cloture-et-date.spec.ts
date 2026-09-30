@@ -86,24 +86,28 @@ describe("⛔ drapeau éteint : un enregistrement muet est clôturé et daté", 
     vi.unstubAllEnvs();
   });
 
-  it("drapeau éteint : l'enregistrement abandonné est déposé avec sa date de purge", { timeout: 60_000 }, async () => {
-    const db: FausseBase = fausseBase();
-    etat.db = commePrisma(db);
-    const { appareilId } = semerAppareil(db);
-    const rencontreId = semerRencontreTest(db, { debutPrevu: T0 }).rencontreId;
-    semerEnregistrement(db, { rencontreId, appareilId, statut: "interrompu", updatedAt: T0 });
-    vi.useFakeTimers({ toFake: ["Date"] });
-    vi.setSystemTime(new Date(T0.getTime() + 600 * MINUTE));
+  it(
+    "drapeau éteint : l'enregistrement abandonné est déposé avec sa date de purge",
+    { timeout: 60_000 },
+    async () => {
+      const db: FausseBase = fausseBase();
+      etat.db = commePrisma(db);
+      const { appareilId } = semerAppareil(db);
+      const rencontreId = semerRencontreTest(db, { debutPrevu: T0 }).rencontreId;
+      semerEnregistrement(db, { rencontreId, appareilId, statut: "interrompu", updatedAt: T0 });
+      vi.useFakeTimers({ toFake: ["Date"] });
+      vi.setSystemTime(new Date(T0.getTime() + 600 * MINUTE));
 
-    await unPassage();
+      await unPassage();
 
-    const e = db.lignes("enregistrement")[0]!;
-    expect(e["statut"]).toBe("depose");
-    expect(e["motifArret"]).toBe("cloture_serveur");
-    expect(e["audioAPurgerAvant"]).toBeInstanceOf(Date);
-    // Contre-témoin : le dossier client, lui, reste éteint.
-    expect(etat.passerBalayage).not.toHaveBeenCalled();
-  });
+      const e = db.lignes("enregistrement")[0]!;
+      expect(e["statut"]).toBe("depose");
+      expect(e["motifArret"]).toBe("cloture_serveur");
+      expect(e["audioAPurgerAvant"]).toBeInstanceOf(Date);
+      // Contre-témoin : le dossier client, lui, reste éteint.
+      expect(etat.passerBalayage).not.toHaveBeenCalled();
+    },
+  );
 
   it("le worker démarre et son entrée répétable est posée sans condition", () => {
     const worker = lire("src/server/queue/worker.ts");

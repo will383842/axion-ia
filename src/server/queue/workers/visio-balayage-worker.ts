@@ -48,7 +48,7 @@ async function processJob(_job: Job<VisioBalayageJobData>): Promise<void> {
   await passerEnregistreur(prisma, enregistreur);
 }
 
-type BaseDossier = Parameters<typeof import("@/server/visio/balayage")["passerBalayage"]>[0];
+type BaseDossier = Parameters<(typeof import("@/server/visio/balayage"))["passerBalayage"]>[0];
 
 /**
  * Le dossier client (PR 4), dans son propre `try` (V1, F6) : une panne hors

@@ -173,7 +173,12 @@ export async function creerAppareil(
 }
 
 export type ResultatRenouvellement =
-  | { readonly ok: true; readonly appareilId: string; readonly jeton: string; readonly expireLe: Date }
+  | {
+      readonly ok: true;
+      readonly appareilId: string;
+      readonly jeton: string;
+      readonly expireLe: Date;
+    }
   | { readonly ok: false; readonly message: string };
 
 /**
@@ -202,7 +207,8 @@ export async function renouvelerAppareil(
     if (n.count === 0) {
       return {
         ok: false,
-        message: "Cet appareil est déjà révoqué : créez un nouveau jeton plutôt que de le renouveler.",
+        message:
+          "Cet appareil est déjà révoqué : créez un nouveau jeton plutôt que de le renouveler.",
       };
     }
     const cree = await creerAppareil(tx, {

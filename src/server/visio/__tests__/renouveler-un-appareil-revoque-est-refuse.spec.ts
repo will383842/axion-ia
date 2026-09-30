@@ -40,7 +40,9 @@ function base(appareil: { id: string; nom: string; revoqueLe: Date | null } | nu
       },
       updateMany: async (a: { where: { revoqueLe: null } }) => {
         journal.push("revoquer");
-        return { count: appareil && appareil.revoqueLe === null && a.where.revoqueLe === null ? 1 : 0 };
+        return {
+          count: appareil && appareil.revoqueLe === null && a.where.revoqueLe === null ? 1 : 0,
+        };
       },
       create: async () => {
         journal.push("creer");
@@ -62,7 +64,11 @@ function base(appareil: { id: string; nom: string; revoqueLe: Date | null } | nu
 describe("⛔ renouveler un appareil révoqué est refusé", () => {
   it("un appareil actif : dans une transaction, révoqué d'abord, puis recréé", async () => {
     const b = base({ id: "a1", nom: "Poste de test", revoqueLe: null });
-    const r = await renouvelerAppareil(b.db, { appareilId: "a1", adminUserId: "u1", maintenant: T0 });
+    const r = await renouvelerAppareil(b.db, {
+      appareilId: "a1",
+      adminUserId: "u1",
+      maintenant: T0,
+    });
     expect(r.ok).toBe(true);
     if (r.ok) expect(r.appareilId).toBe("nouveau");
     expect(b.journal).toEqual(["debut", "lire", "revoquer", "creer", "fin"]);
@@ -70,7 +76,11 @@ describe("⛔ renouveler un appareil révoqué est refusé", () => {
 
   it("un appareil déjà révoqué : refusé, aucun jeton créé", async () => {
     const b = base({ id: "a1", nom: "Poste de test", revoqueLe: T0 });
-    const r = await renouvelerAppareil(b.db, { appareilId: "a1", adminUserId: "u1", maintenant: T0 });
+    const r = await renouvelerAppareil(b.db, {
+      appareilId: "a1",
+      adminUserId: "u1",
+      maintenant: T0,
+    });
     expect(r.ok).toBe(false);
     if (!r.ok) expect(r.message).toMatch(/déjà révoqué/);
     expect(b.journal).not.toContain("creer");

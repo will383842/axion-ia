@@ -70,7 +70,10 @@ describe("⛔ un rattachement pendant P3 ne donne qu'une version à valider", ()
     const annulations = b.de("traitementVisio", "updateMany");
     expect(annulations).toHaveLength(1);
     expect(annulations[0]?.args).toMatchObject({
-      where: { compteRenduId: { in: ["cr1"] }, statut: { in: ["a_faire", "suspendu", "en_cours"] } },
+      where: {
+        compteRenduId: { in: ["cr1"] },
+        statut: { in: ["a_faire", "suspendu", "en_cours"] },
+      },
       data: { statut: "annule", verrouJusqua: null },
     });
     // Et la v2 repart bien de P2.
