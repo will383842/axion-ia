@@ -151,7 +151,10 @@ describe("session_dossier_evenements contre un vrai Postgres (Gate D)", () => {
       await reouvrir(tx, s, "Correction de la date de fin");
       await expect(
         tx.$executeRawUnsafe(`DELETE FROM "training_sessions" WHERE "id" = $1::uuid`, s),
-      ).rejects.toThrow();
+        // Le motif PRÉCIS : un `toThrow()` nu passait pour n'importe quelle
+        // erreur (faute de frappe SQL, colonne absente…) sans rien prouver de
+        // la contrainte. On exige la violation de CETTE clé étrangère (23503).
+      ).rejects.toThrow(/session_dossier_evenements_session_id_fkey/);
     });
   });
 

@@ -74,6 +74,14 @@ export interface InscriptionVerrouEntree {
   } | null;
   /** Expiration du jeton d'émargement VALIDE le plus tardif, `null` s'il n'y en a aucun. */
   readonly jetonEmargementValideJusquA: Date | null;
+  /**
+   * 🔴 Revue PR #1245 — la dernière trace d'émargement DÉJÀ PASSÉE : fin de
+   * fenêtre d'un jeton (expiration, ou révocation si elle vient avant) ou
+   * signature. Le dossier ne peut pas être clos avant elle (condition c) : la
+   * date de clôture ne doit donc jamais la précéder, sans quoi le dossier
+   * annonce des preuves « figées » à une date antérieure à l'une d'elles.
+   */
+  readonly emargementFermeLe?: Date | null;
 }
 
 export interface EntreeVerrouDossier {
@@ -200,6 +208,7 @@ export function etatVerrouDossier(entree: EntreeVerrouDossier): EtatVerrouDossie
       entree.realiseeLe,
       ...actives.map((i) => i.attestation?.createdAt ?? null),
       ...entree.inscriptions.map((i) => i.sortieAt),
+      ...actives.map((i) => i.emargementFermeLe ?? null),
     ]) ?? entree.maintenant;
   return { etat: "clos", depuis };
 }
@@ -320,7 +329,7 @@ export function messageDossierClos(depuis: Date): string {
 /** Client Prisma ou transaction interactive. */
 type ClientLecture = Pick<typeof prisma, "trainingSession" | "sessionDossierEvenement">;
 
-function selectSession(maintenant: Date) {
+function selectSession() {
   return {
     id: true,
     statut: true,
@@ -337,10 +346,15 @@ function selectSession(maintenant: Date) {
         sortieAt: true,
         trainee: { select: { prenom: true, nom: true } },
         attestationDocument: { select: { type: true, annuleeAt: true, createdAt: true } },
+        // TOUS les jetons (valides, expirés, révoqués) : les valides disent si
+        // l'émargement est encore ouvert, les autres QUAND il s'est fermé —
+        // la date de clôture ne peut pas précéder cette fermeture.
         emargementTokens: {
-          where: { revokedAt: null, expiresAt: { gt: maintenant } },
-          select: { expiresAt: true },
-          orderBy: { expiresAt: "desc" as const },
+          select: { expiresAt: true, revokedAt: true },
+        },
+        emargementSignatures: {
+          select: { signeAt: true },
+          orderBy: { signeAt: "desc" as const },
           take: 1,
         },
       },
@@ -358,7 +372,8 @@ interface LigneSession {
     sortieAt: Date | null;
     trainee: { prenom: string; nom: string };
     attestationDocument: { type: string; annuleeAt: Date | null; createdAt: Date } | null;
-    emargementTokens: Array<{ expiresAt: Date }>;
+    emargementTokens: Array<{ expiresAt: Date; revokedAt: Date | null }>;
+    emargementSignatures: Array<{ signeAt: Date }>;
   }>;
 }
 
@@ -372,14 +387,30 @@ function entreeDepuisLigne(
     realiseeLe: s.transitions[0]?.createdAt ?? null,
     evenements,
     maintenant,
-    inscriptions: s.enrollments.map((e) => ({
-      id: e.id,
-      statut: e.statut,
-      stagiaire: `${e.trainee.prenom} ${e.trainee.nom}`.trim(),
-      sortieAt: e.sortieAt,
-      attestation: e.attestationDocument,
-      jetonEmargementValideJusquA: e.emargementTokens[0]?.expiresAt ?? null,
-    })),
+    inscriptions: s.enrollments.map((e) => {
+      const t = maintenant.getTime();
+      const valides = e.emargementTokens
+        .filter((j) => j.revokedAt === null && j.expiresAt.getTime() > t)
+        .map((j) => j.expiresAt);
+      // Fin de fenêtre de chaque jeton : sa révocation si elle précède son
+      // expiration. Seules les fins DÉJÀ passées comptent pour la clôture.
+      const fermetures = e.emargementTokens
+        .map((j) =>
+          j.revokedAt !== null && j.revokedAt.getTime() < j.expiresAt.getTime()
+            ? j.revokedAt
+            : j.expiresAt,
+        )
+        .filter((d) => d.getTime() <= t);
+      return {
+        id: e.id,
+        statut: e.statut,
+        stagiaire: `${e.trainee.prenom} ${e.trainee.nom}`.trim(),
+        sortieAt: e.sortieAt,
+        attestation: e.attestationDocument,
+        jetonEmargementValideJusquA: max(valides),
+        emargementFermeLe: max([...fermetures, ...e.emargementSignatures.map((x) => x.signeAt)]),
+      };
+    }),
   };
 }
 
@@ -443,7 +474,7 @@ export async function chargerEtatVerrou(
   const client = tx ?? prisma;
   const s = (await client.trainingSession.findUnique({
     where: { id: sessionId },
-    select: selectSession(maintenant),
+    select: selectSession(),
   })) as LigneSession | null;
   if (s === null) return null;
   const evenements = (await lireEvenements(client, [sessionId])).get(sessionId) ?? [];
@@ -461,7 +492,7 @@ export async function chargerEtatsVerrou(
   if (ids.length === 0) return out;
   const lignes = (await prisma.trainingSession.findMany({
     where: { id: { in: ids } },
-    select: selectSession(maintenant),
+    select: selectSession(),
   })) as LigneSession[];
   const evenements = await lireEvenements(prisma, ids);
   for (const s of lignes) {
