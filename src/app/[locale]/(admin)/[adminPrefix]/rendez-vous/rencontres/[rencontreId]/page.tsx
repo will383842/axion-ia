@@ -200,9 +200,9 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
             role="status"
             className="mt-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-warning)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
           >
-            <AdminBadge tone="warning">votre réponse est attendue</AdminBadge> L&apos;enregistrement
-            dure moins de 90 secondes : le compte rendu attend que vous disiez si le client a
-            refusé.
+            <AdminBadge tone="warning">votre réponse est attendue</AdminBadge> Enregistrement très
+            court ou session interrompue avant la fin : répondez plus bas, dans « Compte rendu de
+            l&apos;enregistrement ».
           </p>
         ) : null}
         {vueEnregistrement === null ? (

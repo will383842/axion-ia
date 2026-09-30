@@ -24,31 +24,8 @@ import {
   cleConnexionIp,
 } from "./lib/limites-connexion-admin";
 import { signInSchema } from "./lib/schemas/auth";
-import type { AdminRole, AdminStatus } from "../prisma/generated/client";
-
-// Sprint 24 / B3 — cache 60s pour le check status admin dans le JWT callback.
-// Sans cache, chaque requête authentifiée déclenche un round-trip DB ; 60s
-// suffit (revocation < 60s satisfait la cible audit P1 « revocation < 24h »).
-// Map module-level — survit aux requêtes Node runtime, naturellement bornée
-// par cold-start frequency.
-const STATUS_CACHE_TTL_MS = 60_000;
-const statusCache = new Map<string, { status: AdminStatus; ts: number }>();
-
-async function getCachedAdminStatus(adminUserId: string): Promise<AdminStatus | null> {
-  const now = Date.now();
-  const cached = statusCache.get(adminUserId);
-  if (cached && now - cached.ts < STATUS_CACHE_TTL_MS) return cached.status;
-  const row = await prisma.adminUser.findUnique({
-    where: { id: adminUserId },
-    select: { status: true },
-  });
-  if (!row) {
-    statusCache.delete(adminUserId);
-    return null;
-  }
-  statusCache.set(adminUserId, { status: row.status, ts: now });
-  return row.status;
-}
+import { rafraichirJetonAdmin } from "./lib/auth-jeton-admin";
+import type { AdminRole } from "../prisma/generated/client";
 
 declare module "next-auth" {
   interface Session {
@@ -73,23 +50,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     ...authConfig.callbacks,
     /**
-     * Sprint 24 / B3 — enrich + revoke check.
+     * Sprint 24 / B3 — enrich + revoke check ; S1 (30/09) — rôle relu.
      *
-     * 1. Au signIn, copie id+role+status (comme l'Edge callback).
-     * 2. À chaque refresh JWT, recheck `adminUser.status` via un cache 60s :
-     *    si le compte est `suspended` ou supprimé, on retourne `null` →
-     *    Auth.js détruit le JWT et le user est forcé à se reconnecter.
+     * 1. Au signIn, copie id+role (comme l'Edge callback).
+     * 2. À chaque refresh JWT, relit `adminUser.status` ET `adminUser.role`
+     *    via un cache 60s (`src/lib/auth-jeton-admin.ts`) : compte `suspended`
+     *    ou supprimé → `null` (Auth.js détruit le JWT) ; rôle changé → le jeton
+     *    le suit, sans attendre la fin des 30 jours de session.
      */
     async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        token.role = (user as { role?: string }).role;
-      }
-      const adminUserId = typeof token.id === "string" ? token.id : null;
-      if (!adminUserId) return token;
-      const status = await getCachedAdminStatus(adminUserId);
-      if (status !== "active") return null;
-      return token;
+      return rafraichirJetonAdmin({ token, user });
     },
   },
   providers: [

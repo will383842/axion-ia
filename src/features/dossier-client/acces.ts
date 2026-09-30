@@ -35,6 +35,18 @@ import { peutVoirLesEchanges } from "./roles-echanges";
 
 export { peutVoirLesEchanges, ROLES_DOSSIER_ECHANGES } from "./roles-echanges";
 
+/**
+ * Refus d'accès d'une action (session expirée, rôle hors de la liste A2). Son
+ * message est écrit pour Will : il peut revenir dans l'URL (`?erreur=`), à la
+ * différence d'une erreur technique (`message-affichable.ts`).
+ */
+export class AccesRefuse extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "AccesRefuse";
+  }
+}
+
 /** Le message montré à un rôle qui n'a pas accès : il NOMME le rôle et la raison. */
 export function motifSansAccesAuxEchanges(role: string | null | undefined): string {
   const libelle =
@@ -91,8 +103,8 @@ export async function exigerAccesEchanges(
 ): Promise<{ userId: string; role: RoleAdmin }> {
   const session = await auth();
   const user = session?.user as { id?: string; role?: string | null } | undefined;
-  if (!user?.id) throw new Error("Session expirée : reconnectez-vous.");
+  if (!user?.id) throw new AccesRefuse("Session expirée : reconnectez-vous.");
   const role = (user.role ?? null) as RoleAdmin | null;
-  if (!peutVoirLesEchanges(role)) throw new Error(motif(role));
+  if (!peutVoirLesEchanges(role)) throw new AccesRefuse(motif(role));
   return { userId: user.id, role: role as RoleAdmin };
 }

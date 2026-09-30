@@ -10,7 +10,7 @@ export const VERSION_CONTRAT = 1;
 export const ENTETE_CONTRAT = "x-enregistreur-contrat";
 
 /** Version de l'extension (reprise du manifeste, envoyée au site). */
-export const VERSION_EXTENSION = "1.0.0";
+export const VERSION_EXTENSION = "1.1.0";
 
 /**
  * La SEULE adresse que l'extension appelle. Aucun préfixe de console, aucune
@@ -61,3 +61,11 @@ export const SEUIL_SILENCE = 0.01;
 
 /** À partir de 3 participants, un compte Meet gratuit coupe à 60 min. */
 export const PARTICIPANTS_LIMITE_MEET = 3;
+
+/**
+ * Le service worker ne compte les participants de la salle que toutes les
+ * 15 s (lecture de la page Meet). Une arrivée peut donc être vue jusqu'à 15 s
+ * après avoir eu lieu : la fenêtre « hors accord » s'ouvre une période plus
+ * tôt (RGPD-01). Constante LOCALE, hors contrat : le site ne la lit pas.
+ */
+export const PERIODE_MESURE_SALLE_MS = 15000;

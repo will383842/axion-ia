@@ -50,6 +50,25 @@ export const portCoutReel: PortCout = {
   },
 };
 
+/**
+ * Un appel ANNULÉ en vol (arrêt du worker, V1 F3) : son montant réel est
+ * inconnu, mais il a pu être facturé. On inscrit l'ESTIMATION qui a servi au
+ * contrôle du plafond — une borne, jamais zéro.
+ */
+export async function appelAnnuleEnVol(
+  port: PortCout,
+  a: { readonly jobId: string; readonly modele: string; readonly estimationUsd: number },
+): Promise<void> {
+  await port.enregistrer({
+    jobId: a.jobId,
+    provider: "openai",
+    model: a.modele,
+    tokensInput: 0,
+    tokensOutput: 0,
+    costUsd: a.estimationUsd,
+  });
+}
+
 /** Avant chaque appel. */
 export async function avantAppel(port: PortCout, estimationUsd: number): Promise<void> {
   await port.verifierPlafond(estimationUsd);

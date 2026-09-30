@@ -41,6 +41,8 @@ export interface EnregistrementATraiter {
   readonly origineMs: number;
   /** Will a confirmé qu'un enregistrement de moins de 90 s doit être traité. */
   readonly courtConfirme: boolean;
+  /** Will a vérifié que personne n'est entré sans accord (session close par le serveur). */
+  readonly fenetresVerifiees: boolean;
   readonly tranches: readonly TrancheATraiter[];
 }
 

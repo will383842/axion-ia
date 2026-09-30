@@ -13,6 +13,7 @@
 import { appeler, urlDe } from "./lib/api.js";
 import {
   DELAIS_LOCAUX,
+  PERIODE_MESURE_SALLE_MS,
   VERSION_CONTRAT,
   VERSION_EXTENSION,
   VERSION_TEXTE_ANNONCE,
@@ -435,7 +436,7 @@ let dernierBattementSession = 0;
 
 async function surNiveaux(msg) {
   const maintenant = Date.now();
-  if (maintenant - derniereMesureSalle > 15000) {
+  if (maintenant - derniereMesureSalle > PERIODE_MESURE_SALLE_MS) {
     derniereMesureSalle = maintenant;
     derniereSalle = await mesurerLaSalle();
     etat.nbParticipants = derniereSalle.nb;

@@ -36,7 +36,7 @@ import type { CatalogueIA } from "./catalogue-ia";
 import type { ClientOpenAIVisio } from "./openai/client";
 import { idTacheVisio } from "./id-tache";
 import type { PortCout } from "./openai/cout";
-import { classerErreurOpenAI, ErreurVisio } from "./openai/erreurs";
+import { AppelInterrompu, classerErreurOpenAI, ErreurVisio } from "./openai/erreurs";
 import {
   executionsImputees,
   ResultatOrphelin,
@@ -111,6 +111,14 @@ export interface ContexteEtape {
   readonly jobId: string;
   /** Lève `InterruptionArret` si le worker s'arrête (à appeler entre deux appels coûteux). */
   readonly verifierArret: () => void;
+  /**
+   * `verifierArret` + relecture EN BASE de la main (prolonge le verrou) :
+   * lève `ResultatOrphelin` si l'étape a été annulée ou reprise. À attendre
+   * avant CHAQUE appel OpenAI d'une boucle — `verifierArret` seul ne voit une
+   * annulation qu'au prochain battement (jusqu'à 60 s), et les appels
+   * suivants partaient encore, facturés, pour un résultat orphelin.
+   */
+  readonly verifierMain: () => Promise<void>;
   /** Écriture intermédiaire gardée (jeton + retrait). */
   readonly ecrireEnCours: <R>(fn: (tx: Tx) => Promise<R>) => Promise<R>;
 }
@@ -138,12 +146,21 @@ export class ArretVisio extends Error {
   }
 }
 
-/** L'étape attend une réponse de Will (enregistrement de moins de 90 s). */
+/**
+ * L'étape attend une réponse de Will : enregistrement de moins de 90 s, ou
+ * session close par le serveur sans la liste des fenêtres hors accord.
+ */
 export class AttenteWill extends Error {
   constructor(readonly motif: string) {
     super(`en attente de Will : ${motif}`);
     this.name = "AttenteWill";
   }
+}
+
+/** « motif » → « Motif. » (majuscule, ponctuation finale gardée ou ajoutée). */
+function phraseDuMotif(motif: string): string {
+  const m = `${motif.charAt(0).toUpperCase()}${motif.slice(1)}`;
+  return /[?.!]$/.test(m) ? m : `${m}.`;
 }
 
 function plusMinutes(d: Date, min: number): Date {
@@ -156,11 +173,22 @@ export function decisionApresErreur(
   err: ErreurVisio,
   maintenant: Date,
 ): DecisionEchec {
-  const base = { classe: err.classe, code: err.code } as const;
+  // V1 F5 : un échec d'une AUTRE classe que le précédent ouvre une nouvelle
+  // série — une limite de débit ne consomme pas l'essai d'une sortie invalide,
+  // et une base non migrée se date de SON premier échec. Classe précédente
+  // inconnue (report sans classe, ligne ancienne) : la série continue.
+  const memeSerie = t.classeErreur == null || t.classeErreur === err.classe;
+  const echecs = memeSerie ? t.echecs : 0;
+  const premierConnu = memeSerie ? t.premierEchecLe : null;
+  const base = {
+    classe: err.classe,
+    code: err.code,
+    ...(memeSerie ? {} : { nouvelleSerie: true }),
+  } as const;
   switch (err.classe) {
     case "passagere": {
-      const premier = t.premierEchecLe ?? maintenant;
-      const delai = REPRISES_PASSAGERES_MIN[t.echecs];
+      const premier = premierConnu ?? maintenant;
+      const delai = REPRISES_PASSAGERES_MIN[echecs];
       if (delai === undefined) {
         return {
           ...base,
@@ -180,13 +208,13 @@ export function decisionApresErreur(
       };
     }
     case "contenu":
-      return t.echecs >= 1
+      return echecs >= 1
         ? {
             ...base,
             statut: "echec_definitif",
             compter: true,
             prochaineTentativeLe: null,
-            premierEchecLe: t.premierEchecLe ?? maintenant,
+            premierEchecLe: premierConnu ?? maintenant,
           }
         : {
             ...base,
@@ -201,7 +229,7 @@ export function decisionApresErreur(
         statut: "a_faire",
         compter: false,
         prochaineTentativeLe: plusMinutes(maintenant, REPORT_SCHEMA_MIN),
-        premierEchecLe: t.premierEchecLe ?? maintenant,
+        premierEchecLe: premierConnu ?? maintenant,
       };
     case "configuration":
     case "quota":
@@ -211,7 +239,7 @@ export function decisionApresErreur(
         statut: "suspendu",
         compter: false,
         prochaineTentativeLe: null,
-        premierEchecLe: t.premierEchecLe ?? maintenant,
+        premierEchecLe: premierConnu ?? maintenant,
       };
   }
 }
@@ -294,6 +322,16 @@ export async function executerEtape(
       prochaineTentativeLe: null,
       premierEchecLe: t.premierEchecLe,
     });
+    // V1 F4 : jamais EN SILENCE. Fenêtre app/worker : l'app a programmé une
+    // étape que ce worker ne sait pas encore exécuter ; sans alerte, la
+    // console annonçait « d'ici quelques minutes » et rien ne venait.
+    await deps.alerter({
+      code: CODES_ALERTES_CIRCUIT.etapeSansGestionnaire,
+      niveau: "critique",
+      titre: "Circuit visio suspendu : une étape n'a pas de gestionnaire sur le worker",
+      message: `Étape « ${t.etape} » : le worker en place ne sait pas l'exécuter (worker plus ancien que l'app ?). Vérifiez le déploiement du worker, puis cliquez « Reprendre » sur l'état du circuit.`,
+      rencontreId: null,
+    });
     return "suspendue";
   }
 
@@ -303,13 +341,21 @@ export async function executerEtape(
       if (!ok) mainPerdue = true;
     });
   }, PROLONGATION_VERROU_MS);
+  const verifierArret = (): void => {
+    if (deps.arretDemande()) throw new InterruptionArret();
+    if (mainPerdue) throw new ResultatOrphelin();
+  };
   const ctx: ContexteEtape = {
     t,
     deps,
     jobId: idTacheVisio(t.etape, t.rencontreId, t.execution),
-    verifierArret: () => {
-      if (deps.arretDemande()) throw new InterruptionArret();
-      if (mainPerdue) throw new ResultatOrphelin();
+    verifierArret,
+    verifierMain: async () => {
+      verifierArret();
+      if (!(await deps.depot.prolonger(t))) {
+        mainPerdue = true;
+        throw new ResultatOrphelin();
+      }
     },
     ecrireEnCours: (fn) => deps.depot.ecrireEnCours(t, fn),
   };
@@ -368,7 +414,15 @@ async function traiterErreur(
   const maintenant = deps.maintenant();
   if (err instanceof ResultatOrphelin) return "orphelin";
   if (err instanceof RetraitConstate) return "retrait";
-  if (err instanceof InterruptionArret) {
+  // Arrêt du worker, entre deux appels ou PENDANT un appel annulé (V1 F3) :
+  // l'étape repart `a_faire` sans compter d'essai.
+  if (err instanceof InterruptionArret || err instanceof AppelInterrompu) {
+    if (err instanceof AppelInterrompu && err.echecRegistre !== null) {
+      console.error(
+        `[visio] coût d'un appel annulé en vol NON inscrit (${idTacheVisio(t.etape, t.rencontreId, t.execution)}) :`,
+        err.echecRegistre,
+      );
+    }
     await deps.depot.relacher(t);
     return "relachee";
   }
@@ -387,8 +441,9 @@ async function traiterErreur(
       code: CODES_ALERTES_CIRCUIT.reponseAttendue,
       niveau: "important",
       titre: "Circuit visio : un compte rendu attend votre réponse",
-      message:
-        "L'enregistrement dure moins de 90 secondes : le client a-t-il refusé ? Répondez sur la page du rendez-vous, « Compte rendu de l'enregistrement ».",
+      // Le motif de l'attente (enregistrement court, ou session close par le
+      // serveur sans la liste des personnes sans accord) : Will sait quoi vérifier.
+      message: `${phraseDuMotif(err.motif)} Répondez sur la page du rendez-vous, « Compte rendu de l'enregistrement ».`,
       rencontreId: t.rencontreId,
     });
     return "attente_will";

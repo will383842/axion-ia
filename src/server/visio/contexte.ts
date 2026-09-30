@@ -220,7 +220,7 @@ export function ligneFait(f: FaitPourPasse): string {
     f.type,
     f.portee === "projet" ? (f.projetRef ?? "projet non précisé") : "entreprise",
     neutraliserDonnees(f.enonce),
-    f.valeur || "—",
+    neutraliserDonnees(f.valeur) || "—",
     `dit par ${f.locuteur ?? "?"}`,
     `confiance ${f.confiance}`,
   ].join(" | ");

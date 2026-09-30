@@ -10,9 +10,12 @@
  *      (plafond avant, coût après, troncature contrôlée) ;
  *   4. IDEMPOTENT : une tranche `transcrite` n'est jamais refaite (une panne
  *      au milieu ne refait pas payer ce qui est déjà transcrit) ;
- *   5. un segment qui tombe dans une FENÊTRE HORS ACCORD (une personne arrivée
- *      sans accord, son coupé) est marqué `horsAccord` et sa parole n'est PAS
- *      gardée — elle ne sera jamais transmise plus loin ;
+ *   5. une TRANCHE qui chevauche une FENÊTRE HORS ACCORD (une personne arrivée
+ *      sans accord) n'est JAMAIS envoyée à OpenAI : un segment `horsAccord`
+ *      vide garde sa place (RGPD-01). En second filet, un segment qui tombe
+ *      dans une fenêtre est marqué `horsAccord` et sa parole n'est PAS gardée ;
+ *      une session close par le serveur (sans la liste des fenêtres) attend
+ *      Will avant tout envoi ;
  *   6. la transcription est RETENUE, puis `precontroler` ;
  *   7. TOUS les enregistrements déposés de la rencontre sont transcrits (après
  *      « Arrêter » puis une relance, aucune partie de l'appel n'est perdue) ;
@@ -22,13 +25,13 @@
 
 import { createHash } from "node:crypto";
 
+import { motifDesQuestions, questionsAWill } from "./attentes-will";
 import { DUREE_TRANCHE_S } from "./audio/constantes";
 import { estHorsAccord } from "./dialogue";
 import { AttenteWill, type Gestionnaire } from "./etapes";
 import { LANGUE_TRANSCRIPTION, MODELE_TRANSCRIPTION } from "./openai/modeles";
 import { transcrireTranche } from "./openai/transcrire-tranche";
 import type { EnregistrementATraiter, SegmentAEcrire, TrancheATraiter } from "./port-donnees";
-import { enregistrementTropCourt } from "./verification/g00-precontroles";
 
 /** États d'enregistrement dont le son n'est jamais transcrit. */
 export const ETATS_JAMAIS_TRANSCRITS = new Set(["refuse", "accord_non_confirme", "abandonne"]);
@@ -84,11 +87,12 @@ export const transcrire: Gestionnaire = async (ctx) => {
         dejaFait ? [] : [{ etape: "purger_audio", compteRenduId: null, reinitialiser: true }],
     };
   }
+  // G0b et RGPD-01 : chaque question ouverte (court, session interrompue sans
+  // la liste des fenêtres hors accord) attend SON geste de Will ; rien ne
+  // part chez OpenAI avant. Voir `attentes-will.ts`.
   for (const e of aFaire) {
-    const dureeMs = (e.fin ?? deps.maintenant()).getTime() - e.debut.getTime();
-    if (!e.courtConfirme && enregistrementTropCourt(dureeMs, e.motifArret)) {
-      throw new AttenteWill("enregistrement de moins de 90 secondes : le client a-t-il refusé ?");
-    }
+    const questions = questionsAWill(e, deps.maintenant());
+    if (questions.length > 0) throw new AttenteWill(motifDesQuestions(questions));
   }
 
   const faits: Transcrit[] = [];
@@ -131,19 +135,49 @@ async function transcrireUn(
     .filter((x) => x.statut === "transcrite")
     .reduce((s, x) => s + (x.dureeMs ?? DUREE_TRANCHE_S * 1000), 0);
   for (const tranche of tranchesATranscrire(e.tranches)) {
-    ctx.verifierArret();
-    const octets = await deps.donnees.lireSonTranche(tranche.id);
+    await ctx.verifierMain();
     const dureeTranche = tranche.dureeMs ?? DUREE_TRANCHE_S * 1000;
+    const decalageMs = tranche.debutCaptureEpochMs - e.origineMs;
+    // RGPD-01 : une tranche qui chevauche une fenêtre hors accord ne part
+    // JAMAIS chez OpenAI, quelle que soit la piste (le micro peut capter le
+    // haut-parleur). Ni lecture, ni appel, ni coût : un seul segment
+    // `horsAccord`, sans parole, garde la place de la tranche.
+    const trancheEpoch = {
+      debutMs: tranche.debutCaptureEpochMs,
+      finMs: tranche.debutCaptureEpochMs + dureeTranche,
+    };
+    if (estHorsAccord(trancheEpoch, e.fenetresHorsAccord, e.debut.getTime())) {
+      const place: SegmentAEcrire = {
+        ordre: ordreSegment(tranche.piste, tranche.numero, 0),
+        piste: tranche.piste,
+        debutMs: decalageMs,
+        finMs: decalageMs + dureeTranche,
+        locuteurBrut: null,
+        texte: "",
+        horsAccord: true,
+      };
+      await ctx.ecrireEnCours((tx) =>
+        deps.donnees.ecrireSegmentsTranche(tx, {
+          transcriptionId,
+          trancheId: tranche.id,
+          segments: [place],
+        }),
+      );
+      dureeAudioMs += dureeTranche;
+      continue;
+    }
+    const octets = await deps.donnees.lireSonTranche(tranche.id);
     const segments = await transcrireTranche(
       { client: deps.openai(), cout: deps.cout },
       {
         octets,
         dureeMs: dureeTranche,
         niveauFinMuet: tranche.niveauFinMuet,
-        decalageMs: tranche.debutCaptureEpochMs - e.origineMs,
+        decalageMs,
         jobId: `${ctx.jobId}-${e.id.slice(0, 8)}-${tranche.piste}-${tranche.numero}`,
       },
     );
+    // Second filet : un segment qui tomberait quand même dans une fenêtre.
     const aEcrire: SegmentAEcrire[] = segments.map((s, i) => {
       const epoch = { debutMs: s.debutMs + e.origineMs, finMs: s.finMs + e.origineMs };
       const horsAccord = estHorsAccord(epoch, e.fenetresHorsAccord, e.debut.getTime());

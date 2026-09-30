@@ -49,6 +49,7 @@ function vue(p: Partial<Vue> = {}): Vue {
     etapes: [],
     enregistrements: [],
     accords: [{ type: "declaration_axion", survenuLe: LE }],
+    questionsAWill: [],
     ...p,
   };
 }

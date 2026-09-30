@@ -71,6 +71,7 @@ export function enregistrement(p: Partial<EnregistrementATraiter> = {}): Enregis
     fenetresHorsAccord: [],
     origineMs: T0.getTime(),
     courtConfirme: false,
+    fenetresVerifiees: false,
     tranches: [
       {
         id: "tc0",

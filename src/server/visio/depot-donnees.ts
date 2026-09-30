@@ -21,13 +21,16 @@ import {
 import { reponsesFormulaire } from "@/features/admin-rendezvous/a-venir";
 import type { ContactDeLaBase, FaitDeLaBase, ProjetDeLaBase } from "./contexte";
 import type { Periode, SegmentStocke } from "./dialogue";
+import { EVT_COURT_CONFIRME, EVT_FENETRES_VERIFIEES } from "./attentes-will";
 import { ETATS_ENREGISTREMENT_ACTIFS } from "./etats";
 import { enregistrerSuiviDansLaTransaction } from "@/features/dossier-client/suivi";
 import { suiteProposeeApresDictee } from "./dictee";
 import { lireEtat } from "./etat-compte-rendu";
 import { ajouterAuJournal, lireJournal } from "./journal-enregistrement";
 import { euros } from "@/features/dossier-client/libelles";
+import { ArretVisio } from "./etapes";
 import { ErreurVisio } from "./openai/erreurs";
+import { annulerEtapesDesVersions } from "./prise-d-etape";
 import { stockageR2, type LectureAudio } from "./stockage-audio";
 import type {
   DonneesPasses,
@@ -38,6 +41,9 @@ import type {
 } from "./port-donnees";
 
 type Db = PrismaClient;
+
+/** V1 P-1 : une version dans l'un de ces statuts ne continue plus le circuit. */
+const STATUTS_COMPTE_RENDU_ARRETES: ReadonlySet<string> = new Set(["remplace", "rejete"]);
 
 function journalDit(evenements: string, type: string): boolean {
   return lireJournal(evenements).some((e) => e.type === type);
@@ -332,7 +338,8 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
         motifArret: e.motifArret,
         fenetresHorsAccord: periodes(e.fenetresHorsAccord),
         origineMs,
-        courtConfirme: journalDit(e.evenements, "court_confirme"),
+        courtConfirme: journalDit(e.evenements, EVT_COURT_CONFIRME),
+        fenetresVerifiees: journalDit(e.evenements, EVT_FENETRES_VERIFIEES),
         tranches: e.tranches.map((t): TrancheATraiter => ({
           ...t,
           debutCaptureEpochMs: Number(t.debutCaptureEpochMs),
@@ -548,6 +555,9 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
       });
       const ids = enCours.map((c) => c.id);
       if (ids.length > 0) {
+        // Ordre des verrous : `traitements_visio` AVANT `compteRendu`, comme
+        // `terminer` (prise-d-etape.ts) — l'ordre inverse s'interbloque.
+        await annulerEtapesDesVersions(tx, ids);
         await tx.compteRendu.updateMany({
           where: { id: { in: ids } },
           data: { statut: "remplace" },
@@ -719,6 +729,9 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
         select: { id: true, rencontreId: true, statut: true, verification: true },
       });
       if (!cr) return null;
+      // V1 P-1 : une version remplacée (rattachement tardif) ou rejetée ne
+      // continue pas le circuit — aucun appel à OpenAI pour elle.
+      if (STATUTS_COMPTE_RENDU_ARRETES.has(cr.statut)) throw new ArretVisio("inconnu");
       const r = await rencontreDe(db, cr.rencontreId);
       if (!r) return null;
       const etat = cr.verification ? lireEtat(dechiffrerParole(cr.verification)) : null;
@@ -774,8 +787,11 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
       });
     },
     finaliserCompteRendu: async (tx, a) => {
-      await tx.compteRendu.update({
-        where: { id: a.compteRenduId },
+      // V1 P-1 : « à valider » ne s'écrit que sur un BROUILLON. 0 ligne = la
+      // version a été remplacée ou rejetée entre-temps : on s'arrête, la
+      // transaction est annulée, rien n'est écrit.
+      const n = await tx.compteRendu.updateMany({
+        where: { id: a.compteRenduId, statut: "brouillon" },
         data: {
           contenu: chiffrerParole(a.contenu),
           verification: chiffrerParole(JSON.stringify(a.etat)),
@@ -783,6 +799,7 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
           ...(a.modele ? { modele: a.modele } : {}),
         },
       });
+      if (n.count === 0) throw new ArretVisio("inconnu");
       await tx.enregistrement.updateMany({
         where: { rencontreId: a.rencontreId, statut: { in: ["transcrit", "en_traitement"] } },
         data: { statut: "compte_rendu_pret" },

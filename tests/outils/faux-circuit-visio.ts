@@ -93,6 +93,7 @@ export class FauxDepot implements DepotEtapes {
       interruptions: l.interruptions,
       echecs: l.echecs,
       premierEchecLe: l.premierEchecLe,
+      classeErreur: l.classeErreur as NonNullable<EtapeTenue["classeErreur"]> | null,
     };
   };
 
@@ -137,6 +138,7 @@ export class FauxDepot implements DepotEtapes {
     const l = this.ligne(t.id);
     if (l.statut !== "en_cours" || l.execution !== t.execution) return;
     l.statut = d.statut;
+    if (d.nouvelleSerie) l.echecs = 0;
     if (d.compter) l.echecs += 1;
     if (priseNonImputee(d)) l.interruptions += 1;
     l.classeErreur = d.classe;

@@ -22,11 +22,13 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { retirerAccordRencontre } from "@/lib/rgpd-erase";
 import { exigerAccesEchanges } from "@/features/dossier-client/acces";
+import { messageAffichable } from "@/features/dossier-client/message-affichable";
 import {
   ajouterPersonnePourVoix,
   attribuerVoix,
   confirmerAccordALaMain,
   confirmerEnregistrementCourt,
+  confirmerFenetresVerifiees,
   GesteRefuse,
   reecrireCompteRendu,
   reextraireCompteRendu,
@@ -67,15 +69,9 @@ async function executer(
     message = await geste(rencontreId, userId);
     revalidatePath(retour.split("?")[0] ?? "/");
   } catch (err) {
+    // S4 : seuls les messages métier vont dans l'URL, jamais une erreur Prisma.
     cle = "erreur";
-    message =
-      err instanceof GesteRefuse
-        ? err.message
-        : err instanceof z.ZodError
-          ? "Demande incomplète."
-          : err instanceof Error
-            ? err.message
-            : "Erreur inattendue.";
+    message = messageAffichable(err);
   }
   const joint = retour.includes("?") ? "&" : "?";
   redirect(`${retour}${joint}${cle}=${encodeURIComponent(message)}`);
@@ -143,9 +139,21 @@ const GESTES: Readonly<
     await confirmerAccordALaMain(prisma, { rencontreId, maintenant: new Date() });
     return "Accord confirmé : le compte rendu peut être validé.";
   },
-  court: async (_fd, rencontreId) => {
-    await confirmerEnregistrementCourt(prisma, rencontreId, new Date());
+  court: async (fd, rencontreId) => {
+    await confirmerEnregistrementCourt(prisma, {
+      rencontreId,
+      enregistrementId: uuid.parse(fd.get("enregistrementId")),
+      maintenant: new Date(),
+    });
     return "L'enregistrement court sera traité.";
+  },
+  fenetres: async (fd, rencontreId) => {
+    await confirmerFenetresVerifiees(prisma, {
+      rencontreId,
+      enregistrementId: uuid.parse(fd.get("enregistrementId")),
+      maintenant: new Date(),
+    });
+    return "Vérifié : la transcription peut partir.";
   },
   retrait: async (fd, rencontreId, adminId) => {
     if (fd.get("confirmation") !== "oui") {

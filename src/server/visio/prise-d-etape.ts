@@ -52,6 +52,12 @@ export interface EtapeTenue {
   readonly interruptions: number;
   readonly echecs: number;
   readonly premierEchecLe: Date | null;
+  /**
+   * La classe du DERNIER échec (V1, F5) : un échec d'une autre classe ouvre
+   * une nouvelle série (`DecisionEchec.nouvelleSerie`). Absente = inconnue :
+   * la série continue.
+   */
+  readonly classeErreur?: ClasseErreur | null;
 }
 
 /** Une étape à programmer après celle-ci. */
@@ -73,6 +79,12 @@ export interface DecisionEchec {
   readonly compter: boolean;
   readonly prochaineTentativeLe: Date | null;
   readonly premierEchecLe: Date | null;
+  /**
+   * L'échec est d'une AUTRE classe que le précédent : le compteur `echecs`
+   * repart de zéro avant d'être incrémenté (V1, F5). `premierEchecLe` porte
+   * alors la date de ce premier échec de la nouvelle classe.
+   */
+  readonly nouvelleSerie?: boolean;
 }
 
 /** Le résultat a été produit par quelqu'un qui n'avait plus la main : rien n'est écrit. */
@@ -123,6 +135,7 @@ interface LigneTenue {
   interruptions: number;
   echecs: number;
   premier_echec_le: Date | null;
+  classe_erreur: ClasseErreur | null;
 }
 
 function tenue(l: LigneTenue): EtapeTenue {
@@ -135,6 +148,7 @@ function tenue(l: LigneTenue): EtapeTenue {
     interruptions: Number(l.interruptions),
     echecs: Number(l.echecs),
     premierEchecLe: l.premier_echec_le,
+    classeErreur: l.classe_erreur ?? null,
   };
 }
 
@@ -166,6 +180,28 @@ export async function planifierDans(
          AND "compte_rendu_id" IS NOT DISTINCT FROM ${s.compteRenduId}::uuid
          AND "statut" IN ('reussie', 'echec_definitif', 'annule', 'suspendu')`;
   }
+}
+
+/**
+ * V1 P-1 : les étapes d'une version REMPLACÉE du compte rendu s'arrêtent.
+ * Une étape à faire, suspendue ou EN COURS passe `annule` : une étape en
+ * cours perd la main (son écriture finale exige `statut = 'en_cours'`), son
+ * résultat est orphelin et n'écrit rien. Seule implémentation, appelée partout
+ * où une version est remplacée (`completerApresRattachement`,
+ * `creerCompteRendu`), dans la transaction qui la remplace.
+ */
+export async function annulerEtapesDesVersions(
+  tx: Pick<PrismaClient, "traitementVisio">,
+  compteRenduIds: readonly string[],
+): Promise<void> {
+  if (compteRenduIds.length === 0) return;
+  await tx.traitementVisio.updateMany({
+    where: {
+      compteRenduId: { in: [...compteRenduIds] },
+      statut: { in: ["a_faire", "suspendu", "en_cours"] },
+    },
+    data: { statut: "annule", verrouJusqua: null },
+  });
 }
 
 async function exigerLaMain(tx: Tx, t: EtapeTenue): Promise<void> {
@@ -222,7 +258,7 @@ export function depotEtapesPrisma(db: Client): DepotEtapes {
                "verrou_jusqua" = (now() AT TIME ZONE 'UTC') + interval '5 minutes'
          WHERE "id" = ${id}::uuid AND "statut" = 'a_faire'
            AND ("verrou_jusqua" IS NULL OR "verrou_jusqua" < (now() AT TIME ZONE 'UTC'))
-         RETURNING "id", "rencontre_id", "etape", "compte_rendu_id", "execution", "interruptions", "echecs", "premier_echec_le"`;
+         RETURNING "id", "rencontre_id", "etape", "compte_rendu_id", "execution", "interruptions", "echecs", "premier_echec_le", "classe_erreur"`;
       return lignes[0] ? tenue(lignes[0]) : null;
     },
     prolonger: async (t) => {
@@ -264,7 +300,7 @@ export function depotEtapesPrisma(db: Client): DepotEtapes {
       await db.$executeRaw`
         UPDATE "traitements_visio"
            SET "statut" = ${d.statut}::"statut_etape",
-               "echecs" = "echecs" + ${d.compter ? 1 : 0},
+               "echecs" = CASE WHEN ${d.nouvelleSerie === true}::boolean THEN 0 ELSE "echecs" END + ${d.compter ? 1 : 0},
                "interruptions" = "interruptions" + ${priseNonImputee(d) ? 1 : 0},
                "classe_erreur" = ${d.classe}::"classe_erreur",
                "derniere_erreur" = ${d.code}::"code_erreur_visio",

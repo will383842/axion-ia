@@ -21,6 +21,13 @@ import type { CompteRenduV1 } from "@/server/visio/schemas/autres";
 import type { Couverture } from "@/server/visio/verification/g06-couverture";
 import { lireEtat, type EtatCompteRendu } from "@/server/visio/etat-compte-rendu";
 import { rencontreAccordAConfirmer } from "@/server/visio/accord-a-confirmer";
+import {
+  EVT_COURT_CONFIRME,
+  EVT_FENETRES_VERIFIEES,
+  questionsAWill,
+  type QuestionAWill,
+} from "@/server/visio/attentes-will";
+import { lireJournal } from "@/server/visio/journal-enregistrement";
 import { lireVoix, voixNonAttribuees } from "@/server/visio/gestes-compte-rendu";
 
 export interface DocumentCompteRendu {
@@ -112,6 +119,14 @@ export interface VueCompteRendu {
     readonly audioSupprimeLe: Date | null;
   }>;
   readonly accords: ReadonlyArray<{ readonly type: TypeConsentement; readonly survenuLe: Date }>;
+  /**
+   * Les questions ouvertes AVANT la transcription, par enregistrement déposé
+   * (`attentes-will.ts`) : chaque bouton vise son enregistrement.
+   */
+  readonly questionsAWill: ReadonlyArray<{
+    readonly enregistrementId: string;
+    readonly question: QuestionAWill;
+  }>;
 }
 
 const ORDRE_COURANT = ["a_valider", "brouillon", "valide", "a_regenerer", "rejete"];
@@ -232,7 +247,11 @@ export async function lireCompteRendu(
       where: { rencontreId },
       orderBy: { debut: "desc" },
       select: {
+        id: true,
         statut: true,
+        debut: true,
+        fin: true,
+        motifArret: true,
         incomplet: true,
         audioAPurgerAvant: true,
         audioSupprimeLe: true,
@@ -328,5 +347,21 @@ export async function lireCompteRendu(
       audioSupprimeLe: e.audioSupprimeLe,
     })),
     accords,
+    questionsAWill: enregistrements
+      .filter((e) => e.statut === "depose")
+      .flatMap((e) => {
+        const journal = lireJournal(e.evenements);
+        const dit = (type: string) => journal.some((j) => j.type === type);
+        return questionsAWill(
+          {
+            debut: e.debut,
+            fin: e.fin,
+            motifArret: e.motifArret,
+            courtConfirme: dit(EVT_COURT_CONFIRME),
+            fenetresVerifiees: dit(EVT_FENETRES_VERIFIEES),
+          },
+          new Date(),
+        ).map((question) => ({ enregistrementId: e.id, question }));
+      }),
   };
 }

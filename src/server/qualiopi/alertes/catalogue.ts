@@ -1844,6 +1844,14 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — levée par le circuit du compte rendu (`src/server/visio/etapes.ts`, `balayage-circuit.ts`), hors d'`evaluerAlertes`. Elle décrit un fait constaté par le worker ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture. Will la ferme à la main.",
     guichet: "direction",
   },
+  "visio.etape_sans_gestionnaire": {
+    niveau: "critique",
+    titre: "Visio : une étape du circuit n'est pas connue du worker en place (déploiement ?)",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par le circuit du compte rendu (`src/server/visio/etapes.ts`), hors d'`evaluerAlertes`, quand le worker n'a pas de gestionnaire pour une étape programmée. Code distinct de `visio.circuit_suspendu` : l'anti-doublon (code, cible nulle) avalait l'une sous l'autre. Will la ferme à la main, après « Reprendre ».",
+    guichet: "direction",
+  },
   "visio.etape_en_echec": {
     niveau: "important",
     titre: "Visio : un compte rendu n'a pas pu être produit (note manuelle proposée)",

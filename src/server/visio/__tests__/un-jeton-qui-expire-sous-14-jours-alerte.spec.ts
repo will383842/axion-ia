@@ -29,7 +29,8 @@ vi.mock("@/server/qualiopi/alertes/evaluateur", () => ({
   evaluerAlertesDetaille: vi.fn(),
 }));
 
-import { balayerEnregistreur, CODES_ALERTES_VISIO } from "../balayage-enregistreur";
+import { CODES_ALERTES_VISIO } from "../alertes";
+import { balayerEnregistreur } from "../balayage-enregistreur";
 import { seuilAlerteJeton } from "../jeton";
 import {
   commePrisma,

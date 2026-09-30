@@ -36,6 +36,8 @@ export interface DemandeTranscription {
   readonly octets: Buffer;
   readonly modele: string;
   readonly langue: string;
+  /** Annule la requête en vol (arrêt du worker, V1 F3). */
+  readonly signal?: AbortSignal;
 }
 
 /** Le format de sortie imposé (JSON Schema strict), produit par `formatDeSortie`. */
@@ -48,6 +50,8 @@ export interface FormatSortie {
 
 /** Une demande à l'API Responses. */
 export interface DemandeReponse {
+  /** Annule la requête en vol (arrêt du worker, V1 F3). */
+  readonly signal?: AbortSignal;
   readonly modele: string;
   /** Bloc commun + consigne de la passe : identique d'un appel à l'autre (cache). */
   readonly instructions: string;
@@ -146,11 +150,12 @@ export function obtenirClientOpenAI(): ClientOpenAIVisio {
         response_format: "diarized_json",
         chunking_strategy: "auto",
       } as unknown as OpenAI.Audio.TranscriptionCreateParamsNonStreaming;
-      return sdk.audio.transcriptions.create(params);
+      return sdk.audio.transcriptions.create(params, { signal: d.signal });
     },
     repondre: async (d) => {
       const r = await sdk.responses.create(
         parametresResponses(d) as unknown as OpenAI.Responses.ResponseCreateParamsNonStreaming,
+        { signal: d.signal },
       );
       return lireReponse(r);
     },

@@ -35,6 +35,7 @@ import { defaireFusion } from "./defaire-fusion";
 import { validerApresLAppel, type ChoixProjet } from "./valider";
 import { CHAMPS_DE_LA_NOTE, type SaisieNote } from "./note-manuelle";
 import { executerGesteCompteRendu } from "./compte-rendu-gestes";
+import { MessagePourWill, messageAffichable } from "./message-affichable";
 
 const uuid = z.string().uuid();
 
@@ -47,10 +48,13 @@ function base(chemin: string): string {
   return adminPath("fr", chemin);
 }
 
-/** Redirige avec le message d'erreur, lisible par Will. */
+/**
+ * Redirige avec le message d'erreur, lisible par Will. S4 : seuls les messages
+ * MÉTIER vont dans l'URL (`messageAffichable`) ; une erreur Prisma ou un bogue
+ * devient un texte générique, le détail part au journal serveur.
+ */
 function erreurVers(chemin: string, e: unknown): never {
-  const message =
-    e instanceof Error && e.message !== "" ? e.message : "L'opération a échoué. Réessayez.";
+  const message = messageAffichable(e);
   const sep = chemin.includes("?") ? "&" : "?";
   redirect(`${base(chemin)}${sep}erreur=${encodeURIComponent(message.slice(0, 300))}`);
 }
@@ -84,7 +88,7 @@ export async function ouvrirApresLAppelAction(fd: FormData): Promise<void> {
   if (rencontreId === null) {
     erreurVers(
       "rendez-vous?vue=point",
-      new Error(
+      new MessagePourWill(
         "Ce rendez-vous n'entre pas au dossier client (type hors de la liste des rendez-vous clients).",
       ),
     );
@@ -103,7 +107,7 @@ export async function rangerRencontreAction(fd: FormData): Promise<void> {
     texte(fd, "retour") === "a-classer"
       ? "rendez-vous?vue=a-classer"
       : `rendez-vous/rencontres/${rencontreId}?vue=apres-l-appel`;
-  if (!clientId.success) erreurVers(retour, new Error("Choisissez la fiche client."));
+  if (!clientId.success) erreurVers(retour, new MessagePourWill("Choisissez la fiche client."));
   try {
     await prisma.$transaction((tx) =>
       validerRattachement(tx, { rencontreId, clientId: clientId.data, parAdminId: userId }),
@@ -137,7 +141,7 @@ export async function creerProspectAction(fd: FormData): Promise<void> {
     },
     { sirenPropose: texte(fd, "sirenPropose") || null },
   ).catch((e: unknown) => erreurVers(retour, e));
-  if (r.statut !== "cree") erreurVers(retour, new Error(r.message));
+  if (r.statut !== "cree") erreurVers(retour, new MessagePourWill(r.message));
   // La fiche créée RANGE le rendez-vous : son compte rendu est complété (P2 à P5).
   await relancerApresRattachement(prisma, rencontreId).catch((e: unknown) => erreurVers(retour, e));
   revalidatePath(base("rendez-vous"));
@@ -167,7 +171,9 @@ export async function validerApresLAppelAction(fd: FormData): Promise<void> {
   if (!suivi.success) {
     erreurVers(
       retour,
-      new Error(suivi.error.issues[0]?.message ?? "Indiquez comment s'est passé le rendez-vous."),
+      new MessagePourWill(
+        suivi.error.issues[0]?.message ?? "Indiquez comment s'est passé le rendez-vous.",
+      ),
     );
   }
   const garde = garderSuiteEtEcheance(suivi.data.issue, suivi.data.suite, suivi.data.suiteLe);
@@ -213,7 +219,8 @@ export async function creerRencontreAction(fd: FormData): Promise<void> {
     ? `qualiopi/clients/${clientId}/projets/${projetId}`
     : `qualiopi/clients/${clientId}?onglet=echanges`;
   const debut = fromParisLocalInput(texte(fd, "debut"));
-  if (debut === null) erreurVers(retour, new Error("Indiquez la date et l'heure du rendez-vous."));
+  if (debut === null)
+    erreurVers(retour, new MessagePourWill("Indiquez la date et l'heure du rendez-vous."));
   const typeBrut = texte(fd, "type");
   const type = typeBrut === "telephone" || typeBrut === "presentiel" ? typeBrut : "visio";
 
@@ -257,7 +264,8 @@ export async function deplacerRencontreAction(fd: FormData): Promise<void> {
   const rencontreId = uuid.parse(texte(fd, "rencontreId"));
   const retour = `rendez-vous/rencontres/${rencontreId}`;
   const versClientId = uuid.safeParse(texte(fd, "versClientId"));
-  if (!versClientId.success) erreurVers(retour, new Error("Choisissez la fiche d'arrivée."));
+  if (!versClientId.success)
+    erreurVers(retour, new MessagePourWill("Choisissez la fiche d'arrivée."));
   const projetBrut = texte(fd, "versProjetId");
   await deplacerRencontre(prisma, {
     rencontreId,
@@ -275,7 +283,8 @@ export async function fusionnerFichesAction(fd: FormData): Promise<void> {
   const absorbeeId = uuid.parse(texte(fd, "absorbeeId"));
   const retour = `qualiopi/clients/${absorbeeId}?onglet=personnes`;
   const absorbante = uuid.safeParse(texte(fd, "absorbanteId"));
-  if (!absorbante.success) erreurVers(retour, new Error("Choisissez la fiche qui reste."));
+  if (!absorbante.success)
+    erreurVers(retour, new MessagePourWill("Choisissez la fiche qui reste."));
   await fusionnerFiches(prisma, {
     absorbeeId,
     absorbanteId: absorbante.data,

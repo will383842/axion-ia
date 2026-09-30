@@ -34,6 +34,26 @@ export class ErreurVisio extends Error {
   }
 }
 
+/**
+ * L'appel à OpenAI a été ANNULÉ par l'arrêt du worker (SIGTERM, V1 F3). Ce
+ * n'est pas une erreur du fournisseur : l'étape est relâchée sans compter
+ * d'essai. `envoye` dit si la requête était partie (on a pu être facturé :
+ * l'estimation est alors inscrite au registre des coûts).
+ *
+ * `echecRegistre` : l'inscription de cette estimation a elle-même échoué
+ * (base coupée pendant l'arrêt). L'arrêt reste un ARRÊT — jamais une erreur
+ * passagère comptée ; `executerEtape` journalise l'échec du registre.
+ */
+export class AppelInterrompu extends Error {
+  constructor(
+    readonly envoye: boolean,
+    readonly echecRegistre: unknown = null,
+  ) {
+    super("appel OpenAI annulé par l'arrêt du worker");
+    this.name = "AppelInterrompu";
+  }
+}
+
 const PAR_CODE_FOURNISSEUR: Readonly<
   Record<ProviderError["code"], { classe: ClasseErreur; code: CodeErreurVisio }>
 > = {
@@ -51,9 +71,16 @@ const PAR_CODE_FOURNISSEUR: Readonly<
 /** Codes Prisma / PostgreSQL d'une base pas encore migrée (§2.5). */
 const CODES_SCHEMA_EN_RETARD = new Set(["P2021", "P2022", "22P02", "42703", "42P01"]);
 
+/**
+ * Le code d'une erreur de base. Une requête SQL BRUTE (`$executeRaw`,
+ * `$queryRaw` : écriture finale, programmation d'une étape) ne lève pas le
+ * code PostgreSQL mais `P2010` ; le vrai code (`42703`, `42P01`, `22P02`…) est
+ * dans `meta.code` (V1, F2).
+ */
 function codeDe(err: unknown): string | null {
   if (typeof err !== "object" || err === null) return null;
   const e = err as { code?: unknown; meta?: { code?: unknown } };
+  if (e.code === "P2010" && typeof e.meta?.code === "string") return e.meta.code;
   if (typeof e.code === "string") return e.code;
   if (typeof e.meta?.code === "string") return e.meta.code;
   return null;

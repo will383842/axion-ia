@@ -51,6 +51,16 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
       "les faits qui vous concernent sont, eux, rendus ci-dessus.",
   },
   {
+    // RGPD-03 (vérification finale du 30/09) : la transcription n'est rendue
+    // que pour une voix que Williams a rattachée à la personne (`voixValideeLe`).
+    modele: "TranscriptionSegment",
+    motif:
+      "la transcription d'une voix pas encore attribuée (Williams n'a pas encore confirmé " +
+      "qu'elle est la vôtre) n'est pas rendue automatiquement : elle peut être celle d'une " +
+      "autre personne. Elle existe pendant 12 mois après le rendez-vous ; réponse manuelle " +
+      "sous un mois, après vérification de la voix (contact@axion-ia.com).",
+  },
+  {
     modele: "PreRemplissage",
     motif:
       "trace interne des cases pré-remplies ; les valeurs viennent des faits déjà " +

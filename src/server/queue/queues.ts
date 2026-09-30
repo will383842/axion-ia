@@ -1277,21 +1277,20 @@ export async function bootRepeatableJobs(): Promise<void> {
     }
   }
 
-  // ── 2026-09-29 — balayage du dossier client (chantier visio, PR 4) ──────
-  // Purge EXHAUSTIVE d'abord : le jour où le drapeau repasse à « false »,
-  // l'entrée répétable ne doit pas continuer à se déclencher. Puis ajout,
-  // SEULEMENT si `DOSSIER_BALAYAGE_ENABLED === "true"` (lu à l'exécution).
+  // ── 2026-09-29 — balayage du dossier client et de l'enregistreur (visio) ──
+  // Purge EXHAUSTIVE d'abord (un seul répétable, cadence à jour), puis ajout
+  // TOUJOURS (V1, F1) : le passage porte la clôture d'office et les purges de
+  // l'enregistreur. `DOSSIER_BALAYAGE_ENABLED` n'est lu que par le worker,
+  // pour la seule partie « dossier client ».
   if (visioBalayageQueue) {
     for (const existing of await visioBalayageQueue.getRepeatableJobs()) {
       await visioBalayageQueue.removeRepeatableByKey(existing.key);
     }
-    if (process.env.DOSSIER_BALAYAGE_ENABLED === "true") {
-      await visioBalayageQueue.add(
-        "balayage",
-        { tick: new Date().toISOString() },
-        { repeat: { pattern: PATTERN_BALAYAGE_VISIO }, jobId: "visio-balayage-cron" },
-      );
-    }
+    await visioBalayageQueue.add(
+      "balayage",
+      { tick: new Date().toISOString() },
+      { repeat: { pattern: PATTERN_BALAYAGE_VISIO }, jobId: "visio-balayage-cron" },
+    );
   }
 
   // ── 2026-09-29 — balayage du CIRCUIT visio (chantier visio, PR 6) ──────

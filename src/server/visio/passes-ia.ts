@@ -47,6 +47,7 @@ import type { DonneesPasses, FaitAEcrire, FaitDuJour } from "./port-donnees";
 import { SCHEMAS_VISIO, VERSION_SCHEMAS_COMPTE_RENDU } from "./schemas";
 import { couvertureDesFaits } from "./verification/g06-couverture";
 import { verifierCompteRendu, type FaitPourRedaction } from "./verification/g09-redaction";
+import { neutraliserDonnees } from "./verification/regles";
 import { verifierFaits, type FaitVerifie } from "./verification/verifier-faits";
 
 function depsPasse(ctx: ContexteEtape) {
@@ -435,7 +436,7 @@ export const consolider: Gestionnaire = async (ctx) => {
   if (entrees.length > 0) {
     const catalogue = await deps.catalogue();
     for (const { perimetre: p, e } of entrees) {
-      ctx.verifierArret();
+      await ctx.verifierMain();
       const { sortie } = await executerPasse(depsPasse(ctx), {
         passe: "consolider",
         schema: SCHEMAS_VISIO.consolidation.schema,
@@ -473,7 +474,7 @@ export const ebaucher: Gestionnaire = async (ctx) => {
   if (aEbaucher.length > 0) {
     const catalogue = await deps.catalogue();
     for (const { j, entree } of aEbaucher) {
-      ctx.verifierArret();
+      await ctx.verifierMain();
       const { sortie } = await executerPasse(depsPasse(ctx), {
         passe: "ebaucher",
         schema: SCHEMAS_VISIO.ebauche.schema,
@@ -508,9 +509,17 @@ export const ebaucher: Gestionnaire = async (ctx) => {
 
 // ── P5 ───────────────────────────────────────────────────────────────────────
 
-/** P5 — l'entrée ENVOYÉE à la rédaction (faits vérifiés, jamais la transcription). PURE. */
+/**
+ * P5 — l'entrée ENVOYÉE à la rédaction (faits vérifiés, jamais la transcription). PURE.
+ *
+ * G17 (S3, vérification finale du 30/09) : tout texte venu d'une passe
+ * précédente — énoncé, valeur, titre proposé, hypothèses, manquants — passe par
+ * `neutraliserDonnees` : un énoncé tiré d'une phrase piégée ne ferme ni
+ * n'ouvre aucune balise. Test `une-balise-dans-un-fait-n-ouvre-rien-dans-la-redaction`.
+ */
 export function entreeP5(d: DonneesPourPasses, faits: readonly FaitPourPasse[]): string {
   const e = d.etat;
+  const n = neutraliserDonnees;
   const couverture = e.couverture ?? couvertureDesFaits(new Map(faits.map((f) => [f.ref, f.type])));
   const rattachement =
     e.rattachement === null || e.rattachement === "en_attente_client"
@@ -518,7 +527,7 @@ export function entreeP5(d: DonneesPourPasses, faits: readonly FaitPourPasse[]):
       : e.rattachement.decisions
           .map(
             (x) =>
-              `${x.projet_evoque_ref} → ${x.decision}${x.projet_connu_ref ? ` ${x.projet_connu_ref}` : ""}${x.titre_propose ? ` « ${x.titre_propose} »` : ""}`,
+              `${x.projet_evoque_ref} → ${x.decision}${x.projet_connu_ref ? ` ${x.projet_connu_ref}` : ""}${x.titre_propose ? ` « ${n(x.titre_propose)} »` : ""}`,
           )
           .join(" · ") || "aucune proposition";
   return [
@@ -527,10 +536,10 @@ export function entreeP5(d: DonneesPourPasses, faits: readonly FaitPourPasse[]):
     `<couverture>\n${Object.entries(couverture)
       .map(([r, c]) => `${r} : ${c.statut}`)
       .join("\n")}\n</couverture>`,
-    `<faits_verifies>\n${faits.map((f) => [f.ref, f.type, f.portee, f.projetRef ?? "—", f.enonce, f.valeur || "—", `dit par ${f.locuteur ?? "?"}`, `confiance ${f.confiance}`].join(" | ")).join("\n") || "aucun"}\n</faits_verifies>`,
+    `<faits_verifies>\n${faits.map((f) => [f.ref, f.type, f.portee, f.projetRef ?? "—", n(f.enonce), n(f.valeur) || "—", `dit par ${f.locuteur ?? "?"}`, `confiance ${f.confiance}`].join(" | ")).join("\n") || "aucun"}\n</faits_verifies>`,
     `<suivi_du_connu>${e.suivis.map((s) => `${s.connuRef} → ${s.statut}`).join(" · ") || "aucun"}</suivi_du_connu>`,
     `<consolidation>\n${e.consolidation.map((c) => `${c.perimetre} : ${c.resultat.relations.map((r) => `${r.fait_du_jour_ref} ${r.relation}${r.fait_existant_ref ? ` ${r.fait_existant_ref}` : ""}`).join(", ")}`).join("\n") || "aucune"}\n</consolidation>`,
-    `<ebauche_sans_prix>\n${e.ebauches.map((b) => `${b.projetRef} : ${b.lignes.map((l) => `${l.ref} × ${l.quantite} ${l.unite}`).join(" ; ")} · hypothèses : ${b.ebauche.hypotheses.join(" ; ") || "aucune"} · manquant : ${b.ebauche.manquant_pour_chiffrer.join(" ; ") || "rien"}`).join("\n") || "aucune"}\n</ebauche_sans_prix>`,
+    `<ebauche_sans_prix>\n${e.ebauches.map((b) => `${b.projetRef} : ${b.lignes.map((l) => `${l.ref} × ${l.quantite} ${l.unite}`).join(" ; ")} · hypothèses : ${b.ebauche.hypotheses.map(n).join(" ; ") || "aucune"} · manquant : ${b.ebauche.manquant_pour_chiffrer.map(n).join(" ; ") || "rien"}`).join("\n") || "aucune"}\n</ebauche_sans_prix>`,
     `<signaux_calcules>${e.signaux.join(" · ") || "aucun"}</signaux_calcules>`,
     "Rédige le compte rendu au format imposé.",
   ].join("\n");

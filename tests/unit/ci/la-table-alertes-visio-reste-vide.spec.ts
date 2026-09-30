@@ -22,7 +22,7 @@ import { join, relative, sep } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { ALERTE_CATALOGUE } from "@/server/qualiopi/alertes/catalogue";
-import { CODES_ALERTES_VISIO } from "@/server/visio/balayage-enregistreur";
+import { CODES_ALERTES_VISIO } from "@/server/visio/alertes";
 
 const RACINE = process.cwd();
 

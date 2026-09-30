@@ -2,11 +2,14 @@
  * Worker BullMQ — le BALAYAGE du dossier client, toutes les 5 minutes
  * (chantier visio, PR 4 ; `src/server/visio/balayage.ts`).
  *
- * Démarré SEULEMENT si `DOSSIER_BALAYAGE_ENABLED === "true"` sur le worker
- * (`src/server/queue/worker.ts`) : il n'est allumé qu'APRÈS le lancement réel
- * de la reprise de l'historique Calendly (sinon l'historique arriverait en
- * rafale « à classer »). La borne du balayage est la date de son premier
- * passage.
+ * Démarré TOUJOURS (V1, F1) : il porte aussi le seul appel périodique de
+ * l'ENREGISTREUR (clôture d'office, purges, témoin de clé, alertes jeton), qui
+ * ne doit jamais dépendre d'un drapeau du dossier client. Seul le balayage du
+ * DOSSIER CLIENT (`passerBalayage`) reste sous `DOSSIER_BALAYAGE_ENABLED ===
+ * "true"` : il n'est allumé qu'APRÈS le lancement réel de la reprise de
+ * l'historique Calendly (sinon l'historique arriverait en rafale « à
+ * classer »). La borne du balayage est la date de son premier passage.
+ * Garde : `drapeau-eteint-un-enregistrement-muet-est-cloture-et-date.spec.ts`.
  *
  * `concurrency: 1` : deux passages simultanés assureraient deux fois la même
  * rencontre (l'unicité `calendly_event_id` en refuserait une, mais le
@@ -34,35 +37,55 @@ export function balayageActive(): boolean {
 }
 
 async function processJob(_job: Job<VisioBalayageJobData>): Promise<void> {
-  if (!balayageActive()) return;
   // Imports PARESSEUX : ces modules tirent Prisma ; ils ne sont chargés que
   // dans le worker, au premier passage.
-  const [{ prisma }, { notify }, { passerBalayage }, enregistreur] = await Promise.all([
+  const [{ prisma }, enregistreur] = await Promise.all([
     import("@/lib/prisma"),
-    import("@/server/notifications"),
-    import("@/server/visio/balayage"),
     import("@/server/visio/balayage-enregistreur"),
   ]);
-  const r = await passerBalayage(prisma, {
-    notifier: notify,
-    drapeauBrut: process.env.DOSSIER_BALAYAGE_ENABLED,
-  });
-  if (r.etapesEnEchec.length > 0 || r.rencontresAssurees > 0) {
-    console.warn(
-      `[visio-balayage-worker] ${r.rencontresAssurees} rencontre(s) assurée(s), ` +
-        `${r.comptesRendusAValider} compte(s) rendu(s) ` +
-        `à valider depuis 3 j, ${r.suitesEchues} suite(s) échue(s)` +
-        (r.etapesEnEchec.length > 0 ? ` — étapes en échec : ${r.etapesEnEchec.join(", ")}` : ""),
-    );
-  }
+  if (balayageActive()) await passerDossierClient(prisma);
+  // TOUJOURS, drapeau éteint compris, et même si le dossier client a levé.
   await passerEnregistreur(prisma, enregistreur);
+}
+
+type BaseDossier = Parameters<(typeof import("@/server/visio/balayage"))["passerBalayage"]>[0];
+
+/**
+ * Le dossier client (PR 4), dans son propre `try` (V1, F6) : une panne hors
+ * de ses étapes (lecture de la borne) ne saute plus l'enregistreur.
+ */
+async function passerDossierClient(prisma: BaseDossier): Promise<void> {
+  try {
+    const [{ notify }, { passerBalayage }] = await Promise.all([
+      import("@/server/notifications"),
+      import("@/server/visio/balayage"),
+    ]);
+    const r = await passerBalayage(prisma, {
+      notifier: notify,
+      drapeauBrut: process.env.DOSSIER_BALAYAGE_ENABLED,
+    });
+    if (r.etapesEnEchec.length > 0 || r.rencontresAssurees > 0) {
+      console.warn(
+        `[visio-balayage-worker] ${r.rencontresAssurees} rencontre(s) assurée(s), ` +
+          `${r.comptesRendusAValider} compte(s) rendu(s) ` +
+          `à valider depuis 3 j, ${r.suitesEchues} suite(s) échue(s)` +
+          (r.etapesEnEchec.length > 0 ? ` — étapes en échec : ${r.etapesEnEchec.join(", ")}` : ""),
+      );
+    }
+  } catch (err) {
+    console.error(
+      "[visio-balayage-worker] dossier client en échec :",
+      err instanceof Error ? err.name : "inconnue",
+    );
+    captureWorkerError("visio-balayage", VISIO_BALAYAGE_QUEUE_NAME, undefined, err);
+  }
 }
 
 /**
  * L'enregistreur (PR 5) : clôture d'office, reprise des purges de refus,
  * témoin de clé, alertes jeton J-14 / J-3 et extension silencieuse.
  * Après le dossier client, dans son propre `try` : une panne de l'un
- * n'arrête pas l'autre. Garde : `le-worker-de-balayage-appelle-l-enregistreur.spec.ts`.
+ * n'arrête pas l'autre (garde `une-panne-de-borne-n-empeche-pas-l-enregistreur.spec.ts`). Garde : `le-worker-de-balayage-appelle-l-enregistreur.spec.ts`.
  */
 async function passerEnregistreur(prisma: BaseEnregistreur, m: ModuleEnregistreur): Promise<void> {
   try {

@@ -172,6 +172,54 @@ export async function creerAppareil(
   return { appareilId: cree.id, jeton, expireLe };
 }
 
+export type ResultatRenouvellement =
+  | {
+      readonly ok: true;
+      readonly appareilId: string;
+      readonly jeton: string;
+      readonly expireLe: Date;
+    }
+  | { readonly ok: false; readonly message: string };
+
+/**
+ * « Renouveler » (V1, S5) : dans UNE transaction, révoquer l'ancien appareil
+ * D'ABORD — et seulement s'il est encore actif — puis créer le nouveau sous le
+ * même nom. Jamais deux jetons valides à la fois, jamais un jeton recréé pour
+ * un appareil déjà révoqué (poste perdu). Garde :
+ * `renouveler-un-appareil-revoque-est-refuse.spec.ts`.
+ */
+export async function renouvelerAppareil(
+  db: Pick<PrismaClient, "$transaction">,
+  entree: { readonly appareilId: string; readonly adminUserId: string; readonly maintenant: Date },
+): Promise<ResultatRenouvellement> {
+  return db.$transaction(async (tx) => {
+    const ancien = await tx.appareilEnregistrement.findUnique({
+      where: { id: entree.appareilId },
+      select: { id: true, nom: true },
+    });
+    if (!ancien) return { ok: false, message: "Appareil introuvable." };
+    // Révoquer SEULEMENT un appareil encore actif : 0 ligne = déjà révoqué
+    // (avant, ou par un autre onglet entre la lecture et l'écriture).
+    const n = await tx.appareilEnregistrement.updateMany({
+      where: { id: ancien.id, revoqueLe: null },
+      data: { revoqueLe: entree.maintenant },
+    });
+    if (n.count === 0) {
+      return {
+        ok: false,
+        message:
+          "Cet appareil est déjà révoqué : créez un nouveau jeton plutôt que de le renouveler.",
+      };
+    }
+    const cree = await creerAppareil(tx, {
+      nom: ancien.nom,
+      adminUserId: entree.adminUserId,
+      maintenant: entree.maintenant,
+    });
+    return { ok: true, ...cree };
+  });
+}
+
 /** Révoque un appareil (idempotent : une révocation déjà posée n'est pas déplacée). */
 export async function revoquerAppareil(
   db: DbAppareil,
