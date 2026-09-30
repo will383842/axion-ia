@@ -17,6 +17,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { formateursDeLaSession } from "@/server/qualiopi/appreciations/formateurs-de-la-session";
 
 const PLAFOND = 500;
 
@@ -32,9 +33,20 @@ export interface OptionRattachement {
   libelle: string;
 }
 
+/**
+ * Une inscription porte la session qu'elle désigne ET qui l'a animée : c'est ce
+ * qui permet, en qualité « Formateur », de ne proposer que les formateurs de
+ * cette session (audit du 2026-09-30).
+ */
+export interface OptionInscription extends OptionRattachement {
+  sessionId: string;
+  sessionLibelle: string;
+  formateurIds: string[];
+}
+
 export interface OptionsAppreciation {
   stagiaires: OptionRattachement[];
-  inscriptions: OptionRattachement[];
+  inscriptions: OptionInscription[];
   clients: OptionRattachement[];
   /**
    * 🔴 La quatrième liste, absente jusqu'au 2026-09-04. Le formulaire proposait
@@ -73,7 +85,16 @@ export async function listerOptionsAppreciation(): Promise<OptionsAppreciation> 
         select: {
           id: true,
           trainee: { select: { nom: true, prenom: true } },
-          session: { select: { numero: true, titreSession: true } },
+          session: {
+            select: {
+              id: true,
+              numero: true,
+              titreSession: true,
+              formateurPrincipalId: true,
+              sessionFormateurs: { select: { trainerId: true } },
+              jours: { select: { trainerId: true } },
+            },
+          },
         },
         orderBy: { createdAt: "desc" },
         take: PLAFOND,
@@ -109,6 +130,9 @@ export async function listerOptionsAppreciation(): Promise<OptionsAppreciation> 
     inscriptions: inscriptions.map((e) => ({
       id: e.id,
       libelle: `${e.trainee.prenom} ${e.trainee.nom} — ${e.session.titreSession} (${e.session.numero})`,
+      sessionId: e.session.id,
+      sessionLibelle: `${e.session.titreSession} (${e.session.numero})`,
+      formateurIds: formateursDeLaSession(e.session),
     })),
     clients: clients.map((c) => ({
       id: c.id,

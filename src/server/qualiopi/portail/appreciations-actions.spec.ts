@@ -20,6 +20,7 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: vi.fn(),
       update: vi.fn(),
     },
+    enrollment: { findUnique: vi.fn() },
   },
 }));
 
@@ -179,8 +180,10 @@ describe("creerAppreciationAction", () => {
   });
 
   it("logge l'activite admin avec la bonne action", async () => {
+    // Qualité « entreprise » : une appréciation « formateur » exige désormais
+    // sa session et un formateur qui l'a animée (bloc dédié plus bas).
     await creerAppreciationAction({
-      source: "formateur",
+      source: "entreprise",
       note: 3,
       dateAppreciation: DATE_APPR,
     });
@@ -226,6 +229,52 @@ describe("creerAppreciationAction", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 // traiterDemandeRgpdAction
 // ─────────────────────────────────────────────────────────────────────────────
+
+describe("creerAppreciationAction — qualité formateur (audit du 2026-09-30)", () => {
+  const ENR = "11111111-1111-4111-8111-111111111111";
+  const ANIMATEUR = "22222222-2222-4222-8222-222222222222";
+  const AUTRE = "33333333-3333-4333-8333-333333333333";
+  const findEnrollment = (
+    prisma as unknown as { enrollment: { findUnique: ReturnType<typeof vi.fn> } }
+  ).enrollment.findUnique;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockRequireAdminWrite.mockResolvedValue({ userId: "admin-uuid-1" });
+    mockLogActivity.mockResolvedValue(undefined);
+    mockCreerAppreciation.mockResolvedValue({ id: APP_UUID });
+    findEnrollment.mockResolvedValue({
+      session: { formateurPrincipalId: ANIMATEUR, sessionFormateurs: [], jours: [] },
+    });
+  });
+
+  it("REFUSE un formateur qui n'a pas animé la session", async () => {
+    const r = await creerAppreciationAction({
+      source: "formateur",
+      enrollmentId: ENR,
+      trainerId: AUTRE,
+      dateAppreciation: DATE_APPR,
+    });
+    expect(r).toHaveProperty("error");
+    expect(mockCreerAppreciation).not.toHaveBeenCalled();
+  });
+
+  it("REFUSE une appréciation de formateur sans session ni formateur", async () => {
+    const r = await creerAppreciationAction({ source: "formateur", dateAppreciation: DATE_APPR });
+    expect(r).toHaveProperty("error");
+    expect(mockCreerAppreciation).not.toHaveBeenCalled();
+  });
+
+  it("ACCEPTE le formateur qui a animé la session", async () => {
+    const r = await creerAppreciationAction({
+      source: "formateur",
+      enrollmentId: ENR,
+      trainerId: ANIMATEUR,
+      dateAppreciation: DATE_APPR,
+    });
+    expect(r).toEqual({ data: { id: APP_UUID } });
+  });
+});
 
 describe("traiterDemandeRgpdAction", () => {
   beforeEach(() => {

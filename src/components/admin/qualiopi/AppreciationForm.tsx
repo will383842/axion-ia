@@ -14,7 +14,7 @@
  * Tokens admin var(--color-admin-*) — espace admin uniquement.
  */
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useMemo } from "react";
 import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 
 type ActionResult<T> = { data: T } | { error: string };
@@ -33,10 +33,16 @@ interface OptionRattachement {
   libelle: string;
 }
 
+interface OptionInscription extends OptionRattachement {
+  sessionId: string;
+  sessionLibelle: string;
+  formateurIds: ReadonlyArray<string>;
+}
+
 interface AppreciationFormProps {
   /** Listes de rattachement — remplacent la saisie d UUID a la main. */
   stagiaires: ReadonlyArray<OptionRattachement>;
-  inscriptions: ReadonlyArray<OptionRattachement>;
+  inscriptions: ReadonlyArray<OptionInscription>;
   clients: ReadonlyArray<OptionRattachement>;
   /**
    * 🔴 Les formateurs manquaient à cette liste, et avec eux le seul moyen de
@@ -76,6 +82,19 @@ export function AppreciationForm({
   const [enrollmentId, setEnrollmentId] = useState("");
   const [clientId, setClientId] = useState("");
   const [trainerId, setTrainerId] = useState("");
+  const [sessionFormateurId, setSessionFormateurId] = useState("");
+
+  // 🔴 Audit du 2026-09-30 — en qualité « Formateur », seuls les formateurs qui
+  // ont ANIMÉ la session choisie sont proposés (le serveur le vérifie aussi).
+  const sessionsAnimees = useMemo(() => {
+    const parSession = new Map<string, OptionInscription>();
+    for (const i of inscriptions) if (!parSession.has(i.sessionId)) parSession.set(i.sessionId, i);
+    return [...parSession.values()];
+  }, [inscriptions]);
+  const sessionChoisie = sessionsAnimees.find((i) => i.sessionId === sessionFormateurId);
+  const formateursDeLaSession = sessionChoisie
+    ? formateurs.filter((f) => sessionChoisie.formateurIds.includes(f.id))
+    : [];
 
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -110,7 +129,13 @@ export function AppreciationForm({
         ...(noteVal !== undefined ? { note: noteVal } : {}),
         ...(commentaire.trim() ? { commentaire: commentaire.trim() } : {}),
         ...(traineeId.trim() ? { traineeId: traineeId.trim() } : {}),
-        ...(enrollmentId.trim() ? { enrollmentId: enrollmentId.trim() } : {}),
+        ...(source === "formateur"
+          ? sessionChoisie
+            ? { enrollmentId: sessionChoisie.id }
+            : {}
+          : enrollmentId.trim()
+            ? { enrollmentId: enrollmentId.trim() }
+            : {}),
         ...(clientId.trim() ? { clientId: clientId.trim() } : {}),
         ...(trainerId.trim() ? { trainerId: trainerId.trim() } : {}),
       });
@@ -125,6 +150,8 @@ export function AppreciationForm({
         setTraineeId("");
         setEnrollmentId("");
         setClientId("");
+        setTrainerId("");
+        setSessionFormateurId("");
         setDateAppreciation(new Date().toISOString().slice(0, 10));
       }
     });
@@ -217,27 +244,29 @@ export function AppreciationForm({
             </select>
           </div>
 
-          <div>
-            <label className={labelCls} htmlFor="app-enrollment-id">
-              Inscription concernée (facultatif)
-            </label>
-            <select
-              id="app-enrollment-id"
-              value={enrollmentId}
-              onChange={(e) => setEnrollmentId(e.target.value)}
-              disabled={isPending || inscriptions.length === 0}
-              className={inputCls}
-            >
-              <option value="">
-                {inscriptions.length === 0 ? "— aucune inscription —" : "— aucune —"}
-              </option>
-              {inscriptions.map((o) => (
-                <option key={o.id} value={o.id}>
-                  {o.libelle}
+          {source !== "formateur" && (
+            <div>
+              <label className={labelCls} htmlFor="app-enrollment-id">
+                Inscription concernée (facultatif)
+              </label>
+              <select
+                id="app-enrollment-id"
+                value={enrollmentId}
+                onChange={(e) => setEnrollmentId(e.target.value)}
+                disabled={isPending || inscriptions.length === 0}
+                className={inputCls}
+              >
+                <option value="">
+                  {inscriptions.length === 0 ? "— aucune inscription —" : "— aucune —"}
                 </option>
-              ))}
-            </select>
-          </div>
+                {inscriptions.map((o) => (
+                  <option key={o.id} value={o.id}>
+                    {o.libelle}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           <div>
             <label className={labelCls} htmlFor="app-client-id">
@@ -275,29 +304,61 @@ export function AppreciationForm({
           */}
           {source === "formateur" && (
             <div>
+              <label className={labelCls} htmlFor="app-session-formateur">
+                Session animée *
+              </label>
+              <select
+                id="app-session-formateur"
+                value={sessionFormateurId}
+                onChange={(e) => {
+                  setSessionFormateurId(e.target.value);
+                  setTrainerId("");
+                }}
+                disabled={isPending || sessionsAnimees.length === 0}
+                required
+                className={inputCls}
+              >
+                <option value="">
+                  {sessionsAnimees.length === 0 ? "— aucune session —" : "— choisir la session —"}
+                </option>
+                {sessionsAnimees.map((o) => (
+                  <option key={o.sessionId} value={o.sessionId}>
+                    {o.sessionLibelle}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {source === "formateur" && (
+            <div>
               <label className={labelCls} htmlFor="app-trainer-id">
-                Formateur auteur de l&apos;appréciation
+                Formateur auteur de l&apos;appréciation *
               </label>
               <select
                 id="app-trainer-id"
                 value={trainerId}
                 onChange={(e) => setTrainerId(e.target.value)}
-                disabled={isPending || formateurs.length === 0}
+                disabled={isPending || formateursDeLaSession.length === 0}
+                required
                 className={inputCls}
               >
                 <option value="">
-                  {formateurs.length === 0 ? "— aucun formateur enregistré —" : "— aucun —"}
+                  {!sessionChoisie
+                    ? "— choisir d'abord la session —"
+                    : formateursDeLaSession.length === 0
+                      ? "— aucun formateur n'a animé cette session —"
+                      : "— choisir —"}
                 </option>
-                {formateurs.map((o) => (
+                {formateursDeLaSession.map((o) => (
                   <option key={o.id} value={o.id}>
                     {o.libelle}
                   </option>
                 ))}
               </select>
               <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                Sans ce rattachement, l&apos;appréciation est enregistrée mais ne compte pas comme
-                une voix distincte pour l&apos;indicateur 30 (recueil des appréciations des parties
-                prenantes).
+                Seuls les formateurs qui ont animé la session choisie sont proposés : un formateur
+                ne peut pas donner son appréciation sur une session qu&apos;il n&apos;a pas animée.
               </p>
             </div>
           )}

@@ -38,6 +38,7 @@ import {
   supprimerStagiaire,
 } from "@/server/qualiopi/portail/rgpd-service";
 import { prisma } from "@/lib/prisma";
+import { formateursDeLaSession } from "@/server/qualiopi/appreciations/formateurs-de-la-session";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -89,6 +90,37 @@ export async function creerAppreciationAction(input: {
   const parsed = creerAppreciationSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
+
+  // 🔴 Audit du 2026-09-30 — une appréciation de qualité « formateur » ne peut
+  // venir que d'un formateur qui a ANIMÉ la session concernée. Sans ce contrôle,
+  // n'importe quel formateur actif pouvait être déclaré auteur, et l'indicateur
+  // 30 comptait une partie prenante distincte qui n'a pas participé.
+  if (v.source === "formateur") {
+    if (v.enrollmentId === undefined || v.trainerId === undefined) {
+      return {
+        error:
+          "Une appréciation de formateur doit désigner la session concernée et le formateur qui l'a animée.",
+      };
+    }
+    const inscription = await prisma.enrollment.findUnique({
+      where: { id: v.enrollmentId },
+      select: {
+        session: {
+          select: {
+            formateurPrincipalId: true,
+            sessionFormateurs: { select: { trainerId: true } },
+            jours: { select: { trainerId: true } },
+          },
+        },
+      },
+    });
+    if (!inscription) return { error: "Session introuvable." };
+    if (!formateursDeLaSession(inscription.session).includes(v.trainerId)) {
+      return {
+        error: "Ce formateur n'a pas animé cette session : il ne peut pas en être l'auteur.",
+      };
+    }
+  }
 
   const created = await creerAppreciation({
     source: v.source,
