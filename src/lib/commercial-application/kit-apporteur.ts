@@ -77,9 +77,11 @@ export const DELAI_KIT_DOSSIER_COMMENCE_MS = 30 * 60 * 1000;
  * attribuée — décision de Will du 2026-09-22 : SIX mois (était douze).
  *
  * 🔴 Première constante de cette règle côté axionia : elle n'était écrite
- * nulle part dans le code. Les documents `docs/contrat-apporteur-clauses.md`,
- * `docs/fonctionnement-reseau-apporteurs.md` et
- * `docs/audit-attribution-apporteurs-siren.md` disent encore 12 mois : à
- * aligner par une décision explicite, pas en passant.
+ * nulle part dans le code. Les documents ont été alignés par la décision
+ * explicite (#1247, reconfirmée le 2026-09-30) : `docs/contrat-apporteur-clauses.md`
+ * §1.4 et `docs/fonctionnement-reseau-apporteurs.md` disent 6 mois ;
+ * `docs/audit-attribution-apporteurs-siren.md`, audit daté, garde son
+ * raisonnement à 12 mois sous un encart qui renvoie ici. Le parrainage
+ * (10 %, 12 mois) est une autre règle.
  */
 export const FENETRE_ATTRIBUTION_APPORTEUR_MOIS = 6;

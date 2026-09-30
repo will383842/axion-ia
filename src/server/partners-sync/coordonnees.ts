@@ -17,8 +17,11 @@
  *      glissantes, compteur à conduite `refuser` sur panne. Au-delà, la réponse d'un identifiant
  *      inexistant ; l'écart est journalisé et alerté.
  *   4. PORTÉE : une ligne `candidature.recue` doit exister dans `partners_sync_outbox` pour ce
- *      sujet. Sinon — inexistante, non émise, plafond atteint, compteur en panne, déchiffrement
- *      impossible — la MÊME réponse, statut, corps et en-têtes : aucun oracle.
+ *      sujet, ET la fiche doit être encore transmissible À LA LECTURE (`motifDeRefusPretASigner`,
+ *      la règle de l'émission : ni corbeille, ni non-apporteur, ni sans suite). Une candidature
+ *      émise puis retirée ne rend donc plus rien. Sinon — inexistante, non émise, retirée,
+ *      plafond atteint, compteur en panne, déchiffrement impossible — la MÊME réponse, statut,
+ *      corps et en-têtes : aucun oracle.
  *   5. RÉPONSE FERMÉE : `{nom, prenom, email, telephone}`, déchiffrés à l'instant, nuls si absents,
  *      signée comme un envoi (secret d'émission), jamais mise en cache.
  *   6. JOURNAL SANS CLAIR : l'identifiant, l'empreinte de l'adresse et le résultat.
@@ -35,6 +38,7 @@ import type { RateLimitConfig } from "@/lib/rate-limit";
 import { ENTETE_KID, horodatageSignature, kidDe, signerCorps } from "@/server/partners/enveloppe";
 
 import { canalPartnersOuvert, secretPartners, secretRelecture } from "./config";
+import { motifDeRefusPretASigner } from "./producteurs/candidature";
 import { verifierRequetePartners } from "./relecture";
 
 /** 5 lectures réussies par candidature sur 24 h glissantes, refus si le compteur est en panne. */
@@ -55,6 +59,7 @@ const IDENTIFIANT = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{1
 export type ResultatCoordonnees =
   | "rendue"
   | "non_emise"
+  | "non_transmissible"
   | "plafond_atteint"
   | "limiteur_en_panne"
   | "dechiffrement_impossible"
@@ -81,11 +86,19 @@ export interface LecteurCoordonnees {
   submission: {
     findUnique(args: {
       where: { id: string };
-      select: { contactName: true; contactEmail: true; contactPhone: true };
+      select: {
+        contactName: true;
+        contactEmail: true;
+        contactPhone: true;
+        details: true;
+        deletedAt: true;
+      };
     }): PromiseLike<{
       contactName: Chiffree;
       contactEmail: Chiffree;
       contactPhone: Chiffree;
+      details: unknown;
+      deletedAt: Date | null;
     } | null>;
   };
 }
@@ -253,10 +266,23 @@ export async function repondreCoordonnees(
   }
   const submission = await d.prisma.submission.findUnique({
     where: { id: candidatureId },
-    select: { contactName: true, contactEmail: true, contactPhone: true },
+    select: {
+      contactName: true,
+      contactEmail: true,
+      contactPhone: true,
+      details: true,
+      deletedAt: true,
+    },
   });
   if (submission === null) {
     journal("non_emise");
+    return introuvable();
+  }
+  // Émise ne veut pas dire transmissible pour toujours : une fiche mise à la corbeille ou
+  // classée sans suite APRÈS l'émission ne rend plus rien. La règle est celle de l'émission,
+  // relue à l'instant, et la réponse est celle d'un identifiant inexistant.
+  if (motifDeRefusPretASigner(submission) !== null) {
+    journal("non_transmissible");
     return introuvable();
   }
 
