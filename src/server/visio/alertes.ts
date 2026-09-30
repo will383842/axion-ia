@@ -73,8 +73,15 @@ export const CODES_ALERTES_VISIO = {
   /** L'extension ne donne aucun signe pendant un rendez-vous. */
   extensionSilencieuse: "visio.extension_silencieuse",
   // ── circuit du compte rendu (PR 6) ──
-  /** Crédit OpenAI épuisé, plafond atteint, clé absente, étape inconnue du worker : en pause. */
+  /** Crédit OpenAI épuisé, plafond atteint, clé absente : en pause. */
   circuitSuspendu: "visio.circuit_suspendu",
+  /**
+   * Une étape programmée que le worker en place ne sait pas exécuter (V1 F4).
+   * Code DISTINCT de `circuitSuspendu` : l'anti-doublon porte sur
+   * (code, cible) et les deux sont sans cible — sous le même code, une pause
+   * « quota » déjà ouverte avalait celle qui nomme l'étape.
+   */
+  etapeSansGestionnaire: "visio.etape_sans_gestionnaire",
   /** Une étape a échoué définitivement : note manuelle proposée. */
   etapeEnEchec: "visio.etape_en_echec",
   /** La base n'est pas migrée depuis plus de 2 heures. */
@@ -154,7 +161,10 @@ export async function signalerUneFois(
     select: { id: true, notifiedAt: true, metadata: true },
   });
   if (!ouverte) return null;
-  if (ouverte.notifiedAt) {
+  // Avant V1 C3, le balayage marquait `metadata.telegramLe` au lieu de
+  // `notifiedAt` : une alerte ouverte à cette époque est DÉJÀ partie (sinon
+  // elle repartait une fois sur Telegram au déploiement).
+  if (ouverte.notifiedAt || dejaPartieAvantC3(ouverte.metadata)) {
     if (deps.completer) {
       await db.alerteSysteme.update({
         where: { id: ouverte.id },
@@ -180,6 +190,14 @@ export async function signalerUneFois(
     });
   }
   return envoyee ? "envoyee" : "echec_envoi";
+}
+
+function dejaPartieAvantC3(metadata: unknown): boolean {
+  return (
+    metadata !== null &&
+    typeof metadata === "object" &&
+    typeof (metadata as Record<string, unknown>)["telegramLe"] === "string"
+  );
 }
 
 interface MetaPanne {

@@ -39,9 +39,16 @@ export class ErreurVisio extends Error {
  * n'est pas une erreur du fournisseur : l'étape est relâchée sans compter
  * d'essai. `envoye` dit si la requête était partie (on a pu être facturé :
  * l'estimation est alors inscrite au registre des coûts).
+ *
+ * `echecRegistre` : l'inscription de cette estimation a elle-même échoué
+ * (base coupée pendant l'arrêt). L'arrêt reste un ARRÊT — jamais une erreur
+ * passagère comptée ; `executerEtape` journalise l'échec du registre.
  */
 export class AppelInterrompu extends Error {
-  constructor(readonly envoye: boolean) {
+  constructor(
+    readonly envoye: boolean,
+    readonly echecRegistre: unknown = null,
+  ) {
     super("appel OpenAI annulé par l'arrêt du worker");
     this.name = "AppelInterrompu";
   }

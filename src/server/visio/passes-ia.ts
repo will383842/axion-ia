@@ -428,7 +428,7 @@ export const consolider: Gestionnaire = async (ctx) => {
   if (entrees.length > 0) {
     const catalogue = await deps.catalogue();
     for (const { perimetre: p, e } of entrees) {
-      ctx.verifierArret();
+      await ctx.verifierMain();
       const { sortie } = await executerPasse(depsPasse(ctx), {
         passe: "consolider",
         schema: SCHEMAS_VISIO.consolidation.schema,
@@ -466,7 +466,7 @@ export const ebaucher: Gestionnaire = async (ctx) => {
   if (aEbaucher.length > 0) {
     const catalogue = await deps.catalogue();
     for (const { j, entree } of aEbaucher) {
-      ctx.verifierArret();
+      await ctx.verifierMain();
       const { sortie } = await executerPasse(depsPasse(ctx), {
         passe: "ebaucher",
         schema: SCHEMAS_VISIO.ebauche.schema,

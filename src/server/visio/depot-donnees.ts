@@ -544,11 +544,13 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
       });
       const ids = enCours.map((c) => c.id);
       if (ids.length > 0) {
+        // Ordre des verrous : `traitements_visio` AVANT `compteRendu`, comme
+        // `terminer` (prise-d-etape.ts) — l'ordre inverse s'interbloque.
+        await annulerEtapesDesVersions(tx, ids);
         await tx.compteRendu.updateMany({
           where: { id: { in: ids } },
           data: { statut: "remplace" },
         });
-        await annulerEtapesDesVersions(tx, ids);
         const proposes = await tx.fait.findMany({
           where: { compteRenduId: { in: ids }, statut: { in: ["propose", "en_attente"] } },
           select: { id: true },

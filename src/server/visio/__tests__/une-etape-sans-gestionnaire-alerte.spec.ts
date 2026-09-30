@@ -5,8 +5,11 @@
  * lecture des réponses, e-mail de suivi) que le worker en place ne sait pas
  * encore exécuter (retour arrière du worker, déploiement du worker en échec).
  * L'étape était suspendue EN SILENCE : la console annonçait « d'ici quelques
- * minutes » et rien ne venait. Elle lève maintenant `visio.circuit_suspendu`,
- * en nommant l'étape, pour que Will sache quoi reprendre.
+ * minutes » et rien ne venait. Elle lève maintenant
+ * `visio.etape_sans_gestionnaire`, en nommant l'étape, pour que Will sache
+ * quoi reprendre. Code DISTINCT de `visio.circuit_suspendu` : l'anti-doublon
+ * porte sur (code, cible nulle), et une pause « quota » déjà ouverte avalait
+ * l'alerte qui nomme l'étape.
  *
  * Mutation qui rougit : retirer l'appel à `alerter` de la branche « pas de
  * gestionnaire » d'`executerEtape`.
@@ -17,6 +20,7 @@
 
 import { describe, expect, it } from "vitest";
 
+import { CODES_ALERTES_VISIO } from "../alertes";
 import { executerEtape, type Gestionnaire } from "../etapes";
 import { depsDeTest, FauxDepot } from "../../../../tests/outils/faux-circuit-visio";
 
@@ -30,7 +34,8 @@ describe("⛔ une étape sans gestionnaire alerte", () => {
     expect(await executerEtape(deps, t.id)).toBe("suspendue");
     expect(depot.ligne(t.id)).toMatchObject({ statut: "suspendu", classeErreur: "configuration" });
     expect(deps.alertes).toHaveLength(1);
-    expect(deps.alertes[0]).toMatchObject({ code: "visio.circuit_suspendu" });
+    expect(deps.alertes[0]).toMatchObject({ code: "visio.etape_sans_gestionnaire" });
+    expect(deps.alertes[0]!.code).not.toBe(CODES_ALERTES_VISIO.circuitSuspendu);
     expect(deps.alertes[0]!.message).toContain("« questionnaire »");
     expect(deps.alertes[0]!.message).toMatch(/Reprendre/);
   });

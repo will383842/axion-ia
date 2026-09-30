@@ -70,11 +70,17 @@ export async function executerPasse<T>(
   } catch (err) {
     if (err instanceof AppelInterrompu) {
       if (err.envoye) {
-        await appelAnnuleEnVol(deps.cout, {
-          jobId: d.jobId,
-          modele: MODELE_REDACTION,
-          estimationUsd: ESTIMATION_PASSE_USD[d.passe],
-        });
+        try {
+          await appelAnnuleEnVol(deps.cout, {
+            jobId: d.jobId,
+            modele: MODELE_REDACTION,
+            estimationUsd: ESTIMATION_PASSE_USD[d.passe],
+          });
+        } catch (echec) {
+          // Registre injoignable pendant l'arrêt : l'appel reste INTERROMPU
+          // (relâché sans essai), jamais reclassé en erreur passagère.
+          throw new AppelInterrompu(true, echec);
+        }
       }
       throw err;
     }

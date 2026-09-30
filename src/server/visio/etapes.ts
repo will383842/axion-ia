@@ -105,6 +105,14 @@ export interface ContexteEtape {
   readonly jobId: string;
   /** Lève `InterruptionArret` si le worker s'arrête (à appeler entre deux appels coûteux). */
   readonly verifierArret: () => void;
+  /**
+   * `verifierArret` + relecture EN BASE de la main (prolonge le verrou) :
+   * lève `ResultatOrphelin` si l'étape a été annulée ou reprise. À attendre
+   * avant CHAQUE appel OpenAI d'une boucle — `verifierArret` seul ne voit une
+   * annulation qu'au prochain battement (jusqu'à 60 s), et les appels
+   * suivants partaient encore, facturés, pour un résultat orphelin.
+   */
+  readonly verifierMain: () => Promise<void>;
   /** Écriture intermédiaire gardée (jeton + retrait). */
   readonly ecrireEnCours: <R>(fn: (tx: Tx) => Promise<R>) => Promise<R>;
 }
@@ -303,7 +311,7 @@ export async function executerEtape(
     // étape que ce worker ne sait pas encore exécuter ; sans alerte, la
     // console annonçait « d'ici quelques minutes » et rien ne venait.
     await deps.alerter({
-      code: CODES_ALERTES_CIRCUIT.circuitSuspendu,
+      code: CODES_ALERTES_CIRCUIT.etapeSansGestionnaire,
       niveau: "critique",
       titre: "Circuit visio suspendu : une étape n'a pas de gestionnaire sur le worker",
       message: `Étape « ${t.etape} » : le worker en place ne sait pas l'exécuter (worker plus ancien que l'app ?). Vérifiez le déploiement du worker, puis cliquez « Reprendre » sur l'état du circuit.`,
@@ -318,13 +326,21 @@ export async function executerEtape(
       if (!ok) mainPerdue = true;
     });
   }, PROLONGATION_VERROU_MS);
+  const verifierArret = (): void => {
+    if (deps.arretDemande()) throw new InterruptionArret();
+    if (mainPerdue) throw new ResultatOrphelin();
+  };
   const ctx: ContexteEtape = {
     t,
     deps,
     jobId: idTacheVisio(t.etape, t.rencontreId, t.execution),
-    verifierArret: () => {
-      if (deps.arretDemande()) throw new InterruptionArret();
-      if (mainPerdue) throw new ResultatOrphelin();
+    verifierArret,
+    verifierMain: async () => {
+      verifierArret();
+      if (!(await deps.depot.prolonger(t))) {
+        mainPerdue = true;
+        throw new ResultatOrphelin();
+      }
     },
     ecrireEnCours: (fn) => deps.depot.ecrireEnCours(t, fn),
   };
@@ -386,6 +402,12 @@ async function traiterErreur(
   // Arrêt du worker, entre deux appels ou PENDANT un appel annulé (V1 F3) :
   // l'étape repart `a_faire` sans compter d'essai.
   if (err instanceof InterruptionArret || err instanceof AppelInterrompu) {
+    if (err instanceof AppelInterrompu && err.echecRegistre !== null) {
+      console.error(
+        `[visio] coût d'un appel annulé en vol NON inscrit (${idTacheVisio(t.etape, t.rencontreId, t.execution)}) :`,
+        err.echecRegistre,
+      );
+    }
     await deps.depot.relacher(t);
     return "relachee";
   }

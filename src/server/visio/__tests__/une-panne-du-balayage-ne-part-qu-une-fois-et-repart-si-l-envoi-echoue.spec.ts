@@ -61,6 +61,21 @@ describe("⛔ une panne du balayage ne part qu'une fois et repart si l'envoi éc
     expect(base.tables["alerteVisio"] ?? []).toHaveLength(0);
   });
 
+  it("une alerte ouverte avant C3 (`metadata.telegramLe`, `notifiedAt` vide) ne repart pas", async () => {
+    const { base, db, creer } = scene();
+    await creer({
+      code: VISIO_BALAYAGE_EN_PANNE,
+      niveau: "important",
+      titre: "t",
+      message: "m",
+      metadata: { etapes: ["suites"], essais: 1, telegramLe: "2026-09-29T08:00:00.000Z" },
+    });
+    expect(base.tables["alerteSysteme"]?.[0]?.["notifiedAt"] ?? null).toBeNull();
+    const n = notifier(["sent"]);
+    expect(await signalerPanneDuBalayage(db, PANNE, { notifier: n, creer })).toBe("deja_envoyee");
+    expect(n).not.toHaveBeenCalled();
+  });
+
   it("un envoi raté repart au passage suivant, et les essais sont comptés", async () => {
     const { base, db, creer } = scene();
     const n = notifier(["failed", "sent"]);

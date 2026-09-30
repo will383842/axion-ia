@@ -131,7 +131,7 @@ async function transcrireUn(
     .filter((x) => x.statut === "transcrite")
     .reduce((s, x) => s + (x.dureeMs ?? DUREE_TRANCHE_S * 1000), 0);
   for (const tranche of tranchesATranscrire(e.tranches)) {
-    ctx.verifierArret();
+    await ctx.verifierMain();
     const octets = await deps.donnees.lireSonTranche(tranche.id);
     const dureeTranche = tranche.dureeMs ?? DUREE_TRANCHE_S * 1000;
     const segments = await transcrireTranche(

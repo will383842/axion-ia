@@ -125,11 +125,17 @@ export async function transcrireTranche(
   } catch (err) {
     if (err instanceof AppelInterrompu) {
       if (err.envoye) {
-        await appelAnnuleEnVol(deps.cout, {
-          jobId: t.jobId,
-          modele: MODELE_TRANSCRIPTION,
-          estimationUsd: ESTIMATION_TRANCHE_USD,
-        });
+        try {
+          await appelAnnuleEnVol(deps.cout, {
+            jobId: t.jobId,
+            modele: MODELE_TRANSCRIPTION,
+            estimationUsd: ESTIMATION_TRANCHE_USD,
+          });
+        } catch (echec) {
+          // Registre injoignable pendant l'arrêt : l'appel reste INTERROMPU
+          // (relâché sans essai), jamais reclassé en erreur passagère.
+          throw new AppelInterrompu(true, echec);
+        }
       }
       throw err;
     }

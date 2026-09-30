@@ -412,11 +412,13 @@ export async function completerApresRattachement(
   const etat = etatSansTexteBrut(lireEtat(dechiffrerParole(cr.verification)));
   return db.$transaction(async (tx) => {
     if (cr.statut === "brouillon" || cr.statut === "a_valider") {
-      await tx.compteRendu.update({ where: { id: cr.id }, data: { statut: "remplace" } });
       // V1 P-1 : la version remplacée s'ARRÊTE. Sans cette annulation, ses
       // étapes déjà programmées (P3, P4, P5) repartaient chez OpenAI et la
       // ramenaient « à valider » à côté de la nouvelle.
+      // Ordre des verrous : `traitements_visio` AVANT `compteRendu`, comme
+      // `terminer` (prise-d-etape.ts) — l'ordre inverse s'interbloque.
       await annulerEtapesDesVersions(tx, [cr.id]);
+      await tx.compteRendu.update({ where: { id: cr.id }, data: { statut: "remplace" } });
     }
     const nouveau = await tx.compteRendu.create({
       data: {

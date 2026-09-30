@@ -249,6 +249,7 @@ const CODES_ATTENDUS: string[] = [
   "visio.extension_silencieuse",
   // Chantier visio, PR 6 : le circuit du compte rendu.
   "visio.circuit_suspendu",
+  "visio.etape_sans_gestionnaire",
   "visio.etape_en_echec",
   "visio.schema_en_retard",
   "visio.demande_d_arret",
