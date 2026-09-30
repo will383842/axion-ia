@@ -19,6 +19,15 @@
 // sixième se fait LÀ, et nulle part ailleurs. C'est le même parti pris que
 // `PASSAGES` dans `rappels-appel.ts`, qui a prouvé sa valeur : le jour où un
 // second public est arrivé, il a suffi d'ajouter trois lignes.
+//
+// ── « Prêt à signer », hors de la table, et pourquoi (INT-T22) ────────────
+// C'est la seule transition qui ÉMET un fait vers Axion Partners
+// (`candidature.recue`, ADR 0051 §c : au clic, jamais à la réception). Elle a
+// des préconditions que la table ne porte pas (un dossier apporteur, jamais une
+// fiche sans suite) et sa marque doit s'écrire EN LITTÉRAL pour que le cliquet
+// des écrivains (`pnpm partners:cliquet-ecrivains`) la voie à côté de son
+// émission : une clé posée par `details[effet.marqueDetails]` lui serait
+// illisible. Elle vit donc dans `marquerPretASigner`, plus bas.
 
 import "server-only";
 
@@ -31,6 +40,15 @@ import { adminPath } from "@/lib/admin-path";
 import { estApporteur } from "@/lib/commercial-application/est-apporteur";
 import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 import { annulerRelancesLeadApporteur } from "@/features/commercial-application/relances-lead-apporteur";
+import {
+  CandidatureNonTransmissible,
+  emettreCandidatureRecue,
+  lirePretASigner,
+  motifDeRefusPretASigner,
+  type MotifRefusPretASigner,
+} from "@/server/partners-sync/producteurs/candidature";
+import { canalPartnersOuvert } from "@/server/partners-sync/config";
+import type { Prisma } from "../../../prisma/generated/client";
 
 /** Les six gestes qu'un admin pose sur une fiche. */
 export type Transition =
@@ -281,4 +299,102 @@ export async function appliquerTransition(
   updateTag(INBOX_COUNTS_TAG);
 
   return { ok: true, relancesRetirees };
+}
+
+export type ErreurPretASigner =
+  MotifRefusPretASigner | "introuvable" | "charge_illisible" | "db" | "interdit" | "canal_ferme";
+
+export interface ResultatPretASigner {
+  readonly ok: boolean;
+  /** Vrai si la fiche portait déjà la marque : rien n'est réécrit, rien n'est journalisé. */
+  readonly dejaMarquee?: boolean;
+  readonly erreur?: ErreurPretASigner;
+}
+
+/** Un refus levé DANS la transaction : il l'annule sans rien écrire. */
+class RefusPretASigner extends Error {
+  readonly erreur: ErreurPretASigner;
+
+  constructor(erreur: ErreurPretASigner) {
+    super(erreur);
+    this.name = "RefusPretASigner";
+    this.erreur = erreur;
+  }
+}
+
+/**
+ * « Prêt à signer » — le candidat a été eu au téléphone, on l'envoie vers
+ * l'outil du contrat (INT-T22, ADR 0051 §c, REQ-INT-032).
+ *
+ * Dans UNE transaction : relire la fiche, la refuser si elle n'est pas un
+ * dossier apporteur, si elle est classée sans suite ou à la corbeille
+ * (`motifDeRefusPretASigner`, la même règle que l'émission), poser
+ * `details.pretASignerAt`, l'inscrire au journal d'activité, et émettre
+ * `candidature.recue`. L'événement et la marque vivent et meurent ensemble.
+ *
+ * 🔑 Un second clic ne réécrit rien — la marque garde l'instant du premier —
+ * mais RAPPELLE l'émission : la clé du fait rend le même `event_id`, et la file
+ * écrit en `ON CONFLICT DO NOTHING`. Un seul événement, quel que soit le nombre
+ * de clics.
+ *
+ * ⚠️ Aucune relance n'est touchée, aucun statut ne change : le geste transmet, il
+ * ne range ni ne clôt.
+ */
+export async function marquerPretASigner(
+  submissionId: string,
+  adminUserId: string,
+): Promise<ResultatPretASigner> {
+  // 🔴 CANAL FERMÉ, AUCUNE MARQUE. Marquer sans émettre perdrait la fiche : le bouton disparaît une
+  // fois la marque posée, et rien ne la rattraperait à l'ouverture du canal. Et la zone Partners
+  // est inerte tant que le canal est fermé : le geste n'existe pas encore.
+  if (!canalPartnersOuvert()) return { ok: false, erreur: "canal_ferme" };
+  let dejaMarquee = false;
+  try {
+    await prisma.$transaction(async (tx) => {
+      const ligne = await tx.submission.findUnique({
+        where: { id: submissionId },
+        select: { details: true, deletedAt: true },
+      });
+      if (!ligne) throw new RefusPretASigner("introuvable");
+      const refus = motifDeRefusPretASigner(ligne);
+      if (refus !== null) throw new RefusPretASigner(refus);
+
+      dejaMarquee = lirePretASigner(ligne.details) !== null;
+      if (!dejaMarquee) {
+        // `estApporteur` a vérifié que `details` est un objet.
+        const details = ligne.details as Prisma.InputJsonObject;
+        await tx.submission.update({
+          where: { id: submissionId },
+          data: { details: { ...details, pretASignerAt: new Date().toISOString() } },
+        });
+        await tx.activityLog.create({
+          data: {
+            adminUserId,
+            action: "submission.pret_a_signer",
+            targetType: "submission",
+            targetId: submissionId,
+            // Aucune donnée personnelle au journal, comme pour les autres gestes.
+            changes: { transition: "pret-a-signer" } as Record<string, string>,
+          },
+        });
+      }
+      await emettreCandidatureRecue(tx, submissionId);
+    });
+  } catch (e) {
+    if (e instanceof RefusPretASigner) return { ok: false, erreur: e.erreur };
+    if (e instanceof CandidatureNonTransmissible) return { ok: false, erreur: e.motif };
+    // `payloadCandidatureRecue` lève, préfixe `[partners]`, sur un dossier
+    // illisible (score absent, réponse non déclarée) : la fiche reste telle
+    // quelle, rien n'est émis, et l'écran le dit.
+    if (e instanceof Error && e.message.startsWith("[partners]")) {
+      return { ok: false, erreur: "charge_illisible" };
+    }
+    return { ok: false, erreur: "db" };
+  }
+
+  revalidatePath(adminPath("fr", "contacts/messages"));
+  revalidatePath(adminPath("fr", "contacts/commercial"));
+  updateTag(INBOX_COUNTS_TAG);
+
+  return { ok: true, dejaMarquee };
 }

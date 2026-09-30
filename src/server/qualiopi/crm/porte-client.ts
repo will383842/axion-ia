@@ -71,6 +71,7 @@ import {
   definirContactFacturation,
 } from "@/server/qualiopi/crm/contact-facturation";
 import { nomsProches, normaliserVille } from "@/server/qualiopi/crm/normaliser-nom";
+import { CREATION_CLIENT, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -524,6 +525,8 @@ export async function creerOuRetrouverClient(
         },
         select: { id: true, numero: true },
       });
+      // Axion Partners (INT-T03) : `client.cree`, dans la transaction de la création.
+      await emettreFaitClient(tx, cree.id, CREATION_CLIENT);
 
       if (personne !== null && (personne.nom || personne.email)) {
         await definirContactFacturation(tx, {

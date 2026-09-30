@@ -16,6 +16,7 @@ import { premierMessageZod } from "@/lib/zod-message";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { inferOpco } from "@/server/qualiopi/crm/naf-opco";
 import { definirContactFacturation } from "@/server/qualiopi/crm/contact-facturation";
+import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 import {
   creerOuRetrouverClient,
   ErreurSirenDejaPris,
@@ -429,6 +430,8 @@ export async function updateClientAction(
       // la même recherche que la création — jamais deux fiches vivantes au même
       // SIREN (« C'est elle », SIRET saisi dans « Éditer »).
       if (typeof sirenAEcrire === "string") await exigerSirenLibre(tx, id, sirenAEcrire);
+      // Axion Partners (INT-T03) : la charge AVANT l'écriture (rien n'est lu canal fermé).
+      const avant = await chargeClientAvant(tx, id);
       await tx.client.update({
         where: { id },
         data: {
@@ -473,6 +476,9 @@ export async function updateClientAction(
           parAdminId: session.userId,
         });
       }
+      // `client.mis_a_jour` si la charge a changé. APRÈS la dernière écriture de la fiche :
+      // la clé du fait est son `updatedAt` relu.
+      await emettreFaitClient(tx, id, { avant });
     });
   } catch (e) {
     if (e instanceof ErreurSirenDejaPris) return { error: e.message };
