@@ -90,7 +90,7 @@ export type NumeroCritere = IndicateurRNQ["critere"];
 
 export const CRITERES_RNQ: Readonly<Record<NumeroCritere, string>> = {
   1: "Les conditions d'information du public sur les prestations proposées, les délais pour y accéder et les résultats obtenus",
-  2: "L'identification précise des objectifs des prestations proposées et l'adaptation de ces prestations aux publics bénéficiaires lors de la conception des prestations",
+  2: "L'identification précise des objectifs des prestations proposées et l'adaptation de ces prestations aux publics bénéficiaires, lors de la conception des prestations",
   3: "L'adaptation aux publics bénéficiaires des prestations et des modalités d'accueil, d'accompagnement, de suivi et d'évaluation mises en œuvre",
   4: "L'adéquation des moyens pédagogiques, techniques et d'encadrement aux prestations mises en œuvre",
   5: "La qualification et le développement des connaissances et compétences des personnels chargés de mettre en œuvre les prestations",
