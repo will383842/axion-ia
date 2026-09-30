@@ -20,7 +20,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("@/features/dossier-client/compte-rendu-actions", () => ({
+vi.mock("@/features/dossier-client/actions-rencontres", () => ({
   gesteCompteRenduAction: async () => undefined,
 }));
 

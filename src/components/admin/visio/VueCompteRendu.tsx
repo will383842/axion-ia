@@ -30,7 +30,7 @@ import {
   LIBELLE_STATUT_ETAPE,
   LIBELLE_TYPE_CONSENTEMENT,
 } from "@/features/dossier-client/libelles";
-import { gesteCompteRenduAction } from "@/features/dossier-client/compte-rendu-actions";
+import { gesteCompteRenduAction } from "@/features/dossier-client/actions-rencontres";
 
 interface Props {
   readonly vue: Vue;

@@ -1,15 +1,19 @@
 /**
- * Actions serveur de la page du COMPTE RENDU d'un rendez-vous (chantier visio, PR 6).
+ * Les gestes du COMPTE RENDU de l'enregistrement, sur la page du rendez-vous
+ * (chantier visio, PR 6).
  *
- * Chaque action vérifie ELLE-MÊME la session (décision A2 : Will et les
- * administrateurs) : une Server Action s'appelle directement, masquer un
- * bouton n'est pas interdire. Aucune n'appelle OpenAI : elles programment des
- * étapes, que le worker exécute.
+ * Module serveur ORDINAIRE (pas `"use server"`) : il n'est appelé que par
+ * l'action `gesteCompteRenduAction` de `actions-rencontres.ts`, module
+ * d'actions que la page du rendez-vous charge déjà. Un module d'actions de
+ * plus sur une page coûte ~0,9 kB au cliquet de la console (mesuré sur la
+ * PR 1229 : 470,01 kB pour 470), une action de plus dans un module déjà chargé
+ * quelques dizaines d'octets.
  *
- * ⚠️ Module `"use server"` : il n'exporte QUE des fonctions asynchrones.
+ * `executerGesteCompteRendu` vérifie ELLE-MÊME la session (décision A2 : Will
+ * et les administrateurs) avant tout geste : une Server Action s'appelle
+ * directement, masquer un bouton n'est pas interdire. Aucun geste n'appelle
+ * OpenAI : ils programment des étapes, que le worker exécute.
  */
-
-"use server";
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -161,12 +165,11 @@ const GESTES: Readonly<
 };
 
 /**
- * UNE seule action pour toute la page (champ caché `geste`) : chaque action
- * importée par une page ajoute sa référence au JavaScript de la console, et le
- * cliquet de poids de la console n'a pas de marge (mesuré sur la PR 1229 : huit
- * actions séparées le dépassaient de 209 o).
+ * UN seul point d'entrée pour tous les gestes (champ caché `geste`) : huit
+ * actions séparées dépassaient le cliquet de poids de la console de 209 o
+ * (mesuré sur la PR 1229).
  */
-export async function gesteCompteRenduAction(fd: FormData): Promise<void> {
+export async function executerGesteCompteRendu(fd: FormData): Promise<void> {
   const geste = GESTES[String(fd.get("geste") ?? "")];
   await executer(fd, async (rencontreId, adminId) => {
     if (!geste) throw new GesteRefuse("Geste inconnu.");

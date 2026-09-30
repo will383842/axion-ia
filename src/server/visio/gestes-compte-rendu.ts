@@ -1,7 +1,7 @@
 /**
  * Les GESTES DE WILL sur un compte rendu (chantier visio, PR 6) — fonctions
  * de domaine, appelées par les actions serveur de la console
- * (`src/features/dossier-client/compte-rendu-actions.ts`) et par la chaîne
+ * (`src/features/dossier-client/compte-rendu-gestes.ts`) et par la chaîne
  * de Gate D. Aucune ne parle à OpenAI : elles PROGRAMMENT des étapes, que le
  * worker exécute.
  *
