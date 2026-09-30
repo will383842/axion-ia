@@ -97,7 +97,7 @@ export const COPY_ISSUE_ECHANGE = {
       fonctionnement: [
         "Vous nous mettez en relation avec une entreprise qui a un besoin : formation à l'IA, audit ou intégration.",
         "Nous gérons tout le reste : rendez-vous, devis et réalisation.",
-        // JUR-T29 (arbitrage -d7, 2026-09-29) : envoyé AVANT la signature du contrat, le
+        // JUR-T29 : envoyé AVANT la signature du contrat, le
         // barème de cet e-mail est indicatif ; le contrat d'apporteur fait foi.
         "Vous touchez une commission. Le barème ci-dessous est donné à titre indicatif : votre contrat d'apporteur fait foi.",
       ],

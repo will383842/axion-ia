@@ -104,20 +104,18 @@ const FERME = new RegExp(
 const INDICATIF =
   /à\s+partir\s+de|selon\s+(?:votre\s+|ton\s+|son\s+)?profil|à\s+titre\s+indicatif|\bindicati(?:f|ve|fs|ves)\b|\bas\s+a\s+guide\b|\bfrom\s+€|\bdepending\s+on\s+(?:your\s+)?profile\b/i;
 /**
- * `revenu_illimite` : une FAMILLE À PART, que la mention indicative N'EXCUSE PAS (arbitrage -d7
- * du 2026-09-29). « À titre indicatif, 500 € par journée, sans plafond » reste une promesse de
- * revenu illimité : un plafond absent ne se nuance pas. Seules les exceptions nommées (la limite
- * d'ÂGE) en sortent.
+ * `revenu_illimite` : une FAMILLE À PART, que la mention indicative N'EXCUSE PAS. La règle :
+ * aucun plafond absent n'est annoncé, même « à titre indicatif ». Seules les exceptions nommées
+ * (la limite d'ÂGE) en sortent.
  */
 const ILLIMITE =
   /\bsans\s+(?:aucune?\s+)?plafond|\b(?:sans\s+(?:aucune\s+)?|aucune\s+)limite(?!\s+d['’]\s?âge)|\bnon\s+plafonn|\bpas\s+de\s+plafond|\bdéplafonn|\billimit[ée]e?s?\b|\buncapped\b|\bunlimited\b|\bno\s+(?:limit|cap)\b/i;
 /**
- * Deux formules que la juriste A07 juge bloquantes (arbitrage -d7 du 2026-09-30) :
- *   — `promesse_sans_risque` : promettre à un indépendant l'absence de risque (« zéro risque »,
- *     « sans risque », « risk-free »). On dit ce qui est vrai : aucun frais d'entrée, aucun
- *     engagement de volume ;
- *   — `ai_act_trop_large` : « l'AI Act impose / oblige » rapporté aux PME, ETI ou grands groupes
- *     en bloc. Le règlement vise des usages et des systèmes d'IA, pas des tailles d'entreprise.
+ * Deux familles, deux règles :
+ *   — `promesse_sans_risque` : jamais « zéro risque », « sans risque », « risk-free ». On écrit
+ *     les faits : aucun frais d'entrée, aucun engagement de volume ;
+ *   — `ai_act_trop_large` : jamais « l'AI Act impose / oblige » rapporté aux PME, ETI ou grands
+ *     groupes en bloc. On écrit : l'AI Act crée des obligations pour les entreprises qui utilisent l'IA.
  */
 const SANS_RISQUE =
   /\bz[ée]ro\s+risque|\brisque\s+z[ée]ro|\bsans\s+(?:aucun\s+)?risque|\bzero\s+risk|\brisk[-\s]free\b|\bno\s+risk\b/i;

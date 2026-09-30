@@ -104,7 +104,7 @@ describe("REQ-JUR-001 — la mention indicative lève la faute, dans la phrase s
   });
 });
 
-describe("REQ-JUR-019 — un revenu illimité rougit, MÊME dit indicatif (arbitrage -d7)", () => {
+describe("REQ-JUR-019 — un revenu illimité rougit, MÊME dit indicatif", () => {
   it.each([
     "À titre indicatif, 500 € par journée, sans plafond.",
     "Plus vous en présentez, plus vos commissions progressent — sans aucune limite",
@@ -124,7 +124,7 @@ describe("REQ-JUR-019 — un revenu illimité rougit, MÊME dit indicatif (arbit
   });
 });
 
-describe("REQ-JUR-001 — ni promesse sans risque, ni AI Act trop large (A07, arbitrage -d7)", () => {
+describe("REQ-JUR-001 — ni promesse sans risque, ni AI Act trop large", () => {
   it.each([
     "Zéro risque, accompagnement, commissions rapides et mensuelles",
     "Zero risk, support, fast monthly commissions",
@@ -285,7 +285,7 @@ describe("REQ-JUR-019 — les exceptions nommées ne couvrent que LEUR ligne", (
   });
 });
 
-// ── E-mails envoyés AVANT la signature du contrat d'apporteur (arbitrage -d7) ──────────────────
+// ── E-mails envoyés AVANT la signature du contrat d'apporteur ──────────────────
 // Hors de la garde publique (voir son en-tête) ; mais un barème envoyé AVANT la signature n'est
 // pas encore celui d'un contrat : il se dit indicatif. Tout gabarit apporteur ou commercial est
 // classé ici, avant ou après la signature ; un nouveau gabarit non classé rougit.
