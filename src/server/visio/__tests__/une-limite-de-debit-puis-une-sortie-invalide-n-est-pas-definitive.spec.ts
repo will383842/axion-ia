@@ -34,7 +34,6 @@ const DIX_HEURES = new Date("2026-10-06T10:00:00Z");
 const QUATORZE_HEURES = new Date("2026-10-06T14:00:00Z");
 const RENCONTRE = "00000000-0000-4000-8000-0000000000f1";
 
-const DEBIT = new ErreurVisio("passagere", "limite_debit", "429");
 const INVALIDE = new ErreurVisio("contenu", "sortie_invalide", "schéma");
 const SCHEMA = new ErreurVisio("schema_en_retard", "schema_en_retard", "42703");
 
