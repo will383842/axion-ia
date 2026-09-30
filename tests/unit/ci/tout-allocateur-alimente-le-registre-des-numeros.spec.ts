@@ -161,6 +161,22 @@ function migrationDuRegistre(): { nom: string; sql: string } {
   return candidates[0] as { nom: string; sql: string };
 }
 
+/** Déclencheurs du registre lui-même (ajout seul), attendus en plus des porteuses. */
+const DECLENCHEURS_DU_REGISTRE = [
+  "numeros_emis:numeros_emis_ajout_seul",
+  "numeros_emis:numeros_emis_pas_de_truncate",
+] as const;
+
+/**
+ * La liste que Gate D exige EN BASE (`pg_trigger`), lue entre les marqueurs
+ * `déclencheurs-attendus` de `tests/sql/numeros-emis-comportement.sql`.
+ */
+function declencheursExigesEnBase(sql: string): string[] {
+  const bloc = /déclencheurs-attendus:début([\s\S]*?)déclencheurs-attendus:fin/.exec(sql)?.[1];
+  if (bloc === undefined) throw new Error("marqueurs déclencheurs-attendus introuvables");
+  return [...bloc.matchAll(/\('(\w+)',\s*'(\w+)'\)/g)].map((m) => `${m[1]}:${m[2]}`).sort();
+}
+
 describe("tout allocateur de numéro alimente le registre numeros_emis", () => {
   const sources = sourcesExigeesSous(["src"])
     .filter((f) => /\.tsx?$/.test(f) && f !== FICHIER_ALLOCATEUR)
@@ -179,6 +195,19 @@ describe("tout allocateur de numéro alimente le registre numeros_emis", () => {
     expect(attendues.map((p) => `${p.table}.${p.colonne}`)).toEqual(
       expect.arrayContaining(["factures_formation.numero", "trainer_statements.numero_facture"]),
     );
+  });
+
+  it("la liste exigée EN BASE par Gate D est exactement celle dérivée des allocateurs", () => {
+    // Gate D (`pg_trigger`) prouve que les déclencheurs EXISTENT et sont actifs
+    // sur la base migrée à neuf — y compris après une migration ultérieure qui
+    // en retirerait un. Cette spec prouve que la liste de Gate D ne dérive pas.
+    const attendue = [
+      ...attendues.map((p) => `${p.table}:${p.table}_numero_emis`),
+      ...DECLENCHEURS_DU_REGISTRE,
+    ].sort();
+    const sql = lire("tests/sql/numeros-emis-comportement.sql");
+    expect(declencheursExigesEnBase(sql)).toEqual(attendue);
+    expect(attendue).toHaveLength(attendues.length + 2);
   });
 
   it("chaque table porteuse a son déclencheur et son backfill, et rien de plus", () => {

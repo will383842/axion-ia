@@ -63,6 +63,12 @@
 -- (Le retrait détruit la mémoire des numéros émis : à ne jouer qu'en
 -- connaissance de cause.)
 
+-- Les déclencheurs prennent un verrou SHARE ROW EXCLUSIVE sur 9 tables
+-- vivantes : plutôt échouer vite (et laisser l'entrypoint retenter au prochain
+-- démarrage) que faire la queue derrière une longue transaction en bloquant
+-- toutes les écritures sur ces tables.
+SET lock_timeout = '5s';
+
 -- CreateTable
 CREATE TABLE "numeros_emis" (
     "numero" VARCHAR(60) NOT NULL,

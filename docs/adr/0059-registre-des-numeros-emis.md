@@ -30,5 +30,26 @@ L'ADR 0035 a remplacé `count(*) + 1` par `MAX(séquence) + 1`. Ce maximum ne po
 
 - Supprimer une ligne métier (purge, erreur, SQL direct) ne libère plus son numéro. Une purge de démonstration laisse ses numéros `-DEMO-` au registre, sans effet : `parseSequence` les écarte.
 - Le registre étant lu par **préfixe sans filtre de table**, un numéro émis dans une table ne se réemploie dans aucune autre : c'est l'unicité inter-tables, pour tout numéro émis après la migration, que l'ADR 0035 disait hors de portée.
-- ⚠️ Revers : si une table non concernée par une série portait un numéro de cette série **supérieur** à sa borne, la série sauterait ce numéro (un trou justifié plutôt qu'un doublon). Le relevé de l'ADR 0035 ne montre aucun cas ; à revérifier en base avant fusion : `SELECT table_source, numero FROM numeros_emis WHERE numero LIKE 'AXI-FACT-%' AND table_source <> 'factures_formation';` doit être vide.
+- ⚠️ Revers : si une table non concernée par une série portait un numéro de cette série **supérieur** à sa borne, la série sauterait ce numéro (un trou justifié plutôt qu'un doublon). Le relevé de l'ADR 0035 ne montre aucun cas ; à revérifier en base (lecture seule) **avant fusion** — `numeros_emis` n'existe pas encore à ce moment-là, on interroge donc la seule autre table qui a porté ces préfixes : `SELECT numero FROM documents_generes WHERE numero LIKE 'AXI-FACT-%' OR numero LIKE 'AXI-AVO-%';` doit être vide.
 - Après atterrissage, vérifier la migration (AGENTS.md, « Un déploiement vert ne prouve PAS que le schéma a bougé ») puis `SELECT table_source, count(*) FROM numeros_emis GROUP BY 1;`.
+
+## Corriger un numéro erroné à séquence élevée
+
+Le registre étant en ajout seul, une erreur de saisie (un numéro `AXI-FACT-2026-900` inséré à la main au lieu de `-009`, par exemple) ne se corrige pas en supprimant la ligne métier : la borne resterait à 900, et la série sauterait 891 numéros. La seule sortie est de retirer la ligne **du registre**, ce que la base refuse par construction. Procédure, qui doit rester exceptionnelle :
+
+1. **Qui** : le dirigeant, seul. C'est une décision de régularisation comptable, pas une opération technique ; elle ne se délègue ni à une session Claude, ni à un script, ni à un déploiement.
+2. **Avant** : établir que le numéro n'a **jamais** été transmis à un tiers (ni PDF envoyé, ni pièce remise, ni écriture comptable). Un numéro transmis est émis, même par erreur : il ne se retire pas, il s'annule par avoir et le trou se justifie par une note d'écart.
+3. **Comment** : connecté avec le rôle **propriétaire** de la table (seul autorisé à désactiver un déclencheur), dans UNE transaction :
+   ```sql
+   BEGIN;
+   ALTER TABLE numeros_emis DISABLE TRIGGER numeros_emis_ajout_seul;
+   DELETE FROM numeros_emis WHERE numero = 'AXI-FACT-2026-900';
+   ALTER TABLE numeros_emis ENABLE TRIGGER numeros_emis_ajout_seul;
+   COMMIT;
+   ```
+   `ALTER TABLE` étant transactionnel, un échec en cours de route laisse le déclencheur actif. Vérifier ensuite qu'il l'est : `SELECT tgenabled FROM pg_trigger WHERE tgname = 'numeros_emis_ajout_seul';` doit rendre `O`.
+4. **Trace, obligatoire** :
+   - une ligne au **registre des incidents Qualiopi** : date, numéro retiré, motif, preuve de non-transmission, auteur ;
+   - une **note d'écart** jointe à la série concernée, qui explique la correction à l'auditeur ou au contrôleur fiscal.
+
+Gate D (`tests/sql/numeros-emis-comportement.sql`, cas 0) exige les 11 déclencheurs **actifs** sur une base migrée à neuf : une désactivation laissée en place par une migration rougit la CI. En production, rien ne la verrait sinon la requête de l'étape 3 — d'où l'obligation de la jouer.

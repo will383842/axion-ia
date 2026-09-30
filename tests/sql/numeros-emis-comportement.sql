@@ -9,11 +9,49 @@
 -- reste. `AXT99` n'est attrapé par AUCUN cas : une attente déçue remonte,
 -- `ON_ERROR_STOP` arrête psql, Gate D rougit.
 --
--- Mutation qui fait rougir : retirer le déclencheur `clients_numero_emis` de
--- la migration → le cas 1 ne trouve pas le numéro au registre → AXT99.
+-- Mutations qui font rougir : retirer n'importe lequel des 11 déclencheurs
+-- (ou le désactiver) → le cas 0 le nomme → AXT99 ; retirer
+-- `clients_numero_emis` rougit aussi le cas 1.
 -- ═════════════════════════════════════════════════════════════════════════════
 
 \set QUIET on
+
+-- 0. Les 11 déclencheurs EXISTENT EN BASE, chacun sur SA table.
+--    La spec `tout-allocateur-alimente-le-registre-des-numeros.spec.ts` lit
+--    CETTE liste et exige qu'elle soit identique à celle qu'elle dérive des
+--    appels à `nextNumero` : la liste ne peut pas dériver en silence. Un
+--    `DROP TRIGGER` d'une migration ultérieure rougit ici, pas dans la spec.
+DO $$
+DECLARE
+  manquants text;
+BEGIN
+  SELECT string_agg(attendu.nom || ' sur ' || attendu.tab, ', ')
+    INTO manquants
+  FROM (VALUES
+    -- déclencheurs-attendus:début
+    ('audit_missions', 'audit_missions_numero_emis'),
+    ('clients', 'clients_numero_emis'),
+    ('devis', 'devis_numero_emis'),
+    ('documents_generes', 'documents_generes_numero_emis'),
+    ('factures_formation', 'factures_formation_numero_emis'),
+    ('formations', 'formations_numero_emis'),
+    ('reclamations', 'reclamations_numero_emis'),
+    ('trainer_statements', 'trainer_statements_numero_emis'),
+    ('training_sessions', 'training_sessions_numero_emis'),
+    ('numeros_emis', 'numeros_emis_ajout_seul'),
+    ('numeros_emis', 'numeros_emis_pas_de_truncate')
+    -- déclencheurs-attendus:fin
+  ) AS attendu(tab, nom)
+  WHERE NOT EXISTS (
+    SELECT 1 FROM pg_trigger t JOIN pg_class c ON c.oid = t.tgrelid
+    WHERE t.tgname = attendu.nom AND c.relname = attendu.tab AND NOT t.tgisinternal
+      AND t.tgenabled <> 'D'
+  );
+  IF manquants IS NOT NULL THEN
+    RAISE EXCEPTION 'numeros_emis : déclencheur(s) absent(s) ou désactivé(s) en base : %', manquants
+      USING ERRCODE = 'AXT99';
+  END IF;
+END $$;
 
 -- 1. Un numéro écrit dans une table porteuse entre au registre, et y RESTE
 --    quand la ligne métier est supprimée (le défaut du 2026-09-15).
@@ -99,4 +137,4 @@ DO $$ BEGIN
 END $$;
 ROLLBACK;
 
-\echo 'numeros_emis : 7 cas de comportement verts'
+\echo 'numeros_emis : 11 déclencheurs présents, 7 cas de comportement verts'
