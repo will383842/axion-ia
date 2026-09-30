@@ -162,6 +162,7 @@ function installer() {
   m.precisions = lecture("precisions", () => new Set());
   m.preparation = lecture("preparation", () => null);
   m.echeances = lecture("echeances", () => ({ parSession: new Map() }));
+  m.conflits = lecture("conflits", () => ({ conflits: [], erreur: false }));
   m.garde = vi.fn(async () => {
     ordreGarde = journal.length;
     return { autorise: true, role: "super_admin", peutEcrire: true };
@@ -226,6 +227,10 @@ vi.mock("@/server/qualiopi/kit-session/preparation", () => ({
 }));
 vi.mock("@/server/qualiopi/parcours/echeances-service", () => ({
   prochainesEcheances: (...a: unknown[]) => m.echeances!(...a),
+}));
+// Lot L4 — conflit de formateur repris de la fiche 360° du planning.
+vi.mock("@/server/qualiopi/sessions/conflit-formateur", () => ({
+  conflitsFormateurSession: (...a: unknown[]) => m.conflits!(...a),
 }));
 
 // ── Server Actions et composants : jamais exécutés par ce rendu ─────────────
@@ -325,6 +330,7 @@ const LECTURES = [
   "precisions",
   "preparation",
   "echeances",
+  "conflits",
 ] as const;
 
 async function rendre() {
@@ -380,8 +386,9 @@ describe("🔴 la fiche session charge ses données en vagues", () => {
       .map((j) => j.nom)
       .sort();
     // mission ← formateur principal de la session ; signatures ← pièces ;
-    // circuit et précisions ← inscriptions.
-    expect(seconde).toEqual(["circuit", "mission", "precisions", "signatures"]);
+    // circuit et précisions ← inscriptions ; conflits ← dates et formateur
+    // de la session (lot L4).
+    expect(seconde).toEqual(["circuit", "conflits", "mission", "precisions", "signatures"]);
   });
 
   it("une session introuvable rend toujours « introuvable »", async () => {
