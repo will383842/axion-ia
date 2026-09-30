@@ -71,6 +71,7 @@ import {
   type DossierDuRendezVous,
 } from "@/features/dossier-client/queries-rencontres";
 import { LiensApresLAppel } from "@/components/admin/dossier-client/LiensApresLAppel";
+import { estTypeDuDossier } from "@/server/visio/liste-blanche-types";
 import { AClasserVue } from "@/components/admin/dossier-client/AClasserVue";
 import { EtatDuCircuitVue } from "@/components/admin/dossier-client/EtatDuCircuitVue";
 
@@ -157,7 +158,10 @@ function DossierSurLaCarte({ d }: { d: DossierCarte }) {
         </Link>
       ) : null}
       {x.compteRenduNonValide ? (
-        <AdminBadge tone="warning">compte rendu non validé</AdminBadge>
+        // UX-01 : le badge mène au compte rendu à valider.
+        <Link href={`${d.base}/rendez-vous/rencontres/${x.rencontreId}`} className="admin-link">
+          <AdminBadge tone="warning">compte rendu non validé</AdminBadge>
+        </Link>
       ) : null}
       {x.rattachementStatut === "propose" && x.clientPropose !== null ? (
         <form action={rangerRencontreAction}>
@@ -391,7 +395,11 @@ function CartePoint({ r, dossierVisible }: { r: RdvAFaireLePoint; dossierVisible
           {/* Chantier visio (PR 4) : le point complet — rangement, projet,
               note, suite — se fait dans « Après l'appel ». Le formulaire
               court ci-dessous reste pour « Absent » et « Reporté ». */}
-          {dossierVisible ? <LiensApresLAppel calendlyEventId={r.id} /> : null}
+          {/* P-4 (décision de Williams du 30/09) : seuls les types de la liste
+              blanche du dossier mènent à « Après l'appel » (jamais un salon). */}
+          {dossierVisible && estTypeDuDossier(r.titre) ? (
+            <LiensApresLAppel calendlyEventId={r.id} />
+          ) : null}
           <SuiviRendezVousForm calendlyEventId={r.id} mailtoRelance={mailto} />
         </>
       )}
