@@ -254,6 +254,7 @@ const CODES_ATTENDUS: string[] = [
   "visio.demande_d_arret",
   "visio.compte_rendu_a_valider",
   "visio.audio_non_purge",
+  "visio.reponse_attendue",
 ];
 
 const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];

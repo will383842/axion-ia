@@ -218,7 +218,12 @@ export function depsDeTest(o: {
   arret?: () => boolean;
 }): DepsCircuit & { alertes: AlerteCircuit[] } {
   const alertes: AlerteCircuit[] = [];
-  const donnees = { enregistrementActif: async () => false, ...(o.donnees ?? {}) } as PortDonnees;
+  const donnees = {
+    enregistrementActif: async () => false,
+    oppositionIa: async () => false,
+    abandonnerPourOpposition: async () => undefined,
+    ...(o.donnees ?? {}),
+  } as PortDonnees;
   return {
     depot: o.depot,
     donnees,

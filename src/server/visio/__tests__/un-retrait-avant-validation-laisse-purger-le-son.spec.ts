@@ -55,7 +55,16 @@ describe("un retrait avant la validation laisse purger le son", () => {
       depot,
       gestionnaires: { purger_audio: purgerAudio },
       donnees: {
-        audiosAPurger: async () => [{ enregistrementId: "e1", trancheIds: ["t1"], cles: ["k1"] }],
+        audiosAPurger: async () => [
+          {
+            enregistrementId: "e1",
+            trancheIds: ["t1"],
+            cles: ["k1"],
+            statut: "abandonne",
+            audioAPurgerAvant: null,
+            compteRenduValide: false,
+          },
+        ],
         supprimerObjet: async () => {},
         objetExiste: async () => false,
         marquerAudioPurge: async (_tx, a) => {

@@ -25,4 +25,6 @@ export const CODES_ALERTES_CIRCUIT = {
   compteRenduAValider: "visio.compte_rendu_a_valider",
   /** Un son n'a pas été supprimé à son échéance. */
   audioNonPurge: "visio.audio_non_purge",
+  /** Une étape attend une réponse de Will (enregistrement de moins de 90 s). */
+  reponseAttendue: "visio.reponse_attendue",
 } as const;

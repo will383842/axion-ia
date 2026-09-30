@@ -49,7 +49,13 @@ export function audioEnRetard(e: {
 
 export const purgerAudio: Gestionnaire = async (ctx) => {
   const { deps, t } = ctx;
-  const aPurger = await deps.donnees.audiosAPurger(t.rencontreId);
+  const maintenant = deps.maintenant();
+  // B1 : enregistrement PAR enregistrement. Valider le compte rendu d'une
+  // rencontre ne purge pas le son d'une relance encore à transcrire.
+  const aPurger = (await deps.donnees.audiosAPurger(t.rencontreId)).filter((a) =>
+    audioAPurgerMaintenant({ ...a, audioSupprimeLe: null, maintenant }),
+  );
+  if (aPurger.length === 0) return { ecrire: async () => [] };
   for (const a of aPurger) {
     for (const cle of a.cles) {
       await deps.donnees.supprimerObjet(cle);
@@ -64,10 +70,9 @@ export const purgerAudio: Gestionnaire = async (ctx) => {
       }
     }
   }
-  const le = deps.maintenant();
   return {
     ecrire: async (tx) => {
-      for (const a of aPurger) await deps.donnees.marquerAudioPurge(tx, a, le);
+      for (const a of aPurger) await deps.donnees.marquerAudioPurge(tx, a, maintenant);
       return [];
     },
   };

@@ -49,18 +49,14 @@ import {
 import type { PortDonnees } from "./port-donnees";
 import { CODES_ALERTES_CIRCUIT } from "./alertes-circuit";
 
-/** L'ordre du circuit du compte rendu. */
-export const ENCHAINEMENT = [
-  "transcrire",
-  "precontroler",
-  "extraire",
-  "verifier_faits",
-  "rattacher",
-  "consolider",
-  "ebaucher",
-  "rediger",
-  "verifier_compte_rendu",
-] as const satisfies readonly EtapeVisio[];
+/*
+ * L'ORDRE du circuit n'est écrit qu'à UN endroit : la `Suite` que rend chaque
+ * gestionnaire (`recevoir-transcription.ts`, `precontroles.ts`,
+ * `passes-ia.ts`). Il n'est pas linéaire (rattacher peut sauter à consolider,
+ * la vérification du compte rendu renvoie à rediger, un entretien détecté
+ * part à la purge) : une liste ordonnée à côté serait une seconde vérité que
+ * rien ne lit.
+ */
 
 /** Étapes qui ne portent pas de compte rendu (une seule par rencontre). */
 export const ETAPES_SANS_COMPTE_RENDU: ReadonlySet<EtapeVisio> = new Set([
@@ -271,6 +267,16 @@ export async function executerEtape(
     return "reportee";
   }
 
+  // Art. 21 : « défaut = refus ». Relue avant CHAQUE étape qui parle à
+  // OpenAI — pas seulement au démarrage de l'enregistrement : une personne
+  // peut s'opposer pendant une suspension, ou la rencontre être rattachée
+  // après coup à une fiche qui porte une opposition. Seule la purge du son
+  // passe encore.
+  if (!ETAPES_SANS_OPENAI.has(t.etape) && (await deps.donnees.oppositionIa(t.rencontreId))) {
+    await arreterPourOpposition(deps, t);
+    return "echec_definitif";
+  }
+
   const gestionnaire = deps.gestionnaires[t.etape];
   if (!gestionnaire) {
     await deps.depot.echouer(t, {
@@ -313,6 +319,40 @@ export async function executerEtape(
   }
 }
 
+/** Étapes qui n'appellent jamais OpenAI : seules permises malgré une opposition. */
+export const ETAPES_SANS_OPENAI: ReadonlySet<EtapeVisio> = new Set(["purger_audio"]);
+
+/**
+ * Une opposition à l'IA est constatée : l'étape s'arrête (échec définitif,
+ * sans reprise), les enregistrements terminés passent « abandonné » et la
+ * purge du son est programmée. Will est prévenu.
+ */
+async function arreterPourOpposition(deps: DepsCircuit, t: EtapeTenue): Promise<void> {
+  await deps.depot.echouer(t, {
+    statut: "echec_definitif",
+    classe: null,
+    code: null,
+    compter: false,
+    prochaineTentativeLe: null,
+    premierEchecLe: t.premierEchecLe,
+  });
+  await deps.donnees.abandonnerPourOpposition(t.rencontreId);
+  await deps.depot.planifier({
+    rencontreId: t.rencontreId,
+    etape: "purger_audio",
+    compteRenduId: null,
+    reinitialiser: true,
+  });
+  await deps.alerter({
+    code: CODES_ALERTES_CIRCUIT.etapeEnEchec,
+    niveau: "important",
+    titre: "Circuit visio arrêté : une personne s'est opposée à l'IA",
+    message:
+      "Une personne de la fiche ou du rendez-vous s'est opposée à l'IA : rien n'est envoyé à OpenAI, le son est supprimé. Une note manuelle reste possible sur la page du rendez-vous.",
+    rencontreId: t.rencontreId,
+  });
+}
+
 async function traiterErreur(
   deps: DepsCircuit,
   t: EtapeTenue,
@@ -333,6 +373,16 @@ async function traiterErreur(
       compter: false,
       prochaineTentativeLe: null,
       premierEchecLe: t.premierEchecLe,
+    });
+    // Sans cette alerte l'étape resterait suspendue EN SILENCE : la question
+    // n'est posée que sur la vue du compte rendu, que Will n'ouvre pas seul.
+    await deps.alerter({
+      code: CODES_ALERTES_CIRCUIT.reponseAttendue,
+      niveau: "important",
+      titre: "Circuit visio : un compte rendu attend votre réponse",
+      message:
+        "L'enregistrement dure moins de 90 secondes : le client a-t-il refusé ? Répondez sur la page du rendez-vous, « Ouvrir le compte rendu ».",
+      rencontreId: t.rencontreId,
     });
     return "attente_will";
   }
@@ -394,10 +444,4 @@ async function traiterErreur(
     });
   }
   return e.classe === "schema_en_retard" ? "reportee" : "a_reessayer";
-}
-
-/** La ou les étapes qui suivent `etape` dans le circuit du compte rendu. */
-export function etapeSuivante(etape: EtapeVisio): EtapeVisio | null {
-  const i = (ENCHAINEMENT as readonly EtapeVisio[]).indexOf(etape);
-  return i < 0 || i === ENCHAINEMENT.length - 1 ? null : ENCHAINEMENT[i + 1]!;
 }

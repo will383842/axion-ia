@@ -241,7 +241,8 @@ async function projetsDuClient(db: Db, clientId: string | null): Promise<ProjetD
 async function contactsDuClient(db: Db, clientId: string | null): Promise<ContactDeLaBase[]> {
   if (clientId === null) return [];
   const c = await db.clientContact.findMany({
-    where: { clientId },
+    // Jamais le nom d'une personne opposée à l'IA (art. 21) dans une entrée OpenAI.
+    where: { clientId, oppositionIaLe: null },
     orderBy: { createdAt: "asc" },
     select: { id: true, nom: true, fonction: true, statut: true },
   });
@@ -254,6 +255,38 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
       (await db.enregistrement.count({
         where: { rencontreId, statut: { in: [...ETATS_ENREGISTREMENT_ACTIFS] } },
       })) > 0,
+
+    oppositionIa: async (rencontreId) => {
+      const r = await db.rencontre.findUnique({
+        where: { id: rencontreId },
+        select: { clientId: true },
+      });
+      if (!r) return false;
+      const surLaFiche =
+        r.clientId === null
+          ? 0
+          : await db.clientContact.count({
+              where: { clientId: r.clientId, oppositionIaLe: { not: null } },
+            });
+      if (surLaFiche > 0) return true;
+      const participants = await db.rencontreParticipant.findMany({
+        where: { rencontreId, contactId: { not: null } },
+        select: { contactId: true },
+      });
+      const ids = participants.map((p) => p.contactId).filter((x): x is string => x !== null);
+      if (ids.length === 0) return false;
+      return (
+        (await db.clientContact.count({
+          where: { id: { in: ids }, oppositionIaLe: { not: null } },
+        })) > 0
+      );
+    },
+    abandonnerPourOpposition: async (rencontreId) => {
+      await db.enregistrement.updateMany({
+        where: { rencontreId, statut: { notIn: [...ETATS_ENREGISTREMENT_ACTIFS] } },
+        data: { statut: "abandonne" },
+      });
+    },
 
     // ── transcrire ──
     aTranscrire: async (rencontreId) => {
@@ -760,13 +793,23 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
         },
         select: {
           id: true,
+          statut: true,
+          audioAPurgerAvant: true,
           tranches: { select: { id: true, morceaux: { select: { cleR2: true } } } },
+          transcriptions: {
+            where: { sources: { some: { compteRendu: { statut: "valide" } } } },
+            select: { id: true },
+            take: 1,
+          },
         },
       });
       return enr.map((e) => ({
         enregistrementId: e.id,
         trancheIds: e.tranches.map((t) => t.id),
         cles: e.tranches.flatMap((t) => t.morceaux.map((m) => m.cleR2)),
+        statut: e.statut,
+        audioAPurgerAvant: e.audioAPurgerAvant,
+        compteRenduValide: e.transcriptions.length > 0,
       }));
     },
     supprimerObjet: (cle) => stockage.supprimer(cle),

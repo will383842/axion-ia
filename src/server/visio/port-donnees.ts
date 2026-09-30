@@ -134,14 +134,32 @@ export interface FaitAEcrire extends FaitVerifie {
   readonly doublonDeFaitId: string | null;
 }
 
+/**
+ * Un enregistrement dont le son est ENCORE dans R2 — un CANDIDAT à la purge,
+ * pas une purge due : `purgerAudio` applique `audioAPurgerMaintenant` à chacun
+ * (B1 : enregistrement par enregistrement, jamais toute la rencontre).
+ */
 export interface AudioAPurger {
   readonly enregistrementId: string;
   readonly trancheIds: readonly string[];
   readonly cles: readonly string[];
+  readonly statut: string;
+  readonly audioAPurgerAvant: Date | null;
+  /** Une transcription de CET enregistrement est source d'un compte rendu validé. */
+  readonly compteRenduValide: boolean;
 }
 
 export interface PortDonnees {
   readonly enregistrementActif: (rencontreId: string) => Promise<boolean>;
+  /**
+   * Une personne de la fiche du client, ou un participant de la rencontre,
+   * s'est-elle opposée à l'IA (art. 21, `oppositionIaLe`) ? Relu AVANT chaque
+   * étape qui appelle OpenAI : une opposition arrivée pendant une suspension,
+   * ou un rattachement à une fiche qui en porte une, arrête le circuit.
+   */
+  readonly oppositionIa: (rencontreId: string) => Promise<boolean>;
+  /** Opposition constatée : les enregistrements terminés passent « abandonné » (purge due). */
+  readonly abandonnerPourOpposition: (rencontreId: string) => Promise<void>;
 
   // ── transcrire ──
   /**
@@ -254,6 +272,7 @@ export interface PortDonnees {
   readonly rejeterCompteRendu: (tx: Tx, compteRenduId: string) => Promise<void>;
 
   // ── purge de l'audio ──
+  /** Les CANDIDATS (son encore présent, enregistrement terminé) ; le tri « dû » est fait par l'étape. */
   readonly audiosAPurger: (rencontreId: string) => Promise<readonly AudioAPurger[]>;
   readonly supprimerObjet: (cle: string) => Promise<void>;
   readonly objetExiste: (cle: string) => Promise<boolean>;

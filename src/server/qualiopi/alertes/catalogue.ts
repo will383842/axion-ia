@@ -1884,6 +1884,14 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — levée par le circuit du compte rendu (`src/server/visio/etapes.ts`, `balayage-circuit.ts`), hors d'`evaluerAlertes`. Elle décrit un fait constaté par le worker ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture. Will la ferme à la main.",
     guichet: "direction",
   },
+  "visio.reponse_attendue": {
+    niveau: "important",
+    titre: "Visio : un compte rendu attend votre réponse pour continuer",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par le circuit du compte rendu (`src/server/visio/etapes.ts`), hors d'`evaluerAlertes`. Elle décrit un fait constaté par le worker ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture. Will la ferme à la main.",
+    guichet: "direction",
+  },
 } as const;
 
 /**
