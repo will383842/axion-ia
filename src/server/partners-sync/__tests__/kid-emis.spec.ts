@@ -11,6 +11,7 @@ import { createHash, createHmac } from "node:crypto";
 
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
+import contrat from "@/server/partners/contrat/contracts.v2.json";
 import { ENTETE_KID, kidDe } from "@/server/partners/enveloppe";
 
 import { envoyerLigne, type ClientRelais } from "../relais";
@@ -36,6 +37,13 @@ describe("REQ-SEC-028 — kidDe, la dérivation de Partners recopiée à l'ident
 
   it("REQ-SEC-028 — TÉMOIN : le kid change quand la clé tourne", () => {
     expect(kidDe(SECRET_B)).not.toBe(kidDe(SECRET_A));
+  });
+
+  it("REQ-SEC-028 : le nom émis est celui que le contrat recopié DÉCLARE (webhook et coordonnées)", () => {
+    const defs = (contrat as unknown as { $defs: Record<string, { properties: object }> }).$defs;
+    for (const nom of ["webhook_entetes", "api_coordonnees_candidature_reponse_entetes"]) {
+      expect(Object.keys(defs[nom]!.properties)).toContain(ENTETE_KID.toLowerCase());
+    }
   });
 
   it("REQ-SEC-028 : le kid ne révèle pas le secret", () => {
