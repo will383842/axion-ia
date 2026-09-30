@@ -20,8 +20,12 @@ import { estOffreUnAUn } from "@/server/qualiopi/offres/famille-prestation";
 import type { ChecklistVenteInput, VenteFinancement } from "@/server/qualiopi/vente/checklist";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
+import { chargerAideDuProjet } from "@/features/dossier-client/aide-du-projet";
+import { CeQueLeClientADit } from "@/features/dossier-client/ce-que-le-client-a-dit";
+import { VentesEnCours } from "@/components/admin/qualiopi/VentesEnCours";
 
 export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Qualiopi — Nouvelle vente | Axion-IA Admin",
   robots: { index: false, follow: false },
@@ -34,7 +38,7 @@ interface PageProps {
    * `clientId` : pré-sélection du client (boutons « Nouvelle vente » des
    * fiches CRM) — ignoré si un brouillon est repris (le brouillon prime).
    */
-  searchParams: Promise<{ brouillon?: string; clientId?: string }>;
+  searchParams: Promise<{ brouillon?: string; clientId?: string; projetId?: string }>;
 }
 
 export default async function QualiopiVenteNewPage({ params, searchParams }: PageProps) {
@@ -111,6 +115,14 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
     sp.brouillon === undefined && sp.clientId !== undefined
       ? clients.find((c) => c.id === sp.clientId)?.id
       : undefined;
+
+  // ── Chantier visio (PR 7) : vente ouverte depuis un projet (?projetId=) ────
+  // Le lien au projet et l'aide à côté ; la garde A2 est dans le chargeur.
+  const { projetId, aide } = await chargerAideDuProjet({
+    role,
+    clientId: clientInitialId,
+    projetId: sp.projetId,
+  });
 
   // ── Reprise d'un brouillon (?brouillon=<id>) — borné au propriétaire ───────
   let brouillon:
@@ -279,8 +291,18 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
       clients={clients}
       offres={offres}
       formations={formations}
-      brouillonsEnCours={brouillonsEnCours}
       {...(clientInitialId !== undefined ? { clientInitialId } : {})}
+      {...(projetId !== null ? { projetId } : {})}
+      aside={
+        <>
+          {aide !== null ? (
+            <div className="mb-[var(--space-admin-5,12px)]">
+              <CeQueLeClientADit aide={aide.aide} projetTitre={aide.titre} />
+            </div>
+          ) : null}
+          <VentesEnCours adminPrefix={adminPrefix} brouillons={brouillonsEnCours} />
+        </>
+      }
       {...(brouillon !== undefined ? { brouillon } : {})}
       {...(devisInitial !== undefined ? { devisInitial } : {})}
       {...(sessionInitiale !== undefined ? { sessionInitiale } : {})}

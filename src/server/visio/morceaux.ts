@@ -87,6 +87,21 @@ function estConflitUnique(err: unknown): boolean {
 
 type Db = Pick<PrismaClient, "enregistrement" | "enregistrementTranche" | "enregistrementMorceau">;
 
+/**
+ * PR 7 — une DICTÉE, c'est Williams seul (base 6.1.f), sans accord ni preuve
+ * d'accord : aucune piste « client » n'y est jamais reçue, quel que soit son
+ * statut (morceau comme annonce de fin de tranche).
+ */
+export const CODE_PISTE_CLIENT_EN_DICTEE = "piste_client_en_dictee" as const;
+export function refusPisteClientEnDictee(nature: string, piste: string): Resultat | null {
+  if (nature !== "dictee" || piste !== "client") return null;
+  return echec(
+    409,
+    CODE_PISTE_CLIENT_EN_DICTEE,
+    "Une dictée ne reçoit que la voix de Williams : la piste du client est refusée.",
+  );
+}
+
 /** Dépose un morceau chiffré. */
 export async function deposerMorceau(
   db: Db,
@@ -115,11 +130,13 @@ export async function deposerMorceau(
 
   const enr = await db.enregistrement.findUnique({
     where: { id: entree.enregistrementId },
-    select: { id: true, appareilId: true, statut: true },
+    select: { id: true, appareilId: true, statut: true, nature: true },
   });
   if (!enr || enr.appareilId !== entree.appareil.id) {
     return echec(404, "enregistrement_inconnu", "Enregistrement introuvable.");
   }
+  const pisteRefusee = refusPisteClientEnDictee(enr.nature, e.piste);
+  if (pisteRefusee) return pisteRefusee;
   if (enr.statut === "accord_en_attente") {
     return echec(
       409,

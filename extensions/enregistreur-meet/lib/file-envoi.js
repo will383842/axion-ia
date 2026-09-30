@@ -89,6 +89,8 @@ export function classerReponse(type, statut, erreur) {
     return "abandonner";
   }
   if (statut === 400 || statut === 404 || statut === 413 || statut === 415) return "abandonner";
+  // PR 7 — dictée éteinte : jamais « réessayer » avec un micro ouvert.
+  if (statut === 503 && erreur === "dictee_non_annoncee") return "detruire";
   return "reessayer"; // 429, 5xx, réseau
 }
 
@@ -106,7 +108,9 @@ export function purgerCapture(elements, cleClient) {
 /**
  * Interprète la réponse de `POST sessions`. Un 409 « enregistrement actif »
  * rend l'enregistrement qui vit : la capture s'y rattache (reprise après un
- * plantage, ou seconde capture sur la même rencontre).
+ * plantage, ou seconde capture sur la même rencontre). Le serveur ne le rend
+ * que pour un enregistrement de la MÊME nature : une visio pendant une dictée
+ * (et l'inverse) reçoit un refus motivé, jamais une reprise.
  */
 export function interpreterReponseSession(statut, corps) {
   if (statut === 200 && corps && typeof corps.enregistrementId === "string") {
@@ -122,6 +126,10 @@ export function interpreterReponseSession(statut, corps) {
   }
   if (statut === 409)
     return { etat: "refuse", motif: corps?.erreur ?? "refus", message: corps?.message ?? "" };
+  // PR 7 — dictée éteinte (la notice ne l'annonce pas encore) : ce n'est pas
+  // une panne passagère, le micro s'arrête et le son local est détruit.
+  if (statut === 503 && corps?.erreur === "dictee_non_annoncee")
+    return { etat: "refuse", motif: "dictee_non_annoncee", message: corps?.message ?? "" };
   if (statut === 401 || statut === 403) return { etat: "jeton", message: corps?.message ?? "" };
   return { etat: "reessayer" };
 }

@@ -48,6 +48,7 @@ import {
   type Tx,
 } from "./prise-d-etape";
 import type { PortDonnees } from "./port-donnees";
+import type { DepsDemandes } from "./passes/etapes-a-la-demande";
 import { CODES_ALERTES_CIRCUIT } from "./alertes-circuit";
 
 /*
@@ -96,6 +97,11 @@ export interface DepsCircuit {
   /** Vrai dès que le worker a reçu SIGTERM. */
   readonly arretDemande: () => boolean;
   readonly gestionnaires: Readonly<Partial<Record<EtapeVisio, Gestionnaire>>>;
+  /**
+   * PR 7 — les étapes à la demande (questionnaire, lecture des réponses,
+   * e-mail de suivi). Absent : ces étapes s'arrêtent sans rien écrire.
+   */
+  readonly demandes?: DepsDemandes;
 }
 
 export interface ContexteEtape {

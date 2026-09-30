@@ -57,7 +57,14 @@ const OFFRES: OffreOption[] = [
 ];
 
 function monter() {
-  render(<DevisForm clients={CLIENTS} offres={OFFRES} basePath="/fr/adm/qualiopi/devis" />);
+  render(
+    <DevisForm
+      clients={CLIENTS}
+      offres={OFFRES}
+      activites={[{ value: "formation", label: "Formation" }]}
+      basePath="/fr/adm/qualiopi/devis"
+    />,
+  );
   return {
     client: screen.getByLabelText(/^Client/) as HTMLSelectElement,
     designation: screen.getByLabelText(/Désignation/) as HTMLInputElement,

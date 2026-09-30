@@ -153,6 +153,7 @@ import {
 } from "./autofacture-transmission";
 import { PreavisSousTraitantsEmail, preavisSousTraitantsSubject } from "./preavis-sous-traitants";
 import { RencontreInvitationEmail, rencontreInvitationSubject } from "./rencontre-invitation";
+import { VisioEmailSuiviEmail, visioEmailSuiviSubject } from "./visio-email-suivi";
 
 type TemplateMap = {
   [K in EmailJobName]: {
@@ -462,6 +463,12 @@ const TEMPLATES: TemplateMap = {
   "rencontre-invitation": {
     subject: rencontreInvitationSubject,
     component: RencontreInvitationEmail,
+  },
+  // Chantier visio (PR 7) — e-mail de suivi d'un rendez-vous, rédigé depuis
+  // les faits validés ; TOUJOURS garé pour validation (`exigerValidation`).
+  "visio-email-suivi": {
+    subject: visioEmailSuiviSubject,
+    component: VisioEmailSuiviEmail,
   },
 };
 

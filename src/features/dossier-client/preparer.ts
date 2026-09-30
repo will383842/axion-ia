@@ -142,6 +142,24 @@ function financementOpco(v: ValeurConsolidee | undefined): boolean {
   return /\bopco\b/i.test(`${f.texteCourt ?? ""} ${f.enonce}`);
 }
 
+/**
+ * Échéance trop proche avec un financement OPCO, sur la portée d'UN projet.
+ * Source unique du signal : « Préparer » (bloc 9) et l'aide au devis (PR 7)
+ * l'appellent, personne ne le recopie.
+ */
+export function signalEcheanceOpco(
+  porteeProjet: PorteeConsolidee | undefined,
+  maintenant: Date,
+): SignalOpco | null {
+  if (porteeProjet === undefined) return null;
+  const echeance = valeurRetenue(trouverValeur(porteeProjet, "echeance"));
+  if (echeance?.dateCible == null) return null;
+  if (!financementOpco(trouverValeur(porteeProjet, "financement"))) return null;
+  const joursRestants = Math.floor((echeance.dateCible.getTime() - maintenant.getTime()) / JOUR_MS);
+  if (joursRestants >= DELAI_OPCO_JOURS) return null;
+  return { echeance: echeance.dateCible, joursRestants, seuilJours: DELAI_OPCO_JOURS };
+}
+
 export function preparer(e: EntreePreparer): Preparation {
   const projetsAConsolider: ProjetAConsolider[] = e.projets.map((p) => ({
     id: p.id,
@@ -179,25 +197,7 @@ export function preparer(e: EntreePreparer): Preparation {
   );
 
   // 9. Échéance trop proche avec OPCO (projet visé seulement : l'échéance est une valeur de projet).
-  let echeanceProcheAvecOpco: SignalOpco | null = null;
-  if (porteeProjet !== undefined) {
-    const echeance = valeurRetenue(trouverValeur(porteeProjet, "echeance"));
-    if (
-      echeance?.dateCible != null &&
-      financementOpco(trouverValeur(porteeProjet, "financement"))
-    ) {
-      const joursRestants = Math.floor(
-        (echeance.dateCible.getTime() - e.maintenant.getTime()) / JOUR_MS,
-      );
-      if (joursRestants < DELAI_OPCO_JOURS) {
-        echeanceProcheAvecOpco = {
-          echeance: echeance.dateCible,
-          joursRestants,
-          seuilJours: DELAI_OPCO_JOURS,
-        };
-      }
-    }
-  }
+  const echeanceProcheAvecOpco = signalEcheanceOpco(porteeProjet, e.maintenant);
 
   // 4. Questions de questionnaire sans réponse : celles du projet visé seulement.
   const questionnaire =

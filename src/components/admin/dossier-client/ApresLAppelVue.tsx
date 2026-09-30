@@ -15,7 +15,8 @@
  *   3. les FAITS proposés (cochés d'avance seulement s'ils sont validables en
  *      lot) et la NOTE MANUELLE (sept champs et une case) ;
  *   4. l'issue, la suite et son échéance (relance proposée par défaut) ;
- *   5. UN bouton : « Valider et préparer le devis ».
+ *   5. UN bouton : « Valider », ou « Valider et ouvrir le devis » si la suite
+ *      choisie est un devis (libellé en CSS `:has`, sans JavaScript).
  *
  * La page appelante a DÉJÀ posé la garde (`gardeLectureEchanges`, A2) et lu la
  * rencontre. Composant SERVEUR, sans JavaScript : des formulaires HTML reliés à
@@ -292,7 +293,7 @@ export async function ApresLAppelVue({
 
       {/* ── 2 à 5. Projet, faits, note, suite — un seul bouton ─────────────── */}
       {client ? (
-        <form action={validerApresLAppelAction} id="note">
+        <form action={validerApresLAppelAction} id="note" className="group">
           <input type="hidden" name="rencontreId" value={r.id} />
 
           <section className={carteCls}>
@@ -427,8 +428,13 @@ export async function ApresLAppelVue({
             </div>
           </section>
 
+          {/* UX-07 : le libellé suit « La suite » choisie, sans JavaScript (CSS
+              `:has`) — seule la suite « devis » ouvre le devis après validation. */}
           <button type="submit" className="admin-button">
-            Valider et préparer le devis
+            <span className="group-has-[option[value=devis]:checked]:hidden">Valider</span>
+            <span className="hidden group-has-[option[value=devis]:checked]:inline">
+              Valider et ouvrir le devis
+            </span>
           </button>
         </form>
       ) : (

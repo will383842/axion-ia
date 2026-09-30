@@ -26,6 +26,11 @@ import {
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { estimateOpcoCoverage } from "@/server/qualiopi/crm/devis";
+import {
+  lierDevisAuProjet,
+  projetOuvrableDuClient,
+  recopierLienProjet,
+} from "@/server/qualiopi/crm/devis-projet";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
@@ -119,6 +124,12 @@ const createDevisSchema = z.object({
   modaliteOpco: z.enum(["intra", "inter_presentiel", "inter_distanciel"]).optional(),
   /** Enveloppe restante OPCO en centimes (optionnel). */
   opcoEnveloppeRestanteCents: z.number().int().min(0).optional(),
+  /**
+   * Chantier visio (PR 7) : le projet d'où le devis a été ouvert. Seul le LIEN
+   * `projet_devis` est écrit, dans la transaction du devis — jamais une valeur
+   * pré-remplie (décision de Will du 29/09 : le devis s'ouvre vide).
+   */
+  projetId: z.string().uuid().optional(),
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -145,6 +156,9 @@ export async function createDevisAction(
   const parsed = createDevisSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
+  if (v.projetId !== undefined && !(await projetOuvrableDuClient(prisma, v.projetId, v.clientId))) {
+    return { error: "Ce projet n'appartient pas à ce client (ou a été fusionné)." };
+  }
 
   // Calculer le total HT en centimes
   const montantTotalHtCents = v.lignes.reduce(
@@ -207,38 +221,54 @@ export async function createDevisAction(
   const mentionTvaCreation =
     mentionTva(regimeTvaDepuisConfig(regimeTvaCreation)) ?? LEGAL_MENTIONS.factureTvaAssujetti;
 
-  // Allocation numéro séquentiel + insertion, avec retry sur collision (R7)
-  const created = await withNumberRetry(async () => {
-    // F63 — le comptage ignorait l'année alors que le numéro l'estampille :
-    // le 1er janvier, la séquence aurait repris au rang global au lieu de 001.
-    // 🔴 V20 — borne haute, pas cardinalité. Le `startsWith` posé par F63
-    // corrigeait le DÉNOMINATEUR (compter la bonne année) mais pas la MÉCANIQUE :
-    // un devis supprimé faisait toujours reculer le compteur, et
-    // `withNumberRetry` rejouait le même `count()` — cinq fois le même numéro.
-    const numero = await nextNumero("devis", year, (prefixe) =>
-      prisma.devis.findMany({
-        where: { numero: { startsWith: prefixe } },
-        select: { numero: true },
-      }),
-    );
-    return prisma.devis.create({
-      data: {
-        numero,
-        clientId: v.clientId,
-        lignes: v.lignes as never,
-        montantTotalHtCents,
-        mentionTva: mentionTvaCreation,
-        statut: "brouillon",
-        dateValidite,
-        ...(v.activite !== undefined ? { activite: v.activite } : {}),
-        ...(v.refClient !== undefined ? { refClient: v.refClient } : {}),
-        ...(v.financementSuggere !== undefined ? { financementSuggere: v.financementSuggere } : {}),
-        ...(montantOpcoEstimeCents !== undefined ? { montantOpcoEstimeCents } : {}),
-        ...(resteAChargeCents !== undefined ? { resteAChargeCents } : {}),
-      },
-      select: { id: true, numero: true },
-    });
-  });
+  // Allocation numéro séquentiel + insertion, avec retry sur collision (R7).
+  // Chantier visio (PR 7) : le devis et son lien au projet dans UNE transaction,
+  // À L'INTÉRIEUR de `withNumberRetry` — une collision de numéro annule les
+  // deux, et la reprise repart de zéro (aucun lien orphelin).
+  const created = await withNumberRetry(() =>
+    prisma.$transaction(async (tx) => {
+      // F63 — le comptage ignorait l'année alors que le numéro l'estampille :
+      // le 1er janvier, la séquence aurait repris au rang global au lieu de 001.
+      // 🔴 V20 — borne haute, pas cardinalité. Le `startsWith` posé par F63
+      // corrigeait le DÉNOMINATEUR (compter la bonne année) mais pas la MÉCANIQUE :
+      // un devis supprimé faisait toujours reculer le compteur, et
+      // `withNumberRetry` rejouait le même `count()` — cinq fois le même numéro.
+      const numero = await nextNumero("devis", year, (prefixe) =>
+        tx.devis.findMany({
+          where: { numero: { startsWith: prefixe } },
+          select: { numero: true },
+        }),
+      );
+      const devis = await tx.devis.create({
+        data: {
+          numero,
+          clientId: v.clientId,
+          lignes: v.lignes as never,
+          montantTotalHtCents,
+          mentionTva: mentionTvaCreation,
+          statut: "brouillon",
+          dateValidite,
+          ...(v.activite !== undefined ? { activite: v.activite } : {}),
+          ...(v.refClient !== undefined ? { refClient: v.refClient } : {}),
+          ...(v.financementSuggere !== undefined
+            ? { financementSuggere: v.financementSuggere }
+            : {}),
+          ...(montantOpcoEstimeCents !== undefined ? { montantOpcoEstimeCents } : {}),
+          ...(resteAChargeCents !== undefined ? { resteAChargeCents } : {}),
+        },
+        select: { id: true, numero: true },
+      });
+      if (v.projetId !== undefined) {
+        await lierDevisAuProjet(tx, {
+          devisId: devis.id,
+          projetId: v.projetId,
+          clientId: v.clientId,
+          lieParId: session.userId,
+        });
+      }
+      return devis;
+    }),
+  );
 
   await logQualiopiActivity({
     action: "qualiopi.devis.create",
@@ -249,6 +279,7 @@ export async function createDevisAction(
       clientId: v.clientId,
       montantTotalHtCents,
       financementSuggere: v.financementSuggere,
+      ...(v.projetId !== undefined ? { projetId: v.projetId } : {}),
     },
     session,
   });
@@ -890,42 +921,53 @@ export async function reviseDevisAction(
   const dateValidite = new Date();
   dateValidite.setDate(dateValidite.getDate() + 30);
 
-  // Allocation numéro séquentiel + insertion, avec retry sur collision (R7)
-  const created = await withNumberRetry(async () => {
-    // F63 — le comptage ignorait l'année alors que le numéro l'estampille :
-    // le 1er janvier, la séquence aurait repris au rang global au lieu de 001.
-    // 🔴 V20 — même série que la création : même mécanique obligatoirement.
-    const numero = await nextNumero("devis", year, (prefixe) =>
-      prisma.devis.findMany({
-        where: { numero: { startsWith: prefixe } },
-        select: { numero: true },
-      }),
-    );
-    return prisma.devis.create({
-      data: {
-        numero,
-        clientId: origine.clientId,
-        lignes: origine.lignes as never,
-        montantTotalHtCents: origine.montantTotalHtCents,
-        mentionTva: origine.mentionTva,
-        statut: "brouillon",
-        dateValidite,
-        replacesDevisId: origine.id,
-        ...(origine.activite !== null ? { activite: origine.activite } : {}),
-        ...(origine.refClient !== null ? { refClient: origine.refClient } : {}),
-        ...(origine.financementSuggere !== null
-          ? { financementSuggere: origine.financementSuggere }
-          : {}),
-        ...(origine.montantOpcoEstimeCents !== null
-          ? { montantOpcoEstimeCents: origine.montantOpcoEstimeCents }
-          : {}),
-        ...(origine.resteAChargeCents !== null
-          ? { resteAChargeCents: origine.resteAChargeCents }
-          : {}),
-      },
-      select: { id: true, numero: true },
-    });
-  });
+  // Allocation numéro séquentiel + insertion, avec retry sur collision (R7).
+  // Chantier visio (PR 7) : la révision reste dans le projet de la version
+  // qu'elle remplace — lien recopié dans la MÊME transaction. L'ancienne
+  // version n'est pas touchée ici (elle passe `expire` à l'envoi).
+  const created = await withNumberRetry(() =>
+    prisma.$transaction(async (tx) => {
+      // F63 — le comptage ignorait l'année alors que le numéro l'estampille :
+      // le 1er janvier, la séquence aurait repris au rang global au lieu de 001.
+      // 🔴 V20 — même série que la création : même mécanique obligatoirement.
+      const numero = await nextNumero("devis", year, (prefixe) =>
+        tx.devis.findMany({
+          where: { numero: { startsWith: prefixe } },
+          select: { numero: true },
+        }),
+      );
+      const devis = await tx.devis.create({
+        data: {
+          numero,
+          clientId: origine.clientId,
+          lignes: origine.lignes as never,
+          montantTotalHtCents: origine.montantTotalHtCents,
+          mentionTva: origine.mentionTva,
+          statut: "brouillon",
+          dateValidite,
+          replacesDevisId: origine.id,
+          ...(origine.activite !== null ? { activite: origine.activite } : {}),
+          ...(origine.refClient !== null ? { refClient: origine.refClient } : {}),
+          ...(origine.financementSuggere !== null
+            ? { financementSuggere: origine.financementSuggere }
+            : {}),
+          ...(origine.montantOpcoEstimeCents !== null
+            ? { montantOpcoEstimeCents: origine.montantOpcoEstimeCents }
+            : {}),
+          ...(origine.resteAChargeCents !== null
+            ? { resteAChargeCents: origine.resteAChargeCents }
+            : {}),
+        },
+        select: { id: true, numero: true },
+      });
+      await recopierLienProjet(tx, {
+        ancienDevisId: origine.id,
+        nouveauDevisId: devis.id,
+        lieParId: session.userId,
+      });
+      return devis;
+    }),
+  );
 
   await logQualiopiActivity({
     action: "qualiopi.devis.revise",

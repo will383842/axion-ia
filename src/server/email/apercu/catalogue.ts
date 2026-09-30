@@ -455,6 +455,15 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     source: "server/actions/formateur/auth.actions.ts",
   },
 
+  "visio-email-suivi": {
+    categorie: "rendez-vous",
+    quand:
+      "Suivi d'un rendez-vous client, préparé depuis la page du compte rendu (rédigé depuis les faits validés, ou gabarit fixe) — toujours garé dans « E-mails à valider »",
+    destinataire:
+      "un participant client validé du rendez-vous (adresse professionnelle de préférence)",
+    source: "server/visio/passes/etapes-a-la-demande.ts",
+  },
+
   // ── RGPD ──────────────────────────────────────────────────────────────────
   "preavis-sous-traitants": {
     categorie: "rgpd",

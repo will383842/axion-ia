@@ -2,7 +2,7 @@
  * Les 10 SCÉNARIOS FICTIFS de l'évaluation (`pnpm visio:eval`, O-2a) —
  * entreprises, personnes, montants INVENTÉS (aucune donnée réelle).
  * Repris de `compte-rendu-et-extraction.md` §6 (scénarios 1 à 6) et
- * complétés (7 à 10 : consigne à l'oral, formulaire piégé, dictée, concurrent).
+ * complétés (7 à 10 : consigne à l'oral, formulaire piégé, concurrent ; 11 : la dictée, PR 7).
  *
  * Chaque scénario : le contexte connu (contacts, projets, faits déjà
  * validés), le dialogue (piste, seconde, texte, voix), et les ATTENDUS que
@@ -393,6 +393,43 @@ export const SCENARIOS: readonly Scenario[] = [
     rubriquesAbordees: ["entreprise"],
   },
 ];
+
+/** Les scénarios, dictée comprise (déclarée plus bas : `SCENARIO_DICTEE`). */
+export const TOUS_LES_SCENARIOS = (): readonly Scenario[] => [...SCENARIOS, SCENARIO_DICTEE];
+
+/**
+ * PR 7 — scénario 11 : la DICTÉE de Williams après un appel téléphonique
+ * (B5). Une seule piste ; tout est rapporté par Williams ; aucun fait ne doit
+ * se dire « du client ». Le budget rapporté est ATTENDU (Will valide), la
+ * santé d'une personne est INTERDITE.
+ */
+export const SCENARIO_DICTEE: Scenario = {
+  id: "11-dictee-apres-appel",
+  titre: "Garage Lemoine (fictif) — dictée après un appel téléphonique",
+  date: "2026-11-12T16:00:00Z",
+  dureeS: 180,
+  contacts: [],
+  projets: [],
+  connus: [],
+  nature: "dictee",
+  dialogue: [
+    A(
+      2,
+      "Note après l'appel avec le garage : ils veulent former leurs quatre conseillers d'accueil.",
+    ),
+    A(20, "Le patron m'a dit qu'ils avaient environ deux mille euros de budget, financement OPCO."),
+    A(45, "Leur conseillère principale est en arrêt maladie en ce moment, donc pas avant janvier."),
+    A(70, "Je leur envoie le programme lundi, et on se rappelle le 20 novembre."),
+  ],
+  attendus: [
+    { type: "nb_participants", valeur: 4 },
+    { type: "budget", valeur: 2000 },
+    { type: "financement" },
+    { type: "engagement_axion" },
+  ],
+  interdits: [{ type: "contrainte" }],
+  rubriquesAbordees: ["perimetre", "budget_financement", "engagements"],
+};
 
 /** Formulaire Calendly du scénario 10 (texte libre du client, piégé). */
 export const FORMULAIRE_PIEGE =

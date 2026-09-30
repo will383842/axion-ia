@@ -23,9 +23,16 @@ import {
   verifierFaitsEtape,
 } from "./passes-ia";
 import { precontroler } from "./precontroles";
+import { modeEnregistrement, type ModeEnregistrement } from "./drapeau";
 import { depotEtapesPrisma } from "./prise-d-etape";
 import { purgerAudio } from "./purge-audio";
 import { transcrire } from "./recevoir-transcription";
+import {
+  depotDemandesPrisma,
+  envoiEmailSuiviReel,
+  GESTIONNAIRES_A_LA_DEMANDE,
+  type PortEnvoiEmailSuivi,
+} from "./passes/etapes-a-la-demande";
 
 export const GESTIONNAIRES: Readonly<Partial<Record<EtapeVisio, Gestionnaire>>> = {
   transcrire,
@@ -38,6 +45,8 @@ export const GESTIONNAIRES: Readonly<Partial<Record<EtapeVisio, Gestionnaire>>> 
   rediger,
   verifier_compte_rendu: verifierCompteRenduEtape,
   purger_audio: purgerAudio,
+  // PR 7 — à la demande de Will, par le même module OpenAI (coût tracé).
+  ...GESTIONNAIRES_A_LA_DEMANDE,
 };
 
 /** Alerte technique : `AlerteSysteme` + dé-duplication existante (jamais une table parallèle). */
@@ -65,6 +74,10 @@ export interface OptionsCircuit {
   readonly cout?: PortCout;
   readonly alerter?: (a: AlerteCircuit) => Promise<void>;
   readonly maintenant?: () => Date;
+  /** PR 7 — garer l'e-mail de suivi (faux en Gate D : pas de file Redis). */
+  readonly envoiEmail?: PortEnvoiEmailSuivi;
+  /** PR 7 — le drapeau des étapes à la demande (lu à l'exécution sinon). */
+  readonly mode?: () => ModeEnregistrement;
 }
 
 export function construireCircuit(o: OptionsCircuit): DepsCircuit {
@@ -78,6 +91,11 @@ export function construireCircuit(o: OptionsCircuit): DepsCircuit {
     maintenant: o.maintenant ?? (() => new Date()),
     arretDemande: () => arret,
     gestionnaires: GESTIONNAIRES,
+    demandes: {
+      depot: depotDemandesPrisma(o.db),
+      envoi: o.envoiEmail ?? envoiEmailSuiviReel,
+      mode: o.mode ?? (() => modeEnregistrement()),
+    },
   };
 }
 

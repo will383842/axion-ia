@@ -115,14 +115,20 @@ export interface VenteWizardProps {
   formations: VenteFormationOption[];
   /** Pré-sélection client (`?clientId=`, boutons CRM) — le brouillon prime. */
   clientInitialId?: string;
-  /** Ventes déjà commencées par cet admin (rappel de reprise, sous l'en-tête). */
-  brouillonsEnCours?: ReadonlyArray<{
-    id: string;
-    etape: number;
-    clientRaisonSociale: string | null;
-    /** Date déjà formatée fr-FR côté serveur. */
-    modifieLe: string;
-  }>;
+  /**
+   * Chantier visio (PR 7) : vente ouverte depuis un PROJET. Le devis créé est
+   * lié au projet (`projet_devis`) ; rien n'est pré-rempli.
+   */
+  projetId?: string;
+  /**
+   * Emplacement rendu CÔTÉ SERVEUR sous l'en-tête, tel quel : le panneau « Ce
+   * que le client a dit » (lecture seule, vente ouverte depuis un projet ; rien
+   * n'en est recopié dans le devis, décision de Will du 29/09) puis le rappel
+   * « Ventes en cours » (`VentesEnCours`). La page les passe déjà habillés
+   * (marges comprises) : le composant client n'en porte aucun octet (cliquet
+   * du poids de la console).
+   */
+  aside?: React.ReactNode;
   brouillon?: VenteBrouillonInitial;
   devisInitial?: VenteDevisEtat;
   sessionInitiale?: VenteSessionEtat;
@@ -175,7 +181,8 @@ export function VenteWizard({
   offres,
   formations,
   clientInitialId,
-  brouillonsEnCours,
+  projetId,
+  aside,
   brouillon,
   devisInitial,
   sessionInitiale,
@@ -392,6 +399,9 @@ export function VenteWizard({
     startTransition(async () => {
       const r = await createDevisAction({
         clientId,
+        // Lien au projet seulement si le client choisi est bien celui du projet
+        // (l'action le revérifie et refuse un projet d'une autre fiche).
+        ...(projetId !== undefined && clientId === clientInitialId ? { projetId } : {}),
         activite: "formation",
         lignes: [
           {
@@ -558,29 +568,7 @@ export function VenteWizard({
       />
       <AdminFormDirtyGuard dirty={sale && etape < 4} />
 
-      {/* Reprise : le seul chemin quand un devis envoyé attend sa signature. */}
-      {brouillonsEnCours !== undefined && brouillonsEnCours.length > 0 ? (
-        <div className="mb-[var(--space-admin-5,12px)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
-          <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-semibold">
-            Ventes en cours ({brouillonsEnCours.length})
-          </p>
-          <ul className="flex flex-col gap-[var(--space-admin-2)]">
-            {brouillonsEnCours.map((b) => (
-              <li key={b.id} className="text-[length:var(--text-admin-sm)]">
-                <Link
-                  href={`${base}/qualiopi/vente/new?brouillon=${b.id}`}
-                  className="text-[color:var(--color-admin-accent)] underline hover:no-underline"
-                >
-                  {b.clientRaisonSociale ?? "Client non choisi"} — étape {b.etape}/4
-                </Link>{" "}
-                <span className="text-[color:var(--color-admin-fg-soft)]">
-                  (modifié le {b.modifieLe})
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+      {aside}
 
       {/* Stepper (pattern CampaignWizardV2 : pastilles + libellés masqués sous sm:) */}
       <div className="mb-[var(--space-admin-6,16px)] flex items-center gap-[var(--space-admin-3,6px)]">

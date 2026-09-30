@@ -27,6 +27,63 @@ import { etatJeton } from "./jeton.js";
  * @typedef {{ etat: EtatCapture, actions: Action[] }} Resultat
  */
 
+/**
+ * DICTÉE après un appel (PR 7) : micro seul, sur une rencontre EXISTANTE, 5 min
+ * au plus (le site l'attend entre 2 et 5 min). Pas d'étape de consentement :
+ * c'est Williams, seul, qui résume. Le site la refuse (503) tant que la notice
+ * ne l'annonce pas.
+ */
+export const DUREE_MAX_DICTEE_MS = 5 * 60 * 1000;
+
+/**
+ * Démarre une dictée. Refuse sans rencontre choisie ou sans jeton valable.
+ * @param {{ jeton: string | null, jetonExpireLe: string | null, cleClient: string, rencontreId: string | null }} entree
+ * @returns {Resultat}
+ */
+export function demarrerDictee(etat, entree, maintenantMs) {
+  if (etat.phase !== "repos" && etat.phase !== "detruit" && etat.phase !== "termine") {
+    return { etat, actions: [{ type: "refuser", message: "Une capture est déjà en cours." }] };
+  }
+  if (!entree.rencontreId) {
+    return {
+      etat,
+      actions: [{ type: "refuser", message: "Choisissez d'abord le rendez-vous de l'appel." }],
+    };
+  }
+  const j = etatJeton(entree.jeton, entree.jetonExpireLe, maintenantMs);
+  if (!j.peutDemarrer) {
+    return { etat, actions: [{ type: "refuser", message: j.message }] };
+  }
+  return {
+    etat: {
+      phase: "en_cours",
+      nature: "dictee",
+      cleClient: entree.cleClient,
+      rencontreId: entree.rencontreId,
+      enregistrementId: null,
+      debutMs: maintenantMs,
+      // Pas d'accord à attendre : le son part dès que la session existe.
+      accordMs: maintenantMs,
+      rappelAccordFait: true,
+      enPause: false,
+      nbParticipants: 1,
+      participantsAccordes: 1,
+      nouvellePersonneDepuisMs: null,
+      sonCoupe: false,
+      fenetresHorsAccord: [],
+      dernierSonClientMs: maintenantMs,
+      dernierSonMs: maintenantMs,
+      notificationSilenceFaite: false,
+      salleQuitteeDepuisMs: null,
+      badges: [],
+    },
+    actions: [
+      { type: "demarrer_capture", micSeul: true },
+      { type: "creer_session", debutMs: maintenantMs, nature: "dictee" },
+    ],
+  };
+}
+
 /** L'état de repos (aucune capture). */
 /** @returns {EtatCapture} */
 export function etatInitial() {
@@ -173,6 +230,13 @@ export function nouvellePersonneAccord(etat, maintenantMs) {
  */
 export function tic(etat, mesure, maintenantMs) {
   if (etat.phase !== "accord_en_attente" && etat.phase !== "en_cours") return { etat, actions: [] };
+  // Dictée : ni piste client, ni salle, ni participants — seulement la durée.
+  if (etat.nature === "dictee") {
+    if (etat.phase === "en_cours" && maintenantMs - etat.debutMs >= DUREE_MAX_DICTEE_MS) {
+      return arreter(etat, maintenantMs, "duree_max");
+    }
+    return { etat, actions: [] };
+  }
   const actions = [];
   let e = { ...etat };
 
