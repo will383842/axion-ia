@@ -14,7 +14,7 @@
  * récapitulative.
  */
 
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import JSZip from "jszip";
 
 const h = vi.hoisted(() => {
@@ -27,9 +27,14 @@ const h = vi.hoisted(() => {
       {
         get(_c, methode) {
           if (typeof methode !== "string" || methode === "then") return undefined;
-          return async () => {
+          return async (...args: unknown[]) => {
             const cle = `${nom}.${methode}`;
-            if (reponses.has(cle)) return reponses.get(cle);
+            if (reponses.has(cle)) {
+              const r = reponses.get(cle);
+              // Une réponse FONCTION lit la requête : c'est ce qui permet au
+              // double du journal d'appliquer vraiment son `where`.
+              return typeof r === "function" ? (r as (a: unknown) => unknown)(args[0]) : r;
+            }
             if (methode === "findMany" || methode === "groupBy") return [];
             if (methode === "count") return 0;
             return null;
@@ -136,6 +141,7 @@ function jeuAxiSess2026001(): void {
     ],
     emargementContresignatures: [],
   });
+  h.reponses.set("enrollment.findMany", [{ id: ENROLLMENT, trainee: { deletedAt: null } }]);
   h.reponses.set("sessionDossierEvenement.findMany", [
     { type: "reouverture", createdAt: REOUVERTURE, auteurNom: "Williams Jullin", motif: MOTIF },
     {
@@ -155,21 +161,32 @@ function jeuAxiSess2026001(): void {
       adminUser: { name: "Williams Jullin" },
     },
   ]);
-  h.reponses.set("emargementSignature.findMany", [
-    {
-      signataireNom: "Simone Blanc",
-      signeAt: new Date("2026-09-10T07:10:00Z"),
-      revokedAt: new Date("2026-09-30T12:10:00Z"),
-      revokedMotif: "Signature apposée sur le mauvais créneau",
-      revokedById: "admin-1",
-    },
-  ]);
+  // Les tables servent à deux requêtes : la section du dossier (champs
+  // métier) et la recherche des cibles du journal (identifiants) — le double
+  // répond selon ce qui est demandé.
+  h.reponses.set("emargementSignature.findMany", (a: { select: Record<string, unknown> }) =>
+    "revokedAt" in a.select
+      ? [
+          {
+            signataireNom: "Simone Blanc",
+            signeAt: new Date("2026-09-10T07:10:00Z"),
+            revokedAt: new Date("2026-09-30T12:10:00Z"),
+            revokedMotif: "Signature apposée sur le mauvais créneau",
+            revokedById: "admin-1",
+          },
+        ]
+      : [],
+  );
   h.reponses.set("adminUser.findMany", [{ id: "admin-1", name: "Williams Jullin" }]);
-  h.reponses.set("questionnaire.findMany", [
-    { type: "satisfaction_chaud", origineReponse: "stagiaire" },
-    { type: "positionnement", origineReponse: "organisme" },
-    { type: "satisfaction_froid", origineReponse: null },
-  ]);
+  h.reponses.set("questionnaire.findMany", (a: { select: Record<string, unknown> }) =>
+    "origineReponse" in a.select
+      ? [
+          { type: "satisfaction_chaud", origineReponse: "stagiaire" },
+          { type: "positionnement", origineReponse: "organisme" },
+          { type: "satisfaction_froid", origineReponse: null },
+        ]
+      : [],
+  );
 }
 
 async function indexDuZip(): Promise<{ index: string; avertissements: string[] }> {
@@ -203,10 +220,14 @@ describe("ADR 0060 — dossier de session AXI-SESS-2026-001 rouvert puis reclos"
     expect(index).toContain("État à la date de ce dossier : Dossier clos le 30/09/2026");
   });
 
-  it("l'index porte un AVERTISSEMENT de réouverture", async () => {
+  it("l'index SIGNALE la réouverture en tête, sans la compter comme un avertissement (le dossier n'en devient pas incomplet)", async () => {
     const { index, avertissements } = await indexDuZip();
-    expect(avertissements.some((a) => a.includes("rouvert 1 fois"))).toBe(true);
-    expect(index).toMatch(/AVERTISSEMENTS :[\s\S]*rouvert 1 fois/);
+    const lignes = index.split("\n");
+    expect(lignes[3]).toContain("rouvert 1 fois après sa clôture");
+    // Revue PR #1245 : versé dans `avertissements`, il rendait `incomplet`
+    // vrai, et un dossier rouvert, reclos et complet s'affichait INCOMPLET.
+    expect(avertissements.some((a) => a.includes("rouvert"))).toBe(false);
+    expect(index).not.toMatch(/AVERTISSEMENTS :[\s\S]*rouvert 1 fois/);
   });
 
   it("la section « Signatures révoquées » nomme motif, date et auteur", async () => {
@@ -300,5 +321,182 @@ describe("ADR 0060 — manifeste global", () => {
     const m = await genererManifesteAudit();
     expect(m.json.reouverturesSessions).toEqual([]);
     expect(m.markdown).toContain("**0 session rouverte**");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Revue de la PR #1245 — le journal de l'ouverture doit être COMPLET
+// ─────────────────────────────────────────────────────────────────────────────
+
+interface LigneJournal {
+  createdAt: Date;
+  action: string;
+  targetType: string;
+  targetId: string;
+  changes: Record<string, unknown> | null;
+  adminUser: { name: string };
+}
+
+/**
+ * Un double de `activityLog.findMany` qui APPLIQUE son `where` (la version
+ * précédente rendait la même liste quel que soit le filtre, et ne pouvait donc
+ * pas voir qu'une action manquait). Une clé inconnue fait échouer le test :
+ * changer la forme du filtre oblige à relire ce double.
+ */
+function journalFiltrant(lignes: LigneJournal[]) {
+  return (args: unknown): LigneJournal[] => {
+    const where = (args as { where: Record<string, unknown> }).where;
+    for (const k of Object.keys(where)) {
+      if (k !== "createdAt" && k !== "OR") throw new Error(`clé de filtre inconnue : ${k}`);
+    }
+    const periode = where["createdAt"] as { gte?: Date; lte?: Date } | undefined;
+    const ou = where["OR"] as Array<Record<string, unknown>>;
+    return lignes.filter((l) => {
+      const t = l.createdAt.getTime();
+      if (periode?.gte !== undefined && t < periode.gte.getTime()) return false;
+      if (periode?.lte !== undefined && t > periode.lte.getTime()) return false;
+      return ou.some((c) => {
+        if ("targetId" in c) return (c["targetId"] as { in: string[] }).in.includes(l.targetId);
+        if ("changes" in c) {
+          const f = c["changes"] as { path: string[]; equals: unknown };
+          return l.changes !== null && l.changes[f.path[0] as string] === f.equals;
+        }
+        throw new Error(`condition inconnue : ${Object.keys(c).join(",")}`);
+      });
+    });
+  };
+}
+
+const CRENEAU = "00000000-0000-4000-8000-0000000000c1";
+const SIG_EMARGEMENT = "00000000-0000-4000-8000-0000000000c2";
+const SIG_PIECE = "00000000-0000-4000-8000-0000000000c3";
+const EVALUATION = "00000000-0000-4000-8000-0000000000c4";
+const QUESTIONNAIRE = "00000000-0000-4000-8000-0000000000c5";
+const RELEVE = "00000000-0000-4000-8000-0000000000c6";
+const INCIDENT = "00000000-0000-4000-8000-0000000000c7";
+const INCIDENT_SUPPRIME = "00000000-0000-4000-8000-0000000000c8";
+const AUTRE_SESSION_CRENEAU = "00000000-0000-4000-8000-0000000000d1";
+
+function ligne(
+  minute: number,
+  action: string,
+  targetType: string,
+  targetId: string,
+  changes: Record<string, unknown> | null = null,
+): LigneJournal {
+  return {
+    createdAt: new Date(REOUVERTURE.getTime() + minute * 60_000),
+    action,
+    targetType,
+    targetId,
+    changes,
+    adminUser: { name: "Williams Jullin" },
+  };
+}
+
+/** Les objets du dossier, tels que la base les rend (identifiants seulement). */
+function objetsDuDossier(anonyme = false): void {
+  const trainee = { deletedAt: anonyme ? new Date("2026-09-25T10:00:00Z") : null };
+  const viaInscription = (id: string) => [{ id, enrollment: { trainee } }];
+  h.reponses.set("enrollment.findMany", [{ id: ENROLLMENT, trainee }]);
+  h.reponses.set("presenceCreneau.findMany", viaInscription(CRENEAU));
+  h.reponses.set("evaluationAcquis.findMany", viaInscription(EVALUATION));
+  h.reponses.set("releveConnexionImport.findMany", [{ id: RELEVE }]);
+  h.reponses.set("incident.findMany", [{ id: INCIDENT }]);
+  h.reponses.set("documentSignature.findMany", (a: { select: Record<string, unknown> }) =>
+    "revokedAt" in a.select ? [] : [{ id: SIG_PIECE, documentGenere: { trainee } }],
+  );
+  // `emargementSignature` et `questionnaire` servent aussi aux sections
+  // « Signatures révoquées » et « Origine des réponses » : on répond selon la
+  // requête.
+  const revoquees = h.reponses.get("emargementSignature.findMany") as (a: unknown) => unknown;
+  h.reponses.set("emargementSignature.findMany", (a: { select: Record<string, unknown> }) =>
+    "revokedAt" in a.select ? revoquees(a) : viaInscription(SIG_EMARGEMENT),
+  );
+  h.reponses.set("questionnaire.findMany", (a: { select: Record<string, unknown> }) =>
+    "origineReponse" in a.select ? [] : viaInscription(QUESTIONNAIRE),
+  );
+}
+
+describe("ADR 0060 — revue PR #1245 : TOUTES les actions de l'ouverture sont au dossier", () => {
+  beforeEach(() => {
+    // Le journal est lu jusqu'à « maintenant » : on se place après la scène.
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-10-01T08:00:00Z"));
+    jeuAxiSess2026001();
+    objetsDuDossier();
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("🔴 présence corrigée, émargement révoqué, questionnaire saisi, évaluation, relevé, incident (même supprimé), signature de pièce : tout apparaît", async () => {
+    h.reponses.set(
+      "activityLog.findMany",
+      journalFiltrant([
+        ligne(5, "qualiopi.presence.creneau.manual", "PresenceCreneau", CRENEAU, {
+          present: false,
+        }),
+        ligne(6, "qualiopi.emargement.signature_revoquee", "EmargementSignature", SIG_EMARGEMENT, {
+          motif: "Mauvais créneau",
+        }),
+        ligne(7, "qualiopi.satisfaction.saisir_reponses", "Questionnaire", QUESTIONNAIRE),
+        ligne(8, "qualiopi.evaluation.create", "EvaluationAcquis", EVALUATION),
+        ligne(9, "qualiopi.presence.releve.import", "ReleveConnexionImport", RELEVE),
+        ligne(10, "qualiopi.incident.update", "Incident", INCIDENT),
+        ligne(11, "qualiopi.incident.delete", "Incident", INCIDENT_SUPPRIME, {
+          titre: "Retard",
+          dossierSessionId: SESSION,
+        }),
+        ligne(12, "qualiopi.signature.revocation", "DocumentSignature", SIG_PIECE),
+        // Témoin : une action d'une AUTRE session ne doit pas s'y glisser.
+        ligne(13, "qualiopi.presence.creneau.manual", "PresenceCreneau", AUTRE_SESSION_CRENEAU),
+      ]),
+    );
+    const { index } = await indexDuZip();
+    expect(index).not.toContain("aucune au journal d'activité");
+    expect(index).toContain("Actions menées pendant l'ouverture (8, journal d'activité)");
+    for (const action of [
+      "qualiopi.presence.creneau.manual — par Williams Jullin — PresenceCreneau 00000000",
+      "qualiopi.emargement.signature_revoquee",
+      "qualiopi.satisfaction.saisir_reponses",
+      "qualiopi.evaluation.create",
+      "qualiopi.presence.releve.import",
+      "qualiopi.incident.update",
+      "qualiopi.incident.delete",
+      "qualiopi.signature.revocation",
+    ]) {
+      expect(index, action).toContain(action);
+    }
+    expect(index.match(/qualiopi\.presence\.creneau\.manual/g)).toHaveLength(1);
+  });
+
+  it("une action d'un stagiaire ANONYMISÉ reste au dossier, sans son détail libre (RGPD)", async () => {
+    objetsDuDossier(true);
+    h.reponses.set(
+      "activityLog.findMany",
+      journalFiltrant([
+        ligne(5, "qualiopi.enrollment.retour_de_sortie", "Enrollment", ENROLLMENT, {
+          avant: { sortieMotif: "Maladie" },
+        }),
+      ]),
+    );
+    const { index } = await indexDuZip();
+    expect(index).toContain("qualiopi.enrollment.retour_de_sortie");
+    expect(index).toContain("détail masqué : stagiaire anonymisé");
+    expect(index).not.toContain("Maladie");
+  });
+
+  it("une écriture inscrite juste APRÈS le reverrouillage (garde hors transaction) est listée et signalée", async () => {
+    const apres = (REVERROUILLAGE.getTime() - REOUVERTURE.getTime()) / 60_000 + 1;
+    h.reponses.set(
+      "activityLog.findMany",
+      journalFiltrant([
+        ligne(apres, "qualiopi.presence.creneau.manual", "PresenceCreneau", CRENEAU),
+      ]),
+    );
+    const { index } = await indexDuZip();
+    expect(index).toContain("qualiopi.presence.creneau.manual");
+    expect(index).toContain("inscrite APRÈS le reverrouillage");
   });
 });
