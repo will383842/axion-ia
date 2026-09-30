@@ -175,6 +175,27 @@ describe("REQ-JUR-001 — ni promesse sans risque, ni AI Act trop large", () => 
   });
 });
 
+describe("REQ-JUR-019 — aucune projection de revenu mensuel (A07, arbitrage -d7)", () => {
+  it.each([
+    "{scenarios[1]!.n} formations d'1 jour vendues dans le mois, à titre indicatif",
+    "10 formations vendues dans le mois = 5 000 € de commissions",
+    "5 formations 1 j / mois",
+    "20 formations par mois",
+    "10 one-day trainings sold in a month, as a guide",
+    "5 trainings 1 d / month",
+  ])("REQ-JUR-019 — TÉMOIN ROUGE, même dit indicatif : « %s »", (texte) => {
+    expect(temoin(texte)).toContain<FamilleRemuneration>("projection_mensuelle");
+  });
+
+  it.each([
+    "1 journée de formation vendue et encaissée = {formatAmount(perFormation)} de commission, à titre indicatif.",
+    "commissions versées chaque mois, à l'encaissement",
+    "Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.",
+  ])("REQ-JUR-019 — CONTRE-TÉMOIN : « %s »", (texte) => {
+    expect(temoin(texte)).not.toContain("projection_mensuelle");
+  });
+});
+
 describe("REQ-JUR-041 — « kit de vente » est banni", () => {
   it("REQ-JUR-041 — TÉMOIN ROUGE : « kit de vente », même avec une mention indicative", () => {
     expect(temoin("Recevez votre kit de vente, à titre indicatif.")).toContain<FamilleRemuneration>(

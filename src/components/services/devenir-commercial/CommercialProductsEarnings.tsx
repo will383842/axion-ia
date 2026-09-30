@@ -57,7 +57,6 @@ export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsP
   const loc = isFr ? "fr" : "en";
   const flats = COMMERCIAL_COMMISSIONS.filter((c) => c.kind === "flat");
   const perFormation = getCommissionById("com-formation-1j").flatEur ?? 0;
-  const scenarios = [5, 10, 20].map((n) => ({ n, total: n * perFormation }));
 
   const audit = COMMERCIAL_COMMISSIONS.find((c) => c.id === "com-audit");
   const integration = COMMERCIAL_COMMISSIONS.find((c) => c.id === "com-integration");
@@ -112,47 +111,39 @@ export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsP
         ))}
       </div>
 
-      {/* ENCART DE CALCUL — potentiel mensuel (calculé depuis le SSOT) */}
+      {/* ENCART DE CALCUL — UN exemple à l'unité, jamais une projection mensuelle (arbitrage -d7 du
+          2026-09-30 sur l'alerte de la juriste A07 : une grille de ventes mensuelles par paliers
+          est une projection de revenu faite à un indépendant). Calculé depuis le SSOT. */}
       <div className="border-sage/30 from-sage-soft to-bg mt-6 rounded-2xl border-2 bg-gradient-to-br p-6 sm:p-8">
         <p className="text-sage-deep flex items-center gap-2 text-[12px] font-semibold tracking-[0.14em] uppercase">
           <TrendingUp aria-hidden="true" className="h-4 w-4" />
-          {isFr ? "Votre potentiel, à titre indicatif" : "Your potential, as an indication"}
+          {isFr
+            ? "Un exemple de calcul, à titre indicatif"
+            : "A calculation example, as an indication"}
         </p>
         <p className="text-fg mt-3 text-xl leading-snug font-semibold sm:text-2xl">
           {isFr ? (
             <>
-              {scenarios[1]!.n} formations d&apos;1 jour vendues dans le mois ={" "}
+              1 journée de formation vendue et encaissée ={" "}
               <span className="text-terracotta-deep">
-                {formatAmount(scenarios[1]!.total, loc, { compact: true })}
+                {formatAmount(perFormation, loc, { compact: true })}
               </span>{" "}
-              de commissions.
+              de commission, à titre indicatif.
             </>
           ) : (
             <>
-              {scenarios[1]!.n} one-day trainings sold in a month ={" "}
+              1 training day sold and collected ={" "}
               <span className="text-terracotta-deep">
-                {formatAmount(scenarios[1]!.total, loc, { compact: true })}
+                {formatAmount(perFormation, loc, { compact: true })}
               </span>{" "}
-              in commissions.
+              in commission, as an indication.
             </>
           )}
         </p>
-        <div className="mt-5 grid gap-3 sm:grid-cols-3">
-          {scenarios.map((s) => (
-            <div key={s.n} className="bg-bg/80 border-border rounded-xl border px-4 py-3">
-              <p className="text-fg-muted text-xs">
-                {s.n} {isFr ? "formations 1 j / mois" : "trainings 1 d / month"}
-              </p>
-              <p className="text-fg font-mono text-lg font-semibold tabular-nums">
-                {formatAmount(s.total, loc, { compact: true })}
-              </p>
-            </div>
-          ))}
-        </div>
         <p className="text-fg-muted mt-4 text-xs">
           {isFr
-            ? `Et ce ne sont que les formations 1 jour : les formats longs, les audits (${audit?.percent ?? "—"} %) et les intégrations (${integration?.percent ?? "—"} %) s'y ajoutent, à titre indicatif.`
-            : `And that's just 1-day trainings: longer formats, audits (${audit?.percent ?? "—"}%) and integrations (${integration?.percent ?? "—"}%) come on top, as a guide.`}
+            ? `Les formats longs, les audits (${audit?.percent ?? "—"} %) et les intégrations (${integration?.percent ?? "—"} %) suivent leur propre barème, à titre indicatif. Ce sont des exemples de calcul, pas une promesse : vos revenus dépendent de vos ventes.`
+            : `Longer formats, audits (${audit?.percent ?? "—"}%) and integrations (${integration?.percent ?? "—"}%) follow their own rates, as an indication. These are calculation examples, not a promise: your earnings depend on your sales.`}
         </p>
       </div>
 
