@@ -393,7 +393,8 @@ async function emettreSansVerrou(
     intitule: trainingSession.titreSession ?? trainingSession.formation?.titre ?? null,
     numeroSession: trainingSession.numero ?? null,
     periode: periodePrestationSession(trainingSession) ?? null,
-    dureeHeures: trainingSession.dureeReelleHeures ?? trainingSession.formation?.dureeHeures ?? null,
+    dureeHeures:
+      trainingSession.dureeReelleHeures ?? trainingSession.formation?.dureeHeures ?? null,
     stagiaires: (trainingSession.enrollments ?? []).map((e) => e.trainee),
   };
   lignes = lignes.map((l) => ({

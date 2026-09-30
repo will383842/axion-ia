@@ -432,14 +432,15 @@ describe("documents générés — une facture porte son numéro de facture", ()
         exemplaireSigneEnvoyeAt: null,
       },
     ]);
-    m.factures = lecture("factures", () => [
-      { documentId: "d-fact", numero: "AXI-FACT-2026-001" },
-    ]);
+    m.factures = lecture("factures", () => [{ documentId: "d-fact", numero: "AXI-FACT-2026-001" }]);
 
     const arbre = await rendre();
     const props = propsPortant(arbre, "documentsExistants");
     expect(props, "DocumentsSection introuvable dans l'arbre rendu").not.toBeNull();
-    const docs = props!["documentsExistants"] as Array<{ numero: string; numeroFacture?: string | null }>;
+    const docs = props!["documentsExistants"] as Array<{
+      numero: string;
+      numeroFacture?: string | null;
+    }>;
     expect(docs).toEqual([
       expect.objectContaining({ numero: "AXI-DOC-2026-043", numeroFacture: "AXI-FACT-2026-001" }),
     ]);

@@ -64,9 +64,14 @@ export function designationFormation(mode: string, ctx: ContexteDesignationForma
   if (numero !== null) morceaux.push(`session ${numero}`);
 
   const periode = nonVide(ctx.periode);
-  if (periode !== null) morceaux.push(`réalisée ${periode.startsWith("du ") ? periode : `le ${periode}`}`);
+  if (periode !== null)
+    morceaux.push(`réalisée ${periode.startsWith("du ") ? periode : `le ${periode}`}`);
 
-  if (typeof ctx.dureeHeures === "number" && Number.isFinite(ctx.dureeHeures) && ctx.dureeHeures > 0) {
+  if (
+    typeof ctx.dureeHeures === "number" &&
+    Number.isFinite(ctx.dureeHeures) &&
+    ctx.dureeHeures > 0
+  ) {
     morceaux.push(`durée ${dureeLisible(ctx.dureeHeures)}`);
   }
 
