@@ -111,9 +111,7 @@ export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsP
         ))}
       </div>
 
-      {/* ENCART DE CALCUL — UN exemple à l'unité, jamais une projection mensuelle (arbitrage -d7 du
-          2026-09-30 sur l'alerte de la juriste A07 : une grille de ventes mensuelles par paliers
-          est une projection de revenu faite à un indépendant). Calculé depuis le SSOT. */}
+      {/* ENCART DE CALCUL — un calcul à l'unité, jamais un rythme. Calculé depuis le SSOT. */}
       <div className="border-sage/30 from-sage-soft to-bg mt-6 rounded-2xl border-2 bg-gradient-to-br p-6 sm:p-8">
         <p className="text-sage-deep flex items-center gap-2 text-[12px] font-semibold tracking-[0.14em] uppercase">
           <TrendingUp aria-hidden="true" className="h-4 w-4" />

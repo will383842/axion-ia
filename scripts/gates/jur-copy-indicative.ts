@@ -129,10 +129,9 @@ const ILLIMITE = new RegExp(
  *     groupes en bloc. On écrit : l'AI Act crée des obligations pour les entreprises qui utilisent l'IA.
  */
 /**
- * `projection_mensuelle` (arbitrage -d7 du 2026-09-30, alerte A07) : une grille de ventes PAR
- * MOIS (« 10 formations vendues dans le mois = X € », « 5 formations 1 j / mois ») projette un
- * revenu mensuel à un indépendant. Comme le revenu illimité, l'indicatif ne l'excuse pas : on
- * donne un calcul À L'UNITÉ (« 1 journée vendue et encaissée = X € »), jamais un rythme.
+ * `projection_mensuelle` : un calcul À L'UNITÉ (« 1 journée vendue et encaissée = X € »), jamais
+ * un rythme (« 10 formations vendues dans le mois », « 5 formations 1 j / mois »). Comme le revenu
+ * illimité, l'indicatif ne l'excuse pas.
  */
 const PROJECTION_MENSUELLE =
   /(?:\d+|\})\s+(?:[\wÀ-ÿ'’-]+\s+){0,2}?(?:formations?|journées?|ventes?|missions?|trainings?|days?|sales?)\b[^.;!?]{0,40}?(?:\bpar\s+mois\b|\bdans\s+le\s+mois\b|\/\s*mois\b|\bper\s+month\b|\bin\s+a\s+month\b|\/\s*month\b)/i;

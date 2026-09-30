@@ -175,7 +175,7 @@ describe("REQ-JUR-001 — ni promesse sans risque, ni AI Act trop large", () => 
   });
 });
 
-describe("REQ-JUR-019 — aucune projection de revenu mensuel (A07, arbitrage -d7)", () => {
+describe("REQ-JUR-019 — aucune projection de revenu mensuel", () => {
   it.each([
     "{scenarios[1]!.n} formations d'1 jour vendues dans le mois, à titre indicatif",
     "10 formations vendues dans le mois = 5 000 € de commissions",
