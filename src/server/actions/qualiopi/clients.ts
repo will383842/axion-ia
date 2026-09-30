@@ -375,6 +375,26 @@ export async function updateClientAction(
     }
   }
 
+  // P-5 : une fiche dont le type EN BASE est « particulier » ne reçoit ni SIREN
+  // ni SIRET, même si la charge ne dit rien du type (« C'est elle » ne
+  // transmet que le SIREN de l'annuaire). Repasser la fiche en entreprise dans
+  // la même charge reste possible.
+  const identifiantEntreprise =
+    (typeof sirenAEcrire === "string" && sirenAEcrire !== "") ||
+    (typeof fields.siret === "string" && fields.siret !== "");
+  if (identifiantEntreprise && fields.type !== "entreprise") {
+    const typeEnBase =
+      fields.type ??
+      (await prisma.client.findUnique({ where: { id }, select: { type: true } }))?.type;
+    if (typeEnBase === "particulier") {
+      return {
+        error:
+          "Cette fiche est celle d'un particulier : un SIREN ou un SIRET ne s'y pose pas. " +
+          "Changez d'abord le type du client si c'est une entreprise.",
+      };
+    }
+  }
+
   // ── OPCO : trois entrées possibles, UNE seule sortie (`opcoAEcrire`) ───────
   //  • chaîne  → saisie explicite de l'admin, écrite telle quelle
   //  • null    → option « — (inféré) » : on efface la saisie ET on recalcule
