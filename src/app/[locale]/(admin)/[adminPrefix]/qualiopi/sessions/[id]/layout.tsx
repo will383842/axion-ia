@@ -30,6 +30,7 @@ import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 import { MOTIF_REFUS, peutEngager } from "@/server/auth/habilitations";
 import { prisma } from "@/lib/prisma";
+import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import {
   chargerEtatVerrou,
   dossierFige,
@@ -95,7 +96,7 @@ async function gestesEncorePossibles(
       where: {
         type: "satisfaction_froid",
         reponduAt: null,
-        enrollment: { sessionId, statut: { notIn: ["abandon", "exclu"] } },
+        enrollment: { sessionId, ...inscriptionsActives() },
       },
     }),
     prisma.factureFormation.count({ where: { sessionId } }),
