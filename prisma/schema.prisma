@@ -14501,3 +14501,21 @@ enum CodeErreurVisio {
 
   @@map("code_erreur_visio")
 }
+
+/// Registre APPEND-ONLY des numéros de pièces émis (Qualiopi / CGI art. 242
+/// nonies A ann. II : séquence continue, sans réemploi). Alimenté par
+/// DÉCLENCHEUR sur chaque table porteuse d'un numéro alloué par `nextNumero`
+/// (migration `20260930120000_numeros_emis_registre`), jamais par le code :
+/// aucun des 18 sites d'appel n'y écrit. `nextNumero` le lit en plus de la
+/// table métier, si bien qu'une ligne supprimée ne fait plus reculer la série.
+/// UPDATE, DELETE et TRUNCATE y sont refusés en base.
+/// rgpd: technique — numéros de pièces et nom de table, aucune donnée personnelle
+model NumeroEmis {
+  numero      String   @id @db.VarChar(60)
+  /// Table métier qui portait le numéro à sa première émission (`TG_TABLE_NAME`).
+  tableSource String   @map("table_source") @db.VarChar(63)
+  /// Date d'entrée au registre ; pour le backfill, `created_at` de la ligne.
+  emisLe      DateTime @default(now()) @map("emis_le") @db.Timestamptz(6)
+
+  @@map("numeros_emis")
+}
