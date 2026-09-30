@@ -134,7 +134,9 @@ export function sectionHistoriqueDossier(input: {
           a.createdAt.getTime() >= e.createdAt.getTime() &&
           a.createdAt.getTime() <= finGrace &&
           a.action !== "qualiopi.session.dossier.rouvert" &&
-          a.action !== "qualiopi.session.dossier.reverrouille",
+          a.action !== "qualiopi.session.dossier.reverrouille" &&
+          // Une tentative refusée (mot de passe) n'a rien modifié.
+          a.action !== "qualiopi.session.dossier.reouverture_refusee",
       )
       .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
     if (pendant.length === 0) {

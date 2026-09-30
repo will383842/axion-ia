@@ -14,7 +14,7 @@
  * consigne rester vide ; sur `rouvert`, elle doit dépasser la garde.
  */
 
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
@@ -107,7 +107,7 @@ vi.mock("next/navigation", () => ({
 }));
 vi.mock("@sentry/nextjs", () => ({
   captureException: () => undefined,
-  captureMessage: () => undefined,
+  captureMessage: vi.fn(),
   withScope: () => undefined,
   addBreadcrumb: () => undefined,
 }));
@@ -161,6 +161,7 @@ vi.mock("@/server/qualiopi/sessions/verrou-dossier", async (importOriginal) => {
 
 import { ECRITURES_SESSION, ecrituresDe } from "../verrou-dossier-registre";
 import { chargerEtatVerrou } from "../verrou-dossier";
+import * as Sentry from "@sentry/nextjs";
 
 type Appel = () => Promise<unknown>;
 
@@ -732,6 +733,46 @@ describe("ADR 0060 — écritures OUVERTES et ENTRANTES : jamais bloquées par l
       "utf-8",
     );
     expect(source).not.toMatch(/verrou-dossier|assertDossierOuvert/);
+  });
+});
+
+describe("interrupteur de secours QUALIOPI_VERROU_DOSSIER=off (revue #1245)", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it.each(ecrituresDe("verrou").map((e) => [e.action, e] as const))(
+    "%s — dossier CLOS, interrupteur coupé : la garde laisse passer et SIGNALE l'écriture",
+    async (action) => {
+      vi.stubEnv("QUALIOPI_VERROU_DOSSIER", "off");
+      vi.mocked(Sentry.captureMessage).mockClear();
+      h.etat.courant = "clos";
+      const cas = APPELS[action];
+      if (cas === undefined) throw new Error(`pas d'appel pour ${action}`);
+      cas.prepare?.();
+      const sortie = await executer(cas.appel);
+      expect(
+        estRefusDossierClos(sortie),
+        `${action} refusé malgré l'interrupteur : ${sortie.slice(0, 300)}`,
+      ).toBe(false);
+      expect(vi.mocked(Sentry.captureMessage), action).toHaveBeenCalledWith(
+        expect.stringContaining("verrou coupé"),
+        expect.objectContaining({ level: "warning" }),
+      );
+    },
+    30_000,
+  );
+
+  it("saisie à la place du stagiaire sur un dossier « à recueillir » : permise quand le verrou est coupé", async () => {
+    vi.stubEnv("QUALIOPI_VERROU_DOSSIER", "off");
+    h.etat.courant = "a_recueillir";
+    const { saisirReponsesQuestionnaireAction } =
+      await import("@/server/actions/qualiopi/satisfaction");
+    const r = await saisirReponsesQuestionnaireAction({
+      questionnaireId: QUESTIONNAIRE,
+      reponses: { q1: "oui" },
+    });
+    expect(JSON.stringify(r)).not.toMatch(/ne se saisissent plus/);
   });
 });
 
