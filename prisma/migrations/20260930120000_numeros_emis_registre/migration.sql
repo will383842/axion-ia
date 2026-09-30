@@ -63,11 +63,12 @@
 -- (Le retrait détruit la mémoire des numéros émis : à ne jouer qu'en
 -- connaissance de cause.)
 
--- Les déclencheurs prennent un verrou SHARE ROW EXCLUSIVE sur 9 tables
--- vivantes : plutôt échouer vite (et laisser l'entrypoint retenter au prochain
--- démarrage) que faire la queue derrière une longue transaction en bloquant
--- toutes les écritures sur ces tables.
-SET lock_timeout = '5s';
+-- ⚠️ Pas de `lock_timeout` ici, volontairement (relecture architecte de #1238).
+-- Une migration qui échoue est inscrite `failed` par Prisma : chaque `migrate
+-- deploy` suivant s'arrête alors sur P3009 et n'applique PLUS AUCUNE migration,
+-- pendant que l'entrypoint avale l'erreur et que le déploiement reste vert.
+-- Attendre quelques millisecondes derrière une transaction vaut mieux que bloquer
+-- silencieusement toutes les migrations futures. Les 9 tables sont petites.
 
 -- CreateTable
 CREATE TABLE "numeros_emis" (
