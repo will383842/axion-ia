@@ -1,33 +1,23 @@
 /**
- * Qualiopi — Convention de formation tripartite (OF + Client + OPCO).
+ * ⛔ GABARIT ARCHIVÉ — `convention` version 2. NE JAMAIS MODIFIER.
  *
- * Extension de la convention bipartite avec subrogation de paiement OPCO.
- * Conforme aux articles L.6353-1 et D.6353-1 du Code du travail (L.6353-2, abrogé
- * depuis le 01/01/2019, était cité jusqu'à la v2 — archivée dans `archives/`).
+ * Copie conforme de `templates/convention.tsx` tel qu'il était sur `origin/main`
+ * (9941a9673) le 2026-09-30, avant la correction des citations juridiques.
+ * Seule différence : les mentions légales sont lues dans `./mentions-figees`,
+ * et non plus dans le module vivant `legal-mentions.ts`.
+ *
+ * Il ne sert qu'à RE-RENDRE l'exemplaire signé des pièces signées sous cette
+ * version (`exemplaire-signe.ts`, via `./index.ts`). Toute nouvelle pièce est
+ * produite par le gabarit courant. Son texte est verrouillé par
+ * `gabarit-empreinte.spec.ts` et ses octets par
+ * `__tests__/pieces-signees-restent-reproductibles.spec.tsx`.
+ */
+
+/**
+ * Qualiopi — Convention de formation professionnelle (personnes morales).
+ *
+ * Conforme L.6353-1 et L.6353-2 du Code du travail.
  * Rendu serveur exclusif — NE PAS "use client".
- *
- * ## 🔴 Sous-lot 8B — la pièce que lit l'OPCO était la MOINS complète des deux
- *
- * Constat de l'audit OPCO du 15/08 (`_AUDIT/OPCO-COMMERCIAL-2026-08-15/`, T6) :
- * le 02/08, la convention BIPARTITE a reçu les trois mentions exigées par
- * L.6353-1 — moyens pédagogiques et techniques, suivi de l'exécution et
- * appréciation des résultats, sanction de la formation — puis cinq sections de
- * fond (obligations, RGPD, propriété intellectuelle, responsabilité, droit
- * applicable). **La tripartite n'a reçu ni les unes ni les autres.** Son type ne
- * portait même pas les champs, et son corps s'arrêtait à « 4. Annulation ».
- *
- * Elle invoquait pourtant L.6353-1 en tête de page. Une convention qui cite le
- * texte sans en porter les mentions est incomplète au regard de ce qu'elle
- * invoque — et c'est la première chose que lit un instructeur.
- *
- * Ce qui rendait l'écart coûteux : c'est la pièce **transmise au financeur**.
- * L'OPCO ne paie que sur pièces ; celle-ci était la plus exposée et la plus
- * pauvre. Elle est désormais alignée sur la bipartite, section pour section.
- *
- * ⚠️ La numérotation des sections a changé (annexes 5 → 10, signatures 6 → 11).
- * Vérifié avant de renuméroter : **aucun renvoi par rang** n'existe, ni dans la
- * pièce, ni dans les specs, ni dans les kits financeurs. Renuméroter une liste
- * référencée par rang casserait ses renvois — ce n'est pas le cas ici.
  */
 
 import React from "react";
@@ -42,14 +32,15 @@ import {
   assainirEspacesPdf,
   type PreuvesParPartie,
 } from "@/server/qualiopi/documents/base-layout";
-import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
+import { ACOMPTE_DEFAUT_PERCENT } from "@/server/qualiopi/documents/acompte-defaut";
+import { LEGAL_MENTIONS } from "./mentions-figees";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 // ============================================================
 // Types
 // ============================================================
 
-export interface ConventionTripartiteData {
+export interface ConventionData {
   numero: string;
   estCopie?: boolean;
   /** Injecte par `generateDocument` quand l'identite de l'OF est incomplete. */
@@ -62,13 +53,6 @@ export interface ConventionTripartiteData {
     adresse: string;
     contact: string;
   };
-  // Partie OPCO
-  opco: {
-    nom: string;
-    numeroPriseEnCharge: string;
-    adresse?: string;
-    contact?: string;
-  };
   // Objet de la formation
   intitule: string;
   objectifs: string[];
@@ -80,36 +64,31 @@ export interface ConventionTripartiteData {
   lieu: string;
   effectif: number;
   /**
-   * Les trois mentions du contenu de la convention (D.6353-1) — sous-lot 8B.
-   *
-   * Optionnelles, avec les mêmes replis que la bipartite : ces replis décrivent
-   * le dispositif RÉEL de la plateforme (émargement par demi-journée,
-   * positionnement, évaluation des acquis, attestation). Les réinventer session
-   * par session les ferait diverger de ce que le système produit vraiment, et
-   * une convention qui décrit un dispositif absent est pire qu'une convention
-   * muette.
+   * Lot 1ter §6 — les stagiaires NOMMÉS, déjà formatés par
+   * `documents/stagiaires-nommes.ts`. Vide ⇒ `stagiairesADesigner` est rendu.
    */
-  moyensPedagogiques?: string;
-  modalitesEvaluation?: string;
-  sanction?: string;
+  stagiairesNommes?: readonly string[];
+  /** Phrase de substitution quand aucun stagiaire n'est inscrit. */
+  stagiairesADesigner?: string | null;
+  /** Mention d'écart entre l'effectif PRÉVU et les inscrits nommés. */
+  ecartEffectif?: string | null;
   // Conditions financières
   prixHt: number;
+  acomptePercent?: number;
   /**
-   * Montant TOTAL pris en charge par le financeur, en euros.
-   *
-   * 🔴 `null` = **non établi**, et il faut le dire. Ce champ recevait
-   * auparavant `priseEnChargeMontantCents / 100` — c'est-à-dire un TARIF lu
-   * comme un total : un OPCO couvrant 40 €/h sur 14 h et 8 participants faisait
-   * imprimer « 40,00 € » au lieu de 4 480 €, sur une pièce signée par trois
-   * parties, avec un reste à charge faux du même écart.
-   *
-   * ⚠️ Ne JAMAIS remplacer ce `null` par 0 : un zéro affirme que le financeur
-   * ne prend rien en charge. L'absence de donnée n'est pas une donnée nulle.
+   * Moyens pédagogiques et techniques mobilisés — MENTION EXIGÉE par l'article
+   * L.6353-1 du Code du travail, absente jusqu'ici de la convention. Repli sur
+   * une formule décrivant le dispositif réel de la plateforme.
    */
-  montantPrisEnCharge: number | null;
-  /** Reste à charge, en euros. `null` quand la prise en charge n'est pas établie. */
-  resteAChargeClient: number | null;
-  // Date convention
+  moyensPedagogiques?: string;
+  /**
+   * Modalités de suivi de l'exécution et d'appréciation des résultats — même
+   * exigence, même article. Repli sur le dispositif réel.
+   */
+  modalitesEvaluation?: string;
+  /** Sanction de la formation (L.6353-1). Repli : attestation de fin de formation. */
+  sanction?: string;
+  // Dates convention
   dateConvention: string;
   /**
    * Preuves de signature RÉELLEMENT apposées, par partie.
@@ -129,12 +108,8 @@ export interface ConventionTripartiteData {
 // ============================================================
 
 const local = StyleSheet.create({
-  subrogationNote: {
-    fontSize: 9,
-    fontStyle: "italic",
-    marginTop: 6,
-    marginBottom: 6,
-    color: pdfStyles.legalNote.color,
+  annexeList: {
+    marginTop: 4,
   },
   annexeItem: {
     fontSize: 9,
@@ -186,17 +161,39 @@ function formatEur(montant: number): string {
 // Composant
 // ============================================================
 
-export function ConventionTripartitePdf({
+export function ConventionPdf({
   data,
   identite,
 }: {
-  data: ConventionTripartiteData;
+  data: ConventionData;
   identite: OrganismeIdentite;
 }): React.ReactElement {
+  // 🔴 Réconciliation des sources de l'acompte, 2026-07-27.
+  //
+  // L'absence de plafond ici est VOULUE, et c'est la différence de fond avec
+  // `contrat-formation.tsx` : le plafond de 30 % de l'article L.6353-6 protège
+  // une PERSONNE PHYSIQUE qui finance sa propre formation. Une convention
+  // (L.6353-1) lie l'organisme à une personne morale ou à un financeur — aucun
+  // plafond légal ne s'y applique, l'acompte y est purement contractuel.
+  //
+  // Ne PAS « harmoniser » en plafonnant ici : ce serait s'interdire une clause
+  // parfaitement licite entre professionnels, et brouiller la raison d'être du
+  // plafond là où il compte vraiment.
+  //
+  // 🔴 2026-09-05 — le défaut était 30 %, et c'était un usage commercial, pas
+  // une règle de droit. Toute convention générée sans avoir remarqué le champ
+  // (qui se trouvait SOUS le bouton) réclamait donc au client 30 % à la
+  // signature, clause qu'aucune des deux parties n'avait négociée — une fausse
+  // mention dans la pièce qu'il signe, et rien à l'écran ne la signalait.
+  // Le défaut ne réclame plus rien : cf. `acompte-defaut.ts` pour l'arbitrage.
+  const acomptePercent = data.acomptePercent ?? ACOMPTE_DEFAUT_PERCENT;
+  const acompte = (data.prixHt * acomptePercent) / 100;
+  const solde = data.prixHt - acompte;
+
   return (
     <Document>
       <QualiopiPage
-        docTitle="Convention de formation tripartite"
+        docTitle="Convention de formation professionnelle"
         docNumber={data.numero}
         identite={identite}
         {...(data.estCopie ? { estCopie: true as const } : {})}
@@ -229,28 +226,15 @@ export function ConventionTripartitePdf({
           ) : null}
           <FieldRow label="Siège social" value={identite.adresseSiege} required />
           <FieldRow label="Email" value={identite.email || "—"} />
+          <FieldRow label="Téléphone" value={identite.telephone || "—"} />
 
           <Text style={[pdfStyles.paragraph, { fontWeight: "bold", marginTop: 8 }]}>
-            Client (employeur / commanditaire)
+            Client (commanditaire)
           </Text>
           <FieldRow label="Raison sociale" value={data.client.raisonSociale} />
           <FieldRow label="SIRET" value={data.client.siret} />
           <FieldRow label="Adresse" value={data.client.adresse} />
           <FieldRow label="Contact" value={data.client.contact} />
-
-          <Text style={[pdfStyles.paragraph, { fontWeight: "bold", marginTop: 8 }]}>
-            OPCO (organisme financeur)
-          </Text>
-          <FieldRow label="Nom de l'OPCO" value={data.opco.nom} />
-          <FieldRow label="N° de prise en charge" value={data.opco.numeroPriseEnCharge} />
-          {data.opco.adresse ? <FieldRow label="Adresse" value={data.opco.adresse} /> : null}
-          {data.opco.contact ? <FieldRow label="Contact" value={data.opco.contact} /> : null}
-
-          <Text style={local.subrogationNote}>
-            En application de la subrogation de paiement, l'OPCO versera directement sa
-            participation à l'organisme de formation. Le solde restant à charge reste dû par le
-            client.
-          </Text>
         </DocSection>
 
         {/* 2. Objet */}
@@ -279,14 +263,45 @@ export function ConventionTripartitePdf({
             label="Effectif prévu"
             value={`${data.effectif} stagiaire${data.effectif > 1 ? "s" : ""}`}
           />
-
           {/*
-            🔴 Sous-lot 8B — les TROIS mentions du contenu (D.6353-1). Elles
-            manquaient à cette pièce alors qu'elle invoque le texte en tête, et
-            alors que la bipartite les porte depuis le 02/08. Mêmes libellés,
-            mêmes replis : deux formulations divergentes de la même obligation
-            légale sur deux pièces du même dossier se lisent comme une
-            incohérence, et c'est le financeur qui les compare.
+            🔴 Lot 1ter §6 — LA CONVENTION NOMME LES STAGIAIRES.
+
+            Vérifié sur pièce réelle : `AXI-DOC-2026-032` portait « Effectif
+            prévu : 1 stagiaire » et ne nommait PERSONNE, alors que Simone Blanc
+            y était inscrite. Ce n'est pas un défaut d'affichage : la même
+            personne doit se retrouver sur l'émargement, l'évaluation et
+            l'attestation. Sans nom ici, la chaîne de preuve démarre dans le
+            flou — et c'est précisément ce rapprochement qu'un auditeur vient
+            faire.
+
+            Et si personne n'est inscrit, la pièce le DIT. Une convention muette
+            sur ce point se lit comme une convention sans stagiaire, ce qui
+            n'existe pas : le silence y est une affirmation fausse.
+          */}
+          <FieldRow
+            label="Stagiaires"
+            value={
+              data.stagiairesNommes && data.stagiairesNommes.length > 0
+                ? data.stagiairesNommes.join(" · ")
+                : (data.stagiairesADesigner ??
+                  "Stagiaires à désigner par le client — liste nominative annexée avant le démarrage de l'action.")
+            }
+          />
+          {data.ecartEffectif != null && (
+            <FieldRow label="Écart d'effectif" value={data.ecartEffectif} />
+          )}
+          {/*
+            🔴 Trois mentions EXIGÉES par l'article L.6353-1 et absentes de la
+            convention jusqu'au 2026-08-02 : moyens pédagogiques et techniques,
+            modalités de suivi de l'exécution et d'appréciation des résultats,
+            sanction de la formation. Leur absence rend la convention
+            incomplète au regard du texte qu'elle invoque en tête de page — et
+            c'est exactement ce qu'un instructeur DREETS lit en premier.
+
+            Les replis décrivent le dispositif RÉEL de la plateforme
+            (émargement par demi-journée, positionnement, évaluation des acquis,
+            attestation) : les inventer par session les ferait diverger de ce que
+            le système produit effectivement.
           */}
           <FieldRow
             label="Moyens pédagogiques et techniques"
@@ -304,10 +319,7 @@ export function ConventionTripartitePdf({
           />
           <FieldRow
             label="Sanction de la formation"
-            value={
-              data.sanction ||
-              "Attestation de fin de formation (dernier alinéa de l'article L.6313-7 du Code du travail)."
-            }
+            value={data.sanction || "Attestation de fin de formation (article L.6353-1)."}
           />
         </DocSection>
 
@@ -317,33 +329,30 @@ export function ConventionTripartitePdf({
             <Text style={local.amountLabel}>Prix total HT</Text>
             <Text style={local.amountValue}>{formatEur(data.prixHt)}</Text>
           </View>
-          {/* 🔴 Un montant NON ÉTABLI se dit, il ne s'imprime pas à zéro.
-              « 0,00 € » sur une convention affirme que le financeur ne prend
-              rien en charge — une affirmation, et fausse. « À déterminer »
-              décrit exactement l'état du dossier : le barème n'a pas encore été
-              relevé, ou son unité n'a pas été saisie. */}
-          <View style={local.amountRow}>
-            <Text style={local.amountLabel}>Prise en charge OPCO ({data.opco.nom})</Text>
-            <Text style={local.amountValue}>
-              {data.montantPrisEnCharge !== null
-                ? formatEur(data.montantPrisEnCharge)
-                : "À déterminer"}
+          {/*
+            Acompte à 0 : on ne rend PAS « Acompte (0 %) : 0,00 € » — une clause
+            qui annonce un versement nul se lit comme une erreur de génération,
+            et prête à discussion au moment de payer. On écrit ce qui est
+            convenu : la totalité à réception de facture. C'est le cas normal
+            d'une convention régularisée APRÈS la tenue de l'action, où un
+            « acompte à la signature » n'a plus d'objet.
+          */}
+          {acompte > 0 ? (
+            <>
+              <View style={local.amountRow}>
+                <Text style={local.amountLabel}>Acompte à la signature ({acomptePercent} %)</Text>
+                <Text style={local.amountValue}>{formatEur(acompte)}</Text>
+              </View>
+              <View style={local.amountRow}>
+                <Text style={local.amountLabel}>Solde à la fin de la formation</Text>
+                <Text style={local.amountValue}>{formatEur(solde)}</Text>
+              </View>
+            </>
+          ) : (
+            <Text style={pdfStyles.paragraph}>
+              Payable en totalité à réception de facture — aucun acompte à la signature.
             </Text>
-          </View>
-          <View style={local.amountRow}>
-            <Text style={local.amountLabel}>Reste à charge client</Text>
-            <Text style={local.amountValue}>
-              {data.resteAChargeClient !== null
-                ? formatEur(data.resteAChargeClient)
-                : "À déterminer"}
-            </Text>
-          </View>
-          {data.montantPrisEnCharge === null ? (
-            <Text style={local.subrogationNote}>
-              Le montant de prise en charge sera arrêté par le financeur dans son accord écrit ; le
-              solde correspondant restera dû par le client.
-            </Text>
-          ) : null}
+          )}
           {/*
             🔴 F25 — la mention TVA vient du régime CONFIGURÉ, jamais d'une
             constante. L'exonération 261-4-4° était imprimée en dur alors que
@@ -353,7 +362,20 @@ export function ConventionTripartitePdf({
           */}
           {identite.mentionTvaRegime ? (
             <Text style={pdfStyles.legalNote}>{identite.mentionTvaRegime}</Text>
-          ) : null}
+          ) : (
+            /* En régime assujetti, aucune mention n'était portée : le client
+               découvrait la TVA sur la facture. On dit que les prix sont HT. */
+            <Text style={pdfStyles.legalNote}>
+              Prix exprimés hors taxes. La taxe sur la valeur ajoutée au taux en vigueur au jour de
+              la facturation s&apos;y ajoute.
+            </Text>
+          )}
+          <Text style={pdfStyles.legalNote}>
+            Règlement à trente (30) jours à compter de la date d&apos;émission de la facture. Tout
+            retard de paiement entraîne de plein droit des pénalités au taux directeur de la Banque
+            centrale européenne majoré de 10 points, ainsi qu&apos;une indemnité forfaitaire de
+            recouvrement de 40 € (articles L.441-10 et D.441-5 du Code de commerce).
+          </Text>
         </DocSection>
 
         {/* 4. Conditions d'annulation */}
@@ -370,24 +392,32 @@ export function ConventionTripartitePdf({
           <Text style={local.listItem}>
             • Annulation à moins de 8 jours ouvrés avant le début : 100 % du prix HT
           </Text>
+          {/*
+            🔴 F51 — le report gratuit était promis par les CGV et absent de la
+            convention, alors que les deux sont signées ensemble. Les CGV ont été
+            alignées sur ce barème (jours ouvrés) ; la promesse de report, elle,
+            devait remonter ici pour que les deux textes disent la même chose.
+          */}
+          <Text style={local.listItem}>
+            • Dans tous les cas, la prestation est reportable une fois sans frais à une date
+            convenue entre les parties, le report se substituant alors à l&apos;annulation.
+          </Text>
         </DocSection>
 
         {/*
-          🔴 Sous-lot 8B — les cinq sections de fond, absentes de cette pièce.
+          Sections 5 à 9 — 2026-08-02.
 
-          La bipartite les a reçues le 02/08 (obligations, RGPD, propriété
-          intellectuelle, responsabilité, droit applicable) après le constat
-          qu'elle ne couvrait que l'objet, le prix et l'annulation : en cas de
-          litige — support recopié, résultat déçu, incident de traitement —
-          l'organisme n'opposait aucun texte, et le RGPD restait muet sur la
-          pièce même qui fait traiter des données de stagiaires.
+          La convention couvrait l'objet, le prix et l'annulation, et rien
+          d'autre : aucune clause de propriété intellectuelle sur les supports,
+          aucune confidentialité, aucune limitation de responsabilité, aucun
+          droit applicable, et pas un mot sur les données personnelles alors
+          qu'elle en fait traiter à chaque session (identité des stagiaires,
+          émargements, évaluations).
 
-          Le raisonnement vaut à l'identique ici, et davantage : la présence
-          d'un troisième signataire n'ajoute aucune clause, elle ajoute
-          seulement un lecteur de plus. Les textes sont donc REPRIS À
-          L'IDENTIQUE de la bipartite — deux rédactions différentes du même
-          engagement, sur deux pièces du même dossier, s'interpréteraient l'une
-          contre l'autre.
+          Autrement dit, en cas de litige — support recopié et rediffusé,
+          résultat commercial déçu, incident de traitement — l'organisme
+          n'opposait aucun texte, et le RGPD était muet sur une pièce qui est
+          pourtant le support du traitement.
         */}
 
         {/* 5. Obligations des parties */}
@@ -406,18 +436,38 @@ export function ConventionTripartitePdf({
             d&apos;hygiène et de sécurité qui lui incombent.
           </Text>
           {/*
-            La seule clause PROPRE à la tripartite. Elle ne double pas la note de
-            subrogation du § 1 : celle-ci dit qui verse, celle-là dit ce qui se
-            passe quand le versement n'arrive pas. C'est précisément le trou
-            relevé à l'audit (Q3) — techniquement le système sait facturer N
-            payeurs, mais aucun texte ne permettait de réémettre au client.
+            🔴 16/08 — LA CLAUSE QUI MANQUAIT LÀ OÙ ELLE SERT LE PLUS.
+
+            La convention TRIPARTITE a reçu ce jour-là sa clause de défaillance
+            du financeur. Mais la tripartite n'existe QUE s'il y a subrogation.
+            Sans subrogation — le client règle l'organisme et se fait rembourser
+            par son OPCO — la pièce contractuelle est CELLE-CI, et elle ne
+            portait pas un mot sur le financement : ni « OPCO », ni
+            « financeur », ni « subrogation ». Vérifié : zéro occurrence, ici
+            comme aux CGV.
+
+            Or c'est exactement la configuration où le risque se réalise. Si
+            l'OPCO refuse, réduit ou revient sur son accord, la somme reste due
+            à l'organisme — mais aucun texte ne le disait au client, qui pouvait
+            de bonne foi considérer sa dette éteinte par le refus d'un tiers.
+
+            Le texte suit celui de la tripartite : deux rédactions différentes
+            du même engagement, sur deux pièces du même dossier, s'interprètent
+            l'une contre l'autre (art. 1190 C. civ.).
+
+            ⚠️ Rédigée pour être opposable et lisible, elle n'a pas été relue
+            par un avocat — pas plus que le reste de cette pièce. Elle vaut
+            mieux que le silence, qui était l'état précédent.
           */}
           <Text style={pdfStyles.paragraph}>
-            La prise en charge par l&apos;OPCO est subordonnée à son accord écrit préalable et au
-            respect de ses règles de financement. En cas de refus, de réduction, de caducité de
-            l&apos;accord ou de non-paiement par l&apos;OPCO pour quelque cause que ce soit, les
-            sommes correspondantes redeviennent exigibles auprès du client, qui demeure le débiteur
-            du prix convenu à l&apos;article 3.
+            Lorsque le client sollicite une prise en charge auprès d&apos;un financeur (opérateur de
+            compétences, France Travail ou tout autre organisme), cette démarche relève de la
+            relation entre le client et son financeur. Elle ne modifie ni le prix convenu, ni son
+            exigibilité : en l&apos;absence de subrogation de paiement expressément convenue, le
+            client règle l&apos;intégralité du prix à l&apos;organisme et fait son affaire du
+            remboursement. En cas de refus, de réduction, de caducité de l&apos;accord ou de
+            non-paiement par le financeur, pour quelque cause que ce soit, les sommes
+            correspondantes demeurent dues par le client.
           </Text>
         </DocSection>
 
@@ -429,17 +479,6 @@ export function ConventionTripartitePdf({
             d&apos;évaluation des participants aux seules fins d&apos;exécuter la présente
             convention et de satisfaire à ses obligations légales, notamment la conservation des
             pièces justificatives pendant cinq (5) ans.
-          </Text>
-          {/*
-            Spécifique à la tripartite : la transmission au financeur est un
-            traitement de plus, et il doit être annoncé sur la pièce que le
-            financeur lui-même reçoit. L'omettre reviendrait à faire circuler
-            des données d'émargement et d'évaluation sans base annoncée.
-          */}
-          <Text style={pdfStyles.paragraph}>
-            Les pièces justificatives de réalisation (feuille d&apos;émargement, attestation,
-            facture) sont transmises à l&apos;OPCO aux seules fins d&apos;instruction et de
-            règlement du dossier de prise en charge, en exécution de la présente convention.
           </Text>
           <Text style={pdfStyles.paragraph}>
             Les personnes concernées disposent des droits d&apos;accès, de rectification,
@@ -502,20 +541,20 @@ export function ConventionTripartitePdf({
 
         {/* 10. Annexes */}
         <DocSection title="10. Documents annexés">
-          <Text style={local.annexeItem}>– Programme détaillé de la formation</Text>
-          <Text style={local.annexeItem}>– Règlement intérieur des stagiaires</Text>
-          <Text style={local.annexeItem}>– Conditions générales de vente (CGV)</Text>
-          <Text style={local.annexeItem}>
-            – Accord de prise en charge OPCO n° {data.opco.numeroPriseEnCharge}
-          </Text>
+          <View style={local.annexeList}>
+            <Text style={local.annexeItem}>– Programme détaillé de la formation</Text>
+            <Text style={local.annexeItem}>– Règlement intérieur des stagiaires</Text>
+            <Text style={local.annexeItem}>– Conditions générales de vente (CGV)</Text>
+          </View>
         </DocSection>
 
-        {/* 11. Signatures — 3 parties */}
-        {/* « Fait à » = ville du siège — même raisonnement que la convention : un
-            blanc sur une pièce signée électroniquement reste vide pour toujours. */}
+        {/* 11. Signatures */}
+        {/* « Fait à » = ville du siège : la pièce est établie par l'OF, pas sur le
+            lieu de formation. Un blanc ici sortait « Fait à ______ » sur une pièce
+            signée électroniquement, que personne ne complète jamais à la main. */}
         <DocSection title="11. Signatures">
           <SignatureZone
-            intro="La présente convention est établie en trois exemplaires originaux, un pour chaque partie."
+            intro="La présente convention est établie en deux exemplaires originaux, un pour chaque partie."
             faitLe={`${identite.rcsVille || "_________________________"}, le ${data.dateConvention}`}
             parties={[
               {
@@ -527,11 +566,6 @@ export function ConventionTripartitePdf({
                 titre: "Pour le client",
                 signature: data.signatures?.client ?? null,
                 nom: data.client.raisonSociale,
-              },
-              {
-                titre: "Pour l'OPCO",
-                signature: data.signatures?.financeur ?? null,
-                nom: data.opco.nom,
               },
             ]}
           />

@@ -10,9 +10,15 @@
  *                                           durée RÉELLEMENT suivie
  *
  * 🔴 Audit initial 2026-09-14 (M-documents-pdf-11). La décision #7 prévoyait
- * « < 60 % → aucun document ». L'article L.6353-1 al. 2 impose pourtant de
- * remettre au stagiaire, à l'issue de la formation, une attestation portant
- * objectifs, nature, durée et résultats de l'évaluation des acquis. Une faible
+ * « < 60 % → aucun document ». L'organisme remet pourtant au stagiaire, à
+ * l'issue de la formation, une attestation portant objectifs, nature, durée et
+ * résultats de l'évaluation des acquis.
+ *
+ * ⚠️ 2026-09-30 — ces commentaires citaient « L.6353-1 al. 2 », alinéa qui
+ * n'existe plus depuis le 01/01/2019 (loi 2018-771). Le fondement de
+ * l'attestation d'une formation non certifiante est le dernier alinéa de
+ * L.6313-7 ; la remettre à TOUT stagiaire est une décision de l'organisme
+ * (Will, D1/D2 du 2026-09-14), pas la lettre d'un article. Une faible
  * assiduité change ce que la pièce DIT, pas le fait qu'elle soit DUE. Le seuil
  * de 60 % (`classifierPresence`) reste une catégorie d'affichage de la présence ;
  * il ne décide plus de l'existence de la pièce.
@@ -181,7 +187,7 @@ export function preuvesManquantesAttestation(p: PreuvesAttestation): string[] {
     );
   }
   // 🔴 Décision Will D1 (2026-09-14) : l'absence d'évaluation finale n'est plus
-  // un manque soumis à motif. La pièce que L.6353-1 al. 2 doit au stagiaire
+  // un manque soumis à motif. La pièce remise au stagiaire (L.6313-7 dern. al.)
   // sort et imprime « Évaluation des acquis non réalisée » ; l'absence est
   // journalisée par `genererAttestationPourEnrollment`, pas assumée par écrit.
   return manquantes;
@@ -543,8 +549,8 @@ export async function genererAttestationPourEnrollment(
   //
   // Sous 60 %, `classifierPresence` rend « aucune », et ce service posait
   // `attestationGenereeAt` en sortant SANS document. Le stagiaire ne recevait
-  // rien, alors que L.6353-1 al. 2 lui doit, à l'issue de la formation, une
-  // attestation mentionnant objectifs, nature, durée et résultats de
+  // rien, alors que l'organisme lui remet, à l'issue de la formation, une
+  // attestation (L.6313-7 dern. al.) mentionnant objectifs, nature, durée et résultats de
   // l'évaluation. On émet donc la pièce PARTIELLE, qui imprime la durée
   // réellement suivie : c'est ce qu'elle dit qui change avec l'assiduité, pas
   // le fait qu'elle soit due. « aucune » ne sort plus que de la base stub ou

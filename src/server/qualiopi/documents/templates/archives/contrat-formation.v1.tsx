@@ -1,8 +1,23 @@
 /**
+ * ⛔ GABARIT ARCHIVÉ — `contrat_formation` version 1. NE JAMAIS MODIFIER.
+ *
+ * Copie conforme de `templates/contrat-formation.tsx` tel qu'il était sur `origin/main`
+ * (9941a9673) le 2026-09-30, avant la correction des citations juridiques.
+ * Seule différence : les mentions légales sont lues dans `./mentions-figees`,
+ * et non plus dans le module vivant `legal-mentions.ts`.
+ *
+ * Il ne sert qu'à RE-RENDRE l'exemplaire signé des pièces signées sous cette
+ * version (`exemplaire-signe.ts`, via `./index.ts`). Toute nouvelle pièce est
+ * produite par le gabarit courant. Son texte est verrouillé par
+ * `gabarit-empreinte.spec.ts` et ses octets par
+ * `__tests__/pieces-signees-restent-reproductibles.spec.tsx`.
+ */
+
+/**
  * Qualiopi — Contrat de formation professionnelle (PARTICULIERS / B2C).
  *
  * Conforme aux articles L.6353-3 à L.6353-7 du Code du travail.
- * Distinct de la convention (personnes morales, L.6353-1) : ce contrat est
+ * Distinct de la convention (personnes morales, L.6353-1/2) : ce contrat est
  * conclu directement avec une personne physique qui finance elle-même sa
  * formation. Mentions obligatoires (L.6353-4), délai de rétractation de 10 jours
  * (L.6353-5), interdiction de paiement avant l'expiration du délai + acompte ≤ 30 %
@@ -23,7 +38,7 @@ import {
   assainirEspacesPdf,
   type PreuvesParPartie,
 } from "@/server/qualiopi/documents/base-layout";
-import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
+import { LEGAL_MENTIONS } from "./mentions-figees";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { PLAFOND_ACOMPTE_PARTICULIER_PCT } from "@/server/qualiopi/financements/acompte";
 
@@ -221,7 +236,7 @@ export function ContratFormationPdf({
   const niveauPrealable = data.niveauPrealable ?? "Aucun prérequis particulier.";
   const sanction =
     data.sanction ??
-    "Attestation de fin de formation remise à l'issue de l'action (dernier alinéa de l'article L.6313-7 du Code du travail).";
+    "Attestation de fin de formation remise à l'issue de l'action (article L.6353-1).";
 
   return (
     <Document>
@@ -365,7 +380,7 @@ export function ContratFormationPdf({
             informe l'organisme de formation par lettre recommandée avec accusé de réception.
           </Text>
           <Text style={pdfStyles.paragraph}>
-            Dans ce cas, aucune somme ne peut être retenue ni exigée du stagiaire (article L.6353-6
+            Dans ce cas, aucune somme ne peut être retenue ni exigée du stagiaire (article L.6353-5
             du Code du travail).
           </Text>
         </DocSection>

@@ -310,12 +310,12 @@ describe("genererAttestationPourEnrollment", () => {
     expect(passe.rectifie?.motif).toContain("mise à jour de l'évaluation des acquis");
   });
 
-  // ── Présence sous 60 % : la pièce reste DUE (L.6353-1 al. 2) ──────────────
+  // ── Présence sous 60 % : la pièce reste REMISE (L.6313-7 dern. al.) ──────
   //
   // 🔴 Audit initial 2026-09-14 (M-documents-pdf-11). Sous 60 % de présence, le
   // service ne produisait RIEN : `attestationGenereeAt` posé, `documentId` nul.
-  // Or l'article L.6353-1 al. 2 impose de remettre au stagiaire, à l'issue de la
-  // formation, une attestation portant objectifs, nature, durée et résultats de
+  // Or l'organisme remet au stagiaire, à l'issue de la formation, une
+  // attestation (L.6313-7, dern. al.) portant objectifs, nature, durée et résultats de
   // l'évaluation. Une assiduité faible change ce que la pièce DIT (la durée
   // réellement suivie), pas le fait qu'elle soit due.
 
@@ -845,7 +845,7 @@ describe("genererAttestationPourEnrollment", () => {
   // ── Exclu / abandon : la pièce des heures RÉELLEMENT suivies ──────────────
   //
   // 🔴 Décision Will D2 (2026-09-14, audit initial). L'invariant S2 refusait
-  // toute pièce à un stagiaire exclu ou en abandon. L.6353-1 al. 2 la rend due
+  // toute pièce à un stagiaire exclu ou en abandon. L'organisme la remet
   // « à l'issue de la formation » : il reçoit désormais une attestation
   // PARTIELLE, qui porte ses heures et son taux réels et n'affirme aucune
   // validation — même si son taux dépasse le seuil de présence complète.
@@ -985,7 +985,7 @@ describe("genererAttestationPourEnrollment", () => {
     it("D1 : sans évaluation finale, l'attestation SORT sans motif — et le registre le dit", async () => {
       // 🔴 Décision Will D1 (2026-09-14, audit initial, X-documents-pdf-04).
       // L'absence d'évaluation finale exigeait un motif écrit : la pièce que
-      // L.6353-1 al. 2 doit au stagiaire « à l'issue de la formation » dépendait
+      // l'organisme remet au stagiaire « à l'issue de la formation » dépendait
       // donc d'un geste de l'organisme. Elle sort, porte « Évaluation des acquis
       // non réalisée », et l'absence est journalisée.
       mockPrisma.evaluationAcquis.count.mockResolvedValue(0);

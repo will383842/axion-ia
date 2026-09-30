@@ -96,7 +96,7 @@ export interface FormationData {
   modalite: string;
   formateur: string;
   /**
-   * Nature de l'action (L.6353-1 al. 2). Même clé, même libellé et même défaut
+   * Nature de l'action (mention de l'attestation). Même clé, même libellé et même défaut
    * (« Action de formation ») que le certificat de réalisation du dossier.
    */
   natureAction?: keyof typeof NATURE_ACTION_LABELS;
@@ -175,7 +175,7 @@ export function AttestationPdf({ data }: { data: AttestationData }): React.React
             cette pièce et la partielle ne dépend que de la PRÉSENCE. Une stagiaire
             assidue mais « Non validée » recevait une attestation qui se contredisait
             deux blocs plus bas. La phrase certifie ce que la pièce prouve — le suivi —
-            et renvoie aux résultats, qu'elle imprime tels quels (L.6353-1 al. 2). */}
+            et renvoie aux résultats, qu'elle imprime tels quels. */}
         <View style={pdfStyles.section}>
           <Text style={styles.certifPhrase}>
             {`${sujetAttestation(signataire)} atteste que ${prenomNom} a suivi la formation mentionnée ci-dessous. Les résultats de l'évaluation des acquis figurent ci-après.`}
@@ -197,8 +197,8 @@ export function AttestationPdf({ data }: { data: AttestationData }): React.React
         {/* Formation */}
         <DocSection title="Formation suivie">
           <FieldRow label="Intitulé" value={data.formation.intitule} />
-          {/* 🔴 Audit initial 2026-09-14 (X-documents-pdf-05) : L.6353-1 al. 2 fait
-              porter la nature de l'action, et le règlement publié l'annonce. */}
+          {/* 🔴 Audit initial 2026-09-14 (X-documents-pdf-05) : l'attestation porte
+              la nature de l'action, et le règlement publié l'annonce. */}
           <FieldRow
             label="Nature de l'action"
             value={NATURE_ACTION_LABELS[data.formation.natureAction ?? "action_formation"]}

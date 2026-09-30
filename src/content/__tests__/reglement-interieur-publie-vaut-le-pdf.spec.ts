@@ -134,8 +134,8 @@ describe("le règlement intérieur publié vaut celui qu'on remet", () => {
     // Décision Will (2026-09-14, audit initial, X-documents-pdf-04). L'article 7
     // (page publique + PDF) et le livret faisaient dépendre l'attestation de la
     // « participation active aux évaluations » et d'une « absence partielle
-    // justifiée ». L.6353-1 al. 2 la rend due à tout stagiaire, à l'issue de la
-    // formation. Contrôle NÉGATIF : l'ancienne condition ne doit revenir nulle part.
+    // justifiée ». L'organisme la remet à tout stagiaire, à l'issue de la
+    // formation (L.6313-7, dern. al. ; décisions Will D1/D2 du 2026-09-14). Contrôle NÉGATIF : l'ancienne condition ne doit revenir nulle part.
     const anciennes = [
       /conditionne la délivrance de l'attestation/i,
       /obligatoire pour obtenir votre attestation/i,

@@ -1,6 +1,6 @@
 /**
  * Qualiopi — Attestation partielle de formation (assiduité sous le seuil de
- * présence complète, y compris sous 60 % : la pièce reste due, L.6353-1 al. 2).
+ * présence complète, y compris sous 60 % : la pièce est remise, L.6313-7 dern. al.).
  *
  * Identique à l'attestation complète MAIS :
  *  - Titre : "Attestation partielle de formation"
@@ -104,7 +104,7 @@ export interface FormationDataP {
   modalite: string;
   formateur: string;
   /**
-   * Nature de l'action (L.6353-1 al. 2). Même clé, même libellé et même défaut
+   * Nature de l'action (mention de l'attestation). Même clé, même libellé et même défaut
    * (« Action de formation ») que le certificat de réalisation du dossier.
    */
   natureAction?: keyof typeof NATURE_ACTION_LABELS;
@@ -183,8 +183,8 @@ export function AttestationPartiellePdf({
             🔴 Audit initial 2026-09-14 (M-documents-pdf-11 / X-documents-pdf-07).
             Elle annonçait « assiduité comprise entre 60 % et 79 % » : fausse dès
             que le seuil de présence complète était réglé autrement que 80 %, et
-            fausse tout court depuis que la pièce est émise sous 60 % (elle est due
-            au stagiaire, L.6353-1 al. 2). Elle ajoutait « compétences déclarées
+            fausse tout court depuis que la pièce est émise sous 60 % (elle est remise
+            au stagiaire, L.6313-7 dern. al.). Elle ajoutait « compétences déclarées
             partiellement validées » : la partialité ne dit que la PRÉSENCE, les
             résultats de l'évaluation sont imprimés plus bas, tels quels. */}
         {/* 🔴 2e relecture A09 : à 0 minute suivie, la pièce ne dit JAMAIS « a
@@ -223,8 +223,8 @@ export function AttestationPartiellePdf({
         {/* Formation */}
         <DocSection title="Formation concernée">
           <FieldRow label="Intitulé" value={data.formation.intitule} />
-          {/* 🔴 Audit initial 2026-09-14 (X-documents-pdf-05) : L.6353-1 al. 2 fait
-              porter la nature de l'action, et le règlement publié l'annonce. */}
+          {/* 🔴 Audit initial 2026-09-14 (X-documents-pdf-05) : l'attestation porte
+              la nature de l'action, et le règlement publié l'annonce. */}
           <FieldRow
             label="Nature de l'action"
             value={NATURE_ACTION_LABELS[data.formation.natureAction ?? "action_formation"]}

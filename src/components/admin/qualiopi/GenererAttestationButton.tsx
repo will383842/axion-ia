@@ -51,7 +51,7 @@ const RESULTAT_LABELS: Record<AttestationResultat, string> = {
   complete: "Attestation complète générée",
   partielle: "Attestation partielle générée",
   // Depuis l'audit initial 2026-09-14, présence faible, exclus et abandons
-  // reçoivent tous une pièce (L.6353-1 al. 2) : « aucune » ne sort plus que d'une
+  // reçoivent tous une pièce (L.6313-7, dern. al.) : « aucune » ne sort plus que d'une
   // génération concurrente, ou d'un ancien résultat « aucune » resté en base.
   aucune:
     "Aucune pièce produite (génération déjà en cours ou ancien résultat « aucune ») : actualisez, puis régénérez si besoin",

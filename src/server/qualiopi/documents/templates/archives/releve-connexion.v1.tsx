@@ -1,4 +1,19 @@
 /**
+ * ⛔ GABARIT ARCHIVÉ — `releve_connexion` version 1. NE JAMAIS MODIFIER.
+ *
+ * Copie conforme de `templates/releve-connexion.tsx` tel qu'il était sur `origin/main`
+ * (9941a9673) le 2026-09-30, avant la correction des citations juridiques.
+ * Seule différence : les mentions légales sont lues dans `./mentions-figees`,
+ * et non plus dans le module vivant `legal-mentions.ts`.
+ *
+ * Il ne sert qu'à RE-RENDRE l'exemplaire signé des pièces signées sous cette
+ * version (`exemplaire-signe.ts`, via `./index.ts`). Toute nouvelle pièce est
+ * produite par le gabarit courant. Son texte est verrouillé par
+ * `gabarit-empreinte.spec.ts` et ses octets par
+ * `__tests__/pieces-signees-restent-reproductibles.spec.tsx`.
+ */
+
+/**
  * Qualiopi — Template PDF : Relevé de connexion (distanciel).
  *
  * Remplace la feuille d'émargement pour les formations à distance.
@@ -23,7 +38,7 @@ import {
   type PreuvesParPartie,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
+import { DOCUMENT_RETENTION_YEARS } from "./mentions-figees";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
 
 // ============================================================
@@ -180,7 +195,7 @@ export function ReleveConnexionPdf({
 
         {/* Mention conservation */}
         <Text style={pdfStyles.legalNote}>
-          Document à conserver {DOCUMENT_RETENTION_YEARS} ans.
+          Document à conserver {DOCUMENT_RETENTION_YEARS} ans — Article L.6353-9 du Code du travail.
         </Text>
       </QualiopiPage>
     </Document>

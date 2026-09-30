@@ -137,7 +137,7 @@ describe("AttestationPartiellePdf — contenu", () => {
   });
 
   // 🔴 Audit initial 2026-09-14 (M-documents-pdf-11 / X-documents-pdf-07). Sous
-  // 60 % la pièce est désormais émise (L.6353-1 al. 2) : la bannière ne peut plus
+  // 60 % la pièce est désormais émise (L.6313-7 dern. al.) : la bannière ne peut plus
   // annoncer une fourchette « entre 60 % et 79 % » — déjà fausse dès que le seuil
   // de présence complète était réglé autrement que 80 %. Et « compétences
   // déclarées partiellement validées » se lisait comme un résultat d'évaluation,
@@ -164,12 +164,12 @@ describe("AttestationPartiellePdf — contenu", () => {
   });
 });
 
-// 🔴 Audit initial 2026-09-14 (X-documents-pdf-05). L.6353-1 al. 2 fait porter à
-// l'attestation la NATURE de l'action, et le règlement intérieur publié, le PDF
+// 🔴 Audit initial 2026-09-14 (X-documents-pdf-05). L'attestation porte la
+// NATURE de l'action, et le règlement intérieur publié, le PDF
 // du règlement et le livret l'annoncent désormais. Aucune des deux attestations
 // ne l'imprimait : la page publique promettait un champ absent de la pièce.
 // Même source et même libellé que le certificat de réalisation du même dossier.
-describe("attestations — nature de l'action (L.6353-1 al. 2)", () => {
+describe("attestations — nature de l'action", () => {
   it("l'attestation complète imprime la nature de l'action, « Action de formation » par défaut", () => {
     const t = collectPdfTextNormalized(React.createElement(AttestationPdf, { data: ATTESTATION }));
     expect(t).toContain("Nature de l'action");

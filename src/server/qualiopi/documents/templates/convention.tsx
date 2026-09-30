@@ -1,7 +1,8 @@
 /**
  * Qualiopi — Convention de formation professionnelle (personnes morales).
  *
- * Conforme L.6353-1 et L.6353-2 du Code du travail.
+ * Conforme aux articles L.6353-1 et D.6353-1 du Code du travail (L.6353-2, abrogé
+ * depuis le 01/01/2019, était cité jusqu'à la v2 — archivée dans `archives/`).
  * Rendu serveur exclusif — NE PAS "use client".
  */
 
@@ -61,8 +62,8 @@ export interface ConventionData {
   prixHt: number;
   acomptePercent?: number;
   /**
-   * Moyens pédagogiques et techniques mobilisés — MENTION EXIGÉE par l'article
-   * L.6353-1 du Code du travail, absente jusqu'ici de la convention. Repli sur
+   * Moyens pédagogiques et techniques mobilisés — mention du contenu de la
+   * convention (article D.6353-1 du Code du travail), absente jusqu'ici de la convention. Repli sur
    * une formule décrivant le dispositif réel de la plateforme.
    */
   moyensPedagogiques?: string;
@@ -71,7 +72,7 @@ export interface ConventionData {
    * exigence, même article. Repli sur le dispositif réel.
    */
   modalitesEvaluation?: string;
-  /** Sanction de la formation (L.6353-1). Repli : attestation de fin de formation. */
+  /** Sanction de la formation. Repli : attestation (dernier alinéa de L.6313-7). */
   sanction?: string;
   // Dates convention
   dateConvention: string;
@@ -276,7 +277,7 @@ export function ConventionPdf({
             <FieldRow label="Écart d'effectif" value={data.ecartEffectif} />
           )}
           {/*
-            🔴 Trois mentions EXIGÉES par l'article L.6353-1 et absentes de la
+            🔴 Trois mentions du contenu de la convention (D.6353-1), absentes de la
             convention jusqu'au 2026-08-02 : moyens pédagogiques et techniques,
             modalités de suivi de l'exécution et d'appréciation des résultats,
             sanction de la formation. Leur absence rend la convention
@@ -304,7 +305,10 @@ export function ConventionPdf({
           />
           <FieldRow
             label="Sanction de la formation"
-            value={data.sanction || "Attestation de fin de formation (article L.6353-1)."}
+            value={
+              data.sanction ||
+              "Attestation de fin de formation (dernier alinéa de l'article L.6313-7 du Code du travail)."
+            }
           />
         </DocSection>
 
