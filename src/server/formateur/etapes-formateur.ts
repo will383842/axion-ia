@@ -3,7 +3,7 @@
  *
  * ## Le défaut que ce module empêche
  *
- * `construireParcours` déroule les quinze étapes d'un dossier de session. Elles
+ * `construireParcours` déroule les seize étapes d'un dossier de session. Elles
  * sont écrites pour la console : elles nomment des boutons de la console, et
  * treize d'entre elles sont gardées par `requireAdminWrite`. Les déverser telles
  * quelles sur l'accueil du formateur produirait une **liste de reproches sur des

@@ -57,6 +57,8 @@ import {
   listerDossiersRouvertsAnciens,
 } from "@/server/qualiopi/sessions/dossiers-rouverts";
 import { dateHeureParis } from "@/server/qualiopi/sessions/verrou-dossier";
+import { hrefEtape } from "@/server/qualiopi/parcours/cible-etape";
+import { CIBLE_SIGNATURE_PIECES } from "@/server/qualiopi/parcours/session-parcours";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -335,8 +337,15 @@ export default async function ATraiterPage({ params }: PageProps) {
                   : "aucune signature — relancer le signataire";
               const jours = joursDepuis(s.updatedAt);
               const attente = `en attente depuis ${jours} jour${jours > 1 ? "s" : ""}`;
+              // 🔴 L3 (30/09/2026) — une pièce de session ouvre la fiche AU
+              // bloc « Signature des pièces contractuelles », pas en haut d'une
+              // page de huit écrans. Même helper que la checklist de la fiche.
               const cible = s.sessionId
-                ? `${base}/qualiopi/sessions/${s.sessionId}`
+                ? hrefEtape(
+                    s.sessionId,
+                    { phase: "preparer", cible: CIBLE_SIGNATURE_PIECES },
+                    `${base}/qualiopi/sessions`,
+                  )
                 : s.trainerId
                   ? `${base}/qualiopi/formateurs/${s.trainerId}`
                   : `${base}/qualiopi/sessions`;
@@ -431,8 +440,13 @@ export default async function ATraiterPage({ params }: PageProps) {
                     {e.etape.mention} · {e.etape.geste}
                   </span>
                 </span>
+                {/* 🔴 L3 (30/09/2026) — « Ouvrir le dossier » menait en haut de
+                    la fiche, sans rien de plus : il fallait retrouver l'étape
+                    parmi huit écrans. Il mène désormais à l'onglet de sa phase
+                    et à la section qui porte le geste — ou directement à la
+                    sous-page (`hrefEtape`, le même lien que la checklist). */}
                 <AdminButton
-                  href={`${base}/qualiopi/sessions/${e.sessionId}`}
+                  href={hrefEtape(e.sessionId, e.etape, `${base}/qualiopi/sessions`)}
                   variant="secondary"
                   size="sm"
                 >

@@ -75,6 +75,9 @@ export const ANCRES_HUB_SESSION: readonly AncreHub[] = [
   { id: "stagiaires", libelle: "Stagiaires" },
   { id: "documents", libelle: "Documents" },
   { id: "questionnaires", libelle: "Questionnaires" },
+  // Conditionnelle : rendue dans l'onglet « Clôturée » seulement — le résumé
+  // du verrou, son historique et les gestes encore ouverts.
+  { id: "cloture", libelle: "Clôture du dossier", conditionnelle: true },
 ] as const;
 
 /**
@@ -102,3 +105,131 @@ export function ancresVisibles(presentes: Iterable<string> = []): readonly Ancre
  * respiration d'un cran d'espacement pour que le titre ne colle pas au bord.
  */
 export const CLASSE_ANCRE_SECTION = "scroll-mt-[calc(var(--admin-topbar-h)+var(--space-admin-4))]";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Sous-pages — les sections où le fil conducteur mène (L3, 30/09/2026)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Les `id` stables des sous-pages de la session, ceux que les étapes du
+ * parcours visent (`cible.fragment`). Déclarés ICI, une fois : la garde
+ * `le-suivi-mene-au-geste.spec.ts` vérifie que chacun existe dans le fichier de
+ * sa sous-page, et que chaque cible du parcours est l'un d'eux.
+ *
+ * `insc-` est un PRÉFIXE : `/evaluations#insc-{enrollmentId}` mène au cadre du
+ * stagiaire (évaluer, puis attester).
+ */
+export const ANCRES_SOUS_PAGES = {
+  emargement: ["contresignature", "journees", "liens", "feuille"],
+  evaluations: ["evaluations-stagiaires", "insc-"],
+  financement: [],
+  kit: [],
+} as const satisfies Record<string, readonly string[]>;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Phases — la fiche s'affiche par onglet, jamais tout à la fois
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * 🔴 Audit UX du 30/09/2026 : la fiche faisait huit écrans et 77 boutons, tout
+ * affiché tout le temps, sur une session à préparer comme sur une session
+ * terminée. On ne savait ni quoi faire, ni où.
+ *
+ * La fiche s'ouvre désormais sur l'onglet de la phase COURANTE du dossier
+ * (`phaseDossier`, ADR 0060) ; les blocs des autres phases ne disparaissent
+ * pas, ils sont repliés sous « Toutes les actions ». Aucun contenu n'est perdu.
+ */
+export type PhaseFiche = "preparer" | "jour_j" | "apres" | "cloturee";
+
+export const PHASES_FICHE: ReadonlyArray<{ readonly id: PhaseFiche; readonly libelle: string }> = [
+  { id: "preparer", libelle: "Préparer" },
+  { id: "jour_j", libelle: "Le jour J" },
+  { id: "apres", libelle: "Après" },
+  { id: "cloturee", libelle: "Clôturée" },
+];
+
+/**
+ * Les blocs de la fiche — les `id` du catalogue ci-dessus. Écrits en toutes
+ * lettres (le catalogue est typé `AncreHub[]`, donc `string`) : c'est ce qui
+ * oblige `PHASES_DES_BLOCS` à nommer CHAQUE bloc. `ancres.spec.ts` vérifie que
+ * les deux listes coïncident.
+ */
+export type BlocFiche =
+  | "infos"
+  | "checklist"
+  | "cycle-de-vie"
+  | "dates"
+  | "lieu"
+  | "formateur"
+  | "inter-entreprises"
+  | "preparation-kit"
+  | "sous-pages"
+  | "stagiaires"
+  | "documents"
+  | "questionnaires"
+  | "cloture";
+
+/**
+ * À quelles phases appartient chaque bloc de la fiche. `"toujours"` : le bloc
+ * répond à une question de TOUTES les phases (qui, quoi, où en est-on, où
+ * aller) — il n'est jamais replié.
+ *
+ * ⚠️ Un bloc peut appartenir à plusieurs phases : « Stagiaires » sert à
+ * inscrire (Préparer) et à constater une absence (Le jour J). Le découper en
+ * deux composants ferait deux écrans pour une même liste.
+ *
+ * Garde : `ancres.spec.ts` — aucun bloc orphelin, aucune phase vide.
+ */
+export const PHASES_DES_BLOCS: Readonly<Record<BlocFiche, readonly PhaseFiche[] | "toujours">> = {
+  infos: "toujours",
+  checklist: "toujours",
+  // Démarrer (jour J), marquer réalisée (après), reporter ou annuler (préparer).
+  "cycle-de-vie": ["preparer", "jour_j", "apres"],
+  dates: ["preparer"],
+  lieu: ["preparer"],
+  // Affecter (préparer) ; absence ou accord hors outil du formateur (jour J).
+  formateur: ["preparer", "jour_j"],
+  "inter-entreprises": ["preparer"],
+  "preparation-kit": ["preparer"],
+  // La navigation vers Émargement, Évaluations, Financement : utile partout.
+  "sous-pages": "toujours",
+  // Inscrire et adapter (préparer) ; statut de présence du jour (jour J).
+  stagiaires: ["preparer", "jour_j"],
+  // Pièces contractuelles et signatures (préparer) ; attestation, certificat,
+  // factures, contreseings restants (après) ; registre et ZIP (clôturée).
+  documents: ["preparer", "apres", "cloturee"],
+  // Positionnement (préparer) ; à chaud (jour J) ; à froid (après).
+  questionnaires: ["preparer", "jour_j", "apres"],
+  cloture: ["cloturee"],
+};
+
+/** Lit `?phase=` ; une valeur inconnue ou absente rend `null` (onglet par défaut). */
+export function lirePhaseFiche(valeur: string | string[] | undefined): PhaseFiche | null {
+  const v = Array.isArray(valeur) ? valeur[0] : valeur;
+  return PHASES_FICHE.some((p) => p.id === v) ? (v as PhaseFiche) : null;
+}
+
+/**
+ * Répartit les blocs RENDUS entre l'onglet affiché et « Toutes les actions ».
+ *
+ * - l'ordre du catalogue (celui du DOM) est conservé des deux côtés ;
+ * - la réunion des deux listes est EXACTEMENT `presents` : aucun bloc perdu,
+ *   aucun bloc dupliqué ;
+ * - `phase === null` (session annulée ou reportée) : tout est affiché, rien
+ *   n'est replié — il n'y a pas de phase courante à privilégier.
+ */
+export function repartirBlocs(
+  phase: PhaseFiche | null,
+  presents: Iterable<BlocFiche>,
+): { readonly affiches: BlocFiche[]; readonly replies: BlocFiche[] } {
+  const rendus = new Set(presents);
+  const ordre = ANCRES_HUB_SESSION.map((a) => a.id as BlocFiche).filter((id) => rendus.has(id));
+  const affiches: BlocFiche[] = [];
+  const replies: BlocFiche[] = [];
+  for (const id of ordre) {
+    const phases = PHASES_DES_BLOCS[id];
+    if (phase === null || phases === "toujours" || phases.includes(phase)) affiches.push(id);
+    else replies.push(id);
+  }
+  return { affiches, replies };
+}

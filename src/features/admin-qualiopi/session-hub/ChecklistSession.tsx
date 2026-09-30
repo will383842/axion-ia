@@ -1,9 +1,9 @@
 /**
- * 🔴 LA CHECKLIST D'UNE SESSION — les quatorze étapes, sur le hub.
+ * 🔴 LA CHECKLIST D'UNE SESSION — les seize étapes, sur le hub.
  *
  * ## Le défaut
  *
- * Le parcours d'une session existe déjà : quatorze étapes, chacune avec son
+ * Le parcours d'une session existe déjà : seize étapes, chacune avec son
  * état, sa mention et son geste. Mais il n'était rendu **nulle part sur la
  * session elle-même** — seulement en agrégat sur « À traiter », et seulement
  * pour les étapes qui appellent une action.
@@ -30,6 +30,8 @@
 
 import type { EtapeParcours } from "@/server/qualiopi/parcours/session-parcours";
 import type { EtatEtape } from "@/server/qualiopi/parcours/etat-echeance";
+import { hrefEtape } from "@/server/qualiopi/parcours/cible-etape";
+import { GesteEtape } from "./GesteEtape";
 
 /**
  * Marqueur textuel de tête de ligne.
@@ -69,11 +71,34 @@ export function ChecklistSession({
   etapes,
   fait,
   total,
+  sessionId,
+  prefixeSessions,
+  repliee = null,
 }: {
   readonly etapes: ReadonlyArray<EtapeParcours>;
   readonly fait: number;
   readonly total: number;
+  /** Pour construire le lien de chaque étape (`hrefEtape`). */
+  readonly sessionId: string;
+  /** Préfixe de la liste des sessions, p. ex. `/fr/admin/qualiopi/sessions`. */
+  readonly prefixeSessions: string;
+  /**
+   * Session annulée ou reportée : le parcours est REPLIÉ, avec sa filiation
+   * (« Session reportée vers AXI-SESS-… »). 🔴 Audit du 30/09/2026 — ce motif
+   * n'était rendu nulle part sur la fiche : la section restait vide.
+   */
+  readonly repliee?: { readonly motif: string } | null;
 }) {
+  if (repliee !== null) {
+    return (
+      <p
+        role="status"
+        className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+      >
+        {repliee.motif} — plus aucune étape du parcours n&apos;est due sur cette session.
+      </p>
+    );
+  }
   // Pas de parcours calculé (session hors périmètre, ou lecture en échec) : on
   // n'affiche RIEN plutôt qu'une checklist vide. Une liste vide se lirait comme
   // « aucune obligation », ce qui est le contraire de la vérité.
@@ -116,30 +141,44 @@ export function ChecklistSession({
               </span>
               {/*
                 🔴 LE LIEN QUI MANQUAIT — défaut vécu par Will le 2026-09-04 :
-                « je n'ai pas trouvé le bouton pour contresigner ». Le suivi
-                nommait un bloc « Signatures » qui s'appelle en réalité
-                « Signature des pièces contractuelles », et un bouton
-                « Contresigner » qui s'appelle « Signer pour l'organisme ».
+                « je n'ai pas trouvé le bouton pour contresigner ». Puis audit
+                UX du 30/09/2026 : le lien menait au bloc « Sous-pages », d'où
+                il fallait encore choisir la sous-page et y chercher le bouton.
 
-                Même exacte, la phrase n'aurait pas suffi : la fiche fait plus
-                de 4 000 px et empile douze blocs. Décrire un endroit sur une
-                page qu'il faut parcourir aux yeux, c'est ne pas le dire.
+                Le lien mène désormais EN UN CLIC à la section qui porte le
+                geste, sur la fiche (à l'onglet de sa phase) ou directement sur
+                la sous-page (`hrefEtape`).
 
-                Le lien n'est offert que sur ce qui RESTE à faire : sur une
-                étape close il n'y a rien à aller poser, et l'afficher partout
-                noierait les trois lignes qui comptent sous quinze liens
-                identiques.
+                - étape à faire : « Aller à … » — le chemin du geste ;
+                - étape faite : « Voir » — relire la preuve, sans rien refaire ;
+                - sans objet : rien, il n'y a rien à voir.
               */}
-              {e.ancre !== undefined && e.etat !== "fait" && e.etat !== "sans_objet" ? (
+              {e.etat !== "fait" && e.etat !== "sans_objet" ? (
                 <>
                   {" "}
                   <a
-                    href={`#${e.ancre.id}`}
+                    href={hrefEtape(sessionId, e, prefixeSessions)}
                     className="text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-accent)] underline"
                   >
-                    Aller au {e.ancre.libelle} →
+                    Aller à : {e.cible.libelle} →
                   </a>
                 </>
+              ) : e.etat === "fait" ? (
+                <>
+                  {" "}
+                  <a
+                    href={hrefEtape(sessionId, e, prefixeSessions)}
+                    className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] underline"
+                    aria-label={`Voir : ${e.libelle} (${e.cible.libelle})`}
+                  >
+                    Voir
+                  </a>
+                </>
+              ) : null}
+              {/* Le geste SIMPLE, posé d'ici : relancer, générer un accès.
+                  Jamais un acte habilité — ceux-là n'ont pas de `gesteDirect`. */}
+              {e.gesteDirect !== undefined && e.etat !== "fait" && e.etat !== "sans_objet" ? (
+                <GesteEtape geste={e.gesteDirect} />
               ) : null}
               {e.avertissement ? (
                 <>

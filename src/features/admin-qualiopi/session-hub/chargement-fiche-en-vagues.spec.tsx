@@ -163,6 +163,9 @@ function installer() {
   m.preparation = lecture("preparation", () => null);
   m.echeances = lecture("echeances", () => ({ parSession: new Map() }));
   m.conflits = lecture("conflits", () => ({ conflits: [], erreur: false }));
+  // ADR 0060 — l'état du verrou décide de l'onglet ouvert par défaut. Lecture
+  // INDÉPENDANTE : elle part dans la première vague.
+  m.verrou = lecture("verrou", () => null);
   m.garde = vi.fn(async () => {
     ordreGarde = journal.length;
     return { autorise: true, role: "super_admin", peutEcrire: true };
@@ -231,6 +234,9 @@ vi.mock("@/server/qualiopi/parcours/echeances-service", () => ({
 // Lot L4 — conflit de formateur repris de la fiche 360° du planning.
 vi.mock("@/server/qualiopi/sessions/conflit-formateur", () => ({
   conflitsFormateurSession: (...a: unknown[]) => m.conflits!(...a),
+}));
+vi.mock("@/server/qualiopi/sessions/verrou-dossier", () => ({
+  chargerEtatVerrou: (...a: unknown[]) => m.verrou!(...a),
 }));
 
 // ── Server Actions et composants : jamais exécutés par ce rendu ─────────────
@@ -331,6 +337,7 @@ const LECTURES = [
   "preparation",
   "echeances",
   "conflits",
+  "verrou",
 ] as const;
 
 async function rendre() {

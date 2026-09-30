@@ -13,6 +13,7 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Fragment, type ReactNode } from "react";
 import { notFound } from "next/navigation";
 
 import { PreparationKitSession } from "@/components/admin/qualiopi/PreparationKitSession";
@@ -86,7 +87,23 @@ import { champsIdentiteManquants } from "@/server/qualiopi/documents/conformite"
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import type { TrainingSessionStatut } from "../../../../../../../../prisma/generated/client";
 import { AncresHubSession } from "@/features/admin-qualiopi/session-hub/AncresHubSession";
-import { ancresVisibles, CLASSE_ANCRE_SECTION } from "@/features/admin-qualiopi/session-hub/ancres";
+import {
+  ancresVisibles,
+  CLASSE_ANCRE_SECTION,
+  lirePhaseFiche,
+  repartirBlocs,
+  type BlocFiche,
+  type PhaseFiche,
+} from "@/features/admin-qualiopi/session-hub/ancres";
+import { OngletsPhase } from "@/features/admin-qualiopi/session-hub/OngletsPhase";
+import { hrefEtape } from "@/server/qualiopi/parcours/cible-etape";
+import { chargerEtatVerrou } from "@/server/qualiopi/sessions/verrou-dossier";
+import {
+  dateHeureParis,
+  phaseDossier,
+  texteEtatVerrou,
+  type StatutSessionVerrou,
+} from "@/server/qualiopi/sessions/verrou-dossier-pur";
 import { ChecklistSession } from "@/features/admin-qualiopi/session-hub/ChecklistSession";
 import { prochainesEcheances } from "@/server/qualiopi/parcours/echeances-service";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
@@ -330,7 +347,14 @@ interface PageProps {
    * une IMPOSSIBILITÉ — le 201ᵉ stagiaire deviendrait ininscriptible, sans le
    * moindre message. Même patron que l'écran `/qualiopi/stagiaires`.
    */
-  searchParams: Promise<{ qStagiaire?: string }>;
+  searchParams: Promise<{
+    qStagiaire?: string;
+    /**
+     * L'onglet de phase affiché (`preparer` · `jour_j` · `apres` · `cloturee`).
+     * Absent ou inconnu : la phase COURANTE du dossier (`phaseDossier`).
+     */
+    phase?: string;
+  }>;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -339,7 +363,8 @@ interface PageProps {
 
 export default async function SessionHubPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix, id } = await params;
-  const rechercheStagiaire = ((await searchParams).qStagiaire ?? "").trim();
+  const parametres = await searchParams;
+  const rechercheStagiaire = (parametres.qStagiaire ?? "").trim();
   const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
@@ -379,6 +404,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     totalStagiairesRegistre,
     preparationKit,
     echeances,
+    verrou,
   ] = await Promise.all([
     // État de signature du relevé de connexion, lu APRÈS la garde de rôle.
     // `null` quand la session n'a pas de relevé — cas NORMAL du présentiel.
@@ -426,14 +452,19 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
     //
     // 🔴 Le parcours est lu par le MÊME service que « À traiter », en balayage
     // CIBLÉ (`sessionIds`) : une seconde traduction des lignes Prisma vers les
-    // étapes fabriquerait deux vérités, et le jour où une quinzième étape arrive
-    // l'un des deux écrans compterait encore sur quatorze.
+    // étapes fabriquerait deux vérités, et le jour où une dix-septième étape arrive
+    // l'un des deux écrans compterait encore sur seize.
     //
     // ⚠️ `catch` : la checklist est un CONFORT de lecture. Une lecture en échec
     // ne doit pas faire tomber le dossier entier — on perd la checklist, pas la
     // page.
     lirePreparation(id),
     prochainesEcheances({ sessionIds: [id] }).catch(() => null),
+    // ADR 0060 — l'état du verrou du dossier : il décide de l'onglet ouvert par
+    // défaut (`phaseDossier`) et nourrit le bloc « Clôture du dossier ».
+    // ⚠️ `catch` : même règle que la checklist — une lecture en échec retombe
+    // sur la phase déduite du statut, elle ne fait pas tomber la fiche.
+    chargerEtatVerrou(id).catch(() => null),
   ]);
 
   if (!trainingSession) notFound();
@@ -739,6 +770,705 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
   const subLinkCls =
     "flex items-center gap-[var(--space-admin-2)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-accent)] transition-colors hover:bg-[color:var(--color-admin-surface)]";
 
+  // ── La phase du dossier, et l'onglet affiché (L3, 30/09/2026) ──────────────
+  //
+  // 🔴 Audit UX du 30/09/2026 : huit écrans, 77 boutons, tout affiché tout le
+  // temps. La fiche s'ouvre désormais sur la phase COURANTE du dossier — la
+  // même fonction que la liste des sessions et que le verrou (ADR 0060) ; un
+  // `?phase=` explicite (lien de « À traiter », clic sur un onglet) l'emporte.
+  //
+  // Sans état de verrou (lecture en échec), la phase se déduit du statut seul,
+  // par la MÊME fonction : on ne recopie pas la règle.
+  const phaseDuDossier =
+    verrou !== null
+      ? phaseDossier(verrou.statut, verrou.etat)
+      : phaseDossier(trainingSession.statut as StatutSessionVerrou, { etat: "en_cours" });
+  const phaseCourante: PhaseFiche | null =
+    phaseDuDossier === "hors_parcours" ? null : phaseDuDossier;
+  // `null` (session annulée ou reportée, sans `?phase=`) : tout est affiché.
+  const phaseAffichee: PhaseFiche | null = lirePhaseFiche(parametres.phase) ?? phaseCourante;
+  // Ce qui reste dû au parcours — ce que l'onglet « Clôturée » appelle « encore
+  // possible » : sur un dossier clos, ce sont les recueils ENTRANTS (à froid,
+  // contreseings) qui arrivent après l'attestation.
+  const gestesOuverts =
+    parcours?.etapes.filter((e) => e.etat !== "fait" && e.etat !== "sans_objet") ?? [];
+
+  const blocs: Record<BlocFiche, ReactNode> = {
+    infos: (
+      <>
+        {/* ── En-tête de la session ─────────────────────────────────────────── */}
+        <section id="infos" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+          <h2 className={sectionHeadCls}>Informations générales</h2>
+          <div className="grid grid-cols-2 gap-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)] sm:grid-cols-4">
+            {/* Formation */}
+            <div>
+              <p className={infoLabelCls}>Formation</p>
+              <p className={infoValueCls}>
+                <Link
+                  href={`/${locale}/${adminPrefix}/qualiopi/formations/${trainingSession.formation.id}`}
+                  className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                >
+                  {trainingSession.formation.numero}
+                </Link>
+              </p>
+              <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                {trainingSession.formation.titre}
+              </p>
+            </div>
+
+            {/* Modalité */}
+            <div>
+              <p className={infoLabelCls}>Modalité</p>
+              <p className={infoValueCls}>
+                {MODALITE_LABELS[trainingSession.modalite] ?? trainingSession.modalite}
+              </p>
+            </div>
+
+            {/* Stagiaires — « participant » reste au marketing public, jamais en console. */}
+            <div>
+              <p className={infoLabelCls}>Stagiaires</p>
+              <p className={infoValueCls}>
+                {trainingSession._count.enrollments} inscrits /{" "}
+                {trainingSession.nbParticipantsPrevus} prévus
+              </p>
+              {trainingSession.nbParticipantsReels !== null && (
+                <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                  {trainingSession.nbParticipantsReels} réels
+                </p>
+              )}
+            </div>
+
+            {/* Montant HT */}
+            <div>
+              <p className={infoLabelCls}>Montant HT</p>
+              <p className={infoValueCls}>
+                {(trainingSession.montantHtCents / 100).toLocaleString("fr-FR", {
+                  style: "currency",
+                  currency: "EUR",
+                })}
+              </p>
+              {/* Vérification E2E 2026-07-26 — cet écran affirmait « Exonéré TVA »
+                    en dur, juste sous un Montant HT que le PDF facture à 20 %. La
+                    mention suit désormais `qualiopi.regime_tva` et disparaît en
+                    régime assujetti, comme sur les documents. */}
+              {mentionTvaSession !== null && (
+                <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                  {mentionTvaSession}
+                </p>
+              )}
+            </div>
+
+            {/* Client */}
+            {trainingSession.client !== null && (
+              <div>
+                <p className={infoLabelCls}>Client</p>
+                <p className={infoValueCls}>
+                  {/* 🔴 L2 — menait à la LISTE des clients : on y cherchait le sien. */}
+                  <Link
+                    href={`/${locale}/${adminPrefix}/qualiopi/clients/${trainingSession.client.id}`}
+                    className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                  >
+                    {trainingSession.client.numero}
+                  </Link>
+                </p>
+                <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                  {trainingSession.client.raisonSociale}
+                </p>
+              </div>
+            )}
+
+            {/* Financement */}
+            <div>
+              <p className={infoLabelCls}>Financement</p>
+              <p className={infoValueCls}>
+                {trainingSession.financementType !== null
+                  ? (FINANCEMENT_LABELS[trainingSession.financementType] ??
+                    trainingSession.financementType)
+                  : "Non défini"}
+              </p>
+            </div>
+
+            {/* Durée réelle */}
+            {trainingSession.dureeReelleHeures !== null && (
+              <div>
+                <p className={infoLabelCls}>Durée réelle</p>
+                <p className={infoValueCls}>{trainingSession.dureeReelleHeures} h</p>
+              </div>
+            )}
+
+            {/* Session parente (récurrence) */}
+            {trainingSession.sessionParentId !== null && (
+              <div>
+                <p className={infoLabelCls}>Session parente</p>
+                <p className={infoValueCls}>
+                  <Link
+                    href={`${base}/${trainingSession.sessionParentId}`}
+                    className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                  >
+                    Voir la session parente
+                  </Link>
+                </p>
+              </div>
+            )}
+
+            {/* Session reportée */}
+            {trainingSession.sessionReporteeId !== null && (
+              <div>
+                <p className={infoLabelCls}>Reporte la session</p>
+                <p className={infoValueCls}>
+                  <Link
+                    href={`${base}/${trainingSession.sessionReporteeId}`}
+                    className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                  >
+                    Voir la session d&apos;origine
+                  </Link>
+                </p>
+              </div>
+            )}
+          </div>
+          <ContactEtConflitSession
+            adminPrefix={adminPrefix}
+            contact={
+              trainingSession.client !== null
+                ? {
+                    nom: trainingSession.client.contactNom,
+                    fonction: trainingSession.client.contactFonction,
+                    telephone: trainingSession.client.contactTelephone,
+                    email: trainingSession.client.contactEmail,
+                  }
+                : null
+            }
+            formateurNom={
+              allTrainers
+                .filter((t) => t.id === trainingSession.formateurPrincipalId)
+                .map((t) => `${t.prenom} ${t.nom}`.trim())[0] ?? null
+            }
+            conflits={conflitsFormateur}
+          />
+        </section>
+      </>
+    ),
+    checklist: (
+      <>
+        {/* ── Cycle de vie ─────────────────────────────────────────────────── */}
+        {/* 🔴 La checklist, juste après l'identité de la session : c'est la
+              question qu'on se pose en ouvrant un dossier — « où en est-il ? » —
+              et le serveur la calculait déjà sans jamais la rendre ici. */}
+        {parcours !== null ? (
+          <section id="checklist" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+            <h2 className={sectionHeadCls}>Où en est ce dossier</h2>
+            <ChecklistSession
+              etapes={parcours.etapes}
+              fait={parcours.fait}
+              total={parcours.total}
+              sessionId={id}
+              prefixeSessions={base}
+              repliee={parcours.repliee}
+            />
+          </section>
+        ) : null}
+      </>
+    ),
+    "cycle-de-vie": (
+      <>
+        <section id="cycle-de-vie" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+          <h2 className={sectionHeadCls}>Cycle de vie</h2>
+          <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
+            <SessionLifecycleButtons
+              sessionId={id}
+              statut={trainingSession.statut as TrainingSessionStatut}
+              baseSessions={base}
+            />
+          </div>
+        </section>
+      </>
+    ),
+    dates: (
+      <>
+        {/* ── Dates de déroulement ───────────────────────────────────────────
+              🔴 Rangé ICI, avec le lieu, et surtout PAS dans « Cycle de vie » : les
+              dates sont un ATTRIBUT de la session, le report est un ÉVÉNEMENT qui
+              crée une seconde session et laisse la première « Reportée » au
+              registre. Voisiner avec les boutons de report ferait choisir le
+              marteau-pilon pour une faute de frappe. */}
+        <section id="dates" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+          <h2 className={sectionHeadCls}>Dates de déroulement</h2>
+          <SessionDatesForm
+            sessionId={id}
+            initialDateDebut={pourInputDateTimeLocal(trainingSession.dateDebut)}
+            initialDateFin={pourInputDateTimeLocal(trainingSession.dateFin)}
+            joursHorsPlage={joursHorsPlageSession}
+            nbJoursDeclares={joursDeclaresSession.length}
+            hrefJournees={`${sessionBase}/emargement`}
+          />
+        </section>
+      </>
+    ),
+    lieu: (
+      <>
+        {/* ── Modalité et lieu (convention L.6353-1 · Qualiopi off.9) ────────
+              Les deux dans la MÊME section, depuis le 2026-09-05 : ils décident
+              ensemble de ce que la convention imprime, et les séparer garantissait
+              qu'on corrige l'un en oubliant l'autre. Cf. `SessionLieuForm`. */}
+        <section id="lieu" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+          <h2 className={sectionHeadCls}>Modalité et lieu de déroulement</h2>
+          <SessionLieuForm
+            sessionId={id}
+            initial={lieuValuesDepuisSession(trainingSession)}
+            modalite={trainingSession.modalite}
+          />
+        </section>
+      </>
+    ),
+    formateur: (
+      <>
+        {/* ── Formateur principal (R9 — assignation bloquée si non habilité) ─── */}
+        <section id="formateur" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+          <h2 className={sectionHeadCls}>Formateur principal</h2>
+          <AssignFormateurForm
+            sessionId={id}
+            currentTrainerId={trainingSession.formateurPrincipalId}
+            trainers={formateurOptions}
+          />
+          {/* 2026-09-03 — ce que le formateur a RÉPONDU. Une affectation n'est
+                pas une confirmation : tant qu'il n'a pas accepté, la session n'a
+                pas de formateur sûr, et l'écran doit le dire là où on l'affecte. */}
+          {trainingSession.formateurPrincipalId !== null && (
+            <MissionFormateurPanel
+              sessionId={id}
+              trainerId={trainingSession.formateurPrincipalId}
+              trainerNom={
+                formateurOptions.find((f) => f.id === trainingSession.formateurPrincipalId)
+                  ?.label ?? "formateur"
+              }
+              etat={etatMissionFormateur}
+              enAttente={missionFormateur?.statut === "en_attente"}
+              sessionAVenir={
+                trainingSession.statut === "planifiee" && trainingSession.dateDebut > new Date()
+              }
+              absencePossible={trainingSession.dateDebut <= new Date()}
+              // Le geste n'a de sens que si la session a démarré ET que personne
+              // n'a répondu. Sur une mission acceptée, refusée ou retirée, il n'y
+              // a rien à consigner — et le service refuse, mais un bouton qui
+              // refuse une fois sur deux n'est pas un bouton.
+              accordConsignable={
+                trainingSession.dateDebut <= new Date() &&
+                (missionFormateur?.statut === "expiree" ||
+                  missionFormateur?.statut === "sans_reponse" ||
+                  missionFormateur?.statut === "en_attente")
+              }
+            />
+          )}
+        </section>
+      </>
+    ),
+    "inter-entreprises": (
+      <>
+        {/* ── Inter-entreprises (R-INTER — financement/facture par participant) ─ */}
+        <section
+          id="inter-entreprises"
+          className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
+        >
+          <h2 className={sectionHeadCls}>Inter-entreprises</h2>
+          <InterEntreprisesSection
+            sessionId={id}
+            interEntreprises={trainingSession.interEntreprises}
+            enrollments={interEnrollments}
+            clients={clientsForInter}
+          />
+        </section>
+      </>
+    ),
+    "preparation-kit": (
+      <>
+        {/* ── Préparation du kit — ce qu'il reste à faire pour cette session ──
+              Placé AVANT les sous-pages : c'est le premier geste après une vente,
+              et le seul que rien ne rappelait jusqu'ici. */}
+        {preparationKit !== null && preparationKit.aPreparer ? (
+          <section
+            id="preparation-kit"
+            className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
+          >
+            <PreparationKitSession
+              sessionId={id}
+              etape={preparationKit.etape}
+              aFaire={preparationKit.aFaire}
+              nbSorties={preparationKit.nbSorties}
+              valideLe={
+                preparationKit.valideLe ? dateValidation.format(preparationKit.valideLe) : null
+              }
+              hrefRelecture={`${sessionBase}/kit`}
+              genererAction={genererSortiesAction}
+              validerAction={validerSortiesAction}
+            />
+          </section>
+        ) : null}
+      </>
+    ),
+    "sous-pages": (
+      <>
+        {/* ── Navigation vers les sous-pages ──────────────────────────────── */}
+        <section id="sous-pages" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+          <h2 className={sectionHeadCls}>Sous-pages</h2>
+          <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4">
+            <Link href={`${sessionBase}/emargement`} className={subLinkCls}>
+              <span>Émargement</span>
+            </Link>
+            <Link href={`${sessionBase}/evaluations`} className={subLinkCls}>
+              <span>Évaluations</span>
+            </Link>
+            <Link href={`${sessionBase}/financement`} className={subLinkCls}>
+              <span>Financement</span>
+            </Link>
+            {/* Le nécessaire de séance vit au niveau de la FORMATION (kit projeté
+                  + supports générés) : on y mène depuis la session, là où on
+                  prépare l'animation. */}
+            <Link
+              href={`/${locale}/${adminPrefix}/qualiopi/formations/${trainingSession.formation.id}/animer`}
+              className={subLinkCls}
+            >
+              <span>Tout pour animer (formation)</span>
+            </Link>
+          </div>
+        </section>
+      </>
+    ),
+    stagiaires: (
+      <>
+        {/* SECTION: stagiaires */}
+        {/*
+         * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         * VAGUE 2 — Cluster E1 : Inscriptions + accès portail stagiaires
+         * Implémenter : EnrollmentsSection (lister / inscrire / changer statut)
+         * + GenererPortailAccesButton (+ revoquer) par stagiaire.
+         * Câble : enrollTraineeAction, setEnrollmentStatutAction,
+         *         genererPortailAccesAction, revoquerPortailAccesAction.
+         * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         */}
+        <section id="stagiaires" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+          <h2 className={sectionHeadCls}>Stagiaires</h2>
+          <EnrollmentsSection
+            sessionId={id}
+            debutSession={trainingSession.dateDebut.toISOString()}
+            enrollments={enrollmentsSerialized}
+            availableTrainees={traineesRaw.map((t) => ({
+              id: t.id,
+              nom: t.nom,
+              prenom: t.prenom,
+              email: t.email,
+            }))}
+            rechercheStagiaire={rechercheStagiaire}
+            totalStagiairesRegistre={totalStagiairesRegistre}
+            plafondStagiaires={PLAFOND_STAGIAIRES_INSCRIPTIBLES}
+            enrollAction={enrollTraineeAction}
+            setStatutAction={setEnrollmentStatutAction}
+            setAdaptationsAction={setEnrollmentAdaptationsAction}
+            genererPortailAction={genererPortailAccesAction}
+            revoquerPortailAction={revoquerPortailAccesAction}
+          />
+        </section>
+      </>
+    ),
+    documents: (
+      <>
+        {/* SECTION: documents */}
+        {/*
+         * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         * VAGUE 2 — Cluster E2 : Documents (14 types)
+         * Implémenter : DocumentsSection — boutons appelant generer<X>Action
+         * (convention, convocation, emargement, certificat_realisation, etc.)
+         * regroupés par catégorie (session / pédagogie / financeurs).
+         * Affiche les DocumentGenere existants + lien de téléchargement PDF.
+         * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         */}
+        <section id="documents" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+          <h2 className={sectionHeadCls}>Documents</h2>
+
+          {/* Dossier d'audit de la session — REMONTÉ ici (2026-08-05) : le bouton
+                n'était monté QUE sur la sous-page émargement, alors que « le dossier
+                de cette session » est la demande d'auditeur type ; il doit être
+                atteignable depuis la page principale de la session. Mêmes props que
+                sur emargement/page.tsx. */}
+          <div className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
+            <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+              Un ZIP rangé sous le numéro de cette session : ses documents, sa feuille
+              d&apos;émargement, et la vérification d&apos;intégrité de chaque chaîne de signatures.
+              C&apos;est ce que vous remettez à un auditeur qui demande « le dossier de cette
+              session ».
+            </p>
+            {/* 🔴 Le registre des signatures filtre par session depuis toujours :
+                  `listerRegistreSignatures({ sessionId })` accepte le paramètre, et
+                  la page `mode-auditeur/signatures` le lit dans son URL. AUCUN écran
+                  ne le posait — zéro lien portant ce paramètre dans tout `src/app`
+                  et `src/components`. Le filtre existait, testé, et n'était
+                  atteignable qu'en tapant l'URL à la main.
+
+                  Pire : quand ce registre atteint sa limite de lignes, il conseille
+                  lui-même de « le restreindre à une session pour obtenir une vue
+                  exhaustive » — sans offrir le moindre chemin pour le faire. Ce lien
+                  est ce chemin, et il part de là où l'auditeur pose la question :
+                  le hub de la session. */}
+            <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
+              <DossierSessionButton sessionId={id} />
+              <Link
+                href={`/${locale}/${adminPrefix}/qualiopi/mode-auditeur/signatures?session=${id}`}
+                className="admin-button-ghost"
+              >
+                Registre des signatures de cette session
+              </Link>
+              {/* 🔴 2026-09-07 — la PREUVE DE SOLLICITATION, qui n'avait aucun
+                    chemin depuis la session.
+                    L'indicateur 30 ne demande pas que le stagiaire réponde — il
+                    demande que l'organisme ait DEMANDÉ, et relancé. Cette preuve
+                    vit dans le journal des envois, qui ne s'indexait que par
+                    adresse : pour une session à douze inscrits, douze recherches et
+                    un recollement à la main. Ce lien pose la question comme
+                    l'auditeur la pose — par session, pas par personne. */}
+              <Link
+                href={`/${locale}/${adminPrefix}/emails-envoyes?session=${id}&fenetre=0`}
+                className="admin-button-ghost"
+              >
+                Journal des envois de cette session
+              </Link>
+            </div>
+          </div>
+
+          <DocumentsSection
+            sessionId={id}
+            enrollments={enrollmentsLight}
+            documentsExistants={documentsSerialized}
+            // Lot 1ter §2/§5 — ce que ce dossier appelle reellement. Sans lui, les
+            // ~20 boutons de generation s affichaient TOUS, sur TOUTES les
+            // sessions : Kit OPCO sur un financement direct, Contrat de formation
+            // (particulier) sur un client entreprise.
+            contexte={{
+              financement: trainingSession.financementType,
+              typeClient: clientType,
+              statut: trainingSession.statut,
+              formateurEstLeDirigeant,
+            }}
+          />
+
+          {/* Signature des pièces CONTRACTUELLES.
+
+                Sans ce bloc, `emettreLienSignatureAction` et `contresignerPieceAction`
+                n'étaient appelables par personne : les cinq circuits seraient restés
+                du code de signature écrit, testé et inatteignable — le défaut que ce
+                chantier a déjà trouvé trois fois. */}
+          {piecesSignables.length > 0 && (
+            <div
+              id="signature-pieces"
+              className="mt-[var(--space-admin-6)] scroll-mt-[calc(var(--admin-topbar-h)+var(--space-admin-4))] space-y-[var(--space-admin-4)]"
+            >
+              <h3 className="text-[length:var(--text-admin-sm)] font-semibold">
+                Signature des pièces contractuelles
+              </h3>
+              {piecesSignables.map((d) => {
+                const circuit = circuitPour(d.type)!;
+                return (
+                  <PieceSignaturePanel
+                    key={d.id}
+                    documentGenereId={d.id}
+                    numero={d.numero}
+                    pieceLibelle={circuit.libelle}
+                    parties={circuit.parties}
+                    signatures={signaturesParPiece.get(d.id) ?? []}
+                    emettreAction={emettreLienSignatureAction}
+                    revoquerLiensAction={revoquerLiensSignatureAction}
+                    contresignerAction={contresignerPieceAction}
+                    envoyerParEmailAction={envoyerLienSignatureParEmailAction}
+                  />
+                );
+              })}
+            </div>
+          )}
+
+          {/*
+              Visa du responsable pédagogique sur le relevé de connexion.
+
+              ⚠️ Rendu SEULEMENT si un relevé existe : une session présentielle n'en
+              a pas, et un bloc vide se lirait comme une pièce manquante.
+
+              Le composant est celui de l'espace formateur, RÉUTILISÉ tel quel. Deux
+              écrans de signature divergeraient sur ce qu'ils affichent comme signé,
+              et l'un finirait par contredire l'autre sur la même pièce.
+            */}
+          {etatReleveConsole !== null && (
+            <div className="mt-[var(--space-admin-6)]">
+              <SignatureDocument
+                documentGenereId={etatReleveConsole.documentGenereId}
+                titrePiece="Relevé de connexion"
+                numero={etatReleveConsole.numero}
+                parties={etatReleveConsole.parties}
+                peutAgir={etatReleveConsole.peutAgir}
+                mentions={etatReleveConsole.mentions}
+                plafondProbant={etatReleveConsole.plafondProbant}
+                libelleBouton="Viser le relevé"
+                labelSignature="Visa du responsable pédagogique"
+                signerAction={viserReleveResponsablePedagogiqueAction}
+              />
+            </div>
+          )}
+
+          {/*
+              Contreseing de la LETTRE DE MISSION FORMATEUR.
+
+              C'est la contrepartie du bouton « Lettre de mission formateur » de la
+              section ci-dessus : la pièce s'y génère, elle se contresigne ici. Les
+              deux cadres au stylo du §7 du modèle existaient depuis toujours sans
+              que rien ne les remplisse.
+
+              ⚠️ Rendu SEULEMENT si une lettre existe : un bloc vide se lirait comme
+              une pièce manquante alors qu'elle n'a simplement pas été demandée.
+
+              Le composant est celui de l'espace formateur, RÉUTILISÉ tel quel. Deux
+              écrans de signature divergeraient sur ce qu'ils affichent comme signé,
+              et l'un finirait par contredire l'autre sur la même pièce.
+            */}
+          {etatLettreConsole !== null && (
+            <div className="mt-[var(--space-admin-6)]">
+              {/* Une lettre-CADRE couvrant cette session s'affiche et se
+                    contresigne ici comme une lettre de session — en le disant. */}
+              {etatLettreConsole.estCadre && (
+                <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                  Lettre-cadre {etatLettreConsole.periodeLisible ?? ""} — elle couvre cette session
+                  parmi d&apos;autres ; une seule signature du formateur vaut pour toutes.
+                </p>
+              )}
+              <SignatureDocument
+                documentGenereId={etatLettreConsole.documentGenereId}
+                titrePiece={
+                  etatLettreConsole.estCadre
+                    ? "Lettre de mission-cadre"
+                    : "Lettre de mission formateur"
+                }
+                numero={etatLettreConsole.numero}
+                parties={etatLettreConsole.parties}
+                peutAgir={etatLettreConsole.peutAgir}
+                motifBlocage={etatLettreConsole.motifBlocage}
+                mentions={etatLettreConsole.mentions}
+                plafondProbant={etatLettreConsole.plafondProbant}
+                libelleBouton="Contresigner la lettre de mission"
+                labelSignature="Signature pour l'organisme de formation"
+                signerAction={contresignerLettreMissionAction}
+              />
+            </div>
+          )}
+        </section>
+      </>
+    ),
+    questionnaires: (
+      <>
+        {/* SECTION: questionnaires */}
+        {/*
+         * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         * VAGUE 2 — Cluster E3 : Questionnaires de satisfaction
+         * Implémenter : QuestionnairesSection — générer les questionnaires
+         * (genererQuestionnairesSessionAction) + saisir les réponses
+         * (saisirReponsesQuestionnaireAction) par stagiaire.
+         * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         */}
+        <section
+          id="questionnaires"
+          className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
+        >
+          <h2 className={sectionHeadCls}>Questionnaires — positionnement et satisfaction</h2>
+          <QuestionnairesSection
+            sessionId={id}
+            debutSession={trainingSession.dateDebut.toISOString()}
+            questionnaires={questionnairesSerialized}
+            genererAction={genererQuestionnairesSessionAction}
+            saisirReponsesAction={saisirReponsesQuestionnaireAction}
+            envoyerAction={envoyerQuestionnaireAction}
+          />
+        </section>
+      </>
+    ),
+    // ── Clôture du dossier (onglet « Clôturée ») ─────────────────────────
+    // L'état du verrou, dit avec le texte UNIQUE que reprend le dossier
+    // d'audit (`texteEtatVerrou`) ; l'historique des réouvertures ; ce qui
+    // reste possible ; le ZIP et le registre.
+    cloture:
+      verrou !== null ? (
+        <section id="cloture" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
+          <h2 className={sectionHeadCls}>Clôture du dossier</h2>
+          <div className="space-y-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
+            <p
+              role="status"
+              className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]"
+            >
+              {texteEtatVerrou(verrou.etat)}
+            </p>
+
+            <div>
+              <h3 className="text-[length:var(--text-admin-sm)] font-semibold">
+                Historique du verrou
+              </h3>
+              {verrou.entree.evenements.length === 0 ? (
+                <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                  Aucune réouverture : le dossier n&apos;a jamais été rouvert.
+                </p>
+              ) : (
+                <ol className="list-decimal space-y-[var(--space-admin-1)] pl-[var(--space-admin-5)] text-[length:var(--text-admin-sm)]">
+                  {verrou.entree.evenements.map((ev) => (
+                    <li key={`${ev.type}-${ev.createdAt.toISOString()}`}>
+                      {ev.type === "reouverture" ? "Réouverture" : "Nouvelle clôture"} le{" "}
+                      {dateHeureParis(ev.createdAt)} par {ev.auteurNom}
+                      {ev.motif !== null && ev.motif !== "" ? ` — motif : « ${ev.motif} »` : ""}
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </div>
+
+            <div>
+              <h3 className="text-[length:var(--text-admin-sm)] font-semibold">Encore possible</h3>
+              {gestesOuverts.length === 0 ? (
+                <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                  Aucune étape du parcours ne reste due.
+                </p>
+              ) : (
+                <ul className="list-disc space-y-[var(--space-admin-1)] pl-[var(--space-admin-5)] text-[length:var(--text-admin-sm)]">
+                  {gestesOuverts.map((e) => (
+                    <li key={e.cle}>
+                      <a
+                        href={hrefEtape(id, e, base)}
+                        className="text-[color:var(--color-admin-accent)] underline"
+                      >
+                        {e.libelle}
+                      </a>{" "}
+                      <span className="text-[color:var(--color-admin-fg-muted)]">
+                        — {e.mention}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
+              <DossierSessionButton sessionId={id} />
+              <Link
+                href={`/${locale}/${adminPrefix}/qualiopi/mode-auditeur/signatures?session=${id}`}
+                className="admin-button-ghost"
+              >
+                Registre des signatures de cette session
+              </Link>
+            </div>
+          </div>
+        </section>
+      ) : null,
+  };
+  // Les blocs CONDITIONNELS ne sont présents que s'ils ont un contenu : un
+  // onglet qui annoncerait un bloc vide mentirait autant qu'un lien mort.
+  const presents = (Object.keys(blocs) as BlocFiche[]).filter(
+    (b) =>
+      (b !== "checklist" || parcours !== null) &&
+      (b !== "preparation-kit" || (preparationKit !== null && preparationKit.aPreparer)) &&
+      (b !== "cloture" || verrou !== null),
+  );
+  const { affiches: blocsAffiches, replies: blocsReplies } = repartirBlocs(phaseAffichee, presents);
+
   return (
     <>
       {/* Fil d'Ariane, en-tête (n°, statut, phase, client, formateur) et bandeau
@@ -770,549 +1500,38 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
         ancres={ancresVisibles([
           ...(parcours !== null ? ["checklist"] : []),
           ...(preparationKit !== null && preparationKit.aPreparer ? ["preparation-kit"] : []),
+          ...(verrou !== null ? ["cloture"] : []),
         ])}
       />
 
-      {/* ── En-tête de la session ─────────────────────────────────────────── */}
-      <section id="infos" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-        <h2 className={sectionHeadCls}>Informations générales</h2>
-        <div className="grid grid-cols-2 gap-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)] sm:grid-cols-4">
-          {/* Formation */}
-          <div>
-            <p className={infoLabelCls}>Formation</p>
-            <p className={infoValueCls}>
-              <Link
-                href={`/${locale}/${adminPrefix}/qualiopi/formations/${trainingSession.formation.id}`}
-                className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-              >
-                {trainingSession.formation.numero}
-              </Link>
-            </p>
-            <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-              {trainingSession.formation.titre}
-            </p>
-          </div>
-
-          {/* Modalité */}
-          <div>
-            <p className={infoLabelCls}>Modalité</p>
-            <p className={infoValueCls}>
-              {MODALITE_LABELS[trainingSession.modalite] ?? trainingSession.modalite}
-            </p>
-          </div>
-
-          {/* Stagiaires — « participant » reste au marketing public, jamais en console. */}
-          <div>
-            <p className={infoLabelCls}>Stagiaires</p>
-            <p className={infoValueCls}>
-              {trainingSession._count.enrollments} inscrits / {trainingSession.nbParticipantsPrevus}{" "}
-              prévus
-            </p>
-            {trainingSession.nbParticipantsReels !== null && (
-              <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                {trainingSession.nbParticipantsReels} réels
-              </p>
-            )}
-          </div>
-
-          {/* Montant HT */}
-          <div>
-            <p className={infoLabelCls}>Montant HT</p>
-            <p className={infoValueCls}>
-              {(trainingSession.montantHtCents / 100).toLocaleString("fr-FR", {
-                style: "currency",
-                currency: "EUR",
-              })}
-            </p>
-            {/* Vérification E2E 2026-07-26 — cet écran affirmait « Exonéré TVA »
-                en dur, juste sous un Montant HT que le PDF facture à 20 %. La
-                mention suit désormais `qualiopi.regime_tva` et disparaît en
-                régime assujetti, comme sur les documents. */}
-            {mentionTvaSession !== null && (
-              <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                {mentionTvaSession}
-              </p>
-            )}
-          </div>
-
-          {/* Client */}
-          {trainingSession.client !== null && (
-            <div>
-              <p className={infoLabelCls}>Client</p>
-              <p className={infoValueCls}>
-                {/* 🔴 L2 — menait à la LISTE des clients : on y cherchait le sien. */}
-                <Link
-                  href={`/${locale}/${adminPrefix}/qualiopi/clients/${trainingSession.client.id}`}
-                  className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                >
-                  {trainingSession.client.numero}
-                </Link>
-              </p>
-              <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                {trainingSession.client.raisonSociale}
-              </p>
-            </div>
-          )}
-
-          {/* Financement */}
-          <div>
-            <p className={infoLabelCls}>Financement</p>
-            <p className={infoValueCls}>
-              {trainingSession.financementType !== null
-                ? (FINANCEMENT_LABELS[trainingSession.financementType] ??
-                  trainingSession.financementType)
-                : "Non défini"}
-            </p>
-          </div>
-
-          {/* Durée réelle */}
-          {trainingSession.dureeReelleHeures !== null && (
-            <div>
-              <p className={infoLabelCls}>Durée réelle</p>
-              <p className={infoValueCls}>{trainingSession.dureeReelleHeures} h</p>
-            </div>
-          )}
-
-          {/* Session parente (récurrence) */}
-          {trainingSession.sessionParentId !== null && (
-            <div>
-              <p className={infoLabelCls}>Session parente</p>
-              <p className={infoValueCls}>
-                <Link
-                  href={`${base}/${trainingSession.sessionParentId}`}
-                  className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                >
-                  Voir la session parente
-                </Link>
-              </p>
-            </div>
-          )}
-
-          {/* Session reportée */}
-          {trainingSession.sessionReporteeId !== null && (
-            <div>
-              <p className={infoLabelCls}>Reporte la session</p>
-              <p className={infoValueCls}>
-                <Link
-                  href={`${base}/${trainingSession.sessionReporteeId}`}
-                  className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                >
-                  Voir la session d&apos;origine
-                </Link>
-              </p>
-            </div>
-          )}
-        </div>
-        <ContactEtConflitSession
-          adminPrefix={adminPrefix}
-          contact={
-            trainingSession.client !== null
-              ? {
-                  nom: trainingSession.client.contactNom,
-                  fonction: trainingSession.client.contactFonction,
-                  telephone: trainingSession.client.contactTelephone,
-                  email: trainingSession.client.contactEmail,
-                }
-              : null
-          }
-          formateurNom={
-            allTrainers
-              .filter((t) => t.id === trainingSession.formateurPrincipalId)
-              .map((t) => `${t.prenom} ${t.nom}`.trim())[0] ?? null
-          }
-          conflits={conflitsFormateur}
-        />
-      </section>
-
-      {/* ── Cycle de vie ─────────────────────────────────────────────────── */}
-      {/* 🔴 La checklist, juste après l'identité de la session : c'est la
-          question qu'on se pose en ouvrant un dossier — « où en est-il ? » —
-          et le serveur la calculait déjà sans jamais la rendre ici. */}
-      {parcours !== null ? (
-        <section id="checklist" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-          <h2 className={sectionHeadCls}>Où en est ce dossier</h2>
-          <ChecklistSession etapes={parcours.etapes} fait={parcours.fait} total={parcours.total} />
-        </section>
+      {/* Onglets de phase — la fiche s'ouvre sur la phase COURANTE du
+          dossier ; les autres phases sont un clic plus loin, et leurs blocs
+          restent sous « Toutes les actions » plus bas. */}
+      {phaseAffichee !== null ? (
+        <OngletsPhase hrefFiche={sessionBase} affichee={phaseAffichee} courante={phaseCourante} />
       ) : null}
 
-      <section id="cycle-de-vie" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-        <h2 className={sectionHeadCls}>Cycle de vie</h2>
-        <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
-          <SessionLifecycleButtons
-            sessionId={id}
-            statut={trainingSession.statut as TrainingSessionStatut}
-            baseSessions={base}
-          />
-        </div>
-      </section>
+      {blocsAffiches.map((b) => (
+        <Fragment key={b}>{blocs[b]}</Fragment>
+      ))}
 
-      {/* ── Dates de déroulement ───────────────────────────────────────────
-          🔴 Rangé ICI, avec le lieu, et surtout PAS dans « Cycle de vie » : les
-          dates sont un ATTRIBUT de la session, le report est un ÉVÉNEMENT qui
-          crée une seconde session et laisse la première « Reportée » au
-          registre. Voisiner avec les boutons de report ferait choisir le
-          marteau-pilon pour une faute de frappe. */}
-      <section id="dates" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-        <h2 className={sectionHeadCls}>Dates de déroulement</h2>
-        <SessionDatesForm
-          sessionId={id}
-          initialDateDebut={pourInputDateTimeLocal(trainingSession.dateDebut)}
-          initialDateFin={pourInputDateTimeLocal(trainingSession.dateFin)}
-          joursHorsPlage={joursHorsPlageSession}
-          nbJoursDeclares={joursDeclaresSession.length}
-          hrefJournees={`${sessionBase}/emargement`}
-        />
-      </section>
-
-      {/* ── Modalité et lieu (convention L.6353-1 · Qualiopi off.9) ────────
-          Les deux dans la MÊME section, depuis le 2026-09-05 : ils décident
-          ensemble de ce que la convention imprime, et les séparer garantissait
-          qu'on corrige l'un en oubliant l'autre. Cf. `SessionLieuForm`. */}
-      <section id="lieu" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-        <h2 className={sectionHeadCls}>Modalité et lieu de déroulement</h2>
-        <SessionLieuForm
-          sessionId={id}
-          initial={lieuValuesDepuisSession(trainingSession)}
-          modalite={trainingSession.modalite}
-        />
-      </section>
-
-      {/* ── Formateur principal (R9 — assignation bloquée si non habilité) ─── */}
-      <section id="formateur" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-        <h2 className={sectionHeadCls}>Formateur principal</h2>
-        <AssignFormateurForm
-          sessionId={id}
-          currentTrainerId={trainingSession.formateurPrincipalId}
-          trainers={formateurOptions}
-        />
-        {/* 2026-09-03 — ce que le formateur a RÉPONDU. Une affectation n'est
-            pas une confirmation : tant qu'il n'a pas accepté, la session n'a
-            pas de formateur sûr, et l'écran doit le dire là où on l'affecte. */}
-        {trainingSession.formateurPrincipalId !== null && (
-          <MissionFormateurPanel
-            sessionId={id}
-            trainerId={trainingSession.formateurPrincipalId}
-            trainerNom={
-              formateurOptions.find((f) => f.id === trainingSession.formateurPrincipalId)?.label ??
-              "formateur"
-            }
-            etat={etatMissionFormateur}
-            enAttente={missionFormateur?.statut === "en_attente"}
-            sessionAVenir={
-              trainingSession.statut === "planifiee" && trainingSession.dateDebut > new Date()
-            }
-            absencePossible={trainingSession.dateDebut <= new Date()}
-            // Le geste n'a de sens que si la session a démarré ET que personne
-            // n'a répondu. Sur une mission acceptée, refusée ou retirée, il n'y
-            // a rien à consigner — et le service refuse, mais un bouton qui
-            // refuse une fois sur deux n'est pas un bouton.
-            accordConsignable={
-              trainingSession.dateDebut <= new Date() &&
-              (missionFormateur?.statut === "expiree" ||
-                missionFormateur?.statut === "sans_reponse" ||
-                missionFormateur?.statut === "en_attente")
-            }
-          />
-        )}
-      </section>
-
-      {/* ── Inter-entreprises (R-INTER — financement/facture par participant) ─ */}
-      <section
-        id="inter-entreprises"
-        className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
-      >
-        <h2 className={sectionHeadCls}>Inter-entreprises</h2>
-        <InterEntreprisesSection
-          sessionId={id}
-          interEntreprises={trainingSession.interEntreprises}
-          enrollments={interEnrollments}
-          clients={clientsForInter}
-        />
-      </section>
-
-      {/* ── Préparation du kit — ce qu'il reste à faire pour cette session ──
-          Placé AVANT les sous-pages : c'est le premier geste après une vente,
-          et le seul que rien ne rappelait jusqu'ici. */}
-      {preparationKit !== null && preparationKit.aPreparer ? (
-        <section
-          id="preparation-kit"
-          className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
-        >
-          <PreparationKitSession
-            sessionId={id}
-            etape={preparationKit.etape}
-            aFaire={preparationKit.aFaire}
-            nbSorties={preparationKit.nbSorties}
-            valideLe={
-              preparationKit.valideLe ? dateValidation.format(preparationKit.valideLe) : null
-            }
-            hrefRelecture={`${sessionBase}/kit`}
-            genererAction={genererSortiesAction}
-            validerAction={validerSortiesAction}
-          />
-        </section>
+      {/* 🔴 Rien n'est SUPPRIMÉ : les blocs des autres phases sont repliés
+          ici, dans l'ordre de la page. Un geste rare (corriger une date le
+          jour J, régénérer une pièce après coup) reste à un clic — il n'est
+          simplement plus sous les yeux quand il n'est pas de saison. */}
+      {blocsReplies.length > 0 ? (
+        <details className="mb-[var(--space-admin-8)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
+          <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
+            Toutes les actions — {blocsReplies.length} bloc{blocsReplies.length > 1 ? "s" : ""} des
+            autres phases
+          </summary>
+          <div className="mt-[var(--space-admin-4)]">
+            {blocsReplies.map((b) => (
+              <Fragment key={b}>{blocs[b]}</Fragment>
+            ))}
+          </div>
+        </details>
       ) : null}
-
-      {/* ── Navigation vers les sous-pages ──────────────────────────────── */}
-      <section id="sous-pages" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-        <h2 className={sectionHeadCls}>Sous-pages</h2>
-        <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4">
-          <Link href={`${sessionBase}/emargement`} className={subLinkCls}>
-            <span>Émargement</span>
-          </Link>
-          <Link href={`${sessionBase}/evaluations`} className={subLinkCls}>
-            <span>Évaluations</span>
-          </Link>
-          <Link href={`${sessionBase}/financement`} className={subLinkCls}>
-            <span>Financement</span>
-          </Link>
-          {/* Le nécessaire de séance vit au niveau de la FORMATION (kit projeté
-              + supports générés) : on y mène depuis la session, là où on
-              prépare l'animation. */}
-          <Link
-            href={`/${locale}/${adminPrefix}/qualiopi/formations/${trainingSession.formation.id}/animer`}
-            className={subLinkCls}
-          >
-            <span>Tout pour animer (formation)</span>
-          </Link>
-        </div>
-      </section>
-
-      {/* SECTION: stagiaires */}
-      {/*
-       * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       * VAGUE 2 — Cluster E1 : Inscriptions + accès portail stagiaires
-       * Implémenter : EnrollmentsSection (lister / inscrire / changer statut)
-       * + GenererPortailAccesButton (+ revoquer) par stagiaire.
-       * Câble : enrollTraineeAction, setEnrollmentStatutAction,
-       *         genererPortailAccesAction, revoquerPortailAccesAction.
-       * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       */}
-      <section id="stagiaires" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-        <h2 className={sectionHeadCls}>Stagiaires</h2>
-        <EnrollmentsSection
-          sessionId={id}
-          debutSession={trainingSession.dateDebut.toISOString()}
-          enrollments={enrollmentsSerialized}
-          availableTrainees={traineesRaw.map((t) => ({
-            id: t.id,
-            nom: t.nom,
-            prenom: t.prenom,
-            email: t.email,
-          }))}
-          rechercheStagiaire={rechercheStagiaire}
-          totalStagiairesRegistre={totalStagiairesRegistre}
-          plafondStagiaires={PLAFOND_STAGIAIRES_INSCRIPTIBLES}
-          enrollAction={enrollTraineeAction}
-          setStatutAction={setEnrollmentStatutAction}
-          setAdaptationsAction={setEnrollmentAdaptationsAction}
-          genererPortailAction={genererPortailAccesAction}
-          revoquerPortailAction={revoquerPortailAccesAction}
-        />
-      </section>
-
-      {/* SECTION: documents */}
-      {/*
-       * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       * VAGUE 2 — Cluster E2 : Documents (14 types)
-       * Implémenter : DocumentsSection — boutons appelant generer<X>Action
-       * (convention, convocation, emargement, certificat_realisation, etc.)
-       * regroupés par catégorie (session / pédagogie / financeurs).
-       * Affiche les DocumentGenere existants + lien de téléchargement PDF.
-       * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       */}
-      <section id="documents" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-        <h2 className={sectionHeadCls}>Documents</h2>
-
-        {/* Dossier d'audit de la session — REMONTÉ ici (2026-08-05) : le bouton
-            n'était monté QUE sur la sous-page émargement, alors que « le dossier
-            de cette session » est la demande d'auditeur type ; il doit être
-            atteignable depuis la page principale de la session. Mêmes props que
-            sur emargement/page.tsx. */}
-        <div className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
-          <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-            Un ZIP rangé sous le numéro de cette session : ses documents, sa feuille
-            d&apos;émargement, et la vérification d&apos;intégrité de chaque chaîne de signatures.
-            C&apos;est ce que vous remettez à un auditeur qui demande « le dossier de cette session
-            ».
-          </p>
-          {/* 🔴 Le registre des signatures filtre par session depuis toujours :
-              `listerRegistreSignatures({ sessionId })` accepte le paramètre, et
-              la page `mode-auditeur/signatures` le lit dans son URL. AUCUN écran
-              ne le posait — zéro lien portant ce paramètre dans tout `src/app`
-              et `src/components`. Le filtre existait, testé, et n'était
-              atteignable qu'en tapant l'URL à la main.
-
-              Pire : quand ce registre atteint sa limite de lignes, il conseille
-              lui-même de « le restreindre à une session pour obtenir une vue
-              exhaustive » — sans offrir le moindre chemin pour le faire. Ce lien
-              est ce chemin, et il part de là où l'auditeur pose la question :
-              le hub de la session. */}
-          <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
-            <DossierSessionButton sessionId={id} />
-            <Link
-              href={`/${locale}/${adminPrefix}/qualiopi/mode-auditeur/signatures?session=${id}`}
-              className="admin-button-ghost"
-            >
-              Registre des signatures de cette session
-            </Link>
-            {/* 🔴 2026-09-07 — la PREUVE DE SOLLICITATION, qui n'avait aucun
-                chemin depuis la session.
-                L'indicateur 30 ne demande pas que le stagiaire réponde — il
-                demande que l'organisme ait DEMANDÉ, et relancé. Cette preuve
-                vit dans le journal des envois, qui ne s'indexait que par
-                adresse : pour une session à douze inscrits, douze recherches et
-                un recollement à la main. Ce lien pose la question comme
-                l'auditeur la pose — par session, pas par personne. */}
-            <Link
-              href={`/${locale}/${adminPrefix}/emails-envoyes?session=${id}&fenetre=0`}
-              className="admin-button-ghost"
-            >
-              Journal des envois de cette session
-            </Link>
-          </div>
-        </div>
-
-        <DocumentsSection
-          sessionId={id}
-          enrollments={enrollmentsLight}
-          documentsExistants={documentsSerialized}
-          // Lot 1ter §2/§5 — ce que ce dossier appelle reellement. Sans lui, les
-          // ~20 boutons de generation s affichaient TOUS, sur TOUTES les
-          // sessions : Kit OPCO sur un financement direct, Contrat de formation
-          // (particulier) sur un client entreprise.
-          contexte={{
-            financement: trainingSession.financementType,
-            typeClient: clientType,
-            statut: trainingSession.statut,
-            formateurEstLeDirigeant,
-          }}
-        />
-
-        {/* Signature des pièces CONTRACTUELLES.
-
-            Sans ce bloc, `emettreLienSignatureAction` et `contresignerPieceAction`
-            n'étaient appelables par personne : les cinq circuits seraient restés
-            du code de signature écrit, testé et inatteignable — le défaut que ce
-            chantier a déjà trouvé trois fois. */}
-        {piecesSignables.length > 0 && (
-          <div className="mt-[var(--space-admin-6)] space-y-[var(--space-admin-4)]">
-            <h3 className="text-[length:var(--text-admin-sm)] font-semibold">
-              Signature des pièces contractuelles
-            </h3>
-            {piecesSignables.map((d) => {
-              const circuit = circuitPour(d.type)!;
-              return (
-                <PieceSignaturePanel
-                  key={d.id}
-                  documentGenereId={d.id}
-                  numero={d.numero}
-                  pieceLibelle={circuit.libelle}
-                  parties={circuit.parties}
-                  signatures={signaturesParPiece.get(d.id) ?? []}
-                  emettreAction={emettreLienSignatureAction}
-                  revoquerLiensAction={revoquerLiensSignatureAction}
-                  contresignerAction={contresignerPieceAction}
-                  envoyerParEmailAction={envoyerLienSignatureParEmailAction}
-                />
-              );
-            })}
-          </div>
-        )}
-
-        {/*
-          Visa du responsable pédagogique sur le relevé de connexion.
-
-          ⚠️ Rendu SEULEMENT si un relevé existe : une session présentielle n'en
-          a pas, et un bloc vide se lirait comme une pièce manquante.
-
-          Le composant est celui de l'espace formateur, RÉUTILISÉ tel quel. Deux
-          écrans de signature divergeraient sur ce qu'ils affichent comme signé,
-          et l'un finirait par contredire l'autre sur la même pièce.
-        */}
-        {etatReleveConsole !== null && (
-          <div className="mt-[var(--space-admin-6)]">
-            <SignatureDocument
-              documentGenereId={etatReleveConsole.documentGenereId}
-              titrePiece="Relevé de connexion"
-              numero={etatReleveConsole.numero}
-              parties={etatReleveConsole.parties}
-              peutAgir={etatReleveConsole.peutAgir}
-              mentions={etatReleveConsole.mentions}
-              plafondProbant={etatReleveConsole.plafondProbant}
-              libelleBouton="Viser le relevé"
-              labelSignature="Visa du responsable pédagogique"
-              signerAction={viserReleveResponsablePedagogiqueAction}
-            />
-          </div>
-        )}
-
-        {/*
-          Contreseing de la LETTRE DE MISSION FORMATEUR.
-
-          C'est la contrepartie du bouton « Lettre de mission formateur » de la
-          section ci-dessus : la pièce s'y génère, elle se contresigne ici. Les
-          deux cadres au stylo du §7 du modèle existaient depuis toujours sans
-          que rien ne les remplisse.
-
-          ⚠️ Rendu SEULEMENT si une lettre existe : un bloc vide se lirait comme
-          une pièce manquante alors qu'elle n'a simplement pas été demandée.
-
-          Le composant est celui de l'espace formateur, RÉUTILISÉ tel quel. Deux
-          écrans de signature divergeraient sur ce qu'ils affichent comme signé,
-          et l'un finirait par contredire l'autre sur la même pièce.
-        */}
-        {etatLettreConsole !== null && (
-          <div className="mt-[var(--space-admin-6)]">
-            {/* Une lettre-CADRE couvrant cette session s'affiche et se
-                contresigne ici comme une lettre de session — en le disant. */}
-            {etatLettreConsole.estCadre && (
-              <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-                Lettre-cadre {etatLettreConsole.periodeLisible ?? ""} — elle couvre cette session
-                parmi d&apos;autres ; une seule signature du formateur vaut pour toutes.
-              </p>
-            )}
-            <SignatureDocument
-              documentGenereId={etatLettreConsole.documentGenereId}
-              titrePiece={
-                etatLettreConsole.estCadre
-                  ? "Lettre de mission-cadre"
-                  : "Lettre de mission formateur"
-              }
-              numero={etatLettreConsole.numero}
-              parties={etatLettreConsole.parties}
-              peutAgir={etatLettreConsole.peutAgir}
-              motifBlocage={etatLettreConsole.motifBlocage}
-              mentions={etatLettreConsole.mentions}
-              plafondProbant={etatLettreConsole.plafondProbant}
-              libelleBouton="Contresigner la lettre de mission"
-              labelSignature="Signature pour l'organisme de formation"
-              signerAction={contresignerLettreMissionAction}
-            />
-          </div>
-        )}
-      </section>
-
-      {/* SECTION: questionnaires */}
-      {/*
-       * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       * VAGUE 2 — Cluster E3 : Questionnaires de satisfaction
-       * Implémenter : QuestionnairesSection — générer les questionnaires
-       * (genererQuestionnairesSessionAction) + saisir les réponses
-       * (saisirReponsesQuestionnaireAction) par stagiaire.
-       * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       */}
-      <section id="questionnaires" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
-        <h2 className={sectionHeadCls}>Questionnaires — positionnement et satisfaction</h2>
-        <QuestionnairesSection
-          sessionId={id}
-          debutSession={trainingSession.dateDebut.toISOString()}
-          questionnaires={questionnairesSerialized}
-          genererAction={genererQuestionnairesSessionAction}
-          saisirReponsesAction={saisirReponsesQuestionnaireAction}
-          envoyerAction={envoyerQuestionnaireAction}
-        />
-      </section>
     </>
   );
 }

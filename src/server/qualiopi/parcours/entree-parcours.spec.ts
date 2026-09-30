@@ -3,8 +3,8 @@
  *
  * Il vivait en clair dans `prochainesEcheances`. Le hub d'une session a besoin
  * du MÊME parcours, et le recopier aurait fabriqué deux vérités : le jour où
- * une quinzième étape arrive, l'une des deux copies l'ignore, et l'écran qui
- * compte « 12/14 » n'est plus celui qui compte « 13/15 ».
+ * une dix-septième étape arrive, l'une des deux copies l'ignore, et l'écran qui
+ * compte « 14/16 » n'est plus celui qui compte « 15/17 ».
  *
  * Ce fichier garde les deux moitiés du contrat : la traduction elle-même, et
  * le fait qu'aucun écran ne la refasse dans son coin.
@@ -60,7 +60,8 @@ const inscription = (patch: Record<string, unknown> = {}) =>
     evaluations: [],
     emargementTokens: [],
     presences: [],
-    trainee: { portailAcces: [] },
+    trainee: { id: "t1", prenom: "Ada", nom: "Lovelace", portailAcces: [] },
+    attestationDocument: null,
     ...patch,
   }) as LigneSessionParcours["enrollments"][number];
 

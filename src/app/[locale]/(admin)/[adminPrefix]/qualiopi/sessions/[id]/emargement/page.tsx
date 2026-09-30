@@ -44,6 +44,7 @@ import {
 } from "@/server/actions/qualiopi/emargement-liens";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
+import { CLASSE_ANCRE_SECTION } from "@/features/admin-qualiopi/session-hub/ancres";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -216,32 +217,41 @@ export default async function EmargementPage({ params }: PageProps) {
           argent, et la lire après avoir tout fermé ne sert à rien.
           Il disparaît de lui-même quand tout est contresigné, et ne s'affiche
           jamais sur une session en financement direct. */}
-      <BandeauContresignatureFinanceur
-        constat={constatFinanceur}
-        href={`/${locale}/${adminPrefix}/qualiopi/sessions/${id}#formateur`}
-        libelleLien="Voir le formateur désigné (il contresigne depuis son espace)"
-      />
+      {/* `id` stables : le fil conducteur de la fiche (« Où en est ce dossier »)
+          mène ICI en un clic — `/emargement#contresignature`, `#journees`,
+          `#liens`, `#feuille`. Garde : `le-suivi-mene-au-geste.spec.ts`. */}
+      <div id="contresignature" className={CLASSE_ANCRE_SECTION}>
+        <BandeauContresignatureFinanceur
+          constat={constatFinanceur}
+          href={`/${locale}/${adminPrefix}/qualiopi/sessions/${id}#formateur`}
+          libelleLien="Voir le formateur désigné (il contresigne depuis son espace)"
+        />
+      </div>
 
       {/* Section : Journées réellement animées (D14) — AVANT la génération des
           créneaux, parce qu'elle en dépend : sans journées déclarées, les
           créneaux sont déduits de la plage de dates, ce qui est faux dès que les
           journées ne se suivent pas. */}
-      <SessionJoursEditor
-        sessionId={id}
-        joursInitiaux={jours}
-        hasCreneaux={hasCreneaux}
-        saveAction={saveSessionJoursAction}
-      />
+      <div id="journees" className={CLASSE_ANCRE_SECTION}>
+        <SessionJoursEditor
+          sessionId={id}
+          joursInitiaux={jours}
+          hasCreneaux={hasCreneaux}
+          saveAction={saveSessionJoursAction}
+        />
+      </div>
 
       {/* Liens de signature — après les journées (dont ils dépendent) et avant
           la grille : c'est l'ordre dans lequel l'admin travaille. */}
-      <LiensEmargement
-        sessionId={id}
-        hasCreneaux={hasCreneaux}
-        emettreAction={emettreLiensSessionAction}
-        envoyerAction={envoyerLiensEmargementAction}
-        revoquerAction={revoquerLiensSessionAction}
-      />
+      <div id="liens" className={CLASSE_ANCRE_SECTION}>
+        <LiensEmargement
+          sessionId={id}
+          hasCreneaux={hasCreneaux}
+          emettreAction={emettreLiensSessionAction}
+          envoyerAction={envoyerLiensEmargementAction}
+          revoquerAction={revoquerLiensSessionAction}
+        />
+      </div>
 
       {/* Section : Générer les créneaux */}
       <section className="mb-[var(--space-admin-8)]">
@@ -286,7 +296,7 @@ export default async function EmargementPage({ params }: PageProps) {
       </section>
 
       {/* Section : Grille émargement */}
-      <section className="mb-[var(--space-admin-8)]">
+      <section id="feuille" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
         <h2 className={sectionHeadCls}>Feuille d&apos;émargement présentiel</h2>
         {/* 🔴 `G-prerequis-02` — la grille se faisait passer pour un émargement
             signé. Elle DÉCLARE une présence ; l'écran doit le dire avant le clic. */}

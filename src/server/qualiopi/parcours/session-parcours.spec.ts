@@ -54,6 +54,7 @@ function inscription(patch: Partial<SessionParcoursInput["inscriptions"][number]
     questionnaires: [],
     evaluationFinaleAt: null,
     aUnAccesPortail: false,
+    attestation: null as SessionParcoursInput["inscriptions"][number]["attestation"],
     ...patch,
   };
 }
@@ -278,6 +279,13 @@ describe("🔴 fixture « dossier-invest-sun-1 » — les défauts réels rejou�
         emargementSigneAt: null,
         convocationEnvoyeeAt: null,
         evaluationFinaleAt: null,
+        // L'attestation « att » est celle de CETTE inscription
+        // (`attestationDocumentId`) : l'étape rapproche par inscription.
+        attestation: {
+          type: "attestation",
+          annuleeAt: null,
+          createdAt: d("2026-09-12T08:00:00.000Z"),
+        },
         questionnaires: [
           {
             type: "positionnement",
@@ -437,7 +445,7 @@ describe("🔴 un statut terminal REPLIE la checklist", () => {
   });
 
   it("session annulée : repliée, et aucune action réclamée", () => {
-    // Dérouler quinze étapes sur une session annulée demanderait des gestes
+    // Dérouler seize étapes sur une session annulée demanderait des gestes
     // que plus personne ne doit poser.
     const p = construireParcours(
       dossier({
@@ -510,11 +518,11 @@ describe("🔴 les avertissements qui coûtent cher à oublier", () => {
 // Ce que l'exigence voulait dire, et qui est juste : **aucune étape ne doit se
 // retrouver sans état terminal PAR OUBLI**. Le code ne distinguait pas les deux
 // `null` — une borne oubliée ressemblait exactement à une borne volontairement
-// absente. Désormais l'absence se DÉCLARE, et ce test balaie les quinze clés.
+// absente. Désormais l'absence se DÉCLARE, et ce test balaie les seize clés.
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("🔴 aucune étape n'est privée d'état terminal par OUBLI", () => {
-  // Un dossier qui exerce les quinze étapes, longtemps après la fin : c'est
+  // Un dossier qui exerce les seize étapes, longtemps après la fin : c'est
   // le seul moment où toutes ont eu l'occasion de devenir terminales.
   const p = construireParcours(
     dossier({
