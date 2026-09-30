@@ -90,7 +90,7 @@ import {
   gestePositionnement,
   HORIZON_JOURS,
 } from "@/server/qualiopi/parcours/relance-positionnement";
-import { chargerEtatsVerrou } from "@/server/qualiopi/sessions/verrou-dossier";
+import { chargerEtatsVerrou, dossierFige } from "@/server/qualiopi/sessions/verrou-dossier";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types job
@@ -550,7 +550,10 @@ async function handleAttestationsAuto(): Promise<void> {
   const enrollments = enrollmentsEligibles.filter(
     (e) =>
       (e.attestationDocumentId ?? null) === null ||
-      etatsVerrou.get(e.session.id)?.etat.etat !== "clos",
+      !(() => {
+        const etat = etatsVerrou.get(e.session.id)?.etat;
+        return etat !== undefined && dossierFige(etat);
+      })(),
   );
 
   // Comptés séparément pour que le log dise « 3 en attente d'évaluation » plutôt

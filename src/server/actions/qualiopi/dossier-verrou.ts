@@ -30,6 +30,7 @@ import {
   manquantsPourClore,
   texteEtatVerrou,
 } from "@/server/qualiopi/sessions/verrou-dossier";
+import { verifierMotDePasseReouverture } from "@/server/qualiopi/sessions/mot-de-passe-reouverture";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -38,6 +39,8 @@ const MOTIF_REOUVERTURE_MIN = 10;
 
 const rouvrirSchema = z.object({
   sessionId: z.string().uuid(),
+  /** Mot de passe de sécurité (décision du dirigeant) — jamais journalisé. */
+  motDePasse: z.string({ required_error: "Mot de passe de sécurité obligatoire" }).max(200),
   motif: z
     .string({ required_error: "Motif obligatoire" })
     .trim()
@@ -77,6 +80,7 @@ function revaliderSession(sessionId: string): void {
 export async function rouvrirDossierSessionAction(input: {
   sessionId: string;
   motif: string;
+  motDePasse: string;
 }): Promise<ActionResult<{ sessionId: string; depuis: string }>> {
   const session = await requireAdminRead();
   if (!peutEngager(session.role, "rouvrir_dossier")) {
@@ -86,7 +90,28 @@ export async function rouvrirDossierSessionAction(input: {
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Données invalides" };
   }
-  const { sessionId, motif } = parsed.data;
+  const { sessionId, motif, motDePasse } = parsed.data;
+
+  // Second facteur voulu par le dirigeant (2026-09-30) : même habilité, on ne
+  // rouvre pas une preuve sans le mot de passe de sécurité. Le refus est TRACÉ
+  // (tentative), le mot de passe jamais.
+  const verification = verifierMotDePasseReouverture(motDePasse);
+  if (!verification.ok) {
+    await logQualiopiActivity({
+      action: "qualiopi.session.dossier.reouverture_refusee",
+      targetType: "TrainingSession",
+      targetId: sessionId,
+      changes: { raison: verification.raison },
+      session,
+    });
+    return {
+      error:
+        verification.raison === "non_configure"
+          ? "Réouverture impossible : le mot de passe de sécurité n'est pas configuré sur le serveur (QUALIOPI_REOUVERTURE_MDP)."
+          : "Mot de passe de sécurité incorrect. Le dossier reste clos.",
+    };
+  }
+
   const auteurNom = await nomAuteur(session.userId, session.role);
 
   let resultat: { ok: true; depuis: Date } | { ok: false; error: string };

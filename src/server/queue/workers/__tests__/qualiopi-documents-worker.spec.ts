@@ -31,6 +31,7 @@ vi.mock("@/lib/prisma", () => ({
 // dossier n'est clos (une Map vide), comme avant l'arrivée du verrou.
 const verrou = vi.hoisted(() => ({ clos: new Set<string>() }));
 vi.mock("@/server/qualiopi/sessions/verrou-dossier", () => ({
+  dossierFige: (e: { etat: string }) => e.etat === "clos",
   chargerEtatsVerrou: vi.fn(
     async (ids: string[]) =>
       new Map(
