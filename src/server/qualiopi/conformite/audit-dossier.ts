@@ -52,6 +52,7 @@ import {
 } from "@/server/qualiopi/conformite/hors-dossier-audit";
 import { rendreTirageEmargementAJour } from "@/server/qualiopi/documents/emargement-tirage";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
+import { joindrePiecesNominativesComplementaires } from "@/server/qualiopi/conformite/pieces-nominatives-zip";
 
 export { pieceAdmissibleAuDossier };
 
@@ -1024,6 +1025,17 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
     );
   }
 
+  // ── Satisfactions répondues (ind. 30) et évaluations finales réalisées
+  //    (ind. 11) — constat du dossier remis le 2026-09-30. Même contrat que
+  //    les positionnements : nominatives, fail-soft, un trou rend INCOMPLET.
+  const complements = await joindrePiecesNominativesComplementaires(
+    zip,
+    indexLines,
+    avertissements,
+  );
+  nbInclus += complements.nbInclus;
+  nbOmis += complements.nbOmis;
+
   indexLines.push("");
   indexLines.push(`Résumé : ${nbInclus} PDF inclus, ${nbOmis} omis.`);
   zip.file("index.txt", indexLines.join("\n") + "\n");
@@ -1090,7 +1102,9 @@ function buildMarkdown(payload: ManifesteAuditPayload): string {
 
   lignes.push("# Manifeste d'audit Qualiopi — Axion-IA SAS");
   lignes.push("");
-  lignes.push(`**Généré le :** ${new Date(payload.meta.genereAt).toLocaleString("fr-FR")}`);
+  lignes.push(
+    `**Généré le :** ${new Date(payload.meta.genereAt).toLocaleString("fr-FR", { timeZone: "Europe/Paris" })}`,
+  );
   lignes.push(`**Référentiel :** ${payload.meta.version}`);
   lignes.push(
     `**Score de couverture :** ${payload.meta.nbCouverts} / ${payload.meta.nbApplicables} indicateurs applicables (${payload.meta.scorePct} %)`,

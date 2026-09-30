@@ -76,6 +76,17 @@ vi.mock("@/server/qualiopi/positionnement/pieces-remplies", () => ({
   produirePiecesPositionnementRempli: vi.fn(async () => ({ pieces: [], echecs: [] })),
 }));
 
+// Constat du ZIP du 2026-09-30 : satisfactions répondues (ind. 30) et
+// évaluations finales réalisées (ind. 11). Défaut neutre, comme ci-dessus.
+vi.mock("@/server/qualiopi/satisfaction/pieces-remplies", () => ({
+  produirePiecesSatisfactionRemplie: vi.fn(async () => ({ pieces: [], echecs: [] })),
+}));
+vi.mock("@/server/qualiopi/evaluations/pieces-realisees", () => ({
+  produirePiecesEvaluationRealisee: vi.fn(async () => ({ pieces: [], echecs: [] })),
+}));
+
+import { produirePiecesSatisfactionRemplie } from "@/server/qualiopi/satisfaction/pieces-remplies";
+import { produirePiecesEvaluationRealisee } from "@/server/qualiopi/evaluations/pieces-realisees";
 import { prisma } from "@/lib/prisma";
 import {
   compterPositionnementsRemplis,
@@ -1820,5 +1831,159 @@ describe("C2-03 — le dossier d'audit porte les positionnements REMPLIS", () =>
     const result = await genererDossierAuditZip();
     expect(result.incomplet).toBe(true);
     expect(result.avertissements.join("\n")).toMatch(/positionnement/i);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Constat du ZIP du 2026-09-30 — satisfactions répondues, évaluations
+// réalisées, dates de Paris
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 ZIP du 2026-09-30 — satisfactions/ et evaluations/ nominatives", () => {
+  const mockSatisfactions = produirePiecesSatisfactionRemplie as ReturnType<typeof vi.fn>;
+  const mockEvaluations = produirePiecesEvaluationRealisee as ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockEvaluerConformite.mockResolvedValue(makeConformiteResult());
+    mockPrisma.documentGenere.groupBy.mockResolvedValue([]);
+    mockPrisma.documentGenere.findMany.mockResolvedValue([]);
+    mockPrisma.trainerDocument.findMany.mockResolvedValue([]);
+    mockPrisma.veille.count.mockResolvedValue(0);
+    mockPrisma.appreciation.count.mockResolvedValue(0);
+    mockPrisma.trainer.findMany.mockResolvedValue([]);
+    mockPrisma.revueDirection.findFirst.mockResolvedValue(null);
+    mockGetConfig.mockResolvedValue("");
+    mockGetObjectBufferR2.mockResolvedValue(null);
+    mockIsR2Configured.mockReturnValue(true);
+    mockRenderRegistrePdfBuffer.mockImplementation((type: string) =>
+      Promise.resolve({ buffer: Buffer.from(`%PDF-1.4 ${type}`), filename: `${type}.pdf` }),
+    );
+    (produirePiecesPositionnementRempli as ReturnType<typeof vi.fn>).mockResolvedValue({
+      pieces: [],
+      echecs: [],
+    });
+    mockSatisfactions.mockResolvedValue({ pieces: [], echecs: [] });
+    mockEvaluations.mockResolvedValue({ pieces: [], echecs: [] });
+  });
+
+  async function lireZip(): Promise<{ texte: string; zip: JSZip; incomplet: boolean }> {
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    return {
+      texte: await zip.files["index.txt"]!.async("string"),
+      zip,
+      incomplet: result.incomplet,
+    };
+  }
+
+  it("joint une pièce nominative par questionnaire de satisfaction répondu, sous satisfactions/", async () => {
+    mockSatisfactions.mockResolvedValue({
+      pieces: [
+        {
+          chemin: "satisfactions/2026-09-11_martin-camille_5e6f7a8b_a-chaud.pdf",
+          buffer: Buffer.from("%PDF-1.4 chaud"),
+          saisieOrganisme: false,
+          moment: "chaud",
+        },
+        {
+          chemin: "satisfactions/2026-09-11_martin-camille_6f7a8b9c_a-froid_saisie-organisme.pdf",
+          buffer: Buffer.from("%PDF-1.4 froid"),
+          saisieOrganisme: true,
+          moment: "froid",
+        },
+      ],
+      echecs: [],
+    });
+    const { texte, zip, incomplet } = await lireZip();
+    expect(zip.files["satisfactions/2026-09-11_martin-camille_5e6f7a8b_a-chaud.pdf"]).toBeDefined();
+    expect(texte).toContain(
+      "Satisfactions (ind. 30) : 1 à chaud, 1 à froid, dont 1 saisi par l'organisme → satisfactions/",
+    );
+    expect(texte).toContain("[OK]  satisfactions/2026-09-11_martin-camille_5e6f7a8b_a-chaud.pdf");
+    expect(incomplet).toBe(false);
+  });
+
+  it("joint une pièce nominative par évaluation finale réalisée, sous evaluations/", async () => {
+    mockEvaluations.mockResolvedValue({
+      pieces: [
+        {
+          chemin: "evaluations/2026-09-11_martin-camille_9a8b7c6d.pdf",
+          buffer: Buffer.from("%PDF-1.4 eval"),
+        },
+      ],
+      echecs: [],
+    });
+    const { texte, zip } = await lireZip();
+    expect(zip.files["evaluations/2026-09-11_martin-camille_9a8b7c6d.pdf"]).toBeDefined();
+    expect(texte).toContain("Évaluations finales réalisées (ind. 11) : 1 → evaluations/");
+    expect(texte).toContain("[OK]  evaluations/2026-09-11_martin-camille_9a8b7c6d.pdf");
+  });
+
+  it("sans réponse ni résultat, l'index le DIT : le gabarit ne tient pas lieu de preuve", async () => {
+    const { texte } = await lireZip();
+    expect(texte).toContain("Satisfactions (ind. 30) : 0 à chaud, 0 à froid → satisfactions/");
+    expect(texte).toMatch(/Aucun questionnaire de satisfaction répondu/);
+    expect(texte).toContain("Évaluations finales réalisées (ind. 11) : 0 → evaluations/");
+    expect(texte).toMatch(/Aucune évaluation finale enregistrée/);
+  });
+
+  it("une pièce qui ne se rend pas : [OMIS] dans l'index, dossier INCOMPLET et averti", async () => {
+    mockSatisfactions.mockResolvedValue({
+      pieces: [],
+      echecs: [
+        {
+          chemin: "satisfactions/2026-09-11_martin-camille_5e6f7a8b_a-chaud.pdf",
+          motif: "boom",
+          saisieOrganisme: false,
+          moment: "chaud",
+        },
+      ],
+    });
+    mockEvaluations.mockResolvedValue({
+      pieces: [],
+      echecs: [{ chemin: "evaluations/2026-09-11_martin-camille_9a8b7c6d.pdf", motif: "boom" }],
+    });
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    const texte = await zip.files["index.txt"]!.async("string");
+    expect(texte).toContain(
+      "[OMIS] satisfactions/2026-09-11_martin-camille_5e6f7a8b_a-chaud.pdf — erreur de rendu (boom)",
+    );
+    expect(texte).toContain(
+      "[OMIS] evaluations/2026-09-11_martin-camille_9a8b7c6d.pdf — erreur de rendu (boom)",
+    );
+    expect(result.incomplet).toBe(true);
+    const avert = result.avertissements.join("\n");
+    expect(avert).toMatch(/satisfaction/i);
+    expect(avert).toMatch(/évaluation/i);
+  });
+
+  it("une lecture impossible est consignée et rend le dossier INCOMPLET", async () => {
+    mockEvaluations.mockRejectedValue(new Error("base indisponible"));
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    const texte = await zip.files["index.txt"]!.async("string");
+    expect(texte).toContain("[OMIS] evaluations/ — lecture impossible (base indisponible)");
+    expect(result.incomplet).toBe(true);
+  });
+
+  it("🕐 le manifeste.md date sa génération en heure de PARIS (conteneur en UTC)", async () => {
+    const tz = process.env["TZ"];
+    process.env["TZ"] = "UTC";
+    vi.useFakeTimers({ toFake: ["Date"] });
+    // 22 h 53 UTC le 29 = 00 h 53 à Paris le 30.
+    vi.setSystemTime(new Date("2026-09-29T22:53:00.000Z"));
+    try {
+      const result = await genererDossierAuditZip();
+      expect(result.filename).toBe("dossier-audit-qualiopi-2026-09-30");
+      const zip = await JSZip.loadAsync(result.base64, { base64: true });
+      const md = await zip.files["manifeste.md"]!.async("string");
+      expect(md).toContain("**Généré le :** 30/09/2026 00:53");
+    } finally {
+      vi.useRealTimers();
+      if (tz === undefined) delete process.env["TZ"];
+      else process.env["TZ"] = tz;
+    }
   });
 });

@@ -6,7 +6,7 @@
  * builder sélectionne les données réelles du bon modèle Prisma.
  */
 
-import { beforeAll, describe, it, expect, vi, beforeEach } from "vitest";
+import { afterEach, beforeAll, describe, it, expect, vi, beforeEach } from "vitest";
 import { registerPdfTestFontsFallback } from "@/server/qualiopi/documents/register-pdf-test-fonts";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -21,6 +21,8 @@ vi.mock("@/lib/prisma", () => ({
     partenariat: { findMany: vi.fn() },
     sousTraitant: { findMany: vi.fn() },
     incident: { findMany: vi.fn() },
+    appreciation: { findMany: vi.fn() },
+    moyenPedagogique: { findMany: vi.fn() },
   },
 }));
 
@@ -39,7 +41,7 @@ vi.mock("@/server/qualiopi/documents/organisme", () => ({
 }));
 
 import { prisma } from "@/lib/prisma";
-import { renderRegistrePdfBuffer, REGISTRE_TYPES } from "./registres-pdf";
+import { construireRegistre, renderRegistrePdfBuffer, REGISTRE_TYPES } from "./registres-pdf";
 
 const mockPrisma = prisma as unknown as {
   reclamation: { findMany: ReturnType<typeof vi.fn> };
@@ -48,6 +50,8 @@ const mockPrisma = prisma as unknown as {
   partenariat: { findMany: ReturnType<typeof vi.fn> };
   sousTraitant: { findMany: ReturnType<typeof vi.fn> };
   incident: { findMany: ReturnType<typeof vi.fn> };
+  appreciation: { findMany: ReturnType<typeof vi.fn> };
+  moyenPedagogique: { findMany: ReturnType<typeof vi.fn> };
 };
 
 beforeAll(() => {
@@ -62,6 +66,8 @@ function setupEmpty() {
   mockPrisma.partenariat.findMany.mockResolvedValue([]);
   mockPrisma.sousTraitant.findMany.mockResolvedValue([]);
   mockPrisma.incident.findMany.mockResolvedValue([]);
+  mockPrisma.appreciation.findMany.mockResolvedValue([]);
+  mockPrisma.moyenPedagogique.findMany.mockResolvedValue([]);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -71,7 +77,7 @@ function setupEmpty() {
 describe("renderRegistrePdfBuffer", () => {
   beforeEach(setupEmpty);
 
-  it("expose les 6 types de registres attendus", () => {
+  it("expose les 8 types de registres attendus", () => {
     expect([...REGISTRE_TYPES]).toEqual([
       "reclamations",
       "veille",
@@ -79,6 +85,8 @@ describe("renderRegistrePdfBuffer", () => {
       "partenariats",
       "sous_traitants",
       "incidents",
+      "appreciations",
+      "moyens",
     ]);
   });
 
@@ -169,5 +177,115 @@ describe("renderRegistrePdfBuffer", () => {
     } finally {
       process.env["DATABASE_URL"] = original;
     }
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Dossier d'audit du 2026-09-30 — registres manquants et dates UTC
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 constat du ZIP du 2026-09-30 — appréciations, moyens et date de Paris", () => {
+  // Le conteneur de production tourne en UTC : sans ce réglage, un poste de
+  // développement à Paris ferait passer le test sur le code fautif.
+  const tzOrigine = process.env["TZ"];
+  beforeEach(() => {
+    setupEmpty();
+    process.env["TZ"] = "UTC";
+  });
+  afterEach(() => {
+    if (tzOrigine === undefined) delete process.env["TZ"];
+    else process.env["TZ"] = tzOrigine;
+  });
+
+  it("appréciations (ind. 30) : une ligne par appréciation, qualité, auteur, note, date de PARIS", async () => {
+    mockPrisma.appreciation.findMany.mockResolvedValue([
+      {
+        // 23 h 30 UTC le 29 = 01 h 30 à Paris le 30.
+        dateAppreciation: new Date("2026-09-29T23:30:00.000Z"),
+        source: "stagiaire",
+        note: 4,
+        commentaire: "Questionnaire de satisfaction à chaud — note 4/5.",
+        trainee: { nom: "Martin", prenom: "Camille" },
+        trainer: null,
+      },
+      {
+        dateAppreciation: new Date("2026-09-10T10:00:00.000Z"),
+        source: "formateur",
+        note: null,
+        commentaire: "Groupe homogène",
+        trainee: null,
+        trainer: { nom: "Durand", prenom: "Luc" },
+      },
+    ]);
+    const registre = await construireRegistre("appreciations");
+    expect(registre.titre).toMatch(/appréciations/i);
+    expect(registre.sousTitre).toMatch(/30/);
+    expect(registre.lignes).toEqual([
+      [
+        "30/09/2026",
+        "Stagiaire",
+        "Camille Martin",
+        "4/5",
+        "Questionnaire de satisfaction à chaud — note 4/5.",
+      ],
+      ["10/09/2026", "Formateur", "Luc Durand", "", "Groupe homogène"],
+    ]);
+    const result = await renderRegistrePdfBuffer("appreciations");
+    expect(result.buffer.slice(0, 4).toString("utf8")).toBe("%PDF");
+    expect(result.filename).toMatch(/^registre-appreciations-\d{4}-\d{2}-\d{2}\.pdf$/);
+  }, 30_000);
+
+  it("moyens (ind. 17 / 19) : inventaire avec statut et date de vérification", async () => {
+    mockPrisma.moyenPedagogique.findMany.mockResolvedValue([
+      {
+        categorie: "plateforme",
+        libelle: "Google Meet",
+        localisation: "En ligne",
+        actif: true,
+        dateVerification: new Date("2026-09-29T22:15:00.000Z"),
+      },
+      {
+        categorie: "materiel",
+        libelle: "Vidéoprojecteur",
+        localisation: "",
+        actif: false,
+        dateVerification: null,
+      },
+    ]);
+    const registre = await construireRegistre("moyens");
+    expect(registre.titre).toMatch(/moyens/i);
+    expect(registre.lignes).toEqual([
+      ["Plateformes et outils numériques", "Google Meet", "En ligne", "Actif", "30/09/2026"],
+      ["Matériel pédagogique et technique", "Vidéoprojecteur", "", "Retiré", "Jamais vérifié"],
+    ]);
+    const result = await renderRegistrePdfBuffer("moyens");
+    expect(result.buffer.slice(0, 4).toString("utf8")).toBe("%PDF");
+    expect(result.filename).toMatch(/^inventaire-moyens-\d{4}-\d{2}-\d{2}\.pdf$/);
+  }, 30_000);
+
+  it("le nom de fichier porte le jour de PARIS, pas celui d'UTC (00 h 53 à Paris le 30/09)", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-09-29T22:53:00.000Z"));
+    try {
+      const result = await renderRegistrePdfBuffer("veille");
+      expect(result.filename).toBe("journal-veille-2026-09-30.pdf");
+    } finally {
+      vi.useRealTimers();
+    }
+  }, 30_000);
+
+  it("les dates des lignes sont lues à Paris", async () => {
+    mockPrisma.veille.findMany.mockResolvedValue([
+      {
+        dateVeille: new Date("2026-09-29T22:30:00.000Z"),
+        type: "legale",
+        titre: "Décret",
+        source: "Legifrance",
+        impact: "",
+        actionDecidee: "",
+      },
+    ]);
+    const registre = await construireRegistre("veille");
+    expect(registre.lignes[0]![0]).toBe("30/09/2026");
   });
 });
