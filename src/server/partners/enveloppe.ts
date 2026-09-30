@@ -145,6 +145,22 @@ export function signerCorps(secret: string, horodatage: string, corps: string): 
   return createHmac("sha256", secret).update(`${horodatage}.${corps}`).digest("hex");
 }
 
+/**
+ * L'en-tête qui porte l'identifiant de la clé de signature (INT-T41, partners/ADR-0013 d.8),
+ * pour que Partners choisisse le bon secret pendant une rotation à deux clés (QA-T52).
+ */
+export const ENTETE_KID = "X-Axionia-Kid";
+
+/**
+ * L'identifiant d'une clé, DÉRIVÉ de sa valeur — la MÊME dérivation que `kidDe` de Partners
+ * (`src/lib/env.ts`, partners/ADR-0013 d.8) : les huit premiers caractères hexadécimaux du
+ * SHA-256 de « partners.kid.v1 », du séparateur U+001F et de la valeur. Stable pour une valeur,
+ * distinct d'un secret à l'autre, et il ne révèle rien d'exploitable du secret.
+ */
+export function kidDe(valeur: string): string {
+  return createHash("sha256").update(`partners.kid.v1${valeur}`, "utf8").digest("hex").slice(0, 8);
+}
+
 /** L'horodatage de signature, dans la seule forme que `signerCorps` accepte. */
 export function horodatageSignature(maintenant: Date = new Date()): string {
   return Math.floor(maintenant.getTime() / 1000).toString();

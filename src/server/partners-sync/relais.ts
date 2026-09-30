@@ -28,7 +28,7 @@
  * INERTIE : chaque point d'entrée commence par `canalPartnersOuvert()`. Fermé, aucune requête,
  * aucun appel réseau — le client Prisma n'est même pas chargé (import dynamique).
  */
-import { horodatageSignature, signerCorps } from "@/server/partners/enveloppe";
+import { ENTETE_KID, horodatageSignature, kidDe, signerCorps } from "@/server/partners/enveloppe";
 
 import {
   CLE_VERROU_SEQUENCE,
@@ -227,6 +227,7 @@ export async function envoyerLigne(
         "Content-Type": "application/json",
         "X-Axionia-Timestamp": horodatage,
         "X-Axionia-Signature": signerCorps(secret, horodatage, ligne.corps),
+        [ENTETE_KID]: kidDe(secret),
       },
       // LE TEXTE STOCKÉ, tel quel : c'est sur lui que porte la signature.
       body: ligne.corps,
