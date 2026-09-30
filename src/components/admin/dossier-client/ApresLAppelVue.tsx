@@ -428,11 +428,14 @@ export async function ApresLAppelVue({
             </div>
           </section>
 
-          {/* UX-07 : le libellé suit « La suite » choisie, sans JavaScript (CSS
-              `:has`) — seule la suite « devis » ouvre le devis après validation. */}
+          {/* UX-07 : le libellé suit les choix, sans JavaScript (CSS `:has`) — le
+              devis ne s'ouvre qu'avec la suite « devis » ET un rendez-vous tenu
+              (absent ou reporté : la suite est annulée, `garderSuiteEtEcheance`). */}
           <button type="submit" className="admin-button">
-            <span className="group-has-[option[value=devis]:checked]:hidden">Valider</span>
-            <span className="hidden group-has-[option[value=devis]:checked]:inline">
+            <span className="[.group:has(option[value=devis]:checked):not(:has(option[value=absent]:checked)):not(:has(option[value=reporte]:checked))_&]:hidden">
+              Valider
+            </span>
+            <span className="hidden [.group:has(option[value=devis]:checked):not(:has(option[value=absent]:checked)):not(:has(option[value=reporte]:checked))_&]:inline">
               Valider et ouvrir le devis
             </span>
           </button>
