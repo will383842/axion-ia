@@ -206,3 +206,34 @@ describe("la fiche et « À traiter » branchent la règle", () => {
     expect(src).toContain("MENTION_GESTE_VERROUILLE");
   });
 });
+
+describe("session reportée : la session de remplacement se rejoint d'un clic", () => {
+  function repli(remplacementId: string | null) {
+    return renderToStaticMarkup(
+      <ChecklistSession
+        etapes={[]}
+        fait={0}
+        total={0}
+        sessionId="S1"
+        prefixeSessions="/fr/admin/qualiopi/sessions"
+        repliee={{
+          motif: "Session reportée vers AXI-SESS-2026-042",
+          remplacement: "AXI-SESS-2026-042",
+          remplacementId,
+        }}
+      />,
+    );
+  }
+
+  it("le numéro est un LIEN vers la fiche de la session de remplacement", () => {
+    expect(repli("s-042")).toMatch(
+      /<a [^>]*href="\/fr\/admin\/qualiopi\/sessions\/s-042"[^>]*>AXI-SESS-2026-042<\/a>/,
+    );
+  });
+
+  it("identifiant inconnu : le numéro reste écrit, sans lien inventé", () => {
+    const html = repli(null);
+    expect(html).toContain("AXI-SESS-2026-042");
+    expect(html).not.toContain("<a ");
+  });
+});

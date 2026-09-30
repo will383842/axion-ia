@@ -28,6 +28,8 @@
  * l'applique déjà.
  */
 
+import Link from "next/link";
+
 import type { EtapeParcours, RepliParcours } from "@/server/qualiopi/parcours/session-parcours";
 import type { EtatEtape } from "@/server/qualiopi/parcours/etat-echeance";
 import { hrefEtape } from "@/server/qualiopi/parcours/cible-etape";
@@ -111,7 +113,18 @@ export function ChecklistSession({
         role="status"
         className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
       >
-        Remplacée par la session {repliee.remplacement} : le parcours se suit sur sa fiche.
+        Remplacée par la session{" "}
+        {repliee.remplacementId !== null ? (
+          <Link
+            href={`${prefixeSessions}/${repliee.remplacementId}`}
+            className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+          >
+            {repliee.remplacement}
+          </Link>
+        ) : (
+          repliee.remplacement
+        )}{" "}
+        : le parcours se suit sur sa fiche.
       </p>
     );
   }

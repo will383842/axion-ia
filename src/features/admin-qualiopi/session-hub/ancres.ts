@@ -12,14 +12,17 @@
  *
  * ## Pourquoi la liste ne peut pas être une constante rendue telle quelle
  *
- * ⚠️ Une section est **conditionnelle** — la préparation du kit, rendue
- * seulement si `preparationKit.aPreparer`. Une barre qui l'afficherait
- * toujours produirait un lien qui ne mène **nulle part** : le
+ * ⚠️ Trois sections sont **conditionnelles** — la checklist, la préparation
+ * du kit et la clôture du dossier (voir chaque entrée). Une barre qui les
+ * afficherait toujours produirait un lien qui ne mène **nulle part** : le
  * clic ne bouge pas, et l'utilisateur croit l'interface cassée. Un lien mort
  * est pire que pas de lien — il enseigne à ne plus faire confiance à la barre.
  *
  * D'où la forme : le catalogue déclare ce qui PEUT exister, la page dit ce qui
- * existe VRAIMENT à ce rendu, et `ancresVisibles` fait l'intersection.
+ * existe VRAIMENT à ce rendu (`presents`), `repartirBlocs` range les blocs
+ * rendus entre l'onglet et le repli, et `ancresDeLOnglet` ne garde que ceux de
+ * l'onglet. `ancres.spec.ts` vérifie que la page filtre bien chaque section
+ * marquée conditionnelle — et aucune autre.
  *
  * ## Pourquoi un module pur plutôt qu'un tableau dans la page
  *
@@ -37,12 +40,9 @@ export interface AncreHub {
   /** Intitulé affiché dans la barre. Court : la barre tient sur une ligne. */
   readonly libelle: string;
   /**
-   * `true` quand la section n'est pas toujours rendue. La page DOIT alors dire
-   * si elle l'est, via `presentes` — sinon l'ancre est écartée par défaut.
-   *
-   * ⚠️ Le défaut est l'ABSENCE : une ancre conditionnelle qu'on oublie de
-   * déclarer disparaît de la barre. C'est le bon sens du défaut — on préfère
-   * une barre incomplète à une barre qui ment.
+   * `true` quand la section n'est pas toujours rendue. La page DOIT alors
+   * l'écarter de `presents` quand elle ne l'est pas — `ancres.spec.ts` vérifie
+   * que le filtre de la page nomme exactement les sections conditionnelles.
    */
   readonly conditionnelle?: true;
 }
@@ -75,21 +75,14 @@ export const ANCRES_HUB_SESSION: readonly AncreHub[] = [
   { id: "stagiaires", libelle: "Stagiaires" },
   { id: "documents", libelle: "Documents" },
   { id: "questionnaires", libelle: "Questionnaires" },
-  // Conditionnelle : rendue dans l'onglet « Clôturée » seulement — le résumé
-  // du verrou, son historique et les gestes encore ouverts.
+  // Conditionnelle : absente quand la session n'est pas dans le parcours du
+  // verrou (annulée, reportée, hors périmètre) et n'a jamais été rouverte — un
+  // historique vide y serait du bruit. Présente, elle est AFFICHÉE dans
+  // l'onglet « Clôturée » et repliée ailleurs. Elle ne porte QUE l'historique
+  // des réouvertures : l'état du verrou et « Encore possible » vivent dans le
+  // bandeau du layout, le ZIP et le registre dans le bloc Documents.
   { id: "cloture", libelle: "Clôture du dossier", conditionnelle: true },
 ] as const;
-
-/**
- * Les ancres à afficher pour CE rendu.
- *
- * @param presentes — ids des sections conditionnelles effectivement rendues.
- *   Les sections inconditionnelles n'ont pas à y figurer.
- */
-export function ancresVisibles(presentes: Iterable<string> = []): readonly AncreHub[] {
-  const rendues = new Set(presentes);
-  return ANCRES_HUB_SESSION.filter((a) => !a.conditionnelle || rendues.has(a.id));
-}
 
 /**
  * La barre d'ancres d'UN onglet : les seuls blocs AFFICHÉS de l'onglet courant.

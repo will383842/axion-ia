@@ -38,7 +38,7 @@ function sessionAJ3(patch: Record<string, unknown> = {}) {
     // 🔴 2026-08-20 (`D2-5-01`) — champ AJOUTÉ. Le service lit désormais la
     // relation inverse pour composer « Session reportée vers … ». Une fixture
     // est un CONTRAT : elle se recopie sur le `select` de la requête.
-    sessionRemplacement: [] as Array<{ numero: string }>,
+    sessionRemplacement: [] as Array<{ id: string; numero: string }>,
     // 2026-09-15 — champs AJOUTÉS avec l'étape de contresignature : ils sont
     // lus par le même `select`.
     jours: [] as Array<{ date: Date; heureDebut: string; heureFin: string; trainerId: null }>,
@@ -305,12 +305,14 @@ describe("🔴 D2-5-01 — la filiation d'un report", () => {
     sessionFindMany.mockResolvedValue([
       sessionAJ3({
         statut: "reportee",
-        sessionRemplacement: [{ numero: "AXI-SESS-2026-042" }],
+        sessionRemplacement: [{ id: "s-042", numero: "AXI-SESS-2026-042" }],
       }),
     ]);
 
     const { parSession } = await prochainesEcheances(CIBLE);
     expect(parSession.get("s1")?.repliee?.motif).toContain("AXI-SESS-2026-042");
+    // L'identifiant voyage avec le numéro : la fiche en fait un lien.
+    expect(parSession.get("s1")?.repliee?.remplacementId).toBe("s-042");
   });
 
   it("ne prétend à aucune filiation quand il n'y a pas de remplacement", async () => {

@@ -1362,7 +1362,8 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
       </>
     ),
     // ── Clôture du dossier (onglet « Clôturée ») ─────────────────────────
-    // L'historique des réouvertures, seul. Relecture L3 : l'état du verrou
+    // L'historique des réouvertures, seul — absent hors parcours s'il est
+    // vide (filtre `presents` ci-dessous). Relecture L3 : l'état du verrou
     // (`texteEtatVerrou`) et « Encore possible » vivent dans le bandeau du
     // layout, le ZIP et le registre dans le bloc Documents — un seul
     // exemplaire de chaque, jamais deux.
@@ -1373,7 +1374,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
           <h3 className="text-[length:var(--text-admin-sm)] font-semibold">Historique du verrou</h3>
           {verrou.entree.evenements.length === 0 ? (
             <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-              Aucune réouverture : le dossier n&apos;a jamais été rouvert.
+              Dossier jamais rouvert.
             </p>
           ) : (
             <ol className="list-decimal space-y-[var(--space-admin-1)] pl-[var(--space-admin-5)] text-[length:var(--text-admin-sm)]">
@@ -1395,7 +1396,10 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
   const presents = (Object.keys(blocs) as BlocFiche[]).filter(
     (b) =>
       (b !== "checklist" || checklistRendue) &&
-      (b !== "preparation-kit" || (preparationKit !== null && preparationKit.aPreparer)),
+      (b !== "preparation-kit" || (preparationKit !== null && preparationKit.aPreparer)) &&
+      (b !== "cloture" ||
+        phaseDuDossier !== "hors_parcours" ||
+        verrou.entree.evenements.length > 0),
   );
   const { affiches: blocsAffiches, replies: blocsReplies } = repartirBlocs(phaseAffichee, presents);
 

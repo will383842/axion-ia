@@ -81,7 +81,7 @@ export interface LigneSessionParcours {
    * fixture ou un `select` qui l'oublierait ne compile pas. C'est le type, et
    * non la vigilance, qui garde les deux alignés.
    */
-  readonly sessionRemplacement: ReadonlyArray<{ readonly numero: string }>;
+  readonly sessionRemplacement: ReadonlyArray<{ readonly id: string; readonly numero: string }>;
   readonly documents: SessionParcoursInput["documents"];
   /**
    * 2026-09-15 — journées déclarées et contresignatures posées : de quoi dire
@@ -176,6 +176,7 @@ export function entreeParcours(
       formateurPrincipalId: s.formateurPrincipalId,
       financementType: s.financementType,
       sessionReporteeNumero: s.sessionRemplacement[0]?.numero ?? null,
+      sessionReporteeId: s.sessionRemplacement[0]?.id ?? null,
     },
     documents: s.documents,
     signaturesParPiece,
@@ -360,7 +361,8 @@ export async function prochainesEcheances(options?: {
       // `take: 1` — reporter deux fois la même session créerait deux
       // remplacements, et c'est le premier qui porte la filiation.
       sessionRemplacement: {
-        select: { numero: true },
+        // `id` : la fiche fait du numéro un LIEN vers la session de remplacement.
+        select: { id: true, numero: true },
         orderBy: { createdAt: "asc" },
         take: 1,
       },

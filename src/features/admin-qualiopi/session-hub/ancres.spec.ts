@@ -16,7 +16,6 @@ import { describe, expect, it } from "vitest";
 import {
   ANCRES_HUB_SESSION,
   ancresDeLOnglet,
-  ancresVisibles,
   CLASSE_ANCRE_SECTION,
   lirePhaseFiche,
   PHASES_DES_BLOCS,
@@ -104,22 +103,33 @@ describe("🔴 le décalage de défilement est posé sur chaque section", () => 
   });
 });
 
-describe("ancresVisibles", () => {
-  it("écarte une ancre conditionnelle non déclarée — pas de lien mort", () => {
-    const ids = ancresVisibles().map((a) => a.id);
-    expect(ids).not.toContain("preparation-kit");
+describe("sections conditionnelles — pas de lien mort", () => {
+  const SANS = (retire: BlocFiche) => TOUS_LES_BLOCS.filter((b) => b !== retire);
+
+  it("une section conditionnelle que la page n'a pas rendue n'a pas de pastille", () => {
+    const { affiches } = repartirBlocs(null, SANS("preparation-kit"));
+    expect(ancresDeLOnglet(affiches).map((a) => a.id)).not.toContain("preparation-kit");
   });
 
-  it("la rend dès que la page dit que la section est là", () => {
-    expect(ancresVisibles(["preparation-kit"]).map((a) => a.id)).toContain("preparation-kit");
+  it("elle en a une dès que la page dit que la section est là", () => {
+    const { affiches } = repartirBlocs(null, TOUS_LES_BLOCS);
+    expect(ancresDeLOnglet(affiches).map((a) => a.id)).toContain("preparation-kit");
   });
 
-  it("les inconditionnelles sont toujours là, sans rien déclarer", () => {
-    const ids = ancresVisibles().map((a) => a.id);
-    expect(ids).toContain("infos");
-    expect(ids).toContain("documents");
-    // Rendue même hors inter-entreprises : la section porte la bascule.
-    expect(ids).toContain("inter-entreprises");
+  it("🔴 le filtre `presents` de la page nomme EXACTEMENT les sections conditionnelles", () => {
+    // Le drapeau `conditionnelle` n'a de sens que si la page écarte bien la
+    // section quand elle ne la rend pas — et n'écarte qu'elles. Rouge dans les
+    // deux sens : drapeau sans filtre (lien mort), filtre sans drapeau.
+    const filtrees = [...code.matchAll(/\(b !== "([a-z-]+)" \|\|/g)].map((m) => m[1]);
+    const conditionnelles = ANCRES_HUB_SESSION.filter((a) => a.conditionnelle).map((a) => a.id);
+    expect(new Set(filtrees)).toEqual(new Set(conditionnelles));
+    expect(conditionnelles, "témoin").toContain("cloture");
+  });
+
+  it("Inter-entreprises n'est PAS conditionnelle : rendue hors inter, elle porte la bascule", () => {
+    expect(ANCRES_HUB_SESSION.find((a) => a.id === "inter-entreprises")?.conditionnelle).toBe(
+      undefined,
+    );
   });
 
   it("l'ordre du catalogue est celui du DOM, jamais réordonné", () => {

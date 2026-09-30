@@ -55,6 +55,8 @@ export interface SessionParcoursInput {
     readonly financementType: string | null;
     /** Filiation, pour un statut terminal. */
     readonly sessionReporteeNumero?: string | null;
+    /** Identifiant de la même session de remplacement — pour le lien de la fiche. */
+    readonly sessionReporteeId?: string | null;
   };
   /** Pièces de la session, telles que le hub les charge. */
   readonly documents: ReadonlyArray<{
@@ -283,6 +285,8 @@ export interface RepliParcours {
    * fiche n'ajoute que CE qu'il ne dit pas : vers quelle session.
    */
   readonly remplacement: string | null;
+  /** Identifiant de cette session de remplacement (lien vers sa fiche), `null` sinon. */
+  readonly remplacementId: string | null;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -392,6 +396,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       repliee: {
         motif: `Session ${statut}${remplacement !== null ? ` vers ${remplacement}` : ""}`,
         remplacement,
+        remplacementId: remplacement !== null ? (session.sessionReporteeId ?? null) : null,
       },
     };
   }
