@@ -64,7 +64,11 @@ function ctx(donnees: DonneesEmail, mettreEnValidation: ReturnType<typeof vi.fn>
       cout: { verifierPlafond: async () => undefined, enregistrer: async () => undefined },
       catalogue: async () => ({ texte: "", refs: new Set(), empreinte: "x" }),
       demandes: {
-        depot: { pourEmail: async () => donnees, lierEmail: async () => undefined },
+        depot: {
+          pourEmail: async () => donnees,
+          lierEmail: async () => undefined,
+          emailGareSansSuivi: async () => null,
+        },
         envoi: { mettreEnValidation },
         mode: () => "ouvert",
       },

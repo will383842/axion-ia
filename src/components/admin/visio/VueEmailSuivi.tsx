@@ -10,13 +10,15 @@
 // que sur son clic. L'état affiché ici est LU dans `email_outbox`.
 //
 // Régime REFUS (décision A2) : garde en PREMIÈRE instruction, avant toute
-// lecture. Texte brut, formulaires sans JavaScript.
+// lecture. Texte brut, formulaires serveur ; seul le bouton d'envoi
+// (`BoutonGeste`) est client, pour se désactiver pendant l'envoi (V1-02).
 
 import { notFound } from "next/navigation";
 
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { BoutonGeste } from "@/components/admin/visio/BoutonGeste";
 import { LIBELLE_ETAT_EMAIL_SUIVI } from "@/features/dossier-client/etat-email-suivi";
 import { gardeLectureEchanges } from "@/features/dossier-client/acces";
 import { lireEmailsDeSuivi } from "@/features/dossier-client/queries";
@@ -131,16 +133,14 @@ export async function VueEmailSuivi({ locale, adminPrefix, rencontreId, message,
                   <form action={gesteSuiviAction}>
                     {cache("email_preparer")}
                     <input type="hidden" name="contactId" value={c.id} />
-                    <button type="submit" className={bouton}>
+                    <BoutonGeste className={bouton}>
                       Préparer l&apos;e-mail (rédigé depuis les faits)
-                    </button>
+                    </BoutonGeste>
                   </form>
                   <form action={gesteSuiviAction}>
                     {cache("email_gabarit_fixe")}
                     <input type="hidden" name="contactId" value={c.id} />
-                    <button type="submit" className={bouton}>
-                      Utiliser le modèle fixe
-                    </button>
+                    <BoutonGeste className={bouton}>Utiliser le modèle fixe</BoutonGeste>
                   </form>
                 </div>
               </li>

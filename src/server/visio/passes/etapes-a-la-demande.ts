@@ -130,6 +130,16 @@ export interface DepotDemandes {
   ) => Promise<number>;
   readonly pourEmail: (rencontreId: string) => Promise<DonneesEmail | null>;
   readonly lierEmail: (tx: Tx, emailSuiviId: string, emailOutboxId: string) => Promise<void>;
+  /**
+   * Un e-mail de suivi déjà GARÉ (`a_valider`) pour cette rencontre et ce
+   * destinataire, mais jamais relié à une ligne `emails_suivi` : le reste
+   * d'une exécution interrompue après le garage (qui tourne hors transaction).
+   * L'étape le reprend au lieu d'en garer un second. `null` s'il n'y en a pas.
+   */
+  readonly emailGareSansSuivi: (
+    tx: Tx,
+    a: { readonly rencontreId: string; readonly to: string },
+  ) => Promise<string | null>;
   /** La rencontre est-elle une rencontre de test (client fictif) ? */
   readonly estRencontreDeTest: (rencontreId: string) => Promise<boolean>;
 }
@@ -285,13 +295,19 @@ export const emailSuivi: Gestionnaire = async (ctx) => {
   const payload = payloadEmailSuivi(donnees, verdict.email);
   return {
     ecrire: async (tx) => {
-      const outboxId = await d.envoi.mettreEnValidation({
-        to,
-        payload,
-        clientId: donnees.clientId,
-        sujet: verdict.email.objet,
-        rencontreId: ctx.t.rencontreId,
-      });
+      // ⛔ Idempotent (V1-01) : le garage tourne HORS de cette transaction. Une
+      // exécution annulée après lui (arrêt du worker, écriture en échec) laisse
+      // un e-mail « à valider » sans lien ; la reprise le relie au lieu d'en
+      // garer un second — Will n'a jamais deux e-mails à valider pour un seul.
+      const outboxId =
+        (await d.depot.emailGareSansSuivi(tx, { rencontreId: ctx.t.rencontreId, to })) ??
+        (await d.envoi.mettreEnValidation({
+          to,
+          payload,
+          clientId: donnees.clientId,
+          sujet: verdict.email.objet,
+          rencontreId: ctx.t.rencontreId,
+        }));
       if (outboxId === null) {
         throw new ErreurVisio(
           "passagere",
@@ -507,6 +523,21 @@ export function depotDemandesPrisma(db: Db): DepotDemandes {
     },
     lierEmail: async (tx, emailSuiviId, emailOutboxId) => {
       await tx.emailSuivi.update({ where: { id: emailSuiviId }, data: { emailOutboxId } });
+    },
+    emailGareSansSuivi: async (tx, a) => {
+      const orphelin = await tx.emailOutbox.findFirst({
+        where: {
+          template: "visio-email-suivi",
+          entityType: "Rencontre",
+          entityId: a.rencontreId,
+          recipient: a.to,
+          statut: "a_valider",
+          emailSuivi: { is: null },
+        },
+        orderBy: { createdAt: "desc" },
+        select: { id: true },
+      });
+      return orphelin?.id ?? null;
     },
     estRencontreDeTest: (rencontreId) => estRencontreDeTest(db, rencontreId),
   };

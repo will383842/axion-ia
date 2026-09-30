@@ -102,6 +102,8 @@ function base(estTestInterne: boolean) {
       findFirst: vi.fn().mockResolvedValue(null),
     },
     traitementVisio: { findFirst: vi.fn().mockResolvedValue(null) },
+    // Aucun e-mail de suivi n'attend déjà dans « E-mails à valider » (V1-02).
+    emailOutbox: { count: vi.fn().mockResolvedValue(0) },
   };
   return { db: db as unknown as Db, transaction, fait: db.fait, emailSuivi: db.emailSuivi };
 }

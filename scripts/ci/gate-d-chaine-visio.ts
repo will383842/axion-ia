@@ -860,6 +860,22 @@ export async function chaineVisioDeBoutEnBout(): Promise<string[]> {
       { mode: "pilote" },
     );
     await derouler(db, deps);
+    // V1-02 : l'e-mail rédigé attend déjà pour cette personne — le modèle fixe
+    // répond « déjà préparé » et ne gare rien (un double clic, un second onglet).
+    const dejaPrepare = await emailSuiviGabaritFixe(db, envoiEmail, {
+      rencontreId: m.rencontreId,
+      contactId: contact.id,
+      parAdminId: adminId,
+    });
+    if (!dejaPrepare.includes("déjà préparé"))
+      fautes.push(
+        "e-mail de suivi : le modèle fixe gare un second e-mail alors qu'un premier attend",
+      );
+    // Will écarte l'e-mail rédigé : le modèle fixe en prépare alors un autre.
+    await db.emailOutbox.updateMany({
+      where: { emailSuivi: { is: { rencontreId: m.rencontreId } }, statut: "a_valider" },
+      data: { statut: "refuse" },
+    });
     await emailSuiviGabaritFixe(db, envoiEmail, {
       rencontreId: m.rencontreId,
       contactId: contact.id,
@@ -869,21 +885,24 @@ export async function chaineVisioDeBoutEnBout(): Promise<string[]> {
       where: { rencontreId: m.rencontreId },
       include: { emailOutbox: true },
     });
-    if (emails.length !== 2 || emails.some((e) => e.emailOutbox?.statut !== "a_valider"))
+    if (
+      emails.length !== 2 ||
+      emails.filter((e) => e.emailOutbox?.statut === "a_valider").length !== 1
+    )
       fautes.push(
-        `e-mail de suivi : ${emails.length} e-mail(s), ou un e-mail qui n'attend pas la validation`,
+        `e-mail de suivi : ${emails.length} e-mail(s), ou l'e-mail du modèle fixe n'attend pas la validation`,
       );
     const premier = emails.map(
       (e) => e.emailOutbox?.payload as Record<string, unknown> | undefined,
     );
-    // Art. 14 : aucun des deux n'est PARTI — Will peut écarter l'un et envoyer
-    // l'autre, donc les deux portent la ligne. Une fois l'un réellement envoyé,
+    // Art. 14 : aucun des deux n'est PARTI (l'un est écarté, l'autre attend),
+    // donc les deux portent la ligne. Une fois l'un réellement envoyé,
     // le suivant ne la porte plus.
     if (premier.filter((p) => p?.["informationArt14"] === true).length !== 2)
       fautes.push(
         "e-mail de suivi : un e-mail garé avant tout envoi ne porte pas la ligne art. 14",
       );
-    const parti = emails[0]?.emailOutboxId;
+    const parti = emails.find((e) => e.emailOutbox?.statut === "a_valider")?.emailOutboxId;
     if (parti) {
       await db.emailOutbox.update({ where: { id: parti }, data: { statut: "envoye" } });
       await emailSuiviGabaritFixe(db, envoiEmail, {

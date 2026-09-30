@@ -308,7 +308,9 @@ export function DevisForm({
       const result = await createDevisAction({
         clientId,
         lignes: parsedLignes,
-        ...(projetId !== undefined ? { projetId } : {}),
+        // Lien au projet seulement si le client choisi est bien celui du projet
+        // (même garde que VenteWizard ; l'action le revérifie côté serveur).
+        ...(projetId !== undefined && clientId === defaultClientId ? { projetId } : {}),
         ...(activite !== "" ? { activite } : {}),
         ...(financementSuggere !== "" ? { financementSuggere } : {}),
         ...(showOpco && nbParticipants !== ""

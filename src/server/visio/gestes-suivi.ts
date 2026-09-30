@@ -385,6 +385,19 @@ export async function emailSuiviGabaritFixe(
   if (faits.length === 0) {
     throw new GesteRefuse("Validez d'abord le compte rendu : l'e-mail part des faits validés.");
   }
+  // Un double clic (ou un second onglet) ne gare pas un deuxième e-mail : tant
+  // qu'un e-mail de suivi de cette rencontre vers cette personne attend dans
+  // « E-mails à valider », on le signale au lieu d'en préparer un autre.
+  // Écarté (`refuse`) ou parti (`envoye`), il n'attend plus : on en prépare un.
+  const dejaPrepare = await db.emailOutbox.count({
+    where: {
+      statut: "a_valider",
+      emailSuivi: { is: { rencontreId: a.rencontreId, contactId: donnees.contact.id } },
+    },
+  });
+  if (dejaPrepare > 0) {
+    return "Un e-mail de suivi pour cette personne est déjà préparé : relisez-le dans « E-mails à valider ».";
+  }
   const email = gabaritFixeEmail(faits, { titre: donnees.rencontre.titre || "notre rendez-vous" });
   const outboxId = await envoi.mettreEnValidation({
     to,
