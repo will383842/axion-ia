@@ -141,11 +141,17 @@ export function SetFinancementForm({
     startTransition(async () => {
       const result = await setFinancementSessionAction({
         sessionId,
-        ...(selectedType !== "" ? { financementType: selectedType } : {}),
+        // Dossier clos : les champs CONTRACTUELS (type, dispositif, payeur) ne
+        // partent PAS. Le serveur refuse DOSSIER_CLOS dès qu'ils sont présents,
+        // même inchangés : les renvoyer bloquait le suivi OPCO qui, lui, reste
+        // ouvert (revue PR 1249).
+        ...(!fige && selectedType !== "" ? { financementType: selectedType } : {}),
         ...(showOpco ? { opcoStatut: selectedOpcoStatut } : {}),
         ...(showOpco ? { opcoSubrogation: subrogation } : {}),
         ...(showOpco && numeroDossier ? { numeroDossierOpco: numeroDossier } : {}),
-        ...(showFT && selectedFtDispositif !== "" ? { ftDispositif: selectedFtDispositif } : {}),
+        ...(!fige && showFT && selectedFtDispositif !== ""
+          ? { ftDispositif: selectedFtDispositif }
+          : {}),
         ...(showOpco && subrogation && tripartiteDate
           ? { conventionTripartiteSigneeAt: new Date(tripartiteDate) }
           : {}),
@@ -156,7 +162,7 @@ export function SetFinancementForm({
         ...(showPoei && poeiEngagementDate
           ? { ftPoeiEngagementSigneAt: new Date(poeiEngagementDate) }
           : {}),
-        ...(showCPF && cpfPayeur !== "" ? { cpfPayeurResteCharge: cpfPayeur } : {}),
+        ...(!fige && showCPF && cpfPayeur !== "" ? { cpfPayeurResteCharge: cpfPayeur } : {}),
       });
 
       if ("error" in result) {
