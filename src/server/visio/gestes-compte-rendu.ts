@@ -27,6 +27,7 @@ import {
   EVT_ACCORD_CONFIRME_PAR_WILL,
   rencontreAccordAConfirmer,
 } from "./accord-a-confirmer";
+import { EVT_COURT_CONFIRME, EVT_FENETRES_VERIFIEES } from "./attentes-will";
 import { etatSansTexteBrut, lireEtat } from "./etat-compte-rendu";
 import { ajouterAuJournal } from "./journal-enregistrement";
 import { annulerEtapesDesVersions, planifierDans } from "./prise-d-etape";
@@ -448,31 +449,55 @@ export async function completerApresRattachement(
 
 // ── Enregistrement court, reprise ────────────────────────────────────────────
 
-/** G0b : Will confirme qu'un enregistrement de moins de 90 s doit être traité. */
-export async function confirmerEnregistrementCourt(
+interface CibleConfirmation {
+  readonly rencontreId: string;
+  /** L'enregistrement EN ATTENTE que Will a vérifié — jamais « le dernier déposé ». */
+  readonly enregistrementId: string;
+  readonly maintenant: Date;
+}
+
+/**
+ * Pose la réponse de Will dans le journal de L'enregistrement désigné (de
+ * cette rencontre, déposé), puis relance la transcription. Chaque question a
+ * son propre événement (`attentes-will.ts`) : l'une ne lève pas l'autre.
+ */
+async function poserReponseDeWill(
   db: Db,
-  rencontreId: string,
-  maintenant: Date,
+  c: CibleConfirmation,
+  type: typeof EVT_COURT_CONFIRME | typeof EVT_FENETRES_VERIFIEES,
 ): Promise<void> {
   const e = await db.enregistrement.findFirst({
-    where: { rencontreId, statut: "depose" },
-    orderBy: { debut: "desc" },
-    select: { id: true, evenements: true },
+    where: { id: c.enregistrementId, rencontreId: c.rencontreId, statut: "depose" },
+    select: { id: true, evenements: true, motifArret: true },
   });
-  if (!e) throw new GesteRefuse("Aucun enregistrement court en attente.");
+  if (!e) throw new GesteRefuse("Aucun enregistrement en attente de votre réponse.");
+  if (type === EVT_FENETRES_VERIFIEES && e.motifArret !== "cloture_serveur") {
+    throw new GesteRefuse("Cet enregistrement n'a pas été interrompu avant la fin.");
+  }
   await db.$transaction(async (tx) => {
     await tx.enregistrement.update({
       where: { id: e.id },
-      data: {
-        evenements: ajouterAuJournal(e.evenements, { le: maintenant, type: "court_confirme" }),
-      },
+      data: { evenements: ajouterAuJournal(e.evenements, { le: c.maintenant, type }) },
     });
-    await planifierDans(tx, rencontreId, {
+    await planifierDans(tx, c.rencontreId, {
       etape: "transcrire",
       compteRenduId: null,
       reinitialiser: true,
     });
   });
+}
+
+/** G0b : Will confirme qu'un enregistrement de moins de 90 s doit être traité. */
+export async function confirmerEnregistrementCourt(db: Db, c: CibleConfirmation): Promise<void> {
+  await poserReponseDeWill(db, c, EVT_COURT_CONFIRME);
+}
+
+/**
+ * RGPD-01 : session close par le serveur, sans la liste des fenêtres hors
+ * accord. Will confirme que personne n'est entré sans avoir donné son accord.
+ */
+export async function confirmerFenetresVerifiees(db: Db, c: CibleConfirmation): Promise<void> {
+  await poserReponseDeWill(db, c, EVT_FENETRES_VERIFIEES);
 }
 
 /** Reprise manuelle des étapes suspendues (crédit rechargé, configuration corrigée). */
@@ -482,5 +507,6 @@ export async function reprendreEtapesSuspendues(db: Db): Promise<number> {
        SET "statut" = 'a_faire', "classe_erreur" = NULL, "derniere_erreur" = NULL, "prochaine_tentative_le" = NULL
      WHERE "statut" = 'suspendu' AND "classe_erreur" IN ('quota', 'configuration', 'plafond')`;
   // Une étape suspendue SANS classe attend une réponse de Will (enregistrement
-  // de moins de 90 s) : elle ne reprend que par `confirmerEnregistrementCourt`.
+  // de moins de 90 s, session interrompue) : elle ne reprend que par
+  // `confirmerEnregistrementCourt` ou `confirmerFenetresVerifiees`.
 }

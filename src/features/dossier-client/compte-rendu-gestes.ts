@@ -28,6 +28,7 @@ import {
   attribuerVoix,
   confirmerAccordALaMain,
   confirmerEnregistrementCourt,
+  confirmerFenetresVerifiees,
   GesteRefuse,
   reecrireCompteRendu,
   reextraireCompteRendu,
@@ -138,9 +139,21 @@ const GESTES: Readonly<
     await confirmerAccordALaMain(prisma, { rencontreId, maintenant: new Date() });
     return "Accord confirmé : le compte rendu peut être validé.";
   },
-  court: async (_fd, rencontreId) => {
-    await confirmerEnregistrementCourt(prisma, rencontreId, new Date());
+  court: async (fd, rencontreId) => {
+    await confirmerEnregistrementCourt(prisma, {
+      rencontreId,
+      enregistrementId: uuid.parse(fd.get("enregistrementId")),
+      maintenant: new Date(),
+    });
     return "L'enregistrement court sera traité.";
+  },
+  fenetres: async (fd, rencontreId) => {
+    await confirmerFenetresVerifiees(prisma, {
+      rencontreId,
+      enregistrementId: uuid.parse(fd.get("enregistrementId")),
+      maintenant: new Date(),
+    });
+    return "Vérifié : la transcription peut partir.";
   },
   retrait: async (fd, rencontreId, adminId) => {
     if (fd.get("confirmation") !== "oui") {

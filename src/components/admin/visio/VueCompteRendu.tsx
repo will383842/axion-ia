@@ -97,22 +97,41 @@ export function VueCompteRendu({ vue, rencontreId, retour }: Props) {
         Outil de travail interne : rien n&apos;est envoyé au client.
       </p>
 
-      {transcrireEnAttente ? (
-        <section className={carte}>
-          <h3 className={titre}>Enregistrement de moins de 90 secondes</h3>
-          <p className={texte}>
-            Rien n&apos;a été transcrit. Le client a-t-il refusé l&apos;enregistrement ? Si oui,
-            utilisez « Le client retire son accord » plus bas : tout sera supprimé.
-          </p>
-          <form action={gesteCompteRenduAction}>
-            {cache}
-            <input type="hidden" name="geste" value="court" />
-            <button type="submit" className={bouton}>
-              Non, traiter cet enregistrement court
-            </button>
-          </form>
-        </section>
-      ) : null}
+      {transcrireEnAttente
+        ? vue.questionsAWill.map(({ enregistrementId, question }) => (
+            <section key={`${enregistrementId}-${question}`} className={carte}>
+              <h3 className={titre}>
+                {question === "court"
+                  ? "Enregistrement de moins de 90 secondes"
+                  : "Session interrompue avant la fin"}
+              </h3>
+              <p className={texte}>
+                {question === "court" ? (
+                  <>
+                    Rien n&apos;a été transcrit. Le client a-t-il refusé l&apos;enregistrement ? Si
+                    oui, utilisez « Le client retire son accord » plus bas : tout sera supprimé.
+                  </>
+                ) : (
+                  "Personne n'est entré sans avoir donné son accord ?"
+                )}
+              </p>
+              <form action={gesteCompteRenduAction}>
+                {cache}
+                <input
+                  type="hidden"
+                  name="geste"
+                  value={question === "court" ? "court" : "fenetres"}
+                />
+                <input type="hidden" name="enregistrementId" value={enregistrementId} />
+                <button type="submit" className={bouton}>
+                  {question === "court"
+                    ? "Non, traiter cet enregistrement court"
+                    : "Personne sans accord : lancer la transcription"}
+                </button>
+              </form>
+            </section>
+          ))
+        : null}
 
       {vue.accordAConfirmer ? (
         <section className={alerte} role="alert">

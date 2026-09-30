@@ -51,7 +51,7 @@ import { estRendezVousDuDossier } from "./liste-blanche-types";
 import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import { ETATS_ENREGISTREMENT_ACTIFS } from "./etats";
 import { CONSERVATION_AUDIO_MAX_JOURS } from "./cloture";
-import { ajouterAuJournal } from "./journal-enregistrement";
+import { ajouterAuJournal, evenementsDeLExtension } from "./journal-enregistrement";
 import { blocagePreavis } from "./preavis-clients-actifs";
 import {
   CODE_REFUS_PREAVIS,
@@ -847,7 +847,9 @@ export async function terminerSession(
       perdus: JSON.stringify(c.perdus),
       fenetresHorsAccord: JSON.stringify(c.fenetresHorsAccord),
       audioAPurgerAvant: new Date(finLe.getTime() + CONSERVATION_AUDIO_MAX_JOURS * 86_400_000),
-      evenements: ajouterAuJournal(enr.evenements, ...c.evenements, {
+      // m4 : un type réservé au serveur (une décision de Will) n'est jamais
+      // accepté de l'extension.
+      evenements: ajouterAuJournal(enr.evenements, ...evenementsDeLExtension(c.evenements), {
         le: entree.maintenant,
         type: clotureDOffice ? "cloture_serveur_corrigee" : "fin",
       }),

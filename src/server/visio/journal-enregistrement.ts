@@ -8,6 +8,41 @@
 
 export const MAX_EVENEMENTS = 2000;
 
+/**
+ * Les types que SEUL le serveur écrit. Plusieurs sont LUS comme des décisions
+ * (`court_confirme`, `fenetres_verifiees`, `accord_confirme_par_will`…) : un
+ * journal envoyé par l'extension (`POST sessions/[id]/fin`) qui en porterait
+ * un lèverait une vérification de Will. Ils sont écartés à la réception.
+ */
+export const TYPES_RESERVES_AU_SERVEUR: ReadonlySet<string> = new Set([
+  // décisions de Will et du circuit
+  "court_confirme",
+  "fenetres_verifiees",
+  "accord_a_confirmer",
+  "accord_retrouve",
+  "accord_confirme_par_will",
+  "precontrole",
+  // cycle de vie écrit par les routes et la clôture
+  "session_creee",
+  "accord_obtenu",
+  "accord_en_retard_accepte",
+  "refus",
+  "reprise_battement",
+  "fin",
+  "fin_sans_accord",
+  "cloture_serveur",
+  "cloture_serveur_corrigee",
+  "cloture_accord_absent",
+  "interrompu_sans_battement",
+]);
+
+/** Le journal reçu de l'extension, sans les types réservés au serveur. */
+export function evenementsDeLExtension<T extends { readonly type: string }>(
+  evenements: readonly T[],
+): T[] {
+  return evenements.filter((e) => !TYPES_RESERVES_AU_SERVEUR.has(e.type.trim().toLowerCase()));
+}
+
 export interface EvenementTechnique {
   readonly le: string;
   readonly type: string;

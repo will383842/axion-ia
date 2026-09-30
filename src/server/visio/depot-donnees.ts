@@ -21,6 +21,7 @@ import {
 import { reponsesFormulaire } from "@/features/admin-rendezvous/a-venir";
 import type { ContactDeLaBase, FaitDeLaBase, ProjetDeLaBase } from "./contexte";
 import type { Periode, SegmentStocke } from "./dialogue";
+import { EVT_COURT_CONFIRME, EVT_FENETRES_VERIFIEES } from "./attentes-will";
 import { ETATS_ENREGISTREMENT_ACTIFS } from "./etats";
 import { lireEtat } from "./etat-compte-rendu";
 import { ajouterAuJournal, lireJournal } from "./journal-enregistrement";
@@ -330,7 +331,8 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
         motifArret: e.motifArret,
         fenetresHorsAccord: periodes(e.fenetresHorsAccord),
         origineMs,
-        courtConfirme: journalDit(e.evenements, "court_confirme"),
+        courtConfirme: journalDit(e.evenements, EVT_COURT_CONFIRME),
+        fenetresVerifiees: journalDit(e.evenements, EVT_FENETRES_VERIFIEES),
         tranches: e.tranches.map((t): TrancheATraiter => ({
           ...t,
           debutCaptureEpochMs: Number(t.debutCaptureEpochMs),

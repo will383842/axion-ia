@@ -7,8 +7,8 @@
  * sans accord est ABSENTE. Tout transcrire enverrait peut-être leur voix chez
  * OpenAI : l'étape attend donc la réponse de Will, sans aucun appel.
  *
- * Reprise : le même geste que l'enregistrement court (`court_confirme`, bouton
- * « traiter cet enregistrement » de la vue du compte rendu) relâche l'étape.
+ * Reprise : un geste PROPRE (`fenetres_verifiees`, bouton « Personne sans accord :
+ * lancer la transcription » de la vue du compte rendu) relâche l'étape.
  * Une `fin` tardive de l'extension remplace le motif et apporte les fenêtres :
  * elle n'attend plus rien.
  *
@@ -52,7 +52,7 @@ describe("une session close par le serveur attend Will avant OpenAI", () => {
     const depot = new FauxDepot();
     const t = depot.ajouter({ rencontreId: RENCONTRE, etape: "transcrire" });
     const { port } = portTranscription(
-      enregistrement({ motifArret: "cloture_serveur", courtConfirme: true }),
+      enregistrement({ motifArret: "cloture_serveur", fenetresVerifiees: true }),
     );
     const f = fauxClient(undefined, { transcriptions: [VIDE, VIDE] });
     expect(

@@ -25,17 +25,13 @@
 
 import { createHash } from "node:crypto";
 
+import { motifDesQuestions, questionsAWill } from "./attentes-will";
 import { DUREE_TRANCHE_S } from "./audio/constantes";
 import { estHorsAccord } from "./dialogue";
 import { AttenteWill, type Gestionnaire } from "./etapes";
 import { LANGUE_TRANSCRIPTION, MODELE_TRANSCRIPTION } from "./openai/modeles";
 import { transcrireTranche } from "./openai/transcrire-tranche";
 import type { EnregistrementATraiter, SegmentAEcrire, TrancheATraiter } from "./port-donnees";
-import { enregistrementTropCourt } from "./verification/g00-precontroles";
-
-/** L'attente posée quand la session a été close par le serveur, sans fenêtres. */
-export const MOTIF_CLOTURE_SERVEUR =
-  "session interrompue sans la liste des personnes sans accord : vérifiez que personne n'est entré sans accord avant de lancer la transcription";
 
 /** États d'enregistrement dont le son n'est jamais transcrit. */
 export const ETATS_JAMAIS_TRANSCRITS = new Set(["refuse", "accord_non_confirme", "abandonne"]);
@@ -91,18 +87,12 @@ export const transcrire: Gestionnaire = async (ctx) => {
         dejaFait ? [] : [{ etape: "purger_audio", compteRenduId: null, reinitialiser: true }],
     };
   }
+  // G0b et RGPD-01 : chaque question ouverte (court, session interrompue sans
+  // la liste des fenêtres hors accord) attend SON geste de Will ; rien ne
+  // part chez OpenAI avant. Voir `attentes-will.ts`.
   for (const e of aFaire) {
-    const dureeMs = (e.fin ?? deps.maintenant()).getTime() - e.debut.getTime();
-    if (!e.courtConfirme && enregistrementTropCourt(dureeMs, e.motifArret)) {
-      throw new AttenteWill("enregistrement de moins de 90 secondes : le client a-t-il refusé ?");
-    }
-    // RGPD-01 : les fenêtres hors accord n'arrivent qu'avec la `fin` de
-    // l'extension. Une session close d'office par le serveur (navigateur
-    // planté, onglet fermé) n'en a PAS : rien ne part chez OpenAI avant que
-    // Will ait vérifié. Il relâche l'étape par le même geste (`court_confirme`).
-    if (!e.courtConfirme && e.motifArret === "cloture_serveur") {
-      throw new AttenteWill(MOTIF_CLOTURE_SERVEUR);
-    }
+    const questions = questionsAWill(e, deps.maintenant());
+    if (questions.length > 0) throw new AttenteWill(motifDesQuestions(questions));
   }
 
   const faits: Transcrit[] = [];
