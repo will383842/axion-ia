@@ -11,7 +11,8 @@
  *
  * Mutations qui rougissent : retirer `Rencontre` de `SEGMENT_PAR_CIBLE` ;
  * changer le `cibleType` posé par `alerterParLaConsole` ; retirer le lien
- * `?compteRendu=` de la page du rendez-vous. Contre-témoin : une alerte sans
+ * `?compteRendu=` de la page du rendez-vous, ou le reconditionner à
+ * l'existence d'un compte rendu IA. Contre-témoin : une alerte sans
  * rendez-vous (suspension du circuit) ne porte aucune cible. Angle mort :
  * l'existence de la page est lue sur le disque par `lien-cible.spec.ts`.
  */
@@ -70,6 +71,10 @@ describe("une alerte du circuit mène au compte rendu", () => {
       "utf8",
     );
     expect(page).toContain("?compteRendu=${r.id}");
+    // Le lien existe dès qu'un ENREGISTREMENT ou une étape existe, pas
+    // seulement quand un compte rendu est rédigé (retrait B2, réponse G0b).
+    expect(page).toContain("lireCircuitDeLaRencontre(prisma, r.id)");
+    expect(page).toMatch(/\{circuit\.aOuvrir \|\|/);
     const onglet = readFileSync(
       path.resolve(process.cwd(), "src/app/[locale]/(admin)/[adminPrefix]/rendez-vous/page.tsx"),
       "utf8",

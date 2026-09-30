@@ -27,7 +27,7 @@ import {
   FaitsEtCitations,
 } from "@/components/admin/visio/CompteRenduVisio";
 import { gardeLectureEchanges } from "@/features/dossier-client/acces";
-import { lireCompteRendu } from "@/features/dossier-client/compte-rendu";
+import { attendReponseDeWill, lireCompteRendu } from "@/features/dossier-client/compte-rendu";
 import {
   LIBELLE_ETAPE_VISIO,
   LIBELLE_STATUT_COMPTE_RENDU,
@@ -78,9 +78,7 @@ export async function VueCompteRendu({ locale, adminPrefix, rencontreId, message
       <input type="hidden" name="retour" value={retour} />
     </>
   );
-  const transcrireEnAttente = vue.etapes.some(
-    (e) => e.etape === "transcrire" && e.statut === "suspendu" && e.classeErreur === null,
-  );
+  const transcrireEnAttente = vue.etapes.some(attendReponseDeWill);
   const suspendu = vue.etapes.some((e) => e.statut === "suspendu" && e.classeErreur !== null);
   const enEchec = vue.etapes.find((e) => e.statut === "echec_definitif");
   const attenteRattachement =

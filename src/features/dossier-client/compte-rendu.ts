@@ -104,6 +104,51 @@ export interface VueCompteRendu {
 
 const ORDRE_COURANT = ["a_valider", "brouillon", "valide", "a_regenerer", "rejete"];
 
+/**
+ * Une étape attend-elle une RÉPONSE de Will (enregistrement de moins de
+ * 90 s : « le client a-t-il refusé ? ») ? Suspendue SANS classe d'erreur :
+ * ce n'est pas une panne. Lue par la vue du compte rendu et par la page du
+ * rendez-vous — une seule règle.
+ */
+export function attendReponseDeWill(e: {
+  readonly etape: string;
+  readonly statut: string;
+  readonly classeErreur: string | null;
+}): boolean {
+  return e.etape === "transcrire" && e.statut === "suspendu" && e.classeErreur === null;
+}
+
+export interface CircuitDeLaRencontre {
+  /** Un enregistrement, une étape ou un compte rendu IA existe : la vue a quelque chose à montrer. */
+  readonly aOuvrir: boolean;
+  readonly reponseAttendue: boolean;
+}
+
+/**
+ * Ce que la page du rendez-vous doit savoir du circuit pour rendre la vue du
+ * compte rendu ATTEIGNABLE dès qu'il y a un enregistrement — pendant le
+ * traitement, après un échec, ou quand Will est attendu —, et pas seulement
+ * une fois un compte rendu rédigé. C'est là que se trouvent « Le client
+ * retire son accord » (B2) et la réponse aux enregistrements courts.
+ */
+export async function lireCircuitDeLaRencontre(
+  db: PrismaClient,
+  rencontreId: string,
+): Promise<CircuitDeLaRencontre> {
+  const [enregistrements, etapes, crIa] = await Promise.all([
+    db.enregistrement.count({ where: { rencontreId } }),
+    db.traitementVisio.findMany({
+      where: { rencontreId },
+      select: { etape: true, statut: true, classeErreur: true },
+    }),
+    db.compteRendu.count({ where: { rencontreId, origine: "ia" } }),
+  ]);
+  return {
+    aOuvrir: enregistrements > 0 || etapes.length > 0 || crIa > 0,
+    reponseAttendue: etapes.some(attendReponseDeWill),
+  };
+}
+
 export async function lireCompteRendu(
   db: PrismaClient,
   rencontreId: string,

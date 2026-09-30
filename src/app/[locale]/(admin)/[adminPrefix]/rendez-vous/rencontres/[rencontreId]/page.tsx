@@ -35,6 +35,8 @@ import {
   lireFichesVivantes,
   lireRencontreDetaillee,
 } from "@/features/dossier-client/queries-rencontres";
+import { lireCircuitDeLaRencontre } from "@/features/dossier-client/compte-rendu";
+import { prisma } from "@/lib/prisma";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { timeInParis } from "@/lib/calendar-grid";
 
@@ -94,6 +96,10 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
   const fiches = r.client ? (await lireFichesVivantes()).filter((f) => f.id !== r.client?.id) : [];
   const ficheHref = r.client ? `/${locale}/${adminPrefix}/qualiopi/clients/${r.client.id}` : null;
   const valide = r.comptesRendus.find((c) => c.statut === "valide") ?? null;
+  // La vue du compte rendu est ouverte dès qu'un ENREGISTREMENT existe (pendant
+  // le traitement, après un échec, quand Will est attendu) : c'est là que se
+  // trouvent « Le client retire son accord » et la réponse aux enregistrements courts.
+  const circuit = await lireCircuitDeLaRencontre(prisma, r.id);
   const faitsValides = r.faits.filter((f) => f.statut === "valide");
 
   return (
@@ -174,13 +180,24 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
             Aucun compte rendu validé. Ouvrez « Après l&apos;appel » pour écrire la note.
           </p>
         )}
-        {r.comptesRendus.some((c) => c.origine === "ia") ? (
+        {circuit.reponseAttendue ? (
+          <p
+            role="status"
+            className="mt-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-warning)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
+          >
+            <AdminBadge tone="warning">votre réponse est attendue</AdminBadge> L&apos;enregistrement
+            dure moins de 90 secondes : le compte rendu attend que vous disiez si le client a
+            refusé.
+          </p>
+        ) : null}
+        {circuit.aOuvrir || r.comptesRendus.some((c) => c.origine === "ia") ? (
           <p className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
             <Link href={`${rdvBase}?compteRendu=${r.id}`} className={lienCls}>
               Ouvrir le compte rendu de l&apos;enregistrement
             </Link>{" "}
             <span className={mutedCls}>
-              — le lire, le valider, le faire réécrire, ou retirer l&apos;accord du client.
+              — suivre son traitement, le lire, le valider, le faire réécrire, ou retirer
+              l&apos;accord du client.
             </span>
           </p>
         ) : (
