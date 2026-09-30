@@ -37,6 +37,10 @@
  * Une fiche ABSORBÉE par une fusion vivante n'est jamais proposée : on propose
  * l'absorbante.
  *
+ * Plusieurs fiches pour le même SIREN (demande liée) ou le même domaine : AUCUNE
+ * proposition (vérification V1, V1-06). Prendre la première venue serait un
+ * tirage au sort ; le rendez-vous reste « à classer » et Will choisit.
+ *
  * ## Le rattachement tardif relance le circuit (PR 6)
  *
  * `relancerApresRattachement` est le POINT D'ENFILAGE de l'étape `rattacher`
@@ -131,8 +135,10 @@ export function calculerProposition(
   const demande = indices.demandeLiee;
   if (demande) {
     const nomDemande = normaliserNom(demande.raisonSociale);
+    const parSiren = demande.siren ? fiches.filter((x) => x.siren === demande.siren) : [];
+    if (parSiren.length > 1) return null; // V1-06 : ambigu, Will choisit.
     const f =
-      (demande.siren ? fiches.find((x) => x.siren === demande.siren) : undefined) ??
+      parSiren[0] ??
       (demande.emailHash
         ? fiches.find(
             (x) =>
@@ -152,7 +158,9 @@ export function calculerProposition(
     adresses.filter((a) => natureAdresse(a) === "pro").map((a) => domaineDe(a)),
   );
   if (domainesPro.size > 0) {
-    const f = fiches.find((x) => x.domainesPro.some((d) => domainesPro.has(d)));
+    const parDomaine = fiches.filter((x) => x.domainesPro.some((d) => domainesPro.has(d)));
+    if (parDomaine.length > 1) return null; // V1-06 : ambigu, Will choisit.
+    const f = parDomaine[0];
     if (f) return { clientId: f.id, motif: "domaine_email" };
   }
 
