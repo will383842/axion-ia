@@ -109,6 +109,18 @@ export function trancheTronquee(
   return finDernier < dureeMs - TOLERANCE_TRONCATURE_MS;
 }
 
+/**
+ * V2, M2 — la sortie a été coupée : l'erreur EMPORTE les segments partiels
+ * (déjà payés), pour que la tranche garde sa place au lieu de faire échouer
+ * toute l'étape.
+ */
+export class TrancheTronquee extends ErreurVisio {
+  constructor(readonly segments: readonly SegmentTranscrit[]) {
+    super("contenu", "sortie_tronquee", "transcription coupée avant la fin");
+    this.name = "TrancheTronquee";
+  }
+}
+
 /** Transcrit une tranche. Lève une `ErreurVisio` classée. */
 export async function transcrireTranche(
   deps: DepsTranscription,
@@ -151,10 +163,7 @@ export async function transcrireTranche(
   if (!lu.success) {
     throw new ErreurVisio("contenu", "sortie_invalide", "réponse de transcription invalide");
   }
-  if (trancheTronquee(lu.data.segments, t.dureeMs, t.niveauFinMuet)) {
-    throw new ErreurVisio("contenu", "sortie_tronquee", "transcription coupée avant la fin");
-  }
-  return lu.data.segments
+  const segments = lu.data.segments
     .filter((s) => s.text.trim() !== "")
     .map((s) => ({
       debutMs: Math.round(s.start * 1000) + t.decalageMs,
@@ -162,4 +171,8 @@ export async function transcrireTranche(
       locuteurBrut: s.speaker.slice(0, 8),
       texte: s.text.trim(),
     }));
+  if (trancheTronquee(lu.data.segments, t.dureeMs, t.niveauFinMuet)) {
+    throw new TrancheTronquee(segments);
+  }
+  return segments;
 }

@@ -426,7 +426,10 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
       }
       await tx.enregistrementTranche.update({
         where: { id: a.trancheId },
-        data: { statut: "transcrite", transcriteLe: new Date() },
+        data:
+          a.statutTranche === "echec"
+            ? { statut: "echec" }
+            : { statut: "transcrite", transcriteLe: new Date() },
       });
     },
     retenirTranscription: async (tx, a) => {

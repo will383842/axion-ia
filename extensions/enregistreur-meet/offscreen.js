@@ -21,6 +21,8 @@ import {
   ajouterMorceau,
   doitChangerDeTranche,
   finDeTranche,
+  finMuetteSur,
+  noterNiveau,
   nouvelleTranche,
   DUREE_MORCEAU_MS,
 } from "./lib/tranches.js";
@@ -73,6 +75,8 @@ function creerPiste(nom, flux, versHautParleurs) {
     tranche: null,
     octetsTranche: [],
     numero: 0,
+    // V2, M2 — un relevé par seconde, sur les 20 dernières secondes.
+    niveaux: [],
   };
 }
 
@@ -116,7 +120,11 @@ function demarrerTranche(piste, motifDebut) {
     });
   };
   rec.onstop = () => {
-    const niveauFin = niveau(piste.analyseur, piste.tampon);
+    const finMuette = finMuetteSur(
+      piste.niveaux,
+      Date.now(),
+      niveau(piste.analyseur, piste.tampon),
+    );
     ecritures = ecritures.then(async () => {
       const tout = concatener(octetsTranche.filter(Boolean));
       await ajouterALaFile({
@@ -127,7 +135,7 @@ function demarrerTranche(piste, motifDebut) {
         corps: finDeTranche(tranche, piste.nom, {
           empreinte: await empreinteHex(tout),
           dureeMs: Date.now() - tranche.debutCaptureMs,
-          finMuette: niveauFin <= 0.01,
+          finMuette,
         }),
         essais: 0,
       });
@@ -169,13 +177,18 @@ async function demarrer({ streamId, cleClient, micId, micSeul }) {
   for (const p of Object.values(session.pistes)) demarrerTranche(p, "demarrage");
   session.minuteur = setInterval(() => {
     if (!session) return;
+    const maintenant = Date.now();
+    const mesures = {};
+    for (const p of Object.values(session.pistes)) {
+      mesures[p.nom] = niveau(p.analyseur, p.tampon);
+      p.niveaux = noterNiveau(p.niveaux, maintenant, mesures[p.nom]);
+    }
     for (const p of Object.values(session.pistes)) relancerSiBesoin(p);
-    const client = session.pistes.client;
     chrome.runtime.sendMessage({
       type: "niveaux",
       cleClient,
-      niveauClient: client ? niveau(client.analyseur, client.tampon) : 0,
-      niveauAxion: niveau(session.pistes.axion.analyseur, session.pistes.axion.tampon),
+      niveauClient: mesures.client ?? 0,
+      niveauAxion: mesures.axion ?? 0,
     });
   }, 1000);
   // Micro débranché puis rebranché : nouvelle tranche sur la piste « axion ».

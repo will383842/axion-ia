@@ -31,7 +31,11 @@ import { estHorsAccord } from "./dialogue";
 import { AttenteWill, type Gestionnaire } from "./etapes";
 import { ErreurVisio } from "./openai/erreurs";
 import { LANGUE_TRANSCRIPTION, MODELE_TRANSCRIPTION } from "./openai/modeles";
-import { transcrireTranche, type SegmentTranscrit } from "./openai/transcrire-tranche";
+import {
+  TrancheTronquee,
+  transcrireTranche,
+  type SegmentTranscrit,
+} from "./openai/transcrire-tranche";
 import type { EnregistrementATraiter, SegmentAEcrire, TrancheATraiter } from "./port-donnees";
 
 /** États d'enregistrement dont le son n'est jamais transcrit. */
@@ -185,9 +189,29 @@ async function transcrireUn(
       dureeAudioMs += dureeTranche;
       continue;
     }
-    const octets = await deps.donnees.lireSonTranche(tranche.id);
+    // V2, M2 — une tranche illisible (empreinte divergente, tranche absente)
+    // garde sa place en `echec`, sans appel : elle ne fait plus échouer toute
+    // l'étape. Une panne de R2 (`passagere`) reste une erreur de l'étape.
+    let octets: Buffer;
+    try {
+      octets = await deps.donnees.lireSonTranche(tranche.id);
+    } catch (err) {
+      if (!(err instanceof ErreurVisio && err.code === "audio_incomplet")) throw err;
+      await ctx.ecrireEnCours((tx) =>
+        deps.donnees.ecrireSegmentsTranche(tx, {
+          transcriptionId,
+          trancheId: tranche.id,
+          segments: [],
+          statutTranche: "echec",
+        }),
+      );
+      ctx.noterProgres();
+      continue;
+    }
     const jobId = `${ctx.jobId}-${e.id.slice(0, 8)}-${tranche.piste}-${tranche.numero}`;
-    let segments: SegmentTranscrit[] | null = null;
+    let segments: readonly SegmentTranscrit[] | null = null;
+    let statutTranche: "transcrite" | "echec" = "transcrite";
+    let tronquees = 0;
     for (let essai = 0; segments === null; essai++) {
       try {
         segments = await transcrireTranche(
@@ -201,8 +225,21 @@ async function transcrireUn(
           },
         );
       } catch (err) {
+        // V2, M2 — tronquée : un second essai sur place ; tronquée encore, ses
+        // segments partiels (déjà payés) gardent leur place et la tranche
+        // passe `echec`.
+        if (err instanceof TrancheTronquee) {
+          tronquees += 1;
+          if (tronquees >= 2) {
+            segments = err.segments;
+            statutTranche = "echec";
+          } else {
+            await ctx.verifierMain();
+          }
+          continue;
+        }
         const limite = err instanceof ErreurVisio && err.code === "limite_debit";
-        if (!limite || essai >= REESSAIS_LIMITE_DEBIT) throw err;
+        if (!limite || essai >= REESSAIS_LIMITE_DEBIT + tronquees) throw err;
         await (deps.attendre ?? attendreParDefaut)(attenteApresLimite(err.reessayerApresMs));
         // Verrou prolongé ; un arrêt ou une annulation est vu AVANT de repayer.
         await ctx.verifierMain();
@@ -228,6 +265,7 @@ async function transcrireUn(
         transcriptionId,
         trancheId: tranche.id,
         segments: aEcrire,
+        ...(statutTranche === "echec" ? { statutTranche } : {}),
       }),
     );
     ctx.noterProgres();

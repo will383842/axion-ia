@@ -65,6 +65,31 @@ export function ajouterMorceau(tranche, tailleOctets) {
   };
 }
 
+/**
+ * V2, M2 — la fin d'une tranche se juge sur les 20 DERNIÈRES secondes, la
+ * fenêtre de tolérance du serveur (`TOLERANCE_TRONCATURE_MS`), et non sur un
+ * seul relevé de 43 ms à l'arrêt (une touche de clavier faisait croire à une
+ * troncature). Un relevé par seconde est noté ; la fin est muette si moins
+ * d'un quart des relevés de la fenêtre dépassent le seuil.
+ */
+export const FENETRE_FIN_MUETTE_MS = 20_000;
+export const SEUIL_NIVEAU_MUET = 0.01;
+export const PART_PARLANTE_MAX = 0.25;
+
+/** Ajoute un relevé de niveau ; ne garde que la fenêtre. Fonction PURE. */
+export function noterNiveau(historique, le, niveau) {
+  return [...historique, { le, niveau }].filter((r) => r.le > le - FENETRE_FIN_MUETTE_MS);
+}
+
+/** Vrai si la fin de la tranche est muette sur la fenêtre (le relevé d'arrêt compris). */
+export function finMuetteSur(historique, maintenant, niveauArret) {
+  const fenetre = historique.filter((r) => r.le > maintenant - FENETRE_FIN_MUETTE_MS);
+  const niveaux = [...fenetre.map((r) => r.niveau), niveauArret];
+  if (niveaux.length === 1) return niveauArret <= SEUIL_NIVEAU_MUET;
+  const parlants = niveaux.filter((n) => n > SEUIL_NIVEAU_MUET).length;
+  return parlants / niveaux.length < PART_PARLANTE_MAX;
+}
+
 /** Le message de fin de tranche (`POST sessions/[id]/tranches`). */
 export function finDeTranche(tranche, piste, { empreinte, dureeMs, finMuette }) {
   return {

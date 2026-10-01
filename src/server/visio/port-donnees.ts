@@ -190,6 +190,13 @@ export interface PortDonnees {
       readonly transcriptionId: string;
       readonly trancheId: string;
       readonly segments: readonly SegmentAEcrire[];
+      /**
+       * V2, M2 — `echec` : la tranche n'a pas pu être transcrite en entier
+       * (sortie tronquée deux fois, audio illisible). Elle garde sa place
+       * (segments partiels, ou aucun) sans faire échouer l'étape. Défaut :
+       * `transcrite`.
+       */
+      readonly statutTranche?: "transcrite" | "echec";
     },
   ) => Promise<void>;
   readonly retenirTranscription: (
