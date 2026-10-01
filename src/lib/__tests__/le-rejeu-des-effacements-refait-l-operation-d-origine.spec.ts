@@ -81,6 +81,8 @@ vi.mock("@/lib/prisma", () => {
     "clientTestInterne",
     "rencontre",
     "projet",
+    "documentProjet",
+    "documentProjetContenu",
     "rencontreParticipant",
     "questionnaireCadrage",
     "questionnaireQuestion",
@@ -259,5 +261,61 @@ describe("le rejeu des effacements refait l'opération d'origine", () => {
     await rejouerEffacements({ appliquer: true });
     const r = await rejouerEffacements();
     expect(r.reappliquees).toBe(0);
+  });
+});
+
+/**
+ * ADR 0063 — les DOCUMENTS des projets du pilote. `projets` est RESTRICT envers
+ * `documents_projet` : sans ce traitement, le rejeu échouait dès qu'un projet de
+ * test portait un document — et rien de ce qui suit n'était ré-effacé.
+ */
+describe("le rejeu ré-efface les documents des projets du pilote", () => {
+  function avecDocuments(): void {
+    etat.tables["effacementJournal"]?.push(
+      journal("projets", "p-pilote", "pilote"),
+      journal("documents_projet", "d-journalise", "pilote"),
+    );
+    etat.tables["projet"] = [
+      { id: "p-pilote", clientId: "c-test" },
+      { id: "p-vrai", clientId: "c-vrai" },
+    ];
+    etat.tables["documentProjet"] = [
+      { id: "d-du-projet", projetId: "p-pilote" },
+      { id: "d-journalise", projetId: "p-ailleurs" },
+      { id: "d-vrai", projetId: "p-vrai" },
+    ];
+    etat.tables["documentProjetContenu"] = [
+      { documentId: "d-du-projet" },
+      { documentId: "d-journalise" },
+      { documentId: "d-vrai" },
+    ];
+  }
+
+  it("🔴 documents et octets du pilote repartent AVANT le projet ; ceux d'un vrai projet restent", async () => {
+    avecDocuments();
+    await rejouerEffacements({ appliquer: true });
+    expect((etat.tables["documentProjet"] ?? []).map((l) => l["id"])).toEqual(["d-vrai"]);
+    expect((etat.tables["documentProjetContenu"] ?? []).map((l) => l["documentId"])).toEqual([
+      "d-vrai",
+    ]);
+    expect((etat.tables["projet"] ?? []).map((l) => l["id"])).toEqual(["p-vrai"]);
+  });
+
+  it("🔑 compté à blanc, puis idempotent : un second passage compte 0", async () => {
+    avecDocuments();
+    const avant = await rejouerEffacements();
+    expect(avant.reappliquees).toBeGreaterThan(0);
+    await rejouerEffacements({ appliquer: true });
+    expect((await rejouerEffacements()).reappliquees).toBe(0);
+  });
+
+  it("🔑 contre-témoin : sans ligne `pilote`, aucun document n'est touché", async () => {
+    avecDocuments();
+    etat.tables["effacementJournal"] = (etat.tables["effacementJournal"] ?? []).filter(
+      (l) => l["motif"] !== "pilote",
+    );
+    await rejouerEffacements({ appliquer: true });
+    expect(etat.tables["documentProjet"]).toHaveLength(3);
+    expect(etat.tables["documentProjetContenu"]).toHaveLength(3);
   });
 });

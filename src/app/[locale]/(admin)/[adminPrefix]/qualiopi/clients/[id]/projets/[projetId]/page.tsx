@@ -50,6 +50,7 @@ import { NouveauRendezVous } from "@/components/admin/dossier-client/NouveauRend
 import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 import { toParisLocalInput } from "@/lib/calendar-grid";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { DocumentsDuProjet } from "@/components/admin/dossier-client/DocumentsDuProjet";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -63,7 +64,14 @@ interface PageProps {
    * PR 7 — `vue=questionnaire` : le questionnaire de cadrage du projet (une vue
    * de cette page, pas une page de plus : cliquet des pages de la console).
    */
-  searchParams: Promise<{ vue?: string; message?: string; erreur?: string; sceau?: string }>;
+  searchParams: Promise<{
+    vue?: string;
+    message?: string;
+    erreur?: string;
+    sceau?: string;
+    /** ADR 0063 — `documents` : le message vient de la rubrique Documents. */
+    carte?: string;
+  }>;
 }
 
 const carteCls =
@@ -81,6 +89,10 @@ const LIBELLE_EVENEMENT: Readonly<Record<string, string>> = {
   fusionne: "Fusionné",
   deplace: "Déplacé vers une autre fiche",
   renomme: "Renommé",
+  // ADR 0063 — documents du projet (le téléchargement est filtré de l'affichage).
+  document_ajoute: "Document ajouté",
+  document_archive: "Document archivé",
+  document_reaffiche: "Document réaffiché",
 };
 
 export default async function ProjetPage({ params, searchParams }: PageProps) {
@@ -103,7 +115,10 @@ export default async function ProjetPage({ params, searchParams }: PageProps) {
   const projet = projets.find((p) => p.id === projetId);
   if (!client || projet === undefined) notFound();
 
-  const historique = await lireHistoriqueProjet(projet.id);
+  // ADR 0063 — le téléchargement d'un document reste au journal, pas dans l'historique affiché.
+  const historique = (await lireHistoriqueProjet(projet.id)).filter(
+    (h) => h.action !== "document_telecharge",
+  );
   const [personnesCourtes, caseTest] = await Promise.all([
     lirePersonnesCourtes(id),
     lireCaseTestVisible(id),
@@ -154,6 +169,15 @@ export default async function ProjetPage({ params, searchParams }: PageProps) {
           erreur={lireMessageDeRetour(demande, "erreur") ?? undefined}
         />
       ) : null}
+
+      {/* ADR 0063 — rubrique « Documents » : sous l'en-tête (et sous le questionnaire ouvert). */}
+      <DocumentsDuProjet
+        clientId={id}
+        projetId={projet.id}
+        projetHref={`${ficheHref}/projets/${projet.id}`}
+        nbQuestionnaires={projet.nbQuestionnaires}
+        recherche={demande}
+      />
 
       <section className={carteCls}>
         <h2 className={titreCls}>Ce que l&apos;on sait de ce projet</h2>

@@ -10,6 +10,8 @@
 
 import type { ErrorEvent, EventHint, NodeOptions } from "@sentry/nextjs";
 
+import { viderRequeteDesDocuments } from "./sentry-documents-projet";
+
 /**
  * Type de l'événement de transaction, DÉRIVÉ de l'option Sentry elle-même.
  *
@@ -72,6 +74,10 @@ function nettoyerContexts(event: { contexts?: Record<string, unknown> | undefine
  * exporter un jeton valide, soit rendre les URL illisibles au débogage.
  */
 const SEGMENTS_SECRETS: ReadonlyArray<RegExp> = [
+  // Documents du projet (ADR 0063) : `/document/<uuid>/<jeton>` — le jeton
+  // (HMAC base64url, 43 caractères) ouvre la page envoyée au client ; il échappe
+  // à `HEX_TOKEN_RE` et `JWT_RE`. L'identifiant reste lisible, le jeton est masqué.
+  /(\/document\/[0-9a-fA-F-]{36}\/)[^/?#]+/gi,
   /(\/portail\/emarger\/)[^/?#]+/gi,
   /(\/booking\/)[^/?#]+/gi,
   /(\/verifier-attestation\/)[^/?#]+/gi,
@@ -194,6 +200,8 @@ export function piiScrubBeforeSend(event: ErrorEvent, _hint?: EventHint): ErrorE
   // 2. request — d'abord la purge des routes à requête secrète (questionnaire en ligne).
   purgerRequeteSecrete(event);
   if (event.request) {
+    // ADR 0063 : ni corps, ni état du routeur, ni Referer pour les documents du projet.
+    viderRequeteDesDocuments(event.request);
     // 🔴 L'URL n'était pas nettoyée, alors que nos jetons vivent dans le
     // CHEMIN, pas dans la query : `/portail/emarger/<payload>.<signature>`,
     // `/booking/<token>/cancel`. `redactString` seul ne suffit pas — un segment
@@ -281,6 +289,7 @@ export function piiScrubBeforeSendTransaction(
     event.transaction = masquerSegmentsSensibles(event.transaction);
   }
   if (event.request) {
+    viderRequeteDesDocuments(event.request); // ADR 0063
     if (typeof event.request.url === "string") {
       event.request.url = redactString(masquerSegmentsSensibles(event.request.url)) as string;
     }

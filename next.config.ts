@@ -237,8 +237,21 @@ const nextConfig: NextConfig = {
       allowedOrigins: ["axion-ia.com", "www.axion-ia.com"],
       // Candidature emploi : upload CV (≤ 8 Mo) en multipart Server Action.
       // Défaut Next = 1 Mo → relevé à 10 Mo (marge headers/champs au-delà du fichier).
-      bodySizeLimit: "10mb",
+      // ADR 0063 (documents du projet, 2026-10-01) : 16 Mo — un fichier de 15 Mo
+      // au plus + l'enveloppe multipart. Réglage GLOBAL de Next (inévitable sans
+      // route dédiée) : TOUTE action serveur accepte désormais 16 Mo de corps.
+      // ⚠️ `allowedOrigins` ne protège PAS de cela : il compare l'en-tête `Origin`
+      // à `Host`, ce qui arrête une requête croisée d'un NAVIGATEUR, pas un client
+      // hors navigateur (curl, script), qui pose l'`Origin` qu'il veut. Le seul
+      // rempart d'une action reste sa propre garde (session, rôle, validation).
+      bodySizeLimit: "16mb",
     },
+    // ADR 0063 — la page du projet passe par `src/proxy.ts`, qui met le corps
+    // en mémoire et le TRONQUE au-delà de 10 Mo par défaut (Next 16.3,
+    // `proxyClientMaxBodySize.md`) : un fichier de 12 Mo arriverait coupé. Même
+    // valeur que `bodySizeLimit`. Test :
+    // `src/features/dossier-client/documents/__tests__/la-limite-de-corps-laisse-passer-quinze-mo.spec.ts`.
+    proxyClientMaxBodySize: "16mb",
   },
   // React Compiler deferred (PERF-004) — requires `babel-plugin-react-compiler`
   // devDep + Babel takeover that slows Turbopack builds. Re-evaluate Sprint 17
@@ -768,6 +781,37 @@ const nextConfig: NextConfig = {
       {
         source: "/((?!api\\/content-gen\\/preview\\/|.*\\/carrieres\\/widget(?:\\/|$)).*)",
         headers: [{ key: "X-Frame-Options", value: "DENY" }],
+      },
+      // ADR 0063 (2026-10-01) — lien public d'une page envoyée au client,
+      // `/document/<id>/<jeton>`, servie en bac à sable (origine opaque). Placée
+      // APRÈS `/:path*` : même clé, la dernière règle gagne — `no-referrer`
+      // remplace `strict-origin-when-cross-origin`, sinon le jeton fuirait dans
+      // le Referer des CDN qu'appelle la page. La route pose les mêmes valeurs
+      // (`ENTETES_PAGE_PARTAGEE`) ; Next ignorerait les siennes si celles-ci
+      // différaient. Test : `src/app/document/__tests__/la-page-partagee-n-atteint-jamais-le-site.spec.ts`.
+      {
+        source: "/document/:path*",
+        headers: [
+          { key: "Referrer-Policy", value: "no-referrer" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "sandbox allow-scripts",
+              "default-src 'none'",
+              "script-src 'unsafe-inline' https:",
+              "style-src 'unsafe-inline' https:",
+              "img-src data: blob: https:",
+              "font-src data: https:",
+              "media-src data: blob: https:",
+              "connect-src 'none'",
+              "form-action 'none'",
+              "base-uri 'none'",
+              "frame-src 'none'",
+              "frame-ancestors 'none'",
+            ].join("; "),
+          },
+        ],
       },
       // P1 fix audit Web Vitals — Cache-Control explicites sinon Cloudflare
       // revalide à chaque hit (sitemap-index 9 fichiers + OG images statiques).

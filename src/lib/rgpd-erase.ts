@@ -890,6 +890,8 @@ interface PerimetrePilote {
   readonly rencontreIds: readonly string[];
   readonly projetIds: readonly string[];
   readonly contactIds: readonly string[];
+  /** ADR 0063 — documents de projet journalisés `pilote` (rejeu) ; ceux des projets ci-dessus partent aussi. */
+  readonly documentIds: readonly string[];
 }
 
 /**
@@ -897,13 +899,18 @@ interface PerimetrePilote {
  * d'abord (ils retiennent les questions de questionnaire ; un fait de projet
  * porte toujours le client du projet, CHECK `faits_projet_exige_client`), puis
  * les preuves d'accord (sous le drapeau), les questionnaires, les rencontres
- * (le reste suit en cascade), les projets, les personnes. Reprise telle quelle
- * par `purgerPilote` et par `rejouerEffacements`.
+ * (le reste suit en cascade), les documents des projets (ADR 0063 : octets puis
+ * lignes, sous le drapeau — `projets` est RESTRICT envers eux), les projets,
+ * les personnes. Reprise telle quelle par `purgerPilote` et par `rejouerEffacements`.
  */
 async function supprimerDonneesPilote(
   tx: Prisma.TransactionClient,
   p: PerimetrePilote,
-): Promise<{ readonly faits: number; readonly preuvesAccord: number }> {
+): Promise<{
+  readonly faits: number;
+  readonly preuvesAccord: number;
+  readonly documentIds: readonly string[];
+}> {
   const faits = await tx.fait.deleteMany({
     where: {
       OR: [{ clientId: { in: [...p.clientIds] } }, { rencontreId: { in: [...p.rencontreIds] } }],
@@ -914,9 +921,21 @@ async function supprimerDonneesPilote(
   });
   await tx.questionnaireCadrage.deleteMany({ where: { clientId: { in: [...p.clientIds] } } });
   await tx.rencontre.deleteMany({ where: { id: { in: [...p.rencontreIds] } } });
+  // ADR 0063 — les documents des projets du pilote. Les triggers de
+  // `documents_projet*` refusent toute suppression SAUF sous le drapeau
+  // d'effacement, posé par l'appelant (`executerSousDrapeauEffacement`).
+  const documents = await tx.documentProjet.findMany({
+    where: {
+      OR: [{ projetId: { in: [...p.projetIds] } }, { id: { in: [...p.documentIds] } }],
+    },
+    select: { id: true },
+  });
+  const documentIds = documents.map((d) => d.id);
+  await tx.documentProjetContenu.deleteMany({ where: { documentId: { in: documentIds } } });
+  await tx.documentProjet.deleteMany({ where: { id: { in: documentIds } } });
   await tx.projet.deleteMany({ where: { id: { in: [...p.projetIds] } } });
   await tx.clientContact.deleteMany({ where: { id: { in: [...p.contactIds] } } });
-  return { faits: faits.count, preuvesAccord: preuves.count };
+  return { faits: faits.count, preuvesAccord: preuves.count, documentIds };
 }
 
 async function journaliserEffacements(
@@ -1479,14 +1498,17 @@ export async function purgerPilote(): Promise<PurgePiloteResultat> {
       where: { clientId: { in: clientIds } },
       select: { id: true },
     });
-    const { faits, preuvesAccord } = await supprimerDonneesPilote(tx, {
+    const { faits, preuvesAccord, documentIds } = await supprimerDonneesPilote(tx, {
       clientIds,
       rencontreIds,
       projetIds: projets.map((p) => p.id),
       contactIds: personnes.map((p) => p.id),
+      documentIds: [],
     });
 
     await journaliserEffacements(tx, "rencontres", rencontreIds, "pilote");
+    // ADR 0063 — journalisés pour que le rejeu après restauration les resupprime.
+    await journaliserEffacements(tx, "documents_projet", documentIds, "pilote");
     await journaliserEffacements(
       tx,
       "projets",
@@ -1526,6 +1548,23 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
     motif:
       "preuve que l'enregistrement était licite (art. 17(3)(e)) ; conservée jusqu'à la fin " +
       "du dossier + 5 ans, puis purgée (ADR 0056). Supprimée avec les données du pilote.",
+  },
+  {
+    // ADR 0063 — aucune colonne ne rattache un document à une personne :
+    // l'effacement ciblé par adresse ne peut pas savoir quelle pièce la cite.
+    modele: "DocumentProjet",
+    motif:
+      "pièce d'un projet d'entreprise, sans lien à une personne par une colonne ; jamais " +
+      "supprimée automatiquement (ordre permanent), SAUF avec son projet par la purge des " +
+      "données du pilote (fiches de test) et son rejeu, sous le drapeau d'effacement, " +
+      "journalisée (`documents_projet`). Une demande qui vise une pièce précise est traitée " +
+      "à la main, sous le même drapeau — seule voie que la base admet.",
+  },
+  {
+    modele: "DocumentProjetContenu",
+    motif:
+      "les octets d'une pièce de `DocumentProjet` : même règle que la pièce (supprimés avant " +
+      "elle par la purge du pilote).",
   },
 ];
 
@@ -1967,6 +2006,7 @@ export async function rejouerEffacements(
   );
   const rencontresEchues = ids("rencontres").filter((id) => conservation.has(id));
   const projetsPilote = ids("projets").filter((id) => pilote.has(id));
+  const documentsPilote = ids("documents_projet").filter((id) => pilote.has(id));
   const contactsPilote = contacts.filter((id) => pilote.has(id));
   const contactsEffaces = contacts.filter((id) => !pilote.has(id));
   const unePurgePiloteAEuLieu =
@@ -1981,6 +2021,7 @@ export async function rejouerEffacements(
     | "clientTestInterne"
     | "rencontre"
     | "projet"
+    | "documentProjet"
     | "rencontreParticipant"
     | "questionnaireCadrage"
     | "questionnaireQuestion"
@@ -1997,6 +2038,7 @@ export async function rejouerEffacements(
     rencontreIds: rencontresPilote,
     projetIds: projetsPilote,
     contactIds: contactsPilote,
+    documentIds: documentsPilote,
   });
 
   /** Participations des personnes effacées (celles qui portent leur fiche). */
@@ -2080,6 +2122,11 @@ export async function rejouerEffacements(
       }),
       db.questionnaireCadrage.count({ where: { clientId: { in: [...p.clientIds] } } }),
       db.rencontre.count({ where: { id: { in: [...p.rencontreIds] } } }),
+      db.documentProjet.count({
+        where: {
+          OR: [{ projetId: { in: [...p.projetIds] } }, { id: { in: [...p.documentIds] } }],
+        },
+      }),
       db.projet.count({ where: { id: { in: [...p.projetIds] } } }),
       db.clientContact.count({ where: { id: { in: [...p.contactIds] } } }),
       db.rencontre.count({ where: { id: { in: rencontresEchues } } }),

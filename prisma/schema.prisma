@@ -12955,6 +12955,10 @@ model ProjetEvenement {
   ancienStatut  ProjetStatut?         @map("ancien_statut")
   nouveauStatut ProjetStatut?         @map("nouveau_statut")
   autreProjetId String?               @map("autre_projet_id") @db.Uuid
+  /// ADR 0063 — le document visé par `document_*`. Sans clé étrangère, comme
+  /// `projetId` : le journal survit à tout. Jamais le titre (il peut nommer
+  /// une personne) : l'identifiant seulement.
+  documentId    String?               @map("document_id") @db.Uuid
   motif         String?               @db.VarChar(300)
   /// NULL = la machine.
   parAdminId    String?               @map("par_admin_id") @db.Uuid
@@ -12977,6 +12981,14 @@ enum ProjetEvenementAction {
   deplace
   /// Titre changé.
   renomme
+  /// ADR 0063 — un document (lien ou fichier) ajouté au projet (`documentId`).
+  document_ajoute
+  /// ADR 0063 — un document masqué de la liste (jamais détruit).
+  document_archive
+  /// ADR 0063 — un document archivé rendu de nouveau visible.
+  document_reaffiche
+  /// ADR 0063 — un fichier téléchargé depuis la console.
+  document_telecharge
 
   @@map("projet_evenement_action")
 }
@@ -13024,6 +13036,167 @@ model ProjetDevis {
 
   @@index([projetId])
   @@map("projet_devis")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DOCUMENTS DU PROJET (ADR 0063, 2026-10-01) — la rubrique « Documents » d'un
+// projet du dossier client : ce qui a été ENVOYÉ au client et ce qui est
+// INTERNE. Chaque document est SOIT un lien https, SOIT un fichier.
+//
+// ⚠️ Le contenu du fichier vit en base (`bytea`), dans une table À PART
+// (`DocumentProjetContenu`) : une liste de documents ne peut pas le charger,
+// même par un `findMany` sans `select`. Seule la route de téléchargement lit
+// `documentProjetContenu`.
+//
+// ⚠️ NE PAS confondre avec `ConsoleDocument`, `SocieteDocument`,
+// `TrainerDocument` (fichiers sur le volume `console-docs`, hors dossier
+// client) ni avec `DocumentGenere` (pièces Qualiopi émises par le site).
+//
+// Garanties en SQL brut (migration 20261001120000_documents_projet, déclarées
+// dans `src/features/dossier-client/documents/objets-sql.ts`) :
+//   · clé composée `documents_projet_projet_meme_client` : le projet est du
+//     même client (aucun accès croisé possible, même par un bug du code) ;
+//   · CHECK : exactement un de lien / fichier, lien https, taille ≤ 15 Mo,
+//     empreinte hexadécimale, date d'envoi pour « envoyé au client » ;
+//   · triggers : jamais de DELETE ni de TRUNCATE, aucune réécriture hors
+//     archivage et verdict antivirus, contenu conforme à l'empreinte.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// De quel côté de la rubrique un document se range.
+enum CoteDocumentProjet {
+  /// Parti chez le client (e-mail, PDF joint, lien envoyé). Porte `envoyeLe`.
+  envoye_au_client
+  /// Resté chez Axion-IA (guide de l'auditeur, notes, compte rendu, devis de travail).
+  interne
+
+  @@map("cote_document_projet")
+}
+
+/// Nature d'un document, pour le lire d'un coup d'œil. Indépendante du
+/// format du fichier (un compte rendu peut être un PDF ou un DOCX).
+enum NatureDocumentProjet {
+  email
+  pdf
+  page_en_ligne
+  compte_rendu
+  devis
+  note
+  autre
+
+  @@map("nature_document_projet")
+}
+
+/// Format d'un FICHIER — liste fermée. Le type MIME, l'extension et la
+/// signature attendue se DÉRIVENT de cette valeur dans
+/// `src/features/dossier-client/documents/formats.ts` (jamais stockés).
+enum FormatFichierDocument {
+  pdf
+  html
+  eml
+  docx
+  xlsx
+  pptx
+  png
+  jpg
+  txt
+  md
+  csv
+
+  @@map("format_fichier_document")
+}
+
+/// Verdict de l'antivirus (`axion-clamav`, client `src/server/careers/clamav.ts`).
+/// « indisponible » n'est PAS un verdict : le fichier est gardé `non_analyse`
+/// et ne sort jamais tant qu'une analyse ne l'a pas déclaré `sain`.
+enum AnalyseAntivirusDocument {
+  /// Antivirus injoignable à l'ajout : analyse refaite au téléchargement.
+  non_analyse
+  sain
+  /// Jamais téléchargeable. Gardé (aucune suppression), archivé.
+  infecte
+
+  @@map("analyse_antivirus_document")
+}
+
+/// Un document d'un projet du dossier client : métadonnées seulement.
+/// rgpd: dossier-client
+model DocumentProjet {
+  id       String               @id @default(uuid()) @db.Uuid
+  /// Redondant avec le projet À DESSEIN : porte la clé composée
+  /// (projet_id, client_id) → projets(id, client_id). Suit les fusions de
+  /// fiches par ON UPDATE CASCADE.
+  clientId String               @map("client_id") @db.Uuid
+  projetId String               @map("projet_id") @db.Uuid
+  cote     CoteDocumentProjet
+  nature   NatureDocumentProjet
+  titre    String               @db.VarChar(200)
+  /// Date d'envoi au client (obligatoire pour `envoye_au_client`, CHECK).
+  envoyeLe DateTime?            @map("envoye_le") @db.Date
+
+  // ── SOIT un lien… ──
+  /// https uniquement (CHECK en base, `new URL()` côté serveur).
+  lienUrl String? @map("lien_url") @db.VarChar(2000)
+
+  // ── …SOIT un fichier (les cinq colonnes ensemble, CHECK) ──
+  fichierNom          String?                   @map("fichier_nom") @db.VarChar(255)
+  fichierFormat       FormatFichierDocument?    @map("fichier_format")
+  fichierTailleOctets Int?                      @map("fichier_taille_octets")
+  fichierSha256       String?                   @map("fichier_sha256") @db.Char(64)
+  analyseAntivirus    AnalyseAntivirusDocument? @map("analyse_antivirus")
+  analyseLe           DateTime?                 @map("analyse_le")
+  /// Nom de la signature trouvée (`infecte` seulement). Aucune donnée personnelle.
+  analyseSignature    String?                   @map("analyse_signature") @db.VarChar(200)
+
+  /// Archivé = masqué par défaut, réaffichable. Jamais supprimé.
+  archiveLe    DateTime? @map("archive_le")
+  archiveParId String?   @map("archive_par_id") @db.Uuid
+  /// Sans clé étrangère (comme `Projet.creeParId`).
+  ajouteParId  String?   @map("ajoute_par_id") @db.Uuid
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  contenu DocumentProjetContenu?
+
+  @@index([projetId, archiveLe])
+  @@index([clientId, projetId])
+  @@map("documents_projet")
+}
+
+/// Les octets d'un fichier de `DocumentProjet`, à part pour qu'aucune liste
+/// ne les charge. Lu par la route de téléchargement SEULE.
+/// rgpd: dossier-client
+model DocumentProjetContenu {
+  documentId String         @id @map("document_id") @db.Uuid
+  document   DocumentProjet @relation(fields: [documentId], references: [id], onDelete: Restrict)
+  octets     Bytes
+
+  @@map("documents_projet_contenus")
+}
+
+/// Qui a probablement ouvert le lien public d'une page partagée (ADR 0063, D12).
+/// Une HEURISTIQUE sur les en-têtes de la requête, jamais une preuve de lecture.
+enum OrigineOuvertureDocument {
+  /// Navigation déclenchée par une personne (`Sec-Fetch-User: ?1`,
+  /// `Sec-Fetch-Dest: document`) depuis un navigateur ordinaire.
+  navigateur
+  /// Analyseur de liens, aperçu de messagerie, robot : tout le reste.
+  apercu_automatique
+
+  @@map("origine_ouverture_document")
+}
+
+/// Journal en ajout seul (trigger) des ouvertures du lien public d'une page
+/// « envoyée au client » (`/document/<id>/<jeton>`). Ni adresse IP, ni
+/// navigateur, ni personne : la date et l'origine probable, c'est tout.
+/// Sans clé étrangère : un journal survit à tout.
+/// rgpd: technique — date et origine probable d'ouverture d'un lien partagé à une entreprise ; ni IP, ni navigateur, ni personne
+model DocumentProjetOuverture {
+  id         String                   @id @default(uuid()) @db.Uuid
+  documentId String                   @map("document_id") @db.Uuid
+  origine    OrigineOuvertureDocument
+  ouvertLe   DateTime                 @default(now()) @map("ouvert_le")
+
+  @@index([documentId, ouvertLe])
+  @@map("documents_projet_ouvertures")
 }
 
 /// « La fiche B a été absorbée par A ». Une fusion défaite GARDE sa ligne
@@ -14077,6 +14250,9 @@ enum CibleEffacement {
   rencontres
   /// Projet supprimé (`projets.id`).
   projets
+  /// ADR 0063 — document d'un projet du pilote supprimé avec son contenu
+  /// (`documents_projet.id`), sous le drapeau d'effacement.
+  documents_projet
 
   @@map("cible_effacement")
 }

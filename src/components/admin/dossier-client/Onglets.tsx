@@ -294,6 +294,7 @@ export function OngletProjets({
   ficheHref,
   qBase,
   erreur,
+  nbDocuments,
 }: {
   clientId: string;
   projets: ReadonlyArray<ProjetDuDossier>;
@@ -301,6 +302,8 @@ export function OngletProjets({
   ficheHref: string;
   qBase: string;
   erreur: string | null;
+  /** ADR 0063 — documents ACTIFS par projet (comptage groupé), lien vers la rubrique. */
+  nbDocuments?: Readonly<Record<string, number>>;
 }): React.ReactElement {
   return (
     <div>
@@ -336,6 +339,11 @@ export function OngletProjets({
                   <span className={mutedCls}>
                     {p.nbQuestionnaires} questionnaire{p.nbQuestionnaires > 1 ? "s" : ""}
                   </span>
+                ) : null}
+                {(nbDocuments?.[p.id] ?? 0) > 0 ? (
+                  <Link href={`${ficheHref}/projets/${p.id}#documents`} className={lienCls}>
+                    {`${nbDocuments![p.id]} document${nbDocuments![p.id]! > 1 ? "s" : ""}`}
+                  </Link>
                 ) : null}
               </li>
             ))}

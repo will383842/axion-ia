@@ -113,6 +113,14 @@ const EXCEPTIONS: ReadonlyArray<{ chemin: string; raison: string }> = [
       "consulte pas dans un parcours d'audit, il s'archive au dossier de recrutement. " +
       "À rebasculer si un écran de lecture de candidature voit le jour.",
   },
+  {
+    chemin: "features/dossier-client/documents/formats.ts",
+    raison:
+      "Documents du projet (ADR 0063) : fichiers DÉPOSÉS par l'administrateur, " +
+      "parfois du HTML ou un PDF d'origine extérieure ; ils ne s'affichent JAMAIS " +
+      "dans l'origine du site — toujours en pièce jointe, octet-stream, sandbox. " +
+      "Ce ne sont pas des pièces du parcours d'audit Qualiopi.",
+  },
 ];
 
 function fichiersSource(dossier: string, acc: string[] = []): string[] {
