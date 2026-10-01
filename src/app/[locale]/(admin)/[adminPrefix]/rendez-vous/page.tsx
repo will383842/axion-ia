@@ -577,16 +577,17 @@ export default async function RendezVousPage({
         <AClasserVue
           rdvBase={base}
           historique={sp["filtre"] === "historique"}
-          erreur={
-            typeof sp["erreur"] === "string" && sp["erreur"] !== ""
-              ? sp["erreur"].slice(0, 300)
-              : null
-          }
+          erreur={lireMessageDeRetour(sp, "erreur")}
         />
       ) : vue === "circuit" ? (
         <EtatDuCircuitVue rdvBase={base} />
       ) : vue === "point" ? (
-        <VuePoint aFaire={aFaire} maintenant={maintenant} dossierVisible={voitDossier} />
+        <VuePoint
+          aFaire={aFaire}
+          maintenant={maintenant}
+          dossierVisible={voitDossier}
+          erreur={lireMessageDeRetour(sp, "erreur")}
+        />
       ) : vue === "passes" ? (
         <VuePasses maintenant={maintenant} {...optionsPublic} />
       ) : rdv.length === 0 ? (
@@ -633,14 +634,25 @@ async function VuePoint({
   aFaire,
   maintenant,
   dossierVisible,
+  erreur,
 }: {
   aFaire: RdvAFaireLePoint[];
   maintenant: Date;
   dossierVisible: boolean;
+  /** Refus scellé d'« Après l'appel » (`actions-rencontres.ts`, N1). */
+  erreur: string | null;
 }): Promise<React.ReactElement> {
   const bilan = await bilanDuMois(maintenant);
   return (
     <>
+      {erreur !== null ? (
+        <p
+          role="alert"
+          className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-danger)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
+        >
+          {erreur}
+        </p>
+      ) : null}
       <section aria-labelledby="bilan-mois" className="mb-[var(--space-admin-6)]">
         <h2 id="bilan-mois" className="admin-h2">
           Ce mois-ci

@@ -69,6 +69,7 @@ import {
 } from "@/features/dossier-client/queries-rencontres";
 import { NouveauRendezVous } from "@/components/admin/dossier-client/NouveauRendezVous";
 import { FusionDeFiches } from "@/components/admin/dossier-client/FusionDeFiches";
+import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 import { toParisLocalInput } from "@/lib/calendar-grid";
 import {
   rechercherSiren,
@@ -285,7 +286,8 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
   // liste, aucune requête n'est faite (pas seulement aucun rendu).
   const voitEchanges = peutVoirLesEchanges(acces.role);
   const onglet = ongletAffiche(sp.onglet, voitEchanges);
-  const erreur = typeof sp.erreur === "string" && sp.erreur !== "" ? sp.erreur.slice(0, 300) : null;
+  // N1 : seuls les messages scellés par nos actions s'affichent (un lien forgé, rien).
+  const erreur = lireMessageDeRetour(sp, "erreur");
   const maintenant = new Date();
 
   // « SIREN à compléter » : l'annuaire public n'est interrogé que sur demande

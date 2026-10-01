@@ -32,6 +32,7 @@ import {
   type FicheProcheLibellee,
 } from "@/server/qualiopi/crm/porte-client";
 import { exigerAccesEchanges } from "@/features/dossier-client/acces";
+import { avecMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 import { creerProjet, ErreurCreationProjet } from "@/features/dossier-client/creer-projet";
 import { ErreurTrancher, garderCetteValeur } from "@/features/dossier-client/trancher";
 import { updateClientAction } from "@/server/actions/qualiopi/clients";
@@ -96,7 +97,7 @@ export async function confirmerSirenFormAction(formData: FormData): Promise<void
   const base = adminPath("fr", `qualiopi/clients/${clientId}`);
   const r = await updateClientAction({ id: clientId, siren });
   if ("error" in r) {
-    redirect(`${base}?onglet=facturation&erreur=${encodeURIComponent(r.error)}`);
+    redirect(avecMessageDeRetour(`${base}?onglet=facturation`, "erreur", r.error));
   }
   revalidatePath(base);
   redirect(base);
@@ -163,7 +164,7 @@ export async function ajouterPersonneFormAction(formData: FormData): Promise<voi
     fonction: String(formData.get("fonction") ?? "").trim(),
   });
   const base = adminPath("fr", `qualiopi/clients/${clientId}`);
-  if (!r.ok) redirect(`${base}?onglet=personnes&erreur=${encodeURIComponent(r.erreur)}`);
+  if (!r.ok) redirect(avecMessageDeRetour(`${base}?onglet=personnes`, "erreur", r.erreur));
   redirect(`${base}?onglet=personnes`);
 }
 
@@ -215,7 +216,7 @@ export async function creerProjetFormAction(formData: FormData): Promise<void> {
   } catch (e) {
     const message =
       e instanceof ErreurCreationProjet ? e.message : "Le projet n'a pas pu être créé.";
-    redirect(`${base}?onglet=projets&erreur=${encodeURIComponent(message)}`);
+    redirect(avecMessageDeRetour(`${base}?onglet=projets`, "erreur", message));
   }
   revalidatePath(base);
   redirect(`${base}/projets/${cree.id}`);
@@ -247,7 +248,7 @@ export async function garderCetteValeurFormAction(formData: FormData): Promise<v
   }
   revalidatePath(retour.split("?")[0] ?? retour);
   if (erreur !== null) {
-    redirect(`${retour}${retour.includes("?") ? "&" : "?"}erreur=${encodeURIComponent(erreur)}`);
+    redirect(avecMessageDeRetour(retour, "erreur", erreur));
   }
   redirect(retour);
 }

@@ -50,6 +50,21 @@ describe("N1 — un message forgé ne s'affiche pas", () => {
     expect(src).not.toMatch(/sp\.(erreur|message)\b|demande(\.|\[")(erreur|message)\b/);
   });
 
+  it("relecture E2 : « à classer », « à faire le point » et la fiche client lisent le sceau", () => {
+    const rdv = readFileSync("src/app/[locale]/(admin)/[adminPrefix]/rendez-vous/page.tsx", "utf8");
+    expect(rdv).not.toMatch(/sp\["erreur"\]/);
+    expect(rdv).toMatch(/<VuePoint[^>]*erreur=\{lireMessageDeRetour\(sp, "erreur"\)\}/);
+    expect(rdv).toMatch(/<AClasserVue[\s\S]{0,120}erreur=\{lireMessageDeRetour\(sp, "erreur"\)\}/);
+    const fiche = readFileSync(
+      "src/app/[locale]/(admin)/[adminPrefix]/qualiopi/clients/[id]/page.tsx",
+      "utf8",
+    );
+    expect(fiche).toContain('const erreur = lireMessageDeRetour(sp, "erreur");');
+    const actions = readFileSync("src/features/dossier-client/actions.ts", "utf8");
+    expect(actions).not.toMatch(/erreur=\$\{encodeURIComponent/);
+    expect(actions.match(/avecMessageDeRetour\(/g)?.length).toBe(4);
+  });
+
   it.each([
     "src/features/dossier-client/actions-rencontres.ts",
     "src/features/dossier-client/compte-rendu-gestes.ts",
