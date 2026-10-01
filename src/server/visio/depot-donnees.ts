@@ -357,6 +357,7 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
         origineMs,
         courtConfirme: journalDit(e.evenements, EVT_COURT_CONFIRME),
         fenetresVerifiees: journalDit(e.evenements, EVT_FENETRES_VERIFIEES),
+        fenetresRecues: e.fenetresHorsAccord !== null,
         tranches: e.tranches.map((t): TrancheATraiter => ({
           ...t,
           debutCaptureEpochMs: Number(t.debutCaptureEpochMs),

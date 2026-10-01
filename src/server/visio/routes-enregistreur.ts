@@ -174,6 +174,9 @@ export async function traiterBattementSession(
       appareil: g.appareil,
       enregistrementId: id,
       maintenant: g.maintenant,
+      ...(corps.valeur.fenetresHorsAccord
+        ? { fenetresHorsAccord: corps.valeur.fenetresHorsAccord }
+        : {}),
     }),
   );
 }

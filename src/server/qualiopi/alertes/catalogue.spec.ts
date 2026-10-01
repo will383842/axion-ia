@@ -248,6 +248,7 @@ const CODES_ATTENDUS: string[] = [
   "visio.jeton_expire_j3",
   "visio.extension_silencieuse",
   "visio.extension_trop_ancienne",
+  "visio.fenetre_tardive",
   // Chantier visio, PR 6 : le circuit du compte rendu.
   "visio.circuit_suspendu",
   "visio.etape_sans_gestionnaire",

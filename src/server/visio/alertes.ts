@@ -74,6 +74,8 @@ export const CODES_ALERTES_VISIO = {
   extensionSilencieuse: "visio.extension_silencieuse",
   /** V2, N2 — un appareil bat avec une extension qui ne peut plus enregistrer de visio. */
   extensionTropAncienne: "visio.extension_trop_ancienne",
+  /** V2, N3 — une fin tardive signale une personne sans accord après le traitement. */
+  fenetreTardive: "visio.fenetre_tardive",
   // ── circuit du compte rendu (PR 6) ──
   /** Crédit OpenAI épuisé, plafond atteint, clé absente : en pause. */
   circuitSuspendu: "visio.circuit_suspendu",

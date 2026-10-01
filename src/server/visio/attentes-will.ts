@@ -38,13 +38,19 @@ export function questionsAWill(
     readonly motifArret: string | null;
     readonly courtConfirme: boolean;
     readonly fenetresVerifiees: boolean;
+    /**
+     * V2, N4 — un battement de session a apporté la liste des fenêtres hors
+     * accord : la question « interrompue » n'a plus d'objet. Absent : inconnu.
+     */
+    readonly fenetresRecues?: boolean;
   },
   maintenant: Date,
 ): QuestionAWill[] {
   const out: QuestionAWill[] = [];
   const dureeMs = (e.fin ?? maintenant).getTime() - e.debut.getTime();
   if (!e.courtConfirme && enregistrementTropCourt(dureeMs, e.motifArret)) out.push("court");
-  if (!e.fenetresVerifiees && e.motifArret === "cloture_serveur") out.push("interrompue");
+  if (!e.fenetresVerifiees && e.fenetresRecues !== true && e.motifArret === "cloture_serveur")
+    out.push("interrompue");
   return out;
 }
 

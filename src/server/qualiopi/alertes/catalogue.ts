@@ -1833,6 +1833,14 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — levée par le balayage de l'enregistreur des visios (`src/server/visio/balayage-enregistreur.ts`), hors d'`evaluerAlertes`. C'est ce balayage qui la ferme quand la cause disparaît ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture.",
     guichet: "direction",
   },
+  "visio.fenetre_tardive": {
+    niveau: "critique",
+    titre: "Visio : une personne était entrée sans accord",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par la route de fin de session de l'enregistreur (`src/server/visio/sessions.ts`), hors d'`evaluerAlertes`. Elle décrit un fait constaté ; Will la ferme à la main après avoir revu le compte rendu.",
+    guichet: "direction",
+  },
   "visio.extension_trop_ancienne": {
     niveau: "important",
     titre: "Visio : l'extension du poste est trop ancienne pour enregistrer",

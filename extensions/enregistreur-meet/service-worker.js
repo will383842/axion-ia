@@ -474,7 +474,12 @@ async function surNiveaux(msg) {
     appeler({
       route: `sessions/${etat.capture.enregistrementId}/battement`,
       jeton: etat.jeton,
-      json: { le: new Date(maintenant).toISOString(), enPause: etat.capture.enPause === true },
+      json: {
+        le: new Date(maintenant).toISOString(),
+        enPause: etat.capture.enPause === true,
+        // V2, N4 — une session close par le serveur garde ce qu'on savait.
+        fenetresHorsAccord: capture.fenetresAuBattement(etat.capture, maintenant),
+      },
     });
   }
 }

@@ -43,6 +43,8 @@ export interface EnregistrementATraiter {
   readonly courtConfirme: boolean;
   /** Will a vérifié que personne n'est entré sans accord (session close par le serveur). */
   readonly fenetresVerifiees: boolean;
+  /** V2, N4 — la liste des fenêtres hors accord est arrivée (battement ou fin). */
+  readonly fenetresRecues?: boolean;
   readonly tranches: readonly TrancheATraiter[];
 }
 

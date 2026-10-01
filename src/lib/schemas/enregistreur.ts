@@ -258,6 +258,16 @@ export const DeclarerRefus = z.object({
 export const BattementSession = z.object({
   le: horodatage,
   enPause: z.boolean(),
+  /**
+   * V2, N4 — ajout FACULTATIF au contrat v1 : les fenêtres hors accord vues
+   * jusqu'ici (ms depuis le début de la capture). `ouverte` : la personne est
+   * encore là ; le site la fait courir jusqu'à la fin. Une session close par
+   * le serveur garde ainsi ce que l'extension savait.
+   */
+  fenetresHorsAccord: z
+    .array(periode.extend({ ouverte: z.boolean().optional() }))
+    .max(500)
+    .optional(),
 });
 
 /** `POST sessions/[id]/tranches` : fin d'une tranche de 180 s. */

@@ -61,6 +61,8 @@ import {
   type Preavis,
 } from "./visio-annonce";
 import { refusPisteClientEnDictee } from "./morceaux";
+import { CODES_ALERTES_VISIO } from "./alertes";
+import { estHorsAccord } from "./dialogue";
 import { echec, ok, type Resultat } from "./resultat";
 import type { StockageAudio } from "./stockage-audio";
 
@@ -787,6 +789,22 @@ export async function declarerRefus(
   return ok({ statut: "refuse", detruire: true });
 }
 
+/**
+ * V2, N4 — la fin d'une fenêtre hors accord encore OUVERTE au dernier
+ * battement : la personne était là quand le contact a été perdu, la fenêtre
+ * court jusqu'au bout (un battement ou une `fin` suivants la corrigent).
+ */
+export const FIN_FENETRE_OUVERTE_MS = 2_147_483_647;
+
+/** Les fenêtres d'un battement, telles que le site les garde. */
+function fenetresDuBattement(
+  f: ReadonlyArray<{ debutMs: number; finMs: number; ouverte?: boolean | undefined }>,
+): string {
+  return JSON.stringify(
+    f.map((x) => ({ debutMs: x.debutMs, finMs: x.ouverte ? FIN_FENETRE_OUVERTE_MS : x.finMs })),
+  );
+}
+
 /** Battement d'une session : signe de vie ; rouvre un `interrompu`. */
 export async function battementSession(
   db: Db,
@@ -794,14 +812,24 @@ export async function battementSession(
     readonly appareil: Appareil;
     readonly enregistrementId: string;
     readonly maintenant: Date;
+    /** V2, N4 — facultatif (contrat v1) : les fenêtres hors accord vues jusqu'ici. */
+    readonly fenetresHorsAccord?: ReadonlyArray<{
+      debutMs: number;
+      finMs: number;
+      ouverte?: boolean | undefined;
+    }>;
   },
 ): Promise<Resultat> {
   const enr = await chargerDeLAppareil(db, entree.enregistrementId, entree.appareil.id);
   if (!enr) return INTROUVABLE;
+  const fenetres = entree.fenetresHorsAccord
+    ? { fenetresHorsAccord: fenetresDuBattement(entree.fenetresHorsAccord) }
+    : {};
   if (enr.statut === "interrompu") {
     await db.enregistrement.update({
       where: { id: enr.id },
       data: {
+        ...fenetres,
         statut: "en_cours",
         updatedAt: entree.maintenant,
         evenements: ajouterAuJournal(enr.evenements, {
@@ -815,7 +843,7 @@ export async function battementSession(
   if (enr.statut === "en_cours" || enr.statut === "accord_en_attente") {
     await db.enregistrement.update({
       where: { id: enr.id },
-      data: { updatedAt: entree.maintenant },
+      data: { ...fenetres, updatedAt: entree.maintenant },
     });
     return ok({ statut: enr.statut });
   }
@@ -931,6 +959,12 @@ export async function terminerSession(
     return ok({ statut: "accord_non_confirme", detruire: true });
   }
   if (ETATS_TRAITES.includes(enr.statut)) {
+    // V2, N3 — une session close par le serveur, traitée depuis : sa `fin`
+    // tardive apporte des fenêtres hors accord. Elles ne se perdent pas.
+    if (enr.motifArret === "cloture_serveur" && c.fenetresHorsAccord.length > 0) {
+      await appliquerFenetresTardives(db, enr, c.fenetresHorsAccord, entree.maintenant);
+      return ok({ statut: enr.statut, deja: true, fenetresAppliquees: true });
+    }
     return ok({ statut: enr.statut, deja: true });
   }
   const clotureDOffice = enr.statut === "depose" && enr.motifArret === "cloture_serveur";
@@ -977,6 +1011,76 @@ export async function terminerSession(
     },
   });
   return ok({ statut: "depose", incomplet, corrige: clotureDOffice });
+}
+
+/**
+ * V2, N3 — fenêtres hors accord arrivées APRÈS le début du traitement d'une
+ * session close par le serveur : elles sont enregistrées, la parole des
+ * segments qui les chevauchent est vidée (`horsAccord`), et une alerte dit à
+ * Will de revoir le compte rendu et les faits de ce rendez-vous (les faits,
+ * immuables, ne se corrigent pas d'ici).
+ */
+async function appliquerFenetresTardives(
+  db: Db,
+  enr: { id: string; rencontreId: string; debut: Date; evenements: string | null },
+  fenetres: ReadonlyArray<{ debutMs: number; finMs: number }>,
+  maintenant: Date,
+): Promise<void> {
+  const rencontre = await db.rencontre.findUnique({
+    where: { id: enr.rencontreId },
+    select: { debutReel: true },
+  });
+  const enregistrements = await db.enregistrement.findMany({
+    where: { rencontreId: enr.rencontreId },
+    select: { debut: true },
+  });
+  // Même origine que `aTranscrire` : début réel, sinon le premier enregistrement.
+  const origineMs =
+    rencontre?.debutReel?.getTime() ??
+    Math.min(...enregistrements.map((e) => e.debut.getTime()), enr.debut.getTime());
+  const transcriptions = await db.transcription.findMany({
+    where: { enregistrementId: enr.id },
+    select: { id: true },
+  });
+  const segments = await db.transcriptionSegment.findMany({
+    where: { transcriptionId: { in: transcriptions.map((t) => t.id) }, horsAccord: false },
+    select: { transcriptionId: true, ordre: true, debutMs: true, finMs: true },
+  });
+  const touches = segments.filter((s) =>
+    estHorsAccord(
+      { debutMs: origineMs + s.debutMs, finMs: origineMs + s.finMs },
+      fenetres,
+      enr.debut.getTime(),
+    ),
+  );
+  await db.$transaction(async (tx) => {
+    await tx.enregistrement.update({
+      where: { id: enr.id },
+      data: {
+        fenetresHorsAccord: JSON.stringify(fenetres),
+        evenements: ajouterAuJournal(enr.evenements, { le: maintenant, type: "fenetres_tardives" }),
+      },
+    });
+    for (const s of touches) {
+      await tx.transcriptionSegment.updateMany({
+        where: { transcriptionId: s.transcriptionId, ordre: s.ordre },
+        data: { horsAccord: true, texte: "" },
+      });
+    }
+  });
+  try {
+    const { creerOuDedup } = await import("@/server/qualiopi/alertes/alertes-service");
+    await creerOuDedup({
+      code: CODES_ALERTES_VISIO.fenetreTardive,
+      niveau: "critique",
+      titre: "Visio : une personne était entrée sans accord",
+      message: `Constaté le ${maintenant.toISOString().slice(0, 10)} : l'extension a signalé après coup une personne entrée sans accord (${touches.length} passage(s) retiré(s) de la transcription). Revoyez le compte rendu et les faits de ce rendez-vous.`,
+      cibleType: "Rencontre",
+      cibleId: enr.rencontreId,
+    });
+  } catch (err) {
+    console.error("[enregistreur] alerte « fenêtre tardive » non créée :", err);
+  }
 }
 
 type DbPurge = Pick<Db, "enregistrement" | "enregistrementTranche" | "enregistrementMorceau">;

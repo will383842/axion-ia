@@ -204,6 +204,20 @@ export function arreter(etat, maintenantMs, motif = "manuel") {
   };
 }
 
+/**
+ * V2, N4 — les fenêtres hors accord portées par le battement de session :
+ * fermées telles quelles, l'ouverte arrêtée à maintenant et marquée
+ * `ouverte` (le site la fait courir jusqu'à la fin si le contact se perd).
+ */
+export function fenetresAuBattement(etat, maintenantMs) {
+  const t = maintenantMs - etat.debutMs;
+  return (etat.fenetresHorsAccord ?? []).map((x) =>
+    x.finMs === null || x.finMs === undefined
+      ? { debutMs: x.debutMs, finMs: Math.max(x.debutMs, t), ouverte: true }
+      : { debutMs: x.debutMs, finMs: x.finMs },
+  );
+}
+
 function fermerFenetre(etat, maintenantMs) {
   const t = maintenantMs - etat.debutMs;
   return etat.fenetresHorsAccord.map((x) => ({ debutMs: x.debutMs, finMs: x.finMs ?? t }));

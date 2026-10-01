@@ -588,6 +588,31 @@
         },
         "enPause": {
           "type": "boolean"
+        },
+        "fenetresHorsAccord": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "debutMs": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "finMs": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "ouverte": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "debutMs",
+              "finMs"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 500
         }
       },
       "required": [
