@@ -65,6 +65,7 @@ import { TYPES_EVENEMENT } from "@/server/partners/contrat";
 import { payloadClientFusionne } from "@/server/partners/payloads";
 
 import type { BaseTransactionnelle, Tx } from "./base";
+import { estClientTestInterne } from "./client-test";
 
 /**
  * Axion Partners a-t-il confirmé qu'aucun de ses calculs ne s'appuie sur
@@ -76,6 +77,9 @@ export const PARTNERS_A_CONFIRME_LE_SUIVI_PAR_SIREN = false;
 export const LONGUEUR_MIN_MOTIF_FUSION = 10;
 
 export class ErreurFusion extends Error {}
+
+/** M-1 : une fiche d'essai du pilote ne se mêle jamais à une vraie fiche. */
+export const MESSAGE_FICHE_D_ESSAI = "Une fiche d'essai ne se fusionne pas avec une vraie fiche.";
 
 export const MESSAGE_DEUX_SIREN =
   "Ce sont deux entreprises différentes. Si l'une des deux est fausse, corrigez d'abord son SIREN.";
@@ -170,6 +174,13 @@ export async function fusionnerFiches(
       throw new ErreurFusion(
         "La fiche qui reste a elle-même été fusionnée : choisissez celle qui l'a absorbée.",
       );
+    }
+    // M-1 : dans les deux sens — les rencontres de test rejoindraient un vrai client.
+    if (
+      (await estClientTestInterne(tx, e.absorbeeId)) !==
+      (await estClientTestInterne(tx, e.absorbanteId))
+    ) {
+      throw new ErreurFusion(MESSAGE_FICHE_D_ESSAI);
     }
     const decision = deciderFusion(absorbee, absorbante, { reporterSiren: e.reporterSiren });
     if (!decision.permise) throw new ErreurFusion(decision.motif);

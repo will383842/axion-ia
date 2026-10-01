@@ -22,6 +22,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { proposerRattachement, validerRattachement } from "../rattacher";
 import { deplacerRencontre } from "../deplacer";
+import { fusionnerFiches, MESSAGE_FICHE_D_ESSAI } from "../fusionner";
 import { CLE_TEST, dossierEnMemoire, fiche, id } from "./_dossier-en-memoire";
 import { baseEspion } from "../../../../tests/outils/base-espion";
 
@@ -121,4 +122,23 @@ describe("M-1 — une rencontre de test ne se range jamais chez un vrai client",
       motif: "report",
     });
   });
+
+  it.each(["fictive dans vraie", "vraie dans fictive"])(
+    "la fusion d'une fiche d'essai avec une vraie fiche est refusée (%s)",
+    async (sens) => {
+      const { base, vraie, fictive } = scene("fictive");
+      const [absorbeeId, absorbanteId] =
+        sens === "fictive dans vraie" ? [fictive, vraie] : [vraie, fictive];
+      await expect(
+        fusionnerFiches(base.client as never, {
+          absorbeeId,
+          absorbanteId,
+          motif: "Même client, fiche en double",
+          reporterSiren: false,
+          parAdminId: ADMIN,
+        }),
+      ).rejects.toThrow(MESSAGE_FICHE_D_ESSAI);
+      expect(base.tables["rencontre"]?.[0]?.["clientId"]).toBe(fictive);
+    },
+  );
 });
