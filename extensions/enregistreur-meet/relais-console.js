@@ -13,6 +13,8 @@
   document.addEventListener(
     "click",
     (ev) => {
+      // Un clic simulé par un script de la page ne compte pas : seul celui de Will.
+      if (!ev.isTrusted) return;
       const lien = ev.target?.closest?.(`[${OUI}], [${NON}]`);
       if (!lien) return;
       const identifiant = lien.getAttribute(OUI);

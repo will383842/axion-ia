@@ -55,8 +55,8 @@ function relais() {
   const element = (attrs: Record<string, string>) => ({
     getAttribute: (n: string) => (n in attrs ? attrs[n] : null),
   });
-  const cliquer = (cible: ReturnType<typeof element> | null) =>
-    ecouteur?.({ target: { closest: () => cible } });
+  const cliquer = (cible: ReturnType<typeof element> | null, isTrusted = true) =>
+    ecouteur?.({ isTrusted, target: { closest: () => cible } });
   return { cliquer, element, envoyes };
 }
 
@@ -70,6 +70,13 @@ describe("le relais de la console", () => {
       { type: "visio_a_enregistrer", identifiant: "evt_1" },
       { type: "visio_sans_enregistrement" },
     ]);
+  });
+
+  it("un clic SIMULÉ par la page (isTrusted faux) ne relaie rien", () => {
+    const r = relais();
+    r.cliquer(r.element({ [ATTRIBUT_OUI]: "evt_1" }), false);
+    r.cliquer(r.element({ [ATTRIBUT_NON]: "" }), false);
+    expect(r.envoyes).toEqual([]);
   });
 
   it("le relais ne lit rien d'autre de la page et n'y injecte rien", () => {
