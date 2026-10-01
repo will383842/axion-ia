@@ -11,6 +11,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 import type {
   creerSousTraitantAction,
   verifierSousTraitantOfAction,
@@ -87,203 +88,205 @@ export function SousTraitantForm({ creerAction }: SousTraitantFormProps) {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-6)]"
-    >
-      <h3 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-        Nouveau sous-traitant
-      </h3>
+    // Replié par défaut, comme Réclamations, Veille, Moyens et Appréciations :
+    // le registre s'ouvre sur ce qui est ENREGISTRÉ — c'est ce que lit
+    // l'auditeur —, pas sur un formulaire vide. Cf. AdminBlocRepliable.
+    <AdminBlocRepliable titre="+ Nouveau sous-traitant">
+      <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
+          {/* Nom */}
+          <div className={fieldCls}>
+            <label htmlFor="soustraitantform-nom-de-lorganisme" className={labelCls}>
+              Nom de l&apos;organisme
+            </label>
+            <input
+              id="soustraitantform-nom-de-lorganisme"
+              type="text"
+              value={nom}
+              onChange={(e) => setNom(e.target.value)}
+              disabled={isPending}
+              required
+              maxLength={250}
+              placeholder="Dénomination sociale"
+              className={inputCls}
+            />
+          </div>
 
-      <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
-        {/* Nom */}
-        <div className={fieldCls}>
-          <label htmlFor="soustraitantform-nom-de-lorganisme" className={labelCls}>
-            Nom de l&apos;organisme
-          </label>
-          <input
-            id="soustraitantform-nom-de-lorganisme"
-            type="text"
-            value={nom}
-            onChange={(e) => setNom(e.target.value)}
-            disabled={isPending}
-            required
-            maxLength={250}
-            placeholder="Dénomination sociale"
-            className={inputCls}
-          />
-        </div>
+          {/* SIRET */}
+          <div className={fieldCls}>
+            <label htmlFor="soustraitantform-siret-facultatif" className={labelCls}>
+              SIRET (facultatif)
+            </label>
+            {/* 17 : forme espacée d'un Kbis tolérée, normalisée à 14 côté serveur. */}
+            <input
+              id="soustraitantform-siret-facultatif"
+              type="text"
+              value={siret}
+              onChange={(e) => setSiret(e.target.value)}
+              disabled={isPending}
+              inputMode="numeric"
+              maxLength={17}
+              placeholder="14 chiffres"
+              className={inputCls}
+            />
+          </div>
 
-        {/* SIRET */}
-        <div className={fieldCls}>
-          <label htmlFor="soustraitantform-siret-facultatif" className={labelCls}>
-            SIRET (facultatif)
-          </label>
-          {/* 17 : forme espacée d'un Kbis tolérée, normalisée à 14 côté serveur. */}
-          <input
-            id="soustraitantform-siret-facultatif"
-            type="text"
-            value={siret}
-            onChange={(e) => setSiret(e.target.value)}
-            disabled={isPending}
-            inputMode="numeric"
-            maxLength={17}
-            placeholder="14 chiffres"
-            className={inputCls}
-          />
-        </div>
+          {/* NDA */}
+          <div className={fieldCls}>
+            <label htmlFor="soustraitantform-nda-facultatif" className={labelCls}>
+              NDA (facultatif)
+            </label>
+            <input
+              id="soustraitantform-nda-facultatif"
+              type="text"
+              value={nda}
+              onChange={(e) => setNda(e.target.value)}
+              disabled={isPending}
+              maxLength={20}
+              placeholder="Numéro de déclaration d'activité"
+              className={inputCls}
+            />
+          </div>
 
-        {/* NDA */}
-        <div className={fieldCls}>
-          <label htmlFor="soustraitantform-nda-facultatif" className={labelCls}>
-            NDA (facultatif)
-          </label>
-          <input
-            id="soustraitantform-nda-facultatif"
-            type="text"
-            value={nda}
-            onChange={(e) => setNda(e.target.value)}
-            disabled={isPending}
-            maxLength={20}
-            placeholder="Numéro de déclaration d'activité"
-            className={inputCls}
-          />
-        </div>
-
-        {/* ── Contact SIGNATAIRE ──
+          {/* ── Contact SIGNATAIRE ──
 
             Sans adresse, aucun lien de signature n'est émissible pour le
             contrat de sous-traitance — que l'indicateur 27 du RNQ exige signé.
             Le contrat reste signable sur papier, mais l'écran doit le dire ici,
             là où l'admin peut agir. */}
-        <div className={fieldCls}>
-          <label htmlFor="soustraitantform-nom-du-contact-signataire-facult" className={labelCls}>
-            Nom du contact signataire (facultatif)
+          <div className={fieldCls}>
+            <label htmlFor="soustraitantform-nom-du-contact-signataire-facult" className={labelCls}>
+              Nom du contact signataire (facultatif)
+            </label>
+            <input
+              id="soustraitantform-nom-du-contact-signataire-facult"
+              type="text"
+              value={contactNom}
+              onChange={(e) => setContactNom(e.target.value)}
+              disabled={isPending}
+              maxLength={200}
+              placeholder="Personne physique qui signera le contrat"
+              className={inputCls}
+            />
+          </div>
+
+          <div className={fieldCls}>
+            <label htmlFor="soustraitantform-e-mail-du-contact-signataire" className={labelCls}>
+              E-mail du contact signataire
+            </label>
+            <input
+              id="soustraitantform-e-mail-du-contact-signataire"
+              type="email"
+              value={contactEmail}
+              onChange={(e) => setContactEmail(e.target.value)}
+              disabled={isPending}
+              maxLength={320}
+              placeholder="adresse@prestataire.fr"
+              className={inputCls}
+            />
+            <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Sans elle, le contrat de sous-traitance ne peut être signé qu&apos;au stylo : aucun
+              lien de signature ne pourra être émis.
+            </p>
+          </div>
+
+          <div className={fieldCls}>
+            <label htmlFor="soustraitantform-fonction-du-contact-facultatif" className={labelCls}>
+              Fonction du contact (facultatif)
+            </label>
+            <input
+              id="soustraitantform-fonction-du-contact-facultatif"
+              type="text"
+              value={contactFonction}
+              onChange={(e) => setContactFonction(e.target.value)}
+              disabled={isPending}
+              maxLength={200}
+              placeholder="Gérant, dirigeant…"
+              className={inputCls}
+            />
+            <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Figée comme qualité du signataire — c&apos;est elle qui atteste le pouvoir
+              d&apos;engager la structure.
+            </p>
+          </div>
+
+          {/* Date signature contrat */}
+          <div className={fieldCls}>
+            <label htmlFor="soustraitantform-contrat-signe-le-facultatif" className={labelCls}>
+              Contrat signé le (facultatif)
+            </label>
+            <input
+              id="soustraitantform-contrat-signe-le-facultatif"
+              type="date"
+              value={contratSigneAt}
+              onChange={(e) => setContratSigneAt(e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+            />
+          </div>
+        </div>
+
+        {/* Objet prestation */}
+        <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
+          <label htmlFor="soustraitantform-objet-de-la-prestation-sous-trai" className={labelCls}>
+            Objet de la prestation sous-traitée
           </label>
-          <input
-            id="soustraitantform-nom-du-contact-signataire-facult"
-            type="text"
-            value={contactNom}
-            onChange={(e) => setContactNom(e.target.value)}
+          <textarea
+            id="soustraitantform-objet-de-la-prestation-sous-trai"
+            value={objetPrestation}
+            onChange={(e) => setObjetPrestation(e.target.value)}
             disabled={isPending}
-            maxLength={200}
-            placeholder="Personne physique qui signera le contrat"
+            required
+            rows={3}
+            placeholder="Décrire la partie des formations sous-traitée…"
             className={inputCls}
           />
         </div>
 
-        <div className={fieldCls}>
-          <label htmlFor="soustraitantform-e-mail-du-contact-signataire" className={labelCls}>
-            E-mail du contact signataire
-          </label>
+        {/* Actif */}
+        <div className="mt-[var(--space-admin-4)] flex items-center gap-[var(--space-admin-2)]">
           <input
-            id="soustraitantform-e-mail-du-contact-signataire"
-            type="email"
-            value={contactEmail}
-            onChange={(e) => setContactEmail(e.target.value)}
+            type="checkbox"
+            id="sous-traitant-actif"
+            checked={actif}
+            onChange={(e) => setActif(e.target.checked)}
             disabled={isPending}
-            maxLength={320}
-            placeholder="adresse@prestataire.fr"
-            className={inputCls}
+            className="h-4 w-4 accent-[color:var(--color-admin-accent)]"
           />
-          <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-            Sans elle, le contrat de sous-traitance ne peut être signé qu&apos;au stylo : aucun lien
-            de signature ne pourra être émis.
+          <label
+            htmlFor="sous-traitant-actif"
+            className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]"
+          >
+            Sous-traitant actif
+          </label>
+        </div>
+
+        {error && (
+          <p
+            role="alert"
+            className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
+          >
+            Erreur : {error}
           </p>
-        </div>
-
-        <div className={fieldCls}>
-          <label htmlFor="soustraitantform-fonction-du-contact-facultatif" className={labelCls}>
-            Fonction du contact (facultatif)
-          </label>
-          <input
-            id="soustraitantform-fonction-du-contact-facultatif"
-            type="text"
-            value={contactFonction}
-            onChange={(e) => setContactFonction(e.target.value)}
-            disabled={isPending}
-            maxLength={200}
-            placeholder="Gérant, dirigeant…"
-            className={inputCls}
-          />
-          <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-            Figée comme qualité du signataire — c&apos;est elle qui atteste le pouvoir
-            d&apos;engager la structure.
+        )}
+        {successMsg && (
+          <p
+            role="status"
+            className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
+          >
+            {successMsg}
           </p>
-        </div>
+        )}
 
-        {/* Date signature contrat */}
-        <div className={fieldCls}>
-          <label htmlFor="soustraitantform-contrat-signe-le-facultatif" className={labelCls}>
-            Contrat signé le (facultatif)
-          </label>
-          <input
-            id="soustraitantform-contrat-signe-le-facultatif"
-            type="date"
-            value={contratSigneAt}
-            onChange={(e) => setContratSigneAt(e.target.value)}
-            disabled={isPending}
-            className={inputCls}
-          />
-        </div>
-      </div>
-
-      {/* Objet prestation */}
-      <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label htmlFor="soustraitantform-objet-de-la-prestation-sous-trai" className={labelCls}>
-          Objet de la prestation sous-traitée
-        </label>
-        <textarea
-          id="soustraitantform-objet-de-la-prestation-sous-trai"
-          value={objetPrestation}
-          onChange={(e) => setObjetPrestation(e.target.value)}
+        <button
+          type="submit"
           disabled={isPending}
-          required
-          rows={3}
-          placeholder="Décrire la partie des formations sous-traitée…"
-          className={inputCls}
-        />
-      </div>
-
-      {/* Actif */}
-      <div className="mt-[var(--space-admin-4)] flex items-center gap-[var(--space-admin-2)]">
-        <input
-          type="checkbox"
-          id="sous-traitant-actif"
-          checked={actif}
-          onChange={(e) => setActif(e.target.checked)}
-          disabled={isPending}
-          className="h-4 w-4 accent-[color:var(--color-admin-accent)]"
-        />
-        <label
-          htmlFor="sous-traitant-actif"
-          className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]"
+          className="admin-button mt-[var(--space-admin-4)]"
         >
-          Sous-traitant actif
-        </label>
-      </div>
-
-      {error && (
-        <p
-          role="alert"
-          className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
-        >
-          Erreur : {error}
-        </p>
-      )}
-      {successMsg && (
-        <p
-          role="status"
-          className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
-        >
-          {successMsg}
-        </p>
-      )}
-
-      <button type="submit" disabled={isPending} className="admin-button mt-[var(--space-admin-4)]">
-        {isPending ? "Enregistrement…" : "Enregistrer le sous-traitant"}
-      </button>
-    </form>
+          {isPending ? "Enregistrement…" : "Enregistrer le sous-traitant"}
+        </button>
+      </form>
+    </AdminBlocRepliable>
   );
 }
 

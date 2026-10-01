@@ -63,7 +63,7 @@ export default async function QualiopiPartenariatsPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Réseau de partenaires"
-        description="Réseau de partenaires Qualiopi, dont le réseau handicap (off.26 — indicateur 26, super-indicateur). Traçabilité des conventions de partenariat actives et des échanges qui les prouvent."
+        description="Réseau de partenaires Qualiopi, dont le réseau handicap (indicateur 26). Traçabilité des conventions de partenariat actives et des échanges qui les prouvent."
         actions={
           <PdfExportButton
             label="Exporter le registre (PDF)"

@@ -62,6 +62,8 @@ export interface AppreciationItem {
   enrollmentId: string | null;
   traineeId: string | null;
   clientId: string | null;
+  /** Auteur d'une appréciation de qualité `formateur`. */
+  trainerId: string | null;
   coachingSessionId: string | null;
   note: number | null;
   commentaire: string | null;
@@ -151,6 +153,7 @@ export async function listAppreciations(
       enrollmentId: true,
       traineeId: true,
       clientId: true,
+      trainerId: true,
       coachingSessionId: true,
       note: true,
       commentaire: true,
@@ -165,6 +168,7 @@ export async function listAppreciations(
     enrollmentId: item.enrollmentId ?? null,
     traineeId: item.traineeId ?? null,
     clientId: item.clientId ?? null,
+    trainerId: item.trainerId ?? null,
     coachingSessionId: item.coachingSessionId ?? null,
     note: item.note ?? null,
     commentaire: item.commentaire ?? null,

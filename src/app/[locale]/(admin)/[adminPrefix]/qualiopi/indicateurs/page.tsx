@@ -171,7 +171,7 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
         >
           {formatDateHeure(indicateurs.calculeAt)}
         </time>{" "}
-        · Cache Redis 1 h.
+        · Mis à jour toutes les heures.
       </p>
 
       {/* ── Section : Indicateurs KPIs ─────────────────────────────────── */}

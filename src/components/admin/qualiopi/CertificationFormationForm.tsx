@@ -193,7 +193,7 @@ export function CertificationFormationForm({
             {/* N° habilitation */}
             <div>
               <label htmlFor="cert-numero-habilitation" className={labelCls}>
-                N° habilitation (si OF habilité)
+                N° d&apos;habilitation (si l&apos;organisme est habilité)
               </label>
               <input
                 id="cert-numero-habilitation"
@@ -248,7 +248,7 @@ export function CertificationFormationForm({
               htmlFor="cert-est-certificateur"
               className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
             >
-              L&apos;OF est lui-même certificateur
+              L&apos;organisme est lui-même certificateur
             </label>
           </div>
         </>
