@@ -1803,7 +1803,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // est abandonnée au profit de ces codes (ADR 0053, amendement du 29/09).
   "visio.temoin_cle": {
     niveau: "important",
-    titre: "Visio : le worker ne relit pas le témoin de clé de chiffrement",
+    titre: "Visio : comptes rendus bloqués (clé de sécurité absente) — prévenez Claude",
     resolutionAuto: false,
     motifSansResolutionAuto:
       "STRUCTUREL — levée par le balayage de l'enregistreur des visios (`src/server/visio/balayage-enregistreur.ts`), hors d'`evaluerAlertes`. C'est ce balayage qui la ferme quand la cause disparaît ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture.",
@@ -1862,7 +1862,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   },
   "visio.etape_sans_gestionnaire": {
     niveau: "critique",
-    titre: "Visio : une étape du circuit n'est pas connue du worker en place (déploiement ?)",
+    titre: "Visio : comptes rendus bloqués après une mise à jour — prévenez Claude",
     resolutionAuto: false,
     motifSansResolutionAuto:
       "STRUCTUREL — levée par le circuit du compte rendu (`src/server/visio/etapes.ts`), hors d'`evaluerAlertes`, quand le worker n'a pas de gestionnaire pour une étape programmée. Code distinct de `visio.circuit_suspendu` : l'anti-doublon (code, cible nulle) avalait l'une sous l'autre. Will la ferme à la main, après « Reprendre ».",
@@ -1878,7 +1878,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   },
   "visio.schema_en_retard": {
     niveau: "critique",
-    titre: "Visio : la base n'est pas migrée depuis plus de 2 heures",
+    titre: "Visio : comptes rendus bloqués depuis plus de 2 heures (base) — prévenez Claude",
     resolutionAuto: false,
     motifSansResolutionAuto:
       "STRUCTUREL — levée par le circuit du compte rendu (`src/server/visio/etapes.ts`, `balayage-circuit.ts`), hors d'`evaluerAlertes`. Elle décrit un fait constaté par le worker ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture. Will la ferme à la main.",

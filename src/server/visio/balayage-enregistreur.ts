@@ -182,7 +182,7 @@ export async function balayerEnregistreur(
       {
         code: CODES_ALERTES_VISIO.temoinCle,
         cibleId: null,
-        titre: "Visio : le worker ne relit pas le témoin de clé",
+        titre: "Visio : comptes rendus bloqués (clé de sécurité absente) — prévenez Claude",
         // La date distingue une rechute d'une alerte déjà close à la main.
         message: `Constaté le ${jour} : PII_ENCRYPTION_KEY absente ou différente sur le worker, le son déposé ne pourra pas être transcrit.`,
       },
