@@ -76,6 +76,11 @@ const SEGMENTS_SECRETS: ReadonlyArray<RegExp> = [
   /(\/booking\/)[^/?#]+/gi,
   /(\/verifier-attestation\/)[^/?#]+/gi,
   /(\/portail\/acces\/)[^/?#]+/gi,
+  // Questionnaire de cadrage en ligne (2026-10-01) : `/questionnaire/<uuid>/<jeton>`.
+  // Le jeton (HMAC base64url, 43 caractères) échappe à `HEX_TOKEN_RE` et à
+  // `MAGIC_TOKEN_RE` ; il permet de répondre à la place du client. L'identifiant
+  // reste lisible (débogage), le jeton seul est masqué.
+  /(\/questionnaire\/[0-9a-fA-F-]{36}\/)[^/?#]+/gi,
 ];
 
 /** Remplace le segment secret de ces routes par `[TOKEN]`, en gardant la route lisible. */

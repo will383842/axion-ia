@@ -10,6 +10,12 @@
 //   3. coller la réponse du client SOUS chaque question ;
 //   4. valider ou écarter les réponses rangées en faits.
 //
+// Questionnaire EN LIGNE (2026-10-01) : Will peut aussi « Écrire mes
+// questions » (une par ligne, sans IA), puis demander le « Lien du
+// questionnaire en ligne » — une adresse secrète à mettre sous un bouton de
+// son e-mail. Le client répond sur une page publique ; ses réponses arrivent
+// ici, sous chaque question, avec « Reçu en ligne le … · par … ».
+//
 // Composant SERVEUR, rendu en texte brut, formulaires sans JavaScript (l'action
 // unique `gesteSuiviAction`). La page appelle la garde A2 AVANT de lire.
 
@@ -17,6 +23,9 @@ import { gesteSuiviAction } from "@/features/dossier-client/suivi-actions";
 import type { QuestionnaireDuProjet } from "@/features/dossier-client/queries";
 import { peutPreparerQuestionnaire } from "@/features/dossier-client/questionnaire-etat";
 import { texteACopier } from "@/server/visio/passes/p6-questionnaire";
+import { formatDateFrShort, formatTimeFr } from "@/lib/format-date-fr";
+import { BoutonGeste } from "./BoutonGeste";
+import { CopierLienQuestionnaire } from "./CopierLienQuestionnaire";
 
 const carte =
   "mb-[var(--space-admin-5)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]";
@@ -58,6 +67,15 @@ export function VueQuestionnaire({
     </>
   );
   const pret = q !== null && !q.enPreparation && q.questions.length > 0;
+  // Tant que rien n'est reçu, « Écrire mes questions » REMPLACE la version courante.
+  // Même règle que le geste (`versionRemplacable`, lue par la requête) : seul un
+  // brouillon écrit par Will se remplace ; sinon, une nouvelle version.
+  const remplace = q !== null && q.remplacable;
+  const ancienLienSeFerme =
+    q !== null && !q.remplacable && q.mode === "en_ligne" && q.statut === "copie";
+  const enLigneOuvert = pret && q !== null && q.mode === "en_ligne" && q.statut === "copie";
+  const peutOuvrirLien =
+    pret && q !== null && (q.statut === "brouillon" || q.statut === "copie") && !enLigneOuvert;
   return (
     <section className={carte} aria-labelledby="questionnaire-titre">
       <h2 id="questionnaire-titre" className={titre}>
@@ -96,6 +114,36 @@ export function VueQuestionnaire({
         </form>
       ) : null}
 
+      <details className="mb-[var(--space-admin-4)]" open={q === null}>
+        <summary className="cursor-pointer font-medium">
+          Écrire mes questions{remplace ? " (remplace les questions actuelles)" : ""}
+        </summary>
+        <form action={gesteSuiviAction} className="mt-[var(--space-admin-2)]">
+          {cache("questionnaire_ecrire")}
+          <input type="hidden" name="clientId" value={clientId} />
+          <input type="hidden" name="projetId" value={projetId} />
+          <label className={discret} htmlFor="questionnaire-ecrire">
+            Une question par ligne, sans IA : le client verra vos questions, dans cet ordre (votre
+            texte n&apos;est pas relu par les gardes du questionnaire préparé : ni lien ni prix
+            n&apos;y sont retirés). Après le « ? », une courte aide pour le client ; une liste entre
+            parenthèses, ou après « : », séparée par des virgules, devient des choix à toucher.{" "}
+            {remplace
+              ? "Ces questions remplacent celles de ce brouillon."
+              : ancienLienSeFerme
+                ? "Elles forment une nouvelle version : l'ancien lien, envoyé sans réponse, ne fonctionnera plus."
+                : "Elles forment un nouveau questionnaire pour ce projet."}
+          </label>
+          <textarea
+            id="questionnaire-ecrire"
+            name="questions"
+            rows={8}
+            className={`${champ} mb-[var(--space-admin-2)]`}
+            defaultValue={remplace && q !== null ? q.questions.map((x) => x.texte).join("\n") : ""}
+          />
+          <BoutonGeste className={bouton}>Enregistrer mes questions</BoutonGeste>
+        </form>
+      </details>
+
       {q !== null ? (
         <p className={`mb-[var(--space-admin-3)] ${discret}`}>
           Version {q.version} —{" "}
@@ -103,7 +151,44 @@ export function VueQuestionnaire({
             ? "préparation échouée"
             : q.enPreparation
               ? "en préparation (quelques minutes)"
-              : LIBELLE_STATUT[q.statut]}
+              : q.mode === "en_ligne" && q.statut === "copie"
+                ? "lien en ligne envoyé au client, en attente de réponse"
+                : LIBELLE_STATUT[q.statut]}
+        </p>
+      ) : null}
+
+      {peutOuvrirLien && q !== null ? (
+        <form action={gesteSuiviAction} className="mb-[var(--space-admin-4)]">
+          {cache("questionnaire_lien")}
+          <input type="hidden" name="questionnaireId" value={q.id} />
+          <BoutonGeste className={bouton}>Lien du questionnaire en ligne</BoutonGeste>
+        </form>
+      ) : null}
+
+      {enLigneOuvert && q !== null ? (
+        <div className="mb-[var(--space-admin-4)]">
+          <label className={discret} htmlFor="questionnaire-lien">
+            Lien du questionnaire en ligne — à mettre sous un bouton de votre e-mail. Un lien par
+            projet : le client n&apos;y voit que ces questions.
+          </label>
+          {q.lienEnLigne !== null ? (
+            <CopierLienQuestionnaire
+              url={q.lienEnLigne}
+              classeChamp={champ}
+              classeBouton={bouton}
+            />
+          ) : (
+            <p className="text-[color:var(--color-admin-error)]">
+              Le lien ne peut pas être fabriqué : le secret du serveur (AUTH_SECRET) manque.
+            </p>
+          )}
+        </div>
+      ) : null}
+
+      {q !== null && q.mode === "en_ligne" && q.reponseRecueLe !== null ? (
+        <p className="mb-[var(--space-admin-3)] font-medium">
+          Reçu en ligne le {formatDateFrShort(q.reponseRecueLe)} à {formatTimeFr(q.reponseRecueLe)}
+          {q.repondant ? ` · par ${q.repondant}` : ""}
         </p>
       ) : null}
 

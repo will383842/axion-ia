@@ -31,10 +31,12 @@ import {
   clore,
   demanderEmailSuivi,
   demanderQuestionnaire,
+  ecrireQuestions,
   emailSuiviGabaritFixe,
   enregistrerReponses,
   marquerPoseeDeViveVoix,
   marquerQuestionnaireCopie,
+  ouvrirLienEnLigne,
   rejeterFaitDeReponse,
   validerFaitDeReponse,
 } from "@/server/visio/gestes-suivi";
@@ -64,6 +66,15 @@ const GESTES: Readonly<Record<string, Geste>> = {
       parAdminId: adminId,
     }),
   questionnaire_copie: (fd) => marquerQuestionnaireCopie(prisma, id(fd, "questionnaireId")),
+  // Questionnaire en ligne (2026-10-01) : questions écrites par Will, sans IA.
+  questionnaire_ecrire: (fd, adminId) =>
+    ecrireQuestions(prisma, {
+      clientId: id(fd, "clientId"),
+      projetId: id(fd, "projetId"),
+      texte: String(fd.get("questions") ?? "").slice(0, 40_000),
+      parAdminId: adminId,
+    }),
+  questionnaire_lien: (fd) => ouvrirLienEnLigne(prisma, id(fd, "questionnaireId")),
   questionnaire_vive_voix: (fd) =>
     marquerPoseeDeViveVoix(prisma, id(fd, "questionId"), fd.get("valeur") === "oui"),
   questionnaire_reponses: (fd) => {

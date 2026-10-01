@@ -129,7 +129,10 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // d'un rendez-vous client (chantier visio, PR 7). Ses champs sont tous
     // facultatifs : l'aperçu sans charge utile dit « Bonjour, » et l'objet par
     // défaut.
-    expect(tous.length).toBe(63);
+    // 🔴 2026-10-01 — RELEVÉ À 64 : `questionnaire-reponses-recues`, l'e-mail
+    // INTERNE « un client a répondu au questionnaire en ligne ». Ses champs sont
+    // tous facultatifs.
+    expect(tous.length).toBe(64);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

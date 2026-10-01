@@ -33,10 +33,17 @@ import {
   type PortEnvoiEmailSuivi,
 } from "./passes/etapes-a-la-demande";
 import { planifierDans } from "./prise-d-etape";
+import { rencontreDAncrage } from "./ancrage";
+import {
+  MAX_QUESTIONS_ECRITES,
+  MAX_REPONSE,
+  MAX_TEXTE_QUESTION,
+  MODELE_QUESTIONS_DE_WILLIAMS,
+  QUESTIONS_REELLES,
+} from "./questionnaire-en-ligne/constantes";
+import { versionRemplacable } from "./questionnaire-en-ligne/regles";
 
 type Db = PrismaClient;
-
-const MAX_REPONSE = 5000;
 
 /** Le drapeau est lu à l'exécution ; les tests et la Gate D l'injectent. */
 export interface OptionsIa {
@@ -65,19 +72,8 @@ async function exigerIaPermise(
 
 // ── Questionnaire ────────────────────────────────────────────────────────────
 
-/** La rencontre d'ancrage du projet : la plus récente rangée dans ce projet. */
-export async function rencontreDAncrage(
-  db: Pick<Db, "rencontre">,
-  clientId: string,
-  projetId: string,
-): Promise<string | null> {
-  const r = await db.rencontre.findFirst({
-    where: { clientId, projetId, fusionneeDansId: null },
-    orderBy: [{ debutReel: "desc" }, { debutPrevu: "desc" }, { createdAt: "desc" }],
-    select: { id: true },
-  });
-  return r?.id ?? null;
-}
+/** La rencontre d'ancrage du projet (module `ancrage.ts`, partagé avec la route publique). */
+export { rencontreDAncrage };
 
 /** « Préparer un questionnaire » : nouvelle version en brouillon + étape `questionnaire`. */
 export async function demanderQuestionnaire(
@@ -147,16 +143,208 @@ export async function marquerQuestionnaireCopie(db: Db, questionnaireId: string)
   return "Noté : le questionnaire est parti chez le client.";
 }
 
-/** Case « posée de vive voix » : la question sort du texte à copier. */
+/**
+ * Les lignes d'un texte « une question par ligne » : numéros et puces de tête
+ * retirés (« 1. », « 2) », « - », « • »), lignes vides ignorées.
+ */
+export function questionsDuTexte(texte: string): string[] {
+  return texte
+    .split(/\r?\n/)
+    .map((l) =>
+      l
+        .replace(/^\s*(?:\d{1,2}\s*[.)]|[-*•])\s+/u, "")
+        .replace(/\s+/g, " ")
+        .trim(),
+    )
+    .filter((l) => l !== "");
+}
+
+/**
+ * « Écrire mes questions » (questionnaire en ligne, 2026-10-01) : Will écrit
+ * ses questions, une par ligne, SANS IA (donc sans drapeau). Son texte n'est
+ * pas soumis aux gardes de P6 (ni lien ni prix) : c'est le sien.
+ *
+ * Règle UNIQUE de remplacement (`versionRemplacable`, avis de l'architecte B2) :
+ *   · la dernière version est un BROUILLON écrit par Will (ou un brouillon IA
+ *     vide), sans réponse ni fait → elle est REMPLACÉE en place ;
+ *   · sinon → une NOUVELLE version (`en_ligne`, `brouillon`). Ce qui est parti
+ *     chez le client ne se réécrit pas. Si la version précédente est un lien
+ *     en ligne encore sans réponse (`en_ligne` + `copie`), elle est CLOSE dans
+ *     la même transaction : l'ancien lien ne fonctionne plus. Une version « à
+ *     copier » déjà copiée reste intacte : c'est la trace de ce qui est parti.
+ *
+ * Course avec un envoi du client (B1) : le remplacement commence par un
+ * `updateMany` conditionnel qui prend le verrou de la ligne et revérifie
+ * qu'elle est toujours un brouillon sans réponse ; sinon, rien n'est effacé.
+ *
+ * `typeVise = "autre"` : une question écrite à la main ne vise aucune rubrique
+ * du dossier. C'est la valeur que P6 donne lui-même aux questions ouvertes
+ * (`TYPE_VISE_PAR_RUBRIQUE.questions_ouvertes`) ; tout autre type ferait dire
+ * à la lecture des réponses qu'une réponse est, par exemple, un « besoin ».
+ */
+export async function ecrireQuestions(
+  db: Db,
+  a: {
+    readonly clientId: string;
+    readonly projetId: string;
+    readonly texte: string;
+    readonly parAdminId: string;
+  },
+): Promise<string> {
+  if (!(await projetOuvrableDuClient(db, a.projetId, a.clientId))) {
+    throw new GesteRefuse("Ce projet n'existe pas (ou plus) sur cette fiche.");
+  }
+  const questions = questionsDuTexte(a.texte);
+  if (questions.length === 0) {
+    throw new GesteRefuse("Écrivez au moins une question (une par ligne).");
+  }
+  if (questions.length > MAX_QUESTIONS_ECRITES) {
+    throw new GesteRefuse(`${MAX_QUESTIONS_ECRITES} questions au plus par questionnaire.`);
+  }
+  const tropLongue = questions.findIndex((q) => q.length > MAX_TEXTE_QUESTION);
+  if (tropLongue >= 0) {
+    throw new GesteRefuse(
+      `La question ${tropLongue + 1} dépasse ${MAX_TEXTE_QUESTION} caractères : raccourcissez-la.`,
+    );
+  }
+  const maintenant = new Date();
+  return db.$transaction(async (tx) => {
+    const derniere = await tx.questionnaireCadrage.findFirst({
+      where: { projetId: a.projetId },
+      orderBy: { version: "desc" },
+      select: {
+        id: true,
+        version: true,
+        statut: true,
+        mode: true,
+        modele: true,
+        questions: {
+          select: { reponseRecueLe: true, _count: { select: { faitsProduits: true } } },
+        },
+      },
+    });
+    const etat =
+      derniere === null
+        ? null
+        : {
+            statut: derniere.statut,
+            modele: derniere.modele,
+            questions: derniere.questions.map((x) => ({
+              reponseRecueLe: x.reponseRecueLe,
+              faits: x._count.faitsProduits,
+            })),
+          };
+    let remplacable = versionRemplacable(etat);
+    if (remplacable && derniere !== null) {
+      // B1 : verrou de la ligne + revérification, AVANT tout effacement.
+      const tenu = await tx.questionnaireCadrage.updateMany({
+        where: { id: derniere.id, statut: "brouillon", reponseRecueLe: null },
+        data: { genereLe: maintenant },
+      });
+      remplacable = tenu.count === 1;
+    }
+    let questionnaireId: string;
+    let version: number;
+    let ancienLienClos = false;
+    if (remplacable && derniere !== null) {
+      questionnaireId = derniere.id;
+      version = derniere.version;
+      await tx.questionnaireQuestion.deleteMany({ where: { questionnaireId } });
+      await tx.questionnaireCadrage.update({
+        where: { id: questionnaireId },
+        data: {
+          mode: "en_ligne",
+          modele: MODELE_QUESTIONS_DE_WILLIAMS,
+          promptHash: null,
+          genereLe: maintenant,
+          creeParId: a.parAdminId,
+        },
+      });
+    } else {
+      if (derniere !== null && derniere.mode === "en_ligne" && derniere.statut === "copie") {
+        // L'ancien lien est chez le client, sans réponse : il se ferme.
+        const clos = await tx.questionnaireCadrage.updateMany({
+          where: { id: derniere.id, statut: "copie", reponseRecueLe: null },
+          data: { statut: "clos", closLe: maintenant },
+        });
+        ancienLienClos = clos.count === 1;
+      }
+      version = (derniere?.version ?? 0) + 1;
+      const cree = await tx.questionnaireCadrage.create({
+        data: {
+          projetId: a.projetId,
+          clientId: a.clientId,
+          version,
+          mode: "en_ligne",
+          statut: "brouillon",
+          genereLe: maintenant,
+          modele: MODELE_QUESTIONS_DE_WILLIAMS,
+          creeParId: a.parAdminId,
+        },
+        select: { id: true },
+      });
+      questionnaireId = cree.id;
+    }
+    await tx.questionnaireQuestion.createMany({
+      data: questions.map((texte, i) => ({
+        questionnaireId,
+        ordre: i + 1,
+        texte: chiffrerParole(texte),
+        typeVise: "autre" as const,
+      })),
+    });
+    const n = questions.length;
+    const enregistrees = `${n} question${n > 1 ? "s" : ""} enregistrée${n > 1 ? "s" : ""} (version ${version}).`;
+    return ancienLienClos
+      ? `${enregistrees} L'ancien lien ne fonctionne plus : envoyez le nouveau (« Lien du questionnaire en ligne »).`
+      : `${enregistrees} Cliquez « Lien du questionnaire en ligne » pour obtenir le lien à envoyer.`;
+  });
+}
+
+/**
+ * « Lien du questionnaire en ligne » : le questionnaire passe `en_ligne` (le
+ * lien secret s'ouvre — un questionnaire « à copier » n'est jamais exposé sans
+ * ce geste) et, s'il était en brouillon, `copie` (il part chez le client). La
+ * page publique n'ouvre QUE ce couple `en_ligne` + `copie`.
+ */
+export async function ouvrirLienEnLigne(db: Db, questionnaireId: string): Promise<string> {
+  const q = await exigerQuestionnaire(db, questionnaireId);
+  if (q.statut === "clos") throw new GesteRefuse("Ce questionnaire est clos.");
+  if (q.statut === "reponse_recue") {
+    throw new GesteRefuse(
+      "Les réponses sont déjà reçues : écrivez de nouvelles questions pour un nouveau questionnaire.",
+    );
+  }
+  const visibles = await db.questionnaireQuestion.count({
+    where: { questionnaireId: q.id, poseeDeViveVoix: false, ...QUESTIONS_REELLES },
+  });
+  if (visibles === 0) {
+    throw new GesteRefuse("Aucune question à montrer au client : écrivez d'abord vos questions.");
+  }
+  await db.questionnaireCadrage.update({
+    where: { id: q.id },
+    data:
+      q.statut === "brouillon"
+        ? { mode: "en_ligne", statut: "copie", copieLe: new Date() }
+        : { mode: "en_ligne" },
+  });
+  return "Lien prêt : copiez-le et mettez-le sous un bouton de votre e-mail.";
+}
+
+/**
+ * Case « posée de vive voix » : la question sort du texte à copier. La ligne
+ * « Qui répond ? » (ordre 0) n'est pas une question : refusée.
+ */
 export async function marquerPoseeDeViveVoix(
   db: Db,
   questionId: string,
   valeur: boolean,
 ): Promise<string> {
-  await db.questionnaireQuestion.update({
-    where: { id: questionId },
+  const fait = await db.questionnaireQuestion.updateMany({
+    where: { id: questionId, ...QUESTIONS_REELLES },
     data: { poseeDeViveVoix: valeur },
   });
+  if (fait.count === 0) throw new GesteRefuse("Question introuvable.");
   return valeur ? "Question notée comme posée de vive voix." : "Question remise dans le texte.";
 }
 
@@ -174,8 +362,9 @@ export async function enregistrerReponses(
 ): Promise<string> {
   const q = await exigerQuestionnaire(db, a.questionnaireId);
   if (q.statut === "clos") throw new GesteRefuse("Ce questionnaire est clos.");
+  // La ligne « Qui répond ? » (ordre 0) n'est jamais réécrite par la saisie de Will.
   const questions = await db.questionnaireQuestion.findMany({
-    where: { questionnaireId: q.id },
+    where: { questionnaireId: q.id, ...QUESTIONS_REELLES },
     select: { id: true },
   });
   const ids = new Set(questions.map((x) => x.id));

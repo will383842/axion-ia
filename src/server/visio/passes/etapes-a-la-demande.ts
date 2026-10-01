@@ -45,6 +45,7 @@ import { ErreurVisio } from "../openai/erreurs";
 import { executerPasse } from "../openai/passe";
 import type { Tx } from "../prise-d-etape";
 import { SCHEMAS_VISIO } from "../schemas";
+import { QUESTIONS_REELLES, REPONSE_JE_NE_SAIS_PAS } from "../questionnaire-en-ligne/constantes";
 import {
   adresseDEnvoi,
   construireEntreeEmail,
@@ -371,6 +372,11 @@ function lire(v: string | null): string {
   }
 }
 
+/** « Je ne sais pas. » vaut absence de réponse pour la lecture IA. */
+export function sansJeNeSaisPas(reponse: string | null): string | null {
+  return reponse !== null && reponse.trim() === REPONSE_JE_NE_SAIS_PAS ? null : reponse;
+}
+
 /** Le projet principal de la rencontre d'ancrage (le questionnaire est celui de ce projet). */
 async function projetDeLaRencontre(db: Db, rencontreId: string) {
   const r = await db.rencontre.findUnique({
@@ -449,6 +455,9 @@ export function depotDemandesPrisma(db: Db): DepotDemandes {
           projetId: true,
           reponseRecueLe: true,
           questions: {
+            // « Qui répond ? » (questionnaire en ligne, ordre 0) n'est pas une
+            // réponse à lire : un nom et une fonction n'ont rien à faire chez l'IA.
+            where: QUESTIONS_REELLES,
             orderBy: { ordre: "asc" },
             select: {
               id: true,
@@ -476,7 +485,9 @@ export function depotDemandesPrisma(db: Db): DepotDemandes {
             id: x.id,
             ordre: x.ordre,
             texte: lire(x.texte),
-            reponse: x.reponse === null ? null : lire(x.reponse) || null,
+            // « Je ne sais pas. » (bouton du questionnaire en ligne) n'est pas
+            // une réponse à ranger : l'IA n'en tire aucun fait à écarter.
+            reponse: sansJeNeSaisPas(x.reponse === null ? null : lire(x.reponse) || null),
             typeVise: x.typeVise as FaitType,
             cleVisee: x.cleVisee,
           })),

@@ -807,6 +807,43 @@ const nextConfig: NextConfig = {
       //
       // 🔑 Une règle d'en-tête posée sur une route qui pose déjà le sien ne
       // gagne pas : elle double. Vérifier la réponse, pas la configuration.
+      //
+      // Questionnaire de cadrage EN LIGNE (2026-10-01) — `/questionnaire/<id>/<jeton>`.
+      // Page racine EXCLUE du proxy (sinon 301 vers `/fr/…`) : le proxy ne lui
+      // pose donc pas de CSP. Elle a la sienne, plus stricte que la CSP souple du
+      // site public : aucun hôte tiers (la page n'a ni mesure d'audience ni
+      // widget), formulaire vers elle-même seulement. `'unsafe-inline'` reste
+      // nécessaire aux scripts en ligne de Next (charge RSC) ; `'unsafe-eval'`
+      // hors production seulement (`next dev`), comme `src/lib/csp.ts`.
+      // `Referrer-Policy: same-origin` remplace celui de la règle globale (la
+      // dernière règle gagne, même clé) : le jeton est dans l'adresse, il ne
+      // part vers aucun autre site. ⛔ PAS `no-referrer` : le navigateur enverrait
+      // alors `Origin: null` sur le POST du formulaire, et Next refuserait l'action
+      // serveur (« Invalid Server Actions request » — mesuré en local le 2026-10-01).
+      // ⚠️ PAS de `Cache-Control` ici : la page est `force-dynamic`, Next pose
+      // déjà `no-store` — une seconde valeur doublerait l'en-tête (voir plus haut).
+      {
+        source: "/questionnaire/:path*",
+        headers: [
+          { key: "Referrer-Policy", value: "same-origin" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self'",
+              `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "production" ? "" : " 'unsafe-eval'"}`,
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data:",
+              "font-src 'self'",
+              "connect-src 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'none'",
+              "base-uri 'none'",
+              "object-src 'none'",
+            ].join("; "),
+          },
+        ],
+      },
     ];
   },
 };

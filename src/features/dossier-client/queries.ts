@@ -32,6 +32,9 @@ import { prisma } from "@/lib/prisma";
 import { dechiffrerParole } from "@/lib/chiffrer-parole";
 import { lireFaitsDUnClient, TEXTE_ILLISIBLE } from "@/features/dossier-client/lire-faits";
 import { preparationEchouee } from "@/features/dossier-client/questionnaire-etat";
+import { ORDRE_QUI_REPOND } from "@/server/visio/questionnaire-en-ligne/constantes";
+import { urlQuestionnaire } from "@/server/visio/questionnaire-en-ligne/jeton";
+import { versionRemplacable } from "@/server/visio/questionnaire-en-ligne/regles";
 import {
   etatsDesEmailsSuivi,
   type EtatEmailSuivi,
@@ -428,6 +431,15 @@ export interface QuestionnaireDuProjet {
   /** En préparation, mais l'étape ne tourne plus (échec, suspension) : à relancer. */
   readonly preparationEchouee: boolean;
   readonly genereLe: Date;
+  /** `en_ligne` : le client répond sur la page publique (lien secret). */
+  readonly mode: "a_copier" | "en_ligne";
+  readonly reponseRecueLe: Date | null;
+  /** « Qui répond ? » saisi par le client en ligne (ligne d'ordre 0), ou `null`. */
+  readonly repondant: string | null;
+  /** L'URL publique du questionnaire, montrée à Will (`null` hors `en_ligne`). */
+  readonly lienEnLigne: string | null;
+  /** « Écrire mes questions » remplacerait-il cette version (`versionRemplacable`) ? */
+  readonly remplacable: boolean;
   readonly questions: ReadonlyArray<QuestionDuQuestionnaire>;
 }
 
@@ -444,6 +456,8 @@ export async function lireQuestionnaireDuProjet(
       statut: true,
       modele: true,
       genereLe: true,
+      mode: true,
+      reponseRecueLe: true,
       questions: {
         orderBy: { ordre: "asc" },
         select: {
@@ -452,6 +466,8 @@ export async function lireQuestionnaireDuProjet(
           texte: true,
           poseeDeViveVoix: true,
           reponse: true,
+          reponseRecueLe: true,
+          _count: { select: { faitsProduits: true } },
           faitsProduits: {
             where: { statut: { in: ["propose", "en_attente", "valide"] } },
             select: { id: true, statut: true, enonce: true, citation: true },
@@ -461,7 +477,10 @@ export async function lireQuestionnaireDuProjet(
     },
   });
   if (!q) return null;
-  const enPreparation = q.statut === "brouillon" && q.modele === null && q.questions.length === 0;
+  // La ligne d'ordre 0 n'est pas une question : c'est « Qui répond ? », saisi en ligne.
+  const quiRepond = q.questions.find((x) => x.ordre === ORDRE_QUI_REPOND);
+  const questions = q.questions.filter((x) => x.ordre !== ORDRE_QUI_REPOND);
+  const enPreparation = q.statut === "brouillon" && q.modele === null && questions.length === 0;
   // L'étape `questionnaire` s'attache à une rencontre du projet (l'ancrage) :
   // si aucune n'est en vol, la préparation a échoué et se relance.
   const etapes = enPreparation
@@ -480,7 +499,19 @@ export async function lireQuestionnaireDuProjet(
       etapes.map((e) => e.statut),
     ),
     genereLe: q.genereLe,
-    questions: q.questions.map((x) => ({
+    mode: q.mode,
+    reponseRecueLe: q.reponseRecueLe,
+    repondant: quiRepond ? lire(quiRepond.reponse) : null,
+    lienEnLigne: q.mode === "en_ligne" ? urlQuestionnaire(q.id) : null,
+    remplacable: versionRemplacable({
+      statut: q.statut,
+      modele: q.modele,
+      questions: questions.map((x) => ({
+        reponseRecueLe: x.reponseRecueLe,
+        faits: x._count.faitsProduits,
+      })),
+    }),
+    questions: questions.map((x) => ({
       id: x.id,
       ordre: x.ordre,
       texte: lire(x.texte) ?? "",

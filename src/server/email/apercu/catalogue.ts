@@ -463,6 +463,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
       "un participant client validé du rendez-vous (adresse professionnelle de préférence)",
     source: "server/visio/passes/etapes-a-la-demande.ts",
   },
+  "questionnaire-reponses-recues": {
+    categorie: "rendez-vous",
+    quand:
+      "Un client envoie ses réponses au questionnaire de cadrage en ligne (lien secret du projet) — aucune réponse dans le message",
+    destinataire: "interne",
+    source: "app/questionnaire/[id]/[jeton]/actions.ts",
+  },
 
   // ── RGPD ──────────────────────────────────────────────────────────────────
   "preavis-sous-traitants": {
