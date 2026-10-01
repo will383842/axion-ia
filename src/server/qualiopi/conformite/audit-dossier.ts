@@ -16,7 +16,23 @@ import { prisma } from "@/lib/prisma";
 import { whereVeilleExploitee } from "./veille-exploitee";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "@/server/qualiopi/conformite/conformite-service";
-import { libelleCritere } from "@/server/qualiopi/conformite/indicateurs-registre";
+import {
+  libelleCritere,
+  motifNonApplicable,
+} from "@/server/qualiopi/conformite/indicateurs-registre";
+import { reperesDeLecture } from "@/server/qualiopi/conformite/reperes-audit-initial";
+import { liensSitePublic, type LienPublic } from "@/server/qualiopi/conformite/liens-site-public";
+import type { RegistreIndicateur } from "@/server/qualiopi/conformite/registres-par-indicateur";
+import {
+  lirePopulationIndicateur22,
+  ouVerifierIndicateur22,
+  repereIntituleIndicateur22,
+} from "@/server/qualiopi/conformite/intervenants-indicateur-22";
+import {
+  CHEMIN_ADAPTATIONS_ZIP,
+  produireRegistreAdaptations,
+} from "@/server/qualiopi/conformite/adaptations-dossier-global";
+import { joindreFichiersPiecesCompetence } from "@/server/qualiopi/conformite/pieces-competence-zip";
 import { renderRegistrePdfBuffer, REGISTRE_TYPES } from "@/server/qualiopi/registres/registres-pdf";
 import { evaluerCouvertureOff32 } from "@/server/qualiopi/revues/plan-actions";
 import { getObjectBufferR2, isR2Configured, documentPdfKey } from "@/lib/r2-storage";
@@ -178,6 +194,23 @@ export interface IndicateurManifeste {
   readonly preuves: string[];
   /** Documents Prisma présents pertinents pour cet indicateur. */
   readonly documents: PreuveDocument[];
+  /**
+   * Pourquoi l'indicateur est hors périmètre — seulement s'il est
+   * `non_applicable`. Dérivé de la condition d'applicabilité elle-même.
+   */
+  readonly motifNonApplicable?: string;
+  /**
+   * Repères de lecture (régime de l'audit initial, précisions du guide de
+   * lecture). Ils ne changent JAMAIS le statut.
+   */
+  readonly reperes?: readonly string[];
+  /** Pages du site public où l'information se vérifie (liens absolus). */
+  readonly liensPublics?: readonly LienPublic[];
+  /**
+   * Renvois console calculés, prioritaires sur `REGISTRES_PAR_INDICATEUR`
+   * (ind. 22 : la fiche de l'intervenant concerné quand il est seul).
+   */
+  readonly ouVerifier?: readonly RegistreIndicateur[];
 }
 
 export interface ManifesteAuditPayload {
@@ -267,7 +300,13 @@ export const INDICATEUR_DOCUMENT_TYPES: Partial<Record<number, DocumentType[]>> 
 
   // C3 — Accueil & suivi
   9: ["convocation", "livret_accueil", "reglement_interieur", "organisation_action"],
-  10: ["convention", "contrat"],
+  // off.10 ⭐ — 🔴 2026-10-01 (audit initial) : la convention et le contrat
+  // figuraient ici. Ils disent ce qui a été VENDU, pas qu'un besoin a été
+  // recueilli ni ce que l'organisme y a répondu. La vraie preuve est le besoin
+  // déclaré au positionnement et la réponse consignée — un registre, pas une
+  // pièce : `adaptations/indicateur-10.txt` dans le ZIP, et la section
+  // « Adaptations » du dossier de chaque session.
+  10: [],
   11: ["grille_evaluation", "attestation", "attestation_partielle"],
   12: ["emargement", "releve_connexion", "organisation_action"],
   13: [],
@@ -436,8 +475,20 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
     .catch(() => null);
   const couvertureOff32 = evaluerCouvertureOff32(revueAnnuelleOff32, maintenantOff32);
 
-  // off.30 : appréciations multi-parties
-  const nbAppreciations = await prisma.appreciation.count();
+  // off.30 — 🔴 2026-10-01 (audit initial) : le manifeste écrivait ici « N
+  // appréciations multi-parties » SANS regarder le verdict du moteur, qui, lui,
+  // exige deux qualités ET deux personnes physiques distinctes. Le jour où le
+  // moteur disait « multi-parties non démontré », la pièce remise au
+  // certificateur affirmait le contraire deux lignes plus bas. Le manifeste ne
+  // dit plus « multi-parties » que si le moteur l'a établi ; sinon il laisse
+  // parler les lignes du moteur (qui nomment les appréciations dont l'auteur
+  // n'est pas rattaché).
+  const off30Etabli = conformite.indicateurs.find((i) => i.numero === 30)?.statut === "couvert";
+
+  // off.22 ⭐ — qui est concerné (intervenants internes), pour le renvoi et la
+  // lecture de l'intitulé. Fail-soft : `null` n'affirme rien.
+  const population22 = await lirePopulationIndicateur22();
+  const repereIntitule22 = repereIntituleIndicateur22(population22);
 
   // off.21 : formateurs actifs avec CV
   // 🔴 `estFormateur` (2026-09-13) : ce manifeste ne COMPTE pas, il NOMME —
@@ -491,7 +542,7 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
       [
         ndaNumero.trim().length > 0
           ? `NDA DREETS obtenu : ${ndaNumero}`
-          : "NDA DREETS : non renseigné — off.1 ne peut pas être couvert sans numéro de déclaration d'activité",
+          : "NDA DREETS : non renseigné — l'indicateur 1 ne peut pas être couvert sans numéro de déclaration d'activité",
       ],
     ],
     [
@@ -530,8 +581,17 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
     ],
     [
       30,
+      off30Etabli
+        ? [
+            "Recueil multi-parties établi : au moins deux qualités déclarées (stagiaire/entreprise/financeur/formateur) et deux personnes physiques distinctes",
+          ]
+        : [],
+    ],
+    [
+      10,
       [
-        `${nbAppreciations} appréciation${nbAppreciations > 1 ? "s" : ""} multi-parties (stagiaire/entreprise/financeur/formateur)`,
+        `Preuve d'adaptation : pour chaque besoin déclaré, la réponse consignée par l'organisme et sa date — ${CHEMIN_ADAPTATIONS_ZIP} dans le dossier ZIP, et section « Adaptations » du dossier d'audit de chaque session`,
+        "Le détail d'un besoin déclaré est une donnée de santé : chiffré en base, il n'est jamais reproduit dans le dossier",
       ],
     ],
     [
@@ -660,6 +720,20 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
       ...preuvesSupplémentaires.filter((p) => !ind.preuves.includes(p)),
     ];
 
+    // Motif de non-applicabilité : celui du moteur, sinon dérivé de la même
+    // condition (un double de test peut ne pas le porter).
+    const motif =
+      ind.statut === "non_applicable"
+        ? (ind.motifNonApplicable ?? motifNonApplicable(ind.numero) ?? undefined)
+        : undefined;
+    const reperes = [
+      ...reperesDeLecture(ind.numero, ind.statut),
+      ...(ind.numero === 22 && ind.statut !== "non_applicable" && repereIntitule22 !== null
+        ? [repereIntitule22]
+        : []),
+    ];
+    const liensPublics = ind.statut === "non_applicable" ? [] : liensSitePublic(ind.numero);
+
     return {
       numero: ind.numero,
       critere: ind.critere,
@@ -668,6 +742,10 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
       statut: ind.statut,
       preuves: toutesPreuves,
       documents,
+      ...(motif !== undefined ? { motifNonApplicable: motif } : {}),
+      reperes,
+      liensPublics,
+      ...(ind.numero === 22 ? { ouVerifier: ouVerifierIndicateur22(population22) } : {}),
     };
   });
 
@@ -718,6 +796,12 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
  *   - `positionnements/<jour>_<stagiaire>_<id>.pdf` — une pièce nominative par
  *     positionnement RÉPONDU, avec les réponses et l'instant de la réponse
  *     (C2-03 — fail-soft, un échec rend le dossier incomplet).
+ *   - `formateurs/<intervenant>/<type>.<ext>` — le FICHIER de chaque pièce de
+ *     compétence validée (ind. 21) ; une pièce inaccessible est dite dans
+ *     l'index, les avertissements et le manifeste (audit initial 2026-10-01).
+ *   - `adaptations/indicateur-10.txt` — besoin déclaré et réponse de
+ *     l'organisme, session par session (ind. 10) ; aucun détail de santé.
+ *   - `registres/registre-developpement-competences-<jour>.pdf` (ind. 22).
  *
  * Stub-aware : retourne un ZIP minimal (manifeste seulement) si la magic
  * string "stub.invalid" est détectée dans DATABASE_URL.
@@ -791,6 +875,7 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   // prouve ni l'indicateur 21 ni le 27.
   const piecesFormateursRegistre = await prisma.trainerDocument.findMany({
     select: {
+      trainerId: true,
       type: true,
       numeroPiece: true,
       fichierUrl: true,
@@ -868,6 +953,43 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   //   ne sera restituable — le dossier serait livré vide sans avertissement.
   const r2Ok = isR2Configured();
   const avertissements: string[] = [];
+
+  // ── Ind. 21 ⭐ — les FICHIERS des pièces de compétence (audit initial
+  //    2026-10-01). `pieces.json` ne portait que des adresses. Chaque pièce non
+  //    rapatriée est dite : index, avertissement, et manifeste (réécrit plus bas).
+  let lignesManifeste21: string[] = [];
+  let nbFichiers21 = 0;
+  let nbFichiers21Omis = 0;
+  try {
+    const fichiers21 = await joindreFichiersPiecesCompetence(
+      zip,
+      indexLines,
+      avertissements,
+      piecesFormateurs.map((p) => ({
+        trainerId: p.trainerId,
+        formateur: `${p.trainer.prenom} ${p.trainer.nom}`.trim(),
+        type: p.type,
+        statutValidation: p.statutValidation,
+        fichierUrl: p.fichierUrl,
+        dateExpiration: p.dateExpiration,
+      })),
+      now,
+    );
+    lignesManifeste21 = fichiers21.lignesManifeste;
+    nbFichiers21 = fichiers21.nbInclus;
+    nbFichiers21Omis = fichiers21.nbOmis;
+  } catch (err) {
+    const motif = err instanceof Error ? err.message : String(err);
+    indexLines.push(`[OMIS] formateurs/<intervenant>/ — lecture impossible (${motif})`);
+    nbFichiers21Omis = 1;
+    avertissements.push(
+      "⚠️ Les fichiers des pièces de compétence (indicateur 21) n'ont pas pu être joints : seules leurs adresses figurent dans formateurs/pieces.json.",
+    );
+    lignesManifeste21 = [
+      "Fichiers des pièces de compétence NON joints (lecture impossible) — seules leurs adresses figurent dans formateurs/pieces.json",
+    ];
+  }
+  indexLines.push("");
   if (!r2Ok) {
     avertissements.push(
       "⚠️ STOCKAGE R2 NON CONFIGURÉ — aucun PDF de preuve n'est restituable. Le dossier ne contient que le manifeste et les registres. Configurez R2 avant l'audit.",
@@ -886,8 +1008,8 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   }
   indexLines.push("");
 
-  let nbInclus = 0;
-  let nbOmis = 0;
+  let nbInclus = nbFichiers21;
+  let nbOmis = nbFichiers21Omis;
   let nbDocsInclus = 0;
 
   // 🔴 2026-09-02 (audit certificateur) — DEUX MESURES SUR CETTE BOUCLE.
@@ -1062,6 +1184,31 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
     );
   }
 
+  // ── Indicateur 10 ⭐ — besoin déclaré et réponse de l'organisme, session par
+  //    session (audit initial 2026-10-01). Même section que le dossier de
+  //    session ; aucun détail de santé n'est chargé ni déchiffré.
+  indexLines.push("");
+  try {
+    const adaptations = await produireRegistreAdaptations();
+    zip.file(CHEMIN_ADAPTATIONS_ZIP, adaptations.lignes.join("\n") + "\n");
+    indexLines.push(
+      `[OK]  ${CHEMIN_ADAPTATIONS_ZIP}  (ind. 10 — ${adaptations.nbSessions} session${adaptations.nbSessions > 1 ? "s" : ""} portant un besoin déclaré ou une réponse consignée)`,
+    );
+    if (adaptations.nbAConsigner > 0) {
+      avertissements.push(
+        `⚠️ ${adaptations.nbAConsigner} besoin${adaptations.nbAConsigner > 1 ? "s" : ""} d'adaptation déclaré${adaptations.nbAConsigner > 1 ? "s" : ""} sans réponse de l'organisme consignée (indicateur 10) — détail dans ${CHEMIN_ADAPTATIONS_ZIP}.`,
+      );
+    }
+  } catch (err) {
+    indexLines.push(
+      `[OMIS] ${CHEMIN_ADAPTATIONS_ZIP} — lecture impossible (${err instanceof Error ? err.message : String(err)})`,
+    );
+    nbOmis++;
+    avertissements.push(
+      "⚠️ La réponse aux besoins d'adaptation (indicateur 10) n'a pas pu être lue : elle est absente de ce dossier, et ce n'est PAS un constat d'absence de besoin.",
+    );
+  }
+
   // ── Satisfactions répondues (ind. 30) et évaluations finales réalisées
   //    (ind. 11) — constat du dossier remis le 2026-09-30. Même contrat que
   //    les positionnements : nominatives, fail-soft, un trou rend INCOMPLET.
@@ -1072,6 +1219,21 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   );
   nbInclus += complements.nbInclus;
   nbOmis += complements.nbOmis;
+
+  // Le manifeste du ZIP porte, sous l'indicateur 21, ce qui a été joint et ce
+  // qui ne l'a pas été — réécrit ici, une fois les fichiers récupérés.
+  if (lignesManifeste21.length > 0) {
+    const json: ManifesteAuditPayload = {
+      ...manifeste.json,
+      indicateurs: manifeste.json.indicateurs.map((ind) =>
+        ind.numero === 21 && ind.statut !== "non_applicable"
+          ? { ...ind, preuves: [...ind.preuves, ...lignesManifeste21] }
+          : ind,
+      ),
+    };
+    zip.file("manifeste.json", JSON.stringify(json, null, 2));
+    zip.file("manifeste.md", buildMarkdown(json));
+  }
 
   indexLines.push("");
   indexLines.push(`Résumé : ${nbInclus} PDF inclus, ${nbOmis} omis.`);
@@ -1189,6 +1351,12 @@ function buildMarkdown(payload: ManifesteAuditPayload): string {
       lignes.push("");
 
       if (ind.statut !== "non_applicable") {
+        // Repères de lecture (audit initial, guide de lecture) : AVANT les
+        // éléments constatés, ils disent comment les lire. Jamais un verdict.
+        for (const repere of ind.reperes ?? []) {
+          lignes.push(`> ${repere}`);
+        }
+        if ((ind.reperes ?? []).length > 0) lignes.push("");
         if (ind.preuves.length > 0) {
           // 🔴 Constat F15, 2026-07-26. Ce bloc s'intitulait « Preuves » alors
           // que la liste mélange, produits par le même code, des preuves réelles
@@ -1220,11 +1388,23 @@ function buildMarkdown(payload: ManifesteAuditPayload): string {
           }
         }
 
+        if ((ind.liensPublics ?? []).length > 0) {
+          lignes.push("");
+          lignes.push("**Sur le site public :**");
+          for (const lien of ind.liensPublics ?? []) {
+            lignes.push(`- ${lien.libelle} : ${lien.url}`);
+          }
+        }
+
         if (ind.preuves.length === 0 && ind.documents.length === 0) {
           lignes.push("*Aucune preuve disponible.*");
         }
       } else {
-        lignes.push("*Non applicable au périmètre de l'OF.*");
+        lignes.push(
+          ind.motifNonApplicable !== undefined
+            ? `*Non applicable — ${ind.motifNonApplicable}*`
+            : "*Non applicable.*",
+        );
       }
 
       lignes.push("");

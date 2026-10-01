@@ -23,6 +23,7 @@ vi.mock("@/lib/prisma", () => ({
     incident: { findMany: vi.fn() },
     appreciation: { findMany: vi.fn() },
     moyenPedagogique: { findMany: vi.fn() },
+    trainerDevelopmentAction: { findMany: vi.fn() },
   },
 }));
 
@@ -52,6 +53,7 @@ const mockPrisma = prisma as unknown as {
   incident: { findMany: ReturnType<typeof vi.fn> };
   appreciation: { findMany: ReturnType<typeof vi.fn> };
   moyenPedagogique: { findMany: ReturnType<typeof vi.fn> };
+  trainerDevelopmentAction: { findMany: ReturnType<typeof vi.fn> };
 };
 
 beforeAll(() => {
@@ -68,6 +70,7 @@ function setupEmpty() {
   mockPrisma.incident.findMany.mockResolvedValue([]);
   mockPrisma.appreciation.findMany.mockResolvedValue([]);
   mockPrisma.moyenPedagogique.findMany.mockResolvedValue([]);
+  mockPrisma.trainerDevelopmentAction.findMany.mockResolvedValue([]);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -77,7 +80,7 @@ function setupEmpty() {
 describe("renderRegistrePdfBuffer", () => {
   beforeEach(setupEmpty);
 
-  it("expose les 8 types de registres attendus", () => {
+  it("expose les 9 types de registres attendus", () => {
     expect([...REGISTRE_TYPES]).toEqual([
       "reclamations",
       "veille",
@@ -87,6 +90,7 @@ describe("renderRegistrePdfBuffer", () => {
       "incidents",
       "appreciations",
       "moyens",
+      "developpement_competences",
     ]);
   });
 
@@ -261,6 +265,35 @@ describe("🔴 constat du ZIP du 2026-09-30 — appréciations, moyens et date d
     const result = await renderRegistrePdfBuffer("moyens");
     expect(result.buffer.slice(0, 4).toString("utf8")).toBe("%PDF");
     expect(result.filename).toMatch(/^inventaire-moyens-\d{4}-\d{2}-\d{2}\.pdf$/);
+  }, 30_000);
+
+  it("développement des compétences (ind. 22) : intervenants qui animent seulement, statut lisible", async () => {
+    mockPrisma.trainerDevelopmentAction.findMany.mockResolvedValue([
+      {
+        dateAction: new Date("2026-09-15T08:00:00.000Z"),
+        type: "formation_suivie",
+        description: "Formation « IA générative et RGPD »",
+        trainer: { nom: "Jullin", prenom: "Williams", statut: "dirigeant" },
+      },
+    ]);
+    const registre = await construireRegistre("developpement_competences");
+    // Le filtre « personnes qui animent » est posé dans la requête elle-même.
+    expect(mockPrisma.trainerDevelopmentAction.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { trainer: { estFormateur: true } } }),
+    );
+    expect(registre.titre).toMatch(/développement des compétences/i);
+    expect(registre.lignes).toEqual([
+      [
+        "15/09/2026",
+        "Williams Jullin",
+        "Dirigeant-formateur",
+        "Formation suivie",
+        "Formation « IA générative et RGPD »",
+      ],
+    ]);
+    const result = await renderRegistrePdfBuffer("developpement_competences");
+    expect(result.buffer.slice(0, 4).toString("utf8")).toBe("%PDF");
+    expect(result.filename).toMatch(/^registre-developpement-competences-\d{4}-\d{2}-\d{2}\.pdf$/);
   }, 30_000);
 
   it("le nom de fichier porte le jour de PARIS, pas celui d'UTC (00 h 53 à Paris le 30/09)", async () => {

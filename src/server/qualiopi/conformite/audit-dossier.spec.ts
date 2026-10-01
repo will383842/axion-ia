@@ -85,6 +85,26 @@ vi.mock("@/server/qualiopi/evaluations/pieces-realisees", () => ({
   produirePiecesEvaluationRealisee: vi.fn(async () => ({ pieces: [], echecs: [] })),
 }));
 
+// Audit initial 2026-10-01 — ind. 10 (registre des adaptations) et ind. 21
+// (fichiers des pièces de compétence). Défaut neutre ; testés dans leurs specs.
+vi.mock("./adaptations-dossier-global", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("./adaptations-dossier-global")>()),
+  produireRegistreAdaptations: vi.fn(async () => ({
+    lignes: ["Indicateur 10 — registre de test"],
+    nbAConsigner: 0,
+    nbSessions: 0,
+  })),
+}));
+vi.mock("./pieces-competence-zip", () => ({
+  joindreFichiersPiecesCompetence: vi.fn(async () => ({
+    nbInclus: 0,
+    nbOmis: 0,
+    lignesManifeste: [],
+  })),
+}));
+
+import { produireRegistreAdaptations } from "./adaptations-dossier-global";
+import { joindreFichiersPiecesCompetence } from "./pieces-competence-zip";
 import { produirePiecesSatisfactionRemplie } from "@/server/qualiopi/satisfaction/pieces-remplies";
 import { produirePiecesEvaluationRealisee } from "@/server/qualiopi/evaluations/pieces-realisees";
 import { prisma } from "@/lib/prisma";
@@ -305,13 +325,100 @@ describe("genererManifesteAudit", () => {
 
   // ── Preuves enrichies (T17 — CLUSTER 2) ───────────────────────────────────
 
-  it("off.30 : manifeste affiche le compte d'appréciations multi-parties", async () => {
+  // 🔴 2026-10-01 (audit initial) — le manifeste écrivait « N appréciations
+  // multi-parties » sans regarder le verdict du moteur.
+  it("🔴 off.30 : moteur « non démontré » → le manifeste n'affirme JAMAIS « multi-parties »", async () => {
     mockPrisma.appreciation.count.mockResolvedValue(4);
+    const conformite = makeConformiteResult({ statuts: { 30: "a_completer" } });
+    const ind30Moteur = conformite.indicateurs.find((i) => i.numero === 30);
+    ind30Moteur?.preuves.push(
+      "4 appréciations recueillies",
+      "3 appréciations, rattachement des auteurs non établi — ne comptent pas comme partie prenante distincte",
+      "Multi-parties non démontré : deux qualités déclarées peuvent être la même personne physique (stagiaire également représentante du client).",
+    );
+    mockEvaluerConformite.mockResolvedValue(conformite);
     const result = await genererManifesteAudit();
-    const ind30 = result.json.indicateurs.find((i) => i.numero === 30);
-    const preuvesText = ind30?.preuves.join(" ") ?? "";
-    expect(preuvesText).toMatch(/4/);
-    expect(preuvesText).toMatch(/appr[eé]ciation/i);
+    const preuves = result.json.indicateurs.find((i) => i.numero === 30)?.preuves ?? [];
+    // Aucune ligne n'AFFIRME le multi-parties…
+    expect(preuves.filter((p) => /multi-parties/i.test(p) && !/non démontré/i.test(p))).toEqual([]);
+    // … et les appréciations non rattachées restent dites comme telles.
+    expect(preuves.join("\n")).toMatch(/rattachement des auteurs non établi/);
+  });
+
+  it("off.30 : moteur « couvert » → le manifeste dit le multi-parties établi", async () => {
+    mockEvaluerConformite.mockResolvedValue(makeConformiteResult({ statuts: { 30: "couvert" } }));
+    const result = await genererManifesteAudit();
+    const preuves = result.json.indicateurs.find((i) => i.numero === 30)?.preuves ?? [];
+    expect(preuves.join("\n")).toMatch(/multi-parties établi/i);
+  });
+
+  it("🔴 off.10 : la convention et le contrat ne sont PLUS présentés comme preuve d'adaptation", async () => {
+    mockPrisma.documentGenere.groupBy.mockImplementation(
+      groupByHonorantAnnulation([
+        { type: "convention", annulee: false },
+        { type: "contrat", annulee: false },
+      ]),
+    );
+    const result = await genererManifesteAudit();
+    expect(typesAnnonces(result, 10)).toEqual([]);
+    const preuves = result.json.indicateurs.find((i) => i.numero === 10)?.preuves ?? [];
+    expect(preuves.join("\n")).toContain("adaptations/indicateur-10.txt");
+    expect(preuves.join("\n")).toMatch(/donnée de santé/);
+  });
+
+  it("indicateurs non applicables : le MOTIF est dans le JSON et dans le Markdown", async () => {
+    mockEvaluerConformite.mockResolvedValue(
+      makeConformiteResult({
+        statuts: { 3: "non_applicable", 13: "non_applicable", 28: "non_applicable" },
+      }),
+    );
+    const result = await genererManifesteAudit();
+    const motif = (n: number): string | undefined =>
+      result.json.indicateurs.find((i) => i.numero === n)?.motifNonApplicable;
+    expect(motif(3)).toMatch(/RNCP/);
+    expect(motif(13)).toMatch(/pas un CFA/);
+    expect(motif(28)).toMatch(/AFEST/);
+    // Un indicateur applicable ne porte pas de motif.
+    expect(motif(4)).toBeUndefined();
+    expect(result.markdown).toContain(`*Non applicable — ${motif(13)}*`);
+  });
+
+  it("audit initial : régime « processus formalisé » sur 2/11/19/22/24/25/26/32, précision sur 12", async () => {
+    mockEvaluerConformite.mockResolvedValue(
+      makeConformiteResult({
+        statuts: { 3: "non_applicable", 13: "non_applicable", 14: "non_applicable" },
+      }),
+    );
+    const result = await genererManifesteAudit();
+    const reperes = (n: number): readonly string[] =>
+      result.json.indicateurs.find((i) => i.numero === n)?.reperes ?? [];
+    for (const n of [2, 11, 19, 22, 24, 25, 26, 32]) {
+      expect(reperes(n).join(" ")).toMatch(/À l'audit initial/);
+    }
+    // Non applicables : aucun repère, même s'ils figurent dans le texte.
+    for (const n of [3, 13, 14]) expect(reperes(n)).toEqual([]);
+    expect(reperes(12)).toEqual([
+      "Exigé pour les actions de plus de deux jours (guide de lecture).",
+    ]);
+    expect(reperes(4)).toEqual([]);
+    expect(result.markdown).toContain("> À l'audit initial, l'auditeur vérifie");
+  });
+
+  it("liens vers le site public : absolus, sur 1 / 9 / 26 / 31 seulement", async () => {
+    const result = await genererManifesteAudit();
+    const liens = (n: number) =>
+      result.json.indicateurs.find((i) => i.numero === n)?.liensPublics ?? [];
+    expect(liens(1).map((l) => l.url)).toEqual([
+      expect.stringMatching(/^https?:\/\/[^/]+\/fr\/formations$/),
+      expect.stringMatching(/^https?:\/\/[^/]+\/fr\/conditions-generales$/),
+    ]);
+    expect(liens(9).map((l) => l.url)).toEqual([
+      expect.stringMatching(/\/fr\/reglement-interieur$/),
+    ]);
+    expect(liens(26).map((l) => l.url)).toEqual([expect.stringMatching(/\/fr\/accessibilite$/)]);
+    expect(liens(31).map((l) => l.url)).toEqual([expect.stringMatching(/\/fr\/reclamations$/)]);
+    expect(liens(4)).toEqual([]);
+    expect(result.markdown).toMatch(/\*\*Sur le site public :\*\*/);
   });
 
   it("off.26 : manifeste expose le référent handicap s'il est nommé ET joignable", async () => {
@@ -474,7 +581,9 @@ describe("genererManifesteAudit", () => {
     const ind1 = result.json.indicateurs.find((i) => i.numero === 1);
     const preuvesText = ind1?.preuves.join(" ") ?? "";
     expect(preuvesText).toMatch(/non renseigné/i);
-    expect(preuvesText).toMatch(/off\.1/i);
+    // Dit au certificateur en toutes lettres — jamais « off.1 » (2026-10-01).
+    expect(preuvesText).toMatch(/l'indicateur 1 ne peut pas être couvert/);
+    expect(preuvesText).not.toMatch(/off\.\d/);
   });
 
   it("off.23/24/25 : manifeste affiche le compte de veille par type", async () => {
@@ -532,6 +641,58 @@ describe("genererDossierAuditZip", () => {
     const zip = await JSZip.loadAsync(result.base64, { base64: true });
     expect(zip.files["manifeste.json"]).toBeDefined();
     expect(zip.files["manifeste.md"]).toBeDefined();
+  });
+
+  it("🔴 ind. 10 : le ZIP porte adaptations/indicateur-10.txt, et un besoin sans réponse le rend INCOMPLET", async () => {
+    vi.mocked(produireRegistreAdaptations).mockResolvedValueOnce({
+      lignes: [
+        "Indicateur 10",
+        "Session S-1 — Atelier",
+        "  A. B. — besoin déclaré — AUCUNE RÉPONSE CONSIGNÉE",
+      ],
+      nbAConsigner: 1,
+      nbSessions: 1,
+    });
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    const contenu = await zip.file("adaptations/indicateur-10.txt")?.async("string");
+    expect(contenu).toContain("AUCUNE RÉPONSE CONSIGNÉE");
+    expect(result.incomplet).toBe(true);
+    expect(result.avertissements.join("\n")).toMatch(/indicateur 10/);
+  });
+
+  it("ind. 10 : un registre illisible est DIT, jamais rendu comme « aucun besoin »", async () => {
+    vi.mocked(produireRegistreAdaptations).mockRejectedValueOnce(new Error("base indisponible"));
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    expect(zip.file("adaptations/indicateur-10.txt")).toBeNull();
+    expect(result.incomplet).toBe(true);
+    expect(result.avertissements.join("\n")).toMatch(/PAS un constat d'absence de besoin/);
+  });
+
+  it("🔴 ind. 21 : une pièce de compétence inaccessible est écrite dans le manifeste du ZIP", async () => {
+    vi.mocked(joindreFichiersPiecesCompetence).mockImplementationOnce(
+      async (_zip, _index, avertissements) => {
+        avertissements.push("⚠️ 1 pièce de compétence validée non jointe au dossier");
+        return {
+          nbInclus: 0,
+          nbOmis: 1,
+          lignesManifeste: [
+            "0/1 pièce de compétence validée jointe au dossier, sous formateurs/<intervenant>/",
+            "Pièce non jointe — fichier inaccessible : Ada Lovelace — CV : le lien répond 404",
+          ],
+        };
+      },
+    );
+    const result = await genererDossierAuditZip();
+    const zip = await JSZip.loadAsync(result.base64, { base64: true });
+    const json = JSON.parse((await zip.file("manifeste.json")?.async("string")) ?? "{}") as {
+      indicateurs: { numero: number; preuves: string[] }[];
+    };
+    const preuves21 = json.indicateurs.find((i) => i.numero === 21)?.preuves ?? [];
+    expect(preuves21.join("\n")).toContain("Ada Lovelace — CV : le lien répond 404");
+    expect(await zip.file("manifeste.md")?.async("string")).toContain("le lien répond 404");
+    expect(result.incomplet).toBe(true);
   });
 
   it("manifeste.json dans le ZIP est un JSON valide avec meta.version = 'RNQ-V9'", async () => {
@@ -1408,7 +1569,7 @@ describe("Manifeste — un indicateur non applicable ne présente aucune pièce"
     );
     const manifeste = await genererManifesteAudit();
     expect(typesAnnonces(manifeste, 12)).toEqual([]);
-    expect(manifeste.markdown).toContain("*Non applicable au périmètre de l'OF.*");
+    expect(manifeste.markdown).toContain("*Non applicable.*");
   });
 
   it("off.12 applicable : les mêmes pièces sont bien annoncées (le filtre ne masque pas tout)", async () => {

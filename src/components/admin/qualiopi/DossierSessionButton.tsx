@@ -44,7 +44,17 @@ function telechargerZip(base64: string, filename: string): void {
   URL.revokeObjectURL(url);
 }
 
-export function DossierSessionButton({ sessionId }: { sessionId: string }): React.ReactElement {
+export function DossierSessionButton({
+  sessionId,
+  numeroSession,
+}: {
+  sessionId: string;
+  /**
+   * Numéro de la session, quand plusieurs boutons cohabitent sur un même écran
+   * (mode auditeur) : sans lui, dix boutons porteraient le MÊME nom accessible.
+   */
+  numeroSession?: string;
+}): React.ReactElement {
   const [enCours, demarrer] = useTransition();
   // 🔴 Le verdict RESTE à l'écran. Il partait dans un `window.alert` : non
   // copiable, non relisible, effacé au premier clic — alors que le ZIP, lui,
@@ -99,7 +109,11 @@ export function DossierSessionButton({ sessionId }: { sessionId: string }): Reac
         onClick={exporter}
         disabled={enCours}
         className="admin-button-secondary"
-        aria-label="Télécharger le dossier d'audit de cette session (documents, feuille d'émargement, vérification d'intégrité)"
+        aria-label={
+          numeroSession !== undefined
+            ? `Télécharger le dossier d'audit de la session ${numeroSession} (documents, feuille d'émargement, vérification d'intégrité)`
+            : "Télécharger le dossier d'audit de cette session (documents, feuille d'émargement, vérification d'intégrité)"
+        }
       >
         {enCours ? "Génération…" : "Dossier d'audit de la session"}
       </button>

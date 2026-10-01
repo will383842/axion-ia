@@ -50,7 +50,11 @@ import {
   inscriptionSurSessionTenue,
 } from "@/server/qualiopi/conformite/piece-admissible";
 import { evaluerCouvertureOff32 } from "@/server/qualiopi/revues/plan-actions";
-import { INDICATEURS_RNQ, indicateursApplicables } from "./indicateurs-registre";
+import {
+  INDICATEURS_RNQ,
+  indicateursApplicables,
+  motifNonApplicable,
+} from "./indicateurs-registre";
 
 // AFEST retiré le 2026-08-10 — le 1-to-1 est du conseil (décision 2026-07-17) ;
 // déclarer l'AFEST au certificateur avec des prestations de conseil comme preuve
@@ -58,6 +62,36 @@ import { INDICATEURS_RNQ, indicateursApplicables } from "./indicateurs-registre"
 // `alternance_afest` ni ne couvrent off.28. off.28 reste DÉCLARABLE si un jour
 // une Formation porte le type `alternance_afest` — on a retiré l'automatisme,
 // pas la capacité.
+
+// ─────────────────────────────────────────────────────────────────────────────
+// off.26 — prédicats du réseau handicap (partagés avec le manifeste)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Partenariats du réseau handicap ACTIFS. */
+export function whereReseauHandicapActif(): { type: "reseau_handicap"; actif: true } {
+  return { type: "reseau_handicap", actif: true };
+}
+
+/**
+ * Parmi eux, ceux qui portent une TRACE d'échange : une date d'échange, ou une
+ * pièce non vide. Un interlocuteur nommé sans date ni pièce n'en est pas une.
+ */
+export function whereReseauHandicapActifAvecTrace(): {
+  type: "reseau_handicap";
+  actif: true;
+  OR: [
+    { dernierEchangeAt: { not: null } },
+    { AND: [{ preuveUrl: { not: null } }, { NOT: { preuveUrl: "" } }] },
+  ];
+} {
+  return {
+    ...whereReseauHandicapActif(),
+    OR: [
+      { dernierEchangeAt: { not: null } },
+      { AND: [{ preuveUrl: { not: null } }, { NOT: { preuveUrl: "" } }] },
+    ],
+  };
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types exportés
@@ -72,6 +106,12 @@ export interface IndicateurConformite {
   super: boolean;
   statut: StatutConformite;
   preuves: string[];
+  /**
+   * Pourquoi l'indicateur est hors périmètre — présent SEULEMENT quand
+   * `statut === "non_applicable"`. Dérivé de `conditionnel`, la condition même
+   * que lit `indicateursApplicables` (cf. `MOTIFS_NON_APPLICABLE`).
+   */
+  motifNonApplicable?: string;
 }
 
 export interface ConformiteResult {
@@ -232,6 +272,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbInscritsSessionsTenues,
     positionnementsOff10,
     nbInscritsSessionsTenuesDemarrees,
+    // ── Audit initial 2026-10-01 — off.26 : la TRACE d'échange ──────────────
+    nbPartenariatsHandicapAvecTrace,
   ] = await Promise.all([
     prisma.formation.count(),
     prisma.trainingSession.count({ where: { statut: "realisee" } }),
@@ -488,8 +530,14 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       })
       .then((r) => r.length),
     prisma.formation.count({ where: { statut: "actif" } }),
-    // off.26 : partenariats du réseau HANDICAP spécifiquement (≠ partenariat commercial).
-    prisma.partenariat.count({ where: { type: "reseau_handicap" } }),
+    // off.26 : partenariats du réseau HANDICAP spécifiquement (≠ partenariat commercial),
+    //   et ACTIFS seulement.
+    //
+    // 🔴 2026-10-01 — ce compte ne filtrait pas `actif` : une convention terminée
+    // (« Terminé » au registre des partenariats) comptait encore comme réseau
+    // mobilisable devant l'auditrice, sur un super-indicateur. Un partenaire
+    // dont on ne se sert plus n'oriente plus personne.
+    prisma.partenariat.count({ where: whereReseauHandicapActif() }),
     // off.23/24/25 : veille EXPLOITÉE (actionDecidee non vide) et RÉCENTE (< 12 mois).
     //
     // 🔑 La règle vit dans `whereVeilleExploitee`, partagée avec le manifeste
@@ -800,6 +848,11 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
         session: { ...inscriptionSurSessionTenue().session, dateDebut: { lte: maintenant } },
       },
     }),
+    // off.26 ⭐ — parmi les partenariats réseau handicap ACTIFS, ceux qui portent
+    // une TRACE d'échange : une date d'échange ou une pièce (`preuveUrl`). Le nom
+    // d'un interlocuteur seul est une déclaration, pas une trace. Ajouté EN FIN
+    // de liste, comme les précédents : des tests mockent par POSITION.
+    prisma.partenariat.count({ where: whereReseauHandicapActifAvecTrace() }),
   ]);
 
   const typesAction = typesActionResult;
@@ -1030,7 +1083,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     `${nbDocuments} document${nbDocuments > 1 ? "s" : ""} généré${nbDocuments > 1 ? "s" : ""}`,
     ndaNumero.trim().length > 0
       ? `NDA DREETS : ${ndaNumero}`
-      : "NDA DREETS : non renseigné (requis pour couverture off.1)",
+      : "NDA DREETS : non renseigné (requis pour couvrir l'indicateur 1)",
   ];
   if (nbFormationsCertifiantes > 0) {
     // 🔴 2026-08-23 — LA CONTRADICTION LA PLUS VISIBLE DE L'ÉCRAN DE L'AUDITEUR.
@@ -1093,7 +1146,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       `${nbFormationsResultatsPublies} formation${nbFormationsResultatsPublies > 1 ? "s" : ""} avec indicateurs de résultats publiés`,
       `${nbEvaluationsFinales} évaluation${nbEvaluationsFinales > 1 ? "s" : ""} finale${nbEvaluationsFinales > 1 ? "s" : ""} (taux de réussite mesurable)`,
       nbFormationsResultatsPublies === 0
-        ? "Aucun indicateur de résultat publié — off.2 exige la diffusion (canal public à alimenter)"
+        ? "Aucun indicateur de résultat publié — l'indicateur 2 exige leur diffusion (canal public à alimenter)"
         : "Indicateurs de résultats diffusés",
     ],
     nbFormationsResultatsPublies > 0,
@@ -1476,7 +1529,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
         ? "Modalités de coordination des intervenants décrites en configuration"
         : nbPiecesCoordination > 0
           ? `${nbPiecesCoordination} pièce${nbPiecesCoordination > 1 ? "s" : ""} « inventaire des moyens » / « organisation de l'action » au registre`
-          : "Aucune preuve écrite de coordination — off.18 exige les modalités de coordination en configuration OU une pièce « inventaire des moyens » / « organisation de l'action »",
+          : "Aucune preuve écrite de coordination — l'indicateur 18 exige les modalités de coordination en configuration OU une pièce « inventaire des moyens » / « organisation de l'action »",
     ],
     nbTrainers > 0 && moyensParCategorieCouverts && preuveCoordinationEcrite,
   );
@@ -1497,7 +1550,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       `${nbFormationsActivesAvecSupport}/${nbFormationsActives} formation${nbFormationsActives > 1 ? "s" : ""} active${nbFormationsActives > 1 ? "s" : ""} dotée${nbFormationsActives > 1 ? "s" : ""} d'au moins une ressource finalisée (${tauxCouvertureSupports} %)`,
       `${nbSupportsGeneres} support${nbSupportsGeneres > 1 ? "s" : ""} finalisé${nbSupportsGeneres > 1 ? "s" : ""} (généré + PDF disponible) sur ${nbSupports} au total`,
       nbFormationsActives > 0 && nbFormationsActivesAvecSupport < nbFormationsActives
-        ? `${nbFormationsActives - nbFormationsActivesAvecSupport} formation(s) active(s) SANS aucune ressource — off.19 exige la mise à disposition pour chaque prestation`
+        ? `${nbFormationsActives - nbFormationsActivesAvecSupport} formation(s) active(s) SANS aucune ressource — l'indicateur 19 exige la mise à disposition pour chaque prestation`
         : `Toutes les formations actives disposent d'une ressource`,
     ],
     nbFormationsActives > 0 && nbFormationsActivesAvecSupport === nbFormationsActives,
@@ -1598,10 +1651,24 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   //   (type=reseau_handicap, ≠ partenariat commercial quelconque) ET si le référent
   //   handicap est réellement désigné — attesté par un EMAIL renseigné (le nom seul a
   //   un défaut de configuration « Williams Jullin » qui ne prouve pas la désignation).
+  // 🔴 2026-10-01 — la trace d'échange est DITE, jamais supposée. Sans aucune
+  // date d'échange ni pièce sur aucun partenaire actif, la fiche est une
+  // déclaration de l'organisme : l'élément constaté le dit en toutes lettres,
+  // au lieu de laisser « 3 partenariats » se lire comme trois relais mobilisés.
+  // Le verdict n'en dépend pas (décision inchangée) ; la lecture, si.
+  const off26LigneTrace =
+    nbPartenariatsHandicap === 0
+      ? null
+      : nbPartenariatsHandicapAvecTrace === 0
+        ? nbPartenariatsHandicap > 1
+          ? `Aucun des ${nbPartenariatsHandicap} partenariats réseau handicap actifs ne porte de trace d'échange (date d'échange ou pièce) — fiches déclaratives`
+          : "Le partenariat réseau handicap actif ne porte aucune trace d'échange (date d'échange ou pièce) — fiche déclarative"
+        : `${nbPartenariatsHandicapAvecTrace}/${nbPartenariatsHandicap} partenariat${nbPartenariatsHandicap > 1 ? "s" : ""} réseau handicap actif${nbPartenariatsHandicap > 1 ? "s" : ""} portant une trace d'échange (date d'échange ou pièce)`;
   set(
     26,
     [
-      `${nbPartenariatsHandicap} partenariat${nbPartenariatsHandicap > 1 ? "s" : ""} réseau handicap (Agefiph/Cap emploi/RHF) sur ${nbPartenariats} au total`,
+      `${nbPartenariatsHandicap} partenariat${nbPartenariatsHandicap > 1 ? "s" : ""} réseau handicap actif${nbPartenariatsHandicap > 1 ? "s" : ""} (Agefiph/Cap emploi/RHF) sur ${nbPartenariats} au total`,
+      ...(off26LigneTrace !== null ? [off26LigneTrace] : []),
       `${nbTraineesHandicap} stagiaire${nbTraineesHandicap > 1 ? "s" : ""} handicap suivi${nbTraineesHandicap > 1 ? "s" : ""}`,
       referentHandicapEmailRenseigne
         ? `Référent handicap : ${referentHandicapNom} (${referentHandicapEmail})`
@@ -1670,7 +1737,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       ? `${totalSousTraitants} référencé${totalSousTraitants > 1 ? "s" : ""} au total — ${nbSousTraitants} organisme${nbSousTraitants > 1 ? "s" : ""} actif${nbSousTraitants > 1 ? "s" : ""}, ${nbFormateursSousTraitants} formateur${nbFormateursSousTraitants > 1 ? "s" : ""} indépendant${nbFormateursSousTraitants > 1 ? "s" : ""}`
       : nbProceduresSousTraitance > 0
         ? "Aucun sous-traitant à ce jour — dispositions prouvées par la procédure écrite versée au registre"
-        : "Aucun sous-traitant à ce jour — off.27 exige alors une procédure « dispositions sous-traitance »",
+        : "Aucun sous-traitant à ce jour — l'indicateur 27 exige alors une procédure « dispositions sous-traitance »",
     nbProceduresSousTraitance > 0
       ? `${nbProceduresSousTraitance} procédure${nbProceduresSousTraitance > 1 ? "s" : ""} « dispositions sous-traitance » au registre`
       : "Aucune procédure « dispositions sous-traitance » générée",
@@ -1753,7 +1820,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     [
       procedureReclamationsOk
         ? "Procédure de traitement des réclamations publiée (attestée en configuration)"
-        : "Procédure de réclamations : non attestée publiée (requis pour couverture off.31)",
+        : "Procédure de réclamations : non attestée publiée (requis pour couvrir l'indicateur 31)",
       responsableQualiteNom.trim().length > 0
         ? `Process réclamations piloté par : ${responsableQualiteNom}`
         : "Responsable qualité (propriétaire du process réclamations) : non renseigné",
@@ -1775,6 +1842,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   const indicateurs: IndicateurConformite[] = INDICATEURS_RNQ.map((ind) => {
     const isApplicable = applicablesNums.includes(ind.numero);
     if (!isApplicable) {
+      const motif = motifNonApplicable(ind.numero);
       return {
         numero: ind.numero,
         libelle: ind.libelleOfficiel,
@@ -1782,6 +1850,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
         super: ind.super,
         statut: "non_applicable" as StatutConformite,
         preuves: [],
+        // Déduit de la MÊME condition que l'applicabilité (`conditionnel`).
+        ...(motif !== null ? { motifNonApplicable: motif } : {}),
       };
     }
     const data = dataMap.get(ind.numero) ?? { preuves: [], couvert: false };
