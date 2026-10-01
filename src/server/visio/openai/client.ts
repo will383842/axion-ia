@@ -60,6 +60,8 @@ export interface DemandeReponse {
   readonly format: FormatSortie;
   readonly effort: "low" | "medium" | "high";
   readonly maxSortie: number;
+  /** V2, M6 — le délai de CET appel (défaut : celui du client). */
+  readonly delaiMs?: number;
 }
 
 /** La réponse de l'API Responses, réduite à ce que le circuit lit. */
@@ -124,6 +126,18 @@ function lireReponse(r: OpenAI.Responses.Response): ReponseBrute {
   };
 }
 
+/**
+ * V2, M6 — la nature d'une erreur de CONNEXION du SDK (seul module qui le
+ * connaît). Le SDK les range sous `APIError` sans statut : la table commune
+ * les classe « inconnu ». `delai` : la requête est partie (elle a pu être
+ * facturée) ; `connexion` : le fournisseur n'a pas répondu.
+ */
+export function erreurDeConnexion(err: unknown): "delai" | "connexion" | null {
+  if (err instanceof OpenAI.APIConnectionTimeoutError) return "delai";
+  if (err instanceof OpenAI.APIConnectionError) return "connexion";
+  return null;
+}
+
 let instance: ClientOpenAIVisio | null = null;
 
 /** Le client réel, construit au premier appel. */
@@ -155,7 +169,7 @@ export function obtenirClientOpenAI(): ClientOpenAIVisio {
     repondre: async (d) => {
       const r = await sdk.responses.create(
         parametresResponses(d) as unknown as OpenAI.Responses.ResponseCreateParamsNonStreaming,
-        { signal: d.signal },
+        { signal: d.signal, ...(d.delaiMs !== undefined ? { timeout: d.delaiMs } : {}) },
       );
       return lireReponse(r);
     },

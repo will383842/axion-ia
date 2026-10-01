@@ -151,7 +151,16 @@ export async function transcrireTranche(
       }
       throw err;
     }
-    throw classerErreurOpenAI(err);
+    const e = classerErreurOpenAI(err);
+    // V2, M6 — délai dépassé : la requête est partie et a pu être facturée.
+    if (e.code === "delai_depasse") {
+      await appelAnnuleEnVol(deps.cout, {
+        jobId: t.jobId,
+        modele: MODELE_TRANSCRIPTION,
+        estimationUsd: ESTIMATION_TRANCHE_USD,
+      });
+    }
+    throw e;
   }
   await apresAppel(deps.cout, {
     jobId: t.jobId,

@@ -21,6 +21,7 @@
 import type { ClasseErreur, CodeErreurVisio } from "../../../../prisma/generated/client";
 import { ProviderError } from "@/server/content-gen/providers/IProvider";
 import { mapOpenAiError } from "@/server/content-gen/providers/openai";
+import { erreurDeConnexion } from "./client";
 
 /** Une erreur du circuit : une classe (ce qu'on fait) et un code (ce qui s'est passé). */
 export class ErreurVisio extends Error {
@@ -140,6 +141,15 @@ export function classerErreurOpenAI(err: unknown): ErreurVisio {
       "cle_chiffrement_absente",
       "clé de chiffrement absente ou différente",
     );
+  }
+  // V2, M6 — le SDK range ses erreurs de connexion sous `APIError` sans
+  // statut : la table commune les classe « inconnu ». Un délai dépassé est
+  // nommé ici, pour que son coût soit inscrit (la requête est partie).
+  const connexion = erreurDeConnexion(err);
+  if (connexion === "delai")
+    return new ErreurVisio("passagere", "delai_depasse", "OpenAI : timeout");
+  if (connexion === "connexion") {
+    return new ErreurVisio("passagere", "fournisseur_indisponible", "OpenAI : down");
   }
   const fournisseur = err instanceof ProviderError ? err : mapOpenAiError(err);
   const cible = PAR_CODE_FOURNISSEUR[fournisseur.code];

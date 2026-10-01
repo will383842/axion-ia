@@ -67,6 +67,23 @@ export const MAX_SORTIE_PAR_PASSE: Readonly<Record<PasseIA, number>> = {
 };
 
 /**
+ * V2, M6 — le délai du client PAR PASSE. P1 (effort `high`, jusqu'à 32 000
+ * jetons de sortie raisonnement compris) dépassait les 120 s communs sur un
+ * appel long, à chaque essai, pendant 72 h. 10 minutes pour P1, 3 minutes
+ * pour les autres. La transcription d'une tranche garde le délai du client.
+ */
+export const DELAI_PAR_PASSE_MS: Readonly<Record<PasseIA, number>> = {
+  extraire: 600_000,
+  rattacher: 180_000,
+  consolider: 180_000,
+  ebaucher: 180_000,
+  rediger: 180_000,
+  questionnaire: 180_000,
+  lire_reponses: 180_000,
+  email_suivi: 180_000,
+};
+
+/**
  * Estimations passées au plafond de dépense AVANT l'appel (§1.4) : 0,03 $ par
  * tranche de transcription ; 0,50 $ pour P1 ; 0,20 $ pour les autres passes.
  */
