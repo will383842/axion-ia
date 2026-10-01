@@ -41,7 +41,7 @@ const carteCls =
 const mutedCls = "text-[color:var(--color-admin-fg-muted)]";
 const lienCls = "text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline";
 const actionCls = "admin-button-secondary min-h-[44px] whitespace-nowrap";
-const fantomeCls = "admin-button-ghost min-h-[44px] min-w-[44px] whitespace-nowrap";
+const fantomeCls = "admin-button-ghost min-h-[44px] whitespace-nowrap";
 
 // ─── Natures : libellé, pictogramme, couleur (Record EXHAUSTIF, RM-04) ──────
 

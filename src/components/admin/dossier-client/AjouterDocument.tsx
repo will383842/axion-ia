@@ -48,7 +48,7 @@ export function AjouterDocument({
 
   return (
     <details open={ouvert} className="mb-[var(--space-admin-4)]">
-      <summary className="admin-button inline-flex min-h-[44px] cursor-pointer list-none">
+      <summary className="admin-button min-h-[44px] cursor-pointer list-none">
         + Ajouter un document
       </summary>
       <form
