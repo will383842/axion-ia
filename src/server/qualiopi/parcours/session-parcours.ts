@@ -35,6 +35,12 @@ import {
   attenteContresignature,
   type FinancementSession,
 } from "../emargement/contresignature-attendue";
+// 🔴 ADR 0060 — la MÊME règle que le verrou du dossier : une attestation se
+// rapproche PAR INSCRIPTION (`attestationDocumentId`), jamais par comptage.
+// Module pur lui aussi : aucune requête, aucun Prisma.
+import { manquantsPourClore } from "../sessions/verrou-dossier-pur";
+import { partieARelancer } from "../documents/signature/relance-partie";
+import type { PartieSignataire } from "../documents/signature/document-signature-hash";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // L'état d'entrée — exactement ce que le hub porte déjà
@@ -49,6 +55,8 @@ export interface SessionParcoursInput {
     readonly financementType: string | null;
     /** Filiation, pour un statut terminal. */
     readonly sessionReporteeNumero?: string | null;
+    /** Identifiant de la même session de remplacement — pour le lien de la fiche. */
+    readonly sessionReporteeId?: string | null;
   };
   /** Pièces de la session, telles que le hub les charge. */
   readonly documents: ReadonlyArray<{
@@ -77,6 +85,8 @@ export interface SessionParcoursInput {
     readonly emargementSigneAt: Date | null;
     readonly convocationEnvoyeeAt: Date | null;
     readonly questionnaires: ReadonlyArray<{
+      /** Identifiant, pour offrir la relance directe depuis la checklist. */
+      readonly id?: string;
       readonly type: string;
       readonly envoyeAt: Date | null;
       readonly reponduAt: Date | null;
@@ -84,6 +94,25 @@ export interface SessionParcoursInput {
     readonly evaluationFinaleAt: Date | null;
     /** Accès portail vivant — 🔴 GLOBAL au stagiaire, pas scopé session. */
     readonly aUnAccesPortail: boolean;
+    /**
+     * La pièce désignée par `enrollment.attestationDocumentId`, `null` si la
+     * colonne est vide ou si la pièce n'existe plus.
+     *
+     * 🔴 REQUIS (ADR 0060) : l'étape « attestation » comptait les attestations
+     * de la session, si bien que deux attestations pour A et aucune pour B
+     * cochaient l'étape. Elle rapproche désormais inscription par inscription,
+     * avec le prédicat du verrou — un appelant qui oublierait ce champ ne
+     * compilerait pas.
+     */
+    readonly attestation: {
+      readonly type: string;
+      readonly annuleeAt: Date | null;
+      readonly createdAt: Date;
+    } | null;
+    /** Stagiaire de l'inscription — pour le geste direct « générer un accès portail ». */
+    readonly traineeId?: string;
+    /** « Prénom Nom », pour nommer le destinataire d'un geste direct. */
+    readonly stagiaire?: string;
   }>;
   /** Nombre de jetons d'émargement encore vivants pour la session. */
   readonly liensEmargementActifs: number;
@@ -170,34 +199,68 @@ export interface EtapeParcours {
    * catalogue d'alertes — et corrigé ici de la même façon, au niveau du TYPE.
    */
   readonly motifSansBorne?: string;
+  /** La phase de la fiche où l'étape se joue (onglet « Préparer », « Le jour J », « Après »). */
+  readonly phase: PhaseEtape;
   /**
-   * OÙ poser le geste — l'ancre de la section qui le porte, sur la fiche de
-   * session.
+   * OÙ poser le geste — la section qui porte le bouton, sur la fiche OU sur la
+   * sous-page qui le porte. `hrefEtape` (cible-etape.ts) en fait un lien qui y
+   * mène en UN clic.
    *
    * 🔴 Défaut vécu le 2026-09-04, par Will lui-même : « je n'ai pas trouvé le
-   * bouton pour contresigner ». Le suivi DÉCRIT pourtant le geste — « bloc
-   * Signatures, "Contresigner" » — et cette phrase est fausse deux fois : le
-   * bloc s'appelle « Signature des pièces contractuelles » et le bouton
-   * « Signer pour l'organisme ». Aucun des deux mots cités n'existe à l'écran.
+   * bouton pour contresigner ». Le suivi DÉCRIVAIT le geste — « bloc
+   * Signatures, "Contresigner" » — avec deux noms absents de l'écran. Puis,
+   * audit UX du 30/09/2026 : sept étapes menaient à « #sous-pages », un bloc
+   * de quatre liens, et il fallait encore choisir la bonne sous-page puis y
+   * chercher le bouton. La cible nomme désormais la sous-page ET la section.
    *
-   * Et même exacte, la phrase resterait insuffisante : la fiche fait plus de
-   * 4 000 px et empile douze blocs. Décrire où aller, sur une page qu'il faut
-   * parcourir aux yeux, revient à ne pas le dire.
-   *
-   * L'ancre supprime la recherche. Elle n'est PAS un raccourci de confort :
-   * c'est ce qui rend le parcours praticable par quelqu'un qui découvre
-   * l'outil — l'exigence que Will pose pour tout le système.
-   *
-   * Absente = le geste n'a pas de lieu sur cette page (il est chez le
-   * stagiaire, chez le client, ou dans une sous-page à part).
+   * Toujours présente : chaque étape a un lieu, même quand le geste appartient
+   * à un tiers (on y LIT alors l'état, et on y relance).
    */
-  readonly ancre?: {
-    /** Fragment de l'URL, SANS le « # ». Doit exister comme `id` de section. */
-    readonly id: string;
-    /** Ce qu'on lit sur le lien — nomme le BLOC tel qu'il s'affiche. */
-    readonly libelle: string;
-  };
+  readonly cible: CibleEtape;
+  /**
+   * Le geste SIMPLE qu'on peut poser directement depuis la checklist —
+   * relancer, générer un accès. Jamais un acte habilité (contresigner,
+   * attester) : ceux-là mènent au panneau, sans rien déclencher.
+   */
+  readonly gesteDirect?: GesteDirect;
 }
+
+export type PhaseEtape = "preparer" | "jour_j" | "apres";
+
+export type SousPageSession = "emargement" | "evaluations" | "financement" | "kit";
+
+export interface CibleEtape {
+  /** Absente = la fiche de session elle-même. */
+  readonly sousPage?: SousPageSession;
+  /** Fragment d'URL, SANS le « # ». Doit exister comme `id` dans la page ciblée. */
+  readonly fragment: string;
+  /** Ce qu'on lit sur le lien — nomme le BLOC tel qu'il s'affiche. */
+  readonly libelle: string;
+}
+
+/**
+ * Gestes directs — les SEULS que la checklist déclenche elle-même. Chacun
+ * appelle une Server Action existante, classée OUVERTE au registre du verrou
+ * (ADR 0060) : ils restent possibles sur un dossier clos.
+ */
+export type GesteDirect =
+  | {
+      readonly type: "relancer_questionnaire";
+      readonly cibles: ReadonlyArray<{
+        readonly questionnaireId: string;
+        readonly destinataire: string;
+      }>;
+    }
+  | {
+      readonly type: "relancer_signature";
+      readonly documentGenereId: string;
+      readonly partie: PartieSignataire;
+      readonly numero: string;
+    }
+  | {
+      readonly type: "generer_acces_portail";
+      readonly cibles: ReadonlyArray<{ readonly traineeId: string; readonly destinataire: string }>;
+    };
 
 export interface Parcours {
   readonly etapes: ReadonlyArray<EtapeParcours>;
@@ -206,10 +269,24 @@ export interface Parcours {
   readonly avancement: { readonly fait: number; readonly total: number };
   /**
    * Statut terminal (annulée / reportée) : la checklist se REPLIE, avec sa
-   * filiation. Dérouler quatorze étapes sur une session annulée demanderait des
+   * filiation. Dérouler seize étapes sur une session annulée demanderait des
    * gestes que plus personne ne doit poser.
    */
-  readonly repliee: { readonly motif: string } | null;
+  readonly repliee: RepliParcours | null;
+}
+
+/** Le repli d'un statut terminal. */
+export interface RepliParcours {
+  /** « Session annulée », « Session reportée vers AXI-SESS-… » — accentué, rendu tel quel. */
+  readonly motif: string;
+  /**
+   * Numéro de la session de remplacement d'une session REPORTÉE, `null` sinon.
+   * Le bandeau d'état du dossier dit déjà « annulée » / « reportée » ; la
+   * fiche n'ajoute que CE qu'il ne dit pas : vers quelle session.
+   */
+  readonly remplacement: string | null;
+  /** Identifiant de cette session de remplacement (lien vers sa fiche), `null` sinon. */
+  readonly remplacementId: string | null;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -217,6 +294,9 @@ export interface Parcours {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const MS_JOUR = 24 * 60 * 60 * 1000;
+
+/** Les pièces qui font « la convention » d'une session, quelle qu'en soit la forme. */
+export const TYPES_CONVENTION = ["convention", "convention_tripartite", "contrat"] as const;
 
 const avant = (d: Date, jours: number): Date => new Date(d.getTime() - jours * MS_JOUR);
 const apres = (d: Date, jours: number): Date => new Date(d.getTime() + jours * MS_JOUR);
@@ -302,15 +382,22 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
 
   // Statut terminal : on replie, on ne déroule pas.
   if (session.statut === "annulee" || session.statut === "reportee") {
-    const filiation =
+    const remplacement =
       session.statut === "reportee" && session.sessionReporteeNumero
-        ? ` vers ${session.sessionReporteeNumero}`
-        : "";
+        ? session.sessionReporteeNumero
+        : null;
+    // 🔴 Relecture L3 — le motif écrivait le code du statut (« Session
+    // annulee »), sans accent, à l'écran.
+    const statut = session.statut === "annulee" ? "annulée" : "reportée";
     return {
       etapes: [],
       pire: "sans_objet",
       avancement: { fait: 0, total: 0 },
-      repliee: { motif: `Session ${session.statut}${filiation}` },
+      repliee: {
+        motif: `Session ${statut}${remplacement !== null ? ` vers ${remplacement}` : ""}`,
+        remplacement,
+        remplacementId: remplacement !== null ? (session.sessionReporteeId ?? null) : null,
+      },
     };
   }
 
@@ -325,31 +412,35 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "formateur_assigne",
-      ancre: { id: "formateur", libelle: "bloc Formateur principal" },
+      phase: "preparer",
+      cible: { fragment: "formateur", libelle: "bloc Formateur principal" },
       libelle: "Formateur assigné",
       fait: session.formateurPrincipalId !== null,
       faitLe: null,
       echeance: avant(debut, 5),
       borne: debut,
       maintenant,
-      geste: "Manuel — bouton « Assigner un formateur » en tête de session (ind. 17).",
+      geste: "Vous choisissez le formateur, puis « Assigner » (ind. 17).",
     }),
   );
 
   // ── 2. Convention générée ─────────────────────────────────────────────────
-  const conventions = piecesVivantes(documents, "convention", "convention_tripartite", "contrat");
+  const conventions = piecesVivantes(documents, ...TYPES_CONVENTION);
   const doublonActif = conventions.length > 1;
   etapes.push(
     etape({
       cle: "convention_generee",
-      ancre: { id: "documents", libelle: "bloc Documents → Session" },
+      phase: "preparer",
+      cible: CIBLE_DOCUMENTS,
       libelle: "Convention générée",
       fait: conventions.length > 0,
       faitLe: conventions[0]?.createdAt ?? null,
       echeance: avant(debut, 10),
       borne: debut,
       maintenant,
-      geste: "Manuel — bloc Documents, bouton « Générer la convention ». Produire n'engage rien.",
+      geste:
+        "Vous : « Générer : Convention de formation » (contrat pour un particulier, tripartite " +
+        "si l'OPCO signe). Produire n'engage rien.",
       // 🔴 Deux conventions actives = deux pièces opposables sur le même
       // dossier. L'écran ne peut pas choisir laquelle fait foi ; l'humain doit
       // annuler l'ancienne AU REGISTRE, pas la supprimer.
@@ -388,10 +479,17 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   const conventionContresignee = conventions.some((c) =>
     contresigneeParOrganisme(c, signaturesParPiece),
   );
+  // 🔴 Relecture L3 — le bloc « Signature des pièces contractuelles » n'est
+  // rendu QUE s'il existe une pièce contractuelle vivante (`piecesSignables`
+  // de la fiche). Sans convention — jamais générée, ou annulée —, viser
+  // `#signature-pieces` faisait un lien mort : on mène alors au bloc
+  // Documents, toujours rendu, où la convention se génère.
+  const cibleSignature = conventions.length > 0 ? CIBLE_SIGNATURE_PIECES : CIBLE_DOCUMENTS;
   etapes.push(
     etape({
       cle: "convention_signee",
-      ancre: { id: "documents", libelle: "bloc Signature des pièces contractuelles" },
+      phase: "preparer",
+      cible: cibleSignature,
       libelle: "Convention signée par le client",
       fait: conventionSigneeClient,
       faitLe: null,
@@ -399,13 +497,15 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       borne: debut,
       maintenant,
       geste: "Le client signe par son lien. Sans réponse : relancer, ou réémettre le lien.",
+      ...siDefini("gesteDirect", relanceSignatureClient(conventions, signaturesParPiece)),
     }),
   );
 
   etapes.push(
     etape({
       cle: "convention_contresignee",
-      ancre: { id: "documents", libelle: "bloc Signature des pièces contractuelles" },
+      phase: "preparer",
+      cible: cibleSignature,
       libelle: "Convention contresignée par l'organisme",
       // ⚠️ On ne coche PAS sur `conventionComplete` : une convention où seul
       // l'organisme aurait signé passerait alors pour contresignée à bon
@@ -418,7 +518,8 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       borne: debut,
       maintenant,
       geste:
-        "Acte HABILITÉ, jamais automatique : bloc Signatures, « Contresigner ». Rien d'extérieur ne le retient.",
+        "Vous signez pour l'organisme (« Signer pour l'organisme ») : acte HABILITÉ, jamais " +
+        "automatique. Rien d'extérieur ne le retient.",
       ...(conventionSigneeClient && !conventionContresignee
         ? {
             avertissement:
@@ -444,7 +545,8 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "positionnement_envoye",
-      ancre: { id: "questionnaires", libelle: "bloc Questionnaires" },
+      phase: "preparer",
+      cible: CIBLE_QUESTIONNAIRES,
       libelle: "Questionnaire de positionnement envoyé",
       fait: n > 0 && posEnvoyes === n,
       faitLe: null,
@@ -452,13 +554,16 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       borne: debut,
       maintenant,
       avancement: { fait: posEnvoyes, total: n },
-      geste: "Manuel — bloc Inscriptions, « Envoyer le positionnement » (ind. 8).",
+      geste:
+        "Vous : « Générer les questionnaires de la session », puis « Envoyer au stagiaire » " +
+        "(ind. 8).",
       sansObjetSi: n === 0,
       motifSansObjet: "Aucune inscription active",
     }),
     etape({
       cle: "positionnement_repondu",
-      ancre: { id: "questionnaires", libelle: "bloc Questionnaires" },
+      phase: "preparer",
+      cible: CIBLE_QUESTIONNAIRES,
       libelle: "Positionnement répondu",
       fait: n > 0 && posRepondus === n,
       faitLe: null,
@@ -470,6 +575,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       maintenant,
       avancement: { fait: posRepondus, total: n },
       geste: "Le stagiaire répond. Action possible ici : RELANCER — pas répondre à sa place.",
+      ...siDefini("gesteDirect", relancesQuestionnaire(actives, "positionnement")),
       sansObjetSi: n === 0,
       motifSansObjet: "Aucune inscription active",
     }),
@@ -486,7 +592,10 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   });
   etapes.push({
     cle: "convocation_envoyee",
-    ancre: { id: "stagiaires", libelle: "bloc Stagiaires" },
+    phase: "preparer",
+    // Le secours manuel (générer la convocation d'un stagiaire) vit dans le
+    // bloc Documents, volet « Par stagiaire ».
+    cible: { fragment: "par-stagiaire", libelle: "bloc Documents → Par stagiaire" },
     libelle: "Convocation envoyée",
     ...etatConvocation,
     geste:
@@ -508,7 +617,12 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "creneaux_emargement",
-      ancre: { id: "sous-pages", libelle: "sous-page Émargement" },
+      phase: "preparer",
+      cible: {
+        sousPage: "emargement",
+        fragment: "journees",
+        libelle: "Émargement → Journées réellement animées",
+      },
       libelle: "Journées de présence confirmées",
       fait: input.creneauxEmargement > 0,
       faitLe: null,
@@ -516,7 +630,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       borne: debut,
       maintenant,
       geste:
-        "Manuel — onglet Émargement, « Confirmer les journées ». Sans elles, aucun lien n'est émissible.",
+        "Vous : « Confirmer ces journées ». Sans elles, aucun lien d'émargement n'est émissible.",
     }),
   );
 
@@ -524,7 +638,12 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "liens_signature_emis",
-      ancre: { id: "sous-pages", libelle: "sous-page Émargement" },
+      phase: "preparer",
+      cible: {
+        sousPage: "emargement",
+        fragment: "liens",
+        libelle: "Émargement → Liens de signature",
+      },
       // 🔴 2026-09-05 — ce libellé disait « émis », mot qui se lit « envoyés ».
       // Le voyant ne mesure QUE la fabrication : `liensEmargementActifs` compte
       // des jetons vivants, et `emettreLiensSessionAction` ne contient aucun
@@ -549,7 +668,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       geste:
         "Automatique — joint au rappel J-7 ou au rappel de la veille quand les journées sont " +
         "confirmées à temps ; sinon envoyé le jour même, au passage horaire, à chaque stagiaire " +
-        "qui n'a pas encore son lien. « Envoyer les liens » reste le renvoi manuel.",
+        "qui n'a pas encore son lien. « Envoyer les liens par e-mail » reste le renvoi manuel.",
       // 🔴 Une réémission RÉVOQUE la précédente (index unique partiel) : le QR
       // déjà imprimé ou déjà distribué devient mort.
       avertissement:
@@ -566,7 +685,12 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "emargement_signe",
-      ancre: { id: "sous-pages", libelle: "sous-page Émargement" },
+      phase: "jour_j",
+      cible: {
+        sousPage: "emargement",
+        fragment: "feuille",
+        libelle: "Émargement → Feuille d'émargement présentiel",
+      },
       libelle: "Émargement signé",
       fait: n > 0 && emarges === n,
       faitLe: null,
@@ -603,7 +727,12 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "contresignature_formateur",
-      ancre: { id: "sous-pages", libelle: "sous-page Émargement" },
+      phase: "apres",
+      cible: {
+        sousPage: "emargement",
+        fragment: "contresignature",
+        libelle: "Émargement → Contresignature du formateur",
+      },
       libelle: "Émargement contresigné par le formateur",
       fait: signees > 0 && aContresigner === 0,
       faitLe: null,
@@ -653,7 +782,11 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "evaluation_finale",
-      ancre: { id: "sous-pages", libelle: "sous-page Évaluations" },
+      phase: "apres",
+      cible: cibleEvaluations(
+        actives.find((e) => e.evaluationFinaleAt === null) ?? actives[0],
+        "Évaluations → le stagiaire à évaluer",
+      ),
       libelle: "Évaluation finale des acquis",
       fait: n > 0 && evalues === n,
       faitLe: null,
@@ -670,34 +803,64 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
     }),
   );
 
-  // ── 11. Attestation ───────────────────────────────────────────────────────
-  const attestations = piecesVivantes(
-    documents,
-    "attestation",
-    "attestation_partielle",
-    "certificat_realisation",
-  );
+  // ── 11. Attestation — PAR INSCRIPTION ───────────────────────────────────
+  // 🔴 ADR 0060 — ce bloc COMPTAIT les attestations vivantes de la session et
+  // les comparait au nombre d'inscrits : deux attestations pour A (une émise,
+  // une rectifiée) et aucune pour B cochaient l'étape, alors que B n'avait
+  // rien. Le rapprochement se fait désormais inscription par inscription, par
+  // `attestationDocumentId`, avec le prédicat UNIQUE du verrou du dossier —
+  // l'étape et le verrou ne peuvent plus se contredire.
+  const manquantsAttestation = manquantsPourClore({
+    statut: "realisee",
+    realiseeLe: null,
+    evenements: [],
+    maintenant,
+    inscriptions: actives.map((e) => ({
+      id: e.id,
+      statut: e.statut,
+      stagiaire: e.stagiaire ?? e.id,
+      sortieAt: null,
+      attestation: e.attestation,
+      // Seules les conditions d'ATTESTATION comptent ici : l'émargement
+      // encore ouvert est l'affaire de l'étape « Émargement signé ».
+      jetonEmargementValideJusquA: null,
+    })),
+  });
+  const sansAttestation = new Set(manquantsAttestation.map((m) => m.enrollmentId));
+  const attestees = actives.filter((e) => !sansAttestation.has(e.id));
+  const datesAttestation = attestees
+    .map((e) => e.attestation?.createdAt ?? null)
+    .filter((x): x is Date => x !== null);
   // 🔴 Le défaut du dossier n°1 : une attestation ÉMISE AVANT l'évaluation.
   // Elle atteste alors d'acquis que personne n'a constatés.
   const attestationAvantEvaluation =
-    attestations.length > 0 &&
+    datesAttestation.length > 0 &&
     evalues < n &&
-    attestations.some((a) => a.createdAt.getTime() >= fin.getTime());
+    datesAttestation.some((a) => a.getTime() >= fin.getTime());
   etapes.push(
     etape({
       cle: "attestation",
-      ancre: { id: "documents", libelle: "bloc Documents → Par stagiaire" },
+      phase: "apres",
+      // L'acte habilité vit sur la sous-page Évaluations, dans le cadre du
+      // stagiaire : on y MÈNE, on ne déclenche rien d'ici.
+      cible: cibleEvaluations(
+        actives.find((e) => sansAttestation.has(e.id)) ?? actives[0],
+        "Évaluations → l'attestation du stagiaire",
+      ),
       libelle: "Attestation de fin de formation",
-      fait: n > 0 && attestations.length >= n,
-      faitLe: attestations[0]?.createdAt ?? null,
+      fait: n > 0 && sansAttestation.size === 0,
+      faitLe:
+        datesAttestation.length > 0
+          ? new Date(Math.max(...datesAttestation.map((x) => x.getTime())))
+          : null,
       echeance: apres(fin, 3),
       borne: {
         sansBorne:
           "Une attestation s'émet avec des semaines de retard et reste opposable — c'est un droit du stagiaire (L.6353-1). L'écart est porté par la mention, jamais par un refus.",
       },
       maintenant,
-      avancement: { fait: Math.min(attestations.length, n), total: n },
-      geste: "Acte HABILITÉ — attester engage l'organisme. Jamais automatique.",
+      avancement: { fait: attestees.length, total: n },
+      geste: "Vous attestez pour l'organisme : acte HABILITÉ, jamais automatique.",
       sansObjetSi: n === 0,
       motifSansObjet: "Aucune inscription active",
       ...(attestationAvantEvaluation
@@ -714,7 +877,8 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "acces_portail",
-      ancre: { id: "stagiaires", libelle: "bloc Stagiaires" },
+      phase: "preparer",
+      cible: { fragment: "stagiaires", libelle: "bloc Stagiaires" },
       libelle: "Accès à l'espace stagiaire",
       fait: n > 0 && avecAcces === n,
       faitLe: null,
@@ -722,7 +886,8 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       borne: apres(fin, 30),
       maintenant,
       avancement: { fait: avecAcces, total: n },
-      geste: "Automatique à la convocation ; « Générer l'accès » en secours.",
+      geste: "Automatique à la convocation ; « Générer un accès portail » en secours.",
+      ...siDefini("gesteDirect", accesPortailAGenerer(actives)),
       // 🔴 L'accès est GLOBAL au stagiaire, pas scopé à cette session. Un
       // stagiaire inscrit à deux sessions a un seul accès, et les pièces y sont
       // dédupliquées par type : la convocation de l'une masque celle de l'autre.
@@ -743,7 +908,8 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   etapes.push(
     etape({
       cle: "satisfaction_chaud",
-      ancre: { id: "questionnaires", libelle: "bloc Questionnaires" },
+      phase: "jour_j",
+      cible: CIBLE_QUESTIONNAIRES,
       libelle: "Satisfaction à chaud recueillie",
       fait: n > 0 && chaud === n,
       faitLe: null,
@@ -755,12 +921,14 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       maintenant,
       avancement: { fait: chaud, total: n },
       geste: "Automatique J+1, relance J+3 et J+10. Action ici : relancer (ind. 30).",
+      ...siDefini("gesteDirect", relancesQuestionnaire(actives, "satisfaction_chaud")),
       sansObjetSi: n === 0,
       motifSansObjet: "Aucune inscription active",
     }),
     etape({
       cle: "satisfaction_froid",
-      ancre: { id: "questionnaires", libelle: "bloc Questionnaires" },
+      phase: "apres",
+      cible: CIBLE_QUESTIONNAIRES,
       libelle: "Suivi à froid (J+30) recueilli",
       fait: n > 0 && froid === n,
       faitLe: null,
@@ -777,6 +945,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       // s'écrit en toutes lettres, sans quoi un lecteur d'écran l'annonce
       // « gros cercle rouge » au milieu de la phrase.
       geste: "Automatique J+30. Attention : recueilli AVANT J+30, il ne mesure pas le même objet.",
+      ...siDefini("gesteDirect", relancesQuestionnaire(actives, "satisfaction_froid")),
       sansObjetSi: n === 0,
       motifSansObjet: "Aucune inscription active",
     }),
@@ -792,6 +961,102 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
     },
     repliee: null,
   };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Cibles et gestes directs
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Le bloc qui porte les signatures des pièces — ses deux étapes y mènent
+ * QUAND une pièce contractuelle vivante existe (le bloc n'est rendu qu'à cette
+ * condition ; sinon elles mènent à `CIBLE_DOCUMENTS`).
+ */
+export const CIBLE_SIGNATURE_PIECES: CibleEtape = {
+  fragment: "signature-pieces",
+  libelle: "bloc Signature des pièces contractuelles",
+};
+
+/** Le bloc Documents de la fiche — toujours rendu. */
+export const CIBLE_DOCUMENTS: CibleEtape = {
+  fragment: "documents",
+  libelle: "bloc Documents → Session",
+};
+
+const CIBLE_QUESTIONNAIRES: CibleEtape = {
+  fragment: "questionnaires",
+  libelle: "bloc Questionnaires",
+};
+
+type Inscription = SessionParcoursInput["inscriptions"][number];
+
+/**
+ * La sous-page Évaluations, au cadre du stagiaire visé (`insc-{id}`) — ou en
+ * tête de liste quand il n'y a personne à viser.
+ */
+function cibleEvaluations(inscription: Inscription | undefined, libelle: string): CibleEtape {
+  return {
+    sousPage: "evaluations",
+    fragment: inscription !== undefined ? `insc-${inscription.id}` : "evaluations-stagiaires",
+    libelle,
+  };
+}
+
+/** `{ [cle]: valeur }` si la valeur existe, `{}` sinon — pour un étalement optionnel. */
+function siDefini<K extends string, V>(cle: K, valeur: V | undefined): { [P in K]?: V } {
+  return (valeur === undefined ? {} : { [cle]: valeur }) as { [P in K]?: V };
+}
+
+/** Questionnaires envoyés et restés sans réponse : ce qu'on peut relancer. */
+function relancesQuestionnaire(
+  actives: ReadonlyArray<Inscription>,
+  type: string,
+): GesteDirect | undefined {
+  const cibles = actives.flatMap((e) =>
+    e.questionnaires
+      .filter((q) => q.type === type && q.envoyeAt !== null && q.reponduAt === null)
+      .flatMap((q) =>
+        q.id !== undefined
+          ? [{ questionnaireId: q.id, destinataire: e.stagiaire ?? "le stagiaire" }]
+          : [],
+      ),
+  );
+  return cibles.length > 0 ? { type: "relancer_questionnaire", cibles } : undefined;
+}
+
+/**
+ * La première pièce contractuelle qu'une partie EXTÉRIEURE doit encore signer,
+ * et laquelle — décidé par `partieARelancer`, le même module que « À traiter ».
+ * `undefined` quand la prochaine signature est la nôtre : se relancer soi-même
+ * n'a pas de sens, c'est l'étape suivante qui le dit.
+ */
+function relanceSignatureClient(
+  conventions: SessionParcoursInput["documents"],
+  signaturesParPiece: SessionParcoursInput["signaturesParPiece"],
+): GesteDirect | undefined {
+  for (const c of conventions) {
+    if (signeeParToutesLesPartiesExternes(c, signaturesParPiece)) continue;
+    const apposees = [...partiesApposees(c, signaturesParPiece)];
+    const partie = partieARelancer(
+      c.type,
+      apposees.length > 0 ? "partielle" : "en_attente",
+      apposees,
+    );
+    if (partie !== null) {
+      return { type: "relancer_signature", documentGenereId: c.id, partie, numero: c.numero };
+    }
+  }
+  return undefined;
+}
+
+/** Stagiaires sans accès vivant à leur espace : ceux à qui en générer un. */
+function accesPortailAGenerer(actives: ReadonlyArray<Inscription>): GesteDirect | undefined {
+  const cibles = actives.flatMap((e) =>
+    !e.aUnAccesPortail && e.traineeId !== undefined
+      ? [{ traineeId: e.traineeId, destinataire: e.stagiaire ?? "le stagiaire" }]
+      : [],
+  );
+  return cibles.length > 0 ? { type: "generer_acces_portail", cibles } : undefined;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -819,8 +1084,10 @@ function etape(args: {
   avertissement?: string;
   sansObjetSi?: boolean;
   motifSansObjet?: string;
-  /** Où poser le geste — cf. `EtapeParcours.ancre`. */
-  ancre?: { id: string; libelle: string };
+  phase: PhaseEtape;
+  /** Où poser le geste — cf. `EtapeParcours.cible`. */
+  cible: CibleEtape;
+  gesteDirect?: GesteDirect;
 }): EtapeParcours {
   // Une borne DÉCLARÉE absente vaut `null` pour le calcul — mais son motif
   // survit jusqu'à l'écran, ce qui est toute la différence avec un oubli.
@@ -851,7 +1118,9 @@ function etape(args: {
     ...(args.avancement !== undefined ? { avancement: args.avancement } : {}),
     ...(args.avertissement !== undefined ? { avertissement: args.avertissement } : {}),
     ...(motifSansBorne !== undefined ? { motifSansBorne } : {}),
-    ...(args.ancre !== undefined ? { ancre: args.ancre } : {}),
+    phase: args.phase,
+    cible: args.cible,
+    ...(args.gesteDirect !== undefined ? { gesteDirect: args.gesteDirect } : {}),
   };
 }
 

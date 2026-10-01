@@ -13,7 +13,18 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { ANCRES_HUB_SESSION, ancresVisibles, CLASSE_ANCRE_SECTION } from "./ancres";
+import {
+  ANCRES_HUB_SESSION,
+  ancresDeLOnglet,
+  CLASSE_ANCRE_SECTION,
+  lirePhaseFiche,
+  PHASES_DES_BLOCS,
+  PHASES_FICHE,
+  repartirBlocs,
+  type BlocFiche,
+} from "./ancres";
+
+const TOUS_LES_BLOCS = ANCRES_HUB_SESSION.map((a) => a.id as BlocFiche);
 
 const PAGE = join(
   process.cwd(),
@@ -65,7 +76,7 @@ describe("🔴 chaque section ancrée de la page est au catalogue", () => {
     expect(dansLaPage.filter((id) => !auCatalogue.has(id))).toEqual([]);
   });
 
-  it("les dix sections du hub sont couvertes", () => {
+  it("toutes les sections du hub sont couvertes", () => {
     // Compte figé volontairement : ajouter une onzième section sans l'ancrer
     // fera rougir ici, ce qui est exactement le rappel qu'il faut.
     expect([...code.matchAll(/<section\s+id="/g)]).toHaveLength(ANCRES_HUB_SESSION.length);
@@ -92,22 +103,33 @@ describe("🔴 le décalage de défilement est posé sur chaque section", () => 
   });
 });
 
-describe("ancresVisibles", () => {
-  it("écarte une ancre conditionnelle non déclarée — pas de lien mort", () => {
-    const ids = ancresVisibles().map((a) => a.id);
-    expect(ids).not.toContain("preparation-kit");
+describe("sections conditionnelles — pas de lien mort", () => {
+  const SANS = (retire: BlocFiche) => TOUS_LES_BLOCS.filter((b) => b !== retire);
+
+  it("une section conditionnelle que la page n'a pas rendue n'a pas de pastille", () => {
+    const { affiches } = repartirBlocs(null, SANS("preparation-kit"));
+    expect(ancresDeLOnglet(affiches).map((a) => a.id)).not.toContain("preparation-kit");
   });
 
-  it("la rend dès que la page dit que la section est là", () => {
-    expect(ancresVisibles(["preparation-kit"]).map((a) => a.id)).toContain("preparation-kit");
+  it("elle en a une dès que la page dit que la section est là", () => {
+    const { affiches } = repartirBlocs(null, TOUS_LES_BLOCS);
+    expect(ancresDeLOnglet(affiches).map((a) => a.id)).toContain("preparation-kit");
   });
 
-  it("les inconditionnelles sont toujours là, sans rien déclarer", () => {
-    const ids = ancresVisibles().map((a) => a.id);
-    expect(ids).toContain("infos");
-    expect(ids).toContain("documents");
-    // Rendue même hors inter-entreprises : la section porte la bascule.
-    expect(ids).toContain("inter-entreprises");
+  it("🔴 le filtre `presents` de la page nomme EXACTEMENT les sections conditionnelles", () => {
+    // Le drapeau `conditionnelle` n'a de sens que si la page écarte bien la
+    // section quand elle ne la rend pas — et n'écarte qu'elles. Rouge dans les
+    // deux sens : drapeau sans filtre (lien mort), filtre sans drapeau.
+    const filtrees = [...code.matchAll(/\(b !== "([a-z-]+)" \|\|/g)].map((m) => m[1]);
+    const conditionnelles = ANCRES_HUB_SESSION.filter((a) => a.conditionnelle).map((a) => a.id);
+    expect(new Set(filtrees)).toEqual(new Set(conditionnelles));
+    expect(conditionnelles, "témoin").toContain("cloture");
+  });
+
+  it("Inter-entreprises n'est PAS conditionnelle : rendue hors inter, elle porte la bascule", () => {
+    expect(ANCRES_HUB_SESSION.find((a) => a.id === "inter-entreprises")?.conditionnelle).toBe(
+      undefined,
+    );
   });
 
   it("l'ordre du catalogue est celui du DOM, jamais réordonné", () => {
@@ -124,13 +146,114 @@ describe("ancresVisibles", () => {
 });
 
 describe("la barre est bien rendue par la page", () => {
-  it("le composant est appelé, et nourri par ancresVisibles", () => {
+  it("le composant est appelé, et nourri par les blocs AFFICHÉS de l'onglet", () => {
     // Poser les `id` sans afficher la barre laisserait les sections
     // atteignables par URL et introuvables à l'écran — le défaut intact.
     // ⚠️ Frontière de mot obligatoire. `toContain("<AncresHubSession")` reste
     // vrai pour `<AncresHubSessionAutreChose` : constaté en désarmant cette
     // garde même — elle est restée VERTE alors que la barre ne se rendait plus.
     expect(code).toMatch(/<AncresHubSession\b/);
-    expect(code).toContain("ancresVisibles(");
+    // 🔴 Relecture L3 — nourrie par TOUT le catalogue, la barre menait aussi
+    // aux blocs repliés, c'est-à-dire dans un <details> fermé.
+    expect(code).toContain("ancresDeLOnglet(blocsAffiches)");
+  });
+});
+
+describe("🔴 ancresDeLOnglet — aucune pastille vers un bloc replié", () => {
+  it.each(PHASES_FICHE.map((p) => [p.id] as const))("onglet %s", (phase) => {
+    const { affiches, replies } = repartirBlocs(phase, TOUS_LES_BLOCS);
+    const ids = ancresDeLOnglet(affiches).map((a) => a.id);
+    expect(ids).toEqual(affiches);
+    expect(replies.length, "témoin : l'onglet replie bien quelque chose").toBeGreaterThan(0);
+    for (const r of replies) expect(ids, r).not.toContain(r);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Phases (L3, 30/09/2026) — la fiche s'affiche par onglet
+// ─────────────────────────────────────────────────────────────────────────────
+
+const TOUS = ANCRES_HUB_SESSION.map((a) => a.id as BlocFiche);
+
+describe("🔴 aucun bloc orphelin : chaque bloc de la fiche a sa phase", () => {
+  it("la table des phases nomme EXACTEMENT les blocs du catalogue", () => {
+    expect(Object.keys(PHASES_DES_BLOCS).sort()).toEqual([...TOUS].sort());
+  });
+
+  it("aucun bloc n'est rattaché à une liste vide de phases", () => {
+    for (const [bloc, phases] of Object.entries(PHASES_DES_BLOCS)) {
+      if (phases !== "toujours") expect(phases.length, bloc).toBeGreaterThan(0);
+    }
+  });
+
+  it("chaque onglet a au moins un bloc qui lui est PROPRE à montrer", () => {
+    for (const p of PHASES_FICHE) {
+      const propres = TOUS.filter((b) => {
+        const phases = PHASES_DES_BLOCS[b];
+        return phases !== "toujours" && phases.includes(p.id);
+      });
+      expect(propres.length, p.id).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("🔴 aucun contenu perdu : les blocs hors phase sont repliés, jamais supprimés", () => {
+  it.each(PHASES_FICHE.map((p) => [p.id] as const))(
+    "phase %s : affichés + repliés = tous les blocs rendus, sans doublon",
+    (phase) => {
+      const { affiches, replies } = repartirBlocs(phase, TOUS);
+      expect(affiches.length + replies.length).toBe(TOUS.length);
+      expect(new Set([...affiches, ...replies]).size).toBe(TOUS.length);
+      // Chacune des deux listes garde l'ordre du DOM.
+      const rang = (b: BlocFiche) => TOUS.indexOf(b);
+      expect(affiches).toEqual([...affiches].sort((x, y) => rang(x) - rang(y)));
+      expect(replies).toEqual([...replies].sort((x, y) => rang(x) - rang(y)));
+    },
+  );
+
+  it("un bloc absent (conditionnel non rendu) n'apparaît nulle part", () => {
+    const { affiches, replies } = repartirBlocs(
+      "preparer",
+      TOUS.filter((b) => b !== "preparation-kit"),
+    );
+    expect([...affiches, ...replies]).not.toContain("preparation-kit");
+  });
+
+  it("sans phase (session annulée ou reportée) tout est affiché, rien n'est replié", () => {
+    const { affiches, replies } = repartirBlocs(null, TOUS);
+    expect(replies).toEqual([]);
+    expect(affiches).toEqual(TOUS);
+  });
+
+  it("l'onglet Préparer montre les dates, pas la clôture ; Clôturée l'inverse", () => {
+    expect(repartirBlocs("preparer", TOUS).affiches).toContain("dates");
+    expect(repartirBlocs("preparer", TOUS).replies).toContain("cloture");
+    expect(repartirBlocs("cloturee", TOUS).affiches).toContain("cloture");
+    expect(repartirBlocs("cloturee", TOUS).replies).toContain("dates");
+  });
+
+  it("la page rend les DEUX listes : les blocs de l'onglet, et « Toutes les actions »", () => {
+    // Compter les sections : chaque bloc passe par l'une des deux boucles, et
+    // le repli est un <details>, jamais un rendu conditionnel qui l'effacerait.
+    expect(code).toContain("repartirBlocs(");
+    expect(code).toMatch(/blocsAffiches\.map\(/);
+    expect(code).toMatch(/blocsReplies\.map\(/);
+    expect(code).toMatch(/<details[\s>]/);
+    expect(code).toContain("Autres blocs de la fiche");
+    expect(code).not.toContain("Toutes les actions");
+  });
+});
+
+describe("lirePhaseFiche", () => {
+  it("lit une phase connue, rejette le reste", () => {
+    expect(lirePhaseFiche("jour_j")).toBe("jour_j");
+    expect(lirePhaseFiche(["apres", "x"])).toBe("apres");
+    expect(lirePhaseFiche("hors_parcours")).toBeNull();
+    expect(lirePhaseFiche(undefined)).toBeNull();
+  });
+
+  it("sans ?phase, la page retombe sur la phase du dossier (phaseDossier)", () => {
+    expect(code).toMatch(/lirePhaseFiche\(parametres\.phase\)\s*\?\?\s*phaseCourante/);
+    expect(code).toContain("phaseDossier(");
   });
 });

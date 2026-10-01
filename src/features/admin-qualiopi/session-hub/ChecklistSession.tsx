@@ -1,9 +1,9 @@
 /**
- * 🔴 LA CHECKLIST D'UNE SESSION — les quatorze étapes, sur le hub.
+ * 🔴 LA CHECKLIST D'UNE SESSION — les seize étapes, sur le hub.
  *
  * ## Le défaut
  *
- * Le parcours d'une session existe déjà : quatorze étapes, chacune avec son
+ * Le parcours d'une session existe déjà : seize étapes, chacune avec son
  * état, sa mention et son geste. Mais il n'était rendu **nulle part sur la
  * session elle-même** — seulement en agrégat sur « À traiter », et seulement
  * pour les étapes qui appellent une action.
@@ -28,8 +28,17 @@
  * l'applique déjà.
  */
 
-import type { EtapeParcours } from "@/server/qualiopi/parcours/session-parcours";
+import Link from "next/link";
+
+import type { EtapeParcours, RepliParcours } from "@/server/qualiopi/parcours/session-parcours";
 import type { EtatEtape } from "@/server/qualiopi/parcours/etat-echeance";
+import { hrefEtape } from "@/server/qualiopi/parcours/cible-etape";
+import {
+  etapeBloqueeParLeVerrou,
+  gesteDirectPossibleSurDossierClos,
+  MENTION_GESTE_VERROUILLE,
+} from "@/server/qualiopi/parcours/etape-dossier-clos";
+import { GesteEtape } from "./GesteEtape";
 
 /**
  * Marqueur textuel de tête de ligne.
@@ -69,11 +78,56 @@ export function ChecklistSession({
   etapes,
   fait,
   total,
+  sessionId,
+  prefixeSessions,
+  repliee = null,
+  fige = false,
 }: {
   readonly etapes: ReadonlyArray<EtapeParcours>;
   readonly fait: number;
   readonly total: number;
+  /** Pour construire le lien de chaque étape (`hrefEtape`). */
+  readonly sessionId: string;
+  /** Préfixe de la liste des sessions, p. ex. `/fr/admin/qualiopi/sessions`. */
+  readonly prefixeSessions: string;
+  /**
+   * Session annulée ou reportée : le parcours est REPLIÉ. 🔴 Audit du
+   * 30/09/2026 — la filiation n'était rendue nulle part sur la fiche.
+   * Relecture L3 : le bandeau du dossier dit déjà « Session annulée / reportée :
+   * hors du parcours » ; la checklist n'ajoute que ce qu'il ne dit pas — la
+   * session de remplacement —, et ne rend rien sinon.
+   */
+  readonly repliee?: RepliParcours | null;
+  /**
+   * ADR 0060 — `dossierFige(etat)` : dossier CLOS et verrou actif. Une étape
+   * restée due dont le geste est verrouillé n'est alors plus PROPOSÉE (ni
+   * « Aller à », ni description du geste) : l'écran d'arrivée ne montre plus
+   * ce bouton, et le serveur le refuserait (`etape-dossier-clos.ts`).
+   */
+  readonly fige?: boolean;
 }) {
+  if (repliee !== null) {
+    if (repliee.remplacement === null) return null;
+    return (
+      <p
+        role="status"
+        className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+      >
+        Remplacée par la session{" "}
+        {repliee.remplacementId !== null ? (
+          <Link
+            href={`${prefixeSessions}/${repliee.remplacementId}`}
+            className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+          >
+            {repliee.remplacement}
+          </Link>
+        ) : (
+          repliee.remplacement
+        )}{" "}
+        : le parcours se suit sur sa fiche.
+      </p>
+    );
+  }
   // Pas de parcours calculé (session hors périmètre, ou lecture en échec) : on
   // n'affiche RIEN plutôt qu'une checklist vide. Une liste vide se lirait comme
   // « aucune obligation », ce qui est le contraire de la vérité.
@@ -88,70 +142,103 @@ export function ChecklistSession({
       {/* Une liste ORDONNÉE : le parcours est une chronologie, pas un sac. Le
           lecteur d'écran annonce « 3 sur 14 ». */}
       <ol className="list-none space-y-[var(--space-admin-2)] p-0">
-        {etapes.map((e) => (
-          <li
-            key={e.cle}
-            className="flex gap-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-3)]"
-          >
-            <span aria-hidden="true" className={`shrink-0 font-semibold ${COULEUR[e.etat]}`}>
-              {MARQUEUR[e.etat]}
-            </span>
-            <span className="min-w-0">
-              <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-                {/* 🔴 L'intitulé de l'état est DIT, pas seulement coloré : le
+        {etapes.map((e) => {
+          const bloquee = etapeBloqueeParLeVerrou(e, fige);
+          return (
+            <li
+              key={e.cle}
+              className="flex gap-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-3)]"
+            >
+              <span aria-hidden="true" className={`shrink-0 font-semibold ${COULEUR[e.etat]}`}>
+                {MARQUEUR[e.etat]}
+              </span>
+              <span className="min-w-0">
+                <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+                  {/* 🔴 L'intitulé de l'état est DIT, pas seulement coloré : le
                     marqueur est masqué aux lecteurs d'écran, cette mention le
                     remplace. */}
-                <span className="sr-only">{LIBELLE_ETAT[e.etat]} — </span>
-                <strong>{e.libelle}</strong>
-                {e.avancement ? (
-                  <span className="text-[color:var(--color-admin-fg-muted)]">
+                  <span className="sr-only">{LIBELLE_ETAT[e.etat]} — </span>
+                  <strong>{e.libelle}</strong>
+                  {e.avancement ? (
+                    <span className="text-[color:var(--color-admin-fg-muted)]">
+                      {" "}
+                      ({e.avancement.fait}/{e.avancement.total})
+                    </span>
+                  ) : null}
+                </span>
+                <br />
+                <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                  {e.mention} · {bloquee ? MENTION_GESTE_VERROUILLE : e.geste}
+                </span>
+                {/*
+                🔴 LE LIEN QUI MANQUAIT — défaut vécu par Will le 2026-09-04 :
+                « je n'ai pas trouvé le bouton pour contresigner ». Puis audit
+                UX du 30/09/2026 : le lien menait au bloc « Sous-pages », d'où
+                il fallait encore choisir la sous-page et y chercher le bouton.
+
+                Le lien mène désormais EN UN CLIC à la section qui porte le
+                geste, sur la fiche (à l'onglet de sa phase) ou directement sur
+                la sous-page (`hrefEtape`).
+
+                - étape à faire : « Aller à … » — le chemin du geste ;
+                - étape faite : « Voir » — relire la preuve, sans rien refaire ;
+                - sans objet : rien, il n'y a rien à voir.
+              */}
+                {bloquee ? (
+                  <>
                     {" "}
-                    ({e.avancement.fait}/{e.avancement.total})
-                  </span>
+                    {/* Dossier clos : on peut LIRE la section, plus y agir. */}
+                    <a
+                      href={hrefEtape(sessionId, e, prefixeSessions)}
+                      className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] underline"
+                      aria-label={`Voir : ${e.libelle} (${e.cible.libelle})`}
+                    >
+                      Voir
+                    </a>
+                  </>
+                ) : e.etat !== "fait" && e.etat !== "sans_objet" ? (
+                  <>
+                    {" "}
+                    <a
+                      href={hrefEtape(sessionId, e, prefixeSessions)}
+                      className="text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-accent)] underline"
+                    >
+                      Aller à : {e.cible.libelle} →
+                    </a>
+                  </>
+                ) : e.etat === "fait" ? (
+                  <>
+                    {" "}
+                    <a
+                      href={hrefEtape(sessionId, e, prefixeSessions)}
+                      className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] underline"
+                      aria-label={`Voir : ${e.libelle} (${e.cible.libelle})`}
+                    >
+                      Voir
+                    </a>
+                  </>
+                ) : null}
+                {/* Le geste SIMPLE, posé d'ici : relancer, générer un accès.
+                  Jamais un acte habilité — ceux-là n'ont pas de `gesteDirect`. */}
+                {e.gesteDirect !== undefined &&
+                !bloquee &&
+                (!fige || gesteDirectPossibleSurDossierClos(e.gesteDirect)) &&
+                e.etat !== "fait" &&
+                e.etat !== "sans_objet" ? (
+                  <GesteEtape geste={e.gesteDirect} />
+                ) : null}
+                {e.avertissement ? (
+                  <>
+                    <br />
+                    <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
+                      {e.avertissement}
+                    </span>
+                  </>
                 ) : null}
               </span>
-              <br />
-              <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                {e.mention} · {e.geste}
-              </span>
-              {/*
-                🔴 LE LIEN QUI MANQUAIT — défaut vécu par Will le 2026-09-04 :
-                « je n'ai pas trouvé le bouton pour contresigner ». Le suivi
-                nommait un bloc « Signatures » qui s'appelle en réalité
-                « Signature des pièces contractuelles », et un bouton
-                « Contresigner » qui s'appelle « Signer pour l'organisme ».
-
-                Même exacte, la phrase n'aurait pas suffi : la fiche fait plus
-                de 4 000 px et empile douze blocs. Décrire un endroit sur une
-                page qu'il faut parcourir aux yeux, c'est ne pas le dire.
-
-                Le lien n'est offert que sur ce qui RESTE à faire : sur une
-                étape close il n'y a rien à aller poser, et l'afficher partout
-                noierait les trois lignes qui comptent sous quinze liens
-                identiques.
-              */}
-              {e.ancre !== undefined && e.etat !== "fait" && e.etat !== "sans_objet" ? (
-                <>
-                  {" "}
-                  <a
-                    href={`#${e.ancre.id}`}
-                    className="text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-accent)] underline"
-                  >
-                    Aller au {e.ancre.libelle} →
-                  </a>
-                </>
-              ) : null}
-              {e.avertissement ? (
-                <>
-                  <br />
-                  <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
-                    {e.avertissement}
-                  </span>
-                </>
-              ) : null}
-            </span>
-          </li>
-        ))}
+            </li>
+          );
+        })}
       </ol>
     </>
   );

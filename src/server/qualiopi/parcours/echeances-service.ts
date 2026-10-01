@@ -36,6 +36,7 @@ import { appelleUneAction, type EtatEtape } from "./etat-echeance";
 import {
   construireParcours,
   type EtapeParcours,
+  type RepliParcours,
   type SessionParcoursInput,
 } from "./session-parcours";
 
@@ -80,7 +81,7 @@ export interface LigneSessionParcours {
    * fixture ou un `select` qui l'oublierait ne compile pas. C'est le type, et
    * non la vigilance, qui garde les deux alignés.
    */
-  readonly sessionRemplacement: ReadonlyArray<{ readonly numero: string }>;
+  readonly sessionRemplacement: ReadonlyArray<{ readonly id: string; readonly numero: string }>;
   readonly documents: SessionParcoursInput["documents"];
   /**
    * 2026-09-15 — journées déclarées et contresignatures posées : de quoi dire
@@ -132,7 +133,23 @@ export interface LigneSessionParcours {
       /** Au plus une signature non révoquée : seule sa PRÉSENCE compte. */
       readonly emargementSignatures: ReadonlyArray<{ readonly id: string }>;
     }>;
-    readonly trainee: { readonly portailAcces: ReadonlyArray<{ readonly id: string }> };
+    readonly trainee: {
+      readonly id: string;
+      readonly prenom: string;
+      readonly nom: string;
+      readonly portailAcces: ReadonlyArray<{ readonly id: string }>;
+    };
+    /**
+     * 🔴 ADR 0060 — la pièce désignée par `attestationDocumentId`. Champ REQUIS,
+     * pour la raison écrite au-dessus de `sessionRemplacement` : l'étape
+     * « attestation » rapproche désormais par inscription, et un `select` qui
+     * l'oublierait la laisserait toujours « à faire ».
+     */
+    readonly attestationDocument: {
+      readonly type: string;
+      readonly annuleeAt: Date | null;
+      readonly createdAt: Date;
+    } | null;
   }>;
 }
 
@@ -141,8 +158,8 @@ export interface LigneSessionParcours {
  *
  * Il était écrit en clair dans `prochainesEcheances`. Le hub de session a
  * besoin du MÊME parcours, et le recopier aurait fabriqué deux vérités : le
- * jour où une quinzième étape arrive, l'une des deux copies l'ignore, et
- * l'écran qui compte « 12/14 » n'est plus celui qui compte « 13/15 ». C'est la
+ * jour où une dix-septième étape arrive, l'une des deux copies l'ignore, et
+ * l'écran qui compte « 14/16 » n'est plus celui qui compte « 15/17 ». C'est la
  * doctrine SSOT du dépôt, et le défaut qu'on a déjà payé sept fois sur les
  * habilitations.
  */
@@ -159,6 +176,7 @@ export function entreeParcours(
       formateurPrincipalId: s.formateurPrincipalId,
       financementType: s.financementType,
       sessionReporteeNumero: s.sessionRemplacement[0]?.numero ?? null,
+      sessionReporteeId: s.sessionRemplacement[0]?.id ?? null,
     },
     documents: s.documents,
     signaturesParPiece,
@@ -171,6 +189,9 @@ export function entreeParcours(
       questionnaires: e.questionnaires,
       evaluationFinaleAt: e.evaluations[0]?.dateEvaluation ?? null,
       aUnAccesPortail: e.trainee.portailAcces.length > 0,
+      attestation: e.attestationDocument ?? null,
+      traineeId: e.trainee.id,
+      stagiaire: `${e.trainee.prenom} ${e.trainee.nom}`.trim(),
     })),
     liensEmargementActifs: s.enrollments.reduce(
       (n, e) => n + e.emargementTokens.filter((t) => t.expiresAt > maintenant).length,
@@ -230,7 +251,7 @@ export interface ResultatEcheances {
    *
    * `pire` / `fait` / `total` alimentent la colonne « Dossier » de la liste.
    *
-   * 🔴 `etapes` porte les QUATORZE étapes, pas seulement celles qui appellent
+   * 🔴 `etapes` porte les SEIZE étapes, pas seulement celles qui appellent
    * une action : le hub d'une session doit montrer ce qui est FAIT autant que
    * ce qui reste, sinon la checklist se lit comme une liste de reproches. Elles
    * sont déjà construites par `construireParcours` — on les jetait.
@@ -254,7 +275,7 @@ export interface ResultatEcheances {
        * La chaîne était morte des DEUX bouts : `sessionReporteeNumero` n'avait
        * aucun écrivain, et `repliee` aucun lecteur hors de son propre spec.
        */
-      readonly repliee: { readonly motif: string } | null;
+      readonly repliee: RepliParcours | null;
     }
   >;
   /**
@@ -340,7 +361,8 @@ export async function prochainesEcheances(options?: {
       // `take: 1` — reporter deux fois la même session créerait deux
       // remplacements, et c'est le premier qui porte la filiation.
       sessionRemplacement: {
-        select: { numero: true },
+        // `id` : la fiche fait du numéro un LIEN vers la session de remplacement.
+        select: { id: true, numero: true },
         orderBy: { createdAt: "asc" },
         take: 1,
       },
@@ -369,7 +391,10 @@ export async function prochainesEcheances(options?: {
           financementType: true,
           emargementSigneAt: true,
           convocationEnvoyeeAt: true,
-          questionnaires: { select: { type: true, envoyeAt: true, reponduAt: true } },
+          // `id` : de quoi offrir la relance directe depuis la checklist.
+          questionnaires: { select: { id: true, type: true, envoyeAt: true, reponduAt: true } },
+          // ADR 0060 — l'attestation rapprochée PAR INSCRIPTION (même requête).
+          attestationDocument: { select: { type: true, annuleeAt: true, createdAt: true } },
           evaluations: {
             where: { type: "finale" },
             orderBy: { dateEvaluation: "asc" },
@@ -400,6 +425,9 @@ export async function prochainesEcheances(options?: {
           },
           trainee: {
             select: {
+              id: true,
+              prenom: true,
+              nom: true,
               portailAcces: {
                 where: { revoked: false, expiresAt: { gt: maintenant } },
                 take: 1,
@@ -440,7 +468,7 @@ export async function prochainesEcheances(options?: {
       fait: number;
       total: number;
       etapes: ReadonlyArray<EtapeParcours>;
-      repliee: { readonly motif: string } | null;
+      repliee: RepliParcours | null;
     }
   >();
 

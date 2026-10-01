@@ -46,6 +46,7 @@ function dossier(patch: Partial<SessionParcoursInput> = {}): SessionParcoursInpu
         questionnaires: [],
         evaluationFinaleAt: null,
         aUnAccesPortail: true,
+        attestation: null,
       },
     ],
     liensEmargementActifs: 1,
@@ -250,7 +251,8 @@ describe("3. la traduction ligne Prisma → parcours compte les demi-journées",
           // Créneau sans signature : ne compte pas.
           { id: "p3", date: jourDb("2026-09-17"), demiJournee: "matin", emargementSignatures: [] },
         ],
-        trainee: { portailAcces: [] },
+        trainee: { id: "t1", prenom: "Ada", nom: "Lovelace", portailAcces: [] },
+        attestationDocument: null,
       },
     ],
   } as unknown as LigneSessionParcours;

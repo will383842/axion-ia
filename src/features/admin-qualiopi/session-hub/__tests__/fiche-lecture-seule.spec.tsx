@@ -111,10 +111,16 @@ import {
   dateParis,
   messageDossierClos,
   texteEtatVerrou,
+  verrouDossierActif,
   type EtatVerrouDossier,
 } from "@/server/qualiopi/sessions/verrou-dossier";
 import { DossierVerrouProvider } from "../DossierVerrouProvider";
-import { BandeauVerrouDossier } from "../BandeauVerrouDossier";
+import {
+  BandeauVerrouDossier,
+  MENTION_VERROU_COUPE,
+  TITRE_MANQUES_FIGES,
+  type GesteEncorePossible,
+} from "../BandeauVerrouDossier";
 import { SessionDatesForm } from "@/components/admin/qualiopi/SessionDatesForm";
 import { SessionLieuForm } from "@/components/admin/qualiopi/SessionLieuForm";
 import { AssignFormateurForm } from "@/components/admin/qualiopi/AssignFormateurForm";
@@ -660,6 +666,104 @@ describe("le bandeau dit MOT POUR MOT ce que dit le dossier d'audit", () => {
   });
 });
 
+describe("🔴 QUAL-FIL-01 — un dossier clos incomplet ne se lit pas « complet »", () => {
+  function bandeauClos(manquesFiges: string[], encorePossible: GesteEncorePossible[] = []) {
+    return render(
+      <BandeauVerrouDossier
+        sessionId={SESSION}
+        etat={CLOS}
+        peutRouvrir
+        motifSansHabilitation=""
+        encorePossible={encorePossible}
+        manquesFiges={manquesFiges}
+        verrouActif
+        rouvrirAction={nop as never}
+        reverrouillerAction={nop as never}
+      />,
+    );
+  }
+
+  it("les étapes dues bloquées par le verrou sont listées sous « Manques figés »", () => {
+    const { container } = bandeauClos(["Évaluation finale", "Satisfaction à chaud (2/3)"]);
+    expect(screen.getByText(TITRE_MANQUES_FIGES)).toBeTruthy();
+    const liste = container.querySelector("[data-manques-figes] ul");
+    expect([...(liste?.querySelectorAll("li") ?? [])].map(texte)).toEqual([
+      "Évaluation finale",
+      "Satisfaction à chaud (2/3)",
+    ]);
+    // Plus de « Rien n'est en attente » : ce serait laisser croire le dossier complet.
+    expect(texte(container)).not.toContain("Rien n'est en attente");
+    expect(texte(container)).toContain("Aucun autre geste sans rouvrir le dossier.");
+  });
+
+  it("dossier clos complet : pas de liste de manques figés", () => {
+    const { container } = bandeauClos([]);
+    expect(container.querySelector("[data-manques-figes]")).toBeNull();
+    expect(texte(container)).toContain("Rien n'est en attente.");
+  });
+});
+
+describe("🔴 QUAL-VERROU-07 — l'interrupteur de secours se voit sur le bandeau", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  function bandeauServeur() {
+    // Comme le layout : l'information est lue CÔTÉ SERVEUR par `verrouDossierActif()`.
+    return render(
+      <BandeauVerrouDossier
+        sessionId={SESSION}
+        etat={CLOS}
+        peutRouvrir
+        motifSansHabilitation=""
+        encorePossible={[]}
+        manquesFiges={["Évaluation finale"]}
+        verrouActif={verrouDossierActif()}
+        rouvrirAction={nop as never}
+        reverrouillerAction={nop as never}
+      />,
+    );
+  }
+
+  it("QUALIOPI_VERROU_DOSSIER=off : l'état reste « clos », le bandeau dit que le verrou est coupé", () => {
+    vi.stubEnv("QUALIOPI_VERROU_DOSSIER", "off");
+    const { container } = bandeauServeur();
+    expect(container.querySelector("[data-etat-verrou]")?.getAttribute("data-etat-verrou")).toBe(
+      "clos",
+    );
+    expect(screen.getByText(`Dossier clôturé le ${dateParis(DEPUIS_CLOS)}`)).toBeTruthy();
+    expect(texte(container)).not.toContain("lecture seule");
+    expect(screen.getByRole("status").textContent).toBe(
+      "Verrou coupé par l'interrupteur de secours : les modifications sont possibles et ne sont pas inscrites au dossier.",
+    );
+    expect(MENTION_VERROU_COUPE).toBe(screen.getByRole("status").textContent);
+  });
+
+  it("sans la variable (défaut) : « lecture seule », aucune mention de l'interrupteur", () => {
+    vi.stubEnv("QUALIOPI_VERROU_DOSSIER", "");
+    const { container } = bandeauServeur();
+    expect(texte(container)).toContain("— lecture seule");
+    expect(container.querySelector("[data-verrou-coupe]")).toBeNull();
+  });
+
+  it("prop omise : le bandeau lit lui-même l'interrupteur, jamais « lecture seule » à tort", () => {
+    vi.stubEnv("QUALIOPI_VERROU_DOSSIER", "OFF");
+    const { container } = render(
+      <BandeauVerrouDossier
+        sessionId={SESSION}
+        etat={CLOS}
+        peutRouvrir={false}
+        motifSansHabilitation=""
+        encorePossible={[]}
+        rouvrirAction={nop as never}
+        reverrouillerAction={nop as never}
+      />,
+    );
+    expect(texte(container)).not.toContain("lecture seule");
+    expect(container.querySelector("[data-verrou-coupe]")).not.toBeNull();
+  });
+});
+
 describe("Rouvrir le dossier", () => {
   it("INVISIBLE sans l'habilitation `rouvrir_dossier` — un texte dit à qui s'adresser", () => {
     render(
@@ -909,7 +1013,8 @@ describe("cadre commun : un seul en-tête, un seul fil d'Ariane", () => {
     const layout = sansCommentaires(lire("layout.tsx"));
     expect(layout).toContain("<BandeauVerrouDossier");
     expect(layout).toContain("<DossierVerrouProvider");
-    expect(layout).toContain("chargerEtatVerrou(id)");
+    // Lecture mémoïsée (`cache`) : la fiche la relit sans seconde requête.
+    expect(layout).toContain("lireEtatVerrouFiche(id)");
     expect(layout).toContain("href={`${base}/clients/${session.client.id}`}");
   });
 

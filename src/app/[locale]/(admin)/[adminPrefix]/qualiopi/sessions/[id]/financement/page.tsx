@@ -432,7 +432,11 @@ export default async function FinancementSessionPage({ params }: PageProps) {
       </section>
 
       {/* ── Génération de facture ─────────────────────────────────────────── */}
-      <section className="mb-[var(--space-admin-8)]">
+      {/* `id` stable : « Aucune facture émise » (bandeau d'un dossier clos) y mène. */}
+      <section
+        id="facturation"
+        className="mb-[var(--space-admin-8)] scroll-mt-[calc(var(--admin-topbar-h)+var(--space-admin-4))]"
+      >
         <h2 className={sectionHeadCls}>Facturation</h2>
         {alertes.some((a) => a.gravite === "critique") ? (
           <p className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-error)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]">

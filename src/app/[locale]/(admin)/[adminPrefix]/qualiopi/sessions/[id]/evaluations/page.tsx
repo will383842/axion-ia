@@ -25,6 +25,7 @@ import {
 } from "@/server/actions/qualiopi/evaluations";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
+import { CLASSE_ANCRE_SECTION } from "@/features/admin-qualiopi/session-hub/ancres";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -141,7 +142,9 @@ export default async function EvaluationsPage({ params }: PageProps) {
           Aucun stagiaire actif inscrit à cette session.
         </p>
       ) : (
-        <div className="space-y-[var(--space-admin-8)]">
+        // `id` stables : le fil conducteur mène au cadre du stagiaire visé
+        // (`/evaluations#insc-{id}`) — évaluer, puis attester, en un clic.
+        <div id="evaluations-stagiaires" className="space-y-[var(--space-admin-8)]">
           {session.enrollments.map((enrollment) => {
             const evalFinale = [...enrollment.evaluations]
               .filter((e) => e.type === "finale")
@@ -150,7 +153,8 @@ export default async function EvaluationsPage({ params }: PageProps) {
             return (
               <section
                 key={enrollment.id}
-                className="rounded-[var(--radius-admin-lg)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]"
+                id={`insc-${enrollment.id}`}
+                className={`rounded-[var(--radius-admin-lg)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)] ${CLASSE_ANCRE_SECTION}`}
               >
                 {/* En-tête stagiaire */}
                 <div className="mb-[var(--space-admin-4)] flex flex-wrap items-start justify-between gap-[var(--space-admin-3)]">

@@ -84,6 +84,7 @@ import {
 import type { DocumentType } from "../../../../prisma/generated/client";
 import { TriangleAlert } from "lucide-react";
 import { lienTelechargement } from "@/lib/content-disposition";
+import { CLASSE_ANCRE_SECTION } from "@/features/admin-qualiopi/session-hub/ancres";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types props
@@ -1584,8 +1585,10 @@ export function DocumentsSection({
         })()}
       </div>
 
-      {/* ── 2. Documents par stagiaire ───────────────────────────────────── */}
-      <div className={cardCls}>
+      {/* ── 2. Documents par stagiaire ─────────────────────────────────────
+          `id` stable : l'étape « Convocation envoyée » du fil conducteur y
+          mène (secours manuel). Garde : `le-suivi-mene-au-geste.spec.ts`. */}
+      <div id="par-stagiaire" className={`${cardCls} ${CLASSE_ANCRE_SECTION}`}>
         <h3 className={sectionHeadCls}>Par stagiaire</h3>
         {!hasEnrollments ? (
           <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">

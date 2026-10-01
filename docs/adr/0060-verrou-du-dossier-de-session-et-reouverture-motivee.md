@@ -1,6 +1,6 @@
 # ADR 0060 — Verrou du dossier de session et réouverture motivée, visible par l'auditeur
 
-- **Statut** : proposé (PR `qualiopi/verrou-dossier-serveur`, lot L1 de la refonte « session de bout en bout », label `schema`)
+- **Statut** : accepté (2026-09-30 — lots L1 à L4 de la refonte « session de bout en bout » ; L1 porte le label `schema`)
 - **Date** : 2026-09-30
 - **Auteur** : A02 Architecte (spécification) + Claude (réalisation)
 - **Numéro** : la spécification visait 0052 ; 0052 à 0059 sont pris, d'où 0060.
@@ -25,7 +25,7 @@ Le **dernier** événement prime : après une `reouverture`, le dossier est `rou
 
 États : `en_preparation`, `en_cours`, `a_recueillir` (manquants nommés par inscription), `clos` (`depuis` = dernier reverrouillage, sinon la plus récente des dates : passage à réalisée, dernière attestation vivante, dernière sortie), `rouvert` (`depuis`, `par`, `motif`), `hors_parcours` (annulée, reportée). `phaseDossier` en déduit la phase d'écran (`preparer`, `jour_j`, `apres`, `cloturee`, `hors_parcours`).
 
-**Interprétation de la décision (1) du dirigeant.** Les recueils qui arrivent APRÈS l'attestation — questionnaire à froid (J+30, qui peut ne jamais arriver), contreseings restants — ne retardent pas le verrou : ils restent ouverts pendant que le dossier est clos. Seul l'émargement encore signable (c) le retarde. Si le dirigeant préfère que le questionnaire à froid retarde aussi le verrou, il suffit d'une condition de plus dans `manquantsPourClore`, sans toucher au schéma.
+**Décision (1) du dirigeant, confirmée le 2026-09-30.** Les recueils qui arrivent APRÈS l'attestation — questionnaire à froid (J+30, qui peut ne jamais arriver), contreseings restants — ne retardent pas le verrou : le dossier se ferme même s'ils ne sont pas arrivés, et ces réponses restent acceptées après la clôture (écritures ENTRANTES, D6). Seul l'émargement encore signable (c) le retarde.
 
 ### D2. La réouverture est un événement append-only dédié
 
@@ -56,11 +56,11 @@ Fenêtre app/worker (~50 min, le worker atterrit avant l'app qui migre) — cons
 
 ### D5. Habilitation `rouvrir_dossier`
 
-Réservée à la DIRECTION (`super_admin`, `admin`), comme `revoquer_signature` : rouvrir rend modifiable une preuve constituée. Le reverrouillage manuel exige la même habilitation, motif facultatif ; il est refusé tant que (a), (b), (c) ne sont pas réunies, et le refus liste ce qui manque. Un dossier rouvert ne se reverrouille pas tout seul (la page « À traiter » signalera un dossier rouvert depuis plus de 7 jours — lot L4).
+Réservée à la DIRECTION (`super_admin`, `admin`), comme `revoquer_signature` : rouvrir rend modifiable une preuve constituée. Le reverrouillage manuel exige la même habilitation, motif facultatif ; il est refusé tant que (a), (b), (c) ne sont pas réunies, et le refus liste ce qui manque. Un dossier rouvert ne se reverrouille pas tout seul (la page « À traiter » signale un dossier rouvert depuis plus de 7 jours — D9).
 
-**Mot de passe de sécurité (décision du dirigeant, 2026-09-30).** Rouvrir exige, en plus de l'habilitation et du motif, un mot de passe. Le dépôt étant public, seule son empreinte scrypt salée vit dans la variable `QUALIOPI_REOUVERTURE_MDP` (application WEB, format `scrypt:<sel hex>:<empreinte hex>`, générée par `scripts/qualiopi/empreinte-mot-de-passe-reouverture.ts`, saisie sans écho, 12 caractères au moins, hachée telle quelle). Sans variable ou mal formée : aucune réouverture (fermé par défaut). Ordre des contrôles : habilitation → motif → **5 essais par heure et par compte** (Redis ; compteur en panne = on laisse passer, le mot de passe restant exigé) → mot de passe → écriture. Chaque refus est tracé `qualiopi.session.dossier.reouverture_refusee` avec sa raison (`incorrect`, `non_configure`, `trop_d_essais`), jamais le mot de passe ; ces refus n'ayant rien modifié, ils sont exclus des « actions menées pendant l'ouverture » du dossier d'audit.
+**Mot de passe de sécurité (décision du dirigeant, 2026-09-30).** Rouvrir exige, en plus de l'habilitation et du motif, un mot de passe. Le dépôt étant public, seule son empreinte scrypt salée vit dans la variable `QUALIOPI_REOUVERTURE_MDP` (application WEB, format `scrypt:<sel hex>:<empreinte hex>`, générée par `scripts/qualiopi/empreinte-mot-de-passe-reouverture.ts`, saisie deux fois sans écho — refus si les deux saisies diffèrent —, 12 caractères au moins, hachée telle quelle ; procédure : runbook R35). Sans variable ou mal formée : aucune réouverture (fermé par défaut). Ordre des contrôles : habilitation → motif → **5 essais par heure et par compte** (Redis ; compteur en panne = on laisse passer, le mot de passe restant exigé) → mot de passe → écriture. Chaque refus est tracé `qualiopi.session.dossier.reouverture_refusee` avec sa raison (`incorrect`, `non_configure`, `trop_d_essais`), jamais le mot de passe ; ces refus n'ayant rien modifié, ils sont exclus des « actions menées pendant l'ouverture » du dossier d'audit.
 
-**Interrupteur de secours (« ne rien casser »).** `QUALIOPI_VERROU_DOSSIER=off` (casse et espaces indifférents), posé sur l'app ET le worker puis redémarrage, coupe le BLOCAGE sans redéploiement : garde `assertDossierOuvert`, saisie à la place du stagiaire, workers (`dossierFige`). Il ne change jamais l'ÉTAT : fiche, bandeau et dossier d'audit continuent d'afficher « clos ». Toute écriture laissée passer sur un dossier clos est **signalée** (Sentry, niveau warning, `etape: verrou_dossier_coupe`) : elle n'apparaît pas au journal du dossier, puisqu'elle contourne précisément la réouverture motivée. Usage réservé à un blocage légitime en production, le temps d'un correctif ; à retirer aussitôt après.
+**Interrupteur de secours (« ne rien casser »).** `QUALIOPI_VERROU_DOSSIER=off` (casse et espaces indifférents), posé sur l'app ET le worker puis redémarrage, coupe le BLOCAGE sans redéploiement : garde `assertDossierOuvert`, saisie à la place du stagiaire, workers (`dossierFige`). Il ne change jamais l'ÉTAT : fiche, bandeau et dossier d'audit continuent d'afficher « clos » — le bandeau ajoute « Verrou coupé par l'interrupteur de secours : les modifications sont possibles et ne sont pas inscrites au dossier. » et ne dit plus « lecture seule ». Toute écriture laissée passer sur un dossier clos est **signalée** (Sentry, niveau warning, `etape: verrou_dossier_coupe`) : elle n'apparaît pas au journal du dossier, puisqu'elle contourne précisément la réouverture motivée. Usage réservé à un blocage légitime en production, le temps d'un correctif ; à retirer aussitôt après.
 
 ### D6. Classement de chaque écriture : VERROU, OUVERTE ou ENTRANTE
 
@@ -83,20 +83,30 @@ La garde vit dans son propre module (`verrou-dossier-garde.ts`, ré-exporté par
 - **Manifeste global** : `reouverturesSessions[]` (et `reouverturesRegistreLu`) dans `manifeste.json` ; une section récapitulative en tête du Markdown (« N sessions rouvertes », liste des réouvertures). Un registre illisible est DIT, jamais rendu comme « aucune ».
 - **RGPD** : le verrou ne bloque jamais un effacement (`supprimerStagiaire` ne connaît pas le verrou). Le marqueur daté `Trainee.deletedAt` existe : le dossier écrit « Stagiaire anonymisé le … (art. 17 §3 b), preuves conservées ».
 
+### D9. L'écran (lots L2, L3, L4)
+
+- **L2 — lecture seule.** Un cadre commun (`sessions/[id]/layout.tsx`) porte, une fois pour la fiche et ses quatre sous-pages, l'en-tête, le fil d'Ariane et le bandeau d'état (`BandeauVerrouDossier`, texte `texteEtatVerrou` mot pour mot). Sur un dossier clos, chaque écriture classée `verrou` est remplacée par un résumé en lecture ou masquée (`DossierVerrouProvider`) ; le bandeau propose « Rouvrir le dossier » (motif ≥ 10 caractères **et** champ mot de passe, `RouvrirDossierForm`), puis « Clore à nouveau » ; « Regénérer (forcer) » l'attestation demande son motif de rectification.
+- **L3 — fil conducteur.** La fiche s'ouvre sur l'onglet de la phase courante (`phaseDossier`) ; les blocs des autres phases sont repliés, jamais supprimés. Sur un dossier clos, aucune étape ne propose un geste verrouillé (`etapeBloqueeParLeVerrou`, lu dans le registre D6). Une seule liste « Encore possible » (`gestesEncorePossibles`), dans le bandeau ; son complément exact, « Manques figés au moment de la clôture — rouvrir le dossier pour les corriger » (`manquesFigesALaCloture`), dit les étapes dues que le verrou bloque, pour qu'un dossier incomplet ne se lise jamais « complet ».
+- **L4 — une seule porte.** `/planning/formation/[id]` répond 308 vers la fiche session ; la liste des sessions n'a plus qu'un bouton « Ouvrir » et des onglets par phase ; le menu « Formations & prestations » passe à 11 entrées (les autres écrans restent atteignables par leur page parente et la palette) ; « À traiter » signale les dossiers rouverts depuis plus de 7 jours.
+
+### D10. Mise en ligne (décisions du dirigeant, 2026-09-30)
+
+- L1 et L2 partent **ensemble**, en un seul déploiement (un verrou serveur sans écran de lecture seule ni de réouverture ferait des refus incompréhensibles) ; puis L4 ; puis L3.
+- L'attestation `AXI-ATT-2026-001` reste telle quelle : **pas de régénération**.
+- Test en production sur `AXI-SESS-2026-001` limité au **mauvais** mot de passe : aucune réouverture de test n'est inscrite au journal append-only (D2), qui la garderait pour toujours sous les yeux du certificateur.
+
 ## Conséquences
 
 **Positives** — Un dossier clos est une preuve que personne ne modifie sans le dire ; toute rectification après clôture est motivée, nommée, datée, inaltérable en base et lisible par l'auditeur. La saisie à la place du stagiaire devient traçable (ind. 30). Le registre exécutable empêche qu'une nouvelle action échappe au verrou.
 
-**Négatives et mitigations** — Le bouton « Regénérer (forcer) » de l'attestation n'envoie pas encore de motif : il est désormais refusé avec un message qui dit quoi faire ; le champ de motif arrive avec le lot L2. Les actions de réouverture n'ont pas encore d'écran (lot L2) : elles sont inscrites dans la liste des actions « sans surface connue », qui rougira quand L2 les raccordera. L'analyse statique du registre ne voit que les écritures Prisma directes ; les générateurs qui délèguent à un service sont listés à la main et chacun est appelé par le test de refus.
+**Négatives et mitigations** — L'analyse statique du registre ne voit que les écritures Prisma directes ; les générateurs qui délèguent à un service sont listés à la main et chacun est appelé par le test de refus. Une modification faite sous l'interrupteur de secours n'est pas inscrite au dossier : elle n'est visible que dans Sentry (D5), d'où son usage bref.
 
 ## Alternatives considérées
 
 - **Un statut `close`** dans `TrainingSessionStatut` : aurait obligé à réécrire la machine à états et à « défaire » une réalisation pour rouvrir. Écarté (D1).
 - **Tracer la réouverture dans `activity_logs`** : best-effort, sans trigger, falsifiable par UPDATE. Écarté (D2).
-- **Verrouiller tant que le questionnaire à froid n'est pas revenu** : bloquerait des dossiers indéfiniment (réponse facultative). Laissé au choix du dirigeant (D1).
+- **Verrouiller tant que le questionnaire à froid n'est pas revenu** : bloquerait des dossiers indéfiniment (réponse facultative). Écarté par le dirigeant le 2026-09-30 (D1).
 
-## Suivi
+## Exploitation
 
-- L2 : bandeau de verrou, mode lecture seule, boutons « Rouvrir le dossier » / « Clore à nouveau », champ de motif de rectification de l'attestation.
-- L3 : fil conducteur par phase (`phaseDossier`).
-- L4 : liste par phase (`chargerEtatsVerrou`), dossiers rouverts depuis plus de 7 jours dans « À traiter ».
+Rouvrir et clore à nouveau, générer ou changer le mot de passe, lever le blocage après 5 essais, poser et retirer l'interrupteur : runbook [`R35`](../runbooks/R35-dossier-de-session-rouvrir-mot-de-passe-interrupteur.md).

@@ -16,7 +16,22 @@
  *    lecture, ou masque son bouton.
  *
  * L'état vient de `chargerEtatVerrou`, source unique (RM-01) : l'écran ne
- * recalcule aucune règle. Le serveur reste la vraie garde.
+ * recalcule aucune règle. Le serveur reste la vraie garde. La lecture passe
+ * par `lireEtatVerrouFiche` (`cache` de React) : la fiche la relit pour
+ * choisir son onglet, sans seconde requête.
+ *
+ * « Encore possible » (dossier clos) : UNE liste, construite par
+ * `gestesEncorePossibles` (module pur) à partir du parcours — le même que la
+ * checklist de la fiche — et de ce que le parcours ne compte pas. Relecture
+ * L3 : le bloc « Clôture du dossier » en tenait une seconde, qui pouvait
+ * contredire celle-ci.
+ *
+ * « Manques figés au moment de la clôture » (QUAL-FIL-01) : les étapes dues
+ * dont le geste est verrouillé, lues dans le MÊME parcours
+ * (`manquesFigesALaCloture`) — complément exact de « Encore possible ».
+ *
+ * Interrupteur de secours (QUAL-VERROU-07) : `verrouDossierActif()` est lu ICI,
+ * côté serveur, et passé au bandeau, qui dit alors que le verrou est coupé.
  *
  * ⚠️ Budget console : ce layout n'ajoute aucune dépendance cliente — un
  * Provider de contexte et le petit formulaire de réouverture, rien d'autre.
@@ -32,19 +47,22 @@ import { MOTIF_REFUS, peutEngager } from "@/server/auth/habilitations";
 import { prisma } from "@/lib/prisma";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import {
-  chargerEtatVerrou,
   dossierFige,
   phaseDossier,
+  verrouDossierActif,
   type PhaseDossier,
 } from "@/server/qualiopi/sessions/verrou-dossier";
+import { lireEtatVerrouFiche, lireParcoursFiche } from "@/server/qualiopi/sessions/lectures-fiche";
+import {
+  gestesEncorePossibles,
+  manquesFigesALaCloture,
+  type GesteEncorePossible,
+} from "@/server/qualiopi/parcours/encore-possible";
 import {
   reverrouillerDossierSessionAction,
   rouvrirDossierSessionAction,
 } from "@/server/actions/qualiopi/dossier-verrou";
-import {
-  BandeauVerrouDossier,
-  type GesteEncorePossible,
-} from "@/features/admin-qualiopi/session-hub/BandeauVerrouDossier";
+import { BandeauVerrouDossier } from "@/features/admin-qualiopi/session-hub/BandeauVerrouDossier";
 import { DossierVerrouProvider } from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
 
 const STATUT_LABELS: Record<string, string> = {
@@ -63,67 +81,56 @@ const LIBELLES_PHASE: Record<PhaseDossier, string> = {
   hors_parcours: "Hors parcours",
 };
 
-function pluriel(n: number, un: string, plusieurs: string): string {
-  return `${n} ${n > 1 ? plusieurs : un}`;
-}
-
 /**
  * Les gestes OUVERTS réellement dus sur un dossier clos — jamais la liste
  * théorique : un encart qui énumère ce qui n'attend rien apprend à ne plus le
  * lire. Lu seulement quand le dossier est clos.
  */
-async function gestesEncorePossibles(
+async function lireEncorePossible(
   sessionId: string,
-  sessionBase: string,
-): Promise<GesteEncorePossible[]> {
-  const [aSigner, aRemettre, froidEnAttente, factures] = await Promise.all([
-    prisma.documentGenere.count({
-      where: {
-        sessionId,
-        annuleeAt: null,
-        statutSignature: { in: ["en_attente", "partielle"] },
-      },
+  prefixeSessions: string,
+): Promise<{ encorePossible: GesteEncorePossible[]; manquesFiges: string[] }> {
+  const [parcours, piecesASigner, exemplairesARemettre, froidSansReponse, factures] =
+    await Promise.all([
+      lireParcoursFiche(sessionId),
+      prisma.documentGenere.findMany({
+        where: {
+          sessionId,
+          annuleeAt: null,
+          statutSignature: { in: ["en_attente", "partielle"] },
+        },
+        select: { type: true },
+      }),
+      prisma.documentGenere.count({
+        where: {
+          sessionId,
+          annuleeAt: null,
+          statutSignature: "signee",
+          exemplaireSigneEnvoyeAt: null,
+        },
+      }),
+      prisma.questionnaire.count({
+        where: {
+          type: "satisfaction_froid",
+          reponduAt: null,
+          enrollment: { sessionId, ...inscriptionsActives() },
+        },
+      }),
+      prisma.factureFormation.count({ where: { sessionId } }),
+    ]);
+  const etapes = parcours?.etapes ?? null;
+  return {
+    encorePossible: gestesEncorePossibles({
+      sessionId,
+      prefixeSessions,
+      etapes,
+      piecesASigner,
+      exemplairesARemettre,
+      froidSansReponse,
+      factures,
     }),
-    prisma.documentGenere.count({
-      where: {
-        sessionId,
-        annuleeAt: null,
-        statutSignature: "signee",
-        exemplaireSigneEnvoyeAt: null,
-      },
-    }),
-    prisma.questionnaire.count({
-      where: {
-        type: "satisfaction_froid",
-        reponduAt: null,
-        enrollment: { sessionId, ...inscriptionsActives() },
-      },
-    }),
-    prisma.factureFormation.count({ where: { sessionId } }),
-  ]);
-  const out: GesteEncorePossible[] = [];
-  if (aSigner > 0) {
-    out.push({
-      libelle: `${pluriel(aSigner, "pièce attend", "pièces attendent")} encore une signature ou un contreseing`,
-      href: `${sessionBase}#documents`,
-    });
-  }
-  if (aRemettre > 0) {
-    out.push({
-      libelle: `${pluriel(aRemettre, "exemplaire signé", "exemplaires signés")} à remettre`,
-      href: `${sessionBase}#documents`,
-    });
-  }
-  if (froidEnAttente > 0) {
-    out.push({
-      libelle: `${pluriel(froidEnAttente, "questionnaire à froid", "questionnaires à froid")} en attente de réponse du stagiaire`,
-      href: `${sessionBase}#questionnaires`,
-    });
-  }
-  if (factures === 0) {
-    out.push({ libelle: "Aucune facture émise", href: `${sessionBase}/financement` });
-  }
-  return out;
+    manquesFiges: manquesFigesALaCloture(etapes),
+  };
 }
 
 export default async function SessionFicheLayout({
@@ -152,7 +159,7 @@ export default async function SessionFicheLayout({
         formateurPrincipal: { select: { prenom: true, nom: true } },
       },
     }),
-    chargerEtatVerrou(id),
+    lireEtatVerrouFiche(id),
   ]);
   if (session === null || verrou === null) notFound();
 
@@ -162,7 +169,9 @@ export default async function SessionFicheLayout({
   const sessionBase = `/${locale}/${adminPrefix}/qualiopi/sessions/${id}`;
   const fige = dossierFige(verrou.etat);
   const phase = phaseDossier(verrou.statut, verrou.etat);
-  const encorePossible = fige ? await gestesEncorePossibles(id, sessionBase) : [];
+  const { encorePossible, manquesFiges } = fige
+    ? await lireEncorePossible(id, `${base}/sessions`)
+    : { encorePossible: [], manquesFiges: [] };
 
   const libelleCls =
     "text-[length:var(--text-admin-xs)] tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase";
@@ -237,6 +246,8 @@ export default async function SessionFicheLayout({
         peutRouvrir={peutEngager(acces.role, "rouvrir_dossier")}
         motifSansHabilitation={MOTIF_REFUS.rouvrir_dossier}
         encorePossible={encorePossible}
+        manquesFiges={manquesFiges}
+        verrouActif={verrouDossierActif()}
         rouvrirAction={rouvrirDossierSessionAction}
         reverrouillerAction={reverrouillerDossierSessionAction}
       />
