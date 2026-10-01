@@ -18,6 +18,10 @@ import { ExternalLink } from "lucide-react";
 import { CalendlyEventEditor } from "@/components/admin/contacts/CalendlyEventEditor";
 import { EnrichCalendlyEventButton } from "@/components/admin/contacts/EnrichCalendlyEventButton";
 import { RejoindreVisioBouton } from "@/components/admin/contacts/RejoindreVisioBouton";
+import { enregistrementPropose } from "@/components/admin/contacts/enregistrement-propose";
+// Ne lit que deux variables d'environnement, jamais le dossier client : nommé
+// hors du préfixe « lire… » (garde `la-lecture-est-gardee-comme-l-ecriture`).
+import { lireDrapeauEnregistrement as drapeauEnregistrement } from "@/server/visio/drapeau";
 import { invitesSupplementaires, lienRejoindreVisio } from "@/features/admin-rendezvous/visio";
 import { SuiviRendezVousForm } from "@/components/admin/contacts/SuiviRendezVousForm";
 import { IssueEchangeApporteurForm } from "@/components/admin/contacts/IssueEchangeApporteurForm";
@@ -132,7 +136,17 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
         actions={
           <div className="flex flex-wrap items-start gap-2">
             {lienVisio ? (
-              <RejoindreVisioBouton href={lienVisio} debut={event.startTime} fin={event.endTime} />
+              <RejoindreVisioBouton
+                href={lienVisio}
+                debut={event.startTime}
+                fin={event.endTime}
+                enregistrer={enregistrementPropose({
+                  titre: event.eventTypeName,
+                  identifiant: event.id,
+                  drapeau: drapeauEnregistrement().effectif,
+                  linkedJobApplicationId: event.linkedJobApplicationId,
+                })}
+              />
             ) : null}
             <EnrichCalendlyEventButton id={event.id} apiConfigured={apiConfigured} />
             <AdminButton

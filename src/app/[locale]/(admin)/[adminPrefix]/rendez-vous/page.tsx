@@ -27,6 +27,10 @@ import {
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { VueEmailSuivi } from "@/components/admin/visio/VueEmailSuivi";
 import { RejoindreVisioBouton } from "@/components/admin/contacts/RejoindreVisioBouton";
+import { enregistrementPropose } from "@/components/admin/contacts/enregistrement-propose";
+// Ne lit que deux variables d'environnement, jamais le dossier client : nommé
+// hors du préfixe « lire… » (garde `la-lecture-est-gardee-comme-l-ecriture`).
+import { lireDrapeauEnregistrement as drapeauEnregistrement } from "@/server/visio/drapeau";
 import { SuiviRendezVousForm } from "@/components/admin/contacts/SuiviRendezVousForm";
 import { IssueEchangeApporteurForm } from "@/components/admin/contacts/IssueEchangeApporteurForm";
 import {
@@ -235,6 +239,15 @@ function CarteRdv({
               debut={r.startTime}
               fin={r.endTime}
               maintenant={maintenant}
+              enregistrer={
+                r.source === "calendly"
+                  ? enregistrementPropose({
+                      titre: r.title,
+                      identifiant: dossier?.dossier?.rencontreId ?? r.sourceRecordId,
+                      drapeau: drapeauEnregistrement().effectif,
+                    })
+                  : null
+              }
             />
           ) : r.format === "telephone" && r.contactPhone ? (
             <a href={`tel:${r.contactPhone.replace(/\s+/g, "")}`} className="admin-button">

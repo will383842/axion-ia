@@ -79,6 +79,7 @@ export async function listerRencontresDuJour(
       type: true,
       finPrevue: true,
       fusionneeDansId: true,
+      calendlyEventId: true,
       calendlyEvent: {
         select: {
           eventTypeName: true,
@@ -173,6 +174,7 @@ export async function listerRencontresDuJour(
       preavis: blocage
         ? { finLe: blocage.finLe === null ? null : new Date(blocage.finLe).toISOString() }
         : null,
+      ...(d.calendlyEventId ? { calendlyEventId: d.calendlyEventId } : {}),
     });
   }
   return sortie;

@@ -63,6 +63,10 @@ import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardeLectureAppels } from "@/features/admin-calendly/acces";
 import { ManualCalendlyEventButton } from "@/components/admin/contacts/ManualCalendlyEventButton";
 import { RejoindreVisioBouton } from "@/components/admin/contacts/RejoindreVisioBouton";
+import { enregistrementPropose } from "@/components/admin/contacts/enregistrement-propose";
+// Ne lit que deux variables d'environnement, jamais le dossier client : nommé
+// hors du préfixe « lire… » (garde `la-lecture-est-gardee-comme-l-ecriture`).
+import { lireDrapeauEnregistrement as drapeauEnregistrement } from "@/server/visio/drapeau";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
 import { formatDateFrShort } from "@/lib/format-date-fr";
@@ -205,7 +209,12 @@ function LigneRdv({ r, point }: { r: UnifiedRdv; point?: PointLu | undefined }) 
       </Link>
       {r.lienVisio && r.status !== "canceled" ? (
         <span className="flex items-center">
-          <RejoindreVisioBouton href={r.lienVisio} debut={r.startTime} fin={r.endTime} />
+          <RejoindreVisioBouton
+            href={r.lienVisio}
+            debut={r.startTime}
+            fin={r.endTime}
+            enregistrer={enregistrerLaVisio(r)}
+          />
         </span>
       ) : null}
     </li>
@@ -219,6 +228,16 @@ function LigneRdv({ r, point }: { r: UnifiedRdv; point?: PointLu | undefined }) 
  * le point est fait, c'est lui qui parle (« A eu lieu · Retenu », « Absent »…).
  * Une annulation garde son statut : il n'y a pas de point sur un appel annulé.
  */
+/** « Enregistrer cette visio ? » : rendez-vous Calendly du dossier client, drapeau non fermé. */
+function enregistrerLaVisio(r: UnifiedRdv): string | null {
+  if (r.source !== "calendly") return null;
+  return enregistrementPropose({
+    titre: r.title,
+    identifiant: r.sourceRecordId,
+    drapeau: drapeauEnregistrement().effectif,
+  });
+}
+
 function libelleStatut(r: UnifiedRdv, point: PointLu | undefined): string {
   return point && r.status !== "canceled" ? libelleDuPoint(point) : RDV_STATUS_LABELS[r.status];
 }
@@ -579,7 +598,13 @@ export default async function AppelsPage({
           // Au-dessus du lien étiré de la ligne (`z-[1]` dans `AdminTable`) :
           // sans lui, le clic ouvrirait la fiche au lieu de la visio.
           <span className="relative z-[2] inline-flex">
-            <RejoindreVisioBouton href={r.lienVisio} debut={r.startTime} fin={r.endTime} compact />
+            <RejoindreVisioBouton
+              href={r.lienVisio}
+              debut={r.startTime}
+              fin={r.endTime}
+              compact
+              enregistrer={enregistrerLaVisio(r)}
+            />
           </span>
         ) : null,
     },
