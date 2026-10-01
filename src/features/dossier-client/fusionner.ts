@@ -78,7 +78,7 @@ export const LONGUEUR_MIN_MOTIF_FUSION = 10;
 export class ErreurFusion extends Error {}
 
 export const MESSAGE_DEUX_SIREN =
-  "Ce sont deux entreprises différentes. Si l'une des deux est fausse, corrige d'abord son SIREN.";
+  "Ce sont deux entreprises différentes. Si l'une des deux est fausse, corrigez d'abord son SIREN.";
 
 export const MESSAGE_SIREN_SUR_L_ABSORBEE =
   "Seule la fiche à fusionner a un SIREN : elle sortirait de l'anti-doublon et ce SIREN ne " +

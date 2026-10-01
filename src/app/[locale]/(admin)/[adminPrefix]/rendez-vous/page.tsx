@@ -299,7 +299,12 @@ function CarteRdv({
             {r.suivi
               ? apporteur
                 ? `Issue : ${libelleIssue(r.suivi.issue, r.suivi.decision ?? null)} — modifiable ci-dessous`
-                : `Point fait : ${LIBELLE_ISSUE[r.suivi.issue]}${r.suivi.suite ? ` · ${LIBELLE_SUITE[r.suivi.suite]}` : ""} — modifiable ci-dessous`
+                : `Point fait : ${LIBELLE_ISSUE[r.suivi.issue]}${r.suivi.suite ? ` · ${LIBELLE_SUITE[r.suivi.suite]}` : ""} — ${
+                    // m-3 : le formulaire court ne garde qu'Absent et Reporté.
+                    pointAuDossier && r.suivi.issue === "eu_lieu"
+                      ? "modifiable dans « Après l'appel »"
+                      : "modifiable ci-dessous"
+                  }`
               : apporteur
                 ? "L'échange est terminé ? Donnez son issue :"
                 : pointAuDossier

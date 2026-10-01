@@ -140,4 +140,36 @@ describe("« Après l'appel » mène au compte rendu", () => {
     expect(html).not.toContain("Confirmer le client proposé");
     expect(lireFichesVivantes).toHaveBeenCalledWith({ fictivesSeulement: true });
   });
+
+  const faitDe = (id: string, statut: "propose" | "valide") => ({
+    id,
+    type: "besoin" as const,
+    portee: statut === "valide" ? ("entreprise" as const) : ("a_ranger" as const),
+    projetId: null,
+    statut,
+    confiance: "haute" as const,
+    certitude: "dit_explicitement" as const,
+    enonce: "Former l'équipe",
+    question: null,
+  });
+
+  it("m-1 : sans proposition, le titre du nouveau projet reprend le projet évoqué", async () => {
+    const html = await rendu({
+      ...rencontre([]),
+      faits: [faitDe("f1", "propose")],
+      evocations: {
+        projets: [{ ref: "J1", intitule: "Formation RH", proposition: null }],
+        projetDuFait: { f1: "J1" },
+        principal: "J1",
+      },
+    });
+    expect(html).toContain('value="Formation RH"');
+    expect(html).not.toContain('value="Projet Fiche Fictive"');
+  });
+
+  it("m-2 : tous les faits déjà validés — pas de section « à valider » vide", async () => {
+    const html = await rendu({ ...rencontre([]), faits: [faitDe("f1", "valide")] });
+    expect(html).not.toContain("Ce que le client a dit");
+    expect(html).toContain("3. Note");
+  });
 });

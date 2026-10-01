@@ -98,6 +98,9 @@ export async function ApresLAppelVue({
     projets,
   );
   const proposePrincipal = groupes.principal.proposition;
+  // m-2 : la section « à valider » ne compte que les faits encore à valider.
+  const aValider =
+    groupes.principal.faits.length + groupes.autres.reduce((n, g) => n + g.faits.length, 0) > 0;
 
   return (
     <AdminPageShell width="wide">
@@ -402,7 +405,7 @@ export async function ApresLAppelVue({
                   maxLength={200}
                   defaultValue={(proposePrincipal?.mode === "nouveau"
                     ? proposePrincipal.titre
-                    : `Projet ${client.raisonSociale}`
+                    : (groupes.principal.intitule ?? `Projet ${client.raisonSociale}`)
                   ).slice(0, 200)}
                   className={`${inputCls} max-w-md`}
                 />
@@ -470,7 +473,7 @@ export async function ApresLAppelVue({
             ))}
           </section>
 
-          {r.faits.length > 0 ? (
+          {aValider ? (
             <section className={carteCls}>
               <h2 className={titreCls}>3. Ce que le client a dit — à valider</h2>
               <p
@@ -517,7 +520,7 @@ export async function ApresLAppelVue({
 
           <section className={carteCls}>
             <h2 className={titreCls}>
-              {r.faits.length > 0 ? "4." : "3."} {titreDeLaNote(compteRendu)}
+              {aValider ? "4." : "3."} {titreDeLaNote(compteRendu)}
             </h2>
             <div className="grid gap-[var(--space-admin-3)] sm:grid-cols-2">
               {CHAMPS_DE_LA_NOTE.map((c) => (
