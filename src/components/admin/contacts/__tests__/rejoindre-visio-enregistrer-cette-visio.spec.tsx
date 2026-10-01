@@ -60,7 +60,11 @@ describe("Enregistrer cette visio ?", () => {
 });
 
 describe("enregistrementPropose — qui reçoit la question", () => {
-  const client = { titre: "Discutons de votre projet IA (45 min)", identifiant: "evt_1" };
+  const client = {
+    titre: "Discutons de votre projet IA (45 min)",
+    identifiant: "evt_1",
+    linkedJobApplicationId: null,
+  };
 
   it("client du dossier, drapeau pilote ou ouvert : l'identifiant", () => {
     expect(enregistrementPropose({ ...client, drapeau: "ouvert" })).toBe("evt_1");
@@ -77,10 +81,16 @@ describe("enregistrementPropose — qui reçoit la question", () => {
         titre: "Échange apporteur d'affaires",
         identifiant: "evt_2",
         drapeau: "ouvert",
+        linkedJobApplicationId: null,
       }),
     ).toBeNull();
     expect(
-      enregistrementPropose({ titre: "Entretien", identifiant: "evt_3", drapeau: "ouvert" }),
+      enregistrementPropose({
+        titre: "Entretien",
+        identifiant: "evt_3",
+        drapeau: "ouvert",
+        linkedJobApplicationId: null,
+      }),
     ).toBeNull();
   });
 

@@ -245,6 +245,7 @@ function CarteRdv({
                       titre: r.title,
                       identifiant: dossier?.dossier?.rencontreId ?? r.sourceRecordId,
                       drapeau: drapeauEnregistrement().effectif,
+                      linkedJobApplicationId: r.linkedJobApplicationId,
                     })
                   : null
               }

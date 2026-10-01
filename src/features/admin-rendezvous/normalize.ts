@@ -22,6 +22,8 @@ export interface CalendlyEventRow {
   location: string | null;
   notes: string | null;
   capturedAt: Date;
+  /** Rendez-vous d'une candidature (entretien) : jamais enregistrable. */
+  linkedJobApplicationId?: string | null;
 }
 
 export function mapCalendlyStatus(raw: string): RdvStatus {
@@ -127,5 +129,6 @@ export function fromCalendly(e: CalendlyEventRow): UnifiedRdv {
     format: canalDuRendezVous(e.location, e.rawPayload),
     notes: e.notes,
     createdAt: e.capturedAt,
+    linkedJobApplicationId: e.linkedJobApplicationId ?? null,
   };
 }

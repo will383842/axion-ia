@@ -235,6 +235,7 @@ function enregistrerLaVisio(r: UnifiedRdv): string | null {
     titre: r.title,
     identifiant: r.sourceRecordId,
     drapeau: drapeauEnregistrement().effectif,
+    linkedJobApplicationId: r.linkedJobApplicationId,
   });
 }
 

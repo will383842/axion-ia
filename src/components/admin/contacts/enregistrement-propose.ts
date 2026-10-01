@@ -14,12 +14,13 @@ export function enregistrementPropose(e: {
   /** Rencontre si elle existe, sinon `CalendlyEvent.id` : ce que l'extension retrouve. */
   readonly identifiant: string;
   readonly drapeau: ModeEnregistrement;
-  readonly linkedJobApplicationId?: string | null;
+  /** OBLIGATOIRE : un rendez-vous de candidature n'est jamais proposé. */
+  readonly linkedJobApplicationId: string | null;
 }): string | null {
   if (e.drapeau === "ferme") return null;
   const ok = estRendezVousDuDossier({
     eventTypeName: e.titre,
-    linkedJobApplicationId: e.linkedJobApplicationId ?? null,
+    linkedJobApplicationId: e.linkedJobApplicationId,
   });
   return ok ? e.identifiant : null;
 }

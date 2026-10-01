@@ -63,6 +63,11 @@ export interface UnifiedRdv {
   notes: string | null;
   /** Date de tri de repli quand `startTime` est null (capture/création). */
   createdAt: Date;
+  /**
+   * Rendez-vous rattaché à une candidature (entretien), ou `null`. Jamais de
+   * question « Enregistrer cette visio ? » quand il est posé.
+   */
+  linkedJobApplicationId: string | null;
 }
 
 /** Une carte de l'onglet « Rendez-vous » : le rendez-vous et ce qu'on lit avant l'appel. */
