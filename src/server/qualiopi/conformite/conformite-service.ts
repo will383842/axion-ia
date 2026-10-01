@@ -1166,7 +1166,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       nbFormationsResultatsDiffuses > 0
         ? `Indicateurs de résultats diffusés sur la fiche publique : ${formationsResultatsDiffuses.join(", ")}`
         : nbFormationsResultatsPublies > 0
-          ? "Aucun résultat encore diffusé sur une fiche publique (publication décidée, aucune session réalisée sur ces formations) ; procédure P-02 formalisée (classeur qualité, hors console)"
+          ? "Aucun résultat encore diffusé sur une fiche publique (publication décidée, aucune session réalisée sur ces formations) ; procédure P-02 (AXI-QUA-P02) formalisée (classeur qualité, hors console)"
           : "Aucun indicateur de résultat publié — l'indicateur 2 exige leur diffusion (canal public à alimenter)";
     set(
       2,

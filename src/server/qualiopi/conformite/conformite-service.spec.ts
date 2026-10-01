@@ -1749,7 +1749,7 @@ describe("evaluerConformite", () => {
     expect(preuves).not.toContain("Indicateurs de résultats diffusés");
     expect(preuves).toContain("0 formation dont les résultats s'affichent sur la fiche publique");
     expect(preuves).toContain(
-      "Aucun résultat encore diffusé sur une fiche publique (publication décidée, aucune session réalisée sur ces formations) ; procédure P-02 formalisée",
+      "Aucun résultat encore diffusé sur une fiche publique (publication décidée, aucune session réalisée sur ces formations) ; procédure P-02 (AXI-QUA-P02) formalisée",
     );
   });
 
