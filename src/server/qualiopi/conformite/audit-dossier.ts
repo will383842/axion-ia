@@ -1024,7 +1024,8 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   //      allers-retours réseau. C'est le bouton que le certificateur demande le
   //      jour de sa venue ; il doit rendre la main.
   if (!r2Ok) {
-    nbOmis = allDocuments.length;
+    // On AJOUTE : les pièces de l'indicateur 21 non jointes sont déjà comptées.
+    nbOmis += allDocuments.length;
     indexLines.push(
       `[OMIS] ${allDocuments.length} pièce${allDocuments.length > 1 ? "s" : ""} — stockage R2 non configuré, aucun PDF n'est restituable. Le détail par pièce n'est pas listé : la cause est unique et elle est écrite en tête de ce fichier.`,
     );
@@ -1236,7 +1237,7 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   }
 
   indexLines.push("");
-  indexLines.push(`Résumé : ${nbInclus} PDF inclus, ${nbOmis} omis.`);
+  indexLines.push(`Résumé : ${nbInclus} fichier${nbInclus > 1 ? "s" : ""} inclus, ${nbOmis} omis.`);
   zip.file("index.txt", indexLines.join("\n") + "\n");
 
   // [P1] Les avertissements sont écrits à la fois EN TÊTE de l'index et dans un

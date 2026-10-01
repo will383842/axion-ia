@@ -15,6 +15,16 @@
  * Comme les registres, ces liens ne disent RIEN de la couverture.
  */
 
+import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
+
+/**
+ * Une fiche formation du catalogue public, pour que l'auditrice ouvre une
+ * prestation détaillée (objectifs, prérequis, délai d'accès, tarif — sections
+ * de `src/app/[locale]/formations/[slug]/page.tsx`). Dérivée du catalogue,
+ * jamais écrite en dur : un slug retiré ne laisse pas un lien mort.
+ */
+const SLUG_FICHE_EXEMPLE = FORMATIONS_V2[0]?.slugFr;
+
 export interface PagePublique {
   /** Chemin sous la locale française, sans origine (« /fr/… »). */
   readonly chemin: string;
@@ -30,10 +40,17 @@ export interface LienPublic {
 export const PAGES_PUBLIQUES_PAR_INDICATEUR: Readonly<Record<number, readonly PagePublique[]>> = {
   1: [
     { chemin: "/fr/formations", libelle: "Catalogue public des formations" },
-    {
-      chemin: "/fr/conditions-generales",
-      libelle: "Conditions générales (tarifs, délais d'accès)",
-    },
+    ...(SLUG_FICHE_EXEMPLE !== undefined
+      ? [
+          {
+            chemin: `/fr/formations/${SLUG_FICHE_EXEMPLE}`,
+            libelle:
+              "Fiche d'une formation (objectifs, prérequis, délai d'accès, tarif, indicateurs de résultats)",
+          },
+        ]
+      : []),
+    // Les CGV ne disent rien des délais d'accès : ils sont sur chaque fiche.
+    { chemin: "/fr/conditions-generales", libelle: "Conditions générales de vente" },
   ],
   9: [{ chemin: "/fr/reglement-interieur", libelle: "Règlement intérieur publié" }],
   26: [

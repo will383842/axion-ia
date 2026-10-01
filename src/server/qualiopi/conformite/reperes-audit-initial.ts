@@ -33,7 +33,7 @@ export const INDICATEURS_AUDIT_INITIAL_PROCESSUS = [
 
 /** La mention, une seule fois. */
 export const MENTION_AUDIT_INITIAL =
-  "À l'audit initial, l'auditeur vérifie que le processus est défini et formalisé ; la mise en œuvre est vérifiée à l'audit de surveillance.";
+  "Pour un organisme nouvel entrant, l'auditeur vérifie à l'audit initial que le processus est défini et formalisé ; la mise en œuvre est vérifiée à l'audit de surveillance.";
 
 /**
  * Indicateur 12 — précision du guide de lecture. Elle ne change PAS le statut :

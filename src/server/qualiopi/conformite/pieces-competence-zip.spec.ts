@@ -90,9 +90,72 @@ describe("recupererFichierPiece", () => {
       ok: false,
       motif: "le lien répond 404",
     });
-    mockFetch.mockRejectedValueOnce(new Error("resolves to private/reserved IP"));
+    mockFetch.mockRejectedValueOnce(
+      new Error(
+        'ssrf-safe-fetch: hostname "interne.exemple" resolves to private/reserved IP "10.0.0.5" — refused.',
+      ),
+    );
     const r = await recupererFichierPiece("https://interne.exemple/x.pdf");
-    expect(r.ok ? "" : r.motif).toMatch(/récupération impossible/);
+    // Motif GÉNÉRIQUE : ni l'IP résolue, ni le nom d'hôte, ni le message brut.
+    expect(r).toEqual({ ok: false, motif: "adresse refusée" });
+  });
+
+  it("délai dépassé → motif générique", async () => {
+    mockFetch.mockRejectedValueOnce(
+      Object.assign(new Error("The operation was aborted due to timeout"), {
+        name: "TimeoutError",
+      }),
+    );
+    expect(await recupererFichierPiece("https://lent.exemple/x.pdf")).toEqual({
+      ok: false,
+      motif: "délai dépassé",
+    });
+  });
+
+  it("🔴 une pièce du registre d'un type EXCLU (facture, contrat de travail…) n'est jamais jointe", async () => {
+    // Le devis reste JOINT par la règle partagée (trace de cadrage, ind. 4/6) :
+    // ce test suit `hors-dossier-audit.ts`, il ne la redéfinit pas.
+    for (const type of ["contrat_travail", "autofacture_honoraires", "facture", "avoir"]) {
+      mockFindFirst.mockResolvedValueOnce({
+        type,
+        numero: "AXI-DOC-2026-009",
+        createdAt: new Date("2026-09-01T10:00:00Z"),
+      });
+      mockR2.mockResolvedValue(PDF);
+      expect(await recupererFichierPiece(`/api/qualiopi/documents/${ID}`)).toEqual({
+        ok: false,
+        motif: "non joint (type exclu du dossier d'audit)",
+      });
+    }
+    expect(mockR2).not.toHaveBeenCalled();
+  });
+
+  it("🔴 le plafond de 20 Mo tient EN FLUX, sans Content-Length, et la lecture est annulée", async () => {
+    const morceau = new Uint8Array(1024 * 1024); // 1 Mo
+    let envoyes = 0;
+    let annule = false;
+    const flux = new ReadableStream<Uint8Array>({
+      pull(controleur) {
+        envoyes += 1;
+        if (envoyes > 100) {
+          controleur.close();
+          return;
+        }
+        controleur.enqueue(morceau);
+      },
+      cancel() {
+        annule = true;
+      },
+    });
+    // Aucune taille annoncée : seul le comptage en flux peut arrêter la lecture.
+    mockFetch.mockResolvedValueOnce(
+      new Response(flux, { status: 200, headers: { "content-type": "application/pdf" } }),
+    );
+    const r = await recupererFichierPiece("https://gros.exemple/x.pdf");
+    expect(r).toEqual({ ok: false, motif: "trop volumineux (plus de 20 Mo)" });
+    expect(annule).toBe(true);
+    // Arrêté juste après le plafond, pas au bout des 100 Mo.
+    expect(envoyes).toBeLessThan(25);
   });
 });
 

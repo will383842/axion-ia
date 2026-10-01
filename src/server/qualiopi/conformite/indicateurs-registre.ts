@@ -400,7 +400,7 @@ export function indicateursApplicables(typesAction: string[]): number[] {
 export const MOTIFS_NON_APPLICABLE: Readonly<Record<ConditionnelType, string>> = {
   cert: "Aucune formation ne prépare une certification inscrite au RNCP ou au répertoire spécifique (RS).",
   app: "L'organisme n'est pas un CFA et ne délivre pas d'action en apprentissage ou en alternance.",
-  afest: "Aucune action de formation en situation de travail (AFEST).",
+  afest: "Aucune action de formation en situation de travail (AFEST) ni en alternance.",
 };
 
 /**

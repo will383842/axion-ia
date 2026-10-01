@@ -6,6 +6,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 
+import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
 import {
   liensSitePublic,
   originePublique,
@@ -23,19 +24,40 @@ describe("liens vers le site public", () => {
   it("chaque chemin correspond à une page du dépôt (src/app/[locale]/<chemin>/page.tsx)", () => {
     for (const pages of Object.values(PAGES_PUBLIQUES_PAR_INDICATEUR)) {
       for (const page of pages) {
-        expect(page.chemin).toMatch(/^\/fr\/[a-z-]+$/);
-        const segment = page.chemin.replace(/^\/fr\//, "");
-        const fichier = join(process.cwd(), "src", "app", "[locale]", segment, "page.tsx");
+        expect(page.chemin).toMatch(/^\/fr\/[a-z-]+(\/[a-z0-9-]+)?$/);
+        const [segment, slug] = page.chemin.replace(/^\/fr\//, "").split("/");
+        const fichier = join(
+          process.cwd(),
+          "src",
+          "app",
+          "[locale]",
+          segment ?? "",
+          ...(slug !== undefined ? ["[slug]"] : []),
+          "page.tsx",
+        );
         expect(existsSync(fichier), `${page.chemin} → ${fichier}`).toBe(true);
+        // Une fiche n'existe que si son slug est au catalogue pré-rendu.
+        if (slug !== undefined) {
+          expect(FORMATIONS_V2.map((f) => f.slugFr)).toContain(slug);
+        }
       }
     }
   });
 
   it("indicateurs 1 / 9 / 26 / 31, et eux seuls", () => {
     expect(Object.keys(PAGES_PUBLIQUES_PAR_INDICATEUR).map(Number)).toEqual([1, 9, 26, 31]);
-    expect(liensSitePublic(1, "https://axion-ia.com").map((l) => l.url)).toEqual([
-      "https://axion-ia.com/fr/formations",
-      "https://axion-ia.com/fr/conditions-generales",
+    expect(liensSitePublic(1, "https://axion-ia.com")).toEqual([
+      { url: "https://axion-ia.com/fr/formations", libelle: "Catalogue public des formations" },
+      {
+        url: `https://axion-ia.com/fr/formations/${FORMATIONS_V2[0]?.slugFr}`,
+        libelle: expect.stringMatching(
+          /^Fiche d'une formation \(objectifs, prérequis, délai d'accès, tarif/,
+        ),
+      },
+      {
+        url: "https://axion-ia.com/fr/conditions-generales",
+        libelle: "Conditions générales de vente",
+      },
     ]);
     expect(liensSitePublic(9, "https://axion-ia.com")[0]?.url).toBe(
       "https://axion-ia.com/fr/reglement-interieur",

@@ -34,6 +34,7 @@ import { ssrfSafeFetch } from "@/lib/ssrf-safe-fetch";
 import { estPieceCompetenceProbante } from "@/server/qualiopi/trainers/piece-competence";
 import { originePublique } from "./liens-site-public";
 import { pieceAdmissibleAuDossier } from "./piece-admissible";
+import { documentJointAuDossierAudit } from "./hors-dossier-audit";
 
 /** Délai de récupération d'un fichier externe. */
 const DELAI_RECUPERATION_MS = 15_000;
@@ -97,15 +98,25 @@ export async function recupererFichierPiece(adresse: string): Promise<Recuperati
           motif: "pièce du registre introuvable, annulée ou rattachée à une session annulée",
         };
       }
+      // 🔴 Règle X-mode-auditeur-05 — la MÊME que pour `preuves/` : un contrat
+      // de travail, une autofacture, une facture, un devis ou un avoir ne
+      // sortent jamais dans le dossier d'audit, même par une adresse saisie
+      // sur une pièce formateur.
+      if (!documentJointAuDossierAudit(doc.type)) {
+        return { ok: false, motif: "non joint (type exclu du dossier d'audit)" };
+      }
       const buffer = await getObjectBufferR2(documentPdfKey(doc));
       if (buffer === null) return { ok: false, motif: "PDF absent du stockage R2" };
       return { ok: true, buffer, extension: "pdf" };
-    } catch (err) {
-      return { ok: false, motif: `lecture impossible (${messageErreur(err)})` };
+    } catch {
+      return { ok: false, motif: "lecture impossible" };
     }
   }
 
-  // ── Adresse externe : récupération bornée, adresses privées refusées ──────
+  // ── Adresse externe : récupération bornée, par `ssrfSafeFetch` ────────────
+  // ⚠️ La garde de `ssrfSafeFetch` résout le nom AVANT la requête : une
+  // réponse DNS qui change entre les deux (rebinding) n'est pas couverte. Reste
+  // préexistant, hors de ce module.
   try {
     const reponse = await ssrfSafeFetch(url, {
       signal: AbortSignal.timeout(DELAI_RECUPERATION_MS),
@@ -114,13 +125,14 @@ export async function recupererFichierPiece(adresse: string): Promise<Recuperati
     if (!reponse.ok) return { ok: false, motif: `le lien répond ${reponse.status}` };
     const longueur = Number(reponse.headers.get("content-length") ?? "0");
     if (longueur > TAILLE_MAX_OCTETS) {
-      return { ok: false, motif: "fichier trop volumineux (plus de 20 Mo)" };
+      await reponse.body?.cancel().catch(() => undefined);
+      return { ok: false, motif: MOTIF_TROP_VOLUMINEUX };
     }
     const typeMime = (reponse.headers.get("content-type") ?? "").split(";")[0]?.trim() ?? "";
-    const buffer = Buffer.from(await reponse.arrayBuffer());
-    if (buffer.byteLength > TAILLE_MAX_OCTETS) {
-      return { ok: false, motif: "fichier trop volumineux (plus de 20 Mo)" };
-    }
+    // Le plafond se tient EN FLUX : un serveur qui n'annonce pas sa taille (ou
+    // ment) ne fait jamais monter plus de 20 Mo en mémoire.
+    const buffer = await lireAvecPlafond(reponse, TAILLE_MAX_OCTETS);
+    if (buffer === null) return { ok: false, motif: MOTIF_TROP_VOLUMINEUX };
     const estPdf = buffer.subarray(0, 5).toString("latin1") === "%PDF-";
     const extension = estPdf ? "pdf" : EXTENSION_PAR_TYPE_MIME[typeMime.toLowerCase()];
     if (extension === undefined) {
@@ -129,17 +141,51 @@ export async function recupererFichierPiece(adresse: string): Promise<Recuperati
         motif:
           typeMime.toLowerCase() === "text/html"
             ? "le lien mène à une page web, pas au fichier (lien de partage à rendre direct, ou pièce à déposer)"
-            : `contenu non reconnu comme une pièce (${typeMime || "type inconnu"})`,
+            : "type non pris en charge",
       };
     }
     return { ok: true, buffer, extension };
   } catch (err) {
-    return { ok: false, motif: `récupération impossible (${messageErreur(err)})` };
+    return { ok: false, motif: motifEchecRecuperation(err) };
   }
 }
 
-function messageErreur(err: unknown): string {
-  return err instanceof Error ? err.message : String(err);
+const MOTIF_TROP_VOLUMINEUX = "trop volumineux (plus de 20 Mo)";
+
+/**
+ * Lit le corps en comptant les octets, et ANNULE la lecture dès que le plafond
+ * est franchi. `null` = trop volumineux.
+ */
+export async function lireAvecPlafond(reponse: Response, plafond: number): Promise<Buffer | null> {
+  const corps = reponse.body;
+  if (corps === null) return Buffer.alloc(0);
+  const lecteur = corps.getReader();
+  const morceaux: Uint8Array[] = [];
+  let total = 0;
+  for (;;) {
+    const { done, value } = await lecteur.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > plafond) {
+      await lecteur.cancel().catch(() => undefined);
+      return null;
+    }
+    morceaux.push(value);
+  }
+  return Buffer.concat(morceaux);
+}
+
+/**
+ * Motif GÉNÉRIQUE d'un échec de récupération. Le message brut (qui peut porter
+ * l'IP résolue, un nom d'hôte interne, une pile) n'est jamais écrit dans
+ * l'index ni dans le manifeste remis au certificateur.
+ */
+function motifEchecRecuperation(err: unknown): string {
+  const nom = err instanceof Error ? err.name : "";
+  const message = err instanceof Error ? err.message : "";
+  if (nom === "TimeoutError" || nom === "AbortError") return "délai dépassé";
+  if (message.startsWith("ssrf-safe-fetch:")) return "adresse refusée";
+  return "récupération impossible";
 }
 
 /** Nom de dossier lisible, sans accents ni séparateurs. */

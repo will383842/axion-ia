@@ -27,7 +27,7 @@ describe("régime de l'audit initial (arrêté du 6 juin 2019, art. 1)", () => {
 
   it("la mention est sobre et dit les deux temps", () => {
     expect(MENTION_AUDIT_INITIAL).toBe(
-      "À l'audit initial, l'auditeur vérifie que le processus est défini et formalisé ; la mise en œuvre est vérifiée à l'audit de surveillance.",
+      "Pour un organisme nouvel entrant, l'auditeur vérifie à l'audit initial que le processus est défini et formalisé ; la mise en œuvre est vérifiée à l'audit de surveillance.",
     );
   });
 

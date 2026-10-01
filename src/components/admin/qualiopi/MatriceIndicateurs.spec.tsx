@@ -69,7 +69,7 @@ describe.each<MatriceVue>(["tableau", "manifeste"])("MatriceIndicateurs — vue 
 
   it("affiche le régime de l'audit initial à côté de l'indicateur", () => {
     expect(rendre(vue)).toContain(
-      "l&#x27;auditeur vérifie que le processus est défini et formalisé",
+      "vérifie à l&#x27;audit initial que le processus est défini et formalisé",
     );
   });
 
@@ -84,6 +84,25 @@ describe.each<MatriceVue>(["tableau", "manifeste"])("MatriceIndicateurs — vue 
     expect(rendre(vue)).toContain(
       'href="/fr/console/qualiopi/formateurs/abc#developpement-competences"',
     );
+  });
+});
+
+describe("MatriceIndicateurs — l'étoile d'une ligne garde sa couleur et sa marge", () => {
+  // 🔴 2026-10-01 — `ml-1text-[…]` : une espace perdue fondait les deux classes
+  // en une seule, inconnue de Tailwind. L'étoile perdait couleur et marge sur
+  // chaque ligne de l'écran du certificateur.
+  it.each<MatriceVue>(["tableau", "manifeste"])("vue %s", (vue) => {
+    const html = rendre(vue);
+    const etoiles = [...html.matchAll(/<span title="[^"]*" role="img" class="([^"]*)"/g)].map((m) =>
+      (m[1] ?? "").split(" "),
+    );
+    // Au moins l'étoile de la ligne 22 (super) et celle de la légende.
+    expect(etoiles.length).toBeGreaterThanOrEqual(2);
+    const ligne = etoiles.find((classes) => classes.includes("ml-1"));
+    expect(ligne).toEqual(["ml-1", "text-[color:var(--color-admin-destructive)]"]);
+    for (const classes of etoiles) {
+      expect(classes).toContain("text-[color:var(--color-admin-destructive)]");
+    }
   });
 });
 

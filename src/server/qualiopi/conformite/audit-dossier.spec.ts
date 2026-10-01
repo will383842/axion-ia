@@ -393,7 +393,7 @@ describe("genererManifesteAudit", () => {
     const reperes = (n: number): readonly string[] =>
       result.json.indicateurs.find((i) => i.numero === n)?.reperes ?? [];
     for (const n of [2, 11, 19, 22, 24, 25, 26, 32]) {
-      expect(reperes(n).join(" ")).toMatch(/À l'audit initial/);
+      expect(reperes(n).join(" ")).toMatch(/vérifie à l'audit initial/);
     }
     // Non applicables : aucun repère, même s'ils figurent dans le texte.
     for (const n of [3, 13, 14]) expect(reperes(n)).toEqual([]);
@@ -401,7 +401,9 @@ describe("genererManifesteAudit", () => {
       "Exigé pour les actions de plus de deux jours (guide de lecture).",
     ]);
     expect(reperes(4)).toEqual([]);
-    expect(result.markdown).toContain("> À l'audit initial, l'auditeur vérifie");
+    expect(result.markdown).toContain(
+      "> Pour un organisme nouvel entrant, l'auditeur vérifie à l'audit initial",
+    );
   });
 
   it("liens vers le site public : absolus, sur 1 / 9 / 26 / 31 seulement", async () => {
@@ -410,6 +412,7 @@ describe("genererManifesteAudit", () => {
       result.json.indicateurs.find((i) => i.numero === n)?.liensPublics ?? [];
     expect(liens(1).map((l) => l.url)).toEqual([
       expect.stringMatching(/^https?:\/\/[^/]+\/fr\/formations$/),
+      expect.stringMatching(/^https?:\/\/[^/]+\/fr\/formations\/[a-z0-9-]+$/),
       expect.stringMatching(/^https?:\/\/[^/]+\/fr\/conditions-generales$/),
     ]);
     expect(liens(9).map((l) => l.url)).toEqual([
@@ -693,6 +696,39 @@ describe("genererDossierAuditZip", () => {
     expect(preuves21.join("\n")).toContain("Ada Lovelace — CV : le lien répond 404");
     expect(await zip.file("manifeste.md")?.async("string")).toContain("le lien répond 404");
     expect(result.incomplet).toBe(true);
+  });
+
+  it("🔴 résumé de l'index : R2 absent n'EFFACE pas les pièces de l'ind. 21 non jointes, et dit « fichiers »", async () => {
+    mockIsR2Configured.mockReturnValue(false);
+    mockPrisma.documentGenere.findMany.mockResolvedValue([
+      {
+        id: "d1",
+        type: "convocation",
+        numero: "AXI-DOC-2026-001",
+        createdAt: new Date("2026-09-01T10:00:00Z"),
+        sessionId: null,
+      },
+    ]);
+    vi.mocked(joindreFichiersPiecesCompetence).mockImplementationOnce(
+      async (zip, index, avertissements) => {
+        zip.file("formateurs/ada/cv.png", Buffer.from("png"));
+        index.push("[OK]  formateurs/ada/cv.png");
+        avertissements.push("⚠️ 2 pièces de compétence non jointes");
+        return { nbInclus: 1, nbOmis: 2, lignesManifeste: ["1/3 pièces jointes"] };
+      },
+    );
+    try {
+      const result = await genererDossierAuditZip();
+      const zip = await JSZip.loadAsync(result.base64, { base64: true });
+      const index = (await zip.file("index.txt")?.async("string")) ?? "";
+      const resume = index.split("\n").find((l) => l.startsWith("Résumé :")) ?? "";
+      // 1 pièce du registre omise (R2 absent) + 2 pièces de l'ind. 21 = 3 omis.
+      expect(resume).toMatch(/ 3 omis\.$/);
+      expect(resume).toMatch(/fichiers? inclus/);
+      expect(resume).not.toMatch(/PDF/);
+    } finally {
+      mockIsR2Configured.mockReturnValue(true);
+    }
   });
 
   it("manifeste.json dans le ZIP est un JSON valide avec meta.version = 'RNQ-V9'", async () => {

@@ -103,7 +103,9 @@ function SuperStar({ marge = true }: { marge?: boolean }): React.ReactElement {
     <span
       title={SENS_ETOILE}
       role="img"
-      className={`${marge ? "ml-1" : ""}text-[color:var(--color-admin-destructive)]`}
+      className={[marge ? "ml-1" : null, "text-[color:var(--color-admin-destructive)]"]
+        .filter((c) => c !== null)
+        .join(" ")}
       aria-label={SENS_ETOILE}
     >
       <Star
