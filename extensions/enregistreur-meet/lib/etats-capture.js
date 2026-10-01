@@ -150,8 +150,23 @@ export function accordObtenu(etat, maintenantMs) {
   if (maintenantMs - etat.debutMs > DELAIS_LOCAUX.accordMaxMs) {
     return detruire(etat, "accord_hors_delai");
   }
+  // V2, N6 — l'accord ne couvre que les PRÉSENTS au clic. Une personne passée
+  // pendant l'attente puis repartie (pointe au-dessus du compte présent) : son
+  // passage devient une fenêtre hors accord, jamais transcrite.
+  const presents = etat.nbParticipants;
+  const p = etat.pointeAvantAccord;
+  const passage =
+    p && p.nb > presents
+      ? [{ debutMs: p.debutMs, finMs: p.finMs ?? maintenantMs - etat.debutMs }]
+      : [];
   return {
-    etat: { ...etat, phase: "en_cours", accordMs: maintenantMs },
+    etat: {
+      ...etat,
+      phase: "en_cours",
+      accordMs: maintenantMs,
+      participantsAccordes: presents,
+      fenetresHorsAccord: [...(etat.fenetresHorsAccord ?? []), ...passage],
+    },
     actions: [
       { type: "declarer_accord", accordLe: maintenantMs, nouvellePersonne: false },
       { type: "vider_file" },
@@ -312,6 +327,23 @@ export function tic(etat, mesure, maintenantMs) {
   // 3. Participants.
   if (mesure.nbParticipants >= PARTICIPANTS_LIMITE_MEET) badges.add("limite_meet");
   e.nbParticipants = mesure.nbParticipants;
+  if (e.phase === "accord_en_attente") {
+    // V2, N6 — la POINTE de participants avant l'accord : arrivée (une période
+    // de mesure plus tôt), départ ; relue au clic « Accord obtenu ».
+    const rel = maintenantMs - e.debutMs;
+    const pointe = e.pointeAvantAccord ?? null;
+    if (pointe === null || mesure.nbParticipants > pointe.nb) {
+      e.pointeAvantAccord = {
+        nb: mesure.nbParticipants,
+        debutMs: Math.max(0, rel - PERIODE_MESURE_SALLE_MS),
+        finMs: null,
+      };
+    } else if (mesure.nbParticipants < pointe.nb && pointe.finMs === null) {
+      e.pointeAvantAccord = { ...pointe, finMs: rel };
+    } else if (mesure.nbParticipants === pointe.nb && pointe.finMs !== null) {
+      e.pointeAvantAccord = { ...pointe, finMs: null };
+    }
+  }
   if (e.phase === "en_cours" && mesure.nbParticipants > e.participantsAccordes) {
     if (e.nouvellePersonneDepuisMs === null) {
       // RGPD-01 : la fenêtre hors accord s'ouvre à l'ARRIVÉE, pas à la coupure.
