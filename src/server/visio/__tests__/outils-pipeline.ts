@@ -106,7 +106,8 @@ export function portTranscription(
     e === null ? [] : Array.isArray(e) ? e : [e as EnregistrementATraiter];
   const ecrits: Array<{ trancheId: string; segments: readonly SegmentAEcrire[] }> = [];
   const journal: string[] = [];
-  const port: Partial<PortDonnees> = {
+  // Modifiable : un test remplace une méthode pour simuler un cas.
+  const port: { -readonly [K in keyof PortDonnees]?: PortDonnees[K] } = {
     aTranscrire: async () => liste,
     lireSonTranche: async (id) => {
       journal.push(`lire:${id}`);

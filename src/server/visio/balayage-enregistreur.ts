@@ -206,11 +206,12 @@ export async function balayerEnregistreur(
   for (const a of appareils) {
     // V2, N2 — une copie sans RGPD-01 sur un appareil valide : le site refuse
     // ses visios ; Will doit recopier l'extension avant le prochain appel.
+    const version = a.versionExtension ?? null;
     const tropAncienne =
       a.revoqueLe === null &&
       a.expireLe.getTime() > maintenant.getTime() &&
-      typeof a.versionExtension === "string" &&
-      !versionAccepteePourVisio(a.versionExtension);
+      version !== null &&
+      !versionAccepteePourVisio(version);
     if (tropAncienne) {
       const envoyee = await signaler(
         db,
@@ -220,7 +221,7 @@ export async function balayerEnregistreur(
           code: CODES_ALERTES_VISIO.extensionTropAncienne,
           cibleId: a.id,
           titre: "Visio : l'extension du poste est trop ancienne pour enregistrer",
-          message: `Constaté le ${jour} : version ${a.versionExtension.slice(0, 20)} sur le poste, les visios seront refusées. Recopiez l'extension à jour puis rechargez-la dans Chrome.`,
+          message: `Constaté le ${jour} : version ${(version ?? "").slice(0, 20)} sur le poste, les visios seront refusées. Recopiez l'extension à jour puis rechargez-la dans Chrome.`,
         },
         maintenant,
       );
