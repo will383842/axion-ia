@@ -97,7 +97,9 @@ describe("les documents du projet sont gardés comme le dossier", () => {
     }
     expect(Object.keys(actions).length).toBeGreaterThanOrEqual(3);
     expect(etat.lu).toBe(0);
-  });
+    // Charger `actions.ts` (Sentry, Prisma, ClamAV…) dépasse les 5 s par défaut sur
+    // un runner de CI : sans ce délai, le test expirait AVANT de prouver le refus.
+  }, 30_000);
 
   it("contre-témoin : le détecteur voit une action qui lit d'abord le formulaire", () => {
     const fautive = `export async function x(formData: FormData): Promise<void> {

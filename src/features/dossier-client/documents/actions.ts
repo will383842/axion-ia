@@ -49,9 +49,11 @@ const NATURES = [
   "autre",
 ] as const;
 
-const ajoutSchema = z.object({
-  clientId: z.string().uuid(),
-  projetId: z.string().uuid(),
+/** Les identifiants seuls : sans eux, aucune page de retour (requête forgée → erreur). */
+const idsSchema = z.object({ clientId: z.string().uuid(), projetId: z.string().uuid() });
+
+/** Les champs saisis : une valeur refusée revient en message sur la page, jamais en page d'erreur. */
+const champsSchema = z.object({
   cote: z.enum(["envoye_au_client", "interne"]),
   nature: z.union([z.literal("deviner"), z.enum(NATURES)]),
   titre: z.string().max(1000),
@@ -93,29 +95,31 @@ function fichierChoisi(formData: FormData): File | null {
 /** Formulaire « Ajouter le document » : un lien OU un fichier. */
 export async function ajouterDocumentFormAction(formData: FormData): Promise<void> {
   const { userId } = await exigerAccesEchanges();
-  const v = ajoutSchema.parse({
+  const v = idsSchema.parse({
     clientId: texte(formData, "clientId"),
     projetId: texte(formData, "projetId"),
-    cote: texte(formData, "cote") || "envoye_au_client",
-    nature: texte(formData, "nature") || "deviner",
-    titre: texte(formData, "titre"),
-    envoyeLe: texte(formData, "envoyeLe"),
-    lien: texte(formData, "lien"),
   });
-  const fichier = fichierChoisi(formData);
-  const lien = v.lien.trim();
-  const commun = {
-    clientId: v.clientId,
-    projetId: v.projetId,
-    cote: v.cote,
-    nature: v.nature === "deviner" ? null : v.nature,
-    titre: v.titre,
-    envoyeLe: v.envoyeLe || null,
-    parAdminId: userId,
-  };
 
   let ajoute: { id: string };
   try {
+    const c = champsSchema.parse({
+      cote: texte(formData, "cote") || "envoye_au_client",
+      nature: texte(formData, "nature") || "deviner",
+      titre: texte(formData, "titre"),
+      envoyeLe: texte(formData, "envoyeLe"),
+      lien: texte(formData, "lien"),
+    });
+    const fichier = fichierChoisi(formData);
+    const lien = c.lien.trim();
+    const commun = {
+      clientId: v.clientId,
+      projetId: v.projetId,
+      cote: c.cote,
+      nature: c.nature === "deviner" ? null : c.nature,
+      titre: c.titre,
+      envoyeLe: c.envoyeLe || null,
+      parAdminId: userId,
+    };
     if (lien !== "" && fichier !== null) throw new ErreurDocument(MESSAGES_DOCUMENT.lienEtFichier);
     if (lien === "" && fichier === null)
       throw new ErreurDocument(MESSAGES_DOCUMENT.niLienNiFichier);
@@ -140,9 +144,13 @@ export async function ajouterDocumentFormAction(formData: FormData): Promise<voi
         });
       }
       message = e.message;
+    } else if (e instanceof z.ZodError) {
+      message =
+        "Un champ du formulaire n'est pas reconnu (groupe, nature, titre ou date). " +
+        "Vérifiez-les, puis réessayez.";
     } else {
-      const generique = messageAffichable(e);
-      message = generique === "Demande incomplète." ? generique : MESSAGES_DOCUMENT.echecImprevu;
+      messageAffichable(e); // journal serveur ; jamais le texte technique dans l'URL
+      message = MESSAGES_DOCUMENT.echecImprevu;
     }
     redirect(retour(v.clientId, v.projetId, "erreur", message));
   }

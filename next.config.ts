@@ -238,8 +238,12 @@ const nextConfig: NextConfig = {
       // Candidature emploi : upload CV (≤ 8 Mo) en multipart Server Action.
       // Défaut Next = 1 Mo → relevé à 10 Mo (marge headers/champs au-delà du fichier).
       // ADR 0063 (documents du projet, 2026-10-01) : 16 Mo — un fichier de 15 Mo
-      // au plus + l'enveloppe multipart. Réglage global de Next (inévitable sans
-      // route dédiée) ; les actions publiques restent filtrées par `allowedOrigins`.
+      // au plus + l'enveloppe multipart. Réglage GLOBAL de Next (inévitable sans
+      // route dédiée) : TOUTE action serveur accepte désormais 16 Mo de corps.
+      // ⚠️ `allowedOrigins` ne protège PAS de cela : il compare l'en-tête `Origin`
+      // à `Host`, ce qui arrête une requête croisée d'un NAVIGATEUR, pas un client
+      // hors navigateur (curl, script), qui pose l'`Origin` qu'il veut. Le seul
+      // rempart d'une action reste sa propre garde (session, rôle, validation).
       bodySizeLimit: "16mb",
     },
     // ADR 0063 — la page du projet passe par `src/proxy.ts`, qui met le corps

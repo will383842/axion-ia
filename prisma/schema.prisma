@@ -14250,6 +14250,9 @@ enum CibleEffacement {
   rencontres
   /// Projet supprimé (`projets.id`).
   projets
+  /// ADR 0063 — document d'un projet du pilote supprimé avec son contenu
+  /// (`documents_projet.id`), sous le drapeau d'effacement.
+  documents_projet
 
   @@map("cible_effacement")
 }

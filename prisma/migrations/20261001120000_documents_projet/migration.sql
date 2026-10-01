@@ -5,6 +5,10 @@
 --   · cinq énumérations neuves ;
 --   · quatre VALEURS ajoutées à `projet_evenement_action` (le journal du
 --     projet, réutilisé : ajout, archivage, réaffichage, téléchargement) ;
+--   · une VALEUR ajoutée à `cible_effacement` (`documents_projet` : la purge
+--     des données du pilote supprime, sous le drapeau, les documents de ses
+--     projets et les journalise, pour que le rejeu après restauration les
+--     resupprime) ;
 --   · une colonne NULLABLE `projet_evenements.document_id` (sans clé
 --     étrangère : le journal survit à tout) ;
 --   · trois tables neuves, `documents_projet` (métadonnées),
@@ -78,6 +82,9 @@ ALTER TYPE "projet_evenement_action" ADD VALUE 'document_ajoute';
 ALTER TYPE "projet_evenement_action" ADD VALUE 'document_archive';
 ALTER TYPE "projet_evenement_action" ADD VALUE 'document_reaffiche';
 ALTER TYPE "projet_evenement_action" ADD VALUE 'document_telecharge';
+
+-- AlterEnum
+ALTER TYPE "cible_effacement" ADD VALUE 'documents_projet';
 
 -- AlterTable
 ALTER TABLE "projet_evenements" ADD COLUMN     "document_id" UUID;

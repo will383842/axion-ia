@@ -154,7 +154,8 @@ describe("la page partagée n'atteint jamais le site", () => {
     // Contre-témoin : ailleurs, la règle générale s'applique toujours.
     const ailleurs = reponseServie(regles, "/fr/contact", {});
     expect(ailleurs.get("referrer-policy")).toEqual(["strict-origin-when-cross-origin"]);
-  });
+    // Charger `next.config.ts` dépasse 5 s sur une suite chargée.
+  }, 30_000);
 
   it("le matcher du proxy exclut `document/`, et seulement lui", () => {
     const source = readFileSync(path.join(process.cwd(), "src/proxy.ts"), "utf8");

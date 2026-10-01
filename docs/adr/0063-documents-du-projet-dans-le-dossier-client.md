@@ -50,7 +50,7 @@ Le **transport** limite la taille avant la base : `serverActions.bodySizeLimit` 
 
 Triggers `documents_projet_immuable` et `documents_projet_contenus_immuable` : ni `DELETE` ni `UPDATE`, sauf l'archivage (`archive_le`, `archive_par_id`), le verdict antivirus (une seule fois, depuis `non_analyse`) et `client_id` (cascade d'une fusion). `TRUNCATE` refusé sur les deux tables. Une nouvelle version est **un nouveau document**.
 
-Seule exception : le drapeau de session `axion.effacement_rgpd`, posé en `SET LOCAL` par `src/lib/rgpd-erase.ts` seul — la même porte que pour les faits et les preuves d'accord. Aucun code ne l'utilise pour ces tables aujourd'hui ; elle existe pour qu'une demande d'effacement légitime reste possible à la main.
+Seule exception : le drapeau de session `axion.effacement_rgpd`, posé en `SET LOCAL` par `src/lib/rgpd-erase.ts` seul — la même porte que pour les faits et les preuves d'accord. Un seul code l'utilise pour ces tables (_amendement du 01/10, relectures sécurité et exactitude de #1259_) : la **purge des données du pilote** (`supprimerDonneesPilote`, reprise par `purgerPilote` et `rejouerEffacements`). `projets` étant RESTRICT envers les documents, la purge supprime, sous le drapeau et dans la même transaction, les octets, puis les documents des projets de test, puis les projets ; chaque document est journalisé (`effacements_journal`, cible `documents_projet`, motif `pilote`) pour que le rejeu après restauration le resupprime. Sans cela, la purge et le rejeu échouaient dès qu'un projet de test portait un document. Hors de ce chemin, une demande d'effacement visant une pièce reste traitée à la main, sous le même drapeau.
 
 Archiver = masquer par défaut ; « Afficher les documents archivés » les rend visibles ; « Réafficher » les remet dans la liste.
 
@@ -91,7 +91,7 @@ Fenêtre de déploiement : l'application N-1 encore debout après la migration l
 
 ### D10. RGPD
 
-Les deux modèles portent `rgpd: dossier-client` et sont **déclarés** (pas tus) : exclus de l'export automatique (`EXCLUSIONS_EXPORT_DOSSIER` : pièces d'entreprise citant des tiers, réponse manuelle) et en exception de l'effacement automatique (`EXCEPTIONS_EFFACEMENT_DOSSIER` : aucune colonne ne les rattache à une personne ; traitement manuel sous le drapeau).
+Les deux modèles portent `rgpd: dossier-client` et sont **déclarés** (pas tus) : exclus de l'export automatique (`EXCLUSIONS_EXPORT_DOSSIER` : pièces d'entreprise citant des tiers, réponse manuelle) et en exception de l'effacement automatique (`EXCEPTIONS_EFFACEMENT_DOSSIER` : aucune colonne ne les rattache à une personne ; traitement manuel sous le drapeau), à une exception près : ceux des projets du pilote partent avec eux par la purge du pilote et son rejeu (voir D5).
 
 ### D11. Build
 

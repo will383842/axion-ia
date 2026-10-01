@@ -28,5 +28,6 @@ describe("la limite de corps laisse passer quinze Mo", () => {
     expect(config.experimental?.serverActions?.bodySizeLimit).toBe("16mb");
     expect(config.experimental?.proxyClientMaxBodySize).toBe("16mb");
     expect(16 * 1024 * 1024).toBeGreaterThan(TAILLE_MAX_FICHIER_OCTETS);
-  });
+    // Charger `next.config.ts` (Sentry, next-intl…) dépasse 5 s sur une suite chargée.
+  }, 30_000);
 });

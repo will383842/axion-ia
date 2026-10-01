@@ -120,8 +120,18 @@ type Db = {
       select: { id: true };
     }): Promise<{ id: string } | null>;
   };
-  $transaction<T>(fn: (tx: Prisma.TransactionClient) => Promise<T>): Promise<T>;
+  $transaction<T>(
+    fn: (tx: Prisma.TransactionClient) => Promise<T>,
+    options?: { readonly maxWait?: number; readonly timeout?: number },
+  ): Promise<T>;
 };
+
+/**
+ * Délai de la transaction d'écriture : 15 Mo d'octets, puis l'empreinte et la
+ * taille RECALCULÉES par la base au COMMIT (trigger différé). Le défaut de
+ * Prisma (5 s) n'y suffit pas sur un serveur chargé.
+ */
+const DELAI_TRANSACTION_MS = 30_000;
 
 /** La date du jour à Paris, `AAAA-MM-JJ`. */
 export function aujourdhuiAParis(maintenant: Date = new Date()): string {
@@ -184,26 +194,29 @@ async function ecrire(
   donnees: Omit<Prisma.DocumentProjetUncheckedCreateInput, "clientId" | "projetId" | "ajouteParId">,
 ): Promise<{ id: string }> {
   try {
-    return await db.$transaction(async (tx) => {
-      const doc = await tx.documentProjet.create({
-        data: {
-          ...donnees,
-          clientId: e.clientId,
-          projetId: e.projetId,
-          ajouteParId: e.parAdminId,
-        },
-        select: { id: true },
-      });
-      await tx.projetEvenement.create({
-        data: {
-          projetId: e.projetId,
-          action: "document_ajoute",
-          documentId: doc.id,
-          parAdminId: e.parAdminId,
-        },
-      });
-      return { id: doc.id };
-    });
+    return await db.$transaction(
+      async (tx) => {
+        const doc = await tx.documentProjet.create({
+          data: {
+            ...donnees,
+            clientId: e.clientId,
+            projetId: e.projetId,
+            ajouteParId: e.parAdminId,
+          },
+          select: { id: true },
+        });
+        await tx.projetEvenement.create({
+          data: {
+            projetId: e.projetId,
+            action: "document_ajoute",
+            documentId: doc.id,
+            parAdminId: e.parAdminId,
+          },
+        });
+        return { id: doc.id };
+      },
+      { timeout: DELAI_TRANSACTION_MS },
+    );
   } catch (err) {
     return traduireErreurBase(err);
   }

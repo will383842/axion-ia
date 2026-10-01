@@ -416,6 +416,35 @@ describe("documents_projet contre un vrai Postgres (Gate D)", () => {
     });
   });
 
+  it("34. purge du pilote : sans drapeau le projet ne part pas ; sous le drapeau, octets puis documents puis projet partent, aucun octet ne reste", async () => {
+    await dansTransactionAnnulee(async (tx) => {
+      await scene(tx);
+      expect(await essayer(tx, sqlFichier(), sqlContenu())).toBe("accepte");
+      // L'ordre de `supprimerDonneesPilote` (src/lib/rgpd-erase.ts), SANS le drapeau : refusé.
+      const purge: Array<[string, ...unknown[]]> = [
+        [
+          `DELETE FROM "documents_projet_contenus" WHERE "document_id" IN
+             (SELECT "id" FROM "documents_projet" WHERE "projet_id" = $1::uuid)`,
+          PROJET_A,
+        ],
+        [`DELETE FROM "documents_projet" WHERE "projet_id" = $1::uuid`, PROJET_A],
+        [`DELETE FROM "projets" WHERE "id" = $1::uuid`, PROJET_A],
+      ];
+      expect(await essayer(tx, ...purge)).not.toBe("accepte");
+      expect(await essayer(tx, [`DELETE FROM "projets" WHERE "id" = $1::uuid`, PROJET_A])).not.toBe(
+        "accepte",
+      );
+      // Sous le drapeau (posé par `executerSousDrapeauEffacement`), dans la même transaction.
+      await tx.$executeRawUnsafe(`SELECT set_config('axion.effacement_rgpd', 'on', true)`);
+      expect(await essayer(tx, ...purge)).toBe("accepte");
+      const [n] = await tx.$queryRawUnsafe<Array<{ n: number }>>(
+        `SELECT (SELECT count(*) FROM "documents_projet_contenus")::int
+              + (SELECT count(*) FROM "documents_projet")::int AS n`,
+      );
+      expect(n?.n).toBe(0);
+    });
+  });
+
   it("la garde de dérive, lue dans le catalogue, est vide — et rougit sans un trigger", async () => {
     await dansTransactionAnnulee(async (tx) => {
       const lire = async (): Promise<ObjetPresent[]> => [
