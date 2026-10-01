@@ -18,6 +18,13 @@ import {
   MOTIF_PREUVES_MIN,
   refusEstRattrapableParMotif,
 } from "@/server/qualiopi/evaluations/refus-attestation";
+import { useDossierFige } from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
+
+/**
+ * Seuil du motif de RECTIFICATION — le même que le schéma serveur
+ * (`genererAttestationSchema.rectificationMotif`, 10 caractères après `trim`).
+ */
+export const MOTIF_RECTIFICATION_ATTESTATION_MIN = 10;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types props
@@ -33,6 +40,11 @@ export interface GenererAttestationButtonProps {
   genererAction: (input: {
     enrollmentId: string;
     force?: boolean;
+    /**
+     * 🔴 ADR 0060 (D7) — une régénération forcée est une RECTIFICATION : le
+     * serveur refuse `force` sans ce motif. Il est porté au registre.
+     */
+    rectificationMotif?: string;
     /**
      * 🔴 La SOUPAPE. Sans elle, ce bouton ne pouvait plus rien produire dès que
      * la garde des preuves refusait — et l'attestation est DUE au stagiaire.
@@ -72,6 +84,9 @@ export function GenererAttestationButton({
   dejaGeneree,
   genererAction,
 }: GenererAttestationButtonProps): React.ReactElement {
+  // ADR 0060 — dossier clos : régénérer est refusé (écriture VERROU). La
+  // première émission reste possible, mais un dossier clos n'en attend plus.
+  const fige = useDossierFige();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -81,15 +96,30 @@ export function GenererAttestationButton({
   // transformerait une génération ordinaire en cérémonie.
   const [motifOuvert, setMotifOuvert] = useState(false);
   const [motif, setMotif] = useState("");
+  // D7 — « Regénérer (forcer) » ne part JAMAIS sans son motif de rectification.
+  const [rectificationOuverte, setRectificationOuverte] = useState(false);
+  const [motifRectification, setMotifRectification] = useState("");
+  const motifRectificationValide =
+    motifRectification.trim().length >= MOTIF_RECTIFICATION_ATTESTATION_MIN;
 
-  function handleGenerer(force = false) {
+  /**
+   * @param regenerer vrai pour RECTIFIER une attestation déjà émise : `force` ne
+   *        part alors qu'accompagné du motif de rectification. Faux pour une
+   *        première émission — la soupape des preuves n'est pas une
+   *        régénération et ne doit pas se faire refuser comme telle.
+   */
+  function handleGenerer(regenerer: boolean) {
     setError(null);
     setResultat(null);
+    if (regenerer && !motifRectificationValide) {
+      setRectificationOuverte(true);
+      return;
+    }
 
     startTransition(async () => {
       const result = await genererAction({
         enrollmentId,
-        ...(force ? { force: true } : {}),
+        ...(regenerer ? { force: true, rectificationMotif: motifRectification.trim() } : {}),
         ...(motif.trim().length >= MOTIF_PREUVES_MIN
           ? { motifPreuvesManquantes: motif.trim() }
           : {}),
@@ -107,6 +137,8 @@ export function GenererAttestationButton({
         if (refusEstRattrapableParMotif(result.error)) setMotifOuvert(true);
       } else {
         setResultat(result.data.resultat);
+        setRectificationOuverte(false);
+        setMotifRectification("");
         router.refresh();
       }
     });
@@ -126,16 +158,65 @@ export function GenererAttestationButton({
         </button>
       )}
 
-      {/* Bouton forcer si déjà générée */}
-      {dejaGeneree && (
+      {/* Bouton forcer si déjà générée — il OUVRE le motif, il ne part pas seul. */}
+      {dejaGeneree && !fige && !rectificationOuverte && (
         <button
           type="button"
-          onClick={() => handleGenerer(true)}
+          onClick={() => setRectificationOuverte(true)}
           disabled={isPending}
           className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] hover:border-[color:var(--color-admin-accent)] hover:text-[color:var(--color-admin-accent)] disabled:opacity-50"
         >
           {isPending ? "Génération…" : "Regénérer (forcer)"}
         </button>
+      )}
+
+      {dejaGeneree && !fige && rectificationOuverte && (
+        <div className="flex w-full flex-col gap-[var(--space-admin-1)]">
+          <label
+            className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+            htmlFor={`motif-rectification-${enrollmentId}`}
+          >
+            Motif de la rectification (obligatoire) : l&apos;attestation déjà émise sera remplacée,
+            et ce motif est porté au registre, lu par l&apos;auditeur.
+          </label>
+          <textarea
+            id={`motif-rectification-${enrollmentId}`}
+            value={motifRectification}
+            onChange={(e) => setMotifRectification(e.target.value)}
+            rows={2}
+            required
+            minLength={MOTIF_RECTIFICATION_ATTESTATION_MIN}
+            maxLength={500}
+            disabled={isPending}
+            placeholder="Ex. : taux de présence corrigé après import du relevé de connexion du 12/09."
+            className="admin-input"
+          />
+          <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            {motifRectification.trim().length} / {MOTIF_RECTIFICATION_ATTESTATION_MIN} caractères au
+            minimum
+          </p>
+          <div className="flex gap-[var(--space-admin-2)] self-end">
+            <button
+              type="button"
+              onClick={() => {
+                setRectificationOuverte(false);
+                setMotifRectification("");
+              }}
+              disabled={isPending}
+              className="admin-button-ghost"
+            >
+              Annuler
+            </button>
+            <button
+              type="button"
+              onClick={() => handleGenerer(true)}
+              disabled={isPending || !motifRectificationValide}
+              className="admin-button"
+            >
+              {isPending ? "Génération…" : "Regénérer avec ce motif"}
+            </button>
+          </div>
+        </div>
       )}
 
       {/* Résultat */}
@@ -171,8 +252,12 @@ export function GenererAttestationButton({
           />
           <button
             type="button"
-            onClick={() => handleGenerer(true)}
-            disabled={isPending || motif.trim().length < MOTIF_PREUVES_MIN}
+            onClick={() => handleGenerer(dejaGeneree)}
+            disabled={
+              isPending ||
+              motif.trim().length < MOTIF_PREUVES_MIN ||
+              (dejaGeneree && !motifRectificationValide)
+            }
             className="admin-button self-end"
           >
             {isPending ? "Génération…" : "Attester en assumant les manques"}

@@ -13,6 +13,18 @@ import {
   setEnrollmentFinancementAction,
 } from "@/server/actions/qualiopi/inter-entreprises";
 import { genererFactureParInscriptionAction } from "@/server/actions/qualiopi/factures-inter";
+import {
+  MentionDossierClos,
+  useDossierFige,
+} from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
+
+const FINANCEMENT_LIBELLE: Record<Financement, string> = {
+  direct: "Direct (employeur)",
+  opco: "OPCO",
+  cpf: "CPF (dispositif retiré)",
+  france_travail: "France Travail",
+  mixte: "Mixte",
+};
 
 type Financement = "direct" | "opco" | "cpf" | "france_travail" | "mixte";
 
@@ -43,6 +55,7 @@ function EnrollmentRow({
   row: InterEnrollmentRow;
   clients: Array<{ id: string; label: string }>;
 }): React.ReactElement {
+  const fige = useDossierFige();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [msg, setMsg] = useState<string | null>(null);
@@ -92,95 +105,119 @@ function EnrollmentRow({
   return (
     <div className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-3)]">
       <div className="mb-[var(--space-admin-2)] font-medium">{row.traineeNom}</div>
-      <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
-        <select
-          value={financementType}
-          onChange={(e) => setFinancementType(e.target.value)}
-          disabled={isPending}
-          className={inputCls}
-          aria-label="Financement du stagiaire"
-        >
-          <option value="">— Financement —</option>
-          <option value="direct">Direct (employeur)</option>
-          <option value="opco">OPCO</option>
-          {/* 🔴 CPF a été retiré de la vente le 2026-07-04, mais des
+      {/* ADR 0060 — dossier clos : le financement de l'inscrit est figé (écriture
+          VERROU) ; la facture par inscrit reste possible (suivi financier). */}
+      {fige ? (
+        <div className="flex flex-wrap items-center gap-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
+          <span>
+            {row.financementType !== null
+              ? FINANCEMENT_LIBELLE[row.financementType]
+              : "Financement non renseigné"}
+            {" · "}
+            {clients.find((c) => c.id === row.clientId)?.label ?? "payeur non renseigné"}
+            {row.montantHtEuros != null ? ` · ${row.montantHtEuros} € HT` : ""}
+            {row.numeroDossierOpco ? ` · dossier OPCO ${row.numeroDossierOpco}` : ""}
+          </span>
+          <button
+            type="button"
+            onClick={genererFacture}
+            disabled={isPending}
+            className="admin-button"
+          >
+            Générer facture
+          </button>
+        </div>
+      ) : (
+        <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+          <select
+            value={financementType}
+            onChange={(e) => setFinancementType(e.target.value)}
+            disabled={isPending}
+            className={inputCls}
+            aria-label="Financement du stagiaire"
+          >
+            <option value="">— Financement —</option>
+            <option value="direct">Direct (employeur)</option>
+            <option value="opco">OPCO</option>
+            {/* 🔴 CPF a été retiré de la vente le 2026-07-04, mais des
               dossiers l'ont en base : pour eux le <select> ne trouvait
               AUCUNE option correspondante et s'affichait VIDE. Un simple
               « Enregistrer » réécrivait alors le dispositif en silence.
               L'option reste donc listée, non sélectionnable : on ne peut
               plus la choisir, on ne peut plus la perdre. */}
-          <option value="cpf" disabled>
-            CPF (dispositif retiré)
-          </option>
-          <option value="france_travail">France Travail</option>
-          <option value="mixte">Mixte</option>
-        </select>
-        <select
-          value={clientId}
-          onChange={(e) => setClientId(e.target.value)}
-          disabled={isPending}
-          className={inputCls}
-          aria-label="Payeur (employeur)"
-        >
-          <option value="">— Payeur —</option>
-          {clients.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.label}
+            <option value="cpf" disabled>
+              CPF (dispositif retiré)
             </option>
-          ))}
-        </select>
-        {/* 🔴 Ce champ n'avait qu'un placeholder — « Prix siège € HT » — qui
+            <option value="france_travail">France Travail</option>
+            <option value="mixte">Mixte</option>
+          </select>
+          <select
+            value={clientId}
+            onChange={(e) => setClientId(e.target.value)}
+            disabled={isPending}
+            className={inputCls}
+            aria-label="Payeur (employeur)"
+          >
+            <option value="">— Payeur —</option>
+            {clients.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.label}
+              </option>
+            ))}
+          </select>
+          {/* 🔴 Ce champ n'avait qu'un placeholder — « Prix siège € HT » — qui
             disparaît dès la première frappe. L'utilisateur ne savait alors plus
             si le montant saisi était HT ou TTC. L'aria-label servait le lecteur
             d'écran, pas l'œil. */}
-        <label className="flex flex-col gap-[var(--space-admin-1)]">
-          <span className="admin-meta-small">Prix du siège (€ HT)</span>
-          <input
-            type="number"
-            min={0}
-            step="0.01"
-            value={montant}
-            onChange={(e) => setMontant(e.target.value)}
-            disabled={isPending}
-            placeholder="Ex. 1 200"
-            className={`${inputCls} w-32`}
-          />
-        </label>
-        {financementType === "opco" && (
-          <input
-            aria-label="N° dossier OPCO"
-            value={numeroDossierOpco}
-            onChange={(e) => setNumeroDossierOpco(e.target.value)}
-            disabled={isPending}
-            placeholder="N° dossier OPCO"
-            maxLength={60}
-            className={inputCls}
-          />
-        )}
-        {financementType === "cpf" && (
-          <label className="flex items-center gap-[var(--space-admin-1)] text-[length:var(--text-admin-sm)]">
+          <label className="flex flex-col gap-[var(--space-admin-1)]">
+            <span className="admin-meta-small">Prix du siège (€ HT)</span>
             <input
-              type="checkbox"
-              checked={edofVerifie}
-              onChange={(e) => setEdofVerifie(e.target.checked)}
+              type="number"
+              min={0}
+              step="0.01"
+              value={montant}
+              onChange={(e) => setMontant(e.target.value)}
               disabled={isPending}
-              className="h-4 w-4 accent-[color:var(--color-admin-accent)]"
+              placeholder="Ex. 1 200"
+              className={`${inputCls} w-32`}
             />
-            EDOF vérifié
           </label>
-        )}
-        <button type="button" onClick={save} disabled={isPending} className="admin-button">
-          {isPending ? "…" : "Enregistrer"}
-        </button>
-        <button
-          type="button"
-          onClick={genererFacture}
-          disabled={isPending}
-          className="admin-button"
-        >
-          Générer facture
-        </button>
-      </div>
+          {financementType === "opco" && (
+            <input
+              aria-label="N° dossier OPCO"
+              value={numeroDossierOpco}
+              onChange={(e) => setNumeroDossierOpco(e.target.value)}
+              disabled={isPending}
+              placeholder="N° dossier OPCO"
+              maxLength={60}
+              className={inputCls}
+            />
+          )}
+          {financementType === "cpf" && (
+            <label className="flex items-center gap-[var(--space-admin-1)] text-[length:var(--text-admin-sm)]">
+              <input
+                type="checkbox"
+                checked={edofVerifie}
+                onChange={(e) => setEdofVerifie(e.target.checked)}
+                disabled={isPending}
+                className="h-4 w-4 accent-[color:var(--color-admin-accent)]"
+              />
+              EDOF vérifié
+            </label>
+          )}
+          <button type="button" onClick={save} disabled={isPending} className="admin-button">
+            {isPending ? "…" : "Enregistrer"}
+          </button>
+          <button
+            type="button"
+            onClick={genererFacture}
+            disabled={isPending}
+            className="admin-button"
+          >
+            Générer facture
+          </button>
+        </div>
+      )}
       {error && (
         <p
           role="alert"
@@ -207,6 +244,7 @@ export function InterEntreprisesSection({
   enrollments,
   clients,
 }: InterEntreprisesSectionProps): React.ReactElement {
+  const fige = useDossierFige();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -225,16 +263,27 @@ export function InterEntreprisesSection({
 
   return (
     <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
-      <label className="flex cursor-pointer items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-        <input
-          type="checkbox"
-          checked={interEntreprises}
-          onChange={toggle}
-          disabled={isPending}
-          className="h-4 w-4 accent-[color:var(--color-admin-accent)]"
-        />
-        Session inter-entreprises (financement &amp; facture par participant)
-      </label>
+      {fige ? (
+        <>
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+            {interEntreprises
+              ? "Session inter-entreprises : financement et facture par participant."
+              : "Session intra-entreprise."}
+          </p>
+          <MentionDossierClos className="mt-[var(--space-admin-1)]" />
+        </>
+      ) : (
+        <label className="flex cursor-pointer items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+          <input
+            type="checkbox"
+            checked={interEntreprises}
+            onChange={toggle}
+            disabled={isPending}
+            className="h-4 w-4 accent-[color:var(--color-admin-accent)]"
+          />
+          Session inter-entreprises (financement &amp; facture par participant)
+        </label>
+      )}
 
       {error && (
         <p

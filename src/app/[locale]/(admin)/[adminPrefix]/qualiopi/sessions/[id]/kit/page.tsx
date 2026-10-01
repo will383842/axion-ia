@@ -14,14 +14,9 @@
  */
 
 import type { Metadata } from "next";
-import Link from "next/link";
-import { notFound } from "next/navigation";
 
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
-import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
-import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
-import { prisma } from "@/lib/prisma";
 import { lirePreparation, lireSortiesSession } from "@/server/qualiopi/kit-session/preparation";
 import { PreparationKitSession } from "@/components/admin/qualiopi/PreparationKitSession";
 import { genererSortiesAction, validerSortiesAction } from "@/server/actions/qualiopi/kit-session";
@@ -47,29 +42,21 @@ export default async function Page({
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
-  const infos = await prisma.trainingSession.findUnique({
-    where: { id },
-    select: { titreSession: true, numero: true },
-  });
-  if (infos === null) notFound();
-
   const prep = await lirePreparation(id);
   const sorties = await lireSortiesSession(id);
   const base = `/${locale}/${adminPrefix}/qualiopi/sessions/${id}`;
 
   return (
-    <AdminPageShell>
-      <AdminPageHeader
-        title={`Sorties de démonstration — ${infos.titreSession}`}
-        description={`Session ${infos.numero}. Lisez chaque sortie sous la demande qui l'a produite : c'est ce que le formateur aura entre les mains si l'outil tombe en salle.`}
-      />
-
-      <Link
-        href={base}
-        className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline"
-      >
-        ← Retour à la session
-      </Link>
+    <>
+      {/* L2 — fil d'Ariane, retour à la fiche et en-tête : `sessions/[id]/layout.tsx`.
+          La session introuvable y est aussi traitée (404). */}
+      <h2 className="mb-[var(--space-admin-1)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+        Sorties de démonstration
+      </h2>
+      <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+        Lisez chaque sortie sous la demande qui l&apos;a produite : c&apos;est ce que le formateur
+        aura entre les mains si l&apos;outil tombe en salle.
+      </p>
 
       <div className="mt-[var(--space-admin-4)]">
         {prep !== null ? (
@@ -128,6 +115,6 @@ export default async function Page({
           </article>
         ))}
       </div>
-    </AdminPageShell>
+    </>
   );
 }

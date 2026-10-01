@@ -90,6 +90,19 @@ export async function requireHabilitation(acte: ActeEngageant): Promise<AdminSes
   return session;
 }
 
+/**
+ * 🔴 ADR 0060 — garde des écritures classées VERROU. Ré-exportée ici pour
+ * qu'on la trouve à côté des autres gardes ; son CODE vit dans
+ * `@/server/qualiopi/sessions/verrou-dossier-garde`, et les actions l'importent
+ * de là. Raison : 75 specs remplacent ce module `_guards` tout entier par un
+ * mock ; une garde qui vivrait ici y deviendrait `undefined`, et l'action
+ * lèverait au lieu de refuser. Un module dédié se mocke (ou non) en une ligne.
+ */
+export {
+  assertDossierOuvert,
+  type RefusDossierClos,
+} from "@/server/qualiopi/sessions/verrou-dossier-garde";
+
 export interface QualiopiActivityInput {
   /** Action canonique ex. "qualiopi.config.set", "qualiopi.formation.publish". */
   readonly action: string;
@@ -107,26 +120,44 @@ export interface QualiopiActivityInput {
  * Persiste une entrée ActivityLog pour une action Qualiopi. Best-effort :
  * un log raté n'invalide jamais l'action métier.
  */
+/**
+ * Les données d'une entrée `ActivityLog` Qualiopi, SANS l'écrire.
+ *
+ * 🔴 ADR 0060 — pour une trace qui n'est PAS best-effort : l'appelant l'écrit
+ * dans la même transaction que la modification qu'elle documente (retour d'une
+ * sortie vers un statut actif : l'ancienne sortie n'est effacée que si sa
+ * trace est inscrite). Même forme que `logQualiopiActivity`.
+ */
+export async function donneesJournalQualiopi(input: QualiopiActivityInput): Promise<{
+  adminUserId: string;
+  action: string;
+  targetType: string;
+  targetId: string | null;
+  changes: never;
+  ipAddress: string | null;
+  userAgent: string | null;
+}> {
+  const h = await headers();
+  // IP du visiteur par la règle unique (cf. lib/client-ip-core) : via Cloudflare,
+  // x-forwarded-for et x-real-ip ne portaient que le relais Cloudflare.
+  const rawIp = ipVisiteurOuNull(h);
+  // A-02 (RGPD) : hachage de l'IP avant stockage (aligné sur le reste du repo).
+  const ipAddress = hashIp(rawIp);
+  const userAgent = h.get("user-agent") || null;
+  return {
+    adminUserId: input.session.userId,
+    action: input.action.slice(0, 120),
+    targetType: (input.targetType ?? "qualiopi").slice(0, 80),
+    targetId: input.targetId ?? null,
+    changes: (input.changes ?? null) as never,
+    ipAddress: ipAddress?.slice(0, 64) ?? null,
+    userAgent: userAgent?.slice(0, 2000) ?? null,
+  };
+}
+
 export async function logQualiopiActivity(input: QualiopiActivityInput): Promise<void> {
   try {
-    const h = await headers();
-    // IP du visiteur par la règle unique (cf. lib/client-ip-core) : via Cloudflare,
-    // x-forwarded-for et x-real-ip ne portaient que le relais Cloudflare.
-    const rawIp = ipVisiteurOuNull(h);
-    // A-02 (RGPD) : hachage de l'IP avant stockage (aligné sur le reste du repo).
-    const ipAddress = hashIp(rawIp);
-    const userAgent = h.get("user-agent") || null;
-    await prisma.activityLog.create({
-      data: {
-        adminUserId: input.session.userId,
-        action: input.action.slice(0, 120),
-        targetType: (input.targetType ?? "qualiopi").slice(0, 80),
-        targetId: input.targetId ?? null,
-        changes: (input.changes ?? null) as never,
-        ipAddress: ipAddress?.slice(0, 64) ?? null,
-        userAgent: userAgent?.slice(0, 2000) ?? null,
-      },
-    });
+    await prisma.activityLog.create({ data: await donneesJournalQualiopi(input) });
   } catch (err) {
     if (process.env.NODE_ENV !== "production") {
       console.warn(

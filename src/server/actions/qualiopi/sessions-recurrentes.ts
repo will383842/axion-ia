@@ -48,6 +48,7 @@ import {
   parseCoFormateurs,
   type SessionFormateurRoleValue,
 } from "@/server/qualiopi/trainers/session-formateurs";
+import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -340,6 +341,9 @@ export async function reportSessionAction(
   const parsed = reportSessionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
+  const verrou = await assertDossierOuvert(v.sessionId);
+  if (!verrou.ok) return verrou;
 
   if (v.nouvelleDateFin <= v.nouvelleDateDebut) {
     return { error: "La nouvelle date de fin doit être postérieure à la nouvelle date de début" };

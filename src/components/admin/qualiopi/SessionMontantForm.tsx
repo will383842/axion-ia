@@ -29,6 +29,10 @@ import { useRouter } from "next/navigation";
 
 import { setSessionMontantAction } from "@/server/actions/qualiopi/sessions";
 import { centimesVersEuros, eurosVersCentimes } from "@/components/admin/qualiopi/montant-euros";
+import {
+  ResumeLecture,
+  useDossierFige,
+} from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
 
 export interface SessionMontantFormProps {
   sessionId: string;
@@ -54,6 +58,7 @@ export function SessionMontantForm({
   piecesFinancieres,
   hrefDocuments,
 }: SessionMontantFormProps): React.ReactElement {
+  const fige = useDossierFige();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [montant, setMontant] = useState(centimesVersEuros(initialMontantHtCents));
@@ -104,6 +109,24 @@ export function SessionMontantForm({
 
   const labelCls =
     "block text-[length:var(--text-admin-xs)] tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase";
+
+  // ADR 0060 — dossier clos : le montant contractuel est figé ; on corrige
+  // par avoir ou par facture (suivi financier, toujours ouvert).
+  if (fige) {
+    return (
+      <ResumeLecture
+        lignes={[
+          {
+            libelle: "Montant HT contractuel",
+            valeur: (initialMontantHtCents / 100).toLocaleString("fr-FR", {
+              style: "currency",
+              currency: "EUR",
+            }),
+          },
+        ]}
+      />
+    );
+  }
 
   return (
     <form

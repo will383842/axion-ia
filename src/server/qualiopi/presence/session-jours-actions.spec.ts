@@ -18,6 +18,13 @@
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
+// ADR 0060 — le verrou du dossier de session a sa propre suite
+// (`src/server/qualiopi/sessions/__tests__/`) ; ici, le dossier est ouvert.
+vi.mock("@/server/qualiopi/sessions/verrou-dossier-garde", () => ({
+  assertDossierOuvert: async () => ({ ok: true, sessionId: null }),
+  assertDossierOuvertSiRegeneration: async () => ({ ok: true, sessionId: null }),
+}));
+
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainingSession: { findUnique: vi.fn() },

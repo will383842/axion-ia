@@ -15,6 +15,13 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
+// ADR 0060 — le verrou du dossier de session a sa propre suite
+// (`src/server/qualiopi/sessions/__tests__/`) ; ici, le dossier est ouvert.
+vi.mock("@/server/qualiopi/sessions/verrou-dossier-garde", () => ({
+  assertDossierOuvert: async () => ({ ok: true, sessionId: null }),
+  assertDossierOuvertSiRegeneration: async () => ({ ok: true, sessionId: null }),
+}));
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Mocks déclarés avant les imports (hoisting Vitest)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -93,6 +100,9 @@ vi.mock("@/lib/prisma", () => ({
     adminUser: {
       findUnique: (...args: unknown[]) => mockAdminUserFindUnique(...args),
     },
+    // ADR 0060 (D7) — annuler une pièce SIGNÉE exige `revoquer_signature` : la
+    // garde compte les signatures vivantes. Aucune ici.
+    documentSignature: { count: async () => 0 },
   },
 }));
 

@@ -26,6 +26,8 @@ import {
   type IndicateursResult,
 } from "@/server/qualiopi/indicateurs/service";
 import { computeBpf, bpfToCsv } from "@/server/qualiopi/bpf/service";
+import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
+import { chargerEtatVerrou, verrouDossierActif } from "@/server/qualiopi/sessions/verrou-dossier";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -81,6 +83,9 @@ export async function genererQuestionnairesSessionAction(input: {
   const parsed = genererQuestionnairesSessionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, types } = parsed.data;
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
+  const verrou = await assertDossierOuvert(sessionId);
+  if (!verrou.ok) return verrou;
 
   const typesEffectifs = types ?? [...QUESTIONNAIRE_TYPES];
 
@@ -142,11 +147,31 @@ export async function saisirReponsesQuestionnaireAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const { questionnaireId, reponses, noteGlobale } = parsed.data;
 
+  // 🔴 ADR 0060 (D3, indicateur 30) — l'organisme ne répond à la place du
+  // stagiaire que sur un dossier OUVERT (en préparation, en cours, ou rouvert
+  // avec motif). Une fois la session réalisée, seul le stagiaire répond, par son
+  // portail ou son lien : une appréciation saisie après coup par l'organisme
+  // n'est plus une appréciation du stagiaire.
+  const verrou = await assertDossierOuvert({ questionnaireId });
+  if (!verrou.ok) return verrou;
+  if (verrou.sessionId !== null) {
+    const lu = await chargerEtatVerrou(verrou.sessionId);
+    if (verrouDossierActif() && lu !== null && lu.etat.etat === "a_recueillir") {
+      return {
+        error:
+          "Session réalisée : les réponses aux questionnaires ne se saisissent plus à la place du stagiaire. " +
+          "Relancez-le : il répond lui-même, par son portail ou son lien. Pour une correction, rouvrez le dossier (motif tracé).",
+      };
+    }
+  }
+
   let result: { id: string } | null;
   try {
     result = await soumettreReponses({
       questionnaireId,
       reponses,
+      // ADR 0060 (D3) — saisie console : c'est l'ORGANISME qui répond.
+      origine: "organisme",
       ...(noteGlobale !== undefined ? { noteGlobale } : {}),
     });
   } catch (err) {

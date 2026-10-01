@@ -90,6 +90,7 @@ import {
   gestePositionnement,
   HORIZON_JOURS,
 } from "@/server/qualiopi/parcours/relance-positionnement";
+import { chargerEtatsVerrou, dossierFige } from "@/server/qualiopi/sessions/verrou-dossier";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types job
@@ -529,10 +530,31 @@ async function handleAttestationsAuto(): Promise<void> {
     ],
   } satisfies Prisma.EnrollmentWhereInput;
 
-  const enrollments = await prisma.enrollment.findMany({
+  const enrollmentsEligibles = await prisma.enrollment.findMany({
     where: { ...where, ...preuvesRequises },
-    select: { id: true, session: { select: { id: true } } },
+    select: { id: true, attestationDocumentId: true, session: { select: { id: true } } },
   });
+
+  // 🔴 ADR 0060 — ce cron ne fait que des PREMIÈRES émissions
+  // (`attestationGenereeAt: null`). Une inscription qui désigne déjà une pièce
+  // (`attestationDocumentId`) serait une RÉGÉNÉRATION : jamais sur un dossier
+  // clos. La première émission, elle, reste due au stagiaire (L.6353-1).
+  const sessionsARegenerer = [
+    ...new Set(
+      enrollmentsEligibles
+        .filter((e) => (e.attestationDocumentId ?? null) !== null)
+        .map((e) => e.session.id),
+    ),
+  ];
+  const etatsVerrou = await chargerEtatsVerrou(sessionsARegenerer);
+  const enrollments = enrollmentsEligibles.filter(
+    (e) =>
+      (e.attestationDocumentId ?? null) === null ||
+      !(() => {
+        const etat = etatsVerrou.get(e.session.id)?.etat;
+        return etat !== undefined && dossierFige(etat);
+      })(),
+  );
 
   // Comptés séparément pour que le log dise « 3 en attente d'évaluation » plutôt
   // que de rester silencieux sur ce qu'il a délibérément sauté. Seuls ceux
@@ -552,7 +574,7 @@ async function handleAttestationsAuto(): Promise<void> {
   const eligiblesEvaluation = await prisma.enrollment.count({
     where: { ...where, AND: [evaluationOuDelaiEcoule] },
   });
-  const sansPreuvePresence = eligiblesEvaluation - enrollments.length;
+  const sansPreuvePresence = eligiblesEvaluation - enrollmentsEligibles.length;
 
   let ok = 0;
   let ko = 0;
@@ -1150,6 +1172,9 @@ async function handlePositionnement(): Promise<void> {
         await prisma.questionnaire.update({
           where: { id: q.id },
           data: { relanceCount: { increment: 1 }, derniereRelanceAt: now },
+          // ADR 0060 — `select` explicite : tolère l'heure qui précède la
+          // migration de `questionnaires.origine_reponse`.
+          select: { id: true },
         });
         relances++;
       } else {

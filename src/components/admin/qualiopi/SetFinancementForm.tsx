@@ -14,6 +14,10 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
+  MENTION_DOSSIER_CLOS,
+  useDossierFige,
+} from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
+import {
   setFinancementSessionAction,
   validerAccordOpcoAction,
 } from "@/server/actions/qualiopi/financements";
@@ -100,6 +104,10 @@ export function SetFinancementForm({
   ftPoeiAccordFinancementAt,
   ftPoeiEngagementSigneAt,
 }: SetFinancementFormProps): React.ReactElement {
+  // ADR 0060 — dossier clos : le TYPE, le dispositif et le payeur sont figés
+  // (écriture VERROU) ; le statut OPCO, le n° de dossier et la subrogation
+  // restent modifiables (suivi financier).
+  const fige = useDossierFige();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -124,6 +132,9 @@ export function SetFinancementForm({
   const showFT = selectedType === "france_travail";
   const showCPF = selectedType === "cpf";
   const showPoei = showFT && selectedFtDispositif === "poei";
+  // Dossier clos : seuls le suivi OPCO et les pièces POEI restent modifiables.
+  // Sans eux, il n'y a rien à envoyer — pas de bouton qui ne mène à rien.
+  const rienAEnregistrer = fige && !showOpco && !showPoei;
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -133,11 +144,17 @@ export function SetFinancementForm({
     startTransition(async () => {
       const result = await setFinancementSessionAction({
         sessionId,
-        ...(selectedType !== "" ? { financementType: selectedType } : {}),
+        // Dossier clos : les champs CONTRACTUELS (type, dispositif, payeur) ne
+        // partent PAS. Le serveur refuse DOSSIER_CLOS dès qu'ils sont présents,
+        // même inchangés : les renvoyer bloquait le suivi OPCO qui, lui, reste
+        // ouvert (revue PR 1249).
+        ...(!fige && selectedType !== "" ? { financementType: selectedType } : {}),
         ...(showOpco ? { opcoStatut: selectedOpcoStatut } : {}),
         ...(showOpco ? { opcoSubrogation: subrogation } : {}),
         ...(showOpco && numeroDossier ? { numeroDossierOpco: numeroDossier } : {}),
-        ...(showFT && selectedFtDispositif !== "" ? { ftDispositif: selectedFtDispositif } : {}),
+        ...(!fige && showFT && selectedFtDispositif !== ""
+          ? { ftDispositif: selectedFtDispositif }
+          : {}),
         ...(showOpco && subrogation && tripartiteDate
           ? { conventionTripartiteSigneeAt: new Date(tripartiteDate) }
           : {}),
@@ -148,7 +165,7 @@ export function SetFinancementForm({
         ...(showPoei && poeiEngagementDate
           ? { ftPoeiEngagementSigneAt: new Date(poeiEngagementDate) }
           : {}),
-        ...(showCPF && cpfPayeur !== "" ? { cpfPayeurResteCharge: cpfPayeur } : {}),
+        ...(!fige && showCPF && cpfPayeur !== "" ? { cpfPayeurResteCharge: cpfPayeur } : {}),
       });
 
       if ("error" in result) {
@@ -205,7 +222,8 @@ export function SetFinancementForm({
             id="financement-type"
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value as FinancementType | "")}
-            disabled={isPending}
+            disabled={isPending || fige}
+            title={fige ? MENTION_DOSSIER_CLOS : undefined}
             className={selectCls}
           >
             {FINANCEMENT_OPTIONS.map((opt) => (
@@ -214,6 +232,11 @@ export function SetFinancementForm({
               </option>
             ))}
           </select>
+          {fige ? (
+            <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Figé : dossier clos.
+            </span>
+          ) : null}
         </div>
 
         {/* OPCO — statut */}
@@ -312,7 +335,7 @@ export function SetFinancementForm({
               onChange={(e) =>
                 setSelectedFtDispositif(e.target.value as FranceTravailDispositif | "")
               }
-              disabled={isPending}
+              disabled={isPending || fige}
               className={selectCls}
             >
               {FT_DISPOSITIF_OPTIONS.map((opt) => (
@@ -389,7 +412,7 @@ export function SetFinancementForm({
               id="cpf-payeur"
               value={cpfPayeur}
               onChange={(e) => setCpfPayeur(e.target.value)}
-              disabled={isPending}
+              disabled={isPending || fige}
               className={selectCls}
             >
               {CPF_PAYEUR_OPTIONS.map((opt) => (
@@ -422,9 +445,15 @@ export function SetFinancementForm({
 
       {/* Boutons */}
       <div className="mt-[var(--space-admin-5)] flex flex-wrap gap-[var(--space-admin-3)]">
-        <button type="submit" disabled={isPending} className="admin-button">
-          {isPending ? "Enregistrement…" : "Enregistrer le financement"}
-        </button>
+        {rienAEnregistrer ? (
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            Dossier clos : ce financement ne comporte plus rien de modifiable ici.
+          </p>
+        ) : (
+          <button type="submit" disabled={isPending} className="admin-button">
+            {isPending ? "Enregistrement…" : "Enregistrer le financement"}
+          </button>
+        )}
 
         {showOpco && selectedOpcoStatut !== "accord_recu" && (
           <button

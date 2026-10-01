@@ -68,6 +68,10 @@ describe("requireHabilitation — refus côté serveur", () => {
     await expect(requireHabilitation("facturer")).rejects.toThrow(/^forbidden: /);
     await expect(requireHabilitation("contresigner")).rejects.toThrow(/^forbidden: /);
     await expect(requireHabilitation("deposer_demande_financeur")).rejects.toThrow(/^forbidden: /);
+    // ADR 0060 — rouvrir un dossier clos est un acte de DIRECTION.
+    await expect(requireHabilitation("rouvrir_dossier")).rejects.toThrow(
+      MOTIF_REFUS.rouvrir_dossier,
+    );
   });
 
   it("le responsable qualité PASSE sur les actes de qualité qui lui reviennent", async () => {

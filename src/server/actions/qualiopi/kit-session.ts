@@ -18,6 +18,7 @@ import {
   genererSortiesSession,
   validerSortiesSession,
 } from "@/server/qualiopi/kit-session/generation";
+import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -50,6 +51,9 @@ export async function genererSortiesAction(input: {
 
   const parsed = sessionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
+  const verrou = await assertDossierOuvert(parsed.data.sessionId);
+  if (!verrou.ok) return verrou;
 
   try {
     const res = await genererSortiesSession(parsed.data.sessionId);
@@ -81,6 +85,9 @@ export async function validerSortiesAction(input: {
 
   const parsed = sessionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
+  const verrou = await assertDossierOuvert(parsed.data.sessionId);
+  if (!verrou.ok) return verrou;
 
   try {
     await validerSortiesSession(parsed.data.sessionId, session.userId);

@@ -52,12 +52,25 @@ function parentDe(famille: string): string {
   return segments[segments.length - 2] ?? "";
 }
 
+/**
+ * Le `layout.tsx` posé à `[id]`, s'il existe : il enveloppe TOUTES les
+ * sous-pages de la famille. Depuis le lot L2 (ADR 0060), la fiche session
+ * porte son fil d'Ariane et son retour à la fiche UNE fois, dans ce layout —
+ * les sous-pages n'ont plus le leur. Le retour se cherche donc dans la page
+ * ET dans le layout qui l'enveloppe : c'est ce que l'utilisateur voit.
+ */
+function sourceLayout(abs: string): string {
+  const layout = path.join(abs, "layout.tsx");
+  return fs.existsSync(layout) ? fs.readFileSync(layout, "utf-8") : "";
+}
+
 /** Sous-pages découvertes : un dossier sous `[id]` qui porte un `page.tsx`. */
 function sousPages(): ReadonlyArray<{ chemin: string; parent: string; source: string }> {
   const trouvees: Array<{ chemin: string; parent: string; source: string }> = [];
   for (const famille of FAMILLES) {
     const abs = path.join(RACINE, famille);
     if (!fs.existsSync(abs)) continue;
+    const layout = sourceLayout(abs);
     for (const entree of fs.readdirSync(abs, { withFileTypes: true })) {
       if (!entree.isDirectory()) continue;
       const page = path.join(abs, entree.name, "page.tsx");
@@ -65,7 +78,7 @@ function sousPages(): ReadonlyArray<{ chemin: string; parent: string; source: st
         trouvees.push({
           chemin: `${famille}/${entree.name}`,
           parent: parentDe(famille),
-          source: fs.readFileSync(page, "utf-8"),
+          source: [fs.readFileSync(page, "utf-8"), layout].join("\n"),
         });
         continue;
       }
@@ -76,7 +89,7 @@ function sousPages(): ReadonlyArray<{ chemin: string; parent: string; source: st
         trouvees.push({
           chemin: `${famille}/${entree.name}/${sous.name}`,
           parent: parentDe(famille),
-          source: fs.readFileSync(pageSous, "utf-8"),
+          source: [fs.readFileSync(pageSous, "utf-8"), layout].join("\n"),
         });
       }
     }
@@ -109,13 +122,18 @@ function ramenAuParent(source: string, parent: string): boolean {
   // détecteur qui n'admet qu'une seule ÉCRITURE d'une bonne pratique condamne
   // ceux qui l'appliquent autrement — et se fait désarmer au premier faux
   // positif, ce qui laisserait ensuite passer les vrais.
+  //
+  // ⚠️ TOUTES les déclarations, pas la première : la source examinée est la
+  // page PLUS le layout qui l'enveloppe (lot L2). Une page peut déclarer la
+  // même variable pour un autre usage (`kit` : `${base}/kit`) sans en faire un
+  // lien, pendant que le layout porte, lui, le vrai retour à la fiche.
   const decl = "= `" + chemin + "`";
-  const i = source.indexOf(decl);
-  if (i < 0) return false;
-  const avant = source.slice(Math.max(0, i - 80), i);
-  const nom = /const\s+([A-Za-z0-9_]+)\s*$/.exec(avant)?.[1];
-  if (nom === undefined) return false;
-  return source.includes("href={" + nom + "}");
+  for (let i = source.indexOf(decl); i >= 0; i = source.indexOf(decl, i + decl.length)) {
+    const avant = source.slice(Math.max(0, i - 80), i);
+    const nom = /const\s+([A-Za-z0-9_]+)\s*$/.exec(avant)?.[1];
+    if (nom !== undefined && source.includes("href={" + nom + "}")) return true;
+  }
+  return false;
 }
 
 describe("🔴 toute sous-page de session ou de formation ramène à son parent", () => {

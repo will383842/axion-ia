@@ -9,6 +9,10 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import {
+  MentionDossierClos,
+  useDossierFige,
+} from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
 
 export interface GenererCreneauxButtonProps {
   sessionId: string;
@@ -28,6 +32,7 @@ export function GenererCreneauxButton({
   genererAction,
   hasCreneaux,
 }: GenererCreneauxButtonProps): React.ReactElement {
+  const fige = useDossierFige();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -58,6 +63,9 @@ export function GenererCreneauxButton({
       }
     });
   }
+
+  // ADR 0060 — dossier clos : les créneaux sont figés avec les preuves.
+  if (fige) return <MentionDossierClos />;
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-2)]">

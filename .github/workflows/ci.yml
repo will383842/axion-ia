@@ -1286,6 +1286,13 @@ jobs:
         run: |
           PGPASSWORD=ci_password_dummy psql -h localhost -U axion_ia_ci -d axion_ia_ci \
             -v ON_ERROR_STOP=1 -f tests/sql/numeros-emis-comportement.sql
+      # ADR 0060 (2026-09-30) — le journal des réouvertures de dossier de session
+      # est en ajout seul : UPDATE/DELETE refusés par trigger, motif de
+      # réouverture ≥ 10 caractères par CHECK, deux réouvertures = deux lignes,
+      # et la garde de dérive lit pg_trigger/pg_constraint (le SQL brut est
+      # invisible à `migrate diff`). Chaque cas est ANNULÉ : aucune ligne ne reste.
+      - name: Verrou du dossier de session — ajout seul et dérive (Postgres réel)
+        run: pnpm test:integration tests/integration/verrou-dossier
       - name: Visio — comportements sur base réelle
         run: pnpm exec tsx scripts/ci/gate-d-visio.ts
       - name: Verify _prisma_migrations table healthy

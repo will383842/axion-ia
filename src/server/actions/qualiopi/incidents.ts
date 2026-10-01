@@ -22,6 +22,7 @@ import {
   supprimerIncident,
   getIncident,
 } from "@/server/qualiopi/registres/incidents-service";
+import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -235,6 +236,9 @@ export async function supprimerIncidentAction(input: {
   const parsed = supprimerIncidentSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { id } = parsed.data;
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
+  const verrou = await assertDossierOuvert({ incidentId: id });
+  if (!verrou.ok) return verrou;
 
   const existe = await getIncident(id);
   if (existe === null) return { error: "Incident introuvable" };
@@ -249,7 +253,12 @@ export async function supprimerIncidentAction(input: {
     action: "qualiopi.incident.delete",
     targetType: "Incident",
     targetId: id,
-    changes: { titre: existe.titre },
+    // ADR 0060 (D8) — l'incident n'existe plus : sans ce marqueur, le dossier
+    // de sa session ne retrouverait pas sa suppression dans le journal.
+    changes: {
+      titre: existe.titre,
+      ...(verrou.sessionId !== null ? { dossierSessionId: verrou.sessionId } : {}),
+    },
     session,
   });
 

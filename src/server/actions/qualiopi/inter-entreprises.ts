@@ -12,6 +12,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import type { FinancementType, FranceTravailDispositif } from "../../../../prisma/generated/client";
+import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -30,6 +31,9 @@ export async function setSessionInterEntreprisesAction(
   const parsed = setInterSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, interEntreprises } = parsed.data;
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
+  const verrou = await assertDossierOuvert(sessionId);
+  if (!verrou.ok) return verrou;
 
   try {
     await prisma.trainingSession.update({ where: { id: sessionId }, data: { interEntreprises } });
@@ -67,6 +71,9 @@ export async function setEnrollmentFinancementAction(
   const parsed = setEnrollmentFinancementSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
+  const verrou = await assertDossierOuvert({ enrollmentId: v.enrollmentId });
+  if (!verrou.ok) return verrou;
 
   const data: {
     financementType?: FinancementType | null;

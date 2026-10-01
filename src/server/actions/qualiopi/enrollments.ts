@@ -13,7 +13,11 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  logQualiopiActivity,
+  donneesJournalQualiopi,
+} from "@/server/actions/qualiopi/_guards";
 import { creerQuestionnaire } from "@/server/qualiopi/satisfaction/satisfaction-service";
 import { STATUTS_SORTIS } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import {
@@ -23,6 +27,7 @@ import {
   reponseAdaptationConsignee,
 } from "@/server/qualiopi/adaptation/reponse-organisme";
 import { fermerAlertesAdaptationConsignee } from "@/server/qualiopi/adaptation/fermeture-alertes";
+import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -31,6 +36,9 @@ type ActionResult<T> = { data: T } | { error: string };
 // ─────────────────────────────────────────────────────────────────────────────
 
 const ENROLLMENT_STATUTS = ["planifiee", "presente", "abandon", "exclu"] as const;
+
+/** Longueur minimale du motif d'un retour de sortie vers un statut actif (ADR 0060, D7). */
+const MOTIF_RETOUR_MIN = 10;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Schémas Zod
@@ -90,6 +98,9 @@ export async function enrollTraineeAction(input: {
   const parsed = enrollTraineeSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
+  const verrou = await assertDossierOuvert(v.sessionId);
+  if (!verrou.ok) return verrou;
 
   let created: { id: string };
   try {
@@ -143,6 +154,9 @@ export async function updateEnrollmentPresenceAction(input: {
   const parsed = updateEnrollmentPresenceSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { id, ...fields } = parsed.data;
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
+  const verrou = await assertDossierOuvert({ enrollmentId: id });
+  if (!verrou.ok) return verrou;
 
   await prisma.enrollment.update({
     where: { id },
@@ -177,6 +191,9 @@ export async function setEnrollmentStatutAction(input: {
   const parsed = setEnrollmentStatutSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { id, statut, motif } = parsed.data;
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
+  const verrou = await assertDossierOuvert({ enrollmentId: id });
+  if (!verrou.ok) return verrou;
 
   // 🔴 UNE SORTIE A UNE DATE ET UNE RAISON (2026-08-27).
   //
@@ -202,16 +219,77 @@ export async function setEnrollmentStatutAction(input: {
     };
   }
 
-  await prisma.enrollment.update({
-    where: { id },
-    data: estSortie
-      ? { statut, sortieAt: new Date(), sortieMotif: motifPropre }
-      : // Retour à un statut actif : on EFFACE la date et le motif. Sans cela,
-        // une sortie annulée laisserait une date fantôme que les rapports
-        // liraient comme une sortie réelle. La contrainte CHECK de la base
-        // refuse d'ailleurs cette combinaison.
-        { statut, sortieAt: null, sortieMotif: null },
-  });
+  // 🔴 ADR 0060 (D7) — un RETOUR de sortie vers un statut actif efface la date
+  // et le motif de sortie. Effacés sans trace, ils disparaîtraient du dossier :
+  // l'auditeur verrait un stagiaire présent sans savoir qu'il a été déclaré
+  // sorti. L'ancienne sortie est donc écrite au journal AVANT l'effacement, et
+  // le retour exige son propre motif.
+  //
+  // 🔑 Et la trace n'est PAS best-effort : `logQualiopiActivity` avale ses
+  // erreurs, si bien qu'une insertion ratée laissait l'effacement se faire sans
+  // trace. La trace et l'effacement partent dans la MÊME transaction : pas de
+  // trace, pas d'effacement.
+  let traceRetour: Awaited<ReturnType<typeof donneesJournalQualiopi>> | null = null;
+  if (!estSortie) {
+    const actuelle = await prisma.enrollment.findUnique({
+      where: { id },
+      select: { statut: true, sortieAt: true, sortieMotif: true },
+    });
+    if (actuelle === null) return { error: "Inscription introuvable" };
+    if ((STATUTS_SORTIS as readonly string[]).includes(actuelle.statut)) {
+      if (motifPropre.length < MOTIF_RETOUR_MIN) {
+        return {
+          error:
+            `Indiquez pourquoi ce stagiaire redevient actif (${MOTIF_RETOUR_MIN} caractères au moins) : ` +
+            "la sortie déclarée est conservée au journal, et le retour doit s'expliquer à côté d'elle.",
+        };
+      }
+      traceRetour = await donneesJournalQualiopi({
+        action: "qualiopi.enrollment.retour_de_sortie",
+        targetType: "Enrollment",
+        targetId: id,
+        changes: {
+          avant: {
+            statut: actuelle.statut,
+            sortieAt: actuelle.sortieAt?.toISOString() ?? null,
+            sortieMotif: actuelle.sortieMotif,
+          },
+          apres: { statut },
+          motifRetour: motifPropre,
+        },
+        session,
+      });
+    }
+  }
+
+  if (traceRetour !== null) {
+    const trace = traceRetour;
+    try {
+      await prisma.$transaction(async (tx) => {
+        await tx.activityLog.create({ data: trace });
+        await tx.enrollment.update({
+          where: { id },
+          data: { statut, sortieAt: null, sortieMotif: null },
+        });
+      });
+    } catch {
+      return {
+        error:
+          "Le retour n'a pas été enregistré : la trace de l'ancienne sortie n'a pas pu être inscrite au journal. Réessayez.",
+      };
+    }
+  } else {
+    await prisma.enrollment.update({
+      where: { id },
+      data: estSortie
+        ? { statut, sortieAt: new Date(), sortieMotif: motifPropre }
+        : // Retour à un statut actif : on EFFACE la date et le motif. Sans cela,
+          // une sortie annulée laisserait une date fantôme que les rapports
+          // liraient comme une sortie réelle. La contrainte CHECK de la base
+          // refuse d'ailleurs cette combinaison.
+          { statut, sortieAt: null, sortieMotif: null },
+    });
+  }
 
   await logQualiopiActivity({
     action: `qualiopi.enrollment.statut.${statut}`,
@@ -240,6 +318,9 @@ export async function setEnrollmentAdaptationsAction(input: {
   const parsed = setEnrollmentAdaptationsSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { id, adaptationsRealisees, aucuneAdaptationNecessaire } = parsed.data;
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
+  const verrou = await assertDossierOuvert({ enrollmentId: id });
+  if (!verrou.ok) return verrou;
 
   // 🔑 « Aucune adaptation nécessaire » ne remplace JAMAIS une adaptation déjà
   // consignée : un clic de trop effacerait la seule trace de ce qui a été fait

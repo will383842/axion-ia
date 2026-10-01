@@ -24,6 +24,16 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 import { setSessionDatesAction } from "@/server/actions/qualiopi/sessions";
+import {
+  ResumeLecture,
+  useDossierFige,
+} from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
+
+/** « AAAA-MM-JJTHH:MM » → « JJ/MM/AAAA à HH:MM » — sans fuseau : la valeur est déjà en heure de Paris. */
+function lisible(v: string): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(v);
+  return m ? `${m[3]}/${m[2]}/${m[1]} à ${m[4]}:${m[5]}` : v;
+}
 
 export interface SessionDatesFormProps {
   sessionId: string;
@@ -62,6 +72,7 @@ export function SessionDatesForm({
   nbJoursDeclares,
   hrefJournees,
 }: SessionDatesFormProps): React.ReactElement {
+  const fige = useDossierFige();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [dateDebut, setDateDebut] = useState(initialDateDebut);
@@ -75,6 +86,25 @@ export function SessionDatesForm({
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   const modifie = dateDebut !== initialDateDebut || dateFin !== initialDateFin;
+
+  // ADR 0060 — dossier clos : les dates sont une preuve, on les LIT.
+  if (fige) {
+    return (
+      <ResumeLecture
+        lignes={[
+          { libelle: "Début", valeur: `${lisible(initialDateDebut)} (heure de Paris)` },
+          { libelle: "Fin", valeur: `${lisible(initialDateFin)} (heure de Paris)` },
+          {
+            libelle: "Journées déclarées",
+            valeur:
+              joursHorsPlage > 0
+                ? `${nbJoursDeclares}, dont ${joursHorsPlage} hors de cette plage`
+                : String(nbJoursDeclares),
+          },
+        ]}
+      />
+    );
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

@@ -38,6 +38,7 @@ import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
+import { chargerEtatsVerrou, dossierFige } from "@/server/qualiopi/sessions/verrou-dossier";
 import {
   bilanProductionsAuJalon,
   type InstantaneProduction,
@@ -164,6 +165,15 @@ async function handleProductionAuJalon(): Promise<void> {
     take: 100,
   });
 
+  // 🔴 ADR 0060 — un dossier CLOS ne reçoit plus aucune pièce automatique :
+  // une pièce produite après la clôture modifierait une preuve figée sans que
+  // personne ne l'ait décidé. Un dossier ROUVERT, lui, redevient candidat.
+  const etats = await chargerEtatsVerrou(
+    sessions.map((s) => s.id),
+    now,
+  );
+  let ecarteesDossierClos = 0;
+
   let produites = 0;
   let enEchec = 0;
   let ecarteesParPertinence = 0;
@@ -173,6 +183,11 @@ async function handleProductionAuJalon(): Promise<void> {
   let sansProducteur = 0;
 
   for (const session of sessions) {
+    const etatDossier = etats.get(session.id)?.etat;
+    if (etatDossier !== undefined && dossierFige(etatDossier)) {
+      ecarteesDossierClos++;
+      continue;
+    }
     try {
       const instantane: InstantaneProduction = {
         session: {
@@ -277,7 +292,8 @@ async function handleProductionAuJalon(): Promise<void> {
     `[documents-auto] production: ${produites} pièce(s) produite(s), ${enEchec} en échec, ` +
       `${dejaPresentes} déjà présente(s), ${ecarteesParPertinence} écartée(s) par pertinence, ` +
       `${ecarteesParJalon} écartée(s) par jalon, ${sansPorteur} sans porteur, ` +
-      `${sansProducteur} sans producteur (${sessions.length} session(s) scannée(s))`,
+      `${sansProducteur} sans producteur, ${ecarteesDossierClos} session(s) au dossier clos ` +
+      `(${sessions.length} session(s) scannée(s))`,
   );
 }
 

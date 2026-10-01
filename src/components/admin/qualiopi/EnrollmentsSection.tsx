@@ -27,6 +27,10 @@ import {
   type HorodatageCircuitSerialise,
 } from "@/server/qualiopi/adaptation/reponse-organisme";
 import { formaterInstantParis } from "@/server/qualiopi/positionnement/lecture-positionnement";
+import {
+  MentionDossierClos,
+  useDossierFige,
+} from "@/features/admin-qualiopi/session-hub/DossierVerrouProvider";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -196,6 +200,9 @@ function EnrollmentRow({
   revoquerPortailAction,
   onMutated,
 }: EnrollmentRowProps): React.ReactElement {
+  // ADR 0060 — dossier clos : statut, sortie et adaptations sont figés ; le
+  // portail stagiaire (recueil entrant) reste ouvert.
+  const fige = useDossierFige();
   const [isPendingStatut, startStatut] = useTransition();
   const [isPendingRevoke, startRevoke] = useTransition();
   const [isPendingAdapt, startAdapt] = useTransition();
@@ -316,19 +323,21 @@ function EnrollmentRow({
 
       {/* Statut */}
       <td className={tdCls}>
-        <select
-          value={sortieEnAttente ?? enrollment.statut}
-          onChange={(e) => handleStatutChange(e.target.value)}
-          disabled={isPendingStatut}
-          aria-label={`Statut de ${enrollment.trainee.prenom} ${enrollment.trainee.nom}`}
-          className={inputCls}
-        >
-          {STATUT_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
+        {fige ? null : (
+          <select
+            value={sortieEnAttente ?? enrollment.statut}
+            onChange={(e) => handleStatutChange(e.target.value)}
+            disabled={isPendingStatut}
+            aria-label={`Statut de ${enrollment.trainee.prenom} ${enrollment.trainee.nom}`}
+            className={inputCls}
+          >
+            {STATUT_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        )}
         {statutError && (
           <p
             role="alert"
@@ -339,7 +348,7 @@ function EnrollmentRow({
         )}
 
         {/* Saisie du motif — le statut ne part qu'avec lui. */}
-        {sortieEnAttente !== null && (
+        {sortieEnAttente !== null && !fige && (
           <div className="mt-[var(--space-admin-2)]">
             <label
               htmlFor={`motif-${enrollment.id}`}
@@ -440,11 +449,17 @@ function EnrollmentRow({
                 )}). Cette réponse est conservée, mais elle ne couvre pas la nouvelle déclaration : reconsignez-la, modifiée ou confirmée.`}
               </p>
             )}
-            <p className="mt-0.5 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)]">
-              Échangez avec la personne, puis consignez l&apos;adaptation prévue ci-dessous — ou, si
-              rien n&apos;est nécessaire :
-            </p>
-            {texteEstAucuneAdaptation && (
+            {fige ? (
+              <p className="mt-0.5 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)]">
+                Dossier clos : pour consigner la réponse, rouvrez le dossier (motif tracé).
+              </p>
+            ) : (
+              <p className="mt-0.5 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)]">
+                Échangez avec la personne, puis consignez l&apos;adaptation prévue ci-dessous — ou,
+                si rien n&apos;est nécessaire :
+              </p>
+            )}
+            {texteEstAucuneAdaptation && !fige && (
               <button
                 type="button"
                 onClick={() => handleSaveAdaptations(true)}
@@ -465,38 +480,46 @@ function EnrollmentRow({
             {decrireDateConsignation(horodatage, debutSessionDate)}
           </p>
         )}
-        <textarea
-          value={adaptText}
-          onChange={(e) => {
-            setAdaptText(e.target.value);
-            setAdaptSaved(false);
-          }}
-          disabled={isPendingAdapt}
-          rows={2}
-          maxLength={5000}
-          placeholder="Mesure prévue (accès, supports, rythme…) — sans détail de santé"
-          aria-label={`Adaptations réalisées pour ${enrollment.trainee.prenom} ${enrollment.trainee.nom}`}
-          className={`${inputCls} min-w-[14rem] resize-y`}
-        />
-        <div className="mt-1 flex items-center gap-[var(--space-admin-2)]">
-          <button
-            type="button"
-            onClick={() => handleSaveAdaptations()}
-            disabled={isPendingAdapt || (!adaptDirty && !reponseRouverte)}
-            className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline disabled:opacity-50"
-          >
-            {isPendingAdapt
-              ? "Enregistrement…"
-              : reponseRouverte && !adaptDirty
-                ? "Confirmer cette réponse"
-                : "Enregistrer"}
-          </button>
-          {adaptSaved && !adaptDirty && (
-            <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-success)]">
-              Enregistré
-            </span>
-          )}
-        </div>
+        {fige ? (
+          <p className="text-[length:var(--text-admin-xs)] whitespace-pre-line text-[color:var(--color-admin-fg)]">
+            {enrollment.adaptationsRealisees ?? "—"}
+          </p>
+        ) : (
+          <>
+            <textarea
+              value={adaptText}
+              onChange={(e) => {
+                setAdaptText(e.target.value);
+                setAdaptSaved(false);
+              }}
+              disabled={isPendingAdapt}
+              rows={2}
+              maxLength={5000}
+              placeholder="Mesure prévue (accès, supports, rythme…) — sans détail de santé"
+              aria-label={`Adaptations réalisées pour ${enrollment.trainee.prenom} ${enrollment.trainee.nom}`}
+              className={`${inputCls} min-w-[14rem] resize-y`}
+            />
+            <div className="mt-1 flex items-center gap-[var(--space-admin-2)]">
+              <button
+                type="button"
+                onClick={() => handleSaveAdaptations()}
+                disabled={isPendingAdapt || (!adaptDirty && !reponseRouverte)}
+                className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline disabled:opacity-50"
+              >
+                {isPendingAdapt
+                  ? "Enregistrement…"
+                  : reponseRouverte && !adaptDirty
+                    ? "Confirmer cette réponse"
+                    : "Enregistrer"}
+              </button>
+              {adaptSaved && !adaptDirty && (
+                <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-success)]">
+                  Enregistré
+                </span>
+              )}
+            </div>
+          </>
+        )}
         {adaptError && (
           <p
             role="alert"
@@ -739,6 +762,7 @@ export function EnrollmentsSection({
   genererPortailAction,
   revoquerPortailAction,
 }: EnrollmentsSectionProps): React.ReactElement {
+  const fige = useDossierFige();
   const router = useRouter();
 
   function refresh() {
@@ -806,30 +830,37 @@ export function EnrollmentsSection({
       )}
 
       {/* ── Formulaire d&apos;inscription ────────────────────────────────── */}
-      <div>
-        <h3 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
-          Inscrire un stagiaire
-        </h3>
-        <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
-          <EnrollForm
-            sessionId={sessionId}
-            availableTrainees={availableTrainees}
-            alreadyEnrolledIds={alreadyEnrolledIds}
-            enrollAction={enrollAction}
-            onEnrolled={refresh}
-            rechercheStagiaire={rechercheStagiaire}
-            totalStagiairesRegistre={totalStagiairesRegistre ?? availableTrainees.length}
-            // La liste est tronquée quand elle touche le plafond du parent, ou
-            // quand elle est plus courte que le registre. Deux signaux plutôt
-            // qu'un : le second reste juste si le plafond n'est pas transmis.
-            listeTronquee={
-              (plafondStagiaires !== undefined && availableTrainees.length >= plafondStagiaires) ||
-              (totalStagiairesRegistre !== undefined &&
-                availableTrainees.length < totalStagiairesRegistre)
-            }
-          />
+      {/* ADR 0060 — dossier clos : inscrire un nouveau stagiaire est une
+          écriture VERROU. */}
+      {fige ? (
+        <MentionDossierClos />
+      ) : (
+        <div>
+          <h3 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
+            Inscrire un stagiaire
+          </h3>
+          <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
+            <EnrollForm
+              sessionId={sessionId}
+              availableTrainees={availableTrainees}
+              alreadyEnrolledIds={alreadyEnrolledIds}
+              enrollAction={enrollAction}
+              onEnrolled={refresh}
+              rechercheStagiaire={rechercheStagiaire}
+              totalStagiairesRegistre={totalStagiairesRegistre ?? availableTrainees.length}
+              // La liste est tronquée quand elle touche le plafond du parent, ou
+              // quand elle est plus courte que le registre. Deux signaux plutôt
+              // qu'un : le second reste juste si le plafond n'est pas transmis.
+              listeTronquee={
+                (plafondStagiaires !== undefined &&
+                  availableTrainees.length >= plafondStagiaires) ||
+                (totalStagiairesRegistre !== undefined &&
+                  availableTrainees.length < totalStagiairesRegistre)
+              }
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

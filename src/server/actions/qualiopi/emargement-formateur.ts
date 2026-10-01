@@ -37,6 +37,7 @@ import {
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
 import type { DemiJourneeLabel } from "@/server/qualiopi/presence/types";
 import { z } from "zod";
+import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 export type RefusFormateur = RefusSignature | "non_membre" | "stockage";
 
@@ -114,6 +115,12 @@ export async function signerPourStagiaireAction(input: {
     };
   }
   const donnees = parse.data;
+
+  // ADR 0060 — signer À LA PLACE du stagiaire sur un dossier clos réécrirait la
+  // preuve de présence après coup : refusé (la signature du stagiaire lui-même,
+  // par son jeton, reste possible tant que le jeton vit).
+  const verrou = await assertDossierOuvert(donnees.sessionId);
+  if (!verrou.ok) return { ok: false, raison: "session_close", message: verrou.message };
 
   const estMembre = await estMembreDeSession(donnees.sessionId, formateur.trainerId);
   if (!estMembre) {

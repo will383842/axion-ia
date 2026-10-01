@@ -94,6 +94,21 @@ const SANS_AUCUN_APPELANT: ReadonlyArray<string> = [
   "server/actions/qualiopi/vente-brouillon.ts::listMesBrouillonsAction",
 ];
 
+/**
+ * Fichiers qui NOMMENT des actions sans les appeler, et qu'il faut donc écarter
+ * du corpus des appelants.
+ *
+ * 🔴 ADR 0060 — le registre du verrou (`ECRITURES_SESSION`) cite chaque action
+ * qui écrit sur un dossier de session, EN CHAÎNE DE CARACTÈRES : c'est ce qui
+ * permet à ses tests de les parcourir. Sans cette exclusion, deux actions sans
+ * aucun appelant réel (`updateEnrollmentPresenceAction`,
+ * `setPresenceCreneauManualAction`) passaient pour « appelées » du seul fait
+ * d'être classées — exactement le vert trompeur que ce test existe pour éviter.
+ */
+const NOMMENT_SANS_APPELER: ReadonlyArray<string> = [
+  "server/qualiopi/sessions/verrou-dossier-registre.ts",
+];
+
 function estTest(chemin: string): boolean {
   return /\.(spec|test)\.tsx?$/.test(chemin) || /[\\/]__tests__[\\/]/.test(chemin);
 }
@@ -108,7 +123,11 @@ function fichiersSource(): string[] {
       const p = join(dir, e.name);
       if (e.isDirectory()) {
         if (e.name !== "node_modules" && e.name !== "__tests__") pile.push(p);
-      } else if (/\.tsx?$/.test(e.name) && !estTest(p)) {
+      } else if (
+        /\.tsx?$/.test(e.name) &&
+        !estTest(p) &&
+        !NOMMENT_SANS_APPELER.includes(p.slice(SRC.length + 1).replace(/\\/g, "/"))
+      ) {
         out.push(p);
       }
     }

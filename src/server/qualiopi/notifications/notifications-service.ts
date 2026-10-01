@@ -1217,6 +1217,10 @@ export async function envoyerRelanceQuestionnaire(questionnaireId: string): Prom
   await prisma.questionnaire.update({
     where: { id: q.id },
     data: { relanceCount: numeroRelance, derniereRelanceAt: new Date() },
+    // ADR 0060 — `select` explicite : sans lui, Prisma relit TOUTES les colonnes,
+    // dont `origine_reponse`, que le worker (bâti ~50 min avant la migration de
+    // l'app) ne trouverait pas encore en base.
+    select: { id: true },
   });
   return true;
 }

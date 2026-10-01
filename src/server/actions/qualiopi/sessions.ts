@@ -61,6 +61,7 @@ import {
   isTrainerHabilite,
   type TrainerHabilitationFields,
 } from "@/server/qualiopi/trainers/trainers";
+import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 // NB : le type `WriteSessionTransitionInput` n'est PAS ré-exporté ici (aucun
 // caller externe). Un `export type { … }` dans un module "use server" est
@@ -612,6 +613,9 @@ export async function setSessionLieuAction(
   }
   const { id, modalite, ...lieuBrut } = parsed.data;
   const lieu = normaliserLieu(lieuBrut);
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
+  const verrou = await assertDossierOuvert(id);
+  if (!verrou.ok) return verrou;
 
   const LIEU_SELECT = {
     lieuType: true,
@@ -684,6 +688,9 @@ export async function setSessionMontantAction(
     return { error: premier?.message ?? "Données invalides" };
   }
   const { id, montantHtCents, motif } = parsed.data;
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
+  const verrou = await assertDossierOuvert(id);
+  if (!verrou.ok) return verrou;
 
   let avant: { montantHtCents: number } | null;
   try {
@@ -792,6 +799,9 @@ export async function setSessionDatesAction(input: {
     return { error: parsed.error.issues[0]?.message ?? "Données invalides" };
   }
   const v = parsed.data;
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
+  const verrou = await assertDossierOuvert(v.id);
+  if (!verrou.ok) return verrou;
 
   // Même invariant qu'à la création (cf. `createSessionAction`). Le dupliquer
   // est voulu : une plage inversée produit une durée négative sur la convention.

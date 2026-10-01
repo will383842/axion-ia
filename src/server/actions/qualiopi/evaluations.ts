@@ -20,6 +20,7 @@ import {
 } from "@/server/actions/qualiopi/_guards";
 import { createEvaluation } from "@/server/qualiopi/evaluations/evaluations-service";
 import { genererAttestationPourEnrollment } from "@/server/qualiopi/evaluations/attestation-service";
+import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -103,6 +104,9 @@ export async function createEvaluationAcquisAction(input: {
   const parsed = createEvaluationAcquisSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
+  // ADR 0060 — écriture VERROU : refusée sur un dossier clos.
+  const verrou = await assertDossierOuvert({ enrollmentId: v.enrollmentId });
+  if (!verrou.ok) return verrou;
 
   let created: { id: string };
   try {
@@ -166,6 +170,24 @@ export async function genererAttestationAction(input: {
   const parsed = genererAttestationSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
+
+  // 🔴 ADR 0060 (D7) — « Regénérer (forcer) » SANS motif produisait une pièce
+  // nouvelle qui remplaçait l'ancienne sans que rien ne dise pourquoi. Une
+  // régénération forcée est une RECTIFICATION : elle exige son motif.
+  if (v.force === true && v.rectificationMotif === undefined) {
+    return {
+      error:
+        "Regénérer une attestation déjà émise est une rectification : indiquez son motif " +
+        "(10 caractères au moins). Il est porté au registre et visible par l'auditeur.",
+    };
+  }
+  // ADR 0060 — la RÉGÉNÉRATION est une écriture VERROU ; la première émission
+  // et le renvoi de l'attestation existante restent ouverts (droit du
+  // stagiaire, L.6353-1, et condition du verrou lui-même).
+  if (v.force === true || v.rectificationMotif !== undefined) {
+    const verrou = await assertDossierOuvert({ enrollmentId: v.enrollmentId });
+    if (!verrou.ok) return verrou;
+  }
 
   let resultat: "complete" | "partielle" | "aucune";
   let documentId: string | null;
