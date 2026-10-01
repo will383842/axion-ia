@@ -154,6 +154,10 @@ import {
 import { PreavisSousTraitantsEmail, preavisSousTraitantsSubject } from "./preavis-sous-traitants";
 import { RencontreInvitationEmail, rencontreInvitationSubject } from "./rencontre-invitation";
 import { VisioEmailSuiviEmail, visioEmailSuiviSubject } from "./visio-email-suivi";
+import {
+  QuestionnaireReponsesRecuesEmail,
+  questionnaireReponsesRecuesSubject,
+} from "./questionnaire-reponses-recues";
 
 type TemplateMap = {
   [K in EmailJobName]: {
@@ -469,6 +473,12 @@ const TEMPLATES: TemplateMap = {
   "visio-email-suivi": {
     subject: visioEmailSuiviSubject,
     component: VisioEmailSuiviEmail,
+  },
+  // Questionnaire en ligne (2026-10-01) — e-mail interne, sans contenu de
+  // réponse (`app/questionnaire/[id]/[jeton]/actions.ts`).
+  "questionnaire-reponses-recues": {
+    subject: questionnaireReponsesRecuesSubject,
+    component: QuestionnaireReponsesRecuesEmail,
   },
 };
 

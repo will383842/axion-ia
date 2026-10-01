@@ -12,6 +12,8 @@
  */
 
 import { describe, it, expect } from "vitest";
+
+import { jetonQuestionnaire } from "@/server/visio/questionnaire-en-ligne/jeton";
 import {
   piiScrubBeforeSend,
   piiScrubBeforeSendTransaction,
@@ -108,5 +110,38 @@ describe("piiScrubBeforeSendTransaction — le hook qui manquait", () => {
   it("retourne bien la transaction — la jeter perdrait tout le traçage", () => {
     const evt = { transaction: "/fr/formations", request: { url: "https://a.test/fr" } };
     expect(piiScrubBeforeSendTransaction(evt as never)).not.toBeNull();
+  });
+});
+
+describe("questionnaire de cadrage en ligne — le jeton du lien client (2026-10-01)", () => {
+  // Forme réelle : `/questionnaire/<uuid>/<HMAC base64url de 43 caractères>`.
+  const ID = "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b";
+  // Un VRAI jeton, fabriqué par le module de production (forme et alphabet réels).
+  const JETON_Q = jetonQuestionnaire(ID) as string;
+  const URL_Q = `https://axion-ia.com/questionnaire/${ID}/${JETON_Q}`;
+
+  it("🔴 masque le jeton dans l'URL de la page et dans celle de l'action serveur", () => {
+    for (const url of [URL_Q, `${URL_Q}?envoye=1`, `${URL_Q}?erreur=vide`]) {
+      const nettoye = piiScrubBeforeSend({ request: { url } } as never);
+      expect(nettoye?.request?.url).not.toContain(JETON_Q);
+      expect(nettoye?.request?.url).toContain(`/questionnaire/${ID}/[TOKEN]`);
+    }
+  });
+
+  it("masque le jeton d'une TRANSACTION (nom et http.target)", () => {
+    const nettoye = piiScrubBeforeSendTransaction({
+      transaction: `/questionnaire/${ID}/${JETON_Q}`,
+      contexts: { trace: { data: { "http.target": `/questionnaire/${ID}/${JETON_Q}` } } },
+    } as never);
+    expect(nettoye?.transaction).not.toContain(JETON_Q);
+    const cible = (nettoye?.contexts?.["trace"] as { data?: Record<string, unknown> } | undefined)
+      ?.data?.["http.target"];
+    expect(String(cible)).not.toContain(JETON_Q);
+  });
+
+  it("contre-épreuve : `/questionnaire/<uuid>` seul reste lisible", () => {
+    const url = `https://axion-ia.com/questionnaire/${ID}`;
+    const nettoye = piiScrubBeforeSend({ request: { url } } as never);
+    expect(nettoye?.request?.url).toBe(url);
   });
 });

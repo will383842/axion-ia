@@ -507,6 +507,13 @@ export const config = {
     // Trouvée par le harnais E2E, qui l'a signalée comme « requête en échec » sur
     // une route de sa propre liste. Personne ne l'ouvre en temps normal : c'est
     // exactement le genre de page qu'aucune relecture ne va vérifier.
+    // `questionnaire/` exclu (2026-10-01) : le questionnaire de cadrage EN LIGNE
+    // (`src/app/questionnaire/[id]/[jeton]/`), page racine hors `[locale]` comme
+    // `maintenance`. Sans l'exclusion, la règle 0bis la 301 vers
+    // `/fr/questionnaire/…` (404) et le lien de l'e-mail du client ne mène nulle
+    // part. Ses en-têtes de sécurité (CSP, `no-store`, `Referrer-Policy: same-origin`) sont posés
+    // par `next.config.ts`, puisque ce proxy ne la voit plus. Garde :
+    // `src/app/questionnaire/__tests__/le-lien-du-questionnaire-reste-joignable.spec.ts`.
     // 🔴 2026-09-05 — CONTOURNEMENT D'AUTHENTIFICATION, referme ici.
     //
     // Les deux alternatives d'extension ci-dessous portaient `.*\\.ext$`, donc TOUT
@@ -544,6 +551,6 @@ export const config = {
     //
     // ⚠️ Les DEUX alternatives sont corrigees : `.txt` portait exactement le meme
     //    trou que les images. N'en traiter qu'une laisserait la porte entrouverte.
-    "/((?!api/|widget/|qr/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
+    "/((?!api/|widget/|qr/|questionnaire/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
   ],
 };

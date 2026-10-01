@@ -172,7 +172,10 @@ export type EmailJobName =
   | "rencontre-invitation"
   // Chantier visio (PR 7) — e-mail de suivi d'un rendez-vous client, construit
   // sur les faits VALIDÉS. Toujours garé en « E-mails à valider ».
-  | "visio-email-suivi";
+  | "visio-email-suivi"
+  // Questionnaire de cadrage EN LIGNE (2026-10-01) — e-mail INTERNE : un client
+  // a envoyé ses réponses. Aucune réponse dans le message, un lien vers la console.
+  | "questionnaire-reponses-recues";
 
 /**
  * Lot L4 — passage quotidien du vivier candidats.

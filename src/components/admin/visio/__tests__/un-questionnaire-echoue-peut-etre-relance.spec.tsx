@@ -36,6 +36,11 @@ function brouillonVide(echoue: boolean): QuestionnaireDuProjet {
     enPreparation: true,
     preparationEchouee: echoue,
     genereLe: new Date("2026-10-06T08:00:00Z"),
+    mode: "a_copier",
+    reponseRecueLe: null,
+    repondant: null,
+    lienEnLigne: null,
+    remplacable: false,
     questions: [],
   };
 }

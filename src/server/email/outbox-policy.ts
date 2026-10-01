@@ -107,6 +107,10 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // rien à relire — le contenu est la liste des demi-journées signées — et la
   // feuille resterait sans la signature que les OPCO demandent.
   "formateur-contresignature",
+  // Questionnaire en ligne (2026-10-01) : une notification INTERNE (« un client
+  // a répondu »), sans contenu de réponse. Garée, elle serait une alerte perdue
+  // — même raisonnement que `qualiopi-alerte-interne`.
+  "questionnaire-reponses-recues",
 ] as const;
 
 /**
@@ -139,6 +143,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "qualiopi-relance-impayee": "Relance d'impayé",
   "appel-rappel": "Rappel avant un appel de découverte",
   "piece-exemplaire-signe": "Remise de l'exemplaire signé",
+  "questionnaire-reponses-recues": "Questionnaire en ligne : réponses reçues (interne)",
 };
 
 export function libelleTemplateEmail(template: string | null): string {

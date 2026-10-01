@@ -1,6 +1,7 @@
 import * as Sentry from "@sentry/nextjs";
 
 import { optionsSentryServeur } from "./lib/observability/sentry-options";
+import { corpsAIgnorer } from "./lib/observability/sentry-pii-scrub";
 
 // ⚠️ Ce fichier ne couvre QUE l'application Next : il est chargé par le hook
 // d'instrumentation de Next, qui ne s'exécute jamais dans le worker BullMQ
@@ -11,5 +12,20 @@ import { optionsSentryServeur } from "./lib/observability/sentry-options";
 const dsn = process.env["SENTRY_DSN"];
 
 if (dsn) {
-  Sentry.init(optionsSentryServeur(dsn));
+  Sentry.init({
+    ...optionsSentryServeur(dsn),
+    // Questionnaire en ligne (2026-10-01, veto sécurité PR 1258) : le SDK ne lit
+    // pas le CORPS des requêtes des routes à requête secrète (jeton, réponses,
+    // nom du client). Défense en profondeur : `piiScrubBeforeSend` les purge de
+    // toute façon. Remplace l'intégration HTTP par défaut (même nom) : on garde
+    // donc `disableIncomingRequestSpans: true`, que @sentry/nextjs pose par défaut
+    // (Next crée lui-même les spans de requête ; sans ce réglage, transactions en
+    // double sur toutes les routes).
+    integrations: [
+      Sentry.httpIntegration({
+        disableIncomingRequestSpans: true,
+        ignoreIncomingRequestBody: corpsAIgnorer,
+      }),
+    ],
+  });
 }
