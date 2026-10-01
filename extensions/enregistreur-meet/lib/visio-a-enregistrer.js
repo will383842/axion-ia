@@ -11,6 +11,15 @@ import { BASE_API } from "./constantes.js";
 export const ATTRIBUT_OUI = "data-enregistrer-visio";
 export const ATTRIBUT_NON = "data-sans-enregistrement";
 
+/**
+ * Badge de l'icône quand Chrome refuse d'ouvrir le panneau : neutre, jamais
+ * « REC » (rien n'enregistre tant que « Démarrer » n'est pas cliqué).
+ */
+export const BADGE_PRET = "PRÊT";
+
+/** Alarme qui efface la mémoire (et le badge) à son expiration. */
+export const ALARME_MEMOIRE = "visio-a-enregistrer";
+
 /** Durée de vie du « rendez-vous à enregistrer ». */
 export const DUREE_MEMOIRE_MS = 30 * 60 * 1000;
 

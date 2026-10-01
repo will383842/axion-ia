@@ -34,6 +34,8 @@ import {
 import { etatJeton, jetonRefuseParLeSite } from "./lib/jeton.js";
 import { entetesDuMorceau } from "./lib/tranches.js";
 import {
+  ALARME_MEMOIRE,
+  BADGE_PRET,
   memoriserVisio,
   messageAccepte,
   preselection,
@@ -149,18 +151,21 @@ async function appliquerPreselection() {
 
 /**
  * Message du relais de la console. `sidePanel.open` part AVANT tout `await` :
- * c'est le geste de Will (le clic) relayé ; si Chrome refuse, un badge invite
- * à cliquer l'icône.
+ * c'est le geste de Will (le clic) relayé ; si Chrome refuse, le badge « PRÊT »
+ * invite à cliquer l'icône.
  */
 function surRelais(msg, envoyeur) {
   switch (msg.type) {
     case "visio_a_enregistrer": {
       try {
-        chrome.sidePanel.open({ windowId: envoyeur.tab.windowId }).catch(() => badge("REC"));
+        chrome.sidePanel.open({ windowId: envoyeur.tab.windowId }).catch(() => badge(BADGE_PRET));
       } catch {
-        badge("REC");
+        badge(BADGE_PRET);
       }
       etat.aEnregistrer = memoriserVisio(msg.identifiant, Date.now());
+      if (etat.aEnregistrer) {
+        chrome.alarms.create(ALARME_MEMOIRE, { when: etat.aEnregistrer.expireLe });
+      }
       chrome.storage.session
         .set({ aEnregistrer: etat.aEnregistrer })
         .then(actualiserRencontres)
@@ -722,6 +727,10 @@ chrome.runtime.onStartup.addListener(() => {
 chrome.alarms.onAlarm.addListener(async (alarme) => {
   await chargerReglages();
   if (alarme.name === "file") viderFile();
+  if (alarme.name === ALARME_MEMOIRE && !visioMemorisee(etat.aEnregistrer, Date.now())) {
+    await oublierVisio();
+    diffuser();
+  }
   if (alarme.name === "battement-appareil" && etat.jeton) {
     const f = await mesurerLaFile(Date.now());
     const r = await appeler({
