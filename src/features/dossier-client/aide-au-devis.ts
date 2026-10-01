@@ -117,7 +117,8 @@ export interface AideAuDevis {
 
 export interface EntreeAideAuDevis {
   readonly consolidation: Consolidation;
-  readonly projetId: string;
+  /** `null` : devis sans projet — la partie ENTREPRISE seulement (m-8). */
+  readonly projetId: string | null;
   /** Citations DÉCHIFFRÉES par fait (lues après la garde, `lireCitationsDesFaits`). */
   readonly citations: ReadonlyMap<string, string>;
   readonly role: string | null | undefined;
@@ -195,7 +196,7 @@ function elementsDuType(
 /** Construit l'aide au devis d'un projet. */
 export function aideAuDevis(e: EntreeAideAuDevis): AideAuDevis {
   const habilite = peutVoirLesEchanges(e.role);
-  const projet = e.consolidation.projets[e.projetId];
+  const projet = e.projetId === null ? undefined : e.consolidation.projets[e.projetId];
   const entreprise = e.consolidation.entreprise;
   const rubriques: RubriqueAide[] = RUBRIQUES_AIDE.map((r) => ({
     cle: r.cle,

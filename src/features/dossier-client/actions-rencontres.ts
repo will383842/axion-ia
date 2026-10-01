@@ -223,6 +223,8 @@ export async function validerApresLAppelAction(fd: FormData): Promise<void> {
   if (garde.suite === "devis") {
     const q = new URLSearchParams({ clientId: r.clientId });
     if (r.projetId) q.set("projetId", r.projetId);
+    // m-8 : la page du devis garde un chemin de retour vers le rendez-vous.
+    q.set("rencontreId", rencontreId);
     redirect(`${base("qualiopi/devis/new")}?${q.toString()}`);
   }
   redirect(base(`rendez-vous/rencontres/${rencontreId}`));
