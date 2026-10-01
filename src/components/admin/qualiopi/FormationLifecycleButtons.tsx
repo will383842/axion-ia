@@ -134,7 +134,7 @@ function IndicateursForm({ formationId, onDone }: IndicateursFormProps): React.R
       className="mt-[var(--space-admin-4)] space-y-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]"
     >
       <p className="text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
-        Publier un indicateur de résultats (off.1/2 Qualiopi)
+        Publier un indicateur de résultats (indicateurs 1 et 2)
       </p>
 
       <div className="grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2">

@@ -85,7 +85,7 @@ describe("registres Qualiopi lisibles par l'auditeur", () => {
     const source = lire(join(PAGES_QUALIOPI, "appreciations", "page.tsx"));
     expect(source).not.toMatch(/\.slice\(0,\s*8\)/);
     expect(source).toMatch(/resoudreRattachementsAppreciations/);
-    expect(source).toMatch(/Auteur non rattaché/);
+    expect(source).toMatch(/Non rattachée/);
   });
 
   it("aucun sous-titre d'écran ne parle le jargon interne", () => {

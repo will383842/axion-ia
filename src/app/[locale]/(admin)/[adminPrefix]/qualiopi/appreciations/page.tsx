@@ -127,7 +127,7 @@ export default async function QualiopiAppreciationsPage({ params }: PageProps) {
       });
     }
     if (liens.length === 0) {
-      return <span className="text-[color:var(--color-admin-fg-muted)]">Auteur non rattaché</span>;
+      return <span className="text-[color:var(--color-admin-fg-muted)]">Non rattachée</span>;
     }
     return (
       <ul className="space-y-0.5">

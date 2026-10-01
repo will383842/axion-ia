@@ -363,8 +363,9 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
 
       {typeAction !== undefined && (
         <p className="mb-[var(--space-admin-6)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-          Le filtre type d&apos;action s&apos;applique aux métriques liées aux sessions (M1-M7, M12,
-          M14). Les métriques transverses (M8-M11, M13) restent calculées sur tout le périmètre.
+          Le filtre type d&apos;action s&apos;applique aux indicateurs calculés session par session.
+          Les indicateurs transverses (réclamations, incidents, veille, amélioration) restent
+          calculés sur toute l&apos;activité.
         </p>
       )}
 

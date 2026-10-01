@@ -74,7 +74,7 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Revue de direction"
-        description="Revue de direction annuelle (indicateur 32 — son absence est une non-conformité majeure) : indicateurs de l'année, décisions et plan d'actions. Une revue par année civile."
+        description="Revue de direction annuelle (indicateur 32 — amélioration continue) : indicateurs de l'année, décisions et plan d'actions. Une revue par année civile."
         actions={
           <PdfExportButton
             label="Exporter les revues (PDF)"
