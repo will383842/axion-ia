@@ -23,7 +23,8 @@
  */
 
 import type { BaseTransactionnelle } from "./base";
-import { relierParticipantsAuxPersonnes } from "./rattacher";
+import { estClientTestInterne } from "./client-test";
+import { MESSAGE_RENCONTRE_DE_TEST, relierParticipantsAuxPersonnes } from "./rattacher";
 
 export class ErreurDeplacement extends Error {}
 
@@ -41,9 +42,12 @@ export async function deplacerRencontre(
   return db.$transaction(async (tx) => {
     const r = await tx.rencontre.findUnique({
       where: { id: e.rencontreId },
-      select: { id: true, clientId: true, projetId: true },
+      select: { id: true, clientId: true, projetId: true, estTestInterne: true },
     });
     if (r === null) throw new ErreurDeplacement("Rendez-vous introuvable.");
+    if (r.estTestInterne && !(await estClientTestInterne(tx, e.versClientId))) {
+      throw new ErreurDeplacement(MESSAGE_RENCONTRE_DE_TEST);
+    }
     if (r.clientId === null) {
       throw new ErreurDeplacement("Ce rendez-vous n'est rangé nulle part : utilisez « Ranger ».");
     }

@@ -82,7 +82,7 @@ export async function ApresLAppelVue({
   const client = r.client;
   const [projets, fiches, annuaire] = await Promise.all([
     client ? lireProjetsCourts(client.id) : Promise.resolve([]),
-    client ? Promise.resolve([]) : lireFichesVivantes(),
+    client ? Promise.resolve([]) : lireFichesVivantes({ fictivesSeulement: r.estTestInterne }),
     client === null && r.entrepriseDeclaree.nom
       ? rechercherSiren(r.entrepriseDeclaree.nom, r.entrepriseDeclaree.ville)
       : Promise.resolve(null),
@@ -218,7 +218,8 @@ export async function ApresLAppelVue({
           </p>
         ) : (
           <div className="space-y-[var(--space-admin-4)]">
-            {r.clientPropose ? (
+            {/* M-1 : jamais de client proposé pour une rencontre de test. */}
+            {r.clientPropose && !r.estTestInterne ? (
               <form
                 action={rangerRencontreAction}
                 className="flex flex-wrap items-center gap-[var(--space-admin-3)]"
@@ -238,7 +239,9 @@ export async function ApresLAppelVue({
               </form>
             ) : (
               <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>
-                Aucune fiche ne ressemble à ce rendez-vous.
+                {r.estTestInterne
+                  ? "Rendez-vous de test : une fiche fictive ou une nouvelle fiche, jamais un vrai client."
+                  : "Aucune fiche ne ressemble à ce rendez-vous."}
               </p>
             )}
 

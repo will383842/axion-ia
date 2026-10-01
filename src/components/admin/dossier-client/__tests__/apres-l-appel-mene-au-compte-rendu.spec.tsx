@@ -25,6 +25,7 @@ vi.mock("@/features/dossier-client/recherche-entreprises", () => ({
 }));
 
 import { ApresLAppelVue } from "../ApresLAppelVue";
+import { lireFichesVivantes } from "@/features/dossier-client/queries-rencontres";
 import type { RencontreDetaillee } from "@/features/dossier-client/queries-rencontres";
 
 const ID = "00000000-0000-4000-8000-000000000005";
@@ -124,5 +125,19 @@ describe("« Après l'appel » mène au compte rendu", () => {
     const html = await rendu(rencontre([]));
     expect(html).not.toContain("en préparation");
     expect(html).toContain("Note (pas d&#x27;enregistrement)");
+  });
+
+  it("M-1 : rencontre de test — aucun client proposé, seules les fiches fictives sont listées", async () => {
+    vi.mocked(lireFichesVivantes).mockClear();
+    const html = await rendu({
+      ...rencontre([]),
+      client: null,
+      estTestInterne: true,
+      rattachementStatut: "propose",
+      clientPropose: { id: "c9", numero: "AXI-CLI-009", raisonSociale: "Vraie Fiche Fictive" },
+      motifProposition: "email_calendly",
+    });
+    expect(html).not.toContain("Confirmer le client proposé");
+    expect(lireFichesVivantes).toHaveBeenCalledWith({ fictivesSeulement: true });
   });
 });

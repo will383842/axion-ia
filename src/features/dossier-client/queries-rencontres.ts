@@ -275,9 +275,15 @@ export async function lireProjetsCourts(
 }
 
 /** Les fiches vivantes (non absorbées), pour « Ranger chez… » et « Fusionner dans… ». */
-export async function lireFichesVivantes(): Promise<FicheCourte[]> {
+export async function lireFichesVivantes(
+  o: { readonly fictivesSeulement?: boolean } = {},
+): Promise<FicheCourte[]> {
   const fiches = await prisma.client.findMany({
-    where: { fusionsAbsorbee: { none: { defaiteLe: null } } },
+    where: {
+      fusionsAbsorbee: { none: { defaiteLe: null } },
+      // M-1 : une rencontre de test ne se range que chez une fiche fictive du pilote.
+      ...(o.fictivesSeulement ? { testInterne: { isNot: null } } : {}),
+    },
     select: { id: true, numero: true, raisonSociale: true },
     orderBy: { raisonSociale: "asc" },
     take: 1000,
