@@ -396,12 +396,39 @@ export async function reecrireCompteRendu(db: Db, rencontreId: string): Promise<
   });
 }
 
-/** « Réextraire » : P1 depuis la transcription retenue ; l'ancienne version est remplacée. */
+/**
+ * « Relancer » : P1 depuis la transcription retenue ; l'ancienne version est
+ * remplacée. V2, M3 — SANS transcription retenue (la transcription elle-même
+ * a échoué : OpenAI en panne plus de 72 h, par exemple), le geste relance
+ * `transcrire` tant qu'un enregistrement de la rencontre a encore son son.
+ * Les tranches déjà transcrites ne sont ni refaites ni repayées.
+ */
 export async function reextraireCompteRendu(db: Db, rencontreId: string): Promise<void> {
   const t = await db.transcription.count({
     where: { statut: "retenue", enregistrement: { rencontreId } },
   });
-  if (t === 0) throw new GesteRefuse("La transcription n'existe plus : impossible de réextraire.");
+  if (t === 0) {
+    const avecSon = await db.enregistrement.count({
+      where: {
+        rencontreId,
+        statut: { in: ["depose", "en_traitement"] },
+        audioSupprimeLe: null,
+      },
+    });
+    if (avecSon === 0) {
+      throw new GesteRefuse(
+        "Le son de ce rendez-vous n'existe plus : la transcription ne peut pas être relancée.",
+      );
+    }
+    await db.$transaction((tx) =>
+      planifierDans(tx, rencontreId, {
+        etape: "transcrire",
+        compteRenduId: null,
+        reinitialiser: true,
+      }),
+    );
+    return;
+  }
   await db.$transaction((tx) =>
     planifierDans(tx, rencontreId, { etape: "extraire", compteRenduId: null, reinitialiser: true }),
   );
