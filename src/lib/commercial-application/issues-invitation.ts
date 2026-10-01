@@ -52,8 +52,7 @@ export interface PhraseIssue {
 const PHRASES: Readonly<Record<CodeIssueInvitation, PhraseIssue>> = {
   envoyee: {
     ton: "success",
-    texte:
-      "Invitation mise en file : elle part dans la minute, avec le document de présentation et le catalogue.",
+    texte: "Invitation mise en file : elle part dans la minute, avec le catalogue.",
   },
   "en-validation": {
     ton: "success",

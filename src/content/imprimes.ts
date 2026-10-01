@@ -250,12 +250,12 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     nom: "Devenir apporteur d'affaires · 13 pages",
     format: "A4 paysage · 297 × 210 mm · 13 pages, lecture à l'écran",
     resume:
-      "Le document de présentation du réseau d'apporteurs d'affaires : commissions, fonctionnement, prestations à recommander, profils recherchés. Envoyé automatiquement, avec le catalogue, à toute personne qui s'y intéresse — et dont le lien accompagne l'invitation à l'échange de 15 minutes.",
+      "Le document de présentation du réseau d'apporteurs d'affaires : commissions, fonctionnement, prestations à recommander, profils recherchés. RETIRÉ des e-mails, de la page de remerciement et du composeur de la console depuis le 2026-10-01 (décision de Williams, JUR-T44 et JUR-T44b) : il n'est plus envoyé aux candidats jusqu'à sa réécriture (JUR-T45).",
     fichiersPublics: [
       {
         chemin: DOCUMENT_APPORTEUR_CHEMIN,
         nom: "Le PDF, 13 pages",
-        role: "Le lien que portent les e-mails du réseau d'apporteurs (accusé du premier contact, rappels, confirmation du dossier, invitation) et la page de remerciement du tunnel Facebook. ⚠️ Ne pas renommer : le chemin part dans des e-mails déjà envoyés.",
+        role: "Le lien que portaient les e-mails du réseau d'apporteurs et la page de remerciement du tunnel Facebook, retiré depuis le 2026-10-01 (JUR-T44). ⚠️ Ne pas renommer : le chemin part dans des e-mails déjà envoyés.",
       },
     ],
     fichiersHorsLigne: [

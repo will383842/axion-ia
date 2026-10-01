@@ -72,12 +72,12 @@ export async function BlocInvitationApporteur({
     <div className="admin-card admin-card-wide" id="invitation">
       <h2 className="admin-h2">Inviter à un échange de 15 minutes</h2>
       <p className="admin-help">
-        Un e-mail avec le lien de réservation Calendly, le document de présentation et le catalogue
-        — et le lien du dossier si la personne ne l&apos;a pas encore envoyé. Un dossier complet, ou
-        une candidature à une offre commerciale (même si la personne avait déjà laissé un premier
-        contact), reçoit cette invitation automatiquement 15 minutes après son arrivée. Pour un
-        premier contact seul, un dossier commencé, une saisie manuelle ou une fiche importée (CV
-        Indeed), rien ne part tout seul : c&apos;est toi qui choisis qui inviter.
+        Un e-mail avec le lien de réservation Calendly et le catalogue — et le lien du dossier si la
+        personne ne l&apos;a pas encore envoyé. Un dossier complet, ou une candidature à une offre
+        commerciale (même si la personne avait déjà laissé un premier contact), reçoit cette
+        invitation automatiquement 15 minutes après son arrivée. Pour un premier contact seul, un
+        dossier commencé, une saisie manuelle ou une fiche importée (CV Indeed), rien ne part tout
+        seul : c&apos;est toi qui choisis qui inviter.
       </p>
 
       {retour ? (

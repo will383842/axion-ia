@@ -175,8 +175,8 @@ export function FormulaireContactManuel({
           </p>
         ) : cree.invitation?.envoyee ? (
           <p className="text-sm">
-            <strong>Invitation mise en file</strong> : lien Calendly, document de présentation et
-            catalogue. Aucun rappel ne suivra.
+            <strong>Invitation mise en file</strong> : lien Calendly et catalogue. Aucun rappel ne
+            suivra.
           </p>
         ) : cree.invitation ? (
           <p className="text-sm">
@@ -321,8 +321,7 @@ export function FormulaireContactManuel({
           Lui envoyer l&apos;invitation à un échange de 15 minutes
         </label>
         <p className="admin-help">
-          Un e-mail avec le lien de réservation Calendly, le document de présentation et le
-          catalogue. Aucun rappel ne suit.
+          Un e-mail avec le lien de réservation Calendly et le catalogue. Aucun rappel ne suit.
         </p>
         {accordRequis ? (
           <div className="flex flex-col gap-1">
