@@ -67,6 +67,16 @@ export function visioMemorisee(memoire, maintenant) {
 }
 
 const PHASES_AU_REPOS = new Set(["repos", "termine", "detruit"]);
+const PHASES_ACTIVES = new Set(["accord_en_attente", "en_cours"]);
+
+/**
+ * Une capture vient-elle de finir (arrêt, refus, destruction) ? Le service
+ * worker efface alors la mémoire : « termine » ne re-pré-sélectionne jamais
+ * un rendez-vous préparé pendant la capture précédente.
+ */
+export function captureVientDeFinir(phaseAvant, phaseApres) {
+  return PHASES_ACTIVES.has(phaseAvant) && (phaseApres === "termine" || phaseApres === "detruit");
+}
 
 /**
  * La rencontre à pré-sélectionner, au repos seulement (une capture en cours

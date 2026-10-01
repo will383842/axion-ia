@@ -41,9 +41,24 @@ export async function filer(): Promise<void> {
 export async function chargerServiceWorker(o: {
   rencontres: RencontreDeTest[];
   ouvertureRefusee?: boolean;
+  /** Capture déjà en cours au chargement (stockage de session). */
+  captureInitiale?: Record<string, unknown>;
 }) {
   vi.resetModules();
-  const session = new Map<string, unknown>();
+  // Le stockage local (indexedDB) est remplacé : seule la décision est éprouvée.
+  vi.doMock("../../../extensions/enregistreur-meet/stockage-local.js", () => ({
+    ajouterALaFile: async () => undefined,
+    detruireCapture: async () => undefined,
+    ecrireCapture: async () => undefined,
+    lireCaptures: async () => ({}),
+    lireLaFile: async () => [],
+    mesurerLaFile: async () => ({ fileEnAttente: 0, agePlusVieuxMs: null }),
+    mettreAJourElement: async () => undefined,
+    retirerDeLaFile: async () => undefined,
+  }));
+  const session = new Map<string, unknown>(
+    o.captureInitiale ? [["capture", o.captureInitiale]] : [],
+  );
   const local = new Map<string, unknown>([
     ["jeton", "a".repeat(64)],
     ["jetonExpireLe", new Date(Date.now() + 60 * 86_400_000).toISOString()],

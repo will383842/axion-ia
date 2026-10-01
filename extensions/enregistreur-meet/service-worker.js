@@ -36,6 +36,7 @@ import { entetesDuMorceau } from "./lib/tranches.js";
 import {
   ALARME_MEMOIRE,
   BADGE_PRET,
+  captureVientDeFinir,
   memoriserVisio,
   messageAccepte,
   preselection,
@@ -340,7 +341,10 @@ async function executer(actions) {
 }
 
 async function appliquer(resultat) {
+  const avant = etat.capture.phase;
   etat.capture = resultat.etat;
+  // Capture finie : le rendez-vous préparé pendant elle est oublié.
+  if (captureVientDeFinir(avant, resultat.etat.phase)) await oublierVisio();
   await executer(resultat.actions);
   await memoriser();
   diffuser();
