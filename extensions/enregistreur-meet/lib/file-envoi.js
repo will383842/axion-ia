@@ -51,9 +51,21 @@ export function delaiRenvoi(essais) {
  * @param {Record<string, { accord: boolean, enregistrementId: string | null, detruit?: boolean }>} captures
  */
 export function envoyablesMaintenant(elements, captures, maintenantMs) {
+  // V2, M5 — la `fin` d'une capture ne part qu'une fois TOUT son son parti :
+  // aucun morceau ni fin de tranche de la capture en délai de renvoi. Sinon le
+  // site dépose sans eux, la transcription démarre, et le morceau renvoyé
+  // après est refusé (`enregistrement_clos`) puis détruit. Ceux du même lot
+  // partent avant elle (ordre) ; `sonEnAttente` est revérifié juste avant
+  // d'envoyer la fin, si l'un d'eux vient d'échouer.
+  const sonEnAttente = new Set(
+    elements
+      .filter((el) => estDuSon(el) && (el.prochainEssaiMs ?? 0) > maintenantMs)
+      .map((el) => el.cleClient),
+  );
   return elements
     .filter((el) => {
       if ((el.prochainEssaiMs ?? 0) > maintenantMs) return false;
+      if (el.type === "fin" && sonEnAttente.has(el.cleClient)) return false;
       // Le refus ne dépend d'aucune capture : il part tant qu'il n'a pas abouti.
       if (el.type === "refus") return typeof el.enregistrementId === "string";
       const c = el.cleClient === undefined ? undefined : captures[el.cleClient];
@@ -66,6 +78,20 @@ export function envoyablesMaintenant(elements, captures, maintenantMs) {
       return true;
     })
     .sort((a, b) => (ORDRE[a.type] ?? 9) - (ORDRE[b.type] ?? 9) || a.creeLe - b.creeLe);
+}
+
+function estDuSon(el) {
+  return el.type === "morceau" || el.type === "tranche";
+}
+
+/**
+ * V2, M5 — vrai s'il reste dans la file un morceau ou une fin de tranche de
+ * cette capture (en délai de renvoi ou non) : sa `fin` attend.
+ * @param {{ type: string, cleClient?: string }[]} elements
+ * @param {string} cleClient
+ */
+export function sonEnAttentePour(elements, cleClient) {
+  return elements.some((el) => el.cleClient === cleClient && estDuSon(el));
 }
 
 /** Que faire d'un élément après la réponse du site ? */

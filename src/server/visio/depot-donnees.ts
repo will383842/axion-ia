@@ -262,11 +262,28 @@ async function contactsDuClient(db: Db, clientId: string | null): Promise<Contac
   return c.map((x) => ({ ...x, statut: x.statut }));
 }
 
+/** V2, M5 — le délai pendant lequel un son en renvoi retient la transcription. */
+export const ATTENTE_SON_EN_RENVOI_MS = 15 * 60_000;
+
 export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2): PortDonnees {
   return {
+    // V2, M5 — « actif » aussi : un enregistrement DÉPOSÉ dont une tranche est
+    // encore en réception ou incomplète, moins de 15 min après sa fin. Un
+    // morceau en renvoi (503 pendant un déploiement) peut encore arriver : la
+    // transcription attend (report sans compter) au lieu de partir sans lui.
     enregistrementActif: async (rencontreId) =>
       (await db.enregistrement.count({
-        where: { rencontreId, statut: { in: [...ETATS_ENREGISTREMENT_ACTIFS] } },
+        where: {
+          rencontreId,
+          OR: [
+            { statut: { in: [...ETATS_ENREGISTREMENT_ACTIFS] } },
+            {
+              statut: "depose",
+              fin: { gt: new Date(Date.now() - ATTENTE_SON_EN_RENVOI_MS) },
+              tranches: { some: { statut: { in: ["en_reception", "incomplete"] } } },
+            },
+          ],
+        },
       })) > 0,
 
     oppositionIa: async (rencontreId) => {

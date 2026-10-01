@@ -26,6 +26,7 @@ import {
   elementRefus,
   envoyablesMaintenant,
   interpreterReponseSession,
+  sonEnAttentePour,
 } from "./lib/file-envoi.js";
 import { etatJeton, jetonRefuseParLeSite } from "./lib/jeton.js";
 import { entetesDuMorceau } from "./lib/tranches.js";
@@ -331,6 +332,8 @@ async function viderFile() {
       // que la boucle travaillait sur sa copie (les PUT continuaient).
       const k = el.type === "refus" ? null : (await lireCaptures())[el.cleClient];
       if (el.type !== "refus" && (!k || k.detruit)) continue;
+      // V2, M5 — un morceau du même lot vient d'échouer : la fin attend.
+      if (el.type === "fin" && sonEnAttentePour(await lireLaFile(), el.cleClient)) continue;
       const r = await envoyer(el, k);
       if (el.type === "session") {
         const s = interpreterReponseSession(r.statut, r.corps);
