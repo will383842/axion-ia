@@ -810,6 +810,8 @@ describe("Rouvrir le dossier", () => {
     expect((valider as HTMLButtonElement).disabled).toBe(true);
     const mdp = screen.getByLabelText("Mot de passe de sécurité (obligatoire)") as HTMLInputElement;
     expect(mdp.type).toBe("password");
+    // Jamais pré-rempli par le gestionnaire de mots de passe du navigateur.
+    expect(mdp.getAttribute("autocomplete")).toBe("new-password");
     fireEvent.change(mdp, { target: { value: "secret-de-test" } });
     expect((valider as HTMLButtonElement).disabled).toBe(false);
     fireEvent.click(valider);
