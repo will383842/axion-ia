@@ -173,6 +173,12 @@ export interface PortDonnees {
    * de la MÊME origine (début réel, sinon début du premier enregistrement).
    */
   readonly aTranscrire: (rencontreId: string) => Promise<readonly EnregistrementATraiter[]>;
+  /**
+   * V2, N5 — supprime de R2 le son d'UNE tranche (hors accord), vérifie qu'il
+   * n'existe plus, puis date sa suppression. Rend faux si un objet résiste :
+   * la purge de l'enregistrement (validation, 30 jours) le reprendra.
+   */
+  readonly purgerSonTranche: (trancheId: string) => Promise<boolean>;
   /** Octets CLAIRS d'une tranche (morceaux lus dans R2, déchiffrés, empreinte vérifiée). */
   readonly lireSonTranche: (trancheId: string) => Promise<Buffer>;
   readonly ouvrirTranscription: (

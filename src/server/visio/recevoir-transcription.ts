@@ -186,6 +186,10 @@ async function transcrireUn(
           segments: [place],
         }),
       );
+      // V2, N5 — « Sans accord, rien n'est enregistré » : le son de cette
+      // tranche quitte R2 tout de suite, pas à la validation ni à 30 jours.
+      // Un objet qui résiste est repris par la purge de l'enregistrement.
+      await deps.donnees.purgerSonTranche(tranche.id);
       dureeAudioMs += dureeTranche;
       continue;
     }

@@ -113,6 +113,10 @@ export function portTranscription(
       return Buffer.from(id);
     },
     ouvrirTranscription: async () => "tr1",
+    purgerSonTranche: async (id) => {
+      journal.push(`purger:${id}`);
+      return true;
+    },
     marquerEnregistrement: async (_tx, _id, statut) => {
       journal.push(`statut:${statut}`);
     },
