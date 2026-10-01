@@ -80,6 +80,7 @@ export function demarrerDictee(etat, entree, maintenantMs) {
       sonCoupe: false,
       fenetresHorsAccord: [],
       dernierSonClientMs: maintenantMs,
+      dernierSonAxionMs: maintenantMs,
       dernierSonMs: maintenantMs,
       notificationSilenceFaite: false,
       salleQuitteeDepuisMs: null,
@@ -128,6 +129,7 @@ export function demarrer(etat, entree, maintenantMs) {
       sonCoupe: false,
       fenetresHorsAccord: [],
       dernierSonClientMs: maintenantMs,
+      dernierSonAxionMs: maintenantMs,
       dernierSonMs: maintenantMs,
       notificationSilenceFaite: false,
       salleQuitteeDepuisMs: null,
@@ -280,6 +282,7 @@ export function tic(etat, mesure, maintenantMs) {
   const sonClient = mesure.niveauClient > SEUIL_SILENCE;
   const sonAxion = mesure.niveauAxion > SEUIL_SILENCE;
   if (sonClient) e.dernierSonClientMs = maintenantMs;
+  if (sonAxion || e.dernierSonAxionMs === undefined) e.dernierSonAxionMs = maintenantMs;
   if (sonClient || sonAxion) {
     e.dernierSonMs = maintenantMs;
     e.notificationSilenceFaite = false;
@@ -287,6 +290,15 @@ export function tic(etat, mesure, maintenantMs) {
   const badges = new Set();
   if (maintenantMs - e.dernierSonClientMs >= DELAIS_LOCAUX.badgePisteClientMuetteMs)
     badges.add("piste_client_muette");
+  // V2, M7 — le micro ne capte rien depuis 60 s alors que le client parle :
+  // casque décroché, micro débranché. Le document offscreen tente de le
+  // reprendre ; le badge le dit à Will.
+  if (
+    !e.enPause &&
+    sonClient &&
+    maintenantMs - e.dernierSonAxionMs >= DELAIS_LOCAUX.badgePisteClientMuetteMs
+  )
+    badges.add("micro_muet");
   const silence = maintenantMs - e.dernierSonMs;
   if (!e.enPause && silence >= DELAIS_LOCAUX.badgeSilenceMs) badges.add("silence");
   if (!e.enPause && silence >= DELAIS_LOCAUX.notificationSilenceMs && !e.notificationSilenceFaite) {
