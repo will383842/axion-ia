@@ -1715,6 +1715,67 @@ describe("evaluerConformite", () => {
     expect(result.indicateurs.find((i) => i.numero === 2)?.statut).toBe("couvert");
   });
 
+  // ── off.2 : DÉCIDÉE n'est pas DIFFUSÉE (audit initial 2026-10-01) ────────
+  //
+  // 🔴 « Indicateurs de résultats diffusés » s'affichait dès que
+  // `indicateursPubliesAt` était posé, y compris sur « IA pour l'immobilier »,
+  // sans session réalisée : sa fiche publique n'affiche RIEN. La preuve suit
+  // désormais la règle de l'encadré public ; le statut, lui, ne change pas.
+
+  /** `formation.findMany` de la diffusion réelle : discriminé sur le `select`. */
+  function setupFormationsPubliees(
+    rows: Array<{ slug: string; nbStagiairesParSession: number[] }>,
+  ): void {
+    mockP.formation.findMany.mockImplementation((args?: { select?: Record<string, unknown> }) => {
+      if (args?.select?.["sessions"] !== undefined && args?.select?.["slug"] !== undefined) {
+        return Promise.resolve(
+          rows.map((r) => ({
+            slug: r.slug,
+            indicateursPubliesAt: new Date("2026-08-04T10:00:00.000Z"),
+            sessions: r.nbStagiairesParSession.map((n) => ({ _count: { enrollments: n } })),
+          })),
+        );
+      }
+      return Promise.resolve([]);
+    });
+  }
+
+  it("off.2 publication décidée SANS session réalisée : couvert, mais la preuve ne dit PAS « diffusés »", async () => {
+    mockP.formation.count.mockResolvedValue(1);
+    setupFormationsPubliees([{ slug: "ia-pour-l-immobilier", nbStagiairesParSession: [] }]);
+    const ind2 = (await evaluerConformite()).indicateurs.find((i) => i.numero === 2)!;
+    expect(ind2.statut).toBe("couvert");
+    const preuves = ind2.preuves.join(" | ");
+    expect(preuves).not.toContain("Indicateurs de résultats diffusés");
+    expect(preuves).toContain("0 formation dont les résultats s'affichent sur la fiche publique");
+    expect(preuves).toContain(
+      "Aucun résultat encore diffusé sur une fiche publique (publication décidée, aucune session réalisée sur ces formations) ; procédure P-02 (AXI-QUA-P02) formalisée",
+    );
+  });
+
+  it("off.2 session réalisée avec un stagiaire : diffusés, et la fiche est nommée", async () => {
+    mockP.formation.count.mockResolvedValue(2);
+    setupFormationsPubliees([
+      { slug: "ia-pour-l-immobilier", nbStagiairesParSession: [] },
+      { slug: "ia-pour-bien-commencer-journee", nbStagiairesParSession: [1] },
+    ]);
+    const ind2 = (await evaluerConformite()).indicateurs.find((i) => i.numero === 2)!;
+    expect(ind2.statut).toBe("couvert");
+    expect(ind2.preuves).toContain(
+      "Indicateurs de résultats diffusés sur la fiche publique : ia-pour-bien-commencer-journee",
+    );
+  });
+
+  it("off.2 session réalisée SANS stagiaire, ou slug hors catalogue : rien de diffusé", async () => {
+    mockP.formation.count.mockResolvedValue(2);
+    setupFormationsPubliees([
+      { slug: "ia-pour-bien-commencer-journee", nbStagiairesParSession: [0] },
+      { slug: "formation-sur-mesure-hors-catalogue", nbStagiairesParSession: [3] },
+    ]);
+    const ind2 = (await evaluerConformite()).indicateurs.find((i) => i.numero === 2)!;
+    expect(ind2.preuves.join(" | ")).not.toContain("Indicateurs de résultats diffusés");
+  });
+
   // ── off.4 / off.8 : la DATE et la COUVERTURE (audit blanc 2026-08-15) ─────
   //
   // 🔴 Non-conformité relevée : `nbPositionnementsBesoin > 0` — aucune contrainte

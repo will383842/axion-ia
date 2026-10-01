@@ -35,6 +35,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { listerFormationsAResultatsDiffuses } from "@/server/qualiopi/indicateurs/resultats-publics-service";
 import { whereVeilleExploitee } from "./veille-exploitee";
 import { whereBesoinAdaptationDeclare } from "@/server/qualiopi/adaptation/reponse-organisme";
 import { colonneDeclarationDisponible } from "@/server/qualiopi/adaptation/colonne-declaration";
@@ -486,7 +487,10 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       },
       take: 2000,
     }),
-    // off.2 : indicateurs de résultats RÉELLEMENT publiés (diffusion), pas seulement mesurés.
+    // off.2 : publication DÉCIDÉE en console (`indicateursPubliesAt` posé).
+    // ⚠️ Décidée n'est pas diffusée : une formation sans session réalisée
+    // n'affiche rien sur sa fiche. La diffusion RÉELLE est lue après ce bloc
+    // (`listerFormationsAResultatsDiffuses`), avec la règle de l'encadré public.
     prisma.formation.count({ where: { indicateursPubliesAt: { not: null } } }),
     // off.27 : sous-traitants CONFORMES (vigilance) = NDA + vérif data.gouv + contrat signé.
     prisma.sousTraitant.count({
@@ -855,6 +859,12 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     prisma.partenariat.count({ where: whereReseauHandicapActifAvecTrace() }),
   ]);
 
+  // off.2 — diffusion RÉELLE (audit initial 2026-10-01). Lue HORS du
+  // `Promise.all` ci-dessus : plusieurs tests y mockent `formation.findMany`
+  // par position, un appel de plus au milieu les décalerait.
+  const formationsResultatsDiffuses = await listerFormationsAResultatsDiffuses();
+  const nbFormationsResultatsDiffuses = formationsResultatsDiffuses.length;
+
   const typesAction = typesActionResult;
   // off.3/7/16 : formations avec ≥1 code RS ou RNCP renseigné
   const nbFormationsCertifiantes = formationsCertifiantesResult.length;
@@ -1137,20 +1147,38 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(1, off1Preuves, nbFormations > 0 && ndaNumero.trim().length > 0);
 
   // off.2 : résultats publiés — l'exigence RNQ est la DIFFUSION des indicateurs de
-  //         résultats. Couvert seulement si ≥1 formation a des résultats RÉELLEMENT
-  //         publiés (indicateursPubliesAt non null), pas la seule mesure interne.
-  //         [P1] dissocié du proxy « 1 session + 1 éval finale ».
-  set(
-    2,
-    [
-      `${nbFormationsResultatsPublies} formation${nbFormationsResultatsPublies > 1 ? "s" : ""} avec indicateurs de résultats publiés`,
-      `${nbEvaluationsFinales} évaluation${nbEvaluationsFinales > 1 ? "s" : ""} finale${nbEvaluationsFinales > 1 ? "s" : ""} (taux de réussite mesurable)`,
-      nbFormationsResultatsPublies === 0
-        ? "Aucun indicateur de résultat publié — l'indicateur 2 exige leur diffusion (canal public à alimenter)"
-        : "Indicateurs de résultats diffusés",
-    ],
-    nbFormationsResultatsPublies > 0,
-  );
+  //         résultats. [P1] dissocié du proxy « 1 session + 1 éval finale ».
+  //
+  // 🔴 Audit initial 2026-10-01. Cette preuve disait « Indicateurs de résultats
+  // diffusés » dès que `indicateursPubliesAt` était posé — y compris sur « IA
+  // pour l'immobilier », qui n'a aucune session réalisée et dont la fiche
+  // n'affiche donc RIEN. Les preuves disent désormais ce que la fiche montre,
+  // avec la règle de l'encadré public (`resultatsDiffusables`).
+  //
+  // ⚖️ Le STATUT, lui, ne change pas : couvert dès qu'une publication est
+  // décidée en console. Indicateur 2 = régime « processus formalisé » de
+  // l'audit initial (`reperes-audit-initial.ts`) : tant qu'aucune session ne
+  // permet de diffuser un chiffre, c'est la procédure P-02 qui le couvre — et
+  // la preuve le DIT au lieu de prétendre une diffusion.
+  {
+    const s = (n: number): string => (n > 1 ? "s" : "");
+    const conclusion =
+      nbFormationsResultatsDiffuses > 0
+        ? `Indicateurs de résultats diffusés sur la fiche publique : ${formationsResultatsDiffuses.join(", ")}`
+        : nbFormationsResultatsPublies > 0
+          ? "Aucun résultat encore diffusé sur une fiche publique (publication décidée, aucune session réalisée sur ces formations) ; procédure P-02 (AXI-QUA-P02) formalisée (classeur qualité, hors console)"
+          : "Aucun indicateur de résultat publié — l'indicateur 2 exige leur diffusion (canal public à alimenter)";
+    set(
+      2,
+      [
+        `${nbFormationsResultatsPublies} formation${s(nbFormationsResultatsPublies)} avec publication des indicateurs décidée en console`,
+        `${nbFormationsResultatsDiffuses} formation${s(nbFormationsResultatsDiffuses)} dont les résultats s'affichent sur la fiche publique`,
+        `${nbEvaluationsFinales} évaluation${s(nbEvaluationsFinales)} finale${s(nbEvaluationsFinales)} (taux de réussite mesurable)`,
+        conclusion,
+      ],
+      nbFormationsResultatsPublies > 0,
+    );
+  }
 
   // off.3 : taux d'obtention certifications — couvert si ≥1 formation certifiante
   //         (code RS/RNCP) ET évaluations finales présentes

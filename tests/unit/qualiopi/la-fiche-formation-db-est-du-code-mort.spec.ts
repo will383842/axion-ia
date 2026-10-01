@@ -83,6 +83,20 @@ describe("la fiche formation « base de données » est du code mort — et le d
     expect(iBase, "le corps lit la base AVANT le catalogue").toBeGreaterThan(courtCircuit!.index);
   });
 
+  // 2026-10-01 (audit initial, indicateur 2). Le commentaire disait « le bouton
+  // ne publie à PERSONNE » : c'était vrai tant que seule la branche MORTE lisait
+  // la publication. La branche CATALOGUE (vivante) lit désormais les résultats
+  // publiés : on garde qu'elle le fasse, et que le commentaire ne le nie plus.
+  it("la branche catalogue (vivante) lit les résultats publiés de la formation", () => {
+    const debut = PAGE.indexOf("export default async function FormationSlugPage");
+    const corps = PAGE.slice(debut);
+    const branche = /if \(cat\) \{[\s\S]*?return \(?\s*<FormationDetailPage[\s\S]*?\/>/.exec(corps);
+    expect(branche, "branche catalogue introuvable").not.toBeNull();
+    expect(branche![0]).toContain("getResultatsPublicsFormation(cat.slugFr)");
+    expect(branche![0]).toContain("resultats={resultats}");
+    expect(PAGE).not.toMatch(/ne publie à\s+PERSONNE/);
+  });
+
   it("aucun commentaire ne réaffirme que ce seuil est appliqué", () => {
     expect(PAGE).not.toContain("— CE SEUIL EST VRAI. Il avait été retiré");
     expect(PAGE).not.toContain("il est réellement appliqué. Voir le commentaire");

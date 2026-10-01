@@ -169,6 +169,12 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/app/sitemap-images-services.xml/route.ts",
   "src/app/sitemap.ts",
   "src/components/formations/FormationDetailPage.tsx",
+  // Encadré « Nos résultats sur cette formation » (RNQ indicateur 2, décision
+  // du dirigeant du 01/10/2026) : surface PUBLIQUE qui affiche des agrégats
+  // calculés par le domaine qualiopi (`resultats-publics`). Le composant et son
+  // test lisent ces types et libellés ; aucun nom, client ni verbatim.
+  "src/components/formations/ResultatsFormation.tsx",
+  "src/components/formations/ResultatsFormation.spec.tsx",
   "src/components/nav/Footer.tsx",
   "src/components/recrutement/PartenaireLandingPage.tsx",
   // Landing du tunnel Facebook apporteurs (2026-09-03). MÊME MOTIF que la
