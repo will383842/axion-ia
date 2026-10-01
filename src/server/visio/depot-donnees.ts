@@ -67,6 +67,14 @@ function periodes(json: string | null): Periode[] {
   }
 }
 
+/**
+ * V2, N4 — la liste des fenêtres hors accord est-elle arrivée ? Une liste
+ * gardée VIDE ne compte pas : la question à Will reste posée.
+ */
+export function fenetresRecuesDe(json: string | null): boolean {
+  return periodes(json).length > 0;
+}
+
 /** Les valeurs d'un fait mises en texte (pour P2-P5 et G9). */
 export function valeursEnTexte(f: {
   montantMinCents: number | null;
@@ -357,7 +365,7 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
         origineMs,
         courtConfirme: journalDit(e.evenements, EVT_COURT_CONFIRME),
         fenetresVerifiees: journalDit(e.evenements, EVT_FENETRES_VERIFIEES),
-        fenetresRecues: e.fenetresHorsAccord !== null,
+        fenetresRecues: fenetresRecuesDe(e.fenetresHorsAccord),
         tranches: e.tranches.map((t): TrancheATraiter => ({
           ...t,
           debutCaptureEpochMs: Number(t.debutCaptureEpochMs),

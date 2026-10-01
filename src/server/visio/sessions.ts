@@ -617,6 +617,7 @@ async function chargerDeLAppareil(db: Pick<Db, "enregistrement">, id: string, ap
       accordConfirmeLe: true,
       updatedAt: true,
       nature: true,
+      fenetresHorsAccord: true,
     },
   });
   if (!enr || enr.appareilId !== appareilId) return null;
@@ -797,13 +798,37 @@ export async function declarerRefus(
  */
 export const FIN_FENETRE_OUVERTE_MS = 2_147_483_647;
 
-/** Les fenêtres d'un battement, telles que le site les garde. */
+/**
+ * Les fenêtres d'un battement, UNIES à celles déjà gardées (relecture E1) :
+ * une fenêtre gardée n'est jamais supprimée, une fenêtre ouverte peut
+ * seulement être fermée (même début). Rend `null` s'il n'y a rien à garder.
+ */
 function fenetresDuBattement(
+  gardees: string | null,
   f: ReadonlyArray<{ debutMs: number; finMs: number; ouverte?: boolean | undefined }>,
-): string {
-  return JSON.stringify(
-    f.map((x) => ({ debutMs: x.debutMs, finMs: x.ouverte ? FIN_FENETRE_OUVERTE_MS : x.finMs })),
-  );
+): string | null {
+  const parDebut = new Map<number, { debutMs: number; finMs: number }>();
+  try {
+    const lues: unknown = gardees ? JSON.parse(gardees) : [];
+    if (Array.isArray(lues)) {
+      for (const x of lues as Array<{ debutMs?: unknown; finMs?: unknown }>) {
+        if (typeof x?.debutMs === "number" && typeof x.finMs === "number") {
+          parDebut.set(x.debutMs, { debutMs: x.debutMs, finMs: x.finMs });
+        }
+      }
+    }
+  } catch {
+    // Illisible : on ne garde que ce qui arrive.
+  }
+  for (const x of f) {
+    const deja = parDebut.get(x.debutMs);
+    const finMs = x.ouverte ? FIN_FENETRE_OUVERTE_MS : x.finMs;
+    // Une fenêtre fermée ne se rouvre pas, et ne raccourcit pas.
+    if (deja && deja.finMs !== FIN_FENETRE_OUVERTE_MS && deja.finMs >= finMs) continue;
+    parDebut.set(x.debutMs, { debutMs: x.debutMs, finMs });
+  }
+  if (parDebut.size === 0) return null;
+  return JSON.stringify([...parDebut.values()].sort((a, b) => a.debutMs - b.debutMs));
 }
 
 /** Battement d'une session : signe de vie ; rouvre un `interrompu`. */
@@ -823,9 +848,11 @@ export async function battementSession(
 ): Promise<Resultat> {
   const enr = await chargerDeLAppareil(db, entree.enregistrementId, entree.appareil.id);
   if (!enr) return INTROUVABLE;
-  const fenetres = entree.fenetresHorsAccord
-    ? { fenetresHorsAccord: fenetresDuBattement(entree.fenetresHorsAccord) }
-    : {};
+  const unies =
+    entree.fenetresHorsAccord && entree.fenetresHorsAccord.length > 0
+      ? fenetresDuBattement(enr.fenetresHorsAccord, entree.fenetresHorsAccord)
+      : null;
+  const fenetres = unies !== null ? { fenetresHorsAccord: unies } : {};
   if (enr.statut === "interrompu") {
     await db.enregistrement.update({
       where: { id: enr.id },

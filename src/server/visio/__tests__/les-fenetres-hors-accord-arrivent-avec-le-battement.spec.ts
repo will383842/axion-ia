@@ -36,6 +36,7 @@ vi.mock("@/server/qualiopi/alertes/evaluateur", () => ({
 import { fenetresAuBattement } from "../../../../extensions/enregistreur-meet/lib/etats-capture.js";
 import { CODES_ALERTES_VISIO } from "../alertes";
 import { questionsAWill } from "../attentes-will";
+import { fenetresRecuesDe } from "../depot-donnees";
 import { battementSession, FIN_FENETRE_OUVERTE_MS, terminerSession } from "../sessions";
 import {
   commePrisma,
@@ -68,6 +69,46 @@ describe("les fenêtres hors accord arrivent avec le battement", () => {
       { debutMs: 60_000, finMs: 90_000 },
       { debutMs: 250_000, finMs: FIN_FENETRE_OUVERTE_MS },
     ]);
+  });
+
+  it("le battement fait l'UNION : une fenêtre gardée n'est jamais supprimée, une liste vide ne change rien", async () => {
+    const db = fausseBase();
+    const { appareilId, adminUserId } = semerAppareil(db);
+    const { rencontreId } = semerRencontreTest(db);
+    const id = semerEnregistrement(db, { rencontreId, appareilId, statut: "en_cours" });
+    const battre = (
+      fenetresHorsAccord: Array<{ debutMs: number; finMs: number; ouverte?: boolean }>,
+    ) =>
+      battementSession(commePrisma(db), {
+        appareil: { id: appareilId, adminUserId },
+        enregistrementId: id,
+        maintenant: new Date(T0.getTime() + 5 * MINUTE),
+        fenetresHorsAccord,
+      });
+    const gardees = () => db.lignes("enregistrement")[0]?.["fenetresHorsAccord"];
+    await battre([]);
+    expect(gardees()).toBeFalsy();
+    await battre([
+      { debutMs: 60_000, finMs: 90_000 },
+      { debutMs: 250_000, finMs: 260_000, ouverte: true },
+    ]);
+    await battre([]);
+    await battre([{ debutMs: 400_000, finMs: 410_000 }]);
+    expect(JSON.parse(String(gardees()))).toEqual([
+      { debutMs: 60_000, finMs: 90_000 },
+      { debutMs: 250_000, finMs: FIN_FENETRE_OUVERTE_MS },
+      { debutMs: 400_000, finMs: 410_000 },
+    ]);
+    // L'ouverte se ferme, sans disparaître.
+    await battre([{ debutMs: 250_000, finMs: 300_000 }]);
+    expect(JSON.parse(String(gardees()))).toContainEqual({ debutMs: 250_000, finMs: 300_000 });
+    expect(JSON.parse(String(gardees()))).toHaveLength(3);
+  });
+
+  it("une liste gardée vide ne vaut pas « fenêtres reçues »", () => {
+    expect(fenetresRecuesDe(null)).toBe(false);
+    expect(fenetresRecuesDe("[]")).toBe(false);
+    expect(fenetresRecuesDe('[{"debutMs":1,"finMs":2}]')).toBe(true);
   });
 
   it("session close par le serveur : plus de question si un battement a apporté les fenêtres", () => {
