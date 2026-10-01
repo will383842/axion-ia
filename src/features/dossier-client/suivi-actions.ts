@@ -25,6 +25,7 @@ import { prisma } from "@/lib/prisma";
 import { exigerAccesEchanges } from "@/features/dossier-client/acces";
 import { messageAffichable } from "@/features/dossier-client/message-affichable";
 import { avecMessageDeRetour, type CleDeRetour } from "@/features/dossier-client/message-de-retour";
+import { relierParticipantsDeLaRencontre } from "@/features/dossier-client/rattacher";
 import { GesteRefuse } from "@/server/visio/gestes-compte-rendu";
 import {
   clore,
@@ -84,6 +85,8 @@ const GESTES: Readonly<Record<string, Geste>> = {
       contactId: id(fd, "contactId"),
       parAdminId: adminId,
     }),
+  // m-7 : après l'ajout d'une personne sur la fiche, relier les participants par adresse.
+  participants_relier: (fd) => relierParticipantsDeLaRencontre(prisma, id(fd, "rencontreId")),
   email_gabarit_fixe: (fd, adminId) =>
     emailSuiviGabaritFixe(prisma, envoiEmailSuiviReel, {
       rencontreId: id(fd, "rencontreId"),

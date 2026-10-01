@@ -57,7 +57,7 @@ import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { checkSirenFormat, normalizeSiret, sirenDuSiret } from "@/lib/siret";
 import { normaliserNom } from "@/server/qualiopi/crm/normaliser-nom";
 import { completerApresRattachement } from "@/server/visio/gestes-compte-rendu";
-import type { Tx } from "./base";
+import type { BaseTransactionnelle, Tx } from "./base";
 import { estClientTestInterne } from "./client-test";
 
 /** Ce que la machine sait d'un rendez-vous pour proposer une fiche. */
@@ -416,6 +416,30 @@ export async function validerRattachement(tx: Tx, e: EntreeValiderRattachement):
       motif: r.motifProposition,
       parAdminId: e.parAdminId,
     },
+  });
+}
+
+/**
+ * « Relier les participants » (m-7, page « E-mail de suivi ») : après l'ajout
+ * d'une personne sur la fiche, relie les participants de la rencontre RANGÉE
+ * par empreinte d'adresse. Rend le message pour Will.
+ */
+export async function relierParticipantsDeLaRencontre(
+  db: BaseTransactionnelle,
+  rencontreId: string,
+): Promise<string> {
+  return db.$transaction(async (tx) => {
+    const r = await tx.rencontre.findUnique({
+      where: { id: rencontreId },
+      select: { clientId: true },
+    });
+    if (r === null || r.clientId === null) {
+      throw new ErreurRattachement("Rangez d'abord ce rendez-vous chez un client.");
+    }
+    const n = await relierParticipantsAuxPersonnes(tx, rencontreId, r.clientId);
+    return n === 0
+      ? "Aucun participant n'a l'adresse d'une personne de la fiche."
+      : `${n} participant${n > 1 ? "s reliés" : " relié"} à la fiche.`;
   });
 }
 
