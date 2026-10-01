@@ -66,7 +66,7 @@ export default async function QualiopiSousTraitantsPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Sous-traitants"
-        description="Registre des sous-traitants OF (off.27 — indicateur 27). Prestataires auxquels l'OF délègue tout ou partie d'une formation. Consultation data.gouv.fr à attester par l’administrateur (le système ne vérifie pas automatiquement)."
+        description="Registre des sous-traitants de l'organisme (indicateur 27) : les prestataires auxquels l'organisme confie tout ou partie d'une formation. La consultation de data.gouv.fr est à attester par l’administrateur : le système ne la vérifie pas automatiquement."
         actions={
           <div className="flex flex-wrap items-start gap-[var(--space-admin-3)]">
             {/*

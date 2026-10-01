@@ -264,7 +264,7 @@ export function IncidentRowActions({
                 htmlFor="incidentrowactions-action-corrective-alimente-m9"
                 className={labelCls}
               >
-                Action corrective (alimente M9)
+                Action corrective (reprise dans le pilotage)
               </label>
               <textarea
                 id="incidentrowactions-action-corrective-alimente-m9"

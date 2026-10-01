@@ -614,7 +614,7 @@ export default async function QualiopiPilotagePage({ params, searchParams }: Pag
       </div>
 
       <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-        Données calculées en temps réel · Cache Redis 1 h · {libellePeriode}
+        Données mises à jour toutes les heures · {libellePeriode}
         {libelleType !== undefined ? ` · Type d'action : ${libelleType}` : ""}
       </p>
     </AdminPageShell>

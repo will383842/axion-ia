@@ -74,7 +74,7 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Revue de direction"
-        description="Revue de direction annuelle (off.32 — indicateur 32, NC majeure). Snapshot indicateurs de l'année + décisions + plan d'actions. Une revue par année civile."
+        description="Revue de direction annuelle (indicateur 32 — son absence est une non-conformité majeure) : indicateurs de l'année, décisions et plan d'actions. Une revue par année civile."
         actions={
           <PdfExportButton
             label="Exporter les revues (PDF)"
@@ -105,7 +105,8 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
       {!revueAnneeEnCours && (
         <div className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-warning)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]">
           <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]">
-            Aucune revue de direction pour {currentYear}. Indicateur 32 (NC majeure) non couvert.
+            Aucune revue de direction pour {currentYear}. Indicateur 32 (non-conformité majeure) non
+            couvert.
           </p>
         </div>
       )}
@@ -130,7 +131,7 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
                 <th className={headCls}>Participants</th>
                 <th className={headCls}>Décisions</th>
                 <th className={headCls}>Plan d&apos;actions</th>
-                <th className={headCls}>Snapshot indicateurs</th>
+                <th className={headCls}>Indicateurs de l&apos;année</th>
                 <th className={headCls}>Statut</th>
                 <th className={headCls}>Actions</th>
               </tr>

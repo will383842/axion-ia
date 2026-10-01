@@ -10,6 +10,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 import type { creerRevueDirectionAction } from "@/server/actions/qualiopi/revue-direction";
 
 const inputCls =
@@ -61,90 +62,92 @@ export function RevueDirectionForm({ creerAction }: RevueDirectionFormProps) {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-6)]"
-    >
-      <h3 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-        Nouvelle revue de direction
-      </h3>
+    // Replié par défaut, comme Réclamations, Veille, Moyens et Appréciations :
+    // le registre s'ouvre sur ce qui est ENREGISTRÉ — c'est ce que lit
+    // l'auditeur —, pas sur un formulaire vide. Cf. AdminBlocRepliable.
+    <AdminBlocRepliable titre="+ Nouvelle revue de direction">
+      <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
+          {/* Année */}
+          <div className={fieldCls}>
+            <label htmlFor="revuedirectionform-annee" className={labelCls}>
+              Année
+            </label>
+            <input
+              id="revuedirectionform-annee"
+              type="number"
+              value={annee}
+              onChange={(e) => setAnnee(Number(e.target.value))}
+              disabled={isPending}
+              required
+              min={2020}
+              max={2100}
+              className={inputCls}
+            />
+          </div>
 
-      <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
-        {/* Année */}
-        <div className={fieldCls}>
-          <label htmlFor="revuedirectionform-annee" className={labelCls}>
-            Année
+          {/* Date revue */}
+          <div className={fieldCls}>
+            <label htmlFor="revuedirectionform-date-de-la-revue" className={labelCls}>
+              Date de la revue
+            </label>
+            <input
+              id="revuedirectionform-date-de-la-revue"
+              type="date"
+              value={dateRevue}
+              onChange={(e) => setDateRevue(e.target.value)}
+              disabled={isPending}
+              required
+              className={inputCls}
+            />
+          </div>
+        </div>
+
+        {/* Participants */}
+        <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
+          <label htmlFor="revuedirectionform-participants-un-par-ligne-facult" className={labelCls}>
+            Participants (un par ligne, facultatif)
           </label>
-          <input
-            id="revuedirectionform-annee"
-            type="number"
-            value={annee}
-            onChange={(e) => setAnnee(Number(e.target.value))}
+          <textarea
+            id="revuedirectionform-participants-un-par-ligne-facult"
+            value={participantsRaw}
+            onChange={(e) => setParticipantsRaw(e.target.value)}
             disabled={isPending}
-            required
-            min={2020}
-            max={2100}
+            rows={3}
+            placeholder={"Prénom Nom — Rôle\nPrénom Nom — Rôle"}
             className={inputCls}
           />
         </div>
 
-        {/* Date revue */}
-        <div className={fieldCls}>
-          <label htmlFor="revuedirectionform-date-de-la-revue" className={labelCls}>
-            Date de la revue
-          </label>
-          <input
-            id="revuedirectionform-date-de-la-revue"
-            type="date"
-            value={dateRevue}
-            onChange={(e) => setDateRevue(e.target.value)}
-            disabled={isPending}
-            required
-            className={inputCls}
-          />
-        </div>
-      </div>
+        <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          Les décisions et le plan d&apos;actions peuvent être renseignés après création.
+        </p>
 
-      {/* Participants */}
-      <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label htmlFor="revuedirectionform-participants-un-par-ligne-facult" className={labelCls}>
-          Participants (un par ligne, facultatif)
-        </label>
-        <textarea
-          id="revuedirectionform-participants-un-par-ligne-facult"
-          value={participantsRaw}
-          onChange={(e) => setParticipantsRaw(e.target.value)}
+        {error && (
+          <p
+            role="alert"
+            className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
+          >
+            Erreur : {error}
+          </p>
+        )}
+        {successMsg && (
+          <p
+            role="status"
+            className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
+          >
+            {successMsg}
+          </p>
+        )}
+
+        <button
+          type="submit"
           disabled={isPending}
-          rows={3}
-          placeholder={"Prénom Nom — Rôle\nPrénom Nom — Rôle"}
-          className={inputCls}
-        />
-      </div>
-
-      <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-        Les décisions et le plan d&apos;actions peuvent être renseignés après création.
-      </p>
-
-      {error && (
-        <p
-          role="alert"
-          className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
+          className="admin-button mt-[var(--space-admin-4)]"
         >
-          Erreur : {error}
-        </p>
-      )}
-      {successMsg && (
-        <p
-          role="status"
-          className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
-        >
-          {successMsg}
-        </p>
-      )}
-
-      <button type="submit" disabled={isPending} className="admin-button mt-[var(--space-admin-4)]">
-        {isPending ? "Création…" : "Créer la revue de direction"}
-      </button>
-    </form>
+          {isPending ? "Création…" : "Créer la revue de direction"}
+        </button>
+      </form>
+    </AdminBlocRepliable>
   );
 }
