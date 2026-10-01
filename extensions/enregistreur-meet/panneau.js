@@ -10,6 +10,7 @@ let dernierEtat = null;
 
 const LIBELLE_BADGE = {
   piste_client_muette: "Le son du client n'est pas capté.",
+  micro_muet: "Votre micro ne capte rien depuis une minute : vérifiez le casque ou le micro.",
   silence: "Aucun son depuis 3 minutes.",
   limite_meet: "À trois, Meet coupe à 1 h : relancez une réunion et recliquez Démarrer.",
   son_coupe: "Son coupé : une personne n'a pas donné son accord.",

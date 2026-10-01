@@ -37,6 +37,8 @@ import {
 } from "@/features/dossier-client/queries-rencontres";
 import { VueCompteRendu } from "@/components/admin/visio/VueCompteRendu";
 import { lireCircuitDeLaRencontre, lireCompteRendu } from "@/features/dossier-client/compte-rendu";
+import { compteRenduEnregistre } from "@/features/dossier-client/compte-rendu-en-preparation";
+import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 import { prisma } from "@/lib/prisma";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { timeInParis } from "@/lib/calendar-grid";
@@ -85,16 +87,24 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
     return <AccesRefuse motif={acces.motif} retourHref={rdvBase} />;
   }
   const sp = await searchParams;
-  const erreur = typeof sp.erreur === "string" && sp.erreur !== "" ? sp.erreur.slice(0, 300) : null;
-  const message =
-    typeof sp.message === "string" && sp.message !== "" ? sp.message.slice(0, 300) : null;
+  // N1 : seuls les messages scellés par nos actions s'affichent (un lien forgé, rien).
+  const erreur = lireMessageDeRetour(sp, "erreur");
+  const message = lireMessageDeRetour(sp, "message");
 
   const r = await lireRencontreDetaillee(rencontreId);
   if (r === null) notFound();
   // « Après l'appel » est une VUE de cette page (pas une page de plus :
   // cliquet de poids de la console, ADR 0058). Même garde, déjà posée.
   if (sp.vue === "apres-l-appel") {
-    return <ApresLAppelVue r={r} locale={locale} adminPrefix={adminPrefix} erreur={erreur} />;
+    return (
+      <ApresLAppelVue
+        r={r}
+        locale={locale}
+        adminPrefix={adminPrefix}
+        erreur={erreur}
+        compteRendu={await compteRenduEnregistre(prisma, r.id)}
+      />
+    );
   }
   const fiches = r.client ? (await lireFichesVivantes()).filter((f) => f.id !== r.client?.id) : [];
   const ficheHref = r.client ? `/${locale}/${adminPrefix}/qualiopi/clients/${r.client.id}` : null;

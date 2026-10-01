@@ -34,6 +34,7 @@ import { chiffrerOctets } from "@/lib/chiffrer-parole";
 import { PISTES, TAILLE_MAX_MORCEAU_OCTETS } from "@/lib/schemas/enregistreur";
 import { TAILLE_MAX_TRANCHE_OCTETS } from "./audio/constantes";
 import { echec, ok, type Resultat } from "./resultat";
+import { refusVersionDeSession } from "./version-extension";
 import { cleR2Morceau, type StockageAudio } from "./stockage-audio";
 import type { Appareil } from "./sessions";
 
@@ -130,11 +131,14 @@ export async function deposerMorceau(
 
   const enr = await db.enregistrement.findUnique({
     where: { id: entree.enregistrementId },
-    select: { id: true, appareilId: true, statut: true, nature: true },
+    select: { id: true, appareilId: true, statut: true, nature: true, versionExtension: true },
   });
   if (!enr || enr.appareilId !== entree.appareil.id) {
     return echec(404, "enregistrement_inconnu", "Enregistrement introuvable.");
   }
+  // Relecture E1 — une session ouverte par une extension sans RGPD-01.
+  const tropAncienne = refusVersionDeSession(enr);
+  if (tropAncienne) return tropAncienne;
   const pisteRefusee = refusPisteClientEnDictee(enr.nature, e.piste);
   if (pisteRefusee) return pisteRefusee;
   if (enr.statut === "accord_en_attente") {

@@ -47,6 +47,7 @@ import {
   lirePersonnesCourtes,
 } from "@/features/dossier-client/queries-rencontres";
 import { NouveauRendezVous } from "@/components/admin/dossier-client/NouveauRendezVous";
+import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 import { toParisLocalInput } from "@/lib/calendar-grid";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 
@@ -62,7 +63,7 @@ interface PageProps {
    * PR 7 — `vue=questionnaire` : le questionnaire de cadrage du projet (une vue
    * de cette page, pas une page de plus : cliquet des pages de la console).
    */
-  searchParams: Promise<{ vue?: string; message?: string; erreur?: string }>;
+  searchParams: Promise<{ vue?: string; message?: string; erreur?: string; sceau?: string }>;
 }
 
 const carteCls =
@@ -149,8 +150,8 @@ export default async function ProjetPage({ params, searchParams }: PageProps) {
           projetId={projet.id}
           retour={retourQuestionnaire}
           questionnaire={questionnaire}
-          message={demande.message}
-          erreur={demande.erreur}
+          message={lireMessageDeRetour(demande, "message") ?? undefined}
+          erreur={lireMessageDeRetour(demande, "erreur") ?? undefined}
         />
       ) : null}
 

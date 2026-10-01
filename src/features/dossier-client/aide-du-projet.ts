@@ -26,8 +26,11 @@ import { lireCitationsDesFaits, lireFaitsDuClient, lireProjetsDuClient } from ".
 export interface AideDuProjet {
   /** Le projet transmis au formulaire (lien), ou `null`. */
   readonly projetId: string | null;
-  /** L'aide et le titre du projet — rôles habilités seulement. */
-  readonly aide: { readonly aide: AideAuDevis; readonly titre: string } | null;
+  /**
+   * L'aide et le titre du projet — rôles habilités seulement. `titre: null` :
+   * devis sans projet, la partie entreprise seule (m-8).
+   */
+  readonly aide: { readonly aide: AideAuDevis; readonly titre: string | null } | null;
 }
 
 /** Les lectures (injectées par les tests). */
@@ -54,7 +57,12 @@ export async function chargerAideDuProjet(
   },
   lire: LecteursAide = LECTEURS,
 ): Promise<AideDuProjet> {
-  if (a.clientId === undefined || !isUuid(a.projetId)) return { projetId: null, aide: null };
+  if (a.clientId === undefined) return { projetId: null, aide: null };
+  // m-8 : sans projet (« Aucun projet » dans « Après l'appel »), la partie entreprise.
+  if (a.projetId === undefined || a.projetId === "") {
+    return { projetId: null, aide: await aideSansProjet(a.clientId, a, lire) };
+  }
+  if (!isUuid(a.projetId)) return { projetId: null, aide: null };
   // ⛔ Garde A2 AVANT toute lecture du dossier.
   if (!peutVoirLesEchanges(a.role)) return { projetId: a.projetId, aide: null };
   const projets = await lire.projets(a.clientId);
@@ -76,4 +84,25 @@ export async function chargerAideDuProjet(
       }),
     },
   };
+}
+
+/** La partie ENTREPRISE de l'aide, pour un devis sans projet ; `null` si rien n'est validé. */
+async function aideSansProjet(
+  clientId: string,
+  a: { readonly role: string | null | undefined; readonly maintenant?: Date },
+  lire: LecteursAide,
+): Promise<{ readonly aide: AideAuDevis; readonly titre: null } | null> {
+  // ⛔ Garde A2 AVANT toute lecture du dossier.
+  if (!peutVoirLesEchanges(a.role)) return null;
+  const [projets, faits] = await Promise.all([lire.projets(clientId), lire.faits(clientId)]);
+  const maintenant = a.maintenant ?? new Date();
+  const idsValides = faits.filter((f) => f.statut === "valide").map((f) => f.id);
+  const aide = aideAuDevis({
+    consolidation: consoliderFaits(faits, projets, maintenant),
+    projetId: null,
+    citations: await lire.citations(idsValides),
+    role: a.role,
+    maintenant,
+  });
+  return aide.vide ? null : { aide, titre: null };
 }

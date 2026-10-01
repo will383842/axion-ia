@@ -34,6 +34,9 @@ export const TYPES_RESERVES_AU_SERVEUR: ReadonlySet<string> = new Set([
   "cloture_serveur_corrigee",
   "cloture_accord_absent",
   "interrompu_sans_battement",
+  // V2 — fenêtres tardives (N3), question close par la purge (m4)
+  "fenetres_tardives",
+  "question_close_par_purge",
 ]);
 
 /** Le journal reçu de l'extension, sans les types réservés au serveur. */

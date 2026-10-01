@@ -179,6 +179,14 @@ export class FausseBase {
     return fn(this);
   }
 
+  /** SQL brut (programmation d'une étape) : ENREGISTRÉ, jamais exécuté. */
+  readonly bruts: Array<{ sql: string; valeurs: unknown[] }> = [];
+
+  async $executeRaw(strings: TemplateStringsArray, ...valeurs: unknown[]): Promise<number> {
+    this.bruts.push({ sql: strings.join("?"), valeurs });
+    return 1;
+  }
+
   lignes(table: string): Ligne[] {
     this.tables[table] ??= [];
     return this.tables[table];

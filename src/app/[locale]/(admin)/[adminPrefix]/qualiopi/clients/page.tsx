@@ -61,7 +61,8 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
   }
 
   const recherche = (q ?? "").trim();
-  const clients = await listClients(recherche === "" ? undefined : { recherche });
+  // R3 : les fiches d'essai du pilote visio n'apparaissent que sur recherche.
+  const clients = await listClients(recherche === "" ? { horsFichesDEssai: true } : { recherche });
 
   // 🔴 Les compteurs portent sur le RÉSULTAT AFFICHÉ, et le libellé le dit.
   //

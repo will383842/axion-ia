@@ -43,6 +43,8 @@ export interface EnregistrementATraiter {
   readonly courtConfirme: boolean;
   /** Will a vérifié que personne n'est entré sans accord (session close par le serveur). */
   readonly fenetresVerifiees: boolean;
+  /** V2, N4 — la liste des fenêtres hors accord est arrivée (battement ou fin). */
+  readonly fenetresRecues?: boolean;
   readonly tranches: readonly TrancheATraiter[];
 }
 
@@ -173,6 +175,12 @@ export interface PortDonnees {
    * de la MÊME origine (début réel, sinon début du premier enregistrement).
    */
   readonly aTranscrire: (rencontreId: string) => Promise<readonly EnregistrementATraiter[]>;
+  /**
+   * V2, N5 — supprime de R2 le son d'UNE tranche (hors accord), vérifie qu'il
+   * n'existe plus, puis date sa suppression. Rend faux si un objet résiste :
+   * la purge de l'enregistrement (validation, 30 jours) le reprendra.
+   */
+  readonly purgerSonTranche: (trancheId: string) => Promise<boolean>;
   /** Octets CLAIRS d'une tranche (morceaux lus dans R2, déchiffrés, empreinte vérifiée). */
   readonly lireSonTranche: (trancheId: string) => Promise<Buffer>;
   readonly ouvrirTranscription: (
@@ -190,6 +198,13 @@ export interface PortDonnees {
       readonly transcriptionId: string;
       readonly trancheId: string;
       readonly segments: readonly SegmentAEcrire[];
+      /**
+       * V2, M2 — `echec` : la tranche n'a pas pu être transcrite en entier
+       * (sortie tronquée deux fois, audio illisible). Elle garde sa place
+       * (segments partiels, ou aucun) sans faire échouer l'étape. Défaut :
+       * `transcrite`.
+       */
+      readonly statutTranche?: "transcrite" | "echec";
     },
   ) => Promise<void>;
   readonly retenirTranscription: (

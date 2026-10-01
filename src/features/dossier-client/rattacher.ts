@@ -57,7 +57,8 @@ import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { checkSirenFormat, normalizeSiret, sirenDuSiret } from "@/lib/siret";
 import { normaliserNom } from "@/server/qualiopi/crm/normaliser-nom";
 import { completerApresRattachement } from "@/server/visio/gestes-compte-rendu";
-import type { Tx } from "./base";
+import type { BaseTransactionnelle, Tx } from "./base";
+import { estClientTestInterne } from "./client-test";
 
 /** Ce que la machine sait d'un rendez-vous pour proposer une fiche. */
 export interface IndicesDeRattachement {
@@ -272,9 +273,17 @@ export async function proposerRattachement(
 ): Promise<Proposition | null> {
   const r = await tx.rencontre.findUnique({
     where: { id: rencontreId },
-    select: { rattachementStatut: true, clientProposeId: true, motifProposition: true },
+    select: {
+      rattachementStatut: true,
+      clientProposeId: true,
+      motifProposition: true,
+      estTestInterne: true,
+    },
   });
   if (r === null || r.rattachementStatut === "valide") return null;
+  // M-1 : rien n'est proposé pour une rencontre de test (l'adresse de test peut
+  // être celle d'une personne d'une vraie fiche).
+  if (r.estTestInterne) return null;
 
   const proposition = calculerProposition(
     indices,
@@ -307,6 +316,10 @@ export async function proposerRattachement(
 
 export class ErreurRattachement extends Error {}
 
+/** M-1 : le refus, partagé avec « Déplacer ». */
+export const MESSAGE_RENCONTRE_DE_TEST =
+  "Rendez-vous de test : il ne se range que chez une fiche fictive du pilote, ou par « Créer la fiche prospect ».";
+
 export interface EntreeValiderRattachement {
   readonly rencontreId: string;
   readonly clientId: string;
@@ -333,9 +346,15 @@ export async function validerRattachement(tx: Tx, e: EntreeValiderRattachement):
       projetId: true,
       rattachementStatut: true,
       motifProposition: true,
+      estTestInterne: true,
     },
   });
   if (r === null) throw new ErreurRattachement("Rendez-vous introuvable.");
+  // M-1 : une rencontre de test ne va jamais chez un vrai client (ses faits
+  // rejoindraient sa Synthèse, et la purge du pilote la lui retirerait).
+  if (r.estTestInterne && !(await estClientTestInterne(tx, e.clientId))) {
+    throw new ErreurRattachement(MESSAGE_RENCONTRE_DE_TEST);
+  }
   if (r.clientId !== null && r.clientId !== e.clientId) {
     throw new ErreurRattachement(
       "Ce rendez-vous est déjà rangé chez un autre client : utilisez « Déplacer ».",
@@ -397,6 +416,30 @@ export async function validerRattachement(tx: Tx, e: EntreeValiderRattachement):
       motif: r.motifProposition,
       parAdminId: e.parAdminId,
     },
+  });
+}
+
+/**
+ * « Relier les personnes » (m-7, page « E-mail de suivi ») : après l'ajout
+ * d'une personne sur la fiche, relie les participants de la rencontre RANGÉE
+ * par empreinte d'adresse. Rend le message pour Will.
+ */
+export async function relierParticipantsDeLaRencontre(
+  db: BaseTransactionnelle,
+  rencontreId: string,
+): Promise<string> {
+  return db.$transaction(async (tx) => {
+    const r = await tx.rencontre.findUnique({
+      where: { id: rencontreId },
+      select: { clientId: true },
+    });
+    if (r === null || r.clientId === null) {
+      throw new ErreurRattachement("Rangez d'abord ce rendez-vous chez un client.");
+    }
+    const n = await relierParticipantsAuxPersonnes(tx, rencontreId, r.clientId);
+    return n === 0
+      ? "Aucun participant n'a l'adresse d'une personne de la fiche."
+      : `${n} participant${n > 1 ? "s reliés" : " relié"} à la fiche.`;
   });
 }
 

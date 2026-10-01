@@ -80,6 +80,7 @@ export function demarrerDictee(etat, entree, maintenantMs) {
       sonCoupe: false,
       fenetresHorsAccord: [],
       dernierSonClientMs: maintenantMs,
+      dernierSonAxionMs: maintenantMs,
       dernierSonMs: maintenantMs,
       notificationSilenceFaite: false,
       salleQuitteeDepuisMs: null,
@@ -128,6 +129,7 @@ export function demarrer(etat, entree, maintenantMs) {
       sonCoupe: false,
       fenetresHorsAccord: [],
       dernierSonClientMs: maintenantMs,
+      dernierSonAxionMs: maintenantMs,
       dernierSonMs: maintenantMs,
       notificationSilenceFaite: false,
       salleQuitteeDepuisMs: null,
@@ -148,8 +150,26 @@ export function accordObtenu(etat, maintenantMs) {
   if (maintenantMs - etat.debutMs > DELAIS_LOCAUX.accordMaxMs) {
     return detruire(etat, "accord_hors_delai");
   }
+  // V2, N6 — l'accord ne couvre que les PRÉSENTS au clic. Une personne passée
+  // pendant l'attente puis repartie (pointe au-dessus du compte présent) : son
+  // passage devient une fenêtre hors accord, jamais transcrite.
+  const presents = etat.nbParticipants;
+  const rel = maintenantMs - etat.debutMs;
+  const p = etat.pointeAvantAccord;
+  const b = etat.baseAvantAccord;
+  const passage = [
+    // Un participant du départ reparti avant le clic : depuis le début.
+    ...(b && presents < b.nb ? [{ debutMs: 0, finMs: b.finMs ?? rel }] : []),
+    ...(p && p.nb > presents ? [{ debutMs: p.debutMs, finMs: p.finMs ?? rel }] : []),
+  ];
   return {
-    etat: { ...etat, phase: "en_cours", accordMs: maintenantMs },
+    etat: {
+      ...etat,
+      phase: "en_cours",
+      accordMs: maintenantMs,
+      participantsAccordes: presents,
+      fenetresHorsAccord: [...(etat.fenetresHorsAccord ?? []), ...passage],
+    },
     actions: [
       { type: "declarer_accord", accordLe: maintenantMs, nouvellePersonne: false },
       { type: "vider_file" },
@@ -202,6 +222,20 @@ export function arreter(etat, maintenantMs, motif = "manuel") {
       { type: "terminer_session", motif, finLe: maintenantMs, fenetresHorsAccord: fenetres },
     ],
   };
+}
+
+/**
+ * V2, N4 — les fenêtres hors accord portées par le battement de session :
+ * fermées telles quelles, l'ouverte arrêtée à maintenant et marquée
+ * `ouverte` (le site la fait courir jusqu'à la fin si le contact se perd).
+ */
+export function fenetresAuBattement(etat, maintenantMs) {
+  const t = maintenantMs - etat.debutMs;
+  return (etat.fenetresHorsAccord ?? []).map((x) =>
+    x.finMs === null || x.finMs === undefined
+      ? { debutMs: x.debutMs, finMs: Math.max(x.debutMs, t), ouverte: true }
+      : { debutMs: x.debutMs, finMs: x.finMs },
+  );
 }
 
 function fermerFenetre(etat, maintenantMs) {
@@ -266,6 +300,7 @@ export function tic(etat, mesure, maintenantMs) {
   const sonClient = mesure.niveauClient > SEUIL_SILENCE;
   const sonAxion = mesure.niveauAxion > SEUIL_SILENCE;
   if (sonClient) e.dernierSonClientMs = maintenantMs;
+  if (sonAxion || e.dernierSonAxionMs === undefined) e.dernierSonAxionMs = maintenantMs;
   if (sonClient || sonAxion) {
     e.dernierSonMs = maintenantMs;
     e.notificationSilenceFaite = false;
@@ -273,6 +308,15 @@ export function tic(etat, mesure, maintenantMs) {
   const badges = new Set();
   if (maintenantMs - e.dernierSonClientMs >= DELAIS_LOCAUX.badgePisteClientMuetteMs)
     badges.add("piste_client_muette");
+  // V2, M7 — le micro ne capte rien depuis 60 s alors que le client parle :
+  // casque décroché, micro débranché. Le document offscreen tente de le
+  // reprendre ; le badge le dit à Will.
+  if (
+    !e.enPause &&
+    sonClient &&
+    maintenantMs - e.dernierSonAxionMs >= DELAIS_LOCAUX.badgePisteClientMuetteMs
+  )
+    badges.add("micro_muet");
   const silence = maintenantMs - e.dernierSonMs;
   if (!e.enPause && silence >= DELAIS_LOCAUX.badgeSilenceMs) badges.add("silence");
   if (!e.enPause && silence >= DELAIS_LOCAUX.notificationSilenceMs && !e.notificationSilenceFaite) {
@@ -286,6 +330,34 @@ export function tic(etat, mesure, maintenantMs) {
   // 3. Participants.
   if (mesure.nbParticipants >= PARTICIPANTS_LIMITE_MEET) badges.add("limite_meet");
   e.nbParticipants = mesure.nbParticipants;
+  if (e.phase === "accord_en_attente") {
+    // V2, N6 — avant l'accord : le compte du DÉPART (base), et la POINTE au-
+    // dessus de lui (début à la PREMIÈRE arrivée, une période de mesure plus
+    // tôt, gardé tant que la pointe est ouverte ; fin au départ). Relus au
+    // clic « Accord obtenu ».
+    const rel = maintenantMs - e.debutMs;
+    const n = mesure.nbParticipants;
+    const base = e.baseAvantAccord ?? null;
+    if (base === null) {
+      e.baseAvantAccord = { nb: n, finMs: null };
+    } else {
+      if (n < base.nb && base.finMs === null) e.baseAvantAccord = { ...base, finMs: rel };
+      else if (n >= base.nb && base.finMs !== null) e.baseAvantAccord = { ...base, finMs: null };
+      const pointe = e.pointeAvantAccord ?? null;
+      if (n > base.nb && (pointe === null || n > pointe.nb)) {
+        e.pointeAvantAccord = {
+          nb: n,
+          debutMs: pointe ? pointe.debutMs : Math.max(0, rel - PERIODE_MESURE_SALLE_MS),
+          finMs: null,
+        };
+      } else if (pointe && n < pointe.nb && pointe.finMs === null) {
+        e.pointeAvantAccord = { ...pointe, finMs: rel };
+      } else if (pointe && n === pointe.nb && pointe.finMs !== null) {
+        e.pointeAvantAccord = { ...pointe, finMs: null };
+      }
+    }
+  }
+
   if (e.phase === "en_cours" && mesure.nbParticipants > e.participantsAccordes) {
     if (e.nouvellePersonneDepuisMs === null) {
       // RGPD-01 : la fenêtre hors accord s'ouvre à l'ARRIVÉE, pas à la coupure.

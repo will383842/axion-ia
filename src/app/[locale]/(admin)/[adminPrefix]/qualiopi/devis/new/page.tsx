@@ -24,6 +24,7 @@ import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 import { chargerAideDuProjet } from "@/features/dossier-client/aide-du-projet";
 import { CeQueLeClientADit } from "@/features/dossier-client/ce-que-le-client-a-dit";
+import { isUuid } from "@/lib/is-uuid";
 
 export const dynamic = "force-dynamic";
 
@@ -37,8 +38,9 @@ interface PageProps {
   /**
    * `clientId` : pré-sélection du client (lien « Créer un devis » depuis /qualiopi/entrees).
    * `projetId` : devis ouvert depuis un projet de ce client (chantier visio, PR 7).
+   * `rencontreId` : devis ouvert depuis « Après l'appel » (lien de retour, m-8).
    */
-  searchParams: Promise<{ clientId?: string; projetId?: string }>;
+  searchParams: Promise<{ clientId?: string; projetId?: string; rencontreId?: string }>;
 }
 
 export default async function QualiopiDevisNewPage({ params, searchParams }: PageProps) {
@@ -112,6 +114,14 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
         >
           ← Retour aux devis
         </Link>
+        {isUuid(sp.rencontreId) ? (
+          <Link
+            href={`/${locale}/${adminPrefix}/rendez-vous/rencontres/${sp.rencontreId}`}
+            className="ml-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline hover:no-underline"
+          >
+            ← Rendez-vous
+          </Link>
+        ) : null}
       </div>
 
       <AdminPageHeader

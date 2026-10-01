@@ -50,14 +50,25 @@ export const GESTIONNAIRES: Readonly<Partial<Record<EtapeVisio, Gestionnaire>>> 
   ...GESTIONNAIRES_A_LA_DEMANDE,
 };
 
-/** Alerte technique : `AlerteSysteme` + dé-duplication existante (jamais une table parallèle). */
-export async function alerterParLaConsole(a: AlerteCircuit): Promise<void> {
+/**
+ * Alerte technique : `AlerteSysteme` + dé-duplication existante (jamais une
+ * table parallèle). V2, M4 — le message porte l'INSTANT du constat : pour un
+ * code sans résolution automatique, `creerOuDedup` ne recrée jamais une
+ * alerte fermée au même message. Sans la date, une seconde panne de crédit
+ * (ou la version suivante d'un compte rendu à valider) restait muette. Tant
+ * que l'alerte est ouverte, l'anti-doublon (code, cible) la garde unique.
+ */
+export async function alerterParLaConsole(
+  a: AlerteCircuit,
+  maintenant: Date = new Date(),
+): Promise<void> {
   const { creerOuDedup } = await import("@/server/qualiopi/alertes/alertes-service");
+  const constat = maintenant.toISOString().slice(0, 16).replace("T", " à ");
   await creerOuDedup({
     code: a.code,
     niveau: a.niveau,
     titre: a.titre,
-    message: a.message,
+    message: `Constaté le ${constat} (UTC). ${a.message}`,
     ...(a.rencontreId ? { cibleType: "Rencontre", cibleId: a.rencontreId } : {}),
   });
 }
@@ -124,7 +135,7 @@ export function construireCircuit(o: OptionsCircuit): DepsCircuit {
     openai: () => clientInterruptible((o.openai ?? obtenirClientOpenAI)(), signalArret()),
     cout: o.cout ?? portCoutReel,
     catalogue: chargerCatalogue,
-    alerter: o.alerter ?? alerterParLaConsole,
+    alerter: o.alerter ?? ((a) => alerterParLaConsole(a)),
     maintenant: o.maintenant ?? (() => new Date()),
     arretDemande: () => arret,
     gestionnaires: GESTIONNAIRES,

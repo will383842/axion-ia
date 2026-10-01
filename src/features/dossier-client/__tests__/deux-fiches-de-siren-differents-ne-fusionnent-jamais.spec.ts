@@ -1,7 +1,7 @@
 // @vitest-environment node
 /**
  * ⛔ Deux fiches de SIREN DIFFÉRENTS ne fusionnent JAMAIS : ce sont deux
- * entreprises (plan §3.17 point 6). Le refus dit quoi faire (« corrige
+ * entreprises (plan §3.17 point 6). Le refus dit quoi faire (« corrigez
  * d'abord son SIREN »), et rien n'est écrit.
  *
  * Mutation qui fait rougir : rendre `{ permise: true }` dans la branche

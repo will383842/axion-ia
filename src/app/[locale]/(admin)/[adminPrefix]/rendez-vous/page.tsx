@@ -74,6 +74,10 @@ import { LiensApresLAppel } from "@/components/admin/dossier-client/LiensApresLA
 import { estTypeDuDossier } from "@/server/visio/liste-blanche-types";
 import { AClasserVue } from "@/components/admin/dossier-client/AClasserVue";
 import { EtatDuCircuitVue } from "@/components/admin/dossier-client/EtatDuCircuitVue";
+// Ne lit que l'URL (le sceau d'un message de retour), jamais le dossier client :
+// nommé hors du préfixe « lire… », que la garde « rôle avant lecture » compte
+// comme une lecture du dossier (`la-lecture-est-gardee-comme-l-ecriture`).
+import { lireMessageDeRetour as messageScelle } from "@/features/dossier-client/message-de-retour";
 
 export const dynamic = "force-dynamic";
 
@@ -298,7 +302,12 @@ function CarteRdv({
             {r.suivi
               ? apporteur
                 ? `Issue : ${libelleIssue(r.suivi.issue, r.suivi.decision ?? null)} — modifiable ci-dessous`
-                : `Point fait : ${LIBELLE_ISSUE[r.suivi.issue]}${r.suivi.suite ? ` · ${LIBELLE_SUITE[r.suivi.suite]}` : ""} — modifiable ci-dessous`
+                : `Point fait : ${LIBELLE_ISSUE[r.suivi.issue]}${r.suivi.suite ? ` · ${LIBELLE_SUITE[r.suivi.suite]}` : ""} — ${
+                    // m-3 : le formulaire court ne garde qu'Absent et Reporté.
+                    pointAuDossier && r.suivi.issue === "eu_lieu"
+                      ? "modifiable dans « Après l'appel »"
+                      : "modifiable ci-dessous"
+                  }`
               : apporteur
                 ? "L'échange est terminé ? Donnez son issue :"
                 : pointAuDossier
@@ -454,8 +463,8 @@ export default async function RendezVousPage({
         locale={locale}
         adminPrefix={adminPrefix}
         rencontreId={demande["emailSuivi"]}
-        message={demande["message"]}
-        erreur={demande["erreur"]}
+        message={messageScelle(demande, "message") ?? undefined}
+        erreur={messageScelle(demande, "erreur") ?? undefined}
       />
     );
   }
@@ -571,16 +580,17 @@ export default async function RendezVousPage({
         <AClasserVue
           rdvBase={base}
           historique={sp["filtre"] === "historique"}
-          erreur={
-            typeof sp["erreur"] === "string" && sp["erreur"] !== ""
-              ? sp["erreur"].slice(0, 300)
-              : null
-          }
+          erreur={messageScelle(sp, "erreur")}
         />
       ) : vue === "circuit" ? (
         <EtatDuCircuitVue rdvBase={base} />
       ) : vue === "point" ? (
-        <VuePoint aFaire={aFaire} maintenant={maintenant} dossierVisible={voitDossier} />
+        <VuePoint
+          aFaire={aFaire}
+          maintenant={maintenant}
+          dossierVisible={voitDossier}
+          erreur={messageScelle(sp, "erreur")}
+        />
       ) : vue === "passes" ? (
         <VuePasses maintenant={maintenant} {...optionsPublic} />
       ) : rdv.length === 0 ? (
@@ -627,14 +637,25 @@ async function VuePoint({
   aFaire,
   maintenant,
   dossierVisible,
+  erreur,
 }: {
   aFaire: RdvAFaireLePoint[];
   maintenant: Date;
   dossierVisible: boolean;
+  /** Refus scellé d'« Après l'appel » (`actions-rencontres.ts`, N1). */
+  erreur: string | null;
 }): Promise<React.ReactElement> {
   const bilan = await bilanDuMois(maintenant);
   return (
     <>
+      {erreur !== null ? (
+        <p
+          role="alert"
+          className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-danger)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
+        >
+          {erreur}
+        </p>
+      ) : null}
       <section aria-labelledby="bilan-mois" className="mb-[var(--space-admin-6)]">
         <h2 id="bilan-mois" className="admin-h2">
           Ce mois-ci

@@ -179,7 +179,7 @@ async function semer(db: PrismaClient, clientId: string, suffixe: string): Promi
       debut,
       accordConfirmeLe: new Date(debut.getTime() + 9_000),
       evenements: "[]",
-      versionExtension: "1.0.0",
+      versionExtension: "1.2.0",
       versionContrat: 1,
     },
   });
@@ -371,7 +371,7 @@ async function dicteeDeBoutEnBout(db: PrismaClient, clientId: string): Promise<s
     cleClient: randomUUID(),
     rencontreId: rencontre.id,
     nature: "dictee" as const,
-    versionExtension: "1.0.0",
+    versionExtension: "1.2.0",
     debutLe: apres.toISOString(),
     accordLocalLe: null,
     nbParticipants: null,

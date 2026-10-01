@@ -21,6 +21,8 @@ import {
   ajouterMorceau,
   doitChangerDeTranche,
   finDeTranche,
+  finMuetteSur,
+  noterNiveau,
   nouvelleTranche,
   DUREE_MORCEAU_MS,
 } from "./lib/tranches.js";
@@ -65,6 +67,7 @@ function creerPiste(nom, flux, versHautParleurs) {
   return {
     nom,
     flux,
+    source,
     gain,
     analyseur,
     tampon: new Float32Array(analyseur.fftSize),
@@ -73,6 +76,8 @@ function creerPiste(nom, flux, versHautParleurs) {
     tranche: null,
     octetsTranche: [],
     numero: 0,
+    // V2, M2 — un relevé par seconde, sur les 20 dernières secondes.
+    niveaux: [],
   };
 }
 
@@ -116,7 +121,11 @@ function demarrerTranche(piste, motifDebut) {
     });
   };
   rec.onstop = () => {
-    const niveauFin = niveau(piste.analyseur, piste.tampon);
+    const finMuette = finMuetteSur(
+      piste.niveaux,
+      Date.now(),
+      niveau(piste.analyseur, piste.tampon),
+    );
     ecritures = ecritures.then(async () => {
       const tout = concatener(octetsTranche.filter(Boolean));
       await ajouterALaFile({
@@ -127,7 +136,7 @@ function demarrerTranche(piste, motifDebut) {
         corps: finDeTranche(tranche, piste.nom, {
           empreinte: await empreinteHex(tout),
           dureeMs: Date.now() - tranche.debutCaptureMs,
-          finMuette: niveauFin <= 0.01,
+          finMuette,
         }),
         essais: 0,
       });
@@ -146,6 +155,54 @@ function relancerSiBesoin(piste) {
   demarrerTranche(piste, "nouvelle_tranche");
 }
 
+// V2, M7 — le micro décroché (casque Bluetooth, câble) termine sa piste ; la
+// destination audio, elle, continue : l'enregistreur ne s'arrête jamais.
+// On redemande le micro, on rebranche la NOUVELLE source sur le nœud de gain
+// existant (pause et coupure restent en place), et une tranche
+// `micro_reconnecte` s'ouvre. Micro pas encore revenu : un `devicechange`
+// relancera la reprise.
+let micDemande = null;
+let repriseEnCours = false;
+
+function surveillerMicro(p) {
+  for (const piste of p.flux.getAudioTracks()) {
+    piste.onended = () => {
+      void rebrancherMicro(p);
+    };
+  }
+}
+
+function microMort(p) {
+  return p.flux.getAudioTracks().every((piste) => piste.readyState === "ended");
+}
+
+async function rebrancherMicro(p) {
+  if (!session || session.pistes.axion !== p || repriseEnCours) return;
+  repriseEnCours = true;
+  try {
+    let flux = null;
+    for (const audio of micDemande ? [micDemande, true] : [true]) {
+      try {
+        flux = await navigator.mediaDevices.getUserMedia({ audio, video: false });
+        break;
+      } catch {
+        flux = null;
+      }
+    }
+    if (!flux || !session || session.pistes.axion !== p) return;
+    p.source.disconnect();
+    p.source = contexte.createMediaStreamSource(flux);
+    p.source.connect(p.gain);
+    p.flux = flux;
+    surveillerMicro(p);
+    if (p.enregistreur && p.enregistreur.state !== "inactive") p.enregistreur.stop();
+    p.numero += 1;
+    demarrerTranche(p, "micro_reconnecte");
+  } finally {
+    repriseEnCours = false;
+  }
+}
+
 async function demarrer({ streamId, cleClient, micId, micSeul }) {
   contexte = new AudioContext();
   // Dictée (PR 7) : le micro SEUL, aucune capture d'onglet (piste « axion »).
@@ -155,8 +212,9 @@ async function demarrer({ streamId, cleClient, micId, micSeul }) {
         audio: { mandatory: { chromeMediaSource: "tab", chromeMediaSourceId: streamId } },
         video: false,
       });
+  micDemande = micId ? { deviceId: { exact: micId } } : null;
   const fluxMicro = await navigator.mediaDevices.getUserMedia({
-    audio: micId ? { deviceId: { exact: micId } } : true,
+    audio: micDemande ?? true,
     video: false,
   });
   session = {
@@ -167,24 +225,28 @@ async function demarrer({ streamId, cleClient, micId, micSeul }) {
     },
   };
   for (const p of Object.values(session.pistes)) demarrerTranche(p, "demarrage");
+  surveillerMicro(session.pistes.axion);
   session.minuteur = setInterval(() => {
     if (!session) return;
+    const maintenant = Date.now();
+    const mesures = {};
+    for (const p of Object.values(session.pistes)) {
+      mesures[p.nom] = niveau(p.analyseur, p.tampon);
+      p.niveaux = noterNiveau(p.niveaux, maintenant, mesures[p.nom]);
+    }
     for (const p of Object.values(session.pistes)) relancerSiBesoin(p);
-    const client = session.pistes.client;
     chrome.runtime.sendMessage({
       type: "niveaux",
       cleClient,
-      niveauClient: client ? niveau(client.analyseur, client.tampon) : 0,
-      niveauAxion: niveau(session.pistes.axion.analyseur, session.pistes.axion.tampon),
+      niveauClient: mesures.client ?? 0,
+      niveauAxion: mesures.axion ?? 0,
     });
   }, 1000);
-  // Micro débranché puis rebranché : nouvelle tranche sur la piste « axion ».
+  // Micro débranché puis rebranché : s'il est toujours mort, on le reprend.
   navigator.mediaDevices.addEventListener("devicechange", () => {
     if (!session) return;
     const p = session.pistes.axion;
-    if (p.enregistreur && p.enregistreur.state === "recording") return;
-    p.numero += 1;
-    demarrerTranche(p, "micro_reconnecte");
+    if (microMort(p)) void rebrancherMicro(p);
   });
 }
 

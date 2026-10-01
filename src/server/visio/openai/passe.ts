@@ -20,6 +20,7 @@
 import type { ZodType } from "zod";
 
 import {
+  DELAI_PAR_PASSE_MS,
   EFFORT_PAR_PASSE,
   ESTIMATION_PASSE_USD,
   MAX_SORTIE_PAR_PASSE,
@@ -66,6 +67,7 @@ export async function executerPasse<T>(
       format: formatDeSortie(d.schema, d.nomSchema),
       effort: EFFORT_PAR_PASSE[d.passe],
       maxSortie: MAX_SORTIE_PAR_PASSE[d.passe],
+      delaiMs: DELAI_PAR_PASSE_MS[d.passe],
     });
   } catch (err) {
     if (err instanceof AppelInterrompu) {
@@ -84,7 +86,16 @@ export async function executerPasse<T>(
       }
       throw err;
     }
-    throw classerErreurOpenAI(err);
+    const e = classerErreurOpenAI(err);
+    // V2, M6 — délai dépassé : la requête est partie et a pu être facturée.
+    if (e.code === "delai_depasse") {
+      await appelAnnuleEnVol(deps.cout, {
+        jobId: d.jobId,
+        modele: MODELE_REDACTION,
+        estimationUsd: ESTIMATION_PASSE_USD[d.passe],
+      });
+    }
+    throw e;
   }
   await apresAppel(deps.cout, {
     jobId: d.jobId,

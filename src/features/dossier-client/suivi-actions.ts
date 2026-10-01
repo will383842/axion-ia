@@ -23,6 +23,9 @@ import { z } from "zod";
 
 import { prisma } from "@/lib/prisma";
 import { exigerAccesEchanges } from "@/features/dossier-client/acces";
+import { messageAffichable } from "@/features/dossier-client/message-affichable";
+import { avecMessageDeRetour, type CleDeRetour } from "@/features/dossier-client/message-de-retour";
+import { relierParticipantsDeLaRencontre } from "@/features/dossier-client/rattacher";
 import { GesteRefuse } from "@/server/visio/gestes-compte-rendu";
 import {
   clore,
@@ -82,6 +85,8 @@ const GESTES: Readonly<Record<string, Geste>> = {
       contactId: id(fd, "contactId"),
       parAdminId: adminId,
     }),
+  // m-7 : après l'ajout d'une personne sur la fiche, relier les participants par adresse.
+  participants_relier: (fd) => relierParticipantsDeLaRencontre(prisma, id(fd, "rencontreId")),
   email_gabarit_fixe: (fd, adminId) =>
     emailSuiviGabaritFixe(prisma, envoiEmailSuiviReel, {
       rencontreId: id(fd, "rencontreId"),
@@ -93,7 +98,7 @@ const GESTES: Readonly<Record<string, Geste>> = {
 /** Exécute le geste nommé et revient sur la vue avec un message. */
 export async function gesteSuiviAction(fd: FormData): Promise<never> {
   const retour = lireRetour(fd);
-  let cle = "message";
+  let cle: CleDeRetour = "message";
   let message: string;
   try {
     const { userId } = await exigerAccesEchanges();
@@ -102,15 +107,9 @@ export async function gesteSuiviAction(fd: FormData): Promise<never> {
     message = await geste(fd, userId);
     revalidatePath(retour.split("?")[0] ?? "/");
   } catch (err) {
+    // N1 : seuls les messages métier vont dans l'URL, jamais une erreur Prisma.
     cle = "erreur";
-    message =
-      err instanceof GesteRefuse
-        ? err.message
-        : err instanceof z.ZodError
-          ? "Demande incomplète."
-          : err instanceof Error
-            ? err.message
-            : "Erreur inattendue.";
+    message = messageAffichable(err);
   }
-  redirect(`${retour}${retour.includes("?") ? "&" : "?"}${cle}=${encodeURIComponent(message)}`);
+  redirect(avecMessageDeRetour(retour, cle, message));
 }

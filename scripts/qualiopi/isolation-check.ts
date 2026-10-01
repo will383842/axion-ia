@@ -369,6 +369,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //      résolveur ferait diverger le prix d'un devis et celui d'une ébauche.
   "src/server/visio/circuit.ts",
   "src/server/visio/catalogue-ia.ts",
+  // ── Sessions de l'enregistreur (2e vérification, N3) : une fenêtre hors
+  //    accord arrivée après la transcription lève `visio.fenetre_tardive` par
+  //    `creerOuDedup`, import DYNAMIQUE au point d'usage — même emprunt que
+  //    `circuit.ts` et l'enregistreur ci-dessus, jamais un service parallèle.
+  "src/server/visio/sessions.ts",
   // Sa garde : chaque code `visio.*` du circuit est au catalogue.
   "src/server/visio/__tests__/les-codes-d-alerte-du-circuit-sont-au-catalogue.spec.ts",
   // Ses gardes : le catalogue lit LA règle de tarif du site (`deriveTarifType`,

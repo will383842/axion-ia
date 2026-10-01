@@ -64,7 +64,28 @@ export function decisionCloture(e: EtatPourCloture, maintenant: Date): DecisionC
   return { action: "aucune" };
 }
 
-type Db = Pick<PrismaClient, "enregistrement">;
+type Db = Pick<PrismaClient, "enregistrement" | "enregistrementTranche">;
+
+/**
+ * V2, m3 — Chrome a planté : la tranche en cours n'a jamais reçu sa fin.
+ * Ses morceaux, contigus depuis le premier (qui porte l'en-tête WebM), sont
+ * lisibles : elle passe `complete` et sera transcrite. Un trou la laisse
+ * de côté.
+ */
+async function completerTranchesContigues(db: Db, enregistrementId: string): Promise<void> {
+  const tranches = await db.enregistrementTranche.findMany({
+    where: { enregistrementId, statut: { in: ["en_reception", "incomplete"] } },
+    select: { id: true, morceaux: { select: { seq: true } } },
+  });
+  for (const t of tranches) {
+    const seqs = t.morceaux.map((m) => m.seq).sort((a, b) => a - b);
+    if (seqs.length === 0 || !seqs.every((s, i) => s === i)) continue;
+    await db.enregistrementTranche.update({
+      where: { id: t.id },
+      data: { statut: "complete", nbMorceauxAnnonces: seqs.length },
+    });
+  }
+}
 
 export interface BilanCloture {
   readonly accordNonConfirme: number;
@@ -145,6 +166,7 @@ export async function cloturerEnregistrements(db: Db, maintenant: Date): Promise
           evenements: ajouterAuJournal(e.evenements, { le: maintenant, type: "cloture_serveur" }),
         },
       });
+      if (r.count > 0) await completerTranchesContigues(db, e.id);
       deposes += r.count;
     }
   }

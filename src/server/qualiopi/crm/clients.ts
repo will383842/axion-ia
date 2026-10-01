@@ -13,6 +13,11 @@ export interface ListClientsOpts {
   /** Filtre par statut. */
   statut?: ClientStatut;
   /**
+   * Écarte les fiches d'ESSAI du pilote visio (`clients_test_interne`) : la
+   * liste des clients est montrée à l'auditeur Qualiopi (R3, 2e vérification).
+   */
+  horsFichesDEssai?: boolean;
+  /**
    * Recherche libre : raison sociale, SIRET, SIREN, numéro de fiche, contact.
    *
    * 🔴 Les identifiants sont NORMALISÉS avant comparaison. Un SIRET se lit
@@ -74,6 +79,7 @@ function filtreRecherche(terme: string): Prisma.ClientWhereInput | null {
 export async function listClients(opts?: ListClientsOpts): Promise<Client[]> {
   try {
     const filtres: Prisma.ClientWhereInput[] = [];
+    if (opts?.horsFichesDEssai) filtres.push({ testInterne: { is: null } });
     if (opts?.statut) filtres.push({ statut: opts.statut });
     const recherche = opts?.recherche === undefined ? null : filtreRecherche(opts.recherche);
     if (recherche !== null) filtres.push(recherche);

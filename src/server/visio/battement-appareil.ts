@@ -15,7 +15,7 @@ import type { PrismaClient } from "../../../prisma/generated/client";
 import type { TBattementAppareil } from "@/lib/schemas/enregistreur";
 import { estRendezVousDuDossier } from "./liste-blanche-types";
 import { ok, type Resultat } from "./resultat";
-import type { Appareil } from "./sessions";
+import { versionAccepteePourVisio, type Appareil } from "./sessions";
 
 /** Au-delà, un appareil est « silencieux ». Deux battements manqués. */
 export const SILENCE_APPAREIL_MS = 600_000;
@@ -43,6 +43,9 @@ export async function enregistrerBattementAppareil(
     attenteLocaleTropLongue:
       entree.corps.agePlusVieuxMs !== null &&
       entree.corps.agePlusVieuxMs > ATTENTE_LOCALE_ALERTE_MS,
+    // V2, N2 — ajout facultatif au contrat v1 : cette copie ne peut plus
+    // enregistrer de visio (le balayage alerte aussi, sur la version gardée).
+    extensionTropAncienne: !versionAccepteePourVisio(entree.corps.versionExtension),
   });
 }
 

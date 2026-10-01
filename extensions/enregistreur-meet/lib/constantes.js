@@ -10,7 +10,7 @@ export const VERSION_CONTRAT = 1;
 export const ENTETE_CONTRAT = "x-enregistreur-contrat";
 
 /** Version de l'extension (reprise du manifeste, envoyée au site). */
-export const VERSION_EXTENSION = "1.1.0";
+export const VERSION_EXTENSION = "1.2.0";
 
 /**
  * La SEULE adresse que l'extension appelle. Aucun préfixe de console, aucune

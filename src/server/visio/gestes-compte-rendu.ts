@@ -323,11 +323,33 @@ export async function marquerVoixDeWilliams(
 
 // ── Validation ───────────────────────────────────────────────────────────────
 
+/** Ce que la validation laisse à faire à Will (M-2) : le message le dit. */
+export interface SuiteDeLaValidation {
+  /** Une note écrite dans « Après l'appel » était le compte rendu validé : elle passe « remplacée ». */
+  readonly noteManuelleRemplacee: boolean;
+  /** Informations extraites encore à valider dans « Après l'appel ». */
+  readonly faitsAValider: number;
+}
+
+export function messageApresValidationDuCompteRendu(s: SuiteDeLaValidation): string {
+  const morceaux = ["Compte rendu validé. Le son de l'appel va être supprimé."];
+  if (s.noteManuelleRemplacee) {
+    morceaux.push("Votre note écrite reste dans les versions, ses informations restent retenues.");
+  }
+  if (s.faitsAValider > 0) {
+    morceaux.push(
+      `${s.faitsAValider} ${s.faitsAValider > 1 ? "informations restent" : "information reste"} ` +
+        "à valider : ouvrez « Après l'appel ».",
+    );
+  }
+  return morceaux.join(" ");
+}
+
 /** Valide le compte rendu à valider ; programme la purge du son (B1). */
 export async function validerCompteRendu(
   db: Db,
   a: { readonly compteRenduId: string; readonly parAdminId: string; readonly maintenant: Date },
-): Promise<void> {
+): Promise<SuiteDeLaValidation> {
   const cr = await db.compteRendu.findUnique({
     where: { id: a.compteRenduId },
     select: { id: true, rencontreId: true, statut: true },
@@ -335,7 +357,12 @@ export async function validerCompteRendu(
   if (!cr || cr.statut !== "a_valider")
     throw new GesteRefuse("Ce compte rendu n'est pas à valider.");
   await exigerValidationPossible(db, cr.rencontreId);
-  await db.$transaction(async (tx) => {
+  return db.$transaction(async (tx) => {
+    // Un seul compte rendu validé par rencontre (index) : la note écrite passe
+    // « remplacée » — M-2 : Will en est prévenu, ses faits restent validés.
+    const notes = await tx.compteRendu.count({
+      where: { rencontreId: cr.rencontreId, statut: "valide", origine: "manuel" },
+    });
     await tx.compteRendu.updateMany({
       where: { rencontreId: cr.rencontreId, statut: "valide" },
       data: { statut: "remplace" },
@@ -364,6 +391,10 @@ export async function validerCompteRendu(
       compteRenduId: null,
       reinitialiser: true,
     });
+    const faitsAValider = await tx.fait.count({
+      where: { rencontreId: cr.rencontreId, statut: { in: ["propose", "en_attente"] } },
+    });
+    return { noteManuelleRemplacee: notes > 0, faitsAValider };
   });
 }
 
@@ -396,15 +427,46 @@ export async function reecrireCompteRendu(db: Db, rencontreId: string): Promise<
   });
 }
 
-/** « Réextraire » : P1 depuis la transcription retenue ; l'ancienne version est remplacée. */
-export async function reextraireCompteRendu(db: Db, rencontreId: string): Promise<void> {
+/**
+ * « Relancer » : P1 depuis la transcription retenue ; l'ancienne version est
+ * remplacée. V2, M3 — SANS transcription retenue (la transcription elle-même
+ * a échoué : OpenAI en panne plus de 72 h, par exemple), le geste relance
+ * `transcrire` tant qu'un enregistrement de la rencontre a encore son son.
+ * Les tranches déjà transcrites ne sont ni refaites ni repayées.
+ */
+export async function reextraireCompteRendu(
+  db: Db,
+  rencontreId: string,
+): Promise<"transcription" | "extraction"> {
   const t = await db.transcription.count({
     where: { statut: "retenue", enregistrement: { rencontreId } },
   });
-  if (t === 0) throw new GesteRefuse("La transcription n'existe plus : impossible de réextraire.");
+  if (t === 0) {
+    const avecSon = await db.enregistrement.count({
+      where: {
+        rencontreId,
+        statut: { in: ["depose", "en_traitement"] },
+        audioSupprimeLe: null,
+      },
+    });
+    if (avecSon === 0) {
+      throw new GesteRefuse(
+        "Le son de ce rendez-vous n'existe plus : la transcription ne peut pas être relancée.",
+      );
+    }
+    await db.$transaction((tx) =>
+      planifierDans(tx, rencontreId, {
+        etape: "transcrire",
+        compteRenduId: null,
+        reinitialiser: true,
+      }),
+    );
+    return "transcription";
+  }
   await db.$transaction((tx) =>
     planifierDans(tx, rencontreId, { etape: "extraire", compteRenduId: null, reinitialiser: true }),
   );
+  return "extraction";
 }
 
 /**
@@ -478,11 +540,22 @@ async function poserReponseDeWill(
   c: CibleConfirmation,
   type: typeof EVT_COURT_CONFIRME | typeof EVT_FENETRES_VERIFIEES,
 ): Promise<void> {
+  // V2, m4 — son purgé (échéance de 30 jours) : la transcription n'aurait
+  // plus rien à lire ; la réponse est refusée au lieu de produire du vide.
   const e = await db.enregistrement.findFirst({
-    where: { id: c.enregistrementId, rencontreId: c.rencontreId, statut: "depose" },
+    where: {
+      id: c.enregistrementId,
+      rencontreId: c.rencontreId,
+      statut: "depose",
+      audioSupprimeLe: null,
+    },
     select: { id: true, evenements: true, motifArret: true },
   });
-  if (!e) throw new GesteRefuse("Aucun enregistrement en attente de votre réponse.");
+  if (!e) {
+    throw new GesteRefuse(
+      "Aucun enregistrement en attente de votre réponse (ou son son a déjà été supprimé).",
+    );
+  }
   if (type === EVT_FENETRES_VERIFIEES && e.motifArret !== "cloture_serveur") {
     throw new GesteRefuse("Cet enregistrement n'a pas été interrompu avant la fin.");
   }

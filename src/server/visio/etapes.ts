@@ -102,6 +102,11 @@ export interface DepsCircuit {
    * e-mail de suivi). Absent : ces étapes s'arrêtent sans rien écrire.
    */
   readonly demandes?: DepsDemandes;
+  /**
+   * V2, M1 — attendre avant de réessayer une tranche après un 429 « limite de
+   * débit ». Injecté par les tests ; un vrai délai sinon.
+   */
+  readonly attendre?: (ms: number) => Promise<void>;
 }
 
 export interface ContexteEtape {
@@ -121,6 +126,12 @@ export interface ContexteEtape {
   readonly verifierMain: () => Promise<void>;
   /** Écriture intermédiaire gardée (jeton + retrait). */
   readonly ecrireEnCours: <R>(fn: (tx: Tx) => Promise<R>) => Promise<R>;
+  /**
+   * V2, M1 — l'étape a AVANCÉ (une tranche transcrite et écrite). Une erreur
+   * passagère qui suit ne continue pas l'échelle de reprises : elle repart sur
+   * une échelle neuve et la prise n'est pas imputée au plafond.
+   */
+  readonly noterProgres: () => void;
 }
 
 export interface ResultatGestionnaire {
@@ -244,6 +255,35 @@ export function decisionApresErreur(
   }
 }
 
+/**
+ * V2, M1 — une erreur PASSAGÈRE après que l'étape a avancé (des tranches
+ * transcrites dans cette exécution). L'échelle repart de zéro (`echecs = 0`,
+ * pas de premier échec), la prise n'est pas imputée au plafond de 10
+ * exécutions (`compter: false`) : un appel long sous limite de débit avance
+ * de quelques tranches à chaque exécution et finit. Borné : chaque exécution
+ * ainsi épargnée a écrit au moins une tranche, et une tranche faite ne se
+ * refait pas. Fonction PURE.
+ */
+export function decisionApresProgres(err: ErreurVisio, maintenant: Date): DecisionEchec {
+  return {
+    statut: "a_faire",
+    classe: err.classe,
+    code: err.code,
+    compter: false,
+    nouvelleSerie: true,
+    prochaineTentativeLe: plusMinutes(maintenant, REPRISES_PASSAGERES_MIN[0]),
+    premierEchecLe: null,
+  };
+}
+
+/** V2, m2 — le motif d'un arrêt normal, dit à Will. */
+const MOTIFS_ARRET_LISIBLES: Readonly<Record<string, string>> = {
+  piste_muette:
+    "Le son du client n'a pas été capté (mauvais onglet partagé, ou onglet Meet muet) : rien n'a été transcrit de son côté.",
+  sortie_invalide: "Le compte rendu a été rejeté deux fois par la vérification.",
+  audio_incomplet: "Le son reçu est incomplet : la transcription n'a pas pu se faire.",
+};
+
 const TITRES_SUSPENSION: Readonly<Record<string, string>> = {
   configuration: "Circuit visio suspendu : configuration (clé OpenAI ou de chiffrement)",
   quota: "Circuit visio suspendu : crédit OpenAI épuisé",
@@ -336,10 +376,23 @@ export async function executerEtape(
   }
 
   let mainPerdue = false;
+  let progres = false;
+  let prolongationsRatees = 0;
   const minuterie = setInterval(() => {
-    void deps.depot.prolonger(t).then((ok) => {
-      if (!ok) mainPerdue = true;
-    });
+    // V2, m1 — un rejet (base coupée) n'est jamais laissé sans `.catch` : sans
+    // Sentry, Node arrêterait tout le worker. Deux échecs de suite : le verrou
+    // (5 min) n'est plus sûr, la main est tenue pour perdue.
+    deps.depot.prolonger(t).then(
+      (ok) => {
+        prolongationsRatees = 0;
+        if (!ok) mainPerdue = true;
+      },
+      (err: unknown) => {
+        prolongationsRatees += 1;
+        console.error("[visio] prolongation du verrou en échec :", err);
+        if (prolongationsRatees >= 2) mainPerdue = true;
+      },
+    );
   }, PROLONGATION_VERROU_MS);
   const verifierArret = (): void => {
     if (deps.arretDemande()) throw new InterruptionArret();
@@ -358,6 +411,9 @@ export async function executerEtape(
       }
     },
     ecrireEnCours: (fn) => deps.depot.ecrireEnCours(t, fn),
+    noterProgres: () => {
+      progres = true;
+    },
   };
 
   try {
@@ -366,7 +422,7 @@ export async function executerEtape(
     await deps.depot.terminer(t, r.ecrire);
     return "reussie";
   } catch (err) {
-    return await traiterErreur(deps, t, err);
+    return await traiterErreur(deps, t, err, progres);
   } finally {
     clearInterval(minuterie);
   }
@@ -410,6 +466,7 @@ async function traiterErreur(
   deps: DepsCircuit,
   t: EtapeTenue,
   err: unknown,
+  progres = false,
 ): Promise<IssueExecution> {
   const maintenant = deps.maintenant();
   if (err instanceof ResultatOrphelin) return "orphelin";
@@ -457,11 +514,23 @@ async function traiterErreur(
       prochaineTentativeLe: null,
       premierEchecLe: t.premierEchecLe,
     });
+    // V2, m2 — un arrêt « normal » se dit aussi : sans alerte, il n'était
+    // visible que sur la page du rendez-vous, que Will n'ouvre pas seul.
+    await deps.alerter({
+      code: CODES_ALERTES_CIRCUIT.etapeEnEchec,
+      niveau: "important",
+      titre: "Circuit visio : un compte rendu n'a pas pu être produit",
+      message: `${MOTIFS_ARRET_LISIBLES[err.code] ?? `Étape « ${t.etape} » arrêtée (${err.code}).`} Une note manuelle est proposée sur la page du rendez-vous.`,
+      rencontreId: t.rencontreId,
+    });
     return "echec_definitif";
   }
 
   const e = classerErreurOpenAI(err);
-  const d = decisionApresErreur(t, e, maintenant);
+  const d =
+    progres && e.classe === "passagere"
+      ? decisionApresProgres(e, maintenant)
+      : decisionApresErreur(t, e, maintenant);
   await deps.depot.echouer(t, d);
 
   if (d.statut === "suspendu") {

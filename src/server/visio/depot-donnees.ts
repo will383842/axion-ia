@@ -31,7 +31,7 @@ import { euros } from "@/features/dossier-client/libelles";
 import { ArretVisio } from "./etapes";
 import { ErreurVisio } from "./openai/erreurs";
 import { annulerEtapesDesVersions } from "./prise-d-etape";
-import { stockageR2, type LectureAudio } from "./stockage-audio";
+import { purgerSonDUneTranche, stockageR2, type LectureAudio } from "./stockage-audio";
 import type {
   DonneesPasses,
   DonneesPrecontrole,
@@ -65,6 +65,14 @@ function periodes(json: string | null): Periode[] {
   } catch {
     return [];
   }
+}
+
+/**
+ * V2, N4 — la liste des fenêtres hors accord est-elle arrivée ? Une liste
+ * gardée VIDE ne compte pas : la question à Will reste posée.
+ */
+export function fenetresRecuesDe(json: string | null): boolean {
+  return periodes(json).length > 0;
 }
 
 /** Les valeurs d'un fait mises en texte (pour P2-P5 et G9). */
@@ -262,11 +270,28 @@ async function contactsDuClient(db: Db, clientId: string | null): Promise<Contac
   return c.map((x) => ({ ...x, statut: x.statut }));
 }
 
+/** V2, M5 — le délai pendant lequel un son en renvoi retient la transcription. */
+export const ATTENTE_SON_EN_RENVOI_MS = 15 * 60_000;
+
 export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2): PortDonnees {
   return {
+    // V2, M5 — « actif » aussi : un enregistrement DÉPOSÉ dont une tranche est
+    // encore en réception ou incomplète, moins de 15 min après sa fin. Un
+    // morceau en renvoi (503 pendant un déploiement) peut encore arriver : la
+    // transcription attend (report sans compter) au lieu de partir sans lui.
     enregistrementActif: async (rencontreId) =>
       (await db.enregistrement.count({
-        where: { rencontreId, statut: { in: [...ETATS_ENREGISTREMENT_ACTIFS] } },
+        where: {
+          rencontreId,
+          OR: [
+            { statut: { in: [...ETATS_ENREGISTREMENT_ACTIFS] } },
+            {
+              statut: "depose",
+              fin: { gt: new Date(Date.now() - ATTENTE_SON_EN_RENVOI_MS) },
+              tranches: { some: { statut: { in: ["en_reception", "incomplete"] } } },
+            },
+          ],
+        },
       })) > 0,
 
     oppositionIa: async (rencontreId) => {
@@ -340,12 +365,14 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
         origineMs,
         courtConfirme: journalDit(e.evenements, EVT_COURT_CONFIRME),
         fenetresVerifiees: journalDit(e.evenements, EVT_FENETRES_VERIFIEES),
+        fenetresRecues: fenetresRecuesDe(e.fenetresHorsAccord),
         tranches: e.tranches.map((t): TrancheATraiter => ({
           ...t,
           debutCaptureEpochMs: Number(t.debutCaptureEpochMs),
         })),
       }));
     },
+    purgerSonTranche: (trancheId) => purgerSonDUneTranche(db, stockage, trancheId),
     lireSonTranche: async (trancheId) => {
       const t = await db.enregistrementTranche.findUnique({
         where: { id: trancheId },
@@ -426,7 +453,10 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
       }
       await tx.enregistrementTranche.update({
         where: { id: a.trancheId },
-        data: { statut: "transcrite", transcriteLe: new Date() },
+        data:
+          a.statutTranche === "echec"
+            ? { statut: "echec" }
+            : { statut: "transcrite", transcriteLe: new Date() },
       });
     },
     retenirTranscription: async (tx, a) => {
@@ -877,10 +907,41 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
         where: { id: { in: [...a.trancheIds] } },
         data: { statut: "purgee", audioSupprimeLe: le, tailleOctets: 0 },
       });
-      await tx.enregistrement.update({
+      const e = await tx.enregistrement.update({
         where: { id: a.enregistrementId },
         data: { audioSupprimeLe: le },
+        select: { rencontreId: true, evenements: true },
       });
+      // V2, m4 — plus aucun son à transcrire dans la rencontre : une question
+      // à Will encore ouverte (transcription suspendue sans classe) est close,
+      // et le journal le dit. Sinon sa réponse relançait une transcription
+      // sur des tranches purgées.
+      const avecSon = await tx.enregistrement.count({
+        where: {
+          rencontreId: e.rencontreId,
+          statut: { in: ["depose", "en_traitement"] },
+          audioSupprimeLe: null,
+        },
+      });
+      if (avecSon === 0) {
+        const n = await tx.traitementVisio.updateMany({
+          where: {
+            rencontreId: e.rencontreId,
+            etape: "transcrire",
+            statut: "suspendu",
+            classeErreur: null,
+          },
+          data: { statut: "annule", verrouJusqua: null },
+        });
+        if (n.count > 0) {
+          await tx.enregistrement.update({
+            where: { id: a.enregistrementId },
+            data: {
+              evenements: ajouterAuJournal(e.evenements, { le, type: "question_close_par_purge" }),
+            },
+          });
+        }
+      }
     },
   };
 }

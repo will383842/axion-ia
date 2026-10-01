@@ -38,6 +38,10 @@ import { LIBELLE_MOTIF, LIBELLE_TYPE_FAIT } from "@/features/dossier-client/libe
 import { LIBELLE_ORIGINE_DEBRIEF } from "@/features/dossier-client/debriefs-existants";
 import { CHAMPS_DE_LA_NOTE } from "@/features/dossier-client/note-manuelle";
 import {
+  titreDeLaNote,
+  type EtatCompteRenduEnregistre,
+} from "@/features/dossier-client/compte-rendu-en-preparation";
+import {
   lireFichesVivantes,
   lireProjetsCourts,
   type RencontreDetaillee,
@@ -65,17 +69,20 @@ export async function ApresLAppelVue({
   locale,
   adminPrefix,
   erreur,
+  compteRendu,
 }: {
   r: RencontreDetaillee;
   locale: string;
   adminPrefix: string;
   erreur: string | null;
+  /** M-2 : où en est le compte rendu de l'enregistrement (`compteRenduEnregistre`). */
+  compteRendu: EtatCompteRenduEnregistre;
 }) {
   const rdvBase = `/${locale}/${adminPrefix}/rendez-vous`;
   const client = r.client;
   const [projets, fiches, annuaire] = await Promise.all([
     client ? lireProjetsCourts(client.id) : Promise.resolve([]),
-    client ? Promise.resolve([]) : lireFichesVivantes(),
+    client ? Promise.resolve([]) : lireFichesVivantes({ fictivesSeulement: r.estTestInterne }),
     client === null && r.entrepriseDeclaree.nom
       ? rechercherSiren(r.entrepriseDeclaree.nom, r.entrepriseDeclaree.ville)
       : Promise.resolve(null),
@@ -91,6 +98,9 @@ export async function ApresLAppelVue({
     projets,
   );
   const proposePrincipal = groupes.principal.proposition;
+  // m-2 : la section « à valider » ne compte que les faits encore à valider.
+  const aValider =
+    groupes.principal.faits.length + groupes.autres.reduce((n, g) => n + g.faits.length, 0) > 0;
 
   return (
     <AdminPageShell width="wide">
@@ -131,6 +141,29 @@ export async function ApresLAppelVue({
           className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-danger)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
         >
           {erreur}
+        </p>
+      ) : null}
+
+      {/* M-2 : ouvert juste après une visio enregistrée, le compte rendu n'est pas encore là. */}
+      {compteRendu !== "aucun" ? (
+        <p
+          role="status"
+          className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-warning)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
+        >
+          {compteRendu === "en_preparation" ? (
+            <>
+              Le compte rendu de l&apos;enregistrement est en préparation : revenez ici quand il est
+              prêt.
+            </>
+          ) : (
+            <>
+              Le compte rendu de l&apos;enregistrement est prêt :{" "}
+              <Link href={`${rdvBase}/rencontres/${r.id}`} className={lienCls}>
+                validez-le
+              </Link>
+              .
+            </>
+          )}
         </p>
       ) : null}
 
@@ -188,7 +221,8 @@ export async function ApresLAppelVue({
           </p>
         ) : (
           <div className="space-y-[var(--space-admin-4)]">
-            {r.clientPropose ? (
+            {/* M-1 : jamais de client proposé pour une rencontre de test. */}
+            {r.clientPropose && !r.estTestInterne ? (
               <form
                 action={rangerRencontreAction}
                 className="flex flex-wrap items-center gap-[var(--space-admin-3)]"
@@ -208,7 +242,9 @@ export async function ApresLAppelVue({
               </form>
             ) : (
               <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>
-                Aucune fiche ne ressemble à ce rendez-vous.
+                {r.estTestInterne
+                  ? "Rendez-vous de test : une fiche fictive ou une nouvelle fiche, jamais un vrai client."
+                  : "Aucune fiche ne ressemble à ce rendez-vous."}
               </p>
             )}
 
@@ -369,7 +405,7 @@ export async function ApresLAppelVue({
                   maxLength={200}
                   defaultValue={(proposePrincipal?.mode === "nouveau"
                     ? proposePrincipal.titre
-                    : `Projet ${client.raisonSociale}`
+                    : (groupes.principal.intitule ?? `Projet ${client.raisonSociale}`)
                   ).slice(0, 200)}
                   className={`${inputCls} max-w-md`}
                 />
@@ -437,7 +473,7 @@ export async function ApresLAppelVue({
             ))}
           </section>
 
-          {r.faits.length > 0 ? (
+          {aValider ? (
             <section className={carteCls}>
               <h2 className={titreCls}>3. Ce que le client a dit — à valider</h2>
               <p
@@ -484,7 +520,7 @@ export async function ApresLAppelVue({
 
           <section className={carteCls}>
             <h2 className={titreCls}>
-              {r.faits.length > 0 ? "4." : "3."} Note (pas d&apos;enregistrement)
+              {aValider ? "4." : "3."} {titreDeLaNote(compteRendu)}
             </h2>
             <div className="grid gap-[var(--space-admin-3)] sm:grid-cols-2">
               {CHAMPS_DE_LA_NOTE.map((c) => (

@@ -41,6 +41,7 @@ import {
 } from "@/features/dossier-client/queries";
 import { getClient } from "@/server/qualiopi/crm/clients";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
-  searchParams?: Promise<{ projet?: string; erreur?: string }>;
+  searchParams?: Promise<{ projet?: string; erreur?: string; sceau?: string }>;
 }
 
 const carteCls =
@@ -119,6 +120,8 @@ export default async function PreparerPage({ params, searchParams }: PageProps) 
     return <AccesRefuse motif={acces.motif} retourHref={ficheHref} />;
   }
   const sp = (await searchParams) ?? {};
+  // N1 : seul un message scellé par l'action s'affiche (un lien forgé n'affiche rien).
+  const erreur = lireMessageDeRetour(sp, "erreur");
 
   const [client, projets, faits, personnes, questions, comptesRendus, refus] = await Promise.all([
     getClient(id),
@@ -160,9 +163,9 @@ export default async function PreparerPage({ params, searchParams }: PageProps) 
         title="Préparer le prochain échange"
         meta={<AdminBadge tone="neutral">{client.numero}</AdminBadge>}
       />
-      {typeof sp.erreur === "string" && sp.erreur !== "" ? (
+      {erreur ? (
         <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]">
-          {sp.erreur.slice(0, 300)}
+          {erreur.slice(0, 300)}
         </p>
       ) : null}
 

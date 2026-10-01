@@ -23,6 +23,7 @@ import { prisma } from "@/lib/prisma";
 import { retirerAccordRencontre } from "@/lib/rgpd-erase";
 import { exigerAccesEchanges } from "@/features/dossier-client/acces";
 import { messageAffichable } from "@/features/dossier-client/message-affichable";
+import { avecMessageDeRetour, type CleDeRetour } from "@/features/dossier-client/message-de-retour";
 import {
   ajouterPersonnePourVoix,
   attribuerVoix,
@@ -34,6 +35,7 @@ import {
   reextraireCompteRendu,
   completerApresRattachement,
   marquerVoixDeWilliams,
+  messageApresValidationDuCompteRendu,
   reprendreEtapesSuspendues,
   validerCompteRendu,
 } from "@/server/visio/gestes-compte-rendu";
@@ -61,7 +63,7 @@ async function executer(
   geste: (rencontreId: string, adminId: string) => Promise<string>,
 ): Promise<never> {
   const retour = lireRetour(fd);
-  let cle = "message";
+  let cle: CleDeRetour = "message";
   let message: string;
   try {
     const { userId } = await exigerAccesEchanges();
@@ -73,8 +75,7 @@ async function executer(
     cle = "erreur";
     message = messageAffichable(err);
   }
-  const joint = retour.includes("?") ? "&" : "?";
-  redirect(`${retour}${joint}${cle}=${encodeURIComponent(message)}`);
+  redirect(avecMessageDeRetour(retour, cle, message));
 }
 
 /** Les gestes de la page, par leur nom (champ caché `geste` du formulaire). */
@@ -82,20 +83,21 @@ const GESTES: Readonly<
   Record<string, (fd: FormData, rencontreId: string, adminId: string) => Promise<string>>
 > = {
   valider: async (fd, _rencontreId, adminId) => {
-    await validerCompteRendu(prisma, {
+    const suite = await validerCompteRendu(prisma, {
       compteRenduId: uuid.parse(fd.get("compteRenduId")),
       parAdminId: adminId,
       maintenant: new Date(),
     });
-    return "Compte rendu validé. Le son de l'appel va être supprimé.";
+    return messageApresValidationDuCompteRendu(suite);
   },
   reecrire: async (_fd, rencontreId) => {
     await reecrireCompteRendu(prisma, rencontreId);
     return "La réécriture est lancée : le compte rendu revient dans quelques minutes.";
   },
   reextraire: async (_fd, rencontreId) => {
-    await reextraireCompteRendu(prisma, rencontreId);
-    return "L'extraction est relancée depuis la transcription.";
+    return (await reextraireCompteRendu(prisma, rencontreId)) === "transcription"
+      ? "La transcription est relancée."
+      : "L'extraction est relancée depuis la transcription.";
   },
   completer: async (_fd, rencontreId) => {
     const id = await completerApresRattachement(prisma, rencontreId);

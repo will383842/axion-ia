@@ -60,8 +60,16 @@ import {
   type Preavis,
 } from "./visio-annonce";
 import { refusPisteClientEnDictee } from "./morceaux";
+import { CODES_ALERTES_VISIO } from "./alertes";
+import { estHorsAccord } from "./dialogue";
 import { echec, ok, type Resultat } from "./resultat";
-import type { StockageAudio } from "./stockage-audio";
+import {
+  MESSAGE_EXTENSION_TROP_ANCIENNE,
+  refusVersionDeSession,
+  versionAccepteePourVisio,
+} from "./version-extension";
+import { planifierDans } from "./prise-d-etape";
+import { purgerSonDUneTranche, stockageR2, type StockageAudio } from "./stockage-audio";
 
 /** Fenêtre autour du rendez-vous où un entretien de candidat bloque l'enregistrement. */
 export const MARGE_ENTRETIEN_MS = 30 * 60_000;
@@ -99,7 +107,10 @@ const MESSAGES_REFUS: Readonly<Record<MotifATexteFixe, string>> = {
     "Une personne de ce client s'est opposée au traitement par IA : ni enregistrement, ni dictée.",
   refus_anterieur_definitif:
     "Ce rendez-vous a déjà fait l'objet d'un refus : rien ne s'enregistre.",
+  extension_trop_ancienne: MESSAGE_EXTENSION_TROP_ANCIENNE,
 };
+
+export { versionAccepteePourVisio } from "./version-extension";
 
 /** Un refus motivé : le code du contrat et le texte montré à Will. */
 export interface RefusMotive {
@@ -422,6 +433,13 @@ export async function creerOuReprendreSession(
   const debut = new Date(corps.debutLe);
   const accordLocalLe = corps.accordLocalLe ? new Date(corps.accordLocalLe) : null;
 
+  // 00. V2, N2 — une extension sans RGPD-01 n'enregistre aucune visio, pas
+  //     même en rejouant une création : la voix d'une personne passée moins de
+  //     120 s partirait chez OpenAI. La dictée (Williams seul) n'est pas visée.
+  if (corps.nature === "visio" && !versionAccepteePourVisio(corps.versionExtension)) {
+    return refusSession("extension_trop_ancienne");
+  }
+
   // 0. Rejeu de la même création (réseau coupé après l'écriture).
   const parCle = await db.enregistrement.findUnique({
     where: { cleClient: corps.cleClient },
@@ -582,6 +600,8 @@ async function chargerDeLAppareil(db: Pick<Db, "enregistrement">, id: string, ap
       accordConfirmeLe: true,
       updatedAt: true,
       nature: true,
+      fenetresHorsAccord: true,
+      versionExtension: true,
     },
   });
   if (!enr || enr.appareilId !== appareilId) return null;
@@ -604,6 +624,8 @@ export async function declarerAccord(
 ): Promise<Resultat> {
   const enr = await chargerDeLAppareil(db, entree.enregistrementId, entree.appareil.id);
   if (!enr) return INTROUVABLE;
+  const tropAncienne = refusVersionDeSession(enr);
+  if (tropAncienne) return tropAncienne;
   const accordLe = new Date(entree.corps.accordLe);
   const preavis = entree.preavis === undefined ? PREAVIS_SOUS_TRAITANTS : entree.preavis;
 
@@ -755,6 +777,46 @@ export async function declarerRefus(
   return ok({ statut: "refuse", detruire: true });
 }
 
+/**
+ * V2, N4 — la fin d'une fenêtre hors accord encore OUVERTE au dernier
+ * battement : la personne était là quand le contact a été perdu, la fenêtre
+ * court jusqu'au bout (un battement ou une `fin` suivants la corrigent).
+ */
+export const FIN_FENETRE_OUVERTE_MS = 2_147_483_647;
+
+/**
+ * Les fenêtres d'un battement, UNIES à celles déjà gardées (relecture E1) :
+ * une fenêtre gardée n'est jamais supprimée, une fenêtre ouverte peut
+ * seulement être fermée (même début). Rend `null` s'il n'y a rien à garder.
+ */
+function fenetresDuBattement(
+  gardees: string | null,
+  f: ReadonlyArray<{ debutMs: number; finMs: number; ouverte?: boolean | undefined }>,
+): string | null {
+  const parDebut = new Map<number, { debutMs: number; finMs: number }>();
+  try {
+    const lues: unknown = gardees ? JSON.parse(gardees) : [];
+    if (Array.isArray(lues)) {
+      for (const x of lues as Array<{ debutMs?: unknown; finMs?: unknown }>) {
+        if (typeof x?.debutMs === "number" && typeof x.finMs === "number") {
+          parDebut.set(x.debutMs, { debutMs: x.debutMs, finMs: x.finMs });
+        }
+      }
+    }
+  } catch {
+    // Illisible : on ne garde que ce qui arrive.
+  }
+  for (const x of f) {
+    const deja = parDebut.get(x.debutMs);
+    const finMs = x.ouverte ? FIN_FENETRE_OUVERTE_MS : x.finMs;
+    // Une fenêtre fermée ne se rouvre pas, et ne raccourcit pas.
+    if (deja && deja.finMs !== FIN_FENETRE_OUVERTE_MS && deja.finMs >= finMs) continue;
+    parDebut.set(x.debutMs, { debutMs: x.debutMs, finMs });
+  }
+  if (parDebut.size === 0) return null;
+  return JSON.stringify([...parDebut.values()].sort((a, b) => a.debutMs - b.debutMs));
+}
+
 /** Battement d'une session : signe de vie ; rouvre un `interrompu`. */
 export async function battementSession(
   db: Db,
@@ -762,14 +824,26 @@ export async function battementSession(
     readonly appareil: Appareil;
     readonly enregistrementId: string;
     readonly maintenant: Date;
+    /** V2, N4 — facultatif (contrat v1) : les fenêtres hors accord vues jusqu'ici. */
+    readonly fenetresHorsAccord?: ReadonlyArray<{
+      debutMs: number;
+      finMs: number;
+      ouverte?: boolean | undefined;
+    }>;
   },
 ): Promise<Resultat> {
   const enr = await chargerDeLAppareil(db, entree.enregistrementId, entree.appareil.id);
   if (!enr) return INTROUVABLE;
+  const unies =
+    entree.fenetresHorsAccord && entree.fenetresHorsAccord.length > 0
+      ? fenetresDuBattement(enr.fenetresHorsAccord, entree.fenetresHorsAccord)
+      : null;
+  const fenetres = unies !== null ? { fenetresHorsAccord: unies } : {};
   if (enr.statut === "interrompu") {
     await db.enregistrement.update({
       where: { id: enr.id },
       data: {
+        ...fenetres,
         statut: "en_cours",
         updatedAt: entree.maintenant,
         evenements: ajouterAuJournal(enr.evenements, {
@@ -783,7 +857,7 @@ export async function battementSession(
   if (enr.statut === "en_cours" || enr.statut === "accord_en_attente") {
     await db.enregistrement.update({
       where: { id: enr.id },
-      data: { updatedAt: entree.maintenant },
+      data: { ...fenetres, updatedAt: entree.maintenant },
     });
     return ok({ statut: enr.statut });
   }
@@ -816,6 +890,8 @@ export async function terminerTranche(
 ): Promise<Resultat> {
   const enr = await chargerDeLAppareil(db, entree.enregistrementId, entree.appareil.id);
   if (!enr) return INTROUVABLE;
+  const tropAncienne = refusVersionDeSession(enr);
+  if (tropAncienne) return tropAncienne;
   if (enr.statut === "accord_en_attente") {
     return echec(409, "accord_en_attente", "Rien n'est reçu avant l'accord.");
   }
@@ -870,10 +946,14 @@ export async function terminerSession(
     readonly enregistrementId: string;
     readonly corps: TFinSession;
     readonly maintenant: Date;
+    /** V2, N3 — le stockage du son (purge des tranches hors accord) ; R2 par défaut. */
+    readonly stockage?: Pick<StockageAudio, "supprimer" | "existe">;
   },
 ): Promise<Resultat> {
   const enr = await chargerDeLAppareil(db, entree.enregistrementId, entree.appareil.id);
   if (!enr) return INTROUVABLE;
+  const tropAncienne = refusVersionDeSession(enr);
+  if (tropAncienne) return tropAncienne;
   const c = entree.corps;
   const finLe = new Date(c.finLe);
 
@@ -899,6 +979,18 @@ export async function terminerSession(
     return ok({ statut: "accord_non_confirme", detruire: true });
   }
   if (ETATS_TRAITES.includes(enr.statut)) {
+    // V2, N3 — une session close par le serveur, traitée depuis : sa `fin`
+    // tardive apporte des fenêtres hors accord. Elles ne se perdent pas.
+    if (enr.motifArret === "cloture_serveur" && c.fenetresHorsAccord.length > 0) {
+      await appliquerFenetresTardives(
+        db,
+        entree.stockage ?? stockageR2,
+        enr,
+        c.fenetresHorsAccord,
+        entree.maintenant,
+      );
+      return ok({ statut: enr.statut, deja: true, fenetresAppliquees: true });
+    }
     return ok({ statut: enr.statut, deja: true });
   }
   const clotureDOffice = enr.statut === "depose" && enr.motifArret === "cloture_serveur";
@@ -945,6 +1037,111 @@ export async function terminerSession(
     },
   });
   return ok({ statut: "depose", incomplet, corrige: clotureDOffice });
+}
+
+/**
+ * V2, N3 — fenêtres hors accord arrivées APRÈS le début du traitement d'une
+ * session close par le serveur : elles sont enregistrées, la parole des
+ * segments qui les chevauchent est vidée (`horsAccord`), et une alerte dit à
+ * Will de revoir le compte rendu et les faits de ce rendez-vous (les faits,
+ * immuables, ne se corrigent pas d'ici).
+ */
+async function appliquerFenetresTardives(
+  db: Db,
+  stockage: Pick<StockageAudio, "supprimer" | "existe">,
+  enr: { id: string; rencontreId: string; debut: Date; evenements: string | null },
+  fenetres: ReadonlyArray<{ debutMs: number; finMs: number }>,
+  maintenant: Date,
+): Promise<void> {
+  const rencontre = await db.rencontre.findUnique({
+    where: { id: enr.rencontreId },
+    select: { debutReel: true },
+  });
+  const enregistrements = await db.enregistrement.findMany({
+    where: { rencontreId: enr.rencontreId },
+    select: { debut: true },
+  });
+  // Même origine que `aTranscrire` : début réel, sinon le premier enregistrement.
+  const origineMs =
+    rencontre?.debutReel?.getTime() ??
+    Math.min(...enregistrements.map((e) => e.debut.getTime()), enr.debut.getTime());
+  const transcriptions = await db.transcription.findMany({
+    where: { enregistrementId: enr.id },
+    select: { id: true },
+  });
+  const segments = await db.transcriptionSegment.findMany({
+    where: { transcriptionId: { in: transcriptions.map((t) => t.id) }, horsAccord: false },
+    select: { transcriptionId: true, ordre: true, debutMs: true, finMs: true },
+  });
+  const touches = segments.filter((s) =>
+    estHorsAccord(
+      { debutMs: origineMs + s.debutMs, finMs: origineMs + s.finMs },
+      fenetres,
+      enr.debut.getTime(),
+    ),
+  );
+  await db.$transaction(async (tx) => {
+    await tx.enregistrement.update({
+      where: { id: enr.id },
+      data: {
+        fenetresHorsAccord: JSON.stringify(fenetres),
+        evenements: ajouterAuJournal(enr.evenements, { le: maintenant, type: "fenetres_tardives" }),
+      },
+    });
+    for (const s of touches) {
+      await tx.transcriptionSegment.updateMany({
+        where: { transcriptionId: s.transcriptionId, ordre: s.ordre },
+        data: { horsAccord: true, texte: "" },
+      });
+    }
+    // Le compte rendu a pu lire cette voix : vidé (contenu et état, comme au
+    // retrait de l'accord) et sa réécriture programmée, comme « Réécrire ».
+    const cr = await tx.compteRendu.findFirst({
+      where: {
+        rencontreId: enr.rencontreId,
+        statut: { in: ["brouillon", "a_valider", "valide", "a_regenerer"] },
+      },
+      orderBy: { version: "desc" },
+      select: { id: true },
+    });
+    if (cr) {
+      await tx.compteRendu.update({
+        where: { id: cr.id },
+        data: { statut: "a_regenerer", contenu: "", verification: null },
+      });
+      await planifierDans(tx, enr.rencontreId, {
+        etape: "rediger",
+        compteRenduId: cr.id,
+        reinitialiser: true,
+      });
+    }
+  });
+  // « Sans accord, rien n'est enregistré » : le son des tranches qui
+  // chevauchent une fenêtre quitte R2 (comme à l'étape transcrire, N5).
+  const tranches = await db.enregistrementTranche.findMany({
+    where: { enregistrementId: enr.id, audioSupprimeLe: null },
+    select: { id: true, debutCaptureEpochMs: true, dureeMs: true },
+  });
+  for (const t of tranches) {
+    const debut = Number(t.debutCaptureEpochMs);
+    const periode = { debutMs: debut, finMs: debut + (t.dureeMs ?? 180_000) };
+    if (estHorsAccord(periode, fenetres, enr.debut.getTime())) {
+      await purgerSonDUneTranche(db, stockage, t.id);
+    }
+  }
+  try {
+    const { creerOuDedup } = await import("@/server/qualiopi/alertes/alertes-service");
+    await creerOuDedup({
+      code: CODES_ALERTES_VISIO.fenetreTardive,
+      niveau: "critique",
+      titre: "Visio : une personne était entrée sans accord",
+      message: `Constaté le ${maintenant.toISOString().slice(0, 10)} : l'extension a signalé après coup une personne entrée sans accord (${touches.length} passage(s) retiré(s) de la transcription). Revoyez le compte rendu et les faits de ce rendez-vous.`,
+      cibleType: "Rencontre",
+      cibleId: enr.rencontreId,
+    });
+  } catch (err) {
+    console.error("[enregistreur] alerte « fenêtre tardive » non créée :", err);
+  }
 }
 
 type DbPurge = Pick<Db, "enregistrement" | "enregistrementTranche" | "enregistrementMorceau">;

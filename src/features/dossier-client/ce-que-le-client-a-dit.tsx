@@ -24,7 +24,8 @@ export function CeQueLeClientADit({
   projetTitre,
 }: {
   readonly aide: AideAuDevis;
-  readonly projetTitre: string;
+  /** `null` : devis sans projet (m-8). */
+  readonly projetTitre: string | null;
 }): React.ReactElement {
   return (
     <aside className={carteCls} aria-labelledby="aide-devis-titre">
@@ -35,8 +36,9 @@ export function CeQueLeClientADit({
         Ce que le client a dit
       </h2>
       <p className={`mb-[var(--space-admin-3)] ${petitCls} ${mutedCls}`}>
-        Projet « {projetTitre} ». Pour vous aider à rédiger : rien n&apos;est recopié dans le devis,
-        qui reste vide tant que vous ne l&apos;avez pas rempli.
+        {projetTitre !== null ? `Projet « ${projetTitre} ».` : "Sans projet : l'entreprise."} Pour
+        vous aider à rédiger : rien n&apos;est recopié dans le devis, qui reste vide tant que vous
+        ne l&apos;avez pas rempli.
       </p>
 
       {aide.signalOpco !== null ? (

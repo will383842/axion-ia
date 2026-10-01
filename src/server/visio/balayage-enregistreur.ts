@@ -46,7 +46,11 @@ import { cloturerEnregistrements, type BilanCloture } from "./cloture";
 import { extensionSilencieuse } from "./battement-appareil";
 import { lireDrapeauEnregistrement } from "./drapeau";
 import { joursAvantExpiration, seuilAlerteJeton } from "./jeton";
-import { reprendrePurgesDesRefus, type BilanReprisePurges } from "./sessions";
+import {
+  reprendrePurgesDesRefus,
+  versionAccepteePourVisio,
+  type BilanReprisePurges,
+} from "./sessions";
 import { stockageR2, type StockageAudio } from "./stockage-audio";
 import { verifierTemoinCleWorker } from "./temoin-cle";
 
@@ -178,7 +182,7 @@ export async function balayerEnregistreur(
       {
         code: CODES_ALERTES_VISIO.temoinCle,
         cibleId: null,
-        titre: "Visio : le worker ne relit pas le témoin de clé",
+        titre: "Visio : comptes rendus bloqués (clé de sécurité absente) — prévenez Claude",
         // La date distingue une rechute d'une alerte déjà close à la main.
         message: `Constaté le ${jour} : PII_ENCRYPTION_KEY absente ou différente sur le worker, le son déposé ne pourra pas être transcrit.`,
       },
@@ -191,9 +195,40 @@ export async function balayerEnregistreur(
 
   // Jetons qui expirent (J-14, J-3) : une alerte par appareil et par seuil.
   const appareils = await db.appareilEnregistrement.findMany({
-    select: { id: true, expireLe: true, revoqueLe: true, dernierBattementLe: true },
+    select: {
+      id: true,
+      expireLe: true,
+      revoqueLe: true,
+      dernierBattementLe: true,
+      versionExtension: true,
+    },
   });
   for (const a of appareils) {
+    // V2, N2 — une copie sans RGPD-01 sur un appareil valide : le site refuse
+    // ses visios ; Will doit recopier l'extension avant le prochain appel.
+    const version = a.versionExtension ?? null;
+    const tropAncienne =
+      a.revoqueLe === null &&
+      a.expireLe.getTime() > maintenant.getTime() &&
+      version !== null &&
+      !versionAccepteePourVisio(version);
+    if (tropAncienne) {
+      const envoyee = await signaler(
+        db,
+        creer,
+        notifier,
+        {
+          code: CODES_ALERTES_VISIO.extensionTropAncienne,
+          cibleId: a.id,
+          titre: "Visio : l'extension du poste est trop ancienne pour enregistrer",
+          message: `Constaté le ${jour} : version ${(version ?? "").slice(0, 20)} sur le poste, les visios seront refusées. Recopiez l'extension à jour puis rechargez-la dans Chrome.`,
+        },
+        maintenant,
+      );
+      if (envoyee) alertes += 1;
+    } else {
+      await lever(db, CODES_ALERTES_VISIO.extensionTropAncienne, a.id, maintenant);
+    }
     const seuil = seuilAlerteJeton(a, maintenant);
     const codeSeuil =
       seuil === 14

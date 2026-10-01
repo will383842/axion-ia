@@ -114,10 +114,17 @@ export async function VueEmailSuivi({ locale, adminPrefix, rencontreId, message,
             Validez d&apos;abord le compte rendu : l&apos;e-mail part des faits validés.
           </p>
         ) : contacts.length === 0 ? (
-          <p className={discret}>
-            Aucun participant client n&apos;est rattaché à une personne de la fiche : rattachez-le
-            dans « Après l&apos;appel ».
-          </p>
+          <div className={discret}>
+            {/* m-7 : le vrai chemin — la personne d'abord, puis le lien par adresse. */}
+            <p>
+              Aucun participant n&apos;est relié à une personne de la fiche. Ajoutez-la, avec son
+              adresse, dans l&apos;onglet Personnes de la fiche, puis :
+            </p>
+            <form action={gesteSuiviAction} className="mt-[var(--space-admin-2)]">
+              {cache("participants_relier")}
+              <BoutonGeste className={bouton}>Relier les personnes</BoutonGeste>
+            </form>
+          </div>
         ) : (
           <ul className="space-y-[var(--space-admin-3)]">
             {contacts.map((c) => (
