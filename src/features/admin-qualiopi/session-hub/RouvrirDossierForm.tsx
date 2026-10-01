@@ -190,7 +190,12 @@ export function RouvrirDossierForm({
         onChange={(e) => setMotDePasse(e.target.value)}
         required
         maxLength={200}
-        autoComplete="off"
+        // « new-password » et non « off » : Chrome ignore « off » sur un champ
+        // mot de passe et y injectait le mot de passe ENREGISTRÉ du compte admin
+        // (constaté en prod le 01/10). Ce mot de passe de sécurité n'est pas celui
+        // du compte, il ne doit jamais être pré-rempli.
+        autoComplete="new-password"
+        name="mot-de-passe-reouverture"
         disabled={isPending}
         className="admin-input"
       />
