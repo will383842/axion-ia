@@ -7,7 +7,11 @@
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
-import { construireResultatsPublics, type ResultatsPublicsFormation } from "./resultats-publics";
+import {
+  aDesResultatsSurSaFichePublique,
+  construireResultatsPublics,
+  type ResultatsPublicsFormation,
+} from "./resultats-publics";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Lecture en base
@@ -69,4 +73,33 @@ export async function getResultatsPublicsFormation(
   } catch {
     return null;
   }
+}
+
+/**
+ * Slugs des formations dont les résultats s'affichent RÉELLEMENT sur leur
+ * fiche publique — pour le Mode auditeur (indicateur 2). Même règle que
+ * l'encadré (`aDesResultatsSurSaFichePublique` → `resultatsDiffusables`) :
+ * une date de publication posée sur une formation sans session réalisée ne
+ * diffuse rien, et ne doit pas être présentée comme une diffusion.
+ *
+ * Lève en cas d'erreur base, comme les autres lectures du moteur de
+ * conformité : un « aucun résultat diffusé » fabriqué par une panne serait
+ * une fausse preuve dans l'autre sens.
+ */
+export async function listerFormationsAResultatsDiffuses(): Promise<string[]> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return [];
+  const formations = await prisma.formation.findMany({
+    where: { indicateursPubliesAt: { not: null } },
+    select: {
+      slug: true,
+      indicateursPubliesAt: true,
+      sessions: {
+        where: { statut: "realisee" },
+        select: { _count: { select: { enrollments: { where: inscriptionsActives() } } } },
+      },
+    },
+  });
+  return (Array.isArray(formations) ? formations : [])
+    .filter((f) => aDesResultatsSurSaFichePublique(f))
+    .map((f) => f.slug);
 }

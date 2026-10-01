@@ -31,9 +31,12 @@ function tuiles(r: ResultatsPublicsFormation): Tuile[] {
       detail: "Sessions menées à leur terme.",
     },
     {
-      label: r.nbStagiaires > 1 ? "Stagiaires formés" : "Stagiaire formé",
+      // « Accueillis », pas « formés » : même dénominateur que la console
+      // (inscrits non sortis), qui compte aussi un absent. Qui a réellement
+      // suivi la formation, c'est la tuile « Assiduité » qui le dit.
+      label: r.nbStagiaires > 1 ? "Stagiaires accueillis" : "Stagiaire accueilli",
       valeur: String(r.nbStagiaires),
-      detail: "Hors abandons et exclusions.",
+      detail: "Inscrits aux sessions réalisées, hors abandons et exclusions.",
     },
   ];
   if (r.satisfaction) {

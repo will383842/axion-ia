@@ -16,7 +16,10 @@
  * ## Ce qui est affiché, et ce qui ne l'est jamais
  *
  * - **Uniquement des comptes lus en base**, recalculés à chaque régénération
- *   ISR : sessions réalisées, stagiaires, note de satisfaction, assiduité. Les
+ *   ISR : sessions réalisées, stagiaires ACCUEILLIS, note de satisfaction,
+ *   assiduité. « Accueillis », jamais « formés » : le décompte est celui de la
+ *   console (inscrits non sortis), il compte donc aussi un absent ; c'est la
+ *   tuile « Assiduité » qui dit qui a réellement suivi la formation. Les
  *   valeurs SAISIES à la main dans le formulaire console (`indicateursPublies`)
  *   ne sont PAS reprises : une saisie libre peut diverger de la mesure, le
  *   calcul non. La date `indicateursPubliesAt` sert d'ACCORD de publication.
@@ -51,6 +54,7 @@
  * dans `./resultats-publics-service`.
  */
 
+import { getFormationV2 } from "@/content/formations/catalog-v2";
 import { SEUIL_FIABILITE } from "./calcul";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -74,6 +78,7 @@ export interface DonneesResultatsFormation {
 
 export interface ResultatsPublicsFormation {
   readonly nbSessions: number;
+  /** Stagiaires ACCUEILLIS (inscrits non sortis) — jamais « formés ». */
   readonly nbStagiaires: number;
   readonly periode: { readonly debut: Date; readonly fin: Date };
   /** `null` tant qu'aucun questionnaire noté n'est revenu. */
@@ -97,12 +102,59 @@ export function tronquerAuDixieme(x: number): number {
   return Math.floor(x * 10 + 1e-9) / 10;
 }
 
+/**
+ * LA règle de diffusion, à un seul endroit : accord de publication posé en
+ * console, au moins une session réalisée, au moins un stagiaire accueilli.
+ *
+ * Lue par l'encadré public (`construireResultatsPublics`) ET par le Mode
+ * auditeur (`aDesResultatsSurSaFichePublique` → `conformite-service.ts`,
+ * indicateur 2) : l'écran de l'auditeur ne peut plus dire « diffusés » quand
+ * la fiche n'affiche rien.
+ */
+export function resultatsDiffusables(c: {
+  readonly indicateursPubliesAt: Date | null;
+  readonly nbSessionsRealisees: number;
+  readonly nbStagiaires: number;
+}): boolean {
+  return c.indicateursPubliesAt !== null && c.nbSessionsRealisees > 0 && c.nbStagiaires > 0;
+}
+
+/** Une formation publiée, telle que la lit le Mode auditeur. */
+export interface FormationPublieeLue {
+  readonly slug: unknown;
+  readonly indicateursPubliesAt: Date | null;
+  /** Sessions `realisee`, avec le nombre d'inscriptions ACTIVES de chacune. */
+  readonly sessions?: ReadonlyArray<{ readonly _count?: { readonly enrollments?: number } }>;
+}
+
+/**
+ * Les résultats de cette formation s'affichent-ils VRAIMENT sur une fiche
+ * publique ? L'encadré ne vit que sur la fiche CATALOGUE, rattachée par
+ * `Formation.slug` = `slugFr` : une formation hors catalogue (sur-mesure,
+ * slug renommé) n'a pas de fiche qui le montre.
+ */
+export function aDesResultatsSurSaFichePublique(f: FormationPublieeLue): boolean {
+  if (typeof f.slug !== "string" || getFormationV2(f.slug)?.slugFr !== f.slug) return false;
+  const sessions = Array.isArray(f.sessions) ? f.sessions : [];
+  return resultatsDiffusables({
+    indicateursPubliesAt: f.indicateursPubliesAt ?? null,
+    nbSessionsRealisees: sessions.length,
+    nbStagiaires: sessions.reduce((n, s) => n + (s._count?.enrollments ?? 0), 0),
+  });
+}
+
 export function construireResultatsPublics(
   d: DonneesResultatsFormation,
 ): ResultatsPublicsFormation | null {
-  if (d.indicateursPubliesAt === null) return null;
-  if (d.sessions.length === 0) return null;
-  if (d.inscriptions.length === 0) return null;
+  if (
+    !resultatsDiffusables({
+      indicateursPubliesAt: d.indicateursPubliesAt,
+      nbSessionsRealisees: d.sessions.length,
+      nbStagiaires: d.inscriptions.length,
+    })
+  ) {
+    return null;
+  }
 
   const debut = new Date(Math.min(...d.sessions.map((s) => s.dateDebut.getTime())));
   const fin = new Date(Math.max(...d.sessions.map((s) => s.dateFin.getTime())));

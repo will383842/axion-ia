@@ -29,6 +29,7 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
 
 import { prisma } from "@/lib/prisma";
 import {
+  aDesResultatsSurSaFichePublique,
   construireResultatsPublics,
   dateLongueFr,
   libelleEchantillon,
@@ -37,7 +38,10 @@ import {
   tronquerAuDixieme,
   type DonneesResultatsFormation,
 } from "./resultats-publics";
-import { getResultatsPublicsFormation } from "./resultats-publics-service";
+import {
+  getResultatsPublicsFormation,
+  listerFormationsAResultatsDiffuses,
+} from "./resultats-publics-service";
 
 const db = prisma as unknown as {
   formation: { findUnique: ReturnType<typeof vi.fn> };
@@ -191,6 +195,23 @@ describe("getResultatsPublicsFormation — lecture en base", () => {
     );
   });
 
+  // Relecture PR 1265 : sans ce test, retirer `reponduAt` ou le type du filtre
+  // laissait tout vert — un questionnaire envoyé mais pas répondu, ou une
+  // enquête « entreprise », serait entré dans la moyenne publique.
+  it("ne lit que les questionnaires de fin de formation RÉPONDUS et notés", async () => {
+    await getResultatsPublicsFormation("ia-pour-bien-commencer-journee", MAINTENANT);
+    expect(db.questionnaire.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          type: "satisfaction_chaud",
+          reponduAt: { not: null },
+          noteGlobale: { not: null },
+          enrollment: { session: { formationId: "f-038", statut: "realisee" } },
+        },
+      }),
+    );
+  });
+
   it("absent sans publication — et ne lit même pas les sessions", async () => {
     db.formation.findUnique.mockResolvedValue({ id: "f-038", indicateursPubliesAt: null });
     expect(await getResultatsPublicsFormation("ia-pour-bien-commencer-journee")).toBeNull();
@@ -216,5 +237,84 @@ describe("getResultatsPublicsFormation — lecture en base", () => {
   it("une base en panne ne casse pas la fiche : absent", async () => {
     db.formation.findUnique.mockRejectedValue(new Error("ECONNREFUSED"));
     expect(await getResultatsPublicsFormation("ia-pour-bien-commencer-journee")).toBeNull();
+  });
+});
+
+describe("diffusion RÉELLE — la règle partagée avec le Mode auditeur (ind. 2)", () => {
+  const PUBLIEE = new Date("2026-08-04T10:00:00.000Z");
+
+  it("publication + session réalisée + stagiaire + slug catalogue → diffusé", () => {
+    expect(
+      aDesResultatsSurSaFichePublique({
+        slug: "ia-pour-bien-commencer-journee",
+        indicateursPubliesAt: PUBLIEE,
+        sessions: [{ _count: { enrollments: 1 } }],
+      }),
+    ).toBe(true);
+  });
+  it("publication sans session réalisée (cas « IA pour l'immobilier ») → rien", () => {
+    expect(
+      aDesResultatsSurSaFichePublique({
+        slug: "ia-pour-l-immobilier",
+        indicateursPubliesAt: PUBLIEE,
+        sessions: [],
+      }),
+    ).toBe(false);
+  });
+  it("session réalisée sans stagiaire, ou sans publication → rien", () => {
+    const base = { slug: "ia-pour-bien-commencer-journee" };
+    expect(
+      aDesResultatsSurSaFichePublique({
+        ...base,
+        indicateursPubliesAt: PUBLIEE,
+        sessions: [{ _count: { enrollments: 0 } }],
+      }),
+    ).toBe(false);
+    expect(
+      aDesResultatsSurSaFichePublique({
+        ...base,
+        indicateursPubliesAt: null,
+        sessions: [{ _count: { enrollments: 1 } }],
+      }),
+    ).toBe(false);
+  });
+  it("slug hors catalogue : aucune fiche ne l'affiche → rien", () => {
+    expect(
+      aDesResultatsSurSaFichePublique({
+        slug: "formation-sur-mesure-hors-catalogue",
+        indicateursPubliesAt: PUBLIEE,
+        sessions: [{ _count: { enrollments: 3 } }],
+      }),
+    ).toBe(false);
+  });
+
+  it("listerFormationsAResultatsDiffuses lit les sessions réalisées et les inscrits actifs", async () => {
+    process.env["DATABASE_URL"] = "postgresql://u:p@localhost:5432/axion";
+    const findMany = vi.fn().mockResolvedValue([
+      { slug: "ia-pour-l-immobilier", indicateursPubliesAt: PUBLIEE, sessions: [] },
+      {
+        slug: "ia-pour-bien-commencer-journee",
+        indicateursPubliesAt: PUBLIEE,
+        sessions: [{ _count: { enrollments: 1 } }],
+      },
+    ]);
+    (prisma as unknown as { formation: { findMany: typeof findMany } }).formation.findMany =
+      findMany;
+    expect(await listerFormationsAResultatsDiffuses()).toEqual(["ia-pour-bien-commencer-journee"]);
+    expect(findMany).toHaveBeenCalledWith({
+      where: { indicateursPubliesAt: { not: null } },
+      select: {
+        slug: true,
+        indicateursPubliesAt: true,
+        sessions: {
+          where: { statut: "realisee" },
+          select: {
+            _count: {
+              select: { enrollments: { where: { statut: { notIn: ["abandon", "exclu"] } } } },
+            },
+          },
+        },
+      },
+    });
   });
 });
