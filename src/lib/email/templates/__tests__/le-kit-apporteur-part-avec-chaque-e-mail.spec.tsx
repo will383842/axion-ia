@@ -1,7 +1,10 @@
 /**
- * Le kit apporteur (document de présentation + catalogue) part avec CHAQUE
- * e-mail du réseau d'apporteurs — et le lien de réservation d'appel ne part
+ * Le kit apporteur part avec CHAQUE e-mail du réseau d'apporteurs — et le lien de réservation d'appel ne part
  * QUE dans l'invitation (décisions Will 2026-09-19).
+ *
+ * Depuis JUR-T44 (décision de Williams du 2026-10-01), le kit est le catalogue
+ * seul : le document de présentation est retiré jusqu'à sa réécriture
+ * (`DOCUMENT_APPORTEUR_DIFFUSE`, `kit-apporteur-sans-pdf.spec.ts`).
  *
  * Rendu RÉEL des gabarits, pas une lecture du source : c'est le HTML reçu qui
  * compte, et un bloc importé mais jamais rendu serait vert à la lecture.
@@ -76,13 +79,16 @@ const GABARITS_AUTOMATIQUES: Array<[string, React.ReactElement]> = [
 ];
 
 describe("le kit part avec chaque e-mail automatique — le lien d'appel, jamais", () => {
-  it.each(GABARITS_AUTOMATIQUES)("%s : document + catalogue, aucun Calendly", async (_nom, el) => {
-    const h = await html(el);
-    expect(h).toContain(DOCUMENT_APPORTEUR_CHEMIN);
-    expect(h).toMatch(/\/fr\/catalogue"/);
-    // ⛔ Distribué à tous, le lien de réservation saturerait l'agenda de Will.
-    expect(h.toLowerCase()).not.toContain("calendly");
-  });
+  it.each(GABARITS_AUTOMATIQUES)(
+    "%s : catalogue sans document, aucun Calendly",
+    async (_nom, el) => {
+      const h = await html(el);
+      expect(h).not.toContain(DOCUMENT_APPORTEUR_CHEMIN);
+      expect(h).toMatch(/\/fr\/catalogue"/);
+      // ⛔ Distribué à tous, le lien de réservation saturerait l'agenda de Will.
+      expect(h.toLowerCase()).not.toContain("calendly");
+    },
+  );
 });
 
 describe("l'invitation — le seul e-mail qui porte le lien de réservation", () => {
@@ -94,7 +100,8 @@ describe("l'invitation — le seul e-mail qui porte le lien de réservation", ()
       />,
     );
     expect(h).toContain(CALENDLY);
-    expect(h).toContain(DOCUMENT_APPORTEUR_CHEMIN);
+    expect(h).toMatch(/\/fr\/catalogue"/);
+    expect(h).not.toContain(DOCUMENT_APPORTEUR_CHEMIN);
     expect(h).toContain(DOSSIER);
     expect(texte(h)).toMatch(/15 minutes/);
     expect(texte(h)).toMatch(/Aucun engagement/);

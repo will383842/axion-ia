@@ -4,8 +4,9 @@
 // le visiteur vient de donner ses coordonnées, il est au maximum de son
 // attention. Elle fait trois choses :
 //   1. dit que c'est noté et qu'un e-mail arrive (spams compris) ;
-//   2. donne le KIT — document de présentation + catalogue, pour découvrir ce
-//      qu'on recommandera (décision Will 2026-09-19) ;
+//   2. donne le KIT, pour découvrir ce qu'on recommandera (décision Will
+//      2026-09-19) — le catalogue seul depuis JUR-T44 : le document de
+//      présentation est retiré jusqu'à sa réécriture (`DOCUMENT_APPORTEUR_DIFFUSE`) ;
 //   3. propose de compléter le dossier (3 min, sans CV), pré-rempli.
 //
 // Et c'est ici que le pixel Meta compte la conversion (`MerciLeadMeta`), avec
@@ -88,16 +89,18 @@ export default async function Page({ params }: Props) {
               </h2>
               <p className="text-fg-soft mt-2 leading-relaxed">{MERCI.kitTexte}</p>
               <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-                <Cta
-                  href={kit.documentUrl}
-                  size="lg"
-                  variant="outline"
-                  external
-                  track="facebook-merci-document"
-                  className="w-full justify-center sm:w-auto"
-                >
-                  {MERCI.kitDocument} →
-                </Cta>
+                {kit.documentUrl ? (
+                  <Cta
+                    href={kit.documentUrl}
+                    size="lg"
+                    variant="outline"
+                    external
+                    track="facebook-merci-document"
+                    className="w-full justify-center sm:w-auto"
+                  >
+                    {MERCI.kitDocument} →
+                  </Cta>
+                ) : null}
                 <Cta
                   href={kit.catalogueUrl}
                   size="lg"

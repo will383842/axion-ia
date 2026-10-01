@@ -3,7 +3,8 @@
 //
 // Ton : chaleureux, VOUVOIEMENT (Will, 2026-09-29 : tout ce que reçoit un
 // candidat vouvoie, comme les accusés de réception des offres d'emploi). Confirme la réception, annonce la suite et donne le KIT
-// (document de présentation + catalogue).
+// (le catalogue ; le document de présentation est retiré jusqu'à sa réécriture,
+// JUR-T44 — voir `DOCUMENT_APPORTEUR_DIFFUSE`).
 //
 // 🔴 2026-09-19 — trois décisions de Will, appliquées ici :
 //   1. « commercial indépendant » → « réseau d'apporteurs d'affaires ». Le mot
@@ -38,7 +39,7 @@ const COPY = {
   fr: {
     title: "Nous avons bien reçu votre candidature",
     preview:
-      "Nous répondons à TOUTES les candidatures, dans les prochaines heures. En attendant : le document de présentation et le catalogue.",
+      "Nous répondons à TOUTES les candidatures, dans les prochaines heures. En attendant : le catalogue de ce que vous pourrez recommander.",
     intro: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
     body: "Merci d'avoir pris ces quelques minutes : votre candidature pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA est bien arrivée, et elle sera lue avec attention — c'est promis, pas par un robot.",
     // « On répond à TOUTES les candidatures » tient la promesse de l'annonce
@@ -46,18 +47,18 @@ const COPY = {
     // non retenu reçoit, lui aussi, une réponse.
     next: "Nous répondons à toutes les candidatures : la vôtre aura une réponse, quoi qu'il arrive, dans les prochaines heures. Si votre profil correspond, nous vous proposerons un échange de 15 minutes en visio pour faire connaissance.",
     spam: "Pensez à vérifier vos spams si vous n'avez pas de nouvelles : nos emails s'y égarent parfois.",
-    cta: "Lire le document de présentation",
+    cta: "Voir le catalogue des prestations",
     refRow: (id: string) => `Référence : ${id}`,
   },
   en: {
     title: "We received your application",
     preview:
-      "We answer EVERY application, within the next few hours. Meanwhile: the presentation document and the catalogue.",
+      "We answer EVERY application, within the next few hours. Meanwhile: the catalogue of what you will be able to recommend.",
     intro: (n: string) => (n ? `Hello ${n},` : "Hello,"),
     body: "Thanks for taking a few minutes: your application to join Axion-IA's network of business introducers has arrived, and it will be read carefully — by a human, promise.",
     next: "We answer every application: yours will get a reply either way, within the next few hours. If your profile is a match, we will offer you a 15-minute video call to get acquainted.",
     spam: "Check your spam folder if you do not hear from us: our emails sometimes end up there.",
-    cta: "Read the presentation document",
+    cta: "See our catalogue of services",
     refRow: (id: string) => `Reference: ${id}`,
   },
 } as const;
@@ -83,7 +84,7 @@ export function CandidatureCommercialConfirmeeEmail({
       famille="B"
       preview={t.preview}
       title={t.title}
-      cta={{ label: t.cta, href: liensKitApporteur(locale).documentUrl }}
+      cta={{ label: t.cta, href: liensKitApporteur(locale).catalogueUrl }}
       locale={locale}
       sansReseauxSociaux
     >

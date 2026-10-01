@@ -169,8 +169,10 @@ export const MERCI = {
   // KIT : le lien de réservation n'est plus distribué à tous (il saturerait
   // l'agenda de Will), il part sur invitation depuis la console.
   kitTitre: "Découvrez ce que vous pourrez recommander",
+  // JUR-T44 : le document de présentation est retiré jusqu'à sa réécriture
+  // (`DOCUMENT_APPORTEUR_DIFFUSE`) ; seul le catalogue est donné ici.
   kitTexte:
-    "Le document de présentation — statut, commissions, fonctionnement — et le catalogue complet de nos prestations : formations, audit IA, accompagnement, implémentation. Vous les retrouvez aussi dans l'e-mail.",
+    "Le catalogue complet de nos prestations : formations, audit IA, accompagnement, implémentation. Vous le retrouvez aussi dans l'e-mail.",
   kitDocument: "Le document de présentation",
   kitCatalogue: "Le catalogue des prestations",
   dossierTitre: "Complétez votre dossier",

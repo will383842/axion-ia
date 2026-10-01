@@ -86,7 +86,9 @@ describe("les deux étapes, les deux langues", () => {
     const r = await rendu(l, e);
     expect(r.html).toContain(CALENDLY);
     expect(r.html).toMatch(l === "fr" ? /Réserver mon créneau/ : /Book my slot/);
-    expect(r.html).toContain(DOCUMENT_APPORTEUR_CHEMIN);
+    // Le kit : le catalogue seul depuis JUR-T44 (`kit-apporteur-sans-pdf.spec.ts`).
+    expect(r.html).toMatch(/\/(fr|en)\/catalogue"/);
+    expect(r.html).not.toContain(DOCUMENT_APPORTEUR_CHEMIN);
     expect(texte(r.html)).toMatch(l === "fr" ? /un clic suffit/ : /one click is enough/);
     // Le lien d'opposition du pied de page, porté par le châssis de famille B.
     expect(r.html).toMatch(/\/api\/unsubscribe\?token=op1\./);
