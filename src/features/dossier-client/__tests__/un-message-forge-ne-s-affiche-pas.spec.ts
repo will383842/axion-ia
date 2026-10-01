@@ -47,15 +47,15 @@ describe("N1 — un message forgé ne s'affiche pas", () => {
     "src/app/[locale]/(admin)/[adminPrefix]/qualiopi/clients/[id]/preparer/page.tsx",
   ])("%s ne lit ?message= / ?erreur= que scellés", (chemin) => {
     const src = readFileSync(chemin, "utf8");
-    expect(src).toContain("lireMessageDeRetour(");
+    expect(src).toMatch(/lireMessageDeRetour\(|messageScelle\(/);
     expect(src).not.toMatch(/sp\.(erreur|message)\b|demande(\.|\[")(erreur|message)\b/);
   });
 
   it("relecture E2 : « à classer », « à faire le point » et la fiche client lisent le sceau", () => {
     const rdv = readFileSync("src/app/[locale]/(admin)/[adminPrefix]/rendez-vous/page.tsx", "utf8");
     expect(rdv).not.toMatch(/sp\["erreur"\]/);
-    expect(rdv).toMatch(/<VuePoint[^>]*erreur=\{lireMessageDeRetour\(sp, "erreur"\)\}/);
-    expect(rdv).toMatch(/<AClasserVue[\s\S]{0,120}erreur=\{lireMessageDeRetour\(sp, "erreur"\)\}/);
+    expect(rdv).toMatch(/<VuePoint[^>]*erreur=\{messageScelle\(sp, "erreur"\)\}/);
+    expect(rdv).toMatch(/<AClasserVue[\s\S]{0,120}erreur=\{messageScelle\(sp, "erreur"\)\}/);
     const fiche = readFileSync(
       "src/app/[locale]/(admin)/[adminPrefix]/qualiopi/clients/[id]/page.tsx",
       "utf8",

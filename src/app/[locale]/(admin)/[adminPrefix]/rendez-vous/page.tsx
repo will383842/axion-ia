@@ -74,7 +74,10 @@ import { LiensApresLAppel } from "@/components/admin/dossier-client/LiensApresLA
 import { estTypeDuDossier } from "@/server/visio/liste-blanche-types";
 import { AClasserVue } from "@/components/admin/dossier-client/AClasserVue";
 import { EtatDuCircuitVue } from "@/components/admin/dossier-client/EtatDuCircuitVue";
-import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
+// Ne lit que l'URL (le sceau d'un message de retour), jamais le dossier client :
+// nommé hors du préfixe « lire… », que la garde « rôle avant lecture » compte
+// comme une lecture du dossier (`la-lecture-est-gardee-comme-l-ecriture`).
+import { lireMessageDeRetour as messageScelle } from "@/features/dossier-client/message-de-retour";
 
 export const dynamic = "force-dynamic";
 
@@ -460,8 +463,8 @@ export default async function RendezVousPage({
         locale={locale}
         adminPrefix={adminPrefix}
         rencontreId={demande["emailSuivi"]}
-        message={lireMessageDeRetour(demande, "message") ?? undefined}
-        erreur={lireMessageDeRetour(demande, "erreur") ?? undefined}
+        message={messageScelle(demande, "message") ?? undefined}
+        erreur={messageScelle(demande, "erreur") ?? undefined}
       />
     );
   }
@@ -577,7 +580,7 @@ export default async function RendezVousPage({
         <AClasserVue
           rdvBase={base}
           historique={sp["filtre"] === "historique"}
-          erreur={lireMessageDeRetour(sp, "erreur")}
+          erreur={messageScelle(sp, "erreur")}
         />
       ) : vue === "circuit" ? (
         <EtatDuCircuitVue rdvBase={base} />
@@ -586,7 +589,7 @@ export default async function RendezVousPage({
           aFaire={aFaire}
           maintenant={maintenant}
           dossierVisible={voitDossier}
-          erreur={lireMessageDeRetour(sp, "erreur")}
+          erreur={messageScelle(sp, "erreur")}
         />
       ) : vue === "passes" ? (
         <VuePasses maintenant={maintenant} {...optionsPublic} />

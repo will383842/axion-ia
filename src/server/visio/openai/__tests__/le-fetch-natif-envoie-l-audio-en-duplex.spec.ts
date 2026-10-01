@@ -18,7 +18,7 @@ afterEach(() => {
 
 describe("le fetch natif envoie l'audio en duplex", () => {
   it("un appel avec un corps part en duplex « half »", async () => {
-    const vu = vi.fn(async () => new Response("{}"));
+    const vu = vi.fn(async (_url: unknown, _init?: unknown) => new Response("{}"));
     vi.stubGlobal("fetch", vu);
     await fetchNatifAvecCorps("https://api.openai.com/v1/audio/transcriptions", {
       method: "POST",
@@ -28,7 +28,7 @@ describe("le fetch natif envoie l'audio en duplex", () => {
   });
 
   it("contre-témoin : un appel sans corps part tel quel", async () => {
-    const vu = vi.fn(async () => new Response("{}"));
+    const vu = vi.fn(async (_url: unknown, _init?: unknown) => new Response("{}"));
     vi.stubGlobal("fetch", vu);
     await fetchNatifAvecCorps("https://api.openai.com/v1/models", { method: "GET" } as never);
     expect(vu.mock.calls[0]?.[1]).toEqual({ method: "GET" });

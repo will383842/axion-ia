@@ -122,7 +122,7 @@ export async function VueEmailSuivi({ locale, adminPrefix, rencontreId, message,
             </p>
             <form action={gesteSuiviAction} className="mt-[var(--space-admin-2)]">
               {cache("participants_relier")}
-              <BoutonGeste className={bouton}>Relier les participants</BoutonGeste>
+              <BoutonGeste className={bouton}>Relier les personnes</BoutonGeste>
             </form>
           </div>
         ) : (

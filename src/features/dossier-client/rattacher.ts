@@ -420,7 +420,7 @@ export async function validerRattachement(tx: Tx, e: EntreeValiderRattachement):
 }
 
 /**
- * « Relier les participants » (m-7, page « E-mail de suivi ») : après l'ajout
+ * « Relier les personnes » (m-7, page « E-mail de suivi ») : après l'ajout
  * d'une personne sur la fiche, relie les participants de la rencontre RANGÉE
  * par empreinte d'adresse. Rend le message pour Will.
  */

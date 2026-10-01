@@ -4,7 +4,7 @@
  * réservé par un collègue qui n'est pas sur la fiche : la page « E-mail de
  * suivi » disait « rattachez-le dans « Après l'appel » », où aucun geste ne
  * le permet. Désormais : ajoutez la personne (avec son adresse) dans l'onglet
- * Personnes, puis « Relier les participants » relie, par empreinte d'adresse,
+ * Personnes, puis « Relier les personnes » relie, par empreinte d'adresse,
  * chaque participant à sa personne.
  *
  * Mutation qui rougit : retirer le geste `participants_relier`, ou ne plus
@@ -43,7 +43,7 @@ function scene(rangee: boolean) {
 }
 
 describe("m-7 — l'e-mail de suivi relie un nouveau collègue", () => {
-  it("après l'ajout de la personne, « Relier les participants » la relie", async () => {
+  it("après l'ajout de la personne, « Relier les personnes » la relie", async () => {
     const { base, rencontreId, contactId } = scene(true);
     const m = await relierParticipantsDeLaRencontre(base.client as never, rencontreId);
     expect(base.tables["rencontreParticipant"]?.[0]?.["contactId"]).toBe(contactId);
