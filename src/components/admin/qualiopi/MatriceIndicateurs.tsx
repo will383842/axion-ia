@@ -81,8 +81,15 @@ function compteEtAffichage(doc: IndicateurManifeste["documents"][number]): strin
   return `${compte}, ${doc.pieces.length} affichée${doc.pieces.length > 1 ? "s" : ""}`;
 }
 
-/** Étoile « NC majeure » commune aux deux vues. */
-function SuperStar(): React.ReactElement {
+/**
+ * Ce que dit l'étoile, en clair — une seule fois, pour l'étoile ET la légende.
+ * 🔴 2026-10-01 : l'écran du certificateur disait « NC majeure » et
+ * « Indicateur super » — notre jargon, pas le sien.
+ */
+const SENS_ETOILE = "Indicateur dont la non-couverture est une non-conformité majeure";
+
+/** Étoile commune aux deux vues et à la légende. */
+function SuperStar({ marge = true }: { marge?: boolean }): React.ReactElement {
   return (
     // 🔴 `role="img"` AJOUTÉ le 2026-08-27. `aria-label` sur un `<span>` SANS
     // rôle est INTERDIT par la spécification ARIA : un `<span>` nu n'expose
@@ -94,10 +101,12 @@ function SuperStar(): React.ReactElement {
     // `role="img"` est le rôle juste ici : le contenu est une icône décorative
     // (`aria-hidden`), et le nom accessible porte à lui seul l'information.
     <span
-      title="NC majeure en audit"
+      title={SENS_ETOILE}
       role="img"
-      className="ml-1 text-[color:var(--color-admin-destructive)]"
-      aria-label="Indicateur critique (NC majeure)"
+      className={[marge ? "ml-1" : null, "text-[color:var(--color-admin-destructive)]"]
+        .filter((c) => c !== null)
+        .join(" ")}
+      aria-label={SENS_ETOILE}
     >
       <Star
         size={12}
@@ -149,13 +158,15 @@ interface Props {
  * exactement l'information utile quand elle n'y est pas.
  */
 function OuVerifier({
-  numero,
+  ind,
   baseHref,
 }: {
-  numero: number;
+  ind: IndicateurManifeste;
   baseHref: string;
 }): React.ReactElement | null {
-  const registres = registresDeIndicateur(numero);
+  // Renvoi calculé (ind. 22 : la fiche de l'intervenant concerné) prioritaire
+  // sur la table statique.
+  const registres = ind.ouVerifier ?? registresDeIndicateur(ind.numero);
   if (registres.length === 0) return null;
   return (
     <div className="mt-[var(--space-admin-3)]">
@@ -193,6 +204,66 @@ function OuVerifier({
       </ul>
     </div>
   );
+}
+
+/**
+ * Repères de lecture — régime de l'audit initial, précisions du guide de
+ * lecture (`reperes-audit-initial.ts`). Ils disent comment LIRE l'indicateur ;
+ * ils ne changent jamais son statut, d'où un rendu de note, sans couleur.
+ */
+function Reperes({ ind }: { ind: IndicateurManifeste }): React.ReactElement | null {
+  const reperes = ind.reperes ?? [];
+  if (reperes.length === 0) return null;
+  return (
+    <ul className="mb-[var(--space-admin-2)] list-none space-y-0.5">
+      {reperes.map((repere) => (
+        <li
+          key={repere}
+          className="border-l-2 border-[color:var(--color-admin-border)] pl-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] italic"
+        >
+          {repere}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/**
+ * Pages du SITE PUBLIC où l'auditrice vérifie l'information publiée (ind. 1,
+ * 9, 26, 31) — liens absolus, nouvel onglet : elle garde l'écran ouvert.
+ */
+function SurLeSitePublic({ ind }: { ind: IndicateurManifeste }): React.ReactElement | null {
+  const liens = ind.liensPublics ?? [];
+  if (liens.length === 0) return null;
+  return (
+    <div className="mt-[var(--space-admin-3)]">
+      <p className="mb-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
+        Sur le site public
+      </p>
+      <ul className="flex flex-wrap gap-x-[var(--space-admin-4)] gap-y-[var(--space-admin-2)]">
+        {liens.map((lien) => (
+          <li key={lien.url}>
+            <a
+              href={lien.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-[24px] items-center text-[length:var(--text-admin-xs)] underline"
+            >
+              {lien.libelle}
+              <span className="sr-only"> (site public, nouvel onglet)</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/** « Non applicable — motif », ou le texte générique si aucun motif n'est connu. */
+function texteNonApplicable(ind: IndicateurManifeste): string {
+  return ind.motifNonApplicable !== undefined
+    ? `Non applicable — ${ind.motifNonApplicable}`
+    : "Non applicable.";
 }
 
 /** Vue tableau — balayage rapide, 4 colonnes, zébrage. */
@@ -246,7 +317,12 @@ function VueTableau({
                   et constats d'absence, sans polarité — titre et puces neutres,
                   jamais de ✓ décoratif. Le statut est dit par sa colonne. */}
               <td className="px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-[color:var(--color-admin-fg-muted)]">
-                {ind.preuves.length > 0 ? (
+                <Reperes ind={ind} />
+                {ind.statut === "non_applicable" ? (
+                  <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] italic">
+                    {texteNonApplicable(ind)}
+                  </span>
+                ) : ind.preuves.length > 0 ? (
                   <ul className="list-none space-y-0.5">
                     {ind.preuves.map((preuve) => (
                       <li key={preuve} className="flex items-center gap-[var(--space-admin-1)]">
@@ -265,7 +341,8 @@ function VueTableau({
                     Aucun élément enregistré
                   </span>
                 )}
-                <OuVerifier numero={ind.numero} baseHref={baseHref} />
+                <OuVerifier ind={ind} baseHref={baseHref} />
+                <SurLeSitePublic ind={ind} />
               </td>
             </tr>
           ))}
@@ -304,6 +381,8 @@ function VueManifeste({
               <StatutBadge statut={ind.statut} />
             </div>
           </div>
+
+          <Reperes ind={ind} />
 
           {/* Constat F15 (2026-07-26) : titre neutre, puce neutre — voir
               VueTableau ci-dessus, même règle. */}
@@ -396,14 +475,13 @@ function VueManifeste({
           {ind.preuves.length === 0 && ind.documents.length === 0 && (
             <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] italic">
               {ind.statut === "non_applicable"
-                ? "Non applicable au périmètre de l'OF."
+                ? texteNonApplicable(ind)
                 : "Aucune preuve enregistrée pour cet indicateur."}
             </p>
           )}
 
-          {ind.statut !== "non_applicable" && (
-            <OuVerifier numero={ind.numero} baseHref={baseHref} />
-          )}
+          {ind.statut !== "non_applicable" && <OuVerifier ind={ind} baseHref={baseHref} />}
+          {ind.statut !== "non_applicable" && <SurLeSitePublic ind={ind} />}
         </div>
       ))}
     </div>
@@ -451,14 +529,14 @@ export function MatriceIndicateurs({ indicateurs, vue, baseHref }: Props): React
       })}
 
       <footer className="mt-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-5)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-        <span>
-          <Star
-            size={12}
-            aria-hidden="true"
-            fill="currentColor"
-            className="inline-block align-[-0.1em] text-[color:var(--color-admin-destructive)]"
-          />{" "}
-          = Indicateur super (NC majeure si non couvert en audit)
+        {/* 🔴 2026-10-01 — la légende s'écrivait « <icône> = Indicateur super (NC
+            majeure…) ». Le « = » était un caractère du texte : si l'icône ne se
+            rend pas, il restait seul devant la phrase. La légende réutilise
+            désormais l'étoile même des lignes (même rendu, même nom), sans
+            signe, et la phrase se lit seule. */}
+        <span className="inline-flex items-center gap-[var(--space-admin-1)]">
+          <SuperStar marge={false} />
+          <span aria-hidden="true">{SENS_ETOILE}</span>
         </span>
         <span>
           Score = indicateurs couverts / indicateurs applicables (hors « Non applicable »)

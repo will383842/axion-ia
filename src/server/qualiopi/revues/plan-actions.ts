@@ -351,7 +351,7 @@ export function evaluerCouvertureOff32(
   const anneeCourante = maintenant.getFullYear();
 
   if (revue === null) {
-    const manque = `Aucune revue de direction VALIDÉE pour ${anneeCourante} — l'amélioration continue est une exigence annuelle (indicateur 32 ⭐, NC majeure)`;
+    const manque = `Aucune revue de direction VALIDÉE pour ${anneeCourante} — l'amélioration continue est une exigence annuelle (indicateur 32 ⭐, non-conformité majeure)`;
     return {
       couvert: false,
       preuves: [manque],

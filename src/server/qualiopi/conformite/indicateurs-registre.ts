@@ -382,6 +382,37 @@ export function indicateursApplicables(typesAction: string[]): number[] {
     .sort((a, b) => a - b);
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Motif de non-applicabilité — dérivé du MÊME champ que l'applicabilité
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Le motif dit pourquoi un indicateur conditionnel est hors périmètre.
+ *
+ * 🔑 Il est indexé par `ConditionnelType` — le champ même que lit
+ * `indicateursApplicables` — et non par numéro d'indicateur : un motif écrit
+ * en face d'un numéro diverge de la règle dès qu'un indicateur change de
+ * condition. Ici, un indicateur ne peut être « non applicable » que par sa
+ * condition, et c'est cette condition qui parle.
+ *
+ * `Record<ConditionnelType, …>` : une condition ajoutée sans motif ne compile pas.
+ */
+export const MOTIFS_NON_APPLICABLE: Readonly<Record<ConditionnelType, string>> = {
+  cert: "Aucune formation ne prépare une certification inscrite au RNCP ou au répertoire spécifique (RS).",
+  app: "L'organisme n'est pas un CFA et ne délivre pas d'action en apprentissage ou en alternance.",
+  afest: "Aucune action de formation en situation de travail (AFEST) ni en alternance.",
+};
+
+/**
+ * Motif de non-applicabilité de l'indicateur `numero`, ou `null` s'il relève
+ * du tronc commun (jamais hors périmètre, donc jamais de motif).
+ */
+export function motifNonApplicable(numero: number): string | null {
+  const ind = INDICATEURS_RNQ.find((i) => i.numero === numero);
+  if (ind === undefined || ind.conditionnel === undefined) return null;
+  return MOTIFS_NON_APPLICABLE[ind.conditionnel];
+}
+
 /**
  * Retourne vrai si l'indicateur `numero` est super-indicateur en tenant
  * compte des types d'action (off.7 et off.16 deviennent super si certifiant).

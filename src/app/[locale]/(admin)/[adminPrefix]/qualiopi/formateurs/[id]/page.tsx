@@ -35,6 +35,7 @@ import {
   updateTrainerSousTraitancePiecesAction,
 } from "@/server/actions/qualiopi/trainers";
 import { TrainerSousTraitancePanel } from "@/components/admin/qualiopi/TrainerSousTraitancePanel";
+import { ANCRE_DEVELOPPEMENT_COMPETENCES } from "@/server/qualiopi/conformite/intervenants-indicateur-22";
 import { listIndisposFormateur } from "@/server/qualiopi/trainers/availability-queries";
 import {
   listReglesFormateur,
@@ -782,8 +783,13 @@ export default async function FicheFormateurPage({ params }: PageProps) {
         formations={formationOptions}
       />
 
-      {/* Développement des compétences dans le temps (indicateur 22) */}
-      <div className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]">
+      {/* Développement des compétences dans le temps (indicateur 22). L'ancre
+          est la cible du « Où vérifier » du mode auditeur
+          (`ANCRE_DEVELOPPEMENT_COMPETENCES`). */}
+      <div
+        id={ANCRE_DEVELOPPEMENT_COMPETENCES}
+        className="mb-[var(--space-admin-6)] scroll-mt-[var(--space-admin-8)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]"
+      >
         <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
           Développement des compétences (ind. 22)
         </h2>

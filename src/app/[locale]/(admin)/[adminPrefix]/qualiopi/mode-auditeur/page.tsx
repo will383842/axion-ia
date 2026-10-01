@@ -29,6 +29,13 @@ import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 import { EcransRattaches } from "@/components/admin/qualiopi/EcransRattaches";
 import { lignesEcranReouvertures } from "@/server/qualiopi/sessions/dossiers-rouverts";
+import { DossierSessionButton } from "@/components/admin/qualiopi/DossierSessionButton";
+import { listerSessionsRealiseesPourEchantillon } from "@/server/qualiopi/conformite/sessions-echantillon";
+
+/** JJ/MM/AAAA du jour de Paris — jamais le fuseau du conteneur (UTC). */
+function jourParis(d: Date): string {
+  return d.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" });
+}
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -52,7 +59,10 @@ export default async function QualiopiModeAuditeurPage({ params, searchParams }:
   const vue: MatriceVue = sp.vue === "manifeste" ? "manifeste" : "tableau";
   const self = `/${locale}/${adminPrefix}/qualiopi/mode-auditeur`;
 
-  const manifeste = await genererManifesteAudit();
+  const [manifeste, echantillon] = await Promise.all([
+    genererManifesteAudit(),
+    listerSessionsRealiseesPourEchantillon(),
+  ]);
   const indicateurs = manifeste.json.indicateurs;
 
   const nbCouverts = manifeste.json.meta.nbCouverts;
@@ -170,6 +180,69 @@ export default async function QualiopiModeAuditeurPage({ params, searchParams }:
         parent="qualiopi/mode-auditeur"
         titre="Registres et suivi"
       />
+
+      {/* ── Échantillonnage : le dossier d'audit d'UNE session ──────────────
+          L'auditrice tire une session et demande son dossier. Le bouton ne
+          vivait que sur la fiche de chaque session : il fallait quitter cet
+          écran pour le trouver. La liste est courte et le DIT. */}
+      <section
+        aria-labelledby="echantillon-sessions"
+        className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]"
+      >
+        <h2
+          id="echantillon-sessions"
+          className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]"
+        >
+          Dossier d&apos;audit d&apos;une session réalisée
+        </h2>
+        {echantillon === null ? (
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-danger)]">
+            La liste des sessions réalisées n&apos;a pas pu être lue — ce n&apos;est pas un constat
+            d&apos;absence de session. Elles restent accessibles depuis l&apos;écran des sessions.
+          </p>
+        ) : echantillon.sessions.length === 0 ? (
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            Aucune session réalisée à ce jour.
+          </p>
+        ) : (
+          <>
+            <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+              {echantillon.sessions.length < echantillon.total
+                ? `Les ${echantillon.sessions.length} sessions réalisées les plus récentes, sur ${echantillon.total} : les autres sont sur l'écran des sessions, chacune avec le même bouton.`
+                : `${echantillon.total} session${echantillon.total > 1 ? "s" : ""} réalisée${echantillon.total > 1 ? "s" : ""} : chaque dossier porte les pièces, les feuilles d'émargement et la vérification d'intégrité des signatures.`}
+            </p>
+            <ul className="divide-y divide-[color:var(--color-admin-border)]">
+              {echantillon.sessions.map((s) => (
+                <li
+                  key={s.id}
+                  className="flex flex-wrap items-center justify-between gap-[var(--space-admin-3)] py-[var(--space-admin-2)]"
+                >
+                  <div className="text-[length:var(--text-admin-sm)]">
+                    <Link
+                      href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}`}
+                      className="font-medium underline"
+                    >
+                      {s.numero}
+                    </Link>{" "}
+                    — {s.titre}
+                    <span className="ml-[var(--space-admin-2)] text-[color:var(--color-admin-fg-muted)]">
+                      du {jourParis(s.dateDebut)} au {jourParis(s.dateFin)}
+                    </span>
+                  </div>
+                  <div className="shrink-0">
+                    <DossierSessionButton sessionId={s.id} numeroSession={s.numero} />
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
+              <Link href={`/${locale}/${adminPrefix}/qualiopi/sessions`} className="underline">
+                Toutes les sessions
+              </Link>
+            </p>
+          </>
+        )}
+      </section>
 
       {/* ── Score global (repris de l'ancienne page Conformité) ────────────
           🔴 Cette tuile s'appelait « Score de conformité » et affichait « 100 % »

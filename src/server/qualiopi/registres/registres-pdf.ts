@@ -12,6 +12,10 @@
  *   - incidents      : registre des incidents + actions correctives (LOT 4)
  *   - appreciations  : registre des appréciations des parties prenantes (ind. 30)
  *   - moyens         : inventaire des moyens pédagogiques et techniques (ind. 17/19)
+ *   - developpement_competences : actions de développement des compétences
+ *                      des intervenants (ind. 22) — ajouté le 2026-10-01 : le
+ *                      dossier remis n'en portait AUCUNE trace, alors que la
+ *                      preuve existe en base, fiche formateur par fiche.
  *
  * 🔴 Constat du dossier ZIP du 2026-09-30 : l'indicateur 30 n'avait AUCUNE
  * preuve de recueil des appréciations dans le dossier remis, et l'inventaire
@@ -51,6 +55,7 @@ export const REGISTRE_TYPES = [
   "incidents",
   "appreciations",
   "moyens",
+  "developpement_competences",
 ] as const;
 
 export type RegistreType = (typeof REGISTRE_TYPES)[number];
@@ -436,6 +441,56 @@ async function buildMoyens(): Promise<Omit<RegistreData, "dateEdition">> {
   };
 }
 
+const DEVELOPPEMENT_TYPE_LABELS: Record<string, string> = {
+  entretien_professionnel: "Entretien professionnel",
+  formation_suivie: "Formation suivie",
+  veille: "Veille",
+  autre: "Autre",
+};
+
+const TRAINER_STATUT_LABELS: Record<string, string> = {
+  salarie: "Salarié",
+  dirigeant: "Dirigeant-formateur",
+  sous_traitant: "Indépendant",
+};
+
+/**
+ * Actions de développement des compétences des intervenants (ind. 22), les
+ * plus récentes d'abord — toutes dates, pour que l'auditrice voie aussi
+ * l'ancienneté (le moteur ne retient que les 24 derniers mois).
+ *
+ * Les personnes qui n'animent pas (`estFormateur: false`) en sont exclues : une
+ * formation suivie par une secrétaire ne prouve pas la compétence d'un
+ * intervenant, et ce serait une donnée RH hors sujet dans le dossier.
+ */
+async function buildDeveloppementCompetences(): Promise<Omit<RegistreData, "dateEdition">> {
+  const rows = await prisma.trainerDevelopmentAction.findMany({
+    where: { trainer: { estFormateur: true } },
+    select: {
+      dateAction: true,
+      type: true,
+      description: true,
+      trainer: { select: { nom: true, prenom: true, statut: true } },
+    },
+    orderBy: { dateAction: "desc" },
+    take: EXPORT_TAKE,
+  });
+  return {
+    titre: "Registre du développement des compétences des intervenants",
+    sousTitre:
+      "Entretiens professionnels, formations suivies et veille des intervenants (indicateur 22 du référentiel national qualité).",
+    colonnes: ["Date", "Intervenant", "Statut", "Action", "Description"],
+    lignes: rows.map((a) => [
+      formatDateFr(a.dateAction),
+      nomPersonne(a.trainer),
+      TRAINER_STATUT_LABELS[a.trainer.statut] ?? a.trainer.statut,
+      DEVELOPPEMENT_TYPE_LABELS[a.type] ?? a.type,
+      a.description,
+    ]),
+    mentionBasDePage: MENTION_EXPORT,
+  };
+}
+
 const BUILDERS: Record<RegistreType, () => Promise<Omit<RegistreData, "dateEdition">>> = {
   reclamations: buildReclamations,
   veille: buildVeille,
@@ -445,6 +500,7 @@ const BUILDERS: Record<RegistreType, () => Promise<Omit<RegistreData, "dateEditi
   incidents: buildIncidents,
   appreciations: buildAppreciations,
   moyens: buildMoyens,
+  developpement_competences: buildDeveloppementCompetences,
 };
 
 const FILENAMES: Record<RegistreType, string> = {
@@ -456,6 +512,7 @@ const FILENAMES: Record<RegistreType, string> = {
   incidents: "registre-incidents",
   appreciations: "registre-appreciations",
   moyens: "inventaire-moyens",
+  developpement_competences: "registre-developpement-competences",
 };
 
 /** Contenu d'un registre (titre, colonnes, lignes), sans rendu PDF. */

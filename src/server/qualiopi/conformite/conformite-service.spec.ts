@@ -48,7 +48,7 @@ import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "./conformite-service";
 // Le trio certifiant (3/7/16) est DERIVE de ce registre par la garde off.1,
 // jamais recopie : un predicat recopie diverge, ce depot l'a paye 4 fois.
-import { INDICATEURS_RNQ } from "./indicateurs-registre";
+import { INDICATEURS_RNQ, MOTIFS_NON_APPLICABLE } from "./indicateurs-registre";
 
 type MockPrisma = {
   formation: { count: ReturnType<typeof vi.fn>; findMany: ReturnType<typeof vi.fn> };
@@ -952,6 +952,125 @@ describe("evaluerConformite", () => {
     const result = await evaluerConformite();
     const ind26 = result.indicateurs.find((i) => i.numero === 26);
     expect(ind26?.statut).toBe("a_completer");
+  });
+
+  // ── off.26 ⭐ : partenariats ACTIFS, et la trace d'échange DITE (2026-10-01) ─
+
+  /**
+   * Double de `prisma.partenariat.count` qui HONORE le `where` (type, actif,
+   * trace), comme Postgres. Retirer `actif: true` du code de production fait
+   * revenir le partenaire terminé dans le compte — et les assertions rougissent.
+   */
+  function partenariatsHonorantLeWhere(
+    lignes: ReadonlyArray<{
+      type: string;
+      actif: boolean;
+      dernierEchangeAt: Date | null;
+      preuveUrl: string | null;
+    }>,
+  ) {
+    return (args?: { where?: { type?: string; actif?: boolean; OR?: unknown[] } }) => {
+      const w = args?.where ?? {};
+      return Promise.resolve(
+        lignes.filter(
+          (l) =>
+            (w.type === undefined || l.type === w.type) &&
+            (w.actif === undefined || l.actif === w.actif) &&
+            (w.OR === undefined ||
+              l.dernierEchangeAt !== null ||
+              (l.preuveUrl !== null && l.preuveUrl !== "")),
+        ).length,
+      );
+    };
+  }
+
+  it("🔴 off.26 : un partenariat réseau handicap TERMINÉ ne compte plus", async () => {
+    mockP.partenariat.count.mockImplementation(
+      partenariatsHonorantLeWhere([
+        {
+          type: "reseau_handicap",
+          actif: false,
+          dernierEchangeAt: new Date("2025-01-10"),
+          preuveUrl: null,
+        },
+      ]),
+    );
+    mockGetConfig.mockResolvedValue("referent@axion-ia.com");
+    const result = await evaluerConformite();
+    const ind26 = result.indicateurs.find((i) => i.numero === 26);
+    expect(ind26?.statut).toBe("a_completer");
+    expect(ind26?.preuves[0]).toMatch(/^0 partenariat réseau handicap actif/);
+  });
+
+  it("🔴 off.26 : aucune trace d'échange sur les partenaires actifs → l'élément constaté le DIT", async () => {
+    mockP.partenariat.count.mockImplementation(
+      partenariatsHonorantLeWhere([
+        { type: "reseau_handicap", actif: true, dernierEchangeAt: null, preuveUrl: null },
+        { type: "reseau_handicap", actif: true, dernierEchangeAt: null, preuveUrl: "" },
+        // Une trace sur un partenaire TERMINÉ ne vaut pas pour les actifs.
+        {
+          type: "reseau_handicap",
+          actif: false,
+          dernierEchangeAt: new Date("2025-01-10"),
+          preuveUrl: null,
+        },
+      ]),
+    );
+    mockGetConfig.mockResolvedValue("referent@axion-ia.com");
+    const result = await evaluerConformite();
+    const preuves = result.indicateurs.find((i) => i.numero === 26)?.preuves ?? [];
+    expect(preuves[0]).toMatch(/^2 partenariats réseau handicap actifs/);
+    expect(preuves).toContain(
+      "Aucun des 2 partenariats réseau handicap actifs ne porte de trace d'échange (date d'échange ou pièce) — fiches déclaratives",
+    );
+  });
+
+  it("off.26 : une trace d'échange existante est comptée, jamais inventée", async () => {
+    mockP.partenariat.count.mockImplementation(
+      partenariatsHonorantLeWhere([
+        {
+          type: "reseau_handicap",
+          actif: true,
+          dernierEchangeAt: new Date("2026-08-20"),
+          preuveUrl: null,
+        },
+        { type: "reseau_handicap", actif: true, dernierEchangeAt: null, preuveUrl: null },
+      ]),
+    );
+    mockGetConfig.mockResolvedValue("referent@axion-ia.com");
+    const result = await evaluerConformite();
+    const preuves = result.indicateurs.find((i) => i.numero === 26)?.preuves ?? [];
+    expect(preuves).toContain(
+      "1/2 partenariats réseau handicap actifs portant une trace d'échange (date d'échange ou pièce)",
+    );
+  });
+
+  // ── Les éléments constatés se lisent SANS notre jargon (2026-10-01) ──────
+  it("aucun élément constaté ne dit « off.N », « NC » ni « OF » au certificateur", async () => {
+    const result = await evaluerConformite();
+    const textes = result.indicateurs.flatMap((i) => [...i.preuves, i.motifNonApplicable ?? ""]);
+    for (const t of textes) expect(t).not.toMatch(/\boff\.\d|\bNC\b|\bOF\b/);
+  });
+
+  // ── Motif de non-applicabilité (audit initial 2026-10-01) ───────────────
+
+  it("chaque indicateur non applicable porte le motif de SA condition, et seulement lui", async () => {
+    const result = await evaluerConformite();
+    for (const ind of result.indicateurs) {
+      const registre = INDICATEURS_RNQ.find((r) => r.numero === ind.numero);
+      if (ind.statut === "non_applicable") {
+        expect(registre?.conditionnel).toBeDefined();
+        expect(ind.motifNonApplicable).toBe(
+          MOTIFS_NON_APPLICABLE[registre?.conditionnel ?? "cert"],
+        );
+      } else {
+        expect(ind.motifNonApplicable).toBeUndefined();
+      }
+    }
+    const motif = (n: number) => result.indicateurs.find((i) => i.numero === n)?.motifNonApplicable;
+    for (const n of [3, 7, 16]) expect(motif(n)).toMatch(/RNCP/);
+    for (const n of [13, 14, 15, 20, 29]) expect(motif(n)).toMatch(/n'est pas un CFA/);
+    expect(motif(28)).toMatch(/AFEST/);
   });
 
   // ── off.1 : information accessible sur les prestations (S5) ─────────────
