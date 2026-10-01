@@ -4,8 +4,8 @@
  * Chacune vérifie ELLE-MÊME la session et le rôle (`exigerAccesEchanges`,
  * décision A2) : une Server Action s'appelle directement, masquer un bouton
  * n'est pas interdire. Elles ne font que lire le formulaire, appeler le module
- * métier (testé à part), et rediriger — une erreur revient en clair dans
- * l'adresse (`?erreur=`), jamais une page cassée.
+ * métier (testé à part), et rediriger — une erreur revient dans l'adresse
+ * (`?erreur=`, scellée : `message-de-retour.ts`), jamais une page cassée.
  *
  * ⚠️ Module `"use server"` : il n'exporte QUE des fonctions asynchrones.
  */
@@ -37,6 +37,7 @@ import { lireChoixDesGroupes } from "./projets-evoques";
 import { CHAMPS_DE_LA_NOTE, type SaisieNote } from "./note-manuelle";
 import { executerGesteCompteRendu } from "./compte-rendu-gestes";
 import { MessagePourWill, messageAffichable } from "./message-affichable";
+import { avecMessageDeRetour } from "./message-de-retour";
 
 const uuid = z.string().uuid();
 
@@ -55,9 +56,7 @@ function base(chemin: string): string {
  * devient un texte générique, le détail part au journal serveur.
  */
 function erreurVers(chemin: string, e: unknown): never {
-  const message = messageAffichable(e);
-  const sep = chemin.includes("?") ? "&" : "?";
-  redirect(`${base(chemin)}${sep}erreur=${encodeURIComponent(message.slice(0, 300))}`);
+  redirect(avecMessageDeRetour(base(chemin), "erreur", messageAffichable(e)));
 }
 
 /** Les erreurs de `redirect()` doivent traverser : on ne les attrape pas. */

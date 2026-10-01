@@ -16,9 +16,9 @@
  * Mutation qui rougit : rendre `e.message` pour toute `Error` dans
  * `messageAffichable` → les cas Prisma.
  * Contre-témoin : un refus métier garde son texte (Will doit savoir pourquoi).
- * Angle mort : `?erreur=` accepte toujours un texte libre à l'AFFICHAGE : un
- * lien forgé montre un faux message dans la console (React l'échappe, aucun
- * HTML n'est interprété).
+ * N1 (2e vérification) : `suivi-actions.ts` suit la même règle, et un lien
+ * forgé n'affiche plus rien (`message-de-retour.ts`, garde
+ * `un-message-forge-ne-s-affiche-pas.spec.ts`).
  */
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -59,7 +59,15 @@ vi.mock("@/features/dossier-client/deplacer", async (original) => ({
   },
 }));
 
+vi.mock("@/server/visio/gestes-suivi", () => ({
+  demanderEmailSuivi: async () => {
+    throw etat.erreur;
+  },
+}));
+vi.mock("@/server/visio/passes/etapes-a-la-demande", () => ({ envoiEmailSuiviReel: {} }));
+
 import { deplacerRencontreAction } from "@/features/dossier-client/actions-rencontres";
+import { gesteSuiviAction } from "@/features/dossier-client/suivi-actions";
 import { executerGesteCompteRendu } from "@/features/dossier-client/compte-rendu-gestes";
 import { ErreurDeplacement } from "@/features/dossier-client/deplacer";
 import {
@@ -121,6 +129,18 @@ describe("⛔ une erreur Prisma ne sort pas dans l'URL", () => {
   it("🔴 action des rencontres (`erreurVers`) : même règle", async () => {
     etat.erreur = erreurPrisma();
     const url = await urlDe(() => deplacerRencontreAction(formulaireDeplacer()));
+    expect(url).toContain(`erreur=${MESSAGE_ERREUR_GENERIQUE}`);
+    expect(url).not.toMatch(/prisma|Unique constraint|enonce/i);
+  });
+
+  it("🔴 N1 : « Préparer l'e-mail de suivi » (`suivi-actions`) : même règle", async () => {
+    etat.erreur = erreurPrisma();
+    const fd = new FormData();
+    fd.set("geste", "email_preparer");
+    fd.set("rencontreId", RENCONTRE);
+    fd.set("contactId", CLIENT);
+    fd.set("retour", `/fr/console/rendez-vous?emailSuivi=${RENCONTRE}`);
+    const url = await urlDe(() => gesteSuiviAction(fd));
     expect(url).toContain(`erreur=${MESSAGE_ERREUR_GENERIQUE}`);
     expect(url).not.toMatch(/prisma|Unique constraint|enonce/i);
   });

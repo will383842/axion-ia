@@ -74,6 +74,7 @@ import { LiensApresLAppel } from "@/components/admin/dossier-client/LiensApresLA
 import { estTypeDuDossier } from "@/server/visio/liste-blanche-types";
 import { AClasserVue } from "@/components/admin/dossier-client/AClasserVue";
 import { EtatDuCircuitVue } from "@/components/admin/dossier-client/EtatDuCircuitVue";
+import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 
 export const dynamic = "force-dynamic";
 
@@ -454,8 +455,8 @@ export default async function RendezVousPage({
         locale={locale}
         adminPrefix={adminPrefix}
         rencontreId={demande["emailSuivi"]}
-        message={demande["message"]}
-        erreur={demande["erreur"]}
+        message={lireMessageDeRetour(demande, "message") ?? undefined}
+        erreur={lireMessageDeRetour(demande, "erreur") ?? undefined}
       />
     );
   }

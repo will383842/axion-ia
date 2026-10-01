@@ -23,6 +23,7 @@ import { prisma } from "@/lib/prisma";
 import { retirerAccordRencontre } from "@/lib/rgpd-erase";
 import { exigerAccesEchanges } from "@/features/dossier-client/acces";
 import { messageAffichable } from "@/features/dossier-client/message-affichable";
+import { avecMessageDeRetour, type CleDeRetour } from "@/features/dossier-client/message-de-retour";
 import {
   ajouterPersonnePourVoix,
   attribuerVoix,
@@ -62,7 +63,7 @@ async function executer(
   geste: (rencontreId: string, adminId: string) => Promise<string>,
 ): Promise<never> {
   const retour = lireRetour(fd);
-  let cle = "message";
+  let cle: CleDeRetour = "message";
   let message: string;
   try {
     const { userId } = await exigerAccesEchanges();
@@ -74,8 +75,7 @@ async function executer(
     cle = "erreur";
     message = messageAffichable(err);
   }
-  const joint = retour.includes("?") ? "&" : "?";
-  redirect(`${retour}${joint}${cle}=${encodeURIComponent(message)}`);
+  redirect(avecMessageDeRetour(retour, cle, message));
 }
 
 /** Les gestes de la page, par leur nom (champ caché `geste` du formulaire). */

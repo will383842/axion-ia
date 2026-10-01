@@ -38,6 +38,7 @@ import {
 import { VueCompteRendu } from "@/components/admin/visio/VueCompteRendu";
 import { lireCircuitDeLaRencontre, lireCompteRendu } from "@/features/dossier-client/compte-rendu";
 import { compteRenduEnregistre } from "@/features/dossier-client/compte-rendu-en-preparation";
+import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 import { prisma } from "@/lib/prisma";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { timeInParis } from "@/lib/calendar-grid";
@@ -86,9 +87,9 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
     return <AccesRefuse motif={acces.motif} retourHref={rdvBase} />;
   }
   const sp = await searchParams;
-  const erreur = typeof sp.erreur === "string" && sp.erreur !== "" ? sp.erreur.slice(0, 300) : null;
-  const message =
-    typeof sp.message === "string" && sp.message !== "" ? sp.message.slice(0, 300) : null;
+  // N1 : seuls les messages scellés par nos actions s'affichent (un lien forgé, rien).
+  const erreur = lireMessageDeRetour(sp, "erreur");
+  const message = lireMessageDeRetour(sp, "message");
 
   const r = await lireRencontreDetaillee(rencontreId);
   if (r === null) notFound();
