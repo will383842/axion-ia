@@ -123,7 +123,7 @@ chrome.runtime.onMessage.addListener((msg) => {
 $("phrase").textContent = phraseAnnonce();
 $("actualiser").addEventListener("click", () => geste("actualiser"));
 $("rencontre").addEventListener("change", (ev) =>
-  geste("choisir_rencontre", { rencontreId: ev.target.value || null }),
+  geste("choisir_rencontre", { rencontreId: ev.target.value || null, manuel: true }),
 );
 $("creer").addEventListener("click", () => geste("ouvrir_console", { rencontreId: null }));
 $("demarrer").addEventListener("click", () => {

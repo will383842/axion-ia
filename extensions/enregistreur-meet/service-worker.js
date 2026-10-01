@@ -124,7 +124,11 @@ async function oublierVisio() {
   await chrome.storage.session.set({ aEnregistrer: null });
 }
 
-/** Pré-sélectionne le rendez-vous mémorisé, au repos seulement. Ne démarre RIEN. */
+/**
+ * Pré-sélectionne le rendez-vous mémorisé, au repos seulement, UNE fois : la
+ * mémoire est consommée, un « Actualiser » ne revient jamais sur un choix fait
+ * depuis. Ne démarre RIEN.
+ */
 async function appliquerPreselection() {
   const p = preselection(
     { phase: etat.capture.phase, rencontres: etat.rencontres },
@@ -134,7 +138,9 @@ async function appliquerPreselection() {
   if (p) {
     etat.rencontreChoisie = p.rencontreChoisie;
     etat.miseEnAvant = p.miseEnAvant;
+    etat.aEnregistrer = null;
     badge("");
+    await chrome.storage.session.set({ aEnregistrer: null });
     await memoriser();
   } else if (!visioMemorisee(etat.aEnregistrer, Date.now())) {
     etat.miseEnAvant = false;
@@ -605,6 +611,10 @@ async function surGeste(msg) {
       await actualiserRencontres();
       return;
     case "choisir_rencontre": {
+      // Choix de Will dans la liste : le rendez-vous préparé depuis la console
+      // ne reviendra pas l'écraser. (Le choix AUTOMATIQUE du plus proche, fait
+      // par le panneau avant l'arrivée de la liste, ne compte pas.)
+      if (msg.manuel === true) await oublierVisio();
       etat.rencontreChoisie = msg.rencontreId;
       // Capture commencée sans rencontre : elle s'y rattache, rien n'est perdu.
       const c = etat.capture;
