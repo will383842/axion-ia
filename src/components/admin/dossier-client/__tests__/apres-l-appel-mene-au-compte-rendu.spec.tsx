@@ -58,8 +58,11 @@ function rencontre(comptesRendus: RencontreDetaillee["comptesRendus"]): Rencontr
   };
 }
 
-async function rendu(r: RencontreDetaillee): Promise<string> {
-  const el = await ApresLAppelVue({ r, locale: "fr", adminPrefix: "x", erreur: null });
+async function rendu(
+  r: RencontreDetaillee,
+  compteRendu: "aucun" | "en_preparation" | "pret" = "aucun",
+): Promise<string> {
+  const el = await ApresLAppelVue({ r, locale: "fr", adminPrefix: "x", erreur: null, compteRendu });
   return renderToStaticMarkup(el);
 }
 
@@ -108,5 +111,18 @@ describe("« Après l'appel » mène au compte rendu", () => {
     });
     expect(html).toContain("Autre projet évoqué");
     expect(html).not.toContain("« J3 »");
+  });
+
+  it("M-2 : visio enregistrée, compte rendu en préparation — le bandeau le dit, la note est facultative", async () => {
+    const html = await rendu(rencontre([]), "en_preparation");
+    expect(html).toContain("est en préparation : revenez ici quand il");
+    expect(html).toContain("Note (facultative)");
+    expect(html).not.toContain("pas d&#x27;enregistrement");
+  });
+
+  it("M-2 contre-témoin : sans enregistrement, ni bandeau ni « facultative »", async () => {
+    const html = await rendu(rencontre([]));
+    expect(html).not.toContain("en préparation");
+    expect(html).toContain("Note (pas d&#x27;enregistrement)");
   });
 });

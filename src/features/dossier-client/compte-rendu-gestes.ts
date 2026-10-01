@@ -34,6 +34,7 @@ import {
   reextraireCompteRendu,
   completerApresRattachement,
   marquerVoixDeWilliams,
+  messageApresValidationDuCompteRendu,
   reprendreEtapesSuspendues,
   validerCompteRendu,
 } from "@/server/visio/gestes-compte-rendu";
@@ -82,12 +83,12 @@ const GESTES: Readonly<
   Record<string, (fd: FormData, rencontreId: string, adminId: string) => Promise<string>>
 > = {
   valider: async (fd, _rencontreId, adminId) => {
-    await validerCompteRendu(prisma, {
+    const suite = await validerCompteRendu(prisma, {
       compteRenduId: uuid.parse(fd.get("compteRenduId")),
       parAdminId: adminId,
       maintenant: new Date(),
     });
-    return "Compte rendu validé. Le son de l'appel va être supprimé.";
+    return messageApresValidationDuCompteRendu(suite);
   },
   reecrire: async (_fd, rencontreId) => {
     await reecrireCompteRendu(prisma, rencontreId);

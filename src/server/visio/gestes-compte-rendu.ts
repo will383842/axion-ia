@@ -323,11 +323,33 @@ export async function marquerVoixDeWilliams(
 
 // ── Validation ───────────────────────────────────────────────────────────────
 
+/** Ce que la validation laisse à faire à Will (M-2) : le message le dit. */
+export interface SuiteDeLaValidation {
+  /** Une note écrite dans « Après l'appel » était le compte rendu validé : elle passe « remplacée ». */
+  readonly noteManuelleRemplacee: boolean;
+  /** Informations extraites encore à valider dans « Après l'appel ». */
+  readonly faitsAValider: number;
+}
+
+export function messageApresValidationDuCompteRendu(s: SuiteDeLaValidation): string {
+  const morceaux = ["Compte rendu validé. Le son de l'appel va être supprimé."];
+  if (s.noteManuelleRemplacee) {
+    morceaux.push("Votre note écrite reste dans les versions, ses informations restent retenues.");
+  }
+  if (s.faitsAValider > 0) {
+    morceaux.push(
+      `${s.faitsAValider} ${s.faitsAValider > 1 ? "informations restent" : "information reste"} ` +
+        "à valider : ouvrez « Après l'appel ».",
+    );
+  }
+  return morceaux.join(" ");
+}
+
 /** Valide le compte rendu à valider ; programme la purge du son (B1). */
 export async function validerCompteRendu(
   db: Db,
   a: { readonly compteRenduId: string; readonly parAdminId: string; readonly maintenant: Date },
-): Promise<void> {
+): Promise<SuiteDeLaValidation> {
   const cr = await db.compteRendu.findUnique({
     where: { id: a.compteRenduId },
     select: { id: true, rencontreId: true, statut: true },
@@ -335,7 +357,12 @@ export async function validerCompteRendu(
   if (!cr || cr.statut !== "a_valider")
     throw new GesteRefuse("Ce compte rendu n'est pas à valider.");
   await exigerValidationPossible(db, cr.rencontreId);
-  await db.$transaction(async (tx) => {
+  return db.$transaction(async (tx) => {
+    // Un seul compte rendu validé par rencontre (index) : la note écrite passe
+    // « remplacée » — M-2 : Will en est prévenu, ses faits restent validés.
+    const notes = await tx.compteRendu.count({
+      where: { rencontreId: cr.rencontreId, statut: "valide", origine: "manuel" },
+    });
     await tx.compteRendu.updateMany({
       where: { rencontreId: cr.rencontreId, statut: "valide" },
       data: { statut: "remplace" },
@@ -364,6 +391,10 @@ export async function validerCompteRendu(
       compteRenduId: null,
       reinitialiser: true,
     });
+    const faitsAValider = await tx.fait.count({
+      where: { rencontreId: cr.rencontreId, statut: { in: ["propose", "en_attente"] } },
+    });
+    return { noteManuelleRemplacee: notes > 0, faitsAValider };
   });
 }
 

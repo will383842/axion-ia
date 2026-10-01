@@ -41,6 +41,7 @@ import type {
 import { exigerValidationPossible } from "@/server/visio/gestes-compte-rendu";
 import { TYPES_VALIDES_UN_PAR_UN } from "@/server/visio/types-de-faits";
 import { dansLaTransaction, type BaseTransactionnelle, type Tx } from "./base";
+import { compteRenduEnregistre } from "./compte-rendu-en-preparation";
 import { creerProjet } from "./creer-projet";
 import { enregistrerNoteManuelle, noteVide, type SaisieNote } from "./note-manuelle";
 import { enregistrerSuiviDansLaTransaction } from "./suivi";
@@ -280,10 +281,12 @@ export async function validerApresLAppel(
       });
       compteRenduId = n.compteRenduId;
     } else if (e.suivi.issue === "eu_lieu" && faitsValides === 0) {
+      // M-2 : un compte rendu d'enregistrement en préparation dispense aussi de
+      // la note — il arrive quelques minutes après l'appel.
       const existe = await tx.compteRendu.count({
         where: { rencontreId: r.id, statut: { in: ["valide", "a_valider"] } },
       });
-      if (existe === 0) {
+      if (existe === 0 && (await compteRenduEnregistre(tx, r.id)) === "aucun") {
         throw new ErreurValidation(
           "Le rendez-vous a eu lieu : écrivez au moins une ligne de note (le besoin, la prochaine étape…).",
         );
