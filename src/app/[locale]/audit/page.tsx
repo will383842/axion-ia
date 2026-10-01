@@ -111,8 +111,8 @@ export default async function AuditHub({ params }: Props) {
       {
         name: isFr ? "Décrivez votre contexte" : "Describe your context",
         text: isFr
-          ? "Formulaire en ligne, appel téléphonique ou échange direct. Nous explorons votre effectif, votre secteur, votre maturité IA actuelle et vos objectifs business."
-          : "Online form, phone call or direct chat. We explore your headcount, sector, current AI maturity and business objectives.",
+          ? "Formulaire en ligne ou échange en visioconférence Google Meet, gratuit et sans engagement. Nous explorons votre effectif, votre secteur, votre maturité IA actuelle et vos objectifs business."
+          : "Online form or a Google Meet video call, free and with no commitment. We explore your headcount, sector, current AI maturity and business objectives.",
       },
       {
         name: isFr ? "Niveau d'audit calibré" : "Calibrated audit tier",
