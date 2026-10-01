@@ -80,6 +80,8 @@ export function semerRencontreCalendly(
     reponses?: ReadonlyArray<{ question: string; answer: string }>;
     linkedJobApplicationId?: string | null;
     avecRencontre?: boolean;
+    /** Réservé par une adresse de test (ADR 0061). */
+    estTestInterne?: boolean;
   } = {},
 ): { readonly calendlyEventId: string; readonly rencontreId: string | null } {
   const startTime = o.startTime ?? new Date(T0.getTime() + 5 * MINUTE);
@@ -101,6 +103,7 @@ export function semerRencontreCalendly(
     titre: String(ev["eventTypeName"]),
     debutPrevu: startTime,
     finPrevue: ev["endTime"],
+    ...(o.estTestInterne ? { estTestInterne: true } : {}),
   });
   return { calendlyEventId: String(ev["id"]), rencontreId: String(r["id"]) };
 }

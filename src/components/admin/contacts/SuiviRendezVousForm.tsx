@@ -35,11 +35,6 @@ export interface SuiviRendezVousFormProps {
   } | null;
   /** `mailto:` de relance, proposé quand « Absent » est choisi. */
   readonly mailtoRelance?: string | null;
-  /**
-   * UX-02 : sur la carte d'un client dont le dossier est visible, « A eu
-   * lieu » se fait dans « Après l'appel » ; ne restent ici qu'Absent et Reporté.
-   */
-  readonly sansEuLieu?: boolean;
 }
 
 const ETAT_INITIAL: EtatSuivi = { etat: "initial" };
@@ -56,7 +51,6 @@ export function SuiviRendezVousForm({
   calendlyEventId,
   initial = null,
   mailtoRelance = null,
-  sansEuLieu = false,
 }: SuiviRendezVousFormProps): React.ReactElement {
   const [etat, action, enCours] = useActionState(enregistrerSuiviAction, ETAT_INITIAL);
   // Ce que l'utilisateur a cliqué en dernier — pilote l'affichage, pas l'envoi.
@@ -82,17 +76,15 @@ export function SuiviRendezVousForm({
         className="flex flex-wrap gap-[var(--space-admin-2)]"
       >
         {/* « A eu lieu » N'ENVOIE PAS : il faut d'abord dire la suite. */}
-        {sansEuLieu ? null : (
-          <button
-            type="button"
-            className={classeChoix("eu_lieu")}
-            aria-pressed={choix === "eu_lieu"}
-            onClick={() => setChoix("eu_lieu")}
-            disabled={enCours}
-          >
-            ✅ {LIBELLE_ISSUE.eu_lieu}
-          </button>
-        )}
+        <button
+          type="button"
+          className={classeChoix("eu_lieu")}
+          aria-pressed={choix === "eu_lieu"}
+          onClick={() => setChoix("eu_lieu")}
+          disabled={enCours}
+        >
+          ✅ {LIBELLE_ISSUE.eu_lieu}
+        </button>
         <button
           type="button"
           className={classeChoix("absent")}
@@ -117,7 +109,7 @@ export function SuiviRendezVousForm({
         </button>
       </div>
 
-      {choix === "eu_lieu" && !sansEuLieu ? (
+      {choix === "eu_lieu" ? (
         <div className="flex flex-col gap-[var(--space-admin-3)]">
           <div className="flex flex-wrap gap-[var(--space-admin-3)]">
             <label className="flex flex-col gap-1 text-[length:var(--text-admin-sm)]">

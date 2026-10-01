@@ -325,13 +325,12 @@ function CarteRdv({
             <>
               <LiensApresLAppel calendlyEventId={r.sourceRecordId} />
               <p className="mt-[var(--space-admin-3)] mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-                Absent ou reporté ?
+                Absent, reporté, ou sans suite ?
               </p>
               <SuiviRendezVousForm
                 calendlyEventId={r.sourceRecordId}
                 initial={r.suivi}
                 mailtoRelance={mailto}
-                sansEuLieu
               />
             </>
           ) : (
@@ -416,9 +415,9 @@ function CartePoint({ r, dossierVisible }: { r: RdvAFaireLePoint; dossierVisible
             <>
               <LiensApresLAppel calendlyEventId={r.id} />
               <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-                Absent ou reporté ?
+                Absent, reporté, ou sans suite ?
               </p>
-              <SuiviRendezVousForm calendlyEventId={r.id} mailtoRelance={mailto} sansEuLieu />
+              <SuiviRendezVousForm calendlyEventId={r.id} mailtoRelance={mailto} />
             </>
           ) : (
             <SuiviRendezVousForm calendlyEventId={r.id} mailtoRelance={mailto} />

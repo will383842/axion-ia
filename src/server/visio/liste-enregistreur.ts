@@ -106,9 +106,16 @@ export async function listerRencontresDuJour(
     if (r.source === "calendly" && (!d.calendlyEvent || !estRendezVousDuDossier(d.calendlyEvent))) {
       return false;
     }
-    // Mode pilote : la rencontre de test saisie sur le client fictif, seule.
+    // Mode pilote : les rencontres de TEST seules — saisie sur le client
+    // fictif, ou « Discutons » réservé par une adresse de test (ADR 0061, B-1
+    // de la 2e vérification : sans elle, l'essai « nouveau prospect » était
+    // impossible, la rencontre n'apparaissait jamais dans l'extension).
     if (entree.mode === "pilote") {
-      return r.estTestInterne && r.source === "saisie_manuelle" && d.type === "visio";
+      return (
+        r.estTestInterne &&
+        (r.source === "saisie_manuelle" || r.source === "calendly") &&
+        d.type === "visio"
+      );
     }
     return true;
   });
