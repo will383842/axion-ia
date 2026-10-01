@@ -89,6 +89,10 @@ function rendre(e) {
   afficher("encours", phase === "en_cours");
   const choisie = e.rencontres.find((x) => x.rencontreId === $("rencontre").value);
   $("demarrer").disabled = !j.peutDemarrer || bandeauPreavis(choisie) !== null;
+  // « Oui, enregistrer » cliqué dans la console : le bouton est mis en avant,
+  // rien ne démarre sans ce clic (annonce + accord avant toute capture).
+  $("demarrer").classList.toggle("mis-en-avant", e.miseEnAvant === true);
+  afficher("prepare", e.miseEnAvant === true && phase === "repos");
   $("pause").textContent = e.capture.enPause ? "Reprendre" : "Pause";
   $("badges").textContent = "";
   for (const b of e.capture.badges ?? []) {

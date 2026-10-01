@@ -6,7 +6,10 @@
 //     actions ;
 //   · vide la file d'envoi (`lib/file-envoi.js`) vers le site — RIEN ne part
 //     avant l'accord — avec nouvel essai et délai doublé ;
-//   · bat toutes les 5 minutes (versions, file locale ; aucun nom, aucun texte).
+//   · bat toutes les 5 minutes (versions, file locale ; aucun nom, aucun texte) ;
+//   · (1.3.0) reçoit du relais de la console le « Oui, enregistrer » : il
+//     MÉMORISE le rendez-vous 30 min, ouvre le panneau et le pré-sélectionne.
+//     Rien ne démarre : « Démarrer » reste un clic de Will, à l'annonce.
 //
 // Il ne connaît qu'une adresse : `lib/api.js` (https://axion-ia.com/api/enregistreur/).
 
@@ -31,6 +34,12 @@ import {
 import { etatJeton, jetonRefuseParLeSite } from "./lib/jeton.js";
 import { entetesDuMorceau } from "./lib/tranches.js";
 import {
+  memoriserVisio,
+  messageAccepte,
+  preselection,
+  visioMemorisee,
+} from "./lib/visio-a-enregistrer.js";
+import {
   ajouterALaFile,
   detruireCapture,
   ecrireCapture,
@@ -53,6 +62,9 @@ const etat = {
   message: "",
   mode: null,
   miseAJourEnAttente: false,
+  // « Oui, enregistrer » de la console : { identifiant, expireLe } ou null.
+  aEnregistrer: null,
+  miseEnAvant: false,
 };
 
 // ── Réglages et état persistant ─────────────────────────────────────────────
@@ -62,10 +74,16 @@ async function chargerReglages() {
   etat.jeton = r.jeton ?? null;
   etat.jetonExpireLe = r.jetonExpireLe ?? null;
   etat.micId = r.micId ?? null;
-  const s = await chrome.storage.session.get(["capture", "rencontreChoisie", "ongletMeet"]);
+  const s = await chrome.storage.session.get([
+    "capture",
+    "rencontreChoisie",
+    "ongletMeet",
+    "aEnregistrer",
+  ]);
   if (s.capture) etat.capture = s.capture;
   etat.rencontreChoisie = s.rencontreChoisie ?? null;
   etat.ongletMeet = s.ongletMeet ?? null;
+  etat.aEnregistrer = s.aEnregistrer ?? null;
 }
 
 async function memoriser() {
@@ -87,8 +105,69 @@ function diffuser() {
       jeton: j,
       message: etat.message,
       mode: etat.mode,
+      miseEnAvant: etat.miseEnAvant,
     })
     .catch(() => undefined);
+}
+
+// ── « Enregistrer cette visio ? » (1.3.0) ──────────────────────────────────
+
+function badge(texte) {
+  chrome.action.setBadgeText({ text: texte }).catch(() => undefined);
+  if (texte) chrome.action.setBadgeBackgroundColor({ color: "#b91c1c" }).catch(() => undefined);
+}
+
+async function oublierVisio() {
+  etat.aEnregistrer = null;
+  etat.miseEnAvant = false;
+  badge("");
+  await chrome.storage.session.set({ aEnregistrer: null });
+}
+
+/** Pré-sélectionne le rendez-vous mémorisé, au repos seulement. Ne démarre RIEN. */
+async function appliquerPreselection() {
+  const p = preselection(
+    { phase: etat.capture.phase, rencontres: etat.rencontres },
+    etat.aEnregistrer,
+    Date.now(),
+  );
+  if (p) {
+    etat.rencontreChoisie = p.rencontreChoisie;
+    etat.miseEnAvant = p.miseEnAvant;
+    badge("");
+    await memoriser();
+  } else if (!visioMemorisee(etat.aEnregistrer, Date.now())) {
+    etat.miseEnAvant = false;
+  }
+}
+
+/**
+ * Message du relais de la console. `sidePanel.open` part AVANT tout `await` :
+ * c'est le geste de Will (le clic) relayé ; si Chrome refuse, un badge invite
+ * à cliquer l'icône.
+ */
+function surRelais(msg, envoyeur) {
+  switch (msg.type) {
+    case "visio_a_enregistrer": {
+      try {
+        chrome.sidePanel.open({ windowId: envoyeur.tab.windowId }).catch(() => badge("REC"));
+      } catch {
+        badge("REC");
+      }
+      etat.aEnregistrer = memoriserVisio(msg.identifiant, Date.now());
+      chrome.storage.session
+        .set({ aEnregistrer: etat.aEnregistrer })
+        .then(actualiserRencontres)
+        .catch(() => undefined);
+      return;
+    }
+    case "visio_sans_enregistrement":
+      etat.aEnregistrer = null;
+      oublierVisio().then(diffuser);
+      return;
+    default:
+      return;
+  }
 }
 
 // ── Document offscreen ──────────────────────────────────────────────────────
@@ -504,6 +583,7 @@ async function actualiserRencontres() {
     etat.jetonExpireLe = r.corps.jetonExpireLe ?? etat.jetonExpireLe;
     await chrome.storage.local.set({ jetonExpireLe: etat.jetonExpireLe });
     etat.message = "";
+    await appliquerPreselection();
   } else if (jetonRefuseParLeSite(r.statut)) {
     etat.message = r.corps?.message ?? "Jeton refusé par le site.";
   } else if (r.statut === 503) {
@@ -518,6 +598,7 @@ async function surGeste(msg) {
   const maintenant = Date.now();
   switch (msg.type) {
     case "lire_etat":
+      await appliquerPreselection();
       diffuser();
       return;
     case "actualiser":
@@ -561,6 +642,8 @@ async function surGeste(msg) {
           maintenant,
         ),
       );
+      // Le rendez-vous préparé a servi : il ne se re-propose pas.
+      if (etat.capture.phase !== "repos") await oublierVisio();
       return;
     }
     case "demarrer_dictee": {
@@ -657,10 +740,17 @@ chrome.runtime.onUpdateAvailable.addListener(() => {
   else chrome.runtime.reload();
 });
 
-// Messages INTERNES seulement (panneau, options, offscreen). Aucun
-// `onMessageExternal` : aucune page web ne peut piloter l'enregistreur.
+// Messages INTERNES (panneau, options, offscreen), plus les DEUX messages du
+// relais de la console (`messageAccepte`). Aucun `onMessageExternal` : aucune
+// page web ne peut piloter l'enregistreur.
 chrome.runtime.onMessage.addListener((msg, envoyeur, repondre) => {
-  if (envoyeur.id !== chrome.runtime.id || msg?.cible === "offscreen") return false;
+  if (msg?.cible === "offscreen") return false;
+  const tri = messageAccepte(msg, envoyeur, chrome.runtime.id);
+  if (tri === "refuse") return false;
+  if (tri === "relais") {
+    surRelais(msg, envoyeur);
+    return false;
+  }
   const traitement =
     msg.type === "niveaux"
       ? surNiveaux(msg)
