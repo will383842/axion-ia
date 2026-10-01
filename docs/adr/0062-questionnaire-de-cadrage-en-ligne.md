@@ -40,9 +40,10 @@ K     = SHA-256("axion-questionnaire-cadrage|" + AUTH_SECRET)
 - **Il n'y a pas d'expiration dans le temps** (c'est l'esprit de R10). Le lien s'éteint par l'état du questionnaire, jamais par une date (voir §3).
 - **Rotation, conséquence assumée** : faire tourner `AUTH_SECRET` éteint tous les liens ouverts. Will renvoie alors le lien depuis la console. Cette rotation est rare et déconnecte déjà toutes les sessions admin. Le préfixe `v1:` permet une version 2 du calcul sans changer la forme de l'URL.
 - **Le jeton est dans le chemin, il ne doit donc fuir nulle part** :
-  - `Referrer-Policy: no-referrer` est posé à deux endroits, l'en-tête et `<meta>` ;
+  - `Referrer-Policy: same-origin` est posé à deux endroits, l'en-tête et `<meta>` : l'adresse (donc le jeton) n'est transmise à aucun autre site. **Pas `no-referrer`** : avec cette valeur, le navigateur envoie `Origin: null` sur le POST du formulaire, et Next refuse l'action serveur (« Invalid Server Actions request », mesuré le 2026-10-01) — aucun envoi ne passait, avec ou sans JavaScript ;
   - la page ne charge aucun script tiers ;
-  - le segment est masqué `[TOKEN]` dans les envois à Sentry (`SEGMENTS_SECRETS`). Les filtres génériques ne l'attrapent pas : il n'est pas hexadécimal et ne contient pas de point.
+  - le segment est masqué `[TOKEN]` dans les envois à Sentry (`SEGMENTS_SECRETS`). Les filtres génériques ne l'attrapent pas : il n'est pas hexadécimal et ne contient pas de point ;
+  - sur les routes `/questionnaire/` (et `/document/`), Sentry ne reçoit **rien de la requête** : corps (jeton, réponses, nom), cookies, chaîne de requête et en-têtes `Next-Router-State-Tree`, `Next-Action`, `Referer` sont supprimés par `piiScrubBeforeSend` et `piiScrubBeforeSendTransaction`, et le SDK ne lit pas le corps (`httpIntegration({ ignoreIncomingRequestBody })`). Veto de la relecture sécurité de la PR 1258.
 
 ### 2. La route : une page racine hors `[locale]`
 
@@ -50,13 +51,13 @@ K     = SHA-256("axion-questionnaire-cadrage|" + AUTH_SECRET)
 - Le motif `questionnaire/` est **exclu du `matcher` de `src/proxy.ts`**. Sans cette exclusion, la règle 0bis redirige en 301 vers `/fr/questionnaire/…`, qui renvoie 404. Une garde extrait le vrai motif du matcher et vérifie aussi la contre-épreuve.
 - Puisque le proxy ne voit plus la route, ses en-têtes sont posés par `next.config.ts` :
   - une CSP propre : `default-src 'self'`, aucun hôte tiers, `form-action 'self'`, `frame-ancestors 'none'` ;
-  - `Referrer-Policy: no-referrer` ;
+  - `Referrer-Policy: same-origin` (voir §1) ;
   - `X-Robots-Tag: noindex, nofollow, noarchive`.
 - La page est `force-dynamic`. Next pose donc `no-store`, et la page n'est jamais rendue au build (contrat `stub.invalid` de `AGENTS.md`). De plus, la lecture refuse elle-même la base factice.
 - **Écart accepté** : faute de proxy, il n'y a pas de nonce. La CSP de la route garde donc `'unsafe-inline'` pour les scripts en ligne de Next. Ce choix est acceptable parce que la page n'a ni script tiers ni HTML injecté : aucun `dangerouslySetInnerHTML`, et les textes passent par React.
 - Les en-têtes se vérifient **sur la réponse servie**, pas sur la configuration. Une règle `/:path*` pose déjà un `Referrer-Policy`. La vérification attend :
   - une seule CSP ;
-  - un seul `Referrer-Policy`, qui vaut `no-referrer` ;
+  - un seul `Referrer-Policy`, qui vaut `same-origin` ;
   - `no-store` ;
   - `noindex` ;
   - `X-Frame-Options: DENY` ;

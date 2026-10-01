@@ -96,7 +96,18 @@ async function prevenirAxion(questionnaireId: string, clientId: string, projetId
       },
     );
   } catch (e) {
-    Sentry.captureException(e, { tags: { service: "questionnaire-en-ligne", etape: "e-mail" } });
+    // Contexte MINIMAL (veto sécurité PR 1258) : une erreur neuve, sans cause
+    // ni pile d'origine (qui pourraient porter des valeurs), et l'identifiant
+    // du questionnaire seulement — jamais le jeton, les réponses ni le nom. La
+    // requête elle-même est purgée par `piiScrubBeforeSend` (route secrète).
+    const nom = e instanceof Error ? e.name : "inconnue";
+    Sentry.captureException(
+      new Error(`questionnaire-en-ligne : e-mail interne non enfilé (${nom})`),
+      {
+        tags: { service: "questionnaire-en-ligne", etape: "e-mail" },
+        extra: { questionnaireId },
+      },
+    );
   }
 }
 

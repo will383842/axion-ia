@@ -51,14 +51,11 @@ export default async function QuestionnairePage({ params, searchParams }: PagePr
   if (etat.etat === "deja_envoye") {
     return (
       <Coquille>
-        {un(sp["envoye"]) === "1" ? (
-          <>
-            <EffacerBrouillon questionnaireId={questionnaireId} />
-            <EcranDeFin variante="merci" />
-          </>
-        ) : (
-          <EcranDeFin variante="deja" />
-        )}
+        {/* Les réponses sont en base : le brouillon local s'efface dès que la
+            page le constate — après l'envoi (« Merci ») comme sur tout autre
+            appareil ou onglet qui rouvre le lien (« Déjà envoyé »). */}
+        <EffacerBrouillon questionnaireId={questionnaireId} />
+        <EcranDeFin variante={un(sp["envoye"]) === "1" ? "merci" : "deja"} />
       </Coquille>
     );
   }

@@ -101,6 +101,62 @@ function redactString(input: unknown): unknown {
     .replace(HEX_TOKEN_RE, "[TOKEN]");
 }
 
+/**
+ * Routes PUBLIQUES dont la requête ENTIÈRE est un secret (2026-10-01, veto de
+ * la relecture sécurité sur la PR 1258) : le questionnaire de cadrage en ligne
+ * (`/questionnaire/<id>/<jeton>`) et, par prudence, le chantier voisin des
+ * documents du projet (`/document/…`).
+ *
+ * Le SDK serveur capture par défaut le CORPS des requêtes entrantes
+ * (`event.request.data`, ~10 Ko) malgré `sendDefaultPii: false`. Sur ces
+ * routes, le corps du POST porte le jeton, les réponses du client et son nom ;
+ * l'en-tête `Next-Router-State-Tree` porte encore le jeton, `Referer` aussi.
+ * Le masquage par motif ne suffit pas (une réponse libre n'a pas de forme) :
+ * on SUPPRIME, sans chercher à reconnaître.
+ */
+const ROUTE_A_REQUETE_SECRETE =
+  /^(?:[A-Z]+\s+)?(?:https?:\/\/[^/]+)?(?:\/(?:fr|en))?\/(?:questionnaire|document)(?:\/|$)/i;
+
+/** En-têtes retirés en entier sur ces routes (en minuscules). */
+const ENTETES_RETIRES = new Set(["next-router-state-tree", "next-action", "referer", "cookie"]);
+
+/** L'URL (ou le nom de transaction) vise-t-elle une route à requête secrète ? */
+export function estRouteARequeteSecrete(url: unknown): boolean {
+  return typeof url === "string" && ROUTE_A_REQUETE_SECRETE.test(url);
+}
+
+/**
+ * Le prédicat de `httpIntegration({ ignoreIncomingRequestBody })` : le SDK ne
+ * lit même pas le corps de ces requêtes (défense en profondeur ; le nettoyage
+ * ci-dessous reste la garantie, il ne dépend pas de la version du SDK).
+ */
+export function corpsAIgnorer(url: string): boolean {
+  try {
+    return estRouteARequeteSecrete(new URL(url, "http://x").pathname);
+  } catch {
+    return estRouteARequeteSecrete(url);
+  }
+}
+
+/** Purge la requête d'un événement visant une route à requête secrète. */
+function purgerRequeteSecrete(event: {
+  transaction?: string | undefined;
+  request?: ErrorEvent["request"];
+}): void {
+  const req = event.request;
+  if (!estRouteARequeteSecrete(req?.url) && !estRouteARequeteSecrete(event.transaction)) return;
+  if (!req) return;
+  delete req.data;
+  delete req.cookies;
+  delete req.query_string;
+  if (typeof req.url === "string") req.url = req.url.split(/[?#]/)[0] ?? req.url;
+  if (req.headers) {
+    for (const k of Object.keys(req.headers)) {
+      if (ENTETES_RETIRES.has(k.toLowerCase())) delete req.headers[k];
+    }
+  }
+}
+
 function redactRecord(
   rec: Record<string, unknown> | undefined,
 ): Record<string, unknown> | undefined {
@@ -135,7 +191,8 @@ export function piiScrubBeforeSend(event: ErrorEvent, _hint?: EventHint): ErrorE
     delete event.user.username;
   }
 
-  // 2. request
+  // 2. request — d'abord la purge des routes à requête secrète (questionnaire en ligne).
+  purgerRequeteSecrete(event);
   if (event.request) {
     // 🔴 L'URL n'était pas nettoyée, alors que nos jetons vivent dans le
     // CHEMIN, pas dans la query : `/portail/emarger/<payload>.<signature>`,
@@ -218,6 +275,8 @@ export function piiScrubBeforeSendTransaction(
   event: TransactionEvent,
   _hint?: EventHint,
 ): TransactionEvent | null {
+  // Purge AVANT le masquage du nom : la détection lit la route d'origine.
+  purgerRequeteSecrete(event);
   if (typeof event.transaction === "string") {
     event.transaction = masquerSegmentsSensibles(event.transaction);
   }

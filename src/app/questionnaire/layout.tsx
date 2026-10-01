@@ -7,7 +7,7 @@
 // réponses de client dans ses champs n'en veut AUCUN : zéro script tiers, zéro
 // navigation qui ferait fuir l'adresse. Le proxy l'exclut aussi de son
 // `matcher` (sinon 301 vers `/fr/questionnaire/…`, qui n'existe pas) ; les
-// en-têtes (`no-store`, `no-referrer`, `noindex`, CSP) sont posés par
+// en-têtes (`no-store`, `Referrer-Policy: same-origin`, `noindex`, CSP) sont posés par
 // `next.config.ts`.
 //
 // Polices : les mêmes fichiers que le site (`src/fonts/`), Manrope et Fraunces.
