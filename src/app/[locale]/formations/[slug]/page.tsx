@@ -31,6 +31,7 @@ import { isRegimeTva, mentionTva, REGIME_TVA_DEFAUT } from "@/server/qualiopi/le
 import { resolveOffrePriceLabel } from "@/server/qualiopi/offres/pricing-resolver";
 import { FORMATIONS_V2, getFormationV2 } from "@/content/formations/catalog-v2";
 import { FormationDetailPage } from "@/components/formations/FormationDetailPage";
+import { getResultatsPublicsFormation } from "@/server/qualiopi/indicateurs/resultats-publics-service";
 
 // ── Dynamisme & ISR ──────────────────────────────────────────────────────────
 // ISR `revalidate=3600` (budget Web Vitals Phase B : éviter un appel DB par requête
@@ -184,12 +185,21 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
     // Référent handicap NOMMÉ et JOIGNABLE (ind. 26) — seule lecture de config
     // de cette branche, et elle ne peut pas échouer : sous stub.invalid (build)
     // ou DB indisponible, repli générique, repeuplé par l'ISR.
-    const referentHandicap = await getReferentHandicapPublic();
+    // Indicateurs de résultats (ind. 2) — comptes lus en base pour CETTE
+    // formation (rattachement par slug, `Formation.slug` @unique), affichés
+    // seulement si la console a posé `indicateursPubliesAt` ET qu'au moins une
+    // session est réalisée. Ne lève jamais ; sous stub.invalid (build) : `null`,
+    // aucun bloc, et l'ISR (`revalidate` ci-dessus) repeuple en production.
+    const [referentHandicap, resultats] = await Promise.all([
+      getReferentHandicapPublic(),
+      getResultatsPublicsFormation(cat.slugFr),
+    ]);
     return (
       <FormationDetailPage
         formation={cat}
         locale={locale as Locale}
         referentHandicap={referentHandicap}
+        resultats={resultats}
       />
     );
   }
@@ -429,14 +439,19 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
                      « Taux de réussite » 0 occurrence, « Méthode de calcul »
                      0 occurrence.
 
-                  3. Conséquence directe, et elle vaut pour l'audit : le bouton
-                     « publier les indicateurs par formation » ne publie à
-                     PERSONNE. La valeur publiée le 2026-08-04 sur « IA pour
-                     l'immobilier » (« Taux de réussite 100 % », effectif 1)
-                     n'apparaît sur aucune page publique — alors qu'elle suffit
-                     à faire passer l'indicateur 2 au vert dans le mode auditeur
-                     (`conformite-service.ts` : `indicateursPubliesAt` non nul
-                     → « Couvert »).
+                  3. Conséquence directe, et elle vaut pour l'audit : les
+                     valeurs SAISIES dans le formulaire « Publier les
+                     indicateurs » (`indicateursPublies`, ex. « Taux de réussite
+                     100 % » sur « IA pour l'immobilier » le 2026-08-04)
+                     n'apparaissent sur aucune page publique.
+                     ✅ Depuis le 2026-10-01 (audit initial, décision du
+                     dirigeant), la date `indicateursPubliesAt` posée par ce
+                     même bouton vaut ACCORD de publication pour l'encadré
+                     « Nos résultats » de la branche CATALOGUE ci-dessus
+                     (`getResultatsPublicsFormation`) : des comptes RECALCULÉS
+                     en base (sessions réalisées, stagiaires, satisfaction,
+                     assiduité), jamais la saisie libre, et rien tant
+                     qu'aucune session n'est réalisée.
 
                   ⛔ NE PAS « RÉPARER » CE CODE MORT ICI. Décision explicite du
                   propriétaire, 2026-09-17 : rebrancher ces ~300 lignes toucherait

@@ -73,6 +73,8 @@ import { ServiceReviewsSection } from "@/components/reviews/ServiceReviewsSectio
 import { UnifiedContactForm } from "@/components/forms/UnifiedContactForm";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { formatMentionMarqueQualiopi } from "@/server/qualiopi/legal/legal-mentions";
+import type { ResultatsPublicsFormation } from "@/server/qualiopi/indicateurs/resultats-publics";
+import { ResultatsFormation } from "@/components/formations/ResultatsFormation";
 
 /** « 2-15 » → « 2 à 15 personnes ». */
 /**
@@ -128,9 +130,20 @@ interface Props {
   locale: Locale;
   /** Contact du référent handicap (ind. 26) — lu en configuration par la page serveur. */
   referentHandicap: ReferentHandicapContact;
+  /**
+   * Indicateurs de résultats (ind. 2) — lus en base par la page serveur.
+   * `null`/absent : aucun bloc (pas de publication, pas de session réalisée,
+   * build `stub.invalid`).
+   */
+  resultats?: ResultatsPublicsFormation | null;
 }
 
-export function FormationDetailPage({ formation: f, locale, referentHandicap }: Props): ReactNode {
+export function FormationDetailPage({
+  formation: f,
+  locale,
+  referentHandicap,
+  resultats = null,
+}: Props): ReactNode {
   const isFr = locale === "fr";
   // Refonte 2026-07-19 : l'axe de rattachement est la CATÉGORIE (générale /
   // métier / secteur) — le séminaire n'en a pas (rubrique à part).
@@ -881,6 +894,9 @@ export function FormationDetailPage({ formation: f, locale, referentHandicap }: 
             </div>
           ))}
         </dl>
+        {/* Indicateurs de résultats (ind. 2) — HTML serveur, aucun JS client ;
+            absent tant que rien n'est publiable (jamais de bloc vide). */}
+        {resultats ? <ResultatsFormation resultats={resultats} /> : null}
       </Section>
 
       {/* ── SECTEURS D'ACTIVITÉ ──────────────────────────────────────────── */}

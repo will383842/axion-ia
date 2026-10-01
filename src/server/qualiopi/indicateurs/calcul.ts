@@ -18,7 +18,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Nombre minimal d'observations pour considérer un indicateur fiable. */
-const SEUIL_FIABILITE = 5;
+export const SEUIL_FIABILITE = 5;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // computeTauxSatisfaction
