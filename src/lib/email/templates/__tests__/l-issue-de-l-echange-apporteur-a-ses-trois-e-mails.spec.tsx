@@ -98,8 +98,10 @@ describe("Retenu — bienvenue dans le réseau", () => {
     // Le châssis porte « Une question ? Répondez simplement à cet e-mail » : une
     // seule fois, pas deux.
     expect(t.match(/Une question \?/g)).toHaveLength(1);
-    // Le kit : document de présentation et catalogue.
-    expect(r.html).toContain(DOCUMENT_APPORTEUR_CHEMIN);
+    // Le kit : le catalogue seul, le document de présentation est retiré
+    // jusqu'à sa réécriture (JUR-T44, `kit-apporteur-sans-pdf.spec.ts`).
+    expect(r.html).toMatch(/\/fr\/catalogue"/);
+    expect(r.html).not.toContain(DOCUMENT_APPORTEUR_CHEMIN);
   });
 
   it("🔑 les montants viennent du SSOT : 500 € la journée, 30 % l'audit, 15 % l'intégration, 6 mois", async () => {

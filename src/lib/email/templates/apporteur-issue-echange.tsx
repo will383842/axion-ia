@@ -117,7 +117,7 @@ export const COPY_ISSUE_ECHANGE = {
       contrat: "Nous vous enverrons votre contrat d'apporteur, à signer en ligne.",
       espace:
         "Votre espace apporteur personnel ouvrira d'ici un mois. D'ici là, pour nous présenter une entreprise, répondez simplement à cet e-mail avec son nom et celui de votre contact.",
-      kit: "Le document de présentation et le catalogue restent à votre disposition :",
+      kit: "Le catalogue de nos prestations reste à votre disposition :",
     },
     nonRetenu: {
       subject: "Suite à notre échange",
@@ -176,7 +176,7 @@ export const COPY_ISSUE_ECHANGE = {
       contrat: "We will send you your introducer agreement to sign online.",
       espace:
         "Your personal introducer space will open within a month. Until then, to introduce a company, simply reply to this email with its name and your contact's name.",
-      kit: "The presentation document and the catalogue remain at your disposal:",
+      kit: "Our catalogue of services remains at your disposal:",
     },
     nonRetenu: {
       subject: "Following our call",

@@ -146,7 +146,8 @@ describe("invitation — variante « offre »", () => {
       // variante, la personne n'a pas candidaté au réseau.
       dossierUrl: "https://axion-ia.com/fr/devenir-commercial-ia/candidature",
     });
-    expect(r.html).toMatch(/document de présentation/);
+    // Le kit : le catalogue seul depuis JUR-T44 (`kit-apporteur-sans-pdf.spec.ts`).
+    expect(r.html).not.toMatch(/document de présentation/);
     expect(r.html).toMatch(/catalogue complet/);
     expect(r.html).toContain("Williams Jullin");
     expect(r.html).not.toContain("/devenir-commercial-ia/candidature");

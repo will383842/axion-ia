@@ -64,13 +64,16 @@ export function BlocKitApporteur({
   return (
     <>
       <Text style={emailStyles.paragraphStyle}>{intro ?? t.intro}</Text>
-      <Text style={{ ...emailStyles.paragraphStyle, margin: "0 0 6px" }}>
-        →{" "}
-        <a href={documentUrl} style={lien}>
-          {t.document}
-        </a>
-        {t.documentDetail}
-      </Text>
+      {/* JUR-T44 : le document ne part plus tant qu'il n'est pas réécrit (JUR-T45). */}
+      {documentUrl ? (
+        <Text style={{ ...emailStyles.paragraphStyle, margin: "0 0 6px" }}>
+          →{" "}
+          <a href={documentUrl} style={lien}>
+            {t.document}
+          </a>
+          {t.documentDetail}
+        </Text>
+      ) : null}
       <Text style={emailStyles.paragraphStyle}>
         →{" "}
         <a href={catalogueUrl} style={lien}>

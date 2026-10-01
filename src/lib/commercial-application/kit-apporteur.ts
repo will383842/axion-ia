@@ -31,22 +31,39 @@ export { estLienCalendlyValide } from "@/lib/calendly/lien-valide";
  */
 export const DOCUMENT_APPORTEUR_CHEMIN = "imprimes/devenir-apporteur-d-affaires-axion-ia.pdf";
 
+/**
+ * 🔴 JUR-T44 (Axion Partners) — le document de présentation est RETIRÉ du kit.
+ *
+ * Décision C1 de Williams du 2026-10-01 (option A) : le PDF porte des
+ * formulations relevées par la vérification de bout en bout du chantier
+ * Partners. On le retire tout de suite des e-mails et de la page de
+ * remerciement, on le réécrit avec des formulations prudentes, et on ne le
+ * remet qu'après cette réécriture (JUR-T45) — en repassant ce drapeau à `true`
+ * et en rétablissant les textes qui l'annonçaient.
+ *
+ * Le fichier reste servi à son chemin : des e-mails déjà envoyés pointent
+ * dessus. Témoin : `__tests__/kit-apporteur-sans-pdf.spec.ts`, sur le rendu
+ * réel de chaque gabarit et de la page de remerciement.
+ */
+export const DOCUMENT_APPORTEUR_DIFFUSE: boolean = false;
+
 /** Page publique du catalogue : feuilleter ou télécharger (`/[locale]/catalogue`). */
 const CATALOGUE_SEGMENT = "catalogue";
 
 export interface LiensKitApporteur {
-  documentUrl: string;
+  /** `null` tant que le document n'est pas diffusé (`DOCUMENT_APPORTEUR_DIFFUSE`). */
+  documentUrl: string | null;
   catalogueUrl: string;
 }
 
-/** Les deux liens du kit, en URL absolues (un e-mail n'a pas d'origine). */
+/** Les liens du kit, en URL absolues (un e-mail n'a pas d'origine). */
 export function liensKitApporteur(
   locale: "fr" | "en" = "fr",
   origine = SITE_URL,
 ): LiensKitApporteur {
   const base = origine.replace(/\/+$/, "");
   return {
-    documentUrl: `${base}/${DOCUMENT_APPORTEUR_CHEMIN}`,
+    documentUrl: DOCUMENT_APPORTEUR_DIFFUSE ? `${base}/${DOCUMENT_APPORTEUR_CHEMIN}` : null,
     catalogueUrl: `${base}/${locale}/${CATALOGUE_SEGMENT}`,
   };
 }

@@ -1,24 +1,21 @@
 /**
  * JUR-T44 (Axion Partners) — le PDF de présentation « Devenir apporteur
- * d'affaires » ne part plus dans AUCUN e-mail, et la page de remerciement
- * `/apporteur-affaires/merci` ne le lie plus.
+ * d'affaires » ne part plus dans AUCUN e-mail.
  *
  * Décision C1 de Williams du 2026-10-01 (option A) : le document contient des
  * formulations relevées par la vérification de bout en bout du chantier
  * Partners ; on le retire tout de suite des e-mails, on le réécrit avec des
  * formulations prudentes (JUR-T45), et seulement ensuite on le remet.
  *
- * Rendu RÉEL : chaque gabarit du registre, dans les deux langues, et la page de
- * remerciement elle-même. Le catalogue, lui, reste : il ne porte aucune
- * promesse de gains.
+ * Rendu RÉEL : chaque gabarit du registre, dans les deux langues. Le
+ * catalogue, lui, reste : il ne porte aucune promesse de gains. La page de
+ * remerciement a son propre témoin, à côté d'elle (frontière des modules :
+ * `lib/` n'importe pas `app/`) :
+ * `src/app/[locale]/apporteur-affaires/merci/__tests__/la-page-merci-ne-lie-plus-le-pdf.spec.tsx`.
  *
- * Fichier `.ts` (et non `.tsx`) parce que le registre Partners le nomme ainsi :
- * les éléments sont construits par `createElement`.
+ * Fichier `.ts` (et non `.tsx`) parce que le registre Partners le nomme ainsi.
  */
-import { describe, it, expect, beforeAll, vi } from "vitest";
-import { createElement } from "react";
-import type { ReactNode } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
+import { describe, it, expect } from "vitest";
 
 import { renderEmailTemplate, EMAIL_TEMPLATE_NAMES } from "@/lib/email/templates";
 import { PAYLOAD_EXEMPLE } from "@/server/email/apercu/payloads-exemple";
@@ -27,15 +24,6 @@ import {
   VARIANTE_DOSSIER_COMMENCE,
   liensKitApporteur,
 } from "@/lib/commercial-application/kit-apporteur";
-
-vi.mock("next-intl/server", () => ({ setRequestLocale: () => undefined }));
-vi.mock("@/components/recrutement/MerciLeadMeta", () => ({ MerciLeadMeta: () => null }));
-vi.mock("@/i18n/navigation", () => ({
-  Link: ({ href, children, ...rest }: { href: string; children?: ReactNode }) =>
-    createElement("a", { href, ...rest }, children),
-}));
-
-import MerciPage from "@/app/[locale]/apporteur-affaires/merci/page";
 
 /** Le nom du fichier, sans dossier : un autre chemin vers le même PDF reste le PDF. */
 const NOM_DU_PDF = DOCUMENT_APPORTEUR_CHEMIN.split("/").pop()!;
@@ -51,10 +39,6 @@ function texte(h: string): string {
 
 /** Annoncer un document qui n'est plus là serait une promesse vide. */
 const DOCUMENT_ANNONCE = /document de présentation|presentation document/i;
-
-beforeAll(() => {
-  process.env["NEXT_PUBLIC_SITE_URL"] = "https://axion-ia.com";
-});
 
 describe("JUR-T44 — le kit ne porte plus le document de présentation", () => {
   it("liensKitApporteur ne rend plus d'URL du document, et garde le catalogue", () => {
@@ -89,14 +73,4 @@ describe("JUR-T44 — aucun e-mail ne lie le PDF de présentation", () => {
       });
     }
   }
-});
-
-describe("JUR-T44 — la page de remerciement ne lie plus le PDF", () => {
-  it.each(["fr", "en"])("%s : ni lien vers le PDF, ni document annoncé ; le catalogue reste", async (locale) => {
-    const el = await MerciPage({ params: Promise.resolve({ locale }) });
-    const h = renderToStaticMarkup(el);
-    expect(h).not.toContain(NOM_DU_PDF);
-    expect(texte(h)).not.toMatch(DOCUMENT_ANNONCE);
-    expect(h).toMatch(/\/catalogue"/);
-  });
 });

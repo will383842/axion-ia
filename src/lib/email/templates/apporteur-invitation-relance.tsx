@@ -55,7 +55,7 @@ export const COPY_RELANCE_INVITATION = {
       `${n ? `Bonjour ${n}, votre` : "Bonjour, votre"} candidature au réseau d'apporteurs d'affaires d'Axion-IA est retenue, et il ne vous reste plus qu'à choisir le moment de notre échange de 15 minutes en visio. Les créneaux sont limités : réservez le vôtre en un clic avec le bouton ci-dessous.`,
     j7: (n: string) =>
       `${n ? `Bonjour ${n}, c'est` : "Bonjour, c'est"} notre dernier message à ce sujet : votre candidature est toujours retenue, et l'échange de 15 minutes en visio reste ouvert si vous souhaitez découvrir le réseau. Si ce n'est pas le bon moment, aucun souci : sans réservation de votre part, nous ne vous relancerons plus.`,
-    kit: "Pour rappel, les documents pour préparer l'échange :",
+    kit: "Pour rappel, de quoi préparer l'échange :",
     desinscription:
       "Si vous ne souhaitez plus recevoir de message de notre part, un clic suffit : le lien est en bas de ce message.",
     cta: "Réserver mon créneau",
@@ -87,7 +87,7 @@ export const COPY_RELANCE_INVITATION = {
       `${n ? `Hello ${n}, your` : "Hello, your"} application to Axion-IA's business introducer network has been selected, and all that is left is to choose the time of our 15-minute video call. Slots are limited: book yours in one click with the button below.`,
     j7: (n: string) =>
       `${n ? `Hello ${n}, this` : "Hello, this"} is our last message on the subject: your application is still selected, and the 15-minute video call remains open if you would like to discover the network. If now is not the right time, no problem: without a booking from you, we will not remind you again.`,
-    kit: "As a reminder, the documents to prepare for the call:",
+    kit: "As a reminder, to prepare for the call:",
     desinscription:
       "If you no longer wish to hear from us, one click is enough: the link is at the bottom of this message.",
     cta: "Book my slot",

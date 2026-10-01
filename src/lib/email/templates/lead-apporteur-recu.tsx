@@ -16,8 +16,9 @@
 //
 // Il fait trois choses, dans cet ordre :
 //   1. dire que c'est noté — sans délai chiffré, sans appel promis ;
-//   2. donner le KIT : document de présentation + catalogue (décision Will
-//      2026-09-19 : tout le monde le reçoit dès qu'on a son adresse) ;
+//   2. donner le KIT (décision Will 2026-09-19 : tout le monde le reçoit dès
+//      qu'on a son adresse) — le catalogue seul depuis JUR-T44 : le document
+//      de présentation est retiré jusqu'à sa réécriture (`DOCUMENT_APPORTEUR_DIFFUSE`) ;
 //   3. proposer de compléter le dossier (3 minutes, sans CV) : le CTA principal.
 //
 // ⛔ AUCUN lien de réservation d'appel ici. Le lien Calendly n'est envoyé
@@ -47,12 +48,11 @@ interface Payload {
 const COPY = {
   fr: {
     title: "C'est noté",
-    preview:
-      "Le document de présentation, le catalogue, et votre dossier à compléter si vous le souhaitez.",
-    body: "Vous venez de nous laisser vos coordonnées pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Voici le document de présentation et le catalogue de ce que vous pourrez recommander. Si votre profil correspond, nous vous proposons un échange de 15 minutes pour faire connaissance. Aucun engagement : vous décidez après.",
+    preview: "Le catalogue de nos prestations, et votre dossier à compléter si vous le souhaitez.",
+    body: "Vous venez de nous laisser vos coordonnées pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Voici le catalogue de ce que vous pourrez recommander. Si votre profil correspond, nous vous proposons un échange de 15 minutes pour faire connaissance. Aucun engagement : vous décidez après.",
     titleDossier: "Votre dossier vous attend",
     previewDossier:
-      "Le document de présentation, le catalogue, et votre dossier à terminer : il reste quelques écrans.",
+      "Le catalogue de nos prestations, et votre dossier à terminer : il reste quelques écrans.",
     bodyDossier:
       "Vous avez commencé votre dossier pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA. Merci ! Il n'est pas encore arrivé : il vous reste quelques écrans.",
     intro: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
@@ -64,11 +64,10 @@ const COPY = {
   },
   en: {
     title: "Noted",
-    preview: "The presentation document, the catalogue, and your file to complete if you like.",
-    body: "You just left us your details to join Axion-IA's network of business introducers. Here are the presentation document and the catalogue of what you will be able to recommend. If your profile is a match, we will offer you a 15-minute call to get acquainted. No commitment: you decide afterwards.",
+    preview: "Our catalogue of services, and your file to complete if you like.",
+    body: "You just left us your details to join Axion-IA's network of business introducers. Here is the catalogue of what you will be able to recommend. If your profile is a match, we will offer you a 15-minute call to get acquainted. No commitment: you decide afterwards.",
     titleDossier: "Your file is waiting",
-    previewDossier:
-      "The presentation document, the catalogue, and your file to finish: only a few screens left.",
+    previewDossier: "Our catalogue of services, and your file to finish: only a few screens left.",
     bodyDossier:
       "You started your file to join Axion-IA's network of business introducers. Thank you! It has not arrived yet: only a few screens are left.",
     intro: (n: string) => (n ? `Hello ${n},` : "Hello,"),
