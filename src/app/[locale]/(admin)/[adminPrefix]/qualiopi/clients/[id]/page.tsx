@@ -70,6 +70,7 @@ import {
 import { NouveauRendezVous } from "@/components/admin/dossier-client/NouveauRendezVous";
 import { FusionDeFiches } from "@/components/admin/dossier-client/FusionDeFiches";
 import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
+import { compterDocumentsParProjet } from "@/features/dossier-client/documents/queries";
 import { toParisLocalInput } from "@/lib/calendar-grid";
 import {
   rechercherSiren,
@@ -312,9 +313,10 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
       />
     );
   } else if (voitEchanges && onglet === "projets") {
-    const [projets, faitsARanger] = await Promise.all([
+    const [projets, faitsARanger, nbDocuments] = await Promise.all([
       lireProjetsDuClient(id),
       lireFaitsARanger(id),
+      compterDocumentsParProjet(id),
     ]);
     contenuDossier = (
       <OngletProjets
@@ -324,6 +326,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
         ficheHref={ficheHref}
         qBase={qBase}
         erreur={erreur}
+        nbDocuments={nbDocuments}
       />
     );
   } else if (voitEchanges && onglet === "echanges") {

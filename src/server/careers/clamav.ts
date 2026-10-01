@@ -36,6 +36,54 @@ export function lireReponseClamd(brut: string): VerdictAntivirus {
   return { issue: "indisponible", raison: r ? r.slice(0, 200) : "réponse vide" };
 }
 
+/**
+ * Même protocole `zINSTREAM`, sur des OCTETS en mémoire (ADR 0063, documents
+ * du projet stockés en base : il n'y a pas de chemin à lire). Blocs de 1 Mo ;
+ * mêmes trois issues ; `analyserFichier` est inchangé.
+ */
+export function analyserOctets(
+  octets: Uint8Array,
+  delaiMs: number = DELAI_MS,
+): Promise<VerdictAntivirus> {
+  return new Promise((resolve) => {
+    let fini = false;
+    let reponse = "";
+    const finir = (v: VerdictAntivirus) => {
+      if (fini) return;
+      fini = true;
+      socket.destroy();
+      resolve(v);
+    };
+    const socket = connect({ host: HOTE, port: PORT });
+    socket.setTimeout(delaiMs, () => finir({ issue: "indisponible", raison: "délai dépassé" }));
+    socket.on("error", (e) => finir({ issue: "indisponible", raison: e.message }));
+    socket.on("data", (d) => {
+      reponse += d.toString("utf8");
+      if (reponse.includes("\0")) finir(lireReponseClamd(reponse));
+    });
+    socket.on("end", () => finir(lireReponseClamd(reponse)));
+    socket.on("connect", () => {
+      socket.write("zINSTREAM\0");
+      const BLOC = 1024 * 1024;
+      let position = 0;
+      const ecrire = (): void => {
+        while (position < octets.length && !fini) {
+          const bloc = octets.subarray(position, Math.min(position + BLOC, octets.length));
+          position += bloc.length;
+          const entete = Buffer.alloc(4);
+          entete.writeUInt32BE(bloc.length, 0);
+          if (!socket.write(Buffer.concat([entete, bloc]))) {
+            socket.once("drain", ecrire);
+            return;
+          }
+        }
+        if (!fini) socket.write(Buffer.alloc(4));
+      };
+      ecrire();
+    });
+  });
+}
+
 export function analyserFichier(chemin: string): Promise<VerdictAntivirus> {
   return new Promise((resolve) => {
     let fini = false;

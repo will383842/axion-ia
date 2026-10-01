@@ -551,6 +551,11 @@ export const config = {
     //
     // ⚠️ Les DEUX alternatives sont corrigees : `.txt` portait exactement le meme
     //    trou que les images. N'en traiter qu'une laisserait la porte entrouverte.
-    "/((?!api/|widget/|qr/|questionnaire/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
+    // `document/` exclu (ADR 0063, 2026-10-01) : lien public d'une page envoyée
+    // au client (`src/app/document/[id]/[jeton]/route.ts`), route racine hors
+    // `[locale]`. Sans l'exclusion, la règle 0bis la 301 vers `/fr/document/…`
+    // (404). Ses en-têtes sont posés par la route et par `next.config.ts`.
+    // `/documents-x` reste couvert (la barre fait partie du motif).
+    "/((?!api/|widget/|qr/|questionnaire/|document/|maintenance|_next/static|_next/image|favicon\.ico|sitemap|opengraph-image|twitter-image|manifest\.webmanifest|\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\.txt$|(?!(?:fr|en)/).*\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
   ],
 };

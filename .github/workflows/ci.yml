@@ -1293,6 +1293,12 @@ jobs:
       # invisible à `migrate diff`). Chaque cas est ANNULÉ : aucune ligne ne reste.
       - name: Verrou du dossier de session — ajout seul et dérive (Postgres réel)
         run: pnpm test:integration tests/integration/verrou-dossier
+      # ADR 0063 — documents du projet : les 33 cas du SQL brut (clé composée
+      # « même client », lien https, taille, empreinte recalculée, rien ne se
+      # supprime ni ne se réécrit, journal des ouvertures en ajout seul) et la
+      # garde de dérive lue dans pg_trigger/pg_constraint. Chaque cas est ANNULÉ.
+      - name: Documents du projet — SQL brut et comportement (Postgres réel)
+        run: pnpm test:integration tests/integration/documents-projet
       - name: Visio — comportements sur base réelle
         run: pnpm exec tsx scripts/ci/gate-d-visio.ts
       - name: Verify _prisma_migrations table healthy
