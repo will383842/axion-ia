@@ -73,7 +73,7 @@ export default async function QualiopiReclamationsPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Réclamations"
-        description="Registre des réclamations (off.31 — indicateur 31). Alerte si sans réponse > J+15. Toute réclamation doit être enregistrée et traitée."
+        description="Registre des réclamations (indicateur 31). Une alerte est levée si une réclamation reste sans réponse au-delà de 15 jours. Toute réclamation doit être enregistrée et traitée."
         actions={
           <PdfExportButton
             label="Exporter le registre (PDF)"

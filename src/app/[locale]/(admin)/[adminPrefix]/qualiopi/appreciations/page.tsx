@@ -9,6 +9,7 @@
  */
 
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
@@ -20,6 +21,10 @@ import {
 } from "@/server/actions/qualiopi/appreciations";
 import { AppreciationForm } from "@/components/admin/qualiopi/AppreciationForm";
 import { listerOptionsAppreciation } from "@/server/qualiopi/appreciations/options";
+import {
+  resoudreRattachementsAppreciations,
+  type RattachementsAppreciation,
+} from "@/server/qualiopi/appreciations/rattachements";
 import { Hash, Gauge, UserCheck, Users, GraduationCap } from "lucide-react";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
@@ -54,6 +59,10 @@ export default async function QualiopiAppreciationsPage({ params }: PageProps) {
     // Listes de rattachement — remplacent la saisie d'UUID à la main.
     listerOptionsAppreciation(),
   ]);
+  // Libellés de la colonne « Rattachée à » : une requête groupée par table,
+  // jamais une par ligne.
+  const rattachements = await resoudreRattachementsAppreciations(appreciations);
+  const base = `/${locale}/${adminPrefix}`;
 
   const cellCls =
     "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]";
@@ -72,6 +81,70 @@ export default async function QualiopiAppreciationsPage({ params }: PageProps) {
     );
   }
 
+  const lienCls =
+    "text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline focus-visible:underline";
+
+  function renderRattachements(r: RattachementsAppreciation | undefined) {
+    const liens: { cle: string; prefixe: string; href: string; libelle: string }[] = [];
+    if (r?.stagiaire) {
+      liens.push({
+        cle: "stagiaire",
+        prefixe: "Stagiaire",
+        href: `${base}/qualiopi/stagiaires/${r.stagiaire.id}`,
+        libelle: r.stagiaire.libelle,
+      });
+    }
+    if (r?.session) {
+      liens.push({
+        cle: "session",
+        prefixe: "Session",
+        href: `${base}/qualiopi/sessions/${r.session.id}`,
+        libelle: r.session.libelle,
+      });
+    }
+    if (r?.seance) {
+      liens.push({
+        cle: "seance",
+        prefixe: "Accompagnement",
+        href: `${base}/coaching/seances/${r.seance.id}`,
+        libelle: r.seance.libelle,
+      });
+    }
+    if (r?.client) {
+      liens.push({
+        cle: "client",
+        prefixe: "Client",
+        href: `${base}/qualiopi/clients/${r.client.id}`,
+        libelle: r.client.libelle,
+      });
+    }
+    if (r?.formateur) {
+      liens.push({
+        cle: "formateur",
+        prefixe: "Formateur",
+        href: `${base}/qualiopi/formateurs/${r.formateur.id}`,
+        libelle: r.formateur.libelle,
+      });
+    }
+    if (liens.length === 0) {
+      return <span className="text-[color:var(--color-admin-fg-muted)]">Non rattachée</span>;
+    }
+    return (
+      <ul className="space-y-0.5">
+        {liens.map((l) => (
+          <li key={l.cle}>
+            <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              {l.prefixe} :{" "}
+            </span>
+            <Link href={l.href} className={lienCls}>
+              {l.libelle}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
   function renderMoyenne(m: number | null, count: number) {
     if (count === 0 || m === null) return "—";
     return `${m.toFixed(1)}/5`;
@@ -81,7 +154,7 @@ export default async function QualiopiAppreciationsPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Appréciations"
-        description="Recueil multi-parties (off.30) — retours stagiaire, entreprise, financeur, formateur."
+        description="Recueil des appréciations des parties prenantes (indicateur 30) : stagiaires, entreprises, financeurs et formateurs."
       />
 
       {/* KPIs globaux */}
@@ -140,7 +213,7 @@ export default async function QualiopiAppreciationsPage({ params }: PageProps) {
                 <th className={headCls}>Source</th>
                 <th className={headCls}>Note</th>
                 <th className={headCls}>Commentaire</th>
-                <th className={headCls}>Lien</th>
+                <th className={headCls}>Rattachée à</th>
               </tr>
             </thead>
             <tbody>
@@ -161,20 +234,7 @@ export default async function QualiopiAppreciationsPage({ params }: PageProps) {
                       <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
                     )}
                   </td>
-                  <td className={cellCls}>
-                    <div className="space-y-0.5">
-                      {a.traineeId && (
-                        <div className="font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                          T: {a.traineeId.slice(0, 8)}…
-                        </div>
-                      )}
-                      {a.enrollmentId && (
-                        <div className="font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                          E: {a.enrollmentId.slice(0, 8)}…
-                        </div>
-                      )}
-                    </div>
-                  </td>
+                  <td className={cellCls}>{renderRattachements(rattachements.get(a.id))}</td>
                 </tr>
               ))}
             </tbody>

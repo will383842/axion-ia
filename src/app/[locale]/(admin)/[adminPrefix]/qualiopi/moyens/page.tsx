@@ -65,7 +65,7 @@ export default async function QualiopiMoyensPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Moyens pédagogiques"
-        description="Inventaire des moyens humains, techniques et pédagogiques (off.17/18/19 — doc A14). Renseignez la date de vérification : un moyen jamais vérifié ne prouve pas l'adéquation à l'audit."
+        description="Inventaire des moyens humains, techniques et pédagogiques (indicateurs 17 à 19). Renseignez la date de vérification : un moyen jamais vérifié ne prouve pas son adéquation lors de l'audit."
         actions={<GenererInventaireMoyensButton />}
       />
 

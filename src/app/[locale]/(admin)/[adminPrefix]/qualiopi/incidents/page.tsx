@@ -164,7 +164,7 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Registre des incidents"
-        description="Incidents pédagogiques, administratifs et techniques + actions correctives (amélioration continue). Alimente les métriques M7 (incidents) et M9 (actions correctives) du pilotage — remplace les proxys sessions annulées/réclamations seules."
+        description="Incidents pédagogiques, administratifs et techniques, et actions correctives (amélioration continue). Ces incidents et leurs actions correctives sont repris dans le tableau de pilotage."
         actions={
           <PdfExportButton
             label="Exporter le registre (PDF)"
