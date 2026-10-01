@@ -64,7 +64,8 @@ import { refusPisteClientEnDictee } from "./morceaux";
 import { CODES_ALERTES_VISIO } from "./alertes";
 import { estHorsAccord } from "./dialogue";
 import { echec, ok, type Resultat } from "./resultat";
-import type { StockageAudio } from "./stockage-audio";
+import { planifierDans } from "./prise-d-etape";
+import { purgerSonDUneTranche, stockageR2, type StockageAudio } from "./stockage-audio";
 
 /** Fenêtre autour du rendez-vous où un entretien de candidat bloque l'enregistrement. */
 export const MARGE_ENTRETIEN_MS = 30 * 60_000;
@@ -930,6 +931,8 @@ export async function terminerSession(
     readonly enregistrementId: string;
     readonly corps: TFinSession;
     readonly maintenant: Date;
+    /** V2, N3 — le stockage du son (purge des tranches hors accord) ; R2 par défaut. */
+    readonly stockage?: Pick<StockageAudio, "supprimer" | "existe">;
   },
 ): Promise<Resultat> {
   const enr = await chargerDeLAppareil(db, entree.enregistrementId, entree.appareil.id);
@@ -962,7 +965,13 @@ export async function terminerSession(
     // V2, N3 — une session close par le serveur, traitée depuis : sa `fin`
     // tardive apporte des fenêtres hors accord. Elles ne se perdent pas.
     if (enr.motifArret === "cloture_serveur" && c.fenetresHorsAccord.length > 0) {
-      await appliquerFenetresTardives(db, enr, c.fenetresHorsAccord, entree.maintenant);
+      await appliquerFenetresTardives(
+        db,
+        entree.stockage ?? stockageR2,
+        enr,
+        c.fenetresHorsAccord,
+        entree.maintenant,
+      );
       return ok({ statut: enr.statut, deja: true, fenetresAppliquees: true });
     }
     return ok({ statut: enr.statut, deja: true });
@@ -1022,6 +1031,7 @@ export async function terminerSession(
  */
 async function appliquerFenetresTardives(
   db: Db,
+  stockage: Pick<StockageAudio, "supprimer" | "existe">,
   enr: { id: string; rencontreId: string; debut: Date; evenements: string | null },
   fenetres: ReadonlyArray<{ debutMs: number; finMs: number }>,
   maintenant: Date,
@@ -1067,7 +1077,41 @@ async function appliquerFenetresTardives(
         data: { horsAccord: true, texte: "" },
       });
     }
+    // Le compte rendu a pu lire cette voix : vidé (contenu et état, comme au
+    // retrait de l'accord) et sa réécriture programmée, comme « Réécrire ».
+    const cr = await tx.compteRendu.findFirst({
+      where: {
+        rencontreId: enr.rencontreId,
+        statut: { in: ["brouillon", "a_valider", "valide", "a_regenerer"] },
+      },
+      orderBy: { version: "desc" },
+      select: { id: true },
+    });
+    if (cr) {
+      await tx.compteRendu.update({
+        where: { id: cr.id },
+        data: { statut: "a_regenerer", contenu: "", verification: null },
+      });
+      await planifierDans(tx, enr.rencontreId, {
+        etape: "rediger",
+        compteRenduId: cr.id,
+        reinitialiser: true,
+      });
+    }
   });
+  // « Sans accord, rien n'est enregistré » : le son des tranches qui
+  // chevauchent une fenêtre quitte R2 (comme à l'étape transcrire, N5).
+  const tranches = await db.enregistrementTranche.findMany({
+    where: { enregistrementId: enr.id, audioSupprimeLe: null },
+    select: { id: true, debutCaptureEpochMs: true, dureeMs: true },
+  });
+  for (const t of tranches) {
+    const debut = Number(t.debutCaptureEpochMs);
+    const periode = { debutMs: debut, finMs: debut + (t.dureeMs ?? 180_000) };
+    if (estHorsAccord(periode, fenetres, enr.debut.getTime())) {
+      await purgerSonDUneTranche(db, stockage, t.id);
+    }
+  }
   try {
     const { creerOuDedup } = await import("@/server/qualiopi/alertes/alertes-service");
     await creerOuDedup({

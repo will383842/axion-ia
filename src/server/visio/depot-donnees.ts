@@ -31,7 +31,7 @@ import { euros } from "@/features/dossier-client/libelles";
 import { ArretVisio } from "./etapes";
 import { ErreurVisio } from "./openai/erreurs";
 import { annulerEtapesDesVersions } from "./prise-d-etape";
-import { stockageR2, type LectureAudio } from "./stockage-audio";
+import { purgerSonDUneTranche, stockageR2, type LectureAudio } from "./stockage-audio";
 import type {
   DonneesPasses,
   DonneesPrecontrole,
@@ -364,24 +364,7 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
         })),
       }));
     },
-    purgerSonTranche: async (trancheId) => {
-      const morceaux = await db.enregistrementMorceau.findMany({
-        where: { trancheId },
-        select: { cleR2: true },
-      });
-      try {
-        for (const m of morceaux) await stockage.supprimer(m.cleR2);
-        for (const m of morceaux) if (await stockage.existe(m.cleR2)) return false;
-      } catch (err) {
-        console.error("[visio] son d'une tranche hors accord non supprimé :", err);
-        return false;
-      }
-      await db.enregistrementTranche.update({
-        where: { id: trancheId },
-        data: { audioSupprimeLe: new Date(), tailleOctets: 0 },
-      });
-      return true;
-    },
+    purgerSonTranche: (trancheId) => purgerSonDUneTranche(db, stockage, trancheId),
     lireSonTranche: async (trancheId) => {
       const t = await db.enregistrementTranche.findUnique({
         where: { id: trancheId },

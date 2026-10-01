@@ -14,6 +14,7 @@ import {
   isR2Configured,
   uploadToR2,
 } from "@/lib/r2-storage";
+import type { PrismaClient } from "../../../prisma/generated/client";
 
 export const PREFIXE_AUDIO = "visio-audio/";
 
@@ -33,6 +34,35 @@ export interface StockageAudio {
 
 /** Ce que le circuit du compte rendu utilise du port (lecture, purge, preuve). */
 export type LectureAudio = Pick<StockageAudio, "lire" | "supprimer" | "existe">;
+
+/**
+ * V2, N5 et N3 — supprime de R2 le son d'UNE tranche (hors accord), vérifie
+ * qu'il n'existe plus, puis date sa suppression. Rend faux si un objet
+ * résiste : la purge de l'enregistrement (validation, 30 jours) le reprendra.
+ * Seule implémentation : l'étape `transcrire` et la fin tardive l'appellent.
+ */
+export async function purgerSonDUneTranche(
+  db: Pick<PrismaClient, "enregistrementMorceau" | "enregistrementTranche">,
+  stockage: Pick<StockageAudio, "supprimer" | "existe">,
+  trancheId: string,
+): Promise<boolean> {
+  const morceaux = await db.enregistrementMorceau.findMany({
+    where: { trancheId },
+    select: { cleR2: true },
+  });
+  try {
+    for (const m of morceaux) await stockage.supprimer(m.cleR2);
+    for (const m of morceaux) if (await stockage.existe(m.cleR2)) return false;
+  } catch (err) {
+    console.error("[visio] son d'une tranche hors accord non supprimé :", err);
+    return false;
+  }
+  await db.enregistrementTranche.update({
+    where: { id: trancheId },
+    data: { audioSupprimeLe: new Date(), tailleOctets: 0 },
+  });
+  return true;
+}
 
 function exigerPrefixe(cle: string): void {
   if (!cle.startsWith(PREFIXE_AUDIO)) throw new Error("stockage audio : préfixe inattendu.");

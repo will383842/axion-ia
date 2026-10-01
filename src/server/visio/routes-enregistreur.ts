@@ -219,6 +219,7 @@ export async function traiterFin(
       enregistrementId: id,
       corps: corps.valeur,
       maintenant: g.maintenant,
+      stockage: deps.stockage,
     }),
   );
 }

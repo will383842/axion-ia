@@ -40,6 +40,7 @@ import { battementSession, FIN_FENETRE_OUVERTE_MS, terminerSession } from "../se
 import {
   commePrisma,
   fausseBase,
+  fauxStockage,
   MINUTE,
   semerAppareil,
   semerEnregistrement,
@@ -97,7 +98,7 @@ describe("les fenêtres hors accord arrivent avec le battement", () => {
     ]);
   });
 
-  it("une fin tardive après la transcription exclut encore sa fenêtre et alerte", async () => {
+  it("une fin tardive après la transcription exclut sa fenêtre, purge le son, fait réécrire et alerte", async () => {
     const db = fausseBase();
     base.db = db;
     const { appareilId, adminUserId } = semerAppareil(db);
@@ -136,9 +137,33 @@ describe("les fenêtres hors accord arrivent avec le battement", () => {
         apresRefus: false,
       });
     }
+    db.semer("compteRendu", {
+      id: "00000000-0000-4000-8000-0000000000c1",
+      rencontreId,
+      version: 1,
+      statut: "a_valider",
+      contenu: "texte",
+      verification: "etat",
+    });
+    const stockage = fauxStockage();
+    for (const numero of [0, 1]) {
+      const tranche = db.semer("enregistrementTranche", {
+        enregistrementId: id,
+        piste: "client",
+        numero,
+        statut: "transcrite",
+        debutCaptureEpochMs: BigInt(T0.getTime() + numero * 180_000),
+        dureeMs: 180_000,
+        motifDebut: "nouvelle_tranche",
+      });
+      const cle = `audio/${id}/client/${numero}/0`;
+      stockage.objets.set(cle, Buffer.from("x"));
+      db.semer("enregistrementMorceau", { trancheId: tranche["id"], seq: 0, cleR2: cle });
+    }
     const r = await terminerSession(commePrisma(db), {
       appareil: { id: appareilId, adminUserId },
       enregistrementId: id,
+      stockage,
       maintenant: new Date(T0.getTime() + 3 * 3_600_000),
       corps: {
         finLe: new Date(T0.getTime() + 20 * MINUTE).toISOString(),
@@ -153,6 +178,11 @@ describe("les fenêtres hors accord arrivent avec le battement", () => {
     expect(segs.find((s) => s["ordre"] === 2)).toMatchObject({ horsAccord: true, texte: "" });
     expect(segs.find((s) => s["ordre"] === 1)).toMatchObject({ horsAccord: false });
     expect(String(db.lignes("enregistrement")[0]?.["fenetresHorsAccord"])).toContain("120000");
+    // Le compte rendu est vidé et sa réécriture programmée.
+    expect(db.lignes("compteRendu")[0]).toMatchObject({ statut: "a_regenerer", contenu: "" });
+    expect(db.bruts.some((b) => b.valeurs.includes("rediger"))).toBe(true);
+    // Le son de la tranche qui chevauche la fenêtre quitte R2 ; l'autre reste.
+    expect([...stockage.objets.keys()]).toEqual([`audio/${id}/client/1/0`]);
     expect(
       db.lignes("alerteSysteme").filter((a) => a["code"] === CODES_ALERTES_VISIO.fenetreTardive),
     ).toHaveLength(1);
