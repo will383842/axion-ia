@@ -34,12 +34,18 @@ describe("une transcription en échec se relance sans repayer les tranches faite
       "transcription.count": () => 0,
       "enregistrement.count": () => 1,
     });
-    await reextraireCompteRendu(b.base, RENCONTRE);
+    // Le geste dit à Will ce qui repart (« La transcription est relancée. »).
+    expect(await reextraireCompteRendu(b.base, RENCONTRE)).toBe("transcription");
     const sql = b.sqls.map((s) => `${s.sql} ${JSON.stringify(s.valeurs)}`).join("\n");
     expect(sql).toContain("transcrire");
     expect(sql).not.toContain('"extraire"');
     const filtre = b.de("enregistrement", "count")[0]?.args["where"] as Record<string, unknown>;
     expect(filtre).toMatchObject({ rencontreId: RENCONTRE, audioSupprimeLe: null });
+  });
+
+  it("avec une transcription retenue, c'est l'extraction qui repart", async () => {
+    const b = baseEspion({ "transcription.count": () => 1 });
+    expect(await reextraireCompteRendu(b.base, RENCONTRE)).toBe("extraction");
   });
 
   it("contre-témoin : son déjà purgé, refus clair", async () => {

@@ -94,8 +94,9 @@ const GESTES: Readonly<
     return "La réécriture est lancée : le compte rendu revient dans quelques minutes.";
   },
   reextraire: async (_fd, rencontreId) => {
-    await reextraireCompteRendu(prisma, rencontreId);
-    return "L'extraction est relancée depuis la transcription.";
+    return (await reextraireCompteRendu(prisma, rencontreId)) === "transcription"
+      ? "La transcription est relancée."
+      : "L'extraction est relancée depuis la transcription.";
   },
   completer: async (_fd, rencontreId) => {
     const id = await completerApresRattachement(prisma, rencontreId);

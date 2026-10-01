@@ -403,7 +403,10 @@ export async function reecrireCompteRendu(db: Db, rencontreId: string): Promise<
  * `transcrire` tant qu'un enregistrement de la rencontre a encore son son.
  * Les tranches déjà transcrites ne sont ni refaites ni repayées.
  */
-export async function reextraireCompteRendu(db: Db, rencontreId: string): Promise<void> {
+export async function reextraireCompteRendu(
+  db: Db,
+  rencontreId: string,
+): Promise<"transcription" | "extraction"> {
   const t = await db.transcription.count({
     where: { statut: "retenue", enregistrement: { rencontreId } },
   });
@@ -427,11 +430,12 @@ export async function reextraireCompteRendu(db: Db, rencontreId: string): Promis
         reinitialiser: true,
       }),
     );
-    return;
+    return "transcription";
   }
   await db.$transaction((tx) =>
     planifierDans(tx, rencontreId, { etape: "extraire", compteRenduId: null, reinitialiser: true }),
   );
+  return "extraction";
 }
 
 /**
