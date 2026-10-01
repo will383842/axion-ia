@@ -90,8 +90,8 @@ function indicateursAnnonces(description: string): number[] {
   for (const m of description.matchAll(/off\.(\d+(?:\s*\/\s*\d+)*)/gi)) {
     for (const n of (m[1] ?? "").split("/")) numeros.add(Number(n.trim()));
   }
-  // « indicateur 27 », « indicateurs 23-25 »
-  for (const m of description.matchAll(/indicateurs?\s+(\d+)(?:\s*-\s*(\d+))?/gi)) {
+  // « indicateur 27 », « indicateurs 23-25 », « indicateurs 17 à 19 »
+  for (const m of description.matchAll(/indicateurs?\s+(\d+)(?:\s*(?:-|à)\s*(\d+))?/gi)) {
     const debut = Number(m[1]);
     const fin = m[2] !== undefined ? Number(m[2]) : debut;
     for (let n = debut; n <= fin; n += 1) numeros.add(n);

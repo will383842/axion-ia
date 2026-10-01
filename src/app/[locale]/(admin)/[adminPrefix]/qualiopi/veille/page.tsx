@@ -62,7 +62,7 @@ export default async function QualiopiVeillePage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Veille"
-        description="Registre de veille réglementaire, métiers et pédagogique (off.23/24/25 — indicateurs 23-25). Chaque entrée doit préciser l'action décidée (preuve d'exploitation)."
+        description="Registre de veille réglementaire, métiers et pédagogique (indicateurs 23 à 25). Chaque entrée doit préciser l'action décidée (preuve d'exploitation)."
         actions={
           <PdfExportButton
             label="Exporter le journal (PDF)"

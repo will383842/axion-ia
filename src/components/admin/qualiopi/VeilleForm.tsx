@@ -182,7 +182,7 @@ export function VeilleForm({ creerAction }: VeilleFormProps) {
             onChange={(e) => setImpact(e.target.value)}
             disabled={isPending}
             rows={2}
-            placeholder="Quel impact sur l'OF ou les formations ?"
+            placeholder="Quel impact sur l'organisme ou les formations ?"
             className={inputCls}
           />
         </div>
