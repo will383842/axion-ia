@@ -200,8 +200,10 @@ export const PHASES_DES_BLOCS: Readonly<Record<BlocFiche, readonly PhaseFiche[] 
   "preparation-kit": ["preparer"],
   // La navigation vers Émargement, Évaluations, Financement : utile partout.
   "sous-pages": "toujours",
-  // Inscrire et adapter (préparer) ; statut de présence du jour (jour J).
-  stagiaires: ["preparer", "jour_j"],
+  // Inscrire et adapter (préparer) ; présence (jour J) ; accès portail pour
+  // l'attestation (après) ; liste des stagiaires, preuve lue par l'auditeur
+  // (clôturée). Gate B #1254 : le parcours mobile y cherche l'accès portail.
+  stagiaires: "toujours",
   // Pièces contractuelles et signatures (préparer) ; attestation, certificat,
   // factures, contreseings restants (après) ; registre et ZIP (clôturée).
   documents: ["preparer", "apres", "cloturee"],
