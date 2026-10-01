@@ -1833,6 +1833,14 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — levée par le balayage de l'enregistreur des visios (`src/server/visio/balayage-enregistreur.ts`), hors d'`evaluerAlertes`. C'est ce balayage qui la ferme quand la cause disparaît ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture.",
     guichet: "direction",
   },
+  "visio.extension_trop_ancienne": {
+    niveau: "important",
+    titre: "Visio : l'extension du poste est trop ancienne pour enregistrer",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par le balayage de l'enregistreur des visios (`src/server/visio/balayage-enregistreur.ts`), hors d'`evaluerAlertes`. C'est ce balayage qui la ferme quand l'appareil bat avec une version à jour.",
+    guichet: "direction",
+  },
   // ── Circuit du compte rendu (chantier visio, PR 6 ; anti-doublon A3) ────
   // Même plomberie que l'enregistreur : AlerteSysteme + creerOuDedup, sans
   // parole ni nom. Codes posés par `src/server/visio/alertes-circuit.ts`.

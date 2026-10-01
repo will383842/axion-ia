@@ -74,7 +74,8 @@
       "reprise_historique",
       "opposition_ia",
       "refus_anterieur_definitif",
-      "client_actif_preavis_en_cours"
+      "client_actif_preavis_en_cours",
+      "extension_trop_ancienne"
     ]
   },
   "schemas": {

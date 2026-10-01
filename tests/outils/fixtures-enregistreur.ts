@@ -134,7 +134,7 @@ export function semerEnregistrement(
     motifArret: o.motifArret ?? null,
     accordConfirmeLe: o.accordConfirmeLe ?? null,
     evenements: "[]",
-    versionExtension: "1.0.0",
+    versionExtension: "1.1.0",
     versionContrat: 1,
     updatedAt: o.updatedAt ?? T0,
   });
@@ -229,7 +229,7 @@ export function corpsSession(
     cleClient: o.cleClient ?? randomUUID(),
     rencontreId,
     nature: o.nature ?? ("visio" as const),
-    versionExtension: "1.0.0",
+    versionExtension: "1.1.0",
     debutLe: (o.debutLe ?? T0).toISOString(),
     accordLocalLe: o.accordLocalLe ? o.accordLocalLe.toISOString() : null,
     nbParticipants: 2,

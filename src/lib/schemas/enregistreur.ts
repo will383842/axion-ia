@@ -159,7 +159,16 @@ export const MOTIFS_REFUS_SESSION = [
   "opposition_ia",
   "refus_anterieur_definitif",
   "client_actif_preavis_en_cours",
+  "extension_trop_ancienne",
 ] as const;
+
+/**
+ * V2, N2 — la plus ancienne extension qui puisse enregistrer une VISIO : la
+ * 1.1.0 ouvre la fenêtre « personne entrée sans accord » dès l'arrivée
+ * (RGPD-01). Les 1.0.x parlent le même contrat v1 sans ce filet : le site les
+ * refuse (409 `extension_trop_ancienne`).
+ */
+export const VERSION_EXTENSION_MINIMALE_VISIO = "1.1.0";
 
 const horodatage = z.string().datetime({ offset: true });
 const uuid = z.string().uuid();

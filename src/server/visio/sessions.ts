@@ -36,6 +36,7 @@ import type { EnregistrementStatut, PrismaClient } from "../../../prisma/generat
 import {
   DELAIS_SERVEUR,
   VERSION_CONTRAT_ENREGISTREUR,
+  VERSION_EXTENSION_MINIMALE_VISIO,
   type MotifRefusSession,
   type TCreerSession,
   type TDeclarerAccord,
@@ -99,7 +100,31 @@ const MESSAGES_REFUS: Readonly<Record<MotifATexteFixe, string>> = {
     "Une personne de ce client s'est opposée au traitement par IA : ni enregistrement, ni dictée.",
   refus_anterieur_definitif:
     "Ce rendez-vous a déjà fait l'objet d'un refus : rien ne s'enregistre.",
+  extension_trop_ancienne: `Cette copie de l'extension est trop ancienne pour enregistrer une visio : mettez à jour l'extension (version ${VERSION_EXTENSION_MINIMALE_VISIO} au moins), puis recommencez.`,
 };
+
+/** « 1.10.0 » → [1, 10, 0] ; `null` si ce n'est pas une version numérique. */
+function partiesDeVersion(v: string): number[] | null {
+  if (!/^\d+(\.\d+)*$/.test(v)) return null;
+  return v.split(".").map((x) => Number(x));
+}
+
+/**
+ * V2, N2 — vrai si cette version d'extension peut enregistrer une VISIO
+ * (`VERSION_EXTENSION_MINIMALE_VISIO` ou plus récente). Comparaison NUMÉRIQUE,
+ * partie par partie ; une version illisible est refusée.
+ */
+export function versionAccepteePourVisio(version: string): boolean {
+  const lue = partiesDeVersion(version.trim());
+  const min = partiesDeVersion(VERSION_EXTENSION_MINIMALE_VISIO);
+  if (!lue || !min) return false;
+  for (let i = 0; i < Math.max(lue.length, min.length); i += 1) {
+    const a = lue[i] ?? 0;
+    const b = min[i] ?? 0;
+    if (a !== b) return a > b;
+  }
+  return true;
+}
 
 /** Un refus motivé : le code du contrat et le texte montré à Will. */
 export interface RefusMotive {
@@ -421,6 +446,13 @@ export async function creerOuReprendreSession(
   const preavis = entree.preavis === undefined ? PREAVIS_SOUS_TRAITANTS : entree.preavis;
   const debut = new Date(corps.debutLe);
   const accordLocalLe = corps.accordLocalLe ? new Date(corps.accordLocalLe) : null;
+
+  // 00. V2, N2 — une extension sans RGPD-01 n'enregistre aucune visio, pas
+  //     même en rejouant une création : la voix d'une personne passée moins de
+  //     120 s partirait chez OpenAI. La dictée (Williams seul) n'est pas visée.
+  if (corps.nature === "visio" && !versionAccepteePourVisio(corps.versionExtension)) {
+    return refusSession("extension_trop_ancienne");
+  }
 
   // 0. Rejeu de la même création (réseau coupé après l'écriture).
   const parCle = await db.enregistrement.findUnique({
