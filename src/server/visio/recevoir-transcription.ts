@@ -119,7 +119,12 @@ export const transcrire: Gestionnaire = async (ctx) => {
   }
 
   const faits: Transcrit[] = [];
-  for (const e of aFaire) faits.push(await transcrireUn(ctx, e));
+  for (const e of aFaire) {
+    // V2, m5 — relu juste avant : une tranche complétée pendant la
+    // transcription d'un enregistrement précédent n'est pas oubliée.
+    const relu = (await deps.donnees.aTranscrire(t.rencontreId)).find((x) => x.id === e.id);
+    faits.push(await transcrireUn(ctx, relu ?? e));
+  }
 
   return {
     ecrire: async (tx) => {

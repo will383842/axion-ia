@@ -505,11 +505,22 @@ async function poserReponseDeWill(
   c: CibleConfirmation,
   type: typeof EVT_COURT_CONFIRME | typeof EVT_FENETRES_VERIFIEES,
 ): Promise<void> {
+  // V2, m4 — son purgé (échéance de 30 jours) : la transcription n'aurait
+  // plus rien à lire ; la réponse est refusée au lieu de produire du vide.
   const e = await db.enregistrement.findFirst({
-    where: { id: c.enregistrementId, rencontreId: c.rencontreId, statut: "depose" },
+    where: {
+      id: c.enregistrementId,
+      rencontreId: c.rencontreId,
+      statut: "depose",
+      audioSupprimeLe: null,
+    },
     select: { id: true, evenements: true, motifArret: true },
   });
-  if (!e) throw new GesteRefuse("Aucun enregistrement en attente de votre réponse.");
+  if (!e) {
+    throw new GesteRefuse(
+      "Aucun enregistrement en attente de votre réponse (ou son son a déjà été supprimé).",
+    );
+  }
   if (type === EVT_FENETRES_VERIFIEES && e.motifArret !== "cloture_serveur") {
     throw new GesteRefuse("Cet enregistrement n'a pas été interrompu avant la fin.");
   }

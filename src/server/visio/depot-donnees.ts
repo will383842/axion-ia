@@ -916,10 +916,41 @@ export function depotDonneesPrisma(db: Db, stockage: LectureAudio = stockageR2):
         where: { id: { in: [...a.trancheIds] } },
         data: { statut: "purgee", audioSupprimeLe: le, tailleOctets: 0 },
       });
-      await tx.enregistrement.update({
+      const e = await tx.enregistrement.update({
         where: { id: a.enregistrementId },
         data: { audioSupprimeLe: le },
+        select: { rencontreId: true, evenements: true },
       });
+      // V2, m4 — plus aucun son à transcrire dans la rencontre : une question
+      // à Will encore ouverte (transcription suspendue sans classe) est close,
+      // et le journal le dit. Sinon sa réponse relançait une transcription
+      // sur des tranches purgées.
+      const avecSon = await tx.enregistrement.count({
+        where: {
+          rencontreId: e.rencontreId,
+          statut: { in: ["depose", "en_traitement"] },
+          audioSupprimeLe: null,
+        },
+      });
+      if (avecSon === 0) {
+        const n = await tx.traitementVisio.updateMany({
+          where: {
+            rencontreId: e.rencontreId,
+            etape: "transcrire",
+            statut: "suspendu",
+            classeErreur: null,
+          },
+          data: { statut: "annule", verrouJusqua: null },
+        });
+        if (n.count > 0) {
+          await tx.enregistrement.update({
+            where: { id: a.enregistrementId },
+            data: {
+              evenements: ajouterAuJournal(e.evenements, { le, type: "question_close_par_purge" }),
+            },
+          });
+        }
+      }
     },
   };
 }
