@@ -44,6 +44,7 @@ describe("N1 — un message forgé ne s'affiche pas", () => {
     "src/app/[locale]/(admin)/[adminPrefix]/rendez-vous/rencontres/[rencontreId]/page.tsx",
     "src/app/[locale]/(admin)/[adminPrefix]/rendez-vous/page.tsx",
     "src/app/[locale]/(admin)/[adminPrefix]/qualiopi/clients/[id]/projets/[projetId]/page.tsx",
+    "src/app/[locale]/(admin)/[adminPrefix]/qualiopi/clients/[id]/preparer/page.tsx",
   ])("%s ne lit ?message= / ?erreur= que scellés", (chemin) => {
     const src = readFileSync(chemin, "utf8");
     expect(src).toContain("lireMessageDeRetour(");
