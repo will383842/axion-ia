@@ -36,6 +36,25 @@ describe("une personne passée avant l'accord n'est pas couverte par lui", () =>
     expect(r.etat.participantsAccordes).toBe(2);
   });
 
+  it("deux arrivées successives : la fenêtre part de la PREMIÈRE arrivée", () => {
+    const QUATRE = { ...MESURE_NORMALE, nbParticipants: 4 };
+    let e = capture.demarrer(capture.etatInitial(), base(T), T).etat;
+    e = capture.tic(e, DEUX, T + 1_000).etat;
+    e = capture.tic(e, TROIS, T + 100_000).etat;
+    e = capture.tic(e, QUATRE, T + 130_000).etat;
+    e = capture.tic(e, DEUX, T + 160_000).etat;
+    const r = capture.accordObtenu(e, T + 170_000);
+    expect(r.etat.fenetresHorsAccord).toEqual([{ debutMs: 85_000, finMs: 160_000 }]);
+  });
+
+  it("un participant du départ qui s'en va avant le clic : son temps est exclu", () => {
+    let e = capture.demarrer(capture.etatInitial(), base(T), T).etat;
+    e = capture.tic(e, TROIS, T + 1_000).etat;
+    e = capture.tic(e, DEUX, T + 60_000).etat;
+    const r = capture.accordObtenu(e, T + 100_000);
+    expect(r.etat.fenetresHorsAccord).toEqual([{ debutMs: 0, finMs: 60_000 }]);
+  });
+
   it("contre-témoin : sans personne en plus, aucune fenêtre", () => {
     let e = capture.demarrer(capture.etatInitial(), base(T), T).etat;
     e = capture.tic(e, DEUX, T + 1_000).etat;
