@@ -124,10 +124,30 @@ describe("le téléchargement ne montre jamais rien", () => {
   it("un triplet faux ou un identifiant mal formé → 404, jamais 403", async () => {
     const s = baseEnMemoire([{ id: PROJET, clientId: CLIENT }]);
     etat.base = s.db;
-    const doc = s.poser({ clientId: CLIENT, projetId: PROJET, fichierFormat: "pdf" });
+    // Un VRAI fichier sain : seul le triplet peut expliquer le 404 (retirer `clientId`
+    // du `where` de `telecharger.ts` fait servir ce document → rouge).
+    const octets = new TextEncoder().encode("%PDF-1.7 confidentiel");
+    const doc = s.poser(
+      {
+        clientId: CLIENT,
+        projetId: PROJET,
+        fichierNom: "devis.pdf",
+        fichierFormat: "pdf",
+        fichierTailleOctets: octets.length,
+        analyseAntivirus: "sain",
+        analyseLe: new Date(),
+      },
+      octets,
+    );
     expect((await appeler(doc.id, PROJET, "44444444-4444-4444-8444-444444444444")).status).toBe(
       404,
     );
+    expect((await appeler(doc.id, "55555555-5555-4555-8555-555555555555", CLIENT)).status).toBe(
+      404,
+    );
     expect((await appeler("pas-un-uuid")).status).toBe(404);
+    expect(s.compteurs.lecturesContenu).toBe(0);
+    // Contre-témoin : le bon triplet sert le fichier.
+    expect((await appeler(doc.id)).status).toBe(200);
   });
 });

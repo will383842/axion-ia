@@ -416,6 +416,55 @@ describe("documents_projet contre un vrai Postgres (Gate D)", () => {
     });
   });
 
+  it("35-39. chaque CHECK restant refuse sa faute : titre vide, empreinte, nom de fichier, auteur sans archivage, verdict non daté", async () => {
+    await dansTransactionAnnulee(async (tx) => {
+      await scene(tx);
+      const [lien, ...vLien] = sqlLien();
+      expect(await essayer(tx, [lien.replace("'Titre'", "'   '"), ...vLien])).toMatch(
+        /documents_projet_titre_non_vide/,
+      );
+      expect(await essayer(tx, sqlFichier({ sha: "Z".repeat(64) }), sqlContenu())).toMatch(
+        /documents_projet_fichier_sha256/,
+      );
+      const [fichier, ...vFichier] = sqlFichier();
+      expect(
+        await essayer(
+          tx,
+          [fichier.replace("'piece.pdf'", "'dossier/piece.pdf'"), ...vFichier],
+          sqlContenu(),
+        ),
+      ).toMatch(/documents_projet_fichier_nom/);
+      expect(
+        await essayer(
+          tx,
+          [
+            fichier.replace("CASE WHEN $7 = 'non_analyse' THEN NULL ELSE now() END", "NULL"),
+            ...vFichier,
+          ],
+          sqlContenu(),
+        ),
+      ).toMatch(/documents_projet_verdict_coherent/);
+      expect(await essayer(tx, sqlLien())).toBe("accepte");
+      expect(
+        await essayer(tx, [`UPDATE "documents_projet" SET "archive_par_id" = gen_random_uuid()`]),
+      ).toMatch(/documents_projet_archive_coherent/);
+    });
+  });
+
+  it("40. TRUNCATE de documents_projet refusé par SON trigger (celui des contenus retiré dans la transaction)", async () => {
+    await dansTransactionAnnulee(async (tx) => {
+      await scene(tx);
+      expect(await essayer(tx, sqlLien())).toBe("accepte");
+      // Le trigger des contenus retiré : seul `documents_projet_pas_de_truncate` peut refuser.
+      await tx.$executeRawUnsafe(
+        `DROP TRIGGER "documents_projet_contenus_pas_de_truncate" ON "documents_projet_contenus"`,
+      );
+      expect(
+        await essayer(tx, [`TRUNCATE "documents_projet", "documents_projet_contenus"`]),
+      ).toMatch(/documents_projet : TRUNCATE refusé/);
+    });
+  });
+
   it("34. purge du pilote : sans drapeau le projet ne part pas ; sous le drapeau, octets puis documents puis projet partent, aucun octet ne reste", async () => {
     await dansTransactionAnnulee(async (tx) => {
       await scene(tx);

@@ -21,6 +21,19 @@ import { describe, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 
 vi.mock("@/lib/prisma", () => ({ prisma: {} }));
+vi.mock("@/lib/site-url", () => ({ SITE_URL: "https://axion-ia.com" }));
+const lectures = vi.hoisted(() => ({
+  documents: [] as unknown[],
+  ouverturesDemandees: [] as string[][],
+}));
+vi.mock("@/features/dossier-client/documents/queries", async (original) => ({
+  ...(await original<typeof import("@/features/dossier-client/documents/queries")>()),
+  lireDocumentsDuProjet: async () => lectures.documents,
+  lireOuvertures: async (ids: string[]) => {
+    lectures.ouverturesDemandees.push([...ids]);
+    return {};
+  },
+}));
 vi.mock("@/features/dossier-client/documents/actions", () => ({
   ajouterDocumentFormAction: vi.fn(),
   archiverDocumentFormAction: vi.fn(),
@@ -33,7 +46,10 @@ vi.mock("@/features/dossier-client/actions", () => ({
   garderCetteValeurFormAction: vi.fn(),
 }));
 
-import { CarteDocuments } from "@/components/admin/dossier-client/DocumentsDuProjet";
+import {
+  CarteDocuments,
+  DocumentsDuProjet,
+} from "@/components/admin/dossier-client/DocumentsDuProjet";
 import { OngletProjets } from "@/components/admin/dossier-client/Onglets";
 import type { DocumentDeLaListe } from "@/features/dossier-client/documents/queries";
 import type { ProjetDuDossier } from "@/features/dossier-client/queries";
@@ -113,7 +129,11 @@ function rendre(
       projetHref={HREF}
       documents={documents}
       ouvertures={{}}
-      liensPublics={{ d3: "https://axion-ia.com/document/d3/jeton" }}
+      // Un lien pour TOUS les documents : seule `estPartageable` (dans la ligne)
+      // peut alors réserver le bouton à la page partageable.
+      liensPublics={Object.fromEntries(
+        documents.map((d) => [d.id, `https://axion-ia.com/document/${d.id}/jeton`]),
+      )}
       nbQuestionnaires={1}
       message={null}
       erreur={null}
@@ -181,6 +201,30 @@ describe("la rubrique Documents suit la maquette", () => {
     const html = rendre(TELEOS);
     expect(html.match(/Copier le lien client/g)?.length).toBe(1);
     expect(html).toContain("https://axion-ia.com/document/d3/jeton");
+    for (const autre of ["d1", "d2", "d4", "d5"]) {
+      expect(html).not.toContain(`/document/${autre}/jeton`);
+    }
+  });
+
+  it("le producteur ne fabrique un lien public, et ne lit les ouvertures, QUE pour la page partageable", async () => {
+    const uuid = (i: number) => `00000000-0000-4000-8000-00000000000${i}`;
+    lectures.documents = TELEOS.map((d, i) => ({ ...d, id: uuid(i + 1) }));
+    lectures.ouverturesDemandees = [];
+    const element = await DocumentsDuProjet({
+      clientId: "11111111-1111-4111-8111-111111111111",
+      projetId: PROJET,
+      projetHref: HREF,
+      nbQuestionnaires: 0,
+      recherche: {},
+    });
+    const html = renderToStaticMarkup(element);
+    // d3 (index 2) est la seule page envoyée, HTML, saine et visible.
+    expect(lectures.ouverturesDemandees).toEqual([[uuid(3)]]);
+    expect(html.match(/Copier le lien client/g)?.length).toBe(1);
+    expect(html).toMatch(
+      new RegExp(`https://axion-ia[.]com/document/${uuid(3)}/[A-Za-z0-9_-]{43}`),
+    );
+    for (const i of [1, 2, 4, 5]) expect(html).not.toContain(`/document/${uuid(i)}/`);
   });
 
   it("la ligne du questionnaire mène à sa vue et ne compte pas", () => {

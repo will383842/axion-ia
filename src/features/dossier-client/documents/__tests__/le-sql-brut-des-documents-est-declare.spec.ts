@@ -48,7 +48,7 @@ describe("le SQL brut des documents est déclaré", () => {
     for (const o of OBJETS_SQL_DOCUMENTS_PROJET) {
       const motif =
         o.type === "trigger"
-          ? new RegExp(`CREATE (CONSTRAINT )?TRIGGER "${o.nom}"[\\s\\S]*?ON "${o.table}"`)
+          ? new RegExp(`CREATE (CONSTRAINT )?TRIGGER "${o.nom}"[^;]*?ON "${o.table}"`) // sans traverser l'instruction suivante
           : new RegExp(
               `ALTER TABLE "${o.table}" ADD CONSTRAINT "${o.nom}" ${o.type === "fk" ? "FOREIGN KEY" : "CHECK"}`,
             );

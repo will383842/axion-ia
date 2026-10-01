@@ -9,8 +9,9 @@
  *
  * Mutations qui rougissent : retirer `clientId` du `where` d'une lecture ou
  * d'un archivage ; ne pas vérifier le projet avant d'écrire (l'ajout part
- * alors dans le projet d'un autre client — ici la base en mémoire n'a pas la
- * clé composée, la vraie l'a : Gate D).
+ * alors jusqu'à la base, qui le refuse — la base en mémoire lève P2003 comme
+ * la clé composée réelle, MAIS après avoir compté l'écriture : le test « avant
+ * toute écriture » rougit ; la vraie clé est prouvée en Gate D).
  * Contre-témoin : le bon triplet ajoute, archive, réaffiche et télécharge.
  */
 
@@ -68,22 +69,41 @@ describe("un document d'un autre client est introuvable", () => {
     expect(etat.documents).toHaveLength(1);
   });
 
-  it("archiver ou réafficher par un triplet faux répond « introuvable » et n'écrit rien", async () => {
+  const TRIPLETS_FAUX = [
+    { projetId: PROJET_A, clientId: CLIENT_A },
+    { projetId: PROJET_B, clientId: CLIENT_A },
+    { projetId: PROJET_A, clientId: CLIENT_B },
+  ];
+
+  it("archiver par un triplet faux répond « introuvable » et n'écrit rien", async () => {
     const { db, compteurs, docB } = scene();
-    for (const triplet of [
-      { id: docB.id, projetId: PROJET_A, clientId: CLIENT_A },
-      { id: docB.id, projetId: PROJET_B, clientId: CLIENT_A },
-      { id: docB.id, projetId: PROJET_A, clientId: CLIENT_B },
-    ]) {
-      await expect(archiver(db as never, { ...triplet, parAdminId: ADMIN })).rejects.toThrow(
+    for (const t of TRIPLETS_FAUX) {
+      await expect(archiver(db as never, { id: docB.id, ...t, parAdminId: ADMIN })).rejects.toThrow(
         /n'a pas pu être archivé/,
-      );
-      await expect(reafficher(db as never, { ...triplet, parAdminId: ADMIN })).rejects.toThrow(
-        /n'a pas pu être réaffiché/,
       );
     }
     expect(docB.archiveLe).toBeNull();
     expect(compteurs.ecritures).toBe(0);
+  });
+
+  it("réafficher un document ARCHIVÉ par un triplet faux répond « introuvable » et n'écrit rien", async () => {
+    const { db, compteurs, docB } = scene();
+    // Archivé par le bon triplet : seul le triplet peut alors expliquer le refus.
+    await archiver(db as never, {
+      id: docB.id,
+      projetId: PROJET_B,
+      clientId: CLIENT_B,
+      parAdminId: ADMIN,
+    });
+    expect(docB.archiveLe).toBeInstanceOf(Date);
+    const ecrituresAvant = compteurs.ecritures;
+    for (const t of TRIPLETS_FAUX) {
+      await expect(
+        reafficher(db as never, { id: docB.id, ...t, parAdminId: ADMIN }),
+      ).rejects.toThrow(/n'a pas pu être réaffiché/);
+    }
+    expect(docB.archiveLe).toBeInstanceOf(Date);
+    expect(compteurs.ecritures).toBe(ecrituresAvant);
   });
 
   it("télécharger par un triplet faux répond « introuvable » sans lire les octets", async () => {

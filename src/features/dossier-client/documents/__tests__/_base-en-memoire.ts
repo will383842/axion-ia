@@ -7,8 +7,9 @@
  *   · chaque lecture des OCTETS est comptée (`lecturesContenu`) ;
  *   · chaque appel est compté (`requetes`) : un refus « avant la base » se
  *     prouve par `requetes === 0`.
- * Elle n'imite PAS la clé composée ni les triggers de la vraie base : ceux-là
- * sont prouvés sur Postgres réel (Gate D,
+ * Elle imite la clé composée « même client » au `create` (P2003, comme Prisma —
+ * l'écriture est comptée AVANT le refus), mais PAS les CHECK ni les triggers de
+ * la vraie base : ceux-là sont prouvés sur Postgres réel (Gate D,
  * `tests/integration/documents-projet/sql-brut-et-comportement.spec.ts`).
  */
 
