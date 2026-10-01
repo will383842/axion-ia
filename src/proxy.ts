@@ -556,6 +556,6 @@ export const config = {
     // `[locale]`. Sans l'exclusion, la règle 0bis la 301 vers `/fr/document/…`
     // (404). Ses en-têtes sont posés par la route et par `next.config.ts`.
     // `/documents-x` reste couvert (la barre fait partie du motif).
-    "/((?!api/|widget/|qr/|questionnaire/|document/|maintenance|_next/static|_next/image|favicon\.ico|sitemap|opengraph-image|twitter-image|manifest\.webmanifest|\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\.txt$|(?!(?:fr|en)/).*\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
+    "/((?!api/|widget/|qr/|questionnaire/|document/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
   ],
 };
