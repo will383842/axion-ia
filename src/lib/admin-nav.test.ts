@@ -1104,3 +1104,77 @@ describe("menu rangé par fréquence d'usage (2026-09-28)", () => {
     expect(ADMIN_NAV_GROUP_ORDER as ReadonlyArray<string>).not.toContain("system");
   });
 });
+
+// 🔴 2026-09-30 — refonte « session de bout en bout », lot L4 (menu allégé).
+//
+// Constat de l'audit UX en production : « Formations & prestations » offrait
+// 31 lignes et CINQ portes vers une même session. La rubrique n'en montre plus
+// que 11 ; les vingt autres restent dans `buildAdminNav` (palette ⌘K, fil
+// d'Ariane, URL) mais portent `parent`, que la barre latérale filtre.
+describe("« Formations & prestations » : 11 entrées au plus (lot L4, 2026-09-30)", () => {
+  const items = buildAdminNav("p");
+  const qualiopi = items.filter((it) => it.group === "qualiopi");
+  // Même filtre que `AdminSidebarNav` (it.parent == null), plus le tier : une
+  // entrée `advanced` ne compte jamais parmi les entrées du mode simple.
+  const visibles = qualiopi.filter((it) => it.parent == null && it.tier !== "advanced");
+
+  it("la barre latérale en mode simple n'affiche que les 11 entrées décidées", () => {
+    expect(visibles.length).toBeLessThanOrEqual(11);
+    expect(visibles.map((it) => it.label).sort()).toEqual(
+      [
+        "À traiter — formations",
+        "Sessions",
+        "Affaires",
+        "Clients (CRM)",
+        "Devis",
+        "Nouvelle vente",
+        "Stagiaires",
+        "Formateurs",
+        "Catalogue",
+        "Conformité & auditeur",
+        "Réglages formations",
+      ].sort(),
+    );
+  });
+
+  it("une entrée masquée l'est aussi du RENDU : elle porte `parent`, pas seulement `tier`", () => {
+    // `tier` n'est lu par aucun composant : seul `parent` retire une ligne de la
+    // barre. Une entrée `advanced` sans `parent` resterait affichée.
+    const trompeuses = qualiopi.filter((it) => it.tier === "advanced" && it.parent == null);
+    expect(trompeuses.map((it) => it.href)).toEqual([]);
+  });
+
+  it("chaque entrée masquée a pour parent une entrée VISIBLE de la rubrique (fil d'Ariane)", () => {
+    const hrefsVisibles = new Set(visibles.map((it) => it.href));
+    const masquees = qualiopi.filter((it) => it.parent != null);
+    expect(masquees.length).toBe(20);
+    for (const it of masquees) {
+      expect(hrefsVisibles.has(it.parent as string), `${it.label} → ${it.parent}`).toBe(true);
+    }
+  });
+
+  it("aucune entrée n'est perdue : les 31 écrans restent trouvables par la palette ⌘K", () => {
+    expect(qualiopi.length).toBe(31);
+    // La palette cherche sur le libellé (cmdk) : une recherche par un mot du
+    // libellé doit toujours retrouver l'écran masqué.
+    const chercher = (q: string) =>
+      items.filter((it) => it.label.toLowerCase().includes(q.toLowerCase())).map((it) => it.href);
+    for (const [q, href] of [
+      ["Veille", "/qualiopi/veille"],
+      ["Pilotage Qualiopi", "/qualiopi/pilotage"],
+      ["Demandes RGPD", "/qualiopi/rgpd"],
+      ["Réclamations", "/qualiopi/reclamations"],
+      ["E-mails à valider", "/qualiopi/emails"],
+      ["Générateur de formations", "/qualiopi/formation-engine"],
+      ["Barèmes OPCO", "/qualiopi/baremes-opco"],
+      ["Rémunération formateurs", "/qualiopi/remuneration"],
+    ] as const) {
+      expect(chercher(q), q).toContain(`/fr/p${href}`);
+    }
+  });
+
+  it("Sessions ouvre le pôle des dossiers : c'est l'unique porte vers la fiche session", () => {
+    const dossiers = visibles.filter((it) => it.subGroup === "dossiers");
+    expect(dossiers[0]?.href).toBe("/fr/p/qualiopi/sessions");
+  });
+});

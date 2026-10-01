@@ -9,9 +9,12 @@ import {
 } from "./types";
 
 describe("planningDetailHref", () => {
-  it("pointe vers la fiche 360° d'une formation", () => {
+  // 🔴 Lot L4 (2026-09-30) — une seule fiche par session. La fiche 360° du
+  // planning était une CINQUIÈME porte vers la même session, avec ses propres
+  // blocs et sans le verrou du dossier : on envoie directement à la fiche.
+  it("envoie une formation vers LA fiche session, pas vers une fiche 360° parallèle", () => {
     expect(planningDetailHref("adm-x", { type: "formation", id: "f1" })).toBe(
-      "/fr/adm-x/planning/formation/f1",
+      "/fr/adm-x/qualiopi/sessions/f1",
     );
   });
 

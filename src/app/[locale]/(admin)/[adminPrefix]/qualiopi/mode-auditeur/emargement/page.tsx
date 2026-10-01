@@ -108,16 +108,28 @@ const DETAIL_REFUS: Readonly<Record<string, string>> = {
 function Inscription({
   rapport,
   cheminRetour,
+  sessionsHref,
 }: {
   rapport: RapportInscription;
   cheminRetour: string;
+  /** `/…/qualiopi/sessions` — lot L4 : le registre renvoie à LA fiche session. */
+  sessionsHref: string;
 }): React.ReactElement {
   return (
     <li className="border-b border-[color:var(--color-admin-border)] py-[var(--space-admin-4)] last:border-b-0">
       <p className="font-medium">
         {rapport.stagiaire}
         <span className="text-[color:var(--color-admin-fg-muted)]">
-          {` · session ${rapport.sessionNumero} — ${rapport.sessionTitre}`}
+          {" · session "}
+          {/* Lot L4 (2026-09-30) — le numéro ouvre la fiche : l'auditrice qui
+              lit une anomalie doit pouvoir rejoindre le dossier en un clic. */}
+          <Link
+            href={`${sessionsHref}/${rapport.sessionId}`}
+            className="text-[color:var(--color-admin-accent)] underline underline-offset-2"
+          >
+            {rapport.sessionNumero}
+          </Link>
+          {` — ${rapport.sessionTitre}`}
         </span>
       </p>
 
@@ -273,7 +285,12 @@ export default async function RegistreEmargementPage({
       ) : (
         <ul>
           {rapports.map((r) => (
-            <Inscription key={r.enrollmentId} rapport={r} cheminRetour={cheminRetour} />
+            <Inscription
+              key={r.enrollmentId}
+              rapport={r}
+              cheminRetour={cheminRetour}
+              sessionsHref={`/${locale}/${adminPrefix}/qualiopi/sessions`}
+            />
           ))}
         </ul>
       )}

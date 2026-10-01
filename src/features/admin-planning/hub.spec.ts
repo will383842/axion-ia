@@ -125,9 +125,9 @@ describe("sessions non staffées", () => {
     ).toEqual([]);
   });
 
-  it("le lien pointe vers la fiche 360°", () => {
+  it("le lien pointe vers la fiche session (une seule porte, lot L4)", () => {
     const s = hub({ events: [ev({ formateurId: null, formateurNom: null, id: "abc" })] });
-    expect(s[0]?.items[0]?.href).toBe("/fr/adm/planning/formation/abc");
+    expect(s[0]?.items[0]?.href).toBe("/fr/adm/qualiopi/sessions/abc");
   });
 });
 

@@ -8,7 +8,7 @@
 
 import Link from "next/link";
 import { libelleStatutFacture } from "@/server/qualiopi/financements/statuts-facture";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { getPlanningEventDetail } from "@/features/admin-planning/detail";
 import { getTrainerConflicts } from "@/features/admin-planning/queries";
 import {
@@ -94,6 +94,19 @@ export default async function PlanningDetailPage({
   await gardePage("consultation", `/fr/${adminPrefix}/login`);
 
   if (!(TYPES as string[]).includes(type)) notFound();
+
+  // 🔴 2026-09-30 (lot L4, « une seule porte ») — une formation n'a qu'UNE
+  // fiche : celle de la session. Cette fiche 360° en était une cinquième, avec
+  // ses propres blocs et sans le verrou du dossier. 308 (et non 404) : les
+  // marque-pages et les liens déjà envoyés restent bons. Posée APRÈS la garde :
+  // sans session, on part à la connexion sans apprendre la cible.
+  //
+  // Ce que cette fiche montrait en plus — conflit de formateur, téléphone et
+  // e-mail du contact — est repris en tête de la fiche session
+  // (`ContactEtConflitSession`, même règle `getTrainerConflicts`).
+  if (type === "formation") {
+    permanentRedirect(`/fr/${adminPrefix}/qualiopi/sessions/${encodeURIComponent(id)}`);
+  }
 
   const e = await getPlanningEventDetail(type as PlanningEventType, id);
   if (e === null) notFound();

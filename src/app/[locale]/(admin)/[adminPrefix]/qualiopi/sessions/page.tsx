@@ -3,7 +3,9 @@
  *
  * Affiche une PAGE de sessions avec : numéro, titre, formation, dates,
  * modalité, statut, nb inscrits, taux de présence moyen.
- * Lien vers la page émargement par session.
+ * UN seul lien par ligne : « Ouvrir » la fiche session (lot L4, 2026-09-30).
+ * Onglets par phase (`?phase=`) : Préparer / Le jour J / Après / Clôturées /
+ * Annulées ou reportées, calculés par `phaseDossier` (ADR 0060) en UN appel groupé.
  *
  * 🔴 Fenêtre par défaut : 12 mois glissants (cf. `FENETRE_SESSIONS_MOIS`), et
  * 25 lignes par page. L'écran chargeait auparavant TOUTES les sessions avec
@@ -28,12 +30,23 @@ import {
   type ResultatEcheances,
 } from "@/server/qualiopi/parcours/echeances-service";
 import { LIBELLE_ETAT_DOSSIER } from "@/server/qualiopi/parcours/libelles";
-import { FENETRE_SESSIONS_MOIS, parsePageParam } from "@/server/qualiopi/presence/sessions-liste";
+import {
+  debutFenetreSessions,
+  FENETRE_SESSIONS_MOIS,
+  parsePageParam,
+} from "@/server/qualiopi/presence/sessions-liste";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { SEUIL_PARTIELLE_PCT } from "@/server/qualiopi/presence/taux";
 import { AdminEmptyState } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
+import {
+  LIBELLE_PHASE,
+  ONGLETS_PHASE,
+  parsePhaseParam,
+  phasesDesLignes,
+  restrictionDeLaPhase,
+} from "@/server/qualiopi/sessions/sessions-par-phase";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -77,11 +90,35 @@ export default async function QualiopiSessionsPage({ params, searchParams }: Pag
 
   const sp = await searchParams;
   const avecArchives = sp["archives"] === "1";
+  const phase = parsePhaseParam(sp["phase"]);
+  // Onglet de phase (lot L4). La restriction porte sur la FENÊTRE entière — la
+  // même que `listSessionsForAdmin` —, pas sur la page : sinon la pagination
+  // compterait des lignes qu'elle n'affiche pas.
+  const maintenant = new Date();
+  const restriction =
+    phase !== null
+      ? await restrictionDeLaPhase(
+          phase,
+          avecArchives ? {} : { dateDebut: { gte: debutFenetreSessions(maintenant) } },
+          maintenant,
+        )
+      : null;
   const liste = await listSessionsForAdmin({
     page: parsePageParam(sp["page"]),
     avecArchives,
+    maintenant,
+    ...(restriction !== null
+      ? { restriction: { statuts: restriction.statuts, ids: restriction.ids } }
+      : {}),
   });
   const sessions = liste.rows;
+  // La phase de chaque ligne : états déjà lus par l'onglet, sinon UN appel
+  // groupé pour les lignes de la page (jamais un appel par ligne).
+  const phaseParSession = await phasesDesLignes(
+    sessions.map((s) => s.id),
+    restriction?.etats ?? new Map(),
+    maintenant,
+  );
 
   // Lot 1 §1.4 — la colonne « Dossier ».
   //
@@ -105,12 +142,20 @@ export default async function QualiopiSessionsPage({ params, searchParams }: Pag
   // Préfixe locale inclus : les liens de pagination et d'archives se résolvent
   // directement, sans passer par le redirect 301 de proxy.ts.
   const base = `/${locale}/${adminPrefix}/qualiopi/sessions`;
-  const hrefArchives = `${base}?archives=1`;
+  const hrefArchives = `${base}?archives=1${phase !== null ? `&phase=${phase}` : ""}`;
+  const hrefOnglet = (p: string | null): string => {
+    const qs = new URLSearchParams();
+    if (avecArchives) qs.set("archives", "1");
+    if (p !== null) qs.set("phase", p);
+    const q = qs.toString();
+    return q ? `${base}?${q}` : base;
+  };
   const perimetre = avecArchives
     ? "Archives comprises — tout l'historique"
     : `Les ${FENETRE_SESSIONS_MOIS} derniers mois et les sessions à venir`;
   const pagination = `page ${liste.page} / ${liste.totalPages}`;
-  const description = `${perimetre} · ${liste.total} session${liste.total > 1 ? "s" : ""} · ${pagination}.`;
+  const libelleOnglet = ONGLETS_PHASE.find((o) => o.phase === phase)?.libelle ?? null;
+  const description = `${perimetre}${libelleOnglet !== null ? ` · onglet « ${libelleOnglet} »` : ""} · ${liste.total} session${liste.total > 1 ? "s" : ""} · ${pagination}.`;
   const labelArchives = `Voir les archives (${liste.nbArchives} session${liste.nbArchives > 1 ? "s" : ""} plus ancienne${liste.nbArchives > 1 ? "s" : ""})`;
   // 🔴 Le message envoyait AILLEURS que là où se trouve l'action.
   //
@@ -122,10 +167,20 @@ export default async function QualiopiSessionsPage({ params, searchParams }: Pag
   //
   // La seconde branche disait « Ouvrez les archives » sans rien de cliquable,
   // alors que `hrefArchives` est calculé juste au-dessus.
-  const titreVide = avecArchives ? "Aucune session au registre" : "Aucune session sur la période";
-  const descriptionVide = avecArchives
-    ? "Le registre est vide : aucune session n'a encore été créée."
-    : `Des sessions plus anciennes existent peut-être hors des ${FENETRE_SESSIONS_MOIS} derniers mois.`;
+  const titreVide =
+    libelleOnglet !== null
+      ? `Aucune session dans l'onglet « ${libelleOnglet} »`
+      : avecArchives
+        ? "Aucune session au registre"
+        : "Aucune session sur la période";
+  const descriptionVide =
+    restriction?.lectureEchouee === true
+      ? "L'état des dossiers n'a pas pu être lu : cette liste vide n'est PAS un constat. Réessayez, ou ouvrez l'onglet « Toutes »."
+      : libelleOnglet !== null
+        ? "Les autres onglets listent les sessions des autres phases."
+        : avecArchives
+          ? "Le registre est vide : aucune session n'a encore été créée."
+          : `Des sessions plus anciennes existent peut-être hors des ${FENETRE_SESSIONS_MOIS} derniers mois.`;
 
   const cellCls = "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top";
   const headCls =
@@ -189,7 +244,8 @@ export default async function QualiopiSessionsPage({ params, searchParams }: Pag
               ? "Sessions (tout l'historique)"
               : `Sessions (${FENETRE_SESSIONS_MOIS} derniers mois et à venir)`
           }
-          value={liste.total}
+          // Toutes phases confondues : l'onglet restreint la LISTE, pas la carte.
+          value={liste.totalFenetre}
           icon={CalendarDays}
         />
         <AdminStatCard
@@ -210,6 +266,24 @@ export default async function QualiopiSessionsPage({ params, searchParams }: Pag
           tone={liste.compteurs.realisees > 0 ? "success" : "default"}
         />
       </div>
+
+      {/* Onglets de phase (lot L4) — la vie d'un dossier, de gauche à droite.
+          Des liens, pas des boutons : chaque onglet est une URL partageable. */}
+      <nav
+        aria-label="Phase du dossier"
+        className="mb-[var(--space-admin-5)] flex flex-wrap gap-[var(--space-admin-2)]"
+      >
+        {[{ phase: null, libelle: "Toutes" } as const, ...ONGLETS_PHASE].map((o) => (
+          <Link
+            key={o.phase ?? "toutes"}
+            href={hrefOnglet(o.phase)}
+            aria-current={o.phase === phase ? "page" : undefined}
+            className={o.phase === phase ? "admin-button-secondary" : "admin-button-ghost"}
+          >
+            {o.libelle}
+          </Link>
+        ))}
+      </nav>
 
       {sessions.length === 0 ? (
         <AdminEmptyState
@@ -244,7 +318,7 @@ export default async function QualiopiSessionsPage({ params, searchParams }: Pag
                 <th className={headCls}>Inscrits</th>
                 <th className={headCls}>Taux présence</th>
                 <th className={headCls}>Dossier</th>
-                <th className={headCls}>Actions</th>
+                <th className={headCls}>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -347,8 +421,14 @@ export default async function QualiopiSessionsPage({ params, searchParams }: Pag
                           </span>
                         );
                       }
+                      const ph = phaseParSession.get(s.id);
                       return (
                         <>
+                          {ph !== undefined ? (
+                            <div className="text-[length:var(--text-admin-xs)] font-semibold whitespace-nowrap">
+                              {LIBELLE_PHASE[ph]}
+                            </div>
+                          ) : null}
                           <div className="font-medium whitespace-nowrap">
                             {LIBELLE_ETAT_DOSSIER[p.pire]}
                           </div>
@@ -360,38 +440,20 @@ export default async function QualiopiSessionsPage({ params, searchParams }: Pag
                     })()}
                   </td>
 
-                  {/* Actions */}
+                  {/* Action — UNE seule (lot L4, 2026-09-30).
+                      🔴 Quatre boutons par ligne (Ouvrir, Émargement,
+                      Évaluations, Financement) : quatre portes vers la même
+                      session, et autant de façons d'y entrer sans voir où en
+                      est le dossier. La fiche mène aux sous-pages ; la liste
+                      ne mène qu'à la fiche. */}
                   <td className={cellCls}>
-                    {/* Quatre verbes soulignés empilés : c'est la cellule que
-                        Will a pointée en production. On encadre les quatre —
-                        n'en encadrer qu'un rendrait les trois autres muets —
-                        et on les pose côte à côte, à la ligne si besoin. */}
-                    <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
-                      <Link
-                        href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}`}
-                        className="admin-button-secondary"
-                      >
-                        Ouvrir
-                      </Link>
-                      <Link
-                        href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}/emargement`}
-                        className="admin-button-ghost"
-                      >
-                        Émargement
-                      </Link>
-                      <Link
-                        href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}/evaluations`}
-                        className="admin-button-ghost"
-                      >
-                        Évaluations
-                      </Link>
-                      <Link
-                        href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}/financement`}
-                        className="admin-button-ghost"
-                      >
-                        Financement
-                      </Link>
-                    </div>
+                    <Link
+                      href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}`}
+                      className="admin-button-secondary"
+                      aria-label={`Ouvrir la session ${s.numero}`}
+                    >
+                      Ouvrir
+                    </Link>
                   </td>
                 </tr>
               ))}
@@ -406,7 +468,7 @@ export default async function QualiopiSessionsPage({ params, searchParams }: Pag
         page={liste.page}
         totalPages={liste.totalPages}
         baseHref={base}
-        preservedParams={{ archives: avecArchives ? "1" : undefined }}
+        preservedParams={{ archives: avecArchives ? "1" : undefined, phase: phase ?? undefined }}
       />
     </AdminPageShell>
   );

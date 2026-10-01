@@ -12,6 +12,7 @@ import { CheckCircle2, GraduationCap, Hourglass, Archive } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { EcransRattaches } from "@/components/admin/qualiopi/EcransRattaches";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { ImportCatalogFormationsButton } from "@/components/admin/qualiopi/ImportCatalogFormationsButton";
 import {
@@ -99,6 +100,15 @@ export default async function QualiopiFormationsPage({ params, searchParams }: P
             </Link>
           </div>
         }
+      />
+
+      {/* Lot L4 — les écrans retirés de la barre latérale (menu allégé) dont
+          cette page est le `parent` : sans ce bloc, ils ne restaient
+          trouvables que par ⌘K. */}
+      <EcransRattaches
+        adminPrefix={adminPrefix}
+        parent="qualiopi/formations"
+        titre="Outils du catalogue"
       />
 
       {/* 🔴 « Total » et « Actives » affichaient TOUTES DEUX `actives.length` :

@@ -12,6 +12,7 @@ import { AlertTriangle, Handshake, Hash, Users } from "lucide-react";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { GenererListeFormateursButton } from "@/components/admin/qualiopi/GenererListeFormateursButton";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { EcransRattaches } from "@/components/admin/qualiopi/EcransRattaches";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { listTrainers } from "@/server/qualiopi/trainers/trainers";
 import { statsMissionsFormateur } from "@/server/qualiopi/trainers/mission-formateur";
@@ -73,6 +74,15 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
         title="Formateurs"
         description="Salariés, dirigeant-formateur et sous-traitants, habilitations par formation, vérification data.gouv.fr (off.17, 21 et 22 — compétences des intervenants ; off.27 — vigilance sur les sous-traitants)."
         actions={<GenererListeFormateursButton />}
+      />
+
+      {/* Lot L4 — les écrans retirés de la barre latérale (menu allégé) dont
+          cette page est le `parent` : sans ce bloc, ils ne restaient
+          trouvables que par ⌘K. */}
+      <EcransRattaches
+        adminPrefix={adminPrefix}
+        parent="qualiopi/formateurs"
+        titre="Autour des formateurs"
       />
 
       <div className="mb-[var(--space-admin-6)] flex flex-wrap items-center gap-[var(--space-admin-4)]">

@@ -87,12 +87,19 @@ export interface PlanningFilters {
  * L'audit a déjà sa fiche complète, `/qualiopi/audits/[id]`, qui lit la même
  * table `AuditMission` — c'est là qu'on envoie, plutôt que de dupliquer une
  * fiche 360° de plus dans le planning.
+ *
+ * 🔴 2026-09-30 (lot L4, « une seule porte ») — même raisonnement pour une
+ * FORMATION : la fiche 360° `/planning/formation/[id]` était une cinquième porte
+ * vers la même session, avec ses propres blocs et sans le verrou du dossier. On
+ * envoie donc directement à la fiche session ; l'ancienne route répond 308 vers
+ * elle (marque-pages, liens déjà envoyés). Le coaching garde sa fiche 360°.
  */
 export function planningDetailHref(
   adminPrefix: string,
   e: Pick<PlanningEvent, "type" | "id">,
 ): string {
   if (e.type === "audit") return `/fr/${adminPrefix}/qualiopi/audits/${e.id}`;
+  if (e.type === "formation") return `/fr/${adminPrefix}/qualiopi/sessions/${e.id}`;
   return `/fr/${adminPrefix}/planning/${e.type}/${e.id}`;
 }
 
