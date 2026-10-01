@@ -102,6 +102,11 @@ export interface DepsCircuit {
    * e-mail de suivi). Absent : ces étapes s'arrêtent sans rien écrire.
    */
   readonly demandes?: DepsDemandes;
+  /**
+   * V2, M1 — attendre avant de réessayer une tranche après un 429 « limite de
+   * débit ». Injecté par les tests ; un vrai délai sinon.
+   */
+  readonly attendre?: (ms: number) => Promise<void>;
 }
 
 export interface ContexteEtape {
@@ -121,6 +126,12 @@ export interface ContexteEtape {
   readonly verifierMain: () => Promise<void>;
   /** Écriture intermédiaire gardée (jeton + retrait). */
   readonly ecrireEnCours: <R>(fn: (tx: Tx) => Promise<R>) => Promise<R>;
+  /**
+   * V2, M1 — l'étape a AVANCÉ (une tranche transcrite et écrite). Une erreur
+   * passagère qui suit ne continue pas l'échelle de reprises : elle repart sur
+   * une échelle neuve et la prise n'est pas imputée au plafond.
+   */
+  readonly noterProgres: () => void;
 }
 
 export interface ResultatGestionnaire {
@@ -244,6 +255,27 @@ export function decisionApresErreur(
   }
 }
 
+/**
+ * V2, M1 — une erreur PASSAGÈRE après que l'étape a avancé (des tranches
+ * transcrites dans cette exécution). L'échelle repart de zéro (`echecs = 0`,
+ * pas de premier échec), la prise n'est pas imputée au plafond de 10
+ * exécutions (`compter: false`) : un appel long sous limite de débit avance
+ * de quelques tranches à chaque exécution et finit. Borné : chaque exécution
+ * ainsi épargnée a écrit au moins une tranche, et une tranche faite ne se
+ * refait pas. Fonction PURE.
+ */
+export function decisionApresProgres(err: ErreurVisio, maintenant: Date): DecisionEchec {
+  return {
+    statut: "a_faire",
+    classe: err.classe,
+    code: err.code,
+    compter: false,
+    nouvelleSerie: true,
+    prochaineTentativeLe: plusMinutes(maintenant, REPRISES_PASSAGERES_MIN[0]),
+    premierEchecLe: null,
+  };
+}
+
 const TITRES_SUSPENSION: Readonly<Record<string, string>> = {
   configuration: "Circuit visio suspendu : configuration (clé OpenAI ou de chiffrement)",
   quota: "Circuit visio suspendu : crédit OpenAI épuisé",
@@ -336,6 +368,7 @@ export async function executerEtape(
   }
 
   let mainPerdue = false;
+  let progres = false;
   const minuterie = setInterval(() => {
     void deps.depot.prolonger(t).then((ok) => {
       if (!ok) mainPerdue = true;
@@ -358,6 +391,9 @@ export async function executerEtape(
       }
     },
     ecrireEnCours: (fn) => deps.depot.ecrireEnCours(t, fn),
+    noterProgres: () => {
+      progres = true;
+    },
   };
 
   try {
@@ -366,7 +402,7 @@ export async function executerEtape(
     await deps.depot.terminer(t, r.ecrire);
     return "reussie";
   } catch (err) {
-    return await traiterErreur(deps, t, err);
+    return await traiterErreur(deps, t, err, progres);
   } finally {
     clearInterval(minuterie);
   }
@@ -410,6 +446,7 @@ async function traiterErreur(
   deps: DepsCircuit,
   t: EtapeTenue,
   err: unknown,
+  progres = false,
 ): Promise<IssueExecution> {
   const maintenant = deps.maintenant();
   if (err instanceof ResultatOrphelin) return "orphelin";
@@ -461,7 +498,10 @@ async function traiterErreur(
   }
 
   const e = classerErreurOpenAI(err);
-  const d = decisionApresErreur(t, e, maintenant);
+  const d =
+    progres && e.classe === "passagere"
+      ? decisionApresProgres(e, maintenant)
+      : decisionApresErreur(t, e, maintenant);
   await deps.depot.echouer(t, d);
 
   if (d.statut === "suspendu") {

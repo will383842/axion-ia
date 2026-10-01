@@ -29,8 +29,9 @@ import { motifDesQuestions, questionsAWill } from "./attentes-will";
 import { DUREE_TRANCHE_S } from "./audio/constantes";
 import { estHorsAccord } from "./dialogue";
 import { AttenteWill, type Gestionnaire } from "./etapes";
+import { ErreurVisio } from "./openai/erreurs";
 import { LANGUE_TRANSCRIPTION, MODELE_TRANSCRIPTION } from "./openai/modeles";
-import { transcrireTranche } from "./openai/transcrire-tranche";
+import { transcrireTranche, type SegmentTranscrit } from "./openai/transcrire-tranche";
 import type { EnregistrementATraiter, SegmentAEcrire, TrancheATraiter } from "./port-donnees";
 
 /** États d'enregistrement dont le son n'est jamais transcrit. */
@@ -48,6 +49,24 @@ export function tranchesATranscrire(tranches: readonly TrancheATraiter[]): Tranc
   return tranches
     .filter((t) => t.statut === "complete")
     .sort((a, b) => RANG_PISTE[a.piste] - RANG_PISTE[b.piste] || a.numero - b.numero);
+}
+
+/**
+ * V2, M1 — un 429 « limite de débit » sur une tranche : on attend puis on
+ * réessaie la MÊME tranche, au plus `REESSAIS_LIMITE_DEBIT` fois, avant de
+ * lever. Le délai est celui du `retry-after` d'OpenAI, borné ; à défaut,
+ * `ATTENTE_LIMITE_DEBIT_DEFAUT_MS` (le compteur de jetons repart à la minute).
+ */
+export const REESSAIS_LIMITE_DEBIT = 3;
+export const ATTENTE_LIMITE_DEBIT_DEFAUT_MS = 20_000;
+export const ATTENTE_LIMITE_DEBIT_MAX_MS = 60_000;
+
+const attendreParDefaut = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
+
+/** Le délai d'attente après un 429 « limite de débit », borné. */
+export function attenteApresLimite(reessayerApresMs: number | null): number {
+  const ms = reessayerApresMs ?? ATTENTE_LIMITE_DEBIT_DEFAUT_MS;
+  return Math.min(Math.max(ms, 1_000), ATTENTE_LIMITE_DEBIT_MAX_MS);
 }
 
 /** États d'un enregistrement dont le son reste à transcrire (déposé, ou repris après une panne). */
@@ -167,16 +186,28 @@ async function transcrireUn(
       continue;
     }
     const octets = await deps.donnees.lireSonTranche(tranche.id);
-    const segments = await transcrireTranche(
-      { client: deps.openai(), cout: deps.cout },
-      {
-        octets,
-        dureeMs: dureeTranche,
-        niveauFinMuet: tranche.niveauFinMuet,
-        decalageMs,
-        jobId: `${ctx.jobId}-${e.id.slice(0, 8)}-${tranche.piste}-${tranche.numero}`,
-      },
-    );
+    const jobId = `${ctx.jobId}-${e.id.slice(0, 8)}-${tranche.piste}-${tranche.numero}`;
+    let segments: SegmentTranscrit[] | null = null;
+    for (let essai = 0; segments === null; essai++) {
+      try {
+        segments = await transcrireTranche(
+          { client: deps.openai(), cout: deps.cout },
+          {
+            octets,
+            dureeMs: dureeTranche,
+            niveauFinMuet: tranche.niveauFinMuet,
+            decalageMs,
+            jobId,
+          },
+        );
+      } catch (err) {
+        const limite = err instanceof ErreurVisio && err.code === "limite_debit";
+        if (!limite || essai >= REESSAIS_LIMITE_DEBIT) throw err;
+        await (deps.attendre ?? attendreParDefaut)(attenteApresLimite(err.reessayerApresMs));
+        // Verrou prolongé ; un arrêt ou une annulation est vu AVANT de repayer.
+        await ctx.verifierMain();
+      }
+    }
     // Second filet : un segment qui tomberait quand même dans une fenêtre.
     const aEcrire: SegmentAEcrire[] = segments.map((s, i) => {
       const epoch = { debutMs: s.debutMs + e.origineMs, finMs: s.finMs + e.origineMs };
@@ -199,6 +230,7 @@ async function transcrireUn(
         segments: aEcrire,
       }),
     );
+    ctx.noterProgres();
     dureeAudioMs += dureeTranche;
   }
   return { e, transcriptionId, dureeAudioMs };

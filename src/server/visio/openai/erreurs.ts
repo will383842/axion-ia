@@ -28,6 +28,11 @@ export class ErreurVisio extends Error {
     readonly classe: ClasseErreur,
     readonly code: CodeErreurVisio,
     message: string,
+    /**
+     * V2, M1 — le délai demandé par le fournisseur (`retry-after` d'un 429
+     * « limite de débit »), en millisecondes ; `null` s'il n'en donne pas.
+     */
+    readonly reessayerApresMs: number | null = null,
   ) {
     super(message);
     this.name = "ErreurVisio";
@@ -67,6 +72,30 @@ const PAR_CODE_FOURNISSEUR: Readonly<
   invalid_response: { classe: "contenu", code: "sortie_invalide" },
   unknown: { classe: "passagere", code: "inconnu" },
 };
+
+/** `retry-after` (secondes, ou date HTTP) d'une erreur du SDK, en millisecondes. */
+function reessayerApresDe(err: unknown): number | null {
+  if (typeof err !== "object" || err === null) return null;
+  const h = (err as { headers?: unknown }).headers;
+  if (typeof h !== "object" || h === null) return null;
+  const lire = (nom: string): string | null => {
+    const g = (h as { get?: unknown }).get;
+    if (typeof g === "function") {
+      const v: unknown = (g as (n: string) => unknown).call(h, nom);
+      return typeof v === "string" ? v : null;
+    }
+    const v = (h as Record<string, unknown>)[nom];
+    return typeof v === "string" ? v : null;
+  };
+  const ms = lire("retry-after-ms");
+  if (ms !== null && Number.isFinite(Number(ms))) return Math.max(0, Number(ms));
+  const brut = lire("retry-after");
+  if (brut === null) return null;
+  const secondes = Number(brut);
+  if (Number.isFinite(secondes)) return Math.max(0, secondes * 1000);
+  const date = Date.parse(brut);
+  return Number.isNaN(date) ? null : Math.max(0, date - Date.now());
+}
 
 /** Codes Prisma / PostgreSQL d'une base pas encore migrée (§2.5). */
 const CODES_SCHEMA_EN_RETARD = new Set(["P2021", "P2022", "22P02", "42703", "42P01"]);
@@ -114,5 +143,10 @@ export function classerErreurOpenAI(err: unknown): ErreurVisio {
   }
   const fournisseur = err instanceof ProviderError ? err : mapOpenAiError(err);
   const cible = PAR_CODE_FOURNISSEUR[fournisseur.code];
-  return new ErreurVisio(cible.classe, cible.code, `OpenAI : ${fournisseur.code}`);
+  return new ErreurVisio(
+    cible.classe,
+    cible.code,
+    `OpenAI : ${fournisseur.code}`,
+    cible.code === "limite_debit" ? reessayerApresDe(err) : null,
+  );
 }
