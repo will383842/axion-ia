@@ -1527,6 +1527,19 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "preuve que l'enregistrement était licite (art. 17(3)(e)) ; conservée jusqu'à la fin " +
       "du dossier + 5 ans, puis purgée (ADR 0056). Supprimée avec les données du pilote.",
   },
+  {
+    // ADR 0063 — aucune colonne ne rattache un document à une personne :
+    // l'effacement ciblé par adresse ne peut pas savoir quelle pièce la cite.
+    modele: "DocumentProjet",
+    motif:
+      "pièce d'un projet d'entreprise, sans lien à une personne par une colonne ; jamais " +
+      "supprimée automatiquement (ordre permanent). Une demande qui vise une pièce précise " +
+      "est traitée à la main, sous le drapeau d'effacement — seule voie que la base admet.",
+  },
+  {
+    modele: "DocumentProjetContenu",
+    motif: "les octets d'une pièce de `DocumentProjet` : même règle que la pièce.",
+  },
 ];
 
 // ═════════════════════════════════════════════════════════════════════════════

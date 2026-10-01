@@ -67,6 +67,19 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
       "rendus ci-dessus, sauf le corps d'un e-mail de suivi, qui vous est rendu tel qu'il a " +
       "été envoyé avec vos e-mails.",
   },
+  {
+    // ADR 0063 — documents d'un projet d'entreprise : aucune colonne ne les
+    // rattache à une personne ; les rendre exigerait de lire chaque pièce.
+    modele: "DocumentProjet",
+    motif:
+      "les documents d'un projet (e-mails envoyés, propositions, comptes rendus, notes " +
+      "internes) concernent l'entreprise et peuvent citer d'autres personnes : réponse " +
+      "manuelle sous un mois, tiers occultés (contact@axion-ia.com).",
+  },
+  {
+    modele: "DocumentProjetContenu",
+    motif: "le contenu des fichiers des documents de projet ci-dessus (même réponse manuelle).",
+  },
 ];
 
 /** Le texte de la notice, pour `notice.excludedTables` de l'export. */
