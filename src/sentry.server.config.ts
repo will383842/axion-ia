@@ -17,7 +17,15 @@ if (dsn) {
     // Questionnaire en ligne (2026-10-01, veto sécurité PR 1258) : le SDK ne lit
     // pas le CORPS des requêtes des routes à requête secrète (jeton, réponses,
     // nom du client). Défense en profondeur : `piiScrubBeforeSend` les purge de
-    // toute façon. Remplace l'intégration HTTP par défaut (même nom).
-    integrations: [Sentry.httpIntegration({ ignoreIncomingRequestBody: corpsAIgnorer })],
+    // toute façon. Remplace l'intégration HTTP par défaut (même nom) : on garde
+    // donc `disableIncomingRequestSpans: true`, que @sentry/nextjs pose par défaut
+    // (Next crée lui-même les spans de requête ; sans ce réglage, transactions en
+    // double sur toutes les routes).
+    integrations: [
+      Sentry.httpIntegration({
+        disableIncomingRequestSpans: true,
+        ignoreIncomingRequestBody: corpsAIgnorer,
+      }),
+    ],
   });
 }
