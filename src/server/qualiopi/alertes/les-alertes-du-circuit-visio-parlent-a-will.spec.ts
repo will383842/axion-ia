@@ -13,7 +13,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
-import { ALERTE_CATALOGUE } from "@/server/qualiopi/alertes/catalogue";
+import { ALERTE_CATALOGUE } from "./catalogue";
 
 const JARGON = /worker|témoin|migr|déploiement|schéma/i;
 

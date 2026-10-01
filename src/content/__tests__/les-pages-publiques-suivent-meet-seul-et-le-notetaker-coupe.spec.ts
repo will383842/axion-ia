@@ -31,4 +31,10 @@ describe("les pages publiques suivent « Meet seul » et le Notetaker coupé", (
     expect(n?.purposeFr).toContain("Désactivé : aucun assistant Calendly ne rejoint nos réunions.");
     expect(n?.purposeEn).toContain("Disabled: no Calendly assistant joins our meetings.");
   });
+
+  it("R6 : tant qu'il est désactivé, le Notetaker ne traite aucune donnée", () => {
+    const n = SUBPROCESSORS.find((s) => s.name.includes("Notetaker"));
+    expect(n?.dataCategoriesFr).toBe("Aucune donnée traitée : l'assistant est désactivé.");
+    expect(n?.dataCategoriesEn).toBe("No data processed: the assistant is disabled.");
+  });
 });

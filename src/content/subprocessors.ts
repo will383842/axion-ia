@@ -421,10 +421,8 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
       "Assistant d'enregistrement et de transcription proposé par Calendly. Désactivé : aucun assistant Calendly ne rejoint nos réunions.",
     purposeEn:
       "Recording and transcription assistant offered by Calendly. Disabled: no Calendly assistant joins our meetings.",
-    dataCategoriesFr:
-      "Enregistrement audio et vidéo de la réunion, transcription du contenu de la conversation, noms des participants. Aucun rendez-vous téléphonique n'est concerné.",
-    dataCategoriesEn:
-      "Audio and video recording of the meeting, transcript of the conversation, participant names. Phone appointments are not concerned.",
+    dataCategoriesFr: "Aucune donnée traitée : l'assistant est désactivé.",
+    dataCategoriesEn: "No data processed: the assistant is disabled.",
     // 🔴 CONSENTEMENT, et non 6.1.b. Tenir un rendez-vous relève des mesures
     // précontractuelles ; l'ENREGISTRER n'en relève pas — le rendez-vous se
     // tient parfaitement sans. C'est un traitement distinct, qui suppose l'accord
