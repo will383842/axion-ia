@@ -14,7 +14,7 @@ import { etatRendezVous, invitesSupplementaires, momentVisio } from "./visio";
 import type { PointLu } from "./point";
 import { entrepriseEtBesoin, reponsesFormulaire } from "./a-venir";
 
-const CAL_SELECT = {
+export const CAL_SELECT = {
   id: true,
   eventTypeName: true,
   status: true,
@@ -36,6 +36,9 @@ const CAL_SELECT = {
   rawPayload: true,
   notes: true,
   capturedAt: true,
+  // Un rendez-vous de candidature n'est jamais proposé à l'enregistrement
+  // (« Enregistrer cette visio ? », `enregistrementPropose`).
+  linkedJobApplicationId: true,
 } as const;
 
 /**

@@ -210,6 +210,12 @@ export const RencontreDuJour = z.object({
    * `finLe` nul = préavis pas encore envoyé. `null` = rencontre non concernée.
    */
   preavis: z.object({ finLe: horodatage.nullable() }).nullable(),
+  /**
+   * Identifiant du rendez-vous Calendly (`CalendlyEvent.id`), FACULTATIF : le
+   * lien « Oui, enregistrer » de la console le porte quand la rencontre
+   * n'existe pas encore, et l'extension 1.3.0 s'en sert pour pré-sélectionner.
+   */
+  calendlyEventId: z.string().min(1).max(64).optional(),
 });
 
 export const ReponseRencontresDuJour = z.object({

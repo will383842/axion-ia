@@ -4,18 +4,71 @@
     <meta charset="utf-8" />
     <title>Enregistreur Axion-IA</title>
     <style>
-      body { font: 15px/1.4 system-ui, sans-serif; margin: 12px; color: #1a1a1a; }
-      button { min-height: 44px; font-size: 15px; margin: 4px 0; width: 100%; border-radius: 8px; border: 1px solid #888; background: #fff; cursor: pointer; }
-      button.principal { background: #1d4ed8; color: #fff; border-color: #1d4ed8; }
-      button.refus { background: #b91c1c; color: #fff; border-color: #b91c1c; }
-      .bandeau { padding: 8px; border-radius: 8px; margin: 8px 0; }
-      .rouge { background: #fee2e2; color: #7f1d1d; }
-      .orange { background: #ffedd5; color: #7c2d12; }
-      .info { background: #e0e7ff; color: #1e1b4b; }
-      .cache { display: none; }
-      meter { width: 100%; }
-      .phrase { font-style: italic; background: #f5f5f5; padding: 8px; border-radius: 8px; }
-      .rebours { font-size: 28px; font-weight: 700; text-align: center; }
+      body {
+        font:
+          15px/1.4 system-ui,
+          sans-serif;
+        margin: 12px;
+        color: #1a1a1a;
+      }
+      button {
+        min-height: 44px;
+        font-size: 15px;
+        margin: 4px 0;
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid #888;
+        background: #fff;
+        cursor: pointer;
+      }
+      button.principal {
+        background: #1d4ed8;
+        color: #fff;
+        border-color: #1d4ed8;
+      }
+      button.refus {
+        background: #b91c1c;
+        color: #fff;
+        border-color: #b91c1c;
+      }
+      .bandeau {
+        padding: 8px;
+        border-radius: 8px;
+        margin: 8px 0;
+      }
+      .rouge {
+        background: #fee2e2;
+        color: #7f1d1d;
+      }
+      .orange {
+        background: #ffedd5;
+        color: #7c2d12;
+      }
+      .info {
+        background: #e0e7ff;
+        color: #1e1b4b;
+      }
+      .cache {
+        display: none;
+      }
+      meter {
+        width: 100%;
+      }
+      .phrase {
+        font-style: italic;
+        background: #f5f5f5;
+        padding: 8px;
+        border-radius: 8px;
+      }
+      .rebours {
+        font-size: 28px;
+        font-weight: 700;
+        text-align: center;
+      }
+      button.mis-en-avant {
+        outline: 4px solid #f59e0b;
+        outline-offset: 2px;
+      }
     </style>
     <script type="module" src="panneau.js"></script>
   </head>
@@ -31,6 +84,7 @@
     <button id="creer">Créer ce rendez-vous dans la console</button>
 
     <section id="repos">
+      <p id="prepare" class="bandeau info cache">Rendez-vous préparé depuis la console.</p>
       <p>Cliquez sur Démarrer juste avant de dire la phrase d'annonce.</p>
       <button id="demarrer" class="principal">Démarrer</button>
     </section>
@@ -52,8 +106,10 @@
     </section>
 
     <section id="dictee">
-      <p>Après un appel téléphonique : dictez un résumé de 2 à 5 minutes, micro seul, sur le
-        rendez-vous choisi ci-dessus. Personne d'autre n'est enregistré.</p>
+      <p>
+        Après un appel téléphonique : dictez un résumé de 2 à 5 minutes, micro seul, sur le
+        rendez-vous choisi ci-dessus. Personne d'autre n'est enregistré.
+      </p>
       <button id="dicter">Dicter une note</button>
     </section>
 

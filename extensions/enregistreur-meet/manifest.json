@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Enregistreur Axion-IA",
   "description": "Enregistre les rendez-vous Google Meet, avec l'accord oral des participants, pour en faire le compte rendu.",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "minimum_chrome_version": "116",
   "permissions": [
     "tabCapture",
@@ -18,5 +18,12 @@
   "action": { "default_title": "Enregistreur Axion-IA", "default_icon": { "48": "icone.png" } },
   "icons": { "48": "icone.png" },
   "side_panel": { "default_path": "panneau.html" },
+  "content_scripts": [
+    {
+      "matches": ["https://axion-ia.com/*"],
+      "js": ["relais-console.js"],
+      "run_at": "document_idle"
+    }
+  ],
   "options_page": "options.html"
 }
