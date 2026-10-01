@@ -138,6 +138,21 @@ export function erreurDeConnexion(err: unknown): "delai" | "connexion" | null {
   return null;
 }
 
+/**
+ * Le `fetch` NATIF de Node (undici), comme content-gen : le client par défaut
+ * du SDK coupe les réponses longues (« Premature close »). Mais undici REFUSE
+ * d'envoyer un corps en flux sans `duplex: "half"` — sans lui, CHAQUE envoi
+ * d'audio échouait (« RequestInit: duplex option is required when sending a
+ * body »), classé « inconnu ». Constaté par l'essai réel en production du
+ * 01/10, que les tests (OpenAI simulé) ne pouvaient pas voir. Garde :
+ * `__tests__/le-fetch-natif-envoie-l-audio-en-duplex.spec.ts`.
+ */
+export const fetchNatifAvecCorps = ((url: unknown, init?: Record<string, unknown>) =>
+  globalThis.fetch(
+    url as Parameters<typeof globalThis.fetch>[0],
+    (init?.["body"] != null ? { ...init, duplex: "half" } : init) as RequestInit,
+  )) as unknown as typeof globalThis.fetch;
+
 let instance: ClientOpenAIVisio | null = null;
 
 /** Le client réel, construit au premier appel. */
@@ -149,7 +164,7 @@ export function obtenirClientOpenAI(): ClientOpenAIVisio {
     // alerte technique part. Jamais une reprise en boucle.
     throw new ProviderError("OPENAI_API_KEY absente", "auth_failed", "openai", false);
   }
-  const sdk = new OpenAI({ apiKey, timeout: 120_000, maxRetries: 0, fetch: globalThis.fetch });
+  const sdk = new OpenAI({ apiKey, timeout: 120_000, maxRetries: 0, fetch: fetchNatifAvecCorps });
   instance = {
     transcrire: async (d) => {
       const fichier = await toFile(d.octets, "tranche.webm", { type: "audio/webm" });
