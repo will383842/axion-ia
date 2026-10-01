@@ -103,7 +103,8 @@ export const FORMULAIRE = {
   consent:
     "J'accepte qu'Axion-IA m'écrive au sujet du réseau d'apporteurs d'affaires. Données conservées 24 mois après la clôture de mon dossier, jamais vendues ni cédées.",
   bouton: "Recevoir le kit",
-  micro: "Un e-mail tout de suite, avec le document de présentation et le catalogue.",
+  // JUR-T44b : le document de présentation est retiré jusqu'à sa réécriture (JUR-T45).
+  micro: "Un e-mail tout de suite, avec le catalogue de nos prestations.",
 } as const;
 
 export const ETAPES: readonly { readonly titre: string; readonly texte: string }[] = [

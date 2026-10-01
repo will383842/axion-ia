@@ -41,11 +41,17 @@ function cheminPublic(id: string): string | null {
   return IMPRIMES.find((i) => i.id === id)?.fichiersPublics[0]?.chemin ?? null;
 }
 
-/** Les trois imprimés proposés au composeur, avec leur libellé d'insertion. */
+/**
+ * Les imprimés proposés au composeur, avec leur libellé d'insertion.
+ *
+ * 🔴 JUR-T44b (décision de Williams du 2026-10-01, retrait immédiat) :
+ * « devenir-apporteur » n'est plus proposé — le document est retiré de tout ce
+ * qui part vers un candidat jusqu'à sa réécriture. JUR-T45 le remettra ici.
+ * Témoin : __tests__/aucun-imprime-propose-ne-pointe-vers-le-pdf-apporteur.spec.ts.
+ */
 const IMPRIMES_PROPOSES: ReadonlyArray<{ id: string; label: string }> = [
   { id: "depliant-formations", label: "Catalogue des prestations" },
   { id: "flyer-a5", label: "Flyer A5" },
-  { id: "devenir-apporteur", label: "Devenir apporteur" },
 ];
 
 /**

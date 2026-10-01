@@ -21,10 +21,9 @@ const ORIGINE = "https://exemple.invalid";
 describe("liensImprimesPourEmail", () => {
   const liens = liensImprimesPourEmail(ORIGINE);
 
-  it("rend les trois imprimés attendus, ni plus ni moins", () => {
-    expect(liens.map((l) => l.id).sort()).toEqual(
-      ["depliant-formations", "devenir-apporteur", "flyer-a5"].sort(),
-    );
+  // JUR-T44b : « devenir-apporteur » est retiré jusqu'à la réécriture du document (JUR-T45).
+  it("rend les deux imprimés attendus, ni plus ni moins", () => {
+    expect(liens.map((l) => l.id).sort()).toEqual(["depliant-formations", "flyer-a5"].sort());
   });
 
   it.each(liens.map((l) => l))(
