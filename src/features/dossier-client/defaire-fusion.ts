@@ -16,7 +16,13 @@
  * participé à un rendez-vous créé après la fusion, un fait d'un rendez-vous
  * rendu a été rangé dans un projet de l'autre fiche, un projet rendu a reçu un
  * rendez-vous créé après —, rendre l'élément casserait ces liens. On refuse,
- * et on liste les liens à défaire d'abord.
+ * et on liste les liens à défaire d'abord. Les contrôles couvrent aussi les
+ * cinq liens que la base refuserait au COMMIT (vérification V1, V1-04) : un
+ * rendez-vous rendu rangé dans un projet resté, une personne restée dans un
+ * rendez-vous ou un projet rendu, un fait d'un rendez-vous resté rangé dans un
+ * projet rendu, un fait rendu qui cite une personne restée. Dernier filet :
+ * une violation de clé (23503) ou des triggers AXV03/AXV04 venue de la base
+ * devient un refus motivé, jamais le message brut de Postgres.
  *
  * Refus aussi si la fusion a été écrite dans la file de sortie vers Axion
  * Partners (`emiseVersPartnersLe`, posé par `fusionnerFiches` ; jamais en
@@ -27,7 +33,9 @@
  *
  * La ligne `ClientFusion` reste : « Défaire » remplit `defaiteLe`, qui,
  * quand, pourquoi — et écrit `RencontreRattachementEvenement(annule)` pour
- * chaque rendez-vous rendu. Si la fusion avait reporté un SIREN, l'ancien
+ * chaque rendez-vous rendu. Une proposition « à classer » que la fusion avait
+ * redirigée vers la fiche restée est de nouveau proposée à la fiche absorbée
+ * (V1-05). Si la fusion avait reporté un SIREN, l'ancien
  * (`sirenAbsorbeAvant`) est rétabli. Une fusion défaite n'émet rien vers
  * Partners : seule une fusion écrit dans la file, au moment où elle se fait.
  *
@@ -60,6 +68,22 @@ export interface EntreeDefaireFusion {
   readonly parAdminId: string;
 }
 
+/**
+ * Une violation de clé « même client » (23503) ou des triggers AXV03/AXV04,
+ * levée par la base au COMMIT : un lien que les contrôles n'ont pas vu.
+ */
+function estRefusDeLaBase(e: unknown): boolean {
+  if (typeof e !== "object" || e === null) return false;
+  const x = e as { code?: unknown; meta?: { code?: unknown }; message?: unknown };
+  if (x.code === "P2003" || x.code === "23503") return true;
+  if (x.meta?.code === "23503" || x.meta?.code === "AXV03" || x.meta?.code === "AXV04") return true;
+  return typeof x.message === "string" && /23503|AXV0[34]|foreign key/i.test(x.message);
+}
+
+export const MESSAGE_LIEN_REFUSE_PAR_LA_BASE =
+  "Cette fusion ne peut pas être défaite : un élément à rendre a reçu depuis un lien vers la " +
+  "fiche restée (projet, personne ou fait). Retirez d'abord ce lien, puis réessayez.";
+
 export async function defaireFusion(
   db: BaseTransactionnelle,
   e: EntreeDefaireFusion,
@@ -70,6 +94,19 @@ export async function defaireFusion(
       `Écrivez pourquoi vous défaites cette fusion (${LONGUEUR_MIN_MOTIF_FUSION} caractères au moins).`,
     );
   }
+  try {
+    return await defaireDansUneTransaction(db, e, motif);
+  } catch (x) {
+    if (x instanceof ErreurDefaireFusion || !estRefusDeLaBase(x)) throw x;
+    throw new ErreurDefaireFusion(MESSAGE_LIEN_REFUSE_PAR_LA_BASE, ["lien refusé par la base"]);
+  }
+}
+
+async function defaireDansUneTransaction(
+  db: BaseTransactionnelle,
+  e: EntreeDefaireFusion,
+  motif: string,
+): Promise<{ contacts: number; projets: number; rencontres: number }> {
   return db.$transaction(async (tx) => {
     const f = await tx.clientFusion.findUnique({
       where: { id: e.fusionId },
@@ -79,6 +116,7 @@ export async function defaireFusion(
         absorbantId: true,
         sirenReporte: true,
         sirenAbsorbeAvant: true,
+        le: true,
         defaiteLe: true,
         emiseVersPartnersLe: true,
       },
@@ -124,6 +162,9 @@ export async function defaireFusion(
         liens.push("une personne à rendre a un rôle dans un projet de la fiche restée");
       }
     }
+    const personnesRendues = new Set(contacts);
+    const resteeSiPresente = (c: string | null): boolean =>
+      typeof c === "string" && !personnesRendues.has(c);
     if (projets.length > 0) {
       const rdvDuProjet = await tx.rencontre.findMany({
         where: { projetId: { in: projets } },
@@ -131,6 +172,24 @@ export async function defaireFusion(
       });
       if (rdvDuProjet.some((r) => !rendues.has(r.id))) {
         liens.push("un projet à rendre a reçu un rendez-vous créé après la fusion");
+      }
+      // (c) une personne de la fiche restée a un rôle dans un projet rendu.
+      const rolesDuProjet = await tx.projetContact.findMany({
+        where: { projetId: { in: projets } },
+        select: { contactId: true },
+      });
+      if (rolesDuProjet.some((r) => resteeSiPresente(r.contactId))) {
+        liens.push("une personne de la fiche restée a un rôle dans un projet à rendre");
+      }
+      // (d) un fait d'un rendez-vous resté, rangé dans un projet rendu (AXV03).
+      const faitsRanges = await tx.fait.findMany({
+        where: { projetId: { in: projets }, rencontreId: { not: null } },
+        select: { rencontreId: true },
+      });
+      if (faitsRanges.some((x) => x.rencontreId !== null && !rendues.has(x.rencontreId))) {
+        liens.push(
+          "un fait d'un rendez-vous de la fiche restée a été rangé dans un projet à rendre",
+        );
       }
     }
     if (rencontres.length > 0) {
@@ -142,6 +201,42 @@ export async function defaireFusion(
         liens.push(
           "un fait d'un rendez-vous à rendre a été rangé dans un projet de la fiche restée",
         );
+      }
+      // (a) un rendez-vous rendu, rangé depuis dans un projet resté.
+      const rdvRendus = await tx.rencontre.findMany({
+        where: { id: { in: rencontres }, projetId: { not: null } },
+        select: { projetId: true },
+      });
+      if (rdvRendus.some((r) => r.projetId !== null && !projetsRendus.has(r.projetId))) {
+        liens.push("un rendez-vous à rendre a été rangé dans un projet de la fiche restée");
+      }
+      // (b) une personne de la fiche restée ajoutée à un rendez-vous rendu.
+      const presents = await tx.rencontreParticipant.findMany({
+        where: { rencontreId: { in: rencontres }, contactId: { not: null } },
+        select: { contactId: true },
+      });
+      if (presents.some((p) => resteeSiPresente(p.contactId))) {
+        liens.push("une personne de la fiche restée participe à un rendez-vous à rendre");
+      }
+    }
+    // (e) un fait rendu qui cite (sujet, locuteur) une personne de la fiche restée.
+    if (rencontres.length > 0 || projets.length > 0) {
+      const faitsRendus = await tx.fait.findMany({
+        where: {
+          clientId: f.absorbantId,
+          OR: [
+            ...(rencontres.length > 0 ? [{ rencontreId: { in: rencontres } }] : []),
+            ...(projets.length > 0 ? [{ projetId: { in: projets } }] : []),
+          ],
+        },
+        select: { contactSujetId: true, contactLocuteurId: true },
+      });
+      if (
+        faitsRendus.some(
+          (x) => resteeSiPresente(x.contactSujetId) || resteeSiPresente(x.contactLocuteurId),
+        )
+      ) {
+        liens.push("un fait à rendre cite une personne de la fiche restée");
       }
     }
     if (liens.length > 0) {
@@ -193,6 +288,30 @@ export async function defaireFusion(
       await emettreFaitClient(tx, f.absorbeId, { avant });
     }
 
+    // V1-05 : les propositions que la fusion a redirigées (journal « propose »
+    // absorbée → restée, daté de la fusion) reviennent à la fiche absorbée —
+    // seulement si elles attendent encore, chez la fiche restée.
+    const redirigees = await tx.rencontreRattachementEvenement.findMany({
+      where: {
+        action: "propose",
+        ancienClientId: f.absorbeId,
+        nouveauClientId: f.absorbantId,
+        survenuLe: { gte: f.le },
+      },
+      select: { rencontreId: true },
+    });
+    const aRendre = await tx.rencontre.findMany({
+      where: {
+        id: { in: [...new Set(redirigees.map((x) => x.rencontreId))] },
+        clientId: null,
+        clientProposeId: f.absorbantId,
+      },
+      select: { id: true, motifProposition: true },
+    });
+    for (const r of aRendre) {
+      await tx.rencontre.update({ where: { id: r.id }, data: { clientProposeId: f.absorbeId } });
+    }
+
     const le = new Date();
     await tx.clientFusion.update({
       where: { id: f.id },
@@ -205,6 +324,18 @@ export async function defaireFusion(
           action: "annule" as const,
           ancienClientId: f.absorbantId,
           nouveauClientId: f.absorbeId,
+          parAdminId: e.parAdminId,
+        })),
+      });
+    }
+    if (aRendre.length > 0) {
+      await tx.rencontreRattachementEvenement.createMany({
+        data: aRendre.map((r) => ({
+          rencontreId: r.id,
+          action: "propose" as const,
+          ancienClientId: f.absorbantId,
+          nouveauClientId: f.absorbeId,
+          motif: r.motifProposition,
           parAdminId: e.parAdminId,
         })),
       });

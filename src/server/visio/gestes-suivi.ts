@@ -389,10 +389,21 @@ export async function emailSuiviGabaritFixe(
   // qu'un e-mail de suivi de cette rencontre vers cette personne attend dans
   // « E-mails à valider », on le signale au lieu d'en préparer un autre.
   // Écarté (`refuse`) ou parti (`envoye`), il n'attend plus : on en prépare un.
+  // Compte aussi un e-mail GARÉ mais pas encore relié à sa demande (étape
+  // `email_suivi` interrompue après le garage) : même filtre que sa reprise.
   const dejaPrepare = await db.emailOutbox.count({
     where: {
       statut: "a_valider",
-      emailSuivi: { is: { rencontreId: a.rencontreId, contactId: donnees.contact.id } },
+      OR: [
+        { emailSuivi: { is: { rencontreId: a.rencontreId, contactId: donnees.contact.id } } },
+        {
+          template: "visio-email-suivi",
+          entityType: "Rencontre",
+          entityId: a.rencontreId,
+          recipient: to,
+          emailSuivi: { is: null },
+        },
+      ],
     },
   });
   if (dejaPrepare > 0) {

@@ -38,6 +38,7 @@ import {
   ajouterPersonneFormAction,
   basculerOppositionIaFormAction,
   creerProjetFormAction,
+  garderCetteValeurFormAction,
 } from "@/features/dossier-client/actions";
 import { LIBELLE_ETAT_EMAIL_SUIVI } from "@/features/dossier-client/etat-email-suivi";
 import { formatDateFrShort } from "@/lib/format-date-fr";
@@ -68,13 +69,25 @@ const TON_STATUT_PROJET: Readonly<Record<string, Tone>> = {
 // Briques partagées (fiche, page projet, « Préparer »)
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Une valeur consolidée : la valeur retenue, ou la mention qui explique la case vide. */
-export function LigneValeur({ v }: { v: ValeurConsolidee }): React.ReactElement {
+/**
+ * Une valeur consolidée : la valeur retenue, ou la mention qui explique la case vide.
+ * Avec `retour` (page à rouvrir), une valeur « à trancher » porte un bouton
+ * « Garder … » par valeur (V1-02) : un formulaire serveur, sans JavaScript.
+ */
+export function LigneValeur({
+  v,
+  retour,
+}: {
+  v: ValeurConsolidee;
+  retour?: string;
+}): React.ReactElement {
   const mention = MENTION_ETAT[v.etat];
-  const valeurs =
-    v.etat === "courante" || v.etat === "a_trancher"
-      ? [...new Set(v.faits.map((f) => valeurLisible(f)))]
-      : [];
+  const parValeur = new Map<string, string>();
+  if (v.etat === "courante" || v.etat === "a_trancher") {
+    for (const f of v.faits)
+      if (!parValeur.has(valeurLisible(f))) parValeur.set(valeurLisible(f), f.id);
+  }
+  const valeurs = [...parValeur.keys()];
   return (
     <li className="flex flex-wrap items-baseline gap-[var(--space-admin-2)]">
       <span className="font-medium">{LIBELLE_TYPE_FAIT[v.type]} :</span>
@@ -83,6 +96,17 @@ export function LigneValeur({ v }: { v: ValeurConsolidee }): React.ReactElement 
       {mention !== null ? (
         <span className="text-[color:var(--color-admin-warning)]">({mention})</span>
       ) : null}
+      {v.etat === "a_trancher" && retour !== undefined
+        ? [...parValeur].map(([valeur, faitId]) => (
+            <form key={faitId} action={garderCetteValeurFormAction}>
+              <input type="hidden" name="faitId" value={faitId} />
+              <input type="hidden" name="retour" value={retour} />
+              <button type="submit" className="admin-button-ghost">
+                Garder {valeur}
+              </button>
+            </form>
+          ))
+        : null}
     </li>
   );
 }
@@ -92,10 +116,12 @@ export function ListeValeurs({
   portee,
   types,
   vide,
+  retour,
 }: {
   portee: PorteeConsolidee | undefined;
   types?: ReadonlyArray<FaitType>;
   vide: string;
+  retour?: string;
 }): React.ReactElement {
   const valeurs = (portee?.valeurs ?? []).filter(
     (v) => types === undefined || types.includes(v.type),
@@ -105,7 +131,7 @@ export function ListeValeurs({
   return (
     <ul className={listeCls}>
       {valeurs.map((v) => (
-        <LigneValeur key={`${v.type}:${v.cle}`} v={v} />
+        <LigneValeur key={`${v.type}:${v.cle}`} v={v} {...(retour ? { retour } : {})} />
       ))}
     </ul>
   );
@@ -170,19 +196,27 @@ export function OngletSynthese({
   consolidation,
   projets,
   ficheHref,
+  erreur = null,
 }: {
   consolidation: Consolidation;
   projets: ReadonlyArray<ProjetDuDossier>;
   ficheHref: string;
+  erreur?: string | null;
 }): React.ReactElement {
   return (
     <div>
+      {erreur !== null ? (
+        <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]">
+          {erreur}
+        </p>
+      ) : null}
       <section className={carteCls}>
         <h2 className={titreCls}>Ce que fait la société</h2>
         <ListeValeurs
           portee={consolidation.entreprise}
           types={TYPES_SOCIETE}
           vide="Rien de validé pour l'instant sur l'entreprise."
+          retour={ficheHref}
         />
       </section>
 
@@ -218,6 +252,7 @@ export function OngletSynthese({
                 portee={portee}
                 types={TYPES_BLOC_PROJET}
                 vide="Rien de validé pour ce projet."
+                retour={ficheHref}
               />
               <h3 className="mt-[var(--space-admin-4)] mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-semibold">
                 Engagements et questions en cours

@@ -28,6 +28,8 @@ import { dechiffrerParole } from "@/lib/chiffrer-parole";
 import { TEXTE_ILLISIBLE } from "./queries";
 import { debriefsExistants, type DebriefExistant } from "./debriefs-existants";
 import { entrepriseDeclaree, reponsesFormulaire } from "@/features/admin-rendezvous/a-venir";
+import { lireEtat } from "@/server/visio/etat-compte-rendu";
+import { evocationsDe, type Evocations } from "./projets-evoques";
 import {
   caseTestInterneVisible,
   estClientTestInterne,
@@ -99,6 +101,24 @@ export interface RencontreDetaillee {
     readonly champs: ReadonlyArray<{ type: string; enonce: string }>;
   }>;
   readonly faits: ReadonlyArray<FaitDeLaRencontre>;
+  /** Projets évoqués et propositions de P2 (V1-03), `null` sans compte rendu lisible. */
+  readonly evocations: Evocations | null;
+}
+
+/** Les projets évoqués du compte rendu vivant le plus récent ; illisible : `null`. */
+function evocationsDuCompteRendu(
+  comptesRendus: ReadonlyArray<{ statut: string; verification: string | null }>,
+): Evocations | null {
+  const cr = comptesRendus.find(
+    (c) => c.verification !== null && c.statut !== "remplace" && c.statut !== "rejete",
+  );
+  const clair = cr ? lire(cr.verification) : null;
+  if (clair === null || clair === TEXTE_ILLISIBLE) return null;
+  try {
+    return evocationsDe(lireEtat(clair));
+  } catch {
+    return null;
+  }
 }
 
 async function ficheCourte(id: string | null): Promise<FicheCourte | null> {
@@ -141,6 +161,7 @@ export async function lireRencontreDetaillee(
           statut: true,
           valideLe: true,
           contenu: true,
+          verification: true,
         },
         orderBy: { version: "desc" },
       },
@@ -238,6 +259,7 @@ export async function lireRencontreDetaillee(
       enonce: lire(f.enonce) ?? "",
       question: lire(f.texteCourt),
     })),
+    evocations: evocationsDuCompteRendu(r.comptesRendus),
   };
 }
 

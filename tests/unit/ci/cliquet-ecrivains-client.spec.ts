@@ -181,7 +181,7 @@ describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
       const client = du(b);
       expect(client.fautes).toEqual([]);
       expect(client.ecrivains.map((e) => `${e.fichier} (${e.fonction})`).sort()).toEqual([
-        "src/features/dossier-client/defaire-fusion.ts (defaireFusion › travail de db.$transaction())",
+        "src/features/dossier-client/defaire-fusion.ts (defaireDansUneTransaction › travail de db.$transaction())",
         "src/features/dossier-client/fusionner.ts (fusionnerFiches › travail de db.$transaction())",
         "src/lib/rgpd-erase.ts (eraseClientsForEmail › travail de prisma.$transaction())",
         "src/server/actions/qualiopi/clients.ts (updateClientAction › travail de prisma.$transaction())",

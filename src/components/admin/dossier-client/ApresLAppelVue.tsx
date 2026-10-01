@@ -9,7 +9,8 @@
  *      autre fiche (« Ranger chez… »), ou « Créer la fiche prospect » — par la
  *      porte unique, SIREN proposé par l'annuaire et confirmé d'un clic.
  *      Jamais de rangement automatique (A4) ;
- *   2. le PROJET du rendez-vous : un projet ouvert, ou « nouveau projet » ;
+ *   2. le PROJET du rendez-vous : un projet ouvert, ou « nouveau projet » —
+ *      et un choix par AUTRE projet évoqué (V1-03, `projets-evoques.ts`) ;
  *   0. les DÉBRIEFS déjà écrits (notes Calendly, point de l'onglet), affichés
  *      sans ressaisie (A4) ;
  *   3. les FAITS proposés (cochés d'avance seulement s'ils sont validables en
@@ -45,6 +46,7 @@ import { rechercherSiren } from "@/features/dossier-client/recherche-entreprises
 import { valeursInitialesDuSuivi } from "@/features/dossier-client/suite-proposee";
 import { ISSUES, LIBELLE_ISSUE, LIBELLE_SUITE, SUITES } from "@/features/admin-rendezvous/suivi";
 import { validableEnLot } from "@/features/dossier-client/valider";
+import { grouperParProjetEvoque } from "@/features/dossier-client/projets-evoques";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { timeInParis } from "@/lib/calendar-grid";
 
@@ -82,16 +84,32 @@ export async function ApresLAppelVue({
   const initial = valeursInitialesDuSuivi(r.suivi, maintenant);
   const propositionsSiren = annuaire && annuaire.ok ? annuaire.propositions : [];
   const ficheHref = client ? `/${locale}/${adminPrefix}/qualiopi/clients/${client.id}` : null;
+  // V1-03 : un groupe de faits par projet évoqué, un choix de projet par groupe.
+  const groupes = grouperParProjetEvoque(
+    r.faits.filter((f) => f.statut !== "valide"),
+    r.evocations,
+    projets,
+  );
+  const proposePrincipal = groupes.principal.proposition;
 
   return (
     <AdminPageShell width="wide">
-      <div className="mb-[var(--space-admin-4)]">
+      <div className="mb-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-4)]">
         <Link
           href={`${rdvBase}?vue=point`}
           className={`text-[length:var(--text-admin-xs)] ${lienCls}`}
         >
           ← Rendez-vous
         </Link>
+        {/* UX-01 : le compte rendu à valider, à un clic. */}
+        {r.comptesRendus.length > 0 ? (
+          <Link
+            href={`${rdvBase}/rencontres/${r.id}`}
+            className={`text-[length:var(--text-admin-xs)] ${lienCls}`}
+          >
+            Voir le compte rendu
+          </Link>
+        ) : null}
       </div>
 
       <AdminPageHeader
@@ -227,8 +245,20 @@ export async function ApresLAppelVue({
               <p className="font-medium sm:col-span-2">
                 Créer la fiche prospect depuis ce rendez-vous
               </p>
+              {/* P-5 : un indépendant sans entreprise est un particulier (pas de SIREN). */}
+              <fieldset className="flex flex-wrap gap-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] sm:col-span-2">
+                <legend className="font-medium">Type de client</legend>
+                <label className="flex items-center gap-[var(--space-admin-2)]">
+                  <input type="radio" name="type" value="entreprise" defaultChecked />
+                  Entreprise (B2B)
+                </label>
+                <label className="flex items-center gap-[var(--space-admin-2)]">
+                  <input type="radio" name="type" value="particulier" />
+                  Particulier (B2C — CPF perso)
+                </label>
+              </fieldset>
               <label className={labelCls}>
-                Nom de l&apos;entreprise
+                Nom de l&apos;entreprise (ou, pour un particulier, prénom et nom)
                 <input
                   name="raisonSociale"
                   required
@@ -298,6 +328,13 @@ export async function ApresLAppelVue({
 
           <section className={carteCls}>
             <h2 className={titreCls}>2. Quel projet ?</h2>
+            {groupes.autres.length > 0 && groupes.principal.intitule !== null ? (
+              <p
+                className={`mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] ${mutedCls}`}
+              >
+                Projet évoqué : « {groupes.principal.intitule} »
+              </p>
+            ) : null}
             <div className="space-y-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
               {projets.map((p) => (
                 <label key={p.id} className="flex items-center gap-[var(--space-admin-2)]">
@@ -306,7 +343,11 @@ export async function ApresLAppelVue({
                     name="projet"
                     value={p.id}
                     defaultChecked={
-                      r.projetId === p.id || (r.projetId === null && projets.length === 1)
+                      r.projetId === p.id ||
+                      (r.projetId === null &&
+                        (proposePrincipal?.mode === "existant"
+                          ? proposePrincipal.projetId === p.id
+                          : proposePrincipal === null && projets.length === 1))
                     }
                   />
                   {p.titre} <span className={mutedCls}>({p.numero})</span>
@@ -317,13 +358,19 @@ export async function ApresLAppelVue({
                   type="radio"
                   name="projet"
                   value="nouveau"
-                  defaultChecked={projets.length === 0}
+                  defaultChecked={
+                    projets.length === 0 ||
+                    (r.projetId === null && proposePrincipal?.mode === "nouveau")
+                  }
                 />
                 Nouveau projet :
                 <input
                   name="projetTitre"
                   maxLength={200}
-                  defaultValue={`Projet ${client.raisonSociale}`.slice(0, 200)}
+                  defaultValue={(proposePrincipal?.mode === "nouveau"
+                    ? proposePrincipal.titre
+                    : `Projet ${client.raisonSociale}`
+                  ).slice(0, 200)}
                   className={`${inputCls} max-w-md`}
                 />
               </label>
@@ -332,6 +379,62 @@ export async function ApresLAppelVue({
                 Aucun projet pour l&apos;instant (activité et effectif seulement)
               </label>
             </div>
+            {groupes.autres.map((g) => (
+              <fieldset
+                key={g.ref}
+                className="mt-[var(--space-admin-4)] space-y-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
+              >
+                <legend className="font-medium">
+                  {g.intitule !== null
+                    ? `Autre projet évoqué : « ${g.intitule} »`
+                    : "Autre projet évoqué"}
+                </legend>
+                <input type="hidden" name="groupe" value={g.ref ?? ""} />
+                <input
+                  type="hidden"
+                  name={`groupeIntitule_${g.ref}`}
+                  value={g.intitule ?? "l'autre projet évoqué"}
+                />
+                {g.faits.map((f) => (
+                  <input key={f.id} type="hidden" name={`groupeFait_${g.ref}`} value={f.id} />
+                ))}
+                {projets.map((p) => (
+                  <label key={p.id} className="flex items-center gap-[var(--space-admin-2)]">
+                    <input
+                      type="radio"
+                      name={`projet_${g.ref}`}
+                      value={p.id}
+                      defaultChecked={
+                        g.proposition?.mode === "existant" && g.proposition.projetId === p.id
+                      }
+                    />
+                    {p.titre} <span className={mutedCls}>({p.numero})</span>
+                  </label>
+                ))}
+                <label className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+                  <input
+                    type="radio"
+                    name={`projet_${g.ref}`}
+                    value="nouveau"
+                    defaultChecked={g.proposition?.mode !== "existant"}
+                  />
+                  Nouveau projet :
+                  <input
+                    name={`projetTitre_${g.ref}`}
+                    maxLength={200}
+                    defaultValue={(g.proposition?.mode === "nouveau"
+                      ? g.proposition.titre
+                      : (g.intitule ?? `Projet ${client.raisonSociale}`)
+                    ).slice(0, 200)}
+                    className={`${inputCls} max-w-md`}
+                  />
+                </label>
+                <label className="flex items-center gap-[var(--space-admin-2)]">
+                  <input type="radio" name={`projet_${g.ref}`} value="principal" />
+                  Le même projet que ci-dessus
+                </label>
+              </fieldset>
+            ))}
           </section>
 
           {r.faits.length > 0 ? (
@@ -343,10 +446,17 @@ export async function ApresLAppelVue({
                 Les cases non cochées d&apos;avance se valident une par une : budget, décideur,
                 confiance faible, ou pas encore rangé dans un projet.
               </p>
-              <ul className="space-y-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
-                {r.faits
-                  .filter((f) => f.statut !== "valide")
-                  .map((f) => (
+              {[groupes.principal, ...groupes.autres].map((g) => (
+                <ul
+                  key={g.ref ?? "principal"}
+                  className="mb-[var(--space-admin-3)] space-y-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
+                >
+                  {groupes.autres.length > 0 ? (
+                    <li className="font-semibold">
+                      {g.intitule ? `Projet évoqué : « ${g.intitule} »` : "Sans projet évoqué"}
+                    </li>
+                  ) : null}
+                  {g.faits.map((f) => (
                     <li key={f.id}>
                       <label className="flex items-start gap-[var(--space-admin-2)]">
                         <input
@@ -367,7 +477,8 @@ export async function ApresLAppelVue({
                       </label>
                     </li>
                   ))}
-              </ul>
+                </ul>
+              ))}
             </section>
           ) : null}
 
@@ -428,11 +539,14 @@ export async function ApresLAppelVue({
             </div>
           </section>
 
-          {/* UX-07 : le libellé suit « La suite » choisie, sans JavaScript (CSS
-              `:has`) — seule la suite « devis » ouvre le devis après validation. */}
+          {/* UX-07 : le libellé suit les choix, sans JavaScript (CSS `:has`) — le
+              devis ne s'ouvre qu'avec la suite « devis » ET un rendez-vous tenu
+              (absent ou reporté : la suite est annulée, `garderSuiteEtEcheance`). */}
           <button type="submit" className="admin-button">
-            <span className="group-has-[option[value=devis]:checked]:hidden">Valider</span>
-            <span className="hidden group-has-[option[value=devis]:checked]:inline">
+            <span className="[.group:has(option[value=devis]:checked):not(:has(option[value=absent]:checked)):not(:has(option[value=reporte]:checked))_&]:hidden">
+              Valider
+            </span>
+            <span className="hidden [.group:has(option[value=devis]:checked):not(:has(option[value=absent]:checked)):not(:has(option[value=reporte]:checked))_&]:inline">
               Valider et ouvrir le devis
             </span>
           </button>

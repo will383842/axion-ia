@@ -42,7 +42,7 @@ describe("la carte « À faire le point » mène à « Après l'appel » ou à l
     const src = readFileSync(join(process.cwd(), PAGE), "utf8");
     const carte = src.slice(src.indexOf("function CartePoint("), src.indexOf("function Chiffre("));
     expect(carte).toContain("<LiensApresLAppel calendlyEventId={r.id} />");
-    expect(carte).toContain("dossierVisible ?");
+    expect(carte).toContain("dossierVisible && estTypeDuDossier(r.titre) ?");
     // Jamais sur un échange apporteur : les liens sont dans la branche client.
     const apporteur = carte.indexOf("<IssueEchangeApporteurForm");
     const liens = carte.indexOf("<LiensApresLAppel");

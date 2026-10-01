@@ -31,6 +31,7 @@ import { EVT_COURT_CONFIRME, EVT_FENETRES_VERIFIEES } from "./attentes-will";
 import { etatSansTexteBrut, lireEtat } from "./etat-compte-rendu";
 import { ajouterAuJournal } from "./journal-enregistrement";
 import { annulerEtapesDesVersions, planifierDans } from "./prise-d-etape";
+import { CODES_ALERTES_CIRCUIT } from "./alertes-circuit";
 
 type Db = PrismaClient;
 
@@ -346,6 +347,17 @@ export async function validerCompteRendu(
     await tx.enregistrement.updateMany({
       where: { rencontreId: cr.rencontreId, statut: { in: ["compte_rendu_pret", "transcrit"] } },
       data: { statut: "valide" },
+    });
+    // UX-03 : l'alerte « un compte rendu attend votre validation » de cette
+    // rencontre se ferme avec la validation (même transaction).
+    await tx.alerteSysteme.updateMany({
+      where: {
+        code: CODES_ALERTES_CIRCUIT.compteRenduAValider,
+        cibleType: "Rencontre",
+        cibleId: cr.rencontreId,
+        resolue: false,
+      },
+      data: { resolue: true, resolueAt: a.maintenant },
     });
     await planifierDans(tx, cr.rencontreId, {
       etape: "purger_audio",

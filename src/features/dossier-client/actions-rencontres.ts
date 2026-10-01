@@ -33,6 +33,7 @@ import { deplacerRencontre } from "./deplacer";
 import { fusionnerFiches } from "./fusionner";
 import { defaireFusion } from "./defaire-fusion";
 import { validerApresLAppel, type ChoixProjet } from "./valider";
+import { lireChoixDesGroupes } from "./projets-evoques";
 import { CHAMPS_DE_LA_NOTE, type SaisieNote } from "./note-manuelle";
 import { executerGesteCompteRendu } from "./compte-rendu-gestes";
 import { MessagePourWill, messageAffichable } from "./message-affichable";
@@ -143,7 +144,17 @@ export async function creerProspectAction(fd: FormData): Promise<void> {
   ).catch((e: unknown) => erreurVers(retour, e));
   if (r.statut !== "cree") erreurVers(retour, new MessagePourWill(r.message));
   // La fiche créée RANGE le rendez-vous : son compte rendu est complété (P2 à P5).
-  await relancerApresRattachement(prisma, rencontreId).catch((e: unknown) => erreurVers(retour, e));
+  // P-6 : si la relance échoue, la fiche EXISTE déjà — le message le dit, et
+  // nomme le geste qui reprend le compte rendu.
+  await relancerApresRattachement(prisma, rencontreId).catch(() =>
+    erreurVers(
+      retour,
+      new MessagePourWill(
+        "La fiche est créée et le rendez-vous rangé, mais le compte rendu n'a pas pu être " +
+          "complété : ouvrez-le et cliquez « Compléter avec la fiche client ».",
+      ),
+    ),
+  );
   revalidatePath(base("rendez-vous"));
   redirect(base(retour));
 }
@@ -186,10 +197,19 @@ export async function validerApresLAppelAction(fd: FormData): Promise<void> {
         ? { mode: "existant", projetId: modeProjet }
         : { mode: "aucun" };
 
+  // V1-03 : un choix de projet par AUTRE projet évoqué ; un groupe sans choix est refusé.
+  let groupes: ReturnType<typeof lireChoixDesGroupes> = [];
+  try {
+    groupes = lireChoixDesGroupes(fd);
+  } catch (e) {
+    erreurVers(retour, e);
+  }
+
   const r = await validerApresLAppel(prisma, {
     rencontreId,
     parAdminId: userId,
     projet,
+    groupes,
     faitsCoches: fd.getAll("fait").filter((x): x is string => typeof x === "string"),
     note: lireNote(fd),
     suivi: {

@@ -50,33 +50,38 @@ export async function EtatDuCircuitVue({ rdvBase }: { rdvBase: string }) {
   return (
     <>
       <section className={carteCls}>
-        <h2 className={titreCls}>Le balayage</h2>
+        <h2 className={titreCls}>Le traitement automatique des comptes rendus</h2>
         <ul className={listeCls}>
           <Ligne
             libelle="Dernier passage"
             valeur={
               b.etat === "jamais" ? (
-                <AdminBadge tone="neutral">jamais — le balayage n&apos;est pas allumé</AdminBadge>
+                <AdminBadge tone="neutral">
+                  jamais — le traitement automatique est arrêté : prévenez Claude
+                </AdminBadge>
               ) : (
                 <AdminBadge tone={b.etat === "vert" ? "success" : "destructive"} dot>
                   il y a {b.ageMin} min
-                  {b.etat === "rouge" ? ` (au-delà de ${BATTEMENT_ROUGE_MIN} min : arrêté ?)` : ""}
+                  {b.etat === "rouge"
+                    ? ` — rien depuis plus de ${BATTEMENT_ROUGE_MIN} min, le traitement semble arrêté : prévenez Claude`
+                    : ""}
                 </AdminBadge>
               )
             }
           />
-          <Ligne libelle="Drapeau vu par le worker" valeur={e.drapeauVuParWorker ?? "—"} />
+          <Ligne
+            libelle="Réglage de l'enregistrement (lu par le traitement)"
+            valeur={e.drapeauVuParWorker ?? "—"}
+          />
           <Ligne
             libelle="En service depuis"
             valeur={e.borne ? `${formatDateFrShort(e.borne)} à ${timeInParis(e.borne)}` : "—"}
           />
           <Ligne
-            libelle="Étapes du circuit en cours"
+            libelle="Comptes rendus en préparation en ce moment"
             valeur={
               e.etapesEnCours > 0 ? (
-                <AdminBadge tone="warning">
-                  {e.etapesEnCours} — ne pas fusionner maintenant si ça peut attendre
-                </AdminBadge>
+                <AdminBadge tone="warning">{e.etapesEnCours} en cours</AdminBadge>
               ) : (
                 "aucune"
               )
@@ -128,6 +133,9 @@ export async function EtatDuCircuitVue({ rdvBase }: { rdvBase: string }) {
           <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>Aucune.</p>
         ) : (
           <ul className={listeCls}>
+            <li className="font-medium">
+              Une panne ne se répare pas d&apos;ici : prévenez Claude.
+            </li>
             {e.alertesTechniques.map((a) => (
               <li key={a.id}>
                 {a.titre}{" "}

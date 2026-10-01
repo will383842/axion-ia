@@ -63,7 +63,14 @@ export function resumeACopier(doc: DocumentCompteRendu): string {
     .join("\n");
 }
 
-export function DocumentCompteRenduVue({ document }: { readonly document: DocumentCompteRendu }) {
+export function DocumentCompteRenduVue({
+  document,
+  intitules = new Map(),
+}: {
+  readonly document: DocumentCompteRendu;
+  /** UX-06 : intitulé de chaque projet évoqué (`J1` → « Formation RH »). */
+  readonly intitules?: ReadonlyMap<string, string>;
+}) {
   const r = document.redaction;
   return (
     <>
@@ -117,8 +124,11 @@ export function DocumentCompteRenduVue({ document }: { readonly document: Docume
                 {document.ebauches.map((b) => (
                   <div key={b.projetRef} className="text-[length:var(--text-admin-sm)]">
                     <p className={discret}>
-                      Projet {b.projetRef} — offres du catalogue évoquées, SANS PRIX : le devis
-                      s&apos;ouvre vide et vous le composez vous-même.
+                      {intitules.has(b.projetRef)
+                        ? `« ${intitules.get(b.projetRef)} »`
+                        : "Projet évoqué"}{" "}
+                      — offres du catalogue évoquées, SANS PRIX : le devis s&apos;ouvre vide et vous
+                      le composez vous-même.
                     </p>
                     {b.lignes.length > 0 ? (
                       <ul className="list-disc pl-5">

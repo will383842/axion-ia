@@ -3,8 +3,9 @@
  * (chantier visio, PR 4 ; décision A3 de Will : déclenchée par lui,
  * journalisée, réversible).
  *
- * Composant SERVEUR, sans JavaScript. Les règles (deux SIREN différents :
- * refus ; facture sur la fiche sans SIREN : attente) sont dans
+ * Composant SERVEUR, sans JavaScript. Les règles (deux SIREN différents, ou
+ * un SIREN sur la seule fiche absorbée : refus ; facture sur la fiche sans
+ * SIREN : attente) sont dans
  * `features/dossier-client/fusionner.ts` ; l'action les applique et renvoie
  * le motif en clair.
  */
@@ -122,8 +123,9 @@ export function FusionDeFiches({
                 </label>
                 <p className={`text-[length:var(--text-admin-xs)] sm:col-span-2 ${mutedCls}`}>
                   Les personnes, les projets et les rendez-vous passent sur la fiche qui reste ; les
-                  devis et factures restent ici. Deux SIREN différents : la fusion est refusée. Elle
-                  se défait depuis l&apos;une ou l&apos;autre fiche.
+                  devis et factures restent ici. Deux SIREN différents, ou un SIREN sur cette seule
+                  fiche : la fusion est refusée (dans le second cas, fusionnez dans l&apos;autre
+                  sens). Elle se défait depuis l&apos;une ou l&apos;autre fiche.
                 </p>
                 <div className="sm:col-span-2">
                   <button type="submit" className="admin-button-ghost">

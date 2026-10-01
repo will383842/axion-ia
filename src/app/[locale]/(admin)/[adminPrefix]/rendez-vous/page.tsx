@@ -71,6 +71,7 @@ import {
   type DossierDuRendezVous,
 } from "@/features/dossier-client/queries-rencontres";
 import { LiensApresLAppel } from "@/components/admin/dossier-client/LiensApresLAppel";
+import { estTypeDuDossier } from "@/server/visio/liste-blanche-types";
 import { AClasserVue } from "@/components/admin/dossier-client/AClasserVue";
 import { EtatDuCircuitVue } from "@/components/admin/dossier-client/EtatDuCircuitVue";
 
@@ -157,7 +158,10 @@ function DossierSurLaCarte({ d }: { d: DossierCarte }) {
         </Link>
       ) : null}
       {x.compteRenduNonValide ? (
-        <AdminBadge tone="warning">compte rendu non validé</AdminBadge>
+        // UX-01 : le badge mène au compte rendu à valider.
+        <Link href={`${d.base}/rendez-vous/rencontres/${x.rencontreId}`} className="admin-link">
+          <AdminBadge tone="warning">compte rendu non validé</AdminBadge>
+        </Link>
       ) : null}
       {x.rattachementStatut === "propose" && x.clientPropose !== null ? (
         <form action={rangerRencontreAction}>
@@ -183,6 +187,9 @@ function CarteRdv({
 }) {
   const debut = r.startTime as Date;
   const apporteur = estAppelApporteur(r.title);
+  // UX-02 : un client dont le dossier est visible fait le point dans « Après
+  // l'appel » ; le formulaire court ne garde qu'Absent et Reporté.
+  const pointAuDossier = dossier !== null && !apporteur && estTypeDuDossier(r.title);
   // Le brouillon de relance, pour « Absent » — même texte que dans « À faire
   // le point », vers la page de réservation d'appel.
   const mailto = r.contactEmail
@@ -294,7 +301,9 @@ function CarteRdv({
                 : `Point fait : ${LIBELLE_ISSUE[r.suivi.issue]}${r.suivi.suite ? ` · ${LIBELLE_SUITE[r.suivi.suite]}` : ""} — modifiable ci-dessous`
               : apporteur
                 ? "L'échange est terminé ? Donnez son issue :"
-                : "L'appel est terminé ? Faites le point :"}
+                : pointAuDossier
+                  ? "L'appel est terminé ? Faites le point dans « Après l'appel » :"
+                  : "L'appel est terminé ? Faites le point :"}
           </p>
           {/* 2026-09-28 — un échange APPORTEUR a ses propres boutons (retenu,
               à revoir, non retenu…) et ses e-mails, avec aperçu avant envoi. */}
@@ -312,6 +321,18 @@ function CarteRdv({
                   : null
               }
             />
+          ) : pointAuDossier ? (
+            <>
+              <LiensApresLAppel calendlyEventId={r.sourceRecordId} />
+              <p className="mt-[var(--space-admin-3)] mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                Absent, reporté, ou sans suite ?
+              </p>
+              <SuiviRendezVousForm
+                calendlyEventId={r.sourceRecordId}
+                initial={r.suivi}
+                mailtoRelance={mailto}
+              />
+            </>
           ) : (
             <SuiviRendezVousForm
               calendlyEventId={r.sourceRecordId}
@@ -322,12 +343,7 @@ function CarteRdv({
         </section>
       ) : null}
 
-      {dossier !== null && !apporteur ? (
-        <>
-          <DossierSurLaCarte d={dossier} />
-          {r.enCours ? <LiensApresLAppel calendlyEventId={r.sourceRecordId} /> : null}
-        </>
-      ) : null}
+      {dossier !== null && !apporteur ? <DossierSurLaCarte d={dossier} /> : null}
 
       <p>
         <Link href={r.detailHref} className="admin-link">
@@ -391,8 +407,21 @@ function CartePoint({ r, dossierVisible }: { r: RdvAFaireLePoint; dossierVisible
           {/* Chantier visio (PR 4) : le point complet — rangement, projet,
               note, suite — se fait dans « Après l'appel ». Le formulaire
               court ci-dessous reste pour « Absent » et « Reporté ». */}
-          {dossierVisible ? <LiensApresLAppel calendlyEventId={r.id} /> : null}
-          <SuiviRendezVousForm calendlyEventId={r.id} mailtoRelance={mailto} />
+          {/* P-4 (décision de Williams du 30/09) : seuls les types de la liste
+              blanche du dossier mènent à « Après l'appel » (jamais un salon). */}
+          {/* UX-02 : « Après l'appel » en avant ; le formulaire court ne garde
+              qu'Absent et Reporté, sinon deux façons de faire le point. */}
+          {dossierVisible && estTypeDuDossier(r.titre) ? (
+            <>
+              <LiensApresLAppel calendlyEventId={r.id} />
+              <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                Absent, reporté, ou sans suite ?
+              </p>
+              <SuiviRendezVousForm calendlyEventId={r.id} mailtoRelance={mailto} />
+            </>
+          ) : (
+            <SuiviRendezVousForm calendlyEventId={r.id} mailtoRelance={mailto} />
+          )}
         </>
       )}
     </li>

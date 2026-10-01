@@ -154,7 +154,8 @@ export const LIBELLE_ETAPE_VISIO = {
   verifier_faits: "Vérification des faits",
   rattacher: "Rattachement aux projets",
   consolider: "Comparaison avec l'historique",
-  ebaucher: "Ébauche de devis",
+  // UX-06 : aucun devis n'est pré-rempli (décision de Williams) — l'étape relève des offres.
+  ebaucher: "Offres du catalogue évoquées",
   rediger: "Rédaction",
   verifier_compte_rendu: "Vérification du compte rendu",
   purger_audio: "Suppression du son",

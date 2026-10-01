@@ -63,6 +63,14 @@ describe("les rencontres saisies sont renvoyées par rencontres-du-jour", () => 
     expect(liste.map((r) => r.rencontreId)).toEqual([test.rencontreId]);
   });
 
+  it("mode pilote : un « Discutons » de TEST né de Calendly est listé aussi (B-1, ADR 0061)", async () => {
+    const db = fausseBase();
+    const test = semerRencontreCalendly(db, { estTestInterne: true });
+    semerRencontreCalendly(db, { startTime: new Date(T0.getTime() + 30 * MINUTE) });
+    const liste = await listerRencontresDuJour(commePrisma(db), { maintenant: T0, mode: "pilote" });
+    expect(liste.map((r) => r.rencontreId)).toEqual([test.rencontreId]);
+  });
+
   it("nuit du changement d'heure (25/10/2026) : une rencontre à +11 h 30 reste dans la fenêtre", async () => {
     const db = fausseBase();
     const avant = new Date("2026-10-24T22:00:00.000Z"); // 00:00 à Paris (été)

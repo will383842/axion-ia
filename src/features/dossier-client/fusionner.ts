@@ -12,7 +12,12 @@
  *   · deux SIREN DIFFÉRENTS : REFUS, toujours — ce sont deux entreprises ;
  *   · le même SIREN : permise, même si les fiches portent des pièces ;
  *   · aucun SIREN : permise ;
- *   · un SIREN d'un seul côté : permise ; si c'est l'absorbante qui l'a, la
+ *   · un SIREN sur la seule fiche ABSORBÉE : REFUS (V1-01, décision de Will
+ *     du 30/09), et le motif propose le sens inverse. Une fiche absorbée sort
+ *     de l'anti-doublon (porte unique, rattachement) : son SIREN ne serait plus
+ *     porté par aucune fiche vivante, et « Nouveau client » avec ce SIREN
+ *     créerait une troisième fiche ;
+ *   · un SIREN sur la seule fiche qui RESTE : permise ; la
  *     case « reporter le SIREN sur la fiche absorbée » (cochée par défaut)
  *     l'y recopie, et `sirenAbsorbeAvant` garde l'ancien (« Défaire » le
  *     rétablit). REPLI PRUDENT tant qu'Axion Partners n'a pas répondu
@@ -75,6 +80,11 @@ export class ErreurFusion extends Error {}
 export const MESSAGE_DEUX_SIREN =
   "Ce sont deux entreprises différentes. Si l'une des deux est fausse, corrige d'abord son SIREN.";
 
+export const MESSAGE_SIREN_SUR_L_ABSORBEE =
+  "Seule la fiche à fusionner a un SIREN : elle sortirait de l'anti-doublon et ce SIREN ne " +
+  "serait plus sur aucune fiche active. Faites la fusion dans le sens inverse : ouvrez l'autre " +
+  "fiche et fusionnez-la dans celle-ci, qui garde son SIREN.";
+
 export interface FicheAFusionner {
   readonly id: string;
   readonly siren: string | null;
@@ -103,7 +113,8 @@ export function deciderFusion(
   }
   if (a === null && b === null) return { permise: true, reporterSiren: false };
 
-  // Un SIREN d'un seul côté.
+  // Un SIREN d'un seul côté : jamais sur la seule absorbée (V1-01, voir l'en-tête).
+  if (a !== null) return { permise: false, motif: MESSAGE_SIREN_SUR_L_ABSORBEE };
   const sansSiren = a === null ? absorbee : absorbante;
   if (!(e.partnersAConfirme ?? PARTNERS_A_CONFIRME_LE_SUIVI_PAR_SIREN) && sansSiren.aUneFacture) {
     return {
@@ -241,10 +252,29 @@ export async function fusionnerFiches(
       });
     }
     // Les propositions pendantes suivent aussi (A4 : elles restent des propositions).
+    // V1-05 : chacune est consignée au journal de rattachement, daté de la
+    // fusion, pour que « Défaire » la rende à la fiche absorbée.
+    const proposees = await tx.rencontre.findMany({
+      where: { clientProposeId: e.absorbeeId },
+      select: { id: true, motifProposition: true },
+    });
     await tx.rencontre.updateMany({
       where: { clientProposeId: e.absorbeeId },
       data: { clientProposeId: e.absorbanteId },
     });
+    if (proposees.length > 0) {
+      await tx.rencontreRattachementEvenement.createMany({
+        data: proposees.map((r) => ({
+          rencontreId: r.id,
+          action: "propose" as const,
+          ancienClientId: e.absorbeeId,
+          nouveauClientId: e.absorbanteId,
+          motif: r.motifProposition,
+          parAdminId: e.parAdminId,
+          survenuLe: fusion.le,
+        })),
+      });
+    }
 
     if (projetIds.length > 0) {
       await tx.projetEvenement.createMany({

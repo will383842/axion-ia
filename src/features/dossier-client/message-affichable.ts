@@ -22,6 +22,7 @@ import { ErreurDefaireFusion } from "./defaire-fusion";
 import { ErreurDeplacement } from "./deplacer";
 import { ErreurFusion } from "./fusionner";
 import { ErreurNote } from "./note-manuelle";
+import { ErreurChoixDeGroupe } from "./projets-evoques";
 import { ErreurRattachement } from "./rattacher";
 import { ErreurSuivi } from "./suivi";
 import { ErreurValidation } from "./valider";
@@ -46,6 +47,7 @@ const ERREURS_METIER: ReadonlyArray<abstract new (...args: never[]) => Error> = 
   ErreurDeplacement,
   ErreurFusion,
   ErreurNote,
+  ErreurChoixDeGroupe,
   ErreurRattachement,
   ErreurSuivi,
   ErreurValidation,
