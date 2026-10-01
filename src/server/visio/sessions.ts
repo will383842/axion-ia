@@ -36,7 +36,6 @@ import type { EnregistrementStatut, PrismaClient } from "../../../prisma/generat
 import {
   DELAIS_SERVEUR,
   VERSION_CONTRAT_ENREGISTREUR,
-  VERSION_EXTENSION_MINIMALE_VISIO,
   type MotifRefusSession,
   type TCreerSession,
   type TDeclarerAccord,
@@ -64,6 +63,11 @@ import { refusPisteClientEnDictee } from "./morceaux";
 import { CODES_ALERTES_VISIO } from "./alertes";
 import { estHorsAccord } from "./dialogue";
 import { echec, ok, type Resultat } from "./resultat";
+import {
+  MESSAGE_EXTENSION_TROP_ANCIENNE,
+  refusVersionDeSession,
+  versionAccepteePourVisio,
+} from "./version-extension";
 import { planifierDans } from "./prise-d-etape";
 import { purgerSonDUneTranche, stockageR2, type StockageAudio } from "./stockage-audio";
 
@@ -103,31 +107,10 @@ const MESSAGES_REFUS: Readonly<Record<MotifATexteFixe, string>> = {
     "Une personne de ce client s'est opposée au traitement par IA : ni enregistrement, ni dictée.",
   refus_anterieur_definitif:
     "Ce rendez-vous a déjà fait l'objet d'un refus : rien ne s'enregistre.",
-  extension_trop_ancienne: `Cette copie de l'extension est trop ancienne pour enregistrer une visio : mettez à jour l'extension (version ${VERSION_EXTENSION_MINIMALE_VISIO} au moins), puis recommencez.`,
+  extension_trop_ancienne: MESSAGE_EXTENSION_TROP_ANCIENNE,
 };
 
-/** « 1.10.0 » → [1, 10, 0] ; `null` si ce n'est pas une version numérique. */
-function partiesDeVersion(v: string): number[] | null {
-  if (!/^\d+(\.\d+)*$/.test(v)) return null;
-  return v.split(".").map((x) => Number(x));
-}
-
-/**
- * V2, N2 — vrai si cette version d'extension peut enregistrer une VISIO
- * (`VERSION_EXTENSION_MINIMALE_VISIO` ou plus récente). Comparaison NUMÉRIQUE,
- * partie par partie ; une version illisible est refusée.
- */
-export function versionAccepteePourVisio(version: string): boolean {
-  const lue = partiesDeVersion(version.trim());
-  const min = partiesDeVersion(VERSION_EXTENSION_MINIMALE_VISIO);
-  if (!lue || !min) return false;
-  for (let i = 0; i < Math.max(lue.length, min.length); i += 1) {
-    const a = lue[i] ?? 0;
-    const b = min[i] ?? 0;
-    if (a !== b) return a > b;
-  }
-  return true;
-}
+export { versionAccepteePourVisio } from "./version-extension";
 
 /** Un refus motivé : le code du contrat et le texte montré à Will. */
 export interface RefusMotive {
@@ -618,6 +601,7 @@ async function chargerDeLAppareil(db: Pick<Db, "enregistrement">, id: string, ap
       updatedAt: true,
       nature: true,
       fenetresHorsAccord: true,
+      versionExtension: true,
     },
   });
   if (!enr || enr.appareilId !== appareilId) return null;
@@ -640,6 +624,8 @@ export async function declarerAccord(
 ): Promise<Resultat> {
   const enr = await chargerDeLAppareil(db, entree.enregistrementId, entree.appareil.id);
   if (!enr) return INTROUVABLE;
+  const tropAncienne = refusVersionDeSession(enr);
+  if (tropAncienne) return tropAncienne;
   const accordLe = new Date(entree.corps.accordLe);
   const preavis = entree.preavis === undefined ? PREAVIS_SOUS_TRAITANTS : entree.preavis;
 
@@ -904,6 +890,8 @@ export async function terminerTranche(
 ): Promise<Resultat> {
   const enr = await chargerDeLAppareil(db, entree.enregistrementId, entree.appareil.id);
   if (!enr) return INTROUVABLE;
+  const tropAncienne = refusVersionDeSession(enr);
+  if (tropAncienne) return tropAncienne;
   if (enr.statut === "accord_en_attente") {
     return echec(409, "accord_en_attente", "Rien n'est reçu avant l'accord.");
   }
@@ -964,6 +952,8 @@ export async function terminerSession(
 ): Promise<Resultat> {
   const enr = await chargerDeLAppareil(db, entree.enregistrementId, entree.appareil.id);
   if (!enr) return INTROUVABLE;
+  const tropAncienne = refusVersionDeSession(enr);
+  if (tropAncienne) return tropAncienne;
   const c = entree.corps;
   const finLe = new Date(c.finLe);
 

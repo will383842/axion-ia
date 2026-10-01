@@ -28,14 +28,24 @@ vi.mock("@/server/qualiopi/alertes/evaluateur", () => ({
 import { CODES_ALERTES_VISIO } from "../alertes";
 import { balayerEnregistreur } from "../balayage-enregistreur";
 import { enregistrerBattementAppareil } from "../battement-appareil";
-import { creerOuReprendreSession, versionAccepteePourVisio } from "../sessions";
+import { deposerMorceau } from "../morceaux";
+import {
+  creerOuReprendreSession,
+  declarerAccord,
+  declarerRefus,
+  terminerSession,
+  terminerTranche,
+  versionAccepteePourVisio,
+} from "../sessions";
 import {
   commePrisma,
   corpsSession,
   fausseBase,
   fauxStockage,
   MINUTE,
+  entetesMorceau,
   semerAppareil,
+  semerEnregistrement,
   semerRencontreTest,
   T0,
 } from "../../../../tests/outils/fixtures-enregistreur";
@@ -108,5 +118,108 @@ describe("une extension sans RGPD-01 ne peut pas enregistrer", () => {
       .filter((a) => a["code"] === CODES_ALERTES_VISIO.extensionTropAncienne);
     expect(alertes).toHaveLength(1);
     expect(alertes[0]?.["cibleId"]).toBe(appareilId);
+  });
+
+  it("une session déjà ouverte par une 1.0.0 : morceau, tranche, accord et fin refusés ; le refus passe", async () => {
+    const db = fausseBase();
+    const { appareilId, adminUserId } = semerAppareil(db);
+    const appareil = { id: appareilId, adminUserId };
+    const { rencontreId } = semerRencontreTest(db);
+    const id = semerEnregistrement(db, { rencontreId, appareilId, statut: "en_cours" });
+    db.lignes("enregistrement")[0]!["versionExtension"] = "1.0.0";
+    const son = Buffer.from("son");
+    const h = entetesMorceau(son);
+    const attendu = {
+      statut: 409,
+      corps: expect.objectContaining({ erreur: "extension_trop_ancienne" }),
+    };
+    expect(
+      await deposerMorceau(commePrisma(db), fauxStockage(), {
+        appareil,
+        enregistrementId: id,
+        entetes: {
+          piste: h["x-piste"] ?? null,
+          tranche: h["x-tranche"] ?? null,
+          seq: h["x-seq"] ?? null,
+          debutCaptureMs: h["x-debut-capture-ms"] ?? null,
+          empreinte: h["x-empreinte"] ?? null,
+        },
+        octets: son,
+        maintenant: T0,
+      }),
+    ).toMatchObject(attendu);
+    expect(
+      await terminerTranche(commePrisma(db), {
+        appareil,
+        enregistrementId: id,
+        maintenant: T0,
+        corps: {
+          piste: "client",
+          numero: 0,
+          motifDebut: "demarrage",
+          debutCaptureEpochMs: T0.getTime(),
+          nbMorceaux: 1,
+          empreinte: "0".repeat(64),
+          dureeMs: 1000,
+          finMuette: true,
+        },
+      }),
+    ).toMatchObject(attendu);
+    expect(
+      await declarerAccord(commePrisma(db), {
+        appareil,
+        enregistrementId: id,
+        maintenant: T0,
+        corps: {
+          accordLe: T0.toISOString(),
+          nbParticipants: 2,
+          versionTexte: "annonce-v1",
+          nouvellePersonne: false,
+        },
+      }),
+    ).toMatchObject(attendu);
+    expect(
+      await terminerSession(commePrisma(db), {
+        appareil,
+        enregistrementId: id,
+        maintenant: T0,
+        corps: {
+          finLe: T0.toISOString(),
+          motif: "manuel",
+          perdus: [],
+          fenetresHorsAccord: [],
+          evenements: [],
+        },
+      }),
+    ).toMatchObject(attendu);
+    // Le refus, lui, n'est jamais bloqué.
+    const refus = await declarerRefus(commePrisma(db), fauxStockage(), {
+      appareil,
+      enregistrementId: id,
+      refusLe: T0,
+      maintenant: T0,
+    });
+    expect(refus.corps["erreur"]).not.toBe("extension_trop_ancienne");
+  });
+
+  it("contre-témoin : version inconnue de la session, rien n'est refusé pour elle", async () => {
+    const db = fausseBase();
+    const { appareilId, adminUserId } = semerAppareil(db);
+    const { rencontreId } = semerRencontreTest(db);
+    const id = semerEnregistrement(db, { rencontreId, appareilId, statut: "en_cours" });
+    db.lignes("enregistrement")[0]!["versionExtension"] = null;
+    const r = await terminerSession(commePrisma(db), {
+      appareil: { id: appareilId, adminUserId },
+      enregistrementId: id,
+      maintenant: T0,
+      corps: {
+        finLe: T0.toISOString(),
+        motif: "manuel",
+        perdus: [],
+        fenetresHorsAccord: [],
+        evenements: [],
+      },
+    });
+    expect(r.statut).toBe(200);
   });
 });
