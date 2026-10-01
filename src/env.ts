@@ -77,8 +77,11 @@ export const env = createEnv({
     // Optionnelles toutes les quatre : un site sans CRM doit démarrer.
     CRM_SYNC_ENABLED: z.enum(["true", "false"]).optional(),
     // ── Chantier visio (PR 4, 2026-09-29) — balayage du dossier client ──────
-    // Lu par le WORKER seulement. Absent ou "false" : ni worker ni entrée
-    // répétable. Passé à "true" après la reprise réelle de l'historique Calendly.
+    // Lu par le WORKER seulement. Le worker et son entrée répétable tournent
+    // TOUJOURS (ils portent l'enregistreur : clôture d'office, purges, témoin de
+    // clé) ; absent ou "false", seul le passage « dossier client » est sauté
+    // (`visio-balayage-worker.ts`). Passé à "true" après la reprise réelle de
+    // l'historique Calendly.
     DOSSIER_BALAYAGE_ENABLED: z.enum(["true", "false"]).optional(),
     // ── Chantier visio (correctif P-2, ADR 0061) — adresses de test du pilote ─
     // Lu par le site ET le worker (`src/server/visio/adresses-de-test.ts`, à
