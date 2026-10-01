@@ -33,11 +33,11 @@ vi.mock("@/server/qualiopi/alertes/evaluateur", () => ({
   evaluerAlertesDetaille: vi.fn(),
 }));
 
-import { fenetresAuBattement } from "../../../../extensions/enregistreur-meet/lib/etats-capture.js";
-import { CODES_ALERTES_VISIO } from "../alertes";
-import { questionsAWill } from "../attentes-will";
-import { fenetresRecuesDe } from "../depot-donnees";
-import { battementSession, FIN_FENETRE_OUVERTE_MS, terminerSession } from "../sessions";
+import { fenetresAuBattement } from "../../../extensions/enregistreur-meet/lib/etats-capture.js";
+import { CODES_ALERTES_VISIO } from "@/server/visio/alertes";
+import { questionsAWill } from "@/server/visio/attentes-will";
+import { fenetresRecuesDe } from "@/server/visio/depot-donnees";
+import { battementSession, FIN_FENETRE_OUVERTE_MS, terminerSession } from "@/server/visio/sessions";
 import {
   commePrisma,
   fausseBase,
@@ -47,7 +47,7 @@ import {
   semerEnregistrement,
   semerRencontreTest,
   T0,
-} from "../../../../tests/outils/fixtures-enregistreur";
+} from "../../outils/fixtures-enregistreur";
 
 describe("les fenêtres hors accord arrivent avec le battement", () => {
   it("le battement garde les fenêtres ; une fenêtre ouverte court jusqu'à la fin", async () => {

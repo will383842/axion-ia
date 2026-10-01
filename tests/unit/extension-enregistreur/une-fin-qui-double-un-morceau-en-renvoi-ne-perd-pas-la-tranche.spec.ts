@@ -26,15 +26,15 @@ import { describe, expect, it } from "vitest";
 import {
   envoyablesMaintenant,
   sonEnAttentePour,
-} from "../../../../extensions/enregistreur-meet/lib/file-envoi.js";
-import { depotDonneesPrisma } from "../depot-donnees";
+} from "../../../extensions/enregistreur-meet/lib/file-envoi.js";
+import { depotDonneesPrisma } from "@/server/visio/depot-donnees";
 import {
   commePrisma,
   fausseBase,
   semerAppareil,
   semerEnregistrement,
   semerRencontreTest,
-} from "../../../../tests/outils/fixtures-enregistreur";
+} from "../../outils/fixtures-enregistreur";
 
 const MAINTENANT = 1_800_000_000_000;
 const captures = { k: { accord: true, enregistrementId: "e1" } };
