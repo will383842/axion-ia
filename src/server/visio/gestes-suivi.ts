@@ -253,7 +253,8 @@ export async function ecrireQuestions(
       await tx.questionnaireCadrage.update({
         where: { id: questionnaireId },
         data: {
-          mode: "en_ligne",
+          // ⛔ PAS `en_ligne` : seul le geste « Lien » ouvre l'accès en ligne (ADR §3).
+          mode: "a_copier",
           modele: MODELE_QUESTIONS_DE_WILLIAMS,
           promptHash: null,
           genereLe: maintenant,
@@ -267,7 +268,16 @@ export async function ecrireQuestions(
           where: { id: derniere.id, statut: "copie", reponseRecueLe: null },
           data: { statut: "clos", closLe: maintenant },
         });
-        ancienLienClos = clos.count === 1;
+        // Course (relecture exactitude) : si le client vient d'envoyer ses
+        // réponses à cette version, la clôture ne touche rien. Créer v+1 quand
+        // même cacherait ces réponses dans la console (elle lit la dernière
+        // version) : on REFUSE, et la transaction annule tout.
+        if (clos.count !== 1) {
+          throw new GesteRefuse(
+            `Le client vient d'envoyer ses réponses à la version ${derniere.version} : rechargez la page pour les lire avant d'écrire de nouvelles questions.`,
+          );
+        }
+        ancienLienClos = true;
       }
       version = (derniere?.version ?? 0) + 1;
       const cree = await tx.questionnaireCadrage.create({
@@ -275,7 +285,8 @@ export async function ecrireQuestions(
           projetId: a.projetId,
           clientId: a.clientId,
           version,
-          mode: "en_ligne",
+          // ⛔ PAS `en_ligne` : seul le geste « Lien » ouvre l'accès en ligne (ADR §3).
+          mode: "a_copier",
           statut: "brouillon",
           genereLe: maintenant,
           modele: MODELE_QUESTIONS_DE_WILLIAMS,
@@ -387,7 +398,14 @@ export async function enregistrerReponses(
     }
     await tx.questionnaireCadrage.update({
       where: { id: q.id },
-      data: { statut: "reponse_recue", reponseRecueLe: maintenant },
+      // Des réponses COLLÉES par Will ne sont pas « reçues en ligne » : la
+      // première saisie à la main repasse le questionnaire en `a_copier` (la
+      // console n'affiche « Reçu en ligne » que pour un envoi fait par la page).
+      // Une correction après un envoi en ligne garde, elle, le mode d'origine.
+      data:
+        q.statut === "reponse_recue"
+          ? { statut: "reponse_recue" }
+          : { statut: "reponse_recue", reponseRecueLe: maintenant, mode: "a_copier" },
     });
     if (ancrage !== null) {
       await planifierDans(tx, ancrage, {

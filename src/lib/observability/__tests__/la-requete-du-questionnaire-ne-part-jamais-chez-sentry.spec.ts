@@ -23,6 +23,8 @@
 
 import { describe, expect, it } from "vitest";
 
+import { jetonQuestionnaire } from "@/server/visio/questionnaire-en-ligne/jeton";
+
 import {
   corpsAIgnorer,
   estRouteARequeteSecrete,
@@ -31,7 +33,8 @@ import {
 } from "../sentry-pii-scrub";
 
 const ID = "6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b";
-const JETON = "Qx3_vR9kLm2-Tz8wYp4sAb6dEf1gHj5nKc7uWq0oIt0";
+// Un VRAI jeton, fabriqué par le module de production (forme et alphabet réels).
+const JETON = jetonQuestionnaire(ID) as string;
 const REPONSE = "Douze personnes à former, surtout la comptabilité";
 const NOM = "Camille Exemple, DAF";
 const Q = "11111111-1111-4111-8111-111111111111";

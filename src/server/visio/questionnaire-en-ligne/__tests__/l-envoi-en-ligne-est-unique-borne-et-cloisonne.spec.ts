@@ -66,55 +66,109 @@ interface Etat {
   passe?: number;
   /** Les questions relues DANS la transaction (B1) — par défaut, les mêmes. */
   questionsDansTx?: string[];
+  /** Une version plus récente qui n'apparaît QUE sous le verrou (B3 revérifié). */
+  depasseeDansTx?: boolean;
   rencontre?: { id: string } | null;
 }
 
+/** Le filtre B4 attendu : seules les questions au texte VIDÉ sont comptées. */
+const COMPTE_VIDEES = { select: { questions: { where: { texte: "" } } } };
+
+/**
+ * Une base factice qui APPLIQUE les filtres (vérificateur rouge) : un `where`
+ * faux ne passe plus inaperçu. Et une transaction `tx` DISTINCTE de `db` : ce
+ * qui doit être relu ou écrit sous le verrou ne peut pas l'être par `db`.
+ */
 function base(e: Etat = {}) {
-  let dansTx = false;
-  const questionnaireCadrage = {
-    findUnique: vi.fn().mockResolvedValue({
-      id: QID,
-      statut: e.statut ?? "copie",
-      mode: e.mode ?? "en_ligne",
-      version: 1,
-      clientId: "cl",
-      projetId: "p",
-      _count: { questions: e.videes ?? 0 },
-    }),
-    findFirst: vi.fn().mockResolvedValue(e.depassee ? { id: "v2" } : null),
-    updateMany: vi.fn().mockResolvedValue({ count: e.passe ?? 1 }),
+  // Les versions connues : celle-ci, une plus récente si `depassee`, et la
+  // version 9 d'un AUTRE projet (un `findFirst` sans `projetId` la trouverait).
+  const versions = (dansTx: boolean) => [
+    { id: QID, projetId: "p", version: 1 },
+    ...(e.depassee || (dansTx && e.depasseeDansTx)
+      ? [{ id: "v2", projetId: "p", version: 2 }]
+      : []),
+    { id: "autre", projetId: "autre-projet", version: 9 },
+  ];
+  const chercherVersion =
+    (dansTx: boolean) =>
+    async (a: { where: { projetId?: string; version?: { gt?: number; gte?: number } } }) =>
+      versions(dansTx).find(
+        (v) =>
+          (a.where.projetId === undefined || v.projetId === a.where.projetId) &&
+          (a.where.version?.gt === undefined || v.version > a.where.version.gt) &&
+          (a.where.version?.gte === undefined || v.version >= a.where.version.gte),
+      ) ?? null;
+
+  const lignes = (ids: string[], select: Record<string, unknown>) =>
+    ids.map((id, i) =>
+      "texte" in select
+        ? { id, ordre: i + 1, texte: chiffrerParole(`Question ${i + 1} ?`) }
+        : { id },
+    );
+
+  const findUnique = vi.fn().mockImplementation(async (a: { select: Record<string, unknown> }) => ({
+    id: QID,
+    statut: e.statut ?? "copie",
+    mode: e.mode ?? "en_ligne",
+    version: 1,
+    clientId: "cl",
+    projetId: "p",
+    // Sans le filtre « texte vide », le compte porterait sur TOUTES les questions (2).
+    _count: {
+      questions:
+        JSON.stringify(a.select["_count"]) === JSON.stringify(COMPTE_VIDEES) ? (e.videes ?? 0) : 2,
+    },
+  }));
+  const dbFindMany = vi
+    .fn()
+    .mockImplementation(async (a: { select: Record<string, unknown> }) =>
+      lignes([Q1, Q2], a.select),
+    );
+
+  const tx = {
+    questionnaireCadrage: {
+      updateMany: vi.fn().mockResolvedValue({ count: e.passe ?? 1 }),
+      findFirst: vi.fn().mockImplementation(chercherVersion(true)),
+    },
+    questionnaireQuestion: {
+      findMany: vi
+        .fn()
+        .mockImplementation(async (a: { select: Record<string, unknown> }) =>
+          lignes(e.questionsDansTx ?? [Q1, Q2], a.select),
+        ),
+      updateMany: vi.fn().mockResolvedValue({ count: 1 }),
+      upsert: vi.fn().mockResolvedValue({}),
+    },
+    $executeRaw: vi.fn().mockResolvedValue(1),
   };
-  const questionnaireQuestion = {
-    findMany: vi.fn().mockImplementation(async (a: { select: Record<string, unknown> }) => {
-      const ids = dansTx && e.questionsDansTx ? e.questionsDansTx : [Q1, Q2];
-      return ids.map((id, i) =>
-        "texte" in a.select
-          ? { id, ordre: i + 1, texte: chiffrerParole(`Question ${i + 1} ?`) }
-          : { id },
-      );
-    }),
-    updateMany: vi.fn().mockResolvedValue({ count: 1 }),
-    upsert: vi.fn().mockResolvedValue({}),
-  };
-  const $executeRaw = vi.fn().mockResolvedValue(1);
   const db = {
-    questionnaireCadrage,
-    questionnaireQuestion,
-    $executeRaw,
+    questionnaireCadrage: {
+      findUnique,
+      findFirst: vi.fn().mockImplementation(chercherVersion(false)),
+    },
+    // ⚠️ Pas d'`updateMany` ni d'`upsert` ici : une écriture hors transaction échoue.
+    questionnaireQuestion: { findMany: dbFindMany },
     rencontre: {
       findFirst: vi.fn().mockResolvedValue(e.rencontre === undefined ? { id: "r" } : e.rencontre),
       findUnique: vi.fn().mockResolvedValue({ estTestInterne: false }),
     },
-    $transaction: vi.fn(async (fn: (tx: unknown) => Promise<unknown>) => {
-      dansTx = true;
-      try {
-        return await fn(db);
-      } finally {
-        dansTx = false;
-      }
-    }),
+    $transaction: vi.fn(async (fn: (t: unknown) => Promise<unknown>) => fn(tx)),
   };
-  return { db: db as unknown as Db, questionnaireCadrage, questionnaireQuestion, $executeRaw };
+  return {
+    db: db as unknown as Db,
+    tx,
+    questionnaireCadrage: {
+      findUnique,
+      findFirst: db.questionnaireCadrage.findFirst,
+      updateMany: tx.questionnaireCadrage.updateMany,
+    },
+    questionnaireQuestion: {
+      findMany: dbFindMany,
+      updateMany: tx.questionnaireQuestion.updateMany,
+      upsert: tx.questionnaireQuestion.upsert,
+    },
+    $executeRaw: tx.$executeRaw,
+  };
 }
 
 const envoyer = (
@@ -378,5 +432,35 @@ describe("l'envoi est unique, borné et cloisonné", () => {
       lecturePrevue: false,
     });
     expect($executeRaw).not.toHaveBeenCalled();
+  });
+});
+
+describe("vérificateur rouge : les gardes lisent leurs vrais filtres", () => {
+  it("B3 : la version plus récente se cherche sur CE projet, strictement après (`gt`)", async () => {
+    const { db, questionnaireCadrage } = base();
+    expect(await lireQuestionnairePublic(db, QID, jeton())).toMatchObject({ etat: "ouvert" });
+    expect(questionnaireCadrage.findFirst.mock.calls[0]?.[0].where).toEqual({
+      projetId: "p",
+      version: { gt: 1 },
+    });
+  });
+
+  it("B4 : le compte ne porte que sur les questions au texte vidé", async () => {
+    const { db, questionnaireCadrage } = base();
+    await lireQuestionnairePublic(db, QID, jeton());
+    expect(questionnaireCadrage.findUnique.mock.calls[0]?.[0].select._count).toEqual(COMPTE_VIDEES);
+  });
+
+  it("B3 sous le verrou : une version apparue PENDANT l'envoi annule tout", async () => {
+    const { db, questionnaireQuestion, $executeRaw } = base({ depasseeDansTx: true });
+    expect(await envoyer(db, [[Q1, "oui"]], { mode: "ouvert" })).toEqual({ issue: "introuvable" });
+    expect(questionnaireQuestion.updateMany).not.toHaveBeenCalled();
+    expect($executeRaw).not.toHaveBeenCalled();
+  });
+
+  it("B1 : les questions sont relues par la TRANSACTION, pas par la base hors verrou", async () => {
+    const { db, tx } = base();
+    await envoyer(db, [[Q1, "oui"]]);
+    expect(tx.questionnaireQuestion.findMany).toHaveBeenCalledTimes(1);
   });
 });

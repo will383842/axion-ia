@@ -26,6 +26,7 @@ import {
   ecrireQuestions,
   enregistrerReponses,
   marquerPoseeDeViveVoix,
+  marquerQuestionnaireCopie,
   ouvrirLienEnLigne,
   questionsDuTexte,
 } from "../../gestes-suivi";
@@ -34,6 +35,7 @@ import {
   MODELE_QUESTIONS_DE_WILLIAMS,
   ORDRE_QUI_REPOND,
 } from "../constantes";
+import { versionRemplacable } from "../regles";
 
 type Db = Parameters<typeof ecrireQuestions>[0];
 
@@ -58,7 +60,10 @@ function derniere(p: Record<string, unknown>) {
   };
 }
 
-function base(d: unknown, o: { statutPourLien?: string; visibles?: number; verrou?: number } = {}) {
+function base(
+  d: unknown,
+  o: { statutPourLien?: string; visibles?: number; verrou?: number; cloture?: number } = {},
+) {
   const questionnaireCadrage = {
     findFirst: vi.fn().mockResolvedValue(d),
     findUnique: vi.fn().mockResolvedValue({
@@ -69,7 +74,12 @@ function base(d: unknown, o: { statutPourLien?: string; visibles?: number; verro
     }),
     create: vi.fn().mockResolvedValue({ id: "nouveau" }),
     update: vi.fn().mockResolvedValue({}),
-    updateMany: vi.fn().mockResolvedValue({ count: o.verrou ?? 1 }),
+    // Le verrou B1 et la clôture de l'ancien lien sont deux `updateMany`
+    // distincts : chacun a son propre résultat (sinon la clôture « réussirait »
+    // toujours et sa course ne serait jamais testée).
+    updateMany: vi.fn().mockImplementation(async (a: { data: { statut?: string } }) => ({
+      count: a.data.statut === "clos" ? (o.cloture ?? 1) : (o.verrou ?? 1),
+    })),
   };
   const questionnaireQuestion = {
     deleteMany: vi.fn().mockResolvedValue({ count: 2 }),
@@ -105,14 +115,15 @@ describe("écrire ses questions", () => {
     ).toEqual(["Combien de personnes ?", "Quel calendrier ?", "Quels outils ?"]);
   });
 
-  it("sans questionnaire : une version 1, en ligne, brouillon, typeVise « autre », chiffrée", async () => {
+  it("sans questionnaire : une version 1, brouillon PAS en ligne, typeVise « autre », chiffrée", async () => {
     const { db, questionnaireCadrage, questionnaireQuestion } = base(null);
     await ecrire(db, "Combien de personnes ?\nQuel calendrier ?");
     expect(questionnaireCadrage.create).toHaveBeenCalledWith(
       expect.objectContaining({
         data: expect.objectContaining({
           version: 1,
-          mode: "en_ligne",
+          // Seul le geste « Lien » ouvre l'accès en ligne (relecture exactitude 2).
+          mode: "a_copier",
           statut: "brouillon",
           modele: MODELE_QUESTIONS_DE_WILLIAMS,
         }),
@@ -138,6 +149,18 @@ describe("écrire ses questions", () => {
       where: { questionnaireId: "q" },
     });
     expect(questionnaireCadrage.create).not.toHaveBeenCalled();
+    // Le remplacement ne met PAS le questionnaire en ligne.
+    expect(questionnaireCadrage.update.mock.calls[0]?.[0].data.mode).toBe("a_copier");
+  });
+
+  it("course (exactitude 1) : le client vient de répondre à l'ancien lien → geste REFUSÉ, rien de créé", async () => {
+    const { db, questionnaireCadrage, questionnaireQuestion } = base(
+      derniere({ statut: "copie", mode: "en_ligne" }),
+      { cloture: 0 },
+    );
+    await expect(ecrire(db, "Question corrigée ?")).rejects.toBeInstanceOf(GesteRefuse);
+    expect(questionnaireCadrage.create).not.toHaveBeenCalled();
+    expect(questionnaireQuestion.createMany).not.toHaveBeenCalled();
   });
 
   it("B1 : le verrou ne tient plus (le client vient d'agir) → rien n'est effacé, nouvelle version", async () => {
@@ -272,5 +295,57 @@ describe("C3 : la ligne « Qui répond ? » n'est pas une question pour la conso
       questionnaireId: "q",
       ordre: { gt: ORDRE_QUI_REPOND },
     });
+  });
+});
+
+describe("exactitude 2 : seul le geste « Lien » ouvre l'accès en ligne, et seul un envoi en ligne se dit « reçu en ligne »", () => {
+  it("« J'ai copié » ne met PAS le questionnaire en ligne", async () => {
+    const { db, questionnaireCadrage } = base(null, { statutPourLien: "brouillon" });
+    await marquerQuestionnaireCopie(db, "q");
+    expect(questionnaireCadrage.update.mock.calls[0]?.[0].data).not.toHaveProperty("mode");
+  });
+
+  it("des réponses COLLÉES repassent le questionnaire en « à copier »", async () => {
+    const { db, questionnaireCadrage } = base(null, { statutPourLien: "copie" });
+    await enregistrerReponses(db, { questionnaireId: "q", reponses: new Map([["qq", "oui"]]) });
+    expect(questionnaireCadrage.update.mock.calls[0]?.[0].data).toMatchObject({
+      statut: "reponse_recue",
+      mode: "a_copier",
+    });
+  });
+
+  it("contre-témoin : une correction APRÈS un envoi en ligne garde le mode (et la date)", async () => {
+    const { db, questionnaireCadrage } = base(null, { statutPourLien: "reponse_recue" });
+    await enregistrerReponses(db, { questionnaireId: "q", reponses: new Map([["qq", "oui"]]) });
+    expect(questionnaireCadrage.update.mock.calls[0]?.[0].data).toEqual({
+      statut: "reponse_recue",
+    });
+  });
+});
+
+describe("B2 : la règle de remplacement (`versionRemplacable`)", () => {
+  const sans = { reponseRecueLe: null, faits: 0 };
+  const de = (p: Partial<Parameters<typeof versionRemplacable>[0] & object>) =>
+    versionRemplacable({
+      statut: "brouillon",
+      modele: MODELE_QUESTIONS_DE_WILLIAMS,
+      questions: [sans],
+      ...p,
+    });
+
+  it("contre-témoin : un brouillon de Will, sans réponse ni fait, se remplace", () => {
+    expect(de({})).toBe(true);
+  });
+  it("un brouillon de Will avec UN FAIT tiré d'une réponse ne se remplace pas", () => {
+    expect(de({ questions: [sans, { reponseRecueLe: null, faits: 1 }] })).toBe(false);
+  });
+  it("un brouillon de Will avec UNE RÉPONSE ne se remplace pas", () => {
+    expect(de({ questions: [{ reponseRecueLe: new Date(), faits: 0 }] })).toBe(false);
+  });
+  it("une version partie chez le client, ou préparée par l'IA, ne se remplace pas", () => {
+    expect(de({ statut: "copie" })).toBe(false);
+    expect(de({ modele: "gpt-x" })).toBe(false);
+    expect(de({ modele: null, questions: [] })).toBe(true);
+    expect(versionRemplacable(null)).toBe(false);
   });
 });
