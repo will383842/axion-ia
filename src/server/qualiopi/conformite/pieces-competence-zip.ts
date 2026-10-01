@@ -99,9 +99,9 @@ export async function recupererFichierPiece(adresse: string): Promise<Recuperati
         };
       }
       // 🔴 Règle X-mode-auditeur-05 — la MÊME que pour `preuves/` : un contrat
-      // de travail, une autofacture, une facture, un devis ou un avoir ne
-      // sortent jamais dans le dossier d'audit, même par une adresse saisie
-      // sur une pièce formateur.
+      // de travail, une autofacture, une facture ou un avoir ne sortent jamais
+      // dans le dossier d'audit, même par une adresse saisie sur une pièce
+      // formateur (le devis, lui, est joint : trace de cadrage, ind. 4/6).
       if (!documentJointAuDossierAudit(doc.type)) {
         return { ok: false, motif: "non joint (type exclu du dossier d'audit)" };
       }

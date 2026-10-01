@@ -50,9 +50,9 @@ describe("liens vers le site public", () => {
       { url: "https://axion-ia.com/fr/formations", libelle: "Catalogue public des formations" },
       {
         url: `https://axion-ia.com/fr/formations/${FORMATIONS_V2[0]?.slugFr}`,
-        libelle: expect.stringMatching(
-          /^Fiche d'une formation \(objectifs, prérequis, délai d'accès, tarif/,
-        ),
+        // Libellé FIGÉ en entier : la fiche n'affiche aucun indicateur de
+        // résultats (publication non décidée) ; le lien ne doit pas l'annoncer.
+        libelle: "Fiche d'une formation (objectifs, prérequis, délai d'accès, tarif)",
       },
       {
         url: "https://axion-ia.com/fr/conditions-generales",

@@ -44,8 +44,7 @@ export const PAGES_PUBLIQUES_PAR_INDICATEUR: Readonly<Record<number, readonly Pa
       ? [
           {
             chemin: `/fr/formations/${SLUG_FICHE_EXEMPLE}`,
-            libelle:
-              "Fiche d'une formation (objectifs, prérequis, délai d'accès, tarif, indicateurs de résultats)",
+            libelle: "Fiche d'une formation (objectifs, prérequis, délai d'accès, tarif)",
           },
         ]
       : []),
