@@ -80,7 +80,7 @@ afterEach(() => {
   process.env = { ...ENV_AVANT };
 });
 
-describe("REQ-INT-013 — rejouerEvenement réarme une ligne sans toucher son corps", () => {
+describe("REQ-INT-012, REQ-INT-013 — rejouerEvenement réarme une ligne sans toucher son corps", () => {
   it("TÉMOIN — pending, tentatives à zéro, due maintenant, erreur effacée ; ni corps ni séquence", async () => {
     const { prisma, ecritures } = file();
     expect(await rejouerEvenement(A, prisma, new Date(MAINTENANT_MS))).toBe(true);
@@ -214,7 +214,7 @@ describe("REQ-INT-013 — POST /api/partners/reconciliation", () => {
     expect(r.headers.get("cache-control")).toBe("no-store");
   });
 
-  it("TÉMOIN — le journal ne porte que des COMPTES : ni identifiant d'événement, ni corps", async () => {
+  it("REQ-INT-030 : TÉMOIN — le journal ne porte que des COMPTES : ni identifiant d'événement, ni corps", async () => {
     const { prisma } = file();
     await repondreReconciliation(requete(corpsDe([A, INCONNU])), d(prisma));
     expect(lignesDeJournal).toEqual(["[partners-sync] rejeu : 1 réarmé(s), 1 introuvable(s)"]);

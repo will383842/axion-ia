@@ -100,7 +100,7 @@ afterAll(async () => {
   await prisma.$disconnect();
 });
 
-describe("REQ-INT-013 — le rejeu en base réelle", () => {
+describe("REQ-INT-012, REQ-INT-013 — le rejeu en base réelle", () => {
   it("TÉMOIN — une requête signée pour un autre corps n'écrit rien", async () => {
     const r = await repondreReconciliation(
       requete(JSON.stringify({ eventIds: [SENT] }), JSON.stringify({ eventIds: [ABANDONNEE] })),
