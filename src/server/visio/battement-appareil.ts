@@ -62,15 +62,14 @@ export function extensionSilencieuse(
     readonly appareils: ReadonlyArray<{
       readonly dernierBattementLe: Date | null;
       readonly revoqueLe: Date | null;
-      readonly expireLe: Date;
     }>;
   },
   maintenant: Date,
 ): boolean {
   if (!entree.rendezVousEnCours.some((r) => estRendezVousDuDossier(r))) return false;
-  const valides = entree.appareils.filter(
-    (a) => a.revoqueLe === null && a.expireLe.getTime() > maintenant.getTime(),
-  );
+  // Un appareil est valide tant qu'il n'est pas révoqué : le jeton n'expire
+  // plus (révision du 02/10).
+  const valides = entree.appareils.filter((a) => a.revoqueLe === null);
   return !valides.some(
     (a) =>
       a.dernierBattementLe !== null &&

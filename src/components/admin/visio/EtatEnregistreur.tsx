@@ -2,7 +2,7 @@
 //
 // Utilisé par la page « Enregistreur » ; destiné aussi au panneau « État du
 // circuit » de la PR 4 (témoin de clé, drapeau vu par le site et le worker,
-// jetons qui expirent sous 14 jours, extension silencieuse).
+// extension silencieuse). Le jeton n'expire pas (révision du 02/10).
 
 import { AdminBadge } from "@/components/admin/ui";
 import type { EtatEnregistreur as Etat } from "@/features/admin-enregistreur/queries";

@@ -66,10 +66,8 @@ export const CODES_ALERTES_VISIO = {
   // ── enregistreur (PR 5) ──
   /** Le worker ne relit pas le témoin de clé. */
   temoinCle: "visio.temoin_cle",
-  /** Le jeton de l'appareil expire dans 14 jours. */
-  jetonJ14: "visio.jeton_expire_j14",
-  /** Le jeton de l'appareil expire dans 3 jours. */
-  jetonJ3: "visio.jeton_expire_j3",
+  // (Les alertes J-14 / J-3 d'expiration du jeton sont retirées : le jeton
+  // n'expire plus depuis la révision du 02/10, décision de Williams.)
   /** L'extension ne donne aucun signe pendant un rendez-vous. */
   extensionSilencieuse: "visio.extension_silencieuse",
   /** V2, N2 — un appareil bat avec une extension qui ne peut plus enregistrer de visio. */

@@ -4,8 +4,8 @@
 // (décision A2) : garde en PREMIÈRE instruction, avant toute lecture.
 //
 // Ce que Will fait ici : créer le jeton (affiché une fois), le coller dans les
-// options de l'extension ; le renouveler avant 90 jours ; le révoquer si le
-// poste est perdu. Et voir d'un coup d'œil si tout est prêt : mode, clé de
+// options de l'extension ; le révoquer si le poste est perdu (le jeton n'expire
+// pas : révision du 02/10, décision de Williams — il vaut jusqu'à sa révocation). Et voir d'un coup d'œil si tout est prêt : mode, clé de
 // chiffrement, dernier signe de l'extension.
 //
 // Composant serveur ; un seul petit îlot client (le jeton montré une fois).
@@ -50,7 +50,7 @@ export default async function PageEnregistreur({ params }: PageProps): Promise<R
   if (!acces.autorise) return <AccesRefuse motif={acces.motif} retourHref={retour} />;
 
   const etat = await lireEtatEnregistreur();
-  const actifs = etat.appareils.filter((a) => a.revoqueLe === null && a.joursRestants >= 0);
+  const actifs = etat.appareils.filter((a) => a.revoqueLe === null);
 
   return (
     <div className="space-y-[var(--space-admin-6)]">
@@ -82,7 +82,6 @@ export default async function PageEnregistreur({ params }: PageProps): Promise<R
         <ul className="mt-[var(--space-admin-3)] space-y-[var(--space-admin-4)]">
           {etat.appareils.map((a) => {
             const revoque = a.revoqueLe !== null;
-            const expire = !revoque && a.joursRestants < 0;
             return (
               <li
                 key={a.id}
@@ -92,21 +91,15 @@ export default async function PageEnregistreur({ params }: PageProps): Promise<R
                   <span className="font-medium">{a.nom}</span>
                   {revoque ? (
                     <AdminBadge tone="neutral">révoqué</AdminBadge>
-                  ) : expire ? (
-                    <AdminBadge tone="destructive">expiré</AdminBadge>
-                  ) : a.seuil === 3 ? (
-                    <AdminBadge tone="destructive">expire dans {a.joursRestants} j</AdminBadge>
-                  ) : a.seuil === 14 ? (
-                    <AdminBadge tone="warning">expire dans {a.joursRestants} j</AdminBadge>
                   ) : (
-                    <AdminBadge tone="success">valide {a.joursRestants} j</AdminBadge>
+                    <AdminBadge tone="success">Sans expiration</AdminBadge>
                   )}
-                  {!revoque && !expire && a.silencieux ? (
+                  {!revoque && a.silencieux ? (
                     <AdminBadge tone="warning">extension silencieuse</AdminBadge>
                   ) : null}
                 </div>
                 <p className="text-sm text-[color:var(--color-admin-fg-soft)]">
-                  Créé le {dateCourte(a.creeLe)} · expire le {dateCourte(a.expireLe)} · dernier
+                  Créé le {dateCourte(a.creeLe)} · valable jusqu&apos;à sa révocation · dernier
                   signe de l&apos;extension : {dateCourte(a.dernierBattementLe)} · version :{" "}
                   {a.versionExtension ?? "inconnue"}
                 </p>

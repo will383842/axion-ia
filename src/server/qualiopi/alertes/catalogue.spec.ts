@@ -244,8 +244,8 @@ const CODES_ATTENDUS: string[] = [
   // Chantier visio, PR 5 (anti-doublon A3) : les pannes techniques de
   // l'enregistreur passent par ce catalogue, plus par une table à part.
   "visio.temoin_cle",
-  "visio.jeton_expire_j14",
-  "visio.jeton_expire_j3",
+  // (« visio.jeton_expire_j14 » et « _j3 » retirés le 02/10 : le jeton
+  // n'expire plus, décision de Williams.)
   "visio.extension_silencieuse",
   "visio.extension_trop_ancienne",
   "visio.fenetre_tardive",

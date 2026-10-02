@@ -26,7 +26,7 @@ export async function creerJetonAction(_prec: EtatJeton, form: FormData): Promis
     const nom = String(form.get("nom") ?? "").trim() || "Poste de Williams";
     const cree = await creerAppareil(prisma, { nom, adminUserId: userId, maintenant: new Date() });
     revalidatePath(adminPath("fr", CHEMIN));
-    return etatJetonCree(cree.jeton, cree.expireLe);
+    return etatJetonCree(cree.jeton);
   } catch (err) {
     return { etat: "erreur", message: err instanceof Error ? err.message : "Création impossible." };
   }
@@ -47,7 +47,7 @@ export async function renouvelerJetonAction(_prec: EtatJeton, form: FormData): P
     });
     if (!r.ok) return { etat: "erreur", message: r.message };
     revalidatePath(adminPath("fr", CHEMIN));
-    return etatJetonCree(r.jeton, r.expireLe);
+    return etatJetonCree(r.jeton);
   } catch (err) {
     return {
       etat: "erreur",

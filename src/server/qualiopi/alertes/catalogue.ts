@@ -1809,22 +1809,6 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — levée par le balayage de l'enregistreur des visios (`src/server/visio/balayage-enregistreur.ts`), hors d'`evaluerAlertes`. C'est ce balayage qui la ferme quand la cause disparaît ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture.",
     guichet: "direction",
   },
-  "visio.jeton_expire_j14": {
-    niveau: "important",
-    titre: "Visio : le jeton de l'enregistreur expire dans moins de 14 jours",
-    resolutionAuto: false,
-    motifSansResolutionAuto:
-      "STRUCTUREL — levée par le balayage de l'enregistreur des visios (`src/server/visio/balayage-enregistreur.ts`), hors d'`evaluerAlertes`. C'est ce balayage qui la ferme quand la cause disparaît ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture.",
-    guichet: "direction",
-  },
-  "visio.jeton_expire_j3": {
-    niveau: "important",
-    titre: "Visio : le jeton de l'enregistreur expire dans moins de 3 jours",
-    resolutionAuto: false,
-    motifSansResolutionAuto:
-      "STRUCTUREL — levée par le balayage de l'enregistreur des visios (`src/server/visio/balayage-enregistreur.ts`), hors d'`evaluerAlertes`. C'est ce balayage qui la ferme quand la cause disparaît ; `synchroniserAlertes` la résoudrait au premier tour, avant lecture.",
-    guichet: "direction",
-  },
   "visio.extension_silencieuse": {
     niveau: "important",
     titre: "Visio : l'extension ne donne aucun signe pendant un rendez-vous",
