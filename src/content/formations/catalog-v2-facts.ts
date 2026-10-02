@@ -275,7 +275,7 @@ export function getFormationEvaluation(f: FormationV2): string {
 // la garde `src/components/formations/la-reconnaissance-est-sur-chaque-fiche.spec.ts` interdit qu'une
 // fiche parle de RNCP ou de répertoire spécifique.
 export const FORMATION_RECONNAISSANCE =
-  "Attestation de fin de formation (article L.6353-1 du code du travail). Formation non certifiante : elle ne prépare ni à un titre RNCP ni à une certification du répertoire spécifique.";
+  "Attestation de fin de formation (article L.6313-7 du code du travail). Formation non certifiante : elle ne prépare ni à un titre RNCP ni à une certification du répertoire spécifique, et n'ouvre pas de droit à une poursuite d'études.";
 
 export function getFormationReconnaissance(_f: FormationV2): string {
   return FORMATION_RECONNAISSANCE;

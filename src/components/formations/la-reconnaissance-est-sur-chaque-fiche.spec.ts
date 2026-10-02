@@ -42,7 +42,7 @@ import { FormationDetailPage } from "@/components/formations/FormationDetailPage
 import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
 
 const RECONNAISSANCE =
-  "Attestation de fin de formation (article L.6353-1 du code du travail). Formation non certifiante : elle ne prépare ni à un titre RNCP ni à une certification du répertoire spécifique.";
+  "Attestation de fin de formation (article L.6313-7 du code du travail). Formation non certifiante : elle ne prépare ni à un titre RNCP ni à une certification du répertoire spécifique, et n'ouvre pas de droit à une poursuite d'études.";
 
 /** Toutes les chaînes de l'arbre d'éléments, sans exécuter les composants. */
 function textes(noeud: unknown, acc: string[] = []): string[] {
