@@ -65,9 +65,9 @@ export type DependancesReconciliation = {
   journal?: (ligne: string) => void;
 };
 
-const schemaDemande = z
-  .object({ eventIds: z.array(z.string().uuid()).min(1).max(REJEU_MAX_PAR_APPEL) })
-  .strict();
+/** Construit à l'appel, jamais au chargement : la garde d'inertie (R1) refuse tout effet de module. */
+const schemaDemande = () =>
+  z.object({ eventIds: z.array(z.string().uuid()).min(1).max(REJEU_MAX_PAR_APPEL) }).strict();
 
 /**
  * Réarme la ligne de `eventId` : `true` si elle existe. Le corps et la séquence ne sont pas dans
@@ -78,6 +78,7 @@ export async function rejouerEvenement(
   prisma: EcrivainRejeu,
   maintenant: Date,
 ): Promise<boolean> {
+  if (!canalPartnersOuvert()) return false;
   const { count } = await prisma.partnersSyncOutbox.updateMany({
     where: { eventId },
     data: { status: "pending", attempts: 0, nextAttemptAt: maintenant, lastError: null },
@@ -113,7 +114,7 @@ export async function repondreReconciliation(
   } catch {
     return texte(400, "corps_illisible");
   }
-  const demande = schemaDemande.safeParse(brut);
+  const demande = schemaDemande().safeParse(brut);
   if (!demande.success) return texte(400, "corps_illisible");
 
   const limiter = dependances.limiter ?? (await import("@/lib/rate-limit")).checkRateLimit;

@@ -101,6 +101,13 @@ describe("REQ-INT-012, REQ-INT-013 — rejouerEvenement réarme une ligne sans t
     const { prisma } = file();
     expect(await rejouerEvenement(INCONNU, prisma, new Date(MAINTENANT_MS))).toBe(false);
   });
+
+  it("TÉMOIN — canal fermé : rien n'est réarmé, rien n'est écrit (inertie)", async () => {
+    process.env.PARTNERS_SYNC_ENABLED = "false";
+    const { prisma, ecritures } = file();
+    expect(await rejouerEvenement(A, prisma, new Date(MAINTENANT_MS))).toBe(false);
+    expect(ecritures).toEqual([]);
+  });
 });
 
 describe("REQ-INT-013 — POST /api/partners/reconciliation", () => {
