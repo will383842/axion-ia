@@ -706,8 +706,8 @@ export default async function CertificationQualiopiPage({ params }: Props) {
         titleEm={isFr ? "résultats" : "indicators"}
         description={
           isFr
-            ? "Conformément au Référentiel National Qualité (indicateur 2), nous publions nos indicateurs de résultats, avec leur méthode de calcul. Les valeurs non encore représentatives sont signalées « en cours de constitution »."
-            : "In line with the National Quality Framework (indicator 2), we publish our results indicators and their calculation method. Values that are not yet representative are marked as “being compiled.”"
+            ? "Conformément au Référentiel National Qualité (indicateur 2), nous publions nos indicateurs de résultats avec leur méthode de calcul. Nous publions nos résultats dès la première session, toujours avec la taille de l’échantillon ; sous 5 réponses, ils sont signalés comme non représentatifs. Les résultats de chaque formation figurent sur sa fiche."
+            : "In line with the National Quality Framework (indicator 2), we publish our results indicators and their calculation method. We publish our results from the very first session, always with the sample size; below 5 responses, they are flagged as not representative. Each course’s results appear on its page."
         }
       >
         <IndicateursResultatsPublic result={indicateursResultats} isFr={isFr} />

@@ -33,6 +33,7 @@ import {
   DISTANCIEL_ORDINATEUR,
   DISTANCIEL_VISIO,
 } from "@/content/formations/materiel";
+import { ENCART_VIOLENCES, TITRE_ENCART_VIOLENCES } from "@/content/prevention-violences";
 
 /** Première lettre en majuscule : les éléments du matériel commencent en minuscule. */
 function majuscule(texte: string): string {
@@ -268,6 +269,18 @@ export function ConvocationPdf({
             <FieldRow label="Téléphone" value={identite.referentHandicapTelephone} />
           ) : null}
           <Text style={[pdfStyles.legalNote]}>{LEGAL_MENTIONS.referentHandicap}</Text>
+        </DocSection>
+
+        {/* Prévention des violences (indicateur 12, décret n° 2026-728) —
+            même texte que le livret d'accueil (`src/content/prevention-violences.ts`).
+            La convocation est la pièce que le stagiaire lit à coup sûr AVANT
+            d'entrer : elle lui dit à qui signaler, sans détour par le règlement. */}
+        <DocSection title={TITRE_ENCART_VIOLENCES}>
+          {ENCART_VIOLENCES.map((paragraphe) => (
+            <Text key={paragraphe.slice(0, 12)} style={pdfStyles.paragraph}>
+              {paragraphe}
+            </Text>
+          ))}
         </DocSection>
 
         {/* Section 6 : Absence / retard */}

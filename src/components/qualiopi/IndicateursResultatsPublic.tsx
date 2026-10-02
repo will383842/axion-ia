@@ -7,7 +7,13 @@
  * calculés par `getIndicateurs` avec leur MÉTHODE. Chaque valeur est déjà
  * libellée « En cours de constitution » par le service tant que l'échantillon
  * n'est pas fiable (n < 5) → JAMAIS de chiffre creux ou fabriqué (conforme
- * L.121-2 : aucune allégation trompeuse). Rendu uniquement sur la page publique
+ * L.121-2 : aucune allégation trompeuse).
+ *
+ * 🔴 2026-10-02 (indicateur 2, décret 2026-728) — la note de bas disait « Nous
+ * ne publions aucune valeur non représentative », alors que la fiche de chaque
+ * formation (`ResultatsFormation`) publie dès la première session, avec
+ * l'effectif et la mention « échantillon trop faible ». Les deux règles sont
+ * désormais dites, chacune pour ce qu'elle couvre. Rendu uniquement sur la page publique
  * Qualiopi, elle-même gatée par `OF_PUBLIC_DISCLOSURE_ENABLED`.
  */
 
@@ -89,8 +95,8 @@ export function IndicateursResultatsPublic({ result, isFr }: Props): React.React
       </ul>
       <p className="text-fg-soft mt-4 text-[13px] leading-snug">
         {isFr
-          ? `Indicateurs calculés sur l'année ${result.annee}. Un indicateur reste « en cours de constitution » tant que le nombre de retours est insuffisant pour être statistiquement représentatif (seuil de fiabilité). Nous ne publions aucune valeur non représentative.`
-          : `Indicators computed for year ${result.annee}. An indicator remains "being compiled" until the number of responses is statistically representative (reliability threshold). We do not publish non-representative values.`}
+          ? `Synthèse calculée sur l'année ${result.annee}, toutes formations confondues. Sur cette synthèse, un indicateur qui repose sur moins de 5 réponses est signalé « en cours de constitution » : il n'est pas encore représentatif. Les résultats de chaque formation, eux, sont publiés sur sa fiche dès la première session, toujours avec la taille de l'échantillon et signalés comme non représentatifs sous 5 réponses.`
+          : `Summary computed for year ${result.annee}, across all courses. In this summary, an indicator based on fewer than 5 responses is marked "being compiled": it is not yet representative. Each course's own results are published on its page from the very first session, always with the sample size, and flagged as not representative below 5 responses.`}
       </p>
     </div>
   );

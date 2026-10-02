@@ -9,6 +9,7 @@
 
 import type { ReactNode } from "react";
 
+import { SEUIL_FIABILITE } from "@/server/qualiopi/indicateurs/calcul";
 import {
   dateLongueFr,
   libelleEchantillon,
@@ -58,6 +59,29 @@ function tuiles(r: ResultatsPublicsFormation): Tuile[] {
   return liste;
 }
 
+/**
+ * Méthode de calcul, en une ligne, À CÔTÉ des chiffres (indicateur 2 modifié
+ * par le décret n° 2026-728 : « en précisant de manière transparente leurs
+ * modalités de calcul »). Chaque tuile dit ce qu'elle compte ; il manquait
+ * d'où viennent les chiffres, comment la moyenne est arrondie et à partir de
+ * quand l'échantillon est dit représentatif. Mêmes règles que
+ * `construireResultatsPublics` : sources, troncature, seuils.
+ */
+export function methodeResultats(r: ResultatsPublicsFormation): string {
+  const satisfaction = r.satisfaction
+    ? " Satisfaction : moyenne des notes globales sur 5, tronquée au dixième."
+    : "";
+  const assiduite = r.assiduite
+    ? ` Assiduité : stagiaires dont le temps de présence relevé atteint au moins ${r.assiduite.seuilPct} % de la durée prévue.`
+    : "";
+  return (
+    "Méthode : chiffres calculés automatiquement sur les seules sessions réalisées de cette formation, à partir des relevés de présence (émargement ou connexion) et des questionnaires de fin de formation, hors abandons et exclusions." +
+    satisfaction +
+    assiduite +
+    ` Sous ${SEUIL_FIABILITE} stagiaires ou ${SEUIL_FIABILITE} réponses, l’échantillon est signalé comme non représentatif.`
+  );
+}
+
 export function ResultatsFormation({
   resultats: r,
 }: {
@@ -94,6 +118,7 @@ export function ResultatsFormation({
           ? " L’échantillon est encore trop faible pour être représentatif : ces chiffres seront complétés au fil des prochaines sessions."
           : null}
       </p>
+      <p className="text-fg-soft mt-2 text-[12px] leading-relaxed">{methodeResultats(r)}</p>
     </section>
   );
 }

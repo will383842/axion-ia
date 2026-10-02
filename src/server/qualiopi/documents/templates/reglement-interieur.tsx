@@ -18,6 +18,7 @@ import {
 } from "@/server/qualiopi/documents/base-layout";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { TITRE_ARTICLE_VIOLENCES, VIOLENCES_PROCEDURE } from "@/content/prevention-violences";
 
 // ============================================================
 // Types
@@ -111,6 +112,16 @@ export function ReglementInterieurPdf({
         </DocSection>
 
         {/* Article 3 — Discipline */}
+        {/*
+          🔴 2026-10-02 — numérotation alignée sur la page publique. Le PDF
+          réunissait discipline et échelle des sanctions sous « Article 3 », la
+          page les sépare (3 et 3 bis) : la procédure devenait « 3 bis » ici et
+          « 3 ter » là-bas, et l'article sur les violences « 3 ter » ici et
+          « 3 quater » là-bas. Un stagiaire, un auditeur ou le registre des
+          signalements citait donc deux articles différents pour une même règle.
+          Les textes ne changent pas : seuls les numéros et les renvois suivent,
+          avec la phrase de renvoi que la page porte déjà à son article 3.
+        */}
         <DocSection title="Article 3 — Discipline et comportement">
           <Text style={local.articleBody}>Sont notamment interdits :</Text>
           <BulletList
@@ -121,6 +132,17 @@ export function ReglementInterieurPdf({
               "La consommation d'alcool ou de substances illicites.",
             ]}
           />
+          <Text style={local.articleBody}>
+            Tout manquement aux règles de discipline peut donner lieu à l&apos;une des sanctions de
+            l&apos;article 3 bis, prononcée selon la procédure de l&apos;article 3 ter. L&apos;issue
+            financière d&apos;une exclusion relève des seules conditions contractuelles convenues
+            avec le financeur ou l&apos;entreprise — seules les prestations effectivement réalisées
+            sont dues, au prorata — et non d&apos;une sanction disciplinaire.
+          </Text>
+        </DocSection>
+
+        {/* Article 3 bis — Échelle des sanctions (art. R6352-3) */}
+        <DocSection title="Article 3 bis — Échelle des sanctions">
           <Text style={local.articleBody}>
             Constitue une sanction toute mesure, autre que les observations verbales, prise à la
             suite d&apos;un agissement du stagiaire considéré comme fautif, qu&apos;elle affecte ou
@@ -138,14 +160,11 @@ export function ReglementInterieurPdf({
             ]}
           />
           <Text style={local.articleBody}>
-            Les amendes et autres sanctions pécuniaires sont interdites (art. R6352-3). L&apos;issue
-            financière d&apos;une exclusion relève des seules conditions contractuelles convenues
-            avec le financeur ou l&apos;entreprise — seules les prestations effectivement réalisées
-            sont dues, au prorata — et non d&apos;une sanction disciplinaire.
+            Les amendes et autres sanctions pécuniaires sont interdites (art. R6352-3).
           </Text>
         </DocSection>
 
-        {/* Article 3 bis — Procédure disciplinaire (droits de la défense) */}
+        {/* Article 3 ter — Procédure disciplinaire (droits de la défense) */}
         {/*
           🔴 Audit certification 2026-07-26 (F31). Le règlement annonçait
           l'exclusion définitive sans énoncer ni l'échelle des sanctions
@@ -155,7 +174,7 @@ export function ReglementInterieurPdf({
           la sanction sans la procédure est inopposable au stagiaire, et c'est
           l'une des premières pièces que lit un auditeur.
         */}
-        <DocSection title="Article 3 bis — Procédure disciplinaire et droits de la défense">
+        <DocSection title="Article 3 ter — Procédure disciplinaire et droits de la défense">
           <Text style={local.articleBody}>
             Aucune sanction ne peut être infligée au stagiaire sans qu&apos;il ait été informé au
             préalable des griefs retenus contre lui (art. R6352-4).
@@ -187,12 +206,17 @@ export function ReglementInterieurPdf({
           </Text>
         </DocSection>
 
-        {/* Article 3 ter — Prévention des violences, du harcèlement et des discriminations */}
+        {/* Article 3 quater — Prévention des violences, du harcèlement et des discriminations */}
         {/*
           🔴 Décret n° 2026-728 du 1er août 2026, en vigueur au 1er novembre 2026.
-          Le critère 4 du RNQ exige désormais des MESURES DE PRÉVENTION des
-          violences sexistes et sexuelles, du harcèlement et des discriminations,
-          ET la trace de la façon dont un signalement est traité.
+          L'indicateur 12 du Référentiel national qualité (critère 3) exige
+          désormais la prévention ET le traitement de toute situation de
+          violence, dont les violences sexistes et sexuelles, de harcèlement ou
+          de discrimination.
+
+          2026-10-02 — numéro, procédure (signaler, traiter, suites, recours)
+          et titre viennent de `src/content/prevention-violences.ts`, lu aussi
+          par la page publique : les deux versions ne peuvent plus diverger.
 
           Mesuré le 2026-09-13, avant cet article : « harcèlement », « violence »,
           « discrimination », « sexiste », « sexuel » — ZÉRO occurrence, ni dans
@@ -205,7 +229,7 @@ export function ReglementInterieurPdf({
           l'échelle de sanctions que ce règlement porte déjà (art. R6352-3).
           C'est pourquoi les citations sont pénales, et la sanction disciplinaire.
         */}
-        <DocSection title="Article 3 ter — Prévention des violences, du harcèlement et des discriminations">
+        <DocSection title={TITRE_ARTICLE_VIOLENCES}>
           <Text style={local.articleBody}>
             L&apos;organisme ne tolère aucune violence, aucun harcèlement et aucune discrimination,
             qu&apos;ils émanent d&apos;un stagiaire, d&apos;un formateur, d&apos;un intervenant ou
@@ -221,32 +245,11 @@ export function ReglementInterieurPdf({
               "Toute discrimination, c'est-à-dire toute distinction opérée entre les personnes à raison notamment de leur origine, leur sexe, leur situation de famille, leur apparence physique, leur état de santé, leur handicap, leurs moeurs, leur orientation sexuelle, leur identité de genre, leur âge, leurs opinions politiques, leurs activités syndicales ou leur appartenance, vraie ou supposée, à une ethnie, une nation ou une religion déterminée (art. 225-1 du code pénal).",
             ]}
           />
-          <Text style={local.articleBody}>
-            Signaler — toute personne qui s&apos;estime victime ou témoin de tels faits peut les
-            signaler au représentant légal de l&apos;organisme, par écrit à l&apos;adresse de
-            contact publiée dans les mentions légales du site. Un signalement peut être fait pendant
-            ou après la formation. Il n&apos;est soumis à aucun formalisme : le récit des faits
-            suffit.
-          </Text>
-          <Text style={local.articleBody}>
-            Ce que fait l&apos;organisme — le signalement est reçu par le représentant légal, hors
-            du circuit ordinaire des réclamations, et traité de manière confidentielle : son contenu
-            n&apos;est communiqué qu&apos;aux personnes dont l&apos;intervention est nécessaire.
-            L&apos;organisme accuse réception sous 48 heures ouvrées, prend sans délai les mesures
-            conservatoires utiles — dont la suspension de la participation de la personne mise en
-            cause aux séquences concernées — puis recueille la version de chacun. Aucune mesure
-            défavorable ne peut être prise contre l&apos;auteur d&apos;un signalement ou un témoin
-            de bonne foi.
-          </Text>
-          <Text style={local.articleBody}>
-            Suites — si les faits sont établis, ils constituent un agissement fautif et appellent
-            une sanction choisie dans l&apos;échelle de l&apos;article 3, prononcée selon la
-            procédure de l&apos;article 3 bis. Lorsque les faits sont susceptibles de recevoir une
-            qualification pénale, l&apos;organisme informe la victime de son droit de porter plainte
-            et procède, le cas échéant, au signalement prévu à l&apos;article 40 du code de
-            procédure pénale. Le signalement, les mesures prises et la suite donnée sont consignés,
-            et cette trace est tenue à la disposition de l&apos;auditeur.
-          </Text>
+          {VIOLENCES_PROCEDURE.map((paragraphe) => (
+            <Text key={paragraphe.slice(0, 12)} style={local.articleBody}>
+              {paragraphe}
+            </Text>
+          ))}
         </DocSection>
 
         {/* Article 4 — Propriété intellectuelle */}

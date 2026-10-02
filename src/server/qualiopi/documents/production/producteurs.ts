@@ -61,6 +61,7 @@ import { GrilleEvaluationPdf } from "@/server/qualiopi/documents/templates/grill
 import { SatisfactionPdf } from "@/server/qualiopi/documents/templates/satisfaction";
 import { ReglementInterieurPdf } from "@/server/qualiopi/documents/templates/reglement-interieur";
 import { LivretAccueilPdf } from "@/server/qualiopi/documents/templates/livret-accueil";
+import { REGLEMENT_INTERIEUR_VERSION } from "@/content/reglement-interieur-version";
 import { ProgrammeFormationPdf } from "@/server/qualiopi/documents/templates/programme-formation";
 import { OrganisationActionPdf } from "@/server/qualiopi/documents/templates/organisation-action";
 
@@ -961,7 +962,10 @@ export async function produireReglementInterieur(
   if (!session) return { ok: false, motif: "Session introuvable" };
 
   const identite = await getOrganismeIdentite();
-  const dateVersion = formatDateFr(new Date());
+  // Version du TEXTE, pas date du tirage (2026-10-02) : imprimer la date du
+  // jour donnait une « version » différente à chaque exemplaire du même
+  // règlement. Même date que la page publique.
+  const dateVersion = REGLEMENT_INTERIEUR_VERSION.libelleFr;
 
   const doc = await generateDocument({
     type: "reglement_interieur",

@@ -263,6 +263,24 @@ export function getFormationEvaluation(f: FormationV2): string {
   return f.modalitesEvaluationFr ?? FORMATION_EVALUATION_DEFAUT;
 }
 
+// ── Type de reconnaissance (indicateur 1, décret n° 2026-728) ───────────────
+// Le référentiel en vigueur le 1er novembre 2026 exige, parmi les informations
+// publiées, le « type de reconnaissance de la formation délivrée ». Jusqu'ici il
+// n'était qu'IMPLICITE, noyé dans les modalités d'évaluation (analyse d'écarts
+// du 02/10, B2). Rubrique explicite, IDENTIQUE pour toutes les fiches : aucune
+// formation du catalogue ne prépare une certification — `FormationV2` n'a aucun
+// champ RNCP/RS, et aucune fiche n'en cite (vérifié le 02/10/2026). Si une
+// formation certifiante entre un jour au catalogue, ce texte deviendrait FAUX
+// pour elle : c'est pourquoi il n'est PAS surchargeable silencieusement, et
+// la garde `src/components/formations/la-reconnaissance-est-sur-chaque-fiche.spec.ts` interdit qu'une
+// fiche parle de RNCP ou de répertoire spécifique.
+export const FORMATION_RECONNAISSANCE =
+  "Attestation de fin de formation (article L.6353-1 du code du travail). Formation non certifiante : elle ne prépare ni à un titre RNCP ni à une certification du répertoire spécifique.";
+
+export function getFormationReconnaissance(_f: FormationV2): string {
+  return FORMATION_RECONNAISSANCE;
+}
+
 /**
  * Contact public du référent handicap. Fourni par l'appelant serveur via
  * `getReferentHandicapPublic()` (`src/server/qualiopi/config/referent-handicap-public.ts`),
