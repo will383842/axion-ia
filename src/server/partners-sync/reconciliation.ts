@@ -18,6 +18,12 @@
  * fondus. Un rejeu est une écriture par identifiant : un identifiant inconnu n'écrit rien et est
  * rendu dans `introuvables`.
  *
+ * ── Le débit et le journal ───────────────────────────────────────────────────────────────────
+ * Au plus `DEBIT_REJEU.limit` appels par fenêtre de `DEBIT_REJEU.windowSec` secondes (le limiteur
+ * Redis du site, clé `partners:reconciliation`), et REFUSÉ si le compteur est aveugle : un rejeu n'est
+ * jamais urgent, Partners rappelle au passage suivant. Le journal ne porte que des COMPTES : ni
+ * identifiant d'événement, ni corps, ni donnée de personne.
+ *
  * ── Authentification de la réponse (axionia → Partners) ──────────────────────────────────────
  * Comme la relecture : `X-Axionia-Timestamp` / `X-Axionia-Signature` sur « t.corps », secret
  * d'émission.
@@ -27,6 +33,8 @@
  */
 import { z } from "zod";
 
+import type { RateLimitConfig } from "@/lib/rate-limit";
+
 import { horodatageSignature, signerCorps } from "@/server/partners/enveloppe";
 
 import { canalPartnersOuvert, secretPartners, secretRelecture } from "./config";
@@ -34,6 +42,12 @@ import { verifierRequetePartners } from "./relecture";
 
 /** La borne d'un appel : cent identifiants au plus. */
 export const REJEU_MAX_PAR_APPEL = 100;
+
+/** Le débit de la route : dix appels par heure, refusé si le compteur est aveugle. */
+export const DEBIT_REJEU: RateLimitConfig = { limit: 10, windowSec: 3600, surPanne: "refuser" };
+export const CLE_DEBIT_REJEU = "partners:reconciliation";
+
+export type Limiteur = (cle: string, config: RateLimitConfig) => Promise<{ allowed: boolean }>;
 
 export interface EcrivainRejeu {
   partnersSyncOutbox: {
@@ -47,6 +61,8 @@ export interface EcrivainRejeu {
 export type DependancesReconciliation = {
   prisma?: EcrivainRejeu;
   maintenantMs?: number;
+  limiter?: Limiteur;
+  journal?: (ligne: string) => void;
 };
 
 const schemaDemande = z
@@ -100,6 +116,9 @@ export async function repondreReconciliation(
   const demande = schemaDemande.safeParse(brut);
   if (!demande.success) return texte(400, "corps_illisible");
 
+  const limiter = dependances.limiter ?? (await import("@/lib/rate-limit")).checkRateLimit;
+  if (!(await limiter(CLE_DEBIT_REJEU, DEBIT_REJEU)).allowed) return texte(429, "debit_depasse");
+
   const prisma =
     dependances.prisma ?? ((await import("@/lib/prisma")).prisma as unknown as EcrivainRejeu);
   const maintenant = new Date(maintenantMs);
@@ -108,6 +127,11 @@ export async function repondreReconciliation(
   for (const eventId of [...new Set(demande.data.eventIds)]) {
     ((await rejouerEvenement(eventId, prisma, maintenant)) ? rearmes : introuvables).push(eventId);
   }
+
+  const journal = dependances.journal ?? ((l: string) => console.warn(l));
+  journal(
+    `[partners-sync] rejeu : ${rearmes.length} réarmé(s), ${introuvables.length} introuvable(s)`,
+  );
 
   const corps = JSON.stringify({ rearmes, introuvables });
   const horodatage = horodatageSignature(new Date(maintenantMs));

@@ -19,6 +19,8 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { signerCorps } from "@/server/partners/enveloppe";
 import {
+  CLE_DEBIT_REJEU,
+  DEBIT_REJEU,
   REJEU_MAX_PAR_APPEL,
   repondreReconciliation,
   rejouerEvenement,
@@ -102,7 +104,23 @@ describe("REQ-INT-013 — rejouerEvenement réarme une ligne sans toucher son co
 });
 
 describe("REQ-INT-013 — POST /api/partners/reconciliation", () => {
-  const d = (prisma: EcrivainRejeu) => ({ prisma, maintenantMs: MAINTENANT_MS });
+  const lignesDeJournal: string[] = [];
+  const appelsDuLimiteur: unknown[][] = [];
+  let admis = true;
+  const d = (prisma: EcrivainRejeu) => ({
+    prisma,
+    maintenantMs: MAINTENANT_MS,
+    limiter: async (...a: unknown[]) => {
+      appelsDuLimiteur.push(a);
+      return { allowed: admis };
+    },
+    journal: (l: string) => lignesDeJournal.push(l),
+  });
+  beforeEach(() => {
+    lignesDeJournal.length = 0;
+    appelsDuLimiteur.length = 0;
+    admis = true;
+  });
 
   it("TÉMOIN — canal fermé : 404, rien n'est écrit", async () => {
     process.env.PARTNERS_SYNC_ENABLED = "false";
@@ -158,6 +176,32 @@ describe("REQ-INT-013 — POST /api/partners/reconciliation", () => {
     expect(REJEU_MAX_PAR_APPEL).toBe(100);
   });
 
+  it("le débit est nommé : dix appels par heure, refusé si le compteur est aveugle", () => {
+    expect(DEBIT_REJEU).toEqual({ limit: 10, windowSec: 3600, surPanne: "refuser" });
+    expect(CLE_DEBIT_REJEU).toBe("partners:reconciliation");
+  });
+
+  it("TÉMOIN — débit dépassé : 429, rien n'est écrit ; le limiteur reçoit la clé et la borne exactes", async () => {
+    admis = false;
+    const { prisma, ecritures } = file();
+    const r = await repondreReconciliation(requete(corpsDe([A])), d(prisma));
+    expect(r.status).toBe(429);
+    expect(await r.text()).toBe("debit_depasse");
+    expect(ecritures).toEqual([]);
+    expect(appelsDuLimiteur).toEqual([[CLE_DEBIT_REJEU, DEBIT_REJEU]]);
+  });
+
+  it("TÉMOIN — un appel NON AUTHENTIFIÉ ne consomme pas le débit et n'écrit rien", async () => {
+    const { prisma, ecritures } = file();
+    const r = await repondreReconciliation(
+      new Request(`https://axion-ia.com${CHEMIN}`, { method: "POST", body: corpsDe([A]) }),
+      d(prisma),
+    );
+    expect(r.status).toBe(401);
+    expect(appelsDuLimiteur).toEqual([]);
+    expect(ecritures).toEqual([]);
+  });
+
   it("TÉMOIN — réarme les connus, nomme les introuvables, une écriture par identifiant (doublons fondus) ; réponse signée", async () => {
     const { prisma, ecritures } = file();
     const r = await repondreReconciliation(requete(corpsDe([A, INCONNU, B, A])), d(prisma));
@@ -168,6 +212,16 @@ describe("REQ-INT-013 — POST /api/partners/reconciliation", () => {
     const t = r.headers.get("x-axionia-timestamp")!;
     expect(r.headers.get("x-axionia-signature")).toBe(signerCorps(SECRET_EMISSION, t, corps));
     expect(r.headers.get("cache-control")).toBe("no-store");
+  });
+
+  it("TÉMOIN — le journal ne porte que des COMPTES : ni identifiant d'événement, ni corps", async () => {
+    const { prisma } = file();
+    await repondreReconciliation(requete(corpsDe([A, INCONNU])), d(prisma));
+    expect(lignesDeJournal).toEqual(["[partners-sync] rejeu : 1 réarmé(s), 1 introuvable(s)"]);
+    for (const l of lignesDeJournal) {
+      expect(l).not.toContain(A);
+      expect(l).not.toContain(INCONNU);
+    }
   });
 
   it("la signature de la requête porte le chemin ET le corps, séparés par un saut de ligne", () => {

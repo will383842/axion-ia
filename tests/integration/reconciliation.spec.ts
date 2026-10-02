@@ -104,7 +104,7 @@ describe("REQ-INT-013 — le rejeu en base réelle", () => {
   it("TÉMOIN — une requête signée pour un autre corps n'écrit rien", async () => {
     const r = await repondreReconciliation(
       requete(JSON.stringify({ eventIds: [SENT] }), JSON.stringify({ eventIds: [ABANDONNEE] })),
-      { prisma: ecrivain, maintenantMs: MAINTENANT_MS },
+      { prisma: ecrivain, maintenantMs: MAINTENANT_MS, limiter: async () => ({ allowed: true }) },
     );
     expect(r.status).toBe(401);
     expect((await ligne(SENT)).status).toBe("sent");
@@ -114,7 +114,7 @@ describe("REQ-INT-013 — le rejeu en base réelle", () => {
     const inconnu = randomUUID();
     const r = await repondreReconciliation(
       requete(JSON.stringify({ eventIds: [SENT, ABANDONNEE, inconnu] })),
-      { prisma: ecrivain, maintenantMs: MAINTENANT_MS },
+      { prisma: ecrivain, maintenantMs: MAINTENANT_MS, limiter: async () => ({ allowed: true }) },
     );
     expect(r.status).toBe(200);
     expect(JSON.parse(await r.text())).toEqual({
@@ -134,5 +134,20 @@ describe("REQ-INT-013 — le rejeu en base réelle", () => {
       expect(l.sequence).toBe(sequence);
     }
     expect(await prisma.partnersSyncOutbox.count({ where: { eventId: inconnu } })).toBe(0);
+  });
+
+  it("TÉMOIN — le rejeu d'un événement déjà rejoué ne crée rien : une seule ligne, sous son identifiant d'ORIGINE et sa séquence", async () => {
+    for (let i = 0; i < 2; i += 1) {
+      const r = await repondreReconciliation(requete(JSON.stringify({ eventIds: [SENT] })), {
+        prisma: ecrivain,
+        maintenantMs: MAINTENANT_MS,
+        limiter: async () => ({ allowed: true }),
+      });
+      expect(r.status).toBe(200);
+    }
+    const lignes = await prisma.partnersSyncOutbox.findMany({ where: { eventId: SENT } });
+    expect(lignes).toHaveLength(1);
+    expect(lignes[0]!.sequence).toBe(SEQUENCE_DU_BANC);
+    expect(lignes[0]!.corps).toBe(CORPS_SENT);
   });
 });
