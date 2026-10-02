@@ -78,6 +78,7 @@ describe("⛔ les rôles de l'enregistreur sont ceux du dossier client", () => {
   it.each([
     ["src/server/visio/jeton.ts", "peutVoirLesEchanges(titulaire.role)"],
     ["src/app/api/enregistreur/ouvrir/route.ts", "peutVoirLesEchanges(role)"],
+    ["src/app/api/enregistreur/relier/route.ts", "peutVoirLesEchanges(role)"],
     [
       "src/app/[locale]/(admin)/[adminPrefix]/rendez-vous/enregistreur/page.tsx",
       "gardeLectureEchanges(",

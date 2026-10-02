@@ -13,10 +13,20 @@ import { revalidatePath } from "next/cache";
 
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
-import { creerAppareil, renouvelerAppareil, revoquerAppareil } from "@/server/visio/jeton";
+import {
+  annulerLiaisonNonAboutie,
+  creerAppareil,
+  renouvelerAppareil,
+  revoquerAppareil,
+} from "@/server/visio/jeton";
 import { exigerAccesEchanges } from "@/features/dossier-client/acces";
 import { motifSansAccesEnregistreur } from "./motif";
-import { etatJetonCree, type EtatJeton } from "./etat-jeton";
+import {
+  etatJetonCree,
+  FORMAT_NONCE_LIAISON,
+  type EtatJeton,
+  type EtatLiaison,
+} from "./etat-jeton";
 
 const CHEMIN = "rendez-vous/enregistreur";
 
@@ -25,8 +35,10 @@ export async function creerJetonAction(_prec: EtatJeton, form: FormData): Promis
     const { userId } = await exigerAccesEchanges(motifSansAccesEnregistreur);
     const nom = String(form.get("nom") ?? "").trim() || "Poste de Williams";
     const cree = await creerAppareil(prisma, { nom, adminUserId: userId, maintenant: new Date() });
-    revalidatePath(adminPath("fr", CHEMIN));
-    return etatJetonCree(cree.jeton, cree.expireLe);
+    // PAS de `revalidatePath` (constat du 02/10) : le re-rendu démontait le
+    // formulaire et perdait le jeton avant qu'il soit affiché. La liste se met
+    // à jour par le lien « actualiser la liste » sous le jeton.
+    return etatJetonCree(cree.jeton);
   } catch (err) {
     return { etat: "erreur", message: err instanceof Error ? err.message : "Création impossible." };
   }
@@ -46,13 +58,58 @@ export async function renouvelerJetonAction(_prec: EtatJeton, form: FormData): P
       maintenant: new Date(),
     });
     if (!r.ok) return { etat: "erreur", message: r.message };
-    revalidatePath(adminPath("fr", CHEMIN));
-    return etatJetonCree(r.jeton, r.expireLe);
+    // Pas de `revalidatePath` : même raison que la création.
+    return etatJetonCree(r.jeton);
   } catch (err) {
     return {
       etat: "erreur",
       message: err instanceof Error ? err.message : "Renouvellement impossible.",
     };
+  }
+}
+
+/**
+ * « Relier » (extension 1.4.0) : crée le jeton d'un poste, sans date de fin,
+ * et le rend avec le nonce de liaison — la page le pose dans un élément masqué
+ * que le relais de l'extension transmet à son service worker. Pas de
+ * `revalidatePath` (même raison que la création).
+ */
+export async function relierPosteAction(_prec: EtatLiaison, form: FormData): Promise<EtatLiaison> {
+  try {
+    const { userId } = await exigerAccesEchanges(motifSansAccesEnregistreur);
+    const nonce = String(form.get("nonce") ?? "");
+    if (!FORMAT_NONCE_LIAISON.test(nonce)) {
+      return {
+        etat: "erreur",
+        message: "Lien de liaison invalide : relancez « Relier à ma console » depuis l'extension.",
+      };
+    }
+    const nom = String(form.get("nom") ?? "").trim() || "Poste de Williams";
+    const cree = await creerAppareil(prisma, { nom, adminUserId: userId, maintenant: new Date() });
+    return { etat: "relie", nonce, jeton: cree.jeton, appareilId: cree.appareilId };
+  } catch (err) {
+    return { etat: "erreur", message: err instanceof Error ? err.message : "Liaison impossible." };
+  }
+}
+
+/**
+ * Liaison non aboutie (l'extension refuse ou ne répond pas) : révoque
+ * l'appareil que `relierPosteAction` vient de créer — seulement celui de
+ * l'admin courant, non révoqué, créé il y a moins de 15 minutes.
+ */
+export async function annulerLiaisonAction(appareilId: string): Promise<boolean> {
+  try {
+    const { userId } = await exigerAccesEchanges(motifSansAccesEnregistreur);
+    if (typeof appareilId !== "string" || appareilId.length === 0 || appareilId.length > 64) {
+      return false;
+    }
+    return await annulerLiaisonNonAboutie(prisma, {
+      appareilId,
+      adminUserId: userId,
+      maintenant: new Date(),
+    });
+  } catch {
+    return false;
   }
 }
 

@@ -8,6 +8,10 @@
  *     sans jamais démarrer : la capture exige toujours le clic « Démarrer » au
  *     moment de l'annonce (annonce + accord avant toute capture) ;
  *   · « Non, sans enregistrement » efface la mémoire.
+ *
+ * 1.4.0 (02/10) : le relais porte aussi « Relier à ma console », SEULEMENT sur
+ * la page ouverte par la liaison (`?relier=`) : il y lit l'élément masqué posé
+ * par la console (`data-relier-*`) et rien d'autre. Ailleurs, il ne lit rien.
  */
 
 import { readFileSync } from "node:fs";
@@ -51,7 +55,12 @@ function relais() {
       },
     },
   };
-  runInNewContext(lire("relais-console.js"), { document, chrome });
+  runInNewContext(lire("relais-console.js"), {
+    document,
+    chrome,
+    location: { search: "" },
+    URLSearchParams,
+  });
   const element = (attrs: Record<string, string>) => ({
     getAttribute: (n: string) => (n in attrs ? attrs[n] : null),
   });
@@ -82,19 +91,82 @@ describe("le relais de la console", () => {
   it("le relais ne lit rien d'autre de la page et n'y injecte rien", () => {
     const code = sansCommentaires(lire("relais-console.js"));
     expect(code).not.toMatch(
-      /textContent|innerText|innerHTML|\.value\b|querySelector|cookie|localStorage|appendChild|insertAdjacent|location|fetch/,
+      /textContent|innerText|innerHTML|\.value\b|cookie|localStorage|appendChild|insertAdjacent|fetch/,
     );
+    // 1.4.0 — exceptions NOMMÉES de la liaison : l'adresse n'est lue que pour
+    // `?relier=`, et le seul élément cherché porte les attributs de liaison.
+    expect([...code.matchAll(/location(\.\w+)?/g)].map((m) => m[0])).toEqual(["location.search"]);
+    expect([...code.matchAll(/querySelector(All)?\(([^\n]*)\);/g)].map((m) => m[2])).toEqual([
+      "`[${NONCE}][${JETON}]:not([${ETAT}])`",
+    ]);
     expect(code).toContain(ATTRIBUT_OUI);
     expect(code).toContain(ATTRIBUT_NON);
   });
 
-  it("le manifeste ne le déclare que sur axion-ia.com, en version 1.3.0", () => {
+  it("liaison : sur `?relier=`, l'élément masqué part au service worker, la réponse est marquée", async () => {
+    const attrs: Record<string, string> = {
+      "data-relier-nonce": "a".repeat(32),
+      "data-relier-jeton": "b".repeat(64),
+    };
+    const el = {
+      getAttribute: (n: string) => attrs[n] ?? null,
+      setAttribute: (n: string, v: string) => {
+        attrs[n] = v;
+      },
+    };
+    const envoyes: unknown[] = [];
+    runInNewContext(lire("relais-console.js"), {
+      document: {
+        addEventListener: () => undefined,
+        documentElement: {},
+        querySelector: () => (attrs["data-relier-etat"] ? null : el),
+      },
+      chrome: {
+        runtime: {
+          sendMessage: (m: unknown) => {
+            envoyes.push(m);
+            return Promise.resolve({ ok: true });
+          },
+        },
+      },
+      location: { search: `?relier=${"a".repeat(32)}` },
+      URLSearchParams,
+      MutationObserver: class {
+        observe() {}
+      },
+    });
+    await new Promise((r) => setTimeout(r, 0));
+    expect(envoyes).toEqual([
+      { type: "jeton_relie", nonce: "a".repeat(32), jeton: "b".repeat(64) },
+    ]);
+    expect(attrs["data-relier-etat"]).toBe("ok");
+  });
+
+  it("ailleurs que sur `?relier=` : aucun élément n'est cherché", () => {
+    let cherche = 0;
+    runInNewContext(lire("relais-console.js"), {
+      document: {
+        addEventListener: () => undefined,
+        querySelector: () => {
+          cherche++;
+          return null;
+        },
+      },
+      chrome: { runtime: { sendMessage: () => Promise.resolve() } },
+      location: { search: "?onglet=rendez-vous" },
+      URLSearchParams,
+    });
+    expect(cherche).toBe(0);
+  });
+
+  it("le manifeste ne le déclare que sur axion-ia.com, en version 1.4.0", () => {
     const m = JSON.parse(lire("manifest.json"));
     expect(m.content_scripts).toEqual([
       { matches: ["https://axion-ia.com/*"], js: ["relais-console.js"], run_at: "document_idle" },
     ]);
-    expect(m.version).toBe("1.3.0");
-    expect(VERSION_EXTENSION).toBe("1.3.0");
+    expect(m.version).toBe("1.4.0");
+    // 1.4.0 (02/10) : « Relier à ma console » ; le « Oui, enregistrer » est de la 1.3.0.
+    expect(VERSION_EXTENSION).toBe("1.4.0");
   });
 });
 

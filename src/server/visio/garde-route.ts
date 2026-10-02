@@ -14,7 +14,8 @@
  *      (`application/octet-stream`, ≤ 262 144 octets) ; toutes les autres
  *      refusent `audio/*` et `application/octet-stream` (415) ;
  *   6. témoin de clé de chiffrement → 503 si la clé manque ou diffère ;
- *   7. jeton : connu, non révoqué, non expiré, titulaire toujours habilité ;
+ *   7. jeton : connu, non révoqué, titulaire toujours habilité (le jeton
+ *      n'expire pas : révision du 02/10, décision de Williams) ;
  *   8. limite de débit PAR APPAREIL (60/min pour les morceaux, 120/min sinon).
  *
  * ⚠️ AUCUN COOKIE LU, AUCUN EN-TÊTE CORS. L'appelant est le service worker de

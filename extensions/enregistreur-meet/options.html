@@ -4,26 +4,54 @@
     <meta charset="utf-8" />
     <title>Enregistreur Axion-IA — options</title>
     <style>
-      body { font: 15px/1.4 system-ui, sans-serif; margin: 24px; max-width: 640px; color: #1a1a1a; }
-      input, select, button { min-height: 44px; font-size: 15px; width: 100%; margin: 4px 0 12px; }
-      .ok { color: #166534; }
-      .ko { color: #991b1b; }
-      meter { width: 100%; }
+      body {
+        font:
+          15px/1.4 system-ui,
+          sans-serif;
+        margin: 24px;
+        max-width: 640px;
+        color: #1a1a1a;
+      }
+      input,
+      select,
+      button {
+        min-height: 44px;
+        font-size: 15px;
+        width: 100%;
+        margin: 4px 0 12px;
+      }
+      .ok {
+        color: #166534;
+      }
+      .ko {
+        color: #991b1b;
+      }
+      meter {
+        width: 100%;
+      }
     </style>
     <script type="module" src="options.js"></script>
   </head>
   <body>
     <h1>Enregistreur Axion-IA</h1>
 
-    <h2>1. Jeton de l'appareil</h2>
-    <p>Créez-le dans la console (Rendez-vous → Enregistreur), puis collez-le ici. Il n'est affiché qu'une fois.</p>
+    <h2>1. Relier à la console</h2>
+    <p>Un clic : la console s'ouvre (connectez-vous si besoin), cliquez « Relier », c'est fait.</p>
+    <button id="relier">Relier à ma console</button>
+    <p id="etape-suivante" class="ok" hidden></p>
+    <p>
+      Ou, à la main : créez le jeton dans la console (Rendez-vous → Enregistreur), puis collez-le
+      ici. Il n'est affiché qu'une fois.
+    </p>
     <label for="jeton">Jeton (64 caractères)</label>
     <input id="jeton" type="password" autocomplete="off" spellcheck="false" />
     <button id="enregistrer">Enregistrer le jeton</button>
     <p id="etat-jeton"></p>
 
     <h2>2. Micro</h2>
-    <p>À faire une fois : le document qui enregistre ne peut pas demander l'autorisation lui-même.</p>
+    <p>
+      À faire une fois : le document qui enregistre ne peut pas demander l'autorisation lui-même.
+    </p>
     <button id="autoriser">Autoriser le micro</button>
     <label for="micro">Micro utilisé</label>
     <select id="micro"></select>

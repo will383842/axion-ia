@@ -1,7 +1,14 @@
 /**
- * Un jeton expiré, révoqué, inconnu, ou dont le titulaire a perdu son rôle (ou
- * son compte) est refusé (PR 5) ; le titulaire est REVÉRIFIÉ à chaque appel.
+ * Un jeton révoqué, inconnu, ou dont le titulaire a perdu son rôle (ou son
+ * compte) est refusé (PR 5) ; le titulaire est REVÉRIFIÉ à chaque appel.
  * Le jeton n'est gardé qu'haché : la base ne permet pas de le retrouver.
+ *
+ * Révision du 02/10 (décision de Williams) : le jeton n'EXPIRE plus. Il vaut
+ * jusqu'à sa révocation. Un jeton créé avant la révision, dont les 90 jours
+ * d'origine sont dépassés, est ACCEPTÉ tant qu'il n'est pas révoqué.
+ *
+ * Mutation qui rougit : remettre le refus sur `expireLe` dans
+ * `authentifierAppareil` → le cas « 90 jours dépassés » rougit.
  */
 
 import { describe, expect, it } from "vitest";
@@ -11,6 +18,7 @@ import {
   creerAppareil,
   FORMAT_JETON,
   hacherJeton,
+  JETON_SANS_EXPIRATION,
   lireJetonBearer,
 } from "../jeton";
 import {
@@ -21,7 +29,7 @@ import {
   T0,
 } from "../../../../tests/outils/fixtures-enregistreur";
 
-describe("un jeton expiré ou d'un rôle retiré est refusé", () => {
+describe("un jeton révoqué ou d'un rôle retiré est refusé", () => {
   it("jeton valide d'un super-administrateur : accepté", async () => {
     const db = fausseBase();
     const { jeton } = semerAppareil(db);
@@ -29,8 +37,27 @@ describe("un jeton expiré ou d'un rôle retiré est refusé", () => {
     expect(r.ok).toBe(true);
   });
 
+  it("jeton d'avant la révision, 90 jours dépassés, non révoqué : ACCEPTÉ", async () => {
+    const db = fausseBase();
+    const { jeton } = semerAppareil(db, { expireLe: new Date(T0.getTime() - 30 * JOUR) });
+    const r = await authentifierAppareil(commePrisma(db), jeton, T0);
+    expect(r.ok).toBe(true);
+    // L'extension ne reçoit jamais l'ancienne date : elle la bloquerait localement.
+    if (r.ok) expect(r.appareil.expireLe).toEqual(JETON_SANS_EXPIRATION);
+  });
+
+  it("le même jeton ancien, révoqué : refusé", async () => {
+    const db = fausseBase();
+    const { jeton } = semerAppareil(db, {
+      expireLe: new Date(T0.getTime() - 30 * JOUR),
+      revoqueLe: new Date(T0.getTime() - JOUR),
+    });
+    const r = await authentifierAppareil(commePrisma(db), jeton, T0);
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.erreur).toBe("jeton_revoque");
+  });
+
   it.each([
-    ["expiré", { expireLe: new Date(T0.getTime() - 1) }, "jeton_expire", 401],
     ["révoqué", { revoqueLe: new Date(T0.getTime() - JOUR) }, "jeton_revoque", 401],
     ["rôle retiré (rédacteur)", { role: "editor" }, "titulaire_non_habilite", 403],
     [
@@ -58,7 +85,7 @@ describe("un jeton expiré ou d'un rôle retiré est refusé", () => {
     expect(r.ok).toBe(false);
   });
 
-  it("le jeton créé fait 64 hexadécimaux, n'est stocké qu'haché, et expire à 90 jours", async () => {
+  it("le jeton créé fait 64 hexadécimaux, n'est stocké qu'haché, et n'expire pas", async () => {
     const db = fausseBase();
     const cree = await creerAppareil(commePrisma(db), {
       nom: "Poste",
@@ -69,7 +96,9 @@ describe("un jeton expiré ou d'un rôle retiré est refusé", () => {
     const ligne = db.lignes("appareilEnregistrement")[0];
     expect(ligne?.["jetonHash"]).toBe(hacherJeton(cree.jeton));
     expect(JSON.stringify(ligne)).not.toContain(cree.jeton);
-    expect(cree.expireLe.getTime() - T0.getTime()).toBe(90 * JOUR);
+    // Colonne NON nulle en base : la date sentinelle, jamais une durée.
+    expect(cree.expireLe).toEqual(JETON_SANS_EXPIRATION);
+    expect(ligne?.["expireLe"]).toEqual(new Date("9999-12-31T00:00:00.000Z"));
   });
 
   it("seul « Bearer <64 hex> » est lu", () => {

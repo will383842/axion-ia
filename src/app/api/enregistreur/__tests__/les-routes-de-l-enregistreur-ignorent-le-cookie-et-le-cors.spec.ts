@@ -11,12 +11,13 @@
  *   · chaque `route.ts` déclare `runtime = "nodejs"`, `dynamic = "force-dynamic"`
  *     et sort sur `stub.invalid` en tête de handler (ADR 0026).
  *
- * Exception NOMMÉE : `ouvrir/route.ts` lit la session (c'est un onglet ouvert
- * par Will, pas un appel de l'extension) et ne rend jamais de CORS.
+ * Exceptions NOMMÉES : `ouvrir/route.ts` et `relier/route.ts` (1.4.0, « Relier
+ * à ma console ») lisent la session (onglets ouverts par Will, pas des appels
+ * de l'extension) et ne rendent jamais de CORS.
  *
  * Mutation qui rougit : ajouter `"access-control-allow-origin": "*"` aux
  * en-têtes de `repondre()` → le 1er cas rougit ; importer `cookies` dans une
- * route → le 3ᵉ rougit. Contre-témoin : le balayage trouve bien 10 routes.
+ * route → le 3ᵉ rougit. Contre-témoin : le balayage trouve bien 11 routes.
  */
 
 import { readdirSync, readFileSync, statSync } from "node:fs";
@@ -88,7 +89,7 @@ describe("⛔ les routes de l'enregistreur ignorent le cookie et le CORS", () =>
   const fichiers = routes();
 
   it("le balayage trouve les routes — sinon il ne garde rien", () => {
-    expect(fichiers.length).toBe(10);
+    expect(fichiers.length).toBe(11);
   });
 
   it.each(fichiers.map((f) => [relative(process.cwd(), f), f]))(
@@ -98,7 +99,10 @@ describe("⛔ les routes de l'enregistreur ignorent le cookie et le CORS", () =>
       expect(src).not.toMatch(/access-control-allow/i);
       expect(src).not.toMatch(/from "next\/headers"/);
       expect(src).not.toMatch(/\bcookies\s*\(/);
-      if (!f.includes(`${join("enregistreur", "ouvrir")}`)) {
+      if (
+        !f.includes(`${join("enregistreur", "ouvrir")}`) &&
+        !f.includes(`${join("enregistreur", "relier")}`)
+      ) {
         expect(src).not.toMatch(/from "@\/auth"/);
         expect(src).not.toMatch(/\bauth\s*\(/);
       }

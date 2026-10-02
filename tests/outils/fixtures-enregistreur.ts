@@ -8,7 +8,7 @@ import { createHash, randomUUID } from "node:crypto";
 import type { PrismaClient } from "../../prisma/generated/client";
 import { ENTETE_CONTRAT, ENTETES_MORCEAU } from "../../src/lib/schemas/enregistreur";
 import type { DependancesRoutes } from "../../src/server/visio/routes-enregistreur";
-import { hacherJeton } from "../../src/server/visio/jeton";
+import { hacherJeton, JETON_SANS_EXPIRATION } from "../../src/server/visio/jeton";
 import { fausseBase, fauxStockage, type FausseBase } from "./fausse-base-enregistreur";
 
 /** Un mardi d'octobre 2026, 10 h à Paris. */
@@ -42,7 +42,8 @@ export function semerAppareil(
     nom: "Poste de test",
     jetonHash: hacherJeton(jeton),
     adminUserId: admin["id"],
-    expireLe: o.expireLe ?? new Date(T0.getTime() + 90 * JOUR),
+    // Le jeton n'expire plus (révision du 02/10) : la date sentinelle par défaut.
+    expireLe: o.expireLe ?? JETON_SANS_EXPIRATION,
     revoqueLe: o.revoqueLe ?? null,
     dernierBattementLe: o.dernierBattementLe ?? null,
   });

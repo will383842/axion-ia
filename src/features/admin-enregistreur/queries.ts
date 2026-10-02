@@ -7,17 +7,13 @@ import { prisma } from "@/lib/prisma";
 import { BATTEMENT_TEMOIN, lireTemoinCle, type EtatTemoin } from "@/server/visio/temoin-cle";
 import { lireDrapeauEnregistrement, type LectureDrapeau } from "@/server/visio/drapeau";
 import { etatDuPreavis } from "@/server/visio/preavis-clients-actifs";
-import { joursAvantExpiration, seuilAlerteJeton } from "@/server/visio/jeton";
 import { SILENCE_APPAREIL_MS } from "@/server/visio/battement-appareil";
 
 export interface AppareilAffiche {
   readonly id: string;
   readonly nom: string;
   readonly creeLe: Date;
-  readonly expireLe: Date;
-  readonly joursRestants: number;
-  /** 14 ou 3 si un seuil d'alerte est franchi, sinon `null`. */
-  readonly seuil: 14 | 3 | null;
+  /** Le jeton n'expire pas (révision du 02/10) : seule la révocation compte. */
   readonly revoqueLe: Date | null;
   readonly dernierBattementLe: Date | null;
   readonly silencieux: boolean;
@@ -47,7 +43,6 @@ export async function lireEtatEnregistreur(
         id: true,
         nom: true,
         creeLe: true,
-        expireLe: true,
         revoqueLe: true,
         dernierBattementLe: true,
         versionExtension: true,
@@ -62,8 +57,6 @@ export async function lireEtatEnregistreur(
     drapeauVuParWorker: battement?.drapeauVuParWorker ?? null,
     appareils: appareils.map((a) => ({
       ...a,
-      joursRestants: joursAvantExpiration(a.expireLe, maintenant),
-      seuil: seuilAlerteJeton(a, maintenant),
       silencieux:
         a.revoqueLe === null &&
         (a.dernierBattementLe === null ||

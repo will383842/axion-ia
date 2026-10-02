@@ -96,8 +96,10 @@ export const DELAIS_LOCAUX = {
 } as const;
 
 /**
- * Seuils d'alerte avant expiration du jeton d'appareil (console et Telegram).
- * SEULE déclaration : `src/server/visio/jeton.ts` la ré-exporte.
+ * Seuils d'alerte avant expiration du jeton d'appareil — INERTES depuis la
+ * révision du 02/10 (décision de Williams) : le jeton n'expire plus, ni la
+ * console ni le balayage ne les appliquent. Gardés parce qu'ils sont publiés
+ * dans le contrat v1 de l'extension (`alerteJetonJours`), qui ne change pas.
  */
 export const SEUILS_ALERTE_JETON_JOURS = [14, 3] as const;
 

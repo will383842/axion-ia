@@ -6,7 +6,8 @@
  *     résisté à la suppression, un morceau arrivé pendant un refus ;
  *   · témoin de clé déchiffré côté worker (`temoin-cle.ts`) ;
  *   · alertes TECHNIQUES :
- *       - jeton d'appareil qui expire (J-14, puis J-3) ;
+ *       - (plus d'alerte d'expiration du jeton : il n'expire plus depuis la
+ *         révision du 02/10, décision de Williams — révocation seule) ;
  *       - extension silencieuse pendant un rendez-vous « Discutons » ;
  *       - témoin de clé en échec (clé absente ou différente sur le worker).
  *
@@ -45,7 +46,6 @@ import { CODES_ALERTES_VISIO, signalerUneFois } from "./alertes";
 import { cloturerEnregistrements, type BilanCloture } from "./cloture";
 import { extensionSilencieuse } from "./battement-appareil";
 import { lireDrapeauEnregistrement } from "./drapeau";
-import { joursAvantExpiration, seuilAlerteJeton } from "./jeton";
 import {
   reprendrePurgesDesRefus,
   versionAccepteePourVisio,
@@ -193,11 +193,11 @@ export async function balayerEnregistreur(
     await lever(db, CODES_ALERTES_VISIO.temoinCle, null, maintenant);
   }
 
-  // Jetons qui expirent (J-14, J-3) : une alerte par appareil et par seuil.
+  // Appareils : la version de l'extension. Aucune alerte d'expiration du
+  // jeton : il vaut jusqu'à sa révocation (révision du 02/10).
   const appareils = await db.appareilEnregistrement.findMany({
     select: {
       id: true,
-      expireLe: true,
       revoqueLe: true,
       dernierBattementLe: true,
       versionExtension: true,
@@ -208,10 +208,7 @@ export async function balayerEnregistreur(
     // ses visios ; Will doit recopier l'extension avant le prochain appel.
     const version = a.versionExtension ?? null;
     const tropAncienne =
-      a.revoqueLe === null &&
-      a.expireLe.getTime() > maintenant.getTime() &&
-      version !== null &&
-      !versionAccepteePourVisio(version);
+      a.revoqueLe === null && version !== null && !versionAccepteePourVisio(version);
     if (tropAncienne) {
       const envoyee = await signaler(
         db,
@@ -229,31 +226,6 @@ export async function balayerEnregistreur(
     } else {
       await lever(db, CODES_ALERTES_VISIO.extensionTropAncienne, a.id, maintenant);
     }
-    const seuil = seuilAlerteJeton(a, maintenant);
-    const codeSeuil =
-      seuil === 14
-        ? CODES_ALERTES_VISIO.jetonJ14
-        : seuil === 3
-          ? CODES_ALERTES_VISIO.jetonJ3
-          : null;
-    // Jeton renouvelé, révoqué, ou passé au seuil suivant : l'ancienne alerte se ferme.
-    for (const code of [CODES_ALERTES_VISIO.jetonJ14, CODES_ALERTES_VISIO.jetonJ3]) {
-      if (code !== codeSeuil) await lever(db, code, a.id, maintenant);
-    }
-    if (codeSeuil === null) continue;
-    const envoyee = await signaler(
-      db,
-      creer,
-      notifier,
-      {
-        code: codeSeuil,
-        cibleId: a.id,
-        titre: `Visio : le jeton de l'enregistreur expire dans ${joursAvantExpiration(a.expireLe, maintenant)} jour(s)`,
-        message: `Jeton valable jusqu'au ${a.expireLe.toISOString().slice(0, 10)}. Console → Rendez-vous → Enregistreur → « Renouveler », puis coller le nouveau jeton dans l'extension.`,
-      },
-      maintenant,
-    );
-    if (envoyee) alertes += 1;
   }
 
   // Extension silencieuse pendant un rendez-vous « Discutons ».

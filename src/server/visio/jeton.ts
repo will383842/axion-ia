@@ -5,7 +5,8 @@
  *     Will dans la console, collés une fois dans les options de l'extension ;
  *   · stocké HACHÉ (SHA-256) : la base ne permet pas de le retrouver ;
  *   · comparaison à temps constant (même posture que `api/mcp/route.ts`) ;
- *   · 90 jours, révocable, renouvelable ;
+ *   · SANS EXPIRATION (révision du 02/10, décision de Williams) : valable
+ *     jusqu'à sa RÉVOCATION dans la console ; renouvelable ;
  *   · titulaire REVÉRIFIÉ à chaque appel : compte suspendu ou rôle retiré =
  *     appareil refusé, même avec un jeton valide.
  *
@@ -16,18 +17,19 @@ import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 
 import type { PrismaClient } from "../../../prisma/generated/client";
 import { peutVoirLesEchanges } from "@/features/dossier-client/roles-echanges";
-import { SEUILS_ALERTE_JETON_JOURS } from "@/lib/schemas/enregistreur";
 
-/** Durée de vie d'un jeton. */
-export const DUREE_JETON_JOURS = 90;
-
-/** Seuils d'alerte avant expiration : déclarés UNE fois, dans le contrat. */
-export { SEUILS_ALERTE_JETON_JOURS };
+/**
+ * Le jeton n'expire pas (révision du 02/10, décision de Williams). La colonne
+ * `AppareilEnregistrement.expireLe` reste NON nulle en base (aucune migration) :
+ * elle reçoit cette date sentinelle, et c'est elle que le site renvoie à
+ * l'extension (`jetonExpireLe`) — y compris pour un jeton créé avant la
+ * révision, dont la date d'origine (90 jours) n'est plus jamais lue pour
+ * refuser. Seules la révocation et le rôle du titulaire comptent.
+ */
+export const JETON_SANS_EXPIRATION = new Date("9999-12-31T00:00:00.000Z");
 
 /** Forme exacte d'un jeton. Tout le reste est refusé avant la base. */
 export const FORMAT_JETON = /^[0-9a-f]{64}$/;
-
-const JOUR_MS = 86_400_000;
 
 /** Empreinte SHA-256 hexadécimale d'un jeton. */
 export function hacherJeton(jeton: string): string {
@@ -54,28 +56,6 @@ export function empreintesEgales(a: string, b: string): boolean {
   return timingSafeEqual(ha, hb);
 }
 
-/** Nombre de jours pleins avant l'expiration (négatif si expiré). */
-export function joursAvantExpiration(expireLe: Date, maintenant: Date): number {
-  return Math.floor((expireLe.getTime() - maintenant.getTime()) / JOUR_MS);
-}
-
-/**
- * Le seuil d'alerte franchi par un jeton, ou `null`. Un jeton à 10 jours est
- * au seuil 14 ; à 2 jours, au seuil 3. Un jeton expiré ou révoqué n'alerte plus
- * (la console le montre, l'extension refuse de démarrer).
- */
-export function seuilAlerteJeton(
-  appareil: { readonly expireLe: Date; readonly revoqueLe: Date | null },
-  maintenant: Date,
-): (typeof SEUILS_ALERTE_JETON_JOURS)[number] | null {
-  if (appareil.revoqueLe !== null) return null;
-  const jours = joursAvantExpiration(appareil.expireLe, maintenant);
-  if (jours < 0) return null;
-  let seuil: (typeof SEUILS_ALERTE_JETON_JOURS)[number] | null = null;
-  for (const s of SEUILS_ALERTE_JETON_JOURS) if (jours <= s) seuil = s;
-  return seuil;
-}
-
 export type ResultatAuthentification =
   | {
       readonly ok: true;
@@ -88,8 +68,7 @@ export type ResultatAuthentification =
   | {
       readonly ok: false;
       readonly statut: 401 | 403;
-      readonly erreur:
-        "jeton_inconnu" | "jeton_revoque" | "jeton_expire" | "titulaire_non_habilite";
+      readonly erreur: "jeton_inconnu" | "jeton_revoque" | "titulaire_non_habilite";
       readonly message: string;
     };
 
@@ -98,17 +77,18 @@ type DbJeton = Pick<PrismaClient, "appareilEnregistrement" | "adminUser">;
 /**
  * Authentifie un jeton déjà extrait par `lireJetonBearer`. Aucune écriture :
  * la date de dernière utilisation est posée par l'appelant, une fois la
- * requête acceptée.
+ * requête acceptée. Aucune expiration : `expireLe` n'est pas lu pour refuser,
+ * et l'appareil rendu porte toujours `JETON_SANS_EXPIRATION`.
  */
 export async function authentifierAppareil(
   db: DbJeton,
   jeton: string,
-  maintenant: Date,
+  _maintenant: Date,
 ): Promise<ResultatAuthentification> {
   const empreinte = hacherJeton(jeton);
   const appareil = await db.appareilEnregistrement.findUnique({
     where: { jetonHash: empreinte },
-    select: { id: true, jetonHash: true, adminUserId: true, expireLe: true, revoqueLe: true },
+    select: { id: true, jetonHash: true, adminUserId: true, revoqueLe: true },
   });
   // La recherche par empreinte suffit ; la comparaison à temps constant ferme
   // en plus toute différence de traitement selon le contenu de la colonne.
@@ -128,14 +108,6 @@ export async function authentifierAppareil(
       message: "Ce jeton a été révoqué : créez-en un nouveau dans la console.",
     };
   }
-  if (appareil.expireLe.getTime() <= maintenant.getTime()) {
-    return {
-      ok: false,
-      statut: 401,
-      erreur: "jeton_expire",
-      message: "Jeton expiré : renouvelez-le dans la console, et prenez des notes à la main.",
-    };
-  }
   const titulaire = await db.adminUser.findUnique({
     where: { id: appareil.adminUserId },
     select: { role: true, status: true },
@@ -151,7 +123,11 @@ export async function authentifierAppareil(
   }
   return {
     ok: true,
-    appareil: { id: appareil.id, adminUserId: appareil.adminUserId, expireLe: appareil.expireLe },
+    appareil: {
+      id: appareil.id,
+      adminUserId: appareil.adminUserId,
+      expireLe: JETON_SANS_EXPIRATION,
+    },
   };
 }
 
@@ -164,7 +140,7 @@ export async function creerAppareil(
 ): Promise<{ readonly appareilId: string; readonly jeton: string; readonly expireLe: Date }> {
   const nom = entree.nom.trim().slice(0, 80) || "Poste de Williams";
   const { jeton, empreinte } = genererJeton();
-  const expireLe = new Date(entree.maintenant.getTime() + DUREE_JETON_JOURS * JOUR_MS);
+  const expireLe = JETON_SANS_EXPIRATION;
   const cree = await db.appareilEnregistrement.create({
     data: { nom, jetonHash: empreinte, adminUserId: entree.adminUserId, expireLe },
     select: { id: true },
@@ -230,4 +206,30 @@ export async function revoquerAppareil(
     where: { id: appareilId, revoqueLe: null },
     data: { revoqueLe: maintenant },
   });
+}
+
+/** Une liaison « Relier » non aboutie s'annule dans ce délai après la création. */
+export const DELAI_ANNULATION_LIAISON_MS = 15 * 60 * 1000;
+
+/**
+ * « Relier » (extension 1.4.0) refusé par l'extension, ou resté sans réponse :
+ * révoque l'appareil tout juste créé, pour ne pas laisser un jeton actif que
+ * personne n'a (relecture sécurité du 02/10). Seulement s'il appartient à
+ * `adminUserId`, n'est pas déjà révoqué, et date de moins de 15 minutes.
+ * Rend `true` si l'appareil a été révoqué.
+ */
+export async function annulerLiaisonNonAboutie(
+  db: DbAppareil,
+  entree: { readonly appareilId: string; readonly adminUserId: string; readonly maintenant: Date },
+): Promise<boolean> {
+  const n = await db.appareilEnregistrement.updateMany({
+    where: {
+      id: entree.appareilId,
+      adminUserId: entree.adminUserId,
+      revoqueLe: null,
+      creeLe: { gte: new Date(entree.maintenant.getTime() - DELAI_ANNULATION_LIAISON_MS) },
+    },
+    data: { revoqueLe: entree.maintenant },
+  });
+  return n.count > 0;
 }
