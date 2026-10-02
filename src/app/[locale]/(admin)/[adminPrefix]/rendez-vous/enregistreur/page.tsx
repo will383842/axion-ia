@@ -20,6 +20,7 @@ import { RelierPosteForm } from "@/components/admin/visio/RelierPosteForm";
 import { gardeLectureEchanges } from "@/features/dossier-client/acces";
 import { motifSansAccesEnregistreur } from "@/features/admin-enregistreur/motif";
 import {
+  annulerLiaisonAction,
   creerJetonAction,
   relierPosteAction,
   renouvelerJetonAction,
@@ -80,7 +81,11 @@ export default async function PageEnregistreur({
             L&apos;extension a ouvert cette page : cliquez « Relier », le jeton passe directement à
             l&apos;extension de ce profil Chrome, sans copier-coller.
           </p>
-          <RelierPosteForm action={relierPosteAction} nonce={nonce} />
+          <RelierPosteForm
+            action={relierPosteAction}
+            annuler={annulerLiaisonAction}
+            nonce={nonce}
+          />
         </AdminCard>
       ) : null}
 

@@ -7,6 +7,11 @@
 // (`data-relier-nonce`, `data-relier-jeton`) que le relais de l'extension
 // transmet à son service worker, puis marque `data-relier-etat` (ok / refuse).
 // Le jeton n'est jamais affiché, ni écrit dans une URL.
+//
+// Relecture sécurité (02/10) : le jeton ne vit que le temps de la liaison.
+// Il est gardé dans un état LOCAL (l'état de l'action n'en garde pas copie) et
+// retiré dès la réponse ou le délai écoulé. Refus ou silence : l'appareil créé
+// est révoqué (`annuler`), pour ne laisser aucun jeton actif que personne n'a.
 
 import { useActionState, useEffect, useRef, useState } from "react";
 
@@ -14,48 +19,81 @@ import type { EtatLiaison } from "@/features/admin-enregistreur/etat-jeton";
 
 export interface RelierPosteFormProps {
   readonly action: (etat: EtatLiaison, form: FormData) => Promise<EtatLiaison>;
+  /** Révoque l'appareil d'une liaison non aboutie. */
+  readonly annuler: (appareilId: string) => Promise<boolean>;
   readonly nonce: string;
+  /** Délai d'attente de l'extension (réglable pour les tests). */
+  readonly sansReponseMs?: number;
 }
 
-const SANS_REPONSE_MS = 8000;
+type Porte = { readonly nonce: string; readonly jeton: string; readonly appareilId: string };
 
-export function RelierPosteForm({ action, nonce }: RelierPosteFormProps): React.ReactElement {
-  const [etat, envoyer, enCours] = useActionState(action, { etat: "initial" } as EtatLiaison);
-  const porteur = useRef<HTMLSpanElement>(null);
-  const [reponse, setReponse] = useState<"attente" | "ok" | "refuse" | "muette">("attente");
+export function RelierPosteForm({
+  action,
+  annuler,
+  nonce,
+  sansReponseMs = 8000,
+}: RelierPosteFormProps): React.ReactElement {
+  const [porte, setPorte] = useState<Porte | null>(null);
+  const [reponse, setReponse] = useState<"attente" | "ok" | "echec">("attente");
+  const [etat, envoyer, enCours] = useActionState(
+    async (prec: EtatLiaison, form: FormData): Promise<EtatLiaison> => {
+      const r = await action(prec, form);
+      if (r.etat !== "relie") return r;
+      setPorte({ nonce: r.nonce, jeton: r.jeton, appareilId: r.appareilId });
+      // L'état de l'action ne garde pas le jeton.
+      return { ...r, jeton: "" };
+    },
+    { etat: "initial" } as EtatLiaison,
+  );
+  const element = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    const el = porteur.current;
-    if (etat.etat !== "relie" || !el) return;
+    const el = element.current;
+    if (!porte || !el) return;
+    let fini = false;
+    const conclure = (ok: boolean) => {
+      if (fini) return;
+      fini = true;
+      const appareilId = porte.appareilId;
+      setPorte(null);
+      setReponse(ok ? "ok" : "echec");
+      if (!ok) void annuler(appareilId).catch(() => false);
+    };
     const lire = () => {
       const v = el.getAttribute("data-relier-etat");
-      if (v === "ok" || v === "refuse") setReponse(v);
+      if (v === "ok") conclure(true);
+      else if (v === "refuse") conclure(false);
     };
     const obs = new MutationObserver(lire);
     obs.observe(el, { attributes: true });
-    const delai = setTimeout(
-      () => setReponse((r) => (r === "attente" ? "muette" : r)),
-      SANS_REPONSE_MS,
-    );
+    const delai = setTimeout(() => conclure(false), sansReponseMs);
     lire();
     return () => {
       obs.disconnect();
       clearTimeout(delai);
     };
-  }, [etat]);
+    // `etat` : la porte peut arriver un rendu AVANT l'élément (mise à jour hors
+    // transition) ; l'effet se relance quand l'élément apparaît.
+  }, [porte, etat, annuler, sansReponseMs]);
 
   if (etat.etat === "relie") {
     return (
       <div role="status">
-        <span ref={porteur} hidden data-relier-nonce={etat.nonce} data-relier-jeton={etat.jeton} />
+        {porte ? (
+          <span
+            ref={element}
+            hidden
+            data-relier-nonce={porte.nonce}
+            data-relier-jeton={porte.jeton}
+          />
+        ) : null}
         <p className="font-medium">
           {reponse === "ok"
             ? "Relié ✓ — vous pouvez fermer cet onglet"
-            : reponse === "refuse"
-              ? "L'extension a refusé la liaison (lien expiré ou déjà utilisé) : relancez « Relier à ma console » depuis l'extension."
-              : reponse === "muette"
-                ? "L'extension ne répond pas : vérifiez qu'elle est installée (1.4.0) dans ce profil Chrome, puis relancez « Relier à ma console »."
-                : "Liaison en cours…"}
+            : reponse === "echec"
+              ? "Liaison non aboutie, rien n'a été gardé. Relancez depuis l'extension."
+              : "Liaison en cours…"}
         </p>
       </div>
     );

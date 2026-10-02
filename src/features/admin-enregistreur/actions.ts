@@ -13,7 +13,12 @@ import { revalidatePath } from "next/cache";
 
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
-import { creerAppareil, renouvelerAppareil, revoquerAppareil } from "@/server/visio/jeton";
+import {
+  annulerLiaisonNonAboutie,
+  creerAppareil,
+  renouvelerAppareil,
+  revoquerAppareil,
+} from "@/server/visio/jeton";
 import { exigerAccesEchanges } from "@/features/dossier-client/acces";
 import { motifSansAccesEnregistreur } from "./motif";
 import {
@@ -81,9 +86,30 @@ export async function relierPosteAction(_prec: EtatLiaison, form: FormData): Pro
     }
     const nom = String(form.get("nom") ?? "").trim() || "Poste de Williams";
     const cree = await creerAppareil(prisma, { nom, adminUserId: userId, maintenant: new Date() });
-    return { etat: "relie", nonce, jeton: cree.jeton };
+    return { etat: "relie", nonce, jeton: cree.jeton, appareilId: cree.appareilId };
   } catch (err) {
     return { etat: "erreur", message: err instanceof Error ? err.message : "Liaison impossible." };
+  }
+}
+
+/**
+ * Liaison non aboutie (l'extension refuse ou ne répond pas) : révoque
+ * l'appareil que `relierPosteAction` vient de créer — seulement celui de
+ * l'admin courant, non révoqué, créé il y a moins de 15 minutes.
+ */
+export async function annulerLiaisonAction(appareilId: string): Promise<boolean> {
+  try {
+    const { userId } = await exigerAccesEchanges(motifSansAccesEnregistreur);
+    if (typeof appareilId !== "string" || appareilId.length === 0 || appareilId.length > 64) {
+      return false;
+    }
+    return await annulerLiaisonNonAboutie(prisma, {
+      appareilId,
+      adminUserId: userId,
+      maintenant: new Date(),
+    });
+  } catch {
+    return false;
   }
 }
 

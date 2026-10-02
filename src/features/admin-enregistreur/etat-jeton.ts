@@ -39,5 +39,11 @@ export const FORMAT_NONCE_LIAISON = /^[0-9a-f]{32}$/;
  */
 export type EtatLiaison =
   | { readonly etat: "initial" }
-  | { readonly etat: "relie"; readonly nonce: string; readonly jeton: string }
+  | {
+      readonly etat: "relie";
+      readonly nonce: string;
+      readonly jeton: string;
+      /** Pour révoquer l'appareil si la liaison n'aboutit pas. */
+      readonly appareilId: string;
+    }
   | { readonly etat: "erreur"; readonly message: string };

@@ -17,6 +17,7 @@ vi.mock("@/features/admin-enregistreur/actions", () => ({
   renouvelerJetonAction: vi.fn(),
   revoquerJetonAction: vi.fn(),
   relierPosteAction: vi.fn(),
+  annulerLiaisonAction: vi.fn(),
 }));
 vi.mock("@/components/admin/visio/JetonAppareilForm", () => ({
   JetonAppareilForm: ({ libelle }: { libelle: string }) => <button type="button">{libelle}</button>,

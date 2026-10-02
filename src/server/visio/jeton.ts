@@ -207,3 +207,29 @@ export async function revoquerAppareil(
     data: { revoqueLe: maintenant },
   });
 }
+
+/** Une liaison « Relier » non aboutie s'annule dans ce délai après la création. */
+export const DELAI_ANNULATION_LIAISON_MS = 15 * 60 * 1000;
+
+/**
+ * « Relier » (extension 1.4.0) refusé par l'extension, ou resté sans réponse :
+ * révoque l'appareil tout juste créé, pour ne pas laisser un jeton actif que
+ * personne n'a (relecture sécurité du 02/10). Seulement s'il appartient à
+ * `adminUserId`, n'est pas déjà révoqué, et date de moins de 15 minutes.
+ * Rend `true` si l'appareil a été révoqué.
+ */
+export async function annulerLiaisonNonAboutie(
+  db: DbAppareil,
+  entree: { readonly appareilId: string; readonly adminUserId: string; readonly maintenant: Date },
+): Promise<boolean> {
+  const n = await db.appareilEnregistrement.updateMany({
+    where: {
+      id: entree.appareilId,
+      adminUserId: entree.adminUserId,
+      revoqueLe: null,
+      creeLe: { gte: new Date(entree.maintenant.getTime() - DELAI_ANNULATION_LIAISON_MS) },
+    },
+    data: { revoqueLe: entree.maintenant },
+  });
+  return n.count > 0;
+}
