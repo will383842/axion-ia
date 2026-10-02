@@ -13,6 +13,7 @@ import {
 } from "@/content/pricing";
 import { slugify } from "@/lib/slug";
 import { FOUNDER } from "@/lib/brand";
+import { DELAI_ACCES_FAIT, DELAI_ACCES_PHRASE } from "@/content/formations/delai-acces";
 
 // Helpers locaux pour dériver les phrases FAQ multilingues à partir du SSOT
 // pricing. Aucun prix hardcodé : si Will modifie un tier, ces phrases se
@@ -1193,8 +1194,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         },
         {
           title: "Le délai d'accès n'est pas le délai d'autonomie",
-          detail:
-            "Comptez au moins 11 jours ouvrés entre la confirmation et la session, le temps de préparer les cas et les accès. L'autonomie, elle, se joue le lendemain de la session.",
+          detail: `${DELAI_ACCES_PHRASE} L'autonomie, elle, se joue le lendemain de la session.`,
         },
       ],
     },
@@ -2395,8 +2395,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     related: ["formation-ia-entreprise", "atelier-ia-equipe", "equipes-operationnelles"],
     fr: {
       question: "Comment monter mes équipes en compétence sur l'IA ?",
-      answer:
-        "Par la pratique, sur vos propres cas, et en commençant par un périmètre restreint plutôt que par toute l'entreprise d'un coup. Le chemin le plus courant : une demi-journée de 4 heures pour lever les blocages d'un premier groupe, puis une journée pour installer une pratique commune, puis un format de 2 journées pour les équipes qui doivent construire des automatisations.\n\nLes sessions se tiennent en intra, par groupe de 2 à 15 personnes, sur site ou à distance. On y couvre les mêmes fondamentaux quel que soit le métier : formuler une demande structurée, choisir le bon assistant selon le besoin, vérifier une production avant de la diffuser, et savoir quelles données ne sortent jamais de l'entreprise. Le reste du programme est calé sur votre métier ou votre secteur d'activité.\n\nCe qui fait tenir la montée en compétence, c'est ce qui reste après : des prompts construits en séance, une trame commune écrite par l'équipe elle-même, et des cas d'usage identifiés service par service. Comptez au moins 11 jours ouvrés entre la confirmation et la session, le temps de préparer les cas et les accès.",
+      answer: `Par la pratique, sur vos propres cas, et en commençant par un périmètre restreint plutôt que par toute l'entreprise d'un coup. Le chemin le plus courant : une demi-journée de 4 heures pour lever les blocages d'un premier groupe, puis une journée pour installer une pratique commune, puis un format de 2 journées pour les équipes qui doivent construire des automatisations.\n\nLes sessions se tiennent en intra, par groupe de 2 à 15 personnes, sur site ou à distance. On y couvre les mêmes fondamentaux quel que soit le métier : formuler une demande structurée, choisir le bon assistant selon le besoin, vérifier une production avant de la diffuser, et savoir quelles données ne sortent jamais de l'entreprise. Le reste du programme est calé sur votre métier ou votre secteur d'activité.\n\nCe qui fait tenir la montée en compétence, c'est ce qui reste après : des prompts construits en séance, une trame commune écrite par l'équipe elle-même, et des cas d'usage identifiés service par service. ${DELAI_ACCES_PHRASE}`,
       keyPoints: [
         "Commencer par un groupe et un format court plutôt que par toute l'entreprise",
         "4 heures pour lever les blocages, 1 journée pour installer une pratique commune",
@@ -2407,7 +2406,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       facts: [
         { figure: "4 h", label: "format le plus court" },
         { figure: "2-15", label: "participants par groupe" },
-        { figure: "11 j", label: "ouvrés de délai d'accès" },
+        { ...DELAI_ACCES_FAIT },
         { figure: "2-3 j", label: "formats les plus longs" },
       ],
       steps: [
@@ -2418,8 +2417,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         },
         {
           title: "Préparer les cas",
-          detail:
-            "Chaque participant arrive avec de vraies tâches. Les accès aux outils sont préparés avec vous en amont si besoin. Comptez au moins 11 jours ouvrés avant la session.",
+          detail: `Chaque participant arrive avec de vraies tâches. Les accès aux outils sont préparés avec vous en amont si besoin. ${DELAI_ACCES_PHRASE}`,
         },
         {
           title: "La session",
@@ -4053,8 +4051,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     related: ["formation-ia-difference", "presentiel-distance", "equipes-operationnelles"],
     fr: {
       question: "Comment se passe une formation IA en entreprise ?",
-      answer:
-        "Toujours en intra, dans vos locaux ou à distance, pour un seul et même groupe de 2 à 15 personnes. Une journée type dure 7 heures ; le catalogue va de la demi-journée de 4 heures aux formats de 2 journées, ceux-ci étant scindables en journées espacées.\n\nLe déroulé est le même partout. On pose d'abord le cadre — ce qu'une IA sait faire, ce qu'elle fait mal, et les données qui ne sortent jamais de l'entreprise — puis chaque notion est démontrée en direct avant d'être pratiquée immédiatement sur les tâches réelles apportées par les participants. Les exercices sont différenciés par profil et une partie se fait en binômes. La journée se termine par ce que chacun applique dès le lundi suivant.\n\nEn amont, on cale avec vous la formation, les cas à travailler et, si besoin, les accès aux outils : le délai d'accès est d'au moins 11 jours ouvrés à compter de la confirmation. À l'issue, une grille d'évaluation individuelle, renseignée et commentée en salle, valide les acquis, et une attestation individuelle est remise.",
+      answer: `Toujours en intra, dans vos locaux ou à distance, pour un seul et même groupe de 2 à 15 personnes. Une journée type dure 7 heures ; le catalogue va de la demi-journée de 4 heures aux formats de 2 journées, ceux-ci étant scindables en journées espacées.\n\nLe déroulé est le même partout. On pose d'abord le cadre — ce qu'une IA sait faire, ce qu'elle fait mal, et les données qui ne sortent jamais de l'entreprise — puis chaque notion est démontrée en direct avant d'être pratiquée immédiatement sur les tâches réelles apportées par les participants. Les exercices sont différenciés par profil et une partie se fait en binômes. La journée se termine par ce que chacun applique dès le lundi suivant.\n\nEn amont, on cale avec vous la formation, les cas à travailler et, si besoin, les accès aux outils. ${DELAI_ACCES_PHRASE} À l'issue, une grille d'évaluation individuelle, renseignée et commentée en salle, valide les acquis, et une attestation individuelle est remise.`,
       keyPoints: [
         "Toujours en intra : une session est montée pour une seule entreprise",
         "Groupe de 2 à 15 personnes, sur site ou à distance, au même tarif",
@@ -4065,14 +4062,13 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       facts: [
         { figure: "7 h", label: "pour une journée type" },
         { figure: "2-15", label: "participants par groupe" },
-        { figure: "11 j", label: "ouvrés de délai d'accès" },
+        { ...DELAI_ACCES_FAIT },
         { figure: "1", label: "grille d'évaluation individuelle, commentée en salle" },
       ],
       steps: [
         {
           title: "Cadrage en amont",
-          detail:
-            "On choisit la formation, on liste les cas à travailler et on prépare si besoin les accès aux outils. Le délai d'accès est d'au moins 11 jours ouvrés après confirmation.",
+          detail: `On choisit la formation, on liste les cas à travailler et on prépare si besoin les accès aux outils. ${DELAI_ACCES_PHRASE}`,
         },
         {
           title: "Le cadre, avant tout atelier",

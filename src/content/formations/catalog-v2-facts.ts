@@ -26,6 +26,7 @@ import {
 import type { FormationCasUsage, FormationV2 } from "./catalog-v2";
 import { FORMATION_CARD_PHOTOS } from "./catalog-v2-photos";
 import { type ModalitePedagogique, PRESENTIEL_DISTANCIEL } from "./modalites";
+import { DELAI_ACCES_VALEUR, delaiAccesAutresFinanceurs } from "./delai-acces";
 
 // ── Durée canonique en NOMBRES (heures d'horloge + jours) ───────────────────
 // Base 7 h/jour (standard formation professionnelle). Source unique du couple
@@ -225,11 +226,23 @@ export function getFormationCasUsage(f: FormationV2): ReadonlyArray<FormationCas
 //    accessibilité) — obligations Code du travail / RNQ génériques, NON gatées
 //    Qualiopi (aucun claim de certification). Défauts centralisés, surchargeables
 //    par formation. Alignés sur la branche DB legacy de formations/[slug]/page.tsx.
-export const FORMATION_DELAI_ACCES_DEFAUT =
-  "Nous consulter — sous 11 jours ouvrés minimum à compter de la confirmation d'inscription et de la réception du règlement ou de la prise en charge par le financeur.";
+// Délai d'accès : la règle vit dans `./delai-acces` (source unique, règle du
+// dirigeant du 2026-10-02 — l'ancien « 11 jours ouvrés minimum » n'avait aucun
+// fondement). Valeur d'un champ déjà étiqueté « Délai d'accès ».
+export const FORMATION_DELAI_ACCES_DEFAUT = DELAI_ACCES_VALEUR;
 
-export function getFormationDelaiAcces(f: FormationV2): string {
-  return f.delaiAccesFr ?? FORMATION_DELAI_ACCES_DEFAUT;
+/**
+ * `autresFinanceurs` : financeurs autres que l'OPCO proposés SUR LA MÊME PAGE
+ * (ex. France Travail quand le bloc financement est affiché). On n'invente pas
+ * leur délai : la phrase renvoie au délai de réponse du financeur.
+ */
+export function getFormationDelaiAcces(
+  f: FormationV2,
+  autresFinanceurs: ReadonlyArray<string> = [],
+): string {
+  const base = f.delaiAccesFr ?? FORMATION_DELAI_ACCES_DEFAUT;
+  const complement = delaiAccesAutresFinanceurs(autresFinanceurs);
+  return complement ? `${base} ${complement}` : base;
 }
 
 export const FORMATION_METHODES_DEFAUT =

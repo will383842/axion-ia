@@ -2,6 +2,7 @@
 // Manually corrected 2026-05-28 (sprint anti-doorway HCU 2024) — Wikipedia sourced.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
+import { DELAI_ACCES_PHRASE } from "@/content/formations/delai-acces";
 import type { VilleCopy } from "./types";
 
 export const CHATILLON_COPY: VilleCopy = {
@@ -224,7 +225,7 @@ export const CHATILLON_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Châtillon ?",
-      a: "Pour une PME ou ETI implantée à Châtillon, l'Audit sur place est planifiable sous 5 jours ouvrés après validation. Une formation collective démarre au plus tôt 11 jours ouvrés après la confirmation d'inscription (délai d'accès minimum), à une date convenue avec vous.",
+      a: `Pour une PME ou ETI implantée à Châtillon, l'Audit sur place est planifiable sous 5 jours ouvrés après validation. ${DELAI_ACCES_PHRASE} La date de la formation est convenue avec vous.`,
     },
     {
       q: "Couvrez-vous les communes proches de Châtillon ?",

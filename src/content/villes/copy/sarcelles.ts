@@ -5,6 +5,7 @@
 // MANUAL EDIT 2026-05-28 : anti-doorway HCU 2024 — contenu factuel Wikipedia,
 // suppression templates LLM hors-contexte (Cap Digital/Inria/Station F).
 
+import { DELAI_ACCES_PHRASE } from "@/content/formations/delai-acces";
 import type { VilleCopy } from "./types";
 
 export const SARCELLES_COPY: VilleCopy = {
@@ -223,7 +224,7 @@ export const SARCELLES_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à Sarcelles ?",
-      a: "Pour les PME et ETI de Sarcelles, l'Audit sur place est planifié sous 5 jours ouvrés. Une formation collective démarre au plus tôt 11 jours ouvrés après la confirmation d'inscription (délai d'accès minimum), à une date convenue avec vous.",
+      a: `Pour les PME et ETI de Sarcelles, l'Audit sur place est planifié sous 5 jours ouvrés. ${DELAI_ACCES_PHRASE} La date de la formation est convenue avec vous.`,
     },
     {
       q: "Couvrez-vous Garges-lès-Gonesse, Villiers-le-Bel et Saint-Brice-sous-Forêt depuis Sarcelles ?",

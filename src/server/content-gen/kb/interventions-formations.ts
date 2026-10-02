@@ -11,6 +11,7 @@
  * Indexation FTS Postgres déjà en place via KbEntry.content + tsvector.
  */
 
+import { DELAI_ACCES_PHRASE } from "@/content/formations/delai-acces";
 import type { KbFact } from "./audits";
 export type { KbFact };
 
@@ -312,13 +313,17 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   {
     id: "form-031",
     // 🔴 2026-09-30 (audit ind. 2) : « délai MOYEN de 10 à 15 jours ouvrés »
-    // présentait comme une moyenne un chiffre que rien ne mesure, et contredisait
-    // les fiches (« sous 11 jours ouvrés minimum »). Aligné sur la règle réelle,
-    // `FORMATION_DELAI_ACCES_DEFAUT` (src/content/formations/catalog-v2-facts.ts).
-    text: "Le délai d'accès à une formation Axion-IA est d'au moins 11 jours ouvrés entre la confirmation d'inscription (avec réception du règlement ou de l'accord de prise en charge du financeur) et la première session. La date est convenue avec l'entreprise lors de l'appel de cadrage des besoins, gratuit et sans engagement.",
+    // présentait comme une moyenne un chiffre que rien ne mesure.
+    // 🔴 2026-10-02 : le « au moins 11 jours ouvrés » qui l'avait remplacé
+    // n'avait pas plus de fondement. Règle du dirigeant, lue dans la source
+    // unique `src/content/formations/delai-acces.ts`.
+    // ⚠️ Ce fait vit AUSSI en base (`KbEntry`, upsert par
+    // `prisma/seeds/content-gen/seed-kb-facts.ts`) : l'ancienne phrase y reste
+    // tant que le seed n'a pas été relancé.
+    text: `${DELAI_ACCES_PHRASE} La date est convenue avec l'entreprise lors de l'appel de cadrage des besoins, gratuit et sans engagement.`,
     source: "Axion-IA — Délai d'accès publié sur les fiches formation",
     sourceUrl: "https://axion-ia.com/interventions-formations",
-    verifiedAt: "2026-09-30",
+    verifiedAt: "2026-10-02",
     verticales: ["interventions_formations"],
     confidence: 0.9,
   },

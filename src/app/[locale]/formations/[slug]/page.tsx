@@ -30,6 +30,7 @@ import { getReferentHandicapPublic } from "@/server/qualiopi/config/referent-han
 import { isRegimeTva, mentionTva, REGIME_TVA_DEFAUT } from "@/server/qualiopi/legal/tva";
 import { resolveOffrePriceLabel } from "@/server/qualiopi/offres/pricing-resolver";
 import { FORMATIONS_V2, getFormationV2 } from "@/content/formations/catalog-v2";
+import { DELAI_ACCES_VALEUR } from "@/content/formations/delai-acces";
 import { FormationDetailPage } from "@/components/formations/FormationDetailPage";
 import { getResultatsPublicsFormation } from "@/server/qualiopi/indicateurs/resultats-publics-service";
 
@@ -591,11 +592,7 @@ export default async function FormationSlugPage({ params }: { params: Promise<Pa
 
               {/* 9. Délai d&apos;accès */}
               <SectionBlock title="Délai d'accès">
-                <p className="text-fg-soft text-[15px] leading-relaxed">
-                  Nous consulter — sous 11 jours ouvrés minimum à compter de la confirmation
-                  d&apos;inscription et de la réception du règlement ou de la prise en charge
-                  financeur.
-                </p>
+                <p className="text-fg-soft text-[15px] leading-relaxed">{DELAI_ACCES_VALEUR}</p>
               </SectionBlock>
 
               {/* 10. Tarif + exonération TVA (rappel latéral) */}
