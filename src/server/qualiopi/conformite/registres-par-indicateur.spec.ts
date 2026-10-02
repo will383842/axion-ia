@@ -13,7 +13,7 @@ import { join } from "node:path";
 
 import { describe, it, expect } from "vitest";
 
-import { INDICATEURS_RNQ } from "./indicateurs-registre";
+import { INDICATEURS_RNQ_2026 as INDICATEURS_RNQ } from "./indicateurs-registre";
 import { REGISTRES_PAR_INDICATEUR, registresDeIndicateur } from "./registres-par-indicateur";
 
 const RACINE_CONSOLE = join(process.cwd(), "src", "app", "[locale]", "(admin)", "[adminPrefix]");
@@ -21,7 +21,7 @@ const RACINE_CONSOLE = join(process.cwd(), "src", "app", "[locale]", "(admin)", 
 const PAGE_MODE_AUDITEUR = join(RACINE_CONSOLE, "qualiopi", "mode-auditeur", "page.tsx");
 
 describe("registres par indicateur", () => {
-  it("porte une entrée pour CHACUN des 32 indicateurs du registre", () => {
+  it("porte une entrée pour CHACUN des indicateurs des deux grilles (33)", () => {
     const manquants = INDICATEURS_RNQ.filter(
       (ind) => REGISTRES_PAR_INDICATEUR[ind.numero] === undefined,
     ).map((ind) => ind.numero);
@@ -63,12 +63,13 @@ describe("registres par indicateur", () => {
 
   it("laisse vides, et seulement vides, les indicateurs sans registre interne", () => {
     // 3/7/16 (certifiant : preuve statistique publiée), 13/14/15/20/29
-    // (apprentissage, hors périmètre), 28 (AFEST, non déclaré).
+    // (apprentissage, hors périmètre), 28 (AFEST, non déclaré), 33 (grille
+    // 2026, apprentissage, hors périmètre).
     const vides = Object.entries(REGISTRES_PAR_INDICATEUR)
       .filter(([, r]) => r.length === 0)
       .map(([n]) => Number(n))
       .sort((a, b) => a - b);
-    expect(vides).toEqual([3, 7, 13, 14, 15, 16, 20, 28, 29]);
+    expect(vides).toEqual([3, 7, 13, 14, 15, 16, 20, 28, 29, 33]);
   });
 
   /**

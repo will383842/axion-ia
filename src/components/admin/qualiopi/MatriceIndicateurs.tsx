@@ -1,5 +1,6 @@
 /**
- * Qualiopi — Matrice des 32 indicateurs RNQ V9, composant partagé (phase 2
+ * Qualiopi — Matrice des indicateurs du référentiel national qualité (grille
+ * appliquée : 32 ou 33 indicateurs selon la date), composant partagé (phase 2
  * de l'audit UX console, 2026-08-01).
  *
  * Avant : « Conformité » (tableaux denses) et « Mode auditeur » (cartes +

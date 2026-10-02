@@ -106,6 +106,10 @@ export const QUALIOPI_CONFIG_LABELS: Record<QualiopiConfigKey, string> = {
   off29_applicable: "Indicateur 29 (insertion professionnelle) applicable",
   procedure_reclamations_publiee: "Procédure de réclamations publiée au public",
 
+  // ── Référentiel appliqué ──
+  date_audit_referentiel:
+    "Date de l'audit (choisit la grille du référentiel : 32 ou 33 indicateurs)",
+
   // ── Cadences de pilotage ──
   revue_trimestrielle_activee: "Alerte de cadence trimestrielle activée",
 

@@ -16,6 +16,7 @@ import { z } from "zod";
 import { BRAND } from "@/lib/brand";
 import { NDA_NUMERO } from "@/server/qualiopi/legal/legal-mentions";
 import { REGIME_TVA_DEFAUT } from "@/server/qualiopi/legal/tva";
+import { estJourIsoValide } from "@/server/qualiopi/conformite/indicateurs-registre";
 
 /** Définition typée d'une clé : schéma Zod + défaut + description. */
 export interface ConfigEntry<T> {
@@ -533,6 +534,25 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     ...bool(false),
     description:
       "Procédure de traitement des réclamations publiée / communiquée au public (condition de couverture off.31).",
+  },
+
+  // ── Référentiel appliqué (décret n° 2026-728) ─────────────────────────────
+  // Le référentiel change le 1er novembre 2026, SANS transition : un audit tenu
+  // le 31/10 se juge sur 32 indicateurs, un audit tenu le 01/11 sur 33. Le Mode
+  // auditeur, le manifeste et le ZIP choisissent leur grille par cette date ;
+  // vide, c'est le jour même qui choisit (cf. `choisirReferentiel`).
+  // Défaut VIDE : la date de l'audit est un fait que seul le certificateur
+  // fixe, jamais une valeur inventée.
+  date_audit_referentiel: {
+    schema: z
+      .string()
+      .trim()
+      .refine((v) => v === "" || estJourIsoValide(v), {
+        message: "Date d'audit attendue au format AAAA-MM-JJ (ou vide).",
+      }),
+    default: "" as string,
+    description:
+      "Date de l'audit Qualiopi (AAAA-MM-JJ). Choisit la grille du référentiel appliquée par le Mode auditeur, le manifeste et le dossier ZIP : jusqu'au 31/10/2026, 32 indicateurs ; à partir du 01/11/2026, 33 (décret n° 2026-728). Vide : la date du jour.",
   },
 
   // ── Cadences de pilotage (LOT 4) ───────────────────────────────────────────

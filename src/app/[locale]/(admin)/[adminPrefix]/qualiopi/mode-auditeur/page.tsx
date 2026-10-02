@@ -1,7 +1,10 @@
 /**
  * Admin — Qualiopi · Conformité & mode auditeur (fusion phase 2, 2026-08-01).
  *
- * Page canonique de la matrice des 32 indicateurs RNQ V9. Fusionne l'ancienne
+ * Page canonique de la matrice des indicateurs du référentiel national qualité,
+ * sur la grille APPLIQUÉE (32 jusqu'au 31/10/2026, 33 à partir du 01/11/2026 —
+ * décret n° 2026-728 ; choisie par la date d'audit configurée, sinon le jour
+ * même). Fusionne l'ancienne
  * « Conformité » (tableaux denses + stat cards) et le « Mode auditeur »
  * (manifeste, documents, exports) qui affichaient la même évaluation sous
  * deux entrées de nav (`genererManifesteAudit()` wrappe `evaluerConformite()`).
@@ -24,6 +27,7 @@ import {
   type MatriceVue,
 } from "@/components/admin/qualiopi/MatriceIndicateurs";
 import { genererManifesteAudit } from "@/server/qualiopi/conformite/audit-dossier";
+import { libelleReferentielApplique } from "@/server/qualiopi/conformite/indicateurs-registre";
 import { Gauge, CheckCircle2, Hourglass } from "lucide-react";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
@@ -98,7 +102,7 @@ export default async function QualiopiModeAuditeurPage({ params, searchParams }:
       */}
       <AdminPageHeader
         title="Conformité & mode auditeur"
-        description={`État de couverture des 32 indicateurs du Référentiel National Qualité (${manifeste.json.meta.version}). Vue tableau pour le pilotage, vue manifeste (preuves + documents) pour l'auditrice — exports JSON, Markdown et dossier ZIP.`}
+        description={`État de couverture des ${manifeste.json.meta.nbIndicateurs} indicateurs : ${libelleReferentielApplique(manifeste.json.meta.referentiel)}. Vue tableau pour le pilotage, vue manifeste (preuves + documents) pour l'auditrice — exports JSON, Markdown et dossier ZIP.`}
       />
 
       <div className="mb-[var(--space-admin-6)]">
