@@ -3,6 +3,7 @@
 
 import { bandeauPreavis } from "./lib/bandeau-preavis.js";
 import { DELAIS_LOCAUX } from "./lib/constantes.js";
+import { lancerLiaison } from "./lib/liaison.js";
 import { messageInformation, phraseAnnonce } from "./lib/message-information.js";
 
 const $ = (id) => document.getElementById(id);
@@ -79,6 +80,8 @@ function rendre(e) {
   $("jeton").textContent = j.message;
   $("jeton").className =
     `bandeau ${j.niveau === "orange" ? "orange" : "rouge"}${j.message ? "" : " cache"}`;
+  // 1.4.0 — aucun jeton enregistré : « Relier à ma console » en un clic.
+  afficher("relier", j.niveau === "absent");
   $("message").textContent = e.message ?? "";
   afficher("message", !!e.message);
   rendreRencontres(e);
@@ -140,6 +143,7 @@ $("demarrer").addEventListener("click", () => {
   geste("demarrer");
 });
 $("dicter").addEventListener("click", () => geste("demarrer_dictee"));
+$("relier").addEventListener("click", () => lancerLiaison().catch(() => undefined));
 $("accord").addEventListener("click", () => geste("accord"));
 $("refus").addEventListener("click", () => geste("refus"));
 $("refus2").addEventListener("click", () => geste("refus"));

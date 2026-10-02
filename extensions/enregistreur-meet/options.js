@@ -1,8 +1,10 @@
-// Options de l'extension : le jeton (collé une fois, gardé dans
-// `chrome.storage.local`, lisible par l'extension seule), l'autorisation du
-// micro, le choix du micro et un test de 5 secondes avec vumètre.
+// Options de l'extension : le jeton (relié à la console en un clic — 1.4.0 —
+// ou collé à la main, gardé dans `chrome.storage.local`, lisible par
+// l'extension seule), l'autorisation du micro, le choix du micro et un test de
+// 5 secondes avec vumètre.
 
 import { etatJeton } from "./lib/jeton.js";
+import { CLE_LIE_RECEMMENT, lancerLiaison } from "./lib/liaison.js";
 
 const $ = (id) => document.getElementById(id);
 
@@ -38,6 +40,29 @@ $("enregistrer").addEventListener("click", async () => {
   await chrome.storage.local.set({ jeton, jetonExpireLe: null });
   $("jeton").value = "";
   await afficherJeton();
+});
+
+$("relier").addEventListener("click", () => {
+  lancerLiaison().catch(() => {
+    $("etat-jeton").textContent = "Impossible d'ouvrir la console : réessayez.";
+    $("etat-jeton").className = "ko";
+  });
+});
+
+/** Juste après une liaison : dire l'étape suivante (le micro, imposé par Chrome). */
+async function etapeSuivante() {
+  const s = await chrome.storage.session.get([CLE_LIE_RECEMMENT]);
+  if (!s[CLE_LIE_RECEMMENT]) return;
+  await chrome.storage.session.set({ [CLE_LIE_RECEMMENT]: false });
+  $("etape-suivante").textContent =
+    "Relié à la console. Étape suivante : cliquez « Autoriser le micro », puis lancez le test de 5 secondes.";
+  $("etape-suivante").hidden = false;
+  $("autoriser").focus();
+}
+
+chrome.storage.onChanged.addListener((changements, zone) => {
+  if (zone === "local" && changements.jeton) afficherJeton();
+  if (zone === "session" && changements[CLE_LIE_RECEMMENT]?.newValue) etapeSuivante();
 });
 
 $("autoriser").addEventListener("click", async () => {
@@ -82,4 +107,5 @@ $("tester").addEventListener("click", async () => {
 });
 
 afficherJeton();
+etapeSuivante();
 listerMicros().catch(() => undefined);

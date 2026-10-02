@@ -43,6 +43,8 @@ export async function chargerServiceWorker(o: {
   ouvertureRefusee?: boolean;
   /** Capture déjà en cours au chargement (stockage de session). */
   captureInitiale?: Record<string, unknown>;
+  /** 1.4.0 — `null` : aucun jeton enregistré (poste à relier). */
+  jetonInitial?: string | null;
 }) {
   vi.resetModules();
   // Le stockage local (indexedDB) est remplacé : seule la décision est éprouvée.
@@ -59,16 +61,21 @@ export async function chargerServiceWorker(o: {
   const session = new Map<string, unknown>(
     o.captureInitiale ? [["capture", o.captureInitiale]] : [],
   );
-  const local = new Map<string, unknown>([
-    ["jeton", "a".repeat(64)],
-    ["jetonExpireLe", new Date(Date.now() + 60 * 86_400_000).toISOString()],
-  ]);
+  const local = new Map<string, unknown>(
+    o.jetonInitial === null
+      ? []
+      : [
+          ["jeton", o.jetonInitial ?? "a".repeat(64)],
+          ["jetonExpireLe", new Date(Date.now() + 60 * 86_400_000).toISOString()],
+        ],
+  );
   const ecouteurs: Ecouteur[] = [];
   const alarmes: Array<(a: { name: string }) => Promise<void> | void> = [];
   const alarmesCreees: Array<{ nom: string; when: number | undefined }> = [];
   const etats: Array<Record<string, unknown>> = [];
   const badges: string[] = [];
   let ouvertures = 0;
+  let optionsOuvertes = 0;
   const rien = { addListener: () => undefined };
   vi.stubGlobal("chrome", {
     runtime: {
@@ -81,6 +88,9 @@ export async function chargerServiceWorker(o: {
         if (m["type"] === "etat") etats.push(m);
       },
       reload: () => undefined,
+      openOptionsPage: async () => {
+        optionsOuvertes++;
+      },
     },
     storage: { local: zone(local), session: zone(session) },
     alarms: {
@@ -121,11 +131,16 @@ export async function chargerServiceWorker(o: {
   await filer();
 
   const envoyer = async (msg: unknown, envoyeur: unknown = DEPUIS_LE_PANNEAU) => {
+    let reponse: unknown;
     await new Promise<void>((fin) => {
-      const asynchrone = ecouteurs[0]?.(msg, envoyeur, () => fin());
+      const asynchrone = ecouteurs[0]?.(msg, envoyeur, (r?: unknown) => {
+        reponse = r;
+        fin();
+      });
       if (!asynchrone) fin();
     });
     await filer();
+    return reponse;
   };
   const alarme = async (name: string) => {
     for (const f of alarmes) await f({ name });
@@ -135,6 +150,10 @@ export async function chargerServiceWorker(o: {
     envoyer,
     alarme,
     session,
+    local,
+    get optionsOuvertes() {
+      return optionsOuvertes;
+    },
     badges,
     alarmesCreees,
     get ouvertures() {

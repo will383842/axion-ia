@@ -10,6 +10,9 @@
 //   · (1.3.0) reçoit du relais de la console le « Oui, enregistrer » : il
 //     MÉMORISE le rendez-vous 30 min, ouvre le panneau et le pré-sélectionne.
 //     Rien ne démarre : « Démarrer » reste un clic de Will, à l'annonce.
+//   · (1.4.0) reçoit du relais le jeton créé par « Relier » dans la console
+//     (`jeton_relie`) : accepté seulement avec le nonce en attente, non
+//     expiré, puis le nonce est effacé (usage unique) — `lib/liaison.js`.
 //
 // Il ne connaît qu'une adresse : `lib/api.js` (https://axion-ia.com/api/enregistreur/).
 
@@ -32,6 +35,7 @@ import {
   sonEnAttentePour,
 } from "./lib/file-envoi.js";
 import { etatJeton, jetonRefuseParLeSite } from "./lib/jeton.js";
+import { CLE_LIAISON, CLE_LIE_RECEMMENT, liaisonValide } from "./lib/liaison.js";
 import { entetesDuMorceau } from "./lib/tranches.js";
 import {
   ALARME_MEMOIRE,
@@ -180,6 +184,49 @@ function surRelais(msg, envoyeur) {
     default:
       return;
   }
+}
+
+// ── « Relier à ma console » (1.4.0) ────────────────────────────────────────
+
+/**
+ * Le jeton relayé depuis la console. Accepté SEULEMENT avec le nonce en
+ * attente et non expiré ; le nonce est alors effacé (usage unique). Le jeton
+ * est enregistré comme « Enregistrer le jeton » des options. Rien n'est
+ * journalisé. Rend `true` si le jeton est enregistré.
+ */
+async function surJetonRelie(msg) {
+  const s = await chrome.storage.session.get([CLE_LIAISON]);
+  const attente = s[CLE_LIAISON] ?? null;
+  const maintenant = Date.now();
+  if (!liaisonValide(attente, msg, maintenant)) {
+    if (attente && maintenant >= attente.expireLe) {
+      await chrome.storage.session.set({ [CLE_LIAISON]: null });
+    }
+    return false;
+  }
+  await chrome.storage.session.set({ [CLE_LIAISON]: null, [CLE_LIE_RECEMMENT]: true });
+  await chrome.storage.local.set({ jeton: msg.jeton, jetonExpireLe: null });
+  etat.jeton = msg.jeton;
+  etat.jetonExpireLe = null;
+  // Étape suivante, imposée par Chrome : autoriser le micro (options).
+  Promise.resolve()
+    .then(() => chrome.runtime.openOptionsPage())
+    .catch(() => undefined);
+  await actualiserRencontres();
+  return true;
+}
+
+// Les liaisons passent une par une : deux messages simultanés ne peuvent pas
+// consommer le même nonce.
+let fileLiaison = Promise.resolve();
+
+function traiterJetonRelie(msg) {
+  const suite = fileLiaison.then(() => surJetonRelie(msg));
+  fileLiaison = suite.then(
+    () => undefined,
+    () => undefined,
+  );
+  return suite.catch(() => false);
 }
 
 // ── Document offscreen ──────────────────────────────────────────────────────
@@ -763,7 +810,7 @@ chrome.runtime.onUpdateAvailable.addListener(() => {
   else chrome.runtime.reload();
 });
 
-// Messages INTERNES (panneau, options, offscreen), plus les DEUX messages du
+// Messages INTERNES (panneau, options, offscreen), plus les TROIS messages du
 // relais de la console (`messageAccepte`). Aucun `onMessageExternal` : aucune
 // page web ne peut piloter l'enregistreur.
 chrome.runtime.onMessage.addListener((msg, envoyeur, repondre) => {
@@ -771,6 +818,10 @@ chrome.runtime.onMessage.addListener((msg, envoyeur, repondre) => {
   const tri = messageAccepte(msg, envoyeur, chrome.runtime.id);
   if (tri === "refuse") return false;
   if (tri === "relais") {
+    if (msg.type === "jeton_relie") {
+      traiterJetonRelie(msg).then((ok) => repondre({ ok }));
+      return true;
+    }
     surRelais(msg, envoyeur);
     return false;
   }

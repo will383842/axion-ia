@@ -16,7 +16,12 @@ import { adminPath } from "@/lib/admin-path";
 import { creerAppareil, renouvelerAppareil, revoquerAppareil } from "@/server/visio/jeton";
 import { exigerAccesEchanges } from "@/features/dossier-client/acces";
 import { motifSansAccesEnregistreur } from "./motif";
-import { etatJetonCree, type EtatJeton } from "./etat-jeton";
+import {
+  etatJetonCree,
+  FORMAT_NONCE_LIAISON,
+  type EtatJeton,
+  type EtatLiaison,
+} from "./etat-jeton";
 
 const CHEMIN = "rendez-vous/enregistreur";
 
@@ -55,6 +60,30 @@ export async function renouvelerJetonAction(_prec: EtatJeton, form: FormData): P
       etat: "erreur",
       message: err instanceof Error ? err.message : "Renouvellement impossible.",
     };
+  }
+}
+
+/**
+ * « Relier » (extension 1.4.0) : crée le jeton d'un poste, sans date de fin,
+ * et le rend avec le nonce de liaison — la page le pose dans un élément masqué
+ * que le relais de l'extension transmet à son service worker. Pas de
+ * `revalidatePath` (même raison que la création).
+ */
+export async function relierPosteAction(_prec: EtatLiaison, form: FormData): Promise<EtatLiaison> {
+  try {
+    const { userId } = await exigerAccesEchanges(motifSansAccesEnregistreur);
+    const nonce = String(form.get("nonce") ?? "");
+    if (!FORMAT_NONCE_LIAISON.test(nonce)) {
+      return {
+        etat: "erreur",
+        message: "Lien de liaison invalide : relancez « Relier à ma console » depuis l'extension.",
+      };
+    }
+    const nom = String(form.get("nom") ?? "").trim() || "Poste de Williams";
+    const cree = await creerAppareil(prisma, { nom, adminUserId: userId, maintenant: new Date() });
+    return { etat: "relie", nonce, jeton: cree.jeton };
+  } catch (err) {
+    return { etat: "erreur", message: err instanceof Error ? err.message : "Liaison impossible." };
   }
 }
 

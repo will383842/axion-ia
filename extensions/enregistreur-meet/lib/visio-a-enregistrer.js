@@ -6,6 +6,7 @@
 // exige toujours le clic « Démarrer » au moment de l'annonce.
 
 import { BASE_API } from "./constantes.js";
+import { FORMAT_JETON, FORMAT_NONCE } from "./liaison.js";
 
 /** Attributs posés par la console (`RejoindreVisioBouton`), recopiés dans le relais. */
 export const ATTRIBUT_OUI = "data-enregistrer-visio";
@@ -27,12 +28,18 @@ export const DUREE_MEMOIRE_MS = 30 * 60 * 1000;
 const IDENTIFIANT = /^[A-Za-z0-9_-]{1,64}$/;
 
 const ORIGINE_CONSOLE = new URL(BASE_API).origin;
-const TYPES_DU_RELAIS = new Set(["visio_a_enregistrer", "visio_sans_enregistrement"]);
+// 1.4.0 : `jeton_relie` (« Relier à ma console », `lib/liaison.js`). Le nonce
+// est vérifié ensuite par le service worker ; ici, seulement la forme.
+const TYPES_DU_RELAIS = new Set([
+  "visio_a_enregistrer",
+  "visio_sans_enregistrement",
+  "jeton_relie",
+]);
 
 /**
  * Trie un message reçu : `interne` (panneau, options, offscreen), `relais`
- * (l'un des deux messages du relais, depuis la console) ou `refuse`. Un onglet
- * ne pilote JAMAIS l'enregistreur : seuls ses deux messages passent.
+ * (l'un des trois messages du relais, depuis la console) ou `refuse`. Un onglet
+ * ne pilote JAMAIS l'enregistreur : seuls ses trois messages passent.
  */
 export function messageAccepte(msg, envoyeur, idExtension) {
   if (!envoyeur || envoyeur.id !== idExtension) return "refuse";
@@ -47,6 +54,12 @@ export function messageAccepte(msg, envoyeur, idExtension) {
   }
   if (origine !== ORIGINE_CONSOLE || !TYPES_DU_RELAIS.has(msg?.type)) return "refuse";
   if (msg.type === "visio_a_enregistrer" && !IDENTIFIANT.test(String(msg.identifiant ?? ""))) {
+    return "refuse";
+  }
+  if (
+    msg.type === "jeton_relie" &&
+    (!FORMAT_NONCE.test(String(msg.nonce ?? "")) || !FORMAT_JETON.test(String(msg.jeton ?? "")))
+  ) {
     return "refuse";
   }
   return "relais";

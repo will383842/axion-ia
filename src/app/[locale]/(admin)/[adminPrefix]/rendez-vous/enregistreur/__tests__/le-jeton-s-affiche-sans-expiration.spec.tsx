@@ -65,7 +65,9 @@ function etat(appareils: ReadonlyArray<Record<string, unknown>>) {
 }
 
 async function rendre(): Promise<string> {
-  return renderToStaticMarkup((await Page({ params })) as ReactElement);
+  return renderToStaticMarkup(
+    (await Page({ params, searchParams: Promise.resolve({}) })) as ReactElement,
+  );
 }
 
 describe("page Enregistreur : le jeton s'affiche sans expiration", () => {

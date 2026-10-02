@@ -26,3 +26,18 @@ export function etatJetonCree(jeton: string): EtatJeton {
       "Il ne sera plus jamais affiché. Valable jusqu'à sa révocation.",
   };
 }
+
+/**
+ * « Relier à ma console » (extension 1.4.0) : le nonce de liaison tiré par
+ * l'extension (16 octets en hexadécimal). Même forme que `lib/liaison.js`.
+ */
+export const FORMAT_NONCE_LIAISON = /^[0-9a-f]{32}$/;
+
+/**
+ * L'état de l'action « Relier » : le jeton n'est pas montré, il est posé dans
+ * un élément masqué que le relais de l'extension lit (`RelierPosteForm`).
+ */
+export type EtatLiaison =
+  | { readonly etat: "initial" }
+  | { readonly etat: "relie"; readonly nonce: string; readonly jeton: string }
+  | { readonly etat: "erreur"; readonly message: string };
