@@ -30,7 +30,6 @@ import {
 import { FORMATION_DELAI_ACCES_DEFAUT, getFormationDelaiAcces } from "../catalog-v2-facts";
 import { FORMATIONS_V2 } from "../catalog-v2";
 import { FAQ_GLOBAL } from "@/content/transversal";
-import { KB_INTERVENTIONS_FORMATIONS } from "@/server/content-gen/kb/interventions-formations";
 
 vi.mock("@/i18n/navigation", () => ({
   Link: ({ href, children }: { href: unknown; children?: ReactNode }) => (
@@ -131,11 +130,8 @@ describe("délai d'accès — chaque surface lit la source unique", () => {
     expect(json.split(JSON.stringify(DELAI_ACCES_FAIT.label)).length - 1).toBe(2);
   });
 
-  it("base de connaissances (form-031) : la phrase de la source", () => {
-    const fait = KB_INTERVENTIONS_FORMATIONS.find((k) => k.id === "form-031");
-    expect(fait?.text).toContain(DELAI_ACCES_PHRASE);
-    expect(fautes(JSON.stringify(KB_INTERVENTIONS_FORMATIONS))).toEqual([]);
-  });
+  // Base de connaissances (form-031) : vérifiée dans
+  // le test dédié de la zone isolée de génération de contenu.
 
   it.each([
     "athis-mons",
@@ -159,7 +155,6 @@ describe("délai d'accès — l'ancienne affirmation ne revient pas dans le cont
     "src/messages",
     "src/components",
     "src/app/[locale]",
-    "src/server/content-gen/kb",
     "src/server/qualiopi/documents/templates",
   ];
 
