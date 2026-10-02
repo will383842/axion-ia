@@ -223,17 +223,15 @@ export function horodaterRisques(
       sortie.push((disponibles.splice(i, 1)[0] as { objet: unknown }).objet);
       continue;
     }
-    // Nouveau ou modifié : on garde ce que l'entrée porte (une gravité écrite en
-    // toutes lettres par un ancien écrivain reste lisible, elle n'est
-    // simplement pas une cote), on range les champs connus, et la date est
-    // celle du serveur — celle que l'entrée prétendait porter est écrasée.
-    const o = brut as Record<string, unknown>;
+    // Nouveau ou modifié : les champs CONNUS seulement, sous leur forme lue
+    // (cote 1-4 ou null), et la date du serveur. Rien d'autre de l'objet reçu
+    // n'est recopié — ni une clé inconnue, ni une cote hors échelle, ni la date
+    // qu'il prétendait porter (relecture PR #1268).
     sortie.push({
-      ...o,
       intitule: r.intitule,
       cause: r.cause,
-      gravite: r.gravite ?? o["gravite"] ?? null,
-      probabilite: r.probabilite ?? o["probabilite"] ?? null,
+      gravite: r.gravite,
+      probabilite: r.probabilite,
       maitrise: r.maitrise,
       responsable: r.responsable,
       echeance: r.echeance,

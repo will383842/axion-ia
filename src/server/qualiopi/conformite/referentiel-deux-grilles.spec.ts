@@ -88,9 +88,9 @@ describe("les deux grilles", () => {
 });
 
 describe("indicateur 33 — apprentissage seulement", () => {
-  it("critère 7, conditionnel « app », pas super-indicateur", () => {
+  it("critère NON relevé (jamais un critère déduit), conditionnel « app », pas super", () => {
     const i33 = ind2026(33);
-    expect(i33.critere).toBe(7);
+    expect(i33.critere).toBeNull();
     expect(i33.conditionnel).toBe("app");
     expect(i33.super).toBe(false);
     expect(estSuperIndicateur(33, ["classique"])).toBe(false);
@@ -118,6 +118,18 @@ describe("libellés officiels de la grille 2026", () => {
   it("32 : démarche d'amélioration continue ET analyse des risques, mot pour mot", () => {
     expect(ind2026(32).libelleOfficiel).toBe(
       "Le prestataire met en place une démarche d'amélioration continue à partir de l'analyse des appréciations et des réclamations, ainsi qu'une analyse des risques sur la qualité des formations délivrées.",
+    );
+  });
+
+  it("12 : la rédaction du fichier source, mot pour mot (ellipse initiale comprise)", () => {
+    expect(ind2026(12).libelleOfficiel).toBe(
+      "… favoriser l'engagement des bénéficiaires et prévenir les ruptures de parcours. Il s'assure de la prévention et du traitement de toute situation de violence, dont les violences sexistes et sexuelles, de harcèlement ou de discrimination dans le cadre de leur formation.",
+    );
+  });
+
+  it("7 : commence par la condition officielle", () => {
+    expect(ind2026(7).libelleOfficiel).toMatch(
+      /^Lorsque le prestataire met en œuvre des prestations conduisant à une certification professionnelle, il s'assure/,
     );
   });
 

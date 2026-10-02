@@ -78,8 +78,11 @@ export type ConditionnelType = "cert" | "app" | "afest";
 export interface IndicateurRNQ {
   /** Numéro officiel (1–32, 1–33 dans la grille 2026) */
   readonly numero: number;
-  /** Critère de rattachement (1–7) */
-  readonly critere: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  /**
+   * Critère de rattachement (1–7), ou `null` quand il n'est pas relevé dans le
+   * texte consulté (indicateur 33) : on n'affiche jamais un critère déduit.
+   */
+  readonly critere: 1 | 2 | 3 | 4 | 5 | 6 | 7 | null;
   /** Libellé court officiel RNQ V9 (verbatim canonique) */
   readonly libelleOfficiel: string;
   /**
@@ -109,7 +112,14 @@ export interface IndicateurRNQ {
 // formateurs occasionnels »), devant le certificateur.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type NumeroCritere = IndicateurRNQ["critere"];
+export type NumeroCritere = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+
+/**
+ * Rubrique des indicateurs sans critère relevé (`critere: null`). L'écran et le
+ * manifeste la placent après les sept critères.
+ */
+export const RUBRIQUE_SANS_CRITERE =
+  "Indicateur réservé à l'apprentissage — critère de rattachement non précisé ici (non relevé dans le texte consulté)";
 
 export const CRITERES_RNQ: Readonly<Record<NumeroCritere, string>> = {
   1: "Les conditions d'information du public sur les prestations proposées, les délais pour y accéder et les résultats obtenus",
@@ -380,6 +390,19 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
  * début est celui du libellé court V9, qui reprend les premiers mots de
  * l'ancienne rédaction, inchangés.
  *
+ * Précisions, relues le 02/10/2026 (Légifrance refuse les clients
+ * automatisés : le texte n'a pas pu être relu ici, seul le fichier source fait
+ * foi) :
+ *   - 12 (applicable à l'organisme) : la rédaction du fichier source, MOT POUR
+ *     MOT, y compris son ellipse initiale. Le début de la première phrase n'y
+ *     est pas relevé ; on ne le reconstitue pas.
+ *   - 7 : la condition « Lorsque le prestataire met en œuvre des prestations
+ *     conduisant à une certification professionnelle, il … » est celle de
+ *     l'ancienne rédaction (inchangée, le décret n'ajoute que la fin) ; la
+ *     suite est celle du fichier source.
+ *   - 3 : formule courte conservée ; la mention des blocs de compétences de
+ *     l'ancienne rédaction n'a pas pu être vérifiée dans le texte de 2026.
+ *
  * ⚠️ Pour 15 et 20 (apprentissage seulement, non applicables à l'organisme), le
  * fichier source ne relève qu'un RÉSUMÉ des ajouts, pas la phrase intégrale :
  * leurs libellés reprennent ce résumé et les expressions qu'il cite entre
@@ -389,8 +412,8 @@ const LIBELLES_MODIFIES_2026: Readonly<Record<number, string>> = {
   1: "Information accessible au public, détaillée et vérifiable sur les prestations proposées : prérequis, objectifs, type de reconnaissance de la formation délivrée, durée, modalités pédagogiques et de financements, délais d'accès, tarifs, contacts, méthodes mobilisées et modalités d'évaluation, accessibilité aux personnes en situation de handicap. Sa communication ne comporte aucune mention de nature à induire le public en erreur, notamment sur les conditions d'accès, le contenu, les modalités pédagogiques, le financement des formations, les droits ou l'absence de droits de poursuite d'études conférés par la formation préparée.",
   2: "Indicateurs de résultats adaptés à la nature des prestations mises en œuvre et des publics accueillis en précisant de manière transparente leurs modalités de calcul ou en s'appuyant sur des dispositifs existants.",
   3: "Taux d'obtention des certifications préparées ; équivalences, passerelles, suites de parcours, en particulier les poursuites d'études, et les débouchés.",
-  7: "Le prestataire s'assure de l'adéquation du ou des contenus de la prestation aux exigences de la certification visée et peut prouver sa capacité à assurer cette certification, y compris en qualité d'organisme habilité.",
-  12: "Mesures favorisant l'engagement des bénéficiaires et prévenant les ruptures de parcours. Il s'assure de la prévention et du traitement de toute situation de violence, dont les violences sexistes et sexuelles, de harcèlement ou de discrimination dans le cadre de leur formation.",
+  7: "Lorsque le prestataire met en œuvre des prestations conduisant à une certification professionnelle, il s'assure de l'adéquation du ou des contenus de la prestation aux exigences de la certification visée et peut prouver sa capacité à assurer cette certification, y compris en qualité d'organisme habilité.",
+  12: "… favoriser l'engagement des bénéficiaires et prévenir les ruptures de parcours. Il s'assure de la prévention et du traitement de toute situation de violence, dont les violences sexistes et sexuelles, de harcèlement ou de discrimination dans le cadre de leur formation.",
   14: "Accompagnement socio-professionnel, éducatif et relatif à l'exercice de la citoyenneté (CFA). Il dispose d'une procédure de traitement sans délai des situations de rupture liées à des difficultés, violences ou discriminations subies par l'apprenant en formation ou dans l'entreprise d'accueil.",
   15: "Information des apprentis sur leurs droits et devoirs et sur les règles de santé et de sécurité, « de manière renforcée lorsqu'ils sont mineurs » ; information sur les dispositifs de prévention et de signalement des violences, du harcèlement et des discriminations, coordonnées du médiateur de l'apprentissage, signalement des dysfonctionnements à l'inspection du travail (CFA)",
   19: "Ressources pédagogiques mises à disposition et appropriées par le bénéficiaire. Lorsque des modules pédagogiques sont réalisés à distance, le prestataire vérifie l'effectivité de leur suivi par les apprenants. Au-delà d'un nombre d'intervenants par formation, fixé par arrêté du ministre chargé de la formation professionnelle, le prestataire dispose d'un référent pédagogique par formation chargé d'assurer la coordination pédagogique entre les intervenants.",
@@ -410,15 +433,15 @@ const LIBELLES_MODIFIES_2026: Readonly<Record<number, string>> = {
  * l'arrêté du 6 juin 2019 (liste des NC majeures) n'est pas modifié et ne le
  * cite pas.
  *
- * Critère 7 : DÉDUCTION, le fichier source ne relève pas le critère de
- * rattachement. Le 33 suit le 32 dans la numérotation continue, et le critère 7
- * (recueil et prise en compte des appréciations) est le dernier ; son objet
- * (évaluation des enseignements par les apprenants, amélioration continue)
- * est celui du critère 7.
+ * Critère de rattachement : NON RELEVÉ. Le fichier source ne donne pas la
+ * ligne du tableau officiel qui le rattache à un critère, et le texte n'a pas
+ * pu être relu (Légifrance refuse les clients automatisés). `null` plutôt
+ * qu'un critère déduit : l'indicateur est rangé sous la rubrique
+ * `RUBRIQUE_SANS_CRITERE`, jamais sous un critère inventé.
  */
 const INDICATEUR_33: IndicateurRNQ = {
   numero: 33,
-  critere: 7,
+  critere: null,
   libelleOfficiel:
     "Le prestataire met en place un dispositif d'évaluation des contenus et des enseignements par les apprenants, distinct du recueil général de satisfaction, dont les résultats sont partagés avec les équipes pédagogiques et donnent lieu à la formalisation d'une démarche d'amélioration continue, dont il mesure périodiquement l'efficacité.",
   super: false,
@@ -536,6 +559,18 @@ export function choisirReferentiel(
     jourReference,
     origine,
   };
+}
+
+/**
+ * Forme courte, pour un sous-titre : « grille V9, 32 indicateurs, appliquée au
+ * 02/10/2026 ».
+ */
+export function libelleCourtReferentiel(r: ReferentielApplique): string {
+  const grille =
+    r.grille === "rnq-2026"
+      ? "grille du décret n° 2026-728"
+      : "grille en vigueur jusqu'au 31/10/2026";
+  return `référentiel national qualité, ${grille}, ${r.nbIndicateurs} indicateurs, appliquée au ${jourFr(r.jourReference)}`;
 }
 
 /** « JJ/MM/AAAA » d'un « AAAA-MM-JJ ». */

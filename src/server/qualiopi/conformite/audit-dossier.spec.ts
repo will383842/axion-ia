@@ -264,6 +264,10 @@ describe("genererManifesteAudit", () => {
     );
     expect(result.markdown).toContain("audit tenu le 05/11/2026 (date d'audit configurée)");
     expect(result.markdown).not.toContain("**Référentiel :** RNQ-V9");
+    // Le 33 est rangé sous sa rubrique, jamais sous un critère inventé.
+    const rubrique = result.markdown.indexOf("## Indicateur réservé à l'apprentissage");
+    expect(rubrique).toBeGreaterThan(result.markdown.indexOf("## Critère 7"));
+    expect(result.markdown.indexOf("### Ind. 33")).toBeGreaterThan(rubrique);
   });
 
   it("json.indicateurs contient exactement 32 entrées", async () => {

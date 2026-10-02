@@ -54,6 +54,7 @@ import {
   inscriptionSurSessionTenue,
 } from "@/server/qualiopi/conformite/piece-admissible";
 import { evaluerCouvertureOff32 } from "@/server/qualiopi/revues/plan-actions";
+import { lireReferentielApplique } from "./referentiel-applique";
 import {
   INDICATEURS_RNQ,
   choisirReferentiel,
@@ -109,7 +110,8 @@ export type StatutConformite = "couvert" | "a_completer" | "non_applicable";
 export interface IndicateurConformite {
   numero: number;
   libelle: string;
-  critere: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  /** `null` : critère non relevé (indicateur 33), cf. `RUBRIQUE_SANS_CRITERE`. */
+  critere: 1 | 2 | 3 | 4 | 5 | 6 | 7 | null;
   super: boolean;
   statut: StatutConformite;
   preuves: string[];
@@ -886,11 +888,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   // Lue APRÈS toutes les autres lectures de configuration : plusieurs tests
   // enchaînent des `mockResolvedValueOnce` par position sur `getQualiopiConfig`.
   // Une valeur non textuelle (double de test) vaut « pas de date ».
-  const dateAuditBrute: unknown = await getQualiopiConfig("date_audit_referentiel").catch(() => "");
-  const referentiel = choisirReferentiel(
-    typeof dateAuditBrute === "string" ? dateAuditBrute : "",
-    maintenant,
-  );
+  // Lecture partagée avec la garde de validation de la revue et le PDF de
+  // pilotage (`lireReferentielApplique`) : une seule date pour tous.
+  const referentiel = await lireReferentielApplique(maintenant);
   const grille = grilleParId(referentiel.grille);
 
   const typesAction = typesActionResult;

@@ -794,9 +794,13 @@ describe("evaluerConformite", () => {
     }
   });
 
-  it("chaque indicateur a un critere dans [1..7]", async () => {
+  it("chaque indicateur a un critere dans [1..7] (sauf le 33 : critère non relevé)", async () => {
     const result = await evaluerConformite();
     for (const ind of result.indicateurs) {
+      if (ind.numero === 33) {
+        expect(ind.critere).toBeNull();
+        continue;
+      }
       expect(ind.critere).toBeGreaterThanOrEqual(1);
       expect(ind.critere).toBeLessThanOrEqual(7);
     }
@@ -2181,6 +2185,8 @@ describe("evaluerConformite — la grille suit la date d'audit configurée", () 
     expect(i33?.statut).toBe("non_applicable");
     expect(i33?.super).toBe(false);
     expect(i33?.motifNonApplicable).toBe(MOTIFS_NON_APPLICABLE.app);
+    // Critère non relevé dans le texte consulté : jamais un critère déduit.
+    expect(i33?.critere).toBeNull();
     expect(result.indicateurs.find((i) => i.numero === 32)?.libelle).toContain(
       "analyse des risques sur la qualité des formations délivrées",
     );

@@ -122,6 +122,17 @@ describe("datation — la date réelle de la saisie, jamais celle de la revue", 
     expect(ecrit?.["misAJourLe"]).toBe(SAISIE.toISOString());
   });
 
+  it("un risque nouveau ne recopie ni clé inconnue ni cote hors échelle", () => {
+    const [ecrit] = horodaterRisques(
+      [{ intitule: "n", maitrise: "m", gravite: 99, probabilite: -5, valideParAuditeur: true }],
+      [],
+      SAISIE,
+    ) as Record<string, unknown>[];
+    expect(ecrit).not.toHaveProperty("valideParAuditeur");
+    expect(ecrit?.["gravite"]).toBeNull();
+    expect(ecrit?.["probabilite"]).toBeNull();
+  });
+
   it("une ligne sans intitulé n'est pas un risque : elle n'est pas écrite", () => {
     expect(horodaterRisques([{ intitule: "  ", maitrise: "m" }, null, 3], [], SAISIE)).toEqual([]);
   });

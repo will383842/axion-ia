@@ -26,6 +26,8 @@ import {
   normaliserPlanActions,
 } from "@/server/qualiopi/revues/plan-actions";
 import { horodaterRisques } from "@/server/qualiopi/revues/analyse-risques";
+import { risquesSaisisSchema } from "@/server/qualiopi/revues/risque-saisi-schema";
+import { lireReferentielApplique } from "@/server/qualiopi/conformite/referentiel-applique";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -61,7 +63,8 @@ const creerRevueDirectionSchema = z.object({
   // Analyse de risques — decret 2026-728, exigee au 1er novembre 2026.
   // Acceptee DES MAINTENANT : poser la donnee avant de l'exiger est ce qui
   // permet d'arriver a l'echeance avec une analyse deja ecrite.
-  risques: z.array(z.unknown()).optional(),
+  // STRICTE : cotes 1-4 ou nulles, champs connus seulement (PR #1268).
+  risques: risquesSaisisSchema.optional(),
   statut: statutRevueSchema.optional(),
 });
 
@@ -74,7 +77,8 @@ const updateRevueDirectionSchema = z.object({
   // Analyse de risques — decret 2026-728, exigee au 1er novembre 2026.
   // Acceptee DES MAINTENANT : poser la donnee avant de l'exiger est ce qui
   // permet d'arriver a l'echeance avec une analyse deja ecrite.
-  risques: z.array(z.unknown()).optional(),
+  // STRICTE : cotes 1-4 ou nulles, champs connus seulement (PR #1268).
+  risques: risquesSaisisSchema.optional(),
   statut: statutRevueSchema.optional(),
 });
 
@@ -92,14 +96,20 @@ const updateRevueDirectionSchema = z.object({
  * message d'erreur, donc l'écran de saisie et la matrice de conformité disent
  * littéralement la même chose sur la même revue.
  */
-function refuserValidation(etat: {
+async function refuserValidation(etat: {
   annee: number;
   participants: unknown;
   decisions: unknown;
   planActions: unknown;
   risques?: unknown;
-}): string | null {
-  const verdict = evaluerCouvertureOff32(etat, new Date());
+}): Promise<string | null> {
+  // Même grille que la matrice : la date d'audit configurée, sinon le jour de
+  // Paris. L'analyse des risques n'est exigée que par la grille 2026.
+  const maintenant = new Date();
+  const referentiel = await lireReferentielApplique(maintenant);
+  const verdict = evaluerCouvertureOff32(etat, maintenant, {
+    exigeAnalyseRisques: referentiel.grille === "rnq-2026",
+  });
   if (verdict.couvert) return null;
   return (
     "Cette revue ne peut pas être déclarée « validée » : elle ne prouve pas " +
@@ -140,7 +150,7 @@ export async function creerRevueDirectionAction(input: {
   const risques = v.risques !== undefined ? horodaterRisques(v.risques, [], new Date()) : undefined;
 
   if (v.statut === "validee") {
-    const refus = refuserValidation({
+    const refus = await refuserValidation({
       annee: v.annee,
       participants: v.participants ?? [],
       decisions: v.decisions ?? [],
@@ -221,7 +231,7 @@ export async function updateRevueDirectionAction(input: {
       : undefined;
 
   if (fields.statut === "validee") {
-    const refus = refuserValidation({
+    const refus = await refuserValidation({
       annee: stockee?.annee ?? new Date().getFullYear(),
       participants: fields.participants ?? stockee?.participants ?? [],
       decisions: fields.decisions ?? stockee?.decisions ?? [],

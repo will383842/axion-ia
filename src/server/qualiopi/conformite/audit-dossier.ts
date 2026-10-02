@@ -23,6 +23,7 @@ import {
   libelleCritere,
   libelleReferentielApplique,
   motifNonApplicable,
+  RUBRIQUE_SANS_CRITERE,
   type ReferentielApplique,
 } from "@/server/qualiopi/conformite/indicateurs-registre";
 import { reperesDeLecture } from "@/server/qualiopi/conformite/reperes-audit-initial";
@@ -191,7 +192,8 @@ export interface PreuveDocument {
 
 export interface IndicateurManifeste {
   readonly numero: number;
-  readonly critere: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  /** `null` : critère non relevé (indicateur 33), cf. `RUBRIQUE_SANS_CRITERE`. */
+  readonly critere: 1 | 2 | 3 | 4 | 5 | 6 | 7 | null;
   readonly libelle: string;
   readonly super: boolean;
   readonly statut: "couvert" | "a_completer" | "non_applicable";
@@ -1346,13 +1348,15 @@ function buildMarkdown(payload: ManifesteAuditPayload): string {
   lignes.push("---");
   lignes.push("");
 
-  const criteres = [1, 2, 3, 4, 5, 6, 7] as const;
+  // Les sept critères, puis la rubrique des indicateurs dont le critère n'est
+  // pas relevé (indicateur 33) : jamais rangés sous un critère inventé.
+  const criteres = [1, 2, 3, 4, 5, 6, 7, null] as const;
 
   for (const critere of criteres) {
     const inds = payload.indicateurs.filter((i) => i.critere === critere);
     if (inds.length === 0) continue;
 
-    lignes.push(`## ${libelleCritere(critere)}`);
+    lignes.push(`## ${critere === null ? RUBRIQUE_SANS_CRITERE : libelleCritere(critere)}`);
     lignes.push("");
 
     for (const ind of inds) {
