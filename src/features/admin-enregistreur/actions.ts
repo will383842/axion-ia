@@ -25,7 +25,9 @@ export async function creerJetonAction(_prec: EtatJeton, form: FormData): Promis
     const { userId } = await exigerAccesEchanges(motifSansAccesEnregistreur);
     const nom = String(form.get("nom") ?? "").trim() || "Poste de Williams";
     const cree = await creerAppareil(prisma, { nom, adminUserId: userId, maintenant: new Date() });
-    revalidatePath(adminPath("fr", CHEMIN));
+    // PAS de `revalidatePath` (constat du 02/10) : le re-rendu démontait le
+    // formulaire et perdait le jeton avant qu'il soit affiché. La liste se met
+    // à jour par le lien « actualiser la liste » sous le jeton.
     return etatJetonCree(cree.jeton);
   } catch (err) {
     return { etat: "erreur", message: err instanceof Error ? err.message : "Création impossible." };
@@ -46,7 +48,7 @@ export async function renouvelerJetonAction(_prec: EtatJeton, form: FormData): P
       maintenant: new Date(),
     });
     if (!r.ok) return { etat: "erreur", message: r.message };
-    revalidatePath(adminPath("fr", CHEMIN));
+    // Pas de `revalidatePath` : même raison que la création.
     return etatJetonCree(r.jeton);
   } catch (err) {
     return {

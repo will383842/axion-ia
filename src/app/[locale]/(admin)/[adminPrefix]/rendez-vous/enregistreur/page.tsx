@@ -47,6 +47,7 @@ export default async function PageEnregistreur({ params }: PageProps): Promise<R
     motifSansAccesEnregistreur,
   );
   const retour = `/${locale}/${adminPrefix}/rendez-vous`;
+  const ici = `${retour}/enregistreur`;
   if (!acces.autorise) return <AccesRefuse motif={acces.motif} retourHref={retour} />;
 
   const etat = await lireEtatEnregistreur();
@@ -69,15 +70,23 @@ export default async function PageEnregistreur({ params }: PageProps): Promise<R
         <h2 className="mb-[var(--space-admin-3)] text-lg font-semibold">
           Jeton de l&apos;extension
         </h2>
-        {actifs.length === 0 ? (
-          <div className="space-y-[var(--space-admin-3)]">
-            <p>
-              Aucun jeton valide. Créez-en un, puis collez-le dans les options de l&apos;extension
-              (clic droit sur l&apos;icône → Options).
-            </p>
-            <JetonAppareilForm action={creerJetonAction} libelle="Créer le jeton" avecNom />
-          </div>
-        ) : null}
+        {/* TOUJOURS affiché, AVANT la liste (constat du 02/10) : un jeton par profil
+            Chrome, et un formulaire rendu sous condition était démonté au
+            re-rendu, avec le jeton qu'il venait de créer. */}
+        <div className="space-y-[var(--space-admin-3)]">
+          <h3 className="font-semibold">Ajouter un poste</h3>
+          <p>
+            {actifs.length === 0 ? "Aucun jeton valide. " : null}
+            Un jeton par profil Chrome : créez-le, puis collez-le dans les options de
+            l&apos;extension (clic droit sur l&apos;icône → Options).
+          </p>
+          <JetonAppareilForm
+            action={creerJetonAction}
+            libelle="Créer un jeton"
+            avecNom
+            actualiserHref={ici}
+          />
+        </div>
 
         <ul className="mt-[var(--space-admin-3)] space-y-[var(--space-admin-4)]">
           {etat.appareils.map((a) => {
@@ -109,6 +118,7 @@ export default async function PageEnregistreur({ params }: PageProps): Promise<R
                       action={renouvelerJetonAction}
                       libelle="Renouveler"
                       appareilId={a.id}
+                      actualiserHref={ici}
                     />
                     <form action={revoquerJetonAction}>
                       <input type="hidden" name="appareilId" value={a.id} />

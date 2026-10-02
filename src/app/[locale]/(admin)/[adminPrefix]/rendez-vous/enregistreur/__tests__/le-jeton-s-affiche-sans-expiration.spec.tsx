@@ -6,7 +6,10 @@
  *     ni « expire dans N j », et aucune date d'expiration ;
  *   · un jeton créé AVANT la révision (date d'origine dépassée en base) reste
  *     montré actif ;
- *   · la consigne après création ne parle plus de durée.
+ *   · la consigne après création ne parle plus de durée ;
+ *   · le formulaire de création reste proposé avec des jetons actifs (Williams
+ *     a un jeton par profil Chrome) — constat du 02/10 : il disparaissait au
+ *     re-rendu, et le jeton créé avec lui.
  *
  * La lecture de l'état est doublée ; la garde de rôle, les actions et l'îlot
  * client aussi (la garde rôle-avant-lecture a son propre test).
@@ -75,6 +78,15 @@ describe("page Enregistreur : le jeton s'affiche sans expiration", () => {
     expect(html).not.toContain("30/08/2026");
     // L'appareil ancien reste actif : la page ne dit pas « aucun jeton valide »…
     expect(html).not.toContain("Aucun jeton valide");
+  });
+
+  it("avec un jeton actif, « Ajouter un poste » reste proposé (un jeton par profil Chrome)", async () => {
+    d.lire.mockResolvedValue(etat([APPAREIL, { ...APPAREIL, id: "app-2", nom: "Profil 2" }]));
+    const html = await rendre();
+    expect(html).toContain("Ajouter un poste");
+    expect(html).toContain("Créer un jeton");
+    // Et le formulaire est AVANT la liste : un re-rendu de la liste ne le démonte pas.
+    expect(html.indexOf("Créer un jeton")).toBeLessThan(html.indexOf("Profil 2"));
   });
 
   it("un appareil révoqué : « révoqué », et la création est proposée", async () => {
