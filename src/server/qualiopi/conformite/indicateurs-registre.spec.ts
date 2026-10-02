@@ -34,7 +34,7 @@ describe("INDICATEURS_RNQ", () => {
   it("chaque critère a le bon nombre d'indicateurs (3/5/8/4/2/7/3)", () => {
     const countByCritere = [0, 0, 0, 0, 0, 0, 0, 0];
     for (const ind of INDICATEURS_RNQ) {
-      countByCritere[ind.critere]!++;
+      countByCritere[ind.critere ?? 0]!++; // la grille V9 n'a aucun critère nul
     }
     expect(countByCritere[1]).toBe(3); // C1
     expect(countByCritere[2]).toBe(5); // C2
@@ -166,7 +166,7 @@ describe("CRITERES_RNQ", () => {
 
   it("chaque critère d'un indicateur a un intitulé", () => {
     for (const ind of INDICATEURS_RNQ) {
-      expect(CRITERES_RNQ[ind.critere]).toBeTruthy();
+      expect(ind.critere !== null && CRITERES_RNQ[ind.critere]).toBeTruthy();
     }
   });
 

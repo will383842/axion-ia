@@ -44,7 +44,7 @@ export interface ManifesteExportResult {
 /**
  * Génère le manifeste d'audit Qualiopi et le retourne (JSON + Markdown + filename).
  *
- * Le manifeste couvre les 32 indicateurs RNQ V9 :
+ * Le manifeste couvre les indicateurs de la grille appliquée (32 ou 33 selon la date) :
  *   - statut de couverture (couvert / a_completer / non_applicable)
  *   - preuves textuelles déduites de la présence de données
  *   - documents Prisma associés (type + count)

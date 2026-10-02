@@ -1,7 +1,9 @@
 /**
  * Qualiopi — Génération du manifeste d'audit (AGENT B — T12).
  *
- * genererManifesteAudit() : pour chaque indicateur des 32 RNQ V9, liste les
+ * genererManifesteAudit() : pour chaque indicateur de la grille du référentiel
+ *   APPLIQUÉE (32 indicateurs jusqu'au 31/10/2026, 33 à partir du 01/11/2026,
+ *   choisie par la date d'audit configurée ou le jour même), liste les
  *   preuves disponibles (types DocumentGenere présents, comptes) + état de
  *   couverture. Retourne JSON + Markdown. PAS de binaire ZIP.
  *
@@ -17,8 +19,12 @@ import { whereVeilleExploitee } from "./veille-exploitee";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "@/server/qualiopi/conformite/conformite-service";
 import {
+  choisirReferentiel,
   libelleCritere,
+  libelleReferentielApplique,
   motifNonApplicable,
+  RUBRIQUE_SANS_CRITERE,
+  type ReferentielApplique,
 } from "@/server/qualiopi/conformite/indicateurs-registre";
 import { reperesDeLecture } from "@/server/qualiopi/conformite/reperes-audit-initial";
 import { liensSitePublic, type LienPublic } from "@/server/qualiopi/conformite/liens-site-public";
@@ -186,7 +192,8 @@ export interface PreuveDocument {
 
 export interface IndicateurManifeste {
   readonly numero: number;
-  readonly critere: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  /** `null` : critère non relevé (indicateur 33), cf. `RUBRIQUE_SANS_CRITERE`. */
+  readonly critere: 1 | 2 | 3 | 4 | 5 | 6 | 7 | null;
   readonly libelle: string;
   readonly super: boolean;
   readonly statut: "couvert" | "a_completer" | "non_applicable";
@@ -216,7 +223,10 @@ export interface IndicateurManifeste {
 export interface ManifesteAuditPayload {
   readonly meta: {
     readonly genereAt: string;
+    /** Étiquette de la grille appliquée (« RNQ-V9 » ou « RNQ-2026-728 »). */
     readonly version: string;
+    /** La grille appliquée, et le jour qui l'a choisie (date d'audit ou jour même). */
+    readonly referentiel: ReferentielApplique;
     readonly nbIndicateurs: number;
     readonly nbCouverts: number;
     readonly nbApplicables: number;
@@ -382,7 +392,7 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
     return buildEmptyManifeste();
   }
 
-  // Évaluation des 32 indicateurs
+  // Évaluation des indicateurs de la grille appliquée (32 ou 33)
 
   const conformite = await evaluerConformite();
 
@@ -473,7 +483,11 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
       },
     })
     .catch(() => null);
-  const couvertureOff32 = evaluerCouvertureOff32(revueAnnuelleOff32, maintenantOff32);
+  const couvertureOff32 = evaluerCouvertureOff32(revueAnnuelleOff32, maintenantOff32, {
+    // Même grille que la matrice : l'analyse des risques est exigée par la
+    // grille du 1er novembre 2026, donc par la date de l'audit.
+    exigeAnalyseRisques: conformite.referentiel.grille === "rnq-2026",
+  });
 
   // off.30 — 🔴 2026-10-01 (audit initial) : le manifeste écrivait ici « N
   // appréciations multi-parties » SANS regarder le verdict du moteur, qui, lui,
@@ -761,7 +775,10 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
   const json: ManifesteAuditPayload = {
     meta: {
       genereAt: new Date().toISOString(),
-      version: "RNQ-V9",
+      // 🔑 Plus de « RNQ-V9 » en dur : la grille est celle que le moteur a
+      // appliquée, et le manifeste dit laquelle et pourquoi.
+      version: conformite.referentiel.version,
+      referentiel: conformite.referentiel,
       nbIndicateurs: indicateurs.length,
       nbCouverts: conformite.nbCouverts,
       nbApplicables: conformite.nbApplicables,
@@ -785,7 +802,7 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
  * Génère un dossier d'audit complet au format ZIP.
  *
  * Contenu du ZIP :
- *   - `manifeste.json`  — manifeste structuré (32 indicateurs RNQ V9)
+ *   - `manifeste.json`  — manifeste structuré (grille appliquée : 32 ou 33 indicateurs)
  *   - `manifeste.md`    — rendu Markdown lisible par l'auditeur
  *   - `preuves/<type>/<numero>.pdf` — PDF de chaque DocumentGenere ayant une
  *     clé R2 reconstructible. Les PDFs manquants (R2 absent ou 404) sont omis
@@ -1314,7 +1331,7 @@ function buildMarkdown(payload: ManifesteAuditPayload): string {
   lignes.push(
     `**Généré le :** ${new Date(payload.meta.genereAt).toLocaleString("fr-FR", { timeZone: "Europe/Paris" })}`,
   );
-  lignes.push(`**Référentiel :** ${payload.meta.version}`);
+  lignes.push(`**Référentiel :** ${libelleReferentielApplique(payload.meta.referentiel)}`);
   lignes.push(
     `**Score de couverture :** ${payload.meta.nbCouverts} / ${payload.meta.nbApplicables} indicateurs applicables (${payload.meta.scorePct} %)`,
   );
@@ -1331,13 +1348,15 @@ function buildMarkdown(payload: ManifesteAuditPayload): string {
   lignes.push("---");
   lignes.push("");
 
-  const criteres = [1, 2, 3, 4, 5, 6, 7] as const;
+  // Les sept critères, puis la rubrique des indicateurs dont le critère n'est
+  // pas relevé (indicateur 33) : jamais rangés sous un critère inventé.
+  const criteres = [1, 2, 3, 4, 5, 6, 7, null] as const;
 
   for (const critere of criteres) {
     const inds = payload.indicateurs.filter((i) => i.critere === critere);
     if (inds.length === 0) continue;
 
-    lignes.push(`## ${libelleCritere(critere)}`);
+    lignes.push(`## ${critere === null ? RUBRIQUE_SANS_CRITERE : libelleCritere(critere)}`);
     lignes.push("");
 
     for (const ind of inds) {
@@ -1422,10 +1441,12 @@ function buildMarkdown(payload: ManifesteAuditPayload): string {
 }
 
 function buildEmptyManifeste(): ManifesteAuditResult {
+  const referentiel = choisirReferentiel("", new Date());
   const json: ManifesteAuditPayload = {
     meta: {
       genereAt: new Date().toISOString(),
-      version: "RNQ-V9",
+      version: referentiel.version,
+      referentiel,
       nbIndicateurs: 0,
       nbCouverts: 0,
       nbApplicables: 0,

@@ -125,7 +125,7 @@ import {
   pieceAdmissibleAuDossier,
 } from "./audit-dossier";
 import { REGISTRES_PAR_INDICATEUR } from "./registres-par-indicateur";
-import { INDICATEURS_RNQ } from "./indicateurs-registre";
+import { INDICATEURS_RNQ, INDICATEURS_RNQ_2026, choisirReferentiel } from "./indicateurs-registre";
 import JSZip from "jszip";
 // Type réel de l'énumération Prisma : un type de document mal orthographié dans
 // une fixture ci-dessous devient une erreur de compilation, et non une
@@ -156,9 +156,13 @@ function makeConformiteResult(
     scorePct?: number;
     /** Statuts forcés, par numéro d'indicateur (défaut : "a_completer"). */
     statuts?: Readonly<Record<number, StatutIndicateur>>;
+    /** Date d'audit qui choisit la grille (défaut : 30/10/2026, grille V9). */
+    dateAudit?: string;
   } = {},
 ) {
-  const indicateurs = INDICATEURS_RNQ.map((ind) => ({
+  const referentiel = choisirReferentiel(overrides.dateAudit ?? "2026-10-30", new Date());
+  const grille = referentiel.grille === "rnq-2026" ? INDICATEURS_RNQ_2026 : INDICATEURS_RNQ;
+  const indicateurs = grille.map((ind) => ({
     numero: ind.numero,
     libelle: ind.libelleOfficiel,
     critere: ind.critere,
@@ -167,6 +171,7 @@ function makeConformiteResult(
     preuves: [] as string[],
   }));
   return {
+    referentiel,
     indicateurs,
     nbCouverts: overrides.nbCouverts ?? 0,
     nbApplicables: overrides.nbApplicables ?? 25,
@@ -246,6 +251,23 @@ describe("genererManifesteAudit", () => {
   it("json.meta.version est 'RNQ-V9'", async () => {
     const result = await genererManifesteAudit();
     expect(result.json.meta.version).toBe("RNQ-V9");
+  });
+
+  it("grille 2026 (audit le 05/11/2026) : version, 33 entrées et en-tête Markdown daté", async () => {
+    mockEvaluerConformite.mockResolvedValue(makeConformiteResult({ dateAudit: "2026-11-05" }));
+    const result = await genererManifesteAudit();
+    expect(result.json.meta.version).toBe("RNQ-2026-728");
+    expect(result.json.meta.referentiel.grille).toBe("rnq-2026");
+    expect(result.json.indicateurs).toHaveLength(33);
+    expect(result.markdown).toContain(
+      "**Référentiel :** Référentiel national qualité modifié par le décret n° 2026-728",
+    );
+    expect(result.markdown).toContain("audit tenu le 05/11/2026 (date d'audit configurée)");
+    expect(result.markdown).not.toContain("**Référentiel :** RNQ-V9");
+    // Le 33 est rangé sous sa rubrique, jamais sous un critère inventé.
+    const rubrique = result.markdown.indexOf("## Indicateur réservé à l'apprentissage");
+    expect(rubrique).toBeGreaterThan(result.markdown.indexOf("## Critère 7"));
+    expect(result.markdown.indexOf("### Ind. 33")).toBeGreaterThan(rubrique);
   });
 
   it("json.indicateurs contient exactement 32 entrées", async () => {

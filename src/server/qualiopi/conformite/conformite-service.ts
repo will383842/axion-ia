@@ -1,9 +1,12 @@
 /**
  * Qualiopi — Service conformité (AGENT B — T12).
  *
- * evaluerConformite : évalue le statut de chacun des 32 indicateurs RNQ V9
- *   en déduisant la couverture depuis la présence de données en base.
- *   Score = couverts / applicables (JAMAIS /22).
+ * evaluerConformite : évalue le statut de chacun des indicateurs de la GRILLE
+ *   APPLIQUÉE — 32 indicateurs (RNQ V9) pour un audit tenu jusqu'au 31/10/2026,
+ *   33 (décret n° 2026-728) à partir du 01/11/2026 — en déduisant la couverture
+ *   depuis la présence de données en base. La grille se choisit par la date
+ *   d'audit configurée (`date_audit_referentiel`), sinon par le jour même
+ *   (`choisirReferentiel`). Score = couverts / applicables de CETTE grille.
  *
  * LOT 2 (2026-07-13) :
  *   - off.17/18 dépendent AUSSI de l'inventaire des moyens pédagogiques
@@ -51,10 +54,14 @@ import {
   inscriptionSurSessionTenue,
 } from "@/server/qualiopi/conformite/piece-admissible";
 import { evaluerCouvertureOff32 } from "@/server/qualiopi/revues/plan-actions";
+import { lireReferentielApplique } from "./referentiel-applique";
 import {
   INDICATEURS_RNQ,
+  choisirReferentiel,
+  grilleParId,
   indicateursApplicables,
   motifNonApplicable,
+  type ReferentielApplique,
 } from "./indicateurs-registre";
 
 // AFEST retiré le 2026-08-10 — le 1-to-1 est du conseil (décision 2026-07-17) ;
@@ -103,7 +110,8 @@ export type StatutConformite = "couvert" | "a_completer" | "non_applicable";
 export interface IndicateurConformite {
   numero: number;
   libelle: string;
-  critere: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  /** `null` : critère non relevé (indicateur 33), cf. `RUBRIQUE_SANS_CRITERE`. */
+  critere: 1 | 2 | 3 | 4 | 5 | 6 | 7 | null;
   super: boolean;
   statut: StatutConformite;
   preuves: string[];
@@ -116,6 +124,8 @@ export interface IndicateurConformite {
 }
 
 export interface ConformiteResult {
+  /** La grille appliquée, et le jour qui l'a choisie. */
+  referentiel: ReferentielApplique;
   indicateurs: IndicateurConformite[];
   scorePct: number;
   nbCouverts: number;
@@ -139,12 +149,21 @@ function porteReponseBesoinAdaptation(reponses: unknown): boolean {
   return typeof r["besoinAdaptation"] === "boolean";
 }
 
+/**
+ * Indicateur 12, grille 2026 — ce que la console peut dire du volet
+ * « violences, harcèlement, discriminations » : où il se trouve, pas s'il est
+ * tenu. Le statut de l'indicateur n'en dépend pas.
+ */
+export const MENTION_OFF12_VIOLENCES_HORS_CONSOLE =
+  "Prévention et traitement des violences, du harcèlement et des discriminations (volet ajouté par le décret n° 2026-728) : procédure P-12 (AXI-QUA-P12) hors console — règlement intérieur publié sur le site et registre des signalements tenu au classeur qualité, non vérifiés par cet écran";
+
 // ─────────────────────────────────────────────────────────────────────────────
 // evaluerConformite
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Évalue la conformité de l'OF sur les 32 indicateurs RNQ V9.
+ * Évalue la conformité de l'OF sur la grille du référentiel appliquée
+ * (32 indicateurs jusqu'au 31/10/2026, 33 à partir du 01/11/2026).
  *
  * Principe de déduction :
  *   - Chaque indicateur est "couvert" si des artefacts logiciels correspondants
@@ -865,6 +884,15 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   const formationsResultatsDiffuses = await listerFormationsAResultatsDiffuses();
   const nbFormationsResultatsDiffuses = formationsResultatsDiffuses.length;
 
+  // ── Grille du référentiel appliquée (décret n° 2026-728, sans transition) ──
+  // Lue APRÈS toutes les autres lectures de configuration : plusieurs tests
+  // enchaînent des `mockResolvedValueOnce` par position sur `getQualiopiConfig`.
+  // Une valeur non textuelle (double de test) vaut « pas de date ».
+  // Lecture partagée avec la garde de validation de la revue et le PDF de
+  // pilotage (`lireReferentielApplique`) : une seule date pour tous.
+  const referentiel = await lireReferentielApplique(maintenant);
+  const grille = grilleParId(referentiel.grille);
+
   const typesAction = typesActionResult;
   // off.3/7/16 : formations avec ≥1 code RS ou RNCP renseigné
   const nbFormationsCertifiantes = formationsCertifiantesResult.length;
@@ -876,7 +904,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   const typesActionEffectifs = Array.from(
     new Set([...(typesAction.length > 0 ? typesAction : ["classique"])]),
   );
-  const applicablesNums = indicateursApplicables(typesActionEffectifs);
+  const applicablesNums = indicateursApplicables(typesActionEffectifs, grille.indicateurs);
   // off.29 (insertion professionnelle) : indicateur « app » (apprentissage) —
   //   non applicable par défaut chez Axion-IA. La config `off29_applicable`
   //   (défaut false) permet de le réactiver si le certificateur le demande ;
@@ -1493,6 +1521,12 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
         : nbSessionsRealiseesAvecPresence < nbSessionsRealisees
           ? `${nbSessionsRealisees - nbSessionsRealiseesAvecPresence} session(s) réalisée(s) SANS aucune présence constatée — la feuille d'émargement y est vide`
           : "Chaque session réalisée porte au moins une présence constatée",
+      // Grille 2026 : l'indicateur 12 exige aussi la prévention et le traitement
+      // des violences, du harcèlement et des discriminations. Rien, dans la
+      // console, ne trace ce dispositif (le règlement intérieur est une page
+      // publique écrite dans le code, le registre des signalements est une pièce
+      // du classeur qualité) : on le DIT, sans en tirer de verdict.
+      ...(grille.id === "rnq-2026" ? [MENTION_OFF12_VIOLENCES_HORS_CONSOLE] : []),
     ],
     nbSessionsRealisees > 0 && nbSessionsRealiseesAvecPresence === nbSessionsRealisees,
   );
@@ -1863,11 +1897,15 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   // le comptait. On n'affiche plus que ce qui a été mesuré — et `preuves` porte
   // aussi bien ce qui est établi que ce qui manque, action par action, pour que
   // l'écran dise quoi remplir plutôt que de se contenter de rougir.
-  const couvertureOff32 = evaluerCouvertureOff32(revueAnnuelle, maintenant);
+  // L'analyse des risques est exigée par la GRILLE 2026, donc par la date de
+  // l'audit, et non par le seul calendrier du jour.
+  const couvertureOff32 = evaluerCouvertureOff32(revueAnnuelle, maintenant, {
+    exigeAnalyseRisques: grille.id === "rnq-2026",
+  });
   set(32, couvertureOff32.preuves, couvertureOff32.couvert);
 
   // ── Assemblage du résultat ─────────────────────────────────────────────────
-  const indicateurs: IndicateurConformite[] = INDICATEURS_RNQ.map((ind) => {
+  const indicateurs: IndicateurConformite[] = grille.indicateurs.map((ind) => {
     const isApplicable = applicablesNums.includes(ind.numero);
     if (!isApplicable) {
       const motif = motifNonApplicable(ind.numero);
@@ -1897,7 +1935,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   const nbCouverts = indicateurs.filter((i) => i.statut === "couvert").length;
   const scorePct = nbApplicables > 0 ? Math.round((nbCouverts / nbApplicables) * 100) : 0;
 
-  return { indicateurs, scorePct, nbCouverts, nbApplicables };
+  return { referentiel, indicateurs, scorePct, nbCouverts, nbApplicables };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1905,15 +1943,19 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function buildEmptyConformite(): ConformiteResult {
-  const indicateurs: IndicateurConformite[] = INDICATEURS_RNQ.map((ind) => ({
-    numero: ind.numero,
-    libelle: ind.libelleOfficiel,
-    critere: ind.critere,
-    super: ind.super,
-    statut: "a_completer" as StatutConformite,
-    preuves: [],
-  }));
+  const referentiel = choisirReferentiel("", new Date());
+  const indicateurs: IndicateurConformite[] = grilleParId(referentiel.grille).indicateurs.map(
+    (ind) => ({
+      numero: ind.numero,
+      libelle: ind.libelleOfficiel,
+      critere: ind.critere,
+      super: ind.super,
+      statut: "a_completer" as StatutConformite,
+      preuves: [],
+    }),
+  );
   return {
+    referentiel,
     indicateurs,
     scorePct: 0,
     nbCouverts: 0,

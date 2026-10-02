@@ -144,6 +144,82 @@ describe("renderRegistrePdfBuffer", () => {
     expect(result.filename).toMatch(/^revues-direction-plan-amelioration-/);
   }, 30_000);
 
+  it("revue_direction : l'analyse des risques est exportée, risque par risque (ind. 32)", async () => {
+    // 🔴 2026-10-02 — la matrice affichait « 10 risques analysés » et le PDF
+    // remis à l'auditeur n'en montrait aucun.
+    mockPrisma.revueDirection.findMany.mockResolvedValue([
+      {
+        annee: 2026,
+        dateRevue: new Date("2026-08-03T00:00:00.000Z"),
+        statut: "validee",
+        participants: ["Williams Jullin"],
+        decisions: [{ decision: "d" }],
+        planActions: [],
+        risques: [
+          {
+            intitule: "Dépendance à un formateur unique",
+            maitrise: "Vivier de sous-traitants",
+            gravite: 3,
+            probabilite: 3,
+            misAJourLe: "2026-10-15T08:30:00.000Z",
+          },
+          // Saisi le 30/09, avant la datation par risque : jamais daté du 03/08.
+          { intitule: "Panne de la chaîne d'e-mails", maitrise: "Relance manuelle" },
+        ],
+      },
+    ]);
+    const registre = await construireRegistre("revue_direction");
+    expect(registre.sousTitre).toContain(
+      "analyse des risques sur la qualité des formations délivrées",
+    );
+    expect(registre.colonnes).toContain("Analyse des risques");
+    expect(registre.lignes[0]).toContain(
+      "2 risques analysés, dont 1 coté (gravité × probabilité), mis à jour le 15/10/2026 (1 risque non daté)",
+    );
+    const section = registre.sections?.[0];
+    expect(section?.titre).toBe(
+      "Analyse des risques sur la qualité des formations délivrées — revue 2026",
+    );
+    expect(section?.colonnes).toEqual([
+      "Risque",
+      "Cause",
+      "Gravité",
+      "Probabilité",
+      "Criticité",
+      "Mesure de maîtrise",
+      "Responsable",
+      "Échéance",
+      "Mis à jour le",
+    ]);
+    expect(section?.lignes).toHaveLength(2);
+    expect(section?.lignes[0]).toContain("9 (élevée)");
+    expect(section?.lignes[0]).toContain("15/10/2026");
+    expect(section?.lignes[1]).toContain("non coté");
+    expect(section?.lignes[1]).toContain("non daté");
+    expect(section?.lignes[1]).not.toContain("03/08/2026");
+    // Et le PDF se rend, section comprise.
+    const pdf = await renderRegistrePdfBuffer("revue_direction");
+    expect(pdf.buffer.slice(0, 4).toString("utf8")).toBe("%PDF");
+  }, 30_000);
+
+  it("revue_direction : une revue sans risque le dit dans sa section", async () => {
+    mockPrisma.revueDirection.findMany.mockResolvedValue([
+      {
+        annee: 2025,
+        dateRevue: new Date("2025-12-15T00:00:00.000Z"),
+        statut: "archivee",
+        participants: [],
+        decisions: [],
+        planActions: [],
+        risques: [],
+      },
+    ]);
+    const registre = await construireRegistre("revue_direction");
+    expect(registre.sections?.[0]?.texte).toBe("Aucun risque consigné dans cette revue.");
+    expect(registre.sections?.[0]?.lignes).toEqual([]);
+    expect(registre.lignes[0]).toContain("Aucune");
+  });
+
   it("partenariats + sous_traitants : rendent un PDF même registre vide", async () => {
     const p = await renderRegistrePdfBuffer("partenariats");
     const s = await renderRegistrePdfBuffer("sous_traitants");
