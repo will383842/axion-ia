@@ -6,7 +6,8 @@
  * template générique `templates/registre.tsx` :
  *   - reclamations   : registre des réclamations (ind. 31)
  *   - veille         : journal de veille (ind. 23/24/25)
- *   - revue_direction: revues de direction / plan d'amélioration (ind. 32)
+ *   - revue_direction: revues de direction, plan d'amélioration ET analyse des
+ *                      risques, risque par risque (ind. 32)
  *   - partenariats   : registre des partenariats (ind. 26)
  *   - sous_traitants : registre des sous-traitants (ind. 27)
  *   - incidents      : registre des incidents + actions correctives (LOT 4)
@@ -41,6 +42,15 @@ import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { RegistrePdf, type RegistreData } from "@/server/qualiopi/documents/templates/registre";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
+import {
+  LIBELLES_GRAVITE,
+  LIBELLES_PROBABILITE,
+  jourFrParis,
+  libelleCriticite,
+  normaliserRisques,
+  phraseAnalyseRisques,
+  resumerAnalyseRisques,
+} from "@/server/qualiopi/revues/analyse-risques";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types exportés
@@ -206,6 +216,64 @@ async function buildVeille(): Promise<Omit<RegistreData, "dateEdition">> {
   };
 }
 
+/** « JJ/MM/AAAA » d'un « AAAA-MM-JJ » (échéance d'un risque). */
+function jourIsoVersFr(jour: string | null): string {
+  if (jour === null) return "";
+  const [a, m, j] = jour.split("-");
+  return `${j}/${m}/${a}`;
+}
+
+/**
+ * L'analyse des risques d'une revue, une ligne par risque.
+ *
+ * 🔴 2026-10-02 — l'export ne portait QUE décisions et plan d'actions : la
+ * matrice affichait « 10 risques analysés » et le dossier remis à l'auditeur
+ * n'en montrait aucun. Or l'indicateur 32 de la grille du 1er novembre 2026
+ * exige « une analyse des risques sur la qualité des formations délivrées »,
+ * et c'est un super-indicateur.
+ *
+ * La date d'un risque est SA date de saisie (`misAJourLe`), jamais celle de la
+ * revue : un risque saisi après la revue n'est pas antidaté, un risque saisi
+ * avant la datation par risque est dit « non daté ».
+ */
+export function sectionAnalyseRisques(revue: {
+  annee: number;
+  risques: unknown;
+}): NonNullable<RegistreData["sections"]>[number] {
+  const risques = normaliserRisques(revue.risques);
+  return {
+    titre: `Analyse des risques sur la qualité des formations délivrées — revue ${revue.annee}`,
+    texte:
+      risques.length === 0
+        ? "Aucun risque consigné dans cette revue."
+        : `${phraseAnalyseRisques(resumerAnalyseRisques(revue.risques))}. Cotation : gravité 1 à 4 × probabilité 1 à 4 = criticité 1 à 16 (faible 1-3, modérée 4-6, élevée 8-9, critique 12-16).`,
+    colonnes: [
+      "Risque",
+      "Cause",
+      "Gravité",
+      "Probabilité",
+      "Criticité",
+      "Mesure de maîtrise",
+      "Responsable",
+      "Échéance",
+      "Mis à jour le",
+    ],
+    lignes: risques.map((r) => [
+      r.intitule,
+      r.cause,
+      r.gravite === null ? "non cotée" : `${r.gravite} — ${LIBELLES_GRAVITE[r.gravite]}`,
+      r.probabilite === null
+        ? "non cotée"
+        : `${r.probabilite} — ${LIBELLES_PROBABILITE[r.probabilite]}`,
+      libelleCriticite(r),
+      r.maitrise,
+      r.responsable,
+      jourIsoVersFr(r.echeance),
+      r.misAJourLe === null ? "non daté" : jourFrParis(r.misAJourLe),
+    ]),
+  };
+}
+
 async function buildRevueDirection(): Promise<Omit<RegistreData, "dateEdition">> {
   const rows = await prisma.revueDirection.findMany({
     select: {
@@ -215,15 +283,24 @@ async function buildRevueDirection(): Promise<Omit<RegistreData, "dateEdition">>
       participants: true,
       decisions: true,
       planActions: true,
+      risques: true,
     },
     orderBy: { annee: "desc" },
     take: EXPORT_TAKE,
   });
   return {
-    titre: "Revues de direction et plan d'amélioration",
+    titre: "Revues de direction, amélioration continue et analyse des risques",
     sousTitre:
-      "Mise en œuvre des mesures d'amélioration continue (indicateur 32) — revues annuelles, décisions et plan d'actions.",
-    colonnes: ["Année", "Date", "Statut", "Participants", "Décisions", "Plan d'actions"],
+      "Démarche d'amélioration continue et analyse des risques sur la qualité des formations délivrées (indicateur 32) — revues annuelles, décisions, plan d'actions, puis l'analyse des risques de chaque revue.",
+    colonnes: [
+      "Année",
+      "Date",
+      "Statut",
+      "Participants",
+      "Décisions",
+      "Plan d'actions",
+      "Analyse des risques",
+    ],
     lignes: rows.map((r) => [
       String(r.annee),
       formatDateFr(r.dateRevue),
@@ -233,7 +310,11 @@ async function buildRevueDirection(): Promise<Omit<RegistreData, "dateEdition">>
       resumeJsonListe(r.participants),
       resumeJsonListe(r.decisions),
       resumeJsonListe(r.planActions),
+      normaliserRisques(r.risques).length === 0
+        ? "Aucune"
+        : phraseAnalyseRisques(resumerAnalyseRisques(r.risques)),
     ]),
+    sections: rows.map(sectionAnalyseRisques),
     mentionBasDePage: MENTION_EXPORT,
   };
 }

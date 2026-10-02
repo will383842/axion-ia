@@ -25,6 +25,7 @@ import {
   evaluerCouvertureOff32,
   normaliserPlanActions,
 } from "@/server/qualiopi/revues/plan-actions";
+import { horodaterRisques } from "@/server/qualiopi/revues/analyse-risques";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -134,13 +135,17 @@ export async function creerRevueDirectionAction(input: {
   // « validée » qui ne prouverait rien. L'écran de création ne propose pas le
   // statut — mais l'action, elle, l'accepte, et c'est par là qu'un script ou un
   // seed verdirait un super-indicateur sans que personne ne l'ait décidé.
+  // Chaque risque reçoit la date RÉELLE de sa saisie, posée ici (jamais celle de
+  // la revue, jamais celle qu'enverrait le navigateur).
+  const risques = v.risques !== undefined ? horodaterRisques(v.risques, [], new Date()) : undefined;
+
   if (v.statut === "validee") {
     const refus = refuserValidation({
       annee: v.annee,
       participants: v.participants ?? [],
       decisions: v.decisions ?? [],
       planActions: v.planActions ?? [],
-      risques: v.risques ?? [],
+      risques: risques ?? [],
     });
     if (refus !== null) return { error: refus };
   }
@@ -156,7 +161,7 @@ export async function creerRevueDirectionAction(input: {
       // clôture). Sans cela, chaque écran écrirait sa propre forme et le suivi ne
       // serait mesurable nulle part.
       ...(v.planActions !== undefined ? { planActions: normaliserPlanActions(v.planActions) } : {}),
-      ...(v.risques !== undefined ? { risques: v.risques } : {}),
+      ...(risques !== undefined ? { risques } : {}),
       ...(v.statut !== undefined ? { statut: v.statut } : {}),
     });
   } catch (err) {
@@ -204,8 +209,18 @@ export async function updateRevueDirectionAction(input: {
   const planActions =
     fields.planActions !== undefined ? normaliserPlanActions(fields.planActions) : undefined;
 
+  // La revue en base est lue quand la validation doit être opposée à son état
+  // résultant, OU quand l'analyse des risques est réécrite : c'est elle qui dit
+  // quelles entrées n'ont pas changé, donc lesquelles gardent leur date (ou leur
+  // absence de date) d'origine.
+  const stockee =
+    fields.statut === "validee" || fields.risques !== undefined ? await getRevueParId(id) : null;
+  const risques =
+    fields.risques !== undefined
+      ? horodaterRisques(fields.risques, stockee?.risques ?? [], new Date())
+      : undefined;
+
   if (fields.statut === "validee") {
-    const stockee = await getRevueParId(id);
     const refus = refuserValidation({
       annee: stockee?.annee ?? new Date().getFullYear(),
       participants: fields.participants ?? stockee?.participants ?? [],
@@ -214,7 +229,7 @@ export async function updateRevueDirectionAction(input: {
       // 🔴 I32-01 (2026-09-14) — les risques manquaient ici : après le
       // 1er novembre 2026, la garde refusait toute validation, même quand
       // l'analyse était envoyée dans le même geste ou déjà en base.
-      risques: fields.risques ?? stockee?.risques ?? [],
+      risques: risques ?? stockee?.risques ?? [],
     });
     if (refus !== null) return { error: refus };
   }
@@ -227,7 +242,7 @@ export async function updateRevueDirectionAction(input: {
     // 🔴 I32-01 (2026-09-14) — l'analyse de risques saisie à l'écran était
     // acceptée par le schéma puis jetée ici, sans message. La revue de l'année
     // existant déjà (`annee` unique), la mise à jour est son SEUL chemin d'écriture.
-    ...(fields.risques !== undefined ? { risques: fields.risques } : {}),
+    ...(risques !== undefined ? { risques } : {}),
     ...(fields.statut !== undefined ? { statut: fields.statut } : {}),
   });
 

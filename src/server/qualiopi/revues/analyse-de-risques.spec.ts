@@ -135,6 +135,8 @@ describe("tous les lecteurs de la revue sélectionnent bien `risques`", () => {
   const LECTEURS = [
     "src/server/qualiopi/conformite/audit-dossier.ts",
     "src/server/qualiopi/conformite/conformite-service.ts",
+    // Le registre PDF de la revue exporte l'analyse des risques (2026-10-02).
+    "src/server/qualiopi/registres/registres-pdf.ts",
   ] as const;
 
   for (const fichier of LECTEURS) {

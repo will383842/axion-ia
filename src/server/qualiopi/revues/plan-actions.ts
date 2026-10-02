@@ -44,6 +44,8 @@
  * toujours injecté). Testable sans base.
  */
 
+import { phraseAnalyseRisques, resumerAnalyseRisques } from "./analyse-risques";
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
 // ─────────────────────────────────────────────────────────────────────────────
@@ -330,24 +332,33 @@ function compterListe(x: unknown): number {
  */
 export const EXIGENCE_RISQUES_DEPUIS = new Date("2026-11-01T00:00:00.000Z");
 
-/** Compte les entrees d'analyse de risques reellement exploitables. */
+/**
+ * Compte les entrees d'analyse de risques reellement exploitables.
+ *
+ * Un risque sans INTITULE n'est pas un risque, et un risque sans MESURE DE
+ * MAITRISE est un constat : l'indicateur porte sur le processus, pas sur la
+ * liste des inquietudes. Le predicat vit dans `analyse-risques.ts`
+ * (`estRisqueAnalyse`), lu aussi par l'ecran et par le registre PDF.
+ */
 export function compterRisquesExploitables(brut: unknown): number {
-  if (!Array.isArray(brut)) return 0;
-  return brut.filter((r) => {
-    if (typeof r !== "object" || r === null) return false;
-    const o = r as Record<string, unknown>;
-    // Un risque sans INTITULE n'est pas un risque, et un risque sans MESURE DE
-    // MAITRISE est un constat : l'indicateur porte sur le processus, pas sur la
-    // liste des inquietudes.
-    const nonVide = (v: unknown): boolean => typeof v === "string" && v.trim() !== "";
-    return nonVide(o["intitule"]) && nonVide(o["maitrise"]);
-  }).length;
+  return resumerAnalyseRisques(brut).analyses;
+}
+
+export interface OptionsCouvertureOff32 {
+  /**
+   * L'analyse des risques est-elle EXIGEE ? Le moteur de conformite la deduit
+   * de la grille appliquee (date de l'audit) ; a defaut, le calendrier du jour
+   * (`EXIGENCE_RISQUES_DEPUIS`) decide, comme avant.
+   */
+  exigeAnalyseRisques?: boolean;
 }
 
 export function evaluerCouvertureOff32(
   revue: RevueAnnuelleLue | null,
   maintenant: Date,
+  options: OptionsCouvertureOff32 = {},
 ): CouvertureOff32 {
+  const exigeAnalyseRisques = options.exigeAnalyseRisques ?? maintenant >= EXIGENCE_RISQUES_DEPUIS;
   const anneeCourante = maintenant.getFullYear();
 
   if (revue === null) {
@@ -426,12 +437,22 @@ export function evaluerCouvertureOff32(
   }
 
   // ── Analyse de risques — decret 2026-728, exigible au 1er novembre 2026 ────
-  const nbRisques = compterRisquesExploitables(revue.risques);
+  const resumeRisques = resumerAnalyseRisques(revue.risques);
+  const nbRisques = resumeRisques.analyses;
   if (nbRisques > 0) {
-    preuves.push(
-      `${nbRisques} ${pluriel(nbRisques, "risque")} analysé${nbRisques > 1 ? "s" : ""} avec sa mesure de maîtrise`,
-    );
-  } else if (maintenant >= EXIGENCE_RISQUES_DEPUIS) {
+    // « N risques analysés, dont N cotés, mis à jour le … » — la même phrase que
+    // le registre PDF de la revue, remis dans le dossier d'audit.
+    preuves.push(phraseAnalyseRisques(resumeRisques));
+    if (resumeRisques.cotes < nbRisques) {
+      // Signalé, NON bloquant : le texte du décret ne fixe aucune méthode, et le
+      // guide de lecture V10 n'est pas paru. Une analyse sans cotation se défend
+      // mal ; elle n'est pas pour autant absente.
+      const nonCotes = nbRisques - resumeRisques.cotes;
+      preuves.push(
+        `⚠️ ${nonCotes} ${pluriel(nonCotes, "risque")} sans cotation (gravité et probabilité de 1 à 4) — à compléter dans la revue de direction`,
+      );
+    }
+  } else if (exigeAnalyseRisques) {
     manque(
       "Aucune analyse de risques — depuis le 1er novembre 2026, l'indicateur 32 exige un processus d'amélioration continue qui ANTICIPE, pas seulement qui réagit aux appréciations et réclamations (décret n° 2026-728). Un risque compte s'il porte un intitulé ET une mesure de maîtrise.",
     );

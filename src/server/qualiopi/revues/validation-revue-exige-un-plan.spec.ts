@@ -194,8 +194,9 @@ describe("updateRevueDirectionAction — l'analyse de risques arrive jusqu'à la
 
     expect(result).toEqual({ data: { id: ID } });
     const [, input] = mockUpdateRevue.mock.calls[0] as [string, { risques?: unknown[] }];
+    // Écrit tel quel, plus la date RÉELLE de la saisie, posée par le serveur.
     expect(input.risques, "l'analyse de risques saisie à l'écran n'est pas écrite en base").toEqual(
-      [RISQUE],
+      [{ ...RISQUE, misAJourLe: expect.any(String) }],
     );
   });
 

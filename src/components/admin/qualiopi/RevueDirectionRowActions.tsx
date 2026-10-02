@@ -1,5 +1,5 @@
 "use client";
-// use-client: édition inline d'une revue de direction (date, statut, décisions, plan d'actions suivi) via useTransition + Server Action.
+// use-client: édition inline d'une revue de direction (date, statut, décisions, plan d'actions suivi, analyse des risques cotée) via useTransition + Server Action.
 
 /**
  * RevueDirectionRowActions — Édition d'une revue de direction (T19).
@@ -37,6 +37,16 @@
  * conservées telles quelles dans l'objet édité, et affichées sous l'action :
  * l'origine d'un constat est exactement ce que l'auditeur vérifie.
  *
+ * ── L'analyse des risques (indicateur 32, grille du 1er novembre 2026) ──────
+ * Elle était saisie dans un `<textarea>` « intitulé | mesure » : la forme
+ * prévue au schéma (cause, gravité, probabilité, responsable, échéance) n'avait
+ * aucun champ, et chaque enregistrement réécrivait les entrées sous cette forme
+ * réduite. Chaque risque est désormais une ligne de champs réels, cotée gravité
+ * 1-4 × probabilité 1-4 (criticité affichée, jamais stockée), et datée PAR LE
+ * SERVEUR à sa saisie (`horodaterRisques`) — jamais de la date de la revue. Un
+ * risque qu'on ne touche pas garde son objet d'origine, date comprise, ou son
+ * absence de date.
+ *
  * "use client" : useState/useTransition + appel Server Action.
  * Zéro appel DB côté client.
  */
@@ -51,6 +61,16 @@ import {
   type ActionAmelioration,
   type StatutActionAmelioration,
 } from "@/server/qualiopi/revues/plan-actions";
+import {
+  COTES,
+  LIBELLES_GRAVITE,
+  LIBELLES_PROBABILITE,
+  jourFrParis,
+  libelleCriticite,
+  normaliserRisques,
+  type Cote,
+  type RisqueQualite,
+} from "@/server/qualiopi/revues/analyse-risques";
 
 const inputCls =
   "w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-admin-accent)]";
@@ -58,19 +78,6 @@ const labelCls =
   "block text-[length:var(--text-admin-xs)] font-medium uppercase tracking-wide text-[color:var(--color-admin-fg-muted)] mb-1";
 const microLabelCls =
   "block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] mb-1";
-
-/**
- * Exemple d'analyse de risques, deux lignes.
- *
- * Construit par concaténation plutôt qu'écrit d'un trait : une séquence
- * d'échappement qui traverse un générateur se transforme en vrai retour à la
- * ligne et coupe l'instruction — ça s'est produit trois fois sur ce dépôt le
- * 2026-09-13, chez trois sessions différentes.
- */
-const RISQUES_EXEMPLE = [
-  "Formateur unique indisponible sur une session engagée | Constituer un vivier de deux sous-traitants habilités",
-  "Retard de dépôt du BPF | Rappel calendaire à J-30 et pièce préparée en amont",
-].join(String.fromCharCode(10));
 
 /**
  * Libellé affichable d'une entrée `decisions`.
@@ -99,41 +106,42 @@ function versTexte(liste: readonly unknown[]): string {
     .join("\n");
 }
 
-/**
- * Une ligne par risque : « intitulé | mesure de maîtrise ».
- *
- * 🔑 Deux champs et non un. L'indicateur 32 porte sur un PROCESSUS : une liste
- * d'intitulés sans réponse est un inventaire d'inquiétudes, pas une analyse.
- * `compterRisquesExploitables` refuse d'ailleurs une entrée sans maîtrise — cet
- * écran doit donc permettre d'écrire les deux, sinon le refus serait
- * irréparable depuis l'interface.
- */
-function risquesVersTexte(liste: readonly unknown[]): string {
-  if (!Array.isArray(liste)) return "";
-  return liste
-    .map((r) => {
-      if (typeof r !== "object" || r === null) return "";
-      const o = r as Record<string, unknown>;
-      const intitule = typeof o["intitule"] === "string" ? o["intitule"].trim() : "";
-      const maitrise = typeof o["maitrise"] === "string" ? o["maitrise"].trim() : "";
-      return intitule === "" ? "" : `${intitule} | ${maitrise}`;
-    })
-    .filter((l) => l !== "")
-    .join(String.fromCharCode(10));
+/** Un risque neuf : rien de coté, rien de daté — la date sera posée par le serveur. */
+function risqueVierge(): RisqueQualite {
+  return {
+    intitule: "",
+    cause: "",
+    gravite: null,
+    probabilite: null,
+    maitrise: "",
+    responsable: "",
+    echeance: null,
+    misAJourLe: null,
+  };
 }
 
-/** L'inverse — une ligne sans barre garde un intitulé et une maîtrise vide. */
-function risquesVersListe(texte: string): unknown[] {
-  return texte
-    .split(String.fromCharCode(10))
-    .map((l) => l.trim())
-    .filter((l) => l !== "")
-    .map((l) => {
-      const i = l.indexOf("|");
-      return i === -1
-        ? { intitule: l, maitrise: "" }
-        : { intitule: l.slice(0, i).trim(), maitrise: l.slice(i + 1).trim() };
-    });
+/** Lit une cote depuis un `<select>` (« » = non coté). */
+function lireCote(v: string): Cote | null {
+  const n = Number(v);
+  return (COTES as readonly number[]).includes(n) ? (n as Cote) : null;
+}
+
+/**
+ * Ce que l'écran envoie : les champs de contenu, SANS date. Le serveur compare
+ * au stocké, garde l'objet d'origine des entrées inchangées et date les autres.
+ */
+function risquesAEnvoyer(liste: readonly RisqueQualite[]): unknown[] {
+  return liste
+    .filter((r) => r.intitule.trim().length > 0)
+    .map((r) => ({
+      intitule: r.intitule.trim(),
+      cause: r.cause.trim(),
+      gravite: r.gravite,
+      probabilite: r.probabilite,
+      maitrise: r.maitrise.trim(),
+      responsable: r.responsable.trim(),
+      echeance: r.echeance,
+    }));
 }
 
 /**
@@ -199,7 +207,22 @@ export function RevueDirectionRowActions({
   const [actions, setActions] = useState<ActionAmelioration[]>(() =>
     normaliserPlanActions(revue.planActions as unknown[]),
   );
-  const [risquesRaw, setRisquesRaw] = useState(() => risquesVersTexte(revue.risques));
+  const [risques, setRisques] = useState<RisqueQualite[]>(() => normaliserRisques(revue.risques));
+  /** Index des risques modifiés à l'écran : leur date sera celle de l'enregistrement. */
+  const [risquesModifies, setRisquesModifies] = useState<ReadonlySet<number>>(() => new Set());
+
+  function patcherRisque(index: number, patch: Partial<RisqueQualite>): void {
+    setRisques((prev) => prev.map((r, i) => (i === index ? { ...r, ...patch } : r)));
+    setRisquesModifies((prev) => new Set(prev).add(index));
+  }
+
+  function retirerRisque(index: number): void {
+    setRisques((prev) => prev.filter((_, i) => i !== index));
+    // Les index suivants glissent d'un cran : on décale les marques avec eux.
+    setRisquesModifies(
+      (prev) => new Set([...prev].filter((i) => i !== index).map((i) => (i > index ? i - 1 : i))),
+    );
+  }
 
   function patcherAction(index: number, patch: Partial<ActionAmelioration>): void {
     setActions((prev) => prev.map((a, i) => (i === index ? { ...a, ...patch } : a)));
@@ -244,7 +267,7 @@ export function RevueDirectionRowActions({
         // Les lignes sans libellé sont écartées ici comme côté serveur : une
         // ligne qu'on vient d'ajouter et qu'on n'a pas remplie n'est pas une action.
         planActions: actions.filter((a) => a.action.trim().length > 0),
-        risques: risquesVersListe(risquesRaw),
+        risques: risquesAEnvoyer(risques),
       });
       if ("error" in result) {
         setError(result.error);
@@ -351,25 +374,189 @@ export function RevueDirectionRowActions({
         />
       </div>
 
-      <div>
-        <label htmlFor="revuedirectionrowactions-risques" className={labelCls}>
-          Analyse de risques (une par ligne : intitulé | mesure de maîtrise)
-        </label>
-        <textarea
-          id="revuedirectionrowactions-risques"
-          value={risquesRaw}
-          onChange={(e) => setRisquesRaw(e.target.value)}
-          disabled={isPending}
-          rows={4}
-          placeholder={RISQUES_EXEMPLE}
-          className={inputCls}
-        />
+      {/* ── Analyse des risques : une ligne par risque, cotée et datée ── */}
+      <fieldset className="min-w-0 border-0 p-0 [min-inline-size:0]">
+        <legend className={labelCls}>Analyse des risques sur la qualité des formations</legend>
         <p className={microLabelCls}>
-          Exigée au 1{"ᵉʳ"} novembre 2026 (décret n{"°"} 2026-728). Un risque ne compte que s{"’"}il
-          porte un intitulé ET une mesure de maîtrise : une liste d{"’"}inquiétudes sans réponse n
-          {"’"}est pas une analyse.
+          Exigée par l{"’"}indicateur 32 à partir du 1{"ᵉʳ"} novembre 2026 (décret n{"°"}
+          2026-728). Un risque compte s{"’"}il porte un intitulé ET une mesure de maîtrise. Cotation
+          : gravité 1 à 4 × probabilité 1 à 4 = criticité (1 à 16). Chaque risque est daté du jour
+          où il est saisi ou modifié.
         </p>
-      </div>
+
+        {risques.length === 0 && (
+          <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
+            Aucun risque analysé.
+          </p>
+        )}
+
+        <ul className="flex flex-col gap-[var(--space-admin-3)]">
+          {risques.map((r, i) => {
+            const idBase = `revuedirection-risque-${i}`;
+            const modifie = risquesModifies.has(i);
+            return (
+              <li
+                key={idBase}
+                className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-3)]"
+              >
+                <label htmlFor={`${idBase}-intitule`} className={microLabelCls}>
+                  Risque
+                </label>
+                <input
+                  id={`${idBase}-intitule`}
+                  type="text"
+                  value={r.intitule}
+                  onChange={(e) => patcherRisque(i, { intitule: e.target.value })}
+                  disabled={isPending}
+                  placeholder="Ce qui peut dégrader la qualité d'une formation"
+                  className={inputCls}
+                />
+
+                <div className="mt-[var(--space-admin-2)] grid grid-cols-1 gap-[var(--space-admin-2)] sm:grid-cols-3">
+                  <div className="min-w-0">
+                    <label htmlFor={`${idBase}-gravite`} className={microLabelCls}>
+                      Gravité
+                    </label>
+                    <select
+                      id={`${idBase}-gravite`}
+                      value={r.gravite ?? ""}
+                      onChange={(e) => patcherRisque(i, { gravite: lireCote(e.target.value) })}
+                      disabled={isPending}
+                      className={inputCls}
+                    >
+                      <option value="">Non cotée</option>
+                      {COTES.map((c) => (
+                        <option key={c} value={c}>
+                          {c} — {LIBELLES_GRAVITE[c]}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="min-w-0">
+                    <label htmlFor={`${idBase}-probabilite`} className={microLabelCls}>
+                      Probabilité
+                    </label>
+                    <select
+                      id={`${idBase}-probabilite`}
+                      value={r.probabilite ?? ""}
+                      onChange={(e) => patcherRisque(i, { probabilite: lireCote(e.target.value) })}
+                      disabled={isPending}
+                      className={inputCls}
+                    >
+                      <option value="">Non cotée</option>
+                      {COTES.map((c) => (
+                        <option key={c} value={c}>
+                          {c} — {LIBELLES_PROBABILITE[c]}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="min-w-0">
+                    <span className={microLabelCls}>Criticité</span>
+                    <p className="py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]">
+                      {libelleCriticite(r)}
+                    </p>
+                  </div>
+                </div>
+
+                <label
+                  htmlFor={`${idBase}-cause`}
+                  className={`${microLabelCls} mt-[var(--space-admin-2)]`}
+                >
+                  Cause (facultatif)
+                </label>
+                <input
+                  id={`${idBase}-cause`}
+                  type="text"
+                  value={r.cause}
+                  onChange={(e) => patcherRisque(i, { cause: e.target.value })}
+                  disabled={isPending}
+                  className={inputCls}
+                />
+
+                <label
+                  htmlFor={`${idBase}-maitrise`}
+                  className={`${microLabelCls} mt-[var(--space-admin-2)]`}
+                >
+                  Mesure de maîtrise
+                </label>
+                <input
+                  id={`${idBase}-maitrise`}
+                  type="text"
+                  value={r.maitrise}
+                  onChange={(e) => patcherRisque(i, { maitrise: e.target.value })}
+                  disabled={isPending}
+                  placeholder="Ce qui est fait pour l'éviter ou en limiter l'effet"
+                  className={inputCls}
+                />
+
+                <div className="mt-[var(--space-admin-2)] grid grid-cols-1 gap-[var(--space-admin-2)] sm:grid-cols-2">
+                  <div className="min-w-0">
+                    <label htmlFor={`${idBase}-responsable`} className={microLabelCls}>
+                      Responsable
+                    </label>
+                    <input
+                      id={`${idBase}-responsable`}
+                      type="text"
+                      value={r.responsable}
+                      onChange={(e) => patcherRisque(i, { responsable: e.target.value })}
+                      disabled={isPending}
+                      className={inputCls}
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <label htmlFor={`${idBase}-echeance`} className={microLabelCls}>
+                      Échéance
+                    </label>
+                    <input
+                      id={`${idBase}-echeance`}
+                      type="date"
+                      value={r.echeance ?? ""}
+                      onChange={(e) =>
+                        patcherRisque(i, {
+                          echeance: e.target.value.length > 0 ? e.target.value : null,
+                        })
+                      }
+                      disabled={isPending}
+                      className={inputCls}
+                    />
+                  </div>
+                </div>
+
+                <div className="mt-[var(--space-admin-2)] flex flex-wrap items-center justify-between gap-[var(--space-admin-2)]">
+                  <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                    {modifie
+                      ? "Modifié : sera daté du jour à l'enregistrement"
+                      : r.misAJourLe !== null
+                        ? `Mis à jour le ${jourFrParis(r.misAJourLe)}`
+                        : "Non daté (saisi avant la datation par risque)"}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => retirerRisque(i)}
+                    disabled={isPending}
+                    className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] underline"
+                  >
+                    Retirer ce risque
+                  </button>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+
+        <button
+          type="button"
+          onClick={() => {
+            setRisquesModifies((prev) => new Set(prev).add(risques.length));
+            setRisques((prev) => [...prev, risqueVierge()]);
+          }}
+          disabled={isPending}
+          className="mt-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-fg-muted)] transition-opacity hover:opacity-80"
+        >
+          Ajouter un risque
+        </button>
+      </fieldset>
 
       {/* ── Plan d'actions : une action = une ligne suivie jusqu'à sa clôture ── */}
       {/* `min-w-0` + `min-inline-size:0` : la feuille de style du NAVIGATEUR pose
