@@ -82,6 +82,14 @@ vi.mock("@/server/qualiopi/adaptation/dossier-adaptation", () => ({
 }));
 vi.mock("@/server/qualiopi/conformite/conformite-service", () => ({
   evaluerConformite: async () => ({
+    referentiel: {
+      grille: "rnq-v9",
+      version: "RNQ-V9",
+      intitule: "Référentiel national qualité (test)",
+      nbIndicateurs: 32,
+      jourReference: "2026-10-02",
+      origine: "date_du_jour",
+    },
     indicateurs: [],
     nbCouverts: 0,
     nbApplicables: 0,
