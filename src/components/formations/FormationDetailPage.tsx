@@ -174,7 +174,10 @@ export function FormationDetailPage({
   // Mentions indicateur 1 (délai d'accès, méthodes, évaluation, accessibilité) —
   // obligations Code du travail génériques, NON gatées Qualiopi (aucun claim de
   // certification). Défauts centralisés dans catalog-v2-facts, surchargeables.
-  const delaiAcces = getFormationDelaiAcces(f);
+  // France Travail n'est proposé sur la fiche que sous `ofPublic` (bloc
+  // financement) : le délai d'accès ne le nomme que dans ce cas, sans lui
+  // inventer de délai (« délai de réponse du financeur »).
+  const delaiAcces = getFormationDelaiAcces(f, ofPublic ? ["France Travail"] : []);
   const methodes = getFormationMethodes(f);
   const evaluation = getFormationEvaluation(f);
   // Type de reconnaissance (ind. 1, décret 2026-728) — rubrique explicite.

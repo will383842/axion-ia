@@ -2,6 +2,7 @@
 // Manually corrected 2026-05-28 (sprint anti-doorway HCU 2024) — Wikipedia sourced.
 // EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
 
+import { DELAI_ACCES_PHRASE } from "@/content/formations/delai-acces";
 import type { VilleCopy } from "./types";
 
 export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
@@ -224,7 +225,7 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à La Roche-sur-Yon ?",
-      a: "Pour une PME ou ETI yonnaise, l'Audit sur place est planifiable sous 5 à 7 jours ouvrés. Une formation collective démarre au plus tôt 11 jours ouvrés après la confirmation d'inscription (délai d'accès minimum), à une date convenue avec vous.",
+      a: `Pour une PME ou ETI yonnaise, l'Audit sur place est planifiable sous 5 à 7 jours ouvrés. ${DELAI_ACCES_PHRASE} La date de la formation est convenue avec vous.`,
     },
     {
       q: "Couvrez-vous les communes proches de La Roche-sur-Yon ?",

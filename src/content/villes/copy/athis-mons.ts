@@ -5,6 +5,7 @@
 // MANUAL EDIT 2026-05-28 : anti-doorway HCU 2024 — contenu factuel Wikipedia,
 // suppression templates LLM hors-contexte (LVMH/Cap Digital/Station F/Inria).
 
+import { DELAI_ACCES_PHRASE } from "@/content/formations/delai-acces";
 import type { VilleCopy } from "./types";
 
 export const ATHIS_MONS_COPY: VilleCopy = {
@@ -223,7 +224,7 @@ export const ATHIS_MONS_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient à Athis-Mons ?",
-      a: "Pour les PME et ETI d'Athis-Mons, nous planifions l'Audit sur place sous 5 jours ouvrés après validation. Une formation collective démarre au plus tôt 11 jours ouvrés après la confirmation d'inscription (délai d'accès minimum), à une date convenue avec vous.",
+      a: `Pour les PME et ETI d'Athis-Mons, nous planifions l'Audit sur place sous 5 jours ouvrés après validation. ${DELAI_ACCES_PHRASE} La date de la formation est convenue avec vous.`,
     },
     {
       q: "Couvrez-vous aussi Juvisy-sur-Orge, Paray-Vieille-Poste et Ablon-sur-Seine depuis Athis-Mons ?",
