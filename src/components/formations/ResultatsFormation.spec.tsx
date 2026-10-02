@@ -66,3 +66,19 @@ describe("ResultatsFormation — un absent n'est pas « formé »", () => {
     expect(html).toContain("1 sur 2");
   });
 });
+
+// Indicateur 2 modifié par le décret n° 2026-728 : « en précisant de manière
+// transparente leurs modalités de calcul ». La méthode est lisible À CÔTÉ des
+// chiffres, sur la fiche même — pas seulement sur une page qui peut être fermée.
+describe("ResultatsFormation — la méthode de calcul est écrite à côté des chiffres", () => {
+  it("sources, troncature, seuil d'assiduité et seuil de représentativité", () => {
+    const html = renderToStaticMarkup(<ResultatsFormation resultats={REEL} />);
+    expect(html).toContain("Méthode : chiffres calculés automatiquement");
+    expect(html).toContain("relevés de présence (émargement ou connexion)");
+    expect(html).toContain("questionnaires de fin de formation");
+    expect(html).toContain("moyenne des notes globales sur 5, tronquée au dixième");
+    expect(html).toContain("atteint au moins 80 % de la durée prévue");
+    expect(html).toContain("Sous 5 stagiaires ou 5 réponses");
+    expect(html).not.toMatch(/<script/);
+  });
+});

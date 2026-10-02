@@ -7,6 +7,7 @@ import { LegalPageTemplate } from "@/components/sections/LegalPageTemplate";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getLegal } from "@/content/legal";
+import { REGLEMENT_INTERIEUR_VERSION } from "@/content/reglement-interieur-version";
 import { buildProductMetadata } from "@/lib/seo";
 
 interface Props {
@@ -14,10 +15,10 @@ interface Props {
 }
 
 const SLUG = "reglement-interieur" as const;
-// Date de dernière révision éditoriale des pages légales (alignée sur la
-// déclaration d'accessibilité, 6 mai 2026). À mettre à jour à chaque révision
-// de fond. Label affiché localisé ; `lastUpdatedIso` alimente <time dateTime>.
-const LAST_UPDATED_ISO = "2026-05-06";
+// Date de version VRAIE (dernier changement de contenu) — elle affichait
+// « 6 mai 2026 » alors que le texte avait changé jusqu'au 30/09. Source unique,
+// partagée avec le PDF remis au stagiaire, et gardée par une empreinte du texte :
+// `src/content/reglement-interieur-version.ts`.
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -57,8 +58,10 @@ export default async function ReglementInterieur({ params }: Props) {
         {...(copy.titleEm !== undefined ? { titleEm: copy.titleEm } : {})}
         intro={copy.intro}
         sections={copy.sections}
-        lastUpdated={isFr ? "6 mai 2026" : "May 6, 2026"}
-        lastUpdatedIso={LAST_UPDATED_ISO}
+        lastUpdated={
+          isFr ? REGLEMENT_INTERIEUR_VERSION.libelleFr : REGLEMENT_INTERIEUR_VERSION.libelleEn
+        }
+        lastUpdatedIso={REGLEMENT_INTERIEUR_VERSION.iso}
         relatedLinks={[
           {
             href: "/reclamations",

@@ -2,7 +2,8 @@
  * Qualiopi — Livret d'accueil stagiaire.
  *
  * Présentation de l'organisme, contacts, modalités pratiques,
- * évaluation, accessibilité handicap, réclamations, RGPD.
+ * évaluation, accessibilité handicap, réclamations, prévention des violences,
+ * RGPD.
  * Rendu serveur exclusif — NE PAS "use client".
  */
 
@@ -22,6 +23,7 @@ import {
   HANDICAP_PARTENAIRES,
 } from "@/server/qualiopi/legal/legal-mentions";
 import { ASSISTANCE_DISTANCE } from "@/server/qualiopi/legal/assistance-distance";
+import { ENCART_VIOLENCES, TITRE_ENCART_VIOLENCES } from "@/content/prevention-violences";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 // ============================================================
@@ -316,8 +318,31 @@ export function LivretAccueilPdf({
           </Text>
         </DocSection>
 
+        {/* Prévention des violences (indicateur 12, décret n° 2026-728) */}
+        {/*
+          🔴 2026-10-02 — le livret ne disait RIEN des violences, du harcèlement
+          ni des discriminations : le stagiaire n'en était informé que par renvoi
+          au règlement intérieur. L'indicateur 12 renforcé (en vigueur le
+          1er novembre 2026, hors régime « nouvel entrant ») exige la prévention
+          ET le traitement : le stagiaire doit savoir, avant d'entrer, à qui le
+          signaler et ce qui se passe ensuite. Texte commun à la convocation :
+          `src/content/prevention-violences.ts`.
+        */}
+        <DocSection title={`7. ${TITRE_ENCART_VIOLENCES}`}>
+          {ENCART_VIOLENCES.map((paragraphe) => (
+            <Text key={paragraphe.slice(0, 12)} style={local.bodyText}>
+              {paragraphe}
+            </Text>
+          ))}
+          {siteBase ? (
+            <Text style={pdfStyles.legalNote}>
+              Règlement intérieur publié : {siteBase}/reglement-interieur
+            </Text>
+          ) : null}
+        </DocSection>
+
         {/* RGPD */}
-        <DocSection title="7. Protection de vos données personnelles (RGPD)">
+        <DocSection title="8. Protection de vos données personnelles (RGPD)">
           <Text style={local.bodyText}>{LEGAL_MENTIONS.rgpd}</Text>
           <Text style={local.bodyText}>
             Vos données personnelles (identité, coordonnées, données de connexion, évaluations) sont

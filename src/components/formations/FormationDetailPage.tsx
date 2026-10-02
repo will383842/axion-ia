@@ -13,6 +13,7 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import {
   ArrowRight,
+  Award,
   CheckCircle2,
   Clock,
   GraduationCap,
@@ -61,6 +62,7 @@ import {
   getFormationMateriel,
   getFormationPrerequis,
   getFormationMethodes,
+  getFormationReconnaissance,
   getFormationModalites,
   getFormationOutils,
 } from "@/content/formations/catalog-v2-facts";
@@ -175,6 +177,8 @@ export function FormationDetailPage({
   const delaiAcces = getFormationDelaiAcces(f);
   const methodes = getFormationMethodes(f);
   const evaluation = getFormationEvaluation(f);
+  // Type de reconnaissance (ind. 1, décret 2026-728) — rubrique explicite.
+  const reconnaissance = getFormationReconnaissance(f);
   const accessibilite = getFormationAccessibilite(f, referentHandicap);
   // « reste à charge » = mention financement (OPCO), pas un tarif produit.
   const financeMention = "Finançable OPCO — jusqu’à 0 € de reste à charge selon votre situation."; // price-exempt
@@ -272,11 +276,12 @@ export function FormationDetailPage({
     "Opérationnel·le dès le lendemain",
   ];
 
-  // Mentions réglementaires indicateur 1 — 4 blocs neutres (Code du travail).
+  // Mentions réglementaires indicateur 1 — 5 blocs neutres (Code du travail).
   const indicateurRows: ReadonlyArray<{ icon: typeof Clock; label: string; value: string }> = [
     { icon: Clock, label: "Délai d'accès", value: delaiAcces },
     { icon: GraduationCap, label: "Méthodes pédagogiques", value: methodes },
     { icon: CheckCircle2, label: "Modalités d'évaluation", value: evaluation },
+    { icon: Award, label: "Reconnaissance de la formation", value: reconnaissance },
     { icon: Users, label: "Accessibilité & handicap", value: accessibilite },
   ];
 
@@ -874,8 +879,8 @@ export function FormationDetailPage({
       {/* ── INFORMATIONS RÉGLEMENTAIRES (indicateur 1 — Code du travail) ──── */}
       <Section
         eyebrow="Informations réglementaires"
-        title="Délais, méthodes,"
-        titleEm="évaluation & accessibilité"
+        title="Délais, méthodes, évaluation,"
+        titleEm="reconnaissance & accessibilité"
         description="Les informations essentielles avant l'inscription, conformément au Code du travail."
       >
         <dl className="mx-auto grid max-w-5xl gap-4 md:grid-cols-2">

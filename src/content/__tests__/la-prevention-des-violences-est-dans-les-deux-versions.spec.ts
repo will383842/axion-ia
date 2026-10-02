@@ -40,9 +40,26 @@ const GABARIT = readFileSync(
   "utf8",
 );
 
+/**
+ * 2026-10-02 — la procédure (signaler, traiter, suites, recours) vit désormais
+ * dans UN module lu par les deux versions, `src/content/prevention-violences.ts`
+ * (numérotation 3 ter / 3 quater et « article 40 du CPP » corrigés, analyse
+ * d'écarts du 02/10). Une version n'en hérite que si elle IMPORTE et UTILISE la
+ * procédure : sinon on la juge sur son seul texte, comme avant.
+ */
+const PROCEDURE = readFileSync(join(RACINE, "src/content/prevention-violences.ts"), "utf8");
+function avecProcedurePartagee(source: string): string {
+  const importe =
+    /import \{[^}]*VIOLENCES_PROCEDURE[^}]*\} from "(?:@\/content|\.)\/prevention-violences";/.test(
+      source,
+    );
+  const utilise = source.split("VIOLENCES_PROCEDURE").length > 2;
+  return importe && utilise ? `${source}\n${PROCEDURE}` : source;
+}
+
 const VERSIONS = [
-  ["la page publiée", PAGE],
-  ["le document remis au stagiaire", GABARIT],
+  ["la page publiée", avecProcedurePartagee(PAGE)],
+  ["le document remis au stagiaire", avecProcedurePartagee(GABARIT)],
 ] as const;
 
 /** Les fondements que la clause doit nommer, des deux côtés. */
