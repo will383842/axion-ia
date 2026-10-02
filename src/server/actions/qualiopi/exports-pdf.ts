@@ -23,6 +23,8 @@ import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiop
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { lireReferentielApplique } from "@/server/qualiopi/conformite/referentiel-applique";
+import { libelleCourtReferentiel } from "@/server/qualiopi/conformite/indicateurs-registre";
 import { renderRegistrePdfBuffer, REGISTRE_TYPES } from "@/server/qualiopi/registres/registres-pdf";
 import { CvFormateurPdf } from "@/server/qualiopi/documents/templates/cv-formateur";
 import { buildCvFormateurData, formatDateFr } from "@/server/qualiopi/documents/cv-formateur-data";
@@ -365,13 +367,15 @@ export async function genererPilotagePdfAction(
   try {
     const pilotage = await getPilotage(buildPilotageOptions(v));
     const identite = await getOrganismeIdentite();
+    const referentiel = await lireReferentielApplique(now);
     const sousTitreType =
       v.typeAction !== undefined
         ? ` · Type d'action : ${TYPE_ACTION_LABELS[v.typeAction] ?? v.typeAction}`
         : "";
     const data: RegistreData = {
       titre: "Pilotage Qualiopi — 14 métriques",
-      sousTitre: `Tableau de bord de pilotage (RNQ V9) — ${periodeLabel(pilotage.annee, pilotage.periode)}${sousTitreType}.`,
+      // Plus de « RNQ V9 » en dur : la grille que la matrice applique, et sa date.
+      sousTitre: `Tableau de bord de pilotage (${libelleCourtReferentiel(referentiel)}) — ${periodeLabel(pilotage.annee, pilotage.periode)}${sousTitreType}.`,
       colonnes: ["Métrique", "Valeur", "Détail"],
       lignes: pilotageToLignes(pilotage),
       mentionBasDePage:

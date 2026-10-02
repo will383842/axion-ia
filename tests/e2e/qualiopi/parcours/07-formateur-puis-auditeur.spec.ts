@@ -117,6 +117,22 @@ import { test, expect, type Download, type Page } from "@playwright/test";
 import { loginAsAdmin } from "../../fixtures/admin-auth";
 import { CONTENU, ENREGISTREMENT, ouvrir } from "./_communs";
 
+/**
+ * La grille du référentiel change le 1er novembre 2026, sans transition
+ * (décret n° 2026-728) : 32 indicateurs jusqu'au 31/10, 33 ensuite. La base
+ * e2e ne configure pas de date d'audit, c'est donc le jour de Paris qui
+ * choisit (`choisirReferentiel`, indicateurs-registre.ts).
+ */
+const GRILLE_DU_JOUR = (() => {
+  const jour = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Paris",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+  return jour >= "2026-11-01" ? { nb: 33, version: "RNQ-2026-728" } : { nb: 32, version: "RNQ-V9" };
+})();
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Le dossier de démonstration, tel que le seed l'écrit — jamais deviné
 // ─────────────────────────────────────────────────────────────────────────────
@@ -660,7 +676,7 @@ test.describe("@parcours-qualiopi 7 — formateur le jour J, puis auditeur", () 
         "un contrôle de statut ne l'aurait pas vu (mode-auditeur/page.tsx:46-48).",
     ).toHaveText("Conformité & mode auditeur", { timeout: ARRIVEE });
 
-    // ── 1. La matrice porte VRAIMENT les 32 indicateurs ────────────────────
+    // ── 1. La matrice porte VRAIMENT les indicateurs de la grille du jour ──
     //
     // 🔴 `MatriceIndicateurs` rend « Aucune donnée disponible. Les indicateurs
     // seront affichés une fois les services de conformité déployés » quand la
@@ -680,11 +696,11 @@ test.describe("@parcours-qualiopi 7 — formateur le jour J, puis auditeur", () 
 
     await expect(
       page.locator(CONTENU).locator("table tbody tr"),
-      "la matrice n'aligne pas 32 lignes : le RNQ V9 en compte 32 (`INDICATEURS_RNQ`, " +
+      `la matrice n'aligne pas ${GRILLE_DU_JOUR.nb} lignes : la grille du jour en compte ${GRILLE_DU_JOUR.nb} (\`INDICATEURS_RNQ\`, ` +
         "indicateurs-registre.ts:68) et `evaluerConformite()` les rend TOUTES, applicables " +
         "ou non (conformite-service.ts:1235-1256). Un compte différent signale une donnée " +
         "tronquée, pas un écran lent.",
-    ).toHaveCount(32, { timeout: ARRIVEE });
+    ).toHaveCount(GRILLE_DU_JOUR.nb, { timeout: ARRIVEE });
 
     // La tuile de bilan mesure une COUVERTURE DOCUMENTAIRE, pas un verdict
     // d'audit (mode-auditeur/page.tsx:107-113). On vérifie qu'elle est là.
@@ -750,17 +766,17 @@ test.describe("@parcours-qualiopi 7 — formateur le jour J, puis auditeur", () 
 
     expect(
       manifeste.meta?.version ?? "(absent)",
-      "le manifeste exporté ne déclare pas son référentiel : sans « RNQ-V9 », l'auditrice " +
+      "le manifeste exporté ne déclare pas son référentiel : sans lui, l'auditrice " +
         "ne sait pas contre quelle version du référentiel elle le lit (audit-dossier.ts:496)",
-    ).toBe("RNQ-V9");
+    ).toBe(GRILLE_DU_JOUR.version);
 
     expect(
       manifeste.indicateurs?.length ?? 0,
-      "le manifeste exporté ne porte pas les 32 indicateurs. `buildEmptyManifeste()` en " +
+      "le manifeste exporté ne porte pas les indicateurs de la grille. `buildEmptyManifeste()` en " +
         "rend ZÉRO, sous le même nom de fichier et avec le même statut d'action " +
         "(audit-dossier.ts:837-852) : c'est très exactement le dossier vide qui pouvait " +
         "partir chez l'auditrice sans qu'aucun test s'en aperçoive.",
-    ).toBe(32);
+    ).toBe(GRILLE_DU_JOUR.nb);
 
     expect(
       manifeste.meta?.nbApplicables ?? 0,

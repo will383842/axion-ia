@@ -45,10 +45,10 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
 
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
-import { evaluerConformite } from "./conformite-service";
+import { MENTION_OFF12_VIOLENCES_HORS_CONSOLE, evaluerConformite } from "./conformite-service";
 // Le trio certifiant (3/7/16) est DERIVE de ce registre par la garde off.1,
 // jamais recopie : un predicat recopie diverge, ce depot l'a paye 4 fois.
-import { INDICATEURS_RNQ, MOTIFS_NON_APPLICABLE } from "./indicateurs-registre";
+import { INDICATEURS_RNQ, MOTIFS_NON_APPLICABLE, choisirReferentiel } from "./indicateurs-registre";
 
 type MockPrisma = {
   formation: { count: ReturnType<typeof vi.fn>; findMany: ReturnType<typeof vi.fn> };
@@ -302,9 +302,13 @@ function evaluationInitiale(
 describe("evaluerConformite", () => {
   beforeEach(setupEmpty);
 
-  it("retourne exactement 32 indicateurs", async () => {
+  it("retourne exactement les indicateurs de la grille du jour (32 ou 33)", async () => {
+    // Aucune date d'audit configurée (le double rend "") : c'est le jour qui
+    // choisit. Les deux grilles sont vérifiées, date fixée, plus bas.
     const result = await evaluerConformite();
-    expect(result.indicateurs).toHaveLength(32);
+    expect(result.referentiel.origine).toBe("date_du_jour");
+    expect(result.indicateurs).toHaveLength(result.referentiel.nbIndicateurs);
+    expect(result.referentiel.nbIndicateurs).toBe(choisirReferentiel("", new Date()).nbIndicateurs);
   });
 
   it("tous les numéros de 1 à 32 sont présents", async () => {
@@ -790,17 +794,21 @@ describe("evaluerConformite", () => {
     }
   });
 
-  it("chaque indicateur a un critere dans [1..7]", async () => {
+  it("chaque indicateur a un critere dans [1..7] (sauf le 33 : critère non relevé)", async () => {
     const result = await evaluerConformite();
     for (const ind of result.indicateurs) {
+      if (ind.numero === 33) {
+        expect(ind.critere).toBeNull();
+        continue;
+      }
       expect(ind.critere).toBeGreaterThanOrEqual(1);
       expect(ind.critere).toBeLessThanOrEqual(7);
     }
   });
 
-  it("nbApplicables ≤ 32", async () => {
+  it("nbApplicables ≤ nombre d'indicateurs de la grille", async () => {
     const result = await evaluerConformite();
-    expect(result.nbApplicables).toBeLessThanOrEqual(32);
+    expect(result.nbApplicables).toBeLessThanOrEqual(result.indicateurs.length);
   });
 
   it("nbCouverts ≤ nbApplicables", async () => {
@@ -816,7 +824,7 @@ describe("evaluerConformite", () => {
       const result = await evaluerConformite();
       expect(result.nbCouverts).toBe(0);
       expect(result.scorePct).toBe(0);
-      expect(result.indicateurs).toHaveLength(32);
+      expect(result.indicateurs).toHaveLength(choisirReferentiel("", new Date()).nbIndicateurs);
       // En mode stub, aucun mock prisma ne doit être appelé
       expect(mockP.formation.count).not.toHaveBeenCalled();
     } finally {
@@ -2122,5 +2130,101 @@ describe("evaluerConformite", () => {
     ]);
     const result = await evaluerConformite();
     expect(result.indicateurs.find((i) => i.numero === 5)?.statut).toBe("couvert");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Grille du référentiel choisie par la DATE D'AUDIT (décret n° 2026-728)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerConformite — la grille suit la date d'audit configurée", () => {
+  beforeEach(setupEmpty);
+
+  /** Le double de configuration : seule la date d'audit est renseignée. */
+  function auditLe(jour: string): void {
+    mockGetConfig.mockImplementation((key: string) =>
+      Promise.resolve(key === "date_audit_referentiel" ? jour : ""),
+    );
+  }
+
+  /** Une revue VALIDÉE irréprochable, sauf l'analyse des risques. */
+  function revueValideeSansRisques(): void {
+    mockP.revueDirection.findFirst.mockResolvedValue({
+      annee: new Date().getFullYear(),
+      participants: ["Williams Jullin — Président"],
+      decisions: [{ decision: "Renforcer le suivi des réclamations" }],
+      planActions: [
+        {
+          action: "Revoir le questionnaire à chaud",
+          responsable: "W. Jullin",
+          echeance: "2026-12-31",
+        },
+      ],
+      risques: [],
+    });
+  }
+
+  it("audit le 30/10/2026 → 32 indicateurs, grille V9", async () => {
+    auditLe("2026-10-30");
+    const result = await evaluerConformite();
+    expect(result.referentiel).toMatchObject({
+      grille: "rnq-v9",
+      origine: "date_audit",
+      jourReference: "2026-10-30",
+    });
+    expect(result.indicateurs).toHaveLength(32);
+    expect(result.indicateurs.some((i) => i.numero === 33)).toBe(false);
+  });
+
+  it("audit le 05/11/2026 → 33 indicateurs, le 33 non applicable avec le motif apprentissage", async () => {
+    auditLe("2026-11-05");
+    const result = await evaluerConformite();
+    expect(result.referentiel.grille).toBe("rnq-2026");
+    expect(result.indicateurs).toHaveLength(33);
+    const i33 = result.indicateurs.find((i) => i.numero === 33);
+    expect(i33?.statut).toBe("non_applicable");
+    expect(i33?.super).toBe(false);
+    expect(i33?.motifNonApplicable).toBe(MOTIFS_NON_APPLICABLE.app);
+    // Critère non relevé dans le texte consulté : jamais un critère déduit.
+    expect(i33?.critere).toBeNull();
+    expect(result.indicateurs.find((i) => i.numero === 32)?.libelle).toContain(
+      "analyse des risques sur la qualité des formations délivrées",
+    );
+  });
+
+  it("le score se calcule sur la grille choisie : même dénominateur, le 33 n'y entre pas", async () => {
+    auditLe("2026-10-30");
+    const avant = await evaluerConformite();
+    auditLe("2026-11-05");
+    const apres = await evaluerConformite();
+    expect(apres.nbApplicables).toBe(avant.nbApplicables);
+    expect(apres.nbApplicables).toBe(
+      apres.indicateurs.filter((i) => i.statut !== "non_applicable").length,
+    );
+  });
+
+  it("indicateur 12 : la mention P-12 hors console sur la grille 2026, sans changer le statut", async () => {
+    auditLe("2026-10-30");
+    const avant = (await evaluerConformite()).indicateurs.find((i) => i.numero === 12);
+    auditLe("2026-11-05");
+    const apres = (await evaluerConformite()).indicateurs.find((i) => i.numero === 12);
+    expect(avant?.preuves).not.toContain(MENTION_OFF12_VIOLENCES_HORS_CONSOLE);
+    expect(apres?.preuves).toContain(MENTION_OFF12_VIOLENCES_HORS_CONSOLE);
+    expect(MENTION_OFF12_VIOLENCES_HORS_CONSOLE).toContain(
+      "procédure P-12 (AXI-QUA-P12) hors console",
+    );
+    expect(apres?.statut).toBe(avant?.statut);
+  });
+
+  it("indicateur 32 : l'analyse des risques est exigée par la grille 2026, pas par le calendrier", async () => {
+    revueValideeSansRisques();
+    auditLe("2026-10-30");
+    const v9 = (await evaluerConformite()).indicateurs.find((i) => i.numero === 32);
+    revueValideeSansRisques();
+    auditLe("2026-11-05");
+    const g2026 = (await evaluerConformite()).indicateurs.find((i) => i.numero === 32);
+    expect(v9?.statut).toBe("couvert");
+    expect(g2026?.statut).toBe("a_completer");
+    expect(g2026?.preuves.join(" ")).toMatch(/Aucune analyse de risques/);
   });
 });

@@ -36,6 +36,12 @@ vi.mock("@/server/qualiopi/registres/revue-direction-service", () => ({
   getRevueParId: vi.fn(),
 }));
 
+// La date d'audit configurée choisit la grille (et donc l'exigence de
+// l'analyse des risques) — comme pour la matrice.
+vi.mock("@/server/qualiopi/config/site-settings", () => ({
+  getQualiopiConfig: vi.fn().mockResolvedValue(""),
+}));
+
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn().mockResolvedValue({ userId: "admin-uuid" }),
   requireHabilitation: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
@@ -43,12 +49,21 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
 }));
 
 import { updateRevue, getRevueParId } from "@/server/qualiopi/registres/revue-direction-service";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { logQualiopiActivity, requireAdminWrite } from "@/server/actions/qualiopi/_guards";
 import { updateRevueDirectionAction } from "@/server/actions/qualiopi/revue-direction";
 import type { ActionAmelioration } from "./plan-actions";
 
 const mockUpdateRevue = updateRevue as ReturnType<typeof vi.fn>;
 const mockGetRevueParId = getRevueParId as ReturnType<typeof vi.fn>;
+const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
+
+/** Le double de configuration : seule la date d'audit est renseignée. */
+function auditLe(jour: string): void {
+  mockGetConfig.mockImplementation((key: string) =>
+    Promise.resolve(key === "date_audit_referentiel" ? jour : ""),
+  );
+}
 const mockRequireAdminWrite = requireAdminWrite as ReturnType<typeof vi.fn>;
 const mockLog = logQualiopiActivity as ReturnType<typeof vi.fn>;
 
@@ -83,6 +98,7 @@ beforeEach(() => {
   mockLog.mockResolvedValue(undefined);
   mockUpdateRevue.mockResolvedValue({ id: ID });
   mockGetRevueParId.mockResolvedValue(revueComplete());
+  mockGetConfig.mockResolvedValue("");
 });
 
 describe("updateRevueDirectionAction — le statut est un enum, pas du texte libre", () => {
@@ -178,8 +194,8 @@ describe("updateRevueDirectionAction — l'analyse de risques arrive jusqu'à la
   const RISQUE = {
     intitule: "Indisponibilité du formateur unique sur une session engagée",
     cause: "Un seul intervenant habilité",
-    gravite: "élevée",
-    probabilite: "moyenne",
+    gravite: 3,
+    probabilite: 2,
     maitrise: "Constituer un vivier de deux sous-traitants habilités",
     echeance: "2026-12-15",
     responsable: "W. Jullin",
@@ -194,9 +210,90 @@ describe("updateRevueDirectionAction — l'analyse de risques arrive jusqu'à la
 
     expect(result).toEqual({ data: { id: ID } });
     const [, input] = mockUpdateRevue.mock.calls[0] as [string, { risques?: unknown[] }];
+    // Écrit tel quel, plus la date RÉELLE de la saisie, posée par le serveur.
     expect(input.risques, "l'analyse de risques saisie à l'écran n'est pas écrite en base").toEqual(
-      [RISQUE],
+      [{ ...RISQUE, misAJourLe: expect.any(String) }],
     );
+  });
+
+  // 🔴 Relecture PR #1268 — la cotation n'était pas bornée côté serveur : 99,
+  // -5 et une clé arbitraire étaient enregistrés dans la pièce remise à
+  // l'auditeur.
+  it.each([
+    ["gravité 99", { ...RISQUE, gravite: 99 }],
+    ["probabilité -5", { ...RISQUE, probabilite: -5 }],
+    ["gravité 2,5", { ...RISQUE, gravite: 2.5 }],
+    ["gravité en toutes lettres", { ...RISQUE, gravite: "élevée" }],
+    ["clé inconnue", { ...RISQUE, valideParAuditeur: true }],
+    ["intitulé de 301 caractères", { ...RISQUE, intitule: "x".repeat(301) }],
+  ])("🔴 refuse un risque hors schéma (%s) — rien n'est écrit", async (_cas, risque) => {
+    const result = await updateRevueDirectionAction({ id: ID, risques: [risque] });
+    expect("error" in result).toBe(true);
+    expect(mockUpdateRevue).not.toHaveBeenCalled();
+  });
+
+  it("écrit les seuls champs connus, cote bornée, date du serveur", async () => {
+    await updateRevueDirectionAction({
+      id: ID,
+      risques: [{ ...RISQUE, gravite: 4, probabilite: 1, misAJourLe: "2026-08-03T00:00:00.000Z" }],
+    });
+    const [, input] = mockUpdateRevue.mock.calls[0] as [
+      string,
+      { risques: Record<string, unknown>[] },
+    ];
+    const ecrit = input.risques[0] as Record<string, unknown>;
+    expect(Object.keys(ecrit).sort()).toEqual([
+      "cause",
+      "echeance",
+      "gravite",
+      "intitule",
+      "maitrise",
+      "misAJourLe",
+      "probabilite",
+      "responsable",
+    ]);
+    expect(ecrit["gravite"]).toBe(4);
+    expect(ecrit["misAJourLe"]).not.toBe("2026-08-03T00:00:00.000Z");
+  });
+
+  it("les risques stockés inchangés sont réécrits À L'IDENTIQUE (les 10 du 30/09)", async () => {
+    const stockes = [
+      { intitule: "Dépendance à un formateur unique", maitrise: "Vivier de sous-traitants" },
+      { intitule: "Panne de la chaîne d'e-mails", maitrise: "Relance manuelle" },
+    ];
+    mockGetRevueParId.mockResolvedValue({ ...revueComplete(), risques: stockes });
+    await updateRevueDirectionAction({
+      id: ID,
+      // Ce que l'écran renvoie : les champs lus, sans date.
+      risques: stockes.map((r) => ({
+        ...r,
+        cause: "",
+        gravite: null,
+        probabilite: null,
+        responsable: "",
+        echeance: null,
+      })),
+    });
+    const [, input] = mockUpdateRevue.mock.calls[0] as [string, { risques: unknown[] }];
+    expect(input.risques).toEqual(stockes);
+    expect(input.risques[0]).toBe(stockes[0]);
+  });
+
+  it("la garde suit la DATE D'AUDIT configurée, comme la matrice", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    // Avant le 1er novembre, mais audit fixé au 05/11 : grille 2026, risques exigés.
+    vi.setSystemTime(new Date("2026-10-15T09:00:00.000Z"));
+    auditLe("2026-11-05");
+    mockGetRevueParId.mockResolvedValue({ ...revueComplete(), risques: [] });
+    const refus = await updateRevueDirectionAction({ id: ID, statut: "validee" });
+    expect("error" in refus).toBe(true);
+
+    // Après le 1er novembre, mais audit tenu le 28/10 : grille V9, pas exigés.
+    vi.setSystemTime(APRES_ECHEANCE);
+    auditLe("2026-10-28");
+    const ok = await updateRevueDirectionAction({ id: ID, statut: "validee" });
+    expect(ok).toEqual({ data: { id: ID } });
+    mockGetConfig.mockResolvedValue("");
   });
 
   it("n'efface pas les risques stockés quand la mise à jour ne les renvoie pas", async () => {

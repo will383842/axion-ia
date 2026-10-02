@@ -1,5 +1,6 @@
 /**
- * Qualiopi — Matrice des 32 indicateurs RNQ V9, composant partagé (phase 2
+ * Qualiopi — Matrice des indicateurs du référentiel national qualité (grille
+ * appliquée : 32 ou 33 indicateurs selon la date), composant partagé (phase 2
  * de l'audit UX console, 2026-08-01).
  *
  * Avant : « Conformité » (tableaux denses) et « Mode auditeur » (cartes +
@@ -20,6 +21,7 @@ import { libelleTypeDocument } from "@/server/qualiopi/documents/libelles-type-d
 import { registresDeIndicateur } from "@/server/qualiopi/conformite/registres-par-indicateur";
 // Intitulés officiels des 7 critères : source unique, le registre RNQ.
 import { libelleCritere } from "@/server/qualiopi/conformite/indicateurs-registre";
+import { RUBRIQUE_SANS_CRITERE } from "@/server/qualiopi/conformite/indicateurs-registre";
 import { Star } from "lucide-react";
 
 export type MatriceVue = "tableau" | "manifeste";
@@ -120,8 +122,8 @@ function SuperStar({ marge = true }: { marge?: boolean }): React.ReactElement {
 
 function groupParCritere(
   indicateurs: ReadonlyArray<IndicateurManifeste>,
-): Map<number, IndicateurManifeste[]> {
-  const map = new Map<number, IndicateurManifeste[]>();
+): Map<number | null, IndicateurManifeste[]> {
+  const map = new Map<number | null, IndicateurManifeste[]>();
   for (const ind of indicateurs) {
     const groupe = map.get(ind.critere) ?? [];
     groupe.push(ind);
@@ -504,20 +506,24 @@ export function MatriceIndicateurs({ indicateurs, vue, baseHref }: Props): React
 
   return (
     <>
-      {CRITERE_IDS.map((critereId) => {
+      {[...CRITERE_IDS, null].map((critereId) => {
         const lignes = parCritere.get(critereId);
         if (!lignes || lignes.length === 0) return null;
         return (
           <section
-            key={critereId}
+            key={critereId ?? "sans-critere"}
             className="mb-[var(--space-admin-8)]"
-            aria-labelledby={`critere-${critereId}-titre`}
+            // L'indicateur 33 n'a pas de critère relevé : sa rubrique porte un
+            // autre identifiant que les sept critères, jamais « critere-7 ».
+            aria-labelledby={
+              critereId === null ? "rubrique-sans-critere-titre" : `critere-${critereId}-titre`
+            }
           >
             <h2
-              id={`critere-${critereId}-titre`}
+              id={critereId === null ? "rubrique-sans-critere-titre" : `critere-${critereId}-titre`}
               className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]"
             >
-              {libelleCritere(critereId)}
+              {critereId === null ? RUBRIQUE_SANS_CRITERE : libelleCritere(critereId)}
             </h2>
             {vue === "tableau" ? (
               <VueTableau lignes={lignes} baseHref={baseHref} />

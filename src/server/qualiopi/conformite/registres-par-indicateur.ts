@@ -30,9 +30,9 @@
  *
  * ## Exhaustivité
  *
- * Chaque numéro des 32 indicateurs porte une entrée, **y compris vide** :
- * `registres-par-indicateur.spec.ts` le vérifie en dérivant la liste de
- * `INDICATEURS_RNQ`, jamais en la recopiant. Un indicateur ajouté au registre
+ * Chaque numéro des 33 indicateurs (les deux grilles) porte une entrée, **y
+ * compris vide** : `registres-par-indicateur.spec.ts` le vérifie en dérivant la
+ * liste de `INDICATEURS_RNQ_2026`, jamais en la recopiant. Un indicateur ajouté au registre
  * force donc une décision explicite — « voici où on le vérifie » ou « nulle
  * part, et voici pourquoi » — au lieu de disparaître en silence.
  */
@@ -167,9 +167,12 @@ export const REGISTRES_PAR_INDICATEUR: Record<number, readonly RegistreIndicateu
   32: [
     {
       chemin: "/qualiopi/revue-direction",
-      libelle: "Revues de direction et plan d'amélioration continue",
+      libelle: "Revues de direction, amélioration continue et analyse des risques",
     },
   ],
+  // Grille du 1er novembre 2026 seulement. Apprentissage (colonne 4°) : aucun
+  // registre, l'organisme n'en dispense pas.
+  33: [],
 };
 
 /** Les registres d'un indicateur — jamais `undefined`, pour l'appelant JSX. */

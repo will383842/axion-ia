@@ -9,7 +9,7 @@
  */
 
 import React from "react";
-import { Document, Text } from "@react-pdf/renderer";
+import { Document, Text, View } from "@react-pdf/renderer";
 import {
   QualiopiPage,
   DataTable,
@@ -29,6 +29,16 @@ export interface RegistreData {
   colonnes: string[];
   /** Lignes du registre — chaque ligne suit l'ordre de `colonnes`. */
   lignes: string[][];
+  /**
+   * Tableaux complémentaires, rendus APRÈS le tableau principal (ex. l'analyse
+   * des risques de chaque revue de direction, qui n'a pas les mêmes colonnes).
+   */
+  sections?: {
+    titre: string;
+    texte?: string;
+    colonnes: string[];
+    lignes: string[][];
+  }[];
   /** Mention de bas de page (contexte réglementaire de l'export). */
   mentionBasDePage?: string;
   /** Date d'édition formatée (fr-FR) — affichée dans l'encart numéro. */
@@ -68,6 +78,21 @@ export function RegistrePdf({
         ) : (
           <DataTable columns={columns} rows={rows} />
         )}
+
+        {(data.sections ?? []).map((section, i) => (
+          <View key={`section-${i}`} style={pdfStyles.section}>
+            <Text style={pdfStyles.sectionTitle}>{section.titre}</Text>
+            {section.texte ? <Text style={pdfStyles.paragraph}>{section.texte}</Text> : null}
+            {section.lignes.length > 0 ? (
+              <DataTable
+                columns={section.colonnes.map((header, j) => ({ key: `c${j}`, header }))}
+                rows={section.lignes.map((ligne) =>
+                  Object.fromEntries(ligne.map((valeur, j) => [`c${j}`, valeur || "—"])),
+                )}
+              />
+            ) : null}
+          </View>
+        ))}
 
         {data.mentionBasDePage ? (
           <Text style={pdfStyles.legalNote}>{data.mentionBasDePage}</Text>
