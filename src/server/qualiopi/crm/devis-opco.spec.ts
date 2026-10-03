@@ -218,7 +218,7 @@ describe("estimateOpcoCoverage — barème central (Lot 5)", () => {
       montantHtCents: 40_000,
       opco: "afdas",
     });
-    expect(mockResolve).toHaveBeenCalledWith("afdas", expect.any(Date));
+    expect(mockResolve).toHaveBeenCalledWith("afdas", expect.any(Date), {});
     expect(r.montantPriseEnChargeCents).toBe(28_000);
   });
 
@@ -262,5 +262,90 @@ describe("estimateOpcoCoverage — barème central (Lot 5)", () => {
     });
     expect(r.montantPriseEnChargeCents).toBe(300_000);
     expect(r.resteAChargeCents).toBe(600_000);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Lot A4 — barèmes par branche (IDCC) et par taille : origine + avertissement.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const AVERTISSEMENT_SANS_BAREME =
+  "Estimation indicative : aucun barème relevé pour cet OPCO et cette branche, à confirmer auprès de l'OPCO.";
+
+describe("estimateOpcoCoverage — origine de l'estimation (lot A4)", () => {
+  it("transmet l'IDCC et l'effectif au résolveur", async () => {
+    mockResolve.mockResolvedValue(baremeCentral());
+    await estimateOpcoCoverage({
+      nbParticipants: 1,
+      dureeHeures: 7,
+      modalite: "intra",
+      montantHtCents: 40_000,
+      opco: "akto",
+      idcc: "1516",
+      effectif: 12,
+    });
+    expect(mockResolve).toHaveBeenCalledWith("akto", expect.any(Date), {
+      idcc: "1516",
+      effectif: 12,
+    });
+  });
+
+  it("barème trouvé → origine `bareme`, sans avertissement", async () => {
+    mockResolve.mockResolvedValue(baremeCentral());
+    const r = await estimateOpcoCoverage({
+      nbParticipants: 1,
+      dureeHeures: 7,
+      modalite: "intra",
+      montantHtCents: 40_000,
+      opco: "afdas",
+    });
+    expect(r.origine).toBe("bareme");
+    expect(r.avertissement).toBeUndefined();
+  });
+
+  it("aucun barème → montant INCHANGÉ (réglages par défaut), origine `reglage_par_defaut` + avertissement", async () => {
+    mockResolve.mockResolvedValue(null);
+    const r = await estimateOpcoCoverage({
+      nbParticipants: 1,
+      dureeHeures: 7,
+      modalite: "intra",
+      montantHtCents: 40_000,
+      opco: "afdas",
+    });
+    // Même chiffre qu'avant le lot : 1 × 7h × 40 €/h = 28 000 ¢.
+    expect(r.montantPriseEnChargeCents).toBe(28_000);
+    expect(r.resteAChargeCents).toBe(12_000);
+    expect(r.origine).toBe("reglage_par_defaut");
+    expect(r.avertissement).toBe(AVERTISSEMENT_SANS_BAREME);
+  });
+
+  it("sans OPCO connu → origine `reglage_par_defaut` (aucun barème ne peut s'appliquer)", async () => {
+    const r = await estimateOpcoCoverage({
+      nbParticipants: 1,
+      dureeHeures: 7,
+      modalite: "intra",
+      montantHtCents: 20_000,
+    });
+    expect(r.montantPriseEnChargeCents).toBe(20_000);
+    expect(r.origine).toBe("reglage_par_defaut");
+  });
+
+  it("effectif 50 → 0 €, origine `hors_fonds_legaux`, avertissement L6332-17", async () => {
+    mockResolve.mockResolvedValue(baremeCentral());
+    const r = await estimateOpcoCoverage({
+      nbParticipants: 2,
+      dureeHeures: 7,
+      modalite: "intra",
+      montantHtCents: 40_000,
+      opco: "afdas",
+      effectif: 50,
+    });
+    expect(r.montantPriseEnChargeCents).toBe(0);
+    expect(r.resteAChargeCents).toBe(40_000);
+    expect(r.origine).toBe("hors_fonds_legaux");
+    expect(r.avertissement).toBe(
+      "Entreprise de 50 salariés ou plus : pas de financement OPCO sur les fonds légaux du plan de développement des compétences (hors versements volontaires ou conventionnels).",
+    );
+    expect(mockResolve).not.toHaveBeenCalled();
   });
 });

@@ -37,6 +37,8 @@ function bareme(over: Record<string, unknown> = {}) {
     id: "b1",
     opco: "atlas",
     perimetre: null,
+    idcc: null,
+    trancheEffectif: "tous",
     intraHoraireCents: 4000,
     interPresentielCents: 2500,
     interDistancielCents: 1500,
@@ -68,22 +70,40 @@ describe("resolveBaremeOpco", () => {
     expect(await resolveBaremeOpco(undefined, ASOF)).toBeNull();
   });
 
-  it("interroge la version en vigueur (dateEffet <= asOf, effectiveTo null|>asOf, tri desc)", async () => {
-    mockPrisma.baremeOpco.findFirst.mockResolvedValue(bareme());
+  it("interroge les versions en vigueur de l'OPCO (sans IDCC, tranche `tous`), tri desc", async () => {
+    mockPrisma.baremeOpco.findMany.mockResolvedValue([bareme()]);
     const r = await resolveBaremeOpco("atlas", ASOF);
-    expect(r).not.toBeNull();
-    expect(mockPrisma.baremeOpco.findFirst).toHaveBeenCalledWith({
+    expect(r?.id).toBe("b1");
+    expect(mockPrisma.baremeOpco.findMany).toHaveBeenCalledWith({
       where: {
         opco: "atlas",
         dateEffet: { lte: ASOF },
-        OR: [{ effectiveTo: null }, { effectiveTo: { gt: ASOF } }],
+        AND: [
+          { OR: [{ effectiveTo: null }, { effectiveTo: { gt: ASOF } }] },
+          { OR: [{ idcc: null }] },
+        ],
+        trancheEffectif: { in: ["tous"] },
       },
       orderBy: { dateEffet: "desc" },
     });
   });
 
+  it("lot A4 — avec IDCC et effectif : candidats de branche + tranche exacte, branche prioritaire", async () => {
+    mockPrisma.baremeOpco.findMany.mockResolvedValue([
+      bareme({ id: "opco-11-49", idcc: null, trancheEffectif: "de_11_a_49" }),
+      bareme({ id: "branche-tous", idcc: "1516", trancheEffectif: "tous" }),
+    ]);
+    const r = await resolveBaremeOpco("akto", ASOF, { idcc: "1516", effectif: 20 });
+    expect(r?.id).toBe("branche-tous");
+    const appel = mockPrisma.baremeOpco.findMany.mock.calls[0]?.[0] as {
+      where: { AND: unknown[]; trancheEffectif: unknown };
+    };
+    expect(appel.where.AND[1]).toEqual({ OR: [{ idcc: null }, { idcc: "1516" }] });
+    expect(appel.where.trancheEffectif).toEqual({ in: ["de_11_a_49", "tous"] });
+  });
+
   it("stub-safe : renvoie null si la DB throw", async () => {
-    mockPrisma.baremeOpco.findFirst.mockRejectedValue(new Error("db down"));
+    mockPrisma.baremeOpco.findMany.mockRejectedValue(new Error("db down"));
     expect(await resolveBaremeOpco("atlas", ASOF)).toBeNull();
   });
 });
@@ -113,6 +133,16 @@ describe("listBaremesEnVigueur", () => {
     ]);
     const rows = await listBaremesEnVigueur(ASOF);
     expect(rows.map((r) => r.id).sort()).toEqual(["akto-1", "atlas-new"]);
+  });
+
+  it("lot A4 — garde un barème par (OPCO, IDCC, tranche) : la branche ne masque pas l'OPCO", async () => {
+    mockPrisma.baremeOpco.findMany.mockResolvedValue([
+      bareme({ id: "akto-1516", opco: "akto", idcc: "1516" }),
+      bareme({ id: "akto-inter", opco: "akto" }),
+      bareme({ id: "akto-inter-11", opco: "akto", trancheEffectif: "de_11_a_49" }),
+    ]);
+    const rows = await listBaremesEnVigueur(ASOF);
+    expect(rows.map((r) => r.id).sort()).toEqual(["akto-1516", "akto-inter", "akto-inter-11"]);
   });
 
   it("stub-safe → []", async () => {
