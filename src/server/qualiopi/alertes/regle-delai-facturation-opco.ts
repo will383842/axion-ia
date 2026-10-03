@@ -12,6 +12,7 @@
  * la date limite suffisent.
  */
 
+import { dayKeyInParis } from "@/lib/calendar-grid";
 import { prisma } from "@/lib/prisma";
 import {
   dateLimiteFacturation,
@@ -23,8 +24,12 @@ import type { AlerteCandidate } from "./evaluateur";
 export const SEUIL_ALERTE_FACTURATION_JOURS = 15;
 
 const JOUR_MS = 24 * 60 * 60 * 1000;
-/** Le délai le plus long du référentiel est de 120 jours : 365 couvre large. */
-const FENETRE_JOURS = 365;
+/**
+ * Fenêtre de lecture : trois ans. Une alerte ne doit PAS se refermer seule
+ * parce que la session sort de la fenêtre alors qu'aucune facture n'est émise
+ * (relecture A09) ; trois ans couvrent la prescription des créances courantes.
+ */
+const FENETRE_JOURS = 3 * 365;
 const PLAFOND_SESSIONS = 500;
 
 type SessionLue = {
@@ -45,8 +50,13 @@ export function candidatsDelaiFacturationOpco(
     if (!isOpcoId(opco)) continue;
     const limite = dateLimiteFacturation(opco, s.dateFin);
     if (!limite) continue;
-    if (now.getTime() < limite.getTime() - SEUIL_ALERTE_FACTURATION_JOURS * JOUR_MS) continue;
-    const depassee = now.getTime() > limite.getTime();
+    // Comparaison au JOUR CIVIL de Paris : le jour de la date limite compte encore.
+    const aujourdhui = dayKeyInParis(now);
+    const seuil = dayKeyInParis(
+      new Date(limite.getTime() - SEUIL_ALERTE_FACTURATION_JOURS * JOUR_MS),
+    );
+    if (aujourdhui < seuil) continue;
+    const depassee = aujourdhui > dayKeyInParis(limite);
     const date = limite.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" });
     alertes.push({
       code: "delai_facturation_opco",

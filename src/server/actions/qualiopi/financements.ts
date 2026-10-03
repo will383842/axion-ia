@@ -340,6 +340,15 @@ export async function setFinancementSessionAction(input: {
   if (changementOuvreUnDossier(avant?.financementType, fields.financementType)) {
     try {
       const dossier = await creerDossierDepuisSession(sessionId);
+      // Chantier OPCO A3 : une subrogation confirmée par l'accord écrit au moment
+      // même où le dossier s'ouvre est portée sur le dossier créé (sinon elle ne
+      // vivait que sur la session jusqu'au prochain enregistrement).
+      if (confirmationAccord && !confirmationAccord.dossierId) {
+        await prisma.dossierFinancement.update({
+          where: { id: dossier.id },
+          data: { subrogationConfirmeeParAccord: true },
+        });
+      }
       await logQualiopiActivity({
         action: "qualiopi.dossier_financement.ouvert_auto",
         targetType: "DossierFinancement",

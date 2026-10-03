@@ -45,6 +45,11 @@ describe("candidatsDelaiFacturationOpco", () => {
     expect(a?.message).toContain("30/12/2026");
   });
 
+  it("le JOUR MÊME de la date limite, en fin de journée à Paris → encore « important »", () => {
+    const [a] = candidatsDelaiFacturationOpco([ATLAS], new Date("2026-12-30T21:30:00.000Z"));
+    expect(a?.niveau).toBe("important");
+  });
+
   it("limite dépassée → critique", () => {
     const [a] = candidatsDelaiFacturationOpco([ATLAS], J("2026-12-31"));
     expect(a?.niveau).toBe("critique");
