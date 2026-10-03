@@ -4959,53 +4959,66 @@ enum DevisStatut {
 
 /// Client / prospect CRM. NAF → OPCO inféré (cf. crm/naf-opco.ts).
 model Client {
-  id                         String       @id @default(uuid()) @db.Uuid
+  id                         String          @id @default(uuid()) @db.Uuid
   /// Numérotation séquentielle AXI-CLI-NNN.
-  numero                     String       @unique @db.VarChar(40)
+  numero                     String          @unique @db.VarChar(40)
   /// entreprise (B2B) | particulier (B2C). Pour un particulier, raisonSociale = "Prénom Nom".
-  type                       ClientType   @default(entreprise)
-  raisonSociale              String       @map("raison_sociale") @db.VarChar(250)
-  siret                      String?      @db.VarChar(14)
+  type                       ClientType      @default(entreprise)
+  raisonSociale              String          @map("raison_sociale") @db.VarChar(250)
+  siret                      String?         @db.VarChar(14)
   /// SIREN (9 chiffres) — clé de routage annuaire facturation électronique 2026.
-  siren                      String?      @db.VarChar(9)
+  siren                      String?         @db.VarChar(9)
   /// N° TVA intracommunautaire du client (B2B, EN 16931 BT-48).
-  tvaIntracom                String?      @map("tva_intracom") @db.VarChar(40)
-  nafCode                    String?      @map("naf_code") @db.VarChar(6)
-  conventionCollective       String?      @map("convention_collective") @db.VarChar(200)
+  tvaIntracom                String?         @map("tva_intracom") @db.VarChar(40)
+  nafCode                    String?         @map("naf_code") @db.VarChar(6)
+  conventionCollective       String?         @map("convention_collective") @db.VarChar(200)
   /// Code IDCC de la branche (précise la convention collective — saisi, NAF non fiable). [T18]
-  idcc                       String?      @db.VarChar(10)
-  secteur                    String?      @db.VarChar(200)
+  idcc                       String?         @db.VarChar(10)
+  secteur                    String?         @db.VarChar(200)
   taille                     CompanySize?
-  adresse                    String?      @db.Text
+  adresse                    String?         @db.Text
   /// Adresse structurée (EN 16931 BG-8) — remplace progressivement `adresse`
   /// (champ libre conservé en repli d'affichage).
-  adresseRue                 String?      @map("adresse_rue") @db.VarChar(300)
-  adresseCodePostal          String?      @map("adresse_code_postal") @db.VarChar(12)
-  adresseVille               String?      @map("adresse_ville") @db.VarChar(120)
-  adressePaysCode            String?      @map("adresse_pays_code") @db.VarChar(2)
+  adresseRue                 String?         @map("adresse_rue") @db.VarChar(300)
+  adresseCodePostal          String?         @map("adresse_code_postal") @db.VarChar(12)
+  adresseVille               String?         @map("adresse_ville") @db.VarChar(120)
+  adressePaysCode            String?         @map("adresse_pays_code") @db.VarChar(2)
   /// Entité du secteur public (mairie, université, collectivité…) → factures à
   /// déposer sur Chorus Pro (obligation en vigueur, distincte de la réforme 2026).
-  estPublic                  Boolean      @default(false) @map("est_public")
-  contactNom                 String?      @map("contact_nom") @db.VarChar(200)
-  contactEmail               String?      @map("contact_email") @db.Citext
-  contactTelephone           String?      @map("contact_telephone") @db.VarChar(40)
-  contactFonction            String?      @map("contact_fonction") @db.VarChar(150)
+  estPublic                  Boolean         @default(false) @map("est_public")
+  contactNom                 String?         @map("contact_nom") @db.VarChar(200)
+  contactEmail               String?         @map("contact_email") @db.Citext
+  contactTelephone           String?         @map("contact_telephone") @db.VarChar(40)
+  contactFonction            String?         @map("contact_fonction") @db.VarChar(150)
   /// OPCO inféré depuis le code NAF (ou saisi manuellement).
-  opcoIdentifie              String?      @map("opco_identifie") @db.VarChar(60)
-  opcoNumeroAdherent         String?      @map("opco_numero_adherent") @db.VarChar(80)
-  opcoEnveloppeAnnuelleCents Int?         @map("opco_enveloppe_annuelle_cents")
-  statut                     ClientStatut @default(prospect)
-  source                     String?      @db.VarChar(120)
+  opcoIdentifie              String?         @map("opco_identifie") @db.VarChar(60)
+  opcoNumeroAdherent         String?         @map("opco_numero_adherent") @db.VarChar(80)
+  opcoEnveloppeAnnuelleCents Int?            @map("opco_enveloppe_annuelle_cents")
+  /// OPCO TYPÉ (lot OPCO A1) : l'un des 11 du référentiel, choisi en console.
+  /// `opcoIdentifie` (texte libre, inféré ou saisi) est CONSERVÉ tel quel : rien
+  /// n'y est recopié ni écrasé. Un rapprochement en LECTURE SEULE propose
+  /// « OPCO suggéré » quand le texte libre désigne un OPCO sans ambiguïté.
+  opco                       Opco?           @map("opco")
+  /// Effectif salarié de l'entreprise, au niveau SIREN — gouverne les seuils
+  /// OPCO (< 11 / 11-49 / 50 et plus). `null` = inconnu, jamais « 0 par défaut ».
+  /// CHECK (effectif >= 0) posé NOT VALID par la migration.
+  effectif                   Int?            @map("effectif")
+  /// D'où vient l'effectif : saisie console ou relevé INSEE (lot ultérieur).
+  effectifSource             EffectifSource? @map("effectif_source")
+  /// Date du relevé de l'effectif (jour civil de Paris à la saisie).
+  effectifReleveLe           DateTime?       @map("effectif_releve_le") @db.Date
+  statut                     ClientStatut    @default(prospect)
+  source                     String?         @db.VarChar(120)
   /// Contexte injecté au Formation Engine pour la génération sur-mesure.
-  contexteIa                 String?      @map("contexte_ia") @db.Text
-  besoinsIdentifies          Json?        @map("besoins_identifies")
-  notes                      String?      @db.Text
+  contexteIa                 String?         @map("contexte_ia") @db.Text
+  besoinsIdentifies          Json?           @map("besoins_identifies")
+  notes                      String?         @db.Text
   /// Agrégats commerciaux (mis à jour à la clôture des sessions).
-  nbSessions                 Int          @default(0) @map("nb_sessions")
-  nbStagiaires               Int          @default(0) @map("nb_stagiaires")
-  caCents                    Int          @default(0) @map("ca_cents")
-  createdAt                  DateTime     @default(now()) @map("created_at")
-  updatedAt                  DateTime     @updatedAt @map("updated_at")
+  nbSessions                 Int             @default(0) @map("nb_sessions")
+  nbStagiaires               Int             @default(0) @map("nb_stagiaires")
+  caCents                    Int             @default(0) @map("ca_cents")
+  createdAt                  DateTime        @default(now()) @map("created_at")
+  updatedAt                  DateTime        @updatedAt @map("updated_at")
 
   devis                  Devis[]
   formations             Formation[]
@@ -7651,32 +7664,41 @@ enum DossierPayeurType {
 /// `TrainingSession`/`Enrollment` restent la source des validations Qualiopi ;
 /// ce modèle est la vue de PILOTAGE (qui paie, combien, où en est l'accord).
 model DossierFinancement {
-  id                       String                   @id @default(uuid()) @db.Uuid
-  type                     DossierFinancementType
-  statut                   DossierFinancementStatut @default(a_monter)
+  id                            String                   @id @default(uuid()) @db.Uuid
+  type                          DossierFinancementType
+  statut                        DossierFinancementStatut @default(a_monter)
   /// Nom du financeur principal (ex. « OPCO Atlas », « France Travail »).
-  financeurNom             String?                  @map("financeur_nom") @db.VarChar(120)
+  financeurNom                  String?                  @map("financeur_nom") @db.VarChar(120)
   /// Personne physique qui signe pour le financeur SUR CE DOSSIER.
   /// 🔴 Grain volontairement le DOSSIER et non l'OPCO : le gestionnaire change
   /// d'un dossier à l'autre. Créer une table `Financeur` ferait une TROISIÈME
   /// représentation (avec `financeurNom` et `Client.opcoIdentifie`), donc trois
   /// sources à tenir synchronisées et une divergence silencieuse possible.
-  financeurContactNom      String?                  @map("financeur_contact_nom") @db.VarChar(200)
-  financeurContactEmail    String?                  @map("financeur_contact_email") @db.VarChar(320)
-  financeurContactFonction String?                  @map("financeur_contact_fonction") @db.VarChar(200)
+  financeurContactNom           String?                  @map("financeur_contact_nom") @db.VarChar(200)
+  financeurContactEmail         String?                  @map("financeur_contact_email") @db.VarChar(320)
+  financeurContactFonction      String?                  @map("financeur_contact_fonction") @db.VarChar(200)
   /// N° du dossier chez le financeur (référence externe).
-  numeroDossierExterne     String?                  @map("numero_dossier_externe") @db.VarChar(80)
-  subrogation              Boolean                  @default(false)
-  montantDemandeCents      Int?                     @map("montant_demande_cents")
-  montantAccordeCents      Int?                     @map("montant_accorde_cents")
+  numeroDossierExterne          String?                  @map("numero_dossier_externe") @db.VarChar(80)
+  subrogation                   Boolean                  @default(false)
+  montantDemandeCents           Int?                     @map("montant_demande_cents")
+  montantAccordeCents           Int?                     @map("montant_accorde_cents")
   /// Date de paiement attendue du financeur (les OPCO paient à 30-60 j).
-  echeanceFinanceurAt      DateTime?                @map("echeance_financeur_at")
-  envoyeAt                 DateTime?                @map("envoye_at")
-  accordAt                 DateTime?                @map("accord_at")
-  refuseAt                 DateTime?                @map("refuse_at")
-  paiementRecuAt           DateTime?                @map("paiement_recu_at")
-  closAt                   DateTime?                @map("clos_at")
-  notes                    String?                  @db.Text
+  echeanceFinanceurAt           DateTime?                @map("echeance_financeur_at")
+  envoyeAt                      DateTime?                @map("envoye_at")
+  accordAt                      DateTime?                @map("accord_at")
+  /// Date PORTÉE SUR l'accord écrit de l'OPCO (lot OPCO A1). Distincte
+  /// d'`accordAt`, qui est l'horodatage du clic en console : l'un dit quand
+  /// l'OPCO s'est engagé, l'autre quand nous l'avons enregistré.
+  accordEcritLe                 DateTime?                @map("accord_ecrit_le") @db.Date
+  /// Date de dépôt de la demande par l'entreprise sur son espace OPCO.
+  depotFaitLe                   DateTime?                @map("depot_fait_le") @db.Date
+  /// L'accord écrit prévoit-il le paiement direct à l'organisme (subrogation) ?
+  /// `null` = accord non lu sur ce point. Servira au lot A3.
+  subrogationConfirmeeParAccord Boolean?                 @map("subrogation_confirmee_par_accord")
+  refuseAt                      DateTime?                @map("refuse_at")
+  paiementRecuAt                DateTime?                @map("paiement_recu_at")
+  closAt                        DateTime?                @map("clos_at")
+  notes                         String?                  @db.Text
 
   clientId           String?           @map("client_id") @db.Uuid
   client             Client?           @relation(fields: [clientId], references: [id], onDelete: SetNull)
@@ -8596,6 +8618,14 @@ enum PriseEnChargeUnite {
   euro_jour
   euro_formation
   euro_an_salarie
+}
+
+/// Provenance de `Client.effectif` (lot OPCO A1).
+enum EffectifSource {
+  /// Saisi par un administrateur dans la console.
+  saisie
+  /// Relevé dans le répertoire Sirene de l'INSEE.
+  insee
 }
 
 /// OPCO (opérateur de compétences) agréé — les 11 OPCO au 2026. Les 5 premiers

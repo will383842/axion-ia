@@ -16,10 +16,19 @@
  *   2. Transition → en_cours sans alerte critique (warning only) → passe.
  *   3. Transition → en_cours sans aucune alerte → passe.
  *   4. Transition → annulee (pas en_cours) → pas de vérification financement.
- *   5. getFinancementValidations lève → fail-soft, transition non bloquée.
+ *   5. getFinancementValidations lève → ÉCHEC FERMÉ (lot OPCO A1) : refus,
+ *      journalisé, aucune transition tentée.
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
+
+// Journal du projet (Sentry, même patron que la révocation des jetons) :
+// partiel, pour ne rien retirer aux modules qui l'importent transitivement.
+const mockCaptureException = vi.hoisted(() => vi.fn());
+vi.mock("@sentry/nextjs", async (orig) => ({
+  ...(await orig<typeof import("@sentry/nextjs")>()),
+  captureException: (...a: unknown[]) => mockCaptureException(...a),
+}));
 
 // ADR 0060 — le verrou du dossier de session a sa propre suite
 // (`src/server/qualiopi/sessions/__tests__/`) ; ici, le dossier est ouvert.
@@ -199,17 +208,27 @@ describe("transitionSessionAction — garde financement", () => {
     expect(mockGetFinancementValidations).not.toHaveBeenCalled();
   });
 
-  it("fail-soft si getFinancementValidations lève — la transition est quand même tentée", async () => {
+  it("🔴 ÉCHEC FERMÉ si getFinancementValidations lève — refus, journal, aucune transition", async () => {
+    // Avant le lot OPCO A1 : `catch { financementEntries = [] }`. Une base
+    // indisponible faisait démarrer la session SANS accord OPCO vérifié.
     mockFindUnique.mockResolvedValue(makePlanifieeSession());
     mockGetFinancementValidations.mockRejectedValue(new Error("DB unavailable"));
 
     const result = await transitionSessionAction({ id: SESSION_ID, toStatus: "en_cours" });
 
-    // Pas d'erreur financement : la transition a été tentée (transaction appelée)
-    expect(mockTransaction).toHaveBeenCalled();
-    if ("error" in result) {
-      expect(result.error).not.toMatch(/Démarrage bloqué/);
-    }
+    expect(result).toEqual({
+      error:
+        "Démarrage bloqué : impossible de vérifier les financements de la session. " +
+        "Réessayez ou contactez l'administrateur.",
+    });
+    expect(mockTransaction).not.toHaveBeenCalled();
+    expect(mockCaptureException).toHaveBeenCalledTimes(1);
+    // Journal sans donnée personnelle : l'identifiant de session seulement.
+    const [, contexte] = mockCaptureException.mock.calls[0] as [unknown, Record<string, unknown>];
+    expect(contexte).toEqual({
+      tags: { action: "transitionSessionAction:garde_financement" },
+      extra: { sessionId: SESSION_ID, toStatus: "en_cours" },
+    });
   });
 });
 

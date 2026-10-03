@@ -317,3 +317,89 @@ describe("🔴 updateClientAction — le CONTACT est corrigible (chantier V18)",
     expect("siret" in data).toBe(false);
   });
 });
+
+describe("updateClientAction — effectif et OPCO typé (lot OPCO A1)", () => {
+  it("refuse un effectif négatif (zod) et n'écrit rien", async () => {
+    const r = await updateClientAction({ id: ID, effectif: -1 });
+
+    expect("error" in r).toBe(true);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("refuse un effectif non entier", async () => {
+    const r = await updateClientAction({ id: ID, effectif: 12.5 });
+
+    expect("error" in r).toBe(true);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("enregistrer l'effectif pose source = saisie et la date du jour", async () => {
+    const r = await updateClientAction({ id: ID, effectif: 12 });
+
+    expect("data" in r).toBe(true);
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect(data.effectif).toBe(12);
+    expect(data.effectifSource).toBe("saisie");
+    // Colonne `@db.Date` : minuit UTC du jour civil de Paris.
+    const releve = data.effectifReleveLe as Date;
+    expect(releve).toBeInstanceOf(Date);
+    expect(releve.toISOString()).toMatch(/^\d{4}-\d{2}-\d{2}T00:00:00\.000Z$/);
+    const jourParis = new Intl.DateTimeFormat("fr-CA", { timeZone: "Europe/Paris" }).format(
+      new Date(),
+    );
+    expect(releve.toISOString().slice(0, 10)).toBe(jourParis);
+  });
+
+  it("effacer l'effectif (null) efface aussi sa source et sa date", async () => {
+    await updateClientAction({ id: ID, effectif: null });
+
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect(data.effectif).toBeNull();
+    expect(data.effectifSource).toBeNull();
+    expect(data.effectifReleveLe).toBeNull();
+  });
+
+  it("une mise à jour sans effectif ne touche ni l'effectif ni sa source", async () => {
+    await updateClientAction({ id: ID, notes: "rappel" });
+
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect("effectif" in data).toBe(false);
+    expect("effectifSource" in data).toBe(false);
+    expect("effectifReleveLe" in data).toBe(false);
+  });
+
+  it("l'OPCO typé s'écrit dans `opco` sans toucher au texte `opcoIdentifie`", async () => {
+    mockFindUnique.mockResolvedValue({ nafCode: null, idcc: null, opcoIdentifie: "Atlas ?" });
+
+    await updateClientAction({ id: ID, opco: "atlas" });
+
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect(data.opco).toBe("atlas");
+    expect("opcoIdentifie" in data).toBe(false);
+  });
+
+  it("refuse un OPCO hors des 11 du référentiel", async () => {
+    const r = await updateClientAction({ id: ID, opco: "opca_fantome" as never });
+
+    expect("error" in r).toBe(true);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("refuse un effectif ou un OPCO typé quand la fiche EN BASE est un particulier (charge sans type)", async () => {
+    mockFindUnique.mockResolvedValue({ type: "particulier" });
+    const r1 = await updateClientAction({ id: ID, effectif: 3 });
+    const r2 = await updateClientAction({ id: ID, opco: "akto" });
+    expect("error" in r1).toBe(true);
+    expect("error" in r2).toBe(true);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("refuse un effectif ou un OPCO typé sur un particulier", async () => {
+    const r1 = await updateClientAction({ id: ID, type: "particulier", effectif: 3 });
+    const r2 = await updateClientAction({ id: ID, type: "particulier", opco: "akto" });
+
+    expect("error" in r1).toBe(true);
+    expect("error" in r2).toBe(true);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+});
