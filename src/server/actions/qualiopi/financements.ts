@@ -56,6 +56,7 @@ import type {
   PriseEnChargeUnite,
 } from "../../../../prisma/generated/client";
 import { assertDossierOuvert } from "@/server/qualiopi/sessions/verrou-dossier-garde";
+import { regimePaiementDeSession } from "@/server/qualiopi/financements/regime-paiement-session";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -102,6 +103,8 @@ const setFinancementSessionSchema = z.object({
   financementType: z.enum(FINANCEMENT_TYPES as [FinancementType, ...FinancementType[]]).optional(),
   opcoStatut: z.enum(OPCO_STATUTS as [OpcoStatut, ...OpcoStatut[]]).optional(),
   opcoSubrogation: z.boolean().optional(),
+  /** Case « L'accord écrit de l'OPCO prévoit le paiement direct à l'organisme » (OPCO A3). */
+  accordPrevoitPaiementDirect: z.boolean().optional(),
   numeroDossierOpco: z.string().max(60).optional(),
   ftDispositif: z
     .enum(FT_DISPOSITIFS as [FranceTravailDispositif, ...FranceTravailDispositif[]])
@@ -163,6 +166,7 @@ export async function setFinancementSessionAction(input: {
   financementType?: FinancementType;
   opcoStatut?: OpcoStatut;
   opcoSubrogation?: boolean;
+  accordPrevoitPaiementDirect?: boolean;
   numeroDossierOpco?: string;
   ftDispositif?: FranceTravailDispositif;
   cpfPayeurResteCharge?: string;
@@ -256,6 +260,29 @@ export async function setFinancementSessionAction(input: {
     }
   }
 
+  // ── Réforme TVA du 1er octobre 2026 (chantier OPCO A3) ────────────────────
+  // Hors subrogation, l'organisme facture l'entreprise TTC et l'OPCO la
+  // rembourse HT. Quand le régime calculé exclut la subrogation, la garder
+  // n'est permis que sur la foi de l'accord écrit — et c'est tracé.
+  // `inconnu` n'est qu'un avertissement : un calcul incertain ne bloque pas.
+  let avertissementRegime: string | undefined;
+  let confirmationAccord: { dossierId: string | null; regime: string } | undefined;
+  if (updateData.opcoSubrogation === true) {
+    const regime = await regimePaiementDeSession(sessionId);
+    if (regime.regime === "remboursement_entreprise") {
+      if (fields.accordPrevoitPaiementDirect !== true) {
+        return {
+          error:
+            `Subrogation refusée : depuis le 1er octobre 2026, ce dossier relève du remboursement de l'entreprise par l'OPCO (${regime.motif}). ` +
+            "Cochez « L'accord écrit de l'OPCO prévoit le paiement direct à l'organisme » si c'est le cas, sinon décochez la subrogation.",
+        };
+      }
+      confirmationAccord = { dossierId: regime.dossierId, regime: regime.regime };
+    } else if (regime.regime === "inconnu") {
+      avertissementRegime = `Régime de paiement OPCO non déterminé (${regime.motif}) : vérifiez sur l'accord écrit que l'OPCO paie bien l'organisme directement.`;
+    }
+  }
+
   // Le financement AVANT écriture : c'est lui qui dit si ce changement fait
   // ENTRER la session dans le périmètre suivi (cf. `changementOuvreUnDossier`).
   // Lu ici, pas après : après, il est déjà écrasé.
@@ -275,6 +302,22 @@ export async function setFinancementSessionAction(input: {
     changes: updateData,
     session,
   });
+
+  if (confirmationAccord?.dossierId) {
+    await prisma.dossierFinancement.update({
+      where: { id: confirmationAccord.dossierId },
+      data: { subrogationConfirmeeParAccord: true },
+    });
+  }
+  if (confirmationAccord) {
+    await logQualiopiActivity({
+      action: "qualiopi.financement.subrogation_confirmee_par_accord",
+      targetType: confirmationAccord.dossierId ? "DossierFinancement" : "TrainingSession",
+      targetId: confirmationAccord.dossierId ?? sessionId,
+      changes: { sessionId, regime: confirmationAccord.regime },
+      session,
+    });
+  }
 
   // ── 🔴 SOUS-LOT 8C — le dossier de financement s'ouvre TOUT SEUL ──────────
   //
@@ -324,7 +367,7 @@ export async function setFinancementSessionAction(input: {
   // chez un financeur — y compris un `a_monter` renvoyé pour complément (#1112,
   // revue 5250421969) — engage l'organisme : il n'est pas touché, et on le DIT.
   // Fail-soft, comme l'ouverture : le financement saisi ne se perd jamais.
-  let avertissement: string | undefined;
+  let avertissement: string | undefined = avertissementRegime;
   if (financementRefermeLesDossiers(fields.financementType)) {
     try {
       // Journalisé dossier par dossier, APRÈS chaque fermeture : si le suivant
@@ -347,11 +390,15 @@ export async function setFinancementSessionAction(input: {
               : DOSSIER_STATUT_LIBELLES[d.statut],
           )
           .join(" ; ");
-        avertissement =
+        avertissement = [
+          avertissement,
           `${un ? "Un dossier de financement déjà engagé" : `${engages.length} dossiers de financement déjà engagés`} ` +
-          `(${etats}) ${un ? "reste ouvert" : "restent ouverts"} : ` +
-          "une demande déposée chez un financeur ne se referme pas depuis ce formulaire. " +
-          "Sa clôture est un acte habilité, à faire dans Facturation (Hub) une fois le financeur informé.";
+            `(${etats}) ${un ? "reste ouvert" : "restent ouverts"} : ` +
+            "une demande déposée chez un financeur ne se referme pas depuis ce formulaire. " +
+            "Sa clôture est un acte habilité, à faire dans Facturation (Hub) une fois le financeur informé.",
+        ]
+          .filter(Boolean)
+          .join(" ");
       }
     } catch (err) {
       console.error("[financements] fermeture auto du dossier impossible", {

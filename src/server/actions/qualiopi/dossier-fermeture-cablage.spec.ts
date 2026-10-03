@@ -79,6 +79,18 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
   logQualiopiActivity: mockLog,
 }));
 
+// Le régime de paiement OPCO (chantier A3) a sa propre suite : neutre ici, et
+// sa lecture ne consomme pas les `mockResolvedValueOnce` de la session.
+vi.mock("@/server/qualiopi/financements/regime-paiement-session", () => ({
+  regimePaiementDeSession: async () => ({
+    regime: "subrogation_possible",
+    motif: "",
+    source: "",
+    dossierId: null,
+    confirmeParAccord: false,
+  }),
+}));
+
 vi.mock("@/server/actions/qualiopi/_revalidate", () => ({
   revalidateQualiopi: vi.fn(),
   revalidateAdmin: vi.fn(),
