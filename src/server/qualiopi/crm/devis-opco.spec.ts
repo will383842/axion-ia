@@ -314,7 +314,9 @@ describe("estimateOpcoCoverage — origine de l'estimation (lot A4)", () => {
     });
     expect(r1.origine).toBe("bareme");
     expect(r1.avertissement).toMatch(/incomplet/);
-    mockResolve.mockResolvedValue(baremeCentral({ intraHoraireCents: null, plafondAnnuelCents: 800_000 }));
+    mockResolve.mockResolvedValue(
+      baremeCentral({ intraHoraireCents: null, plafondAnnuelCents: 800_000 }),
+    );
     const r2 = await estimateOpcoCoverage({
       nbParticipants: 1,
       dureeHeures: 7,
