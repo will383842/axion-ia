@@ -13,7 +13,7 @@ import {
   candidatsDelaiFacturationOpco,
   regleDelaiFacturationOpco,
   SEUIL_ALERTE_FACTURATION_JOURS,
-} from "./delai-facturation-opco";
+} from "./regle-delai-facturation-opco";
 import { ALERTE_CATALOGUE } from "./catalogue";
 
 const J = (iso: string) => new Date(`${iso}T12:00:00.000Z`);

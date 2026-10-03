@@ -103,6 +103,7 @@ import {
   DELAI_EMISSION_SANS_EVALUATION_JOURS,
   DELAI_EVALUATION_FINALE_JOURS,
 } from "./delai-evaluation-finale";
+import { regleDelaiFacturationOpco } from "./regle-delai-facturation-opco";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Type de retour de l'évaluateur
@@ -4975,6 +4976,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "facture_sans_echeance", fn: regleFactureSansEcheance },
   { nom: "relance_sans_effet", fn: regleRelanceSansEffet },
   { nom: "dossiers_financement", fn: regleDossiersFinancement },
+  { nom: "delai_facturation_opco", fn: regleDelaiFacturationOpco },
   { nom: "devis_sans_reponse", fn: regleDevisSansReponse },
   { nom: "devis_expire_j7", fn: regleDevisExpireJ7 },
   { nom: "devis_expire", fn: regleDevisExpire },

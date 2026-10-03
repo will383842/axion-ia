@@ -1231,6 +1231,15 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "direction",
   },
+  // Chantier OPCO A3 : session subrogée terminée, facture à l'OPCO non émise,
+  // à J-15 de la date limite de facturation du référentiel OPCO. Se referme
+  // dès que la facture est émise.
+  delai_facturation_opco: {
+    niveau: "important",
+    titre: "Facture OPCO à émettre avant la date limite",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
   // [T17.1 — S7] Convention de formation (L.6353-1) non établie avant démarrage (off.9).
   convention_formation_manquante: {
     niveau: "critique",
