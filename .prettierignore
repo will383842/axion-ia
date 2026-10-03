@@ -34,6 +34,8 @@ docs/kits
 src/server/partners/contrat/contracts.v2.json
 src/server/partners/contrat/contracts.sha256
 src/server/partners/contrat/fixtures.v2.json
+src/server/partners/contrat/contracts.v3.json
+src/server/partners/contrat/fixtures.v3.json
 
 # ── Enregistreur Meet (chantier visio, PR 5) : contrat GÉNÉRÉ ─────────────────
 # `pnpm enregistreur:contrat` écrit `contrat.json` et son empreinte

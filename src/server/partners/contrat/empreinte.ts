@@ -44,7 +44,7 @@ export function empreinteContratPublie(): string {
   const hash = ligne.slice(0, 64);
   if (!/^[0-9a-f]{64}$/.test(hash)) {
     throw new Error(
-      `[partners] contracts.sha256 illisible : « ${ligne} ». Attendu « <64 hex>  contracts.v2.json ».`,
+      `[partners] contracts.sha256 illisible : « ${ligne} ». Attendu « <64 hex>  contracts.v3.json ».`,
     );
   }
   return hash;

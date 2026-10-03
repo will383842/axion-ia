@@ -386,8 +386,8 @@ describe("REQ-INT-007 / REQ-INT-032 — six faits, produits par les fonctions d'
 });
 
 describe("REQ-INT-004 — des modèles réels, une liste de types FERMÉE", () => {
-  it("REQ-INT-004 : les six types produits sont au contrat, qui en compte onze, pas un de plus", () => {
-    expect(TYPES_EVENEMENT).toHaveLength(11);
+  it("REQ-INT-004 : les six types produits sont au contrat, qui en compte douze (v3), pas un de plus", () => {
+    expect(TYPES_EVENEMENT).toHaveLength(12);
     for (const t of [
       FACTURE_EMISE,
       AVOIR_EMIS,

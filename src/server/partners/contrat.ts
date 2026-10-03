@@ -70,7 +70,8 @@ export type TypeEvenement =
   | "candidature.recue"
   | "financement.mis_a_jour"
   | "facture.annulee"
-  | "client.fusionne";
+  | "client.fusionne"
+  | "devis.emis";
 
 /** Les neuf champs de l'enveloppe, LUS dans la liste `required` du schéma publié. */
 export const CHAMPS_ENVELOPPE: readonly string[] = PUBLIE.required;

@@ -10,7 +10,9 @@
           "type": "string"
         }
       },
-      "required": ["candidatureId"],
+      "required": [
+        "candidatureId"
+      ],
       "type": "object"
     },
     "api_coordonnees_candidature_reponse": {
@@ -62,7 +64,12 @@
           ]
         }
       },
-      "required": ["nom", "prenom", "email", "telephone"],
+      "required": [
+        "nom",
+        "prenom",
+        "email",
+        "telephone"
+      ],
       "type": "object"
     },
     "api_coordonnees_candidature_reponse_entetes": {
@@ -81,7 +88,10 @@
           "type": "string"
         }
       },
-      "required": ["x-axionia-timestamp", "x-axionia-signature"],
+      "required": [
+        "x-axionia-timestamp",
+        "x-axionia-signature"
+      ],
       "type": "object"
     },
     "api_coordonnees_candidature_requete_entetes": {
@@ -96,7 +106,10 @@
           "type": "string"
         }
       },
-      "required": ["x-partners-timestamp", "x-partners-signature"],
+      "required": [
+        "x-partners-timestamp",
+        "x-partners-signature"
+      ],
       "type": "object"
     },
     "api_relecture_parametres": {
@@ -113,7 +126,10 @@
           "type": "integer"
         }
       },
-      "required": ["after_sequence", "limit"],
+      "required": [
+        "after_sequence",
+        "limit"
+      ],
       "type": "object"
     },
     "api_relecture_reponse": {
@@ -140,7 +156,10 @@
           "type": "string"
         },
         "x-axionia-suite": {
-          "enum": ["0", "1"],
+          "enum": [
+            "0",
+            "1"
+          ],
           "type": "string"
         },
         "x-axionia-timestamp": {
@@ -168,7 +187,10 @@
           "type": "string"
         }
       },
-      "required": ["x-partners-timestamp", "x-partners-signature"],
+      "required": [
+        "x-partners-timestamp",
+        "x-partners-signature"
+      ],
       "type": "object"
     },
     "payload_avoir_emis": {
@@ -405,7 +427,10 @@
           "type": "string"
         }
       },
-      "required": ["survivorId", "absorbedId"],
+      "required": [
+        "survivorId",
+        "absorbedId"
+      ],
       "type": "object"
     },
     "payload_client_mis_a_jour": {
@@ -525,7 +550,13 @@
           ]
         }
       },
-      "required": ["devisId", "numero", "clientId", "siren", "emisLe"],
+      "required": [
+        "devisId",
+        "numero",
+        "clientId",
+        "siren",
+        "emisLe"
+      ],
       "type": "object"
     },
     "payload_devis_signe": {
@@ -722,7 +753,11 @@
           "type": "string"
         }
       },
-      "required": ["factureId", "motif", "clientId"],
+      "required": [
+        "factureId",
+        "motif",
+        "clientId"
+      ],
       "type": "object"
     },
     "payload_facture_emise": {
@@ -824,7 +859,10 @@
                 "type": "string"
               }
             },
-            "required": ["payeurType", "montantAttenduCents"],
+            "required": [
+              "payeurType",
+              "montantAttenduCents"
+            ],
             "type": "object"
           },
           "type": "array"
@@ -898,13 +936,20 @@
                 "type": "string"
               }
             },
-            "required": ["payeurType", "montantAttenduCents"],
+            "required": [
+              "payeurType",
+              "montantAttenduCents"
+            ],
             "type": "object"
           },
           "type": "array"
         }
       },
-      "required": ["factureId", "payers", "echeanceFinanceurAt"],
+      "required": [
+        "factureId",
+        "payers",
+        "echeanceFinanceurAt"
+      ],
       "type": "object"
     },
     "payload_paiement_recu": {
@@ -1080,7 +1125,10 @@
           "type": "string"
         }
       },
-      "required": ["x-axionia-timestamp", "x-axionia-signature"],
+      "required": [
+        "x-axionia-timestamp",
+        "x-axionia-signature"
+      ],
       "type": "object"
     }
   },
@@ -1095,7 +1143,9 @@
             "const": "client.cree"
           }
         },
-        "required": ["event_type"]
+        "required": [
+          "event_type"
+        ]
       },
       "then": {
         "properties": {
@@ -1112,7 +1162,9 @@
             "const": "client.mis_a_jour"
           }
         },
-        "required": ["event_type"]
+        "required": [
+          "event_type"
+        ]
       },
       "then": {
         "properties": {
@@ -1129,7 +1181,9 @@
             "const": "devis.signe"
           }
         },
-        "required": ["event_type"]
+        "required": [
+          "event_type"
+        ]
       },
       "then": {
         "properties": {
@@ -1146,7 +1200,9 @@
             "const": "facture.emise"
           }
         },
-        "required": ["event_type"]
+        "required": [
+          "event_type"
+        ]
       },
       "then": {
         "properties": {
@@ -1163,7 +1219,9 @@
             "const": "avoir.emis"
           }
         },
-        "required": ["event_type"]
+        "required": [
+          "event_type"
+        ]
       },
       "then": {
         "properties": {
@@ -1180,7 +1238,9 @@
             "const": "paiement.recu"
           }
         },
-        "required": ["event_type"]
+        "required": [
+          "event_type"
+        ]
       },
       "then": {
         "properties": {
@@ -1197,7 +1257,9 @@
             "const": "paiement.rembourse"
           }
         },
-        "required": ["event_type"]
+        "required": [
+          "event_type"
+        ]
       },
       "then": {
         "properties": {
@@ -1214,7 +1276,9 @@
             "const": "candidature.recue"
           }
         },
-        "required": ["event_type"]
+        "required": [
+          "event_type"
+        ]
       },
       "then": {
         "properties": {
@@ -1231,7 +1295,9 @@
             "const": "financement.mis_a_jour"
           }
         },
-        "required": ["event_type"]
+        "required": [
+          "event_type"
+        ]
       },
       "then": {
         "properties": {
@@ -1248,7 +1314,9 @@
             "const": "facture.annulee"
           }
         },
-        "required": ["event_type"]
+        "required": [
+          "event_type"
+        ]
       },
       "then": {
         "properties": {
@@ -1265,7 +1333,9 @@
             "const": "client.fusionne"
           }
         },
-        "required": ["event_type"]
+        "required": [
+          "event_type"
+        ]
       },
       "then": {
         "properties": {
@@ -1282,7 +1352,9 @@
             "const": "devis.emis"
           }
         },
-        "required": ["event_type"]
+        "required": [
+          "event_type"
+        ]
       },
       "then": {
         "properties": {

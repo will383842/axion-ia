@@ -73,6 +73,6 @@ describe("REQ-INT-004, REQ-INT-032 — la sortie du producteur passe le contrat 
   });
 
   it("TÉMOIN — un mot-clé que le validateur ne lit pas le fait rougir, jamais passer", () => {
-    expect(fautes({ minimum: 0 }, 1)).toEqual(["$ : mot-clé non lu par ce validateur (minimum)"]);
+    expect(fautes({ maximum: 0 }, 1)).toEqual(["$ : mot-clé non lu par ce validateur (maximum)"]);
   });
 });

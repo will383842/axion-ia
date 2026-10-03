@@ -93,6 +93,7 @@ export type FacturePourEvenement = Pick<
   | "regimeTva"
   | "subrogation"
   | "avoirDeId"
+  | "devisId"
   | "statut"
   | "emiseAt"
   | "echeanceAt"
@@ -471,6 +472,8 @@ export type PayloadFactureEmise = {
   echeanceLe: string | null;
   echeanceFinanceurAt: string | null;
   payers: PayeurEvenement[];
+  /** Contrat v3 : le devis dont la facture procède, nul sinon (« entièrement facturé », DM-10-P). */
+  devisId: string | null;
 };
 
 function payers(liste: ReadonlyArray<PayeurPourEvenement>): PayeurEvenement[] {
@@ -523,6 +526,7 @@ export function payloadFactureEmise({
     echeanceLe: instantOuNul(facture.echeanceAt),
     echeanceFinanceurAt: instantOuNul(echeanceFinanceurAt),
     payers: payers(payeurs),
+    devisId: facture.devisId ?? null,
   });
 }
 

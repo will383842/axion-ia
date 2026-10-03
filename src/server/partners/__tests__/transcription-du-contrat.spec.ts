@@ -49,7 +49,7 @@ describe("REQ-QA-007 — transcription du contrat d'événements", () => {
     const ligne = readFileSync(path.join(RACINE, "contracts.sha256"), "utf8").trim();
 
     // Format `sha256sum` : « <hash>  <nom de fichier> ».
-    expect(ligne).toMatch(/^[0-9a-f]{64} {2}contracts\.v2\.json$/);
+    expect(ligne).toMatch(/^[0-9a-f]{64} {2}contracts\.v3\.json$/);
     expect(ligne.slice(0, 64)).toBe(empreinteContratPublie());
   });
 
@@ -64,11 +64,12 @@ describe("REQ-QA-007 — transcription du contrat d'événements", () => {
     expect([...CHAMPS_ENVELOPPE]).toEqual(publie.required);
   });
 
-  it("REQ-INT-004 — la liste est FERMÉE sur les onze types du contrat v2", () => {
-    // Le nombre est écrit ici À DESSEIN. Sept en v1 (`partners/ADR-0008`), onze depuis la
-    // `schema_version` 2 publiée par INT-T01c : les quatre noms recensés hors contrat y
-    // sont entrés. Un douzième type publié par Partners fait rougir CETTE assertion, et
-    // c'est ici que la question doit se poser.
-    expect(TYPES_EVENEMENT).toHaveLength(11);
+  it("REQ-INT-004 — la liste est FERMÉE sur les douze types du contrat v3", () => {
+    // Le nombre est écrit ici À DESSEIN. Sept en v1 (`partners/ADR-0008`), onze avec la
+    // `schema_version` 2 publiée par INT-T01c, douze avec la v3 (INT-T46-P, INT-T70-P) : le
+    // « devis émis » y est entré. Un treizième type publié par Partners fait rougir CETTE
+    // assertion, et c'est ici que la question doit se poser.
+    expect(TYPES_EVENEMENT).toHaveLength(12);
+    expect(TYPES_EVENEMENT).toContain("devis.emis");
   });
 });

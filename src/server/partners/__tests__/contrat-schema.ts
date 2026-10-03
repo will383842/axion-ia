@@ -3,7 +3,7 @@
  * réduit aux mots-clés que `contracts.v2.json` emploie : le dépôt n'en embarque pas. Tout
  * mot-clé inconnu est une FAUTE, jamais un passe-droit.
  */
-import contrat from "@/server/partners/contrat/contracts.v2.json";
+import contrat from "@/server/partners/contrat/contracts.v3.json";
 
 type Schema = Record<string, unknown>;
 
@@ -22,6 +22,8 @@ const LUS = new Set([
   "pattern",
   "format",
   "minLength",
+  // Contrat v3 : un montant en centimes est borné à zéro (`centimes`, minimum 0).
+  "minimum",
   "$ref",
   "items",
 ]);
@@ -65,6 +67,9 @@ export function fautes(s: Schema, v: unknown, chemin = "$"): string[] {
     if (typeof s["pattern"] === "string" && !new RegExp(s["pattern"], "u").test(v)) {
       f.push(`${chemin} : ne suit pas ${s["pattern"]}`);
     }
+  }
+  if (typeof v === "number" && typeof s["minimum"] === "number" && v < s["minimum"]) {
+    f.push(`${chemin} : sous le minimum ${s["minimum"]}`);
   }
   if (Array.isArray(v) && s["items"]) {
     v.forEach((e, i) => f.push(...fautes(s["items"] as Schema, e, `${chemin}[${i}]`)));
