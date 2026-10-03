@@ -132,6 +132,7 @@ export type DevisPourEvenement = Pick<
   | "clientId"
   | "montantTotalHtCents"
   | "statut"
+  | "sentAt"
   | "acceptedAt"
   | "createdAt"
   | "updatedAt"
@@ -412,6 +413,36 @@ function ligneDevis(
     commissionId: commission.commissionId,
     commission,
   };
+}
+
+/**
+ * Contrat v3 (INT-T46-P, INT-T46-A) : le fait « devis émis », à l'ENVOI d'un devis (décision D2 de
+ * Williams, option A). Le SIREN est celui du client destinataire, nul s'il n'en a pas.
+ */
+export type PayloadDevisEmis = {
+  devisId: string;
+  numero: string;
+  clientId: string;
+  siren: string | null;
+  emisLe: string;
+};
+
+export function payloadDevisEmis({
+  devis,
+  client,
+}: {
+  devis: DevisPourEvenement;
+  client: ClientPourEvenement;
+}): PayloadDevisEmis {
+  // Sans date d'envoi, il n'y a pas de fait « émis » à raconter.
+  const emisLe = instant(devis.sentAt, "Devis.sentAt : un devis non envoyé");
+  return verifieLaFrontiere("devis.emis", {
+    devisId: devis.id,
+    numero: devis.numero,
+    clientId: client.id,
+    siren: client.siren ?? null,
+    emisLe,
+  });
 }
 
 export function payloadDevisSigne({
