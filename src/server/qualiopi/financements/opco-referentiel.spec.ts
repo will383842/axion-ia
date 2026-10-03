@@ -166,6 +166,13 @@ describe("OPCO_FICHES — faits témoins", () => {
     expect(OPCO_FICHES.atlas.modeDeDepotConstate.valeur).toBe("compte_adherent");
   });
 
+  it("faits relus dans les PDF officiels le 2026-10-04 : OPCO EP 30 j de dépôt, OPCO 2i 120 j", () => {
+    expect(OPCO_FICHES.opco_ep.delaiDepotJours.valeur).toBe(30);
+    expect(OPCO_FICHES.opco2i.delaiFacturationJours.valeur).toBe(120);
+    expect(OPCO_FICHES.opco2i.modeDeDepotConstate.valeur).toBe("compte_adherent");
+    expect(OPCO_FICHES.atlas.delaiFacturationJours.aVerifier).toBeUndefined();
+  });
+
   it("Atlas : facturation au plus tard 90 jours après la fin", () => {
     expect(OPCO_FICHES.atlas.delaiFacturationJours.valeur).toBe(90);
   });

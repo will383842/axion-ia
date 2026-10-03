@@ -121,16 +121,13 @@ const SRC_CONSTRUCTYS =
 const SRC_OPCOMMERCE = "https://www.lopcommerce.com/media/bsbnjydz/conditons-generales-gestion.pdf";
 const SRC_MOBILITES =
   "https://www.opcomobilites.fr/actualites/detail/calendrier-de-prise-en-charge-des-actions-de-formation-rappels-importants";
+const SRC_OPCO2I_CHARTE =
+  "https://www.opco2i.fr/wp-content/uploads/2026/04/opco2i-charte-qualite-et-politique-de-controle-juin-2026.pdf";
 const SRC_OCAPIAT_BOOST =
   "https://www.ocapiat.fr/wp-content/uploads/fiche-de-presentation-BOOST-COMPETENCES-OCAPIAT.pdf";
 
 function confirme<T>(valeur: T, source: string): Fait<T> {
   return { valeur, source, releveLe: RELEVE };
-}
-
-/** Relevé du chantier gardé tel quel mais non reconfirmé sur la page source. */
-function aReconfirmer<T>(valeur: T, source: string): Fait<T> {
-  return { valeur, source, releveLe: RELEVE, aVerifier: true };
 }
 
 function inconnu<T>(): Fait<T> {
@@ -165,16 +162,32 @@ export const OPCO_FICHES: Record<OpcoId, OpcoFiche> = {
     ...ficheVide(false),
     // « Demande de prise en charge dans son espace myAtlas Entreprise » (CG du 04/02/2026).
     modeDeDepotConstate: confirme("compte_adherent", SRC_ATLAS),
-    // « Au plus tard 3 mois après la fin » : relevé du chantier, non retrouvé dans l'extrait consulté.
-    delaiFacturationJours: aReconfirmer(90, SRC_ATLAS),
+    // « Émettre des factures libellées à Atlas […] dans un délai maximum de 3 mois à compter de
+    // la date de fin de la formation sous peine de rejet automatique » (CG, relu le 2026-10-04).
+    delaiFacturationJours: confirme(90, SRC_ATLAS),
+    // « Transmettre le dossier […] avant le début de la formation en passant par myAtlas ».
+    delaiDepotJours: confirme(1, SRC_ATLAS),
+    // Pièces complémentaires « dans la limite du 31 décembre de l'année N », sinon refus.
+    dateLimiteDepot2026: confirme("2026-12-31", SRC_ATLAS),
   },
   opco_ep: {
     ...ficheVide(false),
     // « Au plus tard dans les 30 jours suivant la fin de l'action » (CG 2026).
     delaiFacturationJours: confirme(30, SRC_OPCOEP_CG),
+    // « Au moins un mois avant la date de début de l'action de formation, si l'entreprise
+    // souhaite une garantie de réponse […] avant le départ en formation » (CG 2026).
+    delaiDepotJours: confirme(30, SRC_OPCOEP_CG),
   },
   akto: ficheVide(false),
-  opco2i: ficheVide(false),
+  opco2i: {
+    ...ficheVide(false),
+    // « L'entreprise bénéficiaire complète le formulaire de prise en charge dématérialisé sur
+    // le portail de service Mon compte 2i » (charte juin 2026).
+    modeDeDepotConstate: confirme("compte_adherent", SRC_OPCO2I_CHARTE),
+    // Justificatifs « dans un délai de quatre mois à compter de la fin de réalisation de
+    // l'action », sinon aucun paiement n'est dû (charte juin 2026).
+    delaiFacturationJours: confirme(120, SRC_OPCO2I_CHARTE),
+  },
   mobilites: {
     ...ficheVide(false),
     // 15/01/2027 par exception pour les formations débutant entre le 15 et le 31/12/2026.
