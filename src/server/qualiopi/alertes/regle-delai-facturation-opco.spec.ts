@@ -62,11 +62,9 @@ describe("candidatsDelaiFacturationOpco", () => {
     ).toEqual([]);
   });
 
-  it("aucune donnée personnelle : ni raison sociale ni nom dans le texte", () => {
-    const [a] = candidatsDelaiFacturationOpco(
-      [{ ...ATLAS, client: { opco: "atlas", raisonSociale: "Dupont SARL" } }],
-      J("2026-12-20"),
-    );
+  it("aucune donnée personnelle : la raison sociale n'est même pas lue", () => {
+    const client = { opco: "atlas", raisonSociale: "Dupont SARL" };
+    const [a] = candidatsDelaiFacturationOpco([{ ...ATLAS, client }], J("2026-12-20"));
     expect(`${a?.titre} ${a?.message}`).not.toContain("Dupont");
   });
 });
