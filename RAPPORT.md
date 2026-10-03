@@ -65,7 +65,7 @@ prêt plus bas).
 | --- | --- | --- |
 | Résolution, bandeau, schéma, seed (`etat-fonds-opco.spec.ts`) | module absent → échec d'import | 15/15 |
 | Action (`actions/qualiopi/etat-fonds-opco.spec.ts`) | module absent → échec d'import | 4/4 |
-| Alerte (`evaluateur.spec.ts` + `catalogue.spec.ts`) | `expected [] to have a length of 1` ; catalogue 121 ≠ 122 codes | 291 + 1 todo |
+| Alerte (`evaluateur.spec.ts` + `catalogue.spec.ts`) | `expected [] to have a length of 1` ; catalogue 121 ≠ 122 codes | 289 + 1 todo |
 | Navigation (`admin-nav.test.ts`) | 3 compteurs (170≠169, 32≠31, 21≠20) | 53/53 avec le lexique |
 | Bandeau rendu (`le-bandeau-…spec.tsx`) | écrit après le composant (pas de ROUGE observé) | 4/4 |
 
