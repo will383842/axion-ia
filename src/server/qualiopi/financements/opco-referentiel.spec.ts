@@ -2,11 +2,23 @@
  * Tests — opco-referentiel.ts (Lot 5, module PUR).
  *
  * Couvre : liste canonique + garde de type isOpcoId, opcoLabel (fallback),
- * estBaremePerime (seuil mois, relevé absent = périmé, bornes).
+ * estBaremePerime (seuil mois, relevé absent = périmé, bornes), fiches OPCO
+ * sourcées (OPCO_FICHES) et fonctions de date dérivées.
  */
 
 import { describe, it, expect } from "vitest";
-import { OPCO_IDS, OPCO_LABELS, isOpcoId, opcoLabel, estBaremePerime } from "./opco-referentiel";
+import {
+  OPCO_FICHES,
+  OPCO_IDS,
+  OPCO_LABELS,
+  dateLimiteDepotPourSession,
+  dateLimiteFacturation,
+  estBaremePerime,
+  faitsAVerifier,
+  isOpcoId,
+  opcoLabel,
+  type Fait,
+} from "./opco-referentiel";
 
 describe("OPCO_IDS / OPCO_LABELS", () => {
   it("contient les 11 OPCO agréés", () => {
@@ -89,5 +101,157 @@ describe("estBaremePerime", () => {
     expect(estBaremePerime(new Date("2026-03-10T12:00:00.000Z"), 1, finMars)).toBe(false);
     // Un relevé du 20 févr (avant le 28 févr) est périmé.
     expect(estBaremePerime(new Date("2026-02-20T12:00:00.000Z"), 1, finMars)).toBe(true);
+  });
+});
+
+describe("OPCO_FICHES — chaque fait est sourcé et daté", () => {
+  const tousLesFaits = OPCO_IDS.flatMap((id) =>
+    Object.entries(OPCO_FICHES[id]).map(([champ, fait]) => ({
+      id,
+      champ,
+      fait: fait as Fait<unknown>,
+    })),
+  );
+
+  it("a une fiche pour chacun des 11 OPCO, avec les 7 champs", () => {
+    expect(Object.keys(OPCO_FICHES).sort()).toEqual([...OPCO_IDS].sort());
+    for (const id of OPCO_IDS) {
+      expect(Object.keys(OPCO_FICHES[id]).sort()).toEqual(
+        [
+          "dateLimiteDepot2026",
+          "delaiDepotJours",
+          "delaiFacturationJours",
+          "modeDeDepotConstate",
+          "opcoHorsChampTva",
+          "portailEntrepriseUrl",
+          "portailOfUrl",
+        ].sort(),
+      );
+    }
+  });
+
+  it("tout fait porte une date de relevé ISO AAAA-MM-JJ", () => {
+    for (const { fait } of tousLesFaits) {
+      expect(fait.releveLe).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(Number.isNaN(Date.parse(fait.releveLe))).toBe(false);
+    }
+  });
+
+  it("tout fait non null porte une source http(s)", () => {
+    for (const { id, champ, fait } of tousLesFaits) {
+      if (fait.valeur === null) continue;
+      expect(fait.source, `${id}.${champ}`).toMatch(/^https?:\/\/\S+$/);
+    }
+  });
+
+  it("tout fait null est marqué « à vérifier » (on n'invente rien)", () => {
+    for (const { id, champ, fait } of tousLesFaits) {
+      if (fait.valeur !== null) continue;
+      expect(fait.aVerifier, `${id}.${champ}`).toBe(true);
+    }
+  });
+
+  it("les URL de portail, quand elles sont connues, sont en https", () => {
+    for (const id of OPCO_IDS) {
+      for (const champ of ["portailEntrepriseUrl", "portailOfUrl"] as const) {
+        const v = OPCO_FICHES[id][champ].valeur;
+        if (v !== null) expect(v).toMatch(/^https:\/\//);
+      }
+    }
+  });
+});
+
+describe("OPCO_FICHES — faits témoins", () => {
+  it("Atlas : dépôt depuis le compte adhérent de l'entreprise", () => {
+    expect(OPCO_FICHES.atlas.modeDeDepotConstate.valeur).toBe("compte_adherent");
+  });
+
+  it("Atlas : facturation au plus tard 90 jours après la fin", () => {
+    expect(OPCO_FICHES.atlas.delaiFacturationJours.valeur).toBe(90);
+  });
+
+  it("Opco Santé et Uniformation sont hors champ TVA, les 9 autres non", () => {
+    const horsChamp = OPCO_IDS.filter((id) => OPCO_FICHES[id].opcoHorsChampTva.valeur === true);
+    const dansLeChamp = OPCO_IDS.filter((id) => OPCO_FICHES[id].opcoHorsChampTva.valeur === false);
+    expect(horsChamp.sort()).toEqual(["opco_sante", "uniformation"]);
+    expect(dansLeChamp).toHaveLength(9);
+  });
+
+  it("ne modifie pas les libellés imprimés sur les conventions", () => {
+    expect(OPCO_LABELS.opcommerce).toBe("OPCOMMERCE");
+    expect(OPCO_LABELS.opco_sante).toBe("OPCO Santé");
+  });
+});
+
+describe("dateLimiteDepotPourSession", () => {
+  it("début − délai (Constructys, 15 jours calendaires)", () => {
+    expect(
+      dateLimiteDepotPourSession(
+        "constructys",
+        new Date("2026-11-20T00:00:00.000Z"),
+      )?.toISOString(),
+    ).toBe("2026-11-05T00:00:00.000Z");
+  });
+
+  it("franchit le changement d'année (Constructys, début le 10 janvier)", () => {
+    expect(
+      dateLimiteDepotPourSession(
+        "constructys",
+        new Date("2027-01-10T00:00:00.000Z"),
+      )?.toISOString(),
+    ).toBe("2026-12-26T00:00:00.000Z");
+  });
+
+  it("délai nul : au plus tard le jour du début (Ocapiat)", () => {
+    expect(
+      dateLimiteDepotPourSession("ocapiat", new Date("2026-12-01T00:00:00.000Z"))?.toISOString(),
+    ).toBe("2026-12-01T00:00:00.000Z");
+  });
+
+  it("délai inconnu → null, jamais une date inventée", () => {
+    for (const id of OPCO_IDS) {
+      if (OPCO_FICHES[id].delaiDepotJours.valeur !== null) continue;
+      expect(dateLimiteDepotPourSession(id, new Date("2026-12-01T00:00:00.000Z"))).toBeNull();
+    }
+  });
+
+  it("ne mute pas la date reçue", () => {
+    const debut = new Date("2026-11-20T00:00:00.000Z");
+    dateLimiteDepotPourSession("constructys", debut);
+    expect(debut.toISOString()).toBe("2026-11-20T00:00:00.000Z");
+  });
+});
+
+describe("dateLimiteFacturation", () => {
+  it("fin + délai, au changement d'année (Atlas, 90 jours)", () => {
+    expect(
+      dateLimiteFacturation("atlas", new Date("2026-11-15T00:00:00.000Z"))?.toISOString(),
+    ).toBe("2027-02-13T00:00:00.000Z");
+  });
+
+  it("délai inconnu → null", () => {
+    for (const id of OPCO_IDS) {
+      if (OPCO_FICHES[id].delaiFacturationJours.valeur !== null) continue;
+      expect(dateLimiteFacturation(id, new Date("2026-11-15T00:00:00.000Z"))).toBeNull();
+    }
+  });
+});
+
+describe("faitsAVerifier", () => {
+  it("liste exactement les champs marqués « à vérifier »", () => {
+    const attendus = OPCO_IDS.flatMap((id) =>
+      Object.entries(OPCO_FICHES[id])
+        .filter(([, f]) => (f as Fait<unknown>).aVerifier === true)
+        .map(([champ]) => `${id}.${champ}`),
+    );
+    const liste = faitsAVerifier();
+    expect(liste.map((f) => `${f.opco}.${f.champ}`).sort()).toEqual(attendus.sort());
+    expect(liste.length).toBeGreaterThan(0);
+  });
+
+  it("porte le libellé de l'OPCO et la valeur courante pour l'écran", () => {
+    const f = faitsAVerifier()[0]!;
+    expect(f.libelle).toBe(OPCO_LABELS[f.opco]);
+    expect(f).toHaveProperty("valeur");
   });
 });
