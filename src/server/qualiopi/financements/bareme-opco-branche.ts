@@ -18,6 +18,9 @@ export type TrancheEffectif = "moins_11" | "de_11_a_49" | "tous";
 export const AVERTISSEMENT_SANS_BAREME =
   "Estimation indicative : aucun barème relevé pour cet OPCO et cette branche, à confirmer auprès de l'OPCO.";
 
+export const AVERTISSEMENT_BAREME_INCOMPLET =
+  "Estimation indicative : le barème relevé pour cet OPCO est incomplet (taux horaire ou plafond annuel manquant), complété par les réglages par défaut. À confirmer auprès de l'OPCO.";
+
 export const AVERTISSEMENT_HORS_FONDS_LEGAUX =
   "Entreprise de 50 salariés ou plus : pas de financement OPCO sur les fonds légaux du plan de développement des compétences (hors versements volontaires ou conventionnels).";
 

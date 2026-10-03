@@ -82,6 +82,10 @@ describe("migration baremes_opco_releves_2026 (lot A4b, barèmes relus sur les p
     expect(code).not.toMatch(/\b(UPDATE|DELETE|DROP|TRUNCATE)\b/i);
   });
 
+  it("aucun barème pour une branche dont le financement est SUSPENDU (AKTO 1516)", () => {
+    expect(code).not.toMatch(/'1516'/);
+  });
+
   it("chaque barème porte une source https et une date de relevé", () => {
     const blocs = code.split(/INSERT INTO "baremes_opco"/).slice(1);
     for (const b of blocs) {

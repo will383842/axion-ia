@@ -13,6 +13,7 @@ import {
   tarifHoraireBaremeCents,
 } from "@/server/qualiopi/financements/bareme-opco";
 import {
+  AVERTISSEMENT_BAREME_INCOMPLET,
   AVERTISSEMENT_HORS_FONDS_LEGAUX,
   AVERTISSEMENT_SANS_BAREME,
   horsFondsLegaux,
@@ -133,6 +134,7 @@ export async function estimateOpcoCoverage(input: OpcoCoverageInput): Promise<Op
   let tarifHoraireCents = atlasHoraireCents;
   let plafondAnnuelCents = atlasAnnuelCents;
   let origine: OrigineEstimationOpco = "reglage_par_defaut";
+  let baremeCompleteParDefaut = false;
   if (input.opco) {
     const bareme = await resolveBaremeOpco(input.opco, input.asOf ?? new Date(), {
       ...(input.idcc !== undefined ? { idcc: input.idcc } : {}),
@@ -143,6 +145,9 @@ export async function estimateOpcoCoverage(input: OpcoCoverageInput): Promise<Op
       const baremeHoraire = tarifHoraireBaremeCents(bareme, input.modalite);
       if (baremeHoraire != null) tarifHoraireCents = baremeHoraire;
       if (bareme.plafondAnnuelCents != null) plafondAnnuelCents = bareme.plafondAnnuelCents;
+      // Un barème relevé mais INCOMPLET est complété par les réglages par défaut :
+      // on le DIT, sinon « origine : barème » ferait passer un chiffre Atlas pour un relevé.
+      baremeCompleteParDefaut = baremeHoraire == null || bareme.plafondAnnuelCents == null;
     }
   }
 
@@ -161,6 +166,14 @@ export async function estimateOpcoCoverage(input: OpcoCoverageInput): Promise<Op
 
   // Lot A4 — sans barème, le chiffre reste celui des réglages par défaut (pas de
   // régression commerciale), mais il est DIT indicatif.
+  if (origine === "bareme" && baremeCompleteParDefaut) {
+    return {
+      montantPriseEnChargeCents,
+      resteAChargeCents,
+      origine,
+      avertissement: AVERTISSEMENT_BAREME_INCOMPLET,
+    };
+  }
   return origine === "bareme"
     ? { montantPriseEnChargeCents, resteAChargeCents, origine }
     : {

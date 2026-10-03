@@ -290,8 +290,8 @@ describe("estimateOpcoCoverage — origine de l'estimation (lot A4)", () => {
     });
   });
 
-  it("barème trouvé → origine `bareme`, sans avertissement", async () => {
-    mockResolve.mockResolvedValue(baremeCentral());
+  it("barème COMPLET trouvé → origine `bareme`, sans avertissement", async () => {
+    mockResolve.mockResolvedValue(baremeCentral({ plafondAnnuelCents: 800_000 }));
     const r = await estimateOpcoCoverage({
       nbParticipants: 1,
       dureeHeures: 7,
@@ -301,6 +301,28 @@ describe("estimateOpcoCoverage — origine de l'estimation (lot A4)", () => {
     });
     expect(r.origine).toBe("bareme");
     expect(r.avertissement).toBeUndefined();
+  });
+
+  it("barème INCOMPLET (plafond annuel ou taux absent) → origine `bareme` + avertissement « complété par défaut »", async () => {
+    mockResolve.mockResolvedValue(baremeCentral({ plafondAnnuelCents: null }));
+    const r1 = await estimateOpcoCoverage({
+      nbParticipants: 1,
+      dureeHeures: 7,
+      modalite: "intra",
+      montantHtCents: 40_000,
+      opco: "afdas",
+    });
+    expect(r1.origine).toBe("bareme");
+    expect(r1.avertissement).toMatch(/incomplet/);
+    mockResolve.mockResolvedValue(baremeCentral({ intraHoraireCents: null, plafondAnnuelCents: 800_000 }));
+    const r2 = await estimateOpcoCoverage({
+      nbParticipants: 1,
+      dureeHeures: 7,
+      modalite: "intra",
+      montantHtCents: 40_000,
+      opco: "afdas",
+    });
+    expect(r2.avertissement).toMatch(/incomplet/);
   });
 
   it("aucun barème → montant INCHANGÉ (réglages par défaut), origine `reglage_par_defaut` + avertissement", async () => {
