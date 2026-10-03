@@ -48,6 +48,9 @@ import {
   resteDuNetCents,
 } from "@/server/qualiopi/crm/clients";
 import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
+import { bandeauEtatFonds } from "@/server/qualiopi/financements/etat-fonds-opco";
+import { etatFondsDuClient } from "@/server/qualiopi/financements/etat-fonds-opco-lecture";
+import { BandeauEtatFonds } from "@/components/admin/qualiopi/BandeauEtatFonds";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { AdminFilterTabs } from "@/components/admin/ui/AdminFilterTabs";
@@ -290,6 +293,8 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
   // N1 : seuls les messages scellés par nos actions s'affichent (un lien forgé, rien).
   const erreur = lireMessageDeRetour(sp, "erreur");
   const maintenant = new Date();
+  // Lot OPCO A5 : suspension de la branche ou date limite de dépôt de l'OPCO.
+  const bandeauFonds = bandeauEtatFonds(await etatFondsDuClient(client, maintenant));
 
   // « SIREN à compléter » : l'annuaire public n'est interrogé que sur demande
   // (lien « Chercher le SIREN »), côté serveur, 3 s au plus. Aucun JavaScript
@@ -443,6 +448,8 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           </>
         }
       />
+
+      <BandeauEtatFonds bandeau={bandeauFonds} />
 
       {/* ── Onglets du dossier client (A2 : administrateurs seulement) ─────── */}
       {voitEchanges ? (
