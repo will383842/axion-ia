@@ -385,6 +385,15 @@ describe("updateClientAction — effectif et OPCO typé (lot OPCO A1)", () => {
     expect(mockUpdate).not.toHaveBeenCalled();
   });
 
+  it("refuse un effectif ou un OPCO typé quand la fiche EN BASE est un particulier (charge sans type)", async () => {
+    mockFindUnique.mockResolvedValue({ type: "particulier" });
+    const r1 = await updateClientAction({ id: ID, effectif: 3 });
+    const r2 = await updateClientAction({ id: ID, opco: "akto" });
+    expect("error" in r1).toBe(true);
+    expect("error" in r2).toBe(true);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
   it("refuse un effectif ou un OPCO typé sur un particulier", async () => {
     const r1 = await updateClientAction({ id: ID, type: "particulier", effectif: 3 });
     const r2 = await updateClientAction({ id: ID, type: "particulier", opco: "akto" });

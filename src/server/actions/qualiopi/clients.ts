@@ -399,9 +399,13 @@ export async function updateClientAction(
   // ni SIRET, même si la charge ne dit rien du type (« C'est elle » ne
   // transmet que le SIREN de l'annuaire). Repasser la fiche en entreprise dans
   // la même charge reste possible.
+  // Lot OPCO A1 : même règle pour l'effectif et l'OPCO typé, qui n'ont de sens
+  // que pour un employeur — refus SERVEUR, pas seulement masquage du formulaire.
   const identifiantEntreprise =
     (typeof sirenAEcrire === "string" && sirenAEcrire !== "") ||
-    (typeof fields.siret === "string" && fields.siret !== "");
+    (typeof fields.siret === "string" && fields.siret !== "") ||
+    typeof fields.effectif === "number" ||
+    typeof fields.opco === "string";
   if (identifiantEntreprise && fields.type !== "entreprise") {
     const typeEnBase =
       fields.type ??
@@ -409,7 +413,7 @@ export async function updateClientAction(
     if (typeEnBase === "particulier") {
       return {
         error:
-          "Cette fiche est celle d'un particulier : un SIREN ou un SIRET ne s'y pose pas. " +
+          "Cette fiche est celle d'un particulier : un SIREN, un SIRET, un effectif ou un OPCO ne s'y pose pas. " +
           "Changez d'abord le type du client si c'est une entreprise.",
       };
     }

@@ -106,7 +106,9 @@ export function ClientBrancheForm({
           ? { opco: opcoTypeValue === "" ? null : (opcoTypeValue as (typeof OPCO_IDS)[number]) }
           : {}),
         // Le serveur valide (entier ≥ 0) et pose lui-même source et date.
-        ...(!estParticulier && effectifValue.trim() !== effectifInitial
+        // Comparaison NUMÉRIQUE : « 007 » pour un effectif de 7 n'est pas un changement.
+        ...(!estParticulier &&
+        (effectifValue.trim() === "" ? null : Number(effectifValue.trim())) !== (effectif ?? null)
           ? { effectif: effectifValue.trim() === "" ? null : Number(effectifValue.trim()) }
           : {}),
       });
