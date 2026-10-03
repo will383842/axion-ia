@@ -52,7 +52,7 @@ appliquée :
   consigne mais non retrouvé dans l'extrait. Il est gardé avec `aVerifier: true` et apparaît
   dans `faitsAVerifier()`.
 
-Résultat : 13 faits renseignés sur 77 ; 65 champs remontent dans `faitsAVerifier()` (64 null + Atlas 90 j).
+Résultat : 19 faits renseignés sur 77 (dont les 11 faits TVA) ; 59 champs remontent dans `faitsAVerifier()` (58 null + Atlas 90 j).
 Il faudra repasser les faits « non confirmés » ci-dessous depuis un poste qui a accès aux sites.
 
 ## Faits confirmés (relevés le 2026-10-03)
@@ -134,7 +134,7 @@ Prisma, pas de migration, aucun import serveur (le module est importé par `Clie
 ## Limites
 
 - Les sites des OPCO étaient bloqués par le proxy de la session : faits confirmés par extraits de
-  recherche uniquement. 13 faits sur 77 sont renseignés ; les autres sont `null` et `aVerifier`.
+  recherche uniquement. 19 faits sur 77 sont renseignés (dont 11 sur la TVA) ; les 58 autres sont `null` et `aVerifier`.
 - Facturation Atlas (90 j) gardée comme témoin mais marquée `aVerifier` (non retrouvée dans l'extrait).
 - Portail OF d'OPCO EP et toutes les valeurs d'OPCO 2i non confirmés → `null`.
 - Calcul de dates en jours de 24 h (UTC).
