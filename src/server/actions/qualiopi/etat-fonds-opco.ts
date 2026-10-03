@@ -24,6 +24,7 @@ export async function ajouterReleveEtatFondsAction(input: {
   idcc?: string | null;
   statut: string;
   perimetre?: string | null;
+  effectifMaxExclu?: number | string | null;
   dateLimiteDepot?: string | null;
   sourceUrl: string;
   releveLe: string;
@@ -43,6 +44,7 @@ export async function ajouterReleveEtatFondsAction(input: {
       idcc: v.idcc ?? null,
       statut: v.statut,
       perimetre: v.perimetre || null,
+      effectifMaxExclu: v.effectifMaxExclu ?? null,
       dateLimiteDepot: v.dateLimiteDepot ? jour(v.dateLimiteDepot) : null,
       sourceUrl: v.sourceUrl,
       releveLe: jour(v.releveLe),

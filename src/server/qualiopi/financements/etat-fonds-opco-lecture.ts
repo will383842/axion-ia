@@ -60,6 +60,7 @@ export async function ajouterReleveEtatFonds(input: {
   idcc: string | null;
   statut: StatutFondsOpco;
   perimetre: string | null;
+  effectifMaxExclu: number | null;
   dateLimiteDepot: Date | null;
   sourceUrl: string;
   releveLe: Date;

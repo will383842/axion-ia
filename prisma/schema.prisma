@@ -8701,6 +8701,9 @@ model EtatFondsOpco {
   /// Libellé du périmètre. « moins de 50 salariés » y est LU par la résolution :
   /// une telle suspension ne vaut pas pour une entreprise de 50 salariés et plus.
   perimetre       String?         @db.VarChar(200)
+  /// Seuil d'effectif EXCLU de la suspension (50 = « moins de 50 salariés ») :
+  /// une entreprise d'effectif ≥ seuil n'est pas concernée. Null = tous effectifs.
+  effectifMaxExclu Int?           @map("effectif_max_exclu") @db.SmallInt
   dateLimiteDepot DateTime?       @map("date_limite_depot") @db.Date
   sourceUrl       String          @map("source_url") @db.Text
   releveLe        DateTime        @map("releve_le") @db.Date

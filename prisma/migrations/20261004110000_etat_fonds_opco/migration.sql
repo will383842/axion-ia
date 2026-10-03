@@ -15,6 +15,7 @@ CREATE TABLE "etats_fonds_opco" (
     "idcc" CHAR(4),
     "statut" "StatutFondsOpco" NOT NULL,
     "perimetre" VARCHAR(200),
+    "effectif_max_exclu" SMALLINT,
     "date_limite_depot" DATE,
     "source_url" TEXT NOT NULL,
     "releve_le" DATE NOT NULL,
@@ -33,15 +34,19 @@ CREATE INDEX "etats_fonds_opco_opco_idcc_releve_le_idx" ON "etats_fonds_opco"("o
 ALTER TABLE "etats_fonds_opco" ADD CONSTRAINT "etats_fonds_opco_idcc_check"
   CHECK ("idcc" IS NULL OR "idcc" ~ '^[0-9]{4}$');
 
+-- Seuil d'effectif de la suspension (exclu) : 50 = « moins de 50 salariés ».
+ALTER TABLE "etats_fonds_opco" ADD CONSTRAINT "etats_fonds_opco_effectif_max_exclu_check"
+  CHECK ("effectif_max_exclu" IS NULL OR "effectif_max_exclu" > 0);
+
 -- Données de départ 1/2 — AKTO suspend le plan de développement des compétences
 -- des moins de 50 salariés (brève akto.fr du 22/09/2026, relevée le 04/10/2026).
 -- IDCC vérifiés sur les pages de règles d'akto.fr et dans la table SIRO de
 -- France compétences. La branche « Exploitations forestières et scieries
 -- agricoles » (conventions régionales) n'est volontairement PAS insérée.
 INSERT INTO "etats_fonds_opco"
-  ("id", "opco", "idcc", "statut", "perimetre", "date_limite_depot", "source_url", "releve_le", "note", "created_at", "updated_at")
+  ("id", "opco", "idcc", "statut", "perimetre", "effectif_max_exclu", "date_limite_depot", "source_url", "releve_le", "note", "created_at", "updated_at")
 SELECT gen_random_uuid(), 'akto'::"Opco", v.idcc, 'suspendu'::"StatutFondsOpco",
-       v.branche || ' — entreprises de moins de 50 salariés', NULL,
+       v.branche || ' — entreprises de moins de 50 salariés', 50, NULL,
        'https://www.akto.fr/breve/entreprises-moins-50-salaries-suspension-financement-formations-pdc/',
        DATE '2026-10-04',
        'Financement du plan de développement des compétences suspendu pour 2026, entreprises de moins de 50 salariés ; enveloppe intégralement engagée. Restent possibles : plan conventionnel, actions collectives d''Espace Formation, alternance.',

@@ -26,6 +26,7 @@ function releve(p: Partial<ReleveEtatFonds>): ReleveEtatFonds {
     idcc: p.idcc ?? null,
     statut: p.statut ?? "ouvert",
     perimetre: p.perimetre ?? null,
+    effectifMaxExclu: p.effectifMaxExclu ?? null,
     dateLimiteDepot: p.dateLimiteDepot ?? null,
     sourceUrl: p.sourceUrl ?? AKTO_SRC,
     releveLe: p.releveLe ?? new Date("2026-10-04T00:00:00Z"),
@@ -370,5 +371,50 @@ describe("migration 20261004110000_etat_fonds_opco — données de départ", () 
       expect(sql).toContain(`('${idcc}',`);
     }
     expect(sql).not.toMatch(/forestières/i);
+  });
+});
+
+describe("assemblage A5 — corrections de la relecture", () => {
+  it("le seuil porté par la colonne fait foi, même sans « moins de 50 » dans le libellé", () => {
+    const releves = [
+      releve({ idcc: "1516", statut: "suspendu", perimetre: "OF", effectifMaxExclu: 50 }),
+    ];
+    const base = { opco: "akto", idcc: "1516", aLaDate: LE_4_OCTOBRE, releves };
+    expect(etatFondsPour({ ...base, effectif: 49 })?.statut).toBe("suspendu");
+    expect(etatFondsPour({ ...base, effectif: 50 })).toBeNull();
+  });
+
+  it("un IDCC saisi « 01516 » est reconnu, comme dans l'inférence d'OPCO", () => {
+    const releves = [releve({ idcc: "1516", statut: "suspendu", effectifMaxExclu: 50 })];
+    expect(
+      etatFondsPour({ opco: "akto", idcc: "01516", effectif: 5, aLaDate: LE_4_OCTOBRE, releves })
+        ?.statut,
+    ).toBe("suspendu");
+    expect(normaliserIdcc("11516")).toBeNull();
+  });
+
+  it("un relevé de branche sans date ne masque pas la date limite de l'OPCO entier", () => {
+    const releves = [
+      releve({ opco: "atlas", idcc: "1486", statut: "ouvert" }),
+      releve({ opco: "atlas", idcc: null, dateLimiteDepot: new Date("2026-12-30T00:00:00Z") }),
+    ];
+    const e = etatFondsPour({
+      opco: "atlas",
+      idcc: "1486",
+      effectif: 5,
+      aLaDate: LE_4_OCTOBRE,
+      releves,
+    });
+    expect(e?.dateLimiteDepot?.toISOString().slice(0, 10)).toBe("2026-12-30");
+  });
+
+  it("une date de relevé dans le futur est refusée", () => {
+    const r = releveEtatFondsSchema.safeParse({
+      opco: "akto",
+      statut: "ouvert",
+      sourceUrl: "https://www.akto.fr/",
+      releveLe: "2999-01-01",
+    });
+    expect(r.success).toBe(false);
   });
 });

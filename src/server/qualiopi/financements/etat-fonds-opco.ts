@@ -36,6 +36,8 @@ export interface ReleveEtatFonds {
   idcc: string | null;
   statut: StatutFonds;
   perimetre: string | null;
+  /** Seuil d'effectif exclu (50 = « moins de 50 salariés ») ; null = tous effectifs. */
+  effectifMaxExclu?: number | null;
   dateLimiteDepot: Date | null;
   sourceUrl: string;
   releveLe: Date;
@@ -60,8 +62,11 @@ export const SEUIL_EFFECTIF_SUSPENSION = 50;
 export function normaliserIdcc(brut: string | null | undefined): string | null {
   if (!brut) return null;
   const chiffres = brut.replace(/\D/g, "");
-  if (chiffres.length === 0 || chiffres.length > 4) return null;
-  return chiffres.padStart(4, "0");
+  // Même règle que `inferOpcoFromIdcc` (crm/naf-opco.ts) : 5 chiffres tolérés
+  // seulement avec un zéro de tête (« 01516 » → « 1516 »).
+  if (chiffres.length === 0 || chiffres.length > 5) return null;
+  if (chiffres.length === 5 && !chiffres.startsWith("0")) return null;
+  return chiffres.padStart(4, "0").slice(-4);
 }
 
 /** Jour civil de Paris, AAAA-MM-JJ. */
@@ -130,15 +135,25 @@ export function etatFondsPour(input: {
   const [branche] = idcc ? connus.filter((r) => r.idcc === idcc).sort(plusRecentDabord) : [];
   const [opcoEntier] = connus.filter((r) => r.idcc === null).sort(plusRecentDabord);
 
+  // Le seuil fait foi s'il est porté par la colonne ; le libellé n'est qu'un
+  // repli pour les relevés saisis sans seuil.
+  const seuil =
+    branche?.effectifMaxExclu ??
+    (MOINS_DE_50.test(branche?.perimetre ?? "") ? SEUIL_EFFECTIF_SUSPENSION : null);
   const brancheIgnoree =
     branche !== undefined &&
     branche.statut !== "ouvert" &&
-    MOINS_DE_50.test(branche.perimetre ?? "") &&
+    seuil != null &&
     effectif != null &&
-    effectif >= SEUIL_EFFECTIF_SUSPENSION;
+    effectif >= seuil;
 
   const retenu = branche && !brancheIgnoree ? branche : opcoEntier;
-  return retenu ? versEtat(retenu, aLaDate) : null;
+  if (!retenu) return null;
+  // Un relevé de branche sans date limite ne masque pas celle de l'OPCO entier.
+  if (retenu === branche && branche.dateLimiteDepot === null && opcoEntier?.dateLimiteDepot) {
+    return versEtat({ ...branche, dateLimiteDepot: opcoEntier.dateLimiteDepot }, aLaDate);
+  }
+  return versEtat(retenu, aLaDate);
 }
 
 /** Veille mensuelle : au-delà, l'alerte `etat_fonds_perime` est levée. */
@@ -213,7 +228,12 @@ export const releveEtatFondsSchema = z.object({
     .max(2000)
     .url()
     .refine((u) => u.startsWith("https://"), "La source doit être une adresse https"),
-  releveLe: jourSaisi,
+  // Un relevé ne peut pas être daté du futur (la fiche l'ignorerait, la page l'afficherait).
+  releveLe: jourSaisi.refine((d) => d <= jourParis(new Date()), "Date de relevé dans le futur"),
+  effectifMaxExclu: z.preprocess(
+    (v) => (v === "" || v == null ? null : Number(v)),
+    z.number().int().positive().max(32767).nullable().optional(),
+  ),
   note: z.preprocess(vide, z.string().trim().max(2000).nullable().optional()),
 });
 
