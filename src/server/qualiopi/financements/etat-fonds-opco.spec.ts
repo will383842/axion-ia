@@ -8,6 +8,7 @@ import { describe, it, expect } from "vitest";
 
 import {
   bandeauEtatFonds,
+  estEtatFondsPerime,
   etatFondsPour,
   normaliserIdcc,
   relevesEnVigueur,
@@ -284,6 +285,16 @@ describe("bandeauEtatFonds", () => {
         }),
       ),
     ).toBeNull();
+  });
+});
+
+describe("estEtatFondsPerime — veille mensuelle", () => {
+  const releveLe = new Date("2026-10-04T00:00:00Z");
+  it("31 jours : à jour ; 32 jours : périmé (jour civil de Paris)", () => {
+    expect(estEtatFondsPerime(releveLe, new Date("2026-11-04T10:00:00Z"))).toBe(false);
+    expect(estEtatFondsPerime(releveLe, new Date("2026-11-04T22:59:00Z"))).toBe(false);
+    // 23 h 30 UTC le 4/11 = 0 h 30 à Paris le 5/11 : 32 jours.
+    expect(estEtatFondsPerime(releveLe, new Date("2026-11-04T23:30:00Z"))).toBe(true);
   });
 });
 

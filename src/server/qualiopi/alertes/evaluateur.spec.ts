@@ -98,6 +98,10 @@ vi.mock("@/server/qualiopi/financements/bareme-opco", () => ({
   listBaremesEnVigueur: vi.fn(),
 }));
 
+vi.mock("@/server/qualiopi/financements/etat-fonds-opco-lecture", () => ({
+  dernierReleveEtatFonds: vi.fn(),
+}));
+
 // Vigilance URSSAF — on mocke les LECTURES (pièces + cumul annuel) ; les
 // fonctions d'évaluation (seuil, sélection, péremption) restent RÉELLES : ce
 // sont les mêmes que la carte conformité, et c'est précisément ce que la règle
@@ -115,6 +119,7 @@ import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { listBaremesEnVigueur } from "@/server/qualiopi/financements/bareme-opco";
+import { dernierReleveEtatFonds } from "@/server/qualiopi/financements/etat-fonds-opco-lecture";
 import {
   cumulAnnuelFormateurCents,
   listTrainerDocuments,
@@ -166,12 +171,14 @@ const mp = prisma as unknown as {
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
 const mockIdentite = getOrganismeIdentite as ReturnType<typeof vi.fn>;
 const mockListBaremes = listBaremesEnVigueur as ReturnType<typeof vi.fn>;
+const mockDernierReleveFonds = dernierReleveEtatFonds as ReturnType<typeof vi.fn>;
 const mockListTrainerDocs = listTrainerDocuments as ReturnType<typeof vi.fn>;
 const mockCumulAnnuel = cumulAnnuelFormateurCents as ReturnType<typeof vi.fn>;
 
 /** Configure tous les mocks prisma pour retourner des résultats vides (aucune alerte). */
 function setupEmptyMocks() {
   mockListBaremes.mockResolvedValue([]); // aucun barème OPCO → pas d'alerte de péremption
+  mockDernierReleveFonds.mockResolvedValue(null); // aucun relevé d'état des fonds
   mockListTrainerDocs.mockResolvedValue([]); // aucune pièce formateur
   mockCumulAnnuel.mockResolvedValue(0); // sous le seuil de vigilance
   mp.reclamation.findMany.mockResolvedValue([]);
@@ -1569,6 +1576,30 @@ describe("evaluerAlertes — bareme_opco_perime", () => {
     mockListBaremes.mockResolvedValue([{ id: "b2", opco: "akto", releveLe: new Date() }]);
     const alertes = await evaluerAlertes();
     expect(alertes.filter((a) => a.code === "bareme_opco_perime")).toHaveLength(0);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests etat_fonds_perime (lot OPCO A5)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — etat_fonds_perime", () => {
+  beforeEach(() => setupEmptyMocks());
+  const ilYA = (jours: number) => new Date(Date.now() - jours * 86_400_000);
+
+  it("lève UNE alerte quand le relevé le plus récent a plus de 31 jours", async () => {
+    mockDernierReleveFonds.mockResolvedValue({ id: "f1", releveLe: ilYA(40) });
+    const alertes = (await evaluerAlertes()).filter((a) => a.code === "etat_fonds_perime");
+    expect(alertes).toHaveLength(1);
+    expect(alertes[0]?.cibleType).toBe("EtatFondsOpco");
+    expect(alertes[0]?.cibleId).toBe("f1");
+  });
+
+  it("aucune alerte pour un relevé récent, ni sans aucun relevé", async () => {
+    mockDernierReleveFonds.mockResolvedValue({ id: "f2", releveLe: ilYA(20) });
+    expect((await evaluerAlertes()).filter((a) => a.code === "etat_fonds_perime")).toHaveLength(0);
+    mockDernierReleveFonds.mockResolvedValue(null);
+    expect((await evaluerAlertes()).filter((a) => a.code === "etat_fonds_perime")).toHaveLength(0);
   });
 });
 

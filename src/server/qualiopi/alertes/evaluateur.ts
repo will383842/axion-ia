@@ -37,6 +37,12 @@ import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { listBaremesEnVigueur } from "@/server/qualiopi/financements/bareme-opco";
+import { dernierReleveEtatFonds } from "@/server/qualiopi/financements/etat-fonds-opco-lecture";
+import {
+  estEtatFondsPerime,
+  formatJourDate,
+  VEILLE_ETAT_FONDS_JOURS,
+} from "@/server/qualiopi/financements/etat-fonds-opco";
 import { estBaremePerime, opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 import { STATUTS_FACTURE_OUVERTE } from "@/server/qualiopi/financements/statuts-facture";
 import {
@@ -3088,6 +3094,26 @@ async function regleBaremeOpcoPerime(now: Date): Promise<AlerteCandidate[]> {
     }));
 }
 
+/**
+ * Lot OPCO A5 — veille mensuelle de l'état des fonds OPCO. Une seule requête
+ * bornée (le relevé le plus récent), aucune donnée personnelle. Sans aucun
+ * relevé, rien : la page invite déjà à saisir le premier.
+ */
+async function regleEtatFondsPerime(now: Date): Promise<AlerteCandidate[]> {
+  const dernier = await dernierReleveEtatFonds();
+  if (!dernier || !estEtatFondsPerime(dernier.releveLe, now)) return [];
+  return [
+    {
+      code: "etat_fonds_perime",
+      niveau: "important" as AlerteNiveau,
+      titre: "État des fonds OPCO à relever (veille mensuelle)",
+      message: `Le dernier relevé de l'état des fonds OPCO date du ${formatJourDate(dernier.releveLe)} (plus de ${VEILLE_ETAT_FONDS_JOURS} jours). Consultez les sites des OPCO (suspensions, dates limites de dépôt) et ajoutez un relevé, même inchangé.`,
+      cibleType: "EtatFondsOpco",
+      cibleId: dernier.id,
+    },
+  ];
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Catalogue des règles
 // ─────────────────────────────────────────────────────────────────────────────
@@ -4985,6 +5011,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "rgpd_suppression", fn: regleRgpdSuppression },
   { nom: "revue_trimestrielle", fn: regleRevueTrimestrielle },
   { nom: "bareme_opco_perime", fn: regleBaremeOpcoPerime },
+  { nom: "etat_fonds_perime", fn: regleEtatFondsPerime },
   // Lot 1 §1.4 — les deux seules étapes du parcours d'un dossier qui n'avaient
   // AUCUN code d'alerte. Les douze autres en avaient déjà un ; ajouter une
   // alerte « échéance dépassée » globale les aurait signalées deux fois.

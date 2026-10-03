@@ -1231,6 +1231,14 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "direction",
   },
+  // Lot OPCO A5 : veille mensuelle de l'état des fonds des OPCO. Levée quand le
+  // relevé le plus récent (tous OPCO confondus) a plus de 31 jours.
+  etat_fonds_perime: {
+    niveau: "important",
+    titre: "État des fonds OPCO à relever (veille mensuelle)",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
   // [T17.1 — S7] Convention de formation (L.6353-1) non établie avant démarrage (off.9).
   convention_formation_manquante: {
     niveau: "critique",

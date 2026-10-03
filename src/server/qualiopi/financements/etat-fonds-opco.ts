@@ -141,6 +141,15 @@ export function etatFondsPour(input: {
   return retenu ? versEtat(retenu, aLaDate) : null;
 }
 
+/** Veille mensuelle : au-delà, l'alerte `etat_fonds_perime` est levée. */
+export const VEILLE_ETAT_FONDS_JOURS = 31;
+
+/** Vrai si le relevé (colonne `@db.Date`) a plus de 31 jours, en jours civils de Paris. */
+export function estEtatFondsPerime(releveLe: Date, now: Date): boolean {
+  const jours = (Date.parse(jourParis(now)) - Date.parse(jourDate(releveLe))) / 86_400_000;
+  return jours > VEILLE_ETAT_FONDS_JOURS;
+}
+
 export interface Bandeau {
   ton: "rouge" | "orange";
   texte: string;
