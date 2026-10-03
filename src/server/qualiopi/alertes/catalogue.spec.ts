@@ -131,6 +131,8 @@ const CODES_ATTENDUS: string[] = [
   "convention_tripartite_manquante",
   "convention_formation_manquante",
   "bareme_opco_perime",
+  // Chantier OPCO A3 : facture à l'OPCO à émettre avant la date limite.
+  "delai_facturation_opco",
   // Conservé au catalogue bien qu'il ne soit PLUS émis (le palier J30 est couvert
   // par une relance proposée) : sans son entrée, les alertes déjà en base ne
   // s'auto-résoudraient jamais. Cf. `catalogue.ts`.
