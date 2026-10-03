@@ -7,12 +7,18 @@
  * Permet de renseigner l'IDCC (code de la convention collective de branche,
  * déclencheur du barème OPCO par dossier) et la taille de l'entreprise
  * (CompanySize), puis appelle `updateClientAction`.
+ *
+ * Lot OPCO A1 : effectif salarié (seuils OPCO < 11 / 11-49 / 50+) et OPCO TYPÉ
+ * (l'un des 11 du référentiel). Quand l'OPCO typé est vide et que le texte
+ * libre `opcoIdentifie` désigne un OPCO sans ambiguïté, l'écran AFFICHE
+ * « OPCO suggéré : X » — il n'écrit rien : seul un choix explicite le pose.
  */
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateClientAction } from "@/server/actions/qualiopi/clients";
 import { OPCO_IDS, OPCO_LABELS } from "@/server/qualiopi/financements/opco-referentiel";
+import { suggererOpco } from "@/server/qualiopi/financements/opco-suggestion";
 import type { CompanySize } from "@/server/qualiopi/crm/types";
 
 interface ClientBrancheFormProps {
@@ -21,6 +27,10 @@ interface ClientBrancheFormProps {
   taille?: CompanySize | null;
   /** OPCO courant (inféré ou saisi). `null` = « à déterminer ». */
   opcoIdentifie?: string | null;
+  /** OPCO typé (`Client.opco`). `null` = non choisi. */
+  opco?: string | null;
+  /** Effectif salarié de l'entreprise (niveau SIREN). `null` = inconnu. */
+  effectif?: number | null;
   /**
    * Masque le champ OPCO. Un particulier (B2C) relève d'un contrat de formation
    * professionnelle (C. trav. L6353-3) et n'a PAS d'OPCO : lui en proposer un
@@ -42,6 +52,8 @@ export function ClientBrancheForm({
   idcc,
   taille,
   opcoIdentifie,
+  opco,
+  effectif,
   estParticulier = false,
 }: ClientBrancheFormProps): React.ReactElement {
   const router = useRouter();
@@ -54,6 +66,13 @@ export function ClientBrancheForm({
   // a délibérément changé l'OPCO » de « l'admin n'a pas touché au select ».
   const opcoInitial = opcoIdentifie ?? "";
   const [opcoValue, setOpcoValue] = useState<string>(opcoInitial);
+  // Même discipline pour l'OPCO typé et l'effectif : n'envoyer que ce qui a
+  // changé, pour qu'un simple « Enregistrer » ne re-date pas l'effectif.
+  const opcoTypeInitial = opco ?? "";
+  const [opcoTypeValue, setOpcoTypeValue] = useState<string>(opcoTypeInitial);
+  const effectifInitial = effectif == null ? "" : String(effectif);
+  const [effectifValue, setEffectifValue] = useState<string>(effectifInitial);
+  const suggestion = suggererOpco({ opco, opcoIdentifie });
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -82,6 +101,13 @@ export function ClientBrancheForm({
         // ceinture.
         ...(!estParticulier && opcoValue !== opcoInitial
           ? { opcoIdentifie: opcoValue === "" ? null : opcoValue }
+          : {}),
+        ...(!estParticulier && opcoTypeValue !== opcoTypeInitial
+          ? { opco: opcoTypeValue === "" ? null : (opcoTypeValue as (typeof OPCO_IDS)[number]) }
+          : {}),
+        // Le serveur valide (entier ≥ 0) et pose lui-même source et date.
+        ...(!estParticulier && effectifValue.trim() !== effectifInitial
+          ? { effectif: effectifValue.trim() === "" ? null : Number(effectifValue.trim()) }
           : {}),
       });
       if ("error" in result) {
@@ -178,6 +204,51 @@ export function ClientBrancheForm({
                 </option>
               ))}
             </select>
+          </div>
+        )}
+
+        {!estParticulier && (
+          <div className="min-w-0">
+            <label htmlFor={`opco-type-${id}`} className={labelCls}>
+              OPCO (référentiel)
+            </label>
+            <select
+              id={`opco-type-${id}`}
+              value={opcoTypeValue}
+              onChange={(e) => setOpcoTypeValue(e.target.value)}
+              className={inputCls}
+            >
+              <option value="">—</option>
+              {OPCO_IDS.map((o) => (
+                <option key={o} value={o}>
+                  {OPCO_LABELS[o]}
+                </option>
+              ))}
+            </select>
+            {suggestion !== null && (
+              <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                {`OPCO suggéré : ${OPCO_LABELS[suggestion]}`}
+              </p>
+            )}
+          </div>
+        )}
+
+        {!estParticulier && (
+          <div className="min-w-0">
+            <label htmlFor={`effectif-${id}`} className={labelCls}>
+              Effectif
+            </label>
+            <input
+              id={`effectif-${id}`}
+              type="number"
+              inputMode="numeric"
+              min={0}
+              step={1}
+              value={effectifValue}
+              onChange={(e) => setEffectifValue(e.target.value)}
+              placeholder="Salariés"
+              className={inputCls}
+            />
           </div>
         )}
 
