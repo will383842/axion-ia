@@ -12,6 +12,11 @@ import {
   resolveBaremeOpco,
   tarifHoraireBaremeCents,
 } from "@/server/qualiopi/financements/bareme-opco";
+import {
+  AVERTISSEMENT_HORS_FONDS_LEGAUX,
+  AVERTISSEMENT_SANS_BAREME,
+  horsFondsLegaux,
+} from "@/server/qualiopi/financements/bareme-opco-branche";
 import type { Devis } from "@/server/qualiopi/crm/types";
 
 export interface ListDevisOpts {
@@ -61,13 +66,24 @@ export interface OpcoCoverageInput {
   opco?: string;
   /** Date de résolution du barème versionné (défaut : maintenant). */
   asOf?: Date;
+  /** Lot A4 — IDCC de la branche du client (4 chiffres), oriente le barème. */
+  idcc?: string;
+  /** Lot A4 — effectif du client ; ≥ 50 → hors fonds légaux (art. L6332-17). */
+  effectif?: number;
 }
+
+/** Lot A4 — d'où vient le chiffre estimé. */
+export type OrigineEstimationOpco = "bareme" | "reglage_par_defaut" | "hors_fonds_legaux";
 
 export interface OpcoCoverageResult {
   /** Montant estimé de prise en charge OPCO, en CENTIMES. */
   montantPriseEnChargeCents: number;
   /** Reste à charge client, en CENTIMES. */
   resteAChargeCents: number;
+  /** Lot A4 — barème relevé, réglage par défaut (aucun barème), ou hors fonds légaux. */
+  origine: OrigineEstimationOpco;
+  /** Lot A4 — à afficher avec le chiffre quand il n'est pas adossé à un barème. */
+  avertissement?: string;
 }
 
 /**
@@ -84,6 +100,17 @@ export interface OpcoCoverageResult {
  * Tous montants en CENTIMES. Aucun arrondi intermédiaire (Integer math).
  */
 export async function estimateOpcoCoverage(input: OpcoCoverageInput): Promise<OpcoCoverageResult> {
+  // Lot A4 — 50 salariés ou plus : pas de fonds légaux du plan de développement
+  // des compétences (art. L6332-17 C. trav.). Effectif inconnu → pas de conclusion.
+  if (horsFondsLegaux(input.effectif)) {
+    return {
+      montantPriseEnChargeCents: 0,
+      resteAChargeCents: Math.max(0, input.montantHtCents),
+      origine: "hors_fonds_legaux",
+      avertissement: AVERTISSEMENT_HORS_FONDS_LEGAUX,
+    };
+  }
+
   const [tarifIntra, tarifInterPres, tarifInterDist, plafondAnnuel] = await Promise.all([
     getQualiopiConfig("opco_atlas_intra_horaire"),
     getQualiopiConfig("opco_atlas_inter_presentiel"),
@@ -105,9 +132,14 @@ export async function estimateOpcoCoverage(input: OpcoCoverageInput): Promise<Op
   // ou si le plafond concerné n'est pas encore relevé (structure vide).
   let tarifHoraireCents = atlasHoraireCents;
   let plafondAnnuelCents = atlasAnnuelCents;
+  let origine: OrigineEstimationOpco = "reglage_par_defaut";
   if (input.opco) {
-    const bareme = await resolveBaremeOpco(input.opco, input.asOf ?? new Date());
+    const bareme = await resolveBaremeOpco(input.opco, input.asOf ?? new Date(), {
+      ...(input.idcc !== undefined ? { idcc: input.idcc } : {}),
+      ...(input.effectif !== undefined ? { effectif: input.effectif } : {}),
+    });
     if (bareme) {
+      origine = "bareme";
       const baremeHoraire = tarifHoraireBaremeCents(bareme, input.modalite);
       if (baremeHoraire != null) tarifHoraireCents = baremeHoraire;
       if (bareme.plafondAnnuelCents != null) plafondAnnuelCents = bareme.plafondAnnuelCents;
@@ -127,5 +159,14 @@ export async function estimateOpcoCoverage(input: OpcoCoverageInput): Promise<Op
 
   const resteAChargeCents = Math.max(0, input.montantHtCents - montantPriseEnChargeCents);
 
-  return { montantPriseEnChargeCents, resteAChargeCents };
+  // Lot A4 — sans barème, le chiffre reste celui des réglages par défaut (pas de
+  // régression commerciale), mais il est DIT indicatif.
+  return origine === "bareme"
+    ? { montantPriseEnChargeCents, resteAChargeCents, origine }
+    : {
+        montantPriseEnChargeCents,
+        resteAChargeCents,
+        origine,
+        avertissement: AVERTISSEMENT_SANS_BAREME,
+      };
 }
