@@ -20,7 +20,7 @@
  *   2. idem pour `contracts.sha256`
  *   3. `pnpm test src/server/partners` — la transcription et le registre disent le reste.
  */
-import contratPublie from "./contrat/contracts.v2.json";
+import contratPublie from "./contrat/contracts.v3.json";
 
 /**
  * Le JSON Schema publié, tel qu'il est sur le fil. Le type est resserré à la main sur

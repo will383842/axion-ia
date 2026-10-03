@@ -29,7 +29,7 @@ function racine(): string {
 
 /** Le chemin absolu de la copie du JSON Schema publié par Partners. */
 export function cheminContratPublie(): string {
-  return path.join(racine(), "contracts.v2.json");
+  return path.join(racine(), "contracts.v3.json");
 }
 
 /**
