@@ -60,3 +60,33 @@ describe("migration bareme_opco_branche_tranche", () => {
     expect(corps).toMatch(/@@index\(\[opco, idcc, trancheEffectif, dateEffet\]\)/);
   });
 });
+
+describe("migration baremes_opco_releves_2026 (lot A4b, barèmes relus sur les pages officielles)", () => {
+  const dossiers = readdirSync(join(RACINE, "prisma/migrations")).filter((d) =>
+    d.endsWith("_baremes_opco_releves_2026"),
+  );
+  const sql = dossiers[0]
+    ? readFileSync(join(RACINE, "prisma/migrations", dossiers[0], "migration.sql"), "utf8")
+    : "";
+  const code = sql.replace(/--.*$/gm, "");
+
+  it("existe une seule fois", () => {
+    expect(dossiers).toHaveLength(1);
+  });
+
+  it("chaque insertion est gardée par WHERE NOT EXISTS sur son périmètre, sans UPDATE ni DELETE", () => {
+    const inserts = code.match(/INSERT INTO "baremes_opco"/g) ?? [];
+    const gardes = code.match(/WHERE NOT EXISTS/g) ?? [];
+    expect(inserts.length).toBeGreaterThan(0);
+    expect(gardes.length).toBe(inserts.length);
+    expect(code).not.toMatch(/\b(UPDATE|DELETE|DROP|TRUNCATE)\b/i);
+  });
+
+  it("chaque barème porte une source https et une date de relevé", () => {
+    const blocs = code.split(/INSERT INTO "baremes_opco"/).slice(1);
+    for (const b of blocs) {
+      expect(b).toMatch(/'https:\/\/[^']+'/);
+      expect(b).toMatch(/TIMESTAMP '2026-10-04 00:00:00'/);
+    }
+  });
+});
