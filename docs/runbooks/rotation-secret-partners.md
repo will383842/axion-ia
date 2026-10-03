@@ -12,10 +12,10 @@ appel signé par la nouvelle valeur, jusqu'à ce que le récepteur la connaisse.
 
 Les deux secrets n'ont pas le même récepteur :
 
-| Secret côté axion-ia | Même valeur côté Partners | Qui signe | Qui vérifie (le récepteur) | Processus d'axion-ia qui le lisent |
-| --- | --- | --- | --- | --- |
-| `PARTNERS_SYNC_SECRET` | `AXIONIA_WEBHOOK_SECRET` | axion-ia : les envois du relais, et les réponses de relecture et de réconciliation | **Partners** | **web** (réponses de relecture, de réconciliation, des coordonnées) **et worker** (le relais `partners-sync-worker`) |
-| `PARTNERS_RELECTURE_SECRET` | `AXIONIA_RELECTURE_SECRET` | Partners : ses lectures de la file (`GET /api/partners/evenements`) et ses demandes de rejeu | **axion-ia** | **web** seulement |
+| Secret côté axion-ia        | Même valeur côté Partners  | Qui signe                                                                                    | Qui vérifie (le récepteur) | Processus d'axion-ia qui le lisent                                                                                   |
+| --------------------------- | -------------------------- | -------------------------------------------------------------------------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `PARTNERS_SYNC_SECRET`      | `AXIONIA_WEBHOOK_SECRET`   | axion-ia : les envois du relais, et les réponses de relecture et de réconciliation           | **Partners**               | **web** (réponses de relecture, de réconciliation, des coordonnées) **et worker** (le relais `partners-sync-worker`) |
+| `PARTNERS_RELECTURE_SECRET` | `AXIONIA_RELECTURE_SECRET` | Partners : ses lectures de la file (`GET /api/partners/evenements`) et ses demandes de rejeu | **axion-ia**               | **web** seulement                                                                                                    |
 
 Aucune valeur de secret ne s'écrit dans ce fichier, une PR, un journal ou une conversation. La pose
 passe par un secret GitHub, puis par les workflows `coolify-poser-variable.yml` (web) et
@@ -40,6 +40,7 @@ un `kid` inconnu est refusé.
    signe avec la nouvelle valeur et le worker avec l'ancienne : Partners accepte les deux grâce au
    `kid`, mais seulement jusqu'à E. Ne pas commencer l'étape 2 s'il ne reste pas le temps de finir
    l'étape 3 bien avant E ; faire les deux dans la même session de travail.
+
 4. **Vérifier** : un envoi du relais est accepté par Partners (ligne `sent` dans
    `partners_sync_outbox`), et une relecture de Partners vérifie la signature de la réponse.
 5. **Après E**, Partners retire ses deux variables `_PRECEDENT` (son runbook, étape 4).
