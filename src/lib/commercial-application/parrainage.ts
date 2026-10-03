@@ -20,6 +20,59 @@
 /** La clé de `Submission.details` où le code capté est rangé. Une seule écriture, une lecture. */
 export const CLE_DU_CODE_DE_PARRAINAGE = "parrainCode";
 
+/**
+ * Le compteur des captures (conditions (4) et (5) de la lentille sécurité, rattrapage 44) : trente
+ * captures par heure et par adresse réseau HACHÉE avec sel, en refus sur panne ; au-delà de
+ * `alertePanneSecondes` de panne continue, une alerte de catégorie fermée part, une fois. axion-ia
+ * n'a pas de SSOT des seuils du tunnel : la constante vit ici, sur le modèle de
+ * `src/lib/limites-connexion-admin.ts` (rattrapage 94).
+ */
+export const CAPTURES_DE_PARRAINAGE = {
+  limite: 30,
+  fenetreSecondes: 3600,
+  alertePanneSecondes: 900,
+  source: "INT-T52-A, lentille sécurité (rattrapage 44)",
+} as const;
+
+/**
+ * La clé du compteur : TROIS segments, pour que le signal de panne du limiteur partagé, qui ne
+ * rapporte que les deux premiers (`clePrefixe`), ne porte jamais l'empreinte de l'adresse.
+ */
+export function cleDuCompteurDeParrainage(empreinteIp: string): string {
+  return `tunnel:parrainage:${empreinteIp}`;
+}
+
+/**
+ * Le code du dossier complet : celui qu'il a reçu lui-même, sinon celui de son premier contact,
+ * recopié côté serveur (rattrapage 94). Jamais par le navigateur.
+ */
+export function codeDuDossierComplet(
+  codeDuDossier: string | null,
+  codeDuPremierContact: string | null,
+): string | null {
+  return codeDuDossier ?? codeDuPremierContact;
+}
+
+/**
+ * Le suivi d'une panne du compteur, dans le processus : rend `true` UNE fois, quand la panne dure
+ * depuis au moins `alertePanneSecondes` ; un verdict sans panne remet le suivi à zéro. Dédoublonnée
+ * par processus : une panne longue ne fait pas une alerte par candidature.
+ */
+const suivi: { depuisMs: number | null; alerte: boolean } = { depuisMs: null, alerte: false };
+
+export function suivreLaPanneDuCompteur(panne: boolean, maintenantMs: number): boolean {
+  if (!panne) {
+    suivi.depuisMs = null;
+    suivi.alerte = false;
+    return false;
+  }
+  suivi.depuisMs ??= maintenantMs;
+  const longue = maintenantMs - suivi.depuisMs >= CAPTURES_DE_PARRAINAGE.alertePanneSecondes * 1000;
+  if (!longue || suivi.alerte) return false;
+  suivi.alerte = true;
+  return true;
+}
+
 /** La forme d'un code de parrainage (SEC-21) : `AX`, puis six caractères Crockford base32. */
 function aLaFormeDUnCode(valeur: string): boolean {
   return /^AX[0-9A-HJKMNP-TV-Z]{6}$/.test(valeur);

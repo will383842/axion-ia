@@ -30,6 +30,7 @@
  */
 import { createHash } from "node:crypto";
 
+import { codeDeParrainageDeLaFiche } from "@/lib/commercial-application/parrainage";
 import { SCORE_POIDS } from "@/lib/commercial-application/scoring";
 
 import type {
@@ -985,10 +986,10 @@ export function payloadCandidatureRecue({
     // l'identifiant d'une campagne budgétée. Les confondre rendrait faux le « € / actif »
     // que l'exigence veut calculable, sans que le chiffre ait l'air faux.
     campagneId: null,
-    // 🔴 Idem : aucun code de parrainage n'est capturé par le formulaire de candidature
-    // aujourd'hui. Le champ est au contrat parce que REQ-INT-032 le nomme et que son
-    // arbitrage de frontière est tranché (`EXEMPTIONS_NOMMEES`, frontiere.ts) ; son
-    // producteur reste à écrire, et ce sera un autre lot.
-    parrainCodeCapture: null,
+    // INT-T52-A : le code de parrainage capté par le tunnel, rangé dans la fiche qui l'a reçu (ou
+    // recopié du premier contact au dossier complet, côté serveur), relu ici sous sa forme
+    // canonique ; une valeur hors forme vaut `null`. L'arbitrage de frontière
+    // (`EXEMPTIONS_NOMMEES`, frontiere.ts) exempte une VALEUR de code, jamais une identité.
+    parrainCodeCapture: codeDeParrainageDeLaFiche(details),
   });
 }

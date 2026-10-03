@@ -65,6 +65,8 @@ import {
   sourceDepuisUtm,
 } from "@/lib/commercial-application/lead-apporteur";
 import { signalerHoneypot } from "@/lib/security/honeypot-observable";
+import { CLE_DU_CODE_DE_PARRAINAGE } from "@/lib/commercial-application/parrainage";
+import { codeDeParrainageAdmis } from "@/lib/commercial-application/parrainage-serveur";
 import { envoyerLeadMeta } from "@/server/meta/conversions-api";
 import { planifierRelancesLeadApporteur } from "./relances-lead-apporteur";
 
@@ -128,6 +130,10 @@ export async function submitLeadApporteurAction(
   }
   const d = parsed.data;
   const locale = parseLocale(formData.get("locale") ?? "fr");
+  // INT-T52-A : le code de parrainage du lien d'arrivée, rangé dans la fiche s'il a la forme
+  // d'un code et si le compteur l'admet ; sinon la candidature part sans code, la réponse
+  // au visiteur ne changeant jamais.
+  const codeDeParrainage = await codeDeParrainageAdmis(formData.get(CLE_DU_CODE_DE_PARRAINAGE), ip);
 
   // 3 bis. Second compteur, par ADRESSE (clé = hash, jamais l'adresse).
   const emailKey = hashEmailForLookup(d.email);
@@ -200,6 +206,7 @@ export async function submitLeadApporteurAction(
           source: TUNNEL_FACEBOOK_PATH,
           consentVersion: LEAD_APPORTEUR_CONSENT_VERSION,
           ...(Object.keys(funnel).length > 0 ? { funnel: funnel as unknown as object } : {}),
+          ...(codeDeParrainage === null ? {} : { [CLE_DU_CODE_DE_PARRAINAGE]: codeDeParrainage }),
           // Même bloc que le dossier complet, réduit à ce qui a été demandé :
           // la vue console `CandidatureCommercialeDetail` tolère l'absence
           // des sections (expériences vides, pas de pitch, pas de score).
