@@ -361,6 +361,24 @@ export type PayloadDevisSigne = {
 };
 
 /**
+ * `prixReferenceHtCents` d'une ligne de devis signé (contrat v3, arbitrage d'A02) : le prix public
+ * de la LIGNE, comparable à son `montantHtCents`. Le prix public UNITAIRE, ferme, vient de
+ * `resolveOffrePriceEur` (la source qui pré-remplit le PU HT d'un devis) ; il est d'abord converti
+ * en centimes ENTIERS, puis multiplié par la quantité avec le MÊME arrondi que `montantHtCents` —
+ * aucun euro flottant ne traverse le calcul. `null` sans prix public ferme : une absence n'est
+ * jamais un prix nul. Sous le minimum du contrat (1 centime), `null` aussi, jamais 0.
+ */
+export function prixReferenceDeLaLigne(
+  prixPublicEur: number | null,
+  quantite: number,
+): number | null {
+  if (prixPublicEur === null) return null;
+  const prixUnitaireCents = Math.round(prixPublicEur * 100);
+  const ligne = Math.round(quantite * prixUnitaireCents);
+  return ligne >= 1 ? ligne : null;
+}
+
+/**
  * Une ligne de devis, LUE et vérifiée.
  *
  * `Devis.lignes` est une colonne `Json` : la base ne garantit rien de sa forme, et le
