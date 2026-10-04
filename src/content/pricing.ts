@@ -470,6 +470,9 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
   },
   {
     id: "intervention-conference",
+    // INT-T53-A — commission au forfait (décision de Williams du 2026-10-01, voir
+    // `COMMISSION_CONFERENCE_EUR`).
+    commissionId: "com-conference",
     labelFr: "Conférence",
     labelEn: "Talk",
     onQuote: true,
@@ -852,6 +855,14 @@ export interface CommercialCommission {
  */
 export const COMMISSION_FORMATION_PAR_JOURNEE_EUR = 500;
 
+/**
+ * Commission versée à l'apporteur pour une CONFÉRENCE signée et payée, au forfait. Décision de
+ * Williams du 2026-10-01 (12:36:59Z), en réponse à « Un apporteur vous amène un client qui achète une
+ * conférence. L'apporteur touche combien ? » : « 500 pour une conference » (INT-T53-A). Ce n'est
+ * PAS une journée de formation : elle ne dérive pas de `COMMISSION_FORMATION_PAR_JOURNEE_EUR`.
+ */
+export const COMMISSION_CONFERENCE_EUR = 500;
+
 /** Commission due pour `jours` journées de formation vendues. */
 export function commissionFormation(jours: number): number {
   return jours * COMMISSION_FORMATION_PAR_JOURNEE_EUR;
@@ -903,6 +914,17 @@ export const COMMERCIAL_COMMISSIONS: ReadonlyArray<CommercialCommission> = [
       "Flat commission for each long format (3 days or more) sold — beyond 3 days, the commission follows.",
   },
   {
+    // INT-T53-A — la conférence, au forfait. Pas de `basisTierId` : le palier est sur devis, il
+    // n'a pas de prix public pour un exemple chiffré.
+    id: "com-conference",
+    labelFr: "Conférence",
+    labelEn: "Talk",
+    kind: "flat",
+    flatEur: COMMISSION_CONFERENCE_EUR,
+    descriptionFr: "Commission fixe pour chaque conférence signée et payée.",
+    descriptionEn: "Flat commission for each talk signed and paid.",
+  },
+  {
     id: "com-un-a-un",
     labelFr: "Intervention 1-to-1 (dirigeant ou collaborateur)",
     labelEn: "1-on-1 session (executive or team member)",
@@ -934,6 +956,14 @@ export const COMMERCIAL_COMMISSIONS: ReadonlyArray<CommercialCommission> = [
 ] as const;
 
 /** Lookup type-safe d'une commission par id. Throw si introuvable (erreur de migration). */
+/**
+ * Les commissions de FORMATION (`com-formation-*`), et elles seules : les cartes « Formations IA »
+ * de la page publique les lisent. Une autre commission au forfait (la conférence, INT-T53-A) n'y
+ * apparaît jamais comme une formation.
+ */
+export const COMMISSIONS_DE_FORMATION: ReadonlyArray<CommercialCommission> =
+  COMMERCIAL_COMMISSIONS.filter((c) => c.id.startsWith("com-formation-"));
+
 export function getCommissionById(id: string): CommercialCommission {
   const found = COMMERCIAL_COMMISSIONS.find((c) => c.id === id);
   if (!found) {
@@ -989,7 +1019,6 @@ export interface BaremeIndefini {
  */
 export const BAREMES_INDEFINIS: ReadonlyArray<BaremeIndefini> = [
   { tierId: "intervention-4h", depuis: "2026-09-27", motif: "palier_sans_bareme" },
-  { tierId: "intervention-conference", depuis: "2026-09-27", motif: "hors_perimetre_w6" },
   { tierId: "intervention-sur-demande", depuis: "2026-09-27", motif: "hors_perimetre_w6" },
   { tierId: "intervention-dirigeants", depuis: "2026-09-27", motif: "bareme_non_publie" },
   { tierId: "intervention-membre-equipe", depuis: "2026-09-27", motif: "bareme_non_publie" },
