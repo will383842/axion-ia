@@ -38,6 +38,8 @@ import {
   type PayloadDevisSigne,
 } from "@/server/partners/payloads";
 
+import { resolveOffrePriceEur } from "@/server/qualiopi/offres/pricing-resolver";
+
 import { canalPartnersOuvert } from "../config";
 import { ecrireEvenementPartners } from "../outbox";
 
@@ -238,4 +240,26 @@ export async function transactionDevisSigne<R>(
 ): Promise<R> {
   if (!canalPartnersOuvert()) return travail(client);
   return client.$transaction((tx) => travail(tx));
+}
+
+/**
+ * Le prix public FERME de chaque offre citée par les lignes d'un devis, lu dans la transaction
+ * du producteur : un code, une lecture (dédoublonnés), et `resolveOffrePriceEur`, la source qui
+ * pré-remplit le PU HT d'un devis. `null` pour une offre sur devis, sans prix ferme ou inconnue
+ * (arbitrage d'A02 : une absence n'est jamais un prix nul).
+ */
+export async function prixPublicsDesOffres(
+  tx: Prisma.TransactionClient,
+  codes: readonly string[],
+): Promise<Map<string, number | null>> {
+  const uniques = [...new Set(codes)];
+  const prix = new Map<string, number | null>();
+  if (uniques.length === 0) return prix;
+  const offres = await tx.offreSite.findMany({
+    where: { code: { in: uniques } },
+    select: { code: true, tierId: true, gamme: true, dureeCode: true, tarifType: true },
+  });
+  for (const code of uniques) prix.set(code, null);
+  for (const o of offres) prix.set(o.code, resolveOffrePriceEur(o));
+  return prix;
 }
