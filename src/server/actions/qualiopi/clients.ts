@@ -15,6 +15,8 @@ import { siretField } from "@/lib/siret-schema";
 import { premierMessageZod } from "@/lib/zod-message";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { inferOpco } from "@/server/qualiopi/crm/naf-opco";
+import { OPCO_IDS } from "@/server/qualiopi/financements/opco-referentiel";
+import { parisDateISO } from "@/server/qualiopi/presence/time";
 import { definirContactFacturation } from "@/server/qualiopi/crm/contact-facturation";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 import {
@@ -68,6 +70,8 @@ const CHAMPS_ENTREPRISE = [
   "opcoIdentifie",
   "opcoNumeroAdherent",
   "opcoEnveloppeAnnuelleCents",
+  "opco",
+  "effectif",
 ] as const;
 
 function refuserChampsEntreprisePourParticulier(
@@ -191,6 +195,22 @@ const updateClientSchema = z
     opcoIdentifie: z.string().min(1).max(60).nullable().optional(),
     opcoNumeroAdherent: z.string().max(80).optional(),
     opcoEnveloppeAnnuelleCents: z.number().int().min(0).optional(),
+    /**
+     * OPCO TYPÉ (lot OPCO A1) : l'un des 11 du référentiel, `null` efface.
+     * Indépendant d'`opcoIdentifie` : l'un ne recopie ni n'écrase l'autre.
+     */
+    opco: z.enum(OPCO_IDS).nullable().optional(),
+    /**
+     * Effectif salarié (niveau SIREN), entier ≥ 0 ; `null` efface. Sa source
+     * (`saisie`) et sa date de relevé sont posées par le serveur, jamais
+     * transmises par l'écran.
+     */
+    effectif: z
+      .number({ invalid_type_error: "Effectif : un nombre entier est attendu." })
+      .int("Effectif : un nombre entier est attendu.")
+      .min(0, "Effectif : il ne peut pas être négatif.")
+      .nullable()
+      .optional(),
     statut: z.enum(CLIENT_STATUTS).optional(),
     source: z.string().max(120).optional(),
     contexteIa: z.string().optional(),
@@ -379,9 +399,13 @@ export async function updateClientAction(
   // ni SIRET, même si la charge ne dit rien du type (« C'est elle » ne
   // transmet que le SIREN de l'annuaire). Repasser la fiche en entreprise dans
   // la même charge reste possible.
+  // Lot OPCO A1 : même règle pour l'effectif et l'OPCO typé, qui n'ont de sens
+  // que pour un employeur — refus SERVEUR, pas seulement masquage du formulaire.
   const identifiantEntreprise =
     (typeof sirenAEcrire === "string" && sirenAEcrire !== "") ||
-    (typeof fields.siret === "string" && fields.siret !== "");
+    (typeof fields.siret === "string" && fields.siret !== "") ||
+    typeof fields.effectif === "number" ||
+    typeof fields.opco === "string";
   if (identifiantEntreprise && fields.type !== "entreprise") {
     const typeEnBase =
       fields.type ??
@@ -389,7 +413,7 @@ export async function updateClientAction(
     if (typeEnBase === "particulier") {
       return {
         error:
-          "Cette fiche est celle d'un particulier : un SIREN ou un SIRET ne s'y pose pas. " +
+          "Cette fiche est celle d'un particulier : un SIREN, un SIRET, un effectif ou un OPCO ne s'y pose pas. " +
           "Changez d'abord le type du client si c'est une entreprise.",
       };
     }
@@ -435,6 +459,21 @@ export async function updateClientAction(
     }
   }
 
+  // ── Effectif (lot OPCO A1) : la provenance suit la valeur ─────────────────
+  // Saisi en console → source `saisie`, relevé daté du jour civil de Paris
+  // (colonne `@db.Date`, donc minuit UTC). Effacé → source et date effacées :
+  // une date de relevé sans effectif ne dirait rien de vrai.
+  const effectifAEcrire =
+    fields.effectif === undefined
+      ? {}
+      : fields.effectif === null
+        ? { effectif: null, effectifSource: null, effectifReleveLe: null }
+        : {
+            effectif: fields.effectif,
+            effectifSource: "saisie" as const,
+            effectifReleveLe: new Date(`${parisDateISO(new Date())}T00:00:00.000Z`),
+          };
+
   // ── Contact : par la fonction unique, jamais en écriture directe ──────────
   // `Client.contact*` est la COPIE du contact de facturation (dossier client,
   // PA-1). Les écrire ici à côté de lui ferait deux vérités.
@@ -474,6 +513,8 @@ export async function updateClientAction(
           ...(fields.opcoEnveloppeAnnuelleCents !== undefined
             ? { opcoEnveloppeAnnuelleCents: fields.opcoEnveloppeAnnuelleCents }
             : {}),
+          ...(fields.opco !== undefined ? { opco: fields.opco } : {}),
+          ...effectifAEcrire,
           ...(fields.statut !== undefined ? { statut: fields.statut } : {}),
           ...(fields.source !== undefined ? { source: fields.source } : {}),
           ...(fields.contexteIa !== undefined ? { contexteIa: fields.contexteIa } : {}),

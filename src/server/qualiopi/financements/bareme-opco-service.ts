@@ -16,12 +16,16 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import type { Opco } from "../../../../prisma/generated/client";
+import type { Opco, TrancheEffectifOpco } from "../../../../prisma/generated/client";
 
 export interface CreerVersionBaremeInput {
   opco: Opco;
   dateEffet: Date;
   perimetre?: string | null;
+  /** Lot A4 — IDCC de la branche (null = barème de l'OPCO hors branche). */
+  idcc?: string | null;
+  /** Lot A4 — tranche d'effectif (défaut `tous`). */
+  trancheEffectif?: TrancheEffectifOpco;
   intraHoraireCents?: number | null;
   interPresentielCents?: number | null;
   interDistancielCents?: number | null;
@@ -40,12 +44,19 @@ export interface CreerVersionBaremeInput {
 export async function creerVersionBaremeOpco(
   input: CreerVersionBaremeInput,
 ): Promise<{ id: string }> {
+  // Lot A4 — le versionnement est borné au PÉRIMÈTRE (OPCO × IDCC × tranche) :
+  // un barème de branche ne doit ni clore ni être clos par celui de l'OPCO.
+  const perimetre = {
+    opco: input.opco,
+    idcc: input.idcc ?? null,
+    trancheEffectif: input.trancheEffectif ?? ("tous" as const),
+  };
   return prisma.$transaction(async (tx) => {
     // Successeur éventuel : la plus petite date d'effet STRICTEMENT supérieure.
     // Il borne la nouvelle version (cas d'une saisie rétroactive intercalée) pour
     // éviter tout chevauchement / deuxième ligne « en vigueur ».
     const successeur = await tx.baremeOpco.findFirst({
-      where: { opco: input.opco, dateEffet: { gt: input.dateEffet } },
+      where: { ...perimetre, dateEffet: { gt: input.dateEffet } },
       orderBy: { dateEffet: "asc" },
       select: { dateEffet: true },
     });
@@ -55,7 +66,7 @@ export async function creerVersionBaremeOpco(
     // égale) la nouvelle date d'effet : la nouvelle version prend le relais.
     await tx.baremeOpco.updateMany({
       where: {
-        opco: input.opco,
+        ...perimetre,
         effectiveTo: null,
         dateEffet: { lte: input.dateEffet },
       },
@@ -64,7 +75,7 @@ export async function creerVersionBaremeOpco(
 
     const created = await tx.baremeOpco.create({
       data: {
-        opco: input.opco,
+        ...perimetre,
         dateEffet: input.dateEffet,
         effectiveTo,
         perimetre: input.perimetre ?? null,

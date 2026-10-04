@@ -152,6 +152,17 @@ export default async function QualiopiDevisPage({ params }: PageProps) {
                         devis.montantOpcoEstimeCents !== undefined && (
                           <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                             OPCO : {formatEur(devis.montantOpcoEstimeCents)}
+                            {/* Lot A4 — chiffre non adossé à un barème relevé. */}
+                            {devis.opcoEstimationAvertissement && (
+                              <span
+                                className="ml-[var(--space-admin-1)] text-[color:var(--color-admin-warning)]"
+                                title={devis.opcoEstimationAvertissement}
+                              >
+                                {devis.opcoEstimationOrigine === "hors_fonds_legaux"
+                                  ? "(hors fonds légaux)"
+                                  : "(indicatif)"}
+                              </span>
+                            )}
                           </div>
                         )}
                     </td>

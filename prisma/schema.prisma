@@ -4948,6 +4948,13 @@ enum ActiviteFacturation {
 }
 
 /// Statut d'un devis (CRM, distinct de QuoteStatus lié au Booking).
+/// Lot A4 — origine de l'estimation de prise en charge OPCO d'un devis.
+enum OrigineEstimationOpco {
+  bareme
+  reglage_par_defaut
+  hors_fonds_legaux
+}
+
 enum DevisStatut {
   brouillon
   envoye
@@ -4959,53 +4966,66 @@ enum DevisStatut {
 
 /// Client / prospect CRM. NAF → OPCO inféré (cf. crm/naf-opco.ts).
 model Client {
-  id                         String       @id @default(uuid()) @db.Uuid
+  id                         String          @id @default(uuid()) @db.Uuid
   /// Numérotation séquentielle AXI-CLI-NNN.
-  numero                     String       @unique @db.VarChar(40)
+  numero                     String          @unique @db.VarChar(40)
   /// entreprise (B2B) | particulier (B2C). Pour un particulier, raisonSociale = "Prénom Nom".
-  type                       ClientType   @default(entreprise)
-  raisonSociale              String       @map("raison_sociale") @db.VarChar(250)
-  siret                      String?      @db.VarChar(14)
+  type                       ClientType      @default(entreprise)
+  raisonSociale              String          @map("raison_sociale") @db.VarChar(250)
+  siret                      String?         @db.VarChar(14)
   /// SIREN (9 chiffres) — clé de routage annuaire facturation électronique 2026.
-  siren                      String?      @db.VarChar(9)
+  siren                      String?         @db.VarChar(9)
   /// N° TVA intracommunautaire du client (B2B, EN 16931 BT-48).
-  tvaIntracom                String?      @map("tva_intracom") @db.VarChar(40)
-  nafCode                    String?      @map("naf_code") @db.VarChar(6)
-  conventionCollective       String?      @map("convention_collective") @db.VarChar(200)
+  tvaIntracom                String?         @map("tva_intracom") @db.VarChar(40)
+  nafCode                    String?         @map("naf_code") @db.VarChar(6)
+  conventionCollective       String?         @map("convention_collective") @db.VarChar(200)
   /// Code IDCC de la branche (précise la convention collective — saisi, NAF non fiable). [T18]
-  idcc                       String?      @db.VarChar(10)
-  secteur                    String?      @db.VarChar(200)
+  idcc                       String?         @db.VarChar(10)
+  secteur                    String?         @db.VarChar(200)
   taille                     CompanySize?
-  adresse                    String?      @db.Text
+  adresse                    String?         @db.Text
   /// Adresse structurée (EN 16931 BG-8) — remplace progressivement `adresse`
   /// (champ libre conservé en repli d'affichage).
-  adresseRue                 String?      @map("adresse_rue") @db.VarChar(300)
-  adresseCodePostal          String?      @map("adresse_code_postal") @db.VarChar(12)
-  adresseVille               String?      @map("adresse_ville") @db.VarChar(120)
-  adressePaysCode            String?      @map("adresse_pays_code") @db.VarChar(2)
+  adresseRue                 String?         @map("adresse_rue") @db.VarChar(300)
+  adresseCodePostal          String?         @map("adresse_code_postal") @db.VarChar(12)
+  adresseVille               String?         @map("adresse_ville") @db.VarChar(120)
+  adressePaysCode            String?         @map("adresse_pays_code") @db.VarChar(2)
   /// Entité du secteur public (mairie, université, collectivité…) → factures à
   /// déposer sur Chorus Pro (obligation en vigueur, distincte de la réforme 2026).
-  estPublic                  Boolean      @default(false) @map("est_public")
-  contactNom                 String?      @map("contact_nom") @db.VarChar(200)
-  contactEmail               String?      @map("contact_email") @db.Citext
-  contactTelephone           String?      @map("contact_telephone") @db.VarChar(40)
-  contactFonction            String?      @map("contact_fonction") @db.VarChar(150)
+  estPublic                  Boolean         @default(false) @map("est_public")
+  contactNom                 String?         @map("contact_nom") @db.VarChar(200)
+  contactEmail               String?         @map("contact_email") @db.Citext
+  contactTelephone           String?         @map("contact_telephone") @db.VarChar(40)
+  contactFonction            String?         @map("contact_fonction") @db.VarChar(150)
   /// OPCO inféré depuis le code NAF (ou saisi manuellement).
-  opcoIdentifie              String?      @map("opco_identifie") @db.VarChar(60)
-  opcoNumeroAdherent         String?      @map("opco_numero_adherent") @db.VarChar(80)
-  opcoEnveloppeAnnuelleCents Int?         @map("opco_enveloppe_annuelle_cents")
-  statut                     ClientStatut @default(prospect)
-  source                     String?      @db.VarChar(120)
+  opcoIdentifie              String?         @map("opco_identifie") @db.VarChar(60)
+  opcoNumeroAdherent         String?         @map("opco_numero_adherent") @db.VarChar(80)
+  opcoEnveloppeAnnuelleCents Int?            @map("opco_enveloppe_annuelle_cents")
+  /// OPCO TYPÉ (lot OPCO A1) : l'un des 11 du référentiel, choisi en console.
+  /// `opcoIdentifie` (texte libre, inféré ou saisi) est CONSERVÉ tel quel : rien
+  /// n'y est recopié ni écrasé. Un rapprochement en LECTURE SEULE propose
+  /// « OPCO suggéré » quand le texte libre désigne un OPCO sans ambiguïté.
+  opco                       Opco?           @map("opco")
+  /// Effectif salarié de l'entreprise, au niveau SIREN — gouverne les seuils
+  /// OPCO (< 11 / 11-49 / 50 et plus). `null` = inconnu, jamais « 0 par défaut ».
+  /// CHECK (effectif >= 0) posé NOT VALID par la migration.
+  effectif                   Int?            @map("effectif")
+  /// D'où vient l'effectif : saisie console ou relevé INSEE (lot ultérieur).
+  effectifSource             EffectifSource? @map("effectif_source")
+  /// Date du relevé de l'effectif (jour civil de Paris à la saisie).
+  effectifReleveLe           DateTime?       @map("effectif_releve_le") @db.Date
+  statut                     ClientStatut    @default(prospect)
+  source                     String?         @db.VarChar(120)
   /// Contexte injecté au Formation Engine pour la génération sur-mesure.
-  contexteIa                 String?      @map("contexte_ia") @db.Text
-  besoinsIdentifies          Json?        @map("besoins_identifies")
-  notes                      String?      @db.Text
+  contexteIa                 String?         @map("contexte_ia") @db.Text
+  besoinsIdentifies          Json?           @map("besoins_identifies")
+  notes                      String?         @db.Text
   /// Agrégats commerciaux (mis à jour à la clôture des sessions).
-  nbSessions                 Int          @default(0) @map("nb_sessions")
-  nbStagiaires               Int          @default(0) @map("nb_stagiaires")
-  caCents                    Int          @default(0) @map("ca_cents")
-  createdAt                  DateTime     @default(now()) @map("created_at")
-  updatedAt                  DateTime     @updatedAt @map("updated_at")
+  nbSessions                 Int             @default(0) @map("nb_sessions")
+  nbStagiaires               Int             @default(0) @map("nb_stagiaires")
+  caCents                    Int             @default(0) @map("ca_cents")
+  createdAt                  DateTime        @default(now()) @map("created_at")
+  updatedAt                  DateTime        @updatedAt @map("updated_at")
 
   devis                  Devis[]
   formations             Formation[]
@@ -5069,32 +5089,32 @@ model Client {
 
 /// Devis commercial (CRM). Lignes snapshot ; pas de prix catalogue dupliqué.
 model Devis {
-  id                     String               @id @default(uuid()) @db.Uuid
+  id                          String                 @id @default(uuid()) @db.Uuid
   /// Numérotation séquentielle AXI-DEV-YYYY-NNN.
-  numero                 String               @unique @db.VarChar(40)
+  numero                      String                 @unique @db.VarChar(40)
   /// Activité facturée (sélecteur du Hub — pré-remplit régime TVA + mentions).
-  activite               ActiviteFacturation?
+  activite                    ActiviteFacturation?
   /// Référence client / n° de bon de commande (exigé par ETI, grands comptes, OPCO).
-  refClient              String?              @map("ref_client") @db.VarChar(120)
+  refClient                   String?                @map("ref_client") @db.VarChar(120)
   /// Révision : ce devis remplace une version antérieure (v2 → v1). L'ancienne
   /// version passe `expire` à l'envoi de la nouvelle — jamais d'écrasement.
-  replacesDevisId        String?              @map("replaces_devis_id") @db.Uuid
-  replacesDevis          Devis?               @relation("DevisRevision", fields: [replacesDevisId], references: [id], onDelete: SetNull)
-  revisions              Devis[]              @relation("DevisRevision")
+  replacesDevisId             String?                @map("replaces_devis_id") @db.Uuid
+  replacesDevis               Devis?                 @relation("DevisRevision", fields: [replacesDevisId], references: [id], onDelete: SetNull)
+  revisions                   Devis[]                @relation("DevisRevision")
   /// ⚠️ HISTORIQUE — circuit DocuSeal, remplacé par le canal maison le
   /// 2026-07-30. CONSERVÉES : le devis signé via DocuSeal avant cette bascule
   /// garde sa trace. Effacer l'historique d'un circuit qu'on remplace, c'est
   /// perdre la capacité de répondre plus tard à « comment cette pièce-là
   /// a-t-elle été signée ? ». Aucune écriture nouvelle.
-  docusealSubmissionId   String?              @map("docuseal_submission_id") @db.VarChar(120)
-  docusealEmbedUrl       String?              @map("docuseal_embed_url") @db.Text
+  docusealSubmissionId        String?                @map("docuseal_submission_id") @db.VarChar(120)
+  docusealEmbedUrl            String?                @map("docuseal_embed_url") @db.Text
   /// Pièce NUMÉROTÉE sur laquelle porte la signature « bon pour accord ».
   /// Alimentée à l'envoi par `generateDocument`, dont l'`id` était jusque-là
   /// produit puis jeté. C'est elle que `DocumentSignature` référence.
-  documentGenereId       String?              @map("document_genere_id") @db.Uuid
-  documentGenere         DocumentGenere?      @relation("DevisPieceSignable", fields: [documentGenereId], references: [id], onDelete: SetNull)
-  clientId               String               @map("client_id") @db.Uuid
-  client                 Client               @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  documentGenereId            String?                @map("document_genere_id") @db.Uuid
+  documentGenere              DocumentGenere?        @relation("DevisPieceSignable", fields: [documentGenereId], references: [id], onDelete: SetNull)
+  clientId                    String                 @map("client_id") @db.Uuid
+  client                      Client                 @relation(fields: [clientId], references: [id], onDelete: Restrict)
   /// Lignes : [{ designation, quantite, prixUnitaireHtCents, offreCode?, offreTierId? }].
   /// `offreCode` (AXI-OFF-NNN) référence TOUTES les offres ; `offreTierId` n'est
   /// renseigné que pour les offres legacy à `tier_id` non nul. Les lignes émises
@@ -5102,27 +5122,31 @@ model Devis {
   /// 4 offres legacy, un CODE pour les 21 offres du catalogue V2 (le <select>
   /// émettait `tierId ?? code`). Jamais réécrites — pièces émises. Toute jointure
   /// sur `offres_site` doit tolérer les deux formes.
-  lignes                 Json
-  montantTotalHtCents    Int                  @map("montant_total_ht_cents")
+  lignes                      Json
+  montantTotalHtCents         Int                    @map("montant_total_ht_cents")
   /// Mention TVA SNAPSHOTÉE à la création, dérivée de `qualiopi.regime_tva` —
   /// jamais une valeur en dur. La production est en régime « assujetti » (20 %) :
   /// la mention est alors celle de l'assujettissement, PAS une exonération.
   /// L'exonération 261-4-4° exige l'attestation DREETS (Cerfa 3511) ; l'inscrire
   /// par défaut engagerait l'organisme sur un régime qu'il ne détient pas.
-  mentionTva             String               @map("mention_tva") @db.Text
+  mentionTva                  String                 @map("mention_tva") @db.Text
   /// direct | opco | cpf | france_travail.
-  financementSuggere     String?              @map("financement_suggere") @db.VarChar(40)
-  montantOpcoEstimeCents Int?                 @map("montant_opco_estime_cents")
-  resteAChargeCents      Int?                 @map("reste_a_charge_cents")
-  statut                 DevisStatut          @default(brouillon)
+  financementSuggere          String?                @map("financement_suggere") @db.VarChar(40)
+  montantOpcoEstimeCents      Int?                   @map("montant_opco_estime_cents")
+  /// Lot A4 — d'où vient l'estimation OPCO (barème relevé, réglage par défaut, ou
+  /// entreprise hors fonds légaux) et l'avertissement affiché en console.
+  opcoEstimationOrigine       OrigineEstimationOpco? @map("opco_estimation_origine")
+  opcoEstimationAvertissement String?                @map("opco_estimation_avertissement") @db.Text
+  resteAChargeCents           Int?                   @map("reste_a_charge_cents")
+  statut                      DevisStatut            @default(brouillon)
   /// = createdAt + 30 j par défaut.
-  dateValidite           DateTime             @map("date_validite")
-  fichierPdfUrl          String?              @map("fichier_pdf_url") @db.Text
-  sentAt                 DateTime?            @map("sent_at")
-  acceptedAt             DateTime?            @map("accepted_at")
-  declinedAt             DateTime?            @map("declined_at")
-  createdAt              DateTime             @default(now()) @map("created_at")
-  updatedAt              DateTime             @updatedAt @map("updated_at")
+  dateValidite                DateTime               @map("date_validite")
+  fichierPdfUrl               String?                @map("fichier_pdf_url") @db.Text
+  sentAt                      DateTime?              @map("sent_at")
+  acceptedAt                  DateTime?              @map("accepted_at")
+  declinedAt                  DateTime?              @map("declined_at")
+  createdAt                   DateTime               @default(now()) @map("created_at")
+  updatedAt                   DateTime               @updatedAt @map("updated_at")
 
   sessions            TrainingSession[]
   auditMissions       AuditMission[]
@@ -7651,32 +7675,41 @@ enum DossierPayeurType {
 /// `TrainingSession`/`Enrollment` restent la source des validations Qualiopi ;
 /// ce modèle est la vue de PILOTAGE (qui paie, combien, où en est l'accord).
 model DossierFinancement {
-  id                       String                   @id @default(uuid()) @db.Uuid
-  type                     DossierFinancementType
-  statut                   DossierFinancementStatut @default(a_monter)
+  id                            String                   @id @default(uuid()) @db.Uuid
+  type                          DossierFinancementType
+  statut                        DossierFinancementStatut @default(a_monter)
   /// Nom du financeur principal (ex. « OPCO Atlas », « France Travail »).
-  financeurNom             String?                  @map("financeur_nom") @db.VarChar(120)
+  financeurNom                  String?                  @map("financeur_nom") @db.VarChar(120)
   /// Personne physique qui signe pour le financeur SUR CE DOSSIER.
   /// 🔴 Grain volontairement le DOSSIER et non l'OPCO : le gestionnaire change
   /// d'un dossier à l'autre. Créer une table `Financeur` ferait une TROISIÈME
   /// représentation (avec `financeurNom` et `Client.opcoIdentifie`), donc trois
   /// sources à tenir synchronisées et une divergence silencieuse possible.
-  financeurContactNom      String?                  @map("financeur_contact_nom") @db.VarChar(200)
-  financeurContactEmail    String?                  @map("financeur_contact_email") @db.VarChar(320)
-  financeurContactFonction String?                  @map("financeur_contact_fonction") @db.VarChar(200)
+  financeurContactNom           String?                  @map("financeur_contact_nom") @db.VarChar(200)
+  financeurContactEmail         String?                  @map("financeur_contact_email") @db.VarChar(320)
+  financeurContactFonction      String?                  @map("financeur_contact_fonction") @db.VarChar(200)
   /// N° du dossier chez le financeur (référence externe).
-  numeroDossierExterne     String?                  @map("numero_dossier_externe") @db.VarChar(80)
-  subrogation              Boolean                  @default(false)
-  montantDemandeCents      Int?                     @map("montant_demande_cents")
-  montantAccordeCents      Int?                     @map("montant_accorde_cents")
+  numeroDossierExterne          String?                  @map("numero_dossier_externe") @db.VarChar(80)
+  subrogation                   Boolean                  @default(false)
+  montantDemandeCents           Int?                     @map("montant_demande_cents")
+  montantAccordeCents           Int?                     @map("montant_accorde_cents")
   /// Date de paiement attendue du financeur (les OPCO paient à 30-60 j).
-  echeanceFinanceurAt      DateTime?                @map("echeance_financeur_at")
-  envoyeAt                 DateTime?                @map("envoye_at")
-  accordAt                 DateTime?                @map("accord_at")
-  refuseAt                 DateTime?                @map("refuse_at")
-  paiementRecuAt           DateTime?                @map("paiement_recu_at")
-  closAt                   DateTime?                @map("clos_at")
-  notes                    String?                  @db.Text
+  echeanceFinanceurAt           DateTime?                @map("echeance_financeur_at")
+  envoyeAt                      DateTime?                @map("envoye_at")
+  accordAt                      DateTime?                @map("accord_at")
+  /// Date PORTÉE SUR l'accord écrit de l'OPCO (lot OPCO A1). Distincte
+  /// d'`accordAt`, qui est l'horodatage du clic en console : l'un dit quand
+  /// l'OPCO s'est engagé, l'autre quand nous l'avons enregistré.
+  accordEcritLe                 DateTime?                @map("accord_ecrit_le") @db.Date
+  /// Date de dépôt de la demande par l'entreprise sur son espace OPCO.
+  depotFaitLe                   DateTime?                @map("depot_fait_le") @db.Date
+  /// L'accord écrit prévoit-il le paiement direct à l'organisme (subrogation) ?
+  /// `null` = accord non lu sur ce point. Servira au lot A3.
+  subrogationConfirmeeParAccord Boolean?                 @map("subrogation_confirmee_par_accord")
+  refuseAt                      DateTime?                @map("refuse_at")
+  paiementRecuAt                DateTime?                @map("paiement_recu_at")
+  closAt                        DateTime?                @map("clos_at")
+  notes                         String?                  @db.Text
 
   clientId           String?           @map("client_id") @db.Uuid
   client             Client?           @relation(fields: [clientId], references: [id], onDelete: SetNull)
@@ -8598,6 +8631,14 @@ enum PriseEnChargeUnite {
   euro_an_salarie
 }
 
+/// Provenance de `Client.effectif` (lot OPCO A1).
+enum EffectifSource {
+  /// Saisi par un administrateur dans la console.
+  saisie
+  /// Relevé dans le répertoire Sirene de l'INSEE.
+  insee
+}
+
 /// OPCO (opérateur de compétences) agréé — les 11 OPCO au 2026. Les 5 premiers
 /// identifiants (atlas, akto, opco2i, constructys, opcommerce) reprennent VERBATIM
 /// ceux déjà émis par `inferOpcoFromNaf` (src/server/qualiopi/crm/naf-opco.ts) :
@@ -8616,6 +8657,16 @@ enum Opco {
   opco_sante
 }
 
+/// Tranche d'effectif à laquelle s'applique un barème OPCO (lot A4). Les fonds
+/// légaux du plan de développement des compétences ne financent que les
+/// entreprises de moins de 50 salariés (art. L6332-17 C. trav.) : pas de tranche
+/// au-delà. `tous` = barème valable quelle que soit la taille.
+enum TrancheEffectifOpco {
+  moins_11
+  de_11_a_49
+  tous
+}
+
 /// Barème OPCO centralisé et VERSIONNÉ (Lot 5). Complète — sans le remplacer — le
 /// barème saisi par dossier sur TrainingSession : sert de source de PRÉ-REMPLISSAGE
 /// et d'estimation devis quand aucune valeur dossier n'est saisie. Le barème dossier
@@ -8630,29 +8681,35 @@ enum Opco {
 /// VALEURS saisies par un humain (relevés portails OPCO) — jamais inventées ; structure
 /// livrée VIDE (tous les plafonds nullable).
 model BaremeOpco {
-  id                    String    @id @default(uuid()) @db.Uuid
+  id                    String              @id @default(uuid()) @db.Uuid
   opco                  Opco
   /// Libellé optionnel du périmètre (branche/IDCC, taille, dispositif) couvert —
   /// texte libre car les barèmes varient par branche × taille × dispositif.
-  perimetre             String?   @db.VarChar(200)
+  perimetre             String?             @db.VarChar(200)
+  /// Lot A4 — code IDCC de la branche (4 chiffres, CHECK en base). FAIT FOI pour la
+  /// résolution ; `perimetre` reste un libellé. Null = barème de l'OPCO hors branche.
+  idcc                  String?             @db.Char(4)
+  /// Lot A4 — tranche d'effectif couverte (`tous` par défaut : barèmes historiques).
+  trancheEffectif       TrancheEffectifOpco @default(tous) @map("tranche_effectif")
   /// Plafonds en CENTIMES (nullable : structure vide tant que non relevé).
-  intraHoraireCents     Int?      @map("intra_horaire_cents")
-  interPresentielCents  Int?      @map("inter_presentiel_cents")
-  interDistancielCents  Int?      @map("inter_distanciel_cents")
-  plafondFormationCents Int?      @map("plafond_formation_cents")
-  plafondAnnuelCents    Int?      @map("plafond_annuel_cents")
+  intraHoraireCents     Int?                @map("intra_horaire_cents")
+  interPresentielCents  Int?                @map("inter_presentiel_cents")
+  interDistancielCents  Int?                @map("inter_distanciel_cents")
+  plafondFormationCents Int?                @map("plafond_formation_cents")
+  plafondAnnuelCents    Int?                @map("plafond_annuel_cents")
   /// Traçabilité auditeur : URL du portail OPCO + date du relevé.
-  sourceUrl             String?   @map("source_url") @db.Text
-  releveLe              DateTime? @map("releve_le")
+  sourceUrl             String?             @map("source_url") @db.Text
+  releveLe              DateTime?           @map("releve_le")
   /// Versionnement : date d'effet + fermeture (`effectiveTo` null = en vigueur).
-  dateEffet             DateTime  @map("date_effet")
-  effectiveTo           DateTime? @map("effective_to")
-  note                  String?   @db.Text
-  createdById           String?   @map("created_by_id") @db.Uuid
-  createdAt             DateTime  @default(now()) @map("created_at")
-  updatedAt             DateTime  @updatedAt @map("updated_at")
+  dateEffet             DateTime            @map("date_effet")
+  effectiveTo           DateTime?           @map("effective_to")
+  note                  String?             @db.Text
+  createdById           String?             @map("created_by_id") @db.Uuid
+  createdAt             DateTime            @default(now()) @map("created_at")
+  updatedAt             DateTime            @updatedAt @map("updated_at")
 
   @@index([opco, dateEffet])
+  @@index([opco, idcc, trancheEffectif, dateEffet])
   @@index([effectiveTo])
   @@map("baremes_opco")
 }

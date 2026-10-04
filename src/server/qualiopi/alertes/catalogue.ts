@@ -1231,6 +1231,15 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "direction",
   },
+  // Lot A4 — un devis ouvert ou une session OPCO à venir n'a AUCUN barème
+  // applicable (OPCO × branche IDCC × tranche) : l'estimation repose sur les
+  // réglages par défaut. Se résout dès qu'un barème est saisi (ou le devis clos).
+  aucun_bareme_opco: {
+    niveau: "important",
+    titre: "Aucun barème OPCO applicable (estimation indicative)",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
   // [T17.1 — S7] Convention de formation (L.6353-1) non établie avant démarrage (off.9).
   convention_formation_manquante: {
     niveau: "critique",

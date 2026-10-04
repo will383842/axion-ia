@@ -276,6 +276,8 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
                       idcc={client.idcc}
                       taille={client.taille}
                       opcoIdentifie={client.opcoIdentifie}
+                      opco={client.opco}
+                      effectif={client.effectif}
                       estParticulier={client.type === "particulier"}
                     />
                   </td>

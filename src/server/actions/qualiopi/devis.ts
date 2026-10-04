@@ -25,7 +25,8 @@ import {
 } from "@/server/actions/qualiopi/_guards";
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
-import { estimateOpcoCoverage } from "@/server/qualiopi/crm/devis";
+import { estimateOpcoCoverage, type OrigineEstimationOpco } from "@/server/qualiopi/crm/devis";
+import { effectifDuClient, idccValide } from "@/server/qualiopi/financements/bareme-opco-branche";
 import {
   lierDevisAuProjet,
   projetOuvrableDuClient,
@@ -179,6 +180,8 @@ export async function createDevisAction(
   // Estimation OPCO si applicable
   let montantOpcoEstimeCents: number | undefined;
   let resteAChargeCents: number | undefined;
+  let opcoEstimationOrigine: OrigineEstimationOpco | undefined;
+  let opcoEstimationAvertissement: string | undefined;
 
   if (
     v.financementSuggere === "opco" &&
@@ -187,21 +190,30 @@ export async function createDevisAction(
     v.modaliteOpco !== undefined
   ) {
     // OPCO du client (Lot 5) : oriente la résolution du barème central versionné.
-    // Fail-soft : null → estimation Atlas par défaut (comportement historique).
-    const client = await prisma.client
-      .findUnique({ where: { id: v.clientId }, select: { opcoIdentifie: true } })
-      .catch(() => null);
+    // Lot A4 : + IDCC (4 chiffres seulement) et effectif, qui choisissent le barème
+    // de branche et de tranche. Lecture SANS `select` : `Client.effectif` arrive
+    // par une PR parallèle, `effectifDuClient` le lit s'il existe.
+    // Fail-soft : null → estimation sur les réglages par défaut (comportement historique).
+    const client = await prisma.client.findUnique({ where: { id: v.clientId } }).catch(() => null);
+    const idccClient = idccValide(client?.idcc);
+    const effectifClient = effectifDuClient(client);
+    // Enveloppe : saisie sur le devis, sinon celle de la fiche client, sinon le
+    // plafond annuel du barème (défaut d'`estimateOpcoCoverage`).
+    const enveloppeRestanteCents =
+      v.opcoEnveloppeRestanteCents ?? client?.opcoEnveloppeAnnuelleCents ?? undefined;
     const coverage = await estimateOpcoCoverage({
       nbParticipants: v.nbParticipants,
       dureeHeures: v.dureeHeures,
       modalite: v.modaliteOpco,
       montantHtCents: montantTotalHtCents,
-      ...(v.opcoEnveloppeRestanteCents !== undefined
-        ? { enveloppeRestanteCents: v.opcoEnveloppeRestanteCents }
-        : {}),
+      ...(enveloppeRestanteCents !== undefined ? { enveloppeRestanteCents } : {}),
       ...(client?.opcoIdentifie ? { opco: client.opcoIdentifie } : {}),
+      ...(idccClient ? { idcc: idccClient } : {}),
+      ...(effectifClient !== undefined ? { effectif: effectifClient } : {}),
     });
     montantOpcoEstimeCents = coverage.montantPriseEnChargeCents;
+    opcoEstimationOrigine = coverage.origine;
+    opcoEstimationAvertissement = coverage.avertissement;
     resteAChargeCents = coverage.resteAChargeCents;
   }
 
@@ -258,6 +270,8 @@ export async function createDevisAction(
             ? { financementSuggere: v.financementSuggere }
             : {}),
           ...(montantOpcoEstimeCents !== undefined ? { montantOpcoEstimeCents } : {}),
+          ...(opcoEstimationOrigine !== undefined ? { opcoEstimationOrigine } : {}),
+          ...(opcoEstimationAvertissement !== undefined ? { opcoEstimationAvertissement } : {}),
           ...(resteAChargeCents !== undefined ? { resteAChargeCents } : {}),
         },
         select: { id: true, numero: true },
@@ -912,6 +926,8 @@ export async function reviseDevisAction(
       mentionTva: true,
       montantTotalHtCents: true,
       montantOpcoEstimeCents: true,
+      opcoEstimationOrigine: true,
+      opcoEstimationAvertissement: true,
       resteAChargeCents: true,
     },
   });
@@ -958,6 +974,12 @@ export async function reviseDevisAction(
             : {}),
           ...(origine.montantOpcoEstimeCents !== null
             ? { montantOpcoEstimeCents: origine.montantOpcoEstimeCents }
+            : {}),
+          ...(origine.opcoEstimationOrigine !== null
+            ? { opcoEstimationOrigine: origine.opcoEstimationOrigine }
+            : {}),
+          ...(origine.opcoEstimationAvertissement !== null
+            ? { opcoEstimationAvertissement: origine.opcoEstimationAvertissement }
             : {}),
           ...(origine.resteAChargeCents !== null
             ? { resteAChargeCents: origine.resteAChargeCents }

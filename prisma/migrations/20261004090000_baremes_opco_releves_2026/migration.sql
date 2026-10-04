@@ -1,0 +1,35 @@
+-- Chantier OPCO, lot A4b : barèmes de départ RELUS sur les pages officielles des OPCO
+-- le 2026-10-04 (poste du pilote ; citations dans le journal du chantier).
+-- Idempotent : chaque ligne n'est insérée que si son périmètre (OPCO × IDCC × tranche)
+-- n'a encore aucune version. Aucune ligne existante n'est modifiée.
+-- AKTO organismes de formation (IDCC 1516) volontairement NON inséré : le financement
+-- du PDC y est SUSPENDU pour 2026 (brève AKTO du 22/09/2026) ; la suspension est portée
+-- par l'état des fonds (lot A5), pas par un barème qui afficherait une prise en charge.
+
+INSERT INTO "baremes_opco" ("id", "opco", "idcc", "tranche_effectif", "perimetre", "intra_horaire_cents", "inter_presentiel_cents", "inter_distanciel_cents", "plafond_annuel_cents", "source_url", "releve_le", "date_effet", "note", "updated_at")
+SELECT gen_random_uuid(), 'akto', '9999', 'moins_11', 'AKTO hors branche (interprofession) — hexagone, moins de 11 salariés', NULL, 3000, NULL, 250000, 'https://www.akto.fr/regles-de-prise-en-charge-interprofession/', TIMESTAMP '2026-10-04 00:00:00', TIMESTAMP '2026-01-01 00:00:00', 'Inséré par migration, chantier OPCO, vérifié le 2026-10-04. Budget annuel 2 500 € ; inter-entreprises au réel plafonné à 30 €/h. Outre-mer : 5 000 € / 7 000 € / 40 €/h, non inséré.', CURRENT_TIMESTAMP
+WHERE NOT EXISTS (SELECT 1 FROM "baremes_opco" WHERE "opco" = 'akto' AND "idcc" = '9999' AND "tranche_effectif" = 'moins_11');
+
+INSERT INTO "baremes_opco" ("id", "opco", "idcc", "tranche_effectif", "perimetre", "intra_horaire_cents", "inter_presentiel_cents", "inter_distanciel_cents", "plafond_annuel_cents", "source_url", "releve_le", "date_effet", "note", "updated_at")
+SELECT gen_random_uuid(), 'akto', '9999', 'de_11_a_49', 'AKTO hors branche (interprofession) — hexagone, 11 à 49 salariés', NULL, 3000, NULL, 400000, 'https://www.akto.fr/regles-de-prise-en-charge-interprofession/', TIMESTAMP '2026-10-04 00:00:00', TIMESTAMP '2026-01-01 00:00:00', 'Inséré par migration, chantier OPCO, vérifié le 2026-10-04. Budget annuel 4 000 € ; inter-entreprises au réel plafonné à 30 €/h.', CURRENT_TIMESTAMP
+WHERE NOT EXISTS (SELECT 1 FROM "baremes_opco" WHERE "opco" = 'akto' AND "idcc" = '9999' AND "tranche_effectif" = 'de_11_a_49');
+
+INSERT INTO "baremes_opco" ("id", "opco", "idcc", "tranche_effectif", "perimetre", "intra_horaire_cents", "inter_presentiel_cents", "inter_distanciel_cents", "plafond_annuel_cents", "source_url", "releve_le", "date_effet", "note", "updated_at")
+SELECT gen_random_uuid(), 'opcommerce', '1539', 'tous', 'L''Opcommerce — entreprises du bureau et du numérique (IDCC 1539), moins de 50 salariés', NULL, NULL, NULL, 300000, 'https://www.lopcommerce.com/media/3pyfo421/cpc_entreprises-bureau_et_numerique.pdf', TIMESTAMP '2026-10-04 00:00:00', TIMESTAMP '2026-09-10 00:00:00', 'Inséré par migration, chantier OPCO, vérifié le 2026-10-04. « Compétences+ » : 3 000 € HT/an, salaires compris (14,5 €/h). IDCC déduit du nom de la branche et de la table SIRO.', CURRENT_TIMESTAMP
+WHERE NOT EXISTS (SELECT 1 FROM "baremes_opco" WHERE "opco" = 'opcommerce' AND "idcc" = '1539' AND "tranche_effectif" = 'tous');
+
+INSERT INTO "baremes_opco" ("id", "opco", "idcc", "tranche_effectif", "perimetre", "intra_horaire_cents", "inter_presentiel_cents", "inter_distanciel_cents", "plafond_annuel_cents", "source_url", "releve_le", "date_effet", "note", "updated_at")
+SELECT gen_random_uuid(), 'mobilites', NULL, 'moins_11', 'OPCO Mobilités — moins de 11 salariés (coûts pédagogiques)', NULL, NULL, NULL, 150000, 'https://www.opcomobilites.fr/dispositifs-formation/le-plan-de-developpement-des-competences/', TIMESTAMP '2026-10-04 00:00:00', TIMESTAMP '2026-01-01 00:00:00', 'Inséré par migration, chantier OPCO, vérifié le 2026-10-04. 1 500 € HT, coûts pédagogiques seuls, demandes reçues depuis le 01/01/2026.', CURRENT_TIMESTAMP
+WHERE NOT EXISTS (SELECT 1 FROM "baremes_opco" WHERE "opco" = 'mobilites' AND "idcc" IS NULL AND "tranche_effectif" = 'moins_11');
+
+INSERT INTO "baremes_opco" ("id", "opco", "idcc", "tranche_effectif", "perimetre", "intra_horaire_cents", "inter_presentiel_cents", "inter_distanciel_cents", "plafond_annuel_cents", "source_url", "releve_le", "date_effet", "note", "updated_at")
+SELECT gen_random_uuid(), 'mobilites', NULL, 'de_11_a_49', 'OPCO Mobilités — 11 à 49 salariés (coûts pédagogiques)', NULL, NULL, NULL, 180000, 'https://www.opcomobilites.fr/dispositifs-formation/le-plan-de-developpement-des-competences/', TIMESTAMP '2026-10-04 00:00:00', TIMESTAMP '2026-01-01 00:00:00', 'Inséré par migration, chantier OPCO, vérifié le 2026-10-04. Valeur de la tranche 11-19 (1 800 €). Détail : 20-29 = 2 100 €, 30-39 = 2 400 €, 40-49 = 2 700 €.', CURRENT_TIMESTAMP
+WHERE NOT EXISTS (SELECT 1 FROM "baremes_opco" WHERE "opco" = 'mobilites' AND "idcc" IS NULL AND "tranche_effectif" = 'de_11_a_49');
+
+INSERT INTO "baremes_opco" ("id", "opco", "idcc", "tranche_effectif", "perimetre", "intra_horaire_cents", "inter_presentiel_cents", "inter_distanciel_cents", "plafond_annuel_cents", "source_url", "releve_le", "date_effet", "note", "updated_at")
+SELECT gen_random_uuid(), 'opco_sante', '9999', 'tous', 'Opco Santé — entreprises hors convention collective', NULL, NULL, NULL, 250000, 'https://www.opco-sante.fr/nos-outils/synthese-des-prises-en-charge-entreprises-ne-relevant-pas-d-une-convention-collective-hors-cc/', TIMESTAMP '2026-10-04 00:00:00', TIMESTAMP '2026-01-01 00:00:00', 'Inséré par migration, chantier OPCO, vérifié le 2026-10-04. 2 500 €/an, pédagogie + rémunération (SMIC) + frais annexes.', CURRENT_TIMESTAMP
+WHERE NOT EXISTS (SELECT 1 FROM "baremes_opco" WHERE "opco" = 'opco_sante' AND "idcc" = '9999' AND "tranche_effectif" = 'tous');
+
+INSERT INTO "baremes_opco" ("id", "opco", "idcc", "tranche_effectif", "perimetre", "intra_horaire_cents", "inter_presentiel_cents", "inter_distanciel_cents", "plafond_annuel_cents", "source_url", "releve_le", "date_effet", "note", "updated_at")
+SELECT gen_random_uuid(), 'constructys', '1597', 'de_11_a_49', 'Constructys — Bâtiment ouvriers plus de 10 salariés (IDCC 1597), 11 à 49 salariés', 1900, 1900, 1900, NULL, 'https://www.constructys.fr/conditions-de-prise-en-charge-2/', TIMESTAMP '2026-10-04 00:00:00', TIMESTAMP '2026-06-01 00:00:00', 'Inséré par migration, chantier OPCO, vérifié le 2026-10-04. 19 €/h (au lieu de 24 €) pour les demandes reçues depuis le 01/06/2026, entreprises de 11 à moins de 300 salariés. Autres IDCC du Bâtiment non insérés.', CURRENT_TIMESTAMP
+WHERE NOT EXISTS (SELECT 1 FROM "baremes_opco" WHERE "opco" = 'constructys' AND "idcc" = '1597' AND "tranche_effectif" = 'de_11_a_49');

@@ -985,10 +985,22 @@ export async function transitionSessionAction(input: {
   // Garde financement : si la cible est en_cours, vérifier les validations bloquantes.
   if (toStatus === "en_cours") {
     let financementEntries: Awaited<ReturnType<typeof getFinancementValidations>>;
+    // 🔴 ÉCHEC FERMÉ (lot OPCO A1). Le repli était `financementEntries = []` :
+    // une lecture en échec valait « aucune alerte », et la session démarrait
+    // sans accord OPCO vérifié. Ne pas pouvoir vérifier, c'est refuser.
     try {
       financementEntries = await getFinancementValidations(v.id);
-    } catch {
-      financementEntries = [];
+    } catch (err) {
+      // Journal sans donnée personnelle : l'identifiant de session seulement.
+      Sentry.captureException(err, {
+        tags: { action: "transitionSessionAction:garde_financement" },
+        extra: { sessionId: v.id, toStatus },
+      });
+      return {
+        error:
+          "Démarrage bloqué : impossible de vérifier les financements de la session. " +
+          "Réessayez ou contactez l'administrateur.",
+      };
     }
     const critiques = financementEntries.filter(
       (e) => e.result.ok === false && e.result.gravite === "critique",
