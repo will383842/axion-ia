@@ -219,3 +219,53 @@ export function resoudreSiren(
   }
   return { ok: true, siren: saisi === "" ? undefined : saisi };
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SIREN d'une fiche, À LA LECTURE (lot A9, 2026-10-04)
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// `resoudreSiren` décide ce qu'on ÉCRIT ; `sirenDuClient` dit ce qu'on LIT.
+// Une fiche qui n'a qu'un SIRET connaît déjà son SIREN : le badge « SIREN à
+// compléter », le bouton « Rafraîchir depuis l'INSEE » et tout appel à
+// l'annuaire passent par ici, jamais par `client.siren` seul.
+
+/** Identifiants d'une fiche, tels qu'en base. */
+export interface IdentifiantsClient {
+  readonly siren?: string | null;
+  readonly siret?: string | null;
+}
+
+/** Le SIREN d'un SIREN saisi, s'il est bien formé ; sinon `null`. */
+function sirenSaisiValide(siren: string | null | undefined): string | null {
+  if (siren == null || normalizeSiret(siren) === "") return null;
+  const c = checkSirenFormat(siren);
+  return c.ok ? c.value : null;
+}
+
+/** Le SIREN contenu dans un SIRET valide ; sinon `null`. */
+function sirenDuSiretValide(siret: string | null | undefined): string | null {
+  if (siret == null || normalizeSiret(siret) === "") return null;
+  const c = checkSiretFormat(siret);
+  if (!c.ok) return null;
+  const derive = checkSirenFormat(sirenDuSiret(c.value));
+  return derive.ok ? derive.value : null;
+}
+
+/**
+ * Le SIREN d'une fiche : le SIREN saisi s'il est valide, sinon les 9 premiers
+ * chiffres d'un SIRET valide (clé de Luhn), sinon `null`. Pur.
+ */
+export function sirenDuClient(c: IdentifiantsClient): string | null {
+  return sirenSaisiValide(c.siren) ?? sirenDuSiretValide(c.siret);
+}
+
+/** Vrai quand un SIREN saisi valide et un SIRET valide désignent deux entreprises. */
+export function sirenContreditLeSiret(c: IdentifiantsClient): boolean {
+  const saisi = sirenSaisiValide(c.siren);
+  const derive = sirenDuSiretValide(c.siret);
+  return saisi !== null && derive !== null && saisi !== derive;
+}
+
+/** Avertissement affiché quand `sirenContreditLeSiret` est vrai. */
+export const AVERTISSEMENT_SIREN_CONTRAIRE =
+  "Le SIREN ne correspond pas au SIRET : il est conservé. Vérifiez lequel est juste.";
