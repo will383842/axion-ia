@@ -1646,6 +1646,26 @@ describe("evaluerAlertes — aucun_bareme_opco", () => {
     expect((await evaluerAlertes()).filter((a) => a.code === "aucun_bareme_opco")).toHaveLength(0);
   });
 
+  it("🔴 A7a : un client qui n'a QUE l'OPCO typé est vu (barème cherché pour cet OPCO)", async () => {
+    mp.trainingSession.findMany.mockResolvedValue([
+      sessionOpco({ opco: "akto", opcoIdentifie: null }),
+    ]);
+    mockResolveBareme.mockResolvedValue(null);
+    const alertes = (await evaluerAlertes()).filter((a) => a.code === "aucun_bareme_opco");
+    expect(alertes).toHaveLength(1);
+    expect(alertes[0]?.message).toContain("Akto");
+    expect(mockResolveBareme).toHaveBeenCalledWith("akto", expect.any(Date), {});
+  });
+
+  it("A7a : l'OPCO typé prime sur l'ancien texte libre", async () => {
+    mp.trainingSession.findMany.mockResolvedValue([
+      sessionOpco({ opco: "atlas", opcoIdentifie: "akto" }),
+    ]);
+    mockResolveBareme.mockResolvedValue(null);
+    await evaluerAlertes();
+    expect(mockResolveBareme).toHaveBeenCalledWith("atlas", expect.any(Date), {});
+  });
+
   it("lève l'alerte pour un devis OPCO ouvert estimé sur les réglages par défaut", async () => {
     mp.devis.findMany.mockResolvedValue([
       { id: "d-a4", numero: "D-2026-007", opcoEstimationOrigine: "reglage_par_defaut" },
