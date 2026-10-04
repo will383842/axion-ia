@@ -417,7 +417,7 @@ export type NotificationEvent =
         eventStartTime: string;
         eventName: string;
         /**
-         * Format du rendez-vous — `telephone`, `visio` ou `inconnu`.
+         * Format du rendez-vous — `telephone`, `visio`, `sur_place` ou `inconnu`.
          *
          * Optionnel parce que DEUX émetteurs alimentent cette catégorie
          * (`discover.ts` et `POST /api/calendly/client-event`) et qu'ils ne
