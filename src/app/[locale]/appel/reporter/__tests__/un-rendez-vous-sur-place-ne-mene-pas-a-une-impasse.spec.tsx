@@ -3,7 +3,7 @@
 /**
  * Verrou — déplacer un rendez-vous SUR PLACE ne mène plus à une impasse.
  *
- * ## Le défaut (relecture de #1300, 2026-10-04)
+ * ## Le défaut (relecture de la PR 1300, 2026-10-04)
  *
  * La réservation directe ne sait rejouer qu'un appel ou une visio. Pour un
  * rendez-vous sur place (lieu `physical`), la page `/appel/reporter` montrait
