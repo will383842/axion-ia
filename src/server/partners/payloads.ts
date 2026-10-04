@@ -346,6 +346,11 @@ export type LigneDevisEvenement = {
   jours: number | null;
   montantHtCents: number;
   offreCode: string | null;
+  /**
+   * Contrat v3 (#645, arbitrage d'A02) : le prix public de la LIGNE, en centimes, comparable à
+   * `montantHtCents` ; nul sans prix public ferme — une absence n'est jamais un prix nul.
+   */
+  prixReferenceHtCents: number | null;
   commissionId: string | null;
   commission: ResolutionCommission;
 };
@@ -387,10 +392,27 @@ export function prixReferenceDeLaLigne(
  * serait faire disparaître une commission du payload sans que rien ne l'annonce, et le
  * total du devis ne le trahirait même pas puisqu'il est stocké à part.
  */
+/**
+ * Les codes d'offre cités par les lignes d'un devis, dédoublonnés, dans l'ordre : ce que le
+ * producteur relit dans la transaction pour leur prix public. Une ligne sans code n'en apporte
+ * aucun ; une colonne illisible n'en apporte aucun non plus (`ligneDevis` la refusera).
+ */
+export function codesDesOffresDuDevis(lignes: unknown): string[] {
+  if (!Array.isArray(lignes)) return [];
+  const codes: string[] = [];
+  for (const l of lignes) {
+    const code =
+      typeof l === "object" && l !== null ? (l as Record<string, unknown>)["offreCode"] : null;
+    if (typeof code === "string" && code.length > 0 && !codes.includes(code)) codes.push(code);
+  }
+  return codes;
+}
+
 function ligneDevis(
   brute: unknown,
   index: number,
   activite: ActiviteFacturation | null,
+  prixPublics: ReadonlyMap<string, number | null>,
 ): LigneDevisEvenement {
   const o = objet(brute, `Devis.lignes[${index}] : ligne de devis`);
   const designation = chaine(
@@ -420,6 +442,10 @@ function ligneDevis(
   // `quantite` admet des décimales (une demi-journée), et un produit non entier ne serait plus
   // un nombre de centimes — le contrat le refuserait, et Σ lignes ≠ total (INT-T04).
   const montantHtCents = Math.round(quantite * prixUnitaireHtCents);
+  const prixReferenceHtCents =
+    offreCode === null
+      ? null
+      : prixReferenceDeLaLigne(prixPublics.get(offreCode) ?? null, quantite);
   const commission = resoudreCommission({ activite, jours, montantHtCents });
 
   return {
@@ -428,6 +454,7 @@ function ligneDevis(
     jours,
     montantHtCents,
     offreCode,
+    prixReferenceHtCents,
     commissionId: commission.commissionId,
     commission,
   };
@@ -466,9 +493,12 @@ export function payloadDevisEmis({
 export function payloadDevisSigne({
   devis,
   client,
+  prixPublics,
 }: {
   devis: DevisPourEvenement;
   client: ClientPourEvenement;
+  /** Le prix public ferme de chaque offre citée (`prixPublicsDesOffres`), lu par l'appelant. */
+  prixPublics: ReadonlyMap<string, number | null>;
 }): PayloadDevisSigne {
   // `devis.signe` n'est pas `devis.envoye`. Sans date d'acceptation, il n'y a pas de
   // fait à raconter — et l'`occurred_at` de l'enveloppe n'aurait rien à porter.
@@ -494,7 +524,7 @@ export function payloadDevisSigne({
     activite,
     montantTotalHtCents: devis.montantTotalHtCents,
     signeLe,
-    lignes: devis.lignes.map((brute, i) => ligneDevis(brute, i, activite)),
+    lignes: devis.lignes.map((brute, i) => ligneDevis(brute, i, activite, prixPublics)),
   });
 }
 

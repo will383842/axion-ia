@@ -31,6 +31,7 @@
  */
 import type { Prisma, PrismaClient } from "../../../../prisma/generated/client";
 import {
+  codesDesOffresDuDevis,
   payloadDevisEmis,
   payloadDevisSigne,
   type ClientPourEvenement,
@@ -157,7 +158,8 @@ export async function emettreDevisSigne(
     throw new Error(`[partners-sync] devis.signe : client du devis ${devisId} introuvable.`);
   }
 
-  const charge = verifierChargeDevisSigne(payloadDevisSigne({ devis, client }));
+  const prixPublics = await prixPublicsDesOffres(tx, codesDesOffresDuDevis(devis.lignes));
+  const charge = verifierChargeDevisSigne(payloadDevisSigne({ devis, client, prixPublics }));
   // `payloadDevisSigne` a déjà exigé `acceptedAt` : il est l'instant du fait.
   const signeLe = new Date(charge.signeLe);
 

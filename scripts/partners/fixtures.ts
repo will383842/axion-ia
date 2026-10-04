@@ -55,7 +55,9 @@ import {
   champsInterditsDuSujet,
   champsInterditsSelonFrontiere,
 } from "../../src/server/partners/frontiere";
+import { prixPublicsDesOffres } from "../../src/server/partners-sync/producteurs/devis";
 import {
+  codesDesOffresDuDevis,
   payloadAvoirEmis,
   payloadCandidatureRecue,
   payloadClientCree,
@@ -522,7 +524,13 @@ async function construireLesFaits(tx: Prisma): Promise<FaitTous[]> {
       cleDeFait: `devis.signe:${devisRelu.id}`,
       occurredAt: devisRelu.acceptedAt ?? devisRelu.updatedAt,
       sujet: { devis_id: devisRelu.id },
-      payload: { ...payloadDevisSigne({ devis: devisRelu, client: clientRelu }) },
+      payload: {
+        ...payloadDevisSigne({
+          devis: devisRelu,
+          client: clientRelu,
+          prixPublics: await prixPublicsDesOffres(tx, codesDesOffresDuDevis(devisRelu.lignes)),
+        }),
+      },
       sequence: 3,
     },
     {

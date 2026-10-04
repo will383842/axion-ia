@@ -46,7 +46,7 @@ const CLIENT_ID = "7c000000-0000-4000-8000-000000000001";
 type Enregistrement = Record<string, unknown>;
 type LigneOutbox = { eventId: string; eventType: string; subjectRef: string; corps: string };
 
-/** Un faux client de transaction : les trois accès du producteur, rien d'autre. */
+/** Un faux client de transaction : les quatre accès du producteur, rien d'autre. */
 function fauxTx(devis: Enregistrement[]) {
   const outbox = new Map<string, LigneOutbox>();
   const lectures: string[] = [];
@@ -79,6 +79,13 @@ function fauxTx(devis: Enregistrement[]) {
       findUnique: async ({ where }: { where: { id: string } }) => {
         lectures.push(`client:${where.id}`);
         return where.id === CLIENT_ID ? client : null;
+      },
+    },
+    // Contrat v3 : le prix public des offres citées, lu dans la transaction (aucune offre connue ici).
+    offreSite: {
+      findMany: async () => {
+        lectures.push("offres:findMany");
+        return [];
       },
     },
     partnersSyncOutbox: {
