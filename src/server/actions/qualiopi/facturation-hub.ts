@@ -18,6 +18,7 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { dayKeyInParis } from "@/lib/calendar-grid";
 import {
   requireAdminWrite,
   requireHabilitation,
@@ -571,9 +572,15 @@ const TransitionDossierSchema = z.object({
     .optional(),
 });
 
-/** « AAAA-MM-JJ » → minuit UTC, la forme d'une colonne `@db.Date`. */
-function jourSaisiVersDate(jour: string): Date {
-  return new Date(`${jour}T00:00:00.000Z`);
+/**
+ * « AAAA-MM-JJ » → minuit UTC, la forme d'une colonne `@db.Date` ; `null` si le
+ * jour n'existe pas. ⚠️ `new Date("2026-02-31T…")` ne lève pas : il glisse au
+ * 3 mars. On exige donc l'aller-retour exact, pas seulement `isNaN`.
+ */
+function jourSaisiVersDate(jour: string): Date | null {
+  const d = new Date(`${jour}T00:00:00.000Z`);
+  if (Number.isNaN(d.getTime())) return null;
+  return d.toISOString().slice(0, 10) === jour ? d : null;
 }
 
 export async function transitionnerDossierAction(
@@ -587,6 +594,9 @@ export async function transitionnerDossierAction(
   const parsed = TransitionDossierSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };
   const input = parsed.data;
+  const accordEcritLe =
+    input.accordEcritLe !== undefined ? jourSaisiVersDate(input.accordEcritLe) : undefined;
+  if (accordEcritLe === null) return { error: "Date de l'accord écrit invalide." };
 
   try {
     const result = await transitionnerDossier({
@@ -598,9 +608,7 @@ export async function transitionnerDossierAction(
       ...(input.echeanceFinanceurAt !== undefined
         ? { echeanceFinanceurAt: input.echeanceFinanceurAt }
         : {}),
-      ...(input.accordEcritLe !== undefined
-        ? { accordEcritLe: jourSaisiVersDate(input.accordEcritLe) }
-        : {}),
+      ...(accordEcritLe !== undefined ? { accordEcritLe } : {}),
     });
     await logQualiopiActivity({
       action: "facturation.dossier.transition",
@@ -644,7 +652,12 @@ export async function enregistrerDepotDossierAction(
   if (!parsed.success) return { error: "Entrée invalide (date attendue AAAA-MM-JJ)." };
   const input = parsed.data;
   const depotFaitLe = jourSaisiVersDate(input.depotFaitLe);
-  if (Number.isNaN(depotFaitLe.getTime())) return { error: "Date de dépôt invalide." };
+  if (depotFaitLe === null) return { error: "Date de dépôt invalide." };
+  // L'organisme CONSTATE un dépôt déjà fait : une date à venir refermerait
+  // l'alerte `depot_opco_a_faire` sur une promesse. Jour civil de Paris.
+  if (input.depotFaitLe > dayKeyInParis(new Date())) {
+    return { error: "La date de dépôt ne peut pas être dans le futur." };
+  }
 
   try {
     const { trainingSessionId } = await enregistrerDepotDossier({

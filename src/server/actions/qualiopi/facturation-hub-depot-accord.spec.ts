@@ -7,7 +7,7 @@
  * dépôt, et que le journal ne porte aucune donnée personnelle.
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 const h = vi.hoisted(() => ({
   findUniqueOrThrow: vi.fn(),
@@ -47,6 +47,13 @@ const DOSSIER = "11111111-1111-4111-8111-111111111111";
 beforeEach(() => {
   vi.clearAllMocks();
   h.updateMany.mockResolvedValue({ count: 1 });
+  // Le 4 octobre 2026 à 23 h 30 à Paris (21 h 30 UTC) : le 5 est encore demain.
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(new Date("2026-10-04T21:30:00.000Z"));
+});
+
+afterEach(() => {
+  vi.useRealTimers();
 });
 
 describe("enregistrerDepotDossierAction", () => {
@@ -110,6 +117,33 @@ describe("enregistrerDepotDossierAction", () => {
     expect("error" in r).toBe(true);
     expect(h.findUniqueOrThrow).not.toHaveBeenCalled();
   });
+
+  it("jour impossible (31 février) → refus, pas de report silencieux au 3 mars", async () => {
+    const r = await enregistrerDepotDossierAction({
+      dossierId: DOSSIER,
+      depotFaitLe: "2026-02-31",
+    });
+    expect(r).toEqual({ error: "Date de dépôt invalide." });
+    expect(h.updateMany).not.toHaveBeenCalled();
+  });
+
+  it("date de dépôt dans le futur (jour civil de Paris) → refus, aucune écriture", async () => {
+    const r = await enregistrerDepotDossierAction({
+      dossierId: DOSSIER,
+      depotFaitLe: "2026-10-05",
+    });
+    expect(r).toEqual({ error: expect.stringContaining("futur") });
+    expect(h.updateMany).not.toHaveBeenCalled();
+  });
+
+  it("dépôt daté d'aujourd'hui (jour de Paris) → accepté", async () => {
+    h.findUniqueOrThrow.mockResolvedValue({ statut: "a_monter", trainingSessionId: "s-1" });
+    const r = await enregistrerDepotDossierAction({
+      dossierId: DOSSIER,
+      depotFaitLe: "2026-10-04",
+    });
+    expect(r).toEqual({ data: { dossierId: DOSSIER } });
+  });
 });
 
 describe("transitionnerDossierAction — date de l'accord écrit", () => {
@@ -131,6 +165,18 @@ describe("transitionnerDossierAction — date de l'accord écrit", () => {
     expect(arg.data["accordAt"]).toBeInstanceOf(Date);
     const log = h.log.mock.calls[0]?.[0] as { changes: Record<string, unknown> };
     expect(log.changes["accordEcritLe"]).toBe("2026-09-30");
+  });
+
+  it("accordEcritLe impossible (13e mois, 31 février) → message clair, aucune écriture", async () => {
+    for (const accordEcritLe of ["2026-13-01", "2026-02-31"]) {
+      const r = await transitionnerDossierAction({
+        dossierId: DOSSIER,
+        vers: "accord_recu",
+        accordEcritLe,
+      });
+      expect(r).toEqual({ error: "Date de l'accord écrit invalide." });
+    }
+    expect(h.updateMany).not.toHaveBeenCalled();
   });
 
   it("accordEcritLe hors d'un passage à l'accord → refus, aucune écriture", async () => {
