@@ -118,8 +118,11 @@ describe("fiche client — la société d'un côté, le contact de l'autre", () 
 
   it("l'effectif n'apparaît qu'une fois, et le bouton INSEE est sous sa tuile", async () => {
     const html = await rendreFiche(Page, "facturation");
-    expect(html.match(/>Effectif</g) ?? []).toHaveLength(1);
-    const tuile = html.slice(html.indexOf(">Effectif<"), html.indexOf(">OPCO<"));
+    // Une seule LECTURE de l'effectif ; le champ de saisie du formulaire replié
+    // « Modifier » (un `<label>`) n'est pas une seconde mention.
+    expect(html.match(/<p[^>]*>Effectif<\/p>/g) ?? []).toHaveLength(1);
+    const debut = html.search(/<p[^>]*>Effectif<\/p>/);
+    const tuile = html.slice(debut, html.indexOf(">OPCO<", debut));
     expect(tuile).toContain("Rafraîchir depuis l&#x27;INSEE");
   });
 
