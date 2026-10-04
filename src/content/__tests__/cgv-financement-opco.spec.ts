@@ -46,7 +46,11 @@ describe("CGV — article Financement par un OPCO (FR)", () => {
     expect(b).toMatch(/subrogation de paiement/);
     expect(b).toMatch(/facture l'OPCO pour la part prise en charge et le Client pour le solde/);
     expect(b).toMatch(/fait son affaire du remboursement/);
-    expect(b).toMatch(/1er octobre 2026/);
+    // Relecture A07 : aucune date ni réforme datée — la modalité suit l'accord.
+    expect(b).not.toMatch(/1er octobre 2026/);
+    expect(b).toMatch(
+      /relevant des règles propres à chaque OPCO, notamment fiscales, et pouvant évoluer/,
+    );
     expect(b).toMatch(/la modalité applicable est celle que retient l'accord de prise en charge/);
   });
 
@@ -54,13 +58,19 @@ describe("CGV — article Financement par un OPCO (FR)", () => {
     const b = article("fr", TITRE_FR);
     expect(b).toMatch(/refus, de prise en charge partielle ou d'absence de réponse/);
     expect(b).toMatch(/demeurent dues par le Client/);
-    expect(b).toMatch(/« Annulation, report et remboursement »/);
+    expect(b).toMatch(
+      /sauf annulation de sa part, les sommes dues étant alors celles prévues par la clause « Annulation, report et remboursement »/,
+    );
   });
 
   it("4. heures d'absence : non prises en charge, facturées au Client, abandon réservé", () => {
     const b = article("fr", TITRE_FR);
-    expect(b).toMatch(/heures de formation réalisées et attestées/);
-    expect(b).toMatch(/heures d'absence d'un stagiaire[^.]*facturées au Client/);
+    expect(b).toMatch(
+      /heures effectivement suivies par chaque stagiaire, attestées par l'émargement/,
+    );
+    expect(b).toMatch(/restent dues par le Client ; elles lui sont facturées distinctement/);
+    expect(b).toMatch(/ne peuvent être présentées à l'OPCO/);
+    expect(b).toMatch(/l'arrêt définitif de la participation du stagiaire à l'action/);
     expect(b).toMatch(/« Dédit et abandon en cours d'exécution »/);
   });
 
@@ -70,6 +80,22 @@ describe("CGV — article Financement par un OPCO (FR)", () => {
     expect(b).toMatch(/refus de paiement après contrôle/);
     // Même formule que la convention tripartite (§ 5).
     expect(b).toMatch(/redeviennent exigibles auprès du Client, qui demeure le débiteur du prix/);
+    // Relecture A07 : la dernière phrase cède devant la clause d'abandon…
+    expect(b).toMatch(
+      /Enfin, sous réserve de la clause « Dédit et abandon en cours d'exécution », en cas de réduction/,
+    );
+    // … et ne fait pas supporter au Client les manquements d'Axion-IA.
+    expect(b).toMatch(
+      /sauf lorsque la réduction, la caducité ou le non-paiement résulte d'un manquement d'Axion-IA à ses propres obligations/,
+    );
+    expect(b).toMatch(/défaut des justificatifs de réalisation qui lui incombent/);
+  });
+
+  it("le prix reste exigible, sous réserve de la subrogation de paiement", () => {
+    const b = article("fr", TITRE_FR);
+    expect(b).toMatch(
+      /elle ne modifie ni le prix convenu, ni son exigibilité, sous réserve de la subrogation de paiement prévue ci-après/,
+    );
   });
 
   it("les clauses renvoyées existent bien dans les CGV", () => {
@@ -84,10 +110,27 @@ describe("CGV — article Financement par un OPCO (EN)", () => {
     const b = article("en", TITRE_EN);
     expect(b).toMatch(/before the training starts/);
     expect(b).toMatch(/direct payment/);
-    expect(b).toMatch(/1 October 2026/);
+    expect(b).not.toMatch(/1 October 2026/);
     expect(b).toMatch(/refusal, partial funding or lack of response/);
-    expect(b).toMatch(/hours of absence/);
     expect(b).toMatch(/incomplete file attributable to the Client/);
+  });
+
+  it("porte les corrections de la relecture A07", () => {
+    const b = article("en", TITRE_EN);
+    // Heures effectivement suivies ; abandon = arrêt définitif.
+    expect(b).toMatch(
+      /hours actually attended by each trainee, as evidenced by the attendance sheet/,
+    );
+    expect(b).toMatch(/may not be submitted to the OPCO/);
+    expect(b).toMatch(/permanent cessation of the trainee's participation in the action/);
+    // Manquement d'Axion-IA.
+    expect(b).toMatch(/results from a failure by Axion-IA to perform its own obligations/);
+    // Exigibilité sous réserve de la subrogation.
+    expect(b).toMatch(
+      /changes neither the agreed price nor when it falls due, subject to the payment subrogation provided for below/,
+    );
+    // Aucun renvoi à une clause d'abandon qui n'existe pas en anglais.
+    expect(b).not.toMatch(/withdrawal and abandonment|Forfeit and abandonment/i);
   });
 
   it("les clauses renvoyées existent bien dans la version anglaise", () => {
