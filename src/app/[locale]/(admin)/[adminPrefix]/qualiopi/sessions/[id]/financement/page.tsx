@@ -23,6 +23,7 @@ import { PriseEnChargeForm } from "@/components/admin/qualiopi/PriseEnChargeForm
 import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFactureButton";
 import { prisma } from "@/lib/prisma";
 import { getFinancementValidations } from "@/server/qualiopi/financements/validation-service";
+import { regimePaiementDeSession } from "@/server/qualiopi/financements/regime-paiement-session";
 import type { FactureFormationDestinataire } from "../../../../../../../../../prisma/generated/client";
 import { OPCO_STATUT_LABELS } from "@/server/qualiopi/financements/labels";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
@@ -185,6 +186,7 @@ export default async function FinancementSessionPage({ params }: PageProps) {
 
   // Source unique de vérité : couvre OPCO, CPF/EDOF, CPF éligibilité, POEI 3 preuves.
   const financementValidations = await getFinancementValidations(trainingSession.id);
+  const regimePaiement = await regimePaiementDeSession(trainingSession.id);
   // Ne garder que les entrées en échec pour l'affichage des alertes.
   const alertes = financementValidations
     .filter((e) => e.result.ok === false)
@@ -414,6 +416,11 @@ export default async function FinancementSessionPage({ params }: PageProps) {
           ftPoeiOffreEmploiNumero={trainingSession.ftPoeiOffreEmploiNumero}
           ftPoeiAccordFinancementAt={toDateInput(trainingSession.ftPoeiAccordFinancementAt)}
           ftPoeiEngagementSigneAt={toDateInput(trainingSession.ftPoeiEngagementSigneAt)}
+          regimePaiement={{
+            regime: regimePaiement.regime,
+            motif: regimePaiement.motif,
+            confirmeParAccord: regimePaiement.confirmeParAccord,
+          }}
         />
       </section>
 
