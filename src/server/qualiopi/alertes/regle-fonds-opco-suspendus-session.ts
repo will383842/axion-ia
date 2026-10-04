@@ -85,6 +85,9 @@ export function candidatsFondsOpcoSuspendusSession(
       releves,
     });
     const debut = jourParis(s.dateDebut);
+    // Relecture A7c : une suspension ou une date limite visent les NOUVELLES
+    // demandes ; un accord déjà obtenu n'est pas remis en cause.
+    if (s.dossiersFinancement.some((d) => d.accordAt != null || d.accordEcritLe != null)) continue;
 
     if (etat?.statut === "suspendu") {
       alertes.push({

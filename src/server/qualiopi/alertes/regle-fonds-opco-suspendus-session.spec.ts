@@ -74,6 +74,13 @@ describe("candidatsFondsOpcoSuspendusSession — suspension", () => {
     expect(a?.message).toContain("20/09/2026");
   });
 
+  it("🔴 ne lève pas quand l'accord de l'OPCO est déjà obtenu (la suspension vise les nouvelles demandes)", () => {
+    const avecAccord = session({
+      dossiersFinancement: [{ depotFaitLe: null, accordAt: D("2026-09-01"), accordEcritLe: null }],
+    });
+    expect(candidatsFondsOpcoSuspendusSession([avecAccord], [releve()], NOW)).toHaveLength(0);
+  });
+
   it("lit l'OPCO par la règle unique : un client qui n'a que l'ancien texte libre est vu", () => {
     const ancien = session({
       client: { ...session().client!, opco: null, opcoIdentifie: "akto" },

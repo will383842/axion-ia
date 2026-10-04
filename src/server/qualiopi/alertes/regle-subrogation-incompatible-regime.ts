@@ -26,16 +26,25 @@ import { prisma } from "@/lib/prisma";
 import { nomOpcoDuClient } from "@/server/qualiopi/financements/opco-referentiel";
 import { regimePaiementOpco } from "@/server/qualiopi/financements/regime-paiement-opco";
 import { entreeRegimeDepuisSession } from "@/server/qualiopi/financements/regime-paiement-session";
+import { parisDateISO } from "@/server/qualiopi/presence/time";
 import type { AlerteCandidate } from "./evaluateur";
 
 const JOUR_MS = 24 * 60 * 60 * 1000;
 /** Même fenêtre que `delai_facturation_opco` : trois ans, la prescription courante. */
 const FENETRE_JOURS = 3 * 365;
 const PLAFOND_SESSIONS = 500;
+/**
+ * Jour d'entrée en vigueur de la réforme (même date que `regime-paiement-opco.ts`).
+ * Relecture A7c : une session qui commence AVANT, sans accord daté après, relève de
+ * l'ancien régime — la subrogation y est légitime, l'alerte doit se taire.
+ */
+const DEBUT_REFORME = "2026-10-01";
 
 type SessionLue = Parameters<typeof entreeRegimeDepuisSession>[0] & {
   id: string;
   numero: string;
+  /** Début de la session ; absent (lecture partielle) → seule la date d'accord décide. */
+  dateDebut?: Date | null;
 };
 
 /** Décision PURE : quelles sessions subrogées le régime ne permet plus. */
@@ -52,6 +61,14 @@ export function candidatsSubrogationIncompatibleRegime(
       dossiersFinancement: s.dossiersFinancement ?? [],
     });
     if (confirmeParAccord) continue;
+    // Relecture A7c : sans date d'accord, `regimePaiementOpco` descend à la règle
+    // « ≥ 50 salariés » et classerait à tort le stock de sessions antérieures à la
+    // réforme. On ne lève que si la session commence au plus tôt le 1/10/2026 (jour
+    // de Paris) ou si l'accord est daté de ce jour ou après.
+    const debutNouveauRegime = s.dateDebut != null && parisDateISO(s.dateDebut) >= DEBUT_REFORME;
+    const accordNouveauRegime =
+      entree.dateAccord != null && parisDateISO(entree.dateAccord) >= DEBUT_REFORME;
+    if (!debutNouveauRegime && !accordNouveauRegime) continue;
     const { regime, motif } = regimePaiementOpco({ ...entree, aujourdhui: now });
     if (regime !== "remboursement_entreprise") continue;
     alertes.push({
@@ -80,6 +97,7 @@ export async function regleSubrogationIncompatibleRegime(now: Date): Promise<Ale
     select: {
       id: true,
       numero: true,
+      dateDebut: true,
       // Même lecture que `regimePaiementDeSession` : les deux champs OPCO,
       // l'effectif, et le dossier OPCO ouvert le plus récent.
       client: { select: { opco: true, opcoIdentifie: true, effectif: true } },

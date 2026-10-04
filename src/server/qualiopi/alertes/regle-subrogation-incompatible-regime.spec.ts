@@ -64,12 +64,40 @@ describe("candidatsSubrogationIncompatibleRegime", () => {
     const ancienne = {
       id: "s-2",
       numero: "AXI-SES-102",
+      // Subrogation posée avant la réforme pour une session qui commence APRÈS.
+      dateDebut: J("2026-11-05"),
       client: { opco: null, opcoIdentifie: "constructys", effectif: 8 },
       dossiersFinancement: [],
     };
     const [a] = candidatsSubrogationIncompatibleRegime([ancienne], NOW);
     expect(a?.code).toBe("subrogation_incompatible_regime");
     expect(a?.message).toContain("Constructys");
+  });
+
+  it("🔴 ne lève pas sur une session de l'ANCIEN régime (réalisée en juin 2026, ≥ 50 salariés, sans accord daté)", () => {
+    const stock = {
+      id: "s-9",
+      numero: "S-2026-010",
+      dateDebut: J("2026-06-10"),
+      client: { opco: "atlas", opcoIdentifie: null, effectif: 120 },
+      dossiersFinancement: [],
+    };
+    expect(candidatsSubrogationIncompatibleRegime([stock], NOW)).toHaveLength(0);
+    // Même session avec un dossier ouvert sans date d'accord : toujours rien.
+    expect(
+      candidatsSubrogationIncompatibleRegime([{ ...stock, dossiersFinancement: [dossier()] }], NOW),
+    ).toHaveLength(0);
+  });
+
+  it("lève sur une session qui commence après le 1/10/2026 même sans accord daté (≥ 50 salariés)", () => {
+    const future = {
+      id: "s-10",
+      numero: "S-2026-011",
+      dateDebut: J("2026-10-20"),
+      client: { opco: "atlas", opcoIdentifie: null, effectif: 120 },
+      dossiersFinancement: [],
+    };
+    expect(candidatsSubrogationIncompatibleRegime([future], NOW)).toHaveLength(1);
   });
 
   it("ne lève pas si l'accord écrit confirme le paiement direct", () => {
@@ -121,6 +149,7 @@ describe("regleSubrogationIncompatibleRegime — requête", () => {
     const alertes = await regleSubrogationIncompatibleRegime(NOW);
     const select = mockFindMany.mock.calls[0]?.[0]?.select;
     expect(select.client.select).toMatchObject({ opco: true, opcoIdentifie: true, effectif: true });
+    expect(select.dateDebut).toBe(true);
     expect(alertes).toHaveLength(1);
   });
 

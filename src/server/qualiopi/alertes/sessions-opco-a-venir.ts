@@ -37,7 +37,11 @@ export type SessionOpcoAVenir = {
   numero: string;
   dateDebut: Date;
   client: ClientOpcoLu | null;
-  dossiersFinancement: { depotFaitLe: Date | null }[];
+  dossiersFinancement: {
+    depotFaitLe: Date | null;
+    accordAt?: Date | null;
+    accordEcritLe?: Date | null;
+  }[];
 };
 
 export async function sessionsOpcoAVenir(
@@ -72,7 +76,7 @@ export async function sessionsOpcoAVenir(
       },
       dossiersFinancement: {
         where: { type: { in: ["opco", "mixte"] } },
-        select: { depotFaitLe: true },
+        select: { depotFaitLe: true, accordAt: true, accordEcritLe: true },
       },
     },
   });
