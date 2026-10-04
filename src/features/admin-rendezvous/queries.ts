@@ -7,7 +7,8 @@
 // → ces fonctions renvoient vide sans connexion DB. Rien à guarder ici.
 
 import { prisma } from "@/lib/prisma";
-import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
+import { compterParType, passeLeFiltre } from "./type-rdv";
+import type { TypeRendezVous } from "@/server/calendly/type-rendez-vous";
 import { fromCalendly, type CalendlyEventRow } from "./normalize";
 import type { PublicRdv, RdvAVenir, RdvFilters, RdvPasse, UnifiedRdv } from "./types";
 import { etatRendezVous, invitesSupplementaires, momentVisio } from "./visio";
@@ -39,6 +40,8 @@ export const CAL_SELECT = {
   // Un rendez-vous de candidature n'est jamais proposé à l'enregistrement
   // (« Enregistrer cette visio ? », `enregistrementPropose`).
   linkedJobApplicationId: true,
+  // Le type classé (lot L3). NULL possible : `fromCalendly` se replie sur le nom.
+  typeRendezVous: true,
 } as const;
 
 /**
@@ -72,19 +75,21 @@ async function fetchAllCalendly(): Promise<UnifiedRdv[]> {
 }
 
 /**
- * Sépare les échanges apporteurs des appels clients (2026-09-19).
+ * Filtre par type de rendez-vous (2026-10-04, lot L3 ; publics du 2026-09-19).
  *
- * Même règle que la découverte Calendly et la passe des rappels : le NOM du
- * type d'événement contient « apporteur » (cf. `calendly/appel-apporteur.ts`).
- * Filtré en mémoire, comme le reste de ce module : `title` porte déjà ce nom.
+ * Lit `typeRendezVous`, déjà résolu par `fromCalendly` (colonne, sinon nom —
+ * double verrou apporteur compris). Filtré en mémoire, comme le reste de ce
+ * module. `clients` et `apporteurs` restent acceptés (`passeLeFiltre`).
  *
  * Sans `public`, la liste est rendue telle quelle — les appelants historiques
  * (boîte de réception, outil MCP) ne voient aucune différence.
  */
-function filtrerParPublic(rows: UnifiedRdv[], cible: PublicRdv | undefined): UnifiedRdv[] {
-  if (cible === "apporteurs") return rows.filter((r) => estAppelApporteur(r.title));
-  if (cible === "clients") return rows.filter((r) => !estAppelApporteur(r.title));
-  return rows;
+export function filtrerParPublic<T extends UnifiedRdv>(
+  rows: T[],
+  cible: PublicRdv | undefined,
+): T[] {
+  if (!cible) return rows;
+  return rows.filter((r) => passeLeFiltre(r.typeRendezVous, cible));
 }
 
 /** Tri intra-jour : créneaux horodatés d'abord (par heure), puis « heure ? ». */
@@ -98,13 +103,15 @@ function sortWithinDay(arr: UnifiedRdv[]): void {
   });
 }
 
-export async function listRendezVous(
-  filters: RdvFilters,
-): Promise<{ rows: UnifiedRdv[]; total: number }> {
+export async function listRendezVous(filters: RdvFilters): Promise<{
+  rows: UnifiedRdv[];
+  total: number;
+  /** Décompte par type, tous les AUTRES filtres appliqués (compteurs des onglets). */
+  parType: Record<TypeRendezVous, number>;
+}> {
   let rows = await fetchAllCalendly();
 
   if (filters.source && filters.source !== "calendly") rows = [];
-  rows = filtrerParPublic(rows, filters.public);
   if (filters.status) rows = rows.filter((r) => r.status === filters.status);
   if (filters.from) rows = rows.filter((r) => r.dayKey >= (filters.from as string));
   if (filters.to) rows = rows.filter((r) => r.dayKey <= (filters.to as string));
@@ -116,12 +123,15 @@ export async function listRendezVous(
       ),
     );
   }
+  // Compté AVANT le filtre de type : chaque onglet annonce ce qu'il montrera.
+  const parType = compterParType(rows);
+  rows = filtrerParPublic(rows, filters.public);
 
   const total = rows.length;
   const page = filters.page && filters.page > 0 ? filters.page : 1;
   const pageSize = filters.pageSize && filters.pageSize > 0 ? filters.pageSize : 25;
   const paged = rows.slice((page - 1) * pageSize, page * pageSize);
-  return { rows: paged, total };
+  return { rows: paged, total, parType };
 }
 
 /**
@@ -257,7 +267,7 @@ export async function listRendezVousAVenir(
       },
     ];
   });
-  return filtrerParPublic(rows, options.public).slice(0, options.limite ?? 50) as RdvAVenir[];
+  return filtrerParPublic(rows, options.public).slice(0, options.limite ?? 50);
 }
 
 /** Jusqu'où remonte l'onglet « Passés ». */
@@ -310,7 +320,7 @@ export async function listRendezVousPasses(
     ];
   });
   rows.sort((a, b) => (b.startTime as Date).getTime() - (a.startTime as Date).getTime());
-  return filtrerParPublic(rows, options.public) as RdvPasse[];
+  return filtrerParPublic(rows, options.public);
 }
 
 /**

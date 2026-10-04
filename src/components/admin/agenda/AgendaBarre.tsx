@@ -30,6 +30,13 @@ import {
   type VueAgenda,
   type CleJour,
 } from "@/features/admin-agenda/calendrier";
+import {
+  LIBELLE_TYPE_RDV,
+  TEINTE_TYPE_RDV,
+  TYPES_FILTRABLES,
+} from "@/features/admin-rendezvous/type-rdv";
+import { estTypeRendezVous, type TypeRendezVous } from "@/server/calendly/type-rendez-vous";
+import { TEINTE_SOURCE } from "./teinte-agenda";
 
 const LIBELLES_VUE: Record<VueAgenda, string> = {
   mois: "Mois",
@@ -42,7 +49,10 @@ export interface AgendaBarreProps {
   readonly vue: VueAgenda;
   readonly jour: CleJour;
   readonly aujourdhui: CleJour;
-  /** Sources actives, pour les conserver en changeant de vue ou de date. */
+  /**
+   * Filtres actifs (sources ET types, cf. `TYPES_FILTRABLES_AGENDA`), pour les
+   * conserver en changeant de vue ou de date.
+   */
   readonly sources: readonly string[];
 }
 
@@ -178,7 +188,42 @@ export const SOURCES_FILTRABLES = [
 ] as const;
 
 /**
- * Filtres par source — des liens qui basculent, pas des cases à cocher.
+ * Les types de réservation filtrables (2026-10-04, lot L3), avec leur couleur
+ * — la même que celle des réservations dans la grille (`teinte-agenda.ts`).
+ *
+ * 🔑 Ils voyagent dans le MÊME paramètre `sources` que les sources
+ * (`?sources=calendly,diagnostic`) : tous les liens de l'agenda (vues, dates,
+ * jours de la grille) le propagent déjà. Les jetons ne se recouvrent pas.
+ * Un filtre de type ne retient que des réservations ; il laisse passer
+ * l'agenda personnel et les blocages.
+ */
+export const TYPES_FILTRABLES_AGENDA = TYPES_FILTRABLES.map((t) => ({
+  id: t,
+  label: LIBELLE_TYPE_RDV[t],
+  couleur: `var(--color-admin-id-${TEINTE_TYPE_RDV[t] ?? TEINTE_SOURCE.calendly})`,
+}));
+
+/** Les jetons de `?sources=` connus : sources, puis types. */
+export function lireFiltresAgenda(brut: string | undefined): {
+  readonly sources: readonly string[];
+  readonly types: readonly TypeRendezVous[];
+} {
+  const jetons = (brut ?? "")
+    .split(",")
+    .map((x) => x.trim())
+    .filter(Boolean);
+  const connues = SOURCES_FILTRABLES.map((s) => s.id) as readonly string[];
+  return {
+    sources: jetons.filter((x) => connues.includes(x)),
+    types: jetons.filter(
+      (x): x is TypeRendezVous => estTypeRendezVous(x) && TYPES_FILTRABLES.includes(x),
+    ),
+  };
+}
+
+/**
+ * Filtres par source et par type — des liens qui basculent, pas des cases à
+ * cocher.
  *
  * Un lien plutôt qu'une case : l'état vit dans l'URL, donc il est partageable,
  * il survit à un rafraîchissement, il fonctionne avec le bouton Retour, et il
@@ -189,55 +234,81 @@ function AgendaFiltres({
   base,
   vue,
   jour,
-  sources,
+  sources: jetons,
 }: {
   readonly base: string;
   readonly vue: VueAgenda;
   readonly jour: CleJour;
   readonly sources: readonly string[];
 }): React.ReactElement {
-  // `sources` vide = tout est affiché. C'est l'état par défaut et il ne s'écrit
-  // pas dans l'URL : on ne montre pas un filtre à quelqu'un qui n'en a posé aucun.
-  const toutes = SOURCES_FILTRABLES.map((s) => s.id) as readonly string[];
-  const actives = sources.length > 0 ? sources : toutes;
+  const { sources, types } = lireFiltresAgenda(jetons.join(","));
+  const toutesSources = SOURCES_FILTRABLES.map((s) => s.id) as readonly string[];
+  const tousTypes = TYPES_FILTRABLES_AGENDA.map((t) => t.id) as readonly string[];
+  // Un groupe vide = tout est affiché. C'est l'état par défaut et il ne
+  // s'écrit pas dans l'URL : on ne montre pas un filtre à quelqu'un qui n'en a
+  // posé aucun.
+  const sourcesActives = sources.length > 0 ? sources : toutesSources;
+  const typesActifs = types.length > 0 ? (types as readonly string[]) : tousTypes;
+
+  // Basculer UN jeton de son groupe, en gardant l'autre groupe tel quel.
+  // Retirer le dernier actif d'un groupe reviendrait à vider l'écran : on
+  // retombe alors sur tout, le seul comportement qui ne laisse pas devant une
+  // page vide sans comprendre pourquoi.
+  const hrefBascule = (id: string, groupe: "source" | "type"): string => {
+    const actifs = groupe === "source" ? sourcesActives : typesActifs;
+    const tous = groupe === "source" ? toutesSources : tousTypes;
+    const suivants = actifs.includes(id) ? actifs.filter((x) => x !== id) : [...actifs, id];
+    const groupeEcrit = suivants.length > 0 && suivants.length < tous.length ? suivants : [];
+    const autre = groupe === "source" ? types : sources;
+    const tout = groupe === "source" ? [...groupeEcrit, ...autre] : [...autre, ...groupeEcrit];
+    const p = new URLSearchParams({ vue, jour });
+    if (tout.length > 0) p.set("sources", tout.join(","));
+    return `${base}?${p.toString()}`;
+  };
+
+  const puce = (
+    id: string,
+    label: string,
+    couleur: string,
+    active: boolean,
+    groupe: "source" | "type",
+  ) => (
+    <Link
+      key={id}
+      href={hrefBascule(id, groupe)}
+      aria-pressed={active}
+      className={`flex items-center gap-[var(--space-admin-1)] rounded-[var(--radius-admin-md)] border px-[var(--space-admin-2)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-medium ${
+        active
+          ? "border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-bg)] text-[color:var(--color-admin-fg)]"
+          : "border-[color:var(--color-admin-border)] bg-transparent text-[color:var(--color-admin-fg-disabled)] line-through"
+      }`}
+    >
+      <span
+        aria-hidden="true"
+        className="h-[0.625rem] w-[0.625rem] shrink-0 rounded-full"
+        style={{
+          backgroundColor: active ? couleur : "transparent",
+          border: `1px solid ${couleur}`,
+        }}
+      />
+      {label}
+    </Link>
+  );
 
   return (
-    <fieldset className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
-      <legend className="sr-only">Filtrer par source</legend>
-      {SOURCES_FILTRABLES.map((s) => {
-        const active = actives.includes(s.id);
-        // Basculer CETTE source, en gardant les autres. Retirer la dernière
-        // source active reviendrait à vider l'écran : on retombe alors sur tout,
-        // ce qui est le seul comportement qui ne laisse pas l'utilisateur devant
-        // une page vide sans comprendre pourquoi.
-        const suivantes = active ? actives.filter((x) => x !== s.id) : [...actives, s.id];
-        const p = new URLSearchParams({ vue, jour });
-        if (suivantes.length > 0 && suivantes.length < toutes.length) {
-          p.set("sources", suivantes.join(","));
-        }
-        return (
-          <Link
-            key={s.id}
-            href={`${base}?${p.toString()}`}
-            aria-pressed={active}
-            className={`flex items-center gap-[var(--space-admin-1)] rounded-[var(--radius-admin-md)] border px-[var(--space-admin-2)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-medium ${
-              active
-                ? "border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-bg)] text-[color:var(--color-admin-fg)]"
-                : "border-[color:var(--color-admin-border)] bg-transparent text-[color:var(--color-admin-fg-disabled)] line-through"
-            }`}
-          >
-            <span
-              aria-hidden="true"
-              className="h-[0.625rem] w-[0.625rem] shrink-0 rounded-full"
-              style={{
-                backgroundColor: active ? s.couleur : "transparent",
-                border: `1px solid ${s.couleur}`,
-              }}
-            />
-            {s.label}
-          </Link>
-        );
-      })}
-    </fieldset>
+    <div className="flex flex-col items-end gap-[var(--space-admin-2)]">
+      <fieldset className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+        <legend className="sr-only">Filtrer par source</legend>
+        {SOURCES_FILTRABLES.map((s) =>
+          puce(s.id, s.label, s.couleur, sourcesActives.includes(s.id), "source"),
+        )}
+      </fieldset>
+      <fieldset className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+        <legend className="sr-only">Filtrer les réservations par type</legend>
+        {TYPES_FILTRABLES_AGENDA.map((t) =>
+          puce(t.id, t.label, t.couleur, typesActifs.includes(t.id), "type"),
+        )}
+      </fieldset>
+    </div>
   );
 }

@@ -61,9 +61,23 @@ import { notify } from "@/server/notifications";
  */
 
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "../../../prisma/generated/client";
 import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
-import { HORS_APPELS_APPORTEUR, SEULS_APPELS_APPORTEUR } from "@/server/calendly/appel-apporteur";
-import { HORS_RDV_SALON, SEULS_RDV_SALON, salonDuNom } from "@/server/calendly/rdv-salon";
+import {
+  HORS_APPELS_APPORTEUR,
+  HORS_APPELS_APPORTEUR_PAR_NOM,
+  SEULS_APPELS_APPORTEUR,
+  SEULS_APPELS_APPORTEUR_PAR_NOM,
+} from "@/server/calendly/appel-apporteur";
+import {
+  HORS_RDV_SALON,
+  HORS_RDV_SALON_PAR_NOM,
+  SEULS_RDV_SALON,
+  SEULS_RDV_SALON_PAR_NOM,
+  salonDuNom,
+} from "@/server/calendly/rdv-salon";
+import { besoinDuBrut, estColonneTypeRendezVousAbsente } from "@/server/calendly/type-rendez-vous";
+import { typeEffectif } from "@/server/calendly/type-effectif";
 import { enqueueEmail } from "@/server/queue/queues";
 import type { MomentAppel } from "@/lib/email/templates/appel-rappel";
 import type { MomentSalon } from "@/lib/email/templates/rdv-salon";
@@ -119,6 +133,19 @@ interface Passage {
     | typeof HORS_RDV_SALON
     | typeof SEULS_RDV_SALON
   )[];
+  /**
+   * Les MÊMES filtres sur le nom seul (2026-10-04) — repli quand la colonne
+   * `type_rendez_vous` n'existe pas encore : le worker tourne le nouveau code
+   * ~50 min avant la migration. Sans ce repli, chaque passage échouerait
+   * pendant cette fenêtre, et un rappel J-1 ou H-1 (fenêtre de 15 min) dont
+   * l'heure tombe dedans serait PERDU.
+   */
+  readonly filtresParNom: readonly (
+    | typeof HORS_APPELS_APPORTEUR_PAR_NOM
+    | typeof SEULS_APPELS_APPORTEUR_PAR_NOM
+    | typeof HORS_RDV_SALON_PAR_NOM
+    | typeof SEULS_RDV_SALON_PAR_NOM
+  )[];
   readonly marqueur: ChampMarqueur;
   /** `null` = pas de fenêtre : tout rendez-vous à venir est candidat. */
   readonly fenetre: { readonly minMinutes: number; readonly maxMinutes: number } | null;
@@ -138,6 +165,7 @@ export const PASSAGES: readonly Passage[] = [
     job: "appel-confirme",
     destinataire: "client",
     filtres: [HORS_APPELS_APPORTEUR, HORS_RDV_SALON],
+    filtresParNom: [HORS_APPELS_APPORTEUR_PAR_NOM, HORS_RDV_SALON_PAR_NOM],
     marqueur: "confirmationEnvoyeeAt",
     fenetre: null,
     avecDate: true,
@@ -148,6 +176,7 @@ export const PASSAGES: readonly Passage[] = [
     job: "appel-rappel-j1",
     destinataire: "client",
     filtres: [HORS_APPELS_APPORTEUR, HORS_RDV_SALON],
+    filtresParNom: [HORS_APPELS_APPORTEUR_PAR_NOM, HORS_RDV_SALON_PAR_NOM],
     marqueur: "rappelJ1EnvoyeAt",
     fenetre: { minMinutes: 1440, maxMinutes: 1455 },
     avecDate: false,
@@ -157,6 +186,7 @@ export const PASSAGES: readonly Passage[] = [
     job: "appel-rappel",
     destinataire: "client",
     filtres: [HORS_APPELS_APPORTEUR, HORS_RDV_SALON],
+    filtresParNom: [HORS_APPELS_APPORTEUR_PAR_NOM, HORS_RDV_SALON_PAR_NOM],
     marqueur: "rappelEnvoyeAt",
     fenetre: { minMinutes: 60, maxMinutes: 75 },
     avecDate: false,
@@ -171,6 +201,7 @@ export const PASSAGES: readonly Passage[] = [
     job: "apporteur-echange-confirme",
     destinataire: "apporteur",
     filtres: [SEULS_APPELS_APPORTEUR],
+    filtresParNom: [SEULS_APPELS_APPORTEUR_PAR_NOM],
     marqueur: "confirmationEnvoyeeAt",
     fenetre: null,
     avecDate: true,
@@ -180,6 +211,7 @@ export const PASSAGES: readonly Passage[] = [
     job: "apporteur-echange-rappel-j1",
     destinataire: "apporteur",
     filtres: [SEULS_APPELS_APPORTEUR],
+    filtresParNom: [SEULS_APPELS_APPORTEUR_PAR_NOM],
     marqueur: "rappelJ1EnvoyeAt",
     fenetre: { minMinutes: 1440, maxMinutes: 1455 },
     avecDate: false,
@@ -189,6 +221,7 @@ export const PASSAGES: readonly Passage[] = [
     job: "apporteur-echange-rappel",
     destinataire: "apporteur",
     filtres: [SEULS_APPELS_APPORTEUR],
+    filtresParNom: [SEULS_APPELS_APPORTEUR_PAR_NOM],
     marqueur: "rappelEnvoyeAt",
     fenetre: { minMinutes: 60, maxMinutes: 75 },
     avecDate: false,
@@ -208,6 +241,7 @@ export const PASSAGES: readonly Passage[] = [
     job: "rdv-salon-confirme",
     destinataire: "salon",
     filtres: [SEULS_RDV_SALON, HORS_APPELS_APPORTEUR],
+    filtresParNom: [SEULS_RDV_SALON_PAR_NOM, HORS_APPELS_APPORTEUR_PAR_NOM],
     marqueur: "confirmationEnvoyeeAt",
     fenetre: null,
     avecDate: true,
@@ -218,6 +252,7 @@ export const PASSAGES: readonly Passage[] = [
     job: "rdv-salon-rappel-j2",
     destinataire: "salon",
     filtres: [SEULS_RDV_SALON, HORS_APPELS_APPORTEUR],
+    filtresParNom: [SEULS_RDV_SALON_PAR_NOM, HORS_APPELS_APPORTEUR_PAR_NOM],
     marqueur: "rappelJ2EnvoyeAt",
     fenetre: { minMinutes: 2880, maxMinutes: 2895 },
     avecDate: true,
@@ -227,6 +262,7 @@ export const PASSAGES: readonly Passage[] = [
     job: "rdv-salon-rappel-j1",
     destinataire: "salon",
     filtres: [SEULS_RDV_SALON, HORS_APPELS_APPORTEUR],
+    filtresParNom: [SEULS_RDV_SALON_PAR_NOM, HORS_APPELS_APPORTEUR_PAR_NOM],
     marqueur: "rappelJ1EnvoyeAt",
     fenetre: { minMinutes: 1440, maxMinutes: 1455 },
     avecDate: false,
@@ -315,6 +351,35 @@ function marqueurPose(marqueur: ChampMarqueur, quand: Date) {
   }
 }
 
+/** Une ligne candidate, avec ou sans la colonne du type (repli avant migration). */
+interface CandidatRappel {
+  id: string;
+  inviteeName: string | null;
+  inviteeEmail: string | null;
+  startTime: Date | null;
+  endTime: Date | null;
+  location: string | null;
+  rawPayload: unknown;
+  cancelUrl: string | null;
+  rescheduleUrl: string | null;
+  eventTypeName: string;
+  typeRendezVous?: string | null;
+}
+
+/**
+ * Le type et le besoin transmis au gabarit client. Le type passe par
+ * `typeEffectif` — colonne, sinon nom — comme partout ailleurs.
+ */
+export function champsTypeClient(rdv: {
+  readonly typeRendezVous?: string | null | undefined;
+  readonly eventTypeName?: string | null | undefined;
+  readonly rawPayload?: unknown;
+}): { typeRendezVous: string; besoin?: string } {
+  const type = typeEffectif(rdv);
+  const besoin = type === "echange_projet" ? besoinDuBrut(rdv.rawPayload) : null;
+  return { typeRendezVous: type, ...(besoin ? { besoin } : {}) };
+}
+
 /**
  * Exécute UN passage. Ne lève jamais : un cron ne doit pas rougir parce qu'une
  * base a hoqueté.
@@ -335,58 +400,91 @@ export async function executerPassage(
       // tous les rendez-vous passés de l'historique.
       { gt: new Date(nowMs) };
 
-  let candidats;
-  try {
-    candidats = await prisma.calendlyEvent.findMany({
-      where: {
-        // Un rendez-vous annulé, terminé ou marqué absent n'a rien à dire.
-        status: "scheduled",
-        startTime: bornesTemps,
-        ...filtreNonEnvoye(p.marqueur),
-        inviteeEmail: { not: null },
-        // 🔴 Une ligne ANONYMISÉE ne reçoit rien. Son adresse est synthétique
-        // (`erased:…@erased.local`) : lui écrire ferait rebondir un message vers
-        // un domaine qui n'existe pas, au nom d'une personne qui a précisément
-        // demandé qu'on l'oublie. Le marqueur est IMPORTÉ de la chaîne
-        // d'effacement, jamais recopié.
-        NOT: { inviteeName: ERASED_PLACEHOLDER },
-        // 🔑 CHAQUE passage borne sa propre population (2026-09-21) : les
-        // trois messages clients excluent les échanges apporteur, les trois
-        // messages apporteur ne visent qu'eux. Les deux filtres sont écrits
-        // explicitement, jamais dérivés l'un de l'autre.
-        //
-        // ⚠️ Cette ligne portait auparavant `HORS_APPELS_APPORTEUR` en dur,
-        // justifié par « Calendly envoie sa propre confirmation ». C'ÉTAIT
-        // FAUX — relevé dans le compte le 2026-09-21 : Calendly envoie une
-        // INVITATION D'AGENDA, ses rappels par e-mail sont `Off` et aucun
-        // workflow n'existe. Le candidat ne recevait donc rien de personne.
-        AND: [...p.filtres],
-      },
-      orderBy: { startTime: "asc" },
-      take: MAX_PAR_PASSAGE + 1,
-      select: {
-        id: true,
-        inviteeName: true,
-        inviteeEmail: true,
-        startTime: true,
-        endTime: true,
-        location: true,
-        // Nécessaire pour dériver le FORMAT du `type` que Calendly pose, plutôt
-        // que de la forme du texte : `location` est éditable à la main, donc sa
-        // forme ne fait pas foi (cf. `calendly/canal.ts`).
-        rawPayload: true,
-        cancelUrl: true,
-        rescheduleUrl: true,
-        // Le salon (lieu, accès) se déduit du NOM du type d'événement.
-        eventTypeName: true,
-      },
-    });
-  } catch (e) {
-    return {
-      ok: false,
-      ...VIDE,
-      raison: `db_read_failed:${e instanceof Error ? e.message : String(e)}`,
+  // Les colonnes lues, communes aux deux requêtes (avec et sans la colonne
+  // du type). Le repli ne retire QUE `typeRendezVous`.
+  const selectCommun = {
+    id: true,
+    inviteeName: true,
+    inviteeEmail: true,
+    startTime: true,
+    endTime: true,
+    location: true,
+    // Nécessaire pour dériver le FORMAT du `type` que Calendly pose, plutôt
+    // que de la forme du texte : `location` est éditable à la main, donc sa
+    // forme ne fait pas foi (cf. `calendly/canal.ts`).
+    rawPayload: true,
+    cancelUrl: true,
+    rescheduleUrl: true,
+    // Le salon (lieu, accès) se déduit du NOM du type d'événement ; le type
+    // classé se replie aussi sur lui quand la colonne est NULL.
+    eventTypeName: true,
+  } as const;
+
+  const lire = async (
+    filtres: Passage["filtres"] | Passage["filtresParNom"],
+    avecType: boolean,
+  ): Promise<CandidatRappel[]> => {
+    const where: Prisma.CalendlyEventWhereInput = {
+      // Un rendez-vous annulé, terminé ou marqué absent n'a rien à dire.
+      status: "scheduled",
+      startTime: bornesTemps,
+      ...filtreNonEnvoye(p.marqueur),
+      inviteeEmail: { not: null },
+      // 🔴 Une ligne ANONYMISÉE ne reçoit rien. Son adresse est synthétique
+      // (`erased:…@erased.local`) : lui écrire ferait rebondir un message vers
+      // un domaine qui n'existe pas, au nom d'une personne qui a précisément
+      // demandé qu'on l'oublie. Le marqueur est IMPORTÉ de la chaîne
+      // d'effacement, jamais recopié.
+      NOT: { inviteeName: ERASED_PLACEHOLDER },
+      // 🔑 CHAQUE passage borne sa propre population (2026-09-21) : les
+      // trois messages clients excluent les échanges apporteur, les trois
+      // messages apporteur ne visent qu'eux. Les deux filtres sont écrits
+      // explicitement, jamais dérivés l'un de l'autre.
+      //
+      // ⚠️ Cette ligne portait auparavant `HORS_APPELS_APPORTEUR` en dur,
+      // justifié par « Calendly envoie sa propre confirmation ». C'ÉTAIT
+      // FAUX — relevé dans le compte le 2026-09-21 : Calendly envoie une
+      // INVITATION D'AGENDA, ses rappels par e-mail sont `Off` et aucun
+      // workflow n'existe. Le candidat ne recevait donc rien de personne.
+      AND: [...filtres],
     };
+    const requete = {
+      where,
+      orderBy: { startTime: "asc" as const },
+      take: MAX_PAR_PASSAGE + 1,
+    };
+    // Deux appels plutôt qu'un `select` conditionnel : Prisma type mal un
+    // `select` qui est une union.
+    return avecType
+      ? prisma.calendlyEvent.findMany({
+          ...requete,
+          select: { ...selectCommun, typeRendezVous: true },
+        })
+      : prisma.calendlyEvent.findMany({ ...requete, select: selectCommun });
+  };
+
+  let candidats: CandidatRappel[];
+  try {
+    candidats = await lire(p.filtres, true);
+  } catch (e) {
+    if (!estColonneTypeRendezVousAbsente(e)) {
+      return {
+        ok: false,
+        ...VIDE,
+        raison: `db_read_failed:${e instanceof Error ? e.message : String(e)}`,
+      };
+    }
+    // Fenêtre app/worker : la migration n'est pas encore passée. Les mêmes
+    // populations, sur le nom seul — exactement le comportement d'avant.
+    try {
+      candidats = await lire(p.filtresParNom, false);
+    } catch (e2) {
+      return {
+        ok: false,
+        ...VIDE,
+        raison: `db_read_failed:${e2 instanceof Error ? e2.message : String(e2)}`,
+      };
+    }
   }
 
   const plafondAtteint = candidats.length > MAX_PAR_PASSAGE;
@@ -488,6 +586,11 @@ export async function executerPassage(
         format,
         // Rencontre salon : la clé du salon, dont le gabarit tire lieu et accès.
         ...(p.destinataire === "salon" ? { salon: salonDuNom(rdv.eventTypeName) } : {}),
+        // Client (2026-10-04) : le TYPE, dont le gabarit tire surtitre, objet
+        // et texte (« votre diagnostic IA », « votre échange projet »), et le
+        // service choisi pour un échange projet. Les gabarits apporteur et
+        // salon ne les lisent pas : rien ne leur est ajouté.
+        ...(p.destinataire === "client" ? champsTypeClient(rdv) : {}),
         // ⚠️ Le repli reste utile APRÈS l'allumage : si la signature échoue, on
         // préfère un lien Calendly qui marche à un e-mail sans aucun moyen
         // d'annuler. Un prospect qui ne peut pas se décommander ne prévient

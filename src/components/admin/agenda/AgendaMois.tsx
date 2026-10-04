@@ -43,23 +43,12 @@ import {
   type CleJour,
   type VueAgenda,
 } from "@/features/admin-agenda/calendrier";
+import { couleurDe, fondDe } from "./teinte-agenda";
 
 const JOURS_COURTS = ["lun", "mar", "mer", "jeu", "ven", "sam", "dim"] as const;
 
 /** Combien de pastilles nommées avant de basculer sur un compteur. */
 const PASTILLES_MAX = 3;
-
-const COULEUR_SOURCE: Record<AgendaItem["source"], string> = {
-  calendly: "var(--color-admin-id-bleu)",
-  google: "var(--color-admin-id-teal)",
-  console: "var(--color-admin-id-terracotta)",
-};
-
-const FOND_SOURCE: Record<AgendaItem["source"], string> = {
-  calendly: "var(--color-admin-id-bleu-soft)",
-  google: "var(--color-admin-id-teal-soft)",
-  console: "var(--color-admin-id-terracotta-soft)",
-};
 
 export interface AgendaMoisProps {
   readonly base: string;
@@ -169,9 +158,9 @@ export function AgendaMois({
                         it.annule ? "line-through opacity-60" : ""
                       }`}
                       style={{
-                        backgroundColor: FOND_SOURCE[it.source],
+                        backgroundColor: fondDe(it),
                         color: "var(--color-admin-fg)",
-                        borderLeft: `3px solid ${COULEUR_SOURCE[it.source]}`,
+                        borderLeft: `3px solid ${couleurDe(it)}`,
                       }}
                     >
                       {!it.journeeEntiere && (
@@ -261,8 +250,8 @@ function PanneauJour({
               key={it.key}
               className="flex flex-col gap-[2px] rounded-[var(--radius-admin-sm)] p-[var(--space-admin-2)]"
               style={{
-                backgroundColor: FOND_SOURCE[it.source],
-                borderLeft: `3px solid ${COULEUR_SOURCE[it.source]}`,
+                backgroundColor: fondDe(it),
+                borderLeft: `3px solid ${couleurDe(it)}`,
               }}
             >
               <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] tabular-nums">

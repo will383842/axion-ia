@@ -382,6 +382,7 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
     await rattacherEchangeApporteur({
       id: eventId,
       eventTypeName: (data["eventTypeName"] as string | undefined) ?? row.eventTypeName,
+      typeRendezVous,
       inviteeEmail,
       linkedSubmissionId: row.linkedSubmissionId,
       linkedJobApplicationId: row.linkedJobApplicationId,

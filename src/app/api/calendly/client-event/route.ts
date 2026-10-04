@@ -454,6 +454,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       inviteeName: notifyName ?? "(non communiqué)",
       eventStartTime: notifyStart ?? "(voir mail Calendly)",
       eventName: parsed.data.eventTypeSlug,
+      // Le titre de l'alerte se tire du type classé (lot L3, 2026-10-04).
+      typeRendezVous,
+      ...(besoin ? { besoin } : {}),
       // Omis quand il n'est pas établi : l'alerte préfère se taire à affirmer.
       ...(format === "inconnu" ? {} : { format }),
       ...(parsed.data.pageUrl ? { pageUrl: parsed.data.pageUrl } : {}),

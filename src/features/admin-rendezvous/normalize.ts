@@ -6,6 +6,8 @@ import { dayKeyInParis } from "@/lib/calendar-grid";
 import type { RdvStatus, UnifiedRdv } from "./types";
 import { canalDuRendezVous } from "@/server/calendly/canal";
 import { lienRejoindreVisio } from "./visio";
+import { typeEffectif } from "@/server/calendly/type-effectif";
+import { besoinDuBrut } from "@/server/calendly/type-rendez-vous";
 
 /** Sous-ensemble des colonnes `CalendlyEvent` consommées (découplé de Prisma). */
 export interface CalendlyEventRow {
@@ -24,6 +26,8 @@ export interface CalendlyEventRow {
   capturedAt: Date;
   /** Rendez-vous d'une candidature (entretien) : jamais enregistrable. */
   linkedJobApplicationId?: string | null;
+  /** Type classé (lot L3) — NULL pour une ligne écrite pendant le déploiement. */
+  typeRendezVous?: string | null;
 }
 
 export function mapCalendlyStatus(raw: string): RdvStatus {
@@ -130,5 +134,8 @@ export function fromCalendly(e: CalendlyEventRow): UnifiedRdv {
     notes: e.notes,
     createdAt: e.capturedAt,
     linkedJobApplicationId: e.linkedJobApplicationId ?? null,
+    // Colonne d'abord, nom en repli : même règle que les e-mails et alertes.
+    typeRendezVous: typeEffectif(e),
+    besoinChoisi: besoinDuBrut(e.rawPayload),
   };
 }
