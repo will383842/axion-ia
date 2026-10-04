@@ -27,6 +27,7 @@ import {
   payloadFinancementMisAJour,
   payloadPaiementRecu,
   payloadPaiementRembourse,
+  prixReferenceDeLaLigne,
   resoudreClientBeneficiaire,
 } from "../payloads";
 
@@ -633,5 +634,34 @@ describe("REQ-INT-029 — la frontière tient sur les payloads RÉELS", () => {
       champsInterditsSelonFrontiere("client.cree", { contacts: ["jean.dupont@exemple.fr"] }),
     ).not.toEqual([]);
     expect(champsInterditsSelonFrontiere("client.cree", { montantHtCents: 1 })).not.toEqual([]);
+  });
+});
+
+describe("REQ-INT-006 — le prix public de la LIGNE d'un devis signé (prixReferenceHtCents, arbitrage d'A02)", () => {
+  it("REQ-INT-006 : prix public ferme × quantité, en centimes ENTIERS", () => {
+    expect(prixReferenceDeLaLigne(1900, 1)).toBe(190_000);
+    expect(prixReferenceDeLaLigne(1900, 3)).toBe(570_000);
+  });
+
+  it("REQ-INT-006 : TÉMOIN — une quantité non entière s'arrondit comme montantHtCents (le prix public vendu tel quel donne le même montant)", () => {
+    for (const [eur, quantite] of [
+      [1900, 0.5],
+      [1190.55, 1.5],
+      [333.33, 0.25],
+      [12.345, 2.5],
+    ] as const) {
+      const prixUnitaireHtCents = Math.round(eur * 100);
+      const montantHtCents = Math.round(quantite * prixUnitaireHtCents);
+      expect(prixReferenceDeLaLigne(eur, quantite), `${eur} × ${quantite}`).toBe(montantHtCents);
+    }
+  });
+
+  it("REQ-INT-006 : TÉMOIN — sans prix public ferme, null : une absence n'est jamais un prix nul", () => {
+    expect(prixReferenceDeLaLigne(null, 2)).toBeNull();
+  });
+
+  it("REQ-INT-006 : un montant sous le minimum du contrat (1 centime) part null, jamais 0", () => {
+    expect(prixReferenceDeLaLigne(1900, 0)).toBeNull();
+    expect(prixReferenceDeLaLigne(0, 1)).toBeNull();
   });
 });
