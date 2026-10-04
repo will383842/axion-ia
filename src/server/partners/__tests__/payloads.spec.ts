@@ -63,6 +63,7 @@ const factureBase = {
   regimeTva: "assujetti",
   subrogation: true,
   avoirDeId: null,
+  devisId: null,
   statut: "emise" as never,
   emiseAt: new Date("2026-03-01T09:00:00.000Z"),
   echeanceAt: new Date("2026-03-31T09:00:00.000Z"),
@@ -333,6 +334,8 @@ describe("REQ-INT-006 + REQ-DM-040 — `devis.signe`", () => {
     clientId: CLIENT_ID,
     montantTotalHtCents: 500_000,
     statut: "accepte" as never,
+    // Contrat v3 : le devis a été envoyé avant d'être signé (fait « devis émis »).
+    sentAt: new Date("2026-02-10T10:00:00.000Z"),
     acceptedAt: new Date("2026-02-14T15:00:00.000Z"),
     createdAt: new Date("2026-02-01T15:00:00.000Z"),
     updatedAt: new Date("2026-02-14T15:00:00.000Z"),
