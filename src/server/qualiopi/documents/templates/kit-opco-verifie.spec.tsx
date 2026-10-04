@@ -53,6 +53,7 @@ const PIECES = etatPiecesDemande([
     createdAt: D("2026-09-01"),
     annuleeAt: null,
     statutSignature: "signee",
+    exemplaireSigneKey: "documents/2026/convention/AXI-DOC-1-signe.pdf",
   },
   {
     id: "p",
@@ -61,10 +62,28 @@ const PIECES = etatPiecesDemande([
     createdAt: D("2026-09-01"),
     annuleeAt: null,
     statutSignature: "non_requise",
+    exemplaireSigneKey: null,
   },
 ]);
 
 describe("kit OPCO vérifié", () => {
+  it("convention signée sans exemplaire signé archivé → « Manquante », jamais « Jointe »", () => {
+    const pieces = etatPiecesDemande([
+      {
+        id: "c",
+        type: "convention",
+        numero: "AXI-DOC-1",
+        createdAt: D("2026-09-01"),
+        annuleeAt: null,
+        statutSignature: "signee",
+        exemplaireSigneKey: null,
+      },
+    ]);
+    const texte = rendu({ pieces });
+    expect(texte).not.toContain("Jointe — AXI-DOC-1");
+    expect(texte).toContain("exemplaire signé introuvable");
+  });
+
   it("pièce manquante → non cochée et listée parmi les manquantes", () => {
     const texte = rendu({ pieces: PIECES });
     expect(texte).toContain("Jointe — AXI-DOC-1");

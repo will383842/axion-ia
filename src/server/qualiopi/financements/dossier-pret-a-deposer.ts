@@ -6,7 +6,8 @@
  * myAtlas »). L'organisme lui remet donc un dossier COMPLET, et le kit dit
  * ce qui y est vraiment : une pièce n'est cochée que si elle existe au
  * registre des documents, en vigueur (non annulée) — et, pour la convention,
- * signée. Les pièces absentes sont NOMMÉES : un kit qui coche tout ce qu'il
+ * signée AVEC son exemplaire signé archivé (`exemplaireSigneKey`) : c'est cet
+ * exemplaire, jamais le PDF vierge, que le dossier remet. Les pièces absentes sont NOMMÉES : un kit qui coche tout ce qu'il
  * liste se lit comme complet alors qu'il ne l'est pas.
  *
  * Aucun import Prisma : la lecture vit dans `dossier-pret-a-deposer-lecture.ts`.
@@ -24,6 +25,8 @@ export interface DocumentLu {
   createdAt: Date;
   annuleeAt: Date | null;
   statutSignature: string;
+  /** Clé de stockage de l'exemplaire SIGNÉ (`…-signe.pdf`), null s'il n'a pas été archivé. */
+  exemplaireSigneKey: string | null;
 }
 
 export type ClePiece = "convention" | "programme" | "devis" | "calendrier";
@@ -66,19 +69,39 @@ export interface EtatPiece {
   presente: boolean;
   /** Précision lisible : numéro de la pièce, ou pourquoi elle manque. */
   detail: string;
+  /**
+   * La pièce ne vaut que signée : le dossier joint alors l'exemplaire SIGNÉ
+   * (`document.exemplaireSigneKey`), jamais le PDF vierge.
+   */
+  exigeSignature: boolean;
   /** La pièce à joindre au dossier, si présente. */
-  document: Pick<DocumentLu, "id" | "type" | "numero" | "createdAt"> | null;
+  document: Pick<DocumentLu, "id" | "type" | "numero" | "createdAt" | "exemplaireSigneKey"> | null;
 }
 
-/** La plus récente pièce EN VIGUEUR d'un des types, préférence au premier type. */
-function plusRecente(docs: readonly DocumentLu[], types: readonly DocumentType[]): DocumentLu[] {
-  for (const type of types) {
-    const vivants = docs
-      .filter((d) => d.type === type && d.annuleeAt === null)
-      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-    if (vivants.length > 0) return vivants;
-  }
-  return [];
+export const EXEMPLAIRE_SIGNE_INTROUVABLE = "exemplaire signé introuvable";
+
+/**
+ * Pièces EN VIGUEUR des types admis, de la plus récente à la plus ancienne ;
+ * à date égale, l'ordre de préférence des types départage (tripartite d'abord).
+ * Tous types confondus : une tripartite non signée ne doit pas masquer une
+ * bipartite signée.
+ */
+function vivantes(docs: readonly DocumentLu[], types: readonly DocumentType[]): DocumentLu[] {
+  const rang = (t: DocumentType) => types.indexOf(t);
+  return docs
+    .filter((d) => types.includes(d.type) && d.annuleeAt === null)
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime() || rang(a.type) - rang(b.type));
+}
+
+function manquante(def: DefinitionPiece, detail: string): EtatPiece {
+  return {
+    cle: def.cle,
+    libelle: def.libelle,
+    presente: false,
+    exigeSignature: def.exigeSignature,
+    detail,
+    document: null,
+  };
 }
 
 /**
@@ -87,30 +110,64 @@ function plusRecente(docs: readonly DocumentLu[], types: readonly DocumentType[]
  */
 export function etatPiecesDemande(documents: readonly DocumentLu[]): EtatPiece[] {
   return PIECES_DEMANDE_OPCO.map((def) => {
-    const candidats = plusRecente(documents, def.types);
+    const candidats = vivantes(documents, def.types);
     const retenu = def.exigeSignature
       ? (candidats.find((d) => d.statutSignature === "signee") ?? null)
       : (candidats[0] ?? null);
-    if (retenu) {
-      return {
-        cle: def.cle,
-        libelle: def.libelle,
-        presente: true,
-        detail: retenu.numero,
-        document: {
-          id: retenu.id,
-          type: retenu.type,
-          numero: retenu.numero,
-          createdAt: retenu.createdAt,
-        },
-      };
+    if (!retenu) {
+      return manquante(
+        def,
+        def.exigeSignature && candidats.length > 0
+          ? `émise (${candidats[0]?.numero ?? ""}), signature non recueillie`
+          : "non émise",
+      );
     }
-    const detail =
-      def.exigeSignature && candidats.length > 0
-        ? `émise (${candidats[0]?.numero ?? ""}), signature non recueillie`
-        : "non émise";
-    return { cle: def.cle, libelle: def.libelle, presente: false, detail, document: null };
+    // Signée au registre mais exemplaire jamais archivé : joindre la vierge en
+    // l'annonçant signée serait faux. Manquante, et le motif le dit.
+    if (def.exigeSignature && retenu.exemplaireSigneKey === null) {
+      return manquante(def, `signée (${retenu.numero}), ${EXEMPLAIRE_SIGNE_INTROUVABLE}`);
+    }
+    return {
+      cle: def.cle,
+      libelle: def.libelle,
+      presente: true,
+      exigeSignature: def.exigeSignature,
+      detail: retenu.numero,
+      document: {
+        id: retenu.id,
+        type: retenu.type,
+        numero: retenu.numero,
+        createdAt: retenu.createdAt,
+        exemplaireSigneKey: retenu.exemplaireSigneKey,
+      },
+    };
   });
+}
+
+/**
+ * Confirme au STOCKAGE l'exemplaire signé de chaque pièce qui l'exige. Une clé
+ * en base ne prouve pas l'objet : absent, ou vérification impossible → la pièce
+ * passe manquante. Le kit et le ZIP disent ainsi la même chose. Les pièces sans
+ * signature ne sont pas sondées.
+ */
+export async function confirmerExemplairesSignes(
+  pieces: readonly EtatPiece[],
+  existe: (cle: string) => Promise<boolean>,
+): Promise<EtatPiece[]> {
+  return Promise.all(
+    pieces.map(async (p) => {
+      const cle = p.exigeSignature && p.presente ? p.document?.exemplaireSigneKey : null;
+      if (!cle) return p;
+      const ok = await existe(cle).catch(() => false);
+      if (ok) return p;
+      return {
+        ...p,
+        presente: false,
+        detail: `signée (${p.document?.numero ?? ""}), ${EXEMPLAIRE_SIGNE_INTROUVABLE}`,
+        document: null,
+      };
+    }),
+  );
 }
 
 // ── Encart « Comment déposer chez <OPCO> » ──────────────────────────────────

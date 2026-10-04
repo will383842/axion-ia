@@ -30,6 +30,7 @@ const DOSSIER: DossierPretADeposer = {
       createdAt: D("2026-09-01"),
       annuleeAt: null,
       statutSignature: "signee",
+      exemplaireSigneKey: "documents/2026/convention/AXI-DOC-1-signe.pdf",
     },
     {
       id: "p",
@@ -38,6 +39,7 @@ const DOSSIER: DossierPretADeposer = {
       createdAt: D("2026-09-01"),
       annuleeAt: null,
       statutSignature: "non_requise",
+      exemplaireSigneKey: null,
     },
   ]),
   encart: encartDepot({
@@ -62,7 +64,7 @@ describe("construireZipPretADeposer", () => {
     const noms = Object.keys(zip.files).sort();
     expect(noms).toHaveLength(4);
     expect(noms.some((n) => n.startsWith("Kit") && n.includes("AXI-DOC-9"))).toBe(true);
-    expect(noms.some((n) => n.includes("Invest Sun - AXI-DOC-1.pdf"))).toBe(true);
+    expect(noms).toContain("Convention de formation signee - Invest Sun - AXI-DOC-1.pdf");
     expect(noms.some((n) => n.includes("AXI-DOC-2.pdf"))).toBe(true);
     expect(noms).toContain("LISEZMOI.txt");
     // Seules les pièces présentes sont lues au stockage : kit + 2.
@@ -84,6 +86,48 @@ describe("construireZipPretADeposer", () => {
     const r = await construireZipPretADeposer({ kit: KIT, dossier: DOSSIER }, lire);
     expect(r.joints).toEqual(["AXI-DOC-9", "AXI-DOC-1"]);
     expect(r.manquantes).toContain("Programme de la formation");
+  });
+
+  it("convention signée → le lecteur reçoit la clé de l'exemplaire SIGNÉ, jamais la vierge", async () => {
+    const lire = vi.fn(async (cle: string) => Buffer.from(`pdf:${cle}`));
+    await construireZipPretADeposer({ kit: KIT, dossier: DOSSIER }, lire);
+    const cles = lire.mock.calls.map(([c]) => c);
+    expect(cles).toContain("documents/2026/convention/AXI-DOC-1-signe.pdf");
+    expect(cles).not.toContain("documents/2026/convention/AXI-DOC-1.pdf");
+  });
+
+  it("exemplaire signé introuvable au stockage → convention manquante, la vierge n'est pas jointe", async () => {
+    const lire = vi.fn(async (cle: string) =>
+      cle.endsWith("-signe.pdf") ? null : Buffer.from("x"),
+    );
+    const r = await construireZipPretADeposer({ kit: KIT, dossier: DOSSIER }, lire);
+    expect(r.joints).toEqual(["AXI-DOC-9", "AXI-DOC-2"]);
+    expect(r.manquantes).toContain("Convention de formation signée");
+    const zip = await ouvrir(r.base64);
+    expect(Object.keys(zip.files).some((n) => n.includes("AXI-DOC-1"))).toBe(false);
+    const lisezmoi = await zip.file("LISEZMOI.txt")!.async("string");
+    expect(lisezmoi).toContain("exemplaire signé introuvable");
+    expect(lire.mock.calls.map(([c]) => c)).not.toContain(
+      "documents/2026/convention/AXI-DOC-1.pdf",
+    );
+  });
+
+  it("exemplaireSigneKey null → convention manquante, aucune lecture de la vierge", async () => {
+    const pieces = etatPiecesDemande([
+      {
+        id: "c",
+        type: "convention",
+        numero: "AXI-DOC-1",
+        createdAt: D("2026-09-01"),
+        annuleeAt: null,
+        statutSignature: "signee",
+        exemplaireSigneKey: null,
+      },
+    ]);
+    const lire = vi.fn(async (cle: string) => Buffer.from(cle));
+    const r = await construireZipPretADeposer({ kit: KIT, dossier: { ...DOSSIER, pieces } }, lire);
+    expect(r.manquantes).toContain("Convention de formation signée");
+    expect(lire).toHaveBeenCalledTimes(1); // le kit seul
   });
 
   it("kit introuvable au stockage → erreur, pas de ZIP sans kit", async () => {

@@ -6,6 +6,7 @@ import { describe, it, expect } from "vitest";
 import {
   LIBELLES_REGIME,
   NON_RENSEIGNE,
+  confirmerExemplairesSignes,
   encartDepot,
   etatPiecesDemande,
   type DocumentLu,
@@ -19,6 +20,8 @@ function doc(p: Partial<DocumentLu> & Pick<DocumentLu, "type" | "numero">): Docu
     createdAt: D("2026-09-01"),
     annuleeAt: null,
     statutSignature: "non_requise",
+    exemplaireSigneKey:
+      p.statutSignature === "signee" ? `documents/2026/${p.type}/${p.numero}-signe.pdf` : null,
     ...p,
   };
 }
@@ -60,6 +63,101 @@ describe("etatPiecesDemande", () => {
     ]);
     expect(pieces.find((p) => p.cle === "programme")?.document?.numero).toBe("P-RECENT");
     expect(pieces.find((p) => p.cle === "convention")?.document?.numero).toBe("C-TRI");
+  });
+
+  it("une tripartite NON signée plus récente ne masque pas une bipartite SIGNÉE", () => {
+    const [convention] = etatPiecesDemande([
+      doc({
+        type: "convention",
+        numero: "C-BI",
+        statutSignature: "signee",
+        createdAt: D("2026-09-01"),
+      }),
+      doc({
+        type: "convention_tripartite",
+        numero: "C-TRI",
+        statutSignature: "en_attente",
+        createdAt: D("2026-09-20"),
+      }),
+    ]);
+    expect(convention?.presente).toBe(true);
+    expect(convention?.document?.numero).toBe("C-BI");
+  });
+
+  it("deux conventions signées → la plus récente, tous types confondus", () => {
+    const [convention] = etatPiecesDemande([
+      doc({
+        type: "convention_tripartite",
+        numero: "C-TRI",
+        statutSignature: "signee",
+        createdAt: D("2026-09-01"),
+      }),
+      doc({
+        type: "convention",
+        numero: "C-BI",
+        statutSignature: "signee",
+        createdAt: D("2026-09-20"),
+      }),
+    ]);
+    expect(convention?.document?.numero).toBe("C-BI");
+  });
+
+  it("convention signée sans exemplaire signé archivé → manquante, jamais la vierge", () => {
+    const [convention] = etatPiecesDemande([
+      doc({
+        type: "convention",
+        numero: "AXI-DOC-1",
+        statutSignature: "signee",
+        exemplaireSigneKey: null,
+      }),
+    ]);
+    expect(convention?.presente).toBe(false);
+    expect(convention?.document).toBeNull();
+    expect(convention?.detail).toContain("exemplaire signé introuvable");
+  });
+
+  it("la convention retenue porte la clé de l'exemplaire SIGNÉ", () => {
+    const [convention] = etatPiecesDemande([
+      doc({ type: "convention", numero: "AXI-DOC-1", statutSignature: "signee" }),
+    ]);
+    expect(convention?.exigeSignature).toBe(true);
+    expect(convention?.document?.exemplaireSigneKey).toBe(
+      "documents/2026/convention/AXI-DOC-1-signe.pdf",
+    );
+  });
+});
+
+describe("confirmerExemplairesSignes", () => {
+  it("exemplaire signé absent du stockage → la pièce devient manquante (le kit ne dit pas « Jointe »)", async () => {
+    const pieces = etatPiecesDemande([
+      doc({ type: "convention", numero: "AXI-DOC-1", statutSignature: "signee" }),
+      doc({ type: "programme", numero: "AXI-DOC-2" }),
+    ]);
+    const existe = async (cle: string) => !cle.endsWith("-signe.pdf");
+    const r = await confirmerExemplairesSignes(pieces, existe);
+    const parCle = Object.fromEntries(r.map((p) => [p.cle, p]));
+    expect(parCle["convention"]).toMatchObject({ presente: false, document: null });
+    expect(parCle["convention"]?.detail).toContain("exemplaire signé introuvable");
+    // Une pièce sans signature n'est pas sondée : elle reste telle quelle.
+    expect(parCle["programme"]?.presente).toBe(true);
+  });
+
+  it("vérification impossible (erreur du stockage) → manquante, jamais présumée", async () => {
+    const pieces = etatPiecesDemande([
+      doc({ type: "convention", numero: "AXI-DOC-1", statutSignature: "signee" }),
+    ]);
+    const r = await confirmerExemplairesSignes(pieces, async () => {
+      throw new Error("réseau");
+    });
+    expect(r[0]?.presente).toBe(false);
+  });
+
+  it("exemplaire présent → inchangée", async () => {
+    const pieces = etatPiecesDemande([
+      doc({ type: "convention", numero: "AXI-DOC-1", statutSignature: "signee" }),
+    ]);
+    const r = await confirmerExemplairesSignes(pieces, async () => true);
+    expect(r[0]?.presente).toBe(true);
   });
 });
 

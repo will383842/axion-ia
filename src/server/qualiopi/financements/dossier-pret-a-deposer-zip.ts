@@ -6,6 +6,10 @@
  * (convention signée, programme, devis, calendrier). Une pièce absente n'est
  * pas simulée : elle est nommée dans `LISEZMOI.txt`, comme dans le kit.
  *
+ * 🔴 Pour une pièce qui exige la signature, on lit l'EXEMPLAIRE SIGNÉ
+ * (`exemplaireSigneKey`, `…-signe.pdf`), jamais `documentPdfKey` — qui désigne
+ * le PDF VIERGE. Exemplaire introuvable → pièce manquante, pas de repli.
+ *
  * Le lecteur de stockage est injecté : la composition se teste sans R2.
  */
 
@@ -14,6 +18,7 @@ import { documentPdfKey, getObjectBufferR2 } from "@/lib/r2-storage";
 import { nomFichierArchive, nomFichierDocument } from "@/server/qualiopi/documents/nom-fichier";
 import type { DocumentType } from "../../../../prisma/generated/client";
 import type { DossierPretADeposer } from "./dossier-pret-a-deposer-lecture";
+import { EXEMPLAIRE_SIGNE_INTROUVABLE } from "./dossier-pret-a-deposer";
 
 export interface PieceStockee {
   type: DocumentType;
@@ -55,16 +60,25 @@ export async function construireZipPretADeposer(
       lignes.push(`  [MANQUANTE] ${piece.libelle} — ${piece.detail}`);
       continue;
     }
-    const pdf = await lire(documentPdfKey(piece.document));
+    const cle = piece.exigeSignature
+      ? piece.document.exemplaireSigneKey
+      : documentPdfKey(piece.document);
+    const pdf = cle === null ? null : await lire(cle);
     if (pdf === null) {
       manquantes.push(piece.libelle);
-      lignes.push(`  [MANQUANTE] ${piece.libelle} — PDF introuvable au stockage`);
+      lignes.push(
+        `  [MANQUANTE] ${piece.libelle} — ${
+          piece.exigeSignature ? EXEMPLAIRE_SIGNE_INTROUVABLE : "PDF introuvable"
+        } au stockage`,
+      );
       continue;
     }
     const nom = nomFichierDocument({
       type: piece.document.type,
       numero: piece.document.numero,
       contexte,
+      // Même suffixe que `exemplaire-signe.ts` : le fichier dit qu'il est signé.
+      ...(piece.exigeSignature ? { suffixe: "signee" } : {}),
     });
     zip.file(nom, pdf);
     joints.push(piece.document.numero);

@@ -8,12 +8,14 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { isOpcoId } from "./opco-referentiel";
+import { existsInR2, isR2Configured } from "@/lib/r2-storage";
+import { opcoDuClient } from "./opco-referentiel";
 import { regimePaiementDeSession } from "./regime-paiement-session";
 import { etatFondsDuClient } from "./etat-fonds-opco-lecture";
 import { bandeauEtatFonds } from "./etat-fonds-opco";
 import {
   PIECES_DEMANDE_OPCO,
+  confirmerExemplairesSignes,
   encartDepot,
   etatPiecesDemande,
   type DocumentLu,
@@ -37,6 +39,7 @@ const SELECT_DOC = {
   createdAt: true,
   annuleeAt: true,
   statutSignature: true,
+  exemplaireSigneKey: true,
 } as const;
 
 export async function chargerDossierPretADeposer(
@@ -70,16 +73,19 @@ export async function chargerDossierPretADeposer(
   if (!s) return null;
 
   // OPCO typé (A1) d'abord ; à défaut, l'ancien texte libre s'il est un identifiant connu.
-  const opco =
-    s.client?.opco ?? (isOpcoId(s.client?.opcoIdentifie) ? s.client.opcoIdentifie : null);
+  const opco = opcoDuClient(s.client);
   const documents: DocumentLu[] = [...s.documents];
   if (s.devis?.documentGenere) documents.push(s.devis.documentGenere);
 
-  const [regime, fonds] = await Promise.all([
+  const [regime, fonds, pieces] = await Promise.all([
     regimePaiementDeSession(sessionId),
     s.client
       ? etatFondsDuClient({ opco, idcc: s.client.idcc, effectif: s.client.effectif })
       : Promise.resolve(null),
+    // L'exemplaire signé est constaté au stockage : sans R2, rien n'est constatable.
+    confirmerExemplairesSignes(etatPiecesDemande(documents), (cle) =>
+      isR2Configured() ? existsInR2(cle) : Promise.resolve(false),
+    ),
   ]);
   const bandeau = bandeauEtatFonds(fonds);
 
@@ -87,7 +93,7 @@ export async function chargerDossierPretADeposer(
     numeroSession: s.numero,
     intituleFormation: s.titreSession,
     raisonSociale: s.client?.raisonSociale ?? null,
-    pieces: etatPiecesDemande(documents),
+    pieces,
     encart: encartDepot({
       opco,
       dateDebut: s.dateDebut,
