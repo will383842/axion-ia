@@ -66,7 +66,7 @@ export function entreeConditionSuspensive(
     return { erreur: "Seuil : un pourcentage entre 0,01 et 100, au plus deux décimales." };
   }
   if (v.seuilType === "montant" && v.seuilCents === null) {
-    return { erreur: "Seuil : un montant en euros d'au moins 0,01 €, au plus deux décimales." };
+    return { erreur: "Seuil : un montant en euros d'au moins 0,01 €, au plus deux décimales." }; // price-exempt: borne de saisie (un centime), pas un tarif
   }
   if (v.dateLimite === null || v.dateLimite === "") {
     return { erreur: "Indiquez la date limite de l'accord de l'OPCO." };
