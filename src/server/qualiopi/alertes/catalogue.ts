@@ -1240,6 +1240,15 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "direction",
   },
+  // Chantier OPCO A6 : session planifiée financée OPCO, dépôt de la demande par
+  // l'entreprise non saisi, à J-7 de la date limite de dépôt du référentiel.
+  // Se referme dès que « Dépôt fait le » est saisi sur le dossier.
+  depot_opco_a_faire: {
+    niveau: "important",
+    titre: "Dépôt de la demande OPCO à faire par l'entreprise",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
   // Lot OPCO A5 : veille mensuelle de l'état des fonds des OPCO. Levée quand le
   // relevé le plus récent (tous OPCO confondus) a plus de 31 jours.
   etat_fonds_perime: {
