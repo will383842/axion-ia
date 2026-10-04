@@ -19,7 +19,7 @@
 //    appel). L'URI ne change jamais quand on renomme un type.
 // 2. Sinon (URI inconnue, API indisponible, jeton absent, build) : le NOM, avec
 //    les règles historiques — les mêmes que la reprise SQL de la migration
-//    `20261004180000_calendly_type_rendez_vous`.
+//    `20261004230000_calendly_type_rendez_vous`.
 // 3. Jamais d'exception : dans le doute, le nom ; et sans nom parlant, `autre`.
 //
 // Module NEUTRE (ni `server-only`, ni Next) : le worker du sondage l'importe.
