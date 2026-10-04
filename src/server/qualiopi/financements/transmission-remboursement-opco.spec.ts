@@ -54,6 +54,9 @@ function facture(over: Record<string, unknown> = {}, session: Record<string, unk
     paidAt: new Date("2026-10-20T10:00:00Z"),
     clientId: "c-1",
     documentId: "doc-f",
+    // Prisma rend toujours `null` sur un champ sélectionné : facture de session.
+    enrollmentId: null,
+    enrollment: null,
     client: {
       raisonSociale: "Acme",
       contactNom: "Mme Martin",
@@ -91,6 +94,43 @@ beforeEach(() => {
 });
 
 describe("preparerTransmissionRemboursementOpco", () => {
+  it("🔴 RGPD : facture par INSCRIPTION → seules les pièces de SON stagiaire sont jointes", async () => {
+    m.facture = facture(
+      { enrollmentId: "e-1", enrollment: { traineeId: "t1" } },
+      {
+        documents: [
+          {
+            id: "d-c1",
+            type: "certificat_realisation",
+            numero: "AXI-DOC-2026-301",
+            createdAt: new Date("2026-10-14T10:00:00Z"),
+            annuleeAt: null,
+            traineeId: "t1",
+          },
+          {
+            id: "d-c2",
+            type: "certificat_realisation",
+            numero: "AXI-DOC-2026-302",
+            createdAt: new Date("2026-10-14T10:00:00Z"),
+            annuleeAt: null,
+            traineeId: "t2",
+          },
+        ],
+      },
+    );
+    await preparerTransmissionRemboursementOpco("f-210");
+    const options = m.enqueue.mock.calls[0]?.[4] as { attachments?: Array<{ filename?: string }> };
+    const noms = JSON.stringify(options);
+    expect(noms).toContain("AXI-DOC-2026-301");
+    expect(noms).not.toContain("AXI-DOC-2026-302");
+  });
+
+  it("🔴 RGPD : facture par inscription sans stagiaire lisible → aucun certificat joint", async () => {
+    m.facture = facture({ enrollmentId: "e-1", enrollment: null });
+    await preparerTransmissionRemboursementOpco("f-210");
+    expect(JSON.stringify(m.enqueue.mock.calls[0] ?? [])).not.toContain("AXI-DOC-2026-301");
+  });
+
   it("remboursement, facture payée → e-mail à l'ENTREPRISE, garé, facture + certificat joints", async () => {
     m.facture = facture();
     const r = await preparerTransmissionRemboursementOpco("f-210");
