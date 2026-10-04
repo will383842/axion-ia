@@ -148,6 +148,10 @@ import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi
 import { PieceExemplaireSigneEmail, pieceExemplaireSigneSubject } from "./piece-exemplaire-signe";
 import { FactureEnvoiEmail, factureEnvoiSubject } from "./facture-envoi";
 import {
+  FacturePiecesRemboursementOpcoEmail,
+  facturePiecesRemboursementOpcoSubject,
+} from "./facture-pieces-remboursement-opco";
+import {
   AutofactureTransmissionEmail,
   autofactureTransmissionSubject,
 } from "./autofacture-transmission";
@@ -158,6 +162,7 @@ import {
   QuestionnaireReponsesRecuesEmail,
   questionnaireReponsesRecuesSubject,
 } from "./questionnaire-reponses-recues";
+import { OpcoSuiviEntrepriseEmail, opcoSuiviEntrepriseSubject } from "./opco-suivi-entreprise";
 
 type TemplateMap = {
   [K in EmailJobName]: {
@@ -407,6 +412,11 @@ const TEMPLATES: TemplateMap = {
     component: PieceExemplaireSigneEmail,
   },
   "facture-envoi": { subject: factureEnvoiSubject, component: FactureEnvoiEmail },
+  // Lot A8c — circuit remboursement OPCO : facture acquittée + certificat.
+  "facture-pieces-remboursement-opco": {
+    subject: facturePiecesRemboursementOpcoSubject,
+    component: FacturePiecesRemboursementOpcoEmail,
+  },
   "autofacture-transmission": {
     subject: autofactureTransmissionSubject,
     component: AutofactureTransmissionEmail,
@@ -479,6 +489,12 @@ const TEMPLATES: TemplateMap = {
   "questionnaire-reponses-recues": {
     subject: questionnaireReponsesRecuesSubject,
     component: QuestionnaireReponsesRecuesEmail,
+  },
+  // Lot OPCO A8 (2026-10-04) — dossier prêt à déposer envoyé à l'entreprise,
+  // puis relances « dépôt fait ? » / « réponse de l'OPCO ? » (boutons à jeton).
+  "opco-suivi-entreprise": {
+    subject: opcoSuiviEntrepriseSubject,
+    component: OpcoSuiviEntrepriseEmail,
   },
 };
 

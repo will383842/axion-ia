@@ -1973,6 +1973,15 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "45 * * * *",
         jobId: "formation-crons-rappel-j1-cron",
       },
+      // Lot OPCO A8 — suivi de l'entreprise qui dépose (envoi automatique du
+      // dossier, relances). 08:30 À PARIS, jours ouvrés : les motifs sont en
+      // UTC, d'où deux déclencheurs (06:30 en heure d'été, 07:30 en hiver) ;
+      // le corps ne travaille que sur celui qui tombe à 08:xx Paris.
+      {
+        type: "formation-crons.suivi-entreprise-opco",
+        pattern: "30 6,7 * * 1-5",
+        jobId: "formation-crons-suivi-entreprise-opco-cron",
+      },
     ];
 
     for (const { type, pattern, jobId } of formationCronSchedule) {

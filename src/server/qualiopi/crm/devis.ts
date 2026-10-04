@@ -57,8 +57,24 @@ export interface OpcoCoverageInput {
   modalite: "intra" | "inter_presentiel" | "inter_distanciel";
   /** Montant HT de la prestation en CENTIMES. */
   montantHtCents: number;
-  /** Enveloppe restante (centimes). Défaut : plafond annuel du barème résolu. */
+  /**
+   * Enveloppe restante SAISIE sur le devis (centimes). Prime sur tout le reste.
+   * Absente : plafond annuel (fiche client, sinon barème) − consommation de l'année.
+   */
   enveloppeRestanteCents?: number;
+  /**
+   * Lot A7d — enveloppe annuelle propre au client (`Client.opcoEnveloppeAnnuelleCents`),
+   * en centimes. Remplace le plafond annuel du barème comme base de calcul.
+   */
+  enveloppeAnnuelleClientCents?: number;
+  /**
+   * Lot A7d — ce que l'OPCO a déjà pris en charge pour ce client sur l'année
+   * civile de la session (`consommationOpcoAnnee`). Accordé ET en cours sont
+   * déduits : une demande déposée consommera l'enveloppe si elle est accordée,
+   * et promettre deux fois la même somme serait pire que la sous-estimer.
+   * Absente : consommation inconnue → comportement antérieur.
+   */
+  consommationAnnee?: { annee: number; accordeCents: number; enCoursCents: number };
   /**
    * OPCO du client (Lot 5). Si un barème central versionné est en vigueur pour
    * cet OPCO, ses plafonds priment (champ par champ) sur les valeurs Atlas par
@@ -85,6 +101,27 @@ export interface OpcoCoverageResult {
   origine: OrigineEstimationOpco;
   /** Lot A4 — à afficher avec le chiffre quand il n'est pas adossé à un barème. */
   avertissement?: string;
+  /** Lot A7d — consommation de l'année déduite de l'enveloppe, en centimes (si > 0). */
+  consommationDeduiteCents?: number;
+}
+
+const eurosFr = (cents: number): string =>
+  new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
+
+/** Lot A7d — la phrase ajoutée à l'avertissement quand une consommation a été déduite. */
+export function phraseConsommationDeduite(
+  consommation: { annee: number; accordeCents: number; enCoursCents: number },
+  enveloppeRestanteCents: number,
+): string {
+  const total = consommation.accordeCents + consommation.enCoursCents;
+  const detail =
+    consommation.enCoursCents > 0
+      ? ` (${eurosFr(consommation.accordeCents)} accordés, ${eurosFr(consommation.enCoursCents)} demandés en cours)`
+      : "";
+  return (
+    `Enveloppe annuelle ${consommation.annee} diminuée de ${eurosFr(total)} déjà pris en charge ` +
+    `par l'OPCO pour ce client${detail} : il reste ${eurosFr(enveloppeRestanteCents)}.`
+  );
 }
 
 /**
@@ -151,9 +188,24 @@ export async function estimateOpcoCoverage(input: OpcoCoverageInput): Promise<Op
     }
   }
 
-  // Enveloppe effective (défaut = plafond annuel)
-  const enveloppe =
-    input.enveloppeRestanteCents !== undefined ? input.enveloppeRestanteCents : plafondAnnuelCents;
+  // Enveloppe effective (lot A7d) :
+  //   1. saisie sur le devis → telle quelle ;
+  //   2. sinon base annuelle (enveloppe de la fiche client, à défaut plafond du
+  //      barème) − consommation de l'année, BORNÉE À 0 ;
+  //   3. consommation inconnue → la base annuelle (comportement antérieur).
+  const baseAnnuelleCents = input.enveloppeAnnuelleClientCents ?? plafondAnnuelCents;
+  let consommationDeduiteCents = 0;
+  let enveloppe: number;
+  if (input.enveloppeRestanteCents !== undefined) {
+    enveloppe = input.enveloppeRestanteCents;
+  } else if (input.consommationAnnee !== undefined) {
+    consommationDeduiteCents =
+      Math.max(0, Math.round(input.consommationAnnee.accordeCents)) +
+      Math.max(0, Math.round(input.consommationAnnee.enCoursCents));
+    enveloppe = Math.max(0, baseAnnuelleCents - consommationDeduiteCents);
+  } else {
+    enveloppe = baseAnnuelleCents;
+  }
 
   // Montant théorique (integer math : dureeHeures peut être décimal → utiliser *100/100)
   const theoriqueCents = Math.round(input.nbParticipants * input.dureeHeures * tarifHoraireCents);
@@ -166,20 +218,38 @@ export async function estimateOpcoCoverage(input: OpcoCoverageInput): Promise<Op
 
   // Lot A4 — sans barème, le chiffre reste celui des réglages par défaut (pas de
   // régression commerciale), mais il est DIT indicatif.
-  if (origine === "bareme" && baremeCompleteParDefaut) {
-    return {
-      montantPriseEnChargeCents,
-      resteAChargeCents,
-      origine,
-      avertissement: AVERTISSEMENT_BAREME_INCOMPLET,
-    };
-  }
-  return origine === "bareme"
-    ? { montantPriseEnChargeCents, resteAChargeCents, origine }
-    : {
-        montantPriseEnChargeCents,
-        resteAChargeCents,
-        origine,
-        avertissement: AVERTISSEMENT_SANS_BAREME,
-      };
+  const avertissementBareme =
+    origine === "bareme"
+      ? baremeCompleteParDefaut
+        ? AVERTISSEMENT_BAREME_INCOMPLET
+        : undefined
+      : AVERTISSEMENT_SANS_BAREME;
+  // Lot A7d — une consommation déduite se DIT : sans elle, un chiffre plus bas
+  // que d'habitude passerait pour une erreur de barème.
+  const phraseConsommation =
+    consommationDeduiteCents > 0 && input.consommationAnnee !== undefined
+      ? phraseConsommationDeduite(input.consommationAnnee, enveloppe)
+      : undefined;
+  const avertissement = [avertissementBareme, phraseConsommation].filter(Boolean).join(" ");
+  return {
+    montantPriseEnChargeCents,
+    resteAChargeCents,
+    origine,
+    ...(avertissement !== "" ? { avertissement } : {}),
+    ...(consommationDeduiteCents > 0 ? { consommationDeduiteCents } : {}),
+  };
+}
+
+/**
+ * Lot A7d — la date à laquelle on lit le barème et l'année de l'enveloppe d'un
+ * devis : la date de début PRÉVUE de la session liée (un devis d'octobre pour
+ * une session de février relève du barème et de l'enveloppe de février), à
+ * défaut la date de validité du devis, à défaut la date du jour.
+ */
+export function dateDeReferenceDevis(p: {
+  debutSessionPrevue?: Date | null;
+  dateValidite?: Date | null;
+  maintenant: Date;
+}): Date {
+  return p.debutSessionPrevue ?? p.dateValidite ?? p.maintenant;
 }

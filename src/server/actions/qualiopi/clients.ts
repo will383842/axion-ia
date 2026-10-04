@@ -8,9 +8,18 @@
 
 "use server";
 
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { resoudreSiren } from "@/lib/siret";
+import { adminPath } from "@/lib/admin-path";
+import { avecMessageDeRetour } from "@/features/dossier-client/message-de-retour";
+import {
+  AVERTISSEMENT_SIREN_CONTRAIRE,
+  resoudreSiren,
+  sirenContreditLeSiret,
+  sirenDuClient,
+} from "@/lib/siret";
 import { siretField } from "@/lib/siret-schema";
 import { premierMessageZod } from "@/lib/zod-message";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
@@ -18,6 +27,11 @@ import { inferOpco } from "@/server/qualiopi/crm/naf-opco";
 import { OPCO_IDS, isOpcoId, type OpcoId } from "@/server/qualiopi/financements/opco-referentiel";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
 import { definirContactFacturation } from "@/server/qualiopi/crm/contact-facturation";
+import {
+  rafraichirEffectifInsee,
+  type BaseEffectif,
+  type ResultatReleveEffectif,
+} from "@/server/qualiopi/crm/effectif-insee";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 import {
   creerOuRetrouverClient,
@@ -369,7 +383,63 @@ export async function createClientAction(
     session,
   });
 
+  // Lot OPCO A7d : effectif relevé à l'INSEE (borne basse de la tranche) si la
+  // fiche a un SIREN. APRÈS la création, jamais sur son chemin : l'annuaire est
+  // borné à 3 s, et une panne — ou toute exception — laisse la fiche telle quelle.
+  // Lot A9 : la même règle de lecture que la fiche (`sirenDuClient`).
+  if (sirenDuClient({ siren: siren ?? null, siret: v.siret ?? null }) !== null) {
+    await releverEffectifInseeEtTracer(resultat.id, session).catch(() => null);
+  }
+
   return { data: { id: resultat.id, numero: resultat.numero } };
+}
+
+/** Relève l'effectif INSEE et trace l'écriture quand il y en a une. */
+async function releverEffectifInseeEtTracer(
+  clientId: string,
+  session: { userId: string; role: string },
+): Promise<ResultatReleveEffectif> {
+  const r = await rafraichirEffectifInsee(prisma as unknown as BaseEffectif, clientId);
+  if (r.statut === "pose") {
+    await logQualiopiActivity({
+      action: "qualiopi.client.effectif_insee",
+      targetType: "Client",
+      targetId: clientId,
+      changes: { effectif: r.effectif, effectifSource: "insee", trancheInsee: r.tranche },
+      session,
+    });
+  }
+  return r;
+}
+
+/** Message affiché après « Rafraîchir depuis l'INSEE », par issue. */
+const MESSAGE_RELEVE_EFFECTIF: Record<ResultatReleveEffectif["statut"], string> = {
+  pose: "Effectif relevé à l'INSEE.",
+  saisie_conservee:
+    "L'effectif a été saisi à la main : il est conservé. Effacez-le pour reprendre le relevé INSEE.",
+  sans_siren: "Le relevé INSEE demande une entreprise dont le SIREN est connu.",
+  indisponible: "L'annuaire des entreprises ne répond pas pour l'instant. Réessayez plus tard.",
+  tranche_inconnue: "L'INSEE ne publie pas de tranche d'effectif pour ce SIREN.",
+};
+
+/**
+ * « Rafraîchir depuis l'INSEE » (lot OPCO A7d). Seul autre moment, avec la
+ * création, où l'annuaire est interrogé pour l'effectif. Une saisie n'est
+ * jamais écrasée (garde dans `rafraichirEffectifInsee`).
+ */
+export async function rafraichirEffectifInseeAction(
+  clientId: string,
+): Promise<
+  { data: { statut: ResultatReleveEffectif["statut"]; message: string } } | { error: string }
+> {
+  const session = await requireAdminWrite();
+  if (!z.string().uuid().safeParse(clientId).success) return { error: "Client introuvable." };
+  try {
+    const r = await releverEffectifInseeEtTracer(clientId, session);
+    return { data: { statut: r.statut, message: MESSAGE_RELEVE_EFFECTIF[r.statut] } };
+  } catch {
+    return { error: MESSAGE_RELEVE_EFFECTIF.indisponible };
+  }
 }
 
 /**
@@ -379,7 +449,7 @@ export async function createClientAction(
 export async function updateClientAction(
   // `z.input` : voir createClientAction (transform sur siretField).
   input: z.input<typeof updateClientSchema>,
-): Promise<ActionResult<{ id: string }>> {
+): Promise<ActionResult<{ id: string; avertissement?: string }>> {
   const session = await requireAdminWrite();
   const parsed = updateClientSchema.safeParse(input);
   if (!parsed.success) return { error: premierMessageZod(parsed.error) };
@@ -389,11 +459,23 @@ export async function updateClientAction(
   //  • SIRET transmis        → SIREN dérivé ; un SIREN saisi contraire = refus
   //  • SIRET effacé (`null`) → le SIREN n'est touché que s'il est transmis
   //  • SIREN seul            → comparé au SIRET déjà en base
+  //  • Lot A9 : SIRET transmis SANS SIREN (formulaire « Éditer ») et SIREN en
+  //    base qui le contredit → le SIREN en base est CONSERVÉ, avec un
+  //    avertissement ; jamais écrasé en silence par le SIRET.
   let sirenAEcrire: string | null | undefined;
+  let avertissement: string | undefined;
   if (typeof fields.siret === "string") {
     const r = resoudreSiren(fields.siret, fields.siren);
     if (!r.ok) return { error: r.message };
     sirenAEcrire = r.siren;
+    if (fields.siren === undefined && sirenAEcrire !== undefined) {
+      const enBase =
+        (await prisma.client.findUnique({ where: { id }, select: { siren: true } }))?.siren ?? null;
+      if (sirenContreditLeSiret({ siren: enBase, siret: fields.siret })) {
+        sirenAEcrire = undefined;
+        avertissement = AVERTISSEMENT_SIREN_CONTRAIRE;
+      }
+    }
   } else if (fields.siren !== undefined) {
     const enBase =
       fields.siret === null
@@ -618,5 +700,28 @@ export async function updateClientAction(
     session,
   });
 
-  return { data: { id } };
+  return { data: { id, ...(avertissement !== undefined ? { avertissement } : {}) } };
+}
+
+/**
+ * Bouton « Rafraîchir depuis l'INSEE » de la fiche client (formulaire serveur,
+ * aucun JavaScript). Le message revient scellé, à côté de l'effectif
+ * (`?releve=insee`).
+ */
+export async function rafraichirEffectifInseeFormAction(formData: FormData): Promise<void> {
+  const clientId = String(formData.get("clientId") ?? "");
+  if (!z.string().uuid().safeParse(clientId).success) {
+    redirect(adminPath("fr", "qualiopi/clients"));
+  }
+  const base = adminPath("fr", `qualiopi/clients/${clientId}`);
+  const r = await rafraichirEffectifInseeAction(clientId);
+  revalidatePath(base);
+  const ok = "data" in r && r.data.statut === "pose";
+  redirect(
+    avecMessageDeRetour(
+      `${base}?releve=insee`,
+      ok ? "message" : "erreur",
+      "data" in r ? r.data.message : r.error,
+    ),
+  );
 }

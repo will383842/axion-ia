@@ -33,7 +33,6 @@ import {
   dureeReferenceHeures,
   minutesSuiviesPresence,
 } from "@/server/qualiopi/evaluations/heures-suivies";
-import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
@@ -59,6 +58,7 @@ import {
   produireProgramme,
   produireOrganisationAction,
   produireLivretAccueil,
+  produireKitOpco,
 } from "@/server/qualiopi/documents/production/producteurs";
 
 import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
@@ -90,11 +90,7 @@ import { buildCvFormateurData } from "@/server/qualiopi/documents/cv-formateur-d
 // ici ; les gabarits des 12 pièces extraites sont importés par
 // `production/producteurs.ts`.
 import { CertificatRealisationPdf } from "@/server/qualiopi/documents/templates/certificat-realisation";
-import { KitOpcoPdf } from "@/server/qualiopi/documents/templates/kit-opco";
-import {
-  chargerDossierPretADeposer,
-  type DossierPretADeposer,
-} from "@/server/qualiopi/financements/dossier-pret-a-deposer-lecture";
+import { chargerDossierPretADeposer } from "@/server/qualiopi/financements/dossier-pret-a-deposer-lecture";
 import { construireZipPretADeposer } from "@/server/qualiopi/financements/dossier-pret-a-deposer-zip";
 import { KitCpfPdf } from "@/server/qualiopi/documents/templates/kit-cpf";
 import { KitFranceTravailPdf } from "@/server/qualiopi/documents/templates/kit-france-travail";
@@ -119,7 +115,6 @@ import {
   whereHabilitationsDeclarables,
 } from "@/server/qualiopi/trainers/trainers";
 import { getSousTraitant } from "@/server/qualiopi/registres/sous-traitants-service";
-import { nomOpcoDuClient } from "@/server/qualiopi/financements/opco-referentiel";
 // Annulation d'une pièce : les liens de signature en circulation meurent avec
 // la valeur de la pièce (§ 24).
 import { revoquerTokensDocument } from "@/server/qualiopi/documents/signature/token-document";
@@ -916,109 +911,14 @@ export async function genererKitOpcoAction(input: {
   const verrou = await assertDossierOuvertSiRegeneration({ sessionId }, "kit_opco");
   if (!verrou.ok) return verrou;
 
-  const session = await prisma.trainingSession.findUnique({
-    where: { id: sessionId },
-    select: {
-      id: true,
-      titreSession: true,
-      dateDebut: true,
-      dateFin: true,
-      montantHtCents: true,
-      priseEnChargeMontantCents: true,
-      priseEnChargeUnite: true,
-      numeroDossierOpco: true,
-      enrollments: {
-        where: { ...inscriptionsActives() },
-        select: {
-          trainee: { select: { nom: true, prenom: true } },
-          session: {
-            select: {
-              dureeReelleHeures: true,
-              formationSnapshot: true,
-              formation: { select: { dureeHeures: true } },
-            },
-          },
-        },
-      },
-      client: {
-        select: { opco: true, opcoIdentifie: true },
-      },
-    },
-  });
-  if (!session) return { error: "Session introuvable" };
-
-  const identite = await getOrganismeIdentite();
-  // Même source que l'encart de dépôt : OPCO typé d'abord, texte libre ensuite.
-  const nomOpco = nomOpcoDuClient(session.client);
-  const numeroDossier = session.numeroDossierOpco ?? "—";
-  const baremeCents = session.priseEnChargeMontantCents ?? 0;
-
-  // Ventilation par participant
-  const ventilation = session.enrollments.map((e) => {
-    // Durée depuis le snapshot légal (WS5), repli LIVE si legacy.
-    const fd = readFormationForDocs(e.session.formationSnapshot, e.session.formation);
-    const dureeH = e.session.dureeReelleHeures ?? fd.dureeHeures ?? e.session.formation.dureeHeures;
-    const prise = Math.round((baremeCents * dureeH) / 100) * 100;
-    const prixTotal = session.montantHtCents;
-    const parPart =
-      session.enrollments.length > 0
-        ? Math.round(prixTotal / session.enrollments.length)
-        : prixTotal;
-    const rac = Math.max(0, parPart - prise);
-    return {
-      nomParticipant: `${e.trainee.prenom} ${e.trainee.nom}`.trim(),
-      heuresRealisees: dureeH,
-      baremePrisEnChargeHeureCents: baremeCents,
-      montantPrisEnChargeCents: prise,
-      resteAChargeCents: rac,
-    };
-  });
-
-  const totalPrisEnCharge = ventilation.reduce((s, v) => s + v.montantPrisEnChargeCents, 0);
-  const totalRac = ventilation.reduce((s, v) => s + v.resteAChargeCents, 0);
-
-  // Chantier OPCO A6 — état RÉEL des pièces et encart de dépôt. Lecture
-  // impossible → le kit retombe sur la liste fixe, où RIEN n'est coché :
-  // jamais une pièce annoncée présente sans l'avoir constatée.
-  let pret: DossierPretADeposer | null = null;
-  try {
-    pret = await chargerDossierPretADeposer(sessionId);
-  } catch (err) {
-    console.warn("[genererKitOpcoAction] état des pièces illisible (fail-soft)", err);
-  }
-
-  const doc = await generateDocument({
-    type: "kit_opco",
-    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+  // La construction (ventilation, état réel des pièces, encart de dépôt) vit
+  // dans `production/producteurs.ts`, partagée avec l'envoi du dossier à
+  // l'entreprise (lot OPCO A8, passage quotidien du worker).
+  const resultat = await produireKitOpco(sessionId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
-    buildElement: (numero) =>
-      React.createElement(KitOpcoPdf, {
-        data: {
-          numero,
-          dateEmission: formatDateFr(new Date()),
-          identite,
-          nomOpco,
-          numeroDossier,
-          intituleFormation: session.titreSession,
-          dateDebut: formatDate(new Date(session.dateDebut)),
-          dateFin: formatDate(new Date(session.dateFin)),
-          ventilation,
-          totalPrisEnChargeCents: totalPrisEnCharge,
-          totalResteAChargeCents: totalRac,
-          ...(pret
-            ? {
-                pieces: pret.pieces.map((p) => ({
-                  libelle: p.libelle,
-                  presente: p.presente,
-                  detail: p.detail,
-                })),
-                encartDepot: pret.encart,
-              }
-            : {}),
-        },
-      }),
-    refs: { sessionId },
   });
+  if (!resultat.ok) return { error: resultat.motif };
+  const doc = { id: resultat.documentId, numero: resultat.numero };
 
   await logQualiopiActivity({
     action: "qualiopi.document.kit_opco.genere",

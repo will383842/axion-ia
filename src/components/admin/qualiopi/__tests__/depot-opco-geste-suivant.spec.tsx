@@ -12,13 +12,20 @@ import { renderToStaticMarkup } from "react-dom/server";
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ refresh: vi.fn(), push: vi.fn(), replace: vi.fn() }),
 }));
-const a = vi.hoisted(() => ({ accord: vi.fn() }));
+const a = vi.hoisted(() => ({ accord: vi.fn(), envoyer: vi.fn(), arreter: vi.fn() }));
 vi.mock("@/server/actions/qualiopi/documents", () => ({
   genererDossierPretADeposerAction: vi.fn(),
 }));
 vi.mock("@/server/actions/qualiopi/facturation-hub", () => ({
   enregistrerDepotDossierAction: vi.fn(),
   enregistrerAccordEcritAction: (...x: unknown[]) => a.accord(...x),
+}));
+// Lot A8 — module `"use server"` tiré par le panneau (garde admin, Prisma) : un
+// mock de ses TROIS exports, tous ceux que le panneau importe.
+vi.mock("@/server/actions/qualiopi/suivi-entreprise-opco", () => ({
+  envoyerDossierEntrepriseAction: (...x: unknown[]) => a.envoyer(...x),
+  arreterRelancesEntrepriseAction: (...x: unknown[]) => a.arreter(...x),
+  lienAccordEntrepriseAction: vi.fn(),
 }));
 
 import { DepotOpcoPanel, type DepotOpcoPanelProps } from "../DepotOpcoPanel";
@@ -53,6 +60,10 @@ function props(p: Partial<DepotOpcoPanelProps> = {}): DepotOpcoPanelProps {
 beforeEach(() => {
   a.accord.mockReset();
   a.accord.mockResolvedValue({ data: { dossierId: DOSSIER } });
+  a.envoyer.mockReset();
+  a.envoyer.mockResolvedValue({ data: { garePourValidation: false } });
+  a.arreter.mockReset();
+  a.arreter.mockResolvedValue({ data: { dossierId: DOSSIER } });
 });
 afterEach(cleanup);
 
@@ -94,6 +105,51 @@ describe("DepotOpcoPanel — geste suivant", () => {
     expect(screen.queryByLabelText("Accord écrit le")).toBeNull();
     expect(screen.queryByLabelText("Dépôt fait le")).toBeNull();
     expect(screen.getByRole("link", { name: /Ouvrir le dossier OPCO/ })).toBeTruthy();
+  });
+});
+
+describe("DepotOpcoPanel — envoi à l'entreprise (lot A8)", () => {
+  const FRISE = {
+    envoyeLe: "2026-10-01",
+    envoiAutomatique: true,
+    evenements: [
+      { jour: "2026-10-01", libelle: "Dossier envoyé" },
+      { jour: "2026-10-05", libelle: "Relance dépôt n° 1" },
+      { jour: "2026-10-05", libelle: "Réponse de l'entreprise : pas encore" },
+    ],
+    relancesFaites: 1,
+    prochaineRelance: { jour: "2026-10-08", libelle: "relance dépôt n° 2" },
+    relancesArreteesLe: null,
+    accordFichierDepose: false,
+  };
+
+  it("« Envoyer le dossier à l'entreprise » part à l'action", async () => {
+    render(<DepotOpcoPanel {...props()} />);
+    fireEvent.click(screen.getByRole("button", { name: "Envoyer le dossier à l'entreprise" }));
+    await waitFor(() => expect(a.envoyer).toHaveBeenCalledWith({ dossierId: DOSSIER }));
+    expect(await screen.findByText("Dossier envoyé à l'entreprise.")).toBeTruthy();
+  });
+
+  it("frise : envoi, relances, réponses, prochaine relance ; « Arrêter les relances »", async () => {
+    render(<DepotOpcoPanel {...props({ suiviEntreprise: FRISE })} />);
+    expect(screen.getByText(/Envoyé le 01\/10\/2026 \(automatiquement\) · 1 relance/)).toBeTruthy();
+    expect(screen.getByText("05/10/2026 — Réponse de l'entreprise : pas encore")).toBeTruthy();
+    expect(screen.getByText(/Prochaine relance : 08\/10\/2026/)).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Arrêter les relances" }));
+    await waitFor(() => expect(a.arreter).toHaveBeenCalledWith({ dossierId: DOSSIER }));
+  });
+
+  it("relances arrêtées : plus de bouton d'arrêt ; lecture seule : aucun bouton", () => {
+    render(
+      <DepotOpcoPanel
+        {...props({ suiviEntreprise: { ...FRISE, relancesArreteesLe: "2026-10-06" } })}
+      />,
+    );
+    expect(screen.getByText("Relances arrêtées le 06/10/2026.")).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Arrêter les relances" })).toBeNull();
+    cleanup();
+    render(<DepotOpcoPanel {...props({ peutEcrire: false, suiviEntreprise: FRISE })} />);
+    expect(screen.queryByRole("button", { name: /dossier à l'entreprise/ })).toBeNull();
   });
 });
 

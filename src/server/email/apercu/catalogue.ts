@@ -349,6 +349,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     // pur, partagé avec la facture générée le lendemain de la session.
     source: "server/qualiopi/financements/facture-envoi-email.ts",
   },
+  "facture-pieces-remboursement-opco": {
+    categorie: "commerce",
+    quand:
+      "Encaissement qui solde la facture d'une session en remboursement OPCO (sans subrogation) — passe TOUJOURS par la corbeille de validation",
+    destinataire: "l'entreprise cliente",
+    source: "server/qualiopi/financements/transmission-remboursement-opco.ts",
+  },
   "quote-request-received": {
     categorie: "commerce",
     quand: "Formulaire /contact envoyé, demande de devis",
@@ -462,6 +469,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire:
       "un participant client validé du rendez-vous (adresse professionnelle de préférence)",
     source: "server/visio/passes/etapes-a-la-demande.ts",
+  },
+  "opco-suivi-entreprise": {
+    categorie: "formation",
+    quand:
+      "Dossier OPCO prêt (convention signée, contact avec e-mail) : envoi du dossier à déposer, puis relances « dépôt fait ? » (J+3, J+7, J+12, J-5 de la date limite) et « réponse de l'OPCO ? » (J+10, J+20, J+30 du dépôt)",
+    destinataire: "contact de l'entreprise cliente",
+    source: "server/qualiopi/financements/suivi-entreprise/envoi.ts",
   },
   "questionnaire-reponses-recues": {
     categorie: "rendez-vous",

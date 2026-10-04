@@ -44,6 +44,7 @@ import type { FactureData, LigneFacture } from "@/server/qualiopi/documents/temp
 import { resolveRibFacture } from "@/lib/legal-identity";
 import { resoudreConditions } from "./conditions-client";
 import { marquerPaiementRecuSiSoldee } from "@/server/qualiopi/financements/dossier-financement";
+import { preparerTransmissionRemboursementOpco } from "./transmission-remboursement-opco";
 import {
   emettreFaitFacture,
   emettreFaitPaiement,
@@ -641,6 +642,21 @@ export async function enregistrerPaiementFacture(
   // `paiement_recu` si toutes ses factures sont payées.
   if (result.statut === "payee" && result.dossierFinancementId !== null) {
     await marquerPaiementRecuSiSoldee(result.dossierFinancementId);
+  }
+
+  // Lot A8c — circuit REMBOURSEMENT OPCO : la facture de l'entreprise est
+  // soldée, elle reçoit (après validation) la facture acquittée et le
+  // certificat de réalisation pour se faire rembourser. Le service décide si
+  // la facture relève de ce circuit. Best-effort : l'encaissement est acquis.
+  if (result.statut === "payee") {
+    try {
+      await preparerTransmissionRemboursementOpco(input.factureId);
+    } catch (err) {
+      console.error("[facture-libre] pièces de remboursement OPCO non préparées", {
+        factureId: input.factureId,
+        err: err instanceof Error ? err.message : String(err),
+      });
+    }
   }
 
   return { paymentId: result.paymentId, statut: result.statut, resteACents: result.resteACents };
