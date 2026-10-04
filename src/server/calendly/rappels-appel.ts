@@ -371,8 +371,8 @@ interface CandidatRappel {
  * `typeEffectif` — colonne, sinon nom — comme partout ailleurs.
  */
 export function champsTypeClient(rdv: {
-  readonly typeRendezVous?: string | null;
-  readonly eventTypeName?: string | null;
+  readonly typeRendezVous?: string | null | undefined;
+  readonly eventTypeName?: string | null | undefined;
   readonly rawPayload?: unknown;
 }): { typeRendezVous: string; besoin?: string } {
   const type = typeEffectif(rdv);

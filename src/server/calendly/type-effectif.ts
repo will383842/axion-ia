@@ -20,8 +20,8 @@ import {
 } from "@/server/calendly/type-rendez-vous";
 
 export function typeEffectif(rdv: {
-  readonly typeRendezVous?: string | null;
-  readonly eventTypeName?: string | null;
+  readonly typeRendezVous?: string | null | undefined;
+  readonly eventTypeName?: string | null | undefined;
 }): TypeRendezVous {
   if (estRendezVousApporteur(rdv)) return "apporteur";
   if (estTypeRendezVous(rdv.typeRendezVous)) return rdv.typeRendezVous;

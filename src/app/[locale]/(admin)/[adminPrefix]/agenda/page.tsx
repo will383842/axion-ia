@@ -30,7 +30,7 @@ import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
 import { AgendaTimeline } from "@/components/admin/agenda/AgendaTimeline";
 import { PoserIndisponibiliteForm } from "@/components/admin/agenda/PoserIndisponibiliteForm";
 import { RendezVousForm } from "@/components/admin/agenda/RendezVousForm";
-import { AgendaBarre, SOURCES_FILTRABLES } from "@/components/admin/agenda/AgendaBarre";
+import { AgendaBarre, lireFiltresAgenda } from "@/components/admin/agenda/AgendaBarre";
 import { AgendaMois } from "@/components/admin/agenda/AgendaMois";
 import { AgendaSemaine } from "@/components/admin/agenda/AgendaSemaine";
 import {
@@ -131,11 +131,10 @@ export default async function AgendaPage({
   // Filtres de source. Une valeur inconnue est ignoree plutot que de vider
   // l'ecran : un parametre d'URL bricole ne doit jamais faire croire a un
   // agenda vide.
-  const connues = SOURCES_FILTRABLES.map((s) => s.id) as readonly string[];
-  const sources = (sourcesBrutes ?? "")
-    .split(",")
-    .map((x) => x.trim())
-    .filter((x) => connues.includes(x));
+  // Sources ET types de réservation (lot L3) dans le même paramètre : tous
+  // les liens de l'agenda le propagent déjà (`AgendaBarre`).
+  const filtres = lireFiltresAgenda(sourcesBrutes);
+  const sources = [...filtres.sources, ...filtres.types];
 
   const plage = plageDeLaVue(vue, jour);
   const { debut, fin } = bornesPlageParis(plage.debut, plage.finExclue);
@@ -147,7 +146,15 @@ export default async function AgendaPage({
   const session = await auth();
   const peutVoirAppels = peutVoirLesAppels((session?.user as { role?: string } | undefined)?.role);
   const { items: bruts, diagnostics } = await getAgendaFenetre(debut, fin, peutVoirAppels);
-  const items = sources.length > 0 ? bruts.filter((i) => sources.includes(i.source)) : bruts;
+  const items = bruts.filter(
+    (i) =>
+      (filtres.sources.length === 0 || filtres.sources.includes(i.source)) &&
+      // Un filtre de type ne retient que des réservations : l'agenda personnel
+      // et les blocages restent visibles (ils disent quand on est pris).
+      (filtres.types.length === 0 ||
+        i.source !== "calendly" ||
+        (i.typeRendezVous !== null && filtres.types.includes(i.typeRendezVous))),
+  );
 
   const base = `/fr/${adminPrefix}/agenda`;
   const duJour = items.filter((i) => i.jour === jour);

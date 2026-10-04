@@ -60,7 +60,12 @@ import {
   prenomDe,
 } from "@/features/admin-rendezvous/suivi";
 import { SITE_URL } from "@/lib/site-url";
-import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
+import {
+  LIBELLE_TYPE_RDV,
+  TYPES_FILTRABLES,
+  lireFiltreType,
+} from "@/features/admin-rendezvous/type-rdv";
+import { PastilleTypeRdv } from "@/components/admin/contacts/PastilleTypeRdv";
 import { LIBELLE_CANAL } from "@/server/calendly/canal";
 import { dayKeyInParis, dayKeyOfGridDate, timeInParis } from "@/lib/calendar-grid";
 import { formatDateFrShort } from "@/lib/format-date-fr";
@@ -95,8 +100,13 @@ interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-function publicDemande(v: string | undefined): PublicRdv | undefined {
-  return v === "clients" || v === "apporteurs" ? v : undefined;
+/**
+ * Le filtre de type (2026-10-04, lot L3) en paramètres d'URL : `type=` pour un
+ * type, `public=` pour les deux anciens alias (clients, apporteurs).
+ */
+function poserFiltre(qs: URLSearchParams, f: PublicRdv | undefined): void {
+  if (!f) return;
+  qs.set(f === "clients" || f === "apporteurs" ? "public" : "type", f);
 }
 
 /** « Aujourd'hui », « Demain », sinon la date — le libellé d'un groupe de cartes. */
@@ -194,7 +204,8 @@ function CarteRdv({
   dossier: DossierCarte | null;
 }) {
   const debut = r.startTime as Date;
-  const apporteur = estAppelApporteur(r.title);
+  // Type classé (colonne, sinon nom ; double verrou apporteur), lot L3.
+  const apporteur = r.typeRendezVous === "apporteur";
   // UX-02 : un client dont le dossier est visible fait le point dans « Après
   // l'appel » ; le formulaire court ne garde qu'Absent et Reporté.
   const pointAuDossier = dossier !== null && !apporteur && estTypeDuDossier(r.title);
@@ -227,7 +238,8 @@ function CarteRdv({
             ) : null}
           </p>
           <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-            {apporteur ? "Apporteur" : "Client"} · {LIBELLE_CANAL[r.format]} · {r.title}
+            <PastilleTypeRdv type={r.typeRendezVous} besoin={r.besoinChoisi} /> ·{" "}
+            {LIBELLE_CANAL[r.format]} · {r.title}
           </p>
         </div>
 
@@ -420,10 +432,10 @@ function CartePoint({ r, dossierVisible }: { r: RdvAFaireLePoint; dossierVisible
           ) : null}
         </p>
         <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-          {quand} · {estAppelApporteur(r.titre) ? "Apporteur" : "Client"} · {r.titre}
+          {quand} · <PastilleTypeRdv type={r.typeRendezVous} /> · {r.titre}
         </p>
       </div>
-      {estAppelApporteur(r.titre) ? (
+      {r.typeRendezVous === "apporteur" ? (
         <IssueEchangeApporteurForm calendlyEventId={r.id} />
       ) : (
         <>
@@ -492,7 +504,7 @@ export default async function RendezVousPage({
   // 🔴 Le rôle est consulté AVANT toute lecture du dossier client (A2).
   const voitDossier = peutVoirLesEchanges(acces.role);
   const sp = await searchParams;
-  const publicRdv = publicDemande(sp["public"]);
+  const publicRdv = lireFiltreType(sp["type"], sp["public"]);
   const vueDemandee = sp["vue"];
   const vue: Vue =
     vueDemandee === "point" || vueDemandee === "passes"
@@ -519,7 +531,7 @@ export default async function RendezVousPage({
   const lien = (v: Vue, p: PublicRdv | undefined): string => {
     const qs = new URLSearchParams();
     if (v !== "avenir") qs.set("vue", v);
-    if (p) qs.set("public", p);
+    poserFiltre(qs, p);
     const t = qs.toString();
     return t ? `${base}?${t}` : base;
   };
@@ -580,12 +592,22 @@ export default async function RendezVousPage({
           ]}
         />
         <AdminFilterTabs
-          label="Public"
-          current={publicRdv ?? "tous"}
+          label="Type"
+          current={publicRdv === "apporteurs" ? "apporteur" : (publicRdv ?? "tous")}
           options={[
             { value: "tous", label: "Tous", href: lien(vue, undefined) },
-            { value: "clients", label: "Clients", href: lien(vue, "clients") },
-            { value: "apporteurs", label: "Apporteurs", href: lien(vue, "apporteurs") },
+            ...TYPES_FILTRABLES.map((t) => ({
+              value: t,
+              label: LIBELLE_TYPE_RDV[t],
+              href: lien(vue, t),
+            })),
+            // « Autre » et l'ancien « Clients » n'ont d'onglet que s'ils sont actifs.
+            ...(publicRdv === "autre"
+              ? [{ value: "autre", label: LIBELLE_TYPE_RDV.autre, href: lien(vue, "autre") }]
+              : []),
+            ...(publicRdv === "clients"
+              ? [{ value: "clients", label: "Clients", href: lien(vue, "clients") }]
+              : []),
           ]}
         />
       </div>
@@ -742,7 +764,6 @@ async function VuePasses({
 
 function LignePasse({ r }: { r: RdvPasse }) {
   const debut = r.startTime as Date;
-  const apporteur = estAppelApporteur(r.title);
   return (
     <li>
       <Link
@@ -761,7 +782,7 @@ function LignePasse({ r }: { r: RdvPasse }) {
           </span>
           <span className="block text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
             {formatDateFrShort(r.dayKey)} à {timeInParis(debut)} ·{" "}
-            {apporteur ? "Apporteur" : "Client"} · {r.title}
+            <PastilleTypeRdv type={r.typeRendezVous} besoin={r.besoinChoisi} /> · {r.title}
           </span>
           {r.suivi?.note ? (
             <span className="mt-[var(--space-admin-1)] block text-[length:var(--text-admin-sm)] italic">

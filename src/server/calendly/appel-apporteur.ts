@@ -107,8 +107,8 @@ export const HORS_APPELS_APPORTEUR = {
  * clauses, pour les filtres en mémoire (console, rattachement).
  */
 export function estRendezVousApporteur(rdv: {
-  readonly typeRendezVous?: string | null;
-  readonly eventTypeName?: string | null;
+  readonly typeRendezVous?: string | null | undefined;
+  readonly eventTypeName?: string | null | undefined;
 }): boolean {
   return rdv.typeRendezVous === "apporteur" || estAppelApporteur(rdv.eventTypeName);
 }
