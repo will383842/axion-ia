@@ -34,6 +34,15 @@ describe("candidatsDepotOpcoAFaire", () => {
     expect(SEUIL_ALERTE_DEPOT_JOURS).toBe(7);
   });
 
+  it("OPCO typé absent → repli sur l'ancien texte libre `opcoIdentifie` s'il est un identifiant connu", () => {
+    const ancien = { ...CONSTRUCTYS, client: { opco: null, opcoIdentifie: "constructys" } };
+    const [a] = candidatsDepotOpcoAFaire([ancien], J("2026-10-29"));
+    expect(a?.code).toBe("depot_opco_a_faire");
+    expect(a?.message).toContain("Constructys");
+    const inconnu = { ...CONSTRUCTYS, client: { opco: null, opcoIdentifie: "OPCO du coin" } };
+    expect(candidatsDepotOpcoAFaire([inconnu], J("2026-10-29"))).toEqual([]);
+  });
+
   it("J-8 → rien", () => {
     expect(candidatsDepotOpcoAFaire([CONSTRUCTYS], J("2026-10-28"))).toEqual([]);
   });

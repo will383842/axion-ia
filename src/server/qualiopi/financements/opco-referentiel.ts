@@ -52,6 +52,30 @@ export function opcoLabel(id: string | null | undefined): string {
   return isOpcoId(id) ? OPCO_LABELS[id] : (id ?? "—");
 }
 
+/** Les deux champs OPCO d'un client : typé (A1) et ancien texte libre. */
+export interface OpcoClient {
+  opco?: string | null;
+  opcoIdentifie?: string | null;
+}
+
+/**
+ * L'OPCO d'un client — UNE règle pour toutes les lectures (dossier prêt à
+ * déposer, alerte de dépôt, kit) : l'OPCO typé d'abord ; à défaut, l'ancien
+ * texte libre s'il est un identifiant connu.
+ */
+export function opcoDuClient(client: OpcoClient | null | undefined): OpcoId | null {
+  if (isOpcoId(client?.opco)) return client.opco;
+  return isOpcoId(client?.opcoIdentifie) ? client.opcoIdentifie : null;
+}
+
+/** Nom affiché, même règle ; un texte libre non reconnu est repris tel quel. */
+export function nomOpcoDuClient(client: OpcoClient | null | undefined): string {
+  const id = opcoDuClient(client);
+  if (id) return OPCO_LABELS[id];
+  const libre = client?.opcoIdentifie?.trim();
+  return libre ? libre : "OPCO (à préciser)";
+}
+
 /**
  * Un barème est « périmé » si son relevé portail (`releveLe`) date de plus de
  * `moisValidite` mois par rapport à `now`. Un barème sans `releveLe` est traité

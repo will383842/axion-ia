@@ -119,7 +119,7 @@ import {
   whereHabilitationsDeclarables,
 } from "@/server/qualiopi/trainers/trainers";
 import { getSousTraitant } from "@/server/qualiopi/registres/sous-traitants-service";
-import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
+import { nomOpcoDuClient } from "@/server/qualiopi/financements/opco-referentiel";
 // Annulation d'une pièce : les liens de signature en circulation meurent avec
 // la valeur de la pièce (§ 24).
 import { revoquerTokensDocument } from "@/server/qualiopi/documents/signature/token-document";
@@ -941,16 +941,15 @@ export async function genererKitOpcoAction(input: {
         },
       },
       client: {
-        select: { opcoIdentifie: true },
+        select: { opco: true, opcoIdentifie: true },
       },
     },
   });
   if (!session) return { error: "Session introuvable" };
 
   const identite = await getOrganismeIdentite();
-  const nomOpco = session.client?.opcoIdentifie
-    ? opcoLabel(session.client.opcoIdentifie)
-    : "OPCO (à préciser)";
+  // Même source que l'encart de dépôt : OPCO typé d'abord, texte libre ensuite.
+  const nomOpco = nomOpcoDuClient(session.client);
   const numeroDossier = session.numeroDossierOpco ?? "—";
   const baremeCents = session.priseEnChargeMontantCents ?? 0;
 

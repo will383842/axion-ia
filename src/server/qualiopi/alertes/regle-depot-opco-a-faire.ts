@@ -17,8 +17,9 @@ import { dayKeyInParis } from "@/lib/calendar-grid";
 import { prisma } from "@/lib/prisma";
 import {
   dateLimiteDepotPourSession,
-  isOpcoId,
+  opcoDuClient,
   opcoLabel,
+  type OpcoClient,
 } from "@/server/qualiopi/financements/opco-referentiel";
 import type { AlerteCandidate } from "./evaluateur";
 
@@ -35,7 +36,7 @@ type SessionLue = {
   id: string;
   numero: string;
   dateDebut: Date;
-  client: { opco: string | null } | null;
+  client: OpcoClient | null;
   dossiersFinancement: { depotFaitLe: Date | null }[];
 };
 
@@ -45,8 +46,9 @@ export function candidatsDepotOpcoAFaire(sessions: SessionLue[], now: Date): Ale
   const aujourdhui = dayKeyInParis(now);
   for (const s of sessions) {
     if (s.dossiersFinancement.some((d) => d.depotFaitLe !== null)) continue;
-    const opco = s.client?.opco ?? null;
-    if (!isOpcoId(opco)) continue;
+    // Même règle que le dossier prêt à déposer : typé d'abord, texte libre ensuite.
+    const opco = opcoDuClient(s.client);
+    if (!opco) continue;
     const limite = dateLimiteDepotPourSession(opco, s.dateDebut);
     if (!limite) continue;
     // Comparaison au JOUR CIVIL de Paris : le jour de la date limite compte encore.
@@ -89,7 +91,7 @@ export async function regleDepotOpcoAFaire(now: Date): Promise<AlerteCandidate[]
       id: true,
       numero: true,
       dateDebut: true,
-      client: { select: { opco: true } },
+      client: { select: { opco: true, opcoIdentifie: true } },
       dossiersFinancement: {
         where: { type: { in: ["opco", "mixte"] } },
         select: { depotFaitLe: true },
