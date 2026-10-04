@@ -31,6 +31,7 @@ import { z } from "zod";
 import type { PreuveIdccDeclarative, StatutIdcc } from "../../../../prisma/generated/client";
 import { SEUIL_CONCORDANCE_IDCC_OPCO_BPS } from "@/server/qualiopi/config/financing";
 import { inferOpcoFromNaf, normaliserIdcc } from "@/server/qualiopi/crm/naf-opco";
+import { CONFIG_FICHIER_SIRO } from "@/server/qualiopi/financements/idcc-import";
 import { isOpcoId, type OpcoId } from "@/server/qualiopi/financements/opco-referentiel";
 
 // ─── Vocabulaire fermé ─────────────────────────────────────────────────────
@@ -162,6 +163,13 @@ export function regleDeLaPart(entree: EntreeRegleDeLaPart): ResultatRegleDeLaPar
  * ses conventions). Rend les IDCC normalisés, sans doublon, triés ; `null` si
  * le champ est absent ou n'est pas un tableau (l'API n'a rien dit — à ne pas
  * confondre avec une contradiction). Une valeur illisible est écartée.
+ *
+ * 🔴 Les VALEURS D'ÉCHAPPEMENT de la DSN (`5100`, `5501`, `9998`, `9999`) sont
+ * écartées aussi : ce ne sont pas des conventions collectives, et l'API les
+ * publie telles quelles. Réponse réelle lue le 2026-10-04 depuis le poste de b0
+ * (`/search?q=356000000`, LA POSTE) : `complements.liste_idcc = ["9999","5516"]`.
+ * Sans ce filtre, une entreprise qui ne déclare que `9999` se verrait PROPOSER
+ * `9999` comme IDCC.
  */
 export function listeIdccDuResultat(resultat: unknown): string[] | null {
   if (typeof resultat !== "object" || resultat === null) return null;
@@ -173,7 +181,7 @@ export function listeIdccDuResultat(resultat: unknown): string[] | null {
   for (const v of liste) {
     if (typeof v !== "string") continue;
     const idcc = normaliserIdcc(v);
-    if (idcc !== null) out.add(idcc);
+    if (idcc !== null && !CONFIG_FICHIER_SIRO.idccEchappement.includes(idcc)) out.add(idcc);
   }
   return [...out].sort();
 }

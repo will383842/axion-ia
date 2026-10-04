@@ -235,6 +235,14 @@ describe("liste_idcc de l'API Recherche d'entreprises (RM-08)", () => {
   it("une valeur illisible est écartée, pas devinée", () => {
     expect(listeIdccDuResultat(reponseApi(["11516", "abc", "1516"]))).toEqual(["1516"]);
   });
+  it("réponse RÉELLE (LA POSTE, lue le 2026-10-04) : la valeur d'échappement 9999 est écartée", () => {
+    // Extrait de `GET /search?q=356000000&per_page=1`, résultat 0 (siren 356000000).
+    const reponseReelle = { siren: "356000000", complements: { liste_idcc: ["9999", "5516"] } };
+    expect(listeIdccDuResultat(reponseReelle)).toEqual(["5516"]);
+  });
+  it("une entreprise qui ne publie QUE des échappements n'a rien de publié d'utile", () => {
+    expect(listeIdccDuResultat(reponseApi(["9999", "5100", "5501", "9998"]))).toEqual([]);
+  });
 });
 
 // ─── Les neuf cas ──────────────────────────────────────────────────────────
