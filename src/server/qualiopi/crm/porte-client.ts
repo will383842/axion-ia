@@ -72,6 +72,7 @@ import {
 } from "@/server/qualiopi/crm/contact-facturation";
 import { nomsProches, normaliserVille } from "@/server/qualiopi/crm/normaliser-nom";
 import { CREATION_CLIENT, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
+import type { OpcoId } from "@/server/qualiopi/financements/opco-referentiel";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -383,6 +384,8 @@ export interface DonneesFiche {
   readonly adresseVille?: string;
   readonly adresseCodePostal?: string;
   readonly opcoIdentifie?: string;
+  /** OPCO typé (lot A7a) : posé par l'inférence IDCC/NAF à la création. */
+  readonly opco?: OpcoId;
   readonly opcoNumeroAdherent?: string;
   readonly opcoEnveloppeAnnuelleCents?: number;
   readonly source?: string;
