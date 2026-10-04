@@ -148,4 +148,18 @@ describe("l'estimation du devis déduit ce que l'OPCO a déjà pris", () => {
     });
     expect("error" in r).toBe(true);
   });
+
+  it.each(["2026-13-01", "2026-02-31", "0001-01-01", "9999-12-31"])(
+    "date de session impossible ou hors bornes (%s) → refus propre, jamais une exception",
+    async (dateDebutSessionPrevue) => {
+      base({ opco: "atlas", opcoIdentifie: null, idcc: null, opcoEnveloppeAnnuelleCents: null });
+      const r = await createDevisAction({
+        clientId: CLIENT,
+        lignes: [LIGNE],
+        ...OPCO,
+        dateDebutSessionPrevue,
+      });
+      expect("error" in r).toBe(true);
+    },
+  );
 });

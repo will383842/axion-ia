@@ -118,6 +118,22 @@ const FINANCEMENT_LABELS: Record<(typeof FINANCEMENTS)[number], string> = {
   france_travail: "France Travail",
 };
 
+/**
+ * Lot A7d (relecture) — `AAAA-MM-JJ` relu en date UTC et comparé à lui-même, puis
+ * borné à [aujourd'hui − 1 an ; aujourd'hui + 3 ans]. Hors bornes, l'année du
+ * barème et de l'enveloppe n'a plus de sens (an 1 → année NaN, an 9999).
+ */
+function dateDebutSessionPrevueValide(valeur: string, maintenant = new Date()): boolean {
+  const d = new Date(`${valeur}T12:00:00Z`);
+  if (Number.isNaN(d.getTime()) || d.toISOString().slice(0, 10) !== valeur) return false;
+  const annee = maintenant.getUTCFullYear();
+  const min = new Date(maintenant);
+  min.setUTCFullYear(annee - 1);
+  const max = new Date(maintenant);
+  max.setUTCFullYear(annee + 3);
+  return d >= min && d <= max;
+}
+
 const createDevisSchema = z.object({
   clientId: z.string().uuid(),
   lignes: z.array(ligneSchema).min(1),
@@ -141,6 +157,12 @@ const createDevisSchema = z.object({
   dateDebutSessionPrevue: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Date de début prévue : format AAAA-MM-JJ attendu.")
+    // Date calendaire réelle (pas de 13e mois ni de 31 février) et bornée :
+    // l'action serveur est appelable sans le champ `type="date"` (relecture A7d).
+    .refine((v) => dateDebutSessionPrevueValide(v), {
+      message:
+        "Date de début prévue : indiquez une date réelle, au plus un an en arrière et trois ans en avant.",
+    })
     .optional(),
   /**
    * Chantier visio (PR 7) : le projet d'où le devis a été ouvert. Seul le LIEN
