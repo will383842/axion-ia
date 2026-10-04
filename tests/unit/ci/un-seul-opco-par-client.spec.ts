@@ -13,7 +13,6 @@
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
-import { OPCO_IDS } from "@/server/qualiopi/financements/opco-referentiel";
 
 const RACINE = join(__dirname, "../../..");
 
@@ -45,7 +44,17 @@ describe("migration opco_client_repris_de_opco_identifie", () => {
   it("borne la recopie aux 11 identifiants de l'enum, ni plus ni moins", () => {
     const liste = /"opco_identifie" IN \(([^)]*)\)/.exec(code)?.[1] ?? "";
     const valeurs = [...liste.matchAll(/'([^']+)'/g)].map((m) => m[1]).sort();
-    expect(valeurs).toEqual([...OPCO_IDS].sort());
+    // L'enum lue dans le schéma, pas importée du domaine : un test de `tests/unit/ci/`
+    // n'importe pas le domaine Qualiopi (garde `qualiopi:isolation-check`).
+    const schema = readFileSync(join(process.cwd(), "prisma", "schema.prisma"), "utf8");
+    const corps = /^enum Opco \{([^}]*)\}/m.exec(schema)?.[1] ?? "";
+    const enumOpco = corps
+      .split("\n")
+      .map((l) => l.trim())
+      .filter((l) => /^[a-z0-9_]+$/.test(l))
+      .sort();
+    expect(enumOpco).toHaveLength(11);
+    expect(valeurs).toEqual(enumOpco);
   });
 
   it("aucun DROP, DELETE, RENAME, ni modification de structure", () => {
