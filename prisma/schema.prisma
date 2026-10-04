@@ -8693,6 +8693,9 @@ model BaremeOpco {
 /// le dernier relevé (`releveLe`, puis `createdAt`) fait foi ; aucune ligne n'est
 /// jamais modifiée ni supprimée. `idcc` null = la ligne vaut pour tout l'OPCO.
 /// CHECK (idcc ~ '^[0-9]{4}$') posé par la migration.
+/// rgpd: technique — relevés publics des règles des OPCO (suspensions par branche,
+/// dates limites) ; aucune donnée sur une personne (`createdById` = identifiant
+/// interne de l'administrateur auteur du relevé).
 model EtatFondsOpco {
   id               String          @id @default(uuid()) @db.Uuid
   opco             Opco

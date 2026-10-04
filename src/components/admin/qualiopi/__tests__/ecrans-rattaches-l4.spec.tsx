@@ -26,9 +26,15 @@ const ADMIN_ROOT = resolve(process.cwd(), "src/app/[locale]/(admin)/[adminPrefix
 const libelles = (parent: string) => ecransRattaches("p", parent).map((it) => it.label);
 
 describe("écrans rattachés : chaque parent y mène par un lien (lot L4)", () => {
-  it("Catalogue mène au Générateur, aux Validations IA, aux Offres et aux Barèmes OPCO", () => {
+  it("Catalogue mène au Générateur, aux Validations IA, aux Offres, aux Barèmes OPCO et à l'État des fonds OPCO", () => {
     expect(libelles("qualiopi/formations").sort()).toEqual(
-      ["Générateur de formations", "Validations IA", "Offres", "Barèmes OPCO"].sort(),
+      [
+        "Générateur de formations",
+        "Validations IA",
+        "Offres",
+        "Barèmes OPCO",
+        "État des fonds OPCO",
+      ].sort(),
     );
   });
 

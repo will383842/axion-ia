@@ -1459,7 +1459,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/qualiopi/etat-des-fonds`,
       label: "État des fonds OPCO",
-      icon: "Calculator",
+      icon: "Gauge",
       group: "qualiopi",
       subGroup: "catalogue",
       tier: "advanced",
