@@ -33,7 +33,14 @@ type DossierLu = {
 };
 
 type SessionLue = {
-  client: { opco: string | null; opcoIdentifie?: string | null; effectif: number | null } | null;
+  client: {
+    opco: string | null;
+    opcoIdentifie?: string | null;
+    effectif: number | null;
+    /** Lot A7b — saisis sur la fiche client ; `null`/absent = non renseigné. */
+    opcoAdhesionOffreMobilites?: boolean | null;
+    opcoVersementVolontaire?: boolean | null;
+  } | null;
   dossiersFinancement: DossierLu[];
 };
 
@@ -51,9 +58,10 @@ export function entreeRegimeDepuisSession(s: SessionLue): {
       opco: opcoDuClient(s.client),
       effectif: s.client?.effectif ?? null,
       cofinancement: dossier?.type === "mixte" || payeursNonEntreprise > 1,
-      // Aucune donnée en base ne porte (encore) ces deux faits.
-      versementVolontaire: false,
-      adhesionOffreMobilites: null,
+      // Lot A7b : saisis dans le bloc « Branche et OPCO » de la fiche client.
+      // Non renseigné → pas de versement retenu ; adhésion inconnue (jamais « non »).
+      versementVolontaire: s.client?.opcoVersementVolontaire === true,
+      adhesionOffreMobilites: s.client?.opcoAdhesionOffreMobilites ?? null,
       // La date ÉCRITE sur l'accord fait foi ; à défaut, le clic en console.
       dateAccord: dossier?.accordEcritLe ?? dossier?.accordAt ?? null,
       dateDepot: dossier?.depotFaitLe ?? null,
@@ -72,7 +80,15 @@ export async function regimePaiementDeSession(sessionId: string): Promise<Regime
     const s = await prisma.trainingSession.findUnique({
       where: { id: sessionId },
       select: {
-        client: { select: { opco: true, opcoIdentifie: true, effectif: true } },
+        client: {
+          select: {
+            opco: true,
+            opcoIdentifie: true,
+            effectif: true,
+            opcoAdhesionOffreMobilites: true,
+            opcoVersementVolontaire: true,
+          },
+        },
         dossiersFinancement: {
           where: { type: { in: ["opco", "mixte"] }, statut: { not: "clos" } },
           orderBy: { createdAt: "desc" },
