@@ -80,6 +80,8 @@ export type TypeGabaritSignable =
  * | `convention_tripartite` | 3 | 30/09 — mêmes corrections que la bipartite. **v2 archivée** |
  * | `contrat_formation` | 2 | 30/09 — rétractation : « aucune somme… » relève de L.6353-6 (et non L.6353-5) ; sanction par défaut « dernier alinéa de l'article L.6313-7 ». **v1 archivée** |
  * | `releve_connexion` | 2 | 30/09 — pied « Document à conserver 5 ans. » sans la citation de L.6353-9 (qui porte sur les informations demandées aux candidats). **v1 archivée** |
+ * | `convention` | 4 | 04/10 — § 5 réécrit (relecture juridique, tour 2) : « pour quelque cause que ce soit » retiré ; les sommes restent dues sous réserve du dédit et de l'abandon prévus aux CGV, et sauf manquement de l'organisme à ses propres obligations. **v3 archivée** |
+ * | `convention_tripartite` | 4 | 04/10 — même réécriture du § 5 que la bipartite. **v3 archivée** |
  * | les autres | 1 | texte inchangé depuis l'origine |
  *
  * 🔑 DEPUIS LE 30/09, UNE VERSION REMPLACÉE S'ARCHIVE (`./archives/`). Avant,
@@ -114,8 +116,8 @@ export type TypeGabaritSignable =
  */
 export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
   devis: 1,
-  convention: 3,
-  convention_tripartite: 3,
+  convention: 4,
+  convention_tripartite: 4,
   contrat_formation: 2,
   contrat_sous_traitance: 2,
   /*
