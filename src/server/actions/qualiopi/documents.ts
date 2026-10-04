@@ -1073,7 +1073,10 @@ export async function genererDossierPretADeposerAction(input: {
     });
     return { data: zip };
   } catch (err) {
-    return { error: err instanceof Error ? err.message : "Dossier impossible à constituer." };
+    // Le détail (clé de stockage, message R2…) reste au journal serveur : l'écran
+    // reçoit un libellé fixe.
+    console.error("[genererDossierPretADeposerAction] ZIP impossible", err);
+    return { error: "Impossible de préparer le dossier prêt à déposer." };
   }
 }
 
