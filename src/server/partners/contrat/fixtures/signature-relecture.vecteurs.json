@@ -1,0 +1,58 @@
+{
+  "$comment": "PROVISOIRE (wip INT-T72-A) : remplacé, avant toute PR, par la copie à l'octet de packages/contracts/fixtures/signature-relecture.vecteurs.json d'axion-apporteurs (INT-T74-P). HMAC calculés HORS DU CODE : printf '%s' \"<chaine>\" | openssl dgst -sha256 -hmac \"<secret>\" (OpenSSL 3.5.7).",
+  "secret": "secret-de-test-factice-relecture",
+  "vecteurs": [
+    {
+      "cas": "page pleine, une suite",
+      "entrees": {
+        "horodatage": "1790000000",
+        "afterSequence": "1",
+        "limit": "2",
+        "derniereSequence": "3",
+        "suite": "1",
+        "corps": "{\"a\":1}\n{\"a\":2}"
+      },
+      "chaine": "1790000000.1.2.3.1.{\"a\":1}\n{\"a\":2}",
+      "hmac": "550c23556588a7e103c2b6160f8e3cd06b397ba4ee1ab3ef14da1ced29cd2a36"
+    },
+    {
+      "cas": "page vide",
+      "entrees": {
+        "horodatage": "1790000000",
+        "afterSequence": "40",
+        "limit": "100",
+        "derniereSequence": "40",
+        "suite": "0",
+        "corps": ""
+      },
+      "chaine": "1790000000.40.100.40.0.",
+      "hmac": "b208efb4b88bd4828f817733f6f855bda463e33db865f9c509af08f55e7bfa36"
+    },
+    {
+      "cas": "dernière page",
+      "entrees": {
+        "horodatage": "1790000000",
+        "afterSequence": "3",
+        "limit": "100",
+        "derniereSequence": "4",
+        "suite": "0",
+        "corps": "{\"a\":4}"
+      },
+      "chaine": "1790000000.3.100.4.0.{\"a\":4}",
+      "hmac": "03038a08cf0f1baf2641371db385de9e7627f651c1fd7e92552931ff6d55dae3"
+    },
+    {
+      "cas": "séquences au-delà de MAX_SAFE_INTEGER",
+      "entrees": {
+        "horodatage": "1790000000",
+        "afterSequence": "9007199254740993",
+        "limit": "100",
+        "derniereSequence": "9007199254740995",
+        "suite": "1",
+        "corps": "{\"a\":5}"
+      },
+      "chaine": "1790000000.9007199254740993.100.9007199254740995.1.{\"a\":5}",
+      "hmac": "cfd3dbe66775d062271941bb90913c37be2a54ec54b817b8a328235dc18e66fb"
+    }
+  ]
+}
