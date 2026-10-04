@@ -132,7 +132,10 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // 🔴 2026-10-01 — RELEVÉ À 64 : `questionnaire-reponses-recues`, l'e-mail
     // INTERNE « un client a répondu au questionnaire en ligne ». Ses champs sont
     // tous facultatifs.
-    expect(tous.length).toBe(64);
+    // 🔴 2026-10-04 — RELEVÉ À 65 : `facture-pieces-remboursement-opco` (lot
+    // A8c), la facture acquittée et le certificat de réalisation remis à
+    // l'entreprise pour son remboursement OPCO. Ses champs sont tous facultatifs.
+    expect(tous.length).toBe(65);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

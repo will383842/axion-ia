@@ -349,6 +349,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     // pur, partagé avec la facture générée le lendemain de la session.
     source: "server/qualiopi/financements/facture-envoi-email.ts",
   },
+  "facture-pieces-remboursement-opco": {
+    categorie: "commerce",
+    quand:
+      "Encaissement qui solde la facture d'une session en remboursement OPCO (sans subrogation) — passe TOUJOURS par la corbeille de validation",
+    destinataire: "l'entreprise cliente",
+    source: "server/qualiopi/financements/transmission-remboursement-opco.ts",
+  },
   "quote-request-received": {
     categorie: "commerce",
     quand: "Formulaire /contact envoyé, demande de devis",

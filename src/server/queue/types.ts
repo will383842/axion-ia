@@ -128,6 +128,9 @@ export type EmailJobName =
   // Hub facturation — envois MANUELS (admin) de devis/facture avec PDF joint
   | "devis-envoi"
   | "facture-envoi"
+  // Lot A8c — remboursement OPCO : après le règlement complet de sa facture,
+  // l'entreprise reçoit la facture acquittée et le certificat de réalisation.
+  | "facture-pieces-remboursement-opco"
   // Convention de formation — envoi MANUEL du lien de signature au client.
   // Sans lui, l'admin copiait l'URL brute du lien dans sa messagerie.
   | "convention-envoi"
