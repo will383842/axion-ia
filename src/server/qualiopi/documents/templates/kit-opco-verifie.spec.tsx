@@ -16,7 +16,7 @@ import type { OrganismeIdentite } from "../organisme";
 const IDENTITE: OrganismeIdentite = {
   raisonSociale: "Axion-IA SAS",
   nda: "84691234567",
-  qualiopi: null,
+  qualiopi: "",
   siret: "12345678901234",
   adresseSiege: "1 rue de la Paix, 75001 Paris",
   adresseExercice: "1 rue de la Paix, 75001 Paris",

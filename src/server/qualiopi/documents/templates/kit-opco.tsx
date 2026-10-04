@@ -156,7 +156,7 @@ export interface KitOpcoData {
 }
 
 /** Pièces produites APRÈS la formation, à la facturation : jamais cochées ici. */
-const PIECES_APRES_FORMATION = (mentionTva: string | undefined) => [
+const PIECES_APRES_FORMATION = (mentionTva: string | null | undefined) => [
   {
     label: "Certificat de réalisation (durées en centièmes)",
     note: "R.6332-26 + arrêté 21/12/2018",

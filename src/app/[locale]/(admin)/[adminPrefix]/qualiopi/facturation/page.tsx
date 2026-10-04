@@ -239,6 +239,8 @@ export default async function FacturationHubPage({
           statut: true,
           financeurNom: true,
           numeroDossierExterne: true,
+          depotFaitLe: true,
+          accordEcritLe: true,
           montantDemandeCents: true,
           montantAccordeCents: true,
           subrogation: true,
@@ -299,6 +301,8 @@ export default async function FacturationHubPage({
     montantAccordeCents: d.montantAccordeCents,
     subrogation: d.subrogation,
     nbPayeurs: d.payeurs.length,
+    depotFaitLe: d.depotFaitLe ? d.depotFaitLe.toISOString().slice(0, 10) : null,
+    accordEcritLe: d.accordEcritLe ? d.accordEcritLe.toISOString().slice(0, 10) : null,
   }));
   const clientOptions = clients.map((c) => ({
     id: c.id,

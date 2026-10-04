@@ -39,6 +39,10 @@ export interface DossierItem {
   montantAccordeCents: number | null;
   subrogation: boolean;
   nbPayeurs: number;
+  /** Chantier OPCO A6 — dépôt fait par l'entreprise, AAAA-MM-JJ. */
+  depotFaitLe?: string | null;
+  /** Date écrite sur l'accord du financeur, AAAA-MM-JJ. */
+  accordEcritLe?: string | null;
 }
 
 export interface ClientOption {
@@ -98,6 +102,11 @@ function eur(cents: number): string {
   return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
 }
 
+/** « AAAA-MM-JJ » → « JJ/MM/AAAA », sans passer par un fuseau. */
+function jourFr(jour: string): string {
+  return jour.split("-").reverse().join("/");
+}
+
 function isDossierStatut(s: string): s is DossierStatut {
   return s in NEXT_TRANSITIONS;
 }
@@ -124,6 +133,8 @@ export function DossiersFinancementPanel({
   // Saisie du montant accordé (dossier en cours de passage à accord_recu).
   const [accordFor, setAccordFor] = useState<string | null>(null);
   const [accordMontantEur, setAccordMontantEur] = useState("");
+  // Date écrite sur l'accord (fait foi pour le régime de paiement, chantier OPCO A6).
+  const [accordEcritLe, setAccordEcritLe] = useState("");
 
   function reset() {
     setError(null);
@@ -160,13 +171,19 @@ export function DossiersFinancementPanel({
     });
   }
 
-  function doTransition(dossierId: string, vers: DossierStatut, montantAccordeCents?: number) {
+  function doTransition(
+    dossierId: string,
+    vers: DossierStatut,
+    montantAccordeCents?: number,
+    dateAccordEcrit?: string,
+  ) {
     reset();
     startTransition(async () => {
       const res = await transitionnerDossierAction({
         dossierId,
         vers,
         ...(montantAccordeCents !== undefined ? { montantAccordeCents } : {}),
+        ...(dateAccordEcrit !== undefined ? { accordEcritLe: dateAccordEcrit } : {}),
       });
       if ("error" in res) {
         setError(res.error);
@@ -175,6 +192,7 @@ export function DossiersFinancementPanel({
       setSuccess(`Dossier → ${STATUT_LABELS[res.data.statut] ?? res.data.statut}.`);
       setAccordFor(null);
       setAccordMontantEur("");
+      setAccordEcritLe("");
       router.refresh();
     });
   }
@@ -185,6 +203,7 @@ export function DossiersFinancementPanel({
     if (vers === "accord_recu") {
       setAccordFor((cur) => (cur === dossierId ? null : dossierId));
       setAccordMontantEur("");
+      setAccordEcritLe("");
       return;
     }
     // « Clos » est terminal (aucune transition ne repart de clos) → confirmation.
@@ -354,6 +373,8 @@ export function DossiersFinancementPanel({
                     {d.clientRaisonSociale ?? "—"}
                     {d.numeroDossierExterne ? ` · n° ${d.numeroDossierExterne}` : ""}
                     {` · ${d.nbPayeurs} payeur${d.nbPayeurs > 1 ? "s" : ""}`}
+                    {d.depotFaitLe ? ` · déposé le ${jourFr(d.depotFaitLe)}` : ""}
+                    {d.accordEcritLe ? ` · accord du ${jourFr(d.accordEcritLe)}` : ""}
                   </span>
                   <span>
                     {d.montantAccordeCents !== null
@@ -409,6 +430,19 @@ export function DossiersFinancementPanel({
                         placeholder="si connu"
                       />
                     </div>
+                    <div>
+                      <label htmlFor={`accord-date-${d.id}`} className={labelCls}>
+                        Date de l&apos;accord écrit (facultatif)
+                      </label>
+                      <input
+                        id={`accord-date-${d.id}`}
+                        type="date"
+                        value={accordEcritLe}
+                        onChange={(e) => setAccordEcritLe(e.target.value)}
+                        disabled={isPending}
+                        className={inputCls}
+                      />
+                    </div>
                     <button
                       type="button"
                       onClick={() => {
@@ -420,7 +454,12 @@ export function DossiersFinancementPanel({
                           setError("Montant accordé invalide.");
                           return;
                         }
-                        doTransition(d.id, "accord_recu", saisi ? cents : undefined);
+                        doTransition(
+                          d.id,
+                          "accord_recu",
+                          saisi ? cents : undefined,
+                          accordEcritLe !== "" ? accordEcritLe : undefined,
+                        );
                       }}
                       disabled={isPending}
                       className="admin-button"
