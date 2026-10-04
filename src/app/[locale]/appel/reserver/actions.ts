@@ -52,7 +52,9 @@ import { reserverCreneau } from "@/server/calendly/reservation";
 import {
   lireChoixRendezVous,
   lireDepuis,
+  lireSuiviArrivee,
   parametresDuChoix,
+  provenanceEnBloc,
   resoudreChoix,
   utmContentDuChoix,
 } from "@/server/calendly/choix-rendez-vous";
@@ -148,7 +150,10 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
   const choixExplicite = lireChoixRendezVous(fd.get(CHAMP_RDV));
   const choix = choixExplicite ?? "projet";
   const depuis = lireDepuis(fd.get(CHAMP_DEPUIS));
-  const params = parametresDuChoix(choix, depuis);
+  // Les UTM d'arrivée, recopiés par la page en champs cachés (L5a) : chaque
+  // renvoi (erreur, drapeau éteint) les garde dans l'URL.
+  const suivi = lireSuiviArrivee(Object.fromEntries(fd.entries()));
+  const params = parametresDuChoix(choix, depuis, suivi);
   const calendrier = `/${locale}/appel?${params}`;
 
   // Le drapeau peut s'éteindre entre l'affichage du formulaire et son envoi —
@@ -238,9 +243,10 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
   const validation = validerFormulaire(fd, {
     questions: et.questions,
     eventTypeUri: et.uri,
-    utmSource: utm.utm_source ?? null,
-    utmMedium: utm.utm_medium ?? null,
-    utmCampaign: utm.utm_campaign ?? null,
+    // La provenance en BLOC (L5a) : celle de l'arrivée recopiée par le
+    // parcours si elle porte une UTM, sinon celle du cookie (réécrit à chaque
+    // URL avec UTM, donc la DERNIÈRE vue). Jamais un mélange des deux.
+    ...provenanceEnBloc(suivi, utm),
     // Le BOUTON qui a mené ici — mesure « quel bouton rapporte ».
     utmContent: choixExplicite ? utmContentDuChoix(choixExplicite, depuis) : null,
   });

@@ -82,11 +82,67 @@ export function utmContentDuChoix(choix: ChoixRendezVous, depuis?: string | null
   return (d ? `${choix}:${d}` : choix).slice(0, 100);
 }
 
-/** `rdv=diagnostic&depuis=…` — à recopier dans les liens internes du parcours. */
-export function parametresDuChoix(choix: ChoixRendezVous, depuis?: string | null): string {
+/**
+ * Les paramètres de SUIVI d'arrivée que la page `/appel` lit dans son URL (les
+ * quatre déjà lus sur main). `utm_content` n'en fait PAS partie : sur ce
+ * parcours, il mesure le bouton cliqué (`utmContentDuChoix`).
+ */
+export const PARAMS_SUIVI = ["utm_source", "utm_medium", "utm_campaign", "ref"] as const;
+export type ParamSuivi = (typeof PARAMS_SUIVI)[number];
+export type SuiviArrivee = Partial<Record<ParamSuivi, string>>;
+
+/** Même borne et même nettoyage que `parseUtmFromUrl` (`src/lib/utm.ts`). */
+const SUIVI_MAX = 200;
+
+/**
+ * Les paramètres de suivi d'arrivée (`?utm_source=linkedin…`), bornés et
+ * nettoyés. Sans eux, un visiteur arrivé d'une campagne perdait son attribution
+ * au premier clic du parcours (chantier « Types de rendez-vous », L5a).
+ */
+export function lireSuiviArrivee(source: Readonly<Record<string, unknown>>): SuiviArrivee {
+  const out: SuiviArrivee = {};
+  for (const cle of PARAMS_SUIVI) {
+    const v = source[cle];
+    if (typeof v !== "string" || v.length === 0 || v.length > SUIVI_MAX) continue;
+    const propre = v.replace(/[^\w\s.\-/+]/g, "").trim();
+    if (propre) out[cle] = propre;
+  }
+  return out;
+}
+
+function ajouterSuivi(p: URLSearchParams, suivi?: SuiviArrivee | null): void {
+  if (!suivi) return;
+  for (const cle of PARAMS_SUIVI) {
+    const v = suivi[cle];
+    if (v) p.set(cle, v);
+  }
+}
+
+/**
+ * `rdv=diagnostic&depuis=…&utm_source=…` — à recopier dans les liens internes
+ * du parcours (cartes, formulaire, renvois de l'action).
+ */
+export function parametresDuChoix(
+  choix: ChoixRendezVous,
+  depuis?: string | null,
+  suivi?: SuiviArrivee | null,
+): string {
   const p = new URLSearchParams({ [PARAM_RDV]: choix });
   const d = lireDepuis(depuis);
   if (d) p.set(PARAM_DEPUIS, d);
+  ajouterSuivi(p, suivi);
+  return p.toString();
+}
+
+/**
+ * `depuis=…&utm_source=…` SANS choix — le lien « Changer de rendez-vous », qui
+ * ramène à l'écran du choix. Chaîne vide quand il n'y a rien à recopier.
+ */
+export function parametresDuRetour(depuis?: string | null, suivi?: SuiviArrivee | null): string {
+  const p = new URLSearchParams();
+  const d = lireDepuis(depuis);
+  if (d) p.set(PARAM_DEPUIS, d);
+  ajouterSuivi(p, suivi);
   return p.toString();
 }
 
@@ -250,14 +306,48 @@ export function choixDuType(type: unknown): ChoixRendezVous | null {
   return null;
 }
 
-/** Ajoute `utm_content` à une URL Calendly (widget, lien de secours, créneau). */
-export function avecUtmContent(url: string, utmContent: string | null | undefined): string {
-  if (!utmContent) return url;
+/**
+ * Les paramètres d'arrivée que CALENDLY sait garder (dans `tracking` de
+ * l'invité, relu par le sondage). `ref` n'en fait pas partie : Calendly ne le
+ * reprend pas, il reste porté par nos propres URL et par la capture de la page.
+ */
+export const PARAMS_SUIVI_CALENDLY = ["utm_source", "utm_medium", "utm_campaign"] as const;
+
+/**
+ * Ajoute `utm_content` (le BOUTON) et, s'il y en a, les UTM d'ARRIVÉE (L5a) à
+ * une URL Calendly : iframe, lien de secours, créneau. Sans l'arrivée, une
+ * réservation prise chez Calendly ne gardait que le bouton.
+ */
+export function avecUtmContent(
+  url: string,
+  utmContent: string | null | undefined,
+  suivi?: SuiviArrivee | null,
+): string {
+  const arrivee = PARAMS_SUIVI_CALENDLY.filter((cle) => suivi?.[cle]);
+  if (!utmContent && arrivee.length === 0) return url;
   try {
     const u = new URL(url);
-    u.searchParams.set("utm_content", utmContent);
+    if (utmContent) u.searchParams.set("utm_content", utmContent);
+    for (const cle of arrivee) u.searchParams.set(cle, suivi?.[cle] ?? "");
     return u.toString();
   } catch {
     return url;
   }
+}
+
+/**
+ * La provenance d'une réservation directe, prise comme un BLOC : si l'URL
+ * d'arrivée porte au moins une UTM, tout le bloc d'arrivée ; sinon tout le bloc
+ * du cookie. Jamais un mélange champ par champ de deux provenances.
+ */
+export function provenanceEnBloc(
+  arrivee: SuiviArrivee,
+  cookie: Readonly<Partial<Record<"utm_source" | "utm_medium" | "utm_campaign", string>>>,
+): { utmSource: string | null; utmMedium: string | null; utmCampaign: string | null } {
+  const bloc = PARAMS_SUIVI_CALENDLY.some((cle) => arrivee[cle]) ? arrivee : cookie;
+  return {
+    utmSource: bloc.utm_source ?? null,
+    utmMedium: bloc.utm_medium ?? null,
+    utmCampaign: bloc.utm_campaign ?? null,
+  };
 }

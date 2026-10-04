@@ -25,13 +25,16 @@ import {
 import {
   lireChoixRendezVous,
   lireDepuis,
+  lireSuiviArrivee,
   parametresDuChoix,
+  parametresDuRetour,
   resoudreLesDeuxChoix,
   utmContentDuChoix,
   PARAM_DEPUIS,
   PARAM_RDV,
   type ChoixRendezVous,
   type ChoixResolu,
+  type SuiviArrivee,
 } from "@/server/calendly/choix-rendez-vous";
 
 /**
@@ -135,6 +138,9 @@ export default async function AppelPage({ params, searchParams }: Props) {
 
   const choix = lireChoixRendezVous(sp[PARAM_RDV]);
   const depuis = lireDepuis(sp[PARAM_DEPUIS]);
+  // Les UTM d'ARRIVÉE (L5a) : lus une fois, bornés, puis recopiés par chaque
+  // lien du parcours — sans quoi le premier clic effaçait l'attribution.
+  const suivi = lireSuiviArrivee(sp);
   // Une seule lecture de la liste des types (en cache 24 h) pour les deux.
   const resolus = await resoudreLesDeuxChoix();
 
@@ -147,12 +153,12 @@ export default async function AppelPage({ params, searchParams }: Props) {
     utmContent?: string;
     referrer?: string;
   } = {
-    pageUrl: `${SITE_URL}/${locale}/appel${choix ? `?${parametresDuChoix(choix, depuis)}` : ""}`,
+    pageUrl: `${SITE_URL}/${locale}/appel${choix ? `?${parametresDuChoix(choix, depuis, suivi)}` : ""}`,
   };
-  if (typeof sp["utm_source"] === "string") trackingContext.utmSource = sp["utm_source"];
-  if (typeof sp["utm_campaign"] === "string") trackingContext.utmCampaign = sp["utm_campaign"];
-  if (typeof sp["utm_medium"] === "string") trackingContext.utmMedium = sp["utm_medium"];
-  if (typeof sp["ref"] === "string") trackingContext.referrer = sp["ref"];
+  if (suivi.utm_source) trackingContext.utmSource = suivi.utm_source;
+  if (suivi.utm_campaign) trackingContext.utmCampaign = suivi.utm_campaign;
+  if (suivi.utm_medium) trackingContext.utmMedium = suivi.utm_medium;
+  if (suivi.ref) trackingContext.referrer = suivi.ref;
   if (choix) trackingContext.utmContent = utmContentDuChoix(choix, depuis);
 
   const jsonLd = buildServiceJsonLd({
@@ -201,12 +207,13 @@ export default async function AppelPage({ params, searchParams }: Props) {
             choix={choix}
             resolu={resolus[choix]}
             depuis={depuis}
+            suivi={suivi}
             locale={locale}
             isFr={isFr}
             trackingContext={trackingContext}
           />
         ) : (
-          <ChoixDuRendezVous resolus={resolus} depuis={depuis} locale={locale} />
+          <ChoixDuRendezVous resolus={resolus} depuis={depuis} suivi={suivi} locale={locale} />
         )}
 
         {/* CTA fallback bas de page — pour les visiteurs qui préfèrent un autre
@@ -247,9 +254,24 @@ export default async function AppelPage({ params, searchParams }: Props) {
   );
 }
 
-/** `/fr/appel?rdv=diagnostic&depuis=…` — lien simple, rendu serveur. */
-function lienDuChoix(locale: string, choix: ChoixRendezVous, depuis: string | null): string {
-  return `/${locale}/appel?${parametresDuChoix(choix, depuis)}`;
+/** `/fr/appel?rdv=diagnostic&depuis=…&utm_source=…` — lien simple, rendu serveur. */
+function lienDuChoix(
+  locale: string,
+  choix: ChoixRendezVous,
+  depuis: string | null,
+  suivi: SuiviArrivee,
+): string {
+  return `/${locale}/appel?${parametresDuChoix(choix, depuis, suivi)}`;
+}
+
+/**
+ * Le clic sur une carte devient l'événement Plausible « Appel choix », SANS JS :
+ * l'extension `tagged-events`, déjà chargée par `<Plausible />`, lit les classes
+ * `plausible-event-*` du lien cliqué. Propriétés : `rdv` (la carte) et `depuis`
+ * (l'emplacement, déjà nettoyé par `lireDepuis` : minuscules, chiffres, tirets).
+ */
+function classeDepuis(depuis: string | null): string {
+  return depuis ? `plausible-event-depuis=${depuis}` : "";
 }
 
 /** « 30 min », lue chez Calendly ; rien si la durée est inconnue. */
@@ -268,10 +290,12 @@ function libelleDuree(resolu: ChoixResolu): string | null {
 function ChoixDuRendezVous({
   resolus,
   depuis,
+  suivi,
   locale,
 }: {
   resolus: Readonly<Record<ChoixRendezVous, ChoixResolu>>;
   depuis: string | null;
+  suivi: SuiviArrivee;
   locale: string;
 }) {
   const dureeDiagnostic = libelleDuree(resolus.diagnostic);
@@ -323,9 +347,9 @@ function ChoixDuRendezVous({
             </p>
             <div className="mt-auto pt-6">
               <a
-                href={lienDuChoix(locale, "diagnostic", depuis)}
+                href={lienDuChoix(locale, "diagnostic", depuis, suivi)}
                 data-cta="appel_choix_diagnostic"
-                className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep focus-visible:ring-terracotta inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full px-6 text-base font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                className={`plausible-event-name=Appel+choix plausible-event-rdv=diagnostic ${classeDepuis(depuis)} bg-terracotta text-mocha-fg hover:bg-terracotta-deep focus-visible:ring-terracotta inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full px-6 text-base font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none`}
               >
                 Réserver mon diagnostic
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -362,9 +386,9 @@ function ChoixDuRendezVous({
             </ul>
             <div className="mt-auto pt-6">
               <a
-                href={lienDuChoix(locale, "projet", depuis)}
+                href={lienDuChoix(locale, "projet", depuis, suivi)}
                 data-cta="appel_choix_projet"
-                className="border-terracotta text-terracotta-deep hover:bg-terracotta-soft focus-visible:ring-terracotta inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border-2 px-6 text-base font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                className={`plausible-event-name=Appel+choix plausible-event-rdv=projet ${classeDepuis(depuis)} border-terracotta text-terracotta-deep hover:bg-terracotta-soft focus-visible:ring-terracotta inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border-2 px-6 text-base font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none`}
               >
                 Réserver un échange projet
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -399,6 +423,7 @@ function Calendrier({
   choix,
   resolu,
   depuis,
+  suivi,
   locale,
   isFr,
   trackingContext,
@@ -406,6 +431,7 @@ function Calendrier({
   choix: ChoixRendezVous;
   resolu: ChoixResolu;
   depuis: string | null;
+  suivi: SuiviArrivee;
   locale: string;
   isFr: boolean;
   trackingContext: {
@@ -419,9 +445,8 @@ function Calendrier({
 }) {
   const duree = libelleDuree(resolu);
   const utmContent = utmContentDuChoix(choix, depuis);
-  const retourAuChoix = depuis
-    ? `/${locale}/appel?${new URLSearchParams({ [PARAM_DEPUIS]: depuis }).toString()}`
-    : `/${locale}/appel`;
+  const retour = parametresDuRetour(depuis, suivi);
+  const retourAuChoix = retour ? `/${locale}/appel?${retour}` : `/${locale}/appel`;
   return (
     <>
       {/* Hero ultra-compact — l'utilisateur est ici pour réserver, pas lire.
@@ -567,7 +592,8 @@ function Calendrier({
                   reservationDirecte={reservationDirecteActive()}
                   locale={locale}
                   utmContent={utmContent}
-                  parametresDuChoix={parametresDuChoix(choix, depuis)}
+                  parametresDuChoix={parametresDuChoix(choix, depuis, suivi)}
+                  suivi={suivi}
                 />
               </div>
               {/* Capture client des `event_scheduled` émis par l'iframe

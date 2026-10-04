@@ -381,7 +381,7 @@ export default async function FormationsHub({ params }: Props) {
           // CTA — wording aligné sur FormationsLesPlus (offre réelle existante).
           <>
             <Cta
-              href="/appel"
+              href="/appel?depuis=page-formation"
               size="lg"
               className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)]"
               track="collectives-hero-book-call"
