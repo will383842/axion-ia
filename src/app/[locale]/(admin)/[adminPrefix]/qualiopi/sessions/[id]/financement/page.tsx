@@ -27,6 +27,8 @@ import { regimePaiementDeSession } from "@/server/qualiopi/financements/regime-p
 import { destinataireFactureParDefaut } from "@/server/qualiopi/financements/circuit-paiement-opco";
 import { chargerDossierPretADeposer } from "@/server/qualiopi/financements/dossier-pret-a-deposer-lecture";
 import { DepotOpcoPanel } from "@/components/admin/qualiopi/DepotOpcoPanel";
+import { lireContexteSuivi } from "@/server/qualiopi/financements/suivi-entreprise/lecture";
+import { friseSuivi } from "@/server/qualiopi/financements/suivi-entreprise/frise";
 import { BandeauEtatFonds } from "@/components/admin/qualiopi/BandeauEtatFonds";
 import { EstimationBaremeOpco } from "@/components/admin/qualiopi/EstimationBaremeOpco";
 import { estimationOpcoDeSession } from "@/server/qualiopi/financements/estimation-opco-session";
@@ -181,7 +183,7 @@ export default async function FinancementSessionPage({ params }: PageProps) {
   const estOpco =
     trainingSession.financementType === "opco" || trainingSession.financementType === "mixte";
   // Lot A7b : estimation au barème (lecture seule) et accord écrit à côté du dépôt.
-  const [pretADeposer, dossierDepot, estimationBareme] = estOpco
+  const [pretADeposer, dossierDepot, estimationBareme, suiviEntreprise] = estOpco
     ? await Promise.all([
         chargerDossierPretADeposer(trainingSession.id),
         regimePaiement.dossierId
@@ -191,8 +193,14 @@ export default async function FinancementSessionPage({ params }: PageProps) {
             })
           : Promise.resolve(null),
         estimationOpcoDeSession(trainingSession.id),
+        // Lot A8 — frise du suivi de l'entreprise (envoi, relances, réponses).
+        regimePaiement.dossierId
+          ? lireContexteSuivi(regimePaiement.dossierId).then((c) =>
+              c ? friseSuivi(c, new Date()) : null,
+            )
+          : Promise.resolve(null),
       ])
-    : [null, null, null];
+    : [null, null, null, null];
   // Ne garder que les entrées en échec pour l'affichage des alertes.
   const alertes = financementValidations
     .filter((e) => e.result.ok === false)
@@ -444,6 +452,7 @@ export default async function FinancementSessionPage({ params }: PageProps) {
             numeroDossierExterne={dossierDepot?.numeroDossierExterne ?? null}
             accordEcritLe={toDateInput(dossierDepot?.accordEcritLe ?? null)}
             peutEcrire={acces.peutEcrire}
+            suiviEntreprise={suiviEntreprise}
             encart={pretADeposer.encart}
             pieces={pretADeposer.pieces.map((p) => ({
               libelle: p.libelle,

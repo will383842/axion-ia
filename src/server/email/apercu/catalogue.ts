@@ -470,6 +470,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
       "un participant client validé du rendez-vous (adresse professionnelle de préférence)",
     source: "server/visio/passes/etapes-a-la-demande.ts",
   },
+  "opco-suivi-entreprise": {
+    categorie: "formation",
+    quand:
+      "Dossier OPCO prêt (convention signée, contact avec e-mail) : envoi du dossier à déposer, puis relances « dépôt fait ? » (J+3, J+7, J+12, J-5 de la date limite) et « réponse de l'OPCO ? » (J+10, J+20, J+30 du dépôt)",
+    destinataire: "contact de l'entreprise cliente",
+    source: "server/qualiopi/financements/suivi-entreprise/envoi.ts",
+  },
   "questionnaire-reponses-recues": {
     categorie: "rendez-vous",
     quand:
