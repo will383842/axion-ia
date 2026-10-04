@@ -88,10 +88,11 @@ function dossier(extra: Record<string, unknown> = {}) {
   };
 }
 
-async function envoyer(payload: Record<string, unknown>) {
+async function envoyer(payload: Record<string, unknown>, champs: Record<string, string> = {}) {
   const fd = new FormData();
   fd.set("payload", JSON.stringify(payload));
   fd.set("locale", "fr");
+  for (const [cle, valeur] of Object.entries(champs)) fd.set(cle, valeur);
   const r = await submitCommercialApplicationAction({ ok: false, error: "" }, fd);
   expect(r, "le dossier doit être écrit — contre-témoin").toMatchObject({ ok: true });
   const args = h.creer.mock.calls[0]?.[0] as {
@@ -141,6 +142,20 @@ describe("attribution du dossier complet", () => {
     });
     const d = await envoyer(dossier({ sourceConnaissance: "indeed" }));
     expect(d.candidature.sourceConnaissance).toBe("indeed");
+    // INT-T52-A : sans code dans le lien, le premier contact est lu UNE fois, pour son code de
+    // parrainage (rattrapage 94) — jamais pour la source, que le wizard a déclarée.
+    expect(h.trouver.mock.calls.length).toBeLessThanOrEqual(1);
+  });
+
+  it("source déclarée ET code dans le lien : le premier contact n'est jamais lu", async () => {
+    h.trouver.mockResolvedValue({
+      details: { candidature: { sourceConnaissance: "linkedin" }, parrainCode: "AX7Q3M5R" },
+    });
+    const d = (await envoyer(dossier({ sourceConnaissance: "indeed" }), {
+      parrainCode: "AX4D2K9P",
+    })) as { candidature: Record<string, unknown>; parrainCode?: string };
+    expect(d.candidature.sourceConnaissance).toBe("indeed");
+    expect(d.parrainCode).toBe("AX4D2K9P");
     expect(h.trouver).not.toHaveBeenCalled();
   });
 
