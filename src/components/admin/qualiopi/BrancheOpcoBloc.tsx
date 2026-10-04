@@ -83,7 +83,7 @@ export function BrancheOpcoBloc({
   const estSuggestion = client.opco === null && opco !== null;
   const sourceEffectif =
     client.effectifSource === "insee"
-      ? "INSEE"
+      ? "INSEE (borne basse de la tranche)"
       : client.effectifSource === "saisie"
         ? "Saisi"
         : null;

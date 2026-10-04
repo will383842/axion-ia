@@ -14,7 +14,12 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
 import { avecMessageDeRetour } from "@/features/dossier-client/message-de-retour";
-import { resoudreSiren } from "@/lib/siret";
+import {
+  AVERTISSEMENT_SIREN_CONTRAIRE,
+  resoudreSiren,
+  sirenContreditLeSiret,
+  sirenDuClient,
+} from "@/lib/siret";
 import { siretField } from "@/lib/siret-schema";
 import { premierMessageZod } from "@/lib/zod-message";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
@@ -381,7 +386,8 @@ export async function createClientAction(
   // Lot OPCO A7d : effectif relevé à l'INSEE (borne basse de la tranche) si la
   // fiche a un SIREN. APRÈS la création, jamais sur son chemin : l'annuaire est
   // borné à 3 s, et une panne — ou toute exception — laisse la fiche telle quelle.
-  if (siren !== undefined) {
+  // Lot A9 : la même règle de lecture que la fiche (`sirenDuClient`).
+  if (sirenDuClient({ siren: siren ?? null, siret: v.siret ?? null }) !== null) {
     await releverEffectifInseeEtTracer(resultat.id, session).catch(() => null);
   }
 
@@ -443,7 +449,7 @@ export async function rafraichirEffectifInseeAction(
 export async function updateClientAction(
   // `z.input` : voir createClientAction (transform sur siretField).
   input: z.input<typeof updateClientSchema>,
-): Promise<ActionResult<{ id: string }>> {
+): Promise<ActionResult<{ id: string; avertissement?: string }>> {
   const session = await requireAdminWrite();
   const parsed = updateClientSchema.safeParse(input);
   if (!parsed.success) return { error: premierMessageZod(parsed.error) };
@@ -453,11 +459,23 @@ export async function updateClientAction(
   //  • SIRET transmis        → SIREN dérivé ; un SIREN saisi contraire = refus
   //  • SIRET effacé (`null`) → le SIREN n'est touché que s'il est transmis
   //  • SIREN seul            → comparé au SIRET déjà en base
+  //  • Lot A9 : SIRET transmis SANS SIREN (formulaire « Éditer ») et SIREN en
+  //    base qui le contredit → le SIREN en base est CONSERVÉ, avec un
+  //    avertissement ; jamais écrasé en silence par le SIRET.
   let sirenAEcrire: string | null | undefined;
+  let avertissement: string | undefined;
   if (typeof fields.siret === "string") {
     const r = resoudreSiren(fields.siret, fields.siren);
     if (!r.ok) return { error: r.message };
     sirenAEcrire = r.siren;
+    if (fields.siren === undefined && sirenAEcrire !== undefined) {
+      const enBase =
+        (await prisma.client.findUnique({ where: { id }, select: { siren: true } }))?.siren ?? null;
+      if (sirenContreditLeSiret({ siren: enBase, siret: fields.siret })) {
+        sirenAEcrire = undefined;
+        avertissement = AVERTISSEMENT_SIREN_CONTRAIRE;
+      }
+    }
   } else if (fields.siren !== undefined) {
     const enBase =
       fields.siret === null
@@ -682,7 +700,7 @@ export async function updateClientAction(
     session,
   });
 
-  return { data: { id } };
+  return { data: { id, ...(avertissement !== undefined ? { avertissement } : {}) } };
 }
 
 /**
