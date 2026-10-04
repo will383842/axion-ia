@@ -24,7 +24,12 @@ const DOSSIER_ID = "44444444-4444-4444-8444-444444444444";
 
 const m = vi.hoisted(() => ({
   avant: { financementType: "opco", opcoSubrogation: false } as Record<string, unknown>,
-  dossiers: [] as Array<{ id: string; statut: string; subrogation: boolean }>,
+  dossiers: [] as Array<{
+    id: string;
+    statut: string;
+    subrogation: boolean;
+    payeurs: Array<{ id: string }>;
+  }>,
   sessionUpdate: vi.fn(),
   dossierUpdate: vi.fn(),
   createMany: vi.fn(),
@@ -109,7 +114,7 @@ describe("subrogation × créances du dossier", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     m.avant = { financementType: "opco", opcoSubrogation: false };
-    m.dossiers = [{ id: DOSSIER_ID, statut: "accord_recu", subrogation: false }];
+    m.dossiers = [{ id: DOSSIER_ID, statut: "accord_recu", subrogation: false, payeurs: [] }];
     m.opcoSubrogationEcrite = false;
     m.regime.mockResolvedValue({
       regime: "subrogation_possible",
@@ -137,7 +142,7 @@ describe("subrogation × créances du dossier", () => {
 
   it("🔴 décocher la subrogation → une seule créance, du total, à l'entreprise", async () => {
     m.avant = { financementType: "opco", opcoSubrogation: true };
-    m.dossiers = [{ id: DOSSIER_ID, statut: "accord_recu", subrogation: true }];
+    m.dossiers = [{ id: DOSSIER_ID, statut: "accord_recu", subrogation: true, payeurs: [] }];
     m.opcoSubrogationEcrite = true;
 
     const r = await setFinancementSessionAction({ sessionId: SESSION_ID, opcoSubrogation: false });
@@ -155,8 +160,19 @@ describe("subrogation × créances du dossier", () => {
     expect(m.createMany).not.toHaveBeenCalled();
   });
 
+  it("🔴 dossier `accord_recu` portant DÉJÀ une créance facturée → engagé, aucune créance recréée", async () => {
+    m.dossiers = [
+      { id: DOSSIER_ID, statut: "accord_recu", subrogation: false, payeurs: [{ id: "p-facture" }] },
+    ];
+    const r = await setFinancementSessionAction({ sessionId: SESSION_ID, opcoSubrogation: true });
+    expect(m.createMany).not.toHaveBeenCalled();
+    expect((r as { data: { avertissement?: string } }).data.avertissement).toContain(
+      "déjà facturé",
+    );
+  });
+
   it("dossier déjà facturé → rien n'est recalculé, et l'écran le dit", async () => {
-    m.dossiers = [{ id: DOSSIER_ID, statut: "facture", subrogation: false }];
+    m.dossiers = [{ id: DOSSIER_ID, statut: "facture", subrogation: false, payeurs: [] }];
     const r = await setFinancementSessionAction({ sessionId: SESSION_ID, opcoSubrogation: true });
     expect(m.createMany).not.toHaveBeenCalled();
     expect((r as { data: { avertissement?: string } }).data.avertissement).toContain(

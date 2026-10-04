@@ -50,6 +50,12 @@ export interface FacturePourPieces {
   /** Nom lisible de l'OPCO du client, par la règle unique. */
   opcoNom: string;
   justificatifs: Justificatifs;
+  /**
+   * Relecture A8c (RGPD) : facture par INSCRIPTION (inter-entreprises) → le
+   * stagiaire de cette inscription ; les pièces des autres stagiaires (autres
+   * entreprises, autre OPCO) ne sont jamais jointes. `null` = facture de session.
+   */
+  perimetreStagiaireId: string | null;
 }
 
 export async function chargerPiecesFacturation(
@@ -72,6 +78,8 @@ export async function chargerPiecesFacturation(
       paidAt: true,
       clientId: true,
       documentId: true,
+      enrollmentId: true,
+      enrollment: { select: { traineeId: true } },
       client: {
         select: {
           raisonSociale: true,
@@ -106,6 +114,10 @@ export async function chargerPiecesFacturation(
     },
   });
   if (!f) return null;
+  // Facture par inscription sans stagiaire lisible : périmètre vide (rien joint)
+  // plutôt que toute la session.
+  const perimetre: string | null =
+    f.enrollmentId === null ? null : (f.enrollment?.traineeId ?? "__aucun__");
 
   const document =
     f.documentId === null
@@ -150,6 +162,9 @@ export async function chargerPiecesFacturation(
         }
       : null,
     opcoNom: nomOpcoDuClient(f.client),
-    justificatifs: selectionnerJustificatifs(f.session?.documents ?? []),
+    justificatifs: selectionnerJustificatifs(
+      (f.session?.documents ?? []).filter((d) => perimetre === null || d.traineeId === perimetre),
+    ),
+    perimetreStagiaireId: perimetre,
   };
 }

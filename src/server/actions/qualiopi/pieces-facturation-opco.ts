@@ -59,7 +59,12 @@ export async function telechargerPiecesFacturationOpcoAction(input: {
 
   let emargement: { buffer: Buffer; mention: string } | null = null;
   try {
-    const tirage = await rendreTirageEmargementAJour(f.session.id);
+    // Relecture A8c (RGPD) : le tirage couvre TOUTE la session ; sur une facture
+    // par inscription, il exposerait les signatures des autres entreprises.
+    const tirage =
+      f.perimetreStagiaireId === null
+        ? await rendreTirageEmargementAJour(f.session.id)
+        : { ok: false as const };
     if (tirage.ok) emargement = { buffer: tirage.buffer, mention: tirage.mention };
   } catch (err) {
     console.error("[pieces-facturation-opco] tirage d'émargement impossible", err);

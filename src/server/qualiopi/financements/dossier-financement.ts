@@ -431,12 +431,20 @@ export async function alignerDossiersSurSubrogation(
       type: { in: ["opco", "mixte"] },
       statut: { not: "clos" },
     },
-    select: { id: true, statut: true, subrogation: true },
+    select: {
+      id: true,
+      statut: true,
+      subrogation: true,
+      // Relecture A8c : une créance déjà FACTURÉE engage le dossier, quel que soit
+      // son statut (ex. `accord_recu` avec une facture émise) — sinon la
+      // reventilation recréerait une créance du total à côté de la facturée.
+      payeurs: { where: { factureFormationId: { not: null } }, select: { id: true }, take: 1 },
+    },
   });
   const alignes: string[] = [];
   const engages: Array<{ id: string; statut: DossierFinancementStatut }> = [];
   for (const d of dossiers) {
-    if (!STATUTS_REVENTILABLES_SUBROGATION.includes(d.statut)) {
+    if (!STATUTS_REVENTILABLES_SUBROGATION.includes(d.statut) || d.payeurs.length > 0) {
       engages.push({ id: d.id, statut: d.statut });
       continue;
     }
