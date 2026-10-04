@@ -36,7 +36,15 @@ import { compterEnAttente } from "@/server/email/outbox-service";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
-import { listBaremesEnVigueur } from "@/server/qualiopi/financements/bareme-opco";
+import {
+  listBaremesEnVigueur,
+  resolveBaremeOpco,
+} from "@/server/qualiopi/financements/bareme-opco";
+import {
+  effectifDuClient,
+  horsFondsLegaux,
+  idccValide,
+} from "@/server/qualiopi/financements/bareme-opco-branche";
 import { estBaremePerime, opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 import { STATUTS_FACTURE_OUVERTE } from "@/server/qualiopi/financements/statuts-facture";
 import {
@@ -3089,6 +3097,69 @@ async function regleBaremeOpcoPerime(now: Date): Promise<AlerteCandidate[]> {
     }));
 }
 
+/**
+ * Lot A4 — Devis ouvert ou session OPCO à venir sans barème applicable.
+ *
+ * Devis : lu sur `opcoEstimationOrigine`, figé à la création (le chiffre affiché
+ * est celui-là). Session : résolution à date de début, avec l'IDCC et l'effectif
+ * du client. Un client de 50 salariés ou plus n'est pas concerné (pas de fonds
+ * légaux, art. L6332-17) ; un client sans OPCO identifié non plus (rien à résoudre).
+ */
+async function regleAucunBaremeOpco(now: Date): Promise<AlerteCandidate[]> {
+  const alertes: AlerteCandidate[] = [];
+  const titre = "Aucun barème OPCO applicable (estimation indicative)";
+
+  const devis = await prisma.devis.findMany({
+    where: {
+      financementSuggere: "opco",
+      statut: { in: ["brouillon", "envoye"] },
+      opcoEstimationOrigine: "reglage_par_defaut",
+    },
+    select: { id: true, numero: true, opcoEstimationOrigine: true },
+  });
+  for (const d of devis) {
+    if (d.opcoEstimationOrigine !== "reglage_par_defaut") continue;
+    alertes.push({
+      code: "aucun_bareme_opco",
+      niveau: "important",
+      titre,
+      message: `Le devis ${d.numero} estime la prise en charge OPCO sur les réglages par défaut : aucun barème relevé pour cet OPCO et cette branche. Saisissez le barème ou confirmez le montant auprès de l'OPCO.`,
+      cibleType: "Devis",
+      cibleId: d.id,
+    });
+  }
+
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: "planifiee",
+      dateDebut: { gt: now },
+      OR: [{ opcoSubrogation: true }, { dossiersFinancement: { some: {} } }],
+    },
+    select: { id: true, numero: true, dateDebut: true, client: true },
+  });
+  for (const s of sessions) {
+    const client = s.client;
+    if (!client?.opcoIdentifie) continue;
+    const effectif = effectifDuClient(client);
+    if (horsFondsLegaux(effectif)) continue;
+    const idcc = idccValide(client.idcc);
+    const bareme = await resolveBaremeOpco(client.opcoIdentifie, s.dateDebut, {
+      ...(idcc ? { idcc } : {}),
+      ...(effectif !== undefined ? { effectif } : {}),
+    });
+    if (bareme) continue;
+    alertes.push({
+      code: "aucun_bareme_opco",
+      niveau: "important",
+      titre,
+      message: `La session ${s.numero} (début le ${s.dateDebut.toLocaleDateString("fr-FR")}) est financée par l'OPCO ${opcoLabel(client.opcoIdentifie)} sans barème applicable${idcc ? ` pour l'IDCC ${idcc}` : ""}. Saisissez le barème avant d'engager le dossier.`,
+      cibleType: "TrainingSession",
+      cibleId: s.id,
+    });
+  }
+  return alertes;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Catalogue des règles
 // ─────────────────────────────────────────────────────────────────────────────
@@ -4987,6 +5058,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "rgpd_suppression", fn: regleRgpdSuppression },
   { nom: "revue_trimestrielle", fn: regleRevueTrimestrielle },
   { nom: "bareme_opco_perime", fn: regleBaremeOpcoPerime },
+  { nom: "aucun_bareme_opco", fn: regleAucunBaremeOpco },
   // Lot 1 §1.4 — les deux seules étapes du parcours d'un dossier qui n'avaient
   // AUCUN code d'alerte. Les douze autres en avaient déjà un ; ajouter une
   // alerte « échéance dépassée » globale les aurait signalées deux fois.
