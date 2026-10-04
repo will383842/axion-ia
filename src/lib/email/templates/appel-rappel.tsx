@@ -401,6 +401,8 @@ const COMMUN = {
     lieuVisioSansLien:
       "Le lien de connexion figure dans l'invitation d'agenda que vous recevez séparément.",
     lieuTelephone: (l: string) => `Nous vous appellerons au ${l}.`,
+    // Sur place (2026-10-04, salon GOFAB) : une ADRESSE, ni appel ni lien.
+    lieuSurPlace: (l: string) => `Rendez-vous sur place : ${l}`,
     lieuIndetermine: (l: string) => `Lieu du rendez-vous : ${l}`,
     // On dit ce qu'on va faire, pas ce qu'on attend. La personne n'a rien à préparer.
     attendu: `${RIEN_A_PREPARER.fr} ${DEROULE.fr}`,
@@ -421,6 +423,7 @@ const COMMUN = {
     recapFuseau: "Heure de Paris",
     recapVisio: "Visioconférence",
     recapTelephone: "Téléphone",
+    recapSurPlace: "Sur place",
     // ── Ce qui se passe maintenant (confirmation seule) ────────────────────
     maintenantTitre: "Ce qui se passe maintenant",
     maintenantPuces: [
@@ -438,6 +441,7 @@ const COMMUN = {
     lieuVisio: "Video meeting link:",
     lieuVisioSansLien: "The joining link is in the calendar invitation you receive separately.",
     lieuTelephone: (l: string) => `We will call you on ${l}.`,
+    lieuSurPlace: (l: string) => `In-person meeting: ${l}`,
     lieuIndetermine: (l: string) => `Meeting location: ${l}`,
     attendu: `${RIEN_A_PREPARER.en} ${DEROULE.en}`,
     deroule: DEROULE.en,
@@ -450,6 +454,7 @@ const COMMUN = {
     recapFuseau: "Paris time",
     recapVisio: "Video meeting",
     recapTelephone: "Phone call",
+    recapSurPlace: "In person",
     maintenantTitre: "What happens next",
     maintenantPuces: [
       `${INVITATION_AGENDA.en} Same meeting — nothing for you to confirm.`,
@@ -549,7 +554,12 @@ const estUnLienDeReunion = (valeur: string): boolean => /^https?:\/\//i.test(val
  * valeur hors nomenclature retombe donc sur la déduction, jamais sur elle-même.
  */
 function formatDuRendezVous(p: { lieu?: string; format?: string }): CanalRendezVous {
-  if (p.format === "telephone" || p.format === "visio" || p.format === "inconnu") {
+  if (
+    p.format === "telephone" ||
+    p.format === "visio" ||
+    p.format === "sur_place" ||
+    p.format === "inconnu"
+  ) {
     return p.format;
   }
   return canalDuRendezVous(p.lieu);
@@ -722,6 +732,17 @@ function lignesRecap(
     return lignes;
   }
 
+  // Sur place : le format est SÛR même sans adresse — on l'annonce, et
+  // l'adresse en précision quand Calendly l'a donnée. Jamais d'appel promis.
+  if (format === "sur_place") {
+    lignes.push({
+      libelle: c.recapFormat,
+      valeur: c.recapSurPlace,
+      ...(lieu ? { precision: lieu } : {}),
+    });
+    return lignes;
+  }
+
   // Un lieu libre — « chez le client », saisi en console — se mentionne sans
   // affirmer de canal. Et un rendez-vous sans lieu du tout se TAIT : c'est
   // l'invitation Calendly qui fait foi, et inventer serait pire que le silence.
@@ -806,7 +827,11 @@ function LigneLieu({
 
   return (
     <Text style={emailStyles.paragraphStyle}>
-      {format === "telephone" ? c.lieuTelephone(valeur) : c.lieuIndetermine(valeur)}
+      {format === "telephone"
+        ? c.lieuTelephone(valeur)
+        : format === "sur_place"
+          ? c.lieuSurPlace(valeur)
+          : c.lieuIndetermine(valeur)}
     </Text>
   );
 }

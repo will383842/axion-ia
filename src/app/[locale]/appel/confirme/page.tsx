@@ -63,6 +63,7 @@ import {
   ExternalLink,
   HelpCircle,
   ListChecks,
+  MapPin,
   Phone,
   Video,
 } from "lucide-react";
@@ -72,7 +73,7 @@ import { Container } from "@/components/layout/Container";
 import { TeteDeParcours, SortiesDeParcours } from "@/components/booking/parcours-ui";
 import { RemonterAuMessage } from "@/components/booking/RemonterAuMessage";
 import { CALENDLY_API_BASE } from "@/server/calendly/api";
-import { canalDuRendezVous } from "@/server/calendly/canal";
+import { canalDuRendezVous, type CanalRendezVous } from "@/server/calendly/canal";
 import { phraseConfirmationVisio } from "@/content/visio-annonce-textes";
 import {
   classerRendezVous,
@@ -113,8 +114,10 @@ interface Props {
 interface DetailEvenement {
   readonly debut: Date | null;
   readonly fin: Date | null;
-  readonly format: "telephone" | "visio" | "inconnu";
+  readonly format: CanalRendezVous;
   readonly lienReunion: string | null;
+  /** Sur place : l'adresse que Calendly porte dans `location.location`. */
+  readonly adresse: string | null;
   /** Le type, classé par l'URI du type Calendly (repli : son nom). */
   readonly type: TypeRendezVous;
 }
@@ -153,6 +156,11 @@ async function relireLEvenement(uuid: string): Promise<DetailEvenement | null> {
       typeof lieu === "object" && lieu !== null
         ? (lieu as Record<string, unknown>)["join_url"]
         : null;
+    const texteDuLieu =
+      typeof lieu === "object" && lieu !== null
+        ? (lieu as Record<string, unknown>)["location"]
+        : null;
+    const format = canalDuRendezVous(null, { event: { location: lieu } });
     // Le TYPE (chantier « Types de rendez-vous », L2) : par l'URI du type
     // d'événement, la même règle que partout ailleurs — jamais d'exception.
     const type = await classerRendezVous({
@@ -169,8 +177,12 @@ async function relireLEvenement(uuid: string): Promise<DetailEvenement | null> {
       // 🔑 La MÊME dérivation que partout ailleurs. Écrire ici une seconde
       // façon de lire le format ferait diverger la page de l'e-mail que le
       // visiteur reçoit dans la minute.
-      format: canalDuRendezVous(null, { event: { location: lieu } }),
+      format,
       lienReunion: typeof join === "string" && join.startsWith("http") ? join : null,
+      adresse:
+        format === "sur_place" && typeof texteDuLieu === "string" && texteDuLieu.trim() !== ""
+          ? texteDuLieu.trim()
+          : null,
     };
   } catch {
     return null;
@@ -320,6 +332,7 @@ function Confirme({
           fin={detail.fin}
           format={detail.format}
           lienReunion={detail.lienReunion}
+          adresse={detail.adresse}
         />
       ) : null}
 
@@ -345,15 +358,24 @@ function CarteRendezVous({
   fin,
   format,
   lienReunion,
+  adresse,
 }: {
   debut: Date;
   fin: Date | null;
   format: DetailEvenement["format"];
   lienReunion: string | null;
+  adresse: string | null;
 }) {
   const { jour, heure } = quandEnDeux(debut);
   const minutes = dureeEnMinutes(debut, fin);
-  const PictoFormat = format === "visio" ? Video : format === "telephone" ? Phone : Mail;
+  const PictoFormat =
+    format === "visio"
+      ? Video
+      : format === "telephone"
+        ? Phone
+        : format === "sur_place"
+          ? MapPin
+          : Mail;
 
   return (
     <section
@@ -405,8 +427,13 @@ function CarteRendezVous({
                   ? "En visioconférence"
                   : format === "telephone"
                     ? "Par téléphone — nous vous appelons"
-                    : "Le format vous sera précisé par e-mail"}
+                    : format === "sur_place"
+                      ? "Sur place, en personne"
+                      : "Le format vous sera précisé par e-mail"}
               </p>
+              {format === "sur_place" && adresse ? (
+                <p className="text-fg-soft mt-2 text-sm">{adresse}</p>
+              ) : null}
 
               {format === "visio" ? (
                 lienReunion ? (
