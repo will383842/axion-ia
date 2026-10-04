@@ -1332,6 +1332,7 @@ async function handleFacturesRetard(): Promise<void> {
         select: {
           delaiPaiementJours: true,
           raisonSociale: true,
+          opco: true,
           opcoIdentifie: true,
           contactNom: true,
           contactEmail: true,

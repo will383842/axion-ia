@@ -23,6 +23,10 @@ import { AdminCard, AdminPageHeader } from "@/components/admin/ui";
 import { OPCO_STATUT_LABELS } from "@/server/qualiopi/financements/labels";
 import { TriangleAlert } from "lucide-react";
 import { gardePage } from "@/server/auth/garde-page";
+import {
+  nomOpcoDuClient,
+  referenceOpcoDuClient,
+} from "@/server/qualiopi/financements/opco-referentiel";
 
 export const dynamic = "force-dynamic";
 
@@ -202,7 +206,9 @@ export default async function PlanningDetailPage({
                     "—"
                   )}
                 </Line>
-                <Line label="OPCO">{dash(e.client.opcoIdentifie)}</Line>
+                <Line label="OPCO">
+                  {referenceOpcoDuClient(e.client) !== null ? nomOpcoDuClient(e.client) : "—"}
+                </Line>
               </>
             ) : (
               <p className="text-[color:var(--color-admin-fg-muted)]">Aucun client rattaché.</p>

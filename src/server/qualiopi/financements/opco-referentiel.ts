@@ -59,13 +59,19 @@ export interface OpcoClient {
 }
 
 /**
- * L'OPCO d'un client — UNE règle pour toutes les lectures (dossier prêt à
- * déposer, alerte de dépôt, kit) : l'OPCO typé d'abord ; à défaut, l'ancien
- * texte libre s'il est un identifiant connu.
+ * L'OPCO d'un client — UNE règle pour toutes les lectures : l'OPCO typé
+ * d'abord ; à défaut, l'ancien texte libre s'il est un identifiant connu.
+ *
+ * 🔴 Lot A7a : la console porte DEUX champs (`opco` typé, vide sur les fiches
+ * antérieures au 2026-10-03 ; `opcoIdentifie`, écrit par l'inférence). Lire l'un
+ * sans l'autre rend une brique aveugle sur la moitié des clients : toute lecture
+ * passe par ici (garde `tests/unit/ci/un-seul-opco-par-client.spec.ts`).
  */
 export function opcoDuClient(client: OpcoClient | null | undefined): OpcoId | null {
   if (isOpcoId(client?.opco)) return client.opco;
-  return isOpcoId(client?.opcoIdentifie) ? client.opcoIdentifie : null;
+  // `trim()` : une saisie « atlas » entourée d'espaces reste reconnue (relecture A7a).
+  const libre = client?.opcoIdentifie?.trim();
+  return isOpcoId(libre) ? libre : null;
 }
 
 /** Nom affiché, même règle ; un texte libre non reconnu est repris tel quel. */
@@ -74,6 +80,19 @@ export function nomOpcoDuClient(client: OpcoClient | null | undefined): string {
   if (id) return OPCO_LABELS[id];
   const libre = client?.opcoIdentifie?.trim();
   return libre ? libre : "OPCO (à préciser)";
+}
+
+/**
+ * Ce que la fiche dit de son OPCO, même règle : l'identifiant reconnu, sinon le
+ * texte libre tel quel (« Mon OPCO »), sinon `null`. Sert de clé de
+ * regroupement et à savoir si un OPCO est renseigné du tout, y compris quand il
+ * n'est pas (encore) l'un des 11.
+ */
+export function referenceOpcoDuClient(client: OpcoClient | null | undefined): string | null {
+  const id = opcoDuClient(client);
+  if (id) return id;
+  const libre = client?.opcoIdentifie?.trim();
+  return libre ? libre : null;
 }
 
 /**

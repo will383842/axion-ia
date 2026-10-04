@@ -470,3 +470,93 @@ describe("rafraichirEffectifInseeAction (lot OPCO A7d)", () => {
     expect(mockRafraichirEffectif).not.toHaveBeenCalled();
   });
 });
+
+describe("🔴 l'inférence IDCC/NAF écrit aussi l'OPCO TYPÉ (lot OPCO A7a)", () => {
+  it("création : NAF 8559A pose `opco = akto` à côté de `opcoIdentifie`", async () => {
+    await createClientAction({ raisonSociale: "OF Client", nafCode: "8559A" });
+
+    const data = mockCreate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect(data.opcoIdentifie).toBe("akto");
+    expect(data.opco).toBe("akto");
+  });
+
+  it("création : un OPCO saisi en texte n'est pas une inférence, `opco` n'est pas posé", async () => {
+    await createClientAction({ raisonSociale: "X", opcoIdentifie: "opco_ep", nafCode: "8559A" });
+
+    const data = mockCreate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect("opco" in data).toBe(false);
+  });
+
+  it("édition : renseigner le NAF remplit les deux champs quand ils sont vides", async () => {
+    mockFindUnique.mockResolvedValue({
+      nafCode: null,
+      idcc: null,
+      opcoIdentifie: null,
+      opco: null,
+    });
+
+    await updateClientAction({ id: ID, nafCode: "8559A" });
+
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect(data.opcoIdentifie).toBe("akto");
+    expect(data.opco).toBe("akto");
+  });
+
+  it("🔴 un OPCO typé saisi à la main n'est JAMAIS écrasé par l'inférence", async () => {
+    mockFindUnique.mockResolvedValue({
+      nafCode: null,
+      idcc: null,
+      opcoIdentifie: null,
+      opco: "atlas",
+    });
+
+    await updateClientAction({ id: ID, nafCode: "8559A" });
+
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect(data.opcoIdentifie).toBe("akto");
+    expect("opco" in data).toBe(false);
+  });
+
+  it("🔴 « remettre en inféré » ne touche pas non plus l'OPCO typé déjà posé", async () => {
+    mockFindUnique.mockResolvedValue({
+      nafCode: "8559A",
+      idcc: null,
+      opcoIdentifie: "atlas",
+      opco: "atlas",
+    });
+
+    await updateClientAction({ id: ID, opcoIdentifie: null });
+
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect("opco" in data).toBe(false);
+  });
+
+  it("la saisie de l'OPCO typé dans la même charge l'emporte sur l'inférence", async () => {
+    mockFindUnique.mockResolvedValue({
+      nafCode: null,
+      idcc: null,
+      opcoIdentifie: null,
+      opco: null,
+    });
+
+    await updateClientAction({ id: ID, nafCode: "8559A", opco: "opco_ep" });
+
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect(data.opco).toBe("opco_ep");
+  });
+
+  it("un texte libre saisi à la main empêche l'inférence d'écrire l'OPCO typé", async () => {
+    mockFindUnique.mockResolvedValue({
+      nafCode: null,
+      idcc: null,
+      opcoIdentifie: "atlas",
+      opco: null,
+    });
+
+    await updateClientAction({ id: ID, nafCode: "8559A" });
+
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect("opcoIdentifie" in data).toBe(false);
+    expect("opco" in data).toBe(false);
+  });
+});

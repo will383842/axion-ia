@@ -8,6 +8,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { opcoDuClient } from "./opco-referentiel";
 import {
   regimePaiementOpco,
   type EntreeRegimePaiement,
@@ -32,7 +33,7 @@ type DossierLu = {
 };
 
 type SessionLue = {
-  client: { opco: string | null; effectif: number | null } | null;
+  client: { opco: string | null; opcoIdentifie?: string | null; effectif: number | null } | null;
   dossiersFinancement: DossierLu[];
 };
 
@@ -47,7 +48,7 @@ export function entreeRegimeDepuisSession(s: SessionLue): {
     dossier?.payeurs.filter((p) => p.payeurType !== "entreprise").length ?? 0;
   return {
     entree: {
-      opco: s.client?.opco ?? null,
+      opco: opcoDuClient(s.client),
       effectif: s.client?.effectif ?? null,
       cofinancement: dossier?.type === "mixte" || payeursNonEntreprise > 1,
       // Aucune donnée en base ne porte (encore) ces deux faits.
@@ -71,7 +72,7 @@ export async function regimePaiementDeSession(sessionId: string): Promise<Regime
     const s = await prisma.trainingSession.findUnique({
       where: { id: sessionId },
       select: {
-        client: { select: { opco: true, effectif: true } },
+        client: { select: { opco: true, opcoIdentifie: true, effectif: true } },
         dossiersFinancement: {
           where: { type: { in: ["opco", "mixte"] }, statut: { not: "clos" } },
           orderBy: { createdAt: "desc" },

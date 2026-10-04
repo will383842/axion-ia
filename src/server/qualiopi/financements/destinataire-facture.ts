@@ -21,7 +21,7 @@
  */
 
 import type { FactureFormationDestinataire } from "../../../../prisma/generated/client";
-import { opcoLabel } from "./opco-referentiel";
+import { nomOpcoDuClient } from "./opco-referentiel";
 
 /**
  * Le sous-ensemble de `Client` nécessaire pour identifier l'acheteur.
@@ -44,6 +44,7 @@ export interface ClientFacturable {
   adresseCodePostal?: string | null;
   adresseVille?: string | null;
   tvaIntracom?: string | null;
+  opco?: string | null;
   opcoIdentifie?: string | null;
 }
 
@@ -84,9 +85,9 @@ export function resoudreDestinataireFacture(
   const vide = { siret: null, adresse: null, tvaIntracom: null } as const;
 
   if (destinataire === "opco") {
-    const opcoId = client?.opcoIdentifie ?? null;
-    // Nom LISIBLE de l'OPCO (« Atlas » plutôt que le slug « atlas »).
-    return { nom: opcoId ? opcoLabel(opcoId) : "OPCO (à préciser)", ...vide };
+    // Nom LISIBLE de l'OPCO (« Atlas » plutôt que le slug « atlas »), par la
+    // règle unique : OPCO typé d'abord, ancien texte libre ensuite (lot A7a).
+    return { nom: nomOpcoDuClient(client), ...vide };
   }
 
   if (destinataire === "france_travail") {
@@ -128,6 +129,7 @@ export const CLIENT_FACTURABLE_SELECT = {
   adresseCodePostal: true,
   adresseVille: true,
   tvaIntracom: true,
+  opco: true,
   opcoIdentifie: true,
 } as const;
 

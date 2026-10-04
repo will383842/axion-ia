@@ -36,6 +36,7 @@ import {
 } from "@/server/qualiopi/financements/consommation-opco";
 import { opcoDuClient } from "@/server/qualiopi/financements/opco-referentiel";
 import { effectifDuClient, idccValide } from "@/server/qualiopi/financements/bareme-opco-branche";
+import { opcoDuClient } from "@/server/qualiopi/financements/opco-referentiel";
 import {
   lierDevisAuProjet,
   projetOuvrableDuClient,

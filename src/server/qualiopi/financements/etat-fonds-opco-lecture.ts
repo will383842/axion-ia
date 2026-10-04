@@ -9,7 +9,7 @@
 
 import { prisma } from "@/lib/prisma";
 import type { Opco, StatutFondsOpco } from "../../../../prisma/generated/client";
-import { isOpcoId } from "./opco-referentiel";
+import { opcoDuClient } from "./opco-referentiel";
 import { etatFondsPour, type EtatFonds, type ReleveEtatFonds } from "./etat-fonds-opco";
 
 const PLUS_RECENT_DABORD = [{ releveLe: "desc" as const }, { createdAt: "desc" as const }];
@@ -23,23 +23,38 @@ export async function listerRelevesEtatFonds(take = 2000): Promise<ReleveEtatFon
   }
 }
 
-/** L'état des fonds qui vaut pour un client, ou `null` (aucun OPCO, aucun relevé). */
+/**
+ * L'état des fonds qui vaut pour un client, ou `null` (aucun OPCO, aucun relevé).
+ * L'OPCO se lit par la règle unique (lot A7a) : l'appelant fournit les DEUX champs.
+ */
 export async function etatFondsDuClient(
-  client: { opco: string | null; idcc: string | null; effectif: number | null },
+  client: {
+    opco: string | null;
+    opcoIdentifie?: string | null;
+    idcc: string | null;
+    effectif: number | null;
+  },
   aLaDate: Date = new Date(),
 ): Promise<EtatFonds | null> {
-  if (!isOpcoId(client.opco)) return null;
+  const opco = opcoDuClient(client);
+  if (opco === null) return null;
   let releves: ReleveEtatFonds[] = [];
   try {
     releves = await prisma.etatFondsOpco.findMany({
-      where: { opco: client.opco as Opco },
+      where: { opco: opco as Opco },
       orderBy: PLUS_RECENT_DABORD,
       take: 500,
     });
   } catch {
     return null;
   }
-  return etatFondsPour({ ...client, aLaDate, releves });
+  return etatFondsPour({
+    opco,
+    idcc: client.idcc,
+    effectif: client.effectif,
+    aLaDate,
+    releves,
+  });
 }
 
 /** Le relevé le plus récent, tous OPCO confondus (veille mensuelle). */

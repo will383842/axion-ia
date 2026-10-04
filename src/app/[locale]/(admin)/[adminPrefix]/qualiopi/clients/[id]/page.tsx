@@ -48,8 +48,9 @@ import {
   resteDuNetCents,
 } from "@/server/qualiopi/crm/clients";
 import {
+  nomOpcoDuClient,
   opcoDuClient,
-  opcoLabel,
+  referenceOpcoDuClient,
   OPCO_LABELS,
 } from "@/server/qualiopi/financements/opco-referentiel";
 import {
@@ -577,7 +578,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           <div>
             <p className={infoLabelCls}>OPCO</p>
             <p className={infoValueCls}>
-              {client.opcoIdentifie ? opcoLabel(client.opcoIdentifie) : "À déterminer"}
+              {referenceOpcoDuClient(client) !== null ? nomOpcoDuClient(client) : "À déterminer"}
               {client.opcoNumeroAdherent ? ` · adh. ${client.opcoNumeroAdherent}` : ""}
             </p>
           </div>
