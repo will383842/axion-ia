@@ -1,5 +1,5 @@
 /**
- * 🔴 TÉMOIN ROUGE — INT-T65-A : la clause de condition suspensive OPCO est
+ * INT-T65-A : la clause de condition suspensive OPCO est
  * imprimée MOT POUR MOT par les DEUX conventions quand la condition est posée,
  * et rien n'est imprimé sinon.
  *
@@ -148,6 +148,12 @@ conditions générales de vente.`;
 
 /** Espaces de toute nature retirés : seuls les caractères et leur ordre comptent. */
 const sansEspaces = (s: string): string => s.replace(/\s+/g, "");
+/**
+ * Espaces RÉDUITS à un seul : la comparaison voit aussi deux mots collés ou un
+ * mot coupé, ce que `sansEspaces` ne voit pas. Les retours à la ligne du texte
+ * de la juriste et le découpage en nœuds `Text` (gras) ne sont pas du texte.
+ */
+const espacesReduits = (s: string): string => s.replace(/\s+/g, " ").trim();
 
 const GABARITS = [
   {
@@ -180,11 +186,13 @@ describe.each(GABARITS)("$nom — clause de condition suspensive OPCO", ({ rendr
       seuil: SEUIL_POURCENTAGE,
     });
     expect(sansEspaces(rendre(condPourcentage))).toContain(sansEspaces(attendu));
+    expect(espacesReduits(rendre(condPourcentage))).toContain(espacesReduits(attendu));
   });
 
   it("seuil en montant : la clause est imprimée MOT POUR MOT", () => {
     const attendu = clause({ opco: "OPCO Atlas", dateLimite: "15/12/2026", seuil: SEUIL_MONTANT });
     expect(sansEspaces(rendre(condMontant))).toContain(sansEspaces(attendu));
+    expect(espacesReduits(rendre(condMontant))).toContain(espacesReduits(attendu));
   });
 
   it("la clause n'est imprimée qu'UNE fois", () => {

@@ -82,6 +82,8 @@ export type TypeGabaritSignable =
  * | `releve_connexion` | 2 | 30/09 — pied « Document à conserver 5 ans. » sans la citation de L.6353-9 (qui porte sur les informations demandées aux candidats). **v1 archivée** |
  * | `convention` | 4 | 04/10 — § 5 réécrit (relecture juridique, tour 2) : « pour quelque cause que ce soit » retiré ; les sommes restent dues sous réserve du dédit et de l'abandon prévus aux CGV, et sauf manquement de l'organisme à ses propres obligations. **v3 archivée** |
  * | `convention_tripartite` | 4 | 04/10 — même réécriture du § 5 que la bipartite. **v3 archivée** |
+ * | `convention` | 5 | 04/10 — INT-T65-A : clause « 5 bis. Condition suspensive de prise en charge par l'opérateur de compétences » (texte de la juriste A07 validé par Williams, axion-apporteurs#656 commentaire 5978462914), imprimée SEULEMENT si la case est cochée. Sans la case, le texte imprimé est celui de la v4 ; l'incrément est gardé par prudence (cf. ci-dessous). **v4 archivée** |
+ * | `convention_tripartite` | 5 | 04/10 — même clause, mot pour mot. **v4 archivée** |
  * | les autres | 1 | texte inchangé depuis l'origine |
  *
  * 🔑 DEPUIS LE 30/09, UNE VERSION REMPLACÉE S'ARCHIVE (`./archives/`). Avant,
@@ -116,8 +118,23 @@ export type TypeGabaritSignable =
  */
 export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
   devis: 1,
-  convention: 4,
-  convention_tripartite: 4,
+  /*
+    v5 — 04/10/2026, INT-T65-A : clause de condition suspensive OPCO.
+
+    ⚖️ Une convention SANS case imprime exactement le texte de la v4. On
+    incrémente QUAND MÊME, dans le sens prudent :
+      · le gabarit a gagné une BRANCHE de fond : à données égales, une pièce
+        signée sous la v4 ne peut pas avoir porté la clause, et son exemplaire
+        signé doit être rejoué par le composant qui l'a produite — c'est
+        exactement ce que l'archive v4 garantit ;
+      · ne pas incrémenter ferait reposer la fidélité des exemplaires v4 sur un
+        raisonnement (« sans la case, rien ne change ») que rien n'exécute ;
+        archiver ne coûte rien, et la v4 reste rendable telle quelle ;
+      · la règle du fichier tranche : une clause AJOUTÉE est un changement de
+        fond, même conditionnel.
+  */
+  convention: 5,
+  convention_tripartite: 5,
   contrat_formation: 2,
   contrat_sous_traitance: 2,
   /*

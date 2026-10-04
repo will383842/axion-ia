@@ -1249,6 +1249,16 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "direction",
   },
+  // INT-T65-A : convention sous condition suspensive OPCO — rappel à J-7 de la
+  // date limite (jour de Paris), état à constater, et garde-fou critique quand
+  // la session approche sans accord ni renonciation (point 5 de la clause). Se
+  // referme dès que l'état est constaté (`active` ou `caduque`).
+  condition_suspensive_opco: {
+    niveau: "important",
+    titre: "Condition suspensive OPCO à suivre",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
   // Lot OPCO A5 : veille mensuelle de l'état des fonds des OPCO. Levée quand le
   // relevé le plus récent (tous OPCO confondus) a plus de 31 jours — et, depuis
   // le lot A7c, quand un OPCO qui a une session à venir n'a AUCUN relevé.

@@ -1,11 +1,10 @@
 /**
- * 🔴 TÉMOIN ROUGE — INT-T65-A (registre Partners) : machine d'états de la
+ * INT-T65-A (registre Partners, REQ-JUR-061) : machine d'états de la
  * condition suspensive de prise en charge par l'OPCO.
  *
- * Posé AVANT l'implémentation (coordination Partners, issue
- * axion-apporteurs#656, message du 2026-10-04 09:07 UTC) : il échoue tant que
- * `financements/condition-suspensive.ts` n'existe pas. Il passera au vert avec
- * la PR d'INT-T65-A, au signal de la coordination.
+ * Posé ROUGE avant l'implémentation (coordination Partners, issue
+ * axion-apporteurs#656, message du 2026-10-04 09:07 UTC), passé au vert avec
+ * la PR d'INT-T65-A (signal du rattrapage 105, commentaire 5979459198).
  *
  * Ce qu'il fixe, d'après la clause validée par Williams (2026-10-04 09:19 UTC) :
  *   - en_attente → active : accord ÉCRIT ≥ seuil, au plus tard à la date limite ;
@@ -16,13 +15,24 @@
  *   - un accord APRÈS la défaillance ne fait pas revivre la convention ;
  *   - seuil en % (points de base) rapporté au prix TTC de la convention, seuil
  *     en € comparé au montant accordé ; centimes ENTIERS, aucun flottant ;
- *   - la date limite est un JOUR DE PARIS (et non un jour UTC) ;
+ *   - la date limite est un JOUR CIVIL DE PARIS (remarque de la juriste A07,
+ *     #656 commentaire 5979338659) : on stocke l'instant de 00:00 heure de
+ *     Paris, la borne est la FIN de ce jour (minuit exclusif) ;
  *   - rappel à J-7 de la date limite, tant que la condition est en attente.
  */
 import { describe, expect, it } from "vitest";
 
 import {
+  bpsDepuisSaisie,
+  centimesDepuisSaisie,
   dateDuRappel,
+  debutDuJourDeParis,
+  euroDepuisCentimes,
+  libelleJourLimite,
+  libelleSeuilClause,
+  pourcentageDepuisBps,
+  seuilDepuisColonnes,
+  transitionAutorisee,
   dateLimiteDepassee,
   evaluerConditionSuspensive,
   rappelDu,
@@ -37,7 +47,7 @@ const SIGNEE_LE = new Date("2026-10-05T09:00:00Z");
 const condition: ConditionSuspensive = {
   seuil: { type: "pourcentage", bps: 5000 },
   prixTtcCents: 1_200_000,
-  dateLimite: "2026-12-15",
+  dateLimite: debutDuJourDeParis("2026-12-15"),
   signeeLe: SIGNEE_LE,
 };
 
@@ -168,40 +178,84 @@ describe("condition suspensive OPCO — seuil en centimes entiers", () => {
   });
 });
 
-describe("condition suspensive OPCO — la date limite est un jour de Paris", () => {
+describe("condition suspensive OPCO — la date limite est un jour civil de Paris", () => {
+  it("on stocke l'instant de 00:00 heure de Paris du jour limite (hiver et été)", () => {
+    expect(debutDuJourDeParis("2026-12-15").toISOString()).toBe("2026-12-14T23:00:00.000Z");
+    expect(debutDuJourDeParis("2027-07-31").toISOString()).toBe("2027-07-30T22:00:00.000Z");
+    expect(libelleJourLimite(debutDuJourDeParis("2026-12-15"))).toBe("15/12/2026");
+    expect(libelleJourLimite(debutDuJourDeParis("2027-07-31"))).toBe("31/07/2027");
+  });
+
   it("hiver (UTC+1) : le 15 décembre court jusqu'à 22:59:59 UTC", () => {
-    expect(dateLimiteDepassee("2026-12-15", new Date("2026-12-15T22:59:59Z"))).toBe(false);
-    expect(dateLimiteDepassee("2026-12-15", new Date("2026-12-15T23:00:00Z"))).toBe(true);
+    const limite = debutDuJourDeParis("2026-12-15");
+    expect(dateLimiteDepassee(limite, new Date("2026-12-15T22:59:59Z"))).toBe(false);
+    expect(dateLimiteDepassee(limite, new Date("2026-12-15T23:00:00Z"))).toBe(true);
   });
 
   it("été (UTC+2) : le 31 juillet court jusqu'à 21:59:59 UTC", () => {
-    expect(dateLimiteDepassee("2027-07-31", new Date("2027-07-31T21:59:59Z"))).toBe(false);
-    expect(dateLimiteDepassee("2027-07-31", new Date("2027-07-31T22:00:00Z"))).toBe(true);
+    const limite = debutDuJourDeParis("2027-07-31");
+    expect(dateLimiteDepassee(limite, new Date("2027-07-31T21:59:59Z"))).toBe(false);
+    expect(dateLimiteDepassee(limite, new Date("2027-07-31T22:00:00Z"))).toBe(true);
   });
 
-  it("un accord reçu à 23:30 heure de Paris le dernier jour est DANS le délai", () => {
+  // 🔴 Le témoin à deux faces demandé par la juriste : 23h59 heure de Paris le
+  // jour limite → DANS le délai ; 00h00 le lendemain → HORS délai.
+  it("HIVER — accord reçu à 23h59 heure de Paris le jour limite : DANS le délai", () => {
     const r = evaluerConditionSuspensive(
       condition,
-      [accord("2026-12-15T22:30:00Z", 600_000)],
+      [accord("2026-12-15T22:59:00Z", 600_000)], // 23:59 à Paris (UTC+1)
       APRES,
     );
     expect(r.etat).toBe("active");
   });
 
-  it("un accord reçu à 00:30 heure de Paris le lendemain est HORS délai", () => {
+  it("HIVER — accord reçu à 00h00 heure de Paris le lendemain : HORS délai", () => {
     const r = evaluerConditionSuspensive(
       condition,
-      [accord("2026-12-15T23:30:00Z", 600_000)],
+      [accord("2026-12-15T23:00:00Z", 600_000)], // 00:00 le 16 à Paris
       APRES,
     );
     expect(r.etat).toBe("caduque");
+    expect(r.cause).toBe("delai_depasse");
+  });
+
+  const ete: ConditionSuspensive = { ...condition, dateLimite: debutDuJourDeParis("2027-07-31") };
+  const APRES_ETE = new Date("2027-08-10T10:00:00Z");
+
+  it("ÉTÉ — accord reçu à 23h59 heure de Paris le jour limite : DANS le délai", () => {
+    const r = evaluerConditionSuspensive(
+      ete,
+      [accord("2027-07-31T21:59:00Z", 600_000)], // 23:59 à Paris (UTC+2)
+      APRES_ETE,
+    );
+    expect(r.etat).toBe("active");
+  });
+
+  it("ÉTÉ — accord reçu à 00h00 heure de Paris le lendemain : HORS délai", () => {
+    const r = evaluerConditionSuspensive(
+      ete,
+      [accord("2027-07-31T22:00:00Z", 600_000)], // 00:00 le 1er août à Paris
+      APRES_ETE,
+    );
+    expect(r.etat).toBe("caduque");
+  });
+
+  it("la borne ne dépend pas de l'heure stockée dans le jour limite", () => {
+    // Un instant stocké à midi (Paris) du même jour donne la même borne.
+    const midi = new Date("2026-12-15T11:00:00Z");
+    expect(dateLimiteDepassee(midi, new Date("2026-12-15T22:59:59Z"))).toBe(false);
+    expect(dateLimiteDepassee(midi, new Date("2026-12-15T23:00:00Z"))).toBe(true);
+  });
+
+  it("refuse un jour qui n'existe pas", () => {
+    expect(() => debutDuJourDeParis("2027-02-30")).toThrow(RangeError);
   });
 });
 
 describe("condition suspensive OPCO — rappel J-7", () => {
   it("le rappel tombe sept jours avant la date limite", () => {
-    expect(dateDuRappel("2026-12-15")).toBe("2026-12-08");
-    expect(dateDuRappel("2027-03-03")).toBe("2027-02-24");
+    expect(dateDuRappel(debutDuJourDeParis("2026-12-15"))).toBe("2026-12-08");
+    expect(dateDuRappel(debutDuJourDeParis("2027-03-03"))).toBe("2027-02-24");
   });
 
   it("dû à partir du J-7 (jour de Paris) tant que la condition est en attente", () => {
@@ -216,5 +270,57 @@ describe("condition suspensive OPCO — rappel J-7", () => {
     expect(rappelDu(condition, [renonciation("2026-12-01T10:00:00Z")], le)).toBe(false);
     expect(rappelDu(condition, [refus("2026-12-01T10:00:00Z")], le)).toBe(false);
     expect(rappelDu(condition, [], APRES)).toBe(false);
+  });
+});
+
+describe("condition suspensive OPCO — états fermés", () => {
+  it("seules les transitions depuis en_attente sont permises", () => {
+    expect(transitionAutorisee("en_attente", "active")).toBe(true);
+    expect(transitionAutorisee("en_attente", "caduque")).toBe(true);
+    // Une convention caduque ne revit pas : on en conclut une NOUVELLE.
+    expect(transitionAutorisee("caduque", "active")).toBe(false);
+    expect(transitionAutorisee("active", "caduque")).toBe(false);
+    expect(transitionAutorisee("en_attente", "en_attente")).toBe(false);
+  });
+
+  it("le seuil se lit sur les colonnes : exactement un, sinon rien", () => {
+    expect(seuilDepuisColonnes({ seuilConditionBps: 5000, seuilConditionCents: null })).toEqual({
+      type: "pourcentage",
+      bps: 5000,
+    });
+    expect(seuilDepuisColonnes({ seuilConditionBps: null, seuilConditionCents: 300_000 })).toEqual({
+      type: "montant",
+      cents: 300_000,
+    });
+    expect(seuilDepuisColonnes({ seuilConditionBps: 5000, seuilConditionCents: 1 })).toBeNull();
+    expect(seuilDepuisColonnes({ seuilConditionBps: null, seuilConditionCents: null })).toBeNull();
+  });
+});
+
+describe("condition suspensive OPCO — paramètres de la clause, sans flottant", () => {
+  it("{seuil} en pourcentage nomme sa base ; en montant, des euros et des centimes", () => {
+    expect(libelleSeuilClause({ type: "pourcentage", bps: 5000 })).toBe(
+      "50 % du prix toutes taxes comprises de la présente convention",
+    );
+    expect(libelleSeuilClause({ type: "montant", cents: 300_000 })).toBe("3 000,00 €");
+    expect(pourcentageDepuisBps(6250)).toBe("62,5");
+    expect(pourcentageDepuisBps(3333)).toBe("33,33");
+    expect(pourcentageDepuisBps(5005)).toBe("50,05");
+    expect(euroDepuisCentimes(150_050)).toBe("1 500,50 €");
+    expect(euroDepuisCentimes(1)).toBe("0,01 €");
+  });
+
+  it("la saisie française devient un ENTIER (points de base ou centimes)", () => {
+    expect(bpsDepuisSaisie("50")).toBe(5000);
+    expect(bpsDepuisSaisie("62,5")).toBe(6250);
+    expect(bpsDepuisSaisie("33.33")).toBe(3333);
+    expect(bpsDepuisSaisie("0")).toBeNull();
+    expect(bpsDepuisSaisie("100,01")).toBeNull();
+    expect(bpsDepuisSaisie("12,345")).toBeNull();
+    expect(centimesDepuisSaisie("1 500,50")).toBe(150_050);
+    expect(centimesDepuisSaisie("0,1")).toBe(10);
+    expect(centimesDepuisSaisie("0")).toBeNull();
+    expect(centimesDepuisSaisie("abc")).toBeNull();
+    expect(centimesDepuisSaisie("-5")).toBeNull();
   });
 });

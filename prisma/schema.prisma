@@ -7034,14 +7034,6 @@ enum DocumentType {
   contrat_travail
 }
 
-/// INT-T65-A — nature du seuil de la condition suspensive OPCO.
-enum SeuilConditionSuspensiveType {
-  /// `seuilBps`, rapporté au prix TTC de la convention.
-  pourcentage
-  /// `seuilCents`, comparé au montant accordé.
-  montant
-}
-
 /// INT-T65-A — état de la condition suspensive OPCO d'une convention.
 enum EtatConditionSuspensive {
   en_attente
@@ -7054,49 +7046,49 @@ enum EtatConditionSuspensive {
 /// Document officiel généré (PDF react-pdf). Numéro immuable, hash SHA-256,
 /// signed URL S3, QR de vérification (attestation/certificat), conservation 5 ans.
 model DocumentGenere {
-  id                      String                        @id @default(uuid()) @db.Uuid
+  id                      String                   @id @default(uuid()) @db.Uuid
   type                    DocumentType
-  numero                  String                        @unique @db.VarChar(40)
-  formationId             String?                       @map("formation_id") @db.Uuid
-  formation               Formation?                    @relation(fields: [formationId], references: [id], onDelete: SetNull)
-  sessionId               String?                       @map("session_id") @db.Uuid
-  session                 TrainingSession?              @relation(fields: [sessionId], references: [id], onDelete: SetNull)
-  traineeId               String?                       @map("trainee_id") @db.Uuid
-  trainee                 Trainee?                      @relation(fields: [traineeId], references: [id], onDelete: SetNull)
-  clientId                String?                       @map("client_id") @db.Uuid
-  client                  Client?                       @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  numero                  String                   @unique @db.VarChar(40)
+  formationId             String?                  @map("formation_id") @db.Uuid
+  formation               Formation?               @relation(fields: [formationId], references: [id], onDelete: SetNull)
+  sessionId               String?                  @map("session_id") @db.Uuid
+  session                 TrainingSession?         @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  traineeId               String?                  @map("trainee_id") @db.Uuid
+  trainee                 Trainee?                 @relation(fields: [traineeId], references: [id], onDelete: SetNull)
+  clientId                String?                  @map("client_id") @db.Uuid
+  client                  Client?                  @relation(fields: [clientId], references: [id], onDelete: SetNull)
   /// 🔴 Sous-traitant partie au contrat. `genererContratSousTraitanceAction` ne
   /// passait AUCUN `refs` : la pièce n'était reliée au sous-traitant par rien, et
   /// il était donc impossible de savoir à qui adresser le lien de signature.
-  sousTraitantId          String?                       @map("sous_traitant_id") @db.Uuid
-  sousTraitant            SousTraitant?                 @relation(fields: [sousTraitantId], references: [id], onDelete: SetNull)
+  sousTraitantId          String?                  @map("sous_traitant_id") @db.Uuid
+  sousTraitant            SousTraitant?            @relation(fields: [sousTraitantId], references: [id], onDelete: SetNull)
   /// Coaching 1-to-1 AFEST (C1) : rattache un document généré à son parcours.
   /// Null pour les documents de formation collective (inchangé).
-  coachingSessionId       String?                       @map("coaching_session_id") @db.Uuid
-  coachingSession         CoachingSession?              @relation("CoachingDocuments", fields: [coachingSessionId], references: [id], onDelete: SetNull)
+  coachingSessionId       String?                  @map("coaching_session_id") @db.Uuid
+  coachingSession         CoachingSession?         @relation("CoachingDocuments", fields: [coachingSessionId], references: [id], onDelete: SetNull)
   /// 🔴 Formateur MANDATÉ par la pièce (lettre de mission). Ajouté 2026-08-01 :
   /// la lettre-cadre couvre PLUSIEURS sessions — aucune session unique ne peut
   /// plus désigner le mandataire, il faut donc l'ancrer ici. FK réelle et jamais
   /// `metadata` : l'identité d'un signataire se résout depuis les rattachements
   /// (doctrine du canal maison, cf. refs-circuits.spec.ts).
-  trainerId               String?                       @map("trainer_id") @db.Uuid
-  trainer                 Trainer?                      @relation("DocumentGenereTrainer", fields: [trainerId], references: [id], onDelete: SetNull)
+  trainerId               String?                  @map("trainer_id") @db.Uuid
+  trainer                 Trainer?                 @relation("DocumentGenereTrainer", fields: [trainerId], references: [id], onDelete: SetNull)
   /// URL signée S3/R2 (expiration courte). Regénérée à la demande.
-  pdfUrl                  String?                       @map("pdf_url") @db.Text
-  hashSha256              String                        @map("hash_sha256") @db.VarChar(64)
-  sizeBytes               Int                           @default(0) @map("size_bytes")
+  pdfUrl                  String?                  @map("pdf_url") @db.Text
+  hashSha256              String                   @map("hash_sha256") @db.VarChar(64)
+  sizeBytes               Int                      @default(0) @map("size_bytes")
   /// Filigrane COPIE si true.
-  estCopie                Boolean                       @default(false) @map("est_copie")
+  estCopie                Boolean                  @default(false) @map("est_copie")
   /// Token QR de vérification publique (timingSafeEqual), attestation/certificat.
-  qrToken                 String?                       @unique @map("qr_token") @db.VarChar(64)
-  qrTokenCreatedAt        DateTime?                     @map("qr_token_created_at")
-  envoyeAt                DateTime?                     @map("envoye_at")
+  qrToken                 String?                  @unique @map("qr_token") @db.VarChar(64)
+  qrTokenCreatedAt        DateTime?                @map("qr_token_created_at")
+  envoyeAt                DateTime?                @map("envoye_at")
   /// = createdAt + 5 ans (rétention légale).
-  suppressionPrevueAt     DateTime                      @map("suppression_prevue_at")
+  suppressionPrevueAt     DateTime                 @map("suppression_prevue_at")
   /// Pointe vers le fichier source ORIGINAL archivé (ex. CSV Zoom/Teams pour un
   /// relevé de connexion). Obligation CDC : archiver l'original, pas que le PDF.
-  fichierOriginalPath     String?                       @map("fichier_original_path") @db.Text
-  metadata                Json                          @default("{}")
+  fichierOriginalPath     String?                  @map("fichier_original_path") @db.Text
+  metadata                Json                     @default("{}")
   /// 🔴 ANNULATION au registre — la pièce reste, elle cesse de faire foi.
   ///
   /// Une pièce erronée ne se SUPPRIME pas : son numéro est alloué dans une série
@@ -7105,20 +7097,20 @@ model DocumentGenere {
   /// `annuleeMotif` est rendu obligatoire par une contrainte CHECK dès que
   /// `annuleeAt` est posé : une annulation sans raison ne vaut pas mieux que la
   /// contradiction qu'elle lève.
-  annuleeAt               DateTime?                     @map("annulee_at")
-  annuleeMotif            String?                       @map("annulee_motif") @db.Text
+  annuleeAt               DateTime?                @map("annulee_at")
+  annuleeMotif            String?                  @map("annulee_motif") @db.Text
   /// Identité humaine de l'auteur de l'annulation, telle qu'affichée au registre.
-  annuleePar              String?                       @map("annulee_par") @db.Text
+  annuleePar              String?                  @map("annulee_par") @db.Text
   /// Numéro de la pièce qui REMPLACE celle-ci (contre-trace de la rectification).
   ///
   /// La nouvelle pièce porte `metadata.rectifie` ; sans cette colonne, la pièce
   /// périmée ne disait rien de son sort et il fallait déjà connaître la nouvelle
   /// pour apprendre que l'ancienne était morte. Chaque pièce dit son sort.
-  remplaceeParNumero      String?                       @map("remplacee_par_numero") @db.VarChar(40)
+  remplaceeParNumero      String?                  @map("remplacee_par_numero") @db.VarChar(40)
   /// Statut DÉRIVÉ des lignes `DocumentSignature`. Cache de lecture : la source
   /// de vérité reste la table de signatures, jamais cette colonne.
   /// `non_requise` par défaut → aucune pièce existante ne change de comportement.
-  statutSignature         DocumentStatutSignature       @default(non_requise) @map("statut_signature")
+  statutSignature         DocumentStatutSignature  @default(non_requise) @map("statut_signature")
   /// 🔴 L'exemplaire INTÉGRALEMENT SIGNÉ a-t-il été transmis au signataire ?
   ///
   /// Défaut vécu en production le 2026-09-04 : la convention AXI-DOC-2026-039 a
@@ -7136,7 +7128,7 @@ model DocumentGenere {
   ///     rattrapage n'avait nulle part où s'écrire. C'est ce qui la rend
   ///     indispensable même une fois l'envoi câblé — l'alerte
   ///     `exemplaire_signe_non_transmis` la lit.
-  exemplaireSigneEnvoyeAt DateTime?                     @map("exemplaire_signe_envoye_at")
+  exemplaireSigneEnvoyeAt DateTime?                @map("exemplaire_signe_envoye_at")
   /// Clé R2 du PDF intégralement signé, archivée à la transmission.
   ///
   /// `rendreExemplaireSigne` REJOUE l'instantané de rendu à chaque appel et ne
@@ -7144,26 +7136,29 @@ model DocumentGenere {
   /// consulté par un admin ; ça n'en a plus dès qu'on l'ENVOIE, pour deux
   /// raisons : `enqueueEmail` n'accepte de pièce jointe que par clé R2, et une
   /// pièce transmise à un tiers doit rester relisable telle qu'elle est partie.
-  exemplaireSigneKey      String?                       @map("exemplaire_signe_key") @db.Text
+  exemplaireSigneKey      String?                  @map("exemplaire_signe_key") @db.Text
   /// INT-T65-A — convention conclue sous la condition suspensive de l'accord de
-  /// prise en charge de l'OPCO (C. civ. 1304 s.). Portée par la PIÈCE GÉNÉRÉE
-  /// (`convention` ou `convention_tripartite`), c'est-à-dire par ce que le
-  /// client signe : la clause imprimée et ses paramètres ne font qu'un.
+  /// prise en charge de l'OPCO (C. civ. 1304 s.). Forme d'A02, telle quelle.
+  /// Portée par la PIÈCE GÉNÉRÉE (`convention` ou `convention_tripartite`) :
+  /// la clause imprimée et ses paramètres ne font qu'un.
   /// `false` par défaut : aucune pièce existante ne change de sens.
-  conditionSuspensiveOpco Boolean                       @default(false) @map("condition_suspensive_opco")
-  /// Nature du seuil quand la condition est posée. Un CHECK SQL impose
-  /// exactement un des deux seuils selon ce type (migration 20261004210000).
-  seuilType               SeuilConditionSuspensiveType? @map("seuil_type")
-  /// Seuil en points de base du prix TTC de la convention (5000 = 50 %).
-  seuilBps                Int?                          @map("seuil_bps")
-  /// Seuil en centimes entiers, comparé au montant accordé par l'OPCO.
-  seuilCents              Int?                          @map("seuil_cents")
-  /// Dernier jour (jour de Paris) pour obtenir l'accord écrit.
-  dateLimite              DateTime?                     @map("date_limite") @db.Date
-  /// État de la condition ; `null` tant qu'aucune condition n'est posée.
-  etatConditionSuspensive EtatConditionSuspensive?      @map("etat_condition_suspensive")
-  createdAt               DateTime                      @default(now()) @map("created_at")
-  updatedAt               DateTime                      @updatedAt @map("updated_at")
+  conditionSuspensiveOpco Boolean                  @default(false) @map("condition_suspensive_opco")
+  /// Seuil en points de base (1 à 10 000) du prix TTC de la convention. Le
+  /// défaut de 50 % vit dans la SSOT `SEUIL_CONDITION_SUSPENSIVE_OPCO_BPS` et se
+  /// pose à l'écran : jamais de DEFAULT en base. CHECK `convention_seuil_bps_borne`.
+  seuilConditionBps       Int?                     @map("seuil_condition_bps")
+  /// Seuil en centimes entiers (>= 1), comparé au montant accordé par l'OPCO.
+  /// CHECK `convention_seuil_cents_positif`. Exactement un des deux seuils quand
+  /// la case est cochée (CHECK `convention_condition_coherente`).
+  seuilConditionCents     Int?                     @map("seuil_condition_cents")
+  /// Instant de 00:00 (heure de Paris) du JOUR LIMITE. La borne est la FIN de
+  /// ce jour civil de Paris (minuit exclusif) : cf. `condition-suspensive.ts`.
+  dateLimiteCondition     DateTime?                @map("date_limite_condition") @db.Timestamptz(3)
+  /// État fermé de la condition ; `null` tant qu'aucune condition n'est posée.
+  /// Chaque transition est journalisée (`activity_logs`).
+  etatConditionSuspensive EtatConditionSuspensive? @map("etat_condition_suspensive")
+  createdAt               DateTime                 @default(now()) @map("created_at")
+  updatedAt               DateTime                 @updatedAt @map("updated_at")
 
   enrollmentsAttestation Enrollment[]             @relation("EnrollmentAttestation")
   signatures             DocumentSignature[]

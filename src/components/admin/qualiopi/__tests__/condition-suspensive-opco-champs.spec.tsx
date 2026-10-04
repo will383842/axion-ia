@@ -1,5 +1,5 @@
 /**
- * 🔴 TÉMOIN ROUGE — INT-T65-A : les champs de la condition suspensive OPCO, à
+ * INT-T65-A : les champs de la condition suspensive OPCO, à
  * l'endroit où la console génère la convention (`DocumentsSection`).
  *
  * Posé AVANT l'implémentation (coordination Partners, issue
@@ -18,7 +18,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 
-import { ConditionSuspensiveOpcoChamps } from "../ConditionSuspensiveOpcoChamps";
+import {
+  CONDITION_NON_POSEE,
+  ConditionSuspensiveOpcoChamps,
+  entreeConditionSuspensive,
+} from "../ConditionSuspensiveOpcoChamps";
 import { SEUIL_CONDITION_SUSPENSIVE_OPCO_BPS } from "@/server/qualiopi/config/financing";
 
 afterEach(cleanup);
@@ -124,5 +128,54 @@ describe("ConditionSuspensiveOpcoChamps", () => {
     const texte = container.textContent ?? "";
     expect(texte).toMatch(/\b(vous|votre|vos)\b/i);
     expect(texte).not.toMatch(/\b(tu|toi|ton|ta|tes)\b/i);
+  });
+
+  it("décocher puis recocher ne réécrit pas un seuil déjà saisi", () => {
+    const onChange = vi.fn();
+    render(<ConditionSuspensiveOpcoChamps onChange={onChange} />);
+    fireEvent.click(caseACocher());
+    fireEvent.change(screen.getByLabelText(/seuil de prise en charge \(%\)/i), {
+      target: { value: "70" },
+    });
+    fireEvent.click(caseACocher());
+    fireEvent.click(caseACocher());
+    expect(derniere(onChange)).toMatchObject({ seuilBps: 7000 });
+  });
+});
+
+describe("entreeConditionSuspensive — ce qui part vers la server action", () => {
+  it("case non cochée : rien", () => {
+    expect(entreeConditionSuspensive(CONDITION_NON_POSEE)).toBeUndefined();
+  });
+
+  it("cochée : exactement un seuil ENTIER et la date", () => {
+    expect(
+      entreeConditionSuspensive({
+        conditionSuspensiveOpco: true,
+        seuilType: "montant",
+        seuilBps: null,
+        seuilCents: 150_050,
+        dateLimite: "2026-12-15",
+      }),
+    ).toEqual({ seuilConditionBps: null, seuilConditionCents: 150_050, dateLimite: "2026-12-15" });
+  });
+
+  it("seuil illisible ou date absente : un message, au vouvoiement, et rien ne part", () => {
+    const sansSeuil = entreeConditionSuspensive({
+      conditionSuspensiveOpco: true,
+      seuilType: "pourcentage",
+      seuilBps: null,
+      seuilCents: null,
+      dateLimite: "2026-12-15",
+    });
+    expect(sansSeuil).toHaveProperty("erreur");
+    const sansDate = entreeConditionSuspensive({
+      conditionSuspensiveOpco: true,
+      seuilType: "pourcentage",
+      seuilBps: 5000,
+      seuilCents: null,
+      dateLimite: null,
+    });
+    expect(sansDate).toEqual({ erreur: "Indiquez la date limite de l'accord de l'OPCO." });
   });
 });

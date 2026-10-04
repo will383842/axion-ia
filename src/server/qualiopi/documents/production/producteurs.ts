@@ -47,7 +47,23 @@ import {
   montantPrisEnChargeCents,
   resteAChargeCents,
 } from "@/server/qualiopi/financements/prise-en-charge-montant";
-import { nomOpcoDuClient } from "@/server/qualiopi/financements/opco-referentiel";
+import {
+  nomOpcoDuClient,
+  referenceOpcoDuClient,
+  type OpcoClient,
+} from "@/server/qualiopi/financements/opco-referentiel";
+import {
+  debutDuJourDeParis,
+  libelleJourLimite,
+  validerSeuil,
+  type ParametresClauseConditionSuspensiveOpco,
+  type SeuilConditionSuspensive,
+} from "@/server/qualiopi/financements/condition-suspensive";
+import {
+  computeTotauxFacture,
+  regimeTvaDepuisConfig,
+  TAUX_TVA_STANDARD,
+} from "@/server/qualiopi/legal/tva";
 import { lireModulesProgramme } from "@/server/qualiopi/documents/programme-modules";
 import { construireTirageEmargement } from "@/server/qualiopi/documents/emargement-tirage";
 
@@ -262,12 +278,111 @@ function optionsGenerate(opts?: OptionsProduction): {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// INT-T65-A — condition suspensive OPCO (commune aux deux conventions)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Ce que l'écran a fixé quand la case est cochée (déjà validé par zod). */
+export interface OptionConditionSuspensiveOpco {
+  readonly seuil: SeuilConditionSuspensive;
+  /** Jour civil de Paris, « YYYY-MM-DD ». */
+  readonly jourLimite: string;
+}
+
+interface ConditionPreparee {
+  /** Paramètres imprimés par la clause. */
+  readonly clause: ParametresClauseConditionSuspensiveOpco;
+  /** Colonnes écrites sur la convention (forme d'A02). */
+  readonly colonnes: {
+    seuilConditionBps: number | null;
+    seuilConditionCents: number | null;
+    dateLimiteCondition: Date;
+  };
+  /** Base FIGÉE d'un seuil en pourcentage : le prix TTC de cette convention. */
+  readonly metadata: { prixTtcCents: number; opco: string };
+}
+
+/**
+ * Prépare la condition à partir de l'option de l'écran et du client.
+ *
+ * 🔴 La clause NOMME l'OPCO du client : sans OPCO identifié sur la fiche, on
+ * n'émet pas une convention qui imprimerait « OPCO (à préciser) » sous une
+ * condition dont tout dépend.
+ *
+ * Le prix TTC est FIGÉ dans la pièce (`metadata.conditionSuspensiveOpco`) : un
+ * seuil de 50 % se compare au prix de CETTE convention, pas à un prix recalculé
+ * plus tard sous un autre régime de TVA.
+ */
+async function preparerConditionSuspensive(
+  option: OptionConditionSuspensiveOpco,
+  client: OpcoClient,
+  montantHtCents: number,
+): Promise<{ ok: true; condition: ConditionPreparee } | { ok: false; motif: string }> {
+  validerSeuil(option.seuil);
+  if (referenceOpcoDuClient(client) === null) {
+    return {
+      ok: false,
+      motif:
+        "La condition suspensive nomme l'OPCO du client : renseignez-le sur la fiche client avant de générer la convention.",
+    };
+  }
+  const opco = nomOpcoDuClient(client);
+  const regime = regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva"));
+  const tauxStandard = (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
+  const { totalTtcCents } = computeTotauxFacture(
+    [{ quantite: 1, prixUnitaireHtCents: montantHtCents }],
+    regime,
+    tauxStandard,
+  );
+  const dateLimiteCondition = debutDuJourDeParis(option.jourLimite);
+  return {
+    ok: true,
+    condition: {
+      clause: { opco, dateLimite: libelleJourLimite(dateLimiteCondition), seuil: option.seuil },
+      colonnes: {
+        seuilConditionBps: option.seuil.type === "pourcentage" ? option.seuil.bps : null,
+        seuilConditionCents: option.seuil.type === "montant" ? option.seuil.cents : null,
+        dateLimiteCondition,
+      },
+      metadata: { prixTtcCents: totalTtcCents, opco },
+    },
+  };
+}
+
+/** Ce que le journal de génération retient de la condition (sérialisable). */
+function detailsCondition(condition: ConditionPreparee): Record<string, unknown> {
+  return {
+    seuilConditionBps: condition.colonnes.seuilConditionBps,
+    seuilConditionCents: condition.colonnes.seuilConditionCents,
+    dateLimiteCondition: condition.colonnes.dateLimiteCondition.toISOString(),
+    ...condition.metadata,
+  };
+}
+
+/** Options de `generateDocument` propres à la condition (rien si elle n'est pas posée). */
+function optionsCondition(
+  condition: ConditionPreparee | null,
+  opts?: OptionsProduction,
+): {
+  conditionSuspensiveOpco?: ConditionPreparee["colonnes"];
+  metadata?: Record<string, unknown>;
+} {
+  if (condition === null) return {};
+  return {
+    conditionSuspensiveOpco: condition.colonnes,
+    metadata: { ...(opts?.metadata ?? {}), conditionSuspensiveOpco: condition.metadata },
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // 1. Convention de formation (L.6353-1)
 // ─────────────────────────────────────────────────────────────────────────────
 
 export async function produireConvention(
   sessionId: string,
-  opts?: OptionsProduction & { acomptePercent?: number },
+  opts?: OptionsProduction & {
+    acomptePercent?: number;
+    conditionSuspensiveOpco?: OptionConditionSuspensiveOpco;
+  },
 ): Promise<ResultatProduction> {
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
@@ -305,6 +420,9 @@ export async function produireConvention(
           adresse: true,
           contactNom: true,
           contactEmail: true,
+          // INT-T65-A — la clause de condition suspensive nomme l'OPCO.
+          opco: true,
+          opcoIdentifie: true,
         },
       },
     },
@@ -318,6 +436,17 @@ export async function produireConvention(
   const refusLieu = refusEmissionLieu(session);
   if (refusLieu !== null) return { ok: false, motif: refusLieu };
 
+  let condition: ConditionPreparee | null = null;
+  if (opts?.conditionSuspensiveOpco !== undefined) {
+    const preparee = await preparerConditionSuspensive(
+      opts.conditionSuspensiveOpco,
+      session.client,
+      session.montantHtCents,
+    );
+    if (!preparee.ok) return preparee;
+    condition = preparee.condition;
+  }
+
   const identite = await getOrganismeIdentite();
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const objectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
@@ -325,6 +454,7 @@ export async function produireConvention(
   const doc = await generateDocument({
     type: "convention",
     ...optionsGenerate(opts),
+    ...optionsCondition(condition, opts),
     buildElement: (numero) =>
       React.createElement(ConventionPdf, {
         data: {
@@ -351,6 +481,7 @@ export async function produireConvention(
           // facture ». Cf. `acompte-defaut.ts` pour l'arbitrage.
           ...(opts?.acomptePercent !== undefined ? { acomptePercent: opts.acomptePercent } : {}),
           dateConvention: formatDateFr(new Date()),
+          ...(condition !== null ? { conditionSuspensiveOpco: condition.clause } : {}),
         },
         identite,
       }),
@@ -362,7 +493,10 @@ export async function produireConvention(
     ok: true,
     documentId: doc.id,
     numero: doc.numero,
-    details: { acomptePercent: opts?.acomptePercent ?? ACOMPTE_DEFAUT_PERCENT },
+    details: {
+      acomptePercent: opts?.acomptePercent ?? ACOMPTE_DEFAUT_PERCENT,
+      ...(condition !== null ? { conditionSuspensiveOpco: detailsCondition(condition) } : {}),
+    },
   };
 }
 
@@ -372,7 +506,7 @@ export async function produireConvention(
 
 export async function produireConventionTripartite(
   sessionId: string,
-  opts?: OptionsProduction,
+  opts?: OptionsProduction & { conditionSuspensiveOpco?: OptionConditionSuspensiveOpco },
 ): Promise<ResultatProduction> {
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
@@ -429,6 +563,17 @@ export async function produireConventionTripartite(
   const refusLieu = refusEmissionLieu(session);
   if (refusLieu !== null) return { ok: false, motif: refusLieu };
 
+  let condition: ConditionPreparee | null = null;
+  if (opts?.conditionSuspensiveOpco !== undefined) {
+    const preparee = await preparerConditionSuspensive(
+      opts.conditionSuspensiveOpco,
+      session.client,
+      session.montantHtCents,
+    );
+    if (!preparee.ok) return preparee;
+    condition = preparee.condition;
+  }
+
   const identite = await getOrganismeIdentite();
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const objectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
@@ -454,6 +599,7 @@ export async function produireConventionTripartite(
   const doc = await generateDocument({
     type: "convention_tripartite",
     ...optionsGenerate(opts),
+    ...optionsCondition(condition, opts),
     buildElement: (numero) =>
       React.createElement(ConventionTripartitePdf, {
         data: {
@@ -482,13 +628,21 @@ export async function produireConventionTripartite(
           montantPrisEnCharge: priseEnChargeCents !== null ? priseEnChargeCents / 100 : null,
           resteAChargeClient: resteCents !== null ? resteCents / 100 : null,
           dateConvention: formatDateFr(new Date()),
+          ...(condition !== null ? { conditionSuspensiveOpco: condition.clause } : {}),
         },
         identite,
       }),
     refs: { sessionId, clientId: session.clientId! },
   });
 
-  return { ok: true, documentId: doc.id, numero: doc.numero };
+  return {
+    ok: true,
+    documentId: doc.id,
+    numero: doc.numero,
+    ...(condition !== null
+      ? { details: { conditionSuspensiveOpco: detailsCondition(condition) } }
+      : {}),
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
