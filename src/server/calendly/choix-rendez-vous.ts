@@ -82,11 +82,67 @@ export function utmContentDuChoix(choix: ChoixRendezVous, depuis?: string | null
   return (d ? `${choix}:${d}` : choix).slice(0, 100);
 }
 
-/** `rdv=diagnostic&depuis=…` — à recopier dans les liens internes du parcours. */
-export function parametresDuChoix(choix: ChoixRendezVous, depuis?: string | null): string {
+/**
+ * Les paramètres de SUIVI d'arrivée que la page `/appel` lit dans son URL (les
+ * quatre déjà lus sur main). `utm_content` n'en fait PAS partie : sur ce
+ * parcours, il mesure le bouton cliqué (`utmContentDuChoix`).
+ */
+export const PARAMS_SUIVI = ["utm_source", "utm_medium", "utm_campaign", "ref"] as const;
+export type ParamSuivi = (typeof PARAMS_SUIVI)[number];
+export type SuiviArrivee = Partial<Record<ParamSuivi, string>>;
+
+/** Même borne et même nettoyage que `parseUtmFromUrl` (`src/lib/utm.ts`). */
+const SUIVI_MAX = 200;
+
+/**
+ * Les paramètres de suivi d'arrivée (`?utm_source=linkedin…`), bornés et
+ * nettoyés. Sans eux, un visiteur arrivé d'une campagne perdait son attribution
+ * au premier clic du parcours (chantier « Types de rendez-vous », L5a).
+ */
+export function lireSuiviArrivee(source: Readonly<Record<string, unknown>>): SuiviArrivee {
+  const out: SuiviArrivee = {};
+  for (const cle of PARAMS_SUIVI) {
+    const v = source[cle];
+    if (typeof v !== "string" || v.length === 0 || v.length > SUIVI_MAX) continue;
+    const propre = v.replace(/[^\w\s.\-/+]/g, "").trim();
+    if (propre) out[cle] = propre;
+  }
+  return out;
+}
+
+function ajouterSuivi(p: URLSearchParams, suivi?: SuiviArrivee | null): void {
+  if (!suivi) return;
+  for (const cle of PARAMS_SUIVI) {
+    const v = suivi[cle];
+    if (v) p.set(cle, v);
+  }
+}
+
+/**
+ * `rdv=diagnostic&depuis=…&utm_source=…` — à recopier dans les liens internes
+ * du parcours (cartes, formulaire, renvois de l'action).
+ */
+export function parametresDuChoix(
+  choix: ChoixRendezVous,
+  depuis?: string | null,
+  suivi?: SuiviArrivee | null,
+): string {
   const p = new URLSearchParams({ [PARAM_RDV]: choix });
   const d = lireDepuis(depuis);
   if (d) p.set(PARAM_DEPUIS, d);
+  ajouterSuivi(p, suivi);
+  return p.toString();
+}
+
+/**
+ * `depuis=…&utm_source=…` SANS choix — le lien « Changer de rendez-vous », qui
+ * ramène à l'écran du choix. Chaîne vide quand il n'y a rien à recopier.
+ */
+export function parametresDuRetour(depuis?: string | null, suivi?: SuiviArrivee | null): string {
+  const p = new URLSearchParams();
+  const d = lireDepuis(depuis);
+  if (d) p.set(PARAM_DEPUIS, d);
+  ajouterSuivi(p, suivi);
   return p.toString();
 }
 

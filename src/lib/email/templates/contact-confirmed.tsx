@@ -66,7 +66,10 @@ export function ContactConfirmedEmail({
       // calendrier. Un destinataire qui suivait la promesse du texte (« passez
       // directement par notre calendrier de réservation ») atterrissait sur
       // autre chose. La page de réservation du site est `/appel`.
-      cta={{ label: t.cta, href: `${baseUrl}/${locale === "en" ? "en/book-a-call" : "fr/appel"}` }}
+      cta={{
+        label: t.cta,
+        href: `${baseUrl}/${locale === "en" ? "en/book-a-call" : "fr/appel"}?depuis=email-contact`,
+      }}
       locale={locale}
     >
       <Text style={emailStyles.paragraphStyle}>{t.body}</Text>
