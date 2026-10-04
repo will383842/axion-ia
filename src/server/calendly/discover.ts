@@ -465,6 +465,10 @@ export async function discoverNewCalendlyEvents(
           inviteeName: inviteeName ?? "(non communiqué)",
           eventStartTime: start?.toISOString() ?? "(voir mail Calendly)",
           eventName: name,
+          // Le titre de l'alerte se tire du type classé (« Diagnostic IA
+          // réservé », « Échange projet réservé — Besoin : Formation »).
+          typeRendezVous,
+          ...(besoin ? { besoin } : {}),
           format,
           ...(location ? { lieu: location } : {}),
           ...(inviteePhone ? { inviteePhone } : {}),
