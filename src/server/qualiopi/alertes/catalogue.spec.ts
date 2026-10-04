@@ -143,6 +143,10 @@ const CODES_ATTENDUS: string[] = [
   "subrogation_incompatible_regime",
   "fonds_opco_suspendus_session",
   "donnees_opco_incompletes",
+  // Lot OPCO A8 — suivi de l'entreprise qui dépose.
+  "entreprise_a_appeler_depot",
+  "entreprise_a_appeler_reponse_opco",
+  "opco_refus_a_traiter",
   // Conservé au catalogue bien qu'il ne soit PLUS émis (le palier J30 est couvert
   // par une relance proposée) : sans son entrée, les alertes déjà en base ne
   // s'auto-résoudraient jamais. Cf. `catalogue.ts`.

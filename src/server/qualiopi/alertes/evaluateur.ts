@@ -119,6 +119,7 @@ import {
 import { regleDelaiFacturationOpco } from "./regle-delai-facturation-opco";
 import { regleDepotOpcoAFaire } from "./regle-depot-opco-a-faire";
 import { regleDonneesOpcoIncompletes } from "./regle-donnees-opco-incompletes";
+import { regleSuiviEntrepriseOpco } from "./regle-suivi-entreprise-opco";
 import { regleEtatFondsPerime } from "./regle-etat-fonds-perime";
 import { regleFondsOpcoSuspendusSession } from "./regle-fonds-opco-suspendus-session";
 import { regleSubrogationIncompatibleRegime } from "./regle-subrogation-incompatible-regime";
@@ -5079,6 +5080,8 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "subrogation_incompatible_regime", fn: regleSubrogationIncompatibleRegime },
   { nom: "fonds_opco_suspendus_session", fn: regleFondsOpcoSuspendusSession },
   { nom: "donnees_opco_incompletes", fn: regleDonneesOpcoIncompletes },
+  // Lot OPCO A8 — l'entreprise relancée sans réponse : à appeler ; refus déclaré.
+  { nom: "suivi_entreprise_opco", fn: regleSuiviEntrepriseOpco },
   // Lot 1 §1.4 — les deux seules étapes du parcours d'un dossier qui n'avaient
   // AUCUN code d'alerte. Les douze autres en avaient déjà un ; ajouter une
   // alerte « échéance dépassée » globale les aurait signalées deux fois.

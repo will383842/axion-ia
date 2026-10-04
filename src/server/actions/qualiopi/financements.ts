@@ -39,6 +39,7 @@ import {
   genererPdfFactureFormation,
 } from "@/server/qualiopi/financements/facture-formation-emission";
 import {
+  alignerDossiersSurSubrogation,
   creerDossierDepuisSession,
   DOSSIER_STATUT_LIBELLES,
   refermerDossiersAMonter,
@@ -287,7 +288,10 @@ export async function setFinancementSessionAction(input: {
   // ENTRER la session dans le périmètre suivi (cf. `changementOuvreUnDossier`).
   // Lu ici, pas après : après, il est déjà écrasé.
   const avant = await prisma.trainingSession
-    .findUnique({ where: { id: sessionId }, select: { financementType: true } })
+    .findUnique({
+      where: { id: sessionId },
+      select: { financementType: true, opcoSubrogation: true },
+    })
     .catch(() => null);
 
   await prisma.trainingSession.update({
@@ -370,6 +374,32 @@ export async function setFinancementSessionAction(input: {
     }
   }
 
+  // ── 🔴 LOT A8c — les créances suivent la décision de subrogation ──────────
+  //
+  // Le dossier s'ouvre au choix du financement, AVANT que la subrogation ne
+  // soit en général décidée : ses créances étaient celles de ce moment, et
+  // seules les transitions `accord_recu` / `refuse` les recalculaient. Cocher
+  // la subrogation laissait donc une créance « entreprise » du total — la
+  // facture à l'OPCO était refusée — et la décocher laissait une créance OPCO.
+  // Fail-soft, comme l'ouverture : la décision saisie ne se perd jamais.
+  let avertissementCreances: string | undefined;
+  const subrogationApres = updateData.opcoSubrogation;
+  if (typeof subrogationApres === "boolean" && avant?.opcoSubrogation !== subrogationApres) {
+    try {
+      const { engages } = await alignerDossiersSurSubrogation(sessionId, subrogationApres);
+      if (engages.length > 0) {
+        avertissementCreances =
+          "Le dossier de financement est déjà facturé : ses créances ne sont pas recalculées. " +
+          "Pour changer de circuit de paiement, émettez un avoir sur la facture concernée, puis refacturez le bon débiteur.";
+      }
+    } catch (err) {
+      console.error("[financements] alignement des créances sur la subrogation impossible", {
+        sessionId,
+        err: err instanceof Error ? err.message : String(err),
+      });
+    }
+  }
+
   // ── 🔴 LE RETOUR — ce qui s'ouvre seul se referme seul ──────────────────────
   //
   // 17/09/2026, en production : direct → opco → direct en cinq secondes (une
@@ -382,7 +412,8 @@ export async function setFinancementSessionAction(input: {
   // chez un financeur — y compris un `a_monter` renvoyé pour complément (#1112,
   // revue 5250421969) — engage l'organisme : il n'est pas touché, et on le DIT.
   // Fail-soft, comme l'ouverture : le financement saisi ne se perd jamais.
-  let avertissement: string | undefined = avertissementRegime;
+  let avertissement: string | undefined =
+    [avertissementRegime, avertissementCreances].filter(Boolean).join(" ") || undefined;
   if (financementRefermeLesDossiers(fields.financementType)) {
     try {
       // Journalisé dossier par dossier, APRÈS chaque fermeture : si le suivant

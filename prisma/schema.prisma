@@ -7771,12 +7771,73 @@ model DossierFinancement {
   payeurs           DossierPayeur[]
   factures          FactureFormation[]
   relancesProposees RelanceProposee[]
+  /// Lot OPCO A8 — envoi du dossier à l'entreprise et relances (relation seule, aucune colonne).
+  suiviEntreprise   OpcoSuiviEntreprise?
 
   @@index([statut])
   @@index([clientId])
   @@index([trainingSessionId])
   @@index([type, statut])
   @@map("dossiers_financement")
+}
+
+/// Lot OPCO A8 — suivi de l'ENTREPRISE qui dépose sa demande de prise en charge :
+/// l'envoi du dossier prêt à déposer (une fois par dossier), puis les relances
+/// « dépôt fait ? » et « réponse de l'OPCO ? ». Une ligne par dossier de
+/// financement. L'adresse du contact n'est PAS recopiée : elle est lue sur la
+/// fiche client au moment de chaque envoi.
+/// rgpd: technique — identifiants, dates, clés de stockage ; aucune donnée personnelle
+model OpcoSuiviEntreprise {
+  id                 String             @id @default(uuid()) @db.Uuid
+  dossierId          String             @unique @map("dossier_id") @db.Uuid
+  dossier            DossierFinancement @relation(fields: [dossierId], references: [id], onDelete: Cascade)
+  /// Premier envoi du dossier à l'entreprise (point de départ des relances de dépôt).
+  envoyeLe           DateTime           @map("envoye_le") @db.Timestamptz(6)
+  /// `true` : envoi parti du passage quotidien ; `false` : bouton de la console.
+  envoiAutomatique   Boolean            @map("envoi_automatique")
+  /// Clé R2 du ZIP remis (kit OPCO + pièces), servi par le lien sécurisé.
+  zipKey             String?            @map("zip_key") @db.VarChar(300)
+  zipNom             String?            @map("zip_nom") @db.VarChar(200)
+  /// « Arrêter les relances » (console) : plus aucune relance ni alerte « à appeler ».
+  relancesArreteesLe DateTime?          @map("relances_arretees_le") @db.Timestamptz(6)
+  /// Refus déclaré par l'entreprise depuis la page publique.
+  refusDeclareLe     DateTime?          @map("refus_declare_le") @db.Timestamptz(6)
+  /// Accord déposé par l'entreprise (facultatif), après analyse antivirus « sain ».
+  accordFichierKey   String?            @map("accord_fichier_key") @db.VarChar(300)
+  createdAt          DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime           @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  messages OpcoSuiviMessage[]
+
+  @@map("opco_suivi_entreprise")
+}
+
+/// Lot OPCO A8 — un e-mail parti à l'entreprise (envoi ou relance) et la réponse
+/// donnée par son jeton. Clé d'idempotence : (suivi, étape, rang).
+/// Le jeton n'est conservé qu'en empreinte SHA-256 (`hacherToken`).
+/// rgpd: technique — empreinte de jeton, étape, dates et réponse fermée ; aucune donnée personnelle
+model OpcoSuiviMessage {
+  id            String              @id @default(uuid()) @db.Uuid
+  suiviId       String              @map("suivi_id") @db.Uuid
+  suivi         OpcoSuiviEntreprise @relation(fields: [suiviId], references: [id], onDelete: Cascade)
+  /// `envoi` | `relance_depot` | `relance_reponse` (CHECK en base).
+  etape         String              @db.VarChar(20)
+  /// 0 pour l'envoi ; 1, 2, 3… pour les relances de l'étape.
+  rang          Int
+  /// `depot` | `reponse` : la question que porte l'e-mail.
+  question      String              @db.VarChar(10)
+  envoyeLe      DateTime            @map("envoye_le") @db.Timestamptz(6)
+  /// Jour civil de Paris de l'envoi (AAAA-MM-JJ) : au plus un e-mail par jour.
+  jourParis     String              @map("jour_paris") @db.VarChar(10)
+  jetonHash     String              @unique @map("jeton_hash") @db.VarChar(64)
+  jetonExpireLe DateTime            @map("jeton_expire_le") @db.Timestamptz(6)
+  /// `oui` | `pas_encore` | `accord` | `refus` — posée une seule fois (jeton à usage unique).
+  reponse       String?             @db.VarChar(12)
+  reponduLe     DateTime?           @map("repondu_le") @db.Timestamptz(6)
+
+  @@unique([suiviId, etape, rang])
+  @@index([suiviId])
+  @@map("opco_suivi_messages")
 }
 
 /// Créance d'un payeur dans un dossier (N payeurs par dossier — C8 du plan).

@@ -13,6 +13,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { lienCible } from "@/server/qualiopi/alertes/lien-cible";
+import { segmentsAvecTelephone } from "@/server/qualiopi/alertes/telephone-message";
 import { libellesDesCibles, texteCible } from "@/server/qualiopi/alertes/libelle-cible";
 
 import { lireDernierBalayage } from "@/server/qualiopi/alertes/alertes-service";
@@ -390,7 +391,17 @@ export default async function QualiopiAlertesPage({ params, searchParams }: Page
                         {alerte.titre}
                       </p>
                       <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
-                        {alerte.message}
+                        {/* Lot OPCO A8 — le téléphone du contact d'une alerte
+                            « à appeler » se compose d'un clic (console seulement). */}
+                        {segmentsAvecTelephone(alerte.code, alerte.message).map((seg, i) =>
+                          seg.tel ? (
+                            <a key={i} href={`tel:${seg.tel}`} className="underline">
+                              {seg.texte}
+                            </a>
+                          ) : (
+                            <span key={i}>{seg.texte}</span>
+                          ),
+                        )}
                       </p>
 
                       {/*

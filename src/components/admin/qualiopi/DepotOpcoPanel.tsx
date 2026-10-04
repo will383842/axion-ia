@@ -1,5 +1,5 @@
 "use client";
-// use-client: dépôt OPCO d'une session — téléchargement du ZIP (Blob), saisie « Dépôt fait le » et « Accord écrit le » (useTransition + Server Actions).
+// use-client: dépôt OPCO d'une session — téléchargement du ZIP (Blob), saisie « Dépôt fait le » et « Accord écrit le », envoi du dossier à l'entreprise et arrêt des relances (useTransition + Server Actions).
 
 /**
  * DepotOpcoPanel — chantier OPCO A6.
@@ -14,6 +14,11 @@
  * `OPCO_FICHES`, nouvel onglet) et date de l'accord écrit, saisie ici, à côté
  * du dépôt — elle gouverne le régime de paiement. L'état des fonds est porté
  * par le `BandeauEtatFonds` de la page, plus par une ligne de l'encart.
+ *
+ * Lot OPCO A8 : « Envoyer le dossier à l'entreprise » (le même envoi que le
+ * passage quotidien : lien sécurisé, marche à suivre, date limite), frise du
+ * suivi (envoi, relances, réponses, prochaine relance) et « Arrêter les
+ * relances ».
  */
 
 import { useState, useTransition } from "react";
@@ -23,6 +28,12 @@ import {
   enregistrerAccordEcritAction,
   enregistrerDepotDossierAction,
 } from "@/server/actions/qualiopi/facturation-hub";
+import {
+  arreterRelancesEntrepriseAction,
+  envoyerDossierEntrepriseAction,
+  lienAccordEntrepriseAction,
+} from "@/server/actions/qualiopi/suivi-entreprise-opco";
+import type { FriseSuivi } from "@/server/qualiopi/financements/suivi-entreprise/frise";
 
 export interface DepotOpcoPanelProps {
   sessionId: string;
@@ -46,6 +57,8 @@ export interface DepotOpcoPanelProps {
     etatFonds: string | null;
   };
   pieces: { libelle: string; presente: boolean; detail: string }[];
+  /** Lot A8 — suivi de l'entreprise (null : dossier jamais envoyé). */
+  suiviEntreprise?: FriseSuivi | null;
 }
 
 function telechargerZip(base64: string, filename: string): void {
@@ -86,6 +99,7 @@ export function DepotOpcoPanel(props: DepotOpcoPanelProps): React.ReactElement {
   const peutEcrire = props.peutEcrire !== false;
   const { encart } = props;
   const manquantes = props.pieces.filter((p) => !p.presente);
+  const suivi = props.suiviEntreprise ?? null;
 
   function telecharger(): void {
     setError(null);
@@ -103,6 +117,56 @@ export function DepotOpcoPanel(props: DepotOpcoPanelProps): React.ReactElement {
           : "Dossier téléchargé — toutes les pièces de la demande sont jointes.",
       );
       router.refresh();
+    });
+  }
+
+  function envoyerEntreprise(): void {
+    setError(null);
+    setSuccess(null);
+    if (props.dossierId === null) return;
+    const dossierId = props.dossierId;
+    startTransition(async () => {
+      const res = await envoyerDossierEntrepriseAction({ dossierId });
+      if ("error" in res) {
+        setError(res.error);
+        return;
+      }
+      setSuccess(
+        res.data.garePourValidation
+          ? "Dossier préparé : l'e-mail attend votre validation dans « E-mails à valider »."
+          : "Dossier envoyé à l'entreprise.",
+      );
+      router.refresh();
+    });
+  }
+
+  function arreterRelances(): void {
+    setError(null);
+    setSuccess(null);
+    if (props.dossierId === null) return;
+    const dossierId = props.dossierId;
+    startTransition(async () => {
+      const res = await arreterRelancesEntrepriseAction({ dossierId });
+      if ("error" in res) {
+        setError(res.error);
+        return;
+      }
+      setSuccess("Relances arrêtées.");
+      router.refresh();
+    });
+  }
+
+  function voirAccord(): void {
+    setError(null);
+    if (props.dossierId === null) return;
+    const dossierId = props.dossierId;
+    startTransition(async () => {
+      const res = await lienAccordEntrepriseAction({ dossierId });
+      if ("error" in res) {
+        setError(res.error);
+        return;
+      }
+      window.open(res.data.url, "_blank", "noopener,noreferrer");
     });
   }
 
@@ -216,6 +280,71 @@ export function DepotOpcoPanel(props: DepotOpcoPanelProps): React.ReactElement {
           </p>
         ) : null}
       </div>
+
+      {props.dossierId !== null ? (
+        <div>
+          <p className={labelCls}>Envoi à l&apos;entreprise</p>
+          {suivi ? (
+            <div className="space-y-[var(--space-admin-1)] text-[length:var(--text-admin-sm)]">
+              <p>
+                {`Envoyé le ${jourFr(suivi.envoyeLe)} (${
+                  suivi.envoiAutomatique ? "automatiquement" : "depuis la console"
+                }) · ${suivi.relancesFaites} relance${suivi.relancesFaites > 1 ? "s" : ""}`}
+              </p>
+              <ol className="list-inside list-disc text-[color:var(--color-admin-fg-muted)]">
+                {suivi.evenements.map((e, i) => (
+                  <li key={`${e.jour}-${i}`}>{`${jourFr(e.jour)} — ${e.libelle}`}</li>
+                ))}
+              </ol>
+              <p>
+                {suivi.relancesArreteesLe
+                  ? `Relances arrêtées le ${jourFr(suivi.relancesArreteesLe)}.`
+                  : suivi.prochaineRelance
+                    ? `Prochaine relance : ${jourFr(suivi.prochaineRelance.jour)} (${suivi.prochaineRelance.libelle}).`
+                    : "Aucune relance prévue."}
+              </p>
+            </div>
+          ) : (
+            <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+              Pas encore envoyé. L&apos;envoi part seul quand la convention signée est au dossier,
+              que la fiche client porte un e-mail de contact et que le référentiel constate que
+              l&apos;entreprise dépose elle-même chez son OPCO ; sinon, utilisez le bouton.
+            </p>
+          )}
+          {peutEcrire ? (
+            <div className="mt-[var(--space-admin-2)] flex flex-wrap gap-[var(--space-admin-2)]">
+              <button
+                type="button"
+                onClick={envoyerEntreprise}
+                disabled={isPending}
+                className="admin-button-secondary"
+              >
+                {suivi ? "Renvoyer le dossier à l'entreprise" : "Envoyer le dossier à l'entreprise"}
+              </button>
+              {suivi && !suivi.relancesArreteesLe && suivi.prochaineRelance ? (
+                <button
+                  type="button"
+                  onClick={arreterRelances}
+                  disabled={isPending}
+                  className="admin-button-secondary"
+                >
+                  Arrêter les relances
+                </button>
+              ) : null}
+              {suivi?.accordFichierDepose ? (
+                <button
+                  type="button"
+                  onClick={voirAccord}
+                  disabled={isPending}
+                  className="admin-button-secondary"
+                >
+                  Voir l&apos;accord déposé
+                </button>
+              ) : null}
+            </div>
+          ) : null}
+        </div>
+      ) : null}
 
       <div>
         <p className={labelCls}>Dépôt par l&apos;entreprise</p>
