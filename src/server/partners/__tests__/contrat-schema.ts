@@ -26,11 +26,15 @@ const LUS = new Set([
   "minimum",
   "$ref",
   "items",
+  // Contrat v3 : une page de relecture est bornée (`api_relecture_reponse`, maxItems 500).
+  "maxItems",
 ]);
 
 export const RACINE = contrat as unknown as Schema;
 
 export function resoudre(ref: string): Schema {
+  // Contrat v3 : une ligne de relecture est une enveloppe, désignée par la racine (`#`).
+  if (ref === "#") return RACINE;
   const [, nom] = /^#\/\$defs\/(.+)$/.exec(ref) ?? [];
   const cible = nom ? (RACINE["$defs"] as Record<string, Schema>)[nom] : undefined;
   if (!cible) throw new Error(`$ref introuvable : ${ref}`);
@@ -70,6 +74,9 @@ export function fautes(s: Schema, v: unknown, chemin = "$"): string[] {
   }
   if (typeof v === "number" && typeof s["minimum"] === "number" && v < s["minimum"]) {
     f.push(`${chemin} : sous le minimum ${s["minimum"]}`);
+  }
+  if (Array.isArray(v) && typeof s["maxItems"] === "number" && v.length > s["maxItems"]) {
+    f.push(`${chemin} : plus de ${s["maxItems"]} éléments`);
   }
   if (Array.isArray(v) && s["items"]) {
     v.forEach((e, i) => f.push(...fautes(s["items"] as Schema, e, `${chemin}[${i}]`)));

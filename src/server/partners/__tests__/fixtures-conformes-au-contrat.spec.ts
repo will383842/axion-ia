@@ -35,7 +35,7 @@ const EVENEMENTS = (
 );
 
 describe("REQ-INT-004, REQ-INT-032 — la sortie du producteur passe le contrat publié", () => {
-  it("chaque fixture, un par un, est conforme à contracts.v2.json", () => {
+  it("chaque fixture, un par un, est conforme à contracts.v3.json", () => {
     expect(EVENEMENTS.length).toBeGreaterThan(10);
     const rapport = EVENEMENTS.map((e) => [e["event_type"], fautes(RACINE, e)] as const).filter(
       ([, f]) => f.length > 0,

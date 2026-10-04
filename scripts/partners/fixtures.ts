@@ -74,7 +74,7 @@ import {
 // Garde-fous
 // ─────────────────────────────────────────────────────────────────────────────
 
-const SORTIE_PAR_DEFAUT = path.join("src", "server", "partners", "contrat", "fixtures.v2.json");
+const SORTIE_PAR_DEFAUT = path.join("src", "server", "partners", "contrat", "fixtures.v3.json");
 
 /**
  * ⛔ La cible. Refuse tout ce qui n'est pas une base locale.
