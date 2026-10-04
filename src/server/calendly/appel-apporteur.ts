@@ -37,30 +37,78 @@ export function estAppelApporteur(nomTypeEvenement: string | null | undefined): 
     .includes(MOT_CLE_TYPE_APPEL_APPORTEUR);
 }
 
+// ── Les clauses Prisma (2026-10-04 : le TYPE classé d'abord) ──────────────
+//
+// Depuis le lot L1 du chantier « Types de rendez-vous », chaque ligne porte
+// `typeRendezVous`, classé à l'écriture par l'URI du type Calendly (renommer un
+// type ne le fait plus changer de monde). La colonne est NULLABLE : les lignes
+// écrites pendant la fenêtre de déploiement n'en ont pas. D'où deux familles :
+//
+//   · `…_PAR_NOM` : les clauses historiques, sur le nom seul. Gardées pour le
+//     repli du worker, qui tourne le nouveau code ~50 min AVANT la migration
+//     (AGENTS.md) : une requête qui cite une colonne absente échoue, il la
+//     rejoue alors sur le nom (`rappels-appel.ts`, `reconcile.ts`).
+//   · les clauses courantes : la colonne d'abord.
+//
+// 🔑 DOUBLE VERROU pour l'apporteur, comme la garde CRM (`crm-sync/index.ts`) :
+// est apporteur ce que la colonne classe « apporteur » OU dont le nom contient
+// « apporteur ». Tout ce qui était apporteur hier le reste donc, quel que soit
+// le classement — un candidat ne reçoit jamais un e-mail client, n'entre jamais
+// au CRM des ventes. La colonne ne fait qu'AJOUTER : un type apporteur renommé
+// sans le mot-clé reste reconnu.
+
+/** Les quatre types qui ne sont pas un échange apporteur (miroir de l'enum Prisma). */
+const TYPES_HORS_APPORTEUR = ["diagnostic", "echange_projet", "salon", "autre"] as const;
+
+/** Clause historique, nom seul : « SEULEMENT les échanges apporteur ». */
+export const SEULS_APPELS_APPORTEUR_PAR_NOM = {
+  eventTypeName: { contains: MOT_CLE_TYPE_APPEL_APPORTEUR, mode: "insensitive" as const },
+};
+
 /**
- * Le même filtre, en clause Prisma : « tout SAUF les échanges apporteur ».
+ * Clause historique, nom seul : « tout SAUF les échanges apporteur ».
  *
  * `mode: "insensitive"` couvre la casse ; « apporteur » ne porte pas d'accent,
  * donc la normalisation de `estAppelApporteur` n'a pas d'équivalent à chercher
  * côté base.
  */
-export const HORS_APPELS_APPORTEUR = {
+export const HORS_APPELS_APPORTEUR_PAR_NOM = {
   NOT: { eventTypeName: { contains: MOT_CLE_TYPE_APPEL_APPORTEUR, mode: "insensitive" as const } },
 };
 
 /**
- * Le filtre INVERSE : « SEULEMENT les echanges apporteur ».
+ * « SEULEMENT les échanges apporteur » : classés apporteur, OU nommés apporteur.
  *
- * 🔑 Ecrit en positif, jamais comme une negation de `HORS_APPELS_APPORTEUR`.
- * `eventTypeName` est NON NULLABLE en base (`schema.prisma`), donc le piege du
- * `NOT` sur une valeur absente ne s'applique pas ici — mais deriver un filtre
- * d'un autre le rendrait faux le jour ou cette colonne deviendrait facultative.
- * Deux clauses explicites coutent une ligne et ne mentent jamais.
- *
- * Ajoute le 2026-09-21 pour que les trois messages de l'echange apporteur
- * (`apporteur-echange.tsx`) ciblent exactement la population que les messages
- * clients excluent : ensemble, les deux filtres couvrent tout, sans recouvrement.
+ * 🔑 Écrit en positif, jamais comme une négation de `HORS_APPELS_APPORTEUR`.
+ * Ensemble, les deux filtres couvrent tout le compte, sans recouvrement
+ * (`un-type-classe-garde-les-memes-populations.spec.ts` le prouve sur toutes
+ * les combinaisons type × nom).
  */
 export const SEULS_APPELS_APPORTEUR = {
-  eventTypeName: { contains: MOT_CLE_TYPE_APPEL_APPORTEUR, mode: "insensitive" as const },
+  OR: [{ typeRendezVous: "apporteur" as const }, SEULS_APPELS_APPORTEUR_PAR_NOM],
 };
+
+/**
+ * « Tout SAUF les échanges apporteur » : ni classé apporteur, ni nommé apporteur.
+ *
+ * ⚠️ `typeRendezVous: { not: "apporteur" }` serait FAUX : en SQL, `NULL <> x`
+ * n'est pas vrai, et les lignes non classées sortiraient de la population
+ * client. D'où la liste explicite des autres types, plus `null`.
+ */
+export const HORS_APPELS_APPORTEUR = {
+  AND: [
+    { OR: [{ typeRendezVous: null }, { typeRendezVous: { in: [...TYPES_HORS_APPORTEUR] } }] },
+    HORS_APPELS_APPORTEUR_PAR_NOM,
+  ],
+};
+
+/**
+ * Vrai si ce rendez-vous est un échange apporteur — même double verrou que les
+ * clauses, pour les filtres en mémoire (console, rattachement).
+ */
+export function estRendezVousApporteur(rdv: {
+  readonly typeRendezVous?: string | null;
+  readonly eventTypeName?: string | null;
+}): boolean {
+  return rdv.typeRendezVous === "apporteur" || estAppelApporteur(rdv.eventTypeName);
+}
