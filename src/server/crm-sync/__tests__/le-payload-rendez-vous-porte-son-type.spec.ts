@@ -176,9 +176,9 @@ describe("🔴 une coupe ne casse jamais un emoji (relecture A09)", () => {
   // Un surrogate orphelin rend le JSON invalide pour le CRM : 422, refus
   // définitif, et TOUT le rendez-vous est perdu pour le CRM.
   const SURROGATE_ISOLE = /[\ud800-\udbff](?![\udc00-\udfff])|(?<![\ud800-\udbff])[\udc00-\udfff]/;
-  // `JSON.stringify` écrit un surrogate isolé en `\udXXX` (6 caractères
-  // ASCII) : on cherche donc AUSSI cette forme échappée.
-  const SURROGATE_ECHAPPE = /\ud[89a-f][0-9a-f]{2}/i;
+  // `JSON.stringify` écrit un surrogate isolé sous forme échappée (barre
+  // oblique inverse + `ud83d`, 6 caractères ASCII) : on la cherche AUSSI.
+  const SURROGATE_ECHAPPE = /\\ud[89a-f][0-9a-f]{2}/i;
   const surrogateIsole = (v: unknown): boolean => {
     const json = JSON.stringify(v);
     return SURROGATE_ISOLE.test(json) || SURROGATE_ECHAPPE.test(json);
