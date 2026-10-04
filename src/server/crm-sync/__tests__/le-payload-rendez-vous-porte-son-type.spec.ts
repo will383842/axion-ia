@@ -171,3 +171,46 @@ describe("les réponses du questionnaire (L5b) — diagnostic et échange projet
     expect(payloadEmis()).not.toHaveProperty("reponses");
   });
 });
+
+describe("🔴 une coupe ne casse jamais un emoji (relecture A09)", () => {
+  // Un surrogate orphelin rend le JSON invalide pour le CRM : 422, refus
+  // définitif, et TOUT le rendez-vous est perdu pour le CRM.
+  const SURROGATE_ISOLE = /[\ud800-\udbff](?![\udc00-\udfff])|(?<![\ud800-\udbff])[\udc00-\udfff]/;
+  // `JSON.stringify` écrit un surrogate isolé en `\udXXX` (6 caractères
+  // ASCII) : on cherche donc AUSSI cette forme échappée.
+  const SURROGATE_ECHAPPE = /\ud[89a-f][0-9a-f]{2}/i;
+  const surrogateIsole = (v: unknown): boolean => {
+    const json = JSON.stringify(v);
+    return SURROGATE_ISOLE.test(json) || SURROGATE_ECHAPPE.test(json);
+  };
+  const emoji = "\u{1F600}"; // 2 unités UTF-16
+
+  it("réponse et question : emoji pile à la limite → aucun surrogate isolé", async () => {
+    await syncCalendlyEventToCrm({
+      kind: "booked",
+      subjectRef: "site:calendly_event:10",
+      person: personne,
+      payload: {
+        eventTypeName: "Diagnostic IA",
+        typeRendezVous: "diagnostic",
+        reponses: [{ question: "q".repeat(119) + emoji, reponse: "r".repeat(299) + emoji }],
+      },
+    });
+    expect(surrogateIsole(payloadEmis())).toBe(false);
+  });
+
+  it("besoin : emoji pile à la limite → aucun surrogate isolé", async () => {
+    await syncCalendlyEventToCrm({
+      kind: "booked",
+      subjectRef: "site:calendly_event:11",
+      person: personne,
+      payload: {
+        eventTypeName: "Échange projet",
+        typeRendezVous: "echange_projet",
+        besoin: "b".repeat(299) + emoji + "suite",
+      },
+    });
+    expect(surrogateIsole(payloadEmis())).toBe(false);
+    expect((payloadEmis()["besoin"] as string).length).toBeLessThanOrEqual(300);
+  });
+});

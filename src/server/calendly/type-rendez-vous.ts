@@ -283,7 +283,23 @@ function questionsDuBrut(rawPayload: unknown): unknown {
 }
 
 /** Longueur maximale du besoin transmis au CRM. */
-const BESOIN_MAX = 300;
+export const BESOIN_MAX = 300;
+
+/**
+ * Coupe un texte à `max` unités UTF-16 SANS casser un caractère en deux
+ * (relecture A09, 2026-10-04). Un `slice` nu peut couper un emoji entre ses
+ * deux moitiés : le surrogate orphelin rend le JSON invalide pour le CRM, qui
+ * répond 422 — refus définitif, et tout le rendez-vous est perdu pour lui.
+ * Si la coupe tombe après une moitié haute, on la retire : le résultat reste
+ * ≤ `max` et toujours bien formé. Toute coupe d'un texte du payload CRM passe
+ * par ici.
+ */
+export function couperTexte(texte: string, max: number): string {
+  if (texte.length <= max) return texte;
+  const coupe = texte.slice(0, max);
+  const dernier = coupe.charCodeAt(coupe.length - 1);
+  return dernier >= 0xd800 && dernier <= 0xdbff ? coupe.slice(0, -1) : coupe;
+}
 
 /**
  * Le BESOIN exprimé : la réponse à la question dont le libellé contient
@@ -301,7 +317,7 @@ export function besoinDesReponses(questionsAndAnswers: unknown): string | null {
     // Le libellé RÉEL (« Quel service vous intéresse ? ») ou l'ancien « Quel est
     // votre besoin… » — pas n'importe quelle question qui cite « nos services ».
     if (libelle.includes("quel service") || libelle.includes("votre besoin")) {
-      return a.trim().slice(0, BESOIN_MAX);
+      return couperTexte(a.trim(), BESOIN_MAX);
     }
   }
   return null;
@@ -339,8 +355,8 @@ export function bornerReponsesCrm(valeur: unknown): ReponseCrm[] {
     const q = o?.["question"];
     const r = o?.["reponse"];
     if (typeof q !== "string" || typeof r !== "string") continue;
-    const question = q.trim().slice(0, QUESTION_CRM_MAX);
-    const reponse = r.trim().slice(0, REPONSE_CRM_MAX);
+    const question = couperTexte(q.trim(), QUESTION_CRM_MAX).trim();
+    const reponse = couperTexte(r.trim(), REPONSE_CRM_MAX).trim();
     if (!question || !reponse) continue;
     sortie.push({ question, reponse });
   }
@@ -376,7 +392,7 @@ export function utmDuTracking(invitee: unknown): UtmDuTracking {
   const t = objet(objet(invitee)?.["tracking"]);
   const lire = (cle: string): string | null => {
     const v = t?.[cle];
-    return typeof v === "string" && v.trim() ? v.trim().slice(0, 100) : null;
+    return typeof v === "string" && v.trim() ? couperTexte(v.trim(), 100) : null;
   };
   return {
     utmSource: lire("utm_source"),

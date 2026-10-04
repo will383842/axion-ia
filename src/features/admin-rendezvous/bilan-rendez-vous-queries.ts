@@ -11,6 +11,12 @@
 // hors client fictif du pilote. C'est le seul lien constaté entre une
 // réservation et une fiche ; on n'en déduit aucun autre.
 //
+// Report (relecture A09) : un rendez-vous déplacé laisse une ANCIENNE ligne,
+// annulée. Elle est reconnue de deux façons — la charge Calendly de l'invité
+// (`rescheduled: true`, déplacement fait chez Calendly) ou le journal des
+// reports faits sur le site (`calendly_reports.ancien_event_uri`) — et ignorée
+// par l'agrégation : ni réservée, ni annulée.
+//
 // Pas de RLS sur ces tables (axionia) : rien à mesurer sous un autre rôle.
 // Build-safety (ADR 0026) : au build, `$queryRaw` du stub rend [] → bilan vide.
 
@@ -39,6 +45,10 @@ export async function lireBilanRendezVous(
       s.issue::text AS "issue",
       (c.id IS NOT NULL) AS "fiche",
       COALESCE(c.statut::text IN ('client_actif', 'client_inactif'), false) AS "client",
+      (
+        COALESCE(e.raw_payload -> 'invitee' ->> 'rescheduled', '') = 'true'
+        OR EXISTS (SELECT 1 FROM calendly_reports cr WHERE cr.ancien_event_uri = e.event_uri)
+      ) AS "reporte",
       COUNT(*)::int AS "n"
     FROM calendly_events e
     LEFT JOIN rendez_vous_suivis s ON s.calendly_event_id = e.id
@@ -48,7 +58,7 @@ export async function lireBilanRendezVous(
      AND r.est_test_interne = false
     LEFT JOIN clients c ON c.id = r.client_id
     WHERE e.captured_at >= ${depuis} AND e.captured_at <= ${maintenant}
-    GROUP BY 1, 2, 3, 4, 5, 6, 7
+    GROUP BY 1, 2, 3, 4, 5, 6, 7, 8
     LIMIT ${LIGNES_BILAN_MAX}
   `;
   return agregerBilan(Array.isArray(lignes) ? lignes : []);

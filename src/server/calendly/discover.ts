@@ -39,6 +39,7 @@ import { canalDuRendezVous, COULEUR_GOOGLE_CANAL } from "@/server/calendly/canal
 import { colorerReservationCalendly } from "@/server/google-calendar/events";
 import {
   besoinDesReponses,
+  couperTexte,
   reponsesDesQuestions,
   classerRendezVous,
   estColonneTypeRendezVousAbsente,
@@ -185,7 +186,8 @@ function record(value: unknown): Record<string, unknown> | null {
 }
 
 function str(value: unknown, max: number): string | null {
-  return typeof value === "string" && value.trim() ? value.trim().slice(0, max) : null;
+  // Nom, type… partent aussi au CRM : coupe sans casser un emoji (A09).
+  return typeof value === "string" && value.trim() ? couperTexte(value.trim(), max) : null;
 }
 
 function parseDate(value: unknown): Date | null {

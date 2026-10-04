@@ -39,6 +39,12 @@ export interface LigneBilanBrute {
   readonly fiche: boolean;
   /** … et cette fiche est cliente (active ou inactive), pas seulement prospect. */
   readonly client: boolean;
+  /**
+   * L'ANCIENNE ligne d'un rendez-vous déplacé (relecture A09) : Calendly crée
+   * une nouvelle réservation et annule l'ancienne. Comptée, elle ferait
+   * « 2 réservés, 1 annulé » pour un seul rendez-vous : elle est ignorée.
+   */
+  readonly reporte: boolean;
   readonly n: number;
 }
 
@@ -160,6 +166,8 @@ export function agregerBilan(lignes: readonly LigneBilanBrute[]): BilanRendezVou
   for (const t of TYPES_DU_BILAN) parType.set(t, { total: zero(), emplacements: new Map() });
 
   for (const l of lignes) {
+    // Un rendez-vous déplacé ne compte qu'une fois : par sa nouvelle ligne.
+    if (l.reporte) continue;
     const type = typeEffectif(l);
     if (type === "apporteur") {
       ajouter(apporteur, l);

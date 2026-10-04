@@ -25,7 +25,7 @@ const COLONNES: ReadonlyArray<{ cle: keyof CompteursBilan; libelle: string }> = 
   { cle: "honores", libelle: "Honorés" },
   { cle: "absents", libelle: "Absents" },
   { cle: "annules", libelle: "Annulés" },
-  { cle: "fiches", libelle: "Fiche prospect" },
+  { cle: "fiches", libelle: "Rangés sur une fiche" },
   { cle: "clients", libelle: "Clients" },
 ];
 
@@ -117,7 +117,7 @@ export function BilanRendezVousVue({
       </section>
 
       <p className={`text-[length:var(--text-admin-xs)] ${mutedCls}`}>
-        Fiche prospect et Clients : rendez-vous rangés sur une fiche depuis « Après l&apos;appel ».
+        Rangés sur une fiche et Clients : rendez-vous rangés depuis « Après l&apos;appel ».
       </p>
     </div>
   );

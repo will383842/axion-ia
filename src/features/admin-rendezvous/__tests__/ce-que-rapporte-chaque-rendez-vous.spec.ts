@@ -28,6 +28,7 @@ function ligne(p: Partial<LigneBilanBrute>): LigneBilanBrute {
     issue: null,
     fiche: false,
     client: false,
+    reporte: false,
     n: 1,
     ...p,
   };
@@ -148,5 +149,27 @@ describe("la période", () => {
     expect(lirePeriodeBilan(undefined)).toBe(30);
     expect(lirePeriodeBilan("90")).toBe(90);
     expect(lirePeriodeBilan("365")).toBe(30);
+  });
+});
+
+describe("🔴 un rendez-vous déplacé ne compte qu'une fois (relecture A09)", () => {
+  it("l'ancienne ligne d'un report n'est ni réservée ni annulée", () => {
+    const bilan = agregerBilan([
+      // L'ancien créneau : annulé par le report, marqué `reporte`.
+      ligne({ status: "canceled", reporte: true }),
+      // Le nouveau créneau.
+      ligne({ status: "scheduled" }),
+    ]);
+    const diag = bilan.types.find((t) => t.type === "diagnostic");
+    expect(diag?.total.reserves).toBe(1);
+    expect(diag?.total.annules).toBe(0);
+  });
+
+  it("idem pour un apporteur", () => {
+    const bilan = agregerBilan([
+      ligne({ typeRendezVous: "apporteur", status: "canceled", reporte: true }),
+      ligne({ typeRendezVous: "apporteur", status: "scheduled" }),
+    ]);
+    expect(bilan.apporteur).toMatchObject({ reserves: 1, annules: 0 });
   });
 });

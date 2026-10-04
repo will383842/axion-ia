@@ -3,6 +3,8 @@ import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import {
   classerParNom,
   bornerReponsesCrm,
+  BESOIN_MAX,
+  couperTexte,
   estTypeRendezVous,
   typePorteLesReponses,
   type ChampsCrmRendezVous,
@@ -150,7 +152,10 @@ export function payloadRendezVousAuContrat(
     ...reste,
     eventTypeName: nom ?? "Calendly",
     typeRendezVous,
-    besoin: typeof besoin === "string" && besoin.trim() ? besoin : null,
+    // Borné ici aussi, quel que soit l'appelant, et sans casser un emoji
+    // (relecture A09) : un JSON invalide = 422 = rendez-vous perdu pour le CRM.
+    besoin:
+      typeof besoin === "string" && besoin.trim() ? couperTexte(besoin.trim(), BESOIN_MAX) : null,
     ...(typePorteLesReponses(typeRendezVous)
       ? { reponses: bornerReponsesCrm(reponsesBrutes) }
       : {}),
