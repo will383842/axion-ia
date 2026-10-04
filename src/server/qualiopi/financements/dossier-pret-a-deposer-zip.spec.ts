@@ -22,6 +22,7 @@ const DOSSIER: DossierPretADeposer = {
   numeroSession: "AXI-SESS-2026-001",
   intituleFormation: "IA appliquée",
   raisonSociale: "Invest Sun",
+  bandeau: null,
   pieces: etatPiecesDemande([
     {
       id: "c",
