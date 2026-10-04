@@ -8920,6 +8920,9 @@ model ClientIdccControle {
   statut         StatutIdcc             @default(non_renseigne)
   idcc           String?                @db.Char(4)
   preuveType     PreuveIdccDeclarative? @map("preuve_type")
+  /// OPCO de l'accord de prise en charge, posé SEULEMENT pour la preuve
+  /// `accord_prise_en_charge_opco` (CHECK `client_idcc_controles_preuve_opco`).
+  preuveOpco     Opco?                  @map("preuve_opco")
   /// Administrateur qui a enregistré la déclaration (AdminUser.id), sans clé
   /// étrangère : la ligne survit au départ d'un administrateur.
   preuveAuteurId String?                @map("preuve_auteur_id") @db.Uuid

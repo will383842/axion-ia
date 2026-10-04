@@ -247,7 +247,7 @@ describe("liste_idcc de l'API Recherche d'entreprises (RM-08)", () => {
 
 // ─── Les neuf cas ──────────────────────────────────────────────────────────
 
-describe("contrôle croisé — les NEUF cas sont neuf témoins", () => {
+describe("contrôle croisé — les NEUF cas du cahier (§10.1, lettres A à I)", () => {
   const cas: Array<{
     nom: string;
     e: EntreeControleIdcc;
@@ -255,58 +255,70 @@ describe("contrôle croisé — les NEUF cas sont neuf témoins", () => {
     cas: string;
   }> = [
     {
-      nom: "1. rien saisi, rien publié",
-      e: entree({ idccSaisi: null, listeIdcc: listeIdccDuResultat(reponseApi([])) }),
-      statut: "non_renseigne",
-      cas: "c1_rien_saisi_rien_publie",
-    },
-    {
-      nom: "2. rien saisi, l'API publie 1596",
-      e: entree({ idccSaisi: "", listeIdcc: ["1596"], naf: "4120A" }),
-      statut: "probable",
-      cas: "c2_rien_saisi_un_idcc_publie",
-    },
-    {
-      nom: "3. rien saisi, l'API publie 1486 et 1596",
-      e: entree({ idccSaisi: "  ", listeIdcc: ["1486", "1596"] }),
-      statut: "non_renseigne",
-      cas: "c3_rien_saisi_plusieurs_idcc_publies",
-    },
-    {
-      nom: "4. 1596 saisi et publié, CONSTRUCTYS",
+      nom: "A. 1596 saisi = seul IDCC publié, CONSTRUCTYS (part ≥ seuil)",
       e: entree({ idccSaisi: "1596", opcoSaisi: "constructys", listeIdcc: ["1596"], naf: "4120A" }),
       statut: "concordant",
-      cas: "c4_saisi_publie_part_concordante",
+      cas: "A_saisi_seul_publie_part_concordante",
     },
     {
-      nom: "5. 8822 saisi et publié, AKTO (part 77,8 %)",
+      nom: "A. 8822 saisi = seul IDCC publié, AKTO (part 77,8 % : à confirmer)",
       e: entree({ idccSaisi: "8822", opcoSaisi: "akto", listeIdcc: ["8822"] }),
       statut: "probable",
-      cas: "c5_saisi_publie_part_a_confirmer",
+      cas: "A_saisi_seul_publie_part_a_confirmer",
     },
     {
-      nom: "6. 1596 saisi, rien publié, NAF 4120A (CONSTRUCTYS, dans la table)",
-      e: entree({ idccSaisi: "1596", opcoSaisi: "constructys", listeIdcc: null, naf: "4120A" }),
-      statut: "probable",
-      cas: "c6_saisi_rien_publie_naf_compatible",
-    },
-    {
-      nom: "7. 1596 saisi, rien publié, NAF 6201Z (ATLAS, hors table pour 1596)",
-      e: entree({ idccSaisi: "1596", opcoSaisi: "constructys", listeIdcc: [], naf: "6201Z" }),
-      statut: "anomalie",
-      cas: "c7_saisi_rien_publie_naf_contraire",
-    },
-    {
-      nom: "8. 1596 saisi, l'API ne publie que 1486",
+      nom: "B. 1596 saisi, l'API ne publie que 1486",
       e: entree({ idccSaisi: "1596", opcoSaisi: "constructys", listeIdcc: ["1486"], naf: "4120A" }),
       statut: "anomalie",
-      cas: "c8_saisi_contredit_par_la_liste",
+      cas: "B_saisi_contredit_par_l_idcc_publie",
     },
     {
-      nom: "9. 1234 saisi, absent de la table (même publié)",
+      nom: "C. 1596 saisi, l'API publie 1486 et 1596 (multi-conventions), CONSTRUCTYS",
+      e: entree({ idccSaisi: "1596", opcoSaisi: "constructys", listeIdcc: ["1486", "1596"] }),
+      statut: "concordant",
+      cas: "C_saisi_parmi_plusieurs_publies_part_concordante",
+    },
+    {
+      nom: "C. 1596 saisi, l'API publie 1486 et 1596, OPCO EP (part à confirmer)",
+      e: entree({ idccSaisi: "1596", opcoSaisi: "opco_ep", listeIdcc: ["1486", "1596"] }),
+      statut: "probable",
+      cas: "C_saisi_parmi_plusieurs_publies_part_a_confirmer",
+    },
+    {
+      nom: "D. 1596 saisi, l'API publie 1486 et 2216, sans 1596",
+      e: entree({ idccSaisi: "1596", opcoSaisi: "constructys", listeIdcc: ["1486", "2216"] }),
+      statut: "anomalie",
+      cas: "D_saisi_absent_des_idcc_publies",
+    },
+    {
+      nom: "E. 1596 saisi, l'API ne publie rien",
+      e: entree({ idccSaisi: "1596", opcoSaisi: "constructys", listeIdcc: null, naf: "4120A" }),
+      statut: "probable",
+      cas: "E_saisi_rien_publie",
+    },
+    {
+      nom: "F. rien saisi, l'API publie 1596",
+      e: entree({ idccSaisi: "", listeIdcc: ["1596"], naf: "4120A" }),
+      statut: "probable",
+      cas: "F_rien_saisi_un_idcc_publie",
+    },
+    {
+      nom: "G. rien saisi, l'API publie 1486 et 1596 (choix de convention)",
+      e: entree({ idccSaisi: "  ", listeIdcc: ["1486", "1596"] }),
+      statut: "anomalie",
+      cas: "G_rien_saisi_plusieurs_idcc_publies",
+    },
+    {
+      nom: "H. rien saisi, rien publié",
+      e: entree({ idccSaisi: null, listeIdcc: listeIdccDuResultat(reponseApi([])) }),
+      statut: "non_renseigne",
+      cas: "H_rien_saisi_rien_publie",
+    },
+    {
+      nom: "I. 1234 saisi, absent de la table (même publié)",
       e: entree({ idccSaisi: "1234", opcoSaisi: "constructys", listeIdcc: ["1234"], naf: "4120A" }),
       statut: "anomalie",
-      cas: "c9_saisi_inconnu_de_la_table",
+      cas: "I_saisi_inconnu_de_la_table",
     },
   ];
 
@@ -316,29 +328,54 @@ describe("contrôle croisé — les NEUF cas sont neuf témoins", () => {
     expect(r.cas).toBe(attendu);
   });
 
-  it("les neuf cas sont distincts et couvrent tous les statuts calculables", () => {
-    expect(new Set(cas.map((c) => c.cas)).size).toBe(9);
+  it("les neuf lettres A à I sont toutes couvertes, avec tous les statuts calculables", () => {
+    expect(new Set(cas.map((c) => c.cas.charAt(0)))).toEqual(
+      new Set(["A", "B", "C", "D", "E", "F", "G", "H", "I"]),
+    );
     expect(new Set(cas.map((c) => c.statut))).toEqual(
       new Set(STATUTS_IDCC.filter((s) => s !== "confirme")),
     );
   });
 
-  it("cas 2 : l'IDCC publié est une PROPOSITION, jamais une saisie", () => {
-    const r = controlerIdcc(cas[1]!.e);
-    expect(r).toMatchObject({ idcc: null, idccPropose: "1596" });
-  });
-
-  it("cas 4 et 5 portent l'issue de la part qui les a départagés", () => {
-    expect(controlerIdcc(cas[3]!.e).part?.issue).toBe("concordant");
-    expect(controlerIdcc(cas[4]!.e).part?.issue).toBe("a_confirmer");
-    expect(controlerIdcc(cas[8]!.e).part?.issue).toBe("inconnu");
-  });
-
-  it("1596 + OPCO EP, publié : probable — l'OPCO à 1 SIRET ne passe pas", () => {
+  it("D : les valeurs d'échappement retirées, 1486 + 9999 publiés sans 1596 → anomalie", () => {
+    const liste = listeIdccDuResultat(reponseApi(["1486", "9999"]));
+    expect(liste).toEqual(["1486"]);
+    // Après retrait de 9999 il ne reste qu'UN IDCC publié : c'est le cas B.
     const r = controlerIdcc(
-      entree({ idccSaisi: "1596", opcoSaisi: "opco_ep", listeIdcc: ["1596"] }),
+      entree({ idccSaisi: "1596", opcoSaisi: "constructys", listeIdcc: liste }),
     );
-    expect(r.statut).toBe("probable");
+    expect(r.statut).toBe("anomalie");
+  });
+
+  it("E : un NAF CONTRAIRE ne fait pas descendre le statut (le NAF ne décide rien)", () => {
+    const r = controlerIdcc(
+      entree({ idccSaisi: "1596", opcoSaisi: "constructys", listeIdcc: [], naf: "6201Z" }),
+    );
+    expect(r).toMatchObject({ statut: "probable", cas: "E_saisi_rien_publie" });
+  });
+
+  it("le NAF ne fait jamais monter un statut : l'OPCO du NAF seul ne donne pas « concordant »", () => {
+    const r = controlerIdcc(
+      entree({ idccSaisi: "1596", opcoSaisi: "constructys", listeIdcc: null, naf: "4120A" }),
+    );
+    expect(r.statut).not.toBe("concordant");
+  });
+
+  it("F : l'IDCC publié est une PROPOSITION, jamais une saisie ; G n'en propose aucun", () => {
+    expect(controlerIdcc(entree({ idccSaisi: "", listeIdcc: ["1596"] }))).toMatchObject({
+      idcc: null,
+      idccPropose: "1596",
+    });
+    expect(controlerIdcc(entree({ idccSaisi: "", listeIdcc: ["1486", "1596"] })).idccPropose).toBe(
+      null,
+    );
+  });
+
+  it("A et C portent l'issue de la part qui les a départagés ; I l'issue « inconnu »", () => {
+    expect(controlerIdcc(cas[0]!.e).part?.issue).toBe("concordant");
+    expect(controlerIdcc(cas[1]!.e).part?.issue).toBe("a_confirmer");
+    expect(controlerIdcc(cas[4]!.e).part?.issue).toBe("a_confirmer");
+    expect(controlerIdcc(cas[10]!.e).part?.issue).toBe("inconnu");
   });
 
   it("8822 + OCAPIAT, publié : probable", () => {
@@ -348,10 +385,10 @@ describe("contrôle croisé — les NEUF cas sont neuf témoins", () => {
     expect(r.statut).toBe("probable");
   });
 
-  it("une saisie illisible est un IDCC inconnu (cas 9), jamais tronquée", () => {
+  it("une saisie illisible est un IDCC inconnu (cas I), jamais tronquée", () => {
     for (const idccSaisi of ["123456", "11596"]) {
       expect(controlerIdcc(entree({ idccSaisi, couples: [] })).cas).toBe(
-        "c9_saisi_inconnu_de_la_table",
+        "I_saisi_inconnu_de_la_table",
       );
     }
   });
@@ -366,13 +403,6 @@ describe("contrôle croisé — les NEUF cas sont neuf témoins", () => {
       }),
     );
     expect(r).toMatchObject({ idcc: "1596", statut: "concordant" });
-  });
-
-  it("le NAF ne fait jamais monter un statut : l'OPCO du NAF seul ne donne pas « concordant »", () => {
-    const r = controlerIdcc(
-      entree({ idccSaisi: "1596", opcoSaisi: "constructys", listeIdcc: null, naf: "4120A" }),
-    );
-    expect(r.statut).not.toBe("concordant");
   });
 });
 
@@ -672,6 +702,71 @@ describe("écritures du statut", () => {
       }),
     ).rejects.toBeInstanceOf(ConfirmationIdccRefusee);
     expect(lignes.size + journal.length).toBe(0);
+  });
+});
+
+describe("preuve « accord de prise en charge de l'OPCO » (A02, 5983987353)", () => {
+  it("admise si l'OPCO de l'accord est celui de la table pour l'IDCC confirmé", async () => {
+    const { db, lignes } = fausseBase();
+    await confirmerIdccParPreuve(db, {
+      clientId: CLIENT,
+      idccSaisi: "1596",
+      preuve: {
+        type: "accord_prise_en_charge_opco",
+        idcc: "1596",
+        opco: "constructys",
+        auteurId: AUTEUR,
+      },
+      couples: couples("1596"),
+    });
+    expect(lignes.get(CLIENT)).toMatchObject({
+      statut: "confirme",
+      preuveType: "accord_prise_en_charge_opco",
+      preuveOpco: "constructys",
+    });
+  });
+
+  it("🔴 refusée NOMMÉMENT si l'accord vient d'un OPCO étranger à cet IDCC dans la table", async () => {
+    const { db, lignes, journal } = fausseBase();
+    await expect(
+      confirmerIdccParPreuve(db, {
+        clientId: CLIENT,
+        idccSaisi: "1596",
+        preuve: {
+          type: "accord_prise_en_charge_opco",
+          idcc: "1596",
+          opco: "atlas",
+          auteurId: AUTEUR,
+        },
+        couples: couples("1596"),
+      }),
+    ).rejects.toThrow(/vient de l'OPCO « atlas ».*contredit l'IDCC/);
+    expect(lignes.size + journal.length).toBe(0);
+  });
+
+  it("l'OPCO est requis pour un accord, et interdit pour les deux autres preuves", () => {
+    const base = { idcc: "1596", auteurId: AUTEUR };
+    expect(
+      preuveDeclarativeSchema.safeParse({ ...base, type: "accord_prise_en_charge_opco" }).success,
+    ).toBe(false);
+    expect(
+      preuveDeclarativeSchema.safeParse({ ...base, type: "attestation_entreprise", opco: "atlas" })
+        .success,
+    ).toBe(false);
+    expect(
+      preuveDeclarativeSchema.safeParse({
+        ...base,
+        type: "accord_prise_en_charge_opco",
+        opco: "opco_inexistant",
+      }).success,
+    ).toBe(false);
+  });
+
+  it("la migration impose l'OPCO de la preuve ⇔ un accord de prise en charge (CHECK)", () => {
+    const sql = lire("prisma/migrations/20261004231500_idcc_controle/migration.sql");
+    expect(sql).toContain('"preuve_opco" "Opco"');
+    expect(sql).toContain("client_idcc_controles_preuve_opco");
+    expect(sql).toContain(`COALESCE("preuve_type" = 'accord_prise_en_charge_opco', false)`);
   });
 });
 

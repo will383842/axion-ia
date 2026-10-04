@@ -7,7 +7,8 @@
  *    spécification OpenAPI officielle, `results[].complements.liste_idcc`,
  *    « Liste des conventions collectives de l'unité légale (source : Ministère
  *    du travail) », tableau de chaînes) ;
- *  - le code NAF, heuristique de repli (`crm/naf-opco.ts`) ;
+ *  - le code NAF (`crm/naf-opco.ts`) : affiché à la confirmation humaine, il ne
+ *    fait ni monter ni descendre un statut (A02, issue 656, 5983987353) ;
  *  - la RÈGLE DE LA PART d'A02 (issue 656, commentaire 5980505240), appliquée à
  *    la table `idcc_opco` (INT-T60-A), qui garde le fait brut — le nombre de
  *    SIRET par couple — sans rien trancher.
@@ -30,7 +31,7 @@
 import { z } from "zod";
 import type { PreuveIdccDeclarative, StatutIdcc } from "../../../../prisma/generated/client";
 import { SEUIL_CONCORDANCE_IDCC_OPCO_BPS } from "@/server/qualiopi/config/financing";
-import { inferOpcoFromNaf, normaliserIdcc } from "@/server/qualiopi/crm/naf-opco";
+import { normaliserIdcc } from "@/server/qualiopi/crm/naf-opco";
 import { CONFIG_FICHIER_SIRO } from "@/server/qualiopi/financements/idcc-import";
 import { isOpcoId, type OpcoId } from "@/server/qualiopi/financements/opco-referentiel";
 
@@ -59,19 +60,24 @@ export const PREUVES_IDCC_DECLARATIVES = [
 export type IssuePart = "concordant" | "a_confirmer" | "inconnu";
 
 /**
- * Les NEUF cas du contrôle croisé, plus la confirmation. L'identifiant porte le
- * numéro du cas : il est stable, les tests et l'écran s'y réfèrent.
+ * Les NEUF cas du cahier OPCO (§10.1, lettres A à I, confrontés par A02 —
+ * issue 656, commentaire 5983987353), plus la confirmation (§10.3). A et C se
+ * départagent ensuite par la règle de la part : d'où deux issues chacun.
+ * L'identifiant porte la LETTRE du cahier : il est stable, les tests et
+ * l'écran s'y réfèrent.
  */
 export type CasControleIdcc =
-  | "c1_rien_saisi_rien_publie"
-  | "c2_rien_saisi_un_idcc_publie"
-  | "c3_rien_saisi_plusieurs_idcc_publies"
-  | "c4_saisi_publie_part_concordante"
-  | "c5_saisi_publie_part_a_confirmer"
-  | "c6_saisi_rien_publie_naf_compatible"
-  | "c7_saisi_rien_publie_naf_contraire"
-  | "c8_saisi_contredit_par_la_liste"
-  | "c9_saisi_inconnu_de_la_table"
+  | "A_saisi_seul_publie_part_concordante"
+  | "A_saisi_seul_publie_part_a_confirmer"
+  | "B_saisi_contredit_par_l_idcc_publie"
+  | "C_saisi_parmi_plusieurs_publies_part_concordante"
+  | "C_saisi_parmi_plusieurs_publies_part_a_confirmer"
+  | "D_saisi_absent_des_idcc_publies"
+  | "E_saisi_rien_publie"
+  | "F_rien_saisi_un_idcc_publie"
+  | "G_rien_saisi_plusieurs_idcc_publies"
+  | "H_rien_saisi_rien_publie"
+  | "I_saisi_inconnu_de_la_table"
   | "confirme_par_preuve";
 
 // ─── Règle de la part ──────────────────────────────────────────────────────
@@ -194,13 +200,29 @@ export function listeIdccDuResultat(resultat: unknown): string[] | null {
  * `contenu`…) est refusée — il n'y a aucun endroit où poser une pièce.
  * La date n'est pas reçue : le serveur la pose.
  */
-export const preuveDeclarativeSchema = z
+const preuveSansOpco = z
   .object({
-    type: z.enum(PREUVES_IDCC_DECLARATIVES),
+    type: z.enum(["attestation_entreprise", "declaration_opco"]),
     idcc: z.string().regex(/^[0-9]{4}$/),
     auteurId: z.string().uuid(),
   })
   .strict();
+
+/**
+ * L'accord de prise en charge porte l'OPCO qui l'a donné (A02, 5983987353) :
+ * c'est lui qui prouve le RATTACHEMENT, et il n'est admis que si cet OPCO est
+ * celui de la table pour l'IDCC confirmé.
+ */
+const preuveAccordOpco = z
+  .object({
+    type: z.literal("accord_prise_en_charge_opco"),
+    idcc: z.string().regex(/^[0-9]{4}$/),
+    opco: z.string().refine(isOpcoId, "OPCO inconnu"),
+    auteurId: z.string().uuid(),
+  })
+  .strict();
+
+export const preuveDeclarativeSchema = z.union([preuveSansOpco, preuveAccordOpco]);
 
 export type PreuveDeclarativeRecue = z.infer<typeof preuveDeclarativeSchema>;
 
@@ -209,6 +231,8 @@ export interface PreuveDeclarative {
   readonly type: PreuveIdccDeclarative;
   /** IDCC que la preuve confirme. */
   readonly idcc: string;
+  /** OPCO de l'accord, pour `accord_prise_en_charge_opco` seulement. */
+  readonly opco?: OpcoId | null;
   readonly auteurId: string;
   readonly le: Date;
 }
@@ -237,31 +261,33 @@ export interface ResultatControleIdcc {
   readonly idcc: string | null;
   /** Issue de la règle de la part, quand elle a été appliquée. */
   readonly part: ResultatRegleDeLaPart | null;
-  /** IDCC unique publié par l'API quand rien n'est saisi (cas 2) : une PROPOSITION. */
+  /** IDCC unique publié par l'API quand rien n'est saisi (cas F) : une PROPOSITION. */
   readonly idccPropose: string | null;
 }
 
 /**
- * Les neuf cas, dans l'ordre où ils sont jugés :
+ * Les neuf cas du cahier (§10.1), dans l'ordre où ils sont jugés :
  *
- *  0. une preuve déclarative pour l'IDCC saisi             → `confirme`
- *     (une preuve pour un AUTRE IDCC tombe : la saisie a changé)
+ *  §10.3 une preuve déclarative pour l'IDCC saisi        → `confirme`
+ *        (une preuve pour un AUTRE IDCC tombe : la saisie a changé)
  *  Rien de lisible n'est saisi :
- *  1. et l'API ne publie aucun IDCC                         → `non_renseigne`
- *  2. et l'API en publie UN                                 → `probable` (proposé)
- *  3. et l'API en publie plusieurs                          → `non_renseigne`
+ *  H. et l'API ne publie aucun IDCC                       → `non_renseigne`
+ *  F. et l'API en publie UN                               → `probable` (proposé)
+ *  G. et l'API en publie plusieurs                        → `anomalie` (choix de
+ *     convention : en proposer un serait trancher)
  *  Un IDCC est saisi :
- *  9. absent de la table `idcc_opco` (ou illisible)         → `anomalie`  [part « inconnu »]
- *  8. l'API publie des IDCC, mais pas celui-là              → `anomalie`
- *  4. l'API le publie, part de l'OPCO saisi ≥ seuil         → `concordant`
- *  5. l'API le publie, part « à confirmer »                 → `probable`
- *  6. l'API ne publie rien, NAF muet ou compatible          → `probable`
- *  7. l'API ne publie rien, NAF désigne un OPCO étranger
- *     à la table pour cet IDCC                              → `anomalie`
+ *  I. absent de la table `idcc_opco` (ou illisible)       → `anomalie`  [part « inconnu »]
+ *  B. l'API publie UN autre IDCC                          → `anomalie`
+ *  D. l'API en publie plusieurs, sans celui-là            → `anomalie`
+ *  A. l'API ne publie que lui                             → `concordant` si la part
+ *  C. l'API le publie parmi d'autres (multi-conventions)     de l'OPCO saisi atteint
+ *                                                            le seuil, sinon `probable`
+ *  E. l'API ne publie rien                                → `probable`
  *
  * « concordant » exige donc DEUX accords : l'API confirme l'IDCC, la table
- * confirme l'OPCO. Le NAF ne fait jamais monter un statut ; il ne sert qu'à
- * signaler une contradiction quand l'API se tait.
+ * confirme l'OPCO. Le NAF ne fait ni monter NI descendre un statut (A02) : une
+ * contradiction du NAF se montre à la confirmation humaine, elle ne crée pas
+ * d'anomalie que le cahier ne liste pas.
  */
 export function controlerIdcc(entree: EntreeControleIdcc): ResultatControleIdcc {
   const brut = (entree.idccSaisi ?? "").trim();
@@ -275,16 +301,16 @@ export function controlerIdcc(entree: EntreeControleIdcc): ResultatControleIdcc 
 
   if (brut.length === 0) {
     if (liste.length === 0)
-      return { ...base, statut: "non_renseigne", cas: "c1_rien_saisi_rien_publie" };
+      return { ...base, statut: "non_renseigne", cas: "H_rien_saisi_rien_publie" };
     if (liste.length === 1) {
       return {
         ...base,
         statut: "probable",
-        cas: "c2_rien_saisi_un_idcc_publie",
+        cas: "F_rien_saisi_un_idcc_publie",
         idccPropose: liste[0] as string,
       };
     }
-    return { ...base, statut: "non_renseigne", cas: "c3_rien_saisi_plusieurs_idcc_publies" };
+    return { ...base, statut: "anomalie", cas: "G_rien_saisi_plusieurs_idcc_publies" };
   }
 
   // Une saisie illisible (« 123456 », « 11516 ») ne désigne aucune convention :
@@ -300,22 +326,25 @@ export function controlerIdcc(entree: EntreeControleIdcc): ResultatControleIdcc 
   const avecPart = { ...base, part };
 
   if (idcc === null || part.issue === "inconnu") {
-    return { ...avecPart, statut: "anomalie", cas: "c9_saisi_inconnu_de_la_table" };
+    return { ...avecPart, statut: "anomalie", cas: "I_saisi_inconnu_de_la_table" };
   }
-  if (liste.length > 0 && !liste.includes(idcc)) {
-    return { ...avecPart, statut: "anomalie", cas: "c8_saisi_contredit_par_la_liste" };
+  if (liste.length === 0) {
+    return { ...avecPart, statut: "probable", cas: "E_saisi_rien_publie" };
   }
-  if (liste.includes(idcc)) {
-    return part.issue === "concordant"
-      ? { ...avecPart, statut: "concordant", cas: "c4_saisi_publie_part_concordante" }
-      : { ...avecPart, statut: "probable", cas: "c5_saisi_publie_part_a_confirmer" };
+  if (!liste.includes(idcc)) {
+    return liste.length === 1
+      ? { ...avecPart, statut: "anomalie", cas: "B_saisi_contredit_par_l_idcc_publie" }
+      : { ...avecPart, statut: "anomalie", cas: "D_saisi_absent_des_idcc_publies" };
   }
-  const opcoNaf = inferOpcoFromNaf(entree.naf);
-  const opcosTable = new Set(entree.couples.map((c) => c.opco));
-  if (opcoNaf !== null && !opcosTable.has(opcoNaf)) {
-    return { ...avecPart, statut: "anomalie", cas: "c7_saisi_rien_publie_naf_contraire" };
+  const concordant = part.issue === "concordant";
+  if (liste.length === 1) {
+    return concordant
+      ? { ...avecPart, statut: "concordant", cas: "A_saisi_seul_publie_part_concordante" }
+      : { ...avecPart, statut: "probable", cas: "A_saisi_seul_publie_part_a_confirmer" };
   }
-  return { ...avecPart, statut: "probable", cas: "c6_saisi_rien_publie_naf_compatible" };
+  return concordant
+    ? { ...avecPart, statut: "concordant", cas: "C_saisi_parmi_plusieurs_publies_part_concordante" }
+    : { ...avecPart, statut: "probable", cas: "C_saisi_parmi_plusieurs_publies_part_a_confirmer" };
 }
 
 // ─── Lecture de la table ───────────────────────────────────────────────────
@@ -351,6 +380,8 @@ export interface LigneControleIdcc {
   statut: StatutIdcc;
   idcc: string | null;
   preuveType: PreuveIdccDeclarative | null;
+  /** OPCO de l'accord de prise en charge ; `null` pour les autres preuves. */
+  preuveOpco: OpcoId | null;
   preuveAuteurId: string | null;
   preuveLe: Date | null;
 }
@@ -447,6 +478,7 @@ export async function enregistrerControleIdcc(
         statut: resultat.statut,
         idcc: resultat.idcc,
         preuveType: null,
+        preuveOpco: null,
         preuveAuteurId: null,
         preuveLe: null,
       },
@@ -460,6 +492,10 @@ export async function enregistrerControleIdcc(
  * date posée par le serveur. Refuse une entrée qui porte quoi que ce soit
  * d'autre (schéma strict), un IDCC qui n'est pas celui de la fiche, un type
  * hors liste. Aucun fichier n'est reçu ni conservé.
+ *
+ * Un accord de prise en charge n'est admis que si son OPCO est celui de la
+ * table pour l'IDCC confirmé (`couples`, lus par `lireCouplesIdcc`) : un accord
+ * d'un AUTRE OPCO contredit l'IDCC au lieu de le prouver (A02, 5983987353).
  */
 export async function confirmerIdccParPreuve(
   db: BaseControleIdcc,
@@ -467,18 +503,30 @@ export async function confirmerIdccParPreuve(
     clientId: string;
     idccSaisi: string | null | undefined;
     preuve: unknown;
+    /** Couples de la table pour l'IDCC saisi ; requis pour un accord de prise en charge. */
+    couples?: readonly CoupleIdccLu[];
     maintenant?: Date;
   },
 ): Promise<{ change: boolean }> {
   const lue = preuveDeclarativeSchema.safeParse(input.preuve);
   if (!lue.success) {
     throw new ConfirmationIdccRefusee(
-      "preuve déclarative illisible : un type admis, un IDCC, un auteur, rien d'autre",
+      "preuve déclarative illisible : un type admis, un IDCC, un auteur (et l'OPCO pour un accord de prise en charge), rien d'autre",
     );
   }
   const idcc = normaliserIdcc(input.idccSaisi);
   if (idcc === null || idcc !== lue.data.idcc) {
     throw new ConfirmationIdccRefusee("la preuve ne porte pas sur l'IDCC saisi de la fiche");
+  }
+  const preuveOpco =
+    lue.data.type === "accord_prise_en_charge_opco" ? (lue.data.opco as OpcoId) : null;
+  if (preuveOpco !== null) {
+    const opcosTable = new Set((input.couples ?? []).map((c) => c.opco));
+    if (!opcosTable.has(preuveOpco)) {
+      throw new ConfirmationIdccRefusee(
+        `l'accord de prise en charge vient de l'OPCO « ${preuveOpco} », qui n'est pas un OPCO de la convention ${idcc} dans la table officielle : il contredit l'IDCC au lieu de le prouver`,
+      );
+    }
   }
   const le = input.maintenant ?? new Date();
   return db.$transaction((tx) =>
@@ -489,6 +537,7 @@ export async function confirmerIdccParPreuve(
         statut: "confirme",
         idcc,
         preuveType: lue.data.type,
+        preuveOpco,
         preuveAuteurId: lue.data.auteurId,
         preuveLe: le,
       },
