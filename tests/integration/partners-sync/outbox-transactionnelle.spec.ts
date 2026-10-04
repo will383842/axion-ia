@@ -16,7 +16,7 @@ import { createHmac, randomBytes } from "node:crypto";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { PrismaClient } from "../../../prisma/generated/client";
-import fixtures from "../../../src/server/partners/contrat/fixtures.v2.json";
+import fixtures from "../../../src/server/partners/contrat/fixtures.v3.json";
 import {
   ecrireEvenementPartners,
   type FaitPartners,
