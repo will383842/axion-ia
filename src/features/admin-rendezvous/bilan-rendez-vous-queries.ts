@@ -14,7 +14,6 @@
 // Pas de RLS sur ces tables (axionia) : rien à mesurer sous un autre rôle.
 // Build-safety (ADR 0026) : au build, `$queryRaw` du stub rend [] → bilan vide.
 
-import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import {
   agregerBilan,
@@ -31,7 +30,7 @@ export async function lireBilanRendezVous(
   maintenant: Date = new Date(),
 ): Promise<BilanRendezVous> {
   const depuis = new Date(maintenant.getTime() - jours * 86_400_000);
-  const lignes = await prisma.$queryRaw<LigneBilanBrute[]>(Prisma.sql`
+  const lignes = await prisma.$queryRaw<LigneBilanBrute[]>`
     SELECT
       e.type_rendez_vous::text AS "typeRendezVous",
       e.event_type_name AS "eventTypeName",
@@ -51,6 +50,6 @@ export async function lireBilanRendezVous(
     WHERE e.captured_at >= ${depuis} AND e.captured_at <= ${maintenant}
     GROUP BY 1, 2, 3, 4, 5, 6, 7
     LIMIT ${LIGNES_BILAN_MAX}
-  `);
+  `;
   return agregerBilan(Array.isArray(lignes) ? lignes : []);
 }

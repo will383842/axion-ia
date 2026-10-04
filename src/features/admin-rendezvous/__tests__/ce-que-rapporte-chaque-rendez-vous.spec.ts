@@ -120,7 +120,7 @@ describe("l'agrégation par type puis par emplacement", () => {
       ligne({ typeRendezVous: "salon", eventTypeName: "Échange apporteur d'affaires", n: 1 }),
     ]);
     expect(bilan.apporteur.reserves).toBe(6);
-    expect(bilan.types.every((t) => t.type !== "apporteur")).toBe(true);
+    expect(bilan.types.map((t) => t.type as string)).not.toContain("apporteur");
     expect(bilan.types.find((t) => t.type === "salon")?.total.reserves).toBe(0);
   });
 
