@@ -204,6 +204,12 @@ export interface DemandeReservation {
   readonly utmSource?: string | null;
   readonly utmMedium?: string | null;
   readonly utmCampaign?: string | null;
+  /**
+   * Le bouton qui a mené ici : `diagnostic`, `projet`, `diagnostic:accueil-hero`
+   * (chantier « Types de rendez-vous », L2). Recopié par Calendly dans le
+   * `tracking` de l'invité, puis dans notre colonne `utm_content` au sondage.
+   */
+  readonly utmContent?: string | null;
 }
 
 /** Nombre maximal d'invités accepté par Calendly. */
@@ -320,7 +326,7 @@ export function corpsDeLaDemande(
       utm_source: d.utmSource ?? null,
       utm_medium: d.utmMedium ?? null,
       utm_campaign: d.utmCampaign ?? null,
-      utm_content: null,
+      utm_content: d.utmContent ?? null,
       utm_term: null,
       salesforce_uuid: null,
     },

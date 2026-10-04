@@ -29,7 +29,7 @@
 import type { Opco } from "../../../../prisma/generated/client";
 import { isOpcoId } from "@/server/qualiopi/financements/opco-referentiel";
 
-/** Même motif que le CHECK de la migration `20261004230000_idcc_opco`. */
+/** Même motif que le CHECK de la migration `20261004230500_idcc_opco`. */
 export const IDCC_MOTIF = /^[0-9]{4}$/;
 const SIRET_MOTIF = /^[0-9]{14}$/;
 

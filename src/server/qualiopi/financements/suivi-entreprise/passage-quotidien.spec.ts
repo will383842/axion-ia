@@ -64,7 +64,7 @@ describe("passage quotidien", () => {
     expect(db.dossierFinancement.findMany).not.toHaveBeenCalled();
   });
 
-  it("dépôt constaté chez l'entreprise (Atlas) → envoi ; non constaté (AKTO) → écarté sans kit", async () => {
+  it("dépôt constaté chez l'entreprise (Atlas) → envoi ; non constaté (Afdas) → écarté sans kit", async () => {
     db.dossierFinancement.findMany
       .mockResolvedValueOnce([
         {
@@ -74,7 +74,7 @@ describe("passage quotidien", () => {
         },
         {
           id: "d2",
-          client: { opco: "akto", opcoIdentifie: null, contactEmail: "a@b.fr" },
+          client: { opco: "afdas", opcoIdentifie: null, contactEmail: "a@b.fr" },
           trainingSession: null,
         },
         {

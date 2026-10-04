@@ -54,6 +54,7 @@ import * as React from "react";
 import type { CalendlyAvailabilityDay } from "@/server/calendly/availability";
 import { avecCouleursAxion } from "./calendly-brand";
 import { urlDuFormulaire } from "@/server/calendly/formulaire-reservation";
+import { avecUtmContent, type SuiviArrivee } from "@/server/calendly/choix-rendez-vous";
 
 interface CalendlySlotPickerProps {
   /** Duree reelle de l event-type, en minutes, telle que Calendly la connait. */
@@ -89,6 +90,15 @@ interface CalendlySlotPickerProps {
    * selecteur se comporte exactement comme avant.
    */
   readonly lienDuCreneau?: ((startIso: string) => string) | undefined;
+  /**
+   * Chantier « Types de rendez-vous », L2 : le bouton qui a mené ici, ajouté en
+   * `utm_content` aux liens qui partent chez Calendly.
+   */
+  readonly utmContent?: string | undefined;
+  /** `rdv=…&depuis=…`, recopié dans les liens vers notre formulaire. */
+  readonly parametresDuChoix?: string | undefined;
+  /** Les UTM d'ARRIVÉE (L5a), ajoutées aux créneaux qui partent chez Calendly. */
+  readonly suivi?: SuiviArrivee | undefined;
 }
 
 /** `AAAA-MM-JJ` → composantes numériques. Aucune conversion de fuseau. */
@@ -264,6 +274,9 @@ export function CalendlySlotPicker({
   reservationDirecte = false,
   locale = "fr",
   lienDuCreneau,
+  utmContent,
+  parametresDuChoix,
+  suivi,
 }: CalendlySlotPickerProps) {
   const fmt = formatters(isFr);
   // Même boîte que le repli — voir PIÈGE 2.
@@ -413,8 +426,12 @@ export function CalendlySlotPicker({
                             lienDuCreneau
                               ? lienDuCreneau(slot.startIso)
                               : reservationDirecte
-                                ? urlDuFormulaire(locale, slot.startIso)
-                                : avecCouleursAxion(slot.schedulingUrl)
+                                ? urlDuFormulaire(locale, slot.startIso, parametresDuChoix)
+                                : avecUtmContent(
+                                    avecCouleursAxion(slot.schedulingUrl),
+                                    utmContent,
+                                    suivi,
+                                  )
                           }
                           {...(lienDuCreneau || reservationDirecte
                             ? {}

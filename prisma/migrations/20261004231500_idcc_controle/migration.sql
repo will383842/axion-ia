@@ -16,6 +16,7 @@ CREATE TABLE "client_idcc_controles" (
     "statut" "StatutIdcc" NOT NULL DEFAULT 'non_renseigne',
     "idcc" CHAR(4),
     "preuve_type" "PreuveIdccDeclarative",
+    "preuve_opco" "Opco",
     "preuve_auteur_id" UUID,
     "preuve_le" TIMESTAMPTZ(6),
     "maj_at" TIMESTAMPTZ(6) NOT NULL,
@@ -65,3 +66,7 @@ ALTER TABLE "client_idcc_controle_journal" ADD CONSTRAINT "client_idcc_controle_
 -- Une entrée vers « confirme » nomme le type de preuve et son auteur.
 ALTER TABLE "client_idcc_controle_journal" ADD CONSTRAINT "client_idcc_controle_journal_confirme_preuve"
   CHECK ("vers" <> 'confirme' OR ("preuve_type" IS NOT NULL AND "auteur_id" IS NOT NULL));
+-- L'OPCO de la preuve n'existe que pour un accord de prise en charge, et il y
+-- est obligatoire (A02, issue 656, commentaire 5983987353).
+ALTER TABLE "client_idcc_controles" ADD CONSTRAINT "client_idcc_controles_preuve_opco"
+  CHECK (("preuve_opco" IS NOT NULL) = COALESCE("preuve_type" = 'accord_prise_en_charge_opco', false));

@@ -20,6 +20,7 @@ import { notFound } from "next/navigation";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { PastilleTypeRdv } from "@/components/admin/contacts/PastilleTypeRdv";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { ApresLAppelVue } from "@/components/admin/dossier-client/ApresLAppelVue";
@@ -139,6 +140,7 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
         }
         meta={
           <>
+            {r.typeRendezVous ? <PastilleTypeRdv type={r.typeRendezVous} /> : null}
             {r.statut !== null ? (
               <AdminBadge tone="outline">{LIBELLE_STATUT_RENCONTRE[r.statut]}</AdminBadge>
             ) : null}

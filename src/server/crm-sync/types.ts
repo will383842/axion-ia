@@ -104,6 +104,31 @@ export const CRM_FORM_TYPES = [
 
 export type CrmFormType = (typeof CRM_FORM_TYPES)[number];
 
+/**
+ * `payload` des événements `calendly_booked|completed|canceled|no_show`
+ * (chantier « Types de rendez-vous », 2026-10-04 — contrat figé dans
+ * `_PLAN-TYPES-RDV-2026-10-04/PLAN.md`). Trois clés TOUJOURS présentes, sur
+ * tous les chemins ; les autres (`source`, `format`, `lieu`, UTM…) restent
+ * libres — le `payload` n'est pas à clés fermées côté CRM.
+ *   · `eventTypeName`  — nom du type d'événement Calendly ;
+ *   · `typeRendezVous` — les apporteurs ne partent jamais, d'où l'absence de
+ *                        la valeur `apporteur` ;
+ *   · `besoin`         — réponse à la question « service » / « besoin », ou `null`.
+ * Lot L5b (champ AJOUTÉ, rien de retiré) :
+ *   · `reponses`       — les réponses du questionnaire, pour `diagnostic` et
+ *                        `echange_projet` SEULEMENT (absent sinon) : au plus 10,
+ *                        question ≤ 120 caractères, réponse ≤ 300, téléphone écarté.
+ */
+export type CrmTypeRendezVous = "diagnostic" | "echange_projet" | "salon" | "autre";
+
+export interface CrmPayloadRendezVous {
+  eventTypeName: string;
+  typeRendezVous: CrmTypeRendezVous;
+  besoin: string | null;
+  reponses?: Array<{ question: string; reponse: string }>;
+  [cle: string]: unknown;
+}
+
 /** Familles de métiers du vivier — liste FERMÉE (cf. `Taxonomy::CANDIDATE_RELATION_TYPES`). */
 export type CrmCandidateFamily =
   "candidat_commercial" | "candidat_video" | "candidat_tech" | "candidat_autre";

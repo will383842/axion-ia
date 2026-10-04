@@ -149,6 +149,12 @@ interface FormulaireReservationProps {
    * dans un champ caché, il n'a aucun moyen d'en changer depuis cette page.
    */
   readonly retourAuCalendrier?: string | undefined;
+  /**
+   * Champs cachés de CONTEXTE, recopiés tels quels (chantier « Types de
+   * rendez-vous », L2) : le choix `rdv` et l'emplacement `depuis`. L'action en
+   * déduit le type à réserver et le `utm_content` envoyé à Calendly.
+   */
+  readonly champsCaches?: Readonly<Record<string, string>> | undefined;
 }
 
 /**
@@ -267,6 +273,7 @@ export function FormulaireReservation({
   champLocale,
   champLeurre,
   retourAuCalendrier,
+  champsCaches,
 }: FormulaireReservationProps) {
   const v = (nom: string): string => valeurs[nom] ?? "";
   const e = (nom: string): string | undefined => erreurs[nom];
@@ -316,6 +323,9 @@ export function FormulaireReservation({
           visiteur ne peut pas retaper, et il ne doit jamais la perdre. */}
       <input type="hidden" name={CHAMPS.debut} value={debutIso} />
       <input type="hidden" name={champLocale} value={locale} />
+      {Object.entries(champsCaches ?? {}).map(([nom, valeur]) => (
+        <input key={nom} type="hidden" name={nom} value={valeur} />
+      ))}
 
       {/* LEURRE — un champ que rien n'invite à remplir, et qu'un robot remplit
           quand même. Même nom que sur `/contact`, pour la même raison.

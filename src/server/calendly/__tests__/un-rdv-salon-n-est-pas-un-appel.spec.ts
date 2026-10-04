@@ -156,7 +156,9 @@ describe("le message dit où venir et laisse une porte de sortie", () => {
     expect(r.html).toContain("Lyon Pacte PME AURA");
     expect(r.html).toContain("https://calendly.com/reschedulings/abc");
     expect(r.html).toContain("https://calendly.com/cancellations/abc");
-    expect(r.html).toContain("https://calendly.com/axion-ia/premier-contact");
+    // L'échange en visio passe par le parcours du site (L5a), plus par Calendly en direct.
+    expect(r.html).toContain("/fr/appel?rdv=projet&amp;depuis=email-salon");
+    expect(r.html).not.toContain("https://calendly.com/axion-ia/premier-contact");
     expect(r.subject).toContain("GOFAB");
     // Un rendez-vous en personne : jamais le vocabulaire de l'appel.
     expect(r.html).not.toMatch(/appel de découverte|lien de connexion/i);

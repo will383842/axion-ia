@@ -324,7 +324,7 @@ export async function Header() {
               Fond bleu primary + glow shadow : signal d'action fort, conforme
               aux standards 2026 (Linear, Stripe, Cal.com, Anthropic, Resend). */}
           <Link
-            href={ROUTES.appel}
+            href={{ pathname: ROUTES.appel, query: { depuis: "entete" } }}
             aria-label={t("cta.bookCallAria")}
             data-cta="header-primary"
             data-cta-tracking="cta_header_book_call_click"
@@ -419,7 +419,7 @@ export async function Header() {
 
               {/* Dual-CTA mobile — parité desktop : Appel primary + Contact ghost */}
               <Link
-                href={ROUTES.appel}
+                href={{ pathname: ROUTES.appel, query: { depuis: "entete-mobile" } }}
                 aria-label={t("cta.bookCallAria")}
                 data-cta="header-mobile-primary"
                 data-cta-tracking="cta_header_book_call_click"

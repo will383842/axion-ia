@@ -22,6 +22,8 @@ interface CalendlyEventCaptureProps {
     utmSource?: string;
     utmCampaign?: string;
     utmMedium?: string;
+    /** Le bouton qui a mené ici (`diagnostic`, `projet:faq`…), chantier « Types de rendez-vous ». */
+    utmContent?: string;
     referrer?: string;
     pageUrl: string;
   };
