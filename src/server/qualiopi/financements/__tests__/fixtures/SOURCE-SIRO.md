@@ -10,6 +10,7 @@ Lue depuis le poste de b0 (l'environnement cloud n'a pas accès à data.gouv.fr 
 - Dictionnaire : `https://static.data.gouv.fr/resources/table-siret-opco/20250731-130402/dictionnaire-donnees-table-siro-v2au310725.pdf` (v2.0, 31/07/2025).
 
 ## Format constaté (fichier réel)
+
 - Séparateur `|`, pas de guillemets, UTF-8 sans BOM, fin de ligne `\n`.
 - En-tête exact : `SIRET|IDCC|OPCO_PROPRIETAIRE|OPCO_GESTION`.
 - `OPCO_GESTION` vide sauf outre-mer (12 260 lignes, toujours `AKTO`) : AKTO gère pour le compte de l'OPCO propriétaire (dictionnaire § 2, note 3). **Le couple IDCC → OPCO se lit sur `OPCO_PROPRIETAIRE`.**
@@ -18,6 +19,7 @@ Lue depuis le poste de b0 (l'environnement cloud n'a pas accès à data.gouv.fr 
 - Libellés d'OPCO présents (11, exactement) : `OPCO EP`, `AKTO`, `CONSTRUCTYS`, `ATLAS`, `L'OPCOMMERCE`, `OCAPIAT`, `OPCO MOBILITES`, `AFDAS`, `OPCO2I`, `UNIFORMATION COHESION SOCIALE`, `OPCO SANTE`.
 
 ## Chiffres du millésime 2026-06
+
 - 1 052 couples (idcc, opco) distincts dont 43 sur valeurs d'échappement → **1 009 couples réels**.
 - **56 IDCC réels rattachés à ≥ 2 OPCO.** Certains sont structurels (ex. `8822` AKTO 235 / OCAPIAT 67, IDCC agricoles outre-mer), d'autres sont des anomalies isolées (ex. `1596` CONSTRUCTYS 274 837 / OPCO EP 1 ; `1486` ATLAS 253 637 / OPCO2I 2).
 - `siro-202606-couples-idcc-opco.txt` : TOUS les couples du millésime, `idcc|opco|nombre de SIRET`, agrégés depuis le fichier réel.
