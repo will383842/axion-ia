@@ -204,6 +204,23 @@ export async function reporterDepuisLeLien(fd: FormData): Promise<void> {
       redirect(retour("&echec=refus"));
       break;
 
+    case "sur_place":
+      // La page n'offre pas de créneaux pour un rendez-vous sur place : arriver
+      // ici veut dire un formulaire resté ouvert ou rejoué. On dit la VRAIE
+      // raison, puis on renvoie vers la page, qui explique quoi faire.
+      await prevenir(
+        "report_sur_place",
+        "warn",
+        rdv.id,
+        `Rendez-vous sur place : report en ligne impossible (ligne ${rdv.id}).
+
+` +
+          `Le site ne sait reprogrammer qu'un appel ou une visio. Le visiteur ` +
+          `a ete invite a passer par le lien Calendly ou a nous ecrire.`,
+      );
+      redirect(base);
+      break;
+
     case "refus":
       await prevenir(
         "report_refuse",

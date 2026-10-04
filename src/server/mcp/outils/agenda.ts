@@ -94,7 +94,11 @@ async function lireFenetre(premierJour: string, nbJours: number, peutVoirAppels:
       occupe: it.occupe,
       jour: it.jour,
       contact: it.contact,
-      format: it.format,
+      // 🔒 Le contrat MCP est épinglé par le socle (`manifestSha`) : y ajouter
+      // `sur_place` ferait refuser l'adaptateur tant que le socle n'est pas
+      // ré-épinglé. Un rendez-vous sur place sort donc « inconnu » ici — son
+      // adresse reste lisible dans `lieu`. À faire évoluer avec le socle.
+      format: it.format === "sur_place" ? "inconnu" : it.format,
       annule: it.annule,
       lieu: it.lieu,
       note: it.note,

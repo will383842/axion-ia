@@ -115,11 +115,11 @@ const MONTHS = [
 const PAGE_SIZE = 25;
 
 /**
- * Pastille de FORMAT — téléphone, visio, ou « à préciser ».
+ * Pastille de FORMAT — téléphone, visio, sur place, ou « à préciser ».
  *
  * Teinte d'identité (non sémantique) quand le format est connu, badge neutre
  * sinon : un format indécis ne doit pas ressembler à un format décidé. Le choix
- * des deux couleurs et sa raison sont documentés sur `TEINTE_CANAL`.
+ * des couleurs et sa raison sont documentés sur `TEINTE_CANAL`.
  */
 function PastilleFormat({ format }: { format: CanalRendezVous }) {
   const teinte = TEINTE_CANAL[format];
