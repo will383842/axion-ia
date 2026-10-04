@@ -18,11 +18,7 @@ import { describe, expect, it } from "vitest";
 const CHEMIN = path.resolve(__dirname, "../../../../docs/runbooks/rotation-secret-partners.md");
 const lire = () => readFileSync(CHEMIN, "utf8");
 /** Le texte lu comme une phrase : une ligne, sans gras, une seule forme d'apostrophe. */
-const aplati = () =>
-  lire()
-    .replace(/\*\*/g, "")
-    .replace(/’/g, "'")
-    .replace(/\s+/g, " ");
+const aplati = () => lire().replace(/\*\*/g, "").replace(/’/g, "'").replace(/\s+/g, " ");
 const section = (titre: RegExp) => {
   const t = lire();
   const debut = t.search(titre);
@@ -63,8 +59,7 @@ describe("REQ-SEC-012 — le runbook de rotation d'un secret partagé avec Partn
     // Les deux modules de configuration du canal : l'émission (partners) et la lecture (partners-sync).
     const config = ["../../partners/config.ts", "../config.ts"]
       .map((f) => readFileSync(path.resolve(__dirname, f), "utf8"))
-      .join("
-");
+      .join("\n");
     for (const nom of ["PARTNERS_SYNC_SECRET", "PARTNERS_RELECTURE_SECRET"]) {
       expect(t, nom).toContain(`\`${nom}\``);
       expect(config, nom).toContain(nom);
