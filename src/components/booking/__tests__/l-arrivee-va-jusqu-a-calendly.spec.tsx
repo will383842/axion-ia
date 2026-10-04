@@ -1,6 +1,6 @@
 /**
  * L'UTM d'ARRIVÉE va jusqu'à Calendly (chantier « Types de rendez-vous », L5a,
- * relecture de #1293).
+ * relecture de la PR 1293).
  *
  * Drapeau de réservation directe éteint (valeur par défaut) : le visiteur
  * arrivé sur `/fr/appel?utm_source=linkedin&utm_campaign=x` réserve CHEZ
