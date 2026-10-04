@@ -36,12 +36,6 @@ import { compterEnAttente } from "@/server/email/outbox-service";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
-import { dernierReleveEtatFonds } from "@/server/qualiopi/financements/etat-fonds-opco-lecture";
-import {
-  estEtatFondsPerime,
-  formatJourDate,
-  VEILLE_ETAT_FONDS_JOURS,
-} from "@/server/qualiopi/financements/etat-fonds-opco";
 import {
   listBaremesEnVigueur,
   resolveBaremeOpco,
@@ -124,6 +118,10 @@ import {
 } from "./delai-evaluation-finale";
 import { regleDelaiFacturationOpco } from "./regle-delai-facturation-opco";
 import { regleDepotOpcoAFaire } from "./regle-depot-opco-a-faire";
+import { regleDonneesOpcoIncompletes } from "./regle-donnees-opco-incompletes";
+import { regleEtatFondsPerime } from "./regle-etat-fonds-perime";
+import { regleFondsOpcoSuspendusSession } from "./regle-fonds-opco-suspendus-session";
+import { regleSubrogationIncompatibleRegime } from "./regle-subrogation-incompatible-regime";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Type de retour de l'évaluateur
@@ -3110,26 +3108,6 @@ async function regleBaremeOpcoPerime(now: Date): Promise<AlerteCandidate[]> {
 }
 
 /**
- * Lot OPCO A5 — veille mensuelle de l'état des fonds OPCO. Une seule requête
- * bornée (le relevé le plus récent), aucune donnée personnelle. Sans aucun
- * relevé, rien : la page invite déjà à saisir le premier.
- */
-async function regleEtatFondsPerime(now: Date): Promise<AlerteCandidate[]> {
-  const dernier = await dernierReleveEtatFonds();
-  if (!dernier || !estEtatFondsPerime(dernier.releveLe, now)) return [];
-  return [
-    {
-      code: "etat_fonds_perime",
-      niveau: "important" as AlerteNiveau,
-      titre: "État des fonds OPCO à relever (veille mensuelle)",
-      message: `Le dernier relevé de l'état des fonds OPCO date du ${formatJourDate(dernier.releveLe)} (plus de ${VEILLE_ETAT_FONDS_JOURS} jours). Consultez les sites des OPCO (suspensions, dates limites de dépôt) et ajoutez un relevé, même inchangé.`,
-      cibleType: "EtatFondsOpco",
-      cibleId: dernier.id,
-    },
-  ];
-}
-
-/**
  * Lot A4 — Devis ouvert ou session OPCO à venir sans barème applicable.
  *
  * Devis : lu sur `opcoEstimationOrigine`, figé à la création (le chiffre affiché
@@ -5097,6 +5075,10 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "bareme_opco_perime", fn: regleBaremeOpcoPerime },
   { nom: "etat_fonds_perime", fn: regleEtatFondsPerime },
   { nom: "aucun_bareme_opco", fn: regleAucunBaremeOpco },
+  // Lot OPCO A7c — manques n°5 et n°8 de la critique de complétude.
+  { nom: "subrogation_incompatible_regime", fn: regleSubrogationIncompatibleRegime },
+  { nom: "fonds_opco_suspendus_session", fn: regleFondsOpcoSuspendusSession },
+  { nom: "donnees_opco_incompletes", fn: regleDonneesOpcoIncompletes },
   // Lot 1 §1.4 — les deux seules étapes du parcours d'un dossier qui n'avaient
   // AUCUN code d'alerte. Les douze autres en avaient déjà un ; ajouter une
   // alerte « échéance dépassée » globale les aurait signalées deux fois.

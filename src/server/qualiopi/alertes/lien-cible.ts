@@ -49,6 +49,9 @@ const SEGMENT_PAR_CIBLE: Readonly<Record<string, string>> = {
   Devis: "qualiopi/devis",
   FactureFormation: "qualiopi/facturation",
   Formation: "qualiopi/formations",
+  // Lot OPCO A7c : `donnees_opco_incompletes` mène à la fiche client, où se
+  // saisissent l'OPCO, l'IDCC et l'effectif.
+  Client: "qualiopi/clients",
   // Chantier visio (PR 6) : les alertes du circuit du compte rendu mènent à
   // la page du rendez-vous, qui ouvre le compte rendu (lecture, validation,
   // retrait de l'accord).
