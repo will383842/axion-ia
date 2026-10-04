@@ -8,16 +8,58 @@
 
 import { createHash } from "node:crypto";
 import React from "react";
-import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 const findUnique = vi.fn();
 const findMany = vi.fn();
+// Témoins de l'action de génération (fin du fichier).
+const sessionFindUnique = vi.fn();
+const dossierFindFirst = vi.fn();
+const clientFindUnique = vi.fn();
+const jetonFindFirst = vi.fn();
+const documentFindFirst = vi.fn();
+const requireAdminWrite = vi.fn();
+const generateDocument = vi.fn();
+const creerTokenDocument = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    documentGenere: { findUnique: (...a: unknown[]) => findUnique(...a) },
+    documentGenere: {
+      findUnique: (...a: unknown[]) => findUnique(...a),
+      findFirst: (...a: unknown[]) => documentFindFirst(...a),
+    },
     documentSignature: { findMany: (...a: unknown[]) => findMany(...a) },
+    trainingSession: { findUnique: (...a: unknown[]) => sessionFindUnique(...a) },
+    dossierFinancement: { findFirst: (...a: unknown[]) => dossierFindFirst(...a) },
+    client: { findUnique: (...a: unknown[]) => clientFindUnique(...a) },
+    documentSignatureToken: { findFirst: (...a: unknown[]) => jetonFindFirst(...a) },
   },
+}));
+vi.mock("@/server/actions/qualiopi/_guards", () => ({
+  requireAdminWrite: (...a: unknown[]) => requireAdminWrite(...a),
+  requireHabilitation: vi.fn(),
+  logQualiopiActivity: vi.fn(async () => undefined),
+}));
+vi.mock("@/server/qualiopi/sessions/verrou-dossier-garde", () => ({
+  assertDossierOuvert: async () => ({ ok: true, sessionId: null }),
+  assertDossierOuvertSiRegeneration: async () => ({ ok: true, sessionId: null }),
+}));
+vi.mock("@/server/qualiopi/documents/documents-service", async (importOriginal) => ({
+  ...(await importOriginal<object>()),
+  generateDocument: (...a: unknown[]) => generateDocument(...a),
+}));
+vi.mock("@/server/qualiopi/documents/organisme", async (importOriginal) => ({
+  ...(await importOriginal<object>()),
+  getOrganismeIdentite: async () => IDENTITE,
+}));
+vi.mock("@/server/qualiopi/documents/signature/token-document", async (importOriginal) => ({
+  ...(await importOriginal<object>()),
+  creerTokenDocument: (...a: unknown[]) => creerTokenDocument(...a),
+}));
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ refresh: vi.fn(), push: vi.fn() }),
+  usePathname: () => "/",
+  useSearchParams: () => new URLSearchParams(),
 }));
 vi.mock("@/lib/r2-storage", () => ({
   getSignedUrlR2: vi.fn(),
@@ -38,6 +80,11 @@ import {
 import { libelleTypeDocument } from "@/server/qualiopi/documents/libelles-type-document";
 import { versionGabaritCourante } from "./gabarit-versions";
 import { MandatOpcoPdf, type MandatOpcoData } from "./mandat-opco";
+import { render, screen, cleanup } from "@testing-library/react";
+import { genererMandatOpcoAction } from "@/server/actions/qualiopi/documents";
+// Le témoin du bouton vit ici : c'est le fichier de test déclaré de la tâche.
+// eslint-disable-next-line no-restricted-imports -- témoin d'écran, pas une dépendance de code
+import { DocumentsSection } from "@/components/admin/qualiopi/DocumentsSection";
 
 const IDENTITE: OrganismeIdentite = {
   raisonSociale: "Axion-IA SAS",
@@ -253,5 +300,199 @@ describe("🔴 l'exemplaire signé du mandat se rejoue à l'octet", () => {
     expect(t).toContain("Signé le 04/10/2026 11:15");
     expect(t).toContain("Signé le 04/10/2026 11:16");
     expect(t).toContain(`Empreinte : ${"1".repeat(64)}`);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Témoins de l'action et du bouton (rattrapage 110)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const SESSION_ID = "a1234567-89ab-4def-8123-456789abcdef";
+const CLIENT_ID = "b1234567-89ab-4def-8123-456789abcdef";
+const DOC_ID = "c1234567-89ab-4def-8123-456789abcdef";
+
+function sessionEnBase() {
+  return {
+    id: SESSION_ID,
+    clientId: CLIENT_ID,
+    titreSession: "IA générative pour l'artisanat",
+    dateDebut: new Date("2026-11-12T08:00:00Z"),
+    dateFin: new Date("2026-11-13T16:00:00Z"),
+    formationSnapshot: null,
+    formation: { dureeHeures: 14 },
+    enrollments: [
+      { clientId: null, trainee: { nom: "Durand", prenom: "Camille" } },
+      { clientId: null, trainee: { nom: "Martin", prenom: "Lucas" } },
+    ],
+  };
+}
+
+function preparerBase(opts: { conventionEnCircuit: boolean }) {
+  requireAdminWrite.mockResolvedValue({ userId: "admin-1", role: "super_admin" });
+  sessionFindUnique.mockResolvedValue(sessionEnBase());
+  dossierFindFirst.mockResolvedValue({ financeurNom: "OPCO EP" });
+  clientFindUnique.mockResolvedValue({
+    raisonSociale: "Menuiserie Durand SARL",
+    siret: "98765432100011",
+    adresse: "10 avenue du Client, 42000 Saint-Étienne",
+    contactNom: "Claire Durand",
+    contactEmail: "claire@durand.test",
+    contactFonction: "Gérante",
+    opco: null,
+    opcoIdentifie: null,
+  });
+  jetonFindFirst.mockResolvedValue(
+    opts.conventionEnCircuit
+      ? {
+          signataireNom: "Claire Durand",
+          signataireEmail: "claire@durand.test",
+          signataireQualite: "Gérante",
+          expiresAt: new Date("2026-11-01T00:00:00Z"),
+          documentGenere: { numero: "AXI-DOC-2026-119" },
+        }
+      : null,
+  );
+  documentFindFirst.mockResolvedValue(null);
+  findUnique.mockResolvedValue({
+    metadata: {},
+    suppressionPrevueAt: new Date("2031-10-04T00:00:00Z"),
+  });
+  generateDocument.mockResolvedValue({
+    id: DOC_ID,
+    numero: "AXI-DOC-2026-120",
+    pdfUrl: null,
+    hashSha256: "a".repeat(64),
+  });
+  creerTokenDocument.mockResolvedValue({
+    token: "jeton",
+    tokenId: "t1",
+    expiresAt: new Date("2026-11-01T00:00:00Z"),
+  });
+}
+
+describe("🔴 genererMandatOpcoAction — garde, entrée, génération, envoi", () => {
+  beforeEach(() => {
+    for (const m of [
+      sessionFindUnique,
+      dossierFindFirst,
+      clientFindUnique,
+      jetonFindFirst,
+      documentFindFirst,
+      requireAdminWrite,
+      generateDocument,
+      creerTokenDocument,
+      findUnique,
+    ]) {
+      m.mockReset();
+    }
+  });
+
+  it("refuse sans droit admin, AVANT toute lecture", async () => {
+    requireAdminWrite.mockRejectedValueOnce(new Error("Accès refusé"));
+    await expect(
+      genererMandatOpcoAction({ sessionId: SESSION_ID, clientId: CLIENT_ID }),
+    ).rejects.toThrow("Accès refusé");
+    expect(sessionFindUnique).not.toHaveBeenCalled();
+    expect(clientFindUnique).not.toHaveBeenCalled();
+    expect(dossierFindFirst).not.toHaveBeenCalled();
+    expect(generateDocument).not.toHaveBeenCalled();
+  });
+
+  it("zod refuse une clé en trop (`.strict()`)", async () => {
+    preparerBase({ conventionEnCircuit: false });
+    const res = await genererMandatOpcoAction({
+      sessionId: SESSION_ID,
+      clientId: CLIENT_ID,
+      opco: "Un autre OPCO",
+    } as never);
+    expect(res).toStrictEqual({ error: "Données invalides" });
+    expect(sessionFindUnique).not.toHaveBeenCalled();
+    expect(generateDocument).not.toHaveBeenCalled();
+  });
+
+  it("refuse sans dossier OPCO ou mixte ouvert : le mandat n'a pas d'objet", async () => {
+    preparerBase({ conventionEnCircuit: false });
+    dossierFindFirst.mockResolvedValueOnce(null);
+    const res = await genererMandatOpcoAction({ sessionId: SESSION_ID, clientId: CLIENT_ID });
+    expect("error" in res && res.error).toMatch(/OPCO ou mixte/);
+    expect(generateDocument).not.toHaveBeenCalled();
+  });
+
+  it("génère un DocumentGenere `mandat_opco` avec ses refs, nourri par la base", async () => {
+    preparerBase({ conventionEnCircuit: false });
+    const res = await genererMandatOpcoAction({ sessionId: SESSION_ID, clientId: CLIENT_ID });
+    expect("data" in res).toBe(true);
+    expect(generateDocument).toHaveBeenCalledTimes(1);
+    const appel = generateDocument.mock.calls[0]![0] as {
+      type: string;
+      refs: unknown;
+      buildElement: (n: string) => React.ReactElement<{ data: MandatOpcoData }>;
+    };
+    expect(appel.type).toBe("mandat_opco");
+    expect(appel.refs).toStrictEqual({ sessionId: SESSION_ID, clientId: CLIENT_ID });
+    const data = appel.buildElement("AXI-DOC-2026-120").props.data;
+    expect(data.opco.nom).toBe("OPCO EP");
+    expect(data.entreprise.representant).toBe("Claire Durand");
+    expect(data.action.stagiaires).toStrictEqual(["Camille Durand", "Lucas Martin"]);
+    expect(data.action.dureeHeures).toBe(14);
+    expect(data.action.dateDebut).toBe("12/11/2026");
+  });
+
+  it("sans convention en circuit : le mandat part SEUL, au contact de la fiche, et le dit", async () => {
+    preparerBase({ conventionEnCircuit: false });
+    const res = await genererMandatOpcoAction({ sessionId: SESSION_ID, clientId: CLIENT_ID });
+    if (!("data" in res)) throw new Error(res.error);
+    expect(res.data.envoi.mode).toBe("seul");
+    const jeton = creerTokenDocument.mock.calls[0]![0] as Record<string, unknown>;
+    expect(jeton["partie"]).toBe("client");
+    expect(jeton["documentGenereId"]).toBe(DOC_ID);
+    expect(jeton["signataireEmail"]).toBe("claire@durand.test");
+  });
+
+  it("convention en circuit : même envoi — même signataire, même échéance, convention citée", async () => {
+    preparerBase({ conventionEnCircuit: true });
+    const res = await genererMandatOpcoAction({ sessionId: SESSION_ID, clientId: CLIENT_ID });
+    if (!("data" in res)) throw new Error(res.error);
+    expect(res.data.envoi).toMatchObject({
+      mode: "avec_convention",
+      conventionNumero: "AXI-DOC-2026-119",
+      destinataire: "claire@durand.test",
+    });
+    const jeton = creerTokenDocument.mock.calls[0]![0] as Record<string, unknown>;
+    expect(jeton["borneMetier"]).toStrictEqual(new Date("2026-11-01T00:00:00Z"));
+    const appel = generateDocument.mock.calls[0]![0] as {
+      buildElement: (n: string) => React.ReactElement<{ data: MandatOpcoData }>;
+    };
+    expect(appel.buildElement("X").props.data.action.numeroConvention).toBe("AXI-DOC-2026-119");
+  });
+});
+
+describe("🔴 le bouton « Générer le mandat OPCO » suit le financement", () => {
+  afterEach(cleanup);
+
+  function rendre(financement: "direct" | "opco" | "mixte" | "cpf" | null) {
+    cleanup();
+    render(
+      <DocumentsSection
+        sessionId={SESSION_ID}
+        enrollments={[]}
+        documentsExistants={[]}
+        contexte={{ financement, typeClient: "entreprise", statut: "planifiee" }}
+      />,
+    );
+  }
+
+  it("absent sans dossier OPCO ni mixte (direct, CPF, non renseigné)", () => {
+    for (const f of ["direct", "cpf", null] as const) {
+      rendre(f);
+      expect(screen.queryByRole("button", { name: "Générer le mandat OPCO" })).toBeNull();
+    }
+  });
+
+  it("présent sur une session OPCO ou mixte", () => {
+    for (const f of ["opco", "mixte"] as const) {
+      rendre(f);
+      expect(screen.getByRole("button", { name: "Générer le mandat OPCO" })).toBeTruthy();
+    }
   });
 });
