@@ -25,7 +25,16 @@ import {
 } from "@/server/actions/qualiopi/_guards";
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
-import { estimateOpcoCoverage, type OrigineEstimationOpco } from "@/server/qualiopi/crm/devis";
+import {
+  dateDeReferenceDevis,
+  estimateOpcoCoverage,
+  type OrigineEstimationOpco,
+} from "@/server/qualiopi/crm/devis";
+import {
+  anneeParis,
+  consommationOpcoAnnee,
+} from "@/server/qualiopi/financements/consommation-opco";
+import { opcoDuClient } from "@/server/qualiopi/financements/opco-referentiel";
 import { effectifDuClient, idccValide } from "@/server/qualiopi/financements/bareme-opco-branche";
 import {
   lierDevisAuProjet,
@@ -126,6 +135,14 @@ const createDevisSchema = z.object({
   /** Enveloppe restante OPCO en centimes (optionnel). */
   opcoEnveloppeRestanteCents: z.number().int().min(0).optional(),
   /**
+   * Lot A7d — date de début PRÉVUE de la session (AAAA-MM-JJ, optionnel). Choisit
+   * le barème et l'année civile de l'enveloppe ; à défaut, la date de validité.
+   */
+  dateDebutSessionPrevue: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date de début prévue : format AAAA-MM-JJ attendu.")
+    .optional(),
+  /**
    * Chantier visio (PR 7) : le projet d'où le devis a été ouvert. Seul le LIEN
    * `projet_devis` est écrit, dans la transaction du devis — jamais une valeur
    * pré-remplie (décision de Will du 29/09 : le devis s'ouvre vide).
@@ -193,17 +210,38 @@ export async function createDevisAction(
     const client = await prisma.client.findUnique({ where: { id: v.clientId } }).catch(() => null);
     const idccClient = idccValide(client?.idcc);
     const effectifClient = effectifDuClient(client);
-    // Enveloppe : saisie sur le devis, sinon celle de la fiche client, sinon le
-    // plafond annuel du barème (défaut d'`estimateOpcoCoverage`).
-    const enveloppeRestanteCents =
-      v.opcoEnveloppeRestanteCents ?? client?.opcoEnveloppeAnnuelleCents ?? undefined;
+    // Lot A7d — OPCO par la règle unique (typé d'abord, ancien texte à défaut).
+    const opcoClient = opcoDuClient(client);
+    // Lot A7d — barème et enveloppe de l'année de la SESSION, pas du jour.
+    const asOf = dateDeReferenceDevis({
+      debutSessionPrevue:
+        v.dateDebutSessionPrevue !== undefined
+          ? new Date(`${v.dateDebutSessionPrevue}T12:00:00.000Z`)
+          : null,
+      dateValidite,
+      maintenant: new Date(),
+    });
+    // Enveloppe : saisie sur le devis, sinon (enveloppe de la fiche client, à
+    // défaut plafond annuel du barème) − ce que l'OPCO a déjà pris en charge sur
+    // l'année. Consommation illisible → `null` → comportement antérieur.
+    const consommation =
+      v.opcoEnveloppeRestanteCents === undefined && opcoClient !== null
+        ? await consommationOpcoAnnee(v.clientId, opcoClient, anneeParis(asOf))
+        : null;
     const coverage = await estimateOpcoCoverage({
       nbParticipants: v.nbParticipants,
       dureeHeures: v.dureeHeures,
       modalite: v.modaliteOpco,
       montantHtCents: montantTotalHtCents,
-      ...(enveloppeRestanteCents !== undefined ? { enveloppeRestanteCents } : {}),
-      ...(client?.opcoIdentifie ? { opco: client.opcoIdentifie } : {}),
+      asOf,
+      ...(v.opcoEnveloppeRestanteCents !== undefined
+        ? { enveloppeRestanteCents: v.opcoEnveloppeRestanteCents }
+        : {}),
+      ...(client?.opcoEnveloppeAnnuelleCents != null
+        ? { enveloppeAnnuelleClientCents: client.opcoEnveloppeAnnuelleCents }
+        : {}),
+      ...(consommation !== null ? { consommationAnnee: consommation } : {}),
+      ...(opcoClient !== null ? { opco: opcoClient } : {}),
       ...(idccClient ? { idcc: idccClient } : {}),
       ...(effectifClient !== undefined ? { effectif: effectifClient } : {}),
     });
