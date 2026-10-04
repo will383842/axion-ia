@@ -149,7 +149,16 @@ export async function transitionnerDossier(input: {
   montantAccordeCents?: number;
   /** Posé à l'accord/facturation : date de paiement attendue du financeur. */
   echeanceFinanceurAt?: Date;
+  /**
+   * Chantier OPCO A6 — date ÉCRITE sur l'accord du financeur (colonne `@db.Date`).
+   * Distincte de `accordAt` (le clic en console) : c'est elle qui fait foi pour
+   * le régime de paiement. Posée seulement à l'arrivée en `accord_recu`.
+   */
+  accordEcritLe?: Date;
 }): Promise<{ statut: DossierFinancementStatut }> {
+  if (input.accordEcritLe !== undefined && input.vers !== "accord_recu") {
+    throw new Error("La date de l'accord écrit ne se saisit qu'à l'accord.");
+  }
   const dossier = await prisma.dossierFinancement.findUniqueOrThrow({
     where: { id: input.dossierId },
     select: { statut: true },
@@ -173,6 +182,7 @@ export async function transitionnerDossier(input: {
         ...(input.echeanceFinanceurAt !== undefined
           ? { echeanceFinanceurAt: input.echeanceFinanceurAt }
           : {}),
+        ...(input.accordEcritLe !== undefined ? { accordEcritLe: input.accordEcritLe } : {}),
       },
     });
     // 🔑 `financement.mis_a_jour` (INT-T05, REQ-INT-032) : l'échéance du financeur est dans la
@@ -216,6 +226,43 @@ export async function transitionnerDossier(input: {
   }
 
   return { statut: input.vers };
+}
+
+/**
+ * Chantier OPCO A6 — saisit le dépôt de la demande de prise en charge, fait
+ * par l'ENTREPRISE sur son espace OPCO : « Dépôt fait le » et, s'il est connu,
+ * le numéro de dossier attribué par l'OPCO.
+ *
+ * ⚠️ Ce n'est PAS une transition : le statut ne bouge pas (l'envoi reste un
+ * geste distinct de la machine à états). L'écriture est conditionnée au statut
+ * lu — même verrou optimiste que `transitionnerDossier` — et refusée sur un
+ * dossier clos.
+ */
+export async function enregistrerDepotDossier(input: {
+  dossierId: string;
+  depotFaitLe: Date;
+  numeroDossierExterne?: string;
+}): Promise<{ trainingSessionId: string | null }> {
+  const dossier = await prisma.dossierFinancement.findUniqueOrThrow({
+    where: { id: input.dossierId },
+    select: { statut: true, trainingSessionId: true },
+  });
+  if (dossier.statut === "clos") {
+    throw new Error("Dossier clos : le dépôt ne se saisit plus.");
+  }
+  const { count } = await prisma.dossierFinancement.updateMany({
+    where: { id: input.dossierId, statut: dossier.statut },
+    data: {
+      depotFaitLe: input.depotFaitLe,
+      ...(input.numeroDossierExterne !== undefined
+        ? { numeroDossierExterne: input.numeroDossierExterne }
+        : {}),
+    },
+  });
+  if (count === 0) {
+    throw new Error("Modification concurrente détectée — recharger le dossier.");
+  }
+  return { trainingSessionId: dossier.trainingSessionId };
 }
 
 /**

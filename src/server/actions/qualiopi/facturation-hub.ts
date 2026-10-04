@@ -31,6 +31,7 @@ import {
 import {
   transitionnerDossier,
   creerDossierDepuisSession,
+  enregistrerDepotDossier,
 } from "@/server/qualiopi/financements/dossier-financement";
 import { planifierFacturationDevis } from "@/server/qualiopi/financements/facture-libre-pur";
 // SSOT du plafond légal (art. L6353-6) : la même constante que `calculerAcompte`
@@ -563,7 +564,17 @@ const TransitionDossierSchema = z.object({
   vers: z.enum(["a_monter", "envoye", "accord_recu", "refuse", "facture", "paiement_recu", "clos"]),
   montantAccordeCents: z.number().int().positive().optional(),
   echeanceFinanceurAt: z.coerce.date().optional(),
+  /** Date écrite sur l'accord, AAAA-MM-JJ (colonne `@db.Date`). */
+  accordEcritLe: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
 });
+
+/** « AAAA-MM-JJ » → minuit UTC, la forme d'une colonne `@db.Date`. */
+function jourSaisiVersDate(jour: string): Date {
+  return new Date(`${jour}T00:00:00.000Z`);
+}
 
 export async function transitionnerDossierAction(
   rawInput: unknown,
@@ -587,17 +598,76 @@ export async function transitionnerDossierAction(
       ...(input.echeanceFinanceurAt !== undefined
         ? { echeanceFinanceurAt: input.echeanceFinanceurAt }
         : {}),
+      ...(input.accordEcritLe !== undefined
+        ? { accordEcritLe: jourSaisiVersDate(input.accordEcritLe) }
+        : {}),
     });
     await logQualiopiActivity({
       action: "facturation.dossier.transition",
       targetType: "DossierFinancement",
       targetId: input.dossierId,
-      changes: { vers: input.vers, montantAccordeCents: input.montantAccordeCents ?? null },
+      changes: {
+        vers: input.vers,
+        montantAccordeCents: input.montantAccordeCents ?? null,
+        accordEcritLe: input.accordEcritLe ?? null,
+      },
       session,
     });
     return { data: { statut: result.statut } };
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Transition impossible." };
+  }
+}
+
+const DepotDossierSchema = z.object({
+  dossierId: z.string().uuid(),
+  /** AAAA-MM-JJ (colonne `@db.Date`). */
+  depotFaitLe: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  numeroDossierExterne: z.string().trim().min(1).max(80).optional(),
+});
+
+/**
+ * Chantier OPCO A6 — saisit « Dépôt fait le » (+ n° de dossier OPCO) : c'est
+ * l'entreprise qui dépose, l'organisme constate. Referme l'alerte
+ * `depot_opco_a_faire`. Journal sans donnée personnelle : une date et un
+ * numéro de dossier.
+ */
+export async function enregistrerDepotDossierAction(
+  rawInput: unknown,
+): Promise<{ data: { dossierId: string } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  // Même droit que les transitions du dossier : c'est le même suivi du dépôt.
+  const session = await requireHabilitation("deposer_demande_financeur");
+  const parsed = DepotDossierSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide (date attendue AAAA-MM-JJ)." };
+  const input = parsed.data;
+  const depotFaitLe = jourSaisiVersDate(input.depotFaitLe);
+  if (Number.isNaN(depotFaitLe.getTime())) return { error: "Date de dépôt invalide." };
+
+  try {
+    const { trainingSessionId } = await enregistrerDepotDossier({
+      dossierId: input.dossierId,
+      depotFaitLe,
+      ...(input.numeroDossierExterne !== undefined
+        ? { numeroDossierExterne: input.numeroDossierExterne }
+        : {}),
+    });
+    await logQualiopiActivity({
+      action: "facturation.dossier.depot_saisi",
+      targetType: "DossierFinancement",
+      targetId: input.dossierId,
+      changes: {
+        depotFaitLe: input.depotFaitLe,
+        numeroDossierExterne: input.numeroDossierExterne ?? null,
+        trainingSessionId,
+      },
+      session,
+    });
+    return { data: { dossierId: input.dossierId } };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Saisie du dépôt impossible." };
   }
 }
 
