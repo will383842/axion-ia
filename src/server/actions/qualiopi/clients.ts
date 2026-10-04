@@ -18,6 +18,11 @@ import { inferOpco } from "@/server/qualiopi/crm/naf-opco";
 import { OPCO_IDS } from "@/server/qualiopi/financements/opco-referentiel";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
 import { definirContactFacturation } from "@/server/qualiopi/crm/contact-facturation";
+import {
+  rafraichirEffectifInsee,
+  type BaseEffectif,
+  type ResultatReleveEffectif,
+} from "@/server/qualiopi/crm/effectif-insee";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 import {
   creerOuRetrouverClient,
@@ -345,7 +350,62 @@ export async function createClientAction(
     session,
   });
 
+  // Lot OPCO A7d : effectif relevé à l'INSEE (borne basse de la tranche) si la
+  // fiche a un SIREN. APRÈS la création, jamais sur son chemin : l'annuaire est
+  // borné à 3 s, et une panne — ou toute exception — laisse la fiche telle quelle.
+  if (siren !== undefined) {
+    await releverEffectifInseeEtTracer(resultat.id, session).catch(() => null);
+  }
+
   return { data: { id: resultat.id, numero: resultat.numero } };
+}
+
+/** Relève l'effectif INSEE et trace l'écriture quand il y en a une. */
+async function releverEffectifInseeEtTracer(
+  clientId: string,
+  session: { userId: string; role: string },
+): Promise<ResultatReleveEffectif> {
+  const r = await rafraichirEffectifInsee(prisma as unknown as BaseEffectif, clientId);
+  if (r.statut === "pose") {
+    await logQualiopiActivity({
+      action: "qualiopi.client.effectif_insee",
+      targetType: "Client",
+      targetId: clientId,
+      changes: { effectif: r.effectif, effectifSource: "insee", trancheInsee: r.tranche },
+      session,
+    });
+  }
+  return r;
+}
+
+/** Message affiché après « Rafraîchir depuis l'INSEE », par issue. */
+const MESSAGE_RELEVE_EFFECTIF: Record<ResultatReleveEffectif["statut"], string> = {
+  pose: "Effectif relevé à l'INSEE.",
+  saisie_conservee:
+    "L'effectif a été saisi à la main : il est conservé. Effacez-le pour reprendre le relevé INSEE.",
+  sans_siren: "Le relevé INSEE demande une entreprise dont le SIREN est connu.",
+  indisponible: "L'annuaire des entreprises ne répond pas pour l'instant. Réessayez plus tard.",
+  tranche_inconnue: "L'INSEE ne publie pas de tranche d'effectif pour ce SIREN.",
+};
+
+/**
+ * « Rafraîchir depuis l'INSEE » (lot OPCO A7d). Seul autre moment, avec la
+ * création, où l'annuaire est interrogé pour l'effectif. Une saisie n'est
+ * jamais écrasée (garde dans `rafraichirEffectifInsee`).
+ */
+export async function rafraichirEffectifInseeAction(
+  clientId: string,
+): Promise<
+  { data: { statut: ResultatReleveEffectif["statut"]; message: string } } | { error: string }
+> {
+  const session = await requireAdminWrite();
+  if (!z.string().uuid().safeParse(clientId).success) return { error: "Client introuvable." };
+  try {
+    const r = await releverEffectifInseeEtTracer(clientId, session);
+    return { data: { statut: r.statut, message: MESSAGE_RELEVE_EFFECTIF[r.statut] } };
+  } catch {
+    return { error: MESSAGE_RELEVE_EFFECTIF.indisponible };
+  }
 }
 
 /**
