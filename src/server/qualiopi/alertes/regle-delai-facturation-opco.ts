@@ -16,7 +16,7 @@ import { dayKeyInParis } from "@/lib/calendar-grid";
 import { prisma } from "@/lib/prisma";
 import {
   dateLimiteFacturation,
-  isOpcoId,
+  opcoDuClient,
   opcoLabel,
 } from "@/server/qualiopi/financements/opco-referentiel";
 import type { AlerteCandidate } from "./evaluateur";
@@ -36,7 +36,7 @@ type SessionLue = {
   id: string;
   numero: string;
   dateFin: Date;
-  client: { opco: string | null } | null;
+  client: { opco: string | null; opcoIdentifie?: string | null } | null;
 };
 
 /** Décision PURE : quelles sessions approchent (ou ont dépassé) la limite. */
@@ -46,8 +46,8 @@ export function candidatsDelaiFacturationOpco(
 ): AlerteCandidate[] {
   const alertes: AlerteCandidate[] = [];
   for (const s of sessions) {
-    const opco = s.client?.opco ?? null;
-    if (!isOpcoId(opco)) continue;
+    const opco = opcoDuClient(s.client);
+    if (opco === null) continue;
     const limite = dateLimiteFacturation(opco, s.dateFin);
     if (!limite) continue;
     // Comparaison au JOUR CIVIL de Paris : le jour de la date limite compte encore.
@@ -87,7 +87,12 @@ export async function regleDelaiFacturationOpco(now: Date): Promise<AlerteCandid
     },
     orderBy: { dateFin: "asc" },
     take: PLAFOND_SESSIONS,
-    select: { id: true, numero: true, dateFin: true, client: { select: { opco: true } } },
+    select: {
+      id: true,
+      numero: true,
+      dateFin: true,
+      client: { select: { opco: true, opcoIdentifie: true } },
+    },
   });
   return candidatsDelaiFacturationOpco(sessions, now);
 }

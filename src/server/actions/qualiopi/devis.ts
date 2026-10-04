@@ -27,6 +27,7 @@ import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { estimateOpcoCoverage, type OrigineEstimationOpco } from "@/server/qualiopi/crm/devis";
 import { effectifDuClient, idccValide } from "@/server/qualiopi/financements/bareme-opco-branche";
+import { opcoDuClient } from "@/server/qualiopi/financements/opco-referentiel";
 import {
   lierDevisAuProjet,
   projetOuvrableDuClient,
@@ -193,6 +194,7 @@ export async function createDevisAction(
     const client = await prisma.client.findUnique({ where: { id: v.clientId } }).catch(() => null);
     const idccClient = idccValide(client?.idcc);
     const effectifClient = effectifDuClient(client);
+    const opcoClient = opcoDuClient(client);
     // Enveloppe : saisie sur le devis, sinon celle de la fiche client, sinon le
     // plafond annuel du barème (défaut d'`estimateOpcoCoverage`).
     const enveloppeRestanteCents =
@@ -203,7 +205,8 @@ export async function createDevisAction(
       modalite: v.modaliteOpco,
       montantHtCents: montantTotalHtCents,
       ...(enveloppeRestanteCents !== undefined ? { enveloppeRestanteCents } : {}),
-      ...(client?.opcoIdentifie ? { opco: client.opcoIdentifie } : {}),
+      // Règle unique (lot A7a) : OPCO typé d'abord, ancien texte libre reconnu ensuite.
+      ...(opcoClient !== null ? { opco: opcoClient } : {}),
       ...(idccClient ? { idcc: idccClient } : {}),
       ...(effectifClient !== undefined ? { effectif: effectifClient } : {}),
     });
