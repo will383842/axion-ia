@@ -5,7 +5,12 @@
  * estimation au barème en lecture seule.
  */
 
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+// L'estimation elle-même (`estimateOpcoCoverage`) a ses propres tests : seule la
+// projection de la session est éprouvée ici.
+vi.mock("@/server/qualiopi/crm/devis", () => ({ estimateOpcoCoverage: vi.fn() }));
+vi.mock("@/lib/prisma", () => ({ prisma: {} }));
 import { encartDepot } from "./dossier-pret-a-deposer";
 import { OPCO_FICHES, OPCO_IDS } from "./opco-referentiel";
 import { planAccordEcrit } from "./accord-ecrit";

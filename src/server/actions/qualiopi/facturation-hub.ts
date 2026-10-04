@@ -32,6 +32,7 @@ import {
 import {
   transitionnerDossier,
   creerDossierDepuisSession,
+  enregistrerAccordEcrit,
   enregistrerDepotDossier,
 } from "@/server/qualiopi/financements/dossier-financement";
 import { planifierFacturationDevis } from "@/server/qualiopi/financements/facture-libre-pur";
@@ -681,6 +682,53 @@ export async function enregistrerDepotDossierAction(
     return { data: { dossierId: input.dossierId } };
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Saisie du dépôt impossible." };
+  }
+}
+
+const AccordEcritSchema = z.object({
+  dossierId: z.string().uuid(),
+  /** AAAA-MM-JJ (colonne `@db.Date`). */
+  accordEcritLe: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+});
+
+/**
+ * Lot OPCO A7b — saisit la date de l'accord écrit depuis la page Financement,
+ * à côté du dépôt. Même habilitation que les transitions du dossier ; acte
+ * l'accord s'il ne l'était pas (`planAccordEcrit`). Journal : une date, un
+ * dossier, les transitions faites.
+ */
+export async function enregistrerAccordEcritAction(
+  rawInput: unknown,
+): Promise<{ data: { dossierId: string } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  const session = await requireHabilitation("deposer_demande_financeur");
+  const parsed = AccordEcritSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide (date attendue AAAA-MM-JJ)." };
+  const input = parsed.data;
+  const accordEcritLe = jourSaisiVersDate(input.accordEcritLe);
+  if (accordEcritLe === null) return { error: "Date de l'accord écrit invalide." };
+  // On constate un accord REÇU : une date à venir serait une promesse.
+  if (input.accordEcritLe > dayKeyInParis(new Date())) {
+    return { error: "La date de l'accord ne peut pas être dans le futur." };
+  }
+
+  try {
+    const { trainingSessionId, transitions } = await enregistrerAccordEcrit({
+      dossierId: input.dossierId,
+      accordEcritLe,
+    });
+    await logQualiopiActivity({
+      action: "facturation.dossier.accord_ecrit_saisi",
+      targetType: "DossierFinancement",
+      targetId: input.dossierId,
+      changes: { accordEcritLe: input.accordEcritLe, transitions, trainingSessionId },
+      session,
+    });
+    return { data: { dossierId: input.dossierId } };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Saisie de l'accord impossible." };
   }
 }
 
