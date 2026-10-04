@@ -26,6 +26,8 @@ import { genererFacturePdfAction } from "@/server/actions/qualiopi/financements"
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { RegenererFacturePdfButton } from "@/components/admin/qualiopi/RegenererFacturePdfButton";
+import { PiecesFacturationOpcoButton } from "@/components/admin/qualiopi/PiecesFacturationOpcoButton";
+import { circuitPaiementSession } from "@/server/qualiopi/financements/circuit-paiement-opco";
 import { FactureFormationActions } from "@/components/admin/qualiopi/FactureFormationActions";
 import { lienTelechargement } from "@/lib/content-disposition";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
@@ -138,6 +140,8 @@ export default async function QualiopiFactureDetailPage({ params }: PageProps) {
       lignes: true,
       avoirDeId: true,
       documentId: true,
+      // Lot A8c — le circuit de paiement OPCO de la session décide des pièces.
+      session: { select: { financementType: true, opcoSubrogation: true } },
       emiseAt: true,
       echeanceAt: true,
       paidAt: true,
@@ -183,6 +187,18 @@ export default async function QualiopiFactureDetailPage({ params }: PageProps) {
     },
   });
   if (!facture) notFound();
+
+  // Lot A8c — pièces de facturation OPCO : la facture à l'OPCO d'une session
+  // subrogée, ou la facture à l'entreprise d'une session en remboursement.
+  const circuitSession = facture.session ? circuitPaiementSession(facture.session) : "hors_opco";
+  const circuitPieces: "subrogation" | "remboursement" | null =
+    facture.avoirDeId !== null
+      ? null
+      : circuitSession === "subrogation" && facture.destinataire === "opco"
+        ? "subrogation"
+        : circuitSession === "remboursement" && facture.destinataire === "entreprise"
+          ? "remboursement"
+          : null;
 
   // Historique des relances RÉELLEMENT envoyées (stub-safe → []).
   const relances = await getHistoriqueRelancesFacture(facture.id);
@@ -269,6 +285,9 @@ export default async function QualiopiFactureDetailPage({ params }: PageProps) {
             factureId={facture.id}
             regenererAction={genererFacturePdfAction}
           />
+          {circuitPieces !== null && (
+            <PiecesFacturationOpcoButton factureId={facture.id} circuit={circuitPieces} />
+          )}
         </div>
       )}
 
