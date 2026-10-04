@@ -47,7 +47,7 @@ import {
   montantPrisEnChargeCents,
   resteAChargeCents,
 } from "@/server/qualiopi/financements/prise-en-charge-montant";
-import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
+import { nomOpcoDuClient } from "@/server/qualiopi/financements/opco-referentiel";
 import { lireModulesProgramme } from "@/server/qualiopi/documents/programme-modules";
 import { construireTirageEmargement } from "@/server/qualiopi/documents/emargement-tirage";
 
@@ -410,6 +410,7 @@ export async function produireConventionTripartite(
           adresse: true,
           contactNom: true,
           contactEmail: true,
+          opco: true,
           opcoIdentifie: true,
           opcoNumeroAdherent: true,
         },
@@ -425,10 +426,9 @@ export async function produireConventionTripartite(
   const identite = await getOrganismeIdentite();
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const objectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
-  // Libellé, pas slug : `opcoIdentifie` stocke « akto », la pièce lit « Akto ».
-  const nomOpco = session.client.opcoIdentifie
-    ? opcoLabel(session.client.opcoIdentifie)
-    : "OPCO (à préciser)";
+  // Libellé, pas slug : la base stocke « akto », la pièce lit « Akto ». Règle
+  // unique (lot A7a) : OPCO typé d'abord, ancien texte libre ensuite.
+  const nomOpco = nomOpcoDuClient(session.client);
   const numeroPriseEnCharge = session.numeroDossierOpco ?? session.client.opcoNumeroAdherent ?? "—";
   const prixHt = session.montantHtCents / 100;
 

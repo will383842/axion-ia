@@ -967,6 +967,7 @@ export async function envoyerRelanceAction(
           raisonSociale: true,
           contactEmail: true,
           contactNom: true,
+          opco: true,
           opcoIdentifie: true,
           penalitesRetardActives: true,
         },

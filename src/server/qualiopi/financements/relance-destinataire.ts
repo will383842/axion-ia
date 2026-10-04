@@ -38,7 +38,7 @@
  */
 
 import type { FactureFormationDestinataire } from "../../../../prisma/generated/client";
-import { opcoLabel } from "./opco-referentiel";
+import { nomOpcoDuClient, referenceOpcoDuClient } from "./opco-referentiel";
 
 /**
  * Qualité du débiteur — ce que l'écran doit dire à l'admin AVANT qu'il clique.
@@ -62,6 +62,7 @@ export interface ClientPourRelance {
   raisonSociale: string | null;
   contactNom: string | null;
   contactEmail: string | null;
+  opco?: string | null;
   opcoIdentifie?: string | null;
 }
 
@@ -103,8 +104,8 @@ function nomFinanceur(entree: EntreeRelance): string {
 
   if (entree.destinataire === "france_travail") return "France Travail";
 
-  const opcoId = entree.client?.opcoIdentifie?.trim();
-  if (opcoId != null && opcoId !== "") return opcoLabel(opcoId);
+  // Règle unique (lot A7a) : OPCO typé d'abord, ancien texte libre ensuite.
+  if (referenceOpcoDuClient(entree.client) !== null) return nomOpcoDuClient(entree.client);
 
   // `destinataireNom` a été figé à l'émission par `resoudreDestinataireFacture`
   // et vaut déjà « Atlas » ou « OPCO (à préciser) ». C'est le dernier recours
