@@ -139,6 +139,10 @@ const CODES_ATTENDUS: string[] = [
   "etat_fonds_perime",
   // Lot A4 — devis ou session OPCO à venir sans barème applicable (branche × taille).
   "aucun_bareme_opco",
+  // Lot A7c — manques n°5 et n°8 de la critique de complétude du chantier OPCO.
+  "subrogation_incompatible_regime",
+  "fonds_opco_suspendus_session",
+  "donnees_opco_incompletes",
   // Conservé au catalogue bien qu'il ne soit PLUS émis (le palier J30 est couvert
   // par une relance proposée) : sans son entrée, les alertes déjà en base ne
   // s'auto-résoudraient jamais. Cf. `catalogue.ts`.
