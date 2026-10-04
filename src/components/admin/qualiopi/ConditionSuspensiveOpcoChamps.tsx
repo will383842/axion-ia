@@ -1,4 +1,5 @@
 "use client";
+// use-client: case à cocher, bascule %/€ et date limite gérées en état local (useState) avant l'envoi à la server action.
 
 /**
  * INT-T65-A — la condition suspensive OPCO, à l'endroit où la console génère

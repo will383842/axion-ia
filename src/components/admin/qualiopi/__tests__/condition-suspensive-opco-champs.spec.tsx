@@ -3,7 +3,7 @@
  * l'endroit où la console génère la convention (`DocumentsSection`).
  *
  * Posé AVANT l'implémentation (coordination Partners, issue
- * axion-apporteurs#656, message du 2026-10-04 09:07 UTC) : il échoue tant que
+ * axion-apporteurs, issue 656, message du 2026-10-04 09:07 UTC) : il échoue tant que
  * `ConditionSuspensiveOpcoChamps` n'existe pas.
  *
  * Contrat fixé ici :
