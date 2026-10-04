@@ -8,7 +8,7 @@
  *
  *   · la charge est jugée par le contrat publié ; l'`event_id` est celui des fixtures générées
  *     (`client.cree:<id>`, `client.mis_a_jour:<id>:<updatedAt ISO>`), prouvé contre
- *     `fixtures.v2.json` ;
+ *     `fixtures.v3.json` ;
  *   · le SIREN transmis est normalisé, dérivé du SIRET quand il est vide, et jamais faux : un
  *     SIREN (ou un SIRET) invalide part `null` avec une alerte ;
  *   · les deux écrivains branchés (la porte de création, `updateClientAction`) émettent dans
@@ -211,9 +211,9 @@ describe("REQ-INT-007 — la fonction d'émission unique de client.cree et clien
     });
   });
 
-  it("REQ-INT-007 : la convention de clé EST celle des fixtures générées (event_id de fixtures.v2.json)", async () => {
+  it("REQ-INT-007 : la convention de clé EST celle des fixtures générées (event_id de fixtures.v3.json)", async () => {
     const fixtures = JSON.parse(
-      readFileSync(path.resolve(__dirname, "../../partners/contrat/fixtures.v2.json"), "utf8"),
+      readFileSync(path.resolve(__dirname, "../../partners/contrat/fixtures.v3.json"), "utf8"),
     ) as { evenements: { event_id: string; event_type: string }[] };
     const attendu = (type: string) =>
       fixtures.evenements.find((e) => e.event_type === type)?.event_id;

@@ -61,6 +61,7 @@ import {
   payloadClientCree,
   payloadClientFusionne,
   payloadClientMisAJour,
+  payloadDevisEmis,
   payloadDevisSigne,
   payloadFactureAnnulee,
   payloadFactureEmise,
@@ -291,6 +292,8 @@ async function construireLesFaits(tx: Prisma): Promise<FaitTous[]> {
       mentionTva: "TVA 20 % — régime assujetti",
       dateValidite: T("2026-03-16T00:00:00.000Z"),
       statut: "accepte",
+      // Contrat v3 : le devis a été ENVOYÉ avant d'être signé (fait « devis émis »).
+      sentAt: T("2026-02-10T10:00:00.000Z"),
       acceptedAt: T("2026-02-14T15:00:00.000Z"),
       createdAt: T("2026-02-01T15:00:00.000Z"),
       updatedAt: T("2026-02-14T15:00:00.000Z"),
@@ -643,6 +646,14 @@ async function construireLesFaits(tx: Prisma): Promise<FaitTous[]> {
         }),
       },
       sequence: 14,
+    },
+    {
+      type: "devis.emis",
+      cleDeFait: `devis.emis:${devisRelu.id}`,
+      occurredAt: devisRelu.sentAt ?? devisRelu.createdAt,
+      sujet: { devis_id: devisRelu.id },
+      payload: { ...payloadDevisEmis({ devis: devisRelu, client: clientRelu }) },
+      sequence: 15,
     },
   );
 

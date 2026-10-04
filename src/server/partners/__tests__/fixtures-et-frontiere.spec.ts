@@ -22,7 +22,7 @@ import { describe, expect, it } from "vitest";
 
 import { SCHEMA_VERSION, TYPES_EVENEMENT } from "../contrat";
 import { empreinteContratPublie } from "../contrat/empreinte";
-import fixtures from "../contrat/fixtures.v2.json";
+import fixtures from "../contrat/fixtures.v3.json";
 import {
   EXEMPTIONS_NOMMEES,
   FRONTIERE_INTERDITE,
@@ -75,7 +75,11 @@ describe("LE CLIQUET — aucun type du contrat ne reste sans producteur", () => 
     ]) {
       expect(TYPES_EVENEMENT, type).toContain(type);
     }
-    expect(SCHEMA_VERSION).toBe(2);
+  });
+
+  it("le type entré au contrat avec la v3 (devis.emis, INT-T46-A) est au contrat publié", () => {
+    expect(TYPES_EVENEMENT).toContain("devis.emis");
+    expect(SCHEMA_VERSION).toBe(3);
   });
 
   it("aucune fixture ne porte un type que le contrat ne connaît pas", () => {

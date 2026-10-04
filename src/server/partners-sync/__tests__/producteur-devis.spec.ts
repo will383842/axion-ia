@@ -24,7 +24,7 @@ import {
   resoudreCommission,
   versionDeLaGrille,
 } from "@/server/partners/commission";
-import fixtures from "@/server/partners/contrat/fixtures.v2.json";
+import fixtures from "@/server/partners/contrat/fixtures.v3.json";
 import type { PayloadDevisSigne } from "@/server/partners/payloads";
 import { fautes, resoudre } from "@/server/partners/__tests__/contrat-schema";
 
