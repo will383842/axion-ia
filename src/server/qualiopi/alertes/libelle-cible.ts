@@ -57,6 +57,9 @@ export const NOM_TYPE_CIBLE: Readonly<Record<string, string>> = {
   Formation: "Formation",
   EmailOutbox: "E-mail",
   BaremeOpco: "Barème OPCO",
+  EtatFondsOpco: "État des fonds OPCO",
+  // Lot OPCO A7c : `donnees_opco_incompletes`.
+  Client: "Fiche client",
   // Chantier visio (PR 6) : les alertes du circuit du compte rendu.
   Rencontre: "Rendez-vous",
 };
@@ -291,6 +294,16 @@ export async function libellesDesCibles(
               select: { id: true, sujet: true },
             });
             for (const r of rows) poser(type, r.id, r.sujet);
+            break;
+          }
+          case "Client": {
+            // La raison sociale d'une ENTREPRISE seulement : celle d'un
+            // particulier est son nom, et l'affichage retombe alors sur « Fiche client ».
+            const rows = await prisma.client.findMany({
+              where: { id: { in: liste }, type: "entreprise" },
+              select: { id: true, raisonSociale: true },
+            });
+            for (const r of rows) poser(type, r.id, r.raisonSociale);
             break;
           }
           case "BaremeOpco": {

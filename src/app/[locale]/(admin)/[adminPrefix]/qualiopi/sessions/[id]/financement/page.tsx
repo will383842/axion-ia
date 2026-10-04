@@ -24,6 +24,11 @@ import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFacture
 import { prisma } from "@/lib/prisma";
 import { getFinancementValidations } from "@/server/qualiopi/financements/validation-service";
 import { regimePaiementDeSession } from "@/server/qualiopi/financements/regime-paiement-session";
+import { chargerDossierPretADeposer } from "@/server/qualiopi/financements/dossier-pret-a-deposer-lecture";
+import { DepotOpcoPanel } from "@/components/admin/qualiopi/DepotOpcoPanel";
+import { BandeauEtatFonds } from "@/components/admin/qualiopi/BandeauEtatFonds";
+import { EstimationBaremeOpco } from "@/components/admin/qualiopi/EstimationBaremeOpco";
+import { estimationOpcoDeSession } from "@/server/qualiopi/financements/estimation-opco-session";
 import type { FactureFormationDestinataire } from "../../../../../../../../../prisma/generated/client";
 import { OPCO_STATUT_LABELS } from "@/server/qualiopi/financements/labels";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
@@ -187,6 +192,22 @@ export default async function FinancementSessionPage({ params }: PageProps) {
   // Source unique de vérité : couvre OPCO, CPF/EDOF, CPF éligibilité, POEI 3 preuves.
   const financementValidations = await getFinancementValidations(trainingSession.id);
   const regimePaiement = await regimePaiementDeSession(trainingSession.id);
+  // Chantier OPCO A6 — dépôt par l'entreprise : encart, pièces réelles, saisie.
+  const estOpco =
+    trainingSession.financementType === "opco" || trainingSession.financementType === "mixte";
+  // Lot A7b : estimation au barème (lecture seule) et accord écrit à côté du dépôt.
+  const [pretADeposer, dossierDepot, estimationBareme] = estOpco
+    ? await Promise.all([
+        chargerDossierPretADeposer(trainingSession.id),
+        regimePaiement.dossierId
+          ? prisma.dossierFinancement.findUnique({
+              where: { id: regimePaiement.dossierId },
+              select: { depotFaitLe: true, numeroDossierExterne: true, accordEcritLe: true },
+            })
+          : Promise.resolve(null),
+        estimationOpcoDeSession(trainingSession.id),
+      ])
+    : [null, null, null];
   // Ne garder que les entrées en échec pour l'affichage des alertes.
   const alertes = financementValidations
     .filter((e) => e.result.ok === false)
@@ -423,6 +444,36 @@ export default async function FinancementSessionPage({ params }: PageProps) {
           }}
         />
       </section>
+
+      {/* ── Dépôt de la demande OPCO (chantier OPCO A6) ─────────────────── */}
+      {pretADeposer && (
+        <section className="mb-[var(--space-admin-8)]">
+          <h2 className={sectionHeadCls}>Dépôt de la demande de prise en charge</h2>
+          <BandeauEtatFonds bandeau={pretADeposer.bandeau} />
+          <DepotOpcoPanel
+            sessionId={id}
+            dossierId={regimePaiement.dossierId}
+            depotFaitLe={toDateInput(dossierDepot?.depotFaitLe ?? null)}
+            numeroDossierExterne={dossierDepot?.numeroDossierExterne ?? null}
+            accordEcritLe={toDateInput(dossierDepot?.accordEcritLe ?? null)}
+            peutEcrire={acces.peutEcrire}
+            encart={pretADeposer.encart}
+            pieces={pretADeposer.pieces.map((p) => ({
+              libelle: p.libelle,
+              presente: p.presente,
+              detail: p.detail,
+            }))}
+          />
+        </section>
+      )}
+
+      {/* ── Estimation au barème de branche (lot A7b, lecture seule) ─────── */}
+      {estimationBareme && (
+        <section className="mb-[var(--space-admin-8)]">
+          <h2 className={sectionHeadCls}>Estimation au barème de l&apos;OPCO</h2>
+          <EstimationBaremeOpco estimation={estimationBareme} />
+        </section>
+      )}
 
       {/* ── Barème de prise en charge OPCO ──────────────────────────────── */}
       <section className="mb-[var(--space-admin-8)]">

@@ -127,6 +127,17 @@ vi.mock("@/server/qualiopi/documents/organisme", () => ({
   getOrganismeIdentite: () => mockGetOrganismeIdentite(),
 }));
 
+// Chantier OPCO A6 — le dossier prêt à déposer : lecture et ZIP isolés. Par
+// défaut la lecture rend `null` (le kit retombe sur sa liste fixe).
+const mockChargerDossierPret = vi.fn(async (): Promise<unknown> => null);
+const mockConstruireZip = vi.fn();
+vi.mock("@/server/qualiopi/financements/dossier-pret-a-deposer-lecture", () => ({
+  chargerDossierPretADeposer: (...args: unknown[]) => mockChargerDossierPret(...(args as [])),
+}));
+vi.mock("@/server/qualiopi/financements/dossier-pret-a-deposer-zip", () => ({
+  construireZipPretADeposer: (...args: unknown[]) => mockConstruireZip(...args),
+}));
+
 const mockGetQualiopiConfig = vi.fn();
 vi.mock("@/server/qualiopi/config/site-settings", () => ({
   getQualiopiConfig: (...args: unknown[]) => mockGetQualiopiConfig(...args),
@@ -142,6 +153,7 @@ import {
   genererConvocationAction,
   genererEmargementAction,
   genererKitOpcoAction,
+  genererDossierPretADeposerAction,
   genererReglementInterieurAction,
   genererConventionTripartiteAction,
   genererSatisfactionAction,
@@ -606,6 +618,28 @@ describe("genererKitOpcoAction", () => {
     mockSessionFindUnique.mockResolvedValue(null);
     const result = await genererKitOpcoAction({ sessionId: SESSION_ID });
     expect(result).toEqual({ error: "Session introuvable" });
+  });
+});
+
+describe("genererDossierPretADeposerAction — une erreur ne fuit pas vers l'écran", () => {
+  it("échec du ZIP → libellé fixe à l'écran, détail journalisé côté serveur", async () => {
+    mockSessionFindUnique.mockResolvedValue(makeSession({ priseEnChargeMontantCents: 0 }));
+    mockDocumentFindUnique.mockResolvedValue({
+      type: "kit_opco",
+      numero: NUMERO,
+      createdAt: new Date("2026-10-04T10:00:00.000Z"),
+    });
+    mockChargerDossierPret.mockResolvedValue({ numeroSession: "S", pieces: [] });
+    mockConstruireZip.mockRejectedValue(new Error("NoSuchBucket axion-prod-secret"));
+    const journal = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    const r = await genererDossierPretADeposerAction({ sessionId: SESSION_ID });
+
+    expect(r).toEqual({ error: "Impossible de préparer le dossier prêt à déposer." });
+    expect(JSON.stringify(r)).not.toContain("axion-prod-secret");
+    expect(journal).toHaveBeenCalled();
+    expect(String(journal.mock.calls[0]?.[0])).toContain("genererDossierPretADeposerAction");
+    journal.mockRestore();
   });
 });
 

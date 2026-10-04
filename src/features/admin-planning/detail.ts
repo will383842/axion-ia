@@ -36,6 +36,7 @@ export interface DetailClient {
   contactFonction: string | null;
   contactEmail: string | null;
   contactTelephone: string | null;
+  opco: string | null;
   opcoIdentifie: string | null;
 }
 
@@ -95,6 +96,7 @@ const CLIENT_SELECT = {
   contactFonction: true,
   contactEmail: true,
   contactTelephone: true,
+  opco: true,
   opcoIdentifie: true,
 } as const;
 

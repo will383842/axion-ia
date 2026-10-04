@@ -18,9 +18,10 @@ import {
   transactionFaitFacturation,
 } from "@/server/partners-sync/producteurs/facturation";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
-import { opcoLabel } from "./opco-referentiel";
+import { nomOpcoDuClient, referenceOpcoDuClient } from "./opco-referentiel";
 import { montantPrisEnChargeCents } from "./prise-en-charge-montant";
 import { sessionExigeUnDossier } from "./dossier-auto";
+import { planAccordEcrit } from "./accord-ecrit";
 import {
   construireLignesPayeurs,
   montantDemandeFinanceurCents,
@@ -53,7 +54,7 @@ const SELECT_SESSION_PAYEURS = {
   formation: { select: { dureeHeures: true } },
   edofVerifieAt: true,
   ftDispositif: true,
-  client: { select: { id: true, raisonSociale: true, opcoIdentifie: true } },
+  client: { select: { id: true, raisonSociale: true, opco: true, opcoIdentifie: true } },
   // 🔴 T4a — les inscriptions décident des payeurs en inter-entreprises. Les
   // abandons et exclusions sont hors périmètre : on ne réclame pas le siège de
   // quelqu'un qui n'a pas suivi l'action.
@@ -66,7 +67,7 @@ const SELECT_SESSION_PAYEURS = {
       edofVerifieAt: true,
       ftDispositif: true,
       montantHtCents: true,
-      client: { select: { id: true, raisonSociale: true, opcoIdentifie: true } },
+      client: { select: { id: true, raisonSociale: true, opco: true, opcoIdentifie: true } },
     },
   },
 } satisfies Prisma.TrainingSessionSelect;
@@ -149,7 +150,16 @@ export async function transitionnerDossier(input: {
   montantAccordeCents?: number;
   /** Posé à l'accord/facturation : date de paiement attendue du financeur. */
   echeanceFinanceurAt?: Date;
+  /**
+   * Chantier OPCO A6 — date ÉCRITE sur l'accord du financeur (colonne `@db.Date`).
+   * Distincte de `accordAt` (le clic en console) : c'est elle qui fait foi pour
+   * le régime de paiement. Posée seulement à l'arrivée en `accord_recu`.
+   */
+  accordEcritLe?: Date;
 }): Promise<{ statut: DossierFinancementStatut }> {
+  if (input.accordEcritLe !== undefined && input.vers !== "accord_recu") {
+    throw new Error("La date de l'accord écrit ne se saisit qu'à l'accord.");
+  }
   const dossier = await prisma.dossierFinancement.findUniqueOrThrow({
     where: { id: input.dossierId },
     select: { statut: true },
@@ -173,6 +183,7 @@ export async function transitionnerDossier(input: {
         ...(input.echeanceFinanceurAt !== undefined
           ? { echeanceFinanceurAt: input.echeanceFinanceurAt }
           : {}),
+        ...(input.accordEcritLe !== undefined ? { accordEcritLe: input.accordEcritLe } : {}),
       },
     });
     // 🔑 `financement.mis_a_jour` (INT-T05, REQ-INT-032) : l'échéance du financeur est dans la
@@ -216,6 +227,80 @@ export async function transitionnerDossier(input: {
   }
 
   return { statut: input.vers };
+}
+
+/**
+ * Chantier OPCO A6 — saisit le dépôt de la demande de prise en charge, fait
+ * par l'ENTREPRISE sur son espace OPCO : « Dépôt fait le » et, s'il est connu,
+ * le numéro de dossier attribué par l'OPCO.
+ *
+ * ⚠️ Ce n'est PAS une transition : le statut ne bouge pas (l'envoi reste un
+ * geste distinct de la machine à états). L'écriture est conditionnée au statut
+ * lu — même verrou optimiste que `transitionnerDossier` — et refusée sur un
+ * dossier clos.
+ */
+export async function enregistrerDepotDossier(input: {
+  dossierId: string;
+  depotFaitLe: Date;
+  numeroDossierExterne?: string;
+}): Promise<{ trainingSessionId: string | null }> {
+  const dossier = await prisma.dossierFinancement.findUniqueOrThrow({
+    where: { id: input.dossierId },
+    select: { statut: true, trainingSessionId: true },
+  });
+  if (dossier.statut === "clos") {
+    throw new Error("Dossier clos : le dépôt ne se saisit plus.");
+  }
+  const { count } = await prisma.dossierFinancement.updateMany({
+    where: { id: input.dossierId, statut: dossier.statut },
+    data: {
+      depotFaitLe: input.depotFaitLe,
+      ...(input.numeroDossierExterne !== undefined
+        ? { numeroDossierExterne: input.numeroDossierExterne }
+        : {}),
+    },
+  });
+  if (count === 0) {
+    throw new Error("Modification concurrente détectée — recharger le dossier.");
+  }
+  return { trainingSessionId: dossier.trainingSessionId };
+}
+
+/**
+ * Lot OPCO A7b — saisit la date ÉCRITE sur l'accord du financeur depuis la page
+ * Financement de la session. Le geste dépend du statut (`planAccordEcrit`) :
+ * date seule si l'accord est déjà acté, sinon transition(s) jusqu'à
+ * `accord_recu` par `transitionnerDossier` (même machine à états, même
+ * reventilation des créances). Rend les transitions faites, pour le journal.
+ */
+export async function enregistrerAccordEcrit(input: {
+  dossierId: string;
+  accordEcritLe: Date;
+}): Promise<{ trainingSessionId: string | null; transitions: DossierFinancementStatut[] }> {
+  const dossier = await prisma.dossierFinancement.findUniqueOrThrow({
+    where: { id: input.dossierId },
+    select: { statut: true, depotFaitLe: true, trainingSessionId: true },
+  });
+  const plan = planAccordEcrit(dossier);
+  if (plan.geste === "refus") throw new Error(plan.message);
+  if (plan.geste === "transitions") {
+    for (const vers of plan.vers) {
+      await transitionnerDossier({
+        dossierId: input.dossierId,
+        vers,
+        ...(vers === "accord_recu" ? { accordEcritLe: input.accordEcritLe } : {}),
+      });
+    }
+    return { trainingSessionId: dossier.trainingSessionId, transitions: plan.vers };
+  }
+  const { count } = await prisma.dossierFinancement.updateMany({
+    where: { id: input.dossierId, statut: dossier.statut },
+    data: { accordEcritLe: input.accordEcritLe },
+  });
+  if (count === 0) {
+    throw new Error("Modification concurrente détectée — recharger le dossier.");
+  }
+  return { trainingSessionId: dossier.trainingSessionId, transitions: [] };
 }
 
 /**
@@ -442,8 +527,9 @@ export async function creerDossierDepuisSession(sessionId: string): Promise<{ id
       // `opcoIdentifie` restait vide en base ; F6 le remplit, donc il devient
       // visible — d'où la garde, posée dans le MÊME commit.
       // Libellé et non slug : la colonne stocke « akto », on écrit « Akto ».
-      ...(session.client?.opcoIdentifie != null && (type === "opco" || type === "mixte")
-        ? { financeurNom: opcoLabel(session.client.opcoIdentifie) }
+      // Règle unique (lot A7a) : OPCO typé d'abord, ancien texte libre ensuite.
+      ...(referenceOpcoDuClient(session.client) !== null && (type === "opco" || type === "mixte")
+        ? { financeurNom: nomOpcoDuClient(session.client) }
         : {}),
       ...(session.numeroDossierOpco != null
         ? { numeroDossierExterne: session.numeroDossierOpco }

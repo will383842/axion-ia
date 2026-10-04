@@ -47,7 +47,13 @@ import {
   calculerEncoursDuCents,
   resteDuNetCents,
 } from "@/server/qualiopi/crm/clients";
-import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
+import {
+  nomOpcoDuClient,
+  referenceOpcoDuClient,
+} from "@/server/qualiopi/financements/opco-referentiel";
+import { bandeauEtatFonds } from "@/server/qualiopi/financements/etat-fonds-opco";
+import { etatFondsDuClient } from "@/server/qualiopi/financements/etat-fonds-opco-lecture";
+import { BandeauEtatFonds } from "@/components/admin/qualiopi/BandeauEtatFonds";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { AdminFilterTabs } from "@/components/admin/ui/AdminFilterTabs";
@@ -69,6 +75,7 @@ import {
 } from "@/features/dossier-client/queries-rencontres";
 import { NouveauRendezVous } from "@/components/admin/dossier-client/NouveauRendezVous";
 import { FusionDeFiches } from "@/components/admin/dossier-client/FusionDeFiches";
+import { BrancheOpcoBloc } from "@/components/admin/qualiopi/BrancheOpcoBloc";
 import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 import { compterDocumentsParProjet } from "@/features/dossier-client/documents/queries";
 import { toParisLocalInput } from "@/lib/calendar-grid";
@@ -290,6 +297,8 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
   // N1 : seuls les messages scellés par nos actions s'affichent (un lien forgé, rien).
   const erreur = lireMessageDeRetour(sp, "erreur");
   const maintenant = new Date();
+  // Lot OPCO A5 : suspension de la branche ou date limite de dépôt de l'OPCO.
+  const bandeauFonds = bandeauEtatFonds(await etatFondsDuClient(client, maintenant));
 
   // « SIREN à compléter » : l'annuaire public n'est interrogé que sur demande
   // (lien « Chercher le SIREN »), côté serveur, 3 s au plus. Aucun JavaScript
@@ -444,6 +453,8 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
         }
       />
 
+      <BandeauEtatFonds bandeau={bandeauFonds} />
+
       {/* ── Onglets du dossier client (A2 : administrateurs seulement) ─────── */}
       {voitEchanges ? (
         <AdminFilterTabs
@@ -466,6 +477,10 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           {erreur}
         </p>
       ) : null}
+
+      {/* ── Branche et OPCO (lot OPCO A7b) : IDCC, effectif, OPCO, enveloppe,
+          adhérent ; « Modifier » sur place. Rien pour un particulier. ────────── */}
+      <BrancheOpcoBloc client={client} peutEcrire={acces.peutEcrire} />
 
       {/* ── Identité + contact ─────────────────────────────────────────────── */}
       <section className={sectionCls}>
@@ -541,7 +556,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           <div>
             <p className={infoLabelCls}>OPCO</p>
             <p className={infoValueCls}>
-              {client.opcoIdentifie ? opcoLabel(client.opcoIdentifie) : "À déterminer"}
+              {referenceOpcoDuClient(client) !== null ? nomOpcoDuClient(client) : "À déterminer"}
               {client.opcoNumeroAdherent ? ` · adh. ${client.opcoNumeroAdherent}` : ""}
             </p>
           </div>

@@ -18,6 +18,8 @@ import {
   isOpcoId,
   opcoLabel,
   type Fait,
+  opcoDuClient,
+  nomOpcoDuClient,
 } from "./opco-referentiel";
 
 describe("OPCO_IDS / OPCO_LABELS", () => {
@@ -65,6 +67,26 @@ describe("opcoLabel", () => {
   it("renvoie « — » pour null/undefined", () => {
     expect(opcoLabel(null)).toBe("—");
     expect(opcoLabel(undefined)).toBe("—");
+  });
+});
+
+describe("opcoDuClient / nomOpcoDuClient — une seule règle de résolution", () => {
+  it("OPCO typé d'abord, même si le texte libre dit autre chose", () => {
+    const c = { opco: "akto", opcoIdentifie: "atlas" };
+    expect(opcoDuClient(c)).toBe("akto");
+    expect(nomOpcoDuClient(c)).toBe("Akto");
+  });
+  it("typé absent → texte libre s'il est un identifiant connu", () => {
+    expect(opcoDuClient({ opco: null, opcoIdentifie: "atlas" })).toBe("atlas");
+  });
+  it("texte libre inconnu → pas d'identifiant, mais le nom affiché le reprend", () => {
+    const c = { opco: null, opcoIdentifie: "OPCO du coin" };
+    expect(opcoDuClient(c)).toBeNull();
+    expect(nomOpcoDuClient(c)).toBe("OPCO du coin");
+  });
+  it("rien → null / « OPCO (à préciser) »", () => {
+    expect(opcoDuClient(null)).toBeNull();
+    expect(nomOpcoDuClient({ opco: null, opcoIdentifie: "  " })).toBe("OPCO (à préciser)");
   });
 });
 

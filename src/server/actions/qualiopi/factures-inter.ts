@@ -26,7 +26,10 @@ import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { champsIdentiteManquants } from "@/server/qualiopi/documents/conformite";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
-import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
+import {
+  nomOpcoDuClient,
+  referenceOpcoDuClient,
+} from "@/server/qualiopi/financements/opco-referentiel";
 import {
   computeTotauxFacture,
   regimeTvaDepuisConfig,
@@ -86,6 +89,7 @@ export async function genererFactureParInscriptionAction(
           raisonSociale: true,
           siret: true,
           adresse: true,
+          opco: true,
           opcoIdentifie: true,
           // Conditions de paiement du payeur (F61) — sert à poser l'échéance.
           delaiPaiementJours: true,
@@ -108,6 +112,7 @@ export async function genererFactureParInscriptionAction(
               raisonSociale: true,
               siret: true,
               adresse: true,
+              opco: true,
               opcoIdentifie: true,
               delaiPaiementJours: true,
             },
@@ -171,8 +176,10 @@ export async function genererFactureParInscriptionAction(
   if (destinataire === "opco") {
     // Libellé, pas slug : c'est le nom du destinataire imprimé sur la facture.
     // Cette branche est déjà gardée par `destinataire === "opco"` juste au-dessus.
-    const opcoId = payeur?.opcoIdentifie ?? enrollment.session.client?.opcoIdentifie ?? null;
-    destinataireNom = opcoId !== null ? opcoLabel(opcoId) : "OPCO";
+    // Règle unique (lot A7a) : le premier client qui NOMME un OPCO, payeur d'abord.
+    const porteurOpco =
+      [payeur, enrollment.session.client].find((c) => referenceOpcoDuClient(c) !== null) ?? null;
+    destinataireNom = nomOpcoDuClient(porteurOpco);
   } else if (destinataire === "stagiaire") {
     destinataireNom = traineeNom;
   } else if (destinataire === "france_travail") {

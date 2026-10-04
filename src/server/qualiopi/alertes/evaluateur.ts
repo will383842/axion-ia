@@ -45,7 +45,12 @@ import {
   horsFondsLegaux,
   idccValide,
 } from "@/server/qualiopi/financements/bareme-opco-branche";
-import { estBaremePerime, opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
+import {
+  estBaremePerime,
+  nomOpcoDuClient,
+  opcoLabel,
+  referenceOpcoDuClient,
+} from "@/server/qualiopi/financements/opco-referentiel";
 import { STATUTS_FACTURE_OUVERTE } from "@/server/qualiopi/financements/statuts-facture";
 import {
   echeanceEffective,
@@ -112,6 +117,11 @@ import {
   DELAI_EVALUATION_FINALE_JOURS,
 } from "./delai-evaluation-finale";
 import { regleDelaiFacturationOpco } from "./regle-delai-facturation-opco";
+import { regleDepotOpcoAFaire } from "./regle-depot-opco-a-faire";
+import { regleDonneesOpcoIncompletes } from "./regle-donnees-opco-incompletes";
+import { regleEtatFondsPerime } from "./regle-etat-fonds-perime";
+import { regleFondsOpcoSuspendusSession } from "./regle-fonds-opco-suspendus-session";
+import { regleSubrogationIncompatibleRegime } from "./regle-subrogation-incompatible-regime";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Type de retour de l'évaluateur
@@ -3139,11 +3149,15 @@ async function regleAucunBaremeOpco(now: Date): Promise<AlerteCandidate[]> {
   });
   for (const s of sessions) {
     const client = s.client;
-    if (!client?.opcoIdentifie) continue;
+    // Règle unique (lot A7a) : OPCO typé d'abord, ancien texte libre ensuite. Un
+    // texte libre non reconnu reste « un OPCO renseigné » : sans barème possible,
+    // il lève l'alerte, comme avant.
+    const reference = referenceOpcoDuClient(client);
+    if (!client || reference === null) continue;
     const effectif = effectifDuClient(client);
     if (horsFondsLegaux(effectif)) continue;
     const idcc = idccValide(client.idcc);
-    const bareme = await resolveBaremeOpco(client.opcoIdentifie, s.dateDebut, {
+    const bareme = await resolveBaremeOpco(reference, s.dateDebut, {
       ...(idcc ? { idcc } : {}),
       ...(effectif !== undefined ? { effectif } : {}),
     });
@@ -3152,7 +3166,7 @@ async function regleAucunBaremeOpco(now: Date): Promise<AlerteCandidate[]> {
       code: "aucun_bareme_opco",
       niveau: "important",
       titre,
-      message: `La session ${s.numero} (début le ${s.dateDebut.toLocaleDateString("fr-FR")}) est financée par l'OPCO ${opcoLabel(client.opcoIdentifie)} sans barème applicable${idcc ? ` pour l'IDCC ${idcc}` : ""}. Saisissez le barème avant d'engager le dossier.`,
+      message: `La session ${s.numero} (début le ${s.dateDebut.toLocaleDateString("fr-FR")}) est financée par l'OPCO ${nomOpcoDuClient(client)} sans barème applicable${idcc ? ` pour l'IDCC ${idcc}` : ""}. Saisissez le barème avant d'engager le dossier.`,
       cibleType: "TrainingSession",
       cibleId: s.id,
     });
@@ -5048,6 +5062,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "relance_sans_effet", fn: regleRelanceSansEffet },
   { nom: "dossiers_financement", fn: regleDossiersFinancement },
   { nom: "delai_facturation_opco", fn: regleDelaiFacturationOpco },
+  { nom: "depot_opco_a_faire", fn: regleDepotOpcoAFaire },
   { nom: "devis_sans_reponse", fn: regleDevisSansReponse },
   { nom: "devis_expire_j7", fn: regleDevisExpireJ7 },
   { nom: "devis_expire", fn: regleDevisExpire },
@@ -5058,7 +5073,12 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "rgpd_suppression", fn: regleRgpdSuppression },
   { nom: "revue_trimestrielle", fn: regleRevueTrimestrielle },
   { nom: "bareme_opco_perime", fn: regleBaremeOpcoPerime },
+  { nom: "etat_fonds_perime", fn: regleEtatFondsPerime },
   { nom: "aucun_bareme_opco", fn: regleAucunBaremeOpco },
+  // Lot OPCO A7c — manques n°5 et n°8 de la critique de complétude.
+  { nom: "subrogation_incompatible_regime", fn: regleSubrogationIncompatibleRegime },
+  { nom: "fonds_opco_suspendus_session", fn: regleFondsOpcoSuspendusSession },
+  { nom: "donnees_opco_incompletes", fn: regleDonneesOpcoIncompletes },
   // Lot 1 §1.4 — les deux seules étapes du parcours d'un dossier qui n'avaient
   // AUCUN code d'alerte. Les douze autres en avaient déjà un ; ajouter une
   // alerte « échéance dépassée » globale les aurait signalées deux fois.

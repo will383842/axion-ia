@@ -151,6 +151,7 @@ describe("🔴 la frontière du Lot 10 se retrouve dans le routage", () => {
     "dossier_financement_sans_reponse",
     "financeur_paiement_en_retard",
     "delai_facturation_opco",
+    "subrogation_incompatible_regime",
   ] as const;
 
   it.each(CODES_ACTE_ENGAGEANT)("%s ne va jamais au secrétariat", (code) => {

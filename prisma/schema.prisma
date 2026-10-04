@@ -5014,6 +5014,15 @@ model Client {
   effectifSource             EffectifSource? @map("effectif_source")
   /// Date du relevé de l'effectif (jour civil de Paris à la saisie).
   effectifReleveLe           DateTime?       @map("effectif_releve_le") @db.Date
+  /// Lot OPCO A7b — adhésion à l'offre de services d'OPCO Mobilités (condition
+  /// de la subrogation chez cet OPCO). `null` = non renseigné, jamais « non ».
+  opcoAdhesionOffreMobilites Boolean?        @map("opco_adhesion_offre_mobilites")
+  /// Lot OPCO A7b — versement volontaire / conventionnel de l'entreprise à son
+  /// OPCO (fait perdre la subrogation). `null` = non renseigné.
+  opcoVersementVolontaire    Boolean?        @map("opco_versement_volontaire")
+  /// Date (jour civil de Paris) de la dernière saisie de ces deux faits, posée
+  /// par le serveur.
+  opcoAdhesionsRenseigneesLe DateTime?       @map("opco_adhesions_renseignees_le") @db.Date
   statut                     ClientStatut    @default(prospect)
   source                     String?         @db.VarChar(120)
   /// Contexte injecté au Formation Engine pour la génération sur-mesure.
@@ -8712,6 +8721,45 @@ model BaremeOpco {
   @@index([opco, idcc, trancheEffectif, dateEffet])
   @@index([effectiveTo])
   @@map("baremes_opco")
+}
+
+/// État des fonds d'un OPCO (lot OPCO A5) : les enveloppes s'épuisent en cours
+/// d'année, un OPCO peut SUSPENDRE le financement d'une branche, et chaque OPCO a
+/// ses dates limites de dépôt. Versionné par AJOUT : pour un couple (opco, idcc),
+/// le dernier relevé (`releveLe`, puis `createdAt`) fait foi ; aucune ligne n'est
+/// jamais modifiée ni supprimée. `idcc` null = la ligne vaut pour tout l'OPCO.
+/// CHECK (idcc ~ '^[0-9]{4}$') posé par la migration.
+/// rgpd: technique — relevés publics des règles des OPCO (suspensions par branche,
+/// dates limites) ; aucune donnée sur une personne (`createdById` = identifiant
+/// interne de l'administrateur auteur du relevé).
+model EtatFondsOpco {
+  id               String          @id @default(uuid()) @db.Uuid
+  opco             Opco
+  idcc             String?         @db.Char(4)
+  statut           StatutFondsOpco
+  /// Libellé du périmètre. « moins de 50 salariés » y est LU par la résolution :
+  /// une telle suspension ne vaut pas pour une entreprise de 50 salariés et plus.
+  perimetre        String?         @db.VarChar(200)
+  /// Seuil d'effectif EXCLU de la suspension (50 = « moins de 50 salariés ») :
+  /// une entreprise d'effectif ≥ seuil n'est pas concernée. Null = tous effectifs.
+  effectifMaxExclu Int?            @map("effectif_max_exclu") @db.SmallInt
+  dateLimiteDepot  DateTime?       @map("date_limite_depot") @db.Date
+  sourceUrl        String          @map("source_url") @db.Text
+  releveLe         DateTime        @map("releve_le") @db.Date
+  note             String?         @db.Text
+  createdById      String?         @map("created_by_id") @db.Uuid
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @updatedAt @map("updated_at")
+
+  @@index([opco, idcc, releveLe])
+  @@map("etats_fonds_opco")
+}
+
+/// Statut des fonds d'un OPCO pour une branche (lot OPCO A5).
+enum StatutFondsOpco {
+  ouvert
+  reduit
+  suspendu
 }
 
 /// Import d'un relevé de connexion distanciel (CSV Zoom/Teams/Meet). Archive le

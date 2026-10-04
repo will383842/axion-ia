@@ -66,7 +66,9 @@ export default async function QualiopiBaremesOpcoPage({ params }: PageProps) {
   const moisValidite =
     typeof moisValiditeRaw === "number" && moisValiditeRaw > 0 ? moisValiditeRaw : 12;
 
-  const nbOpcoCouverts = enVigueur.length;
+  // Depuis le lot A4, un OPCO peut porter plusieurs barèmes (branche × tranche) :
+  // on compte les OPCO DISTINCTS, pas les barèmes.
+  const nbOpcoCouverts = new Set(enVigueur.map((b) => b.opco)).size;
   const nbPerimes = enVigueur.filter((b) => estBaremePerime(b.releveLe, moisValidite, now)).length;
 
   const opcoOptions = OPCO_IDS.map((id) => ({ id, label: opcoLabel(id) }));

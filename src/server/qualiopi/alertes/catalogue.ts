@@ -1240,12 +1240,58 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "direction",
   },
+  // Chantier OPCO A6 : session planifiée financée OPCO, dépôt de la demande par
+  // l'entreprise non saisi, à J-7 de la date limite de dépôt du référentiel.
+  // Se referme dès que « Dépôt fait le » est saisi sur le dossier.
+  depot_opco_a_faire: {
+    niveau: "important",
+    titre: "Dépôt de la demande OPCO à faire par l'entreprise",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
+  // Lot OPCO A5 : veille mensuelle de l'état des fonds des OPCO. Levée quand le
+  // relevé le plus récent (tous OPCO confondus) a plus de 31 jours — et, depuis
+  // le lot A7c, quand un OPCO qui a une session à venir n'a AUCUN relevé.
+  etat_fonds_perime: {
+    niveau: "important",
+    titre: "État des fonds OPCO à relever (veille mensuelle)",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
   // Lot A4 — un devis ouvert ou une session OPCO à venir n'a AUCUN barème
   // applicable (OPCO × branche IDCC × tranche) : l'estimation repose sur les
   // réglages par défaut. Se résout dès qu'un barème est saisi (ou le devis clos).
   aucun_bareme_opco: {
     niveau: "important",
     titre: "Aucun barème OPCO applicable (estimation indicative)",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
+  // Lot A7c (manque n°5) — session subrogée, non facturée, dont le régime de
+  // paiement est le remboursement de l'entreprise sans accord écrit confirmant
+  // le paiement direct : la facture à l'OPCO serait rejetée. Se referme quand la
+  // subrogation est retirée, l'accord coché, la fiche corrigée ou la facture émise.
+  subrogation_incompatible_regime: {
+    niveau: "critique",
+    titre: "Subrogation OPCO incompatible avec le régime de paiement",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
+  // Lot A7c (manque n°8) — session à venir (J-60) sur des fonds OPCO suspendus
+  // pour l'entreprise, ou après la date limite d'engagement de l'année sans dépôt
+  // saisi à temps. Se referme quand un relevé rouvre les fonds ou que le dépôt est saisi.
+  fonds_opco_suspendus_session: {
+    niveau: "critique",
+    titre: "Session planifiée sur des fonds OPCO suspendus",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
+  // Lot A7c (manques n°3 et n°8) — client entreprise avec session OPCO à venir
+  // sans OPCO reconnu, IDCC ou effectif. Une alerte par client ; se referme
+  // quand la fiche est complète.
+  donnees_opco_incompletes: {
+    niveau: "important",
+    titre: "Données OPCO du client incomplètes",
     resolutionAuto: true,
     guichet: "direction",
   },

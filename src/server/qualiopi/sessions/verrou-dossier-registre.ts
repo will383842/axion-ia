@@ -429,6 +429,13 @@ export const ECRITURES_SESSION: ReadonlyArray<EcritureSession> = [
     condition: "seulement en régénération d'une pièce vivante",
   },
   {
+    action: "genererDossierPretADeposerAction",
+    fichier: "documents.ts",
+    decision: V,
+    raison: "Le dossier prêt à déposer émet un nouveau kit OPCO, pièce déposée.",
+    condition: "seulement en régénération d'une pièce vivante (via genererKitOpcoAction)",
+  },
+  {
     action: "genererKitCpfAction",
     fichier: "documents.ts",
     decision: V,
