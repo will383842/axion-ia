@@ -14,6 +14,8 @@
  *   2. COHÉRENCE avec la clause de défaillance des conventions (vocabulaire).
  *   3. TENABILITÉ : aucun délai promis par Axion-IA, aucun médiateur.
  */
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, it, expect } from "vitest";
 import { getLegal } from "@/content/legal";
 
@@ -60,6 +62,10 @@ describe("CGV — article Financement par un OPCO (FR)", () => {
     expect(b).toMatch(/demeurent dues par le Client/);
     expect(b).toMatch(
       /sauf annulation de sa part, les sommes dues étant alors celles prévues par la clause « Annulation, report et remboursement »/,
+    );
+    // Relecture tour 2 (C) : le refus imputable à Axion-IA ne pèse pas sur le Client.
+    expect(b).toMatch(
+      /demeurent dues par le Client, sauf lorsque le refus résulte d'un manquement d'Axion-IA à ses propres obligations, et sauf annulation de sa part/,
     );
   });
 
@@ -133,10 +139,55 @@ describe("CGV — article Financement par un OPCO (EN)", () => {
     expect(b).not.toMatch(/withdrawal and abandonment|Forfeit and abandonment/i);
   });
 
+  it("porte les corrections de la relecture tour 2", () => {
+    const b = article("en", TITRE_EN);
+    // B : l'abandon n'est pas laissé sans règle.
+    expect(b).toContain(
+      "Abandonment, meaning the permanent cessation of the trainee's participation in the action, is not covered by this rule: in that event, the services actually delivered up to the date of abandonment remain payable pro rata, and the undelivered share is neither invoiced to the OPCO nor claimable from the Client beyond that pro rata amount.",
+    );
+    expect(b).not.toMatch(/is not covered by this rule\. /);
+    expect(b).toContain(
+      "Finally, subject to the rule on abandonment set out above, in the event of reduction,",
+    );
+    // C : le refus imputable à Axion-IA.
+    expect(b).toMatch(
+      /remain payable by the Client, except where the refusal results from a failure by Axion-IA to perform its own obligations, and unless the Client cancels/,
+    );
+  });
+
   it("les clauses renvoyées existent bien dans la version anglaise", () => {
     const titres = CGV.en.sections.map((s) => s.title);
     expect(titres).toContain("Cancellation, rescheduling and refund");
   });
+});
+
+describe("Conventions signées — clause de défaillance du financeur (relecture tour 2)", () => {
+  // Les conventions signées priment sur les CGV (art. 1119 al. 3 C. civ.) :
+  // corriger les CGV sans elles laisserait le « pour quelque cause que ce soit »
+  // gouverner — y compris les manquements de l'organisme.
+  const GABARITS = ["convention.tsx", "convention-tripartite.tsx"];
+  const dir = join(process.cwd(), "src/server/qualiopi/documents/templates");
+
+  for (const nom of GABARITS) {
+    // JSX : apostrophes échappées et retours à la ligne à normaliser.
+    const texte = readFileSync(join(dir, nom), "utf8")
+      .replace(/&apos;/g, "'")
+      .replace(/\s+/g, " ");
+
+    it(`${nom} : plus de « pour quelque cause que ce soit »`, () => {
+      expect(texte).not.toMatch(/pour quelque cause que ce soit/);
+    });
+
+    it(`${nom} : réserve le manquement de l'organisme et le dédit/abandon`, () => {
+      expect(texte).toMatch(/manquement de l'organisme/);
+      expect(texte).toMatch(
+        /sauf lorsque la réduction, la caducité ou le non-paiement résulte d'un manquement de l'organisme à ses propres obligations \(inexécution de tout ou partie de l'action, défaut des justificatifs de réalisation qui lui incombent\)\./,
+      );
+      expect(texte).toMatch(
+        /sous réserve des conditions de dédit et d'abandon en cours d'exécution prévues aux conditions générales de vente/,
+      );
+    });
+  }
 });
 
 describe("CGV — article OPCO : rien qu'Axion-IA ne puisse tenir", () => {
