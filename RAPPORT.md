@@ -52,6 +52,7 @@ Son horodatage, 20261004210000, est bien postérieur à 20261004200000.
   - `etat_condition_suspensive`, nullable.
 
   Aucune n'est un flottant.
+
 - **CHECK `documents_generes_condition_suspensive_seuil_check`** :
   - condition non posée : aucun seuil ni type ;
   - condition posée en `pourcentage` : `seuil_bps` entre 1 et 10 000, et `seuil_cents` NULL ;
@@ -60,6 +61,7 @@ Son horodatage, 20261004210000, est bien postérieur à 20261004200000.
   La contrainte est ajoutée en `NOT VALID`, puis validée par `VALIDATE`. La table n'est pas
   vide, mais les colonnes neuves le sont (`false` ou `NULL` sur chaque ligne existante), donc la
   validation passe sans rien réécrire.
+
 - Le fichier `schema.prisma` est mis à jour en conséquence. Le diff s'allonge parce que
   `prisma format` a réaligné les colonnes du modèle. `prisma migrate diff` (ancien schéma →
   nouveau) produit exactement les mêmes types et les mêmes colonnes.
@@ -81,10 +83,10 @@ SSOT, dans le même commit : `SEUIL_CONDITION_SUSPENSIVE_OPCO_BPS = 5000` dans
 Commande : `pnpm exec vitest run <les trois fichiers>`. Bilan : **3 fichiers en échec**, 6 cas en
 échec et 2 cas verts.
 
-| Témoin | Rouge constaté | Raison |
-| --- | --- | --- |
-| `src/server/qualiopi/financements/__tests__/condition-suspensive.spec.ts` | `Error: Failed to resolve import "../condition-suspensive" … Does the file exist?` | module absent |
-| `src/components/admin/qualiopi/__tests__/condition-suspensive-opco-champs.spec.tsx` | `Error: Failed to resolve import "../ConditionSuspensiveOpcoChamps" … Does the file exist?` | composant absent |
+| Témoin                                                                                        | Rouge constaté                                                                                                                                       | Raison                                      |
+| --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| `src/server/qualiopi/financements/__tests__/condition-suspensive.spec.ts`                     | `Error: Failed to resolve import "../condition-suspensive" … Does the file exist?`                                                                   | module absent                               |
+| `src/components/admin/qualiopi/__tests__/condition-suspensive-opco-champs.spec.tsx`           | `Error: Failed to resolve import "../ConditionSuspensiveOpcoChamps" … Does the file exist?`                                                          | composant absent                            |
 | `src/server/qualiopi/documents/templates/__tests__/condition-suspensive-opco-clause.spec.tsx` | 6 × `AssertionError: expected 'OrganismedeformationAxion-IASAS1ruede…' to contain 'Conditionsuspensivedepriseenchargepar…'` et `expected +0 to be 1` | aucun des deux gabarits n'imprime la clause |
 
 Ce que chaque témoin fixe :
@@ -117,6 +119,7 @@ Ce que chaque témoin fixe :
   - **API attendue :** `evaluerConditionSuspensive`, `seuilAtteint`, `dateLimiteDepassee`,
     `dateDuRappel`, `rappelDu`, ainsi que les types `ConditionSuspensive` et
     `EvenementConditionSuspensive`.
+
 - **Champs de la console.**
   - La case est **non cochée** par défaut, et aucun champ de seuil ni de date n'est alors
     affiché.
@@ -130,6 +133,7 @@ Ce que chaque témoin fixe :
 
   Contrat attendu : une prop `onChange` qui reçoit
   `{conditionSuspensiveOpco, seuilType, seuilBps, seuilCents, dateLimite}`.
+
 - **Gabarits.** `convention.tsx` et `convention-tripartite.tsx` impriment la clause de la
   juriste **mot pour mot**, telle que Williams l'a validée le 2026-10-04 à 09:19 UTC
   (commentaire 5978462914). Le témoin la contrôle avec un seuil en pourcentage puis avec un
@@ -144,6 +148,7 @@ Ce que chaque témoin fixe :
   `data.conditionSuspensiveOpco = { opco, dateLimite, seuil: {type:"pourcentage", bps} | {type:"montant", cents} }`.
 
 Contrôles faits avant de pousser :
+
 - **eslint et prettier** : propres sur les fichiers TypeScript.
 - **`tsc`** : il ne signale que les deux modules absents (`TS2307`), ce qui est attendu pour des
   témoins rouges.
