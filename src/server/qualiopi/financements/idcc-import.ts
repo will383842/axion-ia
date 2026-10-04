@@ -595,6 +595,40 @@ export async function importerFichierIdccOpco(
 /** API du jeu « Table SIRET-OPCO » : la ressource du mois s'y retrouve, sans URL figée. */
 export const SIRO_DATASET_API = "https://www.data.gouv.fr/api/1/datasets/688a210c012cfbf595d7a99a/";
 
+/**
+ * 🔴 SSRF (condition de la sécurité, issue 656, 5985039871 ; axion-ia 5985032100).
+ * L'URL du fichier vient de la RÉPONSE de l'API : une réponse altérée ferait
+ * appeler par le worker n'importe quel hôte, y compris un service interne. Seuls
+ * ces hôtes, en égalité EXACTE (ni sous-domaine, ni suffixe, ni port, ni
+ * identifiants), sont appelés.
+ */
+export const HOTE_API_SIRO = "www.data.gouv.fr";
+export const HOTES_FICHIER_SIRO: readonly string[] = ["static.data.gouv.fr"];
+
+/**
+ * Plafond d'octets lus pour le fichier : le millésime 2026-06 pèse 109 242 949
+ * octets. Au-delà, refus nommé, sans import partiel (la transaction est unique
+ * et n'est ouverte qu'après la lecture complète).
+ */
+export const TAILLE_MAX_FICHIER_SIRO_OCTETS = 300 * 1024 * 1024;
+
+/** Vrai si `url` est en `https:` sur un des `hotes`, sans port ni identifiants. */
+export function urlSiroAutorisee(url: string, hotes: readonly string[]): boolean {
+  let u: URL;
+  try {
+    u = new URL(url);
+  } catch {
+    return false;
+  }
+  return (
+    u.protocol === "https:" &&
+    hotes.includes(u.hostname) &&
+    u.port === "" &&
+    u.username === "" &&
+    u.password === ""
+  );
+}
+
 const TITRE_RESSOURCE = /^siro-(\d{4})(0[1-9]|1[0-2])\.csv$/i;
 
 export interface RessourceSiro {
@@ -619,7 +653,11 @@ export function choisirRessourceSiro(reponse: unknown): RessourceSiro | null {
     if (typeof r !== "object" || r === null) continue;
     const { format, title, url } = r as Record<string, unknown>;
     if (typeof format !== "string" || format.toLowerCase() !== "csv") continue;
-    if (typeof title !== "string" || typeof url !== "string" || !url.startsWith("https://")) {
+    if (
+      typeof title !== "string" ||
+      typeof url !== "string" ||
+      !urlSiroAutorisee(url, HOTES_FICHIER_SIRO)
+    ) {
       continue;
     }
     const m = TITRE_RESSOURCE.exec(title.trim());
@@ -641,9 +679,43 @@ export class TelechargementSiroRefuse extends Error {
 
 export interface DependancesSiro {
   /** Injecté : aucun appel réseau en test. */
-  readonly fetch: (url: string, init: { signal: AbortSignal }) => Promise<Response>;
+  readonly fetch: (
+    url: string,
+    init: { signal: AbortSignal; redirect: "manual" },
+  ) => Promise<Response>;
   readonly delaiApiMs?: number;
   readonly delaiFichierMs?: number;
+  /** Plafond d'octets du fichier (défaut : `TAILLE_MAX_FICHIER_SIRO_OCTETS`). */
+  readonly tailleMaxOctets?: number;
+}
+
+/**
+ * Coupe le flux dès que le total lu dépasse `plafond` : la lecture échoue avec
+ * un refus nommé, avant toute écriture (même si l'en-tête de taille mentait ou
+ * manquait).
+ */
+function plafonnerFlux(
+  flux: ReadableStream<Uint8Array>,
+  plafond: number,
+  quoi: string,
+): ReadableStream<Uint8Array> {
+  let total = 0;
+  return flux.pipeThrough(
+    new TransformStream<Uint8Array, Uint8Array>({
+      transform(morceau, controleur) {
+        total += morceau.byteLength;
+        if (total > plafond) {
+          controleur.error(
+            new TelechargementSiroRefuse(
+              `${quoi} : plus de ${plafond} octets lus, au-delà du plafond`,
+            ),
+          );
+          return;
+        }
+        controleur.enqueue(morceau);
+      },
+    }),
+  );
 }
 
 /** Délais d'attente par défaut : 30 s pour l'API, 15 min pour les 109 Mo. */
@@ -653,16 +725,30 @@ export const DELAI_FICHIER_MS = 15 * 60_000;
 async function obtenir(
   deps: DependancesSiro,
   url: string,
+  hotes: readonly string[],
   delaiMs: number,
   quoi: string,
 ): Promise<Response> {
+  // Vérifié AVANT tout appel : un hôte étranger n'est jamais contacté.
+  if (!urlSiroAutorisee(url, hotes)) {
+    throw new TelechargementSiroRefuse(`${quoi} : hôte non autorisé, aucun appel`);
+  }
   let reponse: Response;
   try {
-    reponse = await deps.fetch(url, { signal: AbortSignal.timeout(delaiMs) });
+    // `manual` : aucune redirection n'est suivie. data.gouv n'en fait aucune
+    // (vérifié le 2026-10-05) ; une redirection est donc refusée, quelle
+    // qu'en soit la cible.
+    reponse = await deps.fetch(url, { signal: AbortSignal.timeout(delaiMs), redirect: "manual" });
   } catch (err) {
     throw new TelechargementSiroRefuse(
       `${quoi} injoignable (${err instanceof Error ? err.name : "erreur"})`,
     );
+  }
+  if ((reponse.status >= 300 && reponse.status < 400) || reponse.type === "opaqueredirect") {
+    throw new TelechargementSiroRefuse(`${quoi} : redirection refusée (HTTP ${reponse.status})`);
+  }
+  if (reponse.url !== "" && !urlSiroAutorisee(reponse.url, hotes)) {
+    throw new TelechargementSiroRefuse(`${quoi} : réponse servie par un hôte non autorisé`);
   }
   if (reponse.status !== 200)
     throw new TelechargementSiroRefuse(`${quoi} : HTTP ${reponse.status}`);
@@ -681,6 +767,7 @@ export async function telechargerSiro(
   const api = await obtenir(
     deps,
     SIRO_DATASET_API,
+    [HOTE_API_SIRO],
     deps.delaiApiMs ?? DELAI_API_MS,
     "API data.gouv",
   );
@@ -697,14 +784,25 @@ export async function telechargerSiro(
   const fichier = await obtenir(
     deps,
     ressource.url,
+    HOTES_FICHIER_SIRO,
     deps.delaiFichierMs ?? DELAI_FICHIER_MS,
     ressource.titre,
   );
   if (fichier.body === null) throw new TelechargementSiroRefuse(`${ressource.titre} : corps vide`);
+  const plafond = deps.tailleMaxOctets ?? TAILLE_MAX_FICHIER_SIRO_OCTETS;
+  const annonce = Number(fichier.headers.get("content-length") ?? "");
+  if (Number.isFinite(annonce) && annonce > plafond) {
+    throw new TelechargementSiroRefuse(
+      `${ressource.titre} : ${annonce} octets annoncés, au-delà du plafond de ${plafond} octets`,
+    );
+  }
   try {
-    return { ressource, lecture: await lireFluxSiro(fichier.body, config) };
+    return {
+      ressource,
+      lecture: await lireFluxSiro(plafonnerFlux(fichier.body, plafond, ressource.titre), config),
+    };
   } catch (err) {
-    if (err instanceof FichierIdccOpcoRefuse) throw err;
+    if (err instanceof FichierIdccOpcoRefuse || err instanceof TelechargementSiroRefuse) throw err;
     throw new TelechargementSiroRefuse(
       `${ressource.titre} : lecture interrompue (${err instanceof Error ? err.name : "erreur"})`,
     );
