@@ -232,9 +232,9 @@ describe("ModeDeDepot — un enum à deux valeurs, sourcé par OPCO (INT-T64-A)"
     }
   });
 
-  it("état relevé : Atlas et OPCO 2i constatés, les neuf autres non constatés", () => {
+  it("état relevé : Atlas, Akto, OPCO 2i et Constructys constatés, les sept autres non constatés", () => {
     const constates = OPCO_IDS.filter((id) => OPCO_FICHES[id].modeDeDepotConstate.valeur !== null);
-    expect(constates).toEqual(["atlas", "opco2i"]);
+    expect([...constates].sort()).toEqual(["akto", "atlas", "constructys", "opco2i"]);
   });
 });
 

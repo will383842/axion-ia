@@ -175,6 +175,9 @@ const SRC_TVA = "https://www.akto.fr/content/uploads/2025/12/CPcommunOpcos_TVA.p
 const SRC_ATLAS = "https://www.opco-atlas.fr/conditions-generales.html";
 const SRC_OPCOEP_CG =
   "https://www.opcoep.fr/ressources/centre-ressources/juridique/conditions-generales-gestion-controle-opcoep.pdf";
+const SRC_AKTO_DEPOT = "https://www.akto.fr/entreprise/financer-une-formation/deposer-demande";
+const SRC_CONSTRUCTYS_CG =
+  "https://www.constructys.fr/wp-content/uploads/Conditions-generales-Constructys.pdf";
 const SRC_CONSTRUCTYS =
   "https://www.constructys.fr/financer-vos-projets-de-formation/modalites-demandes-de-prise-charge/conditions-de-prise-en-charge-2/";
 const SRC_OPCOMMERCE = "https://www.lopcommerce.com/media/bsbnjydz/conditons-generales-gestion.pdf";
@@ -216,9 +219,12 @@ function ficheVide(horsChampTva: boolean): OpcoFiche {
  * renseigné est la règle générale de la source citée, pas une garantie pour
  * un dossier donné.
  *
- * `modeDeDepotConstate` (INT-T64-A) : seuls Atlas et OPCO 2i sont constatés.
- * Les neuf autres restent « non constatés » : leurs pages n'étaient pas lisibles
- * le 2026-10-04 et ne sont pas devinées. ⚠️ `compte_adherent` déclenche l'envoi
+ * `modeDeDepotConstate` (INT-T64-A) : Atlas, OPCO 2i, Akto et Constructys sont
+ * constatés (Akto et Constructys lus le 2026-10-04 depuis le poste de b0, la
+ * session cloud n'ayant pas accès aux sites des OPCO). Les sept autres restent
+ * « non constatés » : page non lue, ou règle écrite qui laisse les deux circuits
+ * ouverts (OPCO EP : « par une entreprise ou un prestataire de formation »).
+ * Rien n'est deviné. ⚠️ `compte_adherent` déclenche l'envoi
  * automatique du dossier à l'entreprise (suivi-entreprise/planning.ts) : ne le
  * poser que sur une page de l'OPCO lue et citée.
  */
@@ -243,7 +249,12 @@ export const OPCO_FICHES: Record<OpcoId, OpcoFiche> = {
     // souhaite une garantie de réponse […] avant le départ en formation » (CG 2026).
     delaiDepotJours: confirme(30, SRC_OPCOEP_CG),
   },
-  akto: ficheVide(false),
+  akto: {
+    ...ficheVide(false),
+    // « Le dossier est à déposer via votre espace en ligne : MonEspace » (page « Déposer une
+    // demande » de l'espace Entreprise, lue le 2026-10-04).
+    modeDeDepotConstate: confirme("compte_adherent", SRC_AKTO_DEPOT),
+  },
   opco2i: {
     ...ficheVide(false),
     // « L'entreprise bénéficiaire complète le formulaire de prise en charge dématérialisé sur
@@ -267,6 +278,10 @@ export const OPCO_FICHES: Record<OpcoId, OpcoFiche> = {
   },
   constructys: {
     ...ficheVide(false),
+    // Obligation de l'entreprise adhérente : « Transmettre de façon dématérialisée le dossier de
+    // demande de prise en charge […] avant le début de la formation via son compte adhérent »
+    // (conditions générales, lues le 2026-10-04).
+    modeDeDepotConstate: confirme("compte_adherent", SRC_CONSTRUCTYS_CG),
     // Dossier complet 15 jours calendaires avant le début, sinon refus.
     delaiDepotJours: confirme(15, SRC_CONSTRUCTYS),
   },
