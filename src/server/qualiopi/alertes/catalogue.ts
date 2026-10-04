@@ -1240,6 +1240,14 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "direction",
   },
+  // Lot OPCO A5 : veille mensuelle de l'état des fonds des OPCO. Levée quand le
+  // relevé le plus récent (tous OPCO confondus) a plus de 31 jours.
+  etat_fonds_perime: {
+    niveau: "important",
+    titre: "État des fonds OPCO à relever (veille mensuelle)",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
   // Lot A4 — un devis ouvert ou une session OPCO à venir n'a AUCUN barème
   // applicable (OPCO × branche IDCC × tranche) : l'estimation repose sur les
   // réglages par défaut. Se résout dès qu'un barème est saisi (ou le devis clos).
