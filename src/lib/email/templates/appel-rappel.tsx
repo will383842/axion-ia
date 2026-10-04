@@ -220,7 +220,8 @@ const VARIANTES_FR: Readonly<Record<"diagnostic" | "echange_projet", VarianteTyp
     deroule: () =>
       "Merci d'avoir réservé votre diagnostic IA gratuit. Vos réponses nous aident à préparer l'échange ; vous repartez avec une idée claire de ce que l'IA peut vous apporter — même si la réponse est « pas tout de suite ».",
     attendu: () => "Rien à préparer. Vos réponses nous aident à préparer l'échange.",
-    puceRienAPreparer: () => "Rien à préparer : vos réponses nous aident à préparer l'échange.",
+    puceRienAPreparer: () =>
+      "Rien d'autre à préparer : nous partons de vos réponses au questionnaire.",
   },
   echange_projet: {
     eyebrow: "Échange projet",
