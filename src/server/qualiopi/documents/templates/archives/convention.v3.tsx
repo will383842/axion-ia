@@ -1,4 +1,20 @@
 /**
+ * ⛔ GABARIT ARCHIVÉ — `convention` version 3. NE JAMAIS MODIFIER.
+ *
+ * Copie conforme de `templates/convention.tsx` tel qu'il était sur la branche
+ * `opco/o13-cgv-financement` (95a96c2b) le 2026-10-04, avant la réécriture de la
+ * clause de défaillance du financeur (§ 5) demandée par la relecture juridique.
+ * Seule différence : la mention légale est FIGÉE dans ce fichier, et non plus
+ * lue dans le module vivant `legal-mentions.ts`. Elle n'est pas ajoutée à
+ * `./mentions-figees`, dont l'empreinte est elle-même verrouillée.
+ *
+ * Il ne sert qu'à RE-RENDRE l'exemplaire signé des pièces signées sous cette
+ * version (`exemplaire-signe.ts`, via `./index.ts`). Toute nouvelle pièce est
+ * produite par le gabarit courant. Son texte est verrouillé par
+ * `gabarit-empreinte.spec.ts`.
+ */
+
+/**
  * Qualiopi — Convention de formation professionnelle (personnes morales).
  *
  * Conforme aux articles L.6353-1 et D.6353-1 du Code du travail (L.6353-2, abrogé
@@ -19,7 +35,11 @@ import {
   type PreuvesParPartie,
 } from "@/server/qualiopi/documents/base-layout";
 import { ACOMPTE_DEFAUT_PERCENT } from "@/server/qualiopi/documents/acompte-defaut";
-import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
+
+/** Mention imprimée par la v3, figée au 2026-10-04 (cf. en-tête). */
+const LEGAL_MENTIONS = {
+  convention: "Établie conformément aux articles L.6353-1 et D.6353-1 du Code du travail.",
+} as const;
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 // ============================================================
@@ -455,12 +475,8 @@ export function ConventionPdf({
             exigibilité : en l&apos;absence de subrogation de paiement expressément convenue, le
             client règle l&apos;intégralité du prix à l&apos;organisme et fait son affaire du
             remboursement. En cas de refus, de réduction, de caducité de l&apos;accord ou de
-            non-paiement par le financeur, les sommes correspondantes demeurent dues par le client,
-            sous réserve des conditions de dédit et d&apos;abandon en cours d&apos;exécution prévues
-            aux conditions générales de vente, et sauf lorsque la réduction, la caducité ou le
-            non-paiement résulte d&apos;un manquement de l&apos;organisme à ses propres obligations
-            (inexécution de tout ou partie de l&apos;action, défaut des justificatifs de réalisation
-            qui lui incombent).
+            non-paiement par le financeur, pour quelque cause que ce soit, les sommes
+            correspondantes demeurent dues par le client.
           </Text>
         </DocSection>
 

@@ -21,6 +21,7 @@ import {
   setFinancementSessionAction,
   validerAccordOpcoAction,
 } from "@/server/actions/qualiopi/financements";
+import type { RegimePaiement } from "@/server/qualiopi/financements/regime-paiement-opco";
 import type {
   FinancementType,
   OpcoStatut,
@@ -48,7 +49,15 @@ export interface SetFinancementFormProps {
   ftPoeiAccordFinancementAt: string | null;
   /** POEI — date (yyyy-mm-dd) d'engagement signé. */
   ftPoeiEngagementSigneAt: string | null;
+  /** Régime de paiement OPCO calculé (réforme TVA du 1er octobre 2026, OPCO A3). */
+  regimePaiement?: { regime: RegimePaiement; motif: string; confirmeParAccord: boolean };
 }
+
+const REGIME_LIBELLES: Record<RegimePaiement, string> = {
+  subrogation_possible: "Subrogation possible",
+  remboursement_entreprise: "Remboursement de l'entreprise par l'OPCO",
+  inconnu: "Régime non déterminé",
+};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Libellés
@@ -103,6 +112,7 @@ export function SetFinancementForm({
   ftPoeiOffreEmploiNumero,
   ftPoeiAccordFinancementAt,
   ftPoeiEngagementSigneAt,
+  regimePaiement,
 }: SetFinancementFormProps): React.ReactElement {
   // ADR 0060 — dossier clos : le TYPE, le dispositif et le payeur sont figés
   // (écriture VERROU) ; le statut OPCO, le n° de dossier et la subrogation
@@ -116,6 +126,9 @@ export function SetFinancementForm({
   const [selectedType, setSelectedType] = useState<FinancementType | "">(financementType ?? "");
   const [selectedOpcoStatut, setSelectedOpcoStatut] = useState<OpcoStatut>(opcoStatut);
   const [subrogation, setSubrogation] = useState<boolean>(opcoSubrogation);
+  const [accordPaiementDirect, setAccordPaiementDirect] = useState<boolean>(
+    regimePaiement?.confirmeParAccord ?? false,
+  );
   const [numeroDossier, setNumeroDossier] = useState<string>(numeroDossierOpco ?? "");
   const [selectedFtDispositif, setSelectedFtDispositif] = useState<FranceTravailDispositif | "">(
     ftDispositif ?? "",
@@ -132,6 +145,8 @@ export function SetFinancementForm({
   const showFT = selectedType === "france_travail";
   const showCPF = selectedType === "cpf";
   const showPoei = showFT && selectedFtDispositif === "poei";
+  const exigeAccordEcrit =
+    showOpco && subrogation && regimePaiement?.regime === "remboursement_entreprise";
   // Dossier clos : seuls le suivi OPCO et les pièces POEI restent modifiables.
   // Sans eux, il n'y a rien à envoyer — pas de bouton qui ne mène à rien.
   const rienAEnregistrer = fige && !showOpco && !showPoei;
@@ -151,6 +166,7 @@ export function SetFinancementForm({
         ...(!fige && selectedType !== "" ? { financementType: selectedType } : {}),
         ...(showOpco ? { opcoStatut: selectedOpcoStatut } : {}),
         ...(showOpco ? { opcoSubrogation: subrogation } : {}),
+        ...(exigeAccordEcrit ? { accordPrevoitPaiementDirect: accordPaiementDirect } : {}),
         ...(showOpco && numeroDossier ? { numeroDossierOpco: numeroDossier } : {}),
         ...(!fige && showFT && selectedFtDispositif !== ""
           ? { ftDispositif: selectedFtDispositif }
@@ -280,6 +296,30 @@ export function SetFinancementForm({
               />
               Facturer directement à l&apos;OPCO (subrogation)
             </label>
+            {regimePaiement ? (
+              <p
+                role={regimePaiement.regime === "subrogation_possible" ? undefined : "note"}
+                className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+              >
+                Régime depuis le 1er octobre 2026 :{" "}
+                <strong>{REGIME_LIBELLES[regimePaiement.regime]}</strong> — {regimePaiement.motif}.
+                {regimePaiement.regime === "inconnu" && subrogation
+                  ? " Vérifiez sur l'accord écrit que l'OPCO paie l'organisme directement."
+                  : null}
+              </p>
+            ) : null}
+            {exigeAccordEcrit ? (
+              <label className="flex cursor-pointer items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+                <input
+                  type="checkbox"
+                  checked={accordPaiementDirect}
+                  onChange={(e) => setAccordPaiementDirect(e.target.checked)}
+                  disabled={isPending}
+                  className="h-4 w-4 accent-[color:var(--color-admin-accent)]"
+                />
+                L&apos;accord écrit de l&apos;OPCO prévoit le paiement direct à l&apos;organisme
+              </label>
+            ) : null}
           </div>
         )}
 

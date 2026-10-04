@@ -41,7 +41,11 @@ export const revalidate = 3600;
 // déclaration obtenu le jour même (récépissé DREETS Auvergne-Rhône-Alpes) et
 // mention obligatoire « ne vaut pas agrément de l'État » (art. L.6352-12
 // C. trav.). Le texte rendu change réellement, la date suit.
-const LAST_UPDATED_ISO = "2026-08-17";
+//
+// 2026-10-04 : ajout de l'article « Financement par un opérateur de
+// compétences (OPCO) » (FR + EN) — dépôt de la demande, subrogation, refus,
+// heures d'absence, non-paiement par l'OPCO. Le texte rendu change, la date suit.
+const LAST_UPDATED_ISO = "2026-10-04";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;

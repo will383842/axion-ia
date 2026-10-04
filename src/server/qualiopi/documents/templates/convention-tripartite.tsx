@@ -415,9 +415,13 @@ export function ConventionTripartitePdf({
           <Text style={pdfStyles.paragraph}>
             La prise en charge par l&apos;OPCO est subordonnée à son accord écrit préalable et au
             respect de ses règles de financement. En cas de refus, de réduction, de caducité de
-            l&apos;accord ou de non-paiement par l&apos;OPCO pour quelque cause que ce soit, les
-            sommes correspondantes redeviennent exigibles auprès du client, qui demeure le débiteur
-            du prix convenu à l&apos;article 3.
+            l&apos;accord ou de non-paiement par l&apos;OPCO, les sommes correspondantes
+            redeviennent exigibles auprès du client, qui demeure le débiteur du prix convenu à
+            l&apos;article 3, sous réserve des conditions de dédit et d&apos;abandon en cours
+            d&apos;exécution prévues aux conditions générales de vente, et sauf lorsque la
+            réduction, la caducité ou le non-paiement résulte d&apos;un manquement de
+            l&apos;organisme à ses propres obligations (inexécution de tout ou partie de
+            l&apos;action, défaut des justificatifs de réalisation qui lui incombent).
           </Text>
         </DocSection>
 
