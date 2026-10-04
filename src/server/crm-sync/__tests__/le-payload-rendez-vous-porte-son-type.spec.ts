@@ -84,6 +84,7 @@ describe("le payload porte toujours les trois champs du contrat", () => {
       eventTypeName: "Diagnostic IA",
       typeRendezVous: "diagnostic",
       besoin: null,
+      reponses: [],
       source: "api_poll",
       format: "visio",
     });
@@ -112,5 +113,61 @@ describe("le payload porte toujours les trois champs du contrat", () => {
       payload: { eventTypeName: "Rencontre salon GOFAB", typeRendezVous: "n'importe quoi" },
     });
     expect(payloadEmis()["typeRendezVous"]).toBe("salon");
+  });
+});
+
+describe("les réponses du questionnaire (L5b) — diagnostic et échange projet seulement", () => {
+  const longue = "x".repeat(500);
+
+  it("diagnostic : les réponses partent, bornées (10 entrées, 120 / 300 caractères)", async () => {
+    const reponses = Array.from({ length: 14 }, (_, i) => ({
+      question: `Question ${i} ${longue}`,
+      reponse: `Réponse ${i} ${longue}`,
+    }));
+    await syncCalendlyEventToCrm({
+      kind: "booked",
+      subjectRef: "site:calendly_event:7",
+      person: personne,
+      payload: { eventTypeName: "Diagnostic IA", typeRendezVous: "diagnostic", reponses },
+    });
+    const emises = payloadEmis()["reponses"] as Array<{ question: string; reponse: string }>;
+    expect(emises).toHaveLength(10);
+    expect(emises[0]?.question.length).toBeLessThanOrEqual(120);
+    expect(emises[0]?.reponse.length).toBeLessThanOrEqual(300);
+    expect(emises[0]?.question.startsWith("Question 0")).toBe(true);
+  });
+
+  it("échange projet : une entrée illisible est écartée, les autres restent", async () => {
+    await syncCalendlyEventToCrm({
+      kind: "booked",
+      subjectRef: "site:calendly_event:8",
+      person: personne,
+      payload: {
+        eventTypeName: "Échange projet",
+        typeRendezVous: "echange_projet",
+        reponses: [
+          { question: "Quel service vous intéresse ?", reponse: "Formation" },
+          { question: 42, reponse: "x" },
+          { question: "Vide", reponse: "   " },
+        ],
+      },
+    });
+    expect(payloadEmis()["reponses"]).toEqual([
+      { question: "Quel service vous intéresse ?", reponse: "Formation" },
+    ]);
+  });
+
+  it("🔴 salon et autre : aucune réponse ne part, même si l'appelant en fournit", async () => {
+    await syncCalendlyEventToCrm({
+      kind: "booked",
+      subjectRef: "site:calendly_event:9",
+      person: personne,
+      payload: {
+        eventTypeName: "Rencontre salon GOFAB",
+        typeRendezVous: "salon",
+        reponses: [{ question: "Q", reponse: "R" }],
+      },
+    });
+    expect(payloadEmis()).not.toHaveProperty("reponses");
   });
 });

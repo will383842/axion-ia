@@ -282,3 +282,25 @@ describe("fenêtre app/worker", () => {
     ).toEqual({ a: 1 });
   });
 });
+
+describe("les réponses du questionnaire pour le CRM (L5b)", () => {
+  it("lit les réponses de la charge enrichie, sans le téléphone", async () => {
+    const { reponsesDuBrut } = await import("@/server/calendly/type-rendez-vous");
+    expect(
+      reponsesDuBrut({
+        invitee: {
+          questions_and_answers: [
+            { question: "Secteur", answer: "BTP" },
+            { question: "Téléphone", answer: "+33 6 00 00 00 00" },
+          ],
+        },
+      }),
+    ).toEqual([{ question: "Secteur", reponse: "BTP" }]);
+  });
+
+  it("rien de lisible : tableau vide", async () => {
+    const { reponsesDesQuestions } = await import("@/server/calendly/type-rendez-vous");
+    expect(reponsesDesQuestions(undefined)).toEqual([]);
+    expect(reponsesDesQuestions("n'importe quoi")).toEqual([]);
+  });
+});

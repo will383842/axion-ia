@@ -2,7 +2,9 @@ import { hashEmailForLookup, normalizeEmail } from "@/lib/security/email-hash";
 import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import {
   classerParNom,
+  bornerReponsesCrm,
   estTypeRendezVous,
+  typePorteLesReponses,
   type ChampsCrmRendezVous,
 } from "@/server/calendly/type-rendez-vous";
 
@@ -140,11 +142,18 @@ export function payloadRendezVousAuContrat(
   const brut = payload?.["typeRendezVous"];
   const typeRendezVous = estTypeRendezVous(brut) ? brut : classerParNom(nom);
   const besoin = payload?.["besoin"];
+  // Lot L5b : les réponses du questionnaire, BORNÉES ici quel que soit
+  // l'appelant, et seulement pour un rendez-vous client (diagnostic, échange
+  // projet). Pour tout autre type la clé est retirée, même fournie.
+  const { reponses: reponsesBrutes, ...reste } = payload ?? {};
   return {
-    ...(payload ?? {}),
+    ...reste,
     eventTypeName: nom ?? "Calendly",
     typeRendezVous,
     besoin: typeof besoin === "string" && besoin.trim() ? besoin : null,
+    ...(typePorteLesReponses(typeRendezVous)
+      ? { reponses: bornerReponsesCrm(reponsesBrutes) }
+      : {}),
   };
 }
 

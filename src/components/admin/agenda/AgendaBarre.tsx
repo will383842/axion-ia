@@ -197,7 +197,9 @@ export const SOURCES_FILTRABLES = [
  * Un filtre de type ne retient que des réservations ; il laisse passer
  * l'agenda personnel et les blocages.
  */
-export const TYPES_FILTRABLES_AGENDA = TYPES_FILTRABLES.map((t) => ({
+// Lot L5b : « Autre » a aussi son bouton — un rendez-vous non classé ne doit
+// jamais disparaître d'un agenda filtré faute de filtre pour le montrer.
+export const TYPES_FILTRABLES_AGENDA = [...TYPES_FILTRABLES, "autre" as const].map((t) => ({
   id: t,
   label: LIBELLE_TYPE_RDV[t],
   couleur: `var(--color-admin-id-${TEINTE_TYPE_RDV[t] ?? TEINTE_SOURCE.calendly})`,
@@ -216,9 +218,24 @@ export function lireFiltresAgenda(brut: string | undefined): {
   return {
     sources: jetons.filter((x) => connues.includes(x)),
     types: jetons.filter(
-      (x): x is TypeRendezVous => estTypeRendezVous(x) && TYPES_FILTRABLES.includes(x),
+      (x): x is TypeRendezVous =>
+        estTypeRendezVous(x) && TYPES_FILTRABLES_AGENDA.some((t) => t.id === x),
     ),
   };
+}
+
+/**
+ * Un élément de l'agenda passe-t-il les filtres ? Un filtre de type ne retient
+ * que des réservations : l'agenda personnel et les blocages restent visibles
+ * (ils disent quand on est pris).
+ */
+export function passeLesFiltresAgenda(
+  item: { readonly source: string; readonly typeRendezVous: TypeRendezVous | null },
+  filtres: ReturnType<typeof lireFiltresAgenda>,
+): boolean {
+  if (filtres.sources.length > 0 && !filtres.sources.includes(item.source)) return false;
+  if (filtres.types.length === 0 || item.source !== "calendly") return true;
+  return item.typeRendezVous !== null && filtres.types.includes(item.typeRendezVous);
 }
 
 /**

@@ -28,6 +28,9 @@
 import { estAppelApporteur } from "@/server/calendly/appel-apporteur";
 import { estRdvSalon } from "@/server/calendly/rdv-salon";
 import { canonicalPath, listerTypesEvenementCalendly } from "@/server/calendly/availability";
+// Module pur, sans import : la règle « quelles réponses du formulaire » est la
+// sienne (téléphone écarté), partagée avec la console et le dossier client.
+import { reponsesFormulaire } from "@/features/admin-rendezvous/a-venir";
 
 /** Les cinq types — 🔑 MIROIR EXACT de l'enum Prisma `TypeRendezVous`. */
 export const TYPES_RENDEZ_VOUS = [
@@ -309,6 +312,58 @@ export function besoinDuBrut(rawPayload: unknown): string | null {
   return besoinDesReponses(questionsDuBrut(rawPayload));
 }
 
+// ── Réponses du questionnaire (contrat CRM, lot L5b) ───────────────────────
+
+/** Une réponse du questionnaire telle que le CRM la reçoit. */
+export interface ReponseCrm {
+  readonly question: string;
+  readonly reponse: string;
+}
+
+/** Bornes du champ `reponses` du payload CRM. */
+export const REPONSES_CRM_MAX = 10;
+export const QUESTION_CRM_MAX = 120;
+export const REPONSE_CRM_MAX = 300;
+
+/**
+ * Borne une liste de réponses venue de n'importe où (charge de l'appelant
+ * comprise) : au plus 10 entrées lisibles, question ≤ 120, réponse ≤ 300.
+ * Une entrée sans question ou sans réponse texte est écartée.
+ */
+export function bornerReponsesCrm(valeur: unknown): ReponseCrm[] {
+  if (!Array.isArray(valeur)) return [];
+  const sortie: ReponseCrm[] = [];
+  for (const x of valeur) {
+    if (sortie.length >= REPONSES_CRM_MAX) break;
+    const o = objet(x);
+    const q = o?.["question"];
+    const r = o?.["reponse"];
+    if (typeof q !== "string" || typeof r !== "string") continue;
+    const question = q.trim().slice(0, QUESTION_CRM_MAX);
+    const reponse = r.trim().slice(0, REPONSE_CRM_MAX);
+    if (!question || !reponse) continue;
+    sortie.push({ question, reponse });
+  }
+  return sortie;
+}
+
+/** Les réponses d'un `questions_and_answers` Calendly, bornées pour le CRM. */
+export function reponsesDesQuestions(questionsAndAnswers: unknown): ReponseCrm[] {
+  return bornerReponsesCrm(
+    reponsesFormulaire({ invitee: { questions_and_answers: questionsAndAnswers } }),
+  );
+}
+
+/** Les réponses lues dans `raw_payload` (ligne enrichie), bornées pour le CRM. */
+export function reponsesDuBrut(rawPayload: unknown): ReponseCrm[] {
+  return bornerReponsesCrm(reponsesFormulaire(rawPayload));
+}
+
+/** Les types dont les réponses partent au CRM : les rendez-vous clients. */
+export function typePorteLesReponses(type: TypeRendezVous): boolean {
+  return type === "diagnostic" || type === "echange_projet";
+}
+
 /** Les UTM du `tracking` de l'invité Calendly, bornées aux colonnes (100). */
 export interface UtmDuTracking {
   readonly utmSource: string | null;
@@ -336,11 +391,14 @@ export function utmDuTracking(invitee: unknown): UtmDuTracking {
 /**
  * Les trois champs que le `payload` CRM d'un rendez-vous porte TOUJOURS
  * (contrat figé dans le plan) : `eventTypeName`, `typeRendezVous`, `besoin`.
+ * Lot L5b : `reponses` en plus, pour le diagnostic et l'échange projet
+ * SEULEMENT (absent sinon).
  */
 export interface ChampsCrmRendezVous {
   readonly eventTypeName: string;
   readonly typeRendezVous: TypeRendezVous;
   readonly besoin: string | null;
+  readonly reponses?: readonly ReponseCrm[];
 }
 
 // ── Fenêtre app/worker ─────────────────────────────────────────────────────

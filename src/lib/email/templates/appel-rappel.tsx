@@ -187,8 +187,12 @@ interface VarianteType {
   readonly eyebrow: string;
   readonly objetConfirme: string;
   readonly objetConfirmeSansDate: string;
-  readonly objetJ1: (heure: string) => string;
-  readonly objetH1: (heure: string) => string;
+  /**
+   * Objets des rappels : `heure` `null` quand la charge ne la porte pas. Ils
+   * passent par `objetCompose` (borne de 45 caractères), comme la confirmation.
+   */
+  readonly objetJ1: (heure: string | null) => string;
+  readonly objetH1: (heure: string | null) => string;
   readonly titreJ1: string;
   readonly titreH1: string;
   /** Après la salutation de la confirmation. */
@@ -204,23 +208,31 @@ const VARIANTES_FR: Readonly<Record<"diagnostic" | "echange_projet", VarianteTyp
     eyebrow: "Diagnostic IA gratuit",
     objetConfirme: "Diagnostic IA :",
     objetConfirmeSansDate: "Votre diagnostic IA gratuit est confirmé",
-    objetJ1: (h) => `Rappel : votre diagnostic IA demain à ${h}`,
-    objetH1: (h) => `Votre diagnostic IA dans une heure, à ${h}`,
+    objetJ1: (h) =>
+      objetCompose(
+        "Rappel :",
+        h ? `votre diagnostic IA demain à ${h}` : "votre diagnostic IA demain",
+      ),
+    objetH1: (h) =>
+      objetCompose("Votre diagnostic IA", h ? `dans une heure, à ${h}` : "dans une heure"),
     titreJ1: "Votre diagnostic IA a lieu demain",
     titreH1: "Votre diagnostic IA a lieu dans une heure",
     deroule: () =>
-      "Merci d'avoir réservé votre diagnostic IA gratuit. Nous arrivons avec de premières pistes pour votre activité ; vous repartez avec une idée claire de ce que l'IA peut vous apporter — même si la réponse est « pas tout de suite ».",
-    attendu: () =>
-      "Rien à préparer : nous arrivons avec de premières pistes pour votre activité, à partir de vos réponses au formulaire.",
-    puceRienAPreparer: () =>
-      "Rien à préparer : vos réponses au formulaire nous suffisent pour arriver avec des pistes.",
+      "Merci d'avoir réservé votre diagnostic IA gratuit. Vos réponses nous aident à préparer l'échange ; vous repartez avec une idée claire de ce que l'IA peut vous apporter — même si la réponse est « pas tout de suite ».",
+    attendu: () => "Rien à préparer. Vos réponses nous aident à préparer l'échange.",
+    puceRienAPreparer: () => "Rien à préparer : vos réponses nous aident à préparer l'échange.",
   },
   echange_projet: {
     eyebrow: "Échange projet",
     objetConfirme: "Échange projet :",
     objetConfirmeSansDate: "Votre échange projet est confirmé",
-    objetJ1: (h) => `Rappel : votre échange projet demain à ${h}`,
-    objetH1: (h) => `Votre échange projet dans une heure, à ${h}`,
+    objetJ1: (h) =>
+      objetCompose(
+        "Rappel :",
+        h ? `votre échange projet demain à ${h}` : "votre échange projet demain",
+      ),
+    objetH1: (h) =>
+      objetCompose("Votre échange projet", h ? `dans une heure, à ${h}` : "dans une heure"),
     titreJ1: "Votre échange projet a lieu demain",
     titreH1: "Votre échange projet a lieu dans une heure",
     deroule: (b) =>
@@ -286,7 +298,7 @@ export const appelRappelSubject = (locale: Locale, payload: Record<string, unkno
   const quand = quandTexte(locale, p);
   const v = varianteDe(locale, p);
   if (v) {
-    const heure = texteOuNull(p.heure) ?? "l'heure prévue";
+    const heure = texteOuNull(p.heure);
     if (m === "confirmation")
       return quand ? objetCompose(v.objetConfirme, quand) : v.objetConfirmeSansDate;
     if (m === "j1") return v.objetJ1(heure);
@@ -864,7 +876,7 @@ function CeQuiSePasseMaintenant({
   p: Payload;
 }) {
   // Type connu : la troisième puce (« Rien à préparer… ») dit ce que le type
-  // apporte — des pistes pour un diagnostic, le service choisi pour un échange
+  // apporte — les réponses utiles pour un diagnostic, le service choisi pour un échange
   // projet. Les deux premières (invitation d'agenda, rappels) sont communes.
   const v = varianteDe(locale, p);
   const [puceAgenda, puceRappels] = c.maintenantPuces;

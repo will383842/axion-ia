@@ -76,3 +76,17 @@ export function compterParType(
   for (const r of rows) compte[r.typeRendezVous] += 1;
   return compte;
 }
+
+/**
+ * L'onglet « Autre » (lot L5b) : visible dès qu'il existe au moins un
+ * rendez-vous de ce type, ou quand il est le filtre actif. Sans lui, un
+ * rendez-vous non classé n'aurait aucun onglet pour le montrer.
+ */
+export function ongletAutreVisible(
+  filtre: PublicRdv | undefined,
+  typesPresents: Iterable<TypeRendezVous>,
+): boolean {
+  if (filtre === "autre") return true;
+  for (const t of typesPresents) if (t === "autre") return true;
+  return false;
+}
