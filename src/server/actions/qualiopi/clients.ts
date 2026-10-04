@@ -202,6 +202,8 @@ const updateClientSchema = z
       .number({ invalid_type_error: "Enveloppe annuelle : un montant est attendu." })
       .int("Enveloppe annuelle : montant en centimes entiers attendu.")
       .min(0, "Enveloppe annuelle : elle ne peut pas être négative.")
+      // Colonne `Int` Postgres (32 bits) : au-delà, message clair plutôt qu'une erreur brute.
+      .max(2_147_483_647, "Enveloppe annuelle : montant trop élevé.")
       .nullable()
       .optional(),
     /**
