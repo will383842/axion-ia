@@ -190,3 +190,22 @@ export function getFinancingPromptFact(): string {
     "- INTERDIT : inventer un numéro (NDA, certificat Qualiopi) ou citer un logo d'OPCO / France Travail.",
   ].join("\n");
 }
+
+/**
+ * SEUIL de la règle de la part (INT-T61-A, règle d'A02 sur l'issue 656,
+ * commentaire 5980505240), en POINTS DE BASE : 9 000 = 90 %.
+ *
+ * La part de l'OPCO saisi = son nombre de SIRET dans la table `idcc_opco`,
+ * divisé par la somme des SIRET de l'IDCC, même millésime. Part ≥ seuil →
+ * « concordant » ; sinon « à confirmer ». Comparaison en ENTIERS (jamais de
+ * flottant) dans `financements/idcc-controle.ts`.
+ *
+ * SOURCE ET DÉCISION : arbitrage de la coordination du 2026-10-04, par
+ * délégation de Williams, fondé sur la distribution SIRO de 2026-06 (IDCC 1596 :
+ * CONSTRUCTYS 274 837 SIRET contre OPCO EP 1 ; IDCC 8822 : AKTO 235 contre
+ * OCAPIAT 67). L'issue « à confirmer » ne bloque rien : elle demande une
+ * confirmation humaine.
+ *
+ * Changer cette valeur est une DÉCISION : la dater et la sourcer ici.
+ */
+export const SEUIL_CONCORDANCE_IDCC_OPCO_BPS = 9000;
