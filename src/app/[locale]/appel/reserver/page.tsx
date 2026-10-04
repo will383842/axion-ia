@@ -32,7 +32,6 @@ import { ArrowLeft, Check } from "lucide-react";
 
 import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
-import { Link } from "@/i18n/navigation";
 import { FormulaireReservation } from "@/components/booking/FormulaireReservation";
 import { RemonterAuMessage } from "@/components/booking/RemonterAuMessage";
 import { resoudreEventTypePourReservation } from "@/server/calendly/availability";
@@ -42,9 +41,21 @@ import {
   creneauExploitable,
   CHAMP_LOCALE,
   CHAMP_LEURRE,
+  CHAMP_DEPUIS,
+  CHAMP_RDV,
 } from "@/server/calendly/formulaire-reservation";
 import { soumettreLaReservation } from "./actions";
 import { signalerRepliPermanent } from "@/server/calendly/alertes-reservation";
+import {
+  avecUtmContent,
+  lireChoixRendezVous,
+  lireDepuis,
+  parametresDuChoix,
+  resoudreChoix,
+  utmContentDuChoix,
+  PARAM_DEPUIS,
+  PARAM_RDV,
+} from "@/server/calendly/choix-rendez-vous";
 
 /**
  * Rendu à chaque requête.
@@ -97,9 +108,16 @@ export default async function ReserverPage({ params, searchParams }: Props) {
 
   const sp = await searchParams;
 
+  // Le TYPE réservé (chantier « Types de rendez-vous », L2) : `?rdv=` posé par le
+  // sélecteur de créneaux. Sans lui (ancien lien), le type appel, comme avant.
+  const choixExplicite = lireChoixRendezVous(sp[PARAM_RDV]);
+  const choix = choixExplicite ?? "projet";
+  const depuis = lireDepuis(sp[PARAM_DEPUIS]);
+  const calendrier = `/${locale}/appel?${parametresDuChoix(choix, depuis)}`;
+
   // Le drapeau d'abord : tant qu'il est éteint, cette route n'existe pas pour
   // le visiteur, et les créneaux continuent de pointer vers Calendly.
-  if (!reservationDirecteActive()) redirect(`/${locale}/appel`);
+  if (!reservationDirecteActive()) redirect(calendrier);
 
   const debutBrut = typeof sp["debut"] === "string" ? sp["debut"] : "";
   const debut = new Date(debutBrut);
@@ -110,11 +128,12 @@ export default async function ReserverPage({ params, searchParams }: Props) {
   // 🔑 Le jugement vient d'une fonction partagée avec l'action : si la page
   // acceptait un créneau que l'action refuse, le visiteur remplirait un
   // formulaire condamné d'avance et ne l'apprendrait qu'après avoir tout saisi.
-  if (!creneauExploitable(debutBrut, new Date())) redirect(`/${locale}/appel`);
+  if (!creneauExploitable(debutBrut, new Date())) redirect(calendrier);
 
-  const et = await resoudreEventTypePourReservation(
-    process.env.NEXT_PUBLIC_CALENDLY_APPEL_URL ?? "",
-  );
+  // Les questions et l'event_type DU BON TYPE ; diagnostic introuvable chez
+  // Calendly → type appel, sans bruit (`choix-rendez-vous.ts`).
+  const resolu = await resoudreChoix(choix);
+  const et = await resoudreEventTypePourReservation(resolu.url);
   if (!et) {
     // Jeton absent, API muette, ou une question qu'on ne sait pas poser : le
     // contrat de repli s'applique, et il est écrit dans `questions.ts`.
@@ -130,7 +149,7 @@ export default async function ReserverPage({ params, searchParams }: Props) {
     // La déduplication (quinze minutes, même clé des deux côtés) évite qu'une
     // panne produise une alerte par visiteur.
     await signalerRepliPermanent();
-    redirect(`/${locale}/appel`);
+    redirect(calendrier);
   }
 
   const reprise = await lireLaRepriseDuCreneau(debutBrut);
@@ -142,13 +161,13 @@ export default async function ReserverPage({ params, searchParams }: Props) {
             un visiteur qui s'est trompé de créneau doit pouvoir revenir sans
             faire défiler tout le formulaire. */}
         <div className="mx-auto max-w-xl">
-          <Link
-            href="/appel"
+          <a
+            href={calendrier}
             className="text-fg-soft hover:text-terracotta-deep focus-visible:ring-terracotta -ml-1 inline-flex min-h-11 items-center gap-1.5 rounded px-1 py-1 text-sm font-semibold focus-visible:ring-2 focus-visible:outline-none"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Choisir un autre créneau
-          </Link>
+          </a>
 
           {/* FIL D'ÉTAPES — deux traits et trois mots.
 
@@ -205,12 +224,19 @@ export default async function ReserverPage({ params, searchParams }: Props) {
             dureeMinutes={et.dureeMinutes ?? DUREE_DEFAUT}
             questions={et.questions}
             {...(reprise ? { erreurs: reprise.erreurs, valeurs: reprise.valeurs } : {})}
-            replidUrl={process.env.NEXT_PUBLIC_CALENDLY_APPEL_URL}
+            replidUrl={avecUtmContent(
+              resolu.url,
+              choixExplicite ? utmContentDuChoix(choixExplicite, depuis) : null,
+            )}
             action={soumettreLaReservation}
             locale={locale}
             champLocale={CHAMP_LOCALE}
             champLeurre={CHAMP_LEURRE}
-            retourAuCalendrier={`/${locale}/appel`}
+            retourAuCalendrier={calendrier}
+            champsCaches={{
+              ...(choixExplicite ? { [CHAMP_RDV]: choixExplicite } : {}),
+              ...(depuis ? { [CHAMP_DEPUIS]: depuis } : {}),
+            }}
           />
         </div>
       </Container>

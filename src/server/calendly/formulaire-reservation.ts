@@ -180,6 +180,8 @@ export interface OptionsValidation {
   readonly utmSource?: string | null;
   readonly utmMedium?: string | null;
   readonly utmCampaign?: string | null;
+  /** Le bouton qui a mené ici (`diagnostic`, `projet:faq`…), voir `choix-rendez-vous.ts`. */
+  readonly utmContent?: string | null;
 }
 
 /**
@@ -349,6 +351,7 @@ export function validerFormulaire(fd: FormData, o: OptionsValidation): ResultatV
       utmSource: o.utmSource ?? null,
       utmMedium: o.utmMedium ?? null,
       utmCampaign: o.utmCampaign ?? null,
+      utmContent: o.utmContent ?? null,
     },
   };
 }
@@ -403,6 +406,19 @@ export function reservationDirecteActive(): boolean {
  * un instant n'est pas une donnée personnelle. Rien de ce que le visiteur
  * saisira ensuite n'y passera — voir `reprise-formulaire.ts`.
  */
-export function urlDuFormulaire(locale: string, debutIso: string): string {
-  return `/${locale}/appel/reserver?debut=${encodeURIComponent(debutIso)}`;
+export function urlDuFormulaire(
+  locale: string,
+  debutIso: string,
+  parametresDuChoix?: string,
+): string {
+  // `parametresDuChoix` = `rdv=diagnostic&depuis=…` (chantier « Types de
+  // rendez-vous », L2) : le formulaire doit savoir QUEL type il réserve. Ni le
+  // choix ni l'emplacement ne sont des données personnelles.
+  const suite = parametresDuChoix ? `&${parametresDuChoix}` : "";
+  return `/${locale}/appel/reserver?debut=${encodeURIComponent(debutIso)}${suite}`;
 }
+
+/** Champ caché du formulaire qui porte le choix (`diagnostic` | `projet`). */
+export const CHAMP_RDV = "rdv";
+/** Champ caché du formulaire qui porte l'emplacement du bouton. */
+export const CHAMP_DEPUIS = "depuis";

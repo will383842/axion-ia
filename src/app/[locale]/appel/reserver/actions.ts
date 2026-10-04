@@ -41,12 +41,21 @@ import {
   CHAMPS,
   CHAMP_LOCALE,
   CHAMP_LEURRE,
+  CHAMP_DEPUIS,
+  CHAMP_RDV,
   type Erreurs,
   type Valeurs,
 } from "@/server/calendly/formulaire-reservation";
 import { deposerLaReprise } from "@/server/calendly/reprise-formulaire";
 import { resoudreEventTypePourReservation } from "@/server/calendly/availability";
 import { reserverCreneau } from "@/server/calendly/reservation";
+import {
+  lireChoixRendezVous,
+  lireDepuis,
+  parametresDuChoix,
+  resoudreChoix,
+  utmContentDuChoix,
+} from "@/server/calendly/choix-rendez-vous";
 
 /**
  * ## 🔴 DEUX QUOTAS, ET C'EST LA LEÇON D'UN DÉFAUT DÉJÀ PAYÉ
@@ -87,13 +96,15 @@ function identifiantDe(eventUri: string): string {
 }
 
 /** Où atterrit une réservation réussie. */
-function urlDeConfirmation(locale: string, eventUri: string): string {
+function urlDeConfirmation(locale: string, eventUri: string, choix: string): string {
   // 🔑 On ne transmet que l'IDENTIFIANT de l'événement, jamais le nom ni
   // l'e-mail : une adresse d'URL finit dans l'historique, dans les journaux du
   // serveur et dans l'en-tête `Referer`. La page de confirmation relira le reste
   // chez Calendly.
   const uuid = identifiantDe(eventUri);
-  return `/${locale}/appel/confirme?e=${encodeURIComponent(uuid)}`;
+  // Le choix (`diagnostic` | `projet`) n'est pas une donnée personnelle : il
+  // sert de repli à la page quand la relecture Calendly n'aboutit pas.
+  return `/${locale}/appel/confirme?e=${encodeURIComponent(uuid)}&rdv=${choix}`;
 }
 
 /**
@@ -122,18 +133,27 @@ async function replier(
   debut: string,
   erreurs: Erreurs,
   valeurs: Valeurs,
+  params?: string,
 ): Promise<never> {
   await deposerLaReprise(debut, erreurs, valeurs);
-  redirect(urlDuFormulaire(locale, debut));
+  redirect(urlDuFormulaire(locale, debut, params));
 }
 
 export async function soumettreLaReservation(fd: FormData): Promise<void> {
   const locale = String(fd.get(CHAMP_LOCALE) ?? "fr");
   const debutBrut = String(fd.get(CHAMPS.debut) ?? "");
 
+  // Le TYPE réservé (chantier « Types de rendez-vous », L2), porté par deux
+  // champs cachés. Sans eux (formulaire d'avant), le type appel, comme avant.
+  const choixExplicite = lireChoixRendezVous(fd.get(CHAMP_RDV));
+  const choix = choixExplicite ?? "projet";
+  const depuis = lireDepuis(fd.get(CHAMP_DEPUIS));
+  const params = parametresDuChoix(choix, depuis);
+  const calendrier = `/${locale}/appel?${params}`;
+
   // Le drapeau peut s'éteindre entre l'affichage du formulaire et son envoi —
   // c'est même tout l'intérêt d'un drapeau : pouvoir couper en une minute.
-  if (!reservationDirecteActive()) redirect(`/${locale}/appel`);
+  if (!reservationDirecteActive()) redirect(calendrier);
 
   const ip = await getClientIp();
 
@@ -155,6 +175,7 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
           "Trop de tentatives depuis cette connexion. Réessayez dans quelques minutes — votre saisie est conservée.",
       },
       saisieBrute(fd),
+      params,
     );
   }
 
@@ -191,12 +212,11 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
           "Nous n'avons pas pu enregistrer ce rendez-vous. Réessayez, ou passez par le lien Calendly en bas du formulaire.",
       },
       saisieBrute(fd),
+      params,
     );
   }
 
-  const et = await resoudreEventTypePourReservation(
-    process.env.NEXT_PUBLIC_CALENDLY_APPEL_URL ?? "",
-  );
+  const et = await resoudreEventTypePourReservation((await resoudreChoix(choix)).url);
   if (!et) {
     // Ni jeton, ni event-type lisible, ou une question qu'on ne sait pas poser.
     // Le contrat de repli du module : on renvoie vers le calendrier, qui saura
@@ -209,7 +229,7 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
     // déguisée en bon fonctionnement, et sans cette alerte elle durerait
     // jusqu'à ce que quelqu'un s'étonne du silence des réservations.
     await signalerRepliPermanent();
-    redirect(`/${locale}/appel`);
+    redirect(calendrier);
   }
 
   const jar = await cookies();
@@ -221,6 +241,8 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
     utmSource: utm.utm_source ?? null,
     utmMedium: utm.utm_medium ?? null,
     utmCampaign: utm.utm_campaign ?? null,
+    // Le BOUTON qui a mené ici — mesure « quel bouton rapporte ».
+    utmContent: choixExplicite ? utmContentDuChoix(choixExplicite, depuis) : null,
   });
 
   // 🔴 UN CRÉNEAU EXPIRÉ NE SE REPLIE PAS VERS LE FORMULAIRE.
@@ -236,7 +258,7 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
   // n'existe plus, donc le formulaire n'aurait rien à confirmer. Ce qui se
   // répare, c'est le silence.
   if (!validation.ok && validation.erreurs[CHAMPS.debut] !== undefined) {
-    redirect(`/${locale}/appel?creneau=indisponible`);
+    redirect(`${calendrier}&creneau=indisponible`);
   }
 
   if (!validation.ok) {
@@ -246,7 +268,7 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
     // propage pas l'inatteignabilité à travers un `await`. Sans ça, tout le code
     // qui suit croit encore la validation possiblement en échec.
     await deposerLaReprise(debutBrut, validation.erreurs, validation.valeurs);
-    redirect(urlDuFormulaire(locale, debutBrut));
+    redirect(urlDuFormulaire(locale, debutBrut, params));
   }
 
   // 3. Quota de reservation, consomme SEULEMENT ici : la saisie est valide et
@@ -262,6 +284,7 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
           "Vous avez deja reserve plusieurs rendez-vous recemment. Ecrivez-nous si vous en avez besoin d'un autre.",
       },
       validation.valeurs,
+      params,
     );
   }
 
@@ -324,7 +347,7 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
           `Ouvrir l'evenement et verifier le lieu.`,
       );
     }
-    redirect(urlDeConfirmation(locale, r.eventUri));
+    redirect(urlDeConfirmation(locale, r.eventUri, choix));
   }
 
   switch (r.raison) {
@@ -340,6 +363,7 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
             "Ce créneau vient d'être réservé par quelqu'un d'autre. Choisissez-en un autre — le reste de votre saisie est conservé.",
         },
         validation.valeurs,
+        params,
       );
       break;
 
@@ -397,7 +421,7 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
       break;
 
     case "non_configure":
-      redirect(`/${locale}/appel`);
+      redirect(calendrier);
       break;
 
     case "portee_manquante":
@@ -432,6 +456,7 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
             "Nous n'avons pas pu enregistrer ce rendez-vous. Passez par le lien Calendly en bas du formulaire — il fonctionne.",
         },
         validation.valeurs,
+        params,
       );
       break;
 
@@ -459,6 +484,7 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
             "Nous n'avons pas pu enregistrer ce rendez-vous. Réessayez, ou passez par le lien Calendly en bas du formulaire.",
         },
         validation.valeurs,
+        params,
       );
       break;
 

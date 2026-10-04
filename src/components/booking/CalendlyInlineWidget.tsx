@@ -50,6 +50,7 @@
 
 import { fetchAvailableSlots } from "@/server/calendly/availability";
 import { CalendlySlotPicker } from "./CalendlySlotPicker";
+import { avecUtmContent } from "@/server/calendly/choix-rendez-vous";
 //
 // CSP : `script-src` (soft public) autorise déjà `https://assets.calendly.com`
 // et `frame-src`/`connect-src` autorisent `calendly.com` + `*.calendly.com`.
@@ -68,9 +69,20 @@ interface CalendlyInlineWidgetProps {
   /** Voir `CalendlySlotPicker` : la decision appartient a la page. */
   readonly reservationDirecte?: boolean;
   readonly locale?: string;
+  /**
+   * Le bouton qui a mené ici (`diagnostic`, `projet:faq`…) — chantier « Types de
+   * rendez-vous », L2. Ajouté en `utm_content` à l'iframe, au lien de secours
+   * et aux créneaux qui partent chez Calendly.
+   */
+  readonly utmContent?: string | undefined;
+  /**
+   * `rdv=diagnostic&depuis=…`, recopié dans les liens vers notre formulaire de
+   * réservation : il doit savoir QUEL type il réserve.
+   */
+  readonly parametresDuChoix?: string | undefined;
 }
 
-function buildCalendlyUrl(baseUrl: string): string {
+function buildCalendlyUrl(baseUrl: string, utmContent?: string): string {
   const url = new URL(baseUrl);
   url.searchParams.set("hide_event_type_details", "1");
   // GARDER `hide_gdpr_banner=1`. Contre-intuitif, donc à ne pas « corriger » :
@@ -85,6 +97,7 @@ function buildCalendlyUrl(baseUrl: string): string {
   url.searchParams.set("primary_color", CALENDLY_BRAND.primary);
   url.searchParams.set("text_color", CALENDLY_BRAND.text);
   url.searchParams.set("background_color", CALENDLY_BRAND.background);
+  if (utmContent) url.searchParams.set("utm_content", utmContent);
   return url.toString();
 }
 
@@ -94,8 +107,10 @@ export async function CalendlyInlineWidget({
   height = 720,
   reservationDirecte = false,
   locale = "fr",
+  utmContent,
+  parametresDuChoix,
 }: CalendlyInlineWidgetProps) {
-  const finalUrl = calendlyUrl ? buildCalendlyUrl(calendlyUrl) : null;
+  const finalUrl = calendlyUrl ? buildCalendlyUrl(calendlyUrl, utmContent) : null;
 
   if (!calendlyUrl || !finalUrl) {
     return (
@@ -149,6 +164,8 @@ export async function CalendlyInlineWidget({
           dureeMinutes={availability.dureeMinutes}
           reservationDirecte={reservationDirecte}
           locale={locale}
+          utmContent={utmContent}
+          parametresDuChoix={parametresDuChoix}
         />
       </div>
     );
@@ -168,7 +185,12 @@ export async function CalendlyInlineWidget({
           vers la même cible. Le conserver afficherait deux liens concurrents
           sous une question dont la prémisse est fausse avant le clic (rien n'est
           censé s'afficher), sur une surface de recueil de consentement. */}
-      <CalendlyConsentGate url={finalUrl} fallbackUrl={calendlyUrl} isFr={isFr} height={height} />
+      <CalendlyConsentGate
+        url={finalUrl}
+        fallbackUrl={avecUtmContent(calendlyUrl, utmContent)}
+        isFr={isFr}
+        height={height}
+      />
     </div>
   );
 }
