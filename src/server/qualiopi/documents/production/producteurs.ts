@@ -47,7 +47,7 @@ import {
   montantPrisEnChargeCents,
   resteAChargeCents,
 } from "@/server/qualiopi/financements/prise-en-charge-montant";
-import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
+import { nomOpcoDuClient } from "@/server/qualiopi/financements/opco-referentiel";
 import { lireModulesProgramme } from "@/server/qualiopi/documents/programme-modules";
 import { construireTirageEmargement } from "@/server/qualiopi/documents/emargement-tirage";
 
@@ -64,6 +64,12 @@ import { LivretAccueilPdf } from "@/server/qualiopi/documents/templates/livret-a
 import { REGLEMENT_INTERIEUR_VERSION } from "@/content/reglement-interieur-version";
 import { ProgrammeFormationPdf } from "@/server/qualiopi/documents/templates/programme-formation";
 import { OrganisationActionPdf } from "@/server/qualiopi/documents/templates/organisation-action";
+import { KitOpcoPdf } from "@/server/qualiopi/documents/templates/kit-opco";
+import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
+import {
+  chargerDossierPretADeposer,
+  type DossierPretADeposer,
+} from "@/server/qualiopi/financements/dossier-pret-a-deposer-lecture";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers partagés (déplacés depuis actions/qualiopi/documents.ts — une seule
@@ -410,6 +416,7 @@ export async function produireConventionTripartite(
           adresse: true,
           contactNom: true,
           contactEmail: true,
+          opco: true,
           opcoIdentifie: true,
           opcoNumeroAdherent: true,
         },
@@ -425,10 +432,9 @@ export async function produireConventionTripartite(
   const identite = await getOrganismeIdentite();
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const objectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
-  // Libellé, pas slug : `opcoIdentifie` stocke « akto », la pièce lit « Akto ».
-  const nomOpco = session.client.opcoIdentifie
-    ? opcoLabel(session.client.opcoIdentifie)
-    : "OPCO (à préciser)";
+  // Libellé, pas slug : la base stocke « akto », la pièce lit « Akto ». Règle
+  // unique (lot A7a) : OPCO typé d'abord, ancien texte libre ensuite.
+  const nomOpco = nomOpcoDuClient(session.client);
   const numeroPriseEnCharge = session.numeroDossierOpco ?? session.client.opcoNumeroAdherent ?? "—";
   const prixHt = session.montantHtCents / 100;
 
@@ -1251,6 +1257,127 @@ export async function produireLivretAccueil(
           dateVersion,
         },
         identite,
+      }),
+    refs: { sessionId },
+  });
+
+  return { ok: true, documentId: doc.id, numero: doc.numero };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Kit OPCO (chantier OPCO A6 ; extrait de l'action le 2026-10-04, lot A8)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Kit OPCO VÉRIFIÉ d'une session : ventilation par participant, état RÉEL des
+ * pièces de la demande et encart « comment déposer ». Deux appelants : l'action
+ * `genererKitOpcoAction` (garde admin, verrou ADR 0060, journal) et l'envoi du
+ * dossier à l'entreprise (lot A8), qui part aussi du passage quotidien du worker.
+ */
+export async function produireKitOpco(
+  sessionId: string,
+  opts?: OptionsProduction,
+): Promise<ResultatProduction> {
+  const session = await prisma.trainingSession.findUnique({
+    where: { id: sessionId },
+    select: {
+      id: true,
+      titreSession: true,
+      dateDebut: true,
+      dateFin: true,
+      montantHtCents: true,
+      priseEnChargeMontantCents: true,
+      priseEnChargeUnite: true,
+      numeroDossierOpco: true,
+      enrollments: {
+        where: { ...inscriptionsActives() },
+        select: {
+          trainee: { select: { nom: true, prenom: true } },
+          session: {
+            select: {
+              dureeReelleHeures: true,
+              formationSnapshot: true,
+              formation: { select: { dureeHeures: true } },
+            },
+          },
+        },
+      },
+      client: {
+        select: { opco: true, opcoIdentifie: true },
+      },
+    },
+  });
+  if (!session) return { ok: false, motif: "Session introuvable" };
+
+  const identite = await getOrganismeIdentite();
+  // Même source que l'encart de dépôt : OPCO typé d'abord, texte libre ensuite.
+  const nomOpco = nomOpcoDuClient(session.client);
+  const numeroDossier = session.numeroDossierOpco ?? "—";
+  const baremeCents = session.priseEnChargeMontantCents ?? 0;
+
+  // Ventilation par participant
+  const ventilation = session.enrollments.map((e) => {
+    // Durée depuis le snapshot légal (WS5), repli LIVE si legacy.
+    const fd = readFormationForDocs(e.session.formationSnapshot, e.session.formation);
+    const dureeH = e.session.dureeReelleHeures ?? fd.dureeHeures ?? e.session.formation.dureeHeures;
+    const prise = Math.round((baremeCents * dureeH) / 100) * 100;
+    const prixTotal = session.montantHtCents;
+    const parPart =
+      session.enrollments.length > 0
+        ? Math.round(prixTotal / session.enrollments.length)
+        : prixTotal;
+    const rac = Math.max(0, parPart - prise);
+    return {
+      nomParticipant: `${e.trainee.prenom} ${e.trainee.nom}`.trim(),
+      heuresRealisees: dureeH,
+      baremePrisEnChargeHeureCents: baremeCents,
+      montantPrisEnChargeCents: prise,
+      resteAChargeCents: rac,
+    };
+  });
+
+  const totalPrisEnCharge = ventilation.reduce((s, v) => s + v.montantPrisEnChargeCents, 0);
+  const totalRac = ventilation.reduce((s, v) => s + v.resteAChargeCents, 0);
+
+  // Chantier OPCO A6 — état RÉEL des pièces et encart de dépôt. Lecture
+  // impossible → le kit retombe sur la liste fixe, où RIEN n'est coché :
+  // jamais une pièce annoncée présente sans l'avoir constatée.
+  let pret: DossierPretADeposer | null = null;
+  try {
+    pret = await chargerDossierPretADeposer(sessionId);
+  } catch (err) {
+    console.warn("[produireKitOpco] état des pièces illisible (fail-soft)", err);
+  }
+
+  const doc = await generateDocument({
+    type: "kit_opco",
+    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+    ...optionsGenerate(opts),
+    buildElement: (numero) =>
+      React.createElement(KitOpcoPdf, {
+        data: {
+          numero,
+          dateEmission: formatDateFr(new Date()),
+          identite,
+          nomOpco,
+          numeroDossier,
+          intituleFormation: session.titreSession,
+          dateDebut: formatDate(new Date(session.dateDebut)),
+          dateFin: formatDate(new Date(session.dateFin)),
+          ventilation,
+          totalPrisEnChargeCents: totalPrisEnCharge,
+          totalResteAChargeCents: totalRac,
+          ...(pret
+            ? {
+                pieces: pret.pieces.map((p) => ({
+                  libelle: p.libelle,
+                  presente: p.presente,
+                  detail: p.detail,
+                })),
+                encartDepot: pret.encart,
+              }
+            : {}),
+        },
       }),
     refs: { sessionId },
   });

@@ -133,8 +133,20 @@ const CODES_ATTENDUS: string[] = [
   "bareme_opco_perime",
   // Chantier OPCO A3 : facture à l'OPCO à émettre avant la date limite.
   "delai_facturation_opco",
+  // Chantier OPCO A6 : dépôt de la demande de prise en charge à faire.
+  "depot_opco_a_faire",
+  // Lot OPCO A5 : veille mensuelle de l'état des fonds des OPCO.
+  "etat_fonds_perime",
   // Lot A4 — devis ou session OPCO à venir sans barème applicable (branche × taille).
   "aucun_bareme_opco",
+  // Lot A7c — manques n°5 et n°8 de la critique de complétude du chantier OPCO.
+  "subrogation_incompatible_regime",
+  "fonds_opco_suspendus_session",
+  "donnees_opco_incompletes",
+  // Lot OPCO A8 — suivi de l'entreprise qui dépose.
+  "entreprise_a_appeler_depot",
+  "entreprise_a_appeler_reponse_opco",
+  "opco_refus_a_traiter",
   // Conservé au catalogue bien qu'il ne soit PLUS émis (le palier J30 est couvert
   // par une relance proposée) : sans son entrée, les alertes déjà en base ne
   // s'auto-résoudraient jamais. Cf. `catalogue.ts`.

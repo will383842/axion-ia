@@ -18,9 +18,10 @@ import {
   transactionFaitFacturation,
 } from "@/server/partners-sync/producteurs/facturation";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
-import { opcoLabel } from "./opco-referentiel";
+import { nomOpcoDuClient, referenceOpcoDuClient } from "./opco-referentiel";
 import { montantPrisEnChargeCents } from "./prise-en-charge-montant";
 import { sessionExigeUnDossier } from "./dossier-auto";
+import { planAccordEcrit } from "./accord-ecrit";
 import {
   construireLignesPayeurs,
   montantDemandeFinanceurCents,
@@ -53,7 +54,7 @@ const SELECT_SESSION_PAYEURS = {
   formation: { select: { dureeHeures: true } },
   edofVerifieAt: true,
   ftDispositif: true,
-  client: { select: { id: true, raisonSociale: true, opcoIdentifie: true } },
+  client: { select: { id: true, raisonSociale: true, opco: true, opcoIdentifie: true } },
   // 🔴 T4a — les inscriptions décident des payeurs en inter-entreprises. Les
   // abandons et exclusions sont hors périmètre : on ne réclame pas le siège de
   // quelqu'un qui n'a pas suivi l'action.
@@ -66,7 +67,7 @@ const SELECT_SESSION_PAYEURS = {
       edofVerifieAt: true,
       ftDispositif: true,
       montantHtCents: true,
-      client: { select: { id: true, raisonSociale: true, opcoIdentifie: true } },
+      client: { select: { id: true, raisonSociale: true, opco: true, opcoIdentifie: true } },
     },
   },
 } satisfies Prisma.TrainingSessionSelect;
@@ -149,7 +150,16 @@ export async function transitionnerDossier(input: {
   montantAccordeCents?: number;
   /** Posé à l'accord/facturation : date de paiement attendue du financeur. */
   echeanceFinanceurAt?: Date;
+  /**
+   * Chantier OPCO A6 — date ÉCRITE sur l'accord du financeur (colonne `@db.Date`).
+   * Distincte de `accordAt` (le clic en console) : c'est elle qui fait foi pour
+   * le régime de paiement. Posée seulement à l'arrivée en `accord_recu`.
+   */
+  accordEcritLe?: Date;
 }): Promise<{ statut: DossierFinancementStatut }> {
+  if (input.accordEcritLe !== undefined && input.vers !== "accord_recu") {
+    throw new Error("La date de l'accord écrit ne se saisit qu'à l'accord.");
+  }
   const dossier = await prisma.dossierFinancement.findUniqueOrThrow({
     where: { id: input.dossierId },
     select: { statut: true },
@@ -173,6 +183,7 @@ export async function transitionnerDossier(input: {
         ...(input.echeanceFinanceurAt !== undefined
           ? { echeanceFinanceurAt: input.echeanceFinanceurAt }
           : {}),
+        ...(input.accordEcritLe !== undefined ? { accordEcritLe: input.accordEcritLe } : {}),
       },
     });
     // 🔑 `financement.mis_a_jour` (INT-T05, REQ-INT-032) : l'échéance du financeur est dans la
@@ -216,6 +227,80 @@ export async function transitionnerDossier(input: {
   }
 
   return { statut: input.vers };
+}
+
+/**
+ * Chantier OPCO A6 — saisit le dépôt de la demande de prise en charge, fait
+ * par l'ENTREPRISE sur son espace OPCO : « Dépôt fait le » et, s'il est connu,
+ * le numéro de dossier attribué par l'OPCO.
+ *
+ * ⚠️ Ce n'est PAS une transition : le statut ne bouge pas (l'envoi reste un
+ * geste distinct de la machine à états). L'écriture est conditionnée au statut
+ * lu — même verrou optimiste que `transitionnerDossier` — et refusée sur un
+ * dossier clos.
+ */
+export async function enregistrerDepotDossier(input: {
+  dossierId: string;
+  depotFaitLe: Date;
+  numeroDossierExterne?: string;
+}): Promise<{ trainingSessionId: string | null }> {
+  const dossier = await prisma.dossierFinancement.findUniqueOrThrow({
+    where: { id: input.dossierId },
+    select: { statut: true, trainingSessionId: true },
+  });
+  if (dossier.statut === "clos") {
+    throw new Error("Dossier clos : le dépôt ne se saisit plus.");
+  }
+  const { count } = await prisma.dossierFinancement.updateMany({
+    where: { id: input.dossierId, statut: dossier.statut },
+    data: {
+      depotFaitLe: input.depotFaitLe,
+      ...(input.numeroDossierExterne !== undefined
+        ? { numeroDossierExterne: input.numeroDossierExterne }
+        : {}),
+    },
+  });
+  if (count === 0) {
+    throw new Error("Modification concurrente détectée — recharger le dossier.");
+  }
+  return { trainingSessionId: dossier.trainingSessionId };
+}
+
+/**
+ * Lot OPCO A7b — saisit la date ÉCRITE sur l'accord du financeur depuis la page
+ * Financement de la session. Le geste dépend du statut (`planAccordEcrit`) :
+ * date seule si l'accord est déjà acté, sinon transition(s) jusqu'à
+ * `accord_recu` par `transitionnerDossier` (même machine à états, même
+ * reventilation des créances). Rend les transitions faites, pour le journal.
+ */
+export async function enregistrerAccordEcrit(input: {
+  dossierId: string;
+  accordEcritLe: Date;
+}): Promise<{ trainingSessionId: string | null; transitions: DossierFinancementStatut[] }> {
+  const dossier = await prisma.dossierFinancement.findUniqueOrThrow({
+    where: { id: input.dossierId },
+    select: { statut: true, depotFaitLe: true, trainingSessionId: true },
+  });
+  const plan = planAccordEcrit(dossier);
+  if (plan.geste === "refus") throw new Error(plan.message);
+  if (plan.geste === "transitions") {
+    for (const vers of plan.vers) {
+      await transitionnerDossier({
+        dossierId: input.dossierId,
+        vers,
+        ...(vers === "accord_recu" ? { accordEcritLe: input.accordEcritLe } : {}),
+      });
+    }
+    return { trainingSessionId: dossier.trainingSessionId, transitions: plan.vers };
+  }
+  const { count } = await prisma.dossierFinancement.updateMany({
+    where: { id: input.dossierId, statut: dossier.statut },
+    data: { accordEcritLe: input.accordEcritLe },
+  });
+  if (count === 0) {
+    throw new Error("Modification concurrente détectée — recharger le dossier.");
+  }
+  return { trainingSessionId: dossier.trainingSessionId, transitions: [] };
 }
 
 /**
@@ -309,6 +394,70 @@ export async function reventilerPayeurs(
 }
 
 /**
+ * Statuts où les créances ne sont pas encore ENGAGÉES par une facture : la
+ * décision de subrogation peut encore les redistribuer.
+ */
+const STATUTS_REVENTILABLES_SUBROGATION: ReadonlyArray<DossierFinancementStatut> = [
+  "a_monter",
+  "envoye",
+  "accord_recu",
+  // Refusé : le plafond reste 0 (tout à l'entreprise), seul le drapeau suit.
+  "refuse",
+];
+
+/**
+ * Lot A8c — la subrogation de la session vient de changer : les dossiers OPCO
+ * ouverts suivent (drapeau `subrogation`, lu par la relance, et créances).
+ *
+ * 🔴 Sans elle, les créances restaient celles de l'OUVERTURE du dossier — qui
+ * précède en général la décision de subrogation : la facture à l'OPCO était
+ * alors refusée, ou une créance OPCO survivait au passage en remboursement.
+ *
+ * À appeler APRÈS l'écriture de la session : `reventilerPayeurs` relit la
+ * subrogation sur la session. Un dossier déjà facturé (ou au-delà) n'est pas
+ * touché — ses créances sont engagées — et il est rendu dans `engages` pour
+ * que l'écran le dise.
+ */
+export async function alignerDossiersSurSubrogation(
+  sessionId: string,
+  subrogation: boolean,
+): Promise<{
+  alignes: string[];
+  engages: Array<{ id: string; statut: DossierFinancementStatut }>;
+}> {
+  const dossiers = await prisma.dossierFinancement.findMany({
+    where: {
+      trainingSessionId: sessionId,
+      type: { in: ["opco", "mixte"] },
+      statut: { not: "clos" },
+    },
+    select: {
+      id: true,
+      statut: true,
+      subrogation: true,
+      // Relecture A8c : une créance déjà FACTURÉE engage le dossier, quel que soit
+      // son statut (ex. `accord_recu` avec une facture émise) — sinon la
+      // reventilation recréerait une créance du total à côté de la facturée.
+      payeurs: { where: { factureFormationId: { not: null } }, select: { id: true }, take: 1 },
+    },
+  });
+  const alignes: string[] = [];
+  const engages: Array<{ id: string; statut: DossierFinancementStatut }> = [];
+  for (const d of dossiers) {
+    if (!STATUTS_REVENTILABLES_SUBROGATION.includes(d.statut) || d.payeurs.length > 0) {
+      engages.push({ id: d.id, statut: d.statut });
+      continue;
+    }
+    if (d.subrogation !== subrogation) {
+      await prisma.dossierFinancement.update({ where: { id: d.id }, data: { subrogation } });
+    }
+    await reventilerPayeurs(d.id, d.statut === "refuse" ? 0 : null);
+    alignes.push(d.id);
+  }
+  return { alignes, engages };
+}
+
+/**
  * Pont encaissement → dossier : si TOUTES les factures (non annulées, hors
  * avoirs) d'un dossier `facture` sont payées, il passe à `paiement_recu`.
  * Best-effort : ne throw jamais (l'encaissement reste valide même si le
@@ -324,12 +473,21 @@ export async function marquerPaiementRecuSiSoldee(dossierId: string): Promise<vo
           where: { statut: { not: "annulee" }, avoirDeId: null },
           select: { statut: true },
         },
+        payeurs: { select: { factureFormationId: true, montantAttenduCents: true } },
       },
     });
     if (!dossier || dossier.statut !== "facture") return;
     if (dossier.factures.length === 0) return;
     const toutesPayees = dossier.factures.every((f) => f.statut === "payee");
     if (!toutesPayees) return;
+    // 🔴 Lot A8c — une créance non nulle encore NON FACTURÉE (le reste à charge
+    // d'une subrogation partielle) retient le dossier : sinon la facture de
+    // l'OPCO payée suffisait à annoncer soldée une affaire dont une part
+    // n'était même pas réclamée.
+    const resteAFacturer = (dossier.payeurs ?? []).some(
+      (p) => p.factureFormationId === null && p.montantAttenduCents > 0,
+    );
+    if (resteAFacturer) return;
     await prisma.dossierFinancement.updateMany({
       where: { id: dossierId, statut: "facture" },
       data: { statut: "paiement_recu", paiementRecuAt: new Date() },
@@ -442,8 +600,9 @@ export async function creerDossierDepuisSession(sessionId: string): Promise<{ id
       // `opcoIdentifie` restait vide en base ; F6 le remplit, donc il devient
       // visible — d'où la garde, posée dans le MÊME commit.
       // Libellé et non slug : la colonne stocke « akto », on écrit « Akto ».
-      ...(session.client?.opcoIdentifie != null && (type === "opco" || type === "mixte")
-        ? { financeurNom: opcoLabel(session.client.opcoIdentifie) }
+      // Règle unique (lot A7a) : OPCO typé d'abord, ancien texte libre ensuite.
+      ...(referenceOpcoDuClient(session.client) !== null && (type === "opco" || type === "mixte")
+        ? { financeurNom: nomOpcoDuClient(session.client) }
         : {}),
       ...(session.numeroDossierOpco != null
         ? { numeroDossierExterne: session.numeroDossierOpco }

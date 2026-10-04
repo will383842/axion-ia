@@ -8,16 +8,30 @@
 
 "use server";
 
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { resoudreSiren } from "@/lib/siret";
+import { adminPath } from "@/lib/admin-path";
+import { avecMessageDeRetour } from "@/features/dossier-client/message-de-retour";
+import {
+  AVERTISSEMENT_SIREN_CONTRAIRE,
+  resoudreSiren,
+  sirenContreditLeSiret,
+  sirenDuClient,
+} from "@/lib/siret";
 import { siretField } from "@/lib/siret-schema";
 import { premierMessageZod } from "@/lib/zod-message";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { inferOpco } from "@/server/qualiopi/crm/naf-opco";
-import { OPCO_IDS } from "@/server/qualiopi/financements/opco-referentiel";
+import { OPCO_IDS, isOpcoId, type OpcoId } from "@/server/qualiopi/financements/opco-referentiel";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
 import { definirContactFacturation } from "@/server/qualiopi/crm/contact-facturation";
+import {
+  rafraichirEffectifInsee,
+  type BaseEffectif,
+  type ResultatReleveEffectif,
+} from "@/server/qualiopi/crm/effectif-insee";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 import {
   creerOuRetrouverClient,
@@ -72,6 +86,8 @@ const CHAMPS_ENTREPRISE = [
   "opcoEnveloppeAnnuelleCents",
   "opco",
   "effectif",
+  "opcoAdhesionOffreMobilites",
+  "opcoVersementVolontaire",
 ] as const;
 
 function refuserChampsEntreprisePourParticulier(
@@ -193,8 +209,24 @@ const updateClientSchema = z
      * une pièce opposable au financeur et à l'auditeur.
      */
     opcoIdentifie: z.string().min(1).max(60).nullable().optional(),
-    opcoNumeroAdherent: z.string().max(80).optional(),
-    opcoEnveloppeAnnuelleCents: z.number().int().min(0).optional(),
+    /** Lot A7b : `null` efface (bloc « Branche et OPCO » de la fiche). */
+    opcoNumeroAdherent: z.string().max(80).nullable().optional(),
+    /** CENTIMES entiers ; `null` efface. Un montant en euros à virgule est refusé. */
+    opcoEnveloppeAnnuelleCents: z
+      .number({ invalid_type_error: "Enveloppe annuelle : un montant est attendu." })
+      .int("Enveloppe annuelle : montant en centimes entiers attendu.")
+      .min(0, "Enveloppe annuelle : elle ne peut pas être négative.")
+      // Colonne `Int` Postgres (32 bits) : au-delà, message clair plutôt qu'une erreur brute.
+      .max(2_147_483_647, "Enveloppe annuelle : montant trop élevé.")
+      .nullable()
+      .optional(),
+    /**
+     * Lot A7b — adhésion à l'offre de services d'OPCO Mobilités et versement
+     * volontaire : `null` = non renseigné (jamais « non »). Leur date de saisie
+     * est posée par le serveur.
+     */
+    opcoAdhesionOffreMobilites: z.boolean().nullable().optional(),
+    opcoVersementVolontaire: z.boolean().nullable().optional(),
     /**
      * OPCO TYPÉ (lot OPCO A1) : l'un des 11 du référentiel, `null` efface.
      * Indépendant d'`opcoIdentifie` : l'un ne recopie ni n'écrase l'autre.
@@ -281,6 +313,10 @@ export async function createClientAction(
   // Inférer l'OPCO si non fourni manuellement. L'IDCC prime : c'est la
   // convention collective qui rattache légalement à un OPCO.
   const opcoIdentifie = v.opcoIdentifie ?? inferOpco({ idcc: v.idcc, naf: v.nafCode });
+  // Lot A7a : l'inférence pose AUSSI l'OPCO typé (une fiche neuve n'en a pas).
+  // Une saisie en texte n'est pas une inférence : elle ne le pose pas.
+  const opcoTypeInfere =
+    v.opcoIdentifie === undefined && isOpcoId(opcoIdentifie) ? opcoIdentifie : null;
 
   // ⚠️ `numero` est alloué PAR LA PORTE, dans sa transaction, avec la même
   // borne haute que V20 (série `client` sans millésime : voir `nextNumero`).
@@ -302,6 +338,7 @@ export async function createClientAction(
       ...(v.adresseVille !== undefined ? { adresseVille: v.adresseVille } : {}),
       ...(v.adresseCodePostal !== undefined ? { adresseCodePostal: v.adresseCodePostal } : {}),
       ...(opcoIdentifie !== null ? { opcoIdentifie } : {}),
+      ...(opcoTypeInfere !== null ? { opco: opcoTypeInfere } : {}),
       ...(v.opcoNumeroAdherent !== undefined ? { opcoNumeroAdherent: v.opcoNumeroAdherent } : {}),
       ...(v.opcoEnveloppeAnnuelleCents !== undefined
         ? { opcoEnveloppeAnnuelleCents: v.opcoEnveloppeAnnuelleCents }
@@ -339,13 +376,70 @@ export async function createClientAction(
       numero: resultat.numero,
       raisonSociale: v.raisonSociale,
       opcoIdentifie,
+      ...(opcoTypeInfere !== null ? { opco: opcoTypeInfere } : {}),
       ...(siren !== undefined ? { siren } : {}),
       ...(resultat.creationForcee ? { creationForcee: true } : {}),
     },
     session,
   });
 
+  // Lot OPCO A7d : effectif relevé à l'INSEE (borne basse de la tranche) si la
+  // fiche a un SIREN. APRÈS la création, jamais sur son chemin : l'annuaire est
+  // borné à 3 s, et une panne — ou toute exception — laisse la fiche telle quelle.
+  // Lot A9 : la même règle de lecture que la fiche (`sirenDuClient`).
+  if (sirenDuClient({ siren: siren ?? null, siret: v.siret ?? null }) !== null) {
+    await releverEffectifInseeEtTracer(resultat.id, session).catch(() => null);
+  }
+
   return { data: { id: resultat.id, numero: resultat.numero } };
+}
+
+/** Relève l'effectif INSEE et trace l'écriture quand il y en a une. */
+async function releverEffectifInseeEtTracer(
+  clientId: string,
+  session: { userId: string; role: string },
+): Promise<ResultatReleveEffectif> {
+  const r = await rafraichirEffectifInsee(prisma as unknown as BaseEffectif, clientId);
+  if (r.statut === "pose") {
+    await logQualiopiActivity({
+      action: "qualiopi.client.effectif_insee",
+      targetType: "Client",
+      targetId: clientId,
+      changes: { effectif: r.effectif, effectifSource: "insee", trancheInsee: r.tranche },
+      session,
+    });
+  }
+  return r;
+}
+
+/** Message affiché après « Rafraîchir depuis l'INSEE », par issue. */
+const MESSAGE_RELEVE_EFFECTIF: Record<ResultatReleveEffectif["statut"], string> = {
+  pose: "Effectif relevé à l'INSEE.",
+  saisie_conservee:
+    "L'effectif a été saisi à la main : il est conservé. Effacez-le pour reprendre le relevé INSEE.",
+  sans_siren: "Le relevé INSEE demande une entreprise dont le SIREN est connu.",
+  indisponible: "L'annuaire des entreprises ne répond pas pour l'instant. Réessayez plus tard.",
+  tranche_inconnue: "L'INSEE ne publie pas de tranche d'effectif pour ce SIREN.",
+};
+
+/**
+ * « Rafraîchir depuis l'INSEE » (lot OPCO A7d). Seul autre moment, avec la
+ * création, où l'annuaire est interrogé pour l'effectif. Une saisie n'est
+ * jamais écrasée (garde dans `rafraichirEffectifInsee`).
+ */
+export async function rafraichirEffectifInseeAction(
+  clientId: string,
+): Promise<
+  { data: { statut: ResultatReleveEffectif["statut"]; message: string } } | { error: string }
+> {
+  const session = await requireAdminWrite();
+  if (!z.string().uuid().safeParse(clientId).success) return { error: "Client introuvable." };
+  try {
+    const r = await releverEffectifInseeEtTracer(clientId, session);
+    return { data: { statut: r.statut, message: MESSAGE_RELEVE_EFFECTIF[r.statut] } };
+  } catch {
+    return { error: MESSAGE_RELEVE_EFFECTIF.indisponible };
+  }
 }
 
 /**
@@ -355,7 +449,7 @@ export async function createClientAction(
 export async function updateClientAction(
   // `z.input` : voir createClientAction (transform sur siretField).
   input: z.input<typeof updateClientSchema>,
-): Promise<ActionResult<{ id: string }>> {
+): Promise<ActionResult<{ id: string; avertissement?: string }>> {
   const session = await requireAdminWrite();
   const parsed = updateClientSchema.safeParse(input);
   if (!parsed.success) return { error: premierMessageZod(parsed.error) };
@@ -365,11 +459,23 @@ export async function updateClientAction(
   //  • SIRET transmis        → SIREN dérivé ; un SIREN saisi contraire = refus
   //  • SIRET effacé (`null`) → le SIREN n'est touché que s'il est transmis
   //  • SIREN seul            → comparé au SIRET déjà en base
+  //  • Lot A9 : SIRET transmis SANS SIREN (formulaire « Éditer ») et SIREN en
+  //    base qui le contredit → le SIREN en base est CONSERVÉ, avec un
+  //    avertissement ; jamais écrasé en silence par le SIRET.
   let sirenAEcrire: string | null | undefined;
+  let avertissement: string | undefined;
   if (typeof fields.siret === "string") {
     const r = resoudreSiren(fields.siret, fields.siren);
     if (!r.ok) return { error: r.message };
     sirenAEcrire = r.siren;
+    if (fields.siren === undefined && sirenAEcrire !== undefined) {
+      const enBase =
+        (await prisma.client.findUnique({ where: { id }, select: { siren: true } }))?.siren ?? null;
+      if (sirenContreditLeSiret({ siren: enBase, siret: fields.siret })) {
+        sirenAEcrire = undefined;
+        avertissement = AVERTISSEMENT_SIREN_CONTRAIRE;
+      }
+    }
   } else if (fields.siren !== undefined) {
     const enBase =
       fields.siret === null
@@ -401,11 +507,16 @@ export async function updateClientAction(
   // la même charge reste possible.
   // Lot OPCO A1 : même règle pour l'effectif et l'OPCO typé, qui n'ont de sens
   // que pour un employeur — refus SERVEUR, pas seulement masquage du formulaire.
+  // Lot A7b : même règle pour l'enveloppe, le n° d'adhérent et les deux faits OPCO.
   const identifiantEntreprise =
     (typeof sirenAEcrire === "string" && sirenAEcrire !== "") ||
     (typeof fields.siret === "string" && fields.siret !== "") ||
     typeof fields.effectif === "number" ||
-    typeof fields.opco === "string";
+    typeof fields.opco === "string" ||
+    typeof fields.opcoEnveloppeAnnuelleCents === "number" ||
+    (typeof fields.opcoNumeroAdherent === "string" && fields.opcoNumeroAdherent !== "") ||
+    typeof fields.opcoAdhesionOffreMobilites === "boolean" ||
+    typeof fields.opcoVersementVolontaire === "boolean";
   if (identifiantEntreprise && fields.type !== "entreprise") {
     const typeEnBase =
       fields.type ??
@@ -433,6 +544,12 @@ export async function updateClientAction(
   // enregistrement de la branche. Le `trim() === ""` couvre les lignes
   // historiques où une chaîne vide a pu être écrite (le schéma l'autorisait).
   let opcoAEcrire: string | null | undefined;
+  // Lot A7a : quand l'INFÉRENCE écrit `opcoIdentifie`, elle pose aussi l'OPCO
+  // typé — seulement s'il est vide en base et absent de la charge. 🔴 Une saisie
+  // de l'OPCO typé n'est JAMAIS écrasée (y compris par « remettre en inféré ») :
+  // faute d'origine « inféré / confirmé » en base, une valeur posée est traitée
+  // comme une saisie.
+  let opcoTypeInfere: OpcoId | undefined;
   if (typeof fields.opcoIdentifie === "string") {
     opcoAEcrire = fields.opcoIdentifie;
   } else if (
@@ -443,7 +560,7 @@ export async function updateClientAction(
     const reinferenceDemandee = fields.opcoIdentifie === null;
     const actuel = await prisma.client.findUnique({
       where: { id },
-      select: { nafCode: true, idcc: true, opcoIdentifie: true },
+      select: { nafCode: true, idcc: true, opcoIdentifie: true, opco: true },
     });
     if (
       actuel !== null &&
@@ -456,6 +573,9 @@ export async function updateClientAction(
       // Sur demande explicite on écrit même `null` (retour à « à déterminer ») ;
       // sinon on n'écrit que si l'inférence a trouvé quelque chose.
       if (reinferenceDemandee || infere !== null) opcoAEcrire = infere;
+      if (fields.opco === undefined && actuel.opco == null && isOpcoId(infere)) {
+        opcoTypeInfere = infere;
+      }
     }
   }
 
@@ -473,6 +593,22 @@ export async function updateClientAction(
             effectifSource: "saisie" as const,
             effectifReleveLe: new Date(`${parisDateISO(new Date())}T00:00:00.000Z`),
           };
+
+  // ── Offre Mobilités / versement volontaire (lot OPCO A7b) ──────────────────
+  // La date de saisie suit les deux faits : jour civil de Paris, posée ici.
+  const adhesionsTransmises =
+    fields.opcoAdhesionOffreMobilites !== undefined || fields.opcoVersementVolontaire !== undefined;
+  const adhesionsAEcrire = adhesionsTransmises
+    ? {
+        ...(fields.opcoAdhesionOffreMobilites !== undefined
+          ? { opcoAdhesionOffreMobilites: fields.opcoAdhesionOffreMobilites }
+          : {}),
+        ...(fields.opcoVersementVolontaire !== undefined
+          ? { opcoVersementVolontaire: fields.opcoVersementVolontaire }
+          : {}),
+        opcoAdhesionsRenseigneesLe: new Date(`${parisDateISO(new Date())}T00:00:00.000Z`),
+      }
+    : {};
 
   // ── Contact : par la fonction unique, jamais en écriture directe ──────────
   // `Client.contact*` est la COPIE du contact de facturation (dossier client,
@@ -514,7 +650,9 @@ export async function updateClientAction(
             ? { opcoEnveloppeAnnuelleCents: fields.opcoEnveloppeAnnuelleCents }
             : {}),
           ...(fields.opco !== undefined ? { opco: fields.opco } : {}),
+          ...(opcoTypeInfere !== undefined ? { opco: opcoTypeInfere } : {}),
           ...effectifAEcrire,
+          ...adhesionsAEcrire,
           ...(fields.statut !== undefined ? { statut: fields.statut } : {}),
           ...(fields.source !== undefined ? { source: fields.source } : {}),
           ...(fields.contexteIa !== undefined ? { contexteIa: fields.contexteIa } : {}),
@@ -556,10 +694,34 @@ export async function updateClientAction(
     changes: {
       ...fields,
       ...(opcoAEcrire !== undefined ? { opcoIdentifie: opcoAEcrire } : {}),
+      ...(opcoTypeInfere !== undefined ? { opco: opcoTypeInfere } : {}),
       ...(sirenAEcrire !== undefined ? { siren: sirenAEcrire } : {}),
     },
     session,
   });
 
-  return { data: { id } };
+  return { data: { id, ...(avertissement !== undefined ? { avertissement } : {}) } };
+}
+
+/**
+ * Bouton « Rafraîchir depuis l'INSEE » de la fiche client (formulaire serveur,
+ * aucun JavaScript). Le message revient scellé, à côté de l'effectif
+ * (`?releve=insee`).
+ */
+export async function rafraichirEffectifInseeFormAction(formData: FormData): Promise<void> {
+  const clientId = String(formData.get("clientId") ?? "");
+  if (!z.string().uuid().safeParse(clientId).success) {
+    redirect(adminPath("fr", "qualiopi/clients"));
+  }
+  const base = adminPath("fr", `qualiopi/clients/${clientId}`);
+  const r = await rafraichirEffectifInseeAction(clientId);
+  revalidatePath(base);
+  const ok = "data" in r && r.data.statut === "pose";
+  redirect(
+    avecMessageDeRetour(
+      `${base}?releve=insee`,
+      ok ? "message" : "erreur",
+      "data" in r ? r.data.message : r.error,
+    ),
+  );
 }

@@ -50,6 +50,7 @@ import {
 } from "@/server/qualiopi/financements/destinataire-facture";
 import { DELAI_PAIEMENT_DEFAUT_JOURS } from "@/server/qualiopi/financements/conditions-client";
 import { choisirCreancePourFacture } from "@/server/qualiopi/financements/facture-par-creance";
+import { refusDestinataireFacture } from "@/server/qualiopi/financements/circuit-paiement-opco";
 import { resolveRibFacture } from "@/lib/legal-identity";
 import { periodePrestationSession } from "@/server/qualiopi/financements/periode-prestation";
 import { designationFormation } from "@/server/qualiopi/financements/designation-facture";
@@ -315,6 +316,13 @@ async function emettreSansVerrou(
         "Subrogation OPCO activée mais le numéro de dossier OPCO est absent. Renseignez-le avant de facturer.",
     };
   }
+
+  // 🔴 Lot A8c — le destinataire suit le CIRCUIT de la session. Hors
+  // subrogation, l'OPCO rembourse l'entreprise : aucune facture ne lui est
+  // adressée. Contrôlé AVANT les créances : sans dossier, rien d'autre ne le
+  // refusait (`choisirCreancePourFacture` rend alors `aucune_creance`).
+  const refusCircuit = refusDestinataireFacture(destinataire, trainingSession);
+  if (refusCircuit !== null) return { error: refusCircuit };
 
   // CPF : vérification EDOF obligatoire
   if (trainingSession.financementType === "cpf" && !trainingSession.edofVerifieAt) {

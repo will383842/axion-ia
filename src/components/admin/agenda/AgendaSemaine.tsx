@@ -26,6 +26,7 @@
 import Link from "next/link";
 import type { AgendaItem } from "@/features/admin-agenda/types";
 import { semaineDe, quantieme, type CleJour } from "@/features/admin-agenda/calendrier";
+import { couleurDe, fondDe } from "./teinte-agenda";
 
 const HEURE_DEBUT = 7;
 const HEURE_FIN = 21;
@@ -35,18 +36,6 @@ const HAUTEUR_REM = 40;
 const HAUTEUR_MIN_PCT = 3.4;
 
 const JOURS_COURTS = ["lun", "mar", "mer", "jeu", "ven", "sam", "dim"] as const;
-
-const COULEUR_SOURCE: Record<AgendaItem["source"], string> = {
-  calendly: "var(--color-admin-id-bleu)",
-  google: "var(--color-admin-id-teal)",
-  console: "var(--color-admin-id-terracotta)",
-};
-
-const FOND_SOURCE: Record<AgendaItem["source"], string> = {
-  calendly: "var(--color-admin-id-bleu-soft)",
-  google: "var(--color-admin-id-teal-soft)",
-  console: "var(--color-admin-id-terracotta-soft)",
-};
 
 export interface AgendaSemaineProps {
   readonly base: string;
@@ -194,8 +183,8 @@ export function AgendaSemaine({
                     key={it.key}
                     className="absolute inset-x-[2px] top-[2px] truncate rounded-[var(--radius-admin-sm)] px-[3px] text-[length:var(--text-admin-xs)]"
                     style={{
-                      backgroundColor: FOND_SOURCE[it.source],
-                      borderLeft: `3px solid ${COULEUR_SOURCE[it.source]}`,
+                      backgroundColor: fondDe(it),
+                      borderLeft: `3px solid ${couleurDe(it)}`,
                     }}
                   >
                     {it.titre}
@@ -215,8 +204,8 @@ export function AgendaSemaine({
                       style={{
                         top: `${String(top)}%`,
                         height: `${String(hauteur)}%`,
-                        backgroundColor: FOND_SOURCE[it.source],
-                        borderLeft: `3px solid ${COULEUR_SOURCE[it.source]}`,
+                        backgroundColor: fondDe(it),
+                        borderLeft: `3px solid ${couleurDe(it)}`,
                         color: "var(--color-admin-fg)",
                       }}
                     >

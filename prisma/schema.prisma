@@ -4400,6 +4400,10 @@ model CalendlyEvent {
   utmSource             String?             @map("utm_source") @db.VarChar(100)
   utmCampaign           String?             @map("utm_campaign") @db.VarChar(100)
   utmMedium             String?             @map("utm_medium") @db.VarChar(100)
+  /// `utm_content` de la réservation (2026-10-04, chantier « Types de rendez-vous »).
+  /// Rempli par l'iframe quand la page le transmet, et recopié du `tracking` de
+  /// l'invité Calendly au sondage / à l'enrichissement quand il est vide.
+  utmContent            String?             @map("utm_content") @db.VarChar(100)
   referrer              String?             @db.VarChar(500)
   /// Match manuel par Will via admin (lien vers une Submission existante).
   linkedSubmissionId    String?             @map("linked_submission_id") @db.Uuid
@@ -4407,6 +4411,16 @@ model CalendlyEvent {
   updatedAt             DateTime            @updatedAt @map("updated_at")
   /// Notes admin manuelles (debrief post-call, etc.).
   notes                 String?             @db.Text
+
+  /// Chantier « Types de rendez-vous » (2026-10-04, lot L1). Le TYPE du rendez-vous,
+  /// classé UNE fois à l'écriture par `server/calendly/type-rendez-vous.ts` :
+  /// d'abord par l'URI du type Calendly (renommer un type ne change rien), sinon
+  /// par le nom. `null` = ligne pas encore classée (reprise faite par la migration).
+  typeRendezVous TypeRendezVous? @map("type_rendez_vous")
+  /// URI API du type d'événement Calendly (`scheduled_event.event_type`, ex.
+  /// « https://api.calendly.com/event_types/UUID »). Clé STABLE du type, que le
+  /// nom n'est pas.
+  eventTypeUri   String?         @map("event_type_uri") @db.VarChar(255)
 
   linkedSubmission       Submission?      @relation(fields: [linkedSubmissionId], references: [id], onDelete: SetNull)
   /// Lot 2 du chantier recrutement — LE LIEN QUI MANQUAIT.
@@ -4435,6 +4449,7 @@ model CalendlyEvent {
   @@index([linkedSubmissionId])
   @@index([linkedJobApplicationId])
   @@index([enrichedAt])
+  @@index([typeRendezVous])
   @@map("calendly_events")
 }
 
@@ -4456,6 +4471,18 @@ model CalendlyEvent {
 //
 // RGPD : `note` est une appréciation écrite sur la personne — exportée
 // (art. 15, `api/gdpr-export`) et effacée avec le reste (`lib/rgpd-erase`).
+
+/// Chantier « Types de rendez-vous » (2026-10-04) — qui vient pour quoi, sur le
+/// compte Calendly unique. Classement : `server/calendly/type-rendez-vous.ts`.
+enum TypeRendezVous {
+  diagnostic
+  echange_projet
+  apporteur
+  salon
+  autre
+
+  @@map("type_rendez_vous")
+}
 
 enum RendezVousIssue {
   eu_lieu
@@ -5014,6 +5041,15 @@ model Client {
   effectifSource             EffectifSource? @map("effectif_source")
   /// Date du relevé de l'effectif (jour civil de Paris à la saisie).
   effectifReleveLe           DateTime?       @map("effectif_releve_le") @db.Date
+  /// Lot OPCO A7b — adhésion à l'offre de services d'OPCO Mobilités (condition
+  /// de la subrogation chez cet OPCO). `null` = non renseigné, jamais « non ».
+  opcoAdhesionOffreMobilites Boolean?        @map("opco_adhesion_offre_mobilites")
+  /// Lot OPCO A7b — versement volontaire / conventionnel de l'entreprise à son
+  /// OPCO (fait perdre la subrogation). `null` = non renseigné.
+  opcoVersementVolontaire    Boolean?        @map("opco_versement_volontaire")
+  /// Date (jour civil de Paris) de la dernière saisie de ces deux faits, posée
+  /// par le serveur.
+  opcoAdhesionsRenseigneesLe DateTime?       @map("opco_adhesions_renseignees_le") @db.Date
   statut                     ClientStatut    @default(prospect)
   source                     String?         @db.VarChar(120)
   /// Contexte injecté au Formation Engine pour la génération sur-mesure.
@@ -7728,12 +7764,73 @@ model DossierFinancement {
   payeurs           DossierPayeur[]
   factures          FactureFormation[]
   relancesProposees RelanceProposee[]
+  /// Lot OPCO A8 — envoi du dossier à l'entreprise et relances (relation seule, aucune colonne).
+  suiviEntreprise   OpcoSuiviEntreprise?
 
   @@index([statut])
   @@index([clientId])
   @@index([trainingSessionId])
   @@index([type, statut])
   @@map("dossiers_financement")
+}
+
+/// Lot OPCO A8 — suivi de l'ENTREPRISE qui dépose sa demande de prise en charge :
+/// l'envoi du dossier prêt à déposer (une fois par dossier), puis les relances
+/// « dépôt fait ? » et « réponse de l'OPCO ? ». Une ligne par dossier de
+/// financement. L'adresse du contact n'est PAS recopiée : elle est lue sur la
+/// fiche client au moment de chaque envoi.
+/// rgpd: technique — identifiants, dates, clés de stockage ; aucune donnée personnelle
+model OpcoSuiviEntreprise {
+  id                 String             @id @default(uuid()) @db.Uuid
+  dossierId          String             @unique @map("dossier_id") @db.Uuid
+  dossier            DossierFinancement @relation(fields: [dossierId], references: [id], onDelete: Cascade)
+  /// Premier envoi du dossier à l'entreprise (point de départ des relances de dépôt).
+  envoyeLe           DateTime           @map("envoye_le") @db.Timestamptz(6)
+  /// `true` : envoi parti du passage quotidien ; `false` : bouton de la console.
+  envoiAutomatique   Boolean            @map("envoi_automatique")
+  /// Clé R2 du ZIP remis (kit OPCO + pièces), servi par le lien sécurisé.
+  zipKey             String?            @map("zip_key") @db.VarChar(300)
+  zipNom             String?            @map("zip_nom") @db.VarChar(200)
+  /// « Arrêter les relances » (console) : plus aucune relance ni alerte « à appeler ».
+  relancesArreteesLe DateTime?          @map("relances_arretees_le") @db.Timestamptz(6)
+  /// Refus déclaré par l'entreprise depuis la page publique.
+  refusDeclareLe     DateTime?          @map("refus_declare_le") @db.Timestamptz(6)
+  /// Accord déposé par l'entreprise (facultatif), après analyse antivirus « sain ».
+  accordFichierKey   String?            @map("accord_fichier_key") @db.VarChar(300)
+  createdAt          DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime           @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  messages OpcoSuiviMessage[]
+
+  @@map("opco_suivi_entreprise")
+}
+
+/// Lot OPCO A8 — un e-mail parti à l'entreprise (envoi ou relance) et la réponse
+/// donnée par son jeton. Clé d'idempotence : (suivi, étape, rang).
+/// Le jeton n'est conservé qu'en empreinte SHA-256 (`hacherToken`).
+/// rgpd: technique — empreinte de jeton, étape, dates et réponse fermée ; aucune donnée personnelle
+model OpcoSuiviMessage {
+  id            String              @id @default(uuid()) @db.Uuid
+  suiviId       String              @map("suivi_id") @db.Uuid
+  suivi         OpcoSuiviEntreprise @relation(fields: [suiviId], references: [id], onDelete: Cascade)
+  /// `envoi` | `relance_depot` | `relance_reponse` (CHECK en base).
+  etape         String              @db.VarChar(20)
+  /// 0 pour l'envoi ; 1, 2, 3… pour les relances de l'étape.
+  rang          Int
+  /// `depot` | `reponse` : la question que porte l'e-mail.
+  question      String              @db.VarChar(10)
+  envoyeLe      DateTime            @map("envoye_le") @db.Timestamptz(6)
+  /// Jour civil de Paris de l'envoi (AAAA-MM-JJ) : au plus un e-mail par jour.
+  jourParis     String              @map("jour_paris") @db.VarChar(10)
+  jetonHash     String              @unique @map("jeton_hash") @db.VarChar(64)
+  jetonExpireLe DateTime            @map("jeton_expire_le") @db.Timestamptz(6)
+  /// `oui` | `pas_encore` | `accord` | `refus` — posée une seule fois (jeton à usage unique).
+  reponse       String?             @db.VarChar(12)
+  reponduLe     DateTime?           @map("repondu_le") @db.Timestamptz(6)
+
+  @@unique([suiviId, etape, rang])
+  @@index([suiviId])
+  @@map("opco_suivi_messages")
 }
 
 /// Créance d'un payeur dans un dossier (N payeurs par dossier — C8 du plan).
@@ -8712,6 +8809,45 @@ model BaremeOpco {
   @@index([opco, idcc, trancheEffectif, dateEffet])
   @@index([effectiveTo])
   @@map("baremes_opco")
+}
+
+/// État des fonds d'un OPCO (lot OPCO A5) : les enveloppes s'épuisent en cours
+/// d'année, un OPCO peut SUSPENDRE le financement d'une branche, et chaque OPCO a
+/// ses dates limites de dépôt. Versionné par AJOUT : pour un couple (opco, idcc),
+/// le dernier relevé (`releveLe`, puis `createdAt`) fait foi ; aucune ligne n'est
+/// jamais modifiée ni supprimée. `idcc` null = la ligne vaut pour tout l'OPCO.
+/// CHECK (idcc ~ '^[0-9]{4}$') posé par la migration.
+/// rgpd: technique — relevés publics des règles des OPCO (suspensions par branche,
+/// dates limites) ; aucune donnée sur une personne (`createdById` = identifiant
+/// interne de l'administrateur auteur du relevé).
+model EtatFondsOpco {
+  id               String          @id @default(uuid()) @db.Uuid
+  opco             Opco
+  idcc             String?         @db.Char(4)
+  statut           StatutFondsOpco
+  /// Libellé du périmètre. « moins de 50 salariés » y est LU par la résolution :
+  /// une telle suspension ne vaut pas pour une entreprise de 50 salariés et plus.
+  perimetre        String?         @db.VarChar(200)
+  /// Seuil d'effectif EXCLU de la suspension (50 = « moins de 50 salariés ») :
+  /// une entreprise d'effectif ≥ seuil n'est pas concernée. Null = tous effectifs.
+  effectifMaxExclu Int?            @map("effectif_max_exclu") @db.SmallInt
+  dateLimiteDepot  DateTime?       @map("date_limite_depot") @db.Date
+  sourceUrl        String          @map("source_url") @db.Text
+  releveLe         DateTime        @map("releve_le") @db.Date
+  note             String?         @db.Text
+  createdById      String?         @map("created_by_id") @db.Uuid
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @updatedAt @map("updated_at")
+
+  @@index([opco, idcc, releveLe])
+  @@map("etats_fonds_opco")
+}
+
+/// Statut des fonds d'un OPCO pour une branche (lot OPCO A5).
+enum StatutFondsOpco {
+  ouvert
+  reduit
+  suspendu
 }
 
 /// Import d'un relevé de connexion distanciel (CSV Zoom/Teams/Meet). Archive le

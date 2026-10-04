@@ -63,7 +63,7 @@ export default async function ModifierClientPage({ params }: PageProps) {
 
       <AdminPageHeader
         title={`Modifier ${client.raisonSociale}`}
-        description={`${client.numero} — identité et contact. La branche (IDCC, taille, OPCO) se modifie depuis la liste des clients.`}
+        description={`${client.numero} — identité et contact. La branche (IDCC, effectif, OPCO) se modifie sur la fiche, bloc « Branche et OPCO ».`}
       />
 
       <ClientEditForm

@@ -77,6 +77,9 @@ vi.mock("@/lib/prisma", () => ({
     // 2026-09-15 — `facture_auto_non_emise` lit le journal des factures générées
     // automatiquement (famille « e-mail non préparé »).
     activityLog: { findMany: vi.fn() },
+    // Lot OPCO A7c — `etat_fonds_perime` (OPCO sans relevé) et
+    // `fonds_opco_suspendus_session` lisent les relevés d'état des fonds.
+    etatFondsOpco: { findMany: vi.fn() },
   },
 }));
 
@@ -99,6 +102,10 @@ vi.mock("@/server/qualiopi/financements/bareme-opco", () => ({
   resolveBaremeOpco: vi.fn(),
 }));
 
+vi.mock("@/server/qualiopi/financements/etat-fonds-opco-lecture", () => ({
+  dernierReleveEtatFonds: vi.fn(),
+}));
+
 // Vigilance URSSAF — on mocke les LECTURES (pièces + cumul annuel) ; les
 // fonctions d'évaluation (seuil, sélection, péremption) restent RÉELLES : ce
 // sont les mêmes que la carte conformité, et c'est précisément ce que la règle
@@ -115,6 +122,7 @@ vi.mock("@/server/qualiopi/trainers/documents", () => ({
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { dernierReleveEtatFonds } from "@/server/qualiopi/financements/etat-fonds-opco-lecture";
 import {
   listBaremesEnVigueur,
   resolveBaremeOpco,
@@ -136,6 +144,7 @@ import { getInterventionsByFamille } from "@/content/intervention-documents-cata
 
 const mp = prisma as unknown as {
   activityLog: { findMany: ReturnType<typeof vi.fn> };
+  etatFondsOpco: { findMany: ReturnType<typeof vi.fn> };
   reclamation: { findMany: ReturnType<typeof vi.fn> };
   enrollment: { findMany: ReturnType<typeof vi.fn> };
   trainingSession: { findMany: ReturnType<typeof vi.fn> };
@@ -170,6 +179,7 @@ const mp = prisma as unknown as {
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
 const mockIdentite = getOrganismeIdentite as ReturnType<typeof vi.fn>;
 const mockListBaremes = listBaremesEnVigueur as ReturnType<typeof vi.fn>;
+const mockDernierReleveFonds = dernierReleveEtatFonds as ReturnType<typeof vi.fn>;
 const mockResolveBareme = resolveBaremeOpco as ReturnType<typeof vi.fn>;
 const mockListTrainerDocs = listTrainerDocuments as ReturnType<typeof vi.fn>;
 const mockCumulAnnuel = cumulAnnuelFormateurCents as ReturnType<typeof vi.fn>;
@@ -177,6 +187,7 @@ const mockCumulAnnuel = cumulAnnuelFormateurCents as ReturnType<typeof vi.fn>;
 /** Configure tous les mocks prisma pour retourner des résultats vides (aucune alerte). */
 function setupEmptyMocks() {
   mockListBaremes.mockResolvedValue([]); // aucun barème OPCO → pas d'alerte de péremption
+  mockDernierReleveFonds.mockResolvedValue(null); // aucun relevé d'état des fonds
   mockResolveBareme.mockResolvedValue({ id: "bareme-applicable" }); // lot A4 : barème trouvé
   mockListTrainerDocs.mockResolvedValue([]); // aucune pièce formateur
   mockCumulAnnuel.mockResolvedValue(0); // sous le seuil de vigilance
@@ -222,6 +233,8 @@ function setupEmptyMocks() {
   mp.sessionFormateurRetire.findMany.mockResolvedValue([]);
   // `facture_auto_non_emise` : aucune facture générée automatiquement par défaut.
   mp.activityLog.findMany.mockResolvedValue([]);
+  // Lot OPCO A7c : aucun relevé d'état des fonds par défaut.
+  mp.etatFondsOpco.findMany.mockResolvedValue([]);
   // 🔴 2026-09-13 — `kit_sorties_non_pretes`. Zero kit imprime publie = la regle
   // ne regarde aucune session. C'est le defaut le moins contraignant, donc le bon
   // pour les autres blocs : un test qui veut la regle pose son propre `count`.
@@ -1579,6 +1592,30 @@ describe("evaluerAlertes — bareme_opco_perime", () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Tests etat_fonds_perime (lot OPCO A5)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — etat_fonds_perime", () => {
+  beforeEach(() => setupEmptyMocks());
+  const ilYA = (jours: number) => new Date(Date.now() - jours * 86_400_000);
+
+  it("lève UNE alerte quand le relevé le plus récent a plus de 31 jours", async () => {
+    mockDernierReleveFonds.mockResolvedValue({ id: "f1", releveLe: ilYA(40) });
+    const alertes = (await evaluerAlertes()).filter((a) => a.code === "etat_fonds_perime");
+    expect(alertes).toHaveLength(1);
+    expect(alertes[0]?.cibleType).toBe("EtatFondsOpco");
+    expect(alertes[0]?.cibleId).toBe("f1");
+  });
+
+  it("aucune alerte pour un relevé récent, ni sans aucun relevé", async () => {
+    mockDernierReleveFonds.mockResolvedValue({ id: "f2", releveLe: ilYA(20) });
+    expect((await evaluerAlertes()).filter((a) => a.code === "etat_fonds_perime")).toHaveLength(0);
+    mockDernierReleveFonds.mockResolvedValue(null);
+    expect((await evaluerAlertes()).filter((a) => a.code === "etat_fonds_perime")).toHaveLength(0);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Tests aucun_bareme_opco (lot A4)
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -1613,6 +1650,26 @@ describe("evaluerAlertes — aucun_bareme_opco", () => {
       sessionOpco({ opcoIdentifie: "akto", effectif: 50 }),
     ]);
     expect((await evaluerAlertes()).filter((a) => a.code === "aucun_bareme_opco")).toHaveLength(0);
+  });
+
+  it("🔴 A7a : un client qui n'a QUE l'OPCO typé est vu (barème cherché pour cet OPCO)", async () => {
+    mp.trainingSession.findMany.mockResolvedValue([
+      sessionOpco({ opco: "akto", opcoIdentifie: null }),
+    ]);
+    mockResolveBareme.mockResolvedValue(null);
+    const alertes = (await evaluerAlertes()).filter((a) => a.code === "aucun_bareme_opco");
+    expect(alertes).toHaveLength(1);
+    expect(alertes[0]?.message).toContain("Akto");
+    expect(mockResolveBareme).toHaveBeenCalledWith("akto", expect.any(Date), {});
+  });
+
+  it("A7a : l'OPCO typé prime sur l'ancien texte libre", async () => {
+    mp.trainingSession.findMany.mockResolvedValue([
+      sessionOpco({ opco: "atlas", opcoIdentifie: "akto" }),
+    ]);
+    mockResolveBareme.mockResolvedValue(null);
+    await evaluerAlertes();
+    expect(mockResolveBareme).toHaveBeenCalledWith("atlas", expect.any(Date), {});
   });
 
   it("lève l'alerte pour un devis OPCO ouvert estimé sur les réglages par défaut", async () => {

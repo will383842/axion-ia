@@ -52,6 +52,49 @@ export function opcoLabel(id: string | null | undefined): string {
   return isOpcoId(id) ? OPCO_LABELS[id] : (id ?? "—");
 }
 
+/** Les deux champs OPCO d'un client : typé (A1) et ancien texte libre. */
+export interface OpcoClient {
+  opco?: string | null;
+  opcoIdentifie?: string | null;
+}
+
+/**
+ * L'OPCO d'un client — UNE règle pour toutes les lectures : l'OPCO typé
+ * d'abord ; à défaut, l'ancien texte libre s'il est un identifiant connu.
+ *
+ * 🔴 Lot A7a : la console porte DEUX champs (`opco` typé, vide sur les fiches
+ * antérieures au 2026-10-03 ; `opcoIdentifie`, écrit par l'inférence). Lire l'un
+ * sans l'autre rend une brique aveugle sur la moitié des clients : toute lecture
+ * passe par ici (garde `tests/unit/ci/un-seul-opco-par-client.spec.ts`).
+ */
+export function opcoDuClient(client: OpcoClient | null | undefined): OpcoId | null {
+  if (isOpcoId(client?.opco)) return client.opco;
+  // `trim()` : une saisie « atlas » entourée d'espaces reste reconnue (relecture A7a).
+  const libre = client?.opcoIdentifie?.trim();
+  return isOpcoId(libre) ? libre : null;
+}
+
+/** Nom affiché, même règle ; un texte libre non reconnu est repris tel quel. */
+export function nomOpcoDuClient(client: OpcoClient | null | undefined): string {
+  const id = opcoDuClient(client);
+  if (id) return OPCO_LABELS[id];
+  const libre = client?.opcoIdentifie?.trim();
+  return libre ? libre : "OPCO (à préciser)";
+}
+
+/**
+ * Ce que la fiche dit de son OPCO, même règle : l'identifiant reconnu, sinon le
+ * texte libre tel quel (« Mon OPCO »), sinon `null`. Sert de clé de
+ * regroupement et à savoir si un OPCO est renseigné du tout, y compris quand il
+ * n'est pas (encore) l'un des 11.
+ */
+export function referenceOpcoDuClient(client: OpcoClient | null | undefined): string | null {
+  const id = opcoDuClient(client);
+  if (id) return id;
+  const libre = client?.opcoIdentifie?.trim();
+  return libre ? libre : null;
+}
+
 /**
  * Un barème est « périmé » si son relevé portail (`releveLe`) date de plus de
  * `moisValidite` mois par rapport à `now`. Un barème sans `releveLe` est traité
@@ -94,8 +137,24 @@ export type Fait<T> = {
   aVerifier?: boolean;
 };
 
-/** Qui dépose la demande de prise en charge, tel que constaté sur la source. */
-export type ModeDeDepot = "compte_adherent" | "of_mandate";
+/**
+ * Qui dépose la demande de prise en charge, tel que constaté sur la source
+ * (INT-T64-A) : l'organisme de formation mandaté par l'entreprise, ou
+ * l'entreprise depuis son compte adhérent sur le portail de l'OPCO.
+ *
+ * Un ENUM à deux valeurs, jamais un booléen. Il vit ici et pas en base : aucune
+ * table ne porte l'OPCO comme entité (l'enum Prisma `Opco` n'est qu'une clé), et
+ * la valeur est un fait sourcé de `OPCO_FICHES`, pas une saisie. L'absence de
+ * relevé est `valeur: null` (« non constaté »), pas une troisième valeur.
+ */
+export const MODES_DE_DEPOT = ["of_mandate", "compte_adherent"] as const;
+
+export type ModeDeDepot = (typeof MODES_DE_DEPOT)[number];
+
+/** Garde de type : vrai si la valeur est l'un des deux modes de dépôt. */
+export function isModeDeDepot(value: unknown): value is ModeDeDepot {
+  return typeof value === "string" && (MODES_DE_DEPOT as readonly string[]).includes(value);
+}
 
 export type OpcoFiche = {
   portailEntrepriseUrl: Fait<string>;
@@ -116,6 +175,9 @@ const SRC_TVA = "https://www.akto.fr/content/uploads/2025/12/CPcommunOpcos_TVA.p
 const SRC_ATLAS = "https://www.opco-atlas.fr/conditions-generales.html";
 const SRC_OPCOEP_CG =
   "https://www.opcoep.fr/ressources/centre-ressources/juridique/conditions-generales-gestion-controle-opcoep.pdf";
+const SRC_AKTO_DEPOT = "https://www.akto.fr/entreprise/financer-une-formation/deposer-demande";
+const SRC_CONSTRUCTYS_CG =
+  "https://www.constructys.fr/wp-content/uploads/Conditions-generales-Constructys.pdf";
 const SRC_CONSTRUCTYS =
   "https://www.constructys.fr/financer-vos-projets-de-formation/modalites-demandes-de-prise-charge/conditions-de-prise-en-charge-2/";
 const SRC_OPCOMMERCE = "https://www.lopcommerce.com/media/bsbnjydz/conditons-generales-gestion.pdf";
@@ -156,6 +218,15 @@ function ficheVide(horsChampTva: boolean): OpcoFiche {
  * 2026-10-03. Les règles varient par branche et par dispositif : un fait
  * renseigné est la règle générale de la source citée, pas une garantie pour
  * un dossier donné.
+ *
+ * `modeDeDepotConstate` (INT-T64-A) : Atlas, OPCO 2i, Akto et Constructys sont
+ * constatés (Akto et Constructys lus le 2026-10-04 depuis le poste de b0, la
+ * session cloud n'ayant pas accès aux sites des OPCO). Les sept autres restent
+ * « non constatés » : page non lue, ou règle écrite qui laisse les deux circuits
+ * ouverts (OPCO EP : « par une entreprise ou un prestataire de formation »).
+ * Rien n'est deviné. ⚠️ `compte_adherent` déclenche l'envoi
+ * automatique du dossier à l'entreprise (suivi-entreprise/planning.ts) : ne le
+ * poser que sur une page de l'OPCO lue et citée.
  */
 export const OPCO_FICHES: Record<OpcoId, OpcoFiche> = {
   atlas: {
@@ -178,7 +249,12 @@ export const OPCO_FICHES: Record<OpcoId, OpcoFiche> = {
     // souhaite une garantie de réponse […] avant le départ en formation » (CG 2026).
     delaiDepotJours: confirme(30, SRC_OPCOEP_CG),
   },
-  akto: ficheVide(false),
+  akto: {
+    ...ficheVide(false),
+    // « Le dossier est à déposer via votre espace en ligne : MonEspace » (page « Déposer une
+    // demande » de l'espace Entreprise, lue le 2026-10-04).
+    modeDeDepotConstate: confirme("compte_adherent", SRC_AKTO_DEPOT),
+  },
   opco2i: {
     ...ficheVide(false),
     // « L'entreprise bénéficiaire complète le formulaire de prise en charge dématérialisé sur
@@ -202,6 +278,10 @@ export const OPCO_FICHES: Record<OpcoId, OpcoFiche> = {
   },
   constructys: {
     ...ficheVide(false),
+    // Obligation de l'entreprise adhérente : « Transmettre de façon dématérialisée le dossier de
+    // demande de prise en charge […] avant le début de la formation via son compte adhérent »
+    // (conditions générales, lues le 2026-10-04).
+    modeDeDepotConstate: confirme("compte_adherent", SRC_CONSTRUCTYS_CG),
     // Dossier complet 15 jours calendaires avant le début, sinon refus.
     delaiDepotJours: confirme(15, SRC_CONSTRUCTYS),
   },

@@ -134,3 +134,52 @@ export async function rechercherSiren(
     clearTimeout(minuterie);
   }
 }
+
+/**
+ * Lot OPCO A7d — code de TRANCHE D'EFFECTIF SALARIÉ de l'unité légale d'un
+ * SIREN, tel que l'annuaire le reprend de Sirene (`tranche_effectif_salarie`,
+ * ex. « 11 »). La traduction du code en effectif est une règle Qualiopi : elle
+ * vit dans `src/server/qualiopi/crm/effectif-insee.ts`, pas ici.
+ *
+ * Mêmes règles que `rechercherSiren` : délai de 3 s, ne lève JAMAIS. Pas de
+ * cache : l'appel n'a lieu que sur un geste (création de la fiche, bouton
+ * « Rafraîchir depuis l'INSEE »), jamais à l'affichage.
+ *
+ * `{ ok: false }` : annuaire en panne, délai dépassé, SIREN invalide.
+ * `{ ok: true, tranche: null }` : l'annuaire a répondu, mais sans tranche pour
+ * ce SIREN (introuvable, ou tranche non renseignée).
+ */
+export type ResultatTrancheEffectif =
+  { readonly ok: true; readonly tranche: string | null } | { readonly ok: false };
+
+export async function rechercherTrancheEffectif(
+  siren: string,
+  options: { readonly fetch?: Fetch } = {},
+): Promise<ResultatTrancheEffectif> {
+  if (!checkSirenFormat(siren).ok) return { ok: false };
+  const url = new URL(URL_ANNUAIRE);
+  url.searchParams.set("q", siren);
+  url.searchParams.set("per_page", "1");
+  const f: Fetch = options.fetch ?? ((u, init) => fetch(u, init));
+  const controleur = new AbortController();
+  const minuterie = setTimeout(() => controleur.abort(), DELAI_ANNUAIRE_MS);
+  try {
+    const reponse = await f(url.toString(), { signal: controleur.signal });
+    if (!reponse.ok) return { ok: false };
+    const corps = (await reponse.json()) as { results?: unknown };
+    const lignes = Array.isArray(corps.results)
+      ? (corps.results as Array<{ siren?: unknown; tranche_effectif_salarie?: unknown }>)
+      : [];
+    // La recherche plein texte peut rendre une autre entreprise : on exige le même SIREN.
+    const ligne = lignes.find((l) => l.siren === siren);
+    const tranche = ligne?.tranche_effectif_salarie;
+    return {
+      ok: true,
+      tranche: typeof tranche === "string" && tranche.trim() !== "" ? tranche.trim() : null,
+    };
+  } catch {
+    return { ok: false };
+  } finally {
+    clearTimeout(minuterie);
+  }
+}

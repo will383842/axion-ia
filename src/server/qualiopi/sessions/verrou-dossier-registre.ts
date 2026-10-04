@@ -429,6 +429,27 @@ export const ECRITURES_SESSION: ReadonlyArray<EcritureSession> = [
     condition: "seulement en régénération d'une pièce vivante",
   },
   {
+    action: "genererDossierPretADeposerAction",
+    fichier: "documents.ts",
+    decision: V,
+    raison: "Le dossier prêt à déposer émet un nouveau kit OPCO, pièce déposée.",
+    condition: "seulement en régénération d'une pièce vivante (via genererKitOpcoAction)",
+  },
+  {
+    action: "envoyerDossierEntrepriseAction",
+    fichier: "suivi-entreprise-opco.ts",
+    decision: O,
+    raison:
+      "Lot OPCO A8 — remettre le dossier à l'entreprise est un suivi du financement ; sur un dossier clos, le dernier kit en vigueur est remis, jamais régénéré (garde de régénération dans le service).",
+  },
+  {
+    action: "arreterRelancesEntrepriseAction",
+    fichier: "suivi-entreprise-opco.ts",
+    decision: O,
+    raison:
+      "Lot OPCO A8 — arrêter des relances ne touche aucune pièce ni aucune donnée de la session.",
+  },
+  {
     action: "genererKitCpfAction",
     fichier: "documents.ts",
     decision: V,

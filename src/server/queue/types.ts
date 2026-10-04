@@ -128,6 +128,9 @@ export type EmailJobName =
   // Hub facturation — envois MANUELS (admin) de devis/facture avec PDF joint
   | "devis-envoi"
   | "facture-envoi"
+  // Lot A8c — remboursement OPCO : après le règlement complet de sa facture,
+  // l'entreprise reçoit la facture acquittée et le certificat de réalisation.
+  | "facture-pieces-remboursement-opco"
   // Convention de formation — envoi MANUEL du lien de signature au client.
   // Sans lui, l'admin copiait l'URL brute du lien dans sa messagerie.
   | "convention-envoi"
@@ -175,7 +178,10 @@ export type EmailJobName =
   | "visio-email-suivi"
   // Questionnaire de cadrage EN LIGNE (2026-10-01) — e-mail INTERNE : un client
   // a envoyé ses réponses. Aucune réponse dans le message, un lien vers la console.
-  | "questionnaire-reponses-recues";
+  | "questionnaire-reponses-recues"
+  // Lot OPCO A8 (2026-10-04) — envoi du dossier prêt à déposer à l'ENTREPRISE et
+  // relances de dépôt / de réponse de l'OPCO, avec réponses en un clic à jeton.
+  | "opco-suivi-entreprise";
 
 /**
  * Lot L4 — passage quotidien du vivier candidats.

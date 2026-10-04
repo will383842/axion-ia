@@ -30,6 +30,15 @@ import { RetirerIndisponibiliteButton } from "./RetirerIndisponibiliteButton";
 import { RendezVousForm } from "./RendezVousForm";
 import { LIBELLE_CANAL } from "@/server/calendly/canal";
 import { RejoindreVisioBouton } from "@/components/admin/contacts/RejoindreVisioBouton";
+import { LIBELLE_TYPE_RDV } from "@/features/admin-rendezvous/type-rdv";
+import { couleurDe } from "./teinte-agenda";
+
+/** Une réservation dit son TYPE (« Diagnostic IA »…), le reste sa source (lot L3). */
+function etiquetteDe(i: AgendaItem): string {
+  return i.source === "calendly" && i.typeRendezVous
+    ? LIBELLE_TYPE_RDV[i.typeRendezVous]
+    : AGENDA_SOURCE_LABELS[i.source];
+}
 
 /**
  * Amplitude affichée. 7 h → 21 h couvre la plage réservable (9 h – 19 h) avec
@@ -207,7 +216,7 @@ export function AgendaTimeline({
                 <span className="block truncate font-medium">{i.titre}</span>
                 <span className="block truncate text-[length:var(--text-admin-xs)] tabular-nums opacity-80">
                   {heureParis(i.debut as Date)}
-                  {i.fin ? ` – ${heureParis(i.fin)}` : ""} · {AGENDA_SOURCE_LABELS[i.source]}
+                  {i.fin ? ` – ${heureParis(i.fin)}` : ""} · {etiquetteDe(i)}
                   {/* Le format n'apparaît que s'il est établi : « à préciser »
                       dans une ligne d'agenda serait du bruit à chaque ligne. */}
                   {i.format === "inconnu" ? "" : ` · ${LIBELLE_CANAL[i.format]}`}
@@ -220,7 +229,14 @@ export function AgendaTimeline({
                 key={i.key}
                 role="listitem"
                 className={`absolute right-[var(--space-admin-2)] left-[var(--space-admin-2)] overflow-hidden rounded-[var(--radius-admin-sm)] border px-[var(--space-admin-2)] py-[2px] text-[length:var(--text-admin-sm)] ${styleSource(i)}`}
-                style={{ top: `${top}%`, height: `${hauteur}%` }}
+                style={{
+                  top: `${top}%`,
+                  height: `${hauteur}%`,
+                  // Réservation : un liseré à la couleur de son type.
+                  ...(i.source === "calendly" && !i.annule
+                    ? { borderLeftWidth: "3px", borderLeftColor: couleurDe(i) }
+                    : {}),
+                }}
               >
                 {i.detailHref ? (
                   <Link

@@ -52,7 +52,7 @@
  * Aucun import Prisma ni Next : mêmes entrées, mêmes sorties.
  */
 
-import { opcoLabel } from "./opco-referentiel";
+import { nomOpcoDuClient, referenceOpcoDuClient } from "./opco-referentiel";
 import {
   resolveEnrollmentFinancement,
   type EnrollmentFinancementFields,
@@ -66,6 +66,7 @@ export type TypePayeur = "entreprise" | "opco_subroge" | "france_travail" | "sta
 export interface ClientPayeur {
   id: string;
   raisonSociale: string | null;
+  opco?: string | null;
   opcoIdentifie: string | null;
 }
 
@@ -138,11 +139,12 @@ function identitePayeur(
 ): { cle: string; nom: string } {
   switch (type) {
     case "opco_subroge": {
-      const slug = client?.opcoIdentifie?.trim();
+      // Règle unique (lot A7a) : OPCO typé d'abord, ancien texte libre ensuite.
+      const reference = referenceOpcoDuClient(client);
       // Deux entreprises relevant du MÊME OPCO ne font qu'un débiteur : c'est
       // l'OPCO qui paie, et il paiera une fois.
-      return slug != null && slug !== ""
-        ? { cle: `opco:${slug}`, nom: opcoLabel(slug) }
+      return reference !== null
+        ? { cle: `opco:${reference}`, nom: nomOpcoDuClient(client) }
         : { cle: "opco:inconnu", nom: "OPCO (à préciser)" };
     }
     case "france_travail":

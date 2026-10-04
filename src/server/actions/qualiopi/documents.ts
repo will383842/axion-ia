@@ -33,7 +33,6 @@ import {
   dureeReferenceHeures,
   minutesSuiviesPresence,
 } from "@/server/qualiopi/evaluations/heures-suivies";
-import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
@@ -59,6 +58,7 @@ import {
   produireProgramme,
   produireOrganisationAction,
   produireLivretAccueil,
+  produireKitOpco,
 } from "@/server/qualiopi/documents/production/producteurs";
 
 import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
@@ -90,7 +90,8 @@ import { buildCvFormateurData } from "@/server/qualiopi/documents/cv-formateur-d
 // ici ; les gabarits des 12 pièces extraites sont importés par
 // `production/producteurs.ts`.
 import { CertificatRealisationPdf } from "@/server/qualiopi/documents/templates/certificat-realisation";
-import { KitOpcoPdf } from "@/server/qualiopi/documents/templates/kit-opco";
+import { chargerDossierPretADeposer } from "@/server/qualiopi/financements/dossier-pret-a-deposer-lecture";
+import { construireZipPretADeposer } from "@/server/qualiopi/financements/dossier-pret-a-deposer-zip";
 import { KitCpfPdf } from "@/server/qualiopi/documents/templates/kit-cpf";
 import { KitFranceTravailPdf } from "@/server/qualiopi/documents/templates/kit-france-travail";
 import {
@@ -114,7 +115,6 @@ import {
   whereHabilitationsDeclarables,
 } from "@/server/qualiopi/trainers/trainers";
 import { getSousTraitant } from "@/server/qualiopi/registres/sous-traitants-service";
-import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 // Annulation d'une pièce : les liens de signature en circulation meurent avec
 // la valeur de la pièce (§ 24).
 import { revoquerTokensDocument } from "@/server/qualiopi/documents/signature/token-document";
@@ -911,90 +911,14 @@ export async function genererKitOpcoAction(input: {
   const verrou = await assertDossierOuvertSiRegeneration({ sessionId }, "kit_opco");
   if (!verrou.ok) return verrou;
 
-  const session = await prisma.trainingSession.findUnique({
-    where: { id: sessionId },
-    select: {
-      id: true,
-      titreSession: true,
-      dateDebut: true,
-      dateFin: true,
-      montantHtCents: true,
-      priseEnChargeMontantCents: true,
-      priseEnChargeUnite: true,
-      numeroDossierOpco: true,
-      enrollments: {
-        where: { ...inscriptionsActives() },
-        select: {
-          trainee: { select: { nom: true, prenom: true } },
-          session: {
-            select: {
-              dureeReelleHeures: true,
-              formationSnapshot: true,
-              formation: { select: { dureeHeures: true } },
-            },
-          },
-        },
-      },
-      client: {
-        select: { opcoIdentifie: true },
-      },
-    },
-  });
-  if (!session) return { error: "Session introuvable" };
-
-  const identite = await getOrganismeIdentite();
-  const nomOpco = session.client?.opcoIdentifie
-    ? opcoLabel(session.client.opcoIdentifie)
-    : "OPCO (à préciser)";
-  const numeroDossier = session.numeroDossierOpco ?? "—";
-  const baremeCents = session.priseEnChargeMontantCents ?? 0;
-
-  // Ventilation par participant
-  const ventilation = session.enrollments.map((e) => {
-    // Durée depuis le snapshot légal (WS5), repli LIVE si legacy.
-    const fd = readFormationForDocs(e.session.formationSnapshot, e.session.formation);
-    const dureeH = e.session.dureeReelleHeures ?? fd.dureeHeures ?? e.session.formation.dureeHeures;
-    const prise = Math.round((baremeCents * dureeH) / 100) * 100;
-    const prixTotal = session.montantHtCents;
-    const parPart =
-      session.enrollments.length > 0
-        ? Math.round(prixTotal / session.enrollments.length)
-        : prixTotal;
-    const rac = Math.max(0, parPart - prise);
-    return {
-      nomParticipant: `${e.trainee.prenom} ${e.trainee.nom}`.trim(),
-      heuresRealisees: dureeH,
-      baremePrisEnChargeHeureCents: baremeCents,
-      montantPrisEnChargeCents: prise,
-      resteAChargeCents: rac,
-    };
-  });
-
-  const totalPrisEnCharge = ventilation.reduce((s, v) => s + v.montantPrisEnChargeCents, 0);
-  const totalRac = ventilation.reduce((s, v) => s + v.resteAChargeCents, 0);
-
-  const doc = await generateDocument({
-    type: "kit_opco",
-    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+  // La construction (ventilation, état réel des pièces, encart de dépôt) vit
+  // dans `production/producteurs.ts`, partagée avec l'envoi du dossier à
+  // l'entreprise (lot OPCO A8, passage quotidien du worker).
+  const resultat = await produireKitOpco(sessionId, {
     ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
-    buildElement: (numero) =>
-      React.createElement(KitOpcoPdf, {
-        data: {
-          numero,
-          dateEmission: formatDateFr(new Date()),
-          identite,
-          nomOpco,
-          numeroDossier,
-          intituleFormation: session.titreSession,
-          dateDebut: formatDate(new Date(session.dateDebut)),
-          dateFin: formatDate(new Date(session.dateFin)),
-          ventilation,
-          totalPrisEnChargeCents: totalPrisEnCharge,
-          totalResteAChargeCents: totalRac,
-        },
-      }),
-    refs: { sessionId },
   });
+  if (!resultat.ok) return { error: resultat.motif };
+  const doc = { id: resultat.documentId, numero: resultat.numero };
 
   await logQualiopiActivity({
     action: "qualiopi.document.kit_opco.genere",
@@ -1005,6 +929,55 @@ export async function genererKitOpcoAction(input: {
   });
 
   return { data: { documentId: doc.id, numero: doc.numero } };
+}
+
+/**
+ * Chantier OPCO A6 — « Dossier prêt à déposer » : émet un kit OPCO VÉRIFIÉ
+ * (même chemin, même verrou que `genererKitOpcoAction`) et le remet dans un
+ * ZIP avec les pièces PRÉSENTES au registre. C'est l'entreprise qui dépose sur
+ * son espace OPCO ; l'organisme lui remet ce dossier.
+ */
+export async function genererDossierPretADeposerAction(input: {
+  sessionId: string;
+}): Promise<
+  ActionResult<{ base64: string; filename: string; joints: string[]; manquantes: string[] }>
+> {
+  // Même droit que le kit OPCO : c'est le kit, accompagné de ses pièces.
+  const adminSession = await requireHabilitation("deposer_demande_financeur");
+  if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
+  const parsed = sessionIdSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { sessionId } = parsed.data;
+
+  // Le kit passe par SON action : garde du verrou (ADR 0060) et journal inclus.
+  const kit = await genererKitOpcoAction({ sessionId });
+  if ("error" in kit) return kit;
+
+  const [kitDoc, pret] = await Promise.all([
+    prisma.documentGenere.findUnique({
+      where: { id: kit.data.documentId },
+      select: { type: true, numero: true, createdAt: true },
+    }),
+    chargerDossierPretADeposer(sessionId),
+  ]);
+  if (!kitDoc || !pret) return { error: "Session introuvable" };
+
+  try {
+    const zip = await construireZipPretADeposer({ kit: kitDoc, dossier: pret });
+    await logQualiopiActivity({
+      action: "qualiopi.document.dossier_pret_a_deposer.genere",
+      targetType: "TrainingSession",
+      targetId: sessionId,
+      changes: { kitNumero: kitDoc.numero, joints: zip.joints, manquantes: zip.manquantes },
+      session: adminSession,
+    });
+    return { data: zip };
+  } catch (err) {
+    // Le détail (clé de stockage, message R2…) reste au journal serveur : l'écran
+    // reçoit un libellé fixe.
+    console.error("[genererDossierPretADeposerAction] ZIP impossible", err);
+    return { error: "Impossible de préparer le dossier prêt à déposer." };
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

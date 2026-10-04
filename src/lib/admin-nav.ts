@@ -1455,6 +1455,16 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       tier: "advanced",
       parent: `${base}/qualiopi/formations`,
     },
+    // État des fonds OPCO (lot OPCO A5) — suspensions par branche, dates limites.
+    {
+      href: `${base}/qualiopi/etat-des-fonds`,
+      label: "État des fonds OPCO",
+      icon: "Gauge",
+      group: "qualiopi",
+      subGroup: "catalogue",
+      tier: "advanced",
+      parent: `${base}/qualiopi/formations`,
+    },
     // « Conformité » (/qualiopi/conformite) fusionnée le 2026-08-01 (phase 2)
     // dans « Conformité & mode auditeur » ci-dessous — même matrice de 32
     // indicateurs sous deux entrées. La route redirige en 308.

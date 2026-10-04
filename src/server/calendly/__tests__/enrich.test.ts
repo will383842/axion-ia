@@ -282,6 +282,8 @@ describe("enrichCalendlyEvent", () => {
         cancelUrl: "https://calendly.com/cancellations/abc",
         rescheduleUrl: "https://calendly.com/reschedulings/abc",
         eventTypeName: "Nom déjà posé",
+        // Déjà classée (2026-10-04) : un type inchangé n'est pas réécrit.
+        typeRendezVous: "autre",
       }),
     );
     fetchInviteeMock.mockResolvedValueOnce(apiData({ timezone: null, calendlyStatus: "active" }));

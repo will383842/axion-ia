@@ -53,6 +53,8 @@ export const EMAILS_A_VALIDER_PAR_DEFAUT: readonly string[] = [
   "devis-envoi",
   "convention-envoi",
   "facture-envoi",
+  // Lot A8c — préparé seul à l'encaissement : il part au client, donc relu.
+  "facture-pieces-remboursement-opco",
 ] as const;
 
 /**
@@ -126,6 +128,8 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "devis-envoi": "Envoi d'un devis",
   "convention-envoi": "Envoi d'une convention",
   "facture-envoi": "Envoi d'une facture",
+  "facture-pieces-remboursement-opco":
+    "Pièces de remboursement OPCO (facture acquittée, certificat de réalisation)",
   "autofacture-transmission": "Transmission d'une facture d'honoraires (autofacturation)",
   "qualiopi-convocation": "Convocation à une session",
   "qualiopi-rappel-j7": "Rappel à J-7",
@@ -144,6 +148,11 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "appel-rappel": "Rappel avant un appel de découverte",
   "piece-exemplaire-signe": "Remise de l'exemplaire signé",
   "questionnaire-reponses-recues": "Questionnaire en ligne : réponses reçues (interne)",
+  // Lot OPCO A8 — volontairement HORS des deux listes : défaut « auto » (envoi
+  // automatique demandé par Will le 04/10), mais une règle « validation »,
+  // globale ou par client, le retient en corbeille comme tout envoi non
+  // réglementaire. Le suivi compte alors l'e-mail comme parti (il attend la relecture).
+  "opco-suivi-entreprise": "Dossier OPCO à déposer et relances de l'entreprise",
 };
 
 export function libelleTemplateEmail(template: string | null): string {
