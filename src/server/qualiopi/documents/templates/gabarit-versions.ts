@@ -63,7 +63,8 @@ export type TypeGabaritSignable =
   | "contrat_sous_traitance"
   | "contrat_travail"
   | "releve_connexion"
-  | "lettre_mission";
+  | "lettre_mission"
+  | "mandat_opco";
 
 /**
  * Version courante du texte rendu, par type de pièce.
@@ -82,6 +83,7 @@ export type TypeGabaritSignable =
  * | `releve_connexion` | 2 | 30/09 — pied « Document à conserver 5 ans. » sans la citation de L.6353-9 (qui porte sur les informations demandées aux candidats). **v1 archivée** |
  * | `convention` | 4 | 04/10 — § 5 réécrit (relecture juridique, tour 2) : « pour quelque cause que ce soit » retiré ; les sommes restent dues sous réserve du dédit et de l'abandon prévus aux CGV, et sauf manquement de l'organisme à ses propres obligations. **v3 archivée** |
  * | `convention_tripartite` | 4 | 04/10 — même réécriture du § 5 que la bipartite. **v3 archivée** |
+ * | `mandat_opco` | 1 | 04/10 — premier texte (INT-T66-A) : mandat spécial, limité, révocable, sans pouvoir de recevoir des fonds ; relu par la juriste avant fusion |
  * | les autres | 1 | texte inchangé depuis l'origine |
  *
  * 🔑 DEPUIS LE 30/09, UNE VERSION REMPLACÉE S'ARCHIVE (`./archives/`). Avant,
@@ -140,6 +142,7 @@ export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
   contrat_travail: 2,
   releve_connexion: 2,
   lettre_mission: 1,
+  mandat_opco: 1,
 };
 
 /**

@@ -67,6 +67,7 @@ const SOURCE: Readonly<Record<TypeGabaritSignable, string>> = {
   contrat_travail: "contrat-travail.tsx",
   releve_connexion: "releve-connexion.tsx",
   lettre_mission: "lettre-mission.tsx",
+  mandat_opco: "mandat-opco.tsx",
 };
 
 /**
@@ -124,6 +125,11 @@ const EMPREINTES: Readonly<
   },
   lettre_mission: {
     sha: "5ecd3292d85abac664088d4ef4648748c63de2a3a6330f86f11cc6a09a96fd9c",
+    version: 1,
+  },
+  mandat_opco: {
+    // v1 — 04/10/2026 : premier texte (INT-T66-A).
+    sha: "870027f574c91d4d4c4d36d7a88254cbf274db404705f9543461aa1690410041",
     version: 1,
   },
 };

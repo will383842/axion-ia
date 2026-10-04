@@ -51,6 +51,7 @@ describe("matrice des circuits", () => {
         "contrat",
         "contrat_sous_traitance",
         "contrat_travail",
+        "mandat_opco",
         // 2026-08-10 (décision Will) : `protocole_afest` retiré — son circuit a
         // disparu avec le module AFEST 1-to-1 (conseil hors Qualiopi).
       ].sort(),
@@ -159,5 +160,17 @@ describe("🔴 canal du devis — épinglé", () => {
     // La bascule de canal ne change PAS qui signe. Si elle l'avait fait, un
     // devis passerait `signee` sur la seule signature du client.
     expect(partiesRequisesPour("devis")).toStrictEqual(["client", "axionia"]);
+  });
+});
+
+describe("🔴 mandat OPCO — canal et parties épinglés (INT-T66-A)", () => {
+  // Décision de Williams du 2026-10-04 : le mandat se signe comme les
+  // conventions, par le canal maison (ADR 0037), et non par DocuSeal.
+  it("le mandat se signe sur le canal MAISON", () => {
+    expect(circuitPour("mandat_opco")?.canal).toBe("maison");
+  });
+
+  it("le mandant donne, l'organisme accepte en dernier — l'OPCO ne signe pas", () => {
+    expect(partiesRequisesPour("mandat_opco")).toStrictEqual(["client", "axionia"]);
   });
 });

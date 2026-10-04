@@ -95,6 +95,10 @@ const DOC_TYPE_TO_NUMBERING: Record<DocumentType, (typeof DOCUMENT_REGISTER_TYPE
   // pièce non comptable : ce contrat n'entre dans aucun livre, la paie s'en
   // charge par ses propres numéros.
   contrat_travail: "document",
+  // Mandat de l'entreprise pour déposer sa demande auprès de l'OPCO. Série
+  // « document », sur le modèle de `convention_tripartite` : pièce contractuelle
+  // non comptable, qu'aucun livre ne numérote.
+  mandat_opco: "document",
   procedure_sous_traitance: "document",
   // Fiche formateur versée au dossier (ind. 21).
   cv_formateur: "document",
