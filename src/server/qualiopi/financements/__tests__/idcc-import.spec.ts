@@ -444,7 +444,7 @@ describe("importerMillesimeIdccOpco — témoins INT-T60-A", () => {
     }
     expect(etat.lignes).toEqual([]);
     const sql = readFileSync(
-      join(process.cwd(), "prisma/migrations/20261004230000_idcc_opco/migration.sql"),
+      join(process.cwd(), "prisma/migrations/20261004230500_idcc_opco/migration.sql"),
       "utf8",
     );
     expect(sql).toContain(`ALTER TABLE "idcc_opco" ADD CONSTRAINT "idcc_opco_idcc_check"`);
