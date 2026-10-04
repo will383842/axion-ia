@@ -95,7 +95,14 @@ export type ResultatReport =
     }
   | { readonly ok: false; readonly raison: "non_configure" }
   /** La ligne source n'a pas de quoi rejouer une réservation. */
-  | { readonly ok: false; readonly raison: "donnees_incompletes"; readonly manque: string };
+  | { readonly ok: false; readonly raison: "donnees_incompletes"; readonly manque: string }
+  /**
+   * Rendez-vous SUR PLACE (lieu `physical`) : la réservation directe ne sait
+   * demander qu'un appel ou une visio, il ne se rejoue donc pas en ligne. Une
+   * raison à part, pour que l'alerte dise la vraie cause — pas « données
+   * incomplètes », qui ferait chercher un enrichissement raté.
+   */
+  | { readonly ok: false; readonly raison: "sur_place" };
 
 /**
  * Relit les réponses aux questions depuis le contenu brut.
@@ -233,6 +240,9 @@ export async function reporterRendezVous(
    */
   journaliser?: (ancienEventUri: string, nouvelEventUri: string) => Promise<unknown>,
 ): Promise<ResultatReport> {
+  if (canalDuRendezVous(source.location, source.rawPayload) === "sur_place") {
+    return { ok: false, raison: "sur_place" };
+  }
   const construite = demandeDepuisLaSource(source, eventTypeUri, nouveauDebut);
   if (!construite.ok)
     return { ok: false, raison: "donnees_incompletes", manque: construite.manque };
