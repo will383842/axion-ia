@@ -91,10 +91,12 @@ describe("subrogation × régime de paiement OPCO — garde serveur", () => {
       .map((c) => c[0])
       .find((e) => e.action === "qualiopi.financement.subrogation_confirmee_par_accord");
     expect(trace, "la confirmation n'est pas tracée").toBeDefined();
-    expect(trace.targetType).toBe("DossierFinancement");
-    expect(trace.targetId).toBe(DOSSIER_ID);
-    // Aucune donnée personnelle : le régime et la session, rien d'autre.
-    expect(Object.keys(trace.changes).sort()).toEqual(["regime", "sessionId"]);
+    // Cible LITTÉRALE sur la session (ADR 0060 : l'historique du dossier la cherche).
+    expect(trace.targetType).toBe("TrainingSession");
+    expect(trace.targetId).toBe(SESSION_ID);
+    expect(trace.changes.dossierId).toBe(DOSSIER_ID);
+    // Aucune donnée personnelle : le régime, la session et le dossier, rien d'autre.
+    expect(Object.keys(trace.changes).sort()).toEqual(["dossierId", "regime", "sessionId"]);
     // La case ne s'écrit pas sur la session.
     expect(mockSessionUpdate.mock.calls[0]![0].data).not.toHaveProperty(
       "accordPrevoitPaiementDirect",

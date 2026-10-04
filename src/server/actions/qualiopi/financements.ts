@@ -312,9 +312,15 @@ export async function setFinancementSessionAction(input: {
   if (confirmationAccord) {
     await logQualiopiActivity({
       action: "qualiopi.financement.subrogation_confirmee_par_accord",
-      targetType: confirmationAccord.dossierId ? "DossierFinancement" : "TrainingSession",
-      targetId: confirmationAccord.dossierId ?? sessionId,
-      changes: { sessionId, regime: confirmationAccord.regime },
+      // targetType LITTÉRAL, sur la session : l'historique du dossier (ADR 0060)
+      // la cherche ; le dossier visé est porté dans `changes`.
+      targetType: "TrainingSession",
+      targetId: sessionId,
+      changes: {
+        sessionId,
+        dossierId: confirmationAccord.dossierId,
+        regime: confirmationAccord.regime,
+      },
       session,
     });
   }
