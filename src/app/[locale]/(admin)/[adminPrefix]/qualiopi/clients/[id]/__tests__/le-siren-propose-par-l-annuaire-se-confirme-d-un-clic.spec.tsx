@@ -54,7 +54,10 @@ vi.mock("@/features/dossier-client/actions", () => ({
   garderCetteValeurFormAction: vi.fn(),
   confirmerSirenFormAction: vi.fn(),
 }));
-vi.mock("@/server/actions/qualiopi/clients", () => ({ updateClientAction: vi.fn() }));
+vi.mock("@/server/actions/qualiopi/clients", () => ({
+  updateClientAction: vi.fn(),
+  rafraichirEffectifInseeFormAction: vi.fn(),
+}));
 
 import { renderToStaticMarkup } from "react-dom/server";
 import Page from "../page";

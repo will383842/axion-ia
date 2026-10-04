@@ -196,6 +196,8 @@ export function DevisForm({
   const [dureeHeures, setDureeHeures] = useState<string>("");
   const [modaliteOpco, setModaliteOpco] = useState<ModaliteOpco>("");
   const [enveloppeRestante, setEnveloppeRestante] = useState<string>("");
+  // Lot OPCO A7d : choisit le barème et l'année civile de l'enveloppe.
+  const [dateDebutSession, setDateDebutSession] = useState<string>("");
 
   const showOpco = financementSuggere === "opco";
   const total = totalHtCents(lignes);
@@ -320,6 +322,9 @@ export function DevisForm({
         ...(showOpco && modaliteOpco !== "" ? { modaliteOpco } : {}),
         ...(showOpco && enveloppeRestante !== ""
           ? { opcoEnveloppeRestanteCents: Math.round(parseFloat(enveloppeRestante) * 100) }
+          : {}),
+        ...(showOpco && dateDebutSession !== ""
+          ? { dateDebutSessionPrevue: dateDebutSession }
           : {}),
       });
 
@@ -625,7 +630,21 @@ export function DevisForm({
                   disabled={isPending}
                   min="0"
                   step="0.01"
-                  placeholder="Défaut : plafond annuel Atlas"
+                  placeholder="Défaut : plafond annuel moins ce que l'OPCO a déjà pris en charge"
+                  className={inputCls}
+                />
+              </div>
+
+              <div className={fieldCls}>
+                <label className={labelCls} htmlFor="devis-opco-debut-session">
+                  Début prévu de la session (optionnel)
+                </label>
+                <input
+                  id="devis-opco-debut-session"
+                  type="date"
+                  value={dateDebutSession}
+                  onChange={(e) => setDateDebutSession(e.target.value)}
+                  disabled={isPending}
                   className={inputCls}
                 />
               </div>

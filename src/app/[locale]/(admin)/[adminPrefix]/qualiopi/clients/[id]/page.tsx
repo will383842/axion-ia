@@ -49,8 +49,16 @@ import {
 } from "@/server/qualiopi/crm/clients";
 import {
   nomOpcoDuClient,
+  opcoDuClient,
   referenceOpcoDuClient,
+  OPCO_LABELS,
 } from "@/server/qualiopi/financements/opco-referentiel";
+import {
+  anneeParis,
+  consommationOpcoParAnnee,
+} from "@/server/qualiopi/financements/consommation-opco";
+import { DejaPrisEnChargeOpco } from "@/components/admin/qualiopi/DejaPrisEnChargeOpco";
+import { rafraichirEffectifInseeFormAction } from "@/server/actions/qualiopi/clients";
 import { bandeauEtatFonds } from "@/server/qualiopi/financements/etat-fonds-opco";
 import { etatFondsDuClient } from "@/server/qualiopi/financements/etat-fonds-opco-lecture";
 import { BandeauEtatFonds } from "@/components/admin/qualiopi/BandeauEtatFonds";
@@ -251,7 +259,13 @@ function SectionVide({ message }: { message: string }): React.ReactElement {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
-  searchParams?: Promise<{ onglet?: string; erreur?: string; annuaire?: string }>;
+  searchParams?: Promise<{
+    onglet?: string;
+    erreur?: string;
+    annuaire?: string;
+    message?: string;
+    releve?: string;
+  }>;
 }
 
 const ONGLETS_DOSSIER = ["synthese", "projets", "echanges", "personnes"] as const;
@@ -299,6 +313,19 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
   const maintenant = new Date();
   // Lot OPCO A5 : suspension de la branche ou date limite de dépôt de l'OPCO.
   const bandeauFonds = bandeauEtatFonds(await etatFondsDuClient(client, maintenant));
+  // Lot OPCO A7d : ce que l'OPCO a déjà pris en charge, année en cours et précédente.
+  const estEntreprise = client.type === "entreprise";
+  const opcoClient = opcoDuClient(client);
+  const anneeCourante = anneeParis(maintenant);
+  const priseEnChargeOpco =
+    estEntreprise && opcoClient !== null
+      ? await consommationOpcoParAnnee(client.id, opcoClient, [anneeCourante, anneeCourante - 1])
+      : null;
+  // Retour du bouton « Rafraîchir depuis l'INSEE » (message scellé).
+  const messageReleveInsee =
+    sp.releve === "insee"
+      ? (lireMessageDeRetour(sp, "message") ?? lireMessageDeRetour(sp, "erreur"))
+      : null;
 
   // « SIREN à compléter » : l'annuaire public n'est interrogé que sur demande
   // (lien « Chercher le SIREN »), côté serveur, 3 s au plus. Aucun JavaScript
@@ -560,6 +587,45 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
               {client.opcoNumeroAdherent ? ` · adh. ${client.opcoNumeroAdherent}` : ""}
             </p>
           </div>
+          {estEntreprise ? (
+            <div data-champ="effectif">
+              <p className={infoLabelCls}>Effectif</p>
+              <p className={infoValueCls}>
+                {typeof client.effectif === "number"
+                  ? `${client.effectif} salarié${client.effectif > 1 ? "s" : ""}`
+                  : "Inconnu"}
+              </p>
+              {typeof client.effectif === "number" ? (
+                <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                  {client.effectifSource === "insee"
+                    ? "Relevé INSEE (borne basse de la tranche)"
+                    : "Saisi en console"}
+                  {client.effectifReleveLe
+                    ? ` · ${formatDateFrShort(client.effectifReleveLe)}`
+                    : ""}
+                </p>
+              ) : null}
+              {acces.peutEcrire && client.siren && client.effectifSource !== "saisie" ? (
+                <form
+                  action={rafraichirEffectifInseeFormAction}
+                  className="mt-[var(--space-admin-1)]"
+                >
+                  <input type="hidden" name="clientId" value={client.id} />
+                  <button type="submit" className="admin-button-ghost">
+                    Rafraîchir depuis l&apos;INSEE
+                  </button>
+                </form>
+              ) : null}
+              {messageReleveInsee !== null ? (
+                <p
+                  role="status"
+                  className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]"
+                >
+                  {messageReleveInsee}
+                </p>
+              ) : null}
+            </div>
+          ) : null}
           <div className="col-span-2 sm:col-span-4">
             <p className={infoLabelCls}>Adresse</p>
             <p className={infoValueCls}>{adresse ?? "—"}</p>
@@ -579,6 +645,15 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           </div>
         </div>
       </section>
+
+      {estEntreprise ? (
+        <section className={sectionCls}>
+          <DejaPrisEnChargeOpco
+            opcoLibelle={opcoClient !== null ? OPCO_LABELS[opcoClient] : null}
+            lignes={priseEnChargeOpco}
+          />
+        </section>
+      ) : null}
 
       {contenuDossier}
 

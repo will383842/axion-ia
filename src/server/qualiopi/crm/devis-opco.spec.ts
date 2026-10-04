@@ -7,7 +7,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { estimateOpcoCoverage } from "./devis";
+import { dateDeReferenceDevis, estimateOpcoCoverage } from "./devis";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Mock getQualiopiConfig
@@ -371,5 +371,111 @@ describe("estimateOpcoCoverage — origine de l'estimation (lot A4)", () => {
       "Entreprise de 50 salariés ou plus : pas de financement OPCO sur les fonds légaux du plan de développement des compétences (hors versements volontaires ou conventionnels).",
     );
     expect(mockResolve).not.toHaveBeenCalled();
+  });
+});
+
+describe("estimateOpcoCoverage — consommation de l'année (lot A7d)", () => {
+  // 2 × 50 h × 40 €/h = 4 000 € théoriques ; facture 6 000 € ; plafond 8 000 €.
+  const base = {
+    nbParticipants: 2,
+    dureeHeures: 50,
+    modalite: "intra" as const,
+    montantHtCents: 600_000,
+  };
+
+  it("enveloppe restante = plafond annuel − consommé (accordé + en cours)", async () => {
+    const r = await estimateOpcoCoverage({
+      ...base,
+      consommationAnnee: { annee: 2027, accordeCents: 500_000, enCoursCents: 100_000 },
+    });
+    // 8 000 − 5 000 − 1 000 = 2 000 € restants.
+    expect(r.montantPriseEnChargeCents).toBe(200_000);
+    expect(r.resteAChargeCents).toBe(400_000);
+    expect(r.consommationDeduiteCents).toBe(600_000);
+    expect(r.avertissement).toContain("2027");
+    expect(r.avertissement).toContain("déjà pris en charge");
+  });
+
+  it("consommé au-delà du plafond → enveloppe bornée à 0, jamais négative", async () => {
+    const r = await estimateOpcoCoverage({
+      ...base,
+      consommationAnnee: { annee: 2027, accordeCents: 900_000, enCoursCents: 0 },
+    });
+    expect(r.montantPriseEnChargeCents).toBe(0);
+    expect(r.resteAChargeCents).toBe(600_000);
+  });
+
+  it("l'enveloppe saisie sur le devis prime sur la consommation", async () => {
+    const r = await estimateOpcoCoverage({
+      ...base,
+      enveloppeRestanteCents: 300_000,
+      consommationAnnee: { annee: 2027, accordeCents: 800_000, enCoursCents: 0 },
+    });
+    expect(r.montantPriseEnChargeCents).toBe(300_000);
+    expect(r.consommationDeduiteCents).toBeUndefined();
+  });
+
+  it("l'enveloppe annuelle de la fiche client remplace le plafond du barème", async () => {
+    const r = await estimateOpcoCoverage({
+      ...base,
+      enveloppeAnnuelleClientCents: 300_000,
+      consommationAnnee: { annee: 2027, accordeCents: 100_000, enCoursCents: 0 },
+    });
+    expect(r.montantPriseEnChargeCents).toBe(200_000);
+  });
+
+  it("sans consommation connue → comportement inchangé, aucune phrase ajoutée", async () => {
+    const r = await estimateOpcoCoverage({ ...base, enveloppeAnnuelleClientCents: 300_000 });
+    expect(r.montantPriseEnChargeCents).toBe(300_000);
+    expect(r.avertissement ?? "").not.toContain("déjà pris en charge");
+  });
+
+  it("consommation nulle → aucune phrase ajoutée", async () => {
+    const r = await estimateOpcoCoverage({
+      ...base,
+      consommationAnnee: { annee: 2027, accordeCents: 0, enCoursCents: 0 },
+    });
+    expect(r.montantPriseEnChargeCents).toBe(400_000);
+    expect(r.avertissement ?? "").not.toContain("déjà pris en charge");
+  });
+
+  it("la phrase s'ajoute aussi derrière un barème complet (sans autre avertissement)", async () => {
+    mockResolve.mockResolvedValueOnce({
+      intraHoraireCents: 4000,
+      interPresentielCents: 2500,
+      interDistancielCents: 1500,
+      plafondAnnuelCents: 800_000,
+    });
+    const r = await estimateOpcoCoverage({
+      ...base,
+      opco: "atlas",
+      consommationAnnee: { annee: 2027, accordeCents: 700_000, enCoursCents: 0 },
+    });
+    expect(r.origine).toBe("bareme");
+    expect(r.montantPriseEnChargeCents).toBe(100_000);
+    expect(r.avertissement).toContain("déjà pris en charge");
+  });
+});
+
+describe("dateDeReferenceDevis — barème de l'année de la session (lot A7d)", () => {
+  const maintenant = new Date("2026-10-04T10:00:00Z");
+  it("asOf = début prévu de la session liée", () => {
+    const debut = new Date("2027-02-08T08:00:00Z");
+    expect(
+      dateDeReferenceDevis({
+        debutSessionPrevue: debut,
+        dateValidite: new Date("2026-11-03T10:00:00Z"),
+        maintenant,
+      }),
+    ).toEqual(debut);
+  });
+  it("sans session → date de validité du devis", () => {
+    const validite = new Date("2026-11-03T10:00:00Z");
+    expect(
+      dateDeReferenceDevis({ debutSessionPrevue: null, dateValidite: validite, maintenant }),
+    ).toEqual(validite);
+  });
+  it("ni l'une ni l'autre → la date du jour", () => {
+    expect(dateDeReferenceDevis({ maintenant })).toEqual(maintenant);
   });
 });
