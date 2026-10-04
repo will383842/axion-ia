@@ -69,7 +69,9 @@ export interface OpcoClient {
  */
 export function opcoDuClient(client: OpcoClient | null | undefined): OpcoId | null {
   if (isOpcoId(client?.opco)) return client.opco;
-  return isOpcoId(client?.opcoIdentifie) ? client.opcoIdentifie : null;
+  // `trim()` : une saisie « atlas » entourée d'espaces reste reconnue (relecture A7a).
+  const libre = client?.opcoIdentifie?.trim();
+  return isOpcoId(libre) ? libre : null;
 }
 
 /** Nom affiché, même règle ; un texte libre non reconnu est repris tel quel. */

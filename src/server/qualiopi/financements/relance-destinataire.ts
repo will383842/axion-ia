@@ -104,12 +104,15 @@ function nomFinanceur(entree: EntreeRelance): string {
 
   if (entree.destinataire === "france_travail") return "France Travail";
 
+  // `destinataireNom` a été figé à l'émission par `resoudreDestinataireFacture`.
+  // Quand il nomme déjà un financeur, la relance redit ce qui est IMPRIMÉ sur la
+  // facture, même si l'OPCO de la fiche a changé depuis (lot A7a, relecture).
+  const nomFacture = entree.destinataireNom?.trim();
+  if (nomFacture && nomFacture !== "OPCO (à préciser)") return nomFacture;
+
   // Règle unique (lot A7a) : OPCO typé d'abord, ancien texte libre ensuite.
   if (referenceOpcoDuClient(entree.client) !== null) return nomOpcoDuClient(entree.client);
 
-  // `destinataireNom` a été figé à l'émission par `resoudreDestinataireFacture`
-  // et vaut déjà « Atlas » ou « OPCO (à préciser) ». C'est le dernier recours
-  // honnête : il vient de la facture elle-même.
   return entree.destinataireNom;
 }
 
