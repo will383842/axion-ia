@@ -81,6 +81,8 @@ const CHAMPS_ENTREPRISE = [
   "opcoEnveloppeAnnuelleCents",
   "opco",
   "effectif",
+  "opcoAdhesionOffreMobilites",
+  "opcoVersementVolontaire",
 ] as const;
 
 function refuserChampsEntreprisePourParticulier(
@@ -202,8 +204,24 @@ const updateClientSchema = z
      * une pièce opposable au financeur et à l'auditeur.
      */
     opcoIdentifie: z.string().min(1).max(60).nullable().optional(),
-    opcoNumeroAdherent: z.string().max(80).optional(),
-    opcoEnveloppeAnnuelleCents: z.number().int().min(0).optional(),
+    /** Lot A7b : `null` efface (bloc « Branche et OPCO » de la fiche). */
+    opcoNumeroAdherent: z.string().max(80).nullable().optional(),
+    /** CENTIMES entiers ; `null` efface. Un montant en euros à virgule est refusé. */
+    opcoEnveloppeAnnuelleCents: z
+      .number({ invalid_type_error: "Enveloppe annuelle : un montant est attendu." })
+      .int("Enveloppe annuelle : montant en centimes entiers attendu.")
+      .min(0, "Enveloppe annuelle : elle ne peut pas être négative.")
+      // Colonne `Int` Postgres (32 bits) : au-delà, message clair plutôt qu'une erreur brute.
+      .max(2_147_483_647, "Enveloppe annuelle : montant trop élevé.")
+      .nullable()
+      .optional(),
+    /**
+     * Lot A7b — adhésion à l'offre de services d'OPCO Mobilités et versement
+     * volontaire : `null` = non renseigné (jamais « non »). Leur date de saisie
+     * est posée par le serveur.
+     */
+    opcoAdhesionOffreMobilites: z.boolean().nullable().optional(),
+    opcoVersementVolontaire: z.boolean().nullable().optional(),
     /**
      * OPCO TYPÉ (lot OPCO A1) : l'un des 11 du référentiel, `null` efface.
      * Indépendant d'`opcoIdentifie` : l'un ne recopie ni n'écrase l'autre.
@@ -471,11 +489,16 @@ export async function updateClientAction(
   // la même charge reste possible.
   // Lot OPCO A1 : même règle pour l'effectif et l'OPCO typé, qui n'ont de sens
   // que pour un employeur — refus SERVEUR, pas seulement masquage du formulaire.
+  // Lot A7b : même règle pour l'enveloppe, le n° d'adhérent et les deux faits OPCO.
   const identifiantEntreprise =
     (typeof sirenAEcrire === "string" && sirenAEcrire !== "") ||
     (typeof fields.siret === "string" && fields.siret !== "") ||
     typeof fields.effectif === "number" ||
-    typeof fields.opco === "string";
+    typeof fields.opco === "string" ||
+    typeof fields.opcoEnveloppeAnnuelleCents === "number" ||
+    (typeof fields.opcoNumeroAdherent === "string" && fields.opcoNumeroAdherent !== "") ||
+    typeof fields.opcoAdhesionOffreMobilites === "boolean" ||
+    typeof fields.opcoVersementVolontaire === "boolean";
   if (identifiantEntreprise && fields.type !== "entreprise") {
     const typeEnBase =
       fields.type ??
@@ -553,6 +576,22 @@ export async function updateClientAction(
             effectifReleveLe: new Date(`${parisDateISO(new Date())}T00:00:00.000Z`),
           };
 
+  // ── Offre Mobilités / versement volontaire (lot OPCO A7b) ──────────────────
+  // La date de saisie suit les deux faits : jour civil de Paris, posée ici.
+  const adhesionsTransmises =
+    fields.opcoAdhesionOffreMobilites !== undefined || fields.opcoVersementVolontaire !== undefined;
+  const adhesionsAEcrire = adhesionsTransmises
+    ? {
+        ...(fields.opcoAdhesionOffreMobilites !== undefined
+          ? { opcoAdhesionOffreMobilites: fields.opcoAdhesionOffreMobilites }
+          : {}),
+        ...(fields.opcoVersementVolontaire !== undefined
+          ? { opcoVersementVolontaire: fields.opcoVersementVolontaire }
+          : {}),
+        opcoAdhesionsRenseigneesLe: new Date(`${parisDateISO(new Date())}T00:00:00.000Z`),
+      }
+    : {};
+
   // ── Contact : par la fonction unique, jamais en écriture directe ──────────
   // `Client.contact*` est la COPIE du contact de facturation (dossier client,
   // PA-1). Les écrire ici à côté de lui ferait deux vérités.
@@ -595,6 +634,7 @@ export async function updateClientAction(
           ...(fields.opco !== undefined ? { opco: fields.opco } : {}),
           ...(opcoTypeInfere !== undefined ? { opco: opcoTypeInfere } : {}),
           ...effectifAEcrire,
+          ...adhesionsAEcrire,
           ...(fields.statut !== undefined ? { statut: fields.statut } : {}),
           ...(fields.source !== undefined ? { source: fields.source } : {}),
           ...(fields.contexteIa !== undefined ? { contexteIa: fields.contexteIa } : {}),

@@ -12,7 +12,7 @@ import { existsInR2, isR2Configured } from "@/lib/r2-storage";
 import { opcoDuClient } from "./opco-referentiel";
 import { regimePaiementDeSession } from "./regime-paiement-session";
 import { etatFondsDuClient } from "./etat-fonds-opco-lecture";
-import { bandeauEtatFonds } from "./etat-fonds-opco";
+import { bandeauEtatFonds, type Bandeau } from "./etat-fonds-opco";
 import {
   PIECES_DEMANDE_OPCO,
   confirmerExemplairesSignes,
@@ -29,6 +29,8 @@ export interface DossierPretADeposer {
   raisonSociale: string | null;
   pieces: EtatPiece[];
   encart: EncartDepot;
+  /** Lot A7b — bandeau d'état des fonds de l'OPCO du client (page Financement). */
+  bandeau: Bandeau | null;
 }
 
 const TYPES_PIECES = [...new Set(PIECES_DEMANDE_OPCO.flatMap((p) => p.types))];
@@ -94,6 +96,7 @@ export async function chargerDossierPretADeposer(
     intituleFormation: s.titreSession,
     raisonSociale: s.client?.raisonSociale ?? null,
     pieces,
+    bandeau,
     encart: encartDepot({
       opco,
       dateDebut: s.dateDebut,

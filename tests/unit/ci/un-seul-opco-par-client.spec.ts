@@ -76,10 +76,8 @@ const LECTURES_AUTORISEES = new Map<string, string>([
   // Référentiel NAF/IDCC → OPCO : produit la valeur sans lire de fiche. Exception
   // PRÉVENTIVE, demandée par le cahier du lot — d'où son exclusion du test « place morte ».
   ["src/server/qualiopi/crm/naf-opco.ts", "inférence"],
-  // La liste des clients TRANSMET la valeur brute au formulaire qui saisit le
-  // texte libre (`ClientBrancheForm`) : on édite ce qui est en base, pas sa lecture.
-  // L'AFFICHAGE de la colonne OPCO, lui, passe par la règle unique.
-  ["src/app/[locale]/(admin)/[adminPrefix]/qualiopi/clients/page.tsx", "valeur éditée"],
+  // (Lot A7b : la liste des clients ne transmet plus le texte libre au formulaire —
+  // un seul sélecteur, l'OPCO typé ; la suggestion est calculée par `suggererOpco`.)
 ]);
 
 function fichiersSources(dossier: string): string[] {
