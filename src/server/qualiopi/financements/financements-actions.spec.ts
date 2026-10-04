@@ -459,7 +459,13 @@ describe("genererFactureFormationAction", () => {
 
   it("autorise si opcoStatut=paiement_recu", async () => {
     mockPrisma.trainingSession.findUnique.mockResolvedValue(
-      makeSession({ financementType: "opco", opcoStatut: "paiement_recu" }),
+      // Lot A8c — une facture à l'OPCO n'existe qu'en subrogation.
+      makeSession({
+        financementType: "opco",
+        opcoStatut: "paiement_recu",
+        opcoSubrogation: true,
+        numeroDossierOpco: "ATL-2026-1",
+      }),
     );
 
     const result = await genererFactureFormationAction({
@@ -674,7 +680,9 @@ describe("genererFactureFormationAction", () => {
   });
 
   it("ventilation horaire : refuse si dureeReelleHeures=0", async () => {
-    mockPrisma.trainingSession.findUnique.mockResolvedValue(makeSession({ dureeReelleHeures: 0 }));
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(
+      makeSession({ dureeReelleHeures: 0, opcoSubrogation: true, numeroDossierOpco: "ATL-2026-1" }),
+    );
 
     const result = await genererFactureFormationAction({
       sessionId: SESSION_UUID,
@@ -688,6 +696,10 @@ describe("genererFactureFormationAction", () => {
   });
 
   it("ventilation horaire : crée la facture si dureeReelleHeures renseigné + barème présent", async () => {
+    // Lot A8c — la ventilation horaire OPCO se facture à l'OPCO : en subrogation.
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(
+      makeSession({ opcoSubrogation: true, numeroDossierOpco: "ATL-2026-1" }),
+    );
     const result = await genererFactureFormationAction({
       sessionId: SESSION_UUID,
       destinataire: "opco",
@@ -699,7 +711,12 @@ describe("genererFactureFormationAction", () => {
 
   it("ventilation horaire : retourne { error } si barème absent (priseEnChargeMontantCents=null)", async () => {
     mockPrisma.trainingSession.findUnique.mockResolvedValue(
-      makeSession({ priseEnChargeMontantCents: null, priseEnChargeUnite: null }),
+      makeSession({
+        priseEnChargeMontantCents: null,
+        priseEnChargeUnite: null,
+        opcoSubrogation: true,
+        numeroDossierOpco: "ATL-2026-1",
+      }),
     );
 
     const result = await genererFactureFormationAction({

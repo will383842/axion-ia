@@ -157,6 +157,10 @@ function dossierDepuisVentilation(opcoSubrogation: boolean, plafond: number | nu
     [],
     {
       financementType: "opco",
+      clientId: CLIENT.id,
+      numeroDossierOpco: null,
+      edofVerifieAt: null,
+      ftDispositif: null,
       montantHtCents: PRIX_HT,
       opcoSubrogation,
       priseEnChargeMontantCents: null,

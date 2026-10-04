@@ -148,6 +148,10 @@ import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi
 import { PieceExemplaireSigneEmail, pieceExemplaireSigneSubject } from "./piece-exemplaire-signe";
 import { FactureEnvoiEmail, factureEnvoiSubject } from "./facture-envoi";
 import {
+  FacturePiecesRemboursementOpcoEmail,
+  facturePiecesRemboursementOpcoSubject,
+} from "./facture-pieces-remboursement-opco";
+import {
   AutofactureTransmissionEmail,
   autofactureTransmissionSubject,
 } from "./autofacture-transmission";
@@ -407,6 +411,11 @@ const TEMPLATES: TemplateMap = {
     component: PieceExemplaireSigneEmail,
   },
   "facture-envoi": { subject: factureEnvoiSubject, component: FactureEnvoiEmail },
+  // Lot A8c — circuit remboursement OPCO : facture acquittée + certificat.
+  "facture-pieces-remboursement-opco": {
+    subject: facturePiecesRemboursementOpcoSubject,
+    component: FacturePiecesRemboursementOpcoEmail,
+  },
   "autofacture-transmission": {
     subject: autofactureTransmissionSubject,
     component: AutofactureTransmissionEmail,
