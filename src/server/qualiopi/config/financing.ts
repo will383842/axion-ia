@@ -190,3 +190,14 @@ export function getFinancingPromptFact(): string {
     "- INTERDIT : inventer un numéro (NDA, certificat Qualiopi) ou citer un logo d'OPCO / France Travail.",
   ].join("\n");
 }
+
+/**
+ * Seuil PAR DÉFAUT de la condition suspensive de prise en charge par l'OPCO
+ * (INT-T65-A), en points de base : 5000 = 50 % du prix TTC de la convention.
+ *
+ * Source : décision de Williams du 2026-10-04 (issue axion-apporteurs#656,
+ * messages 5978053857 et 5978330543). C'est un DÉFAUT proposé à la saisie : la
+ * valeur retenue est stockée sur la convention (`seuilBps` ou `seuilCents`) et
+ * modifiable convention par convention. Entier, jamais de flottant.
+ */
+export const SEUIL_CONDITION_SUSPENSIVE_OPCO_BPS = 5000 as const;
