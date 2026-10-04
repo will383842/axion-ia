@@ -70,6 +70,21 @@ est repris au suivant.
 Si une rotation sans refus est exigée, la double clé (`PARTNERS_RELECTURE_SECRET_PRECEDENT` et son
 échéance, choisie par un `kid`) est un écart à inscrire, sur le modèle de Partners.
 
+## Pendant la rotation (rattrapage 96)
+
+- **L'alerte de secret désynchronisé est attendue.** Pendant la fenêtre de la rotation (entre l'étape
+  2 et l'étape 3 du A, entre l'étape 1 et l'étape 2 du B), des appels sont refusés pour leur signature,
+  et Partners lève son alerte de secret désynchronisé : elle est attendue, et ne demande aucun geste
+  tant que l'étape suivante est faite dans les délais. Elle doit retomber après la dernière étape ; si
+  elle persiste, la rotation n'est pas finie.
+- **Vérifier qu'aucun limiteur d'axion-ia ne bloque Partners après la série de refus.** Dans le code
+  d'axion-ia, le seul limiteur d'une route appelée par Partners est celui du rejeu
+  (`partners:reconciliation`, `DEBIT_REJEU` : dix appels par heure, refus si le compteur est aveugle).
+  Il n'est consulté qu'après la vérification de signature : une requête refusée en `401` ne le
+  consomme pas. La relecture et les coordonnées n'ont pas de limiteur applicatif. Après la dernière
+  étape, une relecture et un rejeu de Partners passent (`200`), et aucun `429 debit_depasse`
+  n'apparaît. S'il en apparaît un, attendre la fenêtre de l'heure ; ne jamais lever le limiteur.
+
 ## Ce que ce runbook ne fait jamais
 
 - Aucune valeur de secret écrite dans un fichier, une PR, un journal ou une conversation.
