@@ -1,5 +1,5 @@
 /**
- * Le CANAL d'un rendez-vous : par téléphone, ou en visioconférence.
+ * Le CANAL d'un rendez-vous : par téléphone, en visioconférence, ou sur place.
  *
  * ## Pourquoi une dérivation, et pas une colonne
  *
@@ -40,7 +40,7 @@
  */
 
 /** Ce qu'on peut affirmer du canal d'un rendez-vous. */
-export type CanalRendezVous = "telephone" | "visio" | "inconnu";
+export type CanalRendezVous = "telephone" | "visio" | "sur_place" | "inconnu";
 
 /**
  * Types de lieu Calendly qui désignent une VISIOCONFÉRENCE.
@@ -67,7 +67,17 @@ const TYPES_VISIO = new Set([
  * les fusionner créerait une dépendance entre l'extraction et l'affichage. Le
  * test `le-canal-est-derive-du-type.spec.ts` vérifie qu'elles ne divergent pas.
  */
-const TYPES_TELEPHONE = new Set(["outbound_call", "inbound_call", "physical"]);
+const TYPES_TELEPHONE = new Set(["outbound_call", "inbound_call"]);
+
+/**
+ * Types de lieu Calendly qui désignent une RENCONTRE EN PERSONNE.
+ *
+ * 🔴 `physical` a longtemps été rangé parmi les téléphones. Constaté en réel le
+ * 2026-10-04 : « Rencontre au salon GOFAB » — lieu `physical` = une adresse —
+ * s'affichait « Téléphone » en console et partait au CRM en `telephone`. Un
+ * lieu `physical` est une ADRESSE : ni un numéro à composer, ni un lien.
+ */
+const TYPES_SUR_PLACE = new Set(["physical"]);
 
 /** Une chaîne qui ressemble à un lien de réunion. */
 const RESSEMBLE_A_UNE_URL = /^https?:\/\//i;
@@ -105,6 +115,7 @@ export function canalDuRendezVous(
   if (type !== null) {
     if (TYPES_VISIO.has(type)) return "visio";
     if (TYPES_TELEPHONE.has(type)) return "telephone";
+    if (TYPES_SUR_PLACE.has(type)) return "sur_place";
     // Type connu de Calendly mais pas de nous : on ne devine pas, on descend
     // d'un cran vers la forme du texte.
   }
@@ -120,6 +131,7 @@ export function canalDuRendezVous(
 export const LIBELLE_CANAL: Readonly<Record<CanalRendezVous, string>> = {
   telephone: "Téléphone",
   visio: "Visio",
+  sur_place: "Sur place",
   inconnu: "À préciser",
 };
 
@@ -164,6 +176,10 @@ export const INTITULE_FORMAT = "Format" as const;
 export const TEINTE_CANAL: Readonly<Record<CanalRendezVous, string | null>> = {
   telephone: "bleu",
   visio: "teal",
+  // `terracotta` : la seule teinte d'identité que ni un format ni un TYPE de
+  // rendez-vous (`TEINTE_TYPE_RDV` : or, bleu, violet, magenta) n'emploie déjà,
+  // or les deux pastilles se côtoient sur la même ligne.
+  sur_place: "terracotta",
   inconnu: null,
 };
 
@@ -177,6 +193,7 @@ export const TEINTE_CANAL: Readonly<Record<CanalRendezVous, string | null>> = {
  *
  * - `"9"` Blueberry (bleu)   → téléphone
  * - `"7"` Peacock  (turquoise) → visio
+ * - `"5"` Banana   (jaune)      → sur place
  *
  * 🔑 `inconnu` rend `null`, et un `null` doit se traduire par « on n'envoie pas
  * de `colorId` », donc par la couleur par défaut de l'agenda — surtout pas par
@@ -185,5 +202,6 @@ export const TEINTE_CANAL: Readonly<Record<CanalRendezVous, string | null>> = {
 export const COULEUR_GOOGLE_CANAL: Readonly<Record<CanalRendezVous, string | null>> = {
   telephone: "9",
   visio: "7",
+  sur_place: "5",
   inconnu: null,
 };

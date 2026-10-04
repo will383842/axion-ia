@@ -283,6 +283,14 @@ function CarteRdv({
             </dd>
           </>
         ) : null}
+        {/* Sur place : l'ADRESSE, et ni bouton de visio ni « Appeler » — un lieu
+            `physical` Calendly est une adresse (salon GOFAB, 2026-10-04). */}
+        {r.format === "sur_place" && r.location?.trim() ? (
+          <>
+            <dt className="admin-dt">Adresse</dt>
+            <dd className="admin-dd">{r.location.trim()}</dd>
+          </>
+        ) : null}
         {r.contactPhone && r.format !== "telephone" ? (
           <>
             <dt className="admin-dt">Téléphone</dt>

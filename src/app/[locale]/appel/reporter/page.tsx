@@ -136,7 +136,13 @@ export default async function ReporterPage({ params, searchParams }: Props) {
 
   const format = canalDuRendezVous(rdv.location, rdv.rawPayload);
   const libelleFormat =
-    format === "visio" ? "en visioconférence" : format === "telephone" ? "par téléphone" : null;
+    format === "visio"
+      ? "en visioconférence"
+      : format === "telephone"
+        ? "par téléphone"
+        : format === "sur_place"
+          ? "sur place"
+          : null;
 
   // ── ÉCRAN 2 : confirmer un créneau déjà choisi ────────────────────────────
   if (nouveauDebut !== "" && creneauExploitable(nouveauDebut, new Date())) {

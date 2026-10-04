@@ -47,7 +47,7 @@ export interface UnifiedRdv {
    */
   lienVisio: string | null;
   /**
-   * Téléphone ou visio — **dérivé** de `location`, jamais stocké.
+   * Téléphone, visio ou sur place — **dérivé** de `location`, jamais stocké.
    *
    * Deux champs qui doivent dire la même chose finissent par diverger : le
    * format se recalcule à chaque lecture, donc les lignes déjà en base

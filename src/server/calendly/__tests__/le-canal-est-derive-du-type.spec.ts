@@ -106,24 +106,43 @@ describe("le canal se dérive du type Calendly", () => {
   });
 });
 
+/** Relit une liste `const NOM = new Set([...])` dans un fichier source. */
+function typesDeLaListe(fichier: string, nom: string): string[] {
+  const src = readFileSync(join(process.cwd(), fichier), "utf8");
+  const bloc = new RegExp(`const ${nom} = new Set\\(\\[([\\s\\S]*?)\\]\\)`).exec(src)?.[1];
+  expect(bloc, `${nom} introuvable dans ${fichier} — la garde ne mesure plus rien`).toBeDefined();
+  // Les commentaires de fin de ligne sont retirés : un type cité en commentaire
+  // n'est pas dans la liste.
+  const sansCommentaires = (bloc ?? "").replace(/\/\/.*$/gm, "");
+  const types = [...sansCommentaires.matchAll(/"([a-z_]+)"/g)].map((m) => m[1] as string);
+  expect(
+    types.length,
+    "aucun type extrait : le motif de lecture a cessé de mordre",
+  ).toBeGreaterThan(0);
+  return types;
+}
+
 describe("les deux listes de types téléphone ne divergent pas", () => {
+  it("🔑 les deux listes sont IDENTIQUES — dans les deux sens", () => {
+    // 🔑 DÉRIVÉ, pas recopié : on relit les deux listes dans leurs fichiers.
+    // Un seul sens (api.ts ⊂ canal.ts) laissait passer un type ajouté au canal
+    // seul — c'est par là qu'une adresse `physical` devenait un « Téléphone ».
+    const extraction = typesDeLaListe("src/server/calendly/api.ts", "PHONE_LOCATION_TYPES").sort();
+    const canal = typesDeLaListe("src/server/calendly/canal.ts", "TYPES_TELEPHONE").sort();
+    expect(canal).toEqual(extraction);
+  });
+
+  it("🔴 `physical` (une adresse) n'est dans AUCUNE des deux listes téléphone", () => {
+    expect(typesDeLaListe("src/server/calendly/api.ts", "PHONE_LOCATION_TYPES")).not.toContain(
+      "physical",
+    );
+    expect(typesDeLaListe("src/server/calendly/canal.ts", "TYPES_TELEPHONE")).not.toContain(
+      "physical",
+    );
+  });
+
   it("🔑 tout type « téléphone » connu de l'extraction l'est aussi du canal", () => {
-    // 🔑 DÉRIVÉ, pas recopié : on relit la liste de `api.ts` dans le fichier,
-    // et on exige que le canal traite chacun de ses types comme un téléphone.
-    // Deux listes qui doivent s'accorder ne doivent pas être comparées de tête.
-    const src = readFileSync(join(process.cwd(), "src/server/calendly/api.ts"), "utf8");
-    const bloc = /const PHONE_LOCATION_TYPES = new Set\(\[([\s\S]*?)\]\)/.exec(src)?.[1];
-    expect(
-      bloc,
-      "PHONE_LOCATION_TYPES introuvable dans api.ts — la garde ne mesure plus rien",
-    ).toBeDefined();
-
-    const types = [...(bloc ?? "").matchAll(/"([a-z_]+)"/g)].map((m) => m[1] as string);
-    expect(
-      types.length,
-      "aucun type extrait : le motif de lecture a cessé de mordre",
-    ).toBeGreaterThan(0);
-
+    const types = typesDeLaListe("src/server/calendly/api.ts", "PHONE_LOCATION_TYPES");
     for (const t of types) {
       expect(
         canalDuRendezVous(null, payloadEnrich(t)),
@@ -141,7 +160,12 @@ describe("le vocabulaire d'affichage", () => {
   });
 
   it("chaque canal a un libellé lisible, y compris l'inconnu", () => {
-    expect(Object.keys(LIBELLE_CANAL).sort()).toEqual(["inconnu", "telephone", "visio"]);
+    expect(Object.keys(LIBELLE_CANAL).sort()).toEqual([
+      "inconnu",
+      "sur_place",
+      "telephone",
+      "visio",
+    ]);
     for (const v of Object.values(LIBELLE_CANAL)) expect(v.trim().length).toBeGreaterThan(0);
   });
 });

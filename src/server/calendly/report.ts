@@ -156,6 +156,14 @@ export function demandeDepuisLaSource(
     // change le format sans le dire est pire qu'un report qui échoue.
     return { ok: false, manque: "le format du rendez-vous (ni téléphone ni visio reconnu)" };
   }
+  if (format === "sur_place") {
+    // 🔑 Un rendez-vous SUR PLACE (lieu `physical`, une adresse) ne se rejoue
+    // pas par l'API : la réservation directe ne sait demander qu'un appel ou
+    // une visio. Le reporter en `telephone` — ce qui arrivait tant que
+    // `physical` était rangé parmi les téléphones — changerait le format sans
+    // le dire. On refuse, l'alerte part, le visiteur est invité à nous écrire.
+    return { ok: false, manque: "un format reportable en ligne (rendez-vous sur place)" };
+  }
 
   // 🔴 LE NUMÉRO SUIT LE REPORT, VISIO COMPRISE (2026-09-03).
   //

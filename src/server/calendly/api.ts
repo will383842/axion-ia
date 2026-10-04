@@ -137,12 +137,15 @@ function isValidCalendlyUri(uri: string): boolean {
   return parsed.protocol === "https:" && parsed.hostname === "api.calendly.com";
 }
 
-/** Types de « lieu » Calendly qui désignent en fait un appel téléphonique. */
-const PHONE_LOCATION_TYPES = new Set([
-  "outbound_call",
-  "inbound_call",
-  "physical", // rare, mais Calendly y range parfois un numéro saisi librement
-]);
+/**
+ * Types de « lieu » Calendly qui désignent en fait un appel téléphonique.
+ *
+ * 🔴 `physical` N'Y EST PLUS (2026-10-04). Un lieu `physical` est une ADRESSE
+ * (« Salon GOFAB — Arena Saint-Étienne… ») : le ranger ici faisait du salon un
+ * « Téléphone » en console et au CRM, via le miroir de `canal.ts`. Une adresse
+ * n'est jamais un numéro à composer, même quand elle commence par un chiffre.
+ */
+const PHONE_LOCATION_TYPES = new Set(["outbound_call", "inbound_call"]);
 
 /**
  * Extrait le numéro de l'invité, dans l'ordre de fiabilité décroissante :
