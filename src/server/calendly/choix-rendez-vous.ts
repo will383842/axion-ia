@@ -306,14 +306,48 @@ export function choixDuType(type: unknown): ChoixRendezVous | null {
   return null;
 }
 
-/** Ajoute `utm_content` à une URL Calendly (widget, lien de secours, créneau). */
-export function avecUtmContent(url: string, utmContent: string | null | undefined): string {
-  if (!utmContent) return url;
+/**
+ * Les paramètres d'arrivée que CALENDLY sait garder (dans `tracking` de
+ * l'invité, relu par le sondage). `ref` n'en fait pas partie : Calendly ne le
+ * reprend pas, il reste porté par nos propres URL et par la capture de la page.
+ */
+export const PARAMS_SUIVI_CALENDLY = ["utm_source", "utm_medium", "utm_campaign"] as const;
+
+/**
+ * Ajoute `utm_content` (le BOUTON) et, s'il y en a, les UTM d'ARRIVÉE (L5a) à
+ * une URL Calendly : iframe, lien de secours, créneau. Sans l'arrivée, une
+ * réservation prise chez Calendly ne gardait que le bouton.
+ */
+export function avecUtmContent(
+  url: string,
+  utmContent: string | null | undefined,
+  suivi?: SuiviArrivee | null,
+): string {
+  const arrivee = PARAMS_SUIVI_CALENDLY.filter((cle) => suivi?.[cle]);
+  if (!utmContent && arrivee.length === 0) return url;
   try {
     const u = new URL(url);
-    u.searchParams.set("utm_content", utmContent);
+    if (utmContent) u.searchParams.set("utm_content", utmContent);
+    for (const cle of arrivee) u.searchParams.set(cle, suivi?.[cle] ?? "");
     return u.toString();
   } catch {
     return url;
   }
+}
+
+/**
+ * La provenance d'une réservation directe, prise comme un BLOC : si l'URL
+ * d'arrivée porte au moins une UTM, tout le bloc d'arrivée ; sinon tout le bloc
+ * du cookie. Jamais un mélange champ par champ de deux provenances.
+ */
+export function provenanceEnBloc(
+  arrivee: SuiviArrivee,
+  cookie: Readonly<Partial<Record<"utm_source" | "utm_medium" | "utm_campaign", string>>>,
+): { utmSource: string | null; utmMedium: string | null; utmCampaign: string | null } {
+  const bloc = PARAMS_SUIVI_CALENDLY.some((cle) => arrivee[cle]) ? arrivee : cookie;
+  return {
+    utmSource: bloc.utm_source ?? null,
+    utmMedium: bloc.utm_medium ?? null,
+    utmCampaign: bloc.utm_campaign ?? null,
+  };
 }

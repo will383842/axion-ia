@@ -231,6 +231,7 @@ export default async function ReserverPage({ params, searchParams }: Props) {
             replidUrl={avecUtmContent(
               resolu.url,
               choixExplicite ? utmContentDuChoix(choixExplicite, depuis) : null,
+              suivi,
             )}
             action={soumettreLaReservation}
             locale={locale}

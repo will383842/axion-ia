@@ -22,7 +22,12 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { lireSuiviArrivee, parametresDuChoix, parametresDuRetour } from "../choix-rendez-vous";
+import {
+  lireSuiviArrivee,
+  parametresDuChoix,
+  parametresDuRetour,
+  provenanceEnBloc,
+} from "../choix-rendez-vous";
 import { urlDuFormulaire } from "../formulaire-reservation";
 
 function lire(chemin: string): string {
@@ -102,6 +107,31 @@ describe("🔑 l'UTM d'arrivée survit au choix", () => {
   });
 });
 
+describe("🔑 la provenance d'une réservation directe se prend en BLOC", () => {
+  const COOKIE = { utm_source: "google", utm_medium: "cpc", utm_campaign: "printemps" };
+
+  it("l'arrivée porte une UTM : tout le bloc d'arrivée, rien du cookie", () => {
+    expect(provenanceEnBloc({ utm_source: "linkedin" }, COOKIE)).toEqual({
+      utmSource: "linkedin",
+      utmMedium: null,
+      utmCampaign: null,
+    });
+  });
+
+  it("aucune UTM d'arrivée (`ref` seul ne compte pas) : tout le bloc du cookie", () => {
+    expect(provenanceEnBloc({ ref: "p-42" }, COOKIE)).toEqual({
+      utmSource: "google",
+      utmMedium: "cpc",
+      utmCampaign: "printemps",
+    });
+    expect(provenanceEnBloc({}, {})).toEqual({
+      utmSource: null,
+      utmMedium: null,
+      utmCampaign: null,
+    });
+  });
+});
+
 describe("🔴 chaque lien du parcours porte l'arrivée", () => {
   const page = sansCommentaires(lire("src/app/[locale]/appel/page.tsx"));
   const reserver = sansCommentaires(lire("src/app/[locale]/appel/reserver/page.tsx"));
@@ -112,6 +142,8 @@ describe("🔴 chaque lien du parcours porte l'arrivée", () => {
     expect(page).toContain("parametresDuChoix(choix, depuis, suivi)");
     expect(page).toContain("parametresDuRetour(depuis, suivi)");
     expect(page).toContain("parametresDuChoix={parametresDuChoix(choix, depuis, suivi)}");
+    expect(page).toContain("suivi={suivi}");
+    expect(page).toContain('/appel${choix ? `?${parametresDuChoix(choix, depuis, suivi)}` : ""}`');
   });
 
   it("/appel/reserver : retour au calendrier et champs cachés", () => {
@@ -123,7 +155,7 @@ describe("🔴 chaque lien du parcours porte l'arrivée", () => {
   it("l'action relit l'arrivée des champs cachés pour ses renvois", () => {
     expect(actions).toContain("lireSuiviArrivee(");
     expect(actions).toContain("parametresDuChoix(choix, depuis, suivi)");
-    // Sans cookie UTM, la réservation directe garde l'arrivée du parcours.
-    expect(actions).toContain("utm.utm_source ?? suivi.utm_source ?? null");
+    // La provenance de la réservation directe se prend en BLOC.
+    expect(actions).toContain("...provenanceEnBloc(suivi, utm)");
   });
 });

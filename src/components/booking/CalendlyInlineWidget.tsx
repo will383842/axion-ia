@@ -50,7 +50,7 @@
 
 import { fetchAvailableSlots } from "@/server/calendly/availability";
 import { CalendlySlotPicker } from "./CalendlySlotPicker";
-import { avecUtmContent } from "@/server/calendly/choix-rendez-vous";
+import { avecUtmContent, type SuiviArrivee } from "@/server/calendly/choix-rendez-vous";
 //
 // CSP : `script-src` (soft public) autorise déjà `https://assets.calendly.com`
 // et `frame-src`/`connect-src` autorisent `calendly.com` + `*.calendly.com`.
@@ -80,9 +80,14 @@ interface CalendlyInlineWidgetProps {
    * réservation : il doit savoir QUEL type il réserve.
    */
   readonly parametresDuChoix?: string | undefined;
+  /**
+   * Les UTM d'ARRIVÉE (L5a), ajoutées à côté de `utm_content` à toute URL qui
+   * part chez Calendly : iframe, lien de secours, créneaux.
+   */
+  readonly suivi?: SuiviArrivee | undefined;
 }
 
-function buildCalendlyUrl(baseUrl: string, utmContent?: string): string {
+function buildCalendlyUrl(baseUrl: string, utmContent?: string, suivi?: SuiviArrivee): string {
   const url = new URL(baseUrl);
   url.searchParams.set("hide_event_type_details", "1");
   // GARDER `hide_gdpr_banner=1`. Contre-intuitif, donc à ne pas « corriger » :
@@ -97,8 +102,7 @@ function buildCalendlyUrl(baseUrl: string, utmContent?: string): string {
   url.searchParams.set("primary_color", CALENDLY_BRAND.primary);
   url.searchParams.set("text_color", CALENDLY_BRAND.text);
   url.searchParams.set("background_color", CALENDLY_BRAND.background);
-  if (utmContent) url.searchParams.set("utm_content", utmContent);
-  return url.toString();
+  return avecUtmContent(url.toString(), utmContent, suivi);
 }
 
 export async function CalendlyInlineWidget({
@@ -109,8 +113,9 @@ export async function CalendlyInlineWidget({
   locale = "fr",
   utmContent,
   parametresDuChoix,
+  suivi,
 }: CalendlyInlineWidgetProps) {
-  const finalUrl = calendlyUrl ? buildCalendlyUrl(calendlyUrl, utmContent) : null;
+  const finalUrl = calendlyUrl ? buildCalendlyUrl(calendlyUrl, utmContent, suivi) : null;
 
   if (!calendlyUrl || !finalUrl) {
     return (
@@ -166,6 +171,7 @@ export async function CalendlyInlineWidget({
           locale={locale}
           utmContent={utmContent}
           parametresDuChoix={parametresDuChoix}
+          suivi={suivi}
         />
       </div>
     );
@@ -187,7 +193,7 @@ export async function CalendlyInlineWidget({
           censé s'afficher), sur une surface de recueil de consentement. */}
       <CalendlyConsentGate
         url={finalUrl}
-        fallbackUrl={avecUtmContent(calendlyUrl, utmContent)}
+        fallbackUrl={avecUtmContent(calendlyUrl, utmContent, suivi)}
         isFr={isFr}
         height={height}
       />

@@ -54,6 +54,7 @@ import {
   lireDepuis,
   lireSuiviArrivee,
   parametresDuChoix,
+  provenanceEnBloc,
   resoudreChoix,
   utmContentDuChoix,
 } from "@/server/calendly/choix-rendez-vous";
@@ -242,11 +243,10 @@ export async function soumettreLaReservation(fd: FormData): Promise<void> {
   const validation = validerFormulaire(fd, {
     questions: et.questions,
     eventTypeUri: et.uri,
-    // Le cookie d'abord (premier contact) ; à défaut, l'arrivée recopiée par
-    // le parcours (L5a) — un cookie absent ne doit pas effacer la provenance.
-    utmSource: utm.utm_source ?? suivi.utm_source ?? null,
-    utmMedium: utm.utm_medium ?? suivi.utm_medium ?? null,
-    utmCampaign: utm.utm_campaign ?? suivi.utm_campaign ?? null,
+    // La provenance en BLOC (L5a) : celle de l'arrivée recopiée par le
+    // parcours si elle porte une UTM, sinon celle du cookie (réécrit à chaque
+    // URL avec UTM, donc la DERNIÈRE vue). Jamais un mélange des deux.
+    ...provenanceEnBloc(suivi, utm),
     // Le BOUTON qui a mené ici — mesure « quel bouton rapporte ».
     utmContent: choixExplicite ? utmContentDuChoix(choixExplicite, depuis) : null,
   });

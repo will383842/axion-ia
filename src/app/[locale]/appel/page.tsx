@@ -153,7 +153,7 @@ export default async function AppelPage({ params, searchParams }: Props) {
     utmContent?: string;
     referrer?: string;
   } = {
-    pageUrl: `${SITE_URL}/${locale}/appel${choix ? `?${parametresDuChoix(choix, depuis)}` : ""}`,
+    pageUrl: `${SITE_URL}/${locale}/appel${choix ? `?${parametresDuChoix(choix, depuis, suivi)}` : ""}`,
   };
   if (suivi.utm_source) trackingContext.utmSource = suivi.utm_source;
   if (suivi.utm_campaign) trackingContext.utmCampaign = suivi.utm_campaign;
@@ -593,6 +593,7 @@ function Calendrier({
                   locale={locale}
                   utmContent={utmContent}
                   parametresDuChoix={parametresDuChoix(choix, depuis, suivi)}
+                  suivi={suivi}
                 />
               </div>
               {/* Capture client des `event_scheduled` émis par l'iframe
