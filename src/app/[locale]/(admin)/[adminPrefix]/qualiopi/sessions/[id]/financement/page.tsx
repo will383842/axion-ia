@@ -24,12 +24,12 @@ import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFacture
 import { prisma } from "@/lib/prisma";
 import { getFinancementValidations } from "@/server/qualiopi/financements/validation-service";
 import { regimePaiementDeSession } from "@/server/qualiopi/financements/regime-paiement-session";
+import { destinataireFactureParDefaut } from "@/server/qualiopi/financements/circuit-paiement-opco";
 import { chargerDossierPretADeposer } from "@/server/qualiopi/financements/dossier-pret-a-deposer-lecture";
 import { DepotOpcoPanel } from "@/components/admin/qualiopi/DepotOpcoPanel";
 import { BandeauEtatFonds } from "@/components/admin/qualiopi/BandeauEtatFonds";
 import { EstimationBaremeOpco } from "@/components/admin/qualiopi/EstimationBaremeOpco";
 import { estimationOpcoDeSession } from "@/server/qualiopi/financements/estimation-opco-session";
-import type { FactureFormationDestinataire } from "../../../../../../../../../prisma/generated/client";
 import { OPCO_STATUT_LABELS } from "@/server/qualiopi/financements/labels";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
@@ -83,21 +83,6 @@ const DESTINATAIRE_LABELS: Record<string, string> = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Helper destinataire par défaut selon type de financement
-// ─────────────────────────────────────────────────────────────────────────────
-
-function defaultDestinataireForType(
-  ft: string | null,
-  subrogation: boolean,
-): FactureFormationDestinataire {
-  if (subrogation) return "opco";
-  if (ft === "france_travail") return "france_travail";
-  if (ft === "cpf") return "stagiaire";
-  if (ft === "opco") return "opco";
-  return "entreprise";
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -216,10 +201,12 @@ export default async function FinancementSessionPage({ params }: PageProps) {
       message: e.result.alerte ?? e.code,
     }));
 
-  const defaultDestinataire = defaultDestinataireForType(
-    trainingSession.financementType,
-    trainingSession.opcoSubrogation,
-  );
+  // Lot A8c — le destinataire présélectionné suit le CIRCUIT : hors
+  // subrogation, l'OPCO rembourse l'entreprise et la facture va à l'entreprise.
+  const defaultDestinataire = destinataireFactureParDefaut({
+    financementType: trainingSession.financementType,
+    opcoSubrogation: trainingSession.opcoSubrogation,
+  });
 
   const sectionHeadCls =
     "text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)] mb-[var(--space-admin-3)]";
