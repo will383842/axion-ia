@@ -1,5 +1,5 @@
 "use client";
-// use-client: dépôt OPCO d'une session — téléchargement du ZIP (Blob) et saisie « Dépôt fait le » (useTransition + Server Actions).
+// use-client: dépôt OPCO d'une session — téléchargement du ZIP (Blob), saisie « Dépôt fait le » et « Accord écrit le » (useTransition + Server Actions).
 
 /**
  * DepotOpcoPanel — chantier OPCO A6.
@@ -9,12 +9,20 @@
  * l'état RÉEL des pièces, remet le « dossier prêt à déposer » (ZIP : kit OPCO
  * vérifié + pièces présentes) et permet de saisir la date du dépôt et le
  * numéro de dossier OPCO — ce qui referme l'alerte `depot_opco_a_faire`.
+ *
+ * Lot OPCO A7b : bouton « Ouvrir le dossier OPCO » (portail relevé dans
+ * `OPCO_FICHES`, nouvel onglet) et date de l'accord écrit, saisie ici, à côté
+ * du dépôt — elle gouverne le régime de paiement. L'état des fonds est porté
+ * par le `BandeauEtatFonds` de la page, plus par une ligne de l'encart.
  */
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { genererDossierPretADeposerAction } from "@/server/actions/qualiopi/documents";
-import { enregistrerDepotDossierAction } from "@/server/actions/qualiopi/facturation-hub";
+import {
+  enregistrerAccordEcritAction,
+  enregistrerDepotDossierAction,
+} from "@/server/actions/qualiopi/facturation-hub";
 
 export interface DepotOpcoPanelProps {
   sessionId: string;
@@ -23,10 +31,15 @@ export interface DepotOpcoPanelProps {
   /** AAAA-MM-JJ, si le dépôt est déjà saisi. */
   depotFaitLe: string | null;
   numeroDossierExterne: string | null;
+  /** AAAA-MM-JJ, si la date de l'accord écrit est déjà saisie. */
+  accordEcritLe?: string | null;
+  /** `false` : lecture seule (ni dépôt ni accord saisissables). Défaut `true`. */
+  peutEcrire?: boolean;
   encart: {
     titre: string;
     qui: string;
     portail: string;
+    portailUrl: string | null;
     delai: string;
     dateLimite: string;
     regime: string;
@@ -52,6 +65,11 @@ function telechargerZip(base64: string, filename: string): void {
   URL.revokeObjectURL(url);
 }
 
+/** « AAAA-MM-JJ » → « JJ/MM/AAAA ». */
+function jourFr(jour: string): string {
+  return jour.split("-").reverse().join("/");
+}
+
 const labelCls =
   "block text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)] mb-[var(--space-admin-1)]";
 const inputCls =
@@ -64,6 +82,8 @@ export function DepotOpcoPanel(props: DepotOpcoPanelProps): React.ReactElement {
   const [success, setSuccess] = useState<string | null>(null);
   const [depot, setDepot] = useState(props.depotFaitLe ?? "");
   const [numero, setNumero] = useState(props.numeroDossierExterne ?? "");
+  const [accord, setAccord] = useState(props.accordEcritLe ?? "");
+  const peutEcrire = props.peutEcrire !== false;
   const { encart } = props;
   const manquantes = props.pieces.filter((p) => !p.presente);
 
@@ -110,12 +130,44 @@ export function DepotOpcoPanel(props: DepotOpcoPanelProps): React.ReactElement {
     });
   }
 
+  function enregistrerAccord(): void {
+    setError(null);
+    setSuccess(null);
+    if (props.dossierId === null) return;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(accord)) {
+      setError("Saisissez la date écrite sur l'accord.");
+      return;
+    }
+    const dossierId = props.dossierId;
+    startTransition(async () => {
+      const res = await enregistrerAccordEcritAction({ dossierId, accordEcritLe: accord });
+      if ("error" in res) {
+        setError(res.error);
+        return;
+      }
+      setSuccess("Accord enregistré.");
+      router.refresh();
+    });
+  }
+
   return (
     <div className="space-y-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
       <div>
-        <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
-          {encart.titre}
-        </p>
+        <div className="mb-[var(--space-admin-2)] flex flex-wrap items-center justify-between gap-[var(--space-admin-3)]">
+          <p className="text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
+            {encart.titre}
+          </p>
+          {encart.portailUrl ? (
+            <a
+              href={encart.portailUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="admin-button"
+            >
+              Ouvrir le dossier OPCO ↗
+            </a>
+          ) : null}
+        </div>
         <dl className="grid grid-cols-1 gap-x-[var(--space-admin-4)] gap-y-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] sm:grid-cols-[max-content_1fr]">
           <dt className="text-[color:var(--color-admin-fg-muted)]">Qui dépose</dt>
           <dd>{encart.qui}</dd>
@@ -129,12 +181,6 @@ export function DepotOpcoPanel(props: DepotOpcoPanelProps): React.ReactElement {
           <dd>{encart.dateLimite}</dd>
           <dt className="text-[color:var(--color-admin-fg-muted)]">Régime de paiement</dt>
           <dd>{encart.regime}</dd>
-          {encart.etatFonds ? (
-            <>
-              <dt className="text-[color:var(--color-admin-fg-muted)]">État des fonds</dt>
-              <dd className="text-[color:var(--color-admin-warning)]">{encart.etatFonds}</dd>
-            </>
-          ) : null}
         </dl>
       </div>
 
@@ -173,7 +219,12 @@ export function DepotOpcoPanel(props: DepotOpcoPanelProps): React.ReactElement {
 
       <div>
         <p className={labelCls}>Dépôt par l&apos;entreprise</p>
-        {props.dossierId === null ? (
+        {!peutEcrire ? (
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            {props.depotFaitLe ? `Dépôt fait le ${jourFr(props.depotFaitLe)}` : "Dépôt non saisi"}
+            {props.accordEcritLe ? ` · accord écrit le ${jourFr(props.accordEcritLe)}` : ""}
+          </p>
+        ) : props.dossierId === null ? (
           <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
             Aucun dossier de financement OPCO ouvert pour cette session : le dépôt se saisit sur le
             dossier, depuis le Hub facturation.
@@ -214,6 +265,27 @@ export function DepotOpcoPanel(props: DepotOpcoPanelProps): React.ReactElement {
               className="admin-button"
             >
               Enregistrer le dépôt
+            </button>
+            <div>
+              <label htmlFor="accord-ecrit-le" className={labelCls}>
+                Accord écrit le
+              </label>
+              <input
+                id="accord-ecrit-le"
+                type="date"
+                value={accord}
+                onChange={(e) => setAccord(e.target.value)}
+                disabled={isPending}
+                className={inputCls}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={enregistrerAccord}
+              disabled={isPending}
+              className="admin-button-secondary"
+            >
+              Enregistrer l&apos;accord
             </button>
           </div>
         )}

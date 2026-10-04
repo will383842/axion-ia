@@ -5014,6 +5014,15 @@ model Client {
   effectifSource             EffectifSource? @map("effectif_source")
   /// Date du relevé de l'effectif (jour civil de Paris à la saisie).
   effectifReleveLe           DateTime?       @map("effectif_releve_le") @db.Date
+  /// Lot OPCO A7b — adhésion à l'offre de services d'OPCO Mobilités (condition
+  /// de la subrogation chez cet OPCO). `null` = non renseigné, jamais « non ».
+  opcoAdhesionOffreMobilites Boolean?        @map("opco_adhesion_offre_mobilites")
+  /// Lot OPCO A7b — versement volontaire / conventionnel de l'entreprise à son
+  /// OPCO (fait perdre la subrogation). `null` = non renseigné.
+  opcoVersementVolontaire    Boolean?        @map("opco_versement_volontaire")
+  /// Date (jour civil de Paris) de la dernière saisie de ces deux faits, posée
+  /// par le serveur.
+  opcoAdhesionsRenseigneesLe DateTime?       @map("opco_adhesions_renseignees_le") @db.Date
   statut                     ClientStatut    @default(prospect)
   source                     String?         @db.VarChar(120)
   /// Contexte injecté au Formation Engine pour la génération sur-mesure.

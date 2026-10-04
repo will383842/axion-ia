@@ -185,6 +185,11 @@ export interface EncartDepot {
   titre: string;
   qui: string;
   portail: string;
+  /**
+   * Lot A7b — adresse du portail de dépôt (`OPCO_FICHES`), pour le bouton
+   * « Ouvrir le dossier OPCO » ; `null` si non relevée (aucun lien inventé).
+   */
+  portailUrl: string | null;
   delai: string;
   dateLimite: string;
   regime: string;
@@ -209,6 +214,7 @@ export function encartDepot(input: {
       titre: "Comment déposer la demande de prise en charge",
       qui: "Dépôt par l'entreprise, auprès de son OPCO (OPCO non renseigné)",
       portail: NON_RENSEIGNE,
+      portailUrl: null,
       delai: NON_RENSEIGNE,
       dateLimite: NON_RENSEIGNE,
       regime,
@@ -226,6 +232,7 @@ export function encartDepot(input: {
         ? "Dépôt par l'entreprise, depuis son espace sur le portail de l'OPCO"
         : "Dépôt par l'entreprise, auprès de son OPCO",
     portail: fiche.portailEntrepriseUrl.valeur ?? NON_RENSEIGNE,
+    portailUrl: fiche.portailEntrepriseUrl.valeur,
     delai:
       delai === null
         ? NON_RENSEIGNE

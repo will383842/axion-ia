@@ -21,6 +21,7 @@ import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions
 import { nomOpcoDuClient, referenceOpcoDuClient } from "./opco-referentiel";
 import { montantPrisEnChargeCents } from "./prise-en-charge-montant";
 import { sessionExigeUnDossier } from "./dossier-auto";
+import { planAccordEcrit } from "./accord-ecrit";
 import {
   construireLignesPayeurs,
   montantDemandeFinanceurCents,
@@ -263,6 +264,43 @@ export async function enregistrerDepotDossier(input: {
     throw new Error("Modification concurrente détectée — recharger le dossier.");
   }
   return { trainingSessionId: dossier.trainingSessionId };
+}
+
+/**
+ * Lot OPCO A7b — saisit la date ÉCRITE sur l'accord du financeur depuis la page
+ * Financement de la session. Le geste dépend du statut (`planAccordEcrit`) :
+ * date seule si l'accord est déjà acté, sinon transition(s) jusqu'à
+ * `accord_recu` par `transitionnerDossier` (même machine à états, même
+ * reventilation des créances). Rend les transitions faites, pour le journal.
+ */
+export async function enregistrerAccordEcrit(input: {
+  dossierId: string;
+  accordEcritLe: Date;
+}): Promise<{ trainingSessionId: string | null; transitions: DossierFinancementStatut[] }> {
+  const dossier = await prisma.dossierFinancement.findUniqueOrThrow({
+    where: { id: input.dossierId },
+    select: { statut: true, depotFaitLe: true, trainingSessionId: true },
+  });
+  const plan = planAccordEcrit(dossier);
+  if (plan.geste === "refus") throw new Error(plan.message);
+  if (plan.geste === "transitions") {
+    for (const vers of plan.vers) {
+      await transitionnerDossier({
+        dossierId: input.dossierId,
+        vers,
+        ...(vers === "accord_recu" ? { accordEcritLe: input.accordEcritLe } : {}),
+      });
+    }
+    return { trainingSessionId: dossier.trainingSessionId, transitions: plan.vers };
+  }
+  const { count } = await prisma.dossierFinancement.updateMany({
+    where: { id: input.dossierId, statut: dossier.statut },
+    data: { accordEcritLe: input.accordEcritLe },
+  });
+  if (count === 0) {
+    throw new Error("Modification concurrente détectée — recharger le dossier.");
+  }
+  return { trainingSessionId: dossier.trainingSessionId, transitions: [] };
 }
 
 /**

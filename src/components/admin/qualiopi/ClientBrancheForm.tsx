@@ -10,27 +10,53 @@
  *
  * Lot OPCO A1 : effectif salarié (seuils OPCO < 11 / 11-49 / 50+) et OPCO TYPÉ
  * (l'un des 11 du référentiel). Quand l'OPCO typé est vide et que le texte
- * libre `opcoIdentifie` désigne un OPCO sans ambiguïté, l'écran AFFICHE
+ * libre désigne un OPCO sans ambiguïté, l'écran AFFICHE
  * « OPCO suggéré : X » — il n'écrit rien : seul un choix explicite le pose.
+ *
+ * Lot OPCO A7b : UN SEUL sélecteur d'OPCO, le champ typé `opco`. L'ancien
+ * second sélecteur (texte libre `opcoIdentifie`, option « — (inféré) ») est
+ * retiré : son seul geste propre, « remettre en inféré », est porté par l'option
+ * « — » (cf. `branche-opco-saisie.ts`). La suggestion se retient d'un clic.
+ * `complet` (fiche client) ajoute enveloppe, n° d'adhérent, offre Mobilités et
+ * versement volontaire.
  */
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateClientAction } from "@/server/actions/qualiopi/clients";
-import { OPCO_IDS, OPCO_LABELS } from "@/server/qualiopi/financements/opco-referentiel";
-import { suggererOpco } from "@/server/qualiopi/financements/opco-suggestion";
+import {
+  OPCO_IDS,
+  OPCO_LABELS,
+  type OpcoId,
+} from "@/server/qualiopi/financements/opco-referentiel";
+import {
+  chargeBrancheOpco,
+  saisieInitiale,
+  type BrancheOpcoInitiale,
+  type BrancheOpcoSaisie,
+  type Tristate,
+} from "@/server/qualiopi/financements/branche-opco-saisie";
 import type { CompanySize } from "@/server/qualiopi/crm/types";
 
 interface ClientBrancheFormProps {
   id: string;
   idcc?: string | null;
   taille?: CompanySize | null;
-  /** OPCO courant (inféré ou saisi). `null` = « à déterminer ». */
-  opcoIdentifie?: string | null;
+  /**
+   * OPCO suggéré par le texte libre historique (`suggererOpco`, calculé par la
+   * page) : affiché, jamais écrit sans le clic « Retenir ».
+   */
+  suggestion?: OpcoId | null;
   /** OPCO typé (`Client.opco`). `null` = non choisi. */
   opco?: string | null;
   /** Effectif salarié de l'entreprise (niveau SIREN). `null` = inconnu. */
   effectif?: number | null;
+  /** Fiche client : enveloppe, adhérent, offre Mobilités, versement volontaire. */
+  complet?: boolean;
+  enveloppeCents?: number | null;
+  numeroAdherent?: string | null;
+  adhesionMobilites?: boolean | null;
+  versementVolontaire?: boolean | null;
   /**
    * Masque le champ OPCO. Un particulier (B2C) relève d'un contrat de formation
    * professionnelle (C. trav. L6353-3) et n'a PAS d'OPCO : lui en proposer un
@@ -47,71 +73,61 @@ const TAILLE_OPTIONS: ReadonlyArray<{ value: CompanySize; label: string }> = [
   { value: "GRANDE_ENTREPRISE", label: "Grande entreprise" },
 ] as const;
 
+const TRISTATE: ReadonlyArray<{ value: Tristate; label: string }> = [
+  { value: "", label: "Non renseigné" },
+  { value: "oui", label: "Oui" },
+  { value: "non", label: "Non" },
+];
+
 export function ClientBrancheForm({
   id,
   idcc,
   taille,
-  opcoIdentifie,
+  suggestion = null,
   opco,
   effectif,
+  complet = false,
+  enveloppeCents,
+  numeroAdherent,
+  adhesionMobilites,
+  versementVolontaire,
   estParticulier = false,
 }: ClientBrancheFormProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [ok, setOk] = useState(false);
-  const [idccValue, setIdccValue] = useState<string>(idcc ?? "");
-  const [tailleValue, setTailleValue] = useState<string>(taille ?? "");
-  // Valeur d'origine mémorisée : c'est elle qui permet de distinguer « l'admin
-  // a délibérément changé l'OPCO » de « l'admin n'a pas touché au select ».
-  const opcoInitial = opcoIdentifie ?? "";
-  const [opcoValue, setOpcoValue] = useState<string>(opcoInitial);
-  // Même discipline pour l'OPCO typé et l'effectif : n'envoyer que ce qui a
-  // changé, pour qu'un simple « Enregistrer » ne re-date pas l'effectif.
-  const opcoTypeInitial = opco ?? "";
-  const [opcoTypeValue, setOpcoTypeValue] = useState<string>(opcoTypeInitial);
-  const effectifInitial = effectif == null ? "" : String(effectif);
-  const [effectifValue, setEffectifValue] = useState<string>(effectifInitial);
-  const suggestion = suggererOpco({ opco, opcoIdentifie });
+  // État d'origine mémorisé : n'envoyer que ce qui a changé, pour qu'un simple
+  // « Enregistrer » ne re-date pas l'effectif ni ne fige un OPCO inféré.
+  const initial: BrancheOpcoInitiale = {
+    idcc: idcc ?? null,
+    taille: taille ?? null,
+    opco: opco ?? null,
+    effectif: effectif ?? null,
+    enveloppeCents: enveloppeCents ?? null,
+    numeroAdherent: numeroAdherent ?? null,
+    adhesionMobilites: adhesionMobilites ?? null,
+    versementVolontaire: versementVolontaire ?? null,
+  };
+  const [saisie, setSaisie] = useState<BrancheOpcoSaisie>(() => saisieInitiale(initial));
+
+  function poser<K extends keyof BrancheOpcoSaisie>(champ: K, valeur: BrancheOpcoSaisie[K]) {
+    setSaisie((s) => ({ ...s, [champ]: valeur }));
+  }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
     setOk(false);
-
-    const idccTrim = idccValue.trim();
+    // 🔴 Le serveur valide et pose lui-même la source et la date de l'effectif
+    // (`saisie`), comme celle de l'offre Mobilités / du versement volontaire.
+    const r = chargeBrancheOpco(initial, saisie, { estParticulier });
+    if ("erreur" in r) {
+      setError(r.erreur);
+      return;
+    }
     startTransition(async () => {
-      const result = await updateClientAction({
-        id,
-        ...(idccTrim !== "" ? { idcc: idccTrim } : {}),
-        ...(tailleValue !== "" ? { taille: tailleValue as CompanySize } : {}),
-        // 🔴 On n'envoie l'OPCO QUE s'il a changé, et JAMAIS `""`.
-        //
-        // Envoyer systématiquement la valeur affichée transformerait un OPCO
-        // simplement INFÉRÉ en saisie EXPLICITE : le serveur cesserait alors de
-        // le recalculer, et renseigner l'IDCC réel dans ce même formulaire
-        // laisserait l'ancien OPCO — faux — sur la convention tripartite. En
-        // omettant la clé quand rien n'a bougé, la ré-inférence serveur reste
-        // armée.
-        //
-        // L'option vide envoie `null` (« remettre en inféré »), pas `""` : une
-        // chaîne vide serait écrite en base, continuerait d'afficher
-        // « À déterminer » et désactiverait la ré-inférence à vie. Le schéma Zod
-        // la refuse désormais (`.min(1)`) — cette omission est la seconde
-        // ceinture.
-        ...(!estParticulier && opcoValue !== opcoInitial
-          ? { opcoIdentifie: opcoValue === "" ? null : opcoValue }
-          : {}),
-        ...(!estParticulier && opcoTypeValue !== opcoTypeInitial
-          ? { opco: opcoTypeValue === "" ? null : (opcoTypeValue as (typeof OPCO_IDS)[number]) }
-          : {}),
-        // Le serveur valide (entier ≥ 0) et pose lui-même source et date.
-        // Comparaison NUMÉRIQUE : « 007 » pour un effectif de 7 n'est pas un changement.
-        ...(!estParticulier &&
-        (effectifValue.trim() === "" ? null : Number(effectifValue.trim())) !== (effectif ?? null)
-          ? { effectif: effectifValue.trim() === "" ? null : Number(effectifValue.trim()) }
-          : {}),
-      });
+      const result = await updateClientAction({ id, ...r.charge });
       if ("error" in result) {
         setError(result.error);
       } else {
@@ -145,7 +161,11 @@ export function ClientBrancheForm({
       </summary>
       <form
         onSubmit={handleSubmit}
-        className="mt-[var(--space-admin-3)] flex flex-col gap-[var(--space-admin-2)] sm:flex-row sm:items-end"
+        className={
+          complet
+            ? "mt-[var(--space-admin-3)] grid grid-cols-1 items-end gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-4"
+            : "mt-[var(--space-admin-3)] flex flex-col gap-[var(--space-admin-2)] sm:flex-row sm:items-end"
+        }
       >
         <div className="min-w-0">
           <label htmlFor={`idcc-${id}`} className={labelCls}>
@@ -155,8 +175,8 @@ export function ClientBrancheForm({
             id={`idcc-${id}`}
             type="text"
             inputMode="numeric"
-            value={idccValue}
-            onChange={(e) => setIdccValue(e.target.value)}
+            value={saisie.idcc}
+            onChange={(e) => poser("idcc", e.target.value)}
             placeholder="Ex. 1486"
             maxLength={10}
             className={inputCls}
@@ -169,8 +189,8 @@ export function ClientBrancheForm({
           </label>
           <select
             id={`taille-${id}`}
-            value={tailleValue}
-            onChange={(e) => setTailleValue(e.target.value)}
+            value={saisie.taille}
+            onChange={(e) => poser("taille", e.target.value)}
             className={inputCls}
           >
             <option value="">—</option>
@@ -182,12 +202,11 @@ export function ClientBrancheForm({
           </select>
         </div>
 
-        {/* Secours manuel de l'inférence. Six OPCO sur onze ne sont couverts par
-          AUCUN code NAF de la table, et l'OPCO se déduit en droit de la
-          convention collective : sans ce champ, un client de ces branches
-          resterait « à déterminer » pour toujours, y compris sur la demande de
-          prise en charge envoyée au financeur. Masqué pour un particulier, qui
-          n'a pas d'OPCO. */}
+        {/* UN SEUL OPCO (lot A7b) : le champ typé. Six OPCO sur onze ne sont
+          couverts par AUCUN code NAF de la table, et l'OPCO se déduit en droit
+          de la convention collective : sans ce champ, un client de ces branches
+          resterait « à déterminer ». Masqué pour un particulier, qui n'a pas
+          d'OPCO. */}
         {!estParticulier && (
           <div className="min-w-0">
             <label htmlFor={`opco-${id}`} className={labelCls}>
@@ -195,41 +214,27 @@ export function ClientBrancheForm({
             </label>
             <select
               id={`opco-${id}`}
-              value={opcoValue}
-              onChange={(e) => setOpcoValue(e.target.value)}
+              value={saisie.opco}
+              onChange={(e) => poser("opco", e.target.value)}
               className={inputCls}
             >
-              <option value="">— (inféré)</option>
-              {OPCO_IDS.map((opco) => (
-                <option key={opco} value={opco}>
-                  {OPCO_LABELS[opco]}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-
-        {!estParticulier && (
-          <div className="min-w-0">
-            <label htmlFor={`opco-type-${id}`} className={labelCls}>
-              OPCO (référentiel)
-            </label>
-            <select
-              id={`opco-type-${id}`}
-              value={opcoTypeValue}
-              onChange={(e) => setOpcoTypeValue(e.target.value)}
-              className={inputCls}
-            >
-              <option value="">—</option>
+              <option value="">— (à déterminer)</option>
               {OPCO_IDS.map((o) => (
                 <option key={o} value={o}>
                   {OPCO_LABELS[o]}
                 </option>
               ))}
             </select>
-            {suggestion !== null && (
-              <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            {suggestion !== null && saisie.opco === "" && (
+              <p className="mt-[var(--space-admin-1)] flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                 {`OPCO suggéré : ${OPCO_LABELS[suggestion]}`}
+                <button
+                  type="button"
+                  onClick={() => poser("opco", suggestion)}
+                  className="admin-button-ghost"
+                >
+                  Retenir
+                </button>
               </p>
             )}
           </div>
@@ -246,12 +251,80 @@ export function ClientBrancheForm({
               inputMode="numeric"
               min={0}
               step={1}
-              value={effectifValue}
-              onChange={(e) => setEffectifValue(e.target.value)}
+              value={saisie.effectif}
+              onChange={(e) => poser("effectif", e.target.value)}
               placeholder="Salariés"
               className={inputCls}
             />
           </div>
+        )}
+
+        {complet && !estParticulier && (
+          <>
+            <div className="min-w-0">
+              <label htmlFor={`enveloppe-${id}`} className={labelCls}>
+                Enveloppe annuelle (€)
+              </label>
+              <input
+                id={`enveloppe-${id}`}
+                type="text"
+                inputMode="decimal"
+                value={saisie.enveloppeEuros}
+                onChange={(e) => poser("enveloppeEuros", e.target.value)}
+                placeholder="Ex. 3 000"
+                className={inputCls}
+              />
+            </div>
+            <div className="min-w-0">
+              <label htmlFor={`adherent-${id}`} className={labelCls}>
+                N° d&apos;adhérent
+              </label>
+              <input
+                id={`adherent-${id}`}
+                type="text"
+                value={saisie.numeroAdherent}
+                onChange={(e) => poser("numeroAdherent", e.target.value)}
+                maxLength={80}
+                className={inputCls}
+              />
+            </div>
+            {saisie.opco === "mobilites" && (
+              <div className="min-w-0">
+                <label htmlFor={`mobilites-${id}`} className={labelCls}>
+                  Offre de services Mobilités
+                </label>
+                <select
+                  id={`mobilites-${id}`}
+                  value={saisie.adhesionMobilites}
+                  onChange={(e) => poser("adhesionMobilites", e.target.value as Tristate)}
+                  className={inputCls}
+                >
+                  {TRISTATE.map((t) => (
+                    <option key={t.value} value={t.value}>
+                      {t.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+            <div className="min-w-0">
+              <label htmlFor={`versement-${id}`} className={labelCls}>
+                Versement volontaire
+              </label>
+              <select
+                id={`versement-${id}`}
+                value={saisie.versementVolontaire}
+                onChange={(e) => poser("versementVolontaire", e.target.value as Tristate)}
+                className={inputCls}
+              >
+                {TRISTATE.map((t) => (
+                  <option key={t.value} value={t.value}>
+                    {t.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </>
         )}
 
         <button type="submit" disabled={isPending} className="admin-button">
