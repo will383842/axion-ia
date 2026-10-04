@@ -47,6 +47,8 @@ import { colorerReservationCalendly } from "@/server/google-calendar/events";
 import { ipDepuisEntetes } from "@/lib/client-ip";
 import {
   besoinDuBrut,
+  reponsesDuBrut,
+  type ReponseCrm,
   classerRendezVous,
   type TypeRendezVous,
 } from "@/server/calendly/type-rendez-vous";
@@ -367,6 +369,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   let nomType = parsed.data.eventTypeSlug;
   let typeRendezVous: TypeRendezVous = typeInitial;
   let besoin: string | null = null;
+  let reponses: ReponseCrm[] = [];
   if (enriched?.ok) {
     const fresh = await prisma.calendlyEvent
       .findUnique({
@@ -387,6 +390,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       nomType = fresh.eventTypeName || nomType;
       typeRendezVous = fresh.typeRendezVous ?? typeRendezVous;
       besoin = besoinDuBrut(fresh.rawPayload);
+      reponses = reponsesDuBrut(fresh.rawPayload);
       notifyName = fresh.inviteeName ?? notifyName;
       notifyEmail = fresh.inviteeEmail ?? notifyEmail;
       notifyStart = fresh.startTime?.toISOString() ?? null;
@@ -431,6 +435,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         eventTypeName: nomType,
         typeRendezVous,
         besoin,
+        reponses,
         pageUrl: parsed.data.pageUrl,
         // 🔑 DANS `payload`, jamais à la racine : le validateur du CRM ne filtre
         // que la racine, et une clé inconnue y vaut 422 définitif — c'est-à-dire

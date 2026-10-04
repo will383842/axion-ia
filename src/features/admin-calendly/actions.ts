@@ -20,7 +20,7 @@ import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 import { adminPath } from "@/lib/admin-path";
 import { enrichCalendlyEvent } from "@/server/calendly/enrich";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
-import { besoinDuBrut, classerParNom } from "@/server/calendly/type-rendez-vous";
+import { besoinDuBrut, classerParNom, reponsesDuBrut } from "@/server/calendly/type-rendez-vous";
 import { peutVoirLesAppels } from "./acces";
 
 // 🔴 LA LISTE DE RÔLES A DÉMÉNAGÉ DANS `./acces.ts` (2026-08-27) — elle était
@@ -116,6 +116,7 @@ export async function updateCalendlyEventAction(
           eventTypeName: updated.eventTypeName,
           typeRendezVous: updated.typeRendezVous ?? classerParNom(updated.eventTypeName),
           besoin: besoinDuBrut(updated.rawPayload),
+          reponses: reponsesDuBrut(updated.rawPayload),
           source: "admin_status_change",
         },
       });

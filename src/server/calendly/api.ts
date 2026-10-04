@@ -199,7 +199,7 @@ export function extractAnswersText(questionsAndAnswers: unknown): string | null 
     if (/t[ée]l[ée]phone|phone|mobile|portable/i.test(q)) continue;
     parts.push(`${q.trim()} : ${a.trim()}`);
   }
-  return parts.length > 0 ? parts.join(" · ").slice(0, 600) : null;
+  return parts.length > 0 ? couperSansCasser(parts.join(" · "), 600) : null;
 }
 
 function parseDate(value: unknown): Date | null {
@@ -208,8 +208,17 @@ function parseDate(value: unknown): Date | null {
   return Number.isNaN(d.getTime()) ? null : d;
 }
 
+/** Coupe sans casser un emoji en deux (même règle que `couperTexte` de
+ * type-rendez-vous.ts, gardée locale pour ne pas créer de dépendance) : ces textes partent au CRM. */
+function couperSansCasser(texte: string, max: number): string {
+  if (texte.length <= max) return texte;
+  const coupe = texte.slice(0, max);
+  const dernier = coupe.charCodeAt(coupe.length - 1);
+  return dernier >= 0xd800 && dernier <= 0xdbff ? coupe.slice(0, -1) : coupe;
+}
+
 function stringOrNull(value: unknown, max: number): string | null {
-  return typeof value === "string" && value.trim() ? value.trim().slice(0, max) : null;
+  return typeof value === "string" && value.trim() ? couperSansCasser(value.trim(), max) : null;
 }
 
 async function calendlyGet(uri: string, token: string): Promise<CalendlyFetchResult | unknown> {

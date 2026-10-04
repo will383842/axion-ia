@@ -64,6 +64,7 @@ import {
   LIBELLE_TYPE_RDV,
   TYPES_FILTRABLES,
   lireFiltreType,
+  ongletAutreVisible,
 } from "@/features/admin-rendezvous/type-rdv";
 import { PastilleTypeRdv } from "@/components/admin/contacts/PastilleTypeRdv";
 import { LIBELLE_CANAL } from "@/server/calendly/canal";
@@ -601,8 +602,13 @@ export default async function RendezVousPage({
               label: LIBELLE_TYPE_RDV[t],
               href: lien(vue, t),
             })),
-            // « Autre » et l'ancien « Clients » n'ont d'onglet que s'ils sont actifs.
-            ...(publicRdv === "autre"
+            // « Autre » : dès qu'un rendez-vous « autre » est listé (à venir ou
+            // à faire le point), ou s'il est le filtre actif (lot L5b).
+            // L'ancien « Clients » n'a d'onglet que s'il est actif.
+            ...(ongletAutreVisible(publicRdv, [
+              ...rdv.map((r) => r.typeRendezVous),
+              ...aFaire.map((r) => r.typeRendezVous),
+            ])
               ? [{ value: "autre", label: LIBELLE_TYPE_RDV.autre, href: lien(vue, "autre") }]
               : []),
             ...(publicRdv === "clients"

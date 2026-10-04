@@ -282,3 +282,60 @@ describe("fenêtre app/worker", () => {
     ).toEqual({ a: 1 });
   });
 });
+
+describe("les réponses du questionnaire pour le CRM (L5b)", () => {
+  it("lit les réponses de la charge enrichie, sans le téléphone", async () => {
+    const { reponsesDuBrut } = await import("@/server/calendly/type-rendez-vous");
+    expect(
+      reponsesDuBrut({
+        invitee: {
+          questions_and_answers: [
+            { question: "Secteur", answer: "BTP" },
+            { question: "Téléphone", answer: "+33 6 00 00 00 00" },
+          ],
+        },
+      }),
+    ).toEqual([{ question: "Secteur", reponse: "BTP" }]);
+  });
+
+  it("rien de lisible : tableau vide", async () => {
+    const { reponsesDesQuestions } = await import("@/server/calendly/type-rendez-vous");
+    expect(reponsesDesQuestions(undefined)).toEqual([]);
+    expect(reponsesDesQuestions("n'importe quoi")).toEqual([]);
+  });
+});
+
+describe("🔴 les coupes ne cassent jamais un emoji (relecture A09)", () => {
+  const SURROGATE_ISOLE = /[\ud800-\udbff](?![\udc00-\udfff])|(?<![\ud800-\udbff])[\udc00-\udfff]/;
+  // `JSON.stringify` écrit un surrogate isolé sous forme échappée (barre
+  // oblique inverse + `ud83d`, 6 caractères ASCII) : on la cherche AUSSI.
+  const SURROGATE_ECHAPPE = /\\ud[89a-f][0-9a-f]{2}/i;
+  const surrogateIsole = (v: unknown): boolean => {
+    const json = JSON.stringify(v);
+    return SURROGATE_ISOLE.test(json) || SURROGATE_ECHAPPE.test(json);
+  };
+  const emoji = "\u{1F600}";
+
+  it("besoin lu dans Calendly : emoji pile à la limite", async () => {
+    const { besoinDesReponses } = await import("@/server/calendly/type-rendez-vous");
+    const b = besoinDesReponses([
+      { question: "Quel service vous intéresse ?", answer: "a".repeat(299) + emoji },
+    ]);
+    expect(surrogateIsole(b)).toBe(false);
+    expect(b?.length).toBeLessThanOrEqual(300);
+  });
+
+  it("réponses lues dans Calendly : emoji pile à la limite", async () => {
+    const { reponsesDesQuestions } = await import("@/server/calendly/type-rendez-vous");
+    const r = reponsesDesQuestions([
+      { question: "q".repeat(119) + emoji, answer: "r".repeat(299) + emoji },
+    ]);
+    expect(surrogateIsole(r)).toBe(false);
+  });
+
+  it("coupe au point de code : un texte court reste intact", async () => {
+    const { couperTexte } = await import("@/server/calendly/type-rendez-vous");
+    expect(couperTexte("abc" + emoji, 5)).toBe("abc" + emoji);
+    expect(couperTexte("abc" + emoji, 4)).toBe("abc");
+  });
+});

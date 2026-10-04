@@ -38,12 +38,12 @@ async function rendre(job: Job, extra: Record<string, unknown>) {
 }
 
 describe("diagnostic IA", () => {
-  it("confirmation : objet, surtitre « Diagnostic IA gratuit », pistes annoncées", async () => {
+  it("confirmation : objet, surtitre « Diagnostic IA gratuit », réponses utiles", async () => {
     const r = await rendre("appel-confirme", { typeRendezVous: "diagnostic" });
     expect(r.subject).toBe("Diagnostic IA : vendredi 9 octobre à 11:30");
     expect(r.text).toContain("Diagnostic IA gratuit");
     expect(r.text).toContain("votre diagnostic IA gratuit");
-    expect(r.text).toMatch(/premières pistes/);
+    expect(r.text).toContain("Vos réponses nous aident à préparer l'échange");
     expect(r.text).not.toContain("Rendez-vous de découverte");
   });
 
@@ -54,7 +54,7 @@ describe("diagnostic IA", () => {
     const h1 = await rendre("appel-rappel", { typeRendezVous: "diagnostic" });
     expect(h1.subject).toBe("Votre diagnostic IA dans une heure, à 11:30");
     expect(h1.html).toContain("Votre diagnostic IA a lieu dans une heure");
-    expect(h1.text).toMatch(/pistes/);
+    expect(h1.text).toContain("Vos réponses nous aident à préparer l'échange");
   });
 
   it("la durée vient du rendez-vous, le lien de visio est intact", async () => {
@@ -113,4 +113,26 @@ describe("ton et engagements", () => {
       }
     },
   );
+});
+
+describe("relecture L3 : objets bornés, rien de non tenable (L5b)", () => {
+  it.each(["diagnostic", "echange_projet"])(
+    "%s : objets J-1 et H-1 ≤ 45 caractères, même sans heure",
+    async (typeRendezVous) => {
+      for (const job of ["appel-rappel-j1", "appel-rappel"] as const) {
+        for (const heure of ["11:30", undefined]) {
+          const r = await rendre(job, { typeRendezVous, heure });
+          expect(r.subject.length, `${job} ${heure}: ${r.subject}`).toBeLessThanOrEqual(45);
+          expect(r.subject).not.toContain("undefined");
+        }
+      }
+    },
+  );
+
+  it("🔴 le diagnostic ne promet plus d'arriver avec des pistes préparées", async () => {
+    for (const job of ["appel-confirme", "appel-rappel-j1", "appel-rappel"] as const) {
+      const r = await rendre(job, { typeRendezVous: "diagnostic" });
+      expect(r.text, job).not.toMatch(/nous arrivons avec|arriver avec des pistes/i);
+    }
+  });
 });

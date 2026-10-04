@@ -47,6 +47,7 @@ import { fetchCalendlyInvitee, isCalendlyApiConfigured } from "./api";
 import { rattacherEchangeApporteur } from "./rattachement-apporteur";
 import {
   besoinDesReponses,
+  reponsesDesQuestions,
   classerRendezVous,
   estColonneTypeRendezVousAbsente,
   eventTypeUriDuBrut,
@@ -295,6 +296,7 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
     eventTypeName: (data["eventTypeName"] as string | undefined) ?? row.eventTypeName,
   });
   const besoin = besoinDesReponses(brutFrais?.invitee?.["questions_and_answers"]);
+  const reponses = reponsesDesQuestions(brutFrais?.invitee?.["questions_and_answers"]);
   const utm = utmDuTracking(brutFrais?.invitee);
   if (!colonnesTypeAbsentes) {
     if (eventTypeUriFrais && eventTypeUriFrais !== row.eventTypeUri) {
@@ -429,6 +431,7 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
           eventTypeName: eventName ?? row.eventTypeName,
           typeRendezVous,
           besoin,
+          reponses,
           source: "api_poll",
         },
       });

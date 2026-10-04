@@ -39,6 +39,8 @@ import { canalDuRendezVous, COULEUR_GOOGLE_CANAL } from "@/server/calendly/canal
 import { colorerReservationCalendly } from "@/server/google-calendar/events";
 import {
   besoinDesReponses,
+  couperTexte,
+  reponsesDesQuestions,
   classerRendezVous,
   estColonneTypeRendezVousAbsente,
   sansColonnesTypeRendezVous,
@@ -184,7 +186,8 @@ function record(value: unknown): Record<string, unknown> | null {
 }
 
 function str(value: unknown, max: number): string | null {
-  return typeof value === "string" && value.trim() ? value.trim().slice(0, max) : null;
+  // Nom, type… partent aussi au CRM : coupe sans casser un emoji (A09).
+  return typeof value === "string" && value.trim() ? couperTexte(value.trim(), max) : null;
 }
 
 function parseDate(value: unknown): Date | null {
@@ -352,6 +355,9 @@ export async function discoverNewCalendlyEvents(
     // elles, une réservation prise hors de l'iframe n'avait AUCUNE provenance.
     const utm = utmDuTracking(firstInvitee);
     const besoin = besoinDesReponses(firstInvitee?.["questions_and_answers"]);
+    // Lot L5b : les réponses du questionnaire (bornées ; le contrat CRM ne les
+    // garde que pour un diagnostic ou un échange projet).
+    const reponses = reponsesDesQuestions(firstInvitee?.["questions_and_answers"]);
 
     const donnees = {
       eventTypeName: name,
@@ -450,7 +456,14 @@ export async function discoverNewCalendlyEvents(
           fullName: inviteeName,
           phone: inviteePhone,
         },
-        payload: { eventTypeName: name, typeRendezVous, besoin, source: "api_poll", format },
+        payload: {
+          eventTypeName: name,
+          typeRendezVous,
+          besoin,
+          reponses,
+          source: "api_poll",
+          format,
+        },
       });
     }
 

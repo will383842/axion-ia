@@ -30,7 +30,11 @@ import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
 import { AgendaTimeline } from "@/components/admin/agenda/AgendaTimeline";
 import { PoserIndisponibiliteForm } from "@/components/admin/agenda/PoserIndisponibiliteForm";
 import { RendezVousForm } from "@/components/admin/agenda/RendezVousForm";
-import { AgendaBarre, lireFiltresAgenda } from "@/components/admin/agenda/AgendaBarre";
+import {
+  AgendaBarre,
+  lireFiltresAgenda,
+  passeLesFiltresAgenda,
+} from "@/components/admin/agenda/AgendaBarre";
 import { AgendaMois } from "@/components/admin/agenda/AgendaMois";
 import { AgendaSemaine } from "@/components/admin/agenda/AgendaSemaine";
 import {
@@ -146,15 +150,8 @@ export default async function AgendaPage({
   const session = await auth();
   const peutVoirAppels = peutVoirLesAppels((session?.user as { role?: string } | undefined)?.role);
   const { items: bruts, diagnostics } = await getAgendaFenetre(debut, fin, peutVoirAppels);
-  const items = bruts.filter(
-    (i) =>
-      (filtres.sources.length === 0 || filtres.sources.includes(i.source)) &&
-      // Un filtre de type ne retient que des réservations : l'agenda personnel
-      // et les blocages restent visibles (ils disent quand on est pris).
-      (filtres.types.length === 0 ||
-        i.source !== "calendly" ||
-        (i.typeRendezVous !== null && filtres.types.includes(i.typeRendezVous))),
-  );
+  // Un filtre de type ne retient que des réservations ; « Autre » compris (L5b).
+  const items = bruts.filter((i) => passeLesFiltresAgenda(i, filtres));
 
   const base = `/fr/${adminPrefix}/agenda`;
   const duJour = items.filter((i) => i.jour === jour);

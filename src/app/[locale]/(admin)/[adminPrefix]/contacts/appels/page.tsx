@@ -33,6 +33,11 @@
 // classée par l'URI du type Calendly, nom en repli. Le filtre `?type=`
 // remplace `?public=`, gardé en alias (clients = diagnostic + échange projet +
 // autre). Chaque onglet porte son compteur.
+//
+// ── CE QUE RAPPORTE CHAQUE RENDEZ-VOUS (2026-10-04, lot L5b) ─────────────
+// Quatrième vue `?vue=rapport` : sur 30 ou 90 jours (`?jours=`), par type puis
+// par bouton (`utm_content`), réservés / honorés / absents / annulés / rangés
+// sur une fiche. Une vue et non une page : aucune entrée de console de plus.
 
 import Link from "next/link";
 import {
@@ -48,6 +53,9 @@ import {
   lireFiltreType,
 } from "@/features/admin-rendezvous/type-rdv";
 import { PastilleTypeRdv } from "@/components/admin/contacts/PastilleTypeRdv";
+import { BilanRendezVousVue } from "@/components/admin/contacts/BilanRendezVousVue";
+import { lirePeriodeBilan, PERIODES_BILAN } from "@/features/admin-rendezvous/bilan-rendez-vous";
+import { lireBilanRendezVous } from "@/features/admin-rendezvous/bilan-rendez-vous-queries";
 import type { TypeRendezVous } from "@/server/calendly/type-rendez-vous";
 import { libelleDuPoint, type PointLu } from "@/features/admin-rendezvous/point";
 import {
@@ -274,7 +282,14 @@ export default async function AppelsPage({
   const sp = await searchParams;
   const base = `/fr/${adminPrefix}/contacts/appels`;
   // « Jour » par défaut (2026-09-19) : les deux autres vues se demandent.
-  const vue = sp["vue"] === "calendrier" ? "calendrier" : sp["vue"] === "liste" ? "liste" : "jour";
+  const vue =
+    sp["vue"] === "calendrier"
+      ? "calendrier"
+      : sp["vue"] === "liste"
+        ? "liste"
+        : sp["vue"] === "rapport"
+          ? "rapport"
+          : "jour";
   const publicRdv = lireFiltreType(sp["type"], sp["public"]);
   const filtre = paramsFiltre(publicRdv);
   const apiConfigured = isCalendlyApiConfigured();
@@ -335,23 +350,26 @@ export default async function AppelsPage({
               label: "Calendrier",
               href: lien(base, { vue: "calendrier", ...filtre }),
             },
+            { value: "rapport", label: "Ce que ça rapporte", href: lien(base, { vue: "rapport" }) },
           ]}
         />
-        <AdminFilterTabs
-          label="Type"
-          current={publicRdv === "apporteurs" ? "apporteur" : (publicRdv ?? "tous")}
-          options={choix.map(({ value, label, cible }) => ({
-            value,
-            label,
-            href: lien(base, {
-              vue: vue === "jour" ? undefined : vue,
-              ...paramsFiltre(cible),
-              year: vue === "calendrier" ? sp["year"] : undefined,
-              month: vue === "calendrier" ? sp["month"] : undefined,
-              date: vue === "liste" ? undefined : sp["date"],
-            }),
-          }))}
-        />
+        {vue === "rapport" ? null : (
+          <AdminFilterTabs
+            label="Type"
+            current={publicRdv === "apporteurs" ? "apporteur" : (publicRdv ?? "tous")}
+            options={choix.map(({ value, label, cible }) => ({
+              value,
+              label,
+              href: lien(base, {
+                vue: vue === "jour" ? undefined : vue,
+                ...paramsFiltre(cible),
+                year: vue === "calendrier" ? sp["year"] : undefined,
+                month: vue === "calendrier" ? sp["month"] : undefined,
+                date: vue === "liste" ? undefined : sp["date"],
+              }),
+            }))}
+          />
+        )}
       </div>
     );
   };
@@ -392,6 +410,30 @@ export default async function AppelsPage({
       )}
     </div>
   );
+
+  // ── Vue « Ce que ça rapporte » ────────────────────────────────────────────
+  if (vue === "rapport") {
+    const jours = lirePeriodeBilan(sp["jours"]);
+    const bilan = await lireBilanRendezVous(jours);
+    return (
+      <>
+        {header}
+        <div className="mb-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-4)]">
+          {onglets(compterParType([]))}
+          <AdminFilterTabs
+            label="Période"
+            current={String(jours)}
+            options={PERIODES_BILAN.map((j) => ({
+              value: String(j),
+              label: `${j} jours`,
+              href: lien(base, { vue: "rapport", jours: j === 30 ? undefined : j }),
+            }))}
+          />
+        </div>
+        <BilanRendezVousVue bilan={bilan} jours={jours} />
+      </>
+    );
+  }
 
   // ── Vue calendrier ────────────────────────────────────────────────────────
   if (vue === "calendrier") {
