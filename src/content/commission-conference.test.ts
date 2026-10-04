@@ -40,7 +40,9 @@ describe("REQ-EXT-022 — la conférence est commissionnée au forfait", () => {
     expect(indefinis).not.toContain("intervention-conference");
     const surDemande = BAREMES_INDEFINIS.find((b) => b.tierId === "intervention-sur-demande");
     expect(surDemande?.motif).toBe("hors_perimetre_w6");
-    expect(getTierById(INTERVENTION_TIERS, "intervention-sur-demande").commissionId).toBeUndefined();
+    expect(
+      getTierById(INTERVENTION_TIERS, "intervention-sur-demande").commissionId,
+    ).toBeUndefined();
   });
 
   it("REQ-DM-014 : la grille reste cohérente : chaque palier a SOIT un taux, SOIT une ligne d'indéfini", () => {
@@ -64,6 +66,8 @@ describe("REQ-EXT-022 — la surface publique des forfaits de formation n'affich
       "utf8",
     );
     expect(source).toMatch(/\bCOMMISSIONS_DE_FORMATION\b/);
-    expect(source).not.toMatch(/COMMERCIAL_COMMISSIONS\.filter\(\s*\(c\)\s*=>\s*c\.kind\s*===\s*"flat"\s*\)/);
+    expect(source).not.toMatch(
+      /COMMERCIAL_COMMISSIONS\.filter\(\s*\(c\)\s*=>\s*c\.kind\s*===\s*"flat"\s*\)/,
+    );
   });
 });

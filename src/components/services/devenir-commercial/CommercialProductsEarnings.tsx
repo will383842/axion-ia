@@ -15,6 +15,7 @@ import { Link } from "@/i18n/navigation";
 import { Section } from "@/components/layout/Section";
 import {
   COMMERCIAL_COMMISSIONS,
+  COMMISSIONS_DE_FORMATION,
   getCommissionById,
   formatAmount,
   type CommercialCommission,
@@ -55,7 +56,9 @@ function percentExample(c: CommercialCommission, isFr: boolean): string | null {
 
 export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsProps): ReactNode {
   const loc = isFr ? "fr" : "en";
-  const flats = COMMERCIAL_COMMISSIONS.filter((c) => c.kind === "flat");
+  // Les cartes « Formations IA » : les commissions de FORMATION seules — la conférence, au forfait
+  // elle aussi, n'est pas une formation (INT-T53-A).
+  const flats = COMMISSIONS_DE_FORMATION;
   const perFormation = getCommissionById("com-formation-1j").flatEur ?? 0;
 
   const audit = COMMERCIAL_COMMISSIONS.find((c) => c.id === "com-audit");
