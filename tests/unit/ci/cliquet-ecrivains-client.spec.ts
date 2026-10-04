@@ -191,6 +191,8 @@ describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
         "src/server/actions/qualiopi/devis.ts (sendDevisAction › travail de prisma.$transaction())",
         "src/server/qualiopi/crm/contact-facturation.ts (definirContactFacturation)",
         "src/server/qualiopi/crm/contact-facturation.ts (definirContactFacturation)",
+        // Lot OPCO A7d : n'écrit que l'effectif et sa provenance, hors charge Partners.
+        "src/server/qualiopi/crm/effectif-insee.ts (rafraichirEffectifInsee)",
       ]);
       const { code, lignes } = rendu(b);
       expect(lignes.at(-1)).toMatch(/5 écrivain\(s\) de client\.cree\|client\.mis_a_jour/);

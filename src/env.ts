@@ -83,6 +83,10 @@ export const env = createEnv({
     // (`visio-balayage-worker.ts`). Passé à "true" après la reprise réelle de
     // l'historique Calendly.
     DOSSIER_BALAYAGE_ENABLED: z.enum(["true", "false"]).optional(),
+    // Lot OPCO A8 — envoi du dossier prêt à déposer à l'entreprise et relances.
+    // Lu par le site ET le worker. Absent : ACTIF (hors tests) ; "false" coupe
+    // tout (envoi automatique, bouton, relances, réponses par lien).
+    OPCO_SUIVI_ENTREPRISE_ENABLED: z.enum(["true", "false"]).optional(),
     // ── Chantier visio (correctif P-2, ADR 0061) — adresses de test du pilote ─
     // Lu par le site ET le worker (`src/server/visio/adresses-de-test.ts`, à
     // l'exécution). Adresses (ou empreintes) séparées par des virgules : un
@@ -678,6 +682,7 @@ export const env = createEnv({
     MAILWIZZ_API_KEY: process.env.MAILWIZZ_API_KEY,
     CRM_SYNC_ENABLED: process.env.CRM_SYNC_ENABLED,
     DOSSIER_BALAYAGE_ENABLED: process.env.DOSSIER_BALAYAGE_ENABLED,
+    OPCO_SUIVI_ENTREPRISE_ENABLED: process.env.OPCO_SUIVI_ENTREPRISE_ENABLED,
     VISIO_ADRESSES_DE_TEST: process.env.VISIO_ADRESSES_DE_TEST,
     CRM_SYNC_CANDIDATES_ENABLED: process.env.CRM_SYNC_CANDIDATES_ENABLED,
     CRM_SYNC_GUIDE_ENABLED: process.env.CRM_SYNC_GUIDE_ENABLED,

@@ -888,6 +888,29 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Lot OPCO A8 (2026-10-04) — réponse en un clic de l'entreprise,
+      // `/api/qualiopi/suivi-opco/<jeton>` : le jeton est dans l'adresse. Même
+      // valeurs que `ENTETES_PAGE_SUIVI` (la route les pose aussi) ; placée
+      // APRÈS `/:path*` pour que `same-origin` l'emporte. Page sans script :
+      // seul le style en ligne et le formulaire vers elle-même sont permis.
+      {
+        source: "/api/qualiopi/suivi-opco/:path*",
+        headers: [
+          { key: "Referrer-Policy", value: "same-origin" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'none'",
+              "style-src 'unsafe-inline'",
+              "img-src 'self' data:",
+              "form-action 'self'",
+              "frame-ancestors 'none'",
+              "base-uri 'none'",
+            ].join("; "),
+          },
+        ],
+      },
     ];
   },
 };

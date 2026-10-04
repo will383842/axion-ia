@@ -141,6 +141,10 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   numero: "F-2026-0142",
   numeroFacture: "F-2026-0142",
   numeroSession: "SESS-2026-018",
+  // Lot OPCO A8 — `opco-suivi-entreprise` (variante « envoi » par défaut).
+  intituleFormation: "Piloter son activité avec l'IA",
+  dateDebutSession: "14/09/2026",
+  nomOpco: "OPCO Atlas",
   offerTitle: "Piloter son activité avec l'IA",
   offre: "Piloter son activité avec l'IA",
   oppositionUrl: "https://exemple.invalid/lien-de-demonstration",

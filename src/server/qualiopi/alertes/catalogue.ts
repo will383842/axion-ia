@@ -1295,6 +1295,28 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "direction",
   },
+  // Lot OPCO A8 — suivi de l'entreprise qui dépose : relances restées sans
+  // réponse (ou échéance proche), et refus déclaré par l'entreprise. Se
+  // referment d'elles-mêmes : dépôt saisi, accord enregistré, relances
+  // arrêtées en console, dossier clos ou renvoyé.
+  entreprise_a_appeler_depot: {
+    niveau: "important",
+    titre: "Entreprise à appeler : dépôt de la demande OPCO",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
+  entreprise_a_appeler_reponse_opco: {
+    niveau: "important",
+    titre: "Entreprise à appeler : réponse de l'OPCO",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
+  opco_refus_a_traiter: {
+    niveau: "critique",
+    titre: "Refus de l'OPCO à traiter",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
   // [T17.1 — S7] Convention de formation (L.6353-1) non établie avant démarrage (off.9).
   convention_formation_manquante: {
     niveau: "critique",

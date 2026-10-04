@@ -168,6 +168,9 @@ export type FormationCronJobType =
   // confondre avec `formateur-rappel-j1` juste au-dessus : celui-ci s'adresse
   // aux participants, et il porte le lien de connexion.
   | "formation-crons.rappel-j1"
+  // Lot OPCO A8 (2026-10-04) — envoi du dossier prêt à déposer à l'ENTREPRISE
+  // et relances (dépôt fait ? réponse de l'OPCO ?). 08:30 Paris, jours ouvrés.
+  | "formation-crons.suivi-entreprise-opco"
   // 🔴 2026-09-12 — RATTRAPAGE DES AUTOFACTURES QUI NE SONT PAS PARTIES.
   //
   // L'émission se déclenche à la validation du relevé, en fail-soft : un PDF
@@ -2542,7 +2545,44 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.formateur-convocation-j7": handleFormateurConvocationJ7,
   "formation-crons.formateur-rappel-j1": handleFormateurRappelJ1,
   "formation-crons.rappel-j1": handleRappelJ1,
+  "formation-crons.suivi-entreprise-opco": handleSuiviEntrepriseOpco,
 };
+
+/**
+ * Lot OPCO A8 — envoi automatique du dossier prêt à déposer et relances de
+ * l'entreprise. Corps et doctrine dans `financements/suivi-entreprise/` ; ici
+ * on déclenche et on trace. Import PARESSEUX (chaîne PDF du kit).
+ *
+ * Deux déclencheurs UTC (06:30 et 07:30) pour tenir 08:30 À PARIS en heure
+ * d'été comme d'hiver : seul celui qui tombe à 08:xx Paris travaille.
+ * Garde « tables présentes » dans le corps (fenêtre app/worker ~50 min).
+ */
+async function handleSuiviEntrepriseOpco(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return;
+  try {
+    const { estLHeureDuPassage, passerSuiviEntreprise } =
+      await import("@/server/qualiopi/financements/suivi-entreprise/passage-quotidien");
+    const now = new Date();
+    if (!estLHeureDuPassage(now)) return;
+    const b = await passerSuiviEntreprise(now);
+    if (!b.actif) {
+      console.log("[formation-crons] suivi-entreprise-opco: coupé (OPCO_SUIVI_ENTREPRISE_ENABLED)");
+      return;
+    }
+    const ligne = b.abstenu
+      ? "[formation-crons] suivi-entreprise-opco: tables absentes (migration à venir), passage suivant"
+      : `[formation-crons] suivi-entreprise-opco: ${b.envoisAuto} dossier(s) envoyé(s), ` +
+        `${b.relances} relance(s), ${b.echecs} échec(s), écartés ${JSON.stringify(b.ecartes)}` +
+        (b.plafondAtteint ? " — PLAFOND DU PASSAGE ATTEINT" : "");
+    if (b.echecs > 0 || b.plafondAtteint) console.error(ligne);
+    else console.log(ligne);
+  } catch (err) {
+    console.error(
+      "[formation-crons] suivi-entreprise-opco: erreur:",
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
 
 /**
  * Surveillance horaire de la chaîne d'envoi (audit 2026-08-16).

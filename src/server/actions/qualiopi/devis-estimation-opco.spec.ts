@@ -22,7 +22,10 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
   logQualiopiActivity: vi.fn(),
 }));
 
-vi.mock("@/server/qualiopi/crm/devis", () => ({
+// Seule l'estimation est interceptée : les autres fonctions du module
+// (`dateDeReferenceDevis`, lot A7d) restent les vraies.
+vi.mock("@/server/qualiopi/crm/devis", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/server/qualiopi/crm/devis")>()),
   estimateOpcoCoverage: (...a: unknown[]) => mockEstimate(...a),
 }));
 
