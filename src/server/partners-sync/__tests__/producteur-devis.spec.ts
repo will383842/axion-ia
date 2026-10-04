@@ -35,6 +35,7 @@ import {
   emettreDevisSigne,
   transactionDevisSigne,
   verifierChargeDevisSigne,
+  prixPublicsDesOffres,
 } from "../producteurs/devis";
 
 const SCHEMA_CHARGE = resoudre("#/$defs/payload_devis_signe");
@@ -377,5 +378,60 @@ describe("REQ-INT-007 — inertie : canal fermé, le comportement d'avant", () =
       await transactionDevisSigne(client, async (tx) => (String(tx) === "tx" ? "tx" : "?")),
     ).toBe("tx");
     expect(transaction).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("REQ-INT-006 — le prix public ferme des offres d'un devis, lu dans la transaction", () => {
+  it("REQ-INT-006 : TÉMOIN — chaque code lu une fois ; prix ferme, sur devis, offre inconnue", async () => {
+    const lus: unknown[] = [];
+    const tx = {
+      offreSite: {
+        findMany: async (q: unknown) => {
+          lus.push(q);
+          return [
+            {
+              code: "AXI-OFF-001",
+              tierId: null,
+              gamme: "generale",
+              dureeCode: "1j",
+              tarifType: "fixe",
+            },
+            {
+              code: "AXI-OFF-002",
+              tierId: null,
+              gamme: "generale",
+              dureeCode: "1j",
+              tarifType: "sur_devis",
+            },
+          ];
+        },
+      },
+    } as unknown as Prisma.TransactionClient;
+    const prix = await prixPublicsDesOffres(tx, [
+      "AXI-OFF-001",
+      "AXI-OFF-002",
+      "AXI-OFF-001",
+      "AXI-OFF-999",
+    ]);
+    expect(lus).toStrictEqual([
+      {
+        where: { code: { in: ["AXI-OFF-001", "AXI-OFF-002", "AXI-OFF-999"] } },
+        select: { code: true, tierId: true, gamme: true, dureeCode: true, tarifType: true },
+      },
+    ]);
+    expect(prix.get("AXI-OFF-001")).toBe(1900);
+    expect(prix.get("AXI-OFF-002")).toBeNull();
+    expect(prix.get("AXI-OFF-999")).toBeNull();
+  });
+
+  it("REQ-INT-006 : sans aucun code, aucune lecture", async () => {
+    const tx = {
+      offreSite: {
+        findMany: async () => {
+          throw new Error("lecture inattendue");
+        },
+      },
+    } as unknown as Prisma.TransactionClient;
+    expect((await prixPublicsDesOffres(tx, [])).size).toBe(0);
   });
 });
