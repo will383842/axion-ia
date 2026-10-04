@@ -13,7 +13,7 @@
  *   - renonciation du client avant accomplissement ou défaillance → active, la
  *     convention produisant ses effets à sa DATE DE SIGNATURE (C. civ. 1304-4) ;
  *   - un accord APRÈS la défaillance ne fait pas revivre la convention ;
- *   - seuil en % (points de base) rapporté au prix TTC de la convention, seuil
+ *   - seuil en % (points de base) rapporté au prix HORS TAXES de la convention, seuil
  *     en € comparé au montant accordé ; centimes ENTIERS, aucun flottant ;
  *   - la date limite est un JOUR CIVIL DE PARIS (remarque de la juriste A07,
  *     #656 commentaire 5979338659) : on stocke l'instant de 00:00 heure de
@@ -43,10 +43,10 @@ import {
 
 const SIGNEE_LE = new Date("2026-10-05T09:00:00Z");
 
-/** Convention à 12 000,00 € TTC, seuil 50 %, date limite au 15 décembre (hiver, UTC+1). */
+/** Convention à 12 000,00 € HT, seuil 50 %, date limite au 15 décembre (hiver, UTC+1). */
 const condition: ConditionSuspensive = {
   seuil: { type: "pourcentage", bps: 5000 },
-  prixTtcCents: 1_200_000,
+  prixHtCents: 1_200_000,
   dateLimite: debutDuJourDeParis("2026-12-15"),
   signeeLe: SIGNEE_LE,
 };
@@ -141,10 +141,19 @@ describe("condition suspensive OPCO — machine d'états", () => {
 });
 
 describe("condition suspensive OPCO — seuil en centimes entiers", () => {
-  it("en % : comparé au prix TTC de la convention (50 % de 12 000,00 €)", () => {
+  it("en % : comparé au prix HT de la convention (50 % de 12 000,00 € HT)", () => {
     const s = { type: "pourcentage", bps: 5000 } as const;
     expect(seuilAtteint(s, 1_200_000, 600_000)).toBe(true);
     expect(seuilAtteint(s, 1_200_000, 599_999)).toBe(false);
+  });
+
+  it("🔴 la base est le HT, pas le TTC (correction de la juriste, décision de Williams)", () => {
+    // Convention à 10 000,00 € HT, soit 12 000,00 € TTC à 20 %. Seuil 50 %.
+    // Un accord de 5 000,00 € atteint 50 % du HT ; il n'atteindrait pas 50 % du TTC.
+    const s = { type: "pourcentage", bps: 5000 } as const;
+    const prixHtCents = 1_000_000;
+    expect(seuilAtteint(s, prixHtCents, 500_000)).toBe(true);
+    expect(seuilAtteint(s, prixHtCents, 499_999)).toBe(false);
   });
 
   it("en % : arithmétique entière, sans arrondi flottant (33,33 % de 100,01 €)", () => {
@@ -300,9 +309,9 @@ describe("condition suspensive OPCO — états fermés", () => {
 describe("condition suspensive OPCO — paramètres de la clause, sans flottant", () => {
   it("{seuil} en pourcentage nomme sa base ; en montant, des euros et des centimes", () => {
     expect(libelleSeuilClause({ type: "pourcentage", bps: 5000 })).toBe(
-      "50 % du prix toutes taxes comprises de la présente convention",
+      "50 % du prix hors taxes de la présente convention",
     );
-    expect(libelleSeuilClause({ type: "montant", cents: 300_000 })).toBe("3 000,00 €");
+    expect(libelleSeuilClause({ type: "montant", cents: 300_000 })).toBe("3 000,00 € hors taxes");
     expect(pourcentageDepuisBps(6250)).toBe("62,5");
     expect(pourcentageDepuisBps(3333)).toBe("33,33");
     expect(pourcentageDepuisBps(5005)).toBe("50,05");

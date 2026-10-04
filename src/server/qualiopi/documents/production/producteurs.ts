@@ -59,11 +59,6 @@ import {
   type ParametresClauseConditionSuspensiveOpco,
   type SeuilConditionSuspensive,
 } from "@/server/qualiopi/financements/condition-suspensive";
-import {
-  computeTotauxFacture,
-  regimeTvaDepuisConfig,
-  TAUX_TVA_STANDARD,
-} from "@/server/qualiopi/legal/tva";
 import { lireModulesProgramme } from "@/server/qualiopi/documents/programme-modules";
 import { construireTirageEmargement } from "@/server/qualiopi/documents/emargement-tirage";
 
@@ -297,8 +292,8 @@ interface ConditionPreparee {
     seuilConditionCents: number | null;
     dateLimiteCondition: Date;
   };
-  /** Base FIGÉE d'un seuil en pourcentage : le prix TTC de cette convention. */
-  readonly metadata: { prixTtcCents: number; opco: string };
+  /** Base FIGÉE d'un seuil en pourcentage : le prix HORS TAXES de cette convention. */
+  readonly metadata: { prixHtCents: number; opco: string };
 }
 
 /**
@@ -308,9 +303,10 @@ interface ConditionPreparee {
  * n'émet pas une convention qui imprimerait « OPCO (à préciser) » sous une
  * condition dont tout dépend.
  *
- * Le prix TTC est FIGÉ dans la pièce (`metadata.conditionSuspensiveOpco`) : un
- * seuil de 50 % se compare au prix de CETTE convention, pas à un prix recalculé
- * plus tard sous un autre régime de TVA.
+ * Le prix HORS TAXES est FIGÉ dans la pièce (`metadata.conditionSuspensiveOpco`) :
+ * un seuil de 50 % se compare au prix HT de CETTE convention (la convention
+ * imprime un total HT ; décision de Williams, « un pourcentage du prix HT, soit
+ * un montant HT », correction de la juriste A07, issue 656).
  */
 async function preparerConditionSuspensive(
   option: OptionConditionSuspensiveOpco,
@@ -326,13 +322,6 @@ async function preparerConditionSuspensive(
     };
   }
   const opco = nomOpcoDuClient(client);
-  const regime = regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva"));
-  const tauxStandard = (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
-  const { totalTtcCents } = computeTotauxFacture(
-    [{ quantite: 1, prixUnitaireHtCents: montantHtCents }],
-    regime,
-    tauxStandard,
-  );
   const dateLimiteCondition = debutDuJourDeParis(option.jourLimite);
   return {
     ok: true,
@@ -343,7 +332,7 @@ async function preparerConditionSuspensive(
         seuilConditionCents: option.seuil.type === "montant" ? option.seuil.cents : null,
         dateLimiteCondition,
       },
-      metadata: { prixTtcCents: totalTtcCents, opco },
+      metadata: { prixHtCents: montantHtCents, opco },
     },
   };
 }

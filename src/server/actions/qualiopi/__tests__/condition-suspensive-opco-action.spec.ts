@@ -189,7 +189,7 @@ function lecture(etat: string, evenements: unknown[] = []) {
     },
     condition: {
       seuil: { type: "pourcentage", bps: 5000 },
-      prixTtcCents: 1_200_000,
+      prixHtCents: 1_200_000,
       dateLimite: debutDuJourDeParis("2026-12-15"),
       signeeLe: new Date("2026-10-05T09:00:00Z"),
     },

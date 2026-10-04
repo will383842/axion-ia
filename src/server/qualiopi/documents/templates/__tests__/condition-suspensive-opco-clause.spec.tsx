@@ -12,8 +12,8 @@
  * Les paramètres `{opco}`, `{dateLimite}` et `{seuil}` sont posés par la
  * convention ; aucun nombre n'est écrit dans le texte. Rendu de `{seuil}` fixé
  * par ce témoin (⚠️ à confirmer par A07 avant la fusion) :
- *   - pourcentage : « 50 % du prix toutes taxes comprises de la présente convention » ;
- *   - montant : « 3 000,00 € ».
+ *   - pourcentage : « 50 % du prix hors taxes de la présente convention » ;
+ *   - montant : « 3 000,00 € hors taxes ».
  *
  * Comparaison : sur le texte de l'arbre @react-pdf (`collectPdfText`), espaces
  * RETIRÉS des deux côtés — les retours à la ligne et le découpage en nœuds
@@ -105,8 +105,8 @@ const condMontant = {
   seuil: { type: "montant", cents: 300_000 },
 } as const;
 
-const SEUIL_POURCENTAGE = "50 % du prix toutes taxes comprises de la présente convention";
-const SEUIL_MONTANT = "3 000,00 €";
+const SEUIL_POURCENTAGE = "50 % du prix hors taxes de la présente convention";
+const SEUIL_MONTANT = "3 000,00 € hors taxes";
 
 /** Texte de la juriste validé par Williams, MOT POUR MOT (gras retiré). */
 function clause(p: { opco: string; dateLimite: string; seuil: string }): string {

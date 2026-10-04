@@ -207,7 +207,7 @@ function formatEur(montant: number): string {
  * Imprimée SEULEMENT si la case a été cochée à la génération. Ses trois
  * paramètres sont posés par la convention ; aucun nombre n'est écrit dans le
  * texte : `{opco}` (libellé de l'OPCO du client), `{dateLimite}` (jour civil de
- * Paris, jj/mm/aaaa) et `{seuil}` (« 50 % du prix toutes taxes comprises de la
+ * Paris, jj/mm/aaaa) et `{seuil}` (« 50 % du prix hors taxes de la
  * présente convention », ou un montant en euros, centimes entiers).
  */
 function ClauseConditionSuspensiveOpco({

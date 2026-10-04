@@ -116,10 +116,10 @@ export async function lireConditionSuspensive(
     // Impossible sous les CHECK : le dire plutôt que de deviner.
     throw new Error(`[condition-suspensive] colonnes incohérentes sur ${doc.numero}`);
   }
-  const meta = doc.metadata as { conditionSuspensiveOpco?: { prixTtcCents?: unknown } } | null;
-  const prixTtcCents = meta?.conditionSuspensiveOpco?.prixTtcCents;
-  if (typeof prixTtcCents !== "number" || !Number.isSafeInteger(prixTtcCents)) {
-    throw new Error(`[condition-suspensive] prix TTC figé absent sur ${doc.numero}`);
+  const meta = doc.metadata as { conditionSuspensiveOpco?: { prixHtCents?: unknown } } | null;
+  const prixHtCents = meta?.conditionSuspensiveOpco?.prixHtCents;
+  if (typeof prixHtCents !== "number" || !Number.isSafeInteger(prixHtCents)) {
+    throw new Error(`[condition-suspensive] prix HT figé absent sur ${doc.numero}`);
   }
 
   const dossiers =
@@ -145,7 +145,7 @@ export async function lireConditionSuspensive(
     },
     condition: {
       seuil,
-      prixTtcCents,
+      prixHtCents,
       dateLimite: doc.dateLimiteCondition,
       signeeLe: dateDeSignature(doc.statutSignature, doc.signatures),
     },

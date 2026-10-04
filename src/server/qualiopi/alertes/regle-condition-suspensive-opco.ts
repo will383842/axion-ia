@@ -74,13 +74,13 @@ export function candidatsConditionSuspensiveOpco(
   for (const c of conventions) {
     if (c.session === null || c.dateLimiteCondition === null) continue;
     const seuil = seuilDepuisColonnes(c);
-    const prix = (c.metadata as { conditionSuspensiveOpco?: { prixTtcCents?: unknown } } | null)
-      ?.conditionSuspensiveOpco?.prixTtcCents;
+    const prix = (c.metadata as { conditionSuspensiveOpco?: { prixHtCents?: unknown } } | null)
+      ?.conditionSuspensiveOpco?.prixHtCents;
     if (seuil === null || typeof prix !== "number") continue;
 
     const condition: ConditionSuspensive = {
       seuil,
-      prixTtcCents: prix,
+      prixHtCents: prix,
       dateLimite: c.dateLimiteCondition,
       signeeLe: null,
     };

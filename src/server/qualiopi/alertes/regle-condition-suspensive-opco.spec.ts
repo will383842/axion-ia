@@ -24,7 +24,7 @@ function convention(over: Partial<ConventionSousCondition> = {}): ConventionSous
     seuilConditionBps: 5000,
     seuilConditionCents: null,
     dateLimiteCondition: debutDuJourDeParis("2026-12-15"),
-    metadata: { conditionSuspensiveOpco: { prixTtcCents: 1_200_000, opco: "OPCO Atlas" } },
+    metadata: { conditionSuspensiveOpco: { prixHtCents: 1_200_000, opco: "OPCO Atlas" } },
     session: {
       id: "ses-1",
       numero: "AXI-SESS-2027-001",

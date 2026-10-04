@@ -72,8 +72,8 @@ export const ETATS_CONDITION_SUSPENSIVE: readonly EtatConditionSuspensive[] = [
 
 export interface ConditionSuspensive {
   readonly seuil: SeuilConditionSuspensive;
-  /** Prix TTC de la convention, en centimes : base d'un seuil en pourcentage. */
-  readonly prixTtcCents: number;
+  /** Prix HORS TAXES de la convention, en centimes : base d'un seuil en pourcentage. */
+  readonly prixHtCents: number;
   /** Instant de 00:00 (heure de Paris) du jour limite — cf. en-tête. */
   readonly dateLimite: Date;
   /** Date de signature de la convention ; `null` tant qu'elle n'est pas signée. */
@@ -128,14 +128,14 @@ export function validerSeuil(seuil: SeuilConditionSuspensive): void {
  */
 export function seuilAtteint(
   seuil: SeuilConditionSuspensive,
-  prixTtcCents: number,
+  prixHtCents: number,
   montantAccordeCents: number,
 ): boolean {
   validerSeuil(seuil);
-  exigerEntier(prixTtcCents, "prix TTC en centimes", 0);
+  exigerEntier(prixHtCents, "prix HT en centimes", 0);
   exigerEntier(montantAccordeCents, "montant accordé en centimes", 0);
   if (seuil.type === "montant") return montantAccordeCents >= seuil.cents;
-  return BigInt(montantAccordeCents) * 10_000n >= BigInt(seuil.bps) * BigInt(prixTtcCents);
+  return BigInt(montantAccordeCents) * 10_000n >= BigInt(seuil.bps) * BigInt(prixHtCents);
 }
 
 /** Lit le seuil sur les colonnes de la convention ; `null` si aucun n'est posé. */
@@ -261,7 +261,7 @@ export function evaluerConditionSuspensive(
       case "refus":
         return { etat: "caduque", effetLe: null, cause: "refus", le: e.le };
       case "accord_ecrit":
-        return seuilAtteint(condition.seuil, condition.prixTtcCents, e.montantAccordeCents)
+        return seuilAtteint(condition.seuil, condition.prixHtCents, e.montantAccordeCents)
           ? { etat: "active", effetLe: condition.signeeLe, cause: "accord_ecrit", le: e.le }
           : { etat: "caduque", effetLe: null, cause: "accord_insuffisant", le: e.le };
     }
@@ -307,14 +307,15 @@ export function euroDepuisCentimes(cents: number): string {
 }
 
 /**
- * Paramètre `{seuil}` de la clause. En pourcentage, la base est NOMMÉE (le prix
- * TTC de la convention) : « 50 % » seul ne dirait pas de quoi.
+ * Paramètre `{seuil}` de la clause, toujours HORS TAXES (la convention imprime un
+ * total HT). En pourcentage, la base est NOMMÉE : « 50 % » seul ne dirait pas de
+ * quoi. En euros, « hors taxes » est écrit : un montant nu serait ambigu.
  */
 export function libelleSeuilClause(seuil: SeuilConditionSuspensive): string {
   validerSeuil(seuil);
   return seuil.type === "pourcentage"
-    ? `${pourcentageDepuisBps(seuil.bps)} % du prix toutes taxes comprises de la présente convention`
-    : euroDepuisCentimes(seuil.cents);
+    ? `${pourcentageDepuisBps(seuil.bps)} % du prix hors taxes de la présente convention`
+    : `${euroDepuisCentimes(seuil.cents)} hors taxes`;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
