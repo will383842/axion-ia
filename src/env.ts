@@ -87,6 +87,10 @@ export const env = createEnv({
     // Lu par le site ET le worker. Absent : ACTIF (hors tests) ; "false" coupe
     // tout (envoi automatique, bouton, relances, réponses par lien).
     OPCO_SUIVI_ENTREPRISE_ENABLED: z.enum(["true", "false"]).optional(),
+    // INT-T60-A — import mensuel de la table IDCC → OPCO (SIRO, data.gouv.fr),
+    // lu par le WORKER (`opco-siro-import-worker.ts`). Absent : ACTIF (hors
+    // tests) ; "false" coupe le téléchargement et l'import.
+    IDCC_OPCO_IMPORT_ENABLED: z.enum(["true", "false"]).optional(),
     // ── Chantier visio (correctif P-2, ADR 0061) — adresses de test du pilote ─
     // Lu par le site ET le worker (`src/server/visio/adresses-de-test.ts`, à
     // l'exécution). Adresses (ou empreintes) séparées par des virgules : un
@@ -683,6 +687,7 @@ export const env = createEnv({
     CRM_SYNC_ENABLED: process.env.CRM_SYNC_ENABLED,
     DOSSIER_BALAYAGE_ENABLED: process.env.DOSSIER_BALAYAGE_ENABLED,
     OPCO_SUIVI_ENTREPRISE_ENABLED: process.env.OPCO_SUIVI_ENTREPRISE_ENABLED,
+    IDCC_OPCO_IMPORT_ENABLED: process.env.IDCC_OPCO_IMPORT_ENABLED,
     VISIO_ADRESSES_DE_TEST: process.env.VISIO_ADRESSES_DE_TEST,
     CRM_SYNC_CANDIDATES_ENABLED: process.env.CRM_SYNC_CANDIDATES_ENABLED,
     CRM_SYNC_GUIDE_ENABLED: process.env.CRM_SYNC_GUIDE_ENABLED,

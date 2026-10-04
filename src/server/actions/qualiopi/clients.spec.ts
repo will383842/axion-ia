@@ -32,6 +32,8 @@ const mockFindMany = vi.fn();
 const mockCreate = vi.fn();
 const mockUpdate = vi.fn();
 const mockFindUnique = vi.fn();
+// Table `idcc_opco` (INT-T60-A) : par défaut, un import a posé 1516 → AKTO.
+const tableIdccOpco = { couples: [["1516", "akto"]] as Array<[string, string]> };
 
 vi.mock("@/lib/prisma", () => {
   const client = {
@@ -64,6 +66,10 @@ vi.mock("@/lib/prisma", () => {
       deleteMany: async () => ({ count: 0 }),
     },
     activityLog: { create: async () => ({}) },
+    idccOpco: {
+      findMany: async (a: { where: { idcc: string } }) =>
+        tableIdccOpco.couples.filter(([i]) => i === a.where.idcc).map(([, opco]) => ({ opco })),
+    },
     // Passthrough : inoffensif aujourd'hui (l'action n'ouvre pas de
     // transaction), nécessaire dès que V20 enveloppera l'allocation.
     $transaction: async (fn: unknown) =>
@@ -149,6 +155,19 @@ describe("createClientAction — OPCO (F6)", () => {
 
     const data = mockCreate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
     expect(data.opcoIdentifie).toBe("akto");
+  });
+
+  it("table idcc_opco vide (avant le premier import) : aucune déduction par l'IDCC, repli NAF", async () => {
+    const avant = tableIdccOpco.couples;
+    tableIdccOpco.couples = [];
+    try {
+      await createClientAction({ raisonSociale: "X", idcc: "1516", nafCode: "6201Z" });
+    } finally {
+      tableIdccOpco.couples = avant;
+    }
+
+    const data = mockCreate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect(data.opcoIdentifie).toBe("atlas");
   });
 
   it("un OPCO saisi explicitement gagne sur l'inférence", async () => {

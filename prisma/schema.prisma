@@ -8835,6 +8835,10 @@ enum StatutFondsOpco {
 model IdccOpco {
   idcc            String   @db.Char(4)
   opco            Opco
+  /// Nombre de SIRET DISTINCTS de la source déclarant ce couple dans ce
+  /// millésime (fait brut, forme d'A02 sur #656). Remplacé avec le millésime,
+  /// jamais cumulé. CHECK (siret_nombre >= 1) posé par la migration.
+  siretNombre     Int      @map("siret_nombre")
   /// Date du fichier SIRO dont la ligne est issue.
   millesimeSource DateTime @map("millesime_source") @db.Date
   /// URL du fichier SIRO lu.

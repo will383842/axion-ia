@@ -6,6 +6,7 @@
 CREATE TABLE "idcc_opco" (
     "idcc" CHAR(4) NOT NULL,
     "opco" "Opco" NOT NULL,
+    "siret_nombre" INTEGER NOT NULL,
     "millesime_source" DATE NOT NULL,
     "source_url" TEXT NOT NULL,
     "importe_at" TIMESTAMPTZ(6) NOT NULL,
@@ -34,6 +35,10 @@ ALTER TABLE "idcc_opco" ADD CONSTRAINT "idcc_opco_idcc_check"
   CHECK ("idcc" ~ '^[0-9]{4}$');
 ALTER TABLE "idcc_opco_changements" ADD CONSTRAINT "idcc_opco_changements_idcc_check"
   CHECK ("idcc" ~ '^[0-9]{4}$');
+-- Forme d'A02 (#656, 2026-10-04 13:31 UTC) : nombre de SIRET distincts de la
+-- source pour ce couple et ce millésime. Un couple présent a au moins un SIRET.
+ALTER TABLE "idcc_opco" ADD CONSTRAINT "idcc_opco_siret_nombre_positif"
+  CHECK ("siret_nombre" >= 1);
 -- Un changement a au moins un côté, et ses deux côtés diffèrent.
 ALTER TABLE "idcc_opco_changements" ADD CONSTRAINT "idcc_opco_changements_cote_check"
   CHECK (("ancien_opco" IS NOT NULL OR "nouvel_opco" IS NOT NULL)
