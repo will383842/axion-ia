@@ -131,7 +131,7 @@ describe("agregerConsommation", () => {
 
 describe("consommationOpcoAnnee — lecture", () => {
   it("lit les dossiers du client et agrège l'année demandée", async () => {
-    const findMany = vi.fn(async () => [
+    const findMany = vi.fn(async (_args: unknown) => [
       {
         type: "opco",
         statut: "accord_recu",

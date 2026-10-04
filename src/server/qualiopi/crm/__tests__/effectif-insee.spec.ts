@@ -126,7 +126,7 @@ describe("effectifInseeAEcrire — la saisie prime", () => {
 
 describe("rechercherTrancheEffectif — l'annuaire", () => {
   it("lit la tranche du SIREN demandé", async () => {
-    const f = vi.fn(async () => reponseAnnuaire("11"));
+    const f = vi.fn(async (_url: string) => reponseAnnuaire("11"));
     expect(await rechercherTrancheEffectif(SIREN, { fetch: f })).toEqual({
       ok: true,
       tranche: "11",
