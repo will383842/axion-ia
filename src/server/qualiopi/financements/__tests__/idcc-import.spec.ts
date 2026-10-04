@@ -17,6 +17,9 @@ import { describe, expect, it } from "vitest";
 import type { Opco } from "../../../../../prisma/generated/client";
 import {
   calculerChangements,
+  urlSiroAutorisee,
+  HOTES_FICHIER_SIRO,
+  TAILLE_MAX_FICHIER_SIRO_OCTETS,
   choisirRessourceSiro,
   CONFIG_FICHIER_SIRO,
   FichierIdccOpcoRefuse,
@@ -552,9 +555,10 @@ function fichierDeCouples(n: number): string {
 
 function faussesRoutes(routes: Record<string, () => Response | Promise<Response>>) {
   const appels: string[] = [];
-  const fetch = async (url: string, init: { signal: AbortSignal }) => {
+  const fetch = async (url: string, init: { signal: AbortSignal; redirect: "manual" }) => {
     appels.push(url);
     expect(init.signal).toBeInstanceOf(AbortSignal);
+    expect(init.redirect, "aucune redirection ne doit être suivie").toBe("manual");
     const r = routes[url];
     if (!r) throw new Error(`URL inattendue : ${url}`);
     return r();
@@ -657,7 +661,7 @@ describe("importerSiroDuMois — téléchargement, sans réseau", () => {
 
   it("le délai d'attente est borné et passé au réseau", async () => {
     const signaux: AbortSignal[] = [];
-    const fetch = async (_url: string, init: { signal: AbortSignal }) => {
+    const fetch = async (_url: string, init: { signal: AbortSignal; redirect: "manual" }) => {
       signaux.push(init.signal);
       return new Promise<Response>((_, rejeter) =>
         init.signal.addEventListener("abort", () => rejeter(init.signal.reason)),
@@ -667,5 +671,111 @@ describe("importerSiroDuMois — téléchargement, sans réseau", () => {
       TelechargementSiroRefuse,
     );
     expect(signaux[0]?.aborted).toBe(true);
+  });
+});
+
+describe("🔴 SSRF — le worker n'appelle que data.gouv (condition de la sécurité)", () => {
+  const grand = fichierDeCouples(1_100);
+
+  it("urlSiroAutorisee : seul static.data.gouv.fr en https, en égalité exacte", () => {
+    expect(urlSiroAutorisee(URL_SIRO, HOTES_FICHIER_SIRO)).toBe(true);
+    for (const etrangere of [
+      "https://exemple.invalid/siro-202606.csv",
+      "https://static.data.gouv.fr.exemple.invalid/siro-202606.csv",
+      "https://127.0.0.1/siro-202606.csv",
+      "https://169.254.169.254/latest/meta-data",
+      "http://static.data.gouv.fr/siro-202606.csv",
+      "https://static.data.gouv.fr:8443/siro-202606.csv",
+      "https://user:mdp@static.data.gouv.fr/siro-202606.csv",
+      "https://sous.static.data.gouv.fr/siro-202606.csv",
+      "https://www.data.gouv.fr/siro-202606.csv",
+      "pas une url",
+    ]) {
+      expect(urlSiroAutorisee(etrangere, HOTES_FICHIER_SIRO), etrangere).toBe(false);
+    }
+  });
+
+  it("une ressource sur un hôte étranger est écartée par choisirRessourceSiro", () => {
+    const r = choisirRessourceSiro({
+      resources: [
+        { format: "csv", title: "siro-202607.csv", url: "https://127.0.0.1/siro-202607.csv" },
+        { format: "csv", title: "siro-202606.csv", url: URL_SIRO },
+      ],
+    });
+    expect(r?.url).toBe(URL_SIRO);
+  });
+
+  it("une API qui ne propose qu'un hôte étranger : AUCUN appel vers lui, table intacte", async () => {
+    const { db, etat } = fausseBase();
+    const instantane = JSON.stringify(etat);
+    const { fetch, appels } = faussesRoutes({
+      [SIRO_DATASET_API]: () =>
+        json({
+          resources: [
+            { format: "csv", title: "siro-202607.csv", url: "https://exemple.invalid/siro.csv" },
+          ],
+        }),
+    });
+    await expect(importerSiroDuMois(db, { fetch })).rejects.toThrow(/aucune ressource/);
+    expect(appels).toEqual([SIRO_DATASET_API]);
+    expect(JSON.stringify(etat)).toBe(instantane);
+  });
+
+  it("une redirection, même vers data.gouv, est refusée : table intacte", async () => {
+    const { db, etat } = fausseBase();
+    const instantane = JSON.stringify(etat);
+    for (const cible of ["https://127.0.0.1/siro.csv", URL_SIRO]) {
+      const { fetch } = faussesRoutes({
+        [SIRO_DATASET_API]: () => json(reponseApi),
+        [URL_SIRO]: () => new Response(null, { status: 302, headers: { location: cible } }),
+      });
+      await expect(importerSiroDuMois(db, { fetch })).rejects.toThrow(/redirection refusée/);
+    }
+    expect(JSON.stringify(etat)).toBe(instantane);
+  });
+
+  it("une réponse servie par un hôte étranger (URL finale) est refusée", async () => {
+    const { db } = fausseBase();
+    const servie = csv(grand);
+    Object.defineProperty(servie, "url", { value: "https://127.0.0.1/siro.csv" });
+    const { fetch } = faussesRoutes({
+      [SIRO_DATASET_API]: () => json(reponseApi),
+      [URL_SIRO]: () => servie,
+    });
+    await expect(importerSiroDuMois(db, { fetch })).rejects.toThrow(/hôte non autorisé/);
+  });
+
+  it("au-delà du plafond d'octets : refus nommé, sans import partiel — en flux ou annoncé", async () => {
+    const { db, etat } = fausseBase();
+    const instantane = JSON.stringify(etat);
+    const enFlux = faussesRoutes({
+      [SIRO_DATASET_API]: () => json(reponseApi),
+      [URL_SIRO]: () => csv(grand),
+    });
+    await expect(
+      importerSiroDuMois(db, { fetch: enFlux.fetch, tailleMaxOctets: 2_000 }),
+    ).rejects.toThrow(/au-delà du plafond/);
+    const annonce = faussesRoutes({
+      [SIRO_DATASET_API]: () => json(reponseApi),
+      [URL_SIRO]: () =>
+        new Response(flux(grand, [100]), {
+          status: 200,
+          headers: { "content-type": "text/csv", "content-length": "999999999999" },
+        }),
+    });
+    await expect(importerSiroDuMois(db, { fetch: annonce.fetch })).rejects.toThrow(
+      /au-delà du plafond/,
+    );
+    expect(JSON.stringify(etat)).toBe(instantane);
+  });
+
+  it("cas nominal : static.data.gouv.fr, 200, sous le plafond → importé", async () => {
+    const { db } = fausseBase();
+    const { fetch } = faussesRoutes({
+      [SIRO_DATASET_API]: () => json(reponseApi),
+      [URL_SIRO]: () => csv(grand),
+    });
+    expect(TAILLE_MAX_FICHIER_SIRO_OCTETS).toBeGreaterThan(109_242_949);
+    await expect(importerSiroDuMois(db, { fetch })).resolves.toMatchObject({ statut: "importe" });
   });
 });
