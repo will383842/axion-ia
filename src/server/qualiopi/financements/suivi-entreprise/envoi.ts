@@ -27,7 +27,10 @@ import { isR2Configured, uploadToR2 } from "@/lib/r2-storage";
 import { enqueueEmail } from "@/server/queue/queues";
 import { produireKitOpco } from "@/server/qualiopi/documents/production/producteurs";
 import { assertDossierOuvertSiRegeneration } from "@/server/qualiopi/sessions/verrou-dossier-garde";
-import type { PayloadSuiviOpco } from "@/lib/email/templates/opco-suivi-entreprise";
+import type {
+  PayloadSuiviOpco,
+  VarianteSuiviOpco,
+} from "@/lib/email/templates/opco-suivi-entreprise";
 import { chargerDossierPretADeposer } from "../dossier-pret-a-deposer-lecture";
 import { construireZipPretADeposer } from "../dossier-pret-a-deposer-zip";
 import { suiviEntrepriseActif } from "./drapeau";
@@ -113,7 +116,7 @@ async function kitPourEnvoi(
 
 function payloadDe(
   c: ContexteSuivi,
-  variante: PayloadSuiviOpco["variante"],
+  variante: VarianteSuiviOpco,
   jeton: string,
   question: QuestionMessage,
   avecDossier: boolean,
@@ -152,7 +155,7 @@ async function poserEtEnfiler(input: {
   etape: EtapeMessage;
   rang: number;
   question: QuestionMessage;
-  variante: PayloadSuiviOpco["variante"];
+  variante: VarianteSuiviOpco;
   avecDossier: boolean;
   portailUrl: string | null;
   now: Date;

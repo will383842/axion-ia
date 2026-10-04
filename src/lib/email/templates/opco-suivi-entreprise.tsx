@@ -145,7 +145,8 @@ export function OpcoSuiviEntrepriseEmail({
     const depot = texte(p.depotFaitLe);
     return (
       <EmailLayout
-        famille="C"
+        famille="B"
+        sansReseauxSociaux
         preview={`Un clic suffit pour nous dire où en est la réponse de ${opco}.`}
         title="La réponse de votre OPCO"
         locale={locale}
@@ -191,7 +192,8 @@ export function OpcoSuiviEntrepriseEmail({
   if (p.variante === "relance_depot") {
     return (
       <EmailLayout
-        famille="C"
+        famille="B"
+        sansReseauxSociaux
         preview={`La demande de prise en charge auprès de ${opco} : un clic pour nous dire où vous en êtes.`}
         title="Votre demande de prise en charge"
         locale={locale}
@@ -212,9 +214,10 @@ export function OpcoSuiviEntrepriseEmail({
   }
 
   return (
-    // Famille B (livraison d'un dossier) : le message porte le dossier, le
-    // portail ET deux réponses — au-delà du budget de 4 liens de la famille C.
-    // Sans réseaux sociaux ni bandeau : rien ne doit détourner du dépôt.
+    // Famille B (cycle de vie d'un dossier) pour les TROIS variantes : chacune
+    // porte deux ou trois réponses, plus le dossier ou le portail — au-delà du
+    // budget de 4 liens de la famille C (mesuré par le test du gabarit). Sans
+    // réseaux sociaux ni bandeau : rien ne doit détourner de la réponse.
     <EmailLayout
       famille="B"
       preview={`Le dossier à déposer chez ${opco}, la marche à suivre et la date limite.`}

@@ -61,7 +61,7 @@ function texteVisible(html: string): string {
 
 describe("e-mail opco-suivi-entreprise", () => {
   for (const p of VARIANTES) {
-    describe(p.variante, () => {
+    describe(p.variante ?? "envoi", () => {
       it("rendu : vouvoiement, sans tutoiement, sans téléphone, sans engagement de délai", async () => {
         const { html, subject } = await renderEmailTemplate("opco-suivi-entreprise", "fr", {
           ...p,
@@ -87,7 +87,7 @@ describe("e-mail opco-suivi-entreprise", () => {
           "opco-suivi-entreprise",
           "fr",
           { ...p },
-          "rh@acme.fr",
+          { destinataire: "rh@acme.fr" },
         );
         const famille = familleDuHtml(html);
         expect(famille).not.toBeNull();
