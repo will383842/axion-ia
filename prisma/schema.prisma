@@ -8823,6 +8823,52 @@ enum StatutFondsOpco {
   suspendu
 }
 
+/// Correspondance IDCC → OPCO (INT-T60-A), importée de la table SIRET-OPCO
+/// « SIRO » de France compétences. Clé primaire = le COUPLE (idcc, opco) : un
+/// IDCC rattaché à deux OPCO a DEUX lignes, jamais tranché par une majorité.
+/// La table ne porte qu'UN millésime à la fois : un import remplace le
+/// millésime entier dans une seule transaction (`idcc-import.ts`), et chaque
+/// écart avec le précédent est journalisé dans `IdccOpcoChangement`.
+/// CHECK (idcc ~ '^[0-9]{4}$') posé par la migration (ici et sur le journal).
+/// rgpd: technique — référentiel public des conventions collectives et de leur
+/// OPCO ; aucune donnée sur une personne
+model IdccOpco {
+  idcc            String   @db.Char(4)
+  opco            Opco
+  /// Date du fichier SIRO dont la ligne est issue.
+  millesimeSource DateTime @map("millesime_source") @db.Date
+  /// URL du fichier SIRO lu.
+  sourceUrl       String   @map("source_url") @db.Text
+  importeAt       DateTime @map("importe_at") @db.Timestamptz(6)
+  /// Intitulé de la convention. Source DISTINCTE de la SIRO (liste du
+  /// ministère du Travail) : nullable, et sa provenance dans `intituleSource`.
+  intitule        String?  @db.Text
+  intituleSource  String?  @map("intitule_source") @db.Text
+
+  @@id([idcc, opco])
+  @@index([opco])
+  @@map("idcc_opco")
+}
+
+/// Journal des changements de la correspondance IDCC → OPCO (INT-T60-A) : un
+/// import ne réécrit jamais une ligne en silence. `ancienOpco` null = IDCC
+/// nouvellement rattaché ; `nouvelOpco` null = rattachement disparu du fichier.
+/// Ajouts seuls : aucune ligne n'est modifiée ni supprimée.
+/// rgpd: technique — référentiel public des conventions collectives et de leur
+/// OPCO ; aucune donnée sur une personne
+model IdccOpcoChangement {
+  id              String   @id @default(uuid()) @db.Uuid
+  idcc            String   @db.Char(4)
+  ancienOpco      Opco?    @map("ancien_opco")
+  nouvelOpco      Opco?    @map("nouvel_opco")
+  /// Millésime qui a introduit le changement.
+  millesimeSource DateTime @map("millesime_source") @db.Date
+  importeAt       DateTime @map("importe_at") @db.Timestamptz(6)
+
+  @@index([idcc, importeAt])
+  @@map("idcc_opco_changements")
+}
+
 /// Import d'un relevé de connexion distanciel (CSV Zoom/Teams/Meet). Archive le
 /// fichier ORIGINAL (obligation CDC) et trace le rapprochement participants↔
 /// stagiaires (matched/unmatched). Génère les `PresenceCreneau` distanciels.
