@@ -68,3 +68,21 @@ export function nomFichierDocument({ type, numero, contexte, suffixe }: NomFichi
   const segments = [asciiSur(libelle), ctx, asciiSur(numero)].filter(Boolean);
   return `${segments.join(" - ")}.pdf`;
 }
+
+/**
+ * Nom d'une ARCHIVE remise à un tiers, mêmes règles que `nomFichierDocument` :
+ * « Dossier OPCO a deposer - INVEST SUN - AXI-SESS-2026-001.zip ».
+ */
+export function nomFichierArchive({
+  libelle,
+  contexte,
+  numero,
+}: {
+  libelle: string;
+  contexte?: string | null;
+  numero: string;
+}): string {
+  const ctx = contexte ? asciiSur(contexte).slice(0, 60).trim() : "";
+  const segments = [asciiSur(libelle), ctx, asciiSur(numero)].filter(Boolean);
+  return `${segments.join(" - ")}.zip`;
+}

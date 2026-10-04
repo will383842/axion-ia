@@ -1231,20 +1231,29 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "direction",
   },
-  // Lot OPCO A5 : veille mensuelle de l'état des fonds des OPCO. Levée quand le
-  // relevé le plus récent (tous OPCO confondus) a plus de 31 jours.
-  etat_fonds_perime: {
-    niveau: "important",
-    titre: "État des fonds OPCO à relever (veille mensuelle)",
-    resolutionAuto: true,
-    guichet: "direction",
-  },
   // Chantier OPCO A3 : session subrogée terminée, facture à l'OPCO non émise,
   // à J-15 de la date limite de facturation du référentiel OPCO. Se referme
   // dès que la facture est émise.
   delai_facturation_opco: {
     niveau: "important",
     titre: "Facture OPCO à émettre avant la date limite",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
+  // Chantier OPCO A6 : session planifiée financée OPCO, dépôt de la demande par
+  // l'entreprise non saisi, à J-7 de la date limite de dépôt du référentiel.
+  // Se referme dès que « Dépôt fait le » est saisi sur le dossier.
+  depot_opco_a_faire: {
+    niveau: "important",
+    titre: "Dépôt de la demande OPCO à faire par l'entreprise",
+    resolutionAuto: true,
+    guichet: "direction",
+  },
+  // Lot OPCO A5 : veille mensuelle de l'état des fonds des OPCO. Levée quand le
+  // relevé le plus récent (tous OPCO confondus) a plus de 31 jours.
+  etat_fonds_perime: {
+    niveau: "important",
+    titre: "État des fonds OPCO à relever (veille mensuelle)",
     resolutionAuto: true,
     guichet: "direction",
   },

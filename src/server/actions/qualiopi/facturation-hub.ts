@@ -18,6 +18,7 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { dayKeyInParis } from "@/lib/calendar-grid";
 import {
   requireAdminWrite,
   requireHabilitation,
@@ -31,6 +32,7 @@ import {
 import {
   transitionnerDossier,
   creerDossierDepuisSession,
+  enregistrerDepotDossier,
 } from "@/server/qualiopi/financements/dossier-financement";
 import { planifierFacturationDevis } from "@/server/qualiopi/financements/facture-libre-pur";
 // SSOT du plafond légal (art. L6353-6) : la même constante que `calculerAcompte`
@@ -563,7 +565,23 @@ const TransitionDossierSchema = z.object({
   vers: z.enum(["a_monter", "envoye", "accord_recu", "refuse", "facture", "paiement_recu", "clos"]),
   montantAccordeCents: z.number().int().positive().optional(),
   echeanceFinanceurAt: z.coerce.date().optional(),
+  /** Date écrite sur l'accord, AAAA-MM-JJ (colonne `@db.Date`). */
+  accordEcritLe: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
 });
+
+/**
+ * « AAAA-MM-JJ » → minuit UTC, la forme d'une colonne `@db.Date` ; `null` si le
+ * jour n'existe pas. ⚠️ `new Date("2026-02-31T…")` ne lève pas : il glisse au
+ * 3 mars. On exige donc l'aller-retour exact, pas seulement `isNaN`.
+ */
+function jourSaisiVersDate(jour: string): Date | null {
+  const d = new Date(`${jour}T00:00:00.000Z`);
+  if (Number.isNaN(d.getTime())) return null;
+  return d.toISOString().slice(0, 10) === jour ? d : null;
+}
 
 export async function transitionnerDossierAction(
   rawInput: unknown,
@@ -576,6 +594,9 @@ export async function transitionnerDossierAction(
   const parsed = TransitionDossierSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };
   const input = parsed.data;
+  const accordEcritLe =
+    input.accordEcritLe !== undefined ? jourSaisiVersDate(input.accordEcritLe) : undefined;
+  if (accordEcritLe === null) return { error: "Date de l'accord écrit invalide." };
 
   try {
     const result = await transitionnerDossier({
@@ -587,17 +608,79 @@ export async function transitionnerDossierAction(
       ...(input.echeanceFinanceurAt !== undefined
         ? { echeanceFinanceurAt: input.echeanceFinanceurAt }
         : {}),
+      ...(accordEcritLe !== undefined ? { accordEcritLe } : {}),
     });
     await logQualiopiActivity({
       action: "facturation.dossier.transition",
       targetType: "DossierFinancement",
       targetId: input.dossierId,
-      changes: { vers: input.vers, montantAccordeCents: input.montantAccordeCents ?? null },
+      changes: {
+        vers: input.vers,
+        montantAccordeCents: input.montantAccordeCents ?? null,
+        accordEcritLe: input.accordEcritLe ?? null,
+      },
       session,
     });
     return { data: { statut: result.statut } };
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Transition impossible." };
+  }
+}
+
+const DepotDossierSchema = z.object({
+  dossierId: z.string().uuid(),
+  /** AAAA-MM-JJ (colonne `@db.Date`). */
+  depotFaitLe: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  numeroDossierExterne: z.string().trim().min(1).max(80).optional(),
+});
+
+/**
+ * Chantier OPCO A6 — saisit « Dépôt fait le » (+ n° de dossier OPCO) : c'est
+ * l'entreprise qui dépose, l'organisme constate. Referme l'alerte
+ * `depot_opco_a_faire`. Journal sans donnée personnelle : une date et un
+ * numéro de dossier.
+ */
+export async function enregistrerDepotDossierAction(
+  rawInput: unknown,
+): Promise<{ data: { dossierId: string } } | { error: string }> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible au build." };
+  }
+  // Même droit que les transitions du dossier : c'est le même suivi du dépôt.
+  const session = await requireHabilitation("deposer_demande_financeur");
+  const parsed = DepotDossierSchema.safeParse(rawInput);
+  if (!parsed.success) return { error: "Entrée invalide (date attendue AAAA-MM-JJ)." };
+  const input = parsed.data;
+  const depotFaitLe = jourSaisiVersDate(input.depotFaitLe);
+  if (depotFaitLe === null) return { error: "Date de dépôt invalide." };
+  // L'organisme CONSTATE un dépôt déjà fait : une date à venir refermerait
+  // l'alerte `depot_opco_a_faire` sur une promesse. Jour civil de Paris.
+  if (input.depotFaitLe > dayKeyInParis(new Date())) {
+    return { error: "La date de dépôt ne peut pas être dans le futur." };
+  }
+
+  try {
+    const { trainingSessionId } = await enregistrerDepotDossier({
+      dossierId: input.dossierId,
+      depotFaitLe,
+      ...(input.numeroDossierExterne !== undefined
+        ? { numeroDossierExterne: input.numeroDossierExterne }
+        : {}),
+    });
+    await logQualiopiActivity({
+      action: "facturation.dossier.depot_saisi",
+      targetType: "DossierFinancement",
+      targetId: input.dossierId,
+      changes: {
+        depotFaitLe: input.depotFaitLe,
+        numeroDossierExterne: input.numeroDossierExterne ?? null,
+        trainingSessionId,
+      },
+      session,
+    });
+    return { data: { dossierId: input.dossierId } };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Saisie du dépôt impossible." };
   }
 }
 
