@@ -1,4 +1,5 @@
 import type { CanalRendezVous } from "@/server/calendly/canal";
+import type { TypeRendezVous } from "@/server/calendly/type-rendez-vous";
 /**
  * Agenda de la console — vue unifiée de TOUS les rendez-vous (2026-08-26).
  *
@@ -84,6 +85,12 @@ export interface AgendaItem {
    */
   readonly note: string | null;
   readonly annule: boolean;
+  /**
+   * Type d'une réservation Calendly (2026-10-04, lot L3) — diagnostic, échange
+   * projet, apporteur, salon, autre ; `null` hors Calendly. Visible de tous
+   * les rôles, comme `format` : le type n'est pas une donnée personnelle.
+   */
+  readonly typeRendezVous: TypeRendezVous | null;
 }
 
 /**

@@ -200,7 +200,7 @@ function avecUtm(url: string, famille: FamilleEmail, content: string, campagne?:
 }
 
 const REVIEW_URL = `${BASE_URL}/fr/avis`;
-const APPEL_URL = `${BASE_URL}/fr/appel`;
+const APPEL_URL = `${BASE_URL}/fr/appel?depuis=email`;
 const SITE_URL_PARTAGE = `${BASE_URL}/fr`;
 
 // ─────────────────────────────────────────────────────────────────────────────

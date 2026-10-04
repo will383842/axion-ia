@@ -47,6 +47,7 @@ import { enrichCalendlyEvent } from "@/server/calendly/enrich";
 import { invaliderCreneaux } from "@/server/calendly/revalider-creneaux";
 import { prevenir } from "@/server/calendly/alertes-reservation";
 import { creneauExploitable } from "@/server/calendly/formulaire-reservation";
+import { urlDeReprogrammation } from "@/server/calendly/choix-rendez-vous";
 
 export async function reporterDepuisLeLien(fd: FormData): Promise<void> {
   const locale = String(fd.get(CHAMP_LOCALE_ANNULATION) ?? "fr");
@@ -78,13 +79,18 @@ export async function reporterDepuisLeLien(fd: FormData): Promise<void> {
       utmSource: true,
       utmMedium: true,
       utmCampaign: true,
+      utmContent: true,
+      eventTypeUri: true,
+      typeRendezVous: true,
+      eventTypeName: true,
     },
   });
   if (!rdv || rdv.status === "canceled") redirect(base);
 
-  const et = await resoudreEventTypePourReservation(
-    process.env.NEXT_PUBLIC_CALENDLY_APPEL_URL ?? "",
-  );
+  // 🔴 CORRIGÉ le 2026-10-04 (chantier « Types de rendez-vous », L2) : le report
+  // reprogrammait TOUJOURS sur le type appel — un diagnostic déplacé devenait un
+  // échange projet. Il garde désormais son type d'ORIGINE.
+  const et = await resoudreEventTypePourReservation(await urlDeReprogrammation(rdv));
   if (!et) redirect(retour("&echec=refus"));
 
   // Le lien ancien → nouveau est journalisé pour le dossier client (chantier

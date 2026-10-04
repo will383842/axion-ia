@@ -20,6 +20,7 @@ import { listerEvenements, MARQUEUR_CONSOLE } from "@/server/google-calendar/eve
 import { isGoogleCalendarConfigured } from "@/server/google-calendar/auth";
 import type { AgendaFenetre, AgendaItem } from "./types";
 import { canalDuRendezVous } from "@/server/calendly/canal";
+import { typeEffectif } from "@/server/calendly/type-effectif";
 import { lienRejoindreVisio } from "@/features/admin-rendezvous/visio";
 
 /**
@@ -97,6 +98,8 @@ async function chargerCalendly(
       // qu'aucune PII ne transite en mémoire côté serveur.
       location: true,
       rawPayload: true,
+      // Le type classé (lot L3) ; NULL → le nom (`typeEffectif`).
+      typeRendezVous: true,
     },
   });
 
@@ -128,6 +131,7 @@ async function chargerCalendly(
         // Une reservation Calendly n'a pas de note de console : elle a sa fiche.
         note: null,
         annule,
+        typeRendezVous: typeEffectif(e),
       },
     ];
   });
@@ -198,6 +202,7 @@ export async function getAgendaFenetre(
             // suppression d'agenda ne se rattrape pas.
             googleEventId: e.description?.includes(MARQUEUR_CONSOLE) ? e.id : null,
             note: e.noteConsole,
+            typeRendezVous: null,
             annule: false,
           };
         });

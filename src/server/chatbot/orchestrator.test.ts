@@ -82,7 +82,7 @@ describe("T-07 intentions simples", () => {
       { retrieve: noopRetrieve },
     );
     expect(r.intent).toBe("rdv");
-    expect(r.rdvUrl).toBe("/fr/appel");
+    expect(r.rdvUrl).toBe("/fr/appel?depuis=chatbot");
   });
 
   it("hors-sujet → recadrage, pas de carte", async () => {
@@ -152,7 +152,7 @@ describe("T-07 explication (RAG + LLM mockés)", () => {
     expect(r.guard.ok).toBe(false);
     expect(r.escalate).toBe(true);
     expect(r.text).not.toContain("9 999");
-    expect(r.rdvUrl).toBe("/fr/appel");
+    expect(r.rdvUrl).toBe("/fr/appel?depuis=chatbot");
   });
 
   it("aucun chunk pertinent → escalade (jamais d'invention)", async () => {
@@ -162,7 +162,7 @@ describe("T-07 explication (RAG + LLM mockés)", () => {
       { retrieve: noopRetrieve },
     );
     expect(r.escalate).toBe(true);
-    expect(r.rdvUrl).toBe("/fr/appel");
+    expect(r.rdvUrl).toBe("/fr/appel?depuis=chatbot");
   });
 
   it("T-11 : confiance trop faible → escalade SANS appel LLM", async () => {
@@ -190,7 +190,7 @@ describe("T-07 explication (RAG + LLM mockés)", () => {
     );
     expect(r.intent).toBe("explication");
     expect(r.escalate).toBe(true);
-    expect(r.rdvUrl).toBe("/fr/appel");
+    expect(r.rdvUrl).toBe("/fr/appel?depuis=chatbot");
     // Message orienté humain, aucune fuite de l'erreur technique.
     expect(r.text).not.toMatch(/503|Anthropic|Error/i);
     expect(r.text).toMatch(/échange|technique|attendre/i);
@@ -210,7 +210,7 @@ describe("T-07 explication (RAG + LLM mockés)", () => {
     );
     expect(llm).not.toHaveBeenCalled(); // pas d'appel LLM sous backpressure
     expect(r.escalate).toBe(true);
-    expect(r.rdvUrl).toBe("/fr/appel");
+    expect(r.rdvUrl).toBe("/fr/appel?depuis=chatbot");
     expect(r.text).toMatch(/afflux|attendre/i);
     expect(r.text).not.toMatch(/429|rate/i); // jamais de 429 brut
   });
@@ -224,7 +224,7 @@ describe("T-07 explication (RAG + LLM mockés)", () => {
     );
     expect(llm).not.toHaveBeenCalled(); // mode éco = 0 appel LLM
     expect(r.escalate).toBe(true);
-    expect(r.rdvUrl).toBe("/fr/appel");
+    expect(r.rdvUrl).toBe("/fr/appel?depuis=chatbot");
   });
 
   it("T-18 : un hors_sujet déterministe jugé on-topic par le LLM → promu explication", async () => {

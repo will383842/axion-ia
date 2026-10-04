@@ -15,7 +15,10 @@ import {
   dateLimiteFacturation,
   estBaremePerime,
   faitsAVerifier,
+  isModeDeDepot,
   isOpcoId,
+  MODES_DE_DEPOT,
+  type ModeDeDepot,
   opcoLabel,
   type Fait,
   opcoDuClient,
@@ -180,6 +183,58 @@ describe("OPCO_FICHES — chaque fait est sourcé et daté", () => {
         if (v !== null) expect(v).toMatch(/^https:\/\//);
       }
     }
+  });
+});
+
+describe("ModeDeDepot — un enum à deux valeurs, sourcé par OPCO (INT-T64-A)", () => {
+  it("n'accepte que of_mandate et compte_adherent", () => {
+    expect([...MODES_DE_DEPOT].sort()).toEqual(["compte_adherent", "of_mandate"]);
+    for (const mode of MODES_DE_DEPOT) expect(isModeDeDepot(mode)).toBe(true);
+    for (const autre of [
+      "",
+      "OF_MANDATE",
+      "non_constate",
+      "entreprise",
+      true,
+      false,
+      null,
+      undefined,
+      1,
+    ])
+      expect(isModeDeDepot(autre), String(autre)).toBe(false);
+  });
+
+  it("n'est pas un booléen, même au typage", () => {
+    // @ts-expect-error — un booléen n'est pas un mode de dépôt.
+    const faux: ModeDeDepot = true;
+    expect(isModeDeDepot(faux)).toBe(false);
+  });
+
+  it("chaque OPCO a une valeur de l'enum, ou un « non constaté » explicite", () => {
+    for (const id of OPCO_IDS) {
+      const fait = OPCO_FICHES[id].modeDeDepotConstate;
+      if (fait.valeur === null) {
+        expect(fait.aVerifier, id).toBe(true);
+        expect(fait.source, id).toBeNull();
+      } else {
+        expect(isModeDeDepot(fait.valeur), id).toBe(true);
+      }
+    }
+  });
+
+  it("toute valeur constatée porte une source https et une date de lecture", () => {
+    for (const id of OPCO_IDS) {
+      const fait = OPCO_FICHES[id].modeDeDepotConstate;
+      if (fait.valeur === null) continue;
+      expect(fait.source, id).toMatch(/^https:\/\/\S+$/);
+      expect(fait.releveLe, id).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(fait.aVerifier, id).toBeUndefined();
+    }
+  });
+
+  it("état relevé : Atlas, Akto, OPCO 2i et Constructys constatés, les sept autres non constatés", () => {
+    const constates = OPCO_IDS.filter((id) => OPCO_FICHES[id].modeDeDepotConstate.valeur !== null);
+    expect([...constates].sort()).toEqual(["akto", "atlas", "constructys", "opco2i"]);
   });
 });
 

@@ -21,6 +21,8 @@
 import { Link, Section, Text } from "@react-email/components";
 import type { ReactElement } from "react";
 
+import { SITE_URL } from "@/lib/site-url";
+
 import { EmailLayout, emailStyles } from "./_layout";
 
 type Locale = "fr" | "en";
@@ -40,8 +42,13 @@ const SALONS = {
   },
 } as const;
 
-/** L'échange en visio proposé à qui ne peut finalement pas venir. */
-const URL_VISIO = "https://calendly.com/axion-ia/premier-contact";
+/**
+ * L'échange en visio proposé à qui ne peut finalement pas venir : l'« Échange
+ * projet » du SITE, plus le lien Calendly direct (chantier « Types de
+ * rendez-vous », L5a) — la réservation passe ainsi par le parcours qui classe
+ * le type et mesure l'emplacement (`utm_content` = `projet:email-salon`).
+ */
+const URL_VISIO = `${SITE_URL}/fr/appel?rdv=projet&depuis=email-salon`;
 
 interface Payload {
   prenom?: string;

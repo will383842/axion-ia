@@ -10,7 +10,7 @@
 // ── La règle ──────────────────────────────────────────────────────────────
 // Juste après l'enrichissement Calendly (le moment où l'adresse de l'invité
 // devient connue), SI :
-//   · le type d'événement est un échange apporteur (`estAppelApporteur`) ;
+//   · le type d'événement est un échange apporteur (`estRendezVousApporteur`) ;
 //   · la ligne n'est rattachée à RIEN — ni demande (`linked_submission_id`), ni
 //     candidature emploi (`linked_job_application_id`) ;
 // ALORS on cherche, par l'empreinte de l'adresse, la demande NON SUPPRIMÉE la
@@ -29,11 +29,16 @@
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { estApporteur, FILTRE_APPORTEUR_PRISMA } from "@/lib/commercial-application/est-apporteur";
-import { estAppelApporteur } from "./appel-apporteur";
+import { estRendezVousApporteur } from "./appel-apporteur";
 
 export interface LigneARattacher {
   id: string;
   eventTypeName: string | null | undefined;
+  /**
+   * Le type classé (2026-10-04), quand l'appelant le connaît. Double verrou :
+   * classé « apporteur » OU nommé apporteur (`estRendezVousApporteur`).
+   */
+  typeRendezVous?: string | null | undefined;
   inviteeEmail: string | null | undefined;
   linkedSubmissionId: string | null | undefined;
   linkedJobApplicationId: string | null | undefined;
@@ -62,7 +67,7 @@ export type IssueRattachement =
 export async function rattacherEchangeApporteur(
   ligne: LigneARattacher,
 ): Promise<IssueRattachement> {
-  if (!estAppelApporteur(ligne.eventTypeName)) {
+  if (!estRendezVousApporteur(ligne)) {
     return { rattache: false, motif: "pas_un_echange_apporteur" };
   }
   if (ligne.linkedSubmissionId || ligne.linkedJobApplicationId) {
