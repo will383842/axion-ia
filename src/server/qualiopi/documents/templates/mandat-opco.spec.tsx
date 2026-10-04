@@ -132,6 +132,19 @@ describe("MandatOpcoPdf — le texte que lit l'entreprise", () => {
     expect(t).not.toContain("garantit l'obtention");
   });
 
+  it("porte mot pour mot les trois ajouts de la juriste (issue 656, commentaire 5981375404)", () => {
+    const t = texte();
+    expect(t).toContain(
+      "Lorsque la convention de formation est conclue sous la condition de la prise en charge par l'OPCO, le dépôt accompli par le mandataire au titre du présent mandat vaut dépôt par le mandant ; un retard du mandataire dans ce dépôt n'est pas imputable au mandant.",
+    );
+    expect(t).toContain(
+      "Toute nouvelle demande, même pour la même action, appelle un nouveau mandat.",
+    );
+    expect(t).toContain(
+      "Si la demande a déjà été déposée, le mandataire informe sans délai l'OPCO de la révocation ; le mandant peut aussi l'en informer lui-même.",
+    );
+  });
+
   it("interdit la substitution — un apporteur ne tient aucun pouvoir de cette pièce", () => {
     expect(texte()).toContain(
       "ne peut se substituer aucune autre personne, notamment un apporteur",

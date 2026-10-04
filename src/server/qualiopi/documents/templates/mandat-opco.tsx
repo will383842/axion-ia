@@ -234,6 +234,12 @@ export function MandatOpcoPdf({
             Le mandant fournit des informations exactes et complètes et demeure responsable de leur
             exactitude.
           </Text>
+          <Text style={pdfStyles.paragraph}>
+            Lorsque la convention de formation est conclue sous la condition de la prise en charge
+            par l&apos;OPCO, le dépôt accompli par le mandataire au titre du présent mandat vaut
+            dépôt par le mandant ; un retard du mandataire dans ce dépôt n&apos;est pas imputable au
+            mandant.
+          </Text>
         </DocSection>
 
         {/* 5. Décision de l'OPCO */}
@@ -250,13 +256,16 @@ export function MandatOpcoPdf({
         <DocSection title="6. Durée et révocation">
           <Text style={pdfStyles.paragraph}>
             Le mandat prend effet à sa signature par les deux parties. Il prend fin à la décision de
-            l&apos;OPCO sur la demande de prise en charge, ou à sa révocation.
+            l&apos;OPCO sur la demande de prise en charge, ou à sa révocation. Toute nouvelle
+            demande, même pour la même action, appelle un nouveau mandat.
           </Text>
           <Text style={pdfStyles.paragraph}>
             Le mandant peut révoquer le mandat à tout moment, sans motif, par écrit adressé au
             mandataire ({identite.email || "par courrier au siège de l'organisme"}). La révocation
             prend effet à sa réception ; le mandataire cesse alors toute démarche au titre du
-            présent mandat. Les démarches accomplies avant la réception demeurent.
+            présent mandat. Les démarches accomplies avant la réception demeurent. Si la demande a
+            déjà été déposée, le mandataire informe sans délai l&apos;OPCO de la révocation ; le
+            mandant peut aussi l&apos;en informer lui-même.
           </Text>
         </DocSection>
 

@@ -128,8 +128,9 @@ const EMPREINTES: Readonly<
     version: 1,
   },
   mandat_opco: {
-    // v1 — 04/10/2026 : premier texte (INT-T66-A).
-    sha: "870027f574c91d4d4c4d36d7a88254cbf274db404705f9543461aa1690410041",
+    // v1 — 04/10/2026 : premier texte (INT-T66-A), avec les trois ajouts de la juriste
+    // (issue 656, commentaire 5981375404) intégrés AVANT toute émission : reste en v1.
+    sha: "d1eb58ca3d70e5c0804503a505cc2f3bd1d541e9af3504da93d0525b9aca78ad",
     version: 1,
   },
 };
