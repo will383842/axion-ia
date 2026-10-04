@@ -394,6 +394,62 @@ export async function reventilerPayeurs(
 }
 
 /**
+ * Statuts où les créances ne sont pas encore ENGAGÉES par une facture : la
+ * décision de subrogation peut encore les redistribuer.
+ */
+const STATUTS_REVENTILABLES_SUBROGATION: ReadonlyArray<DossierFinancementStatut> = [
+  "a_monter",
+  "envoye",
+  "accord_recu",
+  // Refusé : le plafond reste 0 (tout à l'entreprise), seul le drapeau suit.
+  "refuse",
+];
+
+/**
+ * Lot A8c — la subrogation de la session vient de changer : les dossiers OPCO
+ * ouverts suivent (drapeau `subrogation`, lu par la relance, et créances).
+ *
+ * 🔴 Sans elle, les créances restaient celles de l'OUVERTURE du dossier — qui
+ * précède en général la décision de subrogation : la facture à l'OPCO était
+ * alors refusée, ou une créance OPCO survivait au passage en remboursement.
+ *
+ * À appeler APRÈS l'écriture de la session : `reventilerPayeurs` relit la
+ * subrogation sur la session. Un dossier déjà facturé (ou au-delà) n'est pas
+ * touché — ses créances sont engagées — et il est rendu dans `engages` pour
+ * que l'écran le dise.
+ */
+export async function alignerDossiersSurSubrogation(
+  sessionId: string,
+  subrogation: boolean,
+): Promise<{
+  alignes: string[];
+  engages: Array<{ id: string; statut: DossierFinancementStatut }>;
+}> {
+  const dossiers = await prisma.dossierFinancement.findMany({
+    where: {
+      trainingSessionId: sessionId,
+      type: { in: ["opco", "mixte"] },
+      statut: { not: "clos" },
+    },
+    select: { id: true, statut: true, subrogation: true },
+  });
+  const alignes: string[] = [];
+  const engages: Array<{ id: string; statut: DossierFinancementStatut }> = [];
+  for (const d of dossiers) {
+    if (!STATUTS_REVENTILABLES_SUBROGATION.includes(d.statut)) {
+      engages.push({ id: d.id, statut: d.statut });
+      continue;
+    }
+    if (d.subrogation !== subrogation) {
+      await prisma.dossierFinancement.update({ where: { id: d.id }, data: { subrogation } });
+    }
+    await reventilerPayeurs(d.id, d.statut === "refuse" ? 0 : null);
+    alignes.push(d.id);
+  }
+  return { alignes, engages };
+}
+
+/**
  * Pont encaissement → dossier : si TOUTES les factures (non annulées, hors
  * avoirs) d'un dossier `facture` sont payées, il passe à `paiement_recu`.
  * Best-effort : ne throw jamais (l'encaissement reste valide même si le
