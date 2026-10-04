@@ -54,7 +54,7 @@ import * as React from "react";
 import type { CalendlyAvailabilityDay } from "@/server/calendly/availability";
 import { avecCouleursAxion } from "./calendly-brand";
 import { urlDuFormulaire } from "@/server/calendly/formulaire-reservation";
-import { avecUtmContent } from "@/server/calendly/choix-rendez-vous";
+import { avecUtmContent, type SuiviArrivee } from "@/server/calendly/choix-rendez-vous";
 
 interface CalendlySlotPickerProps {
   /** Duree reelle de l event-type, en minutes, telle que Calendly la connait. */
@@ -97,6 +97,8 @@ interface CalendlySlotPickerProps {
   readonly utmContent?: string | undefined;
   /** `rdv=…&depuis=…`, recopié dans les liens vers notre formulaire. */
   readonly parametresDuChoix?: string | undefined;
+  /** Les UTM d'ARRIVÉE (L5a), ajoutées aux créneaux qui partent chez Calendly. */
+  readonly suivi?: SuiviArrivee | undefined;
 }
 
 /** `AAAA-MM-JJ` → composantes numériques. Aucune conversion de fuseau. */
@@ -274,6 +276,7 @@ export function CalendlySlotPicker({
   lienDuCreneau,
   utmContent,
   parametresDuChoix,
+  suivi,
 }: CalendlySlotPickerProps) {
   const fmt = formatters(isFr);
   // Même boîte que le repli — voir PIÈGE 2.
@@ -424,7 +427,11 @@ export function CalendlySlotPicker({
                               ? lienDuCreneau(slot.startIso)
                               : reservationDirecte
                                 ? urlDuFormulaire(locale, slot.startIso, parametresDuChoix)
-                                : avecUtmContent(avecCouleursAxion(slot.schedulingUrl), utmContent)
+                                : avecUtmContent(
+                                    avecCouleursAxion(slot.schedulingUrl),
+                                    utmContent,
+                                    suivi,
+                                  )
                           }
                           {...(lienDuCreneau || reservationDirecte
                             ? {}

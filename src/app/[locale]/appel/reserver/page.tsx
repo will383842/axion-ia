@@ -50,6 +50,7 @@ import {
   avecUtmContent,
   lireChoixRendezVous,
   lireDepuis,
+  lireSuiviArrivee,
   parametresDuChoix,
   resoudreChoix,
   utmContentDuChoix,
@@ -113,7 +114,10 @@ export default async function ReserverPage({ params, searchParams }: Props) {
   const choixExplicite = lireChoixRendezVous(sp[PARAM_RDV]);
   const choix = choixExplicite ?? "projet";
   const depuis = lireDepuis(sp[PARAM_DEPUIS]);
-  const calendrier = `/${locale}/appel?${parametresDuChoix(choix, depuis)}`;
+  // Les UTM d'arrivée (L5a) voyagent avec le choix : retour au calendrier ET
+  // champs cachés, pour que les renvois de l'action les gardent aussi.
+  const suivi = lireSuiviArrivee(sp);
+  const calendrier = `/${locale}/appel?${parametresDuChoix(choix, depuis, suivi)}`;
 
   // Le drapeau d'abord : tant qu'il est éteint, cette route n'existe pas pour
   // le visiteur, et les créneaux continuent de pointer vers Calendly.
@@ -227,6 +231,7 @@ export default async function ReserverPage({ params, searchParams }: Props) {
             replidUrl={avecUtmContent(
               resolu.url,
               choixExplicite ? utmContentDuChoix(choixExplicite, depuis) : null,
+              suivi,
             )}
             action={soumettreLaReservation}
             locale={locale}
@@ -236,6 +241,7 @@ export default async function ReserverPage({ params, searchParams }: Props) {
             champsCaches={{
               ...(choixExplicite ? { [CHAMP_RDV]: choixExplicite } : {}),
               ...(depuis ? { [CHAMP_DEPUIS]: depuis } : {}),
+              ...suivi,
             }}
           />
         </div>
