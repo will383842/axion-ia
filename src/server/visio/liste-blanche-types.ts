@@ -54,6 +54,8 @@ export const TYPES_CALENDLY_DU_DOSSIER: readonly string[] = [
   "discutons de votre projet",
   "echange projet",
   "diagnostic ia",
+  // Slug du type Échange projet, écrit tel quel par la capture de l'iframe.
+  "premier contact",
 ];
 
 /** Les types de rendez-vous CLIENTS — décisifs quand le rendez-vous les porte. */
@@ -64,12 +66,16 @@ export const TYPES_RENDEZ_VOUS_DU_DOSSIER: readonly TypeRendezVous[] = [
 
 /** « Discutons  de votre Projet IA » → « discutons de votre projet ia ». */
 export function normaliserNomDeType(nom: string): string {
-  return nom
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
-    .toLowerCase()
-    .replace(/\s+/g, " ")
-    .trim();
+  return (
+    nom
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "")
+      .toLowerCase()
+      // Le slug (« diagnostic-ia ») qu'écrit la capture de l'iframe vaut le nom.
+      .replace(/[-_]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+  );
 }
 
 /** Ce type d'événement Calendly entre-t-il au dossier client ? */

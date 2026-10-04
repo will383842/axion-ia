@@ -319,7 +319,7 @@ function ChoixDuRendezVous({
               Vous ne savez pas encore par où commencer.
             </p>
             <p className="text-fg-soft mt-1 text-[15px] leading-relaxed">
-              4 questions sur votre activité, et vous repartez avec des pistes concrètes.
+              Quelques questions sur votre activité, et vous repartez avec des pistes concrètes.
             </p>
             <div className="mt-auto pt-6">
               <a
@@ -390,7 +390,7 @@ function ChoixDuRendezVous({
 
 /** Ce que le visiteur fait pendant le rendez-vous — la seule étape qui change. */
 const TROISIEME_ETAPE: Readonly<Record<ChoixRendezVous, string>> = {
-  diagnostic: "Quatre questions sur votre activité, et vous repartez avec des pistes concrètes.",
+  diagnostic: "Quelques questions sur votre activité, et vous repartez avec des pistes concrètes.",
   projet: "On discute de votre projet ou tout autre besoin de renseignements.",
 };
 
