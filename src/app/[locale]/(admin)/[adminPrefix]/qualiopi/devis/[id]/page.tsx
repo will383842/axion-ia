@@ -32,6 +32,13 @@ import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
+
+/** Lot A4 — libellés de l'origine de l'estimation OPCO. */
+const ORIGINE_ESTIMATION_LABELS = {
+  bareme: "barème OPCO relevé",
+  reglage_par_defaut: "réglages par défaut (aucun barème)",
+  hors_fonds_legaux: "hors fonds légaux (50 salariés ou plus)",
+} as const;
 export const metadata: Metadata = {
   title: "Qualiopi — Devis | Axion-IA Admin",
   robots: { index: false, follow: false },
@@ -293,6 +300,17 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
               {avertissementEstimation !== null && (
                 <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
                   {avertissementEstimation}
+                </p>
+              )}
+              {/* Lot A4 — d'où vient le chiffre (barème relevé ou non). */}
+              {devis.opcoEstimationOrigine != null && (
+                <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                  Origine : {ORIGINE_ESTIMATION_LABELS[devis.opcoEstimationOrigine]}
+                </p>
+              )}
+              {devis.opcoEstimationAvertissement && (
+                <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
+                  {devis.opcoEstimationAvertissement}
                 </p>
               )}
             </div>

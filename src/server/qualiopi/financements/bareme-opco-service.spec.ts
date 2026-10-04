@@ -39,6 +39,30 @@ describe("creerVersionBaremeOpco", () => {
     txFindFirst.mockResolvedValue(null); // par défaut : pas de successeur → version courante
   });
 
+  it("lot A4 — une version de branche ne clôt QUE son périmètre (OPCO × IDCC × tranche)", async () => {
+    await creerVersionBaremeOpco({
+      opco: "akto",
+      idcc: "1516",
+      trancheEffectif: "moins_11",
+      dateEffet: DATE_EFFET,
+    });
+    expect(txUpdateMany).toHaveBeenCalledWith({
+      where: {
+        opco: "akto",
+        idcc: "1516",
+        trancheEffectif: "moins_11",
+        effectiveTo: null,
+        dateEffet: { lte: DATE_EFFET },
+      },
+      data: { effectiveTo: DATE_EFFET },
+    });
+    expect(txCreate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ idcc: "1516", trancheEffectif: "moins_11" }),
+      }),
+    );
+  });
+
   it("ferme les versions ouvertes antérieures puis crée la nouvelle", async () => {
     const res = await creerVersionBaremeOpco({
       opco: "atlas",
@@ -51,7 +75,13 @@ describe("creerVersionBaremeOpco", () => {
     // Fermeture ciblée : même OPCO, ouverts, dateEffet <= nouvelle → effectiveTo = dateEffet.
     expect(txUpdateMany).toHaveBeenCalledTimes(1);
     expect(txUpdateMany).toHaveBeenCalledWith({
-      where: { opco: "atlas", effectiveTo: null, dateEffet: { lte: DATE_EFFET } },
+      where: {
+        opco: "atlas",
+        idcc: null,
+        trancheEffectif: "tous",
+        effectiveTo: null,
+        dateEffet: { lte: DATE_EFFET },
+      },
       data: { effectiveTo: DATE_EFFET },
     });
 
@@ -82,7 +112,12 @@ describe("creerVersionBaremeOpco", () => {
 
     expect(txFindFirst).toHaveBeenCalledWith(
       expect.objectContaining({
-        where: { opco: "atlas", dateEffet: { gt: new Date("2026-01-01T00:00:00.000Z") } },
+        where: {
+          opco: "atlas",
+          idcc: null,
+          trancheEffectif: "tous",
+          dateEffet: { gt: new Date("2026-01-01T00:00:00.000Z") },
+        },
         orderBy: { dateEffet: "asc" },
         select: { dateEffet: true },
       }),

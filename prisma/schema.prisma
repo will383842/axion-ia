@@ -4948,6 +4948,13 @@ enum ActiviteFacturation {
 }
 
 /// Statut d'un devis (CRM, distinct de QuoteStatus lié au Booking).
+/// Lot A4 — origine de l'estimation de prise en charge OPCO d'un devis.
+enum OrigineEstimationOpco {
+  bareme
+  reglage_par_defaut
+  hors_fonds_legaux
+}
+
 enum DevisStatut {
   brouillon
   envoye
@@ -5082,32 +5089,32 @@ model Client {
 
 /// Devis commercial (CRM). Lignes snapshot ; pas de prix catalogue dupliqué.
 model Devis {
-  id                     String               @id @default(uuid()) @db.Uuid
+  id                          String                 @id @default(uuid()) @db.Uuid
   /// Numérotation séquentielle AXI-DEV-YYYY-NNN.
-  numero                 String               @unique @db.VarChar(40)
+  numero                      String                 @unique @db.VarChar(40)
   /// Activité facturée (sélecteur du Hub — pré-remplit régime TVA + mentions).
-  activite               ActiviteFacturation?
+  activite                    ActiviteFacturation?
   /// Référence client / n° de bon de commande (exigé par ETI, grands comptes, OPCO).
-  refClient              String?              @map("ref_client") @db.VarChar(120)
+  refClient                   String?                @map("ref_client") @db.VarChar(120)
   /// Révision : ce devis remplace une version antérieure (v2 → v1). L'ancienne
   /// version passe `expire` à l'envoi de la nouvelle — jamais d'écrasement.
-  replacesDevisId        String?              @map("replaces_devis_id") @db.Uuid
-  replacesDevis          Devis?               @relation("DevisRevision", fields: [replacesDevisId], references: [id], onDelete: SetNull)
-  revisions              Devis[]              @relation("DevisRevision")
+  replacesDevisId             String?                @map("replaces_devis_id") @db.Uuid
+  replacesDevis               Devis?                 @relation("DevisRevision", fields: [replacesDevisId], references: [id], onDelete: SetNull)
+  revisions                   Devis[]                @relation("DevisRevision")
   /// ⚠️ HISTORIQUE — circuit DocuSeal, remplacé par le canal maison le
   /// 2026-07-30. CONSERVÉES : le devis signé via DocuSeal avant cette bascule
   /// garde sa trace. Effacer l'historique d'un circuit qu'on remplace, c'est
   /// perdre la capacité de répondre plus tard à « comment cette pièce-là
   /// a-t-elle été signée ? ». Aucune écriture nouvelle.
-  docusealSubmissionId   String?              @map("docuseal_submission_id") @db.VarChar(120)
-  docusealEmbedUrl       String?              @map("docuseal_embed_url") @db.Text
+  docusealSubmissionId        String?                @map("docuseal_submission_id") @db.VarChar(120)
+  docusealEmbedUrl            String?                @map("docuseal_embed_url") @db.Text
   /// Pièce NUMÉROTÉE sur laquelle porte la signature « bon pour accord ».
   /// Alimentée à l'envoi par `generateDocument`, dont l'`id` était jusque-là
   /// produit puis jeté. C'est elle que `DocumentSignature` référence.
-  documentGenereId       String?              @map("document_genere_id") @db.Uuid
-  documentGenere         DocumentGenere?      @relation("DevisPieceSignable", fields: [documentGenereId], references: [id], onDelete: SetNull)
-  clientId               String               @map("client_id") @db.Uuid
-  client                 Client               @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  documentGenereId            String?                @map("document_genere_id") @db.Uuid
+  documentGenere              DocumentGenere?        @relation("DevisPieceSignable", fields: [documentGenereId], references: [id], onDelete: SetNull)
+  clientId                    String                 @map("client_id") @db.Uuid
+  client                      Client                 @relation(fields: [clientId], references: [id], onDelete: Restrict)
   /// Lignes : [{ designation, quantite, prixUnitaireHtCents, offreCode?, offreTierId? }].
   /// `offreCode` (AXI-OFF-NNN) référence TOUTES les offres ; `offreTierId` n'est
   /// renseigné que pour les offres legacy à `tier_id` non nul. Les lignes émises
@@ -5115,27 +5122,31 @@ model Devis {
   /// 4 offres legacy, un CODE pour les 21 offres du catalogue V2 (le <select>
   /// émettait `tierId ?? code`). Jamais réécrites — pièces émises. Toute jointure
   /// sur `offres_site` doit tolérer les deux formes.
-  lignes                 Json
-  montantTotalHtCents    Int                  @map("montant_total_ht_cents")
+  lignes                      Json
+  montantTotalHtCents         Int                    @map("montant_total_ht_cents")
   /// Mention TVA SNAPSHOTÉE à la création, dérivée de `qualiopi.regime_tva` —
   /// jamais une valeur en dur. La production est en régime « assujetti » (20 %) :
   /// la mention est alors celle de l'assujettissement, PAS une exonération.
   /// L'exonération 261-4-4° exige l'attestation DREETS (Cerfa 3511) ; l'inscrire
   /// par défaut engagerait l'organisme sur un régime qu'il ne détient pas.
-  mentionTva             String               @map("mention_tva") @db.Text
+  mentionTva                  String                 @map("mention_tva") @db.Text
   /// direct | opco | cpf | france_travail.
-  financementSuggere     String?              @map("financement_suggere") @db.VarChar(40)
-  montantOpcoEstimeCents Int?                 @map("montant_opco_estime_cents")
-  resteAChargeCents      Int?                 @map("reste_a_charge_cents")
-  statut                 DevisStatut          @default(brouillon)
+  financementSuggere          String?                @map("financement_suggere") @db.VarChar(40)
+  montantOpcoEstimeCents      Int?                   @map("montant_opco_estime_cents")
+  /// Lot A4 — d'où vient l'estimation OPCO (barème relevé, réglage par défaut, ou
+  /// entreprise hors fonds légaux) et l'avertissement affiché en console.
+  opcoEstimationOrigine       OrigineEstimationOpco? @map("opco_estimation_origine")
+  opcoEstimationAvertissement String?                @map("opco_estimation_avertissement") @db.Text
+  resteAChargeCents           Int?                   @map("reste_a_charge_cents")
+  statut                      DevisStatut            @default(brouillon)
   /// = createdAt + 30 j par défaut.
-  dateValidite           DateTime             @map("date_validite")
-  fichierPdfUrl          String?              @map("fichier_pdf_url") @db.Text
-  sentAt                 DateTime?            @map("sent_at")
-  acceptedAt             DateTime?            @map("accepted_at")
-  declinedAt             DateTime?            @map("declined_at")
-  createdAt              DateTime             @default(now()) @map("created_at")
-  updatedAt              DateTime             @updatedAt @map("updated_at")
+  dateValidite                DateTime               @map("date_validite")
+  fichierPdfUrl               String?                @map("fichier_pdf_url") @db.Text
+  sentAt                      DateTime?              @map("sent_at")
+  acceptedAt                  DateTime?              @map("accepted_at")
+  declinedAt                  DateTime?              @map("declined_at")
+  createdAt                   DateTime               @default(now()) @map("created_at")
+  updatedAt                   DateTime               @updatedAt @map("updated_at")
 
   sessions            TrainingSession[]
   auditMissions       AuditMission[]
@@ -8646,6 +8657,16 @@ enum Opco {
   opco_sante
 }
 
+/// Tranche d'effectif à laquelle s'applique un barème OPCO (lot A4). Les fonds
+/// légaux du plan de développement des compétences ne financent que les
+/// entreprises de moins de 50 salariés (art. L6332-17 C. trav.) : pas de tranche
+/// au-delà. `tous` = barème valable quelle que soit la taille.
+enum TrancheEffectifOpco {
+  moins_11
+  de_11_a_49
+  tous
+}
+
 /// Barème OPCO centralisé et VERSIONNÉ (Lot 5). Complète — sans le remplacer — le
 /// barème saisi par dossier sur TrainingSession : sert de source de PRÉ-REMPLISSAGE
 /// et d'estimation devis quand aucune valeur dossier n'est saisie. Le barème dossier
@@ -8660,29 +8681,35 @@ enum Opco {
 /// VALEURS saisies par un humain (relevés portails OPCO) — jamais inventées ; structure
 /// livrée VIDE (tous les plafonds nullable).
 model BaremeOpco {
-  id                    String    @id @default(uuid()) @db.Uuid
+  id                    String              @id @default(uuid()) @db.Uuid
   opco                  Opco
   /// Libellé optionnel du périmètre (branche/IDCC, taille, dispositif) couvert —
   /// texte libre car les barèmes varient par branche × taille × dispositif.
-  perimetre             String?   @db.VarChar(200)
+  perimetre             String?             @db.VarChar(200)
+  /// Lot A4 — code IDCC de la branche (4 chiffres, CHECK en base). FAIT FOI pour la
+  /// résolution ; `perimetre` reste un libellé. Null = barème de l'OPCO hors branche.
+  idcc                  String?             @db.Char(4)
+  /// Lot A4 — tranche d'effectif couverte (`tous` par défaut : barèmes historiques).
+  trancheEffectif       TrancheEffectifOpco @default(tous) @map("tranche_effectif")
   /// Plafonds en CENTIMES (nullable : structure vide tant que non relevé).
-  intraHoraireCents     Int?      @map("intra_horaire_cents")
-  interPresentielCents  Int?      @map("inter_presentiel_cents")
-  interDistancielCents  Int?      @map("inter_distanciel_cents")
-  plafondFormationCents Int?      @map("plafond_formation_cents")
-  plafondAnnuelCents    Int?      @map("plafond_annuel_cents")
+  intraHoraireCents     Int?                @map("intra_horaire_cents")
+  interPresentielCents  Int?                @map("inter_presentiel_cents")
+  interDistancielCents  Int?                @map("inter_distanciel_cents")
+  plafondFormationCents Int?                @map("plafond_formation_cents")
+  plafondAnnuelCents    Int?                @map("plafond_annuel_cents")
   /// Traçabilité auditeur : URL du portail OPCO + date du relevé.
-  sourceUrl             String?   @map("source_url") @db.Text
-  releveLe              DateTime? @map("releve_le")
+  sourceUrl             String?             @map("source_url") @db.Text
+  releveLe              DateTime?           @map("releve_le")
   /// Versionnement : date d'effet + fermeture (`effectiveTo` null = en vigueur).
-  dateEffet             DateTime  @map("date_effet")
-  effectiveTo           DateTime? @map("effective_to")
-  note                  String?   @db.Text
-  createdById           String?   @map("created_by_id") @db.Uuid
-  createdAt             DateTime  @default(now()) @map("created_at")
-  updatedAt             DateTime  @updatedAt @map("updated_at")
+  dateEffet             DateTime            @map("date_effet")
+  effectiveTo           DateTime?           @map("effective_to")
+  note                  String?             @db.Text
+  createdById           String?             @map("created_by_id") @db.Uuid
+  createdAt             DateTime            @default(now()) @map("created_at")
+  updatedAt             DateTime            @updatedAt @map("updated_at")
 
   @@index([opco, dateEffet])
+  @@index([opco, idcc, trancheEffectif, dateEffet])
   @@index([effectiveTo])
   @@map("baremes_opco")
 }

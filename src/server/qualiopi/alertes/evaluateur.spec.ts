@@ -96,6 +96,7 @@ vi.mock("@/server/qualiopi/documents/organisme", () => ({
 
 vi.mock("@/server/qualiopi/financements/bareme-opco", () => ({
   listBaremesEnVigueur: vi.fn(),
+  resolveBaremeOpco: vi.fn(),
 }));
 
 vi.mock("@/server/qualiopi/financements/etat-fonds-opco-lecture", () => ({
@@ -118,8 +119,11 @@ vi.mock("@/server/qualiopi/trainers/documents", () => ({
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { listBaremesEnVigueur } from "@/server/qualiopi/financements/bareme-opco";
 import { dernierReleveEtatFonds } from "@/server/qualiopi/financements/etat-fonds-opco-lecture";
+import {
+  listBaremesEnVigueur,
+  resolveBaremeOpco,
+} from "@/server/qualiopi/financements/bareme-opco";
 import {
   cumulAnnuelFormateurCents,
   listTrainerDocuments,
@@ -172,6 +176,7 @@ const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
 const mockIdentite = getOrganismeIdentite as ReturnType<typeof vi.fn>;
 const mockListBaremes = listBaremesEnVigueur as ReturnType<typeof vi.fn>;
 const mockDernierReleveFonds = dernierReleveEtatFonds as ReturnType<typeof vi.fn>;
+const mockResolveBareme = resolveBaremeOpco as ReturnType<typeof vi.fn>;
 const mockListTrainerDocs = listTrainerDocuments as ReturnType<typeof vi.fn>;
 const mockCumulAnnuel = cumulAnnuelFormateurCents as ReturnType<typeof vi.fn>;
 
@@ -179,6 +184,7 @@ const mockCumulAnnuel = cumulAnnuelFormateurCents as ReturnType<typeof vi.fn>;
 function setupEmptyMocks() {
   mockListBaremes.mockResolvedValue([]); // aucun barème OPCO → pas d'alerte de péremption
   mockDernierReleveFonds.mockResolvedValue(null); // aucun relevé d'état des fonds
+  mockResolveBareme.mockResolvedValue({ id: "bareme-applicable" }); // lot A4 : barème trouvé
   mockListTrainerDocs.mockResolvedValue([]); // aucune pièce formateur
   mockCumulAnnuel.mockResolvedValue(0); // sous le seuil de vigilance
   mp.reclamation.findMany.mockResolvedValue([]);
@@ -1600,6 +1606,54 @@ describe("evaluerAlertes — etat_fonds_perime", () => {
     expect((await evaluerAlertes()).filter((a) => a.code === "etat_fonds_perime")).toHaveLength(0);
     mockDernierReleveFonds.mockResolvedValue(null);
     expect((await evaluerAlertes()).filter((a) => a.code === "etat_fonds_perime")).toHaveLength(0);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests aucun_bareme_opco (lot A4)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — aucun_bareme_opco", () => {
+  beforeEach(() => setupEmptyMocks());
+
+  const sessionOpco = (client: Record<string, unknown> | null) => ({
+    id: "s-a4",
+    numero: "S-2026-042",
+    dateDebut: new Date(Date.now() + 10 * 86_400_000),
+    client,
+  });
+
+  it("lève l'alerte pour une session OPCO à venir sans barème applicable (IDCC transmis)", async () => {
+    mp.trainingSession.findMany.mockResolvedValue([
+      sessionOpco({ opcoIdentifie: "akto", idcc: "1516" }),
+    ]);
+    mockResolveBareme.mockResolvedValue(null);
+    const alertes = (await evaluerAlertes()).filter((a) => a.code === "aucun_bareme_opco");
+    expect(alertes).toHaveLength(1);
+    expect(alertes[0]?.cibleType).toBe("TrainingSession");
+    expect(alertes[0]?.cibleId).toBe("s-a4");
+    expect(mockResolveBareme).toHaveBeenCalledWith("akto", expect.any(Date), { idcc: "1516" });
+  });
+
+  it("pas d'alerte si un barème s'applique, ni si le client a 50 salariés ou plus", async () => {
+    mp.trainingSession.findMany.mockResolvedValue([sessionOpco({ opcoIdentifie: "akto" })]);
+    expect((await evaluerAlertes()).filter((a) => a.code === "aucun_bareme_opco")).toHaveLength(0);
+
+    mockResolveBareme.mockResolvedValue(null);
+    mp.trainingSession.findMany.mockResolvedValue([
+      sessionOpco({ opcoIdentifie: "akto", effectif: 50 }),
+    ]);
+    expect((await evaluerAlertes()).filter((a) => a.code === "aucun_bareme_opco")).toHaveLength(0);
+  });
+
+  it("lève l'alerte pour un devis OPCO ouvert estimé sur les réglages par défaut", async () => {
+    mp.devis.findMany.mockResolvedValue([
+      { id: "d-a4", numero: "D-2026-007", opcoEstimationOrigine: "reglage_par_defaut" },
+      { id: "d-ok", numero: "D-2026-008", opcoEstimationOrigine: "bareme" },
+    ]);
+    const alertes = (await evaluerAlertes()).filter((a) => a.code === "aucun_bareme_opco");
+    expect(alertes.map((a) => a.cibleId)).toEqual(["d-a4"]);
+    expect(alertes[0]?.cibleType).toBe("Devis");
   });
 });
 
