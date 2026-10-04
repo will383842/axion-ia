@@ -17,6 +17,10 @@ vi.mock("@/server/actions/qualiopi/clients", () => ({
 }));
 
 import { ClientBrancheForm } from "../ClientBrancheForm";
+import { suggererOpco } from "@/server/qualiopi/financements/opco-suggestion";
+
+/** Ce que la page calcule et transmet. */
+const suggere = (texte: string | null) => suggererOpco({ opco: null, opcoIdentifie: texte });
 
 const ID = "22222222-2222-4222-8222-222222222222";
 
@@ -36,16 +40,16 @@ function soumettre(): void {
 
 describe("ClientBrancheForm — effectif et OPCO typé", () => {
   it("UN SEUL sélecteur d'OPCO (liste et fiche)", () => {
-    render(<ClientBrancheForm id={ID} opcoIdentifie="atlas" opco={null} />);
+    render(<ClientBrancheForm id={ID} suggestion={suggere("atlas")} opco={null} />);
     expect(screen.getAllByRole("combobox", { name: /OPCO/ })).toHaveLength(1);
     cleanup();
-    render(<ClientBrancheForm id={ID} opcoIdentifie="atlas" opco={null} complet />);
+    render(<ClientBrancheForm id={ID} suggestion={suggere("atlas")} opco={null} complet />);
     expect(screen.getAllByRole("combobox", { name: /OPCO/ })).toHaveLength(1);
     expect(screen.queryByText("OPCO (référentiel)")).toBeNull();
   });
 
   it("affiche « OPCO suggéré » depuis le texte libre, sans rien écrire", async () => {
-    render(<ClientBrancheForm id={ID} opcoIdentifie="OPCO Santé" opco={null} />);
+    render(<ClientBrancheForm id={ID} suggestion={suggere("OPCO Santé")} opco={null} />);
 
     expect(screen.getByText("OPCO suggéré : OPCO Santé")).toBeTruthy();
 
@@ -57,7 +61,7 @@ describe("ClientBrancheForm — effectif et OPCO typé", () => {
   });
 
   it("« Retenir » pose la suggestion dans le sélecteur, puis elle part dans `opco`", async () => {
-    render(<ClientBrancheForm id={ID} opcoIdentifie="OPCO Santé" opco={null} />);
+    render(<ClientBrancheForm id={ID} suggestion={suggere("OPCO Santé")} opco={null} />);
 
     fireEvent.click(screen.getByRole("button", { name: "Retenir" }));
     soumettre();
@@ -67,13 +71,13 @@ describe("ClientBrancheForm — effectif et OPCO typé", () => {
   });
 
   it("n'affiche aucune suggestion quand l'OPCO typé est déjà posé", () => {
-    render(<ClientBrancheForm id={ID} opcoIdentifie="atlas" opco="akto" />);
+    render(<ClientBrancheForm id={ID} suggestion={null} opco="akto" />);
 
     expect(screen.queryByText(/OPCO suggéré/)).toBeNull();
   });
 
   it("envoie l'effectif saisi et l'OPCO typé choisi", async () => {
-    render(<ClientBrancheForm id={ID} opcoIdentifie={null} opco={null} effectif={null} />);
+    render(<ClientBrancheForm id={ID} opco={null} effectif={null} />);
 
     fireEvent.change(screen.getByLabelText("Effectif"), { target: { value: "42" } });
     fireEvent.change(screen.getByLabelText("OPCO"), { target: { value: "uniformation" } });
@@ -85,7 +89,7 @@ describe("ClientBrancheForm — effectif et OPCO typé", () => {
   });
 
   it("« — » remet en inféré : `opco` et `opcoIdentifie` partent à null", async () => {
-    render(<ClientBrancheForm id={ID} opcoIdentifie="akto" opco="akto" />);
+    render(<ClientBrancheForm id={ID} suggestion={null} opco="akto" />);
 
     fireEvent.change(screen.getByLabelText("OPCO"), { target: { value: "" } });
     soumettre();

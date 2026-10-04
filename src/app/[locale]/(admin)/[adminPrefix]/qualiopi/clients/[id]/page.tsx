@@ -75,6 +75,7 @@ import {
 } from "@/features/dossier-client/queries-rencontres";
 import { NouveauRendezVous } from "@/components/admin/dossier-client/NouveauRendezVous";
 import { FusionDeFiches } from "@/components/admin/dossier-client/FusionDeFiches";
+import { BrancheOpcoBloc } from "@/components/admin/qualiopi/BrancheOpcoBloc";
 import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 import { compterDocumentsParProjet } from "@/features/dossier-client/documents/queries";
 import { toParisLocalInput } from "@/lib/calendar-grid";
@@ -476,6 +477,10 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           {erreur}
         </p>
       ) : null}
+
+      {/* ── Branche et OPCO (lot OPCO A7b) : IDCC, effectif, OPCO, enveloppe,
+          adhérent ; « Modifier » sur place. Rien pour un particulier. ────────── */}
+      <BrancheOpcoBloc client={client} peutEcrire={acces.peutEcrire} />
 
       {/* ── Identité + contact ─────────────────────────────────────────────── */}
       <section className={sectionCls}>

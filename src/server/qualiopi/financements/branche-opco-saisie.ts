@@ -56,6 +56,9 @@ export interface ChargeBrancheOpco {
 
 const TAILLES = ["TPE", "PME", "ETI", "GRANDE_ENTREPRISE"] as const;
 
+/** « — » : efface l'OPCO typé ET la saisie libre, le serveur ré-infère. */
+const REMETTRE_EN_INFERE = { opco: null, opcoIdentifie: null } as const;
+
 /**
  * Euros saisis (« 1 500,50 », « 1500.5 », « 12 000 € ») → centimes ENTIERS.
  * Vide → `null` (effacer). Négatif, plus de deux décimales ou illisible →
@@ -121,11 +124,8 @@ export function chargeBrancheOpco(
 
   if (saisie.opco !== (initial.opco ?? "")) {
     const choisi = OPCO_IDS.find((o) => o === saisie.opco);
-    if (choisi !== undefined) charge.opco = choisi;
-    else {
-      charge.opco = null;
-      charge.opcoIdentifie = null;
-    }
+    // Écriture (jamais lecture) du texte libre : « remettre en inféré ».
+    Object.assign(charge, choisi !== undefined ? { opco: choisi } : REMETTRE_EN_INFERE);
   }
 
   const eff = saisie.effectif.trim();
