@@ -455,8 +455,12 @@ export function ConventionPdf({
             exigibilité : en l&apos;absence de subrogation de paiement expressément convenue, le
             client règle l&apos;intégralité du prix à l&apos;organisme et fait son affaire du
             remboursement. En cas de refus, de réduction, de caducité de l&apos;accord ou de
-            non-paiement par le financeur, pour quelque cause que ce soit, les sommes
-            correspondantes demeurent dues par le client.
+            non-paiement par le financeur, les sommes correspondantes demeurent dues par le client,
+            sous réserve des conditions de dédit et d&apos;abandon en cours d&apos;exécution prévues
+            aux conditions générales de vente, et sauf lorsque la réduction, la caducité ou le
+            non-paiement résulte d&apos;un manquement de l&apos;organisme à ses propres obligations
+            (inexécution de tout ou partie de l&apos;action, défaut des justificatifs de réalisation
+            qui lui incombent).
           </Text>
         </DocSection>
 
