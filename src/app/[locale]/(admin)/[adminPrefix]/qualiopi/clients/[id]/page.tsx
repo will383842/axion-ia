@@ -654,19 +654,19 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
             <div>
               <p className={infoLabelCls}>Nom</p>
-              <p className={infoValueCls}>{client.contactNom ?? "—"}</p>
+              <p className={infoValueCls}>{client.contactNom || "—"}</p>
             </div>
             <div>
               <p className={infoLabelCls}>Rôle</p>
-              <p className={infoValueCls}>{client.contactFonction ?? "—"}</p>
+              <p className={infoValueCls}>{client.contactFonction || "—"}</p>
             </div>
             <div className="min-w-0">
               <p className={infoLabelCls}>E-mail</p>
-              <p className={`${infoValueCls} truncate`}>{client.contactEmail ?? "—"}</p>
+              <p className={`${infoValueCls} truncate`}>{client.contactEmail || "—"}</p>
             </div>
             <div>
               <p className={infoLabelCls}>Téléphone</p>
-              <p className={infoValueCls}>{client.contactTelephone ?? "—"}</p>
+              <p className={infoValueCls}>{client.contactTelephone || "—"}</p>
             </div>
             {!estEntreprise ? adresseEtPenalites : null}
           </div>

@@ -117,7 +117,7 @@ describe("la fiche dit ce que l'OPCO a déjà pris en charge", () => {
     const html = await rendreFiche(Page as never);
     const tuile = tuileEffectif(html);
     expect(tuile).toContain(">10<");
-    expect(tuile).toContain("INSEE · ");
+    expect(tuile).toContain("INSEE (borne basse de la tranche) · ");
     expect(tuile).toContain("Rafraîchir depuis l&#x27;INSEE");
     expect(d.annuaire).not.toHaveBeenCalled();
   });
