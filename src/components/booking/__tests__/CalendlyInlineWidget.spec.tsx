@@ -104,3 +104,52 @@ describe("CalendlyInlineWidget — aiguillage", () => {
     }
   });
 });
+
+/**
+ * Chantier « Types de rendez-vous », L2 (2026-10-04) : le widget suit le
+ * rendez-vous CHOISI. Notre formulaire reçoit le choix (`rdv=`), la page
+ * Calendly reçoit le bouton (`utm_content`) — créneaux ET lien de secours.
+ */
+describe("CalendlyInlineWidget — le type choisi voyage", () => {
+  const DIAG = "https://calendly.com/axion-ia/diagnostic-ia";
+
+  it("formulaire maison : chaque créneau porte le choix", async () => {
+    fetchAvailableSlotsMock.mockResolvedValue({ ok: true, days: DAYS });
+    const { container } = render(
+      await CalendlyInlineWidget({
+        calendlyUrl: DIAG,
+        isFr: true,
+        reservationDirecte: true,
+        locale: "fr",
+        utmContent: "diagnostic:faq",
+        parametresDuChoix: "rdv=diagnostic&depuis=faq",
+      }),
+    );
+    expect(fetchAvailableSlotsMock).toHaveBeenCalledWith({ schedulingUrl: DIAG });
+    const lien = container.querySelector('a[data-cta="appel_slot_pick"]');
+    expect(lien?.getAttribute("href")).toBe(
+      "/fr/appel/reserver?debut=2026-08-04T07%3A00%3A00.000Z&rdv=diagnostic&depuis=faq",
+    );
+  });
+
+  it("page Calendly : chaque créneau porte `utm_content`", async () => {
+    fetchAvailableSlotsMock.mockResolvedValue({ ok: true, days: DAYS });
+    const { container } = render(
+      await CalendlyInlineWidget({ calendlyUrl: DIAG, isFr: true, utmContent: "diagnostic" }),
+    );
+    const href = container.querySelector('a[data-cta="appel_slot_pick"]')?.getAttribute("href");
+    expect(new URL(href ?? "").searchParams.get("utm_content")).toBe("diagnostic");
+  });
+
+  it("repli : le lien de secours porte `utm_content`", async () => {
+    fetchAvailableSlotsMock.mockResolvedValue({ ok: false, reason: "api_error" });
+    const { container } = render(
+      await CalendlyInlineWidget({ calendlyUrl: DIAG, isFr: true, utmContent: "projet" }),
+    );
+    const secours = [...container.querySelectorAll('a[href^="https://calendly.com/axion-ia"]')];
+    expect(secours.length).toBeGreaterThan(0);
+    for (const a of secours) {
+      expect(new URL(a.getAttribute("href") ?? "").searchParams.get("utm_content")).toBe("projet");
+    }
+  });
+});
