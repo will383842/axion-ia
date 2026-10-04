@@ -239,8 +239,14 @@ export async function enregistrerReponse(
 
   const dossier = await prisma.dossierFinancement.findUniqueOrThrow({
     where: { id: lu.dossierId },
-    select: { statut: true, depotFaitLe: true },
+    select: { statut: true, depotFaitLe: true, accordEcritLe: true, accordAt: true },
   });
+  // Relecture A8 (E1) : un accord déjà acté (par l'admin ou un lien précédent)
+  // n'est JAMAIS réécrit par un lien encore valide — même règle que la date de dépôt.
+  const accordDejaActe =
+    dossier.accordEcritLe != null ||
+    dossier.accordAt != null ||
+    ["accord_recu", "facture", "paiement_recu", "clos"].includes(dossier.statut);
   const effets: Record<string, unknown> = { question: lu.question, reponse };
   let fichier: IssueFichier = "aucun";
 
@@ -256,6 +262,10 @@ export async function enregistrerReponse(
       // Une date déjà saisie (par l'admin) n'est JAMAIS écrasée.
       effets["depotFaitLeConserve"] = dossier.depotFaitLe ? jourDeDate(dossier.depotFaitLe) : null;
     }
+  } else if (reponse === "accord" && dateAccord !== null && accordDejaActe) {
+    effets["accordEcritLeConserve"] = dossier.accordEcritLe
+      ? jourDeDate(dossier.accordEcritLe)
+      : null;
   } else if (reponse === "accord" && dateAccord !== null) {
     try {
       const r = await enregistrerAccordEcrit({

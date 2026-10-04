@@ -177,6 +177,29 @@ describe("réponse (POST)", () => {
     expect(JSON.stringify(f.accord.mock.calls)).not.toMatch(/montant/i);
   });
 
+  it.each([
+    ["accord_recu", new Date("2026-10-13T00:00:00.000Z"), null],
+    ["facture", new Date("2026-10-13T00:00:00.000Z"), null],
+    ["envoye", null, new Date("2026-10-13T10:00:00.000Z")],
+  ])(
+    "🔴 un accord déjà acté (%s) n'est JAMAIS réécrit par un ancien lien « Accord reçu »",
+    async (statut, accordEcritLe, accordAt) => {
+      db.opcoSuiviMessage.findUnique.mockResolvedValue(message({ question: "reponse" }));
+      db.dossierFinancement.findUniqueOrThrow.mockResolvedValue({
+        statut,
+        depotFaitLe: new Date("2026-10-01T00:00:00.000Z"),
+        accordEcritLe,
+        accordAt,
+      });
+      const r = await enregistrerReponse(
+        { jeton: JETON, reponse: "accord", dateAccord: "2026-10-05" },
+        NOW,
+      );
+      expect(r).toMatchObject({ issue: "enregistree", reponse: "accord" });
+      expect(f.accord).not.toHaveBeenCalled();
+    },
+  );
+
   it("accord : date dans le futur refusée, rien n'est consommé", async () => {
     db.opcoSuiviMessage.findUnique.mockResolvedValue(message({ question: "reponse" }));
     const r = await enregistrerReponse(
