@@ -8694,23 +8694,23 @@ model BaremeOpco {
 /// jamais modifiée ni supprimée. `idcc` null = la ligne vaut pour tout l'OPCO.
 /// CHECK (idcc ~ '^[0-9]{4}$') posé par la migration.
 model EtatFondsOpco {
-  id              String          @id @default(uuid()) @db.Uuid
-  opco            Opco
-  idcc            String?         @db.Char(4)
-  statut          StatutFondsOpco
+  id               String          @id @default(uuid()) @db.Uuid
+  opco             Opco
+  idcc             String?         @db.Char(4)
+  statut           StatutFondsOpco
   /// Libellé du périmètre. « moins de 50 salariés » y est LU par la résolution :
   /// une telle suspension ne vaut pas pour une entreprise de 50 salariés et plus.
-  perimetre       String?         @db.VarChar(200)
+  perimetre        String?         @db.VarChar(200)
   /// Seuil d'effectif EXCLU de la suspension (50 = « moins de 50 salariés ») :
   /// une entreprise d'effectif ≥ seuil n'est pas concernée. Null = tous effectifs.
-  effectifMaxExclu Int?           @map("effectif_max_exclu") @db.SmallInt
-  dateLimiteDepot DateTime?       @map("date_limite_depot") @db.Date
-  sourceUrl       String          @map("source_url") @db.Text
-  releveLe        DateTime        @map("releve_le") @db.Date
-  note            String?         @db.Text
-  createdById     String?         @map("created_by_id") @db.Uuid
-  createdAt       DateTime        @default(now()) @map("created_at")
-  updatedAt       DateTime        @updatedAt @map("updated_at")
+  effectifMaxExclu Int?            @map("effectif_max_exclu") @db.SmallInt
+  dateLimiteDepot  DateTime?       @map("date_limite_depot") @db.Date
+  sourceUrl        String          @map("source_url") @db.Text
+  releveLe         DateTime        @map("releve_le") @db.Date
+  note             String?         @db.Text
+  createdById      String?         @map("created_by_id") @db.Uuid
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @updatedAt @map("updated_at")
 
   @@index([opco, idcc, releveLe])
   @@map("etats_fonds_opco")
