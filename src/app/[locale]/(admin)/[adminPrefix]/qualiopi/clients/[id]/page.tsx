@@ -47,7 +47,10 @@ import {
   calculerEncoursDuCents,
   resteDuNetCents,
 } from "@/server/qualiopi/crm/clients";
-import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
+import {
+  nomOpcoDuClient,
+  referenceOpcoDuClient,
+} from "@/server/qualiopi/financements/opco-referentiel";
 import { bandeauEtatFonds } from "@/server/qualiopi/financements/etat-fonds-opco";
 import { etatFondsDuClient } from "@/server/qualiopi/financements/etat-fonds-opco-lecture";
 import { BandeauEtatFonds } from "@/components/admin/qualiopi/BandeauEtatFonds";
@@ -548,7 +551,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           <div>
             <p className={infoLabelCls}>OPCO</p>
             <p className={infoValueCls}>
-              {client.opcoIdentifie ? opcoLabel(client.opcoIdentifie) : "À déterminer"}
+              {referenceOpcoDuClient(client) !== null ? nomOpcoDuClient(client) : "À déterminer"}
               {client.opcoNumeroAdherent ? ` · adh. ${client.opcoNumeroAdherent}` : ""}
             </p>
           </div>

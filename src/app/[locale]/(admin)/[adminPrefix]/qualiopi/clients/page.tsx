@@ -13,7 +13,10 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { ClientBrancheForm } from "@/components/admin/qualiopi/ClientBrancheForm";
 import { listClients } from "@/server/qualiopi/crm/clients";
-import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
+import {
+  nomOpcoDuClient,
+  referenceOpcoDuClient,
+} from "@/server/qualiopi/financements/opco-referentiel";
 import { Hash, Users, FileText, CheckCircle2 } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
@@ -36,7 +39,7 @@ const STATUT_LABELS: Record<string, string> = {
 // Le OPCO_LABELS local (5 entrées) a été supprimé : c'était un duplicat
 // appauvri de `opco-referentiel.ts` (11 entrées). Il aurait affiché le slug
 // brut — « opco_ep », « uniformation » — dès que l'inférence ou la saisie
-// manuelle sortirait des 5 OPCO qu'il connaissait. Utiliser `opcoLabel()`.
+// manuelle sortirait des 5 OPCO qu'il connaissait. Utiliser `nomOpcoDuClient()`.
 // ⚠️ Effet visible : « Opcommerce » devient « OPCOMMERCE » (libellé du
 // référentiel, aligné sur la marque).
 
@@ -243,8 +246,8 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
                     )}
                   </td>
                   <td className={cellCls}>
-                    {client.opcoIdentifie ? (
-                      opcoLabel(client.opcoIdentifie)
+                    {referenceOpcoDuClient(client) !== null ? (
+                      nomOpcoDuClient(client)
                     ) : (
                       <em className="text-[color:var(--color-admin-fg-muted)] not-italic">
                         À déterminer
