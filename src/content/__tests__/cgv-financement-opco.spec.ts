@@ -1,6 +1,6 @@
 /**
  * Garde-fou — article « Financement par un opérateur de compétences (OPCO) »
- * des CGV (lot OPCO O13, 2026-10-03).
+ * des CGV (lot OPCO O13, 2026-10-04).
  *
  * Les CGV ne disaient rien du financement par un OPCO : zéro occurrence de
  * « subrogation ». Or les conventions de formation (bipartite et tripartite)

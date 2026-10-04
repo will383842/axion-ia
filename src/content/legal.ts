@@ -329,6 +329,22 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "En cas d'abandon en cours d'exécution à l'initiative du Client ou du bénéficiaire, les prestations effectivement réalisées à la date de l'abandon restent dues au prorata. Lorsque l'action est financée par un tiers (OPCO, France Travail, autre financeur), la part non réalisée n'est pas facturée au financeur et ne peut être réclamée au Client au-delà de ce prorata. Lorsque l'abandon résulte d'un cas de force majeure dûment constaté, le contrat est résilié et seules les prestations effectivement dispensées sont dues, conformément à l'article L.6353-7 du Code du travail.",
         },
         {
+          // Lot OPCO O13 (2026-10-04). Les CGV ne disaient RIEN du financement
+          // par un OPCO — zéro occurrence de « subrogation » — alors que les
+          // conventions (bipartite § 5 et tripartite § 5) portent depuis le
+          // 16/08 une clause de défaillance du financeur. Les CGV sont annexées
+          // à ces conventions : mêmes mots (« refus, réduction, caducité,
+          // non-paiement », « redeviennent exigibles auprès du client, qui
+          // demeure le débiteur du prix »), sinon deux rédactions du même
+          // engagement s'interprètent l'une contre l'autre (art. 1190 C. civ.).
+          // ⛔ Aucun délai propre à Axion-IA : le texte doit rester tenable avec
+          // des centaines de clients. Les délais cités sont ceux de l'OPCO.
+          // Les heures d'absence sont distinguées de l'abandon, régi par la
+          // clause précédente (prorata, rien au-delà).
+          title: "Financement par un opérateur de compétences (OPCO)",
+          body: "Lorsque le Client sollicite la prise en charge d'une action de formation par son opérateur de compétences (OPCO), il appartient au Client de déposer sa demande de prise en charge auprès de cet OPCO avant le début de la formation, dans les délais et selon les modalités fixés par cet OPCO ; Axion-IA lui transmet à cette fin les pièces nécessaires (convention de formation, programme, devis). Cette démarche relève de la relation entre le Client et son OPCO : la prise en charge est subordonnée à l'accord écrit de l'OPCO et au respect de ses règles de financement, et elle ne modifie ni le prix convenu, ni son exigibilité. Lorsque l'accord de prise en charge prévoit le paiement direct à l'organisme de formation (subrogation de paiement), Axion-IA facture l'OPCO pour la part prise en charge et le Client pour le solde ; à défaut, Axion-IA facture au Client l'intégralité du prix, et le Client fait son affaire du remboursement auprès de son OPCO. Depuis le 1er octobre 2026, dans le cadre de la réforme du régime de TVA applicable aux OPCO, ceux-ci limitent le recours au paiement direct : la modalité applicable est celle que retient l'accord de prise en charge. En cas de refus, de prise en charge partielle ou d'absence de réponse de l'OPCO avant le début de la formation, les sommes non prises en charge demeurent dues par le Client, sauf annulation de sa part dans les conditions de la clause « Annulation, report et remboursement ». L'OPCO ne prend en charge que les heures de formation réalisées et attestées : les heures d'absence d'un stagiaire à une action qui s'est tenue ne sont pas prises en charge et sont facturées au Client, l'abandon en cours de formation restant régi par la clause « Dédit et abandon en cours d'exécution ». Enfin, en cas de réduction, de caducité de l'accord ou de non-paiement par l'OPCO de tout ou partie de la somme qu'il avait acceptée, notamment en raison d'un dossier incomplet du fait du Client ou d'un refus de paiement après contrôle, les sommes correspondantes redeviennent exigibles auprès du Client, qui demeure le débiteur du prix convenu.",
+        },
+        {
           // F53 — aucune clause de sous-traitance n'existait, alors que
           // l'indicateur Qualiopi 27 en fait un point d'audit et que le dépôt
           // génère déjà des contrats de sous-traitance.
@@ -627,6 +643,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         {
           title: "Cancellation, rescheduling and refund",
           body: "Any cancellation by the Client: more than 7 days before the scheduled date, full refund of sums paid; between 7 and 2 days, 50% of the price remains due; less than 2 days, the full price remains due, with the slot reschedulable once at no extra charge. Where the service takes the form of a training action, the specific terms (training agreement or contract, cancellation and withdrawal conditions, any funding) are set out in the quote or applicable agreement.",
+        },
+        {
+          // Lot OPCO O13 (2026-10-04) — traduction de l'article FR du même nom.
+          title: "Funding by a skills operator (OPCO)",
+          body: 'Where the Client seeks funding for a training action from its skills operator (OPCO), it is for the Client to file its funding application with that OPCO before the training starts, within the time limits and according to the procedures set by that OPCO; Axion-IA provides the Client with the necessary documents for this purpose (training agreement, programme, quote). This application is a matter between the Client and its OPCO: funding is subject to the OPCO\'s written approval and to compliance with its funding rules, and it changes neither the agreed price nor when it falls due. Where the funding approval provides for direct payment to the training provider (payment subrogation), Axion-IA invoices the OPCO for the funded share and the Client for the balance; otherwise, Axion-IA invoices the Client for the full price, and the Client is responsible for obtaining reimbursement from its OPCO. Since 1 October 2026, as part of the reform of the VAT regime applicable to OPCOs, OPCOs have restricted the use of direct payment: the applicable arrangement is the one set out in the funding approval. In the event of refusal, partial funding or lack of response from the OPCO before the training starts, the amounts not funded remain payable by the Client, unless the Client cancels under the conditions of the clause "Cancellation, rescheduling and refund". The OPCO only funds training hours actually delivered and certified: hours of absence of a trainee from a training session that took place are not funded and are invoiced to the Client. Finally, in the event of reduction, lapse of the approval or non-payment by the OPCO of all or part of the amount it had agreed to fund, in particular because of an incomplete file attributable to the Client or a refusal of payment following an audit, the corresponding amounts become payable again by the Client, who remains liable for the agreed price.',
         },
         {
           title: "Reversibility and return",
