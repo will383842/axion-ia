@@ -8,8 +8,12 @@
 
 "use server";
 
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { adminPath } from "@/lib/admin-path";
+import { avecMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 import { resoudreSiren } from "@/lib/siret";
 import { siretField } from "@/lib/siret-schema";
 import { premierMessageZod } from "@/lib/zod-message";
@@ -622,4 +626,27 @@ export async function updateClientAction(
   });
 
   return { data: { id } };
+}
+
+/**
+ * Bouton « Rafraîchir depuis l'INSEE » de la fiche client (formulaire serveur,
+ * aucun JavaScript). Le message revient scellé, à côté de l'effectif
+ * (`?releve=insee`).
+ */
+export async function rafraichirEffectifInseeFormAction(formData: FormData): Promise<void> {
+  const clientId = String(formData.get("clientId") ?? "");
+  if (!z.string().uuid().safeParse(clientId).success) {
+    redirect(adminPath("fr", "qualiopi/clients"));
+  }
+  const base = adminPath("fr", `qualiopi/clients/${clientId}`);
+  const r = await rafraichirEffectifInseeAction(clientId);
+  revalidatePath(base);
+  const ok = "data" in r && r.data.statut === "pose";
+  redirect(
+    avecMessageDeRetour(
+      `${base}?releve=insee`,
+      ok ? "message" : "erreur",
+      "data" in r ? r.data.message : r.error,
+    ),
+  );
 }

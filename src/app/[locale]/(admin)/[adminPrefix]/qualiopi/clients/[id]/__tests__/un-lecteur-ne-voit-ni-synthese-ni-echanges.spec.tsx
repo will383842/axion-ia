@@ -63,7 +63,10 @@ vi.mock("@/features/dossier-client/actions", () => ({
   garderCetteValeurFormAction: vi.fn(),
   confirmerSirenFormAction: vi.fn(),
 }));
-vi.mock("@/server/actions/qualiopi/clients", () => ({ updateClientAction: vi.fn() }));
+vi.mock("@/server/actions/qualiopi/clients", () => ({
+  updateClientAction: vi.fn(),
+  rafraichirEffectifInseeFormAction: vi.fn(),
+}));
 
 import Page from "@/app/[locale]/(admin)/[adminPrefix]/qualiopi/clients/[id]/page";
 import { rendreFiche } from "./_fiche-client-rendu";
