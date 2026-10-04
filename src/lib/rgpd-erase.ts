@@ -720,6 +720,7 @@ export async function eraseCalendlyEventsForEmail(email: string): Promise<EraseC
       utmSource: null,
       utmCampaign: null,
       utmMedium: null,
+      utmContent: null,
       referrer: null,
       // Les liens d'annulation et de report sont des URL-CAPACITÉS nominatives :
       // elles permettent d'agir sur le rendez-vous de la personne sans aucune

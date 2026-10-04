@@ -4400,6 +4400,10 @@ model CalendlyEvent {
   utmSource             String?             @map("utm_source") @db.VarChar(100)
   utmCampaign           String?             @map("utm_campaign") @db.VarChar(100)
   utmMedium             String?             @map("utm_medium") @db.VarChar(100)
+  /// `utm_content` de la réservation (2026-10-04, chantier « Types de rendez-vous »).
+  /// Rempli par l'iframe quand la page le transmet, et recopié du `tracking` de
+  /// l'invité Calendly au sondage / à l'enrichissement quand il est vide.
+  utmContent            String?             @map("utm_content") @db.VarChar(100)
   referrer              String?             @db.VarChar(500)
   /// Match manuel par Will via admin (lien vers une Submission existante).
   linkedSubmissionId    String?             @map("linked_submission_id") @db.Uuid
@@ -4407,6 +4411,16 @@ model CalendlyEvent {
   updatedAt             DateTime            @updatedAt @map("updated_at")
   /// Notes admin manuelles (debrief post-call, etc.).
   notes                 String?             @db.Text
+
+  /// Chantier « Types de rendez-vous » (2026-10-04, lot L1). Le TYPE du rendez-vous,
+  /// classé UNE fois à l'écriture par `server/calendly/type-rendez-vous.ts` :
+  /// d'abord par l'URI du type Calendly (renommer un type ne change rien), sinon
+  /// par le nom. `null` = ligne pas encore classée (reprise faite par la migration).
+  typeRendezVous TypeRendezVous? @map("type_rendez_vous")
+  /// URI API du type d'événement Calendly (`scheduled_event.event_type`, ex.
+  /// « https://api.calendly.com/event_types/UUID »). Clé STABLE du type, que le
+  /// nom n'est pas.
+  eventTypeUri   String?         @map("event_type_uri") @db.VarChar(255)
 
   linkedSubmission       Submission?      @relation(fields: [linkedSubmissionId], references: [id], onDelete: SetNull)
   /// Lot 2 du chantier recrutement — LE LIEN QUI MANQUAIT.
@@ -4435,6 +4449,7 @@ model CalendlyEvent {
   @@index([linkedSubmissionId])
   @@index([linkedJobApplicationId])
   @@index([enrichedAt])
+  @@index([typeRendezVous])
   @@map("calendly_events")
 }
 
@@ -4456,6 +4471,18 @@ model CalendlyEvent {
 //
 // RGPD : `note` est une appréciation écrite sur la personne — exportée
 // (art. 15, `api/gdpr-export`) et effacée avec le reste (`lib/rgpd-erase`).
+
+/// Chantier « Types de rendez-vous » (2026-10-04) — qui vient pour quoi, sur le
+/// compte Calendly unique. Classement : `server/calendly/type-rendez-vous.ts`.
+enum TypeRendezVous {
+  diagnostic
+  echange_projet
+  apporteur
+  salon
+  autre
+
+  @@map("type_rendez_vous")
+}
 
 enum RendezVousIssue {
   eu_lieu

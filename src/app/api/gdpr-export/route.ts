@@ -411,6 +411,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         utmSource: true,
         utmMedium: true,
         utmCampaign: true,
+        utmContent: true,
         source: true,
         // Les réponses libres au formulaire ne vivent QUE là — aucune colonne
         // ne les porte. Les omettre reviendrait à taire ce que la personne a
@@ -524,7 +525,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       notesInternes: r.notes,
       siteReferent: r.referrer,
       origineCampagne:
-        [r.utmSource, r.utmMedium, r.utmCampaign].filter(Boolean).join(" / ") || null,
+        [r.utmSource, r.utmMedium, r.utmCampaign, r.utmContent].filter(Boolean).join(" / ") || null,
       canalDeCapture: r.source,
       // Restituées avec la MÊME fonction que celle qui les envoie dans l'alerte
       // interne — importée, jamais recopiée : la personne reçoit exactement ce

@@ -45,6 +45,12 @@ import { listerFichesRattachables } from "@/features/admin-calendly/fiches-ratta
 // usages AFFICHÉS sont concernés — la `key` React et les valeurs passées en
 // `initial` à CalendlyEventEditor restent en ISO (attendu par le formulaire).
 import { formatDateFr } from "@/lib/format-date-fr";
+// Lot L5b (2026-10-04) : le type, le bouton d'origine et les réponses lisibles.
+import { PastilleTypeRdv } from "@/components/admin/contacts/PastilleTypeRdv";
+import { typeEffectif } from "@/server/calendly/type-effectif";
+import { besoinDuBrut } from "@/server/calendly/type-rendez-vous";
+import { reponsesFormulaire } from "@/features/admin-rendezvous/a-venir";
+import { libelleEmplacement } from "@/features/admin-rendezvous/bilan-rendez-vous";
 
 export const dynamic = "force-dynamic";
 
@@ -92,6 +98,8 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
   const lienVisio =
     event.status === "scheduled" ? lienRejoindreVisio(event.id, event.location) : null;
   const autresInvites = invitesSupplementaires(event.rawPayload);
+  const typeRdv = typeEffectif(event);
+  const reponses = reponsesFormulaire(event.rawPayload);
   // Le point se fait une fois l'appel commencé, jamais sur un appel annulé.
   const peutFaireLePoint =
     event.status !== "canceled" && event.startTime != null && event.startTime <= new Date();
@@ -178,6 +186,23 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
       ) : null}
 
       <div className="admin-detail-grid mt-[var(--space-admin-4)]">
+        {/* Les réponses au questionnaire, lisibles (lot L5b) — avant, il fallait
+            les chercher dans le JSON replié ci-dessous. Téléphone écarté : il
+            est déjà dans le formulaire. */}
+        {reponses.length > 0 ? (
+          <div className="admin-card admin-card-wide">
+            <h2 className="admin-h2">Réponses au questionnaire</h2>
+            <dl className="admin-dl">
+              {reponses.map((r, i) => (
+                <div key={`${i}-${r.question}`} className="contents">
+                  <dt className="admin-dt">{r.question}</dt>
+                  <dd className="admin-dd whitespace-pre-line">{r.reponse}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        ) : null}
+
         {peutFaireLePoint ? (
           <div className="admin-card admin-card-wide">
             <h2 className="admin-h2">Le point après l&apos;appel</h2>
@@ -257,6 +282,18 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
               informations humaines : on ne trouvait plus le statut. Les
               identifiants restent accessibles — repliés. */}
           <dl className="admin-dl">
+            <dt className="admin-dt">Type</dt>
+            <dd className="admin-dd">
+              <PastilleTypeRdv type={typeRdv} besoin={besoinDuBrut(event.rawPayload)} />
+            </dd>
+            {event.utmContent && (
+              <>
+                <dt className="admin-dt">Bouton</dt>
+                <dd className="admin-dd" title={event.utmContent}>
+                  {libelleEmplacement(event.utmContent)}
+                </dd>
+              </>
+            )}
             <dt className="admin-dt">Statut</dt>
             <dd className="admin-dd">{STATUS_LABEL[event.status] ?? event.status}</dd>
             {/* L'invité principal est dans le formulaire ; ceux qu'il a ajoutés
@@ -350,6 +387,15 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
                   </span>
                 )}
               </dd>
+              {event.utmContent && (
+                <>
+                  <dt className="admin-dt">UTM emplacement</dt>
+                  <dd className="admin-dd">
+                    {libelleEmplacement(event.utmContent)}{" "}
+                    <code className="text-xs">{event.utmContent}</code>
+                  </dd>
+                </>
+              )}
               {event.utmSource && (
                 <>
                   <dt className="admin-dt">UTM source</dt>

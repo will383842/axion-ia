@@ -73,10 +73,10 @@ describe("jours civils", () => {
 });
 
 describe("qui dépose", () => {
-  it("Atlas : constaté par le référentiel ; AKTO : non constaté", () => {
+  it("Atlas : constaté par le référentiel ; Afdas : non constaté", () => {
     expect(depotParEntreprise("atlas")).toBe("constate");
     expect(depotParEntreprise("opco2i")).toBe("constate");
-    expect(depotParEntreprise("akto")).toBe("non_constate");
+    expect(depotParEntreprise("afdas")).toBe("non_constate");
   });
 });
 
@@ -120,11 +120,11 @@ describe("éligibilité de l'envoi", () => {
   });
 
   it("OPCO dont le mode de dépôt n'est pas constaté : console seulement", () => {
-    expect(eligibiliteEnvoi({ ...base, opco: "akto" }, "auto", now)).toMatchObject({
+    expect(eligibiliteEnvoi({ ...base, opco: "afdas" }, "auto", now)).toMatchObject({
       ok: false,
       motif: "depot_non_constate",
     });
-    expect(eligibiliteEnvoi({ ...base, opco: "akto" }, "manuel", now)).toEqual({ ok: true });
+    expect(eligibiliteEnvoi({ ...base, opco: "afdas" }, "manuel", now)).toEqual({ ok: true });
   });
 
   it("financement non OPCO, dossier clos, accord déjà là → refus", () => {

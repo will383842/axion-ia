@@ -55,6 +55,8 @@ export interface RendezVousSource {
   readonly utmSource: string | null;
   readonly utmMedium: string | null;
   readonly utmCampaign: string | null;
+  /** Le bouton d'origine (`diagnostic`, `projet:faq`…) — gardé au report (L2). */
+  readonly utmContent?: string | null;
 }
 
 export type ResultatReport =
@@ -191,6 +193,7 @@ export function demandeDepuisLaSource(
       utmSource: source.utmSource,
       utmMedium: source.utmMedium,
       utmCampaign: source.utmCampaign,
+      utmContent: source.utmContent ?? null,
     },
   };
 }

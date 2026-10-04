@@ -396,7 +396,7 @@ export default async function Home({ params }: HomeProps) {
                   — Secondary : formulaire de contact (/contact, réponse 24h) */}
               <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <Link
-                  href="/appel"
+                  href={{ pathname: "/appel", query: { depuis: "accueil-hero" } }}
                   className="bg-terracotta text-paper cta-lift focus-visible:ring-terracotta inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
                   {isFr ? "Je réserve un appel" : "I book a call"}
@@ -1286,7 +1286,7 @@ export default async function Home({ params }: HomeProps) {
               </div>
               <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
                 <Link
-                  href="/appel"
+                  href={{ pathname: "/appel", query: { depuis: "accueil-final" } }}
                   className="bg-paper text-terracotta cta-lift focus-visible:ring-paper inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
                   {isFr ? "Réserver un appel" : "Book a call"}
@@ -1563,7 +1563,7 @@ export default async function Home({ params }: HomeProps) {
           Disparaît à 320 px du bottom (laisse place au CTA final natif).
           rAF dedup pour INP < 100 ms (cf. perf budget). */}
       <StickyMobileCta
-        href="/appel"
+        href="/appel?depuis=accueil-mobile"
         label={isFr ? "Échanger 45 min — sans engagement" : "Talk 45 min — no commitment"}
         track="home-sticky-mobile"
         threshold={600}
