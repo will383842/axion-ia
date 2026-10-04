@@ -29,6 +29,7 @@ import Link from "next/link";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { PastilleTypeRdv } from "@/components/admin/contacts/PastilleTypeRdv";
 import {
   creerProspectAction,
   rangerRencontreAction,
@@ -129,6 +130,7 @@ export async function ApresLAppelVue({
         }`}
         meta={
           <>
+            {r.typeRendezVous ? <PastilleTypeRdv type={r.typeRendezVous} /> : null}
             {r.estTestInterne ? <AdminBadge tone="warning">test interne</AdminBadge> : null}
             {r.repriseHistorique ? <AdminBadge tone="neutral">historique</AdminBadge> : null}
           </>

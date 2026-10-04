@@ -2,10 +2,12 @@
  * Créer un rendez-vous dans la console — en 2 clics depuis un projet
  * (chantier visio, PR 4 ; plan V-05b, décision B9 prise sur recommandation).
  *
- * Il n'existe qu'UN type Calendly client (le diagnostic gratuit). Un client
- * qui revient — deuxième, troisième rendez-vous, réunion improvisée — n'a donc
- * pas de réservation Calendly : sans cet écran, ses rendez-vous n'entreraient
- * jamais dans son dossier, et le pilote n'aurait pas de rencontre de test.
+ * Les réservations Calendly clients (Diagnostic IA, Échange projet, Salon —
+ * chantier « Types de rendez-vous », 2026-10) ne couvrent que la PREMIÈRE
+ * prise de contact. Un client qui revient — deuxième, troisième rendez-vous,
+ * réunion improvisée — n'a pas de réservation Calendly : sans cet écran, ses
+ * rendez-vous n'entreraient jamais dans son dossier, et le pilote n'aurait pas
+ * de rencontre de test.
  *
  * ## Ce que la rencontre est, et n'est pas
  *

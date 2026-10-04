@@ -45,6 +45,13 @@ import {
 } from "@/server/calendly/canal";
 import { colorerReservationCalendly } from "@/server/google-calendar/events";
 import { ipDepuisEntetes } from "@/lib/client-ip";
+import {
+  besoinDuBrut,
+  reponsesDuBrut,
+  type ReponseCrm,
+  classerRendezVous,
+  type TypeRendezVous,
+} from "@/server/calendly/type-rendez-vous";
 
 const ClientEventSchema = z.object({
   eventName: z.literal("calendly.event_scheduled"),
@@ -54,6 +61,8 @@ const ClientEventSchema = z.object({
   utmSource: z.string().max(100).optional(),
   utmCampaign: z.string().max(100).optional(),
   utmMedium: z.string().max(100).optional(),
+  // Le type choisi sur /appel (lot L2) — facultatif, ajouté le 2026-10-04.
+  utmContent: z.string().max(100).optional(),
   referrer: z.string().max(500).optional(),
   pageUrl: z.string().url().max(500),
 });
@@ -296,6 +305,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   //    du postMessage) : la verification de l'etape 5 est alors passee deux
   //    fois avant la premiere ecriture. C'est exactement le doublon qu'on veut
   //    eviter → on le traite comme tel, pas comme une erreur 500.
+  // Classement provisoire, par le slug : le postMessage ne porte pas l'URI du
+  // type. L'enrichissement qui suit le reclasse par l'URI dès qu'il la lit.
+  const typeInitial = await classerRendezVous({ eventTypeName: parsed.data.eventTypeSlug });
+
   let event: { id: string };
   try {
     event = await prisma.calendlyEvent.create({
@@ -305,6 +318,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         eventTypeSlug: parsed.data.eventTypeSlug,
         status: "scheduled",
         source: "embed_js",
+        typeRendezVous: typeInitial,
         ...(eventUri ? { eventUri } : {}),
         ...(inviteeUri ? { inviteeUri } : {}),
         ...(inviteeName ? { inviteeName } : {}),
@@ -314,6 +328,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         ...(parsed.data.utmSource ? { utmSource: parsed.data.utmSource } : {}),
         ...(parsed.data.utmCampaign ? { utmCampaign: parsed.data.utmCampaign } : {}),
         ...(parsed.data.utmMedium ? { utmMedium: parsed.data.utmMedium } : {}),
+        ...(parsed.data.utmContent ? { utmContent: parsed.data.utmContent } : {}),
         ...(parsed.data.referrer ? { referrer: parsed.data.referrer } : {}),
         // _ipHash injecté pour dedup ; consomme par la query findFirst ci-dessus
         rawPayload: { ...rawPayload, _ipHash: ipHash } as never,
@@ -349,6 +364,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Le lieu — lien de réunion ou numéro — pour que l'alerte porte le moyen et
   // pas seulement le nom du canal.
   let lieuRdv: string | null = null;
+  // Contrat CRM (2026-10-04) : le nom lisible, le type et le besoin partent
+  // TOUJOURS. Sans enrichissement, le nom reste le slug et le type provisoire.
+  let nomType = parsed.data.eventTypeSlug;
+  let typeRendezVous: TypeRendezVous = typeInitial;
+  let besoin: string | null = null;
+  let reponses: ReponseCrm[] = [];
   if (enriched?.ok) {
     const fresh = await prisma.calendlyEvent
       .findUnique({
@@ -360,10 +381,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           location: true,
           rawPayload: true,
           inviteePhone: true,
+          eventTypeName: true,
+          typeRendezVous: true,
         },
       })
       .catch(() => null);
     if (fresh) {
+      nomType = fresh.eventTypeName || nomType;
+      typeRendezVous = fresh.typeRendezVous ?? typeRendezVous;
+      besoin = besoinDuBrut(fresh.rawPayload);
+      reponses = reponsesDuBrut(fresh.rawPayload);
       notifyName = fresh.inviteeName ?? notifyName;
       notifyEmail = fresh.inviteeEmail ?? notifyEmail;
       notifyStart = fresh.startTime?.toISOString() ?? null;
@@ -405,6 +432,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       },
       payload: {
         eventTypeSlug: parsed.data.eventTypeSlug,
+        eventTypeName: nomType,
+        typeRendezVous,
+        besoin,
+        reponses,
         pageUrl: parsed.data.pageUrl,
         // 🔑 DANS `payload`, jamais à la racine : le validateur du CRM ne filtre
         // que la racine, et une clé inconnue y vaut 422 définitif — c'est-à-dire
@@ -414,6 +445,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         ...(parsed.data.utmSource ? { utmSource: parsed.data.utmSource } : {}),
         ...(parsed.data.utmCampaign ? { utmCampaign: parsed.data.utmCampaign } : {}),
         ...(parsed.data.utmMedium ? { utmMedium: parsed.data.utmMedium } : {}),
+        ...(parsed.data.utmContent ? { utmContent: parsed.data.utmContent } : {}),
       },
     });
   }
@@ -427,6 +459,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       inviteeName: notifyName ?? "(non communiqué)",
       eventStartTime: notifyStart ?? "(voir mail Calendly)",
       eventName: parsed.data.eventTypeSlug,
+      // Le titre de l'alerte se tire du type classé (lot L3, 2026-10-04).
+      typeRendezVous,
+      ...(besoin ? { besoin } : {}),
       // Omis quand il n'est pas établi : l'alerte préfère se taire à affirmer.
       ...(format === "inconnu" ? {} : { format }),
       ...(parsed.data.pageUrl ? { pageUrl: parsed.data.pageUrl } : {}),

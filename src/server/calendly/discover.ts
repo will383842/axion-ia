@@ -37,6 +37,16 @@ import { CALENDLY_API_BASE, isCalendlyApiConfigured } from "./api";
 import { enrichCalendlyEvent } from "./enrich";
 import { canalDuRendezVous, COULEUR_GOOGLE_CANAL } from "@/server/calendly/canal";
 import { colorerReservationCalendly } from "@/server/google-calendar/events";
+import {
+  besoinDesReponses,
+  couperTexte,
+  reponsesDesQuestions,
+  classerRendezVous,
+  estColonneTypeRendezVousAbsente,
+  sansColonnesTypeRendezVous,
+  uriDeTypeValide,
+  utmDuTracking,
+} from "@/server/calendly/type-rendez-vous";
 
 /**
  * Nombre maximum de réservations créées par passage.
@@ -176,7 +186,8 @@ function record(value: unknown): Record<string, unknown> | null {
 }
 
 function str(value: unknown, max: number): string | null {
-  return typeof value === "string" && value.trim() ? value.trim().slice(0, max) : null;
+  // Nom, type… partent aussi au CRM : coupe sans casser un emoji (A09).
+  return typeof value === "string" && value.trim() ? couperTexte(value.trim(), max) : null;
 }
 
 function parseDate(value: unknown): Date | null {
@@ -336,22 +347,50 @@ export async function discoverNewCalendlyEvents(
     const startTime = parseDate(ev["start_time"]);
     const endTime = parseDate(ev["end_time"]);
 
+    // Le TYPE du rendez-vous (chantier « Types de rendez-vous », 2026-10-04) :
+    // l'URI du type d'abord, le nom en repli. Classé ici, une fois, à l'écriture.
+    const eventTypeUri = uriDeTypeValide(ev["event_type"]);
+    const typeRendezVous = await classerRendezVous({ eventTypeUri, eventTypeName: name });
+    // Les UTM que l'invité portait en arrivant sur Calendly (`tracking`) : sans
+    // elles, une réservation prise hors de l'iframe n'avait AUCUNE provenance.
+    const utm = utmDuTracking(firstInvitee);
+    const besoin = besoinDesReponses(firstInvitee?.["questions_and_answers"]);
+    // Lot L5b : les réponses du questionnaire (bornées ; le contrat CRM ne les
+    // garde que pour un diagnostic ou un échange projet).
+    const reponses = reponsesDesQuestions(firstInvitee?.["questions_and_answers"]);
+
+    const donnees = {
+      eventTypeName: name,
+      eventTypeSlug: slugify(name),
+      status: "scheduled" as const,
+      source: "api_poll" as const,
+      eventUri,
+      inviteeUri,
+      typeRendezVous,
+      ...(eventTypeUri ? { eventTypeUri } : {}),
+      ...(startTime ? { startTime } : {}),
+      ...(endTime ? { endTime } : {}),
+      ...(utm.utmSource ? { utmSource: utm.utmSource } : {}),
+      ...(utm.utmMedium ? { utmMedium: utm.utmMedium } : {}),
+      ...(utm.utmCampaign ? { utmCampaign: utm.utmCampaign } : {}),
+      ...(utm.utmContent ? { utmContent: utm.utmContent } : {}),
+      rawPayload: ev as never,
+    };
+
     let row: { id: string };
     try {
-      row = await prisma.calendlyEvent.create({
-        data: {
-          eventTypeName: name,
-          eventTypeSlug: slugify(name),
-          status: "scheduled",
-          source: "api_poll",
-          eventUri,
-          inviteeUri,
-          ...(startTime ? { startTime } : {}),
-          ...(endTime ? { endTime } : {}),
-          rawPayload: ev as never,
-        },
-        select: { id: true },
-      });
+      try {
+        row = await prisma.calendlyEvent.create({ data: donnees, select: { id: true } });
+      } catch (e) {
+        // Fenêtre app/worker : ce code peut tourner avant la migration qui pose
+        // les colonnes du type. On écrit alors sans elles plutôt que de perdre
+        // la réservation ; l'enrichissement suivant les remplira.
+        if (!estColonneTypeRendezVousAbsente(e)) throw e;
+        row = await prisma.calendlyEvent.create({
+          data: sansColonnesTypeRendezVous(donnees),
+          select: { id: true },
+        });
+      }
     } catch (e) {
       // P2002 : la capture postMessage a créé la même ligne entre notre lecture
       // et notre écriture. C'est exactement le doublon que la contrainte UNIQUE
@@ -417,7 +456,14 @@ export async function discoverNewCalendlyEvents(
           fullName: inviteeName,
           phone: inviteePhone,
         },
-        payload: { eventTypeName: name, source: "api_poll", format },
+        payload: {
+          eventTypeName: name,
+          typeRendezVous,
+          besoin,
+          reponses,
+          source: "api_poll",
+          format,
+        },
       });
     }
 
@@ -432,6 +478,10 @@ export async function discoverNewCalendlyEvents(
           inviteeName: inviteeName ?? "(non communiqué)",
           eventStartTime: start?.toISOString() ?? "(voir mail Calendly)",
           eventName: name,
+          // Le titre de l'alerte se tire du type classé (« Diagnostic IA
+          // réservé », « Échange projet réservé — Besoin : Formation »).
+          typeRendezVous,
+          ...(besoin ? { besoin } : {}),
           format,
           ...(location ? { lieu: location } : {}),
           ...(inviteePhone ? { inviteePhone } : {}),

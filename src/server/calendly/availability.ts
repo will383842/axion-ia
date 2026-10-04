@@ -297,7 +297,7 @@ function isPublicCalendlyUrl(value: unknown): value is string {
 }
 
 /** Forme comparable d'une URL de prise de rendez-vous : origine + chemin, sans slash final. */
-function canonicalPath(value: string): string | null {
+export function canonicalPath(value: string): string | null {
   try {
     const u = new URL(value);
     return `${u.origin}${u.pathname.replace(/\/+$/, "")}`.toLowerCase();
@@ -373,25 +373,26 @@ function record(value: unknown): Record<string, unknown> | null {
 }
 
 /**
- * Retrouve l'URI d'API de l'event-type à partir de son URL publique.
+ * La liste des types d'événement ACTIFS du compte Calendly — la SEULE lecture de
+ * `/event_types` du dépôt (2026-10-04).
  *
- * L'URL publique (`NEXT_PUBLIC_CALENDLY_APPEL_URL`) est la seule chose que le
- * site connaisse ; l'API, elle, ne travaille qu'avec des URI. Deux appels, tous
- * deux mis en cache 24 h : ni le compte ni l'event-type ne changent d'un jour à
- * l'autre.
+ * Factorisée hors de `resolveEventTypeUri` pour que le classement des
+ * rendez-vous (`type-rendez-vous.ts`) relise la même liste, dans le même cache
+ * de 24 h, au lieu d'ouvrir un second appel — une seconde vérité pour un même
+ * fait. Deux appels, tous deux en cache : ni le compte ni ses types ne changent
+ * d'un jour à l'autre.
+ *
+ * `{ failure }` : l'API a refusé ou n'a pas répondu (l'échec ENTIER, avec le
+ * `required_scopes` d'un 403). `null` : réponse illisible.
  */
-async function resolveEventTypeUri(
-  schedulingUrl: string,
-): Promise<
-  { uri: string; dureeMinutes?: number; customQuestions: unknown } | { failure: GetErr } | null
+export async function listerTypesEvenementCalendly(): Promise<
+  { types: ReadonlyArray<Record<string, unknown>> } | { failure: GetErr } | null
 > {
   const me = await calendlyGet(
     `${CALENDLY_API_BASE}/users/me`,
     EVENT_TYPE_REVALIDATE_SECONDS,
     EVENT_TYPE_TAG,
   );
-  // On renvoie l'échec ENTIER, pas seulement sa catégorie : c'est ici que
-  // transitait le `required_scopes` d'un 403, jusqu'ici perdu en route.
   if (!me.ok) return { failure: me };
 
   const userUri = record(record(me.body)?.["resource"])?.["uri"];
@@ -406,11 +407,30 @@ async function resolveEventTypeUri(
 
   const collection = record(list.body)?.["collection"];
   if (!Array.isArray(collection)) return null;
+  return {
+    types: collection.map(record).filter((et): et is Record<string, unknown> => et !== null),
+  };
+}
+
+/**
+ * Retrouve l'URI d'API de l'event-type à partir de son URL publique.
+ *
+ * L'URL publique (`NEXT_PUBLIC_CALENDLY_APPEL_URL`) est la seule chose que le
+ * site connaisse ; l'API, elle, ne travaille qu'avec des URI. La liste vient de
+ * `listerTypesEvenementCalendly`, en cache 24 h.
+ */
+async function resolveEventTypeUri(
+  schedulingUrl: string,
+): Promise<
+  { uri: string; dureeMinutes?: number; customQuestions: unknown } | { failure: GetErr } | null
+> {
+  // On renvoie l'échec ENTIER, pas seulement sa catégorie : c'est ici que
+  // transitait le `required_scopes` d'un 403, jusqu'ici perdu en route.
+  const liste = await listerTypesEvenementCalendly();
+  if (!liste || "failure" in liste) return liste;
 
   const wanted = canonicalPath(schedulingUrl);
-  for (const raw of collection) {
-    const et = record(raw);
-    if (!et) continue;
+  for (const et of liste.types) {
     const uri = et["uri"];
     const sched = et["scheduling_url"];
     if (typeof uri !== "string" || typeof sched !== "string") continue;

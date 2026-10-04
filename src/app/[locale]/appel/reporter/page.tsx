@@ -58,6 +58,7 @@ import {
   CHAMP_NOUVEAU_DEBUT,
 } from "@/server/calendly/liens-rendez-vous";
 import { canalDuRendezVous } from "@/server/calendly/canal";
+import { urlDeReprogrammation } from "@/server/calendly/choix-rendez-vous";
 import { creneauExploitable } from "@/server/calendly/formulaire-reservation";
 import { reporterDepuisLeLien } from "./actions";
 
@@ -117,7 +118,18 @@ export default async function ReporterPage({ params, searchParams }: Props) {
 
   const rdv = await prisma.calendlyEvent.findUnique({
     where: { id: lecture.rendezVousId },
-    select: { id: true, startTime: true, status: true, location: true, rawPayload: true },
+    select: {
+      id: true,
+      startTime: true,
+      status: true,
+      location: true,
+      rawPayload: true,
+      // Le TYPE d'origine : un rendez-vous reprogrammé garde son type
+      // (chantier « Types de rendez-vous », L2 — `urlDeReprogrammation`).
+      eventTypeUri: true,
+      typeRendezVous: true,
+      eventTypeName: true,
+    },
   });
   if (!rdv) return <Introuvable />;
   if (rdv.status === "canceled") return <DejaAnnule locale={locale} />;
@@ -198,8 +210,10 @@ export default async function ReporterPage({ params, searchParams }: Props) {
   }
 
   // ── ÉCRAN 1 : choisir ─────────────────────────────────────────────────────
+  // 🔴 Les créneaux du type D'ORIGINE, jamais ceux du type appel par défaut :
+  // un diagnostic déplacé reste un diagnostic.
   const dispo = await fetchAvailableSlots({
-    schedulingUrl: process.env.NEXT_PUBLIC_CALENDLY_APPEL_URL ?? "",
+    schedulingUrl: await urlDeReprogrammation(rdv),
   });
 
   return (
