@@ -637,7 +637,8 @@ describe("REQ-INT-012 — GET /api/partners/evenements?after_sequence=&limit=", 
     expect(r.headers.get("x-axionia-suite")).toBe("1");
     const t = r.headers.get("x-axionia-timestamp");
     expect(r.headers.get("x-axionia-signature")).toBe(
-      createHmac("sha256", SECRET).update(`${t}.${corps}`).digest("hex"),
+      // INT-T72-A : la chaîne canonique du contrat v3, paramètres et en-têtes de la page compris.
+      createHmac("sha256", SECRET).update(`${t}.1.2.3.1.${corps}`).digest("hex"),
     );
   });
 

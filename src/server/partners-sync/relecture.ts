@@ -28,7 +28,8 @@
  */
 import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 
-import { horodatageSignature, signerCorps } from "@/server/partners/enveloppe";
+import { chaineCanoniqueDeRelecture } from "@/server/partners/contrat/signature-relecture";
+import { ENTETE_KID, horodatageSignature, kidDe } from "@/server/partners/enveloppe";
 
 import { canalPartnersOuvert, secretPartners, secretRelecture } from "./config";
 
@@ -142,15 +143,29 @@ export async function repondreRelecture(
   const derniere = rendues.at(-1)?.sequence ?? parametres.apres;
 
   const horodatage = horodatageSignature(new Date(maintenantMs));
+  const derniereSequence = derniere.toString();
+  const suite = lignes.length > parametres.limite ? "1" : "0";
+  // INT-T72-A : la signature couvre la chaîne CANONIQUE du contrat v3 — l'horodatage, les deux
+  // paramètres DEMANDÉS (sous leur forme sans zéro de tête), les deux en-têtes de la page et le
+  // corps exact. Une page authentique d'une autre lecture ne se rejoue pas sur celle-ci.
+  const chaine = chaineCanoniqueDeRelecture({
+    horodatage,
+    afterSequence: parametres.apres.toString(),
+    limit: parametres.limite.toString(),
+    derniereSequence,
+    suite,
+    corps,
+  });
   return new Response(corps, {
     status: 200,
     headers: {
       "Content-Type": "application/x-ndjson",
       "Cache-Control": "no-store",
       "X-Axionia-Timestamp": horodatage,
-      "X-Axionia-Signature": signerCorps(secretEmission, horodatage, corps),
-      "X-Axionia-Derniere-Sequence": derniere.toString(),
-      "X-Axionia-Suite": lignes.length > parametres.limite ? "1" : "0",
+      "X-Axionia-Signature": createHmac("sha256", secretEmission).update(chaine).digest("hex"),
+      [ENTETE_KID]: kidDe(secretEmission),
+      "X-Axionia-Derniere-Sequence": derniereSequence,
+      "X-Axionia-Suite": suite,
     },
   });
 }

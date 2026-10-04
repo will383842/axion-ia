@@ -16,6 +16,8 @@ import contrat from "@/server/partners/contrat/contracts.v3.json";
 import { ENTETE_KID, kidDe } from "@/server/partners/enveloppe";
 
 import { envoyerLigne, type ClientRelais } from "../relais";
+import { repondreReconciliation } from "../reconciliation";
+import { repondreRelecture, signerCibleRelecture } from "../relecture";
 
 const SECRET_A = "a".repeat(48);
 const SECRET_B = "b".repeat(48);
@@ -109,5 +111,66 @@ describe("REQ-SEC-028 — le webhook signé porte le kid de SA clé", () => {
     const apres = (await envoyerAvec(SECRET_B)).get(ENTETE_KID);
     expect(apres).toBe(kidDe(SECRET_B));
     expect(apres).not.toBe(avant);
+  });
+});
+
+describe("REQ-QA-030 — les réponses signées de la relecture et du rejeu portent le kid (INT-T72-A)", () => {
+  const RELECTURE = "r".repeat(40);
+  const EMISSION = "e".repeat(40);
+  const maintenantMs = Date.UTC(2026, 9, 4, 12, 0, 0);
+  const t = String(Math.floor(maintenantMs / 1000));
+  const ENV_AVANT = { ...process.env };
+
+  beforeEach(() => {
+    process.env.PARTNERS_SYNC_ENABLED = "true";
+    process.env.PARTNERS_SYNC_SECRET = EMISSION;
+    process.env.PARTNERS_SYNC_URL = "https://partners.exemple.test/api/webhooks/axionia";
+    process.env.PARTNERS_RELECTURE_SECRET = RELECTURE;
+    process.env.DATABASE_URL = "postgresql://u:p@localhost:5432/db";
+  });
+  afterEach(() => {
+    process.env = { ...ENV_AVANT };
+  });
+
+  it("REQ-QA-030 : la relecture porte X-Axionia-Kid = kidDe(secret d'émission)", async () => {
+    const cible = "/api/partners/evenements?after_sequence=0&limit=1";
+    const r = await repondreRelecture(
+      new Request(`https://axion-ia.com${cible}`, {
+        headers: {
+          "x-partners-timestamp": t,
+          "x-partners-signature": signerCibleRelecture(RELECTURE, t, cible),
+        },
+      }),
+      {
+        prisma: { partnersSyncOutbox: { findMany: async () => [] } },
+        maintenantMs,
+      },
+    );
+    expect(r.status).toBe(200);
+    expect(r.headers.get(ENTETE_KID)).toBe(kidDe(EMISSION));
+  });
+
+  it("REQ-QA-030 : le rejeu porte X-Axionia-Kid = kidDe(secret d'émission)", async () => {
+    const chemin = "/api/partners/reconciliation";
+    const corps = JSON.stringify({ eventIds: ["0a1b2c3d-0001-4000-8000-000000000001"] });
+    const r = await repondreReconciliation(
+      new Request(`https://axion-ia.com${chemin}`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-partners-timestamp": t,
+          "x-partners-signature": signerCibleRelecture(RELECTURE, t, `${chemin}\n${corps}`),
+        },
+        body: corps,
+      }),
+      {
+        prisma: { partnersSyncOutbox: { updateMany: async () => ({ count: 1 }) } },
+        limiter: async () => ({ allowed: true }),
+        journal: () => undefined,
+        maintenantMs,
+      },
+    );
+    expect(r.status).toBe(200);
+    expect(r.headers.get(ENTETE_KID)).toBe(kidDe(EMISSION));
   });
 });

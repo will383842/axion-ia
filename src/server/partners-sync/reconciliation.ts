@@ -35,7 +35,7 @@ import { z } from "zod";
 
 import type { RateLimitConfig } from "@/lib/rate-limit";
 
-import { horodatageSignature, signerCorps } from "@/server/partners/enveloppe";
+import { ENTETE_KID, horodatageSignature, kidDe, signerCorps } from "@/server/partners/enveloppe";
 
 import { canalPartnersOuvert, secretPartners, secretRelecture } from "./config";
 import { verifierRequetePartners } from "./relecture";
@@ -143,6 +143,8 @@ export async function repondreReconciliation(
       "Cache-Control": "no-store",
       "X-Axionia-Timestamp": horodatage,
       "X-Axionia-Signature": signerCorps(secretEmission, horodatage, corps),
+      // INT-T72-A : le kid de la clé qui signe — sans lui, Partners refuse (kid_absent, QA-T52).
+      [ENTETE_KID]: kidDe(secretEmission),
     },
   });
 }
