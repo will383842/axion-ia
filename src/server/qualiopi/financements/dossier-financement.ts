@@ -465,12 +465,21 @@ export async function marquerPaiementRecuSiSoldee(dossierId: string): Promise<vo
           where: { statut: { not: "annulee" }, avoirDeId: null },
           select: { statut: true },
         },
+        payeurs: { select: { factureFormationId: true, montantAttenduCents: true } },
       },
     });
     if (!dossier || dossier.statut !== "facture") return;
     if (dossier.factures.length === 0) return;
     const toutesPayees = dossier.factures.every((f) => f.statut === "payee");
     if (!toutesPayees) return;
+    // 🔴 Lot A8c — une créance non nulle encore NON FACTURÉE (le reste à charge
+    // d'une subrogation partielle) retient le dossier : sinon la facture de
+    // l'OPCO payée suffisait à annoncer soldée une affaire dont une part
+    // n'était même pas réclamée.
+    const resteAFacturer = (dossier.payeurs ?? []).some(
+      (p) => p.factureFormationId === null && p.montantAttenduCents > 0,
+    );
+    if (resteAFacturer) return;
     await prisma.dossierFinancement.updateMany({
       where: { id: dossierId, statut: "facture" },
       data: { statut: "paiement_recu", paiementRecuAt: new Date() },
