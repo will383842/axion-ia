@@ -15,7 +15,7 @@ import { siretField } from "@/lib/siret-schema";
 import { premierMessageZod } from "@/lib/zod-message";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { inferOpco } from "@/server/qualiopi/crm/naf-opco";
-import { OPCO_IDS } from "@/server/qualiopi/financements/opco-referentiel";
+import { OPCO_IDS, isOpcoId, type OpcoId } from "@/server/qualiopi/financements/opco-referentiel";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
 import { definirContactFacturation } from "@/server/qualiopi/crm/contact-facturation";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
@@ -281,6 +281,10 @@ export async function createClientAction(
   // Inférer l'OPCO si non fourni manuellement. L'IDCC prime : c'est la
   // convention collective qui rattache légalement à un OPCO.
   const opcoIdentifie = v.opcoIdentifie ?? inferOpco({ idcc: v.idcc, naf: v.nafCode });
+  // Lot A7a : l'inférence pose AUSSI l'OPCO typé (une fiche neuve n'en a pas).
+  // Une saisie en texte n'est pas une inférence : elle ne le pose pas.
+  const opcoTypeInfere =
+    v.opcoIdentifie === undefined && isOpcoId(opcoIdentifie) ? opcoIdentifie : null;
 
   // ⚠️ `numero` est alloué PAR LA PORTE, dans sa transaction, avec la même
   // borne haute que V20 (série `client` sans millésime : voir `nextNumero`).
@@ -302,6 +306,7 @@ export async function createClientAction(
       ...(v.adresseVille !== undefined ? { adresseVille: v.adresseVille } : {}),
       ...(v.adresseCodePostal !== undefined ? { adresseCodePostal: v.adresseCodePostal } : {}),
       ...(opcoIdentifie !== null ? { opcoIdentifie } : {}),
+      ...(opcoTypeInfere !== null ? { opco: opcoTypeInfere } : {}),
       ...(v.opcoNumeroAdherent !== undefined ? { opcoNumeroAdherent: v.opcoNumeroAdherent } : {}),
       ...(v.opcoEnveloppeAnnuelleCents !== undefined
         ? { opcoEnveloppeAnnuelleCents: v.opcoEnveloppeAnnuelleCents }
@@ -339,6 +344,7 @@ export async function createClientAction(
       numero: resultat.numero,
       raisonSociale: v.raisonSociale,
       opcoIdentifie,
+      ...(opcoTypeInfere !== null ? { opco: opcoTypeInfere } : {}),
       ...(siren !== undefined ? { siren } : {}),
       ...(resultat.creationForcee ? { creationForcee: true } : {}),
     },
@@ -433,6 +439,12 @@ export async function updateClientAction(
   // enregistrement de la branche. Le `trim() === ""` couvre les lignes
   // historiques où une chaîne vide a pu être écrite (le schéma l'autorisait).
   let opcoAEcrire: string | null | undefined;
+  // Lot A7a : quand l'INFÉRENCE écrit `opcoIdentifie`, elle pose aussi l'OPCO
+  // typé — seulement s'il est vide en base et absent de la charge. 🔴 Une saisie
+  // de l'OPCO typé n'est JAMAIS écrasée (y compris par « remettre en inféré ») :
+  // faute d'origine « inféré / confirmé » en base, une valeur posée est traitée
+  // comme une saisie.
+  let opcoTypeInfere: OpcoId | undefined;
   if (typeof fields.opcoIdentifie === "string") {
     opcoAEcrire = fields.opcoIdentifie;
   } else if (
@@ -443,7 +455,7 @@ export async function updateClientAction(
     const reinferenceDemandee = fields.opcoIdentifie === null;
     const actuel = await prisma.client.findUnique({
       where: { id },
-      select: { nafCode: true, idcc: true, opcoIdentifie: true },
+      select: { nafCode: true, idcc: true, opcoIdentifie: true, opco: true },
     });
     if (
       actuel !== null &&
@@ -456,6 +468,9 @@ export async function updateClientAction(
       // Sur demande explicite on écrit même `null` (retour à « à déterminer ») ;
       // sinon on n'écrit que si l'inférence a trouvé quelque chose.
       if (reinferenceDemandee || infere !== null) opcoAEcrire = infere;
+      if (fields.opco === undefined && actuel.opco == null && isOpcoId(infere)) {
+        opcoTypeInfere = infere;
+      }
     }
   }
 
@@ -514,6 +529,7 @@ export async function updateClientAction(
             ? { opcoEnveloppeAnnuelleCents: fields.opcoEnveloppeAnnuelleCents }
             : {}),
           ...(fields.opco !== undefined ? { opco: fields.opco } : {}),
+          ...(opcoTypeInfere !== undefined ? { opco: opcoTypeInfere } : {}),
           ...effectifAEcrire,
           ...(fields.statut !== undefined ? { statut: fields.statut } : {}),
           ...(fields.source !== undefined ? { source: fields.source } : {}),
@@ -556,6 +572,7 @@ export async function updateClientAction(
     changes: {
       ...fields,
       ...(opcoAEcrire !== undefined ? { opcoIdentifie: opcoAEcrire } : {}),
+      ...(opcoTypeInfere !== undefined ? { opco: opcoTypeInfere } : {}),
       ...(sirenAEcrire !== undefined ? { siren: sirenAEcrire } : {}),
     },
     session,

@@ -89,7 +89,8 @@ describe("regleDelaiFacturationOpco — requête bornée", () => {
       none: { destinataire: "opco", statut: { notIn: ["brouillon", "annulee"] } },
     });
     expect(arg.take).toBeGreaterThan(0);
-    expect(arg.select.client.select).toEqual({ opco: true });
+    // Lot A7a : les DEUX champs, lus par la règle unique `opcoDuClient`.
+    expect(arg.select.client.select).toEqual({ opco: true, opcoIdentifie: true });
   });
 });
 

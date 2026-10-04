@@ -18,7 +18,7 @@ import {
   transactionFaitFacturation,
 } from "@/server/partners-sync/producteurs/facturation";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
-import { opcoLabel } from "./opco-referentiel";
+import { nomOpcoDuClient, referenceOpcoDuClient } from "./opco-referentiel";
 import { montantPrisEnChargeCents } from "./prise-en-charge-montant";
 import { sessionExigeUnDossier } from "./dossier-auto";
 import {
@@ -53,7 +53,7 @@ const SELECT_SESSION_PAYEURS = {
   formation: { select: { dureeHeures: true } },
   edofVerifieAt: true,
   ftDispositif: true,
-  client: { select: { id: true, raisonSociale: true, opcoIdentifie: true } },
+  client: { select: { id: true, raisonSociale: true, opco: true, opcoIdentifie: true } },
   // 🔴 T4a — les inscriptions décident des payeurs en inter-entreprises. Les
   // abandons et exclusions sont hors périmètre : on ne réclame pas le siège de
   // quelqu'un qui n'a pas suivi l'action.
@@ -66,7 +66,7 @@ const SELECT_SESSION_PAYEURS = {
       edofVerifieAt: true,
       ftDispositif: true,
       montantHtCents: true,
-      client: { select: { id: true, raisonSociale: true, opcoIdentifie: true } },
+      client: { select: { id: true, raisonSociale: true, opco: true, opcoIdentifie: true } },
     },
   },
 } satisfies Prisma.TrainingSessionSelect;
@@ -489,8 +489,9 @@ export async function creerDossierDepuisSession(sessionId: string): Promise<{ id
       // `opcoIdentifie` restait vide en base ; F6 le remplit, donc il devient
       // visible — d'où la garde, posée dans le MÊME commit.
       // Libellé et non slug : la colonne stocke « akto », on écrit « Akto ».
-      ...(session.client?.opcoIdentifie != null && (type === "opco" || type === "mixte")
-        ? { financeurNom: opcoLabel(session.client.opcoIdentifie) }
+      // Règle unique (lot A7a) : OPCO typé d'abord, ancien texte libre ensuite.
+      ...(referenceOpcoDuClient(session.client) !== null && (type === "opco" || type === "mixte")
+        ? { financeurNom: nomOpcoDuClient(session.client) }
         : {}),
       ...(session.numeroDossierOpco != null
         ? { numeroDossierExterne: session.numeroDossierOpco }

@@ -172,6 +172,7 @@ export async function getDetailsRelances(
                 raisonSociale: true,
                 contactNom: true,
                 contactEmail: true,
+                opco: true,
                 opcoIdentifie: true,
                 penalitesRetardActives: true,
               },
