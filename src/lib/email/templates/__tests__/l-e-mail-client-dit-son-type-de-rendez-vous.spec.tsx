@@ -45,6 +45,8 @@ describe("diagnostic IA", () => {
     expect(r.text).toContain("votre diagnostic IA gratuit");
     expect(r.text).toContain("Vos réponses nous aident à préparer l'échange");
     expect(r.text).not.toContain("Rendez-vous de découverte");
+    // Vu en réel le 04/10 : la phrase figurait deux fois (intro + puce).
+    expect(r.text.split("nous aident à préparer l'échange").length - 1).toBe(1);
   });
 
   it("rappels J-1 et H-1 : objets et titres propres au diagnostic", async () => {

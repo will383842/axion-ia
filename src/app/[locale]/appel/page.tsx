@@ -465,7 +465,7 @@ function Calendrier({
               className="text-fg text-[clamp(1.625rem,4vw,2.5rem)] leading-tight font-semibold tracking-tight"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              {choix === "diagnostic" ? "Votre diagnostic IA" : "Discutons de votre projet IA"}
+              {choix === "diagnostic" ? "Votre diagnostic IA" : "Votre échange projet"}
             </h1>
             {/* Lien DISCRET pour changer d'avis : le choix n'enferme pas. */}
             <a
