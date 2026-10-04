@@ -496,6 +496,13 @@ const APPELS: Record<string, { appel: Appel; prepare?: () => void }> = {
         sessionId: SESSION,
       }),
   },
+  genererDossierPretADeposerAction: {
+    prepare: pieceVivanteExiste,
+    appel: async () =>
+      (await import("@/server/actions/qualiopi/documents")).genererDossierPretADeposerAction({
+        sessionId: SESSION,
+      }),
+  },
   genererKitCpfAction: {
     prepare: pieceVivanteExiste,
     appel: async () =>

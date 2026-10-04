@@ -91,6 +91,11 @@ import { buildCvFormateurData } from "@/server/qualiopi/documents/cv-formateur-d
 // `production/producteurs.ts`.
 import { CertificatRealisationPdf } from "@/server/qualiopi/documents/templates/certificat-realisation";
 import { KitOpcoPdf } from "@/server/qualiopi/documents/templates/kit-opco";
+import {
+  chargerDossierPretADeposer,
+  type DossierPretADeposer,
+} from "@/server/qualiopi/financements/dossier-pret-a-deposer-lecture";
+import { construireZipPretADeposer } from "@/server/qualiopi/financements/dossier-pret-a-deposer-zip";
 import { KitCpfPdf } from "@/server/qualiopi/documents/templates/kit-cpf";
 import { KitFranceTravailPdf } from "@/server/qualiopi/documents/templates/kit-france-travail";
 import {
@@ -973,6 +978,16 @@ export async function genererKitOpcoAction(input: {
   const totalPrisEnCharge = ventilation.reduce((s, v) => s + v.montantPrisEnChargeCents, 0);
   const totalRac = ventilation.reduce((s, v) => s + v.resteAChargeCents, 0);
 
+  // Chantier OPCO A6 — état RÉEL des pièces et encart de dépôt. Lecture
+  // impossible → le kit retombe sur la liste fixe, où RIEN n'est coché :
+  // jamais une pièce annoncée présente sans l'avoir constatée.
+  let pret: DossierPretADeposer | null = null;
+  try {
+    pret = await chargerDossierPretADeposer(sessionId);
+  } catch (err) {
+    console.warn("[genererKitOpcoAction] état des pièces illisible (fail-soft)", err);
+  }
+
   const doc = await generateDocument({
     type: "kit_opco",
     // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
@@ -991,6 +1006,16 @@ export async function genererKitOpcoAction(input: {
           ventilation,
           totalPrisEnChargeCents: totalPrisEnCharge,
           totalResteAChargeCents: totalRac,
+          ...(pret
+            ? {
+                pieces: pret.pieces.map((p) => ({
+                  libelle: p.libelle,
+                  presente: p.presente,
+                  detail: p.detail,
+                })),
+                encartDepot: pret.encart,
+              }
+            : {}),
         },
       }),
     refs: { sessionId },
@@ -1005,6 +1030,52 @@ export async function genererKitOpcoAction(input: {
   });
 
   return { data: { documentId: doc.id, numero: doc.numero } };
+}
+
+/**
+ * Chantier OPCO A6 — « Dossier prêt à déposer » : émet un kit OPCO VÉRIFIÉ
+ * (même chemin, même verrou que `genererKitOpcoAction`) et le remet dans un
+ * ZIP avec les pièces PRÉSENTES au registre. C'est l'entreprise qui dépose sur
+ * son espace OPCO ; l'organisme lui remet ce dossier.
+ */
+export async function genererDossierPretADeposerAction(input: {
+  sessionId: string;
+}): Promise<
+  ActionResult<{ base64: string; filename: string; joints: string[]; manquantes: string[] }>
+> {
+  // Même droit que le kit OPCO : c'est le kit, accompagné de ses pièces.
+  const adminSession = await requireHabilitation("deposer_demande_financeur");
+  if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
+  const parsed = sessionIdSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { sessionId } = parsed.data;
+
+  // Le kit passe par SON action : garde du verrou (ADR 0060) et journal inclus.
+  const kit = await genererKitOpcoAction({ sessionId });
+  if ("error" in kit) return kit;
+
+  const [kitDoc, pret] = await Promise.all([
+    prisma.documentGenere.findUnique({
+      where: { id: kit.data.documentId },
+      select: { type: true, numero: true, createdAt: true },
+    }),
+    chargerDossierPretADeposer(sessionId),
+  ]);
+  if (!kitDoc || !pret) return { error: "Session introuvable" };
+
+  try {
+    const zip = await construireZipPretADeposer({ kit: kitDoc, dossier: pret });
+    await logQualiopiActivity({
+      action: "qualiopi.document.dossier_pret_a_deposer.genere",
+      targetType: "TrainingSession",
+      targetId: sessionId,
+      changes: { kitNumero: kitDoc.numero, joints: zip.joints, manquantes: zip.manquantes },
+      session: adminSession,
+    });
+    return { data: zip };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Dossier impossible à constituer." };
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
