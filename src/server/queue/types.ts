@@ -240,6 +240,14 @@ export interface VisioBalayageJobData {
 }
 
 /**
+ * INT-T60-A — import mensuel de la table IDCC → OPCO (SIRO). La charge ne porte
+ * qu'un horodatage : la ressource du mois se retrouve par l'API au passage.
+ */
+export interface OpcoSiroImportJobData {
+  readonly tick?: string;
+}
+
+/**
  * Chantier visio (PR 6) — la file `visio` du circuit du compte rendu. La
  * charge ne porte QUE des identifiants : jamais une parole, un nom, un texte
  * (Redis, Sentry, journaux). L'état de chaque étape fait foi en base.

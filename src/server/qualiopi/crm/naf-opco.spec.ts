@@ -6,11 +6,13 @@
 
 import { describe, it, expect } from "vitest";
 import {
-  IDCC_OPCO_MAP,
   inferOpco,
-  inferOpcoFromIdcc,
+  inferOpcoDepuisTable,
   inferOpcoFromNaf,
   NAF_OPCO_MAP,
+  normaliserIdcc,
+  opcosDeLIdcc,
+  type LecteurIdccOpco,
 } from "./naf-opco";
 import { isOpcoId } from "@/server/qualiopi/financements/opco-referentiel";
 
@@ -135,45 +137,93 @@ describe("inferOpcoFromNaf", () => {
   });
 });
 
-describe("inferOpcoFromIdcc", () => {
-  it("retourne 'akto' pour l'IDCC 1516 (CCN des organismes de formation)", () => {
-    expect(inferOpcoFromIdcc("1516")).toBe("akto");
-  });
+/** Fausse table `idcc_opco` : couples (idcc, opco), comme la base. */
+function table(couples: Array<[string, string]>): LecteurIdccOpco & { cles: string[] } {
+  const cles: string[] = [];
+  return {
+    cles,
+    idccOpco: {
+      async findMany({ where }) {
+        cles.push(where.idcc);
+        return couples.filter(([i]) => i === where.idcc).map(([, opco]) => ({ opco }));
+      },
+    },
+  };
+}
 
+describe("normaliserIdcc", () => {
   it("normalise le zéro de tête et les espaces", () => {
-    expect(inferOpcoFromIdcc("01516")).toBe("akto");
-    expect(inferOpcoFromIdcc("1 516")).toBe("akto");
+    expect(normaliserIdcc("1516")).toBe("1516");
+    expect(normaliserIdcc("01516")).toBe("1516");
+    expect(normaliserIdcc("1 516")).toBe("1516");
+    expect(normaliserIdcc("16")).toBe("0016");
   });
 
-  it("ne tronque PAS un code trop long", () => {
-    expect(inferOpcoFromIdcc("11516")).toBeNull();
-    expect(inferOpcoFromIdcc("123456")).toBeNull();
-  });
-
-  it("retourne null pour null, vide ou inconnu", () => {
-    expect(inferOpcoFromIdcc(null)).toBeNull();
-    expect(inferOpcoFromIdcc("")).toBeNull();
-    expect(inferOpcoFromIdcc("9999")).toBeNull();
-  });
-
-  it("chaque entrée porte une source citable (veille légale, ind. 23/24)", () => {
-    for (const entree of Object.values(IDCC_OPCO_MAP)) {
-      expect(entree.source.length).toBeGreaterThan(20);
-    }
+  it("ne tronque PAS un code trop long, et rend null pour null ou vide", () => {
+    expect(normaliserIdcc("11516")).toBeNull();
+    expect(normaliserIdcc("123456")).toBeNull();
+    expect(normaliserIdcc(null)).toBeNull();
+    expect(normaliserIdcc("")).toBeNull();
   });
 });
 
-describe("inferOpco — IDCC prioritaire", () => {
-  it("l'IDCC (autoritaire) l'emporte sur le NAF", () => {
-    expect(inferOpco({ idcc: "1516", naf: "6201Z" })).toBe("akto");
+describe("opcosDeLIdcc — lecture de la table idcc_opco (INT-T60-A)", () => {
+  it("rend les OPCO de la table pour l'IDCC normalisé", async () => {
+    const t = table([
+      ["1516", "akto"],
+      ["1516", "opco2i"],
+      ["1486", "atlas"],
+    ]);
+    expect(await opcosDeLIdcc("01516", t)).toEqual(["akto", "opco2i"]);
+    expect(t.cles).toEqual(["1516"]);
+    expect(await opcosDeLIdcc("1486", t)).toEqual(["atlas"]);
   });
 
-  it("le repli NAF est conservé quand l'IDCC est absent", () => {
-    expect(inferOpco({ idcc: null, naf: "6201Z" })).toBe("atlas");
+  it("rend une liste vide si l'IDCC est inconnu, mal formé, ou la table vide", async () => {
+    expect(await opcosDeLIdcc("9001", table([["1486", "atlas"]]))).toEqual([]);
+    expect(await opcosDeLIdcc("11516", table([["1516", "akto"]]))).toEqual([]);
+    expect(await opcosDeLIdcc(null, table([]))).toEqual([]);
+    // Table vide (avant le premier import) : l'ancienne constante 1516 → AKTO
+    // ne revient PAS par la bande.
+    expect(await opcosDeLIdcc("1516", table([]))).toEqual([]);
   });
 
-  it("retourne null quand les deux sont absents", () => {
-    expect(inferOpco({ idcc: null, naf: null })).toBeNull();
+  it("une table illisible ne bloque rien : liste vide", async () => {
+    const enPanne: LecteurIdccOpco = {
+      idccOpco: {
+        async findMany() {
+          throw new Error('relation "idcc_opco" does not exist');
+        },
+      },
+    };
+    expect(await opcosDeLIdcc("1516", enPanne)).toEqual([]);
+  });
+});
+
+describe("inferOpco — IDCC prioritaire, jamais de majorité", () => {
+  it("un seul OPCO pour l'IDCC l'emporte sur le NAF", () => {
+    expect(inferOpco({ opcosIdcc: ["akto"], naf: "6201Z" })).toBe("akto");
+  });
+
+  it("le repli NAF joue quand l'IDCC ne donne rien (inconnu ou table vide)", () => {
+    expect(inferOpco({ opcosIdcc: [], naf: "6201Z" })).toBe("atlas");
+    expect(inferOpco({ opcosIdcc: [], naf: "8559A" })).toBe("akto");
+  });
+
+  it("plusieurs OPCO : le NAF ne départage que s'il désigne l'un d'eux", () => {
+    expect(inferOpco({ opcosIdcc: ["akto", "opco2i"], naf: "8559A" })).toBe("akto");
+    expect(inferOpco({ opcosIdcc: ["akto", "opco2i"], naf: "6201Z" })).toBeNull();
+    expect(inferOpco({ opcosIdcc: ["akto", "opco2i"], naf: null })).toBeNull();
+  });
+
+  it("retourne null quand rien n'est connu", () => {
+    expect(inferOpco({ opcosIdcc: [], naf: null })).toBeNull();
+  });
+
+  it("inferOpcoDepuisTable lit la table puis infère", async () => {
+    const t = table([["1516", "akto"]]);
+    expect(await inferOpcoDepuisTable(t, { idcc: "1516", naf: "6201Z" })).toBe("akto");
+    expect(await inferOpcoDepuisTable(table([]), { idcc: "1516", naf: "6201Z" })).toBe("atlas");
   });
 });
 
@@ -182,6 +232,5 @@ describe("cohérence des maps avec le référentiel OPCO", () => {
     // La colonne Client.opcoIdentifie est un VarChar(60) sans enum : un slug
     // erroné s'écrirait sans erreur et ne se verrait qu'à l'affichage.
     for (const v of Object.values(NAF_OPCO_MAP)) expect(isOpcoId(v)).toBe(true);
-    for (const e of Object.values(IDCC_OPCO_MAP)) expect(isOpcoId(e.opco)).toBe(true);
   });
 });

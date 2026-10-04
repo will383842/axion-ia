@@ -23,7 +23,7 @@ import {
 import { siretField } from "@/lib/siret-schema";
 import { premierMessageZod } from "@/lib/zod-message";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
-import { inferOpco } from "@/server/qualiopi/crm/naf-opco";
+import { inferOpcoDepuisTable } from "@/server/qualiopi/crm/naf-opco";
 import { OPCO_IDS, isOpcoId, type OpcoId } from "@/server/qualiopi/financements/opco-referentiel";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
 import { definirContactFacturation } from "@/server/qualiopi/crm/contact-facturation";
@@ -284,7 +284,8 @@ export type ResultatCreationClient =
  * - Même SIREN qu'une fiche existante : refus, avec la fiche à ouvrir.
  * - Même adresse e-mail : refus, sauf motif de « créer quand même » journalisé.
  * - Numéro alloué séquentiellement : AXI-CLI-NNN (borne haute + 1, sans millésime).
- * - opcoIdentifie inféré via inferOpco (IDCC prioritaire, repli NAF) si absent.
+ * - opcoIdentifie inféré via inferOpcoDepuisTable (IDCC lu dans `idcc_opco`,
+ *   repli NAF) si absent.
  * - Statut initial : prospect.
  * - Le contact saisi devient la première personne de la fiche et son contact
  *   de facturation (`definirContactFacturation`, même transaction).
@@ -312,7 +313,8 @@ export async function createClientAction(
 
   // Inférer l'OPCO si non fourni manuellement. L'IDCC prime : c'est la
   // convention collective qui rattache légalement à un OPCO.
-  const opcoIdentifie = v.opcoIdentifie ?? inferOpco({ idcc: v.idcc, naf: v.nafCode });
+  const opcoIdentifie =
+    v.opcoIdentifie ?? (await inferOpcoDepuisTable(prisma, { idcc: v.idcc, naf: v.nafCode }));
   // Lot A7a : l'inférence pose AUSSI l'OPCO typé (une fiche neuve n'en a pas).
   // Une saisie en texte n'est pas une inférence : elle ne le pose pas.
   const opcoTypeInfere =
@@ -566,7 +568,7 @@ export async function updateClientAction(
       actuel !== null &&
       (reinferenceDemandee || actuel.opcoIdentifie == null || actuel.opcoIdentifie.trim() === "")
     ) {
-      const infere = inferOpco({
+      const infere = await inferOpcoDepuisTable(prisma, {
         idcc: fields.idcc ?? actuel.idcc,
         naf: fields.nafCode ?? actuel.nafCode,
       });

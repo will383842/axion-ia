@@ -387,6 +387,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/server/visio/__tests__/le-catalogue-du-circuit-lit-les-regles-du-site.spec.ts",
   "src/server/visio/__tests__/une-alerte-du-circuit-mene-au-compte-rendu.spec.ts",
   "src/server/queue/workers/retention-purge-worker.ts",
+  // ── Worker d'import mensuel de la table SIRO (IDCC → OPCO), INT-T60-A :
+  //    consommateur légitime du domaine (il remplit `idcc_opco`), arbitrage de
+  //    la coordination Partners (issue 656, commentaire 5983099169).
+  "src/server/queue/workers/opco-siro-import-worker.ts",
+  "src/server/queue/workers/__tests__/opco-siro-import-worker.spec.ts",
   // ── Recherche admin : partage le garde d'habilitation `actions/qualiopi/_guards`.
   "src/server/actions/admin-recherche.ts",
   // ── Journal des e-mails (lot 3, 2026-09-02) : « Renvoyer » un échec est un
