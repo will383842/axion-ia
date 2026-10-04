@@ -25,9 +25,17 @@ import {
 } from "@/server/actions/qualiopi/_guards";
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
-import { estimateOpcoCoverage, type OrigineEstimationOpco } from "@/server/qualiopi/crm/devis";
-import { effectifDuClient, idccValide } from "@/server/qualiopi/financements/bareme-opco-branche";
+import {
+  dateDeReferenceDevis,
+  estimateOpcoCoverage,
+  type OrigineEstimationOpco,
+} from "@/server/qualiopi/crm/devis";
+import {
+  anneeParis,
+  consommationOpcoAnnee,
+} from "@/server/qualiopi/financements/consommation-opco";
 import { opcoDuClient } from "@/server/qualiopi/financements/opco-referentiel";
+import { effectifDuClient, idccValide } from "@/server/qualiopi/financements/bareme-opco-branche";
 import {
   lierDevisAuProjet,
   projetOuvrableDuClient,
@@ -110,6 +118,22 @@ const FINANCEMENT_LABELS: Record<(typeof FINANCEMENTS)[number], string> = {
   france_travail: "France Travail",
 };
 
+/**
+ * Lot A7d (relecture) — `AAAA-MM-JJ` relu en date UTC et comparé à lui-même, puis
+ * borné à [aujourd'hui − 1 an ; aujourd'hui + 3 ans]. Hors bornes, l'année du
+ * barème et de l'enveloppe n'a plus de sens (an 1 → année NaN, an 9999).
+ */
+function dateDebutSessionPrevueValide(valeur: string, maintenant = new Date()): boolean {
+  const d = new Date(`${valeur}T12:00:00Z`);
+  if (Number.isNaN(d.getTime()) || d.toISOString().slice(0, 10) !== valeur) return false;
+  const annee = maintenant.getUTCFullYear();
+  const min = new Date(maintenant);
+  min.setUTCFullYear(annee - 1);
+  const max = new Date(maintenant);
+  max.setUTCFullYear(annee + 3);
+  return d >= min && d <= max;
+}
+
 const createDevisSchema = z.object({
   clientId: z.string().uuid(),
   lignes: z.array(ligneSchema).min(1),
@@ -126,6 +150,20 @@ const createDevisSchema = z.object({
   modaliteOpco: z.enum(["intra", "inter_presentiel", "inter_distanciel"]).optional(),
   /** Enveloppe restante OPCO en centimes (optionnel). */
   opcoEnveloppeRestanteCents: z.number().int().min(0).optional(),
+  /**
+   * Lot A7d — date de début PRÉVUE de la session (AAAA-MM-JJ, optionnel). Choisit
+   * le barème et l'année civile de l'enveloppe ; à défaut, la date de validité.
+   */
+  dateDebutSessionPrevue: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date de début prévue : format AAAA-MM-JJ attendu.")
+    // Date calendaire réelle (pas de 13e mois ni de 31 février) et bornée :
+    // l'action serveur est appelable sans le champ `type="date"` (relecture A7d).
+    .refine((v) => dateDebutSessionPrevueValide(v), {
+      message:
+        "Date de début prévue : indiquez une date réelle, au plus un an en arrière et trois ans en avant.",
+    })
+    .optional(),
   /**
    * Chantier visio (PR 7) : le projet d'où le devis a été ouvert. Seul le LIEN
    * `projet_devis` est écrit, dans la transaction du devis — jamais une valeur
@@ -194,18 +232,37 @@ export async function createDevisAction(
     const client = await prisma.client.findUnique({ where: { id: v.clientId } }).catch(() => null);
     const idccClient = idccValide(client?.idcc);
     const effectifClient = effectifDuClient(client);
+    // Lot A7d — OPCO par la règle unique (typé d'abord, ancien texte à défaut).
     const opcoClient = opcoDuClient(client);
-    // Enveloppe : saisie sur le devis, sinon celle de la fiche client, sinon le
-    // plafond annuel du barème (défaut d'`estimateOpcoCoverage`).
-    const enveloppeRestanteCents =
-      v.opcoEnveloppeRestanteCents ?? client?.opcoEnveloppeAnnuelleCents ?? undefined;
+    // Lot A7d — barème et enveloppe de l'année de la SESSION, pas du jour.
+    const asOf = dateDeReferenceDevis({
+      debutSessionPrevue:
+        v.dateDebutSessionPrevue !== undefined
+          ? new Date(`${v.dateDebutSessionPrevue}T12:00:00.000Z`)
+          : null,
+      dateValidite,
+      maintenant: new Date(),
+    });
+    // Enveloppe : saisie sur le devis, sinon (enveloppe de la fiche client, à
+    // défaut plafond annuel du barème) − ce que l'OPCO a déjà pris en charge sur
+    // l'année. Consommation illisible → `null` → comportement antérieur.
+    const consommation =
+      v.opcoEnveloppeRestanteCents === undefined && opcoClient !== null
+        ? await consommationOpcoAnnee(v.clientId, opcoClient, anneeParis(asOf))
+        : null;
     const coverage = await estimateOpcoCoverage({
       nbParticipants: v.nbParticipants,
       dureeHeures: v.dureeHeures,
       modalite: v.modaliteOpco,
       montantHtCents: montantTotalHtCents,
-      ...(enveloppeRestanteCents !== undefined ? { enveloppeRestanteCents } : {}),
-      // Règle unique (lot A7a) : OPCO typé d'abord, ancien texte libre reconnu ensuite.
+      asOf,
+      ...(v.opcoEnveloppeRestanteCents !== undefined
+        ? { enveloppeRestanteCents: v.opcoEnveloppeRestanteCents }
+        : {}),
+      ...(client?.opcoEnveloppeAnnuelleCents != null
+        ? { enveloppeAnnuelleClientCents: client.opcoEnveloppeAnnuelleCents }
+        : {}),
+      ...(consommation !== null ? { consommationAnnee: consommation } : {}),
       ...(opcoClient !== null ? { opco: opcoClient } : {}),
       ...(idccClient ? { idcc: idccClient } : {}),
       ...(effectifClient !== undefined ? { effectif: effectifClient } : {}),

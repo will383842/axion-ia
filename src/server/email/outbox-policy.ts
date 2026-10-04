@@ -53,6 +53,8 @@ export const EMAILS_A_VALIDER_PAR_DEFAUT: readonly string[] = [
   "devis-envoi",
   "convention-envoi",
   "facture-envoi",
+  // Lot A8c — préparé seul à l'encaissement : il part au client, donc relu.
+  "facture-pieces-remboursement-opco",
 ] as const;
 
 /**
@@ -126,6 +128,8 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "devis-envoi": "Envoi d'un devis",
   "convention-envoi": "Envoi d'une convention",
   "facture-envoi": "Envoi d'une facture",
+  "facture-pieces-remboursement-opco":
+    "Pièces de remboursement OPCO (facture acquittée, certificat de réalisation)",
   "autofacture-transmission": "Transmission d'une facture d'honoraires (autofacturation)",
   "qualiopi-convocation": "Convocation à une session",
   "qualiopi-rappel-j7": "Rappel à J-7",
